@@ -1014,3 +1014,13 @@ CREATE TABLE phpbb_zebra (
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 
+# Table: 'phpbb_user_confirm_keys'
+CREATE TABLE `phpbb_user_confirm_keys` (
+	`confirm_key` varchar(10) NOT NULL,
+	`user_id` mediumint(8) NOT NULL,
+	`confirm_time` int(11) NOT NULL,
+	PRIMARY KEY  (`confirm_key`),
+	KEY `user_id` (`user_id`)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
