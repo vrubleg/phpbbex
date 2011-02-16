@@ -247,6 +247,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_expire_da
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_gc', '14400');
 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cache_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cron_lock', '0', 1);
