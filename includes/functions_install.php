@@ -52,7 +52,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 			'DELIM'			=> ';;',
 			'COMMENTS'		=> 'remove_remarks',
 			'DRIVER'		=> 'firebird',
-			'AVAILABLE'		=> true,
+			'AVAILABLE'		=> false,
 			'2.0.x'			=> false,
 		),
 		'mysqli'	=> array(
@@ -82,7 +82,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 			'DELIM'			=> 'GO',
 			'COMMENTS'		=> 'remove_comments',
 			'DRIVER'		=> 'mssql',
-			'AVAILABLE'		=> true,
+			'AVAILABLE'		=> false,
 			'2.0.x'			=> true,
 		),
 		'mssql_odbc'=>	array(
@@ -92,7 +92,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 			'DELIM'			=> 'GO',
 			'COMMENTS'		=> 'remove_comments',
 			'DRIVER'		=> 'mssql_odbc',
-			'AVAILABLE'		=> true,
+			'AVAILABLE'		=> false,
 			'2.0.x'			=> true,
 		),
 		'mssqlnative'		=> array(
@@ -102,7 +102,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 			'DELIM'			=> 'GO',
 			'COMMENTS'		=> 'remove_comments',
 			'DRIVER'		=> 'mssqlnative',
-			'AVAILABLE'		=> true,
+			'AVAILABLE'		=> false,
 			'2.0.x'			=> false,
 		),			
 		'oracle'	=>	array(
@@ -112,7 +112,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 			'DELIM'			=> '/',
 			'COMMENTS'		=> 'remove_comments',
 			'DRIVER'		=> 'oracle',
-			'AVAILABLE'		=> true,
+			'AVAILABLE'		=> false,
 			'2.0.x'			=> false,
 		),
 		'postgres' => array(
@@ -122,7 +122,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 			'DELIM'			=> ';',
 			'COMMENTS'		=> 'remove_comments',
 			'DRIVER'		=> 'postgres',
-			'AVAILABLE'		=> true,
+			'AVAILABLE'		=> false,
 			'2.0.x'			=> true,
 		),
 		'sqlite'		=> array(
@@ -132,7 +132,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 			'DELIM'			=> ';',
 			'COMMENTS'		=> 'remove_remarks',
 			'DRIVER'		=> 'sqlite',
-			'AVAILABLE'		=> true,
+			'AVAILABLE'		=> false,
 			'2.0.x'			=> false,
 		),
 	);
