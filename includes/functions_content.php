@@ -585,7 +585,8 @@ function make_clickable_callback($type, $whitespace, $url, $relative_url, $class
 		break;
 	}
 
-	$short_url = (strlen($url) > 55) ? substr($url, 0, 39) . ' ... ' . substr($url, -10) : $url;
+	$short_url = urldecode($url);
+	if(strlen($short_url) > 55) $short_url = substr($short_url, 0, 39) . ' ... ' . substr($short_url, -10);
 
 	switch ($type)
 	{
