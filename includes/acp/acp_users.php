@@ -1820,6 +1820,22 @@ class acp_users
 					$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', false)) ? false : true) : false;
 					$enable_urls	= ($config['allow_sig_links']) ? ((request_var('disable_magic_url', false)) ? false : true) : false;
 
+					// Signature Lines Limit
+					if($config['max_sig_lines'])
+					{
+						$brcount = 1;
+						$brpos = 0;
+						while( ($brpos = strpos($signature, "\n", $brpos)) !== false )
+						{
+							$brcount++;
+							if($brcount > $config['max_sig_lines'])
+							{
+								$signature{$brpos} = ' ';
+							}
+							$brpos++;
+						}
+					}
+
 					$message_parser = new parse_message($signature);
 
 					// Allowing Quote BBCode
@@ -1887,7 +1903,7 @@ class acp_users
 					'FLASH_STATUS'			=> ($config['allow_sig_flash']) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 					'URL_STATUS'			=> ($config['allow_sig_links']) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 
-					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars']),
+					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ? $config['max_sig_lines'] : $user->lang['NO']),
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],

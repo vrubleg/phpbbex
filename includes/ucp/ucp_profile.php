@@ -471,6 +471,22 @@ class ucp_profile
 
 					if (!sizeof($error))
 					{
+						// Signature Lines Limit
+						if($config['max_sig_lines'])
+						{
+							$brcount = 1;
+							$brpos = 0;
+							while( ($brpos = strpos($signature, "\n", $brpos)) !== false )
+							{
+								$brcount++;
+								if($brcount > $config['max_sig_lines'])
+								{
+									$signature{$brpos}=' ';
+								}
+								$brpos++;
+							}
+						}
+
 						$message_parser = new parse_message($signature);
 
 						// Allowing Quote BBCode
@@ -539,7 +555,7 @@ class ucp_profile
 					'URL_STATUS'			=> ($config['allow_sig_links']) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 					'MAX_FONT_SIZE'			=> (int) $config['max_sig_font_size'],
 
-					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars']),
+					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ? $config['max_sig_lines'] : $user->lang['NO']),
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],
