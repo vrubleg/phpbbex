@@ -225,6 +225,9 @@
 			<!-- IF S_SIG_ALLOWED -->
 				<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED} /> {L_ATTACH_SIG}</label></div>
 			<!-- ENDIF -->
+			<!-- IF not S_EDIT_POST -->
+				<div><label for="do_not_merge"><input type="checkbox" name="do_not_merge" id="do_not_merge" /> {L_DO_NOT_MERGE}</label></div>
+			<!-- ENDIF -->
 			<!-- IF S_NOTIFY_ALLOWED -->
 				<div><label for="notify"><input type="checkbox" name="notify" id="notify"{S_NOTIFY_CHECKED} /> {L_NOTIFY_REPLY}</label></div>
 			<!-- ENDIF -->

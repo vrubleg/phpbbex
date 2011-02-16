@@ -875,6 +875,9 @@ $lang = array_merge($lang, array(
 	// Translators should change this if a the usual date format is different
 	'default_dateformat'	=> 'D M d, Y g:i a', // Mon Jan 01, 2007 1:37 pm
 
+	// Additional strings
+	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
+
 ));
 
 ?>

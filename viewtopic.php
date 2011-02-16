@@ -1015,6 +1015,7 @@ while ($row = $db->sql_fetchrow($result))
 
 		'post_id'			=> $row['post_id'],
 		'post_time'			=> $row['post_time'],
+		'post_created'		=> $row['post_created'],
 		'user_id'			=> $row['user_id'],
 		'username'			=> $row['username'],
 		'user_colour'		=> $row['user_colour'],
@@ -1505,7 +1506,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POSTER_WARNINGS'	=> $user_cache[$poster_id]['warnings'],
 		'POSTER_AGE'		=> $user_cache[$poster_id]['age'],
 
-		'POST_DATE'			=> $user->format_date($row['post_time'], false, ($view == 'print') ? true : false),
+		'POST_DATE'			=> $user->format_date($row['post_created'] ? $row['post_created'] : $row['post_time'], false, ($view == 'print') ? true : false),
 		'POST_SUBJECT'		=> $row['post_subject'],
 		'MESSAGE'			=> $message,
 		'SIGNATURE'			=> ($row['enable_sig']) ? $user_cache[$poster_id]['sig'] : '',

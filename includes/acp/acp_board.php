@@ -32,6 +32,7 @@ class acp_board
 		global $cache;
 
 		$user->add_lang('acp/board');
+		$user->add_lang('mods/posts_merging');
 
 		$action	= request_var('action', '');
 		$submit = (isset($_POST['submit']) || isset($_POST['allow_quick_reply_enable'])) ? true : false;
@@ -182,6 +183,9 @@ class acp_board
 						'delete_time'			=> array('lang' => 'DELETE_TIME',			'validate' => 'int:0',		'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']),
 						'display_last_edited'	=> array('lang' => 'DISPLAY_LAST_EDITED',	'validate' => 'bool',		'type' => 'radio:yes_no', 'explain' => true),
 						'flood_interval'		=> array('lang' => 'FLOOD_INTERVAL',		'validate' => 'int:0',		'type' => 'text:3:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']),
+						'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',		'validate' => 'int',		'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
+						//'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',		'validate' => 'string',		'type' => 'text:5:255', 'explain' => true),
+						//'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',		'validate' => 'string',		'type' => 'text:5:255', 'explain' => true),
 						'bump_interval'			=> array('lang' => 'BUMP_INTERVAL',			'validate' => 'int:0',		'type' => 'custom', 'method' => 'bump_interval', 'explain' => true),
 						'topics_per_page'		=> array('lang' => 'TOPICS_PER_PAGE',		'validate' => 'int:1',		'type' => 'text:3:4', 'explain' => false),
 						'posts_per_page'		=> array('lang' => 'POSTS_PER_PAGE',		'validate' => 'int:1',		'type' => 'text:3:4', 'explain' => false),

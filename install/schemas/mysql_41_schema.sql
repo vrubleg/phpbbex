@@ -434,6 +434,7 @@ CREATE TABLE phpbb_posts (
 	icon_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	poster_ip varchar(40) DEFAULT '' NOT NULL,
 	post_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	post_created int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	post_approved tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	post_reported tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	enable_bbcode tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,

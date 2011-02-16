@@ -285,6 +285,13 @@
 			</tr>
 		<!-- ENDIF -->
 
+		<!-- IF not S_EDIT_POST -->
+			<tr>
+				<td><input type="checkbox" class="radio" name="do_not_merge" /></td>
+				<td class="gen">{L_DO_NOT_MERGE}</td>
+			</tr>
+		<!-- ENDIF -->
+
 		<!-- IF S_NOTIFY_ALLOWED -->
 			<tr>
 				<td><input type="checkbox" class="radio" name="notify"{S_NOTIFY_CHECKED} /></td>

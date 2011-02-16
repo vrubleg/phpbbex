@@ -767,6 +767,9 @@ if ($submit || $preview || $refresh)
 	// Grab md5 'checksum' of new message
 	$message_md5 = md5($message_parser->message);
 
+	// Save message for posts merging
+	$addon_for_merge = $message_parser->message;
+
 	// If editing and checksum has changed we know the post was edited while we're editing
 	// Notify and show user the changed post
 	if ($mode == 'edit' && $post_data['forum_flags'] & FORUM_FLAG_POST_REVIEW)
@@ -1132,6 +1135,8 @@ if ($submit || $preview || $refresh)
 				$data['topic_replies_real'] = $post_data['topic_replies_real'];
 				$data['topic_replies'] = $post_data['topic_replies'];
 			}
+
+			include($phpbb_root_path . 'includes/posts_merging.' . $phpEx);
 
 			// The last parameter tells submit_post if search indexer has to be run
 			$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);
