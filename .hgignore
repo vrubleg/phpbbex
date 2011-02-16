@@ -1,0 +1,6 @@
+regexp:cache/(?!(\.htaccess|index\.htm)).+
+regexp:files/(?!(\.htaccess|index\.htm)).+
+regexp:images/avatars/upload/(?!(\.htaccess|index\.htm)).+
+regexp:store/(?!(\.htaccess|index\.htm)).+
+glob:config.php
+glob:work/*
