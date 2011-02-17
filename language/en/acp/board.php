@@ -166,6 +166,8 @@ $lang = array_merge($lang, array(
 	'HOT_THRESHOLD'					=> 'Popular topic threshold',
 	'HOT_THRESHOLD_EXPLAIN'			=> 'Posts per topic threshold required for the popular topic annotation. Set to 0 to disable popular topics.',
 	'MAX_POLL_OPTIONS'				=> 'Maximum number of poll options',
+	'MAX_POST_IMGS'					=> 'Maximum images per post',
+	'MAX_POST_IMGS_EXPLAIN'			=> 'Maximum number of images in a post. Set to 0 for unlimited images.',
 	'MAX_POST_FONT_SIZE'			=> 'Maximum font size per post',
 	'MAX_POST_FONT_SIZE_EXPLAIN'	=> 'Maximum font size allowed in a post. Set to 0 for unlimited font size.',
 	'MAX_POST_IMG_HEIGHT'			=> 'Maximum image height per post',
@@ -192,6 +194,8 @@ $lang = array_merge($lang, array(
 
 	'MAX_SIG_FONT_SIZE'				=> 'Maximum signature font size',
 	'MAX_SIG_FONT_SIZE_EXPLAIN'		=> 'Maximum font size allowed in user signatures. Set to 0 for unlimited size.',
+	'MAX_SIG_IMGS'					=> 'Maximum signature images',
+	'MAX_SIG_IMGS_EXPLAIN'			=> 'Maximum number of images in user signatures. Set to 0 for unlimited links.',
 	'MAX_SIG_IMG_HEIGHT'			=> 'Maximum signature image height',
 	'MAX_SIG_IMG_HEIGHT_EXPLAIN'	=> 'Maximum height of an image/flash file in user signatures. Set to 0 for unlimited height.',
 	'MAX_SIG_IMG_WIDTH'				=> 'Maximum signature image width',

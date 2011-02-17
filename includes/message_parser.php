@@ -1181,6 +1181,14 @@ class parse_message extends bbcode_firstpass
 			return (!$update_this_message) ? $return_message : $this->warn_msg;
 		}
 
+		// Check number of images
+		$num_imgs = ($allow_bbcode && stripos($this->message, '[img') !== false) ? $this->parsed_items['img'] : 0;
+		if ($config['max_' . $mode . '_imgs'] && $num_imgs > $config['max_' . $mode . '_imgs'])
+		{
+			$this->warn_msg[] = sprintf($user->lang['TOO_MANY_IMGS'], $config['max_' . $mode . '_imgs']);
+			return (!$update_this_message) ? $return_message : $this->warn_msg;
+		}
+
 		if (!$update_this_message)
 		{
 			unset($this->message);
