@@ -150,6 +150,13 @@
 				</dl>
 			</form>
 
+			<form id="action_topics_form" method="post" action="{U_ACTION}">
+				<dl>
+					<dt><label for="action_topics">{L_RESYNC_TOPICCOUNTS}</label><br /><span>{L_RESYNC_TOPICCOUNTS_EXPLAIN}</span></dt>
+					<dd><input type="hidden" name="action" value="topics" /><input class="button2" type="submit" id="action_topics" name="action_topics" value="{L_RUN}" /></dd>
+				</dl>
+			</form>
+
 			<form id="action_db_track_form" method="post" action="{U_ACTION}">
 				<dl>
 					<dt><label for="action_db_track">{L_RESYNC_POST_MARKING}</label><br /><span>{L_RESYNC_POST_MARKING_EXPLAIN}</span></dt>

@@ -1061,6 +1061,7 @@ while ($row = $db->sql_fetchrow($result))
 			$user_cache[$poster_id] = array(
 				'joined'		=> '',
 				'posts'			=> '',
+				'topics'		=> '',
 				'from'			=> '',
 
 				'sig'					=> '',
@@ -1110,6 +1111,7 @@ while ($row = $db->sql_fetchrow($result))
 			$user_cache[$poster_id] = array(
 				'joined'		=> $user->format_date($row['user_regdate']),
 				'posts'			=> $row['user_posts'],
+				'topics'		=> $row['user_topics'],
 				'warnings'		=> (isset($row['user_warnings'])) ? $row['user_warnings'] : 0,
 				'from'			=> (!empty($row['user_from'])) ? $row['user_from'] : '',
 
@@ -1501,6 +1503,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'RANK_IMG_SRC'		=> $user_cache[$poster_id]['rank_image_src'],
 		'POSTER_JOINED'		=> $user_cache[$poster_id]['joined'],
 		'POSTER_POSTS'		=> $user_cache[$poster_id]['posts'],
+		'POSTER_TOPICS'		=> $user_cache[$poster_id]['topics'],
 		'POSTER_FROM'		=> $user_cache[$poster_id]['from'],
 		'POSTER_AVATAR'		=> $user_cache[$poster_id]['avatar'],
 		'POSTER_WARNINGS'	=> $user_cache[$poster_id]['warnings'],

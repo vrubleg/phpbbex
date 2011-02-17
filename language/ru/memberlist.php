@@ -117,6 +117,7 @@ $lang = array_merge($lang, array(
 	'REMOVE_FRIEND'			=> 'Убрать из друзей',
 
 	'SEARCH_USER_POSTS'		=> 'Найти сообщения пользователя',
+	'SEARCH_USER_TOPICS'	=> 'Найти темы пользователя',
 	'SELECT_MARKED'			=> 'Выбрать отмеченных',
 	'SELECT_SORT_METHOD'	=> 'Поле сортировки',
 	'SEND_AIM_MESSAGE'		=> 'Отправить AIM-сообщение',

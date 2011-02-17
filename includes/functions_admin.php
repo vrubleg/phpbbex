@@ -590,6 +590,21 @@ function move_posts($post_ids, $topic_id, $auto_sync = true)
 		trigger_error('NO_TOPIC');
 	}
 
+	$sql = 'SELECT p.poster_id
+		FROM ' . POSTS_TABLE . ' p
+		LEFT JOIN ' . TOPICS_TABLE . ' t
+			ON (t.topic_first_post_id = p.post_id)
+		WHERE p.post_postcount = 1
+			AND ' . $db->sql_in_set('t.topic_id', $topic_ids);
+	$result = $db->sql_query($sql);
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$db->sql_return_on_error(true);
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_topics = user_topics - 1 WHERE user_id = ' . (int) $row['poster_id']);
+		$db->sql_return_on_error(false);
+	}
+	$db->sql_freeresult($result);
+
 	$sql = 'UPDATE ' . POSTS_TABLE . '
 		SET forum_id = ' . (int) $forum_row['forum_id'] . ", topic_id = $topic_id
 		WHERE " . $db->sql_in_set('post_id', $post_ids);
@@ -612,6 +627,19 @@ function move_posts($post_ids, $topic_id, $auto_sync = true)
 
 	// Update posted information
 	update_posted_info($topic_ids);
+
+	$sql = 'SELECT p.poster_id
+		FROM ' . POSTS_TABLE . ' p
+		LEFT JOIN ' . TOPICS_TABLE . ' t
+			ON (t.topic_first_post_id = p.post_id)
+		WHERE p.post_postcount = 1
+			AND ' . $db->sql_in_set('t.topic_id', $topic_ids);
+	$result = $db->sql_query($sql);
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_topics = user_topics + 1 WHERE user_id = ' . (int) $row['poster_id']);
+	}
+	$db->sql_freeresult($result);
 }
 
 /**

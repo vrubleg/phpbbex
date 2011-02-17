@@ -1436,6 +1436,16 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 		$db->sql_freeresult($result);
 	}
 
+	if (($post_mode == 'delete_topic') || ($post_mode == 'delete_first_post'))
+	{
+		if ($data['post_approved'] && $data['post_postcount'])
+		{
+			$db->sql_return_on_error(true);
+			$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_topics = user_topics - 1 WHERE user_id = ' . (int) $data['poster_id']);
+			$db->sql_return_on_error(false);
+		}
+	}
+
 	if (!delete_posts('post_id', array($post_id), false, false))
 	{
 		// Try to delete topic, we may had an previous error causing inconsistency
@@ -1488,6 +1498,12 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 			$sql_data[FORUMS_TABLE] = ($data['post_approved']) ? 'forum_posts = forum_posts - 1' : '';
 
 			$sql_data[TOPICS_TABLE] = 'topic_poster = ' . intval($row['poster_id']) . ', topic_first_post_id = ' . intval($row['post_id']) . ", topic_first_poster_colour = '" . $db->sql_escape($row['user_colour']) . "', topic_first_poster_name = '" . (($row['poster_id'] == ANONYMOUS) ? $db->sql_escape($row['post_username']) : $db->sql_escape($row['username'])) . "'";
+
+			if ($row['post_approved'] && $row['post_postcount'])
+			{
+				$sub_sql = 'UPDATE ' . USERS_TABLE . ' SET user_topics = user_topics + 1 WHERE user_id = ' . (int) $row['poster_id'];
+				$db->sql_query($sub_sql);
+			}
 
 			// Decrementing topic_replies here is fine because this case only happens if there is more than one post within the topic - basically removing one "reply"
 			$sql_data[TOPICS_TABLE] .= ', topic_replies_real = topic_replies_real - 1' . (($data['post_approved']) ? ', topic_replies = topic_replies - 1' : '');
@@ -1828,7 +1844,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				);
 			}
 
-			$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = $current_time" . (($auth->acl_get('f_postcount', $data['forum_id']) && $post_approval) ? ', user_posts = user_posts + 1' : '');
+			$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = $current_time" . (($auth->acl_get('f_postcount', $data['forum_id']) && $post_approval) ? ', user_posts = user_posts + 1, user_topics = user_topics + 1' : '');
 
 			if ($post_approval)
 			{

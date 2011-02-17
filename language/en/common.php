@@ -879,6 +879,16 @@ $lang = array_merge($lang, array(
 	// Translators should change this if a the usual date format is different
 	'default_dateformat'	=> 'Y-m-d H:i', // 2005-01-10 17:57
 
+	// User topics count
+	'NUM_TOPICS_IN_QUEUE'		=> array(
+		0			=> 'No topics in queue',	// 0
+		1			=> '1 topic in queue',		// 1
+		2			=> '%d topics in queue',	// 2+
+	),
+	'TOPIC_DAY'					=> '%.2f topics per day',
+	'TOPIC_PCT'					=> '%.2f%% of all topics',
+	'TOTAL_TOPICS'				=> 'Total topics',
+	
 	// Additional strings
 	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
 	'SEARCH_SELF_TOPICS'		=> 'View your topics',

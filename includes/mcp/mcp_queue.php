@@ -520,6 +520,11 @@ function approve_post($post_id_list, $id, $mode)
 			// Topic or Post. ;)
 			if ($post_data['topic_first_post_id'] == $post_id)
 			{
+				// Increase the user_topics field
+				if ($post_data['post_postcount'])
+				{
+					$user_topics_sql[$post_data['poster_id']] = (empty($user_topics_sql[$post_data['poster_id']])) ? 1 : $user_topics_sql[$post_data['poster_id']] + 1;
+				}
 				if ($post_data['forum_id'])
 				{
 					$total_topics++;
@@ -608,6 +613,24 @@ function approve_post($post_id_list, $id, $mode)
 
 		if ($total_topics)
 		{
+			if (sizeof($user_topics_sql))
+			{
+				// Try to minimize the query count by merging users with the same topic count additions
+				$user_topics_update = array();
+
+				foreach ($user_topics_sql as $user_id => $user_topics)
+				{
+					$user_topics_update[$user_topics][] = $user_id;
+				}
+
+				foreach ($user_topics_update as $user_topics => $user_id_ary)
+				{
+					$sql = 'UPDATE ' . USERS_TABLE . '
+						SET user_topics = user_topics + ' . $user_topics . '
+						WHERE ' . $db->sql_in_set('user_id', $user_id_ary);
+					$db->sql_query($sql);
+				}
+			}
 			set_config_count('num_topics', $total_topics, true);
 		}
 

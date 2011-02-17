@@ -388,6 +388,7 @@ $lang = array_merge($lang, array(
 
 	'SAME_PASSWORD_ERROR'		=> 'Введённый вами новый пароль совпадает с вашим текущим.',
 	'SEARCH_YOUR_POSTS'			=> 'Показать ваши сообщения',
+	'SEARCH_YOUR_TOPICS'		=> 'Показать ваши темы',
 	'SEND_PASSWORD'				=> 'Отослать пароль',
 	'SENT_AT'					=> 'Отправлено',
 	'SHOW_EMAIL'				=> 'Показывать мой адрес email',
