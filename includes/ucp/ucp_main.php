@@ -177,7 +177,6 @@ class ucp_main
 				$percentage = ($config['num_posts']) ? min(100, ($user->data['user_posts'] / $config['num_posts']) * 100) : 0;
 				$topics_per_day = $user->data['user_topics'] / $memberdays;
 				$percentage_topics = ($config['num_topics']) ? min(100, ($user->data['user_topics'] / $config['num_topics']) * 100) : 0;
-				$user->add_lang('mods/info_acp_nv_usertopics');
 
 				$template->assign_vars(array(
 					'USER_COLOR'		=> (!empty($user->data['user_colour'])) ? $user->data['user_colour'] : '',
