@@ -862,6 +862,10 @@ $lang = array_merge($lang, array(
 
 	// The value is only an example and will get replaced by the current time on view
 	'dateformats'	=> array(
+		'Y-m-d H:i'				=> '2005-01-10 17:57',
+		'Y-m-d, H:i'			=> '2005-01-10, 17:57',
+		'd.m.Y H:i'				=> '10.01.2005 17:57',
+		'd.m.Y, H:i'			=> '10.01.2005, 17:57',
 		'd M Y, H:i'			=> '01 Jan 2007, 13:37',
 		'd M Y H:i'				=> '01 Jan 2007 13:37',
 		'M jS, \'y, H:i'		=> 'Jan 1st, \'07, 13:37',
@@ -873,7 +877,7 @@ $lang = array_merge($lang, array(
 
 	// The default dateformat which will be used on new installs in this language
 	// Translators should change this if a the usual date format is different
-	'default_dateformat'	=> 'D M d, Y g:i a', // Mon Jan 01, 2007 1:37 pm
+	'default_dateformat'	=> 'Y-m-d H:i', // 2005-01-10 17:57
 
 	// Additional strings
 	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
