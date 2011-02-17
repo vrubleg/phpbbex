@@ -1514,7 +1514,7 @@ function validate_username($username, $allowed_username = false)
 
 		case 'USERNAME_ALPHA_SPACERS':
 			$pcre = true;
-			$regex = '[A-Za-z0-9-[\]_+ ]+';
+			$regex = '[A-Za-z0-9-_. ]+';
 		break;
 
 		case 'USERNAME_LETTER_NUM':
@@ -1536,16 +1536,16 @@ function validate_username($username, $allowed_username = false)
 		case 'USERNAME_LETTER_NUM_SPACERS':
 			if ($pcre)
 			{
-				$regex = '[-\]_+ [\p{Lu}\p{Ll}\p{N}]+';
+				$regex = '[-_. \p{Lu}\p{Ll}\p{N}]+';
 			}
 			else if ($mbstring)
 			{
-				$regex = '[-\]_+ \[[:upper:][:lower:][:digit:]]+';
+				$regex = '[-_. [:upper:][:lower:][:digit:]]+';
 			}
 			else
 			{
 				$pcre = true;
-				$regex = '[-\]_+ [a-zA-Z0-9]+';
+				$regex = '[-_. a-zA-Z0-9]+';
 			}
 		break;
 
