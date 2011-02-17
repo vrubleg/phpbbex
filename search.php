@@ -448,7 +448,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			break;
 
 			case 'egosearch':
-				$l_search_title = $user->lang['SEARCH_SELF'];
+				$l_search_title = ($search_fields === 'firstpost') ? $user->lang['SEARCH_SELF_TOPICS'] : $user->lang['SEARCH_SELF'];
 			break;
 		}
 	}
@@ -586,6 +586,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
 		'U_SEARCH_WORDS'	=> $u_search,
+		'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}index.$phpEx", 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 	));
 
 	if ($sql_where)

@@ -881,6 +881,7 @@ $lang = array_merge($lang, array(
 
 	// Additional strings
 	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
+	'SEARCH_SELF_TOPICS'		=> 'View your topics',
 
 ));
 

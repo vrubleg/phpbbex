@@ -894,6 +894,7 @@ $lang = array_merge($lang, array(
 
 	// Additional strings
 	'DO_NOT_MERGE'				=> 'Не склеивать с предыдущим',
+	'SEARCH_SELF_TOPICS'		=> 'Ваши темы',
 
 ));
 
