@@ -687,7 +687,6 @@ class jabber
 		}
 
 		return $this->send("<message from='" . utf8_htmlspecialchars($this->session['jid']) . "' to='" . utf8_htmlspecialchars($to) . "' type='$type' id='" . uniqid('msg') . "'>
-			<subject>" . utf8_htmlspecialchars($subject) . "</subject>
 			<body>" . utf8_htmlspecialchars($text) . "</body>
 			</message>"
 		);
