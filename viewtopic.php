@@ -941,6 +941,15 @@ $sql = 'SELECT p.post_id
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
 $i = ($store_reverse) ? $sql_limit - 1 : 0;
+
+// Show first post on every page if needed
+if($topic_data['topic_first_post_show'] && ( $start != 0))
+{
+	$i = 0;
+	$post_list[$i] = $topic_data['topic_first_post_id'];
+	$i = ($store_reverse) ? $sql_limit : $i+1;
+}
+
 while ($row = $db->sql_fetchrow($result))
 {
 	$post_list[$i] = (int) $row['post_id'];

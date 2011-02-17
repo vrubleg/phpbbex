@@ -225,6 +225,9 @@
 			<!-- IF S_SIG_ALLOWED -->
 				<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED} /> {L_ATTACH_SIG}</label></div>
 			<!-- ENDIF -->
+			<!-- IF S_FIRST_POST_SHOW_ALLOWED -->
+				<div><label for="topic_first_post_show" title="{L_FIRST_POST_SHOW_EXPLAIN}"><input type="checkbox" name="topic_first_post_show" id="topic_first_post_show"{S_FIRST_POST_SHOW_CHECKED} /> {L_FIRST_POST_SHOW}</label></div>
+			<!-- ENDIF -->
 			<!-- IF not S_EDIT_POST -->
 				<div><label for="do_not_merge"><input type="checkbox" name="do_not_merge" id="do_not_merge" /> {L_DO_NOT_MERGE}</label></div>
 			<!-- ENDIF -->

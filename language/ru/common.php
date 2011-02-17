@@ -905,6 +905,8 @@ $lang = array_merge($lang, array(
 	// Additional strings
 	'DO_NOT_MERGE'				=> 'Не склеивать с предыдущим',
 	'SEARCH_SELF_TOPICS'		=> 'Ваши темы',
+	'FIRST_POST_SHOW'			=> 'На всех страницах',
+	'FIRST_POST_SHOW_EXPLAIN'	=> 'Отображать сообщение на всех страницах темы',
 
 ));
 
