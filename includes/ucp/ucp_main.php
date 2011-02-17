@@ -81,8 +81,7 @@ class ucp_main
 
 				$sql = "SELECT t.* $sql_select
 					FROM $sql_from
-					WHERE t.forum_id = 0
-						AND t.topic_type = " . POST_GLOBAL . '
+					WHERE t.topic_type = " . POST_GLOBAL . '
 					ORDER BY t.topic_last_post_time DESC';
 
 				$topic_list = $rowset = array();

@@ -379,6 +379,7 @@ $lang = array_merge($lang, array(
 	'YES_READ_MARKING'				=> 'Enable server-side topic marking',
 	'YES_READ_MARKING_EXPLAIN'		=> 'Stores read/unread status information in the database rather than a cookie.',
 	'YES_UNREAD_SEARCH'				=> 'Enable search for unread posts',
+	'ANNOUNCE_INDEX'				=> 'Display global annoucements on Index page',
 ));
 
 // Auth settings

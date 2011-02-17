@@ -251,6 +251,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', ''
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cache_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cron_lock', '0', 1);

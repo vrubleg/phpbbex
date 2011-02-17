@@ -1541,7 +1541,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_REPORT'			=> ($auth->acl_get('f_report', $forum_id)) ? append_sid("{$phpbb_root_path}report.$phpEx", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 		'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=report_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
 		'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue&amp;mode=approve_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
-		'U_MINI_POST'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['post_id']) . (($topic_data['topic_type'] == POST_GLOBAL) ? '&amp;f=' . $forum_id : '') . '#p' . $row['post_id'],
+		'U_MINI_POST'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['post_id']) . '#p' . $row['post_id'],
 		'U_NEXT_POST_ID'	=> ($i < $i_total && isset($rowset[$post_list[$i + 1]])) ? $rowset[$post_list[$i + 1]]['post_id'] : '',
 		'U_PREV_POST_ID'	=> $prev_post_id,
 		'U_NOTES'			=> ($auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $user->session_id) : '',
@@ -1616,34 +1616,13 @@ if (isset($user->data['session_page']) && !$user->data['is_bot'] && (strpos($use
 	}
 }
 
-// Get last post time for all global announcements
-// to keep proper forums tracking
-if ($topic_data['topic_type'] == POST_GLOBAL)
-{
-	$sql = 'SELECT topic_last_post_time as forum_last_post_time
-		FROM ' . TOPICS_TABLE . '
-		WHERE forum_id = 0
-		ORDER BY topic_last_post_time DESC';
-	$result = $db->sql_query_limit($sql, 1);
-	$topic_data['forum_last_post_time'] = (int) $db->sql_fetchfield('forum_last_post_time');
-	$db->sql_freeresult($result);
-
-	$sql = 'SELECT mark_time as forum_mark_time
-		FROM ' . FORUMS_TRACK_TABLE . '
-		WHERE forum_id = 0
-			AND user_id = ' . $user->data['user_id'];
-	$result = $db->sql_query($sql);
-	$topic_data['forum_mark_time'] = (int) $db->sql_fetchfield('forum_mark_time');
-	$db->sql_freeresult($result);
-}
-
 // Only mark topic if it's currently unread. Also make sure we do not set topic tracking back if earlier pages are viewed.
 if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id] && $max_post_time > $topic_tracking_info[$topic_id])
 {
-	markread('topic', (($topic_data['topic_type'] == POST_GLOBAL) ? 0 : $forum_id), $topic_id, $max_post_time);
+	markread('topic', $forum_id, $topic_id, $max_post_time);
 
 	// Update forum info
-	$all_marked_read = update_forum_tracking_info((($topic_data['topic_type'] == POST_GLOBAL) ? 0 : $forum_id), $topic_data['forum_last_post_time'], (isset($topic_data['forum_mark_time'])) ? $topic_data['forum_mark_time'] : false, false);
+	$all_marked_read = update_forum_tracking_info($forum_id, $topic_data['forum_last_post_time'], (isset($topic_data['forum_mark_time'])) ? $topic_data['forum_mark_time'] : false, false);
 }
 else
 {

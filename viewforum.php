@@ -233,8 +233,8 @@ if ($sort_days)
 	$sql = 'SELECT COUNT(topic_id) AS num_topics
 		FROM ' . TOPICS_TABLE . "
 		WHERE forum_id = $forum_id
-			AND ((topic_type <> " . POST_GLOBAL . " AND topic_last_post_time >= $min_post_time)
-				OR topic_type = " . POST_ANNOUNCE . ")
+			AND (topic_last_post_time >= $min_post_time
+				OR topic_type = " . POST_ANNOUNCE . " OR topic_type = " . POST_GLOBAL . ")
 		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND topic_approved = 1');
 	$result = $db->sql_query($sql);
 	$topics_count = (int) $db->sql_fetchfield('num_topics');
@@ -375,10 +375,6 @@ if ($forum_data['forum_type'] == FORUM_POST)
 		if ($row['topic_type'] == POST_GLOBAL)
 		{
 			$global_announce_list[$row['topic_id']] = true;
-		}
-		else
-		{
-			$topics_count--;
 		}
 	}
 	$db->sql_freeresult($result);

@@ -144,17 +144,14 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 			'topic_attachment'			=> (!empty($data['attachment_data']) || (isset($merge_post_data['topic_attachment']) && $merge_post_data['topic_attachment'])) ? 1 : 0,
 		);	
 
-		if ($merge_post_data['topic_type'] != POST_GLOBAL)
-		{
-			$sql_data[FORUMS_TABLE]['sql'] = array(
-				'forum_last_post_id'		=> $merge_post_id,
-				'forum_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
-				'forum_last_post_time'		=> $post_time,
-				'forum_last_poster_id'		=> $poster_id,
-				'forum_last_poster_name'	=> (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
-				'forum_last_poster_colour'	=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
-			);	
-		}
+		$sql_data[FORUMS_TABLE]['sql'] = array(
+			'forum_last_post_id'		=> $merge_post_id,
+			'forum_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
+			'forum_last_post_time'		=> $post_time,
+			'forum_last_poster_id'		=> $poster_id,
+			'forum_last_poster_name'	=> (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
+			'forum_last_poster_colour'	=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
+		);
 
 		// Update post information - submit merged post
 		$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . " WHERE post_id = $merge_post_id";
@@ -163,11 +160,8 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . " WHERE topic_id = $topic_id"; 
 		$db->sql_query($sql);
 
-		if ($merge_post_data['topic_type'] != POST_GLOBAL)
-		{
-			$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . "  WHERE forum_id = $forum_id"; 
-			$db->sql_query($sql);
-		}
+		$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . "  WHERE forum_id = $forum_id"; 
+		$db->sql_query($sql);
 
 		// Submit Attachments
 		if (!empty($data['attachment_data']))
@@ -268,7 +262,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 				trigger_error($error);
 			}
 
-			$search->index('edit', $merge_post_id, $merge_post_data['post_text'], $subject, $poster_id, ($merge_post_data['topic_type'] == POST_GLOBAL) ? 0 : $forum_id);
+			$search->index('edit', $merge_post_id, $merge_post_data['post_text'], $subject, $poster_id, $forum_id);
 		}
 
 		// Mark the post and the topic read

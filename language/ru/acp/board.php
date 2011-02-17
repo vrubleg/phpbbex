@@ -379,6 +379,7 @@ $lang = array_merge($lang, array(
 	'YES_READ_MARKING'				=> 'Включить маркировку тем на сервере',
 	'YES_READ_MARKING_EXPLAIN'		=> 'Сохранять информацию о статусе «прочитано/не прочитано» в базе данных, а не в cookies.',
 	'YES_UNREAD_SEARCH'				=> 'Включить поиск непрочитанных сообщений',
+	'ANNOUNCE_INDEX'				=> 'Показывать важные объявления в списке форумов',
 ));
 
 // Auth settings
