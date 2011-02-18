@@ -130,6 +130,7 @@ $lang = array_merge($lang, array(
 	'SORT_EMAIL'			=> 'E-mail',
 	'SORT_LAST_ACTIVE'		=> 'Last active',
 	'SORT_POST_COUNT'		=> 'Post count',
+	'SORT_TOPICS_COUNT'		=> 'Topics count',
 
 	'USERNAME_BEGINS_WITH'	=> 'Username begins with',
 	'USER_ADMIN'			=> 'Administrate user',

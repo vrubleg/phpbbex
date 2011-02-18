@@ -130,6 +130,7 @@ $lang = array_merge($lang, array(
 	'SORT_EMAIL'			=> 'email',
 	'SORT_LAST_ACTIVE'		=> 'Последнее посещение',
 	'SORT_POST_COUNT'		=> 'Число сообщений',
+	'SORT_TOPICS_COUNT'		=> 'Число тем',
 
 	'USERNAME_BEGINS_WITH'	=> 'Имя пользователя начинается с',
 	'USER_ADMIN'			=> 'Администрировать',
