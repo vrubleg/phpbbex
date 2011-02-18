@@ -845,6 +845,7 @@ CREATE TABLE phpbb_topics (
 	poll_max_options tinyint(4) DEFAULT '1' NOT NULL,
 	poll_last_vote int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	poll_vote_change tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
+	poll_show_voters tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_first_post_show tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (topic_id),
 	KEY forum_id (forum_id),

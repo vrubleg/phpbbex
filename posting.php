@@ -724,7 +724,8 @@ if ($submit || $preview || $refresh)
 				'poll_length'		=> 0,
 				'poll_last_vote'	=> 0,
 				'poll_max_options'	=> 0,
-				'poll_vote_change'	=> 0
+				'poll_vote_change'	=> 0,
+				'poll_show_voters'	=> 0
 			);
 
 			$sql = 'UPDATE ' . TOPICS_TABLE . '
@@ -735,6 +736,7 @@ if ($submit || $preview || $refresh)
 
 		$post_data['poll_title'] = $post_data['poll_option_text'] = '';
 		$post_data['poll_vote_change'] = $post_data['poll_max_options'] = $post_data['poll_length'] = 0;
+		$post_data['poll_show_voters'] = 0;
 	}
 	else
 	{
@@ -743,6 +745,7 @@ if ($submit || $preview || $refresh)
 		$post_data['poll_option_text']	= utf8_normalize_nfc(request_var('poll_option_text', '', true));
 		$post_data['poll_max_options']	= request_var('poll_max_options', 1);
 		$post_data['poll_vote_change']	= ($auth->acl_get('f_votechg', $forum_id) && $auth->acl_get('f_vote', $forum_id) && isset($_POST['poll_vote_change'])) ? 1 : 0;
+		$post_data['poll_show_voters']	= isset($_POST['poll_show_voters']) ? 1 : 0;
 	}
 
 	// If replying/quoting and last post id has changed
@@ -913,6 +916,7 @@ if ($submit || $preview || $refresh)
 			'poll_start'		=> $post_data['poll_start'],
 			'poll_last_vote'	=> $post_data['poll_last_vote'],
 			'poll_vote_change'	=> $post_data['poll_vote_change'],
+			'poll_show_voters'	=> $post_data['poll_show_voters'],
 			'enable_bbcode'		=> $post_data['enable_bbcode'],
 			'enable_urls'		=> $post_data['enable_urls'],
 			'enable_smilies'	=> $post_data['enable_smilies'],
@@ -1522,12 +1526,14 @@ if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_
 	$template->assign_vars(array(
 		'S_SHOW_POLL_BOX'		=> true,
 		'S_POLL_VOTE_CHANGE'	=> ($auth->acl_get('f_votechg', $forum_id) && $auth->acl_get('f_vote', $forum_id)),
+		'S_POLL_SHOW_VOTERS'	=> ($mode == 'post' || $auth->acl_get('a_')),
 		'S_POLL_DELETE'			=> ($mode == 'edit' && sizeof($post_data['poll_options']) && ((!$post_data['poll_last_vote'] && $post_data['poster_id'] == $user->data['user_id'] && $auth->acl_get('f_delete', $forum_id)) || $auth->acl_get('m_delete', $forum_id))),
 		'S_POLL_DELETE_CHECKED'	=> (!empty($poll_delete)) ? true : false,
 
 		'L_POLL_OPTIONS_EXPLAIN'	=> sprintf($user->lang['POLL_OPTIONS_' . (($mode == 'edit') ? 'EDIT_' : '') . 'EXPLAIN'], $config['max_poll_options']),
 
 		'VOTE_CHANGE_CHECKED'	=> (!empty($post_data['poll_vote_change'])) ? ' checked="checked"' : '',
+		'SHOW_VOTERS_CHECKED'	=> (!empty($post_data['poll_show_voters'])) ? ' checked="checked"' : '',
 		'POLL_TITLE'			=> (isset($post_data['poll_title'])) ? $post_data['poll_title'] : '',
 		'POLL_OPTIONS'			=> (!empty($post_data['poll_options'])) ? implode("\n", $post_data['poll_options']) : '',
 		'POLL_MAX_OPTIONS'		=> (isset($post_data['poll_max_options'])) ? (int) $post_data['poll_max_options'] : 1,

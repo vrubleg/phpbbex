@@ -1840,7 +1840,8 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 					'poll_start'		=> $poll_start,
 					'poll_max_options'	=> $poll['poll_max_options'],
 					'poll_length'		=> $poll_length,
-					'poll_vote_change'	=> $poll['poll_vote_change'])
+					'poll_vote_change'	=> $poll['poll_vote_change'],
+					'poll_show_voters'	=> $poll['poll_show_voters'])
 				);
 			}
 
@@ -1899,6 +1900,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'poll_max_options'			=> (isset($poll['poll_options'])) ? $poll['poll_max_options'] : 1,
 				'poll_length'				=> (isset($poll['poll_options'])) ? $poll_length : 0,
 				'poll_vote_change'			=> (isset($poll['poll_vote_change'])) ? $poll['poll_vote_change'] : 0,
+				'poll_show_voters'			=> (isset($poll['poll_show_voters'])) ? $poll['poll_show_voters'] : 0,
 				'topic_last_view_time'		=> $current_time,
 
 				'topic_attachment'			=> (!empty($data['attachment_data'])) ? 1 : (isset($data['topic_attachment']) ? $data['topic_attachment'] : 0),
