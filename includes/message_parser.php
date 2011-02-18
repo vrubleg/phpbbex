@@ -1370,6 +1370,7 @@ class parse_message extends bbcode_firstpass
 
 		$add_file		= (isset($_POST['add_file'])) ? true : false;
 		$delete_file	= (isset($_POST['delete_file'])) ? true : false;
+		$update_file	= (isset($_POST['update_file'])) ? true : false;
 
 		// First of all adjust comments if changed
 		$actual_comment_list = utf8_normalize_nfc(request_var('comment_list', array(''), true));
@@ -1533,6 +1534,64 @@ class parse_message extends bbcode_firstpass
 				else
 				{
 					$error[] = sprintf($user->lang['TOO_MANY_ATTACHMENTS'], $cfg['max_attachments']);
+				}
+			}
+			else if ($update_file && $upload_file)
+			{
+				include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+
+				$filedata = upload_attachment($form_name, $forum_id, false, '', $is_message);
+				$error = array_merge($error, $filedata['error']);
+
+				$index = array_keys(request_var('update_file', array(0 => 0)));
+				$index = (!empty($index)) ? $index[0] : false;
+				$filename = $filedata['real_filename'];
+	
+				if ($index !== false && !empty($this->attachment_data[$index]))
+				{
+					$sql = 'SELECT attach_id, is_orphan, filesize, physical_filename, thumbnail
+						FROM ' . ATTACHMENTS_TABLE . '
+						WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id']; // . ' AND poster_id = ' . $user->data['user_id'];
+					$result = $db->sql_query($sql);
+					$row = $db->sql_fetchrow($result);
+					$db->sql_freeresult($result);
+
+					if (!sizeof($error))
+					{
+						$sql_ary = array(
+							'physical_filename'	=> $filedata['physical_filename'],
+							'attach_comment'	=> $this->filename_data['filecomment'],
+							'real_filename'		=> $filedata['real_filename'],
+							'extension'			=> $filedata['extension'],
+							'mimetype'			=> $filedata['mimetype'],
+							'filesize'			=> $filedata['filesize'],
+							'filetime'			=> $filedata['filetime'],
+							'thumbnail'			=> $filedata['thumbnail'],
+							'in_message'		=> ($is_message) ? 1 : 0,
+							// 'poster_id'			=> $user->data['user_id'],
+						);
+
+						$db->sql_query('UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id'] );
+						
+						// Delete old file
+						phpbb_unlink($row['physical_filename'], 'file');
+
+						if ($row['thumbnail'])
+						{
+							phpbb_unlink($row['physical_filename'], 'thumbnail');
+						}
+
+						if (!$row['is_orphan'])
+						{
+							set_config('upload_dir_size', $config['upload_dir_size'] - $row['filesize'] + $filedata['filesize'], true);
+						}
+
+						// Refresh attachment data
+						$this->attachment_data[$index]['real_filename'] = $filedata['real_filename'];
+						$this->attachment_data[$index]['attach_comment'] = ($this->filename_data['filecomment']) ? $this->filename_data['filecomment'] : $this->attachment_data[$index]['attach_comment'];
+						$this->message = preg_replace("#\[attachment=$index\](.*?)\[\/attachment\]#e", "'[attachment=$index]' . \$filename . '[/attachment]'", $this->message);
+						$this->filename_data['filecomment'] = '';
+					}
 				}
 			}
 		}

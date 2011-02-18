@@ -208,6 +208,7 @@ $lang = array_merge($lang, array(
 	'UNAUTHORISED_BBCODE'		=> 'You cannot use certain BBCodes: %s.',
 	'UNGLOBALISE_EXPLAIN'		=> 'To switch this topic back from being global to a normal topic, you need to select the forum you wish this topic to be displayed.',
 	'UPDATE_COMMENT'			=> 'Update comment',
+	'UPDATE_FILE'				=> 'Update file',
 	'URL_INVALID'				=> 'The URL you specified is invalid.',
 	'URL_NOT_FOUND'				=> 'The file specified could not be found.',
 	'URL_IS_OFF'				=> '[url] is <em>OFF</em>',

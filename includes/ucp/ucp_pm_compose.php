@@ -69,7 +69,7 @@ function compose_pm($id, $mode, $action)
 	$add_to		= (isset($_REQUEST['add_to'])) ? true : false;
 	$add_bcc	= (isset($_REQUEST['add_bcc'])) ? true : false;
 
-	$refresh	= isset($_POST['add_file']) || isset($_POST['delete_file']) || $save || $load
+	$refresh	= isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || $save || $load
 		|| $remove_u || $remove_g || $add_to || $add_bcc;
 
 	$action		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : $action;
