@@ -185,6 +185,7 @@ function user_add($user_row, $cp_data = false)
 		'user_style'		=> (int) $config['default_style'],
 		'user_actkey'		=> '',
 		'user_ip'			=> '',
+		'user_browser'		=> '',
 		'user_regdate'		=> time(),
 		'user_passchg'		=> time(),
 		'user_options'		=> 230271,

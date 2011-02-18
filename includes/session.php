@@ -789,6 +789,12 @@ class session
 
 		$db->sql_return_on_error(false);
 
+		// Save Useragent
+		$sql = 'UPDATE ' . USERS_TABLE . "
+			SET user_browser = '" . $db->sql_escape($sql_ary['session_browser']) . "' 
+			WHERE user_id = " . (int) $this->data['user_id'];
+		$db->sql_query($sql);
+
 		// Regenerate autologin/persistent login key
 		if ($session_autologin)
 		{

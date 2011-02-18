@@ -1717,15 +1717,18 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_AIM'			=> ($data['user_aim'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=aim&amp;u=' . $user_id) : '',
 		'U_YIM'			=> ($data['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . urlencode($data['user_yim']) . '&amp;.src=pg' : '',
 		'U_MSN'			=> ($data['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=msnm&amp;u=' . $user_id) : '',
-		'U_JABBER'		=> ($data['user_jabber'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=jabber&amp;u=' . $user_id) : '',
+		'U_JABBER'		=> ($data['user_jabber']) ? ('xmpp:' . $data['user_jabber']) : '',
 		'LOCATION'		=> ($data['user_from']) ? $data['user_from'] : '',
 
+		'USER_AGENT'		=> ($data['user_browser']) ? $data['user_browser'] : '',
 		'USER_ICQ'			=> $data['user_icq'],
 		'USER_AIM'			=> $data['user_aim'],
 		'USER_YIM'			=> $data['user_yim'],
 		'USER_MSN'			=> $data['user_msnm'],
 		'USER_JABBER'		=> $data['user_jabber'],
 		'USER_JABBER_IMG'	=> ($data['user_jabber']) ? $user->img('icon_contact_jabber', $data['user_jabber']) : '',
+		'USER_EMAIL'				=> $data['user_email'],
+		'S_USER_ALLOW_VIEWEMAIL'	=> (strpos($email,"mailto:") === 0),
 
 		'L_VIEWING_PROFILE'	=> sprintf($user->lang['VIEWING_PROFILE'], $username),
 	);
