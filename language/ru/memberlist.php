@@ -147,6 +147,11 @@ $lang = array_merge($lang, array(
 	'VISITED'				=> 'Последнее посещение',
 
 	'WWW'					=> 'Сайт',
+
+	// Memberlist filters
+	'ACTIVE_USERS'			=> 'Активные',
+	'INACTIVE_USERS'		=> 'Не активные',
+	'NO_POSTS_USERS'		=> 'Без сообщений',
 ));
 
 ?>

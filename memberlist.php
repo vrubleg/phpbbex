@@ -31,7 +31,7 @@ $group_id	= request_var('g', 0);
 $topic_id	= request_var('t', 0);
 
 // Check our mode...
-if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders')))
+if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'all', 'active', 'inactive', 'noposts')))
 {
 	trigger_error('NO_MODE');
 }
@@ -1150,6 +1150,24 @@ switch ($mode)
 			}
 		}
 
+		// Memberlist filters
+		if($mode == '') $mode = 'all';
+		switch( $mode )
+		{
+			case 'all':
+				$sql_where .= " AND u.user_posts > 0 ";
+				break;
+			case 'active':
+				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit > " . (time()-3600*24*90) . " ";
+				break;
+			case 'inactive':
+				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit <= " . (time()-3600*24*90) . " ";
+				break;
+			case 'noposts':
+				$sql_where .= " AND u.user_posts = 0 ";
+				break;
+		}
+
 		$first_char = request_var('first_char', '');
 
 		if ($first_char == 'other')
@@ -1571,8 +1589,13 @@ switch ($mode)
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
-			'U_FIND_MEMBER'			=> ($config['load_search'] || $auth->acl_get('a_')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser' . (($start) ? "&amp;start=$start" : '') . (!empty($params) ? '&amp;' . implode('&amp;', $params) : '')) : '',
+			'U_FIND_MEMBER'			=> ($config['load_search'] || $auth->acl_get('a_')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser') : '',
 			'U_HIDE_FIND_MEMBER'	=> ($mode == 'searchuser') ? $u_hide_find_member : '',
+			'U_ALL_USERS'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx"),
+			'U_ACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=active'),
+			'U_INACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=inactive'),
+			'U_NO_POSTS_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=noposts'),
+
 			'U_SORT_USERNAME'		=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_FROM'			=> $sort_url . '&amp;sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_JOINED'			=> $sort_url . '&amp;sk=c&amp;sd=' . (($sort_key == 'c' && $sort_dir == 'a') ? 'd' : 'a'),
