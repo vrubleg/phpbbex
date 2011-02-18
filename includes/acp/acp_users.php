@@ -1329,6 +1329,7 @@ class acp_users
 					'bday_day'		=> 0,
 					'bday_month'	=> 0,
 					'bday_year'		=> 0,
+					'gender'		=> request_var('gender', $user_row['user_gender']),
 				);
 
 				if ($user_row['user_birthday'])
@@ -1364,6 +1365,7 @@ class acp_users
 						'bday_month'	=> array('num', true, 1, 12),
 						'bday_year'		=> array('num', true, 1901, gmdate('Y', time())),
 						'user_birthday'	=> array('date', true),
+						'gender'		=> array('num', true, 0, 2),
 					));
 
 					// validate custom profile fields
@@ -1391,6 +1393,7 @@ class acp_users
 							'user_occ'		=> $data['occupation'],
 							'user_interests'=> $data['interests'],
 							'user_birthday'	=> $data['user_birthday'],
+							'user_gender'	=> $data['gender'],
 						);
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -1442,6 +1445,10 @@ class acp_users
 					'LOCATION'		=> $data['location'],
 					'OCCUPATION'	=> $data['occupation'],
 					'INTERESTS'		=> $data['interests'],
+
+					'S_GENDER_X'	=> $data['gender'] == GENDER_X,
+					'S_GENDER_M'	=> $data['gender'] == GENDER_M,
+					'S_GENDER_F'	=> $data['gender'] == GENDER_F,
 
 					'S_BIRTHDAY_DAY_OPTIONS'	=> $s_birthday_day_options,
 					'S_BIRTHDAY_MONTH_OPTIONS'	=> $s_birthday_month_options,

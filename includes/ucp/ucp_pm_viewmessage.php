@@ -167,6 +167,21 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		$signature = smiley_text($signature);
 	}
 
+	// Author age
+	$user_age = false;
+	$now = getdate(time() + $user->timezone + $user->dst - date('Z'));
+	if ($config['allow_birthdays'] && !empty($user_info['user_birthday']))
+	{
+		list($bday_day, $bday_month, $bday_year) = array_map('intval', explode('-', $user_info['user_birthday']));
+		if ($bday_year)
+		{
+			$diff = $now['mon'] - $bday_month;
+			if ($diff == 0) $diff = ($now['mday'] - $bday_day < 0) ? 1 : 0;
+			else $diff = ($diff < 0) ? 1 : 0;
+			$user_age = (int) ($now['year'] - $bday_year - $diff);
+		}
+	}
+
 	$url = append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm');
 
 	// Number of "to" recipients
@@ -185,6 +200,10 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'AUTHOR_POSTS'		=> (int) $user_info['user_posts'],
 		'AUTHOR_TOPICS'		=> (int) $user_info['user_topics'],
 		'AUTHOR_FROM'		=> (!empty($user_info['user_from'])) ? $user_info['user_from'] : '',
+		'AUTHOR_AGE'		=> $user_age,
+		'S_AUTHOR_GENDER_X'	=> $user_info['user_gender'] == GENDER_X,
+		'S_AUTHOR_GENDER_M'	=> $user_info['user_gender'] == GENDER_M,
+		'S_AUTHOR_GENDER_F'	=> $user_info['user_gender'] == GENDER_F,
 
 		'ONLINE_IMG'		=> (!$config['load_onlinetrack']) ? '' : ((isset($user_info['online']) && $user_info['online']) ? $user->img('icon_user_online', $user->lang['ONLINE']) : $user->img('icon_user_offline', $user->lang['OFFLINE'])),
 		'S_ONLINE'			=> (!$config['load_onlinetrack']) ? false : ((isset($user_info['online']) && $user_info['online']) ? true : false),

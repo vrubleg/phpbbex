@@ -888,6 +888,13 @@ $lang = array_merge($lang, array(
 	'TOPIC_DAY'					=> '%.2f topics per day',
 	'TOPIC_PCT'					=> '%.2f%% of all topics',
 	'TOTAL_TOPICS'				=> 'Total topics',
+
+	// Genders
+	'GENDER'					=> 'Gender',
+	'GENDER_EXPLAIN'			=> 'Please enter your gender here.',
+	'GENDER_X'					=> 'None specified',
+	'GENDER_M'					=> 'Male',
+	'GENDER_F'					=> 'Female',
 	
 	// Additional strings
 	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',

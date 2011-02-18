@@ -917,6 +917,7 @@ CREATE TABLE phpbb_users (
 	user_email varchar(100) DEFAULT '' NOT NULL,
 	user_email_hash bigint(20) DEFAULT '0' NOT NULL,
 	user_birthday varchar(10) DEFAULT '' NOT NULL,
+	user_gender tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_lastvisit int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_lastmark int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_lastpost_time int(11) UNSIGNED DEFAULT '0' NOT NULL,

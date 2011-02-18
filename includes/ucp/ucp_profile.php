@@ -278,6 +278,7 @@ class ucp_profile
 					'location'		=> utf8_normalize_nfc(request_var('location', $user->data['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user->data['user_occ'], true)),
 					'interests'		=> utf8_normalize_nfc(request_var('interests', $user->data['user_interests'], true)),
+					'gender'		=> request_var('gender', $user->data['user_gender']),
 				);
 
 				if ($config['allow_birthdays'])
@@ -315,6 +316,7 @@ class ucp_profile
 						'location'		=> array('string', true, 2, 100),
 						'occupation'	=> array('string', true, 2, 500),
 						'interests'		=> array('string', true, 2, 500),
+						'gender'		=> array('num', true, 0, 2),
 					);
 
 					if ($config['allow_birthdays'])
@@ -364,6 +366,7 @@ class ucp_profile
 							'user_occ'		=> $data['occupation'],
 							'user_interests'=> $data['interests'],
 							'user_notify_type'	=> $data['notify'],
+							'user_gender'	=> $data['gender'],
 						);
 
 						if ($config['allow_birthdays'])
@@ -434,6 +437,10 @@ class ucp_profile
 					'LOCATION'	=> $data['location'],
 					'OCCUPATION'=> $data['occupation'],
 					'INTERESTS'	=> $data['interests'],
+
+					'S_GENDER_X'	=> $data['gender'] == GENDER_X,
+					'S_GENDER_M'	=> $data['gender'] == GENDER_M,
+					'S_GENDER_F'	=> $data['gender'] == GENDER_F,
 				));
 
 				// Get additional profile fields and assign them to the template block var 'profile_fields'

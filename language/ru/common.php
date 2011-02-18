@@ -902,6 +902,13 @@ $lang = array_merge($lang, array(
 	'TOPIC_PCT'					=> '%.2f%% всех тем',
 	'TOTAL_TOPICS'				=> 'Всего тем',
 
+	// Genders
+	'GENDER'					=> 'Пол',
+	'GENDER_EXPLAIN'			=> 'Пожалуйста укажите ваш пол.',
+	'GENDER_X'					=> 'Не указан',
+	'GENDER_M'					=> 'Мужской',
+	'GENDER_F'					=> 'Женский',
+
 	// Additional strings
 	'DO_NOT_MERGE'				=> 'Не склеивать с предыдущим',
 	'SEARCH_SELF_TOPICS'		=> 'Ваши темы',
