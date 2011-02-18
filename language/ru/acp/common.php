@@ -742,4 +742,14 @@ $lang = array_merge($lang, array(
 	'LOG_WORD_EDIT'			=> '<strong>Изменён цензор слов</strong><br />» %s',
 ));
 
+// Manage attachments module for phpBB3 MOD
+$lang = array_merge($lang, array(
+	'ACP_MANAGE_ATTACHMENTS'			=> 'Управление вложениями',
+	'ACP_MANAGE_ATTACHMENTS_EXPLAIN'	=> 'Здесь вы можете управлять файлами, прикреплёнными к сообщениям. Вы можете удалить такие файлы или прикрепить их к другим уже существующим сообщениям. Во втором случае вам потребуется правильный идентификатор сообщения(ID), который вы должны указать самостоятельно. После этого вложение будет прикреплено к указанному вами сообщению.',
+	'LOG_ATTACH_DEL'					=> '<strong>Вложения удалены</strong><br />» %s',
+	'LOG_ATTACH_REASSIGNED'				=> '<strong>Вложение прикреплёно к другому к сообщению</strong><br />» ID %1$d - %2$s',
+	'TOTAL_SIZE'						=> 'Общий размер',
+	'DOWNLOADS'							=> 'Скачивания',
+));
+
 ?>

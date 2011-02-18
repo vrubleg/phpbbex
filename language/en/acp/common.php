@@ -743,4 +743,14 @@ $lang = array_merge($lang, array(
 	'LOG_WORD_EDIT'			=> '<strong>Edited word censor</strong><br />» %s',
 ));
 
+// Manage attachments module for phpBB3 MOD
+$lang = array_merge($lang, array(
+	'ACP_MANAGE_ATTACHMENTS'			=> 'Manage attachments',
+	'ACP_MANAGE_ATTACHMENTS_EXPLAIN'	=> 'Here you can manage files attached to posts. You are able to delete the files or reassign them to existing posts. Reassigning to posts requires a valid post ID, you have to determine this ID by yourself. This will reassign the already assigned attachment to the post you entered.',
+	'LOG_ATTACH_DEL'					=> '<strong>Attachments deleted</strong><br />» %s',
+	'LOG_ATTACH_REASSIGNED'				=> '<strong>Attachment reassigned to Post</strong><br />» ID %1$d - %2$s',
+	'TOTAL_SIZE'						=> 'Total size',
+	'DOWNLOADS'							=> 'Downloads',
+));
+
 ?>
