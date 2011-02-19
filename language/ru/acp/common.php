@@ -754,8 +754,8 @@ $lang = array_merge($lang, array(
 
 // Quick reply
 $lang = array_merge($lang, array(
-	'ACP_QUICK_REPLY'			=> 'Quick reply',
-	'LOG_CONFIG_QUICK_REPLY'	=> '<strong>Edited quick reply settings</strong>',
+	'ACP_QUICK_REPLY'			=> 'Быстрый ответ',
+	'LOG_CONFIG_QUICK_REPLY'	=> '<strong>Изменены настройки быстрого ответа</strong>',
 	'ACP_QUICK_REPLY_EXPLAIN'	=> 'Здесь вы можете настроить желаемый вид и функции быстрого ответа в темах. Вы можете включить/отключить быстрый ответ, а также управлять отображением смайликов, формой добавления вложений и т.п.',
 	'ALLOW_QUICK_REPLY'			=> 'Разрешить быстрый ответ',
 	'ALLOW_QUICK_REPLY_EXPLAIN'	=> 'Пользователи смогут отправлять сообщения на странице просмотра темы.',

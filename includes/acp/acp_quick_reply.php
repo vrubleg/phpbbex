@@ -43,7 +43,6 @@ class acp_quick_reply
 		*/
 				$display_vars = array(
 					'title'	=> 'ACP_QUICK_REPLY',
-					'lang'	=> 'mods/quick_reply',
 					'vars'	=> array(
 						'allow_quick_reply'		=> array('lang' => 'ALLOW_QUICK_REPLY',		'validate' => 'int',	'type' => 'select', 'method' => 'allow_quick_reply', 'explain' => true),
 						'allow_reply_icons'		=> array('lang' => 'ALLOW_REPLY_ICONS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
