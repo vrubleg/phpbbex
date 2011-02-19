@@ -65,7 +65,9 @@ class acp_board
 						'override_user_style'	=> array('lang' => 'OVERRIDE_STYLE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 
 						'legend2'				=> 'WARNINGS',
+						'warning_post_default'	=> array('lang' => 'WARNING_POST_DEFAULT',	'validate' => 'string',	'type' => 'textarea:1:255', 'explain' => false),
 						'warnings_expire_days'	=> array('lang' => 'WARNINGS_EXPIRE',		'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
+						'warnings_gc'			=> array('lang' => 'WARNINGS_GC',			'validate' => 'int',	'type' => 'text:4:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']),
 
 						'legend3'					=> 'ACP_SUBMIT_CHANGES',
 					)

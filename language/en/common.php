@@ -898,6 +898,10 @@ $lang = array_merge($lang, array(
 	'GENDER_M'					=> 'Male',
 	'GENDER_F'					=> 'Female',
 
+	// Warnings
+	'USER_WARNING'				=> 'Warning',
+	'WARNING_DAYS'				=> 'Days',
+
 ));
 
 ?>

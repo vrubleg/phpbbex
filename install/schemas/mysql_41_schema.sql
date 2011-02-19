@@ -993,11 +993,18 @@ CREATE TABLE phpbb_users (
 # Table: 'phpbb_warnings'
 CREATE TABLE phpbb_warnings (
 	warning_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	warning_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
+	issuer_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	post_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	log_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	warning_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (warning_id)
+	warning_days int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	warning_text text NULL,
+	PRIMARY KEY (warning_id),
+	KEY issuer_id (issuer_id),
+	KEY user_id (user_id),
+	KEY post_id (post_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 

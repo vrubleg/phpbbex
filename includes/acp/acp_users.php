@@ -1239,55 +1239,22 @@ class acp_users
 					}
 				}
 
-				$sql = 'SELECT w.warning_id, w.warning_time, w.post_id, l.log_operation, l.log_data, l.user_id AS mod_user_id, m.username AS mod_username, m.user_colour AS mod_user_colour
+				$sql = 'SELECT w.*, m.username AS issuer_username, m.user_colour AS issuer_user_colour
 					FROM ' . WARNINGS_TABLE . ' w
-					LEFT JOIN ' . LOG_TABLE . ' l
-						ON (w.log_id = l.log_id)
 					LEFT JOIN ' . USERS_TABLE . ' m
-						ON (l.user_id = m.user_id)
+						ON (w.issuer_id = m.user_id)
 					WHERE w.user_id = ' . $user_id . '
 					ORDER BY w.warning_time DESC';
 				$result = $db->sql_query($sql);
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					if (!$row['log_operation'])
-					{
-						// We do not have a log-entry anymore, so there is no data available
-						$row['action'] = $user->lang['USER_WARNING_LOG_DELETED'];
-					}
-					else
-					{
-						$row['action'] = (isset($user->lang[$row['log_operation']])) ? $user->lang[$row['log_operation']] : '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}';
-						if (!empty($row['log_data']))
-						{
-							$log_data_ary = @unserialize($row['log_data']);
-							$log_data_ary = ($log_data_ary === false) ? array() : $log_data_ary;
-
-							if (isset($user->lang[$row['log_operation']]))
-							{
-								// Check if there are more occurrences of % than arguments, if there are we fill out the arguments array
-								// It doesn't matter if we add more arguments than placeholders
-								if ((substr_count($row['action'], '%') - sizeof($log_data_ary)) > 0)
-								{
-									$log_data_ary = array_merge($log_data_ary, array_fill(0, substr_count($row['action'], '%') - sizeof($log_data_ary), ''));
-								}
-								$row['action'] = vsprintf($row['action'], $log_data_ary);
-								$row['action'] = bbcode_nl2br(censor_text($row['action']));
-							}
-							else if (!empty($log_data_ary))
-							{
-								$row['action'] .= '<br />' . implode('', $log_data_ary);
-							}
-						}
-					}
-
-
 					$template->assign_block_vars('warn', array(
 						'ID'		=> $row['warning_id'],
-						'USERNAME'	=> ($row['log_operation']) ? get_username_string('full', $row['mod_user_id'], $row['mod_username'], $row['mod_user_colour']) : '-',
-						'ACTION'	=> make_clickable($row['action']),
+						'USERNAME'	=> get_username_string('full', $row['issuer_id'], $row['issuer_username'], $row['issuer_user_colour']),
+						'ACTION'	=> make_clickable(bbcode_nl2br($row['warning_text'])),
 						'DATE'		=> $user->format_date($row['warning_time']),
+						'DAYS'		=> $row['warning_days'],
 					));
 				}
 				$db->sql_freeresult($result);

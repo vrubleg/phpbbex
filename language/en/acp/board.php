@@ -55,6 +55,9 @@ $lang = array_merge($lang, array(
 	'SYSTEM_TIMEZONE_EXPLAIN'			=> 'Timezone to use for displaying times to users who are not logged in (guests, bots). Logged in users set their timezone during registration and can change it in user control panel.',
 	'WARNINGS_EXPIRE'				=> 'Warning duration',
 	'WARNINGS_EXPIRE_EXPLAIN'		=> 'Number of days that will elapse before the warning will automatically expire from a user’s record.',
+	'WARNINGS_GC'					=> 'Warnings pruning period',
+	'WARNINGS_GC_EXPLAIN'			=> 'Time (in seconds) to prune exrired warnings periodically.',
+	'WARNING_POST_DEFAULT'			=> 'Default warning message',
 ));
 
 // Board Features

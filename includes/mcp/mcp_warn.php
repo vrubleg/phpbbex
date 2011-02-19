@@ -325,7 +325,7 @@ class mcp_warn
 			'AVATAR_IMG'		=> $avatar_img,
 			'RANK_IMG'			=> $rank_img,
 
-			'L_WARNING_POST_DEFAULT'	=> sprintf($user->lang['WARNING_POST_DEFAULT'], generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;p=$post_id#p$post_id"),
+			'L_WARNING_POST_DEFAULT'	=> $config['warning_post_default'],
 
 			'S_CAN_NOTIFY'		=> $s_can_notify,
 		));
@@ -443,10 +443,15 @@ class mcp_warn
 /**
 * Insert the warning into the database
 */
-function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
+function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warning_days = '')
 {
 	global $phpEx, $phpbb_root_path, $config;
 	global $template, $db, $user, $auth;
+
+	if (!is_numeric($warning_days))
+	{
+		$warning_days = $config['warnings_expire_days'];
+	}
 
 	if ($send_pm)
 	{
@@ -483,10 +488,14 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
 	$log_id = add_log('user', $user_row['user_id'], 'LOG_USER_WARNING_BODY', $warning);
 
 	$sql_ary = array(
+		'issuer_id'		=> $user->data['user_id'],
 		'user_id'		=> $user_row['user_id'],
 		'post_id'		=> $post_id,
 		'log_id'		=> $log_id,
+		'warning_active'=> 1,
 		'warning_time'	=> time(),
+		'warning_days'	=> $warning_days,
+		'warning_text'	=> $warning,
 	);
 
 	$db->sql_query('INSERT INTO ' . WARNINGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));

@@ -3200,11 +3200,12 @@ function tidy_warnings()
 {
 	global $db, $config;
 
-	$expire_date = time() - ($config['warnings_expire_days'] * 86400);
+	$current_time = time();
 	$warning_list = $user_list = array();
 
 	$sql = 'SELECT * FROM ' . WARNINGS_TABLE . "
-		WHERE warning_time < $expire_date";
+		WHERE warning_active = 1 AND warning_days > 0
+		AND (warning_time + warning_days * 86400) < $current_time";
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
@@ -3218,7 +3219,8 @@ function tidy_warnings()
 	{
 		$db->sql_transaction('begin');
 
-		$sql = 'DELETE FROM ' . WARNINGS_TABLE . '
+		$sql = 'UPDATE ' . WARNINGS_TABLE . '
+			SET warning_active = 0
 			WHERE ' . $db->sql_in_set('warning_id', $warning_list);
 		$db->sql_query($sql);
 

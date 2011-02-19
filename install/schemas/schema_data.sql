@@ -257,6 +257,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '{L_WARNING_POST_DEFAULT}');
 
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cache_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cron_lock', '0', 1);
