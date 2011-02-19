@@ -124,20 +124,37 @@
 			<br /><a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
 		<!-- ENDIF -->
 
-		<!-- IF BBCODE_STATUS -->
 		<!-- IF .smiley --><hr /><!-- ENDIF -->
-		{BBCODE_STATUS}<br />
+
 		<!-- IF S_BBCODE_ALLOWED -->
-			{IMG_STATUS}<br />
-			{FLASH_STATUS}<br />
-			{URL_STATUS}<br />
+			<div><label for="disable_bbcode"><input type="checkbox" name="disable_bbcode" id="disable_bbcode"{S_BBCODE_CHECKED} /> {L_DISABLE_BBCODE}</label></div>
 		<!-- ENDIF -->
-		{SMILIES_STATUS}
+		<!-- IF S_SMILIES_ALLOWED -->
+			<div><label for="disable_smilies"><input type="checkbox" name="disable_smilies" id="disable_smilies"{S_SMILIES_CHECKED} /> {L_DISABLE_SMILIES}</label></div>
 		<!-- ENDIF -->
-		<!-- IF S_EDIT_DRAFT || S_DISPLAY_REVIEW -->
-			<!-- IF S_DISPLAY_REVIEW --><hr /><!-- ENDIF -->
-			<!-- IF S_EDIT_DRAFT --><strong><a href="{S_UCP_ACTION}">{L_BACK_TO_DRAFTS}</a></strong><!-- ENDIF -->
-			<!-- IF S_DISPLAY_REVIEW --><strong><a href="#review">{L_TOPIC_REVIEW}</a></strong><!-- ENDIF -->
+		<!-- IF S_LINKS_ALLOWED -->
+			<div><label for="disable_magic_url"><input type="checkbox" name="disable_magic_url" id="disable_magic_url"{S_MAGIC_URL_CHECKED} /> {L_DISABLE_MAGIC_URL}</label></div>
+		<!-- ENDIF -->
+		<!-- IF S_SIG_ALLOWED -->
+			<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED} /> {L_ATTACH_SIG}</label></div>
+		<!-- ENDIF -->
+		<!-- IF S_FIRST_POST_SHOW_ALLOWED -->
+			<div><label for="topic_first_post_show" title="{L_FIRST_POST_SHOW_EXPLAIN}"><input type="checkbox" name="topic_first_post_show" id="topic_first_post_show"{S_FIRST_POST_SHOW_CHECKED} /> {L_FIRST_POST_SHOW}</label></div>
+		<!-- ENDIF -->
+		<!-- IF not S_EDIT_POST -->
+			<div><label for="do_not_merge"><input type="checkbox" name="do_not_merge" id="do_not_merge" /> {L_DO_NOT_MERGE}</label></div>
+		<!-- ENDIF -->
+
+		<!-- IF S_LOCK_POST_ALLOWED or S_LOCK_TOPIC_ALLOWED or S_NOTIFY_ALLOWED --><hr /><!-- ENDIF -->
+
+		<!-- IF S_NOTIFY_ALLOWED -->
+			<div><label for="notify"><input type="checkbox" name="notify" id="notify"{S_NOTIFY_CHECKED} /> {L_NOTIFY_REPLY}</label></div>
+		<!-- ENDIF -->
+		<!-- IF S_LOCK_TOPIC_ALLOWED -->
+			<div><label for="lock_topic"><input type="checkbox" name="lock_topic" id="lock_topic"{S_LOCK_TOPIC_CHECKED} /> {L_LOCK_TOPIC}</label></div>
+		<!-- ENDIF -->
+		<!-- IF S_LOCK_POST_ALLOWED -->
+			<div><label for="lock_post"><input type="checkbox" name="lock_post" id="lock_post"{S_LOCK_POST_CHECKED} /> {L_LOCK_POST}</label></div>
 		<!-- ENDIF -->
 	</div>
 
@@ -153,38 +170,61 @@
 	</div>
 	<!-- ENDIF -->
 
-	<!-- IF S_HAS_ATTACHMENTS -->
-		<div class="panel bg2">
-			<div class="inner"><span class="corners-top"><span></span></span>
-			<h3>{L_POSTED_ATTACHMENTS}</h3>
+	<!-- IF S_SHOW_ATTACH_BOX or S_HAS_ATTACHMENTS -->
+	<div class="panel bg2">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<!-- IF S_SHOW_ATTACH_BOX -->
+		<h3>{L_ADD_ATTACHMENT}</h3>
+		<fieldset class="fields2">
+		<dl>
+			<dt><label for="fileupload">{L_FILENAME}:</label></dt>
+			<dd>
+				<input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" /> 
+				<input type="submit" name="add_file" value="{L_ADD_FILE}" class="button2" onclick="upload = true;" />
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="filecomment">{L_FILE_COMMENT}:</label></dt>
+			<dd><textarea name="filecomment" id="filecomment" rows="1" cols="40" class="inputbox">{FILE_COMMENT}</textarea></dd>
+		</dl>
+		</fieldset>
+		<!-- ENDIF -->
 
-			<fieldset class="fields2">
-
+		<!-- IF S_HAS_ATTACHMENTS -->
+		<h3>{L_POSTED_ATTACHMENTS}</h3>
+		<fieldset class="fields2">
 			<!-- BEGIN attach_row -->
 			<dl>
-
 				<dt><label for="comment_list_{attach_row.ASSOC_INDEX}">{L_FILE_COMMENT}:</label></dt>
-				<dd><textarea name="comment_list[{attach_row.ASSOC_INDEX}]" id="comment_list_{attach_row.ASSOC_INDEX}" rows="1" cols="35" class="inputbox">{attach_row.FILE_COMMENT}</textarea></dd>
+				<dd><textarea name="comment_list[{attach_row.ASSOC_INDEX}]" id="comment_list_{attach_row.ASSOC_INDEX}" rows="1" cols="40" class="inputbox">{attach_row.FILE_COMMENT}</textarea></dd>
 				<dd><a href="{attach_row.U_VIEW_ATTACHMENT}" class="{S_CONTENT_FLOW_END}">{attach_row.FILENAME}</a></dd>
 				<dd style="margin-top: 5px;">
 					<!-- IF S_INLINE_ATTACHMENT_OPTIONS --><input type="button" value="{L_PLACE_INLINE}" onclick="attach_inline({attach_row.ASSOC_INDEX}, '{attach_row.A_FILENAME}');" class="button2" />&nbsp; <!-- ENDIF -->
-					<input type="submit" name="delete_file[{attach_row.ASSOC_INDEX}]" value="{L_DELETE_FILE}" class="button2" />
+					<input type="submit" name="delete_file[{attach_row.ASSOC_INDEX}]" value="{L_DELETE_FILE}" class="button2" />&nbsp; 
 					<input type="submit" name="update_file[{attach_row.ASSOC_INDEX}]" value="{L_UPDATE_FILE}" class="button2" />
 				</dd>
 			</dl>
 			{attach_row.S_HIDDEN}
 				<!-- IF not attach_row.S_LAST_ROW --><hr class="dashed" /><!-- ENDIF -->
 			<!-- END attach_row -->
+		</fieldset>
+		<!-- ENDIF -->
 
-			</fieldset>
-
-			<span class="corners-bottom"><span></span></span></div>
-		</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
 	<!-- ENDIF -->
 
 	<!-- IF not S_SHOW_DRAFTS and not $SIG_EDIT eq 1 -->
 	<div class="panel bg2">
 		<div class="inner"><span class="corners-top"><span></span></span>
+		<!-- IF S_EDIT_REASON -->
+		<fieldset class="fields2">
+			<dl>
+				<dt><label for="edit_reason">{L_EDIT_REASON}:</label></dt>
+				<dd><input type="text" name="edit_reason" id="edit_reason" value="{EDIT_REASON}" class="inputbox" /></dd>
+			</dl>
+		</fieldset>
+		<!-- ENDIF -->
 		<fieldset class="submit-buttons">
 			{S_HIDDEN_ADDRESS_FIELD}
 			{S_HIDDEN_FIELDS}
@@ -199,53 +239,22 @@
 	</div>
 	<!-- ENDIF -->
 
-	<!-- IF not S_PRIVMSGS and not S_SHOW_DRAFTS and not $SIG_EDIT eq 1 -->
+	<!-- IF not S_PRIVMSGS and not S_SHOW_DRAFTS and not $SIG_EDIT eq 1 and (S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY or S_SHOW_POLL_BOX or S_POLL_DELETE) -->
 		<div id="tabs">
 			<ul>
+				<!-- IF S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY -->
 				<li id="options-panel-tab" class="activetab"><a href="#tabs" onclick="subPanels('options-panel'); return false;"><span>{L_OPTIONS}</span></a></li>
-				<!-- IF S_SHOW_ATTACH_BOX --><li id="attach-panel-tab"><a href="#tabs" onclick="subPanels('attach-panel'); return false;"><span>{L_ADD_ATTACHMENT}</span></a></li><!-- ENDIF -->
+				<!-- ENDIF -->
 				<!-- IF S_SHOW_POLL_BOX || S_POLL_DELETE --><li id="poll-panel-tab"><a href="#tabs" onclick="subPanels('poll-panel'); return false;"><span>{L_ADD_POLL}</span></a></li><!-- ENDIF -->
 			</ul>
 		</div>
 	<!-- ENDIF -->
 
-	<!-- IF not S_SHOW_DRAFTS and not $SIG_EDIT eq 1 -->
 	<div class="panel bg3" id="options-panel">
 		<div class="inner"><span class="corners-top"><span></span></span>
 
+		<!-- IF not S_SHOW_DRAFTS and not $SIG_EDIT eq 1 and (S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY) -->
 		<fieldset class="fields1">
-			<!-- IF S_BBCODE_ALLOWED -->
-				<div><label for="disable_bbcode"><input type="checkbox" name="disable_bbcode" id="disable_bbcode"{S_BBCODE_CHECKED} /> {L_DISABLE_BBCODE}</label></div>
-			<!-- ENDIF -->
-			<!-- IF S_SMILIES_ALLOWED -->
-				<div><label for="disable_smilies"><input type="checkbox" name="disable_smilies" id="disable_smilies"{S_SMILIES_CHECKED} /> {L_DISABLE_SMILIES}</label></div>
-			<!-- ENDIF -->
-			<!-- IF S_LINKS_ALLOWED -->
-				<div><label for="disable_magic_url"><input type="checkbox" name="disable_magic_url" id="disable_magic_url"{S_MAGIC_URL_CHECKED} /> {L_DISABLE_MAGIC_URL}</label></div>
-			<!-- ENDIF -->
-			<!-- IF S_SIG_ALLOWED -->
-				<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED} /> {L_ATTACH_SIG}</label></div>
-			<!-- ENDIF -->
-			<!-- IF S_FIRST_POST_SHOW_ALLOWED -->
-				<div><label for="topic_first_post_show" title="{L_FIRST_POST_SHOW_EXPLAIN}"><input type="checkbox" name="topic_first_post_show" id="topic_first_post_show"{S_FIRST_POST_SHOW_CHECKED} /> {L_FIRST_POST_SHOW}</label></div>
-			<!-- ENDIF -->
-			<!-- IF not S_EDIT_POST -->
-				<div><label for="do_not_merge"><input type="checkbox" name="do_not_merge" id="do_not_merge" /> {L_DO_NOT_MERGE}</label></div>
-			<!-- ENDIF -->
-			<!-- IF S_NOTIFY_ALLOWED -->
-				<div><label for="notify"><input type="checkbox" name="notify" id="notify"{S_NOTIFY_CHECKED} /> {L_NOTIFY_REPLY}</label></div>
-			<!-- ENDIF -->
-			<!-- IF S_LOCK_TOPIC_ALLOWED -->
-				<div><label for="lock_topic"><input type="checkbox" name="lock_topic" id="lock_topic"{S_LOCK_TOPIC_CHECKED} /> {L_LOCK_TOPIC}</label></div>
-			<!-- ENDIF -->
-			<!-- IF S_LOCK_POST_ALLOWED -->
-				<div><label for="lock_post"><input type="checkbox" name="lock_post" id="lock_post"{S_LOCK_POST_CHECKED} /> {L_LOCK_POST} [{L_LOCK_POST_EXPLAIN}]</label></div>
-			<!-- ENDIF -->
-
-			<!-- IF S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY -->
-			<hr class="dashed" />
-			<!-- ENDIF -->
-
 			<!-- IF S_TYPE_TOGGLE -->
 			<dl>
 				<dt><label for="topic_type-0"><!-- IF S_EDIT_POST -->{L_CHANGE_TOPIC_TO}<!-- ELSE -->{L_POST_TOPIC_AS}<!-- ENDIF -->:</label></dt>
@@ -258,13 +267,6 @@
 				<dt><label for="topic_time_limit">{L_STICK_TOPIC_FOR}:</label></dt>
 				<dd><label for="topic_time_limit"><input type="text" name="topic_time_limit" id="topic_time_limit" size="3" maxlength="3" value="{TOPIC_TIME_LIMIT}" class="inputbox autowidth" /> {L_DAYS}</label></dd>
 				<dd>{L_STICK_TOPIC_FOR_EXPLAIN}</dd>
-			</dl>
-			<!-- ENDIF -->
-
-			<!-- IF S_EDIT_REASON -->
-			<dl>
-				<dt><label for="edit_reason">{L_EDIT_REASON}:</label></dt>
-				<dd><input type="text" name="edit_reason" id="edit_reason" value="{EDIT_REASON}" class="inputbox" /></dd>
 			</dl>
 			<!-- ENDIF -->
 		</fieldset>
