@@ -192,6 +192,7 @@ $lang = array_merge($lang, array(
 	'FORUMS'				=> 'Форумы',
 	'FORUMS_MARKED'			=> 'Все форумы отмечены как прочтённые',
 	'FORUM_CAT'				=> 'Категория',
+	'FORUM_DESC'			=> 'Описание',
 	'FORUM_INDEX'			=> 'Список форумов',
 	'FORUM_LINK'			=> 'Ссылка на форум',
 	'FORUM_LOCATION'		=> 'Место в конференции',

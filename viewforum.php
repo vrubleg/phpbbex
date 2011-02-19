@@ -131,14 +131,12 @@ $active_forum_ary = $moderators = array();
 if ($forum_data['left_id'] != $forum_data['right_id'] - 1)
 {
 	list($active_forum_ary, $moderators) = display_forums($forum_data, $config['load_moderators'], $config['load_moderators']);
+	if(!isset($moderators[$forum_id])) get_moderators($moderators, $forum_id);
 }
 else
 {
 	$template->assign_var('S_HAS_SUBFORUM', false);
-	if ($config['load_moderators'])
-	{
-		get_moderators($moderators, $forum_id);
-	}
+	get_moderators($moderators, $forum_id);
 }
 
 // Dump out the page header and load viewforum template

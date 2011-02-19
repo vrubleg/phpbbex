@@ -6,17 +6,12 @@
 	<h2><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h2>
  <!-- ENDIF -->
 
-<!-- IF S_FORUM_RULES -->
+<!-- IF S_FORUM_RULES or FORUM_DESC or FORUM_NAME -->
 	<div class="rules">
 		<div class="inner"><span class="corners-top"><span></span></span>
-		
-		<!-- IF U_FORUM_RULES -->
-			<a href="{U_FORUM_RULES}">{L_FORUM_RULES}</a>
-		<!-- ELSE -->
-			<strong>{L_FORUM_RULES}</strong><br />
-			{FORUM_RULES}
-		<!-- ENDIF -->
-		
+		<!-- IF FORUM_NAME --><strong>{L_FORUM_NAME}:</strong> {FORUM_NAME}<br /><!-- ENDIF -->
+		<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br /><!-- ENDIF -->
+		<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br /><!-- ENDIF -->
 		<span class="corners-bottom"><span></span></span></div>
 	</div>
 <!-- ENDIF -->
