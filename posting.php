@@ -1557,7 +1557,7 @@ $template->set_filenames(array(
 make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"));
 
 // Topic review
-if ($mode == 'reply' || $mode == 'quote')
+if (($mode == 'reply' || $mode == 'quote') && ((bool) $user->optionget('viewtopicreview')))
 {
 	if (topic_review($topic_id, $forum_id))
 	{

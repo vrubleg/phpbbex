@@ -752,4 +752,22 @@ $lang = array_merge($lang, array(
 	'DOWNLOADS'							=> 'Скачивания',
 ));
 
+// Quick reply
+$lang = array_merge($lang, array(
+	'ACP_QUICK_REPLY'			=> 'Quick reply',
+	'LOG_CONFIG_QUICK_REPLY'	=> '<strong>Edited quick reply settings</strong>',
+	'ACP_QUICK_REPLY_EXPLAIN'	=> 'Здесь вы можете настроить желаемый вид и функции быстрого ответа в темах. Вы можете включить/отключить быстрый ответ, а также управлять отображением смайликов, формой добавления вложений и т.п.',
+	'ALLOW_QUICK_REPLY'			=> 'Разрешить быстрый ответ',
+	'ALLOW_QUICK_REPLY_EXPLAIN'	=> 'Пользователи смогут отправлять сообщения на странице просмотра темы.',
+	'ALLOW_QUICK_REPLY_NONE'	=> 'Нет',
+	'ALLOW_QUICK_REPLY_REG'		=> 'Зарегистрированным пользователям',
+	'ALLOW_QUICK_REPLY_ALL'		=> 'Всем',
+	'ALLOW_REPLY_ICONS'			=> 'Значки сообщений/тем',
+	'ALLOW_REPLY_CHECKBOXES'	=> 'Чекбоксы',
+	'ALLOW_REPLY_ATTACHBOX'		=> 'Вложение файлов',
+	'ALLOW_REPLY_SMILIES'		=> 'Смайлики',
+	'ALLOW_QUICK_POST'			=> 'Разрешить быстрые темы',
+	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Пользователи смогут начинать новые темы на странице просмотра форума.',
+));
+
 ?>

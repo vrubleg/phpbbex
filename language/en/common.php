@@ -527,6 +527,7 @@ $lang = array_merge($lang, array(
 	'SEARCH_NEW'				=> 'View new posts',
 	'SEARCH_POSTS_BY'			=> 'Search posts by',
 	'SEARCH_SELF'				=> 'View your posts',
+	'SEARCH_SELF_TOPICS'		=> 'View your topics',
 	'SEARCH_TOPIC'				=> 'Search this topic…',
 	'SEARCH_UNANSWERED'			=> 'View unanswered posts',
 	'SEARCH_UNREAD'				=> 'View unread posts',
@@ -896,12 +897,6 @@ $lang = array_merge($lang, array(
 	'GENDER_X'					=> 'None specified',
 	'GENDER_M'					=> 'Male',
 	'GENDER_F'					=> 'Female',
-	
-	// Additional strings
-	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
-	'SEARCH_SELF_TOPICS'		=> 'View your topics',
-	'FIRST_POST_SHOW'			=> 'Show on top of every page',
-	'FIRST_POST_SHOW_EXPLAIN'	=> 'Show on top of every page',
 
 ));
 

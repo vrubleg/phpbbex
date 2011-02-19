@@ -176,6 +176,10 @@ class ucp_prefs
 					'sigs'			=> request_var('sigs', (bool) $user->optionget('viewsigs')),
 					'avatars'		=> request_var('avatars', (bool) $user->optionget('viewavatars')),
 					'wordcensor'	=> request_var('wordcensor', (bool) $user->optionget('viewcensors')),
+
+					'quickreply'	=> request_var('quickreply', (bool) $user->optionget('viewquickreply')),
+					'quickpost'		=> request_var('quickpost', (bool) $user->optionget('viewquickpost')),
+					'topicreview'	=> request_var('topicreview', (bool) $user->optionget('viewtopicreview')),
 				);
 
 				if ($submit)
@@ -199,6 +203,9 @@ class ucp_prefs
 						$user->optionset('viewsmilies', $data['smilies']);
 						$user->optionset('viewsigs', $data['sigs']);
 						$user->optionset('viewavatars', $data['avatars']);
+						$user->optionset('viewquickreply', $data['quickreply']);
+						$user->optionset('viewquickpost', $data['quickpost']);
+						$user->optionset('viewtopicreview', $data['topicreview']);
 
 						if ($auth->acl_get('u_chgcensors'))
 						{
@@ -281,6 +288,12 @@ class ucp_prefs
 					'S_SIGS'			=> $data['sigs'],
 					'S_AVATARS'			=> $data['avatars'],
 					'S_DISABLE_CENSORS'	=> $data['wordcensor'],
+
+					'S_QUICKREPLY'		=> $data['quickreply'],
+					'QUICK_REPLY'		=> ($config['allow_quick_reply']) ? true : false,
+					'S_QUICKPOST'		=> $data['quickpost'],
+					'QUICK_POST'		=> ($config['allow_quick_post']) ? true : false,
+					'S_TOPICREVIEW'		=> $data['topicreview'],
 
 					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']) ? true : false,
 

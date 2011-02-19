@@ -265,6 +265,12 @@ $post_alt = ($forum_data['forum_status'] == ITEM_LOCKED) ? $user->lang['FORUM_LO
 // Display active topics?
 $s_display_active = ($forum_data['forum_type'] == FORUM_CAT && ($forum_data['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS)) ? true : false;
 
+// Quick post
+if ($config['allow_quick_post'])
+{
+	include($phpbb_root_path . 'includes/quick_reply.' . $phpEx);
+}
+
 $template->assign_vars(array(
 	'MODERATORS'	=> (!empty($moderators[$forum_id])) ? implode(', ', $moderators[$forum_id]) : '',
 

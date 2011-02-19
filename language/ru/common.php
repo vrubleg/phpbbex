@@ -526,6 +526,7 @@ $lang = array_merge($lang, array(
 	'SEARCH_NEW'				=> 'Новые сообщения',
 	'SEARCH_POSTS_BY'			=> 'Искать сообщения',
 	'SEARCH_SELF'				=> 'Ваши сообщения',
+	'SEARCH_SELF_TOPICS'		=> 'Ваши темы',
 	'SEARCH_TOPIC'				=> 'Поиск в теме…',
 	'SEARCH_UNANSWERED'			=> 'Темы без ответов',
 	'SEARCH_UNREAD'				=> 'Непрочитанные сообщения',
@@ -909,12 +910,6 @@ $lang = array_merge($lang, array(
 	'GENDER_X'					=> 'Не указан',
 	'GENDER_M'					=> 'Мужской',
 	'GENDER_F'					=> 'Женский',
-
-	// Additional strings
-	'DO_NOT_MERGE'				=> 'Не склеивать с предыдущим',
-	'SEARCH_SELF_TOPICS'		=> 'Ваши темы',
-	'FIRST_POST_SHOW'			=> 'На всех страницах',
-	'FIRST_POST_SHOW_EXPLAIN'	=> 'Отображать сообщение на всех страницах темы',
 
 ));
 

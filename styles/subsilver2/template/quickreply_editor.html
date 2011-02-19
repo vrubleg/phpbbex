@@ -1,27 +1,189 @@
-<form method="post" action="{U_QR_ACTION}">
+<form action="{U_QR_ACTION}" method="post" id="postform" name="postform"{S_FORM_ENCTYPE}>
 
-	<table class="tablebg" width="100%" cellspacing="1">
-		<tr>
-			<th align="center" colspan="2">{L_QUICKREPLY}</th>
-		</tr>
-		<tr>
-			<td class="row1" width="22%"><b class="genmed">{L_SUBJECT}:</b></td>
-			<td  class="row2" width="78%"><input class="post" style="width:450px" type="text" name="subject" size="45" maxlength="64" tabindex="2" value="{SUBJECT}" /></td>
-		</tr>
-		<tr>
-			<td class="row1" width="22%"><b class="genmed">{L_MESSAGE}:</b></td>
-			<td class="row2" valign="top" align="left" width="78%"><textarea name="message" rows="7" cols="76" tabindex="3"  style="width: 98%;"></textarea> </td>
-		</tr>
-		<tr>
-			<td class="cat" colspan="2" align="center">
-				<input class="btnmain" type="submit" accesskey="s" tabindex="6" name="post" value="{L_SUBMIT}" />&nbsp;
-				<input class="btnlite" type="submit" accesskey="f" tabindex="7" name="full_editor" value="{L_FULL_EDITOR}" />
+<table class="tablebg" width="100%" cellspacing="1">
+<tr>
+	<th colspan="2"><b>{L_QUICK_REPLY}</b></th>
+</tr>
 
-				{S_FORM_TOKEN}
-				{QR_HIDDEN_FIELDS}
+<!-- IF ERROR -->
+	<tr>
+		<td class="row2" colspan="2" align="center"><span class="genmed error">{ERROR}</span></td>
+	</tr>
+<!-- ENDIF -->
+
+<!-- IF S_SHOW_TOPIC_ICONS -->
+	<tr>
+		<td class="row1"><b class="genmed">{L_ICON}:</b></td>
+		<td class="row2">
+			<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td><input type="radio" class="radio" name="icon" value="0"{S_NO_ICON_CHECKED} /><span class="genmed">{L_NO_TOPIC_ICON}</span> <!-- BEGIN topic_icon --><span style="white-space: nowrap;"><input type="radio" class="radio" name="icon" value="{topic_icon.ICON_ID}"{topic_icon.S_ICON_CHECKED} /><img src="{topic_icon.ICON_IMG}" width="{topic_icon.ICON_WIDTH}" height="{topic_icon.ICON_HEIGHT}" alt="" title="" hspace="2" vspace="2" /></span> <!-- END topic_icon --></td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+<!-- ENDIF -->
+
+<!-- IF S_DISPLAY_USERNAME -->
+	<tr>
+		<td class="row1"><b class="genmed">{L_USERNAME}:</b></td>
+		<td class="row2"><input class="post" type="text" tabindex="1" name="username" size="25" value="{USERNAME}" /></td>
+	</tr>
+<!-- ENDIF -->
+
+<tr>
+	<td class="row1" width="22%"><b class="genmed">{L_SUBJECT}:</b></td>
+	<td class="row2" width="78%"><input class="post" style="width:450px" type="text" name="subject" size="45" maxlength="<!-- IF S_NEW_MESSAGE -->60<!-- ELSE -->64<!-- ENDIF -->" tabindex="2" value="{SUBJECT}" /></td>
+</tr>
+<tr>
+	<td class="row1" valign="top"><b class="genmed">{L_MESSAGE_BODY}:</b><br /><span class="gensmall">{L_MESSAGE_BODY_EXPLAIN}&nbsp;</span><br /><br />
+	<!-- IF S_SMILIES_ALLOWED -->
+		<table width="100%" cellspacing="5" cellpadding="0" border="0" align="center">
+		<tr>
+			<td class="gensmall" align="center"><b>{L_SMILIES}</b></td>
+		</tr>
+		<tr>
+			<td align="center">
+				<!-- BEGIN smiley -->
+					<a href="#" onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;" style="line-height: 20px;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" hspace="2" vspace="2" /></a>
+				<!-- END smiley -->
 			</td>
 		</tr>
-	</table>
-	
-</form>
+
+		<!-- IF S_SHOW_SMILEY_LINK -->
+			<tr>
+				<td align="center"><a class="nav" href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a></td>
+			</tr>
+		<!-- ENDIF -->
+
+		</table>
+	<!-- ENDIF -->
+	</td>
+	<td class="row2" valign="top">
+		<script type="text/javascript">
+		// <![CDATA[
+			var form_name = 'postform';
+			var text_name = 'message';
+		// ]]>
+		</script>		
+
+		<table width="100%" cellspacing="0" cellpadding="0" border="0">
+		<!-- INCLUDE posting_buttons.html -->
+		<tr>
+			<td valign="top" style="width: 100%;"><textarea name="message" rows="15" cols="76" tabindex="3" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" style="width: 98%;">{MESSAGE}</textarea></td>
+			<!-- IF S_BBCODE_ALLOWED -->
+			<td width="80" align="center" valign="top">
+				<script type="text/javascript">
+				// <![CDATA[
+					colorPalette('v', 7, 6)
+				// ]]>
+				</script>
+			</td>
+			<!-- ENDIF -->
+	 	</tr>
+		</table>
+	</td>
+</tr>
+
+<tr  style="display: {EXTRA_OPTIONS_DISPLAY};">
+	<td class="row1" valign="top"><b class="genmed">{L_OPTIONS}:</b><br />
+		<table cellspacing="2" cellpadding="0" border="0">
+		<tr>
+			<td class="gensmall">{BBCODE_STATUS}</td>
+		</tr>
+		<!-- IF S_BBCODE_ALLOWED -->
+		<tr>
+			<td class="gensmall">{IMG_STATUS}</td>
+		</tr>
+		<tr>
+			<td class="gensmall">{FLASH_STATUS}</td>
+		</tr>
+		<tr>
+			<td class="gensmall">{URL_STATUS}</td>
+		</tr>
+		<tr>
+			<td class="gensmall">{SMILIES_STATUS}</td>
+		</tr>
+		<!-- ENDIF -->
+		</table>
+	</td>
+	<td class="row2">
+		<table cellpadding="1">
+		<!-- IF S_BBCODE_ALLOWED -->
+			<tr>
+				<td><input type="checkbox" class="radio" name="disable_bbcode"{S_BBCODE_CHECKED} /></td>
+				<td class="gen">{L_DISABLE_BBCODE}</td>
+			</tr>
+		<!-- ENDIF -->
+
+		<!-- IF S_SMILIES_ALLOWED -->
+			<tr>
+				<td><input type="checkbox" class="radio" name="disable_smilies"{S_SMILIES_CHECKED} /></td>
+				<td class="gen">{L_DISABLE_SMILIES}</td>
+			</tr>
+		<!-- ENDIF -->
+
+		<!-- IF S_LINKS_ALLOWED -->
+		<tr>
+			<td><input type="checkbox" class="radio" name="disable_magic_url"{S_MAGIC_URL_CHECKED} /></td>
+			<td class="gen">{L_DISABLE_MAGIC_URL}</td>
+		</tr>
+		<!-- ENDIF -->
+
+		<!-- IF S_SIG_ALLOWED -->
+			<tr>
+				<td><input type="checkbox" class="radio" name="attach_sig"{S_SIGNATURE_CHECKED} /></td>
+				<td class="gen">{L_ATTACH_SIG}</td>
+			</tr>
+		<!-- ENDIF -->
+
+		<!-- IF S_NOTIFY_ALLOWED -->
+			<tr>
+				<td><input type="checkbox" class="radio" name="notify"{S_NOTIFY_CHECKED} /></td>
+				<td class="gen">{L_NOTIFY_REPLY}</td>
+			</tr>
+		<!-- ENDIF -->
+
+		<!-- IF S_LOCK_TOPIC_ALLOWED -->
+			<tr>
+				<td><input type="checkbox" class="radio" name="lock_topic"{S_LOCK_TOPIC_CHECKED} /></td>
+				<td class="gen">{L_LOCK_TOPIC}</td>
+			</tr>
+		<!-- ENDIF -->
+		
+		<!-- IF S_LOCK_POST_ALLOWED -->
+			<tr>
+				<td><input type="checkbox" class="radio" name="lock_post"{S_LOCK_POST_CHECKED} /></td>
+				<td class="gen">{L_LOCK_POST} [{L_LOCK_POST_EXPLAIN}]</td>
+			</tr>
+		<!-- ENDIF -->
+		</table>
+	</td>
+</tr>
+
+<!-- IF CAPTCHA_TEMPLATE and S_CONFIRM_CODE -->
+<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
+<!-- ENDIF -->
+
+<!-- IF S_SHOW_ATTACH_BOX -->
+	<tr>
+		<td class="cat" colspan="2" align="center">
+			<input class="btnlite" type="submit" tabindex="5" name="preview" value="{L_PREVIEW}" />
+			&nbsp; <input class="btnmain" type="submit" accesskey="s" tabindex="6" name="post" value="{L_SUBMIT}" />
+		</td>
+	</tr>
+
+<!-- INCLUDE posting_attach_body.html -->
+<!-- ENDIF -->
+
+<tr>
+	<td class="cat" colspan="2" align="center">{QR_HIDDEN_FIELDS}
+		<input class="btnlite" type="submit" tabindex="10" name="preview" value="{L_PREVIEW}" />
+		&nbsp; <input class="btnmain" type="submit" accesskey="s" tabindex="11" name="post" value="{L_SUBMIT}" />
+	</td>
+</tr>
+</table>
+
 <br clear="all" />
+{S_FORM_TOKEN}
+</form>

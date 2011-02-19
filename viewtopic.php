@@ -1544,6 +1544,8 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POSTER_AVATAR'		=> $user_cache[$poster_id]['avatar'],
 		'POSTER_WARNINGS'	=> $user_cache[$poster_id]['warnings'],
 		'POSTER_AGE'		=> $user_cache[$poster_id]['age'],
+		// This value will be used as a parameter for JS insert_text() function, so we use addslashes to handle "special" usernames properly ;)
+		'POSTER_QUOTE'		=> addslashes(get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username'])),
 
 		'S_POSTER_GENDER_X'	=> $user_cache[$poster_id]['gender'] == GENDER_X,
 		'S_POSTER_GENDER_M'	=> $user_cache[$poster_id]['gender'] == GENDER_M,
@@ -1709,48 +1711,15 @@ else if (!$all_marked_read)
 
 // let's set up quick_reply
 $s_quick_reply = false;
-if ($user->data['is_registered'] && $config['allow_quick_reply'] && ($topic_data['forum_flags'] & FORUM_FLAG_QUICK_REPLY) && $auth->acl_get('f_reply', $forum_id))
+if ($config['allow_quick_reply'])
 {
-	// Quick reply enabled forum
-	$s_quick_reply = (($topic_data['forum_status'] == ITEM_UNLOCKED && $topic_data['topic_status'] == ITEM_UNLOCKED) || $auth->acl_get('m_edit', $forum_id)) ? true : false;
+	$s_quick_reply = include($phpbb_root_path . 'includes/quick_reply.' . $phpEx);
 }
 
-if ($s_can_vote || $s_quick_reply)
+if ($s_can_vote && !$s_quick_reply)
 {
 	add_form_key('posting');
-
-	if ($s_quick_reply)
-	{
-		$s_attach_sig	= $config['allow_sig'] && $user->optionget('attachsig') && $auth->acl_get('f_sigs', $forum_id) && $auth->acl_get('u_sig');
-		$s_smilies		= $config['allow_smilies'] && $user->optionget('smilies') && $auth->acl_get('f_smilies', $forum_id);
-		$s_bbcode		= $config['allow_bbcode'] && $user->optionget('bbcode') && $auth->acl_get('f_bbcode', $forum_id);
-		$s_notify		= $config['allow_topic_notify'] && ($user->data['user_notify'] || $s_watching_topic['is_watching']);
-
-		$qr_hidden_fields = array(
-			'topic_cur_post_id'		=> (int) $topic_data['topic_last_post_id'],
-			'lastclick'				=> (int) time(),
-			'topic_id'				=> (int) $topic_data['topic_id'],
-			'forum_id'				=> (int) $forum_id,
-		);
-
-		// Originally we use checkboxes and check with isset(), so we only provide them if they would be checked
-		(!$s_bbcode)					? $qr_hidden_fields['disable_bbcode'] = 1		: true;
-		(!$s_smilies)					? $qr_hidden_fields['disable_smilies'] = 1		: true;
-		(!$config['allow_post_links'])	? $qr_hidden_fields['disable_magic_url'] = 1	: true;
-		($s_attach_sig)					? $qr_hidden_fields['attach_sig'] = 1			: true;
-		($s_notify)						? $qr_hidden_fields['notify'] = 1				: true;
-		($topic_data['topic_status'] == ITEM_LOCKED) ? $qr_hidden_fields['lock_topic'] = 1 : true;
-
-		$template->assign_vars(array(
-			'S_QUICK_REPLY'			=> true,
-			'U_QR_ACTION'			=> append_sid("{$phpbb_root_path}posting.$phpEx", "mode=reply&amp;f=$forum_id&amp;t=$topic_id"),
-			'QR_HIDDEN_FIELDS'		=> build_hidden_fields($qr_hidden_fields),
-			'SUBJECT'				=> 'Re: ' . censor_text($topic_data['topic_title']),
-		));
-	}
 }
-// now I have the urge to wash my hands :(
-
 
 // We overwrite $_REQUEST['f'] if there is no forum specified
 // to be able to display the correct online list.

@@ -753,4 +753,22 @@ $lang = array_merge($lang, array(
 	'DOWNLOADS'							=> 'Downloads',
 ));
 
+// Quick reply
+$lang = array_merge($lang, array(
+	'ACP_QUICK_REPLY'			=> 'Quick reply',
+	'LOG_CONFIG_QUICK_REPLY'	=> '<strong>Edited quick reply settings</strong>',
+	'ACP_QUICK_REPLY_EXPLAIN'	=> 'Here you can change quick post/reply forms view. You can switch on/off entire quick post/reply forms or displaying of smilies/attachbox/checkboxes/post icons separately.',
+	'ALLOW_QUICK_REPLY'			=> 'Allow quick reply for users',
+	'ALLOW_QUICK_REPLY_EXPLAIN'	=> 'Users can post reply directly at topic view.',
+	'ALLOW_QUICK_REPLY_NONE'	=> 'None',
+	'ALLOW_QUICK_REPLY_REG'		=> 'Registered only',
+	'ALLOW_QUICK_REPLY_ALL'		=> 'All',
+	'ALLOW_REPLY_ICONS'			=> 'Post/topic icons',
+	'ALLOW_REPLY_CHECKBOXES'	=> 'Checkboxes',
+	'ALLOW_REPLY_ATTACHBOX'		=> 'Attachbox',
+	'ALLOW_REPLY_SMILIES'		=> 'Smilies',
+	'ALLOW_QUICK_POST'			=> 'Allow quick topic post for users',
+	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Users can start topic directly at forum view.',
+));
+
 ?>
