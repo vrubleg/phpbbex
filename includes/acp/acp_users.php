@@ -1289,6 +1289,7 @@ class acp_users
 					'msn'			=> request_var('msn', $user_row['user_msnm']),
 					'yim'			=> request_var('yim', $user_row['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user_row['user_jabber'], true)),
+					'skype'			=> utf8_normalize_nfc(request_var('skype', $user_row['user_skype'], true)),
 					'website'		=> request_var('website', $user_row['user_website']),
 					'location'		=> utf8_normalize_nfc(request_var('location', $user_row['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user_row['user_occ'], true)),
@@ -1321,6 +1322,7 @@ class acp_users
 						'jabber'		=> array(
 							array('string', true, 5, 255),
 							array('jabber')),
+						'skype'			=> array('string', true, 3, 255),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 12, 255),
@@ -1355,6 +1357,7 @@ class acp_users
 							'user_msnm'		=> $data['msn'],
 							'user_yim'		=> $data['yim'],
 							'user_jabber'	=> $data['jabber'],
+							'user_skype'	=> $data['skype'],
 							'user_website'	=> $data['website'],
 							'user_from'		=> $data['location'],
 							'user_occ'		=> $data['occupation'],
@@ -1408,6 +1411,7 @@ class acp_users
 					'AIM'			=> $data['aim'],
 					'MSN'			=> $data['msn'],
 					'JABBER'		=> $data['jabber'],
+					'SKYPE'			=> $data['skype'],
 					'WEBSITE'		=> $data['website'],
 					'LOCATION'		=> $data['location'],
 					'OCCUPATION'	=> $data['occupation'],

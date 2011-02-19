@@ -636,6 +636,7 @@ switch ($mode)
 			'MSN_IMG'		=> $user->img('icon_contact_msnm', $user->lang['MSNM']),
 			'YIM_IMG'		=> $user->img('icon_contact_yahoo', $user->lang['YIM']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
+			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
 			'S_PROFILE_ACTION'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group'),
@@ -1581,6 +1582,7 @@ switch ($mode)
 			'MSN_IMG'		=> $user->img('icon_contact_msnm', $user->lang['MSNM']),
 			'YIM_IMG'		=> $user->img('icon_contact_yahoo', $user->lang['YIM']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
+			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
 			'U_FIND_MEMBER'			=> ($config['load_search'] || $auth->acl_get('a_')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser') : '',
@@ -1730,6 +1732,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_YIM'			=> ($data['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . urlencode($data['user_yim']) . '&amp;.src=pg' : '',
 		'U_MSN'			=> ($data['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=msnm&amp;u=' . $user_id) : '',
 		'U_JABBER'		=> ($data['user_jabber']) ? ('xmpp:' . $data['user_jabber']) : '',
+		'U_SKYPE'		=> ($data['user_skype']) ? ('skype:' . $data['user_skype'] . '?chat') : '',
 		'LOCATION'		=> ($data['user_from']) ? $data['user_from'] : '',
 
 		'USER_AGENT'		=> ($data['user_browser']) ? $data['user_browser'] : '',
@@ -1739,6 +1742,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'USER_MSN'			=> $data['user_msnm'],
 		'USER_JABBER'		=> $data['user_jabber'],
 		'USER_JABBER_IMG'	=> ($data['user_jabber']) ? $user->img('icon_contact_jabber', $data['user_jabber']) : '',
+		'USER_SKYPE'		=> $data['user_skype'],
 		'USER_EMAIL'				=> $data['user_email'],
 		'S_USER_ALLOW_VIEWEMAIL'	=> (strpos($email,"mailto:") === 0),
 

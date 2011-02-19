@@ -541,6 +541,7 @@ $lang = array_merge($lang, array(
 	'SETTINGS'					=> 'Настройки',
 	'SIGNATURE'					=> 'Подпись',
 	'SKIP'						=> 'Пропустить',
+	'SKYPE'						=> 'Skype',
 	'SMTP_NO_AUTH_SUPPORT'		=> 'SMTP-сервер не поддерживает аутентификацию.',
 	'SORRY_AUTH_READ'			=> 'Вы не авторизованы для чтения этого форума.',
 	'SORRY_AUTH_VIEW_ATTACH'	=> 'Вы не авторизованы для скачивания этого вложения.',

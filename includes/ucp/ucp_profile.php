@@ -274,6 +274,7 @@ class ucp_profile
 					'msn'			=> request_var('msn', $user->data['user_msnm']),
 					'yim'			=> request_var('yim', $user->data['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user->data['user_jabber'], true)),
+					'skype'			=> utf8_normalize_nfc(request_var('skype', $user->data['user_skype'], true)),
 					'website'		=> request_var('website', $user->data['user_website']),
 					'location'		=> utf8_normalize_nfc(request_var('location', $user->data['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user->data['user_occ'], true)),
@@ -309,6 +310,7 @@ class ucp_profile
 						'jabber'		=> array(
 							array('string', true, 5, 255),
 							array('jabber')),
+						'skype'			=> array('string', true, 3, 255),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 12, 255),
@@ -361,6 +363,7 @@ class ucp_profile
 							'user_msnm'		=> $data['msn'],
 							'user_yim'		=> $data['yim'],
 							'user_jabber'	=> $data['jabber'],
+							'user_skype'	=> $data['skype'],
 							'user_website'	=> $data['website'],
 							'user_from'		=> $data['location'],
 							'user_occ'		=> $data['occupation'],
@@ -433,6 +436,7 @@ class ucp_profile
 					'AIM'		=> $data['aim'],
 					'MSN'		=> $data['msn'],
 					'JABBER'	=> $data['jabber'],
+					'SKYPE'		=> $data['skype'],
 					'WEBSITE'	=> $data['website'],
 					'LOCATION'	=> $data['location'],
 					'OCCUPATION'=> $data['occupation'],

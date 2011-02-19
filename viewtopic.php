@@ -617,6 +617,7 @@ $template->assign_vars(array(
 	'MSN_IMG' 			=> $user->img('icon_contact_msnm', 'MSNM'),
 	'YIM_IMG' 			=> $user->img('icon_contact_yahoo', 'YIM'),
 	'JABBER_IMG'		=> $user->img('icon_contact_jabber', 'JABBER') ,
+	'SKYPE_IMG'			=> $user->img('icon_contact_skype', 'SKYPE') ,
 	'REPORT_IMG'		=> $user->img('icon_post_report', 'REPORT_POST'),
 	'REPORTED_IMG'		=> $user->img('icon_topic_reported', 'POST_REPORTED'),
 	'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
@@ -1118,6 +1119,7 @@ while ($row = $db->sql_fetchrow($result))
 				'msn'				=> '',
 				'yim'				=> '',
 				'jabber'			=> '',
+				'skype'				=> '',
 				'search'			=> '',
 				'age'				=> '',
 				'gender'			=> 0,
@@ -1175,6 +1177,7 @@ while ($row = $db->sql_fetchrow($result))
 				'msn'			=> ($row['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=contact&amp;action=msnm&amp;u=$poster_id") : '',
 				'yim'			=> ($row['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . urlencode($row['user_yim']) . '&amp;.src=pg' : '',
 				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
+				'skype'			=> ($row['user_skype']) ? ('skype:' . $row['user_skype'] . '?chat') : '',
 				'search'		=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.$phpEx", "author_id=$poster_id&amp;sr=posts") : '',
 
 				'author_full'		=> get_username_string('full', $poster_id, $row['username'], $row['user_colour']),
@@ -1582,6 +1585,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_MSN'			=> $user_cache[$poster_id]['msn'],
 		'U_YIM'			=> $user_cache[$poster_id]['yim'],
 		'U_JABBER'		=> $user_cache[$poster_id]['jabber'],
+		'U_SKYPE'		=> $user_cache[$poster_id]['skype'],
 
 		'U_REPORT'			=> ($auth->acl_get('f_report', $forum_id)) ? append_sid("{$phpbb_root_path}report.$phpEx", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 		'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=report_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
