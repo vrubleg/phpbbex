@@ -771,4 +771,14 @@ $lang = array_merge($lang, array(
 	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Users can start topic directly at forum view.',
 ));
 
+// Posts merging
+$lang = array_merge($lang, array(
+	'MERGE_INTERVAL'				=> 'Merging posts interval',
+	'MERGE_INTERVAL_EXPLAIN'		=> 'Number of hours a messages from the user will be merged with his topic last message. Leave empty or 0 to disable merging.',
+	'MERGE_NO_TOPICS'				=> 'Topics without merging',
+	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Set comma separated list of topics\'IDs where posts merging will be disabled.',
+	'MERGE_NO_FORUMS'				=> 'Forums without merging',
+	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Set comma separated list of forums\'IDs where posts merging will be disabled.',
+));
+
 ?>

@@ -40,7 +40,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 	}
 
 	$merge = false;
-	if (request_var('do_not_merge', false))
+	if (!request_var('do_not_merge', false))
 	{
 		$merge_interval = intval($config['merge_interval']) * 3600;
 		if (($current_time - $merge_post_data['topic_last_post_time']) < $merge_interval)
@@ -52,8 +52,6 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 	// Do merging
 	if ($merge && $merge_post_data['poster_id'] == $user->data['user_id'] && $user->data['is_registered'] && $user->data['user_id'] != ANONYMOUS)
 	{
-		$user->add_lang('mods/posts_merging');
-	
 		$message_parser = new parse_message();
 
 		$message_parser->message = &$merge_post_data['post_text'];

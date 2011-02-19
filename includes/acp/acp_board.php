@@ -32,7 +32,6 @@ class acp_board
 		global $cache;
 
 		$user->add_lang('acp/board');
-		$user->add_lang('mods/posts_merging');
 
 		$action	= request_var('action', '');
 		$submit = (isset($_POST['submit']) || isset($_POST['allow_quick_reply_enable'])) ? true : false;
