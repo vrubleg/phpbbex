@@ -781,4 +781,17 @@ $lang = array_merge($lang, array(
 	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Set comma separated list of forums\'IDs where posts merging will be disabled.',
 ));
 
+// Out links
+$lang = array_merge($lang, array(
+	'ACP_OUTLINKS'			=> 'External links',
+	'ACP_OUTLINKS_EXPLAIN'	=> 'From this control panel you can add, edit, and remove external links.',
+	'TITLE'					=> 'Title',
+	'LINK'					=> 'URL',
+	'ADD_LINK'				=> 'Add link',
+	'EDIT_LINK'				=> 'Edit link',
+	'LINK_ADDED'			=> 'The link has been successfully added.',
+	'LINK_UPDATED'			=> 'The selected link has been successfully updated.',
+	'LINK_REMOVED'			=> 'The selected link has been successfully removed.',
+));
+
 ?>
