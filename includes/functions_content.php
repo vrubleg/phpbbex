@@ -586,7 +586,14 @@ function make_clickable_callback($type, $whitespace, $url, $relative_url, $class
 	}
 
 	$short_url = urldecode($url);
-	if(strlen($short_url) > 55) $short_url = substr($short_url, 0, 39) . ' ... ' . substr($short_url, -10);
+	if (!preg_match('/^./u', $short_url))
+	{
+		$short_url = (strlen($url) > 85) ? substr($url, 0, 49) . ' ... ' . substr($url, -30) : $url;
+	}
+	else
+	{
+		if (utf8_strlen($short_url) > 85) $short_url = utf8_substr($short_url, 0, 49) . ' ... ' . utf8_substr($short_url, -30);
+	}
 
 	switch ($type)
 	{
