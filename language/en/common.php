@@ -903,6 +903,21 @@ $lang = array_merge($lang, array(
 	'USER_WARNING'				=> 'Warning',
 	'WARNING_DAYS'				=> 'Days',
 
+	// Main menu
+	'USER_CP'					=> 'User CP',
+	'MODER_CP'					=> 'MCP',
+	'ADMIN_CP'					=> 'ACP',
+	'OVERVIEW'					=> 'Overview',
+	'ATTACHMENTS'				=> 'Attachments',
+	'BOOKMARKS'					=> 'Bookmarks',
+	'DRAFTS'					=> 'Drafts',
+	'SUBSCRIBED'				=> 'Subscriptions',
+	'FRIENDS_AND_FOES'			=> 'Friends &amp; Foes',
+	'PM_COMPOSE'				=> 'Compose message',
+	'PM_INBOX'					=> 'Inbox',
+	'PM_OUTBOX'					=> 'Outbox',
+	'PM_SENTBOX'				=> 'Sent messages',
+
 ));
 
 ?>

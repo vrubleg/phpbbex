@@ -1,6 +1,11 @@
 <!-- INCLUDE overall_header.html -->
-<!-- IF U_MCP --><p>[&nbsp;<a href="{U_MCP}">{L_MCP}</a>&nbsp;]</p><!-- ENDIF -->
 <h2><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h2>
+<!-- IF not S_IS_BOT -->
+<ul class="header-icons">
+	<!-- IF S_WATCH_FORUM_LINK --><li><a href="{S_WATCH_FORUM_LINK}" title="{S_WATCH_FORUM_TITLE}" <!-- IF S_WATCHING_FORUM -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{S_WATCH_FORUM_TITLE}</a></li><!-- ENDIF -->
+</ul>
+<!-- ENDIF -->
+<p class="header-path"><a href="{U_INDEX}" accesskey="h">{L_INDEX}</a> <!-- BEGIN navlinks --> <strong>&#8250;</strong> <a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --></p>
 
 <!-- IF FORUM_DESC or MODERATORS or S_FORUM_RULES -->
 <p>

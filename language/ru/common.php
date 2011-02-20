@@ -916,6 +916,21 @@ $lang = array_merge($lang, array(
 	'USER_WARNING'				=> 'Предупреждение',
 	'WARNING_DAYS'				=> 'Дней',
 
+	// Main menu
+	'USER_CP'					=> 'Личное',
+	'MODER_CP'					=> 'Модератору',
+	'ADMIN_CP'					=> 'Админка',
+	'OVERVIEW'					=> 'Обзор',
+	'ATTACHMENTS'				=> 'Вложения',
+	'BOOKMARKS'					=> 'Закладки',
+	'DRAFTS'					=> 'Черновики',
+	'SUBSCRIBED'				=> 'Подписки',
+	'FRIENDS_AND_FOES'			=> 'Друзья и недруги',
+	'PM_COMPOSE'				=> 'Новое сообщение',
+	'PM_INBOX'					=> 'Входящие',
+	'PM_OUTBOX'					=> 'Исходящие',
+	'PM_SENTBOX'				=> 'Отправленные',
+
 ));
 
 ?>

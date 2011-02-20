@@ -79,7 +79,7 @@ li.row:hover {
 }
 
 li.row:hover dd {
-	border-left-color: #CCCCCC;
+	/*border-left-color: #CCCCCC;*/
 }
 
 li.header dt, li.header dd {
@@ -401,9 +401,9 @@ p.author {
 
 /* Post signature */
 .signature {
-	margin-top: 1.5em;
-	padding-top: 0.2em;
-	font-size: 1.1em;
+	margin-top: 0.4em;
+	padding: 0.4em 0;
+	font-size: 1em;
 	border-top: 1px solid #CCCCCC;
 	clear: left;
 	line-height: 140%;
@@ -579,7 +579,7 @@ dl.codebox code {
 .attach-image {
 	margin: 3px 0;
 	width: 100%;
-	max-height: 350px;
+	max-height: 400px;
 	overflow: auto;
 }
 

@@ -1,6 +1,16 @@
 <!-- INCLUDE overall_header.html -->
-<!-- IF U_MCP --><p>[&nbsp;<a href="{U_MCP}">{L_MCP}</a>&nbsp;]</p><!-- ENDIF -->
 <h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>
+<!-- IF not S_IS_BOT -->
+<ul class="header-icons">
+	<!-- IF U_PRINT_TOPIC --><li><a href="{U_PRINT_TOPIC}" title="{L_PRINT_TOPIC}" class="icon-print">{L_PRINT_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_EMAIL_TOPIC --><li><a href="{U_EMAIL_TOPIC}" title="{L_EMAIL_TOPIC}" class="icon-sendemail">{L_EMAIL_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_WATCH_TOPIC --><li><a href="{U_WATCH_TOPIC}" title="{L_WATCH_TOPIC}" <!-- IF S_WATCHING_TOPIC -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{L_WATCH_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_BOOKMARK_TOPIC --><li><a href="{U_BOOKMARK_TOPIC}" title="{L_BOOKMARK_TOPIC}" <!-- IF S_BOOKMARKED_TOPIC -->class="icon-unbookmark"<!-- ELSE -->class="icon-bookmark"<!-- ENDIF -->>{L_BOOKMARK_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_LOCK_TOPIC --><li><!-- IF not S_IS_LOCKED --><a href="{U_LOCK_TOPIC}" title="{L_LOCK_TOPIC}" class="icon-lock">{L_LOCK_TOPIC}</a><!-- ELSE --><a href="{U_LOCK_TOPIC}" title="{L_UNLOCK_TOPIC}" class="icon-unlock">{L_UNLOCK_TOPIC}</a><!-- ENDIF --></li><!-- ENDIF -->
+	<!-- IF U_BUMP_TOPIC --><li><a href="{U_BUMP_TOPIC}" title="{L_BUMP_TOPIC}" class="icon-bump">{L_BUMP_TOPIC}</a></li><!-- ENDIF -->
+</ul>
+<!-- ENDIF -->
+<p class="header-path"><a href="{U_INDEX}" accesskey="h">{L_INDEX}</a> <!-- BEGIN navlinks --> <strong>&#8250;</strong> <a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --></p>
 
 <!-- IF FORUM_DESC or MODERATORS or S_FORUM_RULES -->
 <p style="display: none">

@@ -48,7 +48,7 @@ hr.dashed {
 /* Round cornered boxes and backgrounds
 ---------------------------------------- */
 .headerbar {
-	background-color: #12A3EB;
+	background-color: #092a5d;
 	background-image: url("{T_THEME_PATH}/images/bg_header.gif");
 	color: #FFFFFF;
 }
@@ -57,14 +57,13 @@ hr.dashed {
 	background-color: #cadceb;
 }
 
-.forabg {
-	background-color: #0076b1;
+.forabg, .forumbg {
+	background-color: #092147;
 	background-image: url("{T_THEME_PATH}/images/bg_list.gif");
-}
-
-.forumbg {
-	background-color: #12A3EB;
+	/*
+	background-color: #0a3e89;
 	background-image: url("{T_THEME_PATH}/images/bg_header.gif");
+	*/
 }
 
 .panel {
@@ -136,6 +135,7 @@ table.table1 td {
 
 table.table1 tbody td {
 	border-top-color: #FAFAFA;
+	border-bottom: 1px solid #b5c1cb;
 }
 
 table.table1 tbody th {
@@ -211,7 +211,7 @@ dl.details dd {
 	background-color: #F7ECEF;
 }
 
-li.reported:hover {
+.reported:hover {
 	background-color: #ECD5D8 !important;
 }
 .sticky, .announce {
@@ -361,7 +361,7 @@ Colours and backgrounds for content.css
 
 ul.forums {
 	background-color: #eef5f9;
-	background-image: url("{T_THEME_PATH}/images/gradient.gif");
+	/* background-image: url("{T_THEME_PATH}/images/gradient.gif"); */
 }
 
 ul.topiclist li {
@@ -392,19 +392,6 @@ li.row {
 
 li.row strong {
 	color: #000000;
-}
-
-li.row:hover {
-	background-color: #F6F4D0;
-}
-
-li.row:hover dd {
-	border-left-color: #CCCCCC;
-}
-
-.rtl li.row:hover dd {
-	border-right-color: #CCCCCC;
-	border-left-color: transparent;
 }
 
 li.header dt, li.header dd {
@@ -445,6 +432,8 @@ dl.faq dt {
 /* Post signature */
 .signature {
 	border-top-color: #CCCCCC;
+	color: gray;
+	line-height: 100%;
 }
 
 /* Post noticies */
@@ -658,31 +647,8 @@ Colours and backgrounds for buttons.css
 .newpm-icon span 	{ background-image: url("{IMG_BUTTON_PM_NEW_SRC}") ;}
 .forwardpm-icon span	{ background-image: url("{IMG_BUTTON_PM_FORWARD_SRC}") ;}
 
-a.print {
-	background-image: url("{T_THEME_PATH}/images/icon_print.gif");
-}
-
-a.sendemail {
-	background-image: url("{T_THEME_PATH}/images/icon_sendemail.gif");
-}
-
-a.fontsize {
-	background-image: url("{T_THEME_PATH}/images/icon_fontsize.gif");
-}
-
 /* Icon images
 ---------------------------------------- */
-.sitehome						{ background-image: url("{T_THEME_PATH}/images/icon_home.gif"); }
-.icon-faq						{ background-image: url("{T_THEME_PATH}/images/icon_faq.gif"); }
-.icon-members					{ background-image: url("{T_THEME_PATH}/images/icon_members.gif"); }
-.icon-home						{ background-image: url("{T_THEME_PATH}/images/icon_home.gif"); }
-.icon-ucp						{ background-image: url("{T_THEME_PATH}/images/icon_ucp.gif"); }
-.icon-register					{ background-image: url("{T_THEME_PATH}/images/icon_register.gif"); }
-.icon-logout					{ background-image: url("{T_THEME_PATH}/images/icon_logout.gif"); }
-.icon-bookmark					{ background-image: url("{T_THEME_PATH}/images/icon_bookmark.gif"); }
-.icon-bump						{ background-image: url("{T_THEME_PATH}/images/icon_bump.gif"); }
-.icon-subscribe					{ background-image: url("{T_THEME_PATH}/images/icon_subscribe.gif"); }
-.icon-unsubscribe				{ background-image: url("{T_THEME_PATH}/images/icon_unsubscribe.gif"); }
 .icon-pages						{ background-image: url("{T_THEME_PATH}/images/icon_pages.gif"); }
 .icon-search					{ background-image: url("{T_THEME_PATH}/images/icon_search.gif"); }
 
