@@ -623,6 +623,9 @@ $lang = array_merge($lang, array(
 	'SMILIES_WINK'					=> 'Подмигивает',
 
 	'TOPICS_TOPIC_TITLE'			=> 'Добро пожаловать в phpBB3',
+
+	'WARNING_POST_DEFAULT'			=> 'Нарушение правил',
+	'BOARD_DISABLE_DEFAULT'			=> 'Извините, идет обновление конференции. Зайдите через 1 час.',
 ));
 
 ?>

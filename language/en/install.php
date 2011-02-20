@@ -623,6 +623,9 @@ $lang = array_merge($lang, array(
 	'SMILIES_WINK'					=> 'Wink',
 
 	'TOPICS_TOPIC_TITLE'			=> 'Welcome to phpBB3',
+
+	'WARNING_POST_DEFAULT'			=> 'Violation of rules',
+	'BOARD_DISABLE_DEFAULT'			=> 'Forum in maintenance',
 ));
 
 ?>
