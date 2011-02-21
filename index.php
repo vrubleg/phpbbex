@@ -120,13 +120,6 @@ if ($config['announce_index'])
 		$sql_select .= ', tp.topic_posted';
 	}
 
-	if ($config['load_db_lastread'])
-	{
-		$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.topic_id = t.topic_id
-			AND tt.user_id = ' . $user->data['user_id'] . ')';
-		$sql_select .= ', tt.mark_time';
-	}
-
 	// Get forums having the f_read permission
 	$forum_ary = $auth->acl_getf('f_read', true);
 	$forum_ary = array_unique(array_keys($forum_ary));
@@ -155,14 +148,7 @@ if ($config['announce_index'])
 	$topic_tracking_info = array();
 	foreach ($topic_lists as $forum_id => $topic_list)
 	{
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
-		{
-			$topic_tracking_info[$forum_id] = get_topic_tracking($forum_id, $topic_list, $rowset, false);
-		}
-		else
-		{
-			$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_list);
-		}
+		$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_list);
 	}
 
 	foreach ($rowset as $row)
