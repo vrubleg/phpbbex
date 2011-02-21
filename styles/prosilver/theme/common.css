@@ -103,7 +103,8 @@ p.right {
 ---------------------------------------- */
 #wrap {
 	padding: 0 20px;
-	min-width: 650px;
+	min-width: 975px;
+	max-width: 1400px;
 }
 
 #simple-wrap {
