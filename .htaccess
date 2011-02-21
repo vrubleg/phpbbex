@@ -43,7 +43,7 @@ AddType application/x-shockwave-flash	swf
 # Expires for main MIME types
 <IfModule mod_expires.c>
 ExpiresActive On
-ExpiresDefault "access plus 1 month"
+# ExpiresDefault "access plus 1 month"
 ExpiresByType image/png					"access plus 1 month"
 ExpiresByType image/gif					"access plus 1 month"
 ExpiresByType image/jpeg				"access plus 1 month"
