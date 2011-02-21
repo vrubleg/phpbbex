@@ -1,4 +1,3 @@
-php_value engine off
 <IfModule mod_expires.c>
 ExpiresActive On
 ExpiresDefault "access plus 1 month"
