@@ -107,6 +107,7 @@ if ($config['load_birthdays'] && $config['allow_birthdays'])
 
 // Global announcements
 $template->assign_var('S_ANNOUNCE_INDEX', $config['announce_index'] ? true : false);
+$template->assign_var('NEWEST_POST_IMG', $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'));
 if ($config['announce_index'])
 {
 	$sql_from = TOPICS_TABLE . ' t ';
@@ -130,7 +131,7 @@ if ($config['announce_index'])
 	$forum_ary = $auth->acl_getf('f_read', true);
 	$forum_ary = array_unique(array_keys($forum_ary));
 
-	$topic_list = $rowset = array();
+	$topic_lists = $rowset = array();
 	if (sizeof($forum_ary))
 	{
 		$sql = "SELECT t.* $sql_select
@@ -142,20 +143,26 @@ if ($config['announce_index'])
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$topic_list[] = $row['topic_id'];
-			$rowset[$row['topic_id']] = $row;
+			$forum_id = $row['forum_id'];
+			$topic_id = $row['topic_id'];
+			isset($topic_lists[$forum_id]) or $topic_lists[$forum_id] = array();
+			$topic_lists[$forum_id][] = $topic_id;
+			$rowset[$topic_id] = $row;
 		}
 		$db->sql_freeresult($result);
 	}
 
 	$topic_tracking_info = array();
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	foreach ($topic_lists as $forum_id => $topic_list)
 	{
-		$topic_tracking_info = get_topic_tracking(0, $topic_list, $rowset, false, $topic_list);
-	}
-	else
-	{
-		$topic_tracking_info = get_complete_topic_tracking(0, $topic_list, $topic_list);
+		if ($config['load_db_lastread'] && $user->data['is_registered'])
+		{
+			$topic_tracking_info[$forum_id] = get_topic_tracking($forum_id, $topic_list, $rowset, false);
+		}
+		else
+		{
+			$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_list);
+		}
 	}
 
 	foreach ($rowset as $row)
@@ -164,7 +171,7 @@ if ($config['announce_index'])
 		$topic_id = $row['topic_id'];
 
 		$folder_img = $folder_alt = $topic_type = '';
-		$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
+		$unread_topic = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$topic_id]) ? true : false;
 		topic_status($row, $row['topic_replies'], $unread_topic, $folder_img, $folder_alt, $topic_type);
 		$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&amp;t=' . $topic_id);
 
@@ -208,7 +215,7 @@ if ($config['announce_index'])
 			'TOPIC_ICON_IMG_WIDTH'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
 			'TOPIC_ICON_IMG_HEIGHT'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
 			'ATTACH_ICON_IMG'		=> ($auth->acl_get('u_download') && $row['topic_attachment']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
-			
+
 			'S_TOPIC_TYPE'			=> $row['topic_type'],
 			'S_USER_POSTED'			=> (isset($row['topic_posted']) && $row['topic_posted']) ? true : false,
 			'S_UNREAD_TOPIC'		=> $unread_topic,
