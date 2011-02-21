@@ -106,28 +106,74 @@ if ($config['load_birthdays'] && $config['allow_birthdays'])
 }
 
 // Global announcements
+$template->assign_var('S_ANNOUNCE_INDEX', $config['announce_index'] ? true : false);
 if ($config['announce_index'])
 {
-	$sql = 'SELECT *
-		FROM ' . TOPICS_TABLE . "
-		WHERE topic_type = " . POST_GLOBAL  . "
-		ORDER BY topic_time DESC";
-	$result = $db->sql_query($sql);
-	while ($row = $db->sql_fetchrow($result))
+	$sql_from = TOPICS_TABLE . ' t ';
+	$sql_select = '';
+
+	if ($config['load_db_track'])
 	{
-		$template->assign_var('S_ANNOUNCE_INDEX',true);
-		$replies = $row['topic_replies'];
-		$unread_topic = (isset($topic_tracking_info[$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
+		$sql_from .= ' LEFT JOIN ' . TOPICS_POSTED_TABLE . ' tp ON (tp.topic_id = t.topic_id
+			AND tp.user_id = ' . $user->data['user_id'] . ')';
+		$sql_select .= ', tp.topic_posted';
+	}
+
+	if ($config['load_db_lastread'])
+	{
+		$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.topic_id = t.topic_id
+			AND tt.user_id = ' . $user->data['user_id'] . ')';
+		$sql_select .= ', tt.mark_time';
+	}
+
+	// Get forums having the f_read permission
+	$forum_ary = $auth->acl_getf('f_read', true);
+	$forum_ary = array_unique(array_keys($forum_ary));
+
+	$topic_list = $rowset = array();
+	if (sizeof($forum_ary))
+	{
+		$sql = "SELECT t.* $sql_select
+			FROM $sql_from
+			WHERE " . $db->sql_in_set('t.forum_id', $forum_ary) . "
+				AND t.topic_type = " . POST_GLOBAL . '
+			ORDER BY t.topic_time DESC'; // topic_last_post_time
+		$result = $db->sql_query($sql);
+
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$topic_list[] = $row['topic_id'];
+			$rowset[$row['topic_id']] = $row;
+		}
+		$db->sql_freeresult($result);
+	}
+
+	$topic_tracking_info = array();
+	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	{
+		$topic_tracking_info = get_topic_tracking(0, $topic_list, $rowset, false, $topic_list);
+	}
+	else
+	{
+		$topic_tracking_info = get_complete_topic_tracking(0, $topic_list, $topic_list);
+	}
+
+	foreach ($rowset as $row)
+	{
+		$forum_id = $row['forum_id'];
+		$topic_id = $row['topic_id'];
+
 		$folder_img = $folder_alt = $topic_type = '';
-		topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
-		$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id']);
+		$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
+		topic_status($row, $row['topic_replies'], $unread_topic, $folder_img, $folder_alt, $topic_type);
+		$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&amp;t=' . $topic_id);
 
 		// Create last post link information, if appropriate
 		if ($row['topic_last_post_id'])
 		{
 			$last_post_subject = $row['topic_last_post_subject'];
 			$last_post_time = $user->format_date($row['topic_last_post_time']);
-			$last_post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row['forum_id'] . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'];
+			$last_post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'];
 		}
 		else
 		{
@@ -136,8 +182,8 @@ if ($config['announce_index'])
 
 		// Send vars to template
 		$template->assign_block_vars('topicrow', array(
-			'FORUM_ID'					=> $row['forum_id'],
-			'TOPIC_ID'					=> $row['topic_id'],
+			'FORUM_ID'					=> $forum_id,
+			'TOPIC_ID'					=> $topic_id,
 			'TOPIC_AUTHOR'				=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 			'TOPIC_AUTHOR_COLOUR'		=> get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 			'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
@@ -149,8 +195,8 @@ if ($config['announce_index'])
 			'LAST_POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 			'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 
-			'PAGINATION'		=> topic_generate_pagination($replies, $view_topic_url),
-			'REPLIES'			=> $replies,
+			'PAGINATION'		=> topic_generate_pagination($row['topic_replies'], $view_topic_url),
+			'REPLIES'			=> $row['topic_replies'],
 			'VIEWS'				=> $row['topic_views'],
 			'TOPIC_TITLE'		=> censor_text($row['topic_title']),
 			'TOPIC_TYPE'		=> $topic_type,
