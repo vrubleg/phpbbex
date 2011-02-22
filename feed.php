@@ -210,7 +210,7 @@ foreach ($item_vars as $row)
 		echo '<p>' . $user->lang['STATISTICS'] . ': ' . $row['statistics'] . '</p>';
 	}
 
-	echo '<hr />' . "\n" . ']]></content>' . "\n";
+	echo "\n" . ']]></content>' . "\n";
 	echo '</entry>' . "\n";
 }
 
