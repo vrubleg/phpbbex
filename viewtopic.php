@@ -249,17 +249,8 @@ else
 
 $sql_array['WHERE'] .= ' AND (f.forum_id = t.forum_id';
 
-if (!$forum_id)
-{
-	// If it is a global announcement make sure to set the forum id to a postable forum
-	$sql_array['WHERE'] .= ' OR (t.topic_type = ' . POST_GLOBAL . '
-		AND f.forum_type = ' . FORUM_POST . ')';
-}
-else
-{
-	$sql_array['WHERE'] .= ' OR (t.topic_type = ' . POST_GLOBAL . "
-		AND f.forum_id = $forum_id)";
-}
+$sql_array['WHERE'] .= ' OR (t.topic_type = ' . POST_GLOBAL . "
+	AND f.forum_id = $forum_id)";
 
 $sql_array['WHERE'] .= ')';
 
