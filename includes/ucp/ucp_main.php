@@ -39,6 +39,8 @@ class ucp_main
 		{
 			case 'front':
 
+				include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+
 				$user->add_lang('memberlist');
 
 				$sql_from = TOPICS_TABLE . ' t ';
@@ -51,85 +53,45 @@ class ucp_main
 					$sql_select .= ', tp.topic_posted';
 				}
 
-				if ($config['load_db_lastread'])
-				{
-					$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.topic_id = t.topic_id
-						AND tt.user_id = ' . $user->data['user_id'] . ')';
-					$sql_select .= ', tt.mark_time';
-				}
-
-				$topic_type = $user->lang['VIEW_TOPIC_GLOBAL'];
-				$folder = 'global_read';
-				$folder_new = 'global_unread';
-
-				// Get cleaned up list... return only those forums not having the f_read permission
-				$forum_ary = $auth->acl_getf('!f_read', true);
+				// Get forums having the f_read permission
+				$forum_ary = $auth->acl_getf('f_read', true);
 				$forum_ary = array_unique(array_keys($forum_ary));
 
-				// Determine first forum the user is able to read into - for global announcement link
-				$sql = 'SELECT forum_id
-					FROM ' . FORUMS_TABLE . '
-					WHERE forum_type = ' . FORUM_POST;
-
+				$topic_lists = $rowset = array();
 				if (sizeof($forum_ary))
 				{
-					$sql .= ' AND ' . $db->sql_in_set('forum_id', $forum_ary, true);
-				}
-				$result = $db->sql_query_limit($sql, 1);
-				$g_forum_id = (int) $db->sql_fetchfield('forum_id');
-				$db->sql_freeresult($result);
-
-				$sql = "SELECT t.* $sql_select
-					FROM $sql_from
-					WHERE t.topic_type = " . POST_GLOBAL . '
-					ORDER BY t.topic_last_post_time DESC';
-
-				$topic_list = $rowset = array();
-				// If the user can't see any forums, he can't read any posts because fid of 0 is invalid
-				if ($g_forum_id)
-				{
+					$sql = "SELECT t.* $sql_select
+						FROM $sql_from
+						WHERE " . $db->sql_in_set('t.forum_id', $forum_ary) . "
+							AND t.topic_type = " . POST_GLOBAL . '
+						ORDER BY t.topic_time DESC';
 					$result = $db->sql_query($sql);
 
 					while ($row = $db->sql_fetchrow($result))
 					{
-						$topic_list[] = $row['topic_id'];
-						$rowset[$row['topic_id']] = $row;
+						$forum_id = $row['forum_id'];
+						$topic_id = $row['topic_id'];
+						isset($topic_lists[$forum_id]) or $topic_lists[$forum_id] = array();
+						$topic_lists[$forum_id][] = $topic_id;
+						$rowset[$topic_id] = $row;
 					}
 					$db->sql_freeresult($result);
 				}
 
 				$topic_tracking_info = array();
-				if ($config['load_db_lastread'])
+				foreach ($topic_lists as $forum_id => $topic_list)
 				{
-					$topic_tracking_info = get_topic_tracking(0, $topic_list, $rowset, false, $topic_list);
-				}
-				else
-				{
-					$topic_tracking_info = get_complete_topic_tracking(0, $topic_list, $topic_list);
+					$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_list);
 				}
 
-				foreach ($topic_list as $topic_id)
+				foreach ($rowset as $row)
 				{
-					$row = &$rowset[$topic_id];
-
 					$forum_id = $row['forum_id'];
 					$topic_id = $row['topic_id'];
 
-					$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
-
-					$folder_img = ($unread_topic) ? $folder_new : $folder;
-					$folder_alt = ($unread_topic) ? 'UNREAD_POSTS' : (($row['topic_status'] == ITEM_LOCKED) ? 'TOPIC_LOCKED' : 'NO_UNREAD_POSTS');
-
-					if ($row['topic_status'] == ITEM_LOCKED)
-					{
-						$folder_img .= '_locked';
-					}
-
-					// Posted image?
-					if (!empty($row['topic_posted']) && $row['topic_posted'])
-					{
-						$folder_img .= '_mine';
-					}
+					$folder_img = $folder_alt = $topic_type = '';
+					$unread_topic = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$topic_id]) ? true : false;
+					topic_status($row, $row['topic_replies'], $unread_topic, $folder_img, $folder_alt, $topic_type);
 
 					$template->assign_block_vars('topicrow', array(
 						'FORUM_ID'					=> $forum_id,
@@ -155,10 +117,10 @@ class ucp_main
 						'S_UNREAD'			=> $unread_topic,
 
 						'U_TOPIC_AUTHOR'		=> get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-						'U_LAST_POST'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$g_forum_id&amp;t=$topic_id&amp;p=" . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
+						'U_LAST_POST'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;p=" . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
 						'U_LAST_POST_AUTHOR'	=> get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-						'U_NEWEST_POST'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$g_forum_id&amp;t=$topic_id&amp;view=unread") . '#unread',
-						'U_VIEW_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$g_forum_id&amp;t=$topic_id"))
+						'U_NEWEST_POST'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;view=unread") . '#unread',
+						'U_VIEW_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id"))
 					);
 				}
 
