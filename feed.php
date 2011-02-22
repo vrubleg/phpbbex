@@ -135,6 +135,53 @@ $global_vars = array_merge($global_vars, array(
 	'FEED_AUTHOR'			=> $config['sitename'],
 ));
 
+switch ($mode)
+{
+	case 'forums':
+		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['ALL_FORUMS'];
+	break;
+
+	case 'topics':
+	case 'topics_new':
+		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_TOPICS_NEW'];
+	break;
+
+	case 'topics_active':
+		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_TOPICS_ACTIVE'];
+	break;
+
+	case 'news':
+		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_NEWS'];
+	break;
+
+	default:
+		if ($topic_id)
+		{
+			$sql = 'SELECT topic_title
+				FROM ' . TOPICS_TABLE . '
+				WHERE topic_id = ' . (int) $topic_id;
+			$result = $db->sql_query($sql);
+			$topic_title = $db->sql_fetchfield('topic_title');
+			$db->sql_freeresult($result);
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($topic_title ? $topic_title : $user->lang['TOPIC']);
+		}
+		else if ($forum_id)
+		{
+			$sql = 'SELECT forum_name
+				FROM ' . FORUMS_TABLE . '
+				WHERE forum_id = ' . (int) $forum_id;
+			$result = $db->sql_query($sql);
+			$forum_name = $db->sql_fetchfield('forum_name');
+			$db->sql_freeresult($result);
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($forum_name ? $forum_name : $user->lang['FORUM']);
+		}
+		else
+		{
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_OVERALL'];
+		}
+	break;
+}
+
 $feed->close();
 
 // Output page
