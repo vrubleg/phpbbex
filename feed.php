@@ -801,6 +801,7 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 		$this->sql = array(
 			'SELECT'	=>	'f.forum_id, f.forum_name, ' .
 							'p.post_id, p.topic_id, p.post_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
+							't.topic_title, ' .
 							'u.username, u.user_id',
 			'FROM'		=> array(
 				USERS_TABLE		=> 'u',
@@ -810,6 +811,10 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 				array(
 					'FROM'	=> array(FORUMS_TABLE	=> 'f'),
 					'ON'	=> 'f.forum_id = p.forum_id',
+				),
+				array(
+					'FROM'	=> array(TOPICS_TABLE	=> 't'),
+					'ON'	=> 't.topic_id = p.topic_id',
 				),
 			),
 			'WHERE'		=> $db->sql_in_set('p.topic_id', $topic_ids) . '
@@ -933,10 +938,17 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 
 		$this->sql = array(
 			'SELECT'	=>	'p.post_id, p.topic_id, p.post_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
+							't.topic_title, ' .
 							'u.username, u.user_id',
 			'FROM'		=> array(
 				POSTS_TABLE		=> 'p',
 				USERS_TABLE		=> 'u',
+			),
+			'LEFT_JOIN'	=> array(
+				array(
+					'FROM'	=> array(TOPICS_TABLE	=> 't'),
+					'ON'	=> 't.topic_id = p.topic_id',
+				),
 			),
 			'WHERE'		=> $db->sql_in_set('p.topic_id', $topic_ids) . '
 							' . ((!$m_approve) ? 'AND p.post_approved = 1' : '') . '
