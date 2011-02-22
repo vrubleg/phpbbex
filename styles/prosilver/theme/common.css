@@ -520,6 +520,11 @@ li.pagination {
 	color: #555555;
 }
 
+#counter {
+	float: right;
+	padding: 7px;
+}
+
 .small {
 	font-size: 0.9em !important;
 }
