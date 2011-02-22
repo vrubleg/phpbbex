@@ -2649,7 +2649,9 @@ function add_form_key($form_name)
 	));
 
 	$template->assign_vars(array(
-		'S_FORM_TOKEN'	=> $s_fields,
+		'S_FORM_TOKEN'		=> $s_fields,
+		'RAW_CREATION_TIME' => $now,
+		'RAW_FORM_TOKEN' 	=> $token,
 	));
 }
 

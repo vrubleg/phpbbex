@@ -101,13 +101,26 @@
 
 	<fieldset class="submit-buttons">
 		{S_HIDDEN_FIELDS}
+		<input type="hidden" name="creation_time" value="0" />
+		<input type="hidden" name="form_token" value="0" />
 		<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp;
 		<input type="submit" tabindex="9" name="submit" id="submit" value="{L_SUBMIT}" class="button1 default-submit-action" />
-		{S_FORM_TOKEN}
 	</fieldset>
 
 	<span class="corners-bottom"><span></span></span></div>
 </div>
+
+<script>
+jQuery(function($)
+{
+	$('#register').submit(function()
+	{
+		$('inp'+'ut[na'+'me=crea'+'tion_t'+'ime]').val('{RAW_CREATION_TIME}');
+		$('in'+'pu'+'t[name'+'=for'+'m_to'+'ken]').val('{RAW_FORM_TOKEN}');
+	});
+});
+</script>
+
 </form>
 
 <!-- INCLUDE overall_footer.html -->
