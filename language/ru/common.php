@@ -497,6 +497,7 @@ $lang = array_merge($lang, array(
 	'FEED_NEWS'					=> 'Новости',
  	'FEED_TOPICS_ACTIVE'		=> 'Активные темы',
  	'FEED_TOPICS_NEW'			=> 'Новые темы',
+ 	'FEED_NEW_MESSAGES'			=> 'Новые сообщения',
 	'RULES_ATTACH_CAN'			=> 'Вы <strong>можете</strong> добавлять вложения',
 	'RULES_ATTACH_CANNOT'		=> 'Вы <strong>не можете</strong> добавлять вложения',
 	'RULES_DELETE_CAN'			=> 'Вы <strong>можете</strong> удалять свои сообщения',
