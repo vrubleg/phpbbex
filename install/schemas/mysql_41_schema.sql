@@ -1003,6 +1003,7 @@ CREATE TABLE phpbb_warnings (
 	warning_days int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	warning_text text NULL,
 	PRIMARY KEY (warning_id),
+	KEY warning_active (warning_active),
 	KEY issuer_id (issuer_id),
 	KEY user_id (user_id),
 	KEY post_id (post_id)
@@ -1029,12 +1030,12 @@ CREATE TABLE phpbb_zebra (
 
 
 # Table: 'phpbb_user_confirm_keys'
-CREATE TABLE `phpbb_user_confirm_keys` (
-	`confirm_key` varchar(10) NOT NULL,
-	`user_id` mediumint(8) NOT NULL,
-	`confirm_time` int(11) NOT NULL,
-	PRIMARY KEY  (`confirm_key`),
-	KEY `user_id` (`user_id`)
+CREATE TABLE phpbb_user_confirm_keys (
+	confirm_key varchar(10) NOT NULL,
+	user_id mediumint(8) NOT NULL,
+	confirm_time int(11) NOT NULL,
+	PRIMARY KEY  (confirm_key),
+	KEY user_id (user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 
