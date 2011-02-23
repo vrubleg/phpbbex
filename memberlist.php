@@ -1736,6 +1736,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'LOCATION'		=> ($data['user_from']) ? $data['user_from'] : '',
 
 		'USER_AGENT'		=> ($data['user_browser']) ? $data['user_browser'] : '',
+		'USER_LAST_IP'		=> ($data['user_ip']) ? $data['user_ip'] : '',
 		'USER_ICQ'			=> $data['user_icq'],
 		'USER_AIM'			=> $data['user_aim'],
 		'USER_YIM'			=> $data['user_yim'],

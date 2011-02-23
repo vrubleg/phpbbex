@@ -791,7 +791,8 @@ class session
 
 		// Save Useragent
 		$sql = 'UPDATE ' . USERS_TABLE . "
-			SET user_browser = '" . $db->sql_escape($sql_ary['session_browser']) . "' 
+			SET user_browser = '" . $db->sql_escape($sql_ary['session_browser']) . "',
+				user_ip = '" . $db->sql_escape($sql_ary['session_ip']) . "'
 			WHERE user_id = " . (int) $this->data['user_id'];
 		$db->sql_query($sql);
 
