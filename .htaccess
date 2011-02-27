@@ -8,13 +8,6 @@ Order Allow,Deny
 Deny from All
 </Files>
 
-# .hg files forbidden
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /
-RewriteRule (/\.hg|^\.hg) - [F,L]
-</IfModule>
-
 # Common
 AddDefaultCharset utf-8
 AddCharset utf-8 .html .css .js .xml .json .rss
@@ -43,7 +36,6 @@ AddType application/x-shockwave-flash	swf
 # Expires for main MIME types
 <IfModule mod_expires.c>
 ExpiresActive On
-# ExpiresDefault "access plus 1 month"
 ExpiresByType image/png					"access plus 1 month"
 ExpiresByType image/gif					"access plus 1 month"
 ExpiresByType image/jpeg				"access plus 1 month"
