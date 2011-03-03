@@ -66,7 +66,7 @@
 		<!-- IF RANK_TITLE --><dd>{RANK_TITLE}</dd><!-- ENDIF -->
 		<!-- IF RANK_IMG --><dd>{RANK_IMG}</dd><!-- ENDIF -->
 		<!-- IF AUTHOR_AVATAR --><dd><a href="{U_MESSAGE_AUTHOR}">{AUTHOR_AVATAR}</a></dd><!-- ENDIF -->
-		<!-- IF AUTHOR_AGE --><dd><strong>{L_AGE}:</strong> {AUTHOR_AGE}</dd><!-- ENDIF -->
+		<!-- IF AUTHOR_AGE and AUTHOR_AGE < 65 and AUTHOR_AGE > 10 --><dd><strong>{L_AGE}:</strong> {AUTHOR_AGE}</dd><!-- ENDIF -->
 		<!-- IF AUTHOR_FROM --><dd><strong>{L_LOCATION}:</strong> {AUTHOR_FROM}</dd><!-- ENDIF -->
 		
 		<!-- IF U_PM or U_EMAIL or U_WWW or U_JABBER -->

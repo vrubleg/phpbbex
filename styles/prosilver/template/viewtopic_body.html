@@ -169,7 +169,7 @@
 			<!-- IF postrow.RANK_IMG --><dd>{postrow.RANK_IMG}</dd><!-- ENDIF -->
 			<!-- IF postrow.POSTER_AVATAR --><dd><!-- IF postrow.U_POST_AUTHOR --><a href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --></dd><!-- ENDIF -->
 
-		<!-- IF postrow.POSTER_AGE --><dd><strong>{L_AGE}:</strong> {postrow.POSTER_AGE}</dd><!-- ENDIF -->
+		<!-- IF postrow.POSTER_AGE and postrow.POSTER_AGE < 65 and postrow.POSTER_AGE > 10 --><dd><strong>{L_AGE}:</strong> {postrow.POSTER_AGE}</dd><!-- ENDIF -->
 		<!-- IF postrow.POSTER_FROM --><dd><strong>{L_LOCATION}:</strong> {postrow.POSTER_FROM}</dd><!-- ENDIF -->
 
 		<!-- IF postrow.S_PROFILE_FIELD1 -->
