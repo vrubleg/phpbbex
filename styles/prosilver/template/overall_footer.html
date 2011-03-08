@@ -15,7 +15,18 @@
 
 	<div id="counter"></div>
 
+	<script>
+	jQuery(function($)
+	{
+		setTimeout(function()
+		{
+			$('#counter').html('<a target="_blank" href="http://liveinternet.ru/stat/'+document.location.host+'/index.html?id=5;id=8;id=7;period=month;total=no"><img height="31" width="88" src="http://counter.yadro.ru/hit?t21.1;r'+escape(document.referrer)+((typeof(screen)=='undefined')?'':';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+';'+Math.random()+'" border="0" title="Показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня" /></a>');
+		}, 500);
+	});
+	</script>
+
 	<div class="copyright">
+		<!-- IF COPYRIGHT_NOTICE -->{COPYRIGHT_NOTICE}<br /><!-- ENDIF -->
 		<!-- IF not COPYRIGHT -->Powered by phpBB &copy; 2007 <a href="http://www.phpbb.com/">phpBB</a> Group :: Global Mod v2.0 &copy; 2011 <a href="http://veg.slutsk.net/">Evgeny Vrublevsky</a><!-- ELSE -->{COPYRIGHT}<!-- ENDIF -->
 		<!-- IF DEBUG_OUTPUT --><br />{DEBUG_OUTPUT}<!-- ENDIF -->
 	</div>
