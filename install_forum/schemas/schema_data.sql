@@ -174,6 +174,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_search', '1')
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_tplcompile', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_unreads_search', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_user_activity', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_enable', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments', '30');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_autologin_time', '0');

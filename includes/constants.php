@@ -213,6 +213,12 @@ define('GENDER_X', 0);
 define('GENDER_M', 1);
 define('GENDER_F', 2);
 
+// Login via E-Mail
+define('LOGIN_VIA_EMAIL_NO',		0);
+define('LOGIN_VIA_EMAIL_YES',		1);
+define('LOGIN_VIA_EMAIL_SILENT',	2);
+define('LOGIN_VIA_EMAIL_ONLY',		3);
+
 // Table names
 define('ACL_GROUPS_TABLE',			$table_prefix . 'acl_groups');
 define('ACL_OPTIONS_TABLE',			$table_prefix . 'acl_options');

@@ -4509,6 +4509,20 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_SEARCH_HIDDEN_FIELDS'=>'<input type="hidden" name="sf" value="titleonly" /><input type="hidden" name="sr" value="topics" />',
 	));
 
+	// Login via E-Mail
+	switch ($config['login_via_email_enable'])
+	{
+		case LOGIN_VIA_EMAIL_YES:
+			$template->assign_var('L_LOGIN_NAME', $user->lang['USERNAME_OR_EMAIL']);
+		break;
+		case LOGIN_VIA_EMAIL_ONLY:
+			$template->assign_var('L_LOGIN_NAME', $user->lang['EMAIL']);
+		break;
+		default:
+			$template->assign_var('L_LOGIN_NAME', $user->lang['USERNAME']);
+		break;
+	}
+
 	// application/xhtml+xml not used because of IE
 	header('Content-type: text/html; charset=UTF-8');
 

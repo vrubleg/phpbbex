@@ -1573,6 +1573,12 @@ function validate_username($username, $allowed_username = false)
 		}
 	}
 
+	// Don't allow a username that look like a e-mail address.
+	if (preg_match('/^' . get_preg_expression('email') . '$/i', strtolower($username)))
+	{
+		return 'INVALID_CHARS';
+	}
+
 	$sql = 'SELECT username
 		FROM ' . USERS_TABLE . "
 		WHERE username_clean = '" . $db->sql_escape($clean_username) . "'";
@@ -1744,7 +1750,7 @@ function validate_email($email, $allowed_email = false)
 		return ($ban_reason === true) ? 'EMAIL_BANNED' : $ban_reason;
 	}
 
-	if (!$config['allow_emailreuse'])
+	if (!$config['allow_emailreuse'] || $config['login_via_email_enable'])
 	{
 		$sql = 'SELECT user_email_hash
 			FROM ' . USERS_TABLE . "

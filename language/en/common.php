@@ -919,6 +919,11 @@ $lang = array_merge($lang, array(
 	'PM_OUTBOX'					=> 'Outbox',
 	'PM_SENTBOX'				=> 'Sent messages',
 
+	// Login via E-Mail
+	'USERNAME_OR_EMAIL'					=> 'Username or E-Mail',
+	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'You have specified an incorrect username or e-mail address. Please check your entry and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_EMAIL'					=> 'You have specified an incorrect e-mail address. Please check your e-mail address and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
+
 ));
 
 ?>

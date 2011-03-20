@@ -798,4 +798,13 @@ $lang = array_merge($lang, array(
 	'SHOW_BUTTON'		=> 'Кнопка',
 ));
 
+// Login via E-Mail
+$lang = array_merge($lang, array(
+	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Вход по e-mail',
+	'LOGIN_VIA_EMAIL_ENABLE_EXPLAIN'	=> 'Разрешить пользователям входить в систему используя имя пользователя или e-mail. В скрытом режиме не будет индикации о возможности входа по e-mail.',
+	'LOGIN_VIA_EMAIL_SILENT'			=> 'Да, скрыто',
+	'LOGIN_VIA_EMAIL_ONLY'				=> 'Только по e-mail',
+	'EMAIL_REUSE_DISABLED'				=> 'Заблокировано, поскольку включён <em>вход по e-mail</em>.',
+));
+
 ?>
