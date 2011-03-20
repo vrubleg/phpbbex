@@ -794,4 +794,9 @@ $lang = array_merge($lang, array(
 	'LINK_REMOVED'			=> 'The selected link has been successfully removed.',
 ));
 
+// Custom BBCode Sorting
+$lang = array_merge($lang, array(
+	'SHOW_BUTTON'		=> 'Button',
+));
+
 ?>

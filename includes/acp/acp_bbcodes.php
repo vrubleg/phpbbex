@@ -192,6 +192,14 @@ class acp_bbcodes
 
 					if ($action == 'create')
 					{
+						// Get new order...
+						$sql = 'SELECT MAX(bbcode_order) as max_bbcode_order
+							FROM ' . BBCODES_TABLE;
+						$result = $db->sql_query($sql);
+						$max_order = (int) $db->sql_fetchfield('max_bbcode_order');
+						$db->sql_freeresult($result);
+						$sql_ary['bbcode_order'] = $max_order + 1;
+
 						$sql = 'SELECT MAX(bbcode_id) as max_bbcode_id
 							FROM ' . BBCODES_TABLE;
 						$result = $db->sql_query($sql);
@@ -286,7 +294,45 @@ class acp_bbcodes
 				}
 
 			break;
+		
+			case 'move_up':
+			case 'move_down':
+
+				$order = request_var('order', 0);
+				$order_total = $order * 2 + (($action == 'move_up') ? -1 : 1);
+
+				$sql = 'UPDATE ' . BBCODES_TABLE . '
+					SET bbcode_order = ' . $order_total . ' - bbcode_order
+					WHERE bbcode_order IN (' . $order . ', ' . (($action == 'move_up') ? $order - 1 : $order + 1) . ')';
+				$db->sql_query($sql);
+
+			break;
 		}
+
+		// By default, check that order is valid and fix it if necessary
+		$sql = 'SELECT bbcode_id, bbcode_order
+			FROM ' . BBCODES_TABLE . '
+			ORDER BY bbcode_order';
+		$result = $db->sql_query($sql);
+
+		if ($row = $db->sql_fetchrow($result))
+		{
+			$order = 0;
+			do
+			{
+				++$order;
+				
+				if ($row['bbcode_order'] != $order)
+				{
+					$sql = 'UPDATE ' . BBCODES_TABLE . "
+						SET bbcode_order = $order
+						WHERE bbcode_id = {$row['bbcode_id']}";
+					$db->sql_query($sql);
+				}
+			}
+			while ($row = $db->sql_fetchrow($result));
+		}
+		$db->sql_freeresult($result);
 
 		$template->assign_vars(array(
 			'U_ACTION'		=> $this->u_action . '&amp;action=add')
@@ -294,7 +340,7 @@ class acp_bbcodes
 
 		$sql = 'SELECT *
 			FROM ' . BBCODES_TABLE . '
-			ORDER BY bbcode_tag';
+			ORDER BY bbcode_order, bbcode_tag';
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -302,8 +348,11 @@ class acp_bbcodes
 			$template->assign_block_vars('bbcodes', array(
 				'BBCODE_TAG'		=> $row['bbcode_tag'],
 				'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;bbcode=' . $row['bbcode_id'],
-				'U_DELETE'			=> $this->u_action . '&amp;action=delete&amp;bbcode=' . $row['bbcode_id'])
-			);
+ 				'U_DELETE'			=> $this->u_action . '&amp;action=delete&amp;bbcode=' . $row['bbcode_id'],
+				'ON_POSTING'	=> $row['display_on_posting'] ? '<span style="color:green">' . $user->lang['YES'] . '</span>' : '<span style="color:red">' . $user->lang['NO'] . '</span>',
+				'U_MOVE_UP'		=> $this->u_action . '&amp;action=move_up&amp;order=' . $row['bbcode_order'],
+				'U_MOVE_DOWN'	=> $this->u_action . '&amp;action=move_down&amp;order=' . $row['bbcode_order'],
+			));
 		}
 		$db->sql_freeresult($result);
 	}

@@ -6,6 +6,9 @@ CREATE TABLE phpbb_user_confirm_keys (
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
+ALTER TABLE phpbb_bbcodes
+	ADD COLUMN bbcode_order smallint(4) DEFAULT '0' NOT NULL AFTER bbcode_id;
+
 ALTER TABLE phpbb_posts
 	ADD COLUMN post_created int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER post_time;
 

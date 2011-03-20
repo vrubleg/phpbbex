@@ -793,4 +793,9 @@ $lang = array_merge($lang, array(
 	'LINK_REMOVED'			=> 'Выбранная ссылка успешно удалена.',
 ));
 
+// Custom BBCode Sorting
+$lang = array_merge($lang, array(
+	'SHOW_BUTTON'		=> 'Кнопка',
+));
+
 ?>
