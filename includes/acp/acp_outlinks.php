@@ -2,34 +2,36 @@
 if (!defined('IN_PHPBB')) exit;
 
 class acp_outlinks
-{		
-	//
-	// Загружает таблицу ссылок. Поля: id, title, url
-	function LoadOutLinks()
+{
+	function load_out_links()
 	{
 		global $config;
 		$outlinks = ($config['outlinks']) ? $config['outlinks'] : '';
-		if($outlinks == "") $outlinks = array(); 
-		else
+		if ($outlinks == "")
 		{
-			// Строки разделены \n, столбцы разделены \t
-			$outlinks = explode("\n", $outlinks);
-			for($i=0; $i<count($outlinks); $i++) $outlinks[$i] = explode("\t", $outlinks[$i]);
+			return array();
+		}
+
+		// Rows separated by \n, columns separated by \t
+		$outlinks = explode("\n", $outlinks);
+		foreach ($outlinks as &$outlink)
+		{
+			// Columns: id, title, url
+			$outlink = explode("\t", $outlink);
 		}
 		return $outlinks;
 	}
-	
-	//
-	// Сохраняет таблицу ссылок
-	function SaveOutLinks($outlinks)
+
+	function save_out_links($outlinks)
 	{
-		for($i=0; $i<count($outlinks); $i++) $outlinks[$i] = implode("\t", $outlinks[$i]);
+		foreach ($outlinks as &$outlink)
+		{
+			$outlink = implode("\t", $outlink);
+		}
 		$outlinks = implode("\n", $outlinks);
 		set_config('outlinks', $outlinks);
 	}
-	
-	//
-	// Главный обработчик модуля
+
 	var $u_action;
 	function main($id, $mode)
 	{
@@ -41,9 +43,9 @@ class acp_outlinks
 		$action = (isset($_POST['add'])) ? 'add' : $action;
 		$action = (isset($_POST['save'])) ? 'save' : $action;
 		$s_hidden_fields = '';
-		$outlinks = $this->LoadOutLinks();
-		
-		// Настройки страницы
+		$outlinks = $this->load_out_links();
+
+		// Page init
 		$this->tpl_name = 'acp_outlinks';
 		$this->page_title = 'ACP_OUTLINKS';
 		$form_name = 'acp_outlinks';
@@ -53,10 +55,19 @@ class acp_outlinks
 		{
 			case 'edit':
 				$link_id = request_var('id', 0);
-				for($i=0; $i<count($outlinks); $i++) if($outlinks[$i][0] == $link_id) break;
-				if($i==count($outlinks)) trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
-				$link_info = array('title' => $outlinks[$i][1], 'url' => $outlinks[$i][2]);
-				$s_hidden_fields .= '<input type="hidden" name="id" value="' . $link_id . '" />';
+				foreach ($outlinks as $outlink)
+				{
+					if ($outlink[0] == $link_id)
+					{
+						$link_info = array('title' => $outlink[1], 'url' => $outlink[2]);
+						$s_hidden_fields .= '<input type="hidden" name="id" value="' . $link_id . '" />';
+						break;
+					}
+				}
+				if (!isset($link_info))
+				{
+					trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				}
 
 			case 'add':
 				$template->assign_vars(array(
@@ -66,8 +77,7 @@ class acp_outlinks
 					'LINK_TITLE'		=> (isset($link_info['title'])) ? $link_info['title'] : '',
 					'LINK_URL'			=> (isset($link_info['url'])) ? $link_info['url'] : '',
 					'S_HIDDEN_FIELDS'	=> $s_hidden_fields
-					)
-				);
+				));
 				return;
 
 			case 'save':
@@ -76,40 +86,46 @@ class acp_outlinks
 				$title 			= str_replace(array("\n", "\t"), "", $title);
 				$url			= request_var('link', '');
 				$url 			= str_replace(array("\n", "\t"), "", $url);
-				if (!check_form_key($form_name) || $title=="") trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
+				if (!check_form_key($form_name) || $title=="")
+				{
+					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
+				}
 				$max_id = 0;
 				$i = 0;
-				for($i; $i<count($outlinks); $i++) 
+				for ($i; $i<count($outlinks); $i++)
 				{
-					if($outlinks[$i][0] > $max_id) $max_id = $outlinks[$i][0];
-					if($outlinks[$i][0] == $link_id) break;
+					if ($outlinks[$i][0] > $max_id) $max_id = $outlinks[$i][0];
+					if ($outlinks[$i][0] == $link_id) break;
 				}
 				$newlink = ($i==count($outlinks));
 				if (!$newlink)
 				{
-					// Обновляем инфу
+					// Update link
 					$outlinks[$i][1] = $title;
 					$outlinks[$i][2] = $url;
 				}
 				else
 				{
-					// Добавляем новую позицию
+					// Add new link
 					$outlinks[] = array(++$max_id, $title, $url);
 				}
-				$this->SaveOutLinks($outlinks);
+				$this->save_out_links($outlinks);
 				$message = ($newlink) ? $user->lang['LINK_ADDED'] : $user->lang['LINK_UPDATED'];
 				trigger_error($message . adm_back_link($this->u_action));
 				break;
 
 			case 'delete':
 				$link_id		= request_var('id', 0);
-				for($i = 0; $i<count($outlinks); $i++) if($outlinks[$i][0] == $link_id) break;
-				if($i==count($outlinks)) trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				for ($i = 0; $i<count($outlinks); $i++) if ($outlinks[$i][0] == $link_id) break;
+				if ($i==count($outlinks))
+				{
+					trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				}
 				if (confirm_box(true))
 				{
-					for($i; $i<(count($outlinks)-1); $i++) $outlinks[$i] = $outlinks[$i+1];
+					for ($i; $i<(count($outlinks)-1); $i++) $outlinks[$i] = $outlinks[$i+1];
 					unset($outlinks[count($outlinks)-1]);
-					$this->SaveOutLinks($outlinks);
+					$this->save_out_links($outlinks);
 					trigger_error($user->lang['LINK_REMOVED'] . adm_back_link($this->u_action));
 				}
 				else
@@ -122,27 +138,30 @@ class acp_outlinks
 					)));
 				}
 				break;
-			
+
 			case 'move_up':
 			case 'move_down':
 				$link_id		= request_var('id', 0);
-				for($i = 0; $i<count($outlinks); $i++) if($outlinks[$i][0] == $link_id) break;
-				if($i==count($outlinks)) trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
-				if($action == 'move_up')
+				for ($i = 0; $i<count($outlinks); $i++) if ($outlinks[$i][0] == $link_id) break;
+				if ($i == count($outlinks))
 				{
-					if($i == 0) break;
+					trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
+				}
+				if ($action == 'move_up')
+				{
+					if ($i == 0) break;
 					$tmp = $outlinks[$i-1];
 					$outlinks[$i-1] = $outlinks[$i];
-					$outlinks[$i] = $tmp;					
+					$outlinks[$i] = $tmp;
 				}
 				else
 				{
-					if($i==(count($outlinks)-1)) break;
+					if ($i==(count($outlinks)-1)) break;
 					$tmp = $outlinks[$i+1];
 					$outlinks[$i+1] = $outlinks[$i];
-					$outlinks[$i] = $tmp;	
+					$outlinks[$i] = $tmp;
 				}
-				$this->SaveOutLinks($outlinks);
+				$this->save_out_links($outlinks);
 				break;
 		}
 
@@ -151,7 +170,7 @@ class acp_outlinks
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields)
 		);
 
-		foreach($outlinks as $row)
+		foreach ($outlinks as $row)
 		{
 			$template->assign_block_vars('items', array(
 				'TITLE'			=> $row[1],
@@ -160,8 +179,7 @@ class acp_outlinks
 				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;id=' . $row[0],
 				'U_MOVE_UP'		=> $this->u_action . '&amp;action=move_up&amp;id=' . $row[0],
 				'U_MOVE_DOWN'	=> $this->u_action . '&amp;action=move_down&amp;id=' . $row[0]
-				)
-			);
+			));
 		}
 		$db->sql_freeresult($result);
 	}
