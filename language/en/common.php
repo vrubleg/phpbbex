@@ -926,6 +926,15 @@ $lang = array_merge($lang, array(
 	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'You have specified an incorrect username or e-mail address. Please check your entry and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
 	'LOGIN_ERROR_EMAIL'					=> 'You have specified an incorrect e-mail address. Please check your e-mail address and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
 
+	// Advanced Warnings
+	'REMARK'				=> 'Remark',
+	'WARNING'				=> 'Warning',
+	'BAN'					=> 'Ban',
+	'PERMANENT_WARNING'		=> 'Permanent warning',
+	'WARNING_X_DAYS'		=> 'Warning for %d days',
+	'PERMANENT_BAN'			=> 'Permanent ban',
+	'BAN_X_DAYS'			=> 'Ban for %d days',
+
 ));
 
 ?>

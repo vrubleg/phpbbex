@@ -204,6 +204,7 @@ $lang = array_merge($lang, array(
 	'MCP_VIEW_USER'			=> 'Просмотр предупреждений конкретного пользователя',
 
 	'MCP_WARN'				=> 'Предупреждения',
+	'MCP_WARN_EDIT'			=> 'Редактировать предупреждение',
 	'MCP_WARN_FRONT'		=> 'Главная страница',
 	'MCP_WARN_LIST'			=> 'Список предупреждений',
 	'MCP_WARN_POST'			=> 'Предупреждение за конкретное сообщение',
@@ -372,6 +373,7 @@ $lang = array_merge($lang, array(
 	'USER_CANNOT_REPORT'			=> 'Вы не можете отправлять жалобы на сообщения в этом форуме.',
 	'USER_FEEDBACK_ADDED'			=> 'Заметка о пользователе успешно добавлена.',
 	'USER_WARNING_ADDED'			=> 'Пользователю успешно вынесено предупреждение.',
+	'USER_WARNING_EDITED'			=> 'Предупреждение успешно отредактировано',
 
 	'VIEW_DETAILS'			=> 'Информация',
 	'VIEW_PM'				=> 'Просмотреть личное сообщение',
@@ -379,10 +381,18 @@ $lang = array_merge($lang, array(
 
 	'WARNED_USERS'			=> 'Пользователи, имеющие предупреждения',
 	'WARNED_USERS_EXPLAIN'	=> 'Это список пользователей, для которых не истекли сроки вынесенных предупреждений.',
-	'WARNING_PM_BODY'		=> 'Это предупреждение, вынесенное вам администратором или модератором этого сайта.[quote]%s[/quote]',
-	'WARNING_PM_SUBJECT'	=> 'Вам вынесено предупреждение',
+	'WARNING_DURATION'		=> 'Срок',
 	'WARNING_POST_DEFAULT'	=> 'Нарушение правил',
+	'WARNING_TYPE'			=> 'Тип',
 	'WARNINGS_ZERO_TOTAL'	=> 'Нет предупреждений.',
+	'WARNING_NOT_FOUND'		=> 'Предупреждение не найдено.',
+
+	'BAN_PM_SUBJECT'		=> 'Вы забанены',
+	'BAN_PM_BODY'			=> '%s',
+	'REMARK_PM_SUBJECT'		=> 'Вам сделано замечание',
+	'REMARK_PM_BODY'		=> '%s',
+	'WARNING_PM_SUBJECT'	=> 'Вам вынесено предупреждение',
+	'WARNING_PM_BODY'		=> '%s',
 
 	'YOU_SELECTED_TOPIC'	=> 'Вы выбрали тему номер %d: %s.',
 

@@ -1002,6 +1002,7 @@ CREATE TABLE phpbb_warnings (
 	log_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	warning_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	warning_days int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	warning_type enum('remark','warning','ban') DEFAULT 'warning' NOT NULL,
 	warning_text text NULL,
 	PRIMARY KEY (warning_id),
 	KEY warning_active (warning_active),

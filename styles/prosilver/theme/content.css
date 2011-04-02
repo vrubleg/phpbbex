@@ -784,3 +784,40 @@ dl.pmlist dd {
 	margin-left: 61% !important;
 	margin-bottom: 2px;
 }
+
+/* Warnings and remarks
+---------------------------------------- */
+.postbody div.warning {
+	background: url("{T_THEME_PATH}/images/card_warning.gif") 8px center no-repeat;
+}
+
+.postbody div.remark {
+	background: url("{T_THEME_PATH}/images/card_remark.gif") 8px center no-repeat;
+}
+
+.postbody div.ban {
+	background: url("{T_THEME_PATH}/images/card_ban.gif") 8px center no-repeat;
+}
+
+.postbody div.warning, div.postbody div.ban, div.postbody div.remark {
+	margin: 3px 0;
+	padding: 2px 8px 3px 26px;
+	font-size: 1.1em;
+	line-height: 1.1em;
+}
+
+.postbody div.warning, div.postbody div.ban {
+	background-color: #ECD5D8;
+	color: #BC2A4D;
+	border: 1px solid #db8180;
+}
+
+div.postbody div.remark {
+	background-color: #ffffff;
+	color: #000000;
+	border: 1px solid #aaaaaa;
+}
+
+.postbody div.warning .date, .postbody div.ban .date, .postbody div.remark .date {
+	float: right;
+}

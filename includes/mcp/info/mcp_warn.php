@@ -24,6 +24,7 @@ class mcp_warn_info
 				'list'				=> array('title' => 'MCP_WARN_LIST', 'auth' => 'aclf_m_warn', 'cat' => array('MCP_WARN')),
 				'warn_user'			=> array('title' => 'MCP_WARN_USER', 'auth' => 'aclf_m_warn', 'cat' => array('MCP_WARN')),
 				'warn_post'			=> array('title' => 'MCP_WARN_POST', 'auth' => 'acl_m_warn && acl_f_read,$id', 'cat' => array('MCP_WARN')),
+				'warn_edit'			=> array('title' => 'MCP_WARN_EDIT', 'auth' => 'acl_m_warn', 'cat' => array('MCP_WARN')),
 			),
 		);
 	}

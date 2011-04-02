@@ -1125,6 +1125,7 @@ while ($row = $db->sql_fetchrow($result))
 				'user_colour'		=> $row['user_colour'],
 
 				'warnings'			=> 0,
+				'warnings_data'		=> array(),
 				'allow_pm'			=> 0,
 			);
 
@@ -1182,6 +1183,20 @@ while ($row = $db->sql_fetchrow($result))
 				'author_username'	=> get_username_string('username', $poster_id, $row['username'], $row['user_colour']),
 				'author_profile'	=> get_username_string('profile', $poster_id, $row['username'], $row['user_colour']),
 			);
+
+			// Pull warnings data
+			$user_cache[$poster_id]['warnings_data'] = array();
+			$sql = 'SELECT w.*, u.username AS issuer_name, u.user_colour AS issuer_colour
+				FROM ' . WARNINGS_TABLE . ' w 
+				LEFT JOIN ' . USERS_TABLE . ' u ON w.issuer_id = u.user_id
+				WHERE w.user_id = ' . $poster_id . ' AND w.warning_active = 1
+				ORDER BY w.warning_id';
+			$warn_result = $db->sql_query($sql);
+			while ($warn_row = $db->sql_fetchrow($warn_result))
+			{
+				$user_cache[$poster_id]['warnings_data'][] = $warn_row;
+			}
+			$db->sql_freeresult($warn_result);
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $user_cache[$poster_id]['rank_title'], $user_cache[$poster_id]['rank_image'], $user_cache[$poster_id]['rank_image_src']);
 
@@ -1345,6 +1360,28 @@ if (sizeof($attach_list))
 	{
 		$display_notice = true;
 	}
+}
+
+// Pull warnings data
+$warnings = array();
+if(count($post_list))
+{
+	$sql = 'SELECT w.*, u.username AS issuer_name, u.user_colour AS issuer_colour
+		FROM ' . WARNINGS_TABLE . ' w 
+		LEFT JOIN ' . USERS_TABLE . ' u 
+		ON w.issuer_id = u.user_id
+		WHERE ' . $db->sql_in_set('w.post_id', $post_list) . '
+		ORDER BY w.warning_id';
+	$result = $db->sql_query($sql);
+	while ($row = $db->sql_fetchrow($result))
+	{
+		if(empty($warnings[$row['post_id']]))
+		{
+			$warnings[$row['post_id']] = array();
+		}
+		$warnings[$row['post_id']][] = $row;
+	}
+	$db->sql_freeresult($result);
 }
 
 // Instantiate BBCode if need be
@@ -1591,7 +1628,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_NEXT_POST_ID'	=> ($i < $i_total && isset($rowset[$post_list[$i + 1]])) ? $rowset[$post_list[$i + 1]]['post_id'] : '',
 		'U_PREV_POST_ID'	=> $prev_post_id,
 		'U_NOTES'			=> ($auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $user->session_id) : '',
-		'U_WARN'			=> ($auth->acl_get('m_warn') && $poster_id != $user->data['user_id'] && $poster_id != ANONYMOUS) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
+		'U_WARN'			=> ($auth->acl_get('m_warn') && $poster_id != ANONYMOUS) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
 
 		'POST_ID'			=> $row['post_id'],
 		'POSTER_ID'			=> $poster_id,
@@ -1617,6 +1654,79 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 
 	// Dump vars into template
 	$template->assign_block_vars('postrow', $postrow);
+
+	// Display user warnings
+	if (!empty($user_cache[$poster_id]['warnings_data']))
+	{
+		foreach ($user_cache[$poster_id]['warnings_data'] as $warning)
+		{
+			switch ($warning['warning_type'])
+			{
+				case 'remark':
+					$warn_title = $user->lang['REMARK'];
+				break;
+				case 'warning':
+				case 'ban':
+					$warn_type = strtoupper($warning['warning_type']);
+					$warn_title = ($warning['warning_days'])
+						? sprintf($user->lang[$warn_type.'_X_DAYS'], $warning['warning_days'])
+						: $user->lang['PERMANENT_'.$warn_type];
+				break;
+			}
+
+			$template->assign_block_vars('postrow.userwarning', array(
+				'TITLE'			=> $warn_title,
+				'WARNING_ID'	=> $warning['warning_id'],
+				'ISSUER_ID'		=> $warning['issuer_id'],
+				'U_ISSUER'		=> get_username_string('profile', 	$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
+				'ISSUER_NAME'	=> get_username_string('username', 	$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
+				'ISSUER_COLOUR'	=> get_username_string('colour', 	$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
+				'ISSUER_FULL'	=> get_username_string('full', 		$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
+				'TIME'			=> $user->format_date($warning['warning_time']),
+				'EXPIRES'		=> $user->format_date($warning['warning_time'] + $warning['warning_days'] * 86400),
+				'ACTIVE'		=> ($warning['warning_active']) ? true : false,
+				'TYPE'			=> $warning['warning_type'],
+				'TEXT'			=> $warning['warning_text'],
+				'U_POST'		=> ($warning['post_id']) ? append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $warning['post_id']) . '#p' . $warning['post_id'] : '',
+			));
+		}
+	}
+
+	// Display post warnings
+	if (isset($warnings[$row['post_id']]))
+	{
+		foreach ($warnings[$row['post_id']] as $warning)
+		{
+			switch ($warning['warning_type'])
+			{
+				case 'remark':
+					$warn_title = $user->lang['REMARK'];
+				break;
+				case 'warning':
+				case 'ban':
+					$warn_type = strtoupper($warning['warning_type']);
+					$warn_title = ($warning['warning_days'])
+						? sprintf($user->lang[$warn_type.'_X_DAYS'], $warning['warning_days'])
+						: $user->lang['PERMANENT_'.$warn_type];
+				break;
+			}
+
+			$template->assign_block_vars('postrow.postwarning', array(
+				'TITLE'			=> $warn_title,
+				'WARNING_ID'	=> $warning['warning_id'],
+				'ISSUER_ID'		=> $warning['issuer_id'],
+				'U_ISSUER'		=> get_username_string('profile', 	$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
+				'ISSUER_NAME'	=> get_username_string('username', 	$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
+				'ISSUER_COLOUR'	=> get_username_string('colour', 	$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
+				'ISSUER_FULL'	=> get_username_string('full', 		$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
+				'TIME'			=> $user->format_date($warning['warning_time']),
+				'EXPIRES'		=> $user->format_date($warning['warning_time'] + $warning['warning_days'] * 86400),
+				'ACTIVE'		=> ($warning['warning_active']) ? true : false,
+				'TYPE'			=> $warning['warning_type'],
+				'TEXT'			=> $warning['warning_text'],
+			));
+		}
+	}
 
 	if (!empty($cp_row['blockrow']))
 	{

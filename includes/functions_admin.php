@@ -3198,7 +3198,7 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 */
 function tidy_warnings()
 {
-	global $db, $config;
+	global $db, $config, $cache;
 
 	$current_time = time();
 	$warning_list = $user_list = array();
@@ -3234,6 +3234,7 @@ function tidy_warnings()
 		$db->sql_transaction('commit');
 	}
 
+	$cache->destroy('sql', WARNINGS_TABLE);
 	set_config('warnings_last_gc', time(), true);
 }
 
