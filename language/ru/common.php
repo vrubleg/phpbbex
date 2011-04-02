@@ -920,8 +920,8 @@ $lang = array_merge($lang, array(
 	// Main menu
 	'USER_CP'					=> 'Личное',
 	'MODER_CP'					=> 'Модератору',
-	'MODER_CP_FORUM'			=> 'Модерация форума',
-	'MODER_CP_TOPIC'			=> 'Модерация темы',
+	'MODERATE_FORUM'			=> 'Модерировать форум',
+	'MODERATE_TOPIC'			=> 'Модерировать тему',
 	'ADMIN_CP'					=> 'Админка',
 	'OVERVIEW'					=> 'Обзор',
 	'ATTACHMENTS'				=> 'Вложения',

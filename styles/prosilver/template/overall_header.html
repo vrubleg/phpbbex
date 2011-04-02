@@ -172,9 +172,9 @@
 		<!-- IF not S_USER_LOGGED_IN and S_REGISTER_ENABLED --><li><a href="{U_REGISTER}">{L_REGISTER}</a></li><!-- ENDIF -->
 		<li style="float: right; border-right: 0;"><a href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a></li>
 
-		<!-- IF U_MCP and not U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP}">{L_MODER_CP}</a></li><!-- ENDIF -->
-		<!-- IF U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_FORUM}">{L_MODER_CP_FORUM}</a></li><!-- ENDIF -->
-		<!-- IF U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_TOPIC}">{L_MODER_CP_TOPIC}</a></li><!-- ENDIF -->
+		<!-- IF S_IN_MCP or U_MCP and not U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP}">{L_MODER_CP}</a></li><!-- ENDIF -->
+		<!-- IF not S_IN_MCP and U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_FORUM}">{L_MODERATE_FORUM}</a></li><!-- ENDIF -->
+		<!-- IF not S_IN_MCP and U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_TOPIC}">{L_MODERATE_TOPIC}</a></li><!-- ENDIF -->
 
 		<!-- IF U_ACP and not U_RESTORE_PERMISSIONS --><li style="float: right;"><a href="{U_ACP}">{L_ADMIN_CP}</a></li><!-- ENDIF -->
 		<!-- IF U_RESTORE_PERMISSIONS --><li style="float: right;"><a href="{U_RESTORE_PERMISSIONS}">{L_RESTORE_PERMISSIONS}</a></li><!-- ENDIF -->

@@ -907,8 +907,8 @@ $lang = array_merge($lang, array(
 	// Main menu
 	'USER_CP'					=> 'User CP',
 	'MODER_CP'					=> 'MCP',
-	'MODER_CP_FORUM'			=> 'Topic MCP',
-	'MODER_CP_TOPIC'			=> 'Forum MCP',
+	'MODERATE_FORUM'			=> 'Moderate forum',
+	'MODERATE_TOPIC'			=> 'Moderate topic',
 	'ADMIN_CP'					=> 'ACP',
 	'OVERVIEW'					=> 'Overview',
 	'ATTACHMENTS'				=> 'Attachments',
