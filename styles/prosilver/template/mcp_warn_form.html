@@ -47,16 +47,9 @@ jQuery(function($)
 {
 	$("#mcp input[name=warning_type]").change(function()
 	{
-		if ($(this).val() == 'remark')
-		{
-			$("#warning_duration").hide();
-		}
-		else
-		{
-			$("#warning_duration").show();
-		}
+		if ($(this).val() == 'remark') $("#warning_duration").hide(); else $("#warning_duration").show();
 	});
-	$("#mcp input[name=warning_type][value={WARNING_TYPE}]").change();
+	$("#mcp input[name=warning_type]:checked").change();
 });
 </script>
 

@@ -76,13 +76,6 @@
 
 	<!-- ENDIF -->
 
-	<!-- IF S_DELETE_ALLOWED -->
-	<dl>
-		<dt><label for="delete">{L_DELETE_POST}:</label></dt>
-		<dd><label for="delete"><input type="checkbox" name="delete" id="delete" /> {L_DELETE_POST_WARN}</label></dd>
-	</dl>
-	<!-- ENDIF -->
-
 	<!-- IF S_SHOW_TOPIC_ICONS or S_SHOW_PM_ICONS -->
 	<dl>
 		<dt><label for="icon">{L_ICON}:</label></dt>
@@ -170,61 +163,59 @@
 	</div>
 	<!-- ENDIF -->
 
-	<!-- IF S_SHOW_ATTACH_BOX or S_HAS_ATTACHMENTS -->
-	<div class="panel bg2">
-		<div class="inner"><span class="corners-top"><span></span></span>
-		<!-- IF S_SHOW_ATTACH_BOX -->
-		<h3>{L_ADD_ATTACHMENT}</h3>
-		<fieldset class="fields2">
-		<dl>
-			<dt><label for="fileupload">{L_FILENAME}:</label></dt>
-			<dd>
-				<input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" /> 
-				<input type="submit" name="add_file" value="{L_ADD_FILE}" class="button2" onclick="upload = true;" />
-			</dd>
-		</dl>
-		<dl>
-			<dt><label for="filecomment">{L_FILE_COMMENT}:</label></dt>
-			<dd><textarea name="filecomment" id="filecomment" rows="1" cols="40" class="inputbox">{FILE_COMMENT}</textarea></dd>
-		</dl>
-		</fieldset>
-		<!-- ENDIF -->
-
-		<!-- IF S_HAS_ATTACHMENTS -->
-		<h3>{L_POSTED_ATTACHMENTS}</h3>
-		<fieldset class="fields2">
-			<!-- BEGIN attach_row -->
-			<dl>
-				<dt><label for="comment_list_{attach_row.ASSOC_INDEX}">{L_FILE_COMMENT}:</label></dt>
-				<dd><textarea name="comment_list[{attach_row.ASSOC_INDEX}]" id="comment_list_{attach_row.ASSOC_INDEX}" rows="1" cols="40" class="inputbox">{attach_row.FILE_COMMENT}</textarea></dd>
-				<dd><a href="{attach_row.U_VIEW_ATTACHMENT}" class="{S_CONTENT_FLOW_END}">{attach_row.FILENAME}</a></dd>
-				<dd style="margin-top: 5px;">
-					<!-- IF S_INLINE_ATTACHMENT_OPTIONS --><input type="button" value="{L_PLACE_INLINE}" onclick="attach_inline({attach_row.ASSOC_INDEX}, '{attach_row.A_FILENAME}');" class="button2" />&nbsp; <!-- ENDIF -->
-					<input type="submit" name="delete_file[{attach_row.ASSOC_INDEX}]" value="{L_DELETE_FILE}" class="button2" />&nbsp; 
-					<input type="submit" name="update_file[{attach_row.ASSOC_INDEX}]" value="{L_UPDATE_FILE}" class="button2" />
-				</dd>
-			</dl>
-			{attach_row.S_HIDDEN}
-				<!-- IF not attach_row.S_LAST_ROW --><hr class="dashed" /><!-- ENDIF -->
-			<!-- END attach_row -->
-		</fieldset>
-		<!-- ENDIF -->
-
-		<span class="corners-bottom"><span></span></span></div>
-	</div>
-	<!-- ENDIF -->
+	<!-- IF S_SHOW_ATTACH_BOX or S_HAS_ATTACHMENTS --><!-- INCLUDE posting_attach_body.html --><!-- ENDIF -->
+	<!-- IF S_SHOW_POLL_BOX or S_POLL_DELETE --><!-- INCLUDE posting_poll_body.html --><!-- ENDIF -->
 
 	<!-- IF not S_SHOW_DRAFTS and not $SIG_EDIT eq 1 -->
 	<div class="panel bg2">
 		<div class="inner"><span class="corners-top"><span></span></span>
-		<!-- IF S_EDIT_REASON -->
+
+		<!-- IF S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY or S_EDIT_REASON or S_DELETE_ALLOWED -->
 		<fieldset class="fields2">
+			<!-- IF S_TYPE_TOGGLE -->
+			<dl>
+				<dt><label for="topic_type-0">{L_POST_TOPIC_AS}:</label></dt>
+				<dd><!-- BEGIN topic_type --><label for="topic_type-{topic_type.VALUE}"><input type="radio" name="topic_type" id="topic_type-{topic_type.VALUE}" value="{topic_type.VALUE}"{topic_type.S_CHECKED} />{topic_type.L_TOPIC_TYPE}</label> <!-- END topic_type --></dd>
+			</dl>
+			<!-- ENDIF -->
+
+			<!-- IF S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY -->
+			<script type="text/javascript">
+			jQuery(function($)
+			{
+				$("#postform input[name=topic_type]").change(function()
+				{
+					if ($(this).val() == 0) $("#stick_topic_for").hide(); else $("#stick_topic_for").show();
+				});
+				$("#postform input[name=topic_type]:checked").change();
+			});
+			</script>
+
+			<dl id="stick_topic_for">
+				<dt><label for="topic_time_limit">{L_STICK_TOPIC_FOR}:</label></dt>
+				<dd><label for="topic_time_limit"><input type="text" name="topic_time_limit" id="topic_time_limit" size="3" maxlength="3" value="{TOPIC_TIME_LIMIT}" class="inputbox autowidth" /> {L_DAYS}</label></dd>
+				<dd>{L_STICK_TOPIC_FOR_EXPLAIN}</dd>
+			</dl>
+			<!-- ENDIF -->
+
+			<!-- IF S_DELETE_ALLOWED -->
+			<dl>
+				<dt><label for="delete">{L_DELETE_POST}:</label></dt>
+				<dd><label for="delete"><input type="checkbox" name="delete" id="delete" /> {L_DELETE_POST_WARN}</label></dd>
+			</dl>
+			<!-- ENDIF -->
+
+			<!-- IF S_EDIT_REASON -->
 			<dl>
 				<dt><label for="edit_reason">{L_EDIT_REASON}:</label></dt>
 				<dd><input type="text" name="edit_reason" id="edit_reason" value="{EDIT_REASON}" class="inputbox" /></dd>
 			</dl>
+			<!-- ENDIF -->
 		</fieldset>
 		<!-- ENDIF -->
+
+
+
 		<fieldset class="submit-buttons">
 			{S_HIDDEN_ADDRESS_FIELD}
 			{S_HIDDEN_FIELDS}
@@ -239,37 +230,7 @@
 	</div>
 	<!-- ENDIF -->
 
-	<!-- IF not S_PRIVMSGS and not S_SHOW_DRAFTS and not $SIG_EDIT eq 1 and (S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY or S_SHOW_POLL_BOX or S_POLL_DELETE) -->
-		<div id="tabs">
-			<ul>
-				<!-- IF S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY -->
-				<li id="options-panel-tab" class="activetab"><a href="#tabs" onclick="subPanels('options-panel'); return false;"><span>{L_OPTIONS}</span></a></li>
-				<!-- ENDIF -->
-				<!-- IF S_SHOW_POLL_BOX || S_POLL_DELETE --><li id="poll-panel-tab"><a href="#tabs" onclick="subPanels('poll-panel'); return false;"><span>{L_ADD_POLL}</span></a></li><!-- ENDIF -->
-			</ul>
-		</div>
-	<!-- ENDIF -->
-
-	<div class="panel bg3" id="options-panel">
+	<div class="panel bg3" style="display: none;">
 		<div class="inner"><span class="corners-top"><span></span></span>
-
-		<!-- IF not S_SHOW_DRAFTS and not $SIG_EDIT eq 1 and (S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY) -->
-		<fieldset class="fields1">
-			<!-- IF S_TYPE_TOGGLE -->
-			<dl>
-				<dt><label for="topic_type-0"><!-- IF S_EDIT_POST -->{L_CHANGE_TOPIC_TO}<!-- ELSE -->{L_POST_TOPIC_AS}<!-- ENDIF -->:</label></dt>
-				<dd><!-- BEGIN topic_type --><label for="topic_type-{topic_type.VALUE}"><input type="radio" name="topic_type" id="topic_type-{topic_type.VALUE}" value="{topic_type.VALUE}"{topic_type.S_CHECKED} />{topic_type.L_TOPIC_TYPE}</label> <!-- END topic_type --></dd>
-			</dl>
-			<!-- ENDIF -->
-
-			<!-- IF S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY -->
-			<dl>
-				<dt><label for="topic_time_limit">{L_STICK_TOPIC_FOR}:</label></dt>
-				<dd><label for="topic_time_limit"><input type="text" name="topic_time_limit" id="topic_time_limit" size="3" maxlength="3" value="{TOPIC_TIME_LIMIT}" class="inputbox autowidth" /> {L_DAYS}</label></dd>
-				<dd>{L_STICK_TOPIC_FOR_EXPLAIN}</dd>
-			</dl>
-			<!-- ENDIF -->
-		</fieldset>
-		<!-- ENDIF -->
 
 <!-- ENDIF -->
