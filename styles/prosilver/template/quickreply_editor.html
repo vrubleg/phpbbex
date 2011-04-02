@@ -56,6 +56,8 @@
 					<br /><a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
 				<!-- ENDIF -->
 
+				<div style="<!-- IF not EXTRA_OPTIONS_DISPLAY -->display: none;<!-- ENDIF -->">
+
 				<!-- IF .smiley --><hr /><!-- ENDIF -->
 
 				<!-- IF S_BBCODE_ALLOWED -->
@@ -89,6 +91,8 @@
 					<div><label for="lock_post"><input type="checkbox" name="lock_post" id="lock_post"{S_LOCK_POST_CHECKED} /> {L_LOCK_POST}</label></div>
 				<!-- ENDIF -->
 
+				</div>
+
 			</div>
 
 			<div id="message-box">
@@ -98,28 +102,7 @@
 		<span class="corners-bottom"><span></span></span></div>
 	</div>
 		
-	<!-- IF S_SHOW_ATTACH_BOX -->
-	<div class="panel bg2">
-		<div class="inner"><span class="corners-top"><span></span></span>
-		<!-- IF S_SHOW_ATTACH_BOX -->
-		<h3>{L_ADD_ATTACHMENT}</h3>
-		<fieldset class="fields2">
-		<dl>
-			<dt><label for="fileupload">{L_FILENAME}:</label></dt>
-			<dd>
-				<input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" /> 
-				<input type="submit" name="add_file" value="{L_ADD_FILE}" class="button2" onclick="upload = true;" />
-			</dd>
-		</dl>
-		<dl>
-			<dt><label for="filecomment">{L_FILE_COMMENT}:</label></dt>
-			<dd><textarea name="filecomment" id="filecomment" rows="1" cols="40" class="inputbox">{FILE_COMMENT}</textarea></dd>
-		</dl>
-		</fieldset>
-		<!-- ENDIF -->
-		<span class="corners-bottom"><span></span></span></div>
-	</div>
-	<!-- ENDIF -->
+	<!-- IF S_SHOW_ATTACH_BOX --><!-- INCLUDE posting_attach_body.html --><!-- ENDIF -->
 
 	<div class="panel bg2">
 		<div class="inner"><span class="corners-top"><span></span></span>

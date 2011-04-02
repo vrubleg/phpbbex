@@ -137,9 +137,8 @@ $qr_hidden_fields = array(
 );
 
 // Attachment entry
-$show_attach_box = (@ini_get('file_uploads') != '0' && strtolower(@ini_get('file_uploads')) != 'off' && $auth->acl_get('f_attach', $forum_id) && $auth->acl_get('u_attach') && $config['allow_attachments'] && $form_enctype && $config['allow_' . $mode . '_attachbox']);
+$show_attach_box = (@ini_get('file_uploads') != '0' && strtolower(@ini_get('file_uploads')) != 'off' && $auth->acl_get('f_attach', $forum_id) && $auth->acl_get('u_attach') && $config['allow_attachments'] && $config['allow_' . $mode . '_attachbox']);
 
-$extra_options_display = ($config['allow_' . $mode . '_checkboxes']) ? 'show' : 'none';
 add_form_key('posting');
 
 // Send vars to template
@@ -149,7 +148,7 @@ $template->assign_vars(array(
 	'U_QR_ACTION'			=> $s_action,
 	'S_FORM_ENCTYPE'		=> ($show_attach_box) ? ' enctype="multipart/form-data"' : '',
 	'SUBJECT'				=> '',
-	'EXTRA_OPTIONS_DISPLAY'	=> $extra_options_display,
+	'EXTRA_OPTIONS_DISPLAY'	=> ($config['allow_' . $mode . '_checkboxes']),
 	
 	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
 	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=bbcode') . '">', '</a>'),
