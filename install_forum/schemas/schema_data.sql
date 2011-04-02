@@ -823,6 +823,7 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'rtf');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (5, 'rm');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (5, 'ram');
 
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'avi');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'wma');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'wmv');
 
@@ -839,7 +840,13 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (8, 'qt');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mpeg');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mpg');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mp3');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'oga');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'ogg');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'ogm');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'ogv');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
 
 # POSTGRES COMMIT #
