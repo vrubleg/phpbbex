@@ -180,7 +180,9 @@
 			<!-- IF postrow.POSTER_WARNINGS -->
 				<dd>
 				<!-- BEGIN userwarning -->
-					<a href="{postrow.userwarning.U_POST}"><img src="{T_THEME_PATH}/images/card_{postrow.userwarning.TYPE}.gif" title="{postrow.userwarning.TITLE}" alt="W" /></a>
+					<!-- IF postrow.userwarning.U_POST --><a href="{postrow.userwarning.U_POST}"><!-- ENDIF -->
+					<img src="{T_THEME_PATH}/images/card_{postrow.userwarning.TYPE}.gif" title="{postrow.userwarning.TITLE}" alt="W" />
+					<!-- IF postrow.userwarning.U_POST --></a><!-- ENDIF -->
 				<!-- END userwarning -->
 				</dd>
 			<!-- ENDIF -->
