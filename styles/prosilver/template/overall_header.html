@@ -35,7 +35,7 @@
 	var onload_functions = new Array();
 	var onunload_functions = new Array();
 
-	<!-- IF S_USER_PM_POPUP -->
+	<!-- IF S_USER_PM_POPUP and S_NEW_PM -->
 		if ({S_NEW_PM})
 		{
 			var url = '{UA_POPUP_PM}';
@@ -171,7 +171,11 @@
 		<!-- IF not S_IS_BOT -->
 		<!-- IF not S_USER_LOGGED_IN and S_REGISTER_ENABLED --><li><a href="{U_REGISTER}">{L_REGISTER}</a></li><!-- ENDIF -->
 		<li style="float: right; border-right: 0;"><a href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a></li>
-		<!-- IF U_MCP --><li style="float: right;"><a href="{U_MCP}">{L_MODER_CP}</a></li><!-- ENDIF -->
+
+		<!-- IF U_MCP and not U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP}">{L_MODER_CP}</a></li><!-- ENDIF -->
+		<!-- IF U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_FORUM}">{L_MODER_CP_FORUM}</a></li><!-- ENDIF -->
+		<!-- IF U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_TOPIC}">{L_MODER_CP_TOPIC}</a></li><!-- ENDIF -->
+
 		<!-- IF U_ACP and not U_RESTORE_PERMISSIONS --><li style="float: right;"><a href="{U_ACP}">{L_ADMIN_CP}</a></li><!-- ENDIF -->
 		<!-- IF U_RESTORE_PERMISSIONS --><li style="float: right;"><a href="{U_RESTORE_PERMISSIONS}">{L_RESTORE_PERMISSIONS}</a></li><!-- ENDIF -->
 		<li style="float: right; border-left: 0; height: 25px;"></li>
