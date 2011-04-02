@@ -900,10 +900,6 @@ $lang = array_merge($lang, array(
 	'GENDER_M'					=> 'Male',
 	'GENDER_F'					=> 'Female',
 
-	// Warnings
-	'USER_WARNING'				=> 'Warning',
-	'WARNING_DAYS'				=> 'Days',
-
 	// Main menu
 	'USER_CP'					=> 'User CP',
 	'MODER_CP'					=> 'MCP',
@@ -927,6 +923,8 @@ $lang = array_merge($lang, array(
 	'LOGIN_ERROR_EMAIL'					=> 'You have specified an incorrect e-mail address. Please check your e-mail address and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
 
 	// Advanced Warnings
+	'USER_WARNING'			=> 'Warning',
+	'WARNING_DAYS'			=> 'Days',
 	'REMARK'				=> 'Remark',
 	'WARNING'				=> 'Warning',
 	'BAN'					=> 'Ban',
@@ -934,6 +932,9 @@ $lang = array_merge($lang, array(
 	'WARNING_X_DAYS'		=> 'Warning for %d days',
 	'PERMANENT_BAN'			=> 'Permanent ban',
 	'BAN_X_DAYS'			=> 'Ban for %d days',
+
+	// Other
+	'SOCIAL_SHARE_IN'		=> 'Share in',
 
 ));
 

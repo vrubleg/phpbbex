@@ -913,10 +913,6 @@ $lang = array_merge($lang, array(
 	'GENDER_M'					=> 'Мужской',
 	'GENDER_F'					=> 'Женский',
 
-	// Warnings
-	'USER_WARNING'				=> 'Предупреждение',
-	'WARNING_DAYS'				=> 'Дней',
-
 	// Main menu
 	'USER_CP'					=> 'Личное',
 	'MODER_CP'					=> 'Модератору',
@@ -940,6 +936,8 @@ $lang = array_merge($lang, array(
 	'LOGIN_ERROR_EMAIL'					=> 'Вы ввели неверный e-mail. Проверьте его и попробуйте ввести ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
 
 	// Advanced Warnings
+	'USER_WARNING'			=> 'Предупреждение',
+	'WARNING_DAYS'			=> 'Дней',
 	'REMARK'				=> 'Замечание',
 	'WARNING'				=> 'Предупреждение',
 	'BAN'					=> 'Бан',
@@ -947,6 +945,9 @@ $lang = array_merge($lang, array(
 	'WARNING_X_DAYS'		=> 'Предупреждение на %d дней',
 	'PERMANENT_BAN'			=> 'Бессрочный бан',
 	'BAN_X_DAYS'			=> 'Бан на %d дней',
+
+	// Other
+	'SOCIAL_SHARE_IN'		=> 'Поделиться в',
 
 ));
 

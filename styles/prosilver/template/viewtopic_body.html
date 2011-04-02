@@ -2,6 +2,14 @@
 <h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>
 <!-- IF not S_IS_BOT -->
 <ul class="header-icons">
+	<script type="text/javascript">
+	var url = encodeURIComponent(document.location.href);
+	var title = encodeURIComponent($('title').text());
+	document.write('<li><a href="http://vkontakte.ru/share.php?url='+url+'&title='+title+'" title="{L_SOCIAL_SHARE_IN} vkontakte.ru" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vkontakte.ru</a></li>');
+	document.write('<li><a href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
+	document.write('<li><a href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
+	</script>
+	<li class="icons-divider"></li>
 	<!-- IF U_PRINT_TOPIC --><li><a href="{U_PRINT_TOPIC}" title="{L_PRINT_TOPIC}" class="icon-print">{L_PRINT_TOPIC}</a></li><!-- ENDIF -->
 	<!-- IF U_EMAIL_TOPIC --><li><a href="{U_EMAIL_TOPIC}" title="{L_EMAIL_TOPIC}" class="icon-sendemail">{L_EMAIL_TOPIC}</a></li><!-- ENDIF -->
 	<!-- IF U_WATCH_TOPIC --><li><a href="{U_WATCH_TOPIC}" title="{L_WATCH_TOPIC}" <!-- IF S_WATCHING_TOPIC -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{L_WATCH_TOPIC}</a></li><!-- ENDIF -->

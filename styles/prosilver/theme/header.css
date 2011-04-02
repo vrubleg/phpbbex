@@ -94,12 +94,12 @@ a.icon-print, a.icon-sendemail, a.icon-bookmark, a.icon-unbookmark, a.icon-bump,
 {
 	display: block;
 	overflow: hidden;
+	width: 26px;
 	height: 26px;
 	text-indent: -5000px;
 	text-align: left;
 	background-repeat: no-repeat;
 	background-image: url("{T_THEME_PATH}/images/header_icons.png");
-	width: 26px;
 }
 
 a.icon-sendemail { background-position: 0 -26px; }
@@ -111,6 +111,31 @@ a.icon-unsubscribe { background-position: 0 -156px; }
 a.icon-bump { background-position: 0 -182px; }
 a.icon-lock { background-position: 0 -208px; }
 a.icon-unlock { background-position: 0 -234px; }
+
+a.icon-vkontakte, a.icon-facebook, a.icon-twitter
+{
+	display: block;
+	overflow: hidden;
+	width: 26px;
+	height: 26px;
+	text-indent: -5000px;
+	text-align: left;
+	background-repeat: no-repeat;
+	background-image: url("{T_THEME_PATH}/images/social_icons.png");
+}
+
+a.icon-facebook { background-position: 0 -26px; }
+a.icon-vkontakte { background-position: 0 -52px; }
+a.icon-twitter { background-position: 0 -78px; }
+
+.header-icons .icons-divider
+{
+	background: #cccccc;
+	width: 1px;
+	height: 26px;
+	display: block;
+	overflow: hidden;
+}
 
 p.header-path
 {
