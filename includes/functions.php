@@ -2894,7 +2894,9 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		$viewonline = ($admin) ? $user->data['session_viewonline'] : $viewonline;
 
 		// Check if the supplied username is equal to the one stored within the database if re-authenticating
-		if ($admin && utf8_clean_string($username) != utf8_clean_string($user->data['username']))
+		if ($admin
+			&& utf8_clean_string($username) != utf8_clean_string($user->data['username'])
+			&& utf8_clean_string($username) != utf8_clean_string($user->data['user_email']))
 		{
 			// We log the attempt to use a different username...
 			add_log('admin', 'LOG_ADMIN_AUTH_FAIL');
@@ -3021,7 +3023,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		'S_HIDDEN_FIELDS' 		=> $s_hidden_fields,
 
 		'S_ADMIN_AUTH'			=> $admin,
-		'USERNAME'				=> ($admin) ? $user->data['username'] : '',
+		'USERNAME'				=> ($admin) ? ($config['login_via_email_enable'] == LOGIN_VIA_EMAIL_ONLY ? $user->data['user_email'] : $user->data['username']) : '',
 
 		'USERNAME_CREDENTIAL'	=> 'username',
 		'PASSWORD_CREDENTIAL'	=> ($admin) ? 'password_' . $credential : 'password',
