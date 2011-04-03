@@ -590,13 +590,20 @@ dl.codebox code {
 }
 
 /* Inline image thumbnails */
+div.inline-attachment {
+	display: inline-block;
+}
+
 div.inline-attachment dl.thumbnail, div.inline-attachment dl.file {
 	display: block;
-	margin-bottom: 4px;
 }
 
 div.inline-attachment p {
 	font-size: 100%;
+}
+
+div.inline-attachment .hide-in-inline {
+	display: none;
 }
 
 dl.file {
@@ -608,8 +615,11 @@ dl.file dt {
 	text-transform: none;
 	margin: 0;
 	padding: 0;
-	font-weight: bold;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+dl.file a {
+	font-weight: bold;
 }
 
 dl.file dd {
