@@ -12,7 +12,10 @@
 	}
 
 	<!-- IF CAPTCHA_TEMPLATE and S_CONFIRM_REFRESH -->
-	onload_functions.push('apply_onkeypress_event()');
+	jQuery(function($)
+	{
+		apply_onkeypress_event();
+	});
 	<!-- ENDIF -->
 
 // ]]>

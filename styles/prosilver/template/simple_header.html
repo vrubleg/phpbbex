@@ -11,7 +11,7 @@
 <meta name="keywords" content="{SITE_KEYWORDS}" />
 <meta name="description" content="{SITE_DESCRIPTION}" />
 {META}
-<title>{SITENAME} &bull; <!-- IF S_IN_MCP -->{L_MCP} &bull; <!-- ELSEIF S_IN_UCP -->{L_UCP} &bull; <!-- ENDIF -->{PAGE_TITLE}</title>
+<title>{SITENAME} - <!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF -->{PAGE_TITLE}</title>
 
 <script type="text/javascript">
 // <![CDATA[
@@ -20,27 +20,6 @@
 	var on_page = '{ON_PAGE}';
 	var per_page = '{PER_PAGE}';
 	var base_url = '{A_BASE_URL}';
-	var onload_functions = new Array();
-	var onunload_functions = new Array();
-
-	/**
-	* New function for handling multiple calls to window.onload and window.unload by pentapenguin
-	*/
-	window.onload = function()
-	{
-		for (var i = 0; i < onload_functions.length; i++)
-		{
-			eval(onload_functions[i]);
-		}
-	}
-
-	window.onunload = function()
-	{
-		for (var i = 0; i < onunload_functions.length; i++)
-		{
-			eval(onunload_functions[i]);
-		}
-	}
 
 // ]]>
 </script>

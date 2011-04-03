@@ -2,7 +2,10 @@
 
 <script type="text/javascript">
 // <![CDATA[
-	onload_functions.push('document.getElementById("{USERNAME_CREDENTIAL}").focus();');
+jQuery(function($)
+{
+	$("#{USERNAME_CREDENTIAL}")[0].focus();
+});
 // ]]>
 </script>
 

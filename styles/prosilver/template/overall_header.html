@@ -12,8 +12,9 @@
 <meta name="description" content="{SITE_DESCRIPTION}" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
 {META}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 <!--[if lte IE 6]><script src="http://vrublevsky.org/noie6/noie6.js"></script><![endif]-->
+<script type="text/javascript" src="{T_TEMPLATE_PATH}/jquery.splash.js"></script>
 <title>{SITENAME} - <!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF -->{PAGE_TITLE}</title>
 
 <!-- IF S_ENABLE_FEEDS -->
@@ -32,15 +33,31 @@
 	var on_page = '{ON_PAGE}';
 	var per_page = '{PER_PAGE}';
 	var base_url = '{A_BASE_URL}';
-	var onload_functions = new Array();
-	var onunload_functions = new Array();
 
 	<!-- IF S_USER_PM_POPUP and S_NEW_PM -->
-		if ({S_NEW_PM})
+	jQuery(function($)
+	{
+		var $popup = $.splash("popup_pm", "500px")
+			.wrap("<div class='dialog'></div>")
+			.before("<span class='corners-top'><span></span></span>")
+			.after("<span class='corners-bottom'><span></span></span>")
+			<!-- IF S_USER_NEW_PRIVMSG == 1 -->
+			.html("<h2>{L_NEW_MESSAGE}</h2><p>{L_YOU_NEW_PM}</p>")
+			<!-- ELSE -->
+			.html("<h2>{L_NEW_MESSAGES}</h2><p>{L_YOU_NEW_PMS}</p>")
+			<!-- ENDIF -->
+			.append("<fieldset class='submit-buttons'>&nbsp;<input type='button' value='{L_CLOSE_WINDOW}' class='button2' name='close' />&nbsp;<input type='button' value='{L_DISPLAY}' class='button1' name='display' />&nbsp;</fieldset>")
+			.trigger("reposition");
+		$("input[name=close]", $popup).click(function()
 		{
-			var url = '{UA_POPUP_PM}';
-			window.open(url.replace(/&amp;/g, '&'), '_phpbbprivmsg', 'height=225,resizable=yes,scrollbars=yes, width=400');
-		}
+			$popup.trigger('close');
+		});
+		$("input[name=display]", $popup).click(function()
+		{
+			var url = '{U_PRIVATEMSGS}';
+			document.location.href = url.replace(/&amp;/g, '&');
+		});
+	});
 	<!-- ENDIF -->
 
 	/**
@@ -50,25 +67,6 @@
 	{
 		popup(url, 760, 570, '_usersearch');
 		return false;
-	}
-
-	/**
-	* New function for handling multiple calls to window.onload and window.unload by pentapenguin
-	*/
-	window.onload = function()
-	{
-		for (var i = 0; i < onload_functions.length; i++)
-		{
-			eval(onload_functions[i]);
-		}
-	}
-
-	window.onunload = function()
-	{
-		for (var i = 0; i < onunload_functions.length; i++)
-		{
-			eval(onunload_functions[i]);
-		}
 	}
 
 // ]]>
