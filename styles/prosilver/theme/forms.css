@@ -248,7 +248,7 @@ fieldset.submit-buttons input {
 
 /* Buttons used in the editor */
 #format-buttons {
-	margin: 15px 0 2px 0;
+	margin: 5px 0 2px 0;
 }
 
 #format-buttons input, #format-buttons select {
