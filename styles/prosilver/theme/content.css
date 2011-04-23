@@ -596,6 +596,7 @@ div.inline-attachment {
 
 div.inline-attachment dl.thumbnail, div.inline-attachment dl.file {
 	display: block;
+	line-height: 1em;
 }
 
 div.inline-attachment p {
