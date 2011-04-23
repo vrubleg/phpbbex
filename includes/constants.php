@@ -171,7 +171,7 @@ define('ATTACHMENT_CATEGORY_QUICKTIME', 6); // Quicktime/Mov files
 define('BBCODE_UID_LEN', 8);
 
 // Number of core BBCodes
-define('NUM_CORE_BBCODES', 12);
+define('NUM_CORE_BBCODES', 13);
 
 // Smiley hard limit
 define('SMILEY_LIMIT', 1000);

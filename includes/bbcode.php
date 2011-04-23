@@ -345,6 +345,15 @@ class bbcode
 					);
 				break;
 
+				case 13:
+					$this->bbcode_cache[$bbcode_id] = array(
+						'str' => array(
+							'[s:$uid]'	=> $this->bbcode_tpl('s_open', $bbcode_id),
+							'[/s:$uid]'	=> $this->bbcode_tpl('s_close', $bbcode_id),
+						)
+					);
+				break;
+
 				default:
 					if (isset($rowset[$bbcode_id]))
 					{
@@ -419,6 +428,8 @@ class bbcode
 				'i_close'	=> '</span>',
 				'u_open'	=> '<span style="text-decoration: underline">',
 				'u_close'	=> '</span>',
+				's_open'	=> '<span style="text-decoration: line-through">',
+				's_close'	=> '</span>',
 				'img'		=> '<img src="$1" alt="' . $user->lang['IMAGE'] . '" />',
 				'size'		=> '<span style="font-size: $1%; line-height: normal">$2</span>',
 				'color'		=> '<span style="color: $1">$2</span>',

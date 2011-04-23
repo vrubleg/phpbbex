@@ -59,6 +59,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_P_HELP'				=> 'Вставить изображение: [img]http://image_url[/img]',
 	'BBCODE_Q_HELP'				=> 'Цитата: [quote]text[/quote]',
 	'BBCODE_S_HELP'				=> 'Цвет шрифта: [color=red]text[/color] Совет: вы можете использовать также конструкцию color=#FF0000',
+	'BBCODE_STRIKE_HELP'		=> 'Зачёркнутый текст: [s]text[/s]',
 	'BBCODE_U_HELP'				=> 'Подчёркнутый текст: [u]text[/u]',
 	'BBCODE_W_HELP'				=> 'Вставить ссылку: [url]http://url[/url] или [url=http://url]URL text[/url]',
 	'BBCODE_D_HELP'				=> 'Флэш: [flash=width,height]http://url[/flash]',

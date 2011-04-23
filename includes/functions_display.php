@@ -899,8 +899,8 @@ function display_custom_bbcodes()
 {
 	global $db, $template, $user;
 
-	// Start counting from 22 for the bbcode ids (every bbcode takes two ids - opening/closing)
-	$num_predefined_bbcodes = 22;
+	// Start counting from 24 for the bbcode ids (every bbcode takes two ids - opening/closing)
+	$num_predefined_bbcodes = 24;
 
 	$sql = 'SELECT bbcode_id, bbcode_tag, bbcode_helpline
 		FROM ' . BBCODES_TABLE . '

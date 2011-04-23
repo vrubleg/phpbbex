@@ -46,3 +46,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
+
+DELETE FROM phpbb_bbcodes WHERE bbcode_tag = 's';
+UPDATE phpbb_bbcodes SET bbcode_id=(SELECT MAX(bbcode_id)+1) WHERE bbcode_id = 13;
