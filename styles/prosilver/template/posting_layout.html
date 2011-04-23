@@ -64,7 +64,22 @@
 
 	<!-- DEFINE $EXTRA_POSTING_OPTIONS = 1 -->
 	<!-- INCLUDE posting_editor.html -->
+<!-- IF S_USER_LOGGED_IN -->
 	{S_FORM_TOKEN}
+<!-- ELSE -->
+	<input type="hidden" name="creation_time" value="0" />
+	<input type="hidden" name="form_token" value="0" />
+	<script type="text/javascript">
+	jQuery(function($)
+	{
+		$('#register').submit(function()
+		{
+			$('inp'+'ut[na'+'me=crea'+'tion_t'+'ime]').val('{RAW_CREATION_TIME}');
+			$('in'+'pu'+'t[name'+'=for'+'m_to'+'ken]').val('{RAW_FORM_TOKEN}');
+		});
+	});
+	</script>
+<!-- ENDIF -->
 	<span class="corners-bottom"><span></span></span></div>
 </div>
 
