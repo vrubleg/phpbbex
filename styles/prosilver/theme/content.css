@@ -240,7 +240,7 @@ div[class].topic-actions {
 
 .postbody h3.first {
 	/* The first post on the page uses this */
-	font-size: 1.7em;
+	/*font-size: 1.7em;*/
 }
 
 .postbody h3 {
