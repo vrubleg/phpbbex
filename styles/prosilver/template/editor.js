@@ -4,7 +4,6 @@
 */
 
 // Startup variables
-var imageTag = false;
 var theSelection = false;
 
 var bbcodeEnabled = true;
@@ -16,14 +15,6 @@ var clientVer = parseInt(navigator.appVersion); // Get browser version
 var is_ie = ((clientPC.indexOf('msie') != -1) && (clientPC.indexOf('opera') == -1));
 var is_win = ((clientPC.indexOf('win') != -1) || (clientPC.indexOf('16bit') != -1));
 var baseHeight;
-
-/**
-* Shows the help messages in the helpline window
-*/
-function helpline(help)
-{
-	document.forms[form_name].helpbox.value = help_line[help];
-}
 
 /**
 * Fix a bug involving the TextRange object. From
