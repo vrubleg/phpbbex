@@ -744,7 +744,7 @@ fieldset.polls dd div {
 ----------------------------------------*/
 .postprofile {
 	/* Also see tweaks.css */
-	margin: 5px 0 10px 0;
+	margin: 5px 0 0 0;
 	min-height: 80px;
 	color: #666666;
 	border-left: 1px solid #FFFFFF;
