@@ -144,7 +144,7 @@ switch ($mode)
 			foreach ($_COOKIE as $cookie_name => $cookie_data)
 			{
 				// Only delete board cookies, no other ones...
-				if (strpos($cookie_name, $config['cookie_name'] . '_') !== 0)
+				if (strpos($cookie_name, $config['cookie_name'] . '_') !== 0 || $cookie_name == $config['cookie_name'] . '_bid')
 				{
 					continue;
 				}
