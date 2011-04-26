@@ -285,5 +285,6 @@ define('ZEBRA_TABLE',				$table_prefix . 'zebra');
 
 // Additional tables
 define('USER_CONFIRM_KEYS_TABLE',	$table_prefix . 'user_confirm_keys');
+define('USER_BROWSER_IDS_TABLE',	$table_prefix . 'user_browser_ids');
 
 ?>

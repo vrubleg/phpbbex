@@ -439,6 +439,7 @@ class session
 						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS) ? true : false;
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
+						$this->update_browser_id();
 						return true;
 					}
 				}
@@ -462,6 +463,39 @@ class session
 
 		// If we reach here then no (valid) session exists. So we'll create a new one
 		return $this->session_create();
+	}
+
+	function update_browser_id()
+	{
+		global $db, $config;
+		
+		$user_id = $this->data['user_id'];
+		$browser_id = request_var($config['cookie_name'] . '_bid', '', false, true);
+
+		if (empty($browser_id))
+		{
+			// Set new browser_id cookie
+			$browser_id = md5(unique_id('bid', true));
+			$cookie_expire = $this->time_now + 86400*365; // One year
+			$this->set_cookie('bid', $browser_id, $cookie_expire);
+		}
+
+		// Update stats
+		$sql = "INSERT INTO " . USER_BROWSER_IDS_TABLE . "
+			SET browser_id='" . $db->sql_escape($browser_id) . "', user_id='" . $db->sql_escape($user_id) . "',
+				created=UNIX_TIMESTAMP(), last_visit=UNIX_TIMESTAMP(), visits=1
+			ON DUPLICATE KEY UPDATE last_visit=UNIX_TIMESTAMP(), visits=visits+1";
+		$db->sql_query($sql);
+
+		// Garbage collection
+		if(rand(0, 1000) == 1)
+		{
+			$sql = "DELETE FROM " . USER_BROWSER_IDS_TABLE . "
+				WHERE  (visits = 1 AND user_id = " . ANONYMOUS . " AND last_visit+3600*12 < UNIX_TIMESTAMP())
+					OR (visits > 1 AND user_id = " . ANONYMOUS . " AND last_visit+86400*7 < UNIX_TIMESTAMP())
+					OR (last_visit+86400*365 < UNIX_TIMESTAMP())";
+			$db->sql_query($sql);
+		}
 	}
 
 	/**

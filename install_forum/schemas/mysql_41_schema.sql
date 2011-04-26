@@ -434,6 +434,7 @@ CREATE TABLE phpbb_posts (
 	poster_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	icon_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	poster_ip varchar(40) DEFAULT '' NOT NULL,
+	poster_browser_id char(32) DEFAULT '' NOT NULL,
 	post_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	post_created int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	post_approved tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
@@ -1040,4 +1041,14 @@ CREATE TABLE phpbb_user_confirm_keys (
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
+
+# Table: 'phpbb_user_browser_ids'
+CREATE TABLE phpbb_user_browser_ids (
+	browser_id char(32) DEFAULT '' NOT NULL,
+	user_id mediumint(8) NOT NULL,
+	created int(11) NOT NULL,
+	last_visit int(11) NOT NULL,
+	visits int(11) NOT NULL,
+	PRIMARY KEY (browser_id,user_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
