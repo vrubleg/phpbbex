@@ -12,6 +12,7 @@ CREATE TABLE phpbb_user_browser_ids (
 	created int(11) NOT NULL,
 	last_visit int(11) NOT NULL,
 	visits int(11) NOT NULL,
+	agent varchar(150) DEFAULT '' NOT NULL,
 	PRIMARY KEY (browser_id,user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
