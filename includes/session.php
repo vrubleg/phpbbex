@@ -484,8 +484,10 @@ class session
 		// Update stats
 		$sql = "INSERT INTO " . USER_BROWSER_IDS_TABLE . "
 			SET browser_id='" . $db->sql_escape($browser_id) . "', user_id='" . $db->sql_escape($user_id) . "',
-				created=UNIX_TIMESTAMP(), last_visit=UNIX_TIMESTAMP(), visits=1, agent = '" . $db->sql_escape($agent) . "'
-			ON DUPLICATE KEY UPDATE last_visit=UNIX_TIMESTAMP(), visits=visits+1, agent = '" . $db->sql_escape($agent) . "'";
+				created=UNIX_TIMESTAMP(), last_visit=UNIX_TIMESTAMP(), visits=1,
+				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'
+			ON DUPLICATE KEY UPDATE last_visit=UNIX_TIMESTAMP(), visits=visits+1,
+				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'";
 		$db->sql_query($sql);
 
 		// Garbage collection
