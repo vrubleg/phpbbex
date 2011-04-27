@@ -404,6 +404,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		if ($row['forum_last_post_id'])
 		{
 			$forums_last_posts_ids_list[$row['forum_id']] = $row['forum_last_post_id'];
+			$last_post_id = $row['forum_last_post_id'];
 			$last_post_subject = $row['forum_last_post_subject'];
 			$last_post_time = $user->format_date($row['forum_last_post_time']);
 			$last_post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row['forum_id_last_post'] . '&amp;p=' . $row['forum_last_post_id']) . '#p' . $row['forum_last_post_id'];
@@ -411,6 +412,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		else
 		{
 			$last_post_subject = $last_post_time = $last_post_url = '';
+			$last_post_id = false;
 		}
 
 		// Output moderator listing ... if applicable
@@ -470,7 +472,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			'FORUM_FOLDER_IMG_ALT'	=> isset($user->lang[$folder_alt]) ? $user->lang[$folder_alt] : '',
 			'FORUM_IMAGE'			=> ($row['forum_image']) ? '<img src="' . $phpbb_root_path . $row['forum_image'] . '" alt="' . $user->lang[$folder_alt] . '" />' : '',
 			'FORUM_IMAGE_SRC'		=> ($row['forum_image']) ? $phpbb_root_path . $row['forum_image'] : '',
-			'LAST_POST_ID'			=> $forums_last_posts_ids_list[$row['forum_id']],
+			'LAST_POST_ID'			=> $last_post_id,
 			'LAST_POST_SUBJECT'		=> censor_text($last_post_subject),
 			'LAST_POST_TIME'		=> $last_post_time,
 			'LAST_POSTER'			=> get_username_string('username', $row['forum_last_poster_id'], $row['forum_last_poster_name'], $row['forum_last_poster_colour']),
@@ -520,7 +522,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			$last_topic_title = (utf8_strlen($last_topic_title_full) > 30) ? utf8_substr($last_topic_title_full, 0, 30) . '&hellip;' : $last_topic_title_full;
 			$last_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $last_topic_row['forum_id'] . '&amp;t=' . $last_topic_row['topic_id']);
 
-			$template->alter_block_array('forumrow', array(						
+			$template->alter_block_array('forumrow', array(
 					'LAST_TOPIC_TITLE'		=> $last_topic_title,
 					'LAST_TOPIC_TITLE_FULL'	=> $last_topic_title_full,
 					'U_LAST_TOPIC_URL'		=> $last_topic_url
