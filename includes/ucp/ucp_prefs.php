@@ -193,7 +193,7 @@ class ucp_prefs
 				{
 					$data['user_topics_per_page'] = 10;
 				}
-				if ($data['user_topics_per_page'] == $config['topics_per_page'])
+				if ($data['user_topics_per_page'] == $config['topics_per_page_default'])
 				{
 					$data['user_topics_per_page'] = 0;
 				}
@@ -206,7 +206,7 @@ class ucp_prefs
 				{
 					$data['user_posts_per_page'] = 10;
 				}
-				if ($data['user_posts_per_page'] == $config['posts_per_page'])
+				if ($data['user_posts_per_page'] == $config['posts_per_page_default'])
 				{
 					$data['user_posts_per_page'] = 0;
 				}
