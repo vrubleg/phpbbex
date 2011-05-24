@@ -1849,6 +1849,18 @@ class user extends session
 		// After calling it we continue script execution...
 		phpbb_user_session_handler();
 
+		if($this->data['is_registered'] && !defined('ADMIN_START'))
+		{
+			if ($this->data['user_topics_per_page'] > 0)
+			{
+				$config['topics_per_page'] = $this->data['user_topics_per_page'];
+			}
+			if ($this->data['user_posts_per_page'] > 0)
+			{
+				$config['posts_per_page'] = $this->data['user_posts_per_page'];
+			}
+		}
+
 		// If this function got called from the error handler we are finished here.
 		if (defined('IN_ERROR_HANDLER'))
 		{
