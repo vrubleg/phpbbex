@@ -170,6 +170,9 @@ class ucp_prefs
 					'post_sd'		=> request_var('post_sd', (!empty($user->data['user_post_sortby_dir'])) ? $user->data['user_post_sortby_dir'] : 'a'),
 					'post_st'		=> request_var('post_st', (!empty($user->data['user_post_show_days'])) ? $user->data['user_post_show_days'] : 0),
 
+					'user_topics_per_page'	=> (int) request_var('user_topics_per_page', (!empty($user->data['user_topics_per_page'])) ? $user->data['user_topics_per_page'] : 0),
+					'user_posts_per_page'	=> (int) request_var('user_posts_per_page', (!empty($user->data['user_posts_per_page'])) ? $user->data['user_posts_per_page'] : 0),
+
 					'images'		=> request_var('images', (bool) $user->optionget('viewimg')),
 					'flash'			=> request_var('flash', (bool) $user->optionget('viewflash')),
 					'smilies'		=> request_var('smilies', (bool) $user->optionget('viewsmilies')),
@@ -181,6 +184,32 @@ class ucp_prefs
 					'quickpost'		=> request_var('quickpost', (bool) $user->optionget('viewquickpost')),
 					'topicreview'	=> request_var('topicreview', (bool) $user->optionget('viewtopicreview')),
 				);
+
+				if ($data['user_topics_per_page'] > 100)
+				{
+					$data['user_topics_per_page'] = 100;
+				}
+				if ($data['user_topics_per_page'] < 10 && $data['user_topics_per_page'] != 0)
+				{
+					$data['user_topics_per_page'] = 10;
+				}
+				if ($data['user_topics_per_page'] == $config['topics_per_page'])
+				{
+					$data['user_topics_per_page'] = 0;
+				}
+
+				if ($data['user_posts_per_page'] > 100)
+				{
+					$data['user_posts_per_page'] = 100;
+				}
+				if ($data['user_posts_per_page'] < 10 && $data['user_posts_per_page'] != 0)
+				{
+					$data['user_posts_per_page'] = 10;
+				}
+				if ($data['user_posts_per_page'] == $config['posts_per_page'])
+				{
+					$data['user_posts_per_page'] = 0;
+				}
 
 				if ($submit)
 				{
@@ -221,6 +250,9 @@ class ucp_prefs
 
 							'user_topic_show_days'	=> $data['topic_st'],
 							'user_post_show_days'	=> $data['post_st'],
+
+							'user_topics_per_page' => $data['user_topics_per_page'],
+							'user_posts_per_page' => $data['user_posts_per_page'],
 						);
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -302,8 +334,11 @@ class ucp_prefs
 					'S_TOPIC_SORT_DIR'		=> $s_sort_topic_dir,
 					'S_POST_SORT_DAYS'		=> $s_limit_post_days,
 					'S_POST_SORT_KEY'		=> $s_sort_post_key,
-					'S_POST_SORT_DIR'		=> $s_sort_post_dir)
-				);
+					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
+
+					'USER_TOPICS_PER_PAGE'	=> $data['user_topics_per_page'] ? $data['user_topics_per_page'] : $config['topics_per_page'],
+					'USER_POSTS_PER_PAGE'	=> $data['user_posts_per_page'] ? $data['user_posts_per_page'] : $config['posts_per_page'],
+				));
 
 			break;
 

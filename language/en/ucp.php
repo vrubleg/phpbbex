@@ -497,6 +497,8 @@ $lang = array_merge($lang, array(
 	'VIEW_POSTS_DAYS'			=> 'Display posts from previous days',
 	'VIEW_POSTS_DIR'			=> 'Display post order direction',
 	'VIEW_POSTS_KEY'			=> 'Display posts ordering by',
+	'USER_TOPICS_PER_PAGE'		=> 'Topics per page',
+	'USER_POSTS_PER_PAGE'		=> 'Posts per page',
 
 	'WATCHED_EXPLAIN'			=> 'Below is a list of forums and topics you are subscribed to. You will be notified of new posts in either. To unsubscribe mark the forum or topic and then press the <em>Unwatch marked</em> button.',
 	'WATCHED_FORUMS'			=> 'Watched forums',
