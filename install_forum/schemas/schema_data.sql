@@ -213,6 +213,10 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('mime_triggers', 'b
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('new_member_post_limit', '3');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('new_member_group_default', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_style', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PASS_TYPE_ANY');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_edit_time', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_boxes', '4');

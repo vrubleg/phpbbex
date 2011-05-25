@@ -61,7 +61,11 @@ class ucp_prefs
 
 				if ($submit)
 				{
-					$data['style'] = ($config['override_user_style']) ? $config['default_style'] : $data['style'];
+					$data['style']		= ($config['override_user_style'])		? $config['default_style']		: $data['style'];
+					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
+					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
+					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
+					$data['dst']		= ($config['override_user_dst'])		? $config['board_dst']			: $data['dst'];
 
 					$error = validate_data($data, array(
 						'dateformat'	=> array('string', false, 1, 30),
@@ -140,17 +144,18 @@ class ucp_prefs
 					'S_NOTIFY_PM'		=> $data['notifypm'],
 					'S_POPUP_PM'		=> $data['popuppm'],
 					'S_DST'				=> $data['dst'],
+					'S_DST_SHOW'		=> ($config['override_user_dst']) ? false : true,
 
 					'DATE_FORMAT'			=> $data['dateformat'],
 					'A_DATE_FORMAT'			=> addslashes($data['dateformat']),
-					'S_DATEFORMAT_OPTIONS'	=> $dateformat_options,
+					'S_DATEFORMAT_OPTIONS'	=> ($config['override_user_dateformat']) ? '' : $dateformat_options,
 					'S_CUSTOM_DATEFORMAT'	=> $s_custom,
 					'DEFAULT_DATEFORMAT'	=> $config['default_dateformat'],
 					'A_DEFAULT_DATEFORMAT'	=> addslashes($config['default_dateformat']),
 
-					'S_LANG_OPTIONS'		=> language_select($data['lang']),
+					'S_LANG_OPTIONS'		=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
 					'S_STYLE_OPTIONS'		=> ($config['override_user_style']) ? '' : style_select($data['style']),
-					'S_TZ_OPTIONS'			=> tz_select($data['tz'], true),
+					'S_TZ_OPTIONS'			=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
 					'S_CAN_HIDE_ONLINE'		=> ($auth->acl_get('u_hideonline')) ? true : false,
 					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && @extension_loaded('xml')) ? true : false)
 				);

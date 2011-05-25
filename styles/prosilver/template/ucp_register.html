@@ -54,16 +54,22 @@
 		<dd><input type="password" tabindex="5" name="password_confirm" id="password_confirm" size="25" value="{PASSWORD_CONFIRM}" class="inputbox autowidth" title="{L_CONFIRM_PASSWORD}" /></dd>
 	</dl>
 
+	<!-- IF S_LANG_OPTIONS and S_TZ_OPTIONS -->
 	<hr />
+	<!-- ENDIF -->
 
+	<!-- IF S_LANG_OPTIONS -->
 	<dl>
 		<dt><label for="lang">{L_LANGUAGE}:</label></dt>
 		<dd><select name="lang" id="lang" onchange="change_language(this.value); return false;" tabindex="6" title="{L_LANGUAGE}">{S_LANG_OPTIONS}</select></dd>
 	</dl>
+	<!-- ENDIF -->
+	<!-- IF S_TZ_OPTIONS -->
 	<dl>
 		<dt><label for="tz">{L_TIMEZONE}:</label></dt>
 		<dd><select name="tz" id="tz" tabindex="7" class="autowidth">{S_TZ_OPTIONS}</select></dd>
 	</dl>
+	<!-- ENDIF -->
 
 	<!-- IF .profile_fields -->
 		<dl><dd><strong>{L_ITEMS_REQUIRED}</strong></dd></dl>

@@ -58,6 +58,10 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
 

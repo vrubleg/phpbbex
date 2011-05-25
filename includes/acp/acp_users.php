@@ -1476,6 +1476,12 @@ class acp_users
 
 				if ($submit)
 				{
+					$data['style']		= ($config['override_user_style'])		? $config['default_style']		: $data['style'];
+					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
+					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
+					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
+					$data['dst']		= ($config['override_user_dst'])		? $config['board_dst']			: $data['dst'];
+
 					$error = validate_data($data, array(
 						'dateformat'	=> array('string', false, 1, 30),
 						'lang'			=> array('match', false, '#^[a-z_\-]{2,}$#i'),
@@ -1658,14 +1664,16 @@ class acp_users
 					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
 
 					'DATE_FORMAT'			=> $data['dateformat'],
-					'S_DATEFORMAT_OPTIONS'	=> $dateformat_options,
+					'S_DATEFORMAT_OPTIONS'	=> ($config['override_user_dateformat']) ? '' : $dateformat_options,
 					'S_CUSTOM_DATEFORMAT'	=> $s_custom,
 					'DEFAULT_DATEFORMAT'	=> $config['default_dateformat'],
 					'A_DEFAULT_DATEFORMAT'	=> addslashes($config['default_dateformat']),
 
-					'S_LANG_OPTIONS'	=> language_select($data['lang']),
-					'S_STYLE_OPTIONS'	=> style_select($data['style']),
-					'S_TZ_OPTIONS'		=> tz_select($data['tz'], true),
+					'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
+					'S_STYLE_OPTIONS'	=> ($config['override_user_style']) ? '' : style_select($data['style']),
+					'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
+
+					'S_DST_SHOW'		=> ($config['override_user_dst']) ? false : true,
 					)
 				);
 

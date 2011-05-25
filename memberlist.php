@@ -885,7 +885,7 @@ switch ($mode)
 				if ($cc)
 				{
 					$mail_to_users[] = array(
-						'email_lang'		=> $user->data['user_lang'],
+						'email_lang'		=> $user->lang_name,
 						'email'				=> $user->data['user_email'],
 						'name'				=> $user->data['username'],
 						'username'			=> $user->data['username'],
