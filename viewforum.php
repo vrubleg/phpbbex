@@ -149,6 +149,7 @@ $template->set_filenames(array(
 make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"), $forum_id);
 
 $template->assign_vars(array(
+	'U_CANONICAL' 			=> generate_board_url() . "/viewforum.$phpEx?f=$forum_id" . (($start) ? "&amp;start=$start" : ''),
 	'U_VIEW_FORUM'			=> append_sid("{$phpbb_root_path}viewforum.$phpEx", "f=$forum_id" . (($start == 0) ? '' : "&amp;start=$start")),
 ));
 
