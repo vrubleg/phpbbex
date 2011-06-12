@@ -65,5 +65,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
 
+INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
+
 DELETE FROM phpbb_bbcodes WHERE bbcode_tag = 's';
 UPDATE phpbb_bbcodes SET bbcode_id=(SELECT MAX(bbcode_id)+1) WHERE bbcode_id = 13;

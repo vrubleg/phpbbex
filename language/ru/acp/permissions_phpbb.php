@@ -109,6 +109,7 @@ $lang = array_merge($lang, array(
 	'acl_u_savedrafts'	=> array('lang' => 'Может сохранять черновики', 'cat' => 'post'),
 	'acl_u_chgcensors'	=> array('lang' => 'Может отключать автоцензора', 'cat' => 'post'),
 	'acl_u_sig'			=> array('lang' => 'Может использовать подпись', 'cat' => 'post'),
+	'u_ignoreedittime'	=> array('lang' => 'Может игнорировать ограничение времени на редактирование', 'cat' => 'post'),
 
 	'acl_u_sendpm'		=> array('lang' => 'Может посылать ЛС', 'cat' => 'pm'),
 	'acl_u_masspm'		=> array('lang' => 'Может рассылать ЛС нескольким пользователям', 'cat' => 'pm'),

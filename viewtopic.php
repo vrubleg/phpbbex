@@ -1553,7 +1553,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		$user->data['user_id'] == $poster_id &&
 		$auth->acl_get('f_edit', $forum_id) &&
 		!$row['post_edit_locked'] &&
-		($row['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'])
+		($row['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'] || $auth->acl_get('u_ignoreedittime'))
 	)));
 
 	$delete_allowed = ($user->data['is_registered'] && ($auth->acl_get('m_delete', $forum_id) || (
