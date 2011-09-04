@@ -10,10 +10,13 @@
 */
 
 @import url("common.css");
+@import url("header.css");
+@import url("mainmenu.css");
 @import url("links.css");
 @import url("content.css");
 @import url("buttons.css");
 @import url("cp.css");
 @import url("forms.css");
-@import url("tweaks.css");
 @import url("colours.css");
+@import url("tweaks.css");
+@import url("dialogs.css");

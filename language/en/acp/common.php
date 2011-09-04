@@ -364,6 +364,9 @@ $lang = array_merge($lang, array(
 	'RESYNC_STATS'					=> 'Resynchronise statistics',
 	'RESYNC_STATS_CONFIRM'			=> 'Are you sure you wish to resynchronise statistics?',
 	'RESYNC_STATS_EXPLAIN'			=> 'Recalculates the total number of posts, topics, users and files.',
+	'RESYNC_TOPICCOUNTS'			=> 'Resynchronise topic counts',
+	'RESYNC_TOPICCOUNTS_EXPLAIN'	=> 'Only existing topics will be taken into consideration. Pruned topics will not be counted.',
+	'RESYNC_TOPICCOUNTS_CONFIRM'	=> 'Are you sure you wish to resynchronise topic counts?',
 	'RUN'							=> 'Run now',
 
 	'STATISTIC'					=> 'Statistic',
@@ -662,6 +665,7 @@ $lang = array_merge($lang, array(
 	'LOG_RESYNC_POSTCOUNTS'		=> '<strong>User post counts resynchronised</strong>',
 	'LOG_RESYNC_POST_MARKING'	=> '<strong>Dotted topics resynchronised</strong>',
 	'LOG_RESYNC_STATS'			=> '<strong>Post, topic and user statistics resynchronised</strong>',
+	'LOG_RESYNC_TOPICCOUNTS'	=> '<strong>User topic counts resynchronised</strong>',
 
 	'LOG_SEARCH_INDEX_CREATED'	=> '<strong>Created search index for</strong><br />» %s',
 	'LOG_SEARCH_INDEX_REMOVED'	=> '<strong>Removed search index for</strong><br />» %s',
@@ -737,6 +741,71 @@ $lang = array_merge($lang, array(
 	'LOG_WORD_ADD'			=> '<strong>Added word censor</strong><br />» %s',
 	'LOG_WORD_DELETE'		=> '<strong>Deleted word censor</strong><br />» %s',
 	'LOG_WORD_EDIT'			=> '<strong>Edited word censor</strong><br />» %s',
+));
+
+// Manage attachments module for phpBB3 MOD
+$lang = array_merge($lang, array(
+	'ACP_MANAGE_ATTACHMENTS'			=> 'Manage attachments',
+	'ACP_MANAGE_ATTACHMENTS_EXPLAIN'	=> 'Here you can manage files attached to posts. You are able to delete the files or reassign them to existing posts. Reassigning to posts requires a valid post ID, you have to determine this ID by yourself. This will reassign the already assigned attachment to the post you entered.',
+	'LOG_ATTACH_DEL'					=> '<strong>Attachments deleted</strong><br />» %s',
+	'LOG_ATTACH_REASSIGNED'				=> '<strong>Attachment reassigned to Post</strong><br />» ID %1$d - %2$s',
+	'TOTAL_SIZE'						=> 'Total size',
+	'DOWNLOADS'							=> 'Downloads',
+));
+
+// Quick reply
+$lang = array_merge($lang, array(
+	'ACP_QUICK_REPLY'			=> 'Quick reply',
+	'LOG_CONFIG_QUICK_REPLY'	=> '<strong>Edited quick reply settings</strong>',
+	'ACP_QUICK_REPLY_EXPLAIN'	=> 'Here you can change quick post/reply forms view. You can switch on/off entire quick post/reply forms or displaying of smilies/attachbox/checkboxes/post icons separately.',
+	'ALLOW_QUICK_REPLY'			=> 'Allow quick reply for users',
+	'ALLOW_QUICK_REPLY_EXPLAIN'	=> 'Users can post reply directly at topic view.',
+	'ALLOW_QUICK_REPLY_NONE'	=> 'None',
+	'ALLOW_QUICK_REPLY_REG'		=> 'Registered only',
+	'ALLOW_QUICK_REPLY_ALL'		=> 'All',
+	'ALLOW_REPLY_ICONS'			=> 'Post/topic icons',
+	'ALLOW_REPLY_CHECKBOXES'	=> 'Checkboxes',
+	'ALLOW_REPLY_ATTACHBOX'		=> 'Attachbox',
+	'ALLOW_REPLY_SMILIES'		=> 'Smilies',
+	'ALLOW_QUICK_POST'			=> 'Allow quick topic post for users',
+	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Users can start topic directly at forum view.',
+));
+
+// Posts merging
+$lang = array_merge($lang, array(
+	'MERGE_INTERVAL'				=> 'Merging posts interval',
+	'MERGE_INTERVAL_EXPLAIN'		=> 'Number of hours a messages from the user will be merged with his topic last message. Leave empty or 0 to disable merging.',
+	'MERGE_NO_TOPICS'				=> 'Topics without merging',
+	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Set comma separated list of topics\'IDs where posts merging will be disabled.',
+	'MERGE_NO_FORUMS'				=> 'Forums without merging',
+	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Set comma separated list of forums\'IDs where posts merging will be disabled.',
+));
+
+// Out links
+$lang = array_merge($lang, array(
+	'ACP_OUTLINKS'			=> 'External links',
+	'ACP_OUTLINKS_EXPLAIN'	=> 'From this control panel you can add, edit, and remove external links.',
+	'TITLE'					=> 'Title',
+	'LINK'					=> 'URL',
+	'ADD_LINK'				=> 'Add link',
+	'EDIT_LINK'				=> 'Edit link',
+	'LINK_ADDED'			=> 'The link has been successfully added.',
+	'LINK_UPDATED'			=> 'The selected link has been successfully updated.',
+	'LINK_REMOVED'			=> 'The selected link has been successfully removed.',
+));
+
+// Custom BBCode Sorting
+$lang = array_merge($lang, array(
+	'SHOW_BUTTON'		=> 'Button',
+));
+
+// Login via E-Mail
+$lang = array_merge($lang, array(
+	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Login via E-Mail',
+	'LOGIN_VIA_EMAIL_ENABLE_EXPLAIN'	=> 'Allow users to login using either their username or e-mail address. With the silent option, there will be no text indicating that this is possible.',
+	'LOGIN_VIA_EMAIL_SILENT'			=> 'Yes, silently',
+	'LOGIN_VIA_EMAIL_ONLY'				=> 'E-Mail only',
+	'EMAIL_REUSE_DISABLED'				=> 'This is disabled while <em>Login via Email</em> is enabled.',
 ));
 
 ?>

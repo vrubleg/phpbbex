@@ -1510,35 +1510,6 @@ function get_topic_tracking($forum_id, $topic_ids, &$rowset, $forum_mark_time, $
 	{
 		$mark_time = array();
 
-		// Get global announcement info
-		if ($global_announce_list && sizeof($global_announce_list))
-		{
-			if (!isset($forum_mark_time[0]))
-			{
-				global $db;
-
-				$sql = 'SELECT mark_time
-					FROM ' . FORUMS_TRACK_TABLE . "
-					WHERE user_id = {$user->data['user_id']}
-						AND forum_id = 0";
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if ($row)
-				{
-					$mark_time[0] = $row['mark_time'];
-				}
-			}
-			else
-			{
-				if ($forum_mark_time[0] !== false)
-				{
-					$mark_time[0] = $forum_mark_time[0];
-				}
-			}
-		}
-
 		if (!empty($forum_mark_time[$forum_id]) && $forum_mark_time[$forum_id] !== false)
 		{
 			$mark_time[$forum_id] = $forum_mark_time[$forum_id];
@@ -1548,14 +1519,7 @@ function get_topic_tracking($forum_id, $topic_ids, &$rowset, $forum_mark_time, $
 
 		foreach ($topic_ids as $topic_id)
 		{
-			if ($global_announce_list && isset($global_announce_list[$topic_id]))
-			{
-				$last_read[$topic_id] = (isset($mark_time[0])) ? $mark_time[0] : $user_lastmark;
-			}
-			else
-			{
-				$last_read[$topic_id] = $user_lastmark;
-			}
+			$last_read[$topic_id] = $user_lastmark;
 		}
 	}
 
@@ -1599,8 +1563,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 			$sql = 'SELECT forum_id, mark_time
 				FROM ' . FORUMS_TRACK_TABLE . "
 				WHERE user_id = {$user->data['user_id']}
-					AND forum_id " .
-					(($global_announce_list && sizeof($global_announce_list)) ? "IN (0, $forum_id)" : "= $forum_id");
+					AND forum_id = $forum_id";
 			$result = $db->sql_query($sql);
 
 			$mark_time = array();
@@ -1614,14 +1577,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 
 			foreach ($topic_ids as $topic_id)
 			{
-				if ($global_announce_list && isset($global_announce_list[$topic_id]))
-				{
-					$last_read[$topic_id] = (isset($mark_time[0])) ? $mark_time[0] : $user_lastmark;
-				}
-				else
-				{
-					$last_read[$topic_id] = $user_lastmark;
-				}
+				$last_read[$topic_id] = $user_lastmark;
 			}
 		}
 	}
@@ -2724,7 +2680,9 @@ function add_form_key($form_name)
 	));
 
 	$template->assign_vars(array(
-		'S_FORM_TOKEN'	=> $s_fields,
+		'S_FORM_TOKEN'		=> $s_fields,
+		'RAW_CREATION_TIME' => $now,
+		'RAW_FORM_TOKEN' 	=> $token,
 	));
 }
 
@@ -2806,20 +2764,34 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 		}
 	}
 
+	// Delete old confirm keys
+	$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . " 
+		WHERE confirm_time < " . (time() - 900);
+	$db->sql_query($sql);
+
 	if ($check && $confirm)
 	{
 		$user_id = request_var('confirm_uid', 0);
 		$session_id = request_var('sess', '');
 		$confirm_key = request_var('confirm_key', '');
 
-		if ($user_id != $user->data['user_id'] || $session_id != $user->session_id || !$confirm_key || !$user->data['user_last_confirm_key'] || $confirm_key != $user->data['user_last_confirm_key'])
+		if ($user_id != $user->data['user_id'] || $session_id != $user->session_id || !$confirm_key)
 		{
 			return false;
 		}
 
-		// Reset user_last_confirm_key
-		$sql = 'UPDATE ' . USERS_TABLE . " SET user_last_confirm_key = ''
-			WHERE user_id = " . $user->data['user_id'];
+		// Checking confirm key
+		$sql = "SELECT * FROM " . USER_CONFIRM_KEYS_TABLE . " 
+			WHERE user_id = " . $user->data['user_id'] . " AND confirm_key = '" . $db->sql_escape($confirm_key) . "'";
+		$result = $db->sql_query($sql);
+		if(!$db->sql_fetchrow($result))
+		{
+			return false;
+		}
+
+		// Delete used confirm key
+		$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . " 
+			WHERE user_id = " . $user->data['user_id'] . " AND confirm_key = '" . $db->sql_escape($confirm_key) . "'";
 		$db->sql_query($sql);
 
 		return true;
@@ -2872,8 +2844,13 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 		'S_HIDDEN_FIELDS'	=> $hidden . $s_hidden_fields)
 	);
 
-	$sql = 'UPDATE ' . USERS_TABLE . " SET user_last_confirm_key = '" . $db->sql_escape($confirm_key) . "'
-		WHERE user_id = " . $user->data['user_id'];
+	// Save new confirm key
+	$data = array(
+		'confirm_key'	=> $confirm_key,
+		'user_id'		=> (int) $user->data['user_id'],
+		'confirm_time'	=> (int) time(),
+	);
+	$sql = 'INSERT INTO ' . USER_CONFIRM_KEYS_TABLE . ' ' . $db->sql_build_array('INSERT', $data);
 	$db->sql_query($sql);
 
 	if (defined('IN_ADMIN') && isset($user->data['session_admin']) && $user->data['session_admin'])
@@ -2948,7 +2925,9 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		$viewonline = ($admin) ? $user->data['session_viewonline'] : $viewonline;
 
 		// Check if the supplied username is equal to the one stored within the database if re-authenticating
-		if ($admin && utf8_clean_string($username) != utf8_clean_string($user->data['username']))
+		if ($admin
+			&& utf8_clean_string($username) != utf8_clean_string($user->data['username'])
+			&& utf8_clean_string($username) != utf8_clean_string($user->data['user_email']))
 		{
 			// We log the attempt to use a different username...
 			add_log('admin', 'LOG_ADMIN_AUTH_FAIL');
@@ -3075,7 +3054,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		'S_HIDDEN_FIELDS' 		=> $s_hidden_fields,
 
 		'S_ADMIN_AUTH'			=> $admin,
-		'USERNAME'				=> ($admin) ? $user->data['username'] : '',
+		'USERNAME'				=> ($admin) ? ($config['login_via_email_enable'] == LOGIN_VIA_EMAIL_ONLY ? $user->data['user_email'] : $user->data['username']) : '',
 
 		'USERNAME_CREDENTIAL'	=> 'username',
 		'PASSWORD_CREDENTIAL'	=> ($admin) ? 'password_' . $credential : 'password',
@@ -4443,7 +4422,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	$web_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? $board_url : $phpbb_root_path;
 
 	// Which timezone?
-	$tz = ($user->data['user_id'] != ANONYMOUS) ? strval(doubleval($user->data['user_timezone'])) : strval(doubleval($config['board_timezone']));
+	$tz = strval($user->timezone/3600.0);
 
 	// Send a proper content-language to the output
 	$user_lang = $user->lang['USER_LANG'];
@@ -4458,10 +4437,23 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		$s_search_hidden_fields['sid'] = $_SID;
 	}
 
+	// Out links
+	$outlinks = ($config['outlinks']) ? $config['outlinks'] : '';
+	if($outlinks == '') $outlinks = array(); 
+	else
+	{
+		$outlinks = explode("\n", $outlinks);
+		for($i=0; $i<count($outlinks); $i++) $outlinks[$i] = explode("\t", $outlinks[$i]);
+	}
+	$template->assign_var("S_OUTLINKS", (count($outlinks)!==0));
+	foreach($outlinks as $row) $template->assign_block_vars( 'outlinks', array('TITLE' => $row[1], 'URL' => $row[2]) );
+
 	// The following assigns all _common_ variables that may be used at any point in a template.
 	$template->assign_vars(array(
 		'SITENAME'						=> $config['sitename'],
 		'SITE_DESCRIPTION'				=> $config['site_desc'],
+		'SITE_KEYWORDS'					=> $config['site_keywords'],
+		'COPYRIGHT_NOTICE'				=> nl2br($config['copyright_notice']),
 		'PAGE_TITLE'					=> $page_title,
 		'SCRIPT_NAME'					=> str_replace('.' . $phpEx, '', $user->page['page_name']),
 		'LAST_VISIT_DATE'				=> sprintf($user->lang['YOU_LAST_VISIT'], $s_last_visit),
@@ -4488,19 +4480,36 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'L_ONLINE_EXPLAIN'	=> $l_online_time,
 
 		'U_PRIVATEMSGS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),
+		'U_PM_COMPOSE'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=compose'),
+		'U_PM_OUTBOX'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=outbox'),
+		'U_PM_SENTBOX'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=sentbox'),
+		'U_PM_DRAFTS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=drafts'),
 		'U_RETURN_INBOX'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),
 		'U_POPUP_PM'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=popup'),
 		'UA_POPUP_PM'			=> addslashes(append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=popup')),
+
 		'U_MEMBERLIST'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx"),
 		'U_VIEWONLINE'			=> ($auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel')) ? append_sid("{$phpbb_root_path}viewonline.$phpEx") : '',
 		'U_LOGIN_LOGOUT'		=> $u_login_logout,
 		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.$phpEx"),
 		'U_SEARCH'				=> append_sid("{$phpbb_root_path}search.$phpEx"),
 		'U_REGISTER'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register'),
+
 		'U_PROFILE'				=> append_sid("{$phpbb_root_path}ucp.$phpEx"),
-		'U_MODCP'				=> append_sid("{$phpbb_root_path}mcp.$phpEx", false, true, $user->session_id),
+		'U_UCP_BOOKMARKS'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=main&amp;mode=bookmarks'),
+		'U_UCP_SUBSCRIBED'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=main&amp;mode=subscribed'),
+		'U_UCP_DRAFTS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=main&amp;mode=drafts'),
+		'U_UCP_ATTACHMENTS'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=attachments&amp;mode=attachments'),
+		'U_UCP_USERGROUPS'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=groups&amp;mode=membership'),
+		'U_UCP_FRIENDS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=zebra&amp;mode=friends'),
+		'U_UCP_PROFILE_INFO'	=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=profile&amp;mode=profile_info'),
+		'U_UCP_SETTINGS'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=prefs&amp;mode=personal'),
+
+		'U_MCP'					=> ($auth->acl_get('m_') || $auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", false, true, $user->session_id) : '',
 		'U_FAQ'					=> append_sid("{$phpbb_root_path}faq.$phpEx"),
+		'U_RULES'				=> append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=rules'),
 		'U_SEARCH_SELF'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch'),
+		'U_SEARCH_SELF_TOPICS'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch&amp;sf=firstpost'),
 		'U_SEARCH_NEW'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=newposts'),
 		'U_SEARCH_UNANSWERED'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unanswered'),
 		'U_SEARCH_UNREAD'		=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unreadposts'),
@@ -4525,7 +4534,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_CONTENT_FLOW_BEGIN'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
 		'S_CONTENT_FLOW_END'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
 		'S_CONTENT_ENCODING'	=> 'UTF-8',
-		'S_TIMEZONE'			=> ($user->data['user_dst'] || ($user->data['user_id'] == ANONYMOUS && $config['board_dst'])) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
+		'S_TIMEZONE'			=> ($user->dst) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
 		'S_DISPLAY_ONLINE_LIST'	=> ($l_online_time) ? 1 : 0,
 		'S_DISPLAY_SEARCH'		=> (!$config['load_search']) ? 0 : (isset($auth) ? ($auth->acl_get('u_search') && $auth->acl_getf_global('f_search')) : 1),
 		'S_DISPLAY_PM'			=> ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))) ? true : false,
@@ -4568,7 +4577,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'T_TEMPLATE_NAME'		=> $user->theme['template_path'],
 		'T_SUPER_TEMPLATE_NAME'	=> (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? $user->theme['template_inherit_path'] : $user->theme['template_path'],
 		'T_IMAGESET_NAME'		=> $user->theme['imageset_path'],
-		'T_IMAGESET_LANG_NAME'	=> $user->data['user_lang'],
+		'T_IMAGESET_LANG_NAME'	=> $user->lang_name,
 		'T_IMAGES'				=> 'images',
 		'T_SMILIES'				=> $config['smilies_path'],
 		'T_AVATAR'				=> $config['avatar_path'],
@@ -4580,7 +4589,22 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'SITE_LOGO_IMG'			=> $user->img('site_logo'),
 
 		'A_COOKIE_SETTINGS'		=> addslashes('; path=' . $config['cookie_path'] . ((!$config['cookie_domain'] || $config['cookie_domain'] == 'localhost' || $config['cookie_domain'] == '127.0.0.1') ? '' : '; domain=' . $config['cookie_domain']) . ((!$config['cookie_secure']) ? '' : '; secure')),
+		'S_SEARCH_HIDDEN_FIELDS'=>'<input type="hidden" name="sf" value="titleonly" /><input type="hidden" name="sr" value="topics" />',
 	));
+
+	// Login via E-Mail
+	switch ($config['login_via_email_enable'])
+	{
+		case LOGIN_VIA_EMAIL_YES:
+			$template->assign_var('L_LOGIN_NAME', $user->lang['USERNAME_OR_EMAIL']);
+		break;
+		case LOGIN_VIA_EMAIL_ONLY:
+			$template->assign_var('L_LOGIN_NAME', $user->lang['EMAIL']);
+		break;
+		default:
+			$template->assign_var('L_LOGIN_NAME', $user->lang['USERNAME']);
+		break;
+	}
 
 	// application/xhtml+xml not used because of IE
 	header('Content-type: text/html; charset=UTF-8');

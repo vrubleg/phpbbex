@@ -122,6 +122,7 @@ class bbcode_firstpass extends bbcode
 			'size'			=> array('bbcode_id' => 5,	'regexp' => array('#\[size=([\-\+]?\d+)\](.*?)\[/size\]#uise' => "\$this->bbcode_size('\$1', '\$2')")),
 			'color'			=> array('bbcode_id' => 6,	'regexp' => array('!\[color=(#[0-9a-f]{3}|#[0-9a-f]{6}|[a-z\-]+)\](.*?)\[/color\]!uise' => "\$this->bbcode_color('\$1', '\$2')")),
 			'u'				=> array('bbcode_id' => 7,	'regexp' => array('#\[u\](.*?)\[/u\]#uise' => "\$this->bbcode_underline('\$1')")),
+			's'				=> array('bbcode_id' => 13,	'regexp' => array('#\[s\](.*?)\[/s\]#uise' => "\$this->bbcode_strikethrough('\$1')")),
 			'list'			=> array('bbcode_id' => 9,	'regexp' => array('#\[list(?:=(?:[a-z0-9]|disc|circle|square))?].*\[/list]#uise' => "\$this->bbcode_parse_list('\$0')")),
 			'email'			=> array('bbcode_id' => 10,	'regexp' => array('#\[email=?(.*?)?\](.*?)\[/email\]#uise' => "\$this->validate_email('\$1', '\$2')")),
 			'flash'			=> array('bbcode_id' => 11,	'regexp' => array('#\[flash=([0-9]+),([0-9]+)\](.*?)\[/flash\]#uie' => "\$this->bbcode_flash('\$1', '\$2', '\$3')"))
@@ -248,6 +249,19 @@ class bbcode_firstpass extends bbcode
 		}
 
 		return '[u:' . $this->bbcode_uid . ']' . $in . '[/u:' . $this->bbcode_uid . ']';
+	}
+
+	/**
+	* Parse s tag
+	*/
+	function bbcode_strikethrough($in)
+	{
+		if (!$this->check_bbcode('s', $in))
+		{
+			return $in;
+		}
+
+		return '[s:' . $this->bbcode_uid . ']' . $in . '[/s:' . $this->bbcode_uid . ']';
 	}
 
 	/**
@@ -1188,6 +1202,14 @@ class parse_message extends bbcode_firstpass
 			return (!$update_this_message) ? $return_message : $this->warn_msg;
 		}
 
+		// Check number of images
+		$num_imgs = ($allow_bbcode && stripos($this->message, '[img') !== false) ? $this->parsed_items['img'] : 0;
+		if ($config['max_' . $mode . '_imgs'] && $num_imgs > $config['max_' . $mode . '_imgs'])
+		{
+			$this->warn_msg[] = sprintf($user->lang['TOO_MANY_IMGS'], $config['max_' . $mode . '_imgs']);
+			return (!$update_this_message) ? $return_message : $this->warn_msg;
+		}
+
 		if (!$update_this_message)
 		{
 			unset($this->message);
@@ -1374,6 +1396,7 @@ class parse_message extends bbcode_firstpass
 
 		$add_file		= (isset($_POST['add_file'])) ? true : false;
 		$delete_file	= (isset($_POST['delete_file'])) ? true : false;
+		$update_file	= (isset($_POST['update_file'])) ? true : false;
 
 		// First of all adjust comments if changed
 		$actual_comment_list = utf8_normalize_nfc(request_var('comment_list', array(''), true));
@@ -1537,6 +1560,64 @@ class parse_message extends bbcode_firstpass
 				else
 				{
 					$error[] = sprintf($user->lang['TOO_MANY_ATTACHMENTS'], $cfg['max_attachments']);
+				}
+			}
+			else if ($update_file && $upload_file)
+			{
+				include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+
+				$filedata = upload_attachment($form_name, $forum_id, false, '', $is_message);
+				$error = array_merge($error, $filedata['error']);
+
+				$index = array_keys(request_var('update_file', array(0 => 0)));
+				$index = (!empty($index)) ? $index[0] : false;
+				$filename = $filedata['real_filename'];
+	
+				if ($index !== false && !empty($this->attachment_data[$index]))
+				{
+					$sql = 'SELECT attach_id, is_orphan, filesize, physical_filename, thumbnail
+						FROM ' . ATTACHMENTS_TABLE . '
+						WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id']; // . ' AND poster_id = ' . $user->data['user_id'];
+					$result = $db->sql_query($sql);
+					$row = $db->sql_fetchrow($result);
+					$db->sql_freeresult($result);
+
+					if (!sizeof($error))
+					{
+						$sql_ary = array(
+							'physical_filename'	=> $filedata['physical_filename'],
+							'attach_comment'	=> $this->filename_data['filecomment'],
+							'real_filename'		=> $filedata['real_filename'],
+							'extension'			=> $filedata['extension'],
+							'mimetype'			=> $filedata['mimetype'],
+							'filesize'			=> $filedata['filesize'],
+							'filetime'			=> $filedata['filetime'],
+							'thumbnail'			=> $filedata['thumbnail'],
+							'in_message'		=> ($is_message) ? 1 : 0,
+							// 'poster_id'			=> $user->data['user_id'],
+						);
+
+						$db->sql_query('UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id'] );
+						
+						// Delete old file
+						phpbb_unlink($row['physical_filename'], 'file');
+
+						if ($row['thumbnail'])
+						{
+							phpbb_unlink($row['physical_filename'], 'thumbnail');
+						}
+
+						if (!$row['is_orphan'])
+						{
+							set_config('upload_dir_size', $config['upload_dir_size'] - $row['filesize'] + $filedata['filesize'], true);
+						}
+
+						// Refresh attachment data
+						$this->attachment_data[$index]['real_filename'] = $filedata['real_filename'];
+						$this->attachment_data[$index]['attach_comment'] = ($this->filename_data['filecomment']) ? $this->filename_data['filecomment'] : $this->attachment_data[$index]['attach_comment'];
+						$this->message = preg_replace("#\[attachment=$index\](.*?)\[\/attachment\]#e", "'[attachment=$index]' . \$filename . '[/attachment]'", $this->message);
+						$this->filename_data['filecomment'] = '';
+					}
 				}
 			}
 		}

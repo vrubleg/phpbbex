@@ -1,0 +1,94 @@
+<form method="post" id="mcp" action="{U_POST_ACTION}">
+
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+	<h3>{USERNAME_FULL}</h3>
+
+	<div>
+		<div class="column1">
+			<!-- IF AVATAR_IMG --><div>{AVATAR_IMG}</div><!-- ENDIF -->
+		</div>
+
+		<div class="column2">
+			<dl class="details">
+				<!-- IF RANK_TITLE --><dt>{L_RANK}:</dt><dd>{RANK_TITLE}</dd><!-- ENDIF -->
+				<!-- IF RANK_IMG --><dt><!-- IF RANK_TITLE -->&nbsp;<!-- ELSE -->{L_RANK}:<!-- ENDIF --></dt><dd>{RANK_IMG}</dd><!-- ENDIF -->
+				<dt>{L_JOINED}:</dt><dd>{JOINED}</dd>
+				<dt>{L_TOTAL_POSTS}:</dt><dd>{POSTS}</dd>
+				<dt>{L_WARNINGS}: </dt><dd>{WARNINGS}</dd>
+			</dl>
+		</div>
+	</div>
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- IF POST -->
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+	<h3>{L_POST_DETAILS}</h3>
+
+	<div class="postbody">
+
+		<div class="content">
+			{POST}
+		</div>
+
+	</div>
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- ENDIF -->
+
+<script type="text/javascript">
+jQuery(function($)
+{
+	$("#mcp input[name=warning_type]").change(function()
+	{
+		if ($(this).val() == 'remark') $("#warning_duration").hide(); else $("#warning_duration").show();
+	});
+	$("#mcp input[name=warning_type]:checked").change();
+});
+</script>
+
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+	<h3>{L_ADD_WARNING}</h3>
+	<p>{L_ADD_WARNING_EXPLAIN}</p>
+
+	<fieldset class="fields1">
+		<dl>
+			<dt><label for="warntype_warning">{L_WARNING_TYPE}:</label></dt>
+			<dd>
+				<label for="warntype_remark"><input type="radio" name="warning_type" id="warntype_remark" value="remark"<!-- IF WARNING_TYPE == 'remark' --> checked="checked"<!-- ENDIF --> /> {L_REMARK}</label> 
+				<label for="warntype_warning"><input type="radio" name="warning_type" id="warntype_warning" value="warning"<!-- IF WARNING_TYPE != 'remark' and WARNING_TYPE != 'ban' --> checked="checked"<!-- ENDIF --> /> {L_WARNING}</label>
+				<label for="warntype_ban"><input type="radio" name="warning_type" id="warntype_ban" value="ban"<!-- IF WARNING_TYPE == 'ban' --> checked="checked"<!-- ENDIF --> /> {L_BAN}</label>
+			</dd>
+			<div id="warning_duration">
+				<dt><label for="warning_days">{L_WARNING_DURATION}:</label></dt>
+				<dd><label for="warning_days"><input type="text" name="warning_days" id="warning_days" size="4" value="{WARNING_DAYS}" /> {L_DAYS}</label></dd>
+			</div>
+		</dl>
+		<textarea name="warning" id="warning" class="inputbox" cols="40" rows="3"><!-- IF WARNING -->{WARNING}<!-- ELSE -->{WARNING_DEFAULT}<!-- ENDIF --></textarea>
+		<!-- IF S_CAN_NOTIFY -->
+		<br /><br />
+		<dl class="panel">
+			<dt>&nbsp;</dt>
+			<dd><label><input type="checkbox" name="notify_user" checked="checked" /> {L_NOTIFY_USER_WARN}</label></dd>
+		</dl>
+		<!-- ENDIF -->
+	</fieldset>
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<fieldset class="submit-buttons">
+	<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp; 
+	<input type="submit" name="action[add_warning]" value="{L_SUBMIT}" class="button1" />
+	<!-- IF WARNING_ID --><input type="hidden" name="warning_id" value="{WARNING_ID}" /><!-- ENDIF -->
+	{S_FORM_TOKEN}
+</fieldset>
+</form>

@@ -137,6 +137,53 @@ $global_vars = array_merge($global_vars, array(
 	'FEED_AUTHOR'			=> $config['sitename'],
 ));
 
+switch ($mode)
+{
+	case 'forums':
+		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['ALL_FORUMS'];
+	break;
+
+	case 'topics':
+	case 'topics_new':
+		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_TOPICS_NEW'];
+	break;
+
+	case 'topics_active':
+		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_TOPICS_ACTIVE'];
+	break;
+
+	case 'news':
+		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_NEWS'];
+	break;
+
+	default:
+		if ($topic_id)
+		{
+			$sql = 'SELECT topic_title
+				FROM ' . TOPICS_TABLE . '
+				WHERE topic_id = ' . (int) $topic_id;
+			$result = $db->sql_query($sql);
+			$topic_title = $db->sql_fetchfield('topic_title');
+			$db->sql_freeresult($result);
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($topic_title ? $topic_title : $user->lang['TOPIC']);
+		}
+		else if ($forum_id)
+		{
+			$sql = 'SELECT forum_name
+				FROM ' . FORUMS_TABLE . '
+				WHERE forum_id = ' . (int) $forum_id;
+			$result = $db->sql_query($sql);
+			$forum_name = $db->sql_fetchfield('forum_name');
+			$db->sql_freeresult($result);
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($forum_name ? $forum_name : $user->lang['FORUM']);
+		}
+		else
+		{
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_OVERALL'];
+		}
+	break;
+}
+
 $feed->close();
 
 // Output page
@@ -218,7 +265,7 @@ foreach ($item_vars as $row)
 		echo '<p>' . $user->lang['STATISTICS'] . ': ' . $row['statistics'] . '</p>';
 	}
 
-	echo '<hr />' . "\n" . ']]></content>' . "\n";
+	echo "\n" . ']]></content>' . "\n";
 	echo '</entry>' . "\n";
 }
 
@@ -811,6 +858,7 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 		$this->sql = array(
 			'SELECT'	=>	'f.forum_id, f.forum_name, ' .
 							'p.post_id, p.topic_id, p.post_time, p.post_edit_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
+							't.topic_title, ' .
 							'u.username, u.user_id',
 			'FROM'		=> array(
 				USERS_TABLE		=> 'u',
@@ -820,6 +868,10 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 				array(
 					'FROM'	=> array(FORUMS_TABLE	=> 'f'),
 					'ON'	=> 'f.forum_id = p.forum_id',
+				),
+				array(
+					'FROM'	=> array(TOPICS_TABLE	=> 't'),
+					'ON'	=> 't.topic_id = p.topic_id',
 				),
 			),
 			'WHERE'		=> $db->sql_in_set('p.topic_id', $topic_ids) . '
@@ -943,10 +995,17 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 
 		$this->sql = array(
 			'SELECT'	=>	'p.post_id, p.topic_id, p.post_time, p.post_edit_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
+							't.topic_title, ' .
 							'u.username, u.user_id',
 			'FROM'		=> array(
 				POSTS_TABLE		=> 'p',
 				USERS_TABLE		=> 'u',
+			),
+			'LEFT_JOIN'	=> array(
+				array(
+					'FROM'	=> array(TOPICS_TABLE	=> 't'),
+					'ON'	=> 't.topic_id = p.topic_id',
+				),
 			),
 			'WHERE'		=> $db->sql_in_set('p.topic_id', $topic_ids) . '
 							' . ((!$m_approve) ? 'AND p.post_approved = 1' : '') . '
@@ -1009,96 +1068,37 @@ class phpbb_feed_topic extends phpbb_feed_post_base
 			trigger_error('NO_TOPIC');
 		}
 
-		if ($this->topic_data['topic_type'] == POST_GLOBAL)
+		$this->forum_id = (int) $this->topic_data['forum_id'];
+
+		// Make sure topic is either approved or user authed
+		if (!$this->topic_data['topic_approved'] && !$auth->acl_get('m_approve', $this->forum_id))
 		{
-			// We need to find at least one postable forum where feeds are enabled,
-			// that the user can read and maybe also has approve permissions.
-			$in_fid_ary = $this->get_readable_forums();
-
-			if (empty($in_fid_ary))
-			{
-				// User cannot read any forums
-				trigger_error('SORRY_AUTH_READ');
-			}
-
-			if (!$this->topic_data['topic_approved'])
-			{
-				// Also require m_approve
-				$in_fid_ary = array_intersect($in_fid_ary, $this->get_moderator_approve_forums());
-
-				if (empty($in_fid_ary))
-				{
-					trigger_error('SORRY_AUTH_READ');
-				}
-			}
-
-			// Diff excluded forums
-			$in_fid_ary = array_diff($in_fid_ary, $this->get_excluded_forums());
-
-			if (empty($in_fid_ary))
-			{
-				trigger_error('SORRY_AUTH_READ');
-			}
-
-			// Also exclude passworded forums
-			$in_fid_ary = array_diff($in_fid_ary, $this->get_passworded_forums());
-
-			if (empty($in_fid_ary))
-			{
-				trigger_error('SORRY_AUTH_READ');
-			}
-
-			$sql = 'SELECT forum_id, left_id
-				FROM ' . FORUMS_TABLE . '
-				WHERE forum_type = ' . FORUM_POST . '
-					AND ' . $db->sql_in_set('forum_id', $in_fid_ary) . '
-				ORDER BY left_id ASC';
-			$result = $db->sql_query_limit($sql, 1);
-			$this->forum_data = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			if (empty($this->forum_data))
-			{
-				// No forum found.
-				trigger_error('SORRY_AUTH_READ');
-			}
-
-			unset($in_fid_ary);
+			trigger_error('SORRY_AUTH_READ');
 		}
-		else
+
+		// Make sure forum is not excluded from feed
+		if (phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $this->topic_data['forum_options']))
 		{
-			$this->forum_id = (int) $this->topic_data['forum_id'];
+			trigger_error('NO_FEED');
+		}
 
-			// Make sure topic is either approved or user authed
-			if (!$this->topic_data['topic_approved'] && !$auth->acl_get('m_approve', $this->forum_id))
+		// Make sure we can read this forum
+		if (!$auth->acl_get('f_read', $this->forum_id))
+		{
+			trigger_error('SORRY_AUTH_READ');
+		}
+
+		// Make sure forum is not passworded or user is authed
+		if ($this->topic_data['forum_password'])
+		{
+			$forum_ids_passworded = $this->get_passworded_forums();
+
+			if (isset($forum_ids_passworded[$this->forum_id]))
 			{
 				trigger_error('SORRY_AUTH_READ');
 			}
 
-			// Make sure forum is not excluded from feed
-			if (phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $this->topic_data['forum_options']))
-			{
-				trigger_error('NO_FEED');
-			}
-
-			// Make sure we can read this forum
-			if (!$auth->acl_get('f_read', $this->forum_id))
-			{
-				trigger_error('SORRY_AUTH_READ');
-			}
-
-			// Make sure forum is not passworded or user is authed
-			if ($this->topic_data['forum_password'])
-			{
-				$forum_ids_passworded = $this->get_passworded_forums();
-
-				if (isset($forum_ids_passworded[$this->forum_id]))
-				{
-					trigger_error('SORRY_AUTH_READ');
-				}
-
-				unset($forum_ids_passworded);
-			}
+			unset($forum_ids_passworded);
 		}
 	}
 

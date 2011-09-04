@@ -86,6 +86,12 @@
 				<!-- IF POSTS_IN_QUEUE and U_MCP_QUEUE --><br />[<a href="{U_MCP_QUEUE}">{L_POSTS_IN_QUEUE}</a>]<!-- ELSEIF POSTS_IN_QUEUE --><br />[{L_POSTS_IN_QUEUE}]<!-- ENDIF -->
 				<!-- IF S_DISPLAY_SEARCH --><br /><a href="{U_SEARCH_USER}">{L_SEARCH_USER_POSTS}</a><!-- ENDIF --></span></td>
 			</tr>
+			<tr>
+				<td class="gen" align="{S_CONTENT_FLOW_END}" valign="top" nowrap="nowrap">{L_TOTAL_TOPICS}: </td>
+				<td><b class="gen">{TOPICS}</b><span class="genmed"><!-- IF TOPICS_PCT --><br />[{TOPICS_PCT} / {TOPICS_DAY}]<!-- ENDIF -->
+				<!-- IF TOPICS_IN_QUEUE and U_MCP_QUEUE --><br />[<a href="{U_MCP_QUEUE}">{L_TOPICS_IN_QUEUE}</a>]<!-- ELSEIF TOPICS_IN_QUEUE --><br />[{L_TOPICS_IN_QUEUE}]<!-- ENDIF -->
+				<!-- IF S_DISPLAY_SEARCH --><br /><a href="{U_SEARCH_USER_TOPICS}">{L_SEARCH_USER_TOPICS}</a><!-- ENDIF --></span></td>
+			</tr>
 			<!-- IF S_SHOW_ACTIVITY -->
 				<tr>
 					<td class="gen" align="{S_CONTENT_FLOW_END}" valign="top" nowrap="nowrap">{L_ACTIVE_IN_FORUM}: </td>
@@ -116,18 +122,6 @@
 					<td><a href="{U_PM}">{PM_IMG}</a></td>
 				</tr>
 			<!-- ENDIF -->
-			<tr>
-				<td class="gen" nowrap="nowrap" align="{S_CONTENT_FLOW_END}">{L_MSNM}: </td>
-				<td><!-- IF U_MSN --><a href="{U_MSN}" onclick="popup(this.href, 550, 320); return false">{MSN_IMG}</a><!-- ELSEIF USER_MSN -->{USER_MSN}<!-- ENDIF --></td>
-			</tr>
-			<tr>
-				<td class="gen" nowrap="nowrap" align="{S_CONTENT_FLOW_END}">{L_YIM}: </td>
-				<td><!-- IF U_YIM --><a href="{U_YIM}" onclick="popup(this.href, 780, 550); return false">{YIM_IMG}</a><!-- ELSEIF USER_YIM -->{USER_YIM}<!-- ENDIF --></td>
-			</tr>
-			<tr>
-				<td class="gen" nowrap="nowrap" align="{S_CONTENT_FLOW_END}">{L_AIM}: </td>
-				<td><!-- IF U_AIM --><a href="{U_AIM}" onclick="popup(this.href, 550, 320); return false">{AIM_IMG}</a><!-- ELSEIF USER_AIM -->{USER_AIM}<!-- ENDIF --></td>
-			</tr>
 			<tr>
 				<td class="gen" nowrap="nowrap" align="{S_CONTENT_FLOW_END}">{L_ICQ}: </td>
 				<td><!-- IF U_ICQ --><a href="{U_ICQ}" onclick="popup(this.href, 550, 320); return false">{ICQ_IMG}</a><!-- ELSEIF USER_ICQ -->{USER_ICQ}<!-- ENDIF --></td>

@@ -364,6 +364,9 @@ $lang = array_merge($lang, array(
 	'RESYNC_STATS'					=> 'Синхронизировать статистику',
 	'RESYNC_STATS_CONFIRM'			=> 'Вы действительно хотите синхронизировать статистику?',
 	'RESYNC_STATS_EXPLAIN'			=> 'Пересчёт общего количества сообщений, тем, пользователей и файлов.',
+	'RESYNC_TOPICCOUNTS'			=> 'Синхронизировать счётчики тем',
+	'RESYNC_TOPICCOUNTS_EXPLAIN'	=> 'Будут учтены только существующие темы. Удалённые темы не будут подсчитаны.',
+	'RESYNC_TOPICCOUNTS_CONFIRM'	=> 'Вы действительно хотите синхронизировать счётчики тем?',	
 	'RUN'							=> 'Выполнить',
 
 	'STATISTIC'					=> 'Статистика',
@@ -661,6 +664,7 @@ $lang = array_merge($lang, array(
 	'LOG_RESYNC_POSTCOUNTS'		=> '<strong>Синхронизированы счётчики сообщений пользователей</strong>',
 	'LOG_RESYNC_POST_MARKING'	=> '<strong>Синхронизированы свои темы</strong>',
 	'LOG_RESYNC_STATS'			=> '<strong>Синхронизирована статистика сообщений, тем и пользователей</strong>',
+	'LOG_RESYNC_TOPICCOUNTS'	=> '<strong>Синхронизированы счётчики тем пользователей</strong>',
 
 	'LOG_SEARCH_INDEX_CREATED'	=> '<strong>Созданы поисковые индексы для</strong><br />» %s',
 	'LOG_SEARCH_INDEX_REMOVED'	=> '<strong>Удалены поисковые индексы для</strong><br />» %s',
@@ -736,6 +740,71 @@ $lang = array_merge($lang, array(
 	'LOG_WORD_ADD'			=> '<strong>Добавлен цензор слов</strong><br />» %s',
 	'LOG_WORD_DELETE'		=> '<strong>Удалён цензор слов</strong><br />» %s',
 	'LOG_WORD_EDIT'			=> '<strong>Изменён цензор слов</strong><br />» %s',
+));
+
+// Manage attachments module for phpBB3 MOD
+$lang = array_merge($lang, array(
+	'ACP_MANAGE_ATTACHMENTS'			=> 'Управление вложениями',
+	'ACP_MANAGE_ATTACHMENTS_EXPLAIN'	=> 'Здесь вы можете управлять файлами, прикреплёнными к сообщениям. Вы можете удалить такие файлы или прикрепить их к другим уже существующим сообщениям. Во втором случае вам потребуется правильный идентификатор сообщения(ID), который вы должны указать самостоятельно. После этого вложение будет прикреплено к указанному вами сообщению.',
+	'LOG_ATTACH_DEL'					=> '<strong>Вложения удалены</strong><br />» %s',
+	'LOG_ATTACH_REASSIGNED'				=> '<strong>Вложение прикреплёно к другому к сообщению</strong><br />» ID %1$d - %2$s',
+	'TOTAL_SIZE'						=> 'Общий размер',
+	'DOWNLOADS'							=> 'Скачивания',
+));
+
+// Quick reply
+$lang = array_merge($lang, array(
+	'ACP_QUICK_REPLY'			=> 'Быстрый ответ',
+	'LOG_CONFIG_QUICK_REPLY'	=> '<strong>Изменены настройки быстрого ответа</strong>',
+	'ACP_QUICK_REPLY_EXPLAIN'	=> 'Здесь вы можете настроить желаемый вид и функции быстрого ответа в темах. Вы можете включить/отключить быстрый ответ, а также управлять отображением смайликов, формой добавления вложений и т.п.',
+	'ALLOW_QUICK_REPLY'			=> 'Разрешить быстрый ответ',
+	'ALLOW_QUICK_REPLY_EXPLAIN'	=> 'Пользователи смогут отправлять сообщения на странице просмотра темы.',
+	'ALLOW_QUICK_REPLY_NONE'	=> 'Нет',
+	'ALLOW_QUICK_REPLY_REG'		=> 'Зарегистрированным пользователям',
+	'ALLOW_QUICK_REPLY_ALL'		=> 'Всем',
+	'ALLOW_REPLY_ICONS'			=> 'Значки сообщений/тем',
+	'ALLOW_REPLY_CHECKBOXES'	=> 'Чекбоксы',
+	'ALLOW_REPLY_ATTACHBOX'		=> 'Вложение файлов',
+	'ALLOW_REPLY_SMILIES'		=> 'Смайлики',
+	'ALLOW_QUICK_POST'			=> 'Разрешить быстрые темы',
+	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Пользователи смогут начинать новые темы на странице просмотра форума.',
+));
+
+// Posts merging
+$lang = array_merge($lang, array(
+	'MERGE_INTERVAL'				=> 'Интервал склеивания сообщений',
+	'MERGE_INTERVAL_EXPLAIN'		=> 'Количество часов, в течение которого сообщения пользователя будут склеены с его последним сообщением темы. Оставьте поле пустым или установите 0 для отключения этой функции.',
+	'MERGE_NO_TOPICS'				=> 'Темы без склеивания',
+	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Список разделённых запятыми номеров тем, в которых склеивание сообщений отключено.',
+	'MERGE_NO_FORUMS'				=> 'Форумы без склеивания',
+	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Список разделённых запятыми номеров форумов, в которых склеивание сообщений отключено.',
+));
+
+// Out links
+$lang = array_merge($lang, array(
+	'ACP_OUTLINKS'			=> 'Внешние ссылки',
+	'ACP_OUTLINKS_EXPLAIN'	=> 'С помощью этой панели вы можете добавлять, удалять и изменять ссылки на на внешние ресурсы.',
+	'TITLE'					=> 'Название',
+	'LINK'					=> 'Ссылка',
+	'ADD_LINK'				=> 'Добавить ссылку',
+	'EDIT_LINK'				=> 'Изменение ссылки',
+	'LINK_ADDED'			=> 'Ссылка успешно добавлена.',
+	'LINK_UPDATED'			=> 'Выбранная ссылка успешно обновлена.',
+	'LINK_REMOVED'			=> 'Выбранная ссылка успешно удалена.',
+));
+
+// Custom BBCode Sorting
+$lang = array_merge($lang, array(
+	'SHOW_BUTTON'		=> 'Кнопка',
+));
+
+// Login via E-Mail
+$lang = array_merge($lang, array(
+	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Вход по e-mail',
+	'LOGIN_VIA_EMAIL_ENABLE_EXPLAIN'	=> 'Разрешить пользователям входить в систему используя имя пользователя или e-mail. В скрытом режиме не будет индикации о возможности входа по e-mail.',
+	'LOGIN_VIA_EMAIL_SILENT'			=> 'Да, скрыто',
+	'LOGIN_VIA_EMAIL_ONLY'				=> 'Только по e-mail',
+	'EMAIL_REUSE_DISABLED'				=> 'Заблокировано, поскольку включён <em>вход по e-mail</em>.',
 ));
 
 ?>

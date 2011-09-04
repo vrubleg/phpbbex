@@ -1,13 +1,3 @@
-#
-# Uncomment the statement below if you want to make use of
-# HTTP authentication and it does not already work.
-# This could be required if you are for example using PHP via Apache CGI.
-#
-#<IfModule mod_rewrite.c>
-#RewriteEngine on
-#RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
-#</IfModule>
-
 <Files "config.php">
 Order Allow,Deny
 Deny from All
@@ -17,3 +7,67 @@ Deny from All
 Order Allow,Deny
 Deny from All
 </Files>
+
+# Common
+AddDefaultCharset utf-8
+AddCharset utf-8 .html .css .js .xml .json .rss
+Options -Indexes -MultiViews
+php_flag magic_quotes_gpc off
+FileETag None
+
+# MIME types
+AddType video/ogg						ogv
+AddType video/mp4						mp4
+AddType video/webm 						webm
+AddType audio/ogg						ogg oga spx
+AddType audio/flac						flac
+AddType image/svg+xml					svg svgz 
+AddType font/ttf						ttf
+AddType font/otf						otf
+AddType font/x-woff						woff
+AddType application/x-7z-compressed		7z
+AddType text/cache-manifest				manifest
+AddType text/javascript					js
+AddType text/css						css
+AddType text/html						html
+AddType image/jpeg						jpg jpeg
+AddType application/x-shockwave-flash	swf
+
+# Expires for main MIME types
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/png					"access plus 1 month"
+ExpiresByType image/gif					"access plus 1 month"
+ExpiresByType image/jpeg				"access plus 1 month"
+ExpiresByType audio/flac				"access plus 3 month"
+ExpiresByType audio/ogg					"access plus 3 month"
+ExpiresByType video/mp4					"access plus 3 month"
+ExpiresByType video/ogg					"access plus 3 month"
+ExpiresByType video/webm				"access plus 3 month"
+ExpiresByType text/css					"access plus 1 month"
+ExpiresByType font/ttf					"access plus 1 month"
+ExpiresByType font/woff					"access plus 1 month"
+ExpiresByType image/svg+xml				"access plus 1 month"
+ExpiresByType text/javascript 			"access plus 1 month"
+ExpiresByType application/javascript 	"access plus 1 month"
+ExpiresByType application/x-javascript 	"access plus 1 month"
+ExpiresByType application/x-shockwave-flash	"access plus 1 month"
+</IfModule>
+
+# Gzip compression for Apache 2
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css
+AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript application/json
+AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml
+AddOutputFilterByType DEFLATE font/ttf font/otf image/svg+xml
+</IfModule>
+
+# Gzip compression for Apache 1
+<IfModule mod_gzip.c>
+mod_gzip_on Yes
+mod_gzip_dechunk Yes
+mod_gzip_item_include file \.(html?|txt|css|js|php)$
+mod_gzip_item_include mime ^text/.*
+mod_gzip_item_exclude mime ^image/.*
+mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</IfModule>

@@ -43,7 +43,7 @@ $lang = array_merge($lang, array(
 	'ADD_POLL_EXPLAIN'			=> 'If you do not want to add a poll to your topic leave the fields blank.',
 	'ALREADY_DELETED'			=> 'Sorry but this message is already deleted.',
 	'ATTACH_QUOTA_REACHED'		=> 'Sorry, the board attachment quota has been reached.',
-	'ATTACH_SIG'				=> 'Attach a signature (signatures can be altered via the UCP)',
+	'ATTACH_SIG'				=> 'Attach a signature',
 
 	'BBCODE_A_HELP'				=> 'Inline uploaded attachment: [attachment=]filename.ext[/attachment]',
 	'BBCODE_B_HELP'				=> 'Bold text: [b]text[/b]',
@@ -59,6 +59,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_P_HELP'				=> 'Insert image: [img]http://image_url[/img]',
 	'BBCODE_Q_HELP'				=> 'Quote text: [quote]text[/quote]',
 	'BBCODE_S_HELP'				=> 'Font colour: [color=red]text[/color]  Tip: you can also use color=#FF0000',
+	'BBCODE_STRIKE_HELP'		=> 'Strikethrough text: [s]text[/s]',
 	'BBCODE_U_HELP'				=> 'Underline text: [u]text[/u]',
 	'BBCODE_W_HELP'				=> 'Insert URL: [url]http://url[/url] or [url=http://url]URL text[/url]',
 	'BBCODE_D_HELP'				=> 'Flash: [flash=width,height]http://url[/flash]',
@@ -156,6 +157,8 @@ $lang = array_merge($lang, array(
 	'POLL_TITLE_COMP_TOO_LONG'	=> 'The parsed size of your poll title is too large, consider removing BBCodes or smilies.',
 	'POLL_VOTE_CHANGE'			=> 'Allow re-voting',
 	'POLL_VOTE_CHANGE_EXPLAIN'	=> 'If enabled users are able to change their vote.',
+	'POLL_SHOW_VOTERS'			=> 'Show poll voters',
+	'POLL_SHOW_VOTERS_EXPLAIN'	=> 'If enabled users are able to see the poll voters.',
 	'POSTED_ATTACHMENTS'		=> 'Posted attachments',
 	'POST_APPROVAL_NOTIFY'		=> 'You will be notified when your post has been approved.',
 	'POST_CONFIRMATION'			=> 'Confirmation of post',
@@ -196,6 +199,7 @@ $lang = array_merge($lang, array(
 	'TOO_MANY_CHARS'			=> 'Your message contains too many characters.',
 	'TOO_MANY_CHARS_POST'		=> 'Your message contains %1$d characters. The maximum number of allowed characters is %2$d.',
 	'TOO_MANY_CHARS_SIG'		=> 'Your signature contains %1$d characters. The maximum number of allowed characters is %2$d.',
+	'TOO_MANY_IMGS'				=> 'Your message contains too many images. The maximum number of images allowed is %d.',
 	'TOO_MANY_POLL_OPTIONS'		=> 'You have tried to enter too many poll options.',
 	'TOO_MANY_SMILIES'			=> 'Your message contains too many smilies. The maximum number of smilies allowed is %d.',
 	'TOO_MANY_URLS'				=> 'Your message contains too many URLs. The maximum number of URLs allowed is %d.',
@@ -205,6 +209,7 @@ $lang = array_merge($lang, array(
 	'UNAUTHORISED_BBCODE'		=> 'You cannot use certain BBCodes: %s.',
 	'UNGLOBALISE_EXPLAIN'		=> 'To switch this topic back from being global to a normal topic, you need to select the forum you wish this topic to be displayed.',
 	'UPDATE_COMMENT'			=> 'Update comment',
+	'UPDATE_FILE'				=> 'Update file',
 	'URL_INVALID'				=> 'The URL you specified is invalid.',
 	'URL_NOT_FOUND'				=> 'The file specified could not be found.',
 	'URL_IS_OFF'				=> '[url] is <em>OFF</em>',
@@ -220,6 +225,29 @@ $lang = array_merge($lang, array(
 
 	'WRONG_FILESIZE'			=> 'The file is too big, maximum allowed size is %1d %2s.',
 	'WRONG_SIZE'				=> 'The image must be at least %1$d pixels wide, %2$d pixels high and at most %3$d pixels wide and %4$d pixels high. The submitted image is %5$d pixels wide and %6$d pixels high.',
+
+	// Quick reply
+	'QUICK_REPLY'				=> 'Quick reply',
+	'QUICK_POST'				=> 'Quick post',
+	'QUOTE_TEXT'				=> 'Select the text you want to quote',
+
+	// Additional strings
+	'FIRST_POST_SHOW'			=> 'Show on top of every page',
+	'FIRST_POST_SHOW_EXPLAIN'	=> 'Show on top of every page',
+
+	// Posts merging
+	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
+	'MERGE_SEPARATOR'			=> "\n\n[size=85][color=gray]%s after %s:[/color][/size]\n",
+	'MERGE_SUBJECT'				=> "[size=85][color=gray]%s[/color][/size]\n",
+
+	// Time delta
+	'D_SECONDS'					=> array('second', 'seconds', 'seconds'),
+	'D_MINUTES'					=> array('minute', 'minutes', 'minutes'),
+	'D_HOURS'					=> array('hour', 'hours', 'hours'),
+	'D_MDAY'					=> array('day', 'days', 'days'),
+	'D_MON'						=> array('month', 'months', 'months'),
+	'D_YEAR'					=> array('year', 'yaers', 'years'),
+
 ));
 
 ?>

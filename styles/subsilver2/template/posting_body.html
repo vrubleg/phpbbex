@@ -285,6 +285,13 @@
 			</tr>
 		<!-- ENDIF -->
 
+		<!-- IF not S_EDIT_POST -->
+			<tr>
+				<td><input type="checkbox" class="radio" name="do_not_merge" /></td>
+				<td class="gen">{L_DO_NOT_MERGE}</td>
+			</tr>
+		<!-- ENDIF -->
+
 		<!-- IF S_NOTIFY_ALLOWED -->
 			<tr>
 				<td><input type="checkbox" class="radio" name="notify"{S_NOTIFY_CHECKED} /></td>
@@ -304,6 +311,13 @@
 				<tr>
 					<td><input type="checkbox" class="radio" name="lock_post"{S_LOCK_POST_CHECKED} /></td>
 					<td class="gen">{L_LOCK_POST} [{L_LOCK_POST_EXPLAIN}]</td>
+				</tr>
+			<!-- ENDIF -->
+
+			<!-- IF S_FIRST_POST_SHOW_ALLOWED -->
+				<tr>
+					<td><input type="checkbox" class="radio" name="topic_first_post_show"{S_FIRST_POST_SHOW_CHECKED} /></td>
+					<td class="gen">{L_FIRST_POST_SHOW}</td>
 				</tr>
 			<!-- ENDIF -->
 

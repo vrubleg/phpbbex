@@ -12,7 +12,10 @@
 	}
 
 	<!-- IF CAPTCHA_TEMPLATE and S_CONFIRM_REFRESH -->
-	onload_functions.push('apply_onkeypress_event()');
+	jQuery(function($)
+	{
+		apply_onkeypress_event();
+	});
 	<!-- ENDIF -->
 
 // ]]>
@@ -51,16 +54,22 @@
 		<dd><input type="password" tabindex="5" name="password_confirm" id="password_confirm" size="25" value="{PASSWORD_CONFIRM}" class="inputbox autowidth" title="{L_CONFIRM_PASSWORD}" /></dd>
 	</dl>
 
+	<!-- IF S_LANG_OPTIONS and S_TZ_OPTIONS -->
 	<hr />
+	<!-- ENDIF -->
 
+	<!-- IF S_LANG_OPTIONS -->
 	<dl>
 		<dt><label for="lang">{L_LANGUAGE}:</label></dt>
 		<dd><select name="lang" id="lang" onchange="change_language(this.value); return false;" tabindex="6" title="{L_LANGUAGE}">{S_LANG_OPTIONS}</select></dd>
 	</dl>
+	<!-- ENDIF -->
+	<!-- IF S_TZ_OPTIONS -->
 	<dl>
 		<dt><label for="tz">{L_TIMEZONE}:</label></dt>
 		<dd><select name="tz" id="tz" tabindex="7" class="autowidth">{S_TZ_OPTIONS}</select></dd>
 	</dl>
+	<!-- ENDIF -->
 
 	<!-- IF .profile_fields -->
 		<dl><dd><strong>{L_ITEMS_REQUIRED}</strong></dd></dl>
@@ -101,13 +110,26 @@
 
 	<fieldset class="submit-buttons">
 		{S_HIDDEN_FIELDS}
+		<input type="hidden" name="creation_time" value="0" />
+		<input type="hidden" name="form_token" value="0" />
 		<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp;
 		<input type="submit" tabindex="9" name="submit" id="submit" value="{L_SUBMIT}" class="button1 default-submit-action" />
-		{S_FORM_TOKEN}
 	</fieldset>
 
 	<span class="corners-bottom"><span></span></span></div>
 </div>
+
+<script type="text/javascript">
+jQuery(function($)
+{
+	$('#register').submit(function()
+	{
+		$('inp'+'ut[na'+'me=crea'+'tion_t'+'ime]').val('{RAW_CREATION_TIME}');
+		$('in'+'pu'+'t[name'+'=for'+'m_to'+'ken]').val('{RAW_FORM_TOKEN}');
+	});
+});
+</script>
+
 </form>
 
 <!-- INCLUDE overall_footer.html -->

@@ -31,6 +31,11 @@ switch ($mode)
 		$user->add_lang('bbcode', false, true);
 	break;
 
+	case 'rules':
+		$l_title = $user->lang['FORUM_RULES'];
+		$user->add_lang('rules', false, true);
+	break;
+
 	default:
 		$l_title = $user->lang['FAQ_EXPLAIN'];
 		$user->add_lang('faq', false, true);

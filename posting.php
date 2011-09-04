@@ -39,7 +39,7 @@ $load		= (isset($_POST['load'])) ? true : false;
 $delete		= (isset($_POST['delete'])) ? true : false;
 $cancel		= (isset($_POST['cancel']) && !isset($_POST['save'])) ? true : false;
 
-$refresh	= (isset($_POST['add_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load) ? true : false;
+$refresh	= (isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load) ? true : false;
 $mode		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : request_var('mode', '');
 
 $error = $post_data = array();
@@ -297,7 +297,7 @@ if ($mode == 'edit' && !$auth->acl_get('m_edit', $forum_id))
 		trigger_error('USER_CANNOT_EDIT');
 	}
 
-	if (!($post_data['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time']))
+	if (!($post_data['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'] || $auth->acl_get('u_ignoreedittime')))
 	{
 		trigger_error('CANNOT_EDIT_TIME');
 	}
@@ -357,6 +357,7 @@ $post_data['poll_length']		= (!empty($post_data['poll_length'])) ? (int) $post_d
 $post_data['poll_start']		= (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
 $post_data['icon_id']			= (!isset($post_data['icon_id']) || in_array($mode, array('quote', 'reply'))) ? 0 : (int) $post_data['icon_id'];
 $post_data['poll_options']		= array();
+$post_data['topic_first_post_show'] = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
 
 // Get Poll Data
 if ($post_data['poll_start'])
@@ -663,6 +664,7 @@ if ($submit || $preview || $refresh)
 	$topic_lock			= (isset($_POST['lock_topic'])) ? true : false;
 	$post_lock			= (isset($_POST['lock_post'])) ? true : false;
 	$poll_delete		= (isset($_POST['poll_delete'])) ? true : false;
+	$topic_first_post_show = (isset($_POST['topic_first_post_show'])) ? true : false;
 
 	if ($submit)
 	{
@@ -694,7 +696,8 @@ if ($submit || $preview || $refresh)
 				'poll_length'		=> 0,
 				'poll_last_vote'	=> 0,
 				'poll_max_options'	=> 0,
-				'poll_vote_change'	=> 0
+				'poll_vote_change'	=> 0,
+				'poll_show_voters'	=> 0
 			);
 
 			$sql = 'UPDATE ' . TOPICS_TABLE . '
@@ -705,6 +708,7 @@ if ($submit || $preview || $refresh)
 
 		$post_data['poll_title'] = $post_data['poll_option_text'] = '';
 		$post_data['poll_vote_change'] = $post_data['poll_max_options'] = $post_data['poll_length'] = 0;
+		$post_data['poll_show_voters'] = 0;
 	}
 	else
 	{
@@ -713,6 +717,7 @@ if ($submit || $preview || $refresh)
 		$post_data['poll_option_text']	= utf8_normalize_nfc(request_var('poll_option_text', '', true));
 		$post_data['poll_max_options']	= request_var('poll_max_options', 1);
 		$post_data['poll_vote_change']	= ($auth->acl_get('f_votechg', $forum_id) && $auth->acl_get('f_vote', $forum_id) && isset($_POST['poll_vote_change'])) ? 1 : 0;
+		$post_data['poll_show_voters']	= isset($_POST['poll_show_voters']) ? 1 : 0;
 	}
 
 	// If replying/quoting and last post id has changed
@@ -738,6 +743,9 @@ if ($submit || $preview || $refresh)
 
 	// Grab md5 'checksum' of new message
 	$message_md5 = md5($message_parser->message);
+
+	// Save message for posts merging
+	$addon_for_merge = $message_parser->message;
 
 	// If editing and checksum has changed we know the post was edited while we're editing
 	// Notify and show user the changed post
@@ -887,6 +895,7 @@ if ($submit || $preview || $refresh)
 			'poll_start'		=> $post_data['poll_start'],
 			'poll_last_vote'	=> $post_data['poll_last_vote'],
 			'poll_vote_change'	=> $post_data['poll_vote_change'],
+			'poll_show_voters'	=> $post_data['poll_show_voters'],
 			'enable_bbcode'		=> $post_data['enable_bbcode'],
 			'enable_urls'		=> $post_data['enable_urls'],
 			'enable_smilies'	=> $post_data['enable_smilies'],
@@ -1112,8 +1121,27 @@ if ($submit || $preview || $refresh)
 				$data['topic_replies'] = $post_data['topic_replies'];
 			}
 
+			include($phpbb_root_path . 'includes/posts_merging.' . $phpEx);
+
 			// The last parameter tells submit_post if search indexer has to be run
 			$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);
+
+			// Show/Unshow first post on every page
+			if(($mode == 'edit' && $post_id == $post_data['topic_first_post_id']) || $mode == 'post')
+			{
+				if($mode == 'post')
+				{
+					$topic_id = $data['topic_id'];
+				}
+				$perm_show_unshow = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'])) ? true : false;
+				if($post_data['topic_first_post_show'] != $topic_first_post_show && $perm_show_unshow)
+				{
+					$sql = 'UPDATE ' . TOPICS_TABLE . '
+						SET topic_first_post_show = ' . (($topic_first_post_show) ? 1 : 0) . " 
+						WHERE topic_id = $topic_id";
+					$db->sql_query($sql);
+				}
+			}
 
 			if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($captcha) && $captcha->is_solved() === true) && ($mode == 'post' || $mode == 'reply' || $mode == 'quote'))
 			{
@@ -1272,7 +1300,7 @@ if ($mode == 'quote' && !$submit && !$preview && !$refresh)
 
 if (($mode == 'reply' || $mode == 'quote') && !$submit && !$preview && !$refresh)
 {
-	$post_data['post_subject'] = ((strpos($post_data['post_subject'], 'Re: ') !== 0) ? 'Re: ' : '') . censor_text($post_data['post_subject']);
+	$post_data['post_subject'] = ''; // ((strpos($post_data['post_subject'], 'Re: ') !== 0) ? 'Re: ' : '') . censor_text($post_data['post_subject']);
 }
 
 $attachment_data = $message_parser->attachment_data;
@@ -1315,6 +1343,13 @@ if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_p
 	$topic_type_toggle = posting_gen_topic_types($forum_id, $post_data['topic_type']);
 }
 
+// Do show show first post on every page checkbox only in first post
+$first_post_show_allowed = false;
+if(($mode == 'edit' && $post_id == $post_data['topic_first_post_id']) || $mode == 'post')
+{
+	$first_post_show_allowed = true;
+}
+
 $s_topic_icons = false;
 if ($post_data['enable_icons'] && $auth->acl_get('f_icons', $forum_id))
 {
@@ -1327,6 +1362,7 @@ $urls_checked		= (isset($post_data['enable_urls'])) ? !$post_data['enable_urls']
 $sig_checked		= $post_data['enable_sig'];
 $lock_topic_checked	= (isset($topic_lock) && $topic_lock) ? $topic_lock : (($post_data['topic_status'] == ITEM_LOCKED) ? 1 : 0);
 $lock_post_checked	= (isset($post_lock)) ? $post_lock : $post_data['post_edit_locked'];
+$first_post_show_checked = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
 
 // If the user is replying or posting and not already watching this topic but set to always being notified we need to overwrite this setting
 $notify_set			= ($mode != 'edit' && $config['allow_topic_notify'] && $user->data['is_registered'] && !$post_data['notify_set']) ? $user->data['user_notify'] : $post_data['notify_set'];
@@ -1447,6 +1483,9 @@ $template->assign_vars(array(
 	'S_HAS_DRAFTS'				=> ($auth->acl_get('u_savedrafts') && $user->data['is_registered'] && $post_data['drafts']) ? true : false,
 	'S_FORM_ENCTYPE'			=> $form_enctype,
 
+	'S_FIRST_POST_SHOW_ALLOWED'		=> ($first_post_show_allowed  && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster']))) ? true : false,
+	'S_FIRST_POST_SHOW_CHECKED'		=> ($first_post_show_checked) ? ' checked="checked"' : '',
+
 	'S_BBCODE_IMG'			=> $img_status,
 	'S_BBCODE_URL'			=> $url_status,
 	'S_BBCODE_FLASH'		=> $flash_status,
@@ -1466,12 +1505,14 @@ if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_
 	$template->assign_vars(array(
 		'S_SHOW_POLL_BOX'		=> true,
 		'S_POLL_VOTE_CHANGE'	=> ($auth->acl_get('f_votechg', $forum_id) && $auth->acl_get('f_vote', $forum_id)),
+		'S_POLL_SHOW_VOTERS'	=> ($mode == 'post' || $auth->acl_get('a_')),
 		'S_POLL_DELETE'			=> ($mode == 'edit' && sizeof($post_data['poll_options']) && ((!$post_data['poll_last_vote'] && $post_data['poster_id'] == $user->data['user_id'] && $auth->acl_get('f_delete', $forum_id)) || $auth->acl_get('m_delete', $forum_id))),
 		'S_POLL_DELETE_CHECKED'	=> (!empty($poll_delete)) ? true : false,
 
 		'L_POLL_OPTIONS_EXPLAIN'	=> sprintf($user->lang['POLL_OPTIONS_' . (($mode == 'edit') ? 'EDIT_' : '') . 'EXPLAIN'], $config['max_poll_options']),
 
-		'VOTE_CHANGE_CHECKED'	=> (!empty($post_data['poll_vote_change'])) ? ' checked="checked"' : '',
+		'VOTE_CHANGE_CHECKED'	=> (!empty($post_data['poll_vote_change']) || $mode == 'post' && !$submit && !$preview && !$refresh) ? ' checked="checked"' : '',
+		'SHOW_VOTERS_CHECKED'	=> (!empty($post_data['poll_show_voters']) || $mode == 'post' && !$submit && !$preview && !$refresh) ? ' checked="checked"' : '',
 		'POLL_TITLE'			=> (isset($post_data['poll_title'])) ? $post_data['poll_title'] : '',
 		'POLL_OPTIONS'			=> (!empty($post_data['poll_options'])) ? implode("\n", $post_data['poll_options']) : '',
 		'POLL_MAX_OPTIONS'		=> (isset($post_data['poll_max_options'])) ? (int) $post_data['poll_max_options'] : 1,
@@ -1495,7 +1536,7 @@ $template->set_filenames(array(
 make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"));
 
 // Topic review
-if ($mode == 'reply' || $mode == 'quote')
+if (($mode == 'reply' || $mode == 'quote') && ((bool) $user->optionget('viewtopicreview')))
 {
 	if (topic_review($topic_id, $forum_id))
 	{

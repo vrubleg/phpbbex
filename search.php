@@ -324,7 +324,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$show_results = 'topics';
 				$sort_key = 't';
 				$sort_dir = 'd';
-				$sort_days = request_var('st', 7);
+				$sort_days = request_var('st', 30);
 				$sort_by_sql['t'] = 't.topic_last_post_time';
 
 				gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
@@ -460,7 +460,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			break;
 
 			case 'egosearch':
-				$l_search_title = $user->lang['SEARCH_SELF'];
+				$l_search_title = ($search_fields === 'firstpost') ? $user->lang['SEARCH_SELF_TOPICS'] : $user->lang['SEARCH_SELF'];
 			break;
 		}
 	}
@@ -598,6 +598,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
 		'U_SEARCH_WORDS'	=> $u_search,
+		'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}index.$phpEx", 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 	));
 
 	if ($sql_where)

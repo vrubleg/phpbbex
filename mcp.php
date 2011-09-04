@@ -79,6 +79,7 @@ $topic_id = request_var('t', 0);
 $forum_id = request_var('f', 0);
 $report_id = request_var('r', 0);
 $user_id = request_var('u', 0);
+$warning_id = request_var('warning_id', 0);
 $username = utf8_normalize_nfc(request_var('username', '', true));
 
 if ($post_id)
@@ -240,6 +241,11 @@ if (!$user_id && $username == '')
 	$module->set_display('warn', 'warn_user', false);
 }
 
+if (!$warning_id)
+{
+	$module->set_display('warn', 'warn_edit', false);
+}
+
 // Load and execute the relevant module
 $module->load_active();
 
@@ -293,6 +299,12 @@ function _module_warn_url($mode, &$module_row)
 		$url_extra .= ($post_id) ? "&amp;p=$post_id" : '';
 
 		return $url_extra;
+	}
+	elseif ($mode == 'warn_edit')
+	{
+		global $warning_id;
+
+		return ($warning_id) ? "&amp;warning_id=$warning_id" : '';
 	}
 	else
 	{

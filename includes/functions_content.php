@@ -585,7 +585,15 @@ function make_clickable_callback($type, $whitespace, $url, $relative_url, $class
 		break;
 	}
 
-	$short_url = (strlen($url) > 55) ? substr($url, 0, 39) . ' ... ' . substr($url, -10) : $url;
+	$short_url = urldecode($url);
+	if (!preg_match('/^./u', $short_url))
+	{
+		$short_url = (strlen($url) > 85) ? substr($url, 0, 49) . ' ... ' . substr($url, -30) : $url;
+	}
+	else
+	{
+		if (utf8_strlen($short_url) > 85) $short_url = utf8_substr($short_url, 0, 49) . ' ... ' . utf8_substr($short_url, -30);
+	}
 
 	switch ($type)
 	{
@@ -937,14 +945,14 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				$display_cat = ATTACHMENT_CATEGORY_NONE;
 			}
 
-			$download_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id']);
+			$download_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 
 			switch ($display_cat)
 			{
 				// Images
 				case ATTACHMENT_CATEGORY_IMAGE:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
-					$inline_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id']);
+					$inline_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(
@@ -958,7 +966,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				// Images, but display Thumbnail
 				case ATTACHMENT_CATEGORY_THUMB:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
-					$thumbnail_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;t=1');
+					$thumbnail_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;t=1&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(
