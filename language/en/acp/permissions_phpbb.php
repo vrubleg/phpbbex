@@ -109,7 +109,7 @@ $lang = array_merge($lang, array(
 	'acl_u_savedrafts'	=> array('lang' => 'Can save drafts', 'cat' => 'post'),
 	'acl_u_chgcensors'	=> array('lang' => 'Can disable word censors', 'cat' => 'post'),
 	'acl_u_sig'			=> array('lang' => 'Can use signature', 'cat' => 'post'),
-	'u_ignoreedittime'	=> array('lang' => 'Can ignore edit time limit', 'cat' => 'post'),
+	'acl_u_ignoreedittime' => array('lang' => 'Can ignore edit time limit', 'cat' => 'post'),
 
 	'acl_u_sendpm'		=> array('lang' => 'Can send private messages', 'cat' => 'pm'),
 	'acl_u_masspm'		=> array('lang' => 'Can send messages to multiple users', 'cat' => 'pm'),
