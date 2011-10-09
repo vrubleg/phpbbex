@@ -13,6 +13,7 @@ AddDefaultCharset utf-8
 AddCharset utf-8 .html .css .js .xml .json .rss
 Options -Indexes -MultiViews
 php_flag magic_quotes_gpc off
+php_flag register_globals off
 FileETag None
 
 # MIME types
