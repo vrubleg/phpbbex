@@ -6,14 +6,10 @@ class acp_outlinks
 	function load_out_links()
 	{
 		global $config;
-		$outlinks = ($config['outlinks']) ? $config['outlinks'] : '';
-		if ($outlinks == "")
-		{
-			return array();
-		}
+		if (empty($config['outlinks'])) return array();
 
 		// Rows separated by \n, columns separated by \t
-		$outlinks = explode("\n", $outlinks);
+		$outlinks = explode("\n", $config['outlinks']);
 		foreach ($outlinks as &$outlink)
 		{
 			// Columns: id, title, url
@@ -36,7 +32,6 @@ class acp_outlinks
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 
 		// Set up general vars
 		$action = request_var('action', '');
@@ -181,8 +176,5 @@ class acp_outlinks
 				'U_MOVE_DOWN'	=> $this->u_action . '&amp;action=move_down&amp;id=' . $row[0]
 			));
 		}
-		$db->sql_freeresult($result);
 	}
 }
-
-?>
