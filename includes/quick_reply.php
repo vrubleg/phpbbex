@@ -131,8 +131,9 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($c
 	));
 }
 
+
 $qr_hidden_fields = array(
-	'topic_cur_post_id'		=> (int) $main_data['topic_last_post_id'],
+	'topic_cur_post_id'		=> (isset($main_data['topic_last_post_id'])) ? (int) $main_data['topic_last_post_id'] : 0,
 	'lastclick'				=> (int) time()
 );
 
