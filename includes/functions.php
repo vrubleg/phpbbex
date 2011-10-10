@@ -4438,15 +4438,16 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	}
 
 	// Out links
-	$outlinks = ($config['outlinks']) ? $config['outlinks'] : '';
-	if($outlinks == '') $outlinks = array(); 
-	else
+	$outlinks = empty($config['outlinks']) ? array() : explode("\n", $config['outlinks']);
+	$template->assign_var('S_OUTLINKS', !empty($outlinks));
+	foreach ($outlinks as $row)
 	{
-		$outlinks = explode("\n", $outlinks);
-		for($i=0; $i<count($outlinks); $i++) $outlinks[$i] = explode("\t", $outlinks[$i]);
+		$row = explode("\t", $row);
+		$template->assign_block_vars('outlinks', array(
+			'TITLE' => $row[1],
+			'URL' => $row[2],
+		));
 	}
-	$template->assign_var("S_OUTLINKS", (count($outlinks)!==0));
-	foreach($outlinks as $row) $template->assign_block_vars( 'outlinks', array('TITLE' => $row[1], 'URL' => $row[2]) );
 
 	// The following assigns all _common_ variables that may be used at any point in a template.
 	$template->assign_vars(array(

@@ -51,6 +51,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post_options', '20');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_enable', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
@@ -58,6 +59,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
