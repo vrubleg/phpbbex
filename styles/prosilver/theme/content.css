@@ -92,6 +92,7 @@ li.header dt, li.header dd {
 	font-size: 1em;
 	font-family: Arial, Helvetica, sans-serif;
 	text-transform: uppercase;
+	text-shadow: 2px 2px 2px #000000;
 }
 
 li.header dt {

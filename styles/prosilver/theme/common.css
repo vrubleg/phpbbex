@@ -313,6 +313,7 @@ table.table1 thead th {
 	line-height: 1.3em;
 	font-size: 1em;
 	padding: 0 0 4px 3px;
+	text-shadow: 2px 2px 2px #000;
 }
 
 table.table1 thead th span {
