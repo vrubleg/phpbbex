@@ -263,6 +263,10 @@ div[class].topic-actions {
 	font-size: 1.3em;
 }
 
+.postbody .content img, .postbody .signature img {
+	max-width: 100%;
+}
+
 .search .postbody {
 	width: 68%
 }
