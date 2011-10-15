@@ -46,6 +46,7 @@ ul.cplist {
 #cp-main .panel li.header dd, #cp-main .panel li.header dt {
 	color: #000000;
 	margin-bottom: 2px;
+	text-shadow: none;
 }
 
 #cp-main table.table1 {

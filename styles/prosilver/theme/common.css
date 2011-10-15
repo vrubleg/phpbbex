@@ -10,18 +10,19 @@
 html {
 	font-size: 100%;
 	/* Always show a scrollbar for short pages - stops the jump when the scrollbar appears. non-IE browsers */
-	height: 101%;
+	/* height: 101%; */
 }
 
 body {
 	/* Text-Sizing with ems: http://www.clagnut.com/blog/348/ */
 	font-family: Verdana, Helvetica, Arial, sans-serif;
-	color: #828282;
-	background-color: #FFFFFF;
+	color: #536482;
+	background-color: #EEEEE7;
 	/*font-size: 62.5%;			 This sets the default font size to be equivalent to 10px */
 	font-size: 10px;
 	margin: 0;
 	padding: 0;
+	height: 100%;
 }
 
 h1 {
@@ -103,9 +104,12 @@ p.right {
 ---------------------------------------- */
 #wrap {
 	padding: 0 20px;
-	min-width: 925px;
+	min-height: 100%;
+	min-width: 875px;
 	max-width: 1400px;
 	margin: 0 auto;
+	background-color: #FFFFFF;
+	box-shadow: 0 0 15px #CCCCCC;
 }
 
 #simple-wrap {
