@@ -69,5 +69,14 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_defau
 
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
 
+UPDATE phpbb_users SET user_options = 233343;
+UPDATE phpbb_forums SET forum_flags = forum_flags|16;
+
 DELETE FROM phpbb_bbcodes WHERE bbcode_tag = 's';
-UPDATE phpbb_bbcodes SET bbcode_id=(SELECT MAX(bbcode_id)+1) WHERE bbcode_id = 13;
+UPDATE IGNORE phpbb_bbcodes SET bbcode_id=14 WHERE bbcode_id = 13;
+UPDATE IGNORE phpbb_bbcodes SET bbcode_id=15 WHERE bbcode_id = 13;
+UPDATE IGNORE phpbb_bbcodes SET bbcode_id=16 WHERE bbcode_id = 13;
+UPDATE IGNORE phpbb_bbcodes SET bbcode_id=17 WHERE bbcode_id = 13;
+UPDATE IGNORE phpbb_bbcodes SET bbcode_id=18 WHERE bbcode_id = 13;
+UPDATE IGNORE phpbb_bbcodes SET bbcode_id=19 WHERE bbcode_id = 13;
+UPDATE IGNORE phpbb_bbcodes SET bbcode_id=20 WHERE bbcode_id = 13;
