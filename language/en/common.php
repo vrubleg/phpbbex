@@ -419,7 +419,7 @@ $lang = array_merge($lang, array(
 	'ONLINE_USER_TOTAL'			=> 'In total there is <strong>%d</strong> user online :: ',
 	'OPTIONS'					=> 'Options',
 
-	'PAGE_OF'				=> 'Page <strong>%1$d</strong> of <strong>%2$d</strong>',
+	'PAGE_OF'				=> 'Page %1$d of %2$d',
 	'PASSWORD'				=> 'Password',
 	'PIXEL'					=> 'px',
 	'PLAY_QUICKTIME_FILE'	=> 'Play Quicktime file',

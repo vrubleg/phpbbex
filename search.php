@@ -554,6 +554,28 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		$l_search_matches = ($total_match_count == 1) ? sprintf($user->lang['FOUND_SEARCH_MATCH'], $total_match_count) : sprintf($user->lang['FOUND_SEARCH_MATCHES'], $total_match_count);
 	}
 
+	if (empty($l_search_title) && ($author_id || $author))
+	{
+		if ($author_id)
+		{
+			// Get user...
+			$sql = 'SELECT username
+				FROM ' . USERS_TABLE . '
+				WHERE user_id = ' . intval($author_id);
+			$result = $db->sql_query($sql);
+			$member = $db->sql_fetchrow($result);
+			$db->sql_freeresult($result);
+			if ($member)
+			{
+				$author = $member['username'];
+			}
+		}
+		if ($author)
+		{
+			$l_search_title = ($show_results != 'posts' ? $user->lang['USER_TOPICS'] : $user->lang['USER_POSTS']) . ' ' . $author;
+		}
+	}
+
 	// define some vars for urls
 	$hilit = implode('|', explode(' ', preg_replace('#\s+#u', ' ', str_replace(array('+', '-', '|', '(', ')', '&quot;'), ' ', $keywords))));
 	// Do not allow *only* wildcard being used for hilight

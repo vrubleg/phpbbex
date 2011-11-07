@@ -418,7 +418,7 @@ $lang = array_merge($lang, array(
 	'ONLINE_USER_TOTAL'			=> 'Всего посетителей: <strong>%d</strong>, из них ',
 	'OPTIONS'					=> 'Настройки',
 
-	'PAGE_OF'				=> 'Страница <strong>%1$d</strong> из <strong>%2$d</strong>',
+	'PAGE_OF'				=> 'Страница %1$d из %2$d',
 	'PASSWORD'				=> 'Пароль',
  	'PIXEL'					=> 'пикс.',
 	'PLAY_QUICKTIME_FILE'	=> 'Воспроизвести файл QuickTime',
