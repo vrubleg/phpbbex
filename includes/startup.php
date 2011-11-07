@@ -14,6 +14,9 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+// Check PHP version
+if(version_compare(PHP_VERSION, '5.2.0', '<')) die('PHP 5.2 is required');
+
 // Report all errors, except notices and deprecation messages
 if (!defined('E_DEPRECATED'))
 {
