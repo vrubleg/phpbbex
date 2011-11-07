@@ -84,6 +84,8 @@ class acp_board
 					'title'	=> 'ACP_BOARD_FEATURES',
 					'vars'	=> array(
 						'legend1'				=> 'ACP_BOARD_FEATURES',
+						'announce_index'		=> array('lang'	=> 'ANNOUNCE_INDEX',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'active_topics_on_index'	=> array('lang' => 'ACTIVE_TOPICS_ON_INDEX',	'validate' => 'int',	'type' => 'text:3:4', 'explain' => true),
 						'allow_privmsg'			=> array('lang' => 'BOARD_PM',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_topic_notify'	=> array('lang' => 'ALLOW_TOPIC_NOTIFY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_forum_notify'	=> array('lang' => 'ALLOW_FORUM_NOTIFY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -339,7 +341,6 @@ class acp_board
 						'load_online_guests'	=> array('lang' => 'YES_ONLINE_GUESTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_onlinetrack'		=> array('lang' => 'YES_ONLINE_TRACK',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_birthdays'		=> array('lang' => 'YES_BIRTHDAYS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'announce_index'		=> array('lang'	=> 'ANNOUNCE_INDEX',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_unreads_search'	=> array('lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_moderators'		=> array('lang' => 'YES_MODERATORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_jumpbox'			=> array('lang' => 'YES_JUMPBOX',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),

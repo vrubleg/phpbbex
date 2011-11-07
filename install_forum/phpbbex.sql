@@ -47,6 +47,7 @@ ALTER TABLE phpbb_warnings
 	ADD INDEX user_id (user_id),
 	ADD INDEX post_id (post_id);
 
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');

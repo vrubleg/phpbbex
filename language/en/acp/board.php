@@ -100,6 +100,9 @@ $lang = array_merge($lang, array(
 	'ALLOW_TOPIC_NOTIFY'		=> 'Allow subscribing to topics',
 	'BOARD_PM'					=> 'Private messaging',
 	'BOARD_PM_EXPLAIN'			=> 'Enable private messaging for all users.',
+	'ANNOUNCE_INDEX'				=> 'Display global annoucements on Index page',
+	'ACTIVE_TOPICS_ON_INDEX'		=> 'Display active topics on Index page',
+	'ACTIVE_TOPICS_ON_INDEX_EXPLAIN'=> 'Leave empty or 0 to disable active topics on index.',
 ));
 
 // Avatar Settings
@@ -395,7 +398,6 @@ $lang = array_merge($lang, array(
 	'YES_READ_MARKING'				=> 'Enable server-side topic marking',
 	'YES_READ_MARKING_EXPLAIN'		=> 'Stores read/unread status information in the database rather than a cookie.',
 	'YES_UNREAD_SEARCH'				=> 'Enable search for unread posts',
-	'ANNOUNCE_INDEX'				=> 'Display global annoucements on Index page',
 ));
 
 // Auth settings
