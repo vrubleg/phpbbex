@@ -140,7 +140,7 @@ else
 }
 
 // Dump out the page header and load viewforum template
-page_header($user->lang['FORUM'] . ' - ' . $forum_data['forum_name'], true, $forum_id);
+page_header($forum_data['forum_name'], true, $forum_id);
 
 $template->set_filenames(array(
 	'body' => 'viewforum_body.html')
