@@ -58,6 +58,7 @@ ul.cplist {
 	font-weight: bold;
 	border-bottom: 1px solid #333333;
 	padding: 5px;
+	text-shadow: none;
 }
 
 #cp-main table.table1 tbody th {
