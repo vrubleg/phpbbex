@@ -55,10 +55,6 @@ hr.dashed {
 .forabg, .forumbg {
 	background-color: #092147;
 	background-image: url("{T_THEME_PATH}/images/bg_list.gif");
-	/*
-	background-color: #0a3e89;
-	background-image: url("{T_THEME_PATH}/images/bg_header.gif");
-	*/
 }
 
 .panel {

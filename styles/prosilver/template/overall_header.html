@@ -76,6 +76,13 @@
 <link href="{T_THEME_PATH}/print.css" rel="stylesheet" type="text/css" media="print" title="printonly" />
 <link href="{T_STYLESHEET_LINK}" rel="stylesheet" type="text/css" media="screen, projection" />
 
+<!-- IF CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2 -->
+<style type="text/css" media="screen, projection">
+.headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.gif"); }
+.forabg, .forumbg { background-image: url("{T_THEME_PATH}/images/bg_list_snow.gif"); }
+</style>
+<!-- ENDIF -->
+
 </head>
 
 <body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}">
