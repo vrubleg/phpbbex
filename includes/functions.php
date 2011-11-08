@@ -2771,6 +2771,7 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 
 	if ($check && $confirm)
 	{
+		static $confirm_keys_cache = array();
 		$user_id = request_var('confirm_uid', 0);
 		$session_id = request_var('sess', '');
 		$confirm_key = request_var('confirm_key', '');
@@ -2778,6 +2779,12 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 		if ($user_id != $user->data['user_id'] || $session_id != $user->session_id || !$confirm_key)
 		{
 			return false;
+		}
+
+		// Maybe this key was checked?
+		if (isset($confirm_keys_cache[$confirm_key]))
+		{
+			return true;
 		}
 
 		// Checking confirm key
@@ -2793,6 +2800,9 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 		$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . " 
 			WHERE user_id = " . $user->data['user_id'] . " AND confirm_key = '" . $db->sql_escape($confirm_key) . "'";
 		$db->sql_query($sql);
+
+		// Mark as checked
+		$confirm_keys_cache[$confirm_key] = true;
 
 		return true;
 	}
