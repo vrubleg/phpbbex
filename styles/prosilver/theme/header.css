@@ -112,7 +112,7 @@ a.icon-bump { background-position: 0 -182px; }
 a.icon-lock { background-position: 0 -208px; }
 a.icon-unlock { background-position: 0 -234px; }
 
-a.icon-vkontakte, a.icon-facebook, a.icon-twitter
+a.icon-vkontakte, a.icon-facebook, a.icon-twitter, a.icon-google-plus
 {
 	display: block;
 	overflow: hidden;
@@ -127,6 +127,7 @@ a.icon-vkontakte, a.icon-facebook, a.icon-twitter
 a.icon-facebook { background-position: 0 -26px; }
 a.icon-vkontakte { background-position: 0 -52px; }
 a.icon-twitter { background-position: 0 -78px; }
+a.icon-google-plus { background-position: 0 -104px; }
 
 .header-icons .icons-divider
 {
