@@ -5,10 +5,10 @@
 	<script type="text/javascript">
 	var url = encodeURIComponent(document.location.href);
 	var title = encodeURIComponent($('title').text());
-	document.write('<li><a href="http://vkontakte.ru/share.php?url='+url+'&title='+title+'" title="{L_SOCIAL_SHARE_IN} vkontakte.ru" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vkontakte.ru</a></li>');
-	document.write('<li><a href="https://plusone.google.com/_/+1/confirm?url='+url+'" title="{L_SOCIAL_SHARE_IN} Google Plus" class="icon-google-plus">{L_SOCIAL_SHARE_IN} Google Plus</a></li>');
-	document.write('<li><a href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
-	document.write('<li><a href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
+	document.write('<li><a target="_blank" href="http://vkontakte.ru/share.php?url='+url+'&title='+title+'" title="{L_SOCIAL_SHARE_IN} vkontakte.ru" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vkontakte.ru</a></li>');
+	document.write('<li><a target="_blank" href="https://plusone.google.com/_/+1/confirm?url='+url+'" title="{L_SOCIAL_SHARE_IN} Google Plus" class="icon-google-plus">{L_SOCIAL_SHARE_IN} Google Plus</a></li>');
+	document.write('<li><a target="_blank" href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
+	document.write('<li><a target="_blank" href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
 	</script>
 	<!-- IF S_WATCH_FORUM_LINK -->
 	<li class="icons-divider"></li>
