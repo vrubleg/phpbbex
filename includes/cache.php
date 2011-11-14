@@ -432,6 +432,30 @@ class cache extends acm
 
 		return $hook_files;
 	}
+
+	/**
+	* Obtain list of albums
+	*/
+	function obtain_album_list()
+	{
+		static $albums;
+
+		if (isset($albums))
+		{
+			return $albums;
+		}
+
+		if (($albums = $this->get('_albums')) === false)
+		{
+			if (class_exists('phpbb_gallery_integration'))
+			{
+				$albums = phpbb_gallery_integration::cache();
+				$this->put('_albums', $albums);
+			}
+		}
+
+		return $albums;
+	}
 }
 
 ?>

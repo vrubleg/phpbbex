@@ -2584,6 +2584,11 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			$sql_forum = '';
 		break;
 
+		case 'gallery':
+			$log_type = LOG_GALLERY;
+			$sql_forum = '';
+		break;
+
 		default:
 			return;
 	}
@@ -2664,6 +2669,8 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			'topic_id'			=> $row['topic_id'],
 
 			'viewforum'			=> ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']) : false,
+			'viewalbum'			=> ((isset($row['album_id']) && $row['album_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id']) : false),
+			'viewimage'			=> ((isset($row['image_id']) && $row['image_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['image_id']) : false),
 			'action'			=> (isset($user->lang[$row['log_operation']])) ? $user->lang[$row['log_operation']] : '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
 		);
 

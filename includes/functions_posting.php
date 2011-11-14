@@ -135,6 +135,11 @@ function generate_smilies($mode, $forum_id)
 		);
 	}
 
+	if (class_exists('phpbb_gallery_integration'))
+	{
+		phpbb_gallery_integration::generate_smilies($mode, $forum_id);
+	}
+
 	if ($mode == 'window')
 	{
 		page_footer();

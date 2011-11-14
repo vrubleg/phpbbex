@@ -125,6 +125,11 @@ if (!empty($config['announce_index']))
 	display_global_announcements('announcetopic');
 }
 
+if (class_exists('phpbb_gallery_integration'))
+{
+	phpbb_gallery_integration::index_total_images();
+}
+
 // Assign index specific vars
 $template->assign_vars(array(
 	'TOTAL_POSTS'	=> sprintf($user->lang[$l_total_post_s], $total_posts),

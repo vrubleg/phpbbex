@@ -4,6 +4,9 @@
 // <![CDATA[
 	var form_name = 'postform';
 	var text_name = 'message';
+	<!-- IF S_GALLERY_SMILIES_POPUP -->
+		text_name = opener.text_name;
+	<!-- ENDIF -->
 // ]]>
 </script>
 <script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/editor.js"></script>

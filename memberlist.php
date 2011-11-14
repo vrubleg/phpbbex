@@ -576,6 +576,11 @@ switch ($mode)
 			unset($module);
 		}
 
+		if (class_exists('phpbb_gallery_integration'))
+		{
+			phpbb_gallery_integration::memberlist_viewprofile($member);
+		}
+
 		$template->assign_vars(show_profile($member, $user_notes_enabled, $warn_user_enabled));
 
 		// Custom Profile Fields

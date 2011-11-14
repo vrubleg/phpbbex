@@ -60,6 +60,7 @@
 		<h3>{L_CONTACT_USER}</h3>
 
 		<dl class="details">
+		<!-- IF U_GALLERY --><dt>{L_GALLERY}:</dt> <dd><a href="{U_GALLERY}">{SHOW_PERSONAL_ALBUM_OF}</a></dd><!-- ENDIF -->
 		<!-- IF U_PM --><dt>{L_PM}:</dt> <dd><a href="{U_PM}">{USERNAME}</a></dd><!-- ENDIF -->
 		<!-- IF U_EMAIL --><dt>{L_EMAIL_ADDRESS}:</dt> <dd><a href="{U_EMAIL}"><!-- IF S_USER_ALLOW_VIEWEMAIL -->{USER_EMAIL}<!-- ELSE -->{L_SEND_EMAIL_USER}<!-- ENDIF --></a></dd><!-- ENDIF -->
 		<!-- IF USER_ICQ --><dt>{L_ICQ}:</dt> <dd>{USER_ICQ}</dd><!-- ENDIF -->
@@ -99,6 +100,12 @@
 					<!-- IF TOPICS_PCT --><br />({TOPICS_PCT} / {TOPICS_DAY})<!-- ENDIF -->
 					<!-- IF TOPICS_IN_QUEUE and U_MCP_QUEUE --><br />(<a href="{U_MCP_QUEUE}">{L_TOPICS_IN_QUEUE}</a>)<!-- ELSEIF TOPICS_IN_QUEUE --><br />({L_TOPICS_IN_QUEUE})<!-- ENDIF -->
 				</dd>
+			<!-- IF TOTAL_IMAGES -->
+				<dt>{L_TOTAL_IMAGES}:</dt>
+					<dd>{IMAGES} | <strong><a href="{U_SEARCH_GALLERY}">{L_SEARCH_USER_IMAGES}</a></strong>
+						<!-- IF IMAGES_PCT --><br />({IMAGES_PCT} / {IMAGES_DAY})<!-- ENDIF -->
+					</dd>
+			<!-- ENDIF -->
 			<!-- IF S_SHOW_ACTIVITY and POSTS -->
 				<dt>{L_ACTIVE_IN_FORUM}:</dt> <dd><!-- IF ACTIVE_FORUM --><strong><a href="{U_ACTIVE_FORUM}">{ACTIVE_FORUM}</a></strong><br />({ACTIVE_FORUM_POSTS} / {ACTIVE_FORUM_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
 				<dt>{L_ACTIVE_IN_TOPIC}:</dt> <dd><!-- IF ACTIVE_TOPIC --><strong><a href="{U_ACTIVE_TOPIC}">{ACTIVE_TOPIC}</a></strong><br />({ACTIVE_TOPIC_POSTS} / {ACTIVE_TOPIC_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
@@ -109,6 +116,8 @@
 </div>
 
 </form>
+
+<!-- INCLUDE gallery/recent_body.html -->
 
 <!-- INCLUDE jumpbox.html -->
 

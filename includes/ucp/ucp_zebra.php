@@ -60,6 +60,11 @@ class ucp_zebra
 								AND ' . $db->sql_in_set('zebra_id', $data['usernames']);
 						$db->sql_query($sql);
 
+						if (class_exists('phpbb_gallery_integration'))
+						{
+							phpbb_gallery_integration::ucp_zebra('remove', $data['usernames'], (int) $user->data['user_id']);
+						}
+
 						$updated = true;
 					}
 
@@ -185,6 +190,11 @@ class ucp_zebra
 											'zebra_id'		=> (int) $zebra_id,
 											$sql_mode		=> 1
 										);
+									}
+
+									if (class_exists('phpbb_gallery_integration'))
+									{
+										phpbb_gallery_integration::ucp_zebra('add', $user_id_ary, (int) $user->data['user_id']);
 									}
 
 									$db->sql_multi_insert(ZEBRA_TABLE, $sql_ary);

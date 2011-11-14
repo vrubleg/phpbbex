@@ -622,6 +622,7 @@ $template->assign_vars(array(
 	'YIM_IMG' 			=> $user->img('icon_contact_yahoo', 'YIM'),
 	'JABBER_IMG'		=> $user->img('icon_contact_jabber', 'JABBER') ,
 	'SKYPE_IMG'			=> $user->img('icon_contact_skype', 'SKYPE') ,
+	'GALLERY_IMG'		=> $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
 	'REPORT_IMG'		=> $user->img('icon_post_report', 'REPORT_POST'),
 	'REPORTED_IMG'		=> $user->img('icon_topic_reported', 'POST_REPORTED'),
 	'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
@@ -1008,7 +1009,7 @@ if (!sizeof($post_list))
 $max_post_time = 0;
 
 $sql = $db->sql_build_query('SELECT', array(
-	'SELECT'	=> 'u.*, z.friend, z.foe, p.*',
+	'SELECT'	=> 'u.*, z.friend, z.foe, p.*, gu.personal_album_id, gu.user_images',
 
 	'FROM'		=> array(
 		USERS_TABLE		=> 'u',
@@ -1019,6 +1020,10 @@ $sql = $db->sql_build_query('SELECT', array(
 		array(
 			'FROM'	=> array(ZEBRA_TABLE => 'z'),
 			'ON'	=> 'z.user_id = ' . $user->data['user_id'] . ' AND z.zebra_id = p.poster_id'
+		),
+		array(
+			'FROM'	=> array(GALLERY_USERS_TABLE => 'gu'),
+			'ON'	=> 'gu.user_id = p.poster_id'
 		)
 	),
 
@@ -1132,6 +1137,10 @@ while ($row = $db->sql_fetchrow($result))
 				'age'				=> '',
 				'gender'			=> 0,
 
+				'gallery_album'		=> '',
+				'gallery_images'	=> '',
+				'gallery_search'	=> '',
+
 				'username'			=> $row['username'],
 				'user_colour'		=> $row['user_colour'],
 
@@ -1188,6 +1197,10 @@ while ($row = $db->sql_fetchrow($result))
 				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
 				'skype'			=> ($row['user_skype']) ? ('skype:' . $row['user_skype'] . '?chat') : '',
 				'search'		=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.$phpEx", "author_id=$poster_id&amp;sr=posts") : '',
+
+				'gallery_album'		=> (phpbb_gallery_config::get('viewtopic_icon') && $row['personal_album_id']) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
+				'gallery_images'	=> (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
+				'gallery_search'	=> (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', "user_id=$poster_id") : '',
 
 				'author_full'		=> get_username_string('full', $poster_id, $row['username'], $row['user_colour']),
 				'author_colour'		=> get_username_string('colour', $poster_id, $row['username'], $row['user_colour']),
@@ -1631,6 +1644,10 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_YIM'			=> $user_cache[$poster_id]['yim'],
 		'U_JABBER'		=> $user_cache[$poster_id]['jabber'],
 		'U_SKYPE'		=> $user_cache[$poster_id]['skype'],
+
+		'U_GALLERY'			=> $user_cache[$poster_id]['gallery_album'],
+		'GALLERY_IMAGES'	=> $user_cache[$poster_id]['gallery_images'],
+		'U_GALLERY_SEARCH'	=> $user_cache[$poster_id]['gallery_search'],
 
 		'U_REPORT'			=> ($auth->acl_get('f_report', $forum_id)) ? append_sid("{$phpbb_root_path}report.$phpEx", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 		'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=report_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',

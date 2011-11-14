@@ -3281,6 +3281,8 @@ function add_log()
 	$reportee_id	= ($mode == 'user') ? intval(array_shift($args)) : '';
 	$forum_id		= ($mode == 'mod') ? intval(array_shift($args)) : '';
 	$topic_id		= ($mode == 'mod') ? intval(array_shift($args)) : '';
+	$album_id		= ($mode == 'gallery') ? intval(array_shift($args)) : '';
+	$image_id		= ($mode == 'gallery') ? intval(array_shift($args)) : '';
 	$action			= array_shift($args);
 	$data			= (!sizeof($args)) ? '' : serialize($args);
 
@@ -3315,6 +3317,14 @@ function add_log()
 
 		case 'critical':
 			$sql_ary['log_type'] = LOG_CRITICAL;
+		break;
+
+		case 'gallery':
+			$sql_ary += array(
+				'log_type'	=> LOG_GALLERY,
+				'album_id'	=> $album_id,
+				'image_id'	=> $image_id,
+			);
 		break;
 
 		default:
@@ -4457,6 +4467,11 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 			'TITLE' => $row[1],
 			'URL' => $row[2],
 		));
+	}
+
+	if (class_exists('phpbb_gallery_integration'))
+	{
+		phpbb_gallery_integration::page_header();
 	}
 
 	// The following assigns all _common_ variables that may be used at any point in a template.

@@ -150,6 +150,10 @@ class acp_logs
 			$data = array();
 				
 			$checks = array('viewtopic', 'viewlogs', 'viewforum');
+			if ($mode == 'gallery')
+			{
+				$checks = array('viewimage', 'viewalbum');
+			}
 			foreach ($checks as $check)
 			{
 				if (isset($row[$check]) && $row[$check])
