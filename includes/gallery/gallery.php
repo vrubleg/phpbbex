@@ -71,12 +71,14 @@ class phpbb_gallery
 		$user_id = ($user->data['user_perm_from'] == 0) ? $user->data['user_id'] : $user->data['user_perm_from'];
 		self::$auth = new phpbb_gallery_auth($user_id);
 
+		/*
 		if (phpbb_gallery_config::get('mvc_time') < time())
 		{
 			// Check the version, do we need to update?
 			phpbb_gallery_config::set('mvc_version', phpbb_gallery_modversioncheck::check(true));
 			phpbb_gallery_config::set('mvc_time', time() + 86400);
 		}
+		*/
 
 		if (phpbb_gallery_config::get('prune_orphan_time') < time())
 		{
@@ -153,12 +155,14 @@ class phpbb_gallery
 		$user_id = ($user->data['user_perm_from'] == 0) ? $user->data['user_id'] : $user->data['user_perm_from'];
 		self::$auth = new phpbb_gallery_auth($user_id);
 
+		/*
 		if (phpbb_gallery_config::get('mvc_time') < time())
 		{
 			// Check the version, do we need to update?
 			phpbb_gallery_config::set('mvc_time', time() + 86400);
 			phpbb_gallery_config::set('mvc_version', phpbb_gallery_modversioncheck::check(true));
 		}
+		*/
 
 		self::$loaded = true;
 		if (request_var('display', '') == 'popup')
