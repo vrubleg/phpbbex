@@ -132,6 +132,7 @@ class phpbb_gallery
 		$template->assign_block_vars('navlinks', array(
 			'FORUM_NAME'	=> $user->lang['GALLERY'],
 			'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('index'),
+			'FIRST'			=> true,
 		));
 
 		self::$loaded = true;
