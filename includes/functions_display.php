@@ -517,13 +517,13 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		$last_topic_result = $db->sql_query($sql);
 		while($last_topic_row = $db->sql_fetchrow($last_topic_result))
 		{
-			$last_topic_title_full = censor_text($last_topic_row['topic_title']);
-			$last_topic_title = (utf8_strlen($last_topic_title_full) > 30) ? utf8_substr($last_topic_title_full, 0, 30) . '&hellip;' : $last_topic_title_full;
+			$last_topic_title_full = htmlspecialchars_decode(censor_text($last_topic_row['topic_title']));
+			$last_topic_title = (utf8_strlen($last_topic_title_full) > 40) ? trim(utf8_substr($last_topic_title_full, 0, 40)) . '…' : $last_topic_title_full;
 			$last_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $last_topic_row['forum_id'] . '&amp;t=' . $last_topic_row['topic_id']);
 
 			$template->alter_block_array('forumrow', array(
-					'LAST_TOPIC_TITLE'		=> $last_topic_title,
-					'LAST_TOPIC_TITLE_FULL'	=> $last_topic_title_full,
+					'LAST_TOPIC_TITLE'		=> htmlspecialchars($last_topic_title),
+					'LAST_TOPIC_TITLE_FULL'	=> htmlspecialchars($last_topic_title_full),
 					'U_LAST_TOPIC_URL'		=> $last_topic_url
 			), array('LAST_POST_ID'	=> $last_topic_row['topic_last_post_id']), 'change');
 		}
