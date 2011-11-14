@@ -120,6 +120,8 @@ class phpbb_gallery
 
 			'S_GALLERY_FEEDS'				=> phpbb_gallery_config::get('feed_enable'),
 			'U_GALLERY_FEED'				=> phpbb_gallery_url::append_sid('feed'),
+
+			'COPYRIGHT'						=> 'Powered by <a href="http://www.flying-bits.org/">phpBB Gallery</a> © 2009 nickvergessen',
 		));
 
 		// Okay, this is not the best way, but we disable the phpbb feeds and display the ones of the gallery.
