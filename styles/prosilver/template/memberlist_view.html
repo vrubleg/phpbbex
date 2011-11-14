@@ -30,6 +30,7 @@
 		<!-- IF LOCATION --><dt>{L_LOCATION}:</dt> <dd>{LOCATION}</dd><!-- ENDIF -->
 		<!-- IF GENDER --><dt>{L_GENDER}:</dt> <dd><!-- IF S_GENDER_M -->{L_GENDER_M}<!-- ELSEIF S_GENDER_F -->{L_GENDER_F}<!-- ELSE -->{L_GENDER_X}<!-- ENDIF --></dd><!-- ENDIF -->
 		<!-- IF AGE and AGE < 65 and AGE > 10 --><dt>{L_AGE}:</dt> <dd>{AGE}</dd><!-- ENDIF -->
+		<!-- IF U_GALLERY --><dt>{L_GALLERY}:</dt> <dd><a href="{U_GALLERY}">{SHOW_PERSONAL_ALBUM_OF}</a></dd><!-- ENDIF -->
 		<!-- IF OCCUPATION --><dt>{L_OCCUPATION}:</dt> <dd>{OCCUPATION}</dd><!-- ENDIF -->
 		<!-- IF INTERESTS --><dt>{L_INTERESTS}:</dt> <dd>{INTERESTS}</dd><!-- ENDIF -->
 		<!-- IF S_GROUP_OPTIONS --><dt>{L_USERGROUPS}:</dt> <dd><select name="g">{S_GROUP_OPTIONS}</select> <input type="submit" name="submit" value="{L_GO}" class="button2" /></dd><!-- ENDIF -->
@@ -60,7 +61,6 @@
 		<h3>{L_CONTACT_USER}</h3>
 
 		<dl class="details">
-		<!-- IF U_GALLERY --><dt>{L_GALLERY}:</dt> <dd><a href="{U_GALLERY}">{SHOW_PERSONAL_ALBUM_OF}</a></dd><!-- ENDIF -->
 		<!-- IF U_PM --><dt>{L_PM}:</dt> <dd><a href="{U_PM}">{USERNAME}</a></dd><!-- ENDIF -->
 		<!-- IF U_EMAIL --><dt>{L_EMAIL_ADDRESS}:</dt> <dd><a href="{U_EMAIL}"><!-- IF S_USER_ALLOW_VIEWEMAIL -->{USER_EMAIL}<!-- ELSE -->{L_SEND_EMAIL_USER}<!-- ENDIF --></a></dd><!-- ENDIF -->
 		<!-- IF USER_ICQ --><dt>{L_ICQ}:</dt> <dd>{USER_ICQ}</dd><!-- ENDIF -->
