@@ -4441,7 +4441,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		$user_lang = substr($user_lang, 0, strpos($user_lang, '-x-'));
 	}
 
-	$s_search_hidden_fields = array();
+	$s_search_hidden_fields = array('sf' => 'titleonly', 'sr' => 'topics');
 	if ($_SID)
 	{
 		$s_search_hidden_fields['sid'] = $_SID;
@@ -4604,7 +4604,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'SITE_LOGO_IMG'			=> $user->img('site_logo'),
 
 		'A_COOKIE_SETTINGS'		=> addslashes('; path=' . $config['cookie_path'] . ((!$config['cookie_domain'] || $config['cookie_domain'] == 'localhost' || $config['cookie_domain'] == '127.0.0.1') ? '' : '; domain=' . $config['cookie_domain']) . ((!$config['cookie_secure']) ? '' : '; secure')),
-		'S_SEARCH_HIDDEN_FIELDS'=>'<input type="hidden" name="sf" value="titleonly" /><input type="hidden" name="sr" value="topics" />',
 	));
 
 	// Login via E-Mail
