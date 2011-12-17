@@ -4480,6 +4480,10 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
 		'S_USER_NEW'					=> $user->data['user_new'],
 
+		'STYLE_SHOW_SITENAME_IN_HEADERBAR'		=> !empty($config['style_show_sitename_in_headerbar']),
+		'STYLE_SHOW_LIVEINTERNET_COUNTER'		=> !empty($config['style_show_liveinternet_counter']),
+		'STYLE_GOOGLE_ANALYTICS_ID'				=> !empty($config['style_google_analytics_id']) ? $config['style_google_analytics_id'] : false,
+
 		'SID'				=> $SID,
 		'_SID'				=> $_SID,
 		'SESSION_ID'		=> $user->session_id,
