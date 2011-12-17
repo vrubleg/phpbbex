@@ -15,6 +15,7 @@
 
 	<div id="counter"></div>
 
+	<!-- IF STYLE_SHOW_LIVEINTERNET_COUNTER -->
 	<script type="text/javascript">
 	jQuery(function($)
 	{
@@ -24,9 +25,24 @@
 		}, 500);
 	});
 	</script>
+	<!-- ENDIF -->
+
+	<!-- IF STYLE_GOOGLE_ANALYTICS_ID -->
+	<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', '{STYLE_GOOGLE_ANALYTICS_ID}']);
+	_gaq.push(['_trackPageview']);
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	</script>
+	<!-- ENDIF -->
 
 	<div class="copyright">
 		<!-- IF COPYRIGHT_NOTICE -->{COPYRIGHT_NOTICE}<br /><!-- ENDIF -->
+		<!-- Please do not remove the copyright of phpBB and phpBBex! Будьте добры, не удаляйте копирайт и ссылки phpBB и phpBBex! -->
 		<!-- IF not COPYRIGHT -->Powered by <a href="http://www.phpbb.com/">phpBB</a> &copy; 2011 phpBB Group, <a href="http://code.google.com/p/phpbbex/">phpBBex</a> &copy; 2011 Evgeny Vrublevsky<!-- ELSE -->{COPYRIGHT}<!-- ENDIF -->
 		<!-- IF DEBUG_OUTPUT --><br />{DEBUG_OUTPUT}<!-- ENDIF -->
 	</div>

@@ -74,7 +74,12 @@ class acp_board
 						'warnings_expire_days'	=> array('lang' => 'WARNINGS_EXPIRE',		'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
 						'warnings_gc'			=> array('lang' => 'WARNINGS_GC',			'validate' => 'int',	'type' => 'text:4:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']),
 
-						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+						'legend3'							=> 'STYLE_OPTIONS',
+						'style_show_sitename_in_headerbar'	=> array('lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_show_liveinternet_counter'	=> array('lang' => 'STYLE_SHOW_LIVEINTERNET_COUNTER',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_google_analytics_id'			=> array('lang' => 'STYLE_GOOGLE_ANALYTICS_ID',			'validate' => 'string',	'type' => 'text:20:255', 'explain' => false),
+
+						'legend4'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;
