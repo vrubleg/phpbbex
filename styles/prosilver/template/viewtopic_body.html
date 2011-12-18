@@ -146,6 +146,9 @@
 			<!-- ENDIF -->
 
 			<div class="content">{postrow.MESSAGE}</div>
+			<!-- IF S_QUICK_REPLY and postrow.DECODED_MESSAGE -->
+				<div id="message_{postrow.POST_ID}" style="display: none;">{postrow.DECODED_MESSAGE}</div>
+			<!-- ENDIF -->
 
 			<!-- IF postrow.S_HAS_ATTACHMENTS -->
 				<dl class="attachbox">

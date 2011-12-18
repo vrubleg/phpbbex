@@ -1440,6 +1440,15 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 	// Parse the message and subject
 	$message = censor_text($row['post_text']);
 
+	// Prepare decoded message if needed
+	$decoded_message = false;
+	if (!empty($config['allow_quick_reply']) && !empty($config['allow_quick_full_quote']) && $auth->acl_get('f_reply', $forum_id))
+	{
+		$decoded_message = $message;
+		decode_message($decoded_message, $row['bbcode_uid']);
+		$decoded_message = bbcode_nl2br($decoded_message);
+	}
+
 	// Second parse bbcode here
 	if ($row['bbcode_bitfield'])
 	{
@@ -1602,6 +1611,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_DATE'			=> $user->format_date($row['post_created'] ? $row['post_created'] : $row['post_time'], false, ($view == 'print') ? true : false),
 		'POST_SUBJECT'		=> $row['post_subject'],
 		'MESSAGE'			=> $message,
+		'DECODED_MESSAGE'	=> $decoded_message,
 		'SIGNATURE'			=> ($row['enable_sig']) ? $user_cache[$poster_id]['sig'] : '',
 		'EDITED_MESSAGE'	=> $l_edited_by,
 		'EDIT_REASON'		=> $row['post_edit_reason'],

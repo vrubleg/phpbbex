@@ -31,6 +31,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_post_links',
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_privmsg', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_full_quote', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post_options', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_sig', '1');
