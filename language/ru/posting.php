@@ -48,7 +48,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_A_HELP'				=> 'Вставить вложение в текст сообщения: [attachment=]filename.ext[/attachment]',
 	'BBCODE_B_HELP'				=> 'Жирный текст: [b]text[/b]',
 	'BBCODE_C_HELP'				=> 'Код: [code]code[/code]',
-	'BBCODE_E_HELP'				=> 'Список: добавить элемент списка',
+	'BBCODE_D_HELP'				=> 'Флэш: [flash=width,height]http://url[/flash]',
 	'BBCODE_F_HELP'				=> 'Размер шрифта: [size=85]small text[/size]',
 	'BBCODE_IS_OFF'				=> '%sBBCode%s <em>ВЫКЛЮЧЕН</em>',
 	'BBCODE_IS_ON'				=> '%sBBCode%s <em>ВКЛЮЧЁН</em>',
@@ -61,7 +61,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_S_HELP'				=> 'Цвет шрифта: [color=red]text[/color] Совет: вы можете использовать также конструкцию color=#FF0000',
 	'BBCODE_U_HELP'				=> 'Подчёркнутый текст: [u]text[/u]',
 	'BBCODE_W_HELP'				=> 'Вставить ссылку: [url]http://url[/url] или [url=http://url]URL text[/url]',
-	'BBCODE_D_HELP'				=> 'Флэш: [flash=width,height]http://url[/flash]',
+	'BBCODE_Y_HELP'				=> 'Список: добавить элемент списка',
 	'BUMP_ERROR'				=> 'Вы не можете поднимать тему сразу после последнего сообщения. Попробуйте чуть позже.',
 
 	'CANNOT_DELETE_REPLIED'		=> 'Извините, но вы можете удалять только сообщения, не имеющие ответов.',

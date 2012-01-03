@@ -68,6 +68,9 @@ $lang = array_merge($lang, array(
 
 	'LENGTH_BAN_INVALID'		=> 'Дата должна быть в формате <kbd>ГГГГ-ММ-ДД</kbd>.',
 
+	'OPTIONS_BANNED'			=> 'Чёрный список',
+	'OPTIONS_EXCLUDED'			=> 'Белый список',
+
 	'PERMANENT'		=> 'Бессрочно',
 
 	'UNTIL'						=> 'До даты',

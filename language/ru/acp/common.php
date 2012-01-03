@@ -327,6 +327,16 @@ $lang = array_merge($lang, array(
 	'DATABASE_SERVER_INFO'	=> 'Сервер базы данных',
 	'DATABASE_SIZE'			=> 'Размер базы данных',
 
+	// Enviroment configuration checks, mbstring related
+	'ERROR_MBSTRING_FUNC_OVERLOAD'					=> 'Перегрузка функций настроена неверно',
+	'ERROR_MBSTRING_FUNC_OVERLOAD_EXPLAIN'			=> 'Параметр <var>mbstring.func_overload</var> должен быть равен 0 или 4. Вы можете проверить текущее значение на странице <samp>Сведения о PHP</samp>.',
+	'ERROR_MBSTRING_ENCODING_TRANSLATION'			=> 'Преобразование кодировок настроено неверно',
+	'ERROR_MBSTRING_ENCODING_TRANSLATION_EXPLAIN'	=> 'Параметр <var>mbstring.encoding_translation</var> должен быть равен 0. Вы можете проверить текущее значение на странице <samp>Сведения о PHP</samp>.',
+	'ERROR_MBSTRING_HTTP_INPUT'						=> 'Кодировка входящего потока HTTP настроена неверно',
+	'ERROR_MBSTRING_HTTP_INPUT_EXPLAIN'				=> 'Параметр <var>mbstring.http_input</var> должен быть равен <samp>pass</samp>. Вы можете проверить текущее значение на странице <samp>Сведения о PHP</samp>.',
+	'ERROR_MBSTRING_HTTP_OUTPUT'					=> 'Кодировка исходящего потока HTTP настроена неверно',
+	'ERROR_MBSTRING_HTTP_OUTPUT_EXPLAIN'			=> 'Параметр <var>mbstring.http_output</var> должен быть равен <samp>pass</samp>. Вы можете проверить текущее значение на странице <samp>Сведения о PHP</samp>.',
+
 	'FILES_PER_DAY'		=> 'Вложений в день',
 	'FORUM_STATS'		=> 'Статистика конференции',
 
