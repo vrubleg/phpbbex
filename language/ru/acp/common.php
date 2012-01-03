@@ -766,6 +766,7 @@ $lang = array_merge($lang, array(
 	'ALLOW_REPLY_CHECKBOXES'	=> 'Чекбоксы',
 	'ALLOW_REPLY_ATTACHBOX'		=> 'Вложение файлов',
 	'ALLOW_REPLY_SMILIES'		=> 'Смайлики',
+	'ALLOW_QUICK_FULL_QUOTE'	=> 'Разрешить полное цитирование',
 	'ALLOW_QUICK_POST'			=> 'Разрешить быстрые темы',
 	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Пользователи смогут начинать новые темы на странице просмотра форума.',
 ));

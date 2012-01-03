@@ -767,6 +767,7 @@ $lang = array_merge($lang, array(
 	'ALLOW_REPLY_CHECKBOXES'	=> 'Checkboxes',
 	'ALLOW_REPLY_ATTACHBOX'		=> 'Attachbox',
 	'ALLOW_REPLY_SMILIES'		=> 'Smilies',
+	'ALLOW_QUICK_FULL_QUOTE'	=> 'Allow full quote',
 	'ALLOW_QUICK_POST'			=> 'Allow quick topic post for users',
 	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Users can start topic directly at forum view.',
 ));

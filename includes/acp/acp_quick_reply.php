@@ -49,6 +49,7 @@ class acp_quick_reply
 						'allow_reply_checkboxes'=> array('lang' => 'ALLOW_REPLY_CHECKBOXES','validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_reply_attachbox'	=> array('lang' => 'ALLOW_REPLY_ATTACHBOX',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_reply_smilies'	=> array('lang' => 'ALLOW_REPLY_SMILIES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_full_quote'=> array('lang' => 'ALLOW_QUICK_FULL_QUOTE','validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
 						'allow_quick_post'		=> array('lang' => 'ALLOW_QUICK_POST',		'validate' => 'int',	'type' => 'select', 'method' => 'allow_quick_post', 'explain' => true),
 						'allow_post_icons'		=> array('lang' => 'ALLOW_REPLY_ICONS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -131,6 +132,7 @@ class acp_quick_reply
 			
 			set_config('allow_quick_reply', $this->new_config['allow_quick_reply']);
 			set_config('allow_quick_reply_options', $this->new_config['allow_quick_reply_options']);
+			set_config('allow_quick_full_quote', $this->new_config['allow_quick_full_quote']);
 			set_config('allow_quick_post', $this->new_config['allow_quick_post']);
 			set_config('allow_quick_post_options', $this->new_config['allow_quick_post_options']);
 
