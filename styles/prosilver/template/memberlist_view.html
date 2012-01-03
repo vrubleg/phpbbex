@@ -107,8 +107,8 @@
 					</dd>
 			<!-- ENDIF -->
 			<!-- IF S_SHOW_ACTIVITY and POSTS -->
-				<dt>{L_ACTIVE_IN_FORUM}:</dt> <dd><!-- IF ACTIVE_FORUM --><strong><a href="{U_ACTIVE_FORUM}">{ACTIVE_FORUM}</a></strong><br />({ACTIVE_FORUM_POSTS} / {ACTIVE_FORUM_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
-				<dt>{L_ACTIVE_IN_TOPIC}:</dt> <dd><!-- IF ACTIVE_TOPIC --><strong><a href="{U_ACTIVE_TOPIC}">{ACTIVE_TOPIC}</a></strong><br />({ACTIVE_TOPIC_POSTS} / {ACTIVE_TOPIC_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
+				<dt>{L_ACTIVE_IN_FORUM}:</dt> <dd><!-- IF ACTIVE_FORUM != '' --><strong><a href="{U_ACTIVE_FORUM}">{ACTIVE_FORUM}</a></strong><br />({ACTIVE_FORUM_POSTS} / {ACTIVE_FORUM_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
+				<dt>{L_ACTIVE_IN_TOPIC}:</dt> <dd><!-- IF ACTIVE_TOPIC != '' --><strong><a href="{U_ACTIVE_TOPIC}">{ACTIVE_TOPIC}</a></strong><br />({ACTIVE_TOPIC_POSTS} / {ACTIVE_TOPIC_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
 			<!-- ENDIF -->
 		</dl>
 	</div>

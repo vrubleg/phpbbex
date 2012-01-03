@@ -59,6 +59,7 @@ $lang = array_merge($lang, array(
 	'LANGUAGE_PACK_DELETED'				=> 'Языковой пакет <strong>%s</strong> успешно удалён. Все пользователи, использующие этот язык, переключены на язык конференции по умолчанию.',
 	'LANGUAGE_PACK_DETAILS'				=> 'Информация о языковом пакете',
 	'LANGUAGE_PACK_INSTALLED'			=> 'Языковой пакет <strong>%s</strong> успешно установлен.',
+	'LANGUAGE_PACK_CPF_UPDATE'			=> 'Языковые строки дополнительных полей профиля были скопированы из языкового пакета по умолчанию. Измените их, если это необходимо.',
 	'LANGUAGE_PACK_ISO'					=> 'ISO',
 	'LANGUAGE_PACK_LOCALNAME'			=> 'Местное название',
 	'LANGUAGE_PACK_NAME'				=> 'Название',

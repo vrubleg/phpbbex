@@ -138,6 +138,7 @@ $lang = array_merge($lang, array(
 	'CURRENT_IMAGE'				=> 'Текущее изображение',
 	'CURRENT_PASSWORD'			=> 'Текущий пароль',
 	'CURRENT_PASSWORD_EXPLAIN'	=> 'Если вы хотите изменить имя пользователя, email или пароль, вы должны указать текущий пароль.',
+	'CUR_PASSWORD_EMPTY'		=> 'Вы не ввели свой текущий пароль.',
 	'CUR_PASSWORD_ERROR'		=> 'Введённый вами пароль не совпадает с текущим паролем',
 	'CUSTOM_DATEFORMAT'			=> 'Другой…',
 
@@ -268,9 +269,11 @@ $lang = array_merge($lang, array(
 	'MOVE_TO_FOLDER'				=> 'Переместить в папку',
 	'MOVE_UP'						=> 'Сдвинуть вверх',
 
+	'NEW_EMAIL_CONFIRM_EMPTY'		=> 'Вы не ввели подтверждение адреса email.',
 	'NEW_EMAIL_ERROR'				=> 'Введённые вами адреса email не совпадают.',
 	'NEW_FOLDER_NAME'				=> 'Новое имя папки',
 	'NEW_PASSWORD'					=> 'Новый пароль',
+	'NEW_PASSWORD_CONFIRM_EMPTY'	=> 'Вы не ввели подтверждение пароля.',
 	'NEW_PASSWORD_ERROR'			=> 'Введённые вами пароли не совпадают.',
 	'NOTIFY_METHOD'					=> 'Способ уведомления',
 	'NOTIFY_METHOD_BOTH'			=> 'Оба способа',
