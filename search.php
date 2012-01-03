@@ -324,7 +324,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$show_results = 'topics';
 				$sort_key = 't';
 				$sort_dir = 'd';
-				$sort_days = request_var('st', 7);
+				$sort_days = request_var('st', 30);
 				$sort_by_sql['t'] = 't.topic_last_post_time';
 
 				gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
@@ -460,7 +460,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			break;
 
 			case 'egosearch':
-				$l_search_title = $user->lang['SEARCH_SELF'];
+				$l_search_title = ($search_fields === 'firstpost') ? $user->lang['SEARCH_SELF_TOPICS'] : $user->lang['SEARCH_SELF'];
 			break;
 		}
 	}
@@ -554,6 +554,28 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		$l_search_matches = ($total_match_count == 1) ? sprintf($user->lang['FOUND_SEARCH_MATCH'], $total_match_count) : sprintf($user->lang['FOUND_SEARCH_MATCHES'], $total_match_count);
 	}
 
+	if (empty($l_search_title) && ($author_id || $author))
+	{
+		if ($author_id)
+		{
+			// Get user...
+			$sql = 'SELECT username
+				FROM ' . USERS_TABLE . '
+				WHERE user_id = ' . intval($author_id);
+			$result = $db->sql_query($sql);
+			$member = $db->sql_fetchrow($result);
+			$db->sql_freeresult($result);
+			if ($member)
+			{
+				$author = $member['username'];
+			}
+		}
+		if ($author)
+		{
+			$l_search_title = ($show_results != 'posts' ? $user->lang['USER_TOPICS'] : $user->lang['USER_POSTS']) . ' ' . $author;
+		}
+	}
+
 	// define some vars for urls
 	$hilit = implode('|', explode(' ', preg_replace('#\s+#u', ' ', str_replace(array('+', '-', '|', '(', ')', '&quot;'), ' ', $keywords))));
 	// Do not allow *only* wildcard being used for hilight
@@ -598,6 +620,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
 		'U_SEARCH_WORDS'	=> $u_search,
+		'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}index.$phpEx", 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 	));
 
 	if ($sql_where)

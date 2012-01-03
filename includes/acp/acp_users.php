@@ -1233,55 +1233,22 @@ class acp_users
 					}
 				}
 
-				$sql = 'SELECT w.warning_id, w.warning_time, w.post_id, l.log_operation, l.log_data, l.user_id AS mod_user_id, m.username AS mod_username, m.user_colour AS mod_user_colour
+				$sql = 'SELECT w.*, m.username AS issuer_username, m.user_colour AS issuer_user_colour
 					FROM ' . WARNINGS_TABLE . ' w
-					LEFT JOIN ' . LOG_TABLE . ' l
-						ON (w.log_id = l.log_id)
 					LEFT JOIN ' . USERS_TABLE . ' m
-						ON (l.user_id = m.user_id)
+						ON (w.issuer_id = m.user_id)
 					WHERE w.user_id = ' . $user_id . '
 					ORDER BY w.warning_time DESC';
 				$result = $db->sql_query($sql);
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					if (!$row['log_operation'])
-					{
-						// We do not have a log-entry anymore, so there is no data available
-						$row['action'] = $user->lang['USER_WARNING_LOG_DELETED'];
-					}
-					else
-					{
-						$row['action'] = (isset($user->lang[$row['log_operation']])) ? $user->lang[$row['log_operation']] : '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}';
-						if (!empty($row['log_data']))
-						{
-							$log_data_ary = @unserialize($row['log_data']);
-							$log_data_ary = ($log_data_ary === false) ? array() : $log_data_ary;
-
-							if (isset($user->lang[$row['log_operation']]))
-							{
-								// Check if there are more occurrences of % than arguments, if there are we fill out the arguments array
-								// It doesn't matter if we add more arguments than placeholders
-								if ((substr_count($row['action'], '%') - sizeof($log_data_ary)) > 0)
-								{
-									$log_data_ary = array_merge($log_data_ary, array_fill(0, substr_count($row['action'], '%') - sizeof($log_data_ary), ''));
-								}
-								$row['action'] = vsprintf($row['action'], $log_data_ary);
-								$row['action'] = bbcode_nl2br(censor_text($row['action']));
-							}
-							else if (!empty($log_data_ary))
-							{
-								$row['action'] .= '<br />' . implode('', $log_data_ary);
-							}
-						}
-					}
-
-
 					$template->assign_block_vars('warn', array(
 						'ID'		=> $row['warning_id'],
-						'USERNAME'	=> ($row['log_operation']) ? get_username_string('full', $row['mod_user_id'], $row['mod_username'], $row['mod_user_colour']) : '-',
-						'ACTION'	=> make_clickable($row['action']),
+						'USERNAME'	=> get_username_string('full', $row['issuer_id'], $row['issuer_username'], $row['issuer_user_colour']),
+						'ACTION'	=> make_clickable(bbcode_nl2br($row['warning_text'])),
 						'DATE'		=> $user->format_date($row['warning_time']),
+						'DAYS'		=> $row['warning_days'],
 					));
 				}
 				$db->sql_freeresult($result);
@@ -1316,6 +1283,7 @@ class acp_users
 					'msn'			=> request_var('msn', $user_row['user_msnm']),
 					'yim'			=> request_var('yim', $user_row['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user_row['user_jabber'], true)),
+					'skype'			=> utf8_normalize_nfc(request_var('skype', $user_row['user_skype'], true)),
 					'website'		=> request_var('website', $user_row['user_website']),
 					'location'		=> utf8_normalize_nfc(request_var('location', $user_row['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user_row['user_occ'], true)),
@@ -1323,6 +1291,7 @@ class acp_users
 					'bday_day'		=> 0,
 					'bday_month'	=> 0,
 					'bday_year'		=> 0,
+					'gender'		=> request_var('gender', $user_row['user_gender']),
 				);
 
 				if ($user_row['user_birthday'])
@@ -1347,6 +1316,7 @@ class acp_users
 						'jabber'		=> array(
 							array('string', true, 5, 255),
 							array('jabber')),
+						'skype'			=> array('string', true, 3, 255),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 12, 255),
@@ -1358,6 +1328,7 @@ class acp_users
 						'bday_month'	=> array('num', true, 1, 12),
 						'bday_year'		=> array('num', true, 1901, gmdate('Y', time())),
 						'user_birthday'	=> array('date', true),
+						'gender'		=> array('num', true, 0, 2),
 					));
 
 					// validate custom profile fields
@@ -1380,11 +1351,13 @@ class acp_users
 							'user_msnm'		=> $data['msn'],
 							'user_yim'		=> $data['yim'],
 							'user_jabber'	=> $data['jabber'],
+							'user_skype'	=> $data['skype'],
 							'user_website'	=> $data['website'],
 							'user_from'		=> $data['location'],
 							'user_occ'		=> $data['occupation'],
 							'user_interests'=> $data['interests'],
 							'user_birthday'	=> $data['user_birthday'],
+							'user_gender'	=> $data['gender'],
 						);
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -1432,10 +1405,15 @@ class acp_users
 					'AIM'			=> $data['aim'],
 					'MSN'			=> $data['msn'],
 					'JABBER'		=> $data['jabber'],
+					'SKYPE'			=> $data['skype'],
 					'WEBSITE'		=> $data['website'],
 					'LOCATION'		=> $data['location'],
 					'OCCUPATION'	=> $data['occupation'],
 					'INTERESTS'		=> $data['interests'],
+
+					'S_GENDER_X'	=> $data['gender'] == GENDER_X,
+					'S_GENDER_M'	=> $data['gender'] == GENDER_M,
+					'S_GENDER_F'	=> $data['gender'] == GENDER_F,
 
 					'S_BIRTHDAY_DAY_OPTIONS'	=> $s_birthday_day_options,
 					'S_BIRTHDAY_MONTH_OPTIONS'	=> $s_birthday_month_options,
@@ -1492,6 +1470,12 @@ class acp_users
 
 				if ($submit)
 				{
+					$data['style']		= ($config['override_user_style'])		? $config['default_style']		: $data['style'];
+					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
+					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
+					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
+					$data['dst']		= ($config['override_user_dst'])		? $config['board_dst']			: $data['dst'];
+
 					$error = validate_data($data, array(
 						'dateformat'	=> array('string', false, 1, 30),
 						'lang'			=> array('match', false, '#^[a-z_\-]{2,}$#i'),
@@ -1674,14 +1658,16 @@ class acp_users
 					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
 
 					'DATE_FORMAT'			=> $data['dateformat'],
-					'S_DATEFORMAT_OPTIONS'	=> $dateformat_options,
+					'S_DATEFORMAT_OPTIONS'	=> ($config['override_user_dateformat']) ? '' : $dateformat_options,
 					'S_CUSTOM_DATEFORMAT'	=> $s_custom,
 					'DEFAULT_DATEFORMAT'	=> $config['default_dateformat'],
 					'A_DEFAULT_DATEFORMAT'	=> addslashes($config['default_dateformat']),
 
-					'S_LANG_OPTIONS'	=> language_select($data['lang']),
-					'S_STYLE_OPTIONS'	=> style_select($data['style']),
-					'S_TZ_OPTIONS'		=> tz_select($data['tz'], true),
+					'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
+					'S_STYLE_OPTIONS'	=> ($config['override_user_style']) ? '' : style_select($data['style']),
+					'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
+
+					'S_DST_SHOW'		=> ($config['override_user_dst']) ? false : true,
 					)
 				);
 
@@ -1814,6 +1800,22 @@ class acp_users
 					$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', false)) ? false : true) : false;
 					$enable_urls	= ($config['allow_sig_links']) ? ((request_var('disable_magic_url', false)) ? false : true) : false;
 
+					// Signature Lines Limit
+					if($config['max_sig_lines'])
+					{
+						$brcount = 1;
+						$brpos = 0;
+						while( ($brpos = strpos($signature, "\n", $brpos)) !== false )
+						{
+							$brcount++;
+							if($brcount > $config['max_sig_lines'])
+							{
+								$signature{$brpos} = ' ';
+							}
+							$brpos++;
+						}
+					}
+
 					$message_parser = new parse_message($signature);
 
 					// Allowing Quote BBCode
@@ -1881,7 +1883,7 @@ class acp_users
 					'FLASH_STATUS'			=> ($config['allow_sig_flash']) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 					'URL_STATUS'			=> ($config['allow_sig_links']) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 
-					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars']),
+					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ? $config['max_sig_lines'] : $user->lang['NO']),
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],

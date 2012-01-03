@@ -85,6 +85,10 @@ class acp_main
 						$confirm = true;
 						$confirm_lang = 'RESYNC_POSTCOUNTS_CONFIRM';
 					break;
+					case 'topics':
+						$confirm = true;
+						$confirm_lang = 'RESYNC_TOPICCOUNTS_CONFIRM';
+					break;
 					case 'date':
 						$confirm = true;
 						$confirm_lang = 'RESET_DATE_CONFIRM';
@@ -242,6 +246,29 @@ class acp_main
 						}
 
 						add_log('admin', 'LOG_RESYNC_POSTCOUNTS');
+
+					break;
+
+					case 'topics':
+						if (!$auth->acl_get('a_board'))
+						{
+							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
+						}
+
+						$sql = 'SELECT COUNT(p.post_id) AS num_topics, u.user_id
+							FROM ' . USERS_TABLE . ' u
+							LEFT JOIN  ' . TOPICS_TABLE . ' t ON (u.user_id = t.topic_poster)
+							LEFT JOIN  ' . POSTS_TABLE . ' p ON (p.post_id = t.topic_first_post_id AND p.post_postcount = 1)
+							GROUP BY u.user_id';
+						$result = $db->sql_query($sql);
+
+						while ($row = $db->sql_fetchrow($result))
+						{
+							$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_topics = {$row['num_topics']} WHERE user_id = {$row['user_id']}");
+						}
+						$db->sql_freeresult($result);
+
+						add_log('admin', 'LOG_RESYNC_TOPICCOUNTS');
 
 					break;
 

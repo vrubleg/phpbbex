@@ -63,20 +63,25 @@
 			<label for="popuppm0"><input type="radio" name="popuppm" id="popuppm0" value="0"<!-- IF not S_POPUP_PM --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 		</dd>
 	</dl>
+	<!-- IF S_LANG_OPTIONS -->
 	<dl>
 		<dt><label for="lang">{L_BOARD_LANGUAGE}:</label></dt>
 		<dd><select name="lang" id="lang">{S_LANG_OPTIONS}</select></dd>
 	</dl>
+	<!-- ENDIF -->
 	<!-- IF S_STYLE_OPTIONS -->
 		<dl>
 			<dt><label for="style">{L_BOARD_STYLE}:</label></dt>
 			<dd><select name="style" id="style">{S_STYLE_OPTIONS}</select></dd>
 		</dl>
 	<!-- ENDIF -->
+	<!-- IF S_TZ_OPTIONS -->
 	<dl>
 		<dt><label for="timezone">{L_BOARD_TIMEZONE}:</label></dt>
 		<dd><select name="tz" id="timezone" class="autowidth">{S_TZ_OPTIONS}</select></dd>
 	</dl>
+	<!-- ENDIF -->
+	<!-- IF S_DST_SHOW -->
 	<dl>
 		<dt><label for="dst1">{L_BOARD_DST}:</label></dt>
 		<dd>
@@ -84,6 +89,8 @@
 			<label for="dst0"><input type="radio" name="dst" id="dst0" value="0"<!-- IF not S_DST --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 		</dd>
 	</dl>
+	<!-- ENDIF -->
+	<!-- IF S_DATEFORMAT_OPTIONS -->
 	<dl>
 		<dt><label for="dateformat">{L_BOARD_DATE_FORMAT}:</label><br /><span>{L_BOARD_DATE_FORMAT_EXPLAIN}</span></dt>
 		<dd>
@@ -93,6 +100,7 @@
 		</dd>
 		<dd id="custom_date" style="display:none;"><input type="text" name="dateformat" id="dateformat" value="{DATE_FORMAT}" maxlength="30" class="inputbox narrow" style="margin-top: 3px;" /></dd>
 	</dl>
+	<!-- ENDIF -->
 	</fieldset>
 
 	<span class="corners-bottom"><span></span></span></div>

@@ -113,6 +113,26 @@ if ($config['load_birthdays'] && $config['allow_birthdays'] && $auth->acl_gets('
 	$db->sql_freeresult($result);
 }
 
+// Images for display topic rows
+$template->assign_vars(array(
+	'NEWEST_POST_IMG'		=> $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
+	'LAST_POST_IMG'			=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+));
+
+// Last active topics
+$template->assign_var('S_ACTIVE_TOPICS_ON_INDEX', !empty($config['active_topics_on_index']));
+if (!empty($config['active_topics_on_index']))
+{
+	display_active_topics('activetopic', $config['active_topics_on_index']);
+}
+
+// Global announcements
+$template->assign_var('S_ANNOUNCE_INDEX', !empty($config['announce_index']));
+if (!empty($config['announce_index']))
+{
+	display_global_announcements('announcetopic');
+}
+
 // Assign index specific vars
 $template->assign_vars(array(
 	'TOTAL_POSTS'	=> sprintf($user->lang[$l_total_post_s], $total_posts),
@@ -131,9 +151,9 @@ $template->assign_vars(array(
 	'S_LOGIN_ACTION'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=login'),
 	'S_DISPLAY_BIRTHDAY_LIST'	=> ($config['load_birthdays']) ? true : false,
 
+	'U_CANONICAL'	=> generate_board_url() . '/',
 	'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}index.$phpEx", 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
-	'U_MCP'				=> ($auth->acl_get('m_') || $auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=main&amp;mode=front', true, $user->session_id) : '')
-);
+));
 
 // Output page
 page_header($user->lang['INDEX']);

@@ -167,6 +167,21 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		$signature = smiley_text($signature);
 	}
 
+	// Author age
+	$user_age = false;
+	$now = getdate(time() + $user->timezone + $user->dst - date('Z'));
+	if ($config['allow_birthdays'] && !empty($user_info['user_birthday']))
+	{
+		list($bday_day, $bday_month, $bday_year) = array_map('intval', explode('-', $user_info['user_birthday']));
+		if ($bday_year)
+		{
+			$diff = $now['mon'] - $bday_month;
+			if ($diff == 0) $diff = ($now['mday'] - $bday_day < 0) ? 1 : 0;
+			else $diff = ($diff < 0) ? 1 : 0;
+			$user_age = (int) ($now['year'] - $bday_year - $diff);
+		}
+	}
+
 	$url = append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm');
 
 	// Number of "to" recipients
@@ -185,7 +200,12 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'AUTHOR_AVATAR'		=> (isset($user_info['avatar'])) ? $user_info['avatar'] : '',
 		'AUTHOR_JOINED'		=> $user->format_date($user_info['user_regdate']),
 		'AUTHOR_POSTS'		=> (int) $user_info['user_posts'],
+		'AUTHOR_TOPICS'		=> (int) $user_info['user_topics'],
 		'AUTHOR_FROM'		=> (!empty($user_info['user_from'])) ? $user_info['user_from'] : '',
+		'AUTHOR_AGE'		=> $user_age,
+		'S_AUTHOR_GENDER_X'	=> $user_info['user_gender'] == GENDER_X,
+		'S_AUTHOR_GENDER_M'	=> $user_info['user_gender'] == GENDER_M,
+		'S_AUTHOR_GENDER_F'	=> $user_info['user_gender'] == GENDER_F,
 
 		'ONLINE_IMG'		=> (!$config['load_onlinetrack']) ? '' : ((isset($user_info['online']) && $user_info['online']) ? $user->img('icon_user_online', $user->lang['ONLINE']) : $user->img('icon_user_offline', $user->lang['OFFLINE'])),
 		'S_ONLINE'			=> (!$config['load_onlinetrack']) ? false : ((isset($user_info['online']) && $user_info['online']) ? true : false),
@@ -212,7 +232,8 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'U_AIM'			=> ($user_info['user_aim'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=aim&amp;u=' . $author_id) : '',
 		'U_YIM'			=> ($user_info['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . urlencode($user_info['user_yim']) . '&amp;.src=pg' : '',
 		'U_MSN'			=> ($user_info['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=msnm&amp;u=' . $author_id) : '',
-		'U_JABBER'		=> ($user_info['user_jabber'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=jabber&amp;u=' . $author_id) : '',
+		'U_JABBER'		=> ($user_info['user_jabber']) ? ('xmpp:' . $user_info['user_jabber']) : '',
+		'U_SKYPE'		=> ($user_info['user_skype']) ? ('skype:' . $user_info['user_skype'] . '?chat') : '',
 
 		'U_DELETE'			=> ($auth->acl_get('u_pm_delete')) ? "$url&amp;mode=compose&amp;action=delete&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
 		'U_EMAIL'			=> $user_info['email'],

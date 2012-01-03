@@ -1,0 +1,58 @@
+.dialog {
+	padding: 0 10px;
+	background-color: #ECF1F3;
+	color: #28313F;
+	border: 10px solid white;
+}
+
+.dialog span.corners-top, .dialog span.corners-bottom {
+	margin: 0 -10px;
+}
+
+.dialog h3 {
+	margin: 0.5em 0;
+}
+
+.dialog p {
+	font-size: 1.2em;
+	margin-bottom: 1em;
+	line-height: 1.4em;
+}
+
+.dialog h2 {
+	font-weight: normal;
+	color: #989898;
+	border-bottom: 1px solid #CCCCCC;
+	font-size: 1.6em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.dialog h2 {
+	color: #115098;
+	border-bottom-color:  #CCCCCC;
+}
+
+.dialog fieldset dt {
+	width: 9em;
+	border-right-width: 0;
+}
+
+.dialog fieldset dd {
+	margin-left: 10em;
+	border-left-width: 0;
+}
+
+.dialog .message
+{
+	/*font-family: "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;*/
+	width: 98%;
+	/*font-size: 1.3em;*/
+
+}
+
+.dialog .submit-buttons
+{
+	text-align: right;
+}

@@ -29,6 +29,22 @@
 	<td class="row1" width="50%"><b class="genmed">{L_VIEW_AVATARS}:</b></td>
 	<td class="row2"><input type="radio" class="radio" name="avatars" value="1"<!-- IF S_AVATARS --> checked="checked"<!-- ENDIF --> /><span class="gen">{L_YES}</span>&nbsp; &nbsp;<input type="radio" class="radio" name="avatars" value="0"<!-- IF not S_AVATARS --> checked="checked"<!-- ENDIF --> /><span class="gen">{L_NO}</span></td>
 </tr>
+<!-- IF QUICK_REPLY -->
+<tr>
+	<td class="row1" width="50%"><b class="genmed">{L_QUICK_REPLY_DISPLAY}:</b></td>
+	<td class="row2"><input type="radio" class="radio" name="quickreply" value="1"<!-- IF S_QUICKREPLY --> checked="checked"<!-- ENDIF --> /><span class="gen">{L_YES}</span>&nbsp; &nbsp;<input type="radio" class="radio" name="quickreply" value="0"<!-- IF not S_QUICKREPLY --> checked="checked"<!-- ENDIF --> /><span class="gen">{L_NO}</span></td>
+</tr>
+<!-- ENDIF -->
+<!-- IF QUICK_POST -->
+<tr>
+	<td class="row1" width="50%"><b class="genmed">{L_QUICK_POST_DISPLAY}:</b></td>
+	<td class="row2"><input type="radio" class="radio" name="quickpost" value="1"<!-- IF S_QUICKPOST --> checked="checked"<!-- ENDIF --> /><span class="gen">{L_YES}</span>&nbsp; &nbsp;<input type="radio" class="radio" name="quickpost" value="0"<!-- IF not S_QUICKPOST --> checked="checked"<!-- ENDIF --> /><span class="gen">{L_NO}</span></td>
+</tr>
+<!-- ENDIF -->
+<tr>
+	<td class="row1" width="50%"><b class="genmed">{L_TOPIC_REVIEW_DISPLAY}:</b></td>
+	<td class="row2"><input type="radio" class="radio" name="topicreview" value="1"<!-- IF S_TOPICREVIEW --> checked="checked"<!-- ENDIF --> /><span class="gen">{L_YES}</span>&nbsp; &nbsp;<input type="radio" class="radio" name="topicreview" value="0"<!-- IF not S_TOPICREVIEW --> checked="checked"<!-- ENDIF --> /><span class="gen">{L_NO}</span></td>
+</tr>
 <!-- IF S_CHANGE_CENSORS -->
 	<tr>
 		<td class="row1" width="50%"><b class="genmed">{L_DISABLE_CENSORS}:</b></td>

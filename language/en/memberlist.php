@@ -116,6 +116,7 @@ $lang = array_merge($lang, array(
 	'REMOVE_FOE'			=> 'Remove foe',
 	'REMOVE_FRIEND'			=> 'Remove friend',
 
+	'SEARCH_USER_TOPICS'	=> 'Search user’s topics',
 	'SELECT_MARKED'			=> 'Select marked',
 	'SELECT_SORT_METHOD'	=> 'Select sort method',
 	'SEND_AIM_MESSAGE'		=> 'Send AIM message',
@@ -128,9 +129,12 @@ $lang = array_merge($lang, array(
 	'SORT_EMAIL'			=> 'E-mail',
 	'SORT_LAST_ACTIVE'		=> 'Last active',
 	'SORT_POST_COUNT'		=> 'Post count',
+	'SORT_TOPICS_COUNT'		=> 'Topics count',
 
 	'USERNAME_BEGINS_WITH'	=> 'Username begins with',
 	'USER_ADMIN'			=> 'Administer user',
+	'USER_AGENT'			=> 'User Agent',
+	'USER_LAST_IP'			=> 'Last IP',
 	'USER_BAN'				=> 'Banning',
 	'USER_FORUM'			=> 'User statistics',
 	'USER_LAST_REMINDED'	=> array(
@@ -144,6 +148,11 @@ $lang = array_merge($lang, array(
 	'VISITED'				=> 'Last visited',
 
 	'WWW'					=> 'Website',
+
+	// Memberlist filters
+	'ACTIVE_USERS'			=> 'Active',
+	'INACTIVE_USERS'		=> 'Inactive',
+	'NO_POSTS_USERS'		=> 'No posts',
 ));
 
 ?>

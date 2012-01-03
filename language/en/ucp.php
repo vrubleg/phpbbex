@@ -194,7 +194,7 @@ $lang = array_merge($lang, array(
 	'FIELD_TOO_LARGE'					=> 'The value of “%1$s” is too large, a maximum value of %2$d is allowed.',
 	'FIELD_INVALID_CHARS_NUMBERS_ONLY'	=> 'The field “%s” has invalid characters, only numbers are allowed.',
 	'FIELD_INVALID_CHARS_ALPHA_ONLY'	=> 'The field “%s” has invalid characters, only alphanumeric characters are allowed.',
-	'FIELD_INVALID_CHARS_SPACERS_ONLY'	=> 'The field “%s” has invalid characters, only alphanumeric, space or -+_[] characters are allowed.',
+	'FIELD_INVALID_CHARS_SPACERS_ONLY'	=> 'The field “%s” has invalid characters, only alphanumeric, space or -._ characters are allowed.',
 	'FIELD_INVALID_DATE'				=> 'The field “%s” has an invalid date.',
 	'FIELD_INVALID_VALUE'				=> 'The field “%s” has an invalid value.',
 
@@ -393,10 +393,11 @@ $lang = array_merge($lang, array(
 
 	'SAME_PASSWORD_ERROR'		=> 'The new password you entered is the same as your current password.',
 	'SEARCH_YOUR_POSTS'			=> 'Show your posts',
+	'SEARCH_YOUR_TOPICS'		=> 'Show your topics',
 	'SEND_PASSWORD'				=> 'Send password',
 	'SENT_AT'					=> 'Sent',			// Used before dates in private messages
 	'SHOW_EMAIL'				=> 'Users can contact me by e-mail',
-	'SIGNATURE_EXPLAIN'			=> 'This is a block of text that can be added to posts you make. There is a %d character limit.',
+	'SIGNATURE_EXPLAIN'			=> 'This is a block of text that can be added to posts you make. There is a %1$d character limit and %2$s lines limit.',
 	'SIGNATURE_PREVIEW'			=> 'Your signature will appear like this in posts',
 	'SIGNATURE_TOO_LONG'		=> 'Your signature is too long.',
 	'SORT'						=> 'Sort',
@@ -472,10 +473,10 @@ $lang = array_merge($lang, array(
 	'UPLOAD_AVATAR_URL'				=> 'Upload from a URL',
 	'UPLOAD_AVATAR_URL_EXPLAIN'		=> 'Enter the URL of the location containing the image. The image will be copied to this site.',
 	'USERNAME_ALPHA_ONLY_EXPLAIN'	=> 'Username must be between %1$d and %2$d chars long and use only alphanumeric characters.',
-	'USERNAME_ALPHA_SPACERS_EXPLAIN'=> 'Username must be between %1$d and %2$d chars long and use alphanumeric, space or -+_[] characters.',
+	'USERNAME_ALPHA_SPACERS_EXPLAIN'=> 'Username must be between %1$d and %2$d chars long and use alphanumeric, space or -._ characters.',
 	'USERNAME_ASCII_EXPLAIN'		=> 'Username must be between %1$d and %2$d chars long and use only ASCII characters, so no special symbols.',
 	'USERNAME_LETTER_NUM_EXPLAIN'	=> 'Username must be between %1$d and %2$d chars long and use only letter or number characters.',
-	'USERNAME_LETTER_NUM_SPACERS_EXPLAIN'=> 'Username must be between %1$d and %2$d chars long and use letter, number, space or -+_[] characters.',
+	'USERNAME_LETTER_NUM_SPACERS_EXPLAIN'=> 'Username must be between %1$d and %2$d chars long and use letter, number, space or -._ characters.',
 	'USERNAME_CHARS_ANY_EXPLAIN'	=> 'Length must be between %1$d and %2$d characters.',
 	'USERNAME_TAKEN_USERNAME'		=> 'The username you entered is already in use, please select an alternative.',
 	'USERNAME_DISALLOWED_USERNAME'	=> 'The username you entered has been disallowed or contains a disallowed word. Please choose a different name.',
@@ -501,6 +502,8 @@ $lang = array_merge($lang, array(
 	'VIEW_POSTS_DAYS'			=> 'Display posts from previous days',
 	'VIEW_POSTS_DIR'			=> 'Display post order direction',
 	'VIEW_POSTS_KEY'			=> 'Display posts ordering by',
+	'USER_TOPICS_PER_PAGE'		=> 'Topics per page',
+	'USER_POSTS_PER_PAGE'		=> 'Posts per page',
 
 	'WATCHED_EXPLAIN'			=> 'Below is a list of forums and topics you are subscribed to. You will be notified of new posts in either. To unsubscribe mark the forum or topic and then press the <em>Unwatch marked</em> button.',
 	'WATCHED_FORUMS'			=> 'Watched forums',
@@ -556,6 +559,11 @@ $lang = array_merge($lang, array(
 	'NO_MEMBER'		=> 'No group memberships',
 	'NO_PENDING'	=> 'No pending memberships',
 	'NO_NONMEMBER'	=> 'No non-member groups',
+
+	'QUICK_REPLY_DISPLAY'		=> 'Display quick reply panel at topic view',
+	'QUICK_POST_DISPLAY'		=> 'Display quick topic post panel at forum view',
+	'TOPIC_REVIEW_DISPLAY'		=> 'Display topic review panel at posting page',
+
 ));
 
 ?>

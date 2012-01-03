@@ -193,6 +193,7 @@ $lang = array_merge($lang, array(
 	'FORUMS'				=> 'Forums',
 	'FORUMS_MARKED'			=> 'The selected forums have been marked read.',
 	'FORUM_CAT'				=> 'Forum category',
+	'FORUM_DESC'			=> 'Description',
 	'FORUM_INDEX'			=> 'Board index',
 	'FORUM_LINK'			=> 'Forum link',
 	'FORUM_LOCATION'		=> 'Forum location',
@@ -348,8 +349,8 @@ $lang = array_merge($lang, array(
 	'NEWEST_USER'				=> 'Our newest member <strong>%s</strong>',
 	'NEW_MESSAGE'				=> 'New message',
 	'NEW_MESSAGES'				=> 'New messages',
-	'NEW_PM'					=> '<strong>%d</strong> new message',
-	'NEW_PMS'					=> '<strong>%d</strong> new messages',
+	'NEW_PM'					=> '%d new message',
+	'NEW_PMS'					=> '%d new messages',
 	'NEW_POST'					=> 'New post',	// Not used anymore
 	'NEW_POSTS'					=> 'New posts',	// Not used anymore
 	'NEXT'						=> 'Next',		// Used in pagination
@@ -383,7 +384,7 @@ $lang = array_merge($lang, array(
 	'NO_MODE'					=> 'No mode specified.',
 	'NO_MODERATORS'				=> 'There are no moderators.',
 	'NO_NEW_MESSAGES'			=> 'No new messages',
-	'NO_NEW_PM'					=> '<strong>0</strong> new messages',
+	'NO_NEW_PM'					=> '0 new messages',
 	'NO_NEW_POSTS'				=> 'No new posts',	// Not used anymore
 	'NO_ONLINE_USERS'			=> 'No registered users',
 	'NO_POSTS'					=> 'No posts',
@@ -397,7 +398,7 @@ $lang = array_merge($lang, array(
 	'NO_TOPIC_FORUM'			=> 'The topic or forum no longer exists.',
 	'NO_TOPICS'					=> 'There are no topics or posts in this forum.',
 	'NO_TOPICS_TIME_FRAME'		=> 'No topics exist inside this forum for the selected time frame.',
-	'NO_UNREAD_PM'				=> '<strong>0</strong> unread messages',
+	'NO_UNREAD_PM'				=> '0 unread messages',
 	'NO_UNREAD_POSTS'			=> 'No unread posts',
 	'NO_UPLOAD_FORM_FOUND'		=> 'Upload initiated but no valid file upload form found.',
 	'NO_USER'					=> 'The requested user does not exist.',
@@ -420,7 +421,7 @@ $lang = array_merge($lang, array(
 	'ONLINE_USER_TOTAL'			=> 'In total there is <strong>%d</strong> user online :: ',
 	'OPTIONS'					=> 'Options',
 
-	'PAGE_OF'				=> 'Page <strong>%1$d</strong> of <strong>%2$d</strong>',
+	'PAGE_OF'				=> 'Page %1$d of %2$d',
 	'PASSWORD'				=> 'Password',
 	'PIXEL'					=> 'px',
 	'PLAY_QUICKTIME_FILE'	=> 'Play Quicktime file',
@@ -500,6 +501,7 @@ $lang = array_merge($lang, array(
 	'FEED_NEWS'					=> 'News',
 	'FEED_TOPICS_ACTIVE'		=> 'Active Topics',
 	'FEED_TOPICS_NEW'			=> 'New Topics',
+	'FEED_OVERALL'				=> 'New Messages',
 	'RULES_ATTACH_CAN'			=> 'You <strong>can</strong> post attachments in this forum',
 	'RULES_ATTACH_CANNOT'		=> 'You <strong>cannot</strong> post attachments in this forum',
 	'RULES_DELETE_CAN'			=> 'You <strong>can</strong> delete your posts in this forum',
@@ -529,6 +531,7 @@ $lang = array_merge($lang, array(
 	'SEARCH_NEW'				=> 'View new posts',
 	'SEARCH_POSTS_BY'			=> 'Search posts by',
 	'SEARCH_SELF'				=> 'View your posts',
+	'SEARCH_SELF_TOPICS'		=> 'View your topics',
 	'SEARCH_TOPIC'				=> 'Search this topic…',
 	'SEARCH_UNANSWERED'			=> 'View unanswered posts',
 	'SEARCH_UNREAD'				=> 'View unread posts',
@@ -544,6 +547,7 @@ $lang = array_merge($lang, array(
 	'SETTINGS'					=> 'Settings',
 	'SIGNATURE'					=> 'Signature',
 	'SKIP'						=> 'Skip to content',
+	'SKYPE'						=> 'Skype',
 	'SMTP_NO_AUTH_SUPPORT'		=> 'SMTP server does not support authentication.',
 	'SORRY_AUTH_READ'			=> 'You are not authorised to read this forum.',
 	'SORRY_AUTH_VIEW_ATTACH'	=> 'You are not authorised to download this attachment.',
@@ -874,6 +878,10 @@ $lang = array_merge($lang, array(
 
 	// The value is only an example and will get replaced by the current time on view
 	'dateformats'	=> array(
+		'Y-m-d H:i'				=> '2005-01-10 17:57',
+		'Y-m-d, H:i'			=> '2005-01-10, 17:57',
+		'd.m.Y H:i'				=> '10.01.2005 17:57',
+		'd.m.Y, H:i'			=> '10.01.2005, 17:57',
 		'd M Y, H:i'			=> '01 Jan 2007, 13:37',
 		'd M Y H:i'				=> '01 Jan 2007 13:37',
 		'M jS, \'y, H:i'		=> 'Jan 1st, \'07, 13:37',
@@ -885,7 +893,60 @@ $lang = array_merge($lang, array(
 
 	// The default dateformat which will be used on new installs in this language
 	// Translators should change this if a the usual date format is different
-	'default_dateformat'	=> 'D M d, Y g:i a', // Mon Jan 01, 2007 1:37 pm
+	'default_dateformat'	=> 'Y-m-d H:i', // 2005-01-10 17:57
+
+	// User topics count
+	'NUM_TOPICS_IN_QUEUE'		=> array(
+		0			=> 'No topics in queue',	// 0
+		1			=> '1 topic in queue',		// 1
+		2			=> '%d topics in queue',	// 2+
+	),
+	'TOPIC_DAY'					=> '%.2f topics per day',
+	'TOPIC_PCT'					=> '%.2f%% of all topics',
+	'TOTAL_TOPICS'				=> 'Total topics',
+
+	// Genders
+	'GENDER'					=> 'Gender',
+	'GENDER_EXPLAIN'			=> 'Please enter your gender here.',
+	'GENDER_X'					=> 'None specified',
+	'GENDER_M'					=> 'Male',
+	'GENDER_F'					=> 'Female',
+
+	// Main menu
+	'USER_CP'					=> 'User CP',
+	'MODER_CP'					=> 'MCP',
+	'MODERATE_FORUM'			=> 'Moderate forum',
+	'MODERATE_TOPIC'			=> 'Moderate topic',
+	'ADMIN_CP'					=> 'ACP',
+	'OVERVIEW'					=> 'Overview',
+	'ATTACHMENTS'				=> 'Attachments',
+	'BOOKMARKS'					=> 'Bookmarks',
+	'DRAFTS'					=> 'Drafts',
+	'SUBSCRIBED'				=> 'Subscriptions',
+	'FRIENDS_AND_FOES'			=> 'Friends &amp; Foes',
+	'PM_COMPOSE'				=> 'Compose message',
+	'PM_INBOX'					=> 'Inbox',
+	'PM_OUTBOX'					=> 'Outbox',
+	'PM_SENTBOX'				=> 'Sent messages',
+
+	// Login via E-Mail
+	'USERNAME_OR_EMAIL'					=> 'Username or E-Mail',
+	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'You have specified an incorrect username or e-mail address. Please check your entry and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_EMAIL'					=> 'You have specified an incorrect e-mail address. Please check your e-mail address and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
+
+	// Advanced Warnings
+	'USER_WARNING'			=> 'Warning',
+	'WARNING_DAYS'			=> 'Days',
+	'REMARK'				=> 'Remark',
+	'WARNING'				=> 'Warning',
+	'BAN'					=> 'Ban',
+	'PERMANENT_WARNING'		=> 'Permanent warning',
+	'WARNING_X_DAYS'		=> 'Warning for %d days',
+	'PERMANENT_BAN'			=> 'Permanent ban',
+	'BAN_X_DAYS'			=> 'Ban for %d days',
+
+	// Other
+	'SOCIAL_SHARE_IN'		=> 'Share in',
 
 ));
 

@@ -249,10 +249,10 @@ fieldset.submit-buttons input {
 
 /* Buttons used in the editor */
 #format-buttons {
-	margin: 15px 0 2px 0;
+	margin: 5px 0 2px 0;
 }
 
-#format-buttons input, #format-buttons select {
+#format-buttons input, #format-buttons select, #format-buttons button {
 	vertical-align: middle;
 }
 
@@ -315,17 +315,22 @@ textarea.inputbox {
 
 /* Form button styles
 ---------------------------------------- */
-input.button1, input.button2 {
+input.button1, input.button2, button {
 	font-size: 1em;
 }
 
-a.button1, input.button1, input.button3, a.button2, input.button2 {
-	width: auto !important;
+a.button1, input.button1, input.button3, a.button2, input.button2, button {
+	/*width: auto !important;*/
 	padding-top: 1px;
 	padding-bottom: 1px;
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	color: #000;
 	background: #FAFAFA none repeat-x top left;
+}
+
+button {
+	padding: 1px 4px;
+	cursor: pointer;
 }
 
 a.button1, input.button1 {
@@ -343,7 +348,7 @@ input.button3 {
 }
 
 /* Alternative button */
-a.button2, input.button2, input.button3 {
+a.button2, input.button2, button, input.button3 {
 	border: 1px solid #666666;
 }
 
@@ -358,7 +363,7 @@ a.button1, a.button1:link, a.button1:visited, a.button1:active, a.button2, a.but
 }
 
 /* Hover states */
-a.button1:hover, input.button1:hover, a.button2:hover, input.button2:hover, input.button3:hover {
+a.button1:hover, input.button1:hover, a.button2:hover, input.button2:hover, button:hover, input.button3:hover {
 	border: 1px solid #BCBCBC;
 	background-position: 0 100%;
 	color: #BCBCBC;

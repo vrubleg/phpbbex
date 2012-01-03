@@ -11,24 +11,16 @@
 	<fieldset>
 	<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
 	<dl>
-		<dt><label for="icq">{L_UCP_ICQ}:</label></dt>
-		<dd><input type="text" name="icq" id="icq" maxlength="15" value="{ICQ}" class="inputbox" /></dd>
-	</dl>
-	<dl>
-		<dt><label for="aim">{L_UCP_AIM}:</label></dt>
-		<dd><input type="text" name="aim" id="aim" maxlength="255" value="{AIM}" class="inputbox" /></dd>
-	</dl>
-	<dl>
-		<dt><label for="msn">{L_UCP_MSNM}:</label></dt>
-		<dd><input type="text" name="msn" id="msn" maxlength="255" value="{MSN}" class="inputbox" /></dd>
-	</dl>
-	<dl>
-		<dt><label for="yim">{L_UCP_YIM}:</label></dt>
-		<dd><input type="text" name="yim" id="yim" maxlength="255" value="{YIM}" class="inputbox" /></dd>
-	</dl>
-	<dl>
 		<dt><label for="jabber">{L_UCP_JABBER}:</label></dt>
 		<dd><input type="text" name="jabber" id="jabber" maxlength="255" value="{JABBER}" class="inputbox" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="skype">{L_SKYPE}:</label></dt>
+		<dd><input type="text" name="skype" id="skype" maxlength="255" value="{SKYPE}" class="inputbox" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="icq">{L_UCP_ICQ}:</label></dt>
+		<dd><input type="text" name="icq" id="icq" maxlength="15" value="{ICQ}" class="inputbox" /></dd>
 	</dl>
 	<dl>
 		<dt><label for="website">{L_WEBSITE}:</label></dt>
@@ -56,6 +48,14 @@
 			</dd>
 		</dl>
 	<!-- ENDIF -->
+	<dl>
+		<dt><label for="gender_x">{L_GENDER}:</label><br /><span>{L_GENDER_EXPLAIN}</span></dt>
+		<dd>
+			<label for="gender_m"><input type="radio" name="gender" id="gender_m" value="1"<!-- IF S_GENDER_M --> checked="checked"<!-- ENDIF --> /> {L_GENDER_M}</label>
+			<label for="gender_f"><input type="radio" name="gender" id="gender_f" value="2"<!-- IF S_GENDER_F --> checked="checked"<!-- ENDIF --> /> {L_GENDER_F}</label>
+			<label for="gender_x"><input type="radio" name="gender" id="gender_x" value="0"<!-- IF S_GENDER_X --> checked="checked"<!-- ENDIF --> /> {L_GENDER_X}</label>
+		</dd>
+	</dl>
 	<!-- BEGIN profile_fields -->
 		<dl>
 			<dt><label<!-- IF profile_fields.FIELD_ID --> for="{profile_fields.FIELD_ID}"<!-- ENDIF -->>{profile_fields.LANG_NAME}:<!-- IF profile_fields.S_REQUIRED --> *<!-- ENDIF --></label>

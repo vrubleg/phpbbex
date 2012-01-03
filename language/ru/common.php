@@ -193,6 +193,7 @@ $lang = array_merge($lang, array(
 	'FORUMS'				=> 'Форумы',
 	'FORUMS_MARKED'			=> 'Выбранные форумы отмечены как прочтённые',
 	'FORUM_CAT'				=> 'Категория',
+	'FORUM_DESC'			=> 'Описание',
 	'FORUM_INDEX'			=> 'Список форумов',
 	'FORUM_LINK'			=> 'Ссылка на форум',
 	'FORUM_LOCATION'		=> 'Место в конференции',
@@ -249,10 +250,10 @@ $lang = array_merge($lang, array(
 	'G_ADMINISTRATORS'			=> 'Администраторы',
 	'G_BOTS'					=> 'Боты',
 	'G_GUESTS'					=> 'Гости',
-	'G_REGISTERED'				=> 'Зарегистрированные пользователи',
-	'G_REGISTERED_COPPA'		=> 'Зарегистрированные пользователи (COPPA)',
+	'G_REGISTERED'				=> 'Зарегистрированные',
+	'G_REGISTERED_COPPA'		=> 'Зарегистрированные (COPPA)',
 	'G_GLOBAL_MODERATORS'		=> 'Супермодераторы',
-	'G_NEWLY_REGISTERED'		=> 'Новые пользователи',
+	'G_NEWLY_REGISTERED'		=> 'Новые',
 
 	'HIDDEN_USERS_ONLINE'			=> 'скрытых пользователей: %d',
 	'HIDDEN_USERS_TOTAL'			=> 'скрытых: %d',
@@ -300,7 +301,7 @@ $lang = array_merge($lang, array(
 	'LDAP_SEARCH_FAILED'				=> 'Произошла ошибка при поиске в директории LDAP.',
 	'LEGEND'							=> 'Легенда',
 	'LOCATION'							=> 'Откуда',
-	'LOCK_POST'							=> 'Заблокировать сообщение',
+	'LOCK_POST'							=> 'Запрет редактирования',
 	'LOCK_POST_EXPLAIN'					=> 'запрет редактирования',
 	'LOCK_TOPIC'						=> 'Закрыть тему',
 	'LOGIN'								=> 'Вход',
@@ -348,8 +349,8 @@ $lang = array_merge($lang, array(
 	'NEWEST_USER'				=> 'Новый пользователь: <strong>%s</strong>',
 	'NEW_MESSAGE'				=> 'Новое сообщение',
 	'NEW_MESSAGES'				=> 'Новые сообщения',
-	'NEW_PM'					=> 'Новых ЛС: <strong>%d</strong>',
-	'NEW_PMS'					=> 'Новых ЛС: <strong>%d</strong>',
+	'NEW_PM'					=> 'Новых ЛС: %d',
+	'NEW_PMS'					=> 'Новых ЛС: %d',
 	'NEW_POST'					=> 'Новое сообщение', // Больше не используется
 	'NEW_POSTS'					=> 'Новые сообщения', // Больше не используется
 	'NEXT'						=> 'След.',		// Used in pagination
@@ -383,7 +384,7 @@ $lang = array_merge($lang, array(
 	'NO_MODE'					=> 'Не указан режим.',
 	'NO_MODERATORS'				=> 'Модераторы отсутствуют.',
 	'NO_NEW_MESSAGES'			=> 'Нет новых сообщений',
-	'NO_NEW_PM'					=> 'Новых ЛС: <strong>0</strong>',
+	'NO_NEW_PM'					=> 'Новых ЛС: 0',
 	'NO_NEW_POSTS'				=> 'Нет новых сообщений', // Больше не используется
 	'NO_ONLINE_USERS'			=> 'нет зарегистрированных пользователей',
 	'NO_POSTS'					=> 'Нет сообщений',
@@ -419,7 +420,7 @@ $lang = array_merge($lang, array(
 	'ONLINE_USER_TOTAL'			=> 'Всего посетителей: <strong>%d</strong>, из них ',
 	'OPTIONS'					=> 'Настройки',
 
-	'PAGE_OF'				=> 'Страница <strong>%1$d</strong> из <strong>%2$d</strong>',
+	'PAGE_OF'				=> 'Страница %1$d из %2$d',
 	'PASSWORD'				=> 'Пароль',
  	'PIXEL'					=> 'пикс.',
 	'PLAY_QUICKTIME_FILE'	=> 'Воспроизвести файл QuickTime',
@@ -489,7 +490,7 @@ $lang = array_merge($lang, array(
 	'REPORTING_POST'			=> 'Размещение жалобы на сообщение',
 	'RESEND_ACTIVATION'			=> 'Повторно выслать письмо для активации учётной записи',
 	'RESET'						=> 'Вернуть',
-	'RESTORE_PERMISSIONS'		=> 'Восстановить права доступа',
+	'RESTORE_PERMISSIONS'		=> 'Восстановить права',
 	'RETURN_INDEX'				=> '%sВернуться на главную страницу%s',
 	'RETURN_FORUM'				=> '%sВернуться в форум%s',
 	'RETURN_PAGE'				=> '%sВернуться на предыдущую страницу%s',
@@ -499,6 +500,7 @@ $lang = array_merge($lang, array(
 	'FEED_NEWS'					=> 'Новости',
  	'FEED_TOPICS_ACTIVE'		=> 'Активные темы',
  	'FEED_TOPICS_NEW'			=> 'Новые темы',
+ 	'FEED_OVERALL'				=> 'Новые сообщения',
 	'RULES_ATTACH_CAN'			=> 'Вы <strong>можете</strong> добавлять вложения',
 	'RULES_ATTACH_CANNOT'		=> 'Вы <strong>не можете</strong> добавлять вложения',
 	'RULES_DELETE_CAN'			=> 'Вы <strong>можете</strong> удалять свои сообщения',
@@ -528,9 +530,10 @@ $lang = array_merge($lang, array(
 	'SEARCH_NEW'				=> 'Новые сообщения',
 	'SEARCH_POSTS_BY'			=> 'Искать сообщения',
 	'SEARCH_SELF'				=> 'Ваши сообщения',
+	'SEARCH_SELF_TOPICS'		=> 'Ваши темы',
 	'SEARCH_TOPIC'				=> 'Поиск в теме…',
-	'SEARCH_UNANSWERED'			=> 'Сообщения без ответов',
-	'SEARCH_UNREAD'				=> 'Непрочитанные сообщения',
+	'SEARCH_UNANSWERED'			=> 'Темы без ответов',
+	'SEARCH_UNREAD'				=> 'Непрочитанные темы',
 	'SEARCH_USER_POSTS'			=> 'Найти сообщения пользователя',
 	'SECONDS'					=> 'секунд',
 	'SELECT'					=> 'Выбор',
@@ -543,6 +546,7 @@ $lang = array_merge($lang, array(
 	'SETTINGS'					=> 'Настройки',
 	'SIGNATURE'					=> 'Подпись',
 	'SKIP'						=> 'Пропустить',
+	'SKYPE'						=> 'Skype',
 	'SMTP_NO_AUTH_SUPPORT'		=> 'SMTP-сервер не поддерживает аутентификацию.',
 	'SORRY_AUTH_READ'			=> 'Вы не авторизованы для чтения этого форума.',
 	'SORRY_AUTH_VIEW_ATTACH'	=> 'Вы не авторизованы для скачивания этого вложения.',
@@ -671,7 +675,7 @@ $lang = array_merge($lang, array(
 	'USER_POST'				=> '%d сообщение',
 	'USER_POSTS'			=> '%d сообщений',
 	'USERS'					=> 'Пользователи',
-	'USE_PERMISSIONS'		=> 'Проверить права пользователя',
+	'USE_PERMISSIONS'		=> 'Проверить права',
 
 	'USER_NEW_PERMISSION_DISALLOWED'	=> 'Вам не разрешено использовать данную возможность. Возможно, вы недавно зарегистрировались на конференции или вам необходимо проявить больше активности на ней, чтобы получить такое право.',
 
@@ -712,7 +716,7 @@ $lang = array_merge($lang, array(
 	'WELCOME_SUBJECT'	=> 'Добро пожаловать на конференцию «%s»',
 	'WEBSITE'			=> 'Сайт',
 	'WHOIS'				=> 'Информация об IP-адресе',
-	'WHO_IS_ONLINE'		=> 'Кто сейчас на конференции',
+	'WHO_IS_ONLINE'		=> 'Кто сейчас на сайте',
 	'WRONG_PASSWORD'	=> 'Вы ввели неверный пароль.',
 
 	'WRONG_DATA_ICQ'			=> 'Введённый номер не являются правильным номером ICQ.',
@@ -883,6 +887,10 @@ $lang = array_merge($lang, array(
 
 	// The value is only an example and will get replaced by the current time on view
 	'dateformats'	=> array(
+		'Y-m-d H:i'				=> '2005-01-10 17:57',
+		'Y-m-d, H:i'			=> '2005-01-10, 17:57',
+		'd.m.Y H:i'				=> '10.01.2005 17:57',
+		'd.m.Y, H:i'			=> '10.01.2005, 17:57',
 		'd M Y, H:i'			=> '10 янв 2005, 17:57',
 		'd M Y H:i'				=> '10 янв 2005 17:57',
 		'M jS, \'y, H:i'		=> 'Янв 1, \'07, 13:37',
@@ -894,7 +902,60 @@ $lang = array_merge($lang, array(
 
 	// The default dateformat which will be used on new installs in this language
 	// Translators should change this if a the usual date format is different
-	'default_dateformat'	=>'|d M Y|, H:i', // Сегодня, 13:37 / 01 Янв 2007, 13:37
+	'default_dateformat'	=> 'Y-m-d H:i', // 2005-01-10 17:57
+
+	// User topics count
+	'NUM_TOPICS_IN_QUEUE'		=> array(
+		0			=> 'Нет тем в очереди',	// 0
+		1			=> '1 тема в очереди',	// 1
+		2			=> '%d тем в очереди',	// 2+
+	),
+	'TOPIC_DAY'					=> '%.2f тем в день',
+	'TOPIC_PCT'					=> '%.2f%% всех тем',
+	'TOTAL_TOPICS'				=> 'Всего тем',
+
+	// Genders
+	'GENDER'					=> 'Пол',
+	'GENDER_EXPLAIN'			=> 'Пожалуйста укажите ваш пол.',
+	'GENDER_X'					=> 'Не указан',
+	'GENDER_M'					=> 'Мужской',
+	'GENDER_F'					=> 'Женский',
+
+	// Main menu
+	'USER_CP'					=> 'Личное',
+	'MODER_CP'					=> 'Модератору',
+	'MODERATE_FORUM'			=> 'Модерировать форум',
+	'MODERATE_TOPIC'			=> 'Модерировать тему',
+	'ADMIN_CP'					=> 'Админка',
+	'OVERVIEW'					=> 'Обзор',
+	'ATTACHMENTS'				=> 'Вложения',
+	'BOOKMARKS'					=> 'Закладки',
+	'DRAFTS'					=> 'Черновики',
+	'SUBSCRIBED'				=> 'Подписки',
+	'FRIENDS_AND_FOES'			=> 'Друзья и недруги',
+	'PM_COMPOSE'				=> 'Новое сообщение',
+	'PM_INBOX'					=> 'Входящие',
+	'PM_OUTBOX'					=> 'Исходящие',
+	'PM_SENTBOX'				=> 'Отправленные',
+
+	// Login via E-Mail
+	'USERNAME_OR_EMAIL'					=> 'Имя или e-mail',
+	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'Вы ввели неверное имя пользователя или e-mail. Проверьте введённые данные и попробуйте ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
+	'LOGIN_ERROR_EMAIL'					=> 'Вы ввели неверный e-mail. Проверьте его и попробуйте ввести ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
+
+	// Advanced Warnings
+	'USER_WARNING'			=> 'Предупреждение',
+	'WARNING_DAYS'			=> 'Дней',
+	'REMARK'				=> 'Замечание',
+	'WARNING'				=> 'Предупреждение',
+	'BAN'					=> 'Бан',
+	'PERMANENT_WARNING'		=> 'Бессрочное предупреждение',
+	'WARNING_X_DAYS'		=> 'Предупреждение на %d дней',
+	'PERMANENT_BAN'			=> 'Бессрочный бан',
+	'BAN_X_DAYS'			=> 'Бан на %d дней',
+
+	// Other
+	'SOCIAL_SHARE_IN'		=> 'Поделиться в',
 
 ));
 

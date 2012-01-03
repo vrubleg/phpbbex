@@ -1,0 +1,91 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_ACP_MANAGE_ATTACHMENTS}</h1>
+
+<p>{L_ACP_MANAGE_ATTACHMENTS_EXPLAIN}</p>
+
+<!-- IF S_WARNING -->
+	<div class="errorbox">
+		<h3>{L_WARNING}</h3>
+		<p>{WARNING_MSG}</p>
+	</div>
+<!-- ENDIF -->
+	
+<!-- IF S_NOTIFY -->
+	<div class="successbox">
+		<h3>{L_NOTIFY}</h3>
+		<p>{NOTIFY_MSG}</p>
+	</div>
+<!-- ENDIF -->
+
+<form id="attachments" method="post" action="{U_ACTION}">
+
+<fieldset class="tabulated">
+<legend>{L_TITLE}</legend>
+
+<!-- IF PAGINATION  or TOTAL_FILES -->
+<div class="pagination">
+	{L_NUMBER_FILES}: {TOTAL_FILES} &bull; {L_TOTAL_SIZE}: {TOTAL_SIZE}<!-- IF S_ON_PAGE --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {S_ON_PAGE}<!-- ENDIF --><!-- ENDIF -->
+</div>
+<!-- ENDIF -->
+
+<table cellspacing="1">
+<thead>
+<tr>
+	<th>{L_FILENAME}</th>
+	<th>{L_FILEDATE}</th>
+	<th>{L_FILESIZE}</th>
+	<th>{L_ATTACH_POST_ID}</th>
+	<th>{L_ATTACH_TO_POST}</th>
+	<th>{L_DELETE}</th>
+</tr>
+</thead>
+<tbody>
+<!-- BEGIN attachments -->
+	<!-- IF attachments.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+		<td style="width: 40%;"><a href="{attachments.U_FILE}" style="font-weight: bold;">{attachments.REAL_FILENAME}</a><br />{attachments.L_DOWNLOAD_COUNT}<br /><!-- IF attachments.S_IN_MESSAGE -->{L_IN} {L_PRIVATE_MESSAGE}<!-- ELSE -->{L_TOPIC}: <!-- ENDIF --><a href="{attachments.U_VIEW_TOPIC}">{attachments.TOPIC_TITLE}</a></td>
+		<td style="width: 15%;">{attachments.FILETIME} {L_POST_BY_AUTHOR} {attachments.ATTACHMENT_POSTER}</td>
+		<td>{attachments.FILESIZE}</td>
+		<td><input type="text" name="post_id[{attachments.ATTACH_ID}]" size="7" maxlength="10" value="{attachments.POST_ID}" {attachments.DISABLED} />
+			<input type="hidden" name="current_post_id[{attachments.ATTACH_ID}]" value="{attachments.POST_ID}" /></td>
+			<input type="hidden" name="current_topic_id[{attachments.ATTACH_ID}]" value="{attachments.TOPIC_ID}" />
+		<td><!-- IF not attachments.DISABLED --><input type="checkbox" class="radio" name="add[{attachments.ATTACH_ID}]" /><!-- ELSE -->&nbsp;<!-- ENDIF --></td>
+		<td><input type="checkbox" class="radio" name="delete[{attachments.ATTACH_ID}]" /></td>
+	</tr>
+<!-- END attachments -->
+<tr class="row4">
+	<td colspan="4">&nbsp;</td>
+	<td class="small"><a href="#" onclick="marklist('attachments', 'add', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('attachments', 'add', false); return false;">{L_UNMARK_ALL}</a></td>
+	<td class="small"><a href="#" onclick="marklist('attachments', 'delete', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('attachments', 'delete', false); return false;">{L_UNMARK_ALL}</a></td>
+</tr>
+</tbody>
+</table>
+
+<fieldset class="display-options">
+	{L_DISPLAY_LOG}: &nbsp;{S_LIMIT_DAYS}&nbsp;{L_SORT_BY}: {S_SORT_KEY} {S_SORT_DIR}
+	<input class="button2" type="submit" value="{L_GO}" name="sort" />
+	{S_FORM_TOKEN}
+</fieldset>
+<hr />
+
+<!-- IF PAGINATION  or TOTAL_FILES -->
+<div class="pagination">
+	{L_NUMBER_FILES}: {TOTAL_FILES} &bull; {L_TOTAL_SIZE}: {TOTAL_SIZE}<!-- IF S_ON_PAGE --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {S_ON_PAGE}<!-- ENDIF --><!-- ENDIF -->
+</div>
+<!-- ENDIF -->
+
+<br />
+
+<p class="submit-buttons">
+	<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+	<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+</p>
+
+</fieldset>
+
+</form>
+
+
+<!-- INCLUDE overall_footer.html -->

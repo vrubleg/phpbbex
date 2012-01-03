@@ -102,14 +102,6 @@ $help = array(
 	array(
 		0 => 'Adding attachments into a post',
 		1 => 'Attachments can now be placed in any part of a post by using the new <strong>[attachment=][/attachment]</strong> BBCode, if the attachments functionality has been enabled by a board administrator and if you are given the appropriate permissions to create attachments. Within the posting screen is a drop-down box (respectively a button) for placing attachments inline.'
-	),
-	array(
-		0 => '--',
-		1 => 'Other matters'
-	),
-	array(
-		0 => 'Can I add my own tags?',
-		1 => 'If you are an administrator on this board and have the proper permissions, you can add further BBCodes through the Custom BBCodes section.'
 	)
 );
 

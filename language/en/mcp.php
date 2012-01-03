@@ -204,6 +204,7 @@ $lang = array_merge($lang, array(
 	'MCP_VIEW_USER'			=> 'View warnings for a specific user',
 
 	'MCP_WARN'				=> 'Warnings',
+	'MCP_WARN_EDIT'			=> 'Edit warning',
 	'MCP_WARN_FRONT'		=> 'Front page',
 	'MCP_WARN_LIST'			=> 'List warnings',
 	'MCP_WARN_POST'			=> 'Warn for specific post',
@@ -371,6 +372,7 @@ $lang = array_merge($lang, array(
 	'USER_CANNOT_REPORT'			=> 'You cannot report posts in this forum.',
 	'USER_FEEDBACK_ADDED'			=> 'User feedback added successfully.',
 	'USER_WARNING_ADDED'			=> 'User warned successfully.',
+	'USER_WARNING_EDITED'			=> 'Warning edited successfully.',
 
 	'VIEW_DETAILS'			=> 'View details',
 	'VIEW_PM'				=> 'View private message',
@@ -378,10 +380,18 @@ $lang = array_merge($lang, array(
 
 	'WARNED_USERS'			=> 'Warned users',
 	'WARNED_USERS_EXPLAIN'	=> 'This is a list of users with unexpired warnings issued to them.',
-	'WARNING_PM_BODY'		=> 'The following is a warning which has been issued to you by an administrator or moderator of this site.[quote]%s[/quote]',
-	'WARNING_PM_SUBJECT'	=> 'Board warning issued',
-	'WARNING_POST_DEFAULT'	=> 'This is a warning regarding the following post made by you: %s .',
+	'WARNING_DURATION'		=> 'Warning duration',
+	'WARNING_POST_DEFAULT'	=> 'Violation of rules',
+	'WARNING_TYPE'			=> 'Warning type',
 	'WARNINGS_ZERO_TOTAL'	=> 'No warnings exist.',
+	'WARNING_NOT_FOUND'		=> 'Warning not found.',
+
+	'BAN_PM_SUBJECT'		=> 'You are banned',
+	'BAN_PM_BODY'			=> '%s',
+	'REMARK_PM_SUBJECT'		=> 'Board remark issued',
+	'REMARK_PM_BODY'		=> '%s',
+	'WARNING_PM_SUBJECT'	=> 'Board warning issued',
+	'WARNING_PM_BODY'		=> '%s',
 
 	'YOU_SELECTED_TOPIC'	=> 'You selected topic number %d: %s.',
 

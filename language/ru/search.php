@@ -45,6 +45,9 @@ $lang = array_merge($lang, array(
 	'FOUND_SEARCH_MATCHES'		=> 'Результатов поиска: %d',
 	'FOUND_MORE_SEARCH_MATCHES'	=> 'Результатов поиска более %d',
 
+	'USER_TOPICS'				=> 'Темы пользователя',
+	'USER_POSTS'				=> 'Сообщения пользователя',
+
 	'GLOBAL'				=> 'Важная',
 
 	'IGNORED_TERMS'			=> 'проигнорированы',

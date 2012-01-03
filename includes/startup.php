@@ -14,12 +14,25 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-// Report all errors, except notices and deprecation messages
+// Check PHP version
+if(version_compare(PHP_VERSION, '5.2.0', '<')) die('PHP 5.2 is required');
+
 if (!defined('E_DEPRECATED'))
 {
 	define('E_DEPRECATED', 8192);
 }
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
+if (defined('DEBUG'))
+{
+	// Display all errors
+	error_reporting(E_ALL);
+	ini_set('display_errors', 'On');
+}
+else
+{
+	// Report all errors, except notices and deprecation messages
+	error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+}
 
 /*
 * Remove variables created by register_globals from the global scope

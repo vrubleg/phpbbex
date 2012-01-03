@@ -1,15 +1,98 @@
 <!-- INCLUDE overall_header.html -->
 
-<p class="{S_CONTENT_FLOW_END}<!-- IF S_USER_LOGGED_IN --> rightside<!-- ENDIF -->"><!-- IF S_USER_LOGGED_IN -->{LAST_VISIT_DATE}<!-- ELSE -->{CURRENT_TIME}<!-- ENDIF --></p>
-<!-- IF U_MCP --><p>{CURRENT_TIME} <br />[&nbsp;<a href="{U_MCP}">{L_MCP}</a>&nbsp;]</p><!-- ELSEIF S_USER_LOGGED_IN --><p>{CURRENT_TIME}</p><!-- ENDIF -->
+<!-- IF S_USER_LOGGED_IN --><p class="rightside">{LAST_VISIT_DATE}</p><!-- ENDIF -->
+<p>{CURRENT_TIME}</p>
 
 <!-- IF S_DISPLAY_SEARCH or (S_USER_LOGGED_IN and not S_IS_BOT) -->
 <ul class="linklist">
 	<!-- IF S_DISPLAY_SEARCH -->
-		<li><a href="{U_SEARCH_UNANSWERED}">{L_SEARCH_UNANSWERED}</a><!-- IF S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_UNREAD}">{L_SEARCH_UNREAD}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --> &bull; <a href="{U_SEARCH_NEW}">{L_SEARCH_NEW}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_ACTIVE_TOPICS}">{L_SEARCH_ACTIVE_TOPICS}</a></li>
+		<li><a href="{U_SEARCH_ACTIVE_TOPICS}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- IF S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_UNREAD}">{L_SEARCH_UNREAD}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --> &bull; <a href="{U_SEARCH_SELF_TOPICS}">{L_SEARCH_SELF_TOPICS}</a> &bull; <a href="{U_SEARCH_SELF}">{L_SEARCH_SELF}</a> &bull; <a href="{U_SEARCH_NEW}">{L_SEARCH_NEW}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_UNANSWERED}">{L_SEARCH_UNANSWERED}</a></li>
 	<!-- ENDIF -->
 	<!-- IF not S_IS_BOT and U_MARK_FORUMS --><li class="rightside"><a href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a></li><!-- ENDIF -->
 </ul>
+<!-- ENDIF -->
+
+<!-- IF S_ANNOUNCE_INDEX and .announcetopic -->
+<div class="forumbg announcement">
+	<div class="inner"><span class="corners-top"><span></span></span>
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="icon">
+					<dt>{L_ANNOUNCEMENTS}</dt>
+					<dd class="posts">{L_REPLIES}</dd>
+					<dd class="views">{L_VIEWS}</dd>
+					<dd class="lastpost"><span>{L_LAST_POST}</span></dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist topics">
+<!-- BEGIN announcetopic -->
+		<li class="row<!-- IF announcetopic.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF --><!-- IF announcetopic.S_POST_ANNOUNCE --> announce<!-- ENDIF -->">
+			<dl class="icon" style="background-image: url({announcetopic.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
+				<dt<!-- IF announcetopic.TOPIC_ICON_IMG --> style="background-image: url({T_ICONS_PATH}{announcetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{announcetopic.TOPIC_FOLDER_IMG_ALT}"><!-- IF announcetopic.S_UNREAD_TOPIC --><a href="{announcetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{announcetopic.U_VIEW_TOPIC}" class="topictitle">{announcetopic.TOPIC_TITLE}</a>
+					<br />
+					<!-- IF announcetopic.PAGINATION --><strong class="pagination"><span>{announcetopic.PAGINATION}</span></strong><!-- ENDIF -->
+					<!-- IF announcetopic.ATTACH_ICON_IMG -->{announcetopic.ATTACH_ICON_IMG} <!-- ENDIF -->{L_POST_BY_AUTHOR} {announcetopic.TOPIC_AUTHOR_FULL} &raquo; {announcetopic.FIRST_POST_TIME} 
+					<!-- IF not announcetopic.S_TOPIC_GLOBAL -->{L_IN} <a href="{announcetopic.U_VIEW_FORUM}">{announcetopic.FORUM_TITLE}</a><!-- ELSE --> ({L_GLOBAL})<!-- ENDIF -->
+				</dt>
+				<dd class="posts">{announcetopic.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
+				<dd class="views">{announcetopic.VIEWS} <dfn>{L_VIEWS}</dfn></dd>
+				<dd class="lastpost"><span><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {announcetopic.LAST_POST_AUTHOR_FULL}
+					<!-- IF not S_IS_BOT --><a href="{announcetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <br /><!-- ENDIF -->{L_POSTED_ON_DATE} {announcetopic.LAST_POST_TIME}</span>
+				</dd>
+			</dl>
+		</li>
+<!-- END announcetopic -->
+		</ul>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_ACTIVE_TOPICS_ON_INDEX and .activetopic -->
+<div class="forumbg">
+
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<ul class="topiclist">
+		<li class="header">
+			<dl class="icon">
+				<dt><!-- IF S_DISPLAY_SEARCH --><a href="{U_SEARCH_ACTIVE_TOPICS}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- ELSE -->{L_SEARCH_ACTIVE_TOPICS}<!-- ENDIF --></dt>
+				<dd class="posts">{L_REPLIES}</dd>
+				<dd class="views">{L_VIEWS}</dd>
+				<dd class="lastpost"><span>{L_LAST_POST}</span></dd>
+			</dl>
+		</li>
+	</ul>
+	<ul class="topiclist topics">
+
+	<!-- BEGIN activetopic -->
+		<li class="row<!-- IF activetopic.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
+			<dl class="icon" style="background-image: url({activetopic.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
+				<dt <!-- IF activetopic.TOPIC_ICON_IMG -->style="background-image: url({T_ICONS_PATH}{activetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{activetopic.TOPIC_FOLDER_IMG_ALT}">
+					<!-- IF activetopic.S_UNREAD_TOPIC --><a href="{activetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
+					<a href="{activetopic.U_VIEW_TOPIC}" class="topictitle">{activetopic.TOPIC_TITLE}</a>
+					<!-- IF activetopic.S_TOPIC_UNAPPROVED or activetopic.S_POSTS_UNAPPROVED --><a href="{activetopic.U_MCP_QUEUE}">{activetopic.UNAPPROVED_IMG}</a> <!-- ENDIF -->
+					<!-- IF activetopic.S_TOPIC_REPORTED --><a href="{activetopic.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
+					<!-- IF activetopic.PAGINATION --><strong class="pagination"><span>{activetopic.PAGINATION}</span></strong><!-- ENDIF -->
+					<!-- IF activetopic.ATTACH_ICON_IMG -->{activetopic.ATTACH_ICON_IMG} <!-- ENDIF -->{L_POST_BY_AUTHOR} {activetopic.TOPIC_AUTHOR_FULL} &raquo; {activetopic.FIRST_POST_TIME}
+					<!-- IF not activetopic.S_TOPIC_GLOBAL -->{L_IN} <a href="{activetopic.U_VIEW_FORUM}">{activetopic.FORUM_TITLE}</a><!-- ELSE --> ({L_GLOBAL})<!-- ENDIF -->
+				</dt>
+				<dd class="posts">{activetopic.REPLIES}</dd>
+				<dd class="views">{activetopic.VIEWS}</dd>
+				<dd class="lastpost"><span>
+					{L_POST_BY_AUTHOR} {activetopic.LAST_POST_AUTHOR_FULL}
+					<!-- IF not S_IS_BOT --><a href="{activetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{activetopic.LAST_POST_TIME}<br /> </span>
+				</dd>
+			</dl>
+		</li>
+	<!-- END activetopic -->
+	</ul>
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- ENDIF -->
+
+<!-- IF S_ACTIVE_TOPICS_ON_INDEX or S_ANNOUNCE_INDEX -->
+<div style="height: 2em"></div>
 <!-- ENDIF -->
 
 <!-- INCLUDE forumlist_body.html -->
@@ -18,10 +101,10 @@
 	<form method="post" action="{S_LOGIN_ACTION}" class="headerspace">
 	<h3><a href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a><!-- IF S_REGISTER_ENABLED -->&nbsp; &bull; &nbsp;<a href="{U_REGISTER}">{L_REGISTER}</a><!-- ENDIF --></h3>
 		<fieldset class="quick-login">
-			<label for="username">{L_USERNAME}:</label>&nbsp;<input type="text" name="username" id="username" size="10" class="inputbox" title="{L_USERNAME}" />
+			<label for="username">{L_LOGIN_NAME}:</label>&nbsp;<input type="text" name="username" id="username" size="10" class="inputbox" title="{L_USERNAME}" />
 			<label for="password">{L_PASSWORD}:</label>&nbsp;<input type="password" name="password" id="password" size="10" class="inputbox" title="{L_PASSWORD}" />
 			<!-- IF S_AUTOLOGIN_ENABLED -->
-				| <label for="autologin">{L_LOG_ME_IN} <input type="checkbox" name="autologin" id="autologin" /></label>
+				| <label for="autologin">{L_LOG_ME_IN} <input type="checkbox" name="autologin" id="autologin" checked="checked" /></label>
 			<!-- ENDIF -->
 			<input type="submit" name="login" value="{L_LOGIN}" class="button2" />
 			{S_LOGIN_REDIRECT}

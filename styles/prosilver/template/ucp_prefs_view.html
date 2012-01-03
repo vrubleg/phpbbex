@@ -44,6 +44,31 @@
 				<label for="avatars0"><input type="radio" name="avatars" id="avatars0" value="0"<!-- IF not S_AVATARS --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 			</dd>
 		</dl>
+		<!-- IF QUICK_REPLY -->
+		<dl>
+			<dt><label for="quickreply1">{L_QUICK_REPLY_DISPLAY}:</label></dt>
+			<dd>
+				<label for="quickreply1"><input type="radio" name="quickreply" id="quickreply1" value="1"<!-- IF S_QUICKREPLY --> checked="checked"<!-- ENDIF --> /> {L_YES}</label> 
+				<label for="quickreply0"><input type="radio" name="quickreply" id="quickreply0" value="0"<!-- IF not S_QUICKREPLY --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+			</dd>
+		</dl>
+		<!-- ENDIF -->
+		<!-- IF QUICK_POST -->
+		<dl>
+			<dt><label for="quickpost1">{L_QUICK_POST_DISPLAY}:</label></dt>
+			<dd>
+				<label for="quickpost1"><input type="radio" name="quickpost" id="quickpost1" value="1"<!-- IF S_QUICKPOST --> checked="checked"<!-- ENDIF --> /> {L_YES}</label> 
+				<label for="quickpost0"><input type="radio" name="quickpost" id="quickpost0" value="0"<!-- IF not S_QUICKPOST --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+			</dd>
+		</dl>
+		<!-- ENDIF -->
+		<dl>
+			<dt><label for="topicreview1">{L_TOPIC_REVIEW_DISPLAY}:</label></dt>
+			<dd>
+				<label for="topicreview1"><input type="radio" name="topicreview" id="topicreview1" value="1"<!-- IF S_TOPICREVIEW --> checked="checked"<!-- ENDIF --> /> {L_YES}</label> 
+				<label for="topicreview0"><input type="radio" name="topicreview" id="topicreview0" value="0"<!-- IF not S_TOPICREVIEW --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+			</dd>
+		</dl>
 		<!-- IF S_CHANGE_CENSORS -->
 			<dl>
 				<dt><label for="wordcensor1">{L_DISABLE_CENSORS}:</label></dt>
@@ -54,6 +79,10 @@
 			</dl>
 		<!-- ENDIF -->
 		<hr />
+		<dl>
+			<dt><label for="user_topics_per_page">{L_USER_TOPICS_PER_PAGE}:</label></dt>
+			<dd><input type="text" name="user_topics_per_page" id="user_topics_per_page" size="3" value="{USER_TOPICS_PER_PAGE}" /></dd>
+		</dl>
 		<dl>
 			<dt><label>{L_VIEW_TOPICS_DAYS}:</label></dt>
 			<dd>{S_TOPIC_SORT_DAYS}</dd>
@@ -67,6 +96,10 @@
 			<dd>{S_TOPIC_SORT_DIR}</dd>
 		</dl>
 		<hr />
+		<dl>
+			<dt><label for="user_posts_per_page">{L_USER_POSTS_PER_PAGE}:</label></dt>
+			<dd><input type="text" name="user_posts_per_page" id="user_posts_per_page" size="3" value="{USER_POSTS_PER_PAGE}" /></dd>
+		</dl>
 		<dl>
 			<dt><label>{L_VIEW_POSTS_DAYS}:</label></dt>
 			<dd>{S_POST_SORT_DAYS}</dd>

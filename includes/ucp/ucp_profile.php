@@ -271,10 +271,12 @@ class ucp_profile
 					'msn'			=> request_var('msn', $user->data['user_msnm']),
 					'yim'			=> request_var('yim', $user->data['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user->data['user_jabber'], true)),
+					'skype'			=> utf8_normalize_nfc(request_var('skype', $user->data['user_skype'], true)),
 					'website'		=> request_var('website', $user->data['user_website']),
 					'location'		=> utf8_normalize_nfc(request_var('location', $user->data['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user->data['user_occ'], true)),
 					'interests'		=> utf8_normalize_nfc(request_var('interests', $user->data['user_interests'], true)),
+					'gender'		=> request_var('gender', $user->data['user_gender']),
 				);
 
 				if ($config['allow_birthdays'])
@@ -305,6 +307,7 @@ class ucp_profile
 						'jabber'		=> array(
 							array('string', true, 5, 255),
 							array('jabber')),
+						'skype'			=> array('string', true, 3, 255),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 12, 255),
@@ -312,6 +315,7 @@ class ucp_profile
 						'location'		=> array('string', true, 2, 100),
 						'occupation'	=> array('string', true, 2, 500),
 						'interests'		=> array('string', true, 2, 500),
+						'gender'		=> array('num', true, 0, 2),
 					);
 
 					if ($config['allow_birthdays'])
@@ -356,11 +360,13 @@ class ucp_profile
 							'user_msnm'		=> $data['msn'],
 							'user_yim'		=> $data['yim'],
 							'user_jabber'	=> $data['jabber'],
+							'user_skype'	=> $data['skype'],
 							'user_website'	=> $data['website'],
 							'user_from'		=> $data['location'],
 							'user_occ'		=> $data['occupation'],
 							'user_interests'=> $data['interests'],
 							'user_notify_type'	=> $data['notify'],
+							'user_gender'	=> $data['gender'],
 						);
 
 						if ($config['allow_birthdays'])
@@ -427,10 +433,15 @@ class ucp_profile
 					'AIM'		=> $data['aim'],
 					'MSN'		=> $data['msn'],
 					'JABBER'	=> $data['jabber'],
+					'SKYPE'		=> $data['skype'],
 					'WEBSITE'	=> $data['website'],
 					'LOCATION'	=> $data['location'],
 					'OCCUPATION'=> $data['occupation'],
 					'INTERESTS'	=> $data['interests'],
+
+					'S_GENDER_X'	=> $data['gender'] == GENDER_X,
+					'S_GENDER_M'	=> $data['gender'] == GENDER_M,
+					'S_GENDER_F'	=> $data['gender'] == GENDER_F,
 				));
 
 				// Get additional profile fields and assign them to the template block var 'profile_fields'
@@ -468,6 +479,22 @@ class ucp_profile
 
 					if (!sizeof($error))
 					{
+						// Signature Lines Limit
+						if($config['max_sig_lines'])
+						{
+							$brcount = 1;
+							$brpos = 0;
+							while( ($brpos = strpos($signature, "\n", $brpos)) !== false )
+							{
+								$brcount++;
+								if($brcount > $config['max_sig_lines'])
+								{
+									$signature{$brpos}=' ';
+								}
+								$brpos++;
+							}
+						}
+
 						$message_parser = new parse_message($signature);
 
 						// Allowing Quote BBCode
@@ -536,7 +563,7 @@ class ucp_profile
 					'URL_STATUS'			=> ($config['allow_sig_links']) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 					'MAX_FONT_SIZE'			=> (int) $config['max_sig_font_size'],
 
-					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars']),
+					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ? $config['max_sig_lines'] : $user->lang['NO']),
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],

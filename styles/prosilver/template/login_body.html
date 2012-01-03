@@ -2,7 +2,10 @@
 
 <script type="text/javascript">
 // <![CDATA[
-	onload_functions.push('document.getElementById("<!-- IF S_ADMIN_AUTH -->{PASSWORD_CREDENTIAL}<!-- ELSE -->{USERNAME_CREDENTIAL}<!-- ENDIF -->").focus();');
+jQuery(function($)
+{
+	$("#<!-- IF S_ADMIN_AUTH -->{PASSWORD_CREDENTIAL}<!-- ELSE -->{USERNAME_CREDENTIAL}<!-- ENDIF -->")[0].focus();
+});
 // ]]>
 </script>
 
@@ -16,7 +19,7 @@
 		<fieldset <!-- IF not S_CONFIRM_CODE -->class="fields1"<!-- ELSE -->class="fields2"<!-- ENDIF -->>
 		<!-- IF LOGIN_ERROR --><div class="error">{LOGIN_ERROR}</div><!-- ENDIF -->
 		<dl>
-			<dt><label for="{USERNAME_CREDENTIAL}">{L_USERNAME}:</label></dt>
+			<dt><label for="{USERNAME_CREDENTIAL}">{L_LOGIN_NAME}:</label></dt>
 			<dd><input type="text" tabindex="1" name="{USERNAME_CREDENTIAL}" id="{USERNAME_CREDENTIAL}" size="25" value="{USERNAME}" class="inputbox autowidth" /></dd>
 		</dl>
 		<dl>
@@ -33,7 +36,7 @@
 		<!-- ENDIF -->
 		<!-- IF S_DISPLAY_FULL_LOGIN -->
 		<dl>
-			<!-- IF S_AUTOLOGIN_ENABLED --><dd><label for="autologin"><input type="checkbox" name="autologin" id="autologin" tabindex="4" /> {L_LOG_ME_IN}</label></dd><!-- ENDIF -->
+			<!-- IF S_AUTOLOGIN_ENABLED --><dd><label for="autologin"><input type="checkbox" name="autologin" id="autologin" checked="checked" tabindex="4" /> {L_LOG_ME_IN}</label></dd><!-- ENDIF -->
 			<dd><label for="viewonline"><input type="checkbox" name="viewonline" id="viewonline" tabindex="5" /> {L_HIDE_ME}</label></dd>
 		</dl>
 		<!-- ENDIF -->
