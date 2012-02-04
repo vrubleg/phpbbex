@@ -820,6 +820,7 @@ dl.pmlist dd {
 	padding: 2px 8px 3px 26px;
 	font-size: 1.1em;
 	line-height: 1.1em;
+	clear: both;
 }
 
 .postbody div.warning, div.postbody div.ban {
