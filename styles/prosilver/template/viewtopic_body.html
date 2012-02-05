@@ -112,9 +112,38 @@
 	<hr />
 <!-- ENDIF -->
 
+<!-- IF S_RATE_ENABLED -->
+<script type="text/javascript">
+jQuery(function($)
+{
+	$('li.rate-box').on('click', '.rate-minus, .rate-plus', function()
+	{
+		var rate = $(this).hasClass('rate-minus') ? 'minus' : 'plus';
+		var post_id = $(this).parents('.post').data('id');
+		var $box = $(this).parents('.rate-box');
+		$.getJSON('rate.php', {'rate': rate, 'post_id': post_id}, function(data)
+		{
+			if (data.status != 'ok') return;
+			var html = '';
+			html += '<span class="rate-';
+			html += (data.user_rate < 0) ? 'minus-voted' : (data.user_can_minus ? 'minus' : 'no-minus');
+			html += '"></span><span class="rate-value rate-';
+			html += (data.post_rating > 0) ? 'positive' : ((data.post_rating < 0) ? 'negative' : 'zero');
+			html += '" title="+' + data.post_rating_positive + ' −' + data.post_rating_negative + '">';
+			html += (data.post_rating_positive != 0 || data.post_rating_negative != 0) ? data.post_rating : '−';
+			html += '</span><span class="rate-';
+			html += (data.user_rate > 0) ? 'plus-voted' : (data.user_can_plus ? 'plus' : 'no-plus');
+			html += '"></span>';
+			$box.html(html);
+		});
+	});
+});
+</script>
+<!-- ENDIF -->
+
 <!-- BEGIN postrow -->
 	<!-- IF postrow.S_FIRST_UNREAD --><a id="unread"></a><!-- ENDIF -->
-	<div id="p{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF --><!-- IF postrow.S_ONLINE and not postrow.S_IGNORE_POST --> online<!-- ENDIF -->">
+	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF --><!-- IF postrow.S_ONLINE and not postrow.S_IGNORE_POST --> online<!-- ENDIF -->">
 		<div class="inner"><span class="corners-top"><span></span></span>
 
 		<div class="postbody">
@@ -123,7 +152,7 @@
 			<!-- ELSE -->
 
 		<!-- IF not S_IS_BOT -->
-			<!-- IF postrow.U_EDIT or postrow.U_DELETE or postrow.U_REPORT or postrow.U_WARN or postrow.U_INFO or postrow.U_QUOTE -->
+			<!-- IF postrow.U_EDIT or postrow.U_DELETE or postrow.U_REPORT or postrow.U_WARN or postrow.U_INFO or postrow.U_QUOTE or postrow.POST_RATING_SHOW -->
 				<ul class="profile-icons">
 					<!-- IF postrow.U_INFO --><li class="info-icon"><a href="{postrow.U_INFO}" title="{L_INFORMATION}"><span>{L_INFORMATION}</span></a></li><!-- ENDIF -->
 					<!-- IF postrow.U_WARN --><li class="warn-icon"><a href="{postrow.U_WARN}" title="{L_WARN_USER}"><span>{L_WARN_USER}</span></a></li><!-- ENDIF -->
@@ -131,6 +160,7 @@
 					<!-- IF postrow.U_DELETE --><li class="delete-icon"><a href="{postrow.U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li><!-- ENDIF -->
 					<!-- IF postrow.U_EDIT --><li class="edit-icon"><a href="{postrow.U_EDIT}" title="{L_EDIT_POST}"><span>{L_EDIT_POST}</span></a></li><!-- ENDIF -->
 					<!-- IF postrow.U_QUOTE --><li class="quote-icon"><!-- IF not S_QUICK_REPLY --><a href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}"><span>{L_REPLY_WITH_QUOTE}</span></a><!-- ELSE --><a href="#postform" onclick="addquote({postrow.POST_ID},'{postrow.POSTER_QUOTE}'); insert_text('\r\n'); return false;" title="{L_QUOTE_TEXT}"><span>{L_QUOTE}</span></a><!-- ENDIF --></li><!-- ENDIF -->
+					<!-- IF postrow.POST_RATING_SHOW --><li class="rate-box"><span class="rate-<!-- IF postrow.USER_RATE < 0 -->minus-voted<!-- ELSEIF postrow.USER_CAN_MINUS -->minus<!-- ELSE -->no-minus<!-- ENDIF -->"></span><span class="rate-value rate-<!-- IF postrow.POST_RATING > 0 -->positive<!-- ELSEIF postrow.POST_RATING < 0 -->negative<!-- ELSE -->zero<!-- ENDIF -->" title="+{postrow.POST_RATING_POSITIVE} −{postrow.POST_RATING_NEGATIVE}"><!-- IF postrow.POST_RATING_NEGATIVE != 0 or postrow.POST_RATING_POSITIVE != 0 -->{postrow.POST_RATING}<!-- ELSE -->−<!-- ENDIF --></span><span class="rate-<!-- IF postrow.USER_RATE > 0 -->plus-voted<!-- ELSEIF postrow.USER_CAN_PLUS -->plus<!-- ELSE -->no-plus<!-- ENDIF -->"></span></li><!-- ENDIF -->
 				</ul>
 			<!-- ENDIF -->
 		<!-- ENDIF -->

@@ -662,6 +662,7 @@ $template->assign_vars(array(
 	'S_DISPLAY_POST_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 	'S_DISPLAY_REPLY_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 	'S_ENABLE_FEEDS_TOPIC'	=> ($config['feed_topic'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $topic_data['forum_options'])) ? true : false,
+	'S_RATE_ENABLED'		=> $config['rate_enabled'],
 
 	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id" . (($start) ? "&amp;start=$start" : ''),
 	'U_TOPIC'				=> "{$server_path}viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
@@ -1088,6 +1089,9 @@ while ($row = $db->sql_fetchrow($result))
 		'post_edit_user'	=> $row['post_edit_user'],
 		'post_edit_locked'	=> $row['post_edit_locked'],
 
+		'post_rating_negative'	=> $row['post_rating_negative'],
+		'post_rating_positive'	=> $row['post_rating_positive'],
+
 		// Make sure the icon actually exists
 		'icon_id'			=> (isset($icons[$row['icon_id']]['img'], $icons[$row['icon_id']]['height'], $icons[$row['icon_id']]['width'])) ? $row['icon_id'] : 0,
 		'post_attachment'	=> $row['post_attachment'],
@@ -1425,6 +1429,19 @@ $template->assign_vars(array(
 	'S_NUM_POSTS' => sizeof($post_list))
 );
 
+// Get user rates
+$sql = 'SELECT *
+	FROM ' . POST_RATES_TABLE . '
+	WHERE user_id = ' . $user->data['user_id'] . '
+		AND ' . $db->sql_in_set('post_id', $post_list);
+$result = $db->sql_query($sql);
+
+$user_rates = array();
+while ($row = $db->sql_fetchrow($result))
+{
+	$user_rates[$row['post_id']] = $row;
+}
+
 // Output the posts
 $first_unread = $post_unread = false;
 for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
@@ -1601,6 +1618,8 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		!$row['post_edit_locked']
 	)));
 
+	$user_rate = isset($user_rates[$row['post_id']]) ? $user_rates[$row['post_id']] : array('rate' => 0, 'rate_time' => 0);
+
 	//
 	$postrow = array(
 		'POST_AUTHOR_FULL'		=> ($poster_id != ANONYMOUS) ? $user_cache[$poster_id]['author_full'] : get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -1671,6 +1690,14 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_ID'			=> $row['post_id'],
 		'POST_NUMBER'		=> $i + $start + 1,
 		'POSTER_ID'			=> $poster_id,
+
+		'POST_RATING_SHOW'		=> $config['rate_enabled'] && ($config['rate_time'] > 0 ? $config['rate_time'] + $row['post_time'] > time() || $row['post_rating_negative'] != 0 && $row['post_rating_positive'] != 0 : true),
+		'POST_RATING'			=> ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
+		'POST_RATING_NEGATIVE'	=> $row['post_rating_negative'],
+		'POST_RATING_POSITIVE'	=> $row['post_rating_positive'],
+		'USER_RATE'				=> $user_rate['rate'],
+		'USER_CAN_MINUS'		=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && ($config['rate_time'] > 0 ? $config['rate_time'] + $row['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
+		'USER_CAN_PLUS'			=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && ($config['rate_time'] > 0 ? $config['rate_time'] + $row['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
 
 		'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
 		'S_POST_UNAPPROVED'	=> ($row['post_approved']) ? false : true,

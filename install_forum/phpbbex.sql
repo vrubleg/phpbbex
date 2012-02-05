@@ -81,3 +81,22 @@ UPDATE IGNORE phpbb_bbcodes SET bbcode_id=17 WHERE bbcode_id = 13;
 UPDATE IGNORE phpbb_bbcodes SET bbcode_id=18 WHERE bbcode_id = 13;
 UPDATE IGNORE phpbb_bbcodes SET bbcode_id=19 WHERE bbcode_id = 13;
 UPDATE IGNORE phpbb_bbcodes SET bbcode_id=20 WHERE bbcode_id = 13;
+
+-- Post rates
+CREATE TABLE phpbb_post_rates (
+  user_id mediumint(8) unsigned NOT NULL,
+  post_id mediumint(8) unsigned NOT NULL,
+  rate tinyint(4) NOT NULL DEFAULT '0',
+  rate_time int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (user_id,post_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+ALTER TABLE phpbb_posts
+	ADD COLUMN post_rating_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER post_reported,
+	ADD COLUMN post_rating_negative mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER post_rating_positive;
+
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive', '0');
