@@ -136,3 +136,22 @@ ul.profile-icons li.edit-icon	{ margin: 0 0 0 3px; }
 ul.profile-icons li.quote-icon	{ margin: 0 0 0 10px; }
 ul.profile-icons li.info-icon, ul.profile-icons li.report-icon	{ margin: 0 3px 0 0; }
 
+/* Rate post box
+---------------------------------------- */
+ul.profile-icons li.rate-box { margin: 3px 0 0 12px; }
+ul.profile-icons li.rate-box span { display: inline-block; height: 15px; background-image: url("{T_THEME_PATH}/images/rate_box.png"); background-repeat: no-repeat; vertical-align: bottom; }
+
+.rate-box .rate-minus		{ background-position: 0 0; width: 18px; cursor: pointer; }
+.rate-box .rate-minus:hover	{ background-position: 0 -15px; }
+.rate-box .rate-no-minus	{ background-position: 0 0; width: 3px; }
+.rate-box .rate-minus-voted	{ background-position: 0 -30px; width: 18px; }
+
+.rate-box .rate-plus		{ background-position: -74px 0; width: 18px; cursor: pointer; }
+.rate-box .rate-plus:hover	{ background-position: -74px -15px; }
+.rate-box .rate-no-plus		{ background-position: -89px 0; width: 3px; }
+.rate-box .rate-plus-voted	{ background-position: -74px -45px; width: 18px; }
+
+.rate-box .rate-value		{ background-position: -18px 0; padding: 0px 4px; font-weight: bold; min-width: 16px; text-align: center; }
+.rate-box .rate-positive	{ color: #00b300; }
+.rate-box .rate-negative	{ color: #d93300; }
+.rate-box .rate-zero		{ color: #666666; }

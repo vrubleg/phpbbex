@@ -230,7 +230,7 @@ div[class].topic-actions {
 	padding: 0;
 	line-height: 1.48em;
 	color: #333333;
-	width: 76%;
+	width: 77%;
 	float: left;
 	clear: both;
 }
@@ -820,6 +820,7 @@ dl.pmlist dd {
 	padding: 2px 8px 3px 26px;
 	font-size: 1.1em;
 	line-height: 1.1em;
+	clear: both;
 }
 
 .postbody div.warning, div.postbody div.ban {

@@ -304,6 +304,9 @@ define('GALLERY_ROLES_TABLE',			$table_prefix . 'gallery_roles');
 define('GALLERY_USERS_TABLE',			$table_prefix . 'gallery_users');
 define('GALLERY_WATCH_TABLE',			$table_prefix . 'gallery_watch');
 
-// Additional tables
+// phpBBex tables
 define('USER_CONFIRM_KEYS_TABLE',	$table_prefix . 'user_confirm_keys');
 define('USER_BROWSER_IDS_TABLE',	$table_prefix . 'user_browser_ids');
+define('POST_RATES_TABLE',			$table_prefix . 'post_rates');
+
+// Additional tables

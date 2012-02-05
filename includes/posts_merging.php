@@ -43,7 +43,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 	if (!request_var('do_not_merge', false))
 	{
 		$merge_interval = intval($config['merge_interval']) * 3600;
-		if (($current_time - $merge_post_data['topic_last_post_time']) < $merge_interval)
+		if (!$merge_post_data['post_edit_locked'] && ($current_time - $merge_post_data['topic_last_post_time']) < $merge_interval)
 		{
 			$merge = true;
 		}
