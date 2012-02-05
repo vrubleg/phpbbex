@@ -151,7 +151,7 @@ ul.profile-icons li.rate-box span { display: inline-block; height: 15px; backgro
 .rate-box .rate-no-plus		{ background-position: -89px 0; width: 3px; }
 .rate-box .rate-plus-voted	{ background-position: -74px -45px; width: 18px; }
 
-.rate-box .rate-value		{ background-position: -18px 0; padding: 0px 4px; font-weight: bold; min-width: 16px; text-align: center; }
+.rate-box .rate-value		{ background-position: -18px 0; padding: 0px 4px; font-weight: bold; line-height: 14px; min-width: 16px; text-align: center; }
 .rate-box .rate-positive	{ color: #00b300; }
 .rate-box .rate-negative	{ color: #d93300; }
 .rate-box .rate-zero		{ color: #666666; }
