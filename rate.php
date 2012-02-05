@@ -11,6 +11,10 @@ $auth->acl($user->data);
 $rate		= request_var('rate', 'none');
 $post_id	= request_var('post_id', 0);
 
+header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+header('Pragma: no-cache');
+header('Expires: Sat, 24 Oct 1987 07:00:00 GMT');
+
 try
 {
 	if (!$post_id) throw new exception('post_id is required');
@@ -30,6 +34,7 @@ try
 		WHERE post_id = ' . $post_id;
 	$result = $db->sql_query($sql);
 	$post = $db->sql_fetchrow($result);
+	if (!$post) throw new exception('post not exists');
 
 	$can = false;
 	switch ($rate)
