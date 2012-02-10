@@ -1128,6 +1128,13 @@ while ($row = $db->sql_fetchrow($result))
 				'topics'		=> '',
 				'from'			=> '',
 
+				'rating'			=> 0,
+				'rating_positive'	=> 0,
+				'rating_negative'	=> 0,
+				'rated'				=> 0,
+				'rated_positive'	=> 0,
+				'rated_negative'	=> 0,
+
 				'sig'					=> '',
 				'sig_bbcode_uid'		=> '',
 				'sig_bbcode_bitfield'	=> '',
@@ -1181,6 +1188,13 @@ while ($row = $db->sql_fetchrow($result))
 				'topics'		=> $row['user_topics'],
 				'warnings'		=> (isset($row['user_warnings'])) ? $row['user_warnings'] : 0,
 				'from'			=> (!empty($row['user_from'])) ? $row['user_from'] : '',
+
+				'rating'			=> ($config['rate_no_positive'] ? 0 : $row['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rating_negative']),
+				'rating_positive'	=> $row['user_rating_positive'],
+				'rating_negative'	=> $row['user_rating_negative'],
+				'rated'				=> ($config['rate_no_positive'] ? 0 : $row['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rated_negative']),
+				'rated_positive'	=> $row['user_rated_positive'],
+				'rated_negative'	=> $row['user_rated_negative'],
 
 				'sig'					=> $user_sig,
 				'sig_bbcode_uid'		=> (!empty($row['user_sig_bbcode_uid'])) ? $row['user_sig_bbcode_uid'] : '',
@@ -1637,6 +1651,14 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POSTER_AVATAR'		=> $user_cache[$poster_id]['avatar'],
 		'POSTER_WARNINGS'	=> $user_cache[$poster_id]['warnings'],
 		'POSTER_AGE'		=> $user_cache[$poster_id]['age'],
+
+		'POSTER_RATING'				=> $user_cache[$poster_id]['rating'],
+		'POSTER_RATING_POSITIVE'	=> $user_cache[$poster_id]['rating_positive'],
+		'POSTER_RATING_NEGATIVE'	=> $user_cache[$poster_id]['rating_negative'],
+		'POSTER_RATED'				=> $user_cache[$poster_id]['rated'],
+		'POSTER_RATED_POSITIVE'		=> $user_cache[$poster_id]['rated_positive'],
+		'POSTER_RATED_NEGATIVE'		=> $user_cache[$poster_id]['rated_negative'],
+
 		// This value will be used as a parameter for JS insert_text() function, so we use addslashes to handle "special" usernames properly ;)
 		'POSTER_QUOTE'		=> addslashes(get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username'])),
 

@@ -90,11 +90,18 @@ CREATE TABLE phpbb_post_rates (
 	rate_time int(11) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (user_id,post_id),
 	KEY post_id (post_id)
+	KEY user_id (user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 ALTER TABLE phpbb_posts
 	ADD COLUMN post_rating_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER post_reported,
 	ADD COLUMN post_rating_negative mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER post_rating_positive;
+
+ALTER TABLE phpbb_users
+	ADD COLUMN user_rating_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER user_last_search,
+	ADD COLUMN user_rating_negative mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER user_rating_positive,
+	ADD COLUMN user_rated_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER user_rating_negative,
+	ADD COLUMN user_rated_negative mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER user_rated_positive;
 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
