@@ -47,21 +47,30 @@ class autoloader
 		autoloader::$registered = false;
 	}
 
+	static function resolve_path($path, $parts)
+	{
+		$last = end($parts);
+		while (count($parts) > 0 && is_dir($path.$parts[0]))
+		{
+			$path .= array_shift($parts) . '/';
+		}
+		$filename = (count($parts) == 0) ? $last : implode('_', $parts);
+		return $path . $filename . '.php';
+	}
+
 	static function load($class)
 	{
 		if (class_exists($class, false)) return true;
-		$parts = explode('_', $class);
+		$parts = explode('_', strtolower($class));
 		// Start searching without prefix
 		$prefix = '';
 		while(count($parts) > 0)
 		{
 			if(isset(autoloader::$pathes[$prefix]))
 			{
-				$filename = implode('_', $parts) . '.php';
-				$filename = strtolower($filename);
 				foreach (autoloader::$pathes[$prefix] as $path)
 				{
-					$file = $path . $filename;
+					$file = autoloader::resolve_path($path, $parts);
 					if (file_exists($file))
 					{
 						include_once($file);
@@ -73,7 +82,6 @@ class autoloader
 			$prefix = empty($prefix)
 				? array_shift($parts)
 				: ($prefix.'_'.array_shift($parts));
-			$prefix = strtolower($prefix);
 		}
 		return false;
 	}
