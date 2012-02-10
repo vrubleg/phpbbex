@@ -104,11 +104,6 @@ $template	= new template();
 $cache		= new cache();
 $db			= new $sql_db();
 
-// Setup class loader for the gallery
-require($phpbb_root_path . 'includes/gallery/class_loader.' . $phpEx);
-$gallery_class_loader = new phpbb_gallery_class_loader($phpbb_root_path, '.' . $phpEx, $cache);
-$gallery_class_loader->register();
-
 // Connect to DB
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, defined('PHPBB_DB_NEW_LINK') ? PHPBB_DB_NEW_LINK : false);
 

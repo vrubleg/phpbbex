@@ -15,7 +15,12 @@ if (!defined('IN_PHPBB'))
 }
 
 // Check PHP version
-if(version_compare(PHP_VERSION, '5.2.0', '<')) die('PHP 5.2 is required');
+if(version_compare(PHP_VERSION, '5.2.2', '<')) die('PHP 5.2.3+ is required');
+
+// Configure autoloader
+require(dirname(__FILE__).'/../classes/autoloader.php');
+autoloader::init(dirname(__FILE__).'/../classes/');
+autoloader::add_path(dirname(__FILE__).'/', 'phpbb');
 
 if (!defined('E_DEPRECATED'))
 {

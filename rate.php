@@ -10,10 +10,13 @@ $auth->acl($user->data);
 
 $rate		= request_var('rate', 'none');
 $post_id	= request_var('post_id', 0);
+$user_id	= $user->data['user_id'];
 
-header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-header('Pragma: no-cache');
-header('Expires: Sat, 24 Oct 1987 07:00:00 GMT');
+response::init(array(
+	'type'   => 'application/json',
+	'gzip'   => true,
+	'expire' => false,
+));
 
 try
 {
@@ -22,7 +25,7 @@ try
 	// Get current user rate
 	$sql = 'SELECT *
 		FROM ' . POST_RATES_TABLE . '
-		WHERE user_id = ' . $user->data['user_id'] . '
+		WHERE user_id = ' . $user_id . '
 			AND post_id = ' . $post_id;
 	$result = $db->sql_query($sql);
 	$user_rate = $db->sql_fetchrow($result);
@@ -40,12 +43,12 @@ try
 	switch ($rate)
 	{
 		case 'minus':
-			$can = $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true);
+			$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true);
 			if ($can) $user_rate['rate']--;
 			if ($user_rate['rate'] < -1) $user_rate['rate'] = -1;
 		break;
 		case 'plus':
-			$can = $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true);
+			$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true);
 			if ($can) $user_rate['rate']++;
 			if ($user_rate['rate'] > 1) $user_rate['rate'] = 1;
 		break;
@@ -58,7 +61,7 @@ try
 			$user_rate['rate_time'] = 0;
 			$sql = 'DELETE
 				FROM ' . POST_RATES_TABLE . '
-				WHERE user_id = ' . $user->data['user_id'] . '
+				WHERE user_id = ' . $user_id . '
 					AND post_id = ' . $post_id;
 		}
 		else
@@ -68,51 +71,113 @@ try
 				INTO ' . POST_RATES_TABLE . '
 				SET rate = ' . $user_rate['rate'] . ',
 					rate_time = ' . time() . ',
-					user_id = ' . $user->data['user_id'] . ',
+					user_id = ' . $user_id . ',
 					post_id = ' . $post_id;
 		}
 		$db->sql_query($sql);
 	}
 
+	// Update post rating
 	$sql = 'SELECT rate, COUNT(*) as count
 		FROM ' . POST_RATES_TABLE . '
 		WHERE post_id = ' . $post_id . '
 		GROUP BY rate';
 	$result = $db->sql_query($sql);
 
-	$negative = 0;
-	$positive = 0;
+	$post_rating_negative = 0;
+	$post_rating_positive = 0;
 	while ($row = $db->sql_fetchrow($result))
 	{
 		if ($row['rate'] < 0)
 		{
-			$negative += abs($row['rate'] * $row['count']);
+			$post_rating_negative += abs($row['rate'] * $row['count']);
 		}
 		else
 		{
-			$positive += abs($row['rate'] * $row['count']);
+			$post_rating_positive += abs($row['rate'] * $row['count']);
 		}
 	}
 
-		$sql = 'UPDATE ' . POSTS_TABLE . '
-			SET post_rating_positive = ' . $positive . ',
-				post_rating_negative = ' . $negative . '
-			WHERE post_id = ' . $post_id;
-		$db->sql_query($sql);
+	$sql = 'UPDATE ' . POSTS_TABLE . '
+		SET post_rating_positive = ' . $post_rating_positive . ',
+			post_rating_negative = ' . $post_rating_negative . '
+		WHERE post_id = ' . $post_id;
+	$db->sql_query($sql);
+
+	// Update poster rating
+	$sql = 'SELECT rate, COUNT(*) as count
+		FROM ' . POST_RATES_TABLE . ' r
+		LEFT JOIN ' . POSTS_TABLE . ' p ON r.post_id = p.post_id
+		WHERE p.poster_id = ' . $post['poster_id'] . '
+		GROUP BY rate';
+	$result = $db->sql_query($sql);
+
+	$poster_rating_negative = 0;
+	$poster_rating_positive = 0;
+	while ($row = $db->sql_fetchrow($result))
+	{
+		if ($row['rate'] < 0)
+		{
+			$poster_rating_negative += abs($row['rate'] * $row['count']);
+		}
+		else
+		{
+			$poster_rating_positive += abs($row['rate'] * $row['count']);
+		}
+	}
+
+	$sql = 'UPDATE ' . USERS_TABLE . '
+		SET user_rating_positive = ' . $poster_rating_positive . ',
+			user_rating_negative = ' . $poster_rating_negative . '
+		WHERE user_id = ' . $post['poster_id'];
+	$db->sql_query($sql);
+	
+	// Update rater info
+	$sql = 'SELECT rate, COUNT(*) as count
+		FROM ' . POST_RATES_TABLE . '
+		WHERE user_id = ' . $user_id . '
+		GROUP BY rate';
+	$result = $db->sql_query($sql);
+
+	$user_rated_negative = 0;
+	$user_rated_positive = 0;
+	while ($row = $db->sql_fetchrow($result))
+	{
+		if ($row['rate'] < 0)
+		{
+			$user_rated_negative += abs($row['rate'] * $row['count']);
+		}
+		else
+		{
+			$user_rated_positive += abs($row['rate'] * $row['count']);
+		}
+	}
+
+	$sql = 'UPDATE ' . USERS_TABLE . '
+		SET user_rated_positive = ' . $user_rated_positive . ',
+			user_rated_negative = ' . $user_rated_negative . '
+		WHERE user_id = ' . $user_id;
+	$db->sql_query($sql);
 
 	$result = array(
 		'status'				=> 'ok',
-		'user_can_minus'		=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
-		'user_can_plus'			=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
+		'user_can_minus'		=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
+		'user_can_plus'			=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
 		'user_rate'				=> $user_rate['rate'],
-		'post_rating'			=> ($config['rate_no_positive'] ? 0 : $positive) - ($config['rate_no_negative'] ? 0 : $negative),
-		'post_rating_negative'	=> $negative,
-		'post_rating_positive'	=> $positive,
+		'post_rating'			=> ($config['rate_no_positive'] ? 0 : $post_rating_positive) - ($config['rate_no_negative'] ? 0 : $post_rating_negative),
+		'post_rating_negative'	=> $post_rating_negative,
+		'post_rating_positive'	=> $post_rating_positive,
+		'poster_rating'			=> ($config['rate_no_positive'] ? 0 : $poster_rating_positive) - ($config['rate_no_negative'] ? 0 : $poster_rating_negative),
+		'poster_rating_negative'=> $poster_rating_negative,
+		'poster_rating_positive'=> $poster_rating_positive,
+		'user_rated'			=> ($config['rate_no_positive'] ? 0 : $user_rated_positive) - ($config['rate_no_negative'] ? 0 : $user_rated_negative),
+		'user_rated_negative'	=> $user_rated_negative,
+		'user_rated_positive'	=> $user_rated_positive,
 	);
 
-	echo json_encode($result);
+	echo json::encode($result);
 }
 catch (exception $e)
 {
-	echo json_encode(array('error' => $e->getMessage(), 'code' => $e->getCode()));
+	echo json::encode(array('error' => $e->getMessage(), 'code' => $e->getCode()));
 }
