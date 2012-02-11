@@ -234,6 +234,11 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('print_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('queue_interval', '60');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ranks_path', 'images/ranks');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('referer_validation', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('script_path', '');
