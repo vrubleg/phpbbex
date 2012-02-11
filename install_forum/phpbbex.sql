@@ -89,7 +89,7 @@ CREATE TABLE phpbb_post_rates (
 	rate tinyint(4) NOT NULL DEFAULT '0',
 	rate_time int(11) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (user_id,post_id),
-	KEY post_id (post_id)
+	KEY post_id (post_id),
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
