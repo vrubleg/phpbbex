@@ -2185,7 +2185,7 @@ function on_page($num_items, $per_page, $start)
 */
 function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 {
-	global $_SID, $_EXTRA_URL, $phpbb_hook;
+	global $_SID, $_EXTRA_URL, $phpbb_hook, $user;
 
 	if ($params === '' || (is_array($params) && empty($params)))
 	{
@@ -2231,7 +2231,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Assign sid if session id is not specified
-	if ($session_id === false)
+	if ($session_id === false && $user->data['user_id'] != ANONYMOUS && !$user->data['is_bot'])
 	{
 		$session_id = $_SID;
 	}
