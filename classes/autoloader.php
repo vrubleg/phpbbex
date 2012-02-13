@@ -60,6 +60,7 @@ class autoloader
 
 	static function load($class)
 	{
+		if (!preg_match("/^[a-z0-9_]+$/i", $class)) return false;
 		if (class_exists($class, false)) return true;
 		$parts = explode('_', strtolower($class));
 		// Start searching without prefix
