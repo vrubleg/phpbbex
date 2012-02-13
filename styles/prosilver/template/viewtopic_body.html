@@ -118,10 +118,10 @@ jQuery(function($)
 {
 	$('li.rate-box').on('click', '.rate-minus, .rate-plus', function()
 	{
-		var rate = $(this).hasClass('rate-minus') ? 'minus' : 'plus';
+		var action = $(this).hasClass('rate-minus') ? 'minus' : 'plus';
 		var post_id = $(this).parents('.post').data('id');
 		var $box = $(this).parents('.rate-box');
-		$.getJSON('rate.php', {'rate': rate, 'post_id': post_id}, function(data)
+		$.getJSON('ajax.php', {'module': 'rating', 'action': action, 'post_id': post_id}, function(data)
 		{
 			if (data.status != 'ok') return;
 			var html = '';

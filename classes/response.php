@@ -78,7 +78,7 @@ class response
 
 		if ($type)
 		{
-			self::header('Content-Type', $type.($charset ? "; charset={$charset}" : ''));
+			self::type($type, $charset);
 		}
 
 		if ($gzip && @extension_loaded('zlib') && !headers_sent() && ob_get_level() <= 1 && ob_get_length() == 0)
@@ -121,6 +121,14 @@ class response
 	{
 		header($_SERVER["SERVER_PROTOCOL"] . ' ' . $status . ' ' . self::$_messages[$status]);
 		header('Status: ' . $status . ' ' . self::$_messages[$status]);
+	}
+
+	/**
+	 * Set Content-Type header
+	 */
+	static function type($mime, $charset = 'utf-8')
+	{
+		self::header('Content-Type', $mime.($charset ? "; charset={$charset}" : ''));
 	}
 
 	/**
