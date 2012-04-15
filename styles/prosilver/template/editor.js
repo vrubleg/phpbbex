@@ -133,6 +133,13 @@ function insert_text(text, spaces, popup)
 	if (!popup) 
 	{
 		textarea = document.forms[form_name].elements[text_name];
+		var textarea_pos = parseInt(jQuery(textarea).position().top);
+		var visible_from = jQuery(document).scrollTop();
+		var visible_to = visible_from + jQuery(window).height();
+		if (textarea_pos < visible_from || textarea_pos > (visible_to - 20))
+		{
+			jQuery(document).scrollTop(textarea_pos);
+		}
 	} 
 	else 
 	{
@@ -248,6 +255,7 @@ function addquote(post_id, username, l_wrote)
 		}
 	}
 
+	theSelection = jQuery.trim(theSelection);
 	if (theSelection)
 	{
 		if (bbcodeEnabled)
