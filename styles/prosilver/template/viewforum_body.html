@@ -2,6 +2,7 @@
 <h2><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h2>
 <!-- IF not S_IS_BOT -->
 <ul class="header-icons">
+	<!-- IF STYLE_SHOW_SOCIAL_BUTTONS -->
 	<script type="text/javascript">
 	var url = encodeURIComponent(document.location.href);
 	var title = encodeURIComponent($('title').text());
@@ -10,8 +11,11 @@
 	document.write('<li><a target="_blank" href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
 	document.write('<li><a target="_blank" href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
 	</script>
-	<!-- IF S_WATCH_FORUM_LINK -->
+	<!-- ENDIF -->
+	<!-- IF STYLE_SHOW_SOCIAL_BUTTONS and S_WATCH_FORUM_LINK -->
 	<li class="icons-divider"></li>
+	<!-- ENDIF -->
+	<!-- IF S_WATCH_FORUM_LINK -->
 	<li><a href="{S_WATCH_FORUM_LINK}" title="{S_WATCH_FORUM_TITLE}" <!-- IF S_WATCHING_FORUM -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{S_WATCH_FORUM_TITLE}</a></li>
 	<!-- ENDIF -->
 </ul>

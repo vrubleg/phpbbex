@@ -106,6 +106,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('email_package_size
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_confirm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_pm_icons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_post_confirm', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_http_auth', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_limit_post', '15');
@@ -277,6 +278,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_expire_da
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_gc', '14400');
 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
 

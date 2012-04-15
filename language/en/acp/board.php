@@ -66,6 +66,7 @@ $lang = array_merge($lang, array(
 	'SITE_KEYWORDS'					=> 'Site keywords',
 	'STYLE_OPTIONS'						=> 'Style options',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
 	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
 	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Google Analytics ID',
 	'COPYRIGHT_NOTICE'				=> 'Copyright notice',

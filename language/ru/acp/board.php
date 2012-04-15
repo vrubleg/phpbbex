@@ -66,6 +66,7 @@ $lang = array_merge($lang, array(
 	'SITE_KEYWORDS'					=> 'Ключевые слова конференции',
 	'STYLE_OPTIONS'						=> 'Настройки стиля',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Отображать название и описание сайта в шапке',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
 	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Выводить счётчик LiveInternet',
 	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Идентификатор Google Analytics',
 	'COPYRIGHT_NOTICE'				=> 'Уведомление об авторских правах',
