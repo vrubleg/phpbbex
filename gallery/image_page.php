@@ -512,6 +512,7 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 				'U_MSN'			=> $user_cache[$user_id]['msn'],
 				'U_YIM'			=> $user_cache[$user_id]['yim'],
 				'U_JABBER'		=> $user_cache[$user_id]['jabber'],
+				'U_SKYPE'		=> $user_cache[$user_id]['skype'],
 
 				'U_GALLERY'			=> $user_cache[$user_id]['gallery_album'],
 				'GALLERY_IMAGES'	=> $user_cache[$user_id]['gallery_images'],
@@ -593,6 +594,7 @@ if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_us
 		'U_POSTER_MSN'			=> $user_cache[$user_id]['msn'],
 		'U_POSTER_YIM'			=> $user_cache[$user_id]['yim'],
 		'U_POSTER_JABBER'		=> $user_cache[$user_id]['jabber'],
+		'U_POSTER_SKYPE'		=> $user_cache[$user_id]['skype'],
 
 		'U_POSTER_GALLERY'			=> $user_cache[$user_id]['gallery_album'],
 		'POSTER_GALLERY_IMAGES'		=> $user_cache[$user_id]['gallery_images'],
@@ -617,6 +619,7 @@ $template->assign_vars(array(
 	'MSN_IMG' 			=> $user->img('icon_contact_msnm', 'MSNM'),
 	'YIM_IMG' 			=> $user->img('icon_contact_yahoo', 'YIM'),
 	'JABBER_IMG'		=> $user->img('icon_contact_jabber', 'JABBER') ,
+	'SKYPE_IMG'			=> $user->img('icon_contact_skype', 'SKYPE') ,
 	'GALLERY_IMG'		=> $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
 ));
 
