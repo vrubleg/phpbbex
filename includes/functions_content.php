@@ -648,6 +648,8 @@ function make_clickable_callback($type, $whitespace, $url, $relative_url, $class
 */
 function make_clickable($text, $server_url = false, $class = 'postlink')
 {
+	global $config;
+
 	if ($server_url === false)
 	{
 		$server_url = generate_board_url();
@@ -660,7 +662,7 @@ function make_clickable($text, $server_url = false, $class = 'postlink')
 	if (!is_array($magic_url_match) || $static_class != $class)
 	{
 		$static_class = $class;
-		$class = ($static_class) ? ' class="' . $static_class . '"' : '';
+		$class = ($static_class ? ' class="' . $static_class . '"' : '') . (empty($config['external_links_nofollow']) ? '' : ' rel="nofollow"');
 		$local_class = ($static_class) ? ' class="' . $static_class . '-local"' : '';
 
 		$magic_url_match = $magic_url_replace = array();

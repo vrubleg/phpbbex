@@ -2,6 +2,7 @@
 <h2><a href="{U_VIEW_TOPIC}">{TOPIC_TITLE}</a></h2>
 <!-- IF not S_IS_BOT -->
 <ul class="header-icons">
+	<!-- IF STYLE_SHOW_SOCIAL_BUTTONS -->
 	<script type="text/javascript">
 	var url = encodeURIComponent(document.location.href);
 	var title = encodeURIComponent($('title').text());
@@ -11,6 +12,7 @@
 	document.write('<li><a target="_blank" href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
 	</script>
 	<li class="icons-divider"></li>
+	<!-- ENDIF -->
 	<!-- IF U_PRINT_TOPIC --><li><a href="{U_PRINT_TOPIC}" title="{L_PRINT_TOPIC}" class="icon-print">{L_PRINT_TOPIC}</a></li><!-- ENDIF -->
 	<!-- IF U_EMAIL_TOPIC --><li><a href="{U_EMAIL_TOPIC}" title="{L_EMAIL_TOPIC}" class="icon-sendemail">{L_EMAIL_TOPIC}</a></li><!-- ENDIF -->
 	<!-- IF U_WATCH_TOPIC --><li><a href="{U_WATCH_TOPIC}" title="{L_WATCH_TOPIC}" <!-- IF S_WATCHING_TOPIC -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{L_WATCH_TOPIC}</a></li><!-- ENDIF -->
@@ -248,7 +250,7 @@ jQuery(function($)
 						<!-- IF postrow.U_EMAIL --><li class="email-icon"><a href="{postrow.U_EMAIL}" title="{L_EMAIL}"><span>{L_EMAIL}</span></a></li><!-- ENDIF -->
 						<!-- IF postrow.U_JABBER --><li class="jabber-icon"><a href="{postrow.U_JABBER}" title="{L_JABBER}"><span>{L_JABBER}</span></a></li><!-- ENDIF -->
 						<!-- IF postrow.U_SKYPE --><li class="skype-icon"><a href="{postrow.U_SKYPE}" title="{L_SKYPE}"><span>{L_SKYPE}</span></a></li><!-- ENDIF -->
-						<!-- IF postrow.U_WWW --><li class="web-icon"><a href="{postrow.U_WWW}" title="{L_VISIT_WEBSITE}: {postrow.U_WWW}"><span>{L_WEBSITE}</span></a></li><!-- ENDIF -->
+						<!-- IF postrow.U_WWW --><li class="web-icon"><a href="{postrow.U_WWW}" title="{L_VISIT_WEBSITE}: {postrow.U_WWW}"<!-- IF EXTERNAL_LINKS_NOFOLLOW --> rel="nofollow"<!-- ENDIF -->><span>{L_WEBSITE}</span></a></li><!-- ENDIF -->
 					</ul>
 				</dd>
 			<!-- ENDIF -->
