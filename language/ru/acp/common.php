@@ -802,6 +802,10 @@ $lang = array_merge($lang, array(
 	'LINK_ADDED'			=> 'Ссылка успешно добавлена.',
 	'LINK_UPDATED'			=> 'Выбранная ссылка успешно обновлена.',
 	'LINK_REMOVED'			=> 'Выбранная ссылка успешно удалена.',
+	'LINK_NOFOLLOW'			=> 'No follow',
+	'LINK_NOFOLLOW_EXPLAIN'	=> 'Для поисковых роботов',
+	'LINK_NEWWINDOW'		=> 'Новое окно',
+	'LINK_NEWWINDOW_EXPLAIN'=> 'Открывать в новом окне',
 ));
 
 // Custom BBCode Sorting

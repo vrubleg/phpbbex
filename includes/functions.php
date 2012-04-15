@@ -4536,8 +4536,10 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	{
 		$row = explode("\t", $row);
 		$template->assign_block_vars('outlinks', array(
-			'TITLE' => $row[1],
-			'URL' => $row[2],
+			'TITLE'		=> !empty($row[0]) ? $row[0] : '',
+			'URL'		=> !empty($row[1]) ? $row[1] : '',
+			'NOFOLLOW'	=> !empty($row[2]) && (intval($row[2]) & 0x1),
+			'NEWWINDOW'	=> !empty($row[2]) && (intval($row[2]) & 0x2),
 		));
 	}
 

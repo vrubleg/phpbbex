@@ -13,8 +13,18 @@
 			<dd><input id="title" type="text" name="title" value="{LINK_TITLE}" maxlength="255" /></dd>
 		</dl>
 		<dl>
-			<dt><label for="link">{L_LINK}</label></dt>
-			<dd><input id="link" type="text" name="link" value="{LINK_URL}" maxlength="255" /></dd>
+			<dt><label for="url">{L_LINK}</label></dt>
+			<dd><input id="url" type="text" name="url" value="{LINK_URL}" maxlength="255" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="newwindow">{L_LINK_NEWWINDOW}</label><br /><span>{L_LINK_NEWWINDOW_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="newwindow" value="1"<!-- IF LINK_NEWWINDOW --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="newwindow" value="0"<!-- IF not LINK_NEWWINDOW --> checked="checked"<!-- ENDIF --> id="newwindow" /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="nofollow">{L_LINK_NOFOLLOW}</label><br /><span>{L_LINK_NOFOLLOW_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="nofollow" value="1"<!-- IF LINK_NOFOLLOW --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+				<label><input type="radio" class="radio" name="nofollow" value="0"<!-- IF not LINK_NOFOLLOW --> checked="checked"<!-- ENDIF --> id="nofollow" /> {L_NO}</label></dd>
 		</dl>
 		{S_HIDDEN_FIELDS}
 		<p class="submit-buttons">
@@ -37,14 +47,18 @@
 	<tr>
 		<th>{L_TITLE}</th>
 		<th>{L_LINK}</th>
-		<th>{L_OPTIONS}</th>
+		<th style="width: 7%;">{L_LINK_NEWWINDOW}</th>
+		<th style="width: 7%;">{L_LINK_NOFOLLOW}</th>
+		<th style="width: 1%;">{L_OPTIONS}</th>
 	</tr>
 	</thead>
 	<tbody>
 	<!-- BEGIN items -->
 		<!-- IF items.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
-		<td style="width: 50%; text-align: center;">{items.TITLE}</td>
-		<td style="width: 50%; text-align: center;">{items.LINK}</td>
+		<td style="text-align: center;">{items.TITLE}</td>
+		<td style="text-align: center;">{items.URL}</td>
+		<td style="text-align: center;"><!-- IF items.NEWWINDOW -->{L_YES}<!-- ELSE -->{L_NO}<!-- ENDIF --></td>
+		<td style="text-align: center;"><!-- IF items.NOFOLLOW -->{L_YES}<!-- ELSE -->{L_NO}<!-- ENDIF --></td>
 		<td style="text-align: right; white-space: nowrap;">
 			<!-- IF items.S_FIRST_ROW -->{ICON_MOVE_UP_DISABLED}<!-- ELSE --><a href="{items.U_MOVE_UP}">{ICON_MOVE_UP}</a><!-- ENDIF -->&nbsp;
 			<!-- IF items.S_LAST_ROW -->{ICON_MOVE_DOWN_DISABLED}<!-- ELSE --><a href="{items.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a><!-- ENDIF -->
