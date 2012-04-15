@@ -143,6 +143,45 @@ jQuery(function($)
 </script>
 <!-- ENDIF -->
 
+<!-- IF S_QUICK_REPLY -->
+<script type="text/javascript">
+jQuery(function($)
+{
+	$('div.postbody').on('mouseup', function(event)
+	{
+		event.stopPropagation();
+		var post = this;
+		setTimeout(function()
+		{
+			$('li.no-full-quote').hide();
+			var sel = '';
+			if (window.getSelection && !is_ie)
+			{
+				sel = window.getSelection().toString();
+			}
+			else if (document.getSelection && !is_ie)
+			{
+				sel = document.getSelection();
+			}
+			else if (document.selection)
+			{
+				sel = document.selection.createRange().text;
+			}
+			sel = (sel == '' || typeof sel == 'undefined' || sel == null) ? false : true;
+			if (sel && event.which <= 1)
+			{
+				$('li.no-full-quote', post).show();
+			}
+		}, 50);
+	});
+	$('body').on('mouseup', function(event)
+	{
+		$('li.no-full-quote').hide();
+	});
+});
+</script>
+<!-- ENDIF -->
+
 <!-- BEGIN postrow -->
 	<!-- IF postrow.S_FIRST_UNREAD --><a id="unread"></a><!-- ENDIF -->
 	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF --><!-- IF postrow.S_ONLINE and not postrow.S_IGNORE_POST --> online<!-- ENDIF -->">
@@ -161,7 +200,7 @@ jQuery(function($)
 					<!-- IF postrow.U_REPORT and not postrow.U_WARN --><li class="report-icon"><a href="{postrow.U_REPORT}" title="{L_REPORT_POST}"><span>{L_REPORT_POST}</span></a></li><!-- ENDIF -->
 					<!-- IF postrow.U_DELETE --><li class="delete-icon"><a href="{postrow.U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li><!-- ENDIF -->
 					<!-- IF postrow.U_EDIT --><li class="edit-icon"><a href="{postrow.U_EDIT}" title="{L_EDIT_POST}"><span>{L_EDIT_POST}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_QUOTE --><li class="quote-icon"><!-- IF not S_QUICK_REPLY --><a href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}"><span>{L_REPLY_WITH_QUOTE}</span></a><!-- ELSE --><a href="#postform" onclick="addquote({postrow.POST_ID},'{postrow.POSTER_QUOTE}'); insert_text('\r\n'); return false;" title="{L_QUOTE_TEXT}"><span>{L_QUOTE}</span></a><!-- ENDIF --></li><!-- ENDIF -->
+					<!-- IF postrow.U_QUOTE --><li <!-- IF not S_QUICK_REPLY or postrow.DECODED_MESSAGE -->class="quote-icon"<!-- ELSE -->class="quote-icon no-full-quote" style="display: none;"<!-- ENDIF -->><!-- IF not S_QUICK_REPLY --><a href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}"><span>{L_REPLY_WITH_QUOTE}</span></a><!-- ELSE --><a href="#postform" onclick="addquote({postrow.POST_ID},'{postrow.POSTER_QUOTE}'); insert_text('\r\n'); return false;" title="{L_QUOTE_TEXT}"><span>{L_QUOTE}</span></a><!-- ENDIF --></li><!-- ENDIF -->
 					<!-- IF postrow.POST_RATING_SHOW --><li class="rate-box"><span class="rate-<!-- IF postrow.USER_RATE < 0 -->minus-voted<!-- ELSEIF postrow.USER_CAN_MINUS -->minus<!-- ELSE -->no-minus<!-- ENDIF -->"></span><span class="rate-value rate-<!-- IF postrow.POST_RATING > 0 -->positive<!-- ELSEIF postrow.POST_RATING < 0 -->negative<!-- ELSE -->zero<!-- ENDIF -->" title="+{postrow.POST_RATING_POSITIVE} −{postrow.POST_RATING_NEGATIVE}"><!-- IF postrow.POST_RATING_NEGATIVE != 0 or postrow.POST_RATING_POSITIVE != 0 -->{postrow.POST_RATING}<!-- ELSE -->−<!-- ENDIF --></span><span class="rate-<!-- IF postrow.USER_RATE > 0 -->plus-voted<!-- ELSEIF postrow.USER_CAN_PLUS -->plus<!-- ELSE -->no-plus<!-- ENDIF -->"></span></li><!-- ENDIF -->
 				</ul>
 			<!-- ENDIF -->
