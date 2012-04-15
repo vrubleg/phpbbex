@@ -154,6 +154,7 @@ jQuery(function($)
 		setTimeout(function()
 		{
 			$('li.no-full-quote').hide();
+
 			var sel = '';
 			if (window.getSelection && !is_ie)
 			{
@@ -167,8 +168,8 @@ jQuery(function($)
 			{
 				sel = document.selection.createRange().text;
 			}
-			sel = (sel == '' || typeof sel == 'undefined' || sel == null) ? false : true;
-			if (sel && event.which <= 1)
+
+			if (jQuery.trim(sel) && event.which <= 1)
 			{
 				$('li.no-full-quote', post).show();
 			}
