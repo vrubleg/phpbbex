@@ -803,6 +803,10 @@ $lang = array_merge($lang, array(
 	'LINK_ADDED'			=> 'The link has been successfully added.',
 	'LINK_UPDATED'			=> 'The selected link has been successfully updated.',
 	'LINK_REMOVED'			=> 'The selected link has been successfully removed.',
+	'LINK_NOFOLLOW'			=> 'No follow',
+	'LINK_NOFOLLOW_EXPLAIN'	=> 'For search robots',
+	'LINK_NEWWINDOW'		=> 'New window',
+	'LINK_NEWWINDOW_EXPLAIN'=> 'Open in new window',
 ));
 
 // Custom BBCode Sorting

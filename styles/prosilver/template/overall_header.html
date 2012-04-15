@@ -95,7 +95,7 @@
 		<!-- IF S_OUTLINKS -->
 		<div id="top-links"><ul>
 		<!-- BEGIN outlinks -->
-			<li<!-- IF outlinks.S_LAST_ROW --> style="border-right: 0;"<!-- ENDIF -->><a href="{outlinks.URL}">{outlinks.TITLE}</a></li>
+			<li<!-- IF outlinks.S_LAST_ROW --> style="border-right: 0;"<!-- ENDIF -->><a href="{outlinks.URL}"<!-- IF outlinks.NEWWINDOW --> target="_blank"<!-- ENDIF --><!-- IF outlinks.NOFOLLOW --> rel="nofollow"<!-- ENDIF -->>{outlinks.TITLE}</a></li>
 		<!-- END outlinks -->
 		</ul></div>
 		<!-- ENDIF -->
