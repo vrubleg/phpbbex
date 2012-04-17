@@ -1,3 +1,4 @@
+-- General scheme updates
 CREATE TABLE phpbb_user_confirm_keys (
 	confirm_key varchar(10) NOT NULL,
 	user_id mediumint(8) NOT NULL,
@@ -47,6 +48,7 @@ ALTER TABLE phpbb_warnings
 	ADD INDEX user_id (user_id),
 	ADD INDEX post_id (post_id);
 
+-- New phpBBex options
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
@@ -68,11 +70,19 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
 
+-- New phpBBex ACL rights
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
 
+-- Reset options for all users (enable quick reply, etc)
 UPDATE phpbb_users SET user_options = 233343;
+
+-- Show all forums in active topics
 UPDATE phpbb_forums SET forum_flags = forum_flags|16;
 
+-- Remove subjects with "Re: "
+-- UPDATE phpbb_posts SET post_subject = "" WHERE post_subject LIKE "Re: %";
+
+-- Delete user bbcode [s]
 DELETE FROM phpbb_bbcodes WHERE bbcode_tag = 's';
 UPDATE IGNORE phpbb_bbcodes SET bbcode_id=14 WHERE bbcode_id = 13;
 UPDATE IGNORE phpbb_bbcodes SET bbcode_id=15 WHERE bbcode_id = 13;
