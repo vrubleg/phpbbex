@@ -26,7 +26,7 @@ class request
 	static function init($unset_superglobals = true)
 	{
 		if (self::$ready) return;
-		self::unregister_globals();
+		// self::unregister_globals();
 		$_GET  = self::sanitize($_GET);
 		$_POST = self::sanitize($_POST);
 		self::$is_https   = (strtolower(arr::get($_SERVER, 'HTTPS')) === 'on');
