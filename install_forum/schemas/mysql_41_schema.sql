@@ -443,6 +443,18 @@ CREATE TABLE phpbb_poll_votes (
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 
+# Table: 'phpbb_post_rates'
+CREATE TABLE phpbb_post_rates (
+	user_id mediumint(8) unsigned NOT NULL,
+	post_id mediumint(8) unsigned NOT NULL,
+	rate tinyint(4) NOT NULL DEFAULT '0',
+	rate_time int(11) unsigned NOT NULL DEFAULT '0',
+	PRIMARY KEY (user_id,post_id),
+	KEY post_id (post_id),
+	KEY user_id (user_id)
+) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+
+
 # Table: 'phpbb_posts'
 CREATE TABLE phpbb_posts (
 	post_id mediumint(8) UNSIGNED NOT NULL auto_increment,
