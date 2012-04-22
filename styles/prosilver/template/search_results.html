@@ -4,16 +4,18 @@
 <!-- IF IGNORED_WORDS --> <p>{L_IGNORED_TERMS}: <strong>{IGNORED_WORDS}</strong></p><!-- ENDIF -->
 
 <!-- IF PAGINATION or SEARCH_MATCHES or PAGE_NUMBER -->
-	<form method="post" action="{S_SEARCH_ACTION}">
-
 	<div class="topic-actions">
 
 	<!-- IF SEARCH_MATCHES -->
 		<div class="search-box">
-			<!-- IF SEARCH_IN_RESULTS -->
-				<label for="add_keywords">{L_SEARCH_IN_RESULTS}: <input type="text" name="add_keywords" id="add_keywords" value="" class="inputbox narrow" /></label>
+		<!-- IF SEARCH_IN_RESULTS -->
+		<form method="post" action="{S_SEARCH_ACTION}">
+			<fieldset>
+				<input type="text" name="add_keywords" class="inputbox search tiny" placeholder="{L_SEARCH_IN_RESULTS}" />
 				<input class="button2" type="submit" name="submit" value="{L_SEARCH}" />
-			<!-- ENDIF -->
+			</fieldset>
+		</form>
+		<!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
 
@@ -21,8 +23,6 @@
 			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</div>
 	</div>
-
-	</form>
 <!-- ENDIF -->
 
 <!-- IF S_SHOW_TOPICS -->

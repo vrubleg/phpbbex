@@ -31,9 +31,14 @@
 <!-- ENDIF -->
 
 <!-- IF S_HAS_SUBFORUM -->
-<!-- IF not S_IS_BOT and U_MARK_FORUMS -->
+<!-- IF S_DISPLAY_SEARCH or (not S_IS_BOT and U_MARK_FORUMS) -->
 <ul class="linklist">
+	<!-- IF S_DISPLAY_SEARCH -->
+	<li><a href="{U_SEARCH_ACTIVE_TOPICS_IN}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- IF S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_UNREAD_IN}">{L_SEARCH_UNREAD}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --><!-- IF not S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_NEW_IN}">{L_SEARCH_NEW}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_SELF_TOPICS_IN}">{L_SEARCH_SELF_TOPICS}</a> &bull; <a href="{U_SEARCH_SELF_IN}">{L_SEARCH_SELF}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_UNANSWERED_IN}">{L_SEARCH_UNANSWERED}</a> &bull; <a href="{U_SEARCH_IN}">{L_SEARCHING_FORUMS}</a></li>
+	<!-- ENDIF -->
+	<!-- IF not S_IS_BOT and U_MARK_FORUMS -->
 	<li class="rightside"><a href="{U_MARK_FORUMS}">{L_MARK_SUBFORUMS_READ}</a></li>
+	<!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
 	<!-- INCLUDE forumlist_body.html -->

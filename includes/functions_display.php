@@ -522,6 +522,15 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		'L_SUBFORUM'		=> ($visible_forums == 1) ? $user->lang['SUBFORUM'] : $user->lang['SUBFORUMS'],
 		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 		'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'TOPICS_UNAPPROVED'),
+
+		// Search in current forum
+		'U_SEARCH_IN'				=> append_sid("{$phpbb_root_path}search.$phpEx", 'fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_SELF_IN'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_SELF_TOPICS_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch&amp;sf=firstpost&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_NEW_IN'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=newposts&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_UNANSWERED_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unanswered&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_UNREAD_IN'		=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unreadposts&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_ACTIVE_TOPICS_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=active_topics&amp;fid[]=' . $root_data['forum_id']),
 	));
 	
 	if(!empty($forums_last_posts_ids_list))
