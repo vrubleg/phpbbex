@@ -373,15 +373,24 @@ if ($user->data['is_registered'])
 	}
 }
 
-if ($forum_data['forum_type'] == FORUM_POST)
+if ($forum_data['forum_type'] == FORUM_POST || $s_display_active)
 {
 	// Obtain announcements ... removed sort ordering, sort by time in all cases
+	$forum_ids = array($forum_id, 0);
+	if ($forum_data['forum_type'] == FORUM_CAT && sizeof($active_forum_ary))
+	{
+		$forum_ids = empty($active_forum_ary['exclude_forum_id'])
+			? $active_forum_ary['forum_id']
+			: array_diff($active_forum_ary['forum_id'], $active_forum_ary['exclude_forum_id']);
+		if (empty($forum_ids)) $forum_ids = array($forum_id, 0);
+	}
+
 	$sql = $db->sql_build_query('SELECT', array(
 		'SELECT'	=> $sql_array['SELECT'],
 		'FROM'		=> $sql_array['FROM'],
 		'LEFT_JOIN'	=> $sql_array['LEFT_JOIN'],
 
-		'WHERE'		=> 't.forum_id IN (' . $forum_id . ', 0)
+		'WHERE'		=> $db->sql_in_set('t.forum_id', $forum_ids) . '
 			AND t.topic_type IN (' . POST_ANNOUNCE . ', ' . POST_GLOBAL . ')',
 
 		'ORDER_BY'	=> 't.topic_time DESC',

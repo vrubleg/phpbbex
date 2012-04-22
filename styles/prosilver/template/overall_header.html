@@ -130,7 +130,7 @@
 		<ul>
 			<li><a style="background-position: 0 -18px;"  href="{U_INDEX}">{L_INDEX}</a></li>
 			<li><a style="background-position: 0 -36px;"  href="{U_SEARCH_ACTIVE_TOPICS}">{L_SEARCH_ACTIVE_TOPICS}</a></li>
-			<!-- IF not S_IS_BOT and S_USER_LOGGED_IN --><li><a style="background-position: 0 -54px;"  href="<!-- IF S_LOAD_UNREADS -->{U_SEARCH_UNREAD}<!-- ELSE -->{U_SEARCH_NEW}<!-- ENDIF -->"><!-- IF S_LOAD_UNREADS -->{L_SEARCH_UNREAD}<!-- ELSE -->{L_SEARCH_NEW}<!-- ENDIF --></a></li><!-- ENDIF -->
+			<!-- IF not S_IS_BOT and (S_USER_LOGGED_IN or S_LOAD_UNREADS) --><li><a style="background-position: 0 -54px;"  href="<!-- IF S_LOAD_UNREADS -->{U_SEARCH_UNREAD}<!-- ELSE -->{U_SEARCH_NEW}<!-- ENDIF -->"><!-- IF S_LOAD_UNREADS -->{L_SEARCH_UNREAD}<!-- ELSE -->{L_SEARCH_NEW}<!-- ENDIF --></a></li><!-- ENDIF -->
 			<li><a style="background-position: 0 -72px;"  href="{U_SEARCH_UNANSWERED}">{L_SEARCH_UNANSWERED}</a></li>
 			<!-- IF not S_IS_BOT and S_USER_LOGGED_IN --><li><a style="background-position: 0 -90px;"  href="{U_SEARCH_SELF_TOPICS}">{L_SEARCH_SELF_TOPICS}</a></li><!-- ENDIF -->
 			<!-- IF not S_IS_BOT and S_USER_LOGGED_IN --><li><a style="background-position: 0 -90px;"  href="{U_SEARCH_SELF}">{L_SEARCH_SELF}</a></li><!-- ENDIF -->

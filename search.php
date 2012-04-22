@@ -221,7 +221,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		}
 
 		// Exclude forums from active topics
-		if (!($row['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS) && ($search_id == 'active_topics'))
+		if (!($row['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS) && ($search_id == 'active_topics') && !in_array($row['forum_id'], $search_forum))
 		{
 			$ex_fid_ary[] = (int) $row['forum_id'];
 			continue;
@@ -584,6 +584,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	$u_hilit = urlencode(htmlspecialchars_decode(str_replace('|', ' ', $hilit)));
 	$u_show_results = '&amp;sr=' . $show_results;
 	$u_search_forum = implode('&amp;fid%5B%5D=', $search_forum);
+	$u_amp_search_forum = ($u_search_forum) ? '&amp;fid%5B%5D=' . $u_search_forum : '';
+	$u_qst_search_forum = ($u_search_forum) ? '?fid%5B%5D=' . $u_search_forum : '';
 
 	$u_search = append_sid("{$phpbb_root_path}search.$phpEx", $u_sort_param . $u_show_results);
 	$u_search .= ($search_id) ? '&amp;search_id=' . $search_id : '';
@@ -592,7 +594,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	$u_search .= ($topic_id) ? '&amp;t=' . $topic_id : '';
 	$u_search .= ($author) ? '&amp;author=' . urlencode(htmlspecialchars_decode($author)) : '';
 	$u_search .= ($author_id) ? '&amp;author_id=' . $author_id : '';
-	$u_search .= ($u_search_forum) ? '&amp;fid%5B%5D=' . $u_search_forum : '';
+	$u_search .= $u_amp_search_forum;
 	$u_search .= (!$search_child) ? '&amp;sc=0' : '';
 	$u_search .= ($search_fields != 'all') ? '&amp;sf=' . $search_fields : '';
 	$u_search .= ($return_chars != 300) ? '&amp;ch=' . $return_chars : '';
@@ -621,6 +623,15 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 		'U_SEARCH_WORDS'	=> $u_search,
 		'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}index.$phpEx", 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
+
+		// Search in current forums
+		'U_SEARCH_IN'				=> append_sid("{$phpbb_root_path}search.$phpEx", $u_qst_search_forum),
+		'U_SEARCH_SELF_IN'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch' . $u_amp_search_forum),
+		'U_SEARCH_SELF_TOPICS_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch&amp;sf=firstpost' . $u_amp_search_forum),
+		'U_SEARCH_NEW_IN'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=newposts' . $u_amp_search_forum),
+		'U_SEARCH_UNANSWERED_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unanswered' . $u_amp_search_forum),
+		'U_SEARCH_UNREAD_IN'		=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unreadposts' . $u_amp_search_forum),
+		'U_SEARCH_ACTIVE_TOPICS_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=active_topics' . $u_amp_search_forum),
 	));
 
 	if ($sql_where)
