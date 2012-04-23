@@ -10,7 +10,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_i
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_attachments', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_autologin', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_local', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remote', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_upload', '1');
@@ -24,7 +24,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_mass_pm', '1
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_LETTER_NUM_SPACERS');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_namechange', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_nocensors', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_pm_attach', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_pm_attach', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_pm_report', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_post_flash', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_post_links', '1');
@@ -49,7 +49,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_flash_pm', '0
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_img_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_method', 'db');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_smilies_pm', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '6144');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '10240');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_gallery_path', 'images/avatars/gallery');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_height', '100');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_width', '100');
@@ -186,8 +186,8 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_en
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments', '30');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_autologin_time', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_filesize', '262144');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_filesize_pm', '65536');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_filesize', '524288');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_filesize_pm', '262144');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_login_attempts', '3');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_name_chars', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_num_search_keywords', '10');
@@ -823,6 +823,8 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'ini');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'log');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'js');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'xml');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'diff');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'sql');
 
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'xls');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'xlsx');

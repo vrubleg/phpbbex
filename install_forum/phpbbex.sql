@@ -128,3 +128,58 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nof
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.2.0');
+
+-- Reset avatar options to phpBBex defaults
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_upload', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remote_upload', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '10240');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_height', '100');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_width', '100');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_height', '64');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_width', '64');
+
+-- Reset signature options to phpBBex defaults (Disable BBCodes, max 200 characters)
+-- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_bbcode', '0');
+-- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_img', '0');
+-- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_links', '0');
+-- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_smilies', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_chars', '200');
+
+-- Reset attachments options to phpBBex defaults
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_pm_attach', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_attachments', '30');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_filesize', '524288');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_filesize_pm', '262144');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbnail', '1');
+
+-- Reset some other options to phpBBex defaults
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_LETTER_NUM_SPACERS');
+-- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', 'Y-m-d H:i');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '43200');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('delete_time', '43200');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_overall', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_tplcompile', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_poll_options', '25');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_smilies', '20');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_urls', '20');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_quote_depth', '2');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('hot_threshold', '100');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '25');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
+
+-- New file extensions
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'diff');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'sql');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'avi');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'oga');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'ogv');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
