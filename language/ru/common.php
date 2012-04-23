@@ -916,7 +916,7 @@ $lang = array_merge($lang, array(
 
 	// Genders
 	'GENDER'					=> 'Пол',
-	'GENDER_EXPLAIN'			=> 'Пожалуйста укажите ваш пол.',
+	'GENDER_EXPLAIN'			=> 'Пожалуйста, укажите ваш пол.',
 	'GENDER_X'					=> 'Не указан',
 	'GENDER_M'					=> 'Мужской',
 	'GENDER_F'					=> 'Женский',
