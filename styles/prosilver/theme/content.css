@@ -627,8 +627,13 @@ dl.file dt {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-dl.file a {
+.attachbox dl.file a {
 	font-weight: bold;
+}
+
+dl.file dt.attach-file {
+	background: url("{IMG_ICON_TOPIC_ATTACH_SRC}") no-repeat 0px 3px;
+	padding-left: 8px;
 }
 
 dl.file dd {
