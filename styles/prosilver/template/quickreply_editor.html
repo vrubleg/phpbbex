@@ -61,7 +61,7 @@
 
 				<div style="<!-- IF not EXTRA_OPTIONS_DISPLAY -->display: none;<!-- ENDIF -->">
 
-				<!-- IF .smiley --><hr /><!-- ENDIF -->
+				<!-- IF S_SMILIES_ALLOWED and .smiley --><hr /><!-- ENDIF -->
 
 				<!-- IF S_BBCODE_ALLOWED -->
 					<div><label for="disable_bbcode"><input type="checkbox" name="disable_bbcode" id="disable_bbcode"{S_BBCODE_CHECKED} /> {L_DISABLE_BBCODE}</label></div>
@@ -78,7 +78,7 @@
 				<!-- IF S_FIRST_POST_SHOW_ALLOWED -->
 					<div><label for="topic_first_post_show" title="{L_FIRST_POST_SHOW_EXPLAIN}"><input type="checkbox" name="topic_first_post_show" id="topic_first_post_show"{S_FIRST_POST_SHOW_CHECKED} /> {L_FIRST_POST_SHOW} </label></div>
 				<!-- ENDIF -->
-				<!-- IF not S_EDIT_POST and not S_NEW_MESSAGE -->
+				<!-- IF S_USER_LOGGED_IN and not S_EDIT_POST and not S_NEW_MESSAGE -->
 					<div><label for="do_not_merge"><input type="checkbox" name="do_not_merge" id="do_not_merge" /> {L_DO_NOT_MERGE}</label></div>
 				<!-- ENDIF -->
 				
