@@ -127,6 +127,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitenam
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
 
 -- phpBBex version

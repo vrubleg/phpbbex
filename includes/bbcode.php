@@ -561,8 +561,9 @@ class bbcode
 		// seem to slash anything else
 		$href = str_replace('\"', '"', $href);
 		$text = str_replace('\"', '"', $text);
-		$external = strpos($href, generate_board_url()) !== 0;
-		$attrs = $external ? ' class="postlink"' : ' class="postlink-local"';
+		$external = strpos($href, generate_board_url(true)) !== 0;
+		$attrs = $external ? ' class="postlink"' : ' class="postlink local"';
+		$attrs .= (!empty($config['external_links_newwindow']) && $external) ? ' target="_blank"' : '';
 		$attrs .= (!empty($config['external_links_nofollow']) && $external) ? ' rel="nofollow"' : '';
 		return '<a href="'.$href.'"'.$attrs.'>'.$text.'</a>';
 	}

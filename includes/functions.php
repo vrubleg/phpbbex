@@ -3443,8 +3443,8 @@ function get_preg_expression($mode)
 		case 'bbcode_htm':
 			return array(
 				'#<!\-\- e \-\-><a href="mailto:(.*?)">.*?</a><!\-\- e \-\->#',
-				'#<!\-\- l \-\-><a (?:class="[\w-]+" )?href="(.*?)(?:(&amp;|\?)sid=[0-9a-f]{32})?">.*?</a><!\-\- l \-\->#',
-				'#<!\-\- ([mw]) \-\-><a (?:class="[\w-]+" )?href="(.*?)">.*?</a><!\-\- \1 \-\->#',
+				'#<!\-\- l \-\-><a [-= "\w]*href="(.*?)(?:(&amp;|\?)sid=[0-9a-f]{32})?">.*?</a><!\-\- l \-\->#',
+				'#<!\-\- ([mw]) \-\-><a [-= "\w]*href="(.*?)">.*?</a><!\-\- \1 \-\->#',
 				'#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/.*? \/><!\-\- s\1 \-\->#',
 				'#<!\-\- .*? \-\->#s',
 				'#<.*?>#s',
@@ -4564,6 +4564,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
 		'S_USER_NEW'					=> $user->data['user_new'],
 
+		'EXTERNAL_LINKS_NEWWINDOW'				=> !empty($config['external_links_newwindow']),
 		'EXTERNAL_LINKS_NOFOLLOW'				=> !empty($config['external_links_nofollow']),
 		'STYLE_SHOW_SITENAME_IN_HEADERBAR'		=> !empty($config['style_show_sitename_in_headerbar']),
 		'STYLE_SHOW_SOCIAL_BUTTONS'				=> !empty($config['style_show_social_buttons']),
