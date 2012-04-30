@@ -518,7 +518,7 @@ function get_attrs_for_external_link($url)
 		if (!is_array($newwindow_exclude))
 		{
 			$newwindow_exclude = empty($config['external_links_newwindow_exclude']) ? array() : explode(',', $config['external_links_newwindow_exclude']);
-			$newwindow_exclude = array_map('trim', $newwindow_exclude);
+			$newwindow_exclude = array_filter(array_map('trim', $newwindow_exclude));
 		}
 
 		foreach ($newwindow_exclude as $prefix)
@@ -538,7 +538,7 @@ function get_attrs_for_external_link($url)
 		if (!is_array($nofollow_exclude))
 		{
 			$nofollow_exclude = empty($config['external_links_nofollow_exclude']) ? array() : explode(',', $config['external_links_nofollow_exclude']);
-			$nofollow_exclude = array_map('trim', $nofollow_exclude);
+			$nofollow_exclude = array_filter(array_map('trim', $nofollow_exclude));
 		}
 
 		foreach ($nofollow_exclude as $prefix)
