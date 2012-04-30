@@ -615,12 +615,12 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$external = stripos($url, $server_url) !== 0;
 			if ($external)
 			{
-				$tag		= 'w';
+				$tag		= ($type == MAGIC_URL_WWW) ? 'w' : 'm';
 				$attrs		= ' class="postlink"' . get_attrs_for_external_link($url);
 			}
 			else
 			{
-				$tag		= 'l';
+				$tag		= ($type == MAGIC_URL_WWW) ? 'w' : 'l';
 				$attrs		= ' class="postlink local"';
 				$url		= preg_replace('/[&?]sid=[0-9a-f]{32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{32}&/', '$1', $url));
 				if (strlen($url) > strlen($server_url) + 1)
