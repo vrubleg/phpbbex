@@ -12,7 +12,8 @@
 <meta name="description" content="{SITE_DESCRIPTION}" />
 <meta name="robots" content="noindex" />
 {META}
-<title>{SITENAME} &bull; {PAGE_TITLE}</title>
+<title><!-- IF PAGE_TITLE -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}</title>
+<!-- IF U_CANONICAL --><link rel="canonical" href="{U_CANONICAL}" /><!-- ENDIF -->
 
 <link href="{T_THEME_PATH}/print.css" rel="stylesheet" type="text/css" />
 </head>
