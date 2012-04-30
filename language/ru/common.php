@@ -788,18 +788,18 @@ $lang = array_merge($lang, array(
 		'November'	=> 'Ноябрь',
 		'December'	=> 'Декабрь',
 
-		'Jan'		=> 'янв',
-		'Feb'		=> 'фев',
-		'Mar'		=> 'мар',
-		'Apr'		=> 'апр',
-		'May_short'	=> 'май',	// Short representation of "May". May_short used because in English the short and long date are the same for May.
-		'Jun'		=> 'июн',
-		'Jul'		=> 'июл',
-		'Aug'		=> 'авг',
-		'Sep'		=> 'сен',
-		'Oct'		=> 'окт',
-		'Nov'		=> 'ноя',
-		'Dec'		=> 'дек',
+		'Jan'		=> 'января',
+		'Feb'		=> 'февраля',
+		'Mar'		=> 'марта',
+		'Apr'		=> 'апреля',
+		'May_short'	=> 'мая',	// Short representation of "May". May_short used because in English the short and long date are the same for May.
+		'Jun'		=> 'июня',
+		'Jul'		=> 'июля',
+		'Aug'		=> 'августа',
+		'Sep'		=> 'сентября',
+		'Oct'		=> 'октября',
+		'Nov'		=> 'ноября',
+		'Dec'		=> 'декабря',
 	),
 
 	'tz'				=> array(
@@ -887,13 +887,13 @@ $lang = array_merge($lang, array(
 
 	// The value is only an example and will get replaced by the current time on view
 	'dateformats'	=> array(
-		'|d M Y|, H:i'			=> 'Сегодня, 13:37 / 01 янв 2007, 13:37',
-		'|d.m.Y|, H:i'			=> 'Сегодня, 10:06 / 24.04.2012, 10:06',
-		'|D, d M Y|, H:i'		=> 'Сегодня, 10:12 / Вт, 24 апр 2012, 10:12',
-		'd M Y, H:i'			=> '10 янв 2005, 17:57',
-		'H:i d.m.Y'				=> '17:57 10.01.2005',
-		'd.m.Y, H:i'			=> '10.01.2005, 17:57',
-		'Y-m-d H:i'				=> '2005-01-10 17:57',
+		'|d.m.Y|, H:i'			=> 'Сегодня, 09:15 / 01.01.2012, 09:15',
+		'|j M Y|, G:i'			=> 'Сегодня, 9:15 / 1 янв 2012, 9:15',
+		'|D, j M Y|, G:i'		=> 'Сегодня, 9:15 / Вт, 1 янв 2012, 9:15',
+		'j M Y, G:i'			=> '1 янв 2012, 9:15',
+		'H:i d.m.Y'				=> '09:15 01.01.2012',
+		'd.m.Y, H:i'			=> '01.01.2012, 09:15',
+		'Y-m-d H:i'				=> '2012-01-01 09:15',
 	),
 
 	// The default dateformat which will be used on new installs in this language

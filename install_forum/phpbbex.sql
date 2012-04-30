@@ -73,8 +73,11 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_defau
 -- New phpBBex ACL rights
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
 
--- Reset options for all users (enable quick reply, etc)
-UPDATE phpbb_users SET user_options = 233343;
+-- Reset options for all users (new dateformat, enable quick reply, etc)
+UPDATE phpbb_users SET user_options = 233343, user_dateformat = '|d.m.Y|, H:i';
+
+-- Other options for robots
+UPDATE phpbb_users SET user_dateformat = 'd.m.Y, H:i' WHERE group_id = 6;
 
 -- Show all forums in active topics
 UPDATE phpbb_forums SET forum_flags = forum_flags|16;
@@ -124,7 +127,10 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitenam
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow_exclude', '');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.2.0');
@@ -144,7 +150,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_width'
 -- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_img', '0');
 -- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_links', '0');
 -- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_smilies', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_chars', '200');
+-- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_chars', '200');
 
 -- Reset attachments options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_pm_attach', '1');
@@ -156,7 +162,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbn
 -- Reset some other options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_LETTER_NUM_SPACERS');
 -- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', 'Y-m-d H:i');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|, H:i');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '43200');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('delete_time', '43200');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
