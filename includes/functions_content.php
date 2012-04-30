@@ -505,60 +505,78 @@ function generate_text_for_edit($text, $uid, $flags)
 }
 
 /**
+* Function for make_clickable_callback and bbcode::bbcode_second_pass_url
+*/
+function get_attrs_for_external_link($url)
+{
+	global $config;
+
+	$newwindow = !empty($config['external_links_newwindow']);
+	if ($newwindow)
+	{
+		static $newwindow_exclude;
+		if (!is_array($newwindow_exclude))
+		{
+			$newwindow_exclude = empty($config['external_links_newwindow_exclude']) ? array() : explode(',', $config['external_links_newwindow_exclude']);
+			$newwindow_exclude = array_map('trim', $newwindow_exclude);
+		}
+
+		foreach ($newwindow_exclude as $prefix)
+		{
+			if (strpos($url, $prefix) === 0)
+			{
+				$newwindow = false;
+				break;
+			}
+		}
+	}
+
+	$nofollow = !empty($config['external_links_nofollow']);
+	if ($nofollow)
+	{
+		static $nofollow_exclude;
+		if (!is_array($nofollow_exclude))
+		{
+			$nofollow_exclude = empty($config['external_links_nofollow_exclude']) ? array() : explode(',', $config['external_links_nofollow_exclude']);
+			$nofollow_exclude = array_map('trim', $nofollow_exclude);
+		}
+
+		foreach ($nofollow_exclude as $prefix)
+		{
+			if (strpos($url, $prefix) === 0)
+			{
+				$nofollow = false;
+				break;
+			}
+		}
+	}
+
+	return ($newwindow ? ' target="_blank"' : '') . ($nofollow ? ' rel="nofollow"' : '');
+}
+
+/**
 * A subroutine of make_clickable used with preg_replace
 * It places correct HTML around an url, shortens the displayed text
 * and makes sure no entities are inside URLs
 */
-function make_clickable_callback($type, $whitespace, $url, $relative_url, $class)
+function make_clickable_callback($type, $whitespace, $url, $server_url)
 {
-	$orig_url		= $url;
-	$orig_relative	= $relative_url;
+	$attrs			= '';
 	$append			= '';
 	$url			= htmlspecialchars_decode($url);
-	$relative_url	= htmlspecialchars_decode($relative_url);
 
 	// make sure no HTML entities were matched
-	$chars = array('<', '>', '"');
-	$split = false;
+	$split = strcspn($url, '<>"');
 
-	foreach ($chars as $char)
-	{
-		$next_split = strpos($url, $char);
-		if ($next_split !== false)
-		{
-			$split = ($split !== false) ? min($split, $next_split) : $next_split;
-		}
-	}
-
-	if ($split !== false)
+	if ($split !== strlen($url))
 	{
 		// an HTML entity was found, so the URL has to end before it
-		$append			= substr($url, $split) . $relative_url;
+		$append			= substr($url, $split);
 		$url			= substr($url, 0, $split);
-		$relative_url	= '';
-	}
-	else if ($relative_url)
-	{
-		// same for $relative_url
-		$split = false;
-		foreach ($chars as $char)
-		{
-			$next_split = strpos($relative_url, $char);
-			if ($next_split !== false)
-			{
-				$split = ($split !== false) ? min($split, $next_split) : $next_split;
-			}
-		}
-
-		if ($split !== false)
-		{
-			$append			= substr($relative_url, $split);
-			$relative_url	= substr($relative_url, 0, $split);
-		}
 	}
 
 	// if the last character of the url is a punctuation mark, exclude it from the url
-	$last_char = ($relative_url) ? $relative_url[strlen($relative_url) - 1] : $url[strlen($url) - 1];
+	$last_char = $url[strlen($url) - 1];
 
 	switch ($last_char)
 	{
@@ -568,14 +586,7 @@ function make_clickable_callback($type, $whitespace, $url, $relative_url, $class
 		case ':':
 		case ',':
 			$append = $last_char;
-			if ($relative_url)
-			{
-				$relative_url = substr($relative_url, 0, -1);
-			}
-			else
-			{
-				$url = substr($url, 0, -1);
-			}
+			$url = substr($url, 0, -1);
 		break;
 
 		// set last_char to empty here, so the variable can be used later to
@@ -585,47 +596,42 @@ function make_clickable_callback($type, $whitespace, $url, $relative_url, $class
 		break;
 	}
 
-	$short_url = urldecode($url);
-	if (!preg_match('/^./u', $short_url))
+	$text = urldecode($url);
+	if (!preg_match('/^./u', $text))
 	{
-		$short_url = (strlen($url) > 85) ? substr($url, 0, 49) . ' ... ' . substr($url, -30) : $url;
+		$text = (strlen($url) > 85) ? substr($url, 0, 49) . ' ... ' . substr($url, -30) : $url;
 	}
 	else
 	{
-		if (utf8_strlen($short_url) > 85) $short_url = utf8_substr($short_url, 0, 49) . ' ... ' . utf8_substr($short_url, -30);
+		if (utf8_strlen($text) > 85) $text = utf8_substr($text, 0, 49) . ' ... ' . utf8_substr($text, -30);
 	}
 
 	switch ($type)
 	{
-		case MAGIC_URL_LOCAL:
-			$tag			= 'l';
-			$relative_url	= preg_replace('/[&?]sid=[0-9a-f]{32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{32}&/', '$1', $relative_url));
-			$url			= $url . '/' . $relative_url;
-			$text			= $relative_url;
-
-			// this url goes to http://domain.tld/path/to/board/ which
-			// would result in an empty link if treated as local so
-			// don't touch it and let MAGIC_URL_FULL take care of it.
-			if (!$relative_url)
-			{
-				return $whitespace . $orig_url . '/' . $orig_relative; // slash is taken away by relative url pattern
-			}
-		break;
+		case MAGIC_URL_WWW:
+			$url	= 'http://' . $url;
 
 		case MAGIC_URL_FULL:
-			$tag	= 'm';
-			$text	= $short_url;
-		break;
-
-		case MAGIC_URL_WWW:
-			$tag	= 'w';
-			$url	= 'http://' . $url;
-			$text	= $short_url;
+			$external = strpos($url, $server_url) !== 0;
+			if ($external)
+			{
+				$tag		= 'w';
+				$attrs		= ' class="postlink"' . get_attrs_for_external_link($url);
+			}
+			else
+			{
+				$tag		= 'l';
+				$attrs		= ' class="postlink local"';
+				$url		= preg_replace('/[&?]sid=[0-9a-f]{32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{32}&/', '$1', $url));
+				if (strlen($url) > strlen($server_url) + 1)
+				{
+					$text	= substr($url, strlen($server_url));
+				}
+			}
 		break;
 
 		case MAGIC_URL_EMAIL:
 			$tag	= 'e';
-			$text	= $short_url;
 			$url	= 'mailto:' . $url;
 		break;
 	}
@@ -634,7 +640,7 @@ function make_clickable_callback($type, $whitespace, $url, $relative_url, $class
 	$text	= htmlspecialchars($text);
 	$append	= htmlspecialchars($append);
 
-	$html	= "$whitespace<!-- $tag --><a$class href=\"$url\">$text</a><!-- $tag -->$append";
+	$html	= "$whitespace<!-- $tag --><a$attrs href=\"$url\">$text</a><!-- $tag -->$append";
 
 	return $html;
 }
@@ -648,43 +654,30 @@ function make_clickable_callback($type, $whitespace, $url, $relative_url, $class
 */
 function make_clickable($text, $server_url = false, $class = 'postlink')
 {
-	global $config;
-
 	if ($server_url === false)
 	{
-		$server_url = generate_board_url();
+		$server_url = generate_board_url(true);
 	}
 
 	static $magic_url_match;
 	static $magic_url_replace;
-	static $static_class;
 
-	if (!is_array($magic_url_match) || $static_class != $class)
+	if (!is_array($magic_url_match))
 	{
-		$static_class = $class;
-		$class = ($static_class ? ' class="' . $static_class . '"' : '')
-			. (empty($config['external_links_newwindow']) ? '' : ' target="_blank"')
-			. (empty($config['external_links_nofollow']) ? '' : ' rel="nofollow"');
-		$local_class = ($static_class) ? ' class="' . $static_class . ' local"' : '';
-
 		$magic_url_match = $magic_url_replace = array();
 		// Be sure to not let the matches cross over. ;)
 
-		// relative urls for this board
-		$magic_url_match[] = '#(^|[\n\t (>.])(' . preg_quote($server_url, '#') . ')/(' . get_preg_expression('relative_url_inline') . ')#ieu';
-		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_LOCAL, '\$1', '\$2', '\$3', '$local_class')";
-
 		// matches a xxxx://aaaaa.bbb.cccc. ...
 		$magic_url_match[] = '#(^|[\n\t (>.])(' . get_preg_expression('url_inline') . ')#ieu';
-		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_FULL, '\$1', '\$2', '', '$class')";
+		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_FULL, '\$1', '\$2', '$server_url')";
 
 		// matches a "www.xxxx.yyyy[/zzzz]" kinda lazy URL thing
 		$magic_url_match[] = '#(^|[\n\t (>])(' . get_preg_expression('www_url_inline') . ')#ieu';
-		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_WWW, '\$1', '\$2', '', '$class')";
+		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_WWW, '\$1', '\$2', '$server_url')";
 
 		// matches an email@domain type address at the start of a line, or after a space or after what might be a BBCode.
 		$magic_url_match[] = '/(^|[\n\t (>])(' . get_preg_expression('email') . ')/ie';
-		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_EMAIL, '\$1', '\$2', '', '')";
+		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_EMAIL, '\$1', '\$2', '$server_url')";
 	}
 
 	return preg_replace($magic_url_match, $magic_url_replace, $text);

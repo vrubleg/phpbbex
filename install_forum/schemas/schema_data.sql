@@ -107,7 +107,9 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_confirm', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_pm_icons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_post_confirm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow_exclude', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_http_auth', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_limit_post', '15');

@@ -556,15 +556,12 @@ class bbcode
 	*/
 	function bbcode_second_pass_url($href, $text)
 	{
-		global $config;
 		// when using the /e modifier, preg_replace slashes double-quotes but does not
 		// seem to slash anything else
 		$href = str_replace('\"', '"', $href);
 		$text = str_replace('\"', '"', $text);
 		$external = strpos($href, generate_board_url(true)) !== 0;
-		$attrs = $external ? ' class="postlink"' : ' class="postlink local"';
-		$attrs .= (!empty($config['external_links_newwindow']) && $external) ? ' target="_blank"' : '';
-		$attrs .= (!empty($config['external_links_nofollow']) && $external) ? ' rel="nofollow"' : '';
+		$attrs = $external ? (' class="postlink"' . get_attrs_for_external_link($href)) : ' class="postlink local"';
 		return '<a href="'.$href.'"'.$attrs.'>'.$text.'</a>';
 	}
 

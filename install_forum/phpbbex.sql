@@ -128,7 +128,9 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow_exclude', '');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.2.0');
