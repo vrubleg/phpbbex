@@ -523,7 +523,7 @@ function get_attrs_for_external_link($url)
 
 		foreach ($newwindow_exclude as $prefix)
 		{
-			if (strpos($url, $prefix) === 0)
+			if (stripos($url, $prefix) === 0)
 			{
 				$newwindow = false;
 				break;
@@ -543,7 +543,7 @@ function get_attrs_for_external_link($url)
 
 		foreach ($nofollow_exclude as $prefix)
 		{
-			if (strpos($url, $prefix) === 0)
+			if (stripos($url, $prefix) === 0)
 			{
 				$nofollow = false;
 				break;
@@ -612,7 +612,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$url	= 'http://' . $url;
 
 		case MAGIC_URL_FULL:
-			$external = strpos($url, $server_url) !== 0;
+			$external = stripos($url, $server_url) !== 0;
 			if ($external)
 			{
 				$tag		= 'w';
