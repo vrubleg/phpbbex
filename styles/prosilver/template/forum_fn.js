@@ -219,7 +219,8 @@ function selectCode(a)
 			}
 
 			var r = document.createRange();
-			r.selectNodeContents(e);
+			r.setStart(e.firstChild, 0);
+			r.setEnd(e.lastChild, e.lastChild.textContent.length);
 			s.removeAllRanges();
 			s.addRange(r);
 		}
