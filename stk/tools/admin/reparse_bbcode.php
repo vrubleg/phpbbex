@@ -287,7 +287,7 @@ class reparse_bbcode
 				$sql_ary = array(
 					'SELECT'	=> 'f.forum_id, f.enable_indexing,
 									p.post_id, p.poster_id, p.icon_id, p.post_text, p.post_subject, p.post_username, p.post_time, p.post_edit_reason, p.bbcode_uid, p.enable_sig, p.post_edit_locked, p.enable_bbcode, p.enable_magic_url, p.enable_smilies, p.post_attachment, 
-									t.topic_id, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_last_post_id, t.topic_type, t.topic_status, t.topic_title, t.poll_title, t.topic_time_limit, t.poll_start, t.poll_length, t.poll_max_options, t.poll_last_vote, t.poll_vote_change,
+									t.topic_id, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_last_post_id, t.topic_type, t.topic_status, t.topic_title, t.poll_title, t.topic_time_limit, t.poll_start, t.poll_length, t.poll_max_options, t.poll_last_vote, t.poll_vote_change, t.poll_show_voters,
 									u.username',
 					'FROM'		=> array(
 						FORUMS_TABLE	=> 'f',
@@ -516,6 +516,7 @@ class reparse_bbcode
 			'poll_start'		=> $this->data['poll_start'],
 			'poll_last_vote'	=> $this->data['poll_last_vote'],
 			'poll_vote_change'	=> $this->data['poll_vote_change'],
+			'poll_show_voters'	=> $this->data['poll_show_voters'],
 			'enable_bbcode'		=> $this->flags['enable_bbcode'],
 			'enable_urls'		=> $this->flags['enable_urls'],
 			'enable_smilies'	=> $this->flags['enable_smilies'],
