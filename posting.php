@@ -297,7 +297,8 @@ if ($mode == 'edit' && !$auth->acl_get('m_edit', $forum_id))
 		trigger_error('USER_CANNOT_EDIT');
 	}
 
-	if (!($post_data['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'] || $auth->acl_get('u_ignoreedittime')))
+	if (!($post_data['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'] || $auth->acl_get('u_ignoreedittime')
+		|| ($post_data['topic_first_post_id'] == $post_id && $auth->acl_get('u_ignorefpedittime'))))
 	{
 		trigger_error('CANNOT_EDIT_TIME');
 	}

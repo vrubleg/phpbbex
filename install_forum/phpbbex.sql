@@ -189,3 +189,6 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
+
+-- New phpBBex ACL rights
+INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
