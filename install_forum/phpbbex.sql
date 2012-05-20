@@ -118,6 +118,7 @@ ALTER TABLE phpbb_users
 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_topic_time', -1);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive', '0');

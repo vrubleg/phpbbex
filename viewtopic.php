@@ -1634,6 +1634,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 	)));
 
 	$user_rate = isset($user_rates[$row['post_id']]) ? $user_rates[$row['post_id']] : array('rate' => 0, 'rate_time' => 0);
+	$rate_time = ($topic_data['topic_first_post_id'] != $row['post_id'] || !isset($config['rate_topic_time']) || $config['rate_topic_time'] == -1) ? $config['rate_time'] : $config['rate_topic_time'];
 
 	//
 	$postrow = array(
@@ -1714,13 +1715,13 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_NUMBER'		=> $i + $start + 1,
 		'POSTER_ID'			=> $poster_id,
 
-		'POST_RATING_SHOW'		=> $config['rate_enabled'] && ($config['rate_time'] > 0 ? $config['rate_time'] + $row['post_time'] > time() || $row['post_rating_negative'] != 0 && $row['post_rating_positive'] != 0 : true),
+		'POST_RATING_SHOW'		=> $config['rate_enabled'] && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() || $row['post_rating_negative'] != 0 && $row['post_rating_positive'] != 0 : true),
 		'POST_RATING'			=> ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
 		'POST_RATING_NEGATIVE'	=> $row['post_rating_negative'],
 		'POST_RATING_POSITIVE'	=> $row['post_rating_positive'],
 		'USER_RATE'				=> $user_rate['rate'],
-		'USER_CAN_MINUS'		=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && ($config['rate_time'] > 0 ? $config['rate_time'] + $row['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
-		'USER_CAN_PLUS'			=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && ($config['rate_time'] > 0 ? $config['rate_time'] + $row['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
+		'USER_CAN_MINUS'		=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
+		'USER_CAN_PLUS'			=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
 
 		'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
 		'S_POST_UNAPPROVED'	=> ($row['post_approved']) ? false : true,
