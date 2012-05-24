@@ -1589,7 +1589,6 @@ class user extends session
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
 			$this->lang_name = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang'] . "/common.$phpEx")) ? $this->data['user_lang'] : basename($config['default_lang']);
-
 			$this->date_format = ($config['override_user_dateformat']) ? $config['default_dateformat'] : $this->data['user_dateformat'];
 			$this->timezone = ($config['override_user_timezone'] ? $config['board_timezone'] : $this->data['user_timezone']) * 3600;
 			$this->dst = ($config['override_user_dst'] ? $config['board_dst'] :$this->data['user_dst']) * 3600;
@@ -1603,39 +1602,57 @@ class user extends session
 
 			/**
 			* If a guest user is surfing, we try to guess his/her language first by obtaining the browser language
-			* If re-enabled we need to make sure only those languages installed are checked
-			* Commented out so we do not loose the code.
-
-			if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+			**/
+			if (!empty($config['auto_guest_lang']) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
 			{
-				$accept_lang_ary = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+				$sql = 'SELECT * FROM ' . LANG_TABLE;
+				$result = $db->sql_query($sql, 3600);
 
+				$lang_allowed = array();
+				while ($row = $db->sql_fetchrow($result))
+				{
+					if (file_exists($phpbb_root_path . 'language/' . $row['lang_dir'] . "/common.$phpEx"))
+					{
+						$lang_allowed[$row['lang_iso']] = substr($row['lang_iso'], 0, 2);
+					}
+				}
+
+				$accept_lang_ary = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 				foreach ($accept_lang_ary as $accept_lang)
 				{
-					// Set correct format ... guess full xx_YY form
-					$accept_lang = substr($accept_lang, 0, 2) . '_' . strtoupper(substr($accept_lang, 3, 2));
-					$accept_lang = basename($accept_lang);
+					$accept_lang = explode(';', $accept_lang);
+					$accept_lang = strtolower(trim($accept_lang[0]));
+					if (strlen($accept_lang) < 2) continue;
 
-					if (file_exists($this->lang_path . $accept_lang . "/common.$phpEx"))
+					// Guess full xx_yy form
+					if (strlen($accept_lang) >= 5)
 					{
-						$this->lang_name = $config['default_lang'] = $accept_lang;
-						break;
-					}
-					else
-					{
-						// No match on xx_YY so try xx
-						$accept_lang = substr($accept_lang, 0, 2);
-						$accept_lang = basename($accept_lang);
-
-						if (file_exists($this->lang_path . $accept_lang . "/common.$phpEx"))
+						$accept_lang = substr($accept_lang, 0, 2) . '_' . substr($accept_lang, 3, 2);
+						if (isset($lang_allowed[$accept_lang]))
 						{
 							$this->lang_name = $config['default_lang'] = $accept_lang;
 							break;
 						}
 					}
+
+					// No match on xx_yy so try xx
+					$accept_lang = substr($accept_lang, 0, 2);
+					if (isset($lang_allowed[$accept_lang]))
+					{
+						$this->lang_name = $config['default_lang'] = $accept_lang;
+						break;
+					}
+
+					// No match on xx so try xx_yy with another yy
+					$accept_lang = array_search($accept_lang, $lang_allowed);
+					if ($accept_lang !== false)
+					{
+						$this->lang_name = $config['default_lang'] = $accept_lang;
+						break;
+					}
 				}
+				$this->data['user_lang'] = $this->lang_name;
 			}
-			*/
 		}
 
 		// We include common language file here to not load it every time a custom language file is included

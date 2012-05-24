@@ -38,6 +38,8 @@ if (empty($lang) || !is_array($lang))
 // Board Settings
 $lang = array_merge($lang, array(
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Here you can determine the basic operation of your board, give it a fitting name and description, and among other settings adjust the default values for timezone and language.',
+	'AUTO_GUEST_LANG'				=> 'Detect language for guests',
+	'AUTO_GUEST_LANG_EXPLAIN'		=> 'Detects guest’s language automatically',
 	'CUSTOM_DATEFORMAT'				=> 'Custom…',
 	'DEFAULT_DATE_FORMAT'			=> 'Date format',
 	'DEFAULT_DATE_FORMAT_EXPLAIN'	=> 'The date format is the same as the PHP <code>date</code> function.',
@@ -50,11 +52,11 @@ $lang = array_merge($lang, array(
 	'OVERRIDE_LANGUAGE'				=> 'Override user language',
 	'OVERRIDE_LANGUAGE_EXPLAIN'		=> 'Replaces user’s language with the default.',
 	'OVERRIDE_DATEFORMAT'			=> 'Override user date format',
-	'OVERRIDE_DATEFORMAT_EXPLAIN'	=> 'Replaces user\'s date format with default',
+	'OVERRIDE_DATEFORMAT_EXPLAIN'	=> 'Replaces user’s date format with default',
 	'OVERRIDE_TIMEZONE'				=> 'Override user time zone',
-	'OVERRIDE_TIMEZONE_EXPLAIN'		=> 'Replaces user\'s time zone with default',
+	'OVERRIDE_TIMEZONE_EXPLAIN'		=> 'Replaces user’s time zone with default',
 	'OVERRIDE_DST'					=> 'Override user DST',
-	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user\'s DST with default',
+	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user’s DST with default',
 	'RATINGS'						=> 'Post ratings',
 	'RATE_ENABLED'					=> 'Enable ratings',
 	'RATE_TOPIC_TIME'				=> 'Limit topic (first post) rating time',

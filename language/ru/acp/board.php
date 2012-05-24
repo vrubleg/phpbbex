@@ -38,6 +38,8 @@ if (empty($lang) || !is_array($lang))
 // Board Settings
 $lang = array_merge($lang, array(
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Здесь вы можете установить общие параметры конференции, дать ей имя и описание, а также указать часовой пояс и язык, которые будут использоваться по умолчанию.',
+	'AUTO_GUEST_LANG'				=> 'Определять язык для гостей',
+	'AUTO_GUEST_LANG_EXPLAIN'		=> 'Для гостей язык будет определяться автоматически',
 	'CUSTOM_DATEFORMAT'				=> 'Другой…',
 	'DEFAULT_DATE_FORMAT'			=> 'Формат даты',
 	'DEFAULT_DATE_FORMAT_EXPLAIN'	=> 'Синтаксис идентичен функции <code><a href="http://www.php.net/date">date</code></a> языка PHP.',

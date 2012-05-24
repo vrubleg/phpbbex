@@ -60,6 +60,7 @@ class acp_board
 						'board_disable_msg'		=> false,
 						'default_lang'			=> array('lang' => 'DEFAULT_LANGUAGE',		'validate' => 'lang',	'type' => 'select', 'function' => 'language_select', 'params' => array('{CONFIG_VALUE}'), 'explain' => false),
 						'override_user_lang'	=> array('lang' => 'OVERRIDE_LANGUAGE',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'auto_guest_lang'		=> array('lang' => 'AUTO_GUEST_LANG',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'default_dateformat'	=> array('lang' => 'DEFAULT_DATE_FORMAT',	'validate' => 'string',	'type' => 'custom', 'method' => 'dateformat_select', 'explain' => true),
 						'override_user_dateformat'	=> array('lang' => 'OVERRIDE_DATEFORMAT',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'board_timezone'		=> array('lang' => 'SYSTEM_TIMEZONE',		'validate' => 'string',	'type' => 'select', 'function' => 'tz_select', 'params' => array('{CONFIG_VALUE}', 1), 'explain' => true),
