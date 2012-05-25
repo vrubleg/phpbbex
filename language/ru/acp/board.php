@@ -67,11 +67,6 @@ $lang = array_merge($lang, array(
 	'SITE_DESC'						=> 'Описание конференции',
 	'SITE_NAME'						=> 'Название конференции',
 	'SITE_KEYWORDS'					=> 'Ключевые слова конференции',
-	'STYLE_OPTIONS'						=> 'Настройки стиля',
-	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Отображать название и описание сайта в шапке',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
-	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Выводить счётчик LiveInternet',
-	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Идентификатор Google Analytics',
 	'COPYRIGHT_NOTICE'				=> 'Уведомление об авторских правах',
 	'SYSTEM_DST'					=> 'Сейчас действует летнее время (<abbr title="Летнее время">DST</abbr>)',
 	'SYSTEM_TIMEZONE'				=> 'Часовой пояс для гостей',
@@ -81,6 +76,19 @@ $lang = array_merge($lang, array(
 	'WARNINGS_GC'					=> 'Период обновления предупреждений',
 	'WARNINGS_GC_EXPLAIN'			=> 'Период (в секундах) автоматического снятия предупреждений.',
 	'WARNING_POST_DEFAULT'			=> 'Шаблон причины предупреждения',
+));
+
+// Style Settings
+$lang = array_merge($lang, array(
+	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Здесь вы можете настроить используемый шаблон (если он учитывает эти опции).',
+
+	'STYLE_SETTINGS_GENERAL'			=> 'Общие настройки',
+	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Отображать название и описание сайта в шапке',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
+
+	'STYLE_SETTINGS_COUNTERS'			=> 'Счётчики',
+	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Выводить счётчик LiveInternet',
+	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Идентификатор Google Analytics',
 ));
 
 // Board Features

@@ -83,12 +83,6 @@ class acp_board
 						'rate_no_negative'		=> array('lang' => 'RATE_NO_NEGATIVE',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
 						'rate_no_positive'		=> array('lang' => 'RATE_NO_POSITIVE',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
 
-						'legend4'							=> 'STYLE_OPTIONS',
-						'style_show_sitename_in_headerbar'	=> array('lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'style_show_social_buttons'			=> array('lang' => 'STYLE_SHOW_SOCIAL_BUTTONS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'style_show_liveinternet_counter'	=> array('lang' => 'STYLE_SHOW_LIVEINTERNET_COUNTER',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'style_google_analytics_id'			=> array('lang' => 'STYLE_GOOGLE_ANALYTICS_ID',			'validate' => 'string',	'type' => 'text:20:255', 'explain' => false),
-
 						'legend5'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
@@ -126,6 +120,23 @@ class acp_board
 						'load_cpf_viewtopic'	=> array('lang' => 'LOAD_CPF_VIEWTOPIC',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
 						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+					)
+				);
+			break;
+
+			case 'style':
+				$display_vars = array(
+					'title'	=> 'ACP_STYLE_SETTINGS',
+					'vars'	=> array(
+						'legend1'							=> 'STYLE_SETTINGS_GENERAL',
+						'style_show_sitename_in_headerbar'	=> array('lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_show_social_buttons'			=> array('lang' => 'STYLE_SHOW_SOCIAL_BUTTONS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'legend2'							=> 'STYLE_SETTINGS_COUNTERS',
+						'style_show_liveinternet_counter'	=> array('lang' => 'STYLE_SHOW_LIVEINTERNET_COUNTER',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_google_analytics_id'			=> array('lang' => 'STYLE_GOOGLE_ANALYTICS_ID',			'validate' => 'string',	'type' => 'text:20:255', 'explain' => false),
+
+						'legend3'							=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;

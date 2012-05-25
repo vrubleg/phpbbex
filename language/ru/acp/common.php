@@ -164,6 +164,7 @@ $lang = array_merge($lang, array(
 	'ACP_SMILIES'				=> 'Смайлики',
 	'ACP_STYLE_COMPONENTS'		=> 'Компоненты стилей',
 	'ACP_STYLE_MANAGEMENT'		=> 'Управление стилями',
+	'ACP_STYLE_SETTINGS'		=> 'Настройки шаблона',
 	'ACP_STYLES'				=> 'Стили',
 
 	'ACP_SUBMIT_CHANGES'		=> 'Сохранить изменения',

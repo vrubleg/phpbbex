@@ -67,11 +67,6 @@ $lang = array_merge($lang, array(
 	'SITE_DESC'						=> 'Site description',
 	'SITE_NAME'						=> 'Site name',
 	'SITE_KEYWORDS'					=> 'Site keywords',
-	'STYLE_OPTIONS'						=> 'Style options',
-	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
-	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
-	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Google Analytics ID',
 	'COPYRIGHT_NOTICE'				=> 'Copyright notice',
 	'SYSTEM_DST'					=> 'Enable Summer Time/<abbr title="Daylight Saving Time">DST</abbr>',
 	'SYSTEM_TIMEZONE'				=> 'Guest timezone',
@@ -81,6 +76,19 @@ $lang = array_merge($lang, array(
 	'WARNINGS_GC'					=> 'Warnings pruning period',
 	'WARNINGS_GC_EXPLAIN'			=> 'Time (in seconds) to prune exrired warnings periodically.',
 	'WARNING_POST_DEFAULT'			=> 'Default warning message',
+));
+
+// Style Settings
+$lang = array_merge($lang, array(
+	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can enable/disable several style features.',
+
+	'STYLE_SETTINGS_GENERAL'			=> 'Style options',
+	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
+
+	'STYLE_SETTINGS_COUNTERS'			=> 'Counters',
+	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
+	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Google Analytics ID',
 ));
 
 // Board Features
