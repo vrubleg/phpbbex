@@ -215,3 +215,6 @@ INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpeditti
 -- New options
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
+
+-- Disable acp_update
+UPDATE phpbb_modules p SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
