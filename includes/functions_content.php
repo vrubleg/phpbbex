@@ -513,6 +513,7 @@ function get_attrs_for_external_link($url)
 
 	if (stripos($url, 'http://') !== 0 && stripos($url, 'https://') !== 0) return '';
 	$maxpos = strpos($url, '/', 8);
+	if (!$maxpos) $maxpos = strlen($url);
 
 	$newwindow = !empty($config['external_links_newwindow']);
 	if ($newwindow)
