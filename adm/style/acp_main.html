@@ -135,7 +135,7 @@
 	<tr>
 		<td>{L_PHPBBEX_VERSION}: </td>
 		<td>
-			<strong><a href="{U_VERSIONCHECK}" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{PHPBBEX_VERSION}</a></strong> (phpBB {PHPBB_VERSION})
+			<strong><a href="<!-- IF S_VERSIONCHECK_FAIL -->http://phpbbex.com/<!-- ELSE -->{U_UPDATE_ANNOUNCEMENT}<!-- ENDIF -->" target="_blank" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{PHPBBEX_VERSION}</a></strong> (phpBB {PHPBB_VERSION})
 		</td>
 	<!-- IF S_TOTAL_ORPHAN -->
 		<td>{L_NUMBER_ORPHAN}: </td>
