@@ -64,10 +64,10 @@ foreach ($uninit as $var_name => $default_value)
 unset($uninit);
 
 $options = array('allow_' . $mode . '_icons' => 1, 'allow_' . $mode . '_checkboxes' => 2, 'allow_' . $mode . '_attachbox' => 3, 'allow_' . $mode . '_smilies' => 4);
+if ($mode == 'reply') $options['allow_reply_subject'] = 5;
 foreach ($options as $key => $value)
 {
 	$config[$key] = ($config['allow_quick_' . $mode . '_options'] & 1 << $value) ? 1 : 0;
-
 }
 
 $bbcode_status	= ($config['allow_bbcode'] && $auth->acl_get('f_bbcode', $forum_id)) ? true : false;
@@ -163,6 +163,7 @@ $template->assign_vars(array(
 	
 	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered']) ? true : false,	
 	'S_SHOW_TOPIC_ICONS'		=> $s_topic_icons,
+	'S_SUBJECT_ALLOWED'			=> ($mode == 'post') || $config['allow_reply_subject'],
 	'S_BBCODE_ALLOWED'			=> $bbcode_status,
 	'S_BBCODE_CHECKED'			=> ($bbcode_checked) ? ' checked="checked"' : '',
 	'S_SMILIES_ALLOWED'			=> ($smilies_status && $config['allow_' . $mode . '_smilies']) ? true : false,
@@ -177,7 +178,7 @@ $template->assign_vars(array(
 	'S_MAGIC_URL_CHECKED'		=> ($urls_checked) ? ' checked="checked"' : '',
 	'S_FIRST_POST_SHOW_ALLOWED'	=> ($mode == 'post'),
 	'S_NEW_MESSAGE'				=> ($mode == 'post'),
-	
+
 	'S_BBCODE_IMG'			=> $img_status,
 	'S_BBCODE_URL'			=> $url_status,
 	'S_BBCODE_FLASH'		=> $flash_status,

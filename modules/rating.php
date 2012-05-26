@@ -39,23 +39,25 @@ class module_rating
 			if (!$user_rate) $user_rate = array('rate' => 0, 'rate_time' => 0);
 
 			// Get post
-			$sql = 'SELECT *
-				FROM ' . POSTS_TABLE . '
-				WHERE post_id = ' . $post_id;
+			$sql = 'SELECT p.*, t.topic_first_post_id
+				FROM ' . POSTS_TABLE . ' p
+				LEFT JOIN ' . TOPICS_TABLE . ' t ON t.topic_id = p.topic_id
+				WHERE p.post_id = ' . $post_id;
 			$result = $db->sql_query($sql);
 			$post = $db->sql_fetchrow($result);
 			if (!$post) throw new exception('post not exists');
+			$rate_time = ($post['topic_first_post_id'] != $post['post_id'] || !isset($config['rate_topic_time']) || $config['rate_topic_time'] == -1) ? $config['rate_time'] : $config['rate_topic_time'];
 
 			$can = false;
 			switch ($rate)
 			{
 				case 'minus':
-					$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true);
+					$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true);
 					if ($can) $user_rate['rate']--;
 					if ($user_rate['rate'] < -1) $user_rate['rate'] = -1;
 				break;
 				case 'plus':
-					$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true);
+					$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true);
 					if ($can) $user_rate['rate']++;
 					if ($user_rate['rate'] > 1) $user_rate['rate'] = 1;
 				break;
@@ -168,8 +170,8 @@ class module_rating
 
 			$result = array(
 				'status'				=> 'ok',
-				'user_can_minus'		=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
-				'user_can_plus'			=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($config['rate_time'] > 0 ? $config['rate_time'] + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
+				'user_can_minus'		=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
+				'user_can_plus'			=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
 				'user_rate'				=> $user_rate['rate'],
 				'post_rating'			=> ($config['rate_no_positive'] ? 0 : $post_rating_positive) - ($config['rate_no_negative'] ? 0 : $post_rating_negative),
 				'post_rating_negative'	=> $post_rating_negative,

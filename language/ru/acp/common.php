@@ -164,6 +164,7 @@ $lang = array_merge($lang, array(
 	'ACP_SMILIES'				=> 'Смайлики',
 	'ACP_STYLE_COMPONENTS'		=> 'Компоненты стилей',
 	'ACP_STYLE_MANAGEMENT'		=> 'Управление стилями',
+	'ACP_STYLE_SETTINGS'		=> 'Настройки шаблона',
 	'ACP_STYLES'				=> 'Стили',
 
 	'ACP_SUBMIT_CHANGES'		=> 'Сохранить изменения',
@@ -322,7 +323,8 @@ $lang = array_merge($lang, array(
 	'AVATAR_DIR_SIZE'			=> 'Размер папки с аватарами',
 
 	'BOARD_STARTED'		=> 'Дата запуска конференции',
-	'BOARD_VERSION'		=> 'Версия phpBB',
+	'PHPBB_VERSION'		=> 'Версия phpBB',
+	'PHPBBEX_VERSION'	=> 'Версия phpBBex',
 
 	'DATABASE_SERVER_INFO'	=> 'Сервер базы данных',
 	'DATABASE_SIZE'			=> 'Размер базы данных',
@@ -389,7 +391,7 @@ $lang = array_merge($lang, array(
 
 	'VALUE'						=> 'Значение',
 	'VERSIONCHECK_FAIL'			=> 'Не удалось получить сведения о последней версии.',
-	'VERSIONCHECK_FORCE_UPDATE'	=> 'Повторно проверить версию',
+	'VERSIONCHECK_FORCE_UPDATE'	=> 'Перепроверить версию',
 	'VIEW_ADMIN_LOG'			=> 'Лог администраторов',
 	'VIEW_INACTIVE_USERS'		=> 'Неактивированные пользователи',
 
@@ -516,6 +518,7 @@ $lang = array_merge($lang, array(
 	'LOG_CONFIG_SERVER'			=> '<strong>Изменены настройки сервера</strong>',
 	'LOG_CONFIG_SETTINGS'		=> '<strong>Изменены настройки конференции</strong>',
 	'LOG_CONFIG_SIGNATURE'		=> '<strong>Изменены настройки подписей</strong>',
+	'LOG_CONFIG_STYLE'			=> '<strong>Изменены настройки шаблона</strong>',
 	'LOG_CONFIG_VISUAL'			=> '<strong>Изменены настройки средств против спам-ботов</strong>',
 
 	'LOG_APPROVE_TOPIC'			=> '<strong>Одобрена тема</strong><br />» %s',
@@ -773,6 +776,7 @@ $lang = array_merge($lang, array(
 	'ALLOW_QUICK_REPLY_REG'		=> 'Зарегистрированным пользователям',
 	'ALLOW_QUICK_REPLY_ALL'		=> 'Всем',
 	'ALLOW_REPLY_ICONS'			=> 'Значки сообщений/тем',
+	'ALLOW_REPLY_SUBJECT'		=> 'Заголовок',
 	'ALLOW_REPLY_CHECKBOXES'	=> 'Чекбоксы',
 	'ALLOW_REPLY_ATTACHBOX'		=> 'Вложение файлов',
 	'ALLOW_REPLY_SMILIES'		=> 'Смайлики',

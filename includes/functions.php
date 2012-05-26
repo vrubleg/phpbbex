@@ -4524,7 +4524,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		$user_lang = substr($user_lang, 0, strpos($user_lang, '-x-'));
 	}
 
-	$s_search_hidden_fields = array('sf' => 'titleonly', 'sr' => 'topics');
+	$s_search_hidden_fields = empty($config['default_search_titleonly']) ? array() : array('sf' => 'titleonly', 'sr' => 'topics');
 	if ($_SID)
 	{
 		$s_search_hidden_fields['sid'] = $_SID;
@@ -4578,13 +4578,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_USER_NEW_PRIVMSG'			=> $user->data['user_new_privmsg'],
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
 		'S_USER_NEW'					=> $user->data['user_new'],
-
-		'EXTERNAL_LINKS_NEWWINDOW'				=> !empty($config['external_links_newwindow']),
-		'EXTERNAL_LINKS_NOFOLLOW'				=> !empty($config['external_links_nofollow']),
-		'STYLE_SHOW_SITENAME_IN_HEADERBAR'		=> !empty($config['style_show_sitename_in_headerbar']),
-		'STYLE_SHOW_SOCIAL_BUTTONS'				=> !empty($config['style_show_social_buttons']),
-		'STYLE_SHOW_LIVEINTERNET_COUNTER'		=> !empty($config['style_show_liveinternet_counter']),
-		'STYLE_GOOGLE_ANALYTICS_ID'				=> !empty($config['style_google_analytics_id']) ? $config['style_google_analytics_id'] : false,
 
 		'SID'				=> $SID,
 		'_SID'				=> $_SID,
@@ -4724,6 +4717,40 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		default:
 			$template->assign_var('L_LOGIN_NAME', $user->lang['USERNAME']);
 		break;
+	}
+
+	// Style settings
+	$settings = array(
+		'external_links_newwindow',
+		'external_links_nofollow',
+
+		'style_show_sitename_in_headerbar',
+		'style_show_social_buttons',
+		'style_show_feeds_in_forumlist',
+		'style_auto_new_year',
+
+		'style_mp_on_left',
+		'style_mp_show_topic_poster',
+		'style_mp_show_gender',
+		'style_mp_show_age',
+		'style_mp_show_from',
+		'style_mp_show_warnings',
+		'style_mp_show_rating',
+		'style_mp_show_rating_detailed',
+		'style_mp_show_rated',
+		'style_mp_show_rated_detailed',
+		'style_mp_show_posts',
+		'style_mp_show_topics',
+		'style_mp_show_joined',
+		'style_mp_show_buttons',
+
+		'style_show_liveinternet_counter',
+		'style_google_analytics_id',
+	);
+
+	foreach ($settings as $setting)
+	{
+		$template->assign_var(strtoupper($setting), !empty($config[$setting]) ? $config[$setting] : false);
 	}
 
 	// application/xhtml+xml not used because of IE

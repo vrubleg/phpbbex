@@ -118,6 +118,7 @@ ALTER TABLE phpbb_users
 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_topic_time', -1);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive', '0');
@@ -127,6 +128,24 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitenam
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_auto_new_year', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topic_poster', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gender', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_age', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_from', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_warnings', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating_detailed', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated_detailed', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_posts', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topics', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_joined', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_buttons', '1');
+
+-- External links
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
@@ -192,3 +211,10 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
 
 -- New phpBBex ACL rights
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
+
+-- New options
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
+
+-- Disable acp_update
+UPDATE phpbb_modules p SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';

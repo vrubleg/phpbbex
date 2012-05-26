@@ -3171,12 +3171,17 @@ function get_database_size()
 */
 function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port = 80, $timeout = 6)
 {
-	global $user;
+	global $user, $config;
 
 	if ($fsock = @fsockopen($host, $port, $errno, $errstr, $timeout))
 	{
 		@fputs($fsock, "GET $directory/$filename HTTP/1.1\r\n");
-		@fputs($fsock, "HOST: $host\r\n");
+		@fputs($fsock, "Host: $host\r\n");
+		@fputs($fsock, "Referer: ".generate_board_url()."\r\n");
+		@fputs($fsock, 'User-Agent: phpBBex/' . (isset($config['phpbbex_version']) ? $config['phpbbex_version'] : '?')
+			. ' phpBB/' . (isset($config['version']) ? $config['version'] : '?')
+			. ' (' . preg_replace('/[^\x00-\x7F]+/e', 'urlencode("$0")', $user->data['username']) . ' <' . $user->data['user_email'] . '>; '
+			. $config['num_posts'] . '; ' . $config['num_topics'] . '; ' . $config['num_users'] . ")\r\n");
 		@fputs($fsock, "Connection: close\r\n\r\n");
 
 		$timer_stop = time() + $timeout;
@@ -3373,8 +3378,7 @@ function obtain_latest_version_info($force_update = false, $warn_fail = false, $
 		$errstr = '';
 		$errno = 0;
 
-		$info = get_remote_file('version.phpbb.com', '/phpbb',
-				((defined('PHPBB_QA')) ? '30x_qa.txt' : '30x.txt'), $errstr, $errno);
+		$info = get_remote_file('phpbbex.com', '/api', 'version.txt', $errstr, $errno);
 
 		if ($info === false)
 		{

@@ -21,7 +21,7 @@ class acp_quick_reply
 		global $db, $user, $auth, $template;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 
-		$quick_reply_options = array('allow_reply_icons'=>1, 'allow_reply_checkboxes'=>2, 'allow_reply_attachbox'=>3, 'allow_reply_smilies'=>4);
+		$quick_reply_options = array('allow_reply_icons'=>1, 'allow_reply_checkboxes'=>2, 'allow_reply_attachbox'=>3, 'allow_reply_smilies'=>4, 'allow_reply_subject'=>5);
 		$quick_post_options = array('allow_post_icons'=>1, 'allow_post_checkboxes'=>2, 'allow_post_attachbox'=>3, 'allow_post_smilies'=>4);
 				
 		$action	= request_var('action', '');
@@ -46,6 +46,7 @@ class acp_quick_reply
 					'vars'	=> array(
 						'allow_quick_reply'		=> array('lang' => 'ALLOW_QUICK_REPLY',		'validate' => 'int',	'type' => 'select', 'method' => 'allow_quick_reply', 'explain' => true),
 						'allow_reply_icons'		=> array('lang' => 'ALLOW_REPLY_ICONS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_reply_subject'	=> array('lang' => 'ALLOW_REPLY_SUBJECT',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_reply_checkboxes'=> array('lang' => 'ALLOW_REPLY_CHECKBOXES','validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_reply_attachbox'	=> array('lang' => 'ALLOW_REPLY_ATTACHBOX',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_reply_smilies'	=> array('lang' => 'ALLOW_REPLY_SMILIES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),

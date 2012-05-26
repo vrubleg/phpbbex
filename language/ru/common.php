@@ -629,6 +629,7 @@ $lang = array_merge($lang, array(
 	'TOPIC_LOCKED'		=> 'Эта тема закрыта, вы не можете редактировать и оставлять сообщения в ней.',
 	'TOPIC_LOCKED_SHORT'=> 'Закрыто',
 	'TOPIC_MOVED'		=> 'Перенесённая',
+	'TOPIC_POSTER'		=> 'Автор темы',
 	'TOPIC_REVIEW'		=> 'Обзор темы',
 	'TOPIC_TITLE'		=> 'Название темы',
 	'TOPIC_UNAPPROVED'	=> 'Данная тема не была одобрена',
@@ -916,6 +917,10 @@ $lang = array_merge($lang, array(
 	'GENDER_X'					=> 'Не указан',
 	'GENDER_M'					=> 'Мужской',
 	'GENDER_F'					=> 'Женский',
+
+	// Ratings
+	'USER_RATING'				=> 'Рейтинг',
+	'USER_RATED'				=> 'Оценил',
 
 	// Main menu
 	'USER_CP'					=> 'Личное',

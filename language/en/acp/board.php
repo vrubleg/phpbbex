@@ -38,6 +38,8 @@ if (empty($lang) || !is_array($lang))
 // Board Settings
 $lang = array_merge($lang, array(
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Here you can determine the basic operation of your board, give it a fitting name and description, and among other settings adjust the default values for timezone and language.',
+	'AUTO_GUEST_LANG'				=> 'Detect language for guests',
+	'AUTO_GUEST_LANG_EXPLAIN'		=> 'Detects guest’s language automatically',
 	'CUSTOM_DATEFORMAT'				=> 'Custom…',
 	'DEFAULT_DATE_FORMAT'			=> 'Date format',
 	'DEFAULT_DATE_FORMAT_EXPLAIN'	=> 'The date format is the same as the PHP <code>date</code> function.',
@@ -50,25 +52,21 @@ $lang = array_merge($lang, array(
 	'OVERRIDE_LANGUAGE'				=> 'Override user language',
 	'OVERRIDE_LANGUAGE_EXPLAIN'		=> 'Replaces user’s language with the default.',
 	'OVERRIDE_DATEFORMAT'			=> 'Override user date format',
-	'OVERRIDE_DATEFORMAT_EXPLAIN'	=> 'Replaces user\'s date format with default',
+	'OVERRIDE_DATEFORMAT_EXPLAIN'	=> 'Replaces user’s date format with default',
 	'OVERRIDE_TIMEZONE'				=> 'Override user time zone',
-	'OVERRIDE_TIMEZONE_EXPLAIN'		=> 'Replaces user\'s time zone with default',
+	'OVERRIDE_TIMEZONE_EXPLAIN'		=> 'Replaces user’s time zone with default',
 	'OVERRIDE_DST'					=> 'Override user DST',
-	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user\'s DST with default',
+	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user’s DST with default',
 	'RATINGS'						=> 'Post ratings',
 	'RATE_ENABLED'					=> 'Enable ratings',
-	'RATE_TIME'						=> 'Limit rating time',
+	'RATE_TOPIC_TIME'				=> 'Limit topic (first post) rating time',
+	'RATE_TIME'						=> 'Limit post rating time',
 	'RATE_CHANGE_TIME'				=> 'Limit rating change time',
 	'RATE_NO_NEGATIVE'				=> 'No negative',
 	'RATE_NO_POSITIVE'				=> 'No positive',
 	'SITE_DESC'						=> 'Site description',
 	'SITE_NAME'						=> 'Site name',
 	'SITE_KEYWORDS'					=> 'Site keywords',
-	'STYLE_OPTIONS'						=> 'Style options',
-	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
-	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
-	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Google Analytics ID',
 	'COPYRIGHT_NOTICE'				=> 'Copyright notice',
 	'SYSTEM_DST'					=> 'Enable Summer Time/<abbr title="Daylight Saving Time">DST</abbr>',
 	'SYSTEM_TIMEZONE'				=> 'Guest timezone',
@@ -78,6 +76,37 @@ $lang = array_merge($lang, array(
 	'WARNINGS_GC'					=> 'Warnings pruning period',
 	'WARNINGS_GC_EXPLAIN'			=> 'Time (in seconds) to prune exrired warnings periodically.',
 	'WARNING_POST_DEFAULT'			=> 'Default warning message',
+));
+
+// Style Settings
+$lang = array_merge($lang, array(
+	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can enable/disable several style features.',
+
+	'STYLE_SETTINGS_GENERAL'			=> 'General',
+	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
+	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
+	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
+
+	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',
+	'STYLE_MP_ON_LEFT'					=> 'Profiles on left',
+	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Display topic starter',
+	'STYLE_MP_SHOW_GENDER'				=> 'Display gender',
+	'STYLE_MP_SHOW_AGE'					=> 'Display age',
+	'STYLE_MP_SHOW_FROM'				=> 'Display from',
+	'STYLE_MP_SHOW_WARNINGS'			=> 'Display warnings',
+	'STYLE_MP_SHOW_RATING'				=> 'Display rating',
+	'STYLE_MP_SHOW_RATING_DETAILED'		=> 'Display detailed rating',
+	'STYLE_MP_SHOW_RATED'				=> 'Display rated',
+	'STYLE_MP_SHOW_RATED_DETAILED'		=> 'Display detailed rated',
+	'STYLE_MP_SHOW_POSTS'				=> 'Display posts counter',
+	'STYLE_MP_SHOW_TOPICS'				=> 'Display topics counter',
+	'STYLE_MP_SHOW_JOINED'				=> 'Display joined date',
+	'STYLE_MP_SHOW_BUTTONS'				=> 'Display contact buttons',
+
+	'STYLE_SETTINGS_COUNTERS'			=> 'Counters',
+	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
+	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Google Analytics ID',
 ));
 
 // Board Features

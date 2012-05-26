@@ -630,6 +630,7 @@ $lang = array_merge($lang, array(
 	'TOPIC_LOCKED'		=> 'This topic is locked, you cannot edit posts or make further replies.',
 	'TOPIC_LOCKED_SHORT'=> 'Topic locked',
 	'TOPIC_MOVED'		=> 'Moved topic',
+	'TOPIC_POSTER'		=> 'Topic author',
 	'TOPIC_REVIEW'		=> 'Topic review',
 	'TOPIC_TITLE'		=> 'Topic title',
 	'TOPIC_UNAPPROVED'	=> 'This topic has not been approved',
@@ -911,6 +912,10 @@ $lang = array_merge($lang, array(
 	'GENDER_X'					=> 'None specified',
 	'GENDER_M'					=> 'Male',
 	'GENDER_F'					=> 'Female',
+
+	// Ratings
+	'USER_RATING'				=> 'Rating',
+	'USER_RATED'				=> 'Rated',
 
 	// Main menu
 	'USER_CP'					=> 'User CP',

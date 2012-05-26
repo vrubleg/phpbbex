@@ -38,6 +38,8 @@ if (empty($lang) || !is_array($lang))
 // Board Settings
 $lang = array_merge($lang, array(
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Здесь вы можете установить общие параметры конференции, дать ей имя и описание, а также указать часовой пояс и язык, которые будут использоваться по умолчанию.',
+	'AUTO_GUEST_LANG'				=> 'Определять язык для гостей',
+	'AUTO_GUEST_LANG_EXPLAIN'		=> 'Для гостей язык будет определяться автоматически',
 	'CUSTOM_DATEFORMAT'				=> 'Другой…',
 	'DEFAULT_DATE_FORMAT'			=> 'Формат даты',
 	'DEFAULT_DATE_FORMAT_EXPLAIN'	=> 'Синтаксис идентичен функции <code><a href="http://www.php.net/date">date</code></a> языка PHP.',
@@ -57,18 +59,14 @@ $lang = array_merge($lang, array(
 	'OVERRIDE_DST_EXPLAIN'			=> 'Будет использовано летнее время, установленное для гостей.',
 	'RATINGS'						=> 'Оценки сообщений',
 	'RATE_ENABLED'					=> 'Включить оценки',
-	'RATE_TIME'						=> 'Время оценивания',
+	'RATE_TOPIC_TIME'				=> 'Время оценивания тем (первых сообщений)',
+	'RATE_TIME'						=> 'Время оценивания сообщений',
 	'RATE_CHANGE_TIME'				=> 'Время изменения решения',
 	'RATE_NO_NEGATIVE'				=> 'Без отрицательных',
 	'RATE_NO_POSITIVE'				=> 'Без положительных',
 	'SITE_DESC'						=> 'Описание конференции',
 	'SITE_NAME'						=> 'Название конференции',
 	'SITE_KEYWORDS'					=> 'Ключевые слова конференции',
-	'STYLE_OPTIONS'						=> 'Настройки стиля',
-	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Отображать название и описание сайта в шапке',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
-	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Выводить счётчик LiveInternet',
-	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Идентификатор Google Analytics',
 	'COPYRIGHT_NOTICE'				=> 'Уведомление об авторских правах',
 	'SYSTEM_DST'					=> 'Сейчас действует летнее время (<abbr title="Летнее время">DST</abbr>)',
 	'SYSTEM_TIMEZONE'				=> 'Часовой пояс для гостей',
@@ -78,6 +76,37 @@ $lang = array_merge($lang, array(
 	'WARNINGS_GC'					=> 'Период обновления предупреждений',
 	'WARNINGS_GC_EXPLAIN'			=> 'Период (в секундах) автоматического снятия предупреждений.',
 	'WARNING_POST_DEFAULT'			=> 'Шаблон причины предупреждения',
+));
+
+// Style Settings
+$lang = array_merge($lang, array(
+	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Здесь вы можете настроить используемый шаблон (если он учитывает эти опции).',
+
+	'STYLE_SETTINGS_GENERAL'			=> 'Общие настройки',
+	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Отображать название и описание сайта в шапке',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
+	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Отображать кнопки RSS в списке форумов',
+	'STYLE_AUTO_NEW_YEAR'				=> 'Зимний стиль заголовков в декабре, январе и феврале',
+
+	'STYLE_SETTINGS_MINIPROFILE'		=> 'Отображение минипрофиля',
+	'STYLE_MP_ON_LEFT'					=> 'Минипрофили слева',
+	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Отображать автора темы',
+	'STYLE_MP_SHOW_GENDER'				=> 'Отображать пол',
+	'STYLE_MP_SHOW_AGE'					=> 'Отображать возраст',
+	'STYLE_MP_SHOW_FROM'				=> 'Отображать откуда',
+	'STYLE_MP_SHOW_WARNINGS'			=> 'Отображать предупреждения',
+	'STYLE_MP_SHOW_RATING'				=> 'Отображать рейтинг (итоговую сумму)',
+	'STYLE_MP_SHOW_RATING_DETAILED'		=> 'Отображать подробный рейтинг',
+	'STYLE_MP_SHOW_RATED'				=> 'Отображать поле «оценил» (итоговую сумму)',
+	'STYLE_MP_SHOW_RATED_DETAILED'		=> 'Отображать поле «оценил» подробно',
+	'STYLE_MP_SHOW_POSTS'				=> 'Отображать количество сообщений',
+	'STYLE_MP_SHOW_TOPICS'				=> 'Отображать количество тем',
+	'STYLE_MP_SHOW_JOINED'				=> 'Отображать дату регистрации',
+	'STYLE_MP_SHOW_BUTTONS'				=> 'Отображать кнопки контактов',
+
+	'STYLE_SETTINGS_COUNTERS'			=> 'Счётчики',
+	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Выводить счётчик LiveInternet',
+	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Идентификатор Google Analytics',
 ));
 
 // Board Features

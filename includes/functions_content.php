@@ -511,6 +511,10 @@ function get_attrs_for_external_link($url)
 {
 	global $config;
 
+	if (stripos($url, 'http://') !== 0 && stripos($url, 'https://') !== 0) return '';
+	$maxpos = strpos($url, '/', 8);
+	if (!$maxpos) $maxpos = strlen($url);
+
 	$newwindow = !empty($config['external_links_newwindow']);
 	if ($newwindow)
 	{
@@ -523,7 +527,8 @@ function get_attrs_for_external_link($url)
 
 		foreach ($newwindow_exclude as $prefix)
 		{
-			if (stripos($url, $prefix) === 0)
+			$pos = stripos($url, $prefix);
+			if ($pos !== false && $pos < $maxpos)
 			{
 				$newwindow = false;
 				break;
@@ -543,7 +548,8 @@ function get_attrs_for_external_link($url)
 
 		foreach ($nofollow_exclude as $prefix)
 		{
-			if (stripos($url, $prefix) === 0)
+			$pos = stripos($url, $prefix);
+			if ($pos !== false && $pos < $maxpos)
 			{
 				$nofollow = false;
 				break;

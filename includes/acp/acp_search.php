@@ -65,6 +65,7 @@ class acp_search
 			'min_search_author_chars'	=> 'integer',
 			'max_num_search_keywords'	=> 'integer',
 			'search_store_results'		=> 'integer',
+			'default_search_titleonly'	=> 'bool',
 		);
 
 		$search = null;
@@ -128,7 +129,7 @@ class acp_search
 			}
 
 			// only change config if anything was actually changed
-			if ($submit && ($config[$config_name] != $config_value))
+			if ($submit && (!isset($config[$config_name]) || $config[$config_name] != $config_value))
 			{
 				set_config($config_name, $config_value);
 				$updated = true;
@@ -221,6 +222,7 @@ class acp_search
 
 			'S_SEARCH_TYPES'		=> $search_options,
 			'S_YES_SEARCH'			=> (bool) $config['load_search'],
+			'S_DEFAULT_TITLEONLY'	=> !empty($config['default_search_titleonly']),
 			'S_SETTINGS'			=> true,
 
 			'U_ACTION'				=> $this->u_action)

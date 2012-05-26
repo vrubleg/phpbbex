@@ -201,8 +201,18 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'AUTHOR_JOINED'		=> $user->format_date($user_info['user_regdate']),
 		'AUTHOR_POSTS'		=> (int) $user_info['user_posts'],
 		'AUTHOR_TOPICS'		=> (int) $user_info['user_topics'],
+		'AUTHOR_WARNINGS'	=> (int) $user_info['user_warnings'],
 		'AUTHOR_FROM'		=> (!empty($user_info['user_from'])) ? $user_info['user_from'] : '',
 		'AUTHOR_AGE'		=> $user_age,
+
+		'S_RATE_ENABLED'			=> $config['rate_enabled'],
+		'AUTHOR_RATING'				=> (int) ($config['rate_no_positive'] ? 0 : $user_info['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $user_info['user_rating_negative']),
+		'AUTHOR_RATING_POSITIVE'	=> (int) $user_info['user_rating_positive'],
+		'AUTHOR_RATING_NEGATIVE'	=> (int) $user_info['user_rating_negative'],
+		'AUTHOR_RATED'				=> (int) ($config['rate_no_positive'] ? 0 : $user_info['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $user_info['user_rated_negative']),
+		'AUTHOR_RATED_POSITIVE'		=> (int) $user_info['user_rated_positive'],
+		'AUTHOR_RATED_NEGATIVE'		=> (int) $user_info['user_rated_negative'],
+
 		'S_AUTHOR_GENDER_X'	=> $user_info['user_gender'] == GENDER_X,
 		'S_AUTHOR_GENDER_M'	=> $user_info['user_gender'] == GENDER_M,
 		'S_AUTHOR_GENDER_F'	=> $user_info['user_gender'] == GENDER_F,

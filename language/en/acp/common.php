@@ -164,6 +164,7 @@ $lang = array_merge($lang, array(
 	'ACP_SMILIES'				=> 'Smilies',
 	'ACP_STYLE_COMPONENTS'		=> 'Style components',
 	'ACP_STYLE_MANAGEMENT'		=> 'Style management',
+	'ACP_STYLE_SETTINGS'		=> 'Style settings',
 	'ACP_STYLES'				=> 'Styles',
 
 	'ACP_SUBMIT_CHANGES'		=> 'Submit changes',
@@ -322,7 +323,8 @@ $lang = array_merge($lang, array(
 	'AVATAR_DIR_SIZE'			=> 'Avatar directory size',
 
 	'BOARD_STARTED'		=> 'Board started',
-	'BOARD_VERSION'		=> 'Board version',
+	'PHPBB_VERSION'		=> 'phpBB version',
+	'PHPBBEX_VERSION'	=> 'phpBBex version',
 
 	'DATABASE_SERVER_INFO'	=> 'Database server',
 	'DATABASE_SIZE'			=> 'Database size',
@@ -516,6 +518,7 @@ $lang = array_merge($lang, array(
 	'LOG_CONFIG_SERVER'			=> '<strong>Altered server settings</strong>',
 	'LOG_CONFIG_SETTINGS'		=> '<strong>Altered board settings</strong>',
 	'LOG_CONFIG_SIGNATURE'		=> '<strong>Altered signature settings</strong>',
+	'LOG_CONFIG_STYLE'			=> '<strong>Altered style settings</strong>',
 	'LOG_CONFIG_VISUAL'			=> '<strong>Altered anti-spambot settings</strong>',
 
 	'LOG_APPROVE_TOPIC'			=> '<strong>Approved topic</strong><br />» %s',
@@ -774,6 +777,7 @@ $lang = array_merge($lang, array(
 	'ALLOW_QUICK_REPLY_REG'		=> 'Registered only',
 	'ALLOW_QUICK_REPLY_ALL'		=> 'All',
 	'ALLOW_REPLY_ICONS'			=> 'Post/topic icons',
+	'ALLOW_REPLY_SUBJECT'		=> 'Subject',
 	'ALLOW_REPLY_CHECKBOXES'	=> 'Checkboxes',
 	'ALLOW_REPLY_ATTACHBOX'		=> 'Attachbox',
 	'ALLOW_REPLY_SMILIES'		=> 'Smilies',
