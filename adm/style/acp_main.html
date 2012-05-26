@@ -17,12 +17,12 @@
 	<!-- IF S_VERSIONCHECK_FAIL -->
 		<div class="errorbox notice">
 			<p>{L_VERSIONCHECK_FAIL}</p>
-			<p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a> &middot; <a href="{U_VERSIONCHECK}">{L_MORE_INFORMATION}</a></p>
+			<p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a></p>
 		</div>
 	<!-- ELSEIF not S_VERSION_UP_TO_DATE -->
 		<div class="errorbox">
-			<p>{L_VERSION_NOT_UP_TO_DATE_TITLE}</p>
-			<p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a> &middot; <a href="{U_VERSIONCHECK}">{L_MORE_INFORMATION}</a></p>
+			<p>{UPDATE_INSTRUCTIONS}</p>
+			<p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a> &middot; <a href="{U_UPDATE_ANNOUNCEMENT}" target="_blank">{L_MORE_INFORMATION}</a></p>
 		</div>
 	<!-- ENDIF -->
 
@@ -133,9 +133,9 @@
 		<td><strong>{GZIP_COMPRESSION}</strong></td>
 	</tr>
 	<tr>
-		<td>{L_BOARD_VERSION}: </td>
+		<td>{L_PHPBBEX_VERSION}: </td>
 		<td>
-			<strong><a href="{U_VERSIONCHECK}" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{BOARD_VERSION}</a></strong> [&nbsp;<a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a>&nbsp;]
+			<strong><a href="{U_VERSIONCHECK}" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{PHPBBEX_VERSION}</a></strong> (phpBB {PHPBB_VERSION})
 		</td>
 	<!-- IF S_TOTAL_ORPHAN -->
 		<td>{L_NUMBER_ORPHAN}: </td>

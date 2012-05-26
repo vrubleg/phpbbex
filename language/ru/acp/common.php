@@ -323,7 +323,8 @@ $lang = array_merge($lang, array(
 	'AVATAR_DIR_SIZE'			=> 'Размер папки с аватарами',
 
 	'BOARD_STARTED'		=> 'Дата запуска конференции',
-	'BOARD_VERSION'		=> 'Версия phpBB',
+	'PHPBB_VERSION'		=> 'Версия phpBB',
+	'PHPBBEX_VERSION'	=> 'Версия phpBBex',
 
 	'DATABASE_SERVER_INFO'	=> 'Сервер базы данных',
 	'DATABASE_SIZE'			=> 'Размер базы данных',
