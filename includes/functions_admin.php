@@ -3171,7 +3171,7 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 		@fputs($fsock, "GET $directory/$filename HTTP/1.1\r\n");
 		@fputs($fsock, "Host: $host\r\n");
 		@fputs($fsock, "Referer: ".generate_board_url()."\r\n");
-		@fputs($fsock, "User-Agent: phpBBex v".(isset($config['phpbbex_version']) ? $config['phpbbex_version'] : ' ').", phpBB v".(isset($config['version']) ? $config['version'] : ' ')."\r\n");
+		@fputs($fsock, "User-Agent: phpBBex v".(isset($config['phpbbex_version']) ? $config['phpbbex_version'] : '?').", phpBB v".(isset($config['version']) ? $config['version'] : '?')."\r\n");
 		@fputs($fsock, "Connection: close\r\n\r\n");
 
 		$timer_stop = time() + $timeout;
