@@ -62,14 +62,20 @@
 	</div>
 
 	<dl class="postprofile" id="profile{MESSAGE_ID}">
-		<dt><span style="font-size: 1.1em;">{MESSAGE_AUTHOR_FULL}</span><!-- IF S_AUTHOR_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF S_AUTHOR_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --></dt>
+		<dt><span style="font-size: 1.1em;">{MESSAGE_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF S_AUTHOR_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF S_AUTHOR_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --></dt>
 		<!-- IF RANK_TITLE --><dd>{RANK_TITLE}</dd><!-- ENDIF -->
 		<!-- IF RANK_IMG --><dd>{RANK_IMG}</dd><!-- ENDIF -->
 		<!-- IF AUTHOR_AVATAR --><dd><a href="{U_MESSAGE_AUTHOR}">{AUTHOR_AVATAR}</a></dd><!-- ENDIF -->
-		<!-- IF AUTHOR_AGE and AUTHOR_AGE < 65 and AUTHOR_AGE > 10 --><dd><strong>{L_AGE}:</strong> {AUTHOR_AGE}</dd><!-- ENDIF -->
-		<!-- IF AUTHOR_FROM --><dd><strong>{L_LOCATION}:</strong> {AUTHOR_FROM}</dd><!-- ENDIF -->
-		
-		<!-- IF U_PM or U_EMAIL or U_WWW or U_JABBER -->
+		<!-- IF STYLE_MP_SHOW_WARNINGS and AUTHOR_WARNINGS --><dd><strong>{L_WARNINGS}:</strong> {AUTHOR_WARNINGS}</dd><!-- ENDIF -->
+		<!-- IF STYLE_MP_SHOW_AGE and AUTHOR_AGE and AUTHOR_AGE < 65 and AUTHOR_AGE > 10 --><dd><strong>{L_AGE}:</strong> {AUTHOR_AGE}</dd><!-- ENDIF -->
+		<!-- IF STYLE_MP_SHOW_FROM and AUTHOR_FROM --><dd><strong>{L_LOCATION}:</strong> {AUTHOR_FROM}</dd><!-- ENDIF -->
+		<!-- IF S_RATE_ENABLED and (STYLE_MP_SHOW_RATING or STYLE_MP_SHOW_RATING_DETAILED) --><dd><strong>{L_USER_RATING}:</strong> <!-- IF STYLE_MP_SHOW_RATING and STYLE_MP_SHOW_RATING_DETAILED -->{AUTHOR_RATING} (+{AUTHOR_RATING_POSITIVE}/−{AUTHOR_RATING_NEGATIVE})<!-- ELSEIF STYLE_MP_SHOW_RATING_DETAILED -->+{AUTHOR_RATING_POSITIVE}/−{AUTHOR_RATING_NEGATIVE}<!-- ELSE -->{AUTHOR_RATING}<!-- ENDIF --></dd><!-- ENDIF -->
+		<!-- IF S_RATE_ENABLED and (STYLE_MP_SHOW_RATED or STYLE_MP_SHOW_RATED_DETAILED) --><dd><strong>{L_USER_RATED}:</strong> <!-- IF STYLE_MP_SHOW_RATED and STYLE_MP_SHOW_RATED_DETAILED -->{AUTHOR_RATED} (+{AUTHOR_RATED_POSITIVE}/−{AUTHOR_RATED_NEGATIVE})<!-- ELSEIF STYLE_MP_SHOW_RATED_DETAILED -->+{AUTHOR_RATED_POSITIVE}/−{AUTHOR_RATED_NEGATIVE}<!-- ELSE -->{AUTHOR_RATED}<!-- ENDIF --></dd><!-- ENDIF -->
+		<!-- IF STYLE_MP_SHOW_POSTS and AUTHOR_POSTS --><dd><strong>{L_POSTS}:</strong> {AUTHOR_POSTS}</dd><!-- ENDIF -->
+		<!-- IF STYLE_MP_SHOW_TOPICS and AUTHOR_TOPICS --><dd><strong>{L_TOPICS}:</strong> {AUTHOR_TOPICS}</dd><!-- ENDIF -->
+		<!-- IF STYLE_MP_SHOW_JOINED and AUTHOR_JOINED --><dd><strong>{L_JOINED}:</strong> {AUTHOR_JOINED}</dd><!-- ENDIF -->
+
+		<!-- IF STYLE_MP_SHOW_BUTTONS and (U_PM or U_EMAIL or U_WWW or U_JABBER or U_SKYPE) -->
 		<dd>
 			<ul class="profile-icons">
 			<!-- IF U_PM --><li class="pm-icon"><a href="{U_PM}" title="{L_PRIVATE_MESSAGE}"><span>{L_PRIVATE_MESSAGE}</span></a></li><!-- ENDIF -->

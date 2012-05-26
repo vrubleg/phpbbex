@@ -131,12 +131,29 @@ class acp_board
 						'legend1'							=> 'STYLE_SETTINGS_GENERAL',
 						'style_show_sitename_in_headerbar'	=> array('lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_show_social_buttons'			=> array('lang' => 'STYLE_SHOW_SOCIAL_BUTTONS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_show_feeds_in_forumlist'		=> array('lang' => 'STYLE_SHOW_FEEDS_IN_FORUMLIST',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_auto_new_year'				=> array('lang' => 'STYLE_AUTO_NEW_YEAR',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
-						'legend2'							=> 'STYLE_SETTINGS_COUNTERS',
+						'legend2'							=> 'STYLE_SETTINGS_MINIPROFILE',
+						'style_mp_show_topic_poster'		=> array('lang' => 'STYLE_MP_SHOW_TOPIC_POSTER',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_gender'				=> array('lang' => 'STYLE_MP_SHOW_GENDER',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_age'					=> array('lang' => 'STYLE_MP_SHOW_AGE',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_from'				=> array('lang' => 'STYLE_MP_SHOW_FROM',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_warnings'			=> array('lang' => 'STYLE_MP_SHOW_WARNINGS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_rating'				=> array('lang' => 'STYLE_MP_SHOW_RATING',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_rating_detailed'		=> array('lang' => 'STYLE_MP_SHOW_RATING_DETAILED',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_rated'				=> array('lang' => 'STYLE_MP_SHOW_RATED',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_rated_detailed'		=> array('lang' => 'STYLE_MP_SHOW_RATED_DETAILED',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_posts'				=> array('lang' => 'STYLE_MP_SHOW_POSTS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_topics'				=> array('lang' => 'STYLE_MP_SHOW_TOPICS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_joined'				=> array('lang' => 'STYLE_MP_SHOW_JOINED',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_buttons'				=> array('lang' => 'STYLE_MP_SHOW_BUTTONS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'legend3'							=> 'STYLE_SETTINGS_COUNTERS',
 						'style_show_liveinternet_counter'	=> array('lang' => 'STYLE_SHOW_LIVEINTERNET_COUNTER',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_google_analytics_id'			=> array('lang' => 'STYLE_GOOGLE_ANALYTICS_ID',			'validate' => 'string',	'type' => 'text:20:255', 'explain' => false),
 
-						'legend3'							=> 'ACP_SUBMIT_CHANGES',
+						'legend4'							=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;

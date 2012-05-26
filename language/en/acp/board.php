@@ -82,9 +82,26 @@ $lang = array_merge($lang, array(
 $lang = array_merge($lang, array(
 	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can enable/disable several style features.',
 
-	'STYLE_SETTINGS_GENERAL'			=> 'Style options',
+	'STYLE_SETTINGS_GENERAL'			=> 'General',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
+	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
+	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
+
+	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',
+	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Display topic starter',
+	'STYLE_MP_SHOW_GENDER'				=> 'Display gender',
+	'STYLE_MP_SHOW_AGE'					=> 'Display age',
+	'STYLE_MP_SHOW_FROM'				=> 'Display from',
+	'STYLE_MP_SHOW_WARNINGS'			=> 'Display warnings',
+	'STYLE_MP_SHOW_RATING'				=> 'Display rating',
+	'STYLE_MP_SHOW_RATING_DETAILED'		=> 'Display detailed rating',
+	'STYLE_MP_SHOW_RATED'				=> 'Display rated',
+	'STYLE_MP_SHOW_RATED_DETAILED'		=> 'Display detailed rated',
+	'STYLE_MP_SHOW_POSTS'				=> 'Display posts counter',
+	'STYLE_MP_SHOW_TOPICS'				=> 'Display topics counter',
+	'STYLE_MP_SHOW_JOINED'				=> 'Display joined date',
+	'STYLE_MP_SHOW_BUTTONS'				=> 'Display contact buttons',
 
 	'STYLE_SETTINGS_COUNTERS'			=> 'Counters',
 	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
