@@ -518,6 +518,7 @@ $lang = array_merge($lang, array(
 	'LOG_CONFIG_SERVER'			=> '<strong>Изменены настройки сервера</strong>',
 	'LOG_CONFIG_SETTINGS'		=> '<strong>Изменены настройки конференции</strong>',
 	'LOG_CONFIG_SIGNATURE'		=> '<strong>Изменены настройки подписей</strong>',
+	'LOG_CONFIG_STYLE'			=> '<strong>Изменены настройки шаблона</strong>',
 	'LOG_CONFIG_VISUAL'			=> '<strong>Изменены настройки средств против спам-ботов</strong>',
 
 	'LOG_APPROVE_TOPIC'			=> '<strong>Одобрена тема</strong><br />» %s',
