@@ -185,7 +185,7 @@ jQuery(function($)
 
 <!-- BEGIN postrow -->
 	<!-- IF postrow.S_FIRST_UNREAD --><a id="unread"></a><!-- ENDIF -->
-	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF --><!-- IF postrow.S_ONLINE and not postrow.S_IGNORE_POST --> online<!-- ENDIF -->">
+	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF -->">
 		<div class="inner"><span class="corners-top"><span></span></span>
 
 		<div class="postbody">
@@ -255,7 +255,7 @@ jQuery(function($)
 
 		<!-- IF not postrow.S_IGNORE_POST -->
 			<dl class="postprofile" id="profile{postrow.POST_ID}">
-			<dt><span style="font-size: 1.1em;">{postrow.POST_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF postrow.S_POSTER_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF postrow.S_POSTER_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --></dt>
+			<dt><span style="font-size: 1.1em;">{postrow.POST_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF postrow.S_POSTER_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF postrow.S_POSTER_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --><!-- IF postrow.S_ONLINE and not postrow.S_IGNORE_POST --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
 			<!-- IF postrow.RANK_TITLE or STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER --><dd><!-- IF STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->{L_TOPIC_POSTER}<!-- ENDIF --><!-- IF postrow.RANK_TITLE and STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->, <!-- ENDIF --><!-- IF postrow.RANK_TITLE -->{postrow.RANK_TITLE}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF postrow.RANK_IMG --><dd>{postrow.RANK_IMG}</dd><!-- ENDIF -->
 			<!-- IF postrow.POSTER_AVATAR --><dd><!-- IF postrow.U_POST_AUTHOR --><a href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --></dd><!-- ENDIF -->

@@ -89,6 +89,7 @@ $lang = array_merge($lang, array(
 	'STYLE_AUTO_NEW_YEAR'				=> 'Зимний стиль заголовков в декабре, январе и феврале',
 
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Отображение минипрофиля',
+	'STYLE_MP_ON_LEFT'					=> 'Минипрофили слева',
 	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Отображать автора темы',
 	'STYLE_MP_SHOW_GENDER'				=> 'Отображать пол',
 	'STYLE_MP_SHOW_AGE'					=> 'Отображать возраст',

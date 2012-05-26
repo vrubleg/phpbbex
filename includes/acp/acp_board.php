@@ -135,6 +135,7 @@ class acp_board
 						'style_auto_new_year'				=> array('lang' => 'STYLE_AUTO_NEW_YEAR',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
 						'legend2'							=> 'STYLE_SETTINGS_MINIPROFILE',
+						'style_mp_on_left'					=> array('lang' => 'STYLE_MP_ON_LEFT',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_topic_poster'		=> array('lang' => 'STYLE_MP_SHOW_TOPIC_POSTER',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_gender'				=> array('lang' => 'STYLE_MP_SHOW_GENDER',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_age'					=> array('lang' => 'STYLE_MP_SHOW_AGE',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),

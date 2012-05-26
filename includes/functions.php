@@ -4714,6 +4714,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_show_feeds_in_forumlist',
 		'style_auto_new_year',
 
+		'style_mp_on_left',
 		'style_mp_show_topic_poster',
 		'style_mp_show_gender',
 		'style_mp_show_age',

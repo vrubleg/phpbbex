@@ -89,6 +89,7 @@ $lang = array_merge($lang, array(
 	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
 
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',
+	'STYLE_MP_ON_LEFT'					=> 'Profiles on left',
 	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Display topic starter',
 	'STYLE_MP_SHOW_GENDER'				=> 'Display gender',
 	'STYLE_MP_SHOW_AGE'					=> 'Display age',
