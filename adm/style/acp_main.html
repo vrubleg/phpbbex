@@ -81,10 +81,10 @@
 		<col class="col1" /><col class="col2" /><col class="col1" /><col class="col2" />
 	<thead>
 	<tr>
-		<th>{L_STATISTIC}</th>
-		<th>{L_VALUE}</th>
-		<th>{L_STATISTIC}</th>
-		<th>{L_VALUE}</th>
+		<th width="20%">{L_STATISTIC}</th>
+		<th width="30%">{L_VALUE}</th>
+		<th width="20%">{L_STATISTIC}</th>
+		<th width="30%">{L_VALUE}</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -133,9 +133,9 @@
 		<td><strong>{GZIP_COMPRESSION}</strong></td>
 	</tr>
 	<tr>
-		<td>{L_PHPBBEX_VERSION}: </td>
+		<td>{L_PHPBBEX_VERSION}:</td>
 		<td>
-			<strong><a href="<!-- IF S_VERSIONCHECK_FAIL -->http://phpbbex.com/<!-- ELSE -->{U_UPDATE_ANNOUNCEMENT}<!-- ENDIF -->" target="_blank" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{PHPBBEX_VERSION}</a></strong> (phpBB {PHPBB_VERSION})
+			<strong><a href="<!-- IF S_VERSIONCHECK_FAIL -->http://phpbbex.com/<!-- ELSE -->{U_UPDATE_ANNOUNCEMENT}<!-- ENDIF -->" target="_blank" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{PHPBBEX_VERSION}</a></strong> (phpBB {PHPBB_VERSION}) [&nbsp;<a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a>&nbsp;]
 		</td>
 	<!-- IF S_TOTAL_ORPHAN -->
 		<td>{L_NUMBER_ORPHAN}: </td>

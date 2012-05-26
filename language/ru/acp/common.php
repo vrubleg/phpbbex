@@ -391,7 +391,7 @@ $lang = array_merge($lang, array(
 
 	'VALUE'						=> 'Значение',
 	'VERSIONCHECK_FAIL'			=> 'Не удалось получить сведения о последней версии.',
-	'VERSIONCHECK_FORCE_UPDATE'	=> 'Повторно проверить версию',
+	'VERSIONCHECK_FORCE_UPDATE'	=> 'Перепроверить версию',
 	'VIEW_ADMIN_LOG'			=> 'Лог администраторов',
 	'VIEW_INACTIVE_USERS'		=> 'Неактивированные пользователи',
 
