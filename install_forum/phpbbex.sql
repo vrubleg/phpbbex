@@ -194,5 +194,6 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
 -- New phpBBex ACL rights
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
 
--- Auto guest lang option
+-- New options
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
