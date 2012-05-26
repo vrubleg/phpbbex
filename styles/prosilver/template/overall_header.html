@@ -87,17 +87,16 @@
 
 <body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> mp-on-left<!-- ENDIF -->">
 
-<div id="wrap">
+<div id="wrap"<!-- IF not S_OUTLINKS --> style="padding-top: 10px;"<!-- ENDIF -->>
 	<a id="top" name="top" accesskey="t"></a>
 	<p class="skiplink"><a href="#start_here">{L_SKIP}</a></p>
+	<!-- IF S_OUTLINKS -->
 	<div id="top-menu">
-		<!-- IF S_OUTLINKS -->
 		<div id="top-links"><ul>
 		<!-- BEGIN outlinks -->
 			<li<!-- IF outlinks.S_LAST_ROW --> style="border-right: 0;"<!-- ENDIF -->><a href="{outlinks.URL}"<!-- IF outlinks.NEWWINDOW --> target="_blank"<!-- ENDIF --><!-- IF outlinks.NOFOLLOW --> rel="nofollow"<!-- ENDIF -->>{outlinks.TITLE}</a></li>
 		<!-- END outlinks -->
 		</ul></div>
-		<!-- ENDIF -->
 		<!-- IF S_DISPLAY_SEARCH and not S_IN_SEARCH -->
 		<div id="search-box">
 			<form action="{U_SEARCH}" method="get" id="search">
@@ -109,6 +108,7 @@
 		</div>
 		<!-- ENDIF -->
 	</div>
+	<!-- ENDIF -->
 
 	<div id="page-header">
 		<div class="headerbar">
@@ -121,6 +121,18 @@
 				<p>{SITE_DESCRIPTION}</p>
 				<!-- ENDIF -->
 			</div>
+
+		<!-- IF not S_OUTLINKS and S_DISPLAY_SEARCH and not S_IN_SEARCH -->
+			<div id="search-box" style="margin-top: 23px;">
+				<form action="{U_SEARCH}" method="post" id="search">
+				<fieldset>
+					<input name="keywords" id="keywords" type="text" maxlength="128" title="{L_SEARCH_KEYWORDS}" class="inputbox search" value="<!-- IF SEARCH_WORDS-->{SEARCH_WORDS}<!-- ELSE -->{L_SEARCH_MINI}<!-- ENDIF -->" onclick="if(this.value=='{LA_SEARCH_MINI}')this.value='';" onblur="if(this.value=='')this.value='{LA_SEARCH_MINI}';" />
+					<input class="button2" value="{L_SEARCH}" type="submit" /><br />
+					<a href="{U_SEARCH}" title="{L_SEARCH_ADV_EXPLAIN}">{L_SEARCH_ADV}</a> {S_SEARCH_HIDDEN_FIELDS}
+				</fieldset>
+				</form>
+			</div>
+		<!-- ENDIF -->
 
 			<span class="clear"></span></div>
 		</div>
