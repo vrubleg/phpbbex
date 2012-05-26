@@ -288,6 +288,22 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitenam
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_auto_new_year', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topic_poster', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gender', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_age', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_from', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_warnings', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating_detailed', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated_detailed', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_posts', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topics', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_joined', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_buttons', '1');
 
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cache_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cron_lock', '0', 1);
