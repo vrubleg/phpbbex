@@ -775,6 +775,7 @@ $lang = array_merge($lang, array(
 	'ALLOW_QUICK_REPLY_REG'		=> 'Registered only',
 	'ALLOW_QUICK_REPLY_ALL'		=> 'All',
 	'ALLOW_REPLY_ICONS'			=> 'Post/topic icons',
+	'ALLOW_REPLY_SUBJECT'		=> 'Subject',
 	'ALLOW_REPLY_CHECKBOXES'	=> 'Checkboxes',
 	'ALLOW_REPLY_ATTACHBOX'		=> 'Attachbox',
 	'ALLOW_REPLY_SMILIES'		=> 'Smilies',

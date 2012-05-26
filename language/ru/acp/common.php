@@ -774,6 +774,7 @@ $lang = array_merge($lang, array(
 	'ALLOW_QUICK_REPLY_REG'		=> 'Зарегистрированным пользователям',
 	'ALLOW_QUICK_REPLY_ALL'		=> 'Всем',
 	'ALLOW_REPLY_ICONS'			=> 'Значки сообщений/тем',
+	'ALLOW_REPLY_SUBJECT'		=> 'Заголовок',
 	'ALLOW_REPLY_CHECKBOXES'	=> 'Чекбоксы',
 	'ALLOW_REPLY_ATTACHBOX'		=> 'Вложение файлов',
 	'ALLOW_REPLY_SMILIES'		=> 'Смайлики',
