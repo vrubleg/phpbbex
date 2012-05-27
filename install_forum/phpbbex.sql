@@ -183,7 +183,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars'
 -- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|, H:i');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '43200');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('delete_time', '43200');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('delete_time', '15');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_overall', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '1');
