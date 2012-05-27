@@ -663,7 +663,7 @@ $template->assign_vars(array(
 	'S_DISPLAY_POST_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 	'S_DISPLAY_REPLY_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 	'S_ENABLE_FEEDS_TOPIC'	=> ($config['feed_topic'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $topic_data['forum_options'])) ? true : false,
-	'S_RATE_ENABLED'		=> $config['rate_enabled'],
+	'S_RATE_ENABLED'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
 
 	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id" . (($start) ? "&amp;start=$start" : ''),
 	'U_TOPIC'				=> "{$server_path}viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
@@ -1129,6 +1129,7 @@ while ($row = $db->sql_fetchrow($result))
 		{
 			$user_cache[$poster_id] = array(
 				'joined'		=> '',
+				'with_us'		=> '',
 				'posts'			=> '',
 				'topics'		=> '',
 				'from'			=> '',
@@ -1193,6 +1194,7 @@ while ($row = $db->sql_fetchrow($result))
 
 			$user_cache[$poster_id] = array(
 				'joined'		=> $user->format_date($row['user_regdate']),
+				'with_us'		=> !empty($config['style_mp_show_with_us']) ? time_delta::get_verbal($row['user_regdate'], time(), false, 2) : '',
 				'posts'			=> $row['user_posts'],
 				'topics'		=> $row['user_topics'],
 				'warnings'		=> (isset($row['user_warnings'])) ? $row['user_warnings'] : 0,
@@ -1660,6 +1662,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'RANK_IMG'			=> $user_cache[$poster_id]['rank_image'],
 		'RANK_IMG_SRC'		=> $user_cache[$poster_id]['rank_image_src'],
 		'POSTER_JOINED'		=> $user_cache[$poster_id]['joined'],
+		'POSTER_WITH_US'	=> $user_cache[$poster_id]['with_us'],
 		'POSTER_POSTS'		=> $user_cache[$poster_id]['posts'],
 		'POSTER_TOPICS'		=> $user_cache[$poster_id]['topics'],
 		'POSTER_FROM'		=> $user_cache[$poster_id]['from'],
@@ -1667,6 +1670,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POSTER_WARNINGS'	=> $user_cache[$poster_id]['warnings'],
 		'POSTER_AGE'		=> $user_cache[$poster_id]['age'],
 
+		'S_POSTER_RATING'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($poster_id != ANONYMOUS),
 		'POSTER_RATING'				=> $user_cache[$poster_id]['rating'],
 		'POSTER_RATING_POSITIVE'	=> $user_cache[$poster_id]['rating_positive'],
 		'POSTER_RATING_NEGATIVE'	=> $user_cache[$poster_id]['rating_negative'],
@@ -1732,7 +1736,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_NUMBER'		=> $i + $start + 1,
 		'POSTER_ID'			=> $poster_id,
 
-		'POST_RATING_SHOW'		=> $config['rate_enabled'] && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() || $row['post_rating_negative'] != 0 && $row['post_rating_positive'] != 0 : true),
+		'POST_RATING_SHOW'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() || $row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0 : true),
 		'POST_RATING'			=> ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
 		'POST_RATING_NEGATIVE'	=> $row['post_rating_negative'],
 		'POST_RATING_POSITIVE'	=> $row['post_rating_positive'],

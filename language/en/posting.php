@@ -240,14 +240,6 @@ $lang = array_merge($lang, array(
 	'MERGE_SEPARATOR'			=> "\n\n[size=85][color=gray]%s after %s:[/color][/size]\n",
 	'MERGE_SUBJECT'				=> "[size=85][color=gray]%s[/color][/size]\n",
 
-	// Time delta
-	'D_SECONDS'					=> array('second', 'seconds', 'seconds'),
-	'D_MINUTES'					=> array('minute', 'minutes', 'minutes'),
-	'D_HOURS'					=> array('hour', 'hours', 'hours'),
-	'D_MDAY'					=> array('day', 'days', 'days'),
-	'D_MON'						=> array('month', 'months', 'months'),
-	'D_YEAR'					=> array('year', 'yaers', 'years'),
-
 ));
 
 ?>

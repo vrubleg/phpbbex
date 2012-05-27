@@ -102,6 +102,7 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_POSTS'				=> 'Отображать количество сообщений',
 	'STYLE_MP_SHOW_TOPICS'				=> 'Отображать количество тем',
 	'STYLE_MP_SHOW_JOINED'				=> 'Отображать дату регистрации',
+	'STYLE_MP_SHOW_WITH_US'				=> 'Отображать как долго пользователь с нами',
 	'STYLE_MP_SHOW_BUTTONS'				=> 'Отображать кнопки контактов',
 
 	'STYLE_SETTINGS_COUNTERS'			=> 'Счётчики',

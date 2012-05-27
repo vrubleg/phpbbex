@@ -97,9 +97,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		set_var($merge_post_data['post_text'], $merge_post_data['post_text'], 'string', true);
 		
 		// Prepare message separator
-		require($phpbb_root_path . 'includes/time_delta.'.$phpEx);
-		$td = new timedelta();
-		$time_delta = $td->spelldelta($merge_post_data['post_time'], $current_time);
+		$time_delta = time_delta::get_verbal($merge_post_data['post_time'], $current_time);
 		$separator = sprintf($user->lang['MERGE_SEPARATOR'], $user->lang['POSTED'], $time_delta);
 		//set_var($separator, $separator, 'string', true);
 
