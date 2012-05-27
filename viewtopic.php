@@ -1657,6 +1657,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POSTER_WARNINGS'	=> $user_cache[$poster_id]['warnings'],
 		'POSTER_AGE'		=> $user_cache[$poster_id]['age'],
 
+		'S_POSTER_RATING'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($poster_id != ANONYMOUS),
 		'POSTER_RATING'				=> $user_cache[$poster_id]['rating'],
 		'POSTER_RATING_POSITIVE'	=> $user_cache[$poster_id]['rating_positive'],
 		'POSTER_RATING_NEGATIVE'	=> $user_cache[$poster_id]['rating_negative'],
