@@ -86,6 +86,8 @@
 		<dl class="details">
 			<dt>{L_JOINED}:</dt> <dd>{JOINED}</dd>
 			<dt>{L_VISITED}:</dt> <dd>{VISITED}</dd>
+			<!-- IF (STYLE_P_SHOW_RATING or STYLE_P_SHOW_RATING_DETAILED) and S_RATING --><dt>{L_USER_RATING}:</dt> <dd><!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --><!-- IF STYLE_P_SHOW_RATING and STYLE_P_SHOW_RATING_DETAILED -->{RATING} (+{RATING_POSITIVE}/−{RATING_NEGATIVE})<!-- ELSEIF STYLE_P_SHOW_RATING_DETAILED -->+{RATING_POSITIVE}/−{RATING_NEGATIVE}<!-- ELSE --><span title="+{RATING_POSITIVE}/−{RATING_NEGATIVE}">{RATING}</span><!-- ENDIF --><!-- ELSE -->{RATING}<!-- ENDIF --></dd><!-- ENDIF -->
+			<!-- IF (STYLE_P_SHOW_RATED or STYLE_P_SHOW_RATED_DETAILED) and S_RATING --><dt>{L_USER_RATED}:</dt> <dd><!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --><!-- IF STYLE_P_SHOW_RATED and STYLE_P_SHOW_RATED_DETAILED -->{RATED} (+{RATED_POSITIVE}/−{RATED_NEGATIVE})<!-- ELSEIF STYLE_P_SHOW_RATED_DETAILED -->+{RATED_POSITIVE}/−{RATED_NEGATIVE}<!-- ELSE --><span title="+{RATED_POSITIVE}/−{RATED_NEGATIVE}">{RATED}</span><!-- ENDIF --><!-- ELSE -->{RATED}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF S_WARNINGS -->
 			<dt>{L_WARNINGS}: </dt>
 			<dd><strong>{WARNINGS}</strong><!-- IF U_NOTES or U_WARN --> [ <!-- IF U_NOTES --><a href="{U_NOTES}">{L_VIEW_NOTES}</a><!-- ENDIF --> <!-- IF U_WARN --><!-- IF U_NOTES --> | <!-- ENDIF --><a href="{U_WARN}">{L_WARN_USER}</a><!-- ENDIF --> ]<!-- ENDIF --></dd>

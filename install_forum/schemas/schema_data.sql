@@ -296,7 +296,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gend
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_age', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_from', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_warnings', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating_detailed', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated_detailed', '0');
@@ -305,6 +305,10 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topi
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_joined', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_with_us', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_buttons', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating_detailed', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated_detailed', '0');
 
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cache_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cron_lock', '0', 1);

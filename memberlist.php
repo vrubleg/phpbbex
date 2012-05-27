@@ -1737,6 +1737,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'TOPICS'		=> ($data['user_topics']) ? $data['user_topics'] : 0,
 		'WARNINGS'		=> isset($data['user_warnings']) ? $data['user_warnings'] : 0,
 
+		'S_RATING'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
 		'RATING'			=> ($config['rate_no_positive'] ? 0 : $data['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $data['user_rating_negative']),
 		'RATING_POSITIVE'	=> $data['user_rating_positive'],
 		'RATING_NEGATIVE'	=> $data['user_rating_negative'],

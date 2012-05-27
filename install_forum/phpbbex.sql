@@ -136,7 +136,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gen
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_age', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_from', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_warnings', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating_detailed', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated_detailed', '0');
@@ -145,6 +145,10 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_top
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_joined', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_with_us', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_buttons', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating_detailed', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated_detailed', '0');
 
 -- External links
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');

@@ -88,8 +88,9 @@ $lang = array_merge($lang, array(
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
 	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
 
+	'STYLE_SETTINGS_PROFILE'			=> 'Profile',
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',
-	'STYLE_MP_ON_LEFT'					=> 'Profiles on left',
+	'STYLE_MP_ON_LEFT'					=> 'Mini profiles on left',
 	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Display topic starter',
 	'STYLE_MP_SHOW_GENDER'				=> 'Display gender',
 	'STYLE_MP_SHOW_AGE'					=> 'Display age',
@@ -104,6 +105,8 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_JOINED'				=> 'Display joined date',
 	'STYLE_MP_SHOW_WITH_US'				=> 'Display how long user is with us',
 	'STYLE_MP_SHOW_BUTTONS'				=> 'Display contact buttons',
+
+	
 
 	'STYLE_SETTINGS_COUNTERS'			=> 'Counters',
 	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',

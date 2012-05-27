@@ -158,6 +158,14 @@ class ucp_main
 
 //					'S_GROUP_OPTIONS'	=> $group_options,
 
+					'S_RATING'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
+					'RATING'			=> (int) ($config['rate_no_positive'] ? 0 : $user->data['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $user->data['user_rating_negative']),
+					'RATING_POSITIVE'	=> (int) $user->data['user_rating_positive'],
+					'RATING_NEGATIVE'	=> (int) $user->data['user_rating_negative'],
+					'RATED'				=> (int) ($config['rate_no_positive'] ? 0 : $user->data['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $user->data['user_rated_negative']),
+					'RATED_POSITIVE'	=> (int) $user->data['user_rated_positive'],
+					'RATED_NEGATIVE'	=> (int) $user->data['user_rated_negative'],
+
 					'U_SEARCH_USER'		=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.$phpEx", 'author_id=' . $user->data['user_id'] . '&amp;sr=posts') : '',
 				));
 
