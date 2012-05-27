@@ -198,7 +198,8 @@ CREATE TABLE phpbb_extensions (
 	extension_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	group_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	extension varchar(100) DEFAULT '' NOT NULL,
-	PRIMARY KEY (extension_id)
+	PRIMARY KEY (extension_id),
+	UNIQUE INDEX extension (extension)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 
