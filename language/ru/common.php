@@ -911,6 +911,14 @@ $lang = array_merge($lang, array(
 	'TOPIC_PCT'					=> '%.2f%% всех тем',
 	'TOTAL_TOPICS'				=> 'Всего тем',
 
+	// Time delta
+	'D_SECONDS'					=> array('секунду', 'секунды', 'секунд'),
+	'D_MINUTES'					=> array('минуту', 'минуты', 'минут'),
+	'D_HOURS'					=> array('час', 'часа', 'часов'),
+	'D_MDAY'					=> array('день', 'дня', 'дней'),
+	'D_MON'						=> array('месяц', 'месяца', 'месяцев'),
+	'D_YEAR'					=> array('год', 'года', 'лет'),
+
 	// Genders
 	'GENDER'					=> 'Пол',
 	'GENDER_EXPLAIN'			=> 'Пожалуйста, укажите ваш пол.',

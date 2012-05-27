@@ -22,15 +22,6 @@ This class is based on  Delta_Russian class created by Dmitry Koterov, http://fo
 
 class timedelta 
 {
-	var $from = 'D_SECONDS';
-
-	// Creates new object.
-	// If $from is specified, "granularity" while spelling is $from.
-	function timedelta($from = 'D_SECONDS') 
-	{
-		$this->from = $from;
-	}
-
 	// returns the associative array with date deltas.
 	function getdelta($first, $last)
 	{
@@ -76,11 +67,11 @@ class timedelta
 	}
 
 	// Makes the spellable phrase.
-	function spelldelta($first, $last)
+	function spelldelta($first_time, $last_time, $accuracy = false, $max_parts = false, $keep_zeros = false)
 	{
 		global $user;
 		// Solve data delta.
-		$delta = $this->getdelta($first, $last);
+		$delta = $this->getdelta($first_time, $last_time);
 		if (!$delta)
 		{
 			return false;
@@ -88,18 +79,28 @@ class timedelta
 
 		// Make spellable phrase.
 		$parts = array();
-		foreach (array_reverse($delta) as $k=>$n) 
+		$parts_count = 0;
+		foreach (array_reverse($delta) as $measure => $value) 
 		{
-			if (!$n && $this->from && $k != $this->from) 
-			{
-				continue;
-			}
-			elseif(!$n && count($parts)) 
+			if ($max_parts && $max_parts <= $parts_count)
 			{
 				break;
 			}
-			$parts[] = timedelta::declension($n, $user->lang['D_' . strtoupper($k)]);
-			if ($this->from && $k == $this->from)
+			if (!$value && (!$keep_zeros || !$parts_count)) 
+			{
+				if ($measure !== $accuracy)
+				{
+					if ($parts_count) $parts_count++;
+					continue;
+				}
+				else if (count($parts))
+				{
+					break;
+				}
+			}
+			$parts_count++;
+			$parts[] = timedelta::declension($value, $user->lang['D_' . strtoupper($measure)]);
+			if ($measure === $accuracy)
 			{
 				break;
 			}

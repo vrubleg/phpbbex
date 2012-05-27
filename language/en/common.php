@@ -906,6 +906,14 @@ $lang = array_merge($lang, array(
 	'TOPIC_PCT'					=> '%.2f%% of all topics',
 	'TOTAL_TOPICS'				=> 'Total topics',
 
+	// Time delta
+	'D_SECONDS'					=> array('second', 'seconds', 'seconds'),
+	'D_MINUTES'					=> array('minute', 'minutes', 'minutes'),
+	'D_HOURS'					=> array('hour', 'hours', 'hours'),
+	'D_MDAY'					=> array('day', 'days', 'days'),
+	'D_MON'						=> array('month', 'months', 'months'),
+	'D_YEAR'					=> array('year', 'yaers', 'years'),
+
 	// Genders
 	'GENDER'					=> 'Gender',
 	'GENDER_EXPLAIN'			=> 'Please enter your gender here.',
