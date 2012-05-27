@@ -1715,7 +1715,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_NUMBER'		=> $i + $start + 1,
 		'POSTER_ID'			=> $poster_id,
 
-		'POST_RATING_SHOW'		=> $config['rate_enabled'] && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() || $row['post_rating_negative'] != 0 && $row['post_rating_positive'] != 0 : true),
+		'POST_RATING_SHOW'		=> $config['rate_enabled'] && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() || $row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0 : true),
 		'POST_RATING'			=> ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
 		'POST_RATING_NEGATIVE'	=> $row['post_rating_negative'],
 		'POST_RATING_POSITIVE'	=> $row['post_rating_positive'],
