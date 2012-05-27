@@ -49,29 +49,29 @@ ALTER TABLE phpbb_warnings
 	ADD INDEX post_id (post_id);
 
 -- New phpBBex options
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post_options', '20');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_enable', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post_options', '20');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_enable', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
 
 -- New phpBBex ACL rights
-INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
+REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
 
 -- Reset options for all users (new dateformat, enable quick reply, etc)
 UPDATE phpbb_users SET user_options = 233343, user_dateformat = '|d.m.Y|, H:i';
@@ -116,41 +116,41 @@ ALTER TABLE phpbb_users
 	ADD COLUMN user_rated_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER user_rating_negative,
 	ADD COLUMN user_rated_negative mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER user_rated_positive;
 
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_topic_time', -1);
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_topic_time', -1);
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive', '0');
 
 -- Style options
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_auto_new_year', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topic_poster', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gender', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_age', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_from', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_warnings', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating_detailed', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated_detailed', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_posts', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topics', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_joined', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_with_us', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_buttons', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_auto_new_year', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topic_poster', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gender', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_age', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_from', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_warnings', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating_detailed', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated_detailed', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_posts', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topics', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_joined', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_with_us', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_buttons', '1');
 
 -- External links
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow_exclude', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow_exclude', '');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.2.0');
@@ -166,11 +166,11 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_height
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_width', '64');
 
 -- Reset signature options to phpBBex defaults (Disable BBCodes, max 200 characters)
--- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_bbcode', '0');
--- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_img', '0');
--- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_links', '0');
--- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_smilies', '0');
--- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_chars', '200');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_bbcode', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_img', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_links', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_smilies', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_chars', '200');
 
 -- Reset attachments options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_pm_attach', '1');
@@ -200,22 +200,23 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', 
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
 
 -- New file extensions
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'diff');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'sql');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'avi');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'oga');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'ogv');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
+ALTER TABLE phpbb_extensions ADD UNIQUE INDEX extension (extension);
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (3, 'diff');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (3, 'sql');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (6, 'avi');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'oga');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'ogv');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
 
 -- New phpBBex ACL rights
-INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
+REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
 
 -- New options
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
 
 -- Disable acp_update
 UPDATE phpbb_modules p SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
