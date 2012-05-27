@@ -77,6 +77,7 @@ class acp_board
 
 						'legend3'				=> 'RATINGS',
 						'rate_enabled'			=> array('lang' => 'RATE_ENABLED',			'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
+						'rate_only_topics'		=> array('lang' => 'RATE_ONLY_TOPICS',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
 						'rate_time'				=> array('lang' => 'RATE_TIME',				'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
 						'rate_topic_time'		=> array('lang' => 'RATE_TOPIC_TIME',		'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
 						'rate_change_time'		=> array('lang' => 'RATE_CHANGE_TIME',		'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),

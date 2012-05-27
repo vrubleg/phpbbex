@@ -59,6 +59,7 @@ $lang = array_merge($lang, array(
 	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user’s DST with default',
 	'RATINGS'						=> 'Post ratings',
 	'RATE_ENABLED'					=> 'Enable ratings',
+	'RATE_ONLY_TOPICS'				=> 'Rate only topics (first posts)',
 	'RATE_TOPIC_TIME'				=> 'Limit topic (first post) rating time',
 	'RATE_TIME'						=> 'Limit post rating time',
 	'RATE_CHANGE_TIME'				=> 'Limit rating change time',

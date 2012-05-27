@@ -117,6 +117,7 @@ ALTER TABLE phpbb_users
 	ADD COLUMN user_rated_negative mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER user_rated_positive;
 
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_only_topics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_topic_time', -1);
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
