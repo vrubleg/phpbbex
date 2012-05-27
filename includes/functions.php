@@ -4708,6 +4708,8 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	$settings = array(
 		'external_links_newwindow',
 		'external_links_nofollow',
+		'rate_no_positive',
+		'rate_no_negative',
 
 		'style_show_sitename_in_headerbar',
 		'style_show_social_buttons',

@@ -662,7 +662,7 @@ $template->assign_vars(array(
 	'S_DISPLAY_POST_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 	'S_DISPLAY_REPLY_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 	'S_ENABLE_FEEDS_TOPIC'	=> ($config['feed_topic'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $topic_data['forum_options'])) ? true : false,
-	'S_RATE_ENABLED'		=> $config['rate_enabled'],
+	'S_RATE_ENABLED'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
 
 	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id" . (($start) ? "&amp;start=$start" : ''),
 	'U_TOPIC'				=> "{$server_path}viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
@@ -1718,7 +1718,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_NUMBER'		=> $i + $start + 1,
 		'POSTER_ID'			=> $poster_id,
 
-		'POST_RATING_SHOW'		=> $config['rate_enabled'] && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() || $row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0 : true),
+		'POST_RATING_SHOW'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() || $row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0 : true),
 		'POST_RATING'			=> ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
 		'POST_RATING_NEGATIVE'	=> $row['post_rating_negative'],
 		'POST_RATING_POSITIVE'	=> $row['post_rating_positive'],
