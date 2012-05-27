@@ -199,6 +199,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'RANK_IMG'			=> $user_info['rank_image'],
 		'AUTHOR_AVATAR'		=> (isset($user_info['avatar'])) ? $user_info['avatar'] : '',
 		'AUTHOR_JOINED'		=> $user->format_date($user_info['user_regdate']),
+		'AUTHOR_WITH_US'	=> !empty($config['style_mp_show_with_us']) ? time_delta::get_verbal($user_info['user_regdate'], time(), false, 2) : '',
 		'AUTHOR_POSTS'		=> (int) $user_info['user_posts'],
 		'AUTHOR_TOPICS'		=> (int) $user_info['user_topics'],
 		'AUTHOR_WARNINGS'	=> (int) $user_info['user_warnings'],
