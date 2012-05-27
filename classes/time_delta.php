@@ -20,10 +20,10 @@ if (!defined('IN_PHPBB'))
 This class is based on  Delta_Russian class created by Dmitry Koterov, http://forum.dklab.ru
 */
 
-class timedelta 
+class time_delta 
 {
 	// returns the associative array with date deltas.
-	function getdelta($first, $last)
+	static private function getdelta($first, $last)
 	{
 		if ($last < $first) return false;
 
@@ -44,7 +44,7 @@ class timedelta
 		$dDay += $l['mday'] - $f['mday'];
 		if ($dDay < 0) 
 		{
-			$monlen = timedelta::monthlength(date("Y", $first), date("m", $first));
+			$monlen = self::monthlength(date("Y", $first), date("m", $first));
 			$dDay += $monlen;
 			$dMon--;
 		}
@@ -67,11 +67,11 @@ class timedelta
 	}
 
 	// Makes the spellable phrase.
-	function spelldelta($first_time, $last_time, $accuracy = false, $max_parts = false, $keep_zeros = false)
+	static public function get_verbal($first_time, $last_time, $accuracy = false, $max_parts = false, $keep_zeros = false)
 	{
 		global $user;
 		// Solve data delta.
-		$delta = $this->getdelta($first_time, $last_time);
+		$delta = self::getdelta($first_time, $last_time);
 		if (!$delta)
 		{
 			return false;
@@ -99,7 +99,7 @@ class timedelta
 				}
 			}
 			$parts_count++;
-			$parts[] = timedelta::declension($value, $user->lang['D_' . strtoupper($measure)]);
+			$parts[] = self::declension($value, $user->lang['D_' . strtoupper($measure)]);
 			if ($measure === $accuracy)
 			{
 				break;
@@ -109,7 +109,7 @@ class timedelta
 	}
 
 	// Returns the length (in days) of the specified month.
-	function monthlength($year, $mon)
+	static private function monthlength($year, $mon)
 	{
 		$l = 28;
 		while (checkdate($mon, $l+1, $year))
@@ -123,7 +123,7 @@ class timedelta
 	// i.e.: "1 answer", "2 answers", "13 answers", et cetera.
 	// $int — an integer value.
 	// $expressions is an array, i.e.: array("answer", "answers", "answers") 
-	function declension($int, $expressions)
+	static private function declension($int, $expressions)
 	{
 	   settype($int, "integer");
 	   $count = $int % 100;

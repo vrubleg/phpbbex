@@ -1124,6 +1124,7 @@ while ($row = $db->sql_fetchrow($result))
 		{
 			$user_cache[$poster_id] = array(
 				'joined'		=> '',
+				'with_us'		=> '',
 				'posts'			=> '',
 				'topics'		=> '',
 				'from'			=> '',
@@ -1184,6 +1185,7 @@ while ($row = $db->sql_fetchrow($result))
 
 			$user_cache[$poster_id] = array(
 				'joined'		=> $user->format_date($row['user_regdate']),
+				'with_us'		=> !empty($config['style_mp_show_with_us']) ? time_delta::get_verbal($row['user_regdate'], time(), false, 2) : '',
 				'posts'			=> $row['user_posts'],
 				'topics'		=> $row['user_topics'],
 				'warnings'		=> (isset($row['user_warnings'])) ? $row['user_warnings'] : 0,
@@ -1647,6 +1649,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'RANK_IMG'			=> $user_cache[$poster_id]['rank_image'],
 		'RANK_IMG_SRC'		=> $user_cache[$poster_id]['rank_image_src'],
 		'POSTER_JOINED'		=> $user_cache[$poster_id]['joined'],
+		'POSTER_WITH_US'	=> $user_cache[$poster_id]['with_us'],
 		'POSTER_POSTS'		=> $user_cache[$poster_id]['posts'],
 		'POSTER_TOPICS'		=> $user_cache[$poster_id]['topics'],
 		'POSTER_FROM'		=> $user_cache[$poster_id]['from'],

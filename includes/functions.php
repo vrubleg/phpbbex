@@ -4727,6 +4727,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_mp_show_posts',
 		'style_mp_show_topics',
 		'style_mp_show_joined',
+		'style_mp_show_with_us',
 		'style_mp_show_buttons',
 
 		'style_show_liveinternet_counter',

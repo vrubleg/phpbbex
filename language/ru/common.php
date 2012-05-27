@@ -965,6 +965,7 @@ $lang = array_merge($lang, array(
 
 	// Other
 	'SOCIAL_SHARE_IN'		=> 'Поделиться в',
+	'USER_WITH_US'			=> 'С нами',
 
 ));
 

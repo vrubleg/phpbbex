@@ -148,6 +148,7 @@ class acp_board
 						'style_mp_show_posts'				=> array('lang' => 'STYLE_MP_SHOW_POSTS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_topics'				=> array('lang' => 'STYLE_MP_SHOW_TOPICS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_joined'				=> array('lang' => 'STYLE_MP_SHOW_JOINED',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_mp_show_with_us'				=> array('lang' => 'STYLE_MP_SHOW_WITH_US',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_buttons'				=> array('lang' => 'STYLE_MP_SHOW_BUTTONS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
 						'legend3'							=> 'STYLE_SETTINGS_COUNTERS',

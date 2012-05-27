@@ -960,6 +960,7 @@ $lang = array_merge($lang, array(
 
 	// Other
 	'SOCIAL_SHARE_IN'		=> 'Share in',
+	'USER_WITH_US'			=> 'With us',
 
 ));
 

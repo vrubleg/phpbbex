@@ -143,6 +143,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rate
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_posts', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topics', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_joined', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_with_us', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_buttons', '1');
 
 -- External links
