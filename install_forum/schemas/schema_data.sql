@@ -108,10 +108,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('email_package_size
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_confirm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_pm_icons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_post_confirm', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow_exclude', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_http_auth', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_limit_post', '15');
@@ -232,7 +228,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_date
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PASS_TYPE_ANY');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.2.0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.3.0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_edit_time', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_boxes', '4');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');
@@ -242,6 +238,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('print_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('queue_interval', '60');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ranks_path', 'images/ranks');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_only_topics', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_topic_time', -1);
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
@@ -296,7 +293,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gend
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_age', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_from', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_warnings', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rating_detailed', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_rated_detailed', '0');
@@ -305,6 +302,10 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topi
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_joined', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_with_us', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_buttons', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating_detailed', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated_detailed', '0');
 
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cache_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cron_lock', '0', 1);

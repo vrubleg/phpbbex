@@ -77,6 +77,7 @@ class acp_board
 
 						'legend3'				=> 'RATINGS',
 						'rate_enabled'			=> array('lang' => 'RATE_ENABLED',			'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
+						'rate_only_topics'		=> array('lang' => 'RATE_ONLY_TOPICS',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
 						'rate_time'				=> array('lang' => 'RATE_TIME',				'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
 						'rate_topic_time'		=> array('lang' => 'RATE_TOPIC_TIME',		'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
 						'rate_change_time'		=> array('lang' => 'RATE_CHANGE_TIME',		'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
@@ -151,11 +152,17 @@ class acp_board
 						'style_mp_show_with_us'				=> array('lang' => 'STYLE_MP_SHOW_WITH_US',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_buttons'				=> array('lang' => 'STYLE_MP_SHOW_BUTTONS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
-						'legend3'							=> 'STYLE_SETTINGS_COUNTERS',
+						'legend3'							=> 'STYLE_SETTINGS_PROFILE',
+						'style_p_show_rating'				=> array('lang' => 'STYLE_MP_SHOW_RATING',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_p_show_rating_detailed'		=> array('lang' => 'STYLE_MP_SHOW_RATING_DETAILED',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_p_show_rated'				=> array('lang' => 'STYLE_MP_SHOW_RATED',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_p_show_rated_detailed'		=> array('lang' => 'STYLE_MP_SHOW_RATED_DETAILED',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'legend4'							=> 'STYLE_SETTINGS_COUNTERS',
 						'style_show_liveinternet_counter'	=> array('lang' => 'STYLE_SHOW_LIVEINTERNET_COUNTER',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_google_analytics_id'			=> array('lang' => 'STYLE_GOOGLE_ANALYTICS_ID',			'validate' => 'string',	'type' => 'text:20:255', 'explain' => false),
 
-						'legend4'							=> 'ACP_SUBMIT_CHANGES',
+						'legend5'							=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;

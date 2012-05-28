@@ -1644,6 +1644,19 @@ class install_install extends module
 				$db->sql_freeresult($result);
 
 				$_module->move_module_by($row, 'move_up', 5);
+
+				// Move attachments settings module 3 down...
+				$sql = 'SELECT *
+					FROM ' . MODULES_TABLE . "
+					WHERE module_basename = 'attachments'
+						AND module_class = 'acp'
+						AND module_mode = 'attach'
+					ORDER BY module_id";
+				$result = $db->sql_query($sql);
+				$row = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
+
+				$_module->move_module_by($row, 'move_down', 3);
 			}
 
 			if ($module_class == 'ucp')
