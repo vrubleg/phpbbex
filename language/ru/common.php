@@ -927,8 +927,8 @@ $lang = array_merge($lang, array(
 	'GENDER_F'					=> 'Женский',
 
 	// Ratings
-	'USER_RATING'				=> 'Рейтинг',
-	'USER_RATED'				=> 'Оценил',
+	'USER_RATING'				=> 'Репутация',
+	'USER_RATED'				=> 'Терпимость',
 
 	// Main menu
 	'USER_CP'					=> 'Личное',

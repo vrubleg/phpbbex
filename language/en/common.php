@@ -922,8 +922,8 @@ $lang = array_merge($lang, array(
 	'GENDER_F'					=> 'Female',
 
 	// Ratings
-	'USER_RATING'				=> 'Rating',
-	'USER_RATED'				=> 'Rated',
+	'USER_RATING'				=> 'Reputation',
+	'USER_RATED'				=> 'Tolerance',
 
 	// Main menu
 	'USER_CP'					=> 'User CP',
