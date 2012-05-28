@@ -69,9 +69,12 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_tim
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
 
 -- New phpBBex ACL rights
 REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
+REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
 
 -- Reset options for all users (new dateformat, enable quick reply, etc)
 UPDATE phpbb_users SET user_options = 233343, user_dateformat = '|d.m.Y|, H:i';
@@ -151,15 +154,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rati
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated_detailed', '0');
 
--- External links
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_nofollow_exclude', '');
-
--- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.2.0');
-
 -- Reset avatar options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_upload', '1');
@@ -216,12 +210,8 @@ REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
 
--- New phpBBex ACL rights
-REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
-
--- New options
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
-
 -- Disable acp_update
 UPDATE phpbb_modules p SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
+
+-- phpBBex version
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.3.0');
