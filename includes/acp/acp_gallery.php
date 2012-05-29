@@ -359,14 +359,14 @@ class acp_gallery
 		$boarddays = (time() - $config['board_startdate']) / 86400;
 		$images_per_day = sprintf('%.2f', phpbb_gallery_config::get('num_images') / $boarddays);
 
-		$sql = 'SELECT COUNT(album_user_id) num_albums
+		$sql = 'SELECT COUNT(album_user_id) AS num_albums
 			FROM ' . GALLERY_ALBUMS_TABLE . '
 			WHERE album_user_id = 0';
 		$result = $db->sql_query($sql);
 		$num_albums = (int) $db->sql_fetchfield('num_albums');
 		$db->sql_freeresult($result);
 
-		$sql = 'SELECT SUM(filesize_upload) as stat, SUM(filesize_medium) as stat_medium, SUM(filesize_cache) as stat_cache
+		$sql = 'SELECT SUM(filesize_upload) AS stat, SUM(filesize_medium) AS stat_medium, SUM(filesize_cache) AS stat_cache
 			FROM ' . GALLERY_IMAGES_TABLE;
 		$result = $db->sql_query($sql);
 		$dir_sizes = $db->sql_fetchrow($result);
@@ -385,10 +385,11 @@ class acp_gallery
 			'MEDIUM_DIR_SIZE'		=> get_formatted_filesize($dir_sizes['stat_medium']),
 			'CACHE_DIR_SIZE'		=> get_formatted_filesize($dir_sizes['stat_cache']),
 			'GALLERY_VERSION'		=> phpbb_gallery_config::get('version'),
-			'U_FIND_USERNAME'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', 'mode=searchuser&amp;form=action_create_pega&amp;field=username&amp;select_single=true'),
+			'U_FIND_USERNAME'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', 'mode=searchuser&amp;form=action_create_pega_form&amp;field=username&amp;select_single=true'),
 			'S_SELECT_ALBUM'		=> phpbb_gallery_album::get_albumbox(false, 'reset_album_id', false, false, false, phpbb_gallery_album::PUBLIC_ALBUM, phpbb_gallery_album::TYPE_UPLOAD),
 
 			'S_FOUNDER'				=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+			'U_ACTION'				=> $this->u_action,
 		));
 	}
 

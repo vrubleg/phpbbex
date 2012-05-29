@@ -121,7 +121,7 @@ class phpbb_gallery_integration
 
 			// Initial load of some needed stuff, like permissions, album data, ...
 			phpbb_gallery::init();
-			$user->add_lang('mods/gallery');
+			$user->add_lang(array('mods/info_acp_gallery', 'mods/gallery'));
 
 			$template->assign_vars(array(
 				'S_GALLERY_POPUP'	=> true,
@@ -207,7 +207,7 @@ class phpbb_gallery_integration
 				break;
 			}
 		}
-		else if (self::$session_page == 'personal' && phpbb_gallery::$auth->acl_check('i_view', PERSONAL_GALLERY_PERMISSIONS))
+		else if (self::$session_page == 'personal' && phpbb_gallery::$auth->acl_check('i_view', phpbb_gallery_auth::PERSONAL_ALBUM))
 		{
 			$location = $user->lang['PERSONAL_ALBUMS'];
 			$location_url = phpbb_gallery_url::append_sid('index', 'mode=personal');
@@ -218,9 +218,11 @@ class phpbb_gallery_integration
 	{
 		global $db;
 
-		$sql = 'SELECT album_id, parent_id, album_name, album_type, left_id, right_id, album_user_id, display_in_rrc, album_auth_access
-			FROM ' . GALLERY_ALBUMS_TABLE . '
-			ORDER BY album_user_id ASC, left_id ASC';
+		$sql = 'SELECT a.album_id, a.parent_id, a.album_name, a.album_type, a.left_id, a.right_id, a.album_user_id, a.display_in_rrc, a.album_auth_access
+			FROM ' . GALLERY_ALBUMS_TABLE . ' a
+			LEFT JOIN ' . USERS_TABLE . ' u
+				ON (u.user_id = a.album_user_id)
+			ORDER BY u.username_clean, a.album_user_id, a.left_id ASC';
 		$result = $db->sql_query($sql);
 
 		$albums = array();
@@ -391,6 +393,23 @@ class phpbb_gallery_integration
 	}
 
 	/**
+	* Integration into UCP before the active module is set.
+	* We use this to hide some modules, when the user has no permissions.
+	*
+	* @param object $module		The module handler
+	*/
+	static public function ucp(&$module)
+	{
+		phpbb_gallery::init();
+
+		// Do not display signature panel if not authed to do so
+		if (!phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM))
+		{
+			$module->set_display('gallery', 'manage_albums', false);
+		}
+	}
+
+	/**
 	* Add/Remove a user from the friends/foes list
 	*
 	* @param string $mode		Mode of action: either 'add' or 'remove'
@@ -400,5 +419,33 @@ class phpbb_gallery_integration
 	static public function ucp_zebra($mode, $zebar_ids, $user_id)
 	{
 		phpbb_gallery_auth::set_user_permissions($zebar_ids);
+	}
+
+	/**
+	* View private message
+	*/
+	static public function ucp_pm_viewmessage($id, $mode, $folder_id, $msg_id, $folder, $message_row)
+	{
+		global $db, $template, $user;
+
+		if ($message_row['author_id'] && (phpbb_gallery_config::get('viewtopic_icon') || phpbb_gallery_config::get('viewtopic_images')))
+		{
+			$sql = 'SELECT personal_album_id, user_images
+				FROM ' . GALLERY_USERS_TABLE . '
+				WHERE user_id = ' . (int) $message_row['author_id'];
+			$result = $db->sql_query($sql);
+			$row = $db->sql_fetchrow($result);
+			$db->sql_freeresult($result);
+
+			if ($row)
+			{
+				$template->assign_vars(array(
+					'GALLERY_IMG'		=> $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
+					'U_GALLERY'			=> (phpbb_gallery_config::get('viewtopic_icon') && $row['personal_album_id']) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
+					'GALLERY_IMAGES'	=> (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
+					'U_GALLERY_SEARCH'	=> (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $message_row['author_id']) : '',
+				));
+			}
+		}
 	}
 }

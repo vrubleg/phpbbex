@@ -320,6 +320,11 @@ if (!$auth->acl_get('u_sig'))
 	$module->set_display('profile', 'signature', false);
 }
 
+if (class_exists('phpbb_gallery_integration'))
+{
+	phpbb_gallery_integration::ucp($module);
+}
+
 // Select the active module
 $module->set_active($id, $mode);
 

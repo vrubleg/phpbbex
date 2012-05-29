@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* info_ucp_gallery [Russian] (Pthelovod v1.1.4)
+* info_ucp_gallery [Russian]
 *
 * @package phpBB Gallery
 * @version $Id$
@@ -25,10 +25,10 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'UCP_GALLERY'						=> 'Галерея',
-	'UCP_GALLERY_FAVORITES'				=> 'Управление избранными',
-	'UCP_GALLERY_PERSONAL_ALBUMS'		=> 'Управление персональными альбомами',
-	'UCP_GALLERY_SETTINGS'				=> 'Личные настройки',
-	'UCP_GALLERY_WATCH'					=> 'Управление подписками',
+	'UCP_GALLERY_FAVORITES'				=> 'Избранное',
+	'UCP_GALLERY_PERSONAL_ALBUMS'		=> 'Личный альбом',
+	'UCP_GALLERY_SETTINGS'				=> 'Настройка',
+	'UCP_GALLERY_WATCH'					=> 'Подписки',
 ));
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* permissions_gallery [Russian] (Pthelovod v1.1.4)
+* permissions_gallery [Russian]
 *
 * @package phpBB Gallery
 * @version $Id$
@@ -23,13 +23,13 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-$lang['permission_cat']['gallery'] = 'phpBB Галерея';
+$lang['permission_cat']['gallery'] = 'Галерея';
 
 // Adding the permissions
 $lang = array_merge($lang, array(
-	'acl_a_gallery_manage'		=> array('lang' => 'Может управлять настройками phpBB галереи',				'cat' => 'gallery'),
+	'acl_a_gallery_manage'		=> array('lang' => 'Может настраивать галерею',				'cat' => 'gallery'),
 	'acl_a_gallery_albums'		=> array('lang' => 'Может добавлять/редактировать альбомы и права доступа',	'cat' => 'gallery'),
-	'acl_a_gallery_import'		=> array('lang' => 'Может использовать функцию импорта',					'cat' => 'gallery'),
-	'acl_a_gallery_cleanup'		=> array('lang' => 'Может делать очистку phpBB галереи',					'cat' => 'gallery'),
+	'acl_a_gallery_import'		=> array('lang' => 'Может импортировать фотографии',					'cat' => 'gallery'),
+	'acl_a_gallery_cleanup'		=> array('lang' => 'Может очищать галерею',					'cat' => 'gallery'),
 ));
 ?>

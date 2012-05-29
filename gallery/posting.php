@@ -457,6 +457,10 @@ else
 			foreach ($process->images as $image_id)
 			{
 				$success = $success && $process->update_image($image_id, !phpbb_gallery::$auth->acl_check('i_approve', $album_id, $album_data['album_user_id']), $album_data['album_contest']);
+				if (phpbb_gallery::$user->get_data('watch_own'))
+				{
+					phpbb_gallery_notification::add($image_id);
+				}
 			}
 
 			$message = '';
@@ -609,7 +613,7 @@ else
 			}
 
 			$rotate = request_var('rotate', array(0));
-			$rotate = $rotate[0];
+			$rotate = (isset($rotate[0])) ? $rotate[0] : 0;
 			if (phpbb_gallery_config::get('allow_rotate') && ($rotate > 0) && (($rotate % 90) == 0))
 			{
 				$image_tools = new phpbb_gallery_image_file();
@@ -619,9 +623,10 @@ else
 				if (($image_data['image_has_exif'] != phpbb_gallery_exif::UNAVAILABLE) && ($image_data['image_has_exif'] != phpbb_gallery_exif::DBSAVED))
 				{
 					// Store exif-data to database if there are any and we didn't already do that.
-					$image_tools->read_exif_data();
-					$sql_ary['image_exif_data'] = $image_tools->exif_data_serialized;
-					$sql_ary['image_has_exif'] = $image_tools->exif_data_exist;
+					$exif = new phpbb_gallery_exif($image_tools->image_source);
+					$exif->read();
+					$sql_ary['image_has_exif'] = $exif->status;
+					$sql_ary['image_exif_data'] = $exif->serialized;
 				}
 
 				// Rotate the image

@@ -1526,11 +1526,6 @@ $allowed = ($auth->acl_get('f_attach', $forum_id) && $auth->acl_get('u_attach') 
 // Attachment entry
 posting_gen_attachment_entry($attachment_data, $filename_data, $allowed);
 
-if (class_exists('phpbb_gallery_integration'))
-{
-	phpbb_gallery_integration::posting_display_popup();
-}
-
 // Output page ...
 page_header($page_title, false);
 

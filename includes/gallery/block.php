@@ -212,7 +212,7 @@ class phpbb_gallery_block
 	{
 		if (is_array($album_id))
 		{
-			$this->albums = array_unique(array_merge($this->albums, array_map('int', $album_id)));
+			$this->albums = array_unique(array_merge($this->albums, array_map('intval', $album_id)));
 		}
 		else if (is_int($album_id) && !in_array($album_id, $this->albums))
 		{
@@ -251,7 +251,7 @@ class phpbb_gallery_block
 	{
 		if (is_array($user_id))
 		{
-			$this->users = array_unique(array_merge($this->users, array_map('int', $user_id)));
+			$this->users = array_unique(array_merge($this->users, array_map('intval', $user_id)));
 		}
 		else if (is_int($user_id) && !in_array($user_id, $this->users))
 		{
@@ -293,27 +293,29 @@ class phpbb_gallery_block
 	{
 		global $db;
 
-		$this->auth_moderate = phpbb_gallery::$auth->acl_album_ids('m_status', 'array', true, $this->get_pegas());
-		if (!empty($this->albums))
+		$albums_is_empty = !empty($this->albums);
+
+		$this->auth_moderate = phpbb_gallery::$auth->acl_album_ids('m_status', 'array', !$albums_is_empty, $this->get_pegas());
+		if ($albums_is_empty)
 		{
 			$this->auth_moderate = array_intersect($this->auth_moderate, $this->albums);
 		}
-		$this->auth_view = array_diff(phpbb_gallery::$auth->acl_album_ids('i_view', 'array', true, $this->get_pegas()), $this->auth_moderate);
-		if (!empty($this->albums))
+		$this->auth_view = array_diff(phpbb_gallery::$auth->acl_album_ids('i_view', 'array', !$albums_is_empty, $this->get_pegas()), $this->auth_moderate);
+		if ($albums_is_empty)
 		{
 			$this->auth_view = array_intersect($this->auth_view, $this->albums);
 		}
 		if (phpbb_gallery_config::get('allow_comments') && ($this->mode & self::MODE_COMMENT) && $this->num_comments)
 		{
-			$this->auth_comments = phpbb_gallery::$auth->acl_album_ids('c_read', 'array', true, $this->get_pegas());
-			if (!empty($this->albums))
+			$this->auth_comments = phpbb_gallery::$auth->acl_album_ids('c_read', 'array', !$albums_is_empty, $this->get_pegas());
+			if ($albums_is_empty)
 			{
 				$this->auth_comments = array_intersect($this->auth_comments, $this->albums);
 			}
 		}
 
 		$this->sql_where_auth = '(';
-		$this->sql_where_auth .= ((!empty($this->auth_view)) ? '(' . $db->sql_in_set('image_album_id', $this->auth_view) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ((empty($this->users)) ? ' AND image_contest = ' . phpbb_gallery_image::NO_CONTEST : '') . ')' : '');
+		$this->sql_where_auth .= ((!empty($this->auth_view)) ? '(' . $db->sql_in_set('image_album_id', $this->auth_view) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ((!empty($this->users)) ? ' AND image_contest = ' . phpbb_gallery_image::NO_CONTEST : '') . ')' : '');
 		$this->sql_where_auth .= ((!empty($this->auth_moderate)) ? ((!empty($this->auth_view)) ? ' OR ' : '') . '(' . $db->sql_in_set('image_album_id', $this->auth_moderate, false, true) . ')' : '');
 
 		if ($this->sql_where_auth == '(')
