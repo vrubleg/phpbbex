@@ -38,6 +38,8 @@ if (empty($lang) || !is_array($lang))
 // Board Settings
 $lang = array_merge($lang, array(
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Here you can determine the basic operation of your board, give it a fitting name and description, and among other settings adjust the default values for timezone and language.',
+	'AUTO_GUEST_LANG'				=> 'Detect language for guests',
+	'AUTO_GUEST_LANG_EXPLAIN'		=> 'Detects guest’s language automatically',
 	'CUSTOM_DATEFORMAT'				=> 'Custom…',
 	'DEFAULT_DATE_FORMAT'			=> 'Date format',
 	'DEFAULT_DATE_FORMAT_EXPLAIN'	=> 'The date format is the same as the PHP <code>date</code> function.',
@@ -50,11 +52,19 @@ $lang = array_merge($lang, array(
 	'OVERRIDE_LANGUAGE'				=> 'Override user language',
 	'OVERRIDE_LANGUAGE_EXPLAIN'		=> 'Replaces user’s language with the default.',
 	'OVERRIDE_DATEFORMAT'			=> 'Override user date format',
-	'OVERRIDE_DATEFORMAT_EXPLAIN'	=> 'Replaces user\'s date format with default',
+	'OVERRIDE_DATEFORMAT_EXPLAIN'	=> 'Replaces user’s date format with default',
 	'OVERRIDE_TIMEZONE'				=> 'Override user time zone',
-	'OVERRIDE_TIMEZONE_EXPLAIN'		=> 'Replaces user\'s time zone with default',
+	'OVERRIDE_TIMEZONE_EXPLAIN'		=> 'Replaces user’s time zone with default',
 	'OVERRIDE_DST'					=> 'Override user DST',
-	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user\'s DST with default',
+	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user’s DST with default',
+	'RATINGS'						=> 'Post ratings',
+	'RATE_ENABLED'					=> 'Enable ratings',
+	'RATE_ONLY_TOPICS'				=> 'Rate only topics (first posts)',
+	'RATE_TOPIC_TIME'				=> 'Limit topic (first post) rating time',
+	'RATE_TIME'						=> 'Limit post rating time',
+	'RATE_CHANGE_TIME'				=> 'Limit rating change time',
+	'RATE_NO_NEGATIVE'				=> 'No negative',
+	'RATE_NO_POSITIVE'				=> 'No positive',
 	'SITE_DESC'						=> 'Site description',
 	'SITE_NAME'						=> 'Site name',
 	'SITE_KEYWORDS'					=> 'Site keywords',
@@ -63,10 +73,45 @@ $lang = array_merge($lang, array(
 	'SYSTEM_TIMEZONE'				=> 'Guest timezone',
 	'SYSTEM_TIMEZONE_EXPLAIN'			=> 'Timezone to use for displaying times to users who are not logged in (guests, bots). Logged in users set their timezone during registration and can change it in their user control panel.',
 	'WARNINGS_EXPIRE'				=> 'Warning duration',
-	'WARNINGS_EXPIRE_EXPLAIN'		=> 'Number of days that will elapse before the warning will automatically expire from a user’s record.',
+	'WARNINGS_EXPIRE_EXPLAIN'		=> 'Number of days that will elapse before the warning will automatically expire from a user’s record. Set this value to 0 to make warnings permanent.',
 	'WARNINGS_GC'					=> 'Warnings pruning period',
 	'WARNINGS_GC_EXPLAIN'			=> 'Time (in seconds) to prune exrired warnings periodically.',
 	'WARNING_POST_DEFAULT'			=> 'Default warning message',
+));
+
+// Style Settings
+$lang = array_merge($lang, array(
+	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can enable/disable several style features.',
+
+	'STYLE_SETTINGS_GENERAL'			=> 'General',
+	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
+	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
+	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
+
+	'STYLE_SETTINGS_PROFILE'			=> 'Profile',
+	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',
+	'STYLE_MP_ON_LEFT'					=> 'Mini profiles on left',
+	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Display topic starter',
+	'STYLE_MP_SHOW_GENDER'				=> 'Display gender',
+	'STYLE_MP_SHOW_AGE'					=> 'Display age',
+	'STYLE_MP_SHOW_FROM'				=> 'Display from',
+	'STYLE_MP_SHOW_WARNINGS'			=> 'Display warnings',
+	'STYLE_MP_SHOW_RATING'				=> 'Display reputation',
+	'STYLE_MP_SHOW_RATING_DETAILED'		=> 'Display detailed reputation',
+	'STYLE_MP_SHOW_RATED'				=> 'Display tolerance',
+	'STYLE_MP_SHOW_RATED_DETAILED'		=> 'Display detailed tolerance',
+	'STYLE_MP_SHOW_POSTS'				=> 'Display posts counter',
+	'STYLE_MP_SHOW_TOPICS'				=> 'Display topics counter',
+	'STYLE_MP_SHOW_JOINED'				=> 'Display joined date',
+	'STYLE_MP_SHOW_WITH_US'				=> 'Display how long user is with us',
+	'STYLE_MP_SHOW_BUTTONS'				=> 'Display contact buttons',
+
+	
+
+	'STYLE_SETTINGS_COUNTERS'			=> 'Counters',
+	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
+	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Google Analytics ID',
 ));
 
 // Board Features
@@ -192,7 +237,7 @@ $lang = array_merge($lang, array(
 	'MAX_POST_URLS'					=> 'Maximum links per post',
 	'MAX_POST_URLS_EXPLAIN'			=> 'Maximum number of URLs in a post. Set to 0 for unlimited links.',
 	'MIN_CHAR_LIMIT'				=> 'Minimum characters per post/message',
-	'MIN_CHAR_LIMIT_EXPLAIN'		=> 'The minimum number of characters the user need to enter within a post/private message.',
+	'MIN_CHAR_LIMIT_EXPLAIN'		=> 'The minimum number of characters the user need to enter within a post/private message. The minimum for this setting is 1.',
 	'POSTING'						=> 'Posting',
 	'POSTS_PER_PAGE'				=> 'Posts per page',
 	'QUOTE_DEPTH_LIMIT'				=> 'Maximum nesting depth for quotes',
@@ -357,7 +402,7 @@ $lang = array_merge($lang, array(
 	'COOKIE_DOMAIN'				=> 'Cookie domain',
 	'COOKIE_NAME'				=> 'Cookie name',
 	'COOKIE_PATH'				=> 'Cookie path',
-	'COOKIE_SECURE'				=> 'Cookie secure',
+	'COOKIE_SECURE'				=> 'HTTPS cookie',
 	'COOKIE_SECURE_EXPLAIN'		=> 'If your server is running via SSL set this to enabled else leave as disabled. Having this enabled and not running via SSL will result in server errors during redirects.',
 	'ONLINE_LENGTH'				=> 'View online time span',
 	'ONLINE_LENGTH_EXPLAIN'		=> 'Number of minutes after which inactive users will not appear in “Who is online” listings. The higher this value the greater is the processing required to generate the listing.',

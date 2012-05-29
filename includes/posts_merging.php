@@ -43,7 +43,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 	if (!request_var('do_not_merge', false))
 	{
 		$merge_interval = intval($config['merge_interval']) * 3600;
-		if (($current_time - $merge_post_data['topic_last_post_time']) < $merge_interval)
+		if (!$merge_post_data['post_edit_locked'] && ($current_time - $merge_post_data['topic_last_post_time']) < $merge_interval)
 		{
 			$merge = true;
 		}
@@ -97,9 +97,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		set_var($merge_post_data['post_text'], $merge_post_data['post_text'], 'string', true);
 		
 		// Prepare message separator
-		require($phpbb_root_path . 'includes/time_delta.'.$phpEx);
-		$td = new timedelta();
-		$time_delta = $td->spelldelta($merge_post_data['post_time'], $current_time);
+		$time_delta = time_delta::get_verbal($merge_post_data['post_time'], $current_time);
 		$separator = sprintf($user->lang['MERGE_SEPARATOR'], $user->lang['POSTED'], $time_delta);
 		//set_var($separator, $separator, 'string', true);
 

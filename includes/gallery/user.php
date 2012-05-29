@@ -428,6 +428,7 @@ class phpbb_gallery_user
 				'msn'				=> '',
 				'yim'				=> '',
 				'jabber'			=> '',
+				'skype'				=> '',
 				'search'			=> '',
 				'age'				=> '',
 
@@ -485,7 +486,8 @@ class phpbb_gallery_user
 				'aim'			=> ($row['user_aim'] && $auth->acl_get('u_sendim')) ? phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=contact&amp;action=aim&amp;u=$user_id") : '',
 				'msn'			=> ($row['user_msnm'] && $auth->acl_get('u_sendim')) ? phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=contact&amp;action=msnm&amp;u=$user_id") : '',
 				'yim'			=> ($row['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . urlencode($row['user_yim']) . '&amp;.src=pg' : '',
-				'jabber'		=> ($row['user_jabber'] && $auth->acl_get('u_sendim')) ? phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=contact&amp;action=jabber&amp;u=$user_id") : '',
+				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
+				'skype'			=> ($row['user_skype']) ? ('skype:' . $row['user_skype'] . '?chat') : '',
 				'search'		=> ($auth->acl_get('u_search')) ? phpbb_gallery_url::append_sid('phpbb', 'search', "author_id=$user_id&amp;sr=posts") : '',
 
 				'gallery_album'		=> ($row['personal_album_id'] && phpbb_gallery_config::get('viewtopic_icon')) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',

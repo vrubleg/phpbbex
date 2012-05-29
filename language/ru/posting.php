@@ -40,7 +40,7 @@ $lang = array_merge($lang, array(
 	'ADD_ATTACHMENT_EXPLAIN'	=> 'Если вы не хотите добавлять вложения, оставьте поля пустыми.',
 	'ADD_FILE'					=> 'Добавить файл',
 	'ADD_POLL'					=> 'Добавить опрос',
-	'ADD_POLL_EXPLAIN'			=> 'Чтобы добавить опрос к сообщению вы должны ввести вопрос.',
+	'ADD_POLL_EXPLAIN'			=> 'Чтобы добавить опрос к сообщению, вы должны ввести вопрос.',
 	'ALREADY_DELETED'			=> 'Это сообщение уже удалено.',
 	'ATTACH_QUOTA_REACHED'		=> 'Достигнут максимальный общий размер ваших вложений.',
 	'ATTACH_SIG'				=> 'Присоединить подпись',
@@ -48,7 +48,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_A_HELP'				=> 'Вставить вложение в текст сообщения: [attachment=]filename.ext[/attachment]',
 	'BBCODE_B_HELP'				=> 'Жирный текст: [b]text[/b]',
 	'BBCODE_C_HELP'				=> 'Код: [code]code[/code]',
-	'BBCODE_E_HELP'				=> 'Список: добавить элемент списка',
+	'BBCODE_D_HELP'				=> 'Флэш: [flash=width,height]http://url[/flash]',
 	'BBCODE_F_HELP'				=> 'Размер шрифта: [size=85]small text[/size]',
 	'BBCODE_IS_OFF'				=> '%sBBCode%s <em>ВЫКЛЮЧЕН</em>',
 	'BBCODE_IS_ON'				=> '%sBBCode%s <em>ВКЛЮЧЁН</em>',
@@ -62,7 +62,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_STRIKE_HELP'		=> 'Зачёркнутый текст: [s]text[/s]',
 	'BBCODE_U_HELP'				=> 'Подчёркнутый текст: [u]text[/u]',
 	'BBCODE_W_HELP'				=> 'Вставить ссылку: [url]http://url[/url] или [url=http://url]URL text[/url]',
-	'BBCODE_D_HELP'				=> 'Флэш: [flash=width,height]http://url[/flash]',
+	'BBCODE_Y_HELP'				=> 'Список: добавить элемент списка',
 	'BUMP_ERROR'				=> 'Вы не можете поднимать тему сразу после последнего сообщения. Попробуйте чуть позже.',
 
 	'CANNOT_DELETE_REPLIED'		=> 'Извините, но вы можете удалять только сообщения, не имеющие ответов.',
@@ -189,7 +189,7 @@ $lang = array_merge($lang, array(
 	'SMILIES_ARE_ON'			=> 'Смайлики <em>ВКЛЮЧЕНЫ</em>',
 	'STICKY_ANNOUNCE_TIME_LIMIT'=> 'Срок для объявления/прилепленной темы',
 	'STICK_TOPIC_FOR'			=> 'Срок',
-	'STICK_TOPIC_FOR_EXPLAIN'	=> 'Относительно даты публикации. Введите 0 чтобы тема всегда была объявлением или прилепленной.',
+	'STICK_TOPIC_FOR_EXPLAIN'	=> 'Относительно даты публикации. Введите 0, чтобы тема всегда была объявлением или прилепленной.',
 	'STYLES_TIP'				=> 'Совет: можно быстро применить стили к выделенному тексту.',
 
 	'TOO_FEW_CHARS'				=> 'Ваше сообщение слишком короткое.',
@@ -239,14 +239,6 @@ $lang = array_merge($lang, array(
 	'DO_NOT_MERGE'				=> 'Не склеивать с предыдущим',
 	'MERGE_SEPARATOR'			=> "\n\n[size=85][color=gray]%s спустя %s:[/color][/size]\n",
 	'MERGE_SUBJECT'				=> "[size=85][color=gray]%s[/color][/size]\n",
-
-	// Time delta
-	'D_SECONDS'					=> array('секунду', 'секунды', 'секунд'),
-	'D_MINUTES'					=> array('минуту', 'минуты', 'минут'),
-	'D_HOURS'					=> array('час', 'часа', 'часов'),
-	'D_MDAY'					=> array('день', 'дня', 'дней'),
-	'D_MON'						=> array('месяц', 'месяца', 'месяцев'),
-	'D_YEAR'					=> array('год', 'года', 'лет'),
 
 ));
 

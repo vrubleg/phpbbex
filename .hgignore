@@ -1,6 +1,6 @@
 regexp:^cache/(?!(\.htaccess|index\.htm)).+
 regexp:^files/(?!(\.htaccess|index\.htm)).+
-regexp:^images/avatars/upload/(?!(\.htaccess|index\.htm)).+
+regexp:^images/avatars/(upload|gallery)/(?!(\.htaccess|index\.htm)).+
 regexp:^store/(?!(\.htaccess|index\.htm)).+
 regexp:^gallery/images/cache/(?!(\.htaccess|index\.htm)).+
 regexp:^gallery/images/import/(?!(\.htaccess|index\.htm)).+

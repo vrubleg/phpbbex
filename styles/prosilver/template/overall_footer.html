@@ -15,19 +15,35 @@
 
 	<div id="counter"></div>
 
+	<!-- IF STYLE_SHOW_LIVEINTERNET_COUNTER -->
 	<script type="text/javascript">
 	jQuery(function($)
 	{
 		setTimeout(function()
 		{
-			$('#counter').html('<a target="_blank" href="http://liveinternet.ru/stat/'+document.location.host+'/index.html?id=5;id=8;id=7;period=month;total=no"><img height="31" width="88" src="http://counter.yadro.ru/hit?t21.1;r'+escape(document.referrer)+((typeof(screen)=='undefined')?'':';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+';'+Math.random()+'" border="0" title="Показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня" /></a>');
+			$('#counter').append('<a target="_blank" href="http://liveinternet.ru/stat/'+document.location.host+'/index.html?id=5;id=8;id=7;period=week"><img height="31" width="88" src="http://counter.yadro.ru/hit?t21.1;r'+escape(document.referrer)+((typeof(screen)=='undefined')?'':';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+';'+Math.random()+'" border="0" title="Показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня" /></a>');
 		}, 500);
 	});
 	</script>
+	<!-- ENDIF -->
+
+	<!-- IF STYLE_GOOGLE_ANALYTICS_ID -->
+	<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', '{STYLE_GOOGLE_ANALYTICS_ID}']);
+	_gaq.push(['_trackPageview']);
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	</script>
+	<!-- ENDIF -->
 
 	<div class="copyright">
 		<!-- IF COPYRIGHT_NOTICE -->{COPYRIGHT_NOTICE}<br /><!-- ENDIF -->
-		<!-- IF not COPYRIGHT -->Powered by <a href="http://www.phpbb.com/">phpBB</a> &copy; 2011 phpBB Group, <a href="http://code.google.com/p/phpbbex/">phpBBex</a> &copy; 2011 Evgeny Vrublevsky<!-- ELSE -->{COPYRIGHT}<!-- ENDIF -->
+		<!-- Please do not remove the copyright of phpBB and phpBBex! Будьте добры, не удаляйте копирайт и ссылки phpBB и phpBBex! -->
+		<!-- IF not COPYRIGHT -->Powered by <a href="http://www.phpbb.com/"<!-- IF EXTERNAL_LINKS_NEWWINDOW --> target="_blank"<!-- ENDIF --><!-- IF EXTERNAL_LINKS_NOFOLLOW --> rel="nofollow"<!-- ENDIF -->>phpBB</a> &copy; 2011 phpBB Group, <a href="http://phpbbex.com/"<!-- IF EXTERNAL_LINKS_NEWWINDOW --> target="_blank"<!-- ENDIF --><!-- IF EXTERNAL_LINKS_NOFOLLOW --> rel="nofollow"<!-- ENDIF -->>phpBBex</a> &copy; 2012 Evgeny Vrublevsky<!-- ELSE -->{COPYRIGHT}<!-- ENDIF -->
 		<!-- IF DEBUG_OUTPUT --><br />{DEBUG_OUTPUT}<!-- ENDIF -->
 	</div>
 

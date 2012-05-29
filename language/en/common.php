@@ -165,6 +165,7 @@ $lang = array_merge($lang, array(
 	'EMPTY_MESSAGE_SUBJECT'				=> 'You must specify a subject when composing a new message.',
 	'ENABLED'							=> 'Enabled',
 	'ENCLOSURE'							=> 'Enclosure',
+	'ENTER_USERNAME'					=> 'Enter username',
 	'ERR_CHANGING_DIRECTORY'			=> 'Unable to change directory.',
 	'ERR_CONNECTING_SERVER'				=> 'Error connecting to the server.',
 	'ERR_JAB_AUTH'						=> 'Could not authorise on Jabber server.',
@@ -201,6 +202,7 @@ $lang = array_merge($lang, array(
 	'FORUM_RULES_LINK'		=> 'Please click here to view the forum rules',
 	'FROM'					=> 'from',
 	'FSOCK_DISABLED'		=> 'The operation could not be completed because the <var>fsockopen</var> function has been disabled or the server being queried could not be found.',
+	'FSOCK_TIMEOUT'			=> 'A timeout occurred while reading from the network stream.',
 
 	'FTP_FSOCK_HOST'				=> 'FTP host',
 	'FTP_FSOCK_HOST_EXPLAIN'		=> 'FTP server used to connect your site.',
@@ -628,6 +630,7 @@ $lang = array_merge($lang, array(
 	'TOPIC_LOCKED'		=> 'This topic is locked, you cannot edit posts or make further replies.',
 	'TOPIC_LOCKED_SHORT'=> 'Topic locked',
 	'TOPIC_MOVED'		=> 'Moved topic',
+	'TOPIC_POSTER'		=> 'Topic author',
 	'TOPIC_REVIEW'		=> 'Topic review',
 	'TOPIC_TITLE'		=> 'Topic title',
 	'TOPIC_UNAPPROVED'	=> 'This topic has not been approved',
@@ -656,6 +659,10 @@ $lang = array_merge($lang, array(
 	'UNREAD_PMS'			=> '<strong>%d</strong> unread messages',
 	'UNREAD_POST'			=> 'Unread post',
 	'UNREAD_POSTS'			=> 'Unread posts',
+	'UNWATCH_FORUM_CONFIRM'		=> 'Are you sure you wish to unsubscribe from this forum?',
+	'UNWATCH_FORUM_DETAILED'	=> 'Are you sure you wish to unsubscribe from the forum “%s”?',
+	'UNWATCH_TOPIC_CONFIRM'		=> 'Are you sure you wish to unsubscribe from this topic?',
+	'UNWATCH_TOPIC_DETAILED'	=> 'Are you sure you wish to unsubscribe from the topic “%s”?',
 	'UNWATCHED_FORUMS'			=> 'You are no longer subscribed to the selected forums.',
 	'UNWATCHED_TOPICS'			=> 'You are no longer subscribed to the selected topics.',
 	'UNWATCHED_FORUMS_TOPICS'	=> 'You are no longer subscribed to the selected entries.',
@@ -704,6 +711,10 @@ $lang = array_merge($lang, array(
 
 	'WARNINGS'			=> 'Warnings',
 	'WARN_USER'			=> 'Warn user',
+	'WATCH_FORUM_CONFIRM'	=> 'Are you sure you wish to subscribe to this forum?',
+	'WATCH_FORUM_DETAILED'	=> 'Are you sure you wish to subscribe to the forum “%s”?',
+	'WATCH_TOPIC_CONFIRM'	=> 'Are you sure you wish to subscribe to this topic?',
+	'WATCH_TOPIC_DETAILED'	=> 'Are you sure you wish to subscribe to the topic “%s”?',
 	'WELCOME_SUBJECT'	=> 'Welcome to %s forums',
 	'WEBSITE'			=> 'Website',
 	'WHOIS'				=> 'Whois',
@@ -868,22 +879,22 @@ $lang = array_merge($lang, array(
 
 	// The value is only an example and will get replaced by the current time on view
 	'dateformats'	=> array(
-		'Y-m-d H:i'				=> '2005-01-10 17:57',
-		'Y-m-d, H:i'			=> '2005-01-10, 17:57',
-		'd.m.Y H:i'				=> '10.01.2005 17:57',
-		'd.m.Y, H:i'			=> '10.01.2005, 17:57',
+		'|d M Y|, H:i'			=> 'Today, 13:37 / 01 Jan 2007, 13:37',
+		'|d.m.Y|, H:i'			=> 'Today, 13:37 / 01.01.2007, 13:37',
+		'|D, d M Y|, H:i'		=> 'Today, 13:37 / Mon, 01 Jan 2007, 13:37',
+		'|F jS, Y|, g:i a'		=> 'Today, 1:37 pm / January 1st, 2007, 1:37 pm',
 		'd M Y, H:i'			=> '01 Jan 2007, 13:37',
-		'd M Y H:i'				=> '01 Jan 2007 13:37',
 		'M jS, \'y, H:i'		=> 'Jan 1st, \'07, 13:37',
 		'D M d, Y g:i a'		=> 'Mon Jan 01, 2007 1:37 pm',
 		'F jS, Y, g:i a'		=> 'January 1st, 2007, 1:37 pm',
-		'|d M Y|, H:i'			=> 'Today, 13:37 / 01 Jan 2007, 13:37',
-		'|F jS, Y|, g:i a'		=> 'Today, 1:37 pm / January 1st, 2007, 1:37 pm'
+		'H:i d.m.Y'				=> '17:57 10.01.2005',
+		'd.m.Y, H:i'			=> '10.01.2005, 17:57',
+		'Y-m-d H:i'				=> '2005-01-10 17:57',
 	),
 
 	// The default dateformat which will be used on new installs in this language
 	// Translators should change this if a the usual date format is different
-	'default_dateformat'	=> 'Y-m-d H:i', // 2005-01-10 17:57
+	'default_dateformat'	=> '|d M Y|, H:i', // Today, 13:37 / 01 Jan 2007, 13:37
 
 	// User topics count
 	'NUM_TOPICS_IN_QUEUE'		=> array(
@@ -895,12 +906,24 @@ $lang = array_merge($lang, array(
 	'TOPIC_PCT'					=> '%.2f%% of all topics',
 	'TOTAL_TOPICS'				=> 'Total topics',
 
+	// Time delta
+	'D_SECONDS'					=> array('second', 'seconds', 'seconds'),
+	'D_MINUTES'					=> array('minute', 'minutes', 'minutes'),
+	'D_HOURS'					=> array('hour', 'hours', 'hours'),
+	'D_MDAY'					=> array('day', 'days', 'days'),
+	'D_MON'						=> array('month', 'months', 'months'),
+	'D_YEAR'					=> array('year', 'yaers', 'years'),
+
 	// Genders
 	'GENDER'					=> 'Gender',
 	'GENDER_EXPLAIN'			=> 'Please enter your gender here.',
 	'GENDER_X'					=> 'None specified',
 	'GENDER_M'					=> 'Male',
 	'GENDER_F'					=> 'Female',
+
+	// Ratings
+	'USER_RATING'				=> 'Reputation',
+	'USER_RATED'				=> 'Tolerance',
 
 	// Main menu
 	'USER_CP'					=> 'User CP',
@@ -937,6 +960,7 @@ $lang = array_merge($lang, array(
 
 	// Other
 	'SOCIAL_SHARE_IN'		=> 'Share in',
+	'USER_WITH_US'			=> 'With us',
 
 ));
 

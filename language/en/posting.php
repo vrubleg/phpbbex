@@ -48,7 +48,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_A_HELP'				=> 'Inline uploaded attachment: [attachment=]filename.ext[/attachment]',
 	'BBCODE_B_HELP'				=> 'Bold text: [b]text[/b]',
 	'BBCODE_C_HELP'				=> 'Code display: [code]code[/code]',
-	'BBCODE_E_HELP'				=> 'List: Add list element',
+	'BBCODE_D_HELP'				=> 'Flash: [flash=width,height]http://url[/flash]',
 	'BBCODE_F_HELP'				=> 'Font size: [size=85]small text[/size]',
 	'BBCODE_IS_OFF'				=> '%sBBCode%s is <em>OFF</em>',
 	'BBCODE_IS_ON'				=> '%sBBCode%s is <em>ON</em>',
@@ -62,7 +62,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_STRIKE_HELP'		=> 'Strikethrough text: [s]text[/s]',
 	'BBCODE_U_HELP'				=> 'Underline text: [u]text[/u]',
 	'BBCODE_W_HELP'				=> 'Insert URL: [url]http://url[/url] or [url=http://url]URL text[/url]',
-	'BBCODE_D_HELP'				=> 'Flash: [flash=width,height]http://url[/flash]',
+	'BBCODE_Y_HELP'				=> 'List: Add list element',
 	'BUMP_ERROR'				=> 'You cannot bump this topic so soon after the last post.',
 
 	'CANNOT_DELETE_REPLIED'		=> 'Sorry but you may only delete posts which have not been replied to.',
@@ -239,14 +239,6 @@ $lang = array_merge($lang, array(
 	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
 	'MERGE_SEPARATOR'			=> "\n\n[size=85][color=gray]%s after %s:[/color][/size]\n",
 	'MERGE_SUBJECT'				=> "[size=85][color=gray]%s[/color][/size]\n",
-
-	// Time delta
-	'D_SECONDS'					=> array('second', 'seconds', 'seconds'),
-	'D_MINUTES'					=> array('minute', 'minutes', 'minutes'),
-	'D_HOURS'					=> array('hour', 'hours', 'hours'),
-	'D_MDAY'					=> array('day', 'days', 'days'),
-	'D_MON'						=> array('month', 'months', 'months'),
-	'D_YEAR'					=> array('year', 'yaers', 'years'),
 
 ));
 

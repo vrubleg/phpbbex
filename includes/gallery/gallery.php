@@ -71,12 +71,14 @@ class phpbb_gallery
 		$user_id = ($user->data['user_perm_from'] == 0) ? $user->data['user_id'] : $user->data['user_perm_from'];
 		self::$auth = new phpbb_gallery_auth($user_id);
 
+		/*
 		if (phpbb_gallery_config::get('mvc_time') < time())
 		{
 			// Check the version, do we need to update?
 			phpbb_gallery_config::set('mvc_version', phpbb_gallery_modversioncheck::check(true));
 			phpbb_gallery_config::set('mvc_time', time() + 86400);
 		}
+		*/
 
 		if (phpbb_gallery_config::get('prune_orphan_time') < time())
 		{
@@ -120,6 +122,8 @@ class phpbb_gallery
 
 			'S_GALLERY_FEEDS'				=> phpbb_gallery_config::get('feed_enable'),
 			'U_GALLERY_FEED'				=> phpbb_gallery_url::append_sid('feed'),
+
+			'COPYRIGHT'						=> 'Powered by <a href="http://www.flying-bits.org/"' . (empty($config['external_links_nofollow']) ? '' : ' rel="nofollow"') . '>phpBB Gallery</a> © 2009 nickvergessen',
 		));
 
 		// Okay, this is not the best way, but we disable the phpbb feeds and display the ones of the gallery.
@@ -128,6 +132,7 @@ class phpbb_gallery
 		$template->assign_block_vars('navlinks', array(
 			'FORUM_NAME'	=> $user->lang['GALLERY'],
 			'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('index'),
+			'FIRST'			=> true,
 		));
 
 		self::$loaded = true;
@@ -151,12 +156,14 @@ class phpbb_gallery
 		$user_id = ($user->data['user_perm_from'] == 0) ? $user->data['user_id'] : $user->data['user_perm_from'];
 		self::$auth = new phpbb_gallery_auth($user_id);
 
+		/*
 		if (phpbb_gallery_config::get('mvc_time') < time())
 		{
 			// Check the version, do we need to update?
 			phpbb_gallery_config::set('mvc_time', time() + 86400);
 			phpbb_gallery_config::set('mvc_version', phpbb_gallery_modversioncheck::check(true));
 		}
+		*/
 
 		self::$loaded = true;
 		if (request_var('display', '') == 'popup')

@@ -164,6 +164,7 @@ $lang = array_merge($lang, array(
 	'ACP_SMILIES'				=> 'Smilies',
 	'ACP_STYLE_COMPONENTS'		=> 'Style components',
 	'ACP_STYLE_MANAGEMENT'		=> 'Style management',
+	'ACP_STYLE_SETTINGS'		=> 'Style settings',
 	'ACP_STYLES'				=> 'Styles',
 
 	'ACP_SUBMIT_CHANGES'		=> 'Submit changes',
@@ -322,10 +323,21 @@ $lang = array_merge($lang, array(
 	'AVATAR_DIR_SIZE'			=> 'Avatar directory size',
 
 	'BOARD_STARTED'		=> 'Board started',
-	'BOARD_VERSION'		=> 'Board version',
+	'PHPBB_VERSION'		=> 'phpBB version',
+	'PHPBBEX_VERSION'	=> 'phpBBex version',
 
 	'DATABASE_SERVER_INFO'	=> 'Database server',
 	'DATABASE_SIZE'			=> 'Database size',
+
+	// Enviroment configuration checks, mbstring related
+	'ERROR_MBSTRING_FUNC_OVERLOAD'					=> 'Function overloading is improperly configured',
+	'ERROR_MBSTRING_FUNC_OVERLOAD_EXPLAIN'			=> '<var>mbstring.func_overload</var> must be set to either 0 or 4. You can check the current value on the <samp>PHP information</samp> page.',
+	'ERROR_MBSTRING_ENCODING_TRANSLATION'			=> 'Transparent character encoding is improperly configured',
+	'ERROR_MBSTRING_ENCODING_TRANSLATION_EXPLAIN'	=> '<var>mbstring.encoding_translation</var> must be set to 0. You can check the current value on the <samp>PHP information</samp> page.',
+	'ERROR_MBSTRING_HTTP_INPUT'						=> 'HTTP input character conversion is improperly configured',
+	'ERROR_MBSTRING_HTTP_INPUT_EXPLAIN'				=> '<var>mbstring.http_input</var> must be set to <samp>pass</samp>. You can check the current value on the <samp>PHP information</samp> page.',
+	'ERROR_MBSTRING_HTTP_OUTPUT'					=> 'HTTP output character conversion is improperly configured',
+	'ERROR_MBSTRING_HTTP_OUTPUT_EXPLAIN'			=> '<var>mbstring.http_output</var> must be set to <samp>pass</samp>. You can check the current value on the <samp>PHP information</samp> page.',
 
 	'FILES_PER_DAY'		=> 'Attachments per day',
 	'FORUM_STATS'		=> 'Board statistics',
@@ -506,6 +518,7 @@ $lang = array_merge($lang, array(
 	'LOG_CONFIG_SERVER'			=> '<strong>Altered server settings</strong>',
 	'LOG_CONFIG_SETTINGS'		=> '<strong>Altered board settings</strong>',
 	'LOG_CONFIG_SIGNATURE'		=> '<strong>Altered signature settings</strong>',
+	'LOG_CONFIG_STYLE'			=> '<strong>Altered style settings</strong>',
 	'LOG_CONFIG_VISUAL'			=> '<strong>Altered anti-spambot settings</strong>',
 
 	'LOG_APPROVE_TOPIC'			=> '<strong>Approved topic</strong><br />» %s',
@@ -764,9 +777,11 @@ $lang = array_merge($lang, array(
 	'ALLOW_QUICK_REPLY_REG'		=> 'Registered only',
 	'ALLOW_QUICK_REPLY_ALL'		=> 'All',
 	'ALLOW_REPLY_ICONS'			=> 'Post/topic icons',
+	'ALLOW_REPLY_SUBJECT'		=> 'Subject',
 	'ALLOW_REPLY_CHECKBOXES'	=> 'Checkboxes',
 	'ALLOW_REPLY_ATTACHBOX'		=> 'Attachbox',
 	'ALLOW_REPLY_SMILIES'		=> 'Smilies',
+	'ALLOW_QUICK_FULL_QUOTE'	=> 'Allow full quote',
 	'ALLOW_QUICK_POST'			=> 'Allow quick topic post for users',
 	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Users can start topic directly at forum view.',
 ));
@@ -792,6 +807,10 @@ $lang = array_merge($lang, array(
 	'LINK_ADDED'			=> 'The link has been successfully added.',
 	'LINK_UPDATED'			=> 'The selected link has been successfully updated.',
 	'LINK_REMOVED'			=> 'The selected link has been successfully removed.',
+	'LINK_NOFOLLOW'			=> 'No follow',
+	'LINK_NOFOLLOW_EXPLAIN'	=> 'For search robots',
+	'LINK_NEWWINDOW'		=> 'New window',
+	'LINK_NEWWINDOW_EXPLAIN'=> 'Open in new window',
 ));
 
 // Custom BBCode Sorting

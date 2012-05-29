@@ -200,7 +200,7 @@ function selectCode(a)
 	// Get ID of code block
 	var e = a.parentNode.parentNode.getElementsByTagName('CODE')[0];
 
-	// Not IE
+	// Not IE and IE9+
 	if (window.getSelection)
 	{
 		var s = window.getSelection();
@@ -219,7 +219,8 @@ function selectCode(a)
 			}
 
 			var r = document.createRange();
-			r.selectNodeContents(e);
+			r.setStart(e.firstChild, 0);
+			r.setEnd(e.lastChild, e.lastChild.textContent.length);
 			s.removeAllRanges();
 			s.addRange(r);
 		}

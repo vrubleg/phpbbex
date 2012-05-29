@@ -27,6 +27,11 @@ class phpbb_gallery_modversioncheck
 		global $user, $template;
 		global $phpbb_admin_path, $phpEx;
 
+		if (!function_exists('simplexml_load_string'))
+		{
+			return false;
+		}
+
 		if (!function_exists('get_remote_file'))
 		{
 			global $phpbb_root_path;

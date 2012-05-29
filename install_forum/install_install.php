@@ -546,6 +546,11 @@ class install_install extends module
 				$error[] = $lang['INST_ERR_NO_DB'];
 				$connect_test = false;
 			}
+			else if (!preg_match(get_preg_expression('table_prefix'), $data['table_prefix']))
+			{
+				$error[] = $lang['INST_ERR_DB_INVALID_PREFIX'];
+				$connect_test = false;
+			}
 			else
 			{
 				$connect_test = connect_check_db(true, $error, $available_dbms[$data['dbms']], $data['table_prefix'], $data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport']);
@@ -1639,6 +1644,19 @@ class install_install extends module
 				$db->sql_freeresult($result);
 
 				$_module->move_module_by($row, 'move_up', 5);
+
+				// Move attachments settings module 3 down...
+				$sql = 'SELECT *
+					FROM ' . MODULES_TABLE . "
+					WHERE module_basename = 'attachments'
+						AND module_class = 'acp'
+						AND module_mode = 'attach'
+					ORDER BY module_id";
+				$result = $db->sql_query($sql);
+				$row = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
+
+				$_module->move_module_by($row, 'move_down', 3);
 			}
 
 			if ($module_class == 'ucp')
@@ -1940,10 +1958,7 @@ class install_install extends module
 
 			$messenger->to($data['board_email1'], $data['admin_name']);
 
-			$messenger->headers('X-AntiAbuse: Board servername - ' . $config['server_name']);
-			$messenger->headers('X-AntiAbuse: User_id - ' . $user->data['user_id']);
-			$messenger->headers('X-AntiAbuse: Username - ' . $user->data['username']);
-			$messenger->headers('X-AntiAbuse: User IP - ' . $user->ip);
+			$messenger->anti_abuse_headers($config, $user);
 
 			$messenger->assign_vars(array(
 				'USERNAME'		=> htmlspecialchars_decode($data['admin_name']),
@@ -2032,7 +2047,7 @@ class install_install extends module
 		'dbname'				=> array('lang' => 'DB_NAME',		'type' => 'text:25:100', 'explain' => false),
 		'dbuser'				=> array('lang' => 'DB_USERNAME',	'type' => 'text:25:100', 'explain' => false),
 		'dbpasswd'				=> array('lang' => 'DB_PASSWORD',	'type' => 'password:25:100', 'explain' => false),
-		'table_prefix'			=> array('lang' => 'TABLE_PREFIX',	'type' => 'text:25:100', 'explain' => false),
+		'table_prefix'			=> array('lang' => 'TABLE_PREFIX',	'type' => 'text:25:100', 'explain' => true),
 	);
 	var $admin_config_options = array(
 		'legend1'				=> 'ADMIN_CONFIG',

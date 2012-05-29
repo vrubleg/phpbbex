@@ -2,16 +2,20 @@
 <h2><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h2>
 <!-- IF not S_IS_BOT -->
 <ul class="header-icons">
+	<!-- IF STYLE_SHOW_SOCIAL_BUTTONS -->
 	<script type="text/javascript">
 	var url = encodeURIComponent(document.location.href);
 	var title = encodeURIComponent($('title').text());
-	document.write('<li><a target="_blank" href="http://vkontakte.ru/share.php?url='+url+'&title='+title+'" title="{L_SOCIAL_SHARE_IN} vkontakte.ru" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vkontakte.ru</a></li>');
+	document.write('<li><a target="_blank" href="http://vk.com/share.php?url='+url+'&title='+title+'" title="{L_SOCIAL_SHARE_IN} vk.com" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vk.com</a></li>');
 	document.write('<li><a target="_blank" href="https://plusone.google.com/_/+1/confirm?url='+url+'" title="{L_SOCIAL_SHARE_IN} Google Plus" class="icon-google-plus">{L_SOCIAL_SHARE_IN} Google Plus</a></li>');
 	document.write('<li><a target="_blank" href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
 	document.write('<li><a target="_blank" href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
 	</script>
-	<!-- IF S_WATCH_FORUM_LINK -->
+	<!-- ENDIF -->
+	<!-- IF STYLE_SHOW_SOCIAL_BUTTONS and S_WATCH_FORUM_LINK -->
 	<li class="icons-divider"></li>
+	<!-- ENDIF -->
+	<!-- IF S_WATCH_FORUM_LINK -->
 	<li><a href="{S_WATCH_FORUM_LINK}" title="{S_WATCH_FORUM_TITLE}" <!-- IF S_WATCHING_FORUM -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{S_WATCH_FORUM_TITLE}</a></li>
 	<!-- ENDIF -->
 </ul>
@@ -27,9 +31,14 @@
 <!-- ENDIF -->
 
 <!-- IF S_HAS_SUBFORUM -->
-<!-- IF not S_IS_BOT and U_MARK_FORUMS -->
+<!-- IF S_DISPLAY_SEARCH or (not S_IS_BOT and U_MARK_FORUMS) -->
 <ul class="linklist">
+	<!-- IF S_DISPLAY_SEARCH -->
+	<li><a href="{U_SEARCH_ACTIVE_TOPICS_IN}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- IF S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_UNREAD_IN}">{L_SEARCH_UNREAD}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --><!-- IF not S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_NEW_IN}">{L_SEARCH_NEW}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_SELF_TOPICS_IN}">{L_SEARCH_SELF_TOPICS}</a> &bull; <a href="{U_SEARCH_SELF_IN}">{L_SEARCH_SELF}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_UNANSWERED_IN}">{L_SEARCH_UNANSWERED}</a> &bull; <a href="{U_SEARCH_IN}">{L_SEARCHING_FORUMS}</a></li>
+	<!-- ENDIF -->
+	<!-- IF not S_IS_BOT and U_MARK_FORUMS -->
 	<li class="rightside"><a href="{U_MARK_FORUMS}">{L_MARK_SUBFORUMS_READ}</a></li>
+	<!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
 	<!-- INCLUDE forumlist_body.html -->
@@ -128,7 +137,7 @@
 		<ul class="topiclist">
 			<li class="header">
 				<dl class="icon">
-					<dt><!-- IF S_DISPLAY_ACTIVE -->{L_ACTIVE_TOPICS}<!-- ELSEIF topicrow.S_TOPIC_TYPE_SWITCH and (topicrow.S_POST_ANNOUNCE or topicrow.S_POST_GLOBAL) -->{L_ANNOUNCEMENTS}<!-- ELSE -->{L_TOPICS}<!-- ENDIF --></dt>
+					<dt><!-- IF topicrow.S_TOPIC_TYPE_SWITCH and (topicrow.S_POST_ANNOUNCE or topicrow.S_POST_GLOBAL) -->{L_ANNOUNCEMENTS}<!-- ELSE --><!-- IF S_DISPLAY_ACTIVE -->{L_ACTIVE_TOPICS}<!-- ELSE -->{L_TOPICS}<!-- ENDIF --><!-- ENDIF --></dt>
 					<dd class="posts">{L_REPLIES}</dd>
 					<dd class="views">{L_VIEWS}</dd>
 					<dd class="lastpost"><span>{L_LAST_POST}</span></dd>

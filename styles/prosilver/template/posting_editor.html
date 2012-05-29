@@ -120,7 +120,7 @@ jQuery(function($)
 			<br /><a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
 		<!-- ENDIF -->
 
-		<!-- IF .smiley --><hr /><!-- ENDIF -->
+		<!-- IF S_SMILIES_ALLOWED and .smiley --><hr /><!-- ENDIF -->
 
 		<!-- IF S_BBCODE_ALLOWED -->
 			<div><label for="disable_bbcode"><input type="checkbox" name="disable_bbcode" id="disable_bbcode"{S_BBCODE_CHECKED} /> {L_DISABLE_BBCODE}</label></div>
@@ -137,7 +137,7 @@ jQuery(function($)
 		<!-- IF S_FIRST_POST_SHOW_ALLOWED -->
 			<div><label for="topic_first_post_show" title="{L_FIRST_POST_SHOW_EXPLAIN}"><input type="checkbox" name="topic_first_post_show" id="topic_first_post_show"{S_FIRST_POST_SHOW_CHECKED} /> {L_FIRST_POST_SHOW}</label></div>
 		<!-- ENDIF -->
-		<!-- IF not S_EDIT_POST and not S_NEW_MESSAGE and not $SIG_EDIT eq 1 and not S_PRIVMSGS and not S_SHOW_DRAFTS -->
+		<!-- IF S_USER_LOGGED_IN and not S_EDIT_POST and not S_NEW_MESSAGE and not $SIG_EDIT eq 1 and not S_PRIVMSGS and not S_SHOW_DRAFTS -->
 			<div><label for="do_not_merge"><input type="checkbox" name="do_not_merge" id="do_not_merge" /> {L_DO_NOT_MERGE}</label></div>
 		<!-- ENDIF -->
 

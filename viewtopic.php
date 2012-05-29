@@ -196,7 +196,7 @@ if ($db->sql_layer === 'firebird')
 // The FROM-Order is quite important here, else t.* columns can not be correctly bound.
 if ($post_id)
 {
-	$sql_array['SELECT'] .= ', p.post_approved';
+	$sql_array['SELECT'] .= ', p.post_approved, p.post_time, p.post_id';
 	$sql_array['FROM'][POSTS_TABLE] = 'p';
 }
 
@@ -305,12 +305,19 @@ if ($post_id)
 	}
 	else
 	{
-		$sql = 'SELECT COUNT(p1.post_id) AS prev_posts
-			FROM ' . POSTS_TABLE . ' p1, ' . POSTS_TABLE . " p2
-			WHERE p1.topic_id = {$topic_data['topic_id']}
-				AND p2.post_id = {$post_id}
-				" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p1.post_approved = 1' : '') . '
-				AND ' . (($sort_dir == 'd') ? 'p1.post_time >= p2.post_time' : 'p1.post_time <= p2.post_time');
+		$sql = 'SELECT COUNT(p.post_id) AS prev_posts
+			FROM ' . POSTS_TABLE . " p
+			WHERE p.topic_id = {$topic_data['topic_id']}
+				" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p.post_approved = 1' : '');
+
+		if ($sort_dir == 'd')
+		{
+			$sql .= " AND (p.post_time > {$topic_data['post_time']} OR (p.post_time = {$topic_data['post_time']} AND p.post_id >= {$topic_data['post_id']}))";
+		}
+		else
+		{
+			$sql .= " AND (p.post_time < {$topic_data['post_time']} OR (p.post_time = {$topic_data['post_time']} AND p.post_id <= {$topic_data['post_id']}))";
+		}
 
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -477,9 +484,10 @@ $s_watching_topic = array(
 	'is_watching'	=> false,
 );
 
-if (($config['email_enable'] || $config['jab_enable']) && $config['allow_topic_notify'] && $user->data['is_registered'])
+if (($config['email_enable'] || $config['jab_enable']) && $config['allow_topic_notify'])
 {
-	watch_topic_forum('topic', $s_watching_topic, $user->data['user_id'], $forum_id, $topic_id, $topic_data['notify_status'], $start);
+	$notify_status = (isset($topic_data['notify_status'])) ? $topic_data['notify_status'] : null;
+	watch_topic_forum('topic', $s_watching_topic, $user->data['user_id'], $forum_id, $topic_id, $notify_status, $start, $topic_data['topic_title']);
 
 	// Reset forum notification if forum notify is set
 	if ($config['allow_forum_notify'] && $auth->acl_get('f_subscribe', $forum_id))
@@ -585,6 +593,15 @@ if ($_SID)
 	$s_search_hidden_fields['sid'] = $_SID;
 }
 
+if (!empty($_EXTRA_URL))
+{
+	foreach ($_EXTRA_URL as $url_param)
+	{
+		$url_param = explode('=', $url_param, 2);
+		$s_hidden_fields[$url_param[0]] = $url_param[1];
+	}
+}
+
 // Send vars to template
 $template->assign_vars(array(
 	'FORUM_ID' 		=> $forum_id,
@@ -646,6 +663,7 @@ $template->assign_vars(array(
 	'S_DISPLAY_POST_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 	'S_DISPLAY_REPLY_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 	'S_ENABLE_FEEDS_TOPIC'	=> ($config['feed_topic'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $topic_data['forum_options'])) ? true : false,
+	'S_RATE_ENABLED'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
 
 	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id" . (($start) ? "&amp;start=$start" : ''),
 	'U_TOPIC'				=> "{$server_path}viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
@@ -1033,7 +1051,7 @@ $sql = $db->sql_build_query('SELECT', array(
 
 $result = $db->sql_query($sql);
 
-$now = getdate(time() + $user->timezone + $user->dst - date('Z'));
+$now = phpbb_gmgetdate(time() + $user->timezone + $user->dst);
 
 // Posts are stored in the $rowset array while $attach_list, $user_cache
 // and the global bbcode_bitfield are built
@@ -1076,6 +1094,9 @@ while ($row = $db->sql_fetchrow($result))
 		'post_edit_user'	=> $row['post_edit_user'],
 		'post_edit_locked'	=> $row['post_edit_locked'],
 
+		'post_rating_negative'	=> $row['post_rating_negative'],
+		'post_rating_positive'	=> $row['post_rating_positive'],
+
 		// Make sure the icon actually exists
 		'icon_id'			=> (isset($icons[$row['icon_id']]['img'], $icons[$row['icon_id']]['height'], $icons[$row['icon_id']]['width'])) ? $row['icon_id'] : 0,
 		'post_attachment'	=> $row['post_attachment'],
@@ -1108,9 +1129,17 @@ while ($row = $db->sql_fetchrow($result))
 		{
 			$user_cache[$poster_id] = array(
 				'joined'		=> '',
+				'with_us'		=> '',
 				'posts'			=> '',
 				'topics'		=> '',
 				'from'			=> '',
+
+				'rating'			=> 0,
+				'rating_positive'	=> 0,
+				'rating_negative'	=> 0,
+				'rated'				=> 0,
+				'rated_positive'	=> 0,
+				'rated_negative'	=> 0,
 
 				'sig'					=> '',
 				'sig_bbcode_uid'		=> '',
@@ -1165,10 +1194,18 @@ while ($row = $db->sql_fetchrow($result))
 
 			$user_cache[$poster_id] = array(
 				'joined'		=> $user->format_date($row['user_regdate']),
+				'with_us'		=> !empty($config['style_mp_show_with_us']) ? time_delta::get_verbal($row['user_regdate'], time(), false, 2) : '',
 				'posts'			=> $row['user_posts'],
 				'topics'		=> $row['user_topics'],
 				'warnings'		=> (isset($row['user_warnings'])) ? $row['user_warnings'] : 0,
 				'from'			=> (!empty($row['user_from'])) ? $row['user_from'] : '',
+
+				'rating'			=> ($config['rate_no_positive'] ? 0 : $row['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rating_negative']),
+				'rating_positive'	=> $row['user_rating_positive'],
+				'rating_negative'	=> $row['user_rating_negative'],
+				'rated'				=> ($config['rate_no_positive'] ? 0 : $row['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rated_negative']),
+				'rated_positive'	=> $row['user_rated_positive'],
+				'rated_negative'	=> $row['user_rated_negative'],
 
 				'sig'					=> $user_sig,
 				'sig_bbcode_uid'		=> (!empty($row['user_sig_bbcode_uid'])) ? $row['user_sig_bbcode_uid'] : '',
@@ -1421,6 +1458,19 @@ $template->assign_vars(array(
 	'S_NUM_POSTS' => sizeof($post_list))
 );
 
+// Get user rates
+$sql = 'SELECT *
+	FROM ' . POST_RATES_TABLE . '
+	WHERE user_id = ' . $user->data['user_id'] . '
+		AND ' . $db->sql_in_set('post_id', $post_list);
+$result = $db->sql_query($sql);
+
+$user_rates = array();
+while ($row = $db->sql_fetchrow($result))
+{
+	$user_rates[$row['post_id']] = $row;
+}
+
 // Output the posts
 $first_unread = $post_unread = false;
 for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
@@ -1452,6 +1502,15 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 
 	// Parse the message and subject
 	$message = censor_text($row['post_text']);
+
+	// Prepare decoded message if needed
+	$decoded_message = false;
+	if (!empty($config['allow_quick_reply']) && !empty($config['allow_quick_full_quote']) && $auth->acl_get('f_reply', $forum_id))
+	{
+		$decoded_message = $message;
+		decode_message($decoded_message, $row['bbcode_uid']);
+		$decoded_message = bbcode_nl2br($decoded_message);
+	}
 
 	// Second parse bbcode here
 	if ($row['bbcode_bitfield'])
@@ -1576,7 +1635,8 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		$user->data['user_id'] == $poster_id &&
 		$auth->acl_get('f_edit', $forum_id) &&
 		!$row['post_edit_locked'] &&
-		($row['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'] || $auth->acl_get('u_ignoreedittime'))
+		($row['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'] || $auth->acl_get('u_ignoreedittime')
+			|| ($topic_data['topic_first_post_id'] == $row['post_id'] && $auth->acl_get('u_ignorefpedittime')))
 	)));
 
 	$delete_allowed = ($user->data['is_registered'] && ($auth->acl_get('m_delete', $forum_id) || (
@@ -1587,6 +1647,9 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		// we do not want to allow removal of the last post if a moderator locked it!
 		!$row['post_edit_locked']
 	)));
+
+	$user_rate = isset($user_rates[$row['post_id']]) ? $user_rates[$row['post_id']] : array('rate' => 0, 'rate_time' => 0);
+	$rate_time = ($topic_data['topic_first_post_id'] != $row['post_id'] || !isset($config['rate_topic_time']) || $config['rate_topic_time'] == -1) ? $config['rate_time'] : $config['rate_topic_time'];
 
 	//
 	$postrow = array(
@@ -1599,12 +1662,22 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'RANK_IMG'			=> $user_cache[$poster_id]['rank_image'],
 		'RANK_IMG_SRC'		=> $user_cache[$poster_id]['rank_image_src'],
 		'POSTER_JOINED'		=> $user_cache[$poster_id]['joined'],
+		'POSTER_WITH_US'	=> $user_cache[$poster_id]['with_us'],
 		'POSTER_POSTS'		=> $user_cache[$poster_id]['posts'],
 		'POSTER_TOPICS'		=> $user_cache[$poster_id]['topics'],
 		'POSTER_FROM'		=> $user_cache[$poster_id]['from'],
 		'POSTER_AVATAR'		=> $user_cache[$poster_id]['avatar'],
 		'POSTER_WARNINGS'	=> $user_cache[$poster_id]['warnings'],
 		'POSTER_AGE'		=> $user_cache[$poster_id]['age'],
+
+		'S_POSTER_RATING'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($poster_id != ANONYMOUS),
+		'POSTER_RATING'				=> $user_cache[$poster_id]['rating'],
+		'POSTER_RATING_POSITIVE'	=> $user_cache[$poster_id]['rating_positive'],
+		'POSTER_RATING_NEGATIVE'	=> $user_cache[$poster_id]['rating_negative'],
+		'POSTER_RATED'				=> $user_cache[$poster_id]['rated'],
+		'POSTER_RATED_POSITIVE'		=> $user_cache[$poster_id]['rated_positive'],
+		'POSTER_RATED_NEGATIVE'		=> $user_cache[$poster_id]['rated_negative'],
+
 		// This value will be used as a parameter for JS insert_text() function, so we use addslashes to handle "special" usernames properly ;)
 		'POSTER_QUOTE'		=> addslashes(get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username'])),
 
@@ -1615,6 +1688,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_DATE'			=> $user->format_date($row['post_created'] ? $row['post_created'] : $row['post_time'], false, ($view == 'print') ? true : false),
 		'POST_SUBJECT'		=> $row['post_subject'],
 		'MESSAGE'			=> $message,
+		'DECODED_MESSAGE'	=> $decoded_message,
 		'SIGNATURE'			=> ($row['enable_sig']) ? $user_cache[$poster_id]['sig'] : '',
 		'EDITED_MESSAGE'	=> $l_edited_by,
 		'EDIT_REASON'		=> $row['post_edit_reason'],
@@ -1661,6 +1735,14 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_ID'			=> $row['post_id'],
 		'POST_NUMBER'		=> $i + $start + 1,
 		'POSTER_ID'			=> $poster_id,
+
+		'POST_RATING_SHOW'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0 || (empty($config['rate_only_topics']) || $topic_data['topic_first_post_id'] == $row['post_id']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true)),
+		'POST_RATING'			=> ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
+		'POST_RATING_NEGATIVE'	=> $row['post_rating_negative'],
+		'POST_RATING_POSITIVE'	=> $row['post_rating_positive'],
+		'USER_RATE'				=> $user_rate['rate'],
+		'USER_CAN_MINUS'		=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && (empty($config['rate_only_topics']) || $topic_data['topic_first_post_id'] == $row['post_id']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
+		'USER_CAN_PLUS'			=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && (empty($config['rate_only_topics']) || $topic_data['topic_first_post_id'] == $row['post_id']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
 
 		'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
 		'S_POST_UNAPPROVED'	=> ($row['post_approved']) ? false : true,

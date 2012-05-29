@@ -35,6 +35,7 @@ if (!empty($load_extensions) && function_exists('dl'))
 }
 
 $id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
+$lang = (isset($_GET['lang'])) ? strval($_GET['lang']) : '';
 
 // This is a simple script to grab and output the requested CSS data stored in the DB
 // We include a session_id check to try and limit 3rd party linking ... unless they
@@ -114,7 +115,7 @@ if ($id)
 
 	if ($user['user_id'] == ANONYMOUS)
 	{
-		$user['user_lang'] = $config['default_lang'];
+		$user['user_lang'] = $config['default_lang'] = $lang;
 	}
 
 	$user_image_lang = (file_exists($phpbb_root_path . 'styles/' . $theme['imageset_path'] . '/imageset/' . $user['user_lang'])) ? $user['user_lang'] : $config['default_lang'];

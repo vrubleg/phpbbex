@@ -10,8 +10,11 @@
 <meta name="distribution" content="global" />
 <meta name="keywords" content="{SITE_KEYWORDS}" />
 <meta name="description" content="{SITE_DESCRIPTION}" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
 {META}
-<title>{SITENAME} - <!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF -->{PAGE_TITLE}</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="{T_TEMPLATE_PATH}/jquery.splash.js"></script>
+<title><!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF --><!-- IF PAGE_TITLE -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}</title>
 
 <script type="text/javascript">
 // <![CDATA[
