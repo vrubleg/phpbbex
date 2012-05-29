@@ -2231,7 +2231,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Assign sid if session id is not specified
-	if ($session_id === false && $user->data['user_id'] != ANONYMOUS && !$user->data['is_bot'])
+	if ($session_id === false && !empty($user) && $user->data['user_id'] != ANONYMOUS && !$user->data['is_bot'])
 	{
 		$session_id = $_SID;
 	}
