@@ -1192,11 +1192,6 @@ function display_custom_bbcodes()
 	$db->sql_freeresult($result);
 }
 
-if (class_exists('phpbb_gallery_integration'))
-{
-	phpbb_gallery_integration::posting_display_popup();
-}
-
 /**
 * Display reasons
 */
