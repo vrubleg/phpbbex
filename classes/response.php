@@ -155,4 +155,13 @@ class response
 			self::header('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + $expire));
 		}
 	}
+
+	/**
+	 * Set 301/302 redirect headers
+	 */
+	static function redirect($to, $status = 302)
+	{
+		self::status($status);
+		self::header('Location', $to);
+	}
 }

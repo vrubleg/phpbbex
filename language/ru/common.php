@@ -928,7 +928,7 @@ $lang = array_merge($lang, array(
 
 	// Ratings
 	'USER_RATING'				=> 'Репутация',
-	'USER_RATED'				=> 'Терпимость',
+	'USER_RATED'				=> 'Лояльность',
 
 	// Main menu
 	'USER_CP'					=> 'Личное',
