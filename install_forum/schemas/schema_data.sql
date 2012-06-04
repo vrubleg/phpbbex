@@ -233,7 +233,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_edit_time', '0'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_boxes', '4');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_recipients', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '25');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('print_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('queue_interval', '60');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ranks_path', 'images/ranks');
