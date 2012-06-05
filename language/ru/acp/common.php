@@ -523,8 +523,8 @@ $lang = array_merge($lang, array(
 
 	'LOG_APPROVE_TOPIC'			=> '<strong>Одобрена тема</strong><br />» %s',
 	'LOG_BUMP_TOPIC'			=> '<strong>Поднята тема</strong><br />» %s',
-	'LOG_DELETE_POST'			=> '<strong>Удалено сообщение «%1$s», опубликованное пользователем </strong><br />» %2$s',
-	'LOG_DELETE_TOPIC'			=> '<strong>Удалена тема «%1$s», созданная пользователем </strong><br />» %2$s',
+	'LOG_DELETE_POST'			=> '<strong>Удалено сообщение</strong><br />Тема: %1$s<br />Автор: %2$s<br />%3$s',
+	'LOG_DELETE_TOPIC'			=> '<strong>Удалена тема</strong><br />Название: %1$s<br />Автор: %2$s<br />%3$s',
 	'LOG_DELETE_SHADOW_TOPIC'	=> '<strong>Удалена ссылка на перенесённую тему</strong><br />» %s',
 	'LOG_FORK'					=> '<strong>Скопирована тема</strong><br />» из форума %s',
 	'LOG_LOCK'					=> '<strong>Закрыта тема</strong><br />» %s',
