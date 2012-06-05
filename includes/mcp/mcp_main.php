@@ -727,6 +727,12 @@ function mcp_delete_topic($topic_ids)
 		$success_msg = (sizeof($topic_ids) == 1) ? 'TOPIC_DELETED_SUCCESS' : 'TOPICS_DELETED_SUCCESS';
 
 		$data = get_topic_data($topic_ids);
+		$first_post_ids = array();
+		foreach ($data as $row)
+		{
+			$first_post_ids[] = $row['topic_first_post_id'];
+		}
+		$posts = get_post_data($first_post_ids);
 
 		foreach ($data as $topic_id => $row)
 		{
@@ -736,7 +742,7 @@ function mcp_delete_topic($topic_ids)
 			}
 			else
 			{
-				add_log('mod', $row['forum_id'], $topic_id, 'LOG_DELETE_TOPIC', $row['topic_title'], $row['topic_first_poster_name']);
+				add_log('mod', $row['forum_id'], $topic_id, 'LOG_DELETE_TOPIC', $row['topic_title'], $row['topic_first_poster_name'], $posts[$row['topic_first_post_id']]['post_text']);
 			}
 		}
 
@@ -822,7 +828,7 @@ function mcp_delete_post($post_ids)
 		foreach ($post_data as $id => $row)
 		{
 			$post_username = ($row['poster_id'] == ANONYMOUS && !empty($row['post_username'])) ? $row['post_username'] : $row['username'];
-			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_DELETE_POST', $row['post_subject'], $post_username);
+			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_DELETE_POST', $row['post_subject'] ? $row['post_subject'] : $row['topic_title'], $post_username, $row['post_text']);
 		}
 
 		// Now delete the posts, topics and forums are automatically resync'ed

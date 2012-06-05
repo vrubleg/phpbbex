@@ -923,7 +923,7 @@ $lang = array_merge($lang, array(
 
 	// Ratings
 	'USER_RATING'				=> 'Reputation',
-	'USER_RATED'				=> 'Tolerance',
+	'USER_RATED'				=> 'Loyalty',
 
 	// Main menu
 	'USER_CP'					=> 'User CP',

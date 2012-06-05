@@ -34,6 +34,12 @@ $voted_id = (sizeof($voted_id) > 1) ? array_unique($voted_id) : $voted_id;
 $start		= request_var('start', 0);
 $view		= request_var('view', '');
 
+// Recalc start position
+if ($start)
+{
+	$start = floor($start / $config['posts_per_page']) * $config['posts_per_page'];
+}
+
 $default_sort_days	= (!empty($user->data['user_post_show_days'])) ? $user->data['user_post_show_days'] : 0;
 $default_sort_key	= (!empty($user->data['user_post_sortby_type'])) ? $user->data['user_post_sortby_type'] : 't';
 $default_sort_dir	= (!empty($user->data['user_post_sortby_dir'])) ? $user->data['user_post_sortby_dir'] : 'a';

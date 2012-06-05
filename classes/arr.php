@@ -8,19 +8,18 @@ class arr
 {
 	/**
 	 * Gets value from array and casts it to type of default value.
-	 *
 	 *     $name  = arr::get($array, 'name');
 	 *     $flag  = arr::get($array, 'flag', false);
 	 *     $flags = arr::get($array, array('flag1', 'flag2'), false);
 	 *     $vars  = arr::get($array, array('flag', 'user_id' => 0), false);
 	 *     $vars  = arr::get($array, array('flag' => false, 'user_id' => 0));
-	 *
-	 * @param   $array   source array
-	 * @param   $key     key name
-	 * @param   $default default value (and pattern for type cast)
+	 * @param array   $array   source array
+	 * @param mixed   $index   key name or array of key names
+	 * @param mixed   $default default value (and pattern for type cast)
+	 * @param bool    $autocast automatically cast value
 	 * @return  mixed
 	 */
-	function get(&$array, $index = null, $default = null, $autocast = false)
+	static function get(&$array, $index = null, $default = null, $autocast = false)
 	{
 		// Called without arguments, return all variables
 		if (is_null($index))
@@ -94,7 +93,7 @@ class arr
 	/**
 	 * Tests if an array is associative or not.
 	 */
-	public static function is_assoc(array $array)
+	static function is_assoc(array $array)
 	{
 		$keys = array_keys($array);
 		// If the array keys of the keys match the keys, then the array must

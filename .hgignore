@@ -8,4 +8,5 @@ regexp:^gallery/images/medium/(?!(\.htaccess|index\.htm)).+
 regexp:^gallery/images/upload/(?!(\.htaccess|index\.htm|image_not_exist\.jpg|no_hotlinking\.jpg|not_authorised\.jpg)).+
 regexp:^config\.php$
 regexp:^work/
+regexp:^.idea/
 regexp:~$
