@@ -3173,8 +3173,7 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 		@fputs($fsock, "Referer: ".generate_board_url()."\r\n");
 		@fputs($fsock, 'User-Agent: phpBBex/' . (isset($config['phpbbex_version']) ? $config['phpbbex_version'] : '?')
 			. ' phpBB/' . (isset($config['version']) ? $config['version'] : '?')
-			. ' (' . preg_replace('/[^\x00-\x7F]+/e', 'urlencode("$0")', $user->data['username']) . ' <' . $user->data['user_email'] . '>; '
-			. $config['num_posts'] . '; ' . $config['num_topics'] . '; ' . $config['num_users'] . ")\r\n");
+			. ' (' . $config['num_posts'] . '; ' . $config['num_topics'] . '; ' . $config['num_users'] . ")\r\n");
 		@fputs($fsock, "Connection: close\r\n\r\n");
 
 		$timer_stop = time() + $timeout;
