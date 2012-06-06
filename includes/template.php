@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 * Base Template class.
 * @package phpBB3
 */
-class template
+class phpbb_template
 {
 	/** variable that holds all the data we'll be substituting into
 	* the compiled templates. Takes form:

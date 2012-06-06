@@ -108,8 +108,8 @@ if (!defined('LOGIN_ATTEMPT_TABLE'))
 	define('LOGIN_ATTEMPT_TABLE', $table_prefix . 'login_attempts');
 }
 
-$user = new user();
-$cache = new cache();
+$user = new phpbb_user();
+$cache = new phpbb_cache();
 $db = new $sql_db();
 
 // Add own hook handler, if present. :o

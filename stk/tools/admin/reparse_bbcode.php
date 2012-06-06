@@ -330,7 +330,7 @@ class reparse_bbcode
 //		$this->_backup($batch);
 
 		// User object used to store a second user object used when parsing signatures. (#62451)
-		$_user2 = new user();
+		$_user2 = new phpbb_user();
 
 		// Walk through the batch
 		foreach ($batch as $this->data)

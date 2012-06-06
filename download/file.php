@@ -46,7 +46,7 @@ if (isset($_GET['avatar']))
 	require($phpbb_root_path . 'includes/functions.' . $phpEx);
 
 	$db = new $sql_db();
-	$cache = new cache();
+	$cache = new phpbb_cache();
 
 	// Connect to DB
 	if (!@$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false))

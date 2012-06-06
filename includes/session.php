@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 * Session class
 * @package phpBB3
 */
-class session
+class phpbb_session
 {
 	var $cookie_data = array();
 	var $page = array();
@@ -1534,7 +1534,7 @@ class session
 *
 * @package phpBB3
 */
-class user extends session
+class phpbb_user extends phpbb_session
 {
 	var $lang = array();
 	var $help = array();
@@ -1556,7 +1556,7 @@ class user extends session
 	/**
 	* Constructor to set the lang path
 	*/
-	function user()
+	function __construct()
 	{
 		global $phpbb_root_path;
 

@@ -98,10 +98,10 @@ require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
 set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');
 
 // Instantiate some basic classes
-$user		= new user();
-$auth		= new auth();
-$template	= new template();
-$cache		= new cache();
+$user		= new phpbb_user();
+$auth		= new phpbb_auth();
+$template	= new phpbb_template();
+$cache		= new phpbb_cache();
 $db			= new $sql_db();
 
 // Connect to DB
