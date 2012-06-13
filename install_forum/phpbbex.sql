@@ -88,6 +88,9 @@ UPDATE phpbb_forums SET forum_flags = forum_flags|16;
 -- Remove subjects with "Re: "
 -- UPDATE phpbb_posts SET post_subject = "" WHERE post_subject LIKE "Re: %";
 
+-- Remove subjects with "Re: " (excluding first posts, it is much slower)
+-- UPDATE phpbb_posts p LEFT JOIN phpbb_topics t ON t.topic_first_post_id = p.post_id SET p.post_subject = "" WHERE p.post_subject LIKE "Re: %" AND t.topic_first_post_id IS NULL;
+
 -- Delete user bbcode [s]
 DELETE FROM phpbb_bbcodes WHERE bbcode_tag = 's';
 UPDATE IGNORE phpbb_bbcodes SET bbcode_id=14 WHERE bbcode_id = 13;
