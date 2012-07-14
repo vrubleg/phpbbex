@@ -165,10 +165,10 @@ $sub = request_var('sub', '');
 // Set PHP error handler to ours
 set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');
 
-$user = new user();
-$auth = new auth();
-$cache = new cache();
-$template = new template();
+$user = new phpbb_user();
+$auth = new phpbb_auth();
+$cache = new phpbb_cache();
+$template = new phpbb_template();
 
 // Add own hook handler, if present. :o
 if (file_exists($phpbb_root_path . 'includes/hooks/index.' . $phpEx))

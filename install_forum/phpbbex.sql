@@ -50,6 +50,8 @@ ALTER TABLE phpbb_warnings
 
 -- New phpBBex options
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '30');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '90');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');
@@ -87,6 +89,9 @@ UPDATE phpbb_forums SET forum_flags = forum_flags|16;
 
 -- Remove subjects with "Re: "
 -- UPDATE phpbb_posts SET post_subject = "" WHERE post_subject LIKE "Re: %";
+
+-- Remove subjects with "Re: " (excluding first posts, it is much slower)
+-- UPDATE phpbb_posts p LEFT JOIN phpbb_topics t ON t.topic_first_post_id = p.post_id SET p.post_subject = "" WHERE p.post_subject LIKE "Re: %" AND t.topic_first_post_id IS NULL;
 
 -- Delete user bbcode [s]
 DELETE FROM phpbb_bbcodes WHERE bbcode_tag = 's';

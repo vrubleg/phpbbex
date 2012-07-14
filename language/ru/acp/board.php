@@ -38,8 +38,12 @@ if (empty($lang) || !is_array($lang))
 // Board Settings
 $lang = array_merge($lang, array(
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Здесь вы можете установить общие параметры конференции, дать ей имя и описание, а также указать часовой пояс и язык, которые будут использоваться по умолчанию.',
+	'ACTIVE_TOPICS_DAYS'			=> 'Тема активна',
+	'ACTIVE_TOPICS_DAYS_EXPLAIN'	=> 'На странице «Активные темы» будут отображаться темы с последней активностью за заданное количество дней. Введите 0 для отображения тем за всё время.',
+	'ACTIVE_USERS_DAYS'				=> 'Пользователь активен',
+	'ACTIVE_USERS_DAYS_EXPLAIN'		=> 'При последнем посещении в заданое количество дней пользователь считается активным.',
 	'AUTO_GUEST_LANG'				=> 'Определять язык для гостей',
-	'AUTO_GUEST_LANG_EXPLAIN'		=> 'Для гостей язык будет определяться автоматически',
+	'AUTO_GUEST_LANG_EXPLAIN'		=> 'Для гостей язык будет определяться автоматически.',
 	'CUSTOM_DATEFORMAT'				=> 'Другой…',
 	'DEFAULT_DATE_FORMAT'			=> 'Формат даты',
 	'DEFAULT_DATE_FORMAT_EXPLAIN'	=> 'Синтаксис идентичен функции <code><a href="http://www.php.net/date">date</code></a> языка PHP.',
@@ -563,6 +567,7 @@ $lang = array_merge($lang, array(
 	'BOARD_HIDE_EMAILS_EXPLAIN'		=> 'Эта функция полностью сохраняет в тайне email-адреса.',
 	'CONTACT_EMAIL'					=> 'Контактный email-адрес',
 	'CONTACT_EMAIL_EXPLAIN'			=> 'Этот адрес будет использоваться при каждой необходимости контакта, например, в случае спама, ошибок и т. п. Он всегда будет использоваться в качестве адресов <samp>From</samp> и <samp>Reply-To</samp> в email-сообщениях.',
+	'CONTACT_EMAIL_NAME'			=> 'Имя отправителя уведомлений',
 	'EMAIL_FUNCTION_NAME'			=> 'Имя функции email',
 	'EMAIL_FUNCTION_NAME_EXPLAIN'	=> 'Функция email, используемая для отправки сообщений через PHP.',
 	'EMAIL_PACKAGE_SIZE'			=> 'Размер почтового пакета',

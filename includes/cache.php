@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 * Class for grabbing/handling cached entries, extends acm_file or acm_db depending on the setup
 * @package acm
 */
-class cache extends acm
+class phpbb_cache extends acm
 {
 	/**
 	* Get config values
