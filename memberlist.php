@@ -1174,10 +1174,10 @@ switch ($mode)
 				$sql_where .= " AND u.user_posts > 0 ";
 				break;
 			case 'active':
-				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit > " . (time()-3600*24*90) . " ";
+				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
 				break;
 			case 'inactive':
-				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit <= " . (time()-3600*24*90) . " ";
+				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
 				break;
 			case 'noposts':
 				$sql_where .= " AND u.user_posts = 0 ";

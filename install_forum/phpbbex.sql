@@ -50,6 +50,8 @@ ALTER TABLE phpbb_warnings
 
 -- New phpBBex options
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '30');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '90');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');

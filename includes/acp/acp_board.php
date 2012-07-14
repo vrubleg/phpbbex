@@ -69,6 +69,8 @@ class acp_board
 						'override_user_dst'			=> array('lang' => 'OVERRIDE_DST',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'default_style'			=> array('lang' => 'DEFAULT_STYLE',			'validate' => 'int',	'type' => 'select', 'function' => 'style_select', 'params' => array('{CONFIG_VALUE}', false), 'explain' => false),
 						'override_user_style'	=> array('lang' => 'OVERRIDE_STYLE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'active_topics_days'	=> array('lang' => 'ACTIVE_TOPICS_DAYS',	'validate' => 'int',	'type' => 'text:4:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
+						'active_users_days'		=> array('lang' => 'ACTIVE_USERS_DAYS',		'validate' => 'int',	'type' => 'text:4:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
 
 						'legend2'				=> 'WARNINGS',
 						'warning_post_default'	=> array('lang' => 'WARNING_POST_DEFAULT',	'validate' => 'string',	'type' => 'textarea:1:255', 'explain' => false),
