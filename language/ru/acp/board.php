@@ -567,6 +567,7 @@ $lang = array_merge($lang, array(
 	'BOARD_HIDE_EMAILS_EXPLAIN'		=> 'Эта функция полностью сохраняет в тайне email-адреса.',
 	'CONTACT_EMAIL'					=> 'Контактный email-адрес',
 	'CONTACT_EMAIL_EXPLAIN'			=> 'Этот адрес будет использоваться при каждой необходимости контакта, например, в случае спама, ошибок и т. п. Он всегда будет использоваться в качестве адресов <samp>From</samp> и <samp>Reply-To</samp> в email-сообщениях.',
+	'CONTACT_EMAIL_NAME'			=> 'Имя отправителя уведомлений',
 	'EMAIL_FUNCTION_NAME'			=> 'Имя функции email',
 	'EMAIL_FUNCTION_NAME_EXPLAIN'	=> 'Функция email, используемая для отправки сообщений через PHP.',
 	'EMAIL_PACKAGE_SIZE'			=> 'Размер почтового пакета',
