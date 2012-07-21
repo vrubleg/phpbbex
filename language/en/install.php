@@ -189,14 +189,11 @@ $lang = array_merge($lang, array(
 	'INITIAL_CONFIG_EXPLAIN'	=> 'Now that install has determined your server can run phpBB you need to supply some specific information. If you do not know how to connect to your database please contact your hosting provider (in the first instance) or use the phpBB support forums. When entering data please ensure you check it thoroughly before continuing.',
 	'INSTALL_CONGRATS'			=> 'Congratulations!',
 	'INSTALL_CONGRATS_EXPLAIN'	=> '
-		You have successfully installed phpBB %1$s. Please proceed by choosing one of the following options:</p>
-		<h2>Convert an existing board to phpBB3</h2>
-		<p>The phpBB Unified Convertor Framework supports the conversion of phpBB 2.0.x and other board systems to phpBB3. If you have an existing board that you wish to convert, please <a href="%2$s">proceed to the convertor</a>.</p>
-		<h2>Go live with your phpBB3!</h2>
-		<p>Clicking the button below will take you to a form for submitting statistical data to phpBB in your Administration Control Panel (ACP). We would appreciate it if you could help us by sending that information. Afterwards you should take some time to examine the options available to you. Remember that help is available online via the <a href="http://www.phpbb.com/support/documentation/3.0/">Documentation</a>, <a href="%3$s">README</a> and the <a href="http://www.phpbb.com/community/viewforum.php?f=46">Support Forums</a>.</p><p><strong>Please delete, move or rename the install directory before using your board. While this directory exists, only the Administration Control Panel (ACP) will be accessible.</strong>',
+		You have successfully installed phpBBex %1$s. Go live with your phpBBex!</p>
+		<p>Clicking the button below will take you to a Administration Control Panel (ACP). You should take some time to examine the options available to you. Remember that help is available online via the <a href="http://www.phpbb.com/support/documentation/3.0/">Documentation on phpbb.com</a> and the <a href="http://phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forums</a>.</p><p><strong>Please delete, move or rename the install directory before using your board. While this directory exists, only the Administration Control Panel (ACP) will be accessible.</strong>',
 	'INSTALL_INTRO'				=> 'Welcome to Installation',
 
-	'INSTALL_INTRO_BODY'		=> 'With this option, it is possible to install phpBB3 onto your server.</p><p>In order to proceed, you will need your database settings. If you do not know your database settings, please contact your host and ask for them. You will not be able to continue without them. You need:</p>
+	'INSTALL_INTRO_BODY'		=> 'With this option, it is possible to install phpBBex onto your server.</p><p>In order to proceed, you will need your database settings. If you do not know your database settings, please contact your host and ask for them. You will not be able to continue without them. You need:</p>
 
 	<ul>
 		<li>The Database Type - the database you will be using.</li>
@@ -206,17 +203,9 @@ $lang = array_merge($lang, array(
 		<li>The Database username and Database password - the login data to access the database.</li>
 	</ul>
 
-	<p><strong>Note:</strong> if you are installing using SQLite, you should enter the full path to your database file in the DSN field and leave the username and password fields blank. For security reasons, you should make sure that the database file is not stored in a location accessible from the web.</p>
-
-	<p>phpBB3 supports the following databases:</p>
+	<p>phpBBex supports the following databases:</p>
 	<ul>
 		<li>MySQL 3.23 or above (MySQLi supported)</li>
-		<li>PostgreSQL 7.3+</li>
-		<li>SQLite 2.8.2+</li>
-		<li>Firebird 2.1+</li>
-		<li>MS SQL Server 2000 or above (directly or via ODBC)</li>
-		<li>MS SQL Server 2005 or above (native)</li>
-		<li>Oracle</li>
 	</ul>
 
 	<p>Only those databases supported on your server will be displayed.',
@@ -287,7 +276,7 @@ $lang = array_merge($lang, array(
 	'NO_LOCATION'				=> 'Cannot determine location. If you know Imagemagick is installed, you may specify the location later within your administration control panel',
 	'NO_TABLES_FOUND'			=> 'No tables found.',
 
-	'OVERVIEW_BODY'				=> 'Welcome to phpBB3!<br /><br />phpBB™ is the most widely used open source bulletin board solution in the world. phpBB3 is the latest installment in a package line started in 2000. Like its predecessors, phpBB3 is feature-rich, user-friendly, and fully supported by the phpBB Team. phpBB3 greatly improves on what made phpBB2 popular, and adds commonly requested features that were not present in previous versions. We hope it exceeds your expectations.<br /><br />This installation system will guide you through installing phpBB3, updating to the latest version of phpBB3 from past releases, as well as converting to phpBB3 from a different discussion board system (including phpBB2). For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>.<br /><br />To read the phpBB3 license or learn about obtaining support and our stance on it, please select the respective options from the side menu. To continue, please select the appropriate tab above.',
+	'OVERVIEW_BODY'				=> 'Welcome to phpBBex!<br /><br />phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a href="http://phpbbex.com/forum/viewtopic.php?t=28">More...</a><br /><br />This installation system will guide you through installing phpBB3. For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>. To install, please select the appropriate tab above.',
 
 	'PCRE_UTF_SUPPORT'				=> 'PCRE UTF-8 support',
 	'PCRE_UTF_SUPPORT_EXPLAIN'		=> 'phpBB will <strong>not</strong> run if your PHP installation is not compiled with UTF-8 support in the PCRE extension.',
@@ -301,10 +290,10 @@ $lang = array_merge($lang, array(
 	'PHP_REGISTER_GLOBALS_EXPLAIN'	=> 'phpBB will still run if this setting is enabled, but if possible, it is recommended that register_globals is disabled on your PHP install for security reasons.',
 	'PHP_SAFE_MODE'					=> 'Safe mode',
 	'PHP_SETTINGS'					=> 'PHP version and settings',
-	'PHP_SETTINGS_EXPLAIN'			=> '<strong>Required</strong> - You must be running at least version 4.3.3 of PHP in order to install phpBB. If <var>safe mode</var> is displayed below your PHP installation is running in that mode. This will impose limitations on remote administration and similar features.',
+	'PHP_SETTINGS_EXPLAIN'			=> '<strong>Required</strong> - You must be running at least version 5.2.3 of PHP in order to install phpBBex. If <var>safe mode</var> is displayed below your PHP installation is running in that mode. This will impose limitations on remote administration and similar features.',
 	'PHP_URL_FOPEN_SUPPORT'			=> 'PHP setting <var>allow_url_fopen</var> is enabled',
 	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Optional</strong> - This setting is optional, however certain phpBB functions like off-site avatars will not work properly without it.',
-	'PHP_VERSION_REQD'				=> 'PHP version >= 4.3.3',
+	'PHP_VERSION_REQD'				=> 'PHP version >= 5.2.3',
 	'POST_ID'						=> 'Post ID',
 	'PREFIX_FOUND'					=> 'A scan of your tables has shown a valid installation using <strong>%s</strong> as table prefix.',
 	'PREPROCESS_STEP'				=> 'Executing pre-processing functions/queries',
@@ -331,7 +320,7 @@ $lang = array_merge($lang, array(
 	'STAGE_ADVANCED_EXPLAIN'	=> 'The settings on this page are only necessary to set if you know that you require something different from the default. If you are unsure, just proceed to the next page, as these settings can be altered from the Administration Control Panel later.',
 	'STAGE_CONFIG_FILE'			=> 'Configuration file',
 	'STAGE_CREATE_TABLE'		=> 'Create database tables',
-	'STAGE_CREATE_TABLE_EXPLAIN'	=> 'The database tables used by phpBB 3.0 have been created and populated with some initial data. Proceed to the next screen to finish installing phpBB.',
+	'STAGE_CREATE_TABLE_EXPLAIN'	=> 'The database tables used by phpBBex have been created and populated with some initial data. Proceed to the next screen to finish installing phpBBex.',
 	'STAGE_DATABASE'			=> 'Database settings',
 	'STAGE_FINAL'				=> 'Final stage',
 	'STAGE_INTRO'				=> 'Introduction',
@@ -344,7 +333,7 @@ $lang = array_merge($lang, array(
 	'SUB_LICENSE'				=> 'License',
 	'SUB_SUPPORT'				=> 'Support',
 	'SUCCESSFUL_CONNECT'		=> 'Successful connection',
-	'SUPPORT_BODY'				=> 'Full support will be provided for the current stable release of phpBB3, free of charge. This includes:</p><ul><li>installation</li><li>configuration</li><li>technical questions</li><li>problems relating to potential bugs in the software</li><li>updating from Release Candidate (RC) versions to the latest stable version</li><li>converting from phpBB 2.0.x to phpBB3</li><li>converting from other discussion board software to phpBB3 (please see the <a href="http://www.phpbb.com/community/viewforum.php?f=65">Convertors Forum</a>)</li></ul><p>We encourage users still running beta versions of phpBB3 to replace their installation with a fresh copy of the latest version.</p><h2>MODs / Styles</h2><p>For issues relating to MODs, please post in the appropriate <a href="http://www.phpbb.com/community/viewforum.php?f=81">Modifications Forum</a>.<br />For issues relating to styles, templates and imagesets, please post in the appropriate <a href="http://www.phpbb.com/community/viewforum.php?f=80">Styles Forum</a>.<br /><br />If your question relates to a specific package, please post directly in the topic dedicated to the package.</p><h2>Obtaining Support</h2><p><a href="http://www.phpbb.com/community/viewtopic.php?f=14&amp;t=571070">The phpBB Welcome Package</a><br /><a href="http://www.phpbb.com/support/">Support Section</a><br /><a href="http://www.phpbb.com/support/documentation/3.0/quickstart/">Quick Start Guide</a><br /><br />To ensure you stay up to date with the latest news and releases, why not <a href="http://www.phpbb.com/support/">subscribe to our mailing list</a>?<br /><br />',
+	'SUPPORT_BODY'				=> 'Full support will be provided for the current stable release of phpBBex, free of charge. This includes:</p><ul><li>installation</li><li>configuration</li><li>technical questions</li><li>problems relating to potential bugs in the software</li><li>updating from Release Candidate (RC) versions to the latest stable version</li></ul><h2>Obtaining Support</h2><p><a href="http://phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forum</a><br /><br />',
 	'SYNC_FORUMS'				=> 'Starting to synchronise forums',
 	'SYNC_POST_COUNT'			=> 'Synchronising post_counts',
 	'SYNC_POST_COUNT_ID'		=> 'Synchronising post_counts from <var>entry</var> %1$s to %2$s.',
@@ -366,7 +355,7 @@ $lang = array_merge($lang, array(
 	'VERIFY_OPTIONS'			=> 'Verifying conversion options',
 	'VERSION'					=> 'Version',
 
-	'WELCOME_INSTALL'			=> 'Welcome to phpBB3 Installation',
+	'WELCOME_INSTALL'			=> 'Welcome to phpBBex Installation',
 	'WRITABLE'					=> 'Writable',
 ));
 

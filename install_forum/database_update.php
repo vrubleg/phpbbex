@@ -527,7 +527,7 @@ function _print_footer()
 	</div>
 
 	<div id="page-footer">
-		Powered by <a href="http://www.phpbb.com/">phpBB</a>&reg; Forum Software &copy; phpBB Group
+		Powered by <a href="http://www.phpbb.com/" target="_blank">phpBB</a> &copy; 2011 phpBB Group, <a href="http://phpbbex.com/" target="_blank">phpBBex</a> &copy; 2012 Evgeny Vrublevsky
 	</div>
 </div>
 

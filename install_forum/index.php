@@ -569,7 +569,7 @@ class module
 		echo '		</div>';
 		echo '	</div>';
 		echo '	<div id="page-footer">';
-		echo '		Powered by <a href="http://www.phpbb.com/">phpBB</a>&reg; Forum Software &copy; phpBB Group';
+		echo '		Powered by <a href="http://www.phpbb.com/" target="_blank">phpBB</a> &copy; 2011 phpBB Group, <a href="http://phpbbex.com/" target="_blank">phpBBex</a> &copy; 2012 Evgeny Vrublevsky';
 		echo '	</div>';
 		echo '</div>';
 		echo '</body>';
