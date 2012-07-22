@@ -65,6 +65,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('no_sid', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');

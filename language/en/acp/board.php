@@ -412,6 +412,9 @@ $lang = array_merge($lang, array(
 	'ONLINE_LENGTH_EXPLAIN'		=> 'Number of minutes after which inactive users will not appear in “Who is online” listings. The higher this value the greater is the processing required to generate the listing.',
 	'SESSION_LENGTH'			=> 'Session length',
 	'SESSION_LENGTH_EXPLAIN'	=> 'Sessions will expire after this time, in seconds.',
+
+	'NO_SID'					=> 'Never add sid to links',
+	'NO_SID_EXPLAIN'			=> 'Warning! You can\'t log in if you set incorrect cookie settings and disable sid.',
 ));
 
 // Load Settings
