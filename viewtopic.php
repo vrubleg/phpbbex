@@ -1741,7 +1741,8 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'S_UNREAD_POST'		=> $post_unread,
 		'S_FIRST_UNREAD'	=> $s_first_unread,
 		'S_CUSTOM_FIELDS'	=> (isset($cp_row['row']) && sizeof($cp_row['row'])) ? true : false,
-		'S_TOPIC_POSTER'	=> ($topic_data['topic_poster'] == $poster_id) ? true : false,
+		'S_ANONYMOUS'		=> ($poster_id == ANONYMOUS),
+		'S_TOPIC_POSTER'	=> ($poster_id != ANONYMOUS ? ($topic_data['topic_poster'] == $poster_id) : ($topic_data['topic_first_poster_name'] == $row['post_username'])),
 
 		'S_IGNORE_POST'		=> ($row['hide_post']) ? true : false,
 		'L_IGNORE_POST'		=> ($row['hide_post']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), '<a href="' . $viewtopic_url . "&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}" . '">', '</a>') : '',

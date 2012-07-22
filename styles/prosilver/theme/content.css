@@ -771,6 +771,11 @@ fieldset.polls dd div {
 	margin-left: 8px;
 }
 
+.postprofile dt span {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
 .postprofile strong {
 	font-weight: normal;
 	color: #000000;
