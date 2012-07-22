@@ -258,10 +258,10 @@ jQuery(function($)
 			<dt><span>{postrow.POST_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF postrow.S_POSTER_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF postrow.S_POSTER_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --><!-- IF postrow.S_ONLINE and not postrow.S_IGNORE_POST --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
 			<!-- IF postrow.RANK_TITLE or STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER --><dd><!-- IF STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->{L_TOPIC_POSTER}<!-- ENDIF --><!-- IF postrow.RANK_TITLE and STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->, <!-- ENDIF --><!-- IF postrow.RANK_TITLE -->{postrow.RANK_TITLE}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF postrow.RANK_IMG --><dd>{postrow.RANK_IMG}</dd><!-- ENDIF -->
-			<!-- IF postrow.POSTER_AVATAR --><dd><!-- IF postrow.U_POST_AUTHOR --><a href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --></dd><!-- ENDIF -->
+			<!-- IF postrow.POSTER_AVATAR --><dd class="avatar"><!-- IF postrow.U_POST_AUTHOR --><a href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --></dd><!-- ENDIF -->
 
 			<!-- IF STYLE_MP_SHOW_WARNINGS and postrow.POSTER_WARNINGS -->
-				<dd>
+				<dd class="wcards">
 				<!-- BEGIN userwarning -->
 					<!-- IF postrow.userwarning.U_POST --><a href="{postrow.userwarning.U_POST}"><!-- ENDIF -->
 					<img src="{T_THEME_PATH}/images/card_{postrow.userwarning.TYPE}.gif" title="{postrow.userwarning.TITLE}" alt="W" />
@@ -270,6 +270,7 @@ jQuery(function($)
 				</dd>
 			<!-- ENDIF -->
 
+			<dd class="fseparator"></dd>
 			<!-- IF STYLE_MP_SHOW_AGE and postrow.POSTER_AGE and postrow.POSTER_AGE < 65 and postrow.POSTER_AGE > 10 --><dd><strong>{L_AGE}:</strong> {postrow.POSTER_AGE}</dd><!-- ENDIF -->
 			<!-- IF STYLE_MP_SHOW_FROM and postrow.POSTER_FROM --><dd><strong>{L_LOCATION}:</strong> {postrow.POSTER_FROM}</dd><!-- ENDIF -->
 			<!-- IF (STYLE_MP_SHOW_RATING or STYLE_MP_SHOW_RATING_DETAILED) and postrow.S_POSTER_RATING --><dd><strong>{L_USER_RATING}:</strong> <!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --><!-- IF STYLE_MP_SHOW_RATING and STYLE_MP_SHOW_RATING_DETAILED -->{postrow.POSTER_RATING} (+{postrow.POSTER_RATING_POSITIVE}/−{postrow.POSTER_RATING_NEGATIVE})<!-- ELSEIF STYLE_MP_SHOW_RATING_DETAILED -->+{postrow.POSTER_RATING_POSITIVE}/−{postrow.POSTER_RATING_NEGATIVE}<!-- ELSE --><span title="+{postrow.POSTER_RATING_POSITIVE}/−{postrow.POSTER_RATING_NEGATIVE}">{postrow.POSTER_RATING}</span><!-- ENDIF --><!-- ELSE -->{postrow.POSTER_RATING}<!-- ENDIF --></dd><!-- ENDIF -->
