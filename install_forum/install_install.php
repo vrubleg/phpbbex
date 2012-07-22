@@ -141,7 +141,7 @@ class install_install extends module
 		// Test the minimum PHP version
 		$php_version = PHP_VERSION;
 
-		if (version_compare($php_version, '4.3.3') < 0)
+		if (version_compare($php_version, '5.2.2') < 0)
 		{
 			$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
 		}
@@ -1973,7 +1973,7 @@ class install_install extends module
 
 		$template->assign_vars(array(
 			'TITLE'		=> $lang['INSTALL_CONGRATS'],
-			'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['version'], append_sid($phpbb_root_path . 'install/index.' . $phpEx, 'mode=convert&amp;language=' . $data['language']), '../docs/README.html'),
+			'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['phpbbex_version'], append_sid($phpbb_root_path . 'install/index.' . $phpEx, 'mode=convert&amp;language=' . $data['language']), '../docs/README.html'),
 			'L_SUBMIT'	=> $lang['INSTALL_LOGIN'],
 			'U_ACTION'	=> append_sid($phpbb_root_path . 'adm/index.' . $phpEx, 'i=send_statistics&amp;mode=send_statistics'),
 		));
@@ -2046,7 +2046,7 @@ class install_install extends module
 		'dbport'				=> array('lang' => 'DB_PORT',		'type' => 'text:25:100', 'explain' => true),
 		'dbname'				=> array('lang' => 'DB_NAME',		'type' => 'text:25:100', 'explain' => false),
 		'dbuser'				=> array('lang' => 'DB_USERNAME',	'type' => 'text:25:100', 'explain' => false),
-		'dbpasswd'				=> array('lang' => 'DB_PASSWORD',	'type' => 'password:25:100', 'explain' => false),
+		'dbpasswd'				=> array('lang' => 'DB_PASSWORD',	'type' => 'text:25:100', 'explain' => false),
 		'table_prefix'			=> array('lang' => 'TABLE_PREFIX',	'type' => 'text:25:100', 'explain' => true),
 	);
 	var $admin_config_options = array(
@@ -2065,7 +2065,7 @@ class install_install extends module
 		'smtp_host'				=> array('lang' => 'SMTP_SERVER',		'type' => 'text:25:50', 'explain' => false),
 		'smtp_auth'				=> array('lang' => 'SMTP_AUTH_METHOD',	'type' => 'select', 'options' => '$this->module->mail_auth_select(\'{VALUE}\')', 'explain' => true),
 		'smtp_user'				=> array('lang' => 'SMTP_USERNAME',		'type' => 'text:25:255', 'explain' => true),
-		'smtp_pass'				=> array('lang' => 'SMTP_PASSWORD',		'type' => 'password:25:255', 'explain' => true),
+		'smtp_pass'				=> array('lang' => 'SMTP_PASSWORD',		'type' => 'text:25:255', 'explain' => true),
 
 		'legend2'				=> 'SERVER_URL_SETTINGS',
 		'cookie_secure'			=> array('lang' => 'COOKIE_SECURE',		'type' => 'radio:enabled_disabled', 'explain' => true),

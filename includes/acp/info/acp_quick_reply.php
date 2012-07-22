@@ -20,8 +20,7 @@ class acp_quick_reply_info
 			'title'		=> 'ACP_QUICK_REPLY',
 			'version'	=> '1.0.0',
 			'modes'		=> array(
-				'quick_reply'		=> array('title' => 'ACP_QUICK_REPLY', 'auth' => 'acl_a_board', 'cat' => array('ACP_BOARD_CONFIGURATION')),
-
+				'quick_reply'		=> array('title' => 'ACP_QUICK_REPLY', 'auth' => 'acl_a_board', 'cat' => array('ACP_MESSAGES')),
 			),
 		);
 	}

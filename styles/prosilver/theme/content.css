@@ -771,14 +771,26 @@ fieldset.polls dd div {
 	margin-left: 8px;
 }
 
+.postprofile dt span {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.postprofile dd.avatar {
+	margin-top: 2px;
+}
+
+.postprofile dd.wcards {
+	margin-top: 1px;
+}
+
+.postprofile dd.fseparator {
+	height: 3px;
+}
+
 .postprofile strong {
 	font-weight: normal;
 	color: #000000;
-}
-
-.avatar {
-	border: none;
-	margin-bottom: 3px;
 }
 
 .online {

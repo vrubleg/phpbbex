@@ -62,10 +62,11 @@
 	</div>
 
 	<dl class="postprofile" id="profile{MESSAGE_ID}">
-		<dt><span style="font-size: 1.1em;">{MESSAGE_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF S_AUTHOR_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF S_AUTHOR_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --><!-- IF S_ONLINE --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
+		<dt><span>{MESSAGE_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF S_AUTHOR_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF S_AUTHOR_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --><!-- IF S_ONLINE --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
 		<!-- IF RANK_TITLE --><dd>{RANK_TITLE}</dd><!-- ENDIF -->
 		<!-- IF RANK_IMG --><dd>{RANK_IMG}</dd><!-- ENDIF -->
-		<!-- IF AUTHOR_AVATAR --><dd><a href="{U_MESSAGE_AUTHOR}">{AUTHOR_AVATAR}</a></dd><!-- ENDIF -->
+		<!-- IF AUTHOR_AVATAR --><dd class="avatar"><a href="{U_MESSAGE_AUTHOR}">{AUTHOR_AVATAR}</a></dd><!-- ENDIF -->
+		<dd class="fseparator"></dd>
 		<!-- IF STYLE_MP_SHOW_WARNINGS and AUTHOR_WARNINGS --><dd><strong>{L_WARNINGS}:</strong> {AUTHOR_WARNINGS}</dd><!-- ENDIF -->
 		<!-- IF STYLE_MP_SHOW_AGE and AUTHOR_AGE and AUTHOR_AGE < 65 and AUTHOR_AGE > 10 --><dd><strong>{L_AGE}:</strong> {AUTHOR_AGE}</dd><!-- ENDIF -->
 		<!-- IF STYLE_MP_SHOW_FROM and AUTHOR_FROM --><dd><strong>{L_LOCATION}:</strong> {AUTHOR_FROM}</dd><!-- ENDIF -->

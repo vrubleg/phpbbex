@@ -53,6 +53,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '30');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '90');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply', '2');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post_options', '20');
@@ -64,6 +65,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('no_sid', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');

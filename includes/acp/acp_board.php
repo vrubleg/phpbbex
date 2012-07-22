@@ -369,10 +369,11 @@ class acp_board
 					'title'	=> 'ACP_COOKIE_SETTINGS',
 					'vars'	=> array(
 						'legend1'		=> 'ACP_COOKIE_SETTINGS',
+						'no_sid'		=> array('lang' => 'NO_SID',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'cookie_domain'	=> array('lang' => 'COOKIE_DOMAIN',	'validate' => 'string',	'type' => 'text::255', 'explain' => false),
 						'cookie_name'	=> array('lang' => 'COOKIE_NAME',	'validate' => 'string',	'type' => 'text::16', 'explain' => false),
 						'cookie_path'	=> array('lang'	=> 'COOKIE_PATH',	'validate' => 'string',	'type' => 'text::255', 'explain' => false),
-						'cookie_secure'	=> array('lang' => 'COOKIE_SECURE',	'validate' => 'bool',	'type' => 'radio:disabled_enabled', 'explain' => true)
+						'cookie_secure'	=> array('lang' => 'COOKIE_SECURE',	'validate' => 'bool',	'type' => 'radio:disabled_enabled', 'explain' => true),
 					)
 				);
 			break;
