@@ -218,7 +218,10 @@ REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
 
 -- Disable acp_update
-UPDATE phpbb_modules p SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
+UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
+
+-- Update YandexBot UA
+UPDATE phpbb_bots SET bot_agent = "YandexBot/" WHERE bot_agent = "Yandex/";
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.3.0');
