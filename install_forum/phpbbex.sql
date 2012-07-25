@@ -220,8 +220,10 @@ REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
 -- Disable acp_update
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
 
--- Update YandexBot UA
+-- Update YandexBot UA and remove Aport [Bot]
 UPDATE phpbb_bots SET bot_agent = "YandexBot/" WHERE bot_agent = "Yandex/";
+DELETE FROM `phpbb_users` WHERE username="Aport [Bot]";
+DELETE FROM `phpbb_bots` WHERE bot_name="Aport [Bot]";
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.3.0');
