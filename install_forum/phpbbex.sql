@@ -225,5 +225,8 @@ UPDATE phpbb_bots SET bot_agent = "YandexBot/" WHERE bot_agent = "Yandex/";
 DELETE FROM `phpbb_users` WHERE username="Aport [Bot]";
 DELETE FROM `phpbb_bots` WHERE bot_name="Aport [Bot]";
 
+-- Remove invalid skypenames
+UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$" AND user_skype != "";
+
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.3.0');
