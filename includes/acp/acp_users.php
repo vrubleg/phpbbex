@@ -1316,7 +1316,9 @@ class acp_users
 						'jabber'		=> array(
 							array('string', true, 5, 255),
 							array('jabber')),
-						'skype'			=> array('string', true, 3, 255),
+						'skype'			=> array(
+							array('string', true, 3, 255),
+							array('match', true, '#^[a-z][-_.a-z0-9]{5,31}$#i')),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 12, 255),
