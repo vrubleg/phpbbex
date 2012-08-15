@@ -2170,11 +2170,19 @@ class install_install extends module
 		'Yahoo Slurp [Bot]'			=> array('Yahoo! DE Slurp', ''),
 		'Yahoo [Bot]'				=> array('Yahoo! Slurp', ''),
 		'YahooSeeker [Bot]'			=> array('YahooSeeker/', ''),
-		'Yandex [Bot]'				=> array('Yandex/', ''),
+		'Yandex [Bot]'				=> array('YandexBot/', ''),
+		'Yandex [Images]'			=> array('YandexImages/', ''),
+		'Yandex [Video]'			=> array('YandexVideo/', ''),
+		'Yandex [Media]'			=> array('YandexMedia/', ''),
+		'Yandex [Blogs]'			=> array('YandexBlogs/', ''),
+		'Yandex [Addurl]'			=> array('YandexAddurl/', ''),
+		'Yandex [Direct]'			=> array('YandexDirect/', ''),
+		'Yandex [Metrika]'			=> array('YandexMetrika/', ''),
+		'Yandex [Catalog]'			=> array('YandexCatalog/', ''),
+		'Yandex [News]'				=> array('YandexNews/', ''),
 		'Rambler [Bot]'				=> array('StackRambler/', ''),
 		'MailRu [Bot]'				=> array('Mail.Ru/', ''),
 		'WebAlta [Bot]'				=> array('WebAlta Crawler/', ''),
-		'Aport [Bot]'				=> array('Aport', ''),
 	);
 
 	/**
