@@ -880,22 +880,22 @@ $lang = array_merge($lang, array(
 
 	// The value is only an example and will get replaced by the current time on view
 	'dateformats'	=> array(
-		'|d M Y|, H:i'			=> 'Today, 13:37 / 01 Jan 2007, 13:37',
-		'|d.m.Y|, H:i'			=> 'Today, 13:37 / 01.01.2007, 13:37',
-		'|D, d M Y|, H:i'		=> 'Today, 13:37 / Mon, 01 Jan 2007, 13:37',
-		'|F jS, Y|, g:i a'		=> 'Today, 1:37 pm / January 1st, 2007, 1:37 pm',
-		'd M Y, H:i'			=> '01 Jan 2007, 13:37',
-		'M jS, \'y, H:i'		=> 'Jan 1st, \'07, 13:37',
-		'D M d, Y g:i a'		=> 'Mon Jan 01, 2007 1:37 pm',
-		'F jS, Y, g:i a'		=> 'January 1st, 2007, 1:37 pm',
-		'H:i d.m.Y'				=> '17:57 10.01.2005',
-		'd.m.Y, H:i'			=> '10.01.2005, 17:57',
-		'Y-m-d H:i'				=> '2005-01-10 17:57',
+		'|d M Y|{, H:i}'		=> 'Today, 13:37 / 01 Jan 2007, 13:37',
+		'|d.m.Y|{, H:i}'		=> 'Today, 13:37 / 01.01.2007, 13:37',
+		'|D, d M Y|{, H:i}'		=> 'Today, 13:37 / Mon, 01 Jan 2007, 13:37',
+		'|F jS, Y|{, g:i a}'	=> 'Today, 1:37 pm / January 1st, 2007, 1:37 pm',
+		'd M Y{, H:i}'			=> '01 Jan 2007, 13:37',
+		'M jS, \'y{, H:i}'		=> 'Jan 1st, \'07, 13:37',
+		'D M d, Y{ g:i a}'		=> 'Mon Jan 01, 2007 1:37 pm',
+		'F jS, Y{, g:i a}'		=> 'January 1st, 2007, 1:37 pm',
+		'{H:i }d.m.Y'			=> '17:57 10.01.2005',
+		'd.m.Y{, H:i}'			=> '10.01.2005, 17:57',
+		'Y-m-d{ H:i}'			=> '2005-01-10 17:57',
 	),
 
 	// The default dateformat which will be used on new installs in this language
 	// Translators should change this if a the usual date format is different
-	'default_dateformat'	=> '|d M Y|, H:i', // Today, 13:37 / 01 Jan 2007, 13:37
+	'default_dateformat'		=> '|d M Y|{, H:i}', // Today, 13:37 / 01 Jan 2007, 13:37
 
 	// User topics count
 	'NUM_TOPICS_IN_QUEUE'		=> array(

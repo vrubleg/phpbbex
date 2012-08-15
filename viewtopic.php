@@ -1190,7 +1190,7 @@ while ($row = $db->sql_fetchrow($result))
 			$id_cache[] = $poster_id;
 
 			$user_cache[$poster_id] = array(
-				'joined'		=> $user->format_date($row['user_regdate']),
+				'joined'		=> $user->format_date($row['user_regdate'], false, false, true),
 				'with_us'		=> !empty($config['style_mp_show_with_us']) ? time_delta::get_verbal($row['user_regdate'], time(), false, 2) : '',
 				'posts'			=> $row['user_posts'],
 				'topics'		=> $row['user_topics'],

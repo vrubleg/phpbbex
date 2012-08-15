@@ -2209,14 +2209,24 @@ class phpbb_user extends phpbb_session
 	*
 	* @return mixed translated date
 	*/
-	function format_date($gmepoch, $format = false, $forcedate = false)
+	function format_date($gmepoch, $format = false, $forcedate = false, $notime = false)
 	{
 		static $midnight;
-		static $date_cache;
+		static $format_cache = array();
+		static $date_cache = array();
 
 		$format = (!$format) ? $this->date_format : $format;
 		$now = time();
 		$delta = $now - $gmepoch;
+
+		if (!isset($format_cache[$format]))
+		{
+			$format_cache[$format] = array(
+				'full'		=> str_replace(array('{', '}'), '', $format),
+				'notime'	=> str_replace(array('{', '}'), '', preg_replace('#{.*?}#i', '', $format)),
+			);
+		}
+		$format = $format_cache[$format][$notime?'notime':'full'];
 
 		if (!isset($date_cache[$format]))
 		{

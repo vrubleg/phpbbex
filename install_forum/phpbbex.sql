@@ -81,10 +81,10 @@ REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittim
 REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
 
 -- Reset options for all users (new dateformat, enable quick reply, etc)
-UPDATE phpbb_users SET user_options = 233343, user_dateformat = '|d.m.Y|, H:i';
+UPDATE phpbb_users SET user_options = 233343, user_dateformat = '|d.m.Y|{, H:i}';
 
 -- Other options for robots
-UPDATE phpbb_users SET user_dateformat = 'd.m.Y, H:i' WHERE group_id = 6;
+UPDATE phpbb_users SET user_dateformat = 'd.m.Y{, H:i}' WHERE group_id = 6;
 
 -- Show all forums in active topics
 UPDATE phpbb_forums SET forum_flags = forum_flags|16;
@@ -188,7 +188,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbn
 -- Reset some other options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_LETTER_NUM_SPACERS');
 -- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|, H:i');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '43200');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('delete_time', '15');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
