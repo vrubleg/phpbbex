@@ -266,6 +266,7 @@ $lang = array_merge($lang, array(
 	'IMG_USER_ICON9'		=> 'Пользовательское изображение 9',
 	'IMG_USER_ICON10'		=> 'Пользовательское изображение 10',
 
+	'INACTIVE_STYLES'			=> 'Неактивные стили',
 	'INCLUDE_DIMENSIONS'		=> 'Учесть размеры',
 	'INCLUDE_IMAGESET'			=> 'Включить набор рисунков',
 	'INCLUDE_TEMPLATE'			=> 'Включить шаблон',
