@@ -8,8 +8,8 @@ jQuery.extend(
 	splash: function(id, width, height)
 	{
 		var html =
-			"<div id='"+id+"_container' style='z-index: 9999; position: fixed; top: 0; left: 0; width: 100%; height: 100%; _position: absolute; _top: expression(eval(document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop)); _left: expression(eval(document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft)); _width: expression(eval(document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth)); _height: expression(eval(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight));'>"+
-			"<div id='"+id+"_shadow_bkg' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; opacity: 0.7; _height: expression(eval(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)); filter:alpha(opacity=70);'></div>"+
+			"<div id='"+id+"_container' style='z-index: 9999; position: fixed; top: 0; left: 0; width: 100%; height: 100%;'>"+
+			"<div id='"+id+"_shadow_bkg' style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; opacity: 0.7; filter:alpha(opacity=70);'></div>"+
 			"<div id='"+id+"_window' style='margin: 0px; padding: 0px; border: 0; position: absolute; top: 50%; left: 50%;'><div id='"+id+"'></div>"+
 			"</div>";
 		jQuery("body").append(html);
