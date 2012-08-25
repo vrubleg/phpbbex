@@ -94,6 +94,7 @@
 	<thead>
 	<tr>
 		<th>{L_BBCODE_TAG}</th>
+ 		<th>{L_SHOW_BUTTON}</th>
 		<th>{L_ACTION}</th>
 	</tr>
 	</thead>
@@ -101,11 +102,24 @@
 	<!-- BEGIN bbcodes -->
 		<!-- IF bbcodes.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
 			<td style="text-align: center;">{bbcodes.BBCODE_TAG}</td>
-			<td style="text-align: right; width: 40px;"><a href="{bbcodes.U_EDIT}">{ICON_EDIT}</a> <a href="{bbcodes.U_DELETE}">{ICON_DELETE}</a></td>
+ 			<td>{bbcodes.ON_POSTING}</td>
+			<td style="text-align: right; width: 80px;">
+				<!-- IF bbcodes.S_FIRST_ROW && not bbcodes.S_LAST_ROW -->
+					{ICON_MOVE_UP_DISABLED}
+					<a href="{bbcodes.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a>
+				<!-- ELSEIF not bbcodes.S_FIRST_ROW && not bbcodes.S_LAST_ROW-->
+					<a href="{bbcodes.U_MOVE_UP}">{ICON_MOVE_UP}</a> 
+					<a href="{bbcodes.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a> 
+				<!-- ELSEIF bbcodes.S_LAST_ROW && not bbcodes.S_FIRST_ROW -->
+					<a href="{bbcodes.U_MOVE_UP}">{ICON_MOVE_UP}</a>	
+					{ICON_MOVE_DOWN_DISABLED}
+				<!-- ENDIF -->			
+				<a href="{bbcodes.U_EDIT}">{ICON_EDIT}</a> <a href="{bbcodes.U_DELETE}">{ICON_DELETE}</a>
+			</td>
 		</tr>
 	<!-- BEGINELSE -->
 		<tr class="row3">
-			<td colspan="2">{L_ACP_NO_ITEMS}</td>
+			<td colspan="3">{L_ACP_NO_ITEMS}</td>
 		</tr>
 	<!-- END bbcodes -->
 	</tbody>

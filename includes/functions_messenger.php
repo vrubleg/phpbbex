@@ -209,7 +209,7 @@ class messenger
 		// tpl_msg now holds a template object we can use to parse the template file
 		if (!isset($this->tpl_msg[$template_lang . $template_file]))
 		{
-			$this->tpl_msg[$template_lang . $template_file] = new template();
+			$this->tpl_msg[$template_lang . $template_file] = new phpbb_template();
 			$tpl = &$this->tpl_msg[$template_lang . $template_file];
 
 			$fallback_template_path = false;
@@ -464,17 +464,17 @@ class messenger
 			$use_queue = true;
 		}
 
+		$encode_eol = ($config['smtp_delivery']) ? "\r\n" : $this->eol;
+
+		$default_contact = (empty($config['board_contact_name']) ? '' : (mail_encode($config['board_contact_name'], $encode_eol) . ' ')) . '<' . $config['board_contact'] . '>';
 		if (empty($this->replyto))
 		{
-			$this->replyto = '<' . $config['board_contact'] . '>';
+			$this->replyto = $default_contact;
 		}
-
 		if (empty($this->from))
 		{
-			$this->from = '<' . $config['board_contact'] . '>';
+			$this->from = $default_contact;
 		}
-
-		$encode_eol = ($config['smtp_delivery']) ? "\r\n" : $this->eol;
 
 		// Build to, cc and bcc strings
 		$to = $cc = $bcc = '';

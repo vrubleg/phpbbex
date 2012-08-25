@@ -115,6 +115,7 @@ $lang = array_merge($lang, array(
 	'REMOVE_FOE'			=> 'Убрать из недругов',
 	'REMOVE_FRIEND'			=> 'Убрать из друзей',
 
+	'SEARCH_USER_TOPICS'	=> 'Найти темы пользователя',
 	'SELECT_MARKED'			=> 'Выбрать отмеченных',
 	'SELECT_SORT_METHOD'	=> 'Поле сортировки',
 	'SEND_AIM_MESSAGE'		=> 'Отправить AIM-сообщение',
@@ -127,9 +128,12 @@ $lang = array_merge($lang, array(
 	'SORT_EMAIL'			=> 'email',
 	'SORT_LAST_ACTIVE'		=> 'Последнее посещение',
 	'SORT_POST_COUNT'		=> 'Число сообщений',
+	'SORT_TOPICS_COUNT'		=> 'Число тем',
 
 	'USERNAME_BEGINS_WITH'	=> 'Имя пользователя начинается с',
 	'USER_ADMIN'			=> 'Администрировать',
+	'USER_AGENT'			=> 'User Agent',
+	'USER_LAST_IP'			=> 'Последний IP',
 	'USER_BAN'				=> 'Блокировка',
 	'USER_FORUM'			=> 'Статистика пользователя',
 	'USER_LAST_REMINDED'	=> array(
@@ -143,6 +147,11 @@ $lang = array_merge($lang, array(
 	'VISITED'				=> 'Последнее посещение',
 
 	'WWW'					=> 'Сайт',
+
+	// Memberlist filters
+	'ACTIVE_USERS'			=> 'Активные',
+	'INACTIVE_USERS'		=> 'Не активные',
+	'NO_POSTS_USERS'		=> 'Без сообщений',
 ));
 
 ?>

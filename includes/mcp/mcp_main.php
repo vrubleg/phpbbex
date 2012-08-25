@@ -332,131 +332,61 @@ function change_topic_type($action, $topic_ids)
 
 	if (confirm_box(true))
 	{
-		if ($new_topic_type != POST_GLOBAL)
+		$sql = 'UPDATE ' . TOPICS_TABLE . "
+			SET topic_type = $new_topic_type
+			WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
+				AND forum_id <> 0';
+		$db->sql_query($sql);
+
+		// Reset forum id if a global topic is within the array
+		$to_forum_id = request_var('to_forum_id', 0);
+
+		if ($to_forum_id)
 		{
 			$sql = 'UPDATE ' . TOPICS_TABLE . "
-				SET topic_type = $new_topic_type
+				SET topic_type = $new_topic_type, forum_id = $to_forum_id
 				WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
-					AND forum_id <> 0';
+					AND forum_id = 0';
 			$db->sql_query($sql);
 
-			// Reset forum id if a global topic is within the array
-			$to_forum_id = request_var('to_forum_id', 0);
+			// Update forum_ids for all posts
+			$sql = 'UPDATE ' . POSTS_TABLE . "
+				SET forum_id = $to_forum_id
+				WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
+					AND forum_id = 0';
+			$db->sql_query($sql);
 
-			if ($to_forum_id)
-			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
-					SET topic_type = $new_topic_type, forum_id = $to_forum_id
-					WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
-						AND forum_id = 0';
-				$db->sql_query($sql);
-
-				// Update forum_ids for all posts
-				$sql = 'UPDATE ' . POSTS_TABLE . "
-					SET forum_id = $to_forum_id
-					WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
-						AND forum_id = 0';
-				$db->sql_query($sql);
-
-				// Do a little forum sync stuff
-				$sql = 'SELECT SUM(t.topic_replies + t.topic_approved) as topic_posts, COUNT(t.topic_approved) as topics_authed
-					FROM ' . TOPICS_TABLE . ' t
-					WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
-				$result = $db->sql_query($sql);
-				$row_data = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				$sync_sql = array();
-
-				if ($row_data['topic_posts'])
-				{
-					$sync_sql[$to_forum_id][]	= 'forum_posts = forum_posts + ' . (int) $row_data['topic_posts'];
-				}
-
-				if ($row_data['topics_authed'])
-				{
-					$sync_sql[$to_forum_id][]	= 'forum_topics = forum_topics + ' . (int) $row_data['topics_authed'];
-				}
-
-				$sync_sql[$to_forum_id][]	= 'forum_topics_real = forum_topics_real + ' . (int) sizeof($topic_ids);
-
-				foreach ($sync_sql as $forum_id_key => $array)
-				{
-					$sql = 'UPDATE ' . FORUMS_TABLE . '
-						SET ' . implode(', ', $array) . '
-						WHERE forum_id = ' . $forum_id_key;
-					$db->sql_query($sql);
-				}
-
-				sync('forum', 'forum_id', $to_forum_id);
-			}
-		}
-		else
-		{
-			// Get away with those topics already being a global announcement by re-calculating $topic_ids
-			$sql = 'SELECT topic_id
-				FROM ' . TOPICS_TABLE . '
-				WHERE ' . $db->sql_in_set('topic_id', $topic_ids) . '
-					AND forum_id <> 0';
+			// Do a little forum sync stuff
+			$sql = 'SELECT SUM(t.topic_replies + t.topic_approved) as topic_posts, COUNT(t.topic_approved) as topics_authed
+				FROM ' . TOPICS_TABLE . ' t
+				WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
 			$result = $db->sql_query($sql);
-
-			$topic_ids = array();
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$topic_ids[] = $row['topic_id'];
-			}
+			$row_data = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 
-			if (sizeof($topic_ids))
+			$sync_sql = array();
+
+			if ($row_data['topic_posts'])
 			{
-				// Delete topic shadows for global announcements
-				$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-					WHERE ' . $db->sql_in_set('topic_moved_id', $topic_ids);
-				$db->sql_query($sql);
-
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
-					SET topic_type = $new_topic_type, forum_id = 0
-						WHERE " . $db->sql_in_set('topic_id', $topic_ids);
-				$db->sql_query($sql);
-
-				// Update forum_ids for all posts
-				$sql = 'UPDATE ' . POSTS_TABLE . '
-					SET forum_id = 0
-					WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
-				$db->sql_query($sql);
-
-				// Do a little forum sync stuff
-				$sql = 'SELECT SUM(t.topic_replies + t.topic_approved) as topic_posts, COUNT(t.topic_approved) as topics_authed
-					FROM ' . TOPICS_TABLE . ' t
-					WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
-				$result = $db->sql_query($sql);
-				$row_data = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				$sync_sql = array();
-
-				if ($row_data['topic_posts'])
-				{
-					$sync_sql[$forum_id][]	= 'forum_posts = forum_posts - ' . (int) $row_data['topic_posts'];
-				}
-
-				if ($row_data['topics_authed'])
-				{
-					$sync_sql[$forum_id][]	= 'forum_topics = forum_topics - ' . (int) $row_data['topics_authed'];
-				}
-
-				$sync_sql[$forum_id][]	= 'forum_topics_real = forum_topics_real - ' . (int) sizeof($topic_ids);
-
-				foreach ($sync_sql as $forum_id_key => $array)
-				{
-					$sql = 'UPDATE ' . FORUMS_TABLE . '
-						SET ' . implode(', ', $array) . '
-						WHERE forum_id = ' . $forum_id_key;
-					$db->sql_query($sql);
-				}
-
-				sync('forum', 'forum_id', $forum_id);
+				$sync_sql[$to_forum_id][]	= 'forum_posts = forum_posts + ' . (int) $row_data['topic_posts'];
 			}
+
+			if ($row_data['topics_authed'])
+			{
+				$sync_sql[$to_forum_id][]	= 'forum_topics = forum_topics + ' . (int) $row_data['topics_authed'];
+			}
+
+			$sync_sql[$to_forum_id][]	= 'forum_topics_real = forum_topics_real + ' . (int) sizeof($topic_ids);
+
+			foreach ($sync_sql as $forum_id_key => $array)
+			{
+				$sql = 'UPDATE ' . FORUMS_TABLE . '
+					SET ' . implode(', ', $array) . '
+					WHERE forum_id = ' . $forum_id_key;
+				$db->sql_query($sql);
+			}
+
+			sync('forum', 'forum_id', $to_forum_id);
 		}
 
 		$success_msg = (sizeof($topic_ids) == 1) ? 'TOPIC_TYPE_CHANGED' : 'TOPICS_TYPE_CHANGED';
@@ -626,16 +556,13 @@ function mcp_move_topic($topic_ids)
 
 			$topic_posts_added += $topic_info['topic_replies'];
 
-			if ($topic_info['topic_type'] != POST_GLOBAL)
-			{
-				$topics_removed++;
-				$topic_posts_removed += $topic_info['topic_replies'];
+			$topics_removed++;
+			$topic_posts_removed += $topic_info['topic_replies'];
 
-				if ($topic_info['topic_approved'])
-				{
-					$topics_authed_removed++;
-					$topic_posts_removed++;
-				}
+			if ($topic_info['topic_approved'])
+			{
+				$topics_authed_removed++;
+				$topic_posts_removed++;
 			}
 		}
 
@@ -665,17 +592,8 @@ function mcp_move_topic($topic_ids)
 			$forum_ids[] = $row['forum_id'];
 			add_log('mod', $to_forum_id, $topic_id, 'LOG_MOVE', $row['forum_name'], $forum_data['forum_name']);
 
-			// If we have moved a global announcement, we need to correct the topic type
-			if ($row['topic_type'] == POST_GLOBAL)
-			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . '
-					SET topic_type = ' . POST_ANNOUNCE . '
-					WHERE topic_id = ' . (int) $row['topic_id'];
-				$db->sql_query($sql);
-			}
-
 			// Leave a redirection if required and only if the topic is visible to users
-			if ($leave_shadow && $row['topic_approved'] && $row['topic_type'] != POST_GLOBAL)
+			if ($leave_shadow && $row['topic_approved'])
 			{
 				$shadow = array(
 					'forum_id'				=>	(int) $row['forum_id'],
@@ -809,6 +727,12 @@ function mcp_delete_topic($topic_ids)
 		$success_msg = (sizeof($topic_ids) == 1) ? 'TOPIC_DELETED_SUCCESS' : 'TOPICS_DELETED_SUCCESS';
 
 		$data = get_topic_data($topic_ids);
+		$first_post_ids = array();
+		foreach ($data as $row)
+		{
+			$first_post_ids[] = $row['topic_first_post_id'];
+		}
+		$posts = get_post_data($first_post_ids);
 
 		foreach ($data as $topic_id => $row)
 		{
@@ -818,7 +742,7 @@ function mcp_delete_topic($topic_ids)
 			}
 			else
 			{
-				add_log('mod', $row['forum_id'], $topic_id, 'LOG_DELETE_TOPIC', $row['topic_title'], $row['topic_first_poster_name']);
+				add_log('mod', $row['forum_id'], $topic_id, 'LOG_DELETE_TOPIC', $row['topic_title'], $row['topic_first_poster_name'], $posts[$row['topic_first_post_id']]['post_text']);
 			}
 		}
 
@@ -904,7 +828,7 @@ function mcp_delete_post($post_ids)
 		foreach ($post_data as $id => $row)
 		{
 			$post_username = ($row['poster_id'] == ANONYMOUS && !empty($row['post_username'])) ? $row['post_username'] : $row['username'];
-			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_DELETE_POST', $row['post_subject'], $post_username);
+			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_DELETE_POST', $row['post_subject'] ? $row['post_subject'] : $row['topic_title'], $post_username, $row['post_text']);
 		}
 
 		// Now delete the posts, topics and forums are automatically resync'ed
@@ -1189,7 +1113,7 @@ function mcp_fork_topic($topic_ids)
 
 				if (!empty($search_type))
 				{
-					$search->index($search_mode, $new_post_id, $sql_ary['post_text'], $sql_ary['post_subject'], $sql_ary['poster_id'], ($topic_row['topic_type'] == POST_GLOBAL) ? 0 : $to_forum_id);
+					$search->index($search_mode, $new_post_id, $sql_ary['post_text'], $sql_ary['post_subject'], $sql_ary['poster_id'], $to_forum_id);
 					$search_mode = 'reply'; // After one we index replies
 				}
 

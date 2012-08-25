@@ -200,6 +200,7 @@ class bbcode
 				case 0:
 					$this->bbcode_cache[$bbcode_id] = array(
 						'str' => array(
+							"[/quote:\$uid]\n"	=> $this->bbcode_tpl('quote_close', $bbcode_id),
 							'[/quote:$uid]'	=> $this->bbcode_tpl('quote_close', $bbcode_id)
 						),
 						'preg' => array(
@@ -229,8 +230,8 @@ class bbcode
 				case 3:
 					$this->bbcode_cache[$bbcode_id] = array(
 						'preg' => array(
-							'#\[url:$uid\]((.*?))\[/url:$uid\]#s'			=> $this->bbcode_tpl('url', $bbcode_id),
-							'#\[url=([^\[]+?):$uid\](.*?)\[/url:$uid\]#s'	=> $this->bbcode_tpl('url', $bbcode_id),
+							'#\[url:$uid\]((.*?))\[/url:$uid\]#se'			=> "\$this->bbcode_second_pass_url('\$1', '\$2')",
+							'#\[url=([^\[]+?):$uid\](.*?)\[/url:$uid\]#se'	=> "\$this->bbcode_second_pass_url('\$1', '\$2')",
 						)
 					);
 				break;
@@ -248,7 +249,7 @@ class bbcode
 					{
 						$this->bbcode_cache[$bbcode_id] = array(
 							'preg' => array(
-								'#\[img:$uid\](.*?)\[/img:$uid\]#s'		=> str_replace('$2', '[ img ]', $this->bbcode_tpl('url', $bbcode_id, true)),
+								'#\[img:$uid\](.*?)\[/img:$uid\]#se'	=> "\$this->bbcode_second_pass_url('\$1', '[ img ]')",
 							)
 						);
 					}
@@ -282,7 +283,7 @@ class bbcode
 				case 8:
 					$this->bbcode_cache[$bbcode_id] = array(
 						'preg' => array(
-							'#\[code(?:=([a-z]+))?:$uid\](.*?)\[/code:$uid\]#ise'	=> "\$this->bbcode_second_pass_code('\$1', '\$2')",
+							'#\[code(?:=([a-z]+))?:$uid\](.*?)\[/code:$uid\][\n]?#ise'	=> "\$this->bbcode_second_pass_code('\$1', '\$2')",
 						)
 					);
 				break;
@@ -327,7 +328,7 @@ class bbcode
 					{
 						$this->bbcode_cache[$bbcode_id] = array(
 							'preg' => array(
-								'#\[flash=([0-9]+),([0-9]+):$uid\](.*?)\[/flash:$uid\]#'	=> str_replace('$1', '$3', str_replace('$2', '[ flash ]', $this->bbcode_tpl('url', $bbcode_id, true)))
+								'#\[flash=([0-9]+),([0-9]+):$uid\](.*?)\[/flash:$uid\]#e'	=> "\$this->bbcode_second_pass_url('\$3', '[ flash ]')",
 							)
 						);
 					}
@@ -340,6 +341,15 @@ class bbcode
 						),
 						'preg'	=> array(
 							'#\[attachment=([0-9]+):$uid\]#'	=> $this->bbcode_tpl('inline_attachment_open', $bbcode_id)
+						)
+					);
+				break;
+
+				case 13:
+					$this->bbcode_cache[$bbcode_id] = array(
+						'str' => array(
+							'[s:$uid]'	=> $this->bbcode_tpl('s_open', $bbcode_id),
+							'[/s:$uid]'	=> $this->bbcode_tpl('s_close', $bbcode_id),
 						)
 					);
 				break;
@@ -418,6 +428,8 @@ class bbcode
 				'i_close'	=> '</span>',
 				'u_open'	=> '<span style="text-decoration: underline">',
 				'u_close'	=> '</span>',
+				's_open'	=> '<span style="text-decoration: line-through">',
+				's_close'	=> '</span>',
 				'img'		=> '<img src="$1" alt="' . $user->lang['IMAGE'] . '" />',
 				'size'		=> '<span style="font-size: $1%; line-height: normal">$2</span>',
 				'color'		=> '<span style="color: $1">$2</span>',
@@ -537,6 +549,20 @@ class bbcode
 		}
 
 		return str_replace('{LIST_TYPE}', $type, $this->bbcode_tpl($tpl));
+	}
+
+	/**
+	* Second parse url tag
+	*/
+	function bbcode_second_pass_url($href, $text)
+	{
+		// when using the /e modifier, preg_replace slashes double-quotes but does not
+		// seem to slash anything else
+		$href = str_replace('\"', '"', $href);
+		$text = str_replace('\"', '"', $text);
+		$external = stripos($href, generate_board_url(true)) !== 0;
+		$attrs = $external ? (' class="postlink"' . get_attrs_for_external_link($href)) : ' class="postlink local"';
+		return '<a href="'.$href.'"'.$attrs.'>'.$text.'</a>';
 	}
 
 	/**

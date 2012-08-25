@@ -590,6 +590,21 @@ function move_posts($post_ids, $topic_id, $auto_sync = true)
 		trigger_error('NO_TOPIC');
 	}
 
+	$sql = 'SELECT p.poster_id
+		FROM ' . POSTS_TABLE . ' p
+		LEFT JOIN ' . TOPICS_TABLE . ' t
+			ON (t.topic_first_post_id = p.post_id)
+		WHERE p.post_postcount = 1
+			AND ' . $db->sql_in_set('t.topic_id', $topic_ids);
+	$result = $db->sql_query($sql);
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$db->sql_return_on_error(true);
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_topics = user_topics - 1 WHERE user_id = ' . (int) $row['poster_id']);
+		$db->sql_return_on_error(false);
+	}
+	$db->sql_freeresult($result);
+
 	$sql = 'UPDATE ' . POSTS_TABLE . '
 		SET forum_id = ' . (int) $forum_row['forum_id'] . ", topic_id = $topic_id
 		WHERE " . $db->sql_in_set('post_id', $post_ids);
@@ -612,6 +627,19 @@ function move_posts($post_ids, $topic_id, $auto_sync = true)
 
 	// Update posted information
 	update_posted_info($topic_ids);
+
+	$sql = 'SELECT p.poster_id
+		FROM ' . POSTS_TABLE . ' p
+		LEFT JOIN ' . TOPICS_TABLE . ' t
+			ON (t.topic_first_post_id = p.post_id)
+		WHERE p.post_postcount = 1
+			AND ' . $db->sql_in_set('t.topic_id', $topic_ids);
+	$result = $db->sql_query($sql);
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_topics = user_topics + 1 WHERE user_id = ' . (int) $row['poster_id']);
+	}
+	$db->sql_freeresult($result);
 }
 
 /**
@@ -3117,12 +3145,16 @@ function get_database_size()
 */
 function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port = 80, $timeout = 6)
 {
-	global $user;
+	global $user, $config;
 
 	if ($fsock = @fsockopen($host, $port, $errno, $errstr, $timeout))
 	{
 		@fputs($fsock, "GET $directory/$filename HTTP/1.1\r\n");
-		@fputs($fsock, "HOST: $host\r\n");
+		@fputs($fsock, "Host: $host\r\n");
+		@fputs($fsock, "Referer: ".generate_board_url()."\r\n");
+		@fputs($fsock, 'User-Agent: phpBBex/' . (isset($config['phpbbex_version']) ? $config['phpbbex_version'] : '?')
+			. ' phpBB/' . (isset($config['version']) ? $config['version'] : '?')
+			. ' (' . $config['num_posts'] . '; ' . $config['num_topics'] . '; ' . $config['num_users'] . ")\r\n");
 		@fputs($fsock, "Connection: close\r\n\r\n");
 
 		$timer_stop = time() + $timeout;
@@ -3187,13 +3219,14 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 */
 function tidy_warnings()
 {
-	global $db, $config;
+	global $db, $config, $cache;
 
-	$expire_date = time() - ($config['warnings_expire_days'] * 86400);
+	$current_time = time();
 	$warning_list = $user_list = array();
 
 	$sql = 'SELECT * FROM ' . WARNINGS_TABLE . "
-		WHERE warning_time < $expire_date";
+		WHERE warning_active = 1 AND warning_days > 0
+		AND (warning_time + warning_days * 86400) < $current_time";
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
@@ -3207,7 +3240,8 @@ function tidy_warnings()
 	{
 		$db->sql_transaction('begin');
 
-		$sql = 'DELETE FROM ' . WARNINGS_TABLE . '
+		$sql = 'UPDATE ' . WARNINGS_TABLE . '
+			SET warning_active = 0
 			WHERE ' . $db->sql_in_set('warning_id', $warning_list);
 		$db->sql_query($sql);
 
@@ -3221,6 +3255,7 @@ function tidy_warnings()
 		$db->sql_transaction('commit');
 	}
 
+	$cache->destroy('sql', WARNINGS_TABLE);
 	set_config('warnings_last_gc', time(), true);
 }
 
@@ -3316,8 +3351,7 @@ function obtain_latest_version_info($force_update = false, $warn_fail = false, $
 		$errstr = '';
 		$errno = 0;
 
-		$info = get_remote_file('version.phpbb.com', '/phpbb',
-				((defined('PHPBB_QA')) ? '30x_qa.txt' : '30x.txt'), $errstr, $errno);
+		$info = get_remote_file('phpbbex.com', '/api', 'version.txt', $errstr, $errno);
 
 		if ($info === false)
 		{

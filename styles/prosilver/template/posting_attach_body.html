@@ -1,8 +1,8 @@
-<div class="panel bg3" id="attach-panel">
+<div class="panel bg2">
 	<div class="inner"><span class="corners-top"><span></span></span>
 
-	<p>{L_ADD_ATTACHMENT_EXPLAIN}</p>
-	
+	<!-- IF S_SHOW_ATTACH_BOX -->
+	<h3>{L_ADD_ATTACHMENT}</h3>
 	<fieldset class="fields2">
 	<dl>
 		<dt><label for="fileupload">{L_FILENAME}:</label></dt>
@@ -11,11 +11,42 @@
 			<input type="submit" name="add_file" value="{L_ADD_FILE}" class="button2" onclick="upload = true;" />
 		</dd>
 	</dl>
-	<dl>
+	<script type="text/javascript">
+	jQuery(function($)
+	{
+		$("#postform input[name=fileupload]").change(function()
+		{
+			if ($(this).val() == "") $("#filecomment_hidden").hide(); else $("#filecomment_hidden").show();
+		});
+		$("#postform input[name=fileupload]").change();
+	});
+	</script>
+	<dl id="filecomment_hidden">
 		<dt><label for="filecomment">{L_FILE_COMMENT}:</label></dt>
-		<dd><textarea name="filecomment" id="filecomment" rows="1" cols="40" class="inputbox autowidth">{FILE_COMMENT}</textarea></dd>
+		<dd><textarea name="filecomment" id="filecomment" rows="1" cols="40" class="inputbox">{FILE_COMMENT}</textarea></dd>
 	</dl>
 	</fieldset>
+	<!-- ENDIF -->
+
+	<!-- IF S_HAS_ATTACHMENTS -->
+	<h3>{L_POSTED_ATTACHMENTS}</h3>
+	<fieldset class="fields2">
+		<!-- BEGIN attach_row -->
+		<dl>
+			<dt><label for="comment_list_{attach_row.ASSOC_INDEX}">{L_FILE_COMMENT}:</label></dt>
+			<dd><textarea name="comment_list[{attach_row.ASSOC_INDEX}]" id="comment_list_{attach_row.ASSOC_INDEX}" rows="1" cols="40" class="inputbox">{attach_row.FILE_COMMENT}</textarea></dd>
+			<dd><a href="{attach_row.U_VIEW_ATTACHMENT}">{attach_row.FILENAME}</a></dd>
+			<dd style="margin-top: 5px;">
+				<!-- IF S_INLINE_ATTACHMENT_OPTIONS --><input type="button" value="{L_PLACE_INLINE}" onclick="attach_inline({attach_row.ASSOC_INDEX}, '{attach_row.A_FILENAME}');" class="button2" />&nbsp; <!-- ENDIF -->
+				<input type="submit" name="delete_file[{attach_row.ASSOC_INDEX}]" value="{L_DELETE_FILE}" class="button2" />&nbsp; 
+				<input type="submit" name="update_file[{attach_row.ASSOC_INDEX}]" value="{L_UPDATE_FILE}" class="button2" />
+			</dd>
+		</dl>
+		{attach_row.S_HIDDEN}
+			<!-- IF not attach_row.S_LAST_ROW --><hr class="dashed" /><!-- ENDIF -->
+		<!-- END attach_row -->
+	</fieldset>
+	<!-- ENDIF -->
 
 	<span class="corners-bottom"><span></span></span></div>
 </div>

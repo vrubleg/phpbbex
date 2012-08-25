@@ -38,6 +38,12 @@ if (empty($lang) || !is_array($lang))
 // Board Settings
 $lang = array_merge($lang, array(
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Here you can determine the basic operation of your board, give it a fitting name and description, and among other settings adjust the default values for timezone and language.',
+	'ACTIVE_TOPICS_DAYS'			=> 'Topic is active for',
+	'ACTIVE_TOPICS_DAYS_EXPLAIN'	=> 'Default activity period for "Active topics" page. Set this value to 0 to display all topics.',
+	'ACTIVE_USERS_DAYS'				=> 'User is active for',
+	'ACTIVE_USERS_DAYS_EXPLAIN'		=> 'The user is considered active for entered number of days.',
+	'AUTO_GUEST_LANG'				=> 'Detect language for guests',
+	'AUTO_GUEST_LANG_EXPLAIN'		=> 'Detects guest’s language automatically',
 	'CUSTOM_DATEFORMAT'				=> 'Custom…',
 	'DEFAULT_DATE_FORMAT'			=> 'Date format',
 	'DEFAULT_DATE_FORMAT_EXPLAIN'	=> 'The date format is the same as the PHP <code>date</code> function.',
@@ -47,13 +53,69 @@ $lang = array_merge($lang, array(
 	'DISABLE_BOARD_EXPLAIN'			=> 'This will make the board unavailable to users. You can also enter a short (255 character) message to display if you wish.',
 	'OVERRIDE_STYLE'				=> 'Override user style',
 	'OVERRIDE_STYLE_EXPLAIN'		=> 'Replaces user’s style with the default.',
+	'OVERRIDE_LANGUAGE'				=> 'Override user language',
+	'OVERRIDE_LANGUAGE_EXPLAIN'		=> 'Replaces user’s language with the default.',
+	'OVERRIDE_DATEFORMAT'			=> 'Override user date format',
+	'OVERRIDE_DATEFORMAT_EXPLAIN'	=> 'Replaces user’s date format with default',
+	'OVERRIDE_TIMEZONE'				=> 'Override user time zone',
+	'OVERRIDE_TIMEZONE_EXPLAIN'		=> 'Replaces user’s time zone with default',
+	'OVERRIDE_DST'					=> 'Override user DST',
+	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user’s DST with default',
+	'RATINGS'						=> 'Post ratings',
+	'RATE_ENABLED'					=> 'Enable ratings',
+	'RATE_ONLY_TOPICS'				=> 'Rate only topics (first posts)',
+	'RATE_TOPIC_TIME'				=> 'Limit topic (first post) rating time',
+	'RATE_TIME'						=> 'Limit post rating time',
+	'RATE_CHANGE_TIME'				=> 'Limit rating change time',
+	'RATE_NO_NEGATIVE'				=> 'No negative',
+	'RATE_NO_POSITIVE'				=> 'No positive',
 	'SITE_DESC'						=> 'Site description',
 	'SITE_NAME'						=> 'Site name',
+	'SITE_KEYWORDS'					=> 'Site keywords',
+	'COPYRIGHT_NOTICE'				=> 'Copyright notice',
 	'SYSTEM_DST'					=> 'Enable Summer Time/<abbr title="Daylight Saving Time">DST</abbr>',
 	'SYSTEM_TIMEZONE'				=> 'Guest timezone',
 	'SYSTEM_TIMEZONE_EXPLAIN'			=> 'Timezone to use for displaying times to users who are not logged in (guests, bots). Logged in users set their timezone during registration and can change it in their user control panel.',
 	'WARNINGS_EXPIRE'				=> 'Warning duration',
 	'WARNINGS_EXPIRE_EXPLAIN'		=> 'Number of days that will elapse before the warning will automatically expire from a user’s record. Set this value to 0 to make warnings permanent.',
+	'WARNINGS_GC'					=> 'Warnings pruning period',
+	'WARNINGS_GC_EXPLAIN'			=> 'Time (in seconds) to prune exrired warnings periodically.',
+	'WARNING_POST_DEFAULT'			=> 'Default warning message',
+));
+
+// Style Settings
+$lang = array_merge($lang, array(
+	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can enable/disable several style features.',
+
+	'STYLE_SETTINGS_GENERAL'			=> 'General',
+	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
+	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
+	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
+
+	'STYLE_SETTINGS_PROFILE'			=> 'Profile',
+	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',
+	'STYLE_MP_ON_LEFT'					=> 'Mini profiles on left',
+	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Display topic starter',
+	'STYLE_MP_SHOW_GENDER'				=> 'Display gender',
+	'STYLE_MP_SHOW_AGE'					=> 'Display age',
+	'STYLE_MP_SHOW_FROM'				=> 'Display from',
+	'STYLE_MP_SHOW_WARNINGS'			=> 'Display warnings',
+	'STYLE_MP_SHOW_RATING'				=> 'Display reputation',
+	'STYLE_MP_SHOW_RATING_DETAILED'		=> 'Display detailed reputation',
+	'STYLE_MP_SHOW_RATED'				=> 'Display loyalty',
+	'STYLE_MP_SHOW_RATED_DETAILED'		=> 'Display detailed loyalty',
+	'STYLE_MP_SHOW_POSTS'				=> 'Display posts counter',
+	'STYLE_MP_SHOW_TOPICS'				=> 'Display topics counter',
+	'STYLE_MP_SHOW_JOINED'				=> 'Display joined date',
+	'STYLE_MP_SHOW_WITH_US'				=> 'Display how long user is with us',
+	'STYLE_MP_SHOW_BUTTONS'				=> 'Display contact buttons',
+
+	
+
+	'STYLE_SETTINGS_COUNTERS'			=> 'Counters',
+	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
+	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Google Analytics ID',
 ));
 
 // Board Features
@@ -87,6 +149,9 @@ $lang = array_merge($lang, array(
 	'ALLOW_TOPIC_NOTIFY'		=> 'Allow subscribing to topics',
 	'BOARD_PM'					=> 'Private messaging',
 	'BOARD_PM_EXPLAIN'			=> 'Enable private messaging for all users.',
+	'ANNOUNCE_INDEX'				=> 'Display global annoucements on Index page',
+	'ACTIVE_TOPICS_ON_INDEX'		=> 'Display active topics on Index page',
+	'ACTIVE_TOPICS_ON_INDEX_EXPLAIN'=> 'Leave empty or 0 to disable active topics on index.',
 ));
 
 // Avatar Settings
@@ -165,6 +230,8 @@ $lang = array_merge($lang, array(
 	'HOT_THRESHOLD'					=> 'Popular topic threshold',
 	'HOT_THRESHOLD_EXPLAIN'			=> 'Posts per topic threshold required for the popular topic annotation. Set to 0 to disable popular topics.',
 	'MAX_POLL_OPTIONS'				=> 'Maximum number of poll options',
+	'MAX_POST_IMGS'					=> 'Maximum images per post',
+	'MAX_POST_IMGS_EXPLAIN'			=> 'Maximum number of images in a post. Set to 0 for unlimited images.',
 	'MAX_POST_FONT_SIZE'			=> 'Maximum font size per post',
 	'MAX_POST_FONT_SIZE_EXPLAIN'	=> 'Maximum font size allowed in a post. Set to 0 for unlimited font size.',
 	'MAX_POST_IMG_HEIGHT'			=> 'Maximum image height per post',
@@ -191,12 +258,16 @@ $lang = array_merge($lang, array(
 
 	'MAX_SIG_FONT_SIZE'				=> 'Maximum signature font size',
 	'MAX_SIG_FONT_SIZE_EXPLAIN'		=> 'Maximum font size allowed in user signatures. Set to 0 for unlimited size.',
+	'MAX_SIG_IMGS'					=> 'Maximum signature images',
+	'MAX_SIG_IMGS_EXPLAIN'			=> 'Maximum number of images in user signatures. Set to 0 for unlimited links.',
 	'MAX_SIG_IMG_HEIGHT'			=> 'Maximum signature image height',
 	'MAX_SIG_IMG_HEIGHT_EXPLAIN'	=> 'Maximum height of an image/flash file in user signatures. Set to 0 for unlimited height.',
 	'MAX_SIG_IMG_WIDTH'				=> 'Maximum signature image width',
 	'MAX_SIG_IMG_WIDTH_EXPLAIN'		=> 'Maximum width of an image/flash file in user signatures. Set to 0 for unlimited width.',
 	'MAX_SIG_LENGTH'				=> 'Maximum signature length',
 	'MAX_SIG_LENGTH_EXPLAIN'		=> 'Maximum number of characters in user signatures.',
+	'MAX_SIG_LINES'					=> 'Maximum lines per signature',
+	'MAX_SIG_LINES_EXPLAIN'			=> 'Maximum lines allowed in user signatures. Set to 0 for unlimited lines.',
 	'MAX_SIG_SMILIES'				=> 'Maximum smilies per signature',
 	'MAX_SIG_SMILIES_EXPLAIN'		=> 'Maximum smilies allowed in user signatures. Set to 0 for unlimited smilies.',
 	'MAX_SIG_URLS'					=> 'Maximum signature links',
@@ -241,7 +312,7 @@ $lang = array_merge($lang, array(
 	'USERNAME_LETTER_NUM_SPACERS'	=> 'Any letter, number, and spacer',
 	'USERNAME_CHARS'			=> 'Limit username chars',
 	'USERNAME_CHARS_ANY'		=> 'Any character',
-	'USERNAME_CHARS_EXPLAIN'	=> 'Restrict type of characters that may be used in usernames, spacers are: space, -, +, _, [ and ].',
+	'USERNAME_CHARS_EXPLAIN'	=> 'Restrict type of characters that may be used in usernames, spacers are: space, dot, - and _.',
 	'USERNAME_LENGTH'			=> 'Username length',
 	'USERNAME_LENGTH_EXPLAIN'	=> 'Minimum and maximum number of characters in usernames.',
 ));
@@ -335,12 +406,15 @@ $lang = array_merge($lang, array(
 	'COOKIE_DOMAIN'				=> 'Cookie domain',
 	'COOKIE_NAME'				=> 'Cookie name',
 	'COOKIE_PATH'				=> 'Cookie path',
-	'COOKIE_SECURE'				=> 'Cookie secure',
+	'COOKIE_SECURE'				=> 'HTTPS cookie',
 	'COOKIE_SECURE_EXPLAIN'		=> 'If your server is running via SSL set this to enabled else leave as disabled. Having this enabled and not running via SSL will result in server errors during redirects.',
 	'ONLINE_LENGTH'				=> 'View online time span',
 	'ONLINE_LENGTH_EXPLAIN'		=> 'Number of minutes after which inactive users will not appear in “Who is online” listings. The higher this value the greater is the processing required to generate the listing.',
 	'SESSION_LENGTH'			=> 'Session length',
 	'SESSION_LENGTH_EXPLAIN'	=> 'Sessions will expire after this time, in seconds.',
+
+	'NO_SID'					=> 'Never add sid to links',
+	'NO_SID_EXPLAIN'			=> 'Warning! You can\'t log in if you set incorrect cookie settings and disable sid.',
 ));
 
 // Load Settings
@@ -498,6 +572,7 @@ $lang = array_merge($lang, array(
 	'BOARD_HIDE_EMAILS_EXPLAIN'		=> 'This function keeps e-mail addresses completely private.',
 	'CONTACT_EMAIL'					=> 'Contact e-mail address',
 	'CONTACT_EMAIL_EXPLAIN'			=> 'This address will be used whenever a specific contact point is needed, e.g. spam, error output, etc. It will always be used as the <samp>From</samp> and <samp>Reply-To</samp> address in e-mails.',
+	'CONTACT_EMAIL_NAME'			=> 'Notifications sender name',
 	'EMAIL_FUNCTION_NAME'			=> 'E-mail function name',
 	'EMAIL_FUNCTION_NAME_EXPLAIN'	=> 'The e-mail function used to send mails through PHP.',
 	'EMAIL_PACKAGE_SIZE'			=> 'E-mail package size',

@@ -16,12 +16,13 @@ html {
 body {
 	/* Text-Sizing with ems: http://www.clagnut.com/blog/348/ */
 	font-family: Verdana, Helvetica, Arial, sans-serif;
-	color: #828282;
-	background-color: #FFFFFF;
+	color: #536482;
+	background-color: #EEEEE7;
 	/*font-size: 62.5%;			 This sets the default font size to be equivalent to 10px */
 	font-size: 10px;
 	margin: 0;
-	padding: 12px 0;
+	padding: 0;
+	height: 100%;
 }
 
 h1 {
@@ -40,7 +41,7 @@ h2 {
 	font-weight: normal;
 	color: #3f3f3f;
 	font-size: 2em;
-	margin: 0.8em 0 0.2em 0;
+	margin: 0.5em 0 0.2em 0;
 }
 
 h2.solo {
@@ -103,7 +104,12 @@ p.right {
 ---------------------------------------- */
 #wrap {
 	padding: 0 20px;
-	min-width: 650px;
+	min-height: 100%;
+	min-width: 875px;
+	max-width: 1400px;
+	margin: 0 auto;
+	background-color: #FFFFFF;
+	box-shadow: 0 0 15px #CCCCCC;
 }
 
 #simple-wrap {
@@ -126,48 +132,11 @@ p.right {
 #logo {
 	float: left;
 	width: auto;
-	padding: 10px 13px 0 10px;
+	padding: 0;
 }
 
 a#logo:hover {
 	text-decoration: none;
-}
-
-/* Search box
---------------------------------------------- */
-#search-box {
-	color: #FFFFFF;
-	position: relative;
-	margin-top: 30px;
-	margin-right: 5px;
-	display: block;
-	float: right;
-	text-align: right;
-	white-space: nowrap; /* For Opera */
-}
-
-#search-box #keywords {
-	width: 95px;
-	background-color: #FFF;
-}
-
-#search-box input {
-	border: 1px solid #b0b0b0;
-}
-
-/* .button1 style defined later, just a few tweaks for the search button version */
-#search-box input.button1 {
-	padding: 1px 5px;
-}
-
-#search-box li {
-	text-align: right;
-	margin-top: 4px;
-}
-
-#search-box img {
-	vertical-align: middle;
-	margin-right: 3px;
 }
 
 /* Site description and logo */
@@ -185,7 +154,6 @@ a#logo:hover {
 .headerbar {
 	background: #ebebeb none repeat-x 0 0;
 	color: #FFFFFF;
-	margin-bottom: 4px;
 	padding: 0 5px;
 }
 
@@ -318,13 +286,6 @@ ul.linklist li.rightside, p.rightside {
 	text-align: right;
 }
 
-ul.navlinks {
-	padding-bottom: 1px;
-	margin-bottom: 1px;
-	border-bottom: 1px solid #FFFFFF;
-	font-weight: bold;
-}
-
 ul.leftside {
 	float: left;
 	margin-left: 0;
@@ -356,6 +317,7 @@ table.table1 thead th {
 	line-height: 1.3em;
 	font-size: 1em;
 	padding: 0 0 4px 3px;
+	text-shadow: 2px 2px 2px #000;
 }
 
 table.table1 thead th span {
@@ -395,7 +357,7 @@ table.table1 .posts		{ text-align: center !important; width: 7%; }
 table.table1 .joined	{ text-align: left; width: 15%; }
 table.table1 .active	{ text-align: left; width: 15%; }
 table.table1 .mark		{ text-align: center; width: 7%; }
-table.table1 .info		{ text-align: left; width: 30%; }
+table.table1 .info		{ text-align: left; width: 25%; }
 table.table1 .info div	{ width: 100%; white-space: normal; overflow: hidden; }
 table.table1 .autocol	{ line-height: 2em; white-space: nowrap; }
 table.table1 thead .autocol { padding-left: 1em; }
@@ -572,8 +534,13 @@ li.pagination {
 
 .copyright {
 	padding: 5px;
-	text-align: center;
+	text-align: left;
 	color: #555555;
+}
+
+#counter {
+	float: right;
+	padding: 7px;
 }
 
 .small {

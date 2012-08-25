@@ -299,7 +299,7 @@ function check_rule(&$rules, &$rule_row, &$message_row, $user_id)
 			$userdata = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 
-			$auth2 = new auth();
+			$auth2 = new phpbb_auth();
 			$auth2->acl($userdata);
 
 			if (!$auth2->acl_get('a_') && !$auth2->acl_get('m_') && !$auth2->acl_getf_global('m_'))
@@ -1574,7 +1574,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	}
 
 	// First of all make sure the subject are having the correct length.
-	$subject = truncate_string($subject);
+	$subject = truncate_string($subject, 90);
 
 	$db->sql_transaction('begin');
 

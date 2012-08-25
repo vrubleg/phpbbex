@@ -1,8 +1,8 @@
-<div class="panel bg3" id="poll-panel">
+<div class="panel bg2">
 	<div class="inner"><span class="corners-top"><span></span></span>
-
+	<h3>{L_ADD_POLL}</h3>
 	<!-- IF S_SHOW_POLL_BOX -->
-	<p>{L_ADD_POLL_EXPLAIN}</p>
+	<!--p>{L_ADD_POLL_EXPLAIN}</p-->
 	<!-- ENDIF -->
 
 	<fieldset class="fields2">
@@ -17,9 +17,27 @@
 			<dt><label for="poll_title">{L_POLL_QUESTION}:</label></dt>
 			<dd><input type="text" name="poll_title" id="poll_title" maxlength="255" value="{POLL_TITLE}" class="inputbox" /></dd>
 		</dl>
+
+		<script type="text/javascript">
+		jQuery(function($)
+		{
+			$("#postform input[name=poll_title]").blur(function()
+			{
+				if ($(this).val() == "") $("#poll_hidden").hide(); else $("#poll_hidden").show();
+			});
+			$("#postform input[name=poll_title]").keyup(function()
+			{
+				if ($(this).val() != "") $("#poll_hidden").show();
+			});
+			$("#postform input[name=poll_title]").blur();
+		});
+		</script>
+
+		<div id="poll_hidden">
+
 		<dl>
 			<dt><label for="poll_option_text">{L_POLL_OPTIONS}:</label><br /><span>{L_POLL_OPTIONS_EXPLAIN}</span></dt>
-			<dd><textarea name="poll_option_text" id="poll_option_text" rows="5" cols="35" class="inputbox">{POLL_OPTIONS}</textarea></dd>
+			<dd><textarea name="poll_option_text" id="poll_option_text" rows="7" cols="35" class="inputbox">{POLL_OPTIONS}</textarea></dd>
 		</dl>
 
 		<hr class="dashed" />
@@ -43,6 +61,15 @@
 				<dd><label for="poll_vote_change"><input type="checkbox" id="poll_vote_change" name="poll_vote_change"{VOTE_CHANGE_CHECKED} /> {L_POLL_VOTE_CHANGE_EXPLAIN}</label></dd>
 			</dl>
 		<!-- ENDIF -->
+
+		<!-- IF S_POLL_SHOW_VOTERS -->
+			<dl>
+				<dt><label for="poll_show_voters">{L_POLL_SHOW_VOTERS}:</label></dt>
+				<dd><label for="poll_show_voters"><input type="checkbox" id="poll_show_voters" name="poll_show_voters"{SHOW_VOTERS_CHECKED} /> {L_POLL_SHOW_VOTERS_EXPLAIN}</label></dd>
+			</dl>
+		<!-- ENDIF -->
+
+		</div>
 
 	<!-- ELSEIF S_POLL_DELETE -->
 		<dl class="fields1">

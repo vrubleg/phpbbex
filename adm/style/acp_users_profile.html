@@ -3,24 +3,16 @@
 	<fieldset>
 		<legend>{L_USER_PROFILE}</legend>
 	<dl>
-		<dt><label for="icq">{L_UCP_ICQ}:</label></dt>
-		<dd><input type="text" id="icq" name="icq" value="{ICQ}" /></dd>
-	</dl>
-	<dl>
-		<dt><label for="aim">{L_UCP_AIM}:</label></dt>
-		<dd><input type="text" id="aim" name="aim" value="{AIM}" /></dd>
-	</dl>
-	<dl>
-		<dt><label for="msn">{L_UCP_MSNM}:</label></dt>
-		<dd><input type="text" id="msn" name="msn" value="{MSN}" /></dd>
-	</dl>
-	<dl>
-		<dt><label for="yim">{L_UCP_YIM}:</label></dt>
-		<dd><input type="text" id="yim" name="yim" value="{YIM}" /></dd>
-	</dl>
-	<dl>
 		<dt><label for="jabber">{L_UCP_JABBER}:</label></dt>
 		<dd><input type="text" id="jabber" name="jabber" value="{JABBER}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="skype">{L_SKYPE}:</label></dt>
+		<dd><input type="text" name="skype" id="skype" value="{SKYPE}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="icq">{L_UCP_ICQ}:</label></dt>
+		<dd><input type="text" id="icq" name="icq" value="{ICQ}" /></dd>
 	</dl>
 	<dl>
 		<dt><label for="website">{L_WEBSITE}:</label></dt>
@@ -41,6 +33,14 @@
 	<dl> 
 		<dt><label for="birthday">{L_BIRTHDAY}:</label><br /><span>{L_BIRTHDAY_EXPLAIN}</span></dt>
 		<dd>{L_DAY}: <select id="birthday" name="bday_day">{S_BIRTHDAY_DAY_OPTIONS}</select> {L_MONTH}: <select name="bday_month">{S_BIRTHDAY_MONTH_OPTIONS}</select> {L_YEAR}: <select name="bday_year">{S_BIRTHDAY_YEAR_OPTIONS}</select></dd>
+	</dl>
+	<dl>
+		<dt><label for="gender_x">{L_GENDER}:</label><br /><span>{L_GENDER_EXPLAIN}</span></dt>
+		<dd>
+			<input type="radio" name="gender" id="gender_m" value="1"<!-- IF S_GENDER_M --> checked="checked"<!-- ENDIF --> /> {L_GENDER_M}
+			<input type="radio" name="gender" id="gender_f" value="2"<!-- IF S_GENDER_F --> checked="checked"<!-- ENDIF --> /> {L_GENDER_F}
+			<input type="radio" name="gender" id="gender_x" value="0"<!-- IF S_GENDER_X --> checked="checked"<!-- ENDIF --> /> {L_GENDER_X}
+		</dd>
 	</dl>
 	</fieldset>
 

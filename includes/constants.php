@@ -171,7 +171,7 @@ define('ATTACHMENT_CATEGORY_QUICKTIME', 6); // Quicktime/Mov files
 define('BBCODE_UID_LEN', 8);
 
 // Number of core BBCodes
-define('NUM_CORE_BBCODES', 12);
+define('NUM_CORE_BBCODES', 13);
 
 // BBCode hard limit
 define('BBCODE_LIMIT', 1511);
@@ -210,6 +210,17 @@ define('CAPTCHA_MAX_CHARS', 7);
 
 // Additional constants
 define('VOTE_CONVERTED', 127);
+
+// Genders
+define('GENDER_X', 0);
+define('GENDER_M', 1);
+define('GENDER_F', 2);
+
+// Login via E-Mail
+define('LOGIN_VIA_EMAIL_NO',		0);
+define('LOGIN_VIA_EMAIL_YES',		1);
+define('LOGIN_VIA_EMAIL_SILENT',	2);
+define('LOGIN_VIA_EMAIL_ONLY',		3);
 
 // Table names
 define('ACL_GROUPS_TABLE',			$table_prefix . 'acl_groups');
@@ -276,7 +287,9 @@ define('WARNINGS_TABLE',			$table_prefix . 'warnings');
 define('WORDS_TABLE',				$table_prefix . 'words');
 define('ZEBRA_TABLE',				$table_prefix . 'zebra');
 
+// phpBBex tables
+define('USER_CONFIRM_KEYS_TABLE',	$table_prefix . 'user_confirm_keys');
+define('USER_BROWSER_IDS_TABLE',	$table_prefix . 'user_browser_ids');
+define('POST_RATES_TABLE',			$table_prefix . 'post_rates');
+
 // Additional tables
-
-
-?>

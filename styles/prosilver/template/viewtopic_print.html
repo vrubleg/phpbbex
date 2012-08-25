@@ -8,11 +8,12 @@
 <meta http-equiv="imagetoolbar" content="no" />
 <meta name="resource-type" content="document" />
 <meta name="distribution" content="global" />
-<meta name="keywords" content="" />
-<meta name="description" content="" />
+<meta name="keywords" content="{SITE_KEYWORDS}" />
+<meta name="description" content="{SITE_DESCRIPTION}" />
 <meta name="robots" content="noindex" />
 {META}
-<title>{SITENAME} &bull; {PAGE_TITLE}</title>
+<title><!-- IF PAGE_TITLE -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}</title>
+<!-- IF U_CANONICAL --><link rel="canonical" href="{U_CANONICAL}" /><!-- ENDIF -->
 
 <link href="{T_THEME_PATH}/print.css" rel="stylesheet" type="text/css" />
 </head>
@@ -43,8 +44,7 @@
 	</div>
 
 	<div id="page-footer">
-		<div class="page-number">{S_TIMEZONE}<br />{PAGE_NUMBER}</div>
-		<div class="copyright">Powered by phpBB&reg; Forum Software &copy; phpBB Group<br />http://www.phpbb.com/</div>
+		<div class="page-number"><!--{S_TIMEZONE}<br /-->{PAGE_NUMBER}</div>
 	</div>
 </div>
 

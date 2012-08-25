@@ -17,12 +17,12 @@
 	<!-- IF S_VERSIONCHECK_FAIL -->
 		<div class="errorbox notice">
 			<p>{L_VERSIONCHECK_FAIL}</p>
-			<p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a> &middot; <a href="{U_VERSIONCHECK}">{L_MORE_INFORMATION}</a></p>
+			<p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a></p>
 		</div>
 	<!-- ELSEIF not S_VERSION_UP_TO_DATE -->
 		<div class="errorbox">
-			<p>{L_VERSION_NOT_UP_TO_DATE_TITLE}</p>
-			<p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a> &middot; <a href="{U_VERSIONCHECK}">{L_MORE_INFORMATION}</a></p>
+			<p>{UPDATE_INSTRUCTIONS}</p>
+			<p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a> &middot; <a href="{U_UPDATE_ANNOUNCEMENT}" target="_blank">{L_MORE_INFORMATION}</a></p>
 		</div>
 	<!-- ENDIF -->
 
@@ -81,10 +81,10 @@
 		<col class="col1" /><col class="col2" /><col class="col1" /><col class="col2" />
 	<thead>
 	<tr>
-		<th>{L_STATISTIC}</th>
-		<th>{L_VALUE}</th>
-		<th>{L_STATISTIC}</th>
-		<th>{L_VALUE}</th>
+		<th width="20%">{L_STATISTIC}</th>
+		<th width="30%">{L_VALUE}</th>
+		<th width="20%">{L_STATISTIC}</th>
+		<th width="30%">{L_VALUE}</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -133,9 +133,9 @@
 		<td><strong>{GZIP_COMPRESSION}</strong></td>
 	</tr>
 	<tr>
-		<td>{L_BOARD_VERSION}: </td>
+		<td>{L_PHPBBEX_VERSION}:</td>
 		<td>
-			<strong><a href="{U_VERSIONCHECK}" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{BOARD_VERSION}</a></strong> [&nbsp;<a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a>&nbsp;]
+			<strong><a href="<!-- IF S_VERSIONCHECK_FAIL -->http://phpbbex.com/<!-- ELSE -->{U_UPDATE_ANNOUNCEMENT}<!-- ENDIF -->" target="_blank" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{PHPBBEX_VERSION}</a></strong> (phpBB {PHPBB_VERSION}) [&nbsp;<a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a>&nbsp;]
 		</td>
 	<!-- IF S_TOTAL_ORPHAN -->
 		<td>{L_NUMBER_ORPHAN}: </td>
@@ -152,14 +152,14 @@
 		<fieldset>
 			<legend>{L_STATISTIC_RESYNC_OPTIONS}</legend>
 
-			<form id="action_online_form" method="post" action="{U_ACTION}">
+			<form id="action_online_form" method="post" action="{U_ACTION}" style="display: none;">
 				<dl>
 					<dt><label for="action_online">{L_RESET_ONLINE}</label><br /><span>&nbsp;</span></dt>
 					<dd><input type="hidden" name="action" value="online" /><input class="button2" type="submit" id="action_online" name="action_online" value="{L_RUN}" /></dd>
 				</dl>
 			</form>
 
-			<form id="action_date_form" method="post" action="{U_ACTION}">
+			<form id="action_date_form" method="post" action="{U_ACTION}" style="display: none;">
 				<dl>
 					<dt><label for="action_date">{L_RESET_DATE}</label><br /><span>&nbsp;</span></dt>
 					<dd><input type="hidden" name="action" value="date" /><input class="button2" type="submit" id="action_date" name="action_date" value="{L_RUN}" /></dd>
@@ -177,6 +177,13 @@
 				<dl>
 					<dt><label for="action_user">{L_RESYNC_POSTCOUNTS}</label><br /><span>{L_RESYNC_POSTCOUNTS_EXPLAIN}</span></dt>
 					<dd><input type="hidden" name="action" value="user" /><input class="button2" type="submit" id="action_user" name="action_user" value="{L_RUN}" /></dd>
+				</dl>
+			</form>
+
+			<form id="action_topics_form" method="post" action="{U_ACTION}">
+				<dl>
+					<dt><label for="action_topics">{L_RESYNC_TOPICCOUNTS}</label><br /><span>{L_RESYNC_TOPICCOUNTS_EXPLAIN}</span></dt>
+					<dd><input type="hidden" name="action" value="topics" /><input class="button2" type="submit" id="action_topics" name="action_topics" value="{L_RUN}" /></dd>
 				</dl>
 			</form>
 

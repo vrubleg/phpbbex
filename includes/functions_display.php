@@ -309,6 +309,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 
 	// Used to tell whatever we have to create a dummy category or not.
 	$last_catless = true;
+	$forums_last_posts_ids_list = array();
 	foreach ($forum_rows as $row)
 	{
 		// Empty category
@@ -414,6 +415,8 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		// Create last post link information, if appropriate
 		if ($row['forum_last_post_id'])
 		{
+			$forums_last_posts_ids_list[$row['forum_id']] = $row['forum_last_post_id'];
+			$last_post_id = $row['forum_last_post_id'];
 			$last_post_subject = $row['forum_last_post_subject'];
 			$last_post_time = $user->format_date($row['forum_last_post_time']);
 			$last_post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row['forum_id_last_post'] . '&amp;p=' . $row['forum_last_post_id']) . '#p' . $row['forum_last_post_id'];
@@ -421,6 +424,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		else
 		{
 			$last_post_subject = $last_post_time = $last_post_url = '';
+			$last_post_id = false;
 		}
 
 		// Output moderator listing ... if applicable
@@ -481,6 +485,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			'FORUM_FOLDER_IMG_ALT'	=> isset($user->lang[$folder_alt]) ? $user->lang[$folder_alt] : '',
 			'FORUM_IMAGE'			=> ($row['forum_image']) ? '<img src="' . $phpbb_root_path . $row['forum_image'] . '" alt="' . $user->lang[$folder_alt] . '" />' : '',
 			'FORUM_IMAGE_SRC'		=> ($row['forum_image']) ? $phpbb_root_path . $row['forum_image'] : '',
+			'LAST_POST_ID'			=> $last_post_id,
 			'LAST_POST_SUBJECT'		=> censor_text($last_post_subject),
 			'LAST_POST_TIME'		=> $last_post_time,
 			'LAST_POSTER'			=> get_username_string('username', $row['forum_last_poster_id'], $row['forum_last_poster_name'], $row['forum_last_poster_colour']),
@@ -517,7 +522,35 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		'L_SUBFORUM'		=> ($visible_forums == 1) ? $user->lang['SUBFORUM'] : $user->lang['SUBFORUMS'],
 		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 		'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'TOPICS_UNAPPROVED'),
+
+		// Search in current forum
+		'U_SEARCH_IN'				=> append_sid("{$phpbb_root_path}search.$phpEx", 'fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_SELF_IN'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_SELF_TOPICS_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch&amp;sf=firstpost&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_NEW_IN'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=newposts&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_UNANSWERED_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unanswered&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_UNREAD_IN'		=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unreadposts&amp;fid[]=' . $root_data['forum_id']),
+		'U_SEARCH_ACTIVE_TOPICS_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=active_topics&amp;fid[]=' . $root_data['forum_id']),
 	));
+	
+	if(!empty($forums_last_posts_ids_list))
+	{
+		$sql = 'SELECT topic_id, topic_title, topic_last_post_id, forum_id FROM ' . TOPICS_TABLE . ' WHERE topic_last_post_id IN (' . implode(',', $forums_last_posts_ids_list) . ')';
+		$last_topic_result = $db->sql_query($sql);
+		while($last_topic_row = $db->sql_fetchrow($last_topic_result))
+		{
+			$last_topic_title_full = htmlspecialchars_decode(censor_text($last_topic_row['topic_title']));
+			$last_topic_title = (utf8_strlen($last_topic_title_full) > 40) ? trim(utf8_substr($last_topic_title_full, 0, 40)) . '…' : $last_topic_title_full;
+			$last_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $last_topic_row['forum_id'] . '&amp;t=' . $last_topic_row['topic_id']);
+
+			$template->alter_block_array('forumrow', array(
+					'LAST_TOPIC_TITLE'		=> htmlspecialchars($last_topic_title),
+					'LAST_TOPIC_TITLE_FULL'	=> htmlspecialchars($last_topic_title_full),
+					'U_LAST_TOPIC_URL'		=> $last_topic_url
+			), array('LAST_POST_ID'	=> $last_topic_row['topic_last_post_id']), 'change');
+		}
+		$db->sql_freeresult($last_topic_result);
+	}
 
 	if ($return_moderators)
 	{
@@ -882,6 +915,245 @@ function topic_status(&$topic_row, $replies, $unread_topic, &$folder_img, &$fold
 }
 
 /**
+* Display topic rows
+*/
+function display_topic_rows($tpl_loopname, $topic_rows)
+{
+	global $auth, $cache, $config, $db, $template, $user;
+	global $phpbb_root_path, $phpEx;
+
+	// No topics to display
+	if (empty($topic_rows))
+	{
+		return;
+	}
+
+	$forums = $topic_ids = array();
+	foreach ($topic_rows as $row)
+	{
+		$topic_ids[] = $row['topic_id'];
+		$forums[$row['forum_id']][] = $row['topic_id'];
+	}
+
+	// Grab icons
+	$icons = $cache->obtain_icons();
+
+	// Now only pull the data of the requested topics
+	$sql = 'SELECT t.*, i.icons_url, i.icons_width, i.icons_height, tp.topic_posted, f.forum_name
+		FROM ' . TOPICS_TABLE . ' t
+		LEFT JOIN ' . TOPICS_POSTED_TABLE . ' tp
+			ON (t.topic_id = tp.topic_id
+				AND tp.user_id = ' . $user->data['user_id'] . ')
+		LEFT JOIN ' . FORUMS_TABLE . ' f
+			ON f.forum_id = t.forum_id
+		LEFT JOIN ' . ICONS_TABLE . ' i
+			ON t.icon_id = i.icons_id
+		WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids) . '
+		ORDER BY t.topic_last_post_time DESC';
+	$result = $db->sql_query($sql);
+
+	foreach ($forums as $forum_id => $topic_ids)
+	{
+		$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_ids);
+	}
+
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$topic_id = $row['topic_id'];
+		$forum_id = $row['forum_id'];
+
+		$s_type_switch_test = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
+		$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
+		$unread_topic = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$topic_id]) ? true : false;
+
+		$folder_img = $folder_alt = $topic_type = '';
+		topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
+
+		$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&amp;t=' . $topic_id);
+		$view_forum_url = append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $forum_id);
+		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id)) ? true : false;
+		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id)) ? true : false;
+		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$topic_id", true, $user->session_id) : '';
+		$s_type_switch = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
+
+		$template->assign_block_vars($tpl_loopname, array(
+			'FORUM_ID'					=> $forum_id,
+			'TOPIC_ID'					=> $topic_id,
+			'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+			'FIRST_POST_TIME'			=> $user->format_date($row['topic_time']),
+
+			'LAST_POST_SUBJECT'			=> censor_text($row['topic_last_post_subject']),
+			'LAST_POST_TIME'			=> $user->format_date($row['topic_last_post_time']),
+			'LAST_VIEW_TIME'			=> $user->format_date($row['topic_last_view_time']),
+			'LAST_POST_AUTHOR'			=> get_username_string('username', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+			'LAST_POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+			'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+
+			'PAGINATION'				=> topic_generate_pagination($replies, $view_topic_url),
+			'REPLIES'					=> $replies,
+			'VIEWS'						=> $row['topic_views'],
+			'TOPIC_TITLE'				=> censor_text($row['topic_title']),
+			'FORUM_TITLE'				=> $row['forum_name'],
+
+			'TOPIC_TYPE'			=> $topic_type,
+			'TOPIC_FOLDER_IMG'		=> $user->img($folder_img, $folder_alt),
+			'TOPIC_FOLDER_IMG_SRC'	=> $user->img($folder_img, $folder_alt, false, '', 'src'),
+			'TOPIC_FOLDER_IMG_ALT'	=> $user->lang[$folder_alt],
+			'NEWEST_POST_IMG'		=> $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
+			'TOPIC_ICON_IMG'		=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
+			'TOPIC_ICON_IMG_WIDTH'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
+			'TOPIC_ICON_IMG_HEIGHT'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
+			'ATTACH_ICON_IMG'		=> ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
+			'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
+			'REPORTED_IMG'			=> ($row['topic_reported'] && $auth->acl_get('m_report', $forum_id)) ? $user->img('icon_topic_reported', 'TOPIC_REPORTED') : '',
+
+			'S_TOPIC_TYPE'			=> $row['topic_type'],
+			'S_USER_POSTED'			=> (isset($row['topic_posted']) && $row['topic_posted']) ? true : false,
+			'S_UNREAD_TOPIC'		=> $unread_topic,
+			'S_TOPIC_REPORTED'		=> ($row['topic_reported'] && $auth->acl_get('m_report', $forum_id)) ? true : false,
+			'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
+			'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
+			'S_HAS_POLL'			=> ($row['poll_start']) ? true : false,
+			'S_POST_ANNOUNCE'		=> ($row['topic_type'] == POST_ANNOUNCE) ? true : false,
+			'S_POST_GLOBAL'			=> ($row['topic_type'] == POST_GLOBAL) ? true : false,
+			'S_POST_STICKY'			=> ($row['topic_type'] == POST_STICKY) ? true : false,
+			'S_TOPIC_LOCKED'		=> ($row['topic_status'] == ITEM_LOCKED) ? true : false,
+			'S_TOPIC_MOVED'			=> ($row['topic_status'] == ITEM_MOVED) ? true : false,
+			'S_TOPIC_TYPE_SWITCH'	=> ($s_type_switch == $s_type_switch_test) ? -1 : $s_type_switch_test,
+
+			'U_NEWEST_POST'			=> $view_topic_url . '&amp;view=unread#unread',
+			'U_LAST_POST'			=> $view_topic_url . '&amp;p=' . $row['topic_last_post_id'] . '#p' . $row['topic_last_post_id'],
+			'U_LAST_POST_AUTHOR'	=> get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+			'U_TOPIC_AUTHOR'		=> get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+			'U_VIEW_TOPIC'			=> $view_topic_url,
+			'U_VIEW_FORUM'			=> $view_forum_url,
+			'U_MCP_REPORT'			=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=reports&amp;f=' . $forum_id . '&amp;t=' . $topic_id, true, $user->session_id),
+			'U_MCP_QUEUE'			=> $u_mcp_queue,
+		));
+	}
+	$db->sql_freeresult($result);
+}
+
+/**
+* Display last active topics
+*/
+function display_active_topics($tpl_loopname, $total_limit)
+{
+	global $auth, $cache, $config, $db, $template, $user;
+	global $phpbb_root_path, $phpEx;
+
+	/**
+	* Set some internal needed variables
+	*/
+	$excluded_topic_ids = array('');
+
+	/**
+	* Get the forums we take our topics from
+	*/
+	// Get the allowed forums
+	$forum_ary = array();
+	$forum_read_ary = $auth->acl_getf('f_read');
+	foreach ($forum_read_ary as $forum_id => $allowed)
+	{
+		if ($allowed['f_read'])
+		{
+			$forum_ary[] = (int) $forum_id;
+		}
+	}
+	$forum_ids = array_unique($forum_ary);
+
+	if (!sizeof($forum_ids))
+	{
+		// No forums with f_read
+		return;
+	}
+
+	$sql = 'SELECT forum_id
+		FROM ' . FORUMS_TABLE . '
+		WHERE ' . $db->sql_in_set('forum_id', $forum_ids) . '
+			AND forum_flags & ' . FORUM_FLAG_ACTIVE_TOPICS;
+	$result = $db->sql_query($sql);
+
+	$forum_ids = array();
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$forum_ids[] = $row['forum_id'];
+	}
+	$db->sql_freeresult($result);
+
+	// No forums with f_read
+	if (!sizeof($forum_ids))
+	{
+		return;
+	}
+
+	// Moderator forums
+	$m_approve_ids = array();
+	$m_approve_ary = $auth->acl_getf('m_approve');
+	foreach ($m_approve_ary as $forum_id => $allowed)
+	{
+		if ($allowed['m_approve'] && in_array($forum_id, $forum_ids))
+		{
+			$m_approve_ids[] = (int) $forum_id;
+		}
+	}
+
+	// Get the allowed topics
+	$sql = 'SELECT forum_id, topic_id, topic_type
+		FROM ' . TOPICS_TABLE . '
+		WHERE ' . $db->sql_in_set('topic_id', $excluded_topic_ids, true) . '
+			AND ' . $db->sql_in_set('forum_id', $forum_ids) . '
+			AND topic_type <> ' . POST_GLOBAL . '
+			AND topic_status <> ' . ITEM_MOVED . '
+			AND (' . $db->sql_in_set('forum_id', $m_approve_ids, false, true) . '
+				OR topic_approved = 1)
+		ORDER BY topic_last_post_time DESC';
+	$result = $db->sql_query_limit($sql, $total_limit);
+
+	$topic_rows = array();
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$topic_rows[] = $row;
+	}
+	$db->sql_freeresult($result);
+
+	display_topic_rows($tpl_loopname, $topic_rows);
+}
+
+/**
+* Display last active topics
+*/
+function display_global_announcements($tpl_loopname)
+{
+	global $auth, $cache, $config, $db, $template, $user;
+	global $phpbb_root_path, $phpEx;
+
+	$forum_ary = $auth->acl_getf('f_read', true);
+	$forum_ary = array_unique(array_keys($forum_ary));
+
+	if (!sizeof($forum_ary))
+	{
+		return;
+	}
+
+	$sql = 'SELECT t.forum_id, t.topic_id
+		FROM ' . TOPICS_TABLE . ' t
+		WHERE ' . $db->sql_in_set('t.forum_id', $forum_ary) . "
+			AND t.topic_type = " . POST_GLOBAL . '
+		ORDER BY t.topic_time DESC'; // topic_last_post_time
+	$result = $db->sql_query($sql);
+
+	$topic_rows = array();
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$topic_rows[] = $row;
+	}
+	$db->sql_freeresult($result);
+
+	display_topic_rows($tpl_loopname, $topic_rows);
+}
+
+/**
 * Assign/Build custom bbcodes for display in screens supporting using of bbcodes
 * The custom bbcodes buttons will be placed within the template block 'custom_codes'
 */
@@ -889,13 +1161,13 @@ function display_custom_bbcodes()
 {
 	global $db, $template, $user;
 
-	// Start counting from 22 for the bbcode ids (every bbcode takes two ids - opening/closing)
-	$num_predefined_bbcodes = 22;
+	// Start counting from 24 for the bbcode ids (every bbcode takes two ids - opening/closing)
+	$num_predefined_bbcodes = 24;
 
 	$sql = 'SELECT bbcode_id, bbcode_tag, bbcode_helpline
 		FROM ' . BBCODES_TABLE . '
 		WHERE display_on_posting = 1
-		ORDER BY bbcode_tag';
+		ORDER BY bbcode_order, bbcode_tag';
 	$result = $db->sql_query($sql);
 
 	$i = 0;

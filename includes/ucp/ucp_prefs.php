@@ -70,6 +70,11 @@ class ucp_prefs
 						$data['style'] = (int) $user->data['user_style'];
 					}
 
+					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
+					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
+					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
+					$data['dst']		= ($config['override_user_dst'])		? $config['board_dst']			: $data['dst'];
+
 					$error = validate_data($data, array(
 						'dateformat'	=> array('string', false, 1, 30),
 						'lang'			=> array('language_iso_name'),
@@ -147,17 +152,18 @@ class ucp_prefs
 					'S_NOTIFY_PM'		=> $data['notifypm'],
 					'S_POPUP_PM'		=> $data['popuppm'],
 					'S_DST'				=> $data['dst'],
+					'S_DST_SHOW'		=> ($config['override_user_dst']) ? false : true,
 
 					'DATE_FORMAT'			=> $data['dateformat'],
 					'A_DATE_FORMAT'			=> addslashes($data['dateformat']),
-					'S_DATEFORMAT_OPTIONS'	=> $dateformat_options,
+					'S_DATEFORMAT_OPTIONS'	=> ($config['override_user_dateformat']) ? '' : $dateformat_options,
 					'S_CUSTOM_DATEFORMAT'	=> $s_custom,
 					'DEFAULT_DATEFORMAT'	=> $config['default_dateformat'],
 					'A_DEFAULT_DATEFORMAT'	=> addslashes($config['default_dateformat']),
 
-					'S_LANG_OPTIONS'		=> language_select($data['lang']),
+					'S_LANG_OPTIONS'		=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
 					'S_STYLE_OPTIONS'		=> ($config['override_user_style']) ? '' : style_select($data['style']),
-					'S_TZ_OPTIONS'			=> tz_select($data['tz'], true),
+					'S_TZ_OPTIONS'			=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
 					'S_CAN_HIDE_ONLINE'		=> ($auth->acl_get('u_hideonline')) ? true : false,
 					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && @extension_loaded('xml')) ? true : false)
 				);
@@ -177,13 +183,46 @@ class ucp_prefs
 					'post_sd'		=> request_var('post_sd', (!empty($user->data['user_post_sortby_dir'])) ? $user->data['user_post_sortby_dir'] : 'a'),
 					'post_st'		=> request_var('post_st', (!empty($user->data['user_post_show_days'])) ? $user->data['user_post_show_days'] : 0),
 
+					'user_topics_per_page'	=> (int) request_var('user_topics_per_page', (!empty($user->data['user_topics_per_page'])) ? $user->data['user_topics_per_page'] : 0),
+					'user_posts_per_page'	=> (int) request_var('user_posts_per_page', (!empty($user->data['user_posts_per_page'])) ? $user->data['user_posts_per_page'] : 0),
+
 					'images'		=> request_var('images', (bool) $user->optionget('viewimg')),
 					'flash'			=> request_var('flash', (bool) $user->optionget('viewflash')),
 					'smilies'		=> request_var('smilies', (bool) $user->optionget('viewsmilies')),
 					'sigs'			=> request_var('sigs', (bool) $user->optionget('viewsigs')),
 					'avatars'		=> request_var('avatars', (bool) $user->optionget('viewavatars')),
 					'wordcensor'	=> request_var('wordcensor', (bool) $user->optionget('viewcensors')),
+
+					'quickreply'	=> request_var('quickreply', (bool) $user->optionget('viewquickreply')),
+					'quickpost'		=> request_var('quickpost', (bool) $user->optionget('viewquickpost')),
+					'topicreview'	=> request_var('topicreview', (bool) $user->optionget('viewtopicreview')),
 				);
+
+				if ($data['user_topics_per_page'] > 100)
+				{
+					$data['user_topics_per_page'] = 100;
+				}
+				if ($data['user_topics_per_page'] < 10 && $data['user_topics_per_page'] != 0)
+				{
+					$data['user_topics_per_page'] = 10;
+				}
+				if ($data['user_topics_per_page'] == $config['topics_per_page_default'])
+				{
+					$data['user_topics_per_page'] = 0;
+				}
+
+				if ($data['user_posts_per_page'] > 100)
+				{
+					$data['user_posts_per_page'] = 100;
+				}
+				if ($data['user_posts_per_page'] < 10 && $data['user_posts_per_page'] != 0)
+				{
+					$data['user_posts_per_page'] = 10;
+				}
+				if ($data['user_posts_per_page'] == $config['posts_per_page_default'])
+				{
+					$data['user_posts_per_page'] = 0;
+				}
 
 				if ($submit)
 				{
@@ -206,6 +245,9 @@ class ucp_prefs
 						$user->optionset('viewsmilies', $data['smilies']);
 						$user->optionset('viewsigs', $data['sigs']);
 						$user->optionset('viewavatars', $data['avatars']);
+						$user->optionset('viewquickreply', $data['quickreply']);
+						$user->optionset('viewquickpost', $data['quickpost']);
+						$user->optionset('viewtopicreview', $data['topicreview']);
 
 						if ($auth->acl_get('u_chgcensors'))
 						{
@@ -221,6 +263,9 @@ class ucp_prefs
 
 							'user_topic_show_days'	=> $data['topic_st'],
 							'user_post_show_days'	=> $data['post_st'],
+
+							'user_topics_per_page' => $data['user_topics_per_page'],
+							'user_posts_per_page' => $data['user_posts_per_page'],
 						);
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -289,6 +334,12 @@ class ucp_prefs
 					'S_AVATARS'			=> $data['avatars'],
 					'S_DISABLE_CENSORS'	=> $data['wordcensor'],
 
+					'S_QUICKREPLY'		=> $data['quickreply'],
+					'QUICK_REPLY'		=> ($config['allow_quick_reply']) ? true : false,
+					'S_QUICKPOST'		=> $data['quickpost'],
+					'QUICK_POST'		=> ($config['allow_quick_post']) ? true : false,
+					'S_TOPICREVIEW'		=> $data['topicreview'],
+
 					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']) ? true : false,
 
 					'S_TOPIC_SORT_DAYS'		=> $s_limit_topic_days,
@@ -296,8 +347,11 @@ class ucp_prefs
 					'S_TOPIC_SORT_DIR'		=> $s_sort_topic_dir,
 					'S_POST_SORT_DAYS'		=> $s_limit_post_days,
 					'S_POST_SORT_KEY'		=> $s_sort_post_key,
-					'S_POST_SORT_DIR'		=> $s_sort_post_dir)
-				);
+					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
+
+					'USER_TOPICS_PER_PAGE'	=> $data['user_topics_per_page'] ? $data['user_topics_per_page'] : $config['topics_per_page'],
+					'USER_POSTS_PER_PAGE'	=> $data['user_posts_per_page'] ? $data['user_posts_per_page'] : $config['posts_per_page'],
+				));
 
 			break;
 

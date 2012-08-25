@@ -68,6 +68,11 @@ class mcp_warn
 				$this->mcp_warn_user_view($action);
 				$this->tpl_name = 'mcp_warn_user';
 			break;
+
+			case 'warn_edit':
+				$this->mcp_warn_edit_view($action);
+				$this->tpl_name = 'mcp_warn_post';
+			break;
 		}
 	}
 
@@ -201,6 +206,8 @@ class mcp_warn
 		$forum_id = request_var('f', 0);
 		$notify = (isset($_REQUEST['notify_user'])) ? true : false;
 		$warning = utf8_normalize_nfc(request_var('warning', '', true));
+		$warning_type = request_var('warning_type', 'warning');
+		$warning_days = request_var('warning_days', 0);
 
 		$sql = 'SELECT u.*, p.*
 			FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . " u
@@ -219,12 +226,6 @@ class mcp_warn
 		if ($user_row['user_type'] == USER_IGNORE)
 		{
 			trigger_error('CANNOT_WARN_ANONYMOUS');
-		}
-
-		// Prevent someone from warning themselves
-		if ($user_row['user_id'] == $user->data['user_id'])
-		{
-			trigger_error('CANNOT_WARN_SELF');
 		}
 
 		// Check if there is already a warning for this post to prevent multiple
@@ -252,7 +253,7 @@ class mcp_warn
 		// Check if can send a notification
 		if ($config['allow_privmsg'])
 		{
-			$auth2 = new auth();
+			$auth2 = new phpbb_auth();
 			$auth2->acl($user_row);
 			$s_can_notify = ($auth2->acl_get('u_readpm')) ? true : false;
 			unset($auth2);
@@ -272,14 +273,14 @@ class mcp_warn
 		{
 			if (check_form_key('mcp_warn'))
 			{
-				add_warning($user_row, $warning, $notify, $post_id);
+				add_warning($user_row, $warning, $notify, $post_id, $warning_days, $warning_type);
 				$msg = $user->lang['USER_WARNING_ADDED'];
 			}
 			else
 			{
 				$msg = $user->lang['FORM_INVALID'];
 			}
-			$redirect = append_sid("{$phpbb_root_path}mcp.$phpEx", "i=notes&amp;mode=user_notes&amp;u=$user_id");
+			$redirect = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "p={$post_id}#p{$post_id}");
 			meta_refresh(2, $redirect);
 			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
@@ -315,17 +316,24 @@ class mcp_warn
 			'U_POST_ACTION'		=> $this->u_action,
 
 			'POST'				=> $message,
-			'USERNAME'			=> $user_row['username'],
-			'USER_COLOR'		=> (!empty($user_row['user_colour'])) ? $user_row['user_colour'] : '',
 			'RANK_TITLE'		=> $rank_title,
 			'JOINED'			=> $user->format_date($user_row['user_regdate']),
 			'POSTS'				=> ($user_row['user_posts']) ? $user_row['user_posts'] : 0,
 			'WARNINGS'			=> ($user_row['user_warnings']) ? $user_row['user_warnings'] : 0,
 
+			'USERNAME_FULL'		=> get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME_COLOUR'	=> get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME'			=> get_username_string('username', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'U_PROFILE'			=> get_username_string('profile', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+
 			'AVATAR_IMG'		=> $avatar_img,
 			'RANK_IMG'			=> $rank_img,
 
-			'L_WARNING_POST_DEFAULT'	=> sprintf($user->lang['WARNING_POST_DEFAULT'], generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;p=$post_id#p$post_id"),
+			'WARNING_DEFAULT'	=> $config['warning_post_default'],
+			'WARNING_DAYS'		=> (isset($warning_row['warning_days']) ? $warning_row['warning_days'] : $config['warnings_expire_days']),
+			'WARNING_TYPE'		=> (isset($warning_row['warning_type'])) ? $warning_row['warning_type'] : 'warning',
+			'WARNING_ID'		=> (isset($warning_row['warning_id'])) ? $warning_row['warning_id'] : '',
+			'WARNING'			=> (isset($warning_row['warning_text'])) ? $warning_row['warning_text'] : '',
 
 			'S_CAN_NOTIFY'		=> $s_can_notify,
 		));
@@ -343,6 +351,8 @@ class mcp_warn
 		$username = request_var('username', '', true);
 		$notify = (isset($_REQUEST['notify_user'])) ? true : false;
 		$warning = utf8_normalize_nfc(request_var('warning', '', true));
+		$warning_type = request_var('warning_type', 'warning');
+		$warning_days = request_var('warning_days', 0);
 
 		$sql_where = ($user_id) ? "user_id = $user_id" : "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 
@@ -358,12 +368,6 @@ class mcp_warn
 			trigger_error('NO_USER');
 		}
 
-		// Prevent someone from warning themselves
-		if ($user_row['user_id'] == $user->data['user_id'])
-		{
-			trigger_error('CANNOT_WARN_SELF');
-		}
-
 		$user_id = $user_row['user_id'];
 
 		if (strpos($this->u_action, "&amp;u=$user_id") === false)
@@ -375,7 +379,7 @@ class mcp_warn
 		// Check if can send a notification
 		if ($config['allow_privmsg'])
 		{
-			$auth2 = new auth();
+			$auth2 = new phpbb_auth();
 			$auth2->acl($user_row);
 			$s_can_notify = ($auth2->acl_get('u_readpm')) ? true : false;
 			unset($auth2);
@@ -395,7 +399,7 @@ class mcp_warn
 		{
 			if (check_form_key('mcp_warn'))
 			{
-				add_warning($user_row, $warning, $notify);
+				add_warning($user_row, $warning, $notify, 0, $warning_days, $warning_type);
 				$msg = $user->lang['USER_WARNING_ADDED'];
 			}
 			else
@@ -420,6 +424,7 @@ class mcp_warn
 		$template->assign_vars(array(
 			'U_POST_ACTION'		=> $this->u_action,
 
+			'POST'				=> false,
 			'RANK_TITLE'		=> $rank_title,
 			'JOINED'			=> $user->format_date($user_row['user_regdate']),
 			'POSTS'				=> ($user_row['user_posts']) ? $user_row['user_posts'] : 0,
@@ -433,20 +438,157 @@ class mcp_warn
 			'AVATAR_IMG'		=> $avatar_img,
 			'RANK_IMG'			=> $rank_img,
 
+			'WARNING_DEFAULT'	=> $config['warning_post_default'],
+			'WARNING_DAYS'		=> (isset($warning_row['warning_days']) ? $warning_row['warning_days'] : $config['warnings_expire_days']),
+			'WARNING_TYPE'		=> (isset($warning_row['warning_type'])) ? $warning_row['warning_type'] : 'warning',
+			'WARNING_ID'		=> (isset($warning_row['warning_id'])) ? $warning_row['warning_id'] : '',
+			'WARNING'			=> (isset($warning_row['warning_text'])) ? $warning_row['warning_text'] : '',
+
 			'S_CAN_NOTIFY'		=> $s_can_notify,
 		));
 
 		return $user_id;
+	}
+
+	/**
+	* Handles warning edit
+	*/
+	function mcp_warn_edit_view($action)
+	{
+		global $phpEx, $phpbb_root_path, $config;
+		global $template, $db, $user, $auth;
+
+		$warning_id = request_var('warning_id', 0);
+		$warning = utf8_normalize_nfc(request_var('warning', '', true));
+		$warning_type = request_var('warning_type', 'warning');
+		$warning_days = request_var('warning_days', 0);
+
+		$sql = 'SELECT *
+			FROM ' . WARNINGS_TABLE . "
+			WHERE warning_id = '$warning_id'";
+		$result = $db->sql_query($sql);
+		$warning_row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+		if (!$warning_row)
+		{
+			trigger_error('WARNING_NOT_FOUND');
+		}
+		$post_id = $warning_row['post_id'];
+		$user_id = $warning_row['user_id'];
+
+		$sql = 'SELECT *
+			FROM ' . USERS_TABLE . "
+			WHERE user_id = {$user_id}";
+		$result = $db->sql_query($sql);
+		$user_row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		$post_row = false;
+		if ($post_id)
+		{
+			$sql = 'SELECT *
+				FROM ' . POSTS_TABLE . "
+				WHERE post_id = {$post_id}";
+			$result = $db->sql_query($sql);
+			$post_row = $db->sql_fetchrow($result);
+			$db->sql_freeresult($result);
+		}
+
+		if ($warning && $action == 'add_warning')
+		{
+			if (check_form_key('mcp_warn'))
+			{
+				edit_warning($warning_row, $warning, $warning_days, $warning_type);
+				$msg = $user->lang['USER_WARNING_EDITED'];
+			}
+			else
+			{
+				$msg = $user->lang['FORM_INVALID'];
+			}
+			$redirect = ($post_id && $post_row)
+				? append_sid("{$phpbb_root_path}viewtopic.$phpEx", "p={$post_id}#p{$post_id}")
+				: append_sid("{$phpbb_root_path}mcp.$phpEx", "i=notes&amp;mode=user_notes&amp;u=$user_id");
+			meta_refresh(2, $redirect);
+			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
+		}
+
+		// OK, they didn't submit a warning so lets build the page for them to do so
+		$message = false;
+		if ($post_row)
+		{
+			// We want to make the message available here as a reminder
+			// Parse the message and subject
+			$message = censor_text($post_row['post_text']);
+
+			// Second parse bbcode here
+			if ($post_row['bbcode_bitfield'])
+			{
+				include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+
+				$bbcode = new bbcode($post_row['bbcode_bitfield']);
+				$bbcode->bbcode_second_pass($message, $post_row['bbcode_uid'], $post_row['bbcode_bitfield']);
+			}
+
+			$message = bbcode_nl2br($message);
+			$message = smiley_text($message);
+		}
+
+		// Generate the appropriate user information for the user we are looking at
+		if (!function_exists('get_user_avatar'))
+		{
+			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+		}
+
+		$rank_title = $rank_img = '';
+		$avatar_img = get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']);
+
+		$template->assign_vars(array(
+			'U_POST_ACTION'		=> $this->u_action,
+
+			'POST'				=> $message,
+			'RANK_TITLE'		=> $rank_title,
+			'JOINED'			=> $user->format_date($user_row['user_regdate']),
+			'POSTS'				=> ($user_row['user_posts']) ? $user_row['user_posts'] : 0,
+			'WARNINGS'			=> ($user_row['user_warnings']) ? $user_row['user_warnings'] : 0,
+
+			'USERNAME_FULL'		=> get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME_COLOUR'	=> get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME'			=> get_username_string('username', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'U_PROFILE'			=> get_username_string('profile', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+
+			'AVATAR_IMG'		=> $avatar_img,
+			'RANK_IMG'			=> $rank_img,
+
+			'WARNING_DEFAULT'	=> $config['warning_post_default'],
+			'WARNING_DAYS'		=> (isset($warning_row['warning_days']) ? $warning_row['warning_days'] : $config['warnings_expire_days']),
+			'WARNING_TYPE'		=> (isset($warning_row['warning_type'])) ? $warning_row['warning_type'] : 'warning',
+			'WARNING_ID'		=> (isset($warning_row['warning_id'])) ? $warning_row['warning_id'] : '',
+			'WARNING'			=> (isset($warning_row['warning_text'])) ? $warning_row['warning_text'] : '',
+
+			'S_CAN_NOTIFY'		=> false,
+		));
 	}
 }
 
 /**
 * Insert the warning into the database
 */
-function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
+function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warning_days = '', $warning_type = 'warning')
 {
 	global $phpEx, $phpbb_root_path, $config;
 	global $template, $db, $user, $auth;
+
+	if (!is_numeric($warning_days))
+	{
+		$warning_days = $config['warnings_expire_days'];
+	}
+
+	if (!in_array($warning_type, array('remark', 'warning', 'ban')))
+	{
+		$warning_type = 'warning';
+	}
+
+	$warning_active = ($warning_type == 'remark') ? 0 : 1;
 
 	if ($send_pm)
 	{
@@ -458,7 +600,7 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
 
 		$message_parser = new parse_message();
 
-		$message_parser->message = sprintf($lang['WARNING_PM_BODY'], $warning);
+		$message_parser->message = sprintf($lang[strtoupper($warning_type).'_PM_BODY'], $warning);
 		$message_parser->parse(true, true, true, false, false, true, true);
 
 		$pm_data = array(
@@ -476,26 +618,34 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
 			'address_list'			=> array('u' => array($user_row['user_id'] => 'to')),
 		);
 
-		submit_pm('post', $lang['WARNING_PM_SUBJECT'], $pm_data, false);
+		submit_pm('post', $lang[strtoupper($warning_type).'_PM_SUBJECT'], $pm_data, false);
 	}
 
 	add_log('admin', 'LOG_USER_WARNING', $user_row['username']);
 	$log_id = add_log('user', $user_row['user_id'], 'LOG_USER_WARNING_BODY', $warning);
 
 	$sql_ary = array(
+		'issuer_id'		=> $user->data['user_id'],
 		'user_id'		=> $user_row['user_id'],
 		'post_id'		=> $post_id,
 		'log_id'		=> $log_id,
+		'warning_active'=> $warning_active,
 		'warning_time'	=> time(),
+		'warning_days'	=> $warning_days,
+		'warning_type'	=> $warning_type,
+		'warning_text'	=> $warning,
 	);
 
 	$db->sql_query('INSERT INTO ' . WARNINGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 
-	$sql = 'UPDATE ' . USERS_TABLE . '
-		SET user_warnings = user_warnings + 1,
-			user_last_warning = ' . time() . '
-		WHERE user_id = ' . $user_row['user_id'];
-	$db->sql_query($sql);
+	if ($warning_active)
+	{
+		$sql = 'UPDATE ' . USERS_TABLE . '
+			SET user_warnings = user_warnings + 1,
+				user_last_warning = ' . time() . '
+			WHERE user_id = ' . $user_row['user_id'];
+		$db->sql_query($sql);
+	}
 
 	// We add this to the mod log too for moderators to see that a specific user got warned.
 	$sql = 'SELECT forum_id, topic_id
@@ -508,4 +658,71 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
 	add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_USER_WARNING', $user_row['username']);
 }
 
+/**
+* Insert the edited warning into the database
+*/
+function edit_warning($warning_row, $warning, $warning_days, $warning_type)
+{
+	global $db, $cache, $config;
+	if(empty($warning_row))	return false;
+
+	if (!is_numeric($warning_days))
+	{
+		$warning_days = $config['warnings_expire_days'];
+	}
+
+	if (!in_array($warning_type, array('remark', 'warning', 'ban')))
+	{
+		$warning_type = 'warning';
+	}
+
+	$warning_end = ($warning_days) ? ($warning_row['warning_time'] + $warning_days * 86400) : 0;
+	$warning_active = ($warning_type == 'remark' || ($warning_days && $warning_end < time())) ? 0 : 1;
+
+	$sql_warn_ary = array(
+		'warning_days'	=> $warning_days,
+		'warning_type'	=> $warning_type,
+		'warning_text'	=> $warning,
+		'warning_active'=> $warning_active,
+	);
+
+	// Update warning information - submit new warning
+	$sql = 'UPDATE ' . WARNINGS_TABLE . ' 
+		SET ' . $db->sql_build_array('UPDATE', $sql_warn_ary) . ' 
+		WHERE warning_id = ' . $warning_row['warning_id'];
+	$db->sql_query($sql);
+
+	recalc_user_warnings($warning_row['user_id']);
+
+	$cache->destroy('sql', WARNINGS_TABLE);
+	return true;
+}
+
+function delete_warning($warning_row)
+{
+	global $db, $cache;
+	if(empty($warning_row))	return false;
+
+	$sql = 'DELETE FROM ' . WARNINGS_TABLE . '
+		WHERE warning_id = ' . $warning_row['warning_id'];
+	$db->sql_query($sql);
+
+	recalc_user_warnings($warning_row['user_id']);
+	
+	return true;
+}
+
+function recalc_user_warnings($user_id)
+{
+	global $db, $cache;
+	$sql = "UPDATE " . USERS_TABLE . " u 
+		SET	user_last_warning = " . time() . ",
+			user_warnings = (
+				SELECT COUNT(*) 
+				FROM " . WARNINGS_TABLE . " w 
+				WHERE w.user_id = {$user_id} AND w.warning_active = 1 
+			)
+		WHERE user_id = {$user_id}";
+	$db->sql_query($sql);
+}
 ?>

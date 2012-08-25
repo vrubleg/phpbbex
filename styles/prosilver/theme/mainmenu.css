@@ -1,0 +1,140 @@
+#main-menu, #main-menu ul 
+{
+	padding: 0; 
+	margin: 0; 
+	list-style: none; 
+	font: 11px Arial, Verdana, Helvetica, sans-serif;
+	position: relative; 
+	z-index: 200;
+}
+
+#main-menu li { float:left; }
+#main-menu li li { float:none; }
+/* a hack for IE5.x and IE6 */
+* html #main-menu li li {float:left;}
+
+#main-menu li a 
+{
+	display: block; 
+	float: left;
+	white-space: nowrap;
+}
+
+#main-menu li li a { float:none; }
+
+#main-menu li:hover {position:relative; z-index:300;}
+#main-menu li:hover ul {left:0; top:24px;}
+
+#main-menu ul {position:absolute; left:-9999px; top:-9999px;}
+/* yet another hack for IE5.x and IE6 */
+* html #main-menu ul {width:1px;}
+
+/* show next level */
+#main-menu li:hover li:hover > ul
+{left:0px; margin-left:100%; top:-1px;}
+#main-menu li:hover li:hover ul,#main-menu li:hover li:hover li:hover ul,#main-menu li:hover li:hover li:hover li:hover ul,#main-menu li:hover li:hover li:hover li:hover li:hover ul
+{left:0px; margin-left:100%; top:-1px;}
+
+/* keep further levels hidden */
+#main-menu li:hover > ul ul
+{position:absolute; left:-9999px; top:-9999px; /*width:auto;*/}
+#main-menu li:hover ul ul,#main-menu li:hover li:hover ul ul,#main-menu li:hover li:hover li:hover ul ul,#main-menu li:hover li:hover li:hover li:hover ul ul
+{position:absolute; left:-9999px; top:-9999px; /*width:auto;*/}
+
+/* главное меню */
+#main-menu
+{
+	height:25px;
+	border: 1px solid #ccc;
+	background-color: #f0f0f0;
+	font-weight: bold;
+}
+#main-menu li
+{
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #d8d8d8;
+}
+#main-menu li li { border: 0; }
+
+
+/* главные ссылки */
+#main-menu li a
+{
+	margin: 1px 1px 1px 0;
+	border: 1px solid transparent;
+	padding: 0px 10px 0 11px; 
+	height: 21px;
+	line-height: 22px;
+}
+
+/* вложенные ссылки */
+#main-menu li li a 
+{
+	margin: 1px;
+	height: 18px; 
+	line-height: 18px; 
+	/*для иконок*/
+	padding: 0 10px 0 25px;
+}
+
+/* вложенные менюшки */
+#main-menu ul
+{
+	border: 1px solid #ccc; 
+	background: #f6f6f6 url("{T_THEME_PATH}/images/menu_bkg.gif") repeat-y left;
+}
+
+/* пункты меню */
+#main-menu li a, #main-menu li:hover li a,#main-menu li:hover li:hover li a,#main-menu li:hover li:hover li:hover li a,#main-menu li:hover li:hover li:hover li:hover li a,#main-menu li:hover li:hover li:hover li:hover li:hover li a
+{
+	background: none;
+	border-color: transparent;
+	_border-color: #f0f0f0; /*для тупого IE6 который не знает про transparent*/
+	text-decoration:none;
+	color:#000;
+}
+
+/* выделенные пункты меню */
+#main-menu li:hover > a
+{
+	border-color: #4282b5;
+	background-color: #f7f7ff;
+	text-decoration:none;
+	color: #000;
+}
+#main-menu li:hover a, #main-menu li:hover li:hover a,#main-menu li:hover li:hover li:hover a,#main-menu li:hover li:hover li:hover li:hover a,#main-menu li:hover li:hover li:hover li:hover li:hover a,#main-menu li:hover li:hover li:hover li:hover li:hover li:hover a
+{
+	border-color: #4282b5;
+	background-color: #f7f7ff;
+	text-decoration:none;
+	color: #000;
+}
+
+#main-menu li:hover li a, #main-menu li:hover li:hover li a, #main-menu li:hover li:hover li:hover li a, #main-menu li:hover li:hover li:hover li:hover li a, #main-menu li:hover li:hover li:hover li:hover li:hover li a
+{
+	background-image: url("{T_THEME_PATH}/images/menu_icons.png"); 
+	background-repeat: no-repeat;
+}
+
+/* разделитель */
+#main-menu ul li.separator 
+{ 
+	height: 1px;
+	background: #dde1e6;
+	line-height: 1px;
+	font-size: 1px;
+}
+
+#main-menu ul li span.arrow
+{
+	float: right;
+	width: 4px;
+	height: 18px;
+	background: transparent url("{T_THEME_PATH}/images/menu_arrow.gif") no-repeat right 50%;
+}
+
+/* фиксирует ширину выпадашек 1 уровня потому что автоматом в IE не определяется нужная ширина */
+#main-menu li ul
+{
+	width: 155px;
+}

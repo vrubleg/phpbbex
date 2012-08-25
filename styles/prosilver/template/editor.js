@@ -4,7 +4,6 @@
 */
 
 // Startup variables
-var imageTag = false;
 var theSelection = false;
 
 var bbcodeEnabled = true;
@@ -16,14 +15,6 @@ var clientVer = parseInt(navigator.appVersion); // Get browser version
 var is_ie = ((clientPC.indexOf('msie') != -1) && (clientPC.indexOf('opera') == -1));
 var is_win = ((clientPC.indexOf('win') != -1) || (clientPC.indexOf('16bit') != -1));
 var baseHeight;
-
-/**
-* Shows the help messages in the helpline window
-*/
-function helpline(help)
-{
-	document.forms[form_name].helpbox.value = help_line[help];
-}
 
 /**
 * Fix a bug involving the TextRange object. From
@@ -142,6 +133,13 @@ function insert_text(text, spaces, popup)
 	if (!popup) 
 	{
 		textarea = document.forms[form_name].elements[text_name];
+		var textarea_pos = parseInt(jQuery(textarea).position().top);
+		var visible_from = jQuery(document).scrollTop();
+		var visible_to = visible_from + jQuery(window).height();
+		if (textarea_pos < visible_from || textarea_pos > (visible_to - 20))
+		{
+			jQuery(document).scrollTop(textarea_pos);
+		}
 	} 
 	else 
 	{
@@ -257,6 +255,7 @@ function addquote(post_id, username, l_wrote)
 		}
 	}
 
+	theSelection = jQuery.trim(theSelection);
 	if (theSelection)
 	{
 		if (bbcodeEnabled)

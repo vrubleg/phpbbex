@@ -1,34 +1,44 @@
 <!-- INCLUDE overall_header.html -->
-<!-- IF U_MCP --><p>[&nbsp;<a href="{U_MCP}">{L_MCP}</a>&nbsp;]</p><!-- ENDIF -->
 <h2><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h2>
-
-<!-- IF FORUM_DESC or MODERATORS or U_MCP -->
-<div>
-	<!-- NOTE: remove the style="display: none" when you want to have the forum description on the forum body -->
-	<!-- IF FORUM_DESC --><div style="display: none !important;">{FORUM_DESC}<br /></div><!-- ENDIF -->
-	<!-- IF MODERATORS --><p><strong><!-- IF S_SINGLE_MODERATOR -->{L_MODERATOR}<!-- ELSE -->{L_MODERATORS}<!-- ENDIF -->:</strong> {MODERATORS}</p><!-- ENDIF -->
-</div>
+<!-- IF not S_IS_BOT -->
+<ul class="header-icons">
+	<!-- IF STYLE_SHOW_SOCIAL_BUTTONS -->
+	<script type="text/javascript">
+	var url = encodeURIComponent(document.location.href);
+	var title = encodeURIComponent($('title').text());
+	document.write('<li><a target="_blank" href="http://vk.com/share.php?url='+url+'&title='+title+'" title="{L_SOCIAL_SHARE_IN} vk.com" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vk.com</a></li>');
+	document.write('<li><a target="_blank" href="https://plusone.google.com/_/+1/confirm?url='+url+'" title="{L_SOCIAL_SHARE_IN} Google Plus" class="icon-google-plus">{L_SOCIAL_SHARE_IN} Google Plus</a></li>');
+	document.write('<li><a target="_blank" href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
+	document.write('<li><a target="_blank" href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
+	</script>
+	<!-- ENDIF -->
+	<!-- IF STYLE_SHOW_SOCIAL_BUTTONS and S_WATCH_FORUM_LINK -->
+	<li class="icons-divider"></li>
+	<!-- ENDIF -->
+	<!-- IF S_WATCH_FORUM_LINK -->
+	<li><a href="{S_WATCH_FORUM_LINK}" title="{S_WATCH_FORUM_TITLE}" <!-- IF S_WATCHING_FORUM -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{S_WATCH_FORUM_TITLE}</a></li>
+	<!-- ENDIF -->
+</ul>
 <!-- ENDIF -->
+<p class="header-path"><a href="{U_INDEX}" accesskey="h">{L_INDEX}</a> <!-- BEGIN navlinks --> <strong>&#8250;</strong> <a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --></p>
 
-<!-- IF S_FORUM_RULES -->
-	<div class="rules">
-		<div class="inner"><span class="corners-top"><span></span></span>
-
-		<!-- IF U_FORUM_RULES -->
-			<a href="{U_FORUM_RULES}">{L_FORUM_RULES}</a>
-		<!-- ELSE -->
-			<strong>{L_FORUM_RULES}</strong><br />
-			{FORUM_RULES}
-		<!-- ENDIF -->
-
-		<span class="corners-bottom"><span></span></span></div>
-	</div>
+<!-- IF FORUM_DESC or MODERATORS or S_FORUM_RULES -->
+<p>
+	<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br /><!-- ENDIF -->
+	<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br /><!-- ENDIF -->
+	<!-- IF MODERATORS --><strong><!-- IF S_SINGLE_MODERATOR -->{L_MODERATOR}<!-- ELSE -->{L_MODERATORS}<!-- ENDIF -->:</strong> {MODERATORS}<br /><!-- ENDIF -->
+</p>
 <!-- ENDIF -->
 
 <!-- IF S_HAS_SUBFORUM -->
-<!-- IF not S_IS_BOT and U_MARK_FORUMS -->
+<!-- IF S_DISPLAY_SEARCH or (not S_IS_BOT and U_MARK_FORUMS) -->
 <ul class="linklist">
+	<!-- IF S_DISPLAY_SEARCH -->
+	<li><a href="{U_SEARCH_ACTIVE_TOPICS_IN}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- IF S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_UNREAD_IN}">{L_SEARCH_UNREAD}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --><!-- IF not S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_NEW_IN}">{L_SEARCH_NEW}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_SELF_TOPICS_IN}">{L_SEARCH_SELF_TOPICS}</a> &bull; <a href="{U_SEARCH_SELF_IN}">{L_SEARCH_SELF}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_UNANSWERED_IN}">{L_SEARCH_UNANSWERED}</a> &bull; <a href="{U_SEARCH_IN}">{L_SEARCHING_FORUMS}</a></li>
+	<!-- ENDIF -->
+	<!-- IF not S_IS_BOT and U_MARK_FORUMS -->
 	<li class="rightside"><a href="{U_MARK_FORUMS}">{L_MARK_SUBFORUMS_READ}</a></li>
+	<!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
 	<!-- INCLUDE forumlist_body.html -->
@@ -93,7 +103,7 @@
 				<dl>
 					<dt><label for="password">{L_PASSWORD}:</label></dt>
 					<dd><input type="password" tabindex="2" id="password" name="password" size="25" class="inputbox autowidth" /></dd>
-					<!-- IF S_AUTOLOGIN_ENABLED --><dd><label for="autologin"><input type="checkbox" name="autologin" id="autologin" tabindex="3" /> {L_LOG_ME_IN}</label></dd><!-- ENDIF -->
+					<!-- IF S_AUTOLOGIN_ENABLED --><dd><label for="autologin"><input type="checkbox" name="autologin" id="autologin" checked="checked" tabindex="3" /> {L_LOG_ME_IN}</label></dd><!-- ENDIF -->
 					<dd><label for="viewonline"><input type="checkbox" name="viewonline" id="viewonline" tabindex="4" /> {L_HIDE_ME}</label></dd>
 				</dl>
 				<dl>
@@ -127,7 +137,7 @@
 		<ul class="topiclist">
 			<li class="header">
 				<dl class="icon">
-					<dt><!-- IF S_DISPLAY_ACTIVE -->{L_ACTIVE_TOPICS}<!-- ELSEIF topicrow.S_TOPIC_TYPE_SWITCH and (topicrow.S_POST_ANNOUNCE or topicrow.S_POST_GLOBAL) -->{L_ANNOUNCEMENTS}<!-- ELSE -->{L_TOPICS}<!-- ENDIF --></dt>
+					<dt><!-- IF topicrow.S_TOPIC_TYPE_SWITCH and (topicrow.S_POST_ANNOUNCE or topicrow.S_POST_GLOBAL) -->{L_ANNOUNCEMENTS}<!-- ELSE --><!-- IF S_DISPLAY_ACTIVE -->{L_ACTIVE_TOPICS}<!-- ELSE -->{L_TOPICS}<!-- ENDIF --><!-- ENDIF --></dt>
 					<dd class="posts">{L_REPLIES}</dd>
 					<dd class="views">{L_VIEWS}</dd>
 					<dd class="lastpost"><span>{L_LAST_POST}</span></dd>
@@ -202,6 +212,10 @@
 		</div>
 		<!-- ENDIF -->
 	</div>
+<!-- ENDIF -->
+
+<!-- IF S_QUICK_REPLY -->
+	<!-- INCLUDE quickreply_editor.html -->
 <!-- ENDIF -->
 
 <!-- INCLUDE jumpbox.html -->

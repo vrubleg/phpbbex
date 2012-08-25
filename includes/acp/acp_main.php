@@ -85,6 +85,10 @@ class acp_main
 						$confirm = true;
 						$confirm_lang = 'RESYNC_POSTCOUNTS_CONFIRM';
 					break;
+					case 'topics':
+						$confirm = true;
+						$confirm_lang = 'RESYNC_TOPICCOUNTS_CONFIRM';
+					break;
 					case 'date':
 						$confirm = true;
 						$confirm_lang = 'RESET_DATE_CONFIRM';
@@ -242,6 +246,29 @@ class acp_main
 						}
 
 						add_log('admin', 'LOG_RESYNC_POSTCOUNTS');
+
+					break;
+
+					case 'topics':
+						if (!$auth->acl_get('a_board'))
+						{
+							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
+						}
+
+						$sql = 'SELECT COUNT(p.post_id) AS num_topics, u.user_id
+							FROM ' . USERS_TABLE . ' u
+							LEFT JOIN  ' . TOPICS_TABLE . ' t ON (u.user_id = t.topic_poster)
+							LEFT JOIN  ' . POSTS_TABLE . ' p ON (p.post_id = t.topic_first_post_id AND p.post_postcount = 1)
+							GROUP BY u.user_id';
+						$result = $db->sql_query($sql);
+
+						while ($row = $db->sql_fetchrow($result))
+						{
+							$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_topics = {$row['num_topics']} WHERE user_id = {$row['user_id']}");
+						}
+						$db->sql_freeresult($result);
+
+						add_log('admin', 'LOG_RESYNC_TOPICCOUNTS');
 
 					break;
 
@@ -413,10 +440,15 @@ class acp_main
 		}
 		else
 		{
-			$latest_version_info = explode("\n", $latest_version_info);
+			$info = explode("\n", $latest_version_info);
+			$latest_version = trim($info[0]);
+			$announcement_url = trim($info[1]);
+			$announcement_url = (strpos($announcement_url, '&amp;') === false) ? str_replace('&', '&amp;', $announcement_url) : $announcement_url;
 
 			$template->assign_vars(array(
-				'S_VERSION_UP_TO_DATE'	=> phpbb_version_compare(trim($latest_version_info[0]), $config['version'], '<='),
+				'S_VERSION_UP_TO_DATE'	=> phpbb_version_compare($latest_version, $config['phpbbex_version'], '<='),
+				'UPDATE_INSTRUCTIONS'	=> $user->lang('UPDATE_INSTRUCTIONS', $latest_version, $announcement_url),
+				'U_UPDATE_ANNOUNCEMENT'	=> $announcement_url,
 			));
 		}
 
@@ -512,12 +544,13 @@ class acp_main
 			'S_TOTAL_ORPHAN'	=> ($total_orphan === false) ? false : true,
 			'GZIP_COMPRESSION'	=> ($config['gzip_compress'] && @extension_loaded('zlib')) ? $user->lang['ON'] : $user->lang['OFF'],
 			'DATABASE_INFO'		=> $db->sql_server_info(),
-			'BOARD_VERSION'		=> $config['version'],
+			'PHPBB_VERSION'		=> $config['version'],
+			'PHPBBEX_VERSION'	=> $config['phpbbex_version'],
 
 			'U_ACTION'			=> $this->u_action,
 			'U_ADMIN_LOG'		=> append_sid("{$phpbb_admin_path}index.$phpEx", 'i=logs&amp;mode=admin'),
 			'U_INACTIVE_USERS'	=> append_sid("{$phpbb_admin_path}index.$phpEx", 'i=inactive&amp;mode=list'),
-			'U_VERSIONCHECK'	=> append_sid("{$phpbb_admin_path}index.$phpEx", 'i=update&amp;mode=version_check'),
+			'U_VERSIONCHECK'	=> append_sid("{$phpbb_admin_path}index.$phpEx", ''),
 			'U_VERSIONCHECK_FORCE'	=> append_sid("{$phpbb_admin_path}index.$phpEx", 'versioncheck_force=1'),
 
 			'S_ACTION_OPTIONS'	=> ($auth->acl_get('a_board')) ? true : false,

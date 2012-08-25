@@ -104,6 +104,9 @@ $lang = array_merge($lang, array(
 	'YES_SEARCH_EXPLAIN'					=> 'Enables user facing search functionality including member search.',
 	'YES_SEARCH_UPDATE'						=> 'Enable fulltext updating',
 	'YES_SEARCH_UPDATE_EXPLAIN'				=> 'Updating of fulltext indexes when posting, overridden if search is disabled.',
+
+	'DEFAULT_SEARCH_TITLEONLY'				=> 'Search only in topic titles by default',
+	'DEFAULT_SEARCH_TITLEONLY_EXPLAIN'		=> 'Affects the global search and the search for a specific forum.',
 ));
 
 ?>

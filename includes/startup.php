@@ -14,6 +14,14 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+// Check PHP version
+if(version_compare(PHP_VERSION, '5.2.2', '<')) die('PHP 5.2.3+ is required');
+
+// Configure autoloader
+require(dirname(__FILE__).'/../classes/autoloader.php');
+autoloader::init(dirname(__FILE__).'/../classes/');
+autoloader::add_path(dirname(__FILE__).'/../modules/', 'module');
+
 // Report all errors, except notices and deprecation messages
 if (!defined('E_DEPRECATED'))
 {
@@ -36,6 +44,13 @@ if (version_compare(PHP_VERSION, '5.4.0-dev', '>='))
 	$level &= ~E_STRICT;
 }
 error_reporting($level);
+
+// Display all errors in DEBUG mode
+if (defined('DEBUG'))
+{
+	error_reporting(E_ALL);
+	ini_set('display_errors', 'On');
+}
 
 /*
 * Remove variables created by register_globals from the global scope

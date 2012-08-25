@@ -1,6 +1,12 @@
 <!-- INCLUDE overall_header.html -->
 
 <h2>{L_UCP}</h2>
+<!-- IF U_PRINT_PM or U_EMAIL_PM -->
+<ul class="header-icons">
+	<!-- IF U_PRINT_PM --><li><a href="{U_PRINT_PM}" title="{L_PRINT_PM}" class="icon-print">{L_PRINT_PM}</a></li><!-- ENDIF -->
+	<!-- IF U_EMAIL_PM --><li><a href="{U_EMAIL_PM}" title="{L_EMAIL_PM}" class="icon-sendemail">{L_EMAIL_PM}</a></li><!-- ENDIF -->
+</ul>
+<!-- ENDIF -->
 
 <div id="tabs">
 	<ul>

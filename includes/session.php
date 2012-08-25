@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 * Session class
 * @package phpBB3
 */
-class session
+class phpbb_session
 {
 	var $cookie_data = array();
 	var $page = array();
@@ -451,6 +451,7 @@ class session
 						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS) ? true : false;
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
+						$this->update_browser_id();
 						return true;
 					}
 				}
@@ -474,6 +475,42 @@ class session
 
 		// If we reach here then no (valid) session exists. So we'll create a new one
 		return $this->session_create();
+	}
+
+	function update_browser_id()
+	{
+		global $db, $config;
+		
+		$user_id = $this->data['user_id'];
+		$agent = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 149));
+		$browser_id = request_var($config['cookie_name'] . '_bid', '', false, true);
+
+		if (empty($browser_id))
+		{
+			// Set new browser_id cookie
+			$browser_id = md5(unique_id('bid', true));
+			$cookie_expire = $this->time_now + 86400*365; // One year
+			$this->set_cookie('bid', $browser_id, $cookie_expire);
+		}
+
+		// Update stats
+		$sql = "INSERT INTO " . USER_BROWSER_IDS_TABLE . "
+			SET browser_id='" . $db->sql_escape($browser_id) . "', user_id='" . $db->sql_escape($user_id) . "',
+				created=UNIX_TIMESTAMP(), last_visit=UNIX_TIMESTAMP(), visits=1,
+				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'
+			ON DUPLICATE KEY UPDATE last_visit=UNIX_TIMESTAMP(), visits=visits+1,
+				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'";
+		$db->sql_query($sql);
+
+		// Garbage collection
+		if(rand(0, 1000) == 1)
+		{
+			$sql = "DELETE FROM " . USER_BROWSER_IDS_TABLE . "
+				WHERE  (visits = 1 AND user_id = " . ANONYMOUS . " AND last_visit+3600*12 < UNIX_TIMESTAMP())
+					OR (visits > 1 AND user_id = " . ANONYMOUS . " AND last_visit+86400*7 < UNIX_TIMESTAMP())
+					OR (last_visit+86400*365 < UNIX_TIMESTAMP())";
+			$db->sql_query($sql);
+		}
 	}
 
 	/**
@@ -802,6 +839,13 @@ class session
 		$db->sql_query($sql);
 
 		$db->sql_return_on_error(false);
+
+		// Save Useragent
+		$sql = 'UPDATE ' . USERS_TABLE . "
+			SET user_browser = '" . $db->sql_escape($sql_ary['session_browser']) . "',
+				user_ip = '" . $db->sql_escape($sql_ary['session_ip']) . "'
+			WHERE user_id = " . (int) $this->data['user_id'];
+		$db->sql_query($sql);
 
 		// Regenerate autologin/persistent login key
 		if ($session_autologin)
@@ -1497,7 +1541,7 @@ class session
 *
 * @package phpBB3
 */
-class user extends session
+class phpbb_user extends phpbb_session
 {
 	var $lang = array();
 	var $help = array();
@@ -1513,12 +1557,12 @@ class user extends session
 	var $img_array = array();
 
 	// Able to add new options (up to id 31)
-	var $keyoptions = array('viewimg' => 0, 'viewflash' => 1, 'viewsmilies' => 2, 'viewsigs' => 3, 'viewavatars' => 4, 'viewcensors' => 5, 'attachsig' => 6, 'bbcode' => 8, 'smilies' => 9, 'popuppm' => 10, 'sig_bbcode' => 15, 'sig_smilies' => 16, 'sig_links' => 17);
+	var $keyoptions = array('viewimg' => 0, 'viewflash' => 1, 'viewsmilies' => 2, 'viewsigs' => 3, 'viewavatars' => 4, 'viewcensors' => 5, 'attachsig' => 6, 'bbcode' => 8, 'smilies' => 9, 'popuppm' => 10, 'viewquickreply' => 11, 'viewquickpost' => 12, 'viewtopicreview' => 13, 'sig_bbcode' => 15, 'sig_smilies' => 16, 'sig_links' => 17);
 
 	/**
 	* Constructor to set the lang path
 	*/
-	function user()
+	function __construct()
 	{
 		global $phpbb_root_path;
 
@@ -1550,11 +1594,10 @@ class user extends session
 
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
-			$this->lang_name = (file_exists($this->lang_path . $this->data['user_lang'] . "/common.$phpEx")) ? $this->data['user_lang'] : basename($config['default_lang']);
-
-			$this->date_format = $this->data['user_dateformat'];
-			$this->timezone = $this->data['user_timezone'] * 3600;
-			$this->dst = $this->data['user_dst'] * 3600;
+			$this->lang_name = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang'] . "/common.$phpEx")) ? $this->data['user_lang'] : basename($config['default_lang']);
+			$this->date_format = ($config['override_user_dateformat']) ? $config['default_dateformat'] : $this->data['user_dateformat'];
+			$this->timezone = ($config['override_user_timezone'] ? $config['board_timezone'] : $this->data['user_timezone']) * 3600;
+			$this->dst = ($config['override_user_dst'] ? $config['board_dst'] :$this->data['user_dst']) * 3600;
 		}
 		else
 		{
@@ -1565,39 +1608,57 @@ class user extends session
 
 			/**
 			* If a guest user is surfing, we try to guess his/her language first by obtaining the browser language
-			* If re-enabled we need to make sure only those languages installed are checked
-			* Commented out so we do not loose the code.
-
-			if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+			**/
+			if (!empty($config['auto_guest_lang']) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
 			{
-				$accept_lang_ary = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+				$sql = 'SELECT * FROM ' . LANG_TABLE;
+				$result = $db->sql_query($sql, 3600);
 
+				$lang_allowed = array();
+				while ($row = $db->sql_fetchrow($result))
+				{
+					if (file_exists($phpbb_root_path . 'language/' . $row['lang_dir'] . "/common.$phpEx"))
+					{
+						$lang_allowed[$row['lang_iso']] = substr($row['lang_iso'], 0, 2);
+					}
+				}
+
+				$accept_lang_ary = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 				foreach ($accept_lang_ary as $accept_lang)
 				{
-					// Set correct format ... guess full xx_YY form
-					$accept_lang = substr($accept_lang, 0, 2) . '_' . strtoupper(substr($accept_lang, 3, 2));
-					$accept_lang = basename($accept_lang);
+					$accept_lang = explode(';', $accept_lang);
+					$accept_lang = strtolower(trim($accept_lang[0]));
+					if (strlen($accept_lang) < 2) continue;
 
-					if (file_exists($this->lang_path . $accept_lang . "/common.$phpEx"))
+					// Guess full xx_yy form
+					if (strlen($accept_lang) >= 5)
 					{
-						$this->lang_name = $config['default_lang'] = $accept_lang;
-						break;
-					}
-					else
-					{
-						// No match on xx_YY so try xx
-						$accept_lang = substr($accept_lang, 0, 2);
-						$accept_lang = basename($accept_lang);
-
-						if (file_exists($this->lang_path . $accept_lang . "/common.$phpEx"))
+						$accept_lang = substr($accept_lang, 0, 2) . '_' . substr($accept_lang, 3, 2);
+						if (isset($lang_allowed[$accept_lang]))
 						{
 							$this->lang_name = $config['default_lang'] = $accept_lang;
 							break;
 						}
 					}
+
+					// No match on xx_yy so try xx
+					$accept_lang = substr($accept_lang, 0, 2);
+					if (isset($lang_allowed[$accept_lang]))
+					{
+						$this->lang_name = $config['default_lang'] = $accept_lang;
+						break;
+					}
+
+					// No match on xx so try xx_yy with another yy
+					$accept_lang = array_search($accept_lang, $lang_allowed);
+					if ($accept_lang !== false)
+					{
+						$this->lang_name = $config['default_lang'] = $accept_lang;
+						break;
+					}
 				}
+				$this->data['user_lang'] = $this->lang_name;
 			}
-			*/
 		}
 
 		// We include common language file here to not load it every time a custom language file is included
@@ -1827,6 +1888,20 @@ class user extends session
 		// Call phpbb_user_session_handler() in case external application want to "bend" some variables or replace classes...
 		// After calling it we continue script execution...
 		phpbb_user_session_handler();
+
+		if($this->data['is_registered'] && !defined('ADMIN_START'))
+		{
+			$config['topics_per_page_default'] = $config['topics_per_page'];
+			if ($this->data['user_topics_per_page'] > 0)
+			{
+				$config['topics_per_page'] = $this->data['user_topics_per_page'];
+			}
+			$config['posts_per_page_default'] = $config['posts_per_page'];
+			if ($this->data['user_posts_per_page'] > 0)
+			{
+				$config['posts_per_page'] = $this->data['user_posts_per_page'];
+			}
+		}
 
 		// If this function got called from the error handler we are finished here.
 		if (defined('IN_ERROR_HANDLER'))
@@ -2140,14 +2215,24 @@ class user extends session
 	*
 	* @return mixed translated date
 	*/
-	function format_date($gmepoch, $format = false, $forcedate = false)
+	function format_date($gmepoch, $format = false, $forcedate = false, $notime = false)
 	{
 		static $midnight;
-		static $date_cache;
+		static $format_cache = array();
+		static $date_cache = array();
 
 		$format = (!$format) ? $this->date_format : $format;
 		$now = time();
 		$delta = $now - $gmepoch;
+
+		if (!isset($format_cache[$format]))
+		{
+			$format_cache[$format] = array(
+				'full'		=> str_replace(array('{', '}'), '', $format),
+				'notime'	=> str_replace(array('{', '}'), '', preg_replace('#{.*?}#i', '', $format)),
+			);
+		}
+		$format = $format_cache[$format][$notime?'notime':'full'];
 
 		if (!isset($date_cache[$format]))
 		{

@@ -1,0 +1,148 @@
+/* Top menu (C)VEG
+--------------------------------------------- */
+
+#top-menu #top-links {
+	float: left;
+	margin: 5px 5px 3px 5px;
+}
+
+#top-menu #top-links ul
+{
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	overflow: auto;
+}
+
+#top-menu #top-links ul li 
+{
+	background-color: #fff;
+	border-right: 1px solid #828282;
+	font-size: 1.1em;
+	float: left;
+}
+
+#top-menu #top-links ul li a 
+{
+	margin: 0px 10px 2px 10px;
+	display: block;
+	text-decoration: none;
+}
+
+/* Search box
+--------------------------------------------- */
+#search-box {
+	color: #FFFFFF;
+	position: relative;
+	margin: 2px 10px 2px 0px;
+	display: block;
+	float: right;
+	text-align: right;
+	white-space: nowrap; /* For Opera */
+}
+
+#search-box #keywords {
+	width: 95px;
+	background-color: #FFF;
+}
+
+#search-box input {
+	border: 1px solid #b0b0b0;
+}
+
+/* .button1 style defined later, just a few tweaks for the search button version */
+#search-box input.button1 {
+	padding: 1px 5px;
+}
+
+#search-box li {
+	text-align: right;
+	margin-top: 4px;
+}
+
+#search-box img {
+	vertical-align: middle;
+	margin-right: 3px;
+}
+
+/*
+   Сама шапка
+*/
+#page-header 
+{
+	clear: both;
+}
+
+/******************************************************************************
+ * Управляющий блок справа от заголовка страницы
+ ******************************************************************************/
+ul.header-icons
+{
+	margin: 0;
+	margin-top: -30px;
+	height: 30px;
+	list-style: none;
+	margin: -30px 0 0 0;
+}
+ul.header-icons li
+{
+	margin: 0 3px;
+	float: right;
+}
+
+a.icon-print, a.icon-sendemail, a.icon-bookmark, a.icon-unbookmark, a.icon-bump, a.icon-subscribe, a.icon-unsubscribe, a.icon-lock, a.icon-unlock
+{
+	display: block;
+	overflow: hidden;
+	width: 26px;
+	height: 26px;
+	text-indent: -5000px;
+	text-align: left;
+	background-repeat: no-repeat;
+	background-image: url("{T_THEME_PATH}/images/header_icons.png");
+}
+
+a.icon-sendemail { background-position: 0 -26px; }
+a.icon-print { background-position: 0 -52px; }
+a.icon-bookmark { background-position: 0 -78px; }
+a.icon-unbookmark { background-position: 0 -104px; }
+a.icon-subscribe { background-position: 0 -130px; }
+a.icon-unsubscribe { background-position: 0 -156px; }
+a.icon-bump { background-position: 0 -182px; }
+a.icon-lock { background-position: 0 -208px; }
+a.icon-unlock { background-position: 0 -234px; }
+
+a.icon-vkontakte, a.icon-facebook, a.icon-twitter, a.icon-google-plus
+{
+	display: block;
+	overflow: hidden;
+	width: 26px;
+	height: 26px;
+	text-indent: -5000px;
+	text-align: left;
+	background-repeat: no-repeat;
+	background-image: url("{T_THEME_PATH}/images/social_icons.png");
+}
+
+a.icon-facebook { background-position: 0 -26px; }
+a.icon-vkontakte { background-position: 0 -52px; }
+a.icon-twitter { background-position: 0 -78px; }
+a.icon-google-plus { background-position: 0 -104px; }
+
+.header-icons .icons-divider
+{
+	background: #cccccc;
+	width: 1px;
+	height: 26px;
+	display: block;
+	overflow: hidden;
+}
+
+p.header-path
+{
+	font-weight: bold;
+	border-top: 1px solid #CCCCCC;
+	padding-top: 5px;
+	margin-top: 0;
+	margin-bottom: 1.3em;
+}

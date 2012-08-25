@@ -80,6 +80,12 @@ if (isset($_GET['e']) && !$user->data['is_registered'])
 	login_box('', $user->lang['LOGIN_NOTIFY_FORUM']);
 }
 
+// Recalc start position, should be after $user->setup()
+if ($start)
+{
+	$start = floor($start / $config['topics_per_page']) * $config['topics_per_page'];
+}
+
 // Permissions check
 if (!$auth->acl_gets('f_list', 'f_read', $forum_id) || ($forum_data['forum_type'] == FORUM_LINK && $forum_data['forum_link'] && !$auth->acl_get('f_read', $forum_id)))
 {
@@ -131,18 +137,16 @@ $active_forum_ary = $moderators = array();
 if ($forum_data['left_id'] != $forum_data['right_id'] - 1)
 {
 	list($active_forum_ary, $moderators) = display_forums($forum_data, $config['load_moderators'], $config['load_moderators']);
+	if(!isset($moderators[$forum_id])) get_moderators($moderators, $forum_id);
 }
 else
 {
 	$template->assign_var('S_HAS_SUBFORUM', false);
-	if ($config['load_moderators'])
-	{
-		get_moderators($moderators, $forum_id);
-	}
+	get_moderators($moderators, $forum_id);
 }
 
 // Dump out the page header and load viewforum template
-page_header($user->lang['VIEW_FORUM'] . ' - ' . $forum_data['forum_name'], true, $forum_id);
+page_header($forum_data['forum_name'], true, $forum_id);
 
 $template->set_filenames(array(
 	'body' => 'viewforum_body.html')
@@ -151,6 +155,7 @@ $template->set_filenames(array(
 make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"), $forum_id);
 
 $template->assign_vars(array(
+	'U_CANONICAL' 			=> generate_board_url() . "/viewforum.$phpEx?f=$forum_id" . (($start) ? "&amp;start=$start" : ''),
 	'U_VIEW_FORUM'			=> append_sid("{$phpbb_root_path}viewforum.$phpEx", "f=$forum_id" . (($start == 0) ? '' : "&amp;start=$start")),
 ));
 
@@ -233,8 +238,8 @@ if ($sort_days)
 	$sql = 'SELECT COUNT(topic_id) AS num_topics
 		FROM ' . TOPICS_TABLE . "
 		WHERE forum_id = $forum_id
-			AND ((topic_type <> " . POST_GLOBAL . " AND topic_last_post_time >= $min_post_time)
-				OR topic_type = " . POST_ANNOUNCE . ")
+			AND (topic_last_post_time >= $min_post_time
+				OR topic_type = " . POST_ANNOUNCE . " OR topic_type = " . POST_GLOBAL . ")
 		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND topic_approved = 1');
 	$result = $db->sql_query($sql);
 	$topics_count = (int) $db->sql_fetchfield('num_topics');
@@ -267,10 +272,16 @@ $post_alt = ($forum_data['forum_status'] == ITEM_LOCKED) ? $user->lang['FORUM_LO
 // Display active topics?
 $s_display_active = ($forum_data['forum_type'] == FORUM_CAT && ($forum_data['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS)) ? true : false;
 
-$s_search_hidden_fields = array('fid' => array($forum_id));
+$s_search_hidden_fields = empty($config['default_search_titleonly']) ? array('fid' => array($forum_id)) : array('sf' => 'titleonly', 'sr' => 'topics', 'fid' => array($forum_id));
 if ($_SID)
 {
 	$s_search_hidden_fields['sid'] = $_SID;
+}
+
+// Quick post
+if ($config['allow_quick_post'])
+{
+	include($phpbb_root_path . 'includes/quick_reply.' . $phpEx);
 }
 
 if (!empty($_EXTRA_URL))
@@ -325,7 +336,7 @@ $template->assign_vars(array(
 	'S_IS_LOCKED'			=> ($forum_data['forum_status'] == ITEM_LOCKED) ? true : false,
 	'S_VIEWFORUM'			=> true,
 
-	'U_MCP'				=> ($auth->acl_get('m_', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", "f=$forum_id&amp;i=main&amp;mode=forum_view", true, $user->session_id) : '',
+	'U_MCP_FORUM'			=> ($auth->acl_get('m_', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", "f=$forum_id&amp;i=main&amp;mode=forum_view", true, $user->session_id) : '',
 	'U_POST_NEW_TOPIC'	=> ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid("{$phpbb_root_path}posting.$phpEx", 'mode=post&amp;f=' . $forum_id) : '',
 	'U_VIEW_FORUM'		=> append_sid("{$phpbb_root_path}viewforum.$phpEx", "f=$forum_id" . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($start == 0) ? '' : "&amp;start=$start")),
 	'U_MARK_TOPICS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}viewforum.$phpEx", 'hash=' . generate_link_hash('global') . "&amp;f=$forum_id&amp;mark=topics") : '',
@@ -368,15 +379,24 @@ if ($user->data['is_registered'])
 	}
 }
 
-if ($forum_data['forum_type'] == FORUM_POST)
+if ($forum_data['forum_type'] == FORUM_POST || $s_display_active)
 {
 	// Obtain announcements ... removed sort ordering, sort by time in all cases
+	$forum_ids = array($forum_id, 0);
+	if ($forum_data['forum_type'] == FORUM_CAT && sizeof($active_forum_ary))
+	{
+		$forum_ids = empty($active_forum_ary['exclude_forum_id'])
+			? $active_forum_ary['forum_id']
+			: array_diff($active_forum_ary['forum_id'], $active_forum_ary['exclude_forum_id']);
+		if (empty($forum_ids)) $forum_ids = array($forum_id, 0);
+	}
+
 	$sql = $db->sql_build_query('SELECT', array(
 		'SELECT'	=> $sql_array['SELECT'],
 		'FROM'		=> $sql_array['FROM'],
 		'LEFT_JOIN'	=> $sql_array['LEFT_JOIN'],
 
-		'WHERE'		=> 't.forum_id IN (' . $forum_id . ', 0)
+		'WHERE'		=> $db->sql_in_set('t.forum_id', $forum_ids) . '
 			AND t.topic_type IN (' . POST_ANNOUNCE . ', ' . POST_GLOBAL . ')',
 
 		'ORDER_BY'	=> 't.topic_time DESC',
@@ -397,10 +417,6 @@ if ($forum_data['forum_type'] == FORUM_POST)
 		if ($row['topic_type'] == POST_GLOBAL)
 		{
 			$global_announce_list[$row['topic_id']] = true;
-		}
-		else
-		{
-			$topics_count--;
 		}
 	}
 	$db->sql_freeresult($result);
