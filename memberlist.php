@@ -985,6 +985,27 @@ switch ($mode)
 		$sort_key_text['m'] = $user->lang['SORT_RANK'];
 		$sort_key_sql['m'] = 'u.user_rank';
 
+		if ($config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']))
+		{
+			$sort_key_text['r'] = $user->lang['USER_RATING'];
+			$sort_key_text['o'] = $user->lang['USER_RATED'];
+			if (!$config['rate_no_negative'] && !$config['rate_no_positive'])
+			{
+				$sort_key_sql['r'] = 'u.user_rating_positive-u.user_rating_negative';
+				$sort_key_sql['o'] = 'u.user_rated_positive-u.user_rated_negative';
+			}
+			else if (!$config['rate_no_positive'])
+			{
+				$sort_key_sql['r'] = 'u.user_rating_positive';
+				$sort_key_sql['o'] = 'u.user_rated_positive';
+			}
+			else if (!$config['rate_no_negative'])
+			{
+				$sort_key_sql['r'] = '-u.user_rating_negative';
+				$sort_key_sql['o'] = '-u.user_rated_negative';
+			}
+		}
+
 		$sort_dir_text = array('a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']);
 
 		$s_sort_key = '';
@@ -1626,6 +1647,8 @@ switch ($mode)
 			'U_SORT_USERNAME'		=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_FROM'			=> $sort_url . '&amp;sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_JOINED'			=> $sort_url . '&amp;sk=c&amp;sd=' . (($sort_key == 'c' && $sort_dir == 'd') ? 'a' : 'd'),
+			'U_SORT_RATING'			=> ($config['rate_enabled']) ? $sort_url . '&amp;sk=r&amp;sd=' . (($sort_key == 'r' && $sort_dir == 'd') ? 'a' : 'd') : '',
+			'U_SORT_RATED'			=> ($config['rate_enabled']) ? $sort_url . '&amp;sk=o&amp;sd=' . (($sort_key == 'o' && $sort_dir == 'd') ? 'a' : 'd') : '',
 			'U_SORT_POSTS'			=> $sort_url . '&amp;sk=d&amp;sd=' . (($sort_key == 'd' && $sort_dir == 'd') ? 'a' : 'd'),
 			'U_SORT_TOPICS'			=> $sort_url . '&amp;sk=t&amp;sd=' . (($sort_key == 't' && $sort_dir == 'd') ? 'a' : 'd'),
 			'U_SORT_WEBSITE'		=> $sort_url . '&amp;sk=f&amp;sd=' . (($sort_key == 'f' && $sort_dir == 'a') ? 'd' : 'a'),

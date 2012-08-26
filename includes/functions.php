@@ -4731,11 +4731,13 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'rate_no_positive',
 		'rate_no_negative',
 
+		// general
 		'style_show_sitename_in_headerbar',
 		'style_show_social_buttons',
 		'style_show_feeds_in_forumlist',
 		'style_auto_new_year',
 
+		// miniprofile
 		'style_mp_on_left',
 		'style_mp_show_topic_poster',
 		'style_mp_show_gender',
@@ -4752,14 +4754,20 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_mp_show_with_us',
 		'style_mp_show_buttons',
 
+		// profile
 		'style_p_show_rating',
 		'style_p_show_rating_detailed',
 		'style_p_show_rated',
 		'style_p_show_rated_detailed',
 
+		// memberlist
 		'style_ml_show_row_numbers',
 		'style_ml_show_gender',
 		'style_ml_show_rank',
+		'style_ml_show_rating',
+		'style_ml_show_rating_detailed',
+		'style_ml_show_rated',
+		'style_ml_show_rated_detailed',
 		'style_ml_show_posts',
 		'style_ml_show_topics',
 		'style_ml_show_from',
@@ -4767,6 +4775,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_ml_show_joined',
 		'style_ml_show_last_active',
 
+		// counters
 		'style_show_liveinternet_counter',
 		'style_google_analytics_id',
 	);
