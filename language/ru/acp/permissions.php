@@ -69,8 +69,8 @@ $lang = array_merge($lang, array(
 	'ACL_TYPE_GLOBAL_A_'	=> 'Права администратора',
 	'ACL_TYPE_GLOBAL_U_'	=> 'Права пользователя',
 	'ACL_TYPE_GLOBAL_M_'	=> 'Права супермодератора',
-	'ACL_TYPE_LOCAL_M_'		=> 'права модератора форума',
-	'ACL_TYPE_LOCAL_F_'		=> 'доступ к форумам',
+	'ACL_TYPE_LOCAL_M_'		=> 'Права модератора форума',
+	'ACL_TYPE_LOCAL_F_'		=> 'Доступ к форумам',
 
 	'ACL_NO'				=> 'Нет',
 	'ACL_VIEW'				=> 'Просмотр прав доступа',
