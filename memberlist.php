@@ -991,8 +991,8 @@ switch ($mode)
 			$sort_key_text['o'] = $user->lang['USER_RATED'];
 			if (!$config['rate_no_negative'] && !$config['rate_no_positive'])
 			{
-				$sort_key_sql['r'] = 'u.user_rating_positive-u.user_rating_negative';
-				$sort_key_sql['o'] = 'u.user_rated_positive-u.user_rated_negative';
+				$sort_key_sql['r'] = 'CAST(u.user_rating_positive AS SIGNED)-CAST(u.user_rating_negative AS SIGNED)';
+				$sort_key_sql['o'] = 'CAST(u.user_rated_positive AS SIGNED)-CAST(u.user_rated_negative AS SIGNED)';
 			}
 			else if (!$config['rate_no_positive'])
 			{
@@ -1001,8 +1001,8 @@ switch ($mode)
 			}
 			else if (!$config['rate_no_negative'])
 			{
-				$sort_key_sql['r'] = '-u.user_rating_negative';
-				$sort_key_sql['o'] = '-u.user_rated_negative';
+				$sort_key_sql['r'] = '-CAST(u.user_rating_negative AS SIGNED)';
+				$sort_key_sql['o'] = '-CAST(u.user_rated_negative AS SIGNED)';
 			}
 		}
 
@@ -1654,7 +1654,7 @@ switch ($mode)
 			'U_SORT_WEBSITE'		=> $sort_url . '&amp;sk=f&amp;sd=' . (($sort_key == 'f' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_LOCATION'		=> $sort_url . '&amp;sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_ACTIVE'			=> ($auth->acl_get('u_viewonline')) ? $sort_url . '&amp;sk=l&amp;sd=' . (($sort_key == 'l' && $sort_dir == 'd') ? 'a' : 'd') : '',
-			'U_SORT_RANK'			=> $sort_url . '&amp;sk=m&amp;sd=' . (($sort_key == 'm' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_RANK'			=> $sort_url . '&amp;sk=m&amp;sd=' . (($sort_key == 'm' && $sort_dir == 'd') ? 'a' : 'd'),
 			'U_LIST_CHAR'			=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'l' && $sort_dir == 'a') ? 'd' : 'a'),
 
 			'S_SHOW_GROUP'		=> ($mode == 'group') ? true : false,
