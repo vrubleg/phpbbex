@@ -244,4 +244,4 @@ DELETE FROM `phpbb_bots` WHERE bot_name="Aport [Bot]";
 UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$" AND user_skype != "";
 
 -- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.3.0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.4.0');

@@ -206,7 +206,7 @@ $lang = array_merge($lang, array(
 
 	<p>phpBBex supports the following databases:</p>
 	<ul>
-		<li>MySQL 3.23 or above (MySQLi supported)</li>
+		<li>MySQL 5.0.3 or above (MySQLi supported)</li>
 	</ul>
 
 	<p>Only those databases supported on your server will be displayed.',
