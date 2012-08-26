@@ -352,12 +352,13 @@ table.table1 tbody th {
 }
 
 /* Specific column styles */
+table.table1 .number	{ text-align: center !important; width: 1%;}
 table.table1 .name		{ text-align: left; }
 table.table1 .posts		{ text-align: center !important; width: 7%; }
-table.table1 .joined	{ text-align: left; width: 15%; }
-table.table1 .active	{ text-align: left; width: 15%; }
+table.table1 .joined	{ text-align: left; width: 14%; }
+table.table1 .active	{ text-align: left; width: 14%; }
 table.table1 .mark		{ text-align: center; width: 7%; }
-table.table1 .info		{ text-align: left; width: 25%; }
+table.table1 .info		{ text-align: left; width: 22%; }
 table.table1 .info div	{ width: 100%; white-space: normal; overflow: hidden; }
 table.table1 .autocol	{ line-height: 2em; white-space: nowrap; }
 table.table1 thead .autocol { padding-left: 1em; }

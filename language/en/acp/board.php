@@ -111,7 +111,11 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_WITH_US'				=> 'Display how long user is with us',
 	'STYLE_MP_SHOW_BUTTONS'				=> 'Display contact buttons',
 
-	
+	'STYLE_SETTINGS_MEMBERLIST'			=> 'Member list',
+	'STYLE_MP_SHOW_ROW_NUMBERS'			=> 'Display sequential numbers',
+	'STYLE_MP_SHOW_RANK'				=> 'Display user rank',
+	'STYLE_MP_SHOW_WEBSITE'				=> 'Display user site',
+	'STYLE_MP_SHOW_LAST_ACTIVE'			=> 'Display user last active date',
 
 	'STYLE_SETTINGS_COUNTERS'			=> 'Counters',
 	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',

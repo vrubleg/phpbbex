@@ -160,6 +160,15 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rati
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating_detailed', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated_detailed', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_row_numbers', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_gender', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rank', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_posts', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_topics', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_from', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_website', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_joined', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_last_active', '1');
 
 -- Reset avatar options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '1');

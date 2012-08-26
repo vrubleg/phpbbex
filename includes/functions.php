@@ -4757,6 +4757,16 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_p_show_rated',
 		'style_p_show_rated_detailed',
 
+		'style_ml_show_row_numbers',
+		'style_ml_show_gender',
+		'style_ml_show_rank',
+		'style_ml_show_posts',
+		'style_ml_show_topics',
+		'style_ml_show_from',
+		'style_ml_show_website',
+		'style_ml_show_joined',
+		'style_ml_show_last_active',
+
 		'style_show_liveinternet_counter',
 		'style_google_analytics_id',
 	);
