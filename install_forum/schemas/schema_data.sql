@@ -313,7 +313,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_row_
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_gender', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rank', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating_detailed', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating_detailed', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rated', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rated_detailed', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_posts', '1');

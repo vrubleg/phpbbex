@@ -373,6 +373,7 @@ $lang = array_merge($lang, array(
 	'USER_FEEDBACK_ADDED'			=> 'User feedback added successfully.',
 	'USER_WARNING_ADDED'			=> 'User warned successfully.',
 	'USER_WARNING_EDITED'			=> 'Warning edited successfully.',
+	'USER_WARNING_DELETED'			=> 'Warning deleted successfully.',
 
 	'VIEW_DETAILS'			=> 'View details',
 	'VIEW_PM'				=> 'View private message',

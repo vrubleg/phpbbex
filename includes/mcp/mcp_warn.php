@@ -71,7 +71,7 @@ class mcp_warn
 
 			case 'warn_edit':
 				$this->mcp_warn_edit_view($action);
-				$this->tpl_name = 'mcp_warn_post';
+				$this->tpl_name = 'mcp_warn_edit';
 			break;
 		}
 	}
@@ -498,8 +498,16 @@ class mcp_warn
 		{
 			if (check_form_key('mcp_warn'))
 			{
-				edit_warning($warning_row, $warning, $warning_days, $warning_type);
-				$msg = $user->lang['USER_WARNING_EDITED'];
+				if ($warning_type == 'delete')
+				{
+					delete_warning($warning_row);
+					$msg = $user->lang['USER_WARNING_DELETED'];
+				}
+				else
+				{
+					edit_warning($warning_row, $warning, $warning_days, $warning_type);
+					$msg = $user->lang['USER_WARNING_EDITED'];
+				}
 			}
 			else
 			{

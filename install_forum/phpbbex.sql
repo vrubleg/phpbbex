@@ -164,7 +164,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_row
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_gender', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rank', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating_detailed', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating_detailed', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rated', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rated_detailed', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_posts', '1');
