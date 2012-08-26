@@ -48,6 +48,8 @@ ALTER TABLE phpbb_warnings
 	ADD INDEX user_id (user_id),
 	ADD INDEX post_id (post_id);
 
+ALTER TABLE phpbb_config MODIFY COLUMN config_value VARCHAR(1000) NOT NULL DEFAULT '';
+
 -- New phpBBex options
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '30');

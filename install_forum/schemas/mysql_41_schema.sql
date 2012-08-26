@@ -151,7 +151,7 @@ CREATE TABLE phpbb_bots (
 # Table: 'phpbb_config'
 CREATE TABLE phpbb_config (
 	config_name varchar(255) DEFAULT '' NOT NULL,
-	config_value varchar(255) DEFAULT '' NOT NULL,
+	config_value varchar(1000) DEFAULT '' NOT NULL,
 	is_dynamic tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (config_name),
 	KEY is_dynamic (is_dynamic)
