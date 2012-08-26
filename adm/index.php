@@ -406,7 +406,7 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 				$length = utf8_strlen($cfg_array[$config_name]);
 
 				// the column is a VARCHAR
-				$validator[$max] = (isset($validator[$max])) ? min(255, $validator[$max]) : 255;
+				$validator[$max] = (isset($validator[$max])) ? min(1000, $validator[$max]) : 1000;
 
 				if (isset($validator[$min]) && $length < $validator[$min])
 				{
