@@ -70,7 +70,7 @@
  		<!-- IF U_WWW --><dt>{L_WEBSITE}:</dt> <dd><a href="{U_WWW}" title="{L_VISIT_WEBSITE}: {U_WWW}"<!-- IF EXTERNAL_LINKS_NEWWINDOW --> target="_blank"<!-- ENDIF --><!-- IF EXTERNAL_LINKS_NOFOLLOW --> rel="nofollow"<!-- ENDIF -->>{U_WWW}</a></dd><!-- ENDIF -->
 		<!-- IF S_PROFILE_FIELD1 -->
 			<!-- NOTE: Use a construct like this to include admin defined profile fields. Replace FIELD1 with the name of your field. -->
-			<dt>{postrow.PROFILE_FIELD1_NAME}:</dt> <dd>{postrow.PROFILE_FIELD1_VALUE}</dd>
+			<dt>{PROFILE_FIELD1_NAME}:</dt> <dd>{PROFILE_FIELD1_VALUE}</dd>
 		<!-- ENDIF -->
 		<!-- IF USER_AGENT and (U_USER_ADMIN or U_USER_BAN) --><dt>{L_USER_AGENT}:</dt> <dd>{USER_AGENT}</dd><!-- ENDIF -->
 		<!-- IF USER_LAST_IP and (U_USER_ADMIN or U_USER_BAN) --><dt>{L_USER_LAST_IP}:</dt> <dd>{USER_LAST_IP}</dd><!-- ENDIF -->

@@ -111,6 +111,12 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_WITH_US'				=> 'Отображать как долго пользователь с нами',
 	'STYLE_MP_SHOW_BUTTONS'				=> 'Отображать кнопки контактов',
 
+	'STYLE_SETTINGS_MEMBERLIST'			=> 'Список пользователей',
+	'STYLE_MP_SHOW_ROW_NUMBERS'			=> 'Отображать номера строк',
+	'STYLE_MP_SHOW_RANK'				=> 'Отображать звание',
+	'STYLE_MP_SHOW_WEBSITE'				=> 'Отображать ссылку на сайт',
+	'STYLE_MP_SHOW_LAST_ACTIVE'			=> 'Отображать дату последнего посещения',
+
 	'STYLE_SETTINGS_COUNTERS'			=> 'Счётчики',
 	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Выводить счётчик LiveInternet',
 	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Идентификатор Google Analytics',
@@ -171,7 +177,7 @@ $lang = array_merge($lang, array(
 	'MAX_AVATAR_SIZE'				=> 'Максимальные размеры аватар',
 	'MAX_AVATAR_SIZE_EXPLAIN'		=> 'Ширина × высота (в пикселах).',
 	'MAX_FILESIZE'					=> 'Максимальный размер файла аватары',
-	'MAX_FILESIZE_EXPLAIN'			=> 'Максимальный размер файлов загружаемых аватар.',
+	'MAX_FILESIZE_EXPLAIN'			=> 'Максимальный размер файлов загружаемых аватар. Если значение равно 0, размер файла ограничен только конфигурацией PHP.',
 	'MIN_AVATAR_SIZE'				=> 'Минимальные размеры аватар',
 	'MIN_AVATAR_SIZE_EXPLAIN'		=> 'Ширина × высота (в пикселах).',
 ));

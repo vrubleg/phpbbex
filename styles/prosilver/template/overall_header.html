@@ -1,8 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{S_CONTENT_DIRECTION}" lang="{S_USER_LANG}" xml:lang="{S_USER_LANG}">
+<!DOCTYPE html>
+<html dir="{S_CONTENT_DIRECTION}" lang="{S_USER_LANG}">
 <head>
-
-<meta http-equiv="content-type" content="text/html; charset={S_CONTENT_ENCODING}" />
+<meta charset="{S_CONTENT_ENCODING}" />
 <meta http-equiv="content-style-type" content="text/css" />
 <meta http-equiv="content-language" content="{S_USER_LANG}" />
 <meta http-equiv="imagetoolbar" content="no" />
@@ -12,9 +11,9 @@
 <meta name="description" content="{SITE_DESCRIPTION}" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
 {META}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script type="text/javascript" src="{T_TEMPLATE_PATH}/jquery.splash.js"></script>
-<!--[if lte IE 6]><script src="http://vrublevsky.org/noie6/noie6.js"></script><![endif]-->
+<!--[if lte IE 7]><script src="http://vrublevsky.org/noie6/noie6.js" charset="utf-8"></script><![endif]-->
 <title><!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF --><!-- IF PAGE_TITLE -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}</title>
 <!-- IF U_CANONICAL --><link rel="canonical" href="{U_CANONICAL}" /><!-- ENDIF -->
 <!-- IF S_ENABLE_FEEDS -->
@@ -89,7 +88,6 @@
 
 <div id="wrap"<!-- IF not S_OUTLINKS --> style="padding-top: 10px;"<!-- ENDIF -->>
 	<a id="top" name="top" accesskey="t"></a>
-	<p class="skiplink"><a href="#start_here">{L_SKIP}</a></p>
 	<!-- IF S_OUTLINKS -->
 	<div id="top-menu">
 		<div id="top-links"><ul>
@@ -202,7 +200,6 @@
 		</ul>
 	</div>
 
-	<a name="start_here"></a>
 	<div id="page-body">
 		<!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) -->
 		<div id="information" class="rules">

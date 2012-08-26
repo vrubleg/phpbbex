@@ -352,12 +352,13 @@ table.table1 tbody th {
 }
 
 /* Specific column styles */
+table.table1 .number	{ text-align: center !important; width: 1%;}
 table.table1 .name		{ text-align: left; }
 table.table1 .posts		{ text-align: center !important; width: 7%; }
-table.table1 .joined	{ text-align: left; width: 15%; }
-table.table1 .active	{ text-align: left; width: 15%; }
+table.table1 .joined	{ text-align: left; width: 13%; }
+table.table1 .active	{ text-align: left; width: 13%; }
 table.table1 .mark		{ text-align: center; width: 7%; }
-table.table1 .info		{ text-align: left; width: 25%; }
+table.table1 .info		{ text-align: left; width: 20%; }
 table.table1 .info div	{ width: 100%; white-space: normal; overflow: hidden; }
 table.table1 .autocol	{ line-height: 2em; white-space: nowrap; }
 table.table1 thead .autocol { padding-left: 1em; }
@@ -380,7 +381,19 @@ table.info tbody th {
 }
 
 .forumbg table.table1 {
-	margin: 0 -2px -1px -1px;
+	margin: 0;
+}
+
+.forumbg-table > .inner {
+	margin: 0 -1px;
+}
+
+.forumbg-table > .inner > span.corners-top {
+	margin: 0 -4px -1px -4px;
+}
+
+.forumbg-table > .inner > span.corners-bottom {
+	margin: -1px -4px 0 -4px;
 }
 
 /* Misc layout styles

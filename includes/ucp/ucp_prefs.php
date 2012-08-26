@@ -61,7 +61,15 @@ class ucp_prefs
 
 				if ($submit)
 				{
-					$data['style']		= ($config['override_user_style'])		? $config['default_style']		: $data['style'];
+					if ($config['override_user_style'])
+					{
+						$data['style'] = (int) $config['default_style'];
+					}
+					else if (!phpbb_style_is_active($data['style']))
+					{
+						$data['style'] = (int) $user->data['user_style'];
+					}
+
 					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
 					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
 					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];

@@ -48,6 +48,8 @@ ALTER TABLE phpbb_warnings
 	ADD INDEX user_id (user_id),
 	ADD INDEX post_id (post_id);
 
+ALTER TABLE phpbb_config MODIFY COLUMN config_value VARCHAR(1000) NOT NULL DEFAULT '';
+
 -- New phpBBex options
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '30');
@@ -160,6 +162,19 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rati
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating_detailed', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated_detailed', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_row_numbers', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_gender', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rank', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating_detailed', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rated', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rated_detailed', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_posts', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_topics', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_from', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_website', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_joined', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_last_active', '1');
 
 -- Reset avatar options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '1');
@@ -229,4 +244,4 @@ DELETE FROM `phpbb_bots` WHERE bot_name="Aport [Bot]";
 UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$" AND user_skype != "";
 
 -- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.3.0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.4.0');

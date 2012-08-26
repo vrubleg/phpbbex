@@ -231,7 +231,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_date
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PASS_TYPE_ANY');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.3.0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.4.0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_edit_time', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_boxes', '4');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');
@@ -279,7 +279,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('tpl_allow_php', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('upload_icons_path', 'images/upload_icons');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('upload_path', 'files');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('version', '3.0.10');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('version', '3.0.11');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '{L_WARNING_POST_DEFAULT}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_expire_days', '90');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_gc', '14400');
@@ -309,6 +309,19 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_ratin
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rating_detailed', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_p_show_rated_detailed', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_row_numbers', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_gender', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rank', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rating_detailed', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rated', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_rated_detailed', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_posts', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_topics', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_from', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_website', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_joined', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_last_active', '1');
 
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cache_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cron_lock', '0', 1);

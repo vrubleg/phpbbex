@@ -69,8 +69,8 @@ $lang = array_merge($lang, array(
 	'ACL_TYPE_GLOBAL_A_'	=> 'Права администратора',
 	'ACL_TYPE_GLOBAL_U_'	=> 'Права пользователя',
 	'ACL_TYPE_GLOBAL_M_'	=> 'Права супермодератора',
-	'ACL_TYPE_LOCAL_M_'		=> 'права модератора форума',
-	'ACL_TYPE_LOCAL_F_'		=> 'доступ к форумам',
+	'ACL_TYPE_LOCAL_M_'		=> 'Права модератора форума',
+	'ACL_TYPE_LOCAL_F_'		=> 'Доступ к форумам',
 
 	'ACL_NO'				=> 'Нет',
 	'ACL_VIEW'				=> 'Просмотр прав доступа',
@@ -185,7 +185,7 @@ $lang = array_merge($lang, array(
 	'ROLE_USER_NOAVATAR'		=> 'Без аватары',
 	'ROLE_USER_NOPM'			=> 'Без личных сообщений',
 	'ROLE_USER_STANDARD'		=> 'Стандартные возможности',
-	'ROLE_USER_NEW_MEMBER'		=> 'Вновь зарегистрированные пользователи',
+	'ROLE_USER_NEW_MEMBER'		=> 'Возможности для новых пользователей',
 	'ROLE_USER_GUEST'			=> 'Возможности для гостей',
 	'ROLE_USER_BOT'				=> 'Возможности для ботов',
 

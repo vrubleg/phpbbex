@@ -62,11 +62,6 @@ $default_key = 'c';
 $sort_key = request_var('sk', $default_key);
 $sort_dir = request_var('sd', 'a');
 
-
-// Grab rank information for later
-$ranks = $cache->obtain_ranks();
-
-
 // What do you want to do today? ... oops, I think that line is taken ...
 switch ($mode)
 {
@@ -995,6 +990,27 @@ switch ($mode)
 		$sort_key_text['m'] = $user->lang['SORT_RANK'];
 		$sort_key_sql['m'] = 'u.user_rank';
 
+		if ($config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']))
+		{
+			$sort_key_text['r'] = $user->lang['USER_RATING'];
+			$sort_key_text['o'] = $user->lang['USER_RATED'];
+			if (!$config['rate_no_negative'] && !$config['rate_no_positive'])
+			{
+				$sort_key_sql['r'] = 'CAST(u.user_rating_positive AS SIGNED)-CAST(u.user_rating_negative AS SIGNED)';
+				$sort_key_sql['o'] = 'CAST(u.user_rated_positive AS SIGNED)-CAST(u.user_rated_negative AS SIGNED)';
+			}
+			else if (!$config['rate_no_positive'])
+			{
+				$sort_key_sql['r'] = 'u.user_rating_positive';
+				$sort_key_sql['o'] = 'u.user_rated_positive';
+			}
+			else if (!$config['rate_no_negative'])
+			{
+				$sort_key_sql['r'] = '-CAST(u.user_rating_negative AS SIGNED)';
+				$sort_key_sql['o'] = '-CAST(u.user_rated_negative AS SIGNED)';
+			}
+		}
+
 		$sort_dir_text = array('a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']);
 
 		$s_sort_key = '';
@@ -1253,21 +1269,16 @@ switch ($mode)
 			// Misusing the avatar function for displaying group avatars...
 			$avatar_img = get_user_avatar($group_row['group_avatar'], $group_row['group_avatar_type'], $group_row['group_avatar_width'], $group_row['group_avatar_height'], 'GROUP_AVATAR');
 
+			// ... same for group rank
 			$rank_title = $rank_img = $rank_img_src = '';
 			if ($group_row['group_rank'])
 			{
-				if (isset($ranks['special'][$group_row['group_rank']]))
+				get_user_rank($group_row['group_rank'], false, $rank_title, $rank_img, $rank_img_src);
+
+				if ($rank_img)
 				{
-					$rank_title = $ranks['special'][$group_row['group_rank']]['rank_title'];
+					$rank_img .= '<br />';
 				}
-				$rank_img = (!empty($ranks['special'][$group_row['group_rank']]['rank_image'])) ? '<img src="' . $config['ranks_path'] . '/' . $ranks['special'][$group_row['group_rank']]['rank_image'] . '" alt="' . $ranks['special'][$group_row['group_rank']]['rank_title'] . '" title="' . $ranks['special'][$group_row['group_rank']]['rank_title'] . '" /><br />' : '';
-				$rank_img_src = (!empty($ranks['special'][$group_row['group_rank']]['rank_image'])) ? $config['ranks_path'] . '/' . $ranks['special'][$group_row['group_rank']]['rank_image'] : '';
-			}
-			else
-			{
-				$rank_title = '';
-				$rank_img = '';
-				$rank_img_src = '';
 			}
 
 			$template->assign_vars(array(
@@ -1378,6 +1389,7 @@ switch ($mode)
 		if ($mode)
 		{
 			$params[] = "mode=$mode";
+			$u_first_char_params[] = "mode=$mode";
 		}
 		$sort_params[] = "mode=$mode";
 
@@ -1639,14 +1651,16 @@ switch ($mode)
 
 			'U_SORT_USERNAME'		=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_FROM'			=> $sort_url . '&amp;sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_JOINED'			=> $sort_url . '&amp;sk=c&amp;sd=' . (($sort_key == 'c' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_POSTS'			=> $sort_url . '&amp;sk=d&amp;sd=' . (($sort_key == 'd' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_JOINED'			=> $sort_url . '&amp;sk=c&amp;sd=' . (($sort_key == 'c' && $sort_dir == 'd') ? 'a' : 'd'),
+			'U_SORT_RATING'			=> ($config['rate_enabled']) ? $sort_url . '&amp;sk=r&amp;sd=' . (($sort_key == 'r' && $sort_dir == 'd') ? 'a' : 'd') : '',
+			'U_SORT_RATED'			=> ($config['rate_enabled']) ? $sort_url . '&amp;sk=o&amp;sd=' . (($sort_key == 'o' && $sort_dir == 'd') ? 'a' : 'd') : '',
+			'U_SORT_POSTS'			=> $sort_url . '&amp;sk=d&amp;sd=' . (($sort_key == 'd' && $sort_dir == 'd') ? 'a' : 'd'),
+			'U_SORT_TOPICS'			=> $sort_url . '&amp;sk=t&amp;sd=' . (($sort_key == 't' && $sort_dir == 'd') ? 'a' : 'd'),
 			'U_SORT_WEBSITE'		=> $sort_url . '&amp;sk=f&amp;sd=' . (($sort_key == 'f' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_LOCATION'		=> $sort_url . '&amp;sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_ACTIVE'			=> ($auth->acl_get('u_viewonline')) ? $sort_url . '&amp;sk=l&amp;sd=' . (($sort_key == 'l' && $sort_dir == 'a') ? 'd' : 'a') : '',
-			'U_SORT_RANK'			=> $sort_url . '&amp;sk=m&amp;sd=' . (($sort_key == 'm' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_ACTIVE'			=> ($auth->acl_get('u_viewonline')) ? $sort_url . '&amp;sk=l&amp;sd=' . (($sort_key == 'l' && $sort_dir == 'd') ? 'a' : 'd') : '',
+			'U_SORT_RANK'			=> $sort_url . '&amp;sk=m&amp;sd=' . (($sort_key == 'm' && $sort_dir == 'd') ? 'a' : 'd'),
 			'U_LIST_CHAR'			=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'l' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_TOPICS'			=> $sort_url . '&amp;sk=t&amp;sd=' . (($sort_key == 't' && $sort_dir == 'a') ? 'd' : 'a'),
 
 			'S_SHOW_GROUP'		=> ($mode == 'group') ? true : false,
 			'S_VIEWONLINE'		=> $auth->acl_get('u_viewonline'),

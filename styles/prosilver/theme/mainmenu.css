@@ -10,8 +10,6 @@
 
 #main-menu li { float:left; }
 #main-menu li li { float:none; }
-/* a hack for IE5.x and IE6 */
-* html #main-menu li li {float:left;}
 
 #main-menu li a 
 {
@@ -26,19 +24,13 @@
 #main-menu li:hover ul {left:0; top:24px;}
 
 #main-menu ul {position:absolute; left:-9999px; top:-9999px;}
-/* yet another hack for IE5.x and IE6 */
-* html #main-menu ul {width:1px;}
 
 /* show next level */
 #main-menu li:hover li:hover > ul
 {left:0px; margin-left:100%; top:-1px;}
-#main-menu li:hover li:hover ul,#main-menu li:hover li:hover li:hover ul,#main-menu li:hover li:hover li:hover li:hover ul,#main-menu li:hover li:hover li:hover li:hover li:hover ul
-{left:0px; margin-left:100%; top:-1px;}
 
 /* keep further levels hidden */
 #main-menu li:hover > ul ul
-{position:absolute; left:-9999px; top:-9999px; /*width:auto;*/}
-#main-menu li:hover ul ul,#main-menu li:hover li:hover ul ul,#main-menu li:hover li:hover li:hover ul ul,#main-menu li:hover li:hover li:hover li:hover ul ul
 {position:absolute; left:-9999px; top:-9999px; /*width:auto;*/}
 
 /* главное меню */
@@ -85,11 +77,10 @@
 }
 
 /* пункты меню */
-#main-menu li a, #main-menu li:hover li a,#main-menu li:hover li:hover li a,#main-menu li:hover li:hover li:hover li a,#main-menu li:hover li:hover li:hover li:hover li a,#main-menu li:hover li:hover li:hover li:hover li:hover li a
+#main-menu li > a
 {
 	background: none;
 	border-color: transparent;
-	_border-color: #f0f0f0; /*для тупого IE6 который не знает про transparent*/
 	text-decoration:none;
 	color:#000;
 }
@@ -102,15 +93,8 @@
 	text-decoration:none;
 	color: #000;
 }
-#main-menu li:hover a, #main-menu li:hover li:hover a,#main-menu li:hover li:hover li:hover a,#main-menu li:hover li:hover li:hover li:hover a,#main-menu li:hover li:hover li:hover li:hover li:hover a,#main-menu li:hover li:hover li:hover li:hover li:hover li:hover a
-{
-	border-color: #4282b5;
-	background-color: #f7f7ff;
-	text-decoration:none;
-	color: #000;
-}
 
-#main-menu li:hover li a, #main-menu li:hover li:hover li a, #main-menu li:hover li:hover li:hover li a, #main-menu li:hover li:hover li:hover li:hover li a, #main-menu li:hover li:hover li:hover li:hover li:hover li a
+#main-menu li:hover li > a
 {
 	background-image: url("{T_THEME_PATH}/images/menu_icons.png"); 
 	background-repeat: no-repeat;

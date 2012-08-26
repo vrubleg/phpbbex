@@ -71,7 +71,7 @@ class mcp_warn
 
 			case 'warn_edit':
 				$this->mcp_warn_edit_view($action);
-				$this->tpl_name = 'mcp_warn_post';
+				$this->tpl_name = 'mcp_warn_edit';
 			break;
 		}
 	}
@@ -309,7 +309,7 @@ class mcp_warn
 			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 		}
 
-		$rank_title = $rank_img = '';
+		get_user_rank($user_row['user_rank'], $user_row['user_posts'], $rank_title, $rank_img, $rank_img_src);
 		$avatar_img = get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']);
 
 		$template->assign_vars(array(
@@ -417,7 +417,7 @@ class mcp_warn
 			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 		}
 
-		$rank_title = $rank_img = '';
+		get_user_rank($user_row['user_rank'], $user_row['user_posts'], $rank_title, $rank_img, $rank_img_src);
 		$avatar_img = get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']);
 
 		// OK, they didn't submit a warning so lets build the page for them to do so
@@ -498,8 +498,16 @@ class mcp_warn
 		{
 			if (check_form_key('mcp_warn'))
 			{
-				edit_warning($warning_row, $warning, $warning_days, $warning_type);
-				$msg = $user->lang['USER_WARNING_EDITED'];
+				if ($warning_type == 'delete')
+				{
+					delete_warning($warning_row);
+					$msg = $user->lang['USER_WARNING_DELETED'];
+				}
+				else
+				{
+					edit_warning($warning_row, $warning, $warning_days, $warning_type);
+					$msg = $user->lang['USER_WARNING_EDITED'];
+				}
 			}
 			else
 			{

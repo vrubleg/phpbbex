@@ -47,7 +47,8 @@ jQuery(function($)
 {
 	$("#mcp input[name=warning_type]").change(function()
 	{
-		if ($(this).val() == 'remark') $("#warning_duration").hide(); else $("#warning_duration").show();
+		if ($(this).val() == 'remark' || $(this).val() == 'delete') $("#warning_duration").hide(); else $("#warning_duration").show();
+		if ($(this).val() == 'delete') $("#warning").hide(); else $("#warning").show();
 	});
 	$("#mcp input[name=warning_type]:checked").change();
 });
@@ -66,6 +67,7 @@ jQuery(function($)
 				<label for="warntype_remark"><input type="radio" name="warning_type" id="warntype_remark" value="remark"<!-- IF WARNING_TYPE == 'remark' --> checked="checked"<!-- ENDIF --> /> {L_REMARK}</label> 
 				<label for="warntype_warning"><input type="radio" name="warning_type" id="warntype_warning" value="warning"<!-- IF WARNING_TYPE != 'remark' and WARNING_TYPE != 'ban' --> checked="checked"<!-- ENDIF --> /> {L_WARNING}</label>
 				<label for="warntype_ban"><input type="radio" name="warning_type" id="warntype_ban" value="ban"<!-- IF WARNING_TYPE == 'ban' --> checked="checked"<!-- ENDIF --> /> {L_BAN}</label>
+				<!-- IF WARNING_ID --><label for="warntype_delete"><input type="radio" name="warning_type" id="warntype_delete" value="delete" /> {L_DELETE}</label><!-- ENDIF -->
 			</dd>
 			<div id="warning_duration">
 				<dt><label for="warning_days">{L_WARNING_DURATION}:</label></dt>
