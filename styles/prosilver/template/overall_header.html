@@ -13,7 +13,6 @@
 {META}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script type="text/javascript" src="{T_TEMPLATE_PATH}/jquery.splash.js"></script>
-<!--[if lte IE 7]><script src="http://vrublevsky.org/noie6/noie6.js" charset="utf-8"></script><![endif]-->
 <title><!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF --><!-- IF PAGE_TITLE -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}</title>
 <!-- IF U_CANONICAL --><link rel="canonical" href="{U_CANONICAL}" /><!-- ENDIF -->
 <!-- IF S_ENABLE_FEEDS -->
@@ -85,7 +84,7 @@
 </head>
 
 <body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> mp-on-left<!-- ENDIF -->">
-
+<!--[if lte IE 7]><script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script><![endif]-->
 <div id="wrap"<!-- IF not S_OUTLINKS --> style="padding-top: 10px;"<!-- ENDIF -->>
 	<a id="top" name="top" accesskey="t"></a>
 	<!-- IF S_OUTLINKS -->
