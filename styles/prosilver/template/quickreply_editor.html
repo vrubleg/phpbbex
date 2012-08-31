@@ -30,6 +30,16 @@
 				<dt><label for="username">{L_USERNAME}:</label></dt>
 				<dd><input type="text" tabindex="1" name="username" id="username" size="60" maxlength="35" value="{USERNAME}" class="inputbox autowidth" /></dd>
 			</dl>
+			<script>
+			jQuery(function($)
+			{
+				if (!localStorage) return;
+				$('#username').val(localStorage.getItem('anonymous_username')).on('keyup', function()
+				{
+					localStorage.setItem('anonymous_username', $(this).val());
+				});
+			});
+			</script>
 			<!-- ENDIF -->
 
 			<!-- IF S_SUBJECT_ALLOWED -->
