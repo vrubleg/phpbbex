@@ -108,6 +108,8 @@ p.right {
 	margin: 0 auto;
 	background-color: #FFFFFF;
 	box-shadow: 0 0 15px #CCCCCC;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 #simple-wrap {
