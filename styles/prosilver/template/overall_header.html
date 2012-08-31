@@ -173,21 +173,24 @@
 		</li>
 		<!-- ENDIF -->
 		<!-- ENDIF -->
+		<!-- IF U_VIEWONLINE or S_DISPLAY_MEMBERLIST or U_TEAM -->
+		<li><a href="{U_MEMBERLIST}">{L_MEMBERLIST}</a>
+		<ul>
+			<!-- IF S_DISPLAY_MEMBERLIST --><li><a style="background-position: 0 -432px;" href="{U_MEMBERLIST}">{L_MEMBERLIST}</a></li><!-- ENDIF -->
+			<!-- IF U_VIEWONLINE --><li><a style="background-position: 0 -414px;" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a></li><!-- ENDIF -->
+			<!-- IF U_TEAM --><li><a style="background-position: 0 -450px;" href="{U_TEAM}">{L_THE_TEAM}</a></li><!-- ENDIF -->
+			</ul>
+		</li>
+		<!-- ENDIF -->
 		<li><a href="{U_FAQ}">{L_INFORMATION}</a>
 		<ul>
 			<li><a style="background-position: 0 -396px;" href="{U_FAQ}">{L_FAQ}</a></li>
 			<li><a style="background-position: 0 -378px;" href="{U_RULES}">{L_FORUM_RULES}</a></li>
-			<li class="separator" />
-			<!-- IF U_VIEWONLINE --><li><a style="background-position: 0 -414px;" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a></li><!-- ENDIF -->
-			<!-- IF S_DISPLAY_MEMBERLIST -->
-			<li><a style="background-position: 0 -432px;" href="{U_MEMBERLIST}">{L_MEMBERLIST}</a></li>
-			<!-- ENDIF -->
-			<!-- IF U_TEAM --><li><a style="background-position: 0 -450px;" href="{U_TEAM}">{L_THE_TEAM}</a></li><!-- ENDIF -->
 			</ul>
 		</li>
 		<!-- IF not S_IS_BOT -->
-		<!-- IF not S_USER_LOGGED_IN and S_REGISTER_ENABLED --><li><a href="{U_REGISTER}">{L_REGISTER}</a></li><!-- ENDIF -->
 		<li style="float: right; border-right: 0;"><a href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a></li>
+		<!-- IF not S_USER_LOGGED_IN and S_REGISTER_ENABLED --><li style="float: right;"><a href="{U_REGISTER}">{L_REGISTER}</a></li><!-- ENDIF -->
 
 		<!-- IF S_IN_MCP or U_MCP and not U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP}">{L_MODER_CP}</a></li><!-- ENDIF -->
 		<!-- IF not S_IN_MCP and U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_FORUM}">{L_MODERATE_FORUM}</a></li><!-- ENDIF -->
