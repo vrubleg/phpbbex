@@ -1530,8 +1530,8 @@ if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_
 
 		'L_POLL_OPTIONS_EXPLAIN'	=> sprintf($user->lang['POLL_OPTIONS_' . (($mode == 'edit') ? 'EDIT_' : '') . 'EXPLAIN'], $config['max_poll_options']),
 
-		'VOTE_CHANGE_CHECKED'	=> (!empty($post_data['poll_vote_change']) || $mode == 'post' && !$submit && !$preview && !$refresh) ? ' checked="checked"' : '',
-		'SHOW_VOTERS_CHECKED'	=> (!empty($post_data['poll_show_voters']) || $mode == 'post' && !$submit && !$preview && !$refresh) ? ' checked="checked"' : '',
+		'VOTE_CHANGE_CHECKED'	=> (!empty($post_data['poll_vote_change']) || ($mode == 'post' || $mode == 'edit' && empty($post_data['poll_title'])) && !$submit && !$preview && !$refresh) ? ' checked="checked"' : '',
+		'SHOW_VOTERS_CHECKED'	=> (!empty($post_data['poll_show_voters']) || ($mode == 'post' || $mode == 'edit' && empty($post_data['poll_title'])) && !$submit && !$preview && !$refresh) ? ' checked="checked"' : '',
 		'POLL_TITLE'			=> (isset($post_data['poll_title'])) ? $post_data['poll_title'] : '',
 		'POLL_OPTIONS'			=> (!empty($post_data['poll_options'])) ? implode("\n", $post_data['poll_options']) : '',
 		'POLL_MAX_OPTIONS'		=> (isset($post_data['poll_max_options'])) ? (int) $post_data['poll_max_options'] : 1,
