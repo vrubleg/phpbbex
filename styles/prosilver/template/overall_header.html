@@ -74,12 +74,13 @@
 <link href="{T_THEME_PATH}/print.css" rel="stylesheet" type="text/css" media="print" title="printonly" />
 <link href="{T_STYLESHEET_LINK}" rel="stylesheet" type="text/css" media="screen, projection" />
 
-<!-- IF STYLE_AUTO_NEW_YEAR and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) -->
 <style type="text/css" media="screen, projection">
+#wrap { min-width: <!-- IF STYLE_MIN_WIDTH > 875 -->{STYLE_MIN_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- IF STYLE_MAX_WIDTH --> max-width: <!-- IF STYLE_MAX_WIDTH > 875 -->{STYLE_MAX_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- ENDIF --> }
+<!-- IF STYLE_AUTO_NEW_YEAR and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) -->
 .headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.gif"); }
 .forabg, .forumbg { background-image: url("{T_THEME_PATH}/images/bg_list_snow.gif"); }
-</style>
 <!-- ENDIF -->
+</style>
 
 </head>
 

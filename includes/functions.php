@@ -4732,6 +4732,8 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'rate_no_negative',
 
 		// general
+		'style_min_width',
+		'style_max_width',
 		'style_show_sitename_in_headerbar',
 		'style_show_social_buttons',
 		'style_show_feeds_in_forumlist',

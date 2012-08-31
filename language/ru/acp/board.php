@@ -88,6 +88,8 @@ $lang = array_merge($lang, array(
 	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Здесь вы можете настроить используемый шаблон (если он учитывает эти опции).',
 
 	'STYLE_SETTINGS_GENERAL'			=> 'Общие настройки',
+	'STYLE_MIN_WIDTH'					=> 'Минимальная ширина страницы',
+	'STYLE_MAX_WIDTH'					=> 'Максимальная ширина страницы',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Отображать название и описание сайта в шапке',
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Отображать кнопки RSS в списке форумов',

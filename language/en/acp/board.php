@@ -88,6 +88,8 @@ $lang = array_merge($lang, array(
 	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can enable/disable several style features.',
 
 	'STYLE_SETTINGS_GENERAL'			=> 'General',
+	'STYLE_MIN_WIDTH'					=> 'Minimum page width',
+	'STYLE_MAX_WIDTH'					=> 'Maximum page width',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
