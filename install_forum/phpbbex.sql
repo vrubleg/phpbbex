@@ -137,6 +137,8 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative'
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive', '0');
 
 -- Style options
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_min_width', '875');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_max_width', '1280');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');

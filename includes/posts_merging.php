@@ -39,18 +39,11 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		trigger_error('NO_POST');
 	}
 
-	$merge = false;
-	if (!request_var('do_not_merge', false))
-	{
-		$merge_interval = intval($config['merge_interval']) * 3600;
-		if (!$merge_post_data['post_edit_locked'] && ($current_time - $merge_post_data['topic_last_post_time']) < $merge_interval)
-		{
-			$merge = true;
-		}
-	}
-
 	// Do merging
-	if ($merge && $merge_post_data['poster_id'] == $user->data['user_id'] && $user->data['is_registered'] && $user->data['user_id'] != ANONYMOUS)
+	if (!request_var('do_not_merge', false)
+		&& (!$merge_post_data['post_edit_locked'] && ($current_time - $merge_post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600)
+		&& ($merge_post_data['poster_id'] == $user->data['user_id'])
+		&& ($user->data['user_id'] != ANONYMOUS && $user->data['is_registered'] || $user->data['user_id'] == ANONYMOUS && request_var($config['cookie_name'] . '_bid', '', false, true) == $merge_post_data['poster_browser_id']))
 	{
 		$message_parser = new parse_message();
 
@@ -59,29 +52,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 
 		// Decode text for update properly
 		$message_parser->decode_message($merge_post_data['bbcode_uid']);
-
-		if (version_compare(PHP_VERSION, '5.0.0', '>='))
-		{
-			$merge_post_data['post_text'] = html_entity_decode($message_parser->message,  ENT_COMPAT, 'UTF-8');
-		}
-		else
-		{
-			// For users prior to PHP 5
-			// A kind og code given in PHP manual for html_entity_decode function
-			function unhtmlentities($string, $quote_style = ENT_COMPAT) 
-			{
-			   // replace numeric entities
-			   $string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
-			   $string = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $string);
-			   // replace literal entities
-			   $trans_tbl = get_html_translation_table(HTML_ENTITIES, $quote_style);
-			   $trans_tbl = array_flip($trans_tbl);
-			   return strtr($string, $trans_tbl);
-			}
-			
-			$merge_post_data['post_text'] = unhtmlentities($message_parser->message);
-		}
-
+		$merge_post_data['post_text'] = html_entity_decode($message_parser->message,  ENT_COMPAT, 'UTF-8');
 		unset($message_parser);
 
 		//Handle with inline attachments

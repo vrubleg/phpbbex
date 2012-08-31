@@ -284,6 +284,8 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_defau
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_expire_days', '90');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_gc', '14400');
 
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_min_width', '875');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_max_width', '1280');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');

@@ -441,7 +441,7 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 					// corresponding configuration variable
 					$min_name = str_replace('_max', '_min', $config_name);
 
-					if (isset($cfg_array[$min_name]) && is_numeric($cfg_array[$min_name]) && $cfg_array[$config_name] < $cfg_array[$min_name])
+					if (isset($cfg_array[$min_name]) && is_numeric($cfg_array[$min_name]) && $cfg_array[$config_name] && $cfg_array[$min_name] && $cfg_array[$config_name] < $cfg_array[$min_name])
 					{
 						// A minimum value exists and the maximum value is less than it
 						$error[] = sprintf($user->lang['SETTING_TOO_LOW'], $user->lang[$config_definition['lang']], (int) $cfg_array[$min_name]);
