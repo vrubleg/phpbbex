@@ -147,11 +147,6 @@ $lang = array_merge($lang, array(
 	'VISITED'				=> 'Last visited',
 
 	'WWW'					=> 'Website',
-
-	// Memberlist filters
-	'ACTIVE_USERS'			=> 'Active',
-	'INACTIVE_USERS'		=> 'Inactive',
-	'NO_POSTS_USERS'		=> 'No posts',
 ));
 
 ?>

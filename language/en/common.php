@@ -945,6 +945,13 @@ $lang = array_merge($lang, array(
 	'PM_OUTBOX'					=> 'Outbox',
 	'PM_SENTBOX'				=> 'Sent messages',
 
+	// Memberlist filters
+	'ALL_USERS'				=> 'All users',
+	'ACTIVE_USERS'			=> 'Active',
+	'INACTIVE_USERS'		=> 'Inactive',
+	'NO_POSTS_USERS'		=> 'No posts',
+	'SEARCH_USERS'			=> 'Search users',
+
 	// Login via E-Mail
 	'USERNAME_OR_EMAIL'					=> 'Username or E-Mail',
 	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'You have specified an incorrect username or e-mail address. Please check your entry and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
