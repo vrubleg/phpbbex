@@ -950,6 +950,13 @@ $lang = array_merge($lang, array(
 	'PM_OUTBOX'					=> 'Исходящие',
 	'PM_SENTBOX'				=> 'Отправленные',
 
+	// Memberlist filters
+	'ALL_USERS'				=> 'Все пользователи',
+	'ACTIVE_USERS'			=> 'Активные',
+	'INACTIVE_USERS'		=> 'Не активные',
+	'NO_POSTS_USERS'		=> 'Без сообщений',
+	'SEARCH_USERS'			=> 'Поиск пользователей',
+
 	// Login via E-Mail
 	'USERNAME_OR_EMAIL'					=> 'Имя или e-mail',
 	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'Вы ввели неверное имя пользователя или e-mail. Проверьте введённые данные и попробуйте ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
