@@ -31,7 +31,7 @@ $group_id	= request_var('g', 0);
 $topic_id	= request_var('t', 0);
 
 // Check our mode...
-if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'all', 'active', 'inactive', 'noposts')))
+if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'active', 'inactive')))
 {
 	trigger_error('NO_MODE');
 }
@@ -1183,20 +1183,13 @@ switch ($mode)
 		}
 
 		// Memberlist filters
-		if($mode == '') $mode = 'all';
 		switch( $mode )
 		{
-			case 'all':
-				$sql_where .= " AND u.user_posts > 0 ";
-				break;
 			case 'active':
-				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
+				$sql_where .= " AND u.user_lastvisit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
 				break;
 			case 'inactive':
-				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
-				break;
-			case 'noposts':
-				$sql_where .= " AND u.user_posts = 0 ";
+				$sql_where .= " AND u.user_lastvisit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
 				break;
 		}
 
@@ -1642,7 +1635,6 @@ switch ($mode)
 			'U_ALL_USERS'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx"),
 			'U_ACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=active'),
 			'U_INACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=inactive'),
-			'U_NO_POSTS_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=noposts'),
 
 			'U_SORT_USERNAME'		=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_FROM'			=> $sort_url . '&amp;sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),

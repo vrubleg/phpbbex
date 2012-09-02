@@ -4610,7 +4610,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'U_MEMBERLIST'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx"),
 		'U_MEMBERLIST_ACTIVE'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=active'),
 		'U_MEMBERLIST_INACTIVE'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=inactive'),
-		'U_MEMBERLIST_NO_POSTS'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=noposts'),
 		'U_MEMBERLIST_SEARCH'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser'),
 		'U_VIEWONLINE'			=> ($auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel')) ? append_sid("{$phpbb_root_path}viewonline.$phpEx") : '',
 		'U_LOGIN_LOGOUT'		=> $u_login_logout,

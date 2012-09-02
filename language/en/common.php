@@ -949,7 +949,6 @@ $lang = array_merge($lang, array(
 	'ALL_USERS'				=> 'All users',
 	'ACTIVE_USERS'			=> 'Active',
 	'INACTIVE_USERS'		=> 'Inactive',
-	'NO_POSTS_USERS'		=> 'No posts',
 	'SEARCH_USERS'			=> 'Search users',
 
 	// Login via E-Mail

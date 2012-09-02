@@ -954,7 +954,6 @@ $lang = array_merge($lang, array(
 	'ALL_USERS'				=> 'Все пользователи',
 	'ACTIVE_USERS'			=> 'Активные',
 	'INACTIVE_USERS'		=> 'Не активные',
-	'NO_POSTS_USERS'		=> 'Без сообщений',
 	'SEARCH_USERS'			=> 'Поиск пользователей',
 
 	// Login via E-Mail
