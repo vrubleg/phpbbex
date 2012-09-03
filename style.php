@@ -203,8 +203,8 @@ if ($id)
 		$cache->destroy('sql', STYLES_THEME_TABLE);
 	}
 
-	// Only set the expire time if the theme changed data is older than 30 minutes - to cope with changes from the ACP
-	if ($recache || $theme['theme_mtime'] > (time() - 1800))
+	// Only set the expire time if the theme changed data is older than 10 minutes - to cope with changes from the ACP
+	if ($recache || $theme['theme_mtime'] > (time() - 600))
 	{
 		header('Expires: 0');
 	}
