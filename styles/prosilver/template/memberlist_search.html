@@ -40,8 +40,6 @@ function insert_single(user)
 <script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/forum_fn.js"></script>
 <!-- ENDIF -->
 
-<h2>{L_FIND_USERNAME}</h2>
-
 <form method="post" action="{S_MODE_ACTION}" id="search_memberlist">
 <div class="panel">
 	<div class="inner"><span class="corners-top"><span></span></span>
@@ -65,12 +63,12 @@ function insert_single(user)
 	</dl>
 	<dl>
 		<dt><label for="joined">{L_JOINED}:</label></dt>
-		<dd><select name="joined_select">{S_JOINED_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="joined" id="joined" value="{JOINED}" /></dd>
+		<dd><select name="joined_select">{S_JOINED_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="joined" id="joined" value="{JOINED}" title="{L_YEAR_MONTH_DAY}" /></dd>
 	</dl>
 <!-- IF S_VIEWONLINE -->
 	<dl>
 		<dt><label for="active">{L_LAST_ACTIVE}:</label></dt>
-		<dd><select name="active_select">{S_ACTIVE_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="active" id="active" value="{ACTIVE}" /></dd>
+		<dd><select name="active_select">{S_ACTIVE_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="active" id="active" value="{ACTIVE}" title="{L_YEAR_MONTH_DAY}" /></dd>
 	</dl>
 <!-- ENDIF -->
 	</fieldset>

@@ -31,7 +31,7 @@ $group_id	= request_var('g', 0);
 $topic_id	= request_var('t', 0);
 
 // Check our mode...
-if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'active', 'inactive')))
+if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'all', 'active', 'inactive')))
 {
 	trigger_error('NO_MODE');
 }
@@ -1183,14 +1183,20 @@ switch ($mode)
 		}
 
 		// Memberlist filters
+		if (!$mode) $mode = 'all';
 		switch( $mode )
 		{
+			case 'all':
+				$page_title = $user->lang['ALL_USERS'];
+			break;
 			case 'active':
+				$page_title = $user->lang['ACTIVE_USERS'];
 				$sql_where .= " AND u.user_lastvisit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
-				break;
+			break;
 			case 'inactive':
+				$page_title = $user->lang['INACTIVE_USERS'];
 				$sql_where .= " AND u.user_lastvisit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
-				break;
+			break;
 		}
 
 		$first_char = request_var('first_char', '');
@@ -1410,6 +1416,7 @@ switch ($mode)
 		// Some search user specific data
 		if ($mode == 'searchuser' && ($config['load_search'] || $auth->acl_get('a_')))
 		{
+			$page_title = $user->lang['SEARCH_USERS'];
 			$group_selected = request_var('search_group_id', 0);
 			$s_group_select = '<option value="0"' . ((!$group_selected) ? ' selected="selected"' : '') . '>&nbsp;</option>';
 			$group_ids = array();
