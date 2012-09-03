@@ -1046,6 +1046,7 @@ switch ($mode)
 			$yahoo		= request_var('yahoo', '');
 			$msn		= request_var('msn', '');
 			$jabber		= request_var('jabber', '');
+			$skype		= request_var('skype', '');
 			$search_group_id	= request_var('search_group_id', 0);
 
 			// when using these, make sure that we actually have values defined in $find_key_match
@@ -1090,6 +1091,7 @@ switch ($mode)
 			$sql_where .= ($yahoo) ? ' AND u.user_yim ' . $db->sql_like_expression(str_replace('*', $db->any_char, $yahoo)) . ' ' : '';
 			$sql_where .= ($msn) ? ' AND u.user_msnm ' . $db->sql_like_expression(str_replace('*', $db->any_char, $msn)) . ' ' : '';
 			$sql_where .= ($jabber) ? ' AND u.user_jabber ' . $db->sql_like_expression(str_replace('*', $db->any_char, $jabber)) . ' ' : '';
+			$sql_where .= ($skype) ? ' AND u.user_skype ' . $db->sql_like_expression(str_replace('*', $db->any_char, $skype)) . ' ' : '';
 			$sql_where .= (is_numeric($count) && isset($find_key_match[$count_select])) ? ' AND u.user_posts ' . $find_key_match[$count_select] . ' ' . (int) $count . ' ' : '';
 
 			if (isset($find_key_match[$joined_select]) && sizeof($joined) == 3)
@@ -1478,6 +1480,7 @@ switch ($mode)
 				'YAHOO'		=> $yahoo,
 				'MSNM'		=> $msn,
 				'JABBER'	=> $jabber,
+				'SKYPE'		=> $skype,
 				'JOINED'	=> implode('-', $joined),
 				'ACTIVE'	=> implode('-', $active),
 				'COUNT'		=> $count,
