@@ -31,7 +31,7 @@ $group_id	= request_var('g', 0);
 $topic_id	= request_var('t', 0);
 
 // Check our mode...
-if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'all', 'active', 'inactive', 'noposts')))
+if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'all', 'active', 'inactive')))
 {
 	trigger_error('NO_MODE');
 }
@@ -1051,6 +1051,7 @@ switch ($mode)
 			$yahoo		= request_var('yahoo', '');
 			$msn		= request_var('msn', '');
 			$jabber		= request_var('jabber', '');
+			$skype		= request_var('skype', '');
 			$search_group_id	= request_var('search_group_id', 0);
 
 			// when using these, make sure that we actually have values defined in $find_key_match
@@ -1095,6 +1096,7 @@ switch ($mode)
 			$sql_where .= ($yahoo) ? ' AND u.user_yim ' . $db->sql_like_expression(str_replace('*', $db->any_char, $yahoo)) . ' ' : '';
 			$sql_where .= ($msn) ? ' AND u.user_msnm ' . $db->sql_like_expression(str_replace('*', $db->any_char, $msn)) . ' ' : '';
 			$sql_where .= ($jabber) ? ' AND u.user_jabber ' . $db->sql_like_expression(str_replace('*', $db->any_char, $jabber)) . ' ' : '';
+			$sql_where .= ($skype) ? ' AND u.user_skype ' . $db->sql_like_expression(str_replace('*', $db->any_char, $skype)) . ' ' : '';
 			$sql_where .= (is_numeric($count) && isset($find_key_match[$count_select])) ? ' AND u.user_posts ' . $find_key_match[$count_select] . ' ' . (int) $count . ' ' : '';
 
 			if (isset($find_key_match[$joined_select]) && sizeof($joined) == 3)
@@ -1188,21 +1190,20 @@ switch ($mode)
 		}
 
 		// Memberlist filters
-		if($mode == '') $mode = 'all';
+		if (!$mode) $mode = 'all';
 		switch( $mode )
 		{
 			case 'all':
-				$sql_where .= " AND u.user_posts > 0 ";
-				break;
+				$page_title = $user->lang['ALL_USERS'];
+			break;
 			case 'active':
-				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
-				break;
+				$page_title = $user->lang['ACTIVE_USERS'];
+				$sql_where .= " AND u.user_lastvisit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
+			break;
 			case 'inactive':
-				$sql_where .= " AND u.user_posts > 0 AND u.user_lastvisit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
-				break;
-			case 'noposts':
-				$sql_where .= " AND u.user_posts = 0 ";
-				break;
+				$page_title = $user->lang['INACTIVE_USERS'];
+				$sql_where .= " AND u.user_lastvisit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
+			break;
 		}
 
 		$first_char = request_var('first_char', '');
@@ -1422,6 +1423,7 @@ switch ($mode)
 		// Some search user specific data
 		if ($mode == 'searchuser' && ($config['load_search'] || $auth->acl_get('a_')))
 		{
+			$page_title = $user->lang['SEARCH_USERS'];
 			$group_selected = request_var('search_group_id', 0);
 			$s_group_select = '<option value="0"' . ((!$group_selected) ? ' selected="selected"' : '') . '>&nbsp;</option>';
 			$group_ids = array();
@@ -1483,6 +1485,7 @@ switch ($mode)
 				'YAHOO'		=> $yahoo,
 				'MSNM'		=> $msn,
 				'JABBER'	=> $jabber,
+				'SKYPE'		=> $skype,
 				'JOINED'	=> implode('-', $joined),
 				'ACTIVE'	=> implode('-', $active),
 				'COUNT'		=> $count,
@@ -1647,7 +1650,6 @@ switch ($mode)
 			'U_ALL_USERS'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx"),
 			'U_ACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=active'),
 			'U_INACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=inactive'),
-			'U_NO_POSTS_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=noposts'),
 
 			'U_SORT_USERNAME'		=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_FROM'			=> $sort_url . '&amp;sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),

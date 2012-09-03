@@ -40,8 +40,6 @@ function insert_single(user)
 <script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/forum_fn.js"></script>
 <!-- ENDIF -->
 
-<h2 class="solo">{L_FIND_USERNAME}</h2>
-
 <form method="post" action="{S_MODE_ACTION}" id="search_memberlist">
 <div class="panel">
 	<div class="inner"><span class="corners-top"><span></span></span>
@@ -60,32 +58,40 @@ function insert_single(user)
 	</dl>
 <!-- ENDIF -->
 	<dl>
+		<dt><label for="skype">{L_SKYPE}:</label></dt>
+		<dd><input type="text" name="skype" id="skype" value="{SKYPE}" class="inputbox" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="jabber">{L_JABBER}:</label></dt>
+		<dd><input type="text" name="jabber" id="jabber" value="{JABBER}" class="inputbox" /></dd>
+	</dl>
+	<dl>
 		<dt><label for="icq">{L_ICQ}:</label></dt>
 		<dd><input type="text" name="icq" id="icq" value="{ICQ}" class="inputbox" /></dd>
 	</dl>
+<!-- IF S_IP_SEARCH_ALLOWED -->
 	<dl>
-		<dt><label for="joined">{L_JOINED}:</label></dt>
-		<dd><select name="joined_select">{S_JOINED_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="joined" id="joined" value="{JOINED}" /></dd>
-	</dl>
-<!-- IF S_VIEWONLINE -->
-	<dl>
-		<dt><label for="active">{L_LAST_ACTIVE}:</label></dt>
-		<dd><select name="active_select">{S_ACTIVE_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="active" id="active" value="{ACTIVE}" /></dd>
+		<dt><label for="ip">{L_POST_IP}:</label></dt>
+		<dd><input type="text" name="ip" id="ip" value="{IP}" class="inputbox" /></dd>
 	</dl>
 <!-- ENDIF -->
 	</fieldset>
 
 	<fieldset class="fields1 column2">
 	<dl>
+		<dt><label for="joined">{L_JOINED}:</label></dt>
+		<dd><select name="joined_select">{S_JOINED_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="joined" id="joined" value="{JOINED}" title="{L_YEAR_MONTH_DAY}" /></dd>
+	</dl>
+<!-- IF S_VIEWONLINE -->
+	<dl>
+		<dt><label for="active">{L_LAST_ACTIVE}:</label></dt>
+		<dd><select name="active_select">{S_ACTIVE_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="active" id="active" value="{ACTIVE}" title="{L_YEAR_MONTH_DAY}" /></dd>
+	</dl>
+<!-- ENDIF -->
+	<dl>
 		<dt><label for="count">{L_POSTS}:</label></dt>
 		<dd><select name="count_select">{S_COUNT_OPTIONS}</select> <input class="inputbox medium" type="text" name="count" id="count" value="{COUNT}" /></dd>
 	</dl>
-<!-- IF S_IP_SEARCH_ALLOWED -->
-	<dl>
-		<dt><label for="ip">{L_POST_IP}:</label></dt>
-		<dd><input class="inputbox medium" type="text" name="ip" id="ip" value="{IP}" /></dd>
-	</dl>
-<!-- ENDIF -->
 	<dl>
 		<dt><label for="search_group_id">{L_GROUP}:</label></dt>
 		<dd><select name="search_group_id" id="search_group_id">{S_GROUP_SELECT}</select></dd>
