@@ -97,7 +97,7 @@ jQuery(function($)
 	<script>
 	jQuery(function($)
 	{
-		if (!localStorage) return;
+		if (!('localStorage' in window && window['localStorage'] !== null)) return;
 		$('#username').val(localStorage.getItem('anonymous_username')).on('keyup', function()
 		{
 			localStorage.setItem('anonymous_username', $(this).val());
