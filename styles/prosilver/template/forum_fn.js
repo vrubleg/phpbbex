@@ -396,12 +396,10 @@ function submit_default_button(event, selector, class_name)
 
 /**
 * Apply onkeypress event for forcing default submit button on ENTER key press
-* The jQuery snippet used is based on http://greatwebguy.com/programming/dom/default-html-button-submit-on-enter-with-jquery/
-* The non-jQuery code is a mimick of the jQuery code ;)
 */
-function apply_onkeypress_event()
+jQuery(function($)
 {
-	jQuery('form input[type=text], form input[type=password]').live('keypress', function (e)
+	jQuery('form input[type=text], form input[type=password], form textarea').live('keypress', function (e)
 	{
 		var default_button = jQuery(this).parents('form').find('input[type=submit].default-submit-action');
 		
@@ -411,7 +409,7 @@ function apply_onkeypress_event()
 		if (phpbb_check_key(e))
 			return true;
 
-		if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13))
+		if ((e.which == 13 || e.which == 10) && (this.tagName.toLowerCase() != 'textarea' || e.ctrlKey))
 		{
 			default_button.click();
 			return false;
@@ -419,7 +417,7 @@ function apply_onkeypress_event()
 
 		return true;
 	});
-}
+});
 
 /**
 * Detect JQuery existance. We currently do not deliver it, but some styles do, so why not benefit from it. ;)
