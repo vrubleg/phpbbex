@@ -2101,8 +2101,6 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $add
 			$start -= $end - $total_pages;
 			$end = $total_pages;
 		}
-		if ($start <= 2) $start = 1;
-		if ($end >= $total_pages - 1) $end = $total_pages;
 		if ($start != 1) $start += 2;
 		if ($end != $total_pages) $end -= 2;
 	}
