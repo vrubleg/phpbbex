@@ -2085,40 +2085,42 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $add
 	$on_page = floor($start_item / $per_page) + 1;
 	$url_delim = (strpos($base_url, '?') === false) ? '?' : ((strpos($base_url, '?') === strlen($base_url) - 1) ? '' : '&amp;');
 
+	$start = 1;
+	$end = $total_pages;
+	if ($total_pages > 11)
+	{
+		$start = $on_page - 5;
+		$end = $on_page + 5;
+		if ($start < 1)
+		{
+			$end += 1 - $start;
+			$start = 1;
+		}
+		if ($end > $total_pages)
+		{
+			$start -= $end - $total_pages;
+			$start = max(1, $start);
+			$end = $total_pages;
+		}
+		if ($start != 1) $start++;
+		if ($end != $total_pages) $end--;
+	}
+
 	$page_string = ($on_page == 1) ? '<strong>1</strong>' : '<a href="' . $base_url . '">1</a>';
+	$page_string .= ($start > 2) ? '<span class="page-dots"> … </span>' : $seperator;
 
-	if ($total_pages > 5)
+	$start_cnt = ($start == 1 ? 2 : $start);
+	$end_cnt = ($end == $total_pages ? $end - 1 : $end);
+	for ($i = $start_cnt; $i <= $end_cnt; $i++)
 	{
-		$start_cnt = min(max(1, $on_page - 4), $total_pages - 5);
-		$end_cnt = max(min($total_pages, $on_page + 4), 6);
-
-		$page_string .= ($start_cnt > 1) ? '<span class="page-dots"> … </span>' : $seperator;
-
-		for ($i = $start_cnt + 1; $i < $end_cnt; $i++)
+		$page_string .= ($i == $on_page) ? '<strong>' . $i . '</strong>' : '<a href="' . $base_url . "{$url_delim}start=" . (($i - 1) * $per_page) . '">' . $i . '</a>';
+		if ($i < $end_cnt)
 		{
-			$page_string .= ($i == $on_page) ? '<strong>' . $i . '</strong>' : '<a href="' . $base_url . "{$url_delim}start=" . (($i - 1) * $per_page) . '">' . $i . '</a>';
-			if ($i < $end_cnt - 1)
-			{
-				$page_string .= $seperator;
-			}
-		}
-
-		$page_string .= ($end_cnt < $total_pages) ? '<span class="page-dots"> … </span>' : $seperator;
-	}
-	else
-	{
-		$page_string .= $seperator;
-
-		for ($i = 2; $i < $total_pages; $i++)
-		{
-			$page_string .= ($i == $on_page) ? '<strong>' . $i . '</strong>' : '<a href="' . $base_url . "{$url_delim}start=" . (($i - 1) * $per_page) . '">' . $i . '</a>';
-			if ($i < $total_pages)
-			{
-				$page_string .= $seperator;
-			}
+			$page_string .= $seperator;
 		}
 	}
 
+	$page_string .= ($end < $total_pages) ? '<span class="page-dots"> … </span>' : $seperator;
 	$page_string .= ($on_page == $total_pages) ? '<strong>' . $total_pages . '</strong>' : '<a href="' . $base_url . "{$url_delim}start=" . (($total_pages - 1) * $per_page) . '">' . $total_pages . '</a>';
 
 	if ($add_prevnext_text)
