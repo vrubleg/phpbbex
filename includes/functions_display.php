@@ -706,13 +706,13 @@ function topic_generate_pagination($replies, $url)
 		for ($j = 0; $j < $replies + 1; $j += $per_page)
 		{
 			$pagination .= '<a href="' . $url . ($j == 0 ? '' : '&amp;start=' . $j) . '">' . $times . '</a>';
-			if ($times == 1 && $total_pages > 5)
+			if ($times == 1 && $total_pages > 7)
 			{
-				$pagination .= '<span class="page-dots"> ... </span>';
+				$pagination .= '<span class="page-dots"> … </span>';
 
 				// Display the last three pages
-				$times = $total_pages - 3;
-				$j += ($total_pages - 4) * $per_page;
+				$times = $total_pages - 5;
+				$j += ($total_pages - 6) * $per_page;
 			}
 			else if ($times < $total_pages)
 			{
