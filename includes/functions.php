@@ -2099,11 +2099,12 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $add
 		if ($end > $total_pages)
 		{
 			$start -= $end - $total_pages;
-			$start = max(1, $start);
 			$end = $total_pages;
 		}
-		if ($start != 1) $start++;
-		if ($end != $total_pages) $end--;
+		if ($start <= 2) $start = 1;
+		if ($end >= $total_pages - 1) $end = $total_pages;
+		if ($start != 1) $start += 2;
+		if ($end != $total_pages) $end -= 2;
 	}
 
 	$page_string = ($on_page == 1) ? '<strong>1</strong>' : '<a href="' . $base_url . '">1</a>';
