@@ -233,6 +233,7 @@ REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'opus');
 
 -- Disable acp_update
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';

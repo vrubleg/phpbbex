@@ -953,5 +953,6 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'opus');
 
 # POSTGRES COMMIT #
