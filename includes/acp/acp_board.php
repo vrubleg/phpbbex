@@ -282,7 +282,11 @@ class acp_board
 						'max_post_img_width'	=> array('lang' => 'MAX_POST_IMG_WIDTH',	'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 						'max_post_img_height'	=> array('lang' => 'MAX_POST_IMG_HEIGHT',	'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 
-						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+						'legend3'							=> 'EXTERNAL_LINKS',
+						'external_links_newwindow'			=> array('lang' => 'EXTERNAL_LINKS_NEWWINDOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'external_links_newwindow_exclude'	=> array('lang' => 'EXTERNAL_LINKS_EXCLUDE',	'validate' => 'string',	'type' => 'textarea:3:1000', 'explain' => true),
+
+						'legend4'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;
