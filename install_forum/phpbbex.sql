@@ -222,6 +222,10 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('hot_threshold', '
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
 
+-- External links
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
+
 -- New file extensions
 ALTER TABLE phpbb_extensions ADD UNIQUE INDEX extension (extension);
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (3, 'diff');
@@ -233,6 +237,7 @@ REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
 REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
+REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'opus');
 
 -- Disable acp_update
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';

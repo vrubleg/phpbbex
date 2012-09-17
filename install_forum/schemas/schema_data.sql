@@ -110,6 +110,8 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('email_package_size
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_confirm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_pm_icons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_post_confirm', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_http_auth', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_limit_post', '15');
@@ -527,7 +529,7 @@ INSERT INTO phpbb_styles (style_name, style_copyright, style_active, template_id
 INSERT INTO phpbb_styles_imageset (imageset_name, imageset_copyright, imageset_path) VALUES ('prosilver', '&copy; phpBB Group', 'prosilver');
 
 # -- phpbb_styles_imageset_data
-INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('site_logo', 'site_logo.gif', '', 67, 224, 1);
+INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('site_logo', 'site_logo.png', '', 67, 224, 1);
 INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('forum_link', 'forum_link.gif', '', 27, 27, 1);
 INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('forum_read', 'forum_read.gif', '', 27, 27, 1);
 INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('forum_read_locked', 'forum_read_locked.gif', '', 27, 27, 1);
@@ -953,5 +955,6 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (9, 'opus');
 
 # POSTGRES COMMIT #

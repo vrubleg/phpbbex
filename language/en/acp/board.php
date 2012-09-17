@@ -256,6 +256,11 @@ $lang = array_merge($lang, array(
 	'SMILIES_LIMIT_EXPLAIN'			=> 'Maximum number of smilies in a post. Set to 0 for unlimited smilies.',
 	'SMILIES_PER_PAGE'				=> 'Smilies per page',
 	'TOPICS_PER_PAGE'				=> 'Topics per page',
+	'EXTERNAL_LINKS'				=> 'External Links',
+	'EXTERNAL_LINKS_NEWWINDOW'		=> 'Open in new windows',
+	'EXTERNAL_LINKS_NOFOLLOW'		=> 'Add attribute rel="nofollow"',
+	'EXTERNAL_LINKS_EXCLUDE'		=> 'Exclude',
+	'EXTERNAL_LINKS_EXCLUDE_EXPLAIN'=> 'Domains or URLs which is not treated as external. Exceptions are placed on separate lines or can be separated by commas.',
 ));
 
 // Signature Settings

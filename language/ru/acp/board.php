@@ -256,6 +256,11 @@ $lang = array_merge($lang, array(
 	'SMILIES_LIMIT_EXPLAIN'			=> 'Максимальное количество смайликов в сообщении. Введите 0 для снятия ограничений.',
 	'SMILIES_PER_PAGE'				=> 'Смайликов на странице',
 	'TOPICS_PER_PAGE'				=> 'Тем на странице',
+	'EXTERNAL_LINKS'				=> 'Внешние ссылки',
+	'EXTERNAL_LINKS_NEWWINDOW'		=> 'Открывать в новом окне',
+	'EXTERNAL_LINKS_NOFOLLOW'		=> 'Добавлять атрибут rel="nofollow"',
+	'EXTERNAL_LINKS_EXCLUDE'		=> 'Исключения',
+	'EXTERNAL_LINKS_EXCLUDE_EXPLAIN'=> 'Домены или URL, которые не считаются внешними. Исключения размещаются на отдельных строках или могут быть разделены запятыми.',
 ));
 
 // Signature Settings
