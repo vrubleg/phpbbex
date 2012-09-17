@@ -55,7 +55,7 @@ class acp_board
 						'sitename'				=> array('lang' => 'SITE_NAME',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						'site_desc'				=> array('lang' => 'SITE_DESC',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						'site_keywords'			=> array('lang' => 'SITE_KEYWORDS',			'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
-						'copyright_notice'		=> array('lang' => 'COPYRIGHT_NOTICE',		'validate' => 'string',	'type' => 'textarea:1:1000', 'explain' => false),
+						'copyright_notice'		=> array('lang' => 'COPYRIGHT_NOTICE',		'validate' => 'string',	'type' => 'textarea:1:500', 'explain' => false),
 						'board_disable'			=> array('lang' => 'DISABLE_BOARD',			'validate' => 'bool',	'type' => 'custom', 'method' => 'board_disable', 'explain' => true),
 						'board_disable_msg'		=> false,
 						'default_lang'			=> array('lang' => 'DEFAULT_LANGUAGE',		'validate' => 'lang',	'type' => 'select', 'function' => 'language_select', 'params' => array('{CONFIG_VALUE}'), 'explain' => false),
@@ -583,6 +583,16 @@ class acp_board
 					enable_bitfield_column_flag(FORUMS_TABLE, 'forum_flags', log(FORUM_FLAG_QUICK_REPLY, 2));
 				}
 			}
+		}
+
+		// Copyright notice
+		if ($mode == 'settings' && $submit)
+		{
+			include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+			$message_parser = new parse_message(isset($this->new_config['copyright_notice']) ? $this->new_config['copyright_notice'] : '');
+			$message_parser->parse(true, false, false);
+			$message_parser->format_display(true, false, false);
+			set_config('copyright_notice_html', preg_replace('#[\s]+class="[\w\d\s]*"[\s]*#', ' ', $message_parser->message));
 		}
 
 		// Store news and exclude ids
