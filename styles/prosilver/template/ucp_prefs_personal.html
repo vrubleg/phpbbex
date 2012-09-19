@@ -9,6 +9,7 @@
 
 	<fieldset>
 	<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
+	<!-- IF not S_HIDE_ALL_EMAILS -->
 	<dl>
 		<dt><label for="viewemail0">{L_SHOW_EMAIL}:</label></dt>
 		<dd>
@@ -16,6 +17,7 @@
 			<label for="viewemail0"><input type="radio" name="viewemail" id="viewemail0" value="0"<!-- IF not S_VIEW_EMAIL --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 		</dd>
 	</dl>
+	<!-- ENDIF -->
 	<dl>
 		<dt><label for="massemail1">{L_ADMIN_EMAIL}:</label></dt>
 		<dd>
