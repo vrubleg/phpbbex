@@ -399,24 +399,22 @@ function submit_default_button(event, selector, class_name)
 */
 jQuery(function($)
 {
-	// Ctrl+Enter title for submit buttons in forms with textareas
-	$('form input[type=submit].default-submit-action').each(function()
-	{
-		if ($(this).parents('form').find('textarea').length > 0) $(this).attr('title', 'Ctrl+Enter');
-	});
+	// Ctrl+Enter and Alt+Enter titles for default and alternate submit buttons
+	$('form input[type=submit].default-submit-action').attr('title', 'Ctrl+Enter');
+	$('form input[type=submit].alternate-submit-action').attr('title', 'Alt+Enter');
 
-	// Enter and Ctrl+Enter handler
+	// Enter, Ctrl+Enter and Alt+Enter handler
 	$('form input[type=text], form input[type=password], form textarea').on('keypress', function (e)
 	{
-		var default_button = $(this).parents('form').find('input[type=submit].default-submit-action');
-		if (!default_button || default_button.length <= 0) return true;
+		var button = $(this).parents('form').find('input[type=submit].' + (e.altKey ? 'alternate' : 'default') + '-submit-action');
+		if (!button || button.length <= 0) return true;
 
 		var is_input = this.tagName.toLowerCase() != 'textarea';
 		if (is_input && phpbb_check_key(e)) return true;
 
-		if ((e.which == 13 || e.which == 10) && (is_input || e.ctrlKey))
+		if ((e.which == 13 || e.which == 10) && (is_input || e.ctrlKey || e.altKey))
 		{
-			default_button.focus().click();
+			button.focus().click();
 			return false;
 		}
 
