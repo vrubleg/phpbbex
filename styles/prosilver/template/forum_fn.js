@@ -399,19 +399,24 @@ function submit_default_button(event, selector, class_name)
 */
 jQuery(function($)
 {
-	jQuery('form input[type=text], form input[type=password], form textarea').live('keypress', function (e)
+	// Ctrl+Enter title for submit buttons in forms with textareas
+	$('form input[type=submit].default-submit-action').each(function()
 	{
-		var default_button = jQuery(this).parents('form').find('input[type=submit].default-submit-action');
-		
-		if (!default_button || default_button.length <= 0)
-			return true;
+		if ($(this).parents('form').find('textarea').length > 0) $(this).attr('title', 'Ctrl+Enter');
+	});
 
-		if (phpbb_check_key(e))
-			return true;
+	// Enter and Ctrl+Enter handler
+	$('form input[type=text], form input[type=password], form textarea').on('keypress', function (e)
+	{
+		var default_button = $(this).parents('form').find('input[type=submit].default-submit-action');
+		if (!default_button || default_button.length <= 0) return true;
 
-		if ((e.which == 13 || e.which == 10) && (this.tagName.toLowerCase() != 'textarea' || e.ctrlKey))
+		var is_input = this.tagName.toLowerCase() != 'textarea';
+		if (is_input && phpbb_check_key(e)) return true;
+
+		if ((e.which == 13 || e.which == 10) && (is_input || e.ctrlKey))
 		{
-			default_button.click();
+			default_button.focus().click();
 			return false;
 		}
 
