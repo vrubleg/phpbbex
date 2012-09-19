@@ -232,12 +232,10 @@ jQuery(function($)
 			<!-- ENDIF -->
 
 			<!-- IF postrow.S_DISPLAY_NOTICE --><div class="rules">{L_DOWNLOAD_NOTICE}</div><!-- ENDIF -->
-			<!-- IF postrow.EDITED_MESSAGE or postrow.EDIT_REASON or postrow.BUMPED_MESSAGE -->
+			<!-- IF postrow.EDITED_MESSAGE or postrow.EDIT_REASON -->
 				<div class="notice">{postrow.EDITED_MESSAGE}
 					<!-- IF postrow.EDITED_MESSAGE and postrow.EDIT_REASON --><br /><!-- ENDIF -->
 					<!-- IF postrow.EDIT_REASON --><strong>{L_REASON}:</strong> <em>{postrow.EDIT_REASON}</em><!-- ENDIF -->
-					<!-- IF postrow.EDIT_REASON and postrow.BUMPED_MESSAGE --><br /><!-- ENDIF -->
-					<!-- IF postrow.BUMPED_MESSAGE -->{postrow.BUMPED_MESSAGE}<!-- ENDIF -->
 				</div>
 			<!-- ENDIF -->
 			<!-- IF postrow.SIGNATURE --><div id="sig{postrow.POST_ID}" class="signature">{postrow.SIGNATURE}</div><!-- ENDIF -->
@@ -310,9 +308,18 @@ jQuery(function($)
 
 		<span class="corners-bottom"><span></span></span></div>
 	</div>
-
 	<hr class="divider" />
+	<!-- IF postrow.S_ROW_COUNT is odd --><!-- DEFINE $NEXT_BG = 'bg2' --><!-- ELSE --><!-- DEFINE $NEXT_BG = 'bg1' --><!-- ENDIF -->
 <!-- END postrow -->
+
+<!-- IF BUMPED_MESSAGE -->
+	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post {$NEXT_BG}">
+		<div class="inner"><span class="corners-top"><span></span></span>
+			{BUMPED_MESSAGE}
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<hr class="divider" />
+<!-- ENDIF -->
 
 <!-- IF S_NUM_POSTS > 1 or PREVIOUS_PAGE -->
 	<form id="viewtopic" method="post" action="{S_TOPIC_ACTION}">
