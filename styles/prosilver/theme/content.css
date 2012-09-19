@@ -266,6 +266,7 @@ div[class].topic-actions {
 
 .postbody .content img, .postbody .signature img {
 	max-width: 100%;
+	vertical-align: bottom;
 }
 
 /* Topic review panel
