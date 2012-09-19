@@ -145,6 +145,7 @@ class ucp_prefs
 					'S_NOTIFY_EMAIL'	=> ($data['notifymethod'] == NOTIFY_EMAIL) ? true : false,
 					'S_NOTIFY_IM'		=> ($data['notifymethod'] == NOTIFY_IM) ? true : false,
 					'S_NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH) ? true : false,
+					'S_HIDE_ALL_EMAILS'	=> $config['board_hide_emails'],
 					'S_VIEW_EMAIL'		=> $data['viewemail'],
 					'S_MASS_EMAIL'		=> $data['massemail'],
 					'S_ALLOW_PM'		=> $data['allowpm'],

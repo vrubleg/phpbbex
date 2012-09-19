@@ -284,12 +284,10 @@ a.topictitle:active {
 /* Post body links */
 .postlink {
 	color: #368AD2;
-	border-bottom-color: #368AD2;
 }
 
 .postlink:visited {
 	color: #5D8FBD;
-	border-bottom-color: #5D8FBD;
 }
 
 .postlink:active {

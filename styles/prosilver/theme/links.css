@@ -81,10 +81,8 @@ a.topictitle:active {
 
 /* Post body links */
 .postlink {
-	text-decoration: none;
+	text-decoration: underline !important;
 	color: #d2d2d2;
-	border-bottom: 1px solid #d2d2d2;
-	padding-bottom: 0;
 }
 
 /* .postlink:visited { color: #bdbdbd; } */
@@ -95,7 +93,7 @@ a.topictitle:active {
 
 .postlink:hover {
 	background-color: #f6f6f6;
-	text-decoration: none;
+	text-decoration: underline !important;
 	color: #404040;
 }
 

@@ -212,7 +212,7 @@ function bump_topic_allowed($forum_id, $topic_bumped, $last_post_time, $topic_po
 	global $config, $auth, $user;
 
 	// Check permission and make sure the last post was not already bumped
-	if (!$auth->acl_get('f_bump', $forum_id) || $topic_bumped)
+	if (!$auth->acl_get('f_bump', $forum_id))
 	{
 		return false;
 	}
