@@ -222,7 +222,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('hot_threshold', '
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('board_hide_emails', '0');
-UPDATE `phpbb_users` SET user_allow_viewemail = 0;
+UPDATE phpbb_users SET user_allow_viewemail = 0;
 
 -- External links
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
