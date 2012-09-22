@@ -11,9 +11,7 @@
 <meta name="description" content="{SITE_DESCRIPTION}" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
 {META}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-<script type="text/javascript" src="{T_TEMPLATE_PATH}/jquery.splash.js"></script>
-<title><!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF --><!-- IF PAGE_TITLE -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}</title>
+<title><!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF --><!-- IF PAGE_TITLE and not S_ON_INDEX -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}<!-- IF S_ON_INDEX and SITE_DESCRIPTION --> - {SITE_DESCRIPTION}<!-- ENDIF --></title>
 <!-- IF U_CANONICAL --><link rel="canonical" href="{U_CANONICAL}" /><!-- ENDIF -->
 <!-- IF S_ENABLE_FEEDS -->
 	<!-- IF S_ENABLE_FEEDS_OVERALL --><link rel="alternate" type="application/atom+xml" title="{L_FEED_OVERALL}" href="{U_FEED}" /><!-- ENDIF -->
@@ -25,6 +23,19 @@
 	<!-- IF S_ENABLE_FEEDS_TOPIC and S_TOPIC_ID --><link rel="alternate" type="application/atom+xml" title="{L_TOPIC} - {TOPIC_TITLE}" href="{U_FEED}?f={S_FORUM_ID}&amp;t={S_TOPIC_ID}" /><!-- ENDIF -->
 <!-- ENDIF -->
 
+<link href="{T_THEME_PATH}/print.css" rel="stylesheet" type="text/css" media="print" title="printonly" />
+<link href="{T_STYLESHEET_LINK}" rel="stylesheet" type="text/css" media="screen, projection" />
+
+<style type="text/css" media="screen, projection">
+#wrap { min-width: <!-- IF STYLE_MIN_WIDTH > 875 -->{STYLE_MIN_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- IF STYLE_MAX_WIDTH --> max-width: <!-- IF STYLE_MAX_WIDTH > 875 -->{STYLE_MAX_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- ENDIF --> }
+<!-- IF STYLE_AUTO_NEW_YEAR and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) -->
+.headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.gif"); }
+.forabg, .forumbg { background-image: url("{T_THEME_PATH}/images/bg_list_snow.gif"); }
+<!-- ENDIF -->
+</style>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="{T_TEMPLATE_PATH}/jquery.splash.js"></script>
 <script type="text/javascript">
 // <![CDATA[
 	var jump_page = '{LA_JUMP_PAGE}:';
@@ -70,22 +81,11 @@
 // ]]>
 </script>
 <script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/forum_fn.js"></script>
-
-<link href="{T_THEME_PATH}/print.css" rel="stylesheet" type="text/css" media="print" title="printonly" />
-<link href="{T_STYLESHEET_LINK}" rel="stylesheet" type="text/css" media="screen, projection" />
-
-<style type="text/css" media="screen, projection">
-#wrap { min-width: <!-- IF STYLE_MIN_WIDTH > 875 -->{STYLE_MIN_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- IF STYLE_MAX_WIDTH --> max-width: <!-- IF STYLE_MAX_WIDTH > 875 -->{STYLE_MAX_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- ENDIF --> }
-<!-- IF STYLE_AUTO_NEW_YEAR and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) -->
-.headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.gif"); }
-.forabg, .forumbg { background-image: url("{T_THEME_PATH}/images/bg_list_snow.gif"); }
-<!-- ENDIF -->
-</style>
+<!--[if lte IE 7]><script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script><![endif]-->
 
 </head>
 
 <body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> mp-on-left<!-- ENDIF -->">
-<!--[if lte IE 7]><script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script><![endif]-->
 <div id="wrap"<!-- IF not S_OUTLINKS --> style="padding-top: 10px;"<!-- ENDIF -->>
 	<a id="top" name="top" accesskey="t"></a>
 	<!-- IF S_OUTLINKS -->
@@ -113,7 +113,7 @@
 			<div class="inner"><span class="corners-top"><span></span></span>
 
 			<div id="site-description">
-				<a href="{U_INDEX}" title="{SITENAME} - {SITE_DESCRIPTION}" id="logo">{SITE_LOGO_IMG}</a>
+				<a href="{U_INDEX}" title="{SITENAME}<!-- IF SITE_DESCRIPTION --> - {SITE_DESCRIPTION}<!-- ENDIF -->" id="logo">{SITE_LOGO_IMG}</a>
 				<!-- IF STYLE_SHOW_SITENAME_IN_HEADERBAR -->
 				<h1>{SITENAME}</h1>
 				<p>{SITE_DESCRIPTION}</p>
