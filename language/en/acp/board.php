@@ -94,6 +94,7 @@ $lang = array_merge($lang, array(
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
 	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
+	'SOCIAL_MEDIA_COVER_URL'			=> 'Path to social media cover',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Profile',
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',
@@ -579,7 +580,7 @@ $lang = array_merge($lang, array(
 	'ADMIN_EMAIL_EXPLAIN'			=> 'This will be used as the return address on all e-mails, the technical contact e-mail address. It will always be used as the <samp>Return-Path</samp> and <samp>Sender</samp> address in e-mails.',
 	'BOARD_EMAIL_FORM'				=> 'Users send e-mail via board',
 	'BOARD_EMAIL_FORM_EXPLAIN'		=> 'Instead of showing the users e-mail address users are able to send e-mails via the board.',
-	'BOARD_HIDE_EMAILS'				=> 'Hide e-mail addresses',
+	'BOARD_HIDE_EMAILS'				=> 'Hide e-mail addresses of all users',
 	'BOARD_HIDE_EMAILS_EXPLAIN'		=> 'This function keeps e-mail addresses completely private.',
 	'CONTACT_EMAIL'					=> 'Contact e-mail address',
 	'CONTACT_EMAIL_EXPLAIN'			=> 'This address will be used whenever a specific contact point is needed, e.g. spam, error output, etc. It will always be used as the <samp>From</samp> and <samp>Reply-To</samp> address in e-mails.',

@@ -140,6 +140,9 @@ if (class_exists('phpbb_gallery_integration'))
 
 // Assign index specific vars
 $template->assign_vars(array(
+	'S_ON_INDEX'	=> true,
+	'U_CANONICAL'	=> generate_board_url() . '/',
+
 	'TOTAL_POSTS'	=> sprintf($user->lang[$l_total_post_s], $total_posts),
 	'TOTAL_TOPICS'	=> sprintf($user->lang[$l_total_topic_s], $total_topics),
 	'TOTAL_USERS'	=> sprintf($user->lang[$l_total_user_s], $total_users),
@@ -156,7 +159,6 @@ $template->assign_vars(array(
 	'S_LOGIN_ACTION'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=login'),
 	'S_DISPLAY_BIRTHDAY_LIST'	=> ($config['load_birthdays']) ? true : false,
 
-	'U_CANONICAL'	=> generate_board_url() . '/',
 	'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}index.$phpEx", 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 ));
 

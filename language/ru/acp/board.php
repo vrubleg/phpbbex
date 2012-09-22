@@ -94,6 +94,7 @@ $lang = array_merge($lang, array(
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Отображать кнопки RSS в списке форумов',
 	'STYLE_AUTO_NEW_YEAR'				=> 'Зимний стиль заголовков в декабре, январе и феврале',
+	'SOCIAL_MEDIA_COVER_URL'			=> 'Путь к обложке для социальных сетей',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Отображение профиля',
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Отображение минипрофиля',
@@ -579,7 +580,7 @@ $lang = array_merge($lang, array(
 	'ADMIN_EMAIL_EXPLAIN'			=> 'Этот адрес будет использован для возврата всех email-сообщений как email-адрес для технических контактов. Он всегда будет использоваться в качестве адресов <samp>Return-Path</samp> и <samp>Sender</samp> в email-сообщениях.',
 	'BOARD_EMAIL_FORM'				=> 'Рассылка email-сообщений через конференцию',
 	'BOARD_EMAIL_FORM_EXPLAIN'		=> 'Пользователи смогут отправлять email-сообщения через конференцию вместо их обычной отправки.',
-	'BOARD_HIDE_EMAILS'				=> 'Скрывать email-адреса',
+	'BOARD_HIDE_EMAILS'				=> 'Скрывать email-адреса всех пользователей',
 	'BOARD_HIDE_EMAILS_EXPLAIN'		=> 'Эта функция полностью сохраняет в тайне email-адреса.',
 	'CONTACT_EMAIL'					=> 'Контактный email-адрес',
 	'CONTACT_EMAIL_EXPLAIN'			=> 'Этот адрес будет использоваться при каждой необходимости контакта, например, в случае спама, ошибок и т. п. Он всегда будет использоваться в качестве адресов <samp>From</samp> и <samp>Reply-To</samp> в email-сообщениях.',
