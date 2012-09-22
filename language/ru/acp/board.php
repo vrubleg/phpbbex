@@ -94,6 +94,7 @@ $lang = array_merge($lang, array(
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Отображать кнопки RSS в списке форумов',
 	'STYLE_AUTO_NEW_YEAR'				=> 'Зимний стиль заголовков в декабре, январе и феврале',
+	'SOCIAL_MEDIA_COVER_URL'			=> 'Путь к обложке для социальных сетей',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Отображение профиля',
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Отображение минипрофиля',

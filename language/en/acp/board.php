@@ -94,6 +94,7 @@ $lang = array_merge($lang, array(
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
 	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
+	'SOCIAL_MEDIA_COVER_URL'			=> 'Path to social media cover',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Profile',
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',

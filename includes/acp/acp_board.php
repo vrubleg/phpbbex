@@ -135,9 +135,10 @@ class acp_board
 						'style_min_width'					=> array('lang' => 'STYLE_MIN_WIDTH',					'validate' => 'int',	'type' => 'text:10:10', 'explain' => false, 'append' => ' ' . $user->lang['PIXEL']),
 						'style_max_width'					=> array('lang' => 'STYLE_MAX_WIDTH',					'validate' => 'int',	'type' => 'text:10:10', 'explain' => false, 'append' => ' ' . $user->lang['PIXEL']),
 						'style_show_sitename_in_headerbar'	=> array('lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'style_show_social_buttons'			=> array('lang' => 'STYLE_SHOW_SOCIAL_BUTTONS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_show_feeds_in_forumlist'		=> array('lang' => 'STYLE_SHOW_FEEDS_IN_FORUMLIST',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_auto_new_year'				=> array('lang' => 'STYLE_AUTO_NEW_YEAR',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_show_social_buttons'			=> array('lang' => 'STYLE_SHOW_SOCIAL_BUTTONS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'social_media_cover_url'			=> array('lang' => 'SOCIAL_MEDIA_COVER_URL',			'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 
 						'legend2'							=> 'STYLE_SETTINGS_MINIPROFILE',
 						'style_mp_on_left'					=> array('lang' => 'STYLE_MP_ON_LEFT',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
