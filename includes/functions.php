@@ -4848,7 +4848,7 @@ function page_footer($run_cron = true)
 		}
 	}
 
-	$powered_by = POWERED_BY;
+	$powered_by = defined('POWERED_BY_ALT') ? POWERED_BY_ALT : POWERED_BY;
 	if (!empty($config['external_links_newwindow'])) $powered_by = str_replace('<a ', '<a target="_blank" ', $powered_by);
 	if (!empty($config['external_links_nofollow']))  $powered_by = str_replace('<a ', '<a rel="nofollow" ', $powered_by);
 
