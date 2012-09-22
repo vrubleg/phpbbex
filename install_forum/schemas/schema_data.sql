@@ -92,7 +92,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('cookie_secure', '0
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('coppa_enable', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('coppa_fax', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('coppa_mail', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', 'Powered by {POWERED_BY}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('database_gc', '604800');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('dbms_version', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');
@@ -290,8 +290,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_min_width', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_max_width', '1280');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_auto_new_year', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');

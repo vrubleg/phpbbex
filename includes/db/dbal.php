@@ -827,7 +827,7 @@ class dbal
 							</div>
 						</div>
 						<div id="page-footer">
-							Powered by <a href="http://www.phpbb.com/">phpBB</a> &copy; 2012 phpBB Group, <a href="http://phpbbex.com/">phpBBex</a> &copy; 2012 Evgeny Vrublevsky
+							Powered by ' . POWERED_BY . '
 						</div>
 					</div>
 					</body>

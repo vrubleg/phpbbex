@@ -348,6 +348,7 @@ class module
 			'L_SKIP'				=> $lang['SKIP'],
 			'PAGE_TITLE'			=> $this->get_page_title(),
 			'T_IMAGE_PATH'			=> $phpbb_root_path . 'adm/images/',
+			'CREDIT_LINE'			=> sprintf($lang['POWERED_BY'], POWERED_BY),
 
 			'S_CONTENT_DIRECTION' 	=> $lang['DIRECTION'],
 			'S_CONTENT_FLOW_BEGIN'	=> ($lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
@@ -569,7 +570,7 @@ class module
 		echo '		</div>';
 		echo '	</div>';
 		echo '	<div id="page-footer">';
-		echo '		Powered by <a href="http://www.phpbb.com/" target="_blank">phpBB</a> &copy; 2012 phpBB Group, <a href="http://phpbbex.com/" target="_blank">phpBBex</a> &copy; 2012 Evgeny Vrublevsky';
+		echo '		Powered by ' . POWERED_BY;
 		echo '	</div>';
 		echo '</div>';
 		echo '</body>';

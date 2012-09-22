@@ -541,9 +541,17 @@ li.pagination {
 	line-height: 1.1em;
 }
 
-#counter {
-	float: right;
+.counters {
 	padding: 7px;
+	float: right;
+}
+
+.counters img {
+	vertical-align: bottom;
+}
+
+.navbar + .copyright {
+	text-align: center;
 }
 
 .small {

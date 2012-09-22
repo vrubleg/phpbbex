@@ -55,7 +55,6 @@ class acp_board
 						'sitename'				=> array('lang' => 'SITE_NAME',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						'site_desc'				=> array('lang' => 'SITE_DESC',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						'site_keywords'			=> array('lang' => 'SITE_KEYWORDS',			'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
-						'copyright_notice'		=> array('lang' => 'COPYRIGHT_NOTICE',		'validate' => 'string',	'type' => 'textarea:1:500', 'explain' => false),
 						'board_disable'			=> array('lang' => 'DISABLE_BOARD',			'validate' => 'bool',	'type' => 'custom', 'method' => 'board_disable', 'explain' => true),
 						'board_disable_msg'		=> false,
 						'default_lang'			=> array('lang' => 'DEFAULT_LANGUAGE',		'validate' => 'lang',	'type' => 'select', 'function' => 'language_select', 'params' => array('{CONFIG_VALUE}'), 'explain' => false),
@@ -178,9 +177,13 @@ class acp_board
 						'style_ml_show_joined'				=> array('lang' => 'STYLE_MP_SHOW_JOINED',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_ml_show_last_active'			=> array('lang' => 'STYLE_MP_SHOW_LAST_ACTIVE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
-						'legend5'							=> 'STYLE_SETTINGS_COUNTERS',
-						'style_show_liveinternet_counter'	=> array('lang' => 'STYLE_SHOW_LIVEINTERNET_COUNTER',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'style_google_analytics_id'			=> array('lang' => 'STYLE_GOOGLE_ANALYTICS_ID',			'validate' => 'string',	'type' => 'text:20:255', 'explain' => false),
+						'legend5'							=> 'STYLE_SETTINGS_FOOTER',
+						'copyright_notice'					=> array('lang' => 'COPYRIGHT_NOTICE',					'validate' => 'html',	'type' => 'textarea:2:800', 'explain' => true),
+						'style_counter_html_1'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
+						'style_counter_html_2'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
+						'style_counter_html_3'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
+						'style_counter_html_4'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
+						'style_counter_html_5'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
 
 						'legend6'							=> 'ACP_SUBMIT_CHANGES',
 					)
@@ -584,16 +587,6 @@ class acp_board
 					enable_bitfield_column_flag(FORUMS_TABLE, 'forum_flags', log(FORUM_FLAG_QUICK_REPLY, 2));
 				}
 			}
-		}
-
-		// Copyright notice
-		if ($mode == 'settings' && $submit)
-		{
-			include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
-			$message_parser = new parse_message(isset($this->new_config['copyright_notice']) ? $this->new_config['copyright_notice'] : '');
-			$message_parser->parse(true, false, false);
-			$message_parser->format_display(true, false, false);
-			set_config('copyright_notice_html', preg_replace('#[\s]+class="[\w\d\s]*"[\s]*#', ' ', $message_parser->message));
 		}
 
 		// Store news and exclude ids

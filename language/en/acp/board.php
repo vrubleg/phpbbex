@@ -72,7 +72,6 @@ $lang = array_merge($lang, array(
 	'SITE_DESC'						=> 'Site description',
 	'SITE_NAME'						=> 'Site name',
 	'SITE_KEYWORDS'					=> 'Site keywords',
-	'COPYRIGHT_NOTICE'				=> 'Copyright notice',
 	'SYSTEM_DST'					=> 'Enable Summer Time/<abbr title="Daylight Saving Time">DST</abbr>',
 	'SYSTEM_TIMEZONE'				=> 'Guest timezone',
 	'SYSTEM_TIMEZONE_EXPLAIN'			=> 'Timezone to use for displaying times to users who are not logged in (guests, bots). Logged in users set their timezone during registration and can change it in their user control panel.',
@@ -120,9 +119,10 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_WEBSITE'				=> 'Display user site',
 	'STYLE_MP_SHOW_LAST_ACTIVE'			=> 'Display user last active date',
 
-	'STYLE_SETTINGS_COUNTERS'			=> 'Counters',
-	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Display LiveInternet counter',
-	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Google Analytics ID',
+	'STYLE_SETTINGS_FOOTER'				=> 'Page footer',
+	'COPYRIGHT_NOTICE'					=> 'Copyrights (HTML)',
+	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'You have to use {POWERED_BY} placeholder or write custom phpBBex copyrights.',
+	'STYLE_COUNTER_HTML'				=> 'Counter code (HTML)',
 ));
 
 // Board Features
