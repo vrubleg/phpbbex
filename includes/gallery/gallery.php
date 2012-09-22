@@ -114,7 +114,7 @@ class phpbb_gallery
 			self::init_popup();
 		}
 
-		define('POWERED_BY_ALT', 'Powered by <a href="http://www.flying-bits.org/">phpBB Gallery</a> © 2009 nickvergessen');
+		define('POWERED_BY_ALT', '<a href="http://www.flying-bits.org/">phpBB Gallery</a> © 2009 nickvergessen');
 
 		$template->assign_vars(array(
 			'S_IN_GALLERY'					=> true,
