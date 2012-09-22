@@ -1026,7 +1026,7 @@ class install_install extends module
 
 			// Replace backslashes and doubled slashes (could happen on some proxy setups)
 			$name = str_replace(array('\\', '//', '/install'), '/', $name);
-			$data['script_path'] = trim(dirname($name));
+			$data['script_path'] = str_replace('\\', '/', trim(dirname($name)));
 		}
 
 		foreach ($this->advanced_config_options as $config_key => $vars)

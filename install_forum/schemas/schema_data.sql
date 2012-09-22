@@ -92,7 +92,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('cookie_secure', '0
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('coppa_enable', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('coppa_fax', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('coppa_mail', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', 'Powered by {POWERED_BY}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('database_gc', '604800');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('dbms_version', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');

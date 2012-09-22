@@ -545,6 +545,10 @@ li.pagination {
 	padding: 7px;
 }
 
+.counters img {
+	vertical-align: bottom;
+}
+
 .right-box + .copyright {
 	text-align: left;
 }

@@ -4569,7 +4569,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'SITENAME'						=> $config['sitename'],
 		'SITE_DESCRIPTION'				=> $config['site_desc'],
 		'SITE_KEYWORDS'					=> $config['site_keywords'],
-		'COPYRIGHT_NOTICE'				=> isset($config['copyright_notice_html']) ? $config['copyright_notice_html'] : nl2br($config['copyright_notice']),
 		'PAGE_TITLE'					=> $page_title,
 		'SCRIPT_NAME'					=> str_replace('.' . $phpEx, '', $user->page['page_name']),
 		'LAST_VISIT_DATE'				=> sprintf($user->lang['YOU_LAST_VISIT'], $s_last_visit),
@@ -4849,10 +4848,25 @@ function page_footer($run_cron = true)
 		}
 	}
 
+	$powered_by = POWERED_BY;
+	if (!empty($config['external_links_newwindow'])) $powered_by = str_replace('<a ', '<a target="_blank" ', $powered_by);
+	if (!empty($config['external_links_nofollow']))  $powered_by = str_replace('<a ', '<a rel="nofollow" ', $powered_by);
+
+	$copyright = $config['copyright_notice'];
+	if (strpos($copyright, '{POWERED_BY}') === false && stripos($copyright, 'phpBBex') === false)
+	{
+		$copyright .= "\n" . $user->lang('POWERED_BY', $powered_by);
+	}
+	else
+	{
+		$copyright = str_replace('{POWERED_BY}', $powered_by, $copyright);
+	}
+
 	$template->assign_vars(array(
 		'DEBUG_OUTPUT'			=> (defined('DEBUG')) ? $debug_output : '',
 		'TRANSLATION_INFO'		=> (!empty($user->lang['TRANSLATION_INFO'])) ? $user->lang['TRANSLATION_INFO'] : '',
-		'CREDIT_LINE'			=> $user->lang('POWERED_BY', '<a href="http://www.phpbb.com/">phpBB</a> &copy; 2012 phpBB Group, <a href="http://phpbbex.com/">phpBBex</a> &copy; 2012 Evgeny Vrublevsky'),
+		'CREDIT_LINE'			=> $user->lang('POWERED_BY', $powered_by),
+		'COPYRIGHT_NOTICE'		=> nl2br(trim($copyright)),
 
 		'U_ACP' => ($auth->acl_get('a_') && !empty($user->data['is_registered'])) ? append_sid("{$phpbb_root_path}adm/index.$phpEx", false, true, $user->session_id) : '')
 	);

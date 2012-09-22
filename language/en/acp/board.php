@@ -120,8 +120,9 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_LAST_ACTIVE'			=> 'Display user last active date',
 
 	'STYLE_SETTINGS_FOOTER'				=> 'Page footer',
-	'COPYRIGHT_NOTICE'					=> 'Copyright notice',
-	'STYLE_COUNTER_HTML'				=> 'Counter HTML code',
+	'COPYRIGHT_NOTICE'					=> 'Copyrights (HTML)',
+	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'You have to use {POWERED_BY} placeholder or write custom phpBBex copyrights.',
+	'STYLE_COUNTER_HTML'				=> 'Counter code (HTML)',
 ));
 
 // Board Features

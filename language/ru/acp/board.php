@@ -120,8 +120,9 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_LAST_ACTIVE'			=> 'Отображать дату последнего посещения',
 
 	'STYLE_SETTINGS_FOOTER'				=> 'Нижняя часть страницы',
-	'COPYRIGHT_NOTICE'					=> 'Уведомление об авторских правах',
-	'STYLE_COUNTER_HTML'				=> 'HTML код счётчика',
+	'COPYRIGHT_NOTICE'					=> 'Авторские права (HTML)',
+	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'Не забудьте вставить метку {POWERED_BY} либо указать информацию о phpBBex.',
+	'STYLE_COUNTER_HTML'				=> 'Код счётчика (HTML)',
 ));
 
 // Board Features

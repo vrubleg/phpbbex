@@ -59,7 +59,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post_options', '20');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', 'Powered by {POWERED_BY}');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_enable', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
@@ -251,7 +251,7 @@ DELETE FROM phpbb_bots WHERE bot_name="Aport [Bot]";
 UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$" AND user_skype != "";
 
 -- Remove obsolete options
-DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id');
+DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.4.0');

@@ -518,7 +518,7 @@ if (function_exists('exit_handler'))
 */
 function _print_footer()
 {
-	echo <<<EOF
+	echo '
 					</div>
 				</div>
 			<span class="corners-bottom"><span></span></span>
@@ -527,13 +527,12 @@ function _print_footer()
 	</div>
 
 	<div id="page-footer">
-		Powered by <a href="http://www.phpbb.com/" target="_blank">phpBB</a> &copy; 2012 phpBB Group, <a href="http://phpbbex.com/" target="_blank">phpBBex</a> &copy; 2012 Evgeny Vrublevsky
+		Powered by ' . POWERED_BY . '
 	</div>
 </div>
 
 </body>
-</html>
-EOF;
+</html>';
 }
 
 /**
