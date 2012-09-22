@@ -13,31 +13,8 @@
 		<span class="corners-bottom"><span></span></span></div>
 	</div>
 
-	<div id="counter"></div>
-
-	<!-- IF STYLE_SHOW_LIVEINTERNET_COUNTER -->
-	<script type="text/javascript">
-	jQuery(function($)
-	{
-		setTimeout(function()
-		{
-			$('#counter').append('<a target="_blank" href="http://liveinternet.ru/stat/'+document.location.host+'/index.html?id=5;id=8;id=7;period=week"><img height="31" width="88" src="http://counter.yadro.ru/hit?t21.1;r'+escape(document.referrer)+((typeof(screen)=='undefined')?'':';s'+screen.width+'*'+screen.height+'*'+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+';'+Math.random()+'" border="0" title="Показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня" /></a>');
-		}, 500);
-	});
-	</script>
-	<!-- ENDIF -->
-
-	<!-- IF STYLE_GOOGLE_ANALYTICS_ID -->
-	<script type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', '{STYLE_GOOGLE_ANALYTICS_ID}']);
-	_gaq.push(['_trackPageview']);
-	(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
-	</script>
+	<!-- IF STYLE_COUNTER_HTML_1 or STYLE_COUNTER_HTML_2 or STYLE_COUNTER_HTML_3 or STYLE_COUNTER_HTML_4 or STYLE_COUNTER_HTML_5 -->
+	<div class="counters right-box">{STYLE_COUNTER_HTML_1} {STYLE_COUNTER_HTML_2} {STYLE_COUNTER_HTML_3} {STYLE_COUNTER_HTML_4} {STYLE_COUNTER_HTML_5}</div>
 	<!-- ENDIF -->
 
 	<div class="copyright">

@@ -141,8 +141,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_min_width',
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_max_width', '1280');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_liveinternet_counter', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_google_analytics_id', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_auto_new_year', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');
@@ -246,11 +244,14 @@ UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND
 
 -- Update YandexBot UA and remove Aport [Bot]
 UPDATE phpbb_bots SET bot_agent = "YandexBot/" WHERE bot_agent = "Yandex/";
-DELETE FROM `phpbb_users` WHERE username="Aport [Bot]";
-DELETE FROM `phpbb_bots` WHERE bot_name="Aport [Bot]";
+DELETE FROM phpbb_users WHERE username="Aport [Bot]";
+DELETE FROM phpbb_bots WHERE bot_name="Aport [Bot]";
 
 -- Remove invalid skypenames
 UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$" AND user_skype != "";
+
+-- Remove obsolete options
+DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.4.0');

@@ -402,6 +402,8 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 		// Validate a bit. ;) (0 = type, 1 = min, 2= max)
 		switch ($validator[$type])
 		{
+			case 'html':
+				$cfg_array[$config_name] = htmlspecialchars_decode($cfg_array[$config_name]);
 			case 'string':
 				$length = utf8_strlen($cfg_array[$config_name]);
 

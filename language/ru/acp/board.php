@@ -72,7 +72,6 @@ $lang = array_merge($lang, array(
 	'SITE_DESC'						=> 'Описание конференции',
 	'SITE_NAME'						=> 'Название конференции',
 	'SITE_KEYWORDS'					=> 'Ключевые слова конференции',
-	'COPYRIGHT_NOTICE'				=> 'Уведомление об авторских правах',
 	'SYSTEM_DST'					=> 'Сейчас действует летнее время (<abbr title="Летнее время">DST</abbr>)',
 	'SYSTEM_TIMEZONE'				=> 'Часовой пояс для гостей',
 	'SYSTEM_TIMEZONE_EXPLAIN'		=> 'Часовой пояс для незарегистрированных пользователей.',
@@ -120,9 +119,9 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_WEBSITE'				=> 'Отображать ссылку на сайт',
 	'STYLE_MP_SHOW_LAST_ACTIVE'			=> 'Отображать дату последнего посещения',
 
-	'STYLE_SETTINGS_COUNTERS'			=> 'Счётчики',
-	'STYLE_SHOW_LIVEINTERNET_COUNTER'	=> 'Выводить счётчик LiveInternet',
-	'STYLE_GOOGLE_ANALYTICS_ID'			=> 'Идентификатор Google Analytics',
+	'STYLE_SETTINGS_FOOTER'				=> 'Нижняя часть страницы',
+	'COPYRIGHT_NOTICE'					=> 'Уведомление об авторских правах',
+	'STYLE_COUNTER_HTML'				=> 'HTML код счётчика',
 ));
 
 // Board Features

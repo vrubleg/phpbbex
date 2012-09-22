@@ -536,14 +536,17 @@ li.pagination {
 
 .copyright {
 	padding: 5px;
-	text-align: left;
+	text-align: center;
 	color: #555555;
 	line-height: 1.1em;
 }
 
-#counter {
-	float: right;
+.counters {
 	padding: 7px;
+}
+
+.right-box + .copyright {
+	text-align: left;
 }
 
 .small {
