@@ -536,7 +536,7 @@ li.pagination {
 
 .copyright {
 	padding: 5px;
-	text-align: center;
+	text-align: left;
 	color: #555555;
 	line-height: 1.1em;
 }
@@ -549,8 +549,8 @@ li.pagination {
 	vertical-align: bottom;
 }
 
-.right-box + .copyright {
-	text-align: left;
+.navbar + .copyright {
+	text-align: center;
 }
 
 .small {
