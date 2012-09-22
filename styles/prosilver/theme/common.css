@@ -543,6 +543,7 @@ li.pagination {
 
 .counters {
 	padding: 7px;
+	float: right;
 }
 
 .counters img {
