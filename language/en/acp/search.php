@@ -107,6 +107,9 @@ $lang = array_merge($lang, array(
 
 	'DEFAULT_SEARCH_TITLEONLY'				=> 'Search only in topic titles by default',
 	'DEFAULT_SEARCH_TITLEONLY_EXPLAIN'		=> 'Affects the global search and the search for a specific forum.',
+
+	'SEARCH_HIGHLIGHT_KEYWORDS'				=> 'Highlight keywords',
+	'SEARCH_HIGHLIGHT_KEYWORDS_EXPLAIN'		=> 'Creates links to viewtopic.php with hilit argument for found topics.',
 ));
 
 ?>

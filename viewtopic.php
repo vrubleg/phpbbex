@@ -48,7 +48,7 @@ $s_can_vote = false;
 /**
 * @todo normalize?
 */
-$hilit_words	= request_var('hilit', '', true);
+$hilit_words = empty($config['search_highlight_keywords']) ? '' : request_var('hilit', '', true);
 
 // Do we have a topic or post id?
 if (!$topic_id && !$post_id)

@@ -77,6 +77,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('search_highlight_keywords', '0');
 
 -- New phpBBex ACL rights
 REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
