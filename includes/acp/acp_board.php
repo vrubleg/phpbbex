@@ -178,12 +178,12 @@ class acp_board
 						'style_ml_show_last_active'			=> array('lang' => 'STYLE_MP_SHOW_LAST_ACTIVE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
 						'legend5'							=> 'STYLE_SETTINGS_FOOTER',
-						'copyright_notice'					=> array('lang' => 'COPYRIGHT_NOTICE',					'validate' => 'html',	'type' => 'textarea:2:800', 'explain' => true),
-						'style_counter_html_1'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
-						'style_counter_html_2'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
-						'style_counter_html_3'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
-						'style_counter_html_4'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
-						'style_counter_html_5'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
+						'copyright_notice'					=> array('lang' => 'COPYRIGHT_NOTICE',					'validate' => 'string',	'type' => 'htmlarea:2:800', 'explain' => true),
+						'style_counter_html_1'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
+						'style_counter_html_2'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
+						'style_counter_html_3'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
+						'style_counter_html_4'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
+						'style_counter_html_5'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
 
 						'legend6'							=> 'ACP_SUBMIT_CHANGES',
 					)
@@ -557,7 +557,7 @@ class acp_board
 		}
 
 		// We go through the display_vars to make sure no one is trying to set variables he/she is not allowed to...
-		foreach ($display_vars['vars'] as $config_name => $null)
+		foreach ($display_vars['vars'] as $config_name => $config_vars)
 		{
 			if (!isset($cfg_array[$config_name]) || strpos($config_name, 'legend') !== false)
 			{
@@ -569,7 +569,7 @@ class acp_board
 				continue;
 			}
 
-			$this->new_config[$config_name] = $config_value = $cfg_array[$config_name];
+			$this->new_config[$config_name] = $config_value = (isset($_REQUEST['config']) && strpos($config_vars['type'], 'html') === 0) ? htmlspecialchars_decode($cfg_array[$config_name]) : $cfg_array[$config_name];
 
 			if ($config_name == 'email_function_name')
 			{
