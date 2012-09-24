@@ -269,6 +269,9 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 		$new[$config_key] = '';
 	}
 
+	// Escape more dangerous symbols (we can't use htmlspecialchars to avoid double escaping)
+	$new[$config_key] = strtr($new[$config_key], array('<' => '&lt;', '>' => '&gt;', '"' => '&quot;'));
+
 	switch ($tpl_type[0])
 	{
 		case 'text':
