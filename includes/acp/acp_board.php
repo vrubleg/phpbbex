@@ -540,8 +540,25 @@ class acp_board
 		}
 
 		$this->new_config = $config;
-		$cfg_array = (isset($_REQUEST['config'])) ? utf8_normalize_nfc(request_var('config', array('' => ''), true)) : $this->new_config;
 		$error = array();
+
+		// Get configuration values and decode HTML special chars if type of value is HTML
+		$cfg_array = array();
+		if (!isset($_REQUEST['config']))
+		{
+			$cfg_array = $config;
+		}
+		else
+		{
+			$cfg_array = utf8_normalize_nfc(request_var('config', array('' => ''), true));
+			foreach ($display_vars['vars'] as $config_name => $config_vars)
+			{
+				if (isset($cfg_array[$config_name]) && strpos($config_vars['type'], 'html') === 0)
+				{
+					$cfg_array[$config_name] = htmlspecialchars_decode($cfg_array[$config_name]);
+				}
+			}
+		}
 
 		// We validate the complete config if whished
 		validate_config_vars($display_vars['vars'], $cfg_array, $error);
@@ -557,7 +574,7 @@ class acp_board
 		}
 
 		// We go through the display_vars to make sure no one is trying to set variables he/she is not allowed to...
-		foreach ($display_vars['vars'] as $config_name => $config_vars)
+		foreach ($display_vars['vars'] as $config_name => $null)
 		{
 			if (!isset($cfg_array[$config_name]) || strpos($config_name, 'legend') !== false)
 			{
@@ -569,7 +586,7 @@ class acp_board
 				continue;
 			}
 
-			$this->new_config[$config_name] = $config_value = (isset($_REQUEST['config']) && strpos($config_vars['type'], 'html') === 0) ? htmlspecialchars_decode($cfg_array[$config_name]) : $cfg_array[$config_name];
+			$this->new_config[$config_name] = $config_value = $cfg_array[$config_name];
 
 			if ($config_name == 'email_function_name')
 			{
