@@ -462,6 +462,8 @@ $lang = array_merge($lang, array(
 	'YES_READ_MARKING'				=> 'Enable server-side topic marking',
 	'YES_READ_MARKING_EXPLAIN'		=> 'Stores read/unread status information in the database rather than a cookie.',
 	'YES_UNREAD_SEARCH'				=> 'Enable search for unread posts',
+	'NO_TYPICAL_INFO_PAGES'			=> 'No typical informational pages',
+	'NO_TYPICAL_INFO_PAGES_EXPLAIN'	=> 'Redirect instantly after posting, voting, marking topics read, login or logout.',
 ));
 
 // Auth settings

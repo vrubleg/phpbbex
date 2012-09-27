@@ -61,6 +61,11 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		{
 			markread('all');
 
+			if (!empty($config['no_typical_info_pages']))
+			{
+				redirect($redirect);
+			}
+
 			trigger_error(
 				$user->lang['FORUMS_MARKED'] . '<br /><br />' .
 				sprintf($user->lang['RETURN_INDEX'], '<a href="' . $redirect . '">', '</a>')
@@ -284,6 +289,12 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			// Add 0 to forums array to mark global announcements correctly
 			$forum_ids[] = 0;
 			markread('topics', $forum_ids);
+
+			if (!empty($config['no_typical_info_pages']))
+			{
+				redirect($redirect);
+			}
+
 			$message = sprintf($user->lang['RETURN_FORUM'], '<a href="' . $redirect . '">', '</a>');
 			meta_refresh(3, $redirect);
 			trigger_error($user->lang['FORUMS_MARKED'] . '<br /><br />' . $message);

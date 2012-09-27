@@ -186,8 +186,11 @@ if ($mark_read == 'topics')
 		markread('topics', array($forum_id, 0));
 	}
 	$redirect_url = append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $forum_id);
+	if (!empty($config['no_typical_info_pages']))
+	{
+		redirect($redirect_url);
+	}
 	meta_refresh(3, $redirect_url);
-
 	trigger_error($user->lang['TOPICS_MARKED'] . '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . $redirect_url . '">', '</a>'));
 }
 

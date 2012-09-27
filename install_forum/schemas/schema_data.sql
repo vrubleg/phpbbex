@@ -226,6 +226,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('mime_triggers', 'b
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('new_member_post_limit', '3');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('new_member_group_default', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('no_sid', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('no_typical_info_pages', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_style', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');

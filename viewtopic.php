@@ -836,8 +836,11 @@ if (!empty($topic_data['poll_start']))
 		$db->sql_query($sql);
 
 		$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
-
-		meta_refresh(5, $redirect_url);
+		if (!empty($config['no_typical_info_pages']))
+		{
+			redirect($redirect_url);
+		}
+		meta_refresh(3, $redirect_url);
 		trigger_error($user->lang['VOTE_SUBMITTED'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>'));
 	}
 

@@ -279,6 +279,11 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		$redirect_url = "{$phpbb_root_path}viewtopic.$phpEx";
 		$redirect_url = append_sid($redirect_url, 'f=' . $forum_id . $params) . $add_anchor;
 
+		if (!empty($config['no_typical_info_pages']))
+		{
+			redirect($redirect_url);
+		}
+
 		meta_refresh(3, $redirect_url);
 
 		$message = (!$auth->acl_get('f_noapprove', $merge_post_data['forum_id']) && !$auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? 'POST_STORED_MOD' : 'POST_STORED';
