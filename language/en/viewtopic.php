@@ -95,7 +95,8 @@ $lang = array_merge($lang, array(
 	'RETURN_POST'			=> '%sReturn to the post%s',
 
 	'SHOW_QR'				=> 'Quick Reply',
-	'SUBMIT_VOTE'			=> 'Submit vote',
+	'SUBMIT_VOTE'			=> 'Vote',
+	'SUBMIT_REVOTE'			=> 'Revote',
 
 	'TOTAL_VOTES'			=> 'Total votes',
 

@@ -931,6 +931,7 @@ if (!empty($topic_data['poll_start']))
 
 	$template->assign_vars(array(
 		'POLL_QUESTION'		=> $topic_data['poll_title'],
+		'POLL_VOTED'		=> count($cur_voted_id) > 0,
 		'TOTAL_VOTES' 		=> $poll_total,
 		'POLL_LEFT_CAP_IMG'	=> $user->img('poll_left'),
 		'POLL_RIGHT_CAP_IMG'=> $user->img('poll_right'),

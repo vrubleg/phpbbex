@@ -96,6 +96,7 @@ $lang = array_merge($lang, array(
 
 	'SHOW_QR'				=> 'Быстрый ответ',
 	'SUBMIT_VOTE'			=> 'Проголосовать',
+	'SUBMIT_REVOTE'			=> 'Переголосовать',
 
 	'TOTAL_VOTES'			=> 'Всего голосов',
 
