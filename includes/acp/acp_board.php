@@ -268,8 +268,6 @@ class acp_board
 						'display_last_edited'	=> array('lang' => 'DISPLAY_LAST_EDITED',	'validate' => 'bool',		'type' => 'radio:yes_no', 'explain' => true),
 						'flood_interval'		=> array('lang' => 'FLOOD_INTERVAL',		'validate' => 'int:0',		'type' => 'text:3:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']),
 						'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',		'validate' => 'int',		'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
-						//'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',		'validate' => 'string',		'type' => 'text:5:255', 'explain' => true),
-						//'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',		'validate' => 'string',		'type' => 'text:5:255', 'explain' => true),
 						'bump_interval'			=> array('lang' => 'BUMP_INTERVAL',			'validate' => 'int:0',		'type' => 'custom', 'method' => 'bump_interval', 'explain' => true),
 						'topics_per_page'		=> array('lang' => 'TOPICS_PER_PAGE',		'validate' => 'int:1',		'type' => 'text:3:4', 'explain' => false),
 						'posts_per_page'		=> array('lang' => 'POSTS_PER_PAGE',		'validate' => 'int:1',		'type' => 'text:3:4', 'explain' => false),
@@ -289,10 +287,18 @@ class acp_board
 						'legend3'							=> 'EXTERNAL_LINKS',
 						'external_links_newwindow'			=> array('lang' => 'EXTERNAL_LINKS_NEWWINDOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'external_links_newwindow_exclude'	=> array('lang' => 'EXTERNAL_LINKS_EXCLUDE',	'validate' => 'string',	'type' => 'textarea:3:1000', 'explain' => true),
+						'external_links_nofollow'			=> array('lang' => 'EXTERNAL_LINKS_NOFOLLOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'external_links_nofollow_exclude'	=> array('lang' => 'EXTERNAL_LINKS_EXCLUDE',	'validate' => 'string',	'type' => 'textarea:3:1000', 'explain' => true),
 
 						'legend4'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
+				// No premium features
+				if (empty($config['premium_key']) || md5($config['premium_key']) != '9b3cf96285fd3149e5c2072c207d89b8')
+				{
+					unset($display_vars['vars']['external_links_nofollow']);
+					unset($display_vars['vars']['external_links_nofollow_exclude']);
+				}
 			break;
 
 			case 'signature':

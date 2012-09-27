@@ -790,16 +790,12 @@ $lang = array_merge($lang, array(
 $lang = array_merge($lang, array(
 	'MERGE_INTERVAL'				=> 'Merging posts interval',
 	'MERGE_INTERVAL_EXPLAIN'		=> 'Number of hours a messages from the user will be merged with his topic last message. Leave empty or 0 to disable merging.',
-	'MERGE_NO_TOPICS'				=> 'Topics without merging',
-	'MERGE_NO_TOPICS_EXPLAIN'		=> 'Set comma separated list of topics\'IDs where posts merging will be disabled.',
-	'MERGE_NO_FORUMS'				=> 'Forums without merging',
-	'MERGE_NO_FORUMS_EXPLAIN'		=> 'Set comma separated list of forums\'IDs where posts merging will be disabled.',
 ));
 
 // Out links
 $lang = array_merge($lang, array(
-	'ACP_OUTLINKS'			=> 'External links',
-	'ACP_OUTLINKS_EXPLAIN'	=> 'From this control panel you can add, edit, and remove external links.',
+	'ACP_OUTLINKS'			=> 'Top links',
+	'ACP_OUTLINKS_EXPLAIN'	=> 'From this control panel you can add, edit, and remove links in top menu.',
 	'TITLE'					=> 'Title',
 	'LINK'					=> 'URL',
 	'ADD_LINK'				=> 'Add link',
