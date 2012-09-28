@@ -97,6 +97,7 @@ $lang = array_merge($lang, array(
 	'SHOW_QR'				=> 'Quick Reply',
 	'SUBMIT_VOTE'			=> 'Vote',
 	'SUBMIT_REVOTE'			=> 'Revote',
+	'SUBMIT_UNVOTE'			=> 'Cancel vote',
 
 	'TOTAL_VOTES'			=> 'Total votes',
 
@@ -111,6 +112,7 @@ $lang = array_merge($lang, array(
 	'VIEW_UNREAD_POST'		=> 'First unread post',
 	'VISIT_WEBSITE'			=> 'WWW',
 	'VOTE_SUBMITTED'		=> 'Your vote has been cast.',
+	'VOTE_CANCELLED'		=> 'Your vote has been cancelled.',
 	'VOTE_CONVERTED'		=> 'Changing votes is not supported for converted polls.',
 
 ));

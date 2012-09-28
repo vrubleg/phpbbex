@@ -43,6 +43,7 @@ $sort_key	= request_var('sk', $default_sort_key);
 $sort_dir	= request_var('sd', $default_sort_dir);
 
 $update		= request_var('update', false);
+$unvote		= request_var('unvote', false);
 
 $s_can_vote = false;
 /**
@@ -747,19 +748,19 @@ if (!empty($topic_data['poll_start']))
 		($auth->acl_get('f_votechg', $forum_id) && $topic_data['poll_vote_change']))) ? true : false;
 	$s_display_results = (!$s_can_vote || ($s_can_vote && sizeof($cur_voted_id)) || $view == 'viewpoll') ? true : false;
 
-	if ($update && $s_can_vote)
+	if (($update || $unvote) && $s_can_vote)
 	{
 
-		if (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options'] || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
+		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options']) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
 		{
 			$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
 
 			meta_refresh(5, $redirect_url);
-			if (!sizeof($voted_id))
+			if (!$unvote && !sizeof($voted_id))
 			{
 				$message = 'NO_VOTE_OPTION';
 			}
-			else if (sizeof($voted_id) > $topic_data['poll_max_options'])
+			else if (!$unvote && sizeof($voted_id) > $topic_data['poll_max_options'])
 			{
 				$message = 'TOO_MANY_VOTE_OPTIONS';
 			}
@@ -774,6 +775,11 @@ if (!empty($topic_data['poll_start']))
 
 			$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>');
 			trigger_error($message);
+		}
+
+		if ($unvote)
+		{
+			$voted_id = array();
 		}
 
 		foreach ($voted_id as $option)
@@ -826,7 +832,7 @@ if (!empty($topic_data['poll_start']))
 
 		if ($user->data['user_id'] == ANONYMOUS && !$user->data['is_bot'])
 		{
-			$user->set_cookie('poll_' . $topic_id, implode(',', $voted_id), time() + 31536000);
+			$user->set_cookie('poll_' . $topic_id, implode(',', $voted_id), time() + 31536000 * ($unvote ? -1 : 1));
 		}
 
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
@@ -841,7 +847,7 @@ if (!empty($topic_data['poll_start']))
 			redirect($redirect_url);
 		}
 		meta_refresh(3, $redirect_url);
-		trigger_error($user->lang['VOTE_SUBMITTED'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>'));
+		trigger_error($user->lang[($unvote ? 'VOTE_CANCELLED' : 'VOTE_SUBMITTED')] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>'));
 	}
 
 	$poll_total = 0;

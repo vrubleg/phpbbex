@@ -97,6 +97,7 @@ $lang = array_merge($lang, array(
 	'SHOW_QR'				=> 'Быстрый ответ',
 	'SUBMIT_VOTE'			=> 'Проголосовать',
 	'SUBMIT_REVOTE'			=> 'Переголосовать',
+	'SUBMIT_UNVOTE'			=> 'Снять голос',
 
 	'TOTAL_VOTES'			=> 'Всего голосов',
 
@@ -111,6 +112,7 @@ $lang = array_merge($lang, array(
 	'VIEW_UNREAD_POST'		=> 'Первое новое сообщение',
 	'VISIT_WEBSITE'			=> 'WWW',
 	'VOTE_SUBMITTED'		=> 'Спасибо, ваш голос учтён.',
+	'VOTE_CANCELLED'		=> 'Ваш голос отменён.',
 	'VOTE_CONVERTED'		=> 'Изменение голосов в сконвертированных опросах не поддерживается.',
 
 ));
