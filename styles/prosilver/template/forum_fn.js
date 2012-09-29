@@ -394,11 +394,24 @@ function submit_default_button(event, selector, class_name)
 	return false;
 }
 
-/**
-* Apply onkeypress event for forcing default submit button on ENTER key press
-*/
 jQuery(function($)
 {
+	// Forms submitting indication
+	$('form input[type=submit]').on('click', function()
+	{
+		var button = this;
+		if ($(button).hasClass('sending')) return false;
+		$(this).parents('form').off('submit.sending').one('submit.sending', function(e)
+		{
+			if (e.isDefaultPrevented()) return;
+			$(button).addClass('sending');
+			setTimeout(function()
+			{
+				$(button).removeClass('sending');
+			}, 5000);
+		});
+	});
+
 	// Ctrl+Enter and Alt+Enter titles for default and alternate submit buttons
 	$('form input[type=submit].default-submit-action').attr('title', 'Ctrl+Enter');
 	$('form input[type=submit].alternate-submit-action').attr('title', 'Alt+Enter');

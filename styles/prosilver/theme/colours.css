@@ -922,8 +922,15 @@ fieldset.quick-login input.inputbox {
 
 a.button1, input.button1, input.button3, a.button2, input.button2, button {
 	color: #000;
-	background-color: #FAFAFA;
-	background-image: url("{T_THEME_PATH}/images/bg_button.gif");
+	background: #e6e6e6 url("{T_THEME_PATH}/images/bg_button.gif");
+}
+
+a.button1.sending, input.button1.sending, input.button3.sending, a.button2.sending, input.button2.sending, button.sending {
+	color: #666666 !important;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+	cursor: default !important;
+	border-color: #666666 !important;
+	background-position: 0 24px !important;
 }
 
 a.button1, input.button1 {
