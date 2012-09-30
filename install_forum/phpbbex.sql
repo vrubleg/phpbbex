@@ -206,10 +206,12 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbn
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_LETTER_NUM_SPACERS');
 -- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '43200');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '60');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('delete_time', '15');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_item_statistics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_overall', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('form_token_lifetime', '43200');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_tplcompile', '1');
