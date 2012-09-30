@@ -322,7 +322,7 @@ jQuery(function($)
 			setTimeout(function()
 			{
 				$(button).removeClass('sending');
-			}, 5000);
+			}, 15000);
 		});
 	});
 

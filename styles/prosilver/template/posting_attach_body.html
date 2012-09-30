@@ -16,12 +16,12 @@
 	{
 		$("#postform input[name=fileupload]").change(function()
 		{
-			if ($(this).val() == "") $("#filecomment_hidden").hide(); else $("#filecomment_hidden").show();
+			if ($(this).val() == "") $(".if_file_is_selected").hide(); else $(".if_file_is_selected").show();
 		});
 		$("#postform input[name=fileupload]").change();
 	});
 	</script>
-	<dl id="filecomment_hidden">
+	<dl class="if_file_is_selected">
 		<dt><label for="filecomment">{L_FILE_COMMENT}:</label></dt>
 		<dd><textarea name="filecomment" id="filecomment" rows="1" cols="40" class="inputbox">{FILE_COMMENT}</textarea></dd>
 	</dl>
@@ -39,7 +39,7 @@
 			<dd style="margin-top: 5px;">
 				<!-- IF S_INLINE_ATTACHMENT_OPTIONS --><input type="button" value="{L_PLACE_INLINE}" onclick="attach_inline({attach_row.ASSOC_INDEX}, '{attach_row.A_FILENAME}');" class="button2" />&nbsp; <!-- ENDIF -->
 				<input type="submit" name="delete_file[{attach_row.ASSOC_INDEX}]" value="{L_DELETE_FILE}" class="button2" />&nbsp; 
-				<input type="submit" name="update_file[{attach_row.ASSOC_INDEX}]" value="{L_UPDATE_FILE}" class="button2" />
+				<input type="submit" name="update_file[{attach_row.ASSOC_INDEX}]" value="{L_UPDATE_FILE}" class="button2 if_file_is_selected" />
 			</dd>
 		</dl>
 		{attach_row.S_HIDDEN}

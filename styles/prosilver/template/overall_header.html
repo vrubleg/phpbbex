@@ -114,9 +114,9 @@
 			<div class="inner"><span class="corners-top"><span></span></span>
 
 			<div id="site-description">
-				<a href="{U_INDEX}" title="{SITENAME}<!-- IF SITE_DESCRIPTION --> - {SITE_DESCRIPTION}<!-- ENDIF -->" id="logo">{SITE_LOGO_IMG}</a>
+				<!-- IF SITE_LOGO_IMG --><a href="{U_INDEX}" title="{SITENAME}<!-- IF SITE_DESCRIPTION --> - {SITE_DESCRIPTION}<!-- ENDIF -->" id="logo">{SITE_LOGO_IMG}</a><!-- ENDIF -->
 				<!-- IF STYLE_SHOW_SITENAME_IN_HEADERBAR -->
-				<h1>{SITENAME}</h1>
+				<h1><!-- IF SITE_LOGO_IMG -->{SITENAME}<!-- ELSE --><a href="{U_INDEX}">{SITENAME}</a><!-- ENDIF --></h1>
 				<p>{SITE_DESCRIPTION}</p>
 				<!-- ENDIF -->
 			</div>

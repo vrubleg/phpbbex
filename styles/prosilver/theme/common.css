@@ -150,6 +150,11 @@ a#logo:hover {
 	margin-right: 0;
 }
 
+#site-description h1 a {
+	text-decoration: none !important;
+	color: #fff !important;
+}
+
 /* Round cornered boxes and backgrounds
 ---------------------------------------- */
 .headerbar {
