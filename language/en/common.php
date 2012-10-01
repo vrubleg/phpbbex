@@ -947,10 +947,10 @@ $lang = array_merge($lang, array(
 	'PM_SENTBOX'				=> 'Sent messages',
 
 	// Memberlist filters
-	'ALL_USERS'				=> 'All users',
-	'ACTIVE_USERS'			=> 'Active',
-	'INACTIVE_USERS'		=> 'Inactive',
-	'SEARCH_USERS'			=> 'Search users',
+	'MEMBERLIST_ALL_USERS'		=> 'All users',
+	'MEMBERLIST_ACTIVE_USERS'	=> 'Active',
+	'MEMBERLIST_INACTIVE_USERS'	=> 'Inactive',
+	'SEARCH_USERS'				=> 'Search users',
 
 	// Login via E-Mail
 	'USERNAME_OR_EMAIL'					=> 'Username or E-Mail',

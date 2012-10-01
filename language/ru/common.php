@@ -952,10 +952,10 @@ $lang = array_merge($lang, array(
 	'PM_SENTBOX'				=> 'Отправленные',
 
 	// Memberlist filters
-	'ALL_USERS'				=> 'Все пользователи',
-	'ACTIVE_USERS'			=> 'Активные',
-	'INACTIVE_USERS'		=> 'Не активные',
-	'SEARCH_USERS'			=> 'Поиск пользователей',
+	'MEMBERLIST_ALL_USERS'		=> 'Все пользователи',
+	'MEMBERLIST_ACTIVE_USERS'	=> 'Активные',
+	'MEMBERLIST_INACTIVE_USERS'	=> 'Не активные',
+	'SEARCH_USERS'				=> 'Поиск пользователей',
 
 	// Login via E-Mail
 	'USERNAME_OR_EMAIL'					=> 'Имя или e-mail',
