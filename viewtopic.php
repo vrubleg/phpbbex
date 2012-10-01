@@ -801,6 +801,7 @@ if (!empty($topic_data['poll_start']))
 					'topic_id'			=> (int) $topic_id,
 					'poll_option_id'	=> (int) $option,
 					'vote_user_id'		=> (int) $user->data['user_id'],
+					'vote_time'			=> (int) time(),
 					'vote_user_ip'		=> (string) $user->ip,
 				);
 
@@ -882,25 +883,25 @@ if (!empty($topic_data['poll_start']))
 		if($topic_data['poll_show_voters'])
 		{
 			$sql_voters = '
-				SELECT u.username, u.user_colour, pv.vote_user_id
+				SELECT u.username, u.user_colour, pv.vote_user_id, pv.vote_time
 				FROM ' . POLL_VOTES_TABLE . ' pv, ' . USERS_TABLE . ' u
 				WHERE pv.topic_id = ' . $topic_id . '
 					AND poll_option_id = ' . $poll_info[$i]['poll_option_id'] . '
 					AND pv.vote_user_id = u.user_id
-				ORDER BY u.username_clean ASC, pv.vote_user_id ASC';
-			$results_voters = $db->sql_query($sql_voters);
+				ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
+			$voters_result = $db->sql_query($sql_voters);
 			$voters_total = 0;
-			$voters_string = "";
+			$voters_string = '';
 			// Add all voters to a string
-			while ($row_voters = $db->sql_fetchrow($results_voters))
+			while ($row_voters = $db->sql_fetchrow($voters_result))
 			{
 				$voters_total = $voters_total + 1;
-				$voters_string = $voters_string . ", " . get_username_string('full', $row_voters['vote_user_id'], $row_voters['username'], $row_voters['user_colour'], $row_voters['username']);
+				$voters_string .= ', ' . get_username_string('full', $row_voters['vote_user_id'], $row_voters['username'], $row_voters['user_colour'], $row_voters['username'], false, $row_voters['vote_time'] ? $user->format_date($row_voters['vote_time']) : '');
 			}
 			$voters_string = ltrim($voters_string, ", ");
 			// Add the string to the list
 			$poll_info[$i]['poll_option_voters'] = $voters_string;
-			$db->sql_freeresult($results_voters);
+			$db->sql_freeresult($voters_result);
 		}
 	}
 

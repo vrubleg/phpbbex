@@ -1,18 +1,18 @@
 -- General scheme updates
 CREATE TABLE phpbb_user_confirm_keys (
 	confirm_key varchar(10) NOT NULL,
-	user_id mediumint(8) NOT NULL,
-	confirm_time int(11) NOT NULL,
+	user_id mediumint(8) UNSIGNED NOT NULL,
+	confirm_time int(11) UNSIGNED NOT NULL,
 	PRIMARY KEY  (confirm_key),
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 CREATE TABLE phpbb_user_browser_ids (
 	browser_id char(32) DEFAULT '' NOT NULL,
-	user_id mediumint(8) NOT NULL,
-	created int(11) NOT NULL,
-	last_visit int(11) NOT NULL,
-	visits int(11) NOT NULL,
+	user_id mediumint(8) UNSIGNED NOT NULL,
+	created int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	visits int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	agent varchar(150) DEFAULT '' NOT NULL,
 	last_ip varchar(40) DEFAULT '' NOT NULL,
 	PRIMARY KEY (browser_id,user_id)
@@ -28,6 +28,9 @@ ALTER TABLE phpbb_posts
 ALTER TABLE phpbb_topics
 	ADD COLUMN poll_show_voters tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_vote_change,
 	ADD COLUMN topic_first_post_show tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_show_voters;
+
+ALTER TABLE phpbb_poll_votes
+	ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER vote_user_id;
 
 ALTER TABLE phpbb_users
 	ADD COLUMN user_topics_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_topic_sortby_dir,
