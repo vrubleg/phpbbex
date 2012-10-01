@@ -288,14 +288,14 @@ class ucp_prefs
 				// Topic ordering options
 				$limit_topic_days = array(0 => $user->lang['ALL_TOPICS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
 
-				$sort_by_topic_text = array('a' => $user->lang['AUTHOR'], 't' => $user->lang['POST_TIME'], 'r' => $user->lang['REPLIES'], 's' => $user->lang['SUBJECT'], 'v' => $user->lang['VIEWS']);
-				$sort_by_topic_sql = array('a' => 't.topic_first_poster_name', 't' => 't.topic_last_post_time', 'r' => 't.topic_replies', 's' => 't.topic_title', 'v' => 't.topic_views');
+				$sort_by_topic_text = array('t' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES'], 'v' => $user->lang['VIEWS'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']);
+				$sort_by_topic_sql = array('t' => 't.topic_last_post_time', 'c' => 't.topic_time', 'r' => 't.topic_replies', 'v' => 't.topic_views', 'a' => 't.topic_first_poster_name', 's' => 't.topic_title');
 
 				// Post ordering options
 				$limit_post_days = array(0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
 
-				$sort_by_post_text = array('a' => $user->lang['AUTHOR'], 't' => $user->lang['POST_TIME'], 's' => $user->lang['SUBJECT']);
-				$sort_by_post_sql = array('a' => 'u.username_clean', 't' => 'p.post_id', 's' => 'p.post_subject');
+				$sort_by_post_text = array('t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']);
+				$sort_by_post_sql = array('t' => 'p.post_id', 'a' => 'u.username_clean', 's' => 'p.post_subject');
 
 				$_options = array('topic', 'post');
 				foreach ($_options as $sort_option)

@@ -131,6 +131,7 @@ $lang = array_merge($lang, array(
 	'CONNECTION_FAILED'		=> 'Ошибка подключения.',
 	'CONNECTION_SUCCESS'	=> 'Подключение успешно установлено.',
 	'COOKIES_DELETED'		=> 'Все cookies, установленные форумами, успешно удалены.',
+	'CREATION_TIME'			=> 'Время создания',
 	'CURRENT_TIME'			=> 'Текущее время: %s',
 
 	'DAY'					=> 'День',
@@ -447,7 +448,7 @@ $lang = array_merge($lang, array(
 	'POST_REPLY'			=> 'Ответить',
 	'POST_REPORTED'			=> 'Просмотреть жалобу',
 	'POST_SUBJECT'			=> 'Заголовок сообщения',
-	'POST_TIME'				=> 'Время размещения',
+	'POST_TIME'				=> 'Время ответа',
 	'POST_TOPIC'			=> 'Новая тема',
 	'POST_UNAPPROVED'		=> 'Это сообщение ожидает проверки',
 	'POWERED_BY'			=> 'Powered by %s',
