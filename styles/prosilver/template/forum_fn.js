@@ -319,10 +319,17 @@ jQuery(function($)
 		{
 			if (e.isDefaultPrevented()) return;
 			$(button).addClass('sending');
-			setTimeout(function()
+			var last = (new Date()).getTime();
+			var timer = setInterval(function()
 			{
-				$(button).removeClass('sending');
-			}, 15000);
+				if ((new Date()).getTime() - last > 2500)
+				{
+					$(button).removeClass('sending');
+					clearInterval(timer);
+					return;
+				}
+				last = (new Date()).getTime();
+			}, 1000);
 		});
 	});
 
