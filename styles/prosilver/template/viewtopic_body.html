@@ -374,8 +374,10 @@ jQuery(function($)
 	</form>
 <!-- ENDIF -->
 
+	<div class="clear"></div>
+
 <!-- IF S_DISPLAY_ONLINE_LIST -->
-	<h3><!-- IF U_VIEWONLINE --><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --></h3>
+	<h3><!-- IF U_VIEWONLINE --><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --> <span class="extra">({L_ONLINE_EXPLAIN})</span></h3>
 	<p>{LOGGED_IN_USER_LIST}</p>
 <!-- ENDIF -->
 

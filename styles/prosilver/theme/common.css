@@ -62,6 +62,14 @@ h3 {
 	margin-top: 20px;
 }
 
+h3 span.extra {
+	color: #ccc;
+	font-size: 0.9em;
+	text-transform: lowercase;
+	vertical-align: top;
+	float: right;
+}
+
 h4 {
 	/* Forum and topic list titles */
 	font-family: "Trebuchet MS", Verdana, Helvetica, Arial, Sans-serif;
