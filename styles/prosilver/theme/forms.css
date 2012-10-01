@@ -359,13 +359,11 @@ a.button1, a.button1:link, a.button1:visited, a.button1:active, a.button2, a.but
 	padding: 2px 8px;
 	line-height: 250%;
 	vertical-align: text-bottom;
-	background-position: 0 1px;
 }
 
 /* Hover states */
 a.button1:hover, input.button1:hover, a.button2:hover, input.button2:hover, button:hover, input.button3:hover {
 	border: 1px solid #BCBCBC;
-	background-position: 0 100%;
 	color: #BCBCBC;
 }
 

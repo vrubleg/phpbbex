@@ -73,7 +73,7 @@
 #main-menu ul
 {
 	border: 1px solid #ccc; 
-	background: #f6f6f6 url("{T_THEME_PATH}/images/menu_bkg.gif") repeat-y left;
+	background: #f6f6f6 url("data:image/gif;base64,R0lGODlhFgABAIAAAOLi4gAAACwAAAAAFgABAAACBISPqVAAOw==") repeat-y left;
 }
 
 /* пункты меню */
@@ -114,7 +114,7 @@
 	float: right;
 	width: 4px;
 	height: 18px;
-	background: transparent url("{T_THEME_PATH}/images/menu_arrow.gif") no-repeat right 50%;
+	background: transparent url("data:image/gif;base64,R0lGODlhBAAHAIABAAAAAAAAACH5BAEAAAEALAAAAAAEAAcAAAIIRA4WaeyrVCgAOw==") no-repeat right 50%;
 }
 
 /* фиксирует ширину выпадашек 1 уровня потому что автоматом в IE не определяется нужная ширина */

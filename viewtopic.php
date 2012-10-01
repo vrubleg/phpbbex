@@ -43,12 +43,13 @@ $sort_key	= request_var('sk', $default_sort_key);
 $sort_dir	= request_var('sd', $default_sort_dir);
 
 $update		= request_var('update', false);
+$unvote		= request_var('unvote', false);
 
 $s_can_vote = false;
 /**
 * @todo normalize?
 */
-$hilit_words	= request_var('hilit', '', true);
+$hilit_words = empty($config['search_highlight_keywords']) ? '' : request_var('hilit', '', true);
 
 // Do we have a topic or post id?
 if (!$topic_id && !$post_id)
@@ -421,8 +422,8 @@ if (!isset($topic_tracking_info))
 // Post ordering options
 $limit_days = array(0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
 
-$sort_by_text = array('a' => $user->lang['AUTHOR'], 't' => $user->lang['POST_TIME'], 's' => $user->lang['SUBJECT']);
-$sort_by_sql = array('a' => array('u.username_clean', 'p.post_id'), 't' => 'p.post_time', 's' => array('p.post_subject', 'p.post_id'));
+$sort_by_text = array('t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']);
+$sort_by_sql = array('t' => 'p.post_time', 'a' => array('u.username_clean', 'p.post_id'), 's' => array('p.post_subject', 'p.post_id'));
 $join_user_sql = array('a' => true, 't' => false, 's' => false);
 
 $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
@@ -748,19 +749,19 @@ if (!empty($topic_data['poll_start']))
 		($auth->acl_get('f_votechg', $forum_id) && $topic_data['poll_vote_change']))) ? true : false;
 	$s_display_results = (!$s_can_vote || ($s_can_vote && sizeof($cur_voted_id)) || $view == 'viewpoll') ? true : false;
 
-	if ($update && $s_can_vote)
+	if (($update || $unvote) && $s_can_vote)
 	{
 
-		if (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options'] || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
+		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options']) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
 		{
 			$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
 
 			meta_refresh(5, $redirect_url);
-			if (!sizeof($voted_id))
+			if (!$unvote && !sizeof($voted_id))
 			{
 				$message = 'NO_VOTE_OPTION';
 			}
-			else if (sizeof($voted_id) > $topic_data['poll_max_options'])
+			else if (!$unvote && sizeof($voted_id) > $topic_data['poll_max_options'])
 			{
 				$message = 'TOO_MANY_VOTE_OPTIONS';
 			}
@@ -775,6 +776,11 @@ if (!empty($topic_data['poll_start']))
 
 			$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>');
 			trigger_error($message);
+		}
+
+		if ($unvote)
+		{
+			$voted_id = array();
 		}
 
 		foreach ($voted_id as $option)
@@ -796,6 +802,7 @@ if (!empty($topic_data['poll_start']))
 					'topic_id'			=> (int) $topic_id,
 					'poll_option_id'	=> (int) $option,
 					'vote_user_id'		=> (int) $user->data['user_id'],
+					'vote_time'			=> (int) time(),
 					'vote_user_ip'		=> (string) $user->ip,
 				);
 
@@ -827,7 +834,7 @@ if (!empty($topic_data['poll_start']))
 
 		if ($user->data['user_id'] == ANONYMOUS && !$user->data['is_bot'])
 		{
-			$user->set_cookie('poll_' . $topic_id, implode(',', $voted_id), time() + 31536000);
+			$user->set_cookie('poll_' . $topic_id, implode(',', $voted_id), time() + 31536000 * ($unvote ? -1 : 1));
 		}
 
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
@@ -837,9 +844,12 @@ if (!empty($topic_data['poll_start']))
 		$db->sql_query($sql);
 
 		$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
-
-		meta_refresh(5, $redirect_url);
-		trigger_error($user->lang['VOTE_SUBMITTED'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>'));
+		if (!empty($config['no_typical_info_pages']))
+		{
+			redirect($redirect_url);
+		}
+		meta_refresh(3, $redirect_url);
+		trigger_error($user->lang[($unvote ? 'VOTE_CANCELLED' : 'VOTE_SUBMITTED')] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>'));
 	}
 
 	$poll_total = 0;
@@ -874,25 +884,25 @@ if (!empty($topic_data['poll_start']))
 		if($topic_data['poll_show_voters'])
 		{
 			$sql_voters = '
-				SELECT u.username, u.user_colour, pv.vote_user_id
+				SELECT u.username, u.user_colour, pv.vote_user_id, pv.vote_time
 				FROM ' . POLL_VOTES_TABLE . ' pv, ' . USERS_TABLE . ' u
 				WHERE pv.topic_id = ' . $topic_id . '
 					AND poll_option_id = ' . $poll_info[$i]['poll_option_id'] . '
 					AND pv.vote_user_id = u.user_id
-				ORDER BY u.username_clean ASC, pv.vote_user_id ASC';
-			$results_voters = $db->sql_query($sql_voters);
+				ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
+			$voters_result = $db->sql_query($sql_voters);
 			$voters_total = 0;
-			$voters_string = "";
+			$voters_string = '';
 			// Add all voters to a string
-			while ($row_voters = $db->sql_fetchrow($results_voters))
+			while ($row_voters = $db->sql_fetchrow($voters_result))
 			{
 				$voters_total = $voters_total + 1;
-				$voters_string = $voters_string . ", " . get_username_string('full', $row_voters['vote_user_id'], $row_voters['username'], $row_voters['user_colour'], $row_voters['username']);
+				$voters_string .= ', ' . get_username_string('full', $row_voters['vote_user_id'], $row_voters['username'], $row_voters['user_colour'], $row_voters['username'], false, $row_voters['vote_time'] ? $user->format_date($row_voters['vote_time']) : '');
 			}
 			$voters_string = ltrim($voters_string, ", ");
 			// Add the string to the list
 			$poll_info[$i]['poll_option_voters'] = $voters_string;
-			$db->sql_freeresult($results_voters);
+			$db->sql_freeresult($voters_result);
 		}
 	}
 
@@ -929,6 +939,7 @@ if (!empty($topic_data['poll_start']))
 
 	$template->assign_vars(array(
 		'POLL_QUESTION'		=> $topic_data['poll_title'],
+		'POLL_VOTED'		=> count($cur_voted_id) > 0,
 		'TOTAL_VOTES' 		=> $poll_total,
 		'POLL_LEFT_CAP_IMG'	=> $user->img('poll_left'),
 		'POLL_RIGHT_CAP_IMG'=> $user->img('poll_right'),

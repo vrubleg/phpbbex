@@ -1,18 +1,18 @@
 -- General scheme updates
 CREATE TABLE phpbb_user_confirm_keys (
 	confirm_key varchar(10) NOT NULL,
-	user_id mediumint(8) NOT NULL,
-	confirm_time int(11) NOT NULL,
+	user_id mediumint(8) UNSIGNED NOT NULL,
+	confirm_time int(11) UNSIGNED NOT NULL,
 	PRIMARY KEY  (confirm_key),
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
 
 CREATE TABLE phpbb_user_browser_ids (
 	browser_id char(32) DEFAULT '' NOT NULL,
-	user_id mediumint(8) NOT NULL,
-	created int(11) NOT NULL,
-	last_visit int(11) NOT NULL,
-	visits int(11) NOT NULL,
+	user_id mediumint(8) UNSIGNED NOT NULL,
+	created int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	visits int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	agent varchar(150) DEFAULT '' NOT NULL,
 	last_ip varchar(40) DEFAULT '' NOT NULL,
 	PRIMARY KEY (browser_id,user_id)
@@ -28,6 +28,9 @@ ALTER TABLE phpbb_posts
 ALTER TABLE phpbb_topics
 	ADD COLUMN poll_show_voters tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_vote_change,
 	ADD COLUMN topic_first_post_show tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_show_voters;
+
+ALTER TABLE phpbb_poll_votes
+	ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER vote_user_id;
 
 ALTER TABLE phpbb_users
 	ADD COLUMN user_topics_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_topic_sortby_dir,
@@ -68,6 +71,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', 
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('no_sid', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('no_typical_info_pages', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
@@ -77,6 +81,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('search_highlight_keywords', '0');
 
 -- New phpBBex ACL rights
 REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
@@ -204,10 +209,12 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbn
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_LETTER_NUM_SPACERS');
 -- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '43200');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '60');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('delete_time', '15');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_item_statistics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_overall', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('form_token_lifetime', '43200');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_tplcompile', '1');

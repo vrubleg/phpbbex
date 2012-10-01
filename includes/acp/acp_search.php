@@ -66,6 +66,7 @@ class acp_search
 			'max_num_search_keywords'	=> 'integer',
 			'search_store_results'		=> 'integer',
 			'default_search_titleonly'	=> 'bool',
+			'search_highlight_keywords'	=> 'bool',
 		);
 
 		$search = null;
@@ -223,6 +224,7 @@ class acp_search
 			'S_SEARCH_TYPES'		=> $search_options,
 			'S_YES_SEARCH'			=> (bool) $config['load_search'],
 			'S_DEFAULT_TITLEONLY'	=> !empty($config['default_search_titleonly']),
+			'S_HIGHLIGHT_KEYWORDS'	=> !empty($config['search_highlight_keywords']),
 			'S_SETTINGS'			=> true,
 
 			'U_ACTION'				=> $this->u_action)

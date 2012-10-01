@@ -131,6 +131,7 @@ $lang = array_merge($lang, array(
 	'CONNECTION_FAILED'		=> 'Connection failed.',
 	'CONNECTION_SUCCESS'	=> 'Connection was successful!',
 	'COOKIES_DELETED'		=> 'All board cookies successfully deleted.',
+	'CREATION_TIME'			=> 'Creation time',
 	'CURRENT_TIME'			=> 'It is currently %s',
 
 	'DAY'					=> 'Day',
@@ -699,8 +700,8 @@ $lang = array_merge($lang, array(
 	'VIEW_LATEST_POST'			=> 'View the latest post',
 	'VIEW_NEWEST_POST'			=> 'View first unread post',
 	'VIEW_NOTES'				=> 'View user notes',
-	'VIEW_ONLINE_TIME'			=> 'based on users active over the past %d minute',
-	'VIEW_ONLINE_TIMES'			=> 'based on users active over the past %d minutes',
+	'VIEW_ONLINE_TIME'			=> 'over the past %d minute',
+	'VIEW_ONLINE_TIMES'			=> 'over the past %d minutes',
 	'VIEW_TOPIC'				=> 'View topic',
 	'VIEW_TOPIC_ANNOUNCEMENT'	=> 'Announcement: ',
 	'VIEW_TOPIC_GLOBAL'			=> 'Global Announcement: ',
@@ -946,10 +947,10 @@ $lang = array_merge($lang, array(
 	'PM_SENTBOX'				=> 'Sent messages',
 
 	// Memberlist filters
-	'ALL_USERS'				=> 'All users',
-	'ACTIVE_USERS'			=> 'Active',
-	'INACTIVE_USERS'		=> 'Inactive',
-	'SEARCH_USERS'			=> 'Search users',
+	'MEMBERLIST_ALL_USERS'		=> 'All users',
+	'MEMBERLIST_ACTIVE_USERS'	=> 'Active',
+	'MEMBERLIST_INACTIVE_USERS'	=> 'Inactive',
+	'SEARCH_USERS'				=> 'Search users',
 
 	// Login via E-Mail
 	'USERNAME_OR_EMAIL'					=> 'Username or E-Mail',

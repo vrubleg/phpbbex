@@ -271,6 +271,8 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 
 	switch ($tpl_type[0])
 	{
+		case 'html':
+			$new[$config_key] = htmlspecialchars($new[$config_key]);
 		case 'text':
 		case 'password':
 			$size = (int) $tpl_type[1];
@@ -286,6 +288,8 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 			$tpl = '<input id="' . $key . '" type="text"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . (($maxlength) ? $maxlength : 255) . '" name="config[' . $config_key . '_width]" value="' . $new[$config_key . '_width'] . '" /> x <input type="text"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . (($maxlength) ? $maxlength : 255) . '" name="config[' . $config_key . '_height]" value="' . $new[$config_key . '_height'] . '" />';
 		break;
 
+		case 'htmlarea':
+			$new[$config_key] = htmlspecialchars($new[$config_key]);
 		case 'textarea':
 			$rows = (int) $tpl_type[1];
 			$cols = (int) $tpl_type[2];
@@ -401,8 +405,6 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 		// Validate a bit. ;) (0 = type, 1 = min, 2= max)
 		switch ($validator[$type])
 		{
-			case 'html':
-				$cfg_array[$config_name] = htmlspecialchars_decode($cfg_array[$config_name]);
 			case 'string':
 				$length = utf8_strlen($cfg_array[$config_name]);
 

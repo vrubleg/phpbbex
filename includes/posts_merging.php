@@ -19,7 +19,7 @@ if (!defined('IN_PHPBB'))
 
 $post_need_approval = (!$auth->acl_get('f_noapprove', $data['forum_id']) && !$auth->acl_get('m_approve', $data['forum_id'])) ? true : false;
 
-if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['merge_interval'] > 0 && !in_array($forum_id, explode(",", $config['merge_no_forums'])) && !in_array($topic_id, explode(",", $config['merge_no_topics'])))
+if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['merge_interval'] > 0)
 {
 	$sql = 'SELECT f.*, t.*, p.* FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . ' f 
 		WHERE p.post_id = t.topic_last_post_id
@@ -278,6 +278,11 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		$add_anchor = '#p' . $merge_post_id;	
 		$redirect_url = "{$phpbb_root_path}viewtopic.$phpEx";
 		$redirect_url = append_sid($redirect_url, 'f=' . $forum_id . $params) . $add_anchor;
+
+		if (!empty($config['no_typical_info_pages']))
+		{
+			redirect($redirect_url);
+		}
 
 		meta_refresh(3, $redirect_url);
 

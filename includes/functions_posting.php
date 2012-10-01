@@ -122,8 +122,8 @@ function generate_smilies($mode, $forum_id)
 				'SMILEY_IMG'	=> $root_path . $config['smilies_path'] . '/' . $row['smiley_url'],
 				'SMILEY_WIDTH'	=> $row['smiley_width'],
 				'SMILEY_HEIGHT'	=> $row['smiley_height'],
-				'SMILEY_DESC'	=> $row['emotion'])
-			);
+				'SMILEY_DESC'	=> isset($user->lang[$row['emotion']]) ? $user->lang[$row['emotion']] : $row['emotion'],
+			));
 		}
 	}
 

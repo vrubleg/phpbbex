@@ -1186,7 +1186,7 @@ function truncate_string($string, $max_length = 60, $max_store_length = 255, $al
 * @return string A string consisting of what is wanted based on $mode.
 * @author BartVB, Acyd Burn
 */
-function get_username_string($mode, $user_id, $username, $username_colour = '', $guest_username = false, $custom_profile_url = false)
+function get_username_string($mode, $user_id, $username, $username_colour = '', $guest_username = false, $custom_profile_url = false, $title = '')
 {
 	static $_profile_cache;
 
@@ -1200,6 +1200,10 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 		$_profile_cache['tpl_noprofile_colour'] = '<span style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</span>';
 		$_profile_cache['tpl_profile'] = '<a href="{PROFILE_URL}">{USERNAME}</a>';
 		$_profile_cache['tpl_profile_colour'] = '<a href="{PROFILE_URL}" style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</a>';
+		$_profile_cache['tpl_noprofile_title'] = '<span title="{TITLE}">{USERNAME}</span>';
+		$_profile_cache['tpl_noprofile_colour_title'] = '<span title="{TITLE}" style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</span>';
+		$_profile_cache['tpl_profile_title'] = '<a href="{PROFILE_URL}" title="{TITLE}">{USERNAME}</a>';
+		$_profile_cache['tpl_profile_colour_title'] = '<a href="{PROFILE_URL}" title="{TITLE}" style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</a>';
 	}
 
 	global $user, $auth;
@@ -1264,12 +1268,14 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 		// no break;
 	}
 
+	$postfix = empty($title) ? '' : '_title';
+
 	if (($mode == 'full' && !$profile_url) || $mode == 'no_profile')
 	{
-		return str_replace(array('{USERNAME_COLOUR}', '{USERNAME}'), array($username_colour, $username), (!$username_colour) ? $_profile_cache['tpl_noprofile'] : $_profile_cache['tpl_noprofile_colour']);
+		return str_replace(array('{USERNAME_COLOUR}', '{USERNAME}', '{TITLE}'), array($username_colour, $username, $title), (!$username_colour) ? $_profile_cache['tpl_noprofile'.$postfix] : $_profile_cache['tpl_noprofile_colour'.$postfix]);
 	}
 
-	return str_replace(array('{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}'), array($profile_url, $username_colour, $username), (!$username_colour) ? $_profile_cache['tpl_profile'] : $_profile_cache['tpl_profile_colour']);
+	return str_replace(array('{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}', '{TITLE}'), array($profile_url, $username_colour, $username, $title), (!$username_colour) ? $_profile_cache['tpl_profile'.$postfix] : $_profile_cache['tpl_profile_colour'.$postfix]);
 }
 
 /**

@@ -114,6 +114,7 @@ class acp_board
 						// 'allow_quick_reply'		=> array('lang' => 'ALLOW_QUICK_REPLY',		'validate' => 'bool',	'type' => 'custom', 'method' => 'quick_reply', 'explain' => true),
 
 						'legend2'				=> 'ACP_LOAD_SETTINGS',
+						'no_typical_info_pages'	=> array('lang' => 'NO_TYPICAL_INFO_PAGES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_birthdays'		=> array('lang' => 'YES_BIRTHDAYS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_moderators'		=> array('lang' => 'YES_MODERATORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_jumpbox'			=> array('lang' => 'YES_JUMPBOX',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -178,12 +179,12 @@ class acp_board
 						'style_ml_show_last_active'			=> array('lang' => 'STYLE_MP_SHOW_LAST_ACTIVE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
 						'legend5'							=> 'STYLE_SETTINGS_FOOTER',
-						'copyright_notice'					=> array('lang' => 'COPYRIGHT_NOTICE',					'validate' => 'html',	'type' => 'textarea:2:800', 'explain' => true),
-						'style_counter_html_1'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
-						'style_counter_html_2'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
-						'style_counter_html_3'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
-						'style_counter_html_4'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
-						'style_counter_html_5'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'html',	'type' => 'textarea:2:1000', 'explain' => false),
+						'copyright_notice'					=> array('lang' => 'COPYRIGHT_NOTICE',					'validate' => 'string',	'type' => 'htmlarea:2:800', 'explain' => true),
+						'style_counter_html_1'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
+						'style_counter_html_2'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
+						'style_counter_html_3'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
+						'style_counter_html_4'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
+						'style_counter_html_5'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
 
 						'legend6'							=> 'ACP_SUBMIT_CHANGES',
 					)
@@ -268,8 +269,6 @@ class acp_board
 						'display_last_edited'	=> array('lang' => 'DISPLAY_LAST_EDITED',	'validate' => 'bool',		'type' => 'radio:yes_no', 'explain' => true),
 						'flood_interval'		=> array('lang' => 'FLOOD_INTERVAL',		'validate' => 'int:0',		'type' => 'text:3:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']),
 						'merge_interval'		=> array('lang' => 'MERGE_INTERVAL',		'validate' => 'int',		'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['HOURS']),
-						//'merge_no_forums'		=> array('lang' => 'MERGE_NO_FORUMS',		'validate' => 'string',		'type' => 'text:5:255', 'explain' => true),
-						//'merge_no_topics'		=> array('lang' => 'MERGE_NO_TOPICS',		'validate' => 'string',		'type' => 'text:5:255', 'explain' => true),
 						'bump_interval'			=> array('lang' => 'BUMP_INTERVAL',			'validate' => 'int:0',		'type' => 'custom', 'method' => 'bump_interval', 'explain' => true),
 						'topics_per_page'		=> array('lang' => 'TOPICS_PER_PAGE',		'validate' => 'int:1',		'type' => 'text:3:4', 'explain' => false),
 						'posts_per_page'		=> array('lang' => 'POSTS_PER_PAGE',		'validate' => 'int:1',		'type' => 'text:3:4', 'explain' => false),
@@ -289,10 +288,18 @@ class acp_board
 						'legend3'							=> 'EXTERNAL_LINKS',
 						'external_links_newwindow'			=> array('lang' => 'EXTERNAL_LINKS_NEWWINDOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'external_links_newwindow_exclude'	=> array('lang' => 'EXTERNAL_LINKS_EXCLUDE',	'validate' => 'string',	'type' => 'textarea:3:1000', 'explain' => true),
+						'external_links_nofollow'			=> array('lang' => 'EXTERNAL_LINKS_NOFOLLOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'external_links_nofollow_exclude'	=> array('lang' => 'EXTERNAL_LINKS_EXCLUDE',	'validate' => 'string',	'type' => 'textarea:3:1000', 'explain' => true),
 
 						'legend4'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
+				// No premium features
+				if (empty($config['premium_key']) || md5($config['premium_key']) != '9b3cf96285fd3149e5c2072c207d89b8')
+				{
+					unset($display_vars['vars']['external_links_nofollow']);
+					unset($display_vars['vars']['external_links_nofollow_exclude']);
+				}
 			break;
 
 			case 'signature':
@@ -414,6 +421,7 @@ class acp_board
 						'load_online_time'	=> array('lang' => 'ONLINE_LENGTH',		'validate' => 'int:0',	'type' => 'text:4:3', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']),
 
 						'legend2'				=> 'GENERAL_OPTIONS',
+						'no_typical_info_pages'	=> array('lang' => 'NO_TYPICAL_INFO_PAGES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_db_track'			=> array('lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_db_lastread'		=> array('lang' => 'YES_READ_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_anon_lastread'	=> array('lang' => 'YES_ANON_READ_MARKING',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
@@ -540,8 +548,25 @@ class acp_board
 		}
 
 		$this->new_config = $config;
-		$cfg_array = (isset($_REQUEST['config'])) ? utf8_normalize_nfc(request_var('config', array('' => ''), true)) : $this->new_config;
 		$error = array();
+
+		// Get configuration values and decode HTML special chars if type of value is HTML
+		$cfg_array = array();
+		if (!isset($_REQUEST['config']))
+		{
+			$cfg_array = $config;
+		}
+		else
+		{
+			$cfg_array = utf8_normalize_nfc(request_var('config', array('' => ''), true));
+			foreach ($display_vars['vars'] as $config_name => $config_vars)
+			{
+				if (isset($cfg_array[$config_name]) && strpos($config_vars['type'], 'html') === 0)
+				{
+					$cfg_array[$config_name] = htmlspecialchars_decode($cfg_array[$config_name]);
+				}
+			}
+		}
 
 		// We validate the complete config if whished
 		validate_config_vars($display_vars['vars'], $cfg_array, $error);

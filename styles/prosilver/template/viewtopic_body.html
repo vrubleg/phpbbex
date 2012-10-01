@@ -91,7 +91,14 @@
 			<!-- IF S_CAN_VOTE -->
 				<dl style="border-top: none;">
 					<dt>&nbsp;</dt>
-					<dd class="resultbar"><input type="submit" name="update" value="{L_SUBMIT_VOTE}" class="button1" /></dd>
+					<dd class="resultbar">
+					<!-- IF POLL_VOTED -->
+						<input type="submit" name="update" value="{L_SUBMIT_REVOTE}" class="button1" />
+						<input type="submit" name="unvote" value="{L_SUBMIT_UNVOTE}" class="button2" />
+					<!-- ELSE -->
+						<input type="submit" name="update" value="{L_SUBMIT_VOTE}" class="button1" />
+					<!-- ENDIF -->
+					</dd>
 				</dl>
 			<!-- ENDIF -->
 
@@ -368,8 +375,10 @@ jQuery(function($)
 	</form>
 <!-- ENDIF -->
 
+	<div class="clear"></div>
+
 <!-- IF S_DISPLAY_ONLINE_LIST -->
-	<h3><!-- IF U_VIEWONLINE --><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --></h3>
+	<h3><!-- IF U_VIEWONLINE --><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --> <span class="extra">({L_ONLINE_EXPLAIN})</span></h3>
 	<p>{LOGGED_IN_USER_LIST}</p>
 <!-- ENDIF -->
 

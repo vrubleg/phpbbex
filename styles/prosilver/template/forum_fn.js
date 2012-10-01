@@ -275,54 +275,6 @@ function play_qt_file(obj)
 	obj.Play();
 }
 
-/**
-* Check if the nodeName of elem is name
-* @author jQuery
-*/
-function is_node_name(elem, name)
-{
-	return elem.nodeName && elem.nodeName.toUpperCase() == name.toUpperCase();
-}
-
-/**
-* Check if elem is in array, return position
-* @author jQuery
-*/
-function is_in_array(elem, array)
-{
-	for (var i = 0, length = array.length; i < length; i++)
-		// === is correct (IE)
-		if (array[i] === elem)
-			return i;
-
-	return -1;
-}
-
-/**
-* Find Element, type and class in tree
-* Not used, but may come in handy for those not using JQuery
-* @author jQuery.find, Meik Sievertsen
-*/
-function find_in_tree(node, tag, type, class_name)
-{
-	var result, element, i = 0, length = node.childNodes.length;
-
-	for (element = node.childNodes[0]; i < length; element = node.childNodes[++i])
-	{
-		if (!element || element.nodeType != 1) continue;
-
-		if ((!tag || is_node_name(element, tag)) && (!type || element.type == type) && (!class_name || is_in_array(class_name, (element.className || element).toString().split(/\s+/)) > -1))
-		{
-			return element;
-		}
-
-		if (element.childNodes.length)
-			result = find_in_tree(element, tag, type, class_name);
-
-		if (result) return result;
-	}
-}
-
 var in_autocomplete = false;
 var last_key_entered = '';
 
@@ -356,49 +308,31 @@ function phpbb_check_key(event)
 	return false;
 }
 
-/**
-* Usually used for onkeypress event, to submit a form on enter
-*/
-function submit_default_button(event, selector, class_name)
-{
-	// Add which for key events
-	if (!event.which && ((event.charCode || event.charCode === 0) ? event.charCode : event.keyCode))
-		event.which = event.charCode || event.keyCode;
-
-	if (phpbb_check_key(event))
-		return true;
-
-	var current = selector['parentNode'];
-
-	// Search parent form element
-	while (current && (!current.nodeName || current.nodeType != 1 || !is_node_name(current, 'form')) && current != document)
-		current = current['parentNode'];
-
-	// Find the input submit button with the class name
-	//current = find_in_tree(current, 'input', 'submit', class_name);
-	var input_tags = current.getElementsByTagName('input');
-	current = false;
-
-	for (var i = 0, element = input_tags[0]; i < input_tags.length; element = input_tags[++i])
-	{
-		if (element.type == 'submit' && is_in_array(class_name, (element.className || element).toString().split(/\s+/)) > -1)
-			current = element;
-	}
-
-	if (!current)
-		return true;
-
-	// Submit form
-	current.focus();
-	current.click();
-	return false;
-}
-
-/**
-* Apply onkeypress event for forcing default submit button on ENTER key press
-*/
 jQuery(function($)
 {
+	// Forms submitting indication
+	$('form input[type=submit]').on('click', function()
+	{
+		var button = this;
+		if ($(button).hasClass('sending')) return false;
+		$(this).parents('form').off('submit.sending').one('submit.sending', function(e)
+		{
+			if (e.isDefaultPrevented()) return;
+			$(button).addClass('sending');
+			var last = (new Date()).getTime();
+			var timer = setInterval(function()
+			{
+				if ((new Date()).getTime() - last > 2500)
+				{
+					$(button).removeClass('sending');
+					clearInterval(timer);
+					return;
+				}
+				last = (new Date()).getTime();
+			}, 1000);
+		});
+	});
+
 	// Ctrl+Enter and Alt+Enter titles for default and alternate submit buttons
 	$('form input[type=submit].default-submit-action').attr('title', 'Ctrl+Enter');
 	$('form input[type=submit].alternate-submit-action').attr('title', 'Alt+Enter');
@@ -409,7 +343,7 @@ jQuery(function($)
 		var button = $(this).parents('form').find('input[type=submit].' + (e.altKey ? 'alternate' : 'default') + '-submit-action');
 		if (!button || button.length <= 0) return true;
 
-		var is_input = this.tagName.toLowerCase() != 'textarea';
+		var is_input = !$(this).is('textarea');
 		if (is_input && phpbb_check_key(e)) return true;
 
 		if ((e.which == 13 || e.which == 10) && (is_input || e.ctrlKey || e.altKey))
@@ -421,8 +355,3 @@ jQuery(function($)
 		return true;
 	});
 });
-
-/**
-* Detect JQuery existance. We currently do not deliver it, but some styles do, so why not benefit from it. ;)
-*/
-var jquery_present = typeof jQuery == 'function';

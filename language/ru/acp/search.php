@@ -107,6 +107,9 @@ $lang = array_merge($lang, array(
 
 	'DEFAULT_SEARCH_TITLEONLY'				=> 'По умолчанию искать только по названиям тем',
 	'DEFAULT_SEARCH_TITLEONLY_EXPLAIN'		=> 'Затрагивает глобальный поиск и поиск по конкретному форуму.',
+
+	'SEARCH_HIGHLIGHT_KEYWORDS'				=> 'Подсвечивать найденные слова',
+	'SEARCH_HIGHLIGHT_KEYWORDS_EXPLAIN'		=> 'Создаёт ссылки на viewtopic.php с параметром hilit для найденных тем.',
 ));
 
 ?>

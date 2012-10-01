@@ -437,6 +437,7 @@ CREATE TABLE phpbb_poll_votes (
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	poll_option_id tinyint(4) DEFAULT '0' NOT NULL,
 	vote_user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	vote_user_ip varchar(40) DEFAULT '' NOT NULL,
 	KEY topic_id (topic_id),
 	KEY vote_user_id (vote_user_id),
@@ -1074,8 +1075,8 @@ CREATE TABLE phpbb_zebra (
 # Table: 'phpbb_user_confirm_keys'
 CREATE TABLE phpbb_user_confirm_keys (
 	confirm_key varchar(10) NOT NULL,
-	user_id mediumint(8) NOT NULL,
-	confirm_time int(11) NOT NULL,
+	user_id mediumint(8) UNSIGNED NOT NULL,
+	confirm_time int(11) UNSIGNED NOT NULL,
 	PRIMARY KEY  (confirm_key),
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8` COLLATE `utf8_bin`;
@@ -1084,10 +1085,10 @@ CREATE TABLE phpbb_user_confirm_keys (
 # Table: 'phpbb_user_browser_ids'
 CREATE TABLE phpbb_user_browser_ids (
 	browser_id char(32) DEFAULT '' NOT NULL,
-	user_id mediumint(8) NOT NULL,
-	created int(11) NOT NULL,
-	last_visit int(11) NOT NULL,
-	visits int(11) NOT NULL,
+	user_id mediumint(8) UNSIGNED NOT NULL,
+	created int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	visits int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	agent varchar(150) DEFAULT '' NOT NULL,
 	last_ip varchar(40) DEFAULT '' NOT NULL,
 	PRIMARY KEY (browser_id,user_id)

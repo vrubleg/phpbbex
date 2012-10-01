@@ -131,6 +131,7 @@ $lang = array_merge($lang, array(
 	'CONNECTION_FAILED'		=> 'Ошибка подключения.',
 	'CONNECTION_SUCCESS'	=> 'Подключение успешно установлено.',
 	'COOKIES_DELETED'		=> 'Все cookies, установленные форумами, успешно удалены.',
+	'CREATION_TIME'			=> 'Время создания',
 	'CURRENT_TIME'			=> 'Текущее время: %s',
 
 	'DAY'					=> 'День',
@@ -447,7 +448,7 @@ $lang = array_merge($lang, array(
 	'POST_REPLY'			=> 'Ответить',
 	'POST_REPORTED'			=> 'Просмотреть жалобу',
 	'POST_SUBJECT'			=> 'Заголовок сообщения',
-	'POST_TIME'				=> 'Время размещения',
+	'POST_TIME'				=> 'Время ответа',
 	'POST_TOPIC'			=> 'Новая тема',
 	'POST_UNAPPROVED'		=> 'Это сообщение ожидает проверки',
 	'POWERED_BY'			=> 'Powered by %s',
@@ -698,8 +699,8 @@ $lang = array_merge($lang, array(
 	'VIEW_LATEST_POST'			=> 'Перейти к последнему сообщению',
 	'VIEW_NEWEST_POST'			=> 'Перейти к первому непрочитанному сообщению',
 	'VIEW_NOTES'				=> 'Заметки о пользователе',
-	'VIEW_ONLINE_TIME'			=> 'основано на активности пользователей за последнюю минуту',
-	'VIEW_ONLINE_TIMES'			=> 'основано на активности пользователей за последние %d минут',
+	'VIEW_ONLINE_TIME'			=> 'по активности за минуту',
+	'VIEW_ONLINE_TIMES'			=> 'по активности за %d минут',
 	'VIEW_TOPIC'				=> 'Просмотр темы',
 	'VIEW_TOPIC_ANNOUNCEMENT'	=> 'Объявление: ',
 	'VIEW_TOPIC_GLOBAL'			=> 'Важная: ',
@@ -951,10 +952,10 @@ $lang = array_merge($lang, array(
 	'PM_SENTBOX'				=> 'Отправленные',
 
 	// Memberlist filters
-	'ALL_USERS'				=> 'Все пользователи',
-	'ACTIVE_USERS'			=> 'Активные',
-	'INACTIVE_USERS'		=> 'Не активные',
-	'SEARCH_USERS'			=> 'Поиск пользователей',
+	'MEMBERLIST_ALL_USERS'		=> 'Все пользователи',
+	'MEMBERLIST_ACTIVE_USERS'	=> 'Активные',
+	'MEMBERLIST_INACTIVE_USERS'	=> 'Не активные',
+	'SEARCH_USERS'				=> 'Поиск пользователей',
 
 	// Login via E-Mail
 	'USERNAME_OR_EMAIL'					=> 'Имя или e-mail',

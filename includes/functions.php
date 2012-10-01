@@ -3041,6 +3041,11 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				return;
 			}
 
+			if (!empty($config['no_typical_info_pages']))
+			{
+				redirect($redirect);
+			}
+
 			$redirect = meta_refresh(3, $redirect);
 			trigger_error($message . '<br /><br />' . sprintf($l_redirect, '<a href="' . $redirect . '">', '</a>'));
 		}
