@@ -27,7 +27,7 @@
 			<li class="row<!-- IF unapproved.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 				<dl>
 					<dt>
-						<a href="{unapproved.U_POST_DETAILS}" class="topictitle">{unapproved.SUBJECT}</a> {unapproved.ATTACH_ICON_IMG}<br />
+						{unapproved.ATTACH_ICON_IMG} <a href="{unapproved.U_POST_DETAILS}" class="topictitle">{unapproved.SUBJECT}</a><br />
 						{L_POSTED} {L_POST_BY_AUTHOR} {unapproved.AUTHOR_FULL} &raquo; {unapproved.POST_TIME}
 					</dt>
 					<dd class="moderation"><span>
@@ -81,7 +81,7 @@
 			<li class="row<!-- IF report.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 				<dl>
 					<dt>
-						<a href="{report.U_POST_DETAILS}#reports" class="topictitle">{report.SUBJECT}</a> {report.ATTACH_ICON_IMG}<br />
+						{report.ATTACH_ICON_IMG} <a href="{report.U_POST_DETAILS}#reports" class="topictitle">{report.SUBJECT}</a><br />
 						<span>{L_POSTED} {L_POST_BY_AUTHOR} {report.AUTHOR_FULL} &raquo; {report.POST_TIME}</span>
 					</dt>
 					<dd class="moderation">
@@ -122,7 +122,7 @@
 			<li class="row<!-- IF report.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 				<dl>
 					<dt>
-						<a href="{pm_report.U_PM_DETAILS}" class="topictitle">{pm_report.PM_SUBJECT}</a> {pm_report.ATTACH_ICON_IMG}<br />
+						{pm_report.ATTACH_ICON_IMG} <a href="{pm_report.U_PM_DETAILS}" class="topictitle">{pm_report.PM_SUBJECT}</a><br />
 						<span>{L_MESSAGE_BY_AUTHOR} {pm_report.PM_AUTHOR_FULL} &raquo; {pm_report.PM_TIME}</span><br />
 						<span>{L_MESSAGE_TO} {pm_report.RECIPIENTS}</span>
 					</dt>

@@ -40,7 +40,7 @@
 				<dl>
 					<!-- IF S_PM -->
 					<dt>
-						<a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.PM_SUBJECT}</a> {postrow.ATTACH_ICON_IMG}<br />
+						{postrow.ATTACH_ICON_IMG} <a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.PM_SUBJECT}</a><br />
 						<span>{L_MESSAGE_BY_AUTHOR} {postrow.PM_AUTHOR_FULL} &raquo; {postrow.PM_TIME}</span><br />
 						<span>{L_MESSAGE_TO} {postrow.RECIPIENTS}</span>
 					</dt>
@@ -49,7 +49,7 @@
 					</dd>
 					<!-- ELSE -->
 					<dt>
-						<a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.POST_SUBJECT}</a> {postrow.ATTACH_ICON_IMG}<br />
+						{postrow.ATTACH_ICON_IMG} <a href="{postrow.U_VIEW_DETAILS}" class="topictitle">{postrow.POST_SUBJECT}</a><br />
 						<span>{L_POSTED} {L_POST_BY_AUTHOR} {postrow.POST_AUTHOR_FULL} &raquo; {postrow.POST_TIME}</span>
 					</dt>
 					<dd class="moderation">

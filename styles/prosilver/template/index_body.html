@@ -23,7 +23,7 @@
 				<dt<!-- IF announcetopic.TOPIC_ICON_IMG --> style="background-image: url({T_ICONS_PATH}{announcetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{announcetopic.TOPIC_FOLDER_IMG_ALT}"><!-- IF announcetopic.S_UNREAD_TOPIC --><a href="{announcetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{announcetopic.U_VIEW_TOPIC}" class="topictitle">{announcetopic.TOPIC_TITLE}</a>
 					<br />
 					<!-- IF announcetopic.PAGINATION --><strong class="pagination"><span>{announcetopic.PAGINATION}</span></strong><!-- ENDIF -->
-					<!-- IF announcetopic.ATTACH_ICON_IMG -->{announcetopic.ATTACH_ICON_IMG} <!-- ENDIF -->{L_POST_BY_AUTHOR} {announcetopic.TOPIC_AUTHOR_FULL} &raquo; {announcetopic.FIRST_POST_TIME} 
+					{L_POST_BY_AUTHOR} {announcetopic.TOPIC_AUTHOR_FULL} &raquo; {announcetopic.FIRST_POST_TIME} 
 					<!-- IF not announcetopic.S_TOPIC_GLOBAL -->{L_IN} <a href="{announcetopic.U_VIEW_FORUM}">{announcetopic.FORUM_TITLE}</a><!-- ELSE --> ({L_GLOBAL})<!-- ENDIF -->
 				</dt>
 				<dd class="posts">{announcetopic.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
@@ -64,7 +64,7 @@
 					<!-- IF activetopic.S_TOPIC_UNAPPROVED or activetopic.S_POSTS_UNAPPROVED --><a href="{activetopic.U_MCP_QUEUE}">{activetopic.UNAPPROVED_IMG}</a> <!-- ENDIF -->
 					<!-- IF activetopic.S_TOPIC_REPORTED --><a href="{activetopic.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
 					<!-- IF activetopic.PAGINATION --><strong class="pagination"><span>{activetopic.PAGINATION}</span></strong><!-- ENDIF -->
-					<!-- IF activetopic.ATTACH_ICON_IMG -->{activetopic.ATTACH_ICON_IMG} <!-- ENDIF -->{L_POST_BY_AUTHOR} {activetopic.TOPIC_AUTHOR_FULL} &raquo; {activetopic.FIRST_POST_TIME}
+					{L_POST_BY_AUTHOR} {activetopic.TOPIC_AUTHOR_FULL} &raquo; {activetopic.FIRST_POST_TIME}
 					<!-- IF not activetopic.S_TOPIC_GLOBAL -->{L_IN} <a href="{activetopic.U_VIEW_FORUM}">{activetopic.FORUM_TITLE}</a><!-- ELSE --> ({L_GLOBAL})<!-- ENDIF -->
 				</dt>
 				<dd class="posts">{activetopic.REPLIES}</dd>
