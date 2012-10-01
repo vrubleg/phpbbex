@@ -1318,29 +1318,9 @@ class parse_message extends bbcode_firstpass
 			// NOTE: obtain_* function? chaching the table contents?
 
 			// For now setting the ttl to 10 minutes
-			switch ($db->sql_layer)
-			{
-				case 'mssql':
-				case 'mssql_odbc':
-				case 'mssqlnative':
-					$sql = 'SELECT *
-						FROM ' . SMILIES_TABLE . '
-						ORDER BY LEN(code) DESC';
-				break;
-
-				case 'firebird':
-					$sql = 'SELECT *
-						FROM ' . SMILIES_TABLE . '
-						ORDER BY CHAR_LENGTH(code) DESC';
-				break;
-
-				// LENGTH supported by MySQL, IBM DB2, Oracle and Access for sure...
-				default:
-					$sql = 'SELECT *
-						FROM ' . SMILIES_TABLE . '
-						ORDER BY LENGTH(code) DESC';
-				break;
-			}
+			$sql = 'SELECT *
+				FROM ' . SMILIES_TABLE . '
+				ORDER BY LENGTH(code) DESC';
 			$result = $db->sql_query($sql, 600);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1352,7 +1332,7 @@ class parse_message extends bbcode_firstpass
 
 				// (assertion)
 				$match[] = preg_quote($row['code'], '#');
-				$replace[] = '<!-- s' . $row['code'] . ' --><img src="{SMILIES_PATH}/' . $row['smiley_url'] . '" alt="' . $row['code'] . '" title="' . $row['emotion'] . '" /><!-- s' . $row['code'] . ' -->';
+				$replace[] = '<!-- s' . $row['code'] . ' --><img src="{SMILIES_PATH}/' . $row['smiley_url'] . '" alt="' . $row['code'] . '" title="' . (isset($user->lang[$row['emotion']]) ? $user->lang[$row['emotion']] : $row['emotion']) . '" /><!-- s' . $row['code'] . ' -->';
 			}
 			$db->sql_freeresult($result);
 		}
