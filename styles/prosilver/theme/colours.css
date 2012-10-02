@@ -363,11 +363,6 @@ ul.topiclist dd {
 	border-left-color: #FFFFFF;
 }
 
-.rtl ul.topiclist dd {
-	border-right-color: #fff;
-	border-left-color: transparent;
-}
-
 ul.topiclist li.row dt a.subforum.read {
 	background-image: url("{IMG_SUBFORUM_READ_SRC}");
 }
@@ -538,18 +533,10 @@ fieldset.polls dd div {
 	color: #FFFFFF;
 }
 
-.rtl .pollbar1, .rtl .pollbar2, .rtl .pollbar3, .rtl .pollbar4, .rtl .pollbar5 {
-	border-right-color: transparent;
-}
-
 .pollbar1 {
 	background-color: #AA2346;
 	border-bottom-color: #74162C;
 	border-right-color: #74162C;
-}
-
-.rtl .pollbar1 {
-	border-left-color: #74162C;
 }
 
 .pollbar2 {
@@ -558,18 +545,10 @@ fieldset.polls dd div {
 	border-right-color: #8C1C38;
 }
 
-.rtl .pollbar2 {
-	border-left-color: #8C1C38;
-}
-
 .pollbar3 {
 	background-color: #D11A4E;
 	border-bottom-color: #AA2346;
 	border-right-color: #AA2346;
-}
-
-.rtl .pollbar3 {
-	border-left-color: #AA2346;
 }
 
 .pollbar4 {
@@ -578,18 +557,10 @@ fieldset.polls dd div {
 	border-right-color: #BE1E4A;
 }
 
-.rtl .pollbar4 {
-	border-left-color: #BE1E4A;
-}
-
 .pollbar5 {
 	background-color: #F81157;
 	border-bottom-color: #D11A4E;
 	border-right-color: #D11A4E;
-}
-
-.rtl .pollbar5 {
-	border-left-color: #D11A4E;
 }
 
 /* Poster profile block
@@ -599,18 +570,8 @@ fieldset.polls dd div {
 	border-left-color: #FFFFFF;
 }
 
-.rtl .postprofile {
-	border-right-color: #FFFFFF;
-	border-left-color: transparent;
-}
-
 .pm .postprofile {
 	border-left-color: #DDDDDD;
-}
-
-.rtl .pm .postprofile {
-	border-right-color: #DDDDDD;
-	border-left-color: transparent;
 }
 
 .postprofile strong {
