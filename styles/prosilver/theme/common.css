@@ -45,10 +45,6 @@ h2 {
 	margin: 0.5em 0 0.2em 0;
 }
 
-h2.solo {
-	margin-bottom: 1em;
-}
-
 h3 {
 	/* Sub-headers (also used as post headers, but defined later) */
 	font-family: Arial, Helvetica, sans-serif;
@@ -66,7 +62,7 @@ h3 span.extra {
 	color: #ccc;
 	font-size: 0.9em;
 	text-transform: lowercase;
-	vertical-align: top;
+	margin-top: 2px;
 	float: right;
 }
 

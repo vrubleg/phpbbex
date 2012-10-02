@@ -911,12 +911,12 @@ fieldset.quick-login input.inputbox {
 /* Form button styles
 ---------------------------------------- */
 
-a.button1, input.button1, input.button3, a.button2, input.button2, button {
+a.button1, input.button1, a.button2, input.button2, button {
 	color: #000;
 	background: #e6e6e6 url("data:image/gif;base64,R0lGODlhBgAwAMQfANTU1crJycHBwL6+v729vdDQ0NXW1dPU1M3NzsbGxs/Pz8vMzMTExMjIyOXl5evs7O3u7eLj4+Hg4Ojo6OTk5dfX1tzc3Obm5t/f3+rq6tra2tLS0tfX1////+/v7wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQJAAAfACwAAAAABgAwAAAFdWAnjltpAmharRXHaXBszTRm31KuR3xP/Y7fZUicGI+ZpPLBbEKeUI90Sq1ar9hstuPoighg02CQGghYAkGMwZ4l3hZMY24L2HWLRW+B+FEQCEQKg0YFhhMZJkkHjE0GBlAGHFMulJUeLpOYl5mWnlKXm5qdIQAh+QQJAAAfACwAAAAABgAwAAAFdmAnjltpAmharRXHaXBszTRm31KuR3xP/Y7fZUicGI+ZpPLBbEKeUI90Sq1ar9hsVuTodjaEcGlATgkELAEjxmDQEnBbY46RBO65hb6HQPwoCApECgpHBYdJJhkPB41MBpBQLlOTUpUeLhyWlZmbmpuUn5iimSEAIfkECQAAHwAsAAAAAAYAMAAABXRgJ45baQJoWq0Vx2lwbM00Zt9Srkd8T/2O32VInBiPmaTywWxCnlCPdEqtWq/YbHbk6JYI4A1gQEYJziwGI8ZI0BKJW2OeC9glkYWeh+j/KAoKRAoFRwUFSiZMB4wPEAaQTy4cUy6VlFKWmZqTm5idm5eXIQAh+QQJAAAfACwAAAAABgAwAAAFdWAnjltpAmharRXHaXBszTRm31KuR3xP/Y7fZUicGI+ZpPLBbEKeUI90Sq1ar9hs1jFyOEyEMGpABlQE6BVjHUskaInGrdHQBe68hT5CQfh/CoFEBQVHBRtKJU0HjE8GjxAeLhxSk1Mul5SVmpKYnZqWn5mXIQAh+QQJAAAfACwAAAAABgAwAAAFc2AnjltpAmharRXHaXBszTRm31KuR3xP/Y7fZUicGI+ZpPLBbEKeUI90Sq1ar9hs1uEYOQgmAiE1KK8E6IqGwYYl3rRG49YI6AKB3mL/Q/gpFwqCQwWFRyVKGwdNBwdQBpBSLhySLpWUlVOWmZedHpOeHiEAIfkECQAAHwAsAAAAAAYAMAAABXVgJ45baQJoWq0Vx2lwbM00Zt9Srkd8T/2O32VInBiPmaTywWxCnlCPdEqtWq/YbNbBHREIJsIgNRiwBGgYY62xJN6zhvwWCOgCi95i8aMg/kMKghcTBYZGJkoHB00HBlAGBlMuHFKUli6YlZiTmx6ZmqGfoCEAOw==");
 }
 
-a.button1.sending, input.button1.sending, input.button3.sending, a.button2.sending, input.button2.sending, button.sending {
+a.button1.sending, input.button1.sending, a.button2.sending, input.button2.sending, button.sending {
 	color: #666666 !important;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 	cursor: default !important;
@@ -928,12 +928,8 @@ a.button1, input.button1 {
 	border-color: #666666;
 }
 
-input.button3 {
-	background-image: none;
-}
-
 /* Alternative button */
-a.button2, input.button2, button, input.button3 {
+a.button2, input.button2, button {
 	border-color: #666666;
 }
 
@@ -943,7 +939,7 @@ a.button1, a.button1:link, a.button1:visited, a.button1:active, a.button2, a.but
 }
 
 /* Hover states */
-a.button1:hover, input.button1:hover, a.button2:hover, input.button2:hover, button:hover, input.button3:hover {
+a.button1:hover, input.button1:hover, a.button2:hover, input.button2:hover, button:hover {
 	border-color: #BC2A4D;
 	color: #BC2A4D;
 }
