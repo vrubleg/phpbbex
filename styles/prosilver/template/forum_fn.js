@@ -313,18 +313,18 @@ jQuery(function($)
 	// Forms submitting indication
 	$('form input[type=submit]').on('click', function()
 	{
-		var button = this;
-		if ($(button).hasClass('sending')) return false;
+		var $submit = $(this);
+		if ($submit.hasClass('sending')) return false;
 		$(this).parents('form').off('submit.sending').one('submit.sending', function(e)
 		{
 			if (e.isDefaultPrevented()) return;
-			$(button).addClass('sending');
+			$submit.addClass('sending');
 			var last = (new Date()).getTime();
 			var timer = setInterval(function()
 			{
-				if ((new Date()).getTime() - last > 2500)
+				if ((new Date()).getTime() - last > 2000)
 				{
-					$(button).removeClass('sending');
+					$submit.removeClass('sending');
 					clearInterval(timer);
 					return;
 				}
@@ -338,17 +338,28 @@ jQuery(function($)
 	$('form input[type=submit].alternate-submit-action').attr('title', 'Alt+Enter');
 
 	// Enter, Ctrl+Enter and Alt+Enter handler
-	$('form input[type=text], form input[type=password], form textarea').on('keypress', function (e)
+	$('form input[type=text], form input[type=password], form textarea').on('keydown', function (e)
 	{
-		var button = $(this).parents('form').find('input[type=submit].' + (e.altKey ? 'alternate' : 'default') + '-submit-action');
-		if (!button || button.length <= 0) return true;
+		var $form = $(this).parents('form');
+		var $submit = $form.find('input[type=submit].' + (e.altKey ? 'alternate' : 'default') + '-submit-action');
+		if (!$submit || $submit.length <= 0) return true;
 
 		var is_input = !$(this).is('textarea');
 		if (is_input && phpbb_check_key(e)) return true;
 
 		if ((e.which == 13 || e.which == 10) && (is_input || e.ctrlKey || e.altKey))
 		{
-			button.focus().click();
+			$submit.triggerHandler('click');
+			if ($submit.attr('name'))
+			{
+				var $input = $('<input type="hidden" />').attr('name', $submit.attr('name')).val($submit.val());
+				$form.append($input).submit();
+				$input.remove();
+			}
+			else
+			{
+				$form.submit();
+			}
 			return false;
 		}
 
