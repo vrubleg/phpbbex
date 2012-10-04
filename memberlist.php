@@ -1189,14 +1189,14 @@ switch ($mode)
 		switch( $mode )
 		{
 			case 'all':
-				$page_title = $user->lang['ALL_USERS'];
+				$page_title = $user->lang['MEMBERLIST_ALL_USERS'];
 			break;
 			case 'active':
-				$page_title = $user->lang['ACTIVE_USERS'];
+				$page_title = $user->lang['MEMBERLIST_ACTIVE_USERS'];
 				$sql_where .= " AND u.user_lastvisit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
 			break;
 			case 'inactive':
-				$page_title = $user->lang['INACTIVE_USERS'];
+				$page_title = $user->lang['MEMBERLIST_INACTIVE_USERS'];
 				$sql_where .= " AND u.user_lastvisit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
 			break;
 		}
