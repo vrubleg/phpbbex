@@ -2634,7 +2634,8 @@ function build_url($strip_vars = false)
 */
 function meta_refresh($time, $url, $disable_cd_check = false)
 {
-	global $template;
+	global $template, $meta_refresh_used;
+	$meta_refresh_used = true;
 
 	$url = redirect($url, true, $disable_cd_check);
 	$url = str_replace('&', '&amp;', $url);
@@ -4481,7 +4482,8 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 			$l_message_new = ($user->data['user_new_privmsg'] == 1) ? $user->lang['NEW_PM'] : $user->lang['NEW_PMS'];
 			$l_privmsgs_text = sprintf($l_message_new, $user->data['user_new_privmsg']);
 
-			if (!$user->data['user_last_privmsg'] || $user->data['user_last_privmsg'] > $user->data['session_last_visit'])
+			global $meta_refresh_used;
+			if (empty($meta_refresh_used) && (!$user->data['user_last_privmsg'] || $user->data['user_last_privmsg'] > $user->data['session_last_visit']))
 			{
 				$sql = 'UPDATE ' . USERS_TABLE . '
 					SET user_last_privmsg = ' . $user->data['session_last_visit'] . '
