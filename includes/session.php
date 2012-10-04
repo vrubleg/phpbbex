@@ -129,7 +129,7 @@ class phpbb_session
 			'script_path'		=> str_replace(' ', '%20', htmlspecialchars($script_path)),
 			'root_script_path'	=> str_replace(' ', '%20', htmlspecialchars($root_script_path)),
 
-			'page'				=> $page,
+			'page'				=> preg_replace('/[^\x00-\x7F]+/e', 'urlencode("$0")', $page),
 			'forum'				=> (isset($_REQUEST['f']) && $_REQUEST['f'] > 0) ? (int) $_REQUEST['f'] : 0,
 		);
 
