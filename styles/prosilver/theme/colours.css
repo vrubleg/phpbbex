@@ -57,6 +57,9 @@ hr.dashed {
 	background-image: url("{T_THEME_PATH}/images/bg_list.gif");
 }
 
+.new-year .headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.png"); }
+.new-year .forabg, .new-year .forumbg { background-image: url("{T_THEME_PATH}/images/bg_list_snow.png"); }
+
 .panel {
 	background-color: #ECF1F3;
 	color: #28313F;

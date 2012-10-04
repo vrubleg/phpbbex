@@ -29,10 +29,6 @@
 
 <style type="text/css" media="screen, projection">
 #wrap { min-width: <!-- IF STYLE_MIN_WIDTH > 875 -->{STYLE_MIN_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- IF STYLE_MAX_WIDTH --> max-width: <!-- IF STYLE_MAX_WIDTH > 875 -->{STYLE_MAX_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- ENDIF --> }
-<!-- IF STYLE_AUTO_NEW_YEAR and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) -->
-.headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.png"); }
-.forabg, .forumbg { background-image: url("{T_THEME_PATH}/images/bg_list_snow.png"); }
-<!-- ENDIF -->
 </style>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -86,7 +82,7 @@
 
 </head>
 
-<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> mp-on-left<!-- ENDIF -->">
+<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> mp-on-left<!-- ENDIF --><!-- IF STYLE_AUTO_NEW_YEAR and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) --> new-year<!-- ENDIF -->">
 <div id="wrap"<!-- IF not S_OUTLINKS --> style="padding-top: 10px;"<!-- ENDIF -->>
 	<a id="top" name="top" accesskey="t"></a>
 	<!-- IF S_OUTLINKS -->
