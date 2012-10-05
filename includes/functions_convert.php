@@ -678,7 +678,7 @@ function import_avatar($source, $use_target = false, $user_id = false)
 
 	if ($use_target === false && $user_id !== false)
 	{
-		$use_target = $config['avatar_salt'] . '_' . $user_id . '.' . substr(strrchr($source, '.'), 1);
+		$use_target = $user_id . '.' . substr(strrchr($source, '.'), 1);
 	}
 
 	$result = _import_check('avatar_path', $source, $use_target);

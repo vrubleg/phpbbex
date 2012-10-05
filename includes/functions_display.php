@@ -1600,7 +1600,11 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 			{
 				return '';
 			}
-			$avatar_img = $phpbb_root_path . "download/file.$phpEx?avatar=";
+			if (($cut_start = strpos($avatar, '_')) !== false)
+			{
+				$avatar = substr_replace($avatar, '', $cut_start, strpos($avatar, '.') - $cut_start);
+			}
+			$avatar_img = $phpbb_root_path . trim($config['avatar_path'], '/') . '/' . $avatar;
 		break;
 
 		case AVATAR_GALLERY:
@@ -1608,7 +1612,7 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 			{
 				return '';
 			}
-			$avatar_img = $phpbb_root_path . $config['avatar_gallery_path'] . '/';
+			$avatar_img = $phpbb_root_path . $config['avatar_gallery_path'] . '/' . $avatar;
 		break;
 
 		case AVATAR_REMOTE:
@@ -1637,7 +1641,6 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 		}
 	}
 
-	$avatar_img .= $avatar;
 	return '<img src="' . (str_replace(' ', '%20', $avatar_img)) . '" width="' . $avatar_width . '" height="' . $avatar_height . '" alt="' . ((!empty($user->lang[$alt])) ? $user->lang[$alt] : $alt) . '" />';
 }
 

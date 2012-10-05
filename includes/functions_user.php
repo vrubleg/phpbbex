@@ -2054,8 +2054,7 @@ function avatar_upload($data, &$error)
 		$file = $upload->remote_upload($data['uploadurl']);
 	}
 
-	$prefix = $config['avatar_salt'] . '_';
-	$file->clean_filename('avatar', $prefix, $data['user_id']);
+	$file->clean_filename('avatar', '', $data['user_id']);
 
 	$destination = $config['avatar_path'];
 
@@ -2080,7 +2079,7 @@ function avatar_upload($data, &$error)
 		$error = array_merge($error, $file->error);
 	}
 
-	return array(AVATAR_UPLOAD, $data['user_id'] . '_' . time() . '.' . $file->get('extension'), $file->get('width'), $file->get('height'));
+	return array(AVATAR_UPLOAD, $data['user_id'] . '.' . $file->get('extension'), $file->get('width'), $file->get('height'));
 }
 
 /**
@@ -2102,7 +2101,7 @@ function get_avatar_filename($avatar_entry)
 	}
 	$ext 			= substr(strrchr($avatar_entry, '.'), 1);
 	$avatar_entry	= intval($avatar_entry);
-	return $config['avatar_salt'] . '_' . (($avatar_group) ? 'g' : '') . $avatar_entry . '.' . $ext;
+	return (($avatar_group) ? 'g' : '') . $avatar_entry . '.' . $ext;
 }
 
 /**
@@ -2607,14 +2606,13 @@ function group_correct_avatar($group_id, $old_entry)
 	$group_id		= (int)$group_id;
 	$ext 			= substr(strrchr($old_entry, '.'), 1);
 	$old_filename 	= get_avatar_filename($old_entry);
-	$new_filename 	= $config['avatar_salt'] . "_g$group_id.$ext";
-	$new_entry 		= 'g' . $group_id . '_' . substr(time(), -5) . ".$ext";
+	$new_filename 	= "g{$group_id}.{$ext}";
 
 	$avatar_path = $phpbb_root_path . $config['avatar_path'];
 	if (@rename($avatar_path . '/'. $old_filename, $avatar_path . '/' . $new_filename))
 	{
 		$sql = 'UPDATE ' . GROUPS_TABLE . '
-			SET group_avatar = \'' . $db->sql_escape($new_entry) . "'
+			SET group_avatar = \'' . $db->sql_escape($new_filename) . "'
 			WHERE group_id = $group_id";
 		$db->sql_query($sql);
 	}
