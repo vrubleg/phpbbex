@@ -915,3 +915,7 @@ input.search {
 input.disabled {
 	color: #666666;
 }
+
+::-webkit-input-placeholder { color: #999; font-style: italic; }
+:-moz-placeholder { color: #999; font-style: italic; }
+:-ms-input-placeholder { color: #999; font-style: italic; }

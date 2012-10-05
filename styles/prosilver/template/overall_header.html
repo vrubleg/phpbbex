@@ -83,7 +83,7 @@
 </head>
 
 <body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> mp-on-left<!-- ENDIF --><!-- IF STYLE_AUTO_NEW_YEAR and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) --> new-year<!-- ENDIF -->">
-<div id="wrap"<!-- IF not S_OUTLINKS --> style="padding-top: 10px;"<!-- ENDIF -->>
+<div id="wrap">
 	<a id="top" name="top" accesskey="t"></a>
 	<!-- IF S_OUTLINKS -->
 	<div id="top-menu">
@@ -96,13 +96,15 @@
 		<div id="search-box">
 			<form action="{U_SEARCH}" method="get" id="search">
 			<fieldset>
-				<input name="keywords" id="keywords" type="text" maxlength="128" title="{L_SEARCH_KEYWORDS}" class="inputbox search" value="<!-- IF SEARCH_WORDS-->{SEARCH_WORDS}<!-- ELSE -->{L_SEARCH_MINI}<!-- ENDIF -->" onclick="if(this.value=='{LA_SEARCH_MINI}')this.value='';" onblur="if(this.value=='')this.value='{LA_SEARCH_MINI}';" /> 
+				<input name="keywords" id="keywords" type="text" maxlength="128" title="{L_SEARCH_KEYWORDS}" class="inputbox search" placeholder="{L_SEARCH_MINI}" value="{SEARCH_WORDS}" />
 				<input class="button2" value="{L_SEARCH}" type="submit" />{S_SEARCH_HIDDEN_FIELDS}
 			</fieldset>
 			</form>
 		</div>
 		<!-- ENDIF -->
 	</div>
+	<!-- ELSE -->
+	<div style="padding-top: 10px;"></div>
 	<!-- ENDIF -->
 
 	<div id="page-header">
@@ -121,7 +123,7 @@
 			<div id="search-box" style="margin-top: 23px;">
 				<form action="{U_SEARCH}" method="post" id="search">
 				<fieldset>
-					<input name="keywords" id="keywords" type="text" maxlength="128" title="{L_SEARCH_KEYWORDS}" class="inputbox search" value="<!-- IF SEARCH_WORDS-->{SEARCH_WORDS}<!-- ELSE -->{L_SEARCH_MINI}<!-- ENDIF -->" onclick="if(this.value=='{LA_SEARCH_MINI}')this.value='';" onblur="if(this.value=='')this.value='{LA_SEARCH_MINI}';" />
+					<input name="keywords" id="keywords" type="text" maxlength="128" title="{L_SEARCH_KEYWORDS}" class="inputbox search" placeholder="{L_SEARCH_MINI}" value="{SEARCH_WORDS}" />
 					<input class="button2" value="{L_SEARCH}" type="submit" /><br />
 					<a href="{U_SEARCH}" title="{L_SEARCH_ADV_EXPLAIN}">{L_SEARCH_ADV}</a> {S_SEARCH_HIDDEN_FIELDS}
 				</fieldset>
