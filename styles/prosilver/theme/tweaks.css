@@ -4,6 +4,8 @@ These style definitions are mainly IE specific
 tweaks required due to its poor CSS support.
 -------------------------------------------------*/
 
+* html body { height: auto; }
+
 * html table, * html select, * html input { font-size: 100%; }
 * html hr { margin: 0; }
 

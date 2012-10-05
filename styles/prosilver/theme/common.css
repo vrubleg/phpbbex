@@ -10,7 +10,8 @@
 html {
 	font-size: 100%;
 	/* Always show a scrollbar for short pages - stops the jump when the scrollbar appears. non-IE browsers */
-	height: 101%;
+	height: 100%;
+	overflow-y: scroll;
 }
 
 body {
@@ -20,10 +21,7 @@ body {
 	background-color: #EEEEE7;
 	/*font-size: 62.5%;			 This sets the default font size to be equivalent to 10px */
 	font-size: 10px;
-	margin: 0;
-	padding: 0;
 	height: 100%;
-	_height: auto; /* For stupid IE6 */
 }
 
 h1 {

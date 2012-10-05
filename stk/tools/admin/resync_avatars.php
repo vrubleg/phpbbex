@@ -75,7 +75,7 @@ class resync_avatars
 			if ($mode != RESYNC_GROUP_AVATARS)
 			{
 				$template->assign_var('U_BACK_TOOL', false);
-				meta_refresh(3, append_sid(STK_INDEX, array('c' => 'admin', 't' => 'resync_avatars', 'step' => 0, 'mode' => RESYNC_GROUP_AVATARS, 'submit' => true)));
+				meta_refresh(1, append_sid(STK_INDEX, array('c' => 'admin', 't' => 'resync_avatars', 'step' => 0, 'mode' => RESYNC_GROUP_AVATARS, 'submit' => true)));
 				trigger_error('RESYNC_AVATARS_NEXT_MODE');
 			}
 
@@ -94,12 +94,20 @@ class resync_avatars
 				if (isset($row['avatar'][0]) && $row['avatar'][0] === 'g')
 				{
 					$avatar_group = true;
-					$user['avatar'] = substr($row['avatar'], 1);
+					$row['avatar'] = substr($row['avatar'], 1);
 				}
 
 				$ext		= substr(strrchr($row['avatar'], '.'), 1);
 				$filename	= (int) $row['avatar'];
-				$path		= PHPBB_ROOT_PATH . $config['avatar_path'] . '/' . $config['avatar_salt'] . '_' . ((isset($avatar_group)) ? 'g' : '') . $filename . '.' . $ext;
+				$path		= PHPBB_ROOT_PATH . $config['avatar_path'] . '/' . ((isset($avatar_group)) ? 'g' : '') . $filename . '.' . $ext;
+				if (!file_exists($path))
+				{
+					$oldstyle = PHPBB_ROOT_PATH . $config['avatar_path'] . '/' . $config['avatar_salt'] . '_' . ((isset($avatar_group)) ? 'g' : '') . $filename . '.' . $ext;
+					if (file_exists($oldstyle))
+					{
+						if (!rename($oldstyle, $path)) continue;
+					}
+				}
 			}
 			else if ($row['avatar_type'] == AVATAR_GALLERY)
 			{
@@ -146,7 +154,7 @@ class resync_avatars
 
 		// Next step
 		$template->assign_var('U_BACK_TOOL', false);
-		meta_refresh(3, append_sid(STK_INDEX, array('c' => 'admin', 't' => 'resync_avatars', 'step' => ++$step, 'submit' => true)));
+		meta_refresh(1, append_sid(STK_INDEX, array('c' => 'admin', 't' => 'resync_avatars', 'mode' => $mode, 'step' => ++$step, 'submit' => true)));
 		trigger_error('RESYNC_AVATARS_PROGRESS');
 	}
 }
