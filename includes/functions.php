@@ -172,25 +172,7 @@ function set_config_count($config_name, $increment, $is_dynamic = false)
 {
 	global $db, $cache;
 
-	switch ($db->sql_layer)
-	{
-		case 'firebird':
-			// Precision must be from 1 to 18
-			$sql_update = 'CAST(CAST(config_value as DECIMAL(18, 0)) + ' . (int) $increment . ' as VARCHAR(255))';
-		break;
-
-		case 'postgres':
-			// Need to cast to text first for PostgreSQL 7.x
-			$sql_update = 'CAST(CAST(config_value::text as DECIMAL(255, 0)) + ' . (int) $increment . ' as VARCHAR(255))';
-		break;
-
-		// MySQL, SQlite, mssql, mssql_odbc, oracle
-		default:
-			$sql_update = 'config_value + ' . (int) $increment;
-		break;
-	}
-
-	$db->sql_query('UPDATE ' . CONFIG_TABLE . ' SET config_value = ' . $sql_update . " WHERE config_name = '" . $db->sql_escape($config_name) . "'");
+	$db->sql_query('UPDATE ' . CONFIG_TABLE . ' SET config_value = ' . 'config_value + ' . intval($increment) . " WHERE config_name = '" . $db->sql_escape($config_name) . "'");
 
 	if (!$is_dynamic)
 	{
@@ -4049,25 +4031,11 @@ function obtain_guest_count($item_id = 0, $item = 'forum')
 
 	// Get number of online guests
 
-	if ($db->sql_layer === 'sqlite')
-	{
-		$sql = 'SELECT COUNT(session_ip) as num_guests
-			FROM (
-				SELECT DISTINCT s.session_ip
-				FROM ' . SESSIONS_TABLE . ' s
-				WHERE s.session_user_id = ' . ANONYMOUS . '
-					AND s.session_time >= ' . ($time - ((int) ($time % 60))) .
-				$reading_sql .
-			')';
-	}
-	else
-	{
-		$sql = 'SELECT COUNT(DISTINCT s.session_ip) as num_guests
-			FROM ' . SESSIONS_TABLE . ' s
-			WHERE s.session_user_id = ' . ANONYMOUS . '
-				AND s.session_time >= ' . ($time - ((int) ($time % 60))) .
-			$reading_sql;
-	}
+	$sql = 'SELECT COUNT(DISTINCT s.session_ip) as num_guests
+		FROM ' . SESSIONS_TABLE . ' s
+		WHERE s.session_user_id = ' . ANONYMOUS . '
+			AND s.session_time >= ' . ($time - ((int) ($time % 60))) .
+		$reading_sql;
 	$result = $db->sql_query($sql);
 	$guests_online = (int) $db->sql_fetchfield('num_guests');
 	$db->sql_freeresult($result);

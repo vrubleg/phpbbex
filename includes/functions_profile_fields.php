@@ -367,35 +367,12 @@ class custom_profile
 			return;
 		}
 
-		switch ($db->sql_layer)
-		{
-			case 'oracle':
-			case 'firebird':
-			case 'postgres':
-				$right_delim = $left_delim = '"';
-			break;
-
-			case 'sqlite':
-			case 'mssql':
-			case 'mssql_odbc':
-			case 'mssqlnative':
-				$right_delim = ']';
-				$left_delim = '[';
-			break;
-
-			case 'mysql':
-			case 'mysql4':
-			case 'mysqli':
-				$right_delim = $left_delim = '`';
-			break;
-		}
-
 		// use new array for the UPDATE; changes in the key do not affect the original array
 		$cp_data_sql = array();
 		foreach ($cp_data as $key => $value)
 		{
 			// Firebird is case sensitive with delimiter
-			$cp_data_sql[$left_delim . (($db->sql_layer == 'firebird' || $db->sql_layer == 'oracle') ? strtoupper($key) : $key) . $right_delim] = $value;
+			$cp_data_sql['`' . $key . '`'] = $value;
 		}
 
 		$sql = 'UPDATE ' . PROFILE_FIELDS_DATA_TABLE . '
