@@ -1619,6 +1619,24 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 		break;
 	}
 
+	if (!$ignore_config)
+	{
+		if ($avatar_width > $config['avatar_max_width'] && $avatar_width && $avatar_height)
+		{
+			$avatar_height = round($config['avatar_max_width']*($avatar_height/$avatar_width));
+			$avatar_width = $config['avatar_max_width'];
+		}
+		if ($avatar_height > $config['avatar_max_height'] && $avatar_width && $avatar_height)
+		{
+			$avatar_width = round($config['avatar_max_height']*($avatar_width/$avatar_height));
+			$avatar_height = $config['avatar_max_height'];
+		}
+		if (!$avatar_width || !$avatar_height)
+		{
+			return '';
+		}
+	}
+
 	$avatar_img .= $avatar;
 	return '<img src="' . (str_replace(' ', '%20', $avatar_img)) . '" width="' . $avatar_width . '" height="' . $avatar_height . '" alt="' . ((!empty($user->lang[$alt])) ? $user->lang[$alt] : $alt) . '" />';
 }
