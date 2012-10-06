@@ -241,12 +241,7 @@ else
 	$sql_array['WHERE'] = "p.post_id = $post_id AND t.topic_id = p.topic_id";
 }
 
-$sql_array['WHERE'] .= ' AND (f.forum_id = t.forum_id';
-
-$sql_array['WHERE'] .= ' OR (t.topic_type = ' . POST_GLOBAL . "
-	AND f.forum_id = $forum_id)";
-
-$sql_array['WHERE'] .= ')';
+$sql_array['WHERE'] .= ' AND f.forum_id = t.forum_id';
 
 // Join to forum table on topic forum_id unless topic forum_id is zero
 // whereupon we join on the forum_id passed as a parameter ... this
