@@ -18,44 +18,84 @@ php_flag register_globals off
 </IfModule>
 FileETag None
 
-# MIME types
+<IfModule mod_expires.c>
+ExpiresActive On
+</IfModule>
+
+# Multimedia MIME types
+AddType audio/ogg						ogg oga
 AddType video/ogg						ogv
-AddType video/mp4						mp4
-AddType video/webm 						webm
-AddType audio/ogg						ogg oga spx
+AddType audio/webm						webma
+AddType video/webm						webm webmv
+AddType audio/mp4						m4a
+AddType video/mp4						mp4 m4v
 AddType audio/opus						opus
 AddType audio/flac						flac
-AddType image/svg+xml					svg svgz 
+AddType audio/aac						aac
+AddType audio/mpeg						mp1 mp2 mp3 mpg mpeg
+AddType audio/wav						wav
+
+<IfModule mod_expires.c>
+ExpiresByType audio/ogg					"access plus 3 month"
+ExpiresByType video/ogg					"access plus 3 month"
+ExpiresByType audio/webm				"access plus 3 month"
+ExpiresByType video/webm				"access plus 3 month"
+ExpiresByType audio/mp4					"access plus 3 month"
+ExpiresByType video/mp4					"access plus 3 month"
+ExpiresByType audio/opus				"access plus 3 month"
+ExpiresByType audio/flac				"access plus 3 month"
+ExpiresByType audio/aac					"access plus 3 month"
+ExpiresByType audio/mpeg				"access plus 3 month"
+ExpiresByType audio/wav					"access plus 3 month"
+</IfModule>
+
+# Image MIME types
+AddType image/png						png
+AddType image/gif						gif
+AddType image/jpeg						jpg jpeg
+AddType image/webp						webp
+AddType image/svg+xml					svg svgz
+
+<IfModule mod_expires.c>
+ExpiresByType image/png					"access plus 1 month"
+ExpiresByType image/gif					"access plus 1 month"
+ExpiresByType image/jpeg				"access plus 1 month"
+ExpiresByType image/webp				"access plus 1 month"
+ExpiresByType image/svg+xml				"access plus 1 month"
+</IfModule>
+
+# Font MIME types
 AddType font/ttf						ttf
 AddType font/otf						otf
-AddType font/x-woff						woff
-AddType application/x-7z-compressed		7z
+AddType application/x-font-woff			woff
+
+<IfModule mod_expires.c>
+ExpiresByType font/ttf					"access plus 1 month"
+ExpiresByType font/otf					"access plus 1 month"
+ExpiresByType application/x-font-woff	"access plus 1 month"
+</IfModule>
+
+# Text MIME types
 AddType text/cache-manifest				manifest
 AddType text/javascript					js
 AddType text/css						css
 AddType text/html						html
-AddType image/jpeg						jpg jpeg
+
+<IfModule mod_expires.c>
+ExpiresByType text/cache-manifest		"access plus 7 days"
+ExpiresByType application/javascript 	"access plus 7 days"
+ExpiresByType application/x-javascript 	"access plus 7 days"
+ExpiresByType text/javascript			"access plus 7 days"
+ExpiresByType text/css					"access plus 7 days"
+ExpiresByType text/html					"access plus 7 days"
+</IfModule>
+
+# Binary MIME types
+AddType application/x-7z-compressed		7z
 AddType application/x-shockwave-flash	swf
 
-# Expires for main MIME types
 <IfModule mod_expires.c>
-ExpiresActive On
-ExpiresByType image/png					"access plus 1 month"
-ExpiresByType image/gif					"access plus 1 month"
-ExpiresByType image/jpeg				"access plus 1 month"
-ExpiresByType audio/flac				"access plus 3 month"
-ExpiresByType audio/ogg					"access plus 3 month"
-ExpiresByType audio/opus				"access plus 3 month"
-ExpiresByType video/mp4					"access plus 3 month"
-ExpiresByType video/ogg					"access plus 3 month"
-ExpiresByType video/webm				"access plus 3 month"
-ExpiresByType text/css					"access plus 1 month"
-ExpiresByType font/ttf					"access plus 1 month"
-ExpiresByType font/woff					"access plus 1 month"
-ExpiresByType image/svg+xml				"access plus 1 month"
-ExpiresByType text/javascript 			"access plus 1 month"
-ExpiresByType application/javascript 	"access plus 1 month"
-ExpiresByType application/x-javascript 	"access plus 1 month"
+ExpiresByType application/x-7z-compressed	"access plus 1 month"
 ExpiresByType application/x-shockwave-flash	"access plus 1 month"
 </IfModule>
 
