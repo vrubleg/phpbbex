@@ -1146,14 +1146,13 @@ if ($submit || $preview || $refresh)
 			$redirect_url = submit_post($mode, $post_data['post_subject'], $post_data['username'], $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);
 
 			// Show/Unshow first post on every page
-			if(($mode == 'edit' && $post_id == $post_data['topic_first_post_id']) || $mode == 'post')
+			if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id']))
 			{
-				if($mode == 'post')
+				if ($mode == 'post')
 				{
 					$topic_id = $data['topic_id'];
 				}
-				$perm_show_unshow = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'])) ? true : false;
-				if($post_data['topic_first_post_show'] != $topic_first_post_show && $perm_show_unshow)
+				if ($post_data['topic_first_post_show'] != $topic_first_post_show && $user->data['is_registered'])
 				{
 					$sql = 'UPDATE ' . TOPICS_TABLE . '
 						SET topic_first_post_show = ' . (($topic_first_post_show) ? 1 : 0) . " 
@@ -1366,13 +1365,6 @@ if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_p
 	$topic_type_toggle = posting_gen_topic_types($forum_id, $post_data['topic_type']);
 }
 
-// Do show show first post on every page checkbox only in first post
-$first_post_show_allowed = false;
-if(($mode == 'edit' && $post_id == $post_data['topic_first_post_id']) || $mode == 'post')
-{
-	$first_post_show_allowed = true;
-}
-
 $s_topic_icons = false;
 if ($post_data['enable_icons'] && $auth->acl_get('f_icons', $forum_id))
 {
@@ -1506,7 +1498,7 @@ $template->assign_vars(array(
 	'S_HAS_DRAFTS'				=> ($auth->acl_get('u_savedrafts') && $user->data['is_registered'] && $post_data['drafts']) ? true : false,
 	'S_FORM_ENCTYPE'			=> $form_enctype,
 
-	'S_FIRST_POST_SHOW_ALLOWED'		=> ($first_post_show_allowed  && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster']))) ? true : false,
+	'S_FIRST_POST_SHOW_ALLOWED'		=> $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),
 	'S_FIRST_POST_SHOW_CHECKED'		=> ($first_post_show_checked) ? ' checked="checked"' : '',
 
 	'S_BBCODE_IMG'			=> $img_status,
