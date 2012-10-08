@@ -68,8 +68,8 @@ class acp_board
 						'override_user_dst'			=> array('lang' => 'OVERRIDE_DST',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'default_style'			=> array('lang' => 'DEFAULT_STYLE',			'validate' => 'int',	'type' => 'select', 'function' => 'style_select', 'params' => array('{CONFIG_VALUE}', false), 'explain' => false),
 						'override_user_style'	=> array('lang' => 'OVERRIDE_STYLE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'active_topics_days'	=> array('lang' => 'ACTIVE_TOPICS_DAYS',	'validate' => 'int',	'type' => 'text:4:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
-						'active_users_days'		=> array('lang' => 'ACTIVE_USERS_DAYS',		'validate' => 'int',	'type' => 'text:4:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
+						'active_topics_days'	=> array('lang' => 'ACTIVE_TOPICS_DAYS',	'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => array('{CONFIG_VALUE}', '{KEY}', true), 'explain' => true),
+						'active_users_days'		=> array('lang' => 'ACTIVE_USERS_DAYS',		'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => array('{CONFIG_VALUE}', '{KEY}', false), 'explain' => true),
 
 						'legend5'					=> 'ACP_SUBMIT_CHANGES',
 					)
@@ -928,6 +928,25 @@ class acp_board
 		{
 			$selected = ($selected_value == $value) ? ' selected="selected"' : '';
 			$act_options .= '<option value="' . $value . '"' . $selected . '>' . $user->lang[$key] . '</option>';
+		}
+
+		return $act_options;
+	}
+
+	/**
+	* Select account activation method
+	*/
+	function select_days($value, $key, $zero)
+	{
+		global $user, $config;
+
+		$limit_days = array(0 => $user->lang['ALL_DAYS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
+		if (!$zero) unset($limit_days[0]);
+		$act_options = '';
+		foreach ($limit_days as $days => $title)
+		{
+			$selected = ($value == $days) ? ' selected="selected"' : '';
+			$act_options .= '<option value="' . $value . '"' . $selected . '>' . $title . '</option>';
 		}
 
 		return $act_options;
