@@ -61,11 +61,11 @@
 			<div id="smiley-box">
 				<!-- IF S_SMILIES_ALLOWED and .smiley -->
 					<!-- BEGIN smiley -->
-						<a href="#" onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
+						<a rel="nofollow" href="#" onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
 					<!-- END smiley -->
 				<!-- ENDIF -->
 				<!-- IF S_SHOW_SMILEY_LINK and S_SMILIES_ALLOWED-->
-					<a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
+					<a rel="nofollow" href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
 				<!-- ENDIF -->
 
 				<div<!-- IF not EXTRA_OPTIONS_DISPLAY --> style="display: none;"<!-- ENDIF -->>

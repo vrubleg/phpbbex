@@ -20,7 +20,7 @@
 	<!-- ENDIF -->
 
 		<div class="rightside pagination">
-			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a rel="nofollow" href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</div>
 	</div>
 <!-- ENDIF -->
@@ -47,7 +47,7 @@
 			<li class="row<!-- IF searchresults.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 				<dl class="icon" style="background-image: url({searchresults.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
 					<dt <!-- IF searchresults.TOPIC_ICON_IMG -->style="background-image: url({T_ICONS_PATH}{searchresults.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{searchresults.TOPIC_FOLDER_IMG_ALT}">
-						<!-- IF searchresults.S_UNREAD_TOPIC --><a href="{searchresults.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
+						<!-- IF searchresults.S_UNREAD_TOPIC --><a rel="nofollow" href="{searchresults.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
 						<a href="{searchresults.U_VIEW_TOPIC}" class="topictitle">{searchresults.TOPIC_TITLE}</a>
 						<!-- IF searchresults.S_TOPIC_UNAPPROVED or searchresults.S_POSTS_UNAPPROVED --><a href="{searchresults.U_MCP_QUEUE}">{searchresults.UNAPPROVED_IMG}</a> <!-- ENDIF -->
 						<!-- IF searchresults.S_TOPIC_REPORTED --><a href="{searchresults.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
@@ -59,7 +59,7 @@
 					<dd class="views">{searchresults.TOPIC_VIEWS}</dd>
 					<dd class="lastpost"><span>
 						{L_POST_BY_AUTHOR} {searchresults.LAST_POST_AUTHOR_FULL}
-						<!-- IF not S_IS_BOT --><a href="{searchresults.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{searchresults.LAST_POST_TIME}<br /> </span>
+						<!-- IF not S_IS_BOT --><a rel="nofollow" href="{searchresults.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{searchresults.LAST_POST_TIME}<br /> </span>
 					</dd>
 				</dl>
 			</li>
@@ -144,7 +144,7 @@
 <!-- IF PAGINATION or .searchresults or PAGE_NUMBER -->
 	<ul class="linklist">
 		<li class="rightside pagination">
-			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a rel="nofollow" href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</li>
 	</ul>
 <!-- ENDIF -->

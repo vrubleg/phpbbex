@@ -16,7 +16,7 @@
 	<li class="icons-divider"></li>
 	<!-- ENDIF -->
 	<!-- IF S_WATCH_FORUM_LINK -->
-	<li><a href="{S_WATCH_FORUM_LINK}" title="{S_WATCH_FORUM_TITLE}" <!-- IF S_WATCHING_FORUM -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{S_WATCH_FORUM_TITLE}</a></li>
+	<li><a rel="nofollow" href="{S_WATCH_FORUM_LINK}" title="{S_WATCH_FORUM_TITLE}" <!-- IF S_WATCHING_FORUM -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{S_WATCH_FORUM_TITLE}</a></li>
 	<!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
@@ -37,7 +37,7 @@
 	<li><a href="{U_SEARCH_ACTIVE_TOPICS_IN}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- IF S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_UNREAD_IN}">{L_SEARCH_UNREAD}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --><!-- IF not S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_NEW_IN}">{L_SEARCH_NEW}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_SELF_TOPICS_IN}">{L_SEARCH_SELF_TOPICS}</a> &bull; <a href="{U_SEARCH_SELF_IN}">{L_SEARCH_SELF}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_UNANSWERED_IN}">{L_SEARCH_UNANSWERED}</a> &bull; <a href="{U_SEARCH_IN}">{L_SEARCHING_FORUMS}</a></li>
 	<!-- ENDIF -->
 	<!-- IF not S_IS_BOT and U_MARK_FORUMS -->
-	<li class="rightside"><a href="{U_MARK_FORUMS}">{L_MARK_SUBFORUMS_READ}</a></li>
+	<li class="rightside"><a rel="nofollow" href="{U_MARK_FORUMS}">{L_MARK_SUBFORUMS_READ}</a></li>
 	<!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
@@ -49,7 +49,7 @@
 
 	<!-- IF not S_IS_BOT and S_DISPLAY_POST_INFO -->
 		<div class="buttons">
-			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->post-icon<!-- ENDIF -->" title="<!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_POST_TOPIC}<!-- ENDIF -->"><a href="{U_POST_NEW_TOPIC}"><span></span><!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_POST_TOPIC}<!-- ENDIF --></a></div>
+			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->post-icon<!-- ENDIF -->" title="<!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_POST_TOPIC}<!-- ENDIF -->"><a rel="nofollow" href="{U_POST_NEW_TOPIC}"><span></span><!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_POST_TOPIC}<!-- ENDIF --></a></div>
 		</div>
 	<!-- ENDIF -->
 
@@ -67,9 +67,9 @@
 
 	<!-- IF PAGINATION or TOTAL_POSTS or TOTAL_TOPICS -->
 		<div class="pagination">
-			<!-- IF not S_IS_BOT and U_MARK_TOPICS --><a href="{U_MARK_TOPICS}" accesskey="m">{L_MARK_TOPICS_READ}</a> &bull; <!-- ENDIF --><!-- IF TOTAL_TOPICS -->{TOTAL_TOPICS}<!-- ENDIF -->
+			<!-- IF not S_IS_BOT and U_MARK_TOPICS --><a rel="nofollow" href="{U_MARK_TOPICS}" accesskey="m">{L_MARK_TOPICS_READ}</a> &bull; <!-- ENDIF --><!-- IF TOTAL_TOPICS -->{TOTAL_TOPICS}<!-- ENDIF -->
 			<!-- IF PAGE_NUMBER -->
-				<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+				<!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 			<!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
@@ -149,7 +149,7 @@
 
 		<li class="row<!-- IF topicrow.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF --><!-- IF topicrow.S_POST_GLOBAL --> global-announce<!-- ENDIF --><!-- IF topicrow.S_POST_ANNOUNCE --> announce<!-- ENDIF --><!-- IF topicrow.S_POST_STICKY --> sticky<!-- ENDIF --><!-- IF topicrow.S_TOPIC_REPORTED --> reported<!-- ENDIF -->">
 			<dl class="icon" style="background-image: url({topicrow.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
-				<dt<!-- IF topicrow.TOPIC_ICON_IMG and S_TOPIC_ICONS --> style="background-image: url({T_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>
+				<dt<!-- IF topicrow.TOPIC_ICON_IMG and S_TOPIC_ICONS --> style="background-image: url({T_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a rel="nofollow" href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>
 					<!-- IF topicrow.S_TOPIC_UNAPPROVED or topicrow.S_POSTS_UNAPPROVED --><a href="{topicrow.U_MCP_QUEUE}">{topicrow.UNAPPROVED_IMG}</a> <!-- ENDIF -->
 					<!-- IF topicrow.S_TOPIC_REPORTED --><a href="{topicrow.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
 					<!-- IF topicrow.PAGINATION --><strong class="pagination"><span>{topicrow.PAGINATION}</span></strong><!-- ENDIF -->
@@ -158,7 +158,7 @@
 				<dd class="posts">{topicrow.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
 				<dd class="views">{topicrow.VIEWS} <dfn>{L_VIEWS}</dfn></dd>
 				<dd class="lastpost"><span><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {topicrow.LAST_POST_AUTHOR_FULL}
-					<!-- IF not S_IS_BOT --><a href="{topicrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{topicrow.LAST_POST_TIME}</span>
+					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{topicrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{topicrow.LAST_POST_TIME}</span>
 				</dd>
 			</dl>
 		</li>
@@ -198,7 +198,7 @@
 	<div class="topic-actions">
 		<!-- IF not S_IS_BOT and S_DISPLAY_POST_INFO -->
 		<div class="buttons">
-			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->post-icon<!-- ENDIF -->" title="<!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_POST_TOPIC}<!-- ENDIF -->"><a href="{U_POST_NEW_TOPIC}"><span></span><!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_POST_TOPIC}<!-- ENDIF --></a></div>
+			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->post-icon<!-- ENDIF -->" title="<!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_POST_TOPIC}<!-- ENDIF -->"><a rel="nofollow" href="{U_POST_NEW_TOPIC}"><span></span><!-- IF S_IS_LOCKED -->{L_FORUM_LOCKED}<!-- ELSE -->{L_POST_TOPIC}<!-- ENDIF --></a></div>
 		</div>
 		<!-- ENDIF -->
 
@@ -207,7 +207,7 @@
 			<!-- IF TOTAL_TOPICS and not S_IS_BOT and U_MARK_TOPICS --><a href="{U_MARK_TOPICS}">{L_MARK_TOPICS_READ}</a> &bull;  <!-- ENDIF -->
 			<!-- IF TOTAL_POSTS and not NEWEST_USER --> {TOTAL_POSTS}<!-- ELSEIF TOTAL_TOPICS and not NEWEST_USER --> {TOTAL_TOPICS}<!-- ENDIF -->
 			<!-- IF TOTAL_USERS -->{TOTAL_USERS}<!-- ENDIF -->
-			<!-- IF PAGINATION --> &bull;  <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a>
+			<!-- IF PAGINATION --> &bull;  <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a>
 			 &bull;  <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</div>
 		<!-- ENDIF -->

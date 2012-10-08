@@ -20,7 +20,9 @@
 <!-- BEGIN announcetopic -->
 		<li class="row<!-- IF announcetopic.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF --><!-- IF announcetopic.S_POST_ANNOUNCE --> announce<!-- ENDIF -->">
 			<dl class="icon" style="background-image: url({announcetopic.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
-				<dt<!-- IF announcetopic.TOPIC_ICON_IMG --> style="background-image: url({T_ICONS_PATH}{announcetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{announcetopic.TOPIC_FOLDER_IMG_ALT}"><!-- IF announcetopic.S_UNREAD_TOPIC --><a href="{announcetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{announcetopic.U_VIEW_TOPIC}" class="topictitle">{announcetopic.TOPIC_TITLE}</a>
+				<dt<!-- IF announcetopic.TOPIC_ICON_IMG --> style="background-image: url({T_ICONS_PATH}{announcetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{announcetopic.TOPIC_FOLDER_IMG_ALT}">
+					<!-- IF announcetopic.S_UNREAD_TOPIC --><a rel="nofollow" href="{announcetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
+					<a href="{announcetopic.U_VIEW_TOPIC}" class="topictitle">{announcetopic.TOPIC_TITLE}</a>
 					<br />
 					<!-- IF announcetopic.PAGINATION --><strong class="pagination"><span>{announcetopic.PAGINATION}</span></strong><!-- ENDIF -->
 					{L_POST_BY_AUTHOR} {announcetopic.TOPIC_AUTHOR_FULL} &raquo; {announcetopic.FIRST_POST_TIME} 
@@ -29,7 +31,7 @@
 				<dd class="posts">{announcetopic.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
 				<dd class="views">{announcetopic.VIEWS} <dfn>{L_VIEWS}</dfn></dd>
 				<dd class="lastpost"><span><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {announcetopic.LAST_POST_AUTHOR_FULL}
-					<!-- IF not S_IS_BOT --><a href="{announcetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <br /><!-- ENDIF -->{L_POSTED_ON_DATE} {announcetopic.LAST_POST_TIME}</span>
+					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{announcetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <br /><!-- ENDIF -->{L_POSTED_ON_DATE} {announcetopic.LAST_POST_TIME}</span>
 				</dd>
 			</dl>
 		</li>
@@ -59,7 +61,7 @@
 		<li class="row<!-- IF activetopic.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 			<dl class="icon" style="background-image: url({activetopic.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
 				<dt <!-- IF activetopic.TOPIC_ICON_IMG -->style="background-image: url({T_ICONS_PATH}{activetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{activetopic.TOPIC_FOLDER_IMG_ALT}">
-					<!-- IF activetopic.S_UNREAD_TOPIC --><a href="{activetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
+					<!-- IF activetopic.S_UNREAD_TOPIC --><a rel="nofollow" href="{activetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
 					<a href="{activetopic.U_VIEW_TOPIC}" class="topictitle">{activetopic.TOPIC_TITLE}</a>
 					<!-- IF activetopic.S_TOPIC_UNAPPROVED or activetopic.S_POSTS_UNAPPROVED --><a href="{activetopic.U_MCP_QUEUE}">{activetopic.UNAPPROVED_IMG}</a> <!-- ENDIF -->
 					<!-- IF activetopic.S_TOPIC_REPORTED --><a href="{activetopic.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
@@ -71,7 +73,7 @@
 				<dd class="views">{activetopic.VIEWS}</dd>
 				<dd class="lastpost"><span>
 					{L_POST_BY_AUTHOR} {activetopic.LAST_POST_AUTHOR_FULL}
-					<!-- IF not S_IS_BOT --><a href="{activetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{activetopic.LAST_POST_TIME}<br /> </span>
+					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{activetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{activetopic.LAST_POST_TIME}<br /> </span>
 				</dd>
 			</dl>
 		</li>
@@ -91,7 +93,7 @@
 	<!-- IF S_DISPLAY_SEARCH -->
 		<li><a href="{U_SEARCH_ACTIVE_TOPICS}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- IF S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_UNREAD}">{L_SEARCH_UNREAD}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --><!-- IF not S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_NEW}">{L_SEARCH_NEW}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_SELF_TOPICS}">{L_SEARCH_SELF_TOPICS}</a> &bull; <a href="{U_SEARCH_SELF}">{L_SEARCH_SELF}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_UNANSWERED}">{L_SEARCH_UNANSWERED}</a> &bull; <a href="{U_SEARCH}">{L_SEARCHING_FORUMS}</a></li>
 	<!-- ENDIF -->
-	<!-- IF not S_IS_BOT and U_MARK_FORUMS --><li class="rightside"><a href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a></li><!-- ENDIF -->
+	<!-- IF not S_IS_BOT and U_MARK_FORUMS --><li class="rightside"><a rel="nofollow" href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a></li><!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
 

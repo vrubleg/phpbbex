@@ -47,7 +47,7 @@
 						<!-- IF forumrow.U_UNAPPROVED_TOPICS --><a href="{forumrow.U_UNAPPROVED_TOPICS}">{UNAPPROVED_IMG}</a><!-- ENDIF -->
 						<!-- IF forumrow.LAST_POST_TIME -->
 							<dfn>{L_LAST_POST}</dfn> <a href="{forumrow.U_LAST_TOPIC_URL}" title="{forumrow.LAST_TOPIC_TITLE_FULL}">{forumrow.LAST_TOPIC_TITLE}</a>
-							<!-- IF not S_IS_BOT --><a href="{forumrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{forumrow.LAST_POST_TIME} {L_POST_BY_AUTHOR} {forumrow.LAST_POSTER_FULL}
+							<!-- IF not S_IS_BOT --><a rel="nofollow" href="{forumrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{forumrow.LAST_POST_TIME} {L_POST_BY_AUTHOR} {forumrow.LAST_POSTER_FULL}
 						<!-- ELSE -->
 							{L_NO_POSTS}<br />&nbsp;
 						<!-- ENDIF -->

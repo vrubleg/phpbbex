@@ -13,12 +13,12 @@
 	</script>
 	<li class="icons-divider"></li>
 	<!-- ENDIF -->
-	<!-- IF U_PRINT_TOPIC --><li><a href="{U_PRINT_TOPIC}" title="{L_PRINT_TOPIC}" class="icon-print">{L_PRINT_TOPIC}</a></li><!-- ENDIF -->
-	<!-- IF U_EMAIL_TOPIC --><li><a href="{U_EMAIL_TOPIC}" title="{L_EMAIL_TOPIC}" class="icon-sendemail">{L_EMAIL_TOPIC}</a></li><!-- ENDIF -->
-	<!-- IF U_WATCH_TOPIC --><li><a href="{U_WATCH_TOPIC}" title="{L_WATCH_TOPIC}" <!-- IF S_WATCHING_TOPIC -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{L_WATCH_TOPIC}</a></li><!-- ENDIF -->
-	<!-- IF U_BOOKMARK_TOPIC --><li><a href="{U_BOOKMARK_TOPIC}" title="{L_BOOKMARK_TOPIC}" <!-- IF S_BOOKMARKED_TOPIC -->class="icon-unbookmark"<!-- ELSE -->class="icon-bookmark"<!-- ENDIF -->>{L_BOOKMARK_TOPIC}</a></li><!-- ENDIF -->
-	<!-- IF U_LOCK_TOPIC --><li><!-- IF not S_IS_LOCKED --><a href="{U_LOCK_TOPIC}" title="{L_LOCK_TOPIC}" class="icon-lock">{L_LOCK_TOPIC}</a><!-- ELSE --><a href="{U_LOCK_TOPIC}" title="{L_UNLOCK_TOPIC}" class="icon-unlock">{L_UNLOCK_TOPIC}</a><!-- ENDIF --></li><!-- ENDIF -->
-	<!-- IF U_BUMP_TOPIC --><li><a href="{U_BUMP_TOPIC}" title="{L_BUMP_TOPIC}" class="icon-bump">{L_BUMP_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_PRINT_TOPIC --><li><a rel="nofollow" href="{U_PRINT_TOPIC}" title="{L_PRINT_TOPIC}" class="icon-print">{L_PRINT_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_EMAIL_TOPIC --><li><a rel="nofollow" href="{U_EMAIL_TOPIC}" title="{L_EMAIL_TOPIC}" class="icon-sendemail">{L_EMAIL_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_WATCH_TOPIC --><li><a rel="nofollow" href="{U_WATCH_TOPIC}" title="{L_WATCH_TOPIC}" <!-- IF S_WATCHING_TOPIC -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{L_WATCH_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_BOOKMARK_TOPIC --><li><a rel="nofollow" href="{U_BOOKMARK_TOPIC}" title="{L_BOOKMARK_TOPIC}" <!-- IF S_BOOKMARKED_TOPIC -->class="icon-unbookmark"<!-- ELSE -->class="icon-bookmark"<!-- ENDIF -->>{L_BOOKMARK_TOPIC}</a></li><!-- ENDIF -->
+	<!-- IF U_LOCK_TOPIC --><li><!-- IF not S_IS_LOCKED --><a rel="nofollow" href="{U_LOCK_TOPIC}" title="{L_LOCK_TOPIC}" class="icon-lock">{L_LOCK_TOPIC}</a><!-- ELSE --><a href="{U_LOCK_TOPIC}" title="{L_UNLOCK_TOPIC}" class="icon-unlock">{L_UNLOCK_TOPIC}</a><!-- ENDIF --></li><!-- ENDIF -->
+	<!-- IF U_BUMP_TOPIC --><li><a rel="nofollow" href="{U_BUMP_TOPIC}" title="{L_BUMP_TOPIC}" class="icon-bump">{L_BUMP_TOPIC}</a></li><!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
 <p class="header-path"><a href="{U_INDEX}" accesskey="h">{L_INDEX}</a> <!-- BEGIN navlinks --> <strong>&#8250;</strong> <a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --></p>
@@ -35,7 +35,7 @@
 
 	<div class="buttons">
 	<!-- IF not S_IS_BOT and S_DISPLAY_REPLY_INFO -->
-		<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->reply-icon<!-- ENDIF -->"><a href="{U_POST_REPLY_TOPIC}" title="<!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED_SHORT}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF --></a></div>
+		<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->reply-icon<!-- ENDIF -->"><a rel="nofollow" href="{U_POST_REPLY_TOPIC}" title="<!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED_SHORT}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF --></a></div>
 	<!-- ENDIF -->
 	</div>
 
@@ -54,7 +54,7 @@
 	<!-- IF PAGINATION or TOTAL_POSTS -->
 		<div class="pagination">
 			<!-- IF U_VIEW_UNREAD_POST and not S_IS_BOT --><a href="{U_VIEW_UNREAD_POST}">{L_VIEW_UNREAD_POST}</a> &bull; <!-- ENDIF -->{TOTAL_POSTS}
-			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
 
@@ -203,19 +203,19 @@ jQuery(function($)
 		<!-- IF not S_IS_BOT -->
 			<!-- IF postrow.U_EDIT or postrow.U_DELETE or postrow.U_REPORT or postrow.U_WARN or postrow.U_INFO or postrow.U_QUOTE or postrow.POST_RATING_SHOW -->
 				<ul class="profile-icons">
-					<!-- IF postrow.U_INFO --><li class="info-icon"><a href="{postrow.U_INFO}" title="{L_INFORMATION}"><span>{L_INFORMATION}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_WARN --><li class="warn-icon"><a href="{postrow.U_WARN}" title="{L_WARN_USER}"><span>{L_WARN_USER}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_REPORT and not postrow.U_WARN --><li class="report-icon"><a href="{postrow.U_REPORT}" title="{L_REPORT_POST}"><span>{L_REPORT_POST}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_DELETE --><li class="delete-icon"><a href="{postrow.U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_EDIT --><li class="edit-icon"><a href="{postrow.U_EDIT}" title="{L_EDIT_POST}"><span>{L_EDIT_POST}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_QUOTE --><li <!-- IF not S_QUICK_REPLY or postrow.DECODED_MESSAGE -->class="quote-icon"<!-- ELSE -->class="quote-icon no-full-quote" style="display: none;"<!-- ENDIF -->><!-- IF not S_QUICK_REPLY --><a href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}"><span>{L_REPLY_WITH_QUOTE}</span></a><!-- ELSE --><a href="#postform" onclick="addquote({postrow.POST_ID},'{postrow.POSTER_QUOTE}'); insert_text('\r\n'); return false;" title="{L_QUOTE_TEXT}"><span>{L_QUOTE}</span></a><!-- ENDIF --></li><!-- ENDIF -->
+					<!-- IF postrow.U_INFO --><li class="info-icon"><a rel="nofollow" href="{postrow.U_INFO}" title="{L_INFORMATION}"><span>{L_INFORMATION}</span></a></li><!-- ENDIF -->
+					<!-- IF postrow.U_WARN --><li class="warn-icon"><a rel="nofollow" href="{postrow.U_WARN}" title="{L_WARN_USER}"><span>{L_WARN_USER}</span></a></li><!-- ENDIF -->
+					<!-- IF postrow.U_REPORT and not postrow.U_WARN --><li class="report-icon"><a rel="nofollow" href="{postrow.U_REPORT}" title="{L_REPORT_POST}"><span>{L_REPORT_POST}</span></a></li><!-- ENDIF -->
+					<!-- IF postrow.U_DELETE --><li class="delete-icon"><a rel="nofollow" href="{postrow.U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li><!-- ENDIF -->
+					<!-- IF postrow.U_EDIT --><li class="edit-icon"><a rel="nofollow" href="{postrow.U_EDIT}" title="{L_EDIT_POST}"><span>{L_EDIT_POST}</span></a></li><!-- ENDIF -->
+					<!-- IF postrow.U_QUOTE --><li <!-- IF not S_QUICK_REPLY or postrow.DECODED_MESSAGE -->class="quote-icon"<!-- ELSE -->class="quote-icon no-full-quote" style="display: none;"<!-- ENDIF -->><!-- IF not S_QUICK_REPLY --><a rel="nofollow" href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}"><span>{L_REPLY_WITH_QUOTE}</span></a><!-- ELSE --><a rel="nofollow" href="#postform" onclick="addquote({postrow.POST_ID},'{postrow.POSTER_QUOTE}'); insert_text('\r\n'); return false;" title="{L_QUOTE_TEXT}"><span>{L_QUOTE}</span></a><!-- ENDIF --></li><!-- ENDIF -->
 					<!-- IF postrow.POST_RATING_SHOW --><li class="rate-box"><span class="rate-<!-- IF postrow.USER_RATE < 0 -->minus-voted<!-- ELSEIF postrow.USER_CAN_MINUS -->minus<!-- ELSE -->no-minus<!-- ENDIF -->"></span><span class="rate-value rate-<!-- IF postrow.POST_RATING > 0 -->positive<!-- ELSEIF postrow.POST_RATING < 0 -->negative<!-- ELSE -->zero<!-- ENDIF -->"<!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --> title="+{postrow.POST_RATING_POSITIVE}/−{postrow.POST_RATING_NEGATIVE}"<!-- ENDIF -->><!-- IF postrow.POST_RATING_NEGATIVE != 0 or postrow.POST_RATING_POSITIVE != 0 -->{postrow.POST_RATING}<!-- ELSE -->−<!-- ENDIF --></span><span class="rate-<!-- IF postrow.USER_RATE > 0 -->plus-voted<!-- ELSEIF postrow.USER_CAN_PLUS -->plus<!-- ELSE -->no-plus<!-- ENDIF -->"></span></li><!-- ENDIF -->
 				</ul>
 			<!-- ENDIF -->
 		<!-- ENDIF -->
 
-			<!-- IF postrow.POST_SUBJECT and postrow.POST_SUBJECT != TOPIC_TITLE --><h3 <!-- IF postrow.S_FIRST_ROW -->class="first"<!-- ENDIF -->><!-- IF postrow.POST_ICON_IMG --><img src="{T_ICONS_PATH}{postrow.POST_ICON_IMG}" width="{postrow.POST_ICON_IMG_WIDTH}" height="{postrow.POST_ICON_IMG_HEIGHT}" alt="" /> <!-- ENDIF --><a href="#p{postrow.POST_ID}">{postrow.POST_SUBJECT}</a></h3><!-- ENDIF -->
-			<p class="author"><!-- IF S_IS_BOT -->{postrow.MINI_POST_IMG}<!-- ELSE --><a href="{postrow.U_MINI_POST}">{postrow.MINI_POST_IMG}</a><!-- ENDIF -->{L_POST_BY_AUTHOR} <!-- IF S_QUICK_REPLY --><strong><a href="#postform" onclick="insert_text('[b]{postrow.POSTER_QUOTE}[/b], '); return false;"<!-- IF postrow.POST_AUTHOR_COLOUR --> style="color: {postrow.POST_AUTHOR_COLOUR};"<!-- ENDIF -->>{postrow.POST_AUTHOR}</a></strong><!-- ELSE --><strong>{postrow.POST_AUTHOR_FULL}</strong><!-- ENDIF --> &raquo; {postrow.POST_DATE} </p>
+			<!-- IF postrow.POST_SUBJECT and postrow.POST_SUBJECT != TOPIC_TITLE --><h3 <!-- IF postrow.S_FIRST_ROW -->class="first"<!-- ENDIF -->><!-- IF postrow.POST_ICON_IMG --><img src="{T_ICONS_PATH}{postrow.POST_ICON_IMG}" width="{postrow.POST_ICON_IMG_WIDTH}" height="{postrow.POST_ICON_IMG_HEIGHT}" alt="" /> <!-- ENDIF --><a rel="nofollow" href="#p{postrow.POST_ID}">{postrow.POST_SUBJECT}</a></h3><!-- ENDIF -->
+			<p class="author"><!-- IF S_IS_BOT -->{postrow.MINI_POST_IMG}<!-- ELSE --><a rel="nofollow" href="{postrow.U_MINI_POST}">{postrow.MINI_POST_IMG}</a><!-- ENDIF -->{L_POST_BY_AUTHOR} <!-- IF S_QUICK_REPLY --><strong><a rel="nofollow" href="#postform" onclick="insert_text('[b]{postrow.POSTER_QUOTE}[/b], '); return false;"<!-- IF postrow.POST_AUTHOR_COLOUR --> style="color: {postrow.POST_AUTHOR_COLOUR};"<!-- ENDIF -->>{postrow.POST_AUTHOR}</a></strong><!-- ELSE --><strong>{postrow.POST_AUTHOR_FULL}</strong><!-- ENDIF --> &raquo; {postrow.POST_DATE} </p>
 
 			<!-- IF postrow.S_POST_UNAPPROVED or postrow.S_POST_REPORTED -->
 				<p class="rules">
@@ -263,12 +263,12 @@ jQuery(function($)
 			<dt><span>{postrow.POST_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF postrow.S_POSTER_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF postrow.S_POSTER_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --><!-- IF postrow.S_ONLINE and not postrow.S_IGNORE_POST --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
 			<!-- IF postrow.RANK_TITLE or STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER --><dd><!-- IF STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->{L_TOPIC_POSTER}<!-- ENDIF --><!-- IF postrow.RANK_TITLE and STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->, <!-- ENDIF --><!-- IF postrow.RANK_TITLE -->{postrow.RANK_TITLE}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF postrow.RANK_IMG --><dd>{postrow.RANK_IMG}</dd><!-- ENDIF -->
-			<!-- IF postrow.POSTER_AVATAR --><dd class="avatar"><!-- IF postrow.U_POST_AUTHOR --><a href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --></dd><!-- ENDIF -->
+			<!-- IF postrow.POSTER_AVATAR --><dd class="avatar"><!-- IF postrow.U_POST_AUTHOR --><a rel="nofollow" href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --></dd><!-- ENDIF -->
 
 			<!-- IF STYLE_MP_SHOW_WARNINGS and postrow.POSTER_WARNINGS -->
 				<dd class="wcards">
 				<!-- BEGIN userwarning -->
-					<!-- IF postrow.userwarning.U_POST --><a href="{postrow.userwarning.U_POST}"><!-- ENDIF -->
+					<!-- IF postrow.userwarning.U_POST --><a rel="nofollow" href="{postrow.userwarning.U_POST}"><!-- ENDIF -->
 					<img src="{T_THEME_PATH}/images/card_{postrow.userwarning.TYPE}.gif" title="{postrow.userwarning.TITLE}" alt="W" />
 					<!-- IF postrow.userwarning.U_POST --></a><!-- ENDIF -->
 				<!-- END userwarning -->
@@ -298,10 +298,10 @@ jQuery(function($)
 			<!-- IF postrow.U_PM or postrow.U_EMAIL or postrow.U_WWW or postrow.U_JABBER or postrow.U_SKYPE -->
 				<dd>
 					<ul class="profile-icons">
-						<!-- IF postrow.U_PM --><li class="pm-icon"><a href="{postrow.U_PM}" title="{L_PRIVATE_MESSAGE}"><span>{L_PRIVATE_MESSAGE}</span></a></li><!-- ENDIF -->
-						<!-- IF postrow.U_EMAIL --><li class="email-icon"><a href="{postrow.U_EMAIL}" title="{L_EMAIL}"><span>{L_EMAIL}</span></a></li><!-- ENDIF -->
-						<!-- IF postrow.U_JABBER --><li class="jabber-icon"><a href="{postrow.U_JABBER}" title="{L_JABBER}"><span>{L_JABBER}</span></a></li><!-- ENDIF -->
-						<!-- IF postrow.U_SKYPE --><li class="skype-icon"><a href="{postrow.U_SKYPE}" title="{L_SKYPE}"><span>{L_SKYPE}</span></a></li><!-- ENDIF -->
+						<!-- IF postrow.U_PM --><li class="pm-icon"><a rel="nofollow" href="{postrow.U_PM}" title="{L_PRIVATE_MESSAGE}"><span>{L_PRIVATE_MESSAGE}</span></a></li><!-- ENDIF -->
+						<!-- IF postrow.U_EMAIL --><li class="email-icon"><a rel="nofollow" href="{postrow.U_EMAIL}" title="{L_EMAIL}"><span>{L_EMAIL}</span></a></li><!-- ENDIF -->
+						<!-- IF postrow.U_JABBER --><li class="jabber-icon"><a rel="nofollow" href="{postrow.U_JABBER}" title="{L_JABBER}"><span>{L_JABBER}</span></a></li><!-- ENDIF -->
+						<!-- IF postrow.U_SKYPE --><li class="skype-icon"><a rel="nofollow" href="{postrow.U_SKYPE}" title="{L_SKYPE}"><span>{L_SKYPE}</span></a></li><!-- ENDIF -->
 						<!-- IF postrow.U_WWW --><li class="web-icon"><a href="{postrow.U_WWW}" title="{L_VISIT_WEBSITE}: {postrow.U_WWW}"<!-- IF EXTERNAL_LINKS_NEWWINDOW --> target="_blank"<!-- ENDIF --><!-- IF EXTERNAL_LINKS_NOFOLLOW --> rel="nofollow"<!-- ENDIF -->><span>{L_WEBSITE}</span></a></li><!-- ENDIF -->
 					</ul>
 				</dd>
@@ -311,7 +311,7 @@ jQuery(function($)
 			</dl>
 		<!-- ENDIF -->
 
-		<div class="back2top"><a href="#wrap" class="top" title="{L_BACK_TO_TOP}">{L_BACK_TO_TOP}</a></div>
+		<div class="back2top"><a rel="nofollow" href="#wrap" class="top" title="{L_BACK_TO_TOP}">{L_BACK_TO_TOP}</a></div>
 
 		<span class="corners-bottom"><span></span></span></div>
 	</div>
@@ -347,14 +347,14 @@ jQuery(function($)
 <div class="topic-actions">
 	<div class="buttons">
 	<!-- IF not S_IS_BOT and S_DISPLAY_REPLY_INFO -->
-		<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->reply-icon<!-- ENDIF -->"><a href="{U_POST_REPLY_TOPIC}" title="<!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED_SHORT}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF --></a></div>
+		<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->reply-icon<!-- ENDIF -->"><a rel="nofollow" href="{U_POST_REPLY_TOPIC}" title="<!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_TOPIC_LOCKED_SHORT}<!-- ELSE -->{L_POST_REPLY}<!-- ENDIF --></a></div>
 	<!-- ENDIF -->
 	</div>
 
 	<!-- IF PAGINATION or TOTAL_POSTS -->
 		<div class="pagination">
 			{TOTAL_POSTS}
-			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
 </div>
