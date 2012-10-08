@@ -117,7 +117,7 @@ if (!$show_bots)
 			AND u.user_type = ' . USER_IGNORE . '
 			AND session_time >= ' . (time() - ($config['load_online_time'] * 60));
 	$result = $db->sql_query($sql);
-	$guest_counter = (int) $db->sql_fetchfield('num_bots');
+	$logged_bots_online = (int) $db->sql_fetchfield('num_bots');
 	$db->sql_freeresult($result);
 }
 
@@ -126,7 +126,7 @@ $sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colo
 	FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . ' s
 	WHERE u.user_id = s.session_user_id
 		AND s.session_time >= ' . (time() - ($config['load_online_time'] * 60)) .
-		((!$show_bots) ? ' AND u.user_type <> ' . USER_IGNORE : '') .
+		((!$show_bots) ? ' AND (u.user_type <> ' . USER_IGNORE . ' OR s.session_user_id = ' . ANONYMOUS . ')' : '') .
 		((!$show_guests) ? ' AND s.session_user_id <> ' . ANONYMOUS : '') . '
 	ORDER BY ' . $order_by;
 $result = $db->sql_query($sql);

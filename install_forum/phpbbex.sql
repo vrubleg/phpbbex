@@ -63,6 +63,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post_options', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', 'Powered by {POWERED_BY}');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_online_bots', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_enable', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
