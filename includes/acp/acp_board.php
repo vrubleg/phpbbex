@@ -71,20 +71,6 @@ class acp_board
 						'active_topics_days'	=> array('lang' => 'ACTIVE_TOPICS_DAYS',	'validate' => 'int',	'type' => 'text:4:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
 						'active_users_days'		=> array('lang' => 'ACTIVE_USERS_DAYS',		'validate' => 'int',	'type' => 'text:4:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
 
-						'legend2'				=> 'WARNINGS',
-						'warning_post_default'	=> array('lang' => 'WARNING_POST_DEFAULT',	'validate' => 'string',	'type' => 'textarea:1:255', 'explain' => false),
-						'warnings_expire_days'	=> array('lang' => 'WARNINGS_EXPIRE',		'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
-						'warnings_gc'			=> array('lang' => 'WARNINGS_GC',			'validate' => 'int',	'type' => 'text:4:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']),
-
-						'legend3'				=> 'RATINGS',
-						'rate_enabled'			=> array('lang' => 'RATE_ENABLED',			'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
-						'rate_only_topics'		=> array('lang' => 'RATE_ONLY_TOPICS',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
-						'rate_time'				=> array('lang' => 'RATE_TIME',				'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
-						'rate_topic_time'		=> array('lang' => 'RATE_TOPIC_TIME',		'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
-						'rate_change_time'		=> array('lang' => 'RATE_CHANGE_TIME',		'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
-						'rate_no_negative'		=> array('lang' => 'RATE_NO_NEGATIVE',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
-						'rate_no_positive'		=> array('lang' => 'RATE_NO_POSITIVE',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
-
 						'legend5'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
@@ -95,8 +81,6 @@ class acp_board
 					'title'	=> 'ACP_BOARD_FEATURES',
 					'vars'	=> array(
 						'legend1'				=> 'ACP_BOARD_FEATURES',
-						'announce_index'		=> array('lang'	=> 'ANNOUNCE_INDEX',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'active_topics_on_index'	=> array('lang' => 'ACTIVE_TOPICS_ON_INDEX',	'validate' => 'int',	'type' => 'text:3:4', 'explain' => true),
 						'allow_privmsg'			=> array('lang' => 'BOARD_PM',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_topic_notify'	=> array('lang' => 'ALLOW_TOPIC_NOTIFY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_forum_notify'	=> array('lang' => 'ALLOW_FORUM_NOTIFY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -113,16 +97,32 @@ class acp_board
 						'login_via_email_enable'=> array('lang' => 'LOGIN_VIA_EMAIL_ENABLE', 'validate' => 'int',	'type' => 'custom', 'method' => 'login_via_email_options', 'explain' => true),
 						// 'allow_quick_reply'		=> array('lang' => 'ALLOW_QUICK_REPLY',		'validate' => 'bool',	'type' => 'custom', 'method' => 'quick_reply', 'explain' => true),
 
-						'legend2'				=> 'ACP_LOAD_SETTINGS',
-						'no_typical_info_pages'	=> array('lang' => 'NO_TYPICAL_INFO_PAGES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'load_birthdays'		=> array('lang' => 'YES_BIRTHDAYS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'load_moderators'		=> array('lang' => 'YES_MODERATORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'load_jumpbox'			=> array('lang' => 'YES_JUMPBOX',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'load_cpf_memberlist'	=> array('lang' => 'LOAD_CPF_MEMBERLIST',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'load_cpf_viewprofile'	=> array('lang' => 'LOAD_CPF_VIEWPROFILE',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'load_cpf_viewtopic'	=> array('lang' => 'LOAD_CPF_VIEWTOPIC',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'legend2'				=> 'WARNINGS',
+						'warning_post_default'	=> array('lang' => 'WARNING_POST_DEFAULT',	'validate' => 'string',	'type' => 'textarea:1:255', 'explain' => false),
+						'warnings_expire_days'	=> array('lang' => 'WARNINGS_EXPIRE',		'validate' => 'int',	'type' => 'text:3:4', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']),
 
-						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+						'legend3'				=> 'RATINGS',
+						'rate_enabled'			=> array('lang' => 'RATE_ENABLED',			'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
+						'rate_only_topics'		=> array('lang' => 'RATE_ONLY_TOPICS',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
+						'rate_time'				=> array('lang' => 'RATE_TIME',				'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
+						'rate_topic_time'		=> array('lang' => 'RATE_TOPIC_TIME',		'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
+						'rate_change_time'		=> array('lang' => 'RATE_CHANGE_TIME',		'validate' => 'int',	'type' => 'text:10:10',		'explain' => false, 'append' => ' ' . $user->lang['SECONDS']),
+						'rate_no_negative'		=> array('lang' => 'RATE_NO_NEGATIVE',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
+						'rate_no_positive'		=> array('lang' => 'RATE_NO_POSITIVE',		'validate' => 'bool',	'type' => 'radio:yes_no',	'explain' => false),
+
+						'legend4'				=> 'WHO_IS_ONLINE',
+						'load_online'			=> array('lang' => 'YES_ONLINE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'load_online_guests'	=> array('lang' => 'YES_ONLINE_GUESTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'load_online_bots'		=> array('lang' => 'YES_ONLINE_BOTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'load_onlinetrack'		=> array('lang' => 'YES_ONLINE_TRACK',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'load_online_time'		=> array('lang' => 'ONLINE_LENGTH',			'validate' => 'int:0',	'type' => 'text:4:3', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']),
+
+						'legend5'				=> 'ACP_LOAD_SETTINGS',
+						'no_typical_info_pages'	=> array('lang' => 'NO_TYPICAL_INFO_PAGES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'load_unreads_search'	=> array('lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'load_db_track'			=> array('lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+
+						'legend6'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;
@@ -135,12 +135,19 @@ class acp_board
 						'style_min_width'					=> array('lang' => 'STYLE_MIN_WIDTH',					'validate' => 'int',	'type' => 'text:10:10', 'explain' => false, 'append' => ' ' . $user->lang['PIXEL']),
 						'style_max_width'					=> array('lang' => 'STYLE_MAX_WIDTH',					'validate' => 'int',	'type' => 'text:10:10', 'explain' => false, 'append' => ' ' . $user->lang['PIXEL']),
 						'style_show_sitename_in_headerbar'	=> array('lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'style_show_feeds_in_forumlist'		=> array('lang' => 'STYLE_SHOW_FEEDS_IN_FORUMLIST',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_auto_new_year'				=> array('lang' => 'STYLE_AUTO_NEW_YEAR',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_show_social_buttons'			=> array('lang' => 'STYLE_SHOW_SOCIAL_BUTTONS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'social_media_cover_url'			=> array('lang' => 'SOCIAL_MEDIA_COVER_URL',			'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
+						'load_jumpbox'						=> array('lang' => 'YES_JUMPBOX',						'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
-						'legend2'							=> 'STYLE_SETTINGS_MINIPROFILE',
+						'legend2'							=> 'STYLE_SETTINGS_INDEX',
+						'announce_index'					=> array('lang'	=> 'ANNOUNCE_INDEX',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'active_topics_on_index'			=> array('lang' => 'ACTIVE_TOPICS_ON_INDEX',			'validate' => 'int',	'type' => 'text:3:4', 'explain' => true),
+						'load_birthdays'					=> array('lang' => 'YES_BIRTHDAYS',						'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'load_moderators'					=> array('lang' => 'YES_MODERATORS',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_show_feeds_in_forumlist'		=> array('lang' => 'STYLE_SHOW_FEEDS_IN_FORUMLIST',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'legend3'							=> 'STYLE_SETTINGS_MINIPROFILE',
 						'style_mp_on_left'					=> array('lang' => 'STYLE_MP_ON_LEFT',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_topic_poster'		=> array('lang' => 'STYLE_MP_SHOW_TOPIC_POSTER',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_gender'				=> array('lang' => 'STYLE_MP_SHOW_GENDER',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -157,13 +164,13 @@ class acp_board
 						'style_mp_show_with_us'				=> array('lang' => 'STYLE_MP_SHOW_WITH_US',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_mp_show_buttons'				=> array('lang' => 'STYLE_MP_SHOW_BUTTONS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
-						'legend3'							=> 'STYLE_SETTINGS_PROFILE',
+						'legend4'							=> 'STYLE_SETTINGS_PROFILE',
 						'style_p_show_rating'				=> array('lang' => 'STYLE_MP_SHOW_RATING',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_p_show_rating_detailed'		=> array('lang' => 'STYLE_MP_SHOW_RATING_DETAILED',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_p_show_rated'				=> array('lang' => 'STYLE_MP_SHOW_RATED',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_p_show_rated_detailed'		=> array('lang' => 'STYLE_MP_SHOW_RATED_DETAILED',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
-						'legend4'							=> 'STYLE_SETTINGS_MEMBERLIST',
+						'legend5'							=> 'STYLE_SETTINGS_MEMBERLIST',
 						'style_ml_show_row_numbers'			=> array('lang' => 'STYLE_MP_SHOW_ROW_NUMBERS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_ml_show_gender'				=> array('lang' => 'STYLE_MP_SHOW_GENDER',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_ml_show_rank'				=> array('lang' => 'STYLE_MP_SHOW_RANK',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -178,7 +185,12 @@ class acp_board
 						'style_ml_show_joined'				=> array('lang' => 'STYLE_MP_SHOW_JOINED',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'style_ml_show_last_active'			=> array('lang' => 'STYLE_MP_SHOW_LAST_ACTIVE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
-						'legend5'							=> 'STYLE_SETTINGS_FOOTER',
+						'legend6'							=> 'CUSTOM_PROFILE_FIELDS',
+						'load_cpf_memberlist'				=> array('lang' => 'LOAD_CPF_MEMBERLIST',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'load_cpf_viewprofile'				=> array('lang' => 'LOAD_CPF_VIEWPROFILE',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'load_cpf_viewtopic'				=> array('lang' => 'LOAD_CPF_VIEWTOPIC',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'legend7'							=> 'STYLE_SETTINGS_FOOTER',
 						'copyright_notice'					=> array('lang' => 'COPYRIGHT_NOTICE',					'validate' => 'string',	'type' => 'htmlarea:2:800', 'explain' => true),
 						'style_counter_html_1'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
 						'style_counter_html_2'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
@@ -186,7 +198,7 @@ class acp_board
 						'style_counter_html_4'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
 						'style_counter_html_5'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
 
-						'legend6'							=> 'ACP_SUBMIT_CHANGES',
+						'legend8'							=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;
@@ -426,9 +438,8 @@ class acp_board
 						'load_db_lastread'		=> array('lang' => 'YES_READ_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_anon_lastread'	=> array('lang' => 'YES_ANON_READ_MARKING',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_online'			=> array('lang' => 'YES_ONLINE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'load_online_guests'	=> array('lang' => 'YES_ONLINE_GUESTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_onlinetrack'		=> array('lang' => 'YES_ONLINE_TRACK',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'load_birthdays'		=> array('lang' => 'YES_BIRTHDAYS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'load_birthdays'		=> array('lang' => 'YES_BIRTHDAYS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_unreads_search'	=> array('lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_moderators'		=> array('lang' => 'YES_MODERATORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_jumpbox'			=> array('lang' => 'YES_JUMPBOX',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),

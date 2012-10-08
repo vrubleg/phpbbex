@@ -27,7 +27,8 @@ $session_id	= request_var('s', '');
 $start		= request_var('start', 0);
 $sort_key	= request_var('sk', 'b');
 $sort_dir	= request_var('sd', 'd');
-$show_guests= ($config['load_online_guests']) ? request_var('sg', 0) : 0;
+$show_guests= ($config['load_online_guests'] || $auth->acl_get('u_viewonline')) ? request_var('sg', 0) : 0;
+$show_bots	= ($config['load_online_bots'] || $auth->acl_get('u_viewonline')) ? request_var('sb', 1) : 0;
 
 // Can this user view profiles/memberlist?
 if (!$auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel'))
@@ -92,7 +93,7 @@ while ($row = $db->sql_fetchrow($result))
 }
 $db->sql_freeresult($result);
 
-$guest_counter = 0;
+$logged_bots_online = $guest_counter = 0;
 
 // Get number of online guests (if we do not display them)
 if (!$show_guests)
@@ -106,11 +107,26 @@ if (!$show_guests)
 	$db->sql_freeresult($result);
 }
 
+// Get number of online guests (if we do not display them)
+if (!$show_bots)
+{
+	$sql = 'SELECT COUNT(DISTINCT session_user_id) as num_bots
+		FROM ' . SESSIONS_TABLE . ' s
+		LEFT JOIN ' . USERS_TABLE . ' u ON s.session_user_id = u.user_id
+		WHERE session_user_id <> ' . ANONYMOUS . '
+			AND u.user_type = ' . USER_IGNORE . '
+			AND session_time >= ' . (time() - ($config['load_online_time'] * 60));
+	$result = $db->sql_query($sql);
+	$guest_counter = (int) $db->sql_fetchfield('num_bots');
+	$db->sql_freeresult($result);
+}
+
 // Get user list
 $sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colour, s.session_id, s.session_time, s.session_page, s.session_ip, s.session_browser, s.session_viewonline, s.session_forum_id
 	FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . ' s
 	WHERE u.user_id = s.session_user_id
 		AND s.session_time >= ' . (time() - ($config['load_online_time'] * 60)) .
+		((!$show_bots) ? ' AND u.user_type <> ' . USER_IGNORE : '') .
 		((!$show_guests) ? ' AND s.session_user_id <> ' . ANONYMOUS : '') . '
 	ORDER BY ' . $order_by;
 $result = $db->sql_query($sql);
@@ -137,8 +153,20 @@ while ($row = $db->sql_fetchrow($result))
 		}
 		else
 		{
-			$view_online = true;
-			$logged_visible_online++;
+			if ($row['user_type'] != USER_IGNORE)
+			{
+				$view_online = true;
+				$logged_visible_online++;
+			}
+			else if ($show_bots)
+			{
+				$view_online = true;
+				$logged_bots_online++;
+			}
+			else
+			{
+				$view_online = false;
+			}
 		}
 
 		$prev_id[$row['user_id']] = 1;
@@ -316,7 +344,7 @@ while ($row = $db->sql_fetchrow($result))
 		'USER_BROWSER'		=> ($auth->acl_get('a_user')) ? $row['session_browser'] : '',
 
 		'U_USER_PROFILE'	=> ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
-		'U_USER_IP'			=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg=$show_guests&amp;start=$start&amp;sk=$sort_key&amp;sd=$sort_dir"),
+		'U_USER_IP'			=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg=$show_guests&amp;sb=$show_bots&amp;start=$start&amp;sk=$sort_key&amp;sd=$sort_dir"),
 		'U_WHOIS'			=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'mode=whois&amp;s=' . $row['session_id']),
 		'U_FORUM_LOCATION'	=> $location_url,
 
@@ -328,33 +356,7 @@ while ($row = $db->sql_fetchrow($result))
 $db->sql_freeresult($result);
 unset($prev_id, $prev_ip);
 
-// Generate reg/hidden/guest online text
-$vars_online = array(
-	'REG'	=> array('logged_visible_online', 'l_r_user_s'),
-	'HIDDEN'=> array('logged_hidden_online', 'l_h_user_s'),
-	'GUEST'	=> array('guest_counter', 'l_g_user_s')
-);
-
-foreach ($vars_online as $l_prefix => $var_ary)
-{
-	switch ($$var_ary[0])
-	{
-		case 0:
-			$$var_ary[1] = $user->lang[$l_prefix . '_USERS_ZERO_ONLINE'];
-		break;
-
-		case 1:
-			$$var_ary[1] = $user->lang[$l_prefix . '_USER_ONLINE'];
-		break;
-
-		default:
-			$$var_ary[1] = $user->lang[$l_prefix . '_USERS_ONLINE'];
-		break;
-	}
-}
-unset($vars_online);
-
-$pagination = generate_pagination(append_sid("{$phpbb_root_path}viewonline.$phpEx", "sg=$show_guests&amp;sk=$sort_key&amp;sd=$sort_dir"), $counter, $config['topics_per_page'], $start);
+$pagination = generate_pagination(append_sid("{$phpbb_root_path}viewonline.$phpEx", "sg=$show_guests&amp;sb=$show_bots&amp;sk=$sort_key&amp;sd=$sort_dir"), $counter, $config['topics_per_page'], $start);
 
 // Grab group details for legend display
 if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
@@ -395,24 +397,29 @@ while ($row = $db->sql_fetchrow($result))
 $db->sql_freeresult($result);
 
 // Refreshing the page every 60 seconds...
-meta_refresh(60, append_sid("{$phpbb_root_path}viewonline.$phpEx", "sg=$show_guests&amp;sk=$sort_key&amp;sd=$sort_dir&amp;start=$start"));
+meta_refresh(60, append_sid("{$phpbb_root_path}viewonline.$phpEx", "sg=$show_guests&amp;sb=$show_bots&amp;sk=$sort_key&amp;sd=$sort_dir&amp;start=$start"));
 
 // Send data to template
 $template->assign_vars(array(
-	'TOTAL_REGISTERED_USERS_ONLINE'	=> sprintf($l_r_user_s, $logged_visible_online) . sprintf($l_h_user_s, $logged_hidden_online),
-	'TOTAL_GUEST_USERS_ONLINE'		=> sprintf($l_g_user_s, $guest_counter),
+	'TOTAL_REGISTERED_USERS_ONLINE'	=> $user->lang('ONLINE_REG_USERS', $logged_visible_online + $logged_hidden_online) . ($logged_hidden_online ? (' (' . $user->lang('ONLINE_HIDDEN_USERS', $logged_hidden_online) . ')') : ''),
+	'TOTAL_GUEST_USERS_ONLINE'		=> $user->lang('ONLINE_GUEST_USERS', $guest_counter),
+	'TOTAL_BOT_USERS_ONLINE'		=> $user->lang('ONLINE_BOT_USERS', $logged_bots_online),
 	'LEGEND'						=> $legend,
 	'PAGINATION'					=> $pagination,
 	'PAGE_NUMBER'					=> on_page($counter, $config['topics_per_page'], $start),
 
-	'U_SORT_USERNAME'		=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests)),
-	'U_SORT_UPDATED'		=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests)),
-	'U_SORT_LOCATION'		=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sk=c&amp;sd=' . (($sort_key == 'c' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests)),
+	'U_SORT_USERNAME'		=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'U_SORT_UPDATED'		=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'U_SORT_LOCATION'		=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sk=c&amp;sd=' . (($sort_key == 'c' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
 
-	'U_SWITCH_GUEST_DISPLAY'	=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sg=' . ((int) !$show_guests)),
-	'L_SWITCH_GUEST_DISPLAY'	=> ($show_guests) ? $user->lang['HIDE_GUESTS'] : $user->lang['DISPLAY_GUESTS'],
-	'S_SWITCH_GUEST_DISPLAY'	=> ($config['load_online_guests']) ? true : false)
-);
+	'U_SWITCH_GUEST_DISPLAY'	=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sg=' . ((int) !$show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'L_SWITCH_GUEST_DISPLAY'	=> $show_guests ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
+	'S_SWITCH_GUEST_DISPLAY'	=> $config['load_online_guests'] || $auth->acl_get('u_viewonline'),
+
+	'U_SWITCH_BOTS_DISPLAY'		=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) !$show_bots)),
+	'L_SWITCH_BOTS_DISPLAY'		=> $show_bots ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
+	'S_SWITCH_BOTS_DISPLAY'		=> $config['load_online_bots'] || $auth->acl_get('u_viewonline'),
+));
 
 // We do not need to load the who is online box here. ;)
 $config['load_online'] = false;

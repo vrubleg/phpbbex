@@ -77,23 +77,23 @@ $lang = array_merge($lang, array(
 	'SYSTEM_TIMEZONE_EXPLAIN'			=> 'Timezone to use for displaying times to users who are not logged in (guests, bots). Logged in users set their timezone during registration and can change it in their user control panel.',
 	'WARNINGS_EXPIRE'				=> 'Warning duration',
 	'WARNINGS_EXPIRE_EXPLAIN'		=> 'Number of days that will elapse before the warning will automatically expire from a user’s record. Set this value to 0 to make warnings permanent.',
-	'WARNINGS_GC'					=> 'Warnings pruning period',
-	'WARNINGS_GC_EXPLAIN'			=> 'Time (in seconds) to prune exrired warnings periodically.',
 	'WARNING_POST_DEFAULT'			=> 'Default warning message',
 ));
 
 // Style Settings
 $lang = array_merge($lang, array(
-	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can enable/disable several style features.',
+	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can show/hide several features.',
 
 	'STYLE_SETTINGS_GENERAL'			=> 'General',
 	'STYLE_MIN_WIDTH'					=> 'Minimum page width',
 	'STYLE_MAX_WIDTH'					=> 'Maximum page width',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
-	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
 	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
 	'SOCIAL_MEDIA_COVER_URL'			=> 'Path to social media cover',
+
+	'STYLE_SETTINGS_INDEX'				=> 'Board Index',
+	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Profile',
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',
@@ -131,7 +131,7 @@ $lang = array_merge($lang, array(
 
 	'ALLOW_ATTACHMENTS'			=> 'Allow attachments',
 	'ALLOW_BIRTHDAYS'			=> 'Allow birthdays',
-	'ALLOW_BIRTHDAYS_EXPLAIN'	=> 'Allow birthdays to be entered and age being displayed in profiles. Please note the birthday list within the board index is controlled by a separate load setting.',
+	'ALLOW_BIRTHDAYS_EXPLAIN'	=> 'Allow birthdays to be entered and age being displayed in profiles.',
 	'ALLOW_BOOKMARKS'			=> 'Allow bookmarking topics',
 	'ALLOW_BOOKMARKS_EXPLAIN'	=> 'User is able to store personal bookmarks.',
 	'ALLOW_BBCODE'				=> 'Allow BBCode',
@@ -156,8 +156,8 @@ $lang = array_merge($lang, array(
 	'ALLOW_TOPIC_NOTIFY'		=> 'Allow subscribing to topics',
 	'BOARD_PM'					=> 'Private messaging',
 	'BOARD_PM_EXPLAIN'			=> 'Enable private messaging for all users.',
-	'ANNOUNCE_INDEX'				=> 'Display global annoucements on Index page',
-	'ACTIVE_TOPICS_ON_INDEX'		=> 'Display active topics on Index page',
+	'ANNOUNCE_INDEX'				=> 'Display global annoucements',
+	'ACTIVE_TOPICS_ON_INDEX'		=> 'Display active topics',
 	'ACTIVE_TOPICS_ON_INDEX_EXPLAIN'=> 'Leave empty or 0 to disable active topics on index.',
 ));
 
@@ -447,14 +447,13 @@ $lang = array_merge($lang, array(
 	'RECOMPILE_STYLES_EXPLAIN'		=> 'Check for updated style components on filesystem and recompile.',
 	'YES_ANON_READ_MARKING'			=> 'Enable topic marking for guests',
 	'YES_ANON_READ_MARKING_EXPLAIN'	=> 'Stores read/unread status information for guests. If disabled, posts are always marked read for guests.',
-	'YES_BIRTHDAYS'					=> 'Enable birthday listing',
-	'YES_BIRTHDAYS_EXPLAIN'			=> 'If disabled the birthday listing is no longer displayed. To let this setting take effect the birthday feature needs to be enabled too.',
+	'YES_BIRTHDAYS'					=> 'Display birthday list',
 	'YES_JUMPBOX'					=> 'Enable display of jumpbox',
 	'YES_MODERATORS'				=> 'Enable display of moderators',
 	'YES_ONLINE'					=> 'Enable online user listings',
 	'YES_ONLINE_EXPLAIN'			=> 'Display online user information on index, forum and topic pages.',
-	'YES_ONLINE_GUESTS'				=> 'Enable online guest listings in viewonline',
-	'YES_ONLINE_GUESTS_EXPLAIN'		=> 'Allow display of guest user information in viewonline.',
+	'YES_ONLINE_GUESTS'				=> 'Enable online guest listings',
+	'YES_ONLINE_BOTS'				=> 'Enable online bot listings',
 	'YES_ONLINE_TRACK'				=> 'Enable display of user online/offline information',
 	'YES_ONLINE_TRACK_EXPLAIN'		=> 'Display online information for user in profiles and topic pages.',
 	'YES_POST_MARKING'				=> 'Enable dotted topics',

@@ -116,7 +116,7 @@
 
 <!-- IF S_DISPLAY_ONLINE_LIST -->
 	<h3><!-- IF U_VIEWONLINE --><a rel="nofollow" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --> <span class="extra">({L_ONLINE_EXPLAIN})</span></h3>
-	<p>{TOTAL_USERS_ONLINE}<br />{RECORD_USERS}<br />{LOGGED_IN_USER_LIST}
+	<p>{TOTAL_USERS_ONLINE}<br />{RECORD_USERS}<!-- IF LOGGED_IN_USER_LIST --><br />{LOGGED_IN_USER_LIST}<!-- ENDIF --><!-- IF LOGGED_IN_BOT_LIST --><br />{LOGGED_IN_BOT_LIST}<!-- ENDIF -->
 	<!-- IF LEGEND --><br /><em>{L_LEGEND}: {LEGEND}</em><!-- ENDIF --></p>
 <!-- ENDIF -->
 
