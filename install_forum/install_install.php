@@ -2163,6 +2163,7 @@ class install_install extends module
 		'Yahoo Slurp [Bot]'			=> array('Yahoo! DE Slurp', ''),
 		'Yahoo [Bot]'				=> array('Yahoo! Slurp', ''),
 		'YahooSeeker [Bot]'			=> array('YahooSeeker/', ''),
+		'Ahrefs [Bot]'				=> array('AhrefsBot/', ''),
 		'Yandex [Bot]'				=> array('YandexBot/', ''),
 		'Yandex [Images]'			=> array('YandexImages/', ''),
 		'Yandex [Video]'			=> array('YandexVideo/', ''),

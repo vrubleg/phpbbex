@@ -22,7 +22,7 @@
 
 		<!-- IF _file.S_FILE -->
 		<dl class="file">
-			<dt class="attach-file"><a class="postlink" href="{_file.U_DOWNLOAD_LINK}" title="{_file.DOWNLOAD_NAME} ({_file.FILESIZE} {_file.SIZE_LANG}, {_file.L_DOWNLOAD_COUNT})<!-- IF _file.COMMENT --> - {_file.COMMENT}<!-- ENDIF -->">{_file.DOWNLOAD_NAME}</a></dt>
+			<dt class="attach-file<!-- IF _file.UPLOAD_ICON -->-with-icon<!-- ENDIF -->"><!-- IF _file.UPLOAD_ICON -->{_file.UPLOAD_ICON}<!-- ENDIF --><a class="postlink" href="{_file.U_DOWNLOAD_LINK}" title="{_file.DOWNLOAD_NAME} ({_file.FILESIZE} {_file.SIZE_LANG}, {_file.L_DOWNLOAD_COUNT})<!-- IF _file.COMMENT --> - {_file.COMMENT}<!-- ENDIF -->">{_file.DOWNLOAD_NAME}</a></dt>
 			<!-- IF _file.COMMENT --><dd class="hide-in-inline"><em>{_file.COMMENT}</em></dd><!-- ENDIF -->
 			<dd class="hide-in-inline">({_file.FILESIZE} {_file.SIZE_LANG}) {_file.L_DOWNLOAD_COUNT}</dd>
 		</dl>

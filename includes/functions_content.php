@@ -863,17 +863,9 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		$thumbnail_filename = $phpbb_root_path . $config['upload_path'] . '/thumb_' . utf8_basename($attachment['physical_filename']);
 
 		$upload_icon = '';
-
-		if (isset($extensions[$attachment['extension']]))
+		if (isset($extensions[$attachment['extension']]) && $extensions[$attachment['extension']]['upload_icon'])
 		{
-			if ($user->img('icon_topic_attach', '') && !$extensions[$attachment['extension']]['upload_icon'])
-			{
-				$upload_icon = $user->img('icon_topic_attach', '');
-			}
-			else if ($extensions[$attachment['extension']]['upload_icon'])
-			{
-				$upload_icon = '<img src="' . $phpbb_root_path . $config['upload_icons_path'] . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" alt="" />';
-			}
+			$upload_icon = '<img src="' . $phpbb_root_path . $config['upload_icons_path'] . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
 		}
 
 		$filesize = get_formatted_filesize($attachment['filesize'], false);
