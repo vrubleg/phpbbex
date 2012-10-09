@@ -262,4 +262,4 @@ UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-
 DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html');
 
 -- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.4.0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.5.0');
