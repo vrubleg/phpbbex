@@ -9,7 +9,7 @@
 		<li><a href="{U_G_SEARCH_RECENT}">{L_VIEW_SEARCH_RECENT}</a> &bull; <a href="{U_G_SEARCH_RANDOM}">{L_VIEW_SEARCH_RANDOM}</a><!-- IF U_G_SEARCH_COMMENTED --> &bull; <a href="{U_G_SEARCH_COMMENTED}">{L_VIEW_SEARCH_COMMENTED}</a><!-- ENDIF --><!-- IF U_G_SEARCH_TOPRATED --> &bull; <a href="{U_G_SEARCH_TOPRATED}">{L_VIEW_SEARCH_TOPRATED}</a><!-- ENDIF --><!-- IF U_G_SEARCH_CONTESTS --> &bull; <a href="{U_G_SEARCH_CONTESTS}">{L_VIEW_SEARCH_CONTESTS}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --> &bull; <a href="{U_G_SEARCH_SELF}">{L_VIEW_SEARCH_SELF}</a><!-- ENDIF --></li>
 		<li class="rightside"><a href="{U_GALLERY_SEARCH}">{L_SEARCH}</a></li>
 	<!-- ENDIF -->
-	<!-- IF not S_IS_BOT and U_MARK_ALBUMS --><li class="rightside"><a href="{U_MARK_ALBUMS}" accesskey="m">{L_MARK_ALBUMS_READ}</a><!-- IF S_DISPLAY_SEARCH --> &bull; <!-- ENDIF --></li><!-- ENDIF -->
+	<!-- IF not S_IS_BOT and U_MARK_ALBUMS --><li class="rightside"><a rel="nofollow" href="{U_MARK_ALBUMS}" accesskey="m">{L_MARK_ALBUMS_READ}</a><!-- IF S_DISPLAY_SEARCH --> &bull; <!-- ENDIF --></li><!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
 
@@ -69,7 +69,7 @@
 
 <!-- IF not S_USER_LOGGED_IN and not S_IS_BOT and S_DISP_LOGIN -->
 	<form method="post" action="{S_LOGIN_ACTION}" class="headerspace">
-	<h3><a href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a><!-- IF S_REGISTER_ENABLED -->&nbsp; &bull; &nbsp;<a href="{U_REGISTER}">{L_REGISTER}</a><!-- ENDIF --></h3>
+	<h3><a rel="nofollow" href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a><!-- IF S_REGISTER_ENABLED -->&nbsp; &bull; &nbsp;<a rel="nofollow" href="{U_REGISTER}">{L_REGISTER}</a><!-- ENDIF --></h3>
 		<fieldset class="quick-login">
 			<label for="username">{L_USERNAME}:</label>&nbsp;<input type="text" name="username" id="username" size="10" class="inputbox" title="{L_USERNAME}" />
 			<label for="password">{L_PASSWORD}:</label>&nbsp;<input type="password" name="password" id="password" size="10" class="inputbox" title="{L_PASSWORD}" />
@@ -82,8 +82,8 @@
 <!-- ENDIF -->
 
 <!-- IF S_DISPLAY_ONLINE_LIST and S_DISP_WHOISONLINE -->
-	<!-- IF U_VIEWONLINE --><h3><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a></h3><!-- ELSE --><h3>{L_WHO_IS_ONLINE}</h3><!-- ENDIF -->
-	<p>{TOTAL_USERS_ONLINE} ({L_ONLINE_EXPLAIN})<br />{RECORD_USERS}<br /> <br />{LOGGED_IN_USER_LIST}
+	<h3><!-- IF U_VIEWONLINE --><a rel="nofollow" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --> <span class="extra">({L_ONLINE_EXPLAIN})</span></h3>
+	<p>{TOTAL_USERS_ONLINE}<br />{RECORD_USERS}<!-- IF LOGGED_IN_USER_LIST --><br />{LOGGED_IN_USER_LIST}<!-- ENDIF --><!-- IF LOGGED_IN_BOT_LIST --><br />{LOGGED_IN_BOT_LIST}<!-- ENDIF -->
 	<!-- IF LEGEND --><br /><em>{L_LEGEND}: {LEGEND}</em><!-- ENDIF --></p>
 <!-- ENDIF -->
 

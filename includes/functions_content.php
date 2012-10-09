@@ -863,17 +863,9 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		$thumbnail_filename = $phpbb_root_path . $config['upload_path'] . '/thumb_' . utf8_basename($attachment['physical_filename']);
 
 		$upload_icon = '';
-
-		if (isset($extensions[$attachment['extension']]))
+		if (isset($extensions[$attachment['extension']]) && $extensions[$attachment['extension']]['upload_icon'])
 		{
-			if ($user->img('icon_topic_attach', '') && !$extensions[$attachment['extension']]['upload_icon'])
-			{
-				$upload_icon = $user->img('icon_topic_attach', '');
-			}
-			else if ($extensions[$attachment['extension']]['upload_icon'])
-			{
-				$upload_icon = '<img src="' . $phpbb_root_path . $config['upload_icons_path'] . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" alt="" />';
-			}
+			$upload_icon = '<img src="' . $phpbb_root_path . $config['upload_icons_path'] . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
 		}
 
 		$filesize = get_formatted_filesize($attachment['filesize'], false);
@@ -1198,12 +1190,12 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 		$_profile_cache['base_url'] = append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile&amp;u={USER_ID}');
 		$_profile_cache['tpl_noprofile'] = '{USERNAME}';
 		$_profile_cache['tpl_noprofile_colour'] = '<span style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</span>';
-		$_profile_cache['tpl_profile'] = '<a href="{PROFILE_URL}">{USERNAME}</a>';
-		$_profile_cache['tpl_profile_colour'] = '<a href="{PROFILE_URL}" style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</a>';
+		$_profile_cache['tpl_profile'] = '<a rel="nofollow" href="{PROFILE_URL}">{USERNAME}</a>';
+		$_profile_cache['tpl_profile_colour'] = '<a rel="nofollow" href="{PROFILE_URL}" style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</a>';
 		$_profile_cache['tpl_noprofile_title'] = '<span title="{TITLE}">{USERNAME}</span>';
 		$_profile_cache['tpl_noprofile_colour_title'] = '<span title="{TITLE}" style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</span>';
-		$_profile_cache['tpl_profile_title'] = '<a href="{PROFILE_URL}" title="{TITLE}">{USERNAME}</a>';
-		$_profile_cache['tpl_profile_colour_title'] = '<a href="{PROFILE_URL}" title="{TITLE}" style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</a>';
+		$_profile_cache['tpl_profile_title'] = '<a rel="nofollow" href="{PROFILE_URL}" title="{TITLE}">{USERNAME}</a>';
+		$_profile_cache['tpl_profile_colour_title'] = '<a rel="nofollow" href="{PROFILE_URL}" title="{TITLE}" style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</a>';
 	}
 
 	global $user, $auth;

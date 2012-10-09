@@ -1035,8 +1035,16 @@ a.button2, input.button2 {
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	color: #000;
 	font-size: 0.85em;
-	background: #EFEFEF url("../images/bg_button.gif") repeat-x top;
+	background: #EFEFEF url("../images/bg_button.gif");
 	cursor: pointer;
+}
+
+a.button1.sending, input.button1.sending, a.button2.sending, input.button2.sending, button.sending {
+	color: #666666 !important;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+	cursor: default !important;
+	border-color: #666666 !important;
+	background-position: 0 24px !important;
 }
 
 a.button1, input.button1 {
@@ -1061,7 +1069,6 @@ a.button2, a.button2:link, a.button2:visited, a.button2:active {
 a.button1:hover, input.button1:hover,
 a.button2:hover, input.button2:hover {
 	border: 1px solid #BC2A4D;
-	background: #EFEFEF url("../images/bg_button.gif") repeat bottom;
 	color: #BC2A4D;
 }
 

@@ -7,10 +7,10 @@
 	<script type="text/javascript">
 	var url = encodeURIComponent(document.location.href);
 	var title = encodeURIComponent($('title').text());
-	document.write('<li><a target="_blank" href="http://vk.com/share.php?url='+url+'&title='+title+'" title="{L_SOCIAL_SHARE_IN} vk.com" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vk.com</a></li>');
-	document.write('<li><a target="_blank" href="https://plus.google.com/share?url='+url+'" title="{L_SOCIAL_SHARE_IN} Google Plus" class="icon-google-plus">{L_SOCIAL_SHARE_IN} Google Plus</a></li>');
-	document.write('<li><a target="_blank" href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
-	document.write('<li><a target="_blank" href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
+	document.write('<li><a rel="nofollow" target="_blank" href="http://vk.com/share.php?url='+url+'&title='+title+'" title="{L_SOCIAL_SHARE_IN} vk.com" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vk.com</a></li>');
+	document.write('<li><a rel="nofollow" target="_blank" href="https://plus.google.com/share?url='+url+'" title="{L_SOCIAL_SHARE_IN} Google Plus" class="icon-google-plus">{L_SOCIAL_SHARE_IN} Google Plus</a></li>');
+	document.write('<li><a rel="nofollow" target="_blank" href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
+	document.write('<li><a rel="nofollow" target="_blank" href="http://twitter.com/intent/tweet?text='+title+'&url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
 	</script>
 	<!-- ENDIF -->
 </ul>
@@ -33,7 +33,7 @@
 <!-- IF .albumrow -->
 	<!-- IF not S_IS_BOT and U_MARK_ALBUMS -->
 	<ul class="linklist">
-		<li class="rightside"><a href="{U_MARK_ALBUMS}">{L_MARK_ALBUMS_READ}</a></li>
+		<li class="rightside"><a rel="nofollow" href="{U_MARK_ALBUMS}">{L_MARK_ALBUMS_READ}</a></li>
 	</ul>
 	<!-- ENDIF -->
 	<!-- INCLUDE gallery/albumlist_body.html -->
@@ -44,7 +44,7 @@
 
 	<!-- IF not S_IN_GALLERY_POPUP and U_UPLOAD_IMAGE -->
 		<div class="buttons">
-			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->upload-icon<!-- ENDIF -->"><a href="{U_UPLOAD_IMAGE}" title="<!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF --></a></div>
+			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->upload-icon<!-- ENDIF -->"><a rel="nofollow" href="{U_UPLOAD_IMAGE}" title="<!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF --></a></div>
 		</div>
 	<!-- ENDIF -->
 
@@ -52,7 +52,7 @@
 		<div class="search-box">
 			<form method="post" id="album-search" action="{S_SEARCHBOX_ACTION}">
 			<fieldset>
-				<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" value="{L_SEARCH_ALBUM}" onclick="if (this.value == '{LA_SEARCH_ALBUM}') this.value = '';" onblur="if (this.value == '') this.value = '{LA_SEARCH_ALBUM}';" />
+				<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" value="" placeholder="{L_SEARCH_ALBUM}" />
 				<input class="button2" type="submit" value="{L_SEARCH}" />
 				<input type="hidden" value="{ALBUM_ID}" name="aid[]" />
 			</fieldset>
@@ -103,7 +103,7 @@
 	<div class="topic-actions">
 		<!-- IF U_UPLOAD_IMAGE -->
 			<div class="buttons">
-				<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->upload-icon<!-- ENDIF -->"><a href="{U_UPLOAD_IMAGE}" title="<!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF --></a></div>
+				<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->upload-icon<!-- ENDIF -->"><a rel="nofollow" href="{U_UPLOAD_IMAGE}" title="<!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF --></a></div>
 			</div>
 		<!-- ENDIF -->
 		<div class="pagination">
@@ -127,8 +127,8 @@
 	</form>
 <!-- ENDIF -->
 
-<!-- IF not S_IN_GALLERY_POPUP and S_DISPLAY_ONLINE_LIST -->
-	<h3><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a></h3>
+<!-- IF not S_IN_GALLERY_POPUP and S_DISPLAY_ONLINE_LIST and LOGGED_IN_USER_LIST -->
+	<h3><!-- IF U_VIEWONLINE --><a rel="nofollow" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --> <span class="extra">({L_ONLINE_EXPLAIN})</span></h3>
 	<p>{LOGGED_IN_USER_LIST}</p>
 <!-- ENDIF -->
 
