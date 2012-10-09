@@ -340,25 +340,47 @@ jQuery(function($)
 	// Enter, Ctrl+Enter and Alt+Enter handler
 	$('form input[type=text], form input[type=password], form textarea').on('keydown', function (e)
 	{
-		var $form = $(this).parents('form');
-		var $submit = $form.find('input[type=submit].' + (e.altKey ? 'alternate' : 'default') + '-submit-action');
-		if (!$submit || $submit.length <= 0) return true;
-
 		var is_input = !$(this).is('textarea');
 		if (is_input && phpbb_check_key(e)) return true;
 
 		if ((e.which == 13 || e.which == 10) && (is_input || e.ctrlKey || e.altKey))
 		{
-			$submit.triggerHandler('click');
-			if ($submit.attr('name'))
+			// Find proper submit button
+			var $form = $(this).parents('form');
+			var $submit = $form.find('input[type=submit].' + (e.altKey ? 'alternate' : 'default') + '-submit-action:eq(0)');
+			if ($submit.length == 0)
 			{
-				var $input = $('<input type="hidden" />').attr('name', $submit.attr('name')).val($submit.val());
-				$form.append($input).submit();
-				$input.remove();
+				if (e.altKey) return false;
+				$submit = $form.find('input[type=submit]');
+				if ($submit.length == 0) return false;
+				if ($submit.length > 1)
+				{
+					$submit = $form.find('input[type=submit][name=submit]');
+					if ($submit.length != 1) return false;
+				}
+			}
+
+			// Submit form
+			if (window.opera && e.ctrlKey)
+			{
+				// Prevent creation of new tab in Opera
+				// Unfortunately this method does not work with the button with name="submit"
+				if ($submit.attr('name') == 'submit') return false;
+				$submit.triggerHandler('click');
+				if ($submit.attr('name'))
+				{
+					var $input = $('<input type="hidden" />').attr('name', $submit.attr('name')).val($submit.val());
+					$form.append($input).submit();
+					$input.remove();
+				}
+				else
+				{
+					$form.submit();
+				}
 			}
 			else
 			{
-				$form.submit();
+				$submit.click();
 			}
 			return false;
 		}
