@@ -4075,7 +4075,7 @@ function obtain_users_online($item_id = 0, $item = 'forum')
 	}
 	if (!$config['load_online_bots'])
 	{
-		$reading_sql = ' AND u.user_type <> ' . USER_IGNORE;
+		$reading_sql .= ' AND u.user_type <> ' . USER_IGNORE;
 	}
 
 	// a little discrete magic to cache this for 30 seconds
