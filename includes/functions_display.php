@@ -1620,6 +1620,7 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 			{
 				return '';
 			}
+			$avatar_img = $avatar;
 		break;
 	}
 

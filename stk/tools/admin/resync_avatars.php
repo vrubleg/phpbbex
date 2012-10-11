@@ -108,6 +108,7 @@ class resync_avatars
 						if (!rename($oldstyle, $path)) continue;
 					}
 				}
+				@chmod($path, 0666);
 			}
 			else if ($row['avatar_type'] == AVATAR_GALLERY)
 			{
