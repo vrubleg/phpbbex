@@ -239,7 +239,7 @@ $lang = array_merge($lang, array(
 	// Posts merging
 	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
 	'MERGE_SEPARATOR'			=> "\n\n[size=85][color=gray]%s after %s:[/color][/size]\n",
-	'MERGE_SUBJECT'				=> "[size=85][color=gray]%s[/color][/size]\n",
+	'MERGE_SUBJECT'				=> "[b]%s[/b]\n",
 
 	// Smiles
 	'SMILE_HI'					=> 'Hi!',
