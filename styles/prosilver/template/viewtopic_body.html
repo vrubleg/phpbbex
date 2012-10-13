@@ -130,7 +130,9 @@ jQuery(function($)
 		var action = $(this).hasClass('rate-minus') ? 'minus' : 'plus';
 		var post_id = $(this).parents('.post').data('id');
 		var $box = $(this).parents('.rate-box');
-		$.getJSON('ajax.php', {'module': 'rating', 'action': action, 'post_id': post_id}, function(data)
+		$('.rate-value', $box).wrapInner('<span class="inline-preloader"></span>');
+		$.getJSON('ajax.php', {'module': 'rating', 'action': action, 'post_id': post_id})
+		.done(function(data)
 		{
 			if (data.status != 'ok') return;
 			var html = '';
@@ -144,6 +146,10 @@ jQuery(function($)
 			html += (data.user_rate > 0) ? 'plus-voted' : (data.user_can_plus ? 'plus' : 'no-plus');
 			html += '"></span>';
 			$box.html(html);
+		})
+		.fail(function()
+		{
+			$('.rate-value', $box).text($('.rate-value span', $box).text());
 		});
 	});
 });
