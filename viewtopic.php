@@ -512,6 +512,10 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 					AND topic_id = $topic_id";
 			$db->sql_query($sql);
 		}
+		if (!empty($config['no_typical_info_pages']))
+		{
+			redirect($viewtopic_url);
+		}
 		$message = (($topic_data['bookmarked']) ? $user->lang['BOOKMARK_REMOVED'] : $user->lang['BOOKMARK_ADDED']) . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $viewtopic_url . '">', '</a>');
 	}
 	else
