@@ -136,7 +136,7 @@ ALTER TABLE phpbb_users
 
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_only_topics', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 3600*24*30);
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 0);
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_topic_time', -1);
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_change_time', 60*5);
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative', '0');
