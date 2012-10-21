@@ -275,39 +275,6 @@ function play_qt_file(obj)
 	obj.Play();
 }
 
-var in_autocomplete = false;
-var last_key_entered = '';
-
-/**
-* Check event key
-*/
-function phpbb_check_key(event)
-{
-	// Keycode is array down or up?
-	if (event.keyCode && (event.keyCode == 40 || event.keyCode == 38))
-		in_autocomplete = true;
-
-	// Make sure we are not within an "autocompletion" field
-	if (in_autocomplete)
-	{
-		// If return pressed and key changed we reset the autocompletion
-		if (!last_key_entered || last_key_entered == event.which)
-		{
-			in_autocompletion = false;
-			return true;
-		}
-	}
-
-	// Keycode is not return, then return. ;)
-	if (event.which != 13)
-	{
-		last_key_entered = event.which;
-		return true;
-	}
-
-	return false;
-}
-
 jQuery(function($)
 {
 	// Forms submitting indication
@@ -341,7 +308,14 @@ jQuery(function($)
 	$('form input[type=text], form input[type=password], form textarea').on('keydown', function (e)
 	{
 		var is_input = !$(this).is('textarea');
-		if (is_input && phpbb_check_key(e)) return true;
+
+		// Detect enter in autocomplete
+		if (is_input)
+		{
+			var in_autocomplete = $(this).data('in_autocomplete');
+			$(this).data('in_autocomplete', (e.which == 40 /*down*/ || e.which == 38 /*up*/ || e.which == 34 /*pgdn*/ || e.which == 33 /*pgup*/));
+			if (in_autocomplete && (e.which == 13 || e.which == 10)) return true;
+		}
 
 		if ((e.which == 13 || e.which == 10) && (is_input || e.ctrlKey || e.altKey))
 		{
