@@ -118,7 +118,6 @@
 
 
 	</form>
-	<hr />
 <!-- ENDIF -->
 
 <!-- IF S_RATE_ENABLED -->
@@ -197,6 +196,8 @@ jQuery(function($)
 <!-- ENDIF -->
 
 <!-- BEGIN postrow -->
+	<!-- IF $LAST_POST_FIRST && postrow.POST_NUMBER != 2 --><hr /><!-- ENDIF -->
+	<!-- IF postrow.POST_NUMBER == 1 --><!-- DEFINE $LAST_POST_FIRST = 1 --><!-- ELSE --><!-- DEFINE $LAST_POST_FIRST = 0 --><!-- ENDIF -->
 	<!-- IF postrow.S_FIRST_UNREAD --><a id="unread"></a><!-- ENDIF -->
 	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF -->">
 		<div class="inner"><span class="corners-top"><span></span></span>
