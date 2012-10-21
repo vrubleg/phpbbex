@@ -68,3 +68,8 @@ stk/tools/usergroup/manage_founders
 stk/tools/usergroup/merge_users
 stk/tools/usergroup/restore_deleted_users
 stk/tools/usergroup/resync_user_groups
+umil/file
+umil/umil
+umil/umil_auto
+umil/umil_frontend
+umil/language/../umil

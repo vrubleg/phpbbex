@@ -2,7 +2,6 @@
 /**
 *
 * @package Support Toolkit
-* @version $Id$
 * @copyright (c) 2010 phpBB Group
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
@@ -17,7 +16,7 @@ if (!defined('IN_PHPBB'))
 }
 
 // What version are we using?
-define('STK_VERSION', '1.0.5');
+define('STK_VERSION', '1.0.6');
 //define('STK_QA', true);
 
 define('ADMIN_START', true);
@@ -52,6 +51,9 @@ else
 // and load UML.
 if (!defined('IN_ERK'))
 {
+	include STK_ROOT_PATH . 'includes/critical_repair.' . PHP_EXT;
+	$critical_repair = new critical_repair();
+
 	$user->session_begin();
 	$auth->acl($user->data);
 	$user->setup('acp/common', $config['default_style']);
@@ -64,4 +66,22 @@ if (!isset($stk_config))
 {
 	$stk_config = array();
 	include STK_ROOT_PATH . 'config.' . PHP_EXT;
+}
+
+// Setup some common variables
+$action = request_var('action', '');
+$submit = request_var('submit', false);
+
+// Try to determine the phpBB version number, we might need that down the road
+// `PHPBB_VERSION` was added in 3.0.3, for older versions just rely on the config
+if ((defined('PHPBB_VERSION') && PHPBB_VERSION == $config['version']) || !defined('PHPBB_VERSION'))
+{
+	define('PHPBB_VERSION_NUMBER', $config['version']);
+}
+// Cant correctly determine the version, let the user define it.
+// As the `perform_unauthed_quick_tasks` function is used skip this
+// if there is already an action to be performed.
+else if (empty($action))
+{
+	$action = 'request_phpbb_version';
 }
