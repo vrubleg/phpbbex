@@ -528,7 +528,6 @@ function perform_authed_quick_tasks($action)
  */
 function stk_version_check()
 {
-	return;
 	global $cache, $template, $umil, $user;
 
 	// We cache the result, check once per session

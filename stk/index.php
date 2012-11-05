@@ -222,9 +222,6 @@ else
 }
 @ini_set('memory_limit', $mem_limit);
 
-// Before we continue check whether this is the latest version of the STK, if not. Block access.
-stk_version_check();
-
 // From this point we'll be able to use the full STK layout
 $template->assign_var('S_STK_FULL_BODY', true);
 
