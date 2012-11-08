@@ -62,7 +62,7 @@ class sql_query
 			return;
 		}
 
-		if (!function_exists('remove_comments'))
+		if (!function_exists('recalc_nested_sets'))
 		{
 			include(PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT);
 		}
@@ -72,7 +72,8 @@ class sql_query
 		}
 
 		$dbmd = get_available_dbms($dbms);
-        $remove_remarks = $dbmd[$dbms]['COMMENTS'];
+		$remove_remarks = $dbmd[$dbms]['COMMENTS'];
+
 		$delimiter = $dbmd[$dbms]['DELIM'];
 		$remove_remarks($sql_query);
 		$sql_query = split_sql_file($sql_query, $delimiter);

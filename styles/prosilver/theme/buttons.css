@@ -139,7 +139,7 @@ ul.profile-icons li.info-icon, ul.profile-icons li.report-icon	{ margin: 0 3px 0
 /* Rate post box
 ---------------------------------------- */
 ul.profile-icons li.rate-box { margin: 3px 0 0 12px; white-space: nowrap; }
-ul.profile-icons li.rate-box span { display: inline-block; height: 15px; background-image: url("{T_THEME_PATH}/images/rate_box.png"); background-repeat: no-repeat; vertical-align: bottom; }
+ul.profile-icons li.rate-box > span { display: inline-block; height: 15px; background-image: url("{T_THEME_PATH}/images/rate_box.png"); background-repeat: no-repeat; vertical-align: bottom; }
 
 .rate-box .rate-minus		{ background-position: 0 0; width: 18px; cursor: pointer; }
 .rate-box .rate-minus:hover	{ background-position: 0 -15px; }

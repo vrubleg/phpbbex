@@ -512,6 +512,10 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 					AND topic_id = $topic_id";
 			$db->sql_query($sql);
 		}
+		if (!empty($config['no_typical_info_pages']))
+		{
+			redirect($viewtopic_url);
+		}
 		$message = (($topic_data['bookmarked']) ? $user->lang['BOOKMARK_REMOVED'] : $user->lang['BOOKMARK_ADDED']) . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $viewtopic_url . '">', '</a>');
 	}
 	else
@@ -1001,7 +1005,7 @@ $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 $i = ($store_reverse) ? $sql_limit - 1 : 0;
 
 // Show first post on every page if needed
-if($topic_data['topic_first_post_show'] && ( $start != 0))
+if($topic_data['topic_first_post_show'] && ($start != 0))
 {
 	$i = 0;
 	$post_list[$i] = $topic_data['topic_first_post_id'];
@@ -1733,7 +1737,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_WARN'			=> ($auth->acl_get('m_warn') && $poster_id != ANONYMOUS) ? append_sid("{$phpbb_root_path}mcp.$phpEx", isset($warnings[$row['post_id']]) ? 'i=warn&amp;mode=warn_edit&amp;warning_id=' . $warnings[$row['post_id']][0]['warning_id'] : 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
 
 		'POST_ID'			=> $row['post_id'],
-		'POST_NUMBER'		=> $i + $start + 1,
+		'POST_NUMBER'		=> ($topic_data['topic_first_post_show'] && $start != 0) ? ($topic_data['topic_first_post_id'] == $row['post_id'] ? 1 : $i + $start) : $i + $start + 1,
 		'POSTER_ID'			=> $poster_id,
 
 		'POST_RATING_SHOW'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0 || (empty($config['rate_only_topics']) || $topic_data['topic_first_post_id'] == $row['post_id']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true)),

@@ -1360,7 +1360,7 @@ function display_user_activity(&$userdata)
 */
 function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, $notify_status = 'unset', $start = 0, $item_title = '')
 {
-	global $template, $db, $user, $phpEx, $start, $phpbb_root_path;
+	global $template, $db, $user, $phpEx, $start, $phpbb_root_path, $config;
 
 	$table_sql = ($mode == 'forum') ? FORUMS_WATCH_TABLE : TOPICS_WATCH_TABLE;
 	$where_sql = ($mode == 'forum') ? 'forum_id' : 'topic_id';
@@ -1409,6 +1409,11 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					$db->sql_query($sql);
 
 					$redirect_url = append_sid("{$phpbb_root_path}view$mode.$phpEx", "$u_url=$match_id&amp;start=$start");
+					if (!empty($config['no_typical_info_pages']))
+					{
+						redirect($redirect_url);
+					}
+
 					$message = $user->lang['NOT_WATCHING_' . strtoupper($mode)] . '<br /><br />';
 					$message .= sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
 					meta_refresh(3, $redirect_url);
@@ -1475,6 +1480,11 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					$db->sql_query($sql);
 
 					$redirect_url = append_sid("{$phpbb_root_path}view$mode.$phpEx", "$u_url=$match_id&amp;start=$start");
+					if (!empty($config['no_typical_info_pages']))
+					{
+						redirect($redirect_url);
+					}
+
 					$message = $user->lang['ARE_WATCHING_' . strtoupper($mode)] . '<br /><br />' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
 					meta_refresh(3, $redirect_url);
 					trigger_error($message);
