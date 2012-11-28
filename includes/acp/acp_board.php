@@ -946,7 +946,7 @@ class acp_board
 		foreach ($limit_days as $days => $title)
 		{
 			$selected = ($value == $days) ? ' selected="selected"' : '';
-			$act_options .= '<option value="' . $value . '"' . $selected . '>' . $title . '</option>';
+			$act_options .= '<option value="' . $days . '"' . $selected . '>' . $title . '</option>';
 		}
 
 		return $act_options;
