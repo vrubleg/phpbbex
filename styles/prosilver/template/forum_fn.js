@@ -277,6 +277,10 @@ function play_qt_file(obj)
 
 jQuery(function($)
 {
+	// Preload sending animation for silly IE and Chrome
+	var $preloader = $('<button class="sending" style="position: absolute; top: -99px; left: -99px;"></button>').appendTo(document.body);
+	setTimeout(function(){$preloader.remove();}, 10);
+
 	// Forms submitting indication
 	$('form input[type=submit]').on('click', function()
 	{
