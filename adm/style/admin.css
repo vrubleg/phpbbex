@@ -1044,7 +1044,7 @@ a.button1.sending, input.button1.sending, a.button2.sending, input.button2.sendi
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 	cursor: default !important;
 	border-color: #666666 !important;
-	background-position: 0 24px !important;
+	background-image: url("../images/bg_button_sending.gif");
 }
 
 a.button1, input.button1 {
