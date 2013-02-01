@@ -365,4 +365,35 @@ jQuery(function($)
 
 		return true;
 	});
+
+	// Global back to top code
+	$(window).scroll(function()
+	{
+		if ($(this).scrollTop() > 150)
+		{
+			$('#back-to-top').fadeIn();
+		}
+		else
+		{
+			$('#back-to-top').fadeOut();
+		}
+	});
+	$(window).resize(function()
+	{
+		if ($(document).width() - $('#wrap').width() > 120)
+		{
+			$('#back-to-top').addClass('tower');
+		}
+		else
+		{
+			$('#back-to-top').removeClass('tower');
+		}
+	});
+	$('#back-to-top').click(function()
+	{
+		$('body:not(:animated),html:not(:animated)').animate({ scrollTop: 0 }, 400);
+		return false;
+	});
+	$(window).resize();
+	$(window).scroll();
 });
