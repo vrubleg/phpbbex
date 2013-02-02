@@ -174,7 +174,7 @@ ul.profile-icons li.rate-box > span { display: inline-block; height: 15px; backg
 
 #back-to-top:hover
 {
-	background-color: rgba(255, 255, 255, 0.8);
+	background-color: rgba(255, 255, 255, 0.6);
 	opacity: 1.0;
 }
 
