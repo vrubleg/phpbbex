@@ -1042,6 +1042,11 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 					'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 
+					'POST_RATING_SHOW'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0 || (empty($config['rate_only_topics']) || $topic_data['topic_first_post_id'] == $row['post_id']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true)),
+					'POST_RATING'			=> ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
+					'POST_RATING_NEGATIVE'	=> $row['post_rating_negative'],
+					'POST_RATING_POSITIVE'	=> $row['post_rating_positive'],
+
 					'POST_SUBJECT'		=> $row['post_subject'],
 					'POST_DATE'			=> (!empty($row['post_time'])) ? $user->format_date($row['post_time']) : '',
 					'MESSAGE'			=> $row['post_text']

@@ -88,6 +88,7 @@
 		</div>
 	<!-- ELSE -->
 		<div class="postbody">
+			<!-- IF searchresults.POST_RATING_SHOW --><ul class="profile-icons"><li class="rate-box"><span class="rate-no-minus"></span><span class="rate-value rate-<!-- IF searchresults.POST_RATING > 0 -->positive<!-- ELSEIF searchresults.POST_RATING < 0 -->negative<!-- ELSE -->zero<!-- ENDIF -->"<!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --> title="+{searchresults.POST_RATING_POSITIVE}/−{searchresults.POST_RATING_NEGATIVE}"<!-- ENDIF -->><!-- IF searchresults.POST_RATING_NEGATIVE != 0 or searchresults.POST_RATING_POSITIVE != 0 -->{searchresults.POST_RATING}<!-- ELSE -->−<!-- ENDIF --></span><span class="rate-no-plus"></span></li></ul><!-- ENDIF -->
 			<h3><a href="{searchresults.U_VIEW_POST}"><!-- IF searchresults.POST_SUBJECT -->{searchresults.POST_SUBJECT}<!-- ELSE -->Re: {searchresults.TOPIC_TITLE}<!-- ENDIF --></a></h3>
 			<div class="content">{searchresults.MESSAGE}</div>
 		</div>

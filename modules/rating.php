@@ -9,16 +9,16 @@ class module_rating
 	function action_plus()
 	{
 		global $user;
-		$this->rate_post(get('post_id', 0), $user->data['user_id'], 'plus');
+		$this->rate_post(get('post_id', 0), $user->data['user_id'], 'plus', get('token', ''));
 	}
 
 	function action_minus()
 	{
 		global $user;
-		$this->rate_post(get('post_id', 0), $user->data['user_id'], 'minus');
+		$this->rate_post(get('post_id', 0), $user->data['user_id'], 'minus', get('token', ''));
 	}
 
-	function rate_post($post_id, $user_id, $rate)
+	function rate_post($post_id, $user_id, $rate, $token)
 	{
 		global $db, $config;
 	
@@ -27,6 +27,7 @@ class module_rating
 
 		try
 		{
+			if (!check_link_hash($token, 'ajax')) throw new exception('User\'s token is invalid');
 			if (!$post_id) throw new exception('post_id is required');
 
 			// Get current user rate

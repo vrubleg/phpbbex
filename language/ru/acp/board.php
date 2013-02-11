@@ -89,8 +89,10 @@ $lang = array_merge($lang, array(
 	'STYLE_MAX_WIDTH'					=> 'Максимальная ширина страницы',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Отображать название и описание сайта в шапке',
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
-	'STYLE_AUTO_NEW_YEAR'				=> 'Зимний стиль заголовков в декабре, январе и феврале',
 	'SOCIAL_MEDIA_COVER_URL'			=> 'Путь к обложке для социальных сетей',
+	'STYLE_BACK_TO_TOP'					=> 'Кнопка «В начало страницы»',
+	'STYLE_ROUNDED_CORNERS'				=> 'Скруглять углы',
+	'STYLE_NEW_YEAR'					=> 'Зимний стиль',
 
 	'STYLE_SETTINGS_INDEX'				=> 'Главная страница',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Отображать кнопки RSS в списке форумов',
@@ -123,6 +125,10 @@ $lang = array_merge($lang, array(
 	'COPYRIGHT_NOTICE'					=> 'Авторские права (HTML)',
 	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'Не забудьте вставить метку {POWERED_BY} либо указать информацию о phpBBex.',
 	'STYLE_COUNTER_HTML'				=> 'Код счётчика (HTML)',
+
+	'AUTO'								=> 'Авто',
+	'ON_LEFT'							=> 'Слева',
+	'ON_RIGHT'							=> 'Справа',
 ));
 
 // Board Features

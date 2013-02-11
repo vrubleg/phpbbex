@@ -4555,6 +4555,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'SESSION_ID'		=> $user->session_id,
 		'ROOT_PATH'			=> $phpbb_root_path,
 		'BOARD_URL'			=> $board_url,
+		'AJAX_TOKEN'		=> generate_link_hash('ajax'),
 
 		'CURRENT_DAY'		=> date('d'),
 		'CURRENT_MONTH'		=> date('m'),
@@ -4704,10 +4705,12 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		// general
 		'style_min_width',
 		'style_max_width',
+		'style_back_to_top',
+		'style_rounded_corners',
+		'style_new_year',
 		'style_show_sitename_in_headerbar',
 		'style_show_social_buttons',
 		'style_show_feeds_in_forumlist',
-		'style_auto_new_year',
 
 		// miniprofile
 		'style_mp_on_left',

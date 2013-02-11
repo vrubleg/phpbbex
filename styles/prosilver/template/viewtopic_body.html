@@ -130,7 +130,7 @@ jQuery(function($)
 		var post_id = $(this).parents('.post').data('id');
 		var $box = $(this).parents('.rate-box');
 		$('.rate-value', $box).wrapInner('<span class="inline-preloader"></span>');
-		$.getJSON('ajax.php', {'module': 'rating', 'action': action, 'post_id': post_id})
+		$.getJSON('ajax.php', {'module': 'rating', 'action': action, 'post_id': post_id, 'token': '{AJAX_TOKEN}'})
 		.done(function(data)
 		{
 			if (data.status != 'ok') return;

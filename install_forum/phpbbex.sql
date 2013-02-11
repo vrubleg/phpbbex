@@ -145,10 +145,12 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive'
 -- Style options
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_min_width', '875');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_max_width', '1280');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_back_to_top', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_rounded_corners', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_new_year', '-1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_auto_new_year', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topic_poster', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gender', '1');
@@ -259,7 +261,7 @@ DELETE FROM phpbb_bots WHERE bot_name="Aport [Bot]";
 UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$" AND user_skype != "";
 
 -- Remove obsolete options
-DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html');
+DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html', 'style_auto_new_year');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.5.3');
