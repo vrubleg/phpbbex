@@ -85,12 +85,20 @@ hr.dashed {
 	background-color: #E7E8EA;
 }
 
-span.corners-top, span.corners-bottom {
+span.corners-top, span.corners-bottom
+{
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAAJFBMVEUAAAD///////////////////////////////////////////+0CY3pAAAAC3RSTlMA+S0G5JOQPzA8OdVeULYAAAA3SURBVHheLckxDQAgDEXBp4EEZiQgBQlIIKkBJCABEd1qjp/AcNMR2fAFCeiypX1HBu+8QpR5AbD7BvGZQdoNAAAAAElFTkSuQmCC");
 }
 
-span.corners-top span, span.corners-bottom span {
+span.corners-top span, span.corners-bottom span
+{
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAAJ1BMVEUAAAD///////////////////////////////////////////////+uPUo5AAAADHRSTlMA+S0G5JM8kAw/OTDyHrdaAAAAMUlEQVR4XiXJMQ0AIAxFwRcIhYAKZOChC1Lqs6L4CcNNx7kJy4EtTUyqDJnS/xXHIh9XjAOovEUBDAAAAABJRU5ErkJggg==");
+}
+
+body.no-rounded-corners span.corners-top, body.no-rounded-corners span.corners-bottom,
+body.no-rounded-corners span.corners-top span, body.no-rounded-corners span.corners-bottom span
+{
+	background-image: none !important;
 }
 
 /* Horizontal lists

@@ -89,8 +89,10 @@ $lang = array_merge($lang, array(
 	'STYLE_MAX_WIDTH'					=> 'Maximum page width',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
 	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
-	'STYLE_AUTO_NEW_YEAR'				=> 'Winter-style headerbar in December, January and February',
 	'SOCIAL_MEDIA_COVER_URL'			=> 'Path to social media cover',
+	'STYLE_BACK_TO_TOP'					=> '"Back to top" button',
+	'STYLE_ROUNDED_CORNERS'				=> 'Rounded corners',
+	'STYLE_NEW_YEAR'					=> 'Winter-style headerbar',
 
 	'STYLE_SETTINGS_INDEX'				=> 'Board Index',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
@@ -123,6 +125,10 @@ $lang = array_merge($lang, array(
 	'COPYRIGHT_NOTICE'					=> 'Copyrights (HTML)',
 	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'You have to use {POWERED_BY} placeholder or write custom phpBBex copyrights.',
 	'STYLE_COUNTER_HTML'				=> 'Counter code (HTML)',
+
+	'AUTO'								=> 'Auto',
+	'ON_LEFT'							=> 'On Left',
+	'ON_RIGHT'							=> 'On Right',
 ));
 
 // Board Features

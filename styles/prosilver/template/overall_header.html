@@ -82,10 +82,10 @@
 
 </head>
 
-<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> mp-on-left<!-- ENDIF --><!-- IF STYLE_AUTO_NEW_YEAR and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) --> new-year<!-- ENDIF -->">
+<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> mp-on-left<!-- ENDIF --><!-- IF STYLE_NEW_YEAR == 1 or STYLE_NEW_YEAR == -1 and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) --> new-year<!-- ENDIF --><!-- IF not STYLE_ROUNDED_CORNERS --> no-rounded-corners<!-- ENDIF -->">
 <div id="wrap">
 	<a id="top" name="top" accesskey="t"></a>
-	<div id="back-to-top" title="{L_BACK_TO_TOP}"></div>
+	<!-- IF STYLE_BACK_TO_TOP --><div id="back-to-top" title="{L_BACK_TO_TOP}" class="<!-- IF STYLE_BACK_TO_TOP == 2 -->on-right<!-- ELSE -->on-left<!-- ENDIF -->"></div><!-- ENDIF -->
 	<!-- IF S_OUTLINKS -->
 	<div id="top-menu">
 		<div id="top-links"><ul>

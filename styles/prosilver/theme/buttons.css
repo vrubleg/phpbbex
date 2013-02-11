@@ -163,14 +163,23 @@ ul.profile-icons li.rate-box > span { display: inline-block; height: 15px; backg
 	display: none;
 	z-index: 10;
 	position: fixed;
-	top: 0px;
-	left: 0px;
+	top: 0;
 	padding: 15px;
 	width: 24px;
 	height: 24px;
 	background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAwFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDQ0jJCVHSkxrcHOEiY2SmJ2epKmjqq+lrLGor7SosLWpsbaqsbaqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbf8/f39/f38/Pz5+frx8vPq6+3g4+XZ3d/O09bJztHDyc26wMS3vcKxuL2ttLmrsreqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbeqsbdxj7yeAAAAJnRSTlMAAAAAAAAAAQUKDhUaISc0QU9ganF6h5SeqbW9xtLc5O7z+Pv9/jTWlcgAAADKSURBVCjPdZLBDoMgDIZ74Ag6dOp0IThISOaimck89/3fam5YmE6/g6H9kt+mAMwjzleFVjW5WBrw/SYXJEwlopAGf2gliTOusZkXErfY00cI8yew5bO44A4lg8SGqu/jbAKKUIzOPUORw5WOU+dc96KqBh2C3EwIU2Bi0IeR5iIxPbzoJl9rihrcwkBRjT90JO708wJ3yWFvI4g3Dqw6WAkT7cESmbTbvkn9RWUbY2S42lWaTuNj4FWYzZT855XMKquV1qqWfGm8AZW4Zl7U37UsAAAAAElFTkSuQmCC") center 15px no-repeat;
 	cursor: pointer;
 	opacity: 0.6;
+}
+
+#back-to-top.on-left
+{
+	left: 0;
+}
+
+#back-to-top.on-right
+{
+	right: 0;
 }
 
 #back-to-top:hover
