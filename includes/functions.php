@@ -4540,6 +4540,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'SESSION_ID'		=> $user->session_id,
 		'ROOT_PATH'			=> $phpbb_root_path,
 		'BOARD_URL'			=> $board_url,
+		'AJAX_TOKEN'		=> generate_link_hash('ajax'),
 
 		'CURRENT_DAY'		=> date('d'),
 		'CURRENT_MONTH'		=> date('m'),
