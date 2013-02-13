@@ -92,6 +92,11 @@ $lang = array_merge($lang, array(
 	'DRAFT_TITLE'				=> 'Draft title',
 
 	'EDIT_REASON'				=> 'Reason for editing this post',
+	'ENTER_LINK_URL'			=> 'Enter URL of your link',
+	'ENTER_LINK_TEXT'			=> 'Enter text of your link',
+	'ENTER_IMAGE_URL'			=> 'Enter URL of your image',
+	'ENTER_QUOTE_NAME'			=> 'Enter name',
+	'ENTER_QUOTE_TEXT'			=> 'Enter text',
 	'EMPTY_FILEUPLOAD'			=> 'The uploaded file is empty.',
 	'EMPTY_MESSAGE'				=> 'You must enter a message when posting.',
 	'EMPTY_REMOTE_DATA'			=> 'File could not be uploaded, please try uploading the file manually.',

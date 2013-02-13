@@ -1,15 +1,19 @@
 
 <script type="text/javascript">
-// <![CDATA[
 	var form_name = 'postform';
 	var text_name = <!-- IF $SIG_EDIT -->'signature'<!-- ELSE -->'message'<!-- ENDIF -->;
 	var load_draft = false;
 	var upload = false;
 
+	lang.enter_link_url = '{LA_ENTER_LINK_URL}';
+	lang.enter_link_text = '{LA_ENTER_LINK_TEXT}';
+	lang.enter_image_url = '{LA_ENTER_IMAGE_URL}';
+	lang.enter_quote_name = '{LA_ENTER_QUOTE_NAME}';
+	lang.enter_quote_text = '{LA_ENTER_QUOTE_TEXT}';
+
 	// Define the bbCode tags
 	var bbcode = new Array();
 	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]','[s]','[/s]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
-// ]]>
 </script>
 <script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/editor.js"></script>
 

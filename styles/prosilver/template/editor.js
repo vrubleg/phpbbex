@@ -59,8 +59,8 @@ function bbstyle(bbnumber)
 	else 
 	{
 		insert_text('[*]');
-		document.forms[form_name].elements[text_name].focus();
 	}
+	document.forms[form_name].elements[text_name].focus();
 }
 
 /**
@@ -71,6 +71,23 @@ function bbfontstyle(bbopen, bbclose)
 	theSelection = false;
 
 	var textarea = document.forms[form_name].elements[text_name];
+
+	var bbname = bbopen.match(/^\[([\w\d]+)/i);
+	if (bbname) bbname = bbname[1].toLowerCase();
+
+	switch (bbname)
+	{
+		case 'url':
+			var url = prompt(lang.enter_link_url, '');
+			if (url) bbopen = '[url=' + url + ']';
+			if (url === null) return;
+		break;
+		case 'quote':
+			var name = prompt(lang.enter_quote_name, '');
+			if (name) bbopen = '[quote="' + name + '"]';
+			if (url === null) return;
+		break;
+	}
 
 	textarea.focus();
 
@@ -83,25 +100,41 @@ function bbfontstyle(bbopen, bbclose)
 		{
 			// Add tags around selection
 			document.selection.createRange().text = bbopen + theSelection + bbclose;
-			document.forms[form_name].elements[text_name].focus();
+			textarea.focus();
 			theSelection = '';
 			return;
 		}
 	}
-	else if (document.forms[form_name].elements[text_name].selectionEnd && (document.forms[form_name].elements[text_name].selectionEnd - document.forms[form_name].elements[text_name].selectionStart > 0))
+	else if (textarea.selectionEnd && (textarea.selectionEnd - textarea.selectionStart > 0))
 	{
-		mozWrap(document.forms[form_name].elements[text_name], bbopen, bbclose);
-		document.forms[form_name].elements[text_name].focus();
+		mozWrap(textarea, bbopen, bbclose);
+		textarea.focus();
 		theSelection = '';
 		return;
 	}
-	
+
+	var bbtext = '';
+	switch (bbname)
+	{
+		case 'url':
+			bbtext = prompt(lang.enter_link_text, '');
+		break;
+		case 'img':
+			bbtext = prompt(lang.enter_image_url, '');
+			if (bbtext === null) return;
+		break;
+		case 'quote':
+			bbtext = prompt(lang.enter_quote_text, '');
+		break;
+	}
+	if (bbtext === null) bbtext = '';
+
 	//The new position for the cursor after adding the bbcode
 	var caret_pos = getCaretPosition(textarea).start;
-	var new_pos = caret_pos + bbopen.length;		
+	var new_pos = caret_pos + (bbtext ? bbopen.length + bbtext.length + bbclose.length : bbopen.length);
 
 	// Open tag
-	insert_text(bbopen + bbclose);
+	insert_text(bbopen + bbtext + bbclose);
 
 	// Center the cursor when we don't have a selection
 	// Gecko and proper browsers
