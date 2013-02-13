@@ -64,6 +64,19 @@ function bbstyle(bbnumber)
 }
 
 /**
+* Prepare URL for [url] and [img] bbcodes
+*/
+function prepare_url(url)
+{
+	if (url.charAt(0) == '/' && url.charAt(1) != '/') return document.location.protocol + '//' + document.location.host + url;
+	if (url.charAt(0) == '/' && url.charAt(1) == '/') return 'http:' + url;
+	if (url.charAt(0) == '.' && url.charAt(1) == '/') return document.location.href.replace(/\/[^\/]*(\?.*)?$/i, '') + url.substring(1);
+	if (url.match(/^[\w\d]+(\.php|\/|$)/i)) return document.location.href.replace(/\/[^\/]*(\?.*)?$/i, '/') + url;
+	if (!url.match(/^[\w\d]+:/i)) return 'http://' + url;
+	return url;
+}
+
+/**
 * Apply bbcodes
 */
 function bbfontstyle(bbopen, bbclose)
@@ -74,18 +87,24 @@ function bbfontstyle(bbopen, bbclose)
 
 	var bbname = bbopen.match(/^\[([\w\d]+)/i);
 	if (bbname) bbname = bbname[1].toLowerCase();
+	var bbtext = '';
 
 	switch (bbname)
 	{
 		case 'url':
 			var url = prompt(lang.enter_link_url, '');
-			if (url) bbopen = '[url=' + url + ']';
 			if (url === null) return;
+			if (url)
+			{
+				url = prepare_url(url);
+				bbopen = '[url=' + url + ']';
+				bbtext = (url.match(/^https?:\/\/[^\/]+\/?$/i)) ? url.replace(/(https?:|\/)/ig, '') : url;
+			}
 		break;
 		case 'quote':
 			var name = prompt(lang.enter_quote_name, '');
+			if (name === null) return;
 			if (name) bbopen = '[quote="' + name + '"]';
-			if (url === null) return;
 		break;
 	}
 
@@ -113,25 +132,23 @@ function bbfontstyle(bbopen, bbclose)
 		return;
 	}
 
-	var bbtext = '';
+	var sel_after = false;
 	switch (bbname)
 	{
-		case 'url':
-			bbtext = prompt(lang.enter_link_text, '');
-		break;
 		case 'img':
 			bbtext = prompt(lang.enter_image_url, '');
 			if (bbtext === null) return;
-		break;
-		case 'quote':
-			bbtext = prompt(lang.enter_quote_text, '');
+			bbtext = prepare_url(bbtext);
+			sel_after = true;
 		break;
 	}
-	if (bbtext === null) bbtext = '';
+	if (!bbtext) bbtext = '';
 
 	//The new position for the cursor after adding the bbcode
 	var caret_pos = getCaretPosition(textarea).start;
-	var new_pos = caret_pos + (bbtext ? bbopen.length + bbtext.length + bbclose.length : bbopen.length);
+	var start_pos = caret_pos + bbopen.length;
+	var end_pos = caret_pos + bbopen.length + bbtext.length;
+	var after_pos = caret_pos + bbopen.length + bbtext.length + bbclose.length;
 
 	// Open tag
 	insert_text(bbopen + bbtext + bbclose);
@@ -140,14 +157,14 @@ function bbfontstyle(bbopen, bbclose)
 	// Gecko and proper browsers
 	if (!isNaN(textarea.selectionStart))
 	{
-		textarea.selectionStart = new_pos;
-		textarea.selectionEnd = new_pos;
+		textarea.selectionStart = sel_after ? after_pos : start_pos;
+		textarea.selectionEnd = sel_after ? after_pos : end_pos;
 	}	
 	// IE
 	else if (document.selection)
 	{
 		var range = textarea.createTextRange(); 
-		range.move("character", new_pos); 
+		range.move("character", sel_after ? after_pos : end_pos); 
 		range.select();
 		storeCaret(textarea);
 	}

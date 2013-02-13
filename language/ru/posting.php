@@ -93,10 +93,8 @@ $lang = array_merge($lang, array(
 
 	'EDIT_REASON'				=> 'Причина правки',
 	'ENTER_LINK_URL'			=> 'Введите URL ссылки',
-	'ENTER_LINK_TEXT'			=> 'Введите текст ссылки',
 	'ENTER_IMAGE_URL'			=> 'Введите URL изображения',
 	'ENTER_QUOTE_NAME'			=> 'Введите имя',
-	'ENTER_QUOTE_TEXT'			=> 'Введите текст цитаты',
 	'EMPTY_FILEUPLOAD'			=> 'Загруженный файл пустой.',
 	'EMPTY_MESSAGE'				=> 'Вы должны ввести текст сообщения',
 	'EMPTY_REMOTE_DATA'			=> 'Не удалось закачать файл, пожалуйста, попробуйте закачать его вручную.',
