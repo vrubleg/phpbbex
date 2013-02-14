@@ -68,6 +68,7 @@ function bbstyle(bbnumber)
 */
 function prepare_url(url)
 {
+	if (!url) return '';
 	url = url.replace('[', '%5B').replace(']', '%5D');
 	if (url.charAt(0) == '/' && url.charAt(1) == '/') return 'http:' + url;
 	if (url.match(/^[\w\d]+(\.php|\/|$)/i)) return './' + url;
