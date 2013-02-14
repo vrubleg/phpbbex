@@ -560,7 +560,7 @@ class bbcode
 		// seem to slash anything else
 		$href = str_replace('\"', '"', $href);
 		$text = str_replace('\"', '"', $text);
-		$external = stripos($href, generate_board_url(true)) !== 0;
+		$external = stripos($href, generate_board_url(true)) !== 0 && $href{0} !== '.' && $href{0} !== '/';
 		$attrs = $external ? (' class="postlink"' . get_attrs_for_external_link($href)) : ' class="postlink local"';
 		return '<a href="'.$href.'"'.$attrs.'>'.$text.'</a>';
 	}

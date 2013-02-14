@@ -302,26 +302,21 @@ class bbcode_firstpass extends bbcode
 			return $in;
 		}
 
-		$in = trim($in);
 		$error = false;
-
-		$in = str_replace(' ', '%20', $in);
+		$in = $this->fix_url($in);
 
 		// Checking urls
-		if (!preg_match('#^' . get_preg_expression('url') . '$#iu', $in) && !preg_match('#^' . get_preg_expression('www_url') . '$#i', $in))
+		$is_relative = $this->is_relative_url($in);
+		if (!$is_relative && !preg_match('#^' . get_preg_expression('url') . '$#iu', $in))
 		{
 			return '[img]' . $in . '[/img]';
 		}
 
-		// Try to cope with a common user error... not specifying a protocol but only a subdomain
-		if (!preg_match('#^[a-z0-9]+://#i', $in))
-		{
-			$in = 'http://' . $in;
-		}
+		$full = $this->to_absolute_url($in);
 
 		if ($config['max_' . $this->mode . '_img_height'] || $config['max_' . $this->mode . '_img_width'])
 		{
-			$stats = @getimagesize(htmlspecialchars_decode($in));
+			$stats = @getimagesize(htmlspecialchars_decode($full));
 
 			if ($stats === false)
 			{
@@ -344,7 +339,7 @@ class bbcode_firstpass extends bbcode
 			}
 		}
 
-		if ($error || $this->path_in_domain($in))
+		if ($error || $this->path_in_domain($full))
 		{
 			return '[img]' . $in . '[/img]';
 		}
@@ -941,65 +936,89 @@ class bbcode_firstpass extends bbcode
 		return $retval;
 	}
 
+	function fix_url($url)
+	{
+		$url = str_replace(' ', '%20', trim($url));
+		if ($url{0} === '/' && $url{1} === '/')
+		{
+			$url = 'http:' . $url;
+		}
+
+		// Try to cope with a common user error... not specifying a protocol but only a subdomain
+		if (!preg_match('#^[a-z][a-z\d+\-]*:#i', $url) && !preg_match('#^([.]/|/|[a-z]*script|about|applet|activex|chrome)#', $url))
+		{
+			$url = 'http://' . $url;
+		}
+
+		return $url;
+	}
+
+	function is_relative_url($url)
+	{
+		return preg_match('#^[.]?/' . get_preg_expression('relative_url') . '$#iu', $url) > 0;
+	}
+
+	function to_absolute_url($url)
+	{
+		if ($url{0} === '/') return generate_board_url(true) . $url;
+		if ($url{0} === '.') return generate_board_url() . substr($url, 1);
+	}
+
 	/**
 	* Validate url
 	*
-	* @param string $var1 optional url parameter for url bbcode: [url(=$var1)]$var2[/url]
-	* @param string $var2 url bbcode content: [url(=$var1)]$var2[/url]
+	* @param string $args optional url parameter for url bbcode: [url(=$args)]$text[/url]
+	* @param string $text url bbcode content: [url(=$args)]$text[/url]
 	*/
-	function validate_url($var1, $var2)
+	function validate_url($args, $text)
 	{
 		global $config;
 
-		$var1 = str_replace("\r\n", "\n", str_replace('\"', '"', trim($var1)));
-		$var2 = str_replace("\r\n", "\n", str_replace('\"', '"', trim($var2)));
+		$args = str_replace("\r\n", "\n", str_replace('\"', '"', trim($args)));
+		$text = str_replace("\r\n", "\n", str_replace('\"', '"', trim($text)));
 
-		$url = ($var1) ? $var1 : $var2;
-
-		if ($var1 && !$var2)
-		{
-			$var2 = $var1;
-		}
-
+		$url = ($args) ? $args : $text;
 		if (!$url)
 		{
-			return '[url' . (($var1) ? '=' . $var1 : '') . ']' . $var2 . '[/url]';
+			return '[url' . (($args) ? '=' . $args : '') . ']' . $text . '[/url]';
 		}
 
-		$valid = false;
+		// Some transformations
+		$url = $this->fix_url($url);
 
-		$url = str_replace(' ', '%20', $url);
+		// Set text if not presented
+		if ($args && !$text)
+		{
+			$text = preg_match('#^https?://[^/]+/?$#iu', $url) ? preg_replace('#(https?:|/)#iu', '', $url) : $url;
+		}
+
+		$is_relative = $this->is_relative_url($url);
+		$is_file_url = false;
+		$is_special = false;
+		if (!$is_relative)
+		{
+			$is_file_url = preg_match('#^(?:https?|s?ftp)://[\w\d]#iu', $url) && preg_match('#^' . get_preg_expression('url') . '$#iu', $url);
+			$is_special = preg_match('#^(?:magnet|ed2k|skype|xmpp|irc|ircs|gtalk|mailto|callto):#iu', $url);
+		}
 
 		// Checking urls
-		if (preg_match('#^' . get_preg_expression('url') . '$#iu', $url) ||
-			preg_match('#^' . get_preg_expression('www_url') . '$#iu', $url) ||
-			preg_match('#^' . preg_quote(generate_board_url(), '#') . get_preg_expression('relative_url') . '$#iu', $url))
-		{
-			$valid = true;
-		}
-
-		if ($valid)
+		if ($is_file_url || $is_relative || $is_special)
 		{
 			$this->parsed_items['url']++;
 
-			// if there is no scheme, then add http schema
-			if (!preg_match('#^[a-z][a-z\d+\-.]*:/{2}#i', $url))
-			{
-				$url = 'http://' . $url;
-			}
-
 			// Is this a link to somewhere inside this board? If so then remove the session id from the url
-			if (strpos($url, generate_board_url()) !== false && strpos($url, 'sid=') !== false)
+			if (($is_relative || stripos($url, generate_board_url(true)) === 0) && strpos($url, 'sid=') !== false)
 			{
 				$url = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}&amp;/', '\1', $url);
 				$url = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}$/', '', $url);
-				$url = append_sid($url);
+				$text = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}&amp;/', '\1', $text);
+				$text = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}$/', '', $text);
 			}
 
-			return ($var1) ? '[url=' . $this->bbcode_specialchars($url) . ':' . $this->bbcode_uid . ']' . $var2 . '[/url:' . $this->bbcode_uid . ']' : '[url:' . $this->bbcode_uid . ']' . $this->bbcode_specialchars($url) . '[/url:' . $this->bbcode_uid . ']';
+			return ($url != $text) ? '[url=' . $this->bbcode_specialchars($url) . ':' . $this->bbcode_uid . ']' . $text . '[/url:' . $this->bbcode_uid . ']' : '[url:' . $this->bbcode_uid . ']' . $this->bbcode_specialchars($url) . '[/url:' . $this->bbcode_uid . ']';
 		}
 
-		return '[url' . (($var1) ? '=' . $var1 : '') . ']' . $var2 . '[/url]';
+		return '[url' . (($args) ? '=' . $args : '') . ']' . $text . '[/url]';
 	}
 
 	/**

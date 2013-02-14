@@ -68,11 +68,10 @@ function bbstyle(bbnumber)
 */
 function prepare_url(url)
 {
-	if (url.charAt(0) == '/' && url.charAt(1) != '/') return document.location.protocol + '//' + document.location.host + url;
+	url = url.replace('[', '%5B').replace(']', '%5D');
 	if (url.charAt(0) == '/' && url.charAt(1) == '/') return 'http:' + url;
-	if (url.charAt(0) == '.' && url.charAt(1) == '/') return document.location.href.replace(/\/[^\/]*(\?.*)?$/i, '') + url.substring(1);
-	if (url.match(/^[\w\d]+(\.php|\/|$)/i)) return document.location.href.replace(/\/[^\/]*(\?.*)?$/i, '/') + url;
-	if (!url.match(/^[\w\d]+:/i)) return 'http://' + url;
+	if (url.match(/^[\w\d]+(\.php|\/|$)/i)) return './' + url;
+	if (!url.match(/^[\w\d]+:/i) && !url.match(/^[.]?\//i)) return 'http://' + url;
 	return url;
 }
 
