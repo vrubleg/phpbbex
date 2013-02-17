@@ -862,6 +862,7 @@ CREATE TABLE phpbb_topics (
 	topic_replies_real mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_status tinyint(3) DEFAULT '0' NOT NULL,
 	topic_type tinyint(3) DEFAULT '0' NOT NULL,
+	topic_priority mediumint(8) DEFAULT '0' NOT NULL,
 	topic_first_post_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_first_poster_name varchar(255) DEFAULT '' NOT NULL,
 	topic_first_poster_colour varchar(6) DEFAULT '' NOT NULL,

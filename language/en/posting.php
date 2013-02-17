@@ -193,7 +193,7 @@ $lang = array_merge($lang, array(
 	'SMILIES_ARE_ON'			=> 'Smilies are <em>ON</em>',
 	'STICKY_ANNOUNCE_TIME_LIMIT'=> 'Sticky/Announcement time limit',
 	'STICK_TOPIC_FOR'			=> 'Stick topic for',
-	'STICK_TOPIC_FOR_EXPLAIN'	=> 'Enter 0 or leave blank for a never ending Sticky/Announcement. Please note that this number is relative to the date of the post.',
+	'STICK_TOPIC_FOR_EXPLAIN'	=> '<i>(relative to the date of the post, enter 0 for never ending)</i>',
 	'STYLES_TIP'				=> 'Tip: Styles can be applied quickly to selected text.',
 
 	'TOO_FEW_CHARS'				=> 'Your message contains too few characters.',
@@ -209,6 +209,8 @@ $lang = array_merge($lang, array(
 	'TOO_MANY_URLS'				=> 'Your message contains too many URLs. The maximum number of URLs allowed is %d.',
 	'TOO_MANY_USER_OPTIONS'		=> 'You cannot specify more options per user than existing poll options.',
 	'TOPIC_BUMPED'				=> 'Topic has been bumped successfully.',
+	'TOPIC_PRIORITY'			=> 'Topic priority',
+	'TOPIC_PRIORITY_EXPLAIN'	=> '<i>(topics with higher priority are displayed above the other)</i>',
 
 	'UNAUTHORISED_BBCODE'		=> 'You cannot use certain BBCodes: %s.',
 	'UNGLOBALISE_EXPLAIN'		=> 'To switch this topic back from being global to a normal topic, you need to select the forum you wish this topic to be displayed.',

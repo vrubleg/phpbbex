@@ -1151,7 +1151,7 @@ function display_global_announcements($tpl_loopname)
 		FROM ' . TOPICS_TABLE . ' t
 		WHERE ' . $db->sql_in_set('t.forum_id', $forum_ary) . "
 			AND t.topic_type = " . POST_GLOBAL . '
-		ORDER BY t.topic_time DESC'; // topic_last_post_time
+		ORDER BY t.topic_priority DESC, t.topic_time DESC';
 	$result = $db->sql_query($sql);
 
 	$topic_rows = array();

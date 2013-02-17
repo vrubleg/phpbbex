@@ -22,8 +22,6 @@ html>body table.table1 { width: 100%; }	/* Reset 100% for opera */
 * html .postbody h3 img { vertical-align: middle; }
 
 /* Form styles */
-html>body dd label input { vertical-align: text-bottom; }	/* Align checkboxes/radio buttons nicely */
-
 * html input.button1, * html input.button2 {
 	padding-bottom: 0;
 	margin-bottom: 1px;

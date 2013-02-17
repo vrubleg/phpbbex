@@ -402,7 +402,7 @@ if ($forum_data['forum_type'] == FORUM_POST || $s_display_active)
 		'WHERE'		=> $db->sql_in_set('t.forum_id', $forum_ids) . '
 			AND t.topic_type IN (' . POST_ANNOUNCE . ', ' . POST_GLOBAL . ')',
 
-		'ORDER_BY'	=> 't.topic_time DESC',
+		'ORDER_BY'	=> 't.topic_priority DESC, t.topic_time DESC',
 	));
 	$result = $db->sql_query($sql);
 
