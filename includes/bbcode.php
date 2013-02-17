@@ -507,6 +507,7 @@ class bbcode
 	*/
 	function bbcode_list($type)
 	{
+		$start = 1;
 		if ($type == '')
 		{
 			$tpl = 'ulist_open_default';
@@ -529,16 +530,19 @@ class bbcode
 		}
 		else if (preg_match('#^[a-z]$#', $type))
 		{
+			$start = (int)(ord($type) - ord('a') + 1);
 			$tpl = 'olist_open';
 			$type = 'lower-alpha';
 		}
 		else if (preg_match('#[A-Z]#', $type))
 		{
+			$start = (int)(ord($type) - ord('A') + 1);
 			$tpl = 'olist_open';
 			$type = 'upper-alpha';
 		}
 		else if (is_numeric($type))
 		{
+			$start = (int) $type;
 			$tpl = 'olist_open';
 			$type = 'decimal';
 		}
@@ -548,7 +552,7 @@ class bbcode
 			$type = 'decimal';
 		}
 
-		return str_replace('{LIST_TYPE}', $type, $this->bbcode_tpl($tpl));
+		return strtr($this->bbcode_tpl($tpl), array('{LIST_TYPE}' => $type, '{LIST_START}' => $start));
 	}
 
 	/**
