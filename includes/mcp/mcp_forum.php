@@ -151,7 +151,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		WHERE t.forum_id IN($forum_id, 0)
 			" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_approved = 1') . "
 			$limit_time_sql
-		ORDER BY t.topic_type DESC, $sort_order_sql";
+		ORDER BY t.topic_type DESC, t.topic_priority DESC, $sort_order_sql";
 	$result = $db->sql_query_limit($sql, $topics_per_page, $start);
 
 	$topic_list = $topic_tracking_info = array();

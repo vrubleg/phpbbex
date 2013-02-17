@@ -137,6 +137,7 @@ $lang = array_merge($lang, array(
 
 	'DAY'					=> 'Day',
 	'DAYS'					=> 'Days',
+	'DEFAULT'				=> 'Default',
 	'DELETE'				=> 'Delete',
 	'DELETE_ALL'			=> 'Delete all',
 	'DELETE_COOKIES'		=> 'Delete all board cookies',
@@ -274,7 +275,7 @@ $lang = array_merge($lang, array(
 
 	'JABBER'				=> 'Jabber',
 	'JOINED'				=> 'Joined',
-	'JUMP_PAGE'				=> 'Enter the page number you wish to go to',
+	'JUMP_PAGE'				=> 'Enter the page number',
 	'JUMP_TO'				=> 'Jump to',
 	'JUMP_TO_PAGE'			=> 'Click to jump to page…',
 

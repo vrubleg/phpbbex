@@ -190,16 +190,19 @@
 			{
 				$("#postform input[name=topic_type]").change(function()
 				{
-					if ($(this).val() == 0) $("#stick_topic_for").hide(); else $("#stick_topic_for").show();
+					if ($(this).val() == 0) $(".only-for-announces").hide(); else $(".only-for-announces").show();
 				});
 				$("#postform input[name=topic_type]:checked").change();
 			});
 			</script>
 
-			<dl id="stick_topic_for">
+			<dl class="only-for-announces">
 				<dt><label for="topic_time_limit">{L_STICK_TOPIC_FOR}:</label></dt>
-				<dd><label for="topic_time_limit"><input type="text" name="topic_time_limit" id="topic_time_limit" size="3" maxlength="3" value="{TOPIC_TIME_LIMIT}" class="inputbox autowidth" /> {L_DAYS}</label></dd>
-				<dd>{L_STICK_TOPIC_FOR_EXPLAIN}</dd>
+				<dd><label for="topic_time_limit"><input type="text" name="topic_time_limit" id="topic_time_limit" size="3" maxlength="3" value="{TOPIC_TIME_LIMIT}" class="inputbox autowidth" /> {L_DAYS} {L_STICK_TOPIC_FOR_EXPLAIN}</label></dd>
+			</dl>
+			<dl class="only-for-announces">
+				<dt><label for="topic_priority">{L_TOPIC_PRIORITY}:</label></dt>
+				<dd><label for="topic_priority"><input type="text" name="topic_priority" id="topic_priority" size="3" maxlength="5" value="{TOPIC_PRIORITY}" class="inputbox autowidth" /> {L_TOPIC_PRIORITY_EXPLAIN}</label></dd>
 			</dl>
 			<!-- ENDIF -->
 

@@ -134,6 +134,9 @@ class acp_forums
 						'forum_style'			=> request_var('forum_style', 0),
 						'display_subforum_list'	=> request_var('display_subforum_list', false),
 						'display_on_index'		=> request_var('display_on_index', false),
+						'forum_topic_show_days'		=> request_var('topic_show_days', 0),
+						'forum_topic_sortby_type'	=> request_var('topic_sortby_type', ''),
+						'forum_topic_sortby_dir'	=> request_var('topic_sortby_dir', ''),
 						'forum_topics_per_page'	=> request_var('topics_per_page', 0),
 						'enable_indexing'		=> request_var('enable_indexing', true),
 						'enable_icons'			=> request_var('enable_icons', false),
@@ -433,6 +436,9 @@ class acp_forums
 							'forum_style'			=> 0,
 							'display_subforum_list'	=> true,
 							'display_on_index'		=> false,
+							'forum_topic_show_days'		=> 0,
+							'forum_topic_sortby_type'	=> '',
+							'forum_topic_sortby_dir'	=> '',
 							'forum_topics_per_page'	=> 0,
 							'enable_indexing'		=> true,
 							'enable_icons'			=> false,
@@ -510,6 +516,30 @@ class acp_forums
 				}
 
 				$styles_list = style_select($forum_data['forum_style'], true);
+
+				$topic_show_days_options = '';
+				$topic_show_days_ary = array(0 => $user->lang['ALL_DAYS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
+				foreach ($topic_show_days_ary as $value => $title)
+				{
+					$selected = ($forum_data['forum_topic_show_days'] == $value) ? ' selected="selected"' : '';
+					$topic_show_days_options .= '<option value="' . $value . '"' . $selected . '>' . $title . '</option>';
+				}
+
+				$topic_sortby_type_options = '';
+				$topic_sortby_type_ary = array('' => $user->lang['DEFAULT'], 't' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES'], 'v' => $user->lang['VIEWS'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']);
+				foreach ($topic_sortby_type_ary as $value => $title)
+				{
+					$selected = ($forum_data['forum_topic_sortby_type'] == $value) ? ' selected="selected"' : '';
+					$topic_sortby_type_options .= '<option value="' . $value . '"' . $selected . '>' . $title . '</option>';
+				}
+
+				$topic_sortby_dir_options = '';
+				$topic_sortby_dir_ary = array('' => $user->lang['DEFAULT'], 'a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']);
+				foreach ($topic_sortby_dir_ary as $value => $title)
+				{
+					$selected = ($forum_data['forum_topic_sortby_dir'] == $value) ? ' selected="selected"' : '';
+					$topic_sortby_dir_options .= '<option value="' . $value . '"' . $selected . '>' . $title . '</option>';
+				}
 
 				$statuslist = '<option value="' . ITEM_UNLOCKED . '"' . (($forum_data['forum_status'] == ITEM_UNLOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['UNLOCKED'] . '</option><option value="' . ITEM_LOCKED . '"' . (($forum_data['forum_status'] == ITEM_LOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['LOCKED'] . '</option>';
 
@@ -620,6 +650,9 @@ class acp_forums
 					'S_STATUS_OPTIONS'			=> $statuslist,
 					'S_PARENT_OPTIONS'			=> $parents_list,
 					'S_STYLES_OPTIONS'			=> $styles_list,
+					'S_TOPIC_SHOW_DAYS_OPTIONS'		=> $topic_show_days_options,
+					'S_TOPIC_SORTBY_TYPE_OPTIONS'	=> $topic_sortby_type_options,
+					'S_TOPIC_SORTBY_DIR_OPTIONS'	=> $topic_sortby_dir_options,
 					'S_FORUM_OPTIONS'			=> make_forum_select(($action == 'add') ? $forum_data['parent_id'] : false, ($action == 'edit') ? $forum_data['forum_id'] : false, false, false, false),
 					'S_SHOW_DISPLAY_ON_INDEX'	=> $s_show_display_on_index,
 					'S_FORUM_POST'				=> ($forum_data['forum_type'] == FORUM_POST) ? true : false,

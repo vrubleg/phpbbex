@@ -2282,6 +2282,14 @@ function generate_board_url($without_script_path = false)
 {
 	global $config, $user;
 
+	static $board_url;
+	static $domain_url;
+
+	if (!empty($board_url))
+	{
+		return $without_script_path ? $domain_url : $board_url;
+	}
+
 	$server_name = $user->host;
 	$server_port = (!empty($_SERVER['SERVER_PORT'])) ? (int) $_SERVER['SERVER_PORT'] : (int) getenv('SERVER_PORT');
 
@@ -2314,18 +2322,11 @@ function generate_board_url($without_script_path = false)
 		}
 	}
 
-	if (!$without_script_path)
-	{
-		$url .= $script_path;
-	}
-
 	// Strip / from the end
-	if (substr($url, -1, 1) == '/')
-	{
-		$url = substr($url, 0, -1);
-	}
+	$domain_url = rtrim($url, '/');
+	$board_url = rtrim($url . $script_path, '/');
 
-	return $url;
+	return $without_script_path ? $domain_url : $board_url;
 }
 
 /**

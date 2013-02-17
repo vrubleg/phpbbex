@@ -137,6 +137,7 @@ $lang = array_merge($lang, array(
 
 	'DAY'					=> 'День',
 	'DAYS'					=> 'дней',
+	'DEFAULT'				=> 'По умолчанию',
 	'DELETE'				=> 'Удалить',
 	'DELETE_ALL'			=> 'Удалить все',
 	'DELETE_COOKIES'		=> 'Удалить cookies конференции',
@@ -274,7 +275,7 @@ $lang = array_merge($lang, array(
 
 	'JABBER'				=> 'Jabber',
 	'JOINED'				=> 'Зарегистрирован',
-	'JUMP_PAGE'				=> 'Введите номер страницы, на которую хотите перейти',
+	'JUMP_PAGE'				=> 'Введите номер страницы',
 	'JUMP_TO'				=> 'Перейти',
 	'JUMP_TO_PAGE'			=> 'Перейти на страницу…',
 

@@ -39,6 +39,7 @@
 				dE('forum_link_options', -1);
 				dE('forum_rules_options', 1);
 				dE('forum_cat_options', -1);
+				dE('forum_display_settings', 1);
 			}
 			else if (value == {FORUM_LINK})
 			{
@@ -46,6 +47,7 @@
 				dE('forum_link_options', 1);
 				dE('forum_rules_options', -1);
 				dE('forum_cat_options', -1);
+				dE('forum_display_settings', -1);
 			}
 			else if (value == {FORUM_CAT})
 			{
@@ -53,6 +55,7 @@
 				dE('forum_link_options', -1);
 				dE('forum_rules_options', 1);
 				dE('forum_cat_options', 1);
+				dE('forum_display_settings', 1);
 			}
 		}
 
@@ -88,6 +91,7 @@
 
 			<!-- IF S_FORUM_LINK -->
 			dE('forum_rules_options', -1);
+			dE('forum_display_settings', -1);
 			<!-- ENDIF -->
 		}
 
@@ -178,10 +182,6 @@
 		<dd><input id="forum_password_unset" name="forum_password_unset" type="checkbox" /></dd>
 	</dl>
 	<!-- ENDIF -->
-	<dl>
-		<dt><label for="forum_style">{L_FORUM_STYLE}:</label></dt>
-		<dd><select id="forum_style" name="forum_style"><option value="0">{L_DEFAULT_STYLE}</option>{S_STYLES_OPTIONS}</select></dd>
-	</dl>
 	</fieldset>
 
 	<div id="forum_cat_options">
@@ -231,10 +231,6 @@
 			<dt><label for="display_recent">{L_ENABLE_RECENT}:</label><br /><span>{L_ENABLE_RECENT_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="display_recent" value="1"<!-- IF S_DISPLAY_ACTIVE_TOPICS --> id="display_recent" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 				<label><input type="radio" class="radio" name="display_recent" value="0"<!-- IF not S_DISPLAY_ACTIVE_TOPICS --> id="display_recent" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
-		</dl>
-		<dl>
-			<dt><label for="topics_per_page">{L_FORUM_TOPICS_PAGE}:</label><br /><span>{L_FORUM_TOPICS_PAGE_EXPLAIN}</span></dt>
-			<dd><input type="text" id="topics_per_page" name="topics_per_page" value="{TOPICS_PER_PAGE}" size="4" maxlength="4" /></dd>
 		</dl>
 		</fieldset>
 
@@ -291,6 +287,32 @@
 			<dt><label for="forum_link_track">{L_FORUM_LINK_TRACK}:</label><br /><span>{L_FORUM_LINK_TRACK_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="forum_link_track" value="1"<!-- IF S_FORUM_LINK_TRACK --> id="forum_link_track" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 				<label><input type="radio" class="radio" name="forum_link_track" value="0"<!-- IF not S_FORUM_LINK_TRACK --> id="forum_link_track" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		</dl>
+		</fieldset>
+	</div>
+
+	<div id="forum_display_settings">
+		<fieldset>
+			<legend>{L_FORUM_DISPLAY_SETTINGS}</legend>
+		<dl>
+			<dt><label for="forum_style">{L_FORUM_STYLE}:</label></dt>
+			<dd><select id="forum_style" name="forum_style"><option value="0">{L_DEFAULT_STYLE}</option>{S_STYLES_OPTIONS}</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="topics_per_page">{L_FORUM_TOPICS_PAGE}:</label><br /><span>{L_FORUM_TOPICS_PAGE_EXPLAIN}</span></dt>
+			<dd><input type="text" id="topics_per_page" name="topics_per_page" value="{TOPICS_PER_PAGE}" size="4" maxlength="4" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="topic_show_days">{L_FORUM_TOPICS_DAYS}:</label></dt>
+			<dd><select id="topic_show_days" name="topic_show_days">{S_TOPIC_SHOW_DAYS_OPTIONS}</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="topic_sortby_type">{L_FORUM_TOPICS_KEY}:</label></dt>
+			<dd><select id="topic_sortby_type" name="topic_sortby_type">{S_TOPIC_SORTBY_TYPE_OPTIONS}</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="topic_sortby_dir">{L_FORUM_TOPICS_DIR}:</label></dt>
+			<dd><select id="topic_sortby_dir" name="topic_sortby_dir">{S_TOPIC_SORTBY_DIR_OPTIONS}</select></dd>
 		</dl>
 		</fieldset>
 	</div>

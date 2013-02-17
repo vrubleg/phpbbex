@@ -21,7 +21,7 @@ function popup(url, width, height, name)
 */
 function jumpto()
 {
-	var page = prompt(jump_page, on_page);
+	var page = prompt(lang.jump_page, on_page);
 
 	if (page !== null && !isNaN(page) && page == Math.floor(page) && page > 0)
 	{

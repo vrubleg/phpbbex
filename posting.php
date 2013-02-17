@@ -551,6 +551,7 @@ if ($save && $user->data['is_registered'] && $auth->acl_get('u_savedrafts') && (
 
 				'topic_type'		=> POST_NORMAL,
 				'topic_time_limit'	=> 0,
+				'topic_priority'	=> 0,
 
 				'poll_title'		=> '',
 				'poll_option_text'	=> '',
@@ -642,6 +643,7 @@ if ($submit || $preview || $refresh)
 	$post_data['orig_topic_type']	= $post_data['topic_type'];
 	$post_data['topic_type']		= request_var('topic_type', (($mode != 'post') ? (int) $post_data['topic_type'] : POST_NORMAL));
 	$post_data['topic_time_limit']	= request_var('topic_time_limit', (($mode != 'post') ? (int) $post_data['topic_time_limit'] : 0));
+	$post_data['topic_priority']	= request_var('topic_priority', (($mode != 'post') ? (int) $post_data['topic_priority'] : 0));
 
 	if ($post_data['enable_icons'] && $auth->acl_get('f_icons', $forum_id))
 	{
@@ -1102,6 +1104,7 @@ if ($submit || $preview || $refresh)
 				'topic_first_post_id'	=> (isset($post_data['topic_first_post_id'])) ? (int) $post_data['topic_first_post_id'] : 0,
 				'topic_last_post_id'	=> (isset($post_data['topic_last_post_id'])) ? (int) $post_data['topic_last_post_id'] : 0,
 				'topic_time_limit'		=> (int) $post_data['topic_time_limit'],
+				'topic_priority'		=> (int) $post_data['topic_priority'],
 				'topic_attachment'		=> (isset($post_data['topic_attachment'])) ? (int) $post_data['topic_attachment'] : 0,
 				'post_id'				=> (int) $post_id,
 				'topic_id'				=> (int) $topic_id,
@@ -1466,6 +1469,7 @@ $template->assign_vars(array(
 	'POST_DATE'				=> ($post_data['post_time']) ? $user->format_date($post_data['post_time']) : '',
 	'ERROR'					=> (sizeof($error)) ? implode('<br />', $error) : '',
 	'TOPIC_TIME_LIMIT'		=> (int) $post_data['topic_time_limit'],
+	'TOPIC_PRIORITY'		=> (int) $post_data['topic_priority'],
 	'EDIT_REASON'			=> $post_data['post_edit_reason'],
 	'U_VIEW_FORUM'			=> append_sid("{$phpbb_root_path}viewforum.$phpEx", "f=$forum_id"),
 	'U_VIEW_TOPIC'			=> ($mode != 'post') ? append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id") : '',

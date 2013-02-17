@@ -29,6 +29,15 @@ ALTER TABLE phpbb_topics
 	ADD COLUMN poll_show_voters tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_vote_change,
 	ADD COLUMN topic_first_post_show tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_show_voters;
 
+ALTER TABLE phpbb_topics
+	ADD COLUMN topic_priority mediumint(8) DEFAULT '0' NOT NULL AFTER topic_type,
+	ADD INDEX topic_priority (topic_priority);
+
+ALTER TABLE phpbb_forums
+	ADD COLUMN forum_topic_show_days smallint(4) UNSIGNED DEFAULT '0' NOT NULL AFTER forum_rules_uid,
+	ADD COLUMN forum_topic_sortby_type varchar(1) DEFAULT '' NOT NULL AFTER forum_topic_show_days,
+	ADD COLUMN forum_topic_sortby_dir varchar(1) DEFAULT '' NOT NULL AFTER forum_topic_sortby_type;
+
 ALTER TABLE phpbb_poll_votes
 	ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER vote_user_id;
 
@@ -218,7 +227,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1'
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_item_statistics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_overall', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('form_token_lifetime', '43200');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_tplcompile', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_poll_options', '25');

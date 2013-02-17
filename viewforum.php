@@ -26,14 +26,6 @@ $forum_id	= request_var('f', 0);
 $mark_read	= request_var('mark', '');
 $start		= request_var('start', 0);
 
-$default_sort_days	= (!empty($user->data['user_topic_show_days'])) ? $user->data['user_topic_show_days'] : 0;
-$default_sort_key	= (!empty($user->data['user_topic_sortby_type'])) ? $user->data['user_topic_sortby_type'] : 't';
-$default_sort_dir	= (!empty($user->data['user_topic_sortby_dir'])) ? $user->data['user_topic_sortby_dir'] : 'd';
-
-$sort_days	= request_var('st', $default_sort_days);
-$sort_key	= request_var('sk', $default_sort_key);
-$sort_dir	= request_var('sd', $default_sort_dir);
-
 // Check if the user has actually sent a forum ID with his/her request
 // If not give them a nice error page.
 if (!$forum_id)
@@ -70,6 +62,13 @@ if (!$forum_data)
 	trigger_error('NO_FORUM');
 }
 
+$default_sort_days	= (!empty($forum_data['forum_topic_show_days']))	? $forum_data['forum_topic_show_days']	: ((!empty($user->data['user_topic_show_days']))	? $user->data['user_topic_show_days']	: 0);
+$default_sort_key	= (!empty($forum_data['forum_topic_sortby_type']))	? $forum_data['forum_topic_sortby_type']: ((!empty($user->data['user_topic_sortby_type']))	? $user->data['user_topic_sortby_type']	: 't');
+$default_sort_dir	= (!empty($forum_data['forum_topic_sortby_dir']))	? $forum_data['forum_topic_sortby_dir']	: ((!empty($user->data['user_topic_sortby_dir']))	? $user->data['user_topic_sortby_dir']	: 'd');
+
+$sort_days	= request_var('st', $default_sort_days);
+$sort_key	= request_var('sk', $default_sort_key);
+$sort_dir	= request_var('sd', $default_sort_dir);
 
 // Configure style, language, etc.
 $user->setup('viewforum', $forum_data['forum_style']);
@@ -402,7 +401,7 @@ if ($forum_data['forum_type'] == FORUM_POST || $s_display_active)
 		'WHERE'		=> $db->sql_in_set('t.forum_id', $forum_ids) . '
 			AND t.topic_type IN (' . POST_ANNOUNCE . ', ' . POST_GLOBAL . ')',
 
-		'ORDER_BY'	=> 't.topic_time DESC',
+		'ORDER_BY'	=> 't.topic_priority DESC, t.topic_time DESC',
 	));
 	$result = $db->sql_query($sql);
 
@@ -469,7 +468,7 @@ $sql = 'SELECT t.topic_id
 		AND t.topic_type IN (" . POST_NORMAL . ', ' . POST_STICKY . ")
 		$sql_approved
 		$sql_limit_time
-	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
+	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', t.topic_priority ' . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
 while ($row = $db->sql_fetchrow($result))

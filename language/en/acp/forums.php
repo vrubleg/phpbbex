@@ -111,8 +111,12 @@ $lang = array_merge($lang, array(
 	'FORUM_SETTINGS'					=> 'Forum settings',
 	'FORUM_STATUS'						=> 'Forum status',
 	'FORUM_STYLE'						=> 'Forum style',
+	'FORUM_DISPLAY_SETTINGS'			=> 'Forum displaying settings',
 	'FORUM_TOPICS_PAGE'					=> 'Topics per page',
 	'FORUM_TOPICS_PAGE_EXPLAIN'			=> 'If non-zero this value will override the default topics per page setting.',
+	'FORUM_TOPICS_DAYS'					=> 'Display topics from previous days',
+	'FORUM_TOPICS_DIR'					=> 'Display topic order direction',
+	'FORUM_TOPICS_KEY'					=> 'Display topics ordering by',
 	'FORUM_TYPE'						=> 'Forum type',
 	'FORUM_UPDATED'						=> 'Forum information updated successfully.',
 
