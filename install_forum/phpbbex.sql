@@ -26,9 +26,12 @@ ALTER TABLE phpbb_posts
 	ADD COLUMN post_created int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER post_time;
 
 ALTER TABLE phpbb_topics
-	ADD COLUMN topic_priority mediumint(8) DEFAULT '0' NOT NULL AFTER topic_type,
 	ADD COLUMN poll_show_voters tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_vote_change,
 	ADD COLUMN topic_first_post_show tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_show_voters;
+
+ALTER TABLE phpbb_topics
+	ADD COLUMN topic_priority mediumint(8) DEFAULT '0' NOT NULL AFTER topic_type,
+	ADD INDEX topic_priority (topic_priority);
 
 ALTER TABLE phpbb_poll_votes
 	ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER vote_user_id;

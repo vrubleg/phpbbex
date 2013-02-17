@@ -469,7 +469,7 @@ $sql = 'SELECT t.topic_id
 		AND t.topic_type IN (" . POST_NORMAL . ', ' . POST_STICKY . ")
 		$sql_approved
 		$sql_limit_time
-	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
+	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', t.topic_priority ' . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
 while ($row = $db->sql_fetchrow($result))
