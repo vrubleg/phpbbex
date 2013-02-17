@@ -4695,8 +4695,11 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_rounded_corners',
 		'style_new_year',
 		'style_show_sitename_in_headerbar',
-		'style_show_social_buttons',
 		'style_show_feeds_in_forumlist',
+
+		// viewtopic
+		'style_show_social_buttons',
+		'style_vt_show_post_numbers',
 
 		// miniprofile
 		'style_mp_on_left',

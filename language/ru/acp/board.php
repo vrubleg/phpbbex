@@ -88,7 +88,6 @@ $lang = array_merge($lang, array(
 	'STYLE_MIN_WIDTH'					=> 'Минимальная ширина страницы',
 	'STYLE_MAX_WIDTH'					=> 'Максимальная ширина страницы',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Отображать название и описание сайта в шапке',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей в темах',
 	'SOCIAL_MEDIA_COVER_URL'			=> 'Путь к обложке для социальных сетей',
 	'STYLE_BACK_TO_TOP'					=> 'Кнопка «В начало страницы»',
 	'STYLE_ROUNDED_CORNERS'				=> 'Скруглять углы',
@@ -97,8 +96,12 @@ $lang = array_merge($lang, array(
 	'STYLE_SETTINGS_INDEX'				=> 'Главная страница',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Отображать кнопки RSS в списке форумов',
 
-	'STYLE_SETTINGS_PROFILE'			=> 'Отображение профиля',
-	'STYLE_SETTINGS_MINIPROFILE'		=> 'Отображение минипрофиля',
+	'STYLE_SETTINGS_VIEWTOPIC'			=> 'Просмотр темы',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей',
+	'STYLE_VT_SHOW_POST_NUMBERS'		=> 'Отображать номера сообщений',
+
+	'STYLE_SETTINGS_PROFILE'			=> 'Профиль',
+	'STYLE_SETTINGS_MINIPROFILE'		=> 'Минипрофиль',
 	'STYLE_MP_ON_LEFT'					=> 'Минипрофили слева',
 	'STYLE_MP_SHOW_TOPIC_POSTER'		=> 'Отображать автора темы',
 	'STYLE_MP_SHOW_GENDER'				=> 'Отображать пол',

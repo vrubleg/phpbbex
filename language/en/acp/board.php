@@ -88,7 +88,6 @@ $lang = array_merge($lang, array(
 	'STYLE_MIN_WIDTH'					=> 'Minimum page width',
 	'STYLE_MAX_WIDTH'					=> 'Maximum page width',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'	=> 'Display site name and description in header bar',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons in topics',
 	'SOCIAL_MEDIA_COVER_URL'			=> 'Path to social media cover',
 	'STYLE_BACK_TO_TOP'					=> '"Back to top" button',
 	'STYLE_ROUNDED_CORNERS'				=> 'Rounded corners',
@@ -96,6 +95,10 @@ $lang = array_merge($lang, array(
 
 	'STYLE_SETTINGS_INDEX'				=> 'Board Index',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
+
+	'STYLE_SETTINGS_VIEWTOPIC'			=> 'View Topic',
+	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons',
+	'STYLE_VT_SHOW_POST_NUMBERS'		=> 'Display post numbers',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Profile',
 	'STYLE_SETTINGS_MINIPROFILE'		=> 'Mini profile',

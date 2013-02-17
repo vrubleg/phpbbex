@@ -1638,6 +1638,8 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 	$user_rate = isset($user_rates[$row['post_id']]) ? $user_rates[$row['post_id']] : array('rate' => 0, 'rate_time' => 0);
 	$rate_time = ($topic_data['topic_first_post_id'] != $row['post_id'] || !isset($config['rate_topic_time']) || $config['rate_topic_time'] == -1) ? $config['rate_time'] : $config['rate_topic_time'];
 
+	$post_number = ($topic_data['topic_first_post_show'] && $start != 0) ? ($topic_data['topic_first_post_id'] == $row['post_id'] ? 1 : $i + $start) : $i + $start + 1;
+
 	//
 	$postrow = array(
 		'POST_AUTHOR_FULL'		=> ($poster_id != ANONYMOUS) ? $user_cache[$poster_id]['author_full'] : get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -1680,7 +1682,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'EDITED_MESSAGE'	=> $l_edited_by,
 		'EDIT_REASON'		=> $row['post_edit_reason'],
 
-		'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
+		'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', "{$user->lang['UNREAD_POST']} #{$post_number}") : $user->img('icon_post_target', "{$user->lang['POST']} #{$post_number}"),
 		'POST_ICON_IMG'			=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
 		'POST_ICON_IMG_WIDTH'	=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
 		'POST_ICON_IMG_HEIGHT'	=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['height'] : '',
@@ -1715,7 +1717,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_WARN'			=> ($auth->acl_get('m_warn') && $poster_id != ANONYMOUS) ? append_sid("{$phpbb_root_path}mcp.$phpEx", count($row['warnings_data']) ? 'i=warn&amp;mode=warn_edit&amp;warning_id=' . $row['warnings_data'][0]['warning_id'] : 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
 
 		'POST_ID'			=> $row['post_id'],
-		'POST_NUMBER'		=> ($topic_data['topic_first_post_show'] && $start != 0) ? ($topic_data['topic_first_post_id'] == $row['post_id'] ? 1 : $i + $start) : $i + $start + 1,
+		'POST_NUMBER'		=> $post_number,
 		'POSTER_ID'			=> $poster_id,
 
 		'POST_RATING_SHOW'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0 || (empty($config['rate_only_topics']) || $topic_data['topic_first_post_id'] == $row['post_id']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true)),
