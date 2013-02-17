@@ -227,7 +227,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1'
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_item_statistics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_overall', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('form_token_lifetime', '43200');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_tplcompile', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_poll_options', '25');
