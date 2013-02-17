@@ -623,7 +623,14 @@ class bbcode_firstpass extends bbcode
 					if (sizeof($item_end_tags) && sizeof($item_end_tags) >= sizeof($list_end_tags))
 					{
 						// current li tag has not been closed
-						$out = preg_replace('/\n?\[$/', '[', $out) . array_pop($item_end_tags) . '][';
+						if (preg_match('/\n\[$/', $out, $m))
+						{
+							$out = preg_replace('/\n?\[$/', '[', $out) . array_pop($item_end_tags) . "]\n[";
+						}
+						else
+						{
+							$out .= array_pop($item_end_tags) . '][';
+						}
 					}
 
 					$out .= array_pop($list_end_tags) . ']';
