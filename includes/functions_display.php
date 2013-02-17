@@ -928,22 +928,15 @@ function topic_status(&$topic_row, $replies, $unread_topic, &$folder_img, &$fold
 /**
 * Display topic rows
 */
-function display_topic_rows($tpl_loopname, $topic_rows)
+function display_topic_rows($tpl_loopname, $topic_ids)
 {
 	global $auth, $cache, $config, $db, $template, $user;
 	global $phpbb_root_path, $phpEx;
 
 	// No topics to display
-	if (empty($topic_rows))
+	if (empty($topic_ids))
 	{
 		return;
-	}
-
-	$forums = $topic_ids = array();
-	foreach ($topic_rows as $row)
-	{
-		$topic_ids[] = $row['topic_id'];
-		$forums[$row['forum_id']][] = $row['topic_id'];
 	}
 
 	// Grab icons
@@ -959,18 +952,29 @@ function display_topic_rows($tpl_loopname, $topic_rows)
 			ON f.forum_id = t.forum_id
 		LEFT JOIN ' . ICONS_TABLE . ' i
 			ON t.icon_id = i.icons_id
-		WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids) . '
-		ORDER BY t.topic_last_post_time DESC';
+		WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
 	$result = $db->sql_query($sql);
 
-	foreach ($forums as $forum_id => $topic_ids)
-	{
-		$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_ids);
-	}
-
+	$forums = array();
+	$topic_rows = array();
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$topic_id = $row['topic_id'];
+		$forum_id = $row['forum_id'];
+		$topic_rows[$topic_id] = $row;
+		$forums[$forum_id][] = $topic_id;
+	}
+	$db->sql_freeresult($result);
+
+	foreach ($forums as $forum_id => $forum_topic_ids)
+	{
+		$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $forum_topic_ids);
+	}
+
+	foreach ($topic_ids as $topic_id)
+	{
+		if (empty($topic_rows[$topic_id])) continue;
+		$row = $topic_rows[$topic_id];
 		$forum_id = $row['forum_id'];
 
 		$s_type_switch_test = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
@@ -1042,7 +1046,6 @@ function display_topic_rows($tpl_loopname, $topic_rows)
 			'U_MCP_QUEUE'			=> $u_mcp_queue,
 		));
 	}
-	$db->sql_freeresult($result);
 }
 
 /**
@@ -1121,14 +1124,14 @@ function display_active_topics($tpl_loopname, $total_limit)
 		ORDER BY topic_last_post_time DESC';
 	$result = $db->sql_query_limit($sql, $total_limit);
 
-	$topic_rows = array();
+	$topic_ids = array();
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$topic_rows[] = $row;
+		$topic_ids[] = $row['topic_id'];
 	}
 	$db->sql_freeresult($result);
 
-	display_topic_rows($tpl_loopname, $topic_rows);
+	display_topic_rows($tpl_loopname, $topic_ids);
 }
 
 /**
@@ -1154,14 +1157,14 @@ function display_global_announcements($tpl_loopname)
 		ORDER BY t.topic_priority DESC, t.topic_time DESC';
 	$result = $db->sql_query($sql);
 
-	$topic_rows = array();
+	$topic_ids = array();
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$topic_rows[] = $row;
+		$topic_ids[] = $row['topic_id'];
 	}
 	$db->sql_freeresult($result);
 
-	display_topic_rows($tpl_loopname, $topic_rows);
+	display_topic_rows($tpl_loopname, $topic_ids);
 }
 
 /**
