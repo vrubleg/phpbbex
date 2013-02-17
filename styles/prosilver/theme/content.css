@@ -376,8 +376,7 @@ dl.faq dt {
 }
 
 .content ul, .content ol {
-	/*margin-bottom: 1em;*/
-	margin-left: 3em;
+	margin-left: 2em;
 }
 
 .posthilit {
