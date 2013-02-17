@@ -137,6 +137,7 @@ $lang = array_merge($lang, array(
 
 	'DAY'					=> 'День',
 	'DAYS'					=> 'дней',
+	'DEFAULT'				=> 'По умолчанию',
 	'DELETE'				=> 'Удалить',
 	'DELETE_ALL'			=> 'Удалить все',
 	'DELETE_COOKIES'		=> 'Удалить cookies конференции',

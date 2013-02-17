@@ -111,8 +111,12 @@ $lang = array_merge($lang, array(
 	'FORUM_SETTINGS'					=> 'Настройки форума',
 	'FORUM_STATUS'						=> 'Статус форума',
 	'FORUM_STYLE'						=> 'Стиль форума',
+	'FORUM_DISPLAY_SETTINGS'			=> 'Настройки отображения форума',
 	'FORUM_TOPICS_PAGE'					=> 'Тем на странице',
 	'FORUM_TOPICS_PAGE_EXPLAIN'			=> 'Если отлично от нуля, это значение заменит настройку количества тем на страницу по умолчанию.',
+	'FORUM_TOPICS_DAYS'					=> 'Показывать темы за',
+	'FORUM_TOPICS_DIR'					=> 'Порядок сортировки тем',
+	'FORUM_TOPICS_KEY'					=> 'Поле сортировки тем',
 	'FORUM_TYPE'						=> 'Тип форума',
 	'FORUM_UPDATED'						=> 'Сведения о форуме успешно обновлены.',
 

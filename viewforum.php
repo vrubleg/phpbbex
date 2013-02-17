@@ -26,14 +26,6 @@ $forum_id	= request_var('f', 0);
 $mark_read	= request_var('mark', '');
 $start		= request_var('start', 0);
 
-$default_sort_days	= (!empty($user->data['user_topic_show_days'])) ? $user->data['user_topic_show_days'] : 0;
-$default_sort_key	= (!empty($user->data['user_topic_sortby_type'])) ? $user->data['user_topic_sortby_type'] : 't';
-$default_sort_dir	= (!empty($user->data['user_topic_sortby_dir'])) ? $user->data['user_topic_sortby_dir'] : 'd';
-
-$sort_days	= request_var('st', $default_sort_days);
-$sort_key	= request_var('sk', $default_sort_key);
-$sort_dir	= request_var('sd', $default_sort_dir);
-
 // Check if the user has actually sent a forum ID with his/her request
 // If not give them a nice error page.
 if (!$forum_id)
@@ -70,6 +62,13 @@ if (!$forum_data)
 	trigger_error('NO_FORUM');
 }
 
+$default_sort_days	= (!empty($forum_data['forum_topic_show_days']))	? $forum_data['forum_topic_show_days']	: ((!empty($user->data['user_topic_show_days']))	? $user->data['user_topic_show_days']	: 0);
+$default_sort_key	= (!empty($forum_data['forum_topic_sortby_type']))	? $forum_data['forum_topic_sortby_type']: ((!empty($user->data['user_topic_sortby_type']))	? $user->data['user_topic_sortby_type']	: 't');
+$default_sort_dir	= (!empty($forum_data['forum_topic_sortby_dir']))	? $forum_data['forum_topic_sortby_dir']	: ((!empty($user->data['user_topic_sortby_dir']))	? $user->data['user_topic_sortby_dir']	: 'd');
+
+$sort_days	= request_var('st', $default_sort_days);
+$sort_key	= request_var('sk', $default_sort_key);
+$sort_dir	= request_var('sd', $default_sort_dir);
 
 // Configure style, language, etc.
 $user->setup('viewforum', $forum_data['forum_style']);

@@ -137,6 +137,7 @@ $lang = array_merge($lang, array(
 
 	'DAY'					=> 'Day',
 	'DAYS'					=> 'Days',
+	'DEFAULT'				=> 'Default',
 	'DELETE'				=> 'Delete',
 	'DELETE_ALL'			=> 'Delete all',
 	'DELETE_COOKIES'		=> 'Delete all board cookies',
