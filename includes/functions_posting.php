@@ -1834,7 +1834,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'topic_first_poster_colour'	=> $user->data['user_colour'],
 				'topic_type'				=> $topic_type,
 				'topic_time_limit'			=> ($topic_type != POST_NORMAL) ? ($data['topic_time_limit'] * 86400) : 0,
-				'topic_priority'			=> ($topic_type != POST_NORMAL) ? $data['topic_priority'] : 0,
+				'topic_priority'			=> ($topic_type != POST_NORMAL && isset($data['topic_priority'])) ? intval($data['topic_priority']) : 0,
 				'topic_attachment'			=> (!empty($data['attachment_data'])) ? 1 : 0,
 			);
 
@@ -1912,7 +1912,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'topic_first_poster_name'	=> $username,
 				'topic_type'				=> $topic_type,
 				'topic_time_limit'			=> ($topic_type != POST_NORMAL) ? ($data['topic_time_limit'] * 86400) : 0,
-				'topic_priority'			=> ($topic_type != POST_NORMAL) ? $data['topic_priority'] : 0,
+				'topic_priority'			=> ($topic_type != POST_NORMAL && isset($data['topic_priority'])) ? intval($data['topic_priority']) : 0,
 				'poll_title'				=> (isset($poll['poll_options'])) ? $poll['poll_title'] : '',
 				'poll_start'				=> (isset($poll['poll_options'])) ? $poll_start : 0,
 				'poll_max_options'			=> (isset($poll['poll_options'])) ? $poll['poll_max_options'] : 1,
