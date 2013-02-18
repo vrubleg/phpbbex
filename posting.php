@@ -1505,6 +1505,8 @@ $template->assign_vars(array(
 	'S_FIRST_POST_SHOW_ALLOWED'		=> $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),
 	'S_FIRST_POST_SHOW_CHECKED'		=> ($first_post_show_checked) ? ' checked="checked"' : '',
 
+	'ALLOWED_EXTENSIONS_JSON'		=> json::encode(get_allowed_extension_sizes($forum_id)),
+
 	'S_BBCODE_IMG'			=> $img_status,
 	'S_BBCODE_URL'			=> $url_status,
 	'S_BBCODE_FLASH'		=> $flash_status,

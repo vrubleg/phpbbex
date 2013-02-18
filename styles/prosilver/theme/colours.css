@@ -911,8 +911,11 @@ input.search {
 	background-image: url("{T_THEME_PATH}/images/icon_textbox_search.gif");
 }
 
-input.disabled {
-	color: #666666;
+input.disabled, input[type=button][disabled], input[type=submit][disabled]
+{
+	border-color: #666666 !important;
+	color: #666666 !important;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 ::-webkit-input-placeholder { color: #999; font-style: italic; }

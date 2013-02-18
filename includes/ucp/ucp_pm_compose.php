@@ -1092,6 +1092,8 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		'S_BBCODE_QUOTE'		=> true,
 		'S_BBCODE_URL'			=> $url_status,
 
+		'ALLOWED_EXTENSIONS_JSON'	=> json::encode(get_allowed_extension_sizes(false)),
+
 		'S_POST_ACTION'				=> $s_action,
 		'S_HIDDEN_ADDRESS_FIELD'	=> $s_hidden_address_field,
 		'S_HIDDEN_FIELDS'			=> $s_hidden_fields,

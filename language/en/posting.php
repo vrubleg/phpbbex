@@ -45,6 +45,8 @@ $lang = array_merge($lang, array(
 	'ATTACH_DISK_FULL'			=> 'There is not enough free disk space to post this attachment.',
 	'ATTACH_QUOTA_REACHED'		=> 'Sorry, the board attachment quota has been reached.',
 	'ATTACH_SIG'				=> 'Attach a signature',
+	'ATTACH_UNALLOWED_EXT'		=> 'Unallowed file extension. Try to use zip or 7z archives.',
+	'ATTACH_IS_TOO_BIG'			=> 'This file is too big. Allowed file size for files of this type: ',
 
 	'BBCODE_A_HELP'				=> 'Inline uploaded attachment: [attachment=]filename.ext[/attachment]',
 	'BBCODE_B_HELP'				=> 'Bold text: [b]text[/b]',

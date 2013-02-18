@@ -854,6 +854,71 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 	return sizeof($attachment_data);
 }
 
+/**
+ * Convert php.ini size value to bytes
+ */
+function phpini_size_to_bytes($val)
+{
+	$val = trim($val);
+	if (empty($val)) return 0;
+	$last = strtolower($val[strlen($val)-1]);
+	switch($last) 
+	{
+		case 'g':
+			$val *= 1024;
+		case 'm':
+			$val *= 1024;
+		case 'k':
+			$val *= 1024;
+	}
+	return $val;
+}
+
+/**
+ * Get allowed file size uploaded per PHP ini settings
+ */
+function get_upload_max_filesize()
+{
+	$php_upload_max = phpini_size_to_bytes(@ini_get('upload_max_filesize'));
+	$php_post_max = phpini_size_to_bytes(@ini_get('post_max_size'));
+	return min($php_upload_max, $php_post_max);
+}
+
+/**
+ * Get allowed extensions and their sizes in bytes
+ */
+function get_allowed_extension_sizes($forum_id = false)
+{
+	global $config, $cache, $auth;
+	$result = array();
+	$can_ignore = $auth->acl_get('a_') || $forum_id !== false && $auth->acl_get('m_', $forum_id);
+
+	$extensions = $cache->obtain_attach_extensions($forum_id);
+	unset($extensions['_allowed_']);
+	ksort($extensions);
+
+	// Calc maximum allowed size
+	$all_max_size = !empty($forum_id) ? (int) $config['max_filesize'] : (int) $config['max_filesize_pm'];
+	$php_max_size = get_upload_max_filesize();
+	if (!$php_max_size) $php_max_size = 1*1024*1024; // We actually don't know php_max_size, set it to 1MB
+	$all_max_size = $all_max_size ? min($all_max_size, $php_max_size) : $php_max_size;
+
+	foreach($extensions as $ext => $vals)
+	{
+		if ($can_ignore)
+		{
+			$result[strtolower($ext)] = $php_max_size;
+		}
+		else
+		{
+			$ext_max_size = (int) $vals['max_filesize'];
+			$result[strtolower($ext)] = ($ext_max_size == 0) ? $all_max_size : min($ext_max_size, $php_max_size);
+		}
+	}
+
+	return $result;
+}
+
 //
 // General Post functions
 //

@@ -149,18 +149,18 @@ $template->assign_vars(array(
 	'S_FORM_ENCTYPE'		=> ($show_attach_box) ? ' enctype="multipart/form-data"' : '',
 	'SUBJECT'				=> '',
 	'EXTRA_OPTIONS_DISPLAY'	=> ($config['allow_' . $mode . '_checkboxes']),
-	
+
 	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
 	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=bbcode') . '">', '</a>'),
 	'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
 	'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
 	'URL_STATUS'			=> ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
-	
+
 	'L_QUICK_REPLY'				=> $user->lang['QUICK_' . strtoupper($mode)],
 	'L_ICON'					=> ($mode == 'reply') ? $user->lang['POST_ICON'] : $user->lang['TOPIC_ICON'],
 	'L_MESSAGE_BODY_EXPLAIN'	=> (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
-	
+
 	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered']) ? true : false,	
 	'S_SHOW_TOPIC_ICONS'		=> $s_topic_icons,
 	'S_SUBJECT_ALLOWED'			=> ($mode == 'post') || $config['allow_reply_subject'],
@@ -178,6 +178,8 @@ $template->assign_vars(array(
 	'S_MAGIC_URL_CHECKED'		=> ($urls_checked) ? ' checked="checked"' : '',
 	'S_FIRST_POST_SHOW_ALLOWED'	=> ($mode == 'post'),
 	'S_NEW_MESSAGE'				=> ($mode == 'post'),
+
+	'ALLOWED_EXTENSIONS_JSON'	=> json::encode(get_allowed_extension_sizes($forum_id)),
 
 	'S_BBCODE_IMG'			=> $img_status,
 	'S_BBCODE_URL'			=> $url_status,
