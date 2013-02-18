@@ -92,6 +92,7 @@ $lang = array_merge($lang, array(
 	'STYLE_BACK_TO_TOP'					=> '"Back to top" button',
 	'STYLE_ROUNDED_CORNERS'				=> 'Rounded corners',
 	'STYLE_NEW_YEAR'					=> 'Winter-style headerbar',
+	'STYLE_POSTING_TOPIC_REVIEW'		=> 'Display topic review panel at posting page',
 
 	'STYLE_SETTINGS_INDEX'				=> 'Board Index',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',

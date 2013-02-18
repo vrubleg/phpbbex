@@ -140,6 +140,7 @@ class acp_board
 						'style_show_sitename_in_headerbar'	=> array('lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'social_media_cover_url'			=> array('lang' => 'SOCIAL_MEDIA_COVER_URL',			'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						'load_jumpbox'						=> array('lang' => 'YES_JUMPBOX',						'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'style_posting_topic_review'		=> array('lang' => 'STYLE_POSTING_TOPIC_REVIEW',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
 						'legend2'							=> 'STYLE_SETTINGS_INDEX',
 						'announce_index'					=> array('lang'	=> 'ANNOUNCE_INDEX',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),

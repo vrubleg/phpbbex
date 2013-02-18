@@ -161,6 +161,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitena
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_vt_show_post_numbers', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_posting_topic_review', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topic_poster', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gender', '1');

@@ -92,6 +92,7 @@ $lang = array_merge($lang, array(
 	'STYLE_BACK_TO_TOP'					=> 'Кнопка «В начало страницы»',
 	'STYLE_ROUNDED_CORNERS'				=> 'Скруглять углы',
 	'STYLE_NEW_YEAR'					=> 'Зимний стиль',
+	'STYLE_POSTING_TOPIC_REVIEW'		=> 'Показывать обзор темы в форме полного ответа',
 
 	'STYLE_SETTINGS_INDEX'				=> 'Главная страница',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Отображать кнопки RSS в списке форумов',

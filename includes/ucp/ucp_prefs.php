@@ -196,7 +196,6 @@ class ucp_prefs
 
 					'quickreply'	=> request_var('quickreply', (bool) $user->optionget('viewquickreply')),
 					'quickpost'		=> request_var('quickpost', (bool) $user->optionget('viewquickpost')),
-					'topicreview'	=> request_var('topicreview', (bool) $user->optionget('viewtopicreview')),
 				);
 
 				if ($data['user_topics_per_page'] > 100)
@@ -248,7 +247,6 @@ class ucp_prefs
 						$user->optionset('viewavatars', $data['avatars']);
 						$user->optionset('viewquickreply', $data['quickreply']);
 						$user->optionset('viewquickpost', $data['quickpost']);
-						$user->optionset('viewtopicreview', $data['topicreview']);
 
 						if ($auth->acl_get('u_chgcensors'))
 						{
@@ -339,7 +337,6 @@ class ucp_prefs
 					'QUICK_REPLY'		=> ($config['allow_quick_reply']) ? true : false,
 					'S_QUICKPOST'		=> $data['quickpost'],
 					'QUICK_POST'		=> ($config['allow_quick_post']) ? true : false,
-					'S_TOPICREVIEW'		=> $data['topicreview'],
 
 					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']) ? true : false,
 

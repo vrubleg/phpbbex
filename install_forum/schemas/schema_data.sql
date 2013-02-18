@@ -298,6 +298,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitenam
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_vt_show_post_numbers', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_posting_topic_review', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_on_left', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_topic_poster', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_mp_show_gender', '1');
