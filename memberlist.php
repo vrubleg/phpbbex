@@ -1270,11 +1270,6 @@ switch ($mode)
 			if ($group_row['group_rank'])
 			{
 				get_user_rank($group_row['group_rank'], false, $rank_title, $rank_img, $rank_img_src);
-
-				if ($rank_img)
-				{
-					$rank_img .= '<br />';
-				}
 			}
 
 			$template->assign_vars(array(
