@@ -936,7 +936,7 @@ $lang = array_merge($lang, array(
 	// Memberlist filters
 	'MEMBERLIST_ALL_USERS'		=> 'Все пользователи',
 	'MEMBERLIST_ACTIVE_USERS'	=> 'Активные',
-	'MEMBERLIST_INACTIVE_USERS'	=> 'Не активные',
+	'MEMBERLIST_INACTIVE_USERS'	=> 'Неактивные',
 	'SEARCH_USERS'				=> 'Поиск пользователей',
 
 	// Login via E-Mail

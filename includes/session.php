@@ -414,6 +414,7 @@ class phpbb_session
 						// Only update session DB a minute or so after last update or if page changes
 						if ($this->time_now - $this->data['session_time'] > 60 || ($this->update_session_page && $this->data['session_page'] != $this->page['page']))
 						{
+							$this->data['session_time'] = $this->time_now;
 							$sql_ary = array('session_time' => $this->time_now);
 
 							if ($this->update_session_page)
@@ -438,6 +439,16 @@ class phpbb_session
 
 								$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 									WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
+								$db->sql_query($sql);
+							}
+
+							// Update the last visit time once an hour
+							if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
+							{
+								$this->data['user_lastvisit'] = $this->time_now;
+								$sql = 'UPDATE ' . USERS_TABLE . '
+									SET user_lastvisit = ' . (int) $this->time_now . '
+									WHERE user_id = ' . (int) $this->data['user_id'];
 								$db->sql_query($sql);
 							}
 
