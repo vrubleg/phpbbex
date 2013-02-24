@@ -564,7 +564,6 @@ $lang = array_merge($lang, array(
 
 	'QUICK_REPLY_DISPLAY'		=> 'Display quick reply panel at topic view',
 	'QUICK_POST_DISPLAY'		=> 'Display quick topic post panel at forum view',
-	'TOPIC_REVIEW_DISPLAY'		=> 'Display topic review panel at posting page',
 
 ));
 

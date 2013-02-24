@@ -354,7 +354,7 @@ function addquote(post_id, username, l_wrote)
 	{
 		if (bbcodeEnabled)
 		{
-			insert_text('[quote="' + username + '"]' + theSelection + '[/quote]');
+			insert_text('[quote="' + username + '"]' + theSelection + '[/quote]\n');
 		}
 		else
 		{

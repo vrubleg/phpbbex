@@ -272,12 +272,17 @@ class ucp_profile
 					'yim'			=> request_var('yim', $user->data['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user->data['user_jabber'], true)),
 					'skype'			=> utf8_normalize_nfc(request_var('skype', $user->data['user_skype'], true)),
-					'website'		=> request_var('website', $user->data['user_website']),
+					'website'		=> utf8_normalize_nfc(request_var('website', $user->data['user_website'], true)),
 					'location'		=> utf8_normalize_nfc(request_var('location', $user->data['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user->data['user_occ'], true)),
 					'interests'		=> utf8_normalize_nfc(request_var('interests', $user->data['user_interests'], true)),
 					'gender'		=> request_var('gender', $user->data['user_gender']),
 				);
+
+				if (!preg_match('#^[a-z0-9]+:#iu', $data['website']))
+				{
+					$data['website'] = 'http://' . $data['website'];
+				}
 
 				if ($config['allow_birthdays'])
 				{
@@ -312,8 +317,8 @@ class ucp_profile
 							array('match', true, '#^[a-z][-_.a-z0-9]{5,31}$#i')),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
-							array('string', true, 12, 255),
-							array('match', true, '#^http[s]?://(.*?\.)*?[a-z0-9\-]+\.[a-z]{2,4}#i')),
+							array('string', true, 11, 255),
+							array('match', true, '#^http[s]?://([\pLa-z0-9\-]+\.)+[\pLa-z]{2,10}#iu')),
 						'location'		=> array('string', true, 2, 100),
 						'occupation'	=> array('string', true, 2, 500),
 						'interests'		=> array('string', true, 2, 500),

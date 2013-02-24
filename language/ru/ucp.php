@@ -564,7 +564,6 @@ $lang = array_merge($lang, array(
 
 	'QUICK_REPLY_DISPLAY'		=> 'Показывать панель быстрого ответа в темах',
 	'QUICK_POST_DISPLAY'		=> 'Показывать панель быстрого создания тем в форумах',
-	'TOPIC_REVIEW_DISPLAY'		=> 'Показывать обзор темы в форме полного ответа',
 
 ));
 
