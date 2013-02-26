@@ -884,6 +884,7 @@ if (!empty($topic_data['poll_start']))
 	unset($poll_bbcode);
 
 	// Get poll voters
+	$voters_total = 0;
 	if($topic_data['poll_show_voters'])
 	{
 		$sql = '
@@ -894,14 +895,15 @@ if (!empty($topic_data['poll_start']))
 			ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
 		$result = $db->sql_query($sql);
 
-		$voters_total = array();
+		$voters = array();
 		$votes = array();
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$voters_total[(int)$row['user_id']] = true;
+			$voters[(int)$row['user_id']] = true;
 			$votes[(int)$row['poll_option_id']][] = $row;
 		}
-		$voters_total = count($voters_total);
+		$voters_total = count($voters);
+		unset($voters);
 		$db->sql_freeresult($result);
 
 		foreach ($poll_info as &$option)
@@ -916,10 +918,19 @@ if (!empty($topic_data['poll_start']))
 		}
 		unset($option);
 	}
+	else
+	{
+		$sql = 'SELECT COUNT(DISTINCT vote_user_id) as count
+			FROM ' . POLL_VOTES_TABLE . '
+			WHERE topic_id = ' . $topic_id;
+		$result = $db->sql_query($sql);
+		$voters_total = (int) $db->sql_fetchfield('count');
+		$db->sql_freeresult($result);
+	}
 
 	foreach ($poll_info as $poll_option)
 	{
-		$option_pct = ($poll_total > 0) ? $poll_option['poll_option_total'] / $poll_total : 0;
+		$option_pct = ($voters_total > 0) ? $poll_option['poll_option_total'] / $voters_total : 0;
 		$option_pct_txt = sprintf("%.1d%%", round($option_pct * 100));
 
 		$template->assign_block_vars('poll_option', array(
@@ -940,6 +951,7 @@ if (!empty($topic_data['poll_start']))
 		'POLL_QUESTION'		=> $topic_data['poll_title'],
 		'POLL_VOTED'		=> count($cur_voted_id) > 0,
 		'TOTAL_VOTES' 		=> $poll_total,
+		'TOTAL_VOTERS' 		=> $voters_total,
 		'POLL_LEFT_CAP_IMG'	=> $user->img('poll_left'),
 		'POLL_RIGHT_CAP_IMG'=> $user->img('poll_right'),
 

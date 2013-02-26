@@ -100,6 +100,7 @@ $lang = array_merge($lang, array(
 	'SUBMIT_UNVOTE'			=> 'Cancel vote',
 
 	'TOTAL_VOTES'			=> 'Total votes',
+	'TOTAL_VOTERS'			=> 'Total voters',
 
 	'UNLOCK_TOPIC'			=> 'Unlock topic',
 
