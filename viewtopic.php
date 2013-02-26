@@ -869,32 +869,6 @@ if (!empty($topic_data['poll_start']))
 
 		$poll_info[$i]['poll_option_text'] = bbcode_nl2br($poll_info[$i]['poll_option_text']);
 		$poll_info[$i]['poll_option_text'] = smiley_text($poll_info[$i]['poll_option_text']);
-
-		// Get poll voters
-		$poll_info[$i]['poll_option_voters'] = false;
-		if($topic_data['poll_show_voters'])
-		{
-			$sql_voters = '
-				SELECT u.username, u.user_colour, pv.vote_user_id, pv.vote_time
-				FROM ' . POLL_VOTES_TABLE . ' pv, ' . USERS_TABLE . ' u
-				WHERE pv.topic_id = ' . $topic_id . '
-					AND poll_option_id = ' . $poll_info[$i]['poll_option_id'] . '
-					AND pv.vote_user_id = u.user_id
-				ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
-			$voters_result = $db->sql_query($sql_voters);
-			$voters_total = 0;
-			$voters_string = '';
-			// Add all voters to a string
-			while ($row_voters = $db->sql_fetchrow($voters_result))
-			{
-				$voters_total = $voters_total + 1;
-				$voters_string .= ', ' . get_username_string('full', $row_voters['vote_user_id'], $row_voters['username'], $row_voters['user_colour'], $row_voters['username'], false, $row_voters['vote_time'] ? $user->format_date($row_voters['vote_time']) : '');
-			}
-			$voters_string = ltrim($voters_string, ", ");
-			// Add the string to the list
-			$poll_info[$i]['poll_option_voters'] = $voters_string;
-			$db->sql_freeresult($voters_result);
-		}
 	}
 
 	$topic_data['poll_title'] = censor_text($topic_data['poll_title']);
@@ -909,6 +883,40 @@ if (!empty($topic_data['poll_start']))
 
 	unset($poll_bbcode);
 
+	// Get poll voters
+	if($topic_data['poll_show_voters'])
+	{
+		$sql = '
+			SELECT u.user_id, u.username, u.user_colour, pv.poll_option_id, pv.vote_time
+			FROM ' . POLL_VOTES_TABLE . ' pv, ' . USERS_TABLE . ' u
+			WHERE pv.topic_id = ' . $topic_id . '
+				AND pv.vote_user_id = u.user_id
+			ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
+		$result = $db->sql_query($sql);
+
+		$voters_total = array();
+		$votes = array();
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$voters_total[(int)$row['user_id']] = true;
+			$votes[(int)$row['poll_option_id']][] = $row;
+		}
+		$voters_total = count($voters_total);
+		$db->sql_freeresult($result);
+
+		foreach ($poll_info as &$option)
+		{
+			$option['poll_option_voters'] = '';
+			if (empty($votes[(int)$option['poll_option_id']])) continue;
+			foreach ($votes[(int)$option['poll_option_id']] as $vote)
+			{
+				$option['poll_option_voters'] .= ', ' . get_username_string('full', $vote['user_id'], $vote['username'], $vote['user_colour'], $vote['username'], false, $vote['vote_time'] ? $user->format_date($vote['vote_time']) : '');
+			}
+			$option['poll_option_voters'] = ltrim($option['poll_option_voters'], ', ');
+		}
+		unset($option);
+	}
+
 	foreach ($poll_info as $poll_option)
 	{
 		$option_pct = ($poll_total > 0) ? $poll_option['poll_option_total'] / $poll_total : 0;
@@ -921,7 +929,7 @@ if (!empty($topic_data['poll_start']))
 			'POLL_OPTION_PERCENT' 	=> $option_pct_txt,
 			'POLL_OPTION_PCT'		=> round($option_pct * 100),
 			'POLL_OPTION_IMG' 		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
-			'POLL_OPTION_VOTERS' 	=> $poll_option['poll_option_voters'],
+			'POLL_OPTION_VOTERS' 	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
 			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)) ? true : false)
 		);
 	}
