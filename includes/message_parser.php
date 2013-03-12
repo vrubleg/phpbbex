@@ -126,7 +126,7 @@ class bbcode_firstpass extends bbcode
 			's'				=> array('bbcode_id' => 13,	'regexp' => array('#\[s\](.*?)\[/s\]#uise' => "\$this->bbcode_strikethrough('\$1')")),
 			'list'			=> array('bbcode_id' => 9,	'regexp' => array('#\[list(?:=(?:[a-z0-9]|disc|circle|square))?].*\[/list]#uise' => "\$this->bbcode_parse_list('\$0')")),
 			'email'			=> array('bbcode_id' => 10,	'regexp' => array('#\[email=?(.*?)?\](.*?)\[/email\]#uise' => "\$this->validate_email('\$1', '\$2')")),
-			'flash'			=> array('bbcode_id' => 11,	'regexp' => array('#\[flash=([0-9]+),([0-9]+)\](.*?)\[/flash\]#uie' => "\$this->bbcode_flash('\$1', '\$2', '\$3')"))
+			'flash'			=> array('bbcode_id' => 11,	'regexp' => array('#\[flash=([0-9]+),([0-9]+)\](.*?)\[/flash\]#uie' => "\$this->bbcode_flash('\$1', '\$2', '\$3')")),
 		);
 
 		// Zero the parsed items array
@@ -300,6 +300,12 @@ class bbcode_firstpass extends bbcode
 		{
 			return $in;
 		}
+
+		// This ugly hardcode taken from the bbcode_code
+		$htm_match = get_preg_expression('bbcode_htm');
+		unset($htm_match[4], $htm_match[5]);
+		$htm_replace = array('\1', '\1', '\2', '\1');
+		$in = preg_replace($htm_match, $htm_replace, $in);
 
 		return '[tt:' . $this->bbcode_uid . ']' . str_replace(array('[', ']', ' ', "\t"), array('&#91;', '&#93;', '&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;'), $in) . '[/tt:' . $this->bbcode_uid . ']';
 	}
