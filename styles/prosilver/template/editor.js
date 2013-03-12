@@ -50,14 +50,20 @@ function initInsertions()
 /**
 * bbstyle
 */
-function bbstyle(bbnumber)
+function bbstyle(bbnumber, event)
 {
 	var textarea = document.forms[form_name].elements[text_name];
 	if (bbnumber != -1)
 	{
-		bbfontstyle(bbtags[bbnumber], bbtags[bbnumber+1]);
-	} 
-	else if (!textarea.selectionEnd || (textarea.selectionEnd - textarea.selectionStart == 0))
+		bbfontstyle(bbtags[bbnumber], bbtags[bbnumber+1], event);
+	}
+	textarea.focus();
+}
+
+function insert_listitem()
+{
+	var textarea = document.forms[form_name].elements[text_name];
+	if (!textarea.selectionEnd || (textarea.selectionEnd - textarea.selectionStart == 0))
 	{
 		insert_text('[*]');
 	}
@@ -123,7 +129,7 @@ function prepare_url(url)
 /**
 * Apply bbcodes
 */
-function bbfontstyle(bbopen, bbclose)
+function bbfontstyle(bbopen, bbclose, event)
 {
 	theSelection = false;
 
@@ -146,9 +152,20 @@ function bbfontstyle(bbopen, bbclose)
 			}
 		break;
 		case 'quote':
-			var name = prompt(lang.enter_quote_name, '');
-			if (name === null) return;
-			if (name) bbopen = '[quote="' + name + '"]';
+			if (event.ctrlKey)
+			{
+				var name = prompt(lang.enter_quote_name, '');
+				if (name === null) return;
+				if (name) bbopen = '[quote="' + name + '"]';
+			}
+		break;
+		case 'list':
+			if (event.ctrlKey)
+			{
+				var start = prompt(lang.enter_list_start, '');
+				if (start === null) return;
+				bbopen = '[list=' + start + ']';
+			}
 		break;
 	}
 

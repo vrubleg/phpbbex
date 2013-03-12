@@ -8,6 +8,7 @@
 	lang.enter_link_url = '{LA_ENTER_LINK_URL}';
 	lang.enter_image_url = '{LA_ENTER_IMAGE_URL}';
 	lang.enter_quote_name = '{LA_ENTER_QUOTE_NAME}';
+	lang.enter_list_start = '{LA_ENTER_LIST_START}';
 
 	// Define the bbCode tags
 	var bbcode = new Array();
@@ -45,25 +46,25 @@
 </div>
 
 <div id="format-buttons">
-	<button type="button" accesskey="b" style="width: 24px;" onclick="bbstyle(0)" title="{L_BBCODE_B_HELP}"><span style="font-weight: bold;">B</span></button>
-	<button type="button" accesskey="i" style="width: 24px;" onclick="bbstyle(2)" title="{L_BBCODE_I_HELP}"><span style="font-style: italic;">I</span></button>
-	<button type="button" accesskey="u" style="width: 24px;" onclick="bbstyle(4)" title="{L_BBCODE_U_HELP}"><span style="text-decoration: underline;">U</span></button>
-	<button type="button" accesskey="s" style="width: 24px;" onclick="bbstyle(22)" title="{L_BBCODE_STRIKE_HELP}"><span style="text-decoration: line-through;">&nbsp;S&nbsp;</span></button>
+	<button type="button" accesskey="b" style="width: 24px;" onclick="bbstyle(0, event)" title="{L_BBCODE_B_HELP}"><span style="font-weight: bold;">B</span></button>
+	<button type="button" accesskey="i" style="width: 24px;" onclick="bbstyle(2, event)" title="{L_BBCODE_I_HELP}"><span style="font-style: italic;">I</span></button>
+	<button type="button" accesskey="u" style="width: 24px;" onclick="bbstyle(4, event)" title="{L_BBCODE_U_HELP}"><span style="text-decoration: underline;">U</span></button>
+	<button type="button" accesskey="s" style="width: 24px;" onclick="bbstyle(22, event)" title="{L_BBCODE_STRIKE_HELP}"><span style="text-decoration: line-through;">&nbsp;S&nbsp;</span></button>
 	<!-- IF S_BBCODE_QUOTE -->
-		<button type="button" accesskey="q" onclick="bbstyle(6)" title="{L_BBCODE_Q_HELP}">Quote</button>
+		<button type="button" accesskey="q" onclick="bbstyle(6, event)" title="{L_BBCODE_Q_HELP}">Quote</button>
 	<!-- ENDIF -->
-	<button type="button" accesskey="c" onclick="bbstyle(8)" title="{L_BBCODE_C_HELP}">Code</button>
-	<button type="button" accesskey="l" onclick="bbstyle(10)" title="{L_BBCODE_L_HELP}">List</button>
-	<button type="button" accesskey="o" onclick="bbstyle(12)" title="{L_BBCODE_O_HELP}">List=</button>
-	<button type="button" accesskey="y" onclick="bbstyle(-1)" title="{L_BBCODE_LISTITEM_HELP}">[*]</button>
+	<button type="button" accesskey="c" onclick="bbstyle(8, event)" title="{L_BBCODE_C_HELP}">Code</button>
+	<button type="button" accesskey="l" onclick="bbstyle(10, event)" title="{L_BBCODE_L_HELP}">List</button>
+	<button type="button" accesskey="o" onclick="bbstyle(12, event)" title="{L_BBCODE_O_HELP}">List=</button>
+	<button type="button" accesskey="y" onclick="insert_listitem()" title="{L_BBCODE_LISTITEM_HELP}">[*]</button>
 	<!-- IF S_BBCODE_IMG -->
-		<button type="button" accesskey="p" onclick="bbstyle(14)" title="{L_BBCODE_P_HELP}">Img</button>
+		<button type="button" accesskey="p" onclick="bbstyle(14, event)" title="{L_BBCODE_P_HELP}">Img</button>
 	<!-- ENDIF -->
 	<!-- IF S_LINKS_ALLOWED -->
-		<button type="button" accesskey="w" onclick="bbstyle(16)" title="{L_BBCODE_W_HELP}"><span style="text-decoration: underline;">URL</span></button>
+		<button type="button" accesskey="w" onclick="bbstyle(16, event)" title="{L_BBCODE_W_HELP}"><span style="text-decoration: underline;">URL</span></button>
 	<!-- ENDIF -->
 	<!-- IF S_BBCODE_FLASH -->
-		<button type="button" accesskey="d" onclick="bbstyle(18)" title="{L_BBCODE_D_HELP}">Flash</button>
+		<button type="button" accesskey="d" onclick="bbstyle(18, event)" title="{L_BBCODE_D_HELP}">Flash</button>
 	<!-- ENDIF -->
 	<select name="addbbcode20" onchange="bbfontstyle('[size=' + this.form.addbbcode20.options[this.form.addbbcode20.selectedIndex].value + ']', '[/size]');this.form.addbbcode20.selectedIndex = 2;" title="{L_BBCODE_F_HELP}">
 		<option value="50">{L_FONT_TINY}</option>
@@ -78,7 +79,7 @@
 	</select>
 	<button type="button" onclick="change_palette();" title="{L_BBCODE_S_HELP}" id="bbpalette">{L_FONT_COLOR}</button>
 	<!-- BEGIN custom_tags -->
-		<button type="button" onclick="bbstyle({custom_tags.BBCODE_ID})" title="{custom_tags.BBCODE_HELPLINE}">{custom_tags.BBCODE_TAG}</button>
+		<button type="button" onclick="bbstyle({custom_tags.BBCODE_ID}, event)" title="{custom_tags.BBCODE_HELPLINE}">{custom_tags.BBCODE_TAG}</button>
 	<!-- END custom_tags -->
 </div>
 <!-- ENDIF -->
