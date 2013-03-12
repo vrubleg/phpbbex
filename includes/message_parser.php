@@ -113,6 +113,7 @@ class bbcode_firstpass extends bbcode
 		// but not for link itself, thus [url][/url] is not affected.
 		$this->bbcodes = array(
 			'code'			=> array('bbcode_id' => 8,	'regexp' => array('#\[code(?:=([a-z]+))?\](.+\[/code\])#uise' => "\$this->bbcode_code('\$1', '\$2')")),
+			'tt'			=> array('bbcode_id' => 14,	'regexp' => array('#\[tt\](.*?)\[/tt\]#uise' => "\$this->bbcode_teletype('\$1')")),
 			'quote'			=> array('bbcode_id' => 0,	'regexp' => array('#\[quote(?:=&quot;(.*?)&quot;)?\](.+)\[/quote\]#uise' => "\$this->bbcode_quote('\$0')")),
 			'attachment'	=> array('bbcode_id' => 12,	'regexp' => array('#\[attachment=([0-9]+)\](.*?)\[/attachment\]#uise' => "\$this->bbcode_attachment('\$1', '\$2')")),
 			'b'				=> array('bbcode_id' => 1,	'regexp' => array('#\[b\](.*?)\[/b\]#uise' => "\$this->bbcode_strong('\$1')")),
@@ -288,6 +289,19 @@ class bbcode_firstpass extends bbcode
 		}
 
 		return '[i:' . $this->bbcode_uid . ']' . $in . '[/i:' . $this->bbcode_uid . ']';
+	}
+
+	/**
+	* Parse tt tag
+	*/
+	function bbcode_teletype($in)
+	{
+		if (!$this->check_bbcode('tt', $in))
+		{
+			return $in;
+		}
+
+		return '[tt:' . $this->bbcode_uid . ']' . str_replace(array('[', ']', ' ', "\t"), array('&#91;', '&#93;', '&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;'), $in) . '[/tt:' . $this->bbcode_uid . ']';
 	}
 
 	/**

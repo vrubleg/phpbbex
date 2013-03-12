@@ -12,7 +12,7 @@
 
 	// Define the bbCode tags
 	var bbcode = new Array();
-	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]','[s]','[/s]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
+	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[tt]','[/tt]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]','[s]','[/s]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
 </script>
 <script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/editor.js"></script>
 
@@ -50,12 +50,12 @@
 	<button type="button" accesskey="i" style="width: 24px;" onclick="bbstyle(2, event)" title="{L_BBCODE_I_HELP}"><span style="font-style: italic;">I</span></button>
 	<button type="button" accesskey="u" style="width: 24px;" onclick="bbstyle(4, event)" title="{L_BBCODE_U_HELP}"><span style="text-decoration: underline;">U</span></button>
 	<button type="button" accesskey="s" style="width: 24px;" onclick="bbstyle(22, event)" title="{L_BBCODE_STRIKE_HELP}"><span style="text-decoration: line-through;">&nbsp;S&nbsp;</span></button>
+	<button type="button" accesskey="t" style="width: 24px;" onclick="bbstyle(12, event)" title="{L_BBCODE_TT_HELP}"><span style="font: 1em/1em monospace;">TT</span></button>
 	<!-- IF S_BBCODE_QUOTE -->
 		<button type="button" accesskey="q" onclick="bbstyle(6, event)" title="{L_BBCODE_Q_HELP}">Quote</button>
 	<!-- ENDIF -->
 	<button type="button" accesskey="c" onclick="bbstyle(8, event)" title="{L_BBCODE_C_HELP}">Code</button>
 	<button type="button" accesskey="l" onclick="bbstyle(10, event)" title="{L_BBCODE_L_HELP}">List</button>
-	<button type="button" accesskey="o" onclick="bbstyle(12, event)" title="{L_BBCODE_O_HELP}">List=</button>
 	<button type="button" accesskey="y" onclick="insert_listitem()" title="{L_BBCODE_LISTITEM_HELP}">[*]</button>
 	<!-- IF S_BBCODE_IMG -->
 		<button type="button" accesskey="p" onclick="bbstyle(14, event)" title="{L_BBCODE_P_HELP}">Img</button>
