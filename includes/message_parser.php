@@ -114,6 +114,7 @@ class bbcode_firstpass extends bbcode
 		$this->bbcodes = array(
 			'code'			=> array('bbcode_id' => 8,	'regexp' => array('#\[code(?:=([a-z]+))?\](.+\[/code\])#uise' => "\$this->bbcode_code('\$1', '\$2')")),
 			'tt'			=> array('bbcode_id' => 14,	'regexp' => array('#\[tt\](.*?)\[/tt\]#uise' => "\$this->bbcode_teletype('\$1')")),
+			'upd'			=> array('bbcode_id' => 15,	'regexp' => array('#\[upd=(\d+(?:[:]\d+){0,3})\](.*?)\[/upd\]#uise' => "\$this->bbcode_upd('\$1', '\$2')")),
 			'quote'			=> array('bbcode_id' => 0,	'regexp' => array('#\[quote(?:=&quot;(.*?)&quot;)?\](.+)\[/quote\]#uise' => "\$this->bbcode_quote('\$0')")),
 			'attachment'	=> array('bbcode_id' => 12,	'regexp' => array('#\[attachment=([0-9]+)\](.*?)\[/attachment\]#uise' => "\$this->bbcode_attachment('\$1', '\$2')")),
 			'b'				=> array('bbcode_id' => 1,	'regexp' => array('#\[b\](.*?)\[/b\]#uise' => "\$this->bbcode_strong('\$1')")),
@@ -308,6 +309,32 @@ class bbcode_firstpass extends bbcode
 		$in = preg_replace($htm_match, $htm_replace, $in);
 
 		return '[tt:' . $this->bbcode_uid . ']' . str_replace(array('[', ']', ' ', "\t"), array('&#91;', '&#93;', '&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;'), $in) . '[/tt:' . $this->bbcode_uid . ']';
+	}
+
+	/**
+	* Parse upd tag
+	*/
+	function bbcode_upd($time, $subj)
+	{
+		$parts = explode(':', $time);
+		$seconds = (int) array_pop($parts);
+		$seconds += array_pop($parts) * 60;
+		$seconds += array_pop($parts) * 3600;
+		$seconds += array_pop($parts) * 86400;
+
+		// Do not allow a very big values
+		if ($seconds > 86400 * 365 * 15 || $seconds < 0)
+		{
+			return '[upd=' . $time . ']' . $subj . '[/upd]';
+		}
+
+		// This ugly hardcode taken from the bbcode_code
+		$htm_match = get_preg_expression('bbcode_htm');
+		unset($htm_match[4], $htm_match[5]);
+		$htm_replace = array('\1', '\1', '\2', '\1');
+		$subj = preg_replace($htm_match, $htm_replace, $subj);
+
+		return '[upd=' . $time . ':' . $this->bbcode_uid . ']' . str_replace(array('[', ']'), array('&#91;', '&#93;'), $subj) . '[/upd:' . $this->bbcode_uid . ']';
 	}
 
 	/**

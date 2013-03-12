@@ -268,15 +268,18 @@ REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'opus');
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
 
 -- Update YandexBot UA and remove Aport [Bot]
-UPDATE phpbb_bots SET bot_agent = "YandexBot/" WHERE bot_agent = "Yandex/";
-DELETE FROM phpbb_users WHERE username="Aport [Bot]";
-DELETE FROM phpbb_bots WHERE bot_name="Aport [Bot]";
+UPDATE phpbb_bots SET bot_agent = 'YandexBot/' WHERE bot_agent = 'Yandex/';
+DELETE FROM phpbb_users WHERE username='Aport [Bot]';
+DELETE FROM phpbb_bots WHERE bot_name='Aport [Bot]';
 
 -- Remove invalid skypenames
-UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$" AND user_skype != "";
+UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$' AND user_skype != '';
 
 -- Remove obsolete options
 DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html', 'style_auto_new_year');
+
+-- Update template bitfield
+UPDATE phpbb_styles_template SET bbcode_bitfield = 'lNk=' WHERE template_name = 'prosilver';
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.5.3');

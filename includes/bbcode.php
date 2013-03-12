@@ -363,6 +363,14 @@ class bbcode
 					);
 				break;
 
+				case 15:
+					$this->bbcode_cache[$bbcode_id] = array(
+						'preg' => array(
+							'#\[upd=(\d+(?:[:]\d+){0,3}):$uid\](.*?)\[/upd:$uid\]#e'	=> "\$this->bbcode_second_pass_upd('\$1', '\$2')",
+						)
+					);
+				break;
+
 				default:
 					if (isset($rowset[$bbcode_id]))
 					{
@@ -444,7 +452,9 @@ class bbcode
 				'img'		=> '<img src="$1" alt="' . $user->lang['IMAGE'] . '" />',
 				'size'		=> '<span style="font-size: $1%; line-height: normal">$2</span>',
 				'color'		=> '<span style="color: $1">$2</span>',
-				'email'		=> '<a href="mailto:$1">$2</a>'
+				'email'		=> '<a href="mailto:$1">$2</a>',
+				'upd_merged'	=> '<span style="font-size: 85%; line-height: normal; color: gray;">$1</span>',
+				'upd_subject'	=> '<br /><span style="font-weight: bold">$1</span>',
 			);
 		}
 
@@ -500,7 +510,9 @@ class bbcode
 			'img'					=> array('{URL}'		=> '$1'),
 			'flash'					=> array('{WIDTH}'		=> '$1', '{HEIGHT}'			=> '$2', '{URL}'	=> '$3'),
 			'url'					=> array('{URL}'		=> '$1', '{DESCRIPTION}'	=> '$2'),
-			'email'					=> array('{EMAIL}'		=> '$1', '{DESCRIPTION}'	=> '$2')
+			'email'					=> array('{EMAIL}'		=> '$1', '{DESCRIPTION}'	=> '$2'),
+			'upd_merged'			=> array('{MERGED}'		=> '$1'),
+			'upd_subject'			=> array('{SUBJECT}'	=> '$1'),
 		);
 
 		$tpl = preg_replace('/{L_([A-Z_]+)}/e', "(!empty(\$user->lang['\$1'])) ? \$user->lang['\$1'] : ucwords(strtolower(str_replace('_', ' ', '\$1')))", $tpl);
@@ -578,6 +590,43 @@ class bbcode
 		$external = stripos($href, generate_board_url(true)) !== 0 && $href{0} !== '.' && $href{0} !== '/';
 		$attrs = $external ? (' class="postlink"' . get_attrs_for_external_link($href)) : ' class="postlink local"';
 		return '<a href="'.$href.'"'.$attrs.'>'.$text.'</a>';
+	}
+
+	/**
+	* Second parse upd tag
+	*/
+	function bbcode_second_pass_upd($time, $subj)
+	{
+		global $user;
+
+		static $tpls = array();
+		if (empty($tpls))
+		{
+			$tpls = array(
+				'upd_merged'	=> $this->bbcode_tpl('upd_merged', 15),
+				'upd_subject'	=> $this->bbcode_tpl('upd_subject', 15),
+			);
+		}
+
+		// when using the /e modifier, preg_replace slashes double-quotes but does not
+		// seem to slash anything else
+		$time = str_replace('\"', '"', $time);
+		$subj = str_replace('\"', '"', $subj);
+
+		$parts = explode(':', $time);
+		$seconds = (int) array_pop($parts);
+		$seconds += array_pop($parts) * 60;
+		$seconds += array_pop($parts) * 3600;
+		$seconds += array_pop($parts) * 86400;
+
+		$result = time_delta::get_verbal(0, $seconds);
+		$result = str_replace('$1', sprintf($user->lang['UPD_MERGED'], $result), $tpls['upd_merged']);
+		if (trim($subj))
+		{
+			$result .= str_replace('$1', $subj, $tpls['upd_subject']);
+		}
+
+		return $result;
 	}
 
 	/**
