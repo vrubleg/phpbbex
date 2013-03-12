@@ -1105,7 +1105,6 @@ while ($row = $db->sql_fetchrow($result))
 
 		'post_id'			=> $row['post_id'],
 		'post_time'			=> $row['post_time'],
-		'post_created'		=> $row['post_created'],
 		'user_id'			=> $row['user_id'],
 		'username'			=> $row['username'],
 		'user_colour'		=> $row['user_colour'],
@@ -1694,7 +1693,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'S_POSTER_GENDER_M'	=> $user_cache[$poster_id]['gender'] == GENDER_M,
 		'S_POSTER_GENDER_F'	=> $user_cache[$poster_id]['gender'] == GENDER_F,
 
-		'POST_DATE'			=> $user->format_date($row['post_created'] ? $row['post_created'] : $row['post_time'], false, ($view == 'print') ? true : false),
+		'POST_DATE'			=> $user->format_date($row['post_time'], false, ($view == 'print') ? true : false),
 		'POST_SUBJECT'		=> $row['post_subject'],
 		'MESSAGE'			=> $message,
 		'DECODED_MESSAGE'	=> $decoded_message,

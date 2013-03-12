@@ -1,10 +1,10 @@
 <?php
-/** 
+/**
 *
 * @package phpBB3
 * @version $Id: posts_merging.php,v 1.100 2008/04/10 22:20:15 rxu Exp $
-* @copyright (c) 2005 phpBB Group 
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+* @copyright (c) 2005 phpBB Group
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
@@ -21,9 +21,9 @@ $post_need_approval = (!$auth->acl_get('f_noapprove', $data['forum_id']) && !$au
 
 if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['merge_interval'] > 0)
 {
-	$sql = 'SELECT f.*, t.*, p.* FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . ' f 
+	$sql = 'SELECT f.*, t.*, p.* FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . ' f
 		WHERE p.post_id = t.topic_last_post_id
-			AND t.topic_id = ' . (int) $topic_id . " 
+			AND t.topic_id = ' . (int) $topic_id . "
 			AND (f.forum_id = t.forum_id
 					OR f.forum_id = $forum_id)";
 
@@ -63,12 +63,12 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 				$merge_post_data['post_text'] = preg_replace('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#e', "'[attachment='.(\\1 + 1).']\\2[/attachment]'", $merge_post_data['post_text']);
 			}
 		}
-		
+
 		// Make sure the message is safe
 		set_var($merge_post_data['post_text'], $merge_post_data['post_text'], 'string', true);
-		
+
 		// Prepare message separator
-		$time_delta = time_delta::get_verbal($merge_post_data['post_time'], $current_time);
+		$time_delta = time_delta::get_verbal($merge_post_data['post_merged'] ? $merge_post_data['post_merged'] : $merge_post_data['post_time'], $current_time);
 		$separator = sprintf($user->lang['MERGE_SEPARATOR'], $user->lang['POSTED'], $time_delta);
 		//set_var($separator, $separator, 'string', true);
 
@@ -78,8 +78,8 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		{
 			$separator .= sprintf($user->lang['MERGE_SUBJECT'], $subject);
 		}
-		$options = '';		
-		
+		$options = '';
+
 		// Merge posts
 		$merge_post_data['post_text'] = $merge_post_data['post_text'] . $separator . $addon_for_merge;
 
@@ -88,7 +88,6 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		generate_text_for_storage($merge_post_data['post_text'], $merge_post_data['bbcode_uid'], $merge_post_data['bbcode_bitfield'], $options, $merge_post_data['enable_bbcode'], $merge_post_data['enable_magic_url'], $merge_post_data['enable_smilies']);
 
 		$poster_id = (int) $merge_post_data['poster_id'];
-		$post_time = $current_time;
 
 		// Prepare post data for update
 		$sql_data[POSTS_TABLE]['sql'] = array(
@@ -96,10 +95,9 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 			'bbcode_bitfield'	=> $merge_post_data['bbcode_bitfield'],
 			'post_text'			=> $merge_post_data['post_text'],
 			'post_checksum'		=> md5($merge_post_data['post_text']),
-			'post_created'		=> ($merge_post_data['post_created']) ? $merge_post_data['post_created'] : $merge_post_data['post_time'],
-			'post_time'			=> $post_time,
+			'post_merged'		=> $current_time,
 			'post_attachment'	=> (!empty($data['attachment_data'])) ? 1 : ($merge_post_data['post_attachment'] ? 1 : 0),
-		);		
+		);
 
 		$sql_data[TOPICS_TABLE]['sql'] = array(
 			'topic_last_post_id'		=> $merge_post_id,
@@ -107,14 +105,14 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 			'topic_last_poster_name'	=> (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
 			'topic_last_poster_colour'	=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
 			'topic_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
-			'topic_last_post_time'		=> $post_time,
+			'topic_last_post_time'		=> $current_time,
 			'topic_attachment'			=> (!empty($data['attachment_data']) || (isset($merge_post_data['topic_attachment']) && $merge_post_data['topic_attachment'])) ? 1 : 0,
-		);	
+		);
 
 		$sql_data[FORUMS_TABLE]['sql'] = array(
 			'forum_last_post_id'		=> $merge_post_id,
 			'forum_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
-			'forum_last_post_time'		=> $post_time,
+			'forum_last_post_time'		=> $current_time,
 			'forum_last_poster_id'		=> $poster_id,
 			'forum_last_poster_name'	=> (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
 			'forum_last_poster_colour'	=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
@@ -124,10 +122,10 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . " WHERE post_id = $merge_post_id";
 		$db->sql_query($sql);
 
-		$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . " WHERE topic_id = $topic_id"; 
+		$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . " WHERE topic_id = $topic_id";
 		$db->sql_query($sql);
 
-		$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . "  WHERE forum_id = $forum_id"; 
+		$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . "  WHERE forum_id = $forum_id";
 		$db->sql_query($sql);
 
 		// Submit Attachments
@@ -207,7 +205,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 				set_config('num_files', $config['num_files'] + $files_added, true);
 			}
 		}
-		
+
 		// Index message contents
 		if ($merge_post_data['enable_indexing'])
 		{
@@ -233,9 +231,9 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		}
 
 		// Mark the post and the topic read
-		markread('post', $forum_id, $topic_id, $post_time);
-		markread('topic', $forum_id, $topic_id, time());
-		
+		markread('post', $forum_id, $topic_id, $current_time);
+		markread('topic', $forum_id, $topic_id, $current_time);
+
 		//
 		if ($config['load_db_lastread'] && $user->data['is_registered'])
 		{
@@ -275,7 +273,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		$params = $add_anchor = '';
 		$params .= '&amp;t=' . $topic_id;
 		$params .= '&amp;p=' . $merge_post_id;
-		$add_anchor = '#p' . $merge_post_id;	
+		$add_anchor = '#p' . $merge_post_id;
 		$redirect_url = "{$phpbb_root_path}viewtopic.$phpEx";
 		$redirect_url = append_sid($redirect_url, 'f=' . $forum_id . $params) . $add_anchor;
 
@@ -292,4 +290,3 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		trigger_error($message);
 	}
 }
-?>
