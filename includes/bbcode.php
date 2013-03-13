@@ -371,6 +371,18 @@ class bbcode
 					);
 				break;
 
+				case 16:
+					$this->bbcode_cache[$bbcode_id] = array(
+						'str' => array(
+							"[/spoiler:\$uid]\n"	=> $this->bbcode_tpl('spoiler_close', $bbcode_id),
+							'[/spoiler:$uid]'		=> $this->bbcode_tpl('spoiler_close', $bbcode_id)
+						),
+						'preg' => array(
+							'#\[spoiler(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[spoiler(?:=&quot;.*?&quot;)?:$uid\]).)?#ise'	=> "\$this->bbcode_second_pass_spoiler('\$1', '\$2')"
+						)
+					);
+				break;
+
 				default:
 					if (isset($rowset[$bbcode_id]))
 					{
@@ -453,8 +465,12 @@ class bbcode
 				'size'		=> '<span style="font-size: $1%; line-height: normal">$2</span>',
 				'color'		=> '<span style="color: $1">$2</span>',
 				'email'		=> '<a href="mailto:$1">$2</a>',
-				'upd_merged'	=> '<span style="font-size: 85%; line-height: normal; color: gray;">$1</span>',
-				'upd_subject'	=> '<br /><span style="font-weight: bold">$1</span>',
+				// Fallbacks for old templates
+				'upd_merged'			=> '<span style="font-size: 85%; line-height: normal; color: gray;">$1</span>',
+				'upd_subject'			=> '<br /><span style="font-weight: bold">$1</span>',
+				'spoiler_title_open'	=> '<div><span style="font-weight: bold">$1:</span> ',
+				'spoiler_open'			=> '<div>',
+				'spoiler_close'			=> '</div>',
 			);
 		}
 
@@ -505,6 +521,7 @@ class bbcode
 
 		static $replacements = array(
 			'quote_username_open'	=> array('{USERNAME}'	=> '$1'),
+			'spoiler_title_open'	=> array('{TITLE}'		=> '$1'),
 			'color'					=> array('{COLOR}'		=> '$1', '{TEXT}'			=> '$2'),
 			'size'					=> array('{SIZE}'		=> '$1', '{TEXT}'			=> '$2'),
 			'img'					=> array('{URL}'		=> '$1'),
@@ -648,6 +665,27 @@ class bbcode
 		$quote = (($username) ? str_replace('$1', $username, $this->bbcode_tpl('quote_username_open')) : $this->bbcode_tpl('quote_open')) . $quote;
 
 		return $quote;
+	}
+
+	/**
+	* Second parse spoiler tag
+	*/
+	function bbcode_second_pass_spoiler($title, $text)
+	{
+		// when using the /e modifier, preg_replace slashes double-quotes but does not
+		// seem to slash anything else
+		$text = str_replace('\"', '"', $text);
+		$title = str_replace('\"', '"', $title);
+
+		// remove newline at the beginning
+		if ($text == "\n")
+		{
+			$text = '';
+		}
+
+		$text = (($title) ? str_replace('$1', $title, $this->bbcode_tpl('spoiler_title_open', 16)) : $this->bbcode_tpl('spoiler_open', 16)) . $text;
+
+		return $text;
 	}
 
 	/**

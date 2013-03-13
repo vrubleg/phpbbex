@@ -171,7 +171,7 @@ define('ATTACHMENT_CATEGORY_QUICKTIME', 6); // Quicktime/Mov files
 define('BBCODE_UID_LEN', 8);
 
 // Number of core BBCodes
-define('NUM_CORE_BBCODES', 15);
+define('NUM_CORE_BBCODES', 16);
 
 // BBCode hard limit
 define('BBCODE_LIMIT', 1511);

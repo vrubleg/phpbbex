@@ -9,42 +9,15 @@
 	lang.enter_image_url = '{LA_ENTER_IMAGE_URL}';
 	lang.enter_quote_name = '{LA_ENTER_QUOTE_NAME}';
 	lang.enter_list_start = '{LA_ENTER_LIST_START}';
+	lang.enter_title = '{LA_ENTER_TITLE}';
 
 	// Define the bbCode tags
 	var bbcode = new Array();
-	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[tt]','[/tt]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]','[s]','[/s]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
+	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[tt]','[/tt]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]','[s]','[/s]','[spoiler]','[/spoiler]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
 </script>
 <script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/editor.js"></script>
 
 <!-- IF S_BBCODE_ALLOWED -->
-<div id="colour_palette" style="display: none;">
-	<dl style="clear: left;">
-		<dt><label>{L_FONT_COLOR}:</label></dt>
-		<dd>
-		<script type="text/javascript">
-		// <![CDATA[
-			function change_palette()
-			{
-				dE('colour_palette');
-				e = document.getElementById('colour_palette');
-				
-				if (e.style.display == 'block')
-				{
-					document.getElementById('bbpalette').innerHTML = '{LA_FONT_COLOR_HIDE}';
-				}
-				else
-				{
-					document.getElementById('bbpalette').innerHTML = '{LA_FONT_COLOR}';
-				}
-			}
-
-			colorPalette('h', 15, 10);
-		// ]]>
-		</script>
-		</dd>
-	</dl>
-</div>
-
 <div id="format-buttons">
 	<button type="button" accesskey="b" style="width: 24px;" onclick="bbstyle(0, event)" title="{L_BBCODE_B_HELP}"><span style="font-weight: bold;">B</span></button>
 	<button type="button" accesskey="i" style="width: 24px;" onclick="bbstyle(2, event)" title="{L_BBCODE_I_HELP}"><span style="font-style: italic;">I</span></button>
@@ -53,6 +26,9 @@
 	<button type="button" accesskey="t" style="width: 24px;" onclick="bbstyle(12, event)" title="{L_BBCODE_TT_HELP}"><span style="font: 1em/1em monospace;">TT</span></button>
 	<!-- IF S_BBCODE_QUOTE -->
 		<button type="button" accesskey="q" onclick="bbstyle(6, event)" title="{L_BBCODE_Q_HELP}">Quote</button>
+	<!-- ENDIF -->
+	<!-- IF S_BBCODE_SPOILER -->
+		<button type="button" accesskey="h" onclick="bbstyle(24, event)" title="{L_BBCODE_SPOILER_HELP}">Spoiler</button>
 	<!-- ENDIF -->
 	<button type="button" accesskey="c" onclick="bbstyle(8, event)" title="{L_BBCODE_C_HELP}">Code</button>
 	<button type="button" accesskey="l" onclick="bbstyle(10, event)" title="{L_BBCODE_L_HELP}">List</button>
@@ -81,5 +57,21 @@
 	<!-- BEGIN custom_tags -->
 		<button type="button" onclick="bbstyle({custom_tags.BBCODE_ID}, event)" title="{custom_tags.BBCODE_HELPLINE}">{custom_tags.BBCODE_TAG}</button>
 	<!-- END custom_tags -->
+</div>
+
+<div id="colour_palette" style="display: none;">
+	<dl style="clear: left;">
+		<dt><label>{L_FONT_COLOR}:</label></dt>
+		<dd>
+		<script>
+			function change_palette()
+			{
+				dE('colour_palette');
+			}
+
+			colorPalette('h', 15, 10);
+		</script>
+		</dd>
+	</dl>
 </div>
 <!-- ENDIF -->

@@ -207,6 +207,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_post_smilies', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_post_urls', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_quote_depth', '2');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_spoiler_depth', '2');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_reg_attempts', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_chars', '200');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_font_size', '200');
@@ -605,7 +606,7 @@ INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, 
 INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('subforum_unread', 'subforum_unread.gif', '', 9, 11, 1);
 
 # -- phpbb_styles_template
-INSERT INTO phpbb_styles_template (template_name, template_copyright, template_path, bbcode_bitfield, template_storedb) VALUES ('prosilver', '&copy; phpBB Group', 'prosilver', 'lNk=', 0);
+INSERT INTO phpbb_styles_template (template_name, template_copyright, template_path, bbcode_bitfield, template_storedb) VALUES ('prosilver', '&copy; phpBB Group', 'prosilver', 'lNmA', 0);
 
 # -- phpbb_styles_theme
 INSERT INTO phpbb_styles_theme (theme_name, theme_copyright, theme_path, theme_storedb, theme_data) VALUES ('prosilver', '&copy; phpBB Group', 'prosilver', 1, '');

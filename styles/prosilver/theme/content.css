@@ -490,6 +490,7 @@ blockquote.uncited {
 
 /* Code block */
 dl.codebox {
+	margin: 0.25em 0;
 	padding: 3px;
 	background-color: #FFFFFF;
 	border: 1px solid #d8d8d8;
@@ -529,6 +530,52 @@ dl.codebox code {
 .syntaxhtml		{ color: #000000; }
 .syntaxkeyword	{ color: #585858; }
 .syntaxstring	{ color: #a7a7a7; }
+
+/* Spoiler block */
+dl.spoilerbox
+{
+	margin: 0.25em 0;
+	padding: 3px;
+	background-color: #FFFFFF;
+	border: 1px solid #d8d8d8;
+	font-size: 1em;
+}
+
+dl.spoilerbox > dt
+{
+	background: url('data:image/gif;base64,R0lGODlhCgAKAKIAADMzM//M/7u7u2ZmZt3d3f///wAAAAAAACH5BAEHAAEALAAAAAAKAAoAAAMVGLrM0+7BMIpsg1iYBeDeNHwTOUEJADs=') no-repeat 4px 4px;
+	padding: 4px 5px 4px 18px;
+	font-size: 0.9em;
+	line-height: 0.9em;
+	display: block;
+	cursor: pointer;
+	color: #105289;
+	width: auto;
+}
+
+dl.spoilerbox > dt:hover
+{
+	color: #D31141;
+	text-decoration: underline;
+}
+
+dl.spoilerbox > dd
+{
+	margin-top: 3px;
+	border-top: 1px solid #CCCCCC;
+	padding: 3px 3px 0 3px;
+	display: none;
+}
+
+dl.spoilerbox.spoilerbox-on > dt
+{
+	background-image: url('data:image/gif;base64,R0lGODlhCgAKAKIAADMzM//M/2ZmZt3d3f///wAAAAAAAAAAACH5BAEHAAEALAAAAAAKAAoAAAMUGLrc/rCJSecCJBPQwBicA4RRuSQAOw==');
+}
+
+dl.spoilerbox.spoilerbox-on > dd
+{
+	display: block;
+}
 
 /* Attachments
 ----------------------------------------*/

@@ -159,6 +159,14 @@ function bbfontstyle(bbopen, bbclose, event)
 				if (name) bbopen = '[quote="' + name + '"]';
 			}
 		break;
+		case 'spoiler':
+			if (event.ctrlKey)
+			{
+				var title = prompt(lang.enter_title, '');
+				if (title === null) return;
+				if (title) bbopen = '[spoiler="' + title + '"]';
+			}
+		break;
 		case 'list':
 			if (event.ctrlKey)
 			{

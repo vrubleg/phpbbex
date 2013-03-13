@@ -82,6 +82,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_e
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_spoiler_depth', '2');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
@@ -117,15 +118,19 @@ UPDATE phpbb_forums SET forum_flags = forum_flags|16;
 -- Remove subjects with "Re: " (excluding first posts, it is much slower)
 -- UPDATE phpbb_posts p LEFT JOIN phpbb_topics t ON t.topic_first_post_id = p.post_id SET p.post_subject = "" WHERE p.post_subject LIKE "Re: %" AND t.topic_first_post_id IS NULL;
 
--- Delete user bbcode [s]
-DELETE FROM phpbb_bbcodes WHERE bbcode_tag = 's';
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=14 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=15 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=16 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=17 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=18 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=19 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=20 WHERE bbcode_id = 13;
+-- Resolve conflicts with the new system bbcodes
+DELETE FROM phpbb_bbcodes WHERE bbcode_tag IN ('s', 'tt', 'upd', 'upd=', 'spoiler', 'spoiler=');
+SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
+UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 13;
+SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
+UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 14;
+SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
+UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 15;
+SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
+UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 16;
+
+-- Update template bitfield
+UPDATE phpbb_styles_template SET bbcode_bitfield = 'lNmA' WHERE template_name = 'prosilver';
 
 -- Post rates
 CREATE TABLE phpbb_post_rates (
@@ -277,9 +282,6 @@ UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-
 
 -- Remove obsolete options
 DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html', 'style_auto_new_year');
-
--- Update template bitfield
-UPDATE phpbb_styles_template SET bbcode_bitfield = 'lNk=' WHERE template_name = 'prosilver';
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.5.3');
