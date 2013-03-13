@@ -1,6 +1,3 @@
-<IfModule mod_cgi.c>
-Options -ExecCGI
-</IfModule>
 <IfModule mod_include.c>
 Options -Includes
 </IfModule>
