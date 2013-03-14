@@ -7,12 +7,6 @@
 
 	<fieldset class="fields2">
 	<!-- IF S_SHOW_POLL_BOX -->
-		<!-- IF S_POLL_DELETE -->
-			<dl>
-				<dt><label for="poll_delete">{L_POLL_DELETE}:</label></dt>
-				<dd><label for="poll_delete"><input type="checkbox" name="poll_delete" id="poll_delete"<!-- IF S_POLL_DELETE_CHECKED --> checked="checked"<!-- ENDIF --> /> </label></dd>
-			</dl>
-		<!-- ENDIF -->
 		<dl>
 			<dt><label for="poll_title">{L_POLL_QUESTION}:</label></dt>
 			<dd><input type="text" name="poll_title" id="poll_title" maxlength="255" value="{POLL_TITLE}" class="inputbox" /></dd>
@@ -21,15 +15,15 @@
 		<script type="text/javascript">
 		jQuery(function($)
 		{
-			$("#postform input[name=poll_title]").blur(function()
+			$('#poll_title, #poll_option_text').on('blur', function()
 			{
-				if ($(this).val() == "") $("#poll_hidden").hide(); else $("#poll_hidden").show();
+				if ($('#poll_title').val() == '' && $('#poll_option_text').val() == '') $("#poll_hidden").hide(); else $("#poll_hidden").show();
 			});
-			$("#postform input[name=poll_title]").keyup(function()
+			$('#poll_title').keyup(function()
 			{
-				if ($(this).val() != "") $("#poll_hidden").show();
+				if ($(this).val() != '') $('#poll_hidden').show();
 			});
-			$("#postform input[name=poll_title]").blur();
+			$('#poll_title').blur();
 		});
 		</script>
 
@@ -37,7 +31,10 @@
 
 		<dl>
 			<dt><label for="poll_option_text">{L_POLL_OPTIONS}:</label><br /><span>{L_POLL_OPTIONS_EXPLAIN}</span></dt>
-			<dd><textarea name="poll_option_text" id="poll_option_text" rows="7" cols="35" class="inputbox">{POLL_OPTIONS}</textarea></dd>
+			<dd>
+				<textarea name="poll_option_text" id="poll_option_text" rows="7" cols="35" class="inputbox">{POLL_OPTIONS}</textarea>
+				<!-- IF S_POLL_RESET --><br /><label for="poll_reset"><input type="checkbox" name="poll_reset" id="poll_reset"<!-- IF S_POLL_RESET_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_POLL_RESET}</label><!-- ENDIF -->
+			</dd>
 		</dl>
 
 		<hr class="dashed" />

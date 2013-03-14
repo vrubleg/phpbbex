@@ -55,6 +55,10 @@ label input {
 	vertical-align: middle;
 }
 
+label input[type="checkbox"], label input[type="radio"] {
+	vertical-align: bottom;
+}
+
 label img {
 	vertical-align: middle;
 }

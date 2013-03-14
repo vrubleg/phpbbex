@@ -2166,8 +2166,8 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 			$db->sql_query($sql);
 		}
 
-		// If edited, we would need to reset votes (since options can be re-ordered above, you can't be sure if the change is for changing the text or adding an option
-		if ($mode == 'edit' && sizeof($poll['poll_options']) < sizeof($cur_poll_options))
+		// We would need to reset votes
+		if ($mode == 'edit' && !empty($poll['poll_reset']))
 		{
 			$db->sql_query('DELETE FROM ' . POLL_VOTES_TABLE . ' WHERE topic_id = ' . $data['topic_id']);
 			$db->sql_query('UPDATE ' . POLL_OPTIONS_TABLE . ' SET poll_option_total = 0 WHERE topic_id = ' . $data['topic_id']);
