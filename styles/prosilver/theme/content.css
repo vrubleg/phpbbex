@@ -281,7 +281,7 @@ div[class].topic-actions {
 	height: 300px;
 }
 
-#topicreview .postbody {
+#topicreview .postbody, #postreview .postbody {
 	width: auto;
 	float: none;
 	margin: 0;
