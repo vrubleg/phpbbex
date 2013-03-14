@@ -70,7 +70,13 @@ class time_delta
 	static public function get_verbal($first_time, $last_time, $accuracy = false, $max_parts = false, $keep_zeros = false)
 	{
 		global $user;
-		// Solve data delta.
+
+		if ($first_time - $last_time === 0)
+		{
+			return self::declension(0, $user->lang['D_SECONDS']);
+		}
+
+		// Solve data delta
 		$delta = self::getdelta($first_time, $last_time);
 		if (!$delta)
 		{

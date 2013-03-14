@@ -470,7 +470,7 @@ CREATE TABLE phpbb_posts (
 	poster_ip varchar(40) DEFAULT '' NOT NULL,
 	poster_browser_id char(32) DEFAULT '' NOT NULL,
 	post_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	post_created int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	post_merged int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	post_approved tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	post_reported tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	post_rating_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0,

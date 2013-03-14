@@ -112,8 +112,11 @@ class bbcode_firstpass extends bbcode
 		// To parse multiline URL we enable dotall option setting only for URL text
 		// but not for link itself, thus [url][/url] is not affected.
 		$this->bbcodes = array(
+			'tt'			=> array('bbcode_id' => 14,	'regexp' => array('#\[tt\](.*?)\[/tt\]#uise' => "\$this->bbcode_teletype('\$1')")),
 			'code'			=> array('bbcode_id' => 8,	'regexp' => array('#\[code(?:=([a-z]+))?\](.+\[/code\])#uise' => "\$this->bbcode_code('\$1', '\$2')")),
-			'quote'			=> array('bbcode_id' => 0,	'regexp' => array('#\[quote(?:=&quot;(.*?)&quot;)?\](.+)\[/quote\]#uise' => "\$this->bbcode_quote('\$0')")),
+			'upd'			=> array('bbcode_id' => 15,	'regexp' => array('#\[upd=(\d+(?:[:]\d+){0,3})\](.*?)\[/upd\]#uise' => "\$this->bbcode_upd('\$1', '\$2')")),
+			'quote'			=> array('bbcode_id' => 0,	'regexp' => array('#\[quote(?:=&quot;(.*?)&quot;)?\](.+)\[/quote\]#uise' => "\$this->bbcode_quote('\$0', 'quote')")),
+			'spoiler'		=> array('bbcode_id' => 16,	'regexp' => array('#\[spoiler(?:=&quot;(.*?)&quot;)?\](.+)\[/spoiler\]#uise' => "\$this->bbcode_quote('\$0', 'spoiler')")),
 			'attachment'	=> array('bbcode_id' => 12,	'regexp' => array('#\[attachment=([0-9]+)\](.*?)\[/attachment\]#uise' => "\$this->bbcode_attachment('\$1', '\$2')")),
 			'b'				=> array('bbcode_id' => 1,	'regexp' => array('#\[b\](.*?)\[/b\]#uise' => "\$this->bbcode_strong('\$1')")),
 			'i'				=> array('bbcode_id' => 2,	'regexp' => array('#\[i\](.*?)\[/i\]#uise' => "\$this->bbcode_italic('\$1')")),
@@ -125,7 +128,7 @@ class bbcode_firstpass extends bbcode
 			's'				=> array('bbcode_id' => 13,	'regexp' => array('#\[s\](.*?)\[/s\]#uise' => "\$this->bbcode_strikethrough('\$1')")),
 			'list'			=> array('bbcode_id' => 9,	'regexp' => array('#\[list(?:=(?:[a-z0-9]|disc|circle|square))?].*\[/list]#uise' => "\$this->bbcode_parse_list('\$0')")),
 			'email'			=> array('bbcode_id' => 10,	'regexp' => array('#\[email=?(.*?)?\](.*?)\[/email\]#uise' => "\$this->validate_email('\$1', '\$2')")),
-			'flash'			=> array('bbcode_id' => 11,	'regexp' => array('#\[flash=([0-9]+),([0-9]+)\](.*?)\[/flash\]#uie' => "\$this->bbcode_flash('\$1', '\$2', '\$3')"))
+			'flash'			=> array('bbcode_id' => 11,	'regexp' => array('#\[flash=([0-9]+),([0-9]+)\](.*?)\[/flash\]#uie' => "\$this->bbcode_flash('\$1', '\$2', '\$3')")),
 		);
 
 		// Zero the parsed items array
@@ -288,6 +291,51 @@ class bbcode_firstpass extends bbcode
 		}
 
 		return '[i:' . $this->bbcode_uid . ']' . $in . '[/i:' . $this->bbcode_uid . ']';
+	}
+
+	/**
+	* Parse tt tag
+	*/
+	function bbcode_teletype($in)
+	{
+		if (!$this->check_bbcode('tt', $in))
+		{
+			return $in;
+		}
+
+		// This ugly hardcode taken from the bbcode_code
+		$htm_match = get_preg_expression('bbcode_htm');
+		unset($htm_match[4], $htm_match[5]);
+		$htm_replace = array('\1', '\1', '\2', '\1');
+		$in = preg_replace($htm_match, $htm_replace, $in);
+
+		return '[tt:' . $this->bbcode_uid . ']' . str_replace(array('[', ']', ' ', "\t"), array('&#91;', '&#93;', '&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;'), $in) . '[/tt:' . $this->bbcode_uid . ']';
+	}
+
+	/**
+	* Parse upd tag
+	*/
+	function bbcode_upd($time, $subj)
+	{
+		$parts = explode(':', $time);
+		$seconds = (int) array_pop($parts);
+		$seconds += array_pop($parts) * 60;
+		$seconds += array_pop($parts) * 3600;
+		$seconds += array_pop($parts) * 86400;
+
+		// Do not allow a very big values
+		if ($seconds > 86400 * 365 * 15 || $seconds < 0)
+		{
+			return '[upd=' . $time . ']' . $subj . '[/upd]';
+		}
+
+		// This ugly hardcode taken from the bbcode_code
+		$htm_match = get_preg_expression('bbcode_htm');
+		unset($htm_match[4], $htm_match[5]);
+		$htm_replace = array('\1', '\1', '\2', '\1');
+		$subj = preg_replace($htm_match, $htm_replace, $subj);
+
+		return '[upd=' . $time . ':' . $this->bbcode_uid . ']' . str_replace(array('[', ']'), array('&#91;', '&#93;'), $subj) . '[/upd:' . $this->bbcode_uid . ']';
 	}
 
 	/**
@@ -712,10 +760,10 @@ class bbcode_firstpass extends bbcode
 	}
 
 	/**
-	* Parse quote bbcode
+	* Parse quote and spoiler bbcodes
 	* Expects the argument to start with a tag
 	*/
-	function bbcode_quote($in)
+	function bbcode_quote($in, $type = 'quote')
 	{
 		global $config, $user;
 
@@ -732,13 +780,18 @@ class bbcode_firstpass extends bbcode
 
 		$in = str_replace("\r\n", "\n", str_replace('\"', '"', trim($in)));
 
+		if (!isset($config['max_'.$type.'_depth']) || $config['max_'.$type.'_depth'] < 0)
+		{
+			return $in;
+		}
+
 		if (!$in)
 		{
 			return '';
 		}
 
 		// To let the parser not catch tokens within quote_username quotes we encode them before we start this...
-		$in = preg_replace('#quote=&quot;(.*?)&quot;\]#ie', "'quote=&quot;' . str_replace(array('[', ']', '\\\"'), array('&#91;', '&#93;', '\"'), '\$1') . '&quot;]'", $in);
+		$in = preg_replace('#'.$type.'=&quot;(.*?)&quot;\]#ie', "'".$type."=&quot;' . str_replace(array('[', ']', '\\\"'), array('&#91;', '&#93;', '\"'), '\$1') . '&quot;]'", $in);
 
 		$tok = ']';
 		$out = '[';
@@ -765,7 +818,7 @@ class bbcode_firstpass extends bbcode
 
 			if ($tok == ']')
 			{
-				if (strtolower($buffer) == '/quote' && sizeof($close_tags) && substr($out, -1, 1) == '[')
+				if (strtolower($buffer) == '/'.$type && sizeof($close_tags) && substr($out, -1, 1) == '[')
 				{
 					// we have found a closing tag
 					$out .= array_pop($close_tags) . ']';
@@ -780,15 +833,15 @@ class bbcode_firstpass extends bbcode
 						$out .= ' ';
 					}*/
 				}
-				else if (preg_match('#^quote(?:=&quot;(.*?)&quot;)?$#is', $buffer, $m) && substr($out, -1, 1) == '[')
+				else if (preg_match('#^'.$type.'(?:=&quot;(.*?)&quot;)?$#is', $buffer, $m) && substr($out, -1, 1) == '[')
 				{
-					$this->parsed_items['quote']++;
+					$this->parsed_items[$type]++;
 
 					// the buffer holds a valid opening tag
-					if ($config['max_quote_depth'] && sizeof($close_tags) >= $config['max_quote_depth'])
+					if (!empty($config['max_'.$type.'_depth']) && sizeof($close_tags) >= $config['max_'.$type.'_depth'])
 					{
 						// there are too many nested quotes
-						$error_ary['quote_depth'] = sprintf($user->lang['QUOTE_DEPTH_EXCEEDED'], $config['max_quote_depth']);
+						$error_ary[$type.'_depth'] = sprintf($user->lang[strtoupper($type).'_DEPTH_EXCEEDED'], $config['max_'.$type.'_depth']);
 
 						$out .= $buffer . $tok;
 						$tok = '[]';
@@ -797,7 +850,7 @@ class bbcode_firstpass extends bbcode
 						continue;
 					}
 
-					array_push($close_tags, '/quote:' . $this->bbcode_uid);
+					array_push($close_tags, '/'.$type.':' . $this->bbcode_uid);
 
 					if (isset($m[1]) && $m[1])
 					{
@@ -826,17 +879,17 @@ class bbcode_firstpass extends bbcode
 							$username = $m[1];
 						}
 
-						$out .= 'quote=&quot;' . $username . '&quot;:' . $this->bbcode_uid . ']';
+						$out .= $type.'=&quot;' . $username . '&quot;:' . $this->bbcode_uid . ']';
 					}
 					else
 					{
-						$out .= 'quote:' . $this->bbcode_uid . ']';
+						$out .= $type.':' . $this->bbcode_uid . ']';
 					}
 
 					$tok = '[';
 					$buffer = '';
 				}
-				else if (preg_match('#^quote=&quot;(.*?)#is', $buffer, $m))
+				else if (preg_match('#^'.$type.'=&quot;(.*?)#is', $buffer, $m))
 				{
 					// the buffer holds an invalid opening tag
 					$buffer .= ']';
@@ -863,7 +916,7 @@ class bbcode_firstpass extends bbcode
 				if ($tok == '[')
 				{
 					// Search the text for the next tok... if an ending quote comes first, then change tok to []
-					$pos1 = stripos($in, '[/quote');
+					$pos1 = stripos($in, '[/'.$type);
 					// If the token ] comes first, we change it to ]
 					$pos2 = strpos($in, ']');
 					// If the token [ comes first, we change it to [
@@ -1120,7 +1173,7 @@ class parse_message extends bbcode_firstpass
 
 		$this->mode = $mode;
 
-		foreach (array('chars', 'smilies', 'urls', 'font_size', 'img_height', 'img_width') as $key)
+		foreach (array('chars', 'smilies', 'urls', 'imgs', 'font_size', 'img_height', 'img_width') as $key)
 		{
 			if (!isset($config['max_' . $mode . '_' . $key]))
 			{

@@ -354,6 +354,35 @@ class bbcode
 					);
 				break;
 
+				case 14:
+					$this->bbcode_cache[$bbcode_id] = array(
+						'str' => array(
+							'[tt:$uid]'	=> $this->bbcode_tpl('tt_open', $bbcode_id),
+							'[/tt:$uid]'	=> $this->bbcode_tpl('tt_close', $bbcode_id),
+						)
+					);
+				break;
+
+				case 15:
+					$this->bbcode_cache[$bbcode_id] = array(
+						'preg' => array(
+							'#\[upd=(\d+(?:[:]\d+){0,3}):$uid\](.*?)\[/upd:$uid\]#e'	=> "\$this->bbcode_second_pass_upd('\$1', '\$2')",
+						)
+					);
+				break;
+
+				case 16:
+					$this->bbcode_cache[$bbcode_id] = array(
+						'str' => array(
+							"[/spoiler:\$uid]\n"	=> $this->bbcode_tpl('spoiler_close', $bbcode_id),
+							'[/spoiler:$uid]'		=> $this->bbcode_tpl('spoiler_close', $bbcode_id)
+						),
+						'preg' => array(
+							'#\[spoiler(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[spoiler(?:=&quot;.*?&quot;)?:$uid\]).)?#ise'	=> "\$this->bbcode_second_pass_spoiler('\$1', '\$2')"
+						)
+					);
+				break;
+
 				default:
 					if (isset($rowset[$bbcode_id]))
 					{
@@ -430,10 +459,18 @@ class bbcode
 				'u_close'	=> '</span>',
 				's_open'	=> '<span style="text-decoration: line-through">',
 				's_close'	=> '</span>',
+				'tt_open'	=> '<code>',
+				'tt_close'	=> '</code>',
 				'img'		=> '<img src="$1" alt="' . $user->lang['IMAGE'] . '" />',
 				'size'		=> '<span style="font-size: $1%; line-height: normal">$2</span>',
 				'color'		=> '<span style="color: $1">$2</span>',
-				'email'		=> '<a href="mailto:$1">$2</a>'
+				'email'		=> '<a href="mailto:$1">$2</a>',
+				// Fallbacks for old templates
+				'upd_merged'			=> '<span style="font-size: 85%; line-height: normal; color: gray;">$1</span>',
+				'upd_subject'			=> '<br /><span style="font-weight: bold">$1</span>',
+				'spoiler_title_open'	=> '<div><span style="font-weight: bold">$1:</span> ',
+				'spoiler_open'			=> '<div>',
+				'spoiler_close'			=> '</div>',
 			);
 		}
 
@@ -484,12 +521,15 @@ class bbcode
 
 		static $replacements = array(
 			'quote_username_open'	=> array('{USERNAME}'	=> '$1'),
+			'spoiler_title_open'	=> array('{TITLE}'		=> '$1'),
 			'color'					=> array('{COLOR}'		=> '$1', '{TEXT}'			=> '$2'),
 			'size'					=> array('{SIZE}'		=> '$1', '{TEXT}'			=> '$2'),
 			'img'					=> array('{URL}'		=> '$1'),
 			'flash'					=> array('{WIDTH}'		=> '$1', '{HEIGHT}'			=> '$2', '{URL}'	=> '$3'),
 			'url'					=> array('{URL}'		=> '$1', '{DESCRIPTION}'	=> '$2'),
-			'email'					=> array('{EMAIL}'		=> '$1', '{DESCRIPTION}'	=> '$2')
+			'email'					=> array('{EMAIL}'		=> '$1', '{DESCRIPTION}'	=> '$2'),
+			'upd_merged'			=> array('{MERGED}'		=> '$1'),
+			'upd_subject'			=> array('{SUBJECT}'	=> '$1'),
 		);
 
 		$tpl = preg_replace('/{L_([A-Z_]+)}/e', "(!empty(\$user->lang['\$1'])) ? \$user->lang['\$1'] : ucwords(strtolower(str_replace('_', ' ', '\$1')))", $tpl);
@@ -570,6 +610,43 @@ class bbcode
 	}
 
 	/**
+	* Second parse upd tag
+	*/
+	function bbcode_second_pass_upd($time, $subj)
+	{
+		global $user;
+
+		static $tpls = array();
+		if (empty($tpls))
+		{
+			$tpls = array(
+				'upd_merged'	=> $this->bbcode_tpl('upd_merged', 15),
+				'upd_subject'	=> $this->bbcode_tpl('upd_subject', 15),
+			);
+		}
+
+		// when using the /e modifier, preg_replace slashes double-quotes but does not
+		// seem to slash anything else
+		$time = str_replace('\"', '"', $time);
+		$subj = str_replace('\"', '"', $subj);
+
+		$parts = explode(':', $time);
+		$seconds = (int) array_pop($parts);
+		$seconds += array_pop($parts) * 60;
+		$seconds += array_pop($parts) * 3600;
+		$seconds += array_pop($parts) * 86400;
+
+		$result = time_delta::get_verbal(0, $seconds);
+		$result = str_replace('$1', sprintf($user->lang['UPD_MERGED'], $result), $tpls['upd_merged']);
+		if (trim($subj))
+		{
+			$result .= str_replace('$1', $subj, $tpls['upd_subject']);
+		}
+
+		return $result;
+	}
+
+	/**
 	* Second parse quote tag
 	*/
 	function bbcode_second_pass_quote($username, $quote)
@@ -588,6 +665,27 @@ class bbcode
 		$quote = (($username) ? str_replace('$1', $username, $this->bbcode_tpl('quote_username_open')) : $this->bbcode_tpl('quote_open')) . $quote;
 
 		return $quote;
+	}
+
+	/**
+	* Second parse spoiler tag
+	*/
+	function bbcode_second_pass_spoiler($title, $text)
+	{
+		// when using the /e modifier, preg_replace slashes double-quotes but does not
+		// seem to slash anything else
+		$text = str_replace('\"', '"', $text);
+		$title = str_replace('\"', '"', $title);
+
+		// remove newline at the beginning
+		if ($text == "\n")
+		{
+			$text = '';
+		}
+
+		$text = (($title) ? str_replace('$1', $title, $this->bbcode_tpl('spoiler_title_open', 16)) : $this->bbcode_tpl('spoiler_open', 16)) . $text;
+
+		return $text;
 	}
 
 	/**

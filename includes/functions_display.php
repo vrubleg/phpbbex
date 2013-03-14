@@ -454,7 +454,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		{
 			$s_subforums_list[] = '<a href="' . $subforum['link'] . '" class="subforum ' . (($subforum['unread']) ? 'unread' : 'read') . '" title="' . (($subforum['unread']) ? $user->lang['UNREAD_POSTS'] : $user->lang['NO_UNREAD_POSTS']) . '">' . $subforum['name'] . '</a>';
 		}
-		$s_subforums_list = (string) implode(', ', $s_subforums_list);
+		$s_subforums_list = (string) implode(' ', $s_subforums_list);
 		$catless = ($row['parent_id'] == $root_data['forum_id']) ? true : false;
 
 		if ($row['forum_type'] != FORUM_LINK)
@@ -1176,7 +1176,7 @@ function display_custom_bbcodes()
 	global $db, $template, $user;
 
 	// Start counting from 24 for the bbcode ids (every bbcode takes two ids - opening/closing)
-	$num_predefined_bbcodes = 24;
+	$num_predefined_bbcodes = 26;
 
 	$sql = 'SELECT bbcode_id, bbcode_tag, bbcode_helpline
 		FROM ' . BBCODES_TABLE . '

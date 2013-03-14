@@ -75,7 +75,8 @@ $smilies_status	= ($bbcode_status && $config['allow_smilies'] && $auth->acl_get(
 $img_status		= ($bbcode_status && $auth->acl_get('f_img', $forum_id)) ? true : false;
 $url_status		= ($config['allow_post_links']) ? true : false;
 $flash_status	= ($bbcode_status && $auth->acl_get('f_flash', $forum_id) && $config['allow_post_flash']) ? true : false;
-$quote_status	= ($auth->acl_get('f_' . $mode, $forum_id)) ? true : false;
+$quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
+$spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 
 if ($config['allow_' . $mode . '_smilies'])
 {
@@ -185,6 +186,7 @@ $template->assign_vars(array(
 	'S_BBCODE_URL'			=> $url_status,
 	'S_BBCODE_FLASH'		=> $flash_status,
 	'S_BBCODE_QUOTE'		=> $quote_status,
+	'S_BBCODE_SPOILER'		=> $spoiler_status,
 	'S_SHOW_ATTACH_BOX'		=> $show_attach_box,
 	)
 

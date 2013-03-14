@@ -547,6 +547,8 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$smilies_status	= ($config['allow_smilies'] && $config['auth_smilies_pm'] && $auth->acl_get('u_pm_smilies')) ? true : false;
 	$img_status		= ($config['auth_img_pm'] && $auth->acl_get('u_pm_img')) ? true : false;
 	$flash_status	= ($config['auth_flash_pm'] && $auth->acl_get('u_pm_flash')) ? true : false;
+	$quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
+	$spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 	$url_status		= ($config['allow_post_links']) ? true : false;
 
 	// Save Draft
@@ -1089,7 +1091,8 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 
 		'S_BBCODE_IMG'			=> $img_status,
 		'S_BBCODE_FLASH'		=> $flash_status,
-		'S_BBCODE_QUOTE'		=> true,
+		'S_BBCODE_QUOTE'		=> $quote_status,
+		'S_BBCODE_SPOILER'		=> $spoiler_status,
 		'S_BBCODE_URL'			=> $url_status,
 
 		'ALLOWED_EXTENSIONS_JSON'	=> json::encode(get_allowed_extension_sizes(false)),

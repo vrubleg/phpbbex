@@ -86,7 +86,7 @@ if ($view && !$post_id)
 			FROM ' . POSTS_TABLE . "
 			WHERE topic_id = $topic_id
 				" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND post_approved = 1') . "
-				AND post_time > $topic_last_read
+				AND (post_time > $topic_last_read OR post_merged > $topic_last_read)
 				AND forum_id = $forum_id
 			ORDER BY post_time ASC";
 		$result = $db->sql_query_limit($sql, 1);
@@ -733,12 +733,12 @@ if (!empty($topic_data['poll_start']))
 	}
 
 	// Can not vote at all if no vote permission
-	$s_can_vote = ($auth->acl_get('f_vote', $forum_id) &&
-		(($topic_data['poll_length'] != 0 && $topic_data['poll_start'] + $topic_data['poll_length'] > time()) || $topic_data['poll_length'] == 0) &&
-		$topic_data['topic_status'] != ITEM_LOCKED &&
-		$topic_data['forum_status'] != ITEM_LOCKED &&
-		(!sizeof($cur_voted_id) ||
-		($auth->acl_get('f_votechg', $forum_id) && $topic_data['poll_vote_change']))) ? true : false;
+	$s_can_vote = $user->data['is_registered']
+		&& $auth->acl_get('f_vote', $forum_id)
+		&& (($topic_data['poll_length'] != 0 && $topic_data['poll_start'] + $topic_data['poll_length'] > time()) || $topic_data['poll_length'] == 0)
+		&& $topic_data['topic_status'] != ITEM_LOCKED
+		&& $topic_data['forum_status'] != ITEM_LOCKED
+		&& (!sizeof($cur_voted_id) || ($auth->acl_get('f_votechg', $forum_id) && $topic_data['poll_vote_change']));
 	$s_display_results = (!$s_can_vote || ($s_can_vote && sizeof($cur_voted_id)) || $view == 'viewpoll') ? true : false;
 
 	if (($update || $unvote) && $s_can_vote)
@@ -870,32 +870,6 @@ if (!empty($topic_data['poll_start']))
 
 		$poll_info[$i]['poll_option_text'] = bbcode_nl2br($poll_info[$i]['poll_option_text']);
 		$poll_info[$i]['poll_option_text'] = smiley_text($poll_info[$i]['poll_option_text']);
-
-		// Get poll voters
-		$poll_info[$i]['poll_option_voters'] = false;
-		if($topic_data['poll_show_voters'])
-		{
-			$sql_voters = '
-				SELECT u.username, u.user_colour, pv.vote_user_id, pv.vote_time
-				FROM ' . POLL_VOTES_TABLE . ' pv, ' . USERS_TABLE . ' u
-				WHERE pv.topic_id = ' . $topic_id . '
-					AND poll_option_id = ' . $poll_info[$i]['poll_option_id'] . '
-					AND pv.vote_user_id = u.user_id
-				ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
-			$voters_result = $db->sql_query($sql_voters);
-			$voters_total = 0;
-			$voters_string = '';
-			// Add all voters to a string
-			while ($row_voters = $db->sql_fetchrow($voters_result))
-			{
-				$voters_total = $voters_total + 1;
-				$voters_string .= ', ' . get_username_string('full', $row_voters['vote_user_id'], $row_voters['username'], $row_voters['user_colour'], $row_voters['username'], false, $row_voters['vote_time'] ? $user->format_date($row_voters['vote_time']) : '');
-			}
-			$voters_string = ltrim($voters_string, ", ");
-			// Add the string to the list
-			$poll_info[$i]['poll_option_voters'] = $voters_string;
-			$db->sql_freeresult($voters_result);
-		}
 	}
 
 	$topic_data['poll_title'] = censor_text($topic_data['poll_title']);
@@ -910,9 +884,54 @@ if (!empty($topic_data['poll_start']))
 
 	unset($poll_bbcode);
 
+	// Get poll voters
+	$voters_total = 0;
+	if($topic_data['poll_show_voters'])
+	{
+		$sql = '
+			SELECT u.user_id, u.username, u.user_colour, pv.poll_option_id, pv.vote_time
+			FROM ' . POLL_VOTES_TABLE . ' pv, ' . USERS_TABLE . ' u
+			WHERE pv.topic_id = ' . $topic_id . '
+				AND pv.vote_user_id = u.user_id
+			ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
+		$result = $db->sql_query($sql);
+
+		$voters = array();
+		$votes = array();
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$voters[(int)$row['user_id']] = true;
+			$votes[(int)$row['poll_option_id']][] = $row;
+		}
+		$voters_total = count($voters);
+		unset($voters);
+		$db->sql_freeresult($result);
+
+		foreach ($poll_info as &$option)
+		{
+			$option['poll_option_voters'] = '';
+			if (empty($votes[(int)$option['poll_option_id']])) continue;
+			foreach ($votes[(int)$option['poll_option_id']] as $vote)
+			{
+				$option['poll_option_voters'] .= ', ' . get_username_string('full', $vote['user_id'], $vote['username'], $vote['user_colour'], $vote['username'], false, $vote['vote_time'] ? $user->format_date($vote['vote_time']) : '');
+			}
+			$option['poll_option_voters'] = ltrim($option['poll_option_voters'], ', ');
+		}
+		unset($option);
+	}
+	else
+	{
+		$sql = 'SELECT COUNT(DISTINCT vote_user_id) as count
+			FROM ' . POLL_VOTES_TABLE . '
+			WHERE topic_id = ' . $topic_id;
+		$result = $db->sql_query($sql);
+		$voters_total = (int) $db->sql_fetchfield('count');
+		$db->sql_freeresult($result);
+	}
+
 	foreach ($poll_info as $poll_option)
 	{
-		$option_pct = ($poll_total > 0) ? $poll_option['poll_option_total'] / $poll_total : 0;
+		$option_pct = ($voters_total > 0) ? $poll_option['poll_option_total'] / $voters_total : 0;
 		$option_pct_txt = sprintf("%.1d%%", round($option_pct * 100));
 
 		$template->assign_block_vars('poll_option', array(
@@ -922,7 +941,7 @@ if (!empty($topic_data['poll_start']))
 			'POLL_OPTION_PERCENT' 	=> $option_pct_txt,
 			'POLL_OPTION_PCT'		=> round($option_pct * 100),
 			'POLL_OPTION_IMG' 		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
-			'POLL_OPTION_VOTERS' 	=> $poll_option['poll_option_voters'],
+			'POLL_OPTION_VOTERS' 	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
 			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)) ? true : false)
 		);
 	}
@@ -933,6 +952,7 @@ if (!empty($topic_data['poll_start']))
 		'POLL_QUESTION'		=> $topic_data['poll_title'],
 		'POLL_VOTED'		=> count($cur_voted_id) > 0,
 		'TOTAL_VOTES' 		=> $poll_total,
+		'TOTAL_VOTERS' 		=> $voters_total,
 		'POLL_LEFT_CAP_IMG'	=> $user->img('poll_left'),
 		'POLL_RIGHT_CAP_IMG'=> $user->img('poll_right'),
 
@@ -1069,7 +1089,7 @@ while ($row = $db->sql_fetchrow($result))
 	// Set max_post_time
 	if ($row['post_time'] > $max_post_time)
 	{
-		$max_post_time = $row['post_time'];
+		$max_post_time = max($row['post_time'], $row['post_merged']);
 	}
 
 	$poster_id = (int) $row['poster_id'];
@@ -1090,7 +1110,7 @@ while ($row = $db->sql_fetchrow($result))
 
 		'post_id'			=> $row['post_id'],
 		'post_time'			=> $row['post_time'],
-		'post_created'		=> $row['post_created'],
+		'post_merged'		=> $row['post_merged'],
 		'user_id'			=> $row['user_id'],
 		'username'			=> $row['username'],
 		'user_colour'		=> $row['user_colour'],
@@ -1623,7 +1643,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		$cp_row = (isset($profile_fields_cache[$poster_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields_cache[$poster_id]) : array();
 	}
 
-	$post_unread = (isset($topic_tracking_info[$topic_id]) && $row['post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
+	$post_unread = (isset($topic_tracking_info[$topic_id]) && ($row['post_time'] > $topic_tracking_info[$topic_id] || $row['post_merged'] > $topic_tracking_info[$topic_id])) ? true : false;
 
 	$s_first_unread = false;
 	if (!$first_unread && $post_unread)
@@ -1687,7 +1707,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'S_POSTER_GENDER_M'	=> $user_cache[$poster_id]['gender'] == GENDER_M,
 		'S_POSTER_GENDER_F'	=> $user_cache[$poster_id]['gender'] == GENDER_F,
 
-		'POST_DATE'			=> $user->format_date($row['post_created'] ? $row['post_created'] : $row['post_time'], false, ($view == 'print') ? true : false),
+		'POST_DATE'			=> $user->format_date($row['post_time'], false, ($view == 'print') ? true : false),
 		'POST_SUBJECT'		=> $row['post_subject'],
 		'MESSAGE'			=> $message,
 		'DECODED_MESSAGE'	=> $decoded_message,
@@ -1879,6 +1899,12 @@ if (isset($user->data['session_page']) && !$user->data['is_bot'] && (strpos($use
 	}
 }
 
+$last_page = ((floor($start / $config['posts_per_page']) + 1) == max(ceil($total_posts / $config['posts_per_page']), 1)) ? true : false;
+if ($last_page)
+{
+	$max_post_time = max($topic_data['topic_last_post_time'], $max_post_time);
+}
+
 // Only mark topic if it's currently unread. Also make sure we do not set topic tracking back if earlier pages are viewed.
 if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id] && $max_post_time > $topic_tracking_info[$topic_id])
 {
@@ -1910,8 +1936,6 @@ if ($all_marked_read)
 }
 else if (!$all_marked_read)
 {
-	$last_page = ((floor($start / $config['posts_per_page']) + 1) == max(ceil($total_posts / $config['posts_per_page']), 1)) ? true : false;
-
 	// What can happen is that we are at the last displayed page. If so, we also display the #unread link based in $post_unread
 	if ($last_page && $post_unread)
 	{

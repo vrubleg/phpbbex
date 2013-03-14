@@ -23,7 +23,12 @@ ALTER TABLE phpbb_bbcodes
 
 ALTER TABLE phpbb_posts
 	ADD COLUMN poster_browser_id char(32) DEFAULT '' NOT NULL AFTER poster_ip,
-	ADD COLUMN post_created int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER post_time;
+	ADD COLUMN post_merged int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER post_time;
+
+-- Only for converting old merging data to new storing format
+-- ALTER TABLE phpbb_posts ADD COLUMN post_merged int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER post_time;
+-- UPDATE phpbb_posts SET post_merged = post_time, post_time=post_created WHERE post_created != 0 AND post_merged = 0;
+-- ALTER TABLE phpbb_posts DROP COLUMN post_created;
 
 ALTER TABLE phpbb_topics
 	ADD COLUMN poll_show_voters tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_vote_change,
@@ -77,6 +82,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_e
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_spoiler_depth', '2');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
@@ -112,15 +118,19 @@ UPDATE phpbb_forums SET forum_flags = forum_flags|16;
 -- Remove subjects with "Re: " (excluding first posts, it is much slower)
 -- UPDATE phpbb_posts p LEFT JOIN phpbb_topics t ON t.topic_first_post_id = p.post_id SET p.post_subject = "" WHERE p.post_subject LIKE "Re: %" AND t.topic_first_post_id IS NULL;
 
--- Delete user bbcode [s]
-DELETE FROM phpbb_bbcodes WHERE bbcode_tag = 's';
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=14 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=15 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=16 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=17 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=18 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=19 WHERE bbcode_id = 13;
-UPDATE IGNORE phpbb_bbcodes SET bbcode_id=20 WHERE bbcode_id = 13;
+-- Resolve conflicts with the new system bbcodes
+DELETE FROM phpbb_bbcodes WHERE bbcode_tag IN ('s', 'tt', 'upd', 'upd=', 'spoiler', 'spoiler=');
+SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
+UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 13;
+SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
+UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 14;
+SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
+UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 15;
+SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
+UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 16;
+
+-- Update template bitfield
+UPDATE phpbb_styles_template SET bbcode_bitfield = 'lNmA' WHERE template_name = 'prosilver';
 
 -- Post rates
 CREATE TABLE phpbb_post_rates (
@@ -263,12 +273,12 @@ REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'opus');
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
 
 -- Update YandexBot UA and remove Aport [Bot]
-UPDATE phpbb_bots SET bot_agent = "YandexBot/" WHERE bot_agent = "Yandex/";
-DELETE FROM phpbb_users WHERE username="Aport [Bot]";
-DELETE FROM phpbb_bots WHERE bot_name="Aport [Bot]";
+UPDATE phpbb_bots SET bot_agent = 'YandexBot/' WHERE bot_agent = 'Yandex/';
+DELETE FROM phpbb_users WHERE username='Aport [Bot]';
+DELETE FROM phpbb_bots WHERE bot_name='Aport [Bot]';
 
 -- Remove invalid skypenames
-UPDATE phpbb_users SET user_skype="" WHERE user_skype NOT RLIKE "^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$" AND user_skype != "";
+UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$' AND user_skype != '';
 
 -- Remove obsolete options
 DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html', 'style_auto_new_year');

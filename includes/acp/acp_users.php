@@ -1292,7 +1292,7 @@ class acp_users
 					'yim'			=> request_var('yim', $user_row['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user_row['user_jabber'], true)),
 					'skype'			=> utf8_normalize_nfc(request_var('skype', $user_row['user_skype'], true)),
-					'website'		=> request_var('website', $user_row['user_website']),
+					'website'		=> utf8_normalize_nfc(request_var('website', $user_row['user_website'], true)),
 					'location'		=> utf8_normalize_nfc(request_var('location', $user_row['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user_row['user_occ'], true)),
 					'interests'		=> utf8_normalize_nfc(request_var('interests', $user_row['user_interests'], true)),
@@ -1301,6 +1301,11 @@ class acp_users
 					'bday_year'		=> 0,
 					'gender'		=> request_var('gender', $user_row['user_gender']),
 				);
+
+				if (!preg_match('#^[a-z0-9]+:#iu', $data['website']))
+				{
+					$data['website'] = 'http://' . $data['website'];
+				}
 
 				if ($user_row['user_birthday'])
 				{
@@ -1329,8 +1334,8 @@ class acp_users
 							array('match', true, '#^[a-z][-_.a-z0-9]{5,31}$#i')),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
-							array('string', true, 12, 255),
-							array('match', true, '#^http[s]?://(.*?\.)*?[a-z0-9\-]+\.[a-z]{2,4}#i')),
+							array('string', true, 11, 255),
+							array('match', true, '#^http[s]?://([\pLa-z0-9\-]+\.)+[\pLa-z]{2,10}#iu')),
 						'location'		=> array('string', true, 2, 100),
 						'occupation'	=> array('string', true, 2, 500),
 						'interests'		=> array('string', true, 2, 500),
