@@ -249,7 +249,7 @@ $lang = array_merge($lang, array(
 	'FIRST_POST_SHOW_EXPLAIN'	=> 'Отображать сообщение на всех страницах темы',
 
 	// Posts merging
-	'DO_NOT_MERGE'				=> 'Не склеивать с предыдущим',
+	'DO_MERGE'					=> 'Склеить с предыдущим',
 
 	// Smiles
 	'SMILE_HI'					=> 'Привет!',

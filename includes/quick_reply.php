@@ -142,6 +142,9 @@ $show_attach_box = (@ini_get('file_uploads') != '0' && strtolower(@ini_get('file
 
 add_form_key('posting');
 
+$s_do_merge_allowed = $user->data['is_registered'] && $mode == 'reply' && $topic_data['topic_last_poster_id'] == $user->data['user_id'];
+$s_do_merge_checked = $s_do_merge_allowed && ((time() - $topic_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
+
 // Send vars to template
 $template->assign_vars(array(
 	'S_QUICK_REPLY'			=> $s_quick_reply,
@@ -179,6 +182,8 @@ $template->assign_vars(array(
 	'S_MAGIC_URL_CHECKED'		=> ($urls_checked) ? ' checked="checked"' : '',
 	'S_FIRST_POST_SHOW_ALLOWED'	=> ($mode == 'post'),
 	'S_NEW_MESSAGE'				=> ($mode == 'post'),
+	'S_DO_MERGE_ALLOWED'		=> $s_do_merge_allowed,
+	'S_DO_MERGE_CHECKED'		=> $s_do_merge_checked ? ' checked="checked"' : '',
 
 	'ALLOWED_EXTENSIONS_JSON'	=> json::encode(get_allowed_extension_sizes($forum_id)),
 

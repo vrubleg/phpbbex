@@ -1446,6 +1446,8 @@ if (isset($captcha) && $captcha->is_solved() !== false)
 $form_enctype = (@ini_get('file_uploads') == '0' || strtolower(@ini_get('file_uploads')) == 'off' || !$config['allow_attachments'] || !$auth->acl_get('u_attach') || !$auth->acl_get('f_attach', $forum_id)) ? '' : ' enctype="multipart/form-data"';
 add_form_key('posting');
 
+$s_do_merge_allowed = $user->data['is_registered'] && ($mode == 'reply' || $mode == 'quote') && $post_data['topic_last_poster_id'] == $user->data['user_id'];
+$s_do_merge_checked = $s_do_merge_allowed && (($current_time - $post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
 
 // Start assigning vars for main posting page ...
 $template->assign_vars(array(
@@ -1505,6 +1507,9 @@ $template->assign_vars(array(
 
 	'S_FIRST_POST_SHOW_ALLOWED'		=> $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),
 	'S_FIRST_POST_SHOW_CHECKED'		=> ($first_post_show_checked) ? ' checked="checked"' : '',
+
+	'S_DO_MERGE_ALLOWED'			=> $s_do_merge_allowed,
+	'S_DO_MERGE_CHECKED'			=> $s_do_merge_checked ? ' checked="checked"' : '',
 
 	'ALLOWED_EXTENSIONS_JSON'		=> json::encode(get_allowed_extension_sizes($forum_id)),
 

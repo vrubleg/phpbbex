@@ -249,7 +249,7 @@ $lang = array_merge($lang, array(
 	'FIRST_POST_SHOW_EXPLAIN'	=> 'Show on top of every page',
 
 	// Posts merging
-	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
+	'DO_MERGE'					=> 'Merge with the last message',
 
 	// Smiles
 	'SMILE_HI'					=> 'Hi!',

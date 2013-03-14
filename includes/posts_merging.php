@@ -40,10 +40,18 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 	}
 
 	// Do merging
-	if (!request_var('do_not_merge', false)
-		&& (!$merge_post_data['post_edit_locked'] && ($current_time - $merge_post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600)
-		&& ($merge_post_data['poster_id'] == $user->data['user_id'])
-		&& ($user->data['user_id'] != ANONYMOUS && $user->data['is_registered'] || $user->data['user_id'] == ANONYMOUS && request_var($config['cookie_name'] . '_bid', '', false, true) == $merge_post_data['poster_browser_id']))
+	$do_merge = ($merge_post_data['poster_id'] == $user->data['user_id']) && !$merge_post_data['post_edit_locked'];
+	if ($user->data['is_registered'])
+	{
+		$do_merge = $do_merge && request_var('do_merge', false);
+	}
+	else
+	{
+		$do_merge = $do_merge && ($current_time - $merge_post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600;
+		$do_merge = $do_merge && request_var($config['cookie_name'] . '_bid', '', false, true) == $merge_post_data['poster_browser_id'];
+	}
+
+	if ($do_merge)
 	{
 		$message_parser = new parse_message();
 
@@ -55,7 +63,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		$merge_post_data['post_text'] = html_entity_decode($message_parser->message,  ENT_COMPAT, 'UTF-8');
 		unset($message_parser);
 
-		//Handle with inline attachments
+		// Handle with inline attachments
 		if (sizeof($data['attachment_data']))
 		{
 			for($i = 0; $i < sizeof($data['attachment_data']); $i++)
@@ -107,7 +115,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		$separator = "\n\n[upd=" . implode(':', $time_parts) . ']' . $subject . "[/upd]\n";
 		$merge_post_data['post_text'] = $merge_post_data['post_text'] . $separator . $addon_for_merge;
 
-		//Prepare post for submit
+		// Prepare post for submit
 		$options = '';
 		generate_text_for_storage($merge_post_data['post_text'], $merge_post_data['bbcode_uid'], $merge_post_data['bbcode_bitfield'], $options, $merge_post_data['enable_bbcode'], $merge_post_data['enable_magic_url'], $merge_post_data['enable_smilies']);
 
