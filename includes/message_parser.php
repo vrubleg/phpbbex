@@ -1173,7 +1173,7 @@ class parse_message extends bbcode_firstpass
 
 		$this->mode = $mode;
 
-		foreach (array('chars', 'smilies', 'urls', 'font_size', 'img_height', 'img_width') as $key)
+		foreach (array('chars', 'smilies', 'urls', 'imgs', 'font_size', 'img_height', 'img_width') as $key)
 		{
 			if (!isset($config['max_' . $mode . '_' . $key]))
 			{

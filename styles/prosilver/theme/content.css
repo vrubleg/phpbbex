@@ -518,7 +518,7 @@ dl.codebox code {
 	max-height: 200px;
 	white-space: normal;
 	padding-top: 5px;
-	font: 0.9em Monaco, "Andale Mono","Courier New", Courier, mono;
+	font: 0.9em "Courier New", Courier, monospace;
 	line-height: 1.3em;
 	color: #8b8b8b;
 	margin: 2px 0;
@@ -530,6 +530,11 @@ dl.codebox code {
 .syntaxhtml		{ color: #000000; }
 .syntaxkeyword	{ color: #585858; }
 .syntaxstring	{ color: #a7a7a7; }
+
+.content code
+{
+	font-family: "Courier New", Courier, monospace;
+}
 
 /* Spoiler block */
 dl.spoilerbox
