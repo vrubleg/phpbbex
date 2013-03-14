@@ -2141,7 +2141,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 						'poll_option_text'	=> (string) $poll['poll_options'][$i]
 					);
 				}
-				else if ($poll['poll_options'][$i] != $cur_poll_options[$i])
+				else if ($poll['poll_options'][$i] != $cur_poll_options[$i]['poll_option_text'])
 				{
 					$sql = 'UPDATE ' . POLL_OPTIONS_TABLE . "
 						SET poll_option_text = '" . $db->sql_escape($poll['poll_options'][$i]) . "'
@@ -2160,10 +2160,14 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				WHERE poll_option_id > ' . sizeof($poll['poll_options']) . '
 					AND topic_id = ' . $data['topic_id'];
 			$db->sql_query($sql);
+			$sql = 'DELETE FROM ' . POLL_VOTES_TABLE . '
+				WHERE poll_option_id > ' . sizeof($poll['poll_options']) . '
+					AND topic_id = ' . $data['topic_id'];
+			$db->sql_query($sql);
 		}
 
 		// If edited, we would need to reset votes (since options can be re-ordered above, you can't be sure if the change is for changing the text or adding an option
-		if ($mode == 'edit' && sizeof($poll['poll_options']) != sizeof($cur_poll_options))
+		if ($mode == 'edit' && sizeof($poll['poll_options']) < sizeof($cur_poll_options))
 		{
 			$db->sql_query('DELETE FROM ' . POLL_VOTES_TABLE . ' WHERE topic_id = ' . $data['topic_id']);
 			$db->sql_query('UPDATE ' . POLL_OPTIONS_TABLE . ' SET poll_option_total = 0 WHERE topic_id = ' . $data['topic_id']);
