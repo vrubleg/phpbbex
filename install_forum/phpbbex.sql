@@ -102,6 +102,13 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('search_highlight_
 -- New phpBBex ACL rights
 REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignoreedittime', 1);
 REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_ignorefpedittime', 1);
+REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_canplus', 1);
+REPLACE INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_canminus', 1);
+REPLACE INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 5, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option IN ('u_canplus, u_canminus');
+REPLACE INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 6, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option IN ('u_canplus, u_canminus');
+REPLACE INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 7, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option IN ('u_canplus, u_canminus');
+REPLACE INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 8, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option IN ('u_canplus, u_canminus');
+REPLACE INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 9, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option IN ('u_canplus, u_canminus');
 
 -- Reset options for all users (new dateformat, enable quick reply, etc)
 UPDATE phpbb_users SET user_options = 233343, user_dateformat = '|d.m.Y|{, H:i}';

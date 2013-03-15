@@ -53,12 +53,12 @@ class module_rating
 			switch ($rate)
 			{
 				case 'minus':
-					$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true);
+					$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true) && $auth->acl_get('u_canminus');
 					if ($can) $user_rate['rate']--;
 					if ($user_rate['rate'] < -1) $user_rate['rate'] = -1;
 				break;
 				case 'plus':
-					$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true);
+					$can = $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true) && $auth->acl_get('u_canplus');
 					if ($can) $user_rate['rate']++;
 					if ($user_rate['rate'] > 1) $user_rate['rate'] = 1;
 				break;
@@ -171,8 +171,8 @@ class module_rating
 
 			$result = array(
 				'status'				=> 'ok',
-				'user_can_minus'		=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true),
-				'user_can_plus'			=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true),
+				'user_can_minus'		=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true) && $auth->acl_get('u_canminus'),
+				'user_can_plus'			=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true) && $auth->acl_get('u_canplus'),
 				'user_rate'				=> $user_rate['rate'],
 				'post_rating'			=> ($config['rate_no_positive'] ? 0 : $post_rating_positive) - ($config['rate_no_negative'] ? 0 : $post_rating_negative),
 				'post_rating_negative'	=> $post_rating_negative,
