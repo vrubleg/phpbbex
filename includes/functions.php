@@ -4582,6 +4582,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 
 		'U_MCP'					=> ($auth->acl_get('m_') || $auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", false, true, $user->session_id) : '',
 		'U_FAQ'					=> append_sid("{$phpbb_root_path}faq.$phpEx"),
+		'U_BBCODE_GUIDE'		=> append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=bbcode'),
 		'U_RULES'				=> append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=rules'),
 		'U_SEARCH_SELF'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch'),
 		'U_SEARCH_SELF_TOPICS'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch&amp;sf=firstpost'),
