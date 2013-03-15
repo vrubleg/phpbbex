@@ -43,8 +43,8 @@ hr.dashed {
 /* Round cornered boxes and backgrounds
 ---------------------------------------- */
 .headerbar {
-	background-color: #092a5d;
-	background-image: url("{T_THEME_PATH}/images/bg_header.gif");
+	background-color: #0a3e89;
+	background-image: url("{T_THEME_PATH}/images/bg_header.png");
 	color: #FFFFFF;
 }
 
@@ -54,7 +54,7 @@ hr.dashed {
 
 .forabg, .forumbg {
 	background-color: #092147;
-	background-image: url("{T_THEME_PATH}/images/bg_list.gif");
+	background-image: url("{T_THEME_PATH}/images/bg_list.png");
 }
 
 .new-year .headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.png"); }

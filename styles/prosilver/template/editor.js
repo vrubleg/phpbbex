@@ -170,7 +170,7 @@ function bbfontstyle(bbopen, bbclose, event)
 		case 'list':
 			if (event.ctrlKey)
 			{
-				var start = prompt(lang.enter_list_start, '');
+				var start = prompt(lang.enter_list_start, '1');
 				if (start === null) return;
 				bbopen = '[list=' + start + ']';
 			}
