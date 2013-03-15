@@ -20,7 +20,7 @@ class module_rating
 
 	function rate_post($post_id, $user_id, $rate, $token)
 	{
-		global $db, $config;
+		global $db, $config, $auth;
 	
 		response::type('application/json');
 		response::expire(false);
