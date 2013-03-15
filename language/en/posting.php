@@ -63,7 +63,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_S_HELP'				=> 'Font colour: [color=red]text[/color] or [color=#FF0000]text[/color]',
 	'BBCODE_SPOILER_HELP'		=> 'Hidden text: [spoiler]text[/spoiler] or [spoiler=&quot;title&quot;]text[/spoiler] (hold ctrl to enter a title)',
 	'BBCODE_STRIKE_HELP'		=> 'Strikethrough text: [s]text[/s]',
-	'BBCODE_TT_HELP'			=> 'Teletype Text: [tt]text[/tt]',
+	'BBCODE_TT_HELP'			=> 'Monospaced font: [tt]text[/tt]',
 	'BBCODE_U_HELP'				=> 'Underline text: [u]text[/u]',
 	'BBCODE_W_HELP'				=> 'Insert URL: [url]http://url[/url] or [url=http://url]URL text[/url]',
 	'BBCODE_Y_HELP'				=> 'List: Add list element',

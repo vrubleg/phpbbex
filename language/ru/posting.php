@@ -63,7 +63,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_S_HELP'				=> 'Цвет шрифта: [color=red]текст[/color] или [color=#FF0000]текст[/color]',
 	'BBCODE_SPOILER_HELP'		=> 'Скрытый текст: [spoiler]текст[/spoiler] или [spoiler=&quot;заголовок&quot;]текст[/spoiler] (держите ctrl для ввода заголовка)',
 	'BBCODE_STRIKE_HELP'		=> 'Зачёркнутый текст: [s]текст[/s]',
-	'BBCODE_TT_HELP'			=> 'Моноширный текст: [tt]текст[/tt]',
+	'BBCODE_TT_HELP'			=> 'Моноширный шрифт: [tt]текст[/tt]',
 	'BBCODE_U_HELP'				=> 'Подчёркнутый текст: [u]текст[/u]',
 	'BBCODE_W_HELP'				=> 'Вставить ссылку: [url]http://url[/url] или [url=http://url]текст[/url]',
 	'BBCODE_Y_HELP'				=> 'Список: добавить элемент списка',
