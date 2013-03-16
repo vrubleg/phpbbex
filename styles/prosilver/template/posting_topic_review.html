@@ -27,7 +27,7 @@
 			</ul>
 			<!-- ENDIF -->
 			<!-- IF topic_review_row.POST_SUBJECT --><h3><a href="#pr{topic_review_row.POST_ID}">{topic_review_row.POST_SUBJECT}</a></h3><!-- ENDIF -->
-			<p class="author"><!-- IF S_IS_BOT -->{topic_review_row.MINI_POST_IMG}<!-- ELSE --><a href="{topic_review_row.U_MINI_POST}">{topic_review_row.MINI_POST_IMG}</a><!-- ENDIF --> {L_POST_BY_AUTHOR} <strong><a href="#postform" onclick="insert_text('[b]{topic_review_row.POSTER_QUOTE}[/b], '); return false;"<!-- IF topic_review_row.POST_AUTHOR_COLOUR --> style="color: {topic_review_row.POST_AUTHOR_COLOUR};"<!-- ENDIF -->>{topic_review_row.POST_AUTHOR}</a></strong> &raquo; {topic_review_row.POST_DATE}  </p>
+			<p class="author"><!-- IF S_IS_BOT -->{topic_review_row.MINI_POST_IMG}<!-- ELSE --><a href="{topic_review_row.U_MINI_POST}">{topic_review_row.MINI_POST_IMG}</a><!-- ENDIF --> {L_POST_BY_AUTHOR} <strong><a href="#postform" onclick="insert_text('[b]{topic_review_row.POSTER_QUOTE}[/b], '); return false;"<!-- IF topic_review_row.POST_AUTHOR_COLOUR --> style="color: {topic_review_row.POST_AUTHOR_COLOUR};"<!-- ENDIF -->>{topic_review_row.POST_AUTHOR}</a></strong> &raquo; {topic_review_row.POST_DATE}</p>
 			<div class="content">{topic_review_row.MESSAGE}</div>
 
 			<!-- IF topic_review_row.S_HAS_ATTACHMENTS -->
