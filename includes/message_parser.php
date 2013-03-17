@@ -114,7 +114,7 @@ class bbcode_firstpass extends bbcode
 		$this->bbcodes = array(
 			'tt'			=> array('bbcode_id' => 14,	'regexp' => array('#\[tt\](.*?)\[/tt\]#uise' => "\$this->bbcode_teletype('\$1')")),
 			'code'			=> array('bbcode_id' => 8,	'regexp' => array('#\[code(?:=([a-z]+))?\](.+\[/code\])#uise' => "\$this->bbcode_code('\$1', '\$2')")),
-			'upd'			=> array('bbcode_id' => 15,	'regexp' => array('#\[upd(?:=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}))?\](.*?)\[/upd\]#uise' => "\$this->bbcode_upd('\$1', '\$2')")),
+			'upd'			=> array('bbcode_id' => 15,	'regexp' => array('#\[upd(?:=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}))?\](?:(.*?)\[/upd\])?#uie' => "\$this->bbcode_upd('\$1', '\$2')")),
 			'quote'			=> array('bbcode_id' => 0,	'regexp' => array('#\[quote(?:=&quot;(.*?)&quot;)?\](.+)\[/quote\]#uise' => "\$this->bbcode_quote('\$0', 'quote')")),
 			'spoiler'		=> array('bbcode_id' => 16,	'regexp' => array('#\[spoiler(?:=&quot;(.*?)&quot;)?\](.+)\[/spoiler\]#uise' => "\$this->bbcode_quote('\$0', 'spoiler')")),
 			'attachment'	=> array('bbcode_id' => 12,	'regexp' => array('#\[attachment=([0-9]+)\](.*?)\[/attachment\]#uise' => "\$this->bbcode_attachment('\$1', '\$2')")),
