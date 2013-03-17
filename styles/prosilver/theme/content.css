@@ -850,6 +850,11 @@ fieldset.polls dd div {
 	color: #000000;
 }
 
+.postprofile img
+{
+	max-width: 100%;
+}
+
 .online {
 	background-image: none;
 	background-position: 100% 0;
