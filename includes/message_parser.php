@@ -337,7 +337,10 @@ class bbcode_firstpass extends bbcode
 		else
 		{
 			$time = (int) $time;
-			if ($time < 0) $time = time();
+			if ($time < 1000000000 || $time > time())
+			{
+				$time = time();
+			}
 		}
 
 		// This ugly hardcode taken from the bbcode_code
