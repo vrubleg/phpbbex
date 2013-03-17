@@ -87,12 +87,12 @@ hr.dashed {
 
 span.corners-top, span.corners-bottom
 {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAAJFBMVEUAAAD///////////////////////////////////////////+0CY3pAAAAC3RSTlMA+S0G5JOQPzA8OdVeULYAAAA3SURBVHheLckxDQAgDEXBp4EEZiQgBQlIIKkBJCABEd1qjp/AcNMR2fAFCeiypX1HBu+8QpR5AbD7BvGZQdoNAAAAAElFTkSuQmCC");
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMCAQAAADrXgSlAAAAPklEQVR4AWP4DwI//0/+b/+fDcR58t+AAQKAorpACsqZDCTgHBtkDhtOjiUyZwKYwjQabCmMC3POhP/2DAwAv4QqjuymjfwAAAAASUVORK5CYII=");
 }
 
 span.corners-top span, span.corners-bottom span
 {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMBAMAAACzedEdAAAAJ1BMVEUAAAD///////////////////////////////////////////////+uPUo5AAAADHRSTlMA+S0G5JM8kAw/OTDyHrdaAAAAMUlEQVR4XiXJMQ0AIAxFwRcIhYAKZOChC1Lqs6L4CcNNx7kJy4EtTUyqDJnS/xXHIh9XjAOovEUBDAAAAABJRU5ErkJggg==");
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMCAQAAADrXgSlAAAAPklEQVR4AWP4z/bf/v/k/z//AwEDFBr8fwLkwKHu/58MSNzJyBwbZA4bMocHmWOJzJmA1WhdmKU2/ydAnAMAkNxXZFneSC8AAAAASUVORK5CYII=");
 }
 
 body.no-rounded-corners span.corners-top, body.no-rounded-corners span.corners-bottom,
@@ -659,11 +659,11 @@ ul.cplist {
 /* CP tabbed menu
 ----------------------------------------*/
 #tabs a {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABpCAMAAABF/buJAAAAUVBMVEXh6/LL3ezM3u3b7PnQ4vDT5PLY6ffO4O/P4fDW5/Xh8f7i8v/V5vTU5fPa6vjg8P3L3evy+f/e7vzN3u3AydXO3+7S4/H////K3Ou6zNnd7fvf1ovSAAABEklEQVR42u3cyVEDURBEwWIHLUijWf6A/4YiFzjUBfKZkFHHjs4Y07yoVEaWTCqVaZmOapU9t4NaZfm+qFaWw0217utVryyXJ9XK/qleWT5fVSv7h3pl306qlf2sXvf1vqhWrpt6Zd6eVSvru3plXd9UK9uqXtlm9cp5flStZL8+qFVOV/W6r1e98OLFK7x48QovXrzCi/f/8g4Vy5jWL7XKYNDktd0qLwK8eIUXL17hxYtXePHiFV68wosXr/DixSu8ePEKL17hxYtXePHi1a94HeiXj/+PB2+Ma++RxwVCkfd4g1DkpVvlRYAXr/DixSu8ePEKL168wotXePHiFV68eIUXL17hxSu8ePEKL94/1w8pjIkXHGWrggAAAABJRU5ErkJggg==");
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABpCAMAAABF/buJAAAAUVBMVEXd7fve7vzg8P3h8f7i8v/b7Pna6vjY6ffW5/XV5vTU5fPT5PLS4/HQ4vDP4fDO4O/O3+7N3u3M3u3L3ezL3evK3Ovh6/Ly+f/////AydW6zNkzglzDAAAA30lEQVR4Ae3Qy2HVQAAEsHkfAgkGbHhr79J/odSQw5yQSlDmvI5FSea5zouSXOt60pJx3h60ZOVOTdbjRk1WKFr3LzVkvPWQ9fa1hoxvPWRs7zVkfPSQsX2vIa+thxzbjxqy/6Qn+/6rhmx7D9mOHvJx/K4h53j9aSHvrx5yjh7+2169etGrVy969epFr14yi8i89r8tZDooyu6gKAo+Q69evejVqxe9etGrVy969epFr1696NWLXr160atXL3r16kWvXjIpyryej9Ay76HneQs9n9kFAAAAAAAAAAAAgH9PW7Ujl05A0wAAAABJRU5ErkJggg==");
 }
 
 #tabs a span {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAABpCAMAAADBcsnLAAAASFBMVEXM3u3a6vjP4fDL3ezW5/Xb7PnT5PLO4O/U5fPQ4vDY6ffV5vTO3+7S4/Hg8P3e7vzL3evN3u3h8f7h6/L////K3Ovd7fu6zNk9c+hJAAAAhklEQVQoz+XStxHEMAxE0T0vQwtD9N/pkaBUgiK95A/SHcDMColAhFhZkImEjUBEKXFB6ogN2RnakAwfZ3h0Gys2Z3g7xe4UyxAVX6eIrmB1Fc9hDfi5gOAiqosYal3wGgqjuB3q+LLKhL6PVZo1O1uP2u167jK+gGZzSzL/otFszsfd7tI/cAY5R2wF41wAAAAASUVORK5CYII=");
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAABpCAMAAADBcsnLAAAASFBMVEW6zNnK3OvL3evL3ezM3u3N3u3O3+7O4O/P4fDQ4vDS4/HT5PLU5fPV5vTW5/XY6ffa6vjb7Pnd7fve7vzg8P3h8f7h6/L///8umdzTAAAAe0lEQVR4AeXFQULEIBBFwQdKnDCJUaC7739T4ecMrlKbAsgWQYR58qCbhWOY2RieGZM5dIG2DPgV+JkuT1wC35I4JXEsNfGWRJXMLoXXsm98ycYmlSKVz6mUg48lO1lOkvi/HTeWYhrQQOGp4kZrbdh9b0NPhupdT0/5Dw5TGs2lj9KUAAAAAElFTkSuQmCC");
 	color: #536482;
 }
 
@@ -704,7 +704,7 @@ ul.cplist {
 #navigation a {
 	color: #333;
 	background-color: #B2C2CF;
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAAAECAMAAACwRo2bAAAAYFBMVEW8zNq7y9m6y9nH2ei1xtPK3Ou6ytjA0d/B0uC2x9S0xdK6y9i/0N62xtS2xtO4yNa5ydfI2unJ2+rE1uS3yNW4yda+z93C1OK3x9W5ytfG2Oa7zNq9zty1xdK8zdu0xNHr3nKCAAAAVUlEQVQoz+3OhQ2AMBAAwLrj7vtvyX9bwgwk3ARHrpdz7siEECUogLV2jnpUgQHVYImUUt57xhilW0LOx56NKISgtTbGTFGH1oRz3oAWSSnJv/r46gbJAy1dkwsXtQAAAABJRU5ErkJggg==");
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAAAECAIAAAAI+ur+AAAAVElEQVR4Ae2Ruw2AUAzE4tt/HEZgATaiocERCCqEFDf5mLwrYFm3ugeO+u4Dekt/wzc8V7ZWnAvVQHtZKe899oZEt0n6KCAOug5N/ZkhnyUP8/+GHcXiApk1ZFm6AAAAAElFTkSuQmCC");
 }
 
 #navigation a:hover {
