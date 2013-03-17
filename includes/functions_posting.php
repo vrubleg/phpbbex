@@ -1168,7 +1168,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 
 		if ($row['bbcode_bitfield'])
 		{
-			$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield']);
+			$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield'], $row['post_time']);
 		}
 
 		$message = bbcode_nl2br($message);

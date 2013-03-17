@@ -2016,7 +2016,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 
 		if ($row['bbcode_bitfield'])
 		{
-			$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield']);
+			$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield'], $row['message_time']);
 		}
 
 		$message = bbcode_nl2br($message);

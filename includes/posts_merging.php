@@ -75,44 +75,9 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		// Make sure the message is safe
 		set_var($merge_post_data['post_text'], $merge_post_data['post_text'], 'string', true);
 
-		// Calculate last merge time
-		$merge_time = $merge_post_data['post_time'];
-		$merge_upds = array();
-		if (preg_match_all('#\[upd=(\d+(?:[:]\d+){0,3})\](.*?)\[/upd\]#uis', $merge_post_data['post_text'], $merge_upds))
-		{
-			foreach ($merge_upds[1] as $merge_upd)
-			{
-				$merge_upd = explode(':', $merge_upd);
-				$merge_time += array_pop($merge_upd);
-				$merge_time += array_pop($merge_upd) * 60;
-				$merge_time += array_pop($merge_upd) * 3600;
-				$merge_time += array_pop($merge_upd) * 86400;
-			}
-			
-			$merge_time = min($merge_time, $current_time);
-		}
-
-		// Convert it into DD:HH:MM:SS format
-		$time_delta = $current_time - $merge_time;
-		$time_parts = array();
-		if (($time_part = (int)($time_delta / 86400)) > 0)
-		{
-			$time_parts[] = $time_part;
-			$time_delta = $time_delta % 86400;
-		}
-		if (($time_part = (int)($time_delta / 3600)) > 0)
-		{
-			$time_parts[] = str_pad($time_part, 2, '0', STR_PAD_LEFT);
-			$time_delta = $time_delta % 3600;
-		}
-		$time_part = (int)($time_delta / 60);
-		$time_parts[] = str_pad($time_part, 2, '0', STR_PAD_LEFT);
-		$time_delta = $time_delta % 60;
-		$time_parts[] = str_pad($time_delta, 2, '0', STR_PAD_LEFT);
-
 		// Merge posts
 		$subject = $post_data['post_subject'];
-		$separator = "\n\n[upd=" . implode(':', $time_parts) . ']' . $subject . "[/upd]\n";
+		$separator = "\n\n[upd=" . $current_time . ']' . $subject . "[/upd]\n";
 		$merge_post_data['post_text'] = $merge_post_data['post_text'] . $separator . $addon_for_merge;
 
 		// Prepare post for submit

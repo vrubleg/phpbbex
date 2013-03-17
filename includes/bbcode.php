@@ -26,6 +26,7 @@ class bbcode
 	var $bbcode_bitfield = '';
 	var $bbcode_cache = array();
 	var $bbcode_template = array();
+	var $post_time = 0;
 
 	var $bbcodes = array();
 
@@ -48,7 +49,7 @@ class bbcode
 	/**
 	* Second pass bbcodes
 	*/
-	function bbcode_second_pass(&$message, $bbcode_uid = '', $bbcode_bitfield = false)
+	function bbcode_second_pass(&$message, $bbcode_uid = '', $bbcode_bitfield = false, $post_time = 0)
 	{
 		if ($bbcode_uid)
 		{
@@ -73,6 +74,9 @@ class bbcode
 
 			return;
 		}
+
+		// Post time for the [upd] bbcode
+		$this->post_time = (int) $post_time;
 
 		$str = array('search' => array(), 'replace' => array());
 		$preg = array('search' => array(), 'replace' => array());
@@ -366,7 +370,7 @@ class bbcode
 				case 15:
 					$this->bbcode_cache[$bbcode_id] = array(
 						'preg' => array(
-							'#\[upd=(\d+(?:[:]\d+){0,3}):$uid\](.*?)\[/upd:$uid\]#e'	=> "\$this->bbcode_second_pass_upd('\$1', '\$2')",
+							'#\[upd=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}):$uid\](.*?)\[/upd:$uid\]#e' => "\$this->bbcode_second_pass_upd('\$1', '\$2')",
 						)
 					);
 				break;
@@ -629,15 +633,41 @@ class bbcode
 		// seem to slash anything else
 		$time = str_replace('\"', '"', $time);
 		$subj = str_replace('\"', '"', $subj);
+		$result = '';
 
-		$parts = explode(':', $time);
-		$seconds = (int) array_pop($parts);
-		$seconds += array_pop($parts) * 60;
-		$seconds += array_pop($parts) * 3600;
-		$seconds += array_pop($parts) * 86400;
+		if ($time{0} !== '+')
+		{
+			$time = (int) $time;
+			if (!$this->post_time || $time - $this->post_time < 0)
+			{
+				$result = $user->format_date($time, false, true);
+				$result = str_replace('$1', sprintf($user->lang['UPD_MERGED'], $result), $tpls['upd_merged']);
+			}
+			else
+			{
+				$result = time_delta::get_verbal($this->post_time, $time);
+				$result = str_replace('$1', sprintf($user->lang['UPD_MERGED_AFTER'], $result), $tpls['upd_merged']);
+			}
+			$this->post_time = $time;
+		}
+		else
+		{
+			$parts = explode(':', $time);
+			$seconds = (int) array_pop($parts);
+			$seconds += array_pop($parts) * 60;
+			$seconds += array_pop($parts) * 3600;
+			$seconds += array_pop($parts) * 86400;
 
-		$result = time_delta::get_verbal(0, $seconds);
-		$result = str_replace('$1', sprintf($user->lang['UPD_MERGED'], $result), $tpls['upd_merged']);
+			if ($this->post_time)
+			{
+				$this->post_time += $seconds;
+			}
+
+			$result = time_delta::get_verbal(0, $seconds);
+			$result = str_replace('$1', sprintf($user->lang['UPD_MERGED_AFTER'], $result), $tpls['upd_merged']);
+
+		}
+
 		if (trim($subj))
 		{
 			$result .= str_replace('$1', $subj, $tpls['upd_subject']);

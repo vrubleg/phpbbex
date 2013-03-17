@@ -133,7 +133,7 @@ class mcp_queue
 				{
 					include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 					$bbcode = new bbcode($post_info['bbcode_bitfield']);
-					$bbcode->bbcode_second_pass($message, $post_info['bbcode_uid'], $post_info['bbcode_bitfield']);
+					$bbcode->bbcode_second_pass($message, $post_info['bbcode_uid'], $post_info['bbcode_bitfield'], $post_info['post_time']);
 				}
 
 				$message = bbcode_nl2br($message);

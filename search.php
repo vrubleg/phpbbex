@@ -1014,7 +1014,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					// Second parse bbcode here
 					if ($row['bbcode_bitfield'])
 					{
-						$bbcode->bbcode_second_pass($row['post_text'], $row['bbcode_uid'], $row['bbcode_bitfield']);
+						$bbcode->bbcode_second_pass($row['post_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], !empty($row['post_time']) ? $row['post_time'] : 0);
 					}
 
 					$row['post_text'] = bbcode_nl2br($row['post_text']);

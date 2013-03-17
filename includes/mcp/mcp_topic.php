@@ -216,7 +216,7 @@ function mcp_topic_view($id, $mode, $action)
 
 		if ($row['bbcode_bitfield'])
 		{
-			$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield']);
+			$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield'], $row['post_time']);
 		}
 
 		$message = bbcode_nl2br($message);

@@ -297,7 +297,7 @@ class mcp_warn
 			include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 
 			$bbcode = new bbcode($user_row['bbcode_bitfield']);
-			$bbcode->bbcode_second_pass($message, $user_row['bbcode_uid'], $user_row['bbcode_bitfield']);
+			$bbcode->bbcode_second_pass($message, $user_row['bbcode_uid'], $user_row['bbcode_bitfield'], $user_row['post_time']);
 		}
 
 		$message = bbcode_nl2br($message);
@@ -534,7 +534,7 @@ class mcp_warn
 				include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 
 				$bbcode = new bbcode($post_row['bbcode_bitfield']);
-				$bbcode->bbcode_second_pass($message, $post_row['bbcode_uid'], $post_row['bbcode_bitfield']);
+				$bbcode->bbcode_second_pass($message, $post_row['bbcode_uid'], $post_row['bbcode_bitfield'], $post_row['post_time']);
 			}
 
 			$message = bbcode_nl2br($message);

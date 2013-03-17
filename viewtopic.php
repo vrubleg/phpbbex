@@ -1526,7 +1526,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 	// Second parse bbcode here
 	if ($row['bbcode_bitfield'])
 	{
-		$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield']);
+		$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield'], $row['post_time']);
 	}
 
 	$message = bbcode_nl2br($message);

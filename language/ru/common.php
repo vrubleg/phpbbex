@@ -898,7 +898,8 @@ $lang = array_merge($lang, array(
 	'TOTAL_TOPICS'				=> 'Всего тем',
 
 	// Posts merging
-	'UPD_MERGED'				=> 'Добавлено спустя %s:',
+	'UPD_MERGED_AFTER'			=> 'Добавлено спустя %s:',
+	'UPD_MERGED'				=> 'Добавлено %s:',
 
 	// Time delta
 	'D_SECONDS'					=> array('секунду', 'секунды', 'секунд'),
