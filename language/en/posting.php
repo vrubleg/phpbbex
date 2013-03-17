@@ -63,7 +63,7 @@ $lang = array_merge($lang, array(
 	'BBCODE_S_HELP'				=> 'Font colour: [color=red]text[/color] or [color=#FF0000]text[/color]',
 	'BBCODE_SPOILER_HELP'		=> 'Hidden text: [spoiler]text[/spoiler] or [spoiler=&quot;title&quot;]text[/spoiler] (hold ctrl to enter a title)',
 	'BBCODE_STRIKE_HELP'		=> 'Strikethrough text: [s]text[/s]',
-	'BBCODE_TT_HELP'			=> 'Teletype Text: [tt]text[/tt]',
+	'BBCODE_TT_HELP'			=> 'Monospaced font: [tt]text[/tt]',
 	'BBCODE_U_HELP'				=> 'Underline text: [u]text[/u]',
 	'BBCODE_W_HELP'				=> 'Insert URL: [url]http://url[/url] or [url=http://url]URL text[/url]',
 	'BBCODE_Y_HELP'				=> 'List: Add list element',
@@ -143,7 +143,7 @@ $lang = array_merge($lang, array(
 
 	'NOTIFY_REPLY'				=> 'Notify me when a reply is posted',
 	'NOT_UPLOADED'				=> 'File could not be uploaded.',
-	'NO_DELETE_POLL_OPTIONS'	=> 'You cannot delete existing poll options.',
+	'NO_DELETE_POLL_OPTIONS'	=> 'You cannot delete existing poll options without resetting previous votes.',
 	'NO_PM_ICON'				=> 'No PM icon',
 	'NO_POLL_TITLE'				=> 'You have to enter a poll title.',
 	'NO_POST'					=> 'The requested post does not exist.',
@@ -154,13 +154,14 @@ $lang = array_merge($lang, array(
 	'PHP_SIZE_OVERRUN'			=> 'The attachment’s file size is too large, the maximum upload size is %1$d %2$s.<br />Please note this is set in php.ini and cannot be overridden.',
 	'PLACE_INLINE'				=> 'Place inline',
 	'POLL_DELETE'				=> 'Delete poll',
+	'POLL_RESET'				=> 'Reset all previous votes',
 	'POLL_FOR'					=> 'Run poll for',
 	'POLL_FOR_EXPLAIN'			=> 'Enter 0 or leave blank for a never ending poll.',
 	'POLL_MAX_OPTIONS'			=> 'Options per user',
 	'POLL_MAX_OPTIONS_EXPLAIN'	=> 'This is the number of options each user may select when voting.',
 	'POLL_OPTIONS'				=> 'Poll options',
 	'POLL_OPTIONS_EXPLAIN'		=> 'Place each option on a new line. You may enter up to <strong>%d</strong> options.',
-	'POLL_OPTIONS_EDIT_EXPLAIN'	=> 'Place each option on a new line. You may enter up to <strong>%d</strong> options. If you remove or add options all previous votes will be reset.',
+	'POLL_OPTIONS_EDIT_EXPLAIN'	=> 'Place each option on a new line. You may enter up to <strong>%d</strong> options. If you remove options you have to reset all previous votes.',
 	'POLL_QUESTION'				=> 'Poll question',
 	'POLL_TITLE_TOO_LONG'		=> 'The poll title must contain fewer than 100 characters.',
 	'POLL_TITLE_COMP_TOO_LONG'	=> 'The parsed size of your poll title is too large, consider removing BBCodes or smilies.',
@@ -248,7 +249,7 @@ $lang = array_merge($lang, array(
 	'FIRST_POST_SHOW_EXPLAIN'	=> 'Show on top of every page',
 
 	// Posts merging
-	'DO_NOT_MERGE'				=> 'Don\'t merge with last message',
+	'DO_MERGE'					=> 'Merge with the last message',
 
 	// Smiles
 	'SMILE_HI'					=> 'Hi!',

@@ -667,7 +667,8 @@ if ($submit || $preview || $refresh)
 
 	$topic_lock			= (isset($_POST['lock_topic'])) ? true : false;
 	$post_lock			= (isset($_POST['lock_post'])) ? true : false;
-	$poll_delete		= (isset($_POST['poll_delete'])) ? true : false;
+	$poll_delete		= isset($_POST['poll_title']) && trim($_POST['poll_title']) === '' && isset($_POST['poll_option_text']) && trim($_POST['poll_option_text']) === '' || isset($_POST['poll_delete']);
+	$poll_reset			= isset($_POST['poll_reset']);
 	$topic_first_post_show = (isset($_POST['topic_first_post_show'])) ? true : false;
 
 	if ($submit)
@@ -681,8 +682,7 @@ if ($submit || $preview || $refresh)
 	}
 
 	// Delete Poll
-	if ($poll_delete && $mode == 'edit' && sizeof($post_data['poll_options']) &&
-		((!$post_data['poll_last_vote'] && $post_data['poster_id'] == $user->data['user_id'] && $auth->acl_get('f_delete', $forum_id)) || $auth->acl_get('m_delete', $forum_id)))
+	if ($poll_delete && $mode == 'edit' && $post_id == $post_data['topic_first_post_id'] && sizeof($post_data['poll_options']) && $auth->acl_get('f_poll', $forum_id))
 	{
 		if ($submit && check_form_key('posting'))
 		{
@@ -892,6 +892,7 @@ if ($submit || $preview || $refresh)
 		&& $auth->acl_get('f_poll', $forum_id))
 	{
 		$poll = array(
+			'poll_reset'		=> $poll_reset,
 			'poll_title'		=> $post_data['poll_title'],
 			'poll_length'		=> $post_data['poll_length'],
 			'poll_max_options'	=> $post_data['poll_max_options'],
@@ -911,11 +912,10 @@ if ($submit || $preview || $refresh)
 		$post_data['poll_options'] = (isset($poll['poll_options'])) ? $poll['poll_options'] : array();
 		$post_data['poll_title'] = (isset($poll['poll_title'])) ? $poll['poll_title'] : '';
 
-		/* We reset votes, therefore also allow removing options
-		if ($post_data['poll_last_vote'] && ($poll['poll_options_size'] < $orig_poll_options_size))
+		if (!$poll_reset && $post_data['poll_last_vote'] && ($poll['poll_options_size'] < $orig_poll_options_size))
 		{
 			$message_parser->warn_msg[] = $user->lang['NO_DELETE_POLL_OPTIONS'];
-		}*/
+		}
 	}
 	else if ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'] && $auth->acl_get('f_poll', $forum_id))
 	{
@@ -1446,6 +1446,8 @@ if (isset($captcha) && $captcha->is_solved() !== false)
 $form_enctype = (@ini_get('file_uploads') == '0' || strtolower(@ini_get('file_uploads')) == 'off' || !$config['allow_attachments'] || !$auth->acl_get('u_attach') || !$auth->acl_get('f_attach', $forum_id)) ? '' : ' enctype="multipart/form-data"';
 add_form_key('posting');
 
+$s_do_merge_allowed = $user->data['is_registered'] && ($mode == 'reply' || $mode == 'quote') && $post_data['topic_last_poster_id'] == $user->data['user_id'];
+$s_do_merge_checked = $s_do_merge_allowed && (($current_time - $post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
 
 // Start assigning vars for main posting page ...
 $template->assign_vars(array(
@@ -1506,6 +1508,9 @@ $template->assign_vars(array(
 	'S_FIRST_POST_SHOW_ALLOWED'		=> $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),
 	'S_FIRST_POST_SHOW_CHECKED'		=> ($first_post_show_checked) ? ' checked="checked"' : '',
 
+	'S_DO_MERGE_ALLOWED'			=> $s_do_merge_allowed,
+	'S_DO_MERGE_CHECKED'			=> $s_do_merge_checked ? ' checked="checked"' : '',
+
 	'ALLOWED_EXTENSIONS_JSON'		=> json::encode(get_allowed_extension_sizes($forum_id)),
 
 	'S_BBCODE_IMG'			=> $img_status,
@@ -1529,8 +1534,8 @@ if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_
 		'S_SHOW_POLL_BOX'		=> true,
 		'S_POLL_VOTE_CHANGE'	=> ($auth->acl_get('f_votechg', $forum_id) && $auth->acl_get('f_vote', $forum_id)),
 		'S_POLL_SHOW_VOTERS'	=> ($mode == 'post' || $mode == 'edit' && (empty($post_data['poll_options']) || !empty($post_data['poll_show_voters'])) || $auth->acl_get('a_')),
-		'S_POLL_DELETE'			=> ($mode == 'edit' && sizeof($post_data['poll_options']) && ((!$post_data['poll_last_vote'] && $post_data['poster_id'] == $user->data['user_id'] && $auth->acl_get('f_delete', $forum_id)) || $auth->acl_get('m_delete', $forum_id))),
-		'S_POLL_DELETE_CHECKED'	=> (!empty($poll_delete)) ? true : false,
+		'S_POLL_RESET'			=> ($mode == 'edit' && $orig_poll_options_size),
+		'S_POLL_RESET_CHECKED'	=> (!empty($poll_reset)) ? true : false,
 
 		'L_POLL_OPTIONS_EXPLAIN'	=> sprintf($user->lang['POLL_OPTIONS_' . (($mode == 'edit') ? 'EDIT_' : '') . 'EXPLAIN'], $config['max_poll_options']),
 

@@ -118,7 +118,7 @@ class mcp_pm_reports
 				{
 					include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 					$bbcode = new bbcode($pm_info['bbcode_bitfield']);
-					$bbcode->bbcode_second_pass($message, $pm_info['bbcode_uid'], $pm_info['bbcode_bitfield']);
+					$bbcode->bbcode_second_pass($message, $pm_info['bbcode_uid'], $pm_info['bbcode_bitfield'], $pm_info['message_time']);
 				}
 
 				$message = bbcode_nl2br($message);

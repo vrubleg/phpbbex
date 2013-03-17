@@ -128,6 +128,8 @@ $lang = array_merge($lang, array(
 	'acl_u_pm_img'		=> array('lang' => 'Может использовать тег [img] в ЛС', 'cat' => 'pm'),
 	'acl_u_pm_flash'	=> array('lang' => 'Может использовать тег [flash] в ЛС', 'cat' => 'pm'),
 
+	'acl_u_canplus'		=> array('lang' => 'Может ставить положительные оценки', 'cat' => 'misc'),
+	'acl_u_canminus'	=> array('lang' => 'Может ставить отрицательные оценки', 'cat' => 'misc'),
 	'acl_u_sendemail'	=> array('lang' => 'Может посылать email-сообщения', 'cat' => 'misc'),
 	'acl_u_sendim'		=> array('lang' => 'Может использовать систему мгновенных сообщений', 'cat' => 'misc'),
 	'acl_u_ignoreflood'	=> array('lang' => 'Может игнорировать флуд-контроль', 'cat' => 'misc'),

@@ -70,7 +70,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	// Second parse bbcode here
 	if ($message_row['bbcode_bitfield'])
 	{
-		$bbcode->bbcode_second_pass($message, $message_row['bbcode_uid'], $message_row['bbcode_bitfield']);
+		$bbcode->bbcode_second_pass($message, $message_row['bbcode_uid'], $message_row['bbcode_bitfield'], $message_row['message_time']);
 	}
 
 	// Always process smilies after parsing bbcodes

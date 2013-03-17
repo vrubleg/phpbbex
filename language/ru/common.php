@@ -99,7 +99,7 @@ $lang = array_merge($lang, array(
 	'BAN_TRIGGERED_BY_EMAIL'=> 'Доступ к конференции закрыт для вашего адреса email.',
 	'BAN_TRIGGERED_BY_IP'	=> 'Доступ к конференции закрыт для вашего IP-адреса.',
 	'BAN_TRIGGERED_BY_USER'	=> 'Доступ к конференции закрыт для вашей учётной записи.',
-	'BBCODE_GUIDE'			=> 'Руководство по BBCode',
+	'BBCODE_GUIDE'			=> 'Помощь по BBCode',
 	'BCC'					=> 'Скрытая копия',
 	'BIRTHDAYS'				=> 'Дни рождения',
 	'BOARD_BAN_PERM'		=> 'Вам закрыт доступ к конференции.<br /><br />Для получения дополнительной информации %2$sсвяжитесь с администратором конференции%3$s.',
@@ -898,7 +898,8 @@ $lang = array_merge($lang, array(
 	'TOTAL_TOPICS'				=> 'Всего тем',
 
 	// Posts merging
-	'UPD_MERGED'				=> 'Добавлено спустя %s:',
+	'UPD_MERGED_AFTER'			=> 'Добавлено спустя %s:',
+	'UPD_MERGED'				=> 'Добавлено %s:',
 
 	// Time delta
 	'D_SECONDS'					=> array('секунду', 'секунды', 'секунд'),

@@ -128,6 +128,8 @@ $lang = array_merge($lang, array(
 	'acl_u_pm_img'		=> array('lang' => 'Can use [img] BBCode tag in private messages', 'cat' => 'pm'),
 	'acl_u_pm_flash'	=> array('lang' => 'Can use [flash] BBCode tag in private messages', 'cat' => 'pm'),
 
+	'acl_u_canplus'		=> array('lang' => 'Can make positive ratings', 'cat' => 'misc'),
+	'acl_u_canminus'	=> array('lang' => 'Can make negative ratings', 'cat' => 'misc'),
 	'acl_u_sendemail'	=> array('lang' => 'Can send e-mails', 'cat' => 'misc'),
 	'acl_u_sendim'		=> array('lang' => 'Can send instant messages', 'cat' => 'misc'),
 	'acl_u_ignoreflood'	=> array('lang' => 'Can ignore flood limit', 'cat' => 'misc'),

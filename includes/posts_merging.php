@@ -40,10 +40,18 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 	}
 
 	// Do merging
-	if (!request_var('do_not_merge', false)
-		&& (!$merge_post_data['post_edit_locked'] && ($current_time - $merge_post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600)
-		&& ($merge_post_data['poster_id'] == $user->data['user_id'])
-		&& ($user->data['user_id'] != ANONYMOUS && $user->data['is_registered'] || $user->data['user_id'] == ANONYMOUS && request_var($config['cookie_name'] . '_bid', '', false, true) == $merge_post_data['poster_browser_id']))
+	$do_merge = ($merge_post_data['poster_id'] == $user->data['user_id']) && !$merge_post_data['post_edit_locked'];
+	if ($user->data['is_registered'])
+	{
+		$do_merge = $do_merge && request_var('do_merge', false);
+	}
+	else
+	{
+		$do_merge = $do_merge && ($current_time - $merge_post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600;
+		$do_merge = $do_merge && request_var($config['cookie_name'] . '_bid', '', false, true) == $merge_post_data['poster_browser_id'];
+	}
+
+	if ($do_merge)
 	{
 		$message_parser = new parse_message();
 
@@ -55,7 +63,7 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		$merge_post_data['post_text'] = html_entity_decode($message_parser->message,  ENT_COMPAT, 'UTF-8');
 		unset($message_parser);
 
-		//Handle with inline attachments
+		// Handle with inline attachments
 		if (sizeof($data['attachment_data']))
 		{
 			for($i = 0; $i < sizeof($data['attachment_data']); $i++)
@@ -67,47 +75,12 @@ if (!$post_need_approval && ($mode == 'reply' || $mode == 'quote') && $config['m
 		// Make sure the message is safe
 		set_var($merge_post_data['post_text'], $merge_post_data['post_text'], 'string', true);
 
-		// Calculate last merge time
-		$merge_time = $merge_post_data['post_time'];
-		$merge_upds = array();
-		if (preg_match_all('#\[upd=(\d+(?:[:]\d+){0,3})\](.*?)\[/upd\]#uis', $merge_post_data['post_text'], $merge_upds))
-		{
-			foreach ($merge_upds[1] as $merge_upd)
-			{
-				$merge_upd = explode(':', $merge_upd);
-				$merge_time += array_pop($merge_upd);
-				$merge_time += array_pop($merge_upd) * 60;
-				$merge_time += array_pop($merge_upd) * 3600;
-				$merge_time += array_pop($merge_upd) * 86400;
-			}
-			
-			$merge_time = min($merge_time, $current_time);
-		}
-
-		// Convert it into DD:HH:MM:SS format
-		$time_delta = $current_time - $merge_time;
-		$time_parts = array();
-		if (($time_part = (int)($time_delta / 86400)) > 0)
-		{
-			$time_parts[] = $time_part;
-			$time_delta = $time_delta % 86400;
-		}
-		if (($time_part = (int)($time_delta / 3600)) > 0)
-		{
-			$time_parts[] = str_pad($time_part, 2, '0', STR_PAD_LEFT);
-			$time_delta = $time_delta % 3600;
-		}
-		$time_part = (int)($time_delta / 60);
-		$time_parts[] = str_pad($time_part, 2, '0', STR_PAD_LEFT);
-		$time_delta = $time_delta % 60;
-		$time_parts[] = str_pad($time_delta, 2, '0', STR_PAD_LEFT);
-
 		// Merge posts
 		$subject = $post_data['post_subject'];
-		$separator = "\n\n[upd=" . implode(':', $time_parts) . ']' . $subject . "[/upd]\n";
+		$separator = "\n\n[upd=" . $current_time . ']' . $subject . "[/upd]\n";
 		$merge_post_data['post_text'] = $merge_post_data['post_text'] . $separator . $addon_for_merge;
 
-		//Prepare post for submit
+		// Prepare post for submit
 		$options = '';
 		generate_text_for_storage($merge_post_data['post_text'], $merge_post_data['bbcode_uid'], $merge_post_data['bbcode_bitfield'], $options, $merge_post_data['enable_bbcode'], $merge_post_data['enable_magic_url'], $merge_post_data['enable_smilies']);
 

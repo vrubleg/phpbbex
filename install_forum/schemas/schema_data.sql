@@ -449,6 +449,8 @@ INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_words', 1);
 # -- User related auth options
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_attach', 1);
+INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_canplus', 1);
+INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_canminus', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_chgavatar', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_chgcensors', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_chgemail', 1);
@@ -664,7 +666,7 @@ INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 
 INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 7, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option NOT IN ('u_attach', 'u_viewonline', 'u_chggrp', 'u_chgname', 'u_ignoreflood', 'u_ignorefpedittime', 'u_ignoreedittime', 'u_pm_attach', 'u_pm_emailpm', 'u_pm_flash', 'u_savedrafts', 'u_search', 'u_sendemail', 'u_sendim', 'u_masspm', 'u_masspm_group');
 
 # No Private Messages (u_)
-INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 8, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_', 'u_chgavatar', 'u_chgcensors', 'u_chgemail', 'u_chgpasswd', 'u_download', 'u_hideonline', 'u_sig', 'u_viewprofile');
+INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 8, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_', 'u_chgavatar', 'u_chgcensors', 'u_chgemail', 'u_chgpasswd', 'u_download', 'u_hideonline', 'u_sig', 'u_viewprofile', 'u_canplus', 'u_canminus');
 INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 8, auth_option_id, 0 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_readpm', 'u_sendpm', 'u_masspm', 'u_masspm_group');
 
 # No Avatar (u_)
