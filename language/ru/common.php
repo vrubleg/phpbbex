@@ -118,6 +118,7 @@ $lang = array_merge($lang, array(
 	'CHANGE_FONT_SIZE'		=> 'Изменить размер шрифта',
 	'CHANGING_PREFERENCES'	=> 'Изменение личных настроек',
 	'CHANGING_PROFILE'		=> 'Изменение настроек профиля',
+	'CLEAR'					=> 'Очистить',
 	'CLICK_VIEW_PRIVMSG'	=> '%sПерейти в папку «Входящие»%s',
 	'COLLAPSE_VIEW'			=> 'Свернуть',
 	'CLOSE_WINDOW'			=> 'Закрыть окно',
