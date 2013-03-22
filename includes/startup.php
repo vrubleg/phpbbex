@@ -18,7 +18,7 @@ if (!defined('IN_PHPBB'))
 if(version_compare(PHP_VERSION, '5.2.2', '<')) die('PHP 5.2.3+ is required');
 
 // Powered by ...
-define('POWERED_BY', '<a href="http://www.phpbb.com/">phpBB</a> &copy; 2012 phpBB Group, <a href="http://phpbbex.com/">phpBBex</a> &copy; 2012 Evgeny Vrublevsky');
+define('POWERED_BY', '<a href="http://phpbbex.com/">phpBBex</a> &copy; 2013 <a href="http://phpbb.com/">phpBB</a> Group, <a href="http://vegalogic.com/">Vegalogic</a> Software');
 
 // Configure autoloader
 require(dirname(__FILE__).'/../classes/autoloader.php');

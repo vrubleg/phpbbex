@@ -279,7 +279,7 @@ class ucp_profile
 					'gender'		=> request_var('gender', $user->data['user_gender']),
 				);
 
-				if (!preg_match('#^[a-z0-9]+:#iu', $data['website']))
+				if (!empty($data['website']) && !preg_match('#^[a-z0-9]+:#iu', $data['website']))
 				{
 					$data['website'] = 'http://' . $data['website'];
 				}
