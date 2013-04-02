@@ -1036,6 +1036,7 @@ class bbcode_firstpass extends bbcode
 	{
 		if ($url{0} === '/') return generate_board_url(true) . $url;
 		if ($url{0} === '.') return generate_board_url() . substr($url, 1);
+		return $url;
 	}
 
 	/**
