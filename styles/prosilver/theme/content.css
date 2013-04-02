@@ -231,6 +231,8 @@ div[class].topic-actions {
 	line-height: 1.48em;
 	color: #333333;
 	width: 79%;
+	width: -webkit-calc(100% - 208px);
+	width: calc(100% - 208px);
 	float: left;
 	clear: both;
 }
@@ -811,10 +813,12 @@ fieldset.polls dd div {
 	/* Also see tweaks.css */
 	margin: 0;
 	padding: 5px 0;
-	min-height: 80px;
+	min-height: 40px;
 	color: #666666;
 	border-left: 1px solid #FFFFFF;
 	width: 20%;
+	width: -webkit-calc(200px);
+	width: calc(200px);
 	float: right;
 	display: inline;
 	position: relative;
