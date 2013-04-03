@@ -142,7 +142,7 @@ $show_attach_box = (@ini_get('file_uploads') != '0' && strtolower(@ini_get('file
 
 add_form_key('posting');
 
-$s_do_merge_allowed = $user->data['is_registered'] && $mode == 'reply' && $topic_data['topic_last_poster_id'] == $user->data['user_id'];
+$s_do_merge_allowed = $user->data['is_registered'] && $mode == 'reply' && $topic_data['topic_last_poster_id'] == $user->data['user_id'] && ($auth->acl_get('f_noapprove', $forum_id) || $auth->acl_get('m_approve', $forum_id));
 $s_do_merge_checked = $s_do_merge_allowed && ((time() - $topic_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
 
 // Send vars to template
