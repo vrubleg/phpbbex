@@ -232,8 +232,12 @@ class install_install extends module
 			'S_LEGEND'		=> false,
 		));
 
-		// Check for PCRE UTF-8 support
-		if (@preg_match('//u', ''))
+		// Check for PCRE UTF-8 and "(?|(a)|(b))" construction support
+		$pattern = '#(?|([\pL])|([\d]))#u';
+		$match1 = $match2 = array();
+		if (@preg_match('//u', '')
+			&& @preg_match($pattern, 'Ъ', $match1) && isset($match1[1]) && $match1[1] === 'Ъ'
+			&& @preg_match($pattern, '1', $match2) && isset($match2[1]) && $match2[1] === '1')
 		{
 			$passed['pcre'] = true;
 			$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';

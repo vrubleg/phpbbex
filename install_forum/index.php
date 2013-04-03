@@ -159,7 +159,7 @@ define('CHMOD_READ', 4);
 define('CHMOD_WRITE', 2);
 define('CHMOD_EXECUTE', 1);
 
-$mode = request_var('mode', 'overview');
+$mode = request_var('mode', 'install');
 $sub = request_var('sub', '');
 
 // Set PHP error handler to ours

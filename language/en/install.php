@@ -192,24 +192,24 @@ $lang = array_merge($lang, array(
 	'INSTALL_CONGRATS_EXPLAIN'	=> '
 		You have successfully installed phpBBex %1$s. Go live with your phpBBex!</p>
 		<p>Clicking the button below will take you to a Administration Control Panel (ACP). You should take some time to examine the options available to you. Remember that help is available online via the <a href="http://www.phpbb.com/support/documentation/3.0/">Documentation on phpbb.com</a> and the <a href="http://phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forums</a>.</p><p><strong>Please delete, move or rename the install directory before using your board. While this directory exists, only the Administration Control Panel (ACP) will be accessible.</strong>',
-	'INSTALL_INTRO'				=> 'Welcome to Installation',
+	'INSTALL_INTRO'				=> 'Welcome to phpBBex installation!',
 
-	'INSTALL_INTRO_BODY'		=> 'With this option, it is possible to install phpBBex onto your server.</p><p>In order to proceed, you will need your database settings. If you do not know your database settings, please contact your host and ask for them. You will not be able to continue without them. You need:</p>
+	'INSTALL_INTRO_BODY'		=> 'phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB 3. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a target="_blank" href="http://phpbbex.com/forum/viewtopic.php?t=28">More...</a>
+
+	<p>With this option, it is possible to install phpBBex onto your server.</p><p>In order to proceed, you will need your MySQL database settings:
 
 	<ul>
-		<li>The Database Type - the database you will be using.</li>
-		<li>The Database server hostname or DSN - the address of the database server.</li>
-		<li>The Database server port - the port of the database server (most of the time this is not needed).</li>
-		<li>The Database name - the name of the database on the server.</li>
+		<li>The Database server hostname or DSN - the address of the MySQL database server;</li>
+		<li>The Database server port - the port of the database server (most of the time this is not needed);</li>
+		<li>The Database name - the name of the database on the server;</li>
 		<li>The Database username and Database password - the login data to access the database.</li>
 	</ul>
 
-	<p>phpBBex supports the following databases:</p>
+	<p>See also:
 	<ul>
-		<li>MySQL 5.0.3 or above (MySQLi supported)</li>
-	</ul>
-
-	<p>Only those databases supported on your server will be displayed.',
+		<li><a target="_blank" href="http://phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forum</a></li>
+		<li><a target="_blank" href="http://phpbbex.com/forum/viewtopic.php?t=28">What\'s new in phpBBex?</a></li>
+	</ul>',
 	'INSTALL_INTRO_NEXT'		=> 'To commence the installation, please press the button below.',
 	'INSTALL_LOGIN'				=> 'Login',
 	'INSTALL_NEXT'				=> 'Next stage',
@@ -279,8 +279,8 @@ $lang = array_merge($lang, array(
 
 	'OVERVIEW_BODY'				=> 'Welcome to phpBBex!<br /><br />phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a href="http://phpbbex.com/forum/viewtopic.php?t=28">More...</a><br /><br />This installation system will guide you through installing phpBB3. For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>. To install, please select the appropriate tab above.',
 
-	'PCRE_UTF_SUPPORT'				=> 'PCRE UTF-8 support',
-	'PCRE_UTF_SUPPORT_EXPLAIN'		=> 'phpBB will <strong>not</strong> run if your PHP installation is not compiled with UTF-8 support in the PCRE extension.',
+	'PCRE_UTF_SUPPORT'				=> 'PCRE UTF-8 and "(?|(a)|(b))" construction support',
+	'PCRE_UTF_SUPPORT_EXPLAIN'		=> 'phpBBex will <strong>not</strong> run if your PHP installation is not compiled with UTF-8 support in the PCRE extension or your PCRE version is obsolete.',
 	'PHP_GETIMAGESIZE_SUPPORT'			=> 'PHP function getimagesize() is available',
 	'PHP_GETIMAGESIZE_SUPPORT_EXPLAIN'	=> '<strong>Required</strong> - In order for phpBB to function correctly, the getimagesize function needs to be available.',
 	'PHP_OPTIONAL_MODULE'			=> 'Optional modules',
