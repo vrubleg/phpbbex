@@ -293,7 +293,7 @@ $lang = array_merge($lang, array(
 
 // PHP info
 $lang = array_merge($lang, array(
-	'ACP_PHP_INFO_EXPLAIN'	=> 'This page lists information on the version of PHP installed on this server. It includes details of loaded modules, available variables and default settings. This information may be useful when diagnosing problems. Please be aware that some hosting companies will limit what information is displayed here for security reasons. You are advised to not give out any details on this page except when asked by <a href="http://www.phpbb.com/about/team/">official team members</a> on the support forums.',
+	'ACP_PHP_INFO_EXPLAIN'	=> 'This page lists information on the version of PHP installed on this server. It includes details of loaded modules, available variables and default settings. This information may be useful when diagnosing problems. Please be aware that some hosting companies will limit what information is displayed here for security reasons. You are advised to not give out any details on this page except when asked by official team members on the support forums.',
 
 	'NO_PHPINFO_AVAILABLE'	=> 'Information about your PHP configuration is unable to be determined. Phpinfo() has been disabled for security reasons.',
 ));
@@ -317,7 +317,7 @@ $lang = array_merge($lang, array(
 
 // Index page
 $lang = array_merge($lang, array(
-	'ADMIN_INTRO'				=> 'Thank you for choosing phpBB as your board solution. This screen will give you a quick overview of all the various statistics of your board. The links on the left hand side of this screen allow you to control every aspect of your board experience. Each page will have instructions on how to use the tools.',
+	'ADMIN_INTRO'				=> 'Thank you for choosing phpBBex as your board solution. This screen will give you a quick overview of all the various statistics of your board. The links on the left hand side of this screen allow you to control every aspect of your board experience. Each page will have instructions on how to use the tools.',
 	'ADMIN_LOG'					=> 'Logged administrator actions',
 	'ADMIN_LOG_INDEX_EXPLAIN'	=> 'This gives an overview of the last five actions carried out by board administrators. A full copy of the log can be viewed from the appropriate menu item or following the link below.',
 	'AVATAR_DIR_SIZE'			=> 'Avatar directory size',
@@ -351,7 +351,7 @@ $lang = array_merge($lang, array(
 	'NUMBER_USERS'		=> 'Number of users',
 	'NUMBER_ORPHAN'		=> 'Orphan attachments',
 
-	'PHP_VERSION_OLD'	=> 'The version of PHP on this server will no longer be supported by future versions of phpBB. %sDetails%s',
+	'PHP_VERSION_OLD'	=> 'The version of PHP on this server will no longer be supported by future versions of phpBB and phpBBex. %sDetails%s',
 
 	'POSTS_PER_DAY'		=> 'Posts per day',
 
@@ -395,7 +395,7 @@ $lang = array_merge($lang, array(
 	'VIEW_ADMIN_LOG'			=> 'View administrator log',
 	'VIEW_INACTIVE_USERS'		=> 'View inactive users',
 
-	'WELCOME_PHPBB'			=> 'Welcome to phpBB',
+	'WELCOME_PHPBB'			=> 'Welcome to phpBBex',
 	'WRITABLE_CONFIG'		=> 'Your config file (config.php) is currently world-writable. We strongly encourage you to change the permissions to 640 or at least to 644 (for example: <a href="http://en.wikipedia.org/wiki/Chmod" rel="external">chmod</a> 640 config.php).',
 ));
 
@@ -607,8 +607,8 @@ $lang = array_merge($lang, array(
 	'LOG_INACTIVE_ACTIVATE'	=> '<strong>Activated inactive users</strong><br />» %s',
 	'LOG_INACTIVE_DELETE'	=> '<strong>Deleted inactive users</strong><br />» %s',
 	'LOG_INACTIVE_REMIND'	=> '<strong>Sent reminder e-mails to inactive users</strong><br />» %s',
-	'LOG_INSTALL_CONVERTED'	=> '<strong>Converted from %1$s to phpBB %2$s</strong>',
-	'LOG_INSTALL_INSTALLED'	=> '<strong>Installed phpBB %s</strong>',
+	'LOG_INSTALL_CONVERTED'	=> '<strong>Converted from %1$s to phpBBex %2$s</strong>',
+	'LOG_INSTALL_INSTALLED'	=> '<strong>Installed phpBBex %s</strong>',
 
 	'LOG_IP_BROWSER_FORWARDED_CHECK'	=> '<strong>Session IP/browser/X_FORWARDED_FOR check failed</strong><br />»User IP “<em>%1$s</em>” checked against session IP “<em>%2$s</em>”, user browser string “<em>%3$s</em>” checked against session browser string “<em>%4$s</em>” and user X_FORWARDED_FOR string “<em>%5$s</em>” checked against session X_FORWARDED_FOR string “<em>%6$s</em>”.',
 

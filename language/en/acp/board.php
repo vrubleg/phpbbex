@@ -184,9 +184,9 @@ $lang = array_merge($lang, array(
 	'ALLOW_REMOTE_UPLOAD_EXPLAIN'	=> 'Allow uploading of avatars from another website.',
 	'ALLOW_UPLOAD'					=> 'Enable avatar uploading',
 	'AVATAR_GALLERY_PATH'			=> 'Avatar gallery path',
-	'AVATAR_GALLERY_PATH_EXPLAIN'	=> 'Path under your phpBB root directory for pre-loaded images, e.g. <samp>images/avatars/gallery</samp>.',
+	'AVATAR_GALLERY_PATH_EXPLAIN'	=> 'Path under your phpBBex root directory for pre-loaded images, e.g. <samp>images/avatars/gallery</samp>.',
 	'AVATAR_STORAGE_PATH'			=> 'Avatar storage path',
-	'AVATAR_STORAGE_PATH_EXPLAIN'	=> 'Path under your phpBB root directory, e.g. <samp>images/avatars/upload</samp>.',
+	'AVATAR_STORAGE_PATH_EXPLAIN'	=> 'Path under your phpBBex root directory, e.g. <samp>images/avatars/upload</samp>.',
 	'MAX_AVATAR_SIZE'				=> 'Maximum avatar dimensions',
 	'MAX_AVATAR_SIZE_EXPLAIN'		=> 'Width x Height in pixels.',
 	'MAX_FILESIZE'					=> 'Maximum avatar file size',
@@ -447,7 +447,7 @@ $lang = array_merge($lang, array(
 
 	'CUSTOM_PROFILE_FIELDS'			=> 'Custom profile fields',
 	'LIMIT_LOAD'					=> 'Limit system load',
-	'LIMIT_LOAD_EXPLAIN'			=> 'If the system’s 1-minute load average exceeds this value the board will automatically go offline. A value of 1.0 equals ~100% utilisation of one processor. This only functions on UNIX based servers and where this information is accessible. The value here resets itself to 0 if phpBB was unable to get the load limit.',
+	'LIMIT_LOAD_EXPLAIN'			=> 'If the system’s 1-minute load average exceeds this value the board will automatically go offline. A value of 1.0 equals ~100% utilisation of one processor. This only functions on UNIX based servers and where this information is accessible. The value here resets itself to 0 if phpBBex was unable to get the load limit.',
 	'LIMIT_SESSIONS'				=> 'Limit sessions',
 	'LIMIT_SESSIONS_EXPLAIN'		=> 'If the number of sessions exceeds this value within a one minute period the board will go offline. Set to 0 for unlimited sessions.',
 	'LOAD_CPF_MEMBERLIST'			=> 'Allow styles to display custom profile fields in memberlist',
@@ -479,11 +479,11 @@ $lang = array_merge($lang, array(
 
 // Auth settings
 $lang = array_merge($lang, array(
-	'ACP_AUTH_SETTINGS_EXPLAIN'	=> 'phpBB supports authentication plug-ins, or modules. These allow you determine how users are authenticated when they log into the board. By default three plug-ins are provided; DB, LDAP and Apache. Not all methods require additional information so only fill out fields if they are relevant to the selected method.',
+	'ACP_AUTH_SETTINGS_EXPLAIN'	=> 'phpBBex supports authentication plug-ins, or modules. These allow you determine how users are authenticated when they log into the board. By default three plug-ins are provided; DB, LDAP and Apache. Not all methods require additional information so only fill out fields if they are relevant to the selected method.',
 
 	'AUTH_METHOD'				=> 'Select an authentication method',
 
-	'APACHE_SETUP_BEFORE_USE'	=> 'You have to setup apache authentication before you switch phpBB to this authentication method. Keep in mind that the username you use for apache authentication has to be the same as your phpBB username. Apache authentication can only be used with mod_php (not with a CGI version) and safe_mode disabled.',
+	'APACHE_SETUP_BEFORE_USE'	=> 'You have to setup apache authentication before you switch phpBBex to this authentication method. Keep in mind that the username you use for apache authentication has to be the same as your phpBBex username. Apache authentication can only be used with mod_php (not with a CGI version) and safe_mode disabled.',
 
 	'LDAP_DN'						=> 'LDAP base <var>dn</var>',
 	'LDAP_DN_EXPLAIN'				=> 'This is the Distinguished Name, locating the user information, e.g. <samp>o=My Company,c=US</samp>.',
@@ -501,7 +501,7 @@ $lang = array_merge($lang, array(
 	'LDAP_UID'						=> 'LDAP <var>uid</var>',
 	'LDAP_UID_EXPLAIN'				=> 'This is the key under which to search for a given login identity, e.g. <var>uid</var>, <var>sn</var>, etc.',
 	'LDAP_USER'						=> 'LDAP user <var>dn</var>',
-	'LDAP_USER_EXPLAIN'				=> 'Leave blank to use anonymous binding. If filled in phpBB uses the specified distinguished name on login attempts to find the correct user, e.g. <samp>uid=Username,ou=MyUnit,o=MyCompany,c=US</samp>. Required for Active Directory Servers.',
+	'LDAP_USER_EXPLAIN'				=> 'Leave blank to use anonymous binding. If filled in phpBBex uses the specified distinguished name on login attempts to find the correct user, e.g. <samp>uid=Username,ou=MyUnit,o=MyCompany,c=US</samp>. Required for Active Directory Servers.',
 	'LDAP_USER_FILTER'				=> 'LDAP user filter',
 	'LDAP_USER_FILTER_EXPLAIN'		=> 'Optionally you can further limit the searched objects with additional filters. For example <samp>objectClass=posixGroup</samp> would result in the use of <samp>(&amp;(uid=$username)(objectClass=posixGroup))</samp>',
 ));
@@ -515,12 +515,12 @@ $lang = array_merge($lang, array(
 	'FORCE_SERVER_VARS'			=> 'Force server URL settings',
 	'FORCE_SERVER_VARS_EXPLAIN'	=> 'If set to yes the server settings defined here will be used in favour of the automatically determined values.',
 	'ICONS_PATH'				=> 'Post icons storage path',
-	'ICONS_PATH_EXPLAIN'		=> 'Path under your phpBB root directory, e.g. <samp>images/icons</samp>.',
+	'ICONS_PATH_EXPLAIN'		=> 'Path under your phpBBex root directory, e.g. <samp>images/icons</samp>.',
 	'PATH_SETTINGS'				=> 'Path settings',
 	'RANKS_PATH'				=> 'Rank image storage path',
-	'RANKS_PATH_EXPLAIN'		=> 'Path under your phpBB root directory, e.g. <samp>images/ranks</samp>.',
+	'RANKS_PATH_EXPLAIN'		=> 'Path under your phpBBex root directory, e.g. <samp>images/ranks</samp>.',
 	'SCRIPT_PATH'				=> 'Script path',
-	'SCRIPT_PATH_EXPLAIN'		=> 'The path where phpBB is located relative to the domain name, e.g. <samp>/phpBB3</samp>.',
+	'SCRIPT_PATH_EXPLAIN'		=> 'The path where phpBBex is located relative to the domain name, e.g. <samp>/phpBBex</samp>.',
 	'SERVER_NAME'				=> 'Domain name',
 	'SERVER_NAME_EXPLAIN'		=> 'The domain name this board runs from (for example: <samp>www.example.com</samp>).',
 	'SERVER_PORT'				=> 'Server port',
@@ -529,9 +529,9 @@ $lang = array_merge($lang, array(
 	'SERVER_PROTOCOL_EXPLAIN'	=> 'This is used as the server protocol if these settings are forced. If empty or not forced the protocol is determined by the cookie secure settings (<samp>http://</samp> or <samp>https://</samp>).',
 	'SERVER_URL_SETTINGS'		=> 'Server URL settings',
 	'SMILIES_PATH'				=> 'Smilies storage path',
-	'SMILIES_PATH_EXPLAIN'		=> 'Path under your phpBB root directory, e.g. <samp>images/smilies</samp>.',
+	'SMILIES_PATH_EXPLAIN'		=> 'Path under your phpBBex root directory, e.g. <samp>images/smilies</samp>.',
 	'UPLOAD_ICONS_PATH'			=> 'Extension group icons storage path',
-	'UPLOAD_ICONS_PATH_EXPLAIN'	=> 'Path under your phpBB root directory, e.g. <samp>images/upload_icons</samp>.',
+	'UPLOAD_ICONS_PATH_EXPLAIN'	=> 'Path under your phpBBex root directory, e.g. <samp>images/upload_icons</samp>.',
 ));
 
 // Security Settings
@@ -627,7 +627,7 @@ $lang = array_merge($lang, array(
 
 // Jabber settings
 $lang = array_merge($lang, array(
-	'ACP_JABBER_SETTINGS_EXPLAIN'	=> 'Here you can enable and control the use of Jabber for instant messaging and board notifications. Jabber is an open source protocol and therefore available for use by anyone. Some Jabber servers include gateways or transports which allow you to contact users on other networks. Not all servers offer all transports and changes in protocols can prevent transports from operating. Please be sure to enter already registered account details - phpBB will use the details you enter here as is.',
+	'ACP_JABBER_SETTINGS_EXPLAIN'	=> 'Here you can enable and control the use of Jabber for instant messaging and board notifications. Jabber is an open source protocol and therefore available for use by anyone. Some Jabber servers include gateways or transports which allow you to contact users on other networks. Not all servers offer all transports and changes in protocols can prevent transports from operating. Please be sure to enter already registered account details - phpBBex will use the details you enter here as is.',
 
 	'JAB_ENABLE'				=> 'Enable Jabber',
 	'JAB_ENABLE_EXPLAIN'		=> 'Enables use of Jabber messaging and notifications.',

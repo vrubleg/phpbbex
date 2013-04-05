@@ -1951,7 +1951,7 @@ class install_install extends module
 		}
 
 		// And finally, add a note to the log
-		add_log('admin', 'LOG_INSTALL_INSTALLED', $config['version']);
+		add_log('admin', 'LOG_INSTALL_INSTALLED', $config['phpbbex_version']);
 
 		$template->assign_vars(array(
 			'TITLE'		=> $lang['INSTALL_CONGRATS'],
