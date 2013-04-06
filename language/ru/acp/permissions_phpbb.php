@@ -69,7 +69,7 @@ $lang = array_merge($lang, array(
 	'permission_cat'	=> array(
 		'actions'		=> 'Действия',
 		'content'		=> 'Содержимое',
-		'forums'		=> 'Форумы',
+		'forums'		=> 'Разделы',
 		'misc'			=> 'Разное',
 		'permissions'	=> 'Права доступа',
 		'pm'			=> 'Личные сообщения',
@@ -88,7 +88,7 @@ $lang = array_merge($lang, array(
 		'u_'			=> 'Права доступа пользователя',
 		'a_'			=> 'Права доступа администратора',
 		'm_'			=> 'Права доступа модератора',
-		'f_'			=> 'Права доступа для форума',
+		'f_'			=> 'Права доступа для раздела',
 		'global'		=> array(
 			'm_'			=> 'Глобальные права модератора',
 		),
@@ -97,7 +97,7 @@ $lang = array_merge($lang, array(
 
 // User Permissions
 $lang = array_merge($lang, array(
-	'acl_u_viewprofile'	=> array('lang' => 'Может просматривать профили, список пользователей и страницу «Кто сейчас на конференции»', 'cat' => 'profile'),
+	'acl_u_viewprofile'	=> array('lang' => 'Может просматривать профили, список пользователей и страницу «Кто сейчас на форуме»', 'cat' => 'profile'),
 	'acl_u_chgname'		=> array('lang' => 'Может менять имя', 'cat' => 'profile'),
 	'acl_u_chgpasswd'	=> array('lang' => 'Может менять пароль', 'cat' => 'profile'),
 	'acl_u_chgemail'	=> array('lang' => 'Может менять email-адрес', 'cat' => 'profile'),
@@ -140,8 +140,8 @@ $lang = array_merge($lang, array(
 
 // Forum Permissions
 $lang = array_merge($lang, array(
-	'acl_f_list'		=> array('lang' => 'Может видеть форум', 'cat' => 'post'),
-	'acl_f_read'		=> array('lang' => 'Может читать форум', 'cat' => 'post'),
+	'acl_f_list'		=> array('lang' => 'Может видеть раздел', 'cat' => 'post'),
+	'acl_f_read'		=> array('lang' => 'Может читать раздел', 'cat' => 'post'),
 	'acl_f_post'		=> array('lang' => 'Может создавать темы', 'cat' => 'post'),
 	'acl_f_reply'		=> array('lang' => 'Может отвечать в темах', 'cat' => 'post'),
 	'acl_f_icons'		=> array('lang' => 'Может использовать значки тем и сообщений', 'cat' => 'post'),
@@ -165,11 +165,11 @@ $lang = array_merge($lang, array(
 	'acl_f_user_lock'	=> array('lang' => 'Может закрывать свои темы', 'cat' => 'actions'),
 	'acl_f_bump'		=> array('lang' => 'Может поднимать темы', 'cat' => 'actions'),
 	'acl_f_report'		=> array('lang' => 'Может размещать жалобы', 'cat' => 'actions'),
-	'acl_f_subscribe'	=> array('lang' => 'Может подписываться на форумы', 'cat' => 'actions'),
+	'acl_f_subscribe'	=> array('lang' => 'Может подписываться на разделы', 'cat' => 'actions'),
 	'acl_f_print'		=> array('lang' => 'Может распечатывать темы', 'cat' => 'actions'),
 	'acl_f_email'		=> array('lang' => 'Может сообщать (другу) по email о теме', 'cat' => 'actions'),
 
-	'acl_f_search'		=> array('lang' => 'Может использовать поиск в форуме', 'cat' => 'misc'),
+	'acl_f_search'		=> array('lang' => 'Может использовать поиск в разделе', 'cat' => 'misc'),
 	'acl_f_ignoreflood' => array('lang' => 'Может игнорировать флуд-контроль', 'cat' => 'misc'),
 	'acl_f_postcount'	=> array('lang' => 'Счётчик сообщений включён<br /><em>Учтите, что данная установка эффективна только при создании новых сообщений.</em>', 'cat' => 'misc'),
 	'acl_f_noapprove'	=> array('lang' => 'Может размещать сообщения без одобрения', 'cat' => 'misc'),
@@ -189,28 +189,28 @@ $lang = array_merge($lang, array(
 	'acl_m_merge'	=> array('lang' => 'Может объединять темы', 'cat' => 'topic_actions'),
 
 	'acl_m_info'	=> array('lang' => 'Может просматривать подробности о сообщениях', 'cat' => 'misc'),
-	'acl_m_warn'	=> array('lang' => 'Может объявлять предупреждения<br /><em>Это право может быть назначено только глобально, а не на уровне форумов.</em>', 'cat' => 'misc'), // This moderator setting is only global (and not local)
-	'acl_m_ban'		=> array('lang' => 'Может управлять блокировкой<br /><em>Это право может быть назначено только глобально, а не на уровне форумов.</em>', 'cat' => 'misc'), // This moderator setting is only global (and not local)
+	'acl_m_warn'	=> array('lang' => 'Может объявлять предупреждения<br /><em>Это право может быть назначено только глобально, а не на уровне разделов.</em>', 'cat' => 'misc'), // This moderator setting is only global (and not local)
+	'acl_m_ban'		=> array('lang' => 'Может управлять блокировкой<br /><em>Это право может быть назначено только глобально, а не на уровне разделов.</em>', 'cat' => 'misc'), // This moderator setting is only global (and not local)
 ));
 
 // Admin Permissions
 $lang = array_merge($lang, array(
-	'acl_a_board'		=> array('lang' => 'Может изменять настройки конференции и проверять обновления', 'cat' => 'settings'),
+	'acl_a_board'		=> array('lang' => 'Может изменять настройки форума и проверять обновления', 'cat' => 'settings'),
 	'acl_a_server'		=> array('lang' => 'Может изменять параметры настройки сервера', 'cat' => 'settings'),
 	'acl_a_jabber'		=> array('lang' => 'Может изменять настройки Jabber', 'cat' => 'settings'),
 	'acl_a_phpinfo'		=> array('lang' => 'Может просматривать сведения о php', 'cat' => 'settings'),
 
-	'acl_a_forum'		=> array('lang' => 'Может управлять форумами', 'cat' => 'forums'),
-	'acl_a_forumadd'	=> array('lang' => 'Может создавать форумы', 'cat' => 'forums'),
-	'acl_a_forumdel'	=> array('lang' => 'Может удалять форумы', 'cat' => 'forums'),
-	'acl_a_prune'		=> array('lang' => 'Может очищать форумы', 'cat' => 'forums'),
+	'acl_a_forum'		=> array('lang' => 'Может управлять разделами', 'cat' => 'forums'),
+	'acl_a_forumadd'	=> array('lang' => 'Может создавать разделы', 'cat' => 'forums'),
+	'acl_a_forumdel'	=> array('lang' => 'Может удалять разделы', 'cat' => 'forums'),
+	'acl_a_prune'		=> array('lang' => 'Может очищать разделы', 'cat' => 'forums'),
 
 	'acl_a_icons'		=> array('lang' => 'Может изменять значки тем, сообщений и смайлики', 'cat' => 'posting'),
 	'acl_a_words'		=> array('lang' => 'Может настраивать автоцензор', 'cat' => 'posting'),
 	'acl_a_bbcode'		=> array('lang' => 'Может определять BBCode', 'cat' => 'posting'),
 	'acl_a_attach'		=> array('lang' => 'Может изменять настройки вложений', 'cat' => 'posting'),
 
-	'acl_a_user'		=> array('lang' => 'Может управлять пользователями<br /><em>Право также включает просмотр типа браузера пользователей в списке находящихся на конференции.</em>', 'cat' => 'user_group'),
+	'acl_a_user'		=> array('lang' => 'Может управлять пользователями<br /><em>Право также включает просмотр типа браузера пользователей в списке находящихся на форуме.</em>', 'cat' => 'user_group'),
 	'acl_a_userdel'		=> array('lang' => 'Может удалять пользователей', 'cat' => 'user_group'),
 	'acl_a_group'		=> array('lang' => 'Может управлять группами', 'cat' => 'user_group'),
 	'acl_a_groupadd'	=> array('lang' => 'Может создавать группы', 'cat' => 'user_group'),
@@ -223,7 +223,7 @@ $lang = array_merge($lang, array(
 	'acl_a_viewauth'	=> array('lang' => 'Может просматривать права доступа', 'cat' => 'permissions'),
 	'acl_a_authgroups'	=> array('lang' => 'Может изменять права доступа для конкретной группы', 'cat' => 'permissions'),
 	'acl_a_authusers'	=> array('lang' => 'Может изменять права доступа для конкретного пользователя', 'cat' => 'permissions'),
-	'acl_a_fauth'		=> array('lang' => 'Может изменять права доступа в форумах', 'cat' => 'permissions'),
+	'acl_a_fauth'		=> array('lang' => 'Может изменять права доступа для разделов', 'cat' => 'permissions'),
 	'acl_a_mauth'		=> array('lang' => 'Может изменять права доступа для модераторов', 'cat' => 'permissions'),
 	'acl_a_aauth'		=> array('lang' => 'Может изменять права доступа для администраторов', 'cat' => 'permissions'),
 	'acl_a_uauth'		=> array('lang' => 'Может изменять права доступа для пользователей', 'cat' => 'permissions'),

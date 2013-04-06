@@ -53,16 +53,16 @@ $lang = array_merge($lang, array(
 	'ACP_BAN_USERNAMES'			=> 'Чёрный список пользователей',
 	'ACP_BBCODES'				=> 'BBCodes',
 	'ACP_BOARD_CONFIGURATION'	=> 'Конфигурация',
-	'ACP_BOARD_FEATURES'		=> 'Функции конференции',
-	'ACP_BOARD_MANAGEMENT'		=> 'Управление конференцией',
-	'ACP_BOARD_SETTINGS'		=> 'Настройки конференции',
+	'ACP_BOARD_FEATURES'		=> 'Функции форума',
+	'ACP_BOARD_MANAGEMENT'		=> 'Управление форумом',
+	'ACP_BOARD_SETTINGS'		=> 'Настройки форума',
 	'ACP_BOTS'					=> 'Поисковые боты',
 
 	'ACP_CAPTCHA'				=> 'Визуальное подтверждение',
 
 	'ACP_CAT_DATABASE'			=> 'База данных',
 	'ACP_CAT_DOT_MODS'			=> 'Модули',
-	'ACP_CAT_FORUMS'			=> 'Форумы',
+	'ACP_CAT_FORUMS'			=> 'Разделы',
 	'ACP_CAT_GENERAL'			=> 'Общие',
 	'ACP_CAT_MAINTENANCE'		=> 'Обслуживание',
 	'ACP_CAT_PERMISSIONS'		=> 'Права доступа',
@@ -85,18 +85,18 @@ $lang = array_merge($lang, array(
 
 	'ACP_FORUM_BASED_PERMISSIONS'	=> 'Локальные права доступа',
 	'ACP_FORUM_LOGS'				=> 'Логи',
-	'ACP_FORUM_MANAGEMENT'			=> 'Форумы',
-	'ACP_FORUM_MODERATORS'			=> 'Модераторы форумов',
-	'ACP_FORUM_PERMISSIONS'			=> 'Доступ к форумам',
+	'ACP_FORUM_MANAGEMENT'			=> 'Разделы',
+	'ACP_FORUM_MODERATORS'			=> 'Модераторы разделов',
+	'ACP_FORUM_PERMISSIONS'			=> 'Доступ к разделам',
 	'ACP_FORUM_PERMISSIONS_COPY'	=> 'Копирование прав доступа',
-	'ACP_FORUM_ROLES'				=> 'Форумные роли',
+	'ACP_FORUM_ROLES'				=> 'Локальные роли',
 
 	'ACP_GENERAL_CONFIGURATION'		=> 'Общие настройки',
 	'ACP_GENERAL_TASKS'				=> 'Общие задачи',
 	'ACP_GLOBAL_MODERATORS'			=> 'Супермодераторы',
 	'ACP_GLOBAL_PERMISSIONS'		=> 'Глобальные права доступа',
 	'ACP_GROUPS'					=> 'Группы',
-	'ACP_GROUPS_FORUM_PERMISSIONS'	=> 'Форумные права групп',
+	'ACP_GROUPS_FORUM_PERMISSIONS'	=> 'Локальные права групп',
 	'ACP_GROUPS_MANAGE'				=> 'Управление группами',
 	'ACP_GROUPS_MANAGEMENT'			=> 'Группы',
 	'ACP_GROUPS_PERMISSIONS'		=> 'Права групп',
@@ -116,7 +116,7 @@ $lang = array_merge($lang, array(
 
 	'ACP_MAIN'					=> 'Главная страница панели администратора',
 	'ACP_MANAGE_EXTENSIONS'		=> 'Расширения',
-	'ACP_MANAGE_FORUMS'			=> 'Управление форумами',
+	'ACP_MANAGE_FORUMS'			=> 'Управление разделами',
 	'ACP_MANAGE_RANKS'			=> 'Управление званиями',
 	'ACP_MANAGE_REASONS'		=> 'Управление жалобами',
 	'ACP_MANAGE_USERS'			=> 'Управление пользователями',
@@ -137,7 +137,7 @@ $lang = array_merge($lang, array(
 	'ACP_PERMISSION_TRACE'		=> 'Трассировка прав доступа',
 	'ACP_PHP_INFO'				=> 'Сведения о PHP',
 	'ACP_POST_SETTINGS'			=> 'Размещение сообщений',
-	'ACP_PRUNE_FORUMS'			=> 'Очистка форумов',
+	'ACP_PRUNE_FORUMS'			=> 'Очистка разделов',
 	'ACP_PRUNE_USERS'			=> 'Очистка списка пользователей',
 	'ACP_PRUNING'				=> 'Очистка',
 
@@ -173,7 +173,7 @@ $lang = array_merge($lang, array(
 	'ACP_THEMES'				=> 'Темы',
 
 	'ACP_UPDATE'					=> 'Обновление',
-	'ACP_USERS_FORUM_PERMISSIONS'	=> 'Форумные права пользователей',
+	'ACP_USERS_FORUM_PERMISSIONS'	=> 'Локальные права пользователей',
 	'ACP_USERS_LOGS'				=> 'Лог пользователей',
 	'ACP_USERS_PERMISSIONS'			=> 'Права пользователей',
 	'ACP_USER_ATTACH'				=> 'Вложения',
@@ -207,7 +207,8 @@ $lang = array_merge($lang, array(
 	'ACTIVATE'				=> 'Включить',
 	'ADD'					=> 'Добавить',
 	'ADMIN'					=> 'Администрирование',
-	'ADMIN_INDEX'			=> 'Главная',
+	'ADMIN_INDEX'			=> 'Главная админки',
+	'FORUM_INDEX'			=> 'Главная форума',
 	'ADMIN_PANEL'			=> 'Панель администратора',
 
 	'ADM_LOGOUT'			=> 'Выход&nbsp;из&nbsp;ACP',
@@ -245,8 +246,8 @@ $lang = array_merge($lang, array(
 	'LOGIN_ADMIN'			=> 'Для входа в панель администратора вы должны быть авторизованы.',
 	'LOGIN_ADMIN_CONFIRM'	=> 'Для входа в панель администратора необходимо повторно ввести своё имя и пароль.',
 	'LOGIN_ADMIN_SUCCESS'	=> 'Проверка подлинности прошла успешно. Сейчас вы будете перенаправлены в панель администратора.',
-	'LOOK_UP_FORUM'			=> 'Выберите форум',
-	'LOOK_UP_FORUMS_EXPLAIN'=> 'Можно выбрать более одного форума.',
+	'LOOK_UP_FORUM'			=> 'Выберите раздел',
+	'LOOK_UP_FORUMS_EXPLAIN'=> 'Можно выбрать более одного раздела.',
 
 	'MANAGE'				=> 'Управление',
 	'MENU_TOGGLE'			=> 'Показать или скрыть боковое меню',
@@ -267,7 +268,7 @@ $lang = array_merge($lang, array(
 	'PARSE_SMILIES'						=> 'Разрешить смайлики',
 	'PARSE_URLS'						=> 'Разрешить ссылки',
 	'PERMISSIONS_TRANSFERRED'			=> 'Передача прав доступа',
-	'PERMISSIONS_TRANSFERRED_EXPLAIN'	=> 'В настоящее время вы используете права пользователя %1$s. Вы можете просматривать конференцию с правами данного пользователя, но не будете иметь доступа к панели администратора, поскольку права администратора не переданы. Вы можете <a href="%2$s"><strong>восстановить свои права</strong></a> в любое время.',
+	'PERMISSIONS_TRANSFERRED_EXPLAIN'	=> 'В настоящее время вы используете права пользователя %1$s. Вы можете просматривать форум с правами данного пользователя, но не будете иметь доступа к панели администратора, поскольку права администратора не переданы. Вы можете <a href="%2$s"><strong>восстановить свои права</strong></a> в любое время.',
 	'PROCEED_TO_ACP'					=> '%sПерейти в панель администратора%s',
 
 	'REMIND'							=> 'Напомнить',
@@ -300,9 +301,9 @@ $lang = array_merge($lang, array(
 
 // Logs
 $lang = array_merge($lang, array(
-	'ACP_ADMIN_LOGS_EXPLAIN'	=> 'Это список действий, выполненных администраторами конференции. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
-	'ACP_CRITICAL_LOGS_EXPLAIN'	=> 'Это список действий, выполненных самой конференцией. Этот журнал предоставляет информацию, которую можно использовать для решения некоторых проблем. Например, с доставкой электронных сообщений. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
-	'ACP_MOD_LOGS_EXPLAIN'		=> 'Это список всех действий, выполненных модераторами в форумах, темах и сообщениях. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
+	'ACP_ADMIN_LOGS_EXPLAIN'	=> 'Это список действий, выполненных администраторами форума. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
+	'ACP_CRITICAL_LOGS_EXPLAIN'	=> 'Это список действий, выполненных самим форумом. Этот журнал предоставляет информацию, которую можно использовать для решения некоторых проблем. Например, с доставкой электронных сообщений. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
+	'ACP_MOD_LOGS_EXPLAIN'		=> 'Это список всех действий, выполненных модераторами в разделах, темах и сообщениях. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
 	'ACP_USERS_LOGS_EXPLAIN'	=> 'Это список действий, выполненных пользователями или над пользователями (жалобы, предупреждения и заметки о пользователях).',
 	'ALL_ENTRIES'				=> 'Все записи',
 
@@ -317,12 +318,12 @@ $lang = array_merge($lang, array(
 
 // Index page
 $lang = array_merge($lang, array(
-	'ADMIN_INTRO'				=> 'Благодарим за выбор phpBBex в качестве решения для создания конференции. Данная страница предоставляет краткий обзор различной статистики. Ссылки слева позволяют управлять всеми аспектами работы вашей конференции. Каждая страница содержит инструкции по использованию текущего инструмента.',
+	'ADMIN_INTRO'				=> 'Благодарим за выбор phpBBex в качестве решения для создания форума. Данная страница предоставляет краткий обзор различной статистики. Ссылки слева позволяют управлять всеми аспектами работы вашего форума. Каждая страница содержит инструкции по использованию текущего инструмента.',
 	'ADMIN_LOG'					=> 'Действия администрации',
-	'ADMIN_LOG_INDEX_EXPLAIN'	=> 'Ниже находится список пяти последних действий, выполненных администраторами конференции. Полную копию журнала можно просмотреть, выбрав соответствующую ссылку в меню или нажав ссылку ниже «Лог администраторов».',
+	'ADMIN_LOG_INDEX_EXPLAIN'	=> 'Ниже находится список пяти последних действий, выполненных администраторами форума. Полную копию журнала можно просмотреть, выбрав соответствующую ссылку в меню или нажав ссылку ниже «Лог администраторов».',
 	'AVATAR_DIR_SIZE'			=> 'Размер каталога с аватарами',
 
-	'BOARD_STARTED'		=> 'Дата запуска конференции',
+	'BOARD_STARTED'		=> 'Дата запуска форума',
 	'PHPBB_VERSION'		=> 'Версия phpBB',
 	'PHPBBEX_VERSION'	=> 'Версия phpBBex',
 
@@ -340,7 +341,7 @@ $lang = array_merge($lang, array(
 	'ERROR_MBSTRING_HTTP_OUTPUT_EXPLAIN'			=> 'Параметр <var>mbstring.http_output</var> должен быть равен <samp>pass</samp>. Вы можете проверить текущее значение на странице <samp>Сведения о PHP</samp>.',
 
 	'FILES_PER_DAY'		=> 'Вложений в день',
-	'FORUM_STATS'		=> 'Статистика конференции',
+	'FORUM_STATS'		=> 'Статистика форума',
 
 	'GZIP_COMPRESSION'	=> 'Сжатие GZip',
 
@@ -361,12 +362,12 @@ $lang = array_merge($lang, array(
 
 	'PURGE_SESSIONS'			=> 'Очистить все сессии',
 	'PURGE_SESSIONS_CONFIRM'	=> 'Вы действительно хотите очистить все текущие сессии?',
-	'PURGE_SESSIONS_EXPLAIN'	=> 'Очистка таблицы сессий. Сессии всех пользователей, находящихся в данный момент на конференции, будут завершены, поэтому после выполнения данного действия им вновь придётся войти на конференцию, введя имя и пароль.',
+	'PURGE_SESSIONS_EXPLAIN'	=> 'Очистка таблицы сессий. Сессии всех пользователей, находящихся в данный момент на форуме, будут завершены, поэтому после выполнения данного действия им вновь придётся войти на форум, введя имя и пароль.',
 
-	'RESET_DATE'					=> 'Сброс даты запуска конференции',
-	'RESET_DATE_CONFIRM'			=> 'Вы действительно хотите сбросить дату запуска конференции?',
+	'RESET_DATE'					=> 'Сброс даты запуска форума',
+	'RESET_DATE_CONFIRM'			=> 'Вы действительно хотите сбросить дату запуска форума?',
 	'RESET_ONLINE'					=> 'Обнуление рекорда посещаемости',
-	'RESET_ONLINE_CONFIRM'			=> 'Вы действительно хотите обнулить рекорд посещаемости конференции?',
+	'RESET_ONLINE_CONFIRM'			=> 'Вы действительно хотите обнулить рекорд посещаемости форума?',
 	'RESYNC_POSTCOUNTS'				=> 'Синхронизировать счётчики сообщений',
 	'RESYNC_POSTCOUNTS_EXPLAIN'		=> 'Будут учтены только существующие сообщения. Удалённые сообщения не будут подсчитаны.',
 	'RESYNC_POSTCOUNTS_CONFIRM'		=> 'Вы действительно хотите синхронизировать счётчики сообщений?',
@@ -410,7 +411,7 @@ $lang = array_merge($lang, array(
 	'INACTIVE_REASON_UNKNOWN'		=> 'Неизвестно',
 	'INACTIVE_USERS'				=> 'Неактивированные пользователи',
 	'INACTIVE_USERS_EXPLAIN'		=> 'Ниже находится список зарегистрированных пользователей, учётные записи которых отключены. Вы можете активировать, удалить или отправить неактивированным пользователям электронное сообщение с напоминанием об активации.',
-	'INACTIVE_USERS_EXPLAIN_INDEX'	=> 'Ниже находится список десяти последних зарегистрированных пользователей, имеющих отключённые учётные записи. Учетные записи неактивны либо потому, что их активация предусмотрена настройками конференции и еще не были активированы, либо потому, что были деактивированы. Полный список неактивированных пользователей можно просмотреть, выбрав соответствующую ссылку в меню или нажав ссылку ниже «Неактивированные пользователи». На странице «Неактивированные пользователи» вы можете активировать, удалить или отправить неактивированным пользователям электронное сообщение с напоминанием об активации.',
+	'INACTIVE_USERS_EXPLAIN_INDEX'	=> 'Ниже находится список десяти последних зарегистрированных пользователей, имеющих отключённые учётные записи. Учетные записи неактивны либо потому, что их активация предусмотрена настройками форума и еще не были активированы, либо потому, что были деактивированы. Полный список неактивированных пользователей можно просмотреть, выбрав соответствующую ссылку в меню или нажав ссылку ниже «Неактивированные пользователи». На странице «Неактивированные пользователи» вы можете активировать, удалить или отправить неактивированным пользователям электронное сообщение с напоминанием об активации.',
 
 	'NO_INACTIVE_USERS'	=> 'Нет неактивированных пользователей',
 
@@ -448,18 +449,18 @@ $lang = array_merge($lang, array(
 	'LOG_ACL_ADD_ADMIN_GLOBAL_A_'		=> '<strong>Добавлены или изменены администраторы</strong><br />» %s',
 	'LOG_ACL_ADD_MOD_GLOBAL_M_'			=> '<strong>Добавлены или изменены супермодераторы</strong><br />» %s',
 
-	'LOG_ACL_ADD_USER_LOCAL_F_'			=> '<strong>Добавлен или изменён доступ пользователей к форуму</strong> из %1$s<br />» %2$s',
-	'LOG_ACL_ADD_USER_LOCAL_M_'			=> '<strong>Добавлен или изменён доступ модератора к форуму</strong> из %1$s<br />» %2$s',
-	'LOG_ACL_ADD_GROUP_LOCAL_F_'		=> '<strong>Добавлен или изменён доступ групп к форуму</strong> из %1$s<br />» %2$s',
-	'LOG_ACL_ADD_GROUP_LOCAL_M_'		=> '<strong>Добавлен или изменён модераторский доступ групп к форуму</strong> из %1$s<br />» %2$s',
+	'LOG_ACL_ADD_USER_LOCAL_F_'			=> '<strong>Добавлен или изменён доступ пользователей к разделу</strong> из %1$s<br />» %2$s',
+	'LOG_ACL_ADD_USER_LOCAL_M_'			=> '<strong>Добавлен или изменён доступ модератора к разделу</strong> из %1$s<br />» %2$s',
+	'LOG_ACL_ADD_GROUP_LOCAL_F_'		=> '<strong>Добавлен или изменён доступ групп к разделу</strong> из %1$s<br />» %2$s',
+	'LOG_ACL_ADD_GROUP_LOCAL_M_'		=> '<strong>Добавлен или изменён модераторский доступ групп к разделу</strong> из %1$s<br />» %2$s',
 
 	'LOG_ACL_ADD_MOD_LOCAL_M_'			=> '<strong>Добавлены или изменены модераторы</strong> из %1$s<br />» %2$s',
-	'LOG_ACL_ADD_FORUM_LOCAL_F_'		=> '<strong>Добавлен или изменён доступ к форуму</strong> из %1$s<br />» %2$s',
+	'LOG_ACL_ADD_FORUM_LOCAL_F_'		=> '<strong>Добавлен или изменён доступ к разделу</strong> из %1$s<br />» %2$s',
 
 	'LOG_ACL_DEL_ADMIN_GLOBAL_A_'		=> '<strong>Удалены администраторы</strong><br />» %s',
 	'LOG_ACL_DEL_MOD_GLOBAL_M_'			=> '<strong>Удалены супермодераторы</strong><br />» %s',
 	'LOG_ACL_DEL_MOD_LOCAL_M_'			=> '<strong>Удалены модераторы</strong> из %1$s<br />» %2$s',
-	'LOG_ACL_DEL_FORUM_LOCAL_F_'		=> '<strong>Удалён доступ пользователя/группы к форуму</strong> из %1$s<br />» %2$s',
+	'LOG_ACL_DEL_FORUM_LOCAL_F_'		=> '<strong>Удалён доступ пользователя/группы к разделу</strong> из %1$s<br />» %2$s',
 
 	'LOG_ACL_TRANSFER_PERMISSIONS'		=> '<strong>Перенесены права доступа пользователя</strong><br />» %s',
 	'LOG_ACL_RESTORE_PERMISSIONS'		=> '<strong>Возвращены свои права доступа после использования прав пользователя</strong><br />» %s',
@@ -507,7 +508,7 @@ $lang = array_merge($lang, array(
 	'LOG_CONFIG_AVATAR'			=> '<strong>Изменены настройки аватар</strong>',
 	'LOG_CONFIG_COOKIE'			=> '<strong>Изменены настройки cookies</strong>',
 	'LOG_CONFIG_EMAIL'			=> '<strong>Изменены настройки почты</strong>',
-	'LOG_CONFIG_FEATURES'		=> '<strong>Изменены возможности конференции</strong>',
+	'LOG_CONFIG_FEATURES'		=> '<strong>Изменены возможности форума</strong>',
 	'LOG_CONFIG_LOAD'			=> '<strong>Изменены настройки нагрузки на сервер</strong>',
 	'LOG_CONFIG_MESSAGE'		=> '<strong>Изменены настройки личных сообщений</strong>',
 	'LOG_CONFIG_POST'			=> '<strong>Изменены настройки сообщений</strong>',
@@ -516,7 +517,7 @@ $lang = array_merge($lang, array(
 	'LOG_CONFIG_SEARCH'			=> '<strong>Изменены настройки поиска</strong>',
 	'LOG_CONFIG_SECURITY'		=> '<strong>Изменены настройки безопасности</strong>',
 	'LOG_CONFIG_SERVER'			=> '<strong>Изменены настройки сервера</strong>',
-	'LOG_CONFIG_SETTINGS'		=> '<strong>Изменены настройки конференции</strong>',
+	'LOG_CONFIG_SETTINGS'		=> '<strong>Изменены настройки форума</strong>',
 	'LOG_CONFIG_SIGNATURE'		=> '<strong>Изменены настройки подписей</strong>',
 	'LOG_CONFIG_STYLE'			=> '<strong>Изменены настройки шаблона</strong>',
 	'LOG_CONFIG_VISUAL'			=> '<strong>Изменены настройки средств против спам-ботов</strong>',
@@ -526,7 +527,7 @@ $lang = array_merge($lang, array(
 	'LOG_DELETE_POST'			=> '<strong>Удалено сообщение</strong><br />Тема: %1$s<br />Автор: %2$s<br />%3$s',
 	'LOG_DELETE_TOPIC'			=> '<strong>Удалена тема</strong><br />Название: %1$s<br />Автор: %2$s<br />%3$s',
 	'LOG_DELETE_SHADOW_TOPIC'	=> '<strong>Удалена ссылка на перенесённую тему</strong><br />» %s',
-	'LOG_FORK'					=> '<strong>Скопирована тема</strong><br />» из форума %s',
+	'LOG_FORK'					=> '<strong>Скопирована тема</strong><br />» из раздела %s',
 	'LOG_LOCK'					=> '<strong>Закрыта тема</strong><br />» %s',
 	'LOG_LOCK_POST'				=> '<strong>Заблокировано сообщение</strong><br />» %s',
 	'LOG_MERGE'					=> '<strong>Объединены сообщения</strong> в тему<br />» %s',
@@ -562,21 +563,21 @@ $lang = array_merge($lang, array(
 	'LOG_ERROR_JABBER'		=> '<strong>Ошибка Jabber</strong><br />» %s',
 	'LOG_ERROR_EMAIL'		=> '<strong>Ошибка почты</strong><br />» %s',
 
-	'LOG_FORUM_ADD'							=> '<strong>Создан форум</strong><br />» %s',
-	'LOG_FORUM_COPIED_PERMISSIONS'			=> '<strong>Скопированы права доступа</strong> из форума «%1$s» в форум<br />» %2$s',
-	'LOG_FORUM_DEL_FORUM'					=> '<strong>Удалён форум</strong><br />» %s',
-	'LOG_FORUM_DEL_FORUMS'					=> '<strong>Удалён форум с подфорумами</strong><br />» %s',
-	'LOG_FORUM_DEL_MOVE_FORUMS'				=> '<strong>Удалён форум и перемещены подфорумы</strong> в %1$s<br />» %2$s',
-	'LOG_FORUM_DEL_MOVE_POSTS'				=> '<strong>Удалён форум и перемещены сообщения</strong> в %1$s<br />» %2$s',
-	'LOG_FORUM_DEL_MOVE_POSTS_FORUMS'		=> '<strong>Удалён форум с подфорумами, перемещены сообщения</strong> в %1$s<br />» %2$s',
-	'LOG_FORUM_DEL_MOVE_POSTS_MOVE_FORUMS'	=> '<strong>Удалён форум, перемещены сообщения</strong> в %1$s <strong>и подфорумы</strong> в %2$s<br />» %3$s',
-	'LOG_FORUM_DEL_POSTS'					=> '<strong>Удалён форум с сообщениями</strong><br />» %s',
-	'LOG_FORUM_DEL_POSTS_FORUMS'			=> '<strong>Удалён форум с сообщениями и подфорумами</strong><br />» %s',
-	'LOG_FORUM_DEL_POSTS_MOVE_FORUMS'		=> '<strong>Удалён форум с сообщениями, перемещены подфорумы</strong> в %1$s<br />» %2$s',
-	'LOG_FORUM_EDIT'						=> '<strong>Изменена информация о форуме</strong><br />» %s',
-	'LOG_FORUM_MOVE_DOWN'					=> '<strong>Перемещён форум</strong> %1$s <strong>под</strong> %2$s',
-	'LOG_FORUM_MOVE_UP'						=> '<strong>Перемещён форум</strong> %1$s <strong>над</strong> %2$s',
-	'LOG_FORUM_SYNC'						=> '<strong>Синхронизирован форум</strong><br />» %s',
+	'LOG_FORUM_ADD'							=> '<strong>Создан раздел</strong><br />» %s',
+	'LOG_FORUM_COPIED_PERMISSIONS'			=> '<strong>Скопированы права доступа</strong> из раздела «%1$s» в раздел<br />» %2$s',
+	'LOG_FORUM_DEL_FORUM'					=> '<strong>Удалён раздел</strong><br />» %s',
+	'LOG_FORUM_DEL_FORUMS'					=> '<strong>Удалён раздел с подразделами</strong><br />» %s',
+	'LOG_FORUM_DEL_MOVE_FORUMS'				=> '<strong>Удалён раздел и перемещены подразделы</strong> в %1$s<br />» %2$s',
+	'LOG_FORUM_DEL_MOVE_POSTS'				=> '<strong>Удалён раздел и перемещены сообщения</strong> в %1$s<br />» %2$s',
+	'LOG_FORUM_DEL_MOVE_POSTS_FORUMS'		=> '<strong>Удалён раздел с подразделами, перемещены сообщения</strong> в %1$s<br />» %2$s',
+	'LOG_FORUM_DEL_MOVE_POSTS_MOVE_FORUMS'	=> '<strong>Удалён раздел, перемещены сообщения</strong> в %1$s <strong>и подразделы</strong> в %2$s<br />» %3$s',
+	'LOG_FORUM_DEL_POSTS'					=> '<strong>Удалён раздел с сообщениями</strong><br />» %s',
+	'LOG_FORUM_DEL_POSTS_FORUMS'			=> '<strong>Удалён раздел с сообщениями и подразделами</strong><br />» %s',
+	'LOG_FORUM_DEL_POSTS_MOVE_FORUMS'		=> '<strong>Удалён раздел с сообщениями, перемещены подразделы</strong> в %1$s<br />» %2$s',
+	'LOG_FORUM_EDIT'						=> '<strong>Изменена информация о разделе</strong><br />» %s',
+	'LOG_FORUM_MOVE_DOWN'					=> '<strong>Перемещён раздел</strong> %1$s <strong>под</strong> %2$s',
+	'LOG_FORUM_MOVE_UP'						=> '<strong>Перемещён раздел</strong> %1$s <strong>над</strong> %2$s',
+	'LOG_FORUM_SYNC'						=> '<strong>Синхронизирован раздел</strong><br />» %s',
 
 	'LOG_GENERAL_ERROR'	=> '<strong>Произошла общая ошибка:</strong> %1$s <br />» %2$s',
 
@@ -607,7 +608,7 @@ $lang = array_merge($lang, array(
 	'LOG_INACTIVE_ACTIVATE'	=> '<strong>Активированы пользователи</strong><br />» %s',
 	'LOG_INACTIVE_DELETE'	=> '<strong>Удалены неактивированные пользователи</strong><br />» %s',
 	'LOG_INACTIVE_REMIND'	=> '<strong>Отправлены email-напоминания неактивированным пользователям</strong><br />» %s',
-	'LOG_INSTALL_CONVERTED'	=> '<strong>Конференция %1$s сконвертирована в phpBBex %2$s</strong>',
+	'LOG_INSTALL_CONVERTED'	=> '<strong>Форум %1$s сконвертирован в phpBBex %2$s</strong>',
 	'LOG_INSTALL_INSTALLED'	=> '<strong>Установлен phpBBex %s</strong>',
 
 	'LOG_IP_BROWSER_FORWARDED_CHECK'	=> '<strong>Неудачная проверка сессии по IP-адресу/браузеру/X_FORWARDED_FOR</strong><br />»IP-адрес пользователя "<em>%1$s</em>" проверен по IP-адресу сессии "<em>%2$s</em>", строка браузера пользователя "<em>%3$s</em>" проверена по строке браузера сессии "<em>%4$s</em>" и строка X_FORWARDED_FOR пользователя "<em>%5$s</em>" проверена по строке X_FORWARDED_FOR сессии "<em>%6$s</em>".',
@@ -638,9 +639,9 @@ $lang = array_merge($lang, array(
 	'LOG_A_ROLE_ADD'		=> '<strong>Добавлена администраторская роль</strong><br />» %s',
 	'LOG_A_ROLE_EDIT'		=> '<strong>Изменена администраторская роль</strong><br />» %s',
 	'LOG_A_ROLE_REMOVED'	=> '<strong>Удалена администраторская роль</strong><br />» %s',
-	'LOG_F_ROLE_ADD'		=> '<strong>Добавлена форумная роль</strong><br />» %s',
-	'LOG_F_ROLE_EDIT'		=> '<strong>Изменена форумная роль</strong><br />» %s',
-	'LOG_F_ROLE_REMOVED'	=> '<strong>Удалена форумная роль</strong><br />» %s',
+	'LOG_F_ROLE_ADD'		=> '<strong>Добавлена локальная роль</strong><br />» %s',
+	'LOG_F_ROLE_EDIT'		=> '<strong>Изменена локальная роль</strong><br />» %s',
+	'LOG_F_ROLE_REMOVED'	=> '<strong>Удалена локальная роль</strong><br />» %s',
 	'LOG_M_ROLE_ADD'		=> '<strong>Добавлена модераторская роль</strong><br />» %s',
 	'LOG_M_ROLE_EDIT'		=> '<strong>Изменена модераторская роль</strong><br />» %s',
 	'LOG_M_ROLE_REMOVED'	=> '<strong>Удалена модераторская роль</strong><br />» %s',
@@ -654,8 +655,8 @@ $lang = array_merge($lang, array(
 	'LOG_PROFILE_FIELD_EDIT'		=> '<strong>Изменено поле профиля</strong><br />» %s',
 	'LOG_PROFILE_FIELD_REMOVED'		=> '<strong>Удалено поле профиля</strong><br />» %s',
 
-	'LOG_PRUNE'					=> '<strong>Очищены форумы</strong><br />» %s',
-	'LOG_AUTO_PRUNE'			=> '<strong>Произведена автоочистка форумов</strong><br />» %s',
+	'LOG_PRUNE'					=> '<strong>Очищены разделы</strong><br />» %s',
+	'LOG_AUTO_PRUNE'			=> '<strong>Произведена автоочистка разделов</strong><br />» %s',
 	'LOG_PRUNE_USER_DEAC'		=> '<strong>Деактивированы пользователи</strong><br />» %s',
 	'LOG_PRUNE_USER_DEL_DEL'	=> '<strong>Удалены пользователи с их сообщениями</strong><br />» %s',
 	'LOG_PRUNE_USER_DEL_ANON'	=> '<strong>Удалены пользователи, их сообщения оставлены</strong><br />» %s',
@@ -672,7 +673,7 @@ $lang = array_merge($lang, array(
 	'LOG_REASON_UPDATED'	=> '<strong>Обновлена причина жалобы/отклонения</strong><br />» %s',
 
 	'LOG_REFERER_INVALID'		=> '<strong>Проверка рефёрера не удалась </strong><br />»Рефёрер: “<em>%1$s</em>”. Запрос был отклонён, сессия удалена.',
-	'LOG_RESET_DATE'			=> '<strong>Сброшена дата запуска конференции</strong>',
+	'LOG_RESET_DATE'			=> '<strong>Сброшена дата запуска форума</strong>',
 	'LOG_RESET_ONLINE'			=> '<strong>Сброшен рекорд посещаемости</strong>',
 	'LOG_RESYNC_POSTCOUNTS'		=> '<strong>Синхронизированы счётчики сообщений пользователей</strong>',
 	'LOG_RESYNC_POST_MARKING'	=> '<strong>Синхронизированы свои темы</strong>',
@@ -718,7 +719,7 @@ $lang = array_merge($lang, array(
 	'LOG_USER_DEL_POSTS'	=> '<strong>Удалены все сообщения пользователя</strong><br />» %s',
 	'LOG_USER_DEL_SIG'		=> '<strong>Удалена подпись пользователя</strong><br />» %s',
 	'LOG_USER_INACTIVE'		=> '<strong>Деактивирован пользователь</strong><br />» %s',
-	'LOG_USER_MOVE_POSTS'	=> '<strong>Перемещены сообщения пользователя</strong><br />» «%1$s» в форум «%2$s»',
+	'LOG_USER_MOVE_POSTS'	=> '<strong>Перемещены сообщения пользователя</strong><br />» «%1$s» в раздел «%2$s»',
 	'LOG_USER_NEW_PASSWORD'	=> '<strong>Изменён пароль пользователя</strong><br />» %s',
 	'LOG_USER_REACTIVATE'	=> '<strong>Принудительная повторная активация учётной записи пользователя</strong><br />» %s',
 	'LOG_USER_REMOVED_NR'	=> '<strong>Удалён флаг новой регистрации пользователя</strong><br />» %s',
@@ -734,7 +735,7 @@ $lang = array_merge($lang, array(
 	'LOG_USER_GENERAL'			=> '<strong>Добавлен элемент:</strong><br />» %s',
 	'LOG_USER_INACTIVE_USER'	=> '<strong>Деактивирована учётная запись пользователя</strong>',
 	'LOG_USER_LOCK'				=> '<strong>Пользователь закрыл свою тему</strong><br />» %s',
-	'LOG_USER_MOVE_POSTS_USER'	=> '<strong>Перемещены все сообщения в форум "%s"</strong>',
+	'LOG_USER_MOVE_POSTS_USER'	=> '<strong>Перемещены все сообщения в раздел "%s"</strong>',
 	'LOG_USER_REACTIVATE_USER'	=> '<strong>Принудительная повторная активация учётной записи пользователя</strong>',
 	'LOG_USER_UNLOCK'			=> '<strong>Пользователь открыл свою тему</strong><br />» %s',
 	'LOG_USER_WARNING'			=> '<strong>Вынесено предупреждение пользователю</strong><br />» %s',
@@ -782,7 +783,7 @@ $lang = array_merge($lang, array(
 	'ALLOW_REPLY_SMILIES'		=> 'Смайлики',
 	'ALLOW_QUICK_FULL_QUOTE'	=> 'Разрешить полное цитирование',
 	'ALLOW_QUICK_POST'			=> 'Разрешить быстрые темы',
-	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Пользователи смогут начинать новые темы на странице просмотра форума.',
+	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Пользователи смогут начинать новые темы на странице просмотра раздела.',
 ));
 
 // Posts merging

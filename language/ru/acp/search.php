@@ -106,7 +106,7 @@ $lang = array_merge($lang, array(
 	'YES_SEARCH_UPDATE_EXPLAIN'				=> 'Обновление полнотекстовых индексов при отправке сообщений. Опция не работает, если поисковые возможности отключены.',
 
 	'DEFAULT_SEARCH_TITLEONLY'				=> 'По умолчанию искать только по названиям тем',
-	'DEFAULT_SEARCH_TITLEONLY_EXPLAIN'		=> 'Затрагивает глобальный поиск и поиск по конкретному форуму.',
+	'DEFAULT_SEARCH_TITLEONLY_EXPLAIN'		=> 'Затрагивает глобальный поиск и поиск по конкретному разделу.',
 
 	'SEARCH_HIGHLIGHT_KEYWORDS'				=> 'Подсвечивать найденные слова',
 	'SEARCH_HIGHLIGHT_KEYWORDS_EXPLAIN'		=> 'Создаёт ссылки на viewtopic.php с параметром hilit для найденных тем.',
