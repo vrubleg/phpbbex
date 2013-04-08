@@ -74,7 +74,7 @@ $lang = array_merge($lang, array(
 	'GROUP_RESIGNED_PENDING'			=> 'Ваш запрос на вступление в выбранную группу успешно отозван.',
 	'GROUP_TYPE'						=> 'Тип группы',
 	'GROUP_UNDISCLOSED'					=> 'Скрытая группа',
-	'FORUM_UNDISCLOSED'					=> 'Модерирование скрытого форума(ов)',
+	'FORUM_UNDISCLOSED'					=> 'Модерирование скрытого раздела(ов)',
 
 	'LOGIN_EXPLAIN_GROUP'				=> 'Вы должны войти для просмотра информации о группе.',
 

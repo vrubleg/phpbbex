@@ -53,7 +53,7 @@ $lang = array_merge($lang, array(
 
 		<br />
 
-		<p>For further information on setting up and managing permissions on your phpBB3 board, please see <a href="http://www.phpbb.com/support/documentation/3.0/quickstart/quick_permissions.html">Chapter 1.5 of our Quick Start Guide</a>.</p>
+		<p>For further information on setting up and managing permissions on your phpBBex board, please see <a href="http://www.phpbb.com/support/documentation/3.0/quickstart/quick_permissions.html">phpBB Quick Start Guide</a>.</p>
 	',
 
 	'ACL_NEVER'				=> 'Never',
@@ -296,7 +296,7 @@ $lang = array_merge($lang, array(
 	'VIEW_PERMISSIONS'		=> 'View permissions',
 
 	'WRONG_PERMISSION_TYPE'				=> 'Wrong permission type selected.',
-	'WRONG_PERMISSION_SETTING_FORMAT'	=> 'The permission settings are in a wrong format, phpBB is not able to process them correctly.',
+	'WRONG_PERMISSION_SETTING_FORMAT'	=> 'The permission settings are in a wrong format, phpBBex is not able to process them correctly.',
 ));
 
 ?>

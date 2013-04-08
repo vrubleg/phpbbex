@@ -1446,7 +1446,7 @@ if (isset($captcha) && $captcha->is_solved() !== false)
 $form_enctype = (@ini_get('file_uploads') == '0' || strtolower(@ini_get('file_uploads')) == 'off' || !$config['allow_attachments'] || !$auth->acl_get('u_attach') || !$auth->acl_get('f_attach', $forum_id)) ? '' : ' enctype="multipart/form-data"';
 add_form_key('posting');
 
-$s_do_merge_allowed = $user->data['is_registered'] && ($mode == 'reply' || $mode == 'quote') && $post_data['topic_last_poster_id'] == $user->data['user_id'];
+$s_do_merge_allowed = $user->data['is_registered'] && ($mode == 'reply' || $mode == 'quote') && $post_data['topic_last_poster_id'] == $user->data['user_id'] && ($auth->acl_get('f_noapprove', $forum_id) || $auth->acl_get('m_approve', $forum_id));
 $s_do_merge_checked = $s_do_merge_allowed && (($current_time - $post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
 
 // Start assigning vars for main posting page ...
