@@ -1024,11 +1024,13 @@ $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 $i = ($store_reverse) ? $sql_limit - 1 : 0;
 
 // Show first post on every page if needed
-if($topic_data['topic_first_post_show'] && ($start != 0))
+if ($topic_data['topic_first_post_show'] && ($start != 0))
 {
-	$i = 0;
-	$post_list[$i] = $topic_data['topic_first_post_id'];
-	$i = ($store_reverse) ? $sql_limit : $i+1;
+	if (!$store_reverse)
+	{
+		$post_list[$i] = (int) $topic_data['topic_first_post_id'];
+	}
+	$i++;
 }
 
 while ($row = $db->sql_fetchrow($result))
@@ -1037,6 +1039,12 @@ while ($row = $db->sql_fetchrow($result))
 	($store_reverse) ? $i-- : $i++;
 }
 $db->sql_freeresult($result);
+
+// Show first post on every page if needed (for reverse order)
+if ($topic_data['topic_first_post_show'] && ($start != 0) && $store_reverse)
+{
+	$post_list[$i] = (int) $topic_data['topic_first_post_id'];
+}
 
 if (!sizeof($post_list))
 {
