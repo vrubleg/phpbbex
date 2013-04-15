@@ -507,9 +507,9 @@ class phpbb_session
 		// Update stats
 		$sql = "INSERT INTO " . USER_BROWSER_IDS_TABLE . "
 			SET browser_id='" . $db->sql_escape($browser_id) . "', user_id='" . $db->sql_escape($user_id) . "',
-				created=UNIX_TIMESTAMP(), last_visit=UNIX_TIMESTAMP(), visits=1,
+				created=" . $this->time_now . ", last_visit=" . $this->time_now . ", visits=1,
 				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'
-			ON DUPLICATE KEY UPDATE last_visit=UNIX_TIMESTAMP(), visits=visits+1,
+			ON DUPLICATE KEY UPDATE last_visit=" . $this->time_now . ", visits=visits+1,
 				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'";
 		$db->sql_query($sql);
 
@@ -517,9 +517,9 @@ class phpbb_session
 		if(rand(0, 1000) == 1)
 		{
 			$sql = "DELETE FROM " . USER_BROWSER_IDS_TABLE . "
-				WHERE  (visits = 1 AND user_id = " . ANONYMOUS . " AND last_visit+3600*12 < UNIX_TIMESTAMP())
-					OR (visits > 1 AND user_id = " . ANONYMOUS . " AND last_visit+86400*7 < UNIX_TIMESTAMP())
-					OR (last_visit+86400*365 < UNIX_TIMESTAMP())";
+				WHERE  (visits = 1 AND user_id = " . ANONYMOUS . " AND last_visit+3600*12 < " . $this->time_now . ")
+					OR (visits > 1 AND user_id = " . ANONYMOUS . " AND last_visit+86400*7 < " . $this->time_now . ")
+					OR (last_visit+86400*365 < " . $this->time_now . ")";
 			$db->sql_query($sql);
 		}
 	}
