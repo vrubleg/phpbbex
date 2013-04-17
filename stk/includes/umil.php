@@ -196,6 +196,7 @@ class umil
 
 			$user->add_lang(array('acp/common', 'acp/permissions'));
 
+			/*
 			// Check to see if a newer version is available.
 			$info = $this->version_check('version.phpbb.com', '/umil', ((defined('PHPBB_QA')) ? 'umil_qa.txt' : 'umil.txt'));
 			if (is_array($info) && isset($info[0]) && isset($info[1]) && defined('DEBUG'))
@@ -219,6 +220,7 @@ class umil
 					));
 				}
 			}
+			*/
 		}
 	}
 
