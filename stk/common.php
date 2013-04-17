@@ -16,7 +16,7 @@ if (!defined('IN_PHPBB'))
 }
 
 // What version are we using?
-define('STK_VERSION', '1.0.6');
+define('STK_VERSION', '1.0.7');
 //define('STK_QA', true);
 
 define('ADMIN_START', true);
@@ -46,6 +46,10 @@ else
 {
 	require STK_ROOT_PATH . 'includes/umil.' . PHP_EXT;
 }
+
+// phpBBs common.php registers hooks, these hooks tend to cause problems with the
+// support toolkit. Therefore we unset the `$phpbb_hook` object here
+unset($phpbb_hook);  
 
 // When not in the ERK we setup the user at this point
 // and load UML.

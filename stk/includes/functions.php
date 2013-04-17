@@ -378,20 +378,20 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 		case 'request_phpbb_version' :
 			global $cache, $config;
 
-			if ($submit)
+			$_version_number = $cache->get('_stk_phpbb_version_number');
+			if ($_version_number === false)
 			{
-				if (!check_form_key('request_phpbb_version'))
+				if ($submit)
 				{
-					trigger_error('FORM_INVALID');
-				}
+					if (!check_form_key('request_phpbb_version'))
+					{
+						trigger_error('FORM_INVALID');
+					}
 
-				$_version_number = request_var('version_number', $config['version']);
-				$cache->put('_stk_phpbb_version_number', $_version_number);
-			}
-			else
-			{
-				$_version_number = $cache->get('_stk_phpbb_version_number');
-				if (false === $_version_number)
+					$_version_number = request_var('version_number', $config['version']);
+					$cache->put('_stk_phpbb_version_number', $_version_number);
+				}
+				else
 				{
 					add_form_key('request_phpbb_version');
 					page_header($user->lang['REQUEST_PHPBB_VERSION'], false);
@@ -670,8 +670,8 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 
 			if (strpos($errfile, 'cache') === false && strpos($errfile, 'template.') === false)
 			{
-				$errfile = phpbb_filter_root_path($errfile);
-				$msg_text = phpbb_filter_root_path($msg_text);
+				$errfile = stk_filter_root_path($errfile);
+				$msg_text = stk_filter_root_path($msg_text);
 				$error_name = ($errno === E_WARNING) ? 'PHP Warning' : 'PHP Notice';
 				echo '<b>[phpBB Debug] ' . $error_name . '</b>: in file <b>' . $errfile . '</b> on line <b>' . $errline . '</b>: <b>' . $msg_text . '</b><br />' . "\n";
 
@@ -891,6 +891,29 @@ if (!function_exists('adm_back_link'))
 	{
 		return '<br /><br /><a href="' . $u_action . '">&laquo; ' . user_lang('BACK_TO_PREV') . '</a>';
 	}
+}
+
+/**
+* Removes absolute path to phpBB root directory from error messages
+* and converts backslashes to forward slashes.
+*
+* @param string $errfile	Absolute file path
+*							(e.g. /var/www/phpbb3/phpBB/includes/functions.php)
+*							Please note that if $errfile is outside of the phpBB root,
+*							the root path will not be found and can not be filtered.
+* @return string			Relative file path
+*							(e.g. /includes/functions.php)
+*/
+function stk_filter_root_path($errfile)
+{
+	static $root_path;
+
+	if (empty($root_path))
+	{
+		$root_path = phpbb_realpath(dirname(__FILE__) . '/../');
+	}
+
+	return str_replace(array($root_path, '\\'), array('[ROOT]', '/'), $errfile);
 }
 
 // php.net, laurynas dot butkus at gmail dot com, http://us.php.net/manual/en/function.html-entity-decode.php#75153
