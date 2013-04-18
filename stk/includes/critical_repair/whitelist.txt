@@ -16,6 +16,7 @@ stk/includes/resync_user_groups/resync_registered
 stk/language/../common
 stk/language/../tools/admin/profile_list
 stk/language/../tools/admin/purge_cache
+stk/language/../tools/admin/purge_sessions
 stk/language/../tools/admin/reparse_bbcode
 stk/language/../tools/admin/resync_attachments
 stk/language/../tools/admin/resync_avatars
@@ -27,6 +28,7 @@ stk/language/../tools/support/database_cleaner
 stk/language/../tools/support/fix_left_right_ids
 stk/language/../tools/support/flash_checker
 stk/language/../tools/support/mysql_upgrader
+stk/language/../tools/support/orphaned_posts
 stk/language/../tools/support/readd_module_management
 stk/language/../tools/support/recache_moderators
 stk/language/../tools/support/reclean_usernames
@@ -43,6 +45,7 @@ stk/language/../tools/usergroup/restore_deleted_users
 stk/language/../tools/usergroup/resync_user_groups
 stk/tools/admin/profile_list
 stk/tools/admin/purge_cache
+stk/tools/admin/purge_sessions
 stk/tools/admin/reparse_bbcode
 stk/tools/admin/resync_attachments
 stk/tools/admin/resync_avatars
@@ -54,6 +57,7 @@ stk/tools/support/database_cleaner
 stk/tools/support/fix_left_right_ids
 stk/tools/support/flash_checker
 stk/tools/support/mysql_upgrader
+stk/tools/support/orphaned_posts
 stk/tools/support/readd_module_management
 stk/tools/support/recache_moderators
 stk/tools/support/reclean_usernames
@@ -68,6 +72,15 @@ stk/tools/usergroup/manage_founders
 stk/tools/usergroup/merge_users
 stk/tools/usergroup/restore_deleted_users
 stk/tools/usergroup/resync_user_groups
+includes/acp/acp_mods
+includes/acp/info/acp_mods
+includes/editor
+includes/functions_mods
+includes/mod_parser
+install/index
+install/install_versions
+language/../acp/mods
+language/../mods/info_acp_modman
 umil/file
 umil/umil
 umil/umil_auto

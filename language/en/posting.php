@@ -131,6 +131,7 @@ $lang = array_merge($lang, array(
 	'LOGIN_EXPLAIN_QUOTE'		=> 'You need to login in order to quote posts within this forum.',
 	'LOGIN_EXPLAIN_REPLY'		=> 'You need to login in order to reply to topics within this forum.',
 
+	'MIN_FONT_SIZE_EXCEEDED'	=> 'You may only use fonts down to size %1$d.',
 	'MAX_FONT_SIZE_EXCEEDED'	=> 'You may only use fonts up to size %1$d.',
 	'MAX_FLASH_HEIGHT_EXCEEDED'	=> 'Your flash files may only be up to %1$d pixels high.',
 	'MAX_FLASH_WIDTH_EXCEEDED'	=> 'Your flash files may only be up to %1$d pixels wide.',
