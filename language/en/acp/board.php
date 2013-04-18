@@ -249,6 +249,8 @@ $lang = array_merge($lang, array(
 	'MAX_POLL_OPTIONS'				=> 'Maximum number of poll options',
 	'MAX_POST_IMGS'					=> 'Maximum images per post',
 	'MAX_POST_IMGS_EXPLAIN'			=> 'Maximum number of images in a post. Set to 0 for unlimited images.',
+	'MIN_POST_FONT_SIZE'			=> 'Minimum font size per post',
+	'MIN_POST_FONT_SIZE_EXPLAIN'	=> 'Minimum font size allowed in a post. Set to 0 for unlimited font size.',
 	'MAX_POST_FONT_SIZE'			=> 'Maximum font size per post',
 	'MAX_POST_FONT_SIZE_EXPLAIN'	=> 'Maximum font size allowed in a post. Set to 0 for unlimited font size.',
 	'MAX_POST_IMG_HEIGHT'			=> 'Maximum image height per post',
@@ -280,6 +282,8 @@ $lang = array_merge($lang, array(
 $lang = array_merge($lang, array(
 	'ACP_SIGNATURE_SETTINGS_EXPLAIN'	=> 'Here you can set all default settings for signatures.',
 
+	'MIN_SIG_FONT_SIZE'				=> 'Minimum signature font size',
+	'MIN_SIG_FONT_SIZE_EXPLAIN'		=> 'Minimum font size allowed in user signatures. Set to 0 for unlimited size.',
 	'MAX_SIG_FONT_SIZE'				=> 'Maximum signature font size',
 	'MAX_SIG_FONT_SIZE_EXPLAIN'		=> 'Maximum font size allowed in user signatures. Set to 0 for unlimited size.',
 	'MAX_SIG_IMGS'					=> 'Maximum signature images',

@@ -1069,6 +1069,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 		'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
 		'URL_STATUS'			=> ($url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
+		'MIN_FONT_SIZE'			=> (int) $config['min_post_font_size'],
 		'MAX_FONT_SIZE'			=> (int) $config['max_post_font_size'],
 		'MINI_POST_IMG'			=> $user->img('icon_post_target', $user->lang['PM']),
 		'ERROR'					=> (sizeof($error)) ? implode('<br />', $error) : '',

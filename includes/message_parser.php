@@ -219,6 +219,13 @@ class bbcode_firstpass extends bbcode
 			return '[size=' . $stx . ']' . $in . '[/size]';
 		}
 
+		if ($config['min_' . $this->mode . '_font_size'] && $config['min_' . $this->mode . '_font_size'] > $stx)
+		{
+			$this->warn_msg[] = sprintf($user->lang['MIN_FONT_SIZE_EXCEEDED'], $config['min_' . $this->mode . '_font_size']);
+
+			return '[size=' . $stx . ']' . $in . '[/size]';
+		}
+
 		// Do not allow size=0
 		if ($stx <= 0)
 		{
@@ -1193,6 +1200,14 @@ class parse_message extends bbcode_firstpass
 			if (!isset($config['max_' . $mode . '_' . $key]))
 			{
 				$config['max_' . $mode . '_' . $key] = 0;
+			}
+		}
+
+		foreach (array('chars', 'font_size') as $key)
+		{
+			if (!isset($config['min_' . $mode . '_' . $key]))
+			{
+				$config['min_' . $mode . '_' . $key] = 0;
 			}
 		}
 

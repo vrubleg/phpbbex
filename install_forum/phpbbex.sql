@@ -292,3 +292,6 @@ DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter'
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.6.0');
+
+-- After 1.6.0
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_post_font_size', '85');
