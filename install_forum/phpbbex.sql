@@ -295,3 +295,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version',
 
 -- After 1.6.0
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_post_font_size', '85');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_font_size', '200');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_sig_font_size', '100');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_font_size', '100');

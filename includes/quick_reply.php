@@ -161,6 +161,9 @@ $template->assign_vars(array(
 	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
 	'URL_STATUS'			=> ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 
+	'MAX_FONT_SIZE'			=> (int) $config['max_post_font_size'],
+	'MIN_FONT_SIZE'			=> (int) $config['min_post_font_size'],
+
 	'L_QUICK_REPLY'				=> $user->lang['QUICK_' . strtoupper($mode)],
 	'L_ICON'					=> ($mode == 'reply') ? $user->lang['POST_ICON'] : $user->lang['TOPIC_ICON'],
 	'L_MESSAGE_BODY_EXPLAIN'	=> (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
