@@ -883,9 +883,9 @@ INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mo
 INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('ARCHIVES', 0, 1, 1, '', 0, '', 1);
 INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('PLAIN_TEXT', 0, 1, 1, '', 0, '', 1);
 INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('DOCUMENTS', 0, 1, 1, '', 0, '', 1);
-INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('AUDIO', 3, 0, 1, '', 0, '', 0);
-INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('VIDEO', 2, 0, 1, '', 0, '', 0);
-INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('FLASH_FILES', 5, 0, 1, '', 0, '', 0);
+INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('AUDIO', 3, 1, 1, '', 0, '', 1);
+INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('VIDEO', 2, 1, 1, '', 0, '', 1);
+INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('FLASH_FILES', 5, 1, 1, '', 0, '', 1);
 INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('DOWNLOADABLE_FILES', 0, 1, 1, '', 0, '', 1);
 
 # -- extensions
