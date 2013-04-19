@@ -263,18 +263,8 @@ UPDATE phpbb_users SET user_allow_viewemail = 0;
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
 
--- New file extensions
+-- Unique index for extensions
 ALTER TABLE phpbb_extensions ADD UNIQUE INDEX extension (extension);
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (3, 'diff');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (3, 'sql');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (6, 'avi');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'oga');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'ogv');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mka');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'mkv');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webm');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'webp');
-REPLACE INTO phpbb_extensions (group_id, extension) VALUES (9, 'opus');
 
 -- Disable acp_update
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
@@ -298,3 +288,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_post_font_siz
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_font_size', '200');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_sig_font_size', '100');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_font_size', '100');
+
+UPDATE phpbb_extension_groups SET group_name = 'AUDIO' WHERE cat_id = 3;
+UPDATE phpbb_extension_groups SET group_name = 'VIDEO' WHERE cat_id = 2;
+UPDATE phpbb_extension_groups SET cat_id = 0 WHERE cat_id = 6;

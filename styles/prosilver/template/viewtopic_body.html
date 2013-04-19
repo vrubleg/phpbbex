@@ -159,12 +159,14 @@ jQuery(function($)
 <script type="text/javascript">
 jQuery(function($)
 {
+	var waiting = false;
 	$('div.postbody').on('mouseup', function(event)
 	{
-		event.stopPropagation();
+		waiting = true;
 		var post = this;
 		setTimeout(function()
 		{
+			waiting = false;
 			$('li.no-full-quote').hide();
 
 			var sel = '';
@@ -189,7 +191,7 @@ jQuery(function($)
 	});
 	$('body').on('mouseup', function(event)
 	{
-		$('li.no-full-quote').hide();
+		if (!waiting) $('li.no-full-quote').hide();
 	});
 });
 </script>
