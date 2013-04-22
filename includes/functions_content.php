@@ -755,6 +755,55 @@ function smiley_text($text, $force_option = false)
 	}
 }
 
+function get_attachment_mime($category, $extension)
+{
+	if ($category == ATTACHMENT_CATEGORY_AUDIO)
+	{
+		switch ($extension)
+		{
+			case 'ogg':
+			case 'oga':
+				return 'audio/ogg';
+			case 'mp4':
+			case 'm4a':
+				return 'audio/mp4';
+			case 'webm':
+			case 'webma':
+				return 'audio/webm';
+			case 'opus':
+				return 'audio/opus';
+			case 'flac':
+				return 'audio/flac';
+			case 'mp1':
+			case 'mp2':
+			case 'mp3':
+			case 'mpg':
+			case 'mpeg':
+				return 'audio/mpeg';
+			case 'wav':
+				return 'audio/wav';
+		}
+	}
+
+	if ($category == ATTACHMENT_CATEGORY_VIDEO)
+	{
+		switch ($extension)
+		{
+			case 'ogg':
+			case 'ogv':
+				return 'video/ogg';
+			case 'mp4':
+			case 'm4v':
+				return 'video/mp4';
+			case 'webm':
+			case 'webmv':
+				return 'video/webm';
+		}
+	}
+
+	return false;
+}
+
 /**
 * General attachment parsing
 *
@@ -972,38 +1021,18 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 					$update_count[] = $attachment['attach_id'];
 				break;
 
-				// Windows Media Streams
-				case ATTACHMENT_CATEGORY_WM:
+				// HTML5 <video> and <audio>
+				case ATTACHMENT_CATEGORY_VIDEO:
+				case ATTACHMENT_CATEGORY_AUDIO:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 
-					// Giving the filename directly because within the wm object all variables are in local context making it impossible
-					// to validate against a valid session (all params can differ)
-					// $download_link = $filename;
-
 					$block_array += array(
+						'S_VIDEO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_VIDEO) ? true : false,
+						'S_AUDIO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_AUDIO) ? true : false,
 						'U_FORUM'		=> generate_board_url(),
 						'ATTACH_ID'		=> $attachment['attach_id'],
-						'S_WM_FILE'		=> true,
+						'MIME'			=> get_attachment_mime($display_cat, $attachment['extension']),
 					);
-
-					// Viewed/Heared File ... update the download count
-					$update_count[] = $attachment['attach_id'];
-				break;
-
-				// Real Media Streams
-				case ATTACHMENT_CATEGORY_RM:
-				case ATTACHMENT_CATEGORY_QUICKTIME:
-					$l_downloaded_viewed = 'VIEWED_COUNT';
-
-					$block_array += array(
-						'S_RM_FILE'			=> ($display_cat == ATTACHMENT_CATEGORY_RM) ? true : false,
-						'S_QUICKTIME_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_QUICKTIME) ? true : false,
-						'U_FORUM'			=> generate_board_url(),
-						'ATTACH_ID'			=> $attachment['attach_id'],
-					);
-
-					// Viewed/Heared File ... update the download count
-					$update_count[] = $attachment['attach_id'];
 				break;
 
 				// Macromedia Flash Files
@@ -1040,6 +1069,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 			);
 		}
 
+		$template->assign_var('T_ROOT_PATH', trim($phpbb_root_path, '/'));
 		$template->assign_block_vars('_file', $block_array);
 
 		$compiled_attachments[] = $template->assign_display('attachment_tpl');

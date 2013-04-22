@@ -120,6 +120,7 @@ function adm_page_header($page_title)
 		'U_ADM_INDEX'			=> append_sid("{$phpbb_admin_path}index.$phpEx"),
 		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.$phpEx"),
 
+		'T_ROOT_PATH'			=> trim($phpbb_root_path, '/'),
 		'T_IMAGES_PATH'			=> "{$phpbb_root_path}images/",
 		'T_SMILIES_PATH'		=> "{$phpbb_root_path}{$config['smilies_path']}/",
 		'T_AVATAR_PATH'			=> "{$phpbb_root_path}{$config['avatar_path']}/",

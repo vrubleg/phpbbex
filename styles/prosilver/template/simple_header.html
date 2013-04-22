@@ -11,16 +11,22 @@
 <link href="{T_THEME_PATH}/print.css" rel="stylesheet" type="text/css" media="print" title="printonly" />
 <link href="{T_STYLESHEET_LINK}" rel="stylesheet" type="text/css" media="screen, projection" />
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/jquery.splash.js"></script>
-<script type="text/javascript">
+<!--[if lt IE 9]>
+	<script src="{T_ROOT_PATH}/assets/js/jquery-ie8.js"></script>
+	<script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+	<script src="{T_ROOT_PATH}/assets/js/jquery.js"></script>
+<!--<![endif]-->
+<script src="{T_SUPER_TEMPLATE_PATH}/jquery.splash.js"></script>
+<script src="{T_SUPER_TEMPLATE_PATH}/forum_fn.js"></script>
+<script>
 	var lang = {};
 	lang.jump_page = '{LA_JUMP_PAGE}';
 	var on_page = '{ON_PAGE}';
 	var per_page = '{PER_PAGE}';
 	var base_url = '{A_BASE_URL}';
 </script>
-<script type="text/javascript" src="{T_SUPER_TEMPLATE_PATH}/forum_fn.js"></script>
 
 <!-- DEFINE $POPUP = 1 -->
 
