@@ -4698,6 +4698,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_new_year',
 		'style_show_sitename_in_headerbar',
 		'style_show_feeds_in_forumlist',
+		'style_use_google_cdn',
 
 		// viewtopic
 		'style_show_social_buttons',

@@ -93,6 +93,8 @@ $lang = array_merge($lang, array(
 	'STYLE_ROUNDED_CORNERS'				=> 'Rounded corners',
 	'STYLE_NEW_YEAR'					=> 'Winter-style headerbar',
 	'STYLE_POSTING_TOPIC_REVIEW'		=> 'Display topic review panel at posting page',
+	'STYLE_USE_GOOGLE_CDN'				=> 'Use the Google CDN for loading the jQuery library',
+	'STYLE_USE_GOOGLE_CDN_EXPLAIN'		=> 'Do not use if your users may have problems with access to the Google CDN.',
 
 	'STYLE_SETTINGS_INDEX'				=> 'Board Index',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
