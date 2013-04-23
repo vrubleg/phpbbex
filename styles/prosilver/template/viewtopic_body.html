@@ -170,22 +170,7 @@ jQuery(function($)
 		{
 			waiting = false;
 			$('li.no-full-quote').hide();
-
-			var sel = '';
-			if (window.getSelection && !is_ie)
-			{
-				sel = window.getSelection().toString();
-			}
-			else if (document.getSelection && !is_ie)
-			{
-				sel = document.getSelection();
-			}
-			else if (document.selection)
-			{
-				sel = document.selection.createRange().text;
-			}
-
-			if (jQuery.trim(sel) && event.which <= 1)
+			if (get_selected_text() && event.which <= 1)
 			{
 				$('li.no-full-quote', post).show();
 			}

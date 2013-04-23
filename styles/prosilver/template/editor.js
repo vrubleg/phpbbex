@@ -138,11 +138,12 @@ function bbfontstyle(bbopen, bbclose, event)
 	var bbname = bbopen.match(/^\[([\w\d]+)/i);
 	if (bbname) bbname = bbname[1].toLowerCase();
 	var bbtext = '';
+	var selected = (textarea.value).substring(textarea.selectionStart, textarea.selectionEnd);
 
 	switch (bbname)
 	{
 		case 'url':
-			var url = prompt(lang.enter_link_url, '');
+			var url = prompt(lang.enter_link_url, selected.match(/^(https?:\/\/[\w\d].*|[-\w\d]+(\.[-\w\d]+)+)$/i) ? selected : '');
 			if (url === null) return;
 			if (url)
 			{
