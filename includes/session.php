@@ -423,34 +423,20 @@ class phpbb_session
 								$sql_ary['session_forum_id'] = $this->page['forum'];
 							}
 
-							$db->sql_return_on_error(true);
-
-							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
-							$result = $db->sql_query($sql);
-
-							$db->sql_return_on_error(false);
-
-							// If the database is not yet updated, there will be an error due to the session_forum_id
-							// @todo REMOVE for 3.0.2
-							if ($result === false)
-							{
-								unset($sql_ary['session_forum_id']);
-
-								$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-									WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
-								$db->sql_query($sql);
-							}
-
 							// Update the last visit time once an hour
 							if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
 							{
+								$sql_ary['session_last_visit'] = $this->data['user_lastvisit'] ? $this->data['user_lastvisit'] : $this->time_now;
 								$this->data['user_lastvisit'] = $this->time_now;
 								$sql = 'UPDATE ' . USERS_TABLE . '
 									SET user_lastvisit = ' . (int) $this->time_now . '
 									WHERE user_id = ' . (int) $this->data['user_id'];
 								$db->sql_query($sql);
 							}
+
+							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
+							$result = $db->sql_query($sql);
 
 							if ($this->data['user_id'] != ANONYMOUS && !empty($config['new_member_post_limit']) && $this->data['user_new'] && $config['new_member_post_limit'] <= $this->data['user_posts'])
 							{
