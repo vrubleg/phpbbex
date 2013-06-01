@@ -618,6 +618,10 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$url	= 'http://' . $url;
 
 		case MAGIC_URL_FULL:
+			if (strtolower($url) === 'http://')
+			{
+				return $whitespace . $url . $append;
+			}
 			$external = stripos($url, $server_url) !== 0;
 			if ($external)
 			{
