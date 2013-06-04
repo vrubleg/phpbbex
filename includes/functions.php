@@ -4757,6 +4757,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 
 	// application/xhtml+xml not used because of IE
 	header('Content-type: text/html; charset=UTF-8');
+	header('X-UA-Compatible: IE=Edge,chrome=1');
 
 	header('Cache-Control: private, no-cache="set-cookie"');
 	header('Expires: 0');
