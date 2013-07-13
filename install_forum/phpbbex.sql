@@ -259,6 +259,16 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page',
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('board_hide_emails', '0');
 UPDATE phpbb_users SET user_allow_viewemail = 0;
 
+-- Reset CAPTCHA options
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_plugin', 'phpbb_captcha_nogd');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_foreground_noise', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_x_grid', '25');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_y_grid', '25');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_wave', '0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_3d_noise', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_fonts', '1');
+
 -- External links
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow_exclude', '');
