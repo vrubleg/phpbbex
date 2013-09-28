@@ -9,5 +9,6 @@ del mediaelementplayer.js
 del mediaelement.js
 del mediaelement.min.js
 del mediaelement-and-player.js
+del flashmediaelement-cdn.swf
 move mediaelementplayer.min.css mediaelement.css
 move mediaelement-and-player.min.js mediaelement.js
