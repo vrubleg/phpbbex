@@ -77,6 +77,7 @@ $lang = array_merge($lang, array(
 
 	'SEARCHED_FOR'				=> 'Поисковый запрос',
 	'SEARCHED_TOPIC'			=> 'Поиск в теме',
+	'SEARCHED_QUERY'			=> 'Поисковый запрос',
 	'SEARCH_ALL_TERMS'			=> 'Искать все слова',
 	'SEARCH_ANY_TERMS'			=> 'Искать любое слово/поиск с языком запросов',
 	'SEARCH_AUTHOR'				=> 'Поиск по автору',
