@@ -325,7 +325,7 @@ class phpbb_session
 		// if no session id is set, redirect to index.php
 		if (defined('NEED_SID') && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
 		{
-			send_status_line(401, 'Not authorized');
+			send_status_line(401, 'Unauthorized');
 			redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
 		}
 
@@ -1719,7 +1719,7 @@ class phpbb_user extends phpbb_session
 
 		if (!$this->theme)
 		{
-			trigger_error('Could not get style data', E_USER_ERROR);
+			trigger_error('NO_STYLE_DATA', E_USER_ERROR);
 		}
 
 		// Now parse the cfg file and cache it
@@ -2238,7 +2238,8 @@ class phpbb_user extends phpbb_session
 				'is_short'		=> strpos($format, '|'),
 				'format_short'	=> substr($format, 0, strpos($format, '|')) . '||' . substr(strrchr($format, '|'), 1),
 				'format_long'	=> str_replace('|', '', $format),
-				'lang'			=> $this->lang['datetime'],
+				// Filter out values that are not strings (e.g. arrays) for strtr().
+				'lang'			=> array_filter($this->lang['datetime'], 'is_string'),
 			);
 
 			// Short representation of month in format? Some languages use different terms for the long and short format of May

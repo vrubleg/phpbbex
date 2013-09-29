@@ -3149,7 +3149,7 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 
 	if ($fsock = @fsockopen($host, $port, $errno, $errstr, $timeout))
 	{
-		@fputs($fsock, "GET $directory/$filename HTTP/1.1\r\n");
+		@fputs($fsock, "GET $directory/$filename HTTP/1.0\r\n");
 		@fputs($fsock, "Host: $host\r\n");
 		@fputs($fsock, "Referer: ".generate_board_url()."\r\n");
 		@fputs($fsock, 'User-Agent: phpBBex/' . (isset($config['phpbbex_version']) ? $config['phpbbex_version'] : '?')
@@ -3354,7 +3354,7 @@ function obtain_latest_version_info($force_update = false, $warn_fail = false, $
 
 		$info = get_remote_file('phpbbex.com', '/api', 'version.txt', $errstr, $errno);
 
-		if ($info === false)
+		if (empty($info))
 		{
 			$cache->destroy('versioncheck');
 			if ($warn_fail)
@@ -3378,7 +3378,7 @@ function obtain_latest_version_info($force_update = false, $warn_fail = false, $
  * @param int		$flag			The binary flag which is OR-ed with the current column value
  * @param string	$sql_more		This string is attached to the sql query generated to update the table.
  *
- * @return void
+ * @return null
  */
 function enable_bitfield_column_flag($table_name, $column_name, $flag, $sql_more = '')
 {

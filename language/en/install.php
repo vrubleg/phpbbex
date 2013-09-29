@@ -80,7 +80,7 @@ $lang = array_merge($lang, array(
 	'CONTINUE_OLD_CONVERSION'	=> 'Continue previously started conversion',
 	'CONVERT'					=> 'Convert',
 	'CONVERT_COMPLETE'			=> 'Conversion completed',
-	'CONVERT_COMPLETE_EXPLAIN'	=> 'You have now successfully converted your board to phpBB 3.0. You can now login and <a href="../">access your board</a>. Please ensure that the settings were transferred correctly before enabling your board by deleting the install directory. Remember that help on using phpBB is available online via the <a href="http://www.phpbb.com/support/documentation/3.0/">Documentation</a> and the <a href="http://www.phpbb.com/community/viewforum.php?f=46">support forums</a>.',
+	'CONVERT_COMPLETE_EXPLAIN'	=> 'You have now successfully converted your board to phpBB 3.0. You can now login and <a href="../">access your board</a>. Please ensure that the settings were transferred correctly before enabling your board by deleting the install directory. Remember that help on using phpBB is available online via the <a href="https://www.phpbb.com/support/documentation/3.0/">Documentation</a> and the <a href="https://www.phpbb.com/community/viewforum.php?f=46">support forums</a>.',
 	'CONVERT_INTRO'				=> 'Welcome to the phpBB Unified Convertor Framework',
 	'CONVERT_INTRO_BODY'		=> 'From here, you are able to import data from other (installed) board systems. The list below shows all the conversion modules currently available. If there is no convertor shown in this list for the board software you wish to convert from, please check our website where further conversion modules may be available for download.',
 	'CONVERT_NEW_CONVERSION'	=> 'New conversion',
@@ -266,7 +266,7 @@ $lang = array_merge($lang, array(
 	'MAKE_FOLDER_WRITABLE'		=> 'Please make sure that this folder exists and is writable by the webserver then try again:<br />»<strong>%s</strong>.',
 	'MAKE_FOLDERS_WRITABLE'		=> 'Please make sure that these folders exist and are writable by the webserver then try again:<br />»<strong>%s</strong>.',
 
-	'MYSQL_SCHEMA_UPDATE_REQUIRED'	=> 'Your MySQL database schema for phpBB is outdated. phpBB detected a schema for MySQL 3.x/4.x, but the server runs on MySQL %2$s.<br /><strong>Before you proceed the update, you need to upgrade the schema.</strong><br /><br />Please refer to the <a href="http://www.phpbb.com/kb/article/doesnt-have-a-default-value-errors/">Knowledge Base article about upgrading the MySQL schema</a>. If you encounter problems, please use <a href="http://www.phpbb.com/community/viewforum.php?f=46">our support forums</a>.',
+	'MYSQL_SCHEMA_UPDATE_REQUIRED'	=> 'Your MySQL database schema for phpBB is outdated. phpBB detected a schema for MySQL 3.x/4.x, but the server runs on MySQL %2$s.<br /><strong>Before you proceed the update, you need to upgrade the schema.</strong><br /><br />Please refer to the <a href="https://www.phpbb.com/kb/article/doesnt-have-a-default-value-errors/">Knowledge Base article about upgrading the MySQL schema</a>. If you encounter problems, please use <a href="https://www.phpbb.com/community/viewforum.php?f=46">our support forums</a>.',
 
 	'NAMING_CONFLICT'			=> 'Naming conflict: %s and %s are both aliases<br /><br />%s',
 	'NEXT_STEP'					=> 'Proceed to next step',
@@ -352,7 +352,7 @@ $lang = array_merge($lang, array(
 	'UNAVAILABLE'				=> 'Unavailable',
 	'UNWRITABLE'				=> 'Unwritable',
 	'UPDATE_TOPICS_POSTED'		=> 'Generating topics posted information',
-	'UPDATE_TOPICS_POSTED_ERR'	=> 'An error occured while generating topics posted information. You can retry this step in the ACP after the conversion process is completed.',
+	'UPDATE_TOPICS_POSTED_ERR'	=> 'An error occurred while generating topics posted information. You can retry this step in the ACP after the conversion process is completed.',
 	'VERIFY_OPTIONS'			=> 'Verifying conversion options',
 	'VERSION'					=> 'Version',
 
@@ -457,7 +457,7 @@ $lang = array_merge($lang, array(
 	'NO_ERRORS'						=> 'No errors',
 	'NO_UPDATE_FILES'				=> 'Not updating the following files',
 	'NO_UPDATE_FILES_EXPLAIN'		=> 'The following files are new or modified but the directory they normally reside in could not be found on your installation. If this list contains files to other directories than language/ or styles/ than you may have modified your directory structure and the update may be incomplete.',
-	'NO_UPDATE_FILES_OUTDATED'		=> 'No valid update directory was found, please make sure you uploaded the relevant files.<br /><br />Your installation does <strong>not</strong> seem to be up to date. Updates are available for your version of phpBB %1$s, please visit <a href="http://www.phpbb.com/downloads/" rel="external">http://www.phpbb.com/downloads/</a> to obtain the correct package to update from Version %2$s to Version %3$s.',
+	'NO_UPDATE_FILES_OUTDATED'		=> 'No valid update directory was found, please make sure you uploaded the relevant files.<br /><br />Your installation does <strong>not</strong> seem to be up to date. Updates are available for your version of phpBB %1$s, please visit <a href="https://www.phpbb.com/downloads/" rel="external">https://www.phpbb.com/downloads/</a> to obtain the correct package to update from Version %2$s to Version %3$s.',
 	'NO_UPDATE_FILES_UP_TO_DATE'	=> 'Your version is up to date. There is no need to run the update tool. If you want to make an integrity check on your files make sure you uploaded the correct update files.',
 	'NO_UPDATE_INFO'				=> 'Update file information could not be found.',
 	'NO_UPDATES_REQUIRED'			=> 'No updates required',
