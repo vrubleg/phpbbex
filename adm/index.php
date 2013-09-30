@@ -114,13 +114,13 @@ function adm_page_header($page_title)
 		'_SID'					=> $_SID,
 		'SESSION_ID'			=> $user->session_id,
 		'ROOT_PATH'				=> $phpbb_admin_path,
+		'PHPBB_ROOT_PATH'		=> $phpbb_root_path,
 
 		'U_LOGOUT'				=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=logout'),
 		'U_ADM_LOGOUT'			=> append_sid("{$phpbb_admin_path}index.$phpEx", 'action=admlogout'),
 		'U_ADM_INDEX'			=> append_sid("{$phpbb_admin_path}index.$phpEx"),
 		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.$phpEx"),
 
-		'T_ROOT_PATH'			=> trim($phpbb_root_path, '/'),
 		'T_IMAGES_PATH'			=> "{$phpbb_root_path}images/",
 		'T_SMILIES_PATH'		=> "{$phpbb_root_path}{$config['smilies_path']}/",
 		'T_AVATAR_PATH'			=> "{$phpbb_root_path}{$config['avatar_path']}/",

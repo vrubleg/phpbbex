@@ -4603,7 +4603,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'SID'				=> $SID,
 		'_SID'				=> $_SID,
 		'SESSION_ID'		=> $user->session_id,
-		'ROOT_PATH'			=> $phpbb_root_path,
+		'ROOT_PATH'			=> $web_path,
 		'BOARD_URL'			=> $board_url,
 		'AJAX_TOKEN'		=> generate_link_hash('ajax'),
 
@@ -4698,7 +4698,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 
 		'S_SEARCH_HIDDEN_FIELDS'	=> build_hidden_fields($s_search_hidden_fields),
 
-		'T_ROOT_PATH'			=> trim($web_path, '/'),
 		'T_THEME_PATH'			=> "{$web_path}styles/" . rawurlencode($user->theme['theme_path']) . '/theme',
 		'T_TEMPLATE_PATH'		=> "{$web_path}styles/" . rawurlencode($user->theme['template_path']) . '/template',
 		'T_SUPER_TEMPLATE_PATH'	=> (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) . '/template' : "{$web_path}styles/" . rawurlencode($user->theme['template_path']) . '/template',
