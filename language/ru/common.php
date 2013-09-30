@@ -946,7 +946,7 @@ $lang = array_merge($lang, array(
 	'PM_COMPOSE'				=> 'Новое сообщение',
 	'PM_INBOX'					=> 'Входящие',
 	'PM_OUTBOX'					=> 'Исходящие',
-	'PM_SENTBOX'				=> 'Отправленные',
+	'PM_SENTBOX'				=> 'Доставленные',
 
 	// Memberlist filters
 	'MEMBERLIST_ALL_USERS'		=> 'Все пользователи',
