@@ -645,7 +645,7 @@ class bbcode
 			}
 			else
 			{
-				$result = time_delta::get_verbal($this->post_time, $time);
+				$result = time_delta::get_verbal($this->post_time, $time, false, 2);
 				$result = str_replace('$1', sprintf($user->lang['UPD_MERGED_AFTER'], $result), $tpls['upd_merged']);
 			}
 			$this->post_time = $time;
@@ -663,7 +663,7 @@ class bbcode
 				$this->post_time += $seconds;
 			}
 
-			$result = time_delta::get_verbal(0, $seconds);
+			$result = time_delta::get_verbal(0, $seconds, false, 2);
 			$result = str_replace('$1', sprintf($user->lang['UPD_MERGED_AFTER'], $result), $tpls['upd_merged']);
 
 		}

@@ -76,7 +76,7 @@ $lang = array_merge($lang, array(
 	'SYSTEM_TIMEZONE'				=> 'Guest timezone',
 	'SYSTEM_TIMEZONE_EXPLAIN'			=> 'Timezone to use for displaying times to users who are not logged in (guests, bots). Logged in users set their timezone during registration and can change it in their user control panel.',
 	'WARNINGS_EXPIRE'				=> 'Warning duration',
-	'WARNINGS_EXPIRE_EXPLAIN'		=> 'Number of days that will elapse before the warning will automatically expire from a user’s record. Set this value to 0 to make warnings permanent.',
+	'WARNINGS_EXPIRE_EXPLAIN'		=> 'Number of days that will elapse before a warning will automatically expire from a user’s record. Set this value to 0 to make warnings permanent.',
 	'WARNING_POST_DEFAULT'			=> 'Default warning message',
 ));
 
@@ -93,6 +93,8 @@ $lang = array_merge($lang, array(
 	'STYLE_ROUNDED_CORNERS'				=> 'Rounded corners',
 	'STYLE_NEW_YEAR'					=> 'Winter-style headerbar',
 	'STYLE_POSTING_TOPIC_REVIEW'		=> 'Display topic review panel at posting page',
+	'STYLE_USE_GOOGLE_CDN'				=> 'Use the Google CDN for loading the jQuery library',
+	'STYLE_USE_GOOGLE_CDN_EXPLAIN'		=> 'Do not use if your users may have problems with access to the Google CDN.',
 
 	'STYLE_SETTINGS_INDEX'				=> 'Board Index',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
@@ -216,7 +218,7 @@ $lang = array_merge($lang, array(
 	'BOXES_MAX_EXPLAIN'			=> 'By default users may create this many personal folders for private messages.',
 	'ENABLE_PM_ICONS'			=> 'Enable use of topic icons in private messages',
 	'FULL_FOLDER_ACTION'		=> 'Full folder default action',
-	'FULL_FOLDER_ACTION_EXPLAIN'=> 'Default action to take if a user’s folder is full assuming the user’s folder action, if set at all, is not applicable. The only exception is for the “Sent messages” folder where the default action is always to delete old messages.',
+	'FULL_FOLDER_ACTION_EXPLAIN'=> 'Default action to take if a user’s folder is full assuming the user’s folder action, if set at all, is not applicable. The only exception is for the “Delivered” folder where the default action is always to delete old messages.',
 	'HOLD_NEW_MESSAGES'			=> 'Hold new messages',
 	'PM_EDIT_TIME'				=> 'Limit editing time',
 	'PM_EDIT_TIME_EXPLAIN'		=> 'Limits the time available to edit a private message not already delivered. Setting the value to 0 disables this behaviour.',

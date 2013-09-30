@@ -326,7 +326,7 @@ class phpbb_session
 		// if no session id is set, redirect to index.php
 		if (defined('NEED_SID') && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
 		{
-			send_status_line(401, 'Not authorized');
+			send_status_line(401, 'Unauthorized');
 			redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
 		}
 
@@ -425,14 +425,6 @@ class phpbb_session
 								$sql_ary['session_album_id'] = $this->page['album'];
 							}
 
-							$db->sql_return_on_error(true);
-
-							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
-							$result = $db->sql_query($sql);
-
-							$db->sql_return_on_error(false);
-
 							if ($result === false)
 							{
 								unset($sql_ary['session_album_id']);
@@ -445,26 +437,20 @@ class phpbb_session
 								$db->sql_return_on_error(false);
 							}
 
-							// If the database is not yet updated, there will be an error due to the session_forum_id
-							// @todo REMOVE for 3.0.2
-							if ($result === false)
-							{
-								unset($sql_ary['session_forum_id']);
-
-								$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-									WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
-								$db->sql_query($sql);
-							}
-
 							// Update the last visit time once an hour
 							if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
 							{
+								$sql_ary['session_last_visit'] = $this->data['user_lastvisit'] ? $this->data['user_lastvisit'] : $this->time_now;
 								$this->data['user_lastvisit'] = $this->time_now;
 								$sql = 'UPDATE ' . USERS_TABLE . '
 									SET user_lastvisit = ' . (int) $this->time_now . '
 									WHERE user_id = ' . (int) $this->data['user_id'];
 								$db->sql_query($sql);
 							}
+
+							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
+							$result = $db->sql_query($sql);
 
 							if ($this->data['user_id'] != ANONYMOUS && !empty($config['new_member_post_limit']) && $this->data['user_new'] && $config['new_member_post_limit'] <= $this->data['user_posts'])
 							{
@@ -1750,7 +1736,7 @@ class phpbb_user extends phpbb_session
 
 		if (!$this->theme)
 		{
-			trigger_error('Could not get style data', E_USER_ERROR);
+			trigger_error('NO_STYLE_DATA', E_USER_ERROR);
 		}
 
 		// Now parse the cfg file and cache it
@@ -2269,7 +2255,8 @@ class phpbb_user extends phpbb_session
 				'is_short'		=> strpos($format, '|'),
 				'format_short'	=> substr($format, 0, strpos($format, '|')) . '||' . substr(strrchr($format, '|'), 1),
 				'format_long'	=> str_replace('|', '', $format),
-				'lang'			=> $this->lang['datetime'],
+				// Filter out values that are not strings (e.g. arrays) for strtr().
+				'lang'			=> array_filter($this->lang['datetime'], 'is_string'),
 			);
 
 			// Short representation of month in format? Some languages use different terms for the long and short format of May

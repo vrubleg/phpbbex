@@ -618,6 +618,10 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$url	= 'http://' . $url;
 
 		case MAGIC_URL_FULL:
+			if (strtolower($url) === 'http://')
+			{
+				return $whitespace . $url . $append;
+			}
 			$external = stripos($url, $server_url) !== 0;
 			if ($external)
 			{
@@ -1069,7 +1073,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 			);
 		}
 
-		$template->assign_var('T_ROOT_PATH', trim($phpbb_root_path, '/'));
+		$template->assign_var('ROOT_PATH', $phpbb_root_path);
 		$template->assign_block_vars('_file', $block_array);
 
 		$compiled_attachments[] = $template->assign_display('attachment_tpl');

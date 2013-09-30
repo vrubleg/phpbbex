@@ -742,6 +742,7 @@ function mcp_delete_topic($topic_ids)
 			}
 			else
 			{
+				decode_message($posts[$row['topic_first_post_id']]['post_text'], $posts[$row['topic_first_post_id']]['bbcode_uid']);
 				add_log('mod', $row['forum_id'], $topic_id, 'LOG_DELETE_TOPIC', $row['topic_title'], $row['topic_first_poster_name'], $posts[$row['topic_first_post_id']]['post_text']);
 			}
 		}
@@ -828,6 +829,7 @@ function mcp_delete_post($post_ids)
 		foreach ($post_data as $id => $row)
 		{
 			$post_username = ($row['poster_id'] == ANONYMOUS && !empty($row['post_username'])) ? $row['post_username'] : $row['username'];
+			decode_message($row['post_text'], $row['bbcode_uid']);
 			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_DELETE_POST', $row['post_subject'] ? $row['post_subject'] : $row['topic_title'], $post_username, $row['post_text']);
 		}
 
@@ -1155,6 +1157,7 @@ function mcp_fork_topic($topic_ids)
 				}
 			}
 
+			// Copy topic subscriptions to new topic
 			$sql = 'SELECT user_id, notify_status
 				FROM ' . TOPICS_WATCH_TABLE . '
 				WHERE topic_id = ' . $topic_id;
@@ -1174,6 +1177,27 @@ function mcp_fork_topic($topic_ids)
 			if (sizeof($sql_ary))
 			{
 				$db->sql_multi_insert(TOPICS_WATCH_TABLE, $sql_ary);
+			}
+
+			// Copy bookmarks to new topic
+			$sql = 'SELECT user_id
+				FROM ' . BOOKMARKS_TABLE . '
+				WHERE topic_id = ' . $topic_id;
+			$result = $db->sql_query($sql);
+
+			$sql_ary = array();
+			while ($row = $db->sql_fetchrow($result))
+			{
+				$sql_ary[] = array(
+					'topic_id'		=> (int) $new_topic_id,
+					'user_id'		=> (int) $row['user_id'],
+				);
+			}
+			$db->sql_freeresult($result);
+
+			if (sizeof($sql_ary))
+			{
+				$db->sql_multi_insert(BOOKMARKS_TABLE, $sql_ary);
 			}
 		}
 

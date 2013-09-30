@@ -4,7 +4,6 @@
 <meta charset="{S_CONTENT_ENCODING}" />
 <meta name="keywords" content="{SITE_KEYWORDS}" />
 <meta name="description" content="{SITE_DESCRIPTION}" />
-<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
 {META}
 <title><!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF --><!-- IF PAGE_TITLE and not S_ON_INDEX -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}<!-- IF S_ON_INDEX and SITE_DESCRIPTION --> - {SITE_DESCRIPTION}<!-- ENDIF --></title>
 <!-- IF U_CANONICAL --><link rel="canonical" href="{U_CANONICAL}" /><!-- ENDIF -->
@@ -26,14 +25,26 @@
 #wrap { min-width: <!-- IF STYLE_MIN_WIDTH > 875 -->{STYLE_MIN_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- IF STYLE_MAX_WIDTH --> max-width: <!-- IF STYLE_MAX_WIDTH > 875 -->{STYLE_MAX_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- ENDIF --> }
 </style>
 
-<!--[if lt IE 9]>
-	<script src="{T_ROOT_PATH}/assets/js/jquery-ie8.js"></script>
-	<script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script>
-<![endif]-->
-<!--[if gte IE 9]><!-->
-	<script src="{T_ROOT_PATH}/assets/js/jquery.js"></script>
-<!--<![endif]-->
-<script src="{T_SUPER_TEMPLATE_PATH}/jquery.splash.js"></script>
+<!-- IF STYLE_USE_GOOGLE_CDN -->
+	<!--[if lt IE 9]>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="{ROOT_PATH}assets/js/jquery-ie8.js"><\/script>')</script>
+		<script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script>
+	<![endif]-->
+	<!--[if gte IE 9]><!-->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="{ROOT_PATH}assets/js/jquery.js"><\/script>')</script>
+	<!--<![endif]-->
+<!-- ELSE -->
+	<!--[if lt IE 9]>
+		<script src="{ROOT_PATH}assets/js/jquery-ie8.js"></script>
+		<script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script>
+	<![endif]-->
+	<!--[if gte IE 9]><!-->
+		<script src="{ROOT_PATH}assets/js/jquery.js"></script>
+	<!--<![endif]-->
+<!-- ENDIF -->
+
 <script src="{T_SUPER_TEMPLATE_PATH}/forum_fn.js"></script>
 <script>
 	var lang = {};

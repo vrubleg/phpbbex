@@ -43,7 +43,7 @@
 		<button type="button" accesskey="d" onclick="bbstyle(18, event)" title="{L_BBCODE_D_HELP}">Flash</button>
 	<!-- ENDIF -->
 	<!-- IF MIN_FONT_SIZE != 100 or MAX_FONT_SIZE != 100 -->
-	<select name="addbbcode20" onchange="bbfontstyle('[size=' + this.form.addbbcode20.options[this.form.addbbcode20.selectedIndex].value + ']', '[/size]');this.form.addbbcode20.selectedIndex = 2;" title="{L_BBCODE_F_HELP}">
+	<select name="addbbcode20" onchange="bbfontstyle('[size=' + this.form.addbbcode20.options[this.form.addbbcode20.selectedIndex].value + ']', '[/size]');jQuery('option[value=100]', this).prop('selected', true);" title="{L_BBCODE_F_HELP}">
 		<!-- IF not MIN_FONT_SIZE or MIN_FONT_SIZE <= 50 --><option value="50">{L_FONT_TINY}</option><!-- ENDIF -->
 		<!-- IF not MIN_FONT_SIZE or MIN_FONT_SIZE <= 85 --><option value="85">{L_FONT_SMALL}</option><!-- ENDIF -->
 		<option value="100" selected="selected">{L_FONT_NORMAL}</option>

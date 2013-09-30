@@ -80,6 +80,7 @@ AddType text/cache-manifest				manifest
 AddType text/javascript					js
 AddType text/css						css
 AddType text/html						html
+AddType text/plain						txt log csv tsv
 
 <IfModule mod_expires.c>
 ExpiresByType text/cache-manifest		"access plus 7 days"
