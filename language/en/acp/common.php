@@ -146,6 +146,7 @@ $lang = array_merge($lang, array(
 	'ACP_RANKS'					=> 'Ranks',
 	'ACP_REASONS'				=> 'Report/denial reasons',
 	'ACP_REGISTER_SETTINGS'		=> 'User registration settings',
+	'ACP_REGISTER_LOGS'			=> 'Registrations log',
 
 	'ACP_RESTORE'				=> 'Restore',
 
@@ -238,7 +239,7 @@ $lang = array_merge($lang, array(
 	'GLOBAL_MASK'			=> 'Global permission mask',
 
 	'INSTALL'				=> 'Install',
-	'IP'					=> 'User IP',
+	'IP'					=> 'IP',
 	'IP_HOSTNAME'			=> 'IP addresses or hostnames',
 
 	'LOGGED_IN_AS'			=> 'You are logged in as:',
@@ -304,6 +305,7 @@ $lang = array_merge($lang, array(
 	'ACP_CRITICAL_LOGS_EXPLAIN'	=> 'This lists the actions carried out by the board itself. This log provides you with information you are able to use for solving specific problems, for example non-delivery of e-mails. You can sort by username, date, IP or action. If you have appropriate permissions you can also clear individual operations or the log as a whole.',
 	'ACP_MOD_LOGS_EXPLAIN'		=> 'This lists all actions done on forums, topics and posts as well as actions carried out on users by moderators, including banning. You can sort by username, date, IP or action. If you have appropriate permissions you can also clear individual operations or the log as a whole.',
 	'ACP_USERS_LOGS_EXPLAIN'	=> 'This lists all actions carried out by users or on users (reports, warnings and user notes).',
+	'ACP_REGISTER_LOGS_EXPLAIN'	=> 'This lists all attempts to register.',
 	'ALL_ENTRIES'				=> 'All entries',
 
 	'DISPLAY_LOG'	=> 'Display entries from previous',
@@ -501,6 +503,7 @@ $lang = array_merge($lang, array(
 	'LOG_CLEAR_MOD'			=> '<strong>Cleared moderator log</strong>',
 	'LOG_CLEAR_USER'		=> '<strong>Cleared user log</strong><br />» %s',
 	'LOG_CLEAR_USERS'		=> '<strong>Cleared user logs</strong>',
+	'LOG_CLEAR_REGISTER'	=> '<strong>Cleared registration log</strong>',
 
 	'LOG_CONFIG_ATTACH'			=> '<strong>Altered attachment settings</strong>',
 	'LOG_CONFIG_AUTH'			=> '<strong>Altered authentication settings</strong>',
@@ -754,6 +757,10 @@ $lang = array_merge($lang, array(
 	'LOG_WORD_ADD'			=> '<strong>Added word censor</strong><br />» %s',
 	'LOG_WORD_DELETE'		=> '<strong>Deleted word censor</strong><br />» %s',
 	'LOG_WORD_EDIT'			=> '<strong>Edited word censor</strong><br />» %s',
+
+	'LOG_REGISTER_OK'				=> '<strong style="color: green;">User registered successfully</strong><br /><strong>Name:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>Browser ID:</strong> %4$s<br /><strong>First request:</strong> %6$s seconds ago<br /><strong>Requested:</strong> %7$s pages',
+	'LOG_REGISTER_REJECTED_BOT'		=> '<strong style="color: orange;">An attempt to register a bot was rejected</strong><br /><strong>Name:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>Browser ID:</strong> %4$s<br /><strong>First request:</strong> %6$s seconds ago<br /><strong>Requested:</strong> %7$s pages<br /><strong>Errors:</strong><br />%3$s',
+	'LOG_REGISTER_REJECTED_USER'	=> '<strong style="color: red;">An attempt to register a user was rejected</strong><br /><strong>Name:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>Browser ID:</strong> %4$s<br /><strong>First request:</strong> %6$s seconds ago<br /><strong>Requested:</strong> %7$s pages<br /><strong>Errors:</strong><br />%3$s',
 ));
 
 // Manage attachments module for phpBB3 MOD

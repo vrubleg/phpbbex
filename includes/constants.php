@@ -135,6 +135,7 @@ define('LOG_ADMIN', 0);
 define('LOG_MOD', 1);
 define('LOG_CRITICAL', 2);
 define('LOG_USERS', 3);
+define('LOG_REGISTER', 4);
 
 // Private messaging - Do NOT change these values
 define('PRIVMSGS_HOLD_BOX', -4);

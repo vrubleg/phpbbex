@@ -195,6 +195,7 @@ $lang = array_merge($lang, array(
 	'FOLDER'				=> 'Папка',
 	'FORGOT_PASS'			=> 'Забыли пароль?',
 	'FORM_INVALID'			=> 'Ошибка отправки формы. Попробуйте ещё раз.',
+	'FORM_INVALID_TOKEN'	=> 'Ошибка отправки формы. Ваш браузер должен поддерживать JavaScript.',
 	'FORUM'					=> 'Раздел',
 	'FORUMS'				=> 'Форум',
 	'FORUMS_MARKED'			=> 'Разделы отмечены как прочтённые',
