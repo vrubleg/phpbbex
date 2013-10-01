@@ -290,9 +290,6 @@ UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-
 -- Remove obsolete options
 DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html', 'style_auto_new_year');
 
--- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.6.0');
-
 -- After 1.6.0
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_post_font_size', '85');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_font_size', '200');
@@ -302,3 +299,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_font_size
 UPDATE phpbb_extension_groups SET group_name = 'AUDIO' WHERE cat_id = 3;
 UPDATE phpbb_extension_groups SET group_name = 'VIDEO' WHERE cat_id = 2;
 UPDATE phpbb_extension_groups SET cat_id = 0 WHERE cat_id = 6;
+
+-- phpBBex version
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.7.0');
