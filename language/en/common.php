@@ -195,6 +195,7 @@ $lang = array_merge($lang, array(
 	'FOLDER'				=> 'Folder',
 	'FORGOT_PASS'			=> 'I forgot my password',
 	'FORM_INVALID'			=> 'The submitted form was invalid. Try submitting again.',
+	'FORM_INVALID_TOKEN'	=> 'The submitted form was invalid. Your browser have to support JavaScript.',
 	'FORUM'					=> 'Forum',
 	'FORUMS'				=> 'Forums',
 	'FORUMS_MARKED'			=> 'Forums have been marked read.',

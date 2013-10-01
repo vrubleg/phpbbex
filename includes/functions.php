@@ -3436,6 +3436,10 @@ function add_log()
 			$sql_ary['log_type'] = LOG_CRITICAL;
 		break;
 
+		case 'register':
+			$sql_ary['log_type'] = LOG_REGISTER;
+		break;
+
 		case 'gallery':
 			$sql_ary += array(
 				'log_type'	=> LOG_GALLERY,

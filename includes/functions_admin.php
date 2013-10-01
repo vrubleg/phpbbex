@@ -2564,6 +2564,11 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			$sql_forum = '';
 		break;
 
+		case 'register':
+			$log_type = LOG_REGISTER;
+			$sql_forum = '';
+		break;
+
 		case 'gallery':
 			$log_type = LOG_GALLERY;
 			$sql_forum = '';

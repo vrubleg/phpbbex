@@ -185,6 +185,14 @@ class ucp_register
 			$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
 			$is_dst				= ($config['override_user_dst'])		? $config['board_dst']			: $is_dst;
 
+			$error_type = array(
+				'generic' => false,
+				'token' => false,
+				'captcha' => false,
+				'attempts' => false,
+				'dnsbl' => false,
+			);
+
 			$error = validate_data($data, array(
 				'username'			=> array(
 					array('string', false, $config['min_name_chars'], $config['max_name_chars']),
@@ -201,9 +209,12 @@ class ucp_register
 				'lang'				=> array('language_iso_name'),
 			));
 
+			$error_type['generic'] = !!sizeof($error);
+
 			if (!check_form_key('ucp_register'))
 			{
 				$error[] = $user->lang['FORM_INVALID'];
+				$error_type['token'] = true;
 			}
 
 			// Replace "error" strings with their real, localised form
@@ -215,11 +226,13 @@ class ucp_register
 				if ($vc_response !== false)
 				{
 					$error[] = $vc_response;
+					$error_type['captcha'] = true;
 				}
 
 				if ($config['max_reg_attempts'] && $captcha->get_attempt_count() > $config['max_reg_attempts'])
 				{
 					$error[] = $user->lang['TOO_MANY_REGISTERS'];
+					$error_type['attempts'] = true;
 				}
 			}
 
@@ -229,6 +242,7 @@ class ucp_register
 				if (($dnsbl = $user->check_dnsbl('register')) !== false)
 				{
 					$error[] = sprintf($user->lang['IP_BLACKLISTED'], $user->ip, $dnsbl[1]);
+					$error_type['dnsbl'] = true;
 				}
 			}
 
@@ -247,6 +261,24 @@ class ucp_register
 					$error[] = $user->lang['NEW_EMAIL_ERROR'];
 				}
 			}
+
+			// Get browser id
+			$browser_id = request_var($config['cookie_name'] . '_bid', '', false, true);
+			$sql = "SELECT * FROM " . USER_BROWSER_IDS_TABLE . " WHERE browser_id='" . $db->sql_escape($browser_id) . "'";
+			$result = $db->sql_query($sql);
+			$browser = $db->sql_fetchrow($result);
+			if (!$browser)
+			{
+				$browser = array(
+					'browser_id' => 'none',
+					'created' => time(),
+					'last_visit' => time(),
+					'visits' => 0,
+					'agent' => trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 149)),
+					'last_ip' => (!empty($_SERVER['REMOTE_ADDR'])) ? (string) $_SERVER['REMOTE_ADDR'] : '',
+				);
+			}
+			$db->sql_freeresult($result);
 
 			if (!sizeof($error))
 			{
@@ -316,6 +348,12 @@ class ucp_register
 				{
 					trigger_error('NO_USER', E_USER_ERROR);
 				}
+
+				// Log registration
+				$user_id_orig = $user->data['user_id'];
+				$user->data['user_id'] = $user_id;
+				add_log('register', 'LOG_REGISTER_OK', $data['username'], $data['email'], '', $browser['browser_id'], $browser['agent'], time() - $browser['created'], $browser['visits']);
+				$user->data['user_id'] = $user_id_orig;
 
 				// Okay, captcha, your job is done.
 				if ($config['enable_confirm'] && isset($captcha))
@@ -413,6 +451,17 @@ class ucp_register
 
 				$message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
 				trigger_error($message);
+			}
+			else
+			{
+				// Log registration
+				add_log('register', 'LOG_REGISTER_REJECTED_' . ($error_type['token'] ? 'BOT' : 'USER'), $data['username'], $data['email'], implode("\n", $error), $browser['browser_id'], $browser['agent'], time() - $browser['created'], $browser['visits']);
+
+				// Display one error if user provided invalid token
+				if ($error_type['token'])
+				{
+					$error = array($user->lang['FORM_INVALID_TOKEN']);
+				}
 			}
 		}
 
