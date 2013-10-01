@@ -48,13 +48,6 @@ if (version_compare(PHP_VERSION, '5.4.0-dev', '>='))
 }
 error_reporting($level);
 
-// Display all errors in DEBUG mode
-if (defined('DEBUG'))
-{
-	error_reporting(E_ALL);
-	ini_set('display_errors', 'On');
-}
-
 /*
 * Remove variables created by register_globals from the global scope
 * Thanks to Matt Kavanagh

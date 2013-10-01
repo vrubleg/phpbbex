@@ -601,7 +601,7 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 	// First and foremost handle the case where phpBB calls trigger error
 	// but the STK really needs to continue.
 	global $critical_repair, $stk_no_error;
-	if ($stk_no_error === true)
+	if ($stk_no_error === true || in_array($errno, array(E_STRICT, E_DEPRECATED, E_NOTICE)))
 	{
 		return true;
 	}
