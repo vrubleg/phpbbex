@@ -301,4 +301,4 @@ UPDATE phpbb_extension_groups SET group_name = 'VIDEO' WHERE cat_id = 2;
 UPDATE phpbb_extension_groups SET cat_id = 0 WHERE cat_id = 6;
 
 -- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.7.0');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.7.1');

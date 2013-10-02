@@ -29,52 +29,54 @@
 		<!-- ENDIF -->
 
 
+		<!-- IF _file.S_AUDIO_FILE or _file.S_VIDEO_FILE or _file.S_FLASH_FILE -->
+		<dl class="file">
+			<dt>
 
-		<!-- IF _file.S_AUDIO_FILE or _file.S_VIDEO_FILE -->
-			<script>
-			if (typeof mejs == 'undefined')
-			{
-				document.write('<scr'+'ipt src="{ROOT_PATH}assets/js/mejs/mediaelement.js"></scr'+'ipt>');
-				var s = document.createElement('link');
-				s.setAttribute('rel', 'stylesheet');
-				s.setAttribute('href', '{ROOT_PATH}assets/js/mejs/mediaelement.css');
-				document.getElementsByTagName("head")[0].appendChild(s)
-			}
-			</script>
-			<!-- IF _file.S_AUDIO_FILE -->
-			<audio id="attach_audio_{_file.ATTACH_ID}" src="{_file.U_DOWNLOAD_LINK}" type="{_file.MIME}"></audio>
-			<script>
-			jQuery(function($)
-			{
-				$('#attach_audio_{_file.ATTACH_ID}').mediaelementplayer();
-			});
-			</script>
-			<!-- ELSE -->
-			<video id="attach_video_{_file.ATTACH_ID}" src="{_file.U_DOWNLOAD_LINK}" type="{_file.MIME}"></video>
-			<script>
-			jQuery(function($)
-			{
-				$('#attach_video_{_file.ATTACH_ID}').mediaelementplayer();
-			});
-			</script>
+			<!-- IF _file.S_AUDIO_FILE or _file.S_VIDEO_FILE -->
+				<script>
+				if (typeof mejs == 'undefined')
+				{
+					document.write('<scr'+'ipt src="{ROOT_PATH}assets/js/mejs/mediaelement.js"></scr'+'ipt>');
+					var s = document.createElement('link');
+					s.setAttribute('rel', 'stylesheet');
+					s.setAttribute('href', '{ROOT_PATH}assets/js/mejs/mediaelement.css');
+					document.getElementsByTagName("head")[0].appendChild(s)
+				}
+				</script>
+				<!-- IF _file.S_AUDIO_FILE -->
+				<audio id="attach_audio_{_file.ATTACH_ID}" src="{_file.U_DOWNLOAD_LINK}" type="{_file.MIME}" preload="none"></audio>
+				<script>
+				jQuery(function($)
+				{
+					$('#attach_audio_{_file.ATTACH_ID}').mediaelementplayer();
+				});
+				</script>
+				<!-- ELSE -->
+				<video id="attach_video_{_file.ATTACH_ID}" src="{_file.U_DOWNLOAD_LINK}" type="{_file.MIME}" preload="none"></video>
+				<script>
+				jQuery(function($)
+				{
+					$('#attach_video_{_file.ATTACH_ID}').mediaelementplayer();
+				});
+				</script>
+				<!-- ENDIF -->
+			<!-- ELSEIF _file.S_FLASH_FILE -->
+				<object classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000" width="{_file.WIDTH}" height="{_file.HEIGHT}">
+					<param name="movie" value="{_file.U_VIEW_LINK}" />
+					<param name="play" value="true" />
+					<param name="loop" value="true" />
+					<param name="quality" value="high" />
+					<param name="allowScriptAccess" value="never" />
+					<param name="allowNetworking" value="internal" />
+					<embed src="{_file.U_VIEW_LINK}" type="application/x-shockwave-flash" width="{_file.WIDTH}" height="{_file.HEIGHT}" play="true" loop="true" quality="high" allowscriptaccess="never" allownetworking="internal"></embed>
+				</object>
 			<!-- ENDIF -->
 
-		<!-- ELSEIF _file.S_FLASH_FILE -->
-			<object classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000" codebase="http://active.macromedia.com/flash2/cabs/swflash.cab#version=5,0,0,0" width="{_file.WIDTH}" height="{_file.HEIGHT}">
-				<param name="movie" value="{_file.U_VIEW_LINK}" />
-				<param name="play" value="true" />
-				<param name="loop" value="true" />
-				<param name="quality" value="high" />
-				<param name="allowScriptAccess" value="never" />
-				<param name="allowNetworking" value="internal" />
-				<embed src="{_file.U_VIEW_LINK}" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" width="{_file.WIDTH}" height="{_file.HEIGHT}" play="true" loop="true" quality="high" allowscriptaccess="never" allownetworking="internal"></embed>
-			</object>
-		<!-- ENDIF -->
-
-		<!-- IF _file.S_AUDIO_FILE or _file.S_VIDEO_FILE or _file.S_FLASH_FILE -->
-			<p>
-			<!-- IF _file.S_QUICKTIME_FILE --><a href="#" onclick="play_qt_file(document.qtstream_{_file.ATTACH_ID}); return false;">[ {L_PLAY_QUICKTIME_FILE} ]</a> <!-- ENDIF -->
-			<a href="{_file.U_DOWNLOAD_LINK}">{_file.DOWNLOAD_NAME}</a> [ {_file.FILESIZE} {_file.SIZE_LANG} | {_file.L_DOWNLOAD_COUNT} ]</p>
+			</dt>
+			<!-- IF _file.COMMENT --><dd><em>{_file.COMMENT}</em></dd><!-- ENDIF -->
+			<dd class="hide-in-inline"><a href="{_file.U_DOWNLOAD_LINK}">{_file.DOWNLOAD_NAME}</a> ({_file.FILESIZE} {_file.SIZE_LANG}) {_file.L_DOWNLOAD_COUNT}</dd>
+		</dl>
 		<!-- ENDIF -->
 
 	<!-- ENDIF -->
