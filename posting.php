@@ -1312,6 +1312,7 @@ if ($mode == 'quote' && !$submit && !$preview && !$refresh)
 {
 	if ($config['allow_bbcode'])
 	{
+		$message_parser->message = preg_replace('#\[upd(?:=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}))?\](?:(.*?)\[/upd\])?[\n]?#ui', '', $message_parser->message);
 		$message_parser->message = '[quote=&quot;' . $post_data['quote_username'] . '&quot;]' . censor_text(trim($message_parser->message)) . "[/quote]\n";
 	}
 	else

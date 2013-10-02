@@ -648,7 +648,7 @@ class bbcode
 				$result = time_delta::get_verbal($this->post_time, $time, false, 2);
 				$result = str_replace('$1', sprintf($user->lang['UPD_MERGED_AFTER'], $result), $tpls['upd_merged']);
 			}
-			$this->post_time = $time;
+			$this->post_time = max($time, $this->post_time);
 		}
 		else
 		{
@@ -665,7 +665,6 @@ class bbcode
 
 			$result = time_delta::get_verbal(0, $seconds, false, 2);
 			$result = str_replace('$1', sprintf($user->lang['UPD_MERGED_AFTER'], $result), $tpls['upd_merged']);
-
 		}
 
 		if (trim($subj))

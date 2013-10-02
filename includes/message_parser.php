@@ -800,7 +800,6 @@ class bbcode_firstpass extends bbcode
 		*/
 
 		$in = str_replace("\r\n", "\n", str_replace('\"', '"', trim($in)));
-		$in = preg_replace('#\[upd(?:=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}))?\](?:(.*?)\[/upd\])?[\n]?#ui', '', $in);
 
 		if (!isset($config['max_'.$type.'_depth']) || $config['max_'.$type.'_depth'] < 0)
 		{
