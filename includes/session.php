@@ -482,7 +482,7 @@ class phpbb_session
 		$agent = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 149));
 		$browser_id = request_var($config['cookie_name'] . '_bid', '', false, true);
 
-		if (empty($browser_id))
+		if (strlen($browser_id) != 32)
 		{
 			// Set new browser_id cookie
 			$browser_id = md5(unique_id('bid', true));
