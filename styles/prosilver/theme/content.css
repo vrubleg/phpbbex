@@ -967,3 +967,8 @@ From the phpBB's tweaks.css
 	height: 1%;
 	overflow: hidden;
 }
+
+ul.linklist {
+	height: 4%;
+	overflow: hidden;
+}
