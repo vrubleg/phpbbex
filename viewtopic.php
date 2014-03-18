@@ -1485,16 +1485,19 @@ $template->assign_vars(array(
 );
 
 // Get user rates
-$sql = 'SELECT *
-	FROM ' . POST_RATES_TABLE . '
-	WHERE user_id = ' . $user->data['user_id'] . '
-		AND ' . $db->sql_in_set('post_id', $post_list);
-$result = $db->sql_query($sql);
-
 $user_rates = array();
-while ($row = $db->sql_fetchrow($result))
+if ($config['rate_enabled'])
 {
-	$user_rates[$row['post_id']] = $row;
+	$sql = 'SELECT *
+		FROM ' . POST_RATES_TABLE . '
+		WHERE user_id = ' . $user->data['user_id'] . '
+			AND ' . $db->sql_in_set('post_id', $post_list);
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$user_rates[$row['post_id']] = $row;
+	}
 }
 
 // Output the posts
