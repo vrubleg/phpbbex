@@ -434,9 +434,24 @@ class phpbb_session
 								$db->sql_query($sql);
 							}
 
+							$db->sql_return_on_error(true);
+
 							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
 							$result = $db->sql_query($sql);
+
+							$db->sql_return_on_error(false);
+
+							// If the database is not yet updated, there will be an error due to the session_forum_id
+							// @todo REMOVE for 3.0.2
+							if ($result === false)
+							{
+								unset($sql_ary['session_forum_id']);
+
+								$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+									WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
+								$db->sql_query($sql);
+							}
 
 							if ($this->data['user_id'] != ANONYMOUS && !empty($config['new_member_post_limit']) && $this->data['user_new'] && $config['new_member_post_limit'] <= $this->data['user_posts'])
 							{
