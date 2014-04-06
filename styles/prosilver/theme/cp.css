@@ -200,6 +200,7 @@ ul.cplist {
 #minitabs {
 	line-height: normal;
 	margin: -20px 7px 0 0;
+	white-space: nowrap;
 }
 
 #minitabs ul {

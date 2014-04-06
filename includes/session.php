@@ -448,9 +448,24 @@ class phpbb_session
 								$db->sql_query($sql);
 							}
 
+							$db->sql_return_on_error(true);
+
 							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
 							$result = $db->sql_query($sql);
+
+							$db->sql_return_on_error(false);
+
+							// If the database is not yet updated, there will be an error due to the session_forum_id
+							// @todo REMOVE for 3.0.2
+							if ($result === false)
+							{
+								unset($sql_ary['session_forum_id']);
+
+								$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+									WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
+								$db->sql_query($sql);
+							}
 
 							if ($this->data['user_id'] != ANONYMOUS && !empty($config['new_member_post_limit']) && $this->data['user_new'] && $config['new_member_post_limit'] <= $this->data['user_posts'])
 							{
@@ -496,7 +511,7 @@ class phpbb_session
 		$agent = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 149));
 		$browser_id = request_var($config['cookie_name'] . '_bid', '', false, true);
 
-		if (empty($browser_id))
+		if (strlen($browser_id) != 32)
 		{
 			// Set new browser_id cookie
 			$browser_id = md5(unique_id('bid', true));

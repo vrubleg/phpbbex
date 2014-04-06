@@ -231,7 +231,6 @@ div[class].topic-actions {
 	line-height: 1.48em;
 	color: #333333;
 	width: 79%;
-	width: -webkit-calc(100% - 208px);
 	width: calc(100% - 208px);
 	float: left;
 	clear: both;
@@ -817,7 +816,6 @@ fieldset.polls dd div {
 	color: #666666;
 	border-left: 1px solid #FFFFFF;
 	width: 20%;
-	width: -webkit-calc(200px);
 	width: calc(200px);
 	float: right;
 	display: inline;
@@ -958,4 +956,19 @@ div.postbody div.remark {
 
 .postbody div.warning .date, .postbody div.ban .date, .postbody div.remark .date {
 	float: right;
+}
+
+/* Style Sheet Tweaks
+
+From the phpBB's tweaks.css
+-------------------------------------------------*/
+
+.clearfix, #tabs, #minitabs, fieldset dl, ul.topiclist dl, dl.polls {
+	height: 1%;
+	overflow: hidden;
+}
+
+ul.linklist {
+	height: 4%;
+	overflow: hidden;
 }

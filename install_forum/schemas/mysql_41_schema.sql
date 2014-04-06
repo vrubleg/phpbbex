@@ -890,6 +890,7 @@ CREATE TABLE phpbb_topics (
 	PRIMARY KEY (topic_id),
 	KEY forum_id (forum_id),
 	KEY forum_id_type (forum_id, topic_type),
+	KEY topic_poster (topic_poster),
 	KEY topic_priority (topic_priority),
 	KEY last_post_time (topic_last_post_time),
 	KEY topic_approved (topic_approved),

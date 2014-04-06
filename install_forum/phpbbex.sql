@@ -302,3 +302,6 @@ UPDATE phpbb_extension_groups SET cat_id = 0 WHERE cat_id = 6;
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.7.1');
+
+-- After 1.7.1
+ALTER TABLE phpbb_topics ADD INDEX topic_poster(topic_poster);
