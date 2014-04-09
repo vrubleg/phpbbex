@@ -65,8 +65,7 @@
 			<!-- ELSE -->
 			.html("<h2>{L_NEW_MESSAGES}</h2><p>{L_YOU_NEW_PMS}</p>")
 			<!-- ENDIF -->
-			.append("<fieldset class='submit-buttons'>&nbsp;<input type='button' value='{L_CLOSE_WINDOW}' class='button2' name='close' />&nbsp;<input type='button' value='{L_DISPLAY}' class='button1' name='display' />&nbsp;</fieldset>")
-			.trigger("reposition");
+			.append("<fieldset class='submit-buttons'>&nbsp;<input type='button' value='{L_CLOSE_WINDOW}' class='button2' name='close' />&nbsp;<input type='button' value='{L_DISPLAY}' class='button1' name='display' />&nbsp;</fieldset>");
 		$("input[name=close]", $popup).click(function()
 		{
 			$popup.trigger('close');
