@@ -261,7 +261,7 @@
 	</div>
 	<!-- BEGIN commentrow -->
 	<a id="comment_{commentrow.COMMENT_ID}"></a>
-	<div class="post <!-- IF commentrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF commentrow.S_ONLINE --> online<!-- ENDIF -->">
+	<div class="post <!-- IF commentrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
 		<div class="inner"><span class="corners-top"><span></span></span>
 			<div class="postbody">
 				<!-- IF commentrow.U_DELETE or commentrow.U_EDIT or commentrow.U_INFO or commentrow.U_QUOTE -->
@@ -279,15 +279,17 @@
 			</div>
 			<dl class="postprofile" id="profile{commentrow.COMMENT_ID}">
 				<dt>
-					<!-- IF commentrow.POSTER_AVATAR -->
-						<!-- IF commentrow.U_POST_AUTHOR --><a href="{commentrow.U_POST_AUTHOR}">{commentrow.POSTER_AVATAR}</a><!-- ELSE -->{commentrow.POSTER_AVATAR}<!-- ENDIF --><br />
-					<!-- ENDIF -->
 					<!-- IF not commentrow.U_POST_AUTHOR --><strong>{commentrow.POST_AUTHOR_FULL}</strong><!-- ELSE -->{commentrow.POST_AUTHOR_FULL}<!-- ENDIF -->
+					<!-- IF commentrow.S_ONLINE --><span class="online"> {L_ONLINE}</span><!-- ENDIF -->
 				</dt>
 
 				<!-- IF commentrow.RANK_TITLE or commentrow.RANK_IMG --><dd>{commentrow.RANK_TITLE}<!-- IF commentrow.RANK_TITLE and commentrow.RANK_IMG --><br /><!-- ENDIF -->{commentrow.RANK_IMG}</dd><!-- ENDIF -->
 
-				<dd>&nbsp;</dd>
+				<!-- IF commentrow.POSTER_AVATAR -->
+					<dd class="avatar"><!-- IF commentrow.U_POST_AUTHOR --><a href="{commentrow.U_POST_AUTHOR}">{commentrow.POSTER_AVATAR}</a><!-- ELSE -->{commentrow.POSTER_AVATAR}<!-- ENDIF --></dd>
+				<!-- ENDIF -->
+
+				<dd class="fseparator"></dd>
 
 				<!-- IF commentrow.POSTER_POSTS != '' --><dd><strong>{L_POSTS}:</strong> {commentrow.POSTER_POSTS}</dd><!-- ENDIF -->
 				<!-- IF commentrow.GALLERY_IMAGES != '' --><dd><strong>{L_IMAGES}:</strong> <!-- IF commentrow.U_GALLERY_SEARCH --><a href="{commentrow.U_GALLERY_SEARCH}">{commentrow.GALLERY_IMAGES}</a><!-- ELSE -->{commentrow.GALLERY_IMAGES}<!-- ENDIF --></dd><!-- ENDIF -->
