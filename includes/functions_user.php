@@ -560,6 +560,13 @@ function user_delete($mode, $user_id, $post_username = false)
 		set_config_count('num_users', -1, true);
 	}
 
+	// Delete user's rates
+	if (!function_exists('remove_rates_batch'))
+	{
+		include($phpbb_root_path . 'includes/functions_rating.' . $phpEx);
+	}
+	remove_rates_batch('user', $user_id);
+
 	return false;
 }
 

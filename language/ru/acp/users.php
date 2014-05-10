@@ -138,6 +138,19 @@ $lang = array_merge($lang, array(
 	'USER_SIG_UPDATED'				=> 'Подпись пользователя успешно обновлена.',
 	'USER_WARNING_LOG_DELETED'		=> 'Информация недоступна. Возможно, данная запись была удалена из журнала.',
 	'USER_TOOLS'					=> 'Основные инструменты',
+
+	'USER_ADMIN_DEL_RATES'			=> 'Удалить оставленные оценки',
+	'DEL_RATES_TYPE'				=> 'Тип удаляемых оценок',
+	'DEL_RATES_BOTH'				=> 'Все',
+	'DEL_RATES_ONLY_NEGATIVE'		=> 'Отрицательные',
+	'DEL_RATES_ONLY_POSITIVE'		=> 'Положительные',
+	'DEL_RATES_FROM'				=> 'С даты (ГГГГ-ММ-ДД)',
+	'DEL_RATES_FROM_EXPLAIN'		=> 'Если не указано, то с момента запуска форума',
+	'DEL_RATES_TO'					=> 'По дату (ГГГГ-ММ-ДД)',
+	'DEL_RATES_TO_EXPLAIN'			=> 'Если не указано, то по текущий момент',
+	'DEL_RATES_MSG_OK'				=> 'Оценки сообщений удалены',
+	'DEL_RATES_MSG_NOTHING'			=> 'Не выбран тип удаляемых оценок',
+
 ));
 
 ?>

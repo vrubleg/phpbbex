@@ -588,6 +588,7 @@ dl.spoilerbox.spoilerbox-on > dd
 .attachbox {
 	float: left;
 	width: auto; 
+	max-width: 100%;
 	margin: 5px 5px 5px 0;
 	padding: 6px;
 	background-color: #FFFFFF;

@@ -138,6 +138,19 @@ $lang = array_merge($lang, array(
 	'USER_SIG_UPDATED'				=> 'User signature successfully updated.',
 	'USER_WARNING_LOG_DELETED'		=> 'No information available. Possibly the log entry has been deleted.',
 	'USER_TOOLS'					=> 'Basic tools',
+
+	'USER_ADMIN_DEL_RATES'			=> 'Delete message rates',
+	'DEL_RATES_TYPE'				=> 'Delete type',
+	'DEL_RATES_BOTH'				=> 'Both',
+	'DEL_RATES_ONLY_NEGATIVE'		=> 'Negative',
+	'DEL_RATES_ONLY_POSITIVE'		=> 'Positive',
+	'DEL_RATES_FROM'				=> 'From (YYYY-MM-DD)',
+	'DEL_RATES_FROM_EXPLAIN'		=> 'If not specified, board started date is used',
+	'DEL_RATES_TO'					=> 'To (YYYY-MM-DD)',
+	'DEL_RATES_TO_EXPLAIN'			=> 'If not specified, current date is used',
+	'DEL_RATES_MSG_OK'				=> 'Message rates deleted correctly',
+	'DEL_RATES_MSG_NOTHING'			=> 'Delete type is not selected',
+
 ));
 
 ?>
