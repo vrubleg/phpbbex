@@ -69,41 +69,49 @@
 
 <!-- IF not S_USER_FOUNDER or S_FOUNDER -->
 
-	<script type="text/javascript">
-	// <![CDATA[
-
-		function display_reason(option)
+	<script>
+	jQuery(function($)
+	{
+		$('#quicktools').on('change', function()
 		{
-			if (option != 'banuser' && option != 'banemail' && option != 'banip')
+			var option = $(this).val();
+			$('#reasons').hide();
+			$('#delrates').hide();
+
+			switch (option)
 			{
-				dE('reasons', -1);
-				return;
+				case 'banuser':
+				case 'banemail':
+				case 'banip':
+					$('#reasons').show();
+				break;
+
+				case 'delrates':
+					$('#delrates').show();
+				break;
 			}
 
-			dE('reasons', 1);
-
-			element = document.getElementById('user_quick_tools').ban_reason;
-
-			if (element.value && element.value != '{LA_USER_ADMIN_BAN_NAME_REASON}' && element.value != '{LA_USER_ADMIN_BAN_EMAIL_REASON}' && element.value != '{LA_USER_ADMIN_BAN_IP_REASON}')
+			var text = $('#ban_reason').val();
+			if (text && text != '{LA_USER_ADMIN_BAN_NAME_REASON}' && text != '{LA_USER_ADMIN_BAN_EMAIL_REASON}' && text != '{LA_USER_ADMIN_BAN_IP_REASON}')
 			{
 				return;
 			}
 
 			if (option == 'banuser')
 			{
-				element.value = '{LA_USER_ADMIN_BAN_NAME_REASON}';
+				$('#ban_reason').val('{LA_USER_ADMIN_BAN_NAME_REASON}');
 			}
 			else if (option == 'banemail')
 			{
-				element.value = '{LA_USER_ADMIN_BAN_EMAIL_REASON}';
+				$('#ban_reason').val('{LA_USER_ADMIN_BAN_EMAIL_REASON}');
 			}
 			else if (option == 'banip')
 			{
-				element.value = '{LA_USER_ADMIN_BAN_IP_REASON}';
+				$('#ban_reason').val('{LA_USER_ADMIN_BAN_IP_REASON}');
 			}
-		}
-
-	// ]]>
+		});
+		$('#quicktools').trigger('change');
+	});
 	</script>
 
 	<form id="user_quick_tools" method="post" action="{U_ACTION}">
@@ -122,6 +130,24 @@
 		<dl>
 			<dt><label for="ban_give_reason">{L_BAN_GIVE_REASON}:</label></dt>
 			<dd><input name="ban_give_reason" type="text" class="text medium" maxlength="3000" id="ban_give_reason" /></dd>
+		</dl>
+	</div>
+	<div style="display: none;" id="delrates">
+		<dl>
+			<dt><label for="delrates_type">{L_DEL_RATES_TYPE}:</label></dt>
+			<dd>
+				<label><input name="delrates_type" type="radio" class="radio" value="1" id="delrates_type" /> {L_DEL_RATES_ONLY_NEGATIVE}</label>
+				<label><input name="delrates_type" type="radio" class="radio" value="2" /> {L_DEL_RATES_ONLY_POSITIVE}</label>
+				<label><input name="delrates_type" type="radio" class="radio" value="3" /> {L_DEL_RATES_BOTH}</label>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="delrates_from">{L_DEL_RATES_FROM}:</label><br /><span>{L_DEL_RATES_FROM_EXPLAIN}</span></dt>
+			<dd><input name="delrates_from" type="text" class="text" maxlength="10" id="delrates_from" value="" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="delrates_to">{L_DEL_RATES_TO}:</label><br /><span>{L_DEL_RATES_TO_EXPLAIN}</span></dt>
+			<dd><input name="delrates_to" type="text" class="text" maxlength="10" id="delrates_to" value="" /></dd>
 		</dl>
 	</div>
 

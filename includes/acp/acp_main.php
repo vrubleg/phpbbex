@@ -89,6 +89,10 @@ class acp_main
 						$confirm = true;
 						$confirm_lang = 'RESYNC_TOPICCOUNTS_CONFIRM';
 					break;
+					case 'rates':
+						$confirm = true;
+						$confirm_lang = 'RESYNC_RATES_CONFIRM';
+					break;
 					case 'date':
 						$confirm = true;
 						$confirm_lang = 'RESET_DATE_CONFIRM';
@@ -269,6 +273,22 @@ class acp_main
 						$db->sql_freeresult($result);
 
 						add_log('admin', 'LOG_RESYNC_TOPICCOUNTS');
+
+					break;
+
+					case 'rates':
+						if (!$auth->acl_get('a_board'))
+						{
+							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
+						}
+
+						if (!function_exists('resync_rates'))
+						{
+							include($phpbb_root_path . 'includes/functions_rating.' . $phpEx);
+						}
+						resync_rates();
+
+						add_log('admin', 'LOG_RESYNC_RATES');
 
 					break;
 

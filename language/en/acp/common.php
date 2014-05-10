@@ -381,6 +381,9 @@ $lang = array_merge($lang, array(
 	'RESYNC_TOPICCOUNTS'			=> 'Resynchronise topic counts',
 	'RESYNC_TOPICCOUNTS_EXPLAIN'	=> 'Only existing topics will be taken into consideration. Pruned topics will not be counted.',
 	'RESYNC_TOPICCOUNTS_CONFIRM'	=> 'Are you sure you wish to resynchronise topic counts?',
+	'RESYNC_RATES'					=> 'Resynchronise rating',
+	'RESYNC_RATES_EXPLAIN'			=> 'Only existing users and posts will be taken into consideration.',
+	'RESYNC_RATES_CONFIRM'			=> 'Are you sure you wish to resynchronise rating?',
 	'RUN'							=> 'Run now',
 
 	'STATISTIC'					=> 'Statistic',
@@ -682,6 +685,7 @@ $lang = array_merge($lang, array(
 	'LOG_RESYNC_POST_MARKING'	=> '<strong>Dotted topics resynchronised</strong>',
 	'LOG_RESYNC_STATS'			=> '<strong>Post, topic and user statistics resynchronised</strong>',
 	'LOG_RESYNC_TOPICCOUNTS'	=> '<strong>User topic counts resynchronised</strong>',
+	'LOG_RESYNC_RATES'			=> '<strong>Rating resynchronised</strong>',
 
 	'LOG_SEARCH_INDEX_CREATED'	=> '<strong>Created search index for</strong><br />» %s',
 	'LOG_SEARCH_INDEX_REMOVED'	=> '<strong>Removed search index for</strong><br />» %s',

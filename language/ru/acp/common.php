@@ -381,7 +381,10 @@ $lang = array_merge($lang, array(
 	'RESYNC_STATS_EXPLAIN'			=> 'Пересчёт общего количества сообщений, тем, пользователей и файлов.',
 	'RESYNC_TOPICCOUNTS'			=> 'Синхронизировать счётчики тем',
 	'RESYNC_TOPICCOUNTS_EXPLAIN'	=> 'Будут учтены только существующие темы. Удалённые темы не будут подсчитаны.',
-	'RESYNC_TOPICCOUNTS_CONFIRM'	=> 'Вы действительно хотите синхронизировать счётчики тем?',	
+	'RESYNC_TOPICCOUNTS_CONFIRM'	=> 'Вы действительно хотите синхронизировать счётчики тем?',
+	'RESYNC_RATES'					=> 'Синхронизировать счётчики оценок',
+	'RESYNC_RATES_EXPLAIN'			=> 'Будут учтены только существующие сообщения и пользователи.',
+	'RESYNC_RATES_CONFIRM'			=> 'Вы действительно хотите синхронизировать счётчики оценок?',
 	'RUN'							=> 'Выполнить',
 
 	'STATISTIC'					=> 'Статистика',
@@ -682,6 +685,7 @@ $lang = array_merge($lang, array(
 	'LOG_RESYNC_POST_MARKING'	=> '<strong>Синхронизированы свои темы</strong>',
 	'LOG_RESYNC_STATS'			=> '<strong>Синхронизирована статистика сообщений, тем и пользователей</strong>',
 	'LOG_RESYNC_TOPICCOUNTS'	=> '<strong>Синхронизированы счётчики тем пользователей</strong>',
+	'LOG_RESYNC_RATES'			=> '<strong>Синхронизированы счётчики оценок</strong>',
 
 	'LOG_SEARCH_INDEX_CREATED'	=> '<strong>Созданы поисковые индексы для</strong><br />» %s',
 	'LOG_SEARCH_INDEX_REMOVED'	=> '<strong>Удалены поисковые индексы для</strong><br />» %s',
