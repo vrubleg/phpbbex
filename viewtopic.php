@@ -1513,12 +1513,11 @@ if ($config['rate_enabled'] && $config['display_raters'])
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$post_id = $row['post_id'];
-		if (!isset($post_raters[$post_id]))
+		if (!isset($post_raters[$row['post_id']]))
 		{
-			$post_raters[$post_id] = array();
+			$post_raters[$row['post_id']] = array();
 		}
-		$post_raters[$post_id][] = $row;
+		$post_raters[$row['post_id']][] = $row;
 	}
 }
 
