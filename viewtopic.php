@@ -1500,6 +1500,28 @@ if ($config['rate_enabled'])
 	}
 }
 
+// Get list of rates for displaying
+$post_raters = array();
+if ($config['rate_enabled'] && $config['display_raters'])
+{
+	$sql = 'SELECT r.*, u.username, u.user_colour
+		FROM ' . POST_RATES_TABLE . ' r
+		LEFT JOIN ' . USERS_TABLE . ' u ON r.user_id = u.user_id
+		WHERE ' . $db->sql_in_set('r.post_id', $post_list) . '
+		ORDER BY r.post_id, r.rate_time';
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$post_id = $row['post_id'];
+		if (!isset($post_raters[$post_id]))
+		{
+			$post_raters[$post_id] = array();
+		}
+		$post_raters[$post_id][] = $row;
+	}
+}
+
 // Output the posts
 $first_unread = $post_unread = false;
 for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
@@ -1788,6 +1810,29 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 
 	// Dump vars into template
 	$template->assign_block_vars('postrow', $postrow);
+
+	// Display raters if needed
+	if ($config['rate_enabled'] && $config['display_raters'] && isset($post_raters[$row['post_id']]))
+	{
+		$is_first_row = true;
+		foreach ($post_raters[$row['post_id']] as $rater)
+		{
+			$template->assign_block_vars('postrow.postrater', array(
+				'S_FIRST_ROW'	=> $is_first_row,
+				'RATER_ID'		=> $rater['user_id'],
+				'POST_ID'		=> $rater['post_id'],
+				'RATE'			=> $rater['rate'],
+				'RATE_TEXT'		=> ($rater['rate'] > 0 ? '+'.$rater['rate'] : '−'.abs($rater['rate'])),
+				'DATETIME'		=> $user->format_date($rater['rate_time']),
+				'DATE'			=> $user->format_date($rater['rate_time'], false, false, true),
+				'U_RATER'		=> get_username_string('profile', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
+				'RATER_NAME'	=> get_username_string('username', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
+				'RATER_COLOUR'	=> get_username_string('colour', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
+				'RATER_FULL'	=> get_username_string('full', 		$rater['user_id'], $rater['username'], $rater['user_colour']),
+			));
+			$is_first_row = false;
+		}
+	}
 
 	// Display user warnings
 	foreach ($user_cache[$poster_id]['warnings_data'] as $warning)
