@@ -138,17 +138,23 @@ jQuery(function($)
 		.done(function(data)
 		{
 			if (data.status != 'ok') return;
+			<!-- IF DISPLAY_RATERS -->
+			var title = $('.rate-value', $box).attr('title');
+			<!-- ENDIF -->
 			var html = '';
 			html += '<span class="rate-';
 			html += (data.user_rate < 0) ? 'minus-voted' : (data.user_can_minus ? 'minus' : 'no-minus');
 			html += '"></span><span class="rate-value rate-';
 			html += (data.post_rating > 0) ? 'positive' : ((data.post_rating < 0) ? 'negative' : 'zero');
-			html += '" title="+' + data.post_rating_positive + ' −' + data.post_rating_negative + '">';
+			html += '" title="+' + data.post_rating_positive + '/−' + data.post_rating_negative + '">';
 			html += (data.post_rating_positive != 0 || data.post_rating_negative != 0) ? data.post_rating : '−';
 			html += '</span><span class="rate-';
 			html += (data.user_rate > 0) ? 'plus-voted' : (data.user_can_plus ? 'plus' : 'no-plus');
 			html += '"></span>';
 			$box.html(html);
+			<!-- IF DISPLAY_RATERS -->
+			$('.rate-value', $box).attr('title', title ? title : '');
+			<!-- ENDIF -->
 		})
 		.fail(function()
 		{
