@@ -40,7 +40,7 @@ if (!$merge_post_id)
 
 // Should we do merging?
 $do_merge = ($merge_post_data['poster_id'] == $user->data['user_id']) && !$merge_post_data['post_edit_locked'];
-$do_merge = $do_merge && ((int) $config['max_post_chars'] == 0 || (utf8_strlen($merge_post_data['post_text']) + utf8_strlen($addon_for_merge)) <= (int) $config['max_post_chars']);
+$do_merge = $do_merge && ((int) $config['max_post_chars'] == 0 || (utf8_strlen($merge_post_data['post_text']) + utf8_strlen($addon_for_merge) + 200) <= (int) $config['max_post_chars']);
 if ($user->data['is_registered'])
 {
 	$do_merge = $do_merge && request_var('do_merge', false);
