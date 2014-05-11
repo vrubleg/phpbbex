@@ -887,6 +887,27 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			$hilit = implode('|', $hilit_array);
 		}
 
+		// Get list of rates for displaying
+		$post_raters = array();
+		if ($config['rate_enabled'] && $config['display_raters'] && $show_results == 'posts' && sizeof($id_ary))
+		{
+			$sql = 'SELECT r.*, u.username, u.user_colour
+				FROM ' . POST_RATES_TABLE . ' r
+				LEFT JOIN ' . USERS_TABLE . ' u ON r.user_id = u.user_id
+				WHERE ' . $db->sql_in_set('r.post_id', $id_ary) . '
+				ORDER BY r.post_id, r.rate_time';
+			$result = $db->sql_query($sql);
+
+			while ($row = $db->sql_fetchrow($result))
+			{
+				if (!isset($post_raters[$row['post_id']]))
+				{
+					$post_raters[$row['post_id']] = array();
+				}
+				$post_raters[$row['post_id']][] = $row;
+			}
+		}
+
 		foreach ($rowset as $row)
 		{
 			$forum_id = $row['forum_id'];
@@ -1068,6 +1089,29 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				'U_VIEW_FORUM'		=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $forum_id),
 				'U_VIEW_POST'		=> (!empty($row['post_id'])) ? append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? '&amp;hilit=' . $u_hilit : '')) . '#p' . $row['post_id'] : '')
 			));
+
+			// Display raters if needed
+			if ($config['rate_enabled'] && $config['display_raters'] && $show_results == 'posts' && isset($post_raters[$row['post_id']]))
+			{
+				$is_first_row = true;
+				foreach ($post_raters[$row['post_id']] as $rater)
+				{
+					$template->assign_block_vars('searchresults.postrater', array(
+						'S_FIRST_ROW'	=> $is_first_row,
+						'RATER_ID'		=> $rater['user_id'],
+						'POST_ID'		=> $rater['post_id'],
+						'RATE'			=> $rater['rate'],
+						'RATE_TEXT'		=> ($rater['rate'] > 0 ? '+'.$rater['rate'] : '−'.abs($rater['rate'])),
+						'DATETIME'		=> $user->format_date($rater['rate_time']),
+						'DATE'			=> $user->format_date($rater['rate_time'], false, false, true),
+						'U_RATER'		=> get_username_string('profile', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
+						'RATER_NAME'	=> get_username_string('username', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
+						'RATER_COLOUR'	=> get_username_string('colour', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
+						'RATER_FULL'	=> get_username_string('full', 		$rater['user_id'], $rater['username'], $rater['user_colour']),
+					));
+					$is_first_row = false;
+				}
+			}
 		}
 
 		if ($topic_id && ($topic_id == $result_topic_id))

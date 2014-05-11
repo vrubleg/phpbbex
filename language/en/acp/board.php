@@ -61,14 +61,6 @@ $lang = array_merge($lang, array(
 	'OVERRIDE_TIMEZONE_EXPLAIN'		=> 'Replaces user’s time zone with default',
 	'OVERRIDE_DST'					=> 'Override user DST',
 	'OVERRIDE_DST_EXPLAIN'			=> 'Replaces user’s DST with default',
-	'RATINGS'						=> 'Post ratings',
-	'RATE_ENABLED'					=> 'Enable ratings',
-	'RATE_ONLY_TOPICS'				=> 'Rate only topics (first posts)',
-	'RATE_TOPIC_TIME'				=> 'Limit topic (first post) rating time',
-	'RATE_TIME'						=> 'Limit post rating time',
-	'RATE_CHANGE_TIME'				=> 'Limit rating change time',
-	'RATE_NO_NEGATIVE'				=> 'No negative',
-	'RATE_NO_POSITIVE'				=> 'No positive',
 	'SITE_DESC'						=> 'Site description',
 	'SITE_NAME'						=> 'Site name',
 	'SITE_KEYWORDS'					=> 'Site keywords',
@@ -171,6 +163,16 @@ $lang = array_merge($lang, array(
 	'ANNOUNCE_INDEX'				=> 'Display global annoucements',
 	'ACTIVE_TOPICS_ON_INDEX'		=> 'Display active topics',
 	'ACTIVE_TOPICS_ON_INDEX_EXPLAIN'=> 'Leave empty or 0 to disable active topics on index.',
+
+	'RATINGS'					=> 'Post ratings',
+	'RATE_ENABLED'				=> 'Enable ratings',
+	'RATE_ONLY_TOPICS'			=> 'Rate only topics (first posts)',
+	'RATE_TOPIC_TIME'			=> 'Limit topic (first post) rating time',
+	'RATE_TIME'					=> 'Limit post rating time',
+	'RATE_CHANGE_TIME'			=> 'Limit rating change time',
+	'RATE_NO_NEGATIVE'			=> 'No negative',
+	'RATE_NO_POSITIVE'			=> 'No positive',
+	'DISPLAY_RATERS'			=> 'Display who and how rated messages',
 ));
 
 // Avatar Settings
