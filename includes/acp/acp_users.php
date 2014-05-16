@@ -672,7 +672,7 @@ class acp_users
 									'S_SELECT_FORUM'		=> true,
 									'U_ACTION'				=> $this->u_action . "&amp;action=$action&amp;u=$user_id",
 									'U_BACK'				=> $this->u_action . "&amp;u=$user_id",
-									'S_FORUM_OPTIONS'		=> make_forum_select(false, false, false, true))
+									'S_FORUM_OPTIONS'		=> make_forum_select(false, false, true, true))
 								);
 
 								return;
