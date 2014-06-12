@@ -116,7 +116,7 @@ class acp_logs
 		// Define forum list if we're looking @ mod logs
 		if ($mode == 'mod')
 		{
-			$forum_box = '<option value="0">' . $user->lang['ALL_FORUMS'] . '</option>' . make_forum_select($forum_id);
+			$forum_box = '<option value="0">' . $user->lang['ALL_FORUMS'] . '</option>' . make_forum_select($forum_id, false, true);
 			
 			$template->assign_vars(array(
 				'S_SHOW_FORUMS'			=> true,
