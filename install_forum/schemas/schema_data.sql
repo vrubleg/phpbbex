@@ -164,7 +164,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_admin_logs_da
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days', '365');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '365');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '30');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '14');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_base_dn', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_email', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_password', '');
@@ -243,7 +243,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_date
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PASS_TYPE_ANY');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.7.1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.8.0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_edit_time', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_boxes', '4');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');

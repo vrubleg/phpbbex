@@ -517,6 +517,7 @@ $lang = array_merge($lang, array(
 	'LOG_CONFIG_EMAIL'			=> '<strong>Изменены настройки почты</strong>',
 	'LOG_CONFIG_FEATURES'		=> '<strong>Изменены возможности форума</strong>',
 	'LOG_CONFIG_LOAD'			=> '<strong>Изменены настройки нагрузки на сервер</strong>',
+	'LOG_CONFIG_LOGS'			=> '<strong>Изменены настройки ведения логов</strong>',
 	'LOG_CONFIG_MESSAGE'		=> '<strong>Изменены настройки личных сообщений</strong>',
 	'LOG_CONFIG_POST'			=> '<strong>Изменены настройки сообщений</strong>',
 	'LOG_CONFIG_REGISTRATION'	=> '<strong>Изменены настройки регистрации пользователей</strong>',
