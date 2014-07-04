@@ -334,7 +334,7 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 				$args = array();
 				foreach ($vars['params'] as $value)
 				{
-					switch ($value)
+					if (is_string($value)) switch ($value)
 					{
 						case '{CONFIG_VALUE}':
 							$value = $new[$config_key];
