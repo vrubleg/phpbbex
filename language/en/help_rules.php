@@ -27,7 +27,7 @@ $help = array(
 	),
 	array(
 		0 => '1.2. General rules',
-		1 => 'Do not publish information containing: <ol><li>excessive amount of slang words, rude and obscene words or phrases;</li><li>advertising;</li><li>pornography;</li><li>someone else’s personal information;</li><li>insults, threats, slander;</li><li>objects of racism and incitement to ethnic strife;</li><li>political, religious and other propaganda;</li><li>incitement to violence or breach of current legislation.</li></ol>Penalty: editing or deletion of information and also notification or a ban against the user.'
+		1 => 'Do not publish information containing: <ol><li>excessive amount of slang words, rude and obscene words or phrases;</li><li>advertising;</li><li>pornography;</li><li>someone else’s personal information;</li><li>insults, threats, slander;</li><li>objects of racism and incitement to ethnic strife;</li><li>political, religious and other types of propaganda;</li><li>incitement to violence or breach of current legislation.</li></ol>Penalty: editing or deletion of information and also notification or a ban against the user.'
 	),
 	array(
 		0 => '--',
