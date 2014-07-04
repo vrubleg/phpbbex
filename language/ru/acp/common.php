@@ -113,6 +113,7 @@ $lang = array_merge($lang, array(
 	'ACP_LANGUAGE_PACKS'		=> 'Языковые пакеты',
 	'ACP_LOAD_SETTINGS'			=> 'Нагрузка на сервер',
 	'ACP_LOGGING'				=> 'Логи',
+	'ACP_LOGGING_SETTINGS'		=> 'Настройки логов',
 
 	'ACP_MAIN'					=> 'Главная страница панели администратора',
 	'ACP_MANAGE_EXTENSIONS'		=> 'Расширения',

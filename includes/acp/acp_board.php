@@ -128,6 +128,22 @@ class acp_board
 				);
 			break;
 
+			case 'logs':
+				$display_vars = array(
+					'title'	=> 'ACP_LOGGING_SETTINGS',
+					'vars'	=> array(
+						'legend1'					=> 'ACP_LOGGING_SETTINGS',
+						'keep_admin_logs_days'		=> array('lang' => 'KEEP_ADMIN_LOGS_DAYS',		'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => array('{CONFIG_VALUE}', '{KEY}', true), 'explain' => false),
+						'keep_mod_logs_days'		=> array('lang' => 'KEEP_MOD_LOGS_DAYS',		'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => array('{CONFIG_VALUE}', '{KEY}', true), 'explain' => false),
+						'keep_critical_logs_days'	=> array('lang' => 'KEEP_CRITICAL_LOGS_DAYS',	'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => array('{CONFIG_VALUE}', '{KEY}', true), 'explain' => false),
+						'keep_user_logs_days'		=> array('lang' => 'KEEP_USER_LOGS_DAYS',		'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => array('{CONFIG_VALUE}', '{KEY}', true), 'explain' => false),
+						'keep_register_logs_days'	=> array('lang' => 'KEEP_REGISTER_LOGS_DAYS',	'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => array('{CONFIG_VALUE}', '{KEY}', true), 'explain' => false),
+
+						'legend2'					=> 'ACP_SUBMIT_CHANGES',
+					)
+				);
+			break;
+
 			case 'style':
 				$display_vars = array(
 					'title'	=> 'ACP_STYLE_SETTINGS',

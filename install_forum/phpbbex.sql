@@ -306,3 +306,8 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version',
 
 -- After 1.7.1
 ALTER TABLE phpbb_topics ADD INDEX topic_poster(topic_poster);
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_admin_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '30');

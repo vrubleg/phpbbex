@@ -37,6 +37,8 @@ class acp_board_info
 				'server'	=> array('title' => 'ACP_SERVER_SETTINGS', 'auth' => 'acl_a_server', 'cat' => array('ACP_SERVER_CONFIGURATION')),
 				'security'	=> array('title' => 'ACP_SECURITY_SETTINGS', 'auth' => 'acl_a_server', 'cat' => array('ACP_SERVER_CONFIGURATION')),
 				'load'		=> array('title' => 'ACP_LOAD_SETTINGS', 'auth' => 'acl_a_server', 'cat' => array('ACP_SERVER_CONFIGURATION')),
+
+				'logs'		=> array('title' => 'ACP_LOGGING_SETTINGS', 'auth' => 'acl_a_clearlogs', 'cat' => array('ACP_FORUM_LOGS')),
 			),
 		);
 	}
