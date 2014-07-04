@@ -205,11 +205,11 @@ class phpbb_template
 	{
 		global $user, $phpbb_hook;
 
-		if (!empty($phpbb_hook) && $phpbb_hook->call_hook(array(__CLASS__, __FUNCTION__), $handle, $include_once, $this))
+		if (!empty($phpbb_hook) && $phpbb_hook->call_hook(array('template', __FUNCTION__), $handle, $include_once, $this))
 		{
-			if ($phpbb_hook->hook_return(array(__CLASS__, __FUNCTION__)))
+			if ($phpbb_hook->hook_return(array('template', __FUNCTION__)))
 			{
-				return $phpbb_hook->hook_return_result(array(__CLASS__, __FUNCTION__));
+				return $phpbb_hook->hook_return_result(array('template', __FUNCTION__));
 			}
 		}
 

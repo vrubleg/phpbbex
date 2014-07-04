@@ -291,7 +291,7 @@ UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-
 -- Remove obsolete options
 DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html', 'style_auto_new_year');
 
--- After 1.6.0
+-- phpBBex 1.7.0
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_post_font_size', '85');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_font_size', '200');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_sig_font_size', '100');
@@ -301,8 +301,13 @@ UPDATE phpbb_extension_groups SET group_name = 'AUDIO' WHERE cat_id = 3;
 UPDATE phpbb_extension_groups SET group_name = 'VIDEO' WHERE cat_id = 2;
 UPDATE phpbb_extension_groups SET cat_id = 0 WHERE cat_id = 6;
 
--- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.7.1');
-
--- After 1.7.1
+-- phpBBex 1.8.0
 ALTER TABLE phpbb_topics ADD INDEX topic_poster(topic_poster);
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_admin_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '14');
+
+-- phpBBex version
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.8.0');

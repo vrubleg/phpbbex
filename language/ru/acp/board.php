@@ -72,6 +72,16 @@ $lang = array_merge($lang, array(
 	'WARNING_POST_DEFAULT'			=> 'Шаблон причины предупреждения',
 ));
 
+// Logging settings
+$lang = array_merge($lang, array(
+	'ACP_LOGGING_SETTINGS_EXPLAIN'	=> 'Здесь вы можете указать настройки ведения логов на вашем форуме.',
+	'KEEP_ADMIN_LOGS_DAYS'			=> 'Хранить логи администратора',
+	'KEEP_MOD_LOGS_DAYS'			=> 'Хранить логи модератора',
+	'KEEP_CRITICAL_LOGS_DAYS'		=> 'Хранить логи ошибок',
+	'KEEP_USER_LOGS_DAYS'			=> 'Хранить логи пользователей',
+	'KEEP_REGISTER_LOGS_DAYS'		=> 'Хранить логи регистраций',
+));
+
 // Style Settings
 $lang = array_merge($lang, array(
 	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Здесь вы можете настроить отображение различных блоков. Некоторые параметры могут не поддерживаться вашим шаблоном.',

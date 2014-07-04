@@ -3382,7 +3382,7 @@ function parse_cfg_file($filename, $lines = false)
 */
 function add_log()
 {
-	global $db, $user;
+	global $db, $user, $config;
 
 	// In phpBB 3.1.x i want to have logging in a class to be able to control it
 	// For now, we need a quite hakish approach to circumvent logging for some actions
@@ -3453,6 +3453,11 @@ function add_log()
 	}
 
 	$db->sql_query('INSERT INTO ' . LOG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+
+	if (mt_rand(0, 24) === 0 && !empty($config['keep_'.$mode.'_logs_days']))
+	{
+		$db->sql_query('DELETE FROM ' . LOG_TABLE . ' WHERE log_type = ' . $sql_ary['log_type'] . ' AND log_time < ' . (time() - $config['keep_'.$mode.'_logs_days'] * 86400));
+	}
 
 	return $db->sql_nextid();
 }

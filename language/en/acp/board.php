@@ -72,6 +72,16 @@ $lang = array_merge($lang, array(
 	'WARNING_POST_DEFAULT'			=> 'Default warning message',
 ));
 
+// Logging settings
+$lang = array_merge($lang, array(
+	'ACP_LOGGING_SETTINGS_EXPLAIN'	=> 'Here you can determine logging settings of your board.',
+	'KEEP_ADMIN_LOGS_DAYS'			=> 'Keep administrator logs for',
+	'KEEP_MOD_LOGS_DAYS'			=> 'Keep moderator logs for',
+	'KEEP_CRITICAL_LOGS_DAYS'		=> 'Keep error logs for',
+	'KEEP_USER_LOGS_DAYS'			=> 'Keep user logs for',
+	'KEEP_REGISTER_LOGS_DAYS'		=> 'Keep registration logs for',
+));
+
 // Style Settings
 $lang = array_merge($lang, array(
 	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can show/hide several features.',
