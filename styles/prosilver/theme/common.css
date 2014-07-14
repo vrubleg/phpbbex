@@ -641,3 +641,9 @@ p.rules a {
 	text-shadow: none;
 	color: transparent;
 }
+
+.splash-image-preloader {
+	background: url("{T_THEME_PATH}/images/preloader32x32.gif") no-repeat center center #fff;
+	min-height: 32px;
+	min-width: 32px;
+}
