@@ -45,25 +45,23 @@ jQuery(function($)
 		var img_height = 0;
 		var scale = 1.0;
 
-		var $popup = $.splash('popup-image')
-			.css('border', '10px solid #FFF')
-			.addClass('splash-image-preloader');
+		var $popup = $.splash('popup-image').addClass('preloader');
 
 		var img = new Image();
 		img.style.verticalAlign = 'bottom';
 		img.onload = function()
 		{
-			$popup.removeClass('splash-image-preloader');
 			img_width = this.width;
 			img_height = this.height;
 			scale = Math.min(1.0, Math.max(32, window.innerWidth - 40) / img_width, Math.max(32, window.innerHeight - 40) / img_height);
 			img.width = parseInt(img_width * scale);
 			img.height = parseInt(img_height * scale);
-			$popup.html(img);
-			$('img', $popup).on('dblclick', function()
+			$(img).on('dblclick', function()
 			{
 				$popup.trigger('close');
 			});
+			$popup.html(img);
+			$popup.removeClass('preloader');
 
 			$popup.parent().parent().parent()[0].addEventListener('wheel', function(e)
 			{
