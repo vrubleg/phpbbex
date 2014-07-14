@@ -1,0 +1,19 @@
+# phpBBex in English #
+
+phpBB 3 is a popular free forum. The first version was published in 2000, and since then a huge community has formed around this engine. Inspite of the serious architectural shortcomings of the third branch inherited from previous versions this engine is considered to be one of the most powerful solutions of the free forums. A huge number of mods written by the community contribute to this.
+
+As a rule, few people are satisfied with the standard functionality of phpBB 3, and every forum owner installs a few mods. However, many mods are not implemented well enough, the errors haven't been corrected for years due to the fact that the authors abandoned their mods. Moreover, there is no guarantee for compatibility of the mods with each other as well as with new versions of phpBB. Besides, if you are not qualified enough you can make mistakes during modding. The result might be unstable.
+
+phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB.
+
+If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you.
+
+# phpBBex по-русски #
+
+phpBB 3 — популярный бесплатный форум. Первая версия вышла в свет в 2000 году, и с тех пор вокруг этого движка сформировалось огромное сообщество. Не глядя на серьёзные архитектурные недостатки третьей ветки, которые остались в наследие от предыдущих версий, данный движок по праву считается одним из самых мощных решений среди бесплатных форумов. Огромное количество модов, написанных сообществом, только способствуют этому.
+
+Сам phpBB 3 развивается, к сожалению, крайне медленно. С момента выхода phpBB 3.0 в 2007 году видимые изменения можно пересчитать по пальцам — разработчики в основном ограничиваются исправлениями найденных багов, а новые возможности предлагается ждать в phpBB 3.1, который ещё неизвестно когда выйдет. Как правило, мало кого устраивает стандартная функциональность phpBB 3, и каждый владелец форума устанавливает несколько различных модов. Однако, многие моды реализованы недостаточно хорошо, в них годами не исправляются ошибки из-за того, что авторы «забили» на поддержку. Плюс никто не гарантирует совместимость модов друг с другом, а также с новыми версиями phpBB. А если всё это собирается воедино человеком без должного опыта, отдалённо представляющим что вообще происходит, в результате очень легко получить нестабильный результат.
+
+phpBBex (phpBB extended) — это попытка создать более продвинутую версию phpBB, которая при этом останется просто форумом, а не комбайном на все случаи жизни. Разработка phpBBex ведётся на профессиональном уровне, исходные коды находятся под контролем системы управления версиями Mercurial. Большинство проделанных изменений не существует в виде модов. Практически все установленные моды (из существующих вне phpBBex) были сильно переработаны: исправлены ошибки, код адаптирован под последние версии phpBB. phpBBex — это независимая ветвь (форк) со своим циклом разработки. Это означает, что phpBBex — это не сборка, в которых как правило просто предустановлено несколько модов.
+
+Если phpBBex без дополнительных модификаций вас устраивает больше, чем стандартный phpBB 3 — несомненно, phpBBex станет для вас верным выбором.

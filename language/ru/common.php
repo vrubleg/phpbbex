@@ -427,7 +427,7 @@ $lang = array_merge($lang, array(
 	'POSTING_PRIVATE_MESSAGE'	=> 'Создание личного сообщения',
 	'POST'					=> 'Сообщение',
 	'POST_ANNOUNCEMENT'		=> 'Объявление',
-	'POST_STICKY'			=> 'Прилепленная',
+	'POST_STICKY'			=> 'Прикреплённая',
 	'POSTED'				=> 'Добавлено',
 	'POSTED_IN_FORUM'		=> 'в',
 	'POSTED_ON_DATE'		=> '',
@@ -697,7 +697,7 @@ $lang = array_merge($lang, array(
 	'VIEW_TOPIC_LOGS'			=> 'Просмотр логов',
 	'VIEW_TOPIC_MOVED'			=> 'Перемещена: ',
 	'VIEW_TOPIC_POLL'			=> 'Опрос: ',
-	'VIEW_TOPIC_STICKY'			=> 'Прилепленная: ',
+	'VIEW_TOPIC_STICKY'			=> 'Прикреплённая: ',
 	'VISIT_WEBSITE'				=> 'Перейти на сайт',
 
 	'WARNINGS'			=> 'Предупреждения',

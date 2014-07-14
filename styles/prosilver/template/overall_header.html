@@ -56,21 +56,21 @@
 	<!-- IF S_USER_PM_POPUP and S_NEW_PM -->
 	jQuery(function($)
 	{
-		var $popup = $.splash("popup_pm", "500px")
-			.wrap("<div class='dialog'></div>")
-			.before("<span class='corners-top'><span></span></span>")
-			.after("<span class='corners-bottom'><span></span></span>")
+		var $popup = $.splash('popup-pm', '500px')
+			.wrap('<div class="dialog"></div>')
+			.before('<span class="corners-top"><span></span></span>')
+			.after('<span class="corners-bottom"><span></span></span>')
 			<!-- IF S_USER_NEW_PRIVMSG == 1 -->
-			.html("<h2>{L_NEW_MESSAGE}</h2><p>{L_YOU_NEW_PM}</p>")
+			.html('<h2>{L_NEW_MESSAGE}</h2><p>{L_YOU_NEW_PM}</p>')
 			<!-- ELSE -->
-			.html("<h2>{L_NEW_MESSAGES}</h2><p>{L_YOU_NEW_PMS}</p>")
+			.html('<h2>{L_NEW_MESSAGES}</h2><p>{L_YOU_NEW_PMS}</p>')
 			<!-- ENDIF -->
-			.append("<fieldset class='submit-buttons'>&nbsp;<input type='button' value='{L_CLOSE_WINDOW}' class='button2' name='close' />&nbsp;<input type='button' value='{L_DISPLAY}' class='button1' name='display' />&nbsp;</fieldset>");
-		$("input[name=close]", $popup).click(function()
+			.append('<fieldset class="submit-buttons">&nbsp;<input type="button" value="{L_CLOSE_WINDOW}" class="button2" name="close" />&nbsp;<input type="button" value="{L_DISPLAY}" class="button1" name="display" />&nbsp;</fieldset>');
+		$('input[name=close]', $popup).click(function()
 		{
 			$popup.trigger('close');
 		});
-		$("input[name=display]", $popup).click(function()
+		$('input[name=display]', $popup).click(function()
 		{
 			var url = '{U_PRIVATEMSGS}';
 			document.location.href = url.replace(/&amp;/g, '&');
