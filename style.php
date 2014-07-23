@@ -8,6 +8,17 @@
 *
 */
 
+if (isset($_GET['mtime']))
+{
+	$mtime = intval($_GET['mtime']);
+	if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH'], '"') == $mtime)
+	{
+		header($_SERVER["SERVER_PROTOCOL"] . ' 304 Not Modified');
+		die();
+	}
+	header('Etag: "' . $mtime . '"');
+}
+
 /**
 * @ignore
 */
