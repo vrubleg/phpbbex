@@ -1135,7 +1135,7 @@ function display_active_topics($tpl_loopname, $total_limit)
 }
 
 /**
-* Display last active topics
+* Display global announcements
 */
 function display_global_announcements($tpl_loopname)
 {
