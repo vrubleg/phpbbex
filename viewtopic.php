@@ -1042,6 +1042,11 @@ if ($topic_data['topic_first_post_show'])
 
 while ($row = $db->sql_fetchrow($result))
 {
+	if ($topic_data['topic_first_post_show'] && $row['post_id'] == $topic_data['topic_first_post_id'])
+	{
+		// Skip first post if it is pinned
+		continue;
+	}
 	$post_list[$i] = (int) $row['post_id'];
 	($store_reverse) ? $i-- : $i++;
 }
