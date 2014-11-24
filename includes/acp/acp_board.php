@@ -962,7 +962,7 @@ class acp_board
 	}
 
 	/**
-	* Select account activation method
+	* Select days
 	*/
 	function select_days($value, $key, $zero)
 	{
