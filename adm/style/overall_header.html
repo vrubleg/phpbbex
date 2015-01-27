@@ -196,7 +196,14 @@ jQuery(function($)
 	$('form input[type=text], form input[type=password], form textarea').on('keydown', function (e)
 	{
 		var is_input = !$(this).is('textarea');
-		if (is_input && phpbb_check_key(e)) return true;
+
+		// Detect enter in autocomplete
+		if (is_input)
+		{
+			var in_autocomplete = $(this).data('in_autocomplete');
+			$(this).data('in_autocomplete', (e.which == 40 /*down*/ || e.which == 38 /*up*/ || e.which == 34 /*pgdn*/ || e.which == 33 /*pgup*/));
+			if (in_autocomplete && (e.which == 13 || e.which == 10)) return true;
+		}
 
 		if ((e.which == 13 || e.which == 10) && (is_input || e.ctrlKey || e.altKey))
 		{

@@ -457,17 +457,11 @@ else
 $highlight_match = $highlight = '';
 if ($hilit_words)
 {
-	foreach (explode(' ', trim($hilit_words)) as $word)
-	{
-		if (trim($word))
-		{
-			$word = str_replace('\*', '\w+?', preg_quote($word, '#'));
-			$word = preg_replace('#(^|\s)\\\\w\*\?(\s|$)#', '$1\w+?$2', $word);
-			$highlight_match .= (($highlight_match != '') ? '|' : '') . $word;
-		}
-	}
-
-	$highlight = urlencode($hilit_words);
+	$highlight_match = phpbb_clean_search_string($hilit_words);
+	$highlight = urlencode($highlight_match);
+	$highlight_match = str_replace('\*', '\w+?', preg_quote($highlight_match, '#'));
+	$highlight_match = preg_replace('#(?<=^|\s)\\\\w\*\?(?=\s|$)#', '\w+?', $highlight_match);
+	$highlight_match = str_replace(' ', '|', $highlight_match);
 }
 
 // Make sure $start is set to the last page if it exceeds the amount
@@ -1017,7 +1011,6 @@ else
 $post_list = $user_cache = $id_cache = $attachments = $attach_list = $rowset = $update_count = $post_edit_list = array();
 $has_attachments = $display_notice = false;
 $bbcode_bitfield = '';
-$i = $i_total = 0;
 
 // Go ahead and pull all data for this topic
 $sql = 'SELECT p.post_id
@@ -1029,29 +1022,27 @@ $sql = 'SELECT p.post_id
 	ORDER BY $sql_sort_order";
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
-$i = ($store_reverse) ? $sql_limit - 1 : 0;
+while ($row = $db->sql_fetchrow($result))
+{
+	if ($topic_data['topic_first_post_show'] && $row['post_id'] == $topic_data['topic_first_post_id'])
+	{
+		// Skip first post if it is pinned
+		continue;
+	}
+	$post_list[] = (int) $row['post_id'];
+}
+$db->sql_freeresult($result);
+
+// If reversed order is used for storing
+if ($store_reverse)
+{
+	$post_list = array_reverse($post_list);
+}
 
 // Show first post on every page if needed
 if ($topic_data['topic_first_post_show'])
 {
-	if (!$store_reverse)
-	{
-		$post_list[$i] = (int) $topic_data['topic_first_post_id'];
-	}
-	$i++;
-}
-
-while ($row = $db->sql_fetchrow($result))
-{
-	$post_list[$i] = (int) $row['post_id'];
-	($store_reverse) ? $i-- : $i++;
-}
-$db->sql_freeresult($result);
-
-// Show first post on every page if needed (for reverse order)
-if ($topic_data['topic_first_post_show'] && $store_reverse)
-{
-	$post_list[$i] = (int) $topic_data['topic_first_post_id'];
+	array_unshift($post_list, (int) $topic_data['topic_first_post_id']);
 }
 
 if (!sizeof($post_list))
@@ -1693,14 +1684,20 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 	$edit_allowed = ($user->data['is_registered'] && ($auth->acl_get('m_edit', $forum_id) || (
 		$user->data['user_id'] == $poster_id &&
 		$auth->acl_get('f_edit', $forum_id) &&
+		$topic_data['topic_status'] != ITEM_LOCKED &&
 		!$row['post_edit_locked'] &&
 		($row['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'] || $auth->acl_get('u_ignoreedittime')
 			|| ($topic_data['topic_first_post_id'] == $row['post_id'] && $auth->acl_get('u_ignorefpedittime')))
 	)));
 
+	$quote_allowed = $auth->acl_get('m_edit', $forum_id) || ($topic_data['topic_status'] != ITEM_LOCKED &&
+		($user->data['user_id'] == ANONYMOUS || $auth->acl_get('f_reply', $forum_id))
+	);
+
 	$delete_allowed = ($user->data['is_registered'] && ($auth->acl_get('m_delete', $forum_id) || (
 		$user->data['user_id'] == $poster_id &&
 		$auth->acl_get('f_delete', $forum_id) &&
+		$topic_data['topic_status'] != ITEM_LOCKED &&
 		$topic_data['topic_last_post_id'] == $row['post_id'] &&
 		($row['post_time'] > time() - ($config['delete_time'] * 60) || !$config['delete_time']) &&
 		// we do not want to allow removal of the last post if a moderator locked it!
@@ -1763,7 +1760,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($user_cache[$poster_id]['online']) ? true : false),
 
 		'U_EDIT'			=> ($edit_allowed) ? append_sid("{$phpbb_root_path}posting.$phpEx", "mode=edit&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
-		'U_QUOTE'			=> ($auth->acl_get('f_reply', $forum_id)) ? append_sid("{$phpbb_root_path}posting.$phpEx", "mode=quote&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
+		'U_QUOTE'			=> ($quote_allowed) ? append_sid("{$phpbb_root_path}posting.$phpEx", "mode=quote&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
 		'U_INFO'			=> ($auth->acl_get('m_info', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", "i=main&amp;mode=post_details&amp;f=$forum_id&amp;p=" . $row['post_id'], true, $user->session_id) : '',
 		'U_DELETE'			=> ($delete_allowed) ? append_sid("{$phpbb_root_path}posting.$phpEx", "mode=delete&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
 
