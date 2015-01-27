@@ -292,7 +292,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('tpl_allow_php', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('upload_icons_path', 'images/upload_icons');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('upload_path', 'files');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('version', '3.0.12');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('version', '3.0.13');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '{L_WARNING_POST_DEFAULT}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_expire_days', '90');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_gc', '14400');
@@ -804,7 +804,7 @@ INSERT INTO phpbb_acl_groups (group_id, forum_id, auth_option_id, auth_role_id, 
 # Bots having bot access
 INSERT INTO phpbb_acl_groups (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES (6, 2, 0, 19, 0);
 
-# NEW MEMBERS are not allowed to PM
+# NEW MEMBERS are not allowed to send private messages
 INSERT INTO phpbb_acl_groups (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES (7, 0, 0, 23, 0);
 
 # NEW MEMBERS on the queue

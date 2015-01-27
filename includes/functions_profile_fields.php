@@ -509,7 +509,7 @@ class custom_profile
 		switch ($this->profile_types[$field_type])
 		{
 			case 'int':
-				if ($value === '' && !$ident_ary['data']['field_show_novalue'])
+				if (($value === '' || $value === null) && !$ident_ary['data']['field_show_novalue'])
 				{
 					return NULL;
 				}
