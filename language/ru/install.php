@@ -284,7 +284,7 @@ $lang = array_merge($lang, array(
 
 	'PCRE_UTF_SUPPORT'				=> 'Поддержка UTF-8 и конструкции "(?|(a)|(b))" в PCRE',
 	'PCRE_UTF_SUPPORT_EXPLAIN'		=> 'phpBBex <strong>не будет</strong> работать, если PHP собран без поддержки UTF-8 для регулярных выражений или используется слишком старая версия PCRE.',
-	'PHP_GETIMAGESIZE_SUPPORT'			=> 'Функция PHP <var>getimagesize()</var> доступна',
+	'PHP_GETIMAGESIZE_SUPPORT'			=> 'Функция PHP getimagesize() доступна',
 	'PHP_GETIMAGESIZE_SUPPORT_EXPLAIN'	=> '<strong>Необходима</strong>. Для правильной работы phpBBex необходимо наличие функции getimagesize.',
 	'PHP_OPTIONAL_MODULE'			=> 'Необязательные модули',
 	'PHP_OPTIONAL_MODULE_EXPLAIN'	=> 'Эти модули и приложения <strong>не являются обязательными</strong>. Тем не менее они предоставляют расширенные возможности будущего форума.',

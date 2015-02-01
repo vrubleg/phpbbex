@@ -89,9 +89,10 @@ $lang = array_merge($lang, array(
 	'AVATAR_PARTIAL_UPLOAD'			=> 'Указанный файл загружен только частично',
 	'AVATAR_PHP_SIZE_NA'			=> 'Слишком большой размер файла аватары.<br />Не удалось определить максимальный размер, установленный в php.ini.',
 	'AVATAR_PHP_SIZE_OVERRUN'		=> 'Слишком большой размер файла аватары. Максимально допустимый размер — %1$d %2$s.<br />Примечание: это ограничение установлено в файле php.ini и не может быть превышено.',
+	'AVATAR_REMOTE_UPLOAD_TIMEOUT'	=> 'Аватара не может быть загружена из-за превышения времени ожидания ответа сервера на запрос.',
 	'AVATAR_URL_INVALID'			=> 'Указанный адрес аватары недопустим.',
 	'AVATAR_URL_NOT_FOUND'			=> 'Указанный файл аватары не найден.',
-	'AVATAR_WRONG_FILESIZE'			=> 'Размер файла аватары должен находиться в диапазоне от 0 до %1d %2s.',
+	'AVATAR_WRONG_FILESIZE'			=> 'Размер файла аватары должен находиться в диапазоне от 0 до %1$d %2$s.',
 	'AVATAR_WRONG_SIZE'				=> 'Размеры отправленной аватары — %5$d×%6$d. Размеры аватары должны быть не менее %1$d×%2$d, но не более %3$d×%4$d. Все размеры указаны в пикселах.',
 
 	'BACK_TO_TOP'			=> 'Наверх',
@@ -334,6 +335,9 @@ $lang = array_merge($lang, array(
 	'MODERATE'				=> 'Модерировать',
 	'MODERATOR'				=> 'Модератор',
 	'MODERATORS'			=> 'Модераторы',
+	'MODULE_NOT_ACCESS'		=> 'Модуль недоступен',
+	'MODULE_NOT_FIND'		=> 'Не удалось найти модуль %s',
+	'MODULE_FILE_INCORRECT_CLASS'	=> 'Файл модуля %s не содержит необходимого класса [%s]',
 	'MONTH'					=> 'Месяц',
 	'MOVE'					=> 'Переместить',
 	'MSNM'					=> 'MSNM/WLM',
@@ -402,7 +406,8 @@ $lang = array_merge($lang, array(
 	// Nullar/Singular/Plural language entry. The key numbers define the number range in which a certain grammatical expression is valid.
 	'NUM_POSTS_IN_QUEUE'	=> array(
 		0		=> 'Нет сообщений в очереди',	// 0
-		1		=> 'Сообщений в очереди: %d',	// 1+
+		1		=> 'Сообщений в очереди: 1',	// 1
+		2		=> 'Сообщений в очереди: %d',	// 2+
 	),
 
 	'OCCUPATION'				=> 'Род занятий',
@@ -641,7 +646,7 @@ $lang = array_merge($lang, array(
 	'TOTAL_USERS_ZERO'	=> 'Пользователей: <strong>0</strong>',
 	'TRACKED_PHP_ERROR'	=> 'Отслеженные ошибки PHP: %s',
 
-	'UNABLE_GET_IMAGE_SIZE'	=> 'Не удалось определить размеры изображения.',
+	'UNABLE_GET_IMAGE_SIZE'	=> 'Не удалось определить размеры изображения. Проверьте правильность введённого адреса URL.',
 	'UNABLE_TO_DELIVER_FILE'=> 'Не удалось доставить файл.',
 	'UNKNOWN_BROWSER'		=> 'Неизвестный браузер',
 	'UNMARK_ALL'			=> 'Снять выделение',
@@ -712,9 +717,9 @@ $lang = array_merge($lang, array(
 	'WHO_IS_ONLINE'		=> 'Кто сейчас на форуме',
 	'WRONG_PASSWORD'	=> 'Вы ввели неверный пароль.',
 
-	'WRONG_DATA_COLOUR'			=> 'Введённо неправильное значение цвета.',
-	'WRONG_DATA_ICQ'			=> 'Введённый номер не являются правильным номером ICQ.',
-	'WRONG_DATA_JABBER'			=> 'Введённое имя не является правильным именем Jabber.',
+	'WRONG_DATA_COLOUR'			=> 'Введено неправильное значение цвета.',
+	'WRONG_DATA_ICQ'			=> 'Введён неправильный номер ICQ.',
+	'WRONG_DATA_JABBER'			=> 'Введено неправильное имя Jabber.',
 	'WRONG_DATA_SKYPE'			=> 'Введённое имя не является правильным именем Skype.',
 	'WRONG_DATA_LANG'			=> 'Указан неправильный язык.',
 	'WRONG_DATA_WEBSITE'		=> 'Адрес сайта должен быть правильной ссылкой, включающей наименование протокола. Например, http://www.example.com/.',
