@@ -107,7 +107,7 @@ if (!$show_guests)
 	$db->sql_freeresult($result);
 }
 
-// Get number of online guests (if we do not display them)
+// Get number of online bots (if we do not display them)
 if (!$show_bots)
 {
 	$sql = 'SELECT COUNT(DISTINCT session_user_id) as num_bots
