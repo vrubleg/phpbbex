@@ -511,6 +511,9 @@ class phpbb_feed_base
 	*/
 	var $separator_stats = "\xE2\x80\x94"; // &mdash;
 
+	/** @var mixed Query result handle */
+	var $result;
+
 	/**
 	* Constructor
 	*/
@@ -664,10 +667,9 @@ class phpbb_feed_base
 
 	function get_item()
 	{
-		global $db, $cache;
-		static $result;
+		global $db;
 
-		if (!isset($result))
+		if (!isset($this->result))
 		{
 			if (!$this->get_sql())
 			{
@@ -676,10 +678,10 @@ class phpbb_feed_base
 
 			// Query database
 			$sql = $db->sql_build_query('SELECT', $this->sql);
-			$result = $db->sql_query_limit($sql, $this->num_items);
+			$this->result = $db->sql_query_limit($sql, $this->num_items);
 		}
 
-		return $db->sql_fetchrow($result);
+		return $db->sql_fetchrow($this->result);
 	}
 
 	function user_viewprofile($row)
