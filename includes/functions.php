@@ -2376,6 +2376,7 @@ function generate_board_url($without_script_path = false)
 		$script_path = $user->page['root_script_path'];
 	}
 
+	/*
 	if ($server_port && (($cookie_secure && $server_port <> 443) || (!$cookie_secure && $server_port <> 80)))
 	{
 		// HTTP HOST can carry a port number (we fetch $user->host, but for old versions this may be true)
@@ -2384,10 +2385,11 @@ function generate_board_url($without_script_path = false)
 			$url .= ':' . $server_port;
 		}
 	}
+	*/
 
 	// Strip / from the end
 	$domain_url = rtrim($url, '/');
-	$board_url = rtrim($url . $script_path, '/');
+	$board_url = rtrim('/' . $script_path, '/');
 
 	return $without_script_path ? $domain_url : $board_url;
 }
@@ -2435,10 +2437,13 @@ function redirect($url, $return = false, $disable_cd_check = false)
 			trigger_error('Tried to redirect to potentially insecure url.', E_USER_ERROR);
 		}
 	}
+	else if (strpos ($url, '//') === 0)
+	{
+		trigger_error('Tried to redirect to potentially insecure url.', E_USER_ERROR);
+	}
 	else if ($url[0] == '/')
 	{
-		// Absolute uri, prepend direct url...
-		$url = generate_board_url(true) . $url;
+		// Absolute uri, it is OK.
 	}
 	else
 	{
@@ -2519,53 +2524,11 @@ function redirect($url, $return = false, $disable_cd_check = false)
 		}
 	}
 
-	// Make sure we don't redirect to external URLs
-	if (!$disable_cd_check && strpos($url, generate_board_url(true) . '/') !== 0)
-	{
-		trigger_error('Tried to redirect to potentially insecure url.', E_USER_ERROR);
-	}
-
-	// Make sure no linebreaks are there... to prevent http response splitting for PHP < 4.4.2
-	if (strpos(urldecode($url), "\n") !== false || strpos(urldecode($url), "\r") !== false || strpos($url, ';') !== false)
-	{
-		trigger_error('Tried to redirect to potentially insecure url.', E_USER_ERROR);
-	}
-
-	// Now, also check the protocol and for a valid url the last time...
-	$allowed_protocols = array('http', 'https', 'ftp', 'ftps');
-	$url_parts = parse_url($url);
-
-	if ($url_parts === false || empty($url_parts['scheme']) || !in_array($url_parts['scheme'], $allowed_protocols))
-	{
-		trigger_error('Tried to redirect to potentially insecure url.', E_USER_ERROR);
-	}
-
 	if ($return)
 	{
 		return $url;
 	}
 
-	// Redirect via an HTML form for PITA webservers
-	if (@preg_match('#Microsoft|WebSTAR|Xitami#', getenv('SERVER_SOFTWARE')))
-	{
-		header('Refresh: 0; URL=' . $url);
-
-		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-		echo '<html xmlns="http://www.w3.org/1999/xhtml" dir="' . $user->lang['DIRECTION'] . '" lang="' . $user->lang['USER_LANG'] . '" xml:lang="' . $user->lang['USER_LANG'] . '">';
-		echo '<head>';
-		echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
-		echo '<meta http-equiv="refresh" content="0; url=' . str_replace('&', '&amp;', $url) . '" />';
-		echo '<title>' . $user->lang['REDIRECT'] . '</title>';
-		echo '</head>';
-		echo '<body>';
-		echo '<div style="text-align: center;">' . sprintf($user->lang['URL_REDIRECT'], '<a href="' . str_replace('&', '&amp;', $url) . '">', '</a>') . '</div>';
-		echo '</body>';
-		echo '</html>';
-
-		exit;
-	}
-
-	// Behave as per HTTP/1.1 spec for others
 	header('Location: ' . $url);
 	exit;
 }
