@@ -2524,6 +2524,9 @@ function redirect($url, $return = false, $disable_cd_check = false)
 		}
 	}
 
+	// A hacky way to ensure that we didn't get url like //domain.name/.
+	$url = preg_replace('#^/+#', '/', $url);
+
 	if ($return)
 	{
 		return $url;
