@@ -48,19 +48,7 @@ if (!defined('PHPBB_INSTALLED'))
 	// Eliminate . and .. from the path
 	$script_path = phpbb_clean_path($script_path);
 
-	$url = (($secure) ? 'https://' : 'http://') . $server_name;
-
-	if ($server_port && (($secure && $server_port <> 443) || (!$secure && $server_port <> 80)))
-	{
-		// HTTP HOST can carry a port number...
-		if (strpos($server_name, ':') === false)
-		{
-			$url .= ':' . $server_port;
-		}
-	}
-
-	$url .= $script_path;
-	header('Location: ' . $url);
+	header('Location: ' . $script_path);
 	exit;
 }
 
