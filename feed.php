@@ -60,7 +60,7 @@ if ($forum_id || $topic_id || $mode)
 }
 
 // This boards URL
-$board_url = generate_board_url();
+$board_url = generate_board_url('full');
 
 // Get correct feed object
 $feed = phpbb_feed_factory::init($mode, $forum_id, $topic_id);

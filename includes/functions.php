@@ -2337,20 +2337,20 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 /**
 * Generate board path (example: /phpBB) or domain URL (example: http://www.example.com)
 *
-* @param bool $without_script_path if set to true, domain URL is returned
+* @param bool $mode true - domain URL, false - board path, 'full' - domain + board URL
 *
 * @return string the generated board url
 */
-function generate_board_url($without_script_path = false)
+function generate_board_url($mode = false)
 {
 	global $config, $user;
 
 	static $board_path;
 	static $domain_url;
 
-	if (!empty($board_path))
+	if (!empty($domain_url))
 	{
-		return $without_script_path ? $domain_url : $board_path;
+		return ($mode == 'full') ? ($domain_url . $board_path) : ($mode ? $domain_url : $board_path);
 	}
 
 	$server_name = $user->host;
@@ -2395,7 +2395,7 @@ function generate_board_url($without_script_path = false)
 		$board_path = '/' . $board_path;
 	}
 
-	return $without_script_path ? $domain_url : $board_path;
+	return ($mode == 'full') ? ($domain_url . $board_path) : ($mode ? $domain_url : $board_path);
 }
 
 /**
