@@ -70,7 +70,7 @@ class phpbb_gallery_url
 		self::$phpbb_admin_path = $phpbb_admin_path;
 		self::$phpEx = '.' . $phpEx;
 		self::$phpbb_gallery_relative = self::beautiful_path(self::$phpbb_root_path . self::$phpbb_gallery_path);
-		self::$phpbb_gallery_full_path = self::beautiful_path(generate_board_url() . '/' . self::$phpbb_gallery_path, true);
+		self::$phpbb_gallery_full_path = self::beautiful_path(generate_board_url('full') . '/' . self::$phpbb_gallery_path, true);
 
 		self::$loaded = true;
 	}
