@@ -2335,9 +2335,9 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 }
 
 /**
-* Generate board url (example: http://www.example.com/phpBB)
+* Generate board path (example: /phpBB) or domain URL (example: http://www.example.com)
 *
-* @param bool $without_script_path if set to true the script path gets not appended (example: http://www.example.com)
+* @param bool $without_script_path if set to true, domain URL is returned
 *
 * @return string the generated board url
 */
@@ -2345,12 +2345,12 @@ function generate_board_url($without_script_path = false)
 {
 	global $config, $user;
 
-	static $board_url;
+	static $board_path;
 	static $domain_url;
 
-	if (!empty($board_url))
+	if (!empty($board_path))
 	{
-		return $without_script_path ? $domain_url : $board_url;
+		return $without_script_path ? $domain_url : $board_path;
 	}
 
 	$server_name = $user->host;
@@ -2389,9 +2389,13 @@ function generate_board_url($without_script_path = false)
 
 	// Strip / from the end
 	$domain_url = rtrim($url, '/');
-	$board_url = rtrim('/' . $script_path, '/');
+	$board_path = trim($script_path, '/');
+	if (strlen($board_path) > 0)
+	{
+		$board_path = '/' . $board_path;
+	}
 
-	return $without_script_path ? $domain_url : $board_url;
+	return $without_script_path ? $domain_url : $board_path;
 }
 
 /**
@@ -2523,9 +2527,6 @@ function redirect($url, $return = false, $disable_cd_check = false)
 			}
 		}
 	}
-
-	// A hacky way to ensure that we didn't get url like //domain.name/.
-	$url = preg_replace('#^/+#', '/', $url);
 
 	if ($return)
 	{
