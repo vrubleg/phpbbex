@@ -50,7 +50,7 @@ if (!defined('PHPBB_INSTALLED'))
 
 	$url = (($secure) ? 'https://' : 'http://') . $server_name;
 
-	if ($server_port && (($secure && $server_port <> 443) || (!$secure && $server_port <> 80)))
+	if ($server_port && !$secure && $server_port <> 80)
 	{
 		// HTTP HOST can carry a port number...
 		if (strpos($server_name, ':') === false)
