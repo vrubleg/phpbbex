@@ -433,7 +433,19 @@ class module
 		$script_name = str_replace(array('\\', '//'), '/', $script_name);
 		$script_path = trim(dirname($script_name));
 
-		header('Location: ' . $script_path . '/' . $page);
+		$url = (($secure) ? 'https://' : 'http://') . $server_name;
+
+		if ($server_port && (($secure && $server_port <> 443) || (!$secure && $server_port <> 80)))
+		{
+			// HTTP HOST can carry a port number...
+			if (strpos($server_name, ':') === false)
+			{
+				$url .= ':' . $server_port;
+			}
+		}
+
+		$url .= $script_path . '/' . $page;
+		header('Location: ' . $url);
 		exit;
 	}
 
