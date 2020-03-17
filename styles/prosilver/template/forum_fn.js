@@ -291,26 +291,38 @@ function selectCode(a)
 {
 	// Get ID of code block
 	var e = a.parentNode.parentNode.getElementsByTagName('CODE')[0];
+	var s, r;
 
 	// Not IE and IE9+
 	if (window.getSelection)
 	{
-		var s = window.getSelection();
-		// Safari
+		s = window.getSelection();
+		// Safari, Chrome, and modern Firefox
 		if (s.setBaseAndExtent)
 		{
-			s.setBaseAndExtent(e, 0, e, e.innerText.length - 1);
+			try
+			{
+				s.setBaseAndExtent(e, 0, e, (e.innerText.length > 1) ? e.innerText.length - 1 : 1);
+			}
+			catch (error)
+			{
+				r = document.createRange();
+				r.setStart(e.firstChild, 0);
+				r.setEnd(e.lastChild, e.lastChild.textContent.length);
+				s.removeAllRanges();
+				s.addRange(r);
+			}
 		}
 		// Firefox and Opera
 		else
 		{
 			// workaround for bug # 42885
-			if (window.opera && e.innerHTML.substring(e.innerHTML.length - 4) == '<BR>')
+			if (window.opera && e.innerHTML.substring(e.innerHTML.length - 4) === '<BR>')
 			{
 				e.innerHTML = e.innerHTML + '&nbsp;';
 			}
 
-			var r = document.createRange();
+			r = document.createRange();
 			r.setStart(e.firstChild, 0);
 			r.setEnd(e.lastChild, e.lastChild.textContent.length);
 			s.removeAllRanges();
@@ -320,8 +332,8 @@ function selectCode(a)
 	// Some older browsers
 	else if (document.getSelection)
 	{
-		var s = document.getSelection();
-		var r = document.createRange();
+		s = document.getSelection();
+		r = document.createRange();
 		r.selectNodeContents(e);
 		s.removeAllRanges();
 		s.addRange(r);
@@ -329,7 +341,7 @@ function selectCode(a)
 	// IE
 	else if (document.selection)
 	{
-		var r = document.body.createTextRange();
+		r = document.body.createTextRange();
 		r.moveToElementText(e);
 		r.select();
 	}
