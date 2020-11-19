@@ -59,10 +59,6 @@ label input {
 	vertical-align: middle;
 }
 
-label input[type="checkbox"], label input[type="radio"] {
-	vertical-align: bottom;
-}
-
 label img {
 	vertical-align: middle;
 }
@@ -331,15 +327,14 @@ input.button1, input.button2, button {
 
 a.button1, input.button1, a.button2, input.button2, button {
 	/*width: auto !important;*/
-	padding-top: 1px;
-	padding-bottom: 1px;
+	padding: 2px 6px;
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	color: #000;
 	background: #FAFAFA none repeat-x top left;
 }
 
 button {
-	padding: 1px 4px;
+	padding: 2px 4px;
 	cursor: pointer;
 }
 
