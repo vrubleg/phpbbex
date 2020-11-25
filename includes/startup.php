@@ -15,7 +15,8 @@ if (!defined('IN_PHPBB'))
 }
 
 // Check PHP version
-if(version_compare(PHP_VERSION, '5.3', '<') || version_compare(PHP_VERSION, '5.9', '>')) die('PHP 5.3-5.6 is required.');
+if (version_compare(PHP_VERSION, '5.4', '<') || version_compare(PHP_VERSION, '5.9', '>')) die('PHP 5.4-5.6 is required.');
+if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE does not support UTF8.');
 
 // Powered by ...
 define('POWERED_BY', '<a href="http://phpbbex.com/">phpBBex</a> &copy; 2015 <a href="http://phpbb.com/">phpBB</a> Group, <a href="http://vegalogic.com/">Vegalogic</a> Software');
@@ -27,64 +28,6 @@ autoloader::add_path(dirname(__FILE__).'/../modules/', 'module');
 
 // Report all errors
 error_reporting(E_ALL);
-
-/*
-* Remove variables created by register_globals from the global scope
-* Thanks to Matt Kavanagh
-*/
-function deregister_globals()
-{
-	$not_unset = array(
-		'GLOBALS'	=> true,
-		'_GET'		=> true,
-		'_POST'		=> true,
-		'_COOKIE'	=> true,
-		'_REQUEST'	=> true,
-		'_SERVER'	=> true,
-		'_SESSION'	=> true,
-		'_ENV'		=> true,
-		'_FILES'	=> true,
-		'phpEx'		=> true,
-		'phpbb_root_path'	=> true
-	);
-
-	// Not only will array_merge and array_keys give a warning if
-	// a parameter is not an array, array_merge will actually fail.
-	// So we check if _SESSION has been initialised.
-	if (!isset($_SESSION) || !is_array($_SESSION))
-	{
-		$_SESSION = array();
-	}
-
-	// Merge all into one extremely huge array; unset this later
-	$input = array_merge(
-		array_keys($_GET),
-		array_keys($_POST),
-		array_keys($_COOKIE),
-		array_keys($_SERVER),
-		array_keys($_SESSION),
-		array_keys($_ENV),
-		array_keys($_FILES)
-	);
-
-	foreach ($input as $varname)
-	{
-		if (isset($not_unset[$varname]))
-		{
-			// Hacking attempt. No point in continuing.
-			if (isset($_COOKIE[$varname]))
-			{
-				echo "Clear your cookies. ";
-			}
-			echo "Malicious variable name detected. Contact the administrator and ask them to disable register_globals.";
-			exit;
-		}
-
-		unset($GLOBALS[$varname]);
-	}
-
-	unset($input);
-}
 
 /**
  * Check if requested page uses a trailing path
@@ -135,25 +78,7 @@ if (phpbb_has_trailing_path($phpEx))
 }
 
 // Register globals and magic quotes have been dropped in PHP 5.4
-if (version_compare(PHP_VERSION, '5.4.0-dev', '>='))
-{
-	/**
-	* @ignore
-	*/
-	define('STRIP', false);
-}
-else
-{
-	@set_magic_quotes_runtime(0);
-
-	// Be paranoid with passed vars
-	if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on' || !function_exists('ini_get'))
-	{
-		deregister_globals();
-	}
-
-	define('STRIP', (get_magic_quotes_gpc()) ? true : false);
-}
+define('STRIP', false);
 
 // Prevent date/time functions from throwing E_WARNING on PHP 5.3 by setting a default timezone
 if (function_exists('date_default_timezone_set') && function_exists('date_default_timezone_get'))

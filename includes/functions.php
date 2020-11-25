@@ -50,8 +50,6 @@ function set_var(&$result, $var, $type, $multibyte = false)
 				$result = preg_replace('/[\x80-\xFF]/', '?', $result);
 			}
 		}
-
-		$result = (STRIP) ? stripslashes($result) : $result;
 	}
 }
 
@@ -1337,7 +1335,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 			}
 			else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 			{
-				$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ((STRIP) ? stripslashes($_COOKIE[$config['cookie_name'] . '_track']) : $_COOKIE[$config['cookie_name'] . '_track']) : '';
+				$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
 				$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 
 				unset($tracking_topics['tf']);
@@ -1346,7 +1344,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				$tracking_topics['l'] = base_convert(time() - $config['board_startdate'], 10, 36);
 
 				$user->set_cookie('track', tracking_serialize($tracking_topics), time() + 31536000);
-				$_COOKIE[$config['cookie_name'] . '_track'] = (STRIP) ? addslashes(tracking_serialize($tracking_topics)) : tracking_serialize($tracking_topics);
+				$_COOKIE[$config['cookie_name'] . '_track'] = tracking_serialize($tracking_topics);
 
 				unset($tracking_topics);
 
@@ -1416,7 +1414,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 		}
 		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 		{
-			$tracking = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ((STRIP) ? stripslashes($_COOKIE[$config['cookie_name'] . '_track']) : $_COOKIE[$config['cookie_name'] . '_track']) : '';
+			$tracking = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
 			$tracking = ($tracking) ? tracking_unserialize($tracking) : array();
 
 			foreach ($forum_id as $f_id)
@@ -1447,7 +1445,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 			}
 
 			$user->set_cookie('track', tracking_serialize($tracking), time() + 31536000);
-			$_COOKIE[$config['cookie_name'] . '_track'] = (STRIP) ? addslashes(tracking_serialize($tracking)) : tracking_serialize($tracking);
+			$_COOKIE[$config['cookie_name'] . '_track'] = tracking_serialize($tracking);
 
 			unset($tracking);
 		}
@@ -1488,7 +1486,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 		}
 		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 		{
-			$tracking = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ((STRIP) ? stripslashes($_COOKIE[$config['cookie_name'] . '_track']) : $_COOKIE[$config['cookie_name'] . '_track']) : '';
+			$tracking = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
 			$tracking = ($tracking) ? tracking_unserialize($tracking) : array();
 
 			$topic_id36 = base_convert($topic_id, 10, 36);
@@ -1543,7 +1541,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 			}
 
 			$user->set_cookie('track', tracking_serialize($tracking), time() + 31536000);
-			$_COOKIE[$config['cookie_name'] . '_track'] = (STRIP) ? addslashes(tracking_serialize($tracking)) : tracking_serialize($tracking);
+			$_COOKIE[$config['cookie_name'] . '_track'] = tracking_serialize($tracking);
 		}
 
 		return;
@@ -1681,7 +1679,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 
 		if (!isset($tracking_topics) || !sizeof($tracking_topics))
 		{
-			$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ((STRIP) ? stripslashes($_COOKIE[$config['cookie_name'] . '_track']) : $_COOKIE[$config['cookie_name'] . '_track']) : '';
+			$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
 			$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 		}
 
@@ -1892,7 +1890,7 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 		}
 		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 		{
-			$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ((STRIP) ? stripslashes($_COOKIE[$config['cookie_name'] . '_track']) : $_COOKIE[$config['cookie_name'] . '_track']) : '';
+			$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
 			$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 
 			if (!$user->data['is_registered'])
@@ -3583,18 +3581,10 @@ function get_preg_expression($mode)
 */
 function get_censor_preg_expression($word, $use_unicode = true)
 {
-	static $unicode_support = null;
-
-	// Check whether PHP version supports unicode properties
-	if (is_null($unicode_support))
-	{
-		$unicode_support = ((version_compare(PHP_VERSION, '5.1.0', '>=') || (version_compare(PHP_VERSION, '5.0.0-dev', '<=') && version_compare(PHP_VERSION, '4.4.0', '>='))) && @preg_match('/\p{L}/u', 'a') !== false) ? true : false;
-	}
-
 	// Unescape the asterisk to simplify further conversions
 	$word = str_replace('\*', '*', preg_quote($word, '#'));
 
-	if ($use_unicode && $unicode_support)
+	if ($use_unicode)
 	{
 		// Replace asterisk(s) inside the pattern, at the start and at the end of it with regexes
 		$word = preg_replace(array('#(?<=[\p{Nd}\p{L}_])\*+(?=[\p{Nd}\p{L}_])#iu', '#^\*+#', '#\*+$#'), array('([\x20]*?|[\p{Nd}\p{L}_-]*?)', '[\p{Nd}\p{L}_-]*?', '[\p{Nd}\p{L}_-]*?'), $word);
@@ -3683,38 +3673,12 @@ function phpbb_checkdnsrr($host, $type = 'MX')
 		return (@gethostbyname($host_fqdn) == $host_fqdn) ? false : true;
 	}
 
-	// checkdnsrr() is available on Windows since PHP 5.3,
-	// but until 5.3.3 it only works for MX records
-	// See: http://bugs.php.net/bug.php?id=51844
-
-	// Call checkdnsrr() if
-	// we're looking for an MX record or
-	// we're not on Windows or
-	// we're running a PHP version where #51844 has been fixed
-
-	// checkdnsrr() supports AAAA since 5.0.0
-	// checkdnsrr() supports TXT since 5.2.4
-	if (
-		($type == 'MX' || DIRECTORY_SEPARATOR != '\\' || version_compare(PHP_VERSION, '5.3.3', '>=')) &&
-		($type != 'AAAA' || version_compare(PHP_VERSION, '5.0.0', '>=')) &&
-		($type != 'TXT' || version_compare(PHP_VERSION, '5.2.4', '>=')) &&
-		function_exists('checkdnsrr')
-	)
+	if (function_exists('checkdnsrr'))
 	{
 		return checkdnsrr($host_fqdn, $type);
 	}
 
-	// dns_get_record() is available since PHP 5; since PHP 5.3 also on Windows,
-	// but on Windows it does not work reliable for AAAA records before PHP 5.3.1
-
-	// Call dns_get_record() if
-	// we're not looking for an AAAA record or
-	// we're not on Windows or
-	// we're running a PHP version where AAAA lookups work reliable
-	if (
-		($type != 'AAAA' || DIRECTORY_SEPARATOR != '\\' || version_compare(PHP_VERSION, '5.3.1', '>=')) &&
-		function_exists('dns_get_record')
-	)
+	if (function_exists('dns_get_record'))
 	{
 		// dns_get_record() expects an integer as second parameter
 		// We have to convert the string $type to the corresponding integer constant.
@@ -3742,94 +3706,6 @@ function phpbb_checkdnsrr($host, $type = 'MX')
 			)
 			{
 				return true;
-			}
-		}
-
-		return false;
-	}
-
-	// If we're on Windows we can still try to call nslookup via exec() as a last resort
-	if (DIRECTORY_SEPARATOR == '\\' && function_exists('exec'))
-	{
-		@exec('nslookup -type=' . escapeshellarg($type) . ' ' . escapeshellarg($host_fqdn), $output);
-
-		// If output is empty, the nslookup failed
-		if (empty($output))
-		{
-			return NULL;
-		}
-
-		foreach ($output as $line)
-		{
-			$line = trim($line);
-
-			if (empty($line))
-			{
-				continue;
-			}
-
-			// Squash tabs and multiple whitespaces to a single whitespace.
-			$line = preg_replace('/\s+/', ' ', $line);
-
-			switch ($type)
-			{
-				case 'MX':
-					if (stripos($line, "$host MX") === 0)
-					{
-						return true;
-					}
-				break;
-
-				case 'NS':
-					if (stripos($line, "$host nameserver") === 0)
-					{
-						return true;
-					}
-				break;
-
-				case 'TXT':
-					if (stripos($line, "$host text") === 0)
-					{
-						return true;
-					}
-				break;
-
-				case 'CNAME':
-					if (stripos($line, "$host canonical name") === 0)
-					{
-						return true;
-					}
-				break;
-
-				default:
-				case 'AAAA':
-					// AAAA records returned by nslookup on Windows XP/2003 have this format.
-					// Later Windows versions use the A record format below for AAAA records.
-					if (stripos($line, "$host AAAA IPv6 address") === 0)
-					{
-						return true;
-					}
-				// No break
-
-				case 'A':
-					if (!empty($host_matches))
-					{
-						// Second line
-						if (stripos($line, "Address: ") === 0)
-						{
-							return true;
-						}
-						else
-						{
-							$host_matches = false;
-						}
-					}
-					else if (stripos($line, "Name: $host") === 0)
-					{
-						// First line
-						$host_matches = true;
-					}
-				break;
 			}
 		}
 

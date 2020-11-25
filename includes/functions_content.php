@@ -684,8 +684,11 @@ function make_clickable($text, $server_url = false, $class = 'postlink')
 		$server_url = generate_board_url(true);
 	}
 
+	// matches a xxxx://aaaaa.bbb.cccc. ...
 	$text = preg_replace_callback('#(^|[\n\t (>.])(' . get_preg_expression('url_inline') . ')#iu', function ($m) use ($server_url) { return make_clickable_callback(MAGIC_URL_FULL, $m[1], $m[2], $server_url); }, $text);
+	// matches a "www.xxxx.yyyy[/zzzz]" kinda lazy URL thing
 	$text = preg_replace_callback('#(^|[\n\t (>])(' . get_preg_expression('www_url_inline') . ')#iu', function ($m) use ($server_url) { return make_clickable_callback(MAGIC_URL_WWW, $m[1], $m[2], $server_url); }, $text);
+	// matches an email@domain type address at the start of a line, or after a space or after what might be a BBCode.
 	$text = preg_replace_callback('/(^|[\n\t (>])(' . get_preg_expression('email') . ')/i', function ($m) use ($server_url) { return make_clickable_callback(MAGIC_URL_EMAIL, $m[1], $m[2], $server_url); }, $text);
 
 	return $text;
