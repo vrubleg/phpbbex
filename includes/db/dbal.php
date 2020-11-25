@@ -424,7 +424,7 @@ class dbal
 	*/
 	function sql_in_set($field, $array, $negate = false, $allow_empty_set = false)
 	{
-		if (!sizeof($array))
+		if (empty($array))
 		{
 			if (!$allow_empty_set)
 			{

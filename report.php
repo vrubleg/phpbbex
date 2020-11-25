@@ -167,7 +167,7 @@ if ($submit && $reason_id)
 		$error[] = $user->lang('EMPTY_REPORT');
 	}
 
-	if (!sizeof($error))
+	if (!count($error))
 	{
 		if (isset($captcha))
 		{
@@ -264,11 +264,11 @@ if (isset($captcha) && $captcha->is_solved() === false)
 }
 
 $template->assign_vars(array(
-	'ERROR'				=> (sizeof($error)) ? implode('<br />', $error) : '',
+	'ERROR'				=> (count($error)) ? implode('<br />', $error) : '',
 	'S_REPORT_POST'		=> ($pm_id) ? false : true,
 	'REPORT_TEXT'		=> $report_text,
 	'S_REPORT_ACTION'	=> append_sid("{$phpbb_root_path}report.$phpEx", 'f=' . $forum_id . '&amp;p=' . $post_id . '&amp;pm=' . $pm_id),
-	'S_HIDDEN_FIELDS'	=> (sizeof($s_hidden_fields)) ? $s_hidden_fields : null,
+	'S_HIDDEN_FIELDS'	=> (!empty($s_hidden_fields)) ? $s_hidden_fields : null,
 
 	'S_NOTIFY'			=> $user_notify,
 	'S_CAN_NOTIFY'		=> ($user->data['is_registered']) ? true : false)
