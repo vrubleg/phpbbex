@@ -33,7 +33,7 @@ class acm
 	/**
 	* Set cache path
 	*/
-	function acm()
+	function __construct()
 	{
 		global $phpbb_root_path;
 		$this->cache_dir = $phpbb_root_path . 'cache/';

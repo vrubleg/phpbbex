@@ -40,7 +40,7 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 		'captcha_gd_fonts'				=> 'CAPTCHA_GD_FONTS',
 	);
 
-	function phpbb_captcha_gd()
+	function __construct()
 	{
 		global $phpbb_root_path, $phpEx;
 
@@ -52,8 +52,7 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 
 	function &get_instance()
 	{
-		$instance =& new phpbb_captcha_gd();
-		return $instance;
+		return new phpbb_captcha_gd();
 	}
 
 	function is_available()

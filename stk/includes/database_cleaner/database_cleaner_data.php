@@ -104,7 +104,7 @@ class database_cleaner_data
 	 *
 	 * @param phpbb_db_tools $db_tools The phpBB phpbb_db_tools object
 	 */
-	function database_cleaner_data($db_tools = null)
+	function __construct($db_tools = null)
 	{
 		$this->db_tools = $db_tools;
 	}

@@ -37,7 +37,12 @@ class bbcode
 	* Constructor
 	* Init bbcode cache entries if bitfield is specified
 	*/
-	function bbcode($bitfield = '')
+	function __construct($bitfield = '')
+	{
+		$this->set_bitfield($bitfield);
+	}
+
+	function set_bitfield($bitfield = '')
 	{
 		if ($bitfield)
 		{

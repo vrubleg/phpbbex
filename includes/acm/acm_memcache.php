@@ -54,10 +54,10 @@ class acm extends acm_memory
 	var $memcache;
 	var $flags = 0;
 
-	function acm()
+	function __construct()
 	{
 		// Call the parent constructor
-		parent::acm_memory();
+		parent::__construct();
 
 		$this->memcache = new Memcache;
 		foreach(explode(',', PHPBB_ACM_MEMCACHE) as $u)

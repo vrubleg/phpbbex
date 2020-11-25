@@ -36,7 +36,7 @@ class fulltext_mysql extends search_backend
 	var $pcre_properties = false;
 	var $mbstring_regex = false;
 
-	function fulltext_mysql(&$error)
+	function __construct(&$error)
 	{
 		global $config;
 

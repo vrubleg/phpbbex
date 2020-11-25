@@ -44,7 +44,7 @@ class fulltext_native extends search_backend
 	*
 	* @access	public
 	*/
-	function fulltext_native(&$error)
+	function __construct(&$error)
 	{
 		global $phpbb_root_path, $phpEx, $config;
 

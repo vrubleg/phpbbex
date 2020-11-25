@@ -39,7 +39,7 @@ class phpbb_recaptcha extends phpbb_default_captcha
 	var $response;
 
 	// PHP4 Constructor
-	function phpbb_recaptcha()
+	function __construct()
 	{
 		$this->recaptcha_server = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? $this->recaptcha_server_secure : $this->recaptcha_server;
 	}
@@ -56,8 +56,7 @@ class phpbb_recaptcha extends phpbb_default_captcha
 
 	function &get_instance()
 	{
-		$instance =& new phpbb_recaptcha();
-		return $instance;
+		return new phpbb_recaptcha();
 	}
 
 	function is_available()

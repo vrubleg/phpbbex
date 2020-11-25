@@ -35,9 +35,9 @@ class acm extends acm_memory
 {
 	var $extension = 'XCache';
 
-	function acm()
+	function __construct()
 	{
-		parent::acm_memory();
+		parent::__construct();
 
 		if (!function_exists('ini_get') || (int) ini_get('xcache.var_size') <= 0)
 		{

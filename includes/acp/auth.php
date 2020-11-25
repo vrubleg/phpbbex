@@ -25,7 +25,7 @@ class auth_admin extends phpbb_auth
 	/**
 	* Init auth settings
 	*/
-	function auth_admin()
+	function __construct()
 	{
 		global $db, $cache;
 
