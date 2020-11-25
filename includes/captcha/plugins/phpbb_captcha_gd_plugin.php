@@ -50,12 +50,11 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 		}
 	}
 
-	protected static $instance;
-
 	static function get_instance()
 	{
-		if (!isset(self::$instance)) { self::$instance = new self(); }
-		return self::$instance;
+		static $instance = null;
+		if ($instance === null) { $instance = new self(); }
+		return $instance;
 	}
 
 	static function is_available()

@@ -96,12 +96,11 @@ class phpbb_captcha_qa
 		}
 	}
 
-	protected static $instance;
-
 	static function get_instance()
 	{
-		if (!isset(self::$instance)) { self::$instance = new self(); }
-		return self::$instance;
+		static $instance = null;
+		if ($instance === null) { $instance = new self(); }
+		return $instance;
 	}
 
 	/**

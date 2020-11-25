@@ -54,12 +54,11 @@ class phpbb_recaptcha extends phpbb_default_captcha
 		$this->response = request_var('recaptcha_response_field', '');
 	}
 
-	protected static $instance;
-
 	static function get_instance()
 	{
-		if (!isset(self::$instance)) { self::$instance = new self(); }
-		return self::$instance;
+		static $instance = null;
+		if ($instance === null) { $instance = new self(); }
+		return $instance;
 	}
 
 	static function is_available()
