@@ -77,24 +77,9 @@ if (phpbb_has_trailing_path($phpEx))
 	exit;
 }
 
-// Register globals and magic quotes have been dropped in PHP 5.4
-define('STRIP', false);
-
 // Prevent date/time functions from throwing E_WARNING on PHP 5.3 by setting a default timezone
 if (function_exists('date_default_timezone_set') && function_exists('date_default_timezone_get'))
 {
-	// For PHP 5.1.0 the date/time functions have been rewritten
-	// and setting a timezone is required prior to calling any date/time function.
-
-	// Since PHP 5.2.0 calls to date/time functions without having a timezone set
-	// result in E_STRICT errors being thrown.
-	// Note: We already exclude E_STRICT errors
-	// (to be exact: they are not included in E_ALL in PHP 5.2)
-
-	// In PHP 5.3.0 the error level has been raised to E_WARNING which causes problems
-	// because we show E_WARNING errors and do not set a default timezone.
-	// This is because we have our own timezone handling and work in UTC only anyway.
-
 	// So what we basically want to do is set our timezone to UTC,
 	// but we don't know what other scripts (such as bridges) are involved,
 	// so we check whether a timezone is already set by calling date_default_timezone_get().
