@@ -25,8 +25,8 @@ require(dirname(__FILE__).'/../classes/autoloader.php');
 autoloader::init(dirname(__FILE__).'/../classes/');
 autoloader::add_path(dirname(__FILE__).'/../modules/', 'module');
 
-// Report all errors, except notices and deprecation messages
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+// Report all errors
+error_reporting(E_ALL);
 
 /*
 * Remove variables created by register_globals from the global scope
