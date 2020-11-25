@@ -54,12 +54,15 @@ class phpbb_recaptcha extends phpbb_default_captcha
 		$this->response = request_var('recaptcha_response_field', '');
 	}
 
-	function &get_instance()
+	protected static $instance;
+
+	static function get_instance()
 	{
-		return new phpbb_recaptcha();
+		if (!isset(self::$instance)) { self::$instance = new self(); }
+		return self::$instance;
 	}
 
-	function is_available()
+	static function is_available()
 	{
 		global $config, $user;
 		$user->add_lang('captcha_recaptcha');
@@ -69,17 +72,17 @@ class phpbb_recaptcha extends phpbb_default_captcha
 	/**
 	*  API function
 	*/
-	function has_config()
+	static function has_config()
 	{
 		return true;
 	}
 
-	function get_name()
+	static function get_name()
 	{
 		return 'CAPTCHA_RECAPTCHA';
 	}
 
-	function get_class_name()
+	static function get_class_name()
 	{
 		return 'phpbb_recaptcha';
 	}

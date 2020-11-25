@@ -40,22 +40,25 @@ class phpbb_captcha_nogd extends phpbb_default_captcha
 		}
 	}
 
-	function &get_instance()
+	protected static $instance;
+
+	static function get_instance()
 	{
-		return new phpbb_captcha_nogd();
+		if (!isset(self::$instance)) { self::$instance = new self(); }
+		return self::$instance;
 	}
 
-	function is_available()
+	static function is_available()
 	{
 		return true;
 	}
 
-	function get_name()
+	static function get_name()
 	{
 		return 'CAPTCHA_NO_GD';
 	}
 
-	function get_class_name()
+	static function get_class_name()
 	{
 		return 'phpbb_captcha_nogd';
 	}
