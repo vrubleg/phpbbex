@@ -173,9 +173,10 @@ class messenger
 	*/
 	function anti_abuse_headers($config, $user)
 	{
-		$this->headers('X-AntiAbuse: Host Name - ' . mail_encode($config['server_name']));
+		$host = $config['server_name'];
+		if (!preg_match('#[-_.\w\d]*#i', $host)) { $host = mail_encode($host); }
+		$this->headers('X-AntiAbuse: Host - ' . $host);
 		$this->headers('X-AntiAbuse: User ID - ' . $user->data['user_id']);
-		$this->headers('X-AntiAbuse: User Name - ' . mail_encode($user->data['username']));
 		$this->headers('X-AntiAbuse: User IP - ' . $user->ip);
 	}
 
