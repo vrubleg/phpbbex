@@ -618,14 +618,6 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 	}
 
 	$text = urldecode($url);
-	if (!preg_match('/^./u', $text))
-	{
-		$text = (strlen($url) > 85) ? substr($url, 0, 49) . ' ... ' . substr($url, -30) : $url;
-	}
-	else
-	{
-		if (utf8_strlen($text) > 85) $text = utf8_substr($text, 0, 49) . ' ... ' . utf8_substr($text, -30);
-	}
 
 	switch ($type)
 	{
@@ -633,11 +625,11 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$url	= 'http://' . $url;
 
 		case MAGIC_URL_FULL:
-			if (strtolower($url) === 'http://')
+			if (in_array(strtolower($url), array('http://', 'https://')))
 			{
 				return $whitespace . $url . $append;
 			}
-			$external = stripos($url, $server_url) !== 0;
+			$external = stripos(preg_replace('#^https?://#i', '', $url), preg_replace('#^https?://#i', '', $server_url)) !== 0;
 			if ($external)
 			{
 				$tag		= ($type == MAGIC_URL_WWW) ? 'w' : 'm';
@@ -648,10 +640,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 				$tag		= ($type == MAGIC_URL_WWW) ? 'w' : 'l';
 				$attrs		= ' class="postlink local"';
 				$url		= preg_replace('/[&?]sid=[0-9a-f]{32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{32}&/', '$1', $url));
-				if (strlen($url) > strlen($server_url) + 1)
-				{
-					$text	= substr($url, strlen($server_url));
-				}
+				$text		= urldecode($url);
 			}
 		break;
 
@@ -660,6 +649,8 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$url	= 'mailto:' . $url;
 		break;
 	}
+
+	if (utf8_strlen($text) > 85) $text = utf8_substr($text, 0, 49) . ' ... ' . utf8_substr($text, -30);
 
 	$url	= htmlspecialchars($url);
 	$text	= htmlspecialchars($text);
