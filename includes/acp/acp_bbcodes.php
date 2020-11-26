@@ -439,7 +439,7 @@ class acp_bbcodes
 				if (preg_match_all('/(?<!\\\\)\$([0-9]+)/', $replace, $repad))
 				{
 					$repad = $pad + sizeof(array_unique($repad[0]));
-					$replace = preg_replace('/(?<!\\\\)\$([0-9]+)/e', "'\${' . (\$1 + \$pad) . '}'", $replace);
+					$replace = preg_replace_callback('/(?<!\\\\)\$([0-9]+)/', function ($m) use ($pad) { return '${' . ($m[1] + $pad) . '}'; }, $replace);
 					$pad = $repad;
 				}
 
@@ -479,7 +479,7 @@ class acp_bbcodes
 			$fp_match = '!' . $fp_match . '!' . $modifiers;
 			$sp_match = '!' . $sp_match . '!s' . (($utf8) ? 'u' : '');
 
-			if (strpos($fp_match, 'e') !== false)
+			if (strpos($modifiers, 'e') !== false)
 			{
 				$fp_replace = str_replace("'.'", '', $fp_replace);
 				$fp_replace = str_replace(".''.", '.', $fp_replace);
