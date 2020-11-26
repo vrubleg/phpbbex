@@ -812,7 +812,7 @@ class bbcode_firstpass extends bbcode
 		}
 
 		// To let the parser not catch tokens within quote_username quotes we encode them before we start this...
-		$in = preg_replace('#'.$type.'=&quot;(.*?)&quot;\]#ie', "'".$type."=&quot;' . str_replace(array('[', ']', '\\\"'), array('&#91;', '&#93;', '\"'), '\$1') . '&quot;]'", $in);
+		$in = preg_replace_callback('#'.$type.'=&quot;(.*?)&quot;\]#i', function ($m) use ($type) { return $type.'=&quot;' . str_replace(array('[', ']', '\"'), array('&#91;', '&#93;', '\"'), $m[1]) . '&quot;]'; }, $in);
 
 		$tok = ']';
 		$out = '[';
