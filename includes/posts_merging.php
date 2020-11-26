@@ -65,12 +65,12 @@ $merge_post_data['post_text'] = html_entity_decode($message_parser->message,  EN
 unset($message_parser);
 
 // Handle with inline attachments
-if (sizeof($data['attachment_data']))
+if (!empty($data['attachment_data']))
 {
-	for($i = 0; $i < sizeof($data['attachment_data']); $i++)
-	{
-		$merge_post_data['post_text'] = preg_replace('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#e', "'[attachment='.(\\1 + 1).']\\2[/attachment]'", $merge_post_data['post_text']);
-	}
+	$count = count($data['attachment_data']);
+	$merge_post_data['post_text'] = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#', function ($m) use ($count) {
+		return '[attachment=' . ($m[1] + $count) . ']' . $m[2] .'[/attachment]';
+	}, $merge_post_data['post_text']);
 }
 
 // Make sure the message is safe
