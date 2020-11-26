@@ -1002,7 +1002,7 @@ p.submit-buttons {
 }
 
 fieldset.submit-buttons input, p.submit-buttons input {
-	padding: 3px 2px;
+	padding: 3px 6px;
 }
 
 fieldset.submit-buttons legend {
@@ -1036,7 +1036,7 @@ input.autowidth { width: auto !important;}
 a.button1, input.button1, input.button3,
 a.button2, input.button2 {
 	width: auto !important;
-	padding: 1px 3px 0 3px;
+	padding: 2px 6px;
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	color: #000;
 	font-size: 0.85em;
@@ -1085,6 +1085,12 @@ input.disabled {
 /* Focus states */
 input.button1:focus, input.button2:focus, input.button3:focus {
 	outline-style: none;
+}
+
+/* Remove focus dots in Firefox before 53, for consistency with newer browsers */
+input::-moz-focus-inner, button::-moz-focus-inner {
+	border: 0;
+	padding: 0;
 }
 
 /* Pagination
