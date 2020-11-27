@@ -16,6 +16,11 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+function safe_strval(&$m)
+{
+	return isset($m) ? strval($m) : '';
+}
+
 /**
 * BBCode class
 * @package phpBB3
@@ -229,7 +234,7 @@ class bbcode
 							'[/quote:$uid]'	=> $this->bbcode_tpl('quote_close', $bbcode_id)
 						),
 						'preg' => array(
-							'#\[quote(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[quote(?:=&quot;.*?&quot;)?:$uid\]).)?#is' => function ($m) { return $this->bbcode_second_pass_quote($m[1], $m[2]); },
+							'#\[quote(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[quote(?:=&quot;.*?&quot;)?:$uid\]).)?#is' => function ($m) { return $this->bbcode_second_pass_quote(safe_strval($m[1]), safe_strval($m[2])); },
 						)
 					);
 				break;
@@ -403,7 +408,7 @@ class bbcode
 							'[/spoiler:$uid]'		=> $this->bbcode_tpl('spoiler_close', $bbcode_id)
 						),
 						'preg' => array(
-							'#\[spoiler(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[spoiler(?:=&quot;.*?&quot;)?:$uid\]).)?#is'	=> function ($m) { return $this->bbcode_second_pass_spoiler($m[1], $m[2]); }
+							'#\[spoiler(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[spoiler(?:=&quot;.*?&quot;)?:$uid\]).)?#is'	=> function ($m) { return $this->bbcode_second_pass_spoiler(safe_strval($m[1]), safe_strval($m[2])); }
 						)
 					);
 				break;

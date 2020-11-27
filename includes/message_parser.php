@@ -127,7 +127,7 @@ class bbcode_firstpass extends bbcode
 			'attachment'	=> array('bbcode_id' => 12,	'regexp' => array('#\[attachment=([0-9]+)\](.*?)\[/attachment\]#uis' => function ($m) { return $this->bbcode_attachment($m[1], $m[2]); })),
 			'b'				=> array('bbcode_id' => 1,	'regexp' => array('#\[b\](.*?)\[/b\]#uis' => function ($m) { return $this->bbcode_strong($m[1]); })),
 			'i'				=> array('bbcode_id' => 2,	'regexp' => array('#\[i\](.*?)\[/i\]#uis' => function ($m) { return $this->bbcode_italic($m[1]); })),
-			'url'			=> array('bbcode_id' => 3,	'regexp' => array('#\[url(=(.*))?\](?(1)((?s).*(?-s))|(.*))\[/url\]#uiU' => function ($m) { return $this->validate_url($m[2], ($m[3]) ? $m[3] : $m[4]); })),
+			'url'			=> array('bbcode_id' => 3,	'regexp' => array('#\[url(=(.*))?\](?(1)((?s).*(?-s))|(.*))\[/url\]#uiU' => function ($m) { return $this->validate_url($m[2], !empty($m[3]) ? $m[3] : safe_strval($m[4])); })),
 			'img'			=> array('bbcode_id' => 4,	'regexp' => array('#\[img\](.*)\[/img\]#uiU' => function ($m) { return $this->bbcode_img($m[1]); })),
 			'size'			=> array('bbcode_id' => 5,	'regexp' => array('#\[size=([\-\+]?\d+)\](.*?)\[/size\]#uis' => function ($m) { return $this->bbcode_size($m[1], $m[2]); })),
 			'color'			=> array('bbcode_id' => 6,	'regexp' => array('!\[color=(#[0-9a-f]{3}|#[0-9a-f]{6}|[a-z\-]+)\](.*?)\[/color\]!uis' => function ($m) { return $this->bbcode_color($m[1], $m[2]); })),
