@@ -96,13 +96,10 @@ class phpbb_captcha_qa
 		}
 	}
 
-	/**
-	*  API function
-	*/
-	function &get_instance()
+	static function get_instance()
 	{
-		$instance =& new phpbb_captcha_qa();
-
+		static $instance = null;
+		if ($instance === null) { $instance = new self(); }
 		return $instance;
 	}
 
@@ -125,7 +122,7 @@ class phpbb_captcha_qa
 	/**
 	*  API function - for the captcha to be available, it must have installed itself and there has to be at least one question in the board's default lang
 	*/
-	function is_available()
+	static function is_available()
 	{
 		global $config, $db, $phpbb_root_path, $phpEx, $user;
 
@@ -150,7 +147,7 @@ class phpbb_captcha_qa
 	/**
 	*  API function
 	*/
-	function has_config()
+	static function has_config()
 	{
 		return true;
 	}
@@ -158,7 +155,7 @@ class phpbb_captcha_qa
 	/**
 	*  API function
 	*/
-	function get_name()
+	static function get_name()
 	{
 		return 'CAPTCHA_QA';
 	}
@@ -166,7 +163,7 @@ class phpbb_captcha_qa
 	/**
 	*  API function
 	*/
-	function get_class_name()
+	static function get_class_name()
 	{
 		return 'phpbb_captcha_qa';
 	}
@@ -253,7 +250,7 @@ class phpbb_captcha_qa
 	/**
 	*  API function
 	*/
-	function garbage_collect($type = 0)
+	static function garbage_collect($type = 0)
 	{
 		global $db, $config;
 

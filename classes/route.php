@@ -275,7 +275,7 @@ class route
 		}
 
 		$this->_normalize();
-		$uri = preg_replace('/[^\x00-\x7F]+/e', 'urlencode("$0")', $this->rule);
+		$uri = preg_replace_callback('/[^\x00-\x7F]+/', function ($m) { return urlencode($m[0]); }, $this->rule);
 		if ($this->is_static)
 		{
 			// This is a static route, no need to replace anything

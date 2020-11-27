@@ -130,7 +130,7 @@ class acp_language
 					'method'		=> $method)
 				);
 
-				$hidden_data .= build_hidden_fields(array('entry' => $_POST['entry']), true, STRIP);
+				$hidden_data .= build_hidden_fields(array('entry' => $_POST['entry']), true);
 
 				$template->assign_vars(array(
 					'S_UPLOAD'	=> true,
@@ -1423,8 +1423,6 @@ $lang = array_merge($lang, array(
 	*/
 	function prepare_lang_entry($text, $store = true)
 	{
-		$text = (STRIP) ? stripslashes($text) : $text;
-
 		// Adjust for storage...
 		if ($store)
 		{

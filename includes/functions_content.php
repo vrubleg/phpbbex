@@ -75,7 +75,7 @@ function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key,
 	foreach ($sorts as $name => $sort_ary)
 	{
 		$key = $sort_ary['key'];
-		$selected = $$sort_ary['key'];
+		$selected = ${$sort_ary['key']};;
 
 		// Check if the key is selectable. If not, we reset to the default or first key found.
 		// This ensures the values are always valid. We also set $sort_dir/sort_key/etc. to the
@@ -84,12 +84,12 @@ function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key,
 		{
 			if ($sort_ary['default'] !== false)
 			{
-				$selected = $$key = $sort_ary['default'];
+				$selected = ${$key} = $sort_ary['default'];
 			}
 			else
 			{
 				@reset($sort_ary['options']);
-				$selected = $$key = key($sort_ary['options']);
+				$selected = ${$key} = key($sort_ary['options']);
 			}
 		}
 
@@ -449,13 +449,10 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 
 		if (empty($bbcode))
 		{
-			$bbcode = new bbcode($bitfield);
-		}
-		else
-		{
-			$bbcode->bbcode($bitfield);
+			$bbcode = new bbcode();
 		}
 
+		$bbcode->set_bitfield($bitfield);
 		$bbcode->bbcode_second_pass($text, $uid);
 	}
 
@@ -621,14 +618,6 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 	}
 
 	$text = urldecode($url);
-	if (!preg_match('/^./u', $text))
-	{
-		$text = (strlen($url) > 85) ? substr($url, 0, 49) . ' ... ' . substr($url, -30) : $url;
-	}
-	else
-	{
-		if (utf8_strlen($text) > 85) $text = utf8_substr($text, 0, 49) . ' ... ' . utf8_substr($text, -30);
-	}
 
 	switch ($type)
 	{
@@ -636,11 +625,11 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$url	= 'http://' . $url;
 
 		case MAGIC_URL_FULL:
-			if (strtolower($url) === 'http://')
+			if (in_array(strtolower($url), array('http://', 'https://')))
 			{
 				return $whitespace . $url . $append;
 			}
-			$external = stripos($url, $server_url) !== 0;
+			$external = stripos(preg_replace('#^https?://#i', '', $url), preg_replace('#^https?://#i', '', $server_url)) !== 0;
 			if ($external)
 			{
 				$tag		= ($type == MAGIC_URL_WWW) ? 'w' : 'm';
@@ -651,10 +640,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 				$tag		= ($type == MAGIC_URL_WWW) ? 'w' : 'l';
 				$attrs		= ' class="postlink local"';
 				$url		= preg_replace('/[&?]sid=[0-9a-f]{32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{32}&/', '$1', $url));
-				if (strlen($url) > strlen($server_url) + 1)
-				{
-					$text	= substr($url, strlen($server_url));
-				}
+				$text		= urldecode($url);
 			}
 		break;
 
@@ -663,6 +649,8 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$url	= 'mailto:' . $url;
 		break;
 	}
+
+	if (utf8_strlen($text) > 85) $text = utf8_substr($text, 0, 49) . ' ... ' . utf8_substr($text, -30);
 
 	$url	= htmlspecialchars($url);
 	$text	= htmlspecialchars($text);
@@ -687,28 +675,14 @@ function make_clickable($text, $server_url = false, $class = 'postlink')
 		$server_url = generate_board_url(true);
 	}
 
-	static $magic_url_match;
-	static $magic_url_replace;
+	// matches a xxxx://aaaaa.bbb.cccc. ...
+	$text = preg_replace_callback('#(^|[\n\t (>.])(' . get_preg_expression('url_inline') . ')#iu', function ($m) use ($server_url) { return make_clickable_callback(MAGIC_URL_FULL, $m[1], $m[2], $server_url); }, $text);
+	// matches a "www.xxxx.yyyy[/zzzz]" kinda lazy URL thing
+	$text = preg_replace_callback('#(^|[\n\t (>])(' . get_preg_expression('www_url_inline') . ')#iu', function ($m) use ($server_url) { return make_clickable_callback(MAGIC_URL_WWW, $m[1], $m[2], $server_url); }, $text);
+	// matches an email@domain type address at the start of a line, or after a space or after what might be a BBCode.
+	$text = preg_replace_callback('/(^|[\n\t (>])(' . get_preg_expression('email') . ')/i', function ($m) use ($server_url) { return make_clickable_callback(MAGIC_URL_EMAIL, $m[1], $m[2], $server_url); }, $text);
 
-	if (!is_array($magic_url_match))
-	{
-		$magic_url_match = $magic_url_replace = array();
-		// Be sure to not let the matches cross over. ;)
-
-		// matches a xxxx://aaaaa.bbb.cccc. ...
-		$magic_url_match[] = '#(^|[\n\t (>.])(' . get_preg_expression('url_inline') . ')#ieu';
-		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_FULL, '\$1', '\$2', '$server_url')";
-
-		// matches a "www.xxxx.yyyy[/zzzz]" kinda lazy URL thing
-		$magic_url_match[] = '#(^|[\n\t (>])(' . get_preg_expression('www_url_inline') . ')#ieu';
-		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_WWW, '\$1', '\$2', '$server_url')";
-
-		// matches an email@domain type address at the start of a line, or after a space or after what might be a BBCode.
-		$magic_url_match[] = '/(^|[\n\t (>])(' . get_preg_expression('email') . ')/ie';
-		$magic_url_replace[] = "make_clickable_callback(MAGIC_URL_EMAIL, '\$1', '\$2', '$server_url')";
-	}
-
-	return preg_replace($magic_url_match, $magic_url_replace, $text);
+	return $text;
 }
 
 /**
@@ -1329,7 +1303,7 @@ class bitfield
 {
 	var $data;
 
-	function bitfield($bitfield = '')
+	function __construct($bitfield = '')
 	{
 		$this->data = base64_decode($bitfield);
 	}

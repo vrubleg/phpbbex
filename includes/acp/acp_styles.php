@@ -2674,7 +2674,7 @@ inherit_from = {INHERIT_FROM}
 	/**
 	* Load css file contents
 	*/
-	function load_css_file($path, $filename)
+	static function load_css_file($path, $filename)
 	{
 		global $phpbb_root_path;
 
@@ -2706,7 +2706,7 @@ inherit_from = {INHERIT_FROM}
 	*
 	* @return string Stylesheet data for theme_data column in the theme table
 	*/
-	function db_theme_data($theme_row, $stylesheet = false, $root_path = '')
+	static function db_theme_data($theme_row, $stylesheet = false, $root_path = '')
 	{
 		global $phpbb_root_path;
 

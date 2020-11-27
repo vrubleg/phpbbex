@@ -22,8 +22,9 @@ if (!defined('IN_PHPBB'))
 */
 class messenger
 {
-	var $vars, $msg, $extra_headers, $replyto, $from, $subject;
+	var $vars, $msg, $replyto, $from, $subject;
 	var $addresses = array();
+	var $extra_headers = array();
 
 	var $mail_priority = MAIL_NORMAL_PRIORITY;
 	var $use_queue = true;
@@ -35,7 +36,7 @@ class messenger
 	/**
 	* Constructor
 	*/
-	function messenger($use_queue = true)
+	function __construct($use_queue = true)
 	{
 		global $config;
 
@@ -172,9 +173,10 @@ class messenger
 	*/
 	function anti_abuse_headers($config, $user)
 	{
-		$this->headers('X-AntiAbuse: Board servername - ' . mail_encode($config['server_name']));
-		$this->headers('X-AntiAbuse: User_id - ' . $user->data['user_id']);
-		$this->headers('X-AntiAbuse: Username - ' . mail_encode($user->data['username']));
+		$host = $config['server_name'];
+		if (!preg_match('#[-_.\w\d]*#i', $host)) { $host = mail_encode($host); }
+		$this->headers('X-AntiAbuse: Host - ' . $host);
+		$this->headers('X-AntiAbuse: User ID - ' . $user->data['user_id']);
 		$this->headers('X-AntiAbuse: User IP - ' . $user->ip);
 	}
 
@@ -237,7 +239,7 @@ class messenger
 
 		$this->tpl_obj = &$this->tpl_msg[$template_lang . $template_file];
 		$this->vars = &$this->tpl_obj->_rootref;
-		$this->tpl_msg = '';
+		$this->tpl_msg = array();
 
 		return true;
 	}
@@ -442,13 +444,14 @@ class messenger
 		$headers[] = 'Content-Type: text/plain; charset=UTF-8'; // format=flowed
 		$headers[] = 'Content-Transfer-Encoding: 8bit'; // 7bit
 
-		$headers[] = 'X-Priority: ' . $this->mail_priority;
-		$headers[] = 'X-MSMail-Priority: ' . (($this->mail_priority == MAIL_LOW_PRIORITY) ? 'Low' : (($this->mail_priority == MAIL_NORMAL_PRIORITY) ? 'Normal' : 'High'));
-		$headers[] = 'X-Mailer: phpBB3';
-		$headers[] = 'X-MimeOLE: phpBB3';
-		$headers[] = 'X-phpBB-Origin: phpbb://' . str_replace(array('http://', 'https://'), array('', ''), generate_board_url());
+		// SpamAssassin doesn't like these headers =(
+		// $headers[] = 'X-Priority: ' . $this->mail_priority;
+		// $headers[] = 'X-MSMail-Priority: ' . (($this->mail_priority == MAIL_LOW_PRIORITY) ? 'Low' : (($this->mail_priority == MAIL_NORMAL_PRIORITY) ? 'Normal' : 'High'));
+		// $headers[] = 'X-Mailer: phpBB3';
+		// $headers[] = 'X-MimeOLE: phpBB3';
+		// $headers[] = 'X-phpBB-Origin: phpbb://' . str_replace(array('http://', 'https://'), array('', ''), generate_board_url());
 
-		if (sizeof($this->extra_headers))
+		if (count($this->extra_headers))
 		{
 			$headers = array_merge($headers, $this->extra_headers);
 		}
@@ -509,7 +512,7 @@ class messenger
 
 			foreach ($address_ary as $which_ary)
 			{
-				$$type .= (($$type != '') ? ', ' : '') . (($which_ary['name'] != '') ? mail_encode($which_ary['name'], $encode_eol) . ' <' . $which_ary['email'] . '>' : $which_ary['email']);
+				${$type} .= ((${$type} != '') ? ', ' : '') . (($which_ary['name'] != '') ? mail_encode($which_ary['name'], $encode_eol) . ' <' . $which_ary['email'] . '>' : $which_ary['email']);
 			}
 		}
 
@@ -639,7 +642,7 @@ class queue
 	/**
 	* constructor
 	*/
-	function queue()
+	function __construct()
 	{
 		global $phpEx, $phpbb_root_path;
 
@@ -1171,7 +1174,7 @@ class smtp_class
 	var $backtrace = false;
 	var $backtrace_log = array();
 
-	function smtp_class()
+	function __construct()
 	{
 		// Always create a backtrace for admins to identify SMTP problems
 		$this->backtrace = true;

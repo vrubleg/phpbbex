@@ -89,7 +89,7 @@ class erk_bom_sniffer
 	/**
 	* Constructor. Prep the tool
 	*/
-	function erk_bom_sniffer()
+	function __construct()
 	{
 		global $critical_repair, $stk_config;
 
@@ -999,7 +999,7 @@ class _erk_bom_sniffer_cache
 	/**
 	* Construct the sniffer cache
 	*/
-	function _erk_bom_sniffer_cache($bom_sniffer)
+	function __construct($bom_sniffer)
 	{
 		$this->bom_sniffer = $bom_sniffer;
 

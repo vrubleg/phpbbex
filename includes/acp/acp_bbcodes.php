@@ -366,17 +366,6 @@ class acp_bbcodes
 		$bbcode_tpl = trim($bbcode_tpl);
 		$utf8 = strpos($bbcode_match, 'INTTEXT') !== false;
 
-		// make sure we have utf8 support
-		$utf8_pcre_properties = false;
-		if (version_compare(PHP_VERSION, '5.1.0', '>=') || (version_compare(PHP_VERSION, '5.0.0-dev', '<=') && version_compare(PHP_VERSION, '4.4.0', '>=')))
-		{
-			// While this is the proper range of PHP versions, PHP may not be linked with the bundled PCRE lib and instead with an older version
-			if (@preg_match('/\p{L}/u', 'a') !== false)
-			{
-				$utf8_pcre_properties = true;
-			}
-		}
-
 		$fp_match = preg_quote($bbcode_match, '!');
 		$fp_replace = preg_replace('#^\[(.*?)\]#', '[$1:$uid]', $bbcode_match);
 		$fp_replace = preg_replace('#\[/(.*?)\]$#', '[/$1:$uid]', $fp_replace);
@@ -407,7 +396,7 @@ class acp_bbcodes
 				'!([a-zA-Z0-9-+.,_ ]+)!'	 =>	"$1"
 			),
 			'INTTEXT' => array(
-				($utf8_pcre_properties) ? '!([\p{L}\p{N}\-+,_. ]+)!u' : '!([a-zA-Z0-9\-+,_. ]+)!u'	 =>	"$1"
+				'!([\p{L}\p{N}\-+,_. ]+)!u'	 =>	"$1"
 			),
 			'IDENTIFIER' => array(
 				'!([a-zA-Z0-9-_]+)!'	 =>	"$1"
@@ -427,7 +416,7 @@ class acp_bbcodes
 			'EMAIL' => '(' . get_preg_expression('email') . ')',
 			'TEXT' => '(.*?)',
 			'SIMPLETEXT' => '([a-zA-Z0-9-+.,_ ]+)',
-			'INTTEXT' => ($utf8_pcre_properties) ? '([\p{L}\p{N}\-+,_. ]+)' : '([a-zA-Z0-9\-+,_. ]+)',
+			'INTTEXT' => '([\p{L}\p{N}\-+,_. ]+)',
 			'IDENTIFIER' => '([a-zA-Z0-9-_]+)',
 			'COLOR' => '([a-zA-Z]+|#[0-9abcdefABCDEF]+)',
 			'NUMBER' => '([0-9]+)',
@@ -435,7 +424,7 @@ class acp_bbcodes
 
 		$pad = 0;
 		$modifiers = 'i';
-		$modifiers .= ($utf8 && $utf8_pcre_properties) ? 'u' : '';
+		$modifiers .= $utf8 ? 'u' : '';
 
 		if (preg_match_all('/\{(' . implode('|', array_keys($tokens)) . ')[0-9]*\}/i', $bbcode_match, $m))
 		{
@@ -450,7 +439,7 @@ class acp_bbcodes
 				if (preg_match_all('/(?<!\\\\)\$([0-9]+)/', $replace, $repad))
 				{
 					$repad = $pad + sizeof(array_unique($repad[0]));
-					$replace = preg_replace('/(?<!\\\\)\$([0-9]+)/e', "'\${' . (\$1 + \$pad) . '}'", $replace);
+					$replace = preg_replace_callback('/(?<!\\\\)\$([0-9]+)/', function ($m) use ($pad) { return '${' . ($m[1] + $pad) . '}'; }, $replace);
 					$pad = $repad;
 				}
 
@@ -490,7 +479,7 @@ class acp_bbcodes
 			$fp_match = '!' . $fp_match . '!' . $modifiers;
 			$sp_match = '!' . $sp_match . '!s' . (($utf8) ? 'u' : '');
 
-			if (strpos($fp_match, 'e') !== false)
+			if (strpos($modifiers, 'e') !== false)
 			{
 				$fp_replace = str_replace("'.'", '', $fp_replace);
 				$fp_replace = str_replace(".''.", '.', $fp_replace);
@@ -515,10 +504,10 @@ class acp_bbcodes
 			trigger_error($user->lang['BBCODE_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
 
-		$fp_match = preg_replace('#\[/?' . $bbcode_search . '#ie', "strtolower('\$0')", $fp_match);
-		$fp_replace = preg_replace('#\[/?' . $bbcode_search . '#ie', "strtolower('\$0')", $fp_replace);
-		$sp_match = preg_replace('#\[/?' . $bbcode_search . '#ie', "strtolower('\$0')", $sp_match);
-		$sp_replace = preg_replace('#\[/?' . $bbcode_search . '#ie', "strtolower('\$0')", $sp_replace);
+		$fp_match = preg_replace_callback('#\[/?' . $bbcode_search . '#i', function ($m) { return strtolower($m[0]); }, $fp_match);
+		$fp_replace = preg_replace_callback('#\[/?' . $bbcode_search . '#i', function ($m) { return strtolower($m[0]); }, $fp_replace);
+		$sp_match = preg_replace_callback('#\[/?' . $bbcode_search . '#i', function ($m) { return strtolower($m[0]); }, $sp_match);
+		$sp_replace = preg_replace_callback('#\[/?' . $bbcode_search . '#i', function ($m) { return strtolower($m[0]); }, $sp_replace);
 
 		return array(
 			'bbcode_tag'				=> $bbcode_tag,

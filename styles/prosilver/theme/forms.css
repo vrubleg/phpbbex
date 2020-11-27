@@ -373,6 +373,12 @@ input.button1:focus, input.button2:focus, input.button3:focus {
 	outline-style: none;
 }
 
+/* Remove focus dots in Firefox before 53, for consistency with newer browsers */
+input::-moz-focus-inner, button::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
 /* Topic and forum Search */
 .search-box {
 	margin-top: 3px;

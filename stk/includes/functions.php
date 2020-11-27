@@ -930,8 +930,8 @@ function html_entity_decode_utf8($string)
 	static $trans_tbl;
 
 	// replace numeric entities
-	$string = preg_replace('~&#x([0-9a-f]+);~ei', '_code2utf8(hexdec("\\1"))', $string);
-	$string = preg_replace('~&#([0-9]+);~e', '_code2utf8(\\1)', $string);
+	$string = preg_replace_callback('~&#x([0-9a-f]+);~i', function ($m) { return _code2utf8(hexdec($m[1])); }, $string);
+	$string = preg_replace_callback('~&#([0-9]+);~', function ($m) { return _code2utf8(intval($m[1])); }, $string);
 
 	// replace literal entities
 	if (!isset($trans_tbl))

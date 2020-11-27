@@ -45,10 +45,10 @@ class acm extends acm_memory
 
 	var $redis;
 
-	function acm()
+	function __construct()
 	{
 		// Call the parent constructor
-		parent::acm_memory();
+		parent::__construct();
 
 		$this->redis = new Redis();
 		$this->redis->connect(PHPBB_ACM_REDIS_HOST, PHPBB_ACM_REDIS_PORT);

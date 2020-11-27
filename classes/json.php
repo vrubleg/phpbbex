@@ -9,7 +9,7 @@ class json_exception extends exception {}
 
 class json
 {
-	function encode($data)
+	static function encode($data)
 	{
 		if (is_null($data))   return 'null';
 		if (is_int($data))    return $data;
@@ -30,7 +30,7 @@ class json
 		}
 	}
 
-	function decode($json)
+	static function decode($json)
 	{
 		$result = json_decode($json, true);
 		if (!function_exists('json_last_error'))

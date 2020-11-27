@@ -164,7 +164,7 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 			include ($phpbb_root_path . 'includes/captcha/captcha_factory.' . $phpEx);
 		}
 
-		$captcha =& phpbb_captcha_factory::get_instance($config['captcha_plugin']);
+		$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 		$captcha->init(CONFIRM_LOGIN);
 		$vc_response = $captcha->validate($row);
 		if ($vc_response)
@@ -187,7 +187,7 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 	{
 		// in phpBB2 passwords were used exactly as they were sent, with addslashes applied
 		$password_old_format = isset($_REQUEST['password']) ? (string) $_REQUEST['password'] : '';
-		$password_old_format = (!STRIP) ? addslashes($password_old_format) : $password_old_format;
+		$password_old_format = addslashes($password_old_format);
 		$password_new_format = '';
 
 		set_var($password_new_format, stripslashes($password_old_format), 'string', true);

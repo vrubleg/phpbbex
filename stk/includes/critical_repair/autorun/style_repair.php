@@ -72,7 +72,7 @@ class erk_style_repair
 				if ($row && file_exists(PHPBB_ROOT_PATH . "styles/{$mode}_path/$subpath$mode.cfg"))
 				{
 					// There already is one of this item in the database, so no need to add it.
-					$$var = $row[$var];
+					${$var} = $row[$var];
 
 					if ($mode == 'template')
 					{
@@ -107,7 +107,7 @@ class erk_style_repair
 
 								$db->sql_query('INSERT INTO ' . $table_prefix . 'styles_' . $mode . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 
-								$$var = $db->sql_nextid();
+								${$var} = $db->sql_nextid();
 
 								if ($mode == 'template')
 								{

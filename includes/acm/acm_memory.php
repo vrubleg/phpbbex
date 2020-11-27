@@ -34,7 +34,7 @@ class acm_memory
 	/**
 	* Set cache path
 	*/
-	function acm_memory()
+	function __construct()
 	{
 		global $phpbb_root_path, $dbname, $table_prefix;
 

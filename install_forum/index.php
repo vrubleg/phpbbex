@@ -18,11 +18,9 @@ define('IN_INSTALL', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-// @todo Review this test and see if we can find out what it is which prevents PHP 4.2.x from even displaying the page with requirements on it
-if (version_compare(PHP_VERSION, '4.3.3') < 0)
-{
-	die('You are running an unsupported PHP version. Please upgrade to PHP 4.3.3 or higher before trying to install phpBB 3.0');
-}
+// Check PHP version
+if (version_compare(PHP_VERSION, '5.4', '<') || version_compare(PHP_VERSION, '5.9', '>')) die('PHP 5.4-5.6 is required.');
+if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE does not support UTF8.');
 
 function phpbb_require_updated($path, $optional = false)
 {

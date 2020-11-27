@@ -8,7 +8,6 @@
 		var url = encodeURIComponent(document.location.href);
 		var title = encodeURIComponent(jQuery('title').text());
 		document.write('<li><a rel="nofollow" target="_blank" href="http://vk.com/share.php?url='+url+'&amp;title='+title+'" title="{L_SOCIAL_SHARE_IN} vk.com" class="icon-vkontakte">{L_SOCIAL_SHARE_IN} vk.com</a></li>');
-		document.write('<li><a rel="nofollow" target="_blank" href="https://plus.google.com/share?url='+url+'" title="{L_SOCIAL_SHARE_IN} Google Plus" class="icon-google-plus">{L_SOCIAL_SHARE_IN} Google Plus</a></li>');
 		document.write('<li><a rel="nofollow" target="_blank" href="http://facebook.com/sharer.php?u='+url+'" title="{L_SOCIAL_SHARE_IN} facebook.com" class="icon-facebook">{L_SOCIAL_SHARE_IN} facebook.com</a></li>');
 		document.write('<li><a rel="nofollow" target="_blank" href="http://twitter.com/intent/tweet?text='+title+'&amp;url='+url+'" title="{L_SOCIAL_SHARE_IN} twitter.com" class="icon-twitter">{L_SOCIAL_SHARE_IN} twitter.com</a></li>');
 	})();
@@ -102,11 +101,11 @@
 				<fieldset class="fields1">
 				<dl>
 					<dt><label for="username">{L_USERNAME}:</label></dt>
-					<dd><input type="text" tabindex="1" name="username" id="username" size="25" value="{USERNAME}" class="inputbox autowidth" /></dd>
+					<dd><input type="text" tabindex="1" name="username" id="username" size="25" value="{USERNAME}" class="inputbox autowidth" autocomplete="username" /></dd>
 				</dl>
 				<dl>
 					<dt><label for="password">{L_PASSWORD}:</label></dt>
-					<dd><input type="password" tabindex="2" id="password" name="password" size="25" class="inputbox autowidth" /></dd>
+					<dd><input type="password" tabindex="2" id="password" name="password" size="25" class="inputbox autowidth" autocomplete="current-password" /></dd>
 					<!-- IF S_AUTOLOGIN_ENABLED --><dd><label for="autologin"><input type="checkbox" name="autologin" id="autologin" checked="checked" tabindex="3" /> {L_LOG_ME_IN}</label></dd><!-- ENDIF -->
 					<dd><label for="viewonline"><input type="checkbox" name="viewonline" id="viewonline" tabindex="4" /> {L_HIDE_ME}</label></dd>
 				</dl>

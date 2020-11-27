@@ -67,7 +67,7 @@ class plugin
 	 * Constructor
 	 * Load the list with available plugins and assign them in the correct category
 	 */
-	function plugin()
+	function __construct()
 	{
 		// Set the path
 		$this->tool_box_path = STK_ROOT_PATH . 'tools/';

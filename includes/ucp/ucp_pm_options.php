@@ -504,7 +504,9 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 	$rule_lang = $action_lang = $check_lang = array();
 
 	// Build all three language arrays
-	preg_replace('#^((RULE|ACTION|CHECK)_([A-Z0-9_]+))$#e', "\${strtolower('\\2') . '_lang'}[constant('\\1')] = \$user->lang['PM_\\2']['\\3']", array_keys(get_defined_constants()));
+	preg_replace_callback('#^((RULE|ACTION|CHECK)_([A-Z0-9_]+))$#', function ($m) use ($user, &$rule_lang, &$action_lang, &$check_lang) {
+		${strtolower($m[2]) . '_lang'}[constant($m[1])] = $user->lang['PM_' . $m[2]][$m[3]];
+	}, array_keys(get_defined_constants()));
 
 	/*
 		Rule Ordering:

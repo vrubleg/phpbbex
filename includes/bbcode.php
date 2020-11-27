@@ -16,6 +16,11 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+function safe_strval(&$m)
+{
+	return isset($m) ? strval($m) : '';
+}
+
 /**
 * BBCode class
 * @package phpBB3
@@ -37,7 +42,12 @@ class bbcode
 	* Constructor
 	* Init bbcode cache entries if bitfield is specified
 	*/
-	function bbcode($bitfield = '')
+	function __construct($bitfield = '')
+	{
+		$this->set_bitfield($bitfield);
+	}
+
+	function set_bitfield($bitfield = '')
 	{
 		if ($bitfield)
 		{
@@ -113,7 +123,18 @@ class bbcode
 							$undid_bbcode_specialchars = true;
 						}
 
-						$message = preg_replace($preg['search'], $preg['replace'], $message);
+						for ($i = 0; $i < count($preg['search']); $i++)
+						{
+							if (is_callable($preg['replace'][$i]))
+							{
+								$message = preg_replace_callback($preg['search'][$i], $preg['replace'][$i], $message);
+							}
+							else
+							{
+								$message = preg_replace($preg['search'][$i], $preg['replace'][$i], $message);
+							}
+						}
+
 						$preg = array('search' => array(), 'replace' => array());
 					}
 				}
@@ -213,7 +234,7 @@ class bbcode
 							'[/quote:$uid]'	=> $this->bbcode_tpl('quote_close', $bbcode_id)
 						),
 						'preg' => array(
-							'#\[quote(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[quote(?:=&quot;.*?&quot;)?:$uid\]).)?#ise'	=> "\$this->bbcode_second_pass_quote('\$1', '\$2')"
+							'#\[quote(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[quote(?:=&quot;.*?&quot;)?:$uid\]).)?#is' => function ($m) { return $this->bbcode_second_pass_quote(safe_strval($m[1]), safe_strval($m[2])); },
 						)
 					);
 				break;
@@ -239,8 +260,8 @@ class bbcode
 				case 3:
 					$this->bbcode_cache[$bbcode_id] = array(
 						'preg' => array(
-							'#\[url:$uid\]((.*?))\[/url:$uid\]#se'			=> "\$this->bbcode_second_pass_url('\$1', '\$2')",
-							'#\[url=([^\[]+?):$uid\](.*?)\[/url:$uid\]#se'	=> "\$this->bbcode_second_pass_url('\$1', '\$2')",
+							'#\[url:$uid\]((.*?))\[/url:$uid\]#s'           => function ($m) { return $this->bbcode_second_pass_url($m[1], $m[2]); },
+							'#\[url=([^\[]+?):$uid\](.*?)\[/url:$uid\]#s'   => function ($m) { return $this->bbcode_second_pass_url($m[1], $m[2]); },
 						)
 					);
 				break;
@@ -258,7 +279,7 @@ class bbcode
 					{
 						$this->bbcode_cache[$bbcode_id] = array(
 							'preg' => array(
-								'#\[img:$uid\](.*?)\[/img:$uid\]#se'	=> "\$this->bbcode_second_pass_url('\$1', '[ img ]')",
+								'#\[img:$uid\](.*?)\[/img:$uid\]#s' => function ($m) { return $this->bbcode_second_pass_url($m[1], '[ img ]'); },
 							)
 						);
 					}
@@ -292,7 +313,7 @@ class bbcode
 				case 8:
 					$this->bbcode_cache[$bbcode_id] = array(
 						'preg' => array(
-							'#\[code(?:=([a-z]+))?:$uid\](.*?)\[/code:$uid\][\n]?#ise'	=> "\$this->bbcode_second_pass_code('\$1', '\$2')",
+							'#\[code(?:=([a-z]+))?:$uid\](.*?)\[/code:$uid\][\n]?#is' => function ($m) { return $this->bbcode_second_pass_code($m[1], $m[2]); },
 						)
 					);
 				break;
@@ -302,7 +323,7 @@ class bbcode
 						'preg' => array(
 							'#(\[\/?(list|\*):[mou]?:?$uid\])[\n]{1}#'	=> "\$1",
 							'#(\[list=([^\[]+):$uid\])[\n]{1}#'			=> "\$1",
-							'#\[list=([^\[]+):$uid\]#e'					=> "\$this->bbcode_list('\$1')",
+							'#\[list=([^\[]+):$uid\]#'					=> function ($m) { return $this->bbcode_list($m[1]); },
 						),
 						'str' => array(
 							'[list:$uid]'		=> $this->bbcode_tpl('ulist_open_default', $bbcode_id),
@@ -337,7 +358,7 @@ class bbcode
 					{
 						$this->bbcode_cache[$bbcode_id] = array(
 							'preg' => array(
-								'#\[flash=([0-9]+),([0-9]+):$uid\](.*?)\[/flash:$uid\]#e'	=> "\$this->bbcode_second_pass_url('\$3', '[ flash ]')",
+								'#\[flash=([0-9]+),([0-9]+):$uid\](.*?)\[/flash:$uid\]#'	=> function ($m) { return $this->bbcode_second_pass_url($m[3], '[ flash ]'); },
 							)
 						);
 					}
@@ -375,7 +396,7 @@ class bbcode
 				case 15:
 					$this->bbcode_cache[$bbcode_id] = array(
 						'preg' => array(
-							'#\[upd=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}):$uid\](.*?)\[/upd:$uid\]#e' => "\$this->bbcode_second_pass_upd('\$1', '\$2')",
+							'#\[upd=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}):$uid\](.*?)\[/upd:$uid\]#' => function ($m) { return $this->bbcode_second_pass_upd($m[1], $m[2]); },
 						)
 					);
 				break;
@@ -387,7 +408,7 @@ class bbcode
 							'[/spoiler:$uid]'		=> $this->bbcode_tpl('spoiler_close', $bbcode_id)
 						),
 						'preg' => array(
-							'#\[spoiler(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[spoiler(?:=&quot;.*?&quot;)?:$uid\]).)?#ise'	=> "\$this->bbcode_second_pass_spoiler('\$1', '\$2')"
+							'#\[spoiler(?:=&quot;(.*?)&quot;)?:$uid\]((?!\[spoiler(?:=&quot;.*?&quot;)?:$uid\]).)?#is'	=> function ($m) { return $this->bbcode_second_pass_spoiler(safe_strval($m[1]), safe_strval($m[2])); }
 						)
 					);
 				break;
@@ -424,7 +445,7 @@ class bbcode
 						}
 
 						// Replace {L_*} lang strings
-						$bbcode_tpl = preg_replace('/{L_([A-Z0-9_]+)}/e', "(!empty(\$user->lang['\$1'])) ? \$user->lang['\$1'] : ucwords(strtolower(str_replace('_', ' ', '\$1')))", $bbcode_tpl);
+						$bbcode_tpl = preg_replace_callback('/{L_([A-Z0-9_]+)}/', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : ucwords(strtolower(str_replace('_', ' ', $m[1]))); }, $bbcode_tpl);
 
 						if (!empty($rowset[$bbcode_id]['second_pass_replace']))
 						{
@@ -541,7 +562,7 @@ class bbcode
 			'upd_subject'			=> array('{SUBJECT}'	=> '$1'),
 		);
 
-		$tpl = preg_replace('/{L_([A-Z0-9_]+)}/e', "(!empty(\$user->lang['\$1'])) ? \$user->lang['\$1'] : ucwords(strtolower(str_replace('_', ' ', '\$1')))", $tpl);
+		$tpl = preg_replace_callback('/{L_([A-Z0-9_]+)}/', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : ucwords(strtolower(str_replace('_', ' ', $m[1]))); }, $tpl);
 
 		if (!empty($replacements[$tpl_name]))
 		{
@@ -613,7 +634,7 @@ class bbcode
 		// seem to slash anything else
 		$href = str_replace('\"', '"', $href);
 		$text = str_replace('\"', '"', $text);
-		$external = stripos($href, generate_board_url(true)) !== 0 && $href{0} !== '.' && $href{0} !== '/';
+		$external = stripos(preg_replace('#^https?://#i', '', $href), preg_replace('#^https?://#i', '', generate_board_url(true))) !== 0 && $href{0} !== '.' && $href{0} !== '/';
 		$attrs = $external ? (' class="postlink"' . get_attrs_for_external_link($href)) : ' class="postlink local"';
 		return '<a href="'.$href.'"'.$attrs.'>'.$text.'</a>';
 	}

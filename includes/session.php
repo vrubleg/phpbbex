@@ -131,7 +131,7 @@ class phpbb_session
 			'script_path'		=> str_replace(' ', '%20', htmlspecialchars($script_path)),
 			'root_script_path'	=> str_replace(' ', '%20', htmlspecialchars($root_script_path)),
 
-			'page'				=> preg_replace('/[^\x00-\x7F]+/e', 'urlencode("$0")', $page),
+			'page'				=> preg_replace_callback('/[^\x00-\x7F]+/', function ($m) { return urlencode($m[0]); }, $page),
 			'forum'				=> $forum_id,
 			'album'				=> (isset($_REQUEST['album_id']) && $_REQUEST['album_id'] > 0) ? (int) $_REQUEST['album_id'] : 0,
 		);
@@ -685,7 +685,7 @@ class phpbb_session
 		// User does not exist
 		// User is inactive
 		// User is bot
-		if (!sizeof($this->data) || !is_array($this->data))
+		if (!is_array($this->data) || !count($this->data))
 		{
 			$this->cookie_data['k'] = '';
 			$this->cookie_data['u'] = ($bot) ? $bot : ANONYMOUS;

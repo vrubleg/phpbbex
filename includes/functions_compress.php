@@ -169,7 +169,7 @@ class compress_zip extends compress
 	/**
 	* Constructor
 	*/
-	function compress_zip($mode, $file)
+	function __construct($mode, $file)
 	{
 		$this->fp = @fopen($file, $mode . 'b');
 
@@ -505,7 +505,7 @@ class compress_tar extends compress
 	/**
 	* Constructor
 	*/
-	function compress_tar($mode, $file, $type = '')
+	function __construct($mode, $file, $type = '')
 	{
 		$type = (!$type) ? $file : $type;
 		$this->isgz = preg_match('#(\.tar\.gz|\.tgz)$#', $type);

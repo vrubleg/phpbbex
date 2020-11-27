@@ -873,6 +873,7 @@ function phpini_size_to_bytes($val)
 	$val = trim($val);
 	if (empty($val)) return 0;
 	$last = strtolower($val[strlen($val)-1]);
+	$val = intval($val);
 	switch($last) 
 	{
 		case 'g':

@@ -40,7 +40,7 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 		'captcha_gd_fonts'				=> 'CAPTCHA_GD_FONTS',
 	);
 
-	function phpbb_captcha_gd()
+	function __construct()
 	{
 		global $phpbb_root_path, $phpEx;
 
@@ -50,13 +50,14 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 		}
 	}
 
-	function &get_instance()
+	static function get_instance()
 	{
-		$instance =& new phpbb_captcha_gd();
+		static $instance = null;
+		if ($instance === null) { $instance = new self(); }
 		return $instance;
 	}
 
-	function is_available()
+	static function is_available()
 	{
 		global $phpbb_root_path, $phpEx;
 
@@ -76,17 +77,17 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 	/**
 	*  API function
 	*/
-	function has_config()
+	static function has_config()
 	{
 		return true;
 	}
 
-	function get_name()
+	static function get_name()
 	{
 		return 'CAPTCHA_GD';
 	}
 
-	function get_class_name()
+	static function get_class_name()
 	{
 		return 'phpbb_captcha_gd';
 	}

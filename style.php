@@ -279,9 +279,6 @@ if ($id)
 				case 'HEIGHT':
 					$replace[] = $imgs[$img]['height'];
 				break;
-
-				default:
-					continue;
 			}
 		}
 

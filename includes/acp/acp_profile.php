@@ -588,7 +588,7 @@ class acp_profile
 
 					if (!$cp->vars[$key] && $action == 'edit')
 					{
-						$cp->vars[$key] = $$key;
+						$cp->vars[$key] = ${$key};
 					}
 					else if ($key == 'l_lang_options' && $field_type == FIELD_BOOL)
 					{

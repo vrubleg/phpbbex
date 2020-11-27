@@ -26,7 +26,7 @@ class ucp_main
 	var $p_master;
 	var $u_action;
 
-	function ucp_main(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
@@ -262,7 +262,7 @@ class ucp_main
 					}
 					else
 					{
-						$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ((STRIP) ? stripslashes($_COOKIE[$config['cookie_name'] . '_track']) : $_COOKIE[$config['cookie_name'] . '_track']) : '';
+						$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
 						$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 					}
 

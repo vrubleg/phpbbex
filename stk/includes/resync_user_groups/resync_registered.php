@@ -30,7 +30,7 @@ class resync_registered
 	/**
 	 * Constructor
 	 */
-	function resync_registered($main_object)
+	function __construct($main_object)
 	{
 		$this->parent = $main_object;
 	}
@@ -75,7 +75,7 @@ class resync_registered
 			{
 				$insert = $this->_get_new_group($row['user_birthday']);
 
-				array_push($$insert, array(
+				array_push(${$insert}, array(
 					'group_id'		=> (int) ($insert == 'insert_coppa') ? $g['REGISTERED_COPPA'] : $g['REGISTERED'],
 					'user_id'		=> (int) $row['user_id'],
 					'group_leader'	=> false,

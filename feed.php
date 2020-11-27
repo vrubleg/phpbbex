@@ -406,7 +406,7 @@ class phpbb_feed_factory
 	*
 	* @return object	Returns correct feeds object for specified mode.
 	*/
-	function init($mode, $forum_id, $topic_id)
+	static function init($mode, $forum_id, $topic_id)
 	{
 		global $config;
 
@@ -517,7 +517,7 @@ class phpbb_feed_base
 	/**
 	* Constructor
 	*/
-	function phpbb_feed_base()
+	function __construct()
 	{
 		global $config;
 
@@ -893,9 +893,9 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 	var $forum_id		= 0;
 	var $forum_data		= array();
 
-	function phpbb_feed_forum($forum_id)
+	function __construct($forum_id)
 	{
-		parent::phpbb_feed_base();
+		parent::__construct();
 
 		$this->forum_id = (int) $forum_id;
 	}
@@ -1030,9 +1030,9 @@ class phpbb_feed_topic extends phpbb_feed_post_base
 	var $forum_id		= 0;
 	var $topic_data		= array();
 
-	function phpbb_feed_topic($topic_id)
+	function __construct($topic_id)
 	{
-		parent::phpbb_feed_base();
+		parent::__construct();
 
 		$this->topic_id = (int) $topic_id;
 	}

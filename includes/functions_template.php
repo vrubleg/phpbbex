@@ -46,7 +46,7 @@ class template_compile
 	/**
 	* constuctor
 	*/
-	function template_compile(&$template)
+	function __construct(&$template)
 	{
 		$this->template = &$template;
 	}
@@ -113,7 +113,7 @@ class template_compile
 
 		if ($echo_var)
 		{
-			global $$echo_var;
+			global ${$echo_var};
 		}
 
 		// Remove any "loose" php ... we want to give admins the ability
@@ -263,7 +263,7 @@ class template_compile
 		// we'll strip out such occurences, minimising such switching
 		if ($no_echo)
 		{
-			return "\$$echo_var .= '" . $template_php . "'";
+			return "\${$echo_var} .= '" . $template_php . "'";
 		}
 
 		return $template_php;
@@ -554,7 +554,7 @@ class template_compile
 							// Add the block reference for the last child.
 							$varref .= "['" . $blocks[0] . "']";
 						}
-						$token = "sizeof($varref)";
+						$token = "!empty($varref)";
 					}
 					else if (!empty($token))
 					{
