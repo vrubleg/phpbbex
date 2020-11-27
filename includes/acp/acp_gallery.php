@@ -354,8 +354,6 @@ class acp_gallery
 			}
 		}
 
-		phpbb_gallery_modversioncheck::check();
-
 		$boarddays = (time() - $config['board_startdate']) / 86400;
 		$images_per_day = sprintf('%.2f', phpbb_gallery_config::get('num_images') / $boarddays);
 

@@ -149,7 +149,7 @@ class phpbb_gallery_notification
 		global $user, $db, $album_id, $image_id, $image_data, $album_data;
 
 		$help_mode = $mode . '_id';
-		$mode_id = $$help_mode;
+		$mode_id = ${$help_mode};
 		$mode_notification = ($mode == 'album') ? 'image' : 'comment';
 
 		// Get banned User ID's

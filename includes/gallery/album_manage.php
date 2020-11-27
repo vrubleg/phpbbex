@@ -30,7 +30,7 @@ class phpbb_gallery_album_manage
 
 	private $u_action = '';
 
-	public function phpbb_gallery_album_manage($user_id, $parent_id, $u_action = '')
+	public function __construct($user_id, $parent_id, $u_action = '')
 	{
 		$this->user_id = (int) $user_id;
 		$this->parent_id = (int) $parent_id;

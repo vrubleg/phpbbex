@@ -26,7 +26,7 @@ class phpbb_gallery_auth_set
 		'a_count'	=> 0,
 	);
 
-	public function phpbb_gallery_auth_set($bits = 0, $i_count = 0, $a_count = 0)
+	public function __construct($bits = 0, $i_count = 0, $a_count = 0)
 	{
 		$this->_bits = $bits;
 

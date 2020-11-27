@@ -52,7 +52,7 @@ class phpbb_gallery_auth
 	* @param	int		$user_id	User you want the permissions from.
 	* @param	int		$album_id	Only get the permissions for a given album_id. Should save some memory. // Not yet implemented.
 	*/
-	public function phpbb_gallery_auth($user_id, $album_id = false)
+	public function __construct($user_id, $album_id = false)
 	{
 		self::$_permissions = array_merge(self::$_permission_i, self::$_permission_c, self::$_permission_m, self::$_permission_misc);
 		self::$_permissions_flipped = array_flip(array_merge(self::$_permissions, array('m_')));
@@ -170,7 +170,7 @@ class phpbb_gallery_auth
 	* Samples:		8912837:0:10::-3
 	*				9961469:20:0::1:23:42
 	*/
-	private function serialize_auth_data($auth_data)
+	private static function serialize_auth_data($auth_data)
 	{
 		$acl_array = array();
 
