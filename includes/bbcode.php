@@ -634,7 +634,7 @@ class bbcode
 		// seem to slash anything else
 		$href = str_replace('\"', '"', $href);
 		$text = str_replace('\"', '"', $text);
-		$external = stripos(preg_replace('#^https?://#i', '', $href), preg_replace('#^https?://#i', '', generate_board_url(true))) !== 0 && $href{0} !== '.' && $href{0} !== '/';
+		$external = stripos(preg_replace('#^https?://#i', '', $href), preg_replace('#^https?://#i', '', generate_board_url(true))) !== 0 && $href[0] !== '.' && $href[0] !== '/';
 		$attrs = $external ? (' class="postlink"' . get_attrs_for_external_link($href)) : ' class="postlink local"';
 		return '<a href="'.$href.'"'.$attrs.'>'.$text.'</a>';
 	}
@@ -661,7 +661,7 @@ class bbcode
 		$subj = str_replace('\"', '"', $subj);
 		$result = '';
 
-		if ($time{0} !== '+')
+		if ($time[0] !== '+')
 		{
 			$time = (int) $time;
 			if (!$this->post_time || $time - $this->post_time < 0)

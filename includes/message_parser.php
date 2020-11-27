@@ -346,7 +346,7 @@ class bbcode_firstpass extends bbcode
 		{
 			$time = time();
 		}
-		else if ($time{0} === '+')
+		else if ($time[0] === '+')
 		{
 			$parts = explode(':', $time);
 			$seconds = (int) array_pop($parts);
@@ -1038,7 +1038,7 @@ class bbcode_firstpass extends bbcode
 	function fix_url($url)
 	{
 		$url = str_replace(' ', '%20', trim($url));
-		if ($url{0} === '/' && $url{1} === '/')
+		if ($url[0] === '/' && $url[1] === '/')
 		{
 			$url = 'http:' . $url;
 		}
@@ -1059,8 +1059,8 @@ class bbcode_firstpass extends bbcode
 
 	function to_absolute_url($url)
 	{
-		if ($url{0} === '/') return generate_board_url(true) . $url;
-		if ($url{0} === '.') return generate_board_url() . substr($url, 1);
+		if ($url[0] === '/') return generate_board_url(true) . $url;
+		if ($url[0] === '.') return generate_board_url() . substr($url, 1);
 		return $url;
 	}
 

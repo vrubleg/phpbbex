@@ -499,8 +499,8 @@ switch ($mode)
 
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
-		$foe = ($row['foe']) ? true : false;
-		$friend = ($row['friend']) ? true : false;
+		$foe = ($row && $row['foe']) ? true : false;
+		$friend = ($row && $row['friend']) ? true : false;
 		$db->sql_freeresult($result);
 
 		if ($config['load_onlinetrack'])

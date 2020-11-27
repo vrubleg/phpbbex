@@ -496,7 +496,7 @@ class ucp_profile
 								$brcount++;
 								if($brcount > $config['max_sig_lines'])
 								{
-									$signature{$brpos}=' ';
+									$signature[$brpos]=' ';
 								}
 								$brpos++;
 							}

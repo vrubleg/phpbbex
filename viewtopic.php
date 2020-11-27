@@ -1616,39 +1616,25 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 
 		$l_edit_time_total = ($row['post_edit_count'] == 1) ? $user->lang['EDITED_TIME_TOTAL'] : $user->lang['EDITED_TIMES_TOTAL'];
 
-		if ($row['post_edit_reason'])
+		// User having edited the post also being the post author?
+		if (!$row['post_edit_user'] || $row['post_edit_user'] == $poster_id)
 		{
-			// User having edited the post also being the post author?
-			if (!$row['post_edit_user'] || $row['post_edit_user'] == $poster_id)
-			{
-				$display_username = get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']);
-			}
-			else
-			{
-				$display_username = get_username_string('full', $row['post_edit_user'], $post_edit_list[$row['post_edit_user']]['username'], $post_edit_list[$row['post_edit_user']]['user_colour']);
-			}
-
-			$l_edited_by = sprintf($l_edit_time_total, $display_username, $user->format_date($row['post_edit_time'], false, true), $row['post_edit_count']);
+			$display_username = get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']);
+		}
+		else if (isset($user_cache[$row['post_edit_user']]))
+		{
+			$display_username = get_username_string('full', $row['post_edit_user'], $user_cache[$row['post_edit_user']]['username'], $user_cache[$row['post_edit_user']]['user_colour']);
+		}
+		else if (isset($post_edit_list[$row['post_edit_user']]))
+		{
+			$display_username = get_username_string('full', $row['post_edit_user'], $post_edit_list[$row['post_edit_user']]['username'], $post_edit_list[$row['post_edit_user']]['user_colour']);
 		}
 		else
 		{
-			if ($row['post_edit_user'] && !isset($user_cache[$row['post_edit_user']]))
-			{
-				$user_cache[$row['post_edit_user']] = $post_edit_list[$row['post_edit_user']];
-			}
-
-			// User having edited the post also being the post author?
-			if (!$row['post_edit_user'] || $row['post_edit_user'] == $poster_id)
-			{
-				$display_username = get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']);
-			}
-			else
-			{
-				$display_username = get_username_string('full', $row['post_edit_user'], $user_cache[$row['post_edit_user']]['username'], $user_cache[$row['post_edit_user']]['user_colour']);
-			}
-
-			$l_edited_by = sprintf($l_edit_time_total, $display_username, $user->format_date($row['post_edit_time'], false, true), $row['post_edit_count']);
+			$display_username = get_username_string('full', ANONYMOUS, '');
 		}
+
+		$l_edited_by = sprintf($l_edit_time_total, $display_username, $user->format_date($row['post_edit_time'], false, true), $row['post_edit_count']);
 	}
 	else
 	{
