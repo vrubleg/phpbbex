@@ -130,7 +130,7 @@ class phpbb_gallery_album
 	*
 	* comparable to make_forum_select (includes/functions_admin.php)
 	*/
-	function get_albumbox($ignore_personals, $select_name, $select_id = false, $requested_permission = false, $ignore_id = false, $album_user_id = self::PUBLIC_ALBUM, $requested_album_type = -1)
+	static function get_albumbox($ignore_personals, $select_name, $select_id = false, $requested_permission = false, $ignore_id = false, $album_user_id = self::PUBLIC_ALBUM, $requested_album_type = -1)
 	{
 		global $db, $user, $cache;
 

@@ -25,8 +25,8 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_GALLERY_CLEANUP_EXPLAIN'	=> 'Здесь можно очистить галерею от ошибочных файлов и данных.',
-	'ACP_GALLERY_OVERVIEW'			=> 'Обзор',
-	'ACP_GALLERY_OVERVIEW_EXPLAIN'	=> '',
+	'ACP_GALLERY_OVERVIEW'			=> 'Галерея phpBBex',
+	'ACP_GALLERY_OVERVIEW_EXPLAIN'	=> 'Здесь находится обзорная статистика по галерее.',
 	'ACP_IMPORT_ALBUMS'				=> 'Импорт фотографий',
 	'ACP_IMPORT_ALBUMS_EXPLAIN'		=> 'Здесь можно произвести массовый импорт фотографий из папки <em>gallery/images/import/</em>. Предварительно проверьте размеры фотографий и, если необходимо, измените их вручную.',
 

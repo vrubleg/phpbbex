@@ -25,7 +25,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_GALLERY_CLEANUP_EXPLAIN'	=> 'Here you can delete some remains.',
-	'ACP_GALLERY_OVERVIEW'			=> 'phpBB Gallery',
+	'ACP_GALLERY_OVERVIEW'			=> 'phpBBex Gallery',
 	'ACP_GALLERY_OVERVIEW_EXPLAIN'	=> 'Here are some statistics about your gallery.',
 	'ACP_IMPORT_ALBUMS'				=> 'Import Images',
 	'ACP_IMPORT_ALBUMS_EXPLAIN'		=> 'Here you can bulk import images from the file system. Before importing images, please be sure to resize them by hand.',
