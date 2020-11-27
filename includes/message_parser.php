@@ -169,9 +169,20 @@ class bbcode_firstpass extends bbcode
 
 		foreach ($rowset as $row)
 		{
+			$match = $row['first_pass_match'];
+			$replace = str_replace('$uid', $this->bbcode_uid, $row['first_pass_replace']);
+
+			// Convert to a callback if the match has e modifier.
+			if (preg_match('/^!(.*)!([a-zA-Z]*e[a-zA-Z]*)$/', $match, $parts))
+			{
+				$match = '!' . $parts[1] . '!' . str_replace('e', '', $parts[2]);
+				$replace = preg_replace('#\$\{(\d+)\}#', '\'.$m[${1}].\'', $replace);
+				$replace = eval('return function ($m) { return ' . $replace . '; };');
+			}
+
 			$this->bbcodes[$row['bbcode_tag']] = array(
 				'bbcode_id'	=> (int) $row['bbcode_id'],
-				'regexp'	=> array($row['first_pass_match'] => str_replace('$uid', $this->bbcode_uid, $row['first_pass_replace']))
+				'regexp'	=> array($match => $replace)
 			);
 		}
 	}
