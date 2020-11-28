@@ -34,27 +34,7 @@ define('IN_INSTALL', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-if (!function_exists('phpbb_require_updated'))
-{
-	function phpbb_require_updated($path, $optional = false)
-	{
-		global $phpbb_root_path;
-
-		$new_path = $phpbb_root_path . 'install/update/new/' . $path;
-		$old_path = $phpbb_root_path . $path;
-
-		if (file_exists($new_path))
-		{
-			require($new_path);
-		}
-		else if (!$optional || file_exists($old_path))
-		{
-			require($old_path);
-		}
-	}
-}
-
-phpbb_require_updated('includes/startup.' . $phpEx);
+require($phpbb_root_path . 'includes/startup.' . $phpEx);
 
 $updates_to_version = UPDATES_TO_VERSION;
 $debug_from_version = DEBUG_FROM_VERSION;
@@ -90,14 +70,14 @@ require($phpbb_root_path . 'includes/auth.' . $phpEx);
 
 require($phpbb_root_path . 'includes/functions.' . $phpEx);
 
-phpbb_require_updated('includes/functions_content.' . $phpEx, true);
+require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
 
 require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
 require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
 require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
 
-phpbb_require_updated('includes/db/db_tools.' . $phpEx);
+require($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
 
 // new table constants are separately defined here in case the updater is run
 // before the files are updated
@@ -2234,7 +2214,7 @@ function change_database_data(&$no_updates, $version)
 			{
 				if (!class_exists('acp_bbcodes'))
 				{
-					phpbb_require_updated('includes/acp/acp_bbcodes.' . $phpEx);
+					require($phpbb_root_path . 'includes/acp/acp_bbcodes.' . $phpEx);
 				}
 				$bbcode_match = $row['bbcode_match'];
 				$bbcode_tpl = $row['bbcode_tpl'];
@@ -2285,5 +2265,3 @@ function change_database_data(&$no_updates, $version)
 		break;
 	}
 }
-
-?>
