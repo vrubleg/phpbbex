@@ -19,8 +19,8 @@ $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
 // Check PHP version
-if (version_compare(PHP_VERSION, '5.4', '<') || version_compare(PHP_VERSION, '5.9', '>')) die('PHP 5.4-5.6 is required.');
-if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE does not support UTF8.');
+if (version_compare(PHP_VERSION, '5.4', '<')) die('PHP 5.4+ is required.');
+if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE with UTF8 support is required.');
 
 function phpbb_require_updated($path, $optional = false)
 {
