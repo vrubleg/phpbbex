@@ -18,7 +18,7 @@ class core
 		if(error_reporting() & $errno) throw new ErrorException($errstr, 0, $errno, $file, $line);
 	}
 
-	static function exception_handler(exception $e)
+	static function exception_handler($e)
 	{
 		if (!headers_sent())
 		{

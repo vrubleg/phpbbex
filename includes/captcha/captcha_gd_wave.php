@@ -101,7 +101,7 @@ class captcha
 		{
 			$coeff1 = ($i + 12) / 45;
 			$coeff2 = 1 - $coeff1;
-			$colors[$i] = imagecolorallocate($img, ($coeff2 * $maxr) + ($coeff1 * $minr), ($coeff2 * $maxg) + ($coeff1 * $ming), ($coeff2 * $maxb) + ($coeff1 * $minb));
+			$colors[$i] = imagecolorallocate($img, min(($coeff2 * $maxr) + ($coeff1 * $minr), 255), min(($coeff2 * $maxg) + ($coeff1 * $ming), 255), min(($coeff2 * $maxb) + ($coeff1 * $minb), 255));
 		}
 
 		// $img_buffer is the last row of 3-space positions (converted to img-space), cached

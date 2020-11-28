@@ -20,7 +20,7 @@ if (!defined('IN_PHPBB'))
 This class is based on  Delta_Russian class created by Dmitry Koterov, http://forum.dklab.ru
 */
 
-class time_delta 
+class time_delta
 {
 	// returns the associative array with date deltas.
 	static private function getdelta($first, $last)
@@ -42,7 +42,7 @@ class time_delta
 
 		// Delta day. Is negative, month overlapping.
 		$dDay += $l['mday'] - $f['mday'];
-		if ($dDay < 0) 
+		if ($dDay < 0)
 		{
 			$monlen = self::monthlength(date("Y", $first), date("m", $first));
 			$dDay += $monlen;
@@ -52,7 +52,7 @@ class time_delta
 
 		// Delta month. If negative, year overlapping.
 		$dMon += $l['mon'] - $f['mon'];
-		if ($dMon < 0) 
+		if ($dMon < 0)
 		{
 			$dMon += 12;
 			$dYear --;
@@ -62,7 +62,7 @@ class time_delta
 		// Delta year.
 		$dYear += $l['year'] - $f['year'];
 		$delta['year'] = $dYear;
-		
+
 		return $delta;
 	}
 
@@ -86,13 +86,13 @@ class time_delta
 		// Make spellable phrase.
 		$parts = array();
 		$parts_count = 0;
-		foreach (array_reverse($delta) as $measure => $value) 
+		foreach (array_reverse($delta) as $measure => $value)
 		{
 			if ($max_parts && $max_parts <= $parts_count)
 			{
 				break;
 			}
-			if (!$value && (!$keep_zeros || !$parts_count)) 
+			if (!$value && (!$keep_zeros || !$parts_count))
 			{
 				if ($measure !== $accuracy)
 				{
@@ -128,7 +128,7 @@ class time_delta
 	// Spell result in appropriate form depending on integer value,
 	// i.e.: "1 answer", "2 answers", "13 answers", et cetera.
 	// $int — an integer value.
-	// $expressions is an array, i.e.: array("answer", "answers", "answers") 
+	// $expressions is an array, i.e.: array("answer", "answers", "answers")
 	static private function declension($int, $expressions)
 	{
 	   settype($int, "integer");
@@ -138,7 +138,7 @@ class time_delta
 		  $result = $int . ' ' . $expressions['2'];
 	   }
 	   else
-	   {	   
+	   {
 		  $count = $count % 10;
 		  if ($count == 1)
 		  {
@@ -156,4 +156,3 @@ class time_delta
 	   return $result;
 	}
 }
-?>
