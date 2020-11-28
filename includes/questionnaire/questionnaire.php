@@ -43,9 +43,9 @@ class phpbb_questionnaire_data_collector
 		$this->providers = array();
 	}
 
-	function add_data_provider(&$provider)
+	function add_data_provider($provider)
 	{
-		$this->providers[] = &$provider;
+		$this->providers[] = $provider;
 	}
 
 	/**
