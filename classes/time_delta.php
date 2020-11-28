@@ -156,4 +156,3 @@ class time_delta
 	   return $result;
 	}
 }
-?>
