@@ -26,7 +26,6 @@ class request
 	static function init($unset_superglobals = true)
 	{
 		if (self::$ready) return;
-		// self::unregister_globals();
 		$_GET  = self::sanitize($_GET);
 		$_POST = self::sanitize($_POST);
 		self::$is_https   = (strtolower(arr::get($_SERVER, 'HTTPS')) === 'on');
@@ -49,7 +48,6 @@ class request
 	/**
 	 * Recursively sanitizes an input variable:
 	 *
-	 * - Strips slashes if magic quotes are enabled
 	 * - Normalizes all newlines to LF
 	 *
 	 * @param   mixed  any variable
@@ -66,32 +64,12 @@ class request
 		}
 		elseif (is_string($value))
 		{
-			if (get_magic_quotes_gpc())
-			{
-				$value = stripslashes($value);
-			}
 			if (strpos($value, "\r") !== false)
 			{
 				$value = str_replace(array("\r\n", "\r"), "\n", $value);
 			}
 		}
 		return $value;
-	}
-
-	/**
-	 * Reverse the effects of register_globals.
-	 */
-	protected static function unregister_globals()
-	{
-		if (!ini_get('register_globals')) return;
-		if (isset($_REQUEST['GLOBALS']) || isset($_FILES['GLOBALS'])) die('Global variable overload attack detected!');
-		$global_vars = array_keys($GLOBALS);
-		// Remove the standard global variables from the list
-		$global_vars = array_diff($global_vars, array('_COOKIE', '_ENV', '_GET', '_FILES', '_POST', '_REQUEST', '_SERVER', '_SESSION', 'GLOBALS'));
-		foreach ($global_vars as $name)
-		{
-			unset($GLOBALS[$name]);
-		}
 	}
 
 	/**

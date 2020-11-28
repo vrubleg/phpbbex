@@ -33,24 +33,15 @@ class json
 	static function decode($json)
 	{
 		$result = json_decode($json, true);
-		if (!function_exists('json_last_error'))
+		switch(json_last_error())
 		{
-			if (!empty($json) && is_null($result) && $json != 'null')
-			{
-				throw new json_exception('Invalid or malformed JSON');
-			}
-		}
-		else
-		{
-			// PHP 5.3.3 version
-			switch(json_last_error())
-			{
-				case JSON_ERROR_DEPTH:          throw new json_exception('The maximum stack depth has been exceeded', JSON_ERROR_DEPTH);
-				case JSON_ERROR_STATE_MISMATCH: throw new json_exception('Invalid or malformed JSON', JSON_ERROR_STATE_MISMATCH);
-				case JSON_ERROR_CTRL_CHAR:      throw new json_exception('Control character error, possibly incorrectly encoded', JSON_ERROR_CTRL_CHAR);
-				case JSON_ERROR_SYNTAX:         throw new json_exception('Syntax error, malformed JSON', JSON_ERROR_SYNTAX);
-				case JSON_ERROR_UTF8:           throw new json_exception('Malformed UTF-8 characters, possibly incorrectly encoded', JSON_ERROR_UTF8);
-			}
+			case JSON_ERROR_NONE:           break;
+			case JSON_ERROR_DEPTH:          throw new json_exception('The maximum stack depth has been exceeded', JSON_ERROR_DEPTH);
+			case JSON_ERROR_STATE_MISMATCH: throw new json_exception('Invalid or malformed JSON', JSON_ERROR_STATE_MISMATCH);
+			case JSON_ERROR_CTRL_CHAR:      throw new json_exception('Control character error, possibly incorrectly encoded', JSON_ERROR_CTRL_CHAR);
+			case JSON_ERROR_SYNTAX:         throw new json_exception('Syntax error, malformed JSON', JSON_ERROR_SYNTAX);
+			case JSON_ERROR_UTF8:           throw new json_exception('Malformed UTF-8 characters, possibly incorrectly encoded', JSON_ERROR_UTF8);
+			default:                        throw new json_exception('Invalid or malformed JSON');
 		}
 		return $result;
 	}

@@ -20,7 +20,7 @@ class cookie
 	static function init($config = array())
 	{
 		if (self::$ready) return;
-		
+
 		self::$prefix    = arr::get($config, 'prefix', '');
 		self::$expire    = arr::get($config, 'expire', 0);
 		self::$path      = arr::get($config, 'path', '/');
