@@ -34,7 +34,7 @@ class captcha
 	function execute($code, $seed)
 	{
 		global $config;
-		
+
 		mt_srand($seed);
 
 		// Create image
@@ -70,7 +70,7 @@ class captcha
 			$bounding_boxes[$i] = $box;
 		}
 
- 
+
 		// Redistribute leftover x-space
 		$offset = array();
 		for ($i = 0; $i < $code_len; ++$i)
@@ -104,8 +104,8 @@ class captcha
 		{
 			$this->wave($img);
 		}
-		
-		
+
+
 		if ($config['captcha_gd_3d_noise'])
 		{
 			$xoffset = mt_rand(0,9);
@@ -123,7 +123,7 @@ class captcha
 				$dimm = $bounding_boxes[$i];
 				$xoffset += ($offset[$i] - $dimm[0]);
 				$yoffset = mt_rand(-$dimm[1], $this->height - $dimm[3]);
-	 
+
 				$noise[$i]->drawchar($sizes[$i], $xoffset, $yoffset, $img, $colour->get_resource('background'), $scheme);
 				$xoffset += $dimm[2];
 			}
@@ -159,13 +159,13 @@ class captcha
 	function wave($img)
 	{
 		global $config;
-		
+
 		$period_x = mt_rand(12,18);
 		$period_y = mt_rand(7,14);
 		$amp_x = mt_rand(5,10);
-		$amp_y = mt_rand(2,4); 
+		$amp_y = mt_rand(2,4);
 		$socket = mt_rand(0,100);
-		
+
 		$dampen_x = mt_rand($this->width/5, $this->width/2);
 		$dampen_y = mt_rand($this->height/5, $this->height/2);
 		$direction_x = (mt_rand (0, 1));
@@ -184,7 +184,7 @@ class captcha
 		}
 		return $img;
 	}
-	
+
 	/**
 	* Noise line
 	*/
@@ -236,7 +236,7 @@ class captcha
 
 
 	function captcha_noise_bg_bitmaps()
-	{		
+	{
 		return array(
 			'width'		=> 15,
 			'height'	=> 5,
@@ -293,14 +293,14 @@ class captcha
 			),
 		));
 	}
-	
+
 	/**
 	* Return bitmaps
 	*/
 	function captcha_bitmaps()
 	{
 		global $config;
-		
+
 		$chars = array(
 			'A'	=>	array(
 						array(
@@ -1681,7 +1681,7 @@ class captcha
 			'J' =>	$chars['J'][mt_rand(0, min(sizeof($chars['J']), $config['captcha_gd_fonts']) -1)],
 			'K' =>	$chars['K'][mt_rand(0, min(sizeof($chars['K']), $config['captcha_gd_fonts']) -1)],
 			'L' =>	$chars['L'][mt_rand(0, min(sizeof($chars['L']), $config['captcha_gd_fonts']) -1)],
-			'M' =>	$chars['M'][mt_rand(0, min(sizeof($chars['M']), $config['captcha_gd_fonts']) -1)],  
+			'M' =>	$chars['M'][mt_rand(0, min(sizeof($chars['M']), $config['captcha_gd_fonts']) -1)],
 			'N' =>	$chars['N'][mt_rand(0, min(sizeof($chars['N']), $config['captcha_gd_fonts']) -1)],
 			'O' =>	$chars['O'][mt_rand(0, min(sizeof($chars['O']), $config['captcha_gd_fonts']) -1)],
 			'P' =>	$chars['P'][mt_rand(0, min(sizeof($chars['P']), $config['captcha_gd_fonts']) -1)],
@@ -1873,7 +1873,7 @@ class char_cube3d
 
 	/**
 	*/
-	function char_cube3d(&$bitmaps, $letter)
+	function __construct(&$bitmaps, $letter)
 	{
 		$this->bitmap			= $bitmaps['data'][$letter];
 		$this->bitmap_width		= $bitmaps['width'];
@@ -2133,7 +2133,7 @@ class colour_manager
 	/**
 	* Create the colour manager, link it to the image resource
 	*/
-	function colour_manager($img, $background = false, $mode = 'ahsv')
+	function __construct($img, $background = false, $mode = 'ahsv')
 	{
 		$this->img = $img;
 		$this->mode = $mode;
@@ -2196,7 +2196,7 @@ class colour_manager
 		{
 			$mode = $this->mode;
 		}
-		
+
 		if (!is_array($colour))
 		{
 			if (isset($this->named_rgb[$colour]))
@@ -2390,7 +2390,7 @@ class colour_manager
 		}
 
 		// This is a hard problem. I chicken out and try to maintain readability at the cost of less randomness.
-		
+
 		while ($count > 0)
 		{
 			$colour[1] = ($colour[1] + mt_rand(40,60)) % 99;
@@ -2404,7 +2404,7 @@ class colour_manager
 	/**
 	* Convert from one colour model to another
 	*/
-	function model_convert($colour, $from_model, $to_model)
+	static function model_convert($colour, $from_model, $to_model)
 	{
 		if ($from_model == $to_model)
 		{
@@ -2460,7 +2460,7 @@ class colour_manager
 	/**
 	* Slightly altered from wikipedia's algorithm
 	*/
-	function hsv2rgb($hsv)
+	static function hsv2rgb($hsv)
 	{
 		colour_manager::normalize_hue($hsv[0]);
 
@@ -2523,7 +2523,7 @@ class colour_manager
 	/**
 	* (more than) Slightly altered from wikipedia's algorithm
 	*/
-	function rgb2hsv($rgb)
+	static function rgb2hsv($rgb)
 	{
 		$r = min(255, max(0, $rgb[0]));
 		$g = min(255, max(0, $rgb[1]));
@@ -2561,7 +2561,7 @@ class colour_manager
 
 	/**
 	*/
-	function normalize_hue(&$hue)
+	static function normalize_hue(&$hue)
 	{
 		$hue %= 360;
 
@@ -2574,7 +2574,7 @@ class colour_manager
 	/**
 	* Alternate hue to hue
 	*/
-	function ah2h($ahue)
+	static function ah2h($ahue)
 	{
 		if (is_array($ahue))
 		{
@@ -2608,7 +2608,7 @@ class colour_manager
 	/**
 	* hue to Alternate hue
 	*/
-	function h2ah($hue)
+	static function h2ah($hue)
 	{
 		if (is_array($hue))
 		{
