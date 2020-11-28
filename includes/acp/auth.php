@@ -182,7 +182,7 @@ class auth_admin extends phpbb_auth
 		}
 
 		// Defining the user-function here to save some memory
-		$return_acl_fill = create_function('$value', 'return ' . $acl_fill . ';');
+		$return_acl_fill = function ($value) use ($acl_fill) { return $acl_fill; };
 
 		// Actually fill the gaps
 		if (sizeof($hold_ary))
@@ -1117,7 +1117,7 @@ class auth_admin extends phpbb_auth
 			/*	Sort permissions by name (more naturaly and user friendly than sorting by a primary key)
 			*	Commented out due to it's memory consumption and time needed
 			*
-			$key_array = array_intersect(array_keys($user->lang), array_map(create_function('$a', 'return "acl_" . $a;'), array_keys($cat_array['permissions'])));
+			$key_array = array_intersect(array_keys($user->lang), array_map(function ($a) { return "acl_" . $a; }, array_keys($cat_array['permissions'])));
 			$values_array = $cat_array['permissions'];
 
 			$cat_array['permissions'] = array();
