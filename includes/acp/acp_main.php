@@ -449,7 +449,7 @@ class acp_main
 		{
 			$template->assign_vars(array(
 				'S_PHP_VERSION_OLD'	=> true,
-				'L_PHP_VERSION_OLD'	=> sprintf($user->lang['PHP_VERSION_OLD'], '<a href="http://phpbbex.com/forum/viewtopic.php?t=3212">', '</a>'),
+				'L_PHP_VERSION_OLD'	=> sprintf($user->lang['PHP_VERSION_OLD'], '<a href="//phpbbex.com/forum/viewtopic.php?t=3212">', '</a>'),
 			));
 		}
 
