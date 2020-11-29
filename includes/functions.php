@@ -2876,7 +2876,7 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 	}
 
 	// Delete old confirm keys
-	$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . " 
+	$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . "
 		WHERE confirm_time < " . (time() - 900);
 	$db->sql_query($sql);
 
@@ -2899,7 +2899,7 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 		}
 
 		// Checking confirm key
-		$sql = "SELECT * FROM " . USER_CONFIRM_KEYS_TABLE . " 
+		$sql = "SELECT * FROM " . USER_CONFIRM_KEYS_TABLE . "
 			WHERE user_id = " . $user->data['user_id'] . " AND confirm_key = '" . $db->sql_escape($confirm_key) . "'";
 		$result = $db->sql_query($sql);
 		if(!$db->sql_fetchrow($result))
@@ -2908,7 +2908,7 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 		}
 
 		// Delete used confirm key
-		$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . " 
+		$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . "
 			WHERE user_id = " . $user->data['user_id'] . " AND confirm_key = '" . $db->sql_escape($confirm_key) . "'";
 		$db->sql_query($sql);
 
@@ -3377,7 +3377,7 @@ function parse_cfg_file($filename, $lines = false)
 
 		$parsed_items[$key] = $value;
 	}
-	
+
 	if (isset($parsed_items['inherit_from']) && isset($parsed_items['name']) && $parsed_items['inherit_from'] == $parsed_items['name'])
 	{
 		unset($parsed_items['inherit_from']);
@@ -4126,7 +4126,7 @@ function obtain_users_online_string($online_users, $item_id = 0, $item = 'forum'
 		$user_online_link = get_username_string('no_profile', $row['user_id'], $row['username'], $row['user_colour']);
 		$online_botlist .= ($online_botlist != '' ? ', ' : '') . $user_online_link;
 	}
-	
+
 	if ($online_botlist)
 	{
 		$online_botlist = $user->lang['G_BOTS'] . ': ' . $online_botlist;
@@ -4658,7 +4658,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_new_year',
 		'style_show_sitename_in_headerbar',
 		'style_show_feeds_in_forumlist',
-		'style_use_google_cdn',
 
 		// viewtopic
 		'style_show_social_buttons',
