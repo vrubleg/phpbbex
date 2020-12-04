@@ -44,7 +44,7 @@ class install_convert extends module
 {
 	var $batch_size = 500;
 
-	function install_convert(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
@@ -94,7 +94,7 @@ class install_convert extends module
 
 				$template->assign_vars(array(
 					'TITLE'		=> $user->lang['INSTALL_CONGRATS'],
-					'BODY'		=> sprintf($user->lang['CONVERT_COMPLETE_EXPLAIN'], NEWEST_PG_VERSION) . $user->lang['PAYPAL_DEV_SUPPORT'],
+					'BODY'		=> sprintf($user->lang['CONVERT_COMPLETE_EXPLAIN'], NEWEST_PG_VERSION),
 					'L_SUBMIT'	=> $user->lang['GOTO_GALLERY'],
 					'U_ACTION'	=> phpbb_gallery_url::append_sid('index'),
 				));
@@ -703,7 +703,7 @@ class install_convert extends module
 						$current_batch++;
 					}
 
-					$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . " 
+					$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . "
 							SET image_album_id = $new_personal_album_id
 							WHERE image_album_id = 0
 								AND image_user_id  = " . (int) $row['image_user_id'];

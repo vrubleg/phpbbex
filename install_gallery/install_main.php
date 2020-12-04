@@ -40,7 +40,7 @@ if (!empty($setmodules))
 */
 class install_main extends module
 {
-	function install_main(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}

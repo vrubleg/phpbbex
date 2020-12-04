@@ -40,7 +40,7 @@ if (!empty($setmodules))
 */
 class install_install extends module
 {
-	function install_install(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
@@ -85,7 +85,7 @@ class install_install extends module
 
 				$template->assign_vars(array(
 					'TITLE'		=> $user->lang['INSTALL_CONGRATS'],
-					'BODY'		=> sprintf($user->lang['INSTALL_CONGRATS_EXPLAIN'], NEWEST_PG_VERSION) . $user->lang['PAYPAL_DEV_SUPPORT'],
+					'BODY'		=> sprintf($user->lang['INSTALL_CONGRATS_EXPLAIN'], NEWEST_PG_VERSION),
 					'L_SUBMIT'	=> $user->lang['GOTO_GALLERY'],
 					'U_ACTION'	=> phpbb_gallery_url::append_sid('index'),
 				));

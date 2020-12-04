@@ -42,7 +42,7 @@ class install_convert_ts extends module
 {
 	var $batch_size = 500;
 
-	function install_convert_ts(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
@@ -95,7 +95,7 @@ class install_convert_ts extends module
 
 				$template->assign_vars(array(
 					'TITLE'		=> $user->lang['INSTALL_CONGRATS'],
-					'BODY'		=> sprintf($user->lang['CONVERT_COMPLETE_EXPLAIN'], NEWEST_PG_VERSION) . $user->lang['PAYPAL_DEV_SUPPORT'],
+					'BODY'		=> sprintf($user->lang['CONVERT_COMPLETE_EXPLAIN'], NEWEST_PG_VERSION),
 					'L_SUBMIT'	=> $user->lang['GOTO_GALLERY'],
 					'U_ACTION'	=> phpbb_gallery_url::append_sid('index'),
 				));

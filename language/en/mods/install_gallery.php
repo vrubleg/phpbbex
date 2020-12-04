@@ -87,12 +87,6 @@ $lang = array_merge($lang, array(
 	'OPTIONAL_IMAGEROTATE_EXP'		=> 'You should update your GD Version, which is currently “%s“.',
 	'OPTIONAL_IMAGEROTATE_EXPLAIN'	=> 'If the function exists, you can rotate images while uploading and editing them.',
 
-	'PAYPAL_DEV_SUPPORT'				=> '</p><div class="errorbox">
-	<h3>Author Notes</h3>
-	<p>Creating, maintaining and updating this MOD required/requires a lot of time and effort, so if you like this MOD and have the desire to express your thanks through a donation, that would be greatly appreciated. My Paypal ID is <strong>nickvergessen@gmx.de</strong>, or contact me for my mailing address.<br /><br />The suggested donation amount for this MOD is 25.00€ (but any amount will help).</p><br />
-	<a href="http://www.flying-bits.org/go/paypal"><input type="submit" value="Make PayPal-Donation" name="paypal" id="paypal" class="button1" /></a>
-</div><p>',
-
 	'PHP_SETTINGS'				=> 'PHP settings',
 	'PHP_SETTINGS_EXP'			=> 'These PHP settings and configurations are required for installing and running the gallery.',
 	'PHP_SETTINGS_OPTIONAL'		=> 'Optional PHP settings',

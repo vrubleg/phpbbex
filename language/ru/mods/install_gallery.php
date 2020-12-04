@@ -87,12 +87,6 @@ $lang = array_merge($lang, array(
 	'OPTIONAL_IMAGEROTATE_EXP'		=> 'Вы должны обновить версию GD, текущая версия — %s.',
 	'OPTIONAL_IMAGEROTATE_EXPLAIN'	=> 'Если функция доступна, вы сможете вращать фотографии при загрузке и редактировании.',
 
-	'PAYPAL_DEV_SUPPORT'				=> '</p><div class="errorbox">
-	<h3>От автора</h3>
-	<p>Создание, обслуживание и обновление этого мода требует много времени и усилий. Если вам нравится мод и если у вас появится желание подчеркнуть свою благодарность пожертвованием, я буду вам очень признателен. Мой Paypal-ID: <strong>nickvergessen@gmx.de</strong>, или же свяжитесь со мной по email.<br /><br /> Рекомендуемый взнос — 25 € (но буду благодарен за любую сумму).</p><br />
-	<a href="http://www.flying-bits.org/go/paypal"><input type="submit" value="Make PayPal-Donation" name="paypal" id="paypal" class="button1" /></a>
-</div><p>',
-
 	'PHP_SETTINGS'				=> 'Параметры PHP',
 	'PHP_SETTINGS_EXP'			=> 'Эти параметры PHP требуются для установки и запуска галереи.',
 	'PHP_SETTINGS_OPTIONAL'		=> 'Дополнительные параметры PHP',
