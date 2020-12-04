@@ -550,7 +550,7 @@ if (!isset($user_cache[$image_data['image_user_id']]))
 			),
 		),
 
-		'WHERE'		=> 'u.user_id = ' . $image_data['image_user_id'],
+		'WHERE'		=> $db->sql_in_set('u.user_id', array(ANONYMOUS, $image_data['image_user_id'])),
 	));
 	$result = $db->sql_query($sql);
 
