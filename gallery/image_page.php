@@ -47,7 +47,7 @@ $user_id = $image_data['image_user_id'];
 
 if (!file_exists(phpbb_gallery_url::path('upload') . $image_data['image_filename']))
 {
-	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 		SET image_filemissing = 1
 		WHERE image_id = ' . $image_id;
 	$db->sql_query($sql);
@@ -123,7 +123,7 @@ if (in_array($mode, array('watch', 'unwatch', 'favorite', 'unfavorite')) && chec
 // We also copy some parts from topic_views here
 if (isset($user->data['session_page']) && !$user->data['is_bot'] && (strpos($user->data['session_page'], '&image_id=' . $image_id) === false || isset($user->data['session_created'])))
 {
-	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 		SET image_view_count = image_view_count + 1
 		WHERE image_id = ' . $image_id;
 	$db->sql_query($sql);
@@ -222,7 +222,7 @@ $template->assign_vars(array(
 
 	'UC_PREVIOUS_IMAGE'	=> (!empty($previous_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
 	'UC_PREVIOUS'		=> (!empty($previous_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_prev', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
-	'UC_IMAGE'			=> phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, ((substr($image_data['image_filename'], 0 -3) == 'gif') ? true : false), false, '', $next_data['image_id']),
+	'UC_IMAGE'			=> phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, ((substr($image_data['image_filename'], 0 -3) == 'gif') ? true : false), false, '', !empty($next_data) ? $next_data['image_id'] : 0),
 	'UC_NEXT_IMAGE'		=> (!empty($next_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
 	'UC_NEXT'			=> (!empty($next_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_next', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
 
@@ -390,6 +390,7 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 		$bbcode = new bbcode();
 
 		$comments = $users = $user_cache = array();
+		$users[] = ANONYMOUS;
 		$users[] = $image_data['image_user_id'];
 		$sql = 'SELECT *
 			FROM ' . GALLERY_COMMENTS_TABLE . '
@@ -457,6 +458,8 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 			}
 
 			$user_id = $row['comment_user_id'];
+			if (!isset($user_cache[$user_id])) { $user_id = ANONYMOUS; }
+
 			if ($user_cache[$user_id]['sig'] && empty($user_cache[$user_id]['sig_parsed']))
 			{
 				$user_cache[$user_id]['sig'] = censor_text($user_cache[$user_id]['sig']);
@@ -562,12 +565,13 @@ if (!isset($user_cache[$image_data['image_user_id']]))
 if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']) || ($image_data['image_contest'] != phpbb_gallery_image::IN_CONTEST))
 {
 	$user_id = $image_data['image_user_id'];
-	$user_cache[$user_id]['username'] = ($image_data['image_username']) ? $image_data['image_username'] : $user->lang['GUEST'];
+	if (!isset($user_cache[$user_id])) { $user_id = ANONYMOUS; }
+
 	$template->assign_vars(array(
-		'POSTER_FULL'		=> get_username_string('full', $user_id, $user_cache[$user_id]['username'], $user_cache[$user_id]['user_colour']),
-		'POSTER_COLOUR'		=> get_username_string('colour', $user_id, $user_cache[$user_id]['username'], $user_cache[$user_id]['user_colour']),
-		'POSTER_USERNAME'	=> get_username_string('username', $user_id, $user_cache[$user_id]['username'], $user_cache[$user_id]['user_colour']),
-		'U_POSTER'			=> get_username_string('profile', $user_id, $user_cache[$user_id]['username'], $user_cache[$user_id]['user_colour']),
+		'POSTER_FULL'		=> get_username_string('full', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
+		'POSTER_COLOUR'		=> get_username_string('colour', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
+		'POSTER_USERNAME'	=> get_username_string('username', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
+		'U_POSTER'			=> get_username_string('profile', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
 
 		'POSTER_SIGNATURE'		=> $user_cache[$user_id]['sig'],
 		'POSTER_RANK_TITLE'		=> $user_cache[$user_id]['rank_title'],
