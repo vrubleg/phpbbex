@@ -65,7 +65,8 @@ class arr
 		if (!is_array($value)) $value = array($value); // explode(',', $value);
 		if (count($default) == 0) return $value;
 		reset($default);
-		list($key, $item) = each($default);
+		$key = key($default);
+		$item = current($default);
 		$item_type = gettype($item);
 		$key_type = gettype($key);
 
@@ -73,7 +74,8 @@ class arr
 		// if ($item_type == 'array')
 		// {
 			// reset($item);
-			// list($subkey, $subitem) = each($item);
+			// $subkey = key($item);
+			// $subitem = current($item);
 			// $subitem_type = gettype($subitem);
 			// $subitem_type = ($subitem_type == 'array') ? 'NULL' : $subitem_type;
 			// $subkey_type = gettype($subkey);

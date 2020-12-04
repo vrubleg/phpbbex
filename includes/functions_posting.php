@@ -869,7 +869,7 @@ function phpini_size_to_bytes($val)
 	if (empty($val)) return 0;
 	$last = strtolower($val[strlen($val)-1]);
 	$val = intval($val);
-	switch($last) 
+	switch($last)
 	{
 		case 'g':
 			$val *= 1024;
@@ -910,7 +910,7 @@ function get_allowed_extension_sizes($forum_id = false)
 	if (!$php_max_size) $php_max_size = 1*1024*1024; // We actually don't know php_max_size, set it to 1MB
 	$all_max_size = $all_max_size ? min($all_max_size, $php_max_size) : $php_max_size;
 
-	foreach($extensions as $ext => $vals)
+	foreach ($extensions as $ext => $vals)
 	{
 		if ($can_ignore)
 		{

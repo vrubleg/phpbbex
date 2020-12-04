@@ -294,7 +294,7 @@ class acp_bbcodes
 				}
 
 			break;
-		
+
 			case 'move_up':
 			case 'move_down':
 
@@ -321,7 +321,7 @@ class acp_bbcodes
 			do
 			{
 				++$order;
-				
+
 				if ($row['bbcode_order'] != $order)
 				{
 					$sql = 'UPDATE ' . BBCODES_TABLE . "
@@ -433,7 +433,8 @@ class acp_bbcodes
 				$token_type = $m[1][$n];
 
 				reset($tokens[strtoupper($token_type)]);
-				list($match, $replace) = each($tokens[strtoupper($token_type)]);
+				$match = key($tokens[strtoupper($token_type)]);
+				$replace = current($tokens[strtoupper($token_type)]);
 
 				// Pad backreference numbers from tokens
 				if (preg_match_all('/(?<!\\\\)\$([0-9]+)/', $replace, $repad))

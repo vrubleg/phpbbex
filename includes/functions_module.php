@@ -311,7 +311,7 @@ class p_master
 	/**
 	* Check module authorisation
 	*/
-	function module_auth($module_auth, $forum_id = false)
+	static function module_auth_for_forum_id($module_auth, $forum_id)
 	{
 		global $auth, $config;
 
@@ -358,8 +358,6 @@ class p_master
 		// Make sure $id seperation is working fine
 		$module_auth = str_replace(' , ', ',', $module_auth);
 
-		$forum_id = ($forum_id === false) ? $this->acl_forum_id : $forum_id;
-
 		$is_auth = false;
 		if (!empty($module_auth))
 		{
@@ -367,6 +365,11 @@ class p_master
 		}
 
 		return $is_auth;
+	}
+
+	function module_auth($module_auth)
+	{
+		return self::module_auth_for_forum_id($module_auth, $this->acl_forum_id);
 	}
 
 	/**

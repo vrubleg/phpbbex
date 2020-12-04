@@ -528,7 +528,7 @@ class template_compile
 				default:
 					if (preg_match('#^((?:[a-z0-9\-_]+\.)+)?(\$)?(?=[A-Z])([A-Z0-9\-_]+)#s', $token, $varrefs))
 					{
-						$token = (!empty($varrefs[1])) ? $this->generate_block_data_ref(substr($varrefs[1], 0, -1), true, $varrefs[2]) . '[\'' . $varrefs[3] . '\']' : (($varrefs[2]) ? '$this->_tpldata[\'DEFINE\'][\'.\'][\'' . $varrefs[3] . '\']' : '$this->_rootref[\'' . $varrefs[3] . '\']');
+						$token = (!empty($varrefs[1])) ? $this->generate_block_data_ref(substr($varrefs[1], 0, -1), true, $varrefs[2]) . '[\'' . $varrefs[3] . '\']' : (($varrefs[2]) ? '$this->_tpldata[\'DEFINE\'][\'.\'][\'' . $varrefs[3] . '\']' : '(isset($this->_rootref[\'' . $varrefs[3] . '\']) ? $this->_rootref[\'' . $varrefs[3] . '\'] : \'\')');
 					}
 					else if (preg_match('#^\.((?:[a-z0-9\-_]+\.?)+)$#s', $token, $varrefs))
 					{
@@ -604,7 +604,7 @@ class template_compile
 		}
 		else
 		{
-			preg_match('#true|false|\.#i', $match[4], $type);
+			preg_match('#true|false|\.?#i', $match[4], $type);
 
 			switch (strtolower($type[0]))
 			{

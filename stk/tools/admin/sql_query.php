@@ -104,7 +104,7 @@ class sql_query
 					if ($cnt == 0)
 					{
 						// Assign the return fields
-						foreach(array_keys($row) as $key)
+						foreach (array_keys($row) as $key)
 						{
 							$template->assign_block_vars('queries.headings', array('FIELD_NAME' => $key));
 						}

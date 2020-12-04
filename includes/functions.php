@@ -82,17 +82,14 @@ function request_var($var_name, $default, $multibyte = false, $cookie = false)
 	}
 	else
 	{
-		list($key_type, $type) = each($default);
-		$type = gettype($type);
-		$key_type = gettype($key_type);
+		$key_type = gettype(key($default));
+		$type = gettype(current($default));
 		if ($type == 'array')
 		{
-			reset($default);
 			$default = current($default);
-			list($sub_key_type, $sub_type) = each($default);
-			$sub_type = gettype($sub_type);
+			$sub_key_type = gettype(key($default));
+			$sub_type = gettype(current($default));
 			$sub_type = ($sub_type == 'array') ? 'NULL' : $sub_type;
-			$sub_key_type = gettype($sub_key_type);
 		}
 	}
 

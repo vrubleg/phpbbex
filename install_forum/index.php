@@ -22,24 +22,7 @@ $phpEx = substr(strrchr(__FILE__, '.'), 1);
 if (version_compare(PHP_VERSION, '5.4', '<')) die('PHP 5.4+ is required.');
 if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE with UTF8 support is required.');
 
-function phpbb_require_updated($path, $optional = false)
-{
-	global $phpbb_root_path;
-
-	$new_path = $phpbb_root_path . 'install/update/new/' . $path;
-	$old_path = $phpbb_root_path . $path;
-
-	if (file_exists($new_path))
-	{
-		require($new_path);
-	}
-	else if (!$optional || file_exists($old_path))
-	{
-		require($old_path);
-	}
-}
-
-phpbb_require_updated('includes/startup.' . $phpEx);
+require($phpbb_root_path . 'includes/startup.' . $phpEx);
 
 // Try to override some limits - maybe it helps some...
 @set_time_limit(0);
@@ -71,9 +54,7 @@ else
 
 // Include essential scripts
 require($phpbb_root_path . 'includes/functions.' . $phpEx);
-
-phpbb_require_updated('includes/functions_content.' . $phpEx, true);
-
+require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
 include($phpbb_root_path . 'includes/auth.' . $phpEx);
 include($phpbb_root_path . 'includes/session.' . $phpEx);
 include($phpbb_root_path . 'includes/template.' . $phpEx);

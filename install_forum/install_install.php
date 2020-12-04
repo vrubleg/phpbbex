@@ -275,7 +275,7 @@ class install_install extends module
 			));
 
 			$checks = array(
-				array('func_overload', '&', MB_OVERLOAD_MAIL|MB_OVERLOAD_STRING),
+				array('func_overload', '&', (defined('MB_OVERLOAD_MAIL') && defined('MB_OVERLOAD_STRING') ? MB_OVERLOAD_MAIL|MB_OVERLOAD_STRING : 0)),
 				array('encoding_translation', '!=', 0),
 				array('http_input', '!=', array('pass', '')),
 				array('http_output', '!=', array('pass', ''))
@@ -599,6 +599,8 @@ class install_install extends module
 		{
 			// Update the list of available DBMS modules to only contain those which can be used
 			$available_dbms_temp = array();
+
+			unset($available_dbms['ANY_DB_SUPPORT']);
 			foreach ($available_dbms as $type => $dbms_ary)
 			{
 				if (!$dbms_ary['AVAILABLE'])

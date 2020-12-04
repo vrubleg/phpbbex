@@ -1769,7 +1769,7 @@ function change_database_data(&$no_updates, $version)
 					$lang = array();
 					include($lang_file);
 
-					foreach($lang as $lang_key => $lang_val)
+					foreach ($lang as $lang_key => $lang_val)
 					{
 						if (isset($extension_groups_updated[$lang_key]) || strpos($lang_key, 'EXT_GROUP_') !== 0)
 						{
