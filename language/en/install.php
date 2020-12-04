@@ -191,10 +191,10 @@ $lang = array_merge($lang, array(
 	'INSTALL_CONGRATS'			=> 'Congratulations!',
 	'INSTALL_CONGRATS_EXPLAIN'	=> '
 		You have successfully installed phpBBex %1$s. Go live with your phpBBex!</p>
-		<p>Clicking the button below will take you to a Administration Control Panel (ACP). You should take some time to examine the options available to you. Remember that help is available online via the <a href="http://www.phpbb.com/support/documentation/3.0/">Documentation on phpbb.com</a> and the <a href="http://phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forums</a>.</p><p><strong>Please delete, move or rename the install directory before using your board. While this directory exists, only the Administration Control Panel (ACP) will be accessible.</strong>',
+		<p>Clicking the button below will take you to a Administration Control Panel (ACP). You should take some time to examine the options available to you. Remember that help is available online via the <a href="http://www.phpbb.com/support/documentation/3.0/">Documentation on phpbb.com</a> and the <a href="//phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forums</a>.</p><p><strong>Please delete, move or rename the install directory before using your board. While this directory exists, only the Administration Control Panel (ACP) will be accessible.</strong>',
 	'INSTALL_INTRO'				=> 'Welcome to phpBBex installation!',
 
-	'INSTALL_INTRO_BODY'		=> 'phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB 3. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a target="_blank" href="http://phpbbex.com/forum/viewtopic.php?t=28">More...</a>
+	'INSTALL_INTRO_BODY'		=> 'phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB 3. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a target="_blank" href="//phpbbex.com/forum/viewtopic.php?t=28">More...</a>
 
 	<p>With this option, it is possible to install phpBBex onto your server.</p><p>In order to proceed, you will need your MySQL database settings:
 
@@ -207,8 +207,8 @@ $lang = array_merge($lang, array(
 
 	<p>See also:
 	<ul>
-		<li><a target="_blank" href="http://phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forum</a></li>
-		<li><a target="_blank" href="http://phpbbex.com/forum/viewtopic.php?t=28">What\'s new in phpBBex?</a></li>
+		<li><a target="_blank" href="//phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forum</a></li>
+		<li><a target="_blank" href="//phpbbex.com/forum/viewtopic.php?t=28">What\'s new in phpBBex?</a></li>
 	</ul>',
 	'INSTALL_INTRO_NEXT'		=> 'To commence the installation, please press the button below.',
 	'INSTALL_LOGIN'				=> 'Login',
@@ -277,7 +277,7 @@ $lang = array_merge($lang, array(
 	'NO_LOCATION'				=> 'Cannot determine location. If you know Imagemagick is installed, you may specify the location later within your administration control panel',
 	'NO_TABLES_FOUND'			=> 'No tables found.',
 
-	'OVERVIEW_BODY'				=> 'Welcome to phpBBex!<br /><br />phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a href="http://phpbbex.com/forum/viewtopic.php?t=28">More...</a><br /><br />This installation system will guide you through installing phpBB3. For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>. To install, please select the appropriate tab above.',
+	'OVERVIEW_BODY'				=> 'Welcome to phpBBex!<br /><br />phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a href="//phpbbex.com/forum/viewtopic.php?t=28">More...</a><br /><br />This installation system will guide you through installing phpBB3. For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>. To install, please select the appropriate tab above.',
 
 	'PCRE_UTF_SUPPORT'				=> 'PCRE UTF-8 and "(?|(a)|(b))" construction support',
 	'PCRE_UTF_SUPPORT_EXPLAIN'		=> 'phpBBex will <strong>not</strong> run if your PHP installation is not compiled with UTF-8 support in the PCRE extension or your PCRE version is obsolete.',
@@ -334,7 +334,7 @@ $lang = array_merge($lang, array(
 	'SUB_LICENSE'				=> 'License',
 	'SUB_SUPPORT'				=> 'Support',
 	'SUCCESSFUL_CONNECT'		=> 'Successful connection',
-	'SUPPORT_BODY'				=> 'Full support will be provided for the current stable release of phpBBex, free of charge. This includes:</p><ul><li>installation</li><li>configuration</li><li>technical questions</li><li>problems relating to potential bugs in the software</li><li>updating from Release Candidate (RC) versions to the latest stable version</li></ul><h2>Obtaining Support</h2><p><a href="http://phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forum</a><br /><br />',
+	'SUPPORT_BODY'				=> 'Full support will be provided for the current stable release of phpBBex, free of charge. This includes:</p><ul><li>installation</li><li>configuration</li><li>technical questions</li><li>problems relating to potential bugs in the software</li><li>updating from Release Candidate (RC) versions to the latest stable version</li></ul><h2>Obtaining Support</h2><p><a href="//phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forum</a><br /><br />',
 	'SYNC_FORUMS'				=> 'Starting to synchronise forums',
 	'SYNC_POST_COUNT'			=> 'Synchronising post_counts',
 	'SYNC_POST_COUNT_ID'		=> 'Synchronising post_counts from <var>entry</var> %1$s to %2$s.',

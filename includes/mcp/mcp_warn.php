@@ -40,7 +40,7 @@ class mcp_warn
 
 		if (is_array($action))
 		{
-			list($action, ) = each($action);
+			$action = key($action);
 		}
 
 		$this->page_title = 'MCP_WARN';
@@ -695,8 +695,8 @@ function edit_warning($warning_row, $warning, $warning_days, $warning_type)
 	);
 
 	// Update warning information - submit new warning
-	$sql = 'UPDATE ' . WARNINGS_TABLE . ' 
-		SET ' . $db->sql_build_array('UPDATE', $sql_warn_ary) . ' 
+	$sql = 'UPDATE ' . WARNINGS_TABLE . '
+		SET ' . $db->sql_build_array('UPDATE', $sql_warn_ary) . '
 		WHERE warning_id = ' . $warning_row['warning_id'];
 	$db->sql_query($sql);
 
@@ -716,19 +716,19 @@ function delete_warning($warning_row)
 	$db->sql_query($sql);
 
 	recalc_user_warnings($warning_row['user_id']);
-	
+
 	return true;
 }
 
 function recalc_user_warnings($user_id)
 {
 	global $db, $cache;
-	$sql = "UPDATE " . USERS_TABLE . " u 
+	$sql = "UPDATE " . USERS_TABLE . " u
 		SET	user_last_warning = " . time() . ",
 			user_warnings = (
-				SELECT COUNT(*) 
-				FROM " . WARNINGS_TABLE . " w 
-				WHERE w.user_id = {$user_id} AND w.warning_active = 1 
+				SELECT COUNT(*)
+				FROM " . WARNINGS_TABLE . " w
+				WHERE w.user_id = {$user_id} AND w.warning_active = 1
 			)
 		WHERE user_id = {$user_id}";
 	$db->sql_query($sql);

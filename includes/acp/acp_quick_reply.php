@@ -23,7 +23,7 @@ class acp_quick_reply
 
 		$quick_reply_options = array('allow_reply_icons'=>1, 'allow_reply_checkboxes'=>2, 'allow_reply_attachbox'=>3, 'allow_reply_smilies'=>4, 'allow_reply_subject'=>5);
 		$quick_post_options = array('allow_post_icons'=>1, 'allow_post_checkboxes'=>2, 'allow_post_attachbox'=>3, 'allow_post_smilies'=>4);
-				
+
 		$action	= request_var('action', '');
 		$submit = (isset($_POST['submit'])) ? true : false;
 
@@ -34,7 +34,7 @@ class acp_quick_reply
 		{
 			return;
 		}
-	
+
 		/**
 		*	Validation types are:
 		*		string, int, bool,
@@ -65,16 +65,16 @@ class acp_quick_reply
 		{
 			$user->add_lang($display_vars['lang']);
 		}
-		
-		foreach($quick_reply_options as $key => $value)
+
+		foreach ($quick_reply_options as $key => $value)
 		{
 			$config[$key] = ($config['allow_quick_reply_options'] & 1 << $value) ? 1 : 0;
 		}
-		foreach($quick_post_options as $key => $value)
+		foreach ($quick_post_options as $key => $value)
 		{
 			$config[$key] = ($config['allow_quick_post_options'] & 1 << $value) ? 1 : 0;
 		}
-		
+
 		$this->new_config = $config;
 		$cfg_array = (isset($_REQUEST['config'])) ? utf8_normalize_nfc(request_var('config', array('' => ''), true)) : $this->new_config;
 		$error = array();
@@ -99,14 +99,14 @@ class acp_quick_reply
 			{
 				continue;
 			}
-			
+
 			$this->new_config[$config_name] = $cfg_array[$config_name];
-			
+
 		}
 
 		if ($submit)
 		{
-			foreach($quick_reply_options as $key=>$value)
+			foreach ($quick_reply_options as $key=>$value)
 			{
 					if ($this->new_config[$key] && !($this->new_config['allow_quick_reply_options'] & 1 << $value))
 					{
@@ -116,8 +116,8 @@ class acp_quick_reply
 					{
 						$this->new_config['allow_quick_reply_options'] -= 1 << $value;
 					}
-			}		
-			foreach($quick_post_options as $key=>$value)
+			}
+			foreach ($quick_post_options as $key=>$value)
 			{
 					if ($this->new_config[$key] && !($this->new_config['allow_quick_post_options'] & 1 << $value))
 					{
@@ -127,10 +127,10 @@ class acp_quick_reply
 					{
 						$this->new_config['allow_quick_post_options'] -= 1 << $value;
 					}
-			}			
-		
+			}
+
 			add_log('admin', 'LOG_CONFIG_' . strtoupper($mode));
-			
+
 			set_config('allow_quick_reply', $this->new_config['allow_quick_reply']);
 			set_config('allow_quick_reply_options', $this->new_config['allow_quick_reply_options']);
 			set_config('allow_quick_full_quote', $this->new_config['allow_quick_full_quote']);
@@ -142,7 +142,7 @@ class acp_quick_reply
 
 		$this->tpl_name = 'acp_quick_reply';
 		$this->page_title = $display_vars['title'];
-		
+
 		$template->assign_vars(array(
 			'L_TITLE'			=> $user->lang[$display_vars['title']],
 			'L_TITLE_EXPLAIN'	=> $user->lang[$display_vars['title'] . '_EXPLAIN'],
@@ -191,7 +191,7 @@ class acp_quick_reply
 				'CONTENT'		=> build_cfg_template($type, $config_key, $this->new_config, $config_key, $vars),
 				)
 			);
-		
+
 			unset($display_vars['vars'][$config_key]);
 		}
 
@@ -203,7 +203,7 @@ class acp_quick_reply
 	function allow_quick_reply($value, $key = '')
 	{
 		global $user;
-		
+
 		$options_ary = array(0 => 'ALLOW_QUICK_REPLY_NONE', 1 => 'ALLOW_QUICK_REPLY_REG', 2 => 'ALLOW_QUICK_REPLY_ALL');
 
 		$allow_quick_reply_options = '';
@@ -216,14 +216,14 @@ class acp_quick_reply
 
 		return $allow_quick_reply_options;
 	}
-	
+
 	/**
 	* Quick post
 	*/
 	function allow_quick_post($value, $key = '')
 	{
 		global $user;
-		
+
 		$options_ary = array(0 => 'ALLOW_QUICK_REPLY_NONE', 1 => 'ALLOW_QUICK_REPLY_REG', 2 => 'ALLOW_QUICK_REPLY_ALL');
 
 		$allow_quick_post_options = '';
@@ -237,7 +237,7 @@ class acp_quick_reply
 		return $allow_quick_post_options;
 	}
 
-	
+
 }
 
 ?>

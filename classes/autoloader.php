@@ -23,7 +23,7 @@ class autoloader
 			autoloader::$pathes[$prefix] = array();
 		}
 		$path = str_replace('\\', '/', $path);
-		if($path{strlen($path)-1} !== '/') $path .= '/';
+		if($path[strlen($path)-1] !== '/') $path .= '/';
 		autoloader::$pathes[$prefix][] = $path;
 	}
 

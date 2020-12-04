@@ -25,25 +25,13 @@
 #wrap { min-width: <!-- IF STYLE_MIN_WIDTH > 875 -->{STYLE_MIN_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- IF STYLE_MAX_WIDTH --> max-width: <!-- IF STYLE_MAX_WIDTH > 875 -->{STYLE_MAX_WIDTH}<!-- ELSE -->875<!-- ENDIF -->px;<!-- ENDIF --> }
 </style>
 
-<!-- IF STYLE_USE_GOOGLE_CDN -->
-	<!--[if lt IE 9]>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		<script>window.jQuery || document.write('<script src="{ROOT_PATH}assets/js/jquery-ie8.js"><\/script>')</script>
-		<script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script>
-	<![endif]-->
-	<!--[if gte IE 9]><!-->
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-		<script>window.jQuery || document.write('<script src="{ROOT_PATH}assets/js/jquery.js"><\/script>')</script>
-	<!--<![endif]-->
-<!-- ELSE -->
-	<!--[if lt IE 9]>
-		<script src="{ROOT_PATH}assets/js/jquery-ie8.js"></script>
-		<script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script>
-	<![endif]-->
-	<!--[if gte IE 9]><!-->
-		<script src="{ROOT_PATH}assets/js/jquery.js"></script>
-	<!--<![endif]-->
-<!-- ENDIF -->
+<!--[if lt IE 9]>
+	<script src="{ROOT_PATH}assets/js/jquery-ie8.js"></script>
+	<script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+	<script src="{ROOT_PATH}assets/js/jquery.js"></script>
+<!--<![endif]-->
 
 <script src="{T_SUPER_TEMPLATE_PATH}/forum_fn.js"></script>
 <script>

@@ -182,7 +182,7 @@ class auth_admin extends phpbb_auth
 		}
 
 		// Defining the user-function here to save some memory
-		$return_acl_fill = create_function('$value', 'return ' . $acl_fill . ';');
+		$return_acl_fill = function ($value) use ($acl_fill) { return $acl_fill; };
 
 		// Actually fill the gaps
 		if (sizeof($hold_ary))
@@ -457,16 +457,14 @@ class auth_admin extends phpbb_auth
 					'S_GROUP_MODE'	=> ($user_mode == 'group') ? true : false)
 				);
 
-				@reset($content_array);
-				while (list($ug_id, $ug_array) = each($content_array))
+				foreach ($content_array as $ug_id => $ug_array)
 				{
 					// Build role dropdown options
 					$current_role_id = (isset($cur_roles[$ug_id][$forum_id])) ? $cur_roles[$ug_id][$forum_id] : 0;
 
 					$s_role_options = '';
 
-					@reset($roles);
-					while (list($role_id, $role_row) = each($roles))
+					foreach ($roles as $role_id => $role_row)
 					{
 						$role_description = (!empty($user->lang[$role_row['role_description']])) ? $user->lang[$role_row['role_description']] : nl2br($role_row['role_description']);
 						$role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
@@ -543,16 +541,14 @@ class auth_admin extends phpbb_auth
 					'S_GROUP_MODE'	=> ($user_mode == 'group') ? true : false)
 				);
 
-				@reset($content_array);
-				while (list($forum_id, $forum_array) = each($content_array))
+				foreach ($content_array as $forum_id => $forum_array)
 				{
 					// Build role dropdown options
 					$current_role_id = (isset($cur_roles[$ug_id][$forum_id])) ? $cur_roles[$ug_id][$forum_id] : 0;
 
 					$s_role_options = '';
 
-					@reset($roles);
-					while (list($role_id, $role_row) = each($roles))
+					foreach ($roles as $role_id => $role_row)
 					{
 						$role_description = (!empty($user->lang[$role_row['role_description']])) ? $user->lang[$role_row['role_description']] : nl2br($role_row['role_description']);
 						$role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
@@ -1103,8 +1099,7 @@ class auth_admin extends phpbb_auth
 	{
 		global $template, $user, $phpbb_admin_path, $phpEx;
 
-		@reset($category_array);
-		while (list($cat, $cat_array) = each($category_array))
+		foreach ($category_array as $cat => $cat_array)
 		{
 			$template->assign_block_vars($tpl_cat, array(
 				'S_YES'		=> ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']) ? true : false,
@@ -1117,7 +1112,7 @@ class auth_admin extends phpbb_auth
 			/*	Sort permissions by name (more naturaly and user friendly than sorting by a primary key)
 			*	Commented out due to it's memory consumption and time needed
 			*
-			$key_array = array_intersect(array_keys($user->lang), array_map(create_function('$a', 'return "acl_" . $a;'), array_keys($cat_array['permissions'])));
+			$key_array = array_intersect(array_keys($user->lang), array_map(function ($a) { return "acl_" . $a; }, array_keys($cat_array['permissions'])));
 			$values_array = $cat_array['permissions'];
 
 			$cat_array['permissions'] = array();
@@ -1129,8 +1124,7 @@ class auth_admin extends phpbb_auth
 			}
 			unset($key_array, $values_array);
 */
-			@reset($cat_array['permissions']);
-			while (list($permission, $allowed) = each($cat_array['permissions']))
+			foreach ($cat_array['permissions'] as $permission => $allowed)
 			{
 				if ($s_view)
 				{
@@ -1189,8 +1183,7 @@ class auth_admin extends phpbb_auth
 			$permissions = $permission_row[$forum_id];
 			ksort($permissions);
 
-			@reset($permissions);
-			while (list($permission, $auth_setting) = each($permissions))
+			foreach ($permissions as $permission => $auth_setting)
 			{
 				if (!isset($user->lang['acl_' . $permission]))
 				{

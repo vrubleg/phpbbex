@@ -449,7 +449,7 @@ class acp_main
 		{
 			$template->assign_vars(array(
 				'S_PHP_VERSION_OLD'	=> true,
-				'L_PHP_VERSION_OLD'	=> sprintf($user->lang['PHP_VERSION_OLD'], '<a href="http://phpbbex.com/forum/viewtopic.php?t=3212">', '</a>'),
+				'L_PHP_VERSION_OLD'	=> sprintf($user->lang['PHP_VERSION_OLD'], '<a href="//phpbbex.com/forum/viewtopic.php?t=3212">', '</a>'),
 			));
 		}
 
@@ -657,7 +657,7 @@ class acp_main
 		{
 			$template->assign_vars(array(
 				'S_MBSTRING_LOADED'						=> true,
-				'S_MBSTRING_FUNC_OVERLOAD_FAIL'			=> (intval(@ini_get('mbstring.func_overload')) & (MB_OVERLOAD_MAIL | MB_OVERLOAD_STRING)),
+				'S_MBSTRING_FUNC_OVERLOAD_FAIL'			=> defined('MB_OVERLOAD_MAIL') && defined('MB_OVERLOAD_STRING') && (intval(@ini_get('mbstring.func_overload')) & (MB_OVERLOAD_MAIL | MB_OVERLOAD_STRING)),
 				'S_MBSTRING_ENCODING_TRANSLATION_FAIL'	=> (@ini_get('mbstring.encoding_translation') != 0),
 				'S_MBSTRING_HTTP_INPUT_FAIL'			=> !in_array(@ini_get('mbstring.http_input'), array('pass', '')),
 				'S_MBSTRING_HTTP_OUTPUT_FAIL'			=> !in_array(@ini_get('mbstring.http_output'), array('pass', '')),

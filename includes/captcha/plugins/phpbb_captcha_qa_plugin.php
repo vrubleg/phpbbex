@@ -87,7 +87,7 @@ class phpbb_captcha_qa
 			}
 			$db->sql_freeresult($result);
 		}
-	
+
 		// okay, if there is a confirm_id, we try to load that confirm's state. If not, we try to find one
 		if (!$this->load_answer() && (!$this->load_confirm_id() || !$this->load_answer()))
 		{
@@ -345,7 +345,7 @@ class phpbb_captcha_qa
 				),
 		);
 
-		foreach($schemas as $table => $schema)
+		foreach ($schemas as $table => $schema)
 		{
 			if (!$db_tool->sql_table_exists($table))
 			{
@@ -362,12 +362,12 @@ class phpbb_captcha_qa
 		global $config, $db, $user;
 
 		$error = '';
-		
+
 		if (!sizeof($this->question_ids))
 		{
 			return false;
 		}
-		
+
 		if (!$this->confirm_id)
 		{
 			$error = $user->lang['CONFIRM_QUESTION_WRONG'];
@@ -431,7 +431,7 @@ class phpbb_captcha_qa
 	function reselect_question()
 	{
 		global $db, $user;
-		
+
 		if (!sizeof($this->question_ids))
 		{
 			return false;
@@ -479,8 +479,8 @@ class phpbb_captcha_qa
 		global $db, $user;
 
 		$sql = 'SELECT confirm_id
-			FROM ' . CAPTCHA_QA_CONFIRM_TABLE . " 
-			WHERE 
+			FROM ' . CAPTCHA_QA_CONFIRM_TABLE . "
+			WHERE
 				session_id = '" . $db->sql_escape($user->session_id) . "'
 				AND lang_iso = '" . $db->sql_escape($this->question_lang) . "'
 				AND confirm_type = " . $this->type;
@@ -502,7 +502,7 @@ class phpbb_captcha_qa
 	function load_answer()
 	{
 		global $db, $user;
-		
+
 		if (!strlen($this->confirm_id) || !sizeof($this->question_ids))
 		{
 			return false;
@@ -987,9 +987,9 @@ class phpbb_captcha_qa
 
 		return $langs;
 	}
-	
-	
-	
+
+
+
 	/**
 	*  See if there is a question other than the one we have
 	*/

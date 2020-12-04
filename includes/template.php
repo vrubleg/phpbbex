@@ -576,7 +576,8 @@ class phpbb_template
 		if (is_array($key))
 		{
 			// Search array to get correct position
-			list($search_key, $search_value) = @each($key);
+			$search_key = key($key);
+			$search_value = current($key);
 
 			$key = NULL;
 			foreach ($this->_tpldata[$blockname] as $i => $val_ary)
