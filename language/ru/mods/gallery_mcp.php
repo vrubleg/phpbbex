@@ -30,7 +30,7 @@ $lang = array_merge($lang, array(
 	'GALLERY_MCP_OVERVIEW'			=> 'Обзор',
 	'GALLERY_MCP_QUEUE'				=> 'Очередь на модерацию',
 	'GALLERY_MCP_QUEUE_DETAIL'		=> 'Информация о фото',
-	'GALLERY_MCP_REPORTED'			=> 'Обжалованные фото',
+	'GALLERY_MCP_REPORTED'			=> 'Жалобы на фото',
 	'GALLERY_MCP_REPO_DONE'			=> 'Закрытые жалобы',
 	'GALLERY_MCP_REPO_OPEN'			=> 'Открытые жалобы',
 	'GALLERY_MCP_REPO_DETAIL'		=> 'Детали жалобы',
@@ -104,7 +104,7 @@ $lang = array_merge($lang, array(
 	'REPORTS_A_OPEN2_CONFIRM'		=> 'Подтвердите открытие жалоб.',
 
 	'REPORT_MOD'					=> 'Редактировал',
-	'REPORTED_IMAGES'				=> 'Обжалованные фото',
+	'REPORTED_IMAGES'				=> 'Жалобы на фото',
 	'REPORTER'						=> 'Пожаловался',
 	'REPORTER_AND_ALBUM'			=> 'Жалующийся и альбом',
 
