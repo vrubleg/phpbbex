@@ -100,7 +100,7 @@ $lang = array_merge($lang, array(
 	'CONTEST_IMAGE_DESC'			=> '<strong>Конкурс</strong> » Описание фотографии скрыто до окончания конкурса %s.',
 	'CONTEST_WINNERS_OF'			=> 'Победитель конкурса «%s»',
 	'CONTINUE'						=> 'Продолжить',
-	
+
 	'DATABASE_NOT_UPTODATE'			=> 'Версия таблиц базы данных галереи не соответствует версии её файлов. Обновите базу данных.',
 	'DELETE_COMMENT'				=> 'Удалить комментарий',
 	'DELETE_COMMENT2'				=> 'Удалить комментарий?',
@@ -136,7 +136,7 @@ $lang = array_merge($lang, array(
 	'GALLERY_VIEWS'					=> 'Просмотры',
 
 	'IGNORE_NOTUPTODATE_MESSAGE'	=> 'Напомнить через неделю',
-	'IMAGE_ALREADY_REPORTED'		=> 'Фото уже обжаловано.',
+	'IMAGE_ALREADY_REPORTED'		=> 'На фото уже пожаловались.',
 	'IMAGE_BBCODE'					=> 'BBCode',
 	'IMAGE_COMMENTS_DISABLED'		=> 'Комментарии отключены на этой странице.',
 	'IMAGE_DAY'						=> '%.2f фото в день',
@@ -150,7 +150,7 @@ $lang = array_merge($lang, array(
 	'IMAGE_STATUS'					=> 'Статус',
 	'IMAGE_URL'						=> 'Ссылка на фото',
 	'IMAGE_WIDTH'					=> 'Ширина фото',
-	'IMAGES_REPORTED_SUCCESSFULLY'	=> 'Фото обжаловано',
+	'IMAGES_REPORTED_SUCCESSFULLY'	=> 'Жалоба на фото отправлена',
 	'IMAGES_UPDATED_SUCCESSFULLY'	=> 'Данные о фотографии обновлены',
 	'INSERT_IMAGE_POST'				=> 'Вставить фото в сообщение',
 	'INVALID_USERNAME'				=> 'Неверное имя пользователя',
@@ -200,7 +200,7 @@ $lang = array_merge($lang, array(
 	'POST_COMMENT'					=> 'Оставить комментарий',
 	'POST_COMMENT_RATE_IMAGE'		=> 'Оставить комментарий и оценить фото',
 	'POSTER'						=> 'Автор',
-	
+
 	'QUOTA_REACHED'					=> 'Вы исчерпали свой лимит количества загруженных фотографий.',
 	'QUOTE_COMMENT'					=> 'Цитировать комментарий',
 
@@ -221,14 +221,14 @@ $lang = array_merge($lang, array(
 	'READ_REPORT'					=> 'Читать жалобу',
 	'RECENT_COMMENTS'				=> 'Последние комментарии',
 	'RECENT_IMAGES'					=> 'Последние фото',
-	'REPORT_IMAGE'					=> 'Обжаловать фото',
+	'REPORT_IMAGE'					=> 'Пожаловаться на фото',
 	'RETURN_ALBUM'					=> '%sВернуться в альбом%s',
 	'ROTATE_IMAGE'					=> 'Повернуть фото',
 	'ROTATE_LEFT'					=> '270°',
 	'ROTATE_NONE'					=> 'нет',
 	'ROTATE_RIGHT'					=> '90°',
 	'ROTATE_UPSIDEDOWN'				=> '180°',
-	
+
 	'SEARCH_ALBUM'					=> 'Искать в альбоме…',
 	'SEARCH_ALBUMS'					=> 'Искать в альбомах',
 	'SEARCH_ALBUMS_EXPLAIN'			=> 'Выберите один или несколько альбомов, в которых будет произведён поиск. Поиск во вложенных альбомах производится автоматически, если вы не отключили соответствующую опцию ниже.',
@@ -255,8 +255,8 @@ $lang = array_merge($lang, array(
 	'SORT_DESCENDING'				=> 'По убыванию',
 	'STATUS'						=> 'Статус',
 	'SUBALBUMS'						=> 'Вложенные альбомы',
-	'SUBALBUM'						=> 'Вложенный альбом',	
-	
+	'SUBALBUM'						=> 'Вложенный альбом',
+
 	'THUMBNAIL_SIZE'				=> 'Размер миниатюры (точек)',
 	'TOTAL_COMMENTS_SPRINTF'		=> array(
 		0	=> 'Комментариев: <strong>0</strong>',
@@ -275,7 +275,7 @@ $lang = array_merge($lang, array(
 		2	=> 'Личных альбомов: <strong>%d</strong>',
 	),
 
-	'UNFAVORITE_IMAGE'				=> 'удалить из избранного',
+	'UNFAVORITE_IMAGE'				=> 'Удалить из избранного',
 	'UNFAVORITED_IMAGE'				=> 'Фотография удалена из избранного.',
 	'UNFAVORITED_IMAGES'			=> 'Фотографии удалены из избранного.',
 	'UNLOCK_IMAGE'					=> 'Разблокировать фото',
@@ -323,14 +323,14 @@ $lang = array_merge($lang, array(
 	'VIEW_SEARCH_SELF'				=> 'Ваши фото',
 	'VIEWING_ALBUM'					=> 'Просмотр альбома %s',
 	'VIEWING_IMAGE'					=> 'Просмотр фотографий из альбома %s',
-	
+
 	'WATCH_ALBUM'					=> 'Подписка на альбом',
 	'WATCH_IMAGE'					=> 'Подписка на комментарии',
 	'WATCH_PEGAS'					=> 'Подписка на новые личные альбомы',
 	'WATCHING_ALBUM'				=> 'Теперь вы будете получать уведомления о новых фото в этом альбоме.',
 	'WATCHING_IMAGE'				=> 'Теперь вы будете получать уведомления о новых комментариях к этому фото.',
 	'WATCHING_PEGAS'				=> 'Вы автоматически подписаны на все новые личные альбомы.',
-	
+
 	'YOUR_COMMENT'					=> 'Ваш комментарий',
 	'YOUR_PERSONAL_ALBUM'			=> 'Ваш личный альбом',
 	'YOUR_RATING'					=> 'Ваша оценка',

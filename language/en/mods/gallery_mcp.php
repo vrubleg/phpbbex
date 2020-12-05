@@ -61,9 +61,9 @@ $lang = array_merge($lang, array(
 	'QUEUE_A_UNAPPROVE2'			=> 'Unapprove image?',
 	'QUEUE_A_UNAPPROVE2_CONFIRM'	=> 'Are you sure, you want to unapprove this image?',
 
-	'QUEUE_STATUS_0'				=> 'The image is waiting for approval.',
-	'QUEUE_STATUS_1'				=> 'The image is approved.',
-	'QUEUE_STATUS_2'				=> 'The image is locked.',
+	'QUEUE_STATUS_0'				=> 'Waiting',
+	'QUEUE_STATUS_1'				=> 'Approved',
+	'QUEUE_STATUS_2'				=> 'Locked',
 
 	'QUEUES_A_APPROVE'				=> 'Approve images',
 	'QUEUES_A_APPROVE2'				=> 'Approve images?',

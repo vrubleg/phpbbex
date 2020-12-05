@@ -60,10 +60,10 @@ $lang = array_merge($lang, array(
 	'QUEUE_A_UNAPPROVE'				=> 'Отклонить фотографию',
 	'QUEUE_A_UNAPPROVE2'			=> 'Отклонить фотографию?',
 	'QUEUE_A_UNAPPROVE2_CONFIRM'	=> 'Подтвердите, что хотите отклонить эту фотографию.',
-	
-	'QUEUE_STATUS_0'				=> 'Это фото ожидает одобрения.',
-	'QUEUE_STATUS_1'				=> 'Это фото одобрено.',
-	'QUEUE_STATUS_2'				=> 'Это фото блокировано.',
+
+	'QUEUE_STATUS_0'				=> 'Ожидание',
+	'QUEUE_STATUS_1'				=> 'Одобрено',
+	'QUEUE_STATUS_2'				=> 'Блокировано',
 
 	'QUEUES_A_APPROVE'				=> 'Одобрить фотографии',
 	'QUEUES_A_APPROVE2'				=> 'Одобрить фотографии?',
