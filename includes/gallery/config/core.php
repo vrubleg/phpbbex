@@ -69,7 +69,7 @@ class phpbb_gallery_config_core
 
 		'gdlib_version'		=> 2,
 
-		'hotlinking_domains'	=> 'flying-bits.org',
+		'hotlinking_domains'	=> '',
 
 		'jpg_quality'			=> 100,
 
