@@ -443,7 +443,7 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 
 	$u_search = phpbb_gallery_url::append_sid('search', $u_sort_param);
 	$u_search .= ($search_id) ? '&amp;search_id=' . $search_id : '';
-	//@todo: 
+	//@todo:
 	$u_search .= ($search_terms != 'all') ? '&amp;terms=' . $search_terms : '';
 	$u_search .= ($u_hilit) ? '&amp;keywords=' . urlencode(htmlspecialchars_decode($keywords)) : '';
 	$u_search .= ($username) ? '&amp;username=' . urlencode(htmlspecialchars_decode($username)) : '';
@@ -678,7 +678,7 @@ $template->assign_vars(array(
 	'S_IN_SEARCH'			=> true,
 ));
 
-page_header($user->lang['GALLERY'] . ' &bull; ' . $user->lang['SEARCH'], false);
+page_header($user->lang['GALLERY'] . ' - ' . $user->lang['SEARCH'], false);
 
 $template->set_filenames(array(
 	'body' => 'gallery/search_body.html')
