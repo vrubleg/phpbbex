@@ -508,7 +508,7 @@ class phpbb_session
 	function update_browser_id()
 	{
 		global $db, $config;
-		
+
 		$user_id = $this->data['user_id'];
 		$agent = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 149));
 		$browser_id = request_var($config['cookie_name'] . '_bid', '', false, true);
@@ -1954,6 +1954,7 @@ class phpbb_user extends phpbb_session
 
 		// Disable board if the install/ directory is still present
 		// For the brave development army we do not care about this, else we need to comment out this everytime we develop locally
+		/*
 		if (!defined('DEBUG_EXTRA') && !defined('ADMIN_START') && !defined('IN_INSTALL') && !defined('IN_LOGIN') && file_exists($phpbb_root_path . 'install') && !is_file($phpbb_root_path . 'install'))
 		{
 			// Adjust the message slightly according to the permissions
@@ -1967,6 +1968,7 @@ class phpbb_user extends phpbb_session
 			}
 			trigger_error($message);
 		}
+		*/
 
 		// Is board disabled and user not an admin or moderator?
 		if ($config['board_disable'] && !defined('IN_LOGIN') && !$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_'))
