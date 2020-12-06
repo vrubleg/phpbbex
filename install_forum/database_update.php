@@ -1,12 +1,7 @@
 <?php
-/**
-*
-* @package install
-* @version $Id$
-* @copyright (c) 2006 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
-*/
+
+define('OLDEST_PHPBBEX_VERSION', '1.8.0');
+define('NEWEST_PHPBBEX_VERSION', '1.9.3');
 
 define('UPDATES_TO_VERSION', '3.0.14');
 
@@ -34,6 +29,15 @@ define('IN_INSTALL', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
+$config_path = $phpbb_root_path . 'config.' . $phpEx;
+$is_installed = file_exists($config_path) && strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false;
+
+if (!$is_installed)
+{
+	header('Location: ./');
+	exit();
+}
+
 require($phpbb_root_path . 'includes/startup.' . $phpEx);
 
 $updates_to_version = UPDATES_TO_VERSION;
@@ -47,7 +51,7 @@ include($phpbb_root_path . 'config.' . $phpEx);
 
 if (!defined('PHPBB_INSTALLED') || empty($dbms) || empty($acm_type))
 {
-	die("Please read: <a href='../docs/INSTALL.html'>INSTALL.html</a> before attempting to update.");
+	die('Error! Invalid config file.');
 }
 
 // Load Extensions
@@ -111,6 +115,45 @@ $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false);
 
 // We do not need this any longer, unset for safety purposes
 unset($dbpasswd);
+
+// Check phpBBex version.
+
+$sql = "SELECT config_value
+	FROM " . CONFIG_TABLE . "
+	WHERE config_name = 'phpbbex_version'";
+$result = $db->sql_query($sql);
+$row = $db->sql_fetchrow($result);
+$db->sql_freeresult($result);
+
+if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
+{
+	die('Error! Update database schema to at least phpBBex 1.8.0.');
+}
+
+if ($row && version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '<'))
+{
+	$sql = "UPDATE " . CONFIG_TABLE . "
+		SET config_value = '" . NEWEST_PHPBBEX_VERSION . "'
+		WHERE config_name = 'phpbbex_version'";
+	$db->sql_query($sql);
+	$cache->purge();
+}
+
+// Check phpBB version.
+
+$sql = "SELECT config_value
+	FROM " . CONFIG_TABLE . "
+	WHERE config_name = 'version'";
+$result = $db->sql_query($sql);
+$row = $db->sql_fetchrow($result);
+$db->sql_freeresult($result);
+
+if ($row && version_compare($row['config_value'], $updates_to_version, '>='))
+{
+	die('OK');
+}
+
+// Original code. One day it should be improved to be able to upgrade pure phpBB to phpBBex.
 
 $user->ip = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars($_SERVER['REMOTE_ADDR']) : '';
 $user->ip = (stripos($user->ip, '::ffff:') === 0) ? substr($user->ip, 7) : $user->ip;
@@ -219,33 +262,6 @@ $orig_version = $config['version'];
 if (empty($config['dbms_version']))
 {
 	set_config('dbms_version', $db->sql_server_info(true));
-}
-
-// Firebird update from Firebird 2.0 to 2.1+ required?
-if ($db->sql_layer == 'firebird')
-{
-	// We do not trust any PHP5 function enabled, we will simply test for a function new in 2.1
-	$db->sql_return_on_error(true);
-
-	$sql = 'SELECT 1 FROM RDB$DATABASE
-		WHERE BIN_AND(10, 1) = 0';
-	$result = $db->sql_query($sql);
-
-	if (!$result || $db->sql_error_triggered)
-	{
-		echo '<br /><br />';
-		echo '<h1>' . $lang['ERROR'] . '</h1><br />';
-
-		echo '<p>' . $lang['FIREBIRD_DBMS_UPDATE_REQUIRED'] . '</p>';
-
-		_print_footer();
-
-		exit_handler();
-		exit;
-	}
-
-	$db->sql_freeresult($result);
-	$db->sql_return_on_error(false);
 }
 
 // MySQL update from MySQL 3.x/4.x to > 4.1.x required?

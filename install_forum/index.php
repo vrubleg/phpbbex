@@ -1,26 +1,22 @@
 <?php
-/**
-*
-* @package install
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
-*/
 
-/**#@+
-* @ignore
-*/
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
-/**#@-*/
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-// Check PHP version
 if (version_compare(PHP_VERSION, '5.4', '<')) die('PHP 5.4+ is required.');
 if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE with UTF8 support is required.');
+
+$config_path = $phpbb_root_path . 'config.' . $phpEx;
+$is_installed = file_exists($config_path) && strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false;
+
+if ($is_installed)
+{
+	header('Location: ./../');
+	exit();
+}
 
 require($phpbb_root_path . 'includes/startup.' . $phpEx);
 
@@ -706,5 +702,3 @@ class module
 		return $user_select;
 	}
 }
-
-?>
