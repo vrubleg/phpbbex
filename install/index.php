@@ -10,7 +10,9 @@ if (version_compare(PHP_VERSION, '5.4', '<')) die('PHP 5.4+ is required.');
 if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE with UTF8 support is required.');
 
 $config_path = $phpbb_root_path . 'config.' . $phpEx;
-$is_installed = file_exists($config_path) && strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false;
+$is_installed = file_exists($config_path)
+	&& strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false
+	&& !file_exists($phpbb_root_path . 'cache/install_lock');
 
 if ($is_installed)
 {

@@ -30,11 +30,13 @@ $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
 $config_path = $phpbb_root_path . 'config.' . $phpEx;
-$is_installed = file_exists($config_path) && strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false;
+$is_installed = file_exists($config_path)
+	&& strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false
+	&& !file_exists($phpbb_root_path . 'cache/install_lock');
 
 if (!$is_installed)
 {
-	header('Location: ./');
+	header('Location: ./index.' . $phpEx);
 	exit();
 }
 
