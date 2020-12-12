@@ -63,8 +63,7 @@ class erk_config_repair
 		if (isset($_POST['submit']) && empty($error))
 		{
 			// Time to convert the data provided into a config file
-			$config_data = "<?php\n";
-			$config_data .= "// phpBB 3.0.x auto-generated configuration file\n// Do not change anything in this file!\n";
+			$config_data = "<?php\n\n";
 
 			$config_data_array = array(
 				'dbms'			=> $available_dbms[$data['dbms']]['DRIVER'],
@@ -87,7 +86,6 @@ class erk_config_repair
 			$config_data .= "\n@define('PHPBB_INSTALLED', true);\n";
 			$config_data .= "// @define('DEBUG', true);\n";
 			$config_data .= "// @define('DEBUG_EXTRA', true);\n";
-			$config_data .= '?' . '>'; // Done this to prevent highlighting editors getting confused!
 
 			// Assume it will work ... if nothing goes wrong below
 			$written = true;
