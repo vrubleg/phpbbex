@@ -14,6 +14,9 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+// Report all errors
+error_reporting(E_ALL);
+
 // Check PHP version
 if (version_compare(PHP_VERSION, '5.4', '<')) die('PHP 5.4+ is required.');
 if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE with UTF8 support is required.');
@@ -25,9 +28,6 @@ define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> &copy; 2015 <a href="
 require(dirname(__FILE__).'/../classes/autoloader.php');
 autoloader::init(dirname(__FILE__).'/../classes/');
 autoloader::add_path(dirname(__FILE__).'/../modules/', 'module');
-
-// Report all errors
-error_reporting(E_ALL);
 
 /**
  * Check if requested page uses a trailing path

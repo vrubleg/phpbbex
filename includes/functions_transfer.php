@@ -280,7 +280,7 @@ class ftp extends transfer
 		}
 
 		// Init some needed values
-		transfer::transfer();
+		parent::__construct();
 
 		return;
 	}
@@ -534,7 +534,7 @@ class ftp_fsock extends transfer
 		}
 
 		// Init some needed values
-		transfer::transfer();
+		parent::__construct();
 
 		return;
 	}

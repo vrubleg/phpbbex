@@ -43,7 +43,7 @@
 		<p>{WARNING_MSG}</p>
 	</div>
 	<!-- ENDIF -->
-	
+
 	<div class="errorbox" style="margin-top: 0;">
 		<h3>{L_NOTICE}</h3>
 		<p>{L_BACKUP_NOTICE}</p>
@@ -461,7 +461,7 @@
 	<!-- BEGIN data -->
 	<dl>
 		<dt><label for="{data.DATA}">{data.NAME}:</label><br /><span>{data.EXPLAIN}</span></dt>
-		<dd><input type="<!-- IF data.DATA == 'password' -->password<!-- ELSE -->text<!-- ENDIF -->" id="{data.DATA}" name="{data.DATA}" value="{data.DEFAULT}" /></dd>
+		<dd><input type="text" id="{data.DATA}" name="{data.DATA}" value="{data.DEFAULT}" /></dd>
 	</dl>
 	<!-- END data -->
 	</fieldset>
