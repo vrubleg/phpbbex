@@ -12,6 +12,10 @@ html {
 	/* Always show a scrollbar for short pages - stops the jump when the scrollbar appears. non-IE browsers */
 	height: 100%;
 	overflow-y: scroll;
+	/* Disable font boosting in mobile browsers. */
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	text-size-adjust: none;
 }
 
 body {
@@ -407,7 +411,7 @@ table.info tbody th {
 
 /* Misc layout styles
 ---------------------------------------- */
-/* column[1-2] styles are containers for two column layouts 
+/* column[1-2] styles are containers for two column layouts
    Also see tweaks.css */
 .column1 {
 	float: left;
