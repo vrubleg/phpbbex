@@ -634,6 +634,10 @@ td.name {
 
 /* General form styles
 ----------------------------------------*/
+button, input, textarea, select {
+	border-radius: 0;
+}
+
 fieldset {
 	margin: 15px 0;
 	padding: 10px;
