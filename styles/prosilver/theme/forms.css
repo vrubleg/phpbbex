@@ -3,6 +3,10 @@
 
 /* General form styles
 ----------------------------------------*/
+button, input, textarea, select {
+	border-radius: 0;
+}
+
 fieldset {
 	border-width: 0;
 	font-family: Verdana, Helvetica, Arial, sans-serif;
@@ -70,7 +74,7 @@ fieldset dl {
 }
 
 fieldset dt {
-	float: left;	
+	float: left;
 	width: 40%;
 	text-align: left;
 	display: block;

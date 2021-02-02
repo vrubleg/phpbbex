@@ -599,7 +599,7 @@ class acp_board
 			$cfg_array = utf8_normalize_nfc(request_var('config', array('' => ''), true));
 			foreach ($display_vars['vars'] as $config_name => $config_vars)
 			{
-				if (isset($cfg_array[$config_name]) && strpos($config_vars['type'], 'html') === 0)
+				if (isset($cfg_array[$config_name]) && isset($config_vars['type']) && strpos($config_vars['type'], 'html') === 0)
 				{
 					$cfg_array[$config_name] = htmlspecialchars_decode($cfg_array[$config_name]);
 				}
