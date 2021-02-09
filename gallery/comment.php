@@ -278,7 +278,7 @@ if ($mode == 'add')
 	{
 		if ($comment_id)
 		{
-			$comment_ary = generate_text_for_edit($comment_data['comment'], $comment_data['comment_uid'], $comment_data['comment_bitfield'], 7);
+			$comment_ary = generate_text_for_edit($comment_data['comment'], $comment_data['comment_uid'], 7);
 			$comment_plain = '[quote="' . $comment_data['comment_username'] . '"]' . $comment_ary['text'] . '[/quote]';
 		}
 		$sig_checked = $user->optionget('attachsig');
@@ -369,7 +369,7 @@ else if ($mode == 'edit')
 	{
 		$sig_checked = (bool) $comment_data['comment_signature'];
 
-		$comment_ary = generate_text_for_edit($comment_data['comment'], $comment_data['comment_uid'], $comment_data['comment_bitfield'], 7);
+		$comment_ary = generate_text_for_edit($comment_data['comment'], $comment_data['comment_uid'], 7);
 		$comment_plain = $comment_ary['text'];
 		$comment_username = $comment_data['comment_username'];
 	}
