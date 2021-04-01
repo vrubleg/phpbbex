@@ -822,7 +822,6 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 	$template->assign_vars(array(
 		'S_SHOW_ATTACH_BOX'	=> $show_attach_box,
 		'S_HAS_ATTACHMENTS'	=> sizeof($attachment_data),
-		'FILESIZE'			=> $config['max_filesize'],
 		'FILE_COMMENT'		=> (isset($filename_data['filecomment'])) ? $filename_data['filecomment'] : '',
 	));
 

@@ -1054,6 +1054,8 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 
 	$form_enctype = (@ini_get('file_uploads') == '0' || strtolower(@ini_get('file_uploads')) == 'off' || !$config['allow_pm_attach'] || !$auth->acl_get('u_pm_attach')) ? '' : ' enctype="multipart/form-data"';
 
+	$allowed_extension_sizes = get_allowed_extension_sizes(false);
+
 	// Start assigning vars for main posting page ...
 	$template->assign_vars(array(
 		'L_POST_A'					=> $page_title,
@@ -1094,7 +1096,8 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		'S_BBCODE_SPOILER'		=> $spoiler_status,
 		'S_BBCODE_URL'			=> $url_status,
 
-		'ALLOWED_EXTENSIONS_JSON'	=> json::encode(get_allowed_extension_sizes(false)),
+		'ALLOWED_EXTENSIONS'		=> implode(',', array_map(function ($ext) { return '.' . $ext; }, array_keys($allowed_extension_sizes))),
+		'ALLOWED_EXTENSIONS_JSON'	=> json::encode($allowed_extension_sizes),
 
 		'S_POST_ACTION'				=> $s_action,
 		'S_HIDDEN_ADDRESS_FIELD'	=> $s_hidden_address_field,

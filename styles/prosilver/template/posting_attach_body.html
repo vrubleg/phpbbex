@@ -7,7 +7,7 @@
 	<dl>
 		<dt><label for="fileupload">{L_FILENAME}:</label></dt>
 		<dd>
-			<input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" /> 
+			<input type="file" name="fileupload" id="fileupload" class="inputbox autowidth" accept="{ALLOWED_EXTENSIONS}" />
 			<input type="submit" name="add_file" value="{L_ADD_FILE}" class="button2" onclick="upload = true;" />
 			<input type="button" name="clear_file" value="{L_CLEAR}" class="button2 if_file_is_selected" />
 		</dd>
@@ -29,7 +29,7 @@
 			<dd><a href="{attach_row.U_VIEW_ATTACHMENT}">{attach_row.FILENAME}</a></dd>
 			<dd style="margin-top: 5px;">
 				<!-- IF S_INLINE_ATTACHMENT_OPTIONS --><input type="button" value="{L_PLACE_INLINE}" onclick="attach_inline({attach_row.ASSOC_INDEX}, '{attach_row.A_FILENAME}');" class="button2" />&nbsp; <!-- ENDIF -->
-				<input type="submit" name="delete_file[{attach_row.ASSOC_INDEX}]" value="{L_DELETE_FILE}" class="button2" />&nbsp; 
+				<input type="submit" name="delete_file[{attach_row.ASSOC_INDEX}]" value="{L_DELETE_FILE}" class="button2" />&nbsp;
 				<input type="submit" name="update_file[{attach_row.ASSOC_INDEX}]" value="{L_UPDATE_FILE}" class="button2 if_file_is_selected" />
 			</dd>
 		</dl>

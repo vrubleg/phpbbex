@@ -1,16 +1,5 @@
 <?php
-/** 
-*
-* @package phpBB3
-* @version $Id: quick_reply.php,v 1.6.4 2007/12/22 01:10:26 rxu Exp $
-* @copyright (c) 2005 phpBB Group 
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
-* Minimum Requirement: PHP 4.3.3
-*/
 
-/**
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -27,7 +16,7 @@ if ($config['allow_quick_' . $mode] && $s_quick_reply_display)
 {
 	$main_data = array();
 	$main_data = ($mode == 'reply') ? $topic_data : $forum_data;
-	
+
 	if ($auth->acl_get('f_' . $mode, $forum_id))
 	{
 		$s_quick_reply = true;
@@ -145,6 +134,8 @@ add_form_key('posting');
 $s_do_merge_allowed = $user->data['is_registered'] && $mode == 'reply' && $topic_data['topic_last_poster_id'] == $user->data['user_id'] && ($auth->acl_get('f_noapprove', $forum_id) || $auth->acl_get('m_approve', $forum_id));
 $s_do_merge_checked = $s_do_merge_allowed && ((time() - $topic_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
 
+$allowed_extension_sizes = get_allowed_extension_sizes($forum_id);
+
 // Send vars to template
 $template->assign_vars(array(
 	'S_QUICK_REPLY'			=> $s_quick_reply,
@@ -168,7 +159,7 @@ $template->assign_vars(array(
 	'L_ICON'					=> ($mode == 'reply') ? $user->lang['POST_ICON'] : $user->lang['TOPIC_ICON'],
 	'L_MESSAGE_BODY_EXPLAIN'	=> (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
 
-	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered']) ? true : false,	
+	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered']) ? true : false,
 	'S_SHOW_TOPIC_ICONS'		=> $s_topic_icons,
 	'S_SUBJECT_ALLOWED'			=> ($mode == 'post') || $config['allow_reply_subject'],
 	'S_BBCODE_ALLOWED'			=> $bbcode_status,
@@ -188,7 +179,8 @@ $template->assign_vars(array(
 	'S_DO_MERGE_ALLOWED'		=> $s_do_merge_allowed,
 	'S_DO_MERGE_CHECKED'		=> $s_do_merge_checked ? ' checked="checked"' : '',
 
-	'ALLOWED_EXTENSIONS_JSON'	=> json::encode(get_allowed_extension_sizes($forum_id)),
+	'ALLOWED_EXTENSIONS'		=> implode(',', array_map(function ($ext) { return '.' . $ext; }, array_keys($allowed_extension_sizes))),
+	'ALLOWED_EXTENSIONS_JSON'	=> json::encode($allowed_extension_sizes),
 
 	'S_BBCODE_IMG'			=> $img_status,
 	'S_BBCODE_URL'			=> $url_status,
@@ -204,4 +196,3 @@ $template->assign_vars(array(
 display_custom_bbcodes();
 
 return true;
-?>
