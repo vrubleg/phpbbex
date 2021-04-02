@@ -14,21 +14,6 @@
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
-
-
-// Thank you sun.
-if (isset($_SERVER['CONTENT_TYPE']))
-{
-	if ($_SERVER['CONTENT_TYPE'] === 'application/x-java-archive')
-	{
-		exit;
-	}
-}
-else if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'Java') !== false)
-{
-	exit;
-}
-
 include($phpbb_root_path . 'common.' . $phpEx);
 
 $download_id = request_var('id', 0);
@@ -203,52 +188,23 @@ else if (($display_cat == ATTACHMENT_CATEGORY_NONE || $display_cat == ATTACHMENT
 	$db->sql_query($sql);
 }
 
-if ($display_cat == ATTACHMENT_CATEGORY_IMAGE && $mode === 'view' && (strpos($attachment['mimetype'], 'image') === 0) && (strpos(strtolower($user->browser), 'msie') !== false) && !phpbb_is_greater_ie_version($user->browser, 7))
+// Determine the 'presenting'-method
+if ($download_mode == PHYSICAL_LINK)
 {
-	wrap_img_in_html(append_sid($phpbb_root_path . 'download/file.' . $phpEx, 'id=' . $attachment['attach_id']), $attachment['real_filename']);
+	// This presenting method should no longer be used
+	if (!@is_dir($phpbb_root_path . $config['upload_path']))
+	{
+		send_status_line(500, 'Internal Server Error');
+		trigger_error($user->lang['PHYSICAL_DOWNLOAD_NOT_POSSIBLE']);
+	}
+
+	redirect($phpbb_root_path . $config['upload_path'] . '/' . $attachment['physical_filename']);
 	file_gc();
 }
 else
 {
-	// Determine the 'presenting'-method
-	if ($download_mode == PHYSICAL_LINK)
-	{
-		// This presenting method should no longer be used
-		if (!@is_dir($phpbb_root_path . $config['upload_path']))
-		{
-			send_status_line(500, 'Internal Server Error');
-			trigger_error($user->lang['PHYSICAL_DOWNLOAD_NOT_POSSIBLE']);
-		}
-
-		redirect($phpbb_root_path . $config['upload_path'] . '/' . $attachment['physical_filename']);
-		file_gc();
-	}
-	else
-	{
-		send_file_to_browser($attachment, $config['upload_path'], $display_cat);
-		file_gc();
-	}
-}
-
-/**
-* Wraps an url into a simple html page. Used to display attachments in IE.
-* this is a workaround for now; might be moved to template system later
-* direct any complaints to 1 Microsoft Way, Redmond
-*/
-function wrap_img_in_html($src, $title)
-{
-	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-Strict.dtd">';
-	echo '<html>';
-	echo '<head>';
-	echo '<meta http-equiv="content-type" content="text/html; charset=UTF-8" />';
-	echo '<title>' . $title . '</title>';
-	echo '</head>';
-	echo '<body>';
-	echo '<div>';
-	echo '<img src="' . $src . '" alt="' . $title . '" />';
-	echo '</div>';
-	echo '</body>';
-	echo '</html>';
+	send_file_to_browser($attachment, $config['upload_path'], $display_cat);
+	file_gc();
 }
 
 /**
@@ -280,7 +236,7 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 	// Please do not change this, it is a security precaution
 	if ($category != ATTACHMENT_CATEGORY_IMAGE || strpos($attachment['mimetype'], 'image') !== 0)
 	{
-		$attachment['mimetype'] = (strpos(strtolower($user->browser), 'msie') !== false || strpos(strtolower($user->browser), 'opera') !== false) ? 'application/octetstream' : 'application/octet-stream';
+		$attachment['mimetype'] = 'application/octet-stream';
 	}
 
 	// Forced MIME type for audio and video files
@@ -331,35 +287,15 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 	* </code>
 	*/
 
-	// Send out the Headers. Do not set Content-Disposition to inline please, it is a security measure for users using the Internet Explorer.
+	// Send out the Headers.
 	header('Content-Type: ' . $attachment['mimetype']);
-
-	if (phpbb_is_greater_ie_version($user->browser, 7))
-	{
-		header('X-Content-Type-Options: nosniff');
-	}
-
-	if (empty($user->browser) || ((strpos(strtolower($user->browser), 'msie') !== false) && !phpbb_is_greater_ie_version($user->browser, 7)))
-	{
-		header('Content-Disposition: attachment; ' . header_filename(htmlspecialchars_decode($attachment['real_filename'])));
-		if (empty($user->browser) || (strpos(strtolower($user->browser), 'msie 6.0') !== false))
-		{
-			header('expires: -1');
-		}
-	}
-	else
-	{
-		header('Content-Disposition: ' . ((strpos($attachment['mimetype'], 'image') === 0 || strpos($attachment['mimetype'], 'audio') === 0 || strpos($attachment['mimetype'], 'video') === 0) ? 'inline' : 'attachment') . '; ' . header_filename(htmlspecialchars_decode($attachment['real_filename'])));
-		if (phpbb_is_greater_ie_version($user->browser, 7) && (strpos($attachment['mimetype'], 'image') !== 0))
-		{
-			header('X-Download-Options: noopen');
-		}
-	}
+	header('X-Content-Type-Options: nosniff');
+	header('Content-Disposition: ' . ((strpos($attachment['mimetype'], 'image') === 0 || strpos($attachment['mimetype'], 'audio') === 0 || strpos($attachment['mimetype'], 'video') === 0) ? 'inline' : 'attachment') . "; filename*=UTF-8''" . rawurlencode(htmlspecialchars_decode($attachment['real_filename'])));
 
 	// Close the db connection before sending the file
 	$db->sql_close();
 
-	if (!set_modified_headers($attachment['filetime'], $user->browser))
+	if (!set_modified_headers($attachment['filetime']))
 	{
 		// Send Content-Length only if set_modified_headers() does not send
 		// status 304 - Not Modified
@@ -389,24 +325,6 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 		flush();
 	}
 	file_gc();
-}
-
-/**
-* Get a browser friendly UTF-8 encoded filename
-*/
-function header_filename($file)
-{
-	$user_agent = (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
-
-	// There be dragons here.
-	// Not many follows the RFC...
-	if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
-	{
-		return "filename=" . rawurlencode($file);
-	}
-
-	// follow the RFC for extended filename for the rest
-	return "filename*=UTF-8''" . rawurlencode($file);
 }
 
 /**
@@ -524,25 +442,21 @@ function download_allowed()
 * Check if the browser has the file already and set the appropriate headers-
 * @returns false if a resend is in order.
 */
-function set_modified_headers($stamp, $browser)
+function set_modified_headers($stamp)
 {
 	// let's see if we have to send the file at all
-	$last_load 	=  isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? strtotime(trim($_SERVER['HTTP_IF_MODIFIED_SINCE'])) : false;
-
-	if (strpos(strtolower($browser), 'msie 6.0') === false && !phpbb_is_greater_ie_version($browser, 7))
+	$last_load = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? strtotime(trim($_SERVER['HTTP_IF_MODIFIED_SINCE'])) : false;
+	if ($last_load !== false && $last_load >= $stamp)
 	{
-		if ($last_load !== false && $last_load >= $stamp)
-		{
-			send_status_line(304, 'Not Modified');
-			// seems that we need those too ... browsers
-			header('Pragma: public');
-			header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 31536000));
-			return true;
-		}
-		else
-		{
-			header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $stamp) . ' GMT');
-		}
+		send_status_line(304, 'Not Modified');
+		// seems that we need those too ... browsers
+		header('Pragma: public');
+		header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 31536000));
+		return true;
+	}
+	else
+	{
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $stamp) . ' GMT');
 	}
 	return false;
 }
@@ -557,26 +471,3 @@ function file_gc()
 	$db->sql_close();
 	exit;
 }
-
-/**
-* Check if the browser is internet explorer version 7+
-*
-* @param string $user_agent	User agent HTTP header
-* @param int $version IE version to check against
-*
-* @return bool true if internet explorer version is greater than $version
-*/
-function phpbb_is_greater_ie_version($user_agent, $version)
-{
-	if (preg_match('/msie (\d+)/', strtolower($user_agent), $matches))
-	{
-		$ie_version = (int) $matches[1];
-		return ($ie_version > $version);
-	}
-	else
-	{
-		return false;
-	}
-}
-
-?>
