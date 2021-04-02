@@ -941,6 +941,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		{
 			$l_downloaded_viewed = $download_link = '';
 			$display_cat = $extensions[$attachment['extension']]['display_cat'];
+			if ($display_cat >= ATTACHMENT_CATEGORY_COUNT) { $display_cat = ATTACHMENT_CATEGORY_NONE; }
 
 			if ($display_cat == ATTACHMENT_CATEGORY_IMAGE)
 			{
@@ -976,11 +977,6 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 
 			// Make some descisions based on user options being set.
 			if (($display_cat == ATTACHMENT_CATEGORY_IMAGE || $display_cat == ATTACHMENT_CATEGORY_THUMB) && !$user->optionget('viewimg'))
-			{
-				$display_cat = ATTACHMENT_CATEGORY_NONE;
-			}
-
-			if ($display_cat == ATTACHMENT_CATEGORY_FLASH && !$user->optionget('viewflash'))
 			{
 				$display_cat = ATTACHMENT_CATEGORY_NONE;
 			}
@@ -1029,23 +1025,6 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 						'ATTACH_ID'		=> $attachment['attach_id'],
 						'MIME'			=> get_attachment_mime($display_cat, $attachment['extension']),
 					);
-				break;
-
-				// Macromedia Flash Files
-				case ATTACHMENT_CATEGORY_FLASH:
-					list($width, $height) = @getimagesize($filename);
-
-					$l_downloaded_viewed = 'VIEWED_COUNT';
-
-					$block_array += array(
-						'S_FLASH_FILE'	=> true,
-						'WIDTH'			=> $width,
-						'HEIGHT'		=> $height,
-						'U_VIEW_LINK'	=> $download_link . '&amp;view=1',
-					);
-
-					// Viewed/Heared File ... update the download count
-					$update_count[] = $attachment['attach_id'];
 				break;
 
 				default:
@@ -1135,8 +1114,8 @@ function extension_allowed($forum_id, $extension, &$extensions)
 * @param string $string The text to truncate to the given length. String is specialchared.
 * @param int $max_length Maximum length of string (multibyte character count as 1 char / Html entity count as 1 char)
 * @param int $max_store_length Maximum character length of string (multibyte character count as 1 char / Html entity count as entity chars).
-* @param bool $allow_reply Allow Re: in front of string 
-* 	NOTE: This parameter can cause undesired behavior (returning strings longer than $max_store_length) and is deprecated. 
+* @param bool $allow_reply Allow Re: in front of string
+* 	NOTE: This parameter can cause undesired behavior (returning strings longer than $max_store_length) and is deprecated.
 * @param string $append String to be appended
 */
 function truncate_string($string, $max_length = 60, $max_store_length = 255, $allow_reply = false, $append = '')

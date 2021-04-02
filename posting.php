@@ -1166,7 +1166,7 @@ if ($submit || $preview || $refresh)
 				if ($post_data['topic_first_post_show'] != $topic_first_post_show && $user->data['is_registered'])
 				{
 					$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET topic_first_post_show = ' . (($topic_first_post_show) ? 1 : 0) . " 
+						SET topic_first_post_show = ' . (($topic_first_post_show) ? 1 : 0) . "
 						WHERE topic_id = $topic_id";
 					$db->sql_query($sql);
 				}
@@ -1462,6 +1462,8 @@ add_form_key('posting');
 $s_do_merge_allowed = $user->data['is_registered'] && ($mode == 'reply' || $mode == 'quote') && $post_data['topic_last_poster_id'] == $user->data['user_id'] && ($auth->acl_get('f_noapprove', $forum_id) || $auth->acl_get('m_approve', $forum_id));
 $s_do_merge_checked = $s_do_merge_allowed && (($current_time - $post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
 
+$allowed_extension_sizes = get_allowed_extension_sizes($forum_id);
+
 // Start assigning vars for main posting page ...
 $template->assign_vars(array(
 	'L_POST_A'					=> $page_title,
@@ -1519,13 +1521,14 @@ $template->assign_vars(array(
 	'S_HAS_DRAFTS'				=> ($auth->acl_get('u_savedrafts') && $user->data['is_registered'] && $post_data['drafts']) ? true : false,
 	'S_FORM_ENCTYPE'			=> $form_enctype,
 
-	'S_FIRST_POST_SHOW_ALLOWED'		=> $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),
-	'S_FIRST_POST_SHOW_CHECKED'		=> ($first_post_show_checked) ? ' checked="checked"' : '',
+	'S_FIRST_POST_SHOW_ALLOWED'	=> $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),
+	'S_FIRST_POST_SHOW_CHECKED'	=> ($first_post_show_checked) ? ' checked="checked"' : '',
 
-	'S_DO_MERGE_ALLOWED'			=> $s_do_merge_allowed,
-	'S_DO_MERGE_CHECKED'			=> $s_do_merge_checked ? ' checked="checked"' : '',
+	'S_DO_MERGE_ALLOWED'		=> $s_do_merge_allowed,
+	'S_DO_MERGE_CHECKED'		=> $s_do_merge_checked ? ' checked="checked"' : '',
 
-	'ALLOWED_EXTENSIONS_JSON'		=> json::encode(get_allowed_extension_sizes($forum_id)),
+	'ALLOWED_EXTENSIONS'		=> implode(',', array_map(function ($ext) { return '.' . $ext; }, array_keys($allowed_extension_sizes))),
+	'ALLOWED_EXTENSIONS_JSON'	=> json::encode($allowed_extension_sizes),
 
 	'S_BBCODE_IMG'			=> $img_status,
 	'S_BBCODE_URL'			=> $url_status,

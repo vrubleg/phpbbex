@@ -431,6 +431,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	}
 
 	$cat_id = (isset($extensions[$file->get('extension')]['display_cat'])) ? $extensions[$file->get('extension')]['display_cat'] : ATTACHMENT_CATEGORY_NONE;
+	if ($cat_id >= ATTACHMENT_CATEGORY_COUNT) { $cat_id = ATTACHMENT_CATEGORY_NONE; }
 
 	// Do we have to create a thumbnail?
 	$filedata['thumbnail'] = ($cat_id == ATTACHMENT_CATEGORY_IMAGE && $config['img_create_thumbnail']) ? 1 : 0;
@@ -827,7 +828,6 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 	$template->assign_vars(array(
 		'S_SHOW_ATTACH_BOX'	=> $show_attach_box,
 		'S_HAS_ATTACHMENTS'	=> sizeof($attachment_data),
-		'FILESIZE'			=> $config['max_filesize'],
 		'FILE_COMMENT'		=> (isset($filename_data['filecomment'])) ? $filename_data['filecomment'] : '',
 	));
 

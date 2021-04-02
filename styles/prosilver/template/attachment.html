@@ -29,11 +29,9 @@
 		<!-- ENDIF -->
 
 
-		<!-- IF _file.S_AUDIO_FILE or _file.S_VIDEO_FILE or _file.S_FLASH_FILE -->
+		<!-- IF _file.S_AUDIO_FILE or _file.S_VIDEO_FILE -->
 		<dl class="file">
 			<dt>
-
-			<!-- IF _file.S_AUDIO_FILE or _file.S_VIDEO_FILE -->
 				<script>
 				if (typeof mejs == 'undefined')
 				{
@@ -61,18 +59,6 @@
 				});
 				</script>
 				<!-- ENDIF -->
-			<!-- ELSEIF _file.S_FLASH_FILE -->
-				<object classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000" width="{_file.WIDTH}" height="{_file.HEIGHT}">
-					<param name="movie" value="{_file.U_VIEW_LINK}" />
-					<param name="play" value="true" />
-					<param name="loop" value="true" />
-					<param name="quality" value="high" />
-					<param name="allowScriptAccess" value="never" />
-					<param name="allowNetworking" value="internal" />
-					<embed src="{_file.U_VIEW_LINK}" type="application/x-shockwave-flash" width="{_file.WIDTH}" height="{_file.HEIGHT}" play="true" loop="true" quality="high" allowscriptaccess="never" allownetworking="internal"></embed>
-				</object>
-			<!-- ENDIF -->
-
 			</dt>
 			<!-- IF _file.COMMENT --><dd><em>{_file.COMMENT}</em></dd><!-- ENDIF -->
 			<dd class="hide-in-inline"><a href="{_file.U_DOWNLOAD_LINK}">{_file.DOWNLOAD_NAME}</a> ({_file.FILESIZE} {_file.SIZE_LANG}) {_file.L_DOWNLOAD_COUNT}</dd>

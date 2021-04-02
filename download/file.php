@@ -183,13 +183,9 @@ if (!$attachment)
 
 $attachment['physical_filename'] = utf8_basename($attachment['physical_filename']);
 $display_cat = $extensions[$attachment['extension']]['display_cat'];
+if ($display_cat >= ATTACHMENT_CATEGORY_COUNT) { $display_cat = ATTACHMENT_CATEGORY_NONE; }
 
 if (($display_cat == ATTACHMENT_CATEGORY_IMAGE || $display_cat == ATTACHMENT_CATEGORY_THUMB) && !$user->optionget('viewimg'))
-{
-	$display_cat = ATTACHMENT_CATEGORY_NONE;
-}
-
-if ($display_cat == ATTACHMENT_CATEGORY_FLASH && !$user->optionget('viewflash'))
 {
 	$display_cat = ATTACHMENT_CATEGORY_NONE;
 }
@@ -268,8 +264,8 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 	{
 		$image_file = substr($attachment['physical_filename'],6);
 		include_once("../includes/functions_posting.php");
-		if (! create_thumbnail($phpbb_root_path . $upload_dir . '/' . $image_file, $filename, '')) 
-		{ // disable thumbnail 
+		if (! create_thumbnail($phpbb_root_path . $upload_dir . '/' . $image_file, $filename, ''))
+		{ // disable thumbnail
 			$db->sql_query('UPDATE ' . ATTACHMENTS_TABLE . ' SET thumbnail = 0 WHERE attach_id = ' . $attachment['attach_id']);
 		};
 	};
@@ -337,34 +333,26 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 
 	// Send out the Headers. Do not set Content-Disposition to inline please, it is a security measure for users using the Internet Explorer.
 	header('Content-Type: ' . $attachment['mimetype']);
-		
+
 	if (phpbb_is_greater_ie_version($user->browser, 7))
 	{
 		header('X-Content-Type-Options: nosniff');
 	}
 
-	if ($category == ATTACHMENT_CATEGORY_FLASH && request_var('view', 0) === 1)
+	if (empty($user->browser) || ((strpos(strtolower($user->browser), 'msie') !== false) && !phpbb_is_greater_ie_version($user->browser, 7)))
 	{
-		// We use content-disposition: inline for flash files and view=1 to let it correctly play with flash player 10 - any other disposition will fail to play inline
-		header('Content-Disposition: inline');
+		header('Content-Disposition: attachment; ' . header_filename(htmlspecialchars_decode($attachment['real_filename'])));
+		if (empty($user->browser) || (strpos(strtolower($user->browser), 'msie 6.0') !== false))
+		{
+			header('expires: -1');
+		}
 	}
 	else
 	{
-		if (empty($user->browser) || ((strpos(strtolower($user->browser), 'msie') !== false) && !phpbb_is_greater_ie_version($user->browser, 7)))
+		header('Content-Disposition: ' . ((strpos($attachment['mimetype'], 'image') === 0 || strpos($attachment['mimetype'], 'audio') === 0 || strpos($attachment['mimetype'], 'video') === 0) ? 'inline' : 'attachment') . '; ' . header_filename(htmlspecialchars_decode($attachment['real_filename'])));
+		if (phpbb_is_greater_ie_version($user->browser, 7) && (strpos($attachment['mimetype'], 'image') !== 0))
 		{
-			header('Content-Disposition: attachment; ' . header_filename(htmlspecialchars_decode($attachment['real_filename'])));
-			if (empty($user->browser) || (strpos(strtolower($user->browser), 'msie 6.0') !== false))
-			{
-				header('expires: -1');
-			}
-		}
-		else
-		{
-			header('Content-Disposition: ' . ((strpos($attachment['mimetype'], 'image') === 0 || strpos($attachment['mimetype'], 'audio') === 0 || strpos($attachment['mimetype'], 'video') === 0) ? 'inline' : 'attachment') . '; ' . header_filename(htmlspecialchars_decode($attachment['real_filename'])));
-			if (phpbb_is_greater_ie_version($user->browser, 7) && (strpos($attachment['mimetype'], 'image') !== 0))
-			{
-				header('X-Download-Options: noopen');
-			}
+			header('X-Download-Options: noopen');
 		}
 	}
 
@@ -540,7 +528,7 @@ function set_modified_headers($stamp, $browser)
 {
 	// let's see if we have to send the file at all
 	$last_load 	=  isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? strtotime(trim($_SERVER['HTTP_IF_MODIFIED_SINCE'])) : false;
-		
+
 	if (strpos(strtolower($browser), 'msie 6.0') === false && !phpbb_is_greater_ie_version($browser, 7))
 	{
 		if ($last_load !== false && $last_load >= $stamp)
