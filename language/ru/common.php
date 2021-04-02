@@ -713,7 +713,7 @@ $lang = array_merge($lang, array(
 	'WATCH_TOPIC_DETAILED'	=> 'Вы действительно хотите подписаться на тему «%s»?',
 	'WELCOME_SUBJECT'	=> 'Добро пожаловать на форум «%s»',
 	'WEBSITE'			=> 'Сайт',
-	'WHOIS'				=> 'Информация об IP-адресе',
+	'WHOIS'				=> 'Whois',
 	'WHO_IS_ONLINE'		=> 'Кто сейчас на форуме',
 	'WRONG_PASSWORD'	=> 'Вы ввели неверный пароль.',
 
