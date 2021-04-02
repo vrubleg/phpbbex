@@ -166,7 +166,7 @@ define('ATTACHMENT_CATEGORY_IMAGE', 1); // Inline Images
 define('ATTACHMENT_CATEGORY_VIDEO', 2); // HTML5 <video>
 define('ATTACHMENT_CATEGORY_AUDIO', 3); // HTML5 <audio>
 define('ATTACHMENT_CATEGORY_THUMB', 4); // Not used within the database, only while displaying posts
-define('ATTACHMENT_CATEGORY_FLASH', 5); // Flash/SWF files
+define('ATTACHMENT_CATEGORY_COUNT', 5); // Count of supported categories
 
 // BBCode UID length
 define('BBCODE_UID_LEN', 8);

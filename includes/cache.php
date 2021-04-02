@@ -197,7 +197,7 @@ class phpbb_cache extends acm
 				$extension = strtolower(trim($row['extension']));
 
 				$extensions[$extension] = array(
-					'display_cat'	=> (int) $row['cat_id'],
+					'display_cat'	=> ($row['cat_id'] < ATTACHMENT_CATEGORY_COUNT) ? intval($row['cat_id']) : ATTACHMENT_CATEGORY_NONE,
 					'download_mode'	=> (int) $row['download_mode'],
 					'upload_icon'	=> trim($row['upload_icon']),
 					'max_filesize'	=> (int) $row['max_filesize'],

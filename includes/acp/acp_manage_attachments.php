@@ -1,10 +1,10 @@
 <?php
-/** 
+/**
 *
 * @package acp
 * @version $Id: acp_manage_attachments.php,v 1.04 2008/03/14 19:19:47 rxu Exp $
-* @copyright (c) 2005 phpBB Group 
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+* @copyright (c) 2005 phpBB Group
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
@@ -14,7 +14,7 @@
 class acp_manage_attachments
 {
 	var $u_action;
-	
+
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
@@ -52,12 +52,12 @@ class acp_manage_attachments
 			$delete_files = (isset($_POST['delete'])) ? array_keys(request_var('delete', array('' => 0))) : array();
 			$add_files = (isset($_POST['add'])) ? array_keys(request_var('add', array('' => 0))) : array();
 			$post_ids = request_var('post_id', array('' => 0));
-			
+
 			$current_post_ids = request_var('current_post_id', array('' => 0));
 			$current_topic_ids = request_var('current_topic_id', array('' => 0));
 			$next_post_ids = $post_ids;
 			$unset_topic_ids = $unset_post_ids = array();
-			
+
 
 			if (sizeof($delete_files) && sizeof($add_files))
 			{
@@ -74,7 +74,7 @@ class acp_manage_attachments
 			if (sizeof($add_files))
 			{
 				$unset_post_ids = array_diff($current_post_ids, $next_post_ids);
-				
+
 				$sql = 'SELECT topic_id
 					FROM ' . POSTS_TABLE . '
 					WHERE ' . $db->sql_in_set('post_id', $next_post_ids);
@@ -184,7 +184,7 @@ class acp_manage_attachments
 						SET post_attachment = 1
 						WHERE post_id = ' . $post_row['post_id'];
 					$db->sql_query($sql);
-					
+
 					$sql = 'UPDATE ' . TOPICS_TABLE . '
 						SET topic_attachment = 1
 						WHERE topic_id = ' . $post_row['topic_id'];
@@ -205,7 +205,7 @@ class acp_manage_attachments
 							WHERE ' . $db->sql_in_set('topic_id', $unset_topic_ids);
 						$db->sql_query($sql);
 					}
-					
+
 					add_log('admin', 'LOG_ATTACH_REASSIGNED', $post_row['post_id'], $row['real_filename']);
 				}
 				$db->sql_freeresult($result);
@@ -233,7 +233,7 @@ class acp_manage_attachments
 		$num_files = (int) $row['num_files'];
 		$total_size = (int) $row['total_size'];
 		$total_size = ($total_size >= 1048576) ? sprintf('%.2f ' . $user->lang['MB'], ($total_size / 1048576)) : (($total_size >= 1024) ? sprintf('%.2f ' . $user->lang['KB'], ($total_size / 1024)) : sprintf('%.2f ' . $user->lang['BYTES'], $total_size));
-		$db->sql_freeresult($result);		
+		$db->sql_freeresult($result);
 
 		// Make sure $start is set to the last page if it exceeds the amount
 		if ($start < 0 || $start > $num_files)
@@ -266,13 +266,13 @@ class acp_manage_attachments
 			$sql_sort_order = $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC') . $sql_sort_anchor;
 			$sql_start = $start;
 		}
-		
+
 		$attachments_list = array();
 
 		// Just get the files
 		$sql = 'SELECT a.*, u.username, u.user_colour, t.topic_title
-			FROM ' . ATTACHMENTS_TABLE . ' a 
-			LEFT JOIN ' . USERS_TABLE . ' u ON (u.user_id = a.poster_id) 
+			FROM ' . ATTACHMENTS_TABLE . ' a
+			LEFT JOIN ' . USERS_TABLE . ' u ON (u.user_id = a.poster_id)
 			LEFT JOIN ' . TOPICS_TABLE . " t ON (a.topic_id = t.topic_id AND a.in_message = 0)
 				WHERE a.is_orphan = 0
 					$limit_filetime
@@ -311,6 +311,7 @@ class acp_manage_attachments
 
 			$row['extension'] = strtolower(trim($row['extension']));
 			$display_cat = $extensions[$row['extension']]['display_cat'];
+			if ($display_cat >= ATTACHMENT_CATEGORY_COUNT) { $display_cat = ATTACHMENT_CATEGORY_NONE; }
 			$l_downloaded_viewed = ($display_cat == ATTACHMENT_CATEGORY_NONE) ? 'DOWNLOAD_COUNT' : 'VIEWED_COUNT';
 			$l_download_count = (!isset($row['download_count']) || $row['download_count'] == 0) ? $user->lang[$l_downloaded_viewed . '_NONE'] : (($row['download_count'] == 1) ? sprintf($user->lang[$l_downloaded_viewed], $row['download_count']) : sprintf($user->lang[$l_downloaded_viewed . 'S'], $row['download_count']));
 
@@ -326,7 +327,7 @@ class acp_manage_attachments
 				'POST_ID'			=> $row['post_msg_id'],
 				'TOPIC_ID'			=> $row['topic_id'],
 				'POST_IDS'			=> (!empty($post_ids[$row['attach_id']])) ? $post_ids[$row['attach_id']] : '',
-				
+
 				'L_DOWNLOAD_COUNT'	=> $l_download_count,
 
 				'S_IN_MESSAGE'		=> $row['in_message'],

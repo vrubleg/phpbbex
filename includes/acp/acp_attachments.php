@@ -591,7 +591,6 @@ class acp_attachments
 					ATTACHMENT_CATEGORY_IMAGE		=> $user->lang['CAT_IMAGES'],
 					ATTACHMENT_CATEGORY_VIDEO		=> $user->lang['CAT_VIDEO_FILES'],
 					ATTACHMENT_CATEGORY_AUDIO		=> $user->lang['CAT_AUDIO_FILES'],
-					ATTACHMENT_CATEGORY_FLASH		=> $user->lang['CAT_FLASH_FILES'],
 				);
 
 				$group_id = request_var('g', 0);
@@ -853,6 +852,7 @@ class acp_attachments
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$s_add_spacer = ($old_allow_group != $row['allow_group'] || $old_allow_pm != $row['allow_in_pm']) ? true : false;
+					$row['cat_id'] = ($row['cat_id'] < ATTACHMENT_CATEGORY_COUNT) ? intval($row['cat_id']) : ATTACHMENT_CATEGORY_NONE;
 
 					$template->assign_block_vars('groups', array(
 						'S_ADD_SPACER'		=> $s_add_spacer,
@@ -1072,8 +1072,9 @@ class acp_attachments
 			ATTACHMENT_CATEGORY_IMAGE		=> $user->lang['CAT_IMAGES'],
 			ATTACHMENT_CATEGORY_VIDEO		=> $user->lang['CAT_VIDEO_FILES'],
 			ATTACHMENT_CATEGORY_AUDIO		=> $user->lang['CAT_AUDIO_FILES'],
-			ATTACHMENT_CATEGORY_FLASH		=> $user->lang['CAT_FLASH_FILES'],
 		);
+
+		$cat_type = ATTACHMENT_CATEGORY_NONE;
 
 		if ($group_id)
 		{
@@ -1082,13 +1083,12 @@ class acp_attachments
 				WHERE group_id = ' . (int) $group_id;
 			$result = $db->sql_query($sql);
 
-			$cat_type = (!($row = $db->sql_fetchrow($result))) ? ATTACHMENT_CATEGORY_NONE : $row['cat_id'];
+			if ($row = $db->sql_fetchrow($result))
+			{
+				$cat_type = ($row['cat_id'] < ATTACHMENT_CATEGORY_COUNT) ? intval($row['cat_id']) : ATTACHMENT_CATEGORY_NONE;
+			}
 
 			$db->sql_freeresult($result);
-		}
-		else
-		{
-			$cat_type = ATTACHMENT_CATEGORY_NONE;
 		}
 
 		$group_select = '<select name="' . $select_name . '"' . (($key) ? ' id="' . $key . '"' : '') . '>';

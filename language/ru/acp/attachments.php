@@ -66,7 +66,6 @@ $lang = array_merge($lang, array(
 	'ATTACH_QUOTA_EXPLAIN'				=> 'Максимально доступное дисковое пространство для вложений. Значение 0 соответствует неограниченному размеру.',
 	'ATTACH_TO_POST'					=> 'Прикрепить файл к сообщению',
 
-	'CAT_FLASH_FILES'			=> 'Файлы Flash',
 	'CAT_IMAGES'				=> 'Рисунки',
 	'CAT_AUDIO_FILES'			=> 'HTML5 аудио',
 	'CAT_VIDEO_FILES'			=> 'HTML5 видео',
@@ -99,7 +98,6 @@ $lang = array_merge($lang, array(
 	'EXT_GROUP_ARCHIVES'			=> 'Архивы',
 	'EXT_GROUP_DOCUMENTS'			=> 'Документы',
 	'EXT_GROUP_DOWNLOADABLE_FILES'	=> 'Скачиваемые файлы',
-	'EXT_GROUP_FLASH_FILES'			=> 'Файлы Flash',
 	'EXT_GROUP_IMAGES'				=> 'Изображения',
 	'EXT_GROUP_PLAIN_TEXT'			=> 'Текстовые файлы',
 	'EXT_GROUP_AUDIO'				=> 'HTML5 аудио',
