@@ -95,6 +95,9 @@ class dbal_mysql extends dbal
 							}
 						}
 
+						// Remove incompatible modes.
+						$modes = array_diff($modes, ['ONLY_FULL_GROUP_BY']);
+
 						$mode = implode(',', $modes);
 						@mysql_query("SET SESSION sql_mode='{$mode}'", $this->db_connect_id);
 					}

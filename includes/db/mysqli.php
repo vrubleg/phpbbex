@@ -94,6 +94,9 @@ class dbal_mysqli extends dbal
 					}
 				}
 
+				// Remove incompatible modes.
+				$modes = array_diff($modes, ['ONLY_FULL_GROUP_BY']);
+
 				$mode = implode(',', $modes);
 				@mysqli_query($this->db_connect_id, "SET SESSION sql_mode='{$mode}'");
 			}
