@@ -3734,15 +3734,13 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 		$msg_text = $msg_long_text;
 	}
 
-	if (!defined('E_DEPRECATED'))
-	{
-		define('E_DEPRECATED', 8192);
-	}
-
 	switch ($errno)
 	{
+		case E_ERROR:
 		case E_NOTICE:
 		case E_WARNING:
+		case E_DEPRECATED:
+		case E_STRICT:
 
 			// Check the error reporting level and return if the error level does not match
 			// If DEBUG is defined the default level is E_ALL
@@ -3751,20 +3749,28 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 				return;
 			}
 
-			if (strpos($errfile, 'cache') === false && strpos($errfile, 'template.') === false)
+			// Template engine generates a lot of notices =(
+			if ($errno == E_NOTICE && (strpos($errfile, 'cache') !== false || strpos($errfile, 'template.') !== false))
 			{
-				$errfile = phpbb_filter_root_path($errfile);
-				$msg_text = phpbb_filter_root_path($msg_text);
-				$error_name = ($errno === E_WARNING) ? 'PHP Warning' : 'PHP Notice';
-				echo '<b>[phpBB Debug] ' . $error_name . '</b>: in file <b>' . $errfile . '</b> on line <b>' . $errline . '</b>: <b>' . $msg_text . '</b><br />' . "\n";
-
-				// we are writing an image - the user won't see the debug, so let's place it in the log
-				if (defined('IMAGE_OUTPUT') || defined('IN_CRON'))
-				{
-					add_log('critical', 'LOG_IMAGE_GENERATION_ERROR', $errfile, $errline, $msg_text);
-				}
-				// echo '<br /><br />BACKTRACE<br />' . get_backtrace() . '<br />' . "\n";
+				return;
 			}
+
+			$error_names = [E_ERROR => 'Error', E_NOTICE => 'Notice', E_WARNING => 'Warning', E_DEPRECATED => 'Deprecated', E_STRICT => 'Strict'];
+			$errfile = phpbb_filter_root_path($errfile);
+			$msg_text = phpbb_filter_root_path($msg_text);
+			$log_text = $msg_text;
+			$backtrace = get_backtrace();
+			if ($backtrace)
+			{
+				$log_text .= '<br /><br />BACKTRACE<br />' . $backtrace;
+			}
+
+			if (defined('IN_INSTALL') || defined('DEBUG') || isset($auth) && $auth->acl_get('a_'))
+			{
+				echo '<b>[PHP ' . $error_names[$errno] . ']</b> in file <b>' . $errfile . '</b> on line <b>' . $errline . '</b>: ' . (defined('DEBUG_EXTRA') ? $log_text : $msg_text) . '<br />' . "\n";
+			}
+
+			add_log('critical', 'LOG_PHP_ERROR', $error_names[$errno], $errfile, $errline, $log_text);
 
 			return;
 
@@ -3931,11 +3937,6 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 			}
 
 			exit_handler();
-		break;
-
-		// PHP4 compatibility
-		case E_DEPRECATED:
-			return true;
 		break;
 	}
 
