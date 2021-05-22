@@ -162,9 +162,9 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('jab_use_ssl', '0')
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('jab_username', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_admin_logs_days', '365');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days', '365');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '365');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '7');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '14');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_base_dn', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_email', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_password', '');
