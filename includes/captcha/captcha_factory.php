@@ -41,7 +41,7 @@ class phpbb_captcha_factory
 	/**
 	* Call the garbage collector
 	*/
-	function garbage_collect($name)
+	static function garbage_collect($name)
 	{
 		global $phpbb_root_path, $phpEx;
 
