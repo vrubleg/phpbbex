@@ -436,7 +436,7 @@ class phpbb_gallery_user
 				'gallery_images'	=> '',
 				'gallery_search'	=> '',
 
-
+				'user_id'			=> $row['user_id'],
 				'username'			=> $row['username'],
 				'user_colour'		=> $row['user_colour'],
 
