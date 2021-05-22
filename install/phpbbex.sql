@@ -306,9 +306,9 @@ UPDATE phpbb_extension_groups SET cat_id = 0 WHERE cat_id = 6;
 ALTER TABLE phpbb_topics ADD INDEX topic_poster(topic_poster);
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_admin_logs_days', '365');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days', '365');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '365');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '7');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '14');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.3');
