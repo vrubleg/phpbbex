@@ -568,8 +568,7 @@ $lang = array_merge($lang, array(
 	'LOG_DOWNLOAD_IP'			=> '<strong>Добавлен IP-адрес/хост в список скачивания</strong><br />» %s',
 	'LOG_DOWNLOAD_REMOVE_IP'	=> '<strong>Удалён IP-адрес/хост из списка скачивания</strong><br />» %s',
 
-	'LOG_ERROR_GENERAL'		=> '<strong>%1$s</strong><br><br><div style="font-family: monospace;">%2$s<br><br><b>URL:</b> %3$s<br><br><b>BACKTRACE</b><br><br>%4$s</div>',
-	'LOG_ERROR_PHP'			=> '<strong>Ошибка PHP</strong><br><br><div style="font-family: monospace;"><b>TYPE:</b> %1$s<br><b>FILE:</b> %2$s<br><b>LINE:</b> %3$s<br><b>TEXT:</b> %4$s<br><b>URL:</b> %5$s<br><br><b>BACKTRACE</b><br><br>%6$s</div>',
+	'LOG_ERROR_GENERAL'		=> '<strong>%1$s</strong><br><br><div style="font-family: monospace;">%2$s</div>',
 	'LOG_ERROR_JABBER'		=> '<strong>Ошибка Jabber</strong><br><br><div style="font-family: monospace;">%s</div>',
 	'LOG_ERROR_EMAIL'		=> '<strong>Ошибка Email</strong><br><br><div style="font-family: monospace;">%s</div>',
 

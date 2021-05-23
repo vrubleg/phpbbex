@@ -567,8 +567,7 @@ $lang = array_merge($lang, array(
 	'LOG_DOWNLOAD_IP'			=> '<strong>Added IP/hostname to download list</strong><br />» %s',
 	'LOG_DOWNLOAD_REMOVE_IP'	=> '<strong>Removed IP/hostname from download list</strong><br />» %s',
 
-	'LOG_ERROR_GENERAL'		=> '<strong>%1$s</strong><br><br><div style="font-family: monospace;">%2$s<br><br><b>PAGE:</b> %3$s<br><br><b>BACKTRACE</b><br><br>%4$s</div>',
-	'LOG_ERROR_PHP'			=> '<strong>PHP Error</strong><br><br><div style="font-family: monospace;"><b>TYPE:</b> %1$s<br><b>FILE:</b> %2$s<br><b>LINE:</b> %3$s<br><b>TEXT:</b> %4$s<br><b>PAGE:</b> %5$s<br><br><b>BACKTRACE</b><br><br>%6$s</div>',
+	'LOG_ERROR_GENERAL'		=> '<strong>%1$s</strong><br><br><div style="font-family: monospace;">%2$s</div>',
 	'LOG_ERROR_JABBER'		=> '<strong>Jabber Error</strong><br><br><div style="font-family: monospace;">%s</div>',
 	'LOG_ERROR_EMAIL'		=> '<strong>Email Error</strong><br><br><div style="font-family: monospace;">%s</div>',
 
