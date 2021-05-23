@@ -63,7 +63,7 @@ class jabber
 		}
 
 		$this->password				= $password;
-		$this->use_ssl				= ($use_ssl && $this->can_use_ssl()) ? true : false;
+		$this->use_ssl				= ($use_ssl && self::can_use_ssl()) ? true : false;
 
 		// Change port if we use SSL
 		if ($this->port == 5222 && $this->use_ssl)
@@ -78,7 +78,7 @@ class jabber
 	/**
 	* Able to use the SSL functionality?
 	*/
-	function can_use_ssl()
+	static function can_use_ssl()
 	{
 		return (@extension_loaded('openssl')) ? true : false;
 	}
@@ -86,7 +86,7 @@ class jabber
 	/**
 	* Able to use TLS?
 	*/
-	function can_use_tls()
+	static function can_use_tls()
 	{
 		if (!@extension_loaded('openssl') || !function_exists('stream_socket_enable_crypto') || !function_exists('stream_get_meta_data') || !function_exists('socket_set_blocking') || !function_exists('stream_get_wrappers'))
 		{
@@ -436,7 +436,7 @@ class jabber
 				}
 
 				// Let's use TLS if SSL is not enabled and we can actually use it
-				if (!$this->session['ssl'] && $this->can_use_tls() && $this->can_use_ssl() && isset($xml['stream:features'][0]['#']['starttls']))
+				if (!$this->session['ssl'] && self::can_use_tls() && self::can_use_ssl() && isset($xml['stream:features'][0]['#']['starttls']))
 				{
 					$this->add_to_log('Switching to TLS.');
 					$this->send("<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>\n");
