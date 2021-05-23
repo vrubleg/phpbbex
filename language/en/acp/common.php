@@ -567,8 +567,10 @@ $lang = array_merge($lang, array(
 	'LOG_DOWNLOAD_IP'			=> '<strong>Added IP/hostname to download list</strong><br />» %s',
 	'LOG_DOWNLOAD_REMOVE_IP'	=> '<strong>Removed IP/hostname from download list</strong><br />» %s',
 
-	'LOG_ERROR_JABBER'		=> '<strong>Jabber error</strong><br />» %s',
-	'LOG_ERROR_EMAIL'		=> '<strong>E-mail error</strong><br />» %s',
+	'LOG_ERROR_GENERAL'		=> '<strong>%1$s</strong><br><br><div style="font-family: monospace;">%2$s<br><br><b>PAGE:</b> %3$s<br><br><b>BACKTRACE</b><br><br>%4$s</div>',
+	'LOG_ERROR_PHP'			=> '<strong>PHP Error</strong><br><br><div style="font-family: monospace;"><b>TYPE:</b> %1$s<br><b>FILE:</b> %2$s<br><b>LINE:</b> %3$s<br><b>TEXT:</b> %4$s<br><b>PAGE:</b> %5$s<br><br><b>BACKTRACE</b><br><br>%6$s</div>',
+	'LOG_ERROR_JABBER'		=> '<strong>Jabber Error</strong><br><br><div style="font-family: monospace;">%s</div>',
+	'LOG_ERROR_EMAIL'		=> '<strong>Email Error</strong><br><br><div style="font-family: monospace;">%s</div>',
 
 	'LOG_FORUM_ADD'							=> '<strong>Created new forum</strong><br />» %s',
 	'LOG_FORUM_COPIED_PERMISSIONS'			=> '<strong>Copied forum permissions</strong> from %1$s<br />» %2$s',
@@ -585,9 +587,6 @@ $lang = array_merge($lang, array(
 	'LOG_FORUM_MOVE_DOWN'					=> '<strong>Moved forum</strong> %1$s <strong>below</strong> %2$s',
 	'LOG_FORUM_MOVE_UP'						=> '<strong>Moved forum</strong> %1$s <strong>above</strong> %2$s',
 	'LOG_FORUM_SYNC'						=> '<strong>Re-synchronised forum</strong><br />» %s',
-
-	'LOG_GENERAL_ERROR'				=> '<strong>A general error occurred</strong>: %1$s <br />» %2$s',
-	'LOG_PHP_ERROR'					=> '<strong>PHP Error</strong><br />» %1$s in %2$s on line %3$s: %4$s',
 
 	'LOG_GROUP_CREATED'		=> '<strong>New usergroup created</strong><br />» %s',
 	'LOG_GROUP_DEFAULTS'	=> '<strong>Group “%1$s” made default for members</strong><br />» %2$s',

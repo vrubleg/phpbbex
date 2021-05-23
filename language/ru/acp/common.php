@@ -568,8 +568,10 @@ $lang = array_merge($lang, array(
 	'LOG_DOWNLOAD_IP'			=> '<strong>Добавлен IP-адрес/хост в список скачивания</strong><br />» %s',
 	'LOG_DOWNLOAD_REMOVE_IP'	=> '<strong>Удалён IP-адрес/хост из списка скачивания</strong><br />» %s',
 
-	'LOG_ERROR_JABBER'		=> '<strong>Ошибка Jabber</strong><br />» %s',
-	'LOG_ERROR_EMAIL'		=> '<strong>Ошибка почты</strong><br />» %s',
+	'LOG_ERROR_GENERAL'		=> '<strong>%1$s</strong><br><br><div style="font-family: monospace;">%2$s<br><br><b>URL:</b> %3$s<br><br><b>BACKTRACE</b><br><br>%4$s</div>',
+	'LOG_ERROR_PHP'			=> '<strong>Ошибка PHP</strong><br><br><div style="font-family: monospace;"><b>TYPE:</b> %1$s<br><b>FILE:</b> %2$s<br><b>LINE:</b> %3$s<br><b>TEXT:</b> %4$s<br><b>URL:</b> %5$s<br><br><b>BACKTRACE</b><br><br>%6$s</div>',
+	'LOG_ERROR_JABBER'		=> '<strong>Ошибка Jabber</strong><br><br><div style="font-family: monospace;">%s</div>',
+	'LOG_ERROR_EMAIL'		=> '<strong>Ошибка Email</strong><br><br><div style="font-family: monospace;">%s</div>',
 
 	'LOG_FORUM_ADD'							=> '<strong>Создан раздел</strong><br />» %s',
 	'LOG_FORUM_COPIED_PERMISSIONS'			=> '<strong>Скопированы права доступа</strong> из раздела «%1$s» в раздел<br />» %2$s',
@@ -586,9 +588,6 @@ $lang = array_merge($lang, array(
 	'LOG_FORUM_MOVE_DOWN'					=> '<strong>Перемещён раздел</strong> %1$s <strong>под</strong> %2$s',
 	'LOG_FORUM_MOVE_UP'						=> '<strong>Перемещён раздел</strong> %1$s <strong>над</strong> %2$s',
 	'LOG_FORUM_SYNC'						=> '<strong>Синхронизирован раздел</strong><br />» %s',
-
-	'LOG_GENERAL_ERROR'				=> '<strong>Произошла общая ошибка:</strong> %1$s <br />» %2$s',
-	'LOG_PHP_ERROR'					=> '<strong>Ошибка PHP</strong><br />» %1$s in %2$s on line %3$s: %4$s',
 
 	'LOG_GROUP_CREATED'		=> '<strong>Создана группа пользователей</strong><br />» %s',
 	'LOG_GROUP_DEFAULTS'	=> '<strong>Группа “%1$s” установлена по умолчанию для пользователей</strong><br />» %2$s',
