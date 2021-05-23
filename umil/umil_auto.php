@@ -239,4 +239,3 @@ function umil_version_select($value, $key)
 
 	return $output;
 }
-?>

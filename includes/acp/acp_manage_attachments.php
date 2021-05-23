@@ -1,16 +1,15 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id: acp_manage_attachments.php,v 1.04 2008/03/14 19:19:47 rxu Exp $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @package acp
-*/
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
 class acp_manage_attachments
 {
 	var $u_action;
@@ -354,5 +353,3 @@ class acp_manage_attachments
 		}
 	}
 }
-
-?>

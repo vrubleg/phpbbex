@@ -1,15 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -2176,5 +2171,3 @@ function get_recipient_strings($pm_by_id)
 
 	return $address_list;
 }
-
-?>

@@ -1,24 +1,17 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
-* @todo Check/enter/update transport info
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 /**
-* @package acp
+* @todo Check/enter/update transport info
 */
 class acp_jabber
 {
@@ -127,5 +120,3 @@ class acp_jabber
 		));
 	}
 }
-
-?>

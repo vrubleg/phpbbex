@@ -1,15 +1,8 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id: posts_merging.php,v 1.100 2008/04/10 22:20:15 rxu Exp $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
-*/
-
-/**
-* @ignore
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
 if (!defined('IN_PHPBB'))

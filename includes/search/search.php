@@ -1,24 +1,15 @@
 <?php
 /**
-*
-* @package search
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @ignore
-*/
 define('SEARCH_RESULT_NOT_IN_CACHE', 0);
 define('SEARCH_RESULT_IN_CACHE', 1);
 define('SEARCH_RESULT_INCOMPLETE', 2);
@@ -27,7 +18,6 @@ define('SEARCH_RESULT_INCOMPLETE', 2);
 * search_backend
 * optional base class for search plugins providing simple caching based on ACM
 * and functions to retrieve ignore_words and synonyms
-* @package search
 */
 class search_backend
 {
@@ -316,5 +306,3 @@ class search_backend
 		$db->sql_query($sql);
 	}
 }
-
-?>

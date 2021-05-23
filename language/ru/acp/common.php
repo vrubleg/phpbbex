@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_common [Russian]
-*
-* @package language
-* @version $Id: common.php 10134 2009-09-10 15:32:16Z marshalrusty $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -730,7 +722,7 @@ $lang = array_merge($lang, array(
 	'LOG_USER_REACTIVATE'	=> '<strong>Принудительная повторная активация учётной записи пользователя</strong><br />» %s',
 	'LOG_USER_REMOVED_NR'	=> '<strong>Удалён флаг новой регистрации пользователя</strong><br />» %s',
 
-	'LOG_USER_UPDATE_EMAIL'	=> '<strong>Пользователем "%1$s" изменён email-адрес</strong><br />» с «%2$s» на «%3$s»"',
+	'LOG_USER_UPDATE_EMAIL'	=> '<strong>Пользователем «%1$s» изменён email-адрес</strong><br />» с «%2$s» на «%3$s»',
 	'LOG_USER_UPDATE_NAME'	=> '<strong>Изменено имя пользователя</strong><br />» с «%1$s» на «%2$s»',
 	'LOG_USER_USER_UPDATE'	=> '<strong>Обновлена информация о пользователе</strong><br />» %s',
 
@@ -832,5 +824,3 @@ $lang = array_merge($lang, array(
 	'LOGIN_VIA_EMAIL_ONLY'				=> 'Только по e-mail',
 	'EMAIL_REUSE_DISABLED'				=> 'Заблокировано, поскольку включён <em>вход по e-mail</em>.',
 ));
-
-?>

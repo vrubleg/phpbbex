@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package VC
-* @version $Id$
-* @copyright (c) 2006, 2008 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -24,9 +18,6 @@ if (!class_exists('phpbb_default_captcha'))
 	include($phpbb_root_path . 'includes/captcha/plugins/captcha_abstract.' . $phpEx);
 }
 
-/**
-* @package VC
-*/
 class phpbb_captcha_nogd extends phpbb_default_captcha
 {
 
@@ -69,5 +60,3 @@ class phpbb_captcha_nogd extends phpbb_default_captcha
 		trigger_error($user->lang['CAPTCHA_NO_OPTIONS'] . adm_back_link($module->u_action));
 	}
 }
-
-?>

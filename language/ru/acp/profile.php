@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_profile [Russian]
-*
-* @package language
-* @version $Id: profile.php 9916 2009-08-03 15:46:56Z Kellanved $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -154,5 +146,3 @@ $lang = array_merge($lang, array(
 
 	'VISIBILITY_OPTION'				=> 'Видимость поля',
 ));
-
-?>

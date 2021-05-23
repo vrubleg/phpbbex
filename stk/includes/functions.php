@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -781,7 +775,7 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 			echo '		</div>';
 			echo '	</div>';
 			echo '	</div>';
-			echo '	<div id="page-footer">' . $l_notify . 'Powered by <a href="https://phpbbex.com/">phpBBex</a></div>';
+			echo '	<div id="page-footer">' . $l_notify . 'Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
 			echo '</div>';
 			echo '</body>';
 			echo '</html>';

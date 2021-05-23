@@ -1,15 +1,10 @@
 <?php
 /**
-*
-* @package utf
-* @version $Id$
-* @copyright (c) 2006 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -1943,5 +1938,3 @@ function utf8_str_replace($search, $replace, $subject)
 
 	return $subject;
 }
-
-?>

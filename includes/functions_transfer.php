@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +12,6 @@ if (!defined('IN_PHPBB'))
 
 /**
 * Transfer class, wrapper for ftp/sftp/ssh
-* @package phpBB3
 */
 class transfer
 {
@@ -902,5 +895,3 @@ class ftp_fsock extends transfer
 		return ($return) ? $response : true;
 	}
 }
-
-?>

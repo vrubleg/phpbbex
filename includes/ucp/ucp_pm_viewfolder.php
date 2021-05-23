@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package ucp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -267,9 +261,9 @@ function view_folder($id, $mode, $folder_id, $folder)
 					}
 				}
 
-				// There is the chance that all recipients of the message got deleted. To avoid creating 
+				// There is the chance that all recipients of the message got deleted. To avoid creating
 				// exports without recipients, we add a bogus "undisclosed recipient".
-				if (!(isset($address[$message_id]['g']) && sizeof($address[$message_id]['g'])) && 
+				if (!(isset($address[$message_id]['g']) && sizeof($address[$message_id]['g'])) &&
 				    !(isset($address[$message_id]['u']) && sizeof($address[$message_id]['u'])))
 				{
 					$address[$message_id]['u'] = array();
@@ -278,7 +272,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 				}
 
 				decode_message($message_row['message_text'], $message_row['bbcode_uid']);
-				
+
 				$data[] = array(
 					'subject'	=> censor_text($row['message_subject']),
 					'sender'	=> $row['username'],
@@ -552,5 +546,3 @@ function get_pm_from($folder_id, $folder, $user_id)
 		'rowset'	=> $rowset
 	);
 }
-
-?>

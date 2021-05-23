@@ -66,4 +66,3 @@ if ($fp !== false)
 
 garbage_collection();
 exit_handler();
-?>

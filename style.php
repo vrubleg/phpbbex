@@ -1,11 +1,8 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
 if (isset($_GET['mtime']))
@@ -19,9 +16,6 @@ if (isset($_GET['mtime']))
 	header('Etag: "' . $mtime . '"');
 }
 
-/**
-* @ignore
-*/
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
@@ -298,5 +292,3 @@ if ($id)
 }
 
 exit;
-
-?>

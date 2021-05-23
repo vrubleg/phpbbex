@@ -1,27 +1,18 @@
 <?php
 /**
-*
-* @package ucp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 /**
-* ucp_profile
 * Changing profile settings
-*
 * @todo what about pertaining user_sig_options?
-* @package ucp
 */
 class ucp_profile
 {
@@ -677,5 +668,3 @@ class ucp_profile
 		$this->page_title = 'UCP_PROFILE_' . strtoupper($mode);
 	}
 }
-
-?>

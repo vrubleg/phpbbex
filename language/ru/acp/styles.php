@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_styles [Russian]
-*
-* @package language
-* @version $Id: styles.php 10074 2009-08-31 11:25:28Z acydburn $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -435,5 +427,3 @@ $lang = array_merge($lang, array(
 	'UNSET'					=> 'Не установлено',
 
 ));
-
-?>

@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_groups [Russian]
-*
-* @package language
-* @version $Id: groups.php 9701 2009-06-28 12:13:11Z toonarmy $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -128,5 +120,3 @@ $lang = array_merge($lang, array(
 	'USER_GROUP_DEFAULT_EXPLAIN'	=> 'Установка этой группы в качестве группы по умолчанию для добавляемых в группу пользователей.',
 	'USER_GROUP_LEADER'				=> 'Назначить лидером группы',
 ));
-
-?>

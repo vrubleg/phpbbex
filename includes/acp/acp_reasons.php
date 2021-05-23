@@ -1,24 +1,15 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @package acp
-*/
 class acp_reasons
 {
 	var $u_action;
@@ -114,7 +105,7 @@ class acp_reasons
 							$result = $db->sql_query($sql);
 							$max_order = (int) $db->sql_fetchfield('max_reason_order');
 							$db->sql_freeresult($result);
-							
+
 							$sql_ary = array(
 								'reason_title'			=> (string) $reason_row['reason_title'],
 								'reason_description'	=> (string) $reason_row['reason_description'],
@@ -172,7 +163,7 @@ class acp_reasons
 					'U_ACTION'		=> $this->u_action . "&amp;id=$reason_id&amp;action=$action",
 					'U_BACK'		=> $this->u_action,
 					'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
-					
+
 					'REASON_TITLE'			=> $reason_row['reason_title'],
 					'REASON_DESCRIPTION'	=> $reason_row['reason_description'],
 
@@ -304,7 +295,7 @@ class acp_reasons
 			do
 			{
 				++$order;
-				
+
 				if ($row['reason_order'] != $order)
 				{
 					$sql = 'UPDATE ' . REPORTS_REASONS_TABLE . "
@@ -371,5 +362,3 @@ class acp_reasons
 		$db->sql_freeresult($result);
 	}
 }
-
-?>

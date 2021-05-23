@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +12,6 @@ if (!defined('IN_PHPBB'))
 
 /**
 * @todo [smilies] check regular expressions for special char replacements (stored specialchared in db)
-* @package acp
 */
 class acp_icons
 {
@@ -954,5 +947,3 @@ class acp_icons
 		return $item_count;
 	}
 }
-
-?>

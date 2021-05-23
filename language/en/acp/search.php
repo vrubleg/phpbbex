@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_search [English]
-*
-* @package language
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -111,5 +103,3 @@ $lang = array_merge($lang, array(
 	'SEARCH_HIGHLIGHT_KEYWORDS'				=> 'Highlight keywords',
 	'SEARCH_HIGHLIGHT_KEYWORDS_EXPLAIN'		=> 'Creates links to viewtopic.php with hilit argument for found topics.',
 ));
-
-?>

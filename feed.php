@@ -1,20 +1,10 @@
 <?php
 /**
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
-* Idea and original RSS Feed 2.0 MOD (Version 1.0.8/9) by leviatan21
-* Original MOD: http://www.phpbb.com/community/viewtopic.php?f=69&t=1214645
-* MOD Author Profile: http://www.phpbb.com/community/memberlist.php?mode=viewprofile&u=345763
-* MOD Author Homepage: http://www.mssti.com/phpbb3/
-*
-**/
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
+*/
 
-/**
-* @ignore
-**/
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
@@ -1484,6 +1474,3 @@ class phpbb_feed_topics_active extends phpbb_feed_topic_base
 		$item_row['title'] = (isset($row['forum_name']) && $row['forum_name'] !== '') ? $row['forum_name'] . ' ' . $this->separator . ' ' . $item_row['title'] : $item_row['title'];
 	}
 }
-
-
-?>

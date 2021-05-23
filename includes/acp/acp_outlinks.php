@@ -1,5 +1,14 @@
 <?php
-if (!defined('IN_PHPBB')) exit;
+/**
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
+*/
+
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
 
 class acp_outlinks
 {

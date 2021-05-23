@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package VC
-* @version $Id$
-* @copyright (c) 2006, 2008 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -162,5 +156,3 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 	}
 
 }
-
-?>

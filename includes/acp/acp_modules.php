@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,9 +20,6 @@ if (!defined('IN_PHPBB'))
 * - category disabled
 */
 
-/**
-* @package acp
-*/
 class acp_modules
 {
 	var $module_class = '';
@@ -1061,5 +1052,3 @@ class acp_modules
 		return $this->lang_name($target['module_langname']);
 	}
 }
-
-?>

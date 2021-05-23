@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package dbal
-* @version $Id$
-* @copyright (c) 2007 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -1843,9 +1837,9 @@ class phpbb_db_tools
 				else
 				{
 					$sql = "SELECT dobj.name AS def_name
-					FROM sys.columns col 
+					FROM sys.columns col
 						LEFT OUTER JOIN sys.objects dobj ON (dobj.object_id = col.default_object_id AND dobj.type = 'D')
-					WHERE col.object_id = object_id('{$table_name}') 
+					WHERE col.object_id = object_id('{$table_name}')
 					AND col.name = '{$column_name}'
 					AND dobj.name IS NOT NULL";
 					$result = $this->db->sql_query($sql);
@@ -2373,9 +2367,9 @@ class phpbb_db_tools
 					{
 						$statements[] = "DECLARE @drop_default_name VARCHAR(100), @cmd VARCHAR(1000)
 							SET @drop_default_name =
-								(SELECT dobj.name FROM sys.columns col 
+								(SELECT dobj.name FROM sys.columns col
 									LEFT OUTER JOIN sys.objects dobj ON (dobj.object_id = col.default_object_id AND dobj.type = 'D')
-								WHERE col.object_id = object_id('{$table_name}') 
+								WHERE col.object_id = object_id('{$table_name}')
 								AND col.name = '{$column_name}'
 								AND dobj.name IS NOT NULL)
 							IF @drop_default_name <> ''
@@ -2521,5 +2515,3 @@ class phpbb_db_tools
 		return $this->_sql_run_sql($statements);
 	}
 }
-
-?>

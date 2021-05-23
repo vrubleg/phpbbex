@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -3867,7 +3861,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 			echo '		</div>';
 			echo '	</div>';
 			echo '	</div>';
-			echo '	<div id="page-footer">' . $l_notify . 'Powered by <a href="https://phpbbex.com/">phpBBex</a></div>';
+			echo '	<div id="page-footer">' . $l_notify . 'Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
 			echo '</div>';
 			echo '</body>';
 			echo '</html>';
@@ -4927,5 +4921,3 @@ function phpbb_user_session_handler()
 
 	return;
 }
-
-?>

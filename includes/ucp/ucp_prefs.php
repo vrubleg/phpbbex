@@ -1,25 +1,17 @@
 <?php
 /**
-*
-* @package ucp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 /**
-* ucp_prefs
 * Changing user preferences
-* @package ucp
 */
 class ucp_prefs
 {
@@ -444,5 +436,3 @@ class ucp_prefs
 		$this->page_title = 'UCP_PREFS_' . strtoupper($mode);
 	}
 }
-
-?>

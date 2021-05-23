@@ -1,20 +1,14 @@
 <?php
 /**
-*
 * LDAP auth plug-in for phpBB3
 *
 * Authentication plug-ins is largely down to Sergey Kanareykin, our thanks to him.
 *
-* @package login
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -349,5 +343,3 @@ function acp_ldap(&$new)
 		'config'	=> array('ldap_server', 'ldap_port', 'ldap_base_dn', 'ldap_uid', 'ldap_user_filter', 'ldap_email', 'ldap_user', 'ldap_password')
 	);
 }
-
-?>
