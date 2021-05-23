@@ -543,7 +543,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		'U_SEARCH_UNREAD_IN'		=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unreadposts&amp;fid[]=' . $root_data['forum_id']),
 		'U_SEARCH_ACTIVE_TOPICS_IN'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=active_topics&amp;fid[]=' . $root_data['forum_id']),
 	));
-	
+
 	if(!empty($forums_last_posts_ids_list))
 	{
 		$sql = 'SELECT topic_id, topic_title, topic_last_post_id, forum_id FROM ' . TOPICS_TABLE . ' WHERE topic_last_post_id IN (' . implode(',', $forums_last_posts_ids_list) . ')';

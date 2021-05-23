@@ -680,22 +680,26 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 				return;
 			}
 
-			$error_names = [E_ERROR => 'Error', E_NOTICE => 'Notice', E_WARNING => 'Warning', E_DEPRECATED => 'Deprecated', E_STRICT => 'Strict'];
+			$err_types = [E_ERROR => 'Error', E_NOTICE => 'Notice', E_WARNING => 'Warning', E_DEPRECATED => 'Deprecated', E_STRICT => 'Strict'];
 			$errfile = stk_filter_root_path($errfile);
 			$msg_text = stk_filter_root_path($msg_text);
-			$log_text = $msg_text;
-			$backtrace = get_backtrace();
-			if ($backtrace)
-			{
-				$log_text .= '<br /><br />BACKTRACE<br />' . $backtrace;
-			}
+			$backtrace = get_backtrace(1);
 
 			if (defined('IN_INSTALL') || defined('DEBUG') || isset($auth) && $auth->acl_get('a_'))
 			{
-				echo '<b>[PHP ' . $error_names[$errno] . ']</b> in file <b>' . $errfile . '</b> on line <b>' . $errline . '</b>: ' . (defined('DEBUG_EXTRA') ? $log_text : $msg_text) . '<br />' . "\n";
+				echo '<b>[PHP ' . $err_types[$errno] . ']</b> in file <b>' . $errfile . '</b> on line <b>' . $errline . '</b>: ' . $msg_text;
+				if (defined('DEBUG_EXTRA') && $backtrace) { echo '<br><br><b>BACKTRACE</b><br><br><div style="font-family: monospace;">' . $backtrace . '</div>'; }
+				echo '<br>' . "\n";
 			}
 
-			add_log('critical', 'LOG_PHP_ERROR', $error_names[$errno], $errfile, $errline, $log_text);
+			if (isset($db))
+			{
+				$log_text = "<b>FILE:</b> {$errfile}<br><b>LINE:</b> {$errline}<br><b>TEXT:</b> {$msg_text}";
+				if (!empty($_SERVER['REQUEST_URI'])) { $log_text .= '<br><b>PAGE:</b> ' . htmlspecialchars($_SERVER['REQUEST_URI']); }
+				if ($backtrace) { $log_text .= '<br><br><b>BACKTRACE</b><br><br>' . $backtrace; }
+
+				add_log('critical', 'LOG_ERROR_GENERAL', 'PHP ' . $err_types[$errno], $log_text);
+			}
 
 			return;
 
@@ -728,23 +732,17 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 				}
 			}
 
-			$log_text = $msg_text;
-			$backtrace = get_backtrace();
-			if ($backtrace)
-			{
-				$log_text .= '<br /><br />BACKTRACE<br />' . $backtrace;
-			}
-
-			if (defined('IN_INSTALL') || defined('DEBUG_EXTRA') || isset($auth) && $auth->acl_get('a_'))
-			{
-				$msg_text = $log_text;
-			}
+			$backtrace = get_backtrace(1);
 
 			if ((defined('DEBUG') || defined('IN_CRON') || defined('IMAGE_OUTPUT')) && isset($db))
 			{
+				$log_text = $msg_text;
+				if (!empty($_SERVER['REQUEST_URI'])) { $log_text .= '<br><br><b>PAGE:</b> ' . htmlspecialchars($_SERVER['REQUEST_URI']); }
+				if ($backtrace) { $log_text .= '<br><br><b>BACKTRACE</b><br><br>' . $backtrace; }
+
 				// let's avoid loops
 				$db->sql_return_on_error(true);
-				add_log('critical', 'LOG_GENERAL_ERROR', $msg_title, $log_text);
+				add_log('critical', 'LOG_ERROR_GENERAL', $msg_title, $log_text);
 				$db->sql_return_on_error(false);
 			}
 
@@ -755,19 +753,19 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 
 			// Try to not call the adm page data...
 
-			echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-			echo '<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">';
+			echo '<!DOCTYPE html>';
+			echo '<html dir="ltr">';
 			echo '<head>';
-			echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
+			echo '<meta charset="UTF-8" />';
 			echo '<title>' . $msg_title . '</title>';
-			echo '<style type="text/css">' . "\n" . '/* <![CDATA[ */' . "\n";
+			echo '<style type="text/css">' . "\n";
 			echo '* { margin: 0; padding: 0; } html { font-size: 100%; height: 100%; margin-bottom: 1px; background-color: #E4EDF0; } body { font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif; color: #536482; background: #E4EDF0; font-size: 62.5%; margin: 0; } ';
 			echo 'a:link, a:active, a:visited { color: #006699; text-decoration: none; } a:hover { color: #DD6900; text-decoration: underline; } ';
-			echo '#wrap { padding: 0 20px 15px 20px; min-width: 615px; } #page-header { text-align: right; height: 40px; } #page-footer { clear: both; font-size: 1em; text-align: center; } ';
+			echo '#wrap { padding: 20px; min-width: 615px; } #page-header { text-align: right; } #page-footer { clear: both; font-size: 1em; text-align: center; } ';
 			echo '.panel { margin: 4px 0; background-color: #FFFFFF; border: solid 1px  #A9B8C2; } ';
-			echo '#errorpage #page-header a { font-weight: bold; line-height: 6em; } #errorpage #content { padding: 10px; } #errorpage #content h1 { line-height: 1.2em; margin-bottom: 0; color: #DF075C; } ';
-			echo '#errorpage #content div { margin-top: 20px; margin-bottom: 5px; border-bottom: 1px solid #CCCCCC; padding-bottom: 5px; color: #333333; font: bold 1.2em "Lucida Grande", Arial, Helvetica, sans-serif; text-decoration: none; line-height: 120%; text-align: left; } ';
-			echo "\n" . '/* ]]> */' . "\n";
+			echo '#errorpage #page-header a { font-weight: bold; } #errorpage #content { padding: 10px; } #errorpage #content h1 { line-height: 1.2em; margin-bottom: 0; color: #DF075C; } ';
+			echo '#errorpage #content div { margin-top: 10px; color: #333333; font: 1.3em monospace; text-decoration: none; line-height: 120%; text-align: left; }';
+			echo "\n";
 			echo '</style>';
 			echo '</head>';
 			echo '<body id="errorpage">';
@@ -779,17 +777,11 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 			echo '	<div class="panel">';
 			echo '		<div id="content">';
 			echo '			<h1>' . $msg_title . '</h1>';
-
-			echo '			<div>' . $msg_text . '</div>';
-
-			echo $l_notify;
-
+			echo '			<div>' . $msg_text . (($backtrace && defined('DEBUG_EXTRA')) ? '<br><br><b>BACKTRACE</b><br><br>' . $backtrace : '') . '</div>';
 			echo '		</div>';
 			echo '	</div>';
 			echo '	</div>';
-			echo '	<div id="page-footer">';
-			echo '		Powered by <a href="http://www.phpbb.com/">phpBB</a>&reg; Forum Software &copy; phpBB Group';
-			echo '	</div>';
+			echo '	<div id="page-footer">' . $l_notify . 'Powered by <a href="https://phpbbex.com/">phpBBex</a></div>';
 			echo '</div>';
 			echo '</body>';
 			echo '</html>';
