@@ -98,7 +98,7 @@ class phpbb_captcha_qa
 	/**
 	* See if the captcha has created its tables.
 	*/
-	function is_installed()
+	static function is_installed()
 	{
 		global $db, $phpbb_root_path, $phpEx;
 
@@ -121,7 +121,7 @@ class phpbb_captcha_qa
 		// load language file for pretty display in the ACP dropdown
 		$user->add_lang('captcha_qa');
 
-		if (!phpbb_captcha_qa::is_installed())
+		if (!self::is_installed())
 		{
 			return false;
 		}
@@ -617,7 +617,7 @@ class phpbb_captcha_qa
 		$user->add_lang('acp/board');
 		$user->add_lang('captcha_qa');
 
-		if (!$this->is_installed())
+		if (!self::is_installed())
 		{
 			$this->install();
 		}
