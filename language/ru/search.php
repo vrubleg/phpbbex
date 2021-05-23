@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* search [Russian]
-*
-* @package language
-* @version $Id: search.php 10004 2009-08-17 13:25:04Z rxu $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -106,5 +98,3 @@ $lang = array_merge($lang, array(
 
 	'TOO_FEW_AUTHOR_CHARS'	=> 'Вы должны ввести не менее %d символов имени автора.',
 ));
-
-?>

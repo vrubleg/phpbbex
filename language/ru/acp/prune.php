@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_prune [Russian]
-*
-* @package language
-* @version $Id: prune.php 9933 2009-08-06 09:12:21Z marshalrusty $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -87,5 +79,3 @@ $lang = array_merge($lang, array(
 
 	'TOPICS_PRUNED'		=> 'Тем удалено',
 ));
-
-?>

@@ -6,16 +6,11 @@
 *
 * This is for authentication via the integrated user table
 *
-* @package login
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -299,5 +294,3 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		'user_row'		=> $row,
 	);
 }
-
-?>

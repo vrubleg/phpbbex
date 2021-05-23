@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* posting [English]
-*
-* @package language
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -310,5 +302,3 @@ $lang = array_merge($lang, array(
 	'SMILE_VERY_HAPPY'			=> 'Very Happy',
 
 ));
-
-?>

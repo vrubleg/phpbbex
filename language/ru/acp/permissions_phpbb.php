@@ -1,16 +1,10 @@
 <?php
 /**
-* acp_permissions (phpBB Permission Set) [Russian]
-*
-* @package language
-* @version $Id: permissions_phpbb.php 9686 2009-06-26 11:52:54Z rxu $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -241,5 +235,3 @@ $lang = array_merge($lang, array(
 	'acl_a_backup'		=> array('lang' => 'Может сохранять/восстанавливать базу данных', 'cat' => 'misc'),
 	'acl_a_search'		=> array('lang' => 'Может управлять поисковыми индексами/установками поиска', 'cat' => 'misc'),
 ));
-
-?>

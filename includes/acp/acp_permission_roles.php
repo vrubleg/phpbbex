@@ -1,24 +1,15 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @package acp
-*/
 class acp_permission_roles
 {
 	var $u_action;
@@ -278,7 +269,7 @@ class acp_permission_roles
 					{
 						trigger_error($user->lang['NO_ROLE_SELECTED'] . adm_back_link($this->u_action), E_USER_WARNING);
 					}
-					
+
 					$sql = 'SELECT *
 						FROM ' . ACL_ROLES_TABLE . '
 						WHERE role_id = ' . $role_id;
@@ -567,5 +558,3 @@ class acp_permission_roles
 		$auth_admin->acl_clear_prefetch();
 	}
 }
-
-?>

@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package VC
-* @version $Id$
-* @copyright (c) 2006 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,8 +12,6 @@ if (!defined('IN_PHPBB'))
 
 /**
 * Main non-gd captcha class
-* @ignore
-* @package VC
 */
 class captcha
 {
@@ -388,5 +380,3 @@ class captcha
 		);
 	}
 }
-
-?>

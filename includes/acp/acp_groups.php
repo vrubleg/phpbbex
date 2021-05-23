@@ -1,24 +1,15 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @package acp
-*/
 class acp_groups
 {
 	var $u_action;
@@ -133,7 +124,7 @@ class acp_groups
 				if (confirm_box(true))
 				{
 					$group_name = ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
-					group_user_attributes('default', $group_id, $mark_ary, false, $group_name, $group_row);	
+					group_user_attributes('default', $group_id, $mark_ary, false, $group_name, $group_row);
 					trigger_error($user->lang['GROUP_DEFS_UPDATED'] . adm_back_link($this->u_action . '&amp;action=list&amp;g=' . $group_id));
 				}
 				else
@@ -832,5 +823,3 @@ class acp_groups
 		}
 	}
 }
-
-?>

@@ -1,17 +1,10 @@
 <?php
 /**
-*
-* help_faq [English]
-*
-* @package language
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -127,5 +120,3 @@ $help = array(
 		1 => 'If you are a member of more than one usergroup, your default is used to determine which group colour and group rank should be shown for you by default. The board administrator may grant you permission to change your default usergroup via your User Control Panel.'
 	)
 );
-
-?>

@@ -1,24 +1,15 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @package acp
-*/
 class acp_styles
 {
 	var $u_action;
@@ -573,7 +564,7 @@ inherit_from = {INHERIT_FROM}
 			case 'imageset':
 				$sql_from = STYLES_IMAGESET_TABLE;
 			break;
-			
+
 			default:
 				trigger_error($user->lang['NO_MODE'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
@@ -3972,5 +3963,3 @@ inherit_from = {INHERIT_FROM}
 	}
 
 }
-
-?>

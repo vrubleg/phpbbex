@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package mcp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
@@ -922,5 +916,3 @@ function check_ids(&$ids, $table, $sql_id, $acl_list = false, $single_forum = fa
 
 	return ($single_forum === false) ? true : (int) $forum_id;
 }
-
-?>

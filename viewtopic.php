@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
@@ -1437,8 +1431,8 @@ if (!empty($post_list))
 {
 	$user_list = array_keys($user_cache);
 	$sql = 'SELECT w.*, u.username AS issuer_name, u.user_colour AS issuer_colour
-		FROM ' . WARNINGS_TABLE . ' w 
-		LEFT JOIN ' . USERS_TABLE . ' u 
+		FROM ' . WARNINGS_TABLE . ' w
+		LEFT JOIN ' . USERS_TABLE . ' u
 		ON w.issuer_id = u.user_id
 		WHERE ' . $db->sql_in_set('w.post_id', $post_list) . '
 			OR (' . $db->sql_in_set('w.user_id', $user_list) . ' AND w.warning_active = 1)
@@ -2013,5 +2007,3 @@ $template->set_filenames(array(
 make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"), $forum_id);
 
 page_footer();
-
-?>

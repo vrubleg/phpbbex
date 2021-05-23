@@ -1,15 +1,10 @@
 <?php
 /**
-*
-* @package acm
-* @copyright (c) 2011 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -36,8 +31,6 @@ if (!defined('PHPBB_ACM_REDIS_HOST'))
 *
 * Compatible with the php extension phpredis available
 * at https://github.com/nicolasff/phpredis
-*
-* @package acm
 */
 class acm extends acm_memory
 {

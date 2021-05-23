@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_common [Russian]
-*
-* @package language
-* @version $Id: common.php 10134 2009-09-10 15:32:16Z marshalrusty $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -832,5 +824,3 @@ $lang = array_merge($lang, array(
 	'LOGIN_VIA_EMAIL_ONLY'				=> 'Только по e-mail',
 	'EMAIL_REUSE_DISABLED'				=> 'Заблокировано, поскольку включён <em>вход по e-mail</em>.',
 ));
-
-?>

@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +12,6 @@ if (!defined('IN_PHPBB'))
 
 /**
 * Custom Profile Fields
-* @package phpBB3
 */
 class custom_profile
 {
@@ -1158,5 +1151,3 @@ class custom_profile_admin extends custom_profile
 		return $options;
 	}
 }
-
-?>

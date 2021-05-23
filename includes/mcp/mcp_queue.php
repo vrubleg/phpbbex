@@ -1,25 +1,17 @@
 <?php
 /**
-*
-* @package mcp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 /**
-* mcp_queue
 * Handling the moderation queue
-* @package mcp
 */
 class mcp_queue
 {
@@ -1020,5 +1012,3 @@ function disapprove_post($post_id_list, $id, $mode)
 		trigger_error($user->lang[$success_msg] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"$redirect\">", '</a>'));
 	}
 }
-
-?>

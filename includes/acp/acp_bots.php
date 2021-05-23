@@ -1,24 +1,15 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @package acp
-*/
 class acp_bots
 {
 	var $u_action;
@@ -158,7 +149,7 @@ class acp_bots
 					{
 						$error[] = $user->lang['ERR_BOT_NO_MATCHES'];
 					}
-			
+
 					if ($bot_row['bot_ip'] && !preg_match('#^[\d\.,:]+$#', $bot_row['bot_ip']))
 					{
 						if (!$ip_list = gethostbynamel($bot_row['bot_ip']))
@@ -177,7 +168,7 @@ class acp_bots
 					{
 						$error[] = $user->lang['ERR_BOT_AGENT_MATCHES_UA'];
 					}
-					
+
 					$bot_name = false;
 					if ($bot_id)
 					{
@@ -202,7 +193,7 @@ class acp_bots
 					{
 						$error[] = $user->lang['BOT_NAME_TAKEN'];
 					}
-					
+
 					if (!sizeof($error))
 					{
 						// New bot? Create a new user and group entry
@@ -220,7 +211,7 @@ class acp_bots
 							{
 								trigger_error($user->lang['NO_BOT_GROUP'] . adm_back_link($this->u_action . "&amp;id=$bot_id&amp;action=$action"), E_USER_WARNING);
 							}
-						
+
 
 							$user_id = user_add(array(
 								'user_type'				=> (int) USER_IGNORE,
@@ -234,7 +225,7 @@ class acp_bots
 								'user_style'			=> (int) $bot_row['bot_style'],
 								'user_allow_massemail'	=> 0,
 							));
-	
+
 							$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 								'user_id'		=> (int) $user_id,
 								'bot_name'		=> (string) $bot_row['bot_name'],
@@ -243,7 +234,7 @@ class acp_bots
 								'bot_ip'		=> (string) $bot_row['bot_ip'])
 							);
 							$db->sql_query($sql);
-	
+
 							$log = 'ADDED';
 						}
 						else if ($bot_id)
@@ -290,12 +281,12 @@ class acp_bots
 
 							$log = 'UPDATED';
 						}
-						
+
 						$cache->destroy('_bots');
-						
+
 						add_log('admin', 'LOG_BOT_' . $log, $bot_row['bot_name']);
 						trigger_error($user->lang['BOT_' . $log] . adm_back_link($this->u_action));
-					
+
 					}
 				}
 				else if ($bot_id)
@@ -336,11 +327,11 @@ class acp_bots
 					'U_ACTION'		=> $this->u_action . "&amp;id=$bot_id&amp;action=$action",
 					'U_BACK'		=> $this->u_action,
 					'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
-					
+
 					'BOT_NAME'		=> $bot_row['bot_name'],
 					'BOT_IP'		=> $bot_row['bot_ip'],
 					'BOT_AGENT'		=> $bot_row['bot_agent'],
-					
+
 					'S_EDIT_BOT'		=> true,
 					'S_ACTIVE_OPTIONS'	=> $s_active_options,
 					'S_STYLE_OPTIONS'	=> $style_select,
@@ -390,7 +381,7 @@ class acp_bots
 		}
 		$db->sql_freeresult($result);
 	}
-	
+
 	/**
 	* Validate bot name against username table
 	*/
@@ -410,9 +401,7 @@ class acp_bots
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
-		
+
 		return ($row) ? false : true;
 	}
 }
-
-?>

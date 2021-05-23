@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +12,6 @@ if (!defined('IN_PHPBB'))
 
 /**
 * Class for handling archives (compression/decompression)
-* @package phpBB3
 */
 class compress
 {
@@ -735,5 +728,3 @@ class compress_tar extends compress
 		}
 	}
 }
-
-?>

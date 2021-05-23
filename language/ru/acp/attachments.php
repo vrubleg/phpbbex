@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_attachments [Russian]
-*
-* @package language
-* @version $Id: attachments.php 8946 2008-09-26 18:32:05Z toonarmy $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -166,5 +158,3 @@ $lang = array_merge($lang, array(
 	'UPLOAD_ICON'					=> 'Значок вложения',
 	'UPLOAD_NOT_DIR'				=> 'Указанный путь для загрузки файлов не является каталогом.',
 ));
-
-?>

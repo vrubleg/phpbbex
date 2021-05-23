@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +12,6 @@ if (!defined('IN_PHPBB'))
 
 /**
 * Class handling all types of 'plugins' (a future term)
-* @package phpBB3
 */
 class p_master
 {
@@ -885,5 +878,3 @@ class p_master
 		}
 	}
 }
-
-?>

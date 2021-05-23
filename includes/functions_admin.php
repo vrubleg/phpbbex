@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -3094,7 +3088,7 @@ function get_database_size()
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
-			
+
 			$sql = 'SELECT ((SUM(size) * 8.0) * 1024.0) as dbsize
 				FROM sysfiles';
 
@@ -3103,7 +3097,7 @@ function get_database_size()
 				// Azure stats are stored elsewhere
 				if (strpos($row['mssql_version'], 'SQL Azure') !== false)
 				{
-					$sql = 'SELECT ((SUM(reserved_page_count) * 8.0) * 1024.0) as dbsize 
+					$sql = 'SELECT ((SUM(reserved_page_count) * 8.0) * 1024.0) as dbsize
 					FROM sys.dm_db_partition_stats';
 				}
 			}
@@ -3410,5 +3404,3 @@ function enable_bitfield_column_flag($table_name, $column_name, $flag, $sql_more
 		' . $sql_more;
 	$db->sql_query($sql);
 }
-
-?>

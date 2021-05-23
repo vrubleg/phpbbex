@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package dbal
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -21,7 +15,7 @@ include_once($phpbb_root_path . 'includes/db/dbal.' . $phpEx);
 /**
 * MySQLi Database Abstraction Layer
 * mysqli-extension has to be compiled with:
-* MySQL 4.1+ or MySQL 5.0+
+* MySQL 5.0+
 * @package dbal
 */
 class dbal_mysqli extends dbal
@@ -579,5 +573,3 @@ class dbal_mysqli extends dbal
 		}
 	}
 }
-
-?>

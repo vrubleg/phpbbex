@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_attachments [English]
-*
-* @package language
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -166,5 +158,3 @@ $lang = array_merge($lang, array(
 	'UPLOAD_ICON'					=> 'Upload icon',
 	'UPLOAD_NOT_DIR'				=> 'The upload location you specified does not appear to be a directory.',
 ));
-
-?>

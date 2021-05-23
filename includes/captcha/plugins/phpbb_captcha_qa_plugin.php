@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package VC
-* @version $Id$
-* @copyright (c) 2006, 2008 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -25,8 +19,6 @@ define('CAPTCHA_QA_CONFIRM_TABLE',	$table_prefix . 'qa_confirm');
 /**
 * And now to something completely different. Let's make a captcha without extending the abstract class.
 * QA CAPTCHA sample implementation
-*
-* @package VC
 */
 class phpbb_captcha_qa
 {
@@ -1015,5 +1007,3 @@ class phpbb_captcha_qa
 		}
 	}
 }
-
-?>

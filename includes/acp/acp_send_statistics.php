@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,9 +12,6 @@ if (!defined('IN_PHPBB'))
 
 include($phpbb_root_path . 'includes/questionnaire/questionnaire.' . $phpEx);
 
-/**
-* @package acp
-*/
 class acp_send_statistics
 {
 	var $u_action;
@@ -86,5 +77,3 @@ class acp_send_statistics
 		}
 	}
 }
-
-?>

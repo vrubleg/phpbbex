@@ -1,18 +1,14 @@
 <?php
 /**
-*
-* @package VC
-* @version $Id$
-* @copyright (c) 2006 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
 /**
 * Wave3D CAPTCHA
 *
 * @author Robert Hetzler
-* @package VC
 */
 class captcha
 {
@@ -841,5 +837,3 @@ class captcha
 		);
 	}
 }
-
-?>

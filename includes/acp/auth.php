@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +12,6 @@ if (!defined('IN_PHPBB'))
 
 /**
 * ACP Permission/Auth class
-* @package phpBB3
 */
 class auth_admin extends phpbb_auth
 {
@@ -1274,5 +1267,3 @@ class auth_admin extends phpbb_auth
 		return true;
 	}
 }
-
-?>

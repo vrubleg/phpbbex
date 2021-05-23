@@ -1,16 +1,10 @@
 <?php
-/** 
-*
-* @package acp
-* @version $Id: acp_quick_reply.php,v 1.00 2007/07/17 00:05:43 davidmj Exp $
-* @copyright (c) 2005 phpBB Group 
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
-*
+/**
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @package module_install
-*/
 class acp_quick_reply_info
 {
 	function module()
@@ -33,5 +27,3 @@ class acp_quick_reply_info
 	{
 	}
 }
-
-?>

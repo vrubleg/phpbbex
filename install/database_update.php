@@ -1,4 +1,9 @@
 <?php
+/**
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
+*/
 
 define('OLDEST_PHPBBEX_VERSION', '1.8.0');
 define('NEWEST_PHPBBEX_VERSION', '1.9.3');
@@ -21,8 +26,6 @@ if (defined('IN_PHPBB') && defined('IN_INSTALL'))
 	return;
 }
 
-/**
-*/
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 

@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_common [English]
-*
-* @package language
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -832,5 +824,3 @@ $lang = array_merge($lang, array(
 	'LOGIN_VIA_EMAIL_ONLY'				=> 'E-Mail only',
 	'EMAIL_REUSE_DISABLED'				=> 'This is disabled while <em>Login via Email</em> is enabled.',
 ));
-
-?>

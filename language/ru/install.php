@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* install [Russian]
-*
-* @package language
-* @version $Id: install.php 10152 2009-09-16 13:02:13Z acydburn $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -574,5 +566,3 @@ $lang = array_merge($lang, array(
 	'WARNING_POST_DEFAULT'			=> 'Нарушение правил',
 	'BOARD_DISABLE_DEFAULT'			=> 'Извините, идет обновление форума. Зайдите через 1 час.',
 ));
-
-?>

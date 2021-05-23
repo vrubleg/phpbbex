@@ -1,24 +1,15 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @package acp
-*/
 class acp_ban
 {
 	var $u_action;
@@ -110,7 +101,7 @@ class acp_ban
 			'L_NO_BAN_CELL'			=> $l_no_ban_cell,
 
 			'S_USERNAME_BAN'	=> ($mode == 'user') ? true : false,
-			
+
 			'U_ACTION'			=> $this->u_action,
 			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser&amp;form=acp_ban&amp;field=ban'),
 		));
@@ -272,5 +263,3 @@ class acp_ban
 		));
 	}
 }
-
-?>

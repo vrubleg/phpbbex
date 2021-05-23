@@ -1,17 +1,10 @@
 <?php
 /**
-*
-* help_bbcode [Russian]
-*
-* @package language
-* @version $Id: help_bbcode.php 9623 2009-06-18 18:12:28Z nickvergessen $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -99,5 +92,3 @@ $help = array(
 		1 => 'Второй тип списка, нумерованный, позволяет выбрать, что именно будет выводиться перед каждым элементом. Для создания нумерованного списка используйте <strong>[list=1][/list]</strong> или <strong>[list=a][/list]</strong> для создания алфавитного списка. Как и в случае маркированного списка, элементы определяются с помощью <strong>[*]</strong>. Например:<br /><br /><strong>[list=1]</strong><br /><strong>[*]</strong>Пойти в магазин<br /><strong>[*]</strong>Купить новый компьютер<br /><strong>[*]</strong>Обругать компьютер, когда случится ошибка<br /><strong>[/list]</strong><br /><br />выдаст следующее:<ol style="list-style-type: decimal"><li>Пойти в магазин</li><li>Купить новый компьютер</li><li>Обругать компьютер, когда случится ошибка</li></ol>Для алфавитного списка используйте:<br /><br /><strong>[list=a]</strong><br /><strong>[*]</strong>Первый возможный ответ<br /><strong>[*]</strong>Второй возможный ответ<br /><strong>[*]</strong>Третий возможный ответ<br /><strong>[/list]</strong><br /><br />что выдаст<ol style="list-style-type: lower-alpha"><li>Первый возможный ответ</li><li>Второй возможный ответ</li><li>Третий возможный ответ</li></ol>'
 	),
 );
-
-?>

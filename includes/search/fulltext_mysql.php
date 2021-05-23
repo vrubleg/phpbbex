@@ -1,30 +1,19 @@
 <?php
 /**
-*
-* @package search
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @ignore
-*/
 include_once($phpbb_root_path . 'includes/search/search.' . $phpEx);
 
 /**
-* fulltext_mysql
 * Fulltext search for MySQL
-* @package search
 */
 class fulltext_mysql extends search_backend
 {
@@ -855,5 +844,3 @@ class fulltext_mysql extends search_backend
 		);
 	}
 }
-
-?>

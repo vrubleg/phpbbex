@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package acm
-* @version $Id$
-* @copyright (c) 2005, 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -24,7 +18,6 @@ if (!class_exists('acm_memory'))
 
 /**
 * ACM for XCache
-* @package acm
 *
 * To use this module you need ini_get() enabled and the following INI settings configured as follows:
 * - xcache.var_size > 0
@@ -111,11 +104,9 @@ class acm extends acm_memory
 	* @access protected
 	* @param string $var Cache key
 	* @return bool True if it exists, otherwise false
-	*/	
+	*/
 	function _isset($var)
 	{
 		return xcache_isset($this->key_prefix . $var);
 	}
 }
-
-?>

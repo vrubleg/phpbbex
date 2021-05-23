@@ -1,17 +1,10 @@
 <?php
 /**
-*
-* help_faq [Russian]
-*
-* @package language
-* @version $Id: help_faq.php 9623 2009-06-18 18:12:28Z nickvergessen $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -127,5 +120,3 @@ $help = array(
 		1 => 'Если вы состоите более чем в одной группе, ваша группа по умолчанию используется для того, чтобы определить, какие групповые цвет и звание должны быть вам присвоены. Администратор форума может предоставить вам разрешение самому изменять вашу группу по умолчанию в личной панели управления.'
 	)
 );
-
-?>

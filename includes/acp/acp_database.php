@@ -1,24 +1,15 @@
 <?php
 /**
-*
-* @package acp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-/**
-* @package acp
-*/
 class acp_database
 {
 	var $db_tools;
@@ -1589,7 +1580,7 @@ class mssql_extractor extends base_extractor
 		}
 		$this->flush($sql_data);
 	}
-	
+
 	function write_data_mssqlnative($table_name)
 	{
 		global $db;
@@ -1615,7 +1606,7 @@ class mssql_extractor extends base_extractor
 
 		$row = new result_mssqlnative($result_fields);
 		$i_num_fields = $row->num_fields();
-		
+
 		for ($i = 0; $i < $i_num_fields; $i++)
 		{
 			$ary_type[$i] = $row->field_type($i);
@@ -1628,7 +1619,7 @@ class mssql_extractor extends base_extractor
 			WHERE COLUMNPROPERTY(object_id('$table_name'), COLUMN_NAME, 'IsIdentity') = 1";
 		$result2 = $db->sql_query($sql);
 		$row2 = $db->sql_fetchrow($result2);
-		
+
 		if (!empty($row2['has_identity']))
 		{
 			$sql_data .= "\nSET IDENTITY_INSERT $table_name ON\nGO\n";
@@ -1692,8 +1683,8 @@ class mssql_extractor extends base_extractor
 			$sql_data .= "\nSET IDENTITY_INSERT $table_name OFF\nGO\n";
 		}
 		$this->flush($sql_data);
-	}	
-	
+	}
+
 	function write_data_odbc($table_name)
 	{
 		global $db;
@@ -2429,5 +2420,3 @@ function fgetd_seekless(&$fp, $delim, $read, $seek, $eof, $buffer = 8192)
 
 	return false;
 }
-
-?>

@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* ucp [Russian]
-*
-* @package language
-* @version $Id: ucp.php 9919 2009-08-04 14:15:13Z acydburn $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -566,5 +558,3 @@ $lang = array_merge($lang, array(
 	'QUICK_POST_DISPLAY'		=> 'Показывать панель быстрого создания тем в разделах',
 
 ));
-
-?>

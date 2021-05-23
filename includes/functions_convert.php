@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package install
-* @version $Id$
-* @copyright (c) 2006 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +12,6 @@ if (!defined('IN_PHPBB'))
 
 /**
 * Default avatar width/height
-* @ignore
 */
 define('DEFAULT_AVATAR_X', 80);
 define('DEFAULT_AVATAR_Y', 80);
@@ -2467,14 +2460,9 @@ function get_smiley_display()
 	return ($smiley_count < 50) ? 1 : 0;
 }
 
-
 function fill_dateformat($user_dateformat)
 {
 	global $config;
 
 	return ((empty($user_dateformat)) ? $config['default_dateformat'] : $user_dateformat);
 }
-
-
-
-?>

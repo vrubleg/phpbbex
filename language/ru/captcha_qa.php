@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* captcha_qa [Russian]
-*
-* @package language
-* @version $Id: captcha_qa.php 9966 2009-08-12 15:12:03Z Kellanved $
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -61,5 +53,3 @@ $lang = array_merge($lang, array(
  	'QA_LAST_QUESTION'			=> 'Нельзя удалить все вопросы, пока текстовое подтверждение выбрано в качестве используемого на форуме.',
 
 ));
-
-?>

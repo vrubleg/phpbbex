@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_permissions [Russian]
-*
-* @package language
-* @version $Id: permissions.php 10017 2009-08-18 14:37:49Z bantu $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -298,5 +290,3 @@ $lang = array_merge($lang, array(
 	'WRONG_PERMISSION_TYPE'				=> 'Выбран неправильный тип прав.',
 	'WRONG_PERMISSION_SETTING_FORMAT'	=> 'Права установлены в неверном формате, их обработка невозможна.',
 ));
-
-?>

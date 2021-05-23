@@ -1,23 +1,16 @@
 <?php
 /**
-*
-* @package VC
-* @version $Id$
-* @copyright (c) 2005 2008 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 /**
-* ucp_confirm
 * Visual confirmation
 *
 * Note to potential users of this code ...
@@ -26,8 +19,6 @@ if (!defined('IN_PHPBB'))
 * to that licence. Do not incorporate this within software
 * released or distributed in any way under a licence other
 * than the GPL. We will be watching ... ;)
-*
-* @package VC
 */
 class ucp_confirm
 {
@@ -46,5 +37,3 @@ class ucp_confirm
 		exit_handler();
 	}
 }
-
-?>

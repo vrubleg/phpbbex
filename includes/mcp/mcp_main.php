@@ -1,25 +1,17 @@
 <?php
 /**
-*
-* @package mcp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 /**
-* mcp_main
 * Handling mcp actions
-* @package mcp
 */
 class mcp_main
 {
@@ -1261,5 +1253,3 @@ function mcp_fork_topic($topic_ids)
 		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
 	}
 }
-
-?>

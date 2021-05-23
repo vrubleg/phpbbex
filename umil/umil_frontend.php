@@ -615,4 +615,3 @@ if (!function_exists('phpbb_chmod'))
 		return $result;
 	}
 }
-?>

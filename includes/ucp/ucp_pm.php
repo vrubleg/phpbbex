@@ -1,15 +1,10 @@
 <?php
 /**
-* @package ucp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -34,8 +29,6 @@ if (!defined('IN_PHPBB'))
 *		Quoting a post (action=quotepost&p=[post_id])
 *		Quoting a PM (action=quote&p=[msg_id])
 *		Forwarding a PM (action=forward&p=[msg_id])
-*
-* @package ucp
 */
 class ucp_pm
 {
@@ -412,5 +405,3 @@ class ucp_pm
 		$this->page_title = 'UCP_PM_' . strtoupper($mode);
 	}
 }
-
-?>

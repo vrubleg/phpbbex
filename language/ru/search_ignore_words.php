@@ -1,13 +1,8 @@
 <?php
 /**
-*
-* search_ignore_words [Russian]
-*
-* @package language
-* @version $Id: search_ignore_words.php,v 1.3 2007/10/04 15:07:24 acydburn Exp $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
 if (!defined('IN_PHPBB'))
@@ -492,5 +487,3 @@ $words = array(
 	'является',
 	'являются',
 );
-
-?>

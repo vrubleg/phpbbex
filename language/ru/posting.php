@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* posting [Russian]
-*
-* @package language
-* @version $Id: posting.php 9742 2009-07-09 10:34:40Z bantu $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -310,5 +302,3 @@ $lang = array_merge($lang, array(
 	'SMILE_VERY_HAPPY'			=> 'Очень доволен',
 
 ));
-
-?>

@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_bots [Russian]
-*
-* @package language
-* @version $Id: bots.php,v 1.12 2007/10/04 15:07:24 acydburn Exp $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -69,5 +61,3 @@ $lang = array_merge($lang, array(
 	'NO_BOT'		=> 'Бот с указанным идентификатором не найден.',
 	'NO_BOT_GROUP'	=> 'Специальная группа «Боты» не найдена.',
 ));
-
-?>

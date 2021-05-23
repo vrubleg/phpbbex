@@ -1,4 +1,9 @@
 <?php
+/**
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
+*/
 
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
@@ -186,9 +191,6 @@ $template->set_filenames(array(
 
 $install->page_footer();
 
-/**
-* @package install
-*/
 class module
 {
 	var $id = 0;

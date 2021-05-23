@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_email [Russian]
-*
-* @package language
-* @version $Id: email.php,v 1.16 2007/10/04 15:07:24 acydburn Exp $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -65,5 +57,3 @@ $lang = array_merge($lang, array(
 	'NO_EMAIL_MESSAGE'		=> 'Необходимо ввести текст сообщения',
 	'NO_EMAIL_SUBJECT'		=> 'Необходимо указать заголовок сообщения',
 ));
-
-?>

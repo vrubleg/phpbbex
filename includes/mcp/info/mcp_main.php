@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package mcp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @package module_install
-*/
 class mcp_main_info
 {
 	function module()
@@ -36,5 +30,3 @@ class mcp_main_info
 	{
 	}
 }
-
-?>

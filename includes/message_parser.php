@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -24,7 +18,6 @@ if (!class_exists('bbcode'))
 /**
 * BBCODE FIRSTPASS
 * BBCODE first pass class (functions for parsing messages for db storage)
-* @package phpBB3
 */
 class bbcode_firstpass extends bbcode
 {
@@ -1684,7 +1677,7 @@ class parse_message extends bbcode_firstpass
 				$index = array_keys(request_var('update_file', array(0 => 0)));
 				$index = (!empty($index)) ? $index[0] : false;
 				$filename = $filedata['real_filename'];
-	
+
 				if ($index !== false && !empty($this->attachment_data[$index]))
 				{
 					$sql = 'SELECT attach_id, is_orphan, filesize, physical_filename, thumbnail
@@ -1710,7 +1703,7 @@ class parse_message extends bbcode_firstpass
 						);
 
 						$db->sql_query('UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id'] );
-						
+
 						// Delete old file
 						phpbb_unlink($row['physical_filename'], 'file');
 
@@ -1891,5 +1884,3 @@ class parse_message extends bbcode_firstpass
 		$poll['poll_max_options'] = ($poll['poll_max_options'] < 1) ? 1 : (($poll['poll_max_options'] > $config['max_poll_options']) ? $config['max_poll_options'] : $poll['poll_max_options']);
 	}
 }
-
-?>

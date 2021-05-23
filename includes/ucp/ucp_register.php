@@ -1,25 +1,17 @@
 <?php
 /**
-*
-* @package ucp
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 /**
-* ucp_register
 * Board registration
-* @package ucp
 */
 class ucp_register
 {
@@ -157,7 +149,7 @@ class ucp_register
 		}
 
 
-		// The CAPTCHA kicks in here. We can't help that the information gets lost on language change. 
+		// The CAPTCHA kicks in here. We can't help that the information gets lost on language change.
 		if ($config['enable_confirm'])
 		{
 			include($phpbb_root_path . 'includes/captcha/captcha_factory.' . $phpEx);
@@ -535,5 +527,3 @@ class ucp_register
 		$this->page_title = 'UCP_REGISTRATION';
 	}
 }
-
-?>

@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_board [Russian]
-*
-* @package language
-* @version $Id: board.php 10080 2009-08-31 14:57:04Z nickvergessen $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -662,5 +654,3 @@ $lang = array_merge($lang, array(
 	'JAB_USERNAME'				=> 'Имя пользователя или JID (идентификатор) Jabber',
 	'JAB_USERNAME_EXPLAIN'		=> 'Введите имя или существующий JID (идентификатор) зарегистрированного пользователя. Проверка имени производиться не будет. Если указано только имя, то ваш JID (идентификатор) будет составлен из этого имени и указанного выше имени сервера. В противном случае укажите существующий JID (идентификатор), например user@jabber.org.',
 ));
-
-?>

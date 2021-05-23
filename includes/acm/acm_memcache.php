@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package acm
-* @version $Id$
-* @copyright (c) 2005, 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -45,7 +39,6 @@ if (!defined('PHPBB_ACM_MEMCACHE'))
 
 /**
 * ACM for Memcached
-* @package acm
 */
 class acm extends acm_memory
 {
@@ -134,5 +127,3 @@ class acm extends acm_memory
 		return $this->memcache->delete($this->key_prefix . $var);
 	}
 }
-
-?>

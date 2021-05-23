@@ -1,15 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-*/
 define('IN_PHPBB', true);
 define('IN_CRON', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
@@ -96,7 +91,7 @@ switch ($cron_type)
 	break;
 
 	case 'tidy_search':
-		
+
 		// Select the search method
 		$search_type = basename($config['search_type']);
 
@@ -211,5 +206,3 @@ function unlock_cron()
 		WHERE config_name = 'cron_lock' AND config_value = '" . $db->sql_escape(CRON_ID) . "'";
 	$db->sql_query($sql);
 }
-
-?>

@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package phpBB3
-* @version $Id$
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -19,7 +13,6 @@ if (!defined('IN_PHPBB'))
 /**
 * Responsible for holding all file relevant information, as well as doing file-specific operations.
 * The {@link fileupload fileupload class} can be used to upload several files, each of them being this object to operate further on.
-* @package phpBB3
 */
 class filespec
 {
@@ -456,7 +449,7 @@ class fileerror extends filespec
 class fileupload
 {
 	var $allowed_extensions = array();
-	var $disallowed_content = array('body', 'head', 'html', 'img', 'plaintext', 'a href', 'pre', 'script', 'table', 'title'); 
+	var $disallowed_content = array('body', 'head', 'html', 'img', 'plaintext', 'a href', 'pre', 'script', 'table', 'title');
 	var $max_filesize = 0;
 	var $min_width = 0;
 	var $min_height = 0;
@@ -1058,5 +1051,3 @@ class fileupload
 		);
 	}
 }
-
-?>

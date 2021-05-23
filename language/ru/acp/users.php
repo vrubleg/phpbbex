@@ -1,18 +1,10 @@
 <?php
 /**
-*
-* acp_users [Russian]
-*
-* @package language
-* @version $Id: users.php 9767 2009-07-17 11:27:50Z toonarmy $
-* @copyright (c) 2005 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -153,5 +145,3 @@ $lang = array_merge($lang, array(
 	'DEL_RATES_MSG_NOTHING'			=> 'Не выбран тип удаляемых оценок',
 
 ));
-
-?>
