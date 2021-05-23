@@ -730,7 +730,7 @@ $lang = array_merge($lang, array(
 	'LOG_USER_REACTIVATE'	=> '<strong>Принудительная повторная активация учётной записи пользователя</strong><br />» %s',
 	'LOG_USER_REMOVED_NR'	=> '<strong>Удалён флаг новой регистрации пользователя</strong><br />» %s',
 
-	'LOG_USER_UPDATE_EMAIL'	=> '<strong>Пользователем "%1$s" изменён email-адрес</strong><br />» с «%2$s» на «%3$s»"',
+	'LOG_USER_UPDATE_EMAIL'	=> '<strong>Пользователем "%1$s" изменён email-адрес</strong><br />» с «%2$s» на «%3$s»',
 	'LOG_USER_UPDATE_NAME'	=> '<strong>Изменено имя пользователя</strong><br />» с «%1$s» на «%2$s»',
 	'LOG_USER_USER_UPDATE'	=> '<strong>Обновлена информация о пользователе</strong><br />» %s',
 
