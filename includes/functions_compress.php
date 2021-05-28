@@ -464,9 +464,9 @@ class compress_zip extends compress
 
 		$mimetype = 'application/zip';
 
-		header('Pragma: no-cache');
+		header('Cache-Control: no-store');
 		header("Content-Type: $mimetype; name=\"$download_name.zip\"");
-		header("Content-disposition: attachment; filename=$download_name.zip");
+		header("Content-Disposition: attachment; filename=$download_name.zip");
 
 		$fp = @fopen("{$phpbb_root_path}store/$filename.zip", 'rb');
 		if ($fp)
@@ -713,9 +713,9 @@ class compress_tar extends compress
 			break;
 		}
 
-		header('Pragma: no-cache');
+		header('Cache-Control: no-store');
 		header("Content-Type: $mimetype; name=\"$download_name$this->type\"");
-		header("Content-disposition: attachment; filename=$download_name$this->type");
+		header("Content-Disposition: attachment; filename=$download_name$this->type");
 
 		$fp = @fopen("{$phpbb_root_path}store/$filename$this->type", 'rb');
 		if ($fp)

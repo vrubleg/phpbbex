@@ -341,9 +341,9 @@ class acp_language
 
 				if ($action == 'download_file')
 				{
-					header('Pragma: no-cache');
+					header('Cache-Control: no-store');
 					header('Content-Type: application/octetstream; name="' . $this->language_file . '"');
-					header('Content-disposition: attachment; filename=' . $this->language_file);
+					header('Content-Disposition: attachment; filename=' . $this->language_file);
 
 					$fp = @fopen($phpbb_root_path . $filename, 'rb');
 					while ($buffer = fread($fp, 1024))

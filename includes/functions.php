@@ -4714,21 +4714,11 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		$template->assign_var(strtoupper($setting), !empty($config[$setting]) ? $config[$setting] : false);
 	}
 
-	// application/xhtml+xml not used because of IE
-	header('Content-type: text/html; charset=UTF-8');
-	header('X-UA-Compatible: IE=Edge,chrome=1');
-
-	header('Cache-Control: private, no-cache="set-cookie"');
-	header('Expires: 0');
-	header('Pragma: no-cache');
-
-	if (!empty($user->data['is_bot']))
+	if (!headers_sent())
 	{
-		// Let reverse proxies know we detected a bot.
-		header('X-PHPBB-IS-BOT: yes');
+		header('Content-Type: text/html; charset=UTF-8');
+		header('Cache-Control: no-store');
 	}
-
-	return;
 }
 
 /**

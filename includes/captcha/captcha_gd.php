@@ -140,7 +140,7 @@ class captcha
 		}
 		// Send image
 		header('Content-Type: image/png');
-		header('Cache-control: no-cache, no-store');
+		header('Cache-Control: no-store');
 		imagepng($img);
 		imagedestroy($img);
 	}
