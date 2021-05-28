@@ -27,7 +27,6 @@
 
 <!--[if lt IE 9]>
 	<script src="{ROOT_PATH}assets/js/jquery-ie8.js"></script>
-	<script src="http://phpbbex.com/oldies/oldies.js" charset="utf-8"></script>
 <![endif]-->
 <!--[if gte IE 9]><!-->
 	<script src="{ROOT_PATH}assets/js/jquery.js"></script>
@@ -41,7 +40,14 @@
 	var per_page = '{PER_PAGE}';
 	var base_url = '{A_BASE_URL}';
 
-	<!-- IF S_USER_PM_POPUP and S_NEW_PM -->
+	function find_username(url)
+	{
+		popup(url, 760, 570, '_usersearch');
+		return false;
+	}
+</script>
+<!-- IF S_USER_PM_POPUP and S_NEW_PM -->
+<script>
 	jQuery(function($)
 	{
 		var $popup = $.splash('popup-pm', '500px')
@@ -64,17 +70,8 @@
 			document.location.href = url.replace(/&amp;/g, '&');
 		});
 	});
-	<!-- ENDIF -->
-
-	/**
-	* Find a member
-	*/
-	function find_username(url)
-	{
-		popup(url, 760, 570, '_usersearch');
-		return false;
-	}
 </script>
+<!-- ENDIF -->
 
 <!-- INCLUDE gallery/plugins_header.html -->
 
@@ -192,6 +189,7 @@
 			<li><a style="background-position: 0 -360px;" href="{U_BBCODE_GUIDE}">{L_BBCODE_GUIDE}</a></li>
 			</ul>
 		</li>
+		<li style="border-right: 0; height: 25px;"></li>
 		<!-- IF not S_IS_BOT -->
 		<li style="float: right; border-right: 0;"><a rel="nofollow" href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a></li>
 		<!-- IF not S_USER_LOGGED_IN and S_REGISTER_ENABLED --><li style="float: right;"><a rel="nofollow" href="{U_REGISTER}">{L_REGISTER}</a></li><!-- ENDIF -->
