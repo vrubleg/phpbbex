@@ -40,7 +40,14 @@
 	var per_page = '{PER_PAGE}';
 	var base_url = '{A_BASE_URL}';
 
-	<!-- IF S_USER_PM_POPUP and S_NEW_PM -->
+	function find_username(url)
+	{
+		popup(url, 760, 570, '_usersearch');
+		return false;
+	}
+</script>
+<!-- IF S_USER_PM_POPUP and S_NEW_PM -->
+<script>
 	jQuery(function($)
 	{
 		var $popup = $.splash('popup-pm', '500px')
@@ -63,17 +70,8 @@
 			document.location.href = url.replace(/&amp;/g, '&');
 		});
 	});
-	<!-- ENDIF -->
-
-	/**
-	* Find a member
-	*/
-	function find_username(url)
-	{
-		popup(url, 760, 570, '_usersearch');
-		return false;
-	}
 </script>
+<!-- ENDIF -->
 
 </head>
 
