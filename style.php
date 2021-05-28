@@ -208,17 +208,17 @@ if ($id)
 		$cache->destroy('sql', STYLES_THEME_TABLE);
 	}
 
+	header('Content-Type: text/css; charset=UTF-8');
+
 	// Only set the expire time if the theme changed data is older than 5 minutes - to cope with changes from the ACP
 	if ($recache || $theme['theme_mtime'] > (time() - 300))
 	{
-		header('Expires: 0');
+		header('Cache-Control: no-cache');
 	}
 	else
 	{
-		header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + $expire_time));
+		header('Cache-Control: public, max-age=' . $expire_time);
 	}
-
-	header('Content-type: text/css; charset=UTF-8');
 
 	// Parse Theme Data
 	$replace = array(

@@ -264,9 +264,9 @@ class acp_database
 									break;
 								}
 
-								header('Pragma: no-cache');
+								header('Cache-Control: no-store');
 								header("Content-Type: $mimetype; name=\"$name\"");
-								header("Content-disposition: attachment; filename=$name");
+								header("Content-Disposition: attachment; filename=$name");
 
 								@set_time_limit(0);
 
@@ -519,9 +519,9 @@ class base_extractor
 		if ($download == true)
 		{
 			$name = $filename . $ext;
-			header('Pragma: no-cache');
+			header('Cache-Control: no-store');
 			header("Content-Type: $mimetype; name=\"$name\"");
-			header("Content-disposition: attachment; filename=$name");
+			header("Content-Disposition: attachment; filename=$name");
 
 			switch ($format)
 			{

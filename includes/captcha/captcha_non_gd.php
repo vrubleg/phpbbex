@@ -96,7 +96,7 @@ class captcha
 
 		// Output image
 		header('Content-Type: image/png');
-		header('Cache-control: no-cache, no-store');
+		header('Cache-Control: no-store');
 		echo $image;
 		exit;
 	}

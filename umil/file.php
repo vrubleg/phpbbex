@@ -45,7 +45,7 @@ if (headers_sent() || !@file_exists($filename) || !@is_readable($filename))
 	trigger_error('UNABLE_TO_DELIVER_FILE');
 }
 
-header('Content-type: text/plain');
+header('Content-Type: text/plain; charset=UTF-8');
 header('Content-Disposition: filename="' . $file . '.txt"');
 
 $size = @filesize($filename);

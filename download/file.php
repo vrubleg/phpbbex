@@ -264,7 +264,7 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 	}
 
 	// Now the tricky part... let's dance
-	header('Pragma: public');
+	header('Cache-Control: public');
 
 	/**
 	* Commented out X-Sendfile support. To not expose the physical filename within the header if xsendfile is absent we need to look into methods of checking it's status.
@@ -438,21 +438,20 @@ function download_allowed()
 */
 function set_modified_headers($stamp)
 {
+	header('Cache-Control: public, max-age=2592000');
+
 	// let's see if we have to send the file at all
 	$last_load = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? strtotime(trim($_SERVER['HTTP_IF_MODIFIED_SINCE'])) : false;
 	if ($last_load !== false && $last_load >= $stamp)
 	{
 		send_status_line(304, 'Not Modified');
-		// seems that we need those too ... browsers
-		header('Pragma: public');
-		header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 31536000));
 		return true;
 	}
 	else
 	{
 		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $stamp) . ' GMT');
+		return false;
 	}
-	return false;
 }
 
 function file_gc()

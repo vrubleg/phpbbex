@@ -142,14 +142,11 @@ function adm_page_header($page_title)
 		'S_CONTENT_FLOW_END'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
 	));
 
-	// application/xhtml+xml not used because of IE
-	header('Content-type: text/html; charset=UTF-8');
-
-	header('Cache-Control: private, no-cache="set-cookie"');
-	header('Expires: 0');
-	header('Pragma: no-cache');
-
-	return;
+	if (!headers_sent())
+	{
+		header('Content-Type: text/html; charset=UTF-8');
+		header('Cache-Control: no-store');
+	}
 }
 
 /**

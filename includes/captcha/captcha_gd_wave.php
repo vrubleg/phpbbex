@@ -243,7 +243,7 @@ class captcha
 
 		// Output image
 		header('Content-Type: image/png');
-		header('Cache-control: no-cache, no-store');
+		header('Cache-Control: no-store');
 		//$mtime = explode(' ', microtime());
 		//$totaltime = $mtime[0] + $mtime[1] - $starttime;
 
