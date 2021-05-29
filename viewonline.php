@@ -176,11 +176,22 @@ while ($row = $db->sql_fetchrow($result))
 			continue;
 		}
 	}
-	else if ($show_guests && $row['user_id'] == ANONYMOUS && !isset($prev_ip[$row['session_ip']]) && $row['session_time'] != $row['session_start'])
+	else if ($show_guests && $row['user_id'] == ANONYMOUS)
 	{
-		$prev_ip[$row['session_ip']] = 1;
+		if ($row['session_time'] != $row['session_start'])
+		{
+			continue;
+		}
+
 		$guest_counter++;
 		$counter++;
+
+		if (isset($prev_ip[$row['session_ip']]))
+		{
+			continue;
+		}
+
+		$prev_ip[$row['session_ip']] = 1;
 
 		if ($counter > $start + $config['topics_per_page'] || $counter <= $start)
 		{
