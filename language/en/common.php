@@ -408,7 +408,7 @@ $lang = array_merge($lang, array(
 	'ONLINE_BUDDIES'			=> 'Online friends',
 	'OPTIONS'					=> 'Options',
 
-	'ONLINE_TOTAL_STR'			=> 'In total there are <strong>%d</strong> users online :: ',
+	'ONLINE_TOTAL_STR'			=> 'There are <strong>%d</strong> users online: ',
 	'ONLINE_HIDDEN_USERS'		=> '%d hidden',
 	'ONLINE_REG_USERS'			=> '%d registered',
 	'ONLINE_GUEST_USERS'		=> array(0 => '0 guests', 1 => '%d guest', 2 => '%d guests'),

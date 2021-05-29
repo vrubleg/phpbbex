@@ -3980,6 +3980,7 @@ function obtain_guest_count($item_id = 0, $item = 'forum')
 	$sql = 'SELECT COUNT(DISTINCT s.session_ip) as num_guests
 		FROM ' . SESSIONS_TABLE . ' s
 		WHERE s.session_user_id = ' . ANONYMOUS . '
+			AND s.session_time <> s.session_start
 			AND s.session_time >= ' . ($time - ((int) ($time % 60))) .
 		$reading_sql;
 	$result = $db->sql_query($sql);
@@ -4011,6 +4012,7 @@ function obtain_users_online($item_id = 0, $item = 'forum')
 		'total_online'			=> 0,
 		'visible_online'		=> 0,
 		'hidden_online'			=> 0,
+		'users_online'			=> 0,
 		'guests_online'			=> 0,
 		'bots_online'			=> 0,
 	);
@@ -4055,6 +4057,7 @@ function obtain_users_online($item_id = 0, $item = 'forum')
 			$online_users['bots_online']++;
 		}
 	}
+	$online_users['users_online'] = $online_users['visible_online'] + $online_users['hidden_online'];
 	$online_users['total_online'] = $online_users['bots_online'] + $online_users['guests_online'] + $online_users['visible_online'] + $online_users['hidden_online'];
 	$db->sql_freeresult($result);
 
