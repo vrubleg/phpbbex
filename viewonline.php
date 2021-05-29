@@ -95,6 +95,7 @@ if (!$show_guests)
 	$sql = 'SELECT COUNT(DISTINCT session_ip) as num_guests
 		FROM ' . SESSIONS_TABLE . '
 		WHERE session_user_id = ' . ANONYMOUS . '
+			AND session_time <> session_start
 			AND session_time >= ' . (time() - ($config['load_online_time'] * 60));
 	$result = $db->sql_query($sql);
 	$guest_counter = (int) $db->sql_fetchfield('num_guests');
@@ -116,7 +117,7 @@ if (!$show_bots)
 }
 
 // Get user list
-$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colour, s.session_id, s.session_time, s.session_page, s.session_ip, s.session_browser, s.session_viewonline, s.session_forum_id, s.session_album_id
+$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colour, s.*
 	FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . ' s
 	WHERE u.user_id = s.session_user_id
 		AND s.session_time >= ' . (time() - ($config['load_online_time'] * 60)) .
@@ -175,11 +176,22 @@ while ($row = $db->sql_fetchrow($result))
 			continue;
 		}
 	}
-	else if ($show_guests && $row['user_id'] == ANONYMOUS && !isset($prev_ip[$row['session_ip']]))
+	else if ($show_guests && $row['user_id'] == ANONYMOUS)
 	{
-		$prev_ip[$row['session_ip']] = 1;
+		if ($row['session_time'] == $row['session_start'])
+		{
+			continue;
+		}
+
 		$guest_counter++;
 		$counter++;
+
+		if (isset($prev_ip[$row['session_ip']]))
+		{
+			continue;
+		}
+
+		$prev_ip[$row['session_ip']] = 1;
 
 		if ($counter > $start + $config['topics_per_page'] || $counter <= $start)
 		{
