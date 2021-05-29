@@ -178,7 +178,7 @@ while ($row = $db->sql_fetchrow($result))
 	}
 	else if ($show_guests && $row['user_id'] == ANONYMOUS)
 	{
-		if ($row['session_time'] != $row['session_start'])
+		if ($row['session_time'] == $row['session_start'])
 		{
 			continue;
 		}
