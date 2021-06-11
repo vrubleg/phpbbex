@@ -245,12 +245,12 @@ class fulltext_native extends search_backend
 			}
 
 			// words which should not be included
-			if ($word[0] == '-')
+			if (strlen($word) && $word[0] == '-')
 			{
 				$word = substr($word, 1);
 
 				// a group of which at least one may not be in the resulting posts
-				if ($word[0] == '(')
+				if (strlen($word) && $word[0] == '(')
 				{
 					$word = array_unique(explode('|', substr($word, 1, -1)));
 					$mode = 'must_exclude_one';
@@ -266,13 +266,13 @@ class fulltext_native extends search_backend
 			else
 			{
 				// no prefix is the same as a +prefix
-				if ($word[0] == '+')
+				if (strlen($word) && $word[0] == '+')
 				{
 					$word = substr($word, 1);
 				}
 
 				// a group of words of which at least one word should be in every resulting post
-				if ($word[0] == '(')
+				if (strlen($word) && $word[0] == '(')
 				{
 					$word = array_unique(explode('|', substr($word, 1, -1)));
 				}
