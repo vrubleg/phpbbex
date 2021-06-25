@@ -6,7 +6,7 @@
 */
 
 define('OLDEST_PHPBBEX_VERSION', '1.8.0');
-define('NEWEST_PHPBBEX_VERSION', '1.9.3');
+define('NEWEST_PHPBBEX_VERSION', '1.9.4');
 
 define('UPDATES_TO_VERSION', '3.0.14');
 
