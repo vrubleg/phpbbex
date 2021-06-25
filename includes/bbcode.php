@@ -487,7 +487,7 @@ class bbcode
 				'img'		=> '<img src="$1" alt="' . $user->lang['IMAGE'] . '" />',
 				'size'		=> '<span style="font-size: $1%; line-height: normal">$2</span>',
 				'color'		=> '<span style="color: $1">$2</span>',
-				'email'		=> '<a href="mailto:$1">$2</a>',
+				'email'		=> '<a href="mailto:$1" class="postlink">$2</a>',
 				// Fallbacks for old templates
 				'upd_merged'			=> '<span style="font-size: 85%; line-height: normal; color: gray;">$1</span>',
 				'upd_subject'			=> '<br /><span style="font-weight: bold">$1</span>',

@@ -641,6 +641,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 		case MAGIC_URL_EMAIL:
 			$tag	= 'e';
 			$url	= 'mailto:' . $url;
+			$attrs	= ' class="postlink"';
 		break;
 	}
 
