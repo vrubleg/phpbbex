@@ -311,4 +311,4 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_da
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
 
 -- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.3');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.4');
