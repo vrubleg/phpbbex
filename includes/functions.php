@@ -4720,7 +4720,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	if (!headers_sent())
 	{
 		header('Content-Type: text/html; charset=UTF-8');
-		header('Cache-Control: no-store');
+		header('Cache-Control: private, no-cache="set-cookie"');
 	}
 }
 

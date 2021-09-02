@@ -145,7 +145,7 @@ function adm_page_header($page_title)
 	if (!headers_sent())
 	{
 		header('Content-Type: text/html; charset=UTF-8');
-		header('Cache-Control: no-store');
+		header('Cache-Control: private, no-cache="set-cookie"');
 	}
 }
 
