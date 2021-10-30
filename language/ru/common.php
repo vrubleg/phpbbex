@@ -528,7 +528,7 @@ $lang = array_merge($lang, array(
 	'SELECT_DESTINATION_FORUM'	=> 'Выберите раздел назначения',
 	'SELECT_FORUM'				=> 'Выберите раздел',
 	'SEND_EMAIL'				=> 'Отправить email',				// Used for submit buttons
-	'SEND_EMAIL_USER'			=> 'Отправить письмо пользователю',	// Used as: {L_SEND_EMAIL_USER} {USERNAME} -> E-mail UserX
+	'SEND_EMAIL_USER'			=> 'Отправить письмо пользователю',	// Used as: {L_SEND_EMAIL_USER} {USERNAME} -> Email UserX
 	'SEND_PRIVATE_MESSAGE'		=> 'Отправить личное сообщение',
 	'SETTINGS'					=> 'Настройки',
 	'SIGNATURE'					=> 'Подпись',
@@ -954,10 +954,10 @@ $lang = array_merge($lang, array(
 	'MEMBERLIST_INACTIVE_USERS'	=> 'Неактивные',
 	'SEARCH_USERS'				=> 'Поиск пользователей',
 
-	// Login via E-Mail
-	'USERNAME_OR_EMAIL'					=> 'Имя или e-mail',
-	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'Вы ввели неверное имя пользователя или e-mail. Проверьте введённые данные и попробуйте ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
-	'LOGIN_ERROR_EMAIL'					=> 'Вы ввели неверный e-mail. Проверьте его и попробуйте ввести ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
+	// Login via Email
+	'USERNAME_OR_EMAIL'					=> 'Имя или email',
+	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'Вы ввели неверное имя пользователя или email. Проверьте введённые данные и попробуйте ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
+	'LOGIN_ERROR_EMAIL'					=> 'Вы ввели неверный email. Проверьте его и попробуйте ввести ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
 
 	// Advanced Warnings
 	'USER_WARNING'			=> 'Предупреждение',
