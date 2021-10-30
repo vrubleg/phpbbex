@@ -1091,7 +1091,7 @@ class bbcode_firstpass extends bbcode
 		if (!$is_relative)
 		{
 			$is_file_url = preg_match('#^(?:https?|s?ftp)://[\w\d]#iu', $url) && preg_match('#^' . get_preg_expression('url') . '$#iu', $url);
-			$is_special = preg_match('#^(?:magnet|ed2k|skype|xmpp|irc|ircs|gtalk|mailto|callto|steam):#iu', $url);
+			$is_special = preg_match('#^(?:magnet|ed2k|skype|xmpp|irc|ircs|mailto|callto|steam):#iu', $url);
 		}
 
 		// Checking urls

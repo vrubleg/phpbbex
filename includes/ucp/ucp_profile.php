@@ -263,6 +263,7 @@ class ucp_profile
 					'yim'			=> request_var('yim', $user->data['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user->data['user_jabber'], true)),
 					'skype'			=> utf8_normalize_nfc(request_var('skype', $user->data['user_skype'], true)),
+					'telegram'		=> utf8_normalize_nfc(request_var('telegram', $user->data['user_telegram'], true)),
 					'website'		=> utf8_normalize_nfc(request_var('website', $user->data['user_website'], true)),
 					'location'		=> utf8_normalize_nfc(request_var('location', $user->data['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user->data['user_occ'], true)),
@@ -306,6 +307,9 @@ class ucp_profile
 						'skype'			=> array(
 							array('string', true, 3, 255),
 							array('match', true, '#^[a-z][-_.a-z0-9]{5,31}$#i')),
+						'telegram'		=> array(
+							array('string', true, 3, 255),
+							array('match', true, '#^[a-z][_a-z0-9]{5,32}$#i')),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 11, 255),
@@ -359,6 +363,7 @@ class ucp_profile
 							'user_yim'		=> $data['yim'],
 							'user_jabber'	=> $data['jabber'],
 							'user_skype'	=> $data['skype'],
+							'user_telegram'	=> $data['telegram'],
 							'user_website'	=> $data['website'],
 							'user_from'		=> $data['location'],
 							'user_occ'		=> $data['occupation'],
@@ -432,6 +437,7 @@ class ucp_profile
 					'MSN'		=> $data['msn'],
 					'JABBER'	=> $data['jabber'],
 					'SKYPE'		=> $data['skype'],
+					'TELEGRAM'	=> $data['telegram'],
 					'WEBSITE'	=> $data['website'],
 					'LOCATION'	=> $data['location'],
 					'OCCUPATION'=> $data['occupation'],

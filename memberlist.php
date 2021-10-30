@@ -626,6 +626,7 @@ switch ($mode)
 			'YIM_IMG'		=> $user->img('icon_contact_yahoo', $user->lang['YIM']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
 			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
+			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
 			'S_PROFILE_ACTION'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group'),
@@ -1041,6 +1042,7 @@ switch ($mode)
 			$msn		= request_var('msn', '');
 			$jabber		= request_var('jabber', '');
 			$skype		= request_var('skype', '');
+			$telegram	= request_var('telegram', '');
 			$search_group_id	= request_var('search_group_id', 0);
 
 			// when using these, make sure that we actually have values defined in $find_key_match
@@ -1086,6 +1088,7 @@ switch ($mode)
 			$sql_where .= ($msn) ? ' AND u.user_msnm ' . $db->sql_like_expression(str_replace('*', $db->any_char, $msn)) . ' ' : '';
 			$sql_where .= ($jabber) ? ' AND u.user_jabber ' . $db->sql_like_expression(str_replace('*', $db->any_char, $jabber)) . ' ' : '';
 			$sql_where .= ($skype) ? ' AND u.user_skype ' . $db->sql_like_expression(str_replace('*', $db->any_char, $skype)) . ' ' : '';
+			$sql_where .= ($telegram) ? ' AND u.user_telegram ' . $db->sql_like_expression(str_replace('*', $db->any_char, $telegram)) . ' ' : '';
 			$sql_where .= (is_numeric($count) && isset($find_key_match[$count_select])) ? ' AND u.user_posts ' . $find_key_match[$count_select] . ' ' . (int) $count . ' ' : '';
 
 			if (isset($find_key_match[$joined_select]) && sizeof($joined) == 3)
@@ -1470,6 +1473,7 @@ switch ($mode)
 				'MSNM'		=> $msn,
 				'JABBER'	=> $jabber,
 				'SKYPE'		=> $skype,
+				'TELEGRAM'	=> $telegram,
 				'JOINED'	=> implode('-', $joined),
 				'ACTIVE'	=> implode('-', $active),
 				'COUNT'		=> $count,
@@ -1627,6 +1631,7 @@ switch ($mode)
 			'YIM_IMG'		=> $user->img('icon_contact_yahoo', $user->lang['YIM']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
 			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
+			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
 			'U_FIND_MEMBER'			=> ($config['load_search'] || $auth->acl_get('a_')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser') : '',
@@ -1785,6 +1790,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_MSN'			=> ($data['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=msnm&amp;u=' . $user_id) : '',
 		'U_JABBER'		=> ($data['user_jabber']) ? ('xmpp:' . $data['user_jabber']) : '',
 		'U_SKYPE'		=> ($data['user_skype']) ? ('skype:' . $data['user_skype'] . '?chat') : '',
+		'U_TELEGRAM'	=> ($data['user_telegram']) ? ('tg://resolve?domain=' . $data['user_telegram']) : '',
 		'LOCATION'		=> ($data['user_from']) ? $data['user_from'] : '',
 
 		'USER_AGENT'		=> ($data['user_browser']) ? $data['user_browser'] : '',
@@ -1796,6 +1802,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'USER_JABBER'		=> $data['user_jabber'],
 		'USER_JABBER_IMG'	=> ($data['user_jabber']) ? $user->img('icon_contact_jabber', $data['user_jabber']) : '',
 		'USER_SKYPE'		=> $data['user_skype'],
+		'USER_TELEGRAM'		=> $data['user_telegram'],
 		'USER_EMAIL'				=> $data['user_email'],
 		'S_USER_ALLOW_VIEWEMAIL'	=> (strpos($email,"mailto:") === 0),
 
