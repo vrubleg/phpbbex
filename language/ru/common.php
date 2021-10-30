@@ -528,12 +528,13 @@ $lang = array_merge($lang, array(
 	'SELECT_DESTINATION_FORUM'	=> 'Выберите раздел назначения',
 	'SELECT_FORUM'				=> 'Выберите раздел',
 	'SEND_EMAIL'				=> 'Отправить email',				// Used for submit buttons
-	'SEND_EMAIL_USER'			=> 'Отправить письмо пользователю',	// Used as: {L_SEND_EMAIL_USER} {USERNAME} -> E-mail UserX
+	'SEND_EMAIL_USER'			=> 'Отправить письмо пользователю',	// Used as: {L_SEND_EMAIL_USER} {USERNAME} -> Email UserX
 	'SEND_PRIVATE_MESSAGE'		=> 'Отправить личное сообщение',
 	'SETTINGS'					=> 'Настройки',
 	'SIGNATURE'					=> 'Подпись',
 	'SKIP'						=> 'Пропустить',
 	'SKYPE'						=> 'Skype',
+	'TELEGRAM'					=> 'Telegram',
 	'SMTP_NO_AUTH_SUPPORT'		=> 'SMTP-сервер не поддерживает аутентификацию.',
 	'SORRY_AUTH_READ'			=> 'Вы не авторизованы для чтения этого раздела.',
 	'SORRY_AUTH_VIEW_ATTACH'	=> 'Вы не авторизованы для скачивания этого вложения.',
@@ -712,7 +713,8 @@ $lang = array_merge($lang, array(
 	'WRONG_DATA_COLOUR'			=> 'Введено неправильное значение цвета.',
 	'WRONG_DATA_ICQ'			=> 'Введён неправильный номер ICQ.',
 	'WRONG_DATA_JABBER'			=> 'Введено неправильное имя Jabber.',
-	'WRONG_DATA_SKYPE'			=> 'Введённое имя не является правильным именем Skype.',
+	'WRONG_DATA_SKYPE'			=> 'Введено неправильное имя Skype.',
+	'WRONG_DATA_TELEGRAM'		=> 'Введено неправильное имя Telegram.',
 	'WRONG_DATA_LANG'			=> 'Указан неправильный язык.',
 	'WRONG_DATA_WEBSITE'		=> 'Адрес сайта должен быть правильной ссылкой, включающей наименование протокола. Например, http://www.example.com/.',
 	'WROTE'						=> 'писал(а)',
@@ -952,10 +954,10 @@ $lang = array_merge($lang, array(
 	'MEMBERLIST_INACTIVE_USERS'	=> 'Неактивные',
 	'SEARCH_USERS'				=> 'Поиск пользователей',
 
-	// Login via E-Mail
-	'USERNAME_OR_EMAIL'					=> 'Имя или e-mail',
-	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'Вы ввели неверное имя пользователя или e-mail. Проверьте введённые данные и попробуйте ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
-	'LOGIN_ERROR_EMAIL'					=> 'Вы ввели неверный e-mail. Проверьте его и попробуйте ввести ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
+	// Login via Email
+	'USERNAME_OR_EMAIL'					=> 'Имя или email',
+	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'Вы ввели неверное имя пользователя или email. Проверьте введённые данные и попробуйте ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
+	'LOGIN_ERROR_EMAIL'					=> 'Вы ввели неверный email. Проверьте его и попробуйте ввести ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
 
 	// Advanced Warnings
 	'USER_WARNING'			=> 'Предупреждение',

@@ -216,6 +216,7 @@ $lang = array_merge($lang, array(
 	'IMG_ICON_CONTACT_ICQ'		=> 'ICQ',
 	'IMG_ICON_CONTACT_JABBER'	=> 'Jabber',
 	'IMG_ICON_CONTACT_SKYPE'	=> 'Skype',
+	'IMG_ICON_CONTACT_TELEGRAM'	=> 'Telegram',
 	'IMG_ICON_CONTACT_MSNM'		=> 'MSNM',
 	'IMG_ICON_CONTACT_PM'		=> 'Send message',
 	'IMG_ICON_CONTACT_YAHOO'	=> 'YIM',

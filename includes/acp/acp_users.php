@@ -1371,6 +1371,7 @@ class acp_users
 					'yim'			=> request_var('yim', $user_row['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user_row['user_jabber'], true)),
 					'skype'			=> utf8_normalize_nfc(request_var('skype', $user_row['user_skype'], true)),
+					'telegram'		=> utf8_normalize_nfc(request_var('telegram', $user_row['user_telegram'], true)),
 					'website'		=> utf8_normalize_nfc(request_var('website', $user_row['user_website'], true)),
 					'location'		=> utf8_normalize_nfc(request_var('location', $user_row['user_from'], true)),
 					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user_row['user_occ'], true)),
@@ -1396,7 +1397,6 @@ class acp_users
 				$data['bday_year']		= request_var('bday_year', $data['bday_year']);
 				$data['user_birthday']	= sprintf('%2d-%2d-%4d', $data['bday_day'], $data['bday_month'], $data['bday_year']);
 
-
 				if ($submit)
 				{
 					$error = validate_data($data, array(
@@ -1411,6 +1411,9 @@ class acp_users
 						'skype'			=> array(
 							array('string', true, 3, 255),
 							array('match', true, '#^[a-z][-_.a-z0-9]{5,31}$#i')),
+						'telegram'		=> array(
+							array('string', true, 3, 255),
+							array('match', true, '#^[a-z][_a-z0-9]{5,32}$#i')),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 11, 255),
@@ -1446,6 +1449,7 @@ class acp_users
 							'user_yim'		=> $data['yim'],
 							'user_jabber'	=> $data['jabber'],
 							'user_skype'	=> $data['skype'],
+							'user_telegram'	=> $data['telegram'],
 							'user_website'	=> $data['website'],
 							'user_from'		=> $data['location'],
 							'user_occ'		=> $data['occupation'],
@@ -1500,6 +1504,7 @@ class acp_users
 					'MSN'			=> $data['msn'],
 					'JABBER'		=> $data['jabber'],
 					'SKYPE'			=> $data['skype'],
+					'TELEGRAM'		=> $data['telegram'],
 					'WEBSITE'		=> $data['website'],
 					'LOCATION'		=> $data['location'],
 					'OCCUPATION'	=> $data['occupation'],

@@ -310,5 +310,10 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_log
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
 
+-- phpBBex 1.9.5
+
+ALTER TABLE phpbb_users ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype;
+INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1);
+
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.4');

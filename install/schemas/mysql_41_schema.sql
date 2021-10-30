@@ -1022,6 +1022,7 @@ CREATE TABLE phpbb_users (
 	user_msnm varchar(255) DEFAULT '' NOT NULL,
 	user_jabber varchar(255) DEFAULT '' NOT NULL,
 	user_skype varchar(255) DEFAULT '' NOT NULL,
+	user_telegram varchar(255) DEFAULT '' NOT NULL,
 	user_website varchar(200) DEFAULT '' NOT NULL,
 	user_occ text NOT NULL,
 	user_interests text NOT NULL,
