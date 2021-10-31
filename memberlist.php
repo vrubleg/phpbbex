@@ -1790,7 +1790,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_MSN'			=> ($data['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=msnm&amp;u=' . $user_id) : '',
 		'U_JABBER'		=> ($data['user_jabber']) ? ('xmpp:' . $data['user_jabber']) : '',
 		'U_SKYPE'		=> ($data['user_skype']) ? ('skype:' . $data['user_skype'] . '?chat') : '',
-		'U_TELEGRAM'	=> ($data['user_telegram']) ? ('https://t.me/' . $data['user_telegram']) : '',
+		'U_TELEGRAM'	=> ($data['user_telegram']) ? ('tg://resolve?domain=' . $data['user_telegram']) : '',
 		'LOCATION'		=> ($data['user_from']) ? $data['user_from'] : '',
 
 		'USER_AGENT'		=> ($data['user_browser']) ? $data['user_browser'] : '',
