@@ -276,6 +276,11 @@ class ucp_profile
 					$data['website'] = 'http://' . $data['website'];
 				}
 
+				if (!empty($data['telegram']) && preg_match('#^(@|https?://(telegram|t)\.me/)[a-z][_a-z0-9]*$#iu', $data['telegram']))
+				{
+					$data['telegram'] = preg_replace('#^(@|https?://(telegram|t)\.me/)#iu', '', $data['telegram']);
+				}
+
 				if ($config['allow_birthdays'])
 				{
 					$data['bday_day'] = $data['bday_month'] = $data['bday_year'] = 0;
@@ -305,11 +310,11 @@ class ucp_profile
 							array('string', true, 5, 255),
 							array('jabber')),
 						'skype'			=> array(
-							array('string', true, 3, 255),
-							array('match', true, '#^[a-z][-_.a-z0-9]{5,31}$#i')),
+							array('string', true, 5, 32),
+							array('match', true, '#^[a-z][-_.a-z0-9]{4,31}$#i')),
 						'telegram'		=> array(
-							array('string', true, 3, 255),
-							array('match', true, '#^[a-z][_a-z0-9]{5,32}$#i')),
+							array('string', true, 5, 32),
+							array('match', true, '#^[a-z][_a-z0-9]{4,31}$#i')),
 						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 11, 255),
