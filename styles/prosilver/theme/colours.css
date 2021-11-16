@@ -604,10 +604,7 @@ Colours and backgrounds for buttons.css
 
 /* Profile & navigation icons */
 .email-icon, .email-icon a		{ background-image: url("{IMG_ICON_CONTACT_EMAIL_SRC}"); }
-.aim-icon, .aim-icon a			{ background-image: url("{IMG_ICON_CONTACT_AIM_SRC}"); }
-.yahoo-icon, .yahoo-icon a		{ background-image: url("{IMG_ICON_CONTACT_YAHOO_SRC}"); }
 .web-icon, .web-icon a			{ background-image: url("{IMG_ICON_CONTACT_WWW_SRC}"); }
-.msnm-icon, .msnm-icon a		{ background-image: url("{IMG_ICON_CONTACT_MSNM_SRC}"); }
 .icq-icon, .icq-icon a			{ background-image: url("{IMG_ICON_CONTACT_ICQ_SRC}"); }
 .jabber-icon, .jabber-icon a	{ background-image: url("{IMG_ICON_CONTACT_JABBER_SRC}"); }
 .skype-icon, .skype-icon a		{ background-image: url("{IMG_ICON_CONTACT_SKYPE_SRC}"); }

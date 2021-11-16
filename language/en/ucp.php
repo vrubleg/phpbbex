@@ -408,7 +408,6 @@ $lang = array_merge($lang, array(
 	'UCP'						=> 'User Control Panel',
 	'UCP_ACTIVATE'				=> 'Activate account',
 	'UCP_ADMIN_ACTIVATE'		=> 'Please note that you will need to enter a valid e-mail address before your account is activated. The administrator will review your account and if approved you will receive an e-mail at the address you specified.',
-	'UCP_AIM'					=> 'AOL Instant Messenger',
 	'UCP_ATTACHMENTS'			=> 'Attachments',
 	'UCP_COPPA_BEFORE'			=> 'Before %s',
 	'UCP_COPPA_ON_AFTER'		=> 'On or after %s',
@@ -423,7 +422,6 @@ $lang = array_merge($lang, array(
 	'UCP_MAIN_FRONT'			=> 'Front page',
 	'UCP_MAIN_SUBSCRIBED'		=> 'Manage subscriptions',
 
-	'UCP_MSNM'					=> 'WL/MSN Messenger',
 	'UCP_NO_ATTACHMENTS'		=> 'You have posted no files.',
 
 	'UCP_PREFS'					=> 'Board preferences',
@@ -454,7 +452,6 @@ $lang = array_merge($lang, array(
 	'UCP_REMIND'					=> 'Send password',
 	'UCP_RESEND'					=> 'Send activation e-mail',
 	'UCP_WELCOME'					=> 'Welcome to the User Control Panel. From here you can monitor, view and update your profile, preferences, subscribed forums and topics. You can also send messages to other users (if permitted). Please ensure you read any announcements before continuing.',
-	'UCP_YIM'						=> 'Yahoo Messenger',
 	'UCP_ZEBRA'						=> 'Friends &amp; Foes',
 	'UCP_ZEBRA_FOES'				=> 'Manage foes',
 	'UCP_ZEBRA_FRIENDS'				=> 'Manage friends',

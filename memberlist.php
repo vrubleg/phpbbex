@@ -268,20 +268,6 @@ switch ($mode)
 		$presence_img = '';
 		switch ($action)
 		{
-			case 'aim':
-				$lang = 'AIM';
-				$sql_field = 'user_aim';
-				$s_select = 'S_SEND_AIM';
-				$s_action = '';
-			break;
-
-			case 'msnm':
-				$lang = 'MSNM';
-				$sql_field = 'user_msnm';
-				$s_select = 'S_SEND_MSNM';
-				$s_action = '';
-			break;
-
 			case 'jabber':
 				$lang = 'JABBER';
 				$sql_field = 'user_jabber';
@@ -363,10 +349,6 @@ switch ($mode)
 		// Send vars to the template
 		$template->assign_vars(array(
 			'IM_CONTACT'	=> $row[$sql_field],
-			'A_IM_CONTACT'	=> addslashes($row[$sql_field]),
-
-			'U_AIM_CONTACT'	=> ($action == 'aim') ? 'aim:addbuddy?screenname=' . urlencode($row[$sql_field]) : '',
-			'U_AIM_MESSAGE'	=> ($action == 'aim') ? 'aim:goim?screenname=' . urlencode($row[$sql_field]) . '&amp;message=' . urlencode($config['sitename']) : '',
 
 			'USERNAME'		=> $row['username'],
 			'CONTACT_NAME'	=> $row[$sql_field],
@@ -621,9 +603,6 @@ switch ($mode)
 			'EMAIL_IMG'		=> $user->img('icon_contact_email', $user->lang['EMAIL']),
 			'WWW_IMG'		=> $user->img('icon_contact_www', $user->lang['WWW']),
 			'ICQ_IMG'		=> $user->img('icon_contact_icq', $user->lang['ICQ']),
-			'AIM_IMG'		=> $user->img('icon_contact_aim', $user->lang['AIM']),
-			'MSN_IMG'		=> $user->img('icon_contact_msnm', $user->lang['MSNM']),
-			'YIM_IMG'		=> $user->img('icon_contact_yahoo', $user->lang['YIM']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
 			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
 			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
@@ -1027,7 +1006,7 @@ switch ($mode)
 		$select_single 	= request_var('select_single', false);
 
 		// Search URL parameters, if any of these are in the URL we do a search
-		$search_params = array('username', 'email', 'icq', 'aim', 'yahoo', 'msn', 'jabber', 'search_group_id', 'joined_select', 'active_select', 'count_select', 'joined', 'active', 'count', 'ip');
+		$search_params = array('username', 'email', 'icq', 'jabber', 'search_group_id', 'joined_select', 'active_select', 'count_select', 'joined', 'active', 'count', 'ip');
 
 		// We validate form and field here, only id/class allowed
 		$form = (!preg_match('/^[a-z0-9_-]+$/i', $form)) ? '' : $form;
@@ -1037,9 +1016,6 @@ switch ($mode)
 			$username	= request_var('username', '', true);
 			$email		= strtolower(request_var('email', ''));
 			$icq		= request_var('icq', '');
-			$aim		= request_var('aim', '');
-			$yahoo		= request_var('yahoo', '');
-			$msn		= request_var('msn', '');
 			$jabber		= request_var('jabber', '');
 			$skype		= request_var('skype', '');
 			$telegram	= request_var('telegram', '');
@@ -1083,9 +1059,6 @@ switch ($mode)
 			$sql_where .= ($username) ? ' AND u.username_clean ' . $db->sql_like_expression(str_replace('*', $db->any_char, utf8_clean_string($username))) : '';
 			$sql_where .= ($auth->acl_get('a_user') && $email) ? ' AND u.user_email ' . $db->sql_like_expression(str_replace('*', $db->any_char, $email)) . ' ' : '';
 			$sql_where .= ($icq) ? ' AND u.user_icq ' . $db->sql_like_expression(str_replace('*', $db->any_char, $icq)) . ' ' : '';
-			$sql_where .= ($aim) ? ' AND u.user_aim ' . $db->sql_like_expression(str_replace('*', $db->any_char, $aim)) . ' ' : '';
-			$sql_where .= ($yahoo) ? ' AND u.user_yim ' . $db->sql_like_expression(str_replace('*', $db->any_char, $yahoo)) . ' ' : '';
-			$sql_where .= ($msn) ? ' AND u.user_msnm ' . $db->sql_like_expression(str_replace('*', $db->any_char, $msn)) . ' ' : '';
 			$sql_where .= ($jabber) ? ' AND u.user_jabber ' . $db->sql_like_expression(str_replace('*', $db->any_char, $jabber)) . ' ' : '';
 			$sql_where .= ($skype) ? ' AND u.user_skype ' . $db->sql_like_expression(str_replace('*', $db->any_char, $skype)) . ' ' : '';
 			$sql_where .= ($telegram) ? ' AND u.user_telegram ' . $db->sql_like_expression(str_replace('*', $db->any_char, $telegram)) . ' ' : '';
@@ -1335,9 +1308,6 @@ switch ($mode)
 			'username'		=> array('username', '', true),
 			'email'			=> array('email', ''),
 			'icq'			=> array('icq', ''),
-			'aim'			=> array('aim', ''),
-			'yahoo'			=> array('yahoo', ''),
-			'msn'			=> array('msn', ''),
 			'jabber'		=> array('jabber', ''),
 			'search_group_id'	=> array('search_group_id', 0),
 			'joined_select'	=> array('joined_select', 'lt'),
@@ -1468,9 +1438,6 @@ switch ($mode)
 				'USERNAME'	=> $username,
 				'EMAIL'		=> $email,
 				'ICQ'		=> $icq,
-				'AIM'		=> $aim,
-				'YAHOO'		=> $yahoo,
-				'MSNM'		=> $msn,
 				'JABBER'	=> $jabber,
 				'SKYPE'		=> $skype,
 				'TELEGRAM'	=> $telegram,
@@ -1626,9 +1593,6 @@ switch ($mode)
 			'EMAIL_IMG'		=> $user->img('icon_contact_email', $user->lang['EMAIL']),
 			'WWW_IMG'		=> $user->img('icon_contact_www', $user->lang['WWW']),
 			'ICQ_IMG'		=> $user->img('icon_contact_icq', $user->lang['ICQ']),
-			'AIM_IMG'		=> $user->img('icon_contact_aim', $user->lang['AIM']),
-			'MSN_IMG'		=> $user->img('icon_contact_msnm', $user->lang['MSNM']),
-			'YIM_IMG'		=> $user->img('icon_contact_yahoo', $user->lang['YIM']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
 			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
 			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
@@ -1785,9 +1749,6 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_WWW'			=> (!empty($data['user_website'])) ? $data['user_website'] : '',
 		'U_SHORT_WWW'			=> (!empty($data['user_website'])) ? ((strlen($data['user_website']) > 55) ? substr($data['user_website'], 0, 39) . ' ... ' . substr($data['user_website'], -10) : $data['user_website']) : '',
 		'U_ICQ'			=> ($data['user_icq']) ? 'http://www.icq.com/people/' . urlencode($data['user_icq']) . '/' : '',
-		'U_AIM'			=> ($data['user_aim'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=aim&amp;u=' . $user_id) : '',
-		'U_YIM'			=> ($data['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . urlencode($data['user_yim']) . '&amp;.src=pg' : '',
-		'U_MSN'			=> ($data['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=contact&amp;action=msnm&amp;u=' . $user_id) : '',
 		'U_JABBER'		=> ($data['user_jabber']) ? ('xmpp:' . $data['user_jabber']) : '',
 		'U_SKYPE'		=> ($data['user_skype']) ? ('skype:' . $data['user_skype'] . '?chat') : '',
 		'U_TELEGRAM'	=> ($data['user_telegram']) ? ('tg://resolve?domain=' . $data['user_telegram']) : '',
@@ -1796,9 +1757,6 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'USER_AGENT'		=> ($data['user_browser']) ? $data['user_browser'] : '',
 		'USER_LAST_IP'		=> ($data['user_ip']) ? $data['user_ip'] : '',
 		'USER_ICQ'			=> $data['user_icq'],
-		'USER_AIM'			=> $data['user_aim'],
-		'USER_YIM'			=> $data['user_yim'],
-		'USER_MSN'			=> $data['user_msnm'],
 		'USER_JABBER'		=> $data['user_jabber'],
 		'USER_JABBER_IMG'	=> ($data['user_jabber']) ? $user->img('icon_contact_jabber', $data['user_jabber']) : '',
 		'USER_SKYPE'		=> $data['user_skype'],

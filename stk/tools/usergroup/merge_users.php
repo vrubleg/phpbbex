@@ -93,14 +93,14 @@ class merge_users
 			return;
 		}
 
-		$sql = 'SELECT user_id, user_type 
+		$sql = 'SELECT user_id, user_type
 			FROM ' . USERS_TABLE . '
 			WHERE ' . (($source_name) ? 'username_clean = \'' . $db->sql_escape(utf8_clean_string($source_name)) . '\'' : 'user_id = ' . (int) $source_id);
 		$result = $db->sql_query($sql);
 		$source = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		$sql = 'SELECT user_id, user_type 
+		$sql = 'SELECT user_id, user_type
 			FROM ' . USERS_TABLE . '
 			WHERE ' . (($target_name) ? 'username_clean = \'' . $db->sql_escape(utf8_clean_string($target_name)) . '\'' : 'user_id = ' . (int) $target_id);
 
@@ -546,7 +546,7 @@ class merge_users
 			$update['target']['user_notify_type'] = NOTIFY_BOTH;
 		}
 
-		foreach (array('birthday', 'avatar', 'sig', 'from', 'icq', 'aim', 'yim', 'msnm', 'jabber', 'website', 'occ', 'interests') as $var)
+		foreach (array('birthday', 'avatar', 'sig', 'from', 'icq', 'jabber', 'skype', 'telegram', 'website', 'occ', 'interests') as $var)
 		{
 			if (!$target['user_' . $var] && $source['user_' . $var])
 			{

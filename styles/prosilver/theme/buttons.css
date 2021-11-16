@@ -97,10 +97,7 @@ ul.profile-icons li a:hover { background: none; }
 
 /* Profile & navigation & moderator icons */
 .email-icon, .email-icon a,
-.aim-icon, .aim-icon a,
-.yahoo-icon, .yahoo-icon a,
 .web-icon, .web-icon a,
-.msnm-icon, .msnm-icon a,
 .icq-icon, .icq-icon a,
 .jabber-icon, .jabber-icon a,
 .skype-icon, .skype-icon a,
@@ -117,10 +114,7 @@ ul.profile-icons li a:hover { background: none; }
 
 /* Set profile icon dimensions */
 ul.profile-icons li.email-icon	{ width: {IMG_ICON_CONTACT_EMAIL_WIDTH}px; height: {IMG_ICON_CONTACT_EMAIL_HEIGHT}px; }
-ul.profile-icons li.aim-icon	{ width: {IMG_ICON_CONTACT_AIM_WIDTH}px; height: {IMG_ICON_CONTACT_AIM_HEIGHT}px; }
-ul.profile-icons li.yahoo-icon	{ width: {IMG_ICON_CONTACT_YAHOO_WIDTH}px; height: {IMG_ICON_CONTACT_YAHOO_HEIGHT}px; }
 ul.profile-icons li.web-icon	{ width: {IMG_ICON_CONTACT_WWW_WIDTH}px; height: {IMG_ICON_CONTACT_WWW_HEIGHT}px; }
-ul.profile-icons li.msnm-icon	{ width: {IMG_ICON_CONTACT_MSNM_WIDTH}px; height: {IMG_ICON_CONTACT_MSNM_HEIGHT}px; }
 ul.profile-icons li.icq-icon	{ width: {IMG_ICON_CONTACT_ICQ_WIDTH}px; height: {IMG_ICON_CONTACT_ICQ_HEIGHT}px; }
 ul.profile-icons li.jabber-icon	{ width: {IMG_ICON_CONTACT_JABBER_WIDTH}px; height: {IMG_ICON_CONTACT_JABBER_HEIGHT}px; }
 ul.profile-icons li.skype-icon	{ width: {IMG_ICON_CONTACT_SKYPE_WIDTH}px; height: {IMG_ICON_CONTACT_SKYPE_HEIGHT}px; }

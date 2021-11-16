@@ -55,7 +55,6 @@ $lang = array_merge($lang, array(
 	'ADMINISTRATOR'					=> 'Administrator',
 	'ADMINISTRATORS'				=> 'Administrators',
 	'AGE'							=> 'Age',
-	'AIM'							=> 'AIM',
 	'ALLOWED'						=> 'Allowed',
 	'ALL_FILES'						=> 'All files',
 	'ALL_FORUMS'					=> 'All forums',
@@ -332,7 +331,6 @@ $lang = array_merge($lang, array(
 	'MODULE_FILE_INCORRECT_CLASS'	=> 'Module file %s does not contain correct class [%s]',
 	'MONTH'					=> 'Month',
 	'MOVE'					=> 'Move',
-	'MSNM'					=> 'MSNM/WLM',
 
 	'NA'						=> 'N/A',
 	'NEWEST_USER'				=> 'Our newest member <strong>%s</strong>',
@@ -569,14 +567,12 @@ $lang = array_merge($lang, array(
 
 	'TOO_LONG'						=> 'The value you entered is too long.',
 
-	'TOO_LONG_AIM'					=> 'The screenname you entered is too long.',
 	'TOO_LONG_CONFIRM_CODE'			=> 'The confirm code you entered is too long.',
 	'TOO_LONG_DATEFORMAT'			=> 'The date format you entered is too long.',
 	'TOO_LONG_ICQ'					=> 'The ICQ number you entered is too long.',
 	'TOO_LONG_INTERESTS'			=> 'The interests you entered is too long.',
 	'TOO_LONG_JABBER'				=> 'The Jabber account name you entered is too long.',
 	'TOO_LONG_LOCATION'				=> 'The location you entered is too long.',
-	'TOO_LONG_MSN'					=> 'The MSNM/WLM name you entered is too long.',
 	'TOO_LONG_NEW_PASSWORD'			=> 'The password you entered is too long.',
 	'TOO_LONG_OCCUPATION'			=> 'The occupation you entered is too long.',
 	'TOO_LONG_PASSWORD_CONFIRM'		=> 'The password confirmation you entered is too long.',
@@ -585,20 +581,17 @@ $lang = array_merge($lang, array(
 	'TOO_LONG_EMAIL'				=> 'The e-mail address you entered is too long.',
 	'TOO_LONG_EMAIL_CONFIRM'		=> 'The e-mail address confirmation you entered is too long.',
 	'TOO_LONG_WEBSITE'				=> 'The website address you entered is too long.',
-	'TOO_LONG_YIM'					=> 'The Yahoo! Messenger name you entered is too long.',
 
 	'TOO_MANY_VOTE_OPTIONS'			=> 'You have tried to vote for too many options.',
 
 	'TOO_SHORT'						=> 'The value you entered is too short.',
 
-	'TOO_SHORT_AIM'					=> 'The screenname you entered is too short.',
 	'TOO_SHORT_CONFIRM_CODE'		=> 'The confirm code you entered is too short.',
 	'TOO_SHORT_DATEFORMAT'			=> 'The date format you entered is too short.',
 	'TOO_SHORT_ICQ'					=> 'The ICQ number you entered is too short.',
 	'TOO_SHORT_INTERESTS'			=> 'The interests you entered is too short.',
 	'TOO_SHORT_JABBER'				=> 'The Jabber account name you entered is too short.',
 	'TOO_SHORT_LOCATION'			=> 'The location you entered is too short.',
-	'TOO_SHORT_MSN'					=> 'The MSNM/WLM name you entered is too short.',
 	'TOO_SHORT_NEW_PASSWORD'		=> 'The password you entered is too short.',
 	'TOO_SHORT_OCCUPATION'			=> 'The occupation you entered is too short.',
 	'TOO_SHORT_PASSWORD_CONFIRM'	=> 'The password confirmation you entered is too short.',
@@ -607,7 +600,6 @@ $lang = array_merge($lang, array(
 	'TOO_SHORT_EMAIL'				=> 'The e-mail address you entered is too short.',
 	'TOO_SHORT_EMAIL_CONFIRM'		=> 'The e-mail address confirmation you entered is too short.',
 	'TOO_SHORT_WEBSITE'				=> 'The website address you entered is too short.',
-	'TOO_SHORT_YIM'					=> 'The Yahoo! Messenger name you entered is too short.',
 
 	'TOO_SMALL'						=> 'The value you entered is too small.',
 	'TOO_SMALL_MAX_RECIPIENTS'		=> 'The value of <strong>Maximum number of allowed recipients per private message</strong> setting you entered is too small.',
@@ -722,7 +714,6 @@ $lang = array_merge($lang, array(
 	'YEAR'				=> 'Year',
 	'YEAR_MONTH_DAY'	=> '(YYYY-MM-DD)',
 	'YES'				=> 'Yes',
-	'YIM'				=> 'YIM',
 	'YOU_LAST_VISIT'	=> 'Last visit was: %s',
 	'YOU_NEW_PM'		=> 'A new private message is waiting for you in your Inbox.',
 	'YOU_NEW_PMS'		=> 'New private messages are waiting for you in your Inbox.',

@@ -55,7 +55,6 @@ $lang = array_merge($lang, array(
 	'ADMINISTRATOR'					=> 'Администратор',
 	'ADMINISTRATORS'				=> 'Администраторы',
 	'AGE'							=> 'Возраст',
-	'AIM'							=> 'AIM',
 	'ALLOWED'						=> 'Разрешено',
 	'ALL_FILES'						=> 'Все файлы',
 	'ALL_FORUMS'					=> 'Все разделы',
@@ -332,7 +331,6 @@ $lang = array_merge($lang, array(
 	'MODULE_FILE_INCORRECT_CLASS'	=> 'Файл модуля %s не содержит необходимого класса [%s]',
 	'MONTH'					=> 'Месяц',
 	'MOVE'					=> 'Переместить',
-	'MSNM'					=> 'MSNM/WLM',
 
 	'NA'						=> 'Нет',
 	'NEWEST_USER'				=> 'Новый пользователь: <strong>%s</strong>',
@@ -569,14 +567,12 @@ $lang = array_merge($lang, array(
 
 	'TOO_LONG'			=> 'Введённое значение слишком длинное.',
 
-	'TOO_LONG_AIM'					=> 'Имя в AIM слишком длинное.',
 	'TOO_LONG_CONFIRM_CODE'			=> 'Введённый код подтверждения слишком длинный.',
 	'TOO_LONG_DATEFORMAT'			=> 'Введённый формат даты слишком длинный.',
 	'TOO_LONG_ICQ'					=> 'Номер ICQ слишком длинный.',
 	'TOO_LONG_INTERESTS'			=> 'Слишком длинная строка интересов.',
 	'TOO_LONG_JABBER'				=> 'Имя учётной записи Jabber слишком длинное.',
 	'TOO_LONG_LOCATION'				=> 'Строка «Откуда» слишком длинная.',
-	'TOO_LONG_MSN'					=> 'Имя в MSN/WLM слишком длинное.',
 	'TOO_LONG_NEW_PASSWORD'			=> 'Введённый пароль слишком длинный.',
 	'TOO_LONG_OCCUPATION'			=> 'Строка «Род занятий» слишком длинная.',
 	'TOO_LONG_PASSWORD_CONFIRM'		=> 'Подтверждение пароля слишком длинное.',
@@ -585,20 +581,17 @@ $lang = array_merge($lang, array(
 	'TOO_LONG_EMAIL'				=> 'Адрес email слишком длинный.',
 	'TOO_LONG_EMAIL_CONFIRM'		=> 'Подтверждение адреса email слишком длинное.',
 	'TOO_LONG_WEBSITE'				=> 'Адрес сайта слишком длинный.',
-	'TOO_LONG_YIM'					=> 'Имя в YIM слишком длинное.',
 
 	'TOO_MANY_VOTE_OPTIONS'			=> 'Вы выбрали слишком много вариантов ответа при голосовании.',
 
 	'TOO_SHORT'						=> 'Введённое значение слишком короткое.',
 
-	'TOO_SHORT_AIM'					=> 'Имя в AIM слишком короткое.',
 	'TOO_SHORT_CONFIRM_CODE'		=> 'Введённый код подтверждения слишком короткий.',
 	'TOO_SHORT_DATEFORMAT'			=> 'Введённый формат даты слишком короткий.',
 	'TOO_SHORT_ICQ'					=> 'Номер ICQ слишком короткий.',
 	'TOO_SHORT_INTERESTS'			=> 'Слишком короткая строка интересов.',
 	'TOO_SHORT_JABBER'				=> 'Имя учётной записи Jabber слишком короткое.',
 	'TOO_SHORT_LOCATION'			=> 'Строка «Откуда» слишком короткая.',
-	'TOO_SHORT_MSN'					=> 'Имя в MSNM/WLM слишком короткое.',
 	'TOO_SHORT_NEW_PASSWORD'		=> 'Введённый пароль слишком короткий.',
 	'TOO_SHORT_OCCUPATION'			=> 'Строка «Род занятий» слишком короткая.',
 	'TOO_SHORT_PASSWORD_CONFIRM'	=> 'Подтверждение пароля слишком короткое.',
@@ -607,7 +600,6 @@ $lang = array_merge($lang, array(
 	'TOO_SHORT_EMAIL'				=> 'Адрес email слишком короткий.',
 	'TOO_SHORT_EMAIL_CONFIRM'		=> 'Подтверждение адреса email слишком короткое.',
 	'TOO_SHORT_WEBSITE'				=> 'Адрес сайта слишком короткий.',
-	'TOO_SHORT_YIM'					=> 'Имя в YIM слишком короткое.',
 
 	'TOO_SMALL'						=> 'Введённое значение слишком мало.',
 	'TOO_SMALL_MAX_RECIPIENTS'		=> 'Введённое значение настройки <strong>Максимальное разрешённое число получателей ЛС</strong> слишком мало.',
@@ -722,7 +714,6 @@ $lang = array_merge($lang, array(
 	'YEAR'				=> 'Год',
 	'YEAR_MONTH_DAY'	=> '(ГГГГ-ММ-ДД)',
 	'YES'				=> 'Да',
-	'YIM'				=> 'YIM',
 	'YOU_LAST_VISIT'	=> 'Предыдущее посещение: %s',
 	'YOU_NEW_PM'		=> 'Вам пришло новое личное сообщение.',
 	'YOU_NEW_PMS'		=> 'Вам пришли новые личные сообщения.',

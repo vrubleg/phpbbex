@@ -1366,9 +1366,6 @@ class acp_users
 
 				$data = array(
 					'icq'			=> request_var('icq', $user_row['user_icq']),
-					'aim'			=> request_var('aim', $user_row['user_aim']),
-					'msn'			=> request_var('msn', $user_row['user_msnm']),
-					'yim'			=> request_var('yim', $user_row['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user_row['user_jabber'], true)),
 					'skype'			=> utf8_normalize_nfc(request_var('skype', $user_row['user_skype'], true)),
 					'telegram'		=> utf8_normalize_nfc(request_var('telegram', $user_row['user_telegram'], true)),
@@ -1408,8 +1405,6 @@ class acp_users
 						'icq'			=> array(
 							array('string', true, 3, 15),
 							array('match', true, '#^[0-9]+$#i')),
-						'aim'			=> array('string', true, 3, 255),
-						'msn'			=> array('string', true, 5, 255),
 						'jabber'		=> array(
 							array('string', true, 5, 255),
 							array('jabber')),
@@ -1419,7 +1414,6 @@ class acp_users
 						'telegram'		=> array(
 							array('string', true, 5, 32),
 							array('match', true, '#^[a-z][_a-z0-9]{4,31}$#i')),
-						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 11, 255),
 							array('match', true, '#^http[s]?://([\pLa-z0-9\-]+\.)+[\pLa-z]{2,10}#iu')),
@@ -1449,9 +1443,6 @@ class acp_users
 					{
 						$sql_ary = array(
 							'user_icq'		=> $data['icq'],
-							'user_aim'		=> $data['aim'],
-							'user_msnm'		=> $data['msn'],
-							'user_yim'		=> $data['yim'],
 							'user_jabber'	=> $data['jabber'],
 							'user_skype'	=> $data['skype'],
 							'user_telegram'	=> $data['telegram'],
@@ -1504,9 +1495,6 @@ class acp_users
 
 				$template->assign_vars(array(
 					'ICQ'			=> $data['icq'],
-					'YIM'			=> $data['yim'],
-					'AIM'			=> $data['aim'],
-					'MSN'			=> $data['msn'],
 					'JABBER'		=> $data['jabber'],
 					'SKYPE'			=> $data['skype'],
 					'TELEGRAM'		=> $data['telegram'],

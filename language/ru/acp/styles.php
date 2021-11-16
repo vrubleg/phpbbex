@@ -210,15 +210,12 @@ $lang = array_merge($lang, array(
 
 	'IMG_ICON_BACK_TOP'		=> 'Наверх',
 
-	'IMG_ICON_CONTACT_AIM'		=> 'AIM',
 	'IMG_ICON_CONTACT_EMAIL'	=> 'Отправить email',
 	'IMG_ICON_CONTACT_ICQ'		=> 'ICQ',
 	'IMG_ICON_CONTACT_JABBER'	=> 'Jabber',
 	'IMG_ICON_CONTACT_SKYPE'	=> 'Skype',
 	'IMG_ICON_CONTACT_TELEGRAM'	=> 'Telegram',
-	'IMG_ICON_CONTACT_MSNM'		=> 'MSNM',
 	'IMG_ICON_CONTACT_PM'		=> 'Отправить личное сообщение',
-	'IMG_ICON_CONTACT_YAHOO'	=> 'YIM',
 	'IMG_ICON_CONTACT_WWW'		=> 'Сайт',
 
 	'IMG_ICON_POST_DELETE'			=> 'Удалить сообщение',
@@ -228,7 +225,6 @@ $lang = array_merge($lang, array(
 	'IMG_ICON_POST_REPORT'			=> 'Пожаловаться на сообщение',
 	'IMG_ICON_POST_TARGET'			=> 'Значок сообщения',
 	'IMG_ICON_POST_TARGET_UNREAD'	=> 'Значок нового сообщения',
-
 
 	'IMG_ICON_TOPIC_ATTACH'			=> 'Вложение',
 	'IMG_ICON_TOPIC_LATEST'			=> 'Последнее сообщение',
