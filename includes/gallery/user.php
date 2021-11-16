@@ -405,8 +405,17 @@ class phpbb_gallery_user
 		{
 			$user_cache[$user_id] = array(
 				'joined'		=> '',
+				'with_us'		=> '',
 				'posts'			=> '',
+				'topics'		=> '',
 				'from'			=> '',
+
+				'rating'			=> 0,
+				'rating_positive'	=> 0,
+				'rating_negative'	=> 0,
+				'rated'				=> 0,
+				'rated_positive'	=> 0,
+				'rated_negative'	=> 0,
 
 				'sig'					=> '',
 				'sig_bbcode_uid'		=> '',
@@ -429,6 +438,7 @@ class phpbb_gallery_user
 				'telegram'			=> '',
 				'search'			=> '',
 				'age'				=> '',
+				'gender'			=> 0,
 
 				'gallery_album'		=> '',
 				'gallery_images'	=> '',
@@ -455,10 +465,19 @@ class phpbb_gallery_user
 			$id_cache[] = $user_id;
 
 			$user_cache[$user_id] = array(
-				'joined'		=> $user->format_date($row['user_regdate']),
+				'joined'		=> $user->format_date($row['user_regdate'], false, false, true),
+				'with_us'		=> !empty($config['style_mp_show_with_us']) ? time_delta::get_verbal($row['user_regdate'], time(), false, 2) : '',
 				'posts'			=> $row['user_posts'],
+				'topics'		=> $row['user_topics'],
 				'warnings'		=> (isset($row['user_warnings'])) ? $row['user_warnings'] : 0,
 				'from'			=> (!empty($row['user_from'])) ? $row['user_from'] : '',
+
+				'rating'			=> ($config['rate_no_positive'] ? 0 : $row['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rating_negative']),
+				'rating_positive'	=> $row['user_rating_positive'],
+				'rating_negative'	=> $row['user_rating_negative'],
+				'rated'				=> ($config['rate_no_positive'] ? 0 : $row['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rated_negative']),
+				'rated_positive'	=> $row['user_rated_positive'],
+				'rated_negative'	=> $row['user_rated_negative'],
 
 				'sig'					=> $user_sig,
 				'sig_bbcode_uid'		=> (!empty($row['user_sig_bbcode_uid'])) ? $row['user_sig_bbcode_uid'] : '',
@@ -469,6 +488,7 @@ class phpbb_gallery_user
 
 				'avatar'		=> ($user->optionget('viewavatars')) ? get_user_avatar($row['user_avatar'], $row['user_avatar_type'], $row['user_avatar_width'], $row['user_avatar_height']) : '',
 				'age'			=> '',
+				'gender'		=> (int)$row['user_gender'],
 
 				'rank_title'		=> '',
 				'rank_image'		=> '',
