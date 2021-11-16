@@ -258,9 +258,6 @@ class ucp_profile
 
 				$data = array(
 					'icq'			=> request_var('icq', $user->data['user_icq']),
-					'aim'			=> request_var('aim', $user->data['user_aim']),
-					'msn'			=> request_var('msn', $user->data['user_msnm']),
-					'yim'			=> request_var('yim', $user->data['user_yim']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user->data['user_jabber'], true)),
 					'skype'			=> utf8_normalize_nfc(request_var('skype', $user->data['user_skype'], true)),
 					'telegram'		=> utf8_normalize_nfc(request_var('telegram', $user->data['user_telegram'], true)),
@@ -304,8 +301,6 @@ class ucp_profile
 						'icq'			=> array(
 							array('string', true, 3, 15),
 							array('match', true, '#^[0-9]+$#i')),
-						'aim'			=> array('string', true, 3, 255),
-						'msn'			=> array('string', true, 5, 255),
 						'jabber'		=> array(
 							array('string', true, 5, 255),
 							array('jabber')),
@@ -315,7 +310,6 @@ class ucp_profile
 						'telegram'		=> array(
 							array('string', true, 5, 32),
 							array('match', true, '#^[a-z][_a-z0-9]{4,31}$#i')),
-						'yim'			=> array('string', true, 5, 255),
 						'website'		=> array(
 							array('string', true, 11, 255),
 							array('match', true, '#^http[s]?://([\pLa-z0-9\-]+\.)+[\pLa-z]{2,10}#iu')),
@@ -363,9 +357,6 @@ class ucp_profile
 
 						$sql_ary = array(
 							'user_icq'		=> $data['icq'],
-							'user_aim'		=> $data['aim'],
-							'user_msnm'		=> $data['msn'],
-							'user_yim'		=> $data['yim'],
 							'user_jabber'	=> $data['jabber'],
 							'user_skype'	=> $data['skype'],
 							'user_telegram'	=> $data['telegram'],
@@ -437,9 +428,6 @@ class ucp_profile
 					'ERROR'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 
 					'ICQ'		=> $data['icq'],
-					'YIM'		=> $data['yim'],
-					'AIM'		=> $data['aim'],
-					'MSN'		=> $data['msn'],
 					'JABBER'	=> $data['jabber'],
 					'SKYPE'		=> $data['skype'],
 					'TELEGRAM'	=> $data['telegram'],

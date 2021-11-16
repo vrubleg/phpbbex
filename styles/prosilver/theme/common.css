@@ -28,6 +28,10 @@ body {
 	height: 100%;
 }
 
+body.simple-body {
+	background-color: #FFFFFF;
+}
+
 h1 {
 	/* Forum name */
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;

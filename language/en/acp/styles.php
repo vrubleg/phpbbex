@@ -211,15 +211,12 @@ $lang = array_merge($lang, array(
 
 	'IMG_ICON_BACK_TOP'		=> 'Top',
 
-	'IMG_ICON_CONTACT_AIM'		=> 'AIM',
 	'IMG_ICON_CONTACT_EMAIL'	=> 'Send e-mail',
 	'IMG_ICON_CONTACT_ICQ'		=> 'ICQ',
 	'IMG_ICON_CONTACT_JABBER'	=> 'Jabber',
 	'IMG_ICON_CONTACT_SKYPE'	=> 'Skype',
 	'IMG_ICON_CONTACT_TELEGRAM'	=> 'Telegram',
-	'IMG_ICON_CONTACT_MSNM'		=> 'MSNM',
 	'IMG_ICON_CONTACT_PM'		=> 'Send message',
-	'IMG_ICON_CONTACT_YAHOO'	=> 'YIM',
 	'IMG_ICON_CONTACT_WWW'		=> 'Website',
 
 	'IMG_ICON_POST_DELETE'			=> 'Delete post',
@@ -229,7 +226,6 @@ $lang = array_merge($lang, array(
 	'IMG_ICON_POST_REPORT'			=> 'Report post',
 	'IMG_ICON_POST_TARGET'			=> 'Minipost',
 	'IMG_ICON_POST_TARGET_UNREAD'	=> 'New minipost',
-
 
 	'IMG_ICON_TOPIC_ATTACH'			=> 'Attachment',
 	'IMG_ICON_TOPIC_LATEST'			=> 'Last post',
