@@ -25,21 +25,6 @@ hr.dashed {
 	border-top-color: #CCCCCC;
 }
 
-/* Search box
---------------------------------------------- */
-
-#search-box {
-	color: #FFFFFF;
-}
-
-#search-box #keywords {
-	background-color: #FFF;
-}
-
-#search-box input {
-	border-color: #0075B0;
-}
-
 /* Round cornered boxes and backgrounds
 ---------------------------------------- */
 .headerbar {

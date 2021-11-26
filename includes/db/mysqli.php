@@ -59,6 +59,9 @@ class dbal_mysqli extends dbal
 			}
 		}
 
+		// It was MYSQLI_REPORT_OFF by default till PHP 8.1. phpBB code relies on that.
+		mysqli_report(MYSQLI_REPORT_OFF);
+
 		$this->db_connect_id = @mysqli_connect($this->server, $this->user, $sqlpassword, $this->dbname, $port, $socket);
 
 		if ($this->db_connect_id && $this->dbname != '')

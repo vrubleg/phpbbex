@@ -575,7 +575,7 @@ class phpbb_template
 			$key = NULL;
 			foreach ($this->_tpldata[$blockname] as $i => $val_ary)
 			{
-				if ($val_ary[$search_key] === $search_value)
+				if (isset($val_ary[$search_key]) && $val_ary[$search_key] === $search_value)
 				{
 					$key = $i;
 					break;

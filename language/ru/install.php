@@ -357,7 +357,7 @@ $lang = array_merge($lang, array(
 
 // Updater
 $lang = array_merge($lang, array(
-	'ALL_FILES_UP_TO_DATE'		=> 'Все файлы соответствуют самой последней версии phpBB. Теперь <a href="../ucp.php?mode=login">войдите на форум</a> и проверьте, что всё работает нормально. Не забудьте удалить, переименовать или переместить каталог «install»! Пожалуйста, отправьте нам обновлённую информацию о вашем сервере и конфигурации форума с помощью страницы <a href="../ucp.php?mode=login&amp;redirect=adm/index.php%3Fi=send_statistics%26mode=send_statistics">Статистические данные</a> в панели администратора.',
+	'ALL_FILES_UP_TO_DATE'		=> 'Все файлы соответствуют самой последней версии phpBB. Теперь <a href="../ucp.php?mode=login">войдите на форум</a> и проверьте, что всё работает нормально.',
 	'ARCHIVE_FILE'				=> 'Файл-источник в архиве',
 
 	'BACK'				=> 'Назад',

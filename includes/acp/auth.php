@@ -1088,7 +1088,7 @@ class auth_admin extends phpbb_auth
 	* Assign category to template
 	* used by display_mask()
 	*/
-	function assign_cat_array(&$category_array, $tpl_cat, $tpl_mask, $ug_id, $forum_id, $show_trace = false, $s_view)
+	function assign_cat_array(&$category_array, $tpl_cat, $tpl_mask, $ug_id, $forum_id, $show_trace = false, $s_view = false)
 	{
 		global $template, $user, $phpbb_admin_path, $phpEx;
 
@@ -1162,7 +1162,7 @@ class auth_admin extends phpbb_auth
 	* Building content array from permission rows with explicit key ordering
 	* used by display_mask()
 	*/
-	function build_permission_array(&$permission_row, &$content_array, &$categories, $key_sort_array)
+	static function build_permission_array(&$permission_row, &$content_array, &$categories, $key_sort_array)
 	{
 		global $user;
 

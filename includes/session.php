@@ -361,12 +361,11 @@ class phpbb_session
 				$u_forwarded_for = ($config['forwarded_for_check']) ? substr($this->forwarded_for, 0, 254) : '';
 
 				// referer checks
-				// The @ before $config['referer_validation'] suppresses notices present while running the updater
-				$check_referer_path = (@$config['referer_validation'] == REFERER_VALIDATE_PATH);
+				$check_referer_path = (isset($config['referer_validation']) && $config['referer_validation'] == REFERER_VALIDATE_PATH);
 				$referer_valid = true;
 
 				// we assume HEAD and TRACE to be foul play and thus only whitelist GET
-				if (@$config['referer_validation'] && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) !== 'get')
+				if (!empty($config['referer_validation']) && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) !== 'get')
 				{
 					$referer_valid = $this->validate_referer($check_referer_path);
 				}
