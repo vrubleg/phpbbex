@@ -60,8 +60,7 @@ class phpbb_gallery_upload
 		{
 			phpbb_gallery_url::_include('functions_upload', 'phpbb');
 		}
-		$this->upload = new fileupload();
-		$this->upload->fileupload('', self::get_allowed_types(), (4 * phpbb_gallery_config::get('max_filesize')));
+		$this->upload = new fileupload('', self::get_allowed_types(), (4 * phpbb_gallery_config::get('max_filesize')));
 
 		$this->tools = new phpbb_gallery_image_file(phpbb_gallery_config::get('gdlib_version'));
 
@@ -246,7 +245,7 @@ class phpbb_gallery_upload
 
 		global $db;
 
-		$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+		$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 			SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 			WHERE image_id = ' . $image_id;
 		$db->sql_query($sql);

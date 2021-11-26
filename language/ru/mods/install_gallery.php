@@ -63,7 +63,7 @@ $lang = array_merge($lang, array(
 	'FOUNDER_CHECK'					=> 'Вы являетесь основателем этой конференции.',
 	'FOUNDER_NEEDED'				=> 'Вы должны иметь статус основателя этой конференции.',
 
-	'INSTALL_CONGRATS_EXPLAIN'	=> 'Вы успешно установили phpBB Gallery версии %s.<br/><br/><strong>Удалите, переместите или переименуйте папку <em>install</em> перед использованием конференции. Пока папка не удалена, будет доступен только администраторский раздел.</strong>',
+	'INSTALL_CONGRATS_EXPLAIN'	=> 'Вы успешно установили phpBB Gallery версии %s.',
 	'INSTALL_INTRO_BODY'		=> 'Установка phpBB Gallery на вашу конференцию.',
 
 	'GOTO_GALLERY'				=> 'Перейти в phpBB Gallery',

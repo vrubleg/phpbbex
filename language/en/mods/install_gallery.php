@@ -63,7 +63,7 @@ $lang = array_merge($lang, array(
 	'FOUNDER_CHECK'					=> 'You are a “Founder“ of this board',
 	'FOUNDER_NEEDED'				=> 'You must be a “Founder“ of this board!',
 
-	'INSTALL_CONGRATS_EXPLAIN'	=> 'You have now successfully installed phpBB Gallery v%s.<br/><br/><strong>Please now delete, move or rename the install directory before you use your board. If this directory is still present, only the Administration Control Panel (ACP) will be accessible.</strong>',
+	'INSTALL_CONGRATS_EXPLAIN'	=> 'You have now successfully installed phpBB Gallery v%s.',
 	'INSTALL_INTRO_BODY'		=> 'With this option, it is possible to install phpBB Gallery onto your board.',
 
 	'GOTO_GALLERY'				=> 'Go to phpBB Gallery',

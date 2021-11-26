@@ -379,9 +379,9 @@ class acp_gallery
 			'IMAGES_PER_DAY'		=> $images_per_day,
 			'TOTAL_ALBUMS'			=> $num_albums,
 			'TOTAL_PERSONALS'		=> phpbb_gallery_config::get('num_pegas'),
-			'GUPLOAD_DIR_SIZE'		=> get_formatted_filesize($dir_sizes['stat']),
-			'MEDIUM_DIR_SIZE'		=> get_formatted_filesize($dir_sizes['stat_medium']),
-			'CACHE_DIR_SIZE'		=> get_formatted_filesize($dir_sizes['stat_cache']),
+			'GUPLOAD_DIR_SIZE'		=> get_formatted_filesize(!empty($dir_sizes['stat']) ? $dir_sizes['stat'] : 0),
+			'MEDIUM_DIR_SIZE'		=> get_formatted_filesize(!empty($dir_sizes['stat_medium']) ? $dir_sizes['stat'] : 0),
+			'CACHE_DIR_SIZE'		=> get_formatted_filesize(!empty($dir_sizes['stat_cache']) ? $dir_sizes['stat'] : 0),
 			'GALLERY_VERSION'		=> phpbb_gallery_config::get('version'),
 			'U_FIND_USERNAME'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', 'mode=searchuser&amp;form=action_create_pega_form&amp;field=username&amp;select_single=true'),
 			'S_SELECT_ALBUM'		=> phpbb_gallery_album::get_albumbox(false, 'reset_album_id', false, false, false, phpbb_gallery_album::PUBLIC_ALBUM, phpbb_gallery_album::TYPE_UPLOAD),
@@ -855,7 +855,7 @@ class acp_gallery
 		{
 			if ($missing_authors)
 			{
-				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 					SET image_user_id = ' . ANONYMOUS . ",
 						image_user_colour = ''
 					WHERE " . $db->sql_in_set('image_id', $missing_authors);
@@ -863,7 +863,7 @@ class acp_gallery
 			}
 			if ($missing_comments)
 			{
-				$sql = 'UPDATE ' . GALLERY_COMMENTS_TABLE . ' 
+				$sql = 'UPDATE ' . GALLERY_COMMENTS_TABLE . '
 					SET comment_user_id = ' . ANONYMOUS . ",
 						comment_user_colour = ''
 					WHERE " . $db->sql_in_set('comment_id', $missing_comments);

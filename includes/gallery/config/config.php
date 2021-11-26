@@ -26,7 +26,7 @@ class phpbb_gallery_config
 			self::load();
 		}
 
-		return self::$config[$key];
+		return isset(self::$config[$key]) ? self::$config[$key] : null;
 	}
 
 	static public function get_array()
@@ -171,7 +171,7 @@ class phpbb_gallery_config
 	/**
 	* Functions for loading the configs from core and plugins
 	*/
-	static private $config = false;
+	static private $config = array();
 
 	static private $loaded = false;
 
