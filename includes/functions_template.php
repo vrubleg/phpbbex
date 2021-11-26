@@ -430,6 +430,8 @@ class template_compile
 		{
 			$token = &$tokens[$i];
 
+			if ($token === null) { $token = ''; }
+
 			switch ($token)
 			{
 				case '!==':
@@ -522,7 +524,8 @@ class template_compile
 				default:
 					if (preg_match('#^((?:[a-z0-9\-_]+\.)+)?(\$)?(?=[A-Z])([A-Z0-9\-_]+)#s', $token, $varrefs))
 					{
-						$token = (!empty($varrefs[1])) ? $this->generate_block_data_ref(substr($varrefs[1], 0, -1), true, $varrefs[2]) . '[\'' . $varrefs[3] . '\']' : (($varrefs[2]) ? '$this->_tpldata[\'DEFINE\'][\'.\'][\'' . $varrefs[3] . '\']' : '(isset($this->_rootref[\'' . $varrefs[3] . '\']) ? $this->_rootref[\'' . $varrefs[3] . '\'] : \'\')');
+						$token = (!empty($varrefs[1])) ? $this->generate_block_data_ref(substr($varrefs[1], 0, -1), true, $varrefs[2]) . '[\'' . $varrefs[3] . '\']' : (($varrefs[2]) ? '$this->_tpldata[\'DEFINE\'][\'.\'][\'' . $varrefs[3] . '\']' : '$this->_rootref[\'' . $varrefs[3] . '\']');
+						$token = '(isset(' . $token . ') ? ' . $token . ' : \'\')';
 					}
 					else if (preg_match('#^\.((?:[a-z0-9\-_]+\.?)+)$#s', $token, $varrefs))
 					{
@@ -667,7 +670,7 @@ class template_compile
 		switch ($expr_type)
 		{
 			case 'even':
-				if (@$tokens[$expr_end] == 'by')
+				if (isset($tokens[$expr_end]) && $tokens[$expr_end] == 'by')
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
@@ -680,7 +683,7 @@ class template_compile
 			break;
 
 			case 'odd':
-				if (@$tokens[$expr_end] == 'by')
+				if (isset($tokens[$expr_end]) && $tokens[$expr_end] == 'by')
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
@@ -693,7 +696,7 @@ class template_compile
 			break;
 
 			case 'div':
-				if (@$tokens[$expr_end] == 'by')
+				if (isset($tokens[$expr_end]) && $tokens[$expr_end] == 'by')
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
@@ -731,7 +734,7 @@ class template_compile
 
 		// Append the variable reference.
 		$varref .= "['$varname']";
-		$varref = ($echo) ? "<?php echo $varref; ?>" : ((isset($varref)) ? $varref : '');
+		$varref = ($echo) ? "<?php if (isset($varref)) echo $varref; ?>" : ((isset($varref)) ? $varref : '');
 
 		return $varref;
 	}

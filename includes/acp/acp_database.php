@@ -484,7 +484,7 @@ class base_extractor
 	var $format;
 	var $run_comp = false;
 
-	function base_extractor($download = false, $store = false, $format, $filename, $time)
+	function __construct($download, $store, $format, $filename, $time)
 	{
 		$this->download = $download;
 		$this->store = $store;

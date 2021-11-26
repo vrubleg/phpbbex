@@ -756,7 +756,7 @@ class fulltext_native extends search_backend
 			$sql = $db->sql_build_query('SELECT', $sql_array_copy);
 			unset($sql_array_copy);
 
-			$db->sql_query($sql);
+			$result = $db->sql_query($sql);
 			$db->sql_freeresult($result);
 
 			$sql = 'SELECT FOUND_ROWS() as total_results';

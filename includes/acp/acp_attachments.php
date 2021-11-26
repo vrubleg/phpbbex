@@ -1117,9 +1117,7 @@ class acp_attachments
 		}
 		$db->sql_freeresult($result);
 
-		$row['group_id'] = 0;
-		$row['group_name'] = $user->lang['NOT_ASSIGNED'];
-		$group_name[] = $row;
+		$group_name[] = array('group_id' => 0, 'group_name' => $user->lang['NOT_ASSIGNED']);
 
 		for ($i = 0; $i < sizeof($group_name); $i++)
 		{
