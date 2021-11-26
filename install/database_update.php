@@ -1429,13 +1429,6 @@ function change_database_data(&$no_updates, $version)
 					'cat'		=> 'ACP_CAT_USERS',
 					'after'		=> array('feedback', 'ACP_USER_FEEDBACK')
 				),
-				'send_statistics'		=> array(
-					'base'		=> 'send_statistics',
-					'class'		=> 'acp',
-					'title'		=> 'ACP_SEND_STATISTICS',
-					'auth'		=> 'acl_a_server',
-					'cat'		=> 'ACP_SERVER_CONFIGURATION'
-				),
 				'setting_forum_copy'	=> array(
 					'base'		=> 'permissions',
 					'class'		=> 'acp',

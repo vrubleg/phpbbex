@@ -127,7 +127,7 @@ function get_permission_rows(&$permission_data, &$permission_rows, &$existing_pe
 function get_role_rows(&$roles_data, &$role_rows, &$existing_roles)
 {
 	global $db;
-	
+
 	$existing_roles = array();
 	$sql_ary = array(
 		'SELECT'	=> 'ar.role_name',
@@ -436,12 +436,6 @@ function fetch_cleaner_data(&$data, $phpbb_version)
 		case '3_0_7_pl1' :
 		case '3_0_7' :
 		case '3_0_6' :
-			// If $config['questionnaire_unique_id] exists add it to the config data array
-			if (isset($config['questionnaire_unique_id']))
-			{
-				$data->config['questionnaire_unique_id'] = array('config_value' => $config['questionnaire_unique_id'], 'is_dynamic' => '0');
-			}
-
 			// Need to force do some ordering on $module_extras
 			$extra_add = array('ACP_FORUM_PERMISSIONS_COPY');
 			array_splice($data->module_extras['acp']['ACP_FORUM_BASED_PERMISSIONS'], 1, 0, $extra_add);
