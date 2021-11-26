@@ -42,28 +42,18 @@
 	white-space: nowrap; /* For Opera */
 }
 
-#search-box #keywords {
+#search-box input[name=keywords] {
 	width: 95px;
-	background-color: #FFF;
+	background-color: #fff;
 }
 
 #search-box input {
-	border: 1px solid #b0b0b0;
+	border: 1px solid #0075b0;
 }
 
 /* .button1 style defined later, just a few tweaks for the search button version */
 #search-box input.button1 {
 	padding: 1px 5px;
-}
-
-#search-box li {
-	text-align: right;
-	margin-top: 4px;
-}
-
-#search-box img {
-	vertical-align: middle;
-	margin-right: 3px;
 }
 
 /* Page header
