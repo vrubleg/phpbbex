@@ -311,7 +311,7 @@ class dbal_mysql extends dbal
 		if (isset($this->open_queries[(int) $query_id]))
 		{
 			unset($this->open_queries[(int) $query_id]);
-			return @mysql_free_result($query_id);
+			return ($query_id !== false) ? @mysql_free_result($query_id) : false;
 		}
 
 		return false;
