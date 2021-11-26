@@ -303,7 +303,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_back_to_top'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_rounded_corners', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_new_year', '-1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_vt_show_post_numbers', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('display_raters', '0');

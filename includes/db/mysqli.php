@@ -310,7 +310,7 @@ class dbal_mysqli extends dbal
 			return $cache->sql_freeresult($query_id);
 		}
 
-		return @mysqli_free_result($query_id);
+		return ($query_id !== false) ? @mysqli_free_result($query_id) : false;
 	}
 
 	/**
