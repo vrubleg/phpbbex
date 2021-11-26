@@ -175,7 +175,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_back_to_top
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_rounded_corners', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_new_year', '-1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_vt_show_post_numbers', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('display_raters', '0');
