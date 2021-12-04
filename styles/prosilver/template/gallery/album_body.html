@@ -129,11 +129,6 @@
 	</form>
 <!-- ENDIF -->
 
-<!-- IF not S_IN_GALLERY_POPUP and S_DISPLAY_ONLINE_LIST and LOGGED_IN_USER_LIST -->
-	<h3><!-- IF U_VIEWONLINE --><a rel="nofollow" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --> <span class="extra">({L_ONLINE_EXPLAIN})</span></h3>
-	<p>{LOGGED_IN_USER_LIST}</p>
-<!-- ENDIF -->
-
 <!-- IF not S_IN_GALLERY_POPUP and S_IS_POSTABLE -->
 	<h3>{L_ALBUM_PERMISSIONS}</h3>
 	<p><!-- BEGIN rules -->{rules.RULE}<br /><!-- END rules --></p>
