@@ -431,7 +431,7 @@ class auth_admin extends phpbb_auth
 			foreach ($hold_ary as $forum_id => $forum_array)
 			{
 				$content_array = $categories = array();
-				$this->build_permission_array($hold_ary[$forum_id], $content_array, $categories, array_keys($ug_names_ary));
+				self::build_permission_array($hold_ary[$forum_id], $content_array, $categories, array_keys($ug_names_ary));
 
 				$template->assign_block_vars($tpl_pmask, array(
 					'NAME'			=> ($forum_id == 0) ? $forum_names_ary[0] : $forum_names_ary[$forum_id]['forum_name'],
@@ -515,7 +515,7 @@ class auth_admin extends phpbb_auth
 				}
 
 				$content_array = $categories = array();
-				$this->build_permission_array($hold_ary[$ug_id], $content_array, $categories, array_keys($forum_names_ary));
+				self::build_permission_array($hold_ary[$ug_id], $content_array, $categories, array_keys($forum_names_ary));
 
 				$template->assign_block_vars($tpl_pmask, array(
 					'NAME'			=> $ug_name,
