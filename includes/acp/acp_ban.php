@@ -89,7 +89,7 @@ class acp_ban
 			break;
 		}
 
-		$this->display_ban_options($mode);
+		self::display_ban_options($mode);
 
 		$template->assign_vars(array(
 			'L_TITLE'				=> $this->page_title,
@@ -110,7 +110,7 @@ class acp_ban
 	/**
 	* Display ban options
 	*/
-	function display_ban_options($mode)
+	static function display_ban_options($mode)
 	{
 		global $user, $db, $template;
 
