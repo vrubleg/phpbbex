@@ -6,7 +6,7 @@
 */
 
 define('OLDEST_PHPBBEX_VERSION', '1.8.0');
-define('NEWEST_PHPBBEX_VERSION', '1.9.4');
+define('NEWEST_PHPBBEX_VERSION', '1.9.5');
 
 define('UPDATES_TO_VERSION', '3.0.14');
 
@@ -135,14 +135,19 @@ if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
 	die('Error! Update database schema to at least phpBBex 1.8.0.');
 }
 
-if ($row && version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '<'))
+if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>='))
 {
-	$sql = "UPDATE " . CONFIG_TABLE . "
-		SET config_value = '" . NEWEST_PHPBBEX_VERSION . "'
-		WHERE config_name = 'phpbbex_version'";
-	$db->sql_query($sql);
-	$cache->purge();
+	die('OK');
 }
+
+if (version_compare($row['config_value'], '1.9.5', '<'))
+{
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
+	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
+}
+
+$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '" . NEWEST_PHPBBEX_VERSION . "' WHERE config_name = 'phpbbex_version'");
+$cache->purge();
 
 // Check phpBB version.
 
@@ -158,7 +163,7 @@ if ($row && version_compare($row['config_value'], $updates_to_version, '>='))
 	die('OK');
 }
 
-// Original code. One day it should be improved to be able to upgrade pure phpBB to phpBBex.
+// Original code. One day it might be improved to be able to upgrade pure phpBB to phpBBex.
 
 $user->ip = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars($_SERVER['REMOTE_ADDR']) : '';
 $user->ip = (stripos($user->ip, '::ffff:') === 0) ? substr($user->ip, 7) : $user->ip;
