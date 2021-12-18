@@ -316,4 +316,4 @@ ALTER TABLE phpbb_users ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NUL
 INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1);
 
 -- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.4');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.5');
