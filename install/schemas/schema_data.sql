@@ -16,7 +16,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '1'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_local', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remote', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_upload', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remote_upload', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remote_upload', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_bbcode', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_birthdays', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_bookmarks', '1');

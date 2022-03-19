@@ -217,7 +217,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('social_media_cove
 -- Reset avatar options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_upload', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remote_upload', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remote_upload', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '10240');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_height', '100');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_width', '100');
