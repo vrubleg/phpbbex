@@ -1924,7 +1924,7 @@ class phpbb_user extends phpbb_session
 		// After calling it we continue script execution...
 		phpbb_user_session_handler();
 
-		if($this->data['is_registered'] && !defined('ADMIN_START'))
+		if(!empty($this->data['is_registered']) && !defined('ADMIN_START'))
 		{
 			$config['topics_per_page_default'] = $config['topics_per_page'];
 			if ($this->data['user_topics_per_page'] > 0)

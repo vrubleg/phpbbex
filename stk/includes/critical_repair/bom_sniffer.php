@@ -189,7 +189,7 @@ class erk_bom_sniffer
 				// Test whether we're sniffing a language directory (any)
 				$lang_test_dir	= '';
 				$lang_matches	= array();
-				if (preg_match('#language/([a-zA-Z\-_]+)/#ise', $directory, $lang_matches))
+				if (preg_match('#language/([a-zA-Z\-_]+)/#is', $directory, $lang_matches))
 				{
 					$lang_test_dir = str_replace($lang_matches[1], '..', $directory);
 				}
@@ -544,7 +544,7 @@ class erk_bom_sniffer
 				return false;
 		}
 
-		return (preg_match('~' . $match . '~ise', $buffer)) ? true : false;
+		return (preg_match('~' . $match . '~is', $buffer)) ? true : false;
 	}
 
 	//-- Wrappers

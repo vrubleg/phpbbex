@@ -30,7 +30,12 @@ html {
 	background: #DBD7D1;
 	/* Always show a scrollbar for short pages - stops the jump when the scrollbar appears. non-ie browsers */
 	height: 100%;
+	overflow-y: scroll;
 	margin-bottom: 1px;
+	/* Disable font boosting in mobile browsers. */
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	text-size-adjust: none;
 }
 
 body {
@@ -635,6 +640,10 @@ td.name {
 
 /* General form styles
 ----------------------------------------*/
+button, input, textarea, select {
+	border-radius: 0;
+}
+
 fieldset {
 	margin: 15px 0;
 	padding: 10px;
@@ -730,6 +739,10 @@ optgroup, select {
 	vertical-align: middle;
 	width: auto;
 	color: #000;
+}
+
+select:focus {
+	outline-style: none;
 }
 
 optgroup {
@@ -979,6 +992,7 @@ input:focus, textarea:focus {
 	border: 1px solid #BC2A4D;
 	background-color: #E9E9E2;
 	color: #BC2A4D;
+	outline-style: none;
 }
 
 /* Submit button fieldset or paragraph
@@ -1000,7 +1014,7 @@ p.submit-buttons {
 }
 
 fieldset.submit-buttons input, p.submit-buttons input {
-	padding: 3px 2px;
+	padding: 3px 6px;
 }
 
 fieldset.submit-buttons legend {
@@ -1034,12 +1048,20 @@ input.autowidth { width: auto !important;}
 a.button1, input.button1, input.button3,
 a.button2, input.button2 {
 	width: auto !important;
-	padding: 1px 3px 0 3px;
+	padding: 2px 6px;
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	color: #000;
 	font-size: 0.85em;
-	background: #EFEFEF url("../images/bg_button.gif") repeat-x top;
+	background: #EFEFEF url("../images/bg_button.gif");
 	cursor: pointer;
+}
+
+a.button1.sending, input.button1.sending, a.button2.sending, input.button2.sending, button.sending {
+	color: #666666 !important;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+	cursor: default !important;
+	border-color: #666666 !important;
+	background-image: url("../images/bg_button_sending.gif");
 }
 
 a.button1, input.button1 {
@@ -1064,13 +1086,23 @@ a.button2, a.button2:link, a.button2:visited, a.button2:active {
 a.button1:hover, input.button1:hover,
 a.button2:hover, input.button2:hover {
 	border: 1px solid #BC2A4D;
-	background: #EFEFEF url("../images/bg_button.gif") repeat bottom;
 	color: #BC2A4D;
 }
 
 input.disabled {
 	font-weight: normal;
 	color: #666666;
+}
+
+/* Focus states */
+input.button1:focus, input.button2:focus, input.button3:focus {
+	outline-style: none;
+}
+
+/* Remove focus dots in Firefox before 53, for consistency with newer browsers */
+input::-moz-focus-inner, button::-moz-focus-inner {
+	border: 0;
+	padding: 0;
 }
 
 /* Pagination
@@ -1181,10 +1213,6 @@ input.disabled {
 	color: #FFFFFF;
 	text-decoration: none;
 	font-weight: bold;
-}
-
-.errorbox p {
-	border-bottom: thin dashed #f5f5f5;
 }
 
 /* Special cases for the error page */
