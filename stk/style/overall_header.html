@@ -1,19 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{S_CONTENT_DIRECTION}" lang="{S_USER_LANG}" xml:lang="{S_USER_LANG}">
+<!DOCTYPE html>
+<html dir="{S_CONTENT_DIRECTION}" lang="{S_USER_LANG}">
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset={S_CONTENT_ENCODING}" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<meta http-equiv="Content-Language" content="{S_USER_LANG}" />
-<meta http-equiv="imagetoolbar" content="no" />
+<meta charset="{S_CONTENT_ENCODING}" />
 <!-- IF META -->{META}<!-- ENDIF -->
-
 <title>{PAGE_TITLE}</title>
 
 <link href="style/style.css" rel="stylesheet" type="text/css" media="screen" />
 
-<script type="text/javascript">
-// <![CDATA[
+<script src="../assets/js/jquery.js"></script>
+<script src="../adm/style/sending.js"></script>
+<script>
+
 var jump_page = '{LA_JUMP_PAGE}:';
 var on_page = '{ON_PAGE}';
 var per_page = '{PER_PAGE}';
@@ -29,9 +27,16 @@ function jumpto()
 {
 	var page = prompt(jump_page, on_page);
 
-	if (page !== null && !isNaN(page) && page > 0)
+	if (page !== null && !isNaN(page) && page == Math.floor(page) && page > 0)
 	{
-		document.location.href = base_url.replace(/&amp;/g, '&') + '&start=' + ((page - 1) * per_page);
+		if (base_url.indexOf('?') == -1)
+		{
+			document.location.href = base_url + '?start=' + ((page - 1) * per_page);
+		}
+		else
+		{
+			document.location.href = base_url.replace(/&amp;/g, '&') + '&start=' + ((page - 1) * per_page);
+		}
 	}
 }
 
@@ -201,7 +206,7 @@ function selectCode(a)
 		r.select();
 	}
 }
-// ]]>
+
 </script>
 </head>
 
