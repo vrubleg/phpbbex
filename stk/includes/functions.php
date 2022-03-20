@@ -706,7 +706,6 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 				$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
 				$msg_title = (!isset($msg_title)) ? $user->lang['GENERAL_ERROR'] : ((!empty($user->lang[$msg_title])) ? $user->lang[$msg_title] : $msg_title);
 
-				$l_return_index = sprintf($user->lang['RETURN_INDEX'], '<a href="' . $phpbb_root_path . '">', '</a>');
 				$l_notify = '';
 
 				if (!empty($config['board_contact']))
@@ -717,7 +716,6 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 			else
 			{
 				$msg_title = 'General Error';
-				$l_return_index = '<a href="' . $phpbb_root_path . '">Return to index page</a>';
 				$l_notify = '';
 
 				if (!empty($config['board_contact']))
@@ -753,27 +751,22 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 			echo '<meta charset="UTF-8" />';
 			echo '<title>' . $msg_title . '</title>';
 			echo '<style type="text/css">' . "\n";
-			echo '* { margin: 0; padding: 0; } html { font-size: 100%; height: 100%; margin-bottom: 1px; background-color: #E4EDF0; } body { font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif; color: #536482; background: #E4EDF0; font-size: 62.5%; margin: 0; } ';
+			echo '* { margin: 0; padding: 0; } html { font-size: 100%; height: 100%; overflow-y: scroll; margin-bottom: 1px; background-color: #E4EDF0; } body { font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif; color: #536482; background: #E4EDF0; font-size: 62.5%; margin: 0; } ';
 			echo 'a:link, a:active, a:visited { color: #006699; text-decoration: none; } a:hover { color: #DD6900; text-decoration: underline; } ';
-			echo '#wrap { padding: 20px; min-width: 615px; } #page-header { text-align: right; } #page-footer { clear: both; font-size: 1em; text-align: center; } ';
+			echo '#wrap { padding: 20px; min-width: 615px; } #page-footer { clear: both; font-size: 1em; text-align: center; } ';
 			echo '.panel { margin: 4px 0; background-color: #FFFFFF; border: solid 1px  #A9B8C2; } ';
-			echo '#errorpage #page-header a { font-weight: bold; } #errorpage #content { padding: 10px; } #errorpage #content h1 { line-height: 1.2em; margin-bottom: 0; color: #DF075C; } ';
+			echo '#errorpage #content { padding: 10px; } #errorpage #content h1 { line-height: 1.2em; margin-bottom: 0; color: #DF075C; } ';
 			echo '#errorpage #content div { margin-top: 10px; color: #333333; font: 1.3em monospace; text-decoration: none; line-height: 120%; text-align: left; }';
 			echo "\n";
 			echo '</style>';
 			echo '</head>';
 			echo '<body id="errorpage">';
 			echo '<div id="wrap">';
-			echo '	<div id="page-header">';
-			echo '		' . $l_return_index;
-			echo '	</div>';
-			echo '	<div id="acp">';
 			echo '	<div class="panel">';
 			echo '		<div id="content">';
 			echo '			<h1>' . $msg_title . '</h1>';
 			echo '			<div>' . $msg_text . (($backtrace && defined('DEBUG_EXTRA')) ? '<br><br><b>BACKTRACE</b><br><br>' . $backtrace : '') . '</div>';
 			echo '		</div>';
-			echo '	</div>';
 			echo '	</div>';
 			echo '	<div id="page-footer">' . $l_notify . 'Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
 			echo '</div>';
