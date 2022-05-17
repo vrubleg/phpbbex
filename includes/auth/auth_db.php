@@ -189,16 +189,10 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 
 		if ($password == $password_new_format)
 		{
-			if (!function_exists('utf8_to_cp1252'))
-			{
-				global $phpbb_root_path, $phpEx;
-				include($phpbb_root_path . 'includes/utf/data/recode_basic.' . $phpEx);
-			}
-
 			// cp1252 is phpBB2's default encoding, characters outside ASCII range might work when converted into that encoding
 			// plain md5 support left in for conversions from other systems.
-			if ((strlen($row['user_password']) == 34 && (phpbb_check_hash(md5($password_old_format), $row['user_password']) || phpbb_check_hash(md5(utf8_to_cp1252($password_old_format)), $row['user_password'])))
-				|| (strlen($row['user_password']) == 32  && (md5($password_old_format) == $row['user_password'] || md5(utf8_to_cp1252($password_old_format)) == $row['user_password'])))
+			if ((strlen($row['user_password']) == 34 && (phpbb_check_hash(md5($password_old_format), $row['user_password']) || phpbb_check_hash(md5(utf8_to($password_old_format, 'cp1252')), $row['user_password'])))
+				|| (strlen($row['user_password']) == 32  && (md5($password_old_format) == $row['user_password'] || md5(utf8_to($password_old_format, 'cp1252')) == $row['user_password'])))
 			{
 				$hash = phpbb_hash($password_new_format);
 
