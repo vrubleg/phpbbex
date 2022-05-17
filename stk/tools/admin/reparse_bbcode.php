@@ -16,14 +16,6 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-/**
-* Allow our end user to define whether we decode htmlspecialchars. Doing so
-* *will* transform entities that where posted as one (&#156;) to their
-* representing character. But this will fix broken htmlentities (&amp;#156;).
-* By default we won't run it, but at least give the user this option :)
-*/
-define('RUN_HTMLSPECIALCHARS_DECODE', false);
-
 /**@#+
 * The bbcode reparse types
 */
@@ -144,19 +136,19 @@ class reparse_bbcode
 		// If post IDs or PM IDs were specified, we need to make sure the list is valid.
 		$reparse_posts = array();
 		$reparse_pms = array();
-		
+
 		if (!empty($reparse_id))
 		{
 			$reparse_posts = explode(',', $reparse_id);
-			
+
 			if (!sizeof($reparse_posts))
 			{
 				trigger_error('REPARSE_IDS_INVALID');
 			}
-			
+
 			// Make sure there's no extra whitespace
 			array_walk($reparse_posts, array($this, '_trim_post_ids'));
-			
+
 			$cache->put('_stk_reparse_posts', $reparse_posts);
 		}
 		else if ($mode == BBCODE_REPARSE_POSTS)
@@ -166,19 +158,19 @@ class reparse_bbcode
 				$reparse_posts = $result;
 			}
 		}
-		
+
 		if (!empty($reparse_pm_id))
 		{
 			$reparse_pms = explode(',', $reparse_pm_id);
-			
+
 			if (!sizeof($reparse_pms))
 			{
 				trigger_error('REPARSE_IDS_INVALID');
 			}
-			
+
 			// Again, make sure the format is okay
 			array_walk($reparse_pms, array($this, '_trim_post_ids'));
-			
+
 			$cache->put('_stk_reparse_pms', $reparse_pms);
 		}
 		else if ($mode == BBCODE_REPARSE_PMS)
@@ -188,7 +180,7 @@ class reparse_bbcode
 				$reparse_pms = $result;
 			}
 		}
-		
+
 		// The message parser
 		if (!class_exists('parse_message'))
 		{
@@ -286,7 +278,7 @@ class reparse_bbcode
 			case BBCODE_REPARSE_POSTS :
 				$sql_ary = array(
 					'SELECT'	=> 'f.forum_id, f.enable_indexing,
-									p.post_id, p.poster_id, p.icon_id, p.post_text, p.post_subject, p.post_username, p.post_time, p.post_edit_reason, p.bbcode_uid, p.enable_sig, p.post_edit_locked, p.enable_bbcode, p.enable_magic_url, p.enable_smilies, p.post_attachment, 
+									p.post_id, p.poster_id, p.icon_id, p.post_text, p.post_subject, p.post_username, p.post_time, p.post_edit_reason, p.bbcode_uid, p.enable_sig, p.post_edit_locked, p.enable_bbcode, p.enable_magic_url, p.enable_smilies, p.post_attachment,
 									t.topic_id, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_last_post_id, t.topic_type, t.topic_priority, t.topic_status, t.topic_title, t.poll_title, t.topic_time_limit, t.poll_start, t.poll_length, t.poll_max_options, t.poll_last_vote, t.poll_vote_change, t.poll_show_voters,
 									u.username',
 					'FROM'		=> array(
@@ -681,20 +673,14 @@ class reparse_bbcode
 	{
 		// Format the content as if it where *INSIDE* the posting field.
 		$parser->decode_message($this->data['bbcode_uid']);
-		$message = &$parser->message;	// tmp copy
-		if (defined('RUN_HTMLSPECIALCHARS_DECODE') && RUN_HTMLSPECIALCHARS_DECODE == true)
-		{
-			$message = htmlspecialchars_decode($message);
-		}
-		$message = html_entity_decode_utf8($message);
+		$message = html_entity_decode($parser->message,  ENT_COMPAT, 'UTF-8');
 
 		// Now we'll *request_var* the post
 		set_var($message, $message, 'string', true);
 		$message = utf8_normalize_nfc($message);
 
 		// Update the parser
-		$parser->message = &$message;
-		unset($message);
+		$parser->message = $message;
 	}
 
 	/**

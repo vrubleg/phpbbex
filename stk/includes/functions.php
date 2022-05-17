@@ -706,7 +706,6 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 				$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
 				$msg_title = (!isset($msg_title)) ? $user->lang['GENERAL_ERROR'] : ((!empty($user->lang[$msg_title])) ? $user->lang[$msg_title] : $msg_title);
 
-				$l_return_index = sprintf($user->lang['RETURN_INDEX'], '<a href="' . $phpbb_root_path . '">', '</a>');
 				$l_notify = '';
 
 				if (!empty($config['board_contact']))
@@ -717,7 +716,6 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 			else
 			{
 				$msg_title = 'General Error';
-				$l_return_index = '<a href="' . $phpbb_root_path . '">Return to index page</a>';
 				$l_notify = '';
 
 				if (!empty($config['board_contact']))
@@ -753,27 +751,22 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 			echo '<meta charset="UTF-8" />';
 			echo '<title>' . $msg_title . '</title>';
 			echo '<style type="text/css">' . "\n";
-			echo '* { margin: 0; padding: 0; } html { font-size: 100%; height: 100%; margin-bottom: 1px; background-color: #E4EDF0; } body { font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif; color: #536482; background: #E4EDF0; font-size: 62.5%; margin: 0; } ';
+			echo '* { margin: 0; padding: 0; } html { font-size: 100%; height: 100%; overflow-y: scroll; margin-bottom: 1px; background-color: #E4EDF0; } body { font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif; color: #536482; background: #E4EDF0; font-size: 62.5%; margin: 0; } ';
 			echo 'a:link, a:active, a:visited { color: #006699; text-decoration: none; } a:hover { color: #DD6900; text-decoration: underline; } ';
-			echo '#wrap { padding: 20px; min-width: 615px; } #page-header { text-align: right; } #page-footer { clear: both; font-size: 1em; text-align: center; } ';
+			echo '#wrap { padding: 20px; min-width: 615px; } #page-footer { clear: both; font-size: 1em; text-align: center; } ';
 			echo '.panel { margin: 4px 0; background-color: #FFFFFF; border: solid 1px  #A9B8C2; } ';
-			echo '#errorpage #page-header a { font-weight: bold; } #errorpage #content { padding: 10px; } #errorpage #content h1 { line-height: 1.2em; margin-bottom: 0; color: #DF075C; } ';
+			echo '#errorpage #content { padding: 10px; } #errorpage #content h1 { line-height: 1.2em; margin-bottom: 0; color: #DF075C; } ';
 			echo '#errorpage #content div { margin-top: 10px; color: #333333; font: 1.3em monospace; text-decoration: none; line-height: 120%; text-align: left; }';
 			echo "\n";
 			echo '</style>';
 			echo '</head>';
 			echo '<body id="errorpage">';
 			echo '<div id="wrap">';
-			echo '	<div id="page-header">';
-			echo '		' . $l_return_index;
-			echo '	</div>';
-			echo '	<div id="acp">';
 			echo '	<div class="panel">';
 			echo '		<div id="content">';
 			echo '			<h1>' . $msg_title . '</h1>';
 			echo '			<div>' . $msg_text . (($backtrace && defined('DEBUG_EXTRA')) ? '<br><br><b>BACKTRACE</b><br><br>' . $backtrace : '') . '</div>';
 			echo '		</div>';
-			echo '	</div>';
 			echo '	</div>';
 			echo '	<div id="page-footer">' . $l_notify . 'Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
 			echo '</div>';
@@ -909,71 +902,6 @@ function stk_filter_root_path($errfile)
 	}
 
 	return str_replace(array($root_path, '\\'), array('[ROOT]', '/'), $errfile);
-}
-
-// php.net, laurynas dot butkus at gmail dot com, http://us.php.net/manual/en/function.html-entity-decode.php#75153
-function html_entity_decode_utf8($string)
-{
-	static $trans_tbl;
-
-	// replace numeric entities
-	$string = preg_replace_callback('~&#x([0-9a-f]+);~i', function ($m) { return _code2utf8(hexdec($m[1])); }, $string);
-	$string = preg_replace_callback('~&#([0-9]+);~', function ($m) { return _code2utf8(intval($m[1])); }, $string);
-
-	// replace literal entities
-	if (!isset($trans_tbl))
-	{
-		$trans_tbl = array();
-
-		foreach (get_html_translation_table(HTML_ENTITIES) as $val => $key)
-		{
-			$trans_tbl[$key] = utf8_encode($val);
-		}
-	}
-
-	return strtr($string, $trans_tbl);
-}
-
-// Returns the utf string corresponding to the unicode value (from php.net, courtesy - romans@void.lv)
-function _code2utf8($num)
-{
-	$return = '';
-
-	if ($num < 128)
-	{
-		$return = chr($num);
-	}
-	else if ($num < 2048)
-	{
-		$return = chr(($num >> 6) + 192) . chr(($num & 63) + 128);
-	}
-	else if ($num < 65536)
-	{
-		$return = chr(($num >> 12) + 224) . chr((($num >> 6) & 63) + 128) . chr(($num & 63) + 128);
-	}
-	else if ($num < 2097152)
-	{
-		$return = chr(($num >> 18) + 240) . chr((($num >> 12) & 63) + 128) . chr((($num >> 6) & 63) + 128) . chr(($num & 63) + 128);
-	}
-
-	return $return;
-}
-
-/**
-* wrapper for pathinfo($file, PATHINFO_FILENAME), as PATHINFO_FILENAME is
-* php > 5.2
-* Function by php [spat] hm2k.org (http://www.php.net/manual/en/function.pathinfo.php#88159)
- */
-function pathinfo_filename($file) { //file.name.ext, returns file.name
-	if (defined('PATHINFO_FILENAME'))
-	{
-		return pathinfo($file, PATHINFO_FILENAME);
-	}
-
-	if (strstr($file, '.'))
-	{
-		return substr($file, 0, strrpos($file, '.'));
-	}
 }
 
 /**

@@ -14,8 +14,9 @@ if (!defined('IN_PHPBB'))
 error_reporting(E_ALL);
 
 // Check PHP version
-if (version_compare(PHP_VERSION, '5.4', '<')) die('PHP 5.4+ is required.');
-if (@preg_match('/\p{L}/u', 'a') === false) die('PCRE with UTF8 support is required.');
+if (version_compare(PHP_VERSION, '5.4', '<')) { die('PHP 5.4+ is required.'); }
+if (@preg_match('/\p{L}/u', 'a') === false) { die('PCRE with UTF-8 support is required.'); }
+if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
 // Powered by ...
 define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> &copy; 2015 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');

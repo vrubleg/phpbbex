@@ -372,7 +372,7 @@ function fetch_cleaner_data(&$data, $phpbb_version)
 	// Add the data
 	foreach ($filelist as $file)
 	{
-		$version	= pathinfo_filename($file);
+		$version	= pathinfo($file, PATHINFO_FILENAME);
 		$class		= 'datafile_' . $version;
 		if (!class_exists($class))
 		{

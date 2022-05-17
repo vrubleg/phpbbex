@@ -283,10 +283,10 @@ if ($plugin->get_part('t'))
 
 	if (!$submit || !empty($error))
 	{
-        /*
-        * Instead of building a page yourself you may return an array with the options you want to show.  This is outputted similar to how the acp_board is.
-        * You may also send back a string if you just want a confirm box shown with that string used for the title
-        */
+		/*
+		* Instead of building a page yourself you may return an array with the options you want to show.  This is outputted similar to how the acp_board is.
+		* You may also send back a string if you just want a confirm box shown with that string used for the title
+		*/
 		$options = $tool->display_options();
 
 		if (is_array($options) && isset($options['vars']))
@@ -395,7 +395,7 @@ else
 	// In de event the request category is empty force it to main.
 	if (!$plugin->get_part('c'))
 	{
-		$plugin->set_part('c', 'main');
+		$plugin->set_part('c', 'support');
 	}
 
 	// Category title and desc if available

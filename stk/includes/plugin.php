@@ -35,10 +35,7 @@ class plugin
 	 * @access private
 	 */
 	var $plugin_list = array(
-		'main' 		=> array(
-			'erk',
-		),
-		'support'	=> array(),
+		'support'	=> array('erk'),
 	);
 
 	/**
@@ -53,7 +50,7 @@ class plugin
 	 * Parts, used to build the query string
 	 */
 	var $_parts = array(
-		'c' => 'main',
+		'c' => 'support',
 		't' => '',
 	);
 

@@ -1457,23 +1457,15 @@ class fulltext_native extends search_backend
 	*
 	* @param	string	$text			Text to split, in UTF-8 (not normalized or sanitized)
 	* @param	string	$allowed_chars	String of special chars to allow
-	* @param	string	$encoding		Text encoding
 	* @return	string					Cleaned up text, only alphanumeric chars are left
 	*
 	* @todo normalizer::cleanup being able to be used?
 	*/
-	function cleanup($text, $allowed_chars = null, $encoding = 'utf-8')
+	function cleanup($text, $allowed_chars = null)
 	{
 		global $phpbb_root_path, $phpEx;
 		static $conv = array(), $conv_loaded = array();
 		$words = $allow = array();
-
-		// Convert the text to UTF-8
-		$encoding = strtolower($encoding);
-		if ($encoding != 'utf-8')
-		{
-			$text = utf8_recode($text, $encoding);
-		}
 
 		$utf_len_mask = array(
 			"\xC0"	=>	2,
