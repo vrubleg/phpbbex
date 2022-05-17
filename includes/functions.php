@@ -3832,7 +3832,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 			echo '#wrap { padding: 20px; min-width: 615px; } #page-footer { clear: both; font-size: 1em; text-align: center; } ';
 			echo '.panel { margin: 4px 0; background-color: #FFFFFF; border: solid 1px  #A9B8C2; } ';
 			echo '#errorpage #content { padding: 10px; } #errorpage #content h1 { line-height: 1.2em; margin-bottom: 0; color: #DF075C; } ';
-			echo '#errorpage #content div { margin-top: 10px; color: #333333; font: 1.3em monospace; text-decoration: none; line-height: 120%; text-align: left; }';
+			echo '#errorpage #content div { margin-top: 10px; color: #333333; font: 1.5em monospace; text-decoration: none; line-height: 120%; text-align: left; }';
 			echo "\n";
 			echo '</style>';
 			echo '</head>';
