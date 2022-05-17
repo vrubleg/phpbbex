@@ -95,8 +95,14 @@ class plugin
 		$this->_parts['c'] = request_var('c', $this->_parts['c']);
 		$this->_parts['t'] = request_var('t', $this->_parts['t']);
 
+		if ($this->_parts['c'] && !isset($this->plugin_list[$this->_parts['c']]))
+		{
+			trigger_error('MODULE_NOT_ACCESS', E_USER_ERROR);
+		}
+
 		// We shouldn't rely on the given category request, unless there really is a tool with that name in the given category
-		if ($this->_parts['t'] && (!isset($this->plugin_list[$this->_parts['c']]) || !in_array($this->_parts['t'], $this->plugin_list[$this->_parts['c']])))
+		$found = $this->_parts['t'] && isset($this->plugin_list[$this->_parts['c']]) && in_array($this->_parts['t'], $this->plugin_list[$this->_parts['c']]);
+		if ($this->_parts['t'] && !$found)
 		{
 			foreach ($this->plugin_list as $cat => $tools)
 			{
@@ -105,15 +111,17 @@ class plugin
 					if ($tool == $this->_parts['t'])
 					{
 						$this->_parts['c'] = $cat;
+						$found = true;
+						break;
 					}
 				}
+				if ($found) { break; }
 			}
 		}
 
-		// Check if they want to use a tool or not, make sure that the tool name is legal, and make sure the tool exists
-		if (!$this->_parts['t'] || preg_match('#([^a-zA-Z0-9_])#', $this->_parts['t']) || !file_exists(STK_ROOT_PATH . 'tools/' . $this->_parts['c'] . '/' . $this->_parts['t'] . '.' . PHP_EXT))
+		if ($this->_parts['t'] && (!$found || preg_match('#([^a-zA-Z0-9_])#', $this->_parts['t']) || !file_exists(STK_ROOT_PATH . 'tools/' . $this->_parts['c'] . '/' . $this->_parts['t'] . '.' . PHP_EXT)))
 		{
-			$this->_parts['t'] = '';
+			trigger_error('MODULE_NOT_ACCESS', E_USER_ERROR);
 		}
 
 		// Make sure the form_key is set

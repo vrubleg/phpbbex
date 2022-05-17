@@ -131,7 +131,7 @@ else
 
 	// disallowed?
 	$extensions = array();
-	if (!extension_allowed($row['forum_id'], $attachment['extension'], $extensions))
+	if (!extension_allowed($row ? $row['forum_id'] : false, $attachment['extension'], $extensions))
 	{
 		send_status_line(404, 'Forbidden');
 		trigger_error(sprintf($user->lang['EXTENSION_DISABLED_AFTER_POSTING'], $attachment['extension']));
