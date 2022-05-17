@@ -29,7 +29,7 @@ class phpbb_gallery_cleanup
 	{
 		foreach ($filenames as $file)
 		{
-			phpbb_gallery_image_file::delete(utf8_decode($file));
+			phpbb_gallery_image_file::delete($file);
 		}
 
 		return 'CLEAN_ENTRIES_DONE';

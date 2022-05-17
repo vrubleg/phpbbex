@@ -421,7 +421,7 @@ class acp_gallery
 				* Import the images
 				*/
 				$image_src = str_replace("{{$import_schema}}", "'", $image_src);
-				$image_src_full = phpbb_gallery_url::path('import') . utf8_decode($image_src);
+				$image_src_full = phpbb_gallery_url::path('import') . $image_src;
 				if (file_exists($image_src_full))
 				{
 					$filetype = getimagesize($image_src_full);
@@ -712,7 +712,7 @@ class acp_gallery
 		foreach ($files as $file)
 		{
 			$template->assign_block_vars('imagerow', array(
-				'FILE_NAME'				=> utf8_encode($file),
+				'FILE_NAME'				=> $file,
 			));
 		}
 
@@ -1082,7 +1082,7 @@ class acp_gallery
 					}
 
 					$template->assign_block_vars('entryrow', array(
-						'FILE_NAME'				=> utf8_encode($file),
+						'FILE_NAME'				=> $file,
 					));
 				}
 			}
