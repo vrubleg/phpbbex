@@ -2269,7 +2269,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Assign sid if session id is not specified
-	if ($session_id === false && empty($config['no_sid']) && !empty($user) && !$user->data['is_bot'] || $session_id === false && defined('NEED_SID'))
+	if ($session_id === false && empty($config['no_sid']) && !empty($user) && empty($user->data['is_bot']) || $session_id === false && defined('NEED_SID'))
 	{
 		$session_id = $_SID;
 	}
@@ -4780,7 +4780,7 @@ function page_footer($run_cron = true)
 
 	// Call cron-type script
 	$call_cron = false;
-	if (!defined('IN_CRON') && $run_cron && !$config['board_disable'] && !$user->data['is_bot'])
+	if (!defined('IN_CRON') && $run_cron && !$config['board_disable'] && empty($user->data['is_bot']))
 	{
 		$call_cron = true;
 		$time_now = (!empty($user->time_now) && is_int($user->time_now)) ? $user->time_now : time();
