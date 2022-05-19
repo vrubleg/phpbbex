@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -121,89 +115,89 @@ class erk_config_repair
 		{
 			header('Content-type: text/html; charset=UTF-8');
 			?>
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
-		<head>
-			<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-			<meta http-equiv="content-style-type" content="text/css" />
-			<meta http-equiv="imagetoolbar" content="no" />
-			<title>Config Repair - Support Toolkit</title>
-			<link href="<?php echo STK_ROOT_PATH; ?>style/style.css" rel="stylesheet" type="text/css" media="screen" />
-			<link href="<?php echo STK_ROOT_PATH; ?>style/erk_style.css" rel="stylesheet" type="text/css" media="screen" />
-		</head>
-		<body id="errorpage">
-			<div id="wrap">
-				<div id="page-header">
-
-				</div>
-				<div id="page-body">
-					<div id="acp">
-						<div class="panel">
-							<span class="corners-top"><span></span></span>
-								<div id="content">
-									<h1>Config Repair</h1>
-									<br />
-									<p>
-										Through this tool you can regenerate your configuration file.
-									</p>
-									<form id="stk" method="post" action="<?php echo STK_ROOT_PATH . 'index.' . PHP_EXT; ?>" name="support_tool_kit">
-										<fieldset>
-											<?php if (!empty($error)) {?>
-												<div class="errorbox">
-													<h3>Error</h3>
-													<p><?php echo implode('<br />', $error); ?></p>
-												</div>
-											<?php } ?>
-											<dl>
-												<dt><label for="dbms">Database type:</label></dt>
-												<dd><select name="dbms">
-													<?php foreach (get_available_dbms() as $dbms => $dbms_data) { ?>
-														<option value="<?php echo $dbms; ?>" <?php if ($data['dbms'] == $dbms) { echo ' selected="selected"'; } ?>><?php echo $dbms_data['LABEL']; ?>
-													<?php } ?>
-												</select></dd>
-											</dl>
-											<dl>
-												<dt><label for="dbhost">Database server hostname or DSN:</label><br /><span class="explain">DSN stands for Data Source Name and is relevant only for ODBC installs.</span></dt>
-												<dd><input id="dbhost" type="text" value="<?php echo $data['dbhost']; ?>" name="dbhost" maxlength="100" size="25"/></dd>
-											</dl>
-											<dl>
-												<dt><label for="dbport">Database server port:</label><br /><span class="explain">Leave this blank unless you know the server operates on a non-standard port.</span></dt>
-												<dd><input id="dbport" type="text" value="<?php echo $data['dbport']; ?>" name="dbport" maxlength="100" size="25"/></dd>
-											</dl>
-											<dl>
-												<dt><label for="dbname">Database name:</label></dt>
-												<dd><input id="dbname" type="text" value="<?php echo $data['dbname']; ?>" name="dbname" maxlength="100" size="25"/></dd>
-											</dl>
-											<dl>
-												<dt><label for="dbuser">Database username:</label></dt>
-												<dd><input id="dbuser" type="text" value="<?php echo $data['dbuser']; ?>" name="dbuser" maxlength="100" size="25"/></dd>
-											</dl>
-											<dl>
-												<dt><label for="dbpasswd">Database password:</label></dt>
-												<dd><input id="dbpasswd" type="password" value="" name="dbpasswd" maxlength="100" size="25"/></dd>
-											</dl>
-											<dl>
-												<dt><label for="table_prefix">Prefix for tables in database:</label></dt>
-												<dd><input id="table_prefix" type="text" value="<?php echo $data['table_prefix']; ?>" name="table_prefix" maxlength="100" size="25"/></dd>
-											</dl>
-											<p class="submit-buttons">
-												<input class="button1" type="submit" id="submit" name="submit" value="Submit" />&nbsp;
-												<input class="button2" type="reset" id="reset" name="reset" value="Reset" />
-											</p>
-										</fieldset>
-									</form>
-								</div>
-							<span class="corners-bottom"><span></span></span>
-						</div>
+<!DOCTYPE html>
+<html dir="ltr">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Config Repair - Support Toolkit</title>
+		<link href="<?php echo STK_ROOT_PATH; ?>style/style.css" rel="stylesheet" type="text/css" media="screen" />
+	</head>
+	<body id="errorpage">
+		<div id="wrap">
+			<div id="page-header">
+				<h1>Emergency Repair Kit</h1>
+				<p>
+					<a href="<?php echo STK_ROOT_PATH; ?>">Support Toolkit index</a> &bull;
+					<a href="<?php echo PHPBB_ROOT_PATH; ?>">Board index</a>
+				</p>
+			</div>
+			<div id="page-body">
+				<div id="acp">
+					<div class="panel">
+						<span class="corners-top"><span></span></span>
+							<div id="content">
+								<h1>Config Repair</h1>
+								<br />
+								<p>
+									Through this tool you can regenerate your configuration file.
+								</p>
+								<form id="stk" method="post" action="<?php echo STK_ROOT_PATH . 'index.' . PHP_EXT; ?>" name="support_tool_kit">
+									<fieldset>
+										<?php if (!empty($error)) {?>
+											<div class="errorbox">
+												<h3>Error</h3>
+												<p><?php echo implode('<br />', $error); ?></p>
+											</div>
+										<?php } ?>
+										<dl>
+											<dt><label for="dbms">Database type:</label></dt>
+											<dd><select name="dbms">
+												<?php foreach (get_available_dbms() as $dbms => $dbms_data) { ?>
+													<option value="<?php echo $dbms; ?>" <?php if ($data['dbms'] == $dbms) { echo ' selected="selected"'; } ?>><?php echo $dbms_data['LABEL']; ?>
+												<?php } ?>
+											</select></dd>
+										</dl>
+										<dl>
+											<dt><label for="dbhost">Database server hostname or DSN:</label><br /><span class="explain">DSN stands for Data Source Name and is relevant only for ODBC installs.</span></dt>
+											<dd><input id="dbhost" type="text" value="<?php echo $data['dbhost']; ?>" name="dbhost" maxlength="100" size="25"/></dd>
+										</dl>
+										<dl>
+											<dt><label for="dbport">Database server port:</label><br /><span class="explain">Leave this blank unless you know the server operates on a non-standard port.</span></dt>
+											<dd><input id="dbport" type="text" value="<?php echo $data['dbport']; ?>" name="dbport" maxlength="100" size="25"/></dd>
+										</dl>
+										<dl>
+											<dt><label for="dbname">Database name:</label></dt>
+											<dd><input id="dbname" type="text" value="<?php echo $data['dbname']; ?>" name="dbname" maxlength="100" size="25"/></dd>
+										</dl>
+										<dl>
+											<dt><label for="dbuser">Database username:</label></dt>
+											<dd><input id="dbuser" type="text" value="<?php echo $data['dbuser']; ?>" name="dbuser" maxlength="100" size="25"/></dd>
+										</dl>
+										<dl>
+											<dt><label for="dbpasswd">Database password:</label></dt>
+											<dd><input id="dbpasswd" type="password" value="" name="dbpasswd" maxlength="100" size="25"/></dd>
+										</dl>
+										<dl>
+											<dt><label for="table_prefix">Prefix for tables in database:</label></dt>
+											<dd><input id="table_prefix" type="text" value="<?php echo $data['table_prefix']; ?>" name="table_prefix" maxlength="100" size="25"/></dd>
+										</dl>
+										<p class="submit-buttons">
+											<input class="button1" type="submit" id="submit" name="submit" value="Submit" />&nbsp;
+											<input class="button2" type="reset" id="reset" name="reset" value="Reset" />
+										</p>
+									</fieldset>
+								</form>
+							</div>
+						<span class="corners-bottom"><span></span></span>
 					</div>
 				</div>
-				<div id="page-footer">
-					Support Toolkit &copy; <a href="http://www.phpbb.com/">phpBB Group</a><br />
-					Powered by <a href="http://www.phpbb.com/">phpBB</a>&reg; Forum Software &copy; phpBB Group
-				</div>
 			</div>
-		</body>
-	</html>
+			<div id="page-footer">
+				Powered by <a href="//phpbbex.com/">phpBBex</a>
+			</div>
+		</div>
+	</body>
+</html>
 			<?php
 			exit;
 		}

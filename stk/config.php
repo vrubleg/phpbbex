@@ -1,11 +1,8 @@
 <?php
 /**
-*
-* @package Support Toolkit
-* @version $Id$
-* @copyright (c) 2010 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
 if (!defined('IN_PHPBB'))
@@ -13,9 +10,6 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-/**
-* @var Array STK configuration array
-*/
 $stk_config = array(
 	/**
 	* The BOM sniffer uses a white list to determine which files will be checked

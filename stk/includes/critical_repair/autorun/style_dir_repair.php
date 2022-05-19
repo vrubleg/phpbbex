@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -22,7 +16,7 @@ class erk_style_dir_repair
 	 * Instance of the acp_styles module
 	 */
 	var $ac = null;
-	
+
 	var $sid = '';
 
 	function run()
@@ -49,7 +43,7 @@ class erk_style_dir_repair
 			}
 			$this->ac = new acp_styles();
 			$this->ac->main('', 'default');	// Bit hacky
-		
+
 			// The style directory of the active style doesn't exist anymore
 			$this->repair();
 			$this->refresh();
@@ -128,7 +122,7 @@ class erk_style_dir_repair
 		garbage_collection();
 		exit_handler();
 	}
-	
+
 	/**
 	 * Remove all styles from the database that doesn't have their
 	 * files anymore
@@ -150,10 +144,10 @@ class erk_style_dir_repair
 			}
 			closedir($handle);
 		}
-		
+
 		// Disable the message handler
 		$stk_no_error = true;
-		
+
 		// Get all the styles from the database
 		$sql = 'SELECT s.style_id, t.template_path
 			FROM (' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t)
@@ -167,7 +161,7 @@ class erk_style_dir_repair
 				// More uglyness from phpBB :/
 				$GLOBALS['_REQUEST']['new_id']	= (int) $this->sid;
 				$GLOBALS['_POST']['update']		= true;
-				
+
 				// Uninstall the style
 				$this->ac->remove('style', $row['style_id']);
 				$this->ac->remove('template', $row['style_id']);
@@ -175,7 +169,7 @@ class erk_style_dir_repair
 				$this->ac->remove('imageset', $row['style_id']);
 			}
 		}
-		
+
 		// Enable the message handler
 		$stk_no_error = false;
 	}

@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit
-* @version $Id$
-* @copyright (c) 2010 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;

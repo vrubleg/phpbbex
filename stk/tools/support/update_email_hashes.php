@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit - Update email hashes
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -60,7 +54,7 @@ class update_email_hashes
 				// Skip if the hash hasn't changed
 				continue;
 			}
-			
+
 			// Update the field
 			$sql = 'UPDATE ' . USERS_TABLE . " SET user_email_hash = '" . $new_hash . "'
 				WHERE user_id = " . $userrow['user_id'];

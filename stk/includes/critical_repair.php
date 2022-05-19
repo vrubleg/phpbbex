@@ -1,26 +1,17 @@
 <?php
 /**
-*
-* @package Support Toolkit
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 // Load functions_admin.php if required
-if (!function_exists('filelist'))
-{
-	include(PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT);
-}
+require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT);
 
 class critical_repair
 {
@@ -40,11 +31,11 @@ class critical_repair
 	var $tool_path;
 
 	/**
-	* Initialise critical repair.
+	* initialize critical repair.
 	* This method loads all critical repair tools
 	* @return void
 	*/
-	function initialise()
+	function initialize()
 	{
 		$this->tool_path = STK_ROOT_PATH . 'includes/critical_repair/';
 		$filelist = filelist($this->tool_path, '', PHP_EXT);
@@ -134,30 +125,19 @@ class critical_repair
 
 		// Build the page
 		?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+<!DOCTYPE html>
+<html dir="ltr">
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta http-equiv="content-style-type" content="text/css" />
-		<meta http-equiv="imagetoolbar" content="no" />
-		<title>Support Toolkit :: Emergency Repair Kit</title>
+		<meta charset="UTF-8" />
+		<title>Emergency Repair Kit</title>
 		<link href="<?php echo STK_ROOT_PATH; ?>style/style.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="<?php echo STK_ROOT_PATH; ?>style/erk_style.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
 	<body id="errorpage">
 		<div id="wrap">
 			<div id="page-header">
+				<h1>Emergency Repair Kit</h1>
 				<p>
-					<?php
-					if ($redirect_stk)
-					{
-						echo '<a href="' . STK_ROOT_PATH . '">Support Toolkit index</a> &bull; ';
-					}
-					else
-					{
-						echo '<a href="' . STK_ROOT_PATH . 'erk.php">Emergency Repair Toolkit index</a> &bull; ';
-					}
-					?>
+					<a href="<?php echo STK_ROOT_PATH; ?>">Support Toolkit index</a> &bull;
 					<a href="<?php echo PHPBB_ROOT_PATH; ?>">Board index</a>
 				</p>
 			</div>
@@ -177,11 +157,11 @@ class critical_repair
 									<?php
 									if ($redirect_stk)
 									{
-										echo 'Click <a href="' . STK_ROOT_PATH . '">here</a> to reload the STK';
+										echo '<a href="' . STK_ROOT_PATH . '">Click here to reload the STK</a>';
 									}
 									else
 									{
-										echo 'Click <a href="' . STK_ROOT_PATH . 'erk.php">here</a> to reload the ERK';
+										echo '<a href="' . STK_ROOT_PATH . 'erk.php">Click here to reload the ERK</a>';
 									}
 									?>
 								</p>
@@ -191,8 +171,7 @@ class critical_repair
 				</div>
 			</div>
 			<div id="page-footer">
-				Support Toolkit &copy; <a href="http://www.phpbb.com/">phpBB Group</a><br />
-				Powered by <a href="http://www.phpbb.com/">phpBB</a>&reg; Forum Software &copy; phpBB Group
+				Powered by <a href="//phpbbex.com/">phpBBex</a>
 			</div>
 		</div>
 	</body>
