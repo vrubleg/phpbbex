@@ -1,17 +1,11 @@
 <?php
 /**
-*
-* @package Support Toolkit - Merge Users
-* @version $Id$
+* @package phpBBex Support Toolkit
 * @author Chris Smith <toonarmy@phpbb.com> (http://www.cs278.org/)
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU License
-*
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;

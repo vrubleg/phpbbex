@@ -1,15 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit
-* @copyright (c) 2010 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -49,7 +44,7 @@ else
 
 // phpBBs common.php registers hooks, these hooks tend to cause problems with the
 // support toolkit. Therefore we unset the `$phpbb_hook` object here
-unset($phpbb_hook);  
+unset($phpbb_hook);
 
 // When not in the ERK we setup the user at this point
 // and load UML.

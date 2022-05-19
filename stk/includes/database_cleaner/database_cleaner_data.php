@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit - Database Cleaner
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -93,7 +87,7 @@ class database_cleaner_data
 	* @var Array An array containing all tables that are included in a vanilla phpBB install of this version
 	*/
 	var $tables = array();
-	
+
 	/**
 	* @var Array An array containing all report reasons
 	*/
@@ -162,7 +156,7 @@ class database_cleaner_data
 					{
 						continue;
 					}
-					
+
 					include (PHPBB_ROOT_PATH . "language/{$entry}/install." . PHP_EXT);
 
 					if (in_array($test, $lang))
@@ -189,7 +183,7 @@ class database_cleaner_data
 			}
 		}
 
-		// Firebird and Oracle, need the table and column names in 
+		// Firebird and Oracle, need the table and column names in
 		// UPPERCASE. #62821
 		switch ($this->db_tools->sql_layer)
 		{

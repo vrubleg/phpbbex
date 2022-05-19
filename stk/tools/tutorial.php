@@ -1,11 +1,8 @@
 <?php
 /**
-*
-* @package Support Toolkit - Tutorial
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
 /*
@@ -20,9 +17,6 @@
 /*
 * Make sure you have this check for security reasons.
 */
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;

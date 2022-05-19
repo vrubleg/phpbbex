@@ -1,54 +1,55 @@
 <?php
 /**
-*
-* @package Support Toolkit
-* @version $Id$
-* @copyright (c) 2010 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
 define('IN_PHPBB', true);
 define('IN_ERK', true);
 
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
+if (!defined('PHPBB_CACHE_PATH')) { define('PHPBB_CACHE_PATH', PHPBB_ROOT_PATH . 'cache/'); }
 if (!defined('PHP_EXT')) { define('PHP_EXT', substr(strrchr(__FILE__, '.'), 1)); }
 if (!defined('STK_DIR_NAME')) { define('STK_DIR_NAME', substr(strrchr(dirname(__FILE__), DIRECTORY_SEPARATOR), 1)); }	// Get the name of the stk directory
 if (!defined('STK_ROOT_PATH')) { define('STK_ROOT_PATH', './'); }
 if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.' . PHP_EXT); }
 
-// Try to override some limits - maybe it helps some...
-@set_time_limit(0);
-$mem_limit = @ini_get('memory_limit');
-if (!empty($mem_limit))
-{
-	$unit = strtolower(substr($mem_limit, -1, 1));
-	$mem_limit = (int) $mem_limit;
+require STK_ROOT_PATH . 'includes/critical_repair.' . PHP_EXT;
+$critical_repair = new critical_repair();
 
-	if ($unit == 'k')
-	{
-		$mem_limit = floor($mem_limit / 1024);
-	}
-	else if ($unit == 'g')
-	{
-		$mem_limit *= 1024;
-	}
-	else if (is_numeric($unit))
-	{
-		$mem_limit = floor((int) ($mem_limit . $unit) / 1048576);
-	}
-	$mem_limit = max(128, $mem_limit) . 'M';
-}
-else
+// Check if there is a recent ERK allow key file, not older than 60 minutes.
+
+$time_span = intval(time() / 1200);
+$curr_keys = [
+	substr(md5($time_span - 0), 0, 8),
+	substr(md5($time_span - 1), 0, 8),
+	substr(md5($time_span - 2), 0, 8)
+];
+
+$allowed = false;
+foreach ($curr_keys as $key)
 {
-	$mem_limit = '128M';
+	if (file_exists(PHPBB_CACHE_PATH . 'allow_erk_' . $key . '.key'))
+	{
+		$allowed = true;
+		break;
+	}
 }
-@ini_set('memory_limit', $mem_limit);
+
+if (!$allowed)
+{
+	$critical_repair->trigger_error('Run ERK through STK. If you cannot login, create an empty file at <tt>/cache/allow_erk_' . $curr_keys[0] . '.key</tt> to run ERK directly. ', false);
+}
+
+// Try to override some limits - maybe it helps some...
+
+@ini_set('memory_limit', '128M');
+@set_time_limit(3600);
 
 // Init critical repair and run the tools that *must* be ran before initing anything else
-include STK_ROOT_PATH . 'includes/critical_repair.' . PHP_EXT;
-$critical_repair = new critical_repair();
-$critical_repair->initialise();
+
+$critical_repair->initialize();
 $critical_repair->run_tool('bom_sniffer');
 $critical_repair->run_tool('config_repair');
 
@@ -72,6 +73,18 @@ $umil->cache_purge(array(
 	'imageset',
 ));
 
+// Remove old ERK allow key files.
+if ($dir = opendir(PHPBB_CACHE_PATH))
+{
+	while (($entry = readdir($dir)) !== false)
+	{
+		if (strpos($entry, 'allow_erk_') === 0)
+		{
+			@unlink(PHPBB_CACHE_PATH . $entry);
+		}
+	}
+	closedir($dir);
+}
 
 // Let's tell the user all is okay :)
 $critical_repair->trigger_error("The Emergency Repair Kit hasn't found any critical issues within your phpBB installation.", true);

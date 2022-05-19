@@ -1,15 +1,10 @@
 <?php
 /**
- *
- * @package Support Toolkit - Database Cleaner
- * @copyright (c) 2009 phpBB Group
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *
- */
-
-/**
-* @ignore
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;

@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit - Make Founder
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -158,7 +152,7 @@ class manage_founders
 				}
 
 				// Drop the arrays
-				$user_id = array_shift($user_id); 
+				$user_id = array_shift($user_id);
 				$username = array_shift($username);
 
 				// No user found

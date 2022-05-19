@@ -1,15 +1,10 @@
 <?php
 /**
- *
- * @package Support Toolkit - Resynchronise Users groups
- * @copyright (c) 2009 phpBB Group
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- *
- */
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
+*/
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -90,7 +85,7 @@ class resync_registered
 
 	/**
 	 * Grep the users that aren't in the groups
-	 * @param  Boolean $missing If true this function will return whether there are users 
+	 * @param  Boolean $missing If true this function will return whether there are users
 	 *                          missing
 	 */
 	function _fetch_users($missing = false)
@@ -114,7 +109,7 @@ class resync_registered
 			{
 				$users[] = (int) $user['user_id'];
 			}
-	
+
 			$sql = 'SELECT user_id
 				FROM ' . USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', $users, true) . '

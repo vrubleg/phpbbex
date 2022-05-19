@@ -1,16 +1,10 @@
 <?php
 /**
-*
-* @package Support Toolkit - Restore Deleted Users
-* @version $Id$
-* @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
+* @package phpBBex Support Toolkit
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -110,7 +104,7 @@ class restore_deleted_users
 			{
 				$post_ids[] = (int)$row['post_id'];
 			}
-			
+
 			$return['vars']['legend2'] = 'DAMAGED_POSTS';
 			$return['vars']['damaged_posts'] = array('lang' => 'DAMAGED_POSTS', 'default' => implode(', ', $post_ids), 'explain' => true, 'type' => 'text:40:255');
 		}
