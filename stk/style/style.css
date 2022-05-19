@@ -15,13 +15,6 @@
 }
 
 body, div, p, th, td, li, dd {
-	font-size: x-small;
-	voice-family: "\"}\"";
-	voice-family: inherit;
-	font-size: small
-}
-
-html>body, html>div, html>p, html>th, html>td, html>li, html>dd {
 	font-size: small
 }
 
@@ -208,10 +201,6 @@ a:active {
 	margin: 0 3% 0 0;
 }
 
-* html #main {
-	height: 350px;
-}
-
 #page-body.simple-page-body {
 	padding: 0;
 	padding-right: 10px;
@@ -259,7 +248,6 @@ a:active {
 }
 
 #tabs a span {
-	float: left;
 	display: block;
 	background: url("../images/bg_tabs2.gif") no-repeat 100% -34px;
 	padding: 7px 10px 4px 4px;
@@ -269,14 +257,6 @@ a:active {
 	text-transform: uppercase;
 	font-weight: bold;
 }
-
-.rtl #tabs a span {
-	float: right;
-}
-
-/* Commented Backslash Hack hides rule from IE5-Mac \*/
-#tabs a span, .rtl #tabs a span { float:none;}
-/* End hack */
 
 #tabs a:hover span {
 	color: #BC2A4D;
@@ -352,11 +332,6 @@ span.corners-bottom span {
 	background-image: url("../images/corners_right.gif");
 	background-position: 100% 100%;
 }
-
-/* WinIE tweaks \*/
-* html span.corners-top, * html span.corners-bottom { background-image: url("../images/corners_left.gif"); }
-* html span.corners-top span, * html span.corners-bottom span { background-image: url("../images/corners_right.gif"); }
-/* End tweaks */
 
 /* Sub-navigation Menu
 ---------------------------------------- */
@@ -662,10 +637,6 @@ fieldset {
 	border-left: 1px solid #CCCCCC;
 }
 
-* html fieldset {
-	padding: 0 10px 5px 10px;
-}
-
 fieldset p {
 	font-size: 0.85em;
 }
@@ -682,18 +653,6 @@ legend {
 	line-height: 1.2em;
 	top: -0.2em;
 	vertical-align: middle;
-}
-
-* html legend {
-	margin: 0 0 -10px -7px;
-	line-height: 1em;
-	font-size: .85em;
-}
-
-/* Holly hack, .rtl comes after html */
-* html .rtl legend {
-	margin: 0;
-	margin-right: -7px;
 }
 
 input, textarea {
@@ -1036,7 +995,6 @@ textarea.full {
 	width: 99%;
 }
 
-* html input.full, * html textarea.full { width: 95%;}
 input.medium { width: 50%;}
 input.narrow { width: 25%;}
 input.tiny { width: 10%;}
@@ -1186,8 +1144,6 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 .errorbox {
 	background-color: #BC2A4D;
 }
-
-* html .errorbox, * html .successbox { height: 1%; } /* Pixel shift fix for IE */
 
 .successbox h3, .errorbox h3 {
 	color: #FFFFFF;
@@ -1422,21 +1378,12 @@ fieldset.permissions .padding {
 }
 
 .permissions-category a span.tabbg {
-	float: left;
 	display: block;
 	background: url("../images/bg_tabs_alt2.gif") no-repeat 100% -35px;
 	padding: 7px 12px 6px 6px;
 	color: #536482;
 	white-space: nowrap;
 }
-
-.rtl .permissions-category a span.tabbg {
-	float: right;
-}
-
-/* Commented Backslash Hack hides rule from IE5-Mac \*/
-.permissions-category a span.tabbg, .rtl .permissions-category a span.tabbg { float: none;}
-/* End hack */
 
 .permissions-category a:hover span.tabbg {
 	color: #DD6900;
