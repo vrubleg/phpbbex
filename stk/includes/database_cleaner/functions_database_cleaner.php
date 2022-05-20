@@ -361,7 +361,8 @@ function fetch_cleaner_data(&$data, $phpbb_version)
 	{
 		include PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT;
 	}
-	$filelist = array_shift(filelist(STK_ROOT_PATH . 'includes/database_cleaner/', 'data/', PHP_EXT));
+	$filelist = filelist(STK_ROOT_PATH . 'includes/database_cleaner/', 'data/', PHP_EXT);
+	$filelist = array_shift($filelist);
 	usort($filelist, 'version_compare');
 
 	// Add the data
@@ -403,6 +404,9 @@ function fetch_cleaner_data(&$data, $phpbb_version)
 	// Perform some actions that only have to be done on given versions or on all
 	switch($phpbb_version)
 	{
+		case '3_0_14'	:
+		case '3_0_13_pl1' :
+		case '3_0_13'	:
 		case '3_0_12'	:
 		case '3_0_11'	:
 		case '3_0_10'	:
