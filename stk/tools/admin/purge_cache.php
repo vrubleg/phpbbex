@@ -27,7 +27,7 @@ class purge_cache
 	*
 	* Does the actual stuff we want the tool to do after submission
 	*/
-	function run_tool(&$error)
+	function run_tool()
 	{
 		global $auth, $cache;
 

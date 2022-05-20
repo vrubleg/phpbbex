@@ -95,11 +95,6 @@ class plugin
 		$this->_parts['c'] = request_var('c', $this->_parts['c']);
 		$this->_parts['t'] = request_var('t', $this->_parts['t']);
 
-		if ($this->_parts['c'] && !isset($this->plugin_list[$this->_parts['c']]))
-		{
-			trigger_error('MODULE_NOT_ACCESS', E_USER_ERROR);
-		}
-
 		// We shouldn't rely on the given category request, unless there really is a tool with that name in the given category
 		$found = $this->_parts['t'] && isset($this->plugin_list[$this->_parts['c']]) && in_array($this->_parts['t'], $this->plugin_list[$this->_parts['c']]);
 		if ($this->_parts['t'] && !$found)
@@ -119,6 +114,7 @@ class plugin
 			}
 		}
 
+		// Trigger an error if the module is not found.
 		if ($this->_parts['t'] && (!$found || preg_match('#([^a-zA-Z0-9_])#', $this->_parts['t']) || !file_exists(STK_ROOT_PATH . 'tools/' . $this->_parts['c'] . '/' . $this->_parts['t'] . '.' . PHP_EXT)))
 		{
 			trigger_error('MODULE_NOT_ACCESS', E_USER_ERROR);
