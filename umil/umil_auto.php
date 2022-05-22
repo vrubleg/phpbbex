@@ -1,13 +1,11 @@
 <?php
 /**
- *
- * @author Nathan Guse (EXreaction) http://lithiumstudios.org
- * @author David Lewis (Highway of Life) highwayoflife@gmail.com
- * @package umil
- * @copyright (c) 2008 phpBB Group
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
+* @package phpBBex UMIL
+* @author Nathan Guse (EXreaction)
+* @author David Lewis (Highway of Life)
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
+*/
 
 /**
  * Parameters which should be setup before calling this file:
@@ -28,21 +26,15 @@
  * 'UNINSTALL_' . $mod_name . '_CONFIRM'
  */
 
-// You must run define('UMIL_AUTO', true) before calling this file.
-/**
- * @ignore
- */
+// You must define('UMIL_AUTO', true) before calling this file.
 if (!defined('UMIL_AUTO'))
 {
 	exit;
 }
 
-/*
-* Do not include common.php, the MOD author is required to include this.
-*/
+// You must define('IN_PHPBB', true) and include common.php before calling this file.
 if (!defined('IN_PHPBB'))
 {
-	trigger_error('UMIL doesn\'t support the missing IN_PHPBB anymore. Please visit <a href="http://www.phpbb.com/mods/umil/update/">http://www.phpbb.com/mods/umil/update</a> on how to update your UMIF files.', E_USER_ERROR);
 	exit;
 }
 
@@ -71,12 +63,7 @@ if (!$user->data['is_registered'])
 
 if (!class_exists('umil_frontend'))
 {
-    if (!file_exists($phpbb_root_path . 'umil/umil_frontend.' . $phpEx))
-	{
-		trigger_error('Please download the latest UMIL (Unified MOD Install Library) from: <a href="http://www.phpbb.com/mods/umil/">phpBB.com/mods/umil</a>', E_USER_ERROR);
-	}
-
-	include($phpbb_root_path . 'umil/umil_frontend.' . $phpEx);
+	require_once($phpbb_root_path . 'umil/umil_frontend.' . $phpEx);
 }
 
 $force_display_results = request_var('display_results', (defined('DEBUG') ? true : false));

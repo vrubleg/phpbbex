@@ -1,17 +1,12 @@
 <?php
 /**
- *
- * @author Nathan Guse (EXreaction) http://lithiumstudios.org
- * @author David Lewis (Highway of Life) highwayoflife@gmail.com
- * @package umil
- * @copyright (c) 2008 phpBB Group
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
+* @package phpBBex UMIL
+* @author Nathan Guse (EXreaction)
+* @author David Lewis (Highway of Life)
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
+*/
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -195,32 +190,6 @@ class umil
 			//}
 
 			$user->add_lang(array('acp/common', 'acp/permissions'));
-
-			// Check to see if a newer version is available.
-			/*
-			$info = $this->version_check('version.phpbb.com', '/umil', ((defined('PHPBB_QA')) ? 'umil_qa.txt' : 'umil.txt'));
-			if (is_array($info) && isset($info[0]) && isset($info[1]) && defined('DEBUG'))
-			{
-				if (version_compare(UMIL_VERSION, $info[0], '<'))
-				{
-					global $template;
-
-					// Make sure user->setup() has been called
-					if (empty($user->lang))
-					{
-						$user->setup();
-					}
-
-					page_header('', false);
-
-					$user->lang['UPDATE_UMIL'] = (isset($user->lang['UPDATE_UMIL'])) ? $user->lang['UPDATE_UMIL'] : 'This version of UMIL is outdated.<br /><br />Please download the latest UMIL (Unified MOD Install Library) from: <a href="%1$s">%1$s</a>';
-					$template->assign_vars(array(
-						'S_BOARD_DISABLED'		=> true,
-						'L_BOARD_DISABLED'		=> sprintf($user->lang['UPDATE_UMIL'], $info[1]),
-					));
-				}
-			}
-			*/
 		}
 	}
 

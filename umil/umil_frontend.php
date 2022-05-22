@@ -1,16 +1,12 @@
 <?php
 /**
- *
- * @author Nathan Guse (EXreaction) http://lithiumstudios.org
- * @author David Lewis (Highway of Life) highwayoflife@gmail.com
- * @package umil
- * @copyright (c) 2008 phpBB Group
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- */
+* @package phpBBex UMIL
+* @author Nathan Guse (EXreaction)
+* @author David Lewis (Highway of Life)
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
+*/
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,12 +14,7 @@ if (!defined('IN_PHPBB'))
 
 if (!class_exists('umil'))
 {
-    if (!file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
-	{
-		trigger_error('Please download the latest UMIL (Unified MOD Install Library) from: <a href="http://www.phpbb.com/mods/umil/">phpBB.com/mods/umil</a>', E_USER_ERROR);
-	}
-
-	include($phpbb_root_path . 'umil/umil.' . $phpEx);
+	require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
 }
 
 /**
