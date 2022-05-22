@@ -1510,7 +1510,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	// Recipient Information
 	$recipients = $to = $bcc = array();
 
-	if ($mode != 'edit')
+	if ($mode != 'edit' && $mode != 'reparse')
 	{
 		// Build Recipient List
 		// u|g => array($user_id => 'to'|'bcc')
@@ -1614,9 +1614,9 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		break;
 
 		case 'edit':
+		case 'reparse':
 			$sql_data = array(
 				'icon_id'			=> $data['icon_id'],
-				'message_edit_time'	=> $current_time,
 				'enable_bbcode'		=> $data['enable_bbcode'],
 				'enable_smilies'	=> $data['enable_smilies'],
 				'enable_magic_url'	=> $data['enable_urls'],
@@ -1627,6 +1627,10 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				'bbcode_bitfield'	=> $data['bbcode_bitfield'],
 				'bbcode_uid'		=> $data['bbcode_uid']
 			);
+			if ($mode == 'edit')
+			{
+				$sql_data['message_edit_time'] = $current_time;
+			}
 		break;
 	}
 
@@ -1646,9 +1650,16 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				WHERE msg_id = ' . $data['msg_id'];
 			$db->sql_query($sql);
 		}
+		else if ($mode == 'reparse')
+		{
+			$sql = 'UPDATE ' . PRIVMSGS_TABLE . '
+				SET ' . $db->sql_build_array('UPDATE', $sql_data) . '
+				WHERE msg_id = ' . $data['msg_id'];
+			$db->sql_query($sql);
+		}
 	}
 
-	if ($mode != 'edit')
+	if ($mode != 'edit' && $mode != 'reparse')
 	{
 		if ($sql)
 		{
@@ -1702,7 +1713,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	}
 
 	// Submit Attachments
-	if (!empty($data['attachment_data']) && $data['msg_id'] && in_array($mode, array('post', 'reply', 'quote', 'quotepost', 'edit', 'forward')))
+	if (!empty($data['attachment_data']) && $data['msg_id'] && in_array($mode, array('post', 'reply', 'edit', 'reparse', 'quote', 'quotepost', 'forward')))
 	{
 		$space_taken = $files_added = 0;
 		$orphan_rows = array();
@@ -1793,7 +1804,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	$db->sql_transaction('commit');
 
 	// Send Notifications
-	if ($mode != 'edit')
+	if ($mode != 'edit' && $mode != 'reparse')
 	{
 		pm_notification($mode, $data['from_username'], $recipients, $subject, $data['message'], $data['msg_id']);
 	}

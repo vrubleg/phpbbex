@@ -377,7 +377,7 @@ class reparse_bbcode
 					$this->_reparse_pm($pm_data);
 
 					// Re-submit the pm through the API
-					submit_pm('edit', $this->data['message_subject'], $pm_data, false);
+					submit_pm('reparse', $this->data['message_subject'], $pm_data, false);
 				break;
 
 				case BBCODE_REPARSE_SIGS :
