@@ -1728,12 +1728,12 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 		$post_mode = 'post';
 		$update_message = true;
 	}
-	else if ($mode != 'edit')
+	else if ($mode != 'edit' && $mode != 'reparse')
 	{
 		$post_mode = 'reply';
 		$update_message = true;
 	}
-	else if ($mode == 'edit')
+	else if ($mode == 'edit' || $mode == 'reparse')
 	{
 		$post_mode = ($data['topic_replies_real'] == 0) ? 'edit_topic' : (($data['topic_first_post_id'] == $data['post_id']) ? 'edit_first_post' : (($data['topic_last_post_id'] == $data['post_id']) ? 'edit_last_post' : 'edit'));
 	}
@@ -1745,10 +1745,10 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 	// Collect some basic information about which tables and which rows to update/insert
 	$sql_data = $topic_row = array();
-	$poster_id = ($mode == 'edit') ? $data['poster_id'] : (int) $user->data['user_id'];
+	$poster_id = ($mode == 'edit' || $mode == 'reparse') ? $data['poster_id'] : (int) $user->data['user_id'];
 
 	// Retrieve some additional information if not present
-	if ($mode == 'edit' && (!isset($data['post_approved']) || !isset($data['topic_approved']) || $data['post_approved'] === false || $data['topic_approved'] === false))
+	if (($mode == 'edit' || $mode == 'reparse') && (!isset($data['post_approved']) || !isset($data['topic_approved']) || $data['post_approved'] === false || $data['topic_approved'] === false))
 	{
 		$sql = 'SELECT p.post_approved, t.topic_type, t.topic_replies, t.topic_replies_real, t.topic_approved
 			FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . ' p
@@ -1825,23 +1825,26 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 			// If normal edit display edit info
 
 			// Display edit info if edit reason given or user is editing his post, which is not the last within the topic.
-			if ($data['post_edit_reason'] || (!$auth->acl_get('m_edit', $data['forum_id']) && ($post_mode == 'edit' || $post_mode == 'edit_first_post')))
+			if ($mode == 'edit')
 			{
-				$data['post_edit_reason']		= truncate_string($data['post_edit_reason'], 255, 255, false);
+				if (!empty($data['post_edit_reason']) || (!$auth->acl_get('m_edit', $data['forum_id']) && ($post_mode == 'edit' || $post_mode == 'edit_first_post')))
+				{
+					$data['post_edit_reason']		= truncate_string($data['post_edit_reason'], 255, 255, false);
 
-				$sql_data[POSTS_TABLE]['sql']	= array(
-					'post_edit_time'	=> $current_time,
-					'post_edit_reason'	=> $data['post_edit_reason'],
-					'post_edit_user'	=> (int) $data['post_edit_user'],
-				);
+					$sql_data[POSTS_TABLE]['sql']	= array(
+						'post_edit_time'	=> $current_time,
+						'post_edit_reason'	=> $data['post_edit_reason'],
+						'post_edit_user'	=> (int) $data['post_edit_user'],
+					);
 
-				$sql_data[POSTS_TABLE]['stat'][] = 'post_edit_count = post_edit_count + 1';
-			}
-			else if (!$data['post_edit_reason'] && $mode == 'edit' && $auth->acl_get('m_edit', $data['forum_id']))
-			{
-				$sql_data[POSTS_TABLE]['sql'] = array(
-					'post_edit_reason'	=> '',
-				);
+					$sql_data[POSTS_TABLE]['stat'][] = 'post_edit_count = post_edit_count + 1';
+				}
+				else if (empty($data['post_edit_reason']) && $auth->acl_get('m_edit', $data['forum_id']))
+				{
+					$sql_data[POSTS_TABLE]['sql'] = array(
+						'post_edit_reason'	=> '',
+					);
+				}
 			}
 
 			// If the person editing this post is different to the one having posted then we will add a log entry stating the edit
@@ -2113,7 +2116,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	{
 		$cur_poll_options = array();
 
-		if ($mode == 'edit')
+		if ($mode == 'edit' || $mode == 'reparse')
 		{
 			$sql = 'SELECT *
 				FROM ' . POLL_OPTIONS_TABLE . '
@@ -2170,7 +2173,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 		}
 
 		// We would need to reset votes
-		if ($mode == 'edit' && !empty($poll['poll_reset']))
+		if (($mode == 'edit' || $mode == 'reparse') && !empty($poll['poll_reset']))
 		{
 			$db->sql_query('DELETE FROM ' . POLL_VOTES_TABLE . ' WHERE topic_id = ' . $data['topic_id']);
 			$db->sql_query('UPDATE ' . POLL_OPTIONS_TABLE . ' SET poll_option_total = 0 WHERE topic_id = ' . $data['topic_id']);
@@ -2178,7 +2181,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	}
 
 	// Submit Attachments
-	if (!empty($data['attachment_data']) && $data['post_id'] && in_array($mode, array('post', 'reply', 'quote', 'edit')))
+	if (!empty($data['attachment_data']) && $data['post_id'] && in_array($mode, array('post', 'reply', 'quote', 'edit', 'reparse')))
 	{
 		$space_taken = $files_added = 0;
 		$orphan_rows = array();
@@ -2471,7 +2474,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 			trigger_error($error);
 		}
 
-		$search->index($mode, $data['post_id'], $data['message'], $subject, $poster_id, $data['forum_id']);
+		$search->index($mode != 'reparse' ? $mode : 'edit', $data['post_id'], $data['message'], $subject, $poster_id, $data['forum_id']);
 	}
 
 	// Topic Notification, do not change if moderator is changing other users posts...
