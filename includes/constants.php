@@ -21,9 +21,6 @@ if (!defined('IN_PHPBB'))
 // phpBB Version
 define('PHPBB_VERSION', '3.0.14');
 
-// QA-related
-// define('PHPBB_QA', 1);
-
 // User related
 define('ANONYMOUS', 1);
 

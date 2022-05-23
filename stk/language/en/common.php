@@ -51,10 +51,6 @@ $lang = array_merge($lang, array(
 	'LOGIN_STK_SUCCESS'					=> 'You have successfully authenticated and will now be redirected to the Support Toolkit.',
 
 	'NOTICE'								=> 'Notice',
-	'NO_VERSION_FILE'					=> 'The Support Toolkit (STK) was not able to determine the latest version. Please go to the <a href="http://phpbb.com/support/stk">Support Toolkit section of phpBB.com</a> and verify that you are using the latest version before using the STK.',
-
-	'REQUEST_PHPBB_VERSION'				=> 'Define phpBB version',
-	'REQUEST_PHPBB_VERSION_EXPLAIN'		=> 'The Support Toolkit was unable to correctly identify which phpBB version you are running, please select the appropriate version in this form before continuing.<br />This indicates that your board files and board version are inconsistent, most likely due to an incomplete update. Please visit the <a href="https://www.phpbb.com/community/viewforum.php?f=46">support forums</a> to get assistance to resolve this issue.',
 
 	'PASS_GENERATED'						=> 'Your STK password file was successfully generated!<br/>The password that was generated for you is: <em>%1$s</em><br />This password will expire on: <span style="text-decoration: underline;">%2$s</span>. After this time you <strong>must</strong> generate a new password file in order to keep using the emergency login feature!<br /><br />Use the following button to download the file. Once you’ve downloaded this file you must upload it to your server into the "stk" directory',
 	'PASS_GENERATED_REDIRECT'			=> 'Once you have uploaded the password file to the correct location, click <a href="%s">here</a> to go back to the login page.',
@@ -67,7 +63,6 @@ $lang = array_merge($lang, array(
 	'STK_LOGOUT'							=> 'STK Logout',
 	'STK_LOGOUT_SUCCESS'					=> 'You have successfully logged out from the Support Toolkit.',
 	'STK_NON_LOGIN'						=> 'Login to access the STK.',
-	'STK_OUTDATED'						=> 'Your Support Toolkit installation appears to be out of date. The latest available version is <strong style="color: #008000;">%1$s</strong>, while the version your have installed is <strong style="color: #FF0000;">%2$s</strong>.<br /><br />Due to the large impact of this tool on your phpBB installation, it has been disabled until an update is performed. We strongly recommend keeping all software running on your server up to date. For more information regarding the latest update, please see the <a href="%3$s">release topic</a>.<br /><br /><em>If you see this notice after an update of the Support Toolkit, click <a href="%4$s">here</a> to clear the version check cache.</em>',
 	'SUPPORT_TOOL_KIT'					=> 'Support Toolkit',
 	'SUPPORT_TOOL_KIT_INDEX'				=> 'Support Toolkit index',
 	'SUPPORT_TOOL_KIT_PASSWORD'			=> 'Password',

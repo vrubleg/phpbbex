@@ -261,7 +261,6 @@ function stk_add_lang($lang_file, $fore_lang = false)
 	// Internally cache some data
 	static $lang_data	= array();
 	static $lang_dirs	= array();
-	static $is_302		= null;
 
 	// Store current phpBB data
 	if (empty($lang_data))
@@ -286,27 +285,6 @@ function stk_add_lang($lang_file, $fore_lang = false)
 
 		// Only unique dirs
 		$lang_dirs = array_unique($lang_dirs);
-	}
-
-	// Which phpBB version is the user using
-	if (is_null($is_302))
-	{
-		// Guess the version based upon behavior, at this point a version
-		// check isn't sufficient as there are cases where the version
-		// information isn't available or isn't reliable.
-		/*
-		 * // There are different ways of handling language paths due to the changes
-		 * // made in phpBB 3.0.3 (set custom lang path)
-		 * if (version_compare(PHPBB_VERSION_NUMBER, '3.0.2', '<='))
-		 * {
-		 *	$is_302 = true;
-		 * }
-		 * else
-		 * {
-		 *	$is_302 = false;
-		 * }
-		 */
-		$is_302 = (file_exists($user->lang_path . 'common.' . PHP_EXT)) ? true : false;
 	}
 
 	// Switch to the STK language dir
@@ -334,12 +312,6 @@ function stk_add_lang($lang_file, $fore_lang = false)
 		trigger_error("Language file: {$lang_file}." . PHP_EXT . ' missing!', E_USER_ERROR);
 	}
 
-	// In phpBB <= 3.0.2 the lang_name is stored in the lang_path
-	if ($is_302)
-	{
-		$user->lang_path .= $user->lang_name . '/';
-	}
-
 	// Add the file
 	$user->add_lang($lang_file);
 
@@ -356,7 +328,7 @@ function stk_add_lang($lang_file, $fore_lang = false)
  */
 function perform_unauthed_quick_tasks($action, $submit = false)
 {
-	global $template, $umil, $user;
+	global $template, $user;
 
 	switch ($action)
 	{
@@ -366,68 +338,6 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 			$user->unset_admin();
 			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.' . PHP_EXT));
 			trigger_error('STK_LOGOUT_SUCCESS');
-		break;
-
-		// Can't rely on phpBB to get the phpBB version.
-		case 'request_phpbb_version' :
-			global $cache, $config;
-
-			$_version_number = $cache->get('_stk_phpbb_version_number');
-			if ($_version_number === false)
-			{
-				if ($submit)
-				{
-					if (!check_form_key('request_phpbb_version'))
-					{
-						trigger_error('FORM_INVALID');
-					}
-
-					$_version_number = request_var('version_number', $config['version']);
-					$cache->put('_stk_phpbb_version_number', $_version_number);
-				}
-				else
-				{
-					add_form_key('request_phpbb_version');
-					page_header($user->lang['REQUEST_PHPBB_VERSION'], false);
-
-					// Grep the latest phpBB version number
-					$info = $umil->version_check('version.phpbb.com', '/phpbb', '30x.txt');
-					list(,, $_phpbb_version) = explode('.', $info[0]);
-
-					// Build the options
-					$version_options = '';
-					for ($i = $_phpbb_version; $i > -1; $i--)
-					{
-						if (stripos($i, 'PL') !== false)
-						{
-							list($base_v, $pl_num) = explode('-PL', $_phpbb_version);
-							for ($j = $pl_num; $j > 0; $j--)
-							{
-								$v = "3.0.{$base_v}-PL{$j}";
-								$d = ($v == $config['version']) ? " default='default'" : '';
-								$version_options .= "<option value='{$v}'{$d}>{$v}</option>";
-							}
-							$i = $base_v;
-						}
-						$v = "3.0.{$i}";
-						$d = ($v == $config['version']) ? " default='default'" : '';
-						$version_options .= "<option value='{$v}'{$d}>{$v}</option>";
-					}
-
-					$template->assign_vars(array(
-						'PROCEED_TO_STK'				=> $user->lang('PROCEED_TO_STK', '', ''),
-						'REQUEST_PHPBB_VERSION_OPTIONS'	=> $version_options,
-						'U_ACTION'						=> append_sid(STK_INDEX, array('action' => 'request_phpbb_version')),
-					));
-
-					$template->set_filenames(array(
-						'body'	=> 'request_phpbb_version.html',
-					));
-					page_footer(false);
-				}
-			}
-
-			define('PHPBB_VERSION_NUMBER', $_version_number);
 		break;
 
 		// Generate the passwd file
