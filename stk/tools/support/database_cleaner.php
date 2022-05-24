@@ -74,7 +74,7 @@ if (!class_exists('database_cleaner'))
 			global $config;
 
 			// Correctly format the version number. Only RC releases are in uppercase
-			$this->phpbb_version = str_replace(array('.', '-', 'rc'), array('_', '_', 'RC'), strtolower(PHPBB_VERSION_NUMBER));
+			$this->phpbb_version = str_replace(array('.', '-', 'rc'), array('_', '_', 'RC'), strtolower(PHPBB_VERSION));
 
 			// Unstable versions can only be used when debugging
 			$matches = array();

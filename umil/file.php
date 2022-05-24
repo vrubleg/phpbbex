@@ -1,17 +1,12 @@
 <?php
 /**
- *
- * @author Nathan Guse (EXreaction) http://lithiumstudios.org
- * @author David Lewis (Highway of Life) highwayoflife@gmail.com
- * @package umil
- * @copyright (c) 2008 phpBB Group
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
-
-/**
-* @ignore
+* @package phpBBex UMIL
+* @author Nathan Guse (EXreaction)
+* @author David Lewis (Highway of Life)
+* @copyright (c) 2015 phpBB Group, Vegalogic Software
+* @license GNU Public License
 */
+
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);

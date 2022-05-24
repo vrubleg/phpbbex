@@ -96,14 +96,14 @@ h4 {
 	border-top: 1px solid #ccc;
 }
 
-code { 
-	color: #006600; 
-	font-weight: normal; 
-	font-family: 'Courier New', monospace; 
-	border-color: #D1D7DC; 
-	border-width: 1px; 
-	border-style: solid; 
-	background-color: #FAFAFA; 
+code {
+	color: #006600;
+	font-weight: normal;
+	font-family: 'Courier New', monospace;
+	border-color: #D1D7DC;
+	border-width: 1px;
+	border-style: solid;
+	background-color: #FAFAFA;
 }
 
 #wrap {
@@ -127,7 +127,7 @@ code {
 #logo {
 	float: left;
 	width: auto;
-	padding: 10px 13px 0 10px;
+	padding: 0;
 }
 
 a#logo:hover {
@@ -221,8 +221,8 @@ hr {
 }
 
 .headerbar {
-	background-color: #12A3EB;
-	background-image: url("bg_header.gif");
+	background-color: #0a2c60;
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAABcCAIAAAApjOiNAAABY0lEQVR4AQXBQYEbQBAEMdV4XwEVfiEVMsfDfVJ//v4DgLef/wDUAVC2pwBDD4DgAgS6SQfCwSRFT8cGcCCCOgAKj8QYOQUReiAADyDgqALJU0NAL2Gw9AYU4VREazxawaFTAss8zr7C4cRdTnAGw8RJUqDHrSDb95TNBu41K0DeCoAcBMo8BUHd0xlgOUuoMldxruG6BaayLqfDXN0hdMCtQ+jWXazTBW6EUnFqZaN1V+V0ko6EttM9DrMKt6DC8jgmU/awQhpPASZdSlDLAfrM6vPWAfWx7wEBfV4SbKNbR1SXvTRQpoc6IDtlw0wddgfd6rgWqO0t4Kq5V1maVY5kErqBwHg5MajdAgV6OSZzeFAouJUhmi4UDe7UHHG1R5CYu6mOA05kpkvHIUG9IAFukCK8CoDuiKBwEwj0Qodt8hSg4gAEHonB7ISEckcgyNEgRYcEhiOA1IMygoOBwYMCbL9d3oK89uR2xwAAAABJRU5ErkJggg==");
 	color: #FFFFFF;
 }
 
@@ -231,21 +231,14 @@ hr {
 	color: #28313F;
 }
 
-
-span.corners-top {
-	background-image: url("corners_left.png");
+span.corners-top, span.corners-bottom
+{
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMCAQAAADrXgSlAAAAPklEQVR4AWP4DwI//0/+b/+fDcR58t+AAQKAorpACsqZDCTgHBtkDhtOjiUyZwKYwjQabCmMC3POhP/2DAwAv4QqjuymjfwAAAAASUVORK5CYII=");
 }
 
-span.corners-top span {
-	background-image: url("corners_right.png");
-}
-
-span.corners-bottom {
-	background-image: url("corners_left.png");
-}
-
-span.corners-bottom span {
-	background-image: url("corners_right.png");
+span.corners-top span, span.corners-bottom span
+{
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMCAQAAADrXgSlAAAAPklEQVR4AWP4z/bf/v/k/z//AwEDFBr8fwLkwKHu/58MSNzJyBwbZA4bMocHmWOJzJmA1WhdmKU2/ydAnAMAkNxXZFneSC8AAAAASUVORK5CYII=");
 }
 
 .error {
@@ -286,10 +279,6 @@ a:active	{ color: #368AD2; }
 	font: 0.9em Monaco, "Andale Mono","Courier New", Courier, mono;
 	line-height: 1.3em;
 }
-
-* html hr { margin: 0; }
-* html span.corners-top, * html span.corners-bottom { background-image: url("corners_left.gif"); }
-* html span.corners-top span, * html span.corners-bottom span { background-image: url("corners_right.gif"); }
 
 .back2top {
 	clear: both;

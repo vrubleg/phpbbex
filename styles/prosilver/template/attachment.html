@@ -32,32 +32,10 @@
 		<!-- IF _file.S_AUDIO_FILE or _file.S_VIDEO_FILE -->
 		<dl class="file">
 			<dt>
-				<script>
-				if (typeof mejs == 'undefined')
-				{
-					document.write('<scr'+'ipt src="{ROOT_PATH}assets/js/mejs/mediaelement.js"></scr'+'ipt>');
-					var s = document.createElement('link');
-					s.setAttribute('rel', 'stylesheet');
-					s.setAttribute('href', '{ROOT_PATH}assets/js/mejs/mediaelement.css');
-					document.getElementsByTagName("head")[0].appendChild(s)
-				}
-				</script>
 				<!-- IF _file.S_AUDIO_FILE -->
-				<audio id="attach_audio_{_file.ATTACH_ID}" src="{_file.U_DOWNLOAD_LINK}" type="{_file.MIME}" preload="none"></audio>
-				<script>
-				jQuery(function($)
-				{
-					$('#attach_audio_{_file.ATTACH_ID}').mediaelementplayer();
-				});
-				</script>
+				<audio controls id="attach_audio_{_file.ATTACH_ID}" src="{_file.U_DOWNLOAD_LINK}" type="{_file.MIME}" preload="none"></audio>
 				<!-- ELSE -->
-				<video id="attach_video_{_file.ATTACH_ID}" src="{_file.U_DOWNLOAD_LINK}" type="{_file.MIME}" preload="none"></video>
-				<script>
-				jQuery(function($)
-				{
-					$('#attach_video_{_file.ATTACH_ID}').mediaelementplayer();
-				});
-				</script>
+				<video controls id="attach_video_{_file.ATTACH_ID}" src="{_file.U_DOWNLOAD_LINK}" type="{_file.MIME}" preload="none"></video>
 				<!-- ENDIF -->
 			</dt>
 			<!-- IF _file.COMMENT --><dd><em>{_file.COMMENT}</em></dd><!-- ENDIF -->

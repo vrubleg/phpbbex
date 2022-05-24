@@ -147,7 +147,23 @@ if (version_compare($row['config_value'], '1.9.5', '<'))
 }
 
 $db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '" . NEWEST_PHPBBEX_VERSION . "' WHERE config_name = 'phpbbex_version'");
-$cache->purge();
+
+if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
+{
+	require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
+
+	$umil = new umil(true);
+	$umil->cache_purge(array(
+		'data',
+		'template',
+		'theme',
+		'imageset',
+	));
+}
+else
+{
+	$cache->purge();
+}
 
 // Check phpBB version.
 
