@@ -50,16 +50,7 @@
 <script>
 	jQuery(function($)
 	{
-		var $popup = $.splash('popup-pm', '500px')
-			.wrap('<div class="dialog"></div>')
-			.before('<span class="corners-top"><span></span></span>')
-			.after('<span class="corners-bottom"><span></span></span>')
-			<!-- IF S_USER_NEW_PRIVMSG == 1 -->
-			.html('<h2>{L_NEW_MESSAGE}</h2><p>{L_YOU_NEW_PM}</p>')
-			<!-- ELSE -->
-			.html('<h2>{L_NEW_MESSAGES}</h2><p>{L_YOU_NEW_PMS}</p>')
-			<!-- ENDIF -->
-			.append('<fieldset class="submit-buttons">&nbsp;<input type="button" value="{L_CLOSE_WINDOW}" class="button2" name="close" />&nbsp;<input type="button" value="{L_DISPLAY}" class="button1" name="display" />&nbsp;</fieldset>');
+		var $popup = $.splash('popup-pm', '500px').addClass('dialog').html('<div class="inner"><!-- IF S_USER_NEW_PRIVMSG == 1 --><h2>{L_NEW_MESSAGE}</h2><p>{L_YOU_NEW_PM}</p><!-- ELSE --><h2>{L_NEW_MESSAGES}</h2><p>{L_YOU_NEW_PMS}</p><!-- ENDIF --><fieldset class="submit-buttons">&nbsp;<input type="button" value="{L_CLOSE_WINDOW}" class="button2" name="close" />&nbsp;<input type="button" value="{L_DISPLAY}" class="button1" name="display" />&nbsp;</fieldset></div>');
 		$('input[name=close]', $popup).click(function()
 		{
 			$popup.trigger('close');
