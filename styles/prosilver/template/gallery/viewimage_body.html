@@ -20,17 +20,17 @@
 <p class="header-path"><!-- BEGIN navlinks --><!-- IF not navlinks.FIRST --> <strong>&#8250;</strong> <!-- ENDIF --><a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --></p>
 
 <div class="post bg2<!-- IF S_IMAGE_REPORTED --> reported<!-- ENDIF -->">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 		<!-- IF UC_PREVIOUS --><p style="float: left; text-align: left;">{UC_PREVIOUS_IMAGE}<br />{UC_PREVIOUS}</p><!-- ENDIF -->
 		<!-- IF UC_NEXT --><p style="float: right; text-align: right;">{UC_NEXT_IMAGE}<br />{UC_NEXT}</p><!-- ENDIF -->
 		<div style="text-align: center; clear: both;">{UC_IMAGE}
 			<!-- IF S_IMAGE_REPORTED --><br /><br /><a href="{U_IMAGE_REPORTED}"><span class="error">{L_IMAGE_REPORTED}</span></a><!-- ENDIF -->
 		</div>
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 
 <div id="details" class="panel">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 		<div class="postbody">
 			<!-- IF U_EDIT or U_DELETE or U_REPORT -->
 			<ul class="profile-icons">
@@ -135,7 +135,7 @@
 			<!-- ENDIF -->
 			<!-- ENDIF -->
 		</dl>
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 
 <!-- IF S_QUICK_MOD -->
@@ -161,10 +161,10 @@
 
 <!-- IF IMAGE_DESC -->
 <div class="panel">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 		<h3>{L_IMAGE_DESC}</h3>
 		<div class="postbody" style="width: 100%"><div class="content">{IMAGE_DESC}</div></div>
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 <!-- ENDIF -->
 
@@ -172,7 +172,7 @@
 <a name="rating"></a>
 <form id="postform" action="{S_COMMENT_ACTION}" method="post">
 <div id="postingbox" class="panel">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 		<h3><!-- IF S_ALLOWED_TO_RATE and S_ALLOWED_TO_COMMENT -->{L_POST_COMMENT_RATE_IMAGE}<!-- ELSEIF S_ALLOWED_TO_COMMENT -->{L_POST_COMMENT}<!-- ELSE -->{L_RATE_IMAGE}<!-- ENDIF --></h3>
 		<fieldset id="comment-box" class="fields1">
 			<!-- IF S_ALLOWED_TO_RATE -->
@@ -240,7 +240,7 @@
 			{CONTEST_COMMENTS}
 		<!-- ENDIF -->
 		{S_FORM_TOKEN}
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 </form>
 <!-- ENDIF -->
@@ -249,9 +249,9 @@
 <a name="comments"></a>
 <!-- IF not .commentrow or S_COMMENTS_DISABLED -->
 	<div id="comments" class="panel">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 			<strong><!-- IF S_COMMENTS_DISABLED -->{L_IMAGE_COMMENTS_DISABLED}<!-- ELSE -->{L_NO_COMMENTS}<!-- ENDIF --></strong>
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 	</div>
 <!-- ENDIF -->
 <!-- IF .commentrow -->
@@ -263,7 +263,7 @@
 	<!-- BEGIN commentrow -->
 	<a id="comment_{commentrow.COMMENT_ID}"></a>
 	<div class="post <!-- IF commentrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 			<div class="postbody">
 				<!-- IF commentrow.U_DELETE or commentrow.U_EDIT or commentrow.U_INFO or commentrow.U_QUOTE -->
 					<ul class="profile-icons">
@@ -322,7 +322,7 @@
 				<!-- ENDIF -->
 				<!-- ENDIF -->
 			</dl>
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 	</div>
 	<!-- END commentrow -->
 

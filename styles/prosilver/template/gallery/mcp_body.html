@@ -16,7 +16,7 @@
 </div>
 
 <div class="panel bg3">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 	<div style="width: 100%;">
 	<div id="cp-menu">
 		<div id="navigation">
@@ -35,7 +35,7 @@
 
 	<!-- IF S_GALLERY_MCP_VIEWALBUM or S_QUEUE_LIST or S_REPORT_LIST -->
 		<div class="panel">
-			<div class="inner"><span class="corners-top"><span></span></span>
+			<div class="inner">
 
 			<!-- IF TITLE --><h3>{TITLE}</h3><!-- ENDIF -->
 			<!-- IF DESCRIPTION --><p>{DESCRIPTION}</p><!-- ENDIF -->
@@ -85,7 +85,7 @@
 				<fieldset class="display-options">
 					<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box {S_CONTENT_FLOW_END}">{L_NEXT}</a><!-- ENDIF -->
 					<!-- IF PREVIOUS_PAGE --><a href="{PREVIOUS_PAGE}" class="left-box {S_CONTENT_FLOW_BEGIN}">{L_PREVIOUS}</a><!-- ENDIF -->
-					<label>{L_SORT_BY} 
+					<label>{L_SORT_BY}
 						<select name="sk">
 							<option<!-- IF S_SORT_KEY == 'image_time' --> selected="selected"<!-- ENDIF --> value='image_time'>{L_TIME}</option>
 							<option<!-- IF S_SORT_KEY == 'image_name' --> selected="selected"<!-- ENDIF --> value='image_name'>{L_IMAGE_NAME}</option>
@@ -105,7 +105,7 @@
 								<option<!-- IF S_SORT_KEY == 'image_last_comment' --> selected="selected"<!-- ENDIF --> value='image_last_comment'>{L_LAST_COMMENT}</option>
 							<!-- ENDIF -->
 						</select>
-					</label> 
+					</label>
 					<label>
 						<select name="sd">
 							<option<!-- IF S_SORT_DESC --> selected="selected"<!-- ENDIF --> value='DESC'>{L_SORT_DESCENDING}</option>
@@ -131,7 +131,7 @@
 				</ul>
 			<!-- ENDIF -->
 
-			<span class="corners-bottom"><span></span></span></div>
+			</div>
 		</div>
 		<fieldset class="display-actions">
 			<select name="action">
@@ -162,7 +162,7 @@
 
 	<!-- IF S_GALLERY_MCP_REPO_DETAIL or S_GALLERY_MCP_QUEUE_DETAIL -->
 		<div class="panel">
-			<div class="inner"><span class="corners-top"><span></span></span>
+			<div class="inner">
 
 			<div class="postbody">
 				<ul class="profile-icons">
@@ -187,19 +187,19 @@
 				</div>
 			</div>
 
-			<span class="corners-bottom"><span></span></span></div>
+			</div>
 		</div>
 
 		<!-- IF S_GALLERY_MCP_REPO_DETAIL -->
 			<div id="report" class="panel">
-				<div class="inner"><span class="corners-top"><span></span></span>
+				<div class="inner">
 
 				<div class="postbody">
 					<p class="author">{L_REPORT_BY} {REPORTER} &raquo; {REPORT_TIME}</p>
 					<div class="content">{REPORT_NOTE}</div>
 				</div>
 
-				<span class="corners-bottom"><span></span></span></div>
+				</div>
 			</div>
 		<!-- ENDIF -->
 
@@ -237,11 +237,11 @@
 	<div class="clear"></div>
 
 	</div>
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 <!-- ELSEIF S_MODE_OVERVIEW -->
 <div class="panel bg3">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 	<div style="width: 100%;">
 	<div id="cp-menu">&nbsp;</div>
 
@@ -249,7 +249,7 @@
 	<h2>{SUBSECTION}</h2>
 
 	<div class="panel">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 
 		<h3>{L_LATEST_IMAGES_UNAPPROVED}</h3>
 
@@ -272,11 +272,11 @@
 			<strong>{NO_UNAPPROVED_IMAGE}</strong>
 		<!-- ENDIF -->
 
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 	</div>
 
 	<div class="panel">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 
 		<h3>{L_LATEST_IMAGES_REPORTED}</h3>
 
@@ -304,26 +304,26 @@
 			<strong>{NO_REPORTED_IMAGE}</strong>
 		<!-- ENDIF -->
 
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 	</div>
 
 	</div>
 	<div class="clear"></div>
 
 	</div>
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 <!-- ELSE -->
 <form method="post" id="mcp" action="{S_MCP_ACTION}">
 <div class="panel" id="message">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 		<h2>{L_MOVE}</h2>
 		<p>
 			{L_MOVE_TO_ALBUM} &nbsp; {S_ALBUM_SELECT} &nbsp;
 			<input class="button2" type="submit" name="move" value="{L_MOVE}" />
 			{S_HIDDEN_FIELDS}{S_FORM_TOKEN}
 		</p>
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 </form>
 <!-- ENDIF -->

@@ -6,7 +6,7 @@
 <form method="get" action="{S_SEARCH_ACTION}">
 
 <div class="panel">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 	<h3>{L_SEARCH_QUERY}</h3>
 
 	<fieldset>
@@ -22,11 +22,11 @@
 	</dl>
 	</fieldset>
 
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 
 <div class="panel bg2">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 
 	<h3>{L_SEARCH_OPTIONS}</h3>
 
@@ -39,7 +39,7 @@
 	<dl>
 		<dt><label for="search_child1">{L_SEARCH_SUBALBUMS}:</label></dt>
 		<dd>
-			<label for="search_child1"><input type="radio" name="sc" id="search_child1" value="1" checked="checked" /> {L_YES}</label> 
+			<label for="search_child1"><input type="radio" name="sc" id="search_child1" value="1" checked="checked" /> {L_YES}</label>
 			<label for="search_child2"><input type="radio" name="sc" id="search_child2" value="0" /> {L_NO}</label>
 		</dd>
 	</dl>
@@ -59,24 +59,24 @@
 	<dl>
 		<dt><label for="sd">{L_RESULT_SORT}:</label></dt>
 		<dd>{S_SELECT_SORT_KEY}&nbsp;
-			<label for="sa"><input type="radio" name="sd" id="sa" value="a" /> {L_SORT_ASCENDING}</label> 
+			<label for="sa"><input type="radio" name="sd" id="sa" value="a" /> {L_SORT_ASCENDING}</label>
 			<label for="sd"><input type="radio" name="sd" id="sd" value="d" checked="checked" /> {L_SORT_DESCENDING}</label>
 		</dd>
 	</dl>
 	</fieldset>
 
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 
 <div class="panel bg3">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 
 	<fieldset class="submit-buttons">
-		{S_HIDDEN_FIELDS}<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp; 
+		{S_HIDDEN_FIELDS}<input type="reset" value="{L_RESET}" name="reset" class="button2" />&nbsp;
 		<input type="submit" name="submit" value="{L_SEARCH}" class="button1" />
 	</fieldset>
 
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 
 </form>
