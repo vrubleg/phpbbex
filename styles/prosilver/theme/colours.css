@@ -42,8 +42,8 @@ hr.dashed {
 	background-image: url("{T_THEME_PATH}/images/bg_list.png");
 }
 
-.new-year .headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.png"); }
-.new-year .forabg, .new-year .forumbg { background-image: url("{T_THEME_PATH}/images/bg_list_snow.png"); }
+body.style-new-year .headerbar { background-image: url("{T_THEME_PATH}/images/bg_header_snow.png"); }
+body.style-new-year .forabg, body.style-new-year .forumbg { background-image: url("{T_THEME_PATH}/images/bg_list_snow.png"); }
 
 .panel {
 	background-color: #ECF1F3;
@@ -80,8 +80,8 @@ span.corners-top span, span.corners-bottom span
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMCAQAAADrXgSlAAAAPklEQVR4AWP4z/bf/v/k/z//AwEDFBr8fwLkwKHu/58MSNzJyBwbZA4bMocHmWOJzJmA1WhdmKU2/ydAnAMAkNxXZFneSC8AAAAASUVORK5CYII=");
 }
 
-body.no-rounded-corners span.corners-top, body.no-rounded-corners span.corners-bottom,
-body.no-rounded-corners span.corners-top span, body.no-rounded-corners span.corners-bottom span
+body.style-not-rounded-corners span.corners-top, body.style-not-rounded-corners span.corners-bottom,
+body.style-not-rounded-corners span.corners-top span, body.style-not-rounded-corners span.corners-bottom span
 {
 	background-image: none !important;
 }

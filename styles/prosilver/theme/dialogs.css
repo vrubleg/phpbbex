@@ -10,7 +10,7 @@
 	border-radius: 7px;
 }
 
-.no-rounded-corners .dialog > .inner {
+body.style-not-rounded-corners .dialog > .inner {
 	border-radius: 0;
 }
 

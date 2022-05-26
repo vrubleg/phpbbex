@@ -464,7 +464,7 @@ blockquote blockquote {
 	/* Nested quotes */
 	background-color: #bababa;
 	font-size: 1em;
-	margin: 0.5em 1px 0 15px;	
+	margin: 0.5em 1px 0 15px;
 }
 
 blockquote blockquote blockquote {
@@ -587,7 +587,7 @@ dl.spoilerbox.spoilerbox-on > dd
 ----------------------------------------*/
 .attachbox {
 	float: left;
-	width: auto; 
+	width: auto;
 	max-width: 100%;
 	margin: 5px 5px 5px 0;
 	padding: 6px;
@@ -693,7 +693,7 @@ dl.file dt.attach-file-with-icon img {
 dl.file dd {
 	color: #666666;
 	margin: 0;
-	padding: 0;	
+	padding: 0;
 }
 
 dl.thumbnail img {
@@ -880,27 +880,27 @@ dl.pmlist dd {
 
 /* Profiles on left
 ---------------------------------------- */
-.mp-on-left .attachbox {
+body.style-mp-on-left .attachbox {
 	clear: right;
 }
 
-.mp-on-left .postbody {
+body.style-mp-on-left .postbody {
 	float: right;
 }
 
-.mp-on-left .postprofile {
+body.style-mp-on-left .postprofile {
 	border-right: 1px solid #FFFFFF;
 	border-left: 0;
 	float: left;
 }
 
-.mp-on-left .pm .postprofile
+body.style-mp-on-left .pm .postprofile
 {
 	border-right: 1px solid #DDDDDD;
 	border-left: 0;
 }
 
-.mp-on-left .postprofile dd, .mp-on-left .postprofile dt {
+body.style-mp-on-left .postprofile dd, body.style-mp-on-left .postprofile dt {
 	margin-left: 0;
 }
 
@@ -917,7 +917,7 @@ dl.pmlist dd {
 	overflow: hidden;
 }
 
-.mp-on-left .postprofile span.online {
+body.style-mp-on-left .postprofile span.online {
 	right: 0;
 }
 

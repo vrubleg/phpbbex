@@ -263,10 +263,6 @@ span.corners-bottom span {
 	background-position: 100% 100%;
 }
 
-.headbg span.corners-bottom {
-	margin-bottom: -1px;
-}
-
 .post span.corners-top, .post span.corners-bottom, .panel span.corners-top, .panel span.corners-bottom, .navbar span.corners-top, .navbar span.corners-bottom {
 	margin: 0 -10px;
 }

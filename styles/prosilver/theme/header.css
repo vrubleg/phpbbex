@@ -1,4 +1,4 @@
-/* Top menu (C)VEG
+/* Top menu
 --------------------------------------------- */
 
 #top-links {
@@ -58,9 +58,13 @@
 
 /* Page header
 --------------------------------------------- */
-#page-header
-{
+#page-header {
+	padding-top: 10px;
 	clear: both;
+}
+
+#top-links + #page-header {
+	padding-top: 0;
 }
 
 /* Page title icons
