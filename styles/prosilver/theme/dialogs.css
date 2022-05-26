@@ -7,11 +7,10 @@
 	background-color: #ECF1F3;
 	color: #28313F;
 	margin: 10px;
-	border-radius: 7px;
 }
 
-body.style-not-rounded-corners .dialog > .inner {
-	border-radius: 0;
+body.style-rounded-corners .dialog > .inner {
+	border-radius: 7px;
 }
 
 .dialog h3 {

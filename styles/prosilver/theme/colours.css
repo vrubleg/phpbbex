@@ -70,22 +70,6 @@ body.style-new-year .forabg, body.style-new-year .forumbg { background-image: ur
 	background-color: #E7E8EA;
 }
 
-span.corners-top, span.corners-bottom
-{
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMCAQAAADrXgSlAAAAPklEQVR4AWP4DwI//0/+b/+fDcR58t+AAQKAorpACsqZDCTgHBtkDhtOjiUyZwKYwjQabCmMC3POhP/2DAwAv4QqjuymjfwAAAAASUVORK5CYII=");
-}
-
-span.corners-top span, span.corners-bottom span
-{
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAMCAQAAADrXgSlAAAAPklEQVR4AWP4z/bf/v/k/z//AwEDFBr8fwLkwKHu/58MSNzJyBwbZA4bMocHmWOJzJmA1WhdmKU2/ydAnAMAkNxXZFneSC8AAAAASUVORK5CYII=");
-}
-
-body.style-not-rounded-corners span.corners-top, body.style-not-rounded-corners span.corners-bottom,
-body.style-not-rounded-corners span.corners-top span, body.style-not-rounded-corners span.corners-bottom span
-{
-	background-image: none !important;
-}
-
 /* Horizontal lists
 ----------------------------------------*/
 
@@ -339,7 +323,6 @@ Colours and backgrounds for content.css
 
 ul.forums {
 	background-color: #eef5f9;
-	/* background-image: url("{T_THEME_PATH}/images/gradient.gif"); */
 }
 
 ul.topiclist li {
@@ -718,27 +701,6 @@ ul.cplist {
 
 #cp-main .pm {
 	background-color: #FFFFFF;
-}
-
-#cp-main span.corners-top, #cp-menu span.corners-top,
-#cp-main span.corners-bottom, #cp-menu span.corners-bottom {
-	background-image: url("data:image/gif;base64,R0lGODlhBgAMALIDAPX4+9Dg7eHr9P///8rc6wAAAAAAAAAAACH5BAUAAAUALAAAAAAGAAwAAAMZSCowFKBIEmURVlY7cunZJmEZVUKWQjBFAgA7");
-}
-
-#cp-main span.corners-top span, #cp-menu span.corners-top span,
-#cp-main span.corners-bottom span, #cp-menu span.corners-bottom span {
-	background-image: url("data:image/gif;base64,R0lGODlhBgAMALIBAPX4+////+Hr9NDg7crc6wAAAAAAAAAAACH5BAUAAAUALAAAAAAGAAwAAAMXGCDU9WCQByct4hagQ9fclVGAtUkb0yQAOw==");
-}
-
-/* Topicreview */
-#cp-main .panel #topicreview span.corners-top, #cp-menu .panel #topicreview span.corners-top,
-#cp-main .panel #topicreview span.corners-bottom, #cp-menu .panel #topicreview span.corners-bottom {
-	background-image: url("data:image/gif;base64,R0lGODlhBgAMAIABAP///wAAACH5BAEAAAEALAAAAAAGAAwAAAIOhBFhmcj6opzTMdvwcQUAOw==");
-}
-
-#cp-main .panel #topicreview span.corners-top span, #cp-menu .panel #topicreview span.corners-top span,
-#cp-main .panel #topicreview span.corners-bottom span, #cp-menu .panel #topicreview span.corners-bottom span {
-	background-image: url("data:image/gif;base64,R0lGODlhBgAMAIABAP///wAAACH5BAEAAAEALAAAAAAGAAwAAAIPTIBghst+oJx0KXfZTaAAADs=");
 }
 
 /* Friends list */

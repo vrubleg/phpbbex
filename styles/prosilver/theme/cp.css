@@ -300,48 +300,17 @@ ul.cplist {
 	background-color: #FFFFFF;
 }
 
-#cp-main span.corners-top, #cp-menu span.corners-top {
-	background-image: none;
-}
-
-#cp-main span.corners-top span, #cp-menu span.corners-top span {
-	background-image: none;
-}
-
-#cp-main span.corners-bottom, #cp-menu span.corners-bottom {
-	background-image: none;
-}
-
-#cp-main span.corners-bottom span, #cp-menu span.corners-bottom span {
-	background-image: none;
-}
-
-/* Topicreview */
-#cp-main .panel #topicreview span.corners-top, #cp-menu .panel #topicreview span.corners-top {
-	background-image: none;
-}
-
-#cp-main .panel #topicreview span.corners-top span, #cp-menu .panel #topicreview span.corners-top span {
-	background-image: none;
-}
-
-#cp-main .panel #topicreview span.corners-bottom, #cp-menu .panel #topicreview span.corners-bottom {
-	background-image: none;
-}
-
-#cp-main .panel #topicreview span.corners-bottom span, #cp-menu .panel #topicreview span.corners-bottom span {
-	background-image: none;
-}
-
 /* Friends list */
 .cp-mini {
 	background-color: #f9f9f9;
-	padding: 0 5px;
+	padding: 10px;
 	margin: 10px 15px 10px 5px;
+	max-height: 200px;
+	overflow-y: auto;
 }
 
-.cp-mini span.corners-top, .cp-mini span.corners-bottom {
-	margin: 0 -5px;
+body.style-rounded-corners .cp-mini {
+	border-radius: 7px;
 }
 
 dl.mini dt {

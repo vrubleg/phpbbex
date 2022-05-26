@@ -1,16 +1,16 @@
 <!-- IF S_FORUM_RULES or FORUM_DESC or FORUM_NAME -->
 	<div class="rules">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 		<!-- IF FORUM_NAME --><strong>{L_FORUM_NAME}:</strong> {FORUM_NAME}<br /><!-- ENDIF -->
 		<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br /><!-- ENDIF -->
 		<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br /><!-- ENDIF -->
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 	</div>
 <!-- ENDIF -->
 
 <form id="postform" method="post" action="{U_QR_ACTION}" name="postform"{S_FORM_ENCTYPE}>
 	<div class="panel" id="postingbox">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 		<h3>{L_QUICK_REPLY}</h3>
 		<fieldset class="fields1">
 			<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
@@ -111,21 +111,19 @@
 				<textarea name="message" id="message" rows="15" cols="76" tabindex="3" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" class="inputbox">{MESSAGE}</textarea>
 			</div>
 		</fieldset>
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 	</div>
-		
+
 	<!-- IF S_SHOW_ATTACH_BOX --><!-- INCLUDE posting_attach_body.html --><!-- ENDIF -->
 
 	<div class="panel bg2">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 		<fieldset class="submit-buttons">
 			{QR_HIDDEN_FIELDS}
 			<input type="submit" tabindex="5" name="preview" value="{L_PREVIEW}" class="button1 alternate-submit-action" />&nbsp;
 			<input type="submit" accesskey="s" tabindex="6" name="post" value="{L_SUBMIT}" class="button1 default-submit-action" />&nbsp;
-
-			</fieldset>
-
-		<span class="corners-bottom"><span></span></span></div>
+		</fieldset>
+		</div>
 	</div>
 <!-- IF S_USER_LOGGED_IN -->
 	{S_FORM_TOKEN}

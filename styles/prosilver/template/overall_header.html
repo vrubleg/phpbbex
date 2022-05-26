@@ -66,7 +66,7 @@
 
 </head>
 
-<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> style-mp-on-left<!-- ENDIF --><!-- IF STYLE_NEW_YEAR == 1 or STYLE_NEW_YEAR == -1 and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) --> style-new-year<!-- ENDIF --><!-- IF not STYLE_ROUNDED_CORNERS --> style-not-rounded-corners<!-- ENDIF -->">
+<body id="phpbb" class="section-{SCRIPT_NAME} {S_CONTENT_DIRECTION}<!-- IF STYLE_MP_ON_LEFT --> style-mp-on-left<!-- ENDIF --><!-- IF STYLE_NEW_YEAR == 1 or STYLE_NEW_YEAR == -1 and (CURRENT_MONTH == 12 or CURRENT_MONTH == 1 or CURRENT_MONTH == 2) --> style-new-year<!-- ENDIF --><!-- IF STYLE_ROUNDED_CORNERS --> style-rounded-corners<!-- ENDIF -->">
 <div id="wrap">
 	<a id="top" name="top" accesskey="t"></a>
 	<!-- IF STYLE_BACK_TO_TOP --><div id="back-to-top" title="{L_BACK_TO_TOP}" class="<!-- IF STYLE_BACK_TO_TOP == 2 -->on-right<!-- ELSE -->on-left<!-- ENDIF -->"></div><!-- ENDIF -->
@@ -92,7 +92,7 @@
 
 	<div id="page-header">
 		<div class="headerbar">
-			<div class="inner"><span class="corners-top"><span></span></span>
+			<div class="inner">
 
 			<div id="site-description">
 				<!-- IF SITE_LOGO_IMG --><a href="{U_INDEX}" title="{SITENAME}<!-- IF SITE_DESCRIPTION --> - {SITE_DESCRIPTION}<!-- ENDIF -->" id="logo">{SITE_LOGO_IMG}</a><!-- ENDIF -->
@@ -114,7 +114,7 @@
 			</div>
 		<!-- ENDIF -->
 
-			<span class="clear"></span></div>
+			</div>
 		</div>
 
 		<ul id="main-menu">
@@ -195,8 +195,8 @@
 	<div id="page-body">
 		<!-- IF S_BOARD_DISABLED and S_USER_LOGGED_IN and (U_MCP or U_ACP) -->
 		<div id="information" class="rules">
-			<div class="inner"><span class="corners-top"><span></span></span>
+			<div class="inner">
 				<strong>{L_INFORMATION}:</strong> {L_BOARD_DISABLED}
-			<span class="corners-bottom"><span></span></span></div>
+			</div>
 		</div>
 		<!-- ENDIF -->
