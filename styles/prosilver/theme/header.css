@@ -63,7 +63,7 @@
 	clear: both;
 }
 
-#top-links + #page-header {
+#top-menu + #page-header {
 	padding-top: 0;
 }
 
