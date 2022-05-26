@@ -5,7 +5,7 @@
 
 <!-- IF S_ANNOUNCE_INDEX and .announcetopic -->
 <div class="forumbg announcement">
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 		<ul class="topiclist">
 			<li class="header">
 				<dl class="icon">
@@ -25,7 +25,7 @@
 					<a href="{announcetopic.U_VIEW_TOPIC}" class="topictitle">{announcetopic.TOPIC_TITLE}</a>
 					<br />
 					<!-- IF announcetopic.PAGINATION --><strong class="pagination"><span>{announcetopic.PAGINATION}</span></strong><!-- ENDIF -->
-					{L_POST_BY_AUTHOR} {announcetopic.TOPIC_AUTHOR_FULL} &raquo; {announcetopic.FIRST_POST_TIME} 
+					{L_POST_BY_AUTHOR} {announcetopic.TOPIC_AUTHOR_FULL} &raquo; {announcetopic.FIRST_POST_TIME}
 					<!-- IF not announcetopic.S_TOPIC_GLOBAL -->{L_IN} <a href="{announcetopic.U_VIEW_FORUM}">{announcetopic.FORUM_TITLE}</a><!-- ELSE --> ({L_GLOBAL})<!-- ENDIF -->
 				</dt>
 				<dd class="posts">{announcetopic.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
@@ -37,14 +37,14 @@
 		</li>
 <!-- END announcetopic -->
 		</ul>
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 <!-- ENDIF -->
 
 <!-- IF S_ACTIVE_TOPICS_ON_INDEX and .activetopic -->
 <div class="forumbg">
 
-	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="inner">
 	<ul class="topiclist">
 		<li class="header">
 			<dl class="icon">
@@ -80,7 +80,7 @@
 	<!-- END activetopic -->
 	</ul>
 
-	<span class="corners-bottom"><span></span></span></div>
+	</div>
 </div>
 <!-- ENDIF -->
 

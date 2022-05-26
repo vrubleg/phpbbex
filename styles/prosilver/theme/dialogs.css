@@ -1,12 +1,16 @@
 .dialog {
-	padding: 0 10px;
-	background-color: #ECF1F3;
-	color: #28313F;
-	border: 10px solid white;
+	background-color: white;
 }
 
-.dialog span.corners-top, .dialog span.corners-bottom {
-	margin: 0 -10px;
+.dialog > .inner {
+	padding: 5px 10px;
+	background-color: #ECF1F3;
+	color: #28313F;
+	margin: 10px;
+}
+
+body.style-rounded-corners .dialog > .inner {
+	border-radius: 7px;
 }
 
 .dialog h3 {
@@ -46,10 +50,7 @@
 
 .dialog .message
 {
-	/*font-family: "Trebuchet MS", Verdana, Helvetica, Arial, sans-serif;*/
 	width: 98%;
-	/*font-size: 1.3em;*/
-
 }
 
 .dialog .submit-buttons

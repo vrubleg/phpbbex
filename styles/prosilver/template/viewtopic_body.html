@@ -68,7 +68,7 @@
 	<form method="post" action="{S_POLL_ACTION}">
 
 	<div class="panel">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 
 		<div class="content">
 			<h2>{POLL_QUESTION}</h2>
@@ -114,7 +114,7 @@
 			</fieldset>
 		</div>
 
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 		{S_FORM_TOKEN}
 		{S_HIDDEN_FIELDS}
 	</div>
@@ -196,7 +196,7 @@ jQuery(function($)
 	<!-- IF postrow.POST_NUMBER == 1 --><!-- DEFINE $LAST_POST_FIRST = 1 --><!-- ELSE --><!-- DEFINE $LAST_POST_FIRST = 0 --><!-- ENDIF -->
 	<!-- IF postrow.S_FIRST_UNREAD --><a id="unread"></a><!-- ENDIF -->
 	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF -->">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 
 		<div class="postbody">
 			<!-- IF postrow.S_IGNORE_POST -->
@@ -316,7 +316,7 @@ jQuery(function($)
 			</dl>
 		<!-- ENDIF -->
 
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 	</div>
 	<hr class="divider" />
 	<!-- IF postrow.S_ROW_COUNT is odd --><!-- DEFINE $NEXT_BG = 'bg2' --><!-- ELSE --><!-- DEFINE $NEXT_BG = 'bg1' --><!-- ENDIF -->
@@ -324,9 +324,9 @@ jQuery(function($)
 
 <!-- IF BUMPED_MESSAGE -->
 	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post {$NEXT_BG}">
-		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="inner">
 			{BUMPED_MESSAGE}
-		<span class="corners-bottom"><span></span></span></div>
+		</div>
 	</div>
 	<hr class="divider" />
 <!-- ENDIF -->

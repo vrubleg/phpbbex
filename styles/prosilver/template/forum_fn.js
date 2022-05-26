@@ -1,37 +1,30 @@
-//------------------------------------------------------------------------------
-// Splash Plugin v 0.9.8 [09.04.2014]
-// (C) 2010-2014 Evgeny Vrublevsky <veg@tut.by>
-//------------------------------------------------------------------------------
+/**
+* jQuery Splash Plugin
+* (C) 2010 Evgeny Vrublevsky <me@veg.by>
+*/
 
 jQuery.extend(
 {
 	splash: function(id, width, height)
 	{
-		var html =
-			"<div id='"+id+"_container' style='z-index: 9999; position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: table;'><div id='"+id+"_shadow_bkg' style='display: table-cell; vertical-align: middle; text-align: center; background-color: rgba(0,0,0,0.7);'>"+
-			"<div id='"+id+"_window' style='display: inline-block; text-align: left; vertical-align: baseline;' onclick='arguments[0].stopPropagation();'><div id='"+id+"'></div></div>"+
-			"</div></div>";
-		jQuery("body").append(html);
-		jQuery("#"+id).bind("resize", function(e, width, height)
+		jQuery("body").append("<div id='"+id+"-container' style='z-index: 9999; position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: table;'><div id='"+id+"-shadow-bkg' style='display: table-cell; vertical-align: middle; text-align: center; background-color: rgba(0,0,0,0.7);'><div id='"+id+"' style='display: inline-block; text-align: left; vertical-align: baseline;' onclick='arguments[0].stopPropagation();'></div></div></div>");
+		var $el = jQuery("#"+id);
+		$el.bind("resize", function(e, width, height)
 		{
-			if(width)	jQuery("#"+id+"_window").css("width", width);
-			if(height)	jQuery("#"+id+"_window").css("height", height);
+			if(width)	$el.css("width", width);
+			if(height)	$el.css("height", height);
 		});
-		jQuery("#"+id).bind("close", function()
+		$el.bind("close", function()
 		{
-			jQuery("#"+id).unbind("close");
-			jQuery("#"+id).remove();
-			jQuery("#"+id+"_window").remove();
-			jQuery("#"+id+"_shadow_bkg").remove();
-			jQuery("#"+id+"_container").remove();
+			jQuery("#"+id+"-container").remove();
 		});
-		jQuery("#"+id+"_shadow_bkg").click(function()
+		jQuery("#"+id+"-shadow-bkg").click(function()
 		{
-			jQuery("#"+id).trigger("close");
+			$el.trigger("close");
 			return false;
 		});
-		jQuery("#"+id).trigger("resize", [width, height]);
-		return jQuery("#"+id);
+		$el.trigger("resize", [width, height]);
+		return $el;
 	}
 });
 
@@ -63,7 +56,7 @@ jQuery(function($)
 			$popup.html(img);
 			$popup.removeClass('preloader');
 
-			$popup.parent().parent().parent()[0].addEventListener('wheel', function(e)
+			document.getElementById('popup-image-container').addEventListener('wheel', function(e)
 			{
 				if (e.deltaY < 0)
 				{
@@ -72,10 +65,9 @@ jQuery(function($)
 				}
 				else if (e.deltaY > 0)
 				{
-					var min_scale = Math.min(100 / img_width, 100 / img_height);
+					var min_scale = Math.min(400 / img_width, 400 / img_height);
 					scale = Math.max(min_scale, scale - 0.1);
 				}
-				console.log(scale);
 				img.width = parseInt(img_width * scale);
 				img.height = parseInt(img_height * scale);
 				e.preventDefault();
@@ -135,10 +127,6 @@ function jumpto()
 function marklist(id, name, state)
 {
 	var parent = document.getElementById(id);
-	if (!parent)
-	{
-		eval('parent = document.' + id);
-	}
 
 	if (!parent)
 	{
@@ -146,9 +134,9 @@ function marklist(id, name, state)
 	}
 
 	var rb = parent.getElementsByTagName('input');
-	
+
 	for (var r = 0; r < rb.length; r++)
-	{	
+	{
 		if (rb[r].name.substr(0, name.length) == name)
 		{
 			rb[r].checked = state;
@@ -167,7 +155,7 @@ function viewableArea(e, itself)
 	{
 		e = e.parentNode;
 	}
-	
+
 	if (!e.vaHeight)
 	{
 		// Store viewable area height before changing style to auto
@@ -265,7 +253,7 @@ function printPage()
 * Show/hide groups of blocks
 * c = CSS style name
 * e = checkbox element
-* t = toggle dispay state (used to show 'grip-show' image in the profile block when hiding the profiles) 
+* t = toggle dispay state (used to show 'grip-show' image in the profile block when hiding the profiles)
 */
 function displayBlocks(c, e, t)
 {

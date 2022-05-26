@@ -171,40 +171,64 @@ a#logo:hover {
 .headerbar {
 	background: #ebebeb none repeat-x 0 0;
 	color: #FFFFFF;
-	padding: 0 5px;
+	padding: 5px 5px 0 5px;
+}
+
+body.style-rounded-corners .headerbar {
+	border-radius: 7px 7px 0 0;
 }
 
 .navbar {
 	background-color: #ebebeb;
-	padding: 0 10px;
+	padding: 5px 10px;
+}
+
+body.style-rounded-corners .navbar {
+	border-radius: 7px;
 }
 
 .forabg {
 	background: #b1b1b1 none repeat-x 0 0;
 	margin-bottom: 4px;
-	padding: 0 5px;
+	padding: 5px;
 	clear: both;
+}
+
+body.style-rounded-corners .forabg {
+	border-radius: 7px;
 }
 
 .forumbg {
 	background: #ebebeb none repeat-x 0 0;
 	margin-bottom: 4px;
-	padding: 0 5px;
+	padding: 5px;
 	clear: both;
+}
+
+body.style-rounded-corners .forumbg {
+	border-radius: 7px;
 }
 
 .panel {
 	margin-bottom: 4px;
-	padding: 0 10px;
+	padding: 5px 10px;
 	background-color: #f3f3f3;
 	color: #3f3f3f;
 }
 
+body.style-rounded-corners .panel {
+	border-radius: 7px;
+}
+
 .post {
-	padding: 0 10px;
+	padding: 5px 10px;
 	margin-bottom: 4px;
 	background-repeat: no-repeat;
 	background-position: 100% 0;
+}
+
+body.style-rounded-corners .post {
+	border-radius: 7px;
 }
 
 .post:target .content {
@@ -230,53 +254,6 @@ a#logo:hover {
 .fieldsbg {
 	/*border: 1px #DBDEE2 solid;*/
 	background-color: #eaeaea;
-}
-
-span.corners-top, span.corners-bottom, span.corners-top span, span.corners-bottom span {
-	font-size: 1px;
-	line-height: 1px;
-	display: block;
-	height: 5px;
-	background-repeat: no-repeat;
-}
-
-span.corners-top {
-	background-image: none;
-	background-position: 0 0;
-	margin: 0 -5px;
-}
-
-span.corners-top span {
-	background-image: none;
-	background-position: 100% 0;
-}
-
-span.corners-bottom {
-	background-image: none;
-	background-position: 0 100%;
-	margin: 0 -5px;
-	clear: both;
-}
-
-span.corners-bottom span {
-	background-image: none;
-	background-position: 100% 100%;
-}
-
-.headbg span.corners-bottom {
-	margin-bottom: -1px;
-}
-
-.post span.corners-top, .post span.corners-bottom, .panel span.corners-top, .panel span.corners-bottom, .navbar span.corners-top, .navbar span.corners-bottom {
-	margin: 0 -10px;
-}
-
-.rules span.corners-top {
-	margin: 0 -10px 5px -10px;
-}
-
-.rules span.corners-bottom {
-	margin: 5px -10px 0 -10px;
 }
 
 /* Horizontal lists
@@ -403,14 +380,6 @@ table.info tbody th {
 
 .forumbg-table > .inner {
 	margin: 0 -1px;
-}
-
-.forumbg-table > .inner > span.corners-top {
-	margin: 0 -4px -1px -4px;
-}
-
-.forumbg-table > .inner > span.corners-bottom {
-	margin: -1px -4px 0 -4px;
 }
 
 /* Misc layout styles
@@ -599,9 +568,13 @@ li.reported:hover {
 div.rules {
 	background-color: #ececec;
 	color: #bcbcbc;
-	padding: 0 10px;
+	padding: 10px;
 	margin: 10px 0;
 	font-size: 1.1em;
+}
+
+body.style-rounded-corners div.rules {
+	border-radius: 7px;
 }
 
 div.rules ul, div.rules ol {
@@ -629,12 +602,10 @@ p.rules a {
 	top: -20px;
 }
 
-.clear {
+.clear, .inner:after {
 	display: block;
 	clear: both;
-	font-size: 1px;
-	line-height: 1px;
-	background: transparent;
+	content: '';
 }
 
 /* Hides inner text and shows preloader 10×2 pixels */
