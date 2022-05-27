@@ -345,7 +345,7 @@ $lang = array_merge($lang, array(
 	'NUMBER_USERS'		=> 'Number of users',
 	'NUMBER_ORPHAN'		=> 'Orphan attachments',
 
-	'PHP_VERSION_OLD'	=> 'The version of PHP on this server will no longer be supported by future versions of phpBB and phpBBex. %sDetails%s',
+	'PHP_VERSION_OLD'	=> 'The version of PHP on this server will no longer be supported by future versions of phpBBex. Upgrading PHP to 7.1 or newer is recommended.',
 
 	'POSTS_PER_DAY'		=> 'Posts per day',
 
