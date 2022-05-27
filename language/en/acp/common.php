@@ -393,7 +393,7 @@ $lang = array_merge($lang, array(
 	'VIEW_INACTIVE_USERS'		=> 'View inactive users',
 
 	'WELCOME_PHPBB'			=> 'Welcome to phpBBex',
-	'WRITABLE_CONFIG'		=> 'Your config file (config.php) is currently world-writable. We strongly encourage you to change the permissions to 640 or at least to 644 (for example: <a href="http://en.wikipedia.org/wiki/Chmod" rel="external">chmod</a> 640 config.php).',
+	'WRITABLE_CONFIG'		=> 'Your config.php is currently world-writable. Change the permissions to 640 or at least to 644 (for example: <samp>chmod 640 config.php</samp>).',
 ));
 
 // Inactive Users
