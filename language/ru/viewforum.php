@@ -34,7 +34,7 @@ $lang = array_merge($lang, array(
 	'FORUM_PERMISSIONS'		=> 'Права доступа',
 
 	'ICON_ANNOUNCEMENT'		=> 'Объявление',
-	'ICON_STICKY'			=> 'Прикреплённая',
+	'ICON_STICKY'			=> 'Закреплённая',
 
 	'LOGIN_NOTIFY_FORUM'	=> 'Вы получили уведомление о новом сообщении в этом разделе, пожалуйста, авторизируйтесь для его просмотра.',
 

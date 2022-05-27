@@ -346,7 +346,7 @@ $lang = array_merge($lang, array(
 	'NUMBER_USERS'		=> 'Пользователей',
 	'NUMBER_ORPHAN'		=> 'Потерянных вложений',
 
- 	'PHP_VERSION_OLD'	=> 'Версия PHP на данном сервере устарела и не будет поддерживаться будущими версиями phpBB и phpBBex. %sПодробнее%s',
+ 	'PHP_VERSION_OLD'	=> 'Версия PHP на данном сервере устарела и не будет поддерживаться будущими версиями phpBBex. Рекомендуется обновиться до PHP 7.1 или новее.',
 
 	'POSTS_PER_DAY'		=> 'Сообщений в день',
 
@@ -394,7 +394,7 @@ $lang = array_merge($lang, array(
 	'VIEW_INACTIVE_USERS'		=> 'Неактивированные пользователи',
 
 	'WELCOME_PHPBB'			=> 'Добро пожаловать в phpBBex',
-	'WRITABLE_CONFIG'		=> 'Файл <samp>config.php</samp> в настоящее время доступен для записи. Настоятельно рекомендуется изменить право доступа к этому файлу на 640 или по крайней мере на 644 (например: <a href="http://ru.wikipedia.org/wiki/Chmod" rel="external">chmod</a> 640 config.php).',
+	'WRITABLE_CONFIG'		=> 'Файл config.php доступен для записи для всех. Измените права доступа на 640 или по крайней мере на 644 (например: <samp>chmod 640 config.php</samp>).',
 ));
 
 // Inactive Users
