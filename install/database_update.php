@@ -6,7 +6,7 @@
 */
 
 define('OLDEST_PHPBBEX_VERSION', '1.8.0');
-define('NEWEST_PHPBBEX_VERSION', '1.9.5');
+define('NEWEST_PHPBBEX_VERSION', '1.9.6');
 
 define('UPDATES_TO_VERSION', '3.0.14');
 
@@ -88,13 +88,6 @@ require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
 
 require($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
 
-// new table constants are separately defined here in case the updater is run
-// before the files are updated
-if (!defined('LOGIN_ATTEMPT_TABLE'))
-{
-	define('LOGIN_ATTEMPT_TABLE', $table_prefix . 'login_attempts');
-}
-
 $user = new phpbb_user();
 $cache = new phpbb_cache();
 $db = new $sql_db();
@@ -132,7 +125,7 @@ $db->sql_freeresult($result);
 
 if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
 {
-	die('Error! Update database schema to at least phpBBex 1.8.0.');
+	die('Error! Update database schema to at least phpBBex 1.8.0 before running this script.');
 }
 
 if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>='))
@@ -144,6 +137,28 @@ if (version_compare($row['config_value'], '1.9.5', '<'))
 {
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
 	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
+}
+
+if (version_compare($row['config_value'], '1.9.6', '<'))
+{
+	$convert_tables = [];
+
+	$sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$table_prefix}%' AND `Collation` <> 'utf8mb4_bin'";
+	$result = $db->sql_query($sql);
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$convert_tables[] = $row['Name'];
+	}
+	$db->sql_freeresult($result);
+
+	foreach ($convert_tables as $table)
+	{
+		$db->sql_query("ALTER TABLE `{$table}` DEFAULT CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
+		$db->sql_query("ALTER TABLE `{$table}` CONVERT TO CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
+	}
+
+	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci");
+	$db->sql_query("ALTER TABLE " . TOPICS_TABLE . " MODIFY topic_title varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci");
 }
 
 $db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '" . NEWEST_PHPBBEX_VERSION . "' WHERE config_name = 'phpbbex_version'");
