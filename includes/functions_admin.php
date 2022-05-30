@@ -3006,7 +3006,6 @@ function view_warned_users(&$users, &$user_count, $limit = 0, $offset = 0, $limi
 
 /**
 * Get database size
-* Currently only mysql and mssql are supported
 */
 function get_database_size()
 {
@@ -3015,139 +3014,30 @@ function get_database_size()
 	$database_size = false;
 
 	// This code is heavily influenced by a similar routine in phpMyAdmin 2.2.0
-	switch ($db->sql_layer)
+	if ($db->sql_layer == 'mysqli')
 	{
-		case 'mysql':
-		case 'mysql4':
-		case 'mysqli':
-			$sql = 'SELECT VERSION() AS mysql_version';
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
+		$sql = "SHOW TABLE STATUS FROM `{$db->dbname}`";
+		$result = $db->sql_query($sql, 7200);
 
-			if ($row)
+		$database_size = 0;
+		while ($row = $db->sql_fetchrow($result))
+		{
+			if ((isset($row['Type']) && $row['Type'] != 'MRG_MyISAM') || (isset($row['Engine']) && ($row['Engine'] == 'MyISAM' || $row['Engine'] == 'InnoDB')))
 			{
-				$version = $row['mysql_version'];
-
-				if (preg_match('#(3\.23|[45]\.)#', $version))
+				if ($table_prefix != '')
 				{
-					$db_name = (preg_match('#^(?:3\.23\.(?:[6-9]|[1-9]{2}))|[45]\.#', $version)) ? "`{$db->dbname}`" : $db->dbname;
-
-					$sql = 'SHOW TABLE STATUS
-						FROM ' . $db_name;
-					$result = $db->sql_query($sql, 7200);
-
-					$database_size = 0;
-					while ($row = $db->sql_fetchrow($result))
+					if (strpos($row['Name'], $table_prefix) !== false)
 					{
-						if ((isset($row['Type']) && $row['Type'] != 'MRG_MyISAM') || (isset($row['Engine']) && ($row['Engine'] == 'MyISAM' || $row['Engine'] == 'InnoDB')))
-						{
-							if ($table_prefix != '')
-							{
-								if (strpos($row['Name'], $table_prefix) !== false)
-								{
-									$database_size += $row['Data_length'] + $row['Index_length'];
-								}
-							}
-							else
-							{
-								$database_size += $row['Data_length'] + $row['Index_length'];
-							}
-						}
+						$database_size += $row['Data_length'] + $row['Index_length'];
 					}
-					$db->sql_freeresult($result);
 				}
-			}
-		break;
-
-		case 'firebird':
-			global $dbname;
-
-			// if it on the local machine, we can get lucky
-			if (file_exists($dbname))
-			{
-				$database_size = filesize($dbname);
-			}
-
-		break;
-
-		case 'sqlite':
-			global $dbhost;
-
-			if (file_exists($dbhost))
-			{
-				$database_size = filesize($dbhost);
-			}
-
-		break;
-
-		case 'mssql':
-		case 'mssql_odbc':
-		case 'mssqlnative':
-			$sql = 'SELECT @@VERSION AS mssql_version';
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			$sql = 'SELECT ((SUM(size) * 8.0) * 1024.0) as dbsize
-				FROM sysfiles';
-
-			if ($row)
-			{
-				// Azure stats are stored elsewhere
-				if (strpos($row['mssql_version'], 'SQL Azure') !== false)
+				else
 				{
-					$sql = 'SELECT ((SUM(reserved_page_count) * 8.0) * 1024.0) as dbsize
-					FROM sys.dm_db_partition_stats';
+					$database_size += $row['Data_length'] + $row['Index_length'];
 				}
 			}
-
-			$result = $db->sql_query($sql, 7200);
-			$database_size = ($row = $db->sql_fetchrow($result)) ? $row['dbsize'] : false;
-			$db->sql_freeresult($result);
-		break;
-
-		case 'postgres':
-			$sql = "SELECT proname
-				FROM pg_proc
-				WHERE proname = 'pg_database_size'";
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			if ($row['proname'] == 'pg_database_size')
-			{
-				$database = $db->dbname;
-				if (strpos($database, '.') !== false)
-				{
-					list($database, ) = explode('.', $database);
-				}
-
-				$sql = "SELECT oid
-					FROM pg_database
-					WHERE datname = '$database'";
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				$oid = $row['oid'];
-
-				$sql = 'SELECT pg_database_size(' . $oid . ') as size';
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				$database_size = $row['size'];
-			}
-		break;
-
-		case 'oracle':
-			$sql = 'SELECT SUM(bytes) as dbsize
-				FROM user_segments';
-			$result = $db->sql_query($sql, 7200);
-			$database_size = ($row = $db->sql_fetchrow($result)) ? $row['dbsize'] : false;
-			$db->sql_freeresult($result);
-		break;
+		}
+		$db->sql_freeresult($result);
 	}
 
 	$database_size = ($database_size !== false) ? get_formatted_filesize($database_size) : $user->lang['NOT_AVAILABLE'];
