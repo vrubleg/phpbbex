@@ -5,7 +5,7 @@ CREATE TABLE phpbb_user_confirm_keys (
 	confirm_time int(11) UNSIGNED NOT NULL,
 	PRIMARY KEY  (confirm_key),
 	KEY user_id (user_id)
-) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_user_browser_ids (
 	browser_id char(32) DEFAULT '' NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE phpbb_user_browser_ids (
 	agent varchar(150) DEFAULT '' NOT NULL,
 	last_ip varchar(40) DEFAULT '' NOT NULL,
 	PRIMARY KEY (browser_id,user_id)
-) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 ALTER TABLE phpbb_bbcodes
 	ADD COLUMN bbcode_order smallint(4) DEFAULT '0' NOT NULL AFTER bbcode_id;
@@ -148,7 +148,7 @@ CREATE TABLE phpbb_post_rates (
 	PRIMARY KEY (user_id,post_id),
 	KEY post_id (post_id),
 	KEY user_id (user_id)
-) CHARACTER SET `utf8` COLLATE `utf8_bin`;
+) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 ALTER TABLE phpbb_posts
 	ADD COLUMN post_rating_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0 AFTER post_reported,

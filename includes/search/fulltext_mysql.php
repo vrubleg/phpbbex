@@ -39,9 +39,9 @@ class fulltext_mysql extends search_backend
 	{
 		global $db, $user;
 
-		if ($db->sql_layer != 'mysql4' && $db->sql_layer != 'mysqli')
+		if ($db->sql_layer != 'mysqli')
 		{
-			return $user->lang['FULLTEXT_MYSQL_INCOMPATIBLE_VERSION'];
+			return $user->lang['FULLTEXT_MYSQL_NOT_SUPPORTED'];
 		}
 
 		$result = $db->sql_query('SHOW TABLE STATUS LIKE \'' . POSTS_TABLE . '\'');
@@ -665,27 +665,13 @@ class fulltext_mysql extends search_backend
 
 		if (!isset($this->stats['post_subject']))
 		{
-			if ($db->sql_layer == 'mysqli' || version_compare($db->sql_server_info(true), '4.1.3', '>='))
-			{
-				$alter[] = 'MODIFY post_subject varchar(255) COLLATE utf8_unicode_ci DEFAULT \'\' NOT NULL';
-			}
-			else
-			{
-				$alter[] = 'MODIFY post_subject text NOT NULL';
-			}
+			$alter[] = 'MODIFY post_subject varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT \'\' NOT NULL';
 			$alter[] = 'ADD FULLTEXT (post_subject)';
 		}
 
 		if (!isset($this->stats['post_text']))
 		{
-			if ($db->sql_layer == 'mysqli' || version_compare($db->sql_server_info(true), '4.1.3', '>='))
-			{
-				$alter[] = 'MODIFY post_text mediumtext COLLATE utf8_unicode_ci NOT NULL';
-			}
-			else
-			{
-				$alter[] = 'MODIFY post_text mediumtext NOT NULL';
-			}
+			$alter[] = 'MODIFY post_text mediumtext COLLATE utf8mb4_unicode_ci NOT NULL';
 			$alter[] = 'ADD FULLTEXT (post_text)';
 		}
 

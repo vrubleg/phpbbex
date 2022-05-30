@@ -202,16 +202,16 @@ class mysql_upgrader
 					}
 					else if ($column_data[2] == 'true_sort')
 					{
-						$line .= ' COLLATE utf8_unicode_ci';
+						$line .= ' COLLATE utf8mb4_unicode_ci';
 					}
 					else if ($column_data[2] == 'no_sort')
 					{
-						$line .= ' COLLATE utf8_bin';
+						$line .= ' COLLATE utf8mb4_bin';
 					}
 				}
 				else if (preg_match('/(?:var)?char|(?:medium)?text/i', $column_type))
 				{
-					$line .= ' COLLATE utf8_bin';
+					$line .= ' COLLATE utf8mb4_bin';
 				}
 
 				$line .= ',' . PHP_EOL;
@@ -247,8 +247,8 @@ class mysql_upgrader
 				}
 			}
 
-			//$line .= "\tCONVERT TO CHARACTER SET `utf8`$newline";
-			$line .= "\tDEFAULT CHARSET=utf8 COLLATE=utf8_bin;" . PHP_EOL . PHP_EOL;
+			//$line .= "\tCONVERT TO CHARACTER SET `utf8mb4`$newline";
+			$line .= "\tDEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;" . PHP_EOL . PHP_EOL;
 
 			$this->_upgrader .= $line . PHP_EOL;
 
@@ -261,7 +261,7 @@ class mysql_upgrader
 
 		// Write the result also to the cache so it can be downloaded later on
 		$cache->put('_stk_mysql_upgrader_result', $this->_upgrader);
-		
+
 		// If the user only checked "run" than we run the result set
 		if ($run_result)
 		{
@@ -314,11 +314,11 @@ class mysql_upgrader
 	 * Directly run the script
 	 * @access private
 	 * @return void
-	 */	
+	 */
 	function _run_result()
 	{
 		global $cache, $umil;
-		
+
 		// Read from teh cache
 		$this->_upgrader = $cache->get('_stk_mysql_upgrader_result');
 		if ($this->_upgrader === false)

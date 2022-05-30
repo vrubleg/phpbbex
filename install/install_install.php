@@ -1141,19 +1141,6 @@ class install_install extends module
 		// NOTE: trigger_error does not work here.
 		$db->sql_return_on_error(true);
 
-		// If mysql is chosen, we need to adjust the schema filename slightly to reflect the correct version. ;)
-		if ($data['dbms'] == 'mysql')
-		{
-			if (version_compare($db->sql_server_info(true), '4.1.3', '>='))
-			{
-				$available_dbms[$data['dbms']]['SCHEMA'] .= '_41';
-			}
-			else
-			{
-				$available_dbms[$data['dbms']]['SCHEMA'] .= '_40';
-			}
-		}
-
 		// Ok we have the db info go ahead and read in the relevant schema
 		// and work on building the table
 		$dbms_schema = 'schemas/' . $available_dbms[$data['dbms']]['SCHEMA'] . '_schema.sql';

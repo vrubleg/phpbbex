@@ -571,7 +571,7 @@ class phpbb_db_tools
 		{
 			case 'mysql_41':
 				// make sure the table is in UTF-8 mode
-				$table_sql .= "\n) CHARACTER SET `utf8` COLLATE `utf8_bin`;";
+				$table_sql .= "\n) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;";
 				$statements[] = $table_sql;
 			break;
 
@@ -1587,7 +1587,7 @@ class phpbb_db_tools
 					}
 					else if ($this->sql_layer === 'mysql_41' && $column_data[2] == 'true_sort')
 					{
-						$sql .= ' COLLATE utf8_unicode_ci';
+						$sql .= ' COLLATE utf8mb4_unicode_ci';
 					}
 				}
 

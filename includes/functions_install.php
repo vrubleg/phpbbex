@@ -35,31 +35,18 @@ function can_load_dll($dll)
 * Returns an array of available DBMS with some data, if a DBMS is specified it will only
 * return data for that DBMS and will load its extension if necessary.
 */
-function get_available_dbms($dbms = false, $return_unavailable = false, $only_20x_options = false)
+function get_available_dbms($dbms = false, $return_unavailable = false)
 {
 	global $lang;
 	$available_dbms = array(
-		// Note: php 5.5 alpha 2 deprecated mysql.
-		// Keep mysqli before mysql in this list.
 		'mysqli'	=> array(
-			'LABEL'			=> 'MySQL with MySQLi Extension',
-			'SCHEMA'		=> 'mysql_41',
+			'LABEL'			=> 'MySQLi',
+			'SCHEMA'		=> 'mysql',
 			'MODULE'		=> 'mysqli',
 			'DELIM'			=> ';',
 			'COMMENTS'		=> 'remove_remarks',
 			'DRIVER'		=> 'mysqli',
 			'AVAILABLE'		=> true,
-			'2.0.x'			=> true,
-		),
-		'mysql'		=> array(
-			'LABEL'			=> 'MySQL',
-			'SCHEMA'		=> 'mysql',
-			'MODULE'		=> 'mysql',
-			'DELIM'			=> ';',
-			'COMMENTS'		=> 'remove_remarks',
-			'DRIVER'		=> 'mysql',
-			'AVAILABLE'		=> true,
-			'2.0.x'			=> true,
 		),
 	);
 
@@ -78,19 +65,6 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 	// now perform some checks whether they are really available
 	foreach ($available_dbms as $db_name => $db_ary)
 	{
-		if ($only_20x_options && !$db_ary['2.0.x'])
-		{
-			if ($return_unavailable)
-			{
-				$available_dbms[$db_name]['AVAILABLE'] = false;
-			}
-			else
-			{
-				unset($available_dbms[$db_name]);
-			}
-			continue;
-		}
-
 		$dll = $db_ary['MODULE'];
 
 		if (!@extension_loaded($dll))
@@ -121,11 +95,11 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 /**
 * Generate the drop down of available database options
 */
-function dbms_select($default = '', $only_20x_options = false)
+function dbms_select($default = '')
 {
 	global $lang;
 
-	$available_dbms = get_available_dbms(false, false, $only_20x_options);
+	$available_dbms = get_available_dbms(false, false);
 	$dbms_options = '';
 	foreach ($available_dbms as $dbms_name => $details)
 	{

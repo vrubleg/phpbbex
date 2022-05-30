@@ -66,11 +66,18 @@ class dbal_mysqli extends dbal
 
 		if ($this->db_connect_id && $this->dbname != '')
 		{
-			@mysqli_query($this->db_connect_id, "SET NAMES 'utf8'");
-
-			// enforce strict mode on databases that support it
-			if (version_compare($this->sql_server_info(true), '5.0.2', '>='))
+			// Enforce MySQL 5.5+ (due to utf8mb4 support).
+			if (version_compare($this->sql_server_info(true), '5.5', '<'))
 			{
+				@mysqli_close($this->db_connect_id);
+				$this->db_connect_id = false;
+				$this->connect_error = 'MySQL 5.5 or newer is required.';
+				return $this->sql_error('');
+			}
+			else
+			{
+				@mysqli_query($this->db_connect_id, "SET NAMES 'utf8mb4'");
+
 				$result = @mysqli_query($this->db_connect_id, 'SELECT @@session.sql_mode AS sql_mode');
 				$row = @mysqli_fetch_assoc($result);
 				@mysqli_free_result($result);
@@ -96,8 +103,9 @@ class dbal_mysqli extends dbal
 
 				$mode = implode(',', $modes);
 				@mysqli_query($this->db_connect_id, "SET SESSION sql_mode='{$mode}'");
+
+				return $this->db_connect_id;
 			}
-			return $this->db_connect_id;
 		}
 
 		return $this->sql_error('');
@@ -126,7 +134,7 @@ class dbal_mysqli extends dbal
 			}
 		}
 
-		return ($raw) ? $this->sql_server_version : 'MySQL(i) ' . $this->sql_server_version;
+		return ($raw) ? $this->sql_server_version : 'MySQL ' . $this->sql_server_version;
 	}
 
 	/**
@@ -422,7 +430,14 @@ class dbal_mysqli extends dbal
 	*/
 	function _sql_error()
 	{
-		if ($this->db_connect_id)
+		if ($this->connect_error)
+		{
+			$error = array(
+				'message'	=> $this->connect_error,
+				'code'		=> '',
+			);
+		}
+		else if ($this->db_connect_id)
 		{
 			$error = array(
 				'message'	=> @mysqli_error($this->db_connect_id),
@@ -439,7 +454,7 @@ class dbal_mysqli extends dbal
 		else
 		{
 			$error = array(
-				'message'	=> $this->connect_error,
+				'message'	=> '',
 				'code'		=> '',
 			);
 		}
