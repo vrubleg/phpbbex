@@ -2650,7 +2650,7 @@ class umil
 						}
 						else if ($dbms === 'mysql_41' && $column_data[2] == 'true_sort')
 						{
-							$sql .= ' COLLATE utf8_unicode_ci';
+							$sql .= ' COLLATE utf8mb4_unicode_ci';
 						}
 					}
 
@@ -2953,7 +2953,7 @@ class umil
 			case 'mysql_41':
 				// Remove last line delimiter...
 				$sql = substr($sql, 0, -2);
-				$sql .= "\n) CHARACTER SET utf8 COLLATE utf8_bin;\n\n";
+				$sql .= "\n) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;\n\n";
 			break;
 
 			// Create Generator
