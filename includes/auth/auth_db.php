@@ -174,7 +174,6 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		{
 			$captcha->reset();
 		}
-
 	}
 
 	// If the password convert flag is set we need to convert it
@@ -260,8 +259,8 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
 		{
 			return array(
-				'status'		=> LOGIN_ERROR_ACTIVE,
-				'error_msg'		=> 'ACTIVE_ERROR',
+				'status'		=> LOGIN_ERROR_INACTIVE,
+				'error_msg'		=> 'LOGIN_ERROR_INACTIVE',
 				'user_row'		=> $row,
 			);
 		}
