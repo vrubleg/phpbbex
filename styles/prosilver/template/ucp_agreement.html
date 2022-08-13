@@ -3,18 +3,12 @@
 <!-- IF S_SHOW_COPPA or S_REGISTRATION -->
 
 <!-- IF S_LANG_OPTIONS -->
-<script type="text/javascript">
-// <![CDATA[
-	/**
-	* Change language
-	*/
+<script>
 	function change_language(lang_iso)
 	{
 		document.forms['register'].change_lang.value = lang_iso;
 		document.forms['register'].submit();
 	}
-
-// ]]>
 </script>
 
 	<form method="post" action="{S_UCP_ACTION}" id="register">
@@ -33,7 +27,7 @@
 	<div class="panel">
 		<div class="inner">
 		<div class="content">
-			<h2>{SITENAME} - {L_REGISTRATION}</h2>
+			<h2>{L_REGISTRATION}</h2>
 			<p><!-- IF S_SHOW_COPPA -->{L_COPPA_BIRTHDAY}<!-- ELSE -->{L_TERMS_OF_USE}<!-- ENDIF --></p>
 		</div>
 		</div>
@@ -60,7 +54,7 @@
 	<div class="panel">
 		<div class="inner">
 		<div class="content">
-			<h2>{SITENAME} - {AGREEMENT_TITLE}</h2>
+			<h2>{AGREEMENT_TITLE}</h2>
 			<p>{AGREEMENT_TEXT}</p>
 			<hr class="dashed" />
 			<p><a href="{U_BACK}" class="button2">{L_BACK}</a></p>

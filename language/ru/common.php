@@ -15,22 +15,6 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-// DEVELOPERS PLEASE NOTE
-//
-// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
-//
-// Placeholders can now contain order information, e.g. instead of
-// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
-// translators to re-order the output of data while ensuring it remains correct
-//
-// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-//
-// Some characters you may want to copy&paste:
-// ’ » “ ” …
-//
-
 $lang = array_merge($lang, array(
 	'TRANSLATION_INFO'	=> '',
 	'DIRECTION'			=> 'ltr',
@@ -300,7 +284,7 @@ $lang = array_merge($lang, array(
 	'LOGIN_ERROR_PASSWORD_CONVERT'		=> 'При обновлении форума не удалось преобразовать ваш пароль. Вы можете %sзапросить новый пароль%s. Если вы продолжаете испытывать трудности, то свяжитесь с то свяжитесь с %sадминистратором%s.',
 	'LOGIN_ERROR_USERNAME'				=> 'Вы ввели неверное имя пользователя. Проверьте его и попробуйте ввести ещё раз. Если проблема со входом останется, то сообщите об этом %sадминистратору%s.',
 	'LOGIN_FORUM'						=> 'Для просмотра или размещения сообщений в этом разделе необходимо ввести пароль.',
-	'LOGIN_INFO'						=> 'Для входа на форум вы должны быть зарегистрированы. Регистрация занимает всего несколько минут, но предоставляет вам более широкие возможности. Администратором форума могут быть установлены также дополнительные привилегии для зарегистрированных пользователей. Прежде чем зарегистрироваться, вам следует ознакомиться с правилами и политикой, принятыми на форуме. Помните, что ваше присутствие на форуме означает согласие со <strong>всеми</strong> правилами.',
+	'LOGIN_INFO'						=> 'Для входа на форум вы должны быть зарегистрированы. Регистрация занимает всего несколько минут, но предоставляет вам более широкие возможности. Прежде чем зарегистрироваться, вам следует ознакомиться с правилами, принятыми на форуме. Помните, что ваше присутствие на форуме означает согласие со всеми правилами.',
 	'LOGIN_VIEWFORUM'					=> 'Для просмотра этого раздела вы должны быть авторизованы.',
 	'LOGIN_EXPLAIN_EDIT'				=> 'Для редактирования сообщений в этом разделе вы должны быть авторизованы.',
 	'LOGIN_EXPLAIN_VIEWONLINE'			=> 'Для просмотра списка пользователей, находящихся сейчас на форуме, вы должны быть авторизованы.',
