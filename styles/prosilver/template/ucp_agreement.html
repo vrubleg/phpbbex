@@ -1,6 +1,6 @@
 <!-- INCLUDE overall_header.html -->
 
-<!-- IF S_SHOW_COPPA or S_REGISTRATION -->
+<!-- IF S_REGISTRATION -->
 
 <!-- IF S_LANG_OPTIONS -->
 <script>
@@ -28,7 +28,7 @@
 		<div class="inner">
 		<div class="content">
 			<h2>{L_REGISTRATION}</h2>
-			<p><!-- IF S_SHOW_COPPA -->{L_COPPA_BIRTHDAY}<!-- ELSE -->{L_TERMS_OF_USE}<!-- ENDIF --></p>
+			<p>{L_TERMS_OF_USE}</p>
 		</div>
 		</div>
 	</div>
@@ -36,12 +36,8 @@
 	<div class="panel">
 		<div class="inner">
 		<fieldset class="submit-buttons">
-			<!-- IF S_SHOW_COPPA -->
-			<strong><a href="{U_COPPA_NO}" class="button1">{L_COPPA_NO}</a></strong>&nbsp; <a href="{U_COPPA_YES}" class="button2">{L_COPPA_YES}</a>
-			<!-- ELSE -->
 			<input type="submit" name="agreed" id="agreed" value="{L_AGREE}" class="button1" />&nbsp;
 			<input type="submit" name="not_agreed" value="{L_NOT_AGREE}" class="button2" />
-			<!-- ENDIF -->
 			{S_HIDDEN_FIELDS}
 			{S_FORM_TOKEN}
 		</fieldset>

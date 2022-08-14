@@ -63,27 +63,12 @@ class ucp_resend
 				trigger_error('ACCOUNT_DEACTIVATED');
 			}
 
-			// Determine coppa status on group (REGISTERED(_COPPA))
-			$sql = 'SELECT group_name, group_type
-				FROM ' . GROUPS_TABLE . '
-				WHERE group_id = ' . $user_row['group_id'];
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			if (!$row)
-			{
-				trigger_error('NO_GROUP');
-			}
-
-			$coppa = ($row['group_name'] == 'REGISTERED_COPPA' && $row['group_type'] == GROUP_SPECIAL) ? true : false;
-
 			include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
 			$messenger = new messenger(false);
 
-			if ($config['require_activation'] == USER_ACTIVATION_SELF || $coppa)
+			if ($config['require_activation'] == USER_ACTIVATION_SELF)
 			{
-				$messenger->template(($coppa) ? 'coppa_resend_inactive' : 'user_resend_inactive', $user_row['user_lang']);
+				$messenger->template('user_resend_inactive', $user_row['user_lang']);
 				$messenger->to($user_row['user_email'], $user_row['username']);
 
 				$messenger->anti_abuse_headers($config, $user);
@@ -93,15 +78,6 @@ class ucp_resend
 					'USERNAME'		=> htmlspecialchars_decode($user_row['username']),
 					'U_ACTIVATE'	=> generate_board_url() . "/ucp.$phpEx?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}")
 				);
-
-				if ($coppa)
-				{
-					$messenger->assign_vars(array(
-						'FAX_INFO'		=> $config['coppa_fax'],
-						'MAIL_INFO'		=> $config['coppa_mail'],
-						'EMAIL_ADDRESS'	=> $user_row['user_email'])
-					);
-				}
 
 				$messenger->send(NOTIFY_EMAIL);
 			}

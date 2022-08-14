@@ -1135,7 +1135,7 @@ function user_group_auth($group, $select_query, $use_src_db)
 {
 	global $convert, $phpbb_root_path, $config, $user, $db, $src_db, $same_db;
 
-	if (!in_array($group, array('guests', 'registered', 'registered_coppa', 'global_moderators', 'administrators', 'bots')))
+	if (!in_array($group, array('guests', 'registered', 'global_moderators', 'administrators', 'bots')))
 	{
 		$convert->p_master->error(sprintf($user->lang['CONV_ERROR_WRONG_GROUP'], $group, 'user_group_auth()'), __LINE__, __FILE__, true);
 		return;
@@ -1713,7 +1713,6 @@ function add_default_groups()
 	$default_groups = array(
 		'GUESTS'			=> array('', 0, 0),
 		'REGISTERED'		=> array('', 0, 0),
-		'REGISTERED_COPPA'	=> array('', 0, 0),
 		'GLOBAL_MODERATORS'	=> array('00AA00', 1, 0),
 		'ADMINISTRATORS'	=> array('AA0000', 1, 1),
 		'BOTS'				=> array('9E8DA7', 0, 0),

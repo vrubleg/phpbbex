@@ -15,18 +15,6 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-// DEVELOPERS PLEASE NOTE
-//
-// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
-//
-// Placeholders can now contain order information, e.g. instead of
-// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
-// translators to re-order the output of data while ensuring it remains correct
-//
-// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-
 // Board Settings
 $lang = array_merge($lang, array(
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Здесь вы можете установить общие параметры форума, дать ему имя и описание, а также указать часовой пояс и язык, которые будут использоваться по умолчанию.',
@@ -324,12 +312,6 @@ $lang = array_merge($lang, array(
 //	'ACC_USER_ADMIN'			=> 'User + Admin',
 	'ALLOW_EMAIL_REUSE'			=> 'Разрешить повторное использование email-адреса',
 	'ALLOW_EMAIL_REUSE_EXPLAIN'	=> 'Разные пользователи смогут регистрироваться с одинаковым email-адресом.',
-	'COPPA'						=> 'COPPA',
-	'COPPA_FAX'					=> 'Номер факса для COPPA',
-	'COPPA_MAIL'				=> 'Почтовый адрес для COPPA',
-	'COPPA_MAIL_EXPLAIN'		=> 'Почтовый адрес, на который родители должны отправлять формы регистрации COPPA.',
-	'ENABLE_COPPA'				=> 'Включить COPPA',
-	'ENABLE_COPPA_EXPLAIN'		=> 'От пользователя потребуется подтвердить, достиг ли он возраста 13 лет или старше, для соответствия требованиям U.S. COPPA Act. Если отключено, специальные группы COPPA больше не будут отображены.',
 	'MAX_CHARS'					=> 'макс.',
 	'MIN_CHARS'					=> 'мин.',
 	'NO_AUTH_PLUGIN'			=> 'Не найдено подходящего модуля авторизации.',

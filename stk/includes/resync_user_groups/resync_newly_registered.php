@@ -22,8 +22,7 @@ class resync_newly_registered
 	 */
 	var $groups	= array(
 		0	=> 'REGISTERED',
-		1	=> 'REGISTERED_COPPA',
-		2	=> 'NEWLY_REGISTERED',
+		1	=> 'NEWLY_REGISTERED',
 	);
 
 	/**
@@ -60,7 +59,7 @@ class resync_newly_registered
 
 		// Get global variables
 		$last = request_var('last', 0); // The user_id of the last user in this batch
-		$step = request_var('step', 0);	// Step 0 is syncing the REGISTERED, 1 is REGISTERED_COPPA and 2 is NEWLY_REGISTERED
+		$step = request_var('step', 0);	// Step 0 is syncing the REGISTERED and 1 is NEWLY_REGISTERED
 
 		// Get the user ids
 		$nr_gid		= 0;
@@ -71,7 +70,7 @@ class resync_newly_registered
 		if (empty($users))
 		{
 			// There is a next step?
-			if ($step == 2)
+			if ($step == 1)
 			{
 				return;
 			}
@@ -89,8 +88,7 @@ class resync_newly_registered
 		switch ($group_name)
 		{
 			// Users with not enough posts
-			case 'REGISTERED'		:
-			case 'REGISTERED_COPPA'	:
+			case 'REGISTERED':
 				$function	= 'group_user_add';
 				$args		= array(
 					$nr_gid,
@@ -101,7 +99,7 @@ class resync_newly_registered
 				);
 			break;
 
-			case 'NEWLY_REGISTERED'	:
+			case 'NEWLY_REGISTERED':
 				$function	= 'group_user_del';
 				$args		= array(
 					$nr_gid,
@@ -160,12 +158,11 @@ class resync_newly_registered
 		switch ($group_name)
 		{
 			// Users with not enough posts
-			case 'REGISTERED'		:
-			case 'REGISTERED_COPPA'	:
+			case 'REGISTERED':
 				$sql_token = '<';
 			break;
 
-			case 'NEWLY_REGISTERED'	:
+			case 'NEWLY_REGISTERED':
 				$sql_token = '>=';
 			break;
 		}
@@ -209,7 +206,7 @@ class resync_newly_registered
 		global $db;
 
 		// Value?
-		$new_group_value = ($group_name == 'REGISTERED' || $group_name == 'REGISTERED_COPPA') ? 1 : 0;
+		$new_group_value = ($group_name == 'REGISTERED') ? 1 : 0;
 
 		// Set the flag
 		$sql = 'UPDATE ' . USERS_TABLE . ' SET user_new = ' . $new_group_value . ' WHERE ' . $db->sql_in_set('user_id', $user_ids);

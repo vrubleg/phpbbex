@@ -141,6 +141,11 @@ if (version_compare($row['config_value'], '1.9.5', '<'))
 
 if (version_compare($row['config_value'], '1.9.6', '<'))
 {
+	// The COPPA group is not special anymore.
+
+	$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA'");
+	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('coppa_enable', 'coppa_mail', 'coppa_fax')");
+
 	// Drop fulltext search index if present.
 
 	$drop_indexes = [];

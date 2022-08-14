@@ -29,7 +29,6 @@ class ucp_register
 
 		include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
 
-		$coppa			= (isset($_REQUEST['coppa'])) ? ((!empty($_REQUEST['coppa'])) ? 1 : 0) : false;
 		$agreed			= (!empty($_POST['agreed'])) ? 1 : 0;
 		$submit			= (isset($_POST['submit'])) ? true : false;
 		$change_lang	= request_var('change_lang', '');
@@ -70,15 +69,13 @@ class ucp_register
 			}
 		}
 
-
 		$cp = new custom_profile();
 
 		$error = $cp_data = $cp_error = array();
 
-		if (!$agreed || ($coppa === false && $config['coppa_enable']) || ($coppa && !$config['coppa_enable']))
+		if (!$agreed)
 		{
 			$add_lang = ($change_lang) ? '&amp;change_lang=' . urlencode($change_lang) : '';
-			$add_coppa = ($coppa !== false) ? '&amp;coppa=' . $coppa : '';
 
 			$s_hidden_fields = array(
 				'change_lang'	=> $change_lang,
@@ -110,38 +107,16 @@ class ucp_register
 			}
 			$db->sql_freeresult($result);
 
-			if ($coppa === false && $config['coppa_enable'])
-			{
-				$now = getdate();
-				$coppa_birthday = $user->format_date(mktime($now['hours'] + $user->data['user_dst'], $now['minutes'], $now['seconds'], $now['mon'], $now['mday'] - 1, $now['year'] - 13), $user->lang['DATE_FORMAT']);
-				unset($now);
+			$template->assign_vars(array(
+				'S_LANG_OPTIONS'	=> (sizeof($lang_row) == 1 || $config['override_user_lang']) ? '' : language_select($user_lang),
+				'L_TERMS_OF_USE'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
 
-				$template->assign_vars(array(
-					'S_LANG_OPTIONS'	=> (sizeof($lang_row) == 1 || $config['override_user_lang']) ? '' : language_select($user_lang),
-					'L_COPPA_NO'		=> sprintf($user->lang['UCP_COPPA_BEFORE'], $coppa_birthday),
-					'L_COPPA_YES'		=> sprintf($user->lang['UCP_COPPA_ON_AFTER'], $coppa_birthday),
+				'S_REGISTRATION'	=> true,
+				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
+				'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register' . $add_lang),
+				)
+			);
 
-					'U_COPPA_NO'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register&amp;coppa=0' . $add_lang),
-					'U_COPPA_YES'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register&amp;coppa=1' . $add_lang),
-
-					'S_SHOW_COPPA'		=> true,
-					'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
-					'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register' . $add_lang),
-				));
-			}
-			else
-			{
-				$template->assign_vars(array(
-					'S_LANG_OPTIONS'	=> (sizeof($lang_row) == 1 || $config['override_user_lang']) ? '' : language_select($user_lang),
-					'L_TERMS_OF_USE'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
-
-					'S_SHOW_COPPA'		=> false,
-					'S_REGISTRATION'	=> true,
-					'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
-					'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register' . $add_lang . $add_coppa),
-					)
-				);
-			}
 			unset($lang_row);
 
 			$this->tpl_name = 'ucp_agreement';
@@ -277,7 +252,7 @@ class ucp_register
 				$server_url = generate_board_url();
 
 				// Which group by default?
-				$group_name = ($coppa) ? 'REGISTERED_COPPA' : 'REGISTERED';
+				$group_name = 'REGISTERED';
 
 				$sql = 'SELECT group_id
 					FROM ' . GROUPS_TABLE . "
@@ -294,9 +269,7 @@ class ucp_register
 
 				$group_id = $row['group_id'];
 
-				if (($coppa ||
-					$config['require_activation'] == USER_ACTIVATION_SELF ||
-					$config['require_activation'] == USER_ACTIVATION_ADMIN) && $config['email_enable'])
+				if (($config['require_activation'] == USER_ACTIVATION_SELF || $config['require_activation'] == USER_ACTIVATION_ADMIN) && $config['email_enable'])
 				{
 					$user_actkey = gen_rand_string(mt_rand(6, 10));
 					$user_type = USER_INACTIVE;
@@ -353,12 +326,7 @@ class ucp_register
 					$captcha->reset();
 				}
 
-				if ($coppa && $config['email_enable'])
-				{
-					$message = $user->lang['ACCOUNT_COPPA'];
-					$email_template = 'coppa_welcome_inactive';
-				}
-				else if ($config['require_activation'] == USER_ACTIVATION_SELF && $config['email_enable'])
+				if ($config['require_activation'] == USER_ACTIVATION_SELF && $config['email_enable'])
 				{
 					$message = $user->lang['ACCOUNT_INACTIVE'];
 					$email_template = 'user_welcome_inactive';
@@ -392,15 +360,6 @@ class ucp_register
 						'PASSWORD'		=> htmlspecialchars_decode($data['new_password']),
 						'U_ACTIVATE'	=> "$server_url/ucp.$phpEx?mode=activate&u=$user_id&k=$user_actkey")
 					);
-
-					if ($coppa)
-					{
-						$messenger->assign_vars(array(
-							'FAX_INFO'		=> $config['coppa_fax'],
-							'MAIL_INFO'		=> $config['coppa_mail'],
-							'EMAIL_ADDRESS'	=> $data['email'])
-						);
-					}
 
 					$messenger->send(NOTIFY_EMAIL);
 
@@ -462,11 +421,6 @@ class ucp_register
 			'change_lang'	=> 0,
 		);
 
-		if ($config['coppa_enable'])
-		{
-			$s_hidden_fields['coppa'] = $coppa;
-		}
-
 		if ($config['enable_confirm'])
 		{
 			$s_hidden_fields = array_merge($s_hidden_fields, $captcha->get_hidden_fields());
@@ -511,7 +465,6 @@ class ucp_register
 			'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz']),
 			'S_CONFIRM_REFRESH'	=> ($config['enable_confirm'] && $config['confirm_refresh']) ? true : false,
 			'S_REGISTRATION'	=> true,
-			'S_COPPA'			=> $coppa,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register'),
 		));

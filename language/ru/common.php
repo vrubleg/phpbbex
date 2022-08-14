@@ -228,7 +228,6 @@ $lang = array_merge($lang, array(
 	'G_BOTS'					=> 'Боты',
 	'G_GUESTS'					=> 'Гости',
 	'G_REGISTERED'				=> 'Зарегистрированные',
-	'G_REGISTERED_COPPA'		=> 'Зарегистрированные (COPPA)',
 	'G_GLOBAL_MODERATORS'		=> 'Супермодераторы',
 	'G_NEWLY_REGISTERED'		=> 'Новые',
 
