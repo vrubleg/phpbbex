@@ -15,18 +15,6 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-// DEVELOPERS PLEASE NOTE
-//
-// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
-//
-// Placeholders can now contain order information, e.g. instead of
-// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
-// translators to re-order the output of data while ensuring it remains correct
-//
-// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-
 // User pruning
 $lang = array_merge($lang, array(
 	'ACP_PRUNE_USERS_EXPLAIN'	=> 'Здесь вы можете удалять или отключать пользователей форума. Учётные записи могут быть отфильтрованы различными способами — по количеству сообщений, по времени последнего посещения и так далее. Критерии могут быть объединены с целью сокращения учётных записей, к которым будет применена очистка. Например, вы можете удалить пользователей, которые не посещали форум после 01.01.2002, и имеющих менее десяти сообщений. Также вы можете полностью пропустить выбор критериев, вручную введя желаемых пользователей (каждого на отдельной строке) в текстовое поле. Будьте осторожны с этим инструментом — удалённых пользователей восстановить невозможно!',

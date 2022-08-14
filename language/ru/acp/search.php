@@ -15,18 +15,6 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-// DEVELOPERS PLEASE NOTE
-//
-// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
-//
-// Placeholders can now contain order information, e.g. instead of
-// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
-// translators to re-order the output of data while ensuring it remains correct
-//
-// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-
 $lang = array_merge($lang, array(
 	'ACP_SEARCH_INDEX_EXPLAIN'				=> 'Здесь вы можете управлять индексами поискового механизма. Поскольку обычно используется только один механизм, необходимо удалять все неиспользуемые индексы. После изменения каких-либо настроек поиска (например, минимального/максимального количества символов) имеет смысл повторно создать поисковые индексы для того, чтобы они отражали произведённые изменения.',
 	'ACP_SEARCH_SETTINGS_EXPLAIN'			=> 'Здесь вы можете указать поисковый механизм, который будет использоваться для индексации сообщений и осуществления поиска. Также вы можете устанавливать различные настройки, которые могут влиять на количество ресурсов, требуемых для обработки поисковых запросов. Некоторые из этих настроек одинаковы для всех поисковых механизмов.',
