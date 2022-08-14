@@ -109,7 +109,6 @@ $lang = array_merge($lang, array(
 	'CONGRATULATIONS'		=> 'Congratulations to',
 	'CONNECTION_FAILED'		=> 'Connection failed.',
 	'CONNECTION_SUCCESS'	=> 'Connection was successful!',
-	'COOKIES_DELETED'		=> 'All board cookies successfully deleted.',
 	'CREATION_TIME'			=> 'Creation time',
 	'CURRENT_TIME'			=> 'It is currently %s',
 
@@ -118,7 +117,6 @@ $lang = array_merge($lang, array(
 	'DEFAULT'				=> 'Default',
 	'DELETE'				=> 'Delete',
 	'DELETE_ALL'			=> 'Delete all',
-	'DELETE_COOKIES'		=> 'Delete all board cookies',
 	'DELETE_MARKED'			=> 'Delete marked',
 	'DELETE_POST'			=> 'Delete post',
 	'DELIMITER'				=> 'Delimiter',

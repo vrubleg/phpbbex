@@ -109,7 +109,6 @@ $lang = array_merge($lang, array(
 	'CONGRATULATIONS'		=> 'Поздравляем',
 	'CONNECTION_FAILED'		=> 'Ошибка подключения.',
 	'CONNECTION_SUCCESS'	=> 'Подключение успешно установлено.',
-	'COOKIES_DELETED'		=> 'Все cookies, установленные форумом, успешно удалены.',
 	'CREATION_TIME'			=> 'Время создания',
 	'CURRENT_TIME'			=> 'Текущее время: %s',
 
@@ -118,7 +117,6 @@ $lang = array_merge($lang, array(
 	'DEFAULT'				=> 'По умолчанию',
 	'DELETE'				=> 'Удалить',
 	'DELETE_ALL'			=> 'Удалить все',
-	'DELETE_COOKIES'		=> 'Удалить cookies форума',
 	'DELETE_MARKED'			=> 'Удалить отмеченные',
 	'DELETE_POST'			=> 'Удалить сообщение',
 	'DELIMITER'				=> 'Разделитель',

@@ -130,7 +130,6 @@ $lang = array_merge($lang, array(
 	'DELETE_ATTACHMENT_CONFIRM'	=> 'Are you sure you want to delete this attachment?',
 	'DELETE_ATTACHMENTS_CONFIRM'=> 'Are you sure you want to delete these attachments?',
 	'DELETE_AVATAR'				=> 'Delete image',
-	'DELETE_COOKIES_CONFIRM'	=> 'Are you sure you want to delete all cookies set by this board?',
 	'DELETE_MARKED_PM'			=> 'Delete marked messages',
 	'DELETE_MARKED_PM_CONFIRM'	=> 'Are you sure you want to delete all marked messages?',
 	'DELETE_OLDEST_MESSAGES'	=> 'Delete oldest messages',

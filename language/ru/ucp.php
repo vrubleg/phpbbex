@@ -132,7 +132,6 @@ $lang = array_merge($lang, array(
 	'DELETE_ATTACHMENT_CONFIRM'	=> 'Вы уверены, что хотите удалить данное вложение?',
 	'DELETE_ATTACHMENTS_CONFIRM'=> 'Вы уверены, что хотите удалить данные вложения?',
 	'DELETE_AVATAR'				=> 'Удалить изображение',
-	'DELETE_COOKIES_CONFIRM'	=> 'Вы уверены, что хотите удалить все cookie, установленные данным форумом?',
 	'DELETE_MARKED_PM'			=> 'Удалить отмеченные',
 	'DELETE_MARKED_PM_CONFIRM'	=> 'Вы уверены, что хотите удалить все отмеченные сообщения?',
 	'DELETE_OLDEST_MESSAGES'	=> 'Удалить самые старые сообщения',
