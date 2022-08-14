@@ -15,35 +15,13 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-// DEVELOPERS PLEASE NOTE
-//
-// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
-//
-// Placeholders can now contain order information, e.g. instead of
-// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
-// translators to re-order the output of data while ensuring it remains correct
-//
-// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-
 // Privacy policy and T&C
 $lang = array_merge($lang, array(
-	'TERMS_OF_USE_CONTENT'	=> 'By accessing “%1$s”, you agree to be legally bound by the following terms. If you do not agree to be legally bound by all of the following terms then please do not access and/or use “%1$s”. We may change these at any time and we’ll do our utmost in informing you, though it would be prudent to review this regularly yourself as your continued usage of “%1$s” after changes mean you agree to be legally bound by these terms as they are updated and/or amended.<br />
+	'TERMS_OF_USE_CONTENT' => 'By accessing “%1$s”, you agree to be legally bound by the following terms. If you do not agree to be legally bound by all of the following terms then please do not access and/or use “%1$s”. We may change these at any time and we’ll do our utmost in informing you, though it would be prudent to review this regularly yourself as your continued usage of “%1$s” after changes mean you agree to be legally bound by these terms as they are updated and/or amended.<br />
 	<br />
-	You agree not to post any abusive, obscene, vulgar, slanderous, hateful, threatening, sexually-orientated or any other material that may violate any laws be it of your country or International Law. Doing so may lead to you being immediately and permanently banned, with notification of your Internet Service Provider if deemed required by us. The IP address of all posts are recorded to aid in enforcing these conditions. You agree that “%1$s” have the right to remove, edit, move or close any topic at any time should we see fit. As a user you agree to any information you have entered to being stored in a database. While this information will not be disclosed to any third party without your consent, neither “%1$s” nor phpBBex shall be held responsible for any hacking attempt that may lead to the data being compromised.
-	',
+	You agree not to post any abusive, obscene, vulgar, slanderous, hateful, threatening, sexually-orientated or any other material that may violate any laws be it of your country or International Law. Doing so may lead to you being immediately and permanently banned, with notification of your Internet Service Provider if deemed required by us. The IP address of all posts are recorded to aid in enforcing these conditions. You agree that “%1$s” have the right to remove, edit, move or close any topic at any time should we see fit. As a user you agree to any information you have entered to being stored in a database. While this information will not be disclosed to any third party without your consent, neither “%1$s” nor phpBBex shall be held responsible for any hacking attempt that may lead to the data being compromised.',
 
-	'PRIVACY_POLICY'		=> 'This policy explains in detail how “%1$s” along with its affiliated companies (hereinafter “we”, “us”, “our”, “%1$s”, “%2$s”) and phpBBex (hereinafter “phpBBex software”) use any information collected during any session of usage by you (hereinafter “your information”).<br />
-	<br />
-	Your information is collected via two ways. Firstly, by browsing “%1$s” will cause the phpBBex software to create a number of cookies, which are small text files that are downloaded on to your computer’s web browser temporary files. The first two cookies just contain a user identifier (hereinafter “user-id”) and an anonymous session identifier (hereinafter “session-id”), automatically assigned to you by the phpBBex software. A third cookie will be created once you have browsed topics within “%1$s” and is used to store which topics have been read, thereby improving your user experience.<br />
-	<br />
-	We may also create cookies external to the phpBBex software whilst browsing “%1$s”, though these are outside the scope of this document which is intended to only cover the pages created by the phpBBex software. The second way in which we collect your information is by what you submit to us. This can be, and is not limited to: posting as an anonymous user (hereinafter “anonymous posts”), registering on “%1$s” (hereinafter “your account”) and posts submitted by you after registration and whilst logged in (hereinafter “your posts”).<br />
-	<br />
-	Your account will at a bare minimum contain a uniquely identifiable name (hereinafter “your user name”), a personal password used for logging into your account (hereinafter “your password”) and a personal, valid e-mail address (hereinafter “your e-mail”). Your information for your account at “%1$s” is protected by data-protection laws applicable in the country that hosts us. Any information beyond your user name, your password, and your e-mail address required by “%1$s” during the registration process is either mandatory or optional, at the discretion of “%1$s”. In all cases, you have the option of what information in your account is publicly displayed. Furthermore, within your account, you have the option to opt-in or opt-out of automatically generated e-mails from the phpBBex software.<br />
-	<br />
-	Your password is ciphered (a one-way hash) so that it is secure. However, it is recommended that you do not reuse the same password across a number of different websites. Your password is the means of accessing your account at “%1$s”, so please guard it carefully and under no circumstance will anyone affiliated with “%1$s”, phpBBex or another 3rd party, legitimately ask you for your password. Should you forget your password for your account, you can use the “I forgot my password” feature provided by the phpBBex software. This process will ask you to submit your user name and your e-mail, then the phpBBex software will generate a new password to reclaim your account.<br />
-	',
+	'PRIVACY_POLICY' => 'The “%1$s” bulletin board uses cookies for keeping your session. Data that you submit is tied to your account. Your account will at a bare minimum contain a uniquely identifiable name, a personal password used for logging into your account and a personal e-mail address. Any information from your account, except your password and e-mail address, will be publicly displayed. Your password is ciphered (a one-way hash) so that it is secure and impossible to restore even if the administrator would like to do it. But you can request a new password using the “I forgot my password” feature that sends a new randomly generated password to your e-mail. You have the option to opt-out of automatically generated e-mails from the bulletin board, but e-mails that are required to reclaim access to your account may be sent anyway.',
 ));
 
 // Common language entries
@@ -52,7 +30,6 @@ $lang = array_merge($lang, array(
 	'ACCOUNT_ACTIVE_ADMIN'			=> 'The account has now been activated.',
 	'ACCOUNT_ACTIVE_PROFILE'		=> 'Your account has now been successfully reactivated.',
 	'ACCOUNT_ADDED'					=> 'Thank you for registering, your account has been created. You may now login with your username and password.',
-	'ACCOUNT_COPPA'					=> 'Your account has been created but has to be approved, please check your e-mail for details.',
 	'ACCOUNT_EMAIL_CHANGED'			=> 'Your account has been updated. However, this board requires account reactivation on e-mail changes. An activation key has been sent to the new e-mail address you provided. Please check your e-mail for further information.',
 	'ACCOUNT_EMAIL_CHANGED_ADMIN'	=> 'Your account has been updated. However, this board requires account reactivation by the administrators on e-mail changes. An e-mail has been sent to them and you will be informed when your account has been reactivated.',
 	'ACCOUNT_INACTIVE'				=> 'Your account has been created. However, this board requires account activation, an activation key has been sent to the e-mail address you provided. Please check your e-mail for further information.',
@@ -121,9 +98,6 @@ $lang = array_merge($lang, array(
 
 	'CONFIRM_PASSWORD'			=> 'Confirm password',
 	'CONFIRM_PASSWORD_EXPLAIN'	=> 'You only need to confirm your password if you changed it above.',
-	'COPPA_BIRTHDAY'			=> 'To continue with the registration procedure please tell us when you were born.',
-	'COPPA_COMPLIANCE'			=> 'COPPA compliance',
-	'COPPA_EXPLAIN'				=> 'Please note that clicking submit will create your account. However it cannot be activated until a parent or guardian approves your registration. You will be emailed a copy of the necessary form with details of where to send it.',
 	'CREATE_FOLDER'				=> 'Add folder…',
 	'CURRENT_IMAGE'				=> 'Current image',
 	'CURRENT_PASSWORD'			=> 'Current password',
@@ -146,7 +120,6 @@ $lang = array_merge($lang, array(
 	'DELETE_ATTACHMENT_CONFIRM'	=> 'Are you sure you want to delete this attachment?',
 	'DELETE_ATTACHMENTS_CONFIRM'=> 'Are you sure you want to delete these attachments?',
 	'DELETE_AVATAR'				=> 'Delete image',
-	'DELETE_COOKIES_CONFIRM'	=> 'Are you sure you want to delete all cookies set by this board?',
 	'DELETE_MARKED_PM'			=> 'Delete marked messages',
 	'DELETE_MARKED_PM_CONFIRM'	=> 'Are you sure you want to delete all marked messages?',
 	'DELETE_OLDEST_MESSAGES'	=> 'Delete oldest messages',
@@ -409,8 +382,6 @@ $lang = array_merge($lang, array(
 	'UCP_ACTIVATE'				=> 'Activate account',
 	'UCP_ADMIN_ACTIVATE'		=> 'Please note that you will need to enter a valid e-mail address before your account is activated. The administrator will review your account and if approved you will receive an e-mail at the address you specified.',
 	'UCP_ATTACHMENTS'			=> 'Attachments',
-	'UCP_COPPA_BEFORE'			=> 'Before %s',
-	'UCP_COPPA_ON_AFTER'		=> 'On or after %s',
 	'UCP_EMAIL_ACTIVATE'		=> 'Please note that you will need to enter a valid e-mail address before your account is activated. You will receive an e-mail at the address you provide that contains an account activation link.',
 	'UCP_ICQ'					=> 'ICQ number',
 	'UCP_JABBER'				=> 'Jabber address',

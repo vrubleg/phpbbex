@@ -86,12 +86,9 @@ class acp_permissions
 		if ($select_all_groups)
 		{
 			// Add default groups to selection
-			$sql_and = (!$config['coppa_enable']) ? " AND group_name <> 'REGISTERED_COPPA'" : '';
-
 			$sql = 'SELECT group_id
 				FROM ' . GROUPS_TABLE . '
-				WHERE group_type = ' . GROUP_SPECIAL . "
-				$sql_and";
+				WHERE group_type = ' . GROUP_SPECIAL;
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))

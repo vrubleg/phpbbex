@@ -2778,14 +2778,7 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 {
 	global $db, $auth, $config;
 
-	if ($config['coppa_enable'])
-	{
-		$group_order = array('ADMINISTRATORS', 'GLOBAL_MODERATORS', 'NEWLY_REGISTERED', 'REGISTERED_COPPA', 'REGISTERED', 'BOTS', 'GUESTS');
-	}
-	else
-	{
-		$group_order = array('ADMINISTRATORS', 'GLOBAL_MODERATORS', 'NEWLY_REGISTERED', 'REGISTERED', 'BOTS', 'GUESTS');
-	}
+	$group_order = array('ADMINISTRATORS', 'GLOBAL_MODERATORS', 'NEWLY_REGISTERED', 'REGISTERED', 'BOTS', 'GUESTS');
 
 	// We need both username and user_id info
 	$result = user_get_id_name($user_id_ary, $username_ary);

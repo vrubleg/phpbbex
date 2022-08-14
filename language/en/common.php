@@ -15,22 +15,6 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-// DEVELOPERS PLEASE NOTE
-//
-// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
-//
-// Placeholders can now contain order information, e.g. instead of
-// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
-// translators to re-order the output of data while ensuring it remains correct
-//
-// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-//
-// Some characters you may want to copy&paste:
-// ’ » “ ” …
-//
-
 $lang = array_merge($lang, array(
 	'TRANSLATION_INFO'	=> '',
 	'DIRECTION'			=> 'ltr',
@@ -51,7 +35,6 @@ $lang = array_merge($lang, array(
 	'ACCOUNT_NOT_ACTIVATED'			=> 'Your account has not been activated yet.',
 	'ACP'							=> 'Administration Control Panel',
 	'ACTIVE'						=> 'active',
-	'ACTIVE_ERROR'					=> 'The specified username is currently inactive. If you have problems activating your account, please contact a board administrator.',
 	'ADMINISTRATOR'					=> 'Administrator',
 	'ADMINISTRATORS'				=> 'Administrators',
 	'AGE'							=> 'Age',
@@ -88,15 +71,16 @@ $lang = array_merge($lang, array(
 
 	'BACK_TO_TOP'			=> 'Top',
 	'BACK_TO_PREV'			=> 'Back to previous page',
-	'BAN_TRIGGERED_BY_EMAIL'=> 'A ban has been issued on your e-mail address.',
-	'BAN_TRIGGERED_BY_IP'	=> 'A ban has been issued on your IP address.',
-	'BAN_TRIGGERED_BY_USER'	=> 'A ban has been issued on your username.',
+	'BAN_TRIGGERED_BY_EMAIL'=> 'Your e-mail address is in ban list.',
+	'BAN_TRIGGERED_BY_IP'	=> 'Your IP address is in ban list.',
+	'BAN_TRIGGERED_BY_USER'	=> 'Your username is in ban list.',
 	'BBCODE_GUIDE'			=> 'BBCode guide',
 	'BCC'					=> 'BCC',
 	'BIRTHDAYS'				=> 'Birthdays',
-	'BOARD_BAN_PERM'		=> 'You have been <strong>permanently</strong> banned from this board.<br /><br />Please contact the %2$sBoard Administrator%3$s for more information.',
-	'BOARD_BAN_REASON'		=> 'Reason given for ban: <strong>%s</strong>',
-	'BOARD_BAN_TIME'		=> 'You have been banned from this board until <strong>%1$s</strong>.<br /><br />Please contact the %2$sBoard Administrator%3$s for more information.',
+	'BOARD_BAN_PERM'		=> 'You have been <strong>permanently</strong> banned from this board.',
+	'BOARD_BAN_TIME'		=> 'You have been banned from this board until <strong>%s</strong>.',
+	'BOARD_BAN_REASON'		=> '<br /><br />Reason: <strong>%s</strong><br /><br />',
+	'BOARD_BAN_CONTACT'		=> 'Please contact the %sBoard Administrator%s for more information.',
 	'BOARD_DISABLE'			=> 'Sorry but this board is currently unavailable.',
 	'BOARD_DISABLED'		=> 'This board is currently disabled.',
 	'BOARD_RULES'			=> 'Board rules',
@@ -125,7 +109,6 @@ $lang = array_merge($lang, array(
 	'CONGRATULATIONS'		=> 'Congratulations to',
 	'CONNECTION_FAILED'		=> 'Connection failed.',
 	'CONNECTION_SUCCESS'	=> 'Connection was successful!',
-	'COOKIES_DELETED'		=> 'All board cookies successfully deleted.',
 	'CREATION_TIME'			=> 'Creation time',
 	'CURRENT_TIME'			=> 'It is currently %s',
 
@@ -134,7 +117,6 @@ $lang = array_merge($lang, array(
 	'DEFAULT'				=> 'Default',
 	'DELETE'				=> 'Delete',
 	'DELETE_ALL'			=> 'Delete all',
-	'DELETE_COOKIES'		=> 'Delete all board cookies',
 	'DELETE_MARKED'			=> 'Delete marked',
 	'DELETE_POST'			=> 'Delete post',
 	'DELIMITER'				=> 'Delimiter',
@@ -244,7 +226,6 @@ $lang = array_merge($lang, array(
 	'G_BOTS'					=> 'Bots',
 	'G_GUESTS'					=> 'Guests',
 	'G_REGISTERED'				=> 'Registered users',
-	'G_REGISTERED_COPPA'		=> 'Registered COPPA users',
 	'G_GLOBAL_MODERATORS'		=> 'Global moderators',
 	'G_NEWLY_REGISTERED'		=> 'Newly registered users',
 
@@ -295,11 +276,12 @@ $lang = array_merge($lang, array(
 	'LOGIN_CONFIRM_EXPLAIN'				=> 'To prevent brute forcing accounts the board requires you to enter a confirmation code after a maximum amount of failed logins. The code is displayed in the image you should see below. If you are visually impaired or cannot otherwise read this code please contact the %sBoard Administrator%s.', // unused
 	'LOGIN_ERROR_ATTEMPTS'				=> 'You exceeded the maximum allowed number of login attempts. In addition to your username and password you now also have to solve the CAPTCHA below.',
 	'LOGIN_ERROR_EXTERNAL_AUTH_APACHE'	=> 'You have not been authenticated by Apache.',
-	'LOGIN_ERROR_PASSWORD'				=> 'You have specified an incorrect password. Please check your password and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
-	'LOGIN_ERROR_PASSWORD_CONVERT'		=> 'It was not possible to convert your password when updating this bulletin board’s software. Please %srequest a new password%s. If you continue to have problems please contact the %sBoard Administrator%s.',
-	'LOGIN_ERROR_USERNAME'				=> 'You have specified an incorrect username. Please check your username and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_INACTIVE'				=> 'The specified username is inactive. If you have problems activating your account, please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_PASSWORD'				=> 'You have specified an incorrect password. Please check your password and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_PASSWORD_CONVERT'		=> 'It was not possible to convert your password when updating this bulletin board’s software. Please %srequest a new password%s. If you continue to have problems, please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_USERNAME'				=> 'You have specified an incorrect username. Please check your username and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
 	'LOGIN_FORUM'						=> 'To view or post in this forum you must enter its password.',
-	'LOGIN_INFO'						=> 'In order to login you must be registered. Registering takes only a few moments but gives you increased capabilities. The board administrator may also grant additional permissions to registered users. Before you register please ensure you are familiar with our terms of use and related policies. Please ensure you read any forum rules as you navigate around the board.',
+	'LOGIN_INFO'						=> 'In order to login you must be registered. Registering takes only a few moments but gives you increased capabilities. Before you register please ensure you are familiar with our terms of use. Please ensure you read any forum rules as you navigate around the board.',
 	'LOGIN_VIEWFORUM'					=> 'The board requires you to be registered and logged in to view this forum.',
 	'LOGIN_EXPLAIN_EDIT'				=> 'In order to edit posts in this forum you have to be registered and logged in.',
 	'LOGIN_EXPLAIN_VIEWONLINE'			=> 'In order to view the online list you have to be registered and logged in.',
@@ -937,8 +919,8 @@ $lang = array_merge($lang, array(
 
 	// Login via E-Mail
 	'USERNAME_OR_EMAIL'					=> 'Username or E-Mail',
-	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'You have specified an incorrect username or e-mail address. Please check your entry and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
-	'LOGIN_ERROR_EMAIL'					=> 'You have specified an incorrect e-mail address. Please check your e-mail address and try again. If you continue to have problems please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'You have specified an incorrect username or e-mail address. Please check your entry and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_EMAIL'					=> 'You have specified an incorrect e-mail address. Please check your e-mail address and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
 
 	// Advanced Warnings
 	'USER_WARNING'			=> 'Warning',

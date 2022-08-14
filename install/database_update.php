@@ -141,6 +141,38 @@ if (version_compare($row['config_value'], '1.9.5', '<'))
 
 if (version_compare($row['config_value'], '1.9.6', '<'))
 {
+	// The COPPA group is not special anymore.
+
+	$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA'");
+	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('coppa_enable', 'coppa_mail', 'coppa_fax')");
+
+	// Drop fulltext search index if present.
+
+	$drop_indexes = [];
+
+	$sql = 'SHOW INDEX FROM ' . POSTS_TABLE;
+	$result = $db->sql_query($sql);
+	while ($row = $db->sql_fetchrow($result))
+	{
+		if ($row['Index_type'] == 'FULLTEXT' && in_array($row['Key_name'], ['post_text', 'post_subject', 'post_content']))
+		{
+			$drop_indexes[] = $row['Key_name'];
+		}
+	}
+	$db->sql_freeresult($result);
+
+	if ($drop_indexes)
+	{
+		$sql = 'ALTER TABLE ' . POSTS_TABLE;
+		for ($i = 0; $i < count($drop_indexes); $i++)
+		{
+			$sql .= ($i == 0 ? ' ' : ', ') . 'DROP INDEX ' . $drop_indexes[$i];
+		}
+		$result = $db->sql_query($sql);
+	}
+
+	// Convert tables to InnoDB with utf8mb4 encoding.
+
 	$convert_tables = [];
 
 	$sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$table_prefix}%' AND `Collation` <> 'utf8mb4_bin'";
@@ -153,8 +185,7 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 
 	foreach ($convert_tables as $table)
 	{
-		$db->sql_query("ALTER TABLE `{$table}` DEFAULT CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
-		$db->sql_query("ALTER TABLE `{$table}` CONVERT TO CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
+		$db->sql_query("ALTER TABLE `{$table}` ENGINE=InnoDB, CONVERT TO CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
 	}
 
 	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci");

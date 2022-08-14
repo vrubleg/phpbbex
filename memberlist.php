@@ -1397,14 +1397,7 @@ switch ($mode)
 			if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
 			{
 				$sql = 'SELECT group_id, group_name, group_type
-					FROM ' . GROUPS_TABLE;
-
-				if (!$config['coppa_enable'])
-				{
-					$sql .= " WHERE group_name <> 'REGISTERED_COPPA'";
-				}
-
-				$sql .= ' ORDER BY group_name ASC';
+					FROM ' . GROUPS_TABLE . ' ORDER BY group_name ASC';
 			}
 			else
 			{
@@ -1416,14 +1409,8 @@ switch ($mode)
 							AND ug.user_id = ' . $user->data['user_id'] . '
 							AND ug.user_pending = 0
 						)
-					WHERE (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
-
-				if (!$config['coppa_enable'])
-				{
-					$sql .= " AND g.group_name <> 'REGISTERED_COPPA'";
-				}
-
-				$sql .= ' ORDER BY g.group_name ASC';
+					WHERE (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')
+					ORDER BY g.group_name ASC';
 			}
 			$result = $db->sql_query($sql);
 

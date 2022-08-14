@@ -134,53 +134,6 @@ switch ($mode)
 
 	break;
 
-	case 'delete_cookies':
-
-		// Delete Cookies with dynamic names (do NOT delete poll cookies)
-		if (confirm_box(true))
-		{
-			$set_time = time() - 31536000;
-
-			foreach ($_COOKIE as $cookie_name => $cookie_data)
-			{
-				// Only delete board cookies, no other ones...
-				if (strpos($cookie_name, $config['cookie_name'] . '_') !== 0 || $cookie_name == $config['cookie_name'] . '_bid')
-				{
-					continue;
-				}
-
-				$cookie_name = str_replace($config['cookie_name'] . '_', '', $cookie_name);
-
-				// Polls are stored as {cookie_name}_poll_{topic_id}, cookie_name_ got removed, therefore checking for poll_
-				if (strpos($cookie_name, 'poll_') !== 0)
-				{
-					$user->set_cookie($cookie_name, '', $set_time);
-				}
-			}
-
-			$user->set_cookie('track', '', $set_time);
-			$user->set_cookie('u', '', $set_time);
-			$user->set_cookie('k', '', $set_time);
-			$user->set_cookie('sid', '', $set_time);
-
-			// We destroy the session here, the user will be logged out nevertheless
-			$user->session_kill();
-			$user->session_begin();
-
-			meta_refresh(3, append_sid("{$phpbb_root_path}index.$phpEx"));
-
-			$message = $user->lang['COOKIES_DELETED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
-			trigger_error($message);
-		}
-		else
-		{
-			confirm_box(false, 'DELETE_COOKIES', '');
-		}
-
-		redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
-
-	break;
-
 	case 'switch_perm':
 
 		$user_id = request_var('u', 0);

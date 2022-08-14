@@ -2304,11 +2304,6 @@ class acp_users
 				$s_group_options = '';
 				while ($row = $db->sql_fetchrow($result))
 				{
-					if (!$config['coppa_enable'] && $row['group_name'] == 'REGISTERED_COPPA')
-					{
-						continue;
-					}
-
 					// Do not display those groups not allowed to be managed
 					if ($user->data['user_type'] != USER_FOUNDER && $row['group_founder_manage'])
 					{

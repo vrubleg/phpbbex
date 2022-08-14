@@ -886,95 +886,6 @@ function phpbb_is_writable($file)
 	}
 }
 
-// Compatibility functions
-
-if (!function_exists('array_combine'))
-{
-	/**
-	* A wrapper for the PHP5 function array_combine()
-	* @param array $keys contains keys for the resulting array
-	* @param array $values contains values for the resulting array
-	*
-	* @return Returns an array by using the values from the keys array as keys and the
-	* 	values from the values array as the corresponding values. Returns false if the
-	* 	number of elements for each array isn't equal or if the arrays are empty.
-	*/
-	function array_combine($keys, $values)
-	{
-		$keys = array_values($keys);
-		$values = array_values($values);
-
-		$n = sizeof($keys);
-		$m = sizeof($values);
-		if (!$n || !$m || ($n != $m))
-		{
-			return false;
-		}
-
-		$combined = array();
-		for ($i = 0; $i < $n; $i++)
-		{
-			$combined[$keys[$i]] = $values[$i];
-		}
-		return $combined;
-	}
-}
-
-if (!function_exists('str_split'))
-{
-	/**
-	* A wrapper for the PHP5 function str_split()
-	* @param array $string contains the string to be converted
-	* @param array $split_length contains the length of each chunk
-	*
-	* @return  Converts a string to an array. If the optional split_length parameter is specified,
-	*  	the returned array will be broken down into chunks with each being split_length in length,
-	*  	otherwise each chunk will be one character in length. FALSE is returned if split_length is
-	*  	less than 1. If the split_length length exceeds the length of string, the entire string is
-	*  	returned as the first (and only) array element.
-	*/
-	function str_split($string, $split_length = 1)
-	{
-		if ($split_length < 1)
-		{
-			return false;
-		}
-		else if ($split_length >= strlen($string))
-		{
-			return array($string);
-		}
-		else
-		{
-			preg_match_all('#.{1,' . $split_length . '}#s', $string, $matches);
-			return $matches[0];
-		}
-	}
-}
-
-if (!function_exists('stripos'))
-{
-	/**
-	* A wrapper for the PHP5 function stripos
-	* Find position of first occurrence of a case-insensitive string
-	*
-	* @param string $haystack is the string to search in
-	* @param string $needle is the string to search for
-	*
-	* @return mixed Returns the numeric position of the first occurrence of needle in the haystack string. Unlike strpos(), stripos() is case-insensitive.
-	* Note that the needle may be a string of one or more characters.
-	* If needle is not found, stripos() will return boolean FALSE.
-	*/
-	function stripos($haystack, $needle)
-	{
-		if (preg_match('#' . preg_quote($needle, '#') . '#i', $haystack, $m))
-		{
-			return strpos($haystack, $m[0]);
-		}
-
-		return false;
-	}
-}
-
 /**
 * Checks if a path ($path) is absolute or relative
 *
@@ -3130,9 +3041,9 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				$err = $user->lang[$result['error_msg']];
 
 				// Assign admin contact to some error messages
-				if ($result['error_msg'] == 'LOGIN_ERROR_USERNAME_OR_EMAIL' || $result['error_msg'] == 'LOGIN_ERROR_USERNAME' || $result['error_msg'] == 'LOGIN_ERROR_EMAIL' || $result['error_msg'] == 'LOGIN_ERROR_PASSWORD')
+				if ($result['error_msg'] == 'LOGIN_ERROR_USERNAME_OR_EMAIL' || $result['error_msg'] == 'LOGIN_ERROR_USERNAME' || $result['error_msg'] == 'LOGIN_ERROR_EMAIL' || $result['error_msg'] == 'LOGIN_ERROR_PASSWORD' || $result['error_msg'] == 'LOGIN_ERROR_INACTIVE')
 				{
-					$err = (!$config['board_contact']) ? sprintf($user->lang[$result['error_msg']], '', '') : sprintf($user->lang[$result['error_msg']], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>');
+					$err = empty($config['board_contact']) ? sprintf($user->lang[$result['error_msg']], '', '') : sprintf($user->lang[$result['error_msg']], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>');
 				}
 
 			break;
@@ -4546,7 +4457,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'U_SEARCH_UNANSWERED'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unanswered'),
 		'U_SEARCH_UNREAD'		=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unreadposts'),
 		'U_SEARCH_ACTIVE_TOPICS'=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=active_topics'),
-		'U_DELETE_COOKIES'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=delete_cookies'),
 		'U_TEAM'				=> ($user->data['user_id'] != ANONYMOUS && !$auth->acl_get('u_viewprofile')) ? '' : append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=leaders'),
 		'U_TERMS_USE'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=terms'),
 		'U_PRIVACY'				=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=privacy'),

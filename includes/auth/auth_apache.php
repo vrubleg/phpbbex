@@ -94,8 +94,8 @@ function login_apache(&$username, &$password)
 			if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
 			{
 				return array(
-					'status'		=> LOGIN_ERROR_ACTIVE,
-					'error_msg'		=> 'ACTIVE_ERROR',
+					'status'		=> LOGIN_ERROR_INACTIVE,
+					'error_msg'		=> 'LOGIN_ERROR_INACTIVE',
 					'user_row'		=> $row,
 				);
 			}

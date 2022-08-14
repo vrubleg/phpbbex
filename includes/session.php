@@ -1291,14 +1291,34 @@ class phpbb_session
 				$this->session_create(ANONYMOUS);
 			}
 
+			// Determine what message to output.
+			$message = [];
 
-			// Determine which message to output
-			$till_date = ($ban_row['ban_end']) ? $this->format_date($ban_row['ban_end']) : '';
-			$message = ($ban_row['ban_end']) ? 'BOARD_BAN_TIME' : 'BOARD_BAN_PERM';
+			if ($ban_row['ban_end'])
+			{
+				$message[] = sprintf($this->lang['BOARD_BAN_TIME'], $this->format_date($ban_row['ban_end']));
+			}
+			else
+			{
+				$message[] = $this->lang['BOARD_BAN_PERM'];
+			}
 
-			$message = sprintf($this->lang[$message], $till_date, '<a href="mailto:' . $config['board_contact'] . '">', '</a>');
-			$message .= ($ban_row['ban_give_reason']) ? '<br /><br />' . sprintf($this->lang['BOARD_BAN_REASON'], $ban_row['ban_give_reason']) : '';
-			$message .= '<br /><br /><em>' . $this->lang['BAN_TRIGGERED_BY_' . strtoupper($ban_triggered_by)] . '</em>';
+			if ($ban_triggered_by != 'user')
+			{
+				$message[] = $this->lang['BAN_TRIGGERED_BY_' . strtoupper($ban_triggered_by)];
+			}
+
+			if ($ban_row['ban_give_reason'])
+			{
+				$message[] = sprintf($this->lang['BOARD_BAN_REASON'], $ban_row['ban_give_reason']);
+			}
+
+			if (!empty($config['board_contact']))
+			{
+				$message[] = sprintf($this->lang['BOARD_BAN_CONTACT'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>');
+			}
+
+			$message = implode(' ', $message);
 
 			// To circumvent session_begin returning a valid value and the check_ban() not called on second page view, we kill the session again
 			$this->session_kill(false);

@@ -167,13 +167,11 @@ function group_select_options($group_id, $exclude_ids = false, $manage_founder =
 	global $db, $user, $config;
 
 	$exclude_sql = ($exclude_ids !== false && sizeof($exclude_ids)) ? 'WHERE ' . $db->sql_in_set('group_id', array_map('intval', $exclude_ids), true) : '';
-	$sql_and = (!$config['coppa_enable']) ? (($exclude_sql) ? ' AND ' : ' WHERE ') . "group_name <> 'REGISTERED_COPPA'" : '';
-	$sql_founder = ($manage_founder !== false) ? (($exclude_sql || $sql_and) ? ' AND ' : ' WHERE ') . 'group_founder_manage = ' . (int) $manage_founder : '';
+	$sql_founder = ($manage_founder !== false) ? ($exclude_sql ? ' AND ' : ' WHERE ') . 'group_founder_manage = ' . (int) $manage_founder : '';
 
 	$sql = 'SELECT group_id, group_name, group_type
 		FROM ' . GROUPS_TABLE . "
 		$exclude_sql
-		$sql_and
 		$sql_founder
 		ORDER BY group_type DESC, group_name ASC";
 	$result = $db->sql_query($sql);

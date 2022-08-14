@@ -315,5 +315,9 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_register_log
 ALTER TABLE phpbb_users ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype;
 INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1);
 
+-- phpBBex 1.9.6
+UPDATE phpbb_groups SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA';
+DELETE FROM phpbb_config WHERE config_name IN ('coppa_enable', 'coppa_mail', 'coppa_fax');
+
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.5');
