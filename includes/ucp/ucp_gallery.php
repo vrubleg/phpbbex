@@ -23,6 +23,9 @@ if (!defined('IN_PHPBB'))
 class ucp_gallery
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 
 	function main($id, $mode)
 	{
@@ -666,7 +669,7 @@ class ucp_gallery
 				phpbb_gallery_auth::set_user_permissions('all', '');
 			}
 
-			$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . ' 
+			$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $album_data) . '
 					WHERE album_id  = ' . (int) $album_id;
 			$db->sql_query($sql);

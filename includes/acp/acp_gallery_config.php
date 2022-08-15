@@ -26,6 +26,9 @@ if (!defined('IN_PHPBB'))
 class acp_gallery_config
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 	var $new_config = array();
 
 	function main($id, $mode)
