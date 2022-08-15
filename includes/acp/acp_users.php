@@ -12,8 +12,11 @@ if (!defined('IN_PHPBB'))
 
 class acp_users
 {
-	var $u_action;
 	var $p_master;
+	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 
 	function __construct(&$p_master)
 	{

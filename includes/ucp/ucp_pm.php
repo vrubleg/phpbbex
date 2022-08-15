@@ -33,6 +33,11 @@ if (!defined('IN_PHPBB'))
 class ucp_pm
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
+
+	var $p_name;
 
 	function main($id, $mode)
 	{

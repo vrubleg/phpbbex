@@ -19,6 +19,7 @@ class phpbb_auth
 	var $cache = array();
 	var $acl_options = array();
 	var $acl_forum_ids = false;
+	var $role_cache = array();
 
 	/**
 	* Init permissions

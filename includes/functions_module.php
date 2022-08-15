@@ -20,12 +20,18 @@ class p_master
 	var $p_name;
 	var $p_mode;
 	var $p_parent;
+	var $p_left;
+	var $p_right;
+	var $module;
 
 	var $include_path = false;
 	var $active_module = false;
 	var $active_module_row_id = false;
 	var $acl_forum_id = false;
 	var $module_ary = array();
+
+	var $module_cache = array();
+	var $loaded_cache = array();
 
 	/**
 	* Constuctor

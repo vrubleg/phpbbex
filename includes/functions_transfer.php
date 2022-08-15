@@ -228,7 +228,7 @@ class transfer
 	/**
 	* Determine methods able to be used
 	*/
-	function methods()
+	static function methods()
 	{
 		$methods = array();
 		$disabled_functions = explode(',', @ini_get('disable_functions'));

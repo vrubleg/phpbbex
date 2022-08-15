@@ -12,6 +12,11 @@ if (!defined('IN_PHPBB'))
 
 class acp_outlinks
 {
+	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
+
 	function load_out_links()
 	{
 		global $config;
@@ -57,7 +62,6 @@ class acp_outlinks
 		set_config('outlinks', $outlinks);
 	}
 
-	var $u_action;
 	function main($acp_id, $acp_mode)
 	{
 		global $db, $user, $auth, $template, $cache;

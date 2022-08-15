@@ -13,6 +13,9 @@ if (!defined('IN_PHPBB'))
 class acp_forums
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 	var $parent_id = 0;
 
 	function main($id, $mode)

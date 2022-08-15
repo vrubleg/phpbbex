@@ -15,8 +15,11 @@ if (!defined('IN_PHPBB'))
 */
 class mcp_logs
 {
-	var $u_action;
 	var $p_master;
+	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 
 	function __construct(&$p_master)
 	{

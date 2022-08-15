@@ -13,6 +13,9 @@ if (!defined('IN_PHPBB'))
 class acp_styles
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 
 	var $style_cfg;
 	var $template_cfg;

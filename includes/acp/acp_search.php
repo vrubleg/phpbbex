@@ -13,6 +13,10 @@ if (!defined('IN_PHPBB'))
 class acp_search
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
+
 	var $state;
 	var $search;
 	var $max_post_id;

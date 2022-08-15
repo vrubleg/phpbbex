@@ -19,6 +19,7 @@ class phpbb_session
 	var $page = array();
 	var $data = array();
 	var $browser = '';
+	var $referer = '';
 	var $forwarded_for = '';
 	var $host = '';
 	var $session_id = '';
@@ -1587,12 +1588,12 @@ class phpbb_user extends phpbb_session
 	var $date_format;
 	var $timezone;
 	var $dst;
-
 	var $lang_name = false;
 	var $lang_id = false;
 	var $lang_path;
 	var $img_lang;
 	var $img_array = array();
+	var $profile_fields;
 
 	// Able to add new options (up to id 31)
 	var $keyoptions = array('viewimg' => 0, 'viewflash' => 1, 'viewsmilies' => 2, 'viewsigs' => 3, 'viewavatars' => 4, 'viewcensors' => 5, 'attachsig' => 6, 'bbcode' => 8, 'smilies' => 9, 'popuppm' => 10, 'viewquickreply' => 11, 'viewquickpost' => 12, 'sig_bbcode' => 15, 'sig_smilies' => 16, 'sig_links' => 17);

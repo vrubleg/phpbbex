@@ -16,6 +16,9 @@ if (!defined('IN_PHPBB'))
 class ucp_resend
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 
 	function main($id, $mode)
 	{
