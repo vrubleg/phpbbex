@@ -13,6 +13,10 @@ if (!defined('IN_PHPBB'))
 class acp_logs
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
+	var $log_type;
 
 	function main($id, $mode)
 	{

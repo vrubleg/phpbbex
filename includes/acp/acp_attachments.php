@@ -13,6 +13,9 @@ if (!defined('IN_PHPBB'))
 class acp_attachments
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 	var $new_config;
 
 	function main($id, $mode)

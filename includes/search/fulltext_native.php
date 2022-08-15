@@ -988,7 +988,7 @@ class fulltext_native extends search_backend
 			// Count rows for the executed queries. Replace $select within $sql with SQL_CALC_FOUND_ROWS, and run it.
 			$sql = str_replace('SELECT ' . $select, 'SELECT DISTINCT SQL_CALC_FOUND_ROWS p.post_id', $sql);
 
-			$db->sql_query($sql);
+			$result = $db->sql_query($sql);
 			$db->sql_freeresult($result);
 
 			$sql = 'SELECT FOUND_ROWS() as total_results';

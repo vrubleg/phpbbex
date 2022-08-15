@@ -13,6 +13,9 @@ if (!defined('IN_PHPBB'))
 class acp_permissions
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 	var $permission_dropdown;
 
 	function main($id, $mode)

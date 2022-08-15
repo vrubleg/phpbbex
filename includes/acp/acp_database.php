@@ -14,6 +14,9 @@ class acp_database
 {
 	var $db_tools;
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 
 	function main($id, $mode)
 	{

@@ -13,6 +13,9 @@ if (!defined('IN_PHPBB'))
 class acp_profile
 {
 	var $u_action;
+	var $module_path;
+	var $tpl_name;
+	var $page_title;
 
 	var $edit_lang_id;
 	var $lang_defs;
