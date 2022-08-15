@@ -1177,7 +1177,6 @@ while ($row = $db->sql_fetchrow($result))
 				'pm'				=> '',
 				'email'				=> '',
 				'www'				=> '',
-				'icq_status_img'	=> '',
 				'icq'				=> '',
 				'jabber'			=> '',
 				'skype'				=> '',
@@ -1245,6 +1244,7 @@ while ($row = $db->sql_fetchrow($result))
 				'online'		=> false,
 				'profile'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=viewprofile&amp;u=$poster_id"),
 				'www'			=> $row['user_website'],
+				'icq'			=> ($row['user_icq']) ? ('https://icq.im/' . urlencode($row['user_icq'])) : '',
 				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
 				'skype'			=> ($row['user_skype']) ? ('skype:' . $row['user_skype'] . '?chat') : '',
 				'telegram'		=> ($row['user_telegram']) ? ('tg://resolve?domain=' . $row['user_telegram']) : '',
@@ -1265,17 +1265,6 @@ while ($row = $db->sql_fetchrow($result))
 			else
 			{
 				$user_cache[$poster_id]['email'] = '';
-			}
-
-			if (!empty($row['user_icq']))
-			{
-				$user_cache[$poster_id]['icq'] = 'http://www.icq.com/people/' . urlencode($row['user_icq']) . '/';
-				$user_cache[$poster_id]['icq_status_img'] = '<img src="http://web.icq.com/whitepages/online?icq=' . $row['user_icq'] . '&amp;img=5" width="18" height="18" alt="" />';
-			}
-			else
-			{
-				$user_cache[$poster_id]['icq_status_img'] = '';
-				$user_cache[$poster_id]['icq'] = '';
 			}
 
 			if ($config['allow_birthdays'] && !empty($row['user_birthday']))
@@ -1715,7 +1704,6 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_ICON_IMG'			=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
 		'POST_ICON_IMG_WIDTH'	=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
 		'POST_ICON_IMG_HEIGHT'	=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['height'] : '',
-		'ICQ_STATUS_IMG'		=> $user_cache[$poster_id]['icq_status_img'],
 		'ONLINE_IMG'			=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$poster_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
 		'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($user_cache[$poster_id]['online']) ? true : false),
 
