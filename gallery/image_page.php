@@ -515,7 +515,6 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 				'POSTER_RATED_POSITIVE'		=> $user_cache[$user_id]['rated_positive'],
 				'POSTER_RATED_NEGATIVE'		=> $user_cache[$user_id]['rated_negative'],
 
-				'ICQ_STATUS_IMG'	=> $user_cache[$user_id]['icq_status_img'],
 				'ONLINE_IMG'		=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$user_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
 				'S_ONLINE'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($user_cache[$user_id]['online']) ? true : false),
 
@@ -610,7 +609,6 @@ if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_us
 		'POSTER_RATED_POSITIVE'		=> $user_cache[$user_id]['rated_positive'],
 		'POSTER_RATED_NEGATIVE'		=> $user_cache[$user_id]['rated_negative'],
 
-		'POSTER_ICQ_STATUS_IMG'		=> $user_cache[$user_id]['icq_status_img'],
 		'POSTER_ONLINE_IMG'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$user_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
 		'S_POSTER_ONLINE'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($user_cache[$user_id]['online']) ? true : false),
 

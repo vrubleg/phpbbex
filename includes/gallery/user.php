@@ -431,7 +431,6 @@ class phpbb_gallery_user
 				'pm'				=> '',
 				'email'				=> '',
 				'www'				=> '',
-				'icq_status_img'	=> '',
 				'icq'				=> '',
 				'jabber'			=> '',
 				'skype'				=> '',
@@ -501,6 +500,7 @@ class phpbb_gallery_user
 				'online'		=> false,
 				'profile'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=viewprofile&amp;u=$user_id"),
 				'www'			=> $row['user_website'],
+				'icq'			=> ($row['user_icq']) ? ('https://icq.im/' . urlencode($row['user_icq'])) : '',
 				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
 				'skype'			=> ($row['user_skype']) ? ('skype:' . $row['user_skype'] . '?chat') : '',
 				'telegram'		=> ($row['user_telegram']) ? ('tg://resolve?domain=' . $row['user_telegram']) : '',
@@ -520,17 +520,6 @@ class phpbb_gallery_user
 			else
 			{
 				$user_cache[$user_id]['email'] = '';
-			}
-
-			if (!empty($row['user_icq']))
-			{
-				$user_cache[$user_id]['icq'] = 'http://www.icq.com/people/webmsg.php?to=' . $row['user_icq'];
-				$user_cache[$user_id]['icq_status_img'] = '<img src="http://web.icq.com/whitepages/online?icq=' . $row['user_icq'] . '&amp;img=5" width="18" height="18" alt="" />';
-			}
-			else
-			{
-				$user_cache[$user_id]['icq_status_img'] = '';
-				$user_cache[$user_id]['icq'] = '';
 			}
 
 			if ($config['allow_birthdays'] && !empty($row['user_birthday']))
