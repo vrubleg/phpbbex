@@ -146,6 +146,12 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 	$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA'");
 	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('coppa_enable', 'coppa_mail', 'coppa_fax')");
 
+	// Delete obsolete AIM, YIM, and MSN columns that always were unused in phpBBex.
+
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_aim");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_yim");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_msnm");
+
 	// Drop fulltext search index if present.
 
 	$drop_indexes = [];

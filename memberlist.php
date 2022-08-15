@@ -1727,7 +1727,6 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'S_ONLINE'			=> ($config['load_onlinetrack'] && $online) ? true : false,
 		'RANK_IMG'			=> $rank_img,
 		'RANK_IMG_SRC'		=> $rank_img_src,
-		'ICQ_STATUS_IMG'	=> (!empty($data['user_icq'])) ? '<img src="http://web.icq.com/whitepages/online?icq=' . $data['user_icq'] . '&amp;img=5" width="18" height="18" />' : '',
 		'S_JABBER_ENABLED'	=> ($config['jab_enable']) ? true : false,
 
 		'S_WARNINGS'	=> ($auth->acl_getf_global('m_') || $auth->acl_get('m_warn')) ? true : false,
@@ -1740,7 +1739,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_EMAIL'		=> $email,
 		'U_WWW'			=> (!empty($data['user_website'])) ? $data['user_website'] : '',
 		'U_SHORT_WWW'			=> (!empty($data['user_website'])) ? ((strlen($data['user_website']) > 55) ? substr($data['user_website'], 0, 39) . ' ... ' . substr($data['user_website'], -10) : $data['user_website']) : '',
-		'U_ICQ'			=> ($data['user_icq']) ? 'http://www.icq.com/people/' . urlencode($data['user_icq']) . '/' : '',
+		'U_ICQ'			=> ($data['user_icq']) ? 'https://icq.im/' . urlencode($data['user_icq']) : '',
 		'U_JABBER'		=> ($data['user_jabber']) ? ('xmpp:' . $data['user_jabber']) : '',
 		'U_SKYPE'		=> ($data['user_skype']) ? ('skype:' . $data['user_skype'] . '?chat') : '',
 		'U_TELEGRAM'	=> ($data['user_telegram']) ? ('tg://resolve?domain=' . $data['user_telegram']) : '',

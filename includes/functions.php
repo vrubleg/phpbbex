@@ -2903,7 +2903,11 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 	// Make sure user->setup() has been called
 	if (empty($user->lang))
 	{
-		$user->setup();
+		$user->setup('ucp');
+	}
+	else
+	{
+		$user->add_lang('ucp');
 	}
 
 	// Print out error if user tries to authenticate as an administrator without having the privileges...

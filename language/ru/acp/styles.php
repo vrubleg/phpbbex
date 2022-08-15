@@ -15,18 +15,6 @@ if (empty($lang) || !is_array($lang))
 	$lang = array();
 }
 
-// DEVELOPERS PLEASE NOTE
-//
-// All language files should use UTF-8 as their encoding and the files must not contain a BOM.
-//
-// Placeholders can now contain order information, e.g. instead of
-// 'Page %s of %s' you can (and should) write 'Page %1$s of %2$s', this allows
-// translators to re-order the output of data while ensuring it remains correct
-//
-// You do not need this where single placeholders are used, e.g. 'Message %d' is fine
-// equally where a string contains only two placeholders which are used to wrap text
-// in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
-
 $lang = array_merge($lang, array(
 	'ACP_IMAGESETS_EXPLAIN'	=> 'Наборы изображений включают в себя все используемые форумом картинки кнопок, разделов, папок и т. п., а также другие, не относящиеся к конкретным стилям изображения. Здесь вы можете редактировать, экспортировать или удалять существующие наборы изображений и импортировать или активировать новые.',
 	'ACP_STYLES_EXPLAIN'	=> 'Здесь вы можете управлять стилями, доступными на форуме. Стиль состоит из шаблона, темы и набора изображений. Вы можете изменять существующие стили, удалять, деактивировать, повторно активировать, создавать их или импортировать новые. Вы также можете увидеть, как будет выглядеть стиль, используя функцию предпросмотра. Текущий стиль по умолчанию помечен звёздочкой (*). Также указано общее количество пользователей для каждого стиля. Учтите, что принудительная замена стилей пользователей здесь не производится.',

@@ -233,7 +233,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 
 		'U_PM'			=> ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($user_info['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=compose&amp;u=' . $author_id) : '',
 		'U_WWW'			=> (!empty($user_info['user_website'])) ? $user_info['user_website'] : '',
-		'U_ICQ'			=> ($user_info['user_icq']) ? 'http://www.icq.com/people/' . urlencode($user_info['user_icq']) . '/' : '',
+		'U_ICQ'			=> ($user_info['user_icq']) ? 'https://icq.im/' . urlencode($user_info['user_icq']) : '',
 		'U_JABBER'		=> ($user_info['user_jabber']) ? ('xmpp:' . $user_info['user_jabber']) : '',
 		'U_SKYPE'		=> ($user_info['user_skype']) ? ('skype:' . $user_info['user_skype'] . '?chat') : '',
 		'U_TELEGRAM'	=> ($user_info['user_telegram']) ? ('tg://resolve?domain=' . $user_info['user_telegram']) : '',
