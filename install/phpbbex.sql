@@ -318,6 +318,9 @@ INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, 
 -- phpBBex 1.9.6
 UPDATE phpbb_groups SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA';
 DELETE FROM phpbb_config WHERE config_name IN ('coppa_enable', 'coppa_mail', 'coppa_fax');
+ALTER TABLE phpbb_users DROP COLUMN user_aim;
+ALTER TABLE phpbb_users DROP COLUMN user_yim;
+ALTER TABLE phpbb_users DROP COLUMN user_msnm;
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.5');
