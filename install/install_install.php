@@ -1170,20 +1170,6 @@ class install_install extends module
 		// Ok tables have been built, let's fill in the basic information
 		$sql_query = file_get_contents('schemas/schema_data.sql');
 
-		// Deal with any special comments
-		switch ($data['dbms'])
-		{
-			case 'mssql':
-			case 'mssql_odbc':
-			case 'mssqlnative':
-				$sql_query = preg_replace('#\# MSSQL IDENTITY (phpbb_[a-z_]+) (ON|OFF) \##s', 'SET IDENTITY_INSERT \1 \2;', $sql_query);
-			break;
-
-			case 'postgres':
-				$sql_query = preg_replace('#\# POSTGRES (BEGIN|COMMIT) \##s', '\1; ', $sql_query);
-			break;
-		}
-
 		// Change prefix
 		$sql_query = preg_replace('# phpbb_([^\s]*) #i', ' ' . $data['table_prefix'] . '\1 ', $sql_query);
 
