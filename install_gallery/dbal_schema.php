@@ -139,7 +139,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '0.0.0',
 			'structure'		=> array(
 				'COLUMNS'		=> array(
-					'config_name'		=> array('VCHAR:255', ''),
+					'config_name'		=> array('VCHAR:191', ''),
 					'config_value'		=> array('VCHAR:255', ''),
 				),
 				'PRIMARY_KEY'	=> 'config_name',
