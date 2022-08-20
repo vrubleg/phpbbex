@@ -151,7 +151,7 @@ if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
 	die('Error! Update database schema to at least phpBBex 1.8.0 before running this script.');
 }
 
-if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>='))
+if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>=') && request_var('mode', '') != 'utf8mb4')
 {
 	die('OK');
 }
@@ -160,6 +160,7 @@ if (version_compare($row['config_value'], '1.9.5', '<'))
 {
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
 	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.5' WHERE config_name = 'phpbbex_version'");
 }
 
 if (version_compare($row['config_value'], '1.9.6', '<'))
@@ -176,6 +177,18 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_yim");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_msnm");
 	$db->sql_return_on_error(false);
+
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
+}
+
+// Convert tables to InnoDB with utf8mb4 encoding if mode=utf8mb4.
+if (request_var('mode', '') == 'utf8mb4')
+{
+	// QA CAPTCHA tables.
+
+	@define('CAPTCHA_QUESTIONS_TABLE',  $table_prefix . 'captcha_questions');
+	@define('CAPTCHA_ANSWERS_TABLE',    $table_prefix . 'captcha_answers');
+	@define('CAPTCHA_QA_CONFIRM_TABLE', $table_prefix . 'qa_confirm');
 
 	// Drop fulltext search index if present.
 
@@ -206,7 +219,7 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 
 	$db->sql_query("UPDATE " . SEARCH_WORDLIST_TABLE . " SET word_text=SUBSTR(word_text, 1, 191) WHERE CHAR_LENGTH(word_text) > 191");
 
-	// Convert tables to InnoDB with utf8mb4 encoding.
+	// Get list of tables that are not in utf8mb4 encoding.
 
 	$convert_tables = [];
 
@@ -217,6 +230,8 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 		$convert_tables[] = $row['Name'];
 	}
 	$db->sql_freeresult($result);
+
+	// Convert tables to InnoDB with utf8mb4 encoding.
 
 	foreach ($convert_tables as $table)
 	{
@@ -279,6 +294,9 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 			case USER_CONFIRM_KEYS_TABLE:
 			case USER_BROWSER_IDS_TABLE:
 			case POST_RATES_TABLE:
+			case CAPTCHA_QUESTIONS_TABLE:
+			case CAPTCHA_ANSWERS_TABLE:
+			case CAPTCHA_QA_CONFIRM_TABLE:
 				// Use default conversion query for most tables.
 				break;
 			case CONFIG_TABLE:
@@ -331,8 +349,6 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 		if ($sql) { $db->sql_query($sql); }
 	}
 }
-
-$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '" . NEWEST_PHPBBEX_VERSION . "' WHERE config_name = 'phpbbex_version'");
 
 if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
 {
