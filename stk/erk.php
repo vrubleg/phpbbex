@@ -15,6 +15,9 @@ if (!defined('STK_DIR_NAME')) { define('STK_DIR_NAME', substr(strrchr(dirname(__
 if (!defined('STK_ROOT_PATH')) { define('STK_ROOT_PATH', './'); }
 if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.' . PHP_EXT); }
 
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
+$phpEx = substr(strrchr(__FILE__, '.'), 1);
+
 require STK_ROOT_PATH . 'includes/critical_repair.' . PHP_EXT;
 $critical_repair = new critical_repair();
 
@@ -39,7 +42,7 @@ foreach ($curr_keys as $key)
 
 if (!$allowed)
 {
-	$critical_repair->trigger_error('Run ERK through STK. If you cannot login, create an empty file at <tt>/cache/allow_erk_' . $curr_keys[0] . '.key</tt> to run ERK directly. ', false);
+	$critical_repair->trigger_error('Run ERK through STK. If you cannot login, create an empty file at <tt>/cache/allow_erk_' . $curr_keys[0] . '.key</tt> to to allow running ERK directly.', false);
 }
 
 // Try to override some limits - maybe it helps some...

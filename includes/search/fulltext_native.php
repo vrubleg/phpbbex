@@ -1051,10 +1051,10 @@ class fulltext_native extends search_backend
 
 		while (strlen($word))
 		{
-			if (strlen($word) > 255 || strlen($word) <= $isset_min)
+			if (strlen($word) > 191 || strlen($word) <= $isset_min)
 			{
 				/**
-				* Words longer than 255 bytes are ignored. This will have to be
+				* Words longer than 191 bytes are ignored. This will have to be
 				* changed whenever we change the length of search_wordlist.word_text
 				*
 				* Words shorter than $isset_min bytes are ignored, too

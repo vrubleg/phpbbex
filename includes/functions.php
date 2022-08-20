@@ -1121,18 +1121,6 @@ function phpbb_clean_path($path)
 	return $path;
 }
 
-if (!function_exists('htmlspecialchars_decode'))
-{
-	/**
-	* A wrapper for htmlspecialchars_decode
-	* @ignore
-	*/
-	function htmlspecialchars_decode($string, $quote_style = ENT_COMPAT)
-	{
-		return strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS, $quote_style)));
-	}
-}
-
 // functions used for building option fields
 
 /**
@@ -3687,7 +3675,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 				echo '<br>' . "\n";
 			}
 
-			if (isset($db))
+			if (isset($db) && $db->db_connect_id)
 			{
 				$log_text = "<b>FILE:</b> {$errfile}<br><b>LINE:</b> {$errline}<br><b>TEXT:</b> {$msg_text}";
 				if (!empty($_SERVER['REQUEST_URI'])) { $log_text .= '<br><b>PAGE:</b> ' . htmlspecialchars($_SERVER['REQUEST_URI']); }
@@ -3727,7 +3715,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 
 			$backtrace = get_backtrace(1);
 
-			if ((defined('DEBUG') || defined('IN_CRON') || defined('IMAGE_OUTPUT')) && isset($db))
+			if ((defined('DEBUG') || defined('IN_CRON') || defined('IMAGE_OUTPUT')) && isset($db) && $db->db_connect_id)
 			{
 				$log_text = $msg_text;
 				if (!empty($_SERVER['REQUEST_URI'])) { $log_text .= '<br><br><b>PAGE:</b> ' . htmlspecialchars($_SERVER['REQUEST_URI']); }

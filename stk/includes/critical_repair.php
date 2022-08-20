@@ -128,9 +128,9 @@ class critical_repair
 <!DOCTYPE html>
 <html dir="ltr">
 	<head>
-		<meta charset="UTF-8" />
+		<meta charset="utf-8" />
 		<title>Emergency Repair Kit</title>
-		<link href="<?php echo STK_ROOT_PATH; ?>style/style.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="<?php echo STK_ROOT_PATH; ?>style/style.css" rel="stylesheet" media="screen" />
 	</head>
 	<body id="errorpage">
 		<div id="wrap">
@@ -144,29 +144,27 @@ class critical_repair
 			<div id="page-body">
 				<div id="acp">
 					<div class="panel">
-						<span class="corners-top"><span></span></span>
-							<div id="content">
-								<h1>Emergency Repair Kit</h1>
+						<div id="content">
+							<h1>Emergency Repair Kit</h1>
+							<?php
+							foreach ($msg as $m)
+							{
+								echo "<p>{$m}</p>";
+							}
+							?>
+							<p>
 								<?php
-								foreach ($msg as $m)
+								if ($redirect_stk)
 								{
-									echo "<p>{$m}</p>";
+									echo '<a href="' . STK_ROOT_PATH . '">Click here to reload the STK</a>';
+								}
+								else
+								{
+									echo '<a href="' . STK_ROOT_PATH . 'erk.php">Click here to reload the ERK</a>';
 								}
 								?>
-								<p>
-									<?php
-									if ($redirect_stk)
-									{
-										echo '<a href="' . STK_ROOT_PATH . '">Click here to reload the STK</a>';
-									}
-									else
-									{
-										echo '<a href="' . STK_ROOT_PATH . 'erk.php">Click here to reload the ERK</a>';
-									}
-									?>
-								</p>
-							</div>
-						<span class="corners-bottom"><span></span></span>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>

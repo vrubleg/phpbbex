@@ -43,6 +43,33 @@ if (!$is_installed)
 	exit();
 }
 
+// Check if there is a recent allow key file, not older than 60 minutes.
+
+$time_span = intval(time() / 1200);
+$curr_keys = [
+	substr(md5($time_span - 0), 0, 8),
+	substr(md5($time_span - 1), 0, 8),
+	substr(md5($time_span - 2), 0, 8)
+];
+
+$allowed = false;
+foreach ($curr_keys as $key)
+{
+	if (file_exists($phpbb_root_path . 'cache/allow_upd_' . $key . '.key'))
+	{
+		$allowed = true;
+		break;
+	}
+}
+
+if (!$allowed)
+{
+	http_response_code(403);
+	die('Create an empty file at <tt>/cache/allow_upd_' . $curr_keys[0] . '.key</tt> to allow running the update.');
+}
+
+// We are allowed, run the update!
+
 require($phpbb_root_path . 'includes/startup.' . $phpEx);
 
 $updates_to_version = UPDATES_TO_VERSION;
@@ -76,16 +103,12 @@ require($phpbb_root_path . 'includes/cache.' . $phpEx);
 require($phpbb_root_path . 'includes/template.' . $phpEx);
 require($phpbb_root_path . 'includes/session.' . $phpEx);
 require($phpbb_root_path . 'includes/auth.' . $phpEx);
-
 require($phpbb_root_path . 'includes/functions.' . $phpEx);
-
 require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
-
 require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
 require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
 require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
-
 require($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
 
 $user = new phpbb_user();
@@ -128,7 +151,7 @@ if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
 	die('Error! Update database schema to at least phpBBex 1.8.0 before running this script.');
 }
 
-if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>='))
+if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>=') && request_var('mode', '') != 'utf8mb4')
 {
 	die('OK');
 }
@@ -137,6 +160,7 @@ if (version_compare($row['config_value'], '1.9.5', '<'))
 {
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
 	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.5' WHERE config_name = 'phpbbex_version'");
 }
 
 if (version_compare($row['config_value'], '1.9.6', '<'))
@@ -148,10 +172,18 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 
 	// Delete obsolete AIM, YIM, and MSN columns that always were unused in phpBBex.
 
+	$db->sql_return_on_error(true);
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_aim");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_yim");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_msnm");
+	$db->sql_return_on_error(false);
 
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
+}
+
+// Convert tables to InnoDB with utf8mb4 encoding if mode=utf8mb4.
+if (request_var('mode', '') == 'utf8mb4')
+{
 	// Drop fulltext search index if present.
 
 	$drop_indexes = [];
@@ -160,7 +192,7 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 	$result = $db->sql_query($sql);
 	while ($row = $db->sql_fetchrow($result))
 	{
-		if ($row['Index_type'] == 'FULLTEXT' && in_array($row['Key_name'], ['post_text', 'post_subject', 'post_content']))
+		if ($row['Index_type'] == 'FULLTEXT' && in_array($row['Key_name'], ['post_text', 'post_subject', 'post_content']) && !in_array($row['Key_name'], $drop_indexes))
 		{
 			$drop_indexes[] = $row['Key_name'];
 		}
@@ -177,7 +209,11 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 		$result = $db->sql_query($sql);
 	}
 
-	// Convert tables to InnoDB with utf8mb4 encoding.
+	// New maximum word size is 191 character. Trim existing words.
+
+	$db->sql_query("UPDATE " . SEARCH_WORDLIST_TABLE . " SET word_text=SUBSTR(word_text, 1, 191) WHERE CHAR_LENGTH(word_text) > 191");
+
+	// Get list of tables that are not in utf8mb4 encoding.
 
 	$convert_tables = [];
 
@@ -189,16 +225,155 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 	}
 	$db->sql_freeresult($result);
 
+	// Convert tables to InnoDB with utf8mb4 encoding.
+
 	foreach ($convert_tables as $table)
 	{
-		$db->sql_query("ALTER TABLE `{$table}` ENGINE=InnoDB, CONVERT TO CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
+		// "CONVERT TO CHARACTER SET `utf8mb4`" implies "DEFAULT CHARACTER SET `utf8mb4`".
+		$sql = "ALTER TABLE `{$table}` ENGINE=InnoDB, CONVERT TO CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`";
+		switch ($table)
+		{
+			case ACL_GROUPS_TABLE:
+			case ACL_OPTIONS_TABLE:
+			case ACL_ROLES_DATA_TABLE:
+			case ACL_ROLES_TABLE:
+			case ACL_USERS_TABLE:
+			case ATTACHMENTS_TABLE:
+			case BANLIST_TABLE:
+			case BBCODES_TABLE:
+			case BOOKMARKS_TABLE:
+			case BOTS_TABLE:
+			case CONFIRM_TABLE:
+			case DISALLOW_TABLE:
+			case DRAFTS_TABLE:
+			case EXTENSIONS_TABLE:
+			case EXTENSION_GROUPS_TABLE:
+			case FORUMS_TABLE:
+			case FORUMS_ACCESS_TABLE:
+			case FORUMS_TRACK_TABLE:
+			case FORUMS_WATCH_TABLE:
+			case ICONS_TABLE:
+			case LANG_TABLE:
+			case LOG_TABLE:
+			case MODERATOR_CACHE_TABLE:
+			case MODULES_TABLE:
+			case POLL_OPTIONS_TABLE:
+			case POLL_VOTES_TABLE:
+			case PRIVMSGS_TABLE:
+			case PRIVMSGS_FOLDER_TABLE:
+			case PRIVMSGS_RULES_TABLE:
+			case PRIVMSGS_TO_TABLE:
+			case PROFILE_FIELDS_TABLE:
+			case PROFILE_FIELDS_DATA_TABLE:
+			case PROFILE_FIELDS_LANG_TABLE:
+			case PROFILE_LANG_TABLE:
+			case RANKS_TABLE:
+			case REPORTS_TABLE:
+			case REPORTS_REASONS_TABLE:
+			case SEARCH_RESULTS_TABLE:
+			case SEARCH_WORDMATCH_TABLE:
+			case SESSIONS_TABLE:
+			case SESSIONS_KEYS_TABLE:
+			case SITELIST_TABLE:
+			case SMILIES_TABLE:
+			case STYLES_TEMPLATE_DATA_TABLE:
+			case STYLES_IMAGESET_DATA_TABLE:
+			case TOPICS_POSTED_TABLE:
+			case TOPICS_TRACK_TABLE:
+			case TOPICS_WATCH_TABLE:
+			case USER_GROUP_TABLE:
+			case WARNINGS_TABLE:
+			case WORDS_TABLE:
+			case ZEBRA_TABLE:
+			case USER_CONFIRM_KEYS_TABLE:
+			case USER_BROWSER_IDS_TABLE:
+			case POST_RATES_TABLE:
+			// Standard QA CAPTCHA tables.
+			case "{$table_prefix}captcha_questions":
+			case "{$table_prefix}captcha_answers":
+			case "{$table_prefix}qa_confirm":
+				// Use default conversion query for most tables.
+				break;
+			case CONFIG_TABLE:
+				$sql .= ",
+					MODIFY config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
+					MODIFY config_value varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT '' NOT NULL";
+				break;
+			case GROUPS_TABLE:
+				$sql .= ", MODIFY group_name varchar(191) DEFAULT '' NOT NULL";
+				break;
+			case LOGIN_ATTEMPT_TABLE:
+				$sql .= ",
+					MODIFY attempt_ip varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
+					MODIFY attempt_browser varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
+					MODIFY attempt_forwarded_for varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";
+				break;
+			case POSTS_TABLE:
+				$sql .= ",
+					MODIFY post_username varchar(191) DEFAULT '' NOT NULL,
+					MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci";
+				break;
+			case TOPICS_TABLE:
+				$sql .= ", MODIFY topic_title varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci";
+				break;
+			case SEARCH_WORDLIST_TABLE:
+				$sql .= ", MODIFY word_text varchar(191) DEFAULT '' NOT NULL";
+				break;
+			case STYLES_TABLE:
+				$sql .= ", MODIFY style_name varchar(100) DEFAULT '' NOT NULL";
+				break;
+			case STYLES_IMAGESET_TABLE:
+				$sql .= ", MODIFY imageset_name varchar(100) DEFAULT '' NOT NULL";
+				break;
+			case STYLES_TEMPLATE_TABLE:
+				$sql .= ", MODIFY template_name varchar(100) DEFAULT '' NOT NULL";
+				break;
+			case STYLES_THEME_TABLE:
+				$sql .= ", MODIFY theme_name varchar(100) DEFAULT '' NOT NULL";
+				break;
+			case USERS_TABLE:
+				$sql .= ",
+					MODIFY username varchar(191) DEFAULT '' NOT NULL,
+					MODIFY username_clean varchar(191) DEFAULT '' NOT NULL";
+				break;
+
+			// Simple Chat MOD tables.
+			case "{$table_prefix}chat_messages":
+			case "{$table_prefix}chat_sessions":
+				break;
+
+			// Gallery MOD tables.
+			case "{$table_prefix}gallery_albums":
+			case "{$table_prefix}gallery_albums_track":
+			case "{$table_prefix}gallery_comments":
+			case "{$table_prefix}gallery_contests":
+			case "{$table_prefix}gallery_favorites":
+			case "{$table_prefix}gallery_images":
+			case "{$table_prefix}gallery_modscache":
+			case "{$table_prefix}gallery_permissions":
+			case "{$table_prefix}gallery_rates":
+			case "{$table_prefix}gallery_reports":
+			case "{$table_prefix}gallery_roles":
+			case "{$table_prefix}gallery_users":
+			case "{$table_prefix}gallery_watch":
+				break;
+			case "{$table_prefix}gallery_config":
+				$sql .= ", MODIFY config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";
+				break;
+
+			// Portal MOD tables.
+			case "{$table_prefix}portal_config":
+				$sql .= ", MODIFY config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";
+				break;
+
+			// Skip unknown tables.
+			default:
+				$sql = null;
+				break;
+		}
+		if ($sql) { $db->sql_query($sql); }
 	}
-
-	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci");
-	$db->sql_query("ALTER TABLE " . TOPICS_TABLE . " MODIFY topic_title varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci");
 }
-
-$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '" . NEWEST_PHPBBEX_VERSION . "' WHERE config_name = 'phpbbex_version'");
 
 if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
 {
@@ -291,21 +466,13 @@ $errored = false;
 header('Content-type: text/html; charset=UTF-8');
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="<?php echo $lang['DIRECTION']; ?>" lang="<?php echo $lang['USER_LANG']; ?>" xml:lang="<?php echo $lang['USER_LANG']; ?>">
+<!DOCTYPE html>
+<html dir="<?php echo $lang['DIRECTION']; ?>" lang="<?php echo $lang['USER_LANG']; ?>" xml:lang="<?php echo $lang['USER_LANG']; ?>">
 <head>
-
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta http-equiv="content-language" content="<?php echo $lang['USER_LANG']; ?>" />
-<meta http-equiv="content-style-type" content="text/css" />
-<meta http-equiv="imagetoolbar" content="no" />
-
+<meta charset="utf-8" />
 <title><?php echo $lang['UPDATING_TO_LATEST_STABLE']; ?></title>
-
-<link href="../adm/style/admin.css" rel="stylesheet" type="text/css" media="screen" />
-
+<link href="../adm/style/admin.css" rel="stylesheet" media="screen" />
 </head>
-
 <body>
 <div id="wrap">
 	<div id="page-header">&nbsp;</div>
@@ -313,9 +480,8 @@ header('Content-type: text/html; charset=UTF-8');
 	<div id="page-body">
 		<div id="acp">
 		<div class="panel">
-			<span class="corners-top"><span></span></span>
-				<div id="content">
-					<div id="main" class="install-body">
+			<div id="content">
+				<div id="main" class="install-body">
 
 	<h1><?php echo $lang['UPDATING_TO_LATEST_STABLE']; ?></h1>
 
@@ -591,9 +757,8 @@ if (function_exists('exit_handler'))
 function _print_footer()
 {
 	echo '
-					</div>
 				</div>
-			<span class="corners-bottom"><span></span></span>
+			</div>
 		</div>
 		</div>
 	</div>

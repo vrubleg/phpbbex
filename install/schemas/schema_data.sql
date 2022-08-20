@@ -1,9 +1,3 @@
-#
-# $Id$
-#
-
-# POSTGRES BEGIN #
-
 # -- Config
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_sessions', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
@@ -945,5 +939,3 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (7, 'mpg');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (7, 'mka');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (7, 'mkv');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (7, 'swf');
-
-# POSTGRES COMMIT #

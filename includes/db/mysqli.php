@@ -30,7 +30,7 @@ class dbal_mysqli extends dbal
 	{
 		if (!function_exists('mysqli_connect'))
 		{
-			$this->connect_error = 'mysqli_connect function does not exist, is mysqli extension installed?';
+			$this->connect_error = 'MySQLi extension is not installed.';
 			return $this->sql_error('');
 		}
 

@@ -201,6 +201,7 @@ class module
 	var $tpl_name = '';
 	var $mode;
 	var $sub;
+	var $module;
 
 	/**
 	* Private methods, should not be overwritten
@@ -519,10 +520,10 @@ class module
 			return;
 		}
 
-		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-		echo '<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">';
+		echo '<!DOCTYPE html>';
+		echo '<html dir="ltr">';
 		echo '<head>';
-		echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
+		echo '<meta charset="utf-8" />';
 		echo '<title>' . $lang['INST_ERR_FATAL'] . '</title>';
 		echo '<link href="../adm/style/admin.css" rel="stylesheet" type="text/css" media="screen" />';
 		echo '</head>';
@@ -533,14 +534,12 @@ class module
 		echo '	<div id="page-body">';
 		echo '		<div id="acp">';
 		echo '		<div class="panel">';
-		echo '			<span class="corners-top"><span></span></span>';
 		echo '			<div id="content">';
 		echo '				<h1>' . $lang['INST_ERR_FATAL'] . '</h1>';
 		echo '		<p>' . $lang['INST_ERR_FATAL'] . "</p>\n";
 		echo '		<p>' . basename($file) . ' [ ' . $line . " ]</p>\n";
 		echo '		<p><b>' . $error . "</b></p>\n";
 		echo '			</div>';
-		echo '			<span class="corners-bottom"><span></span></span>';
 		echo '		</div>';
 		echo '		</div>';
 		echo '	</div>';

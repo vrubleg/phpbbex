@@ -300,7 +300,7 @@ class phpbb_captcha_qa
 		$schemas = array(
 				CAPTCHA_QUESTIONS_TABLE		=> array (
 					'COLUMNS' => array(
-						'question_id'	=> array('UINT', Null, 'auto_increment'),
+						'question_id'	=> array('UINT', null, 'auto_increment'),
 						'strict'		=> array('BOOL', 0),
 						'lang_id'		=> array('UINT', 0),
 						'lang_iso'		=> array('VCHAR:30', ''),
