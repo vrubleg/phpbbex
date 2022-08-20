@@ -184,12 +184,6 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 // Convert tables to InnoDB with utf8mb4 encoding if mode=utf8mb4.
 if (request_var('mode', '') == 'utf8mb4')
 {
-	// QA CAPTCHA tables.
-
-	@define('CAPTCHA_QUESTIONS_TABLE',  $table_prefix . 'captcha_questions');
-	@define('CAPTCHA_ANSWERS_TABLE',    $table_prefix . 'captcha_answers');
-	@define('CAPTCHA_QA_CONFIRM_TABLE', $table_prefix . 'qa_confirm');
-
 	// Drop fulltext search index if present.
 
 	$drop_indexes = [];
@@ -294,9 +288,10 @@ if (request_var('mode', '') == 'utf8mb4')
 			case USER_CONFIRM_KEYS_TABLE:
 			case USER_BROWSER_IDS_TABLE:
 			case POST_RATES_TABLE:
-			case CAPTCHA_QUESTIONS_TABLE:
-			case CAPTCHA_ANSWERS_TABLE:
-			case CAPTCHA_QA_CONFIRM_TABLE:
+			// Standard QA CAPTCHA tables.
+			case "{$table_prefix}captcha_questions":
+			case "{$table_prefix}captcha_answers":
+			case "{$table_prefix}qa_confirm":
 				// Use default conversion query for most tables.
 				break;
 			case CONFIG_TABLE:
@@ -341,8 +336,38 @@ if (request_var('mode', '') == 'utf8mb4')
 					MODIFY username varchar(191) DEFAULT '' NOT NULL,
 					MODIFY username_clean varchar(191) DEFAULT '' NOT NULL";
 				break;
+
+			// Simple Chat MOD tables.
+			case "{$table_prefix}chat_messages":
+			case "{$table_prefix}chat_sessions":
+				break;
+
+			// Gallery MOD tables.
+			case "{$table_prefix}gallery_albums":
+			case "{$table_prefix}gallery_albums_track":
+			case "{$table_prefix}gallery_comments":
+			case "{$table_prefix}gallery_contests":
+			case "{$table_prefix}gallery_favorites":
+			case "{$table_prefix}gallery_images":
+			case "{$table_prefix}gallery_modscache":
+			case "{$table_prefix}gallery_permissions":
+			case "{$table_prefix}gallery_rates":
+			case "{$table_prefix}gallery_reports":
+			case "{$table_prefix}gallery_roles":
+			case "{$table_prefix}gallery_users":
+			case "{$table_prefix}gallery_watch":
+				break;
+			case "{$table_prefix}gallery_config":
+				$sql .= ", MODIFY config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";
+				break;
+
+			// Portal MOD tables.
+			case "{$table_prefix}portal_config":
+				$sql .= ", MODIFY config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";
+				break;
+
+			// Skip unknown tables.
 			default:
-				// Skip unknown tables.
 				$sql = null;
 				break;
 		}
