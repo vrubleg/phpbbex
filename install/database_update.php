@@ -171,9 +171,11 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 
 	// Delete obsolete AIM, YIM, and MSN columns that always were unused in phpBBex.
 
+	$db->sql_return_on_error(true);
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_aim");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_yim");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_msnm");
+	$db->sql_return_on_error(false);
 
 	// Drop fulltext search index if present.
 
@@ -199,6 +201,10 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 		}
 		$result = $db->sql_query($sql);
 	}
+
+	// New maximum word size is 191 character. Trim existing words.
+
+	$db->sql_query("UPDATE " . SEARCH_WORDLIST_TABLE . " SET word_text=SUBSTR(word_text, 1, 191) WHERE CHAR_LENGTH(word_text) > 191");
 
 	// Convert tables to InnoDB with utf8mb4 encoding.
 
