@@ -43,6 +43,33 @@ if (!$is_installed)
 	exit();
 }
 
+// Check if there is a recent allow key file, not older than 60 minutes.
+
+$time_span = intval(time() / 1200);
+$curr_keys = [
+	substr(md5($time_span - 0), 0, 8),
+	substr(md5($time_span - 1), 0, 8),
+	substr(md5($time_span - 2), 0, 8)
+];
+
+$allowed = false;
+foreach ($curr_keys as $key)
+{
+	if (file_exists($phpbb_root_path . 'cache/allow_upd_' . $key . '.key'))
+	{
+		$allowed = true;
+		break;
+	}
+}
+
+if (!$allowed)
+{
+	http_response_code(403);
+	die('Create an empty file at <tt>/cache/allow_upd_' . $curr_keys[0] . '.key</tt> to allow running the update.');
+}
+
+// We are allowed, run the update!
+
 require($phpbb_root_path . 'includes/startup.' . $phpEx);
 
 $updates_to_version = UPDATES_TO_VERSION;

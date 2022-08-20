@@ -42,7 +42,7 @@ foreach ($curr_keys as $key)
 
 if (!$allowed)
 {
-	$critical_repair->trigger_error('Run ERK through STK. If you cannot login, create an empty file at <tt>/cache/allow_erk_' . $curr_keys[0] . '.key</tt> to run ERK directly. ', false);
+	$critical_repair->trigger_error('Run ERK through STK. If you cannot login, create an empty file at <tt>/cache/allow_erk_' . $curr_keys[0] . '.key</tt> to to allow running ERK directly.', false);
 }
 
 // Try to override some limits - maybe it helps some...
