@@ -24,7 +24,9 @@ class erk_config_repair
 	}
 	function repair()
 	{
-		include(PHPBB_ROOT_PATH . 'includes/functions_install.' . PHP_EXT);
+		require_once(PHPBB_ROOT_PATH . 'includes/functions.' . PHP_EXT);
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_install.' . PHP_EXT);
+
 		$available_dbms = get_available_dbms();
 
 		$error = array();
@@ -140,7 +142,7 @@ class erk_config_repair
 							<p>
 								Through this tool you can regenerate your configuration file.
 							</p>
-							<form id="stk" method="post" action="<?php echo STK_ROOT_PATH . 'index.' . PHP_EXT; ?>" name="support_tool_kit">
+							<form id="stk" method="post" action="<?php echo STK_ROOT_PATH . 'erk.' . PHP_EXT; ?>" name="support_tool_kit">
 								<fieldset>
 									<?php if (!empty($error)) {?>
 										<div class="errorbox">

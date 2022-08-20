@@ -13,6 +13,9 @@ if (!defined('STK_DIR_NAME')) { define('STK_DIR_NAME', substr(strrchr(dirname(__
 if (!defined('STK_ROOT_PATH')) { define('STK_ROOT_PATH', './'); }
 if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.' . PHP_EXT); }
 
+$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
+$phpEx = substr(strrchr(__FILE__, '.'), 1);
+
 require STK_ROOT_PATH . 'common.' . PHP_EXT;
 
 // Setup the user

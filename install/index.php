@@ -201,6 +201,7 @@ class module
 	var $tpl_name = '';
 	var $mode;
 	var $sub;
+	var $module;
 
 	/**
 	* Private methods, should not be overwritten

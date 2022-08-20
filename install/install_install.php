@@ -40,6 +40,9 @@ if (!empty($setmodules))
 */
 class install_install extends module
 {
+	var $p_master;
+	var $page_title;
+
 	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
