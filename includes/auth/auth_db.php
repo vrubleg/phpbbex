@@ -55,6 +55,8 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		);
 	}
 
+	$browser = trim(substr($browser, 0, 149));
+	$forwarded_for = trim(substr($forwarded_for, 0, 149));
 	$username_clean = utf8_clean_string($username);
 
 	$sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
@@ -100,7 +102,7 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 
 		$attempt_data = array(
 			'attempt_ip'			=> $ip,
-			'attempt_browser'		=> trim(substr($browser, 0, 149)),
+			'attempt_browser'		=> $browser,
 			'attempt_forwarded_for'	=> $forwarded_for,
 			'attempt_time'			=> time(),
 			'user_id'				=> ($row) ? (int) $row['user_id'] : 0,

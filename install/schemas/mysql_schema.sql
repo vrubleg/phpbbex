@@ -145,7 +145,7 @@ CREATE TABLE phpbb_bots (
 
 # Table: 'phpbb_config'
 CREATE TABLE phpbb_config (
-	config_name varchar(255) DEFAULT '' NOT NULL,
+	config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
 	config_value varchar(1000) DEFAULT '' NOT NULL,
 	is_dynamic tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (config_name),
@@ -301,7 +301,7 @@ CREATE TABLE phpbb_groups (
 	group_type tinyint(4) DEFAULT '1' NOT NULL,
 	group_founder_manage tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	group_skip_auth tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	group_name varchar(255) DEFAULT '' NOT NULL,
+	group_name varchar(191) DEFAULT '' NOT NULL,
 	group_desc text NOT NULL,
 	group_desc_bitfield varchar(255) DEFAULT '' NOT NULL,
 	group_desc_options int(11) UNSIGNED DEFAULT '7' NOT NULL,
@@ -372,9 +372,9 @@ CREATE TABLE phpbb_log (
 
 # Table: 'phpbb_login_attempts'
 CREATE TABLE phpbb_login_attempts (
-	attempt_ip varchar(40) DEFAULT '' NOT NULL,
-	attempt_browser varchar(150) DEFAULT '' NOT NULL,
-	attempt_forwarded_for varchar(255) DEFAULT '' NOT NULL,
+	attempt_ip varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
+	attempt_browser varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
+	attempt_forwarded_for varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
 	attempt_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	username varchar(255) DEFAULT '0' NOT NULL,
@@ -474,7 +474,7 @@ CREATE TABLE phpbb_posts (
 	enable_smilies tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_magic_url tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_sig tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
-	post_username varchar(255) DEFAULT '' NOT NULL,
+	post_username varchar(191) DEFAULT '' NOT NULL,
 	post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci,
 	post_text mediumtext NOT NULL,
 	post_checksum varchar(32) DEFAULT '' NOT NULL,
@@ -682,7 +682,7 @@ CREATE TABLE phpbb_search_results (
 # Table: 'phpbb_search_wordlist'
 CREATE TABLE phpbb_search_wordlist (
 	word_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	word_text varchar(255) DEFAULT '' NOT NULL,
+	word_text varchar(191) DEFAULT '' NOT NULL,
 	word_common tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	word_count mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (word_id),
@@ -763,7 +763,7 @@ CREATE TABLE phpbb_smilies (
 # Table: 'phpbb_styles'
 CREATE TABLE phpbb_styles (
 	style_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	style_name varchar(255) DEFAULT '' NOT NULL,
+	style_name varchar(100) DEFAULT '' NOT NULL,
 	style_copyright varchar(255) DEFAULT '' NOT NULL,
 	style_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	template_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -780,7 +780,7 @@ CREATE TABLE phpbb_styles (
 # Table: 'phpbb_styles_template'
 CREATE TABLE phpbb_styles_template (
 	template_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	template_name varchar(255) DEFAULT '' NOT NULL,
+	template_name varchar(100) DEFAULT '' NOT NULL,
 	template_copyright varchar(255) DEFAULT '' NOT NULL,
 	template_path varchar(100) DEFAULT '' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT 'kNg=' NOT NULL,
@@ -807,7 +807,7 @@ CREATE TABLE phpbb_styles_template_data (
 # Table: 'phpbb_styles_theme'
 CREATE TABLE phpbb_styles_theme (
 	theme_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	theme_name varchar(255) DEFAULT '' NOT NULL,
+	theme_name varchar(100) DEFAULT '' NOT NULL,
 	theme_copyright varchar(255) DEFAULT '' NOT NULL,
 	theme_path varchar(100) DEFAULT '' NOT NULL,
 	theme_storedb tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
@@ -821,7 +821,7 @@ CREATE TABLE phpbb_styles_theme (
 # Table: 'phpbb_styles_imageset'
 CREATE TABLE phpbb_styles_imageset (
 	imageset_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	imageset_name varchar(255) DEFAULT '' NOT NULL,
+	imageset_name varchar(100) DEFAULT '' NOT NULL,
 	imageset_copyright varchar(255) DEFAULT '' NOT NULL,
 	imageset_path varchar(100) DEFAULT '' NOT NULL,
 	PRIMARY KEY (imageset_id),
@@ -948,8 +948,8 @@ CREATE TABLE phpbb_users (
 	user_ip varchar(40) DEFAULT '' NOT NULL,
 	user_browser varchar(150) DEFAULT '' NOT NULL,
 	user_regdate int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	username varchar(255) DEFAULT '' NOT NULL,
-	username_clean varchar(255) DEFAULT '' NOT NULL,
+	username varchar(191) DEFAULT '' NOT NULL,
+	username_clean varchar(191) DEFAULT '' NOT NULL,
 	user_password varchar(40) DEFAULT '' NOT NULL,
 	user_passchg int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_pass_convert tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
