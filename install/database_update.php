@@ -5,7 +5,7 @@
 * @license GNU Public License
 */
 
-define('OLDEST_PHPBBEX_VERSION', '1.8.0');
+define('OLDEST_PHPBBEX_VERSION', '1.7.0');
 define('NEWEST_PHPBBEX_VERSION', '1.9.6');
 
 define('UPDATES_TO_VERSION', '3.0.14');
@@ -174,12 +174,25 @@ $db->sql_freeresult($result);
 
 if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
 {
-	die('Error! Update database schema to at least phpBBex 1.8.0 before running this script.');
+	die('Error! Update database schema to at least phpBBex ' . OLDEST_PHPBBEX_VERSION . ' before running this script.');
 }
 
 if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>'))
 {
 	die('Error! Database schema has newer version than supported.');
+}
+
+if (version_compare($row['config_value'], '1.8.0', '<'))
+{
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . TOPICS_TABLE . " ADD INDEX topic_poster(topic_poster)");
+	$db->sql_return_on_error(false);
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_admin_logs_days', '365')");
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_mod_logs_days', '365')");
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_critical_logs_days', '7')");
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_user_logs_days', '365')");
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_register_logs_days', '7')");
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.8.0' WHERE config_name = 'phpbbex_version'");
 }
 
 if (version_compare($row['config_value'], '1.9.5', '<'))
