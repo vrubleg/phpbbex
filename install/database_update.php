@@ -582,24 +582,35 @@ if (request_var('utf8mb4', 0))
 	}
 }
 
-if (!request_var('nopurge', 0))
+// Purge cached data depending on purge argument.
+switch (request_var('purge', 'cache'))
 {
-	if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
-	{
-		require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
+	case 'none':
+		break;
 
-		$umil = new umil(true);
-		$umil->cache_purge(array(
-			'data',
-			'template',
-			'theme',
-			'imageset',
-		));
-	}
-	else
-	{
+	case 'cache':
+	default:
 		$cache->purge();
-	}
+		break;
+
+	case 'all':
+		if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
+		{
+			require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
+
+			$umil = new umil(true);
+			$umil->cache_purge(array(
+				'data',
+				'template',
+				'theme',
+				'imageset',
+			));
+		}
+		else
+		{
+			$cache->purge();
+		}
+		break;
 }
 
 // Check phpBB version.
