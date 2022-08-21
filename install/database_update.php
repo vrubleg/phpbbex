@@ -316,6 +316,8 @@ if (request_var('bots', 0))
 
 		if (!$user_row)
 		{
+			if ($bot_agent === false) { continue; }
+
 			$bot_ip = '';
 
 			$user_row = array(
@@ -345,8 +347,10 @@ if (request_var('bots', 0))
 
 			$db->sql_query($sql);
 		}
-		else if ($user_row['user_type'] == USER_IGNORE)
+		else
 		{
+			if ($user_row['user_type'] != USER_IGNORE) { continue; }
+
 			$bot_user_id = (int) $user_row['user_id'];
 
 			if ($bot_agent === false)
