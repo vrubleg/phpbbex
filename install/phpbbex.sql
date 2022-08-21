@@ -278,16 +278,8 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_ne
 -- Unique index for extensions
 ALTER TABLE phpbb_extensions ADD UNIQUE INDEX extension (extension);
 
--- Disable acp_update
-UPDATE phpbb_modules SET module_enabled = 0 WHERE module_basename = 'update' AND module_class = 'acp';
-
--- Update YandexBot UA and remove Aport [Bot]
-UPDATE phpbb_bots SET bot_agent = 'YandexBot/' WHERE bot_agent = 'Yandex/';
-DELETE FROM phpbb_users WHERE username='Aport [Bot]';
-DELETE FROM phpbb_bots WHERE bot_name='Aport [Bot]';
-
 -- Remove invalid skypenames
-UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$' AND user_skype != '';
+-- UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$' AND user_skype != '';
 
 -- Remove obsolete options
 DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html', 'style_auto_new_year');
@@ -321,6 +313,9 @@ DELETE FROM phpbb_config WHERE config_name IN ('coppa_enable', 'coppa_mail', 'co
 ALTER TABLE phpbb_users DROP COLUMN user_aim;
 ALTER TABLE phpbb_users DROP COLUMN user_yim;
 ALTER TABLE phpbb_users DROP COLUMN user_msnm;
+
+-- Disable obsolete modules (they can be removed in the ACP safely).
+UPDATE phpbb_modules SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.5');

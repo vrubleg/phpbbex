@@ -5,7 +5,7 @@
 * @license GNU Public License
 */
 
-define('OLDEST_PHPBBEX_VERSION', '1.8.0');
+define('OLDEST_PHPBBEX_VERSION', '1.7.0');
 define('NEWEST_PHPBBEX_VERSION', '1.9.6');
 
 define('UPDATES_TO_VERSION', '3.0.14');
@@ -28,6 +28,8 @@ if (defined('IN_PHPBB') && defined('IN_INSTALL'))
 
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
+
+header('Content-Type: text/html; charset=utf-8');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
@@ -106,6 +108,7 @@ require($phpbb_root_path . 'includes/auth.' . $phpEx);
 require($phpbb_root_path . 'includes/functions.' . $phpEx);
 require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
 require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+require($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
 require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
 require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
@@ -131,40 +134,73 @@ else
 	$phpbb_hook = false;
 }
 
-// Connect to DB
+// Connect to DB.
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false);
+unset($dbpasswd); // For safety purposes.
 
-// We do not need this any longer, unset for safety purposes
-unset($dbpasswd);
+$user->ip = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars($_SERVER['REMOTE_ADDR']) : '';
+$user->ip = (stripos($user->ip, '::ffff:') === 0) ? substr($user->ip, 7) : $user->ip;
+
+// Load config.
+$config = array();
+$sql = 'SELECT * FROM ' . CONFIG_TABLE;
+$result = $db->sql_query($sql);
+while ($row = $db->sql_fetchrow($result))
+{
+	$config[$row['config_name']] = $row['config_value'];
+}
+$db->sql_freeresult($result);
+
+// Load language files.
+if (!isset($config['default_lang']) || !file_exists($phpbb_root_path . 'language/' . $config['default_lang']))
+{
+	die('Error! Default language is not found!');
+}
+require($phpbb_root_path . 'language/' . $config['default_lang'] . '/common.' . $phpEx);
+require($phpbb_root_path . 'language/' . $config['default_lang'] . '/acp/common.' . $phpEx);
+require($phpbb_root_path . 'language/' . $config['default_lang'] . '/install.' . $phpEx);
+
+// Set PHP error handler to ours.
+//set_error_handler('msg_handler');
 
 // Check phpBBex version.
 
-$sql = "SELECT config_value
-	FROM " . CONFIG_TABLE . "
-	WHERE config_name = 'phpbbex_version'";
-$result = $db->sql_query($sql);
-$row = $db->sql_fetchrow($result);
-$db->sql_freeresult($result);
-
-if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
+if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_version'], OLDEST_PHPBBEX_VERSION, '<'))
 {
-	die('Error! Update database schema to at least phpBBex 1.8.0 before running this script.');
+	die('Error! Update database schema to at least phpBBex ' . OLDEST_PHPBBEX_VERSION . ' before running this script.');
 }
 
-if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>=') && request_var('mode', '') != 'utf8mb4')
+if (version_compare($config['phpbbex_version'], NEWEST_PHPBBEX_VERSION, '>'))
 {
-	die('OK');
+	die('Error! Database schema has newer version than supported.');
 }
 
-if (version_compare($row['config_value'], '1.9.5', '<'))
+if (version_compare($config['phpbbex_version'], '1.8.0', '<'))
+{
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . TOPICS_TABLE . " ADD INDEX topic_poster(topic_poster)");
+	$db->sql_return_on_error(false);
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_admin_logs_days', '365')");
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_mod_logs_days', '365')");
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_critical_logs_days', '7')");
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_user_logs_days', '365')");
+	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_register_logs_days', '7')");
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.8.0' WHERE config_name = 'phpbbex_version'");
+}
+
+if (version_compare($config['phpbbex_version'], '1.9.5', '<'))
 {
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
 	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.5' WHERE config_name = 'phpbbex_version'");
 }
 
-if (version_compare($row['config_value'], '1.9.6', '<'))
+if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 {
+	// Disable obsolete modules (they can be removed in the ACP safely).
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics')");
+
 	// The COPPA group is not special anymore.
 
 	$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA'");
@@ -181,8 +217,179 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
 }
 
-// Convert tables to InnoDB with utf8mb4 encoding if mode=utf8mb4.
-if (request_var('mode', '') == 'utf8mb4')
+// Update bots if bots=1 is passed.
+if (request_var('bots', 0))
+{
+	$bots_updates = array(
+		// Bot deletions.
+		'Aport [Bot]'				=> false,
+		'Alta Vista [Bot]'			=> false,
+		'FAST Enterprise [Crawler]'	=> false,
+		'Francis [Bot]'				=> false,
+		'Google Desktop'			=> false,
+		'Heise IT-Markt [Crawler]'	=> false,
+		'Heritrix [Crawler]'		=> false,
+		'IBM Research [Bot]'		=> false,
+		'ICCrawler - ICjobs'		=> false,
+		'Metager [Bot]'				=> false,
+		'MSN NewsBlogs'				=> false,
+		'NG-Search [Bot]'			=> false,
+		'Nutch [Bot]'				=> false,
+		'Nutch/CVS [Bot]'			=> false,
+		'OmniExplorer [Bot]'		=> false,
+		'Online link [Validator]'	=> false,
+		'Seekport [Bot]'			=> false,
+		'Sensis [Crawler]'			=> false,
+		'SEO Crawler'				=> false,
+		'Seoma [Crawler]'			=> false,
+		'SEOSearch [Crawler]'		=> false,
+		'Snappy [Bot]'				=> false,
+		'Synoo [Bot]'				=> false,
+		'Telekom [Bot]'				=> false,
+		'W3 [Sitesearch]'			=> false,
+		'WiseNut [Bot]'				=> false,
+		'Yahoo MMCrawler [Bot]'		=> false,
+		'Yahoo Slurp [Bot]'			=> false,
+		'YahooSeeker [Bot]'			=> false,
+		'Yandex [Addurl]'			=> false,
+		'Yandex [Catalog]'			=> false,
+		'Rambler [Bot]'				=> false,
+		'WebAlta [Bot]'				=> false,
+		// Bot updates and additions.
+		'AdsBot [Google]'			=> 'AdsBot-Google',
+		'Alexa [Bot]'				=> 'ia_archiver',
+		'Ask Jeeves [Bot]'			=> 'Ask Jeeves',
+		'Baidu [Spider]'			=> 'Baiduspider',
+		'Bing [Bot]'				=> 'bingbot/',
+		'Exabot [Bot]'				=> 'Exabot',
+		'FAST WebCrawler [Crawler]'	=> 'FAST-WebCrawler/',
+		'Gigabot [Bot]'				=> 'Gigabot/',
+		'Google Adsense [Bot]'		=> 'Mediapartners-Google',
+		'Google Feedfetcher'		=> 'Feedfetcher-Google',
+		'Google [Bot]'				=> 'Googlebot',
+		'ichiro [Crawler]'			=> 'ichiro/',
+		'Majestic-12 [Bot]'			=> 'MJ12bot/',
+		'MSN [Bot]'					=> 'msnbot/',
+		'MSNbot Media'				=> 'msnbot-media/',
+		'psbot [Picsearch]'			=> 'psbot/0',
+		'Steeler [Crawler]'			=> 'http://www.tkl.iis.u-tokyo.ac.jp/~crawler/',
+		'TurnitinBot [Bot]'			=> 'TurnitinBot/',
+		'Voyager [Bot]'				=> 'voyager/',
+		'W3C [Linkcheck]'			=> 'W3C-checklink/',
+		'W3C [Validator]'			=> 'W3C_Validator',
+		'YaCy [Bot]'				=> 'yacybot',
+		'Yahoo [Bot]'				=> 'Yahoo! Slurp',
+		'Ahrefs [Bot]'				=> 'AhrefsBot/',
+		'Senti [Bot]'				=> 'SentiBot/',
+		'Barkrowler [Bot]'			=> 'Barkrowler/',
+		'Yandex [Bot]'				=> 'YandexBot/',
+		'Yandex [Images]'			=> 'YandexImages/',
+		'Yandex [Video]'			=> 'YandexVideo/',
+		'Yandex [Media]'			=> 'YandexMedia/',
+		'Yandex [Blogs]'			=> 'YandexBlogs/',
+		'Yandex [Direct]'			=> 'YandexDirect/',
+		'Yandex [Metrika]'			=> 'YandexMetrika/',
+		'Yandex [News]'				=> 'YandexNews/',
+		'MailRu [Bot]'				=> 'Mail.Ru/',
+	);
+
+	// Get BOTS group.
+	$sql = 'SELECT group_id, group_colour
+		FROM ' . GROUPS_TABLE . "
+		WHERE group_name = 'BOTS'";
+	$result = $db->sql_query($sql);
+	$group_row = $db->sql_fetchrow($result);
+	$db->sql_freeresult($result);
+	if (!$group_row) { die('Cannot find BOTS group.'); }
+
+	// Update loop.
+	foreach ($bots_updates as $bot_name => $bot_agent)
+	{
+		$bot_name_clean = utf8_clean_string($bot_name);
+
+		$sql = 'SELECT user_id, user_type
+			FROM ' . USERS_TABLE . "
+			WHERE username_clean = '" . $db->sql_escape($bot_name_clean) . "'";
+		$result = $db->sql_query($sql);
+		$user_row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		if (!$user_row)
+		{
+			$bot_ip = '';
+
+			$user_row = array(
+				'user_type'				=> USER_IGNORE,
+				'group_id'				=> $group_row['group_id'],
+				'username'				=> $bot_name,
+				'user_regdate'			=> time(),
+				'user_password'			=> '',
+				'user_colour'			=> $group_row['group_colour'],
+				'user_email'			=> '',
+				'user_lang'				=> $config['default_lang'],
+				'user_style'			=> $config['default_style'],
+				'user_timezone'			=> 0,
+				'user_dateformat'		=> $config['default_dateformat'],
+				'user_allow_massemail'	=> 0,
+			);
+
+			$bot_user_id = user_add($user_row);
+
+			$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+				'bot_active'	=> 1,
+				'bot_name'		=> (string) $bot_name,
+				'user_id'		=> (int) $bot_user_id,
+				'bot_agent'		=> (string) $bot_agent,
+				'bot_ip'		=> (string) $bot_ip,
+			));
+
+			$db->sql_query($sql);
+		}
+		else if ($user_row['user_type'] == USER_IGNORE)
+		{
+			$bot_user_id = (int) $user_row['user_id'];
+
+			if ($bot_agent === false)
+			{
+				$sql = 'DELETE FROM ' . BOTS_TABLE . "
+					WHERE user_id = $bot_user_id";
+				$db->sql_query($sql);
+
+				user_delete('remove', $bot_user_id);
+			}
+			else
+			{
+				$sql = 'UPDATE ' . BOTS_TABLE . "
+					SET bot_agent = '" .  $db->sql_escape($bot_agent) . "'
+					WHERE user_id = $bot_user_id";
+				$db->sql_query($sql);
+			}
+		}
+	}
+
+	// Disable receiving PMs for bots.
+	$sql = 'SELECT user_id
+		FROM ' . BOTS_TABLE;
+	$result = $db->sql_query($sql);
+
+	$bot_user_ids = array();
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$bot_user_ids[] = (int) $row['user_id'];
+	}
+	$db->sql_freeresult($result);
+
+	if (!empty($bot_user_ids))
+	{
+		$sql = 'UPDATE ' . USERS_TABLE . '
+			SET user_allow_pm = 0
+			WHERE ' . $db->sql_in_set('user_id', $bot_user_ids);
+		$db->sql_query($sql);
+	}
+}
+
+// Convert tables to InnoDB with utf8mb4 encoding if utf8mb4=1 is passed.
+if (request_var('utf8mb4', 0))
 {
 	// Drop fulltext search index if present.
 
@@ -375,95 +582,53 @@ if (request_var('mode', '') == 'utf8mb4')
 	}
 }
 
-if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
+// Purge cached data depending on purge argument.
+switch (request_var('purge', 'cache'))
 {
-	require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
+	case 'none':
+		break;
 
-	$umil = new umil(true);
-	$umil->cache_purge(array(
-		'data',
-		'template',
-		'theme',
-		'imageset',
-	));
-}
-else
-{
-	$cache->purge();
+	case 'cache':
+	default:
+		$cache->purge();
+		break;
+
+	case 'all':
+		if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
+		{
+			require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
+
+			$umil = new umil(true);
+			$umil->cache_purge(array(
+				'data',
+				'template',
+				'theme',
+				'imageset',
+			));
+		}
+		else
+		{
+			$cache->purge();
+		}
+		break;
 }
 
 // Check phpBB version.
 
-$sql = "SELECT config_value
-	FROM " . CONFIG_TABLE . "
-	WHERE config_name = 'version'";
-$result = $db->sql_query($sql);
-$row = $db->sql_fetchrow($result);
-$db->sql_freeresult($result);
-
-if ($row && version_compare($row['config_value'], $updates_to_version, '>='))
+if (!empty($config['version']) && version_compare($config['version'], $updates_to_version, '>='))
 {
 	die('OK');
 }
 
 // Original code. One day it might be improved to be able to upgrade pure phpBB to phpBBex.
 
-$user->ip = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars($_SERVER['REMOTE_ADDR']) : '';
-$user->ip = (stripos($user->ip, '::ffff:') === 0) ? substr($user->ip, 7) : $user->ip;
-
-$sql = "SELECT config_value
-	FROM " . CONFIG_TABLE . "
-	WHERE config_name = 'default_lang'";
-$result = $db->sql_query($sql);
-$row = $db->sql_fetchrow($result);
-$db->sql_freeresult($result);
-
-$language = basename(request_var('language', ''));
-
-if (!$language)
-{
-	$language = $row['config_value'];
-}
-
-if (!file_exists($phpbb_root_path . 'language/' . $language))
-{
-	die('No language found!');
-}
-
-// And finally, load the relevant language files
-include($phpbb_root_path . 'language/' . $language . '/common.' . $phpEx);
-include($phpbb_root_path . 'language/' . $language . '/acp/common.' . $phpEx);
-include($phpbb_root_path . 'language/' . $language . '/install.' . $phpEx);
-
-// Set PHP error handler to ours
-//set_error_handler('msg_handler');
-
-// Define some variables for the database update
 $inline_update = (request_var('type', 0)) ? true : false;
 
-// To let set_config() calls succeed, we need to make the config array available globally
-$config = array();
-
-$sql = 'SELECT *
-	FROM ' . CONFIG_TABLE;
-$result = $db->sql_query($sql);
-
-while ($row = $db->sql_fetchrow($result))
-{
-	$config[$row['config_name']] = $row['config_value'];
-}
-$db->sql_freeresult($result);
-
-// phpbb_db_tools will be taken from new files (under install/update/new)
-// if possible, falling back to the board's copy.
 $db_tools = new phpbb_db_tools($db, true);
-
 $database_update_info = database_update_info();
 
 $error_ary = array();
 $errored = false;
-
-header('Content-type: text/html; charset=UTF-8');
 
 ?>
 <!DOCTYPE html>
@@ -731,7 +896,7 @@ else
 
 	<p><?php echo ((isset($lang['INLINE_UPDATE_SUCCESSFUL'])) ? $lang['INLINE_UPDATE_SUCCESSFUL'] : 'The database update was successful. Now you need to continue the update process.'); ?></p>
 
-	<p><a href="<?php echo append_sid("{$phpbb_root_path}install/index.{$phpEx}", "mode=update&amp;sub=file_check&amp;language=$language"); ?>" class="button1"><?php echo (isset($lang['CONTINUE_UPDATE_NOW'])) ? $lang['CONTINUE_UPDATE_NOW'] : 'Continue the update process now'; ?></a></p>
+	<p><a href="<?php echo append_sid("{$phpbb_root_path}install/index.{$phpEx}", "mode=update&amp;sub=file_check"); ?>" class="button1"><?php echo (isset($lang['CONTINUE_UPDATE_NOW'])) ? $lang['CONTINUE_UPDATE_NOW'] : 'Continue the update process now'; ?></a></p>
 
 <?php
 }
@@ -2065,69 +2230,6 @@ function change_database_data(&$no_updates, $version)
 					AND module_mode = \'avatar\'';
 			_sql($sql, $errored, $error_ary);
 
-			// add Bing Bot
-			$bot_name = 'Bing [Bot]';
-			$bot_name_clean = utf8_clean_string($bot_name);
-
-			$sql = 'SELECT user_id
-				FROM ' . USERS_TABLE . "
-				WHERE username_clean = '" . $db->sql_escape($bot_name_clean) . "'";
-			$result = $db->sql_query($sql);
-			$bing_already_added = (bool) $db->sql_fetchfield('user_id');
-			$db->sql_freeresult($result);
-
-			if (!$bing_already_added)
-			{
-				$bot_agent = 'bingbot/';
-				$bot_ip = '';
-				$sql = 'SELECT group_id, group_colour
-					FROM ' . GROUPS_TABLE . "
-					WHERE group_name = 'BOTS'";
-				$result = $db->sql_query($sql);
-				$group_row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if (!$group_row)
-				{
-					// default fallback, should never get here
-					$group_row['group_id'] = 6;
-					$group_row['group_colour'] = '9E8DA7';
-				}
-
-				if (!function_exists('user_add'))
-				{
-					include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-				}
-
-				$user_row = array(
-					'user_type'				=> USER_IGNORE,
-					'group_id'				=> $group_row['group_id'],
-					'username'				=> $bot_name,
-					'user_regdate'			=> time(),
-					'user_password'			=> '',
-					'user_colour'			=> $group_row['group_colour'],
-					'user_email'			=> '',
-					'user_lang'				=> $config['default_lang'],
-					'user_style'			=> $config['default_style'],
-					'user_timezone'			=> 0,
-					'user_dateformat'		=> $config['default_dateformat'],
-					'user_allow_massemail'	=> 0,
-				);
-
-				$user_id = user_add($user_row);
-
-				$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
-					'bot_active'	=> 1,
-					'bot_name'		=> (string) $bot_name,
-					'user_id'		=> (int) $user_id,
-					'bot_agent'		=> (string) $bot_agent,
-					'bot_ip'		=> (string) $bot_ip,
-				));
-
-				_sql($sql, $errored, $error_ary);
-			}
-			// end Bing Bot addition
-
 			// Delete shadow topics pointing to not existing topics
 			$batch_size = 500;
 
@@ -2377,79 +2479,6 @@ function change_database_data(&$no_updates, $version)
 					AND module_basename = \'profile\'
 					AND module_mode = \'signature\'';
 			_sql($sql, $errored, $error_ary);
-
-			// Update bots
-			if (!function_exists('user_delete'))
-			{
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-			}
-
-			$bots_updates = array(
-				// Bot Deletions
-				'NG-Search [Bot]'		=> false,
-				'Nutch/CVS [Bot]'		=> false,
-				'OmniExplorer [Bot]'	=> false,
-				'Seekport [Bot]'		=> false,
-				'Synoo [Bot]'			=> false,
-				'WiseNut [Bot]'			=> false,
-
-				// Bot Updates
-				// Bot name to bot user agent map
-				'Baidu [Spider]'	=> 'Baiduspider',
-				'Exabot [Bot]'		=> 'Exabot',
-				'Voyager [Bot]'		=> 'voyager/',
-				'W3C [Validator]'	=> 'W3C_Validator',
-			);
-
-			foreach ($bots_updates as $bot_name => $bot_agent)
-			{
-				$sql = 'SELECT user_id
-					FROM ' . USERS_TABLE . '
-					WHERE user_type = ' . USER_IGNORE . "
-						AND username_clean = '" . $db->sql_escape(utf8_clean_string($bot_name)) . "'";
-				$result = $db->sql_query($sql);
-				$bot_user_id = (int) $db->sql_fetchfield('user_id');
-				$db->sql_freeresult($result);
-
-				if ($bot_user_id)
-				{
-					if ($bot_agent === false)
-					{
-						$sql = 'DELETE FROM ' . BOTS_TABLE . "
-							WHERE user_id = $bot_user_id";
-						_sql($sql, $errored, $error_ary);
-
-						user_delete('remove', $bot_user_id);
-					}
-					else
-					{
-						$sql = 'UPDATE ' . BOTS_TABLE . "
-							SET bot_agent = '" .  $db->sql_escape($bot_agent) . "'
-							WHERE user_id = $bot_user_id";
-						_sql($sql, $errored, $error_ary);
-					}
-				}
-			}
-
-			// Disable receiving pms for bots
-			$sql = 'SELECT user_id
-				FROM ' . BOTS_TABLE;
-			$result = $db->sql_query($sql);
-
-			$bot_user_ids = array();
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$bot_user_ids[] = (int) $row['user_id'];
-			}
-			$db->sql_freeresult($result);
-
-			if (!empty($bot_user_ids))
-			{
-				$sql = 'UPDATE ' . USERS_TABLE . '
-					SET user_allow_pm = 0
-					WHERE ' . $db->sql_in_set('user_id', $bot_user_ids);
-				_sql($sql, $errored, $error_ary);
-			}
 
 			/**
 			* Update BBCodes that currently use the LOCAL_URL tag
