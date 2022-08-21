@@ -151,9 +151,9 @@ if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
 	die('Error! Update database schema to at least phpBBex 1.8.0 before running this script.');
 }
 
-if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>=') && request_var('mode', '') != 'utf8mb4')
+if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>'))
 {
-	die('OK');
+	die('Error! Database schema has newer version than supported.');
 }
 
 if (version_compare($row['config_value'], '1.9.5', '<'))
@@ -181,8 +181,8 @@ if (version_compare($row['config_value'], '1.9.6', '<'))
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
 }
 
-// Convert tables to InnoDB with utf8mb4 encoding if mode=utf8mb4.
-if (request_var('mode', '') == 'utf8mb4')
+// Convert tables to InnoDB with utf8mb4 encoding if utf8mb4=1.
+if (request_var('utf8mb4', 0))
 {
 	// Drop fulltext search index if present.
 
@@ -375,21 +375,24 @@ if (request_var('mode', '') == 'utf8mb4')
 	}
 }
 
-if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
+if (!request_var('nopurge', 0))
 {
-	require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
+	if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
+	{
+		require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
 
-	$umil = new umil(true);
-	$umil->cache_purge(array(
-		'data',
-		'template',
-		'theme',
-		'imageset',
-	));
-}
-else
-{
-	$cache->purge();
+		$umil = new umil(true);
+		$umil->cache_purge(array(
+			'data',
+			'template',
+			'theme',
+			'imageset',
+		));
+	}
+	else
+	{
+		$cache->purge();
+	}
 }
 
 // Check phpBB version.
