@@ -165,24 +165,17 @@ require($phpbb_root_path . 'language/' . $config['default_lang'] . '/install.' .
 
 // Check phpBBex version.
 
-$sql = "SELECT config_value
-	FROM " . CONFIG_TABLE . "
-	WHERE config_name = 'phpbbex_version'";
-$result = $db->sql_query($sql);
-$row = $db->sql_fetchrow($result);
-$db->sql_freeresult($result);
-
-if (!$row || version_compare($row['config_value'], OLDEST_PHPBBEX_VERSION, '<'))
+if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_version'], OLDEST_PHPBBEX_VERSION, '<'))
 {
 	die('Error! Update database schema to at least phpBBex ' . OLDEST_PHPBBEX_VERSION . ' before running this script.');
 }
 
-if (version_compare($row['config_value'], NEWEST_PHPBBEX_VERSION, '>'))
+if (version_compare($config['phpbbex_version'], NEWEST_PHPBBEX_VERSION, '>'))
 {
 	die('Error! Database schema has newer version than supported.');
 }
 
-if (version_compare($row['config_value'], '1.8.0', '<'))
+if (version_compare($config['phpbbex_version'], '1.8.0', '<'))
 {
 	$db->sql_return_on_error(true);
 	$db->sql_query("ALTER TABLE " . TOPICS_TABLE . " ADD INDEX topic_poster(topic_poster)");
@@ -195,14 +188,14 @@ if (version_compare($row['config_value'], '1.8.0', '<'))
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.8.0' WHERE config_name = 'phpbbex_version'");
 }
 
-if (version_compare($row['config_value'], '1.9.5', '<'))
+if (version_compare($config['phpbbex_version'], '1.9.5', '<'))
 {
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
 	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.5' WHERE config_name = 'phpbbex_version'");
 }
 
-if (version_compare($row['config_value'], '1.9.6', '<'))
+if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 {
 	// Disable obsolete modules (they can be removed in the ACP safely).
 
@@ -611,14 +604,7 @@ if (!request_var('nopurge', 0))
 
 // Check phpBB version.
 
-$sql = "SELECT config_value
-	FROM " . CONFIG_TABLE . "
-	WHERE config_name = 'version'";
-$result = $db->sql_query($sql);
-$row = $db->sql_fetchrow($result);
-$db->sql_freeresult($result);
-
-if ($row && version_compare($row['config_value'], $updates_to_version, '>='))
+if (!empty($config['version']) && version_compare($config['version'], $updates_to_version, '>='))
 {
 	die('OK');
 }

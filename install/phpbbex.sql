@@ -278,9 +278,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_ne
 -- Unique index for extensions
 ALTER TABLE phpbb_extensions ADD UNIQUE INDEX extension (extension);
 
--- Disable obsolete modules (they can be removed in the ACP safely).
-UPDATE phpbb_modules SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics');
-
 -- Remove invalid skypenames
 -- UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$' AND user_skype != '';
 
@@ -316,6 +313,9 @@ DELETE FROM phpbb_config WHERE config_name IN ('coppa_enable', 'coppa_mail', 'co
 ALTER TABLE phpbb_users DROP COLUMN user_aim;
 ALTER TABLE phpbb_users DROP COLUMN user_yim;
 ALTER TABLE phpbb_users DROP COLUMN user_msnm;
+
+-- Disable obsolete modules (they can be removed in the ACP safely).
+UPDATE phpbb_modules SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics');
 
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.5');
