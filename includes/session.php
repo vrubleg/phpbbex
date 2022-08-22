@@ -115,8 +115,6 @@ class phpbb_session
 		$script_path .= (substr($script_path, -1, 1) == '/') ? '' : '/';
 		$root_script_path .= (substr($root_script_path, -1, 1) == '/') ? '' : '/';
 
-		$forum_id = (isset($_REQUEST['f']) && $_REQUEST['f'] > 0 && $_REQUEST['f'] < 16777215) ? (int) $_REQUEST['f'] : 0;
-
 		$page_array += array(
 			'page_name'			=> $page_name,
 			'page_dir'			=> $page_dir,
@@ -126,7 +124,6 @@ class phpbb_session
 			'root_script_path'	=> str_replace(' ', '%20', htmlspecialchars($root_script_path)),
 
 			'page'				=> preg_replace_callback('/[^\x00-\x7F]+/', function ($m) { return urlencode($m[0]); }, $page),
-			'forum'				=> $forum_id,
 		);
 
 		return $page_array;
@@ -415,7 +412,6 @@ class phpbb_session
 							if ($this->update_session_page)
 							{
 								$sql_ary['session_page'] = substr($this->page['page'], 0, 199);
-								$sql_ary['session_forum_id'] = $this->page['forum'];
 							}
 
 							// Update the last visit time once an hour
@@ -429,24 +425,9 @@ class phpbb_session
 								$db->sql_query($sql);
 							}
 
-							$db->sql_return_on_error(true);
-
 							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
 							$result = $db->sql_query($sql);
-
-							$db->sql_return_on_error(false);
-
-							// If the database is not yet updated, there will be an error due to the session_forum_id
-							// @todo REMOVE for 3.0.2
-							if ($result === false)
-							{
-								unset($sql_ary['session_forum_id']);
-
-								$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-									WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
-								$db->sql_query($sql);
-							}
 
 							if ($this->data['user_id'] != ANONYMOUS && !empty($config['new_member_post_limit']) && $this->data['user_new'] && $config['new_member_post_limit'] <= $this->data['user_posts'])
 							{
@@ -758,7 +739,6 @@ class phpbb_session
 					if ($this->update_session_page)
 					{
 						$sql_ary['session_page'] = substr($this->page['page'], 0, 199);
-						$sql_ary['session_forum_id'] = $this->page['forum'];
 					}
 
 					$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
@@ -803,7 +783,6 @@ class phpbb_session
 		if ($this->update_session_page)
 		{
 			$sql_ary['session_page'] = (string) substr($this->page['page'], 0, 199);
-			$sql_ary['session_forum_id'] = $this->page['forum'];
 		}
 
 		$db->sql_return_on_error(true);
@@ -818,8 +797,6 @@ class phpbb_session
 			// Limit new sessions in 1 minute period (if required)
 			if (empty($this->data['session_time']) && $config['active_sessions'])
 			{
-//				$db->sql_return_on_error(false);
-
 				$sql = 'SELECT COUNT(session_id) AS sessions
 					FROM ' . SESSIONS_TABLE . '
 					WHERE session_time >= ' . ($this->time_now - 60);
@@ -835,10 +812,6 @@ class phpbb_session
 			}
 		}
 
-		// Since we re-create the session id here, the inserted row must be unique. Therefore, we display potential errors.
-		// Commented out because it will not allow forums to update correctly
-//		$db->sql_return_on_error(false);
-
 		// Something quite important: session_page always holds the *last* page visited, except for the *first* visit.
 		// We are not able to simply have an empty session_page btw, therefore we need to tell phpBB how to detect this special case.
 		// If the session id is empty, we have a completely new one and will set an "identifier" here. This identifier is able to be checked later.
@@ -852,7 +825,6 @@ class phpbb_session
 
 		$sql_ary['session_id'] = (string) $this->session_id;
 		$sql_ary['session_page'] = (string) substr($this->page['page'], 0, 199);
-		$sql_ary['session_forum_id'] = $this->page['forum'];
 
 		$sql = 'INSERT INTO ' . SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
