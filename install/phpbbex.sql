@@ -313,6 +313,8 @@ DELETE FROM phpbb_config WHERE config_name IN ('coppa_enable', 'coppa_mail', 'co
 ALTER TABLE phpbb_users DROP COLUMN user_aim;
 ALTER TABLE phpbb_users DROP COLUMN user_yim;
 ALTER TABLE phpbb_users DROP COLUMN user_msnm;
+ALTER TABLE phpbb_sessions DROP COLUMN session_forum_id;
+ALTER TABLE phpbb_sessions DROP COLUMN session_album_id; -- For Gallery MOD.
 
 -- Disable obsolete modules (they can be removed in the ACP safely).
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics');

@@ -214,6 +214,13 @@ if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_msnm");
 	$db->sql_return_on_error(false);
 
+	// Remove unused columns from sessions table.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " DROP COLUMN session_forum_id");
+	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " DROP COLUMN session_album_id"); // For Gallery MOD.
+	$db->sql_return_on_error(false);
+
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
 }
 
