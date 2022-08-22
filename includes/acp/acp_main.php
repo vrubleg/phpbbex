@@ -414,7 +414,6 @@ class acp_main
 						$reinsert_ary = array(
 								'session_id'			=> (string) $user->session_id,
 								'session_page'			=> (string) substr($user->page['page'], 0, 199),
-								'session_forum_id'		=> $user->page['forum'],
 								'session_user_id'		=> (int) $user->data['user_id'],
 								'session_start'			=> (int) $user->data['session_start'],
 								'session_last_visit'	=> (int) $user->data['session_last_visit'],

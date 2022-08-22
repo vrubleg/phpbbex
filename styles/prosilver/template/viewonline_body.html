@@ -18,7 +18,6 @@
 		<thead>
 		<tr>
 			<th class="name"><a href="{U_SORT_USERNAME}">{L_USERNAME}</a></th>
-			<th class="info"><a href="{U_SORT_LOCATION}">{L_FORUM_LOCATION}</a></th>
 			<th class="active"><a href="{U_SORT_UPDATED}">{L_LAST_UPDATED}</a></th>
 		</tr>
 		</thead>
@@ -27,17 +26,17 @@
 		<tr class="<!-- IF user_row.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
 			<td>{user_row.USERNAME_FULL}<!-- IF user_row.USER_IP --> <span style="margin-left: 30px;">{L_IP}: <a href="{user_row.U_USER_IP}">{user_row.USER_IP}</a> &#187; <a href="{user_row.U_WHOIS}" onclick="popup(this.href, 750, 500); return false;">{L_WHOIS}</a></span><!-- ENDIF -->
 				<!-- IF user_row.USER_BROWSER --><br />{user_row.USER_BROWSER}<!-- ENDIF --></td>
-			<td class="info"><a href="{user_row.U_FORUM_LOCATION}">{user_row.FORUM_LOCATION}</a></td>
 			<td class="active">{user_row.LASTUPDATE}</td>
 		</tr>
 		<!-- END user_row -->
+		</tbody>
 	<!-- ELSE -->
 		<tbody>
 		<tr class="bg1">
-			<td colspan="3">{L_NO_ONLINE_USERS}</td>
+			<td colspan="2">{L_NO_ONLINE_USERS}</td>
 		</tr>
+		</tbody>
 	<!-- ENDIF -->
-	</tbody>
 	</table>
 
 	</div>

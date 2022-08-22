@@ -214,6 +214,13 @@ if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " DROP COLUMN user_msnm");
 	$db->sql_return_on_error(false);
 
+	// Remove unused columns from sessions table.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " DROP COLUMN session_forum_id");
+	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " DROP COLUMN session_album_id"); // For Gallery MOD.
+	$db->sql_return_on_error(false);
+
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
 }
 
@@ -675,41 +682,6 @@ $orig_version = $config['version'];
 if (empty($config['dbms_version']))
 {
 	set_config('dbms_version', $db->sql_server_info(true));
-}
-
-// MySQL update from MySQL 3.x/4.x to > 4.1.x required?
-if ($db->sql_layer == 'mysql' || $db->sql_layer == 'mysql4' || $db->sql_layer == 'mysqli')
-{
-	// Verify by fetching column... if the column type matches the new type we update dbms_version...
-	$sql = "SHOW COLUMNS FROM " . CONFIG_TABLE;
-	$result = $db->sql_query($sql);
-
-	$column_type = '';
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$field = strtolower($row['Field']);
-
-		if ($field == 'config_value')
-		{
-			$column_type = strtolower($row['Type']);
-			break;
-		}
-	}
-	$db->sql_freeresult($result);
-
-	// If column type is blob, but mysql version says we are on > 4.1.3, then the schema needs an update
-	if (strpos($column_type, 'blob') !== false && version_compare($db->sql_server_info(true), '4.1.3', '>='))
-	{
-		echo '<br /><br />';
-		echo '<h1>' . $lang['ERROR'] . '</h1><br />';
-
-		echo '<p>' . sprintf($lang['MYSQL_SCHEMA_UPDATE_REQUIRED'], $config['dbms_version'], $db->sql_server_info(true)) . '</p>';
-
-		_print_footer();
-
-		exit_handler();
-		exit;
-	}
 }
 
 // Now check if the user wants to update from a version we no longer support updates from

@@ -249,8 +249,6 @@ $lang = array_merge($lang, array(
 	'MAKE_FOLDER_WRITABLE'		=> 'Убедитесь, что этот каталог существует и у сервера есть права на запись в него, затем повторите попытку:<br />»<strong>%s</strong>.',
 	'MAKE_FOLDERS_WRITABLE'		=> 'Убедитесь, что эти каталоги существуют и у сервера есть права на запись в них, затем повторите попытку:<br />»<strong>%s</strong>.',
 
-	'MYSQL_SCHEMA_UPDATE_REQUIRED'	=> 'Схема вашей базы данных MySQL устарела. phpBB обнаружил, что используется схема для MySQL 3.x/4.x, но сервер работает на MySQL %2$s.<br /><strong>Перед началом процесса обновления вам необходимо произвести обновление схемы базы данных.</strong><br /><br />Прочтите в базе знаний <a href="http://www.phpbb.com/kb/article/doesnt-have-a-default-value-errors/">статью об обновлении базы данных MySQL</a>. При возникновении проблем обращайтесь на <a href="http://www.phpbbguru.net/community/">форум официальной русской поддержки phpBB</a>.',
-
 	'NAMING_CONFLICT'			=> 'Конфликт имён: оба имени %s и %s являются псевдонимами<br /><br />%s',
 	'NEXT_STEP'					=> 'Следующий шаг',
 	'NOT_FOUND'					=> 'Не найден',
