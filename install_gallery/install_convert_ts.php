@@ -426,14 +426,8 @@ class install_convert_ts extends module
 
 		// Create columns
 		$umil->table_column_add(array(
-			array(SESSIONS_TABLE,	'session_album_id',	array('UINT', 0)),
 			array(LOG_TABLE,		'album_id',			array('UINT', 0)),
 			array(LOG_TABLE,		'image_id',			array('UINT', 0)),
-		));
-
-		// Add index
-		$umil->table_index_add(array(
-			array(SESSIONS_TABLE,		'session_aid',	array('session_album_id')),
 		));
 
 		// Set default config

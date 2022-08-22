@@ -176,7 +176,6 @@ class install_uninstall extends module
 
 		// Delete columns
 		$umil->table_column_remove(array(
-			array(SESSIONS_TABLE,	'session_album_id'),
 			array(LOG_TABLE,		'album_id'),
 			array(LOG_TABLE,		'image_id'),
 			array(USERS_TABLE,		'album_id'),

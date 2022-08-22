@@ -75,7 +75,6 @@ $lang = array_merge($lang, array(
 	'CLICK_RETURN_IMAGE'			=> '%sВернуться к фотографии%s',
 	'CLICK_RETURN_INDEX'			=> '%sВернуться на главную страницу галереи%s',
 	'COMMENT'						=> 'Комментарий',
-	'COMMENT_IMAGE'					=> 'Оставить комментарий к фотографии в альбоме %s',
 	'COMMENT_LENGTH'				=> 'Введите здесь комментарий (не более <strong>%d</strong> символов).',
 	'COMMENT_ON'					=> 'Комментировать',
 	'COMMENT_STORED'				=> 'Комментарий сохранён.',
@@ -321,8 +320,6 @@ $lang = array_merge($lang, array(
 	'VIEW_SEARCH_CONTESTS'			=> 'Победители конкурсов',
 	'VIEW_SEARCH_TOPRATED'			=> 'Фото с наивысшей оценкой',
 	'VIEW_SEARCH_SELF'				=> 'Ваши фото',
-	'VIEWING_ALBUM'					=> 'Просмотр альбома %s',
-	'VIEWING_IMAGE'					=> 'Просмотр фотографий из альбома %s',
 
 	'WATCH_ALBUM'					=> 'Подписка на альбом',
 	'WATCH_IMAGE'					=> 'Подписка на комментарии',

@@ -75,7 +75,6 @@ $lang = array_merge($lang, array(
 	'CLICK_RETURN_IMAGE'			=> 'Click %shere%s to return to the image',
 	'CLICK_RETURN_INDEX'			=> 'Click %shere%s to return to the index',
 	'COMMENT'						=> 'Comment',
-	'COMMENT_IMAGE'					=> 'Posting a comment on an image in album %s',
 	'COMMENT_LENGTH'				=> 'Enter your comment here, it may contain no more than <strong>%d</strong> characters.',
 	'COMMENT_ON'					=> 'Comment on',
 	'COMMENT_STORED'				=> 'Your comment has been saved successfully.',
@@ -321,8 +320,6 @@ $lang = array_merge($lang, array(
 	'VIEW_SEARCH_CONTESTS'			=> 'View contest winners',
 	'VIEW_SEARCH_TOPRATED'			=> 'View top rated images',
 	'VIEW_SEARCH_SELF'				=> 'View your images',
-	'VIEWING_ALBUM'					=> 'Viewing album %s',
-	'VIEWING_IMAGE'					=> 'Viewing image in album %s',
 
 	'WATCH_ALBUM'					=> 'Subscribe album',
 	'WATCH_IMAGE'					=> 'Subscribe image',
