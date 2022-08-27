@@ -504,7 +504,6 @@ inherit_from = {INHERIT_FROM}
 							$db->sql_transaction('commit');
 
 							$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
-							$cache->destroy('imageset_site_logo_md5');
 
 							add_log('admin', 'LOG_IMAGESET_REFRESHED', $imageset_row['imageset_name']);
 							trigger_error($user->lang['IMAGESET_REFRESHED'] . adm_back_link($this->u_action));

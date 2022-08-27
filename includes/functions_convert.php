@@ -1808,41 +1808,39 @@ function add_bots()
 	}
 
 	$bots = array(
-		'AdsBot [Google]'			=> array('AdsBot-Google', ''),
-		'Alexa [Bot]'				=> array('ia_archiver', ''),
-		'Ask Jeeves [Bot]'			=> array('Ask Jeeves', ''),
-		'Baidu [Spider]'			=> array('Baiduspider', ''),
-		'Bing [Bot]'				=> array('bingbot/', ''),
-		'Exabot [Bot]'				=> array('Exabot', ''),
-		'FAST WebCrawler [Crawler]'	=> array('FAST-WebCrawler/', ''),
-		'Gigabot [Bot]'				=> array('Gigabot/', ''),
-		'Google Adsense [Bot]'		=> array('Mediapartners-Google', ''),
-		'Google Feedfetcher'		=> array('Feedfetcher-Google', ''),
-		'Google [Bot]'				=> array('Googlebot', ''),
-		'ichiro [Crawler]'			=> array('ichiro/', ''),
-		'Majestic-12 [Bot]'			=> array('MJ12bot/', ''),
-		'MSN [Bot]'					=> array('msnbot/', ''),
-		'MSNbot Media'				=> array('msnbot-media/', ''),
-		'psbot [Picsearch]'			=> array('psbot/0', ''),
-		'Steeler [Crawler]'			=> array('http://www.tkl.iis.u-tokyo.ac.jp/~crawler/', ''),
-		'TurnitinBot [Bot]'			=> array('TurnitinBot/', ''),
-		'Voyager [Bot]'				=> array('voyager/', ''),
-		'W3C [Linkcheck]'			=> array('W3C-checklink/', ''),
-		'W3C [Validator]'			=> array('W3C_Validator', ''),
-		'YaCy [Bot]'				=> array('yacybot', ''),
-		'Yahoo [Bot]'				=> array('Yahoo! Slurp', ''),
-		'Ahrefs [Bot]'				=> array('AhrefsBot/', ''),
-		'Senti [Bot]'				=> array('SentiBot/', ''),
-		'Barkrowler [Bot]'			=> array('Barkrowler/', ''),
-		'Yandex [Bot]'				=> array('YandexBot/', ''),
-		'Yandex [Images]'			=> array('YandexImages/', ''),
-		'Yandex [Video]'			=> array('YandexVideo/', ''),
-		'Yandex [Media]'			=> array('YandexMedia/', ''),
-		'Yandex [Blogs]'			=> array('YandexBlogs/', ''),
-		'Yandex [Direct]'			=> array('YandexDirect/', ''),
-		'Yandex [Metrika]'			=> array('YandexMetrika/', ''),
-		'Yandex [News]'				=> array('YandexNews/', ''),
-		'MailRu [Bot]'				=> array('Mail.Ru/', ''),
+		'Alexa [Bot]'				=> 'ia_archiver',
+		'Ask Jeeves [Bot]'			=> 'Ask Jeeves',
+		'Baidu [Spider]'			=> 'Baiduspider',
+		'Bing [Bot]'				=> 'bingbot/',
+		'Exabot [Bot]'				=> 'Exabot',
+		'FAST WebCrawler [Crawler]'	=> 'FAST-WebCrawler/',
+		'Gigabot [Bot]'				=> 'Gigabot/',
+		'Google [Bot]'				=> 'Googlebot',
+		'Google Ads [Bot]'			=> 'AdsBot-Google',
+		'Google Adsense [Bot]'		=> 'Mediapartners-Google',
+		'Majestic-12 [Bot]'			=> 'MJ12bot/',
+		'Steeler [Crawler]'			=> 'http://www.tkl.iis.u-tokyo.ac.jp/~crawler/',
+		'TurnitinBot [Bot]'			=> 'TurnitinBot/',
+		'Voyager [Bot]'				=> 'voyager/',
+		'W3C [Linkcheck]'			=> 'W3C-checklink/',
+		'W3C [Validator]'			=> 'W3C_Validator',
+		'YaCy [Bot]'				=> 'yacybot',
+		'Yahoo [Bot]'				=> 'Yahoo! Slurp',
+		'Ahrefs [Bot]'				=> 'AhrefsBot/',
+		'Senti [Bot]'				=> 'SentiBot/',
+		'Petal [Bot]'				=> 'PetalBot',
+		'Barkrowler [Bot]'			=> 'Barkrowler/',
+		'Ubermetrics [Bot]'			=> 'techinfo@ubermetrics-technologies.com',
+		'Trendiction [Bot]'			=> 'trendiction.de/bot',
+		'Seostar [Bot]'				=> 'https://seostar.co/robot/',
+		'BLEX [Bot]'				=> 'BLEXBot/',
+		'DuckDuck [Bot]'			=> 'duckduckgo.com',
+		'Yandex [Bot]'				=> 'YandexBot/',
+		'Yandex Images [Bot]'		=> 'YandexImages/',
+		'Yandex Metrika [Bot]'		=> 'YandexMetrika/',
+		'MailRu [Bot]'				=> 'Mail.Ru/',
+		'Feedly [Bot]'				=> 'Feedly/',
+		'Feedspot [Bot]'			=> 'Feedspot/',
 	);
 
 	if (!function_exists('user_add'))
@@ -1850,8 +1848,10 @@ function add_bots()
 		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 	}
 
-	foreach ($bots as $bot_name => $bot_ary)
+	foreach ($bots as $bot_name => $bot_agent)
 	{
+		if (empty($bot_agent)) { continue; }
+
 		$user_row = array(
 			'user_type'				=> USER_IGNORE,
 			'group_id'				=> $group_id,
@@ -1874,8 +1874,8 @@ function add_bots()
 				'bot_active'	=> 1,
 				'bot_name'		=> $bot_name,
 				'user_id'		=> $user_id,
-				'bot_agent'		=> $bot_ary[0],
-				'bot_ip'		=> $bot_ary[1])
+				'bot_agent'		=> $bot_agent,
+				'bot_ip'		=> '')
 			);
 			$db->sql_query($sql);
 		}
