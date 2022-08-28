@@ -373,7 +373,7 @@ CREATE TABLE phpbb_log (
 # Table: 'phpbb_login_attempts'
 CREATE TABLE phpbb_login_attempts (
 	attempt_ip varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
-	attempt_browser varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
+	attempt_browser varchar(250) DEFAULT '' NOT NULL,
 	attempt_forwarded_for varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
 	attempt_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -710,7 +710,7 @@ CREATE TABLE phpbb_sessions (
 	session_start int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	session_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	session_ip varchar(40) DEFAULT '' NOT NULL,
-	session_browser varchar(150) DEFAULT '' NOT NULL,
+	session_browser varchar(250) DEFAULT '' NOT NULL,
 	session_forwarded_for varchar(255) DEFAULT '' NOT NULL,
 	session_page varchar(255) DEFAULT '' NOT NULL,
 	session_viewonline tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
@@ -944,7 +944,7 @@ CREATE TABLE phpbb_users (
 	user_permissions mediumtext NOT NULL,
 	user_perm_from mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_ip varchar(40) DEFAULT '' NOT NULL,
-	user_browser varchar(150) DEFAULT '' NOT NULL,
+	user_browser varchar(250) DEFAULT '' NOT NULL,
 	user_regdate int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	username varchar(191) DEFAULT '' NOT NULL,
 	username_clean varchar(191) DEFAULT '' NOT NULL,
@@ -1086,7 +1086,7 @@ CREATE TABLE phpbb_user_browser_ids (
 	created int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	visits int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	agent varchar(150) DEFAULT '' NOT NULL,
+	agent varchar(250) DEFAULT '' NOT NULL,
 	last_ip varchar(40) DEFAULT '' NOT NULL,
 	PRIMARY KEY (browser_id,user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;

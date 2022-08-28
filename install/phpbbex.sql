@@ -13,7 +13,7 @@ CREATE TABLE phpbb_user_browser_ids (
 	created int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	visits int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	agent varchar(150) DEFAULT '' NOT NULL,
+	agent varchar(250) DEFAULT '' NOT NULL,
 	last_ip varchar(40) DEFAULT '' NOT NULL,
 	PRIMARY KEY (browser_id,user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
@@ -315,6 +315,10 @@ ALTER TABLE phpbb_users DROP COLUMN user_yim;
 ALTER TABLE phpbb_users DROP COLUMN user_msnm;
 ALTER TABLE phpbb_sessions DROP COLUMN session_forum_id;
 ALTER TABLE phpbb_sessions DROP COLUMN session_album_id; -- For Gallery MOD.
+ALTER TABLE phpbb_login_attempts MODIFY attempt_browser varchar(250) DEFAULT '' NOT NULL;
+ALTER TABLE phpbb_sessions MODIFY session_browser varchar(250) DEFAULT '' NOT NULL;
+ALTER TABLE phpbb_users MODIFY user_browser varchar(250) DEFAULT '' NOT NULL;
+ALTER TABLE phpbb_user_browser_ids MODIFY agent varchar(250) DEFAULT '' NOT NULL;
 
 -- Disable obsolete modules (they can be removed in the ACP safely).
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics');

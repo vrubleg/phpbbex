@@ -55,7 +55,7 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		);
 	}
 
-	$browser = trim(substr($browser, 0, 149));
+	$browser = trim(substr($browser, 0, 249));
 	$forwarded_for = trim(substr($forwarded_for, 0, 149));
 	$username_clean = utf8_clean_string($username);
 
