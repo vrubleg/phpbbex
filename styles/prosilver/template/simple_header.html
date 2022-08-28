@@ -7,8 +7,8 @@
 {META}
 <title><!-- IF S_IN_MCP -->{L_MCP} - <!-- ELSEIF S_IN_UCP -->{L_UCP} - <!-- ENDIF --><!-- IF PAGE_TITLE -->{PAGE_TITLE} - <!-- ENDIF --><!-- IF PAGE_NUMBER and ON_PAGE > 1 -->{PAGE_NUMBER} - <!-- ENDIF -->{SITENAME}</title>
 
-<link href="{T_THEME_PATH}/print.css" rel="stylesheet" type="text/css" media="print" title="printonly" />
-<link href="{T_STYLESHEET_LINK}" rel="stylesheet" type="text/css" media="screen, projection" />
+<link href="{T_THEME_PATH}/print.css" rel="stylesheet" media="print" title="printonly" />
+<link href="{T_STYLESHEET_LINK}" rel="stylesheet" media="screen" />
 
 <script src="{ROOT_PATH}assets/js/jquery.js"></script>
 <script src="{T_SUPER_TEMPLATE_PATH}/js/common.js"></script>
@@ -27,5 +27,5 @@
 <body id="phpbb" class="{S_CONTENT_DIRECTION} simple-body">
 
 <div id="simple-wrap">
-	<a id="top" name="top" accesskey="t"></a>
+	<a id="top" accesskey="t"></a>
 	<div id="page-body">

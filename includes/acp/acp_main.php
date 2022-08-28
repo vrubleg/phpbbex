@@ -418,7 +418,7 @@ class acp_main
 								'session_start'			=> (int) $user->data['session_start'],
 								'session_last_visit'	=> (int) $user->data['session_last_visit'],
 								'session_time'			=> (int) $user->time_now,
-								'session_browser'		=> (string) trim(substr($user->browser, 0, 149)),
+								'session_browser'		=> (string) trim(substr($user->browser, 0, 249)),
 								'session_forwarded_for'	=> (string) $user->forwarded_for,
 								'session_ip'			=> (string) $user->ip,
 								'session_autologin'		=> (int) $user->data['session_autologin'],

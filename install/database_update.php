@@ -221,6 +221,13 @@ if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " DROP COLUMN session_album_id"); // For Gallery MOD.
 	$db->sql_return_on_error(false);
 
+	// Upgrade max UA length from 150 to 250.
+
+	$db->sql_query("ALTER TABLE " . LOGIN_ATTEMPT_TABLE . " MODIFY attempt_browser varchar(250) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " MODIFY session_browser varchar(250) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_browser varchar(250) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USER_BROWSER_IDS_TABLE . " MODIFY agent varchar(250) DEFAULT '' NOT NULL");
+
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
 }
 
@@ -534,7 +541,6 @@ if (request_var('utf8mb4', 0))
 			case LOGIN_ATTEMPT_TABLE:
 				$sql .= ",
 					MODIFY attempt_ip varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
-					MODIFY attempt_browser varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
 					MODIFY attempt_forwarded_for varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";
 				break;
 			case POSTS_TABLE:
