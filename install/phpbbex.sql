@@ -314,7 +314,7 @@ ALTER TABLE phpbb_users DROP COLUMN user_aim;
 ALTER TABLE phpbb_users DROP COLUMN user_yim;
 ALTER TABLE phpbb_users DROP COLUMN user_msnm;
 ALTER TABLE phpbb_sessions DROP COLUMN session_forum_id;
-ALTER TABLE phpbb_sessions DROP COLUMN session_album_id; -- For Gallery MOD.
+-- ALTER TABLE phpbb_sessions DROP COLUMN session_album_id; -- For Gallery MOD.
 ALTER TABLE phpbb_login_attempts MODIFY attempt_browser varchar(250) DEFAULT '' NOT NULL;
 ALTER TABLE phpbb_sessions MODIFY session_browser varchar(250) DEFAULT '' NOT NULL;
 ALTER TABLE phpbb_users MODIFY user_browser varchar(250) DEFAULT '' NOT NULL;
@@ -324,4 +324,4 @@ ALTER TABLE phpbb_user_browser_ids MODIFY agent varchar(250) DEFAULT '' NOT NULL
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics');
 
 -- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.5');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.6');
