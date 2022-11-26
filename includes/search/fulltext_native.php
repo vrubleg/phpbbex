@@ -111,6 +111,7 @@ class fulltext_native extends search_backend
 							if ($i === $n - 1 || ($keywords[$i + 1] !== '*' && strcspn($keywords[$i + 1], $tokens) === 0))
 							{
 								$keywords = substr($keywords, 0, $i) . substr($keywords, $i + 1);
+								$n--;
 							}
 						}
 					break;
