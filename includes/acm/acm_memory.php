@@ -62,6 +62,7 @@ class acm_memory
 			return true;
 		}
 
+		$this->vars = array();
 		return false;
 	}
 

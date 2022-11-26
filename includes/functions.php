@@ -3863,22 +3863,12 @@ function phpbb_filter_root_path($errfile)
 
 /**
 * Queries the session table to get information about online guests
-* @param int $item_id Limits the search to the item with this id
-* @param string $item The name of the item which is stored in the session table as session_{$item}_id
 * @return int The number of active distinct guest sessions
 */
-function obtain_guest_count($item_id = 0, $item = 'forum')
+function obtain_guest_count()
 {
 	global $db, $config;
 
-	if ($item_id)
-	{
-		$reading_sql = ' AND s.session_' . $item . '_id = ' . (int) $item_id;
-	}
-	else
-	{
-		$reading_sql = '';
-	}
 	$time = (time() - (intval($config['load_online_time']) * 60));
 
 	// Get number of online guests
@@ -3887,8 +3877,7 @@ function obtain_guest_count($item_id = 0, $item = 'forum')
 		FROM ' . SESSIONS_TABLE . ' s
 		WHERE s.session_user_id = ' . ANONYMOUS . '
 			AND s.session_time <> s.session_start
-			AND s.session_time >= ' . ($time - ((int) ($time % 60))) .
-		$reading_sql;
+			AND s.session_time >= ' . ($time - ((int) ($time % 60)));
 	$result = $db->sql_query($sql);
 	$guests_online = (int) $db->sql_fetchfield('num_guests');
 	$db->sql_freeresult($result);
@@ -3898,19 +3887,13 @@ function obtain_guest_count($item_id = 0, $item = 'forum')
 
 /**
 * Queries the session table to get information about online users
-* @param int $item_id Limits the search to the item with this id
-* @param string $item The name of the item which is stored in the session table as session_{$item}_id
 * @return array An array containing the ids of online, hidden and visible users, as well as statistical info
 */
-function obtain_users_online($item_id = 0, $item = 'forum')
+function obtain_users_online()
 {
 	global $db, $config, $user;
 
 	$reading_sql = '';
-	if ($item_id !== 0)
-	{
-		$reading_sql = ' AND s.session_' . $item . '_id = ' . (int) $item_id;
-	}
 
 	$online_users = array(
 		'online_users'			=> array(),
@@ -3925,7 +3908,7 @@ function obtain_users_online($item_id = 0, $item = 'forum')
 
 	if ($config['load_online_guests'])
 	{
-		$online_users['guests_online'] = obtain_guest_count($item_id, $item);
+		$online_users['guests_online'] = obtain_guest_count();
 	}
 	if (!$config['load_online_bots'])
 	{
@@ -3973,11 +3956,9 @@ function obtain_users_online($item_id = 0, $item = 'forum')
 /**
 * Uses the result of obtain_users_online to generate a localized, readable representation.
 * @param mixed $online_users result of obtain_users_online - array with user_id lists for total, hidden and visible users, and statistics
-* @param int $item_id Indicate that the data is limited to one item and not global
-* @param string $item The name of the item which is stored in the session table as session_{$item}_id
 * @return array An array containing the string for output to the template
 */
-function obtain_users_online_string($online_users, $item_id = 0, $item = 'forum')
+function obtain_users_online_string($online_users)
 {
 	global $config, $db, $user, $auth;
 
@@ -3993,26 +3974,14 @@ function obtain_users_online_string($online_users, $item_id = 0, $item = 'forum'
 	}
 
 	$and_hidden = !$auth->acl_get('u_viewonline') && $online_users['hidden_online'];
-	$and_guests = $item_id !== 0 && $online_users['guests_online'];
 	if ($and_hidden)
 	{
-		$online_userlist .= ($online_userlist ? ($and_guests ? ', ' : ' ' . $user->lang['AND'] . ' ') : '') . $user->lang('ONLINE_HIDDEN_USERS', $online_users['hidden_online']);
-	}
-	if ($and_guests)
-	{
-		$online_userlist .= ($online_userlist ? (' ' . $user->lang['AND'] . ' ') : '') . $user->lang('ONLINE_GUEST_USERS', $online_users['guests_online']);
+		$online_userlist .= ($online_userlist ? (' ' . $user->lang['AND'] . ' ') : '') . $user->lang('ONLINE_HIDDEN_USERS', $online_users['hidden_online']);
 	}
 
 	if ($online_userlist)
 	{
-		if ($item_id === 0)
-		{
-			$online_userlist = $user->lang['G_REGISTERED'] . ': ' . $online_userlist;
-		}
-		else
-		{
-			$online_userlist = sprintf($user->lang['BROWSING_' . strtoupper($item)], $online_userlist);
-		}
+		$online_userlist = $user->lang['G_REGISTERED'] . ': ' . $online_userlist;
 	}
 
 	foreach ($online_users['online_bots'] as $row)
@@ -4244,13 +4213,10 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	if ($config['load_online'] && $config['load_online_time'] && $display_online_list)
 	{
 		/**
-		* Load online data:
-		* For obtaining another session column use $item and $item_id in the function-parameter, whereby the column is session_{$item}_id.
+		* Load online data.
 		*/
-		$item_id = max($item_id, 0);
-
-		$online_users = obtain_users_online($item_id, $item);
-		$user_online_strings = obtain_users_online_string($online_users, $item_id, $item);
+		$online_users = obtain_users_online();
+		$user_online_strings = obtain_users_online_string($online_users);
 
 		$l_online_users = $user_online_strings['l_online_users'];
 		$online_userlist = $user_online_strings['online_userlist'];
