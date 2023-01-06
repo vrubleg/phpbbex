@@ -231,6 +231,39 @@ if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
 }
 
+if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
+{
+	// Remove obsolete permissions.
+
+	$permissions = array('u_pm_emailpm');
+	$option_ids = array();
+
+	$result = $db->sql_query('SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE. ' WHERE ' . $db->sql_in_set('auth_option', $permissions));
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$option_ids[] = (int) $row['auth_option_id'];
+	}
+	$db->sql_freeresult($result);
+
+	if (!empty($option_ids))
+	{
+		foreach (array(ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE) as $table)
+		{
+			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
+		}
+
+		// Reset permissions cache...
+		$cache->destroy('_acl_options');
+		include_once($phpbb_root_path . 'includes/acp/auth.' . $phpEx);
+		$auth_admin = new auth_admin();
+		$auth_admin->acl_clear_prefetch();
+	}
+
+	// Update DB schema version.
+
+	// $db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.7' WHERE config_name = 'phpbbex_version'");
+}
+
 // Update bots if bots=1 is passed.
 if (request_var('bots', 0))
 {

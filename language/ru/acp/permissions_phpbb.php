@@ -101,7 +101,6 @@ $lang = array_merge($lang, array(
 	'acl_u_pm_edit'		=> array('lang' => 'Может редактировать собственные ЛС', 'cat' => 'pm'),
 	'acl_u_pm_delete'	=> array('lang' => 'Может удалять ЛС из своих папок', 'cat' => 'pm'),
 	'acl_u_pm_forward'	=> array('lang' => 'Может пересылать ЛС', 'cat' => 'pm'),
-	'acl_u_pm_emailpm'	=> array('lang' => 'Может отправлять ЛС по email', 'cat' => 'pm'),
 	'acl_u_pm_printpm'	=> array('lang' => 'Может распечатывать ЛС', 'cat' => 'pm'),
 	'acl_u_pm_attach'	=> array('lang' => 'Может прикреплять вложения в ЛС', 'cat' => 'pm'),
 	'acl_u_pm_download'	=> array('lang' => 'Может скачивать файлы из ЛС', 'cat' => 'pm'),
