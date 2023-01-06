@@ -691,7 +691,7 @@ switch ($mode)
 
 		add_form_key('memberlist_email');
 
-		if (!$config['email_enable'])
+		if (!$config['email_enable'] || !$config['board_email_form'])
 		{
 			trigger_error('EMAIL_DISABLED');
 		}
@@ -714,7 +714,7 @@ switch ($mode)
 		// Send email to user...
 		if ($user_id)
 		{
-			if ($user_id == ANONYMOUS || !$config['board_email_form'])
+			if ($user_id == ANONYMOUS)
 			{
 				trigger_error('NO_EMAIL');
 			}

@@ -100,9 +100,6 @@ $lang = array_merge($lang, array(
 	'acl_u_readpm'		=> array('lang' => 'Может читать ЛС', 'cat' => 'pm'),
 	'acl_u_pm_edit'		=> array('lang' => 'Может редактировать собственные ЛС', 'cat' => 'pm'),
 	'acl_u_pm_delete'	=> array('lang' => 'Может удалять ЛС из своих папок', 'cat' => 'pm'),
-	'acl_u_pm_forward'	=> array('lang' => 'Может пересылать ЛС', 'cat' => 'pm'),
-	'acl_u_pm_emailpm'	=> array('lang' => 'Может отправлять ЛС по email', 'cat' => 'pm'),
-	'acl_u_pm_printpm'	=> array('lang' => 'Может распечатывать ЛС', 'cat' => 'pm'),
 	'acl_u_pm_attach'	=> array('lang' => 'Может прикреплять вложения в ЛС', 'cat' => 'pm'),
 	'acl_u_pm_download'	=> array('lang' => 'Может скачивать файлы из ЛС', 'cat' => 'pm'),
 	'acl_u_pm_bbcode'	=> array('lang' => 'Может использовать BBCode в ЛС', 'cat' => 'pm'),
@@ -148,7 +145,6 @@ $lang = array_merge($lang, array(
 	'acl_f_bump'		=> array('lang' => 'Может поднимать темы', 'cat' => 'actions'),
 	'acl_f_report'		=> array('lang' => 'Может размещать жалобы', 'cat' => 'actions'),
 	'acl_f_subscribe'	=> array('lang' => 'Может подписываться на разделы', 'cat' => 'actions'),
-	'acl_f_print'		=> array('lang' => 'Может распечатывать темы', 'cat' => 'actions'),
 	'acl_f_email'		=> array('lang' => 'Может сообщать (другу) по email о теме', 'cat' => 'actions'),
 
 	'acl_f_search'		=> array('lang' => 'Может использовать поиск в разделе', 'cat' => 'misc'),
@@ -179,7 +175,6 @@ $lang = array_merge($lang, array(
 $lang = array_merge($lang, array(
 	'acl_a_board'		=> array('lang' => 'Может изменять настройки форума и проверять обновления', 'cat' => 'settings'),
 	'acl_a_server'		=> array('lang' => 'Может изменять параметры настройки сервера', 'cat' => 'settings'),
-	'acl_a_jabber'		=> array('lang' => 'Может изменять настройки Jabber', 'cat' => 'settings'),
 	'acl_a_phpinfo'		=> array('lang' => 'Может просматривать сведения о php', 'cat' => 'settings'),
 
 	'acl_a_forum'		=> array('lang' => 'Может управлять разделами', 'cat' => 'forums'),
