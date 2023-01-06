@@ -581,8 +581,8 @@ $lang = array_merge($lang, array(
 
 	'ADMIN_EMAIL'					=> 'Обратный email-адрес',
 	'ADMIN_EMAIL_EXPLAIN'			=> 'Этот адрес будет использован для возврата всех email-сообщений как email-адрес для технических контактов. Он всегда будет использоваться в качестве адресов <samp>Return-Path</samp> и <samp>Sender</samp> в email-сообщениях.',
-	'BOARD_EMAIL_FORM'				=> 'Рассылка email-сообщений через форум',
-	'BOARD_EMAIL_FORM_EXPLAIN'		=> 'Пользователи смогут отправлять email-сообщения через форум вместо их обычной отправки.',
+	'BOARD_EMAIL_FORM'				=> 'Отправка email-сообщений через форум',
+	'BOARD_EMAIL_FORM_EXPLAIN'		=> 'Пользователи смогут отправлять email-сообщения через форум.',
 	'BOARD_HIDE_EMAILS'				=> 'Скрывать email-адреса всех пользователей',
 	'BOARD_HIDE_EMAILS_EXPLAIN'		=> 'Эта функция полностью сохраняет в тайне email-адреса.',
 	'CONTACT_EMAIL'					=> 'Контактный email-адрес',
