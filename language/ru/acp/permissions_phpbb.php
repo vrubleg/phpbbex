@@ -176,7 +176,6 @@ $lang = array_merge($lang, array(
 $lang = array_merge($lang, array(
 	'acl_a_board'		=> array('lang' => 'Может изменять настройки форума и проверять обновления', 'cat' => 'settings'),
 	'acl_a_server'		=> array('lang' => 'Может изменять параметры настройки сервера', 'cat' => 'settings'),
-	'acl_a_jabber'		=> array('lang' => 'Может изменять настройки Jabber', 'cat' => 'settings'),
 	'acl_a_phpinfo'		=> array('lang' => 'Может просматривать сведения о php', 'cat' => 'settings'),
 
 	'acl_a_forum'		=> array('lang' => 'Может управлять разделами', 'cat' => 'forums'),
