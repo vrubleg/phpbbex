@@ -198,7 +198,6 @@ $lang = array_merge($lang, array(
 	'ALLOW_IMG_PM'				=> 'Allow use of <code>[IMG]</code> BBCode tag',
 	'ALLOW_MASS_PM'				=> 'Allow sending of private messages to multiple users and groups',
 	'ALLOW_MASS_PM_EXPLAIN'		=> 'Sending to groups can be adjusted per group within the group settings page.',
-	'ALLOW_PRINT_PM'			=> 'Allow print view in private messaging',
 	'ALLOW_QUOTE_PM'			=> 'Allow quotes in private messages',
 	'ALLOW_SIG_PM'				=> 'Allow signature in private messages',
 	'ALLOW_SMILIES_PM'			=> 'Allow smilies in private messages',

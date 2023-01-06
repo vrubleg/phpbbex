@@ -259,6 +259,10 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		$auth_admin->acl_clear_prefetch();
 	}
 
+	// Remove obsolete config values.
+
+	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('print_pm')");
+
 	// Update DB schema version.
 
 	// $db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.7' WHERE config_name = 'phpbbex_version'");
