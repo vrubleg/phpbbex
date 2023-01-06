@@ -235,7 +235,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 {
 	// Remove obsolete permissions.
 
-	$permissions = array('u_pm_emailpm', 'u_pm_printpm');
+	$permissions = array('f_print', 'u_pm_emailpm', 'u_pm_printpm');
 	$option_ids = array();
 
 	$result = $db->sql_query('SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE. ' WHERE ' . $db->sql_in_set('auth_option', $permissions));
