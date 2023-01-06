@@ -47,7 +47,7 @@ $lang = array_merge($lang, array(
 	'LOGIN_VIEWTOPIC'		=> 'Необходимо авторизоваться для просмотра этой темы.',
 
 	'MAKE_ANNOUNCE'				=> 'Сделать объявлением',
-	'MAKE_GLOBAL'				=> 'Сделать важной',
+	'MAKE_GLOBAL'				=> 'Сделать глобальной',
 	'MAKE_NORMAL'				=> 'Сделать обычной',
 	'MAKE_STICKY'				=> 'Сделать закреплённой',
 	'MAX_OPTIONS_SELECT'		=> 'Можно выбрать до <strong>%d</strong> вариантов ответа',
