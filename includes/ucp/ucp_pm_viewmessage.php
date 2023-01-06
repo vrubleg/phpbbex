@@ -258,7 +258,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'S_BBCODE_ALLOWED'	=> ($bbcode_status) ? 1 : 0,
 
 		'U_PRINT_PM'		=> "$url&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] . "&amp;view=print",
-		'U_FORWARD_PM'		=> ($config['forward_pm'] && $auth->acl_get('u_sendpm')) ? "$url&amp;mode=compose&amp;action=forward&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '')
+		'U_FORWARD_PM'		=> ($auth->acl_get('u_sendpm')) ? "$url&amp;mode=compose&amp;action=forward&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '')
 	);
 
 	// Display not already displayed Attachments for this post, we already parsed them. ;)

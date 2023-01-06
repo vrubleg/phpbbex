@@ -194,7 +194,6 @@ $lang = array_merge($lang, array(
 	'ALLOW_BBCODE_PM'			=> 'Allow BBCode in private messages',
 	'ALLOW_FLASH_PM'			=> 'Allow use of <code>[FLASH]</code> BBCode tag',
 	'ALLOW_FLASH_PM_EXPLAIN'	=> 'Note that the ability to use flash in private messages, if enabled here, also depends on the permissions.',
-	'ALLOW_FORWARD_PM'			=> 'Allow forwarding of private messages',
 	'ALLOW_IMG_PM'				=> 'Allow use of <code>[IMG]</code> BBCode tag',
 	'ALLOW_MASS_PM'				=> 'Allow sending of private messages to multiple users and groups',
 	'ALLOW_MASS_PM_EXPLAIN'		=> 'Sending to groups can be adjusted per group within the group settings page.',

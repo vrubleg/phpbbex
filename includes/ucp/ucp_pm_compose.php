@@ -216,9 +216,9 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		break;
 	}
 
-	if ($action == 'forward' && (!$config['forward_pm'] || !$auth->acl_get('u_sendpm')))
+	if ($action == 'forward' && !$auth->acl_get('u_sendpm'))
 	{
-		trigger_error('NO_AUTH_FORWARD_MESSAGE');
+		trigger_error('NO_AUTH_SEND_MESSAGE');
 	}
 
 	if ($action == 'edit' && !$auth->acl_get('u_pm_edit'))

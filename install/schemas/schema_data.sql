@@ -119,7 +119,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('force_server_vars'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_lifetime', '43200');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_mintime', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_sid_guests', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('forward_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('forwarded_for_check', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('full_folder_action', '2');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_mysql_max_word_len', '254');
