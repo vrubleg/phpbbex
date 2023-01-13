@@ -2573,20 +2573,21 @@ function build_url($strip_vars = false)
 * @param string $url URL to redirect to. The url will go through redirect() first before the template variable is assigned
 * @param bool $disable_cd_check If true, meta_refresh() will redirect to an external domain. If false, the redirect point to the boards url if it does not match the current domain. Default is false.
 */
-function meta_refresh($time, $url, $disable_cd_check = false)
+function meta_refresh($time, $url = false, $disable_cd_check = false)
 {
 	global $template, $meta_refresh_used;
 	$meta_refresh_used = true;
 
-	$url = redirect($url, true, $disable_cd_check);
-	$url = str_replace('&', '&amp;', $url);
-
-	// For XHTML compatibility we change back & to &amp;
-	$template->assign_vars(array(
-		'META' => '<meta http-equiv="refresh" content="' . $time . '; url=' . $url . '" />')
-	);
-
-	return $url;
+	if ($url === false)
+	{
+		$template->assign_var('META', '<meta http-equiv="refresh" content="' . $time . '" />');
+	}
+	else
+	{
+		$url = redirect($url, true, $disable_cd_check);
+		$url = str_replace('&', '&amp;', $url);
+		$template->assign_var('META', '<meta http-equiv="refresh" content="' . $time . '; url=' . $url . '" />');
+	}
 }
 
 /**

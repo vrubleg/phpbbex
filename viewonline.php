@@ -249,7 +249,7 @@ while ($row = $db->sql_fetchrow($result))
 $db->sql_freeresult($result);
 
 // Refreshing the page every 60 seconds...
-meta_refresh(60, append_sid("{$phpbb_root_path}viewonline.$phpEx", "sg=$show_guests&amp;sb=$show_bots&amp;sk=$sort_key&amp;sd=$sort_dir&amp;start=$start"));
+meta_refresh(60);
 
 // Send data to template
 $template->assign_vars(array(
