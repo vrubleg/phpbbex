@@ -261,7 +261,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 	// Remove obsolete config values.
 
-	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('forward_pm', 'print_pm')");
+	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('forward_pm', 'print_pm', 'email_function_name')");
 
 	// Update DB schema version.
 
