@@ -436,11 +436,11 @@ class messenger
 		$headers[] = 'Date: ' . date('r', time());
 		$headers[] = 'Content-Type: text/plain; charset=UTF-8'; // format=flowed
 		$headers[] = 'Content-Transfer-Encoding: 8bit'; // 7bit
+		$headers[] = 'X-Mailer: phpBB3';
 
 		// SpamAssassin doesn't like these headers =(
 		// $headers[] = 'X-Priority: ' . $this->mail_priority;
 		// $headers[] = 'X-MSMail-Priority: ' . (($this->mail_priority == MAIL_LOW_PRIORITY) ? 'Low' : (($this->mail_priority == MAIL_NORMAL_PRIORITY) ? 'Normal' : 'High'));
-		// $headers[] = 'X-Mailer: phpBB3';
 		// $headers[] = 'X-MimeOLE: phpBB3';
 		// $headers[] = 'X-phpBB-Origin: phpbb://' . str_replace(array('http://', 'https://'), array('', ''), generate_board_url());
 
@@ -622,7 +622,6 @@ class messenger
 
 /**
 * handling email and jabber queue
-* @package phpBB3
 */
 class queue
 {
@@ -1153,8 +1152,6 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 /**
 * SMTP Class
 * Auth Mechanisms originally taken from the AUTH Modules found within the PHP Extension and Application Repository (PEAR)
-* See docs/AUTHORS for more details
-* @package phpBB3
 */
 class smtp_class
 {
@@ -1248,7 +1245,7 @@ class smtp_class
 	*/
 	function log_into_server($hostname, $username, $password, $default_auth_method)
 	{
-		global $user;
+		global $config, $user;
 
 		$err_msg = '';
 
@@ -1278,8 +1275,6 @@ class smtp_class
 		// severe problems and is not fixable!
 		if ($default_auth_method == 'POP-BEFORE-SMTP' && $username && $password)
 		{
-			global $config;
-
 			$errno = 0;
 			$errstr = '';
 
