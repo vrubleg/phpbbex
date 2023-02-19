@@ -259,6 +259,8 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		$auth_admin->acl_clear_prefetch();
 	}
 
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_auth = 'acl_a_server' WHERE module_auth = 'acl_a_jabber'");
+
 	// Add new config options.
 
 	$db->sql_query("INSERT IGNORE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('smtp_verify_cert', '1')");
