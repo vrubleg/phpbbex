@@ -1332,14 +1332,14 @@ class smtp_class
 			return (isset($user->lang['NO_SUPPORTED_AUTH_METHODS'])) ? $user->lang['NO_SUPPORTED_AUTH_METHODS'] : 'No supported authentication methods';
 		}
 
-		$method = strtolower(str_replace('-', '_', $method));
+		$method = 'auth_' . strtolower(str_replace('-', '_', $method));
 		return $this->$method($username, $password);
 	}
 
 	/**
 	* Plain authentication method
 	*/
-	function plain($username, $password)
+	protected function auth_plain($username, $password)
 	{
 		$this->server_send('AUTH PLAIN');
 		if ($err_msg = $this->server_parse('334', __LINE__))
@@ -1360,7 +1360,7 @@ class smtp_class
 	/**
 	* Login authentication method
 	*/
-	function login($username, $password)
+	protected function auth_login($username, $password)
 	{
 		$this->server_send('AUTH LOGIN');
 		if ($err_msg = $this->server_parse('334', __LINE__))
@@ -1386,7 +1386,7 @@ class smtp_class
 	/**
 	* cram_md5 authentication method
 	*/
-	function cram_md5($username, $password)
+	protected function auth_cram_md5($username, $password)
 	{
 		$this->server_send('AUTH CRAM-MD5');
 		if ($err_msg = $this->server_parse('334', __LINE__))
@@ -1413,7 +1413,7 @@ class smtp_class
 	* digest_md5 authentication method
 	* A real pain in the ***
 	*/
-	function digest_md5($username, $password)
+	protected function auth_digest_md5($username, $password)
 	{
 		global $config, $user;
 
