@@ -520,7 +520,7 @@ class messenger
 
 			if ($config['smtp_delivery'])
 			{
-				$result = smtpmail($this->addresses, mail_encode($this->subject), wordwrap(utf8_wordwrap($this->msg), 997, "\n", true), $err_msg, $headers);
+				$result = smtpmail($this->addresses, mail_encode($this->subject), wordwrap(utf8_wordwrap($this->msg, 250), 997, "\n", true), $err_msg, $headers);
 			}
 			else
 			{
@@ -827,7 +827,7 @@ class queue
 
 						if ($config['smtp_delivery'])
 						{
-							$result = smtpmail($addresses, mail_encode($subject), wordwrap(utf8_wordwrap($msg), 997, "\n", true), $err_msg, $headers);
+							$result = smtpmail($addresses, mail_encode($subject), wordwrap(utf8_wordwrap($msg, 250), 997, "\n", true), $err_msg, $headers);
 						}
 						else
 						{
@@ -1658,7 +1658,7 @@ function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 	// On some PHP Versions mail() *may* fail if there are newlines within the subject.
 	// Newlines are used as a delimiter for lines in mail_encode() according to RFC 2045 section 6.8.
 	// Because PHP can't decide what is wanted we revert back to the non-RFC-compliant way of separating by one space (Use '' as parameter to mail_encode() results in SPACE used)
-	$result = mail($to, mail_encode($subject, ''), wordwrap(utf8_wordwrap($msg), 997, "\n", true), $headers);
+	$result = mail($to, mail_encode($subject, ''), wordwrap(utf8_wordwrap($msg, 250), 997, "\n", true), $headers);
 
 	$collector->uninstall();
 	$err_msg = $collector->format_errors();

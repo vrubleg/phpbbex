@@ -756,7 +756,7 @@ class acp_board
 			else
 			{
 				$user->add_lang('memberlist');
-				trigger_error($user->lang['CONFIG_UPDATED'] . '<br>' . $user->lang('EMAIL_DISABLED') . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($user->lang('EMAIL_DISABLED') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 		}
 
