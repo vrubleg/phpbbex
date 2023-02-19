@@ -1276,7 +1276,7 @@ class smtp_class
 			$this->socket_tls = stream_socket_enable_crypto($this->socket, true, $crypto_method);
 			$collector->uninstall();
 
-			if (!$smtp->socket_tls)
+			if (!$this->socket_tls)
 			{
 				$err_msg = 'STARTTLS: Could not enable TLS on a socket';
 				if (count($collector->errors)) { $err_msg .= '<br /><br />' . htmlspecialchars($collector->format_errors()); }
