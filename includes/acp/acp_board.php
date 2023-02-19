@@ -549,6 +549,7 @@ class acp_board
 						'board_email'			=> array('lang' => 'ADMIN_EMAIL',			'validate' => 'email',	'type' => 'text:25:100', 'explain' => true),
 						'board_email_sig'		=> array('lang' => 'EMAIL_SIG',				'validate' => 'string',	'type' => 'textarea:5:30', 'explain' => true),
 						'board_hide_emails'		=> array('lang' => 'BOARD_HIDE_EMAILS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'send_test_email'		=> array('lang' => 'SEND_TEST_EMAIL',		'validate' => 'bool',	'type' => 'custom', 'method' => 'send_test_email', 'explain' => true),
 
 						'legend2'				=> 'SMTP_SETTINGS',
 						'smtp_delivery'			=> array('lang' => 'USE_SMTP',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
@@ -731,6 +732,31 @@ class acp_board
 				{
 					trigger_error('NO_AUTH_PLUGIN', E_USER_ERROR);
 				}
+			}
+		}
+
+		if ($mode == 'email' && request_var('send_test_email', ''))
+		{
+			if ($config['email_enable'])
+			{
+				include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+
+				$messenger = new messenger(false);
+				$messenger->template('test');
+				$messenger->to($user->data['user_email'], $user->data['username']);
+				$messenger->anti_abuse_headers($config, $user);
+				$messenger->assign_vars(array(
+					'USERNAME'	=> htmlspecialchars_decode($user->data['username']),
+					'MESSAGE'	=> htmlspecialchars_decode(request_var('send_test_email_text', '', true)),
+				));
+				$messenger->send(NOTIFY_EMAIL);
+
+				trigger_error($user->lang('TEST_EMAIL_SENT') . adm_back_link($this->u_action));
+			}
+			else
+			{
+				$user->add_lang('memberlist');
+				trigger_error($user->lang('EMAIL_DISABLED') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 		}
 
@@ -1181,6 +1207,13 @@ class acp_board
 
 		// Empty sql cache for forums table because options changed
 		$cache->destroy('sql', FORUMS_TABLE);
+	}
+
+	function send_test_email($value, $key)
+	{
+		global $user;
+
+		return '<textarea id="' . $key . '_text" name="' . $key . '_text" placeholder="' . $user->lang('MESSAGE') . '"></textarea><br><input class="button2" type="submit" id="' . $key . '" name="' . $key . '" value="' . $user->lang('SEND_TEST_EMAIL') . '">';
 	}
 
 }
