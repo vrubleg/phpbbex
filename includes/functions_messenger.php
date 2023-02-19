@@ -1553,7 +1553,7 @@ class smtp_class
 			}
 			$cnonce = base64_encode($str);
 
-			$digest_uri = 'smtp/' . $config['smtp_host'];
+			$digest_uri = 'smtp/' . preg_replace('#^[-_.\d\w]+://#', '', $config['smtp_host']);
 
 			$auth_1 = sprintf('%s:%s:%s', pack('H32', md5(sprintf('%s:%s:%s', $username, $md5_challenge['realm'], $password))), $md5_challenge['nonce'], $cnonce);
 			$auth_2 = 'AUTHENTICATE:' . $digest_uri;
