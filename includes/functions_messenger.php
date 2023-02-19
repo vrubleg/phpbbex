@@ -1267,44 +1267,6 @@ class smtp_class
 			}
 		}
 
-		// If we are authenticating through pop-before-smtp, we
-		// have to login ones before we get authenticated
-		// NOTE: on some configurations the time between an update of the auth database takes so
-		// long that the first email send does not work. This is not a biggie on a live board (only
-		// the install mail will most likely fail) - but on a dynamic ip connection this might produce
-		// severe problems and is not fixable!
-		if ($default_auth_method == 'POP-BEFORE-SMTP' && $username && $password)
-		{
-			$errno = 0;
-			$errstr = '';
-
-			$this->server_send("QUIT");
-			fclose($this->socket);
-
-			$result = $this->pop_before_smtp($hostname, $username, $password);
-			$username = $password = $default_auth_method = '';
-
-			// We need to close the previous session, else the server is not
-			// able to get our ip for matching...
-			if (!$this->socket = @fsockopen($config['smtp_host'], $config['smtp_port'], $errno, $errstr, 10))
-			{
-				if ($errstr)
-				{
-					$errstr = utf8_convert_message($errstr);
-				}
-
-				$err_msg = (isset($user->lang['NO_CONNECT_TO_SMTP_HOST'])) ? sprintf($user->lang['NO_CONNECT_TO_SMTP_HOST'], $errno, $errstr) : "Could not connect to smtp host : $errno : $errstr";
-				return $err_msg;
-			}
-
-			// Wait for reply
-			if ($err_msg = $this->server_parse('220', __LINE__))
-			{
-				$this->close_session($err_msg);
-				return $err_msg;
-			}
-		}
-
 		// Try EHLO first
 		$this->server_send("EHLO {$local_host}");
 		if ($err_msg = $this->server_parse('250', __LINE__))
@@ -1345,11 +1307,11 @@ class smtp_class
 		// Get best authentication method
 		$available_methods = explode(' ', $this->commands['AUTH']);
 
-		// Define the auth ordering if the default auth method was not found
+		// Allowed auth methods and their ordering if the default auth method was not found.
 		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5');
 		$method = '';
 
-		if (in_array($default_auth_method, $available_methods))
+		if (in_array($default_auth_method, $auth_methods) && in_array($default_auth_method, $available_methods))
 		{
 			$method = $default_auth_method;
 		}
@@ -1372,41 +1334,6 @@ class smtp_class
 
 		$method = strtolower(str_replace('-', '_', $method));
 		return $this->$method($username, $password);
-	}
-
-	/**
-	* Pop before smtp authentication
-	*/
-	function pop_before_smtp($hostname, $username, $password)
-	{
-		global $user;
-
-		if (!$this->socket = @fsockopen($hostname, 110, $errno, $errstr, 10))
-		{
-			if ($errstr)
-			{
-				$errstr = utf8_convert_message($errstr);
-			}
-
-			return (isset($user->lang['NO_CONNECT_TO_SMTP_HOST'])) ? sprintf($user->lang['NO_CONNECT_TO_SMTP_HOST'], $errno, $errstr) : "Could not connect to smtp host : $errno : $errstr";
-		}
-
-		$this->server_send("USER $username", true);
-		if ($err_msg = $this->server_parse('+OK', __LINE__))
-		{
-			return $err_msg;
-		}
-
-		$this->server_send("PASS $password", true);
-		if ($err_msg = $this->server_parse('+OK', __LINE__))
-		{
-			return $err_msg;
-		}
-
-		$this->server_send('QUIT');
-		fclose($this->socket);
-
-		return false;
 	}
 
 	/**

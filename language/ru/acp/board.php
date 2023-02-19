@@ -600,7 +600,6 @@ $lang = array_merge($lang, array(
 	'SMTP_PASSWORD'					=> 'Пароль SMTP',
 	'SMTP_PASSWORD_EXPLAIN'			=> 'Введите пароль, только если SMTP требует этого.<br /><em><strong>Внимание:</strong> этот пароль будет сохранён в базе данных в незашифрованном виде и будет виден всем, кто имеет доступ к ней или к этой странице настроек.</em>',
 	'SMTP_PLAIN'					=> 'PLAIN',
-	'SMTP_POP_BEFORE_SMTP'			=> 'POP-BEFORE-SMTP',
 	'SMTP_PORT'						=> 'Порт сервера SMTP',
 	'SMTP_PORT_EXPLAIN'				=> 'Изменяйте порт только в том случае, если вам точно известно, что сервер использует другой порт.',
 	'SMTP_SERVER'					=> 'Адрес сервера SMTP',

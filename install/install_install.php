@@ -1998,7 +1998,7 @@ class install_install extends module
 	{
 		global $lang;
 
-		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5', 'POP-BEFORE-SMTP');
+		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5');
 		$s_smtp_auth_options = '';
 
 		foreach ($auth_methods as $method)

@@ -600,7 +600,6 @@ $lang = array_merge($lang, array(
 	'SMTP_PASSWORD'					=> 'SMTP password',
 	'SMTP_PASSWORD_EXPLAIN'			=> 'Only enter a password if your SMTP server requires it.<br /><em><strong>Warning:</strong> This password will be stored as plain text in the database, visible to everybody who can access your database or who can view this configuration page.</em>',
 	'SMTP_PLAIN'					=> 'PLAIN',
-	'SMTP_POP_BEFORE_SMTP'			=> 'POP-BEFORE-SMTP',
 	'SMTP_PORT'						=> 'SMTP server port',
 	'SMTP_PORT_EXPLAIN'				=> 'Only change this if you know your SMTP server is on a different port.',
 	'SMTP_SERVER'					=> 'SMTP server address',
