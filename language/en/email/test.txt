@@ -2,10 +2,8 @@ Subject: phpBBex is correctly configured to send emails
 
 Hello {USERNAME},
 
-Congratulations. If you received this email, phpBBex is correctly configured to send emails.
-<!-- IF MESSAGE -->
+Congratulations. If you received this email, phpBBex is correctly configured to send emails.<!-- IF MESSAGE -->
 
-{MESSAGE}
-<!-- ENDIF -->
+{MESSAGE}<!-- ENDIF -->
 
 {EMAIL_SIG}
