@@ -1247,50 +1247,10 @@ class smtp_class
 	{
 		global $config, $user;
 
-		$err_msg = '';
-
-		// Here we try to determine the *real* hostname (reverse DNS entry preferrably)
-		$local_host = $user->host;
-
-		if (function_exists('php_uname'))
+		// Greet the server and parse its capabilities.
+		if (($err_msg = $this->greet_server()) !== true)
 		{
-			$local_host = php_uname('n');
-
-			// Able to resolve name to IP
-			if (($addr = @gethostbyname($local_host)) !== $local_host)
-			{
-				// Able to resolve IP back to name
-				if (($name = @gethostbyaddr($addr)) !== $addr)
-				{
-					$local_host = $name;
-				}
-			}
-		}
-
-		// Try EHLO first
-		$this->server_send("EHLO {$local_host}");
-		if ($err_msg = $this->server_parse('250', __LINE__))
-		{
-			// a 503 response code means that we're already authenticated
-			if ($this->numeric_response_code == 503)
-			{
-				return false;
-			}
-
-			// If EHLO fails, we try HELO
-			$this->server_send("HELO {$local_host}");
-			if ($err_msg = $this->server_parse('250', __LINE__))
-			{
-				return ($this->numeric_response_code == 503) ? false : $err_msg;
-			}
-		}
-
-		foreach ($this->responses as $response)
-		{
-			$response = explode(' ', $response);
-			$response_code = $response[0];
-			unset($response[0]);
-			$this->commands[$response_code] = implode(' ', $response);
+			return $err_msg;
 		}
 
 		// If we are not authenticated yet, something might be wrong if no username and passwd passed
@@ -1334,6 +1294,72 @@ class smtp_class
 
 		$method = 'auth_' . strtolower(str_replace('-', '_', $method));
 		return $this->$method($username, $password);
+	}
+
+	/**
+	* Try to EHLO or HELO the server and parse its capabilities.
+	*
+	* @return mixed True if the authentication process is supposed to continue.
+	*               False if already authenticated.
+	*               Error string message otherwise.
+	*/
+	protected function greet_server()
+	{
+		static $local_host = null;
+
+		// Prepare local host.
+		if ($local_host === null)
+		{
+			global $user;
+
+			// Here we try to determine the *real* hostname (reverse DNS entry preferrably).
+			$local_host = $user->host;
+
+			if (function_exists('php_uname'))
+			{
+				$local_host = php_uname('n');
+
+				// Able to resolve name to IP.
+				if (($addr = @gethostbyname($local_host)) !== $local_host)
+				{
+					// Able to resolve IP back to name.
+					if (($name = @gethostbyaddr($addr)) !== $addr)
+					{
+						$local_host = $name;
+					}
+				}
+			}
+		}
+
+		// Try EHLO first.
+		$this->server_send("EHLO {$local_host}");
+		if ($err_msg = $this->server_parse('250', __LINE__))
+		{
+			// a 503 response code means that we're already authenticated.
+			if ($this->numeric_response_code == 503)
+			{
+				return false;
+			}
+
+			// If EHLO fails, we try HELO.
+			$this->server_send("HELO {$local_host}");
+			if ($err_msg = $this->server_parse('250', __LINE__))
+			{
+				return ($this->numeric_response_code == 503) ? false : $err_msg;
+			}
+		}
+
+		// Parse response.
+		$this->commands = array();
+		foreach ($this->responses as $response)
+		{
+			$response = explode(' ', $response);
+			$response_code = $response[0];
+			unset($response[0]);
+			$this->commands[$response_code] = implode(' ', $response);
+		}
+
+		return true;
 	}
 
 	/**
