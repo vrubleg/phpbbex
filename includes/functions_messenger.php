@@ -1157,6 +1157,7 @@ class smtp_class
 {
 	var $server_response = '';
 	var $socket = 0;
+	var $socket_tls = false;
 	var $responses = array();
 	var $commands = array();
 	var $numeric_response_code = 0;
@@ -1251,6 +1252,49 @@ class smtp_class
 		if (($err_msg = $this->hello()) !== true)
 		{
 			return $err_msg;
+		}
+
+		// Handle STARTTLS extension according to RFC 3207.
+		if (!$this->socket_tls && isset($this->commands['STARTTLS']) && !preg_match('#^(tls|ssl)(v[-_.\d\w]+)?://#i', $config['smtp_host']) && function_exists('stream_socket_enable_crypto'))
+		{
+			$this->server_send('STARTTLS');
+			if ($err_msg = $this->server_parse('220', __LINE__))
+			{
+				return $err_msg;
+			}
+
+			$was_blocked = stream_get_meta_data($this->socket)['blocked'];
+			if ($was_blocked || stream_set_blocking($this->socket, true))
+			{
+				$crypto_method = STREAM_CRYPTO_METHOD_TLS_CLIENT;
+
+				// Fix inconsistency in PHP 5.6.7 - 7.1.22.
+				if ($crypto_method == STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT)
+				{
+					$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
+					$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+				}
+
+				$collector = new phpbb_error_collector;
+				$collector->install();
+				$this->socket_tls = stream_socket_enable_crypto($this->socket, true, $crypto_method);
+				$collector->uninstall();
+
+				if (!$smtp->socket_tls)
+				{
+					$err_msg = 'STARTTLS: Could not enable TLS on a socket';
+					if (count($collector->errors)) { $err_msg .= '<br /><br />' . htmlspecialchars($collector->format_errors()); }
+					return $err_msg;
+				}
+
+				if (!$was_blocked) { stream_set_blocking($this->socket, false); }
+
+				// Switched to TLS. According to RFC 3207, say hello again.
+				if (($err_msg = $this->hello()) !== true)
+				{
+					return $err_msg;
+				}
+			}
 		}
 
 		// If we are not authenticated yet, something might be wrong if no username and passwd passed
