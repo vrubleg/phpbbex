@@ -575,7 +575,7 @@ $lang = array_merge($lang, array(
 
 // Email Settings
 $lang = array_merge($lang, array(
-	'ACP_EMAIL_SETTINGS_EXPLAIN'	=> 'This information is used when the board sends e-mails to your users. Please ensure the e-mail address you specify is valid, any bounced or undeliverable messages will likely be sent to that address. If your host does not provide a native (PHP based) e-mail service you can instead send messages directly using SMTP. This requires the address of an appropriate server (ask your provider if necessary). If the server requires authentication (and only if it does) enter the necessary username, password and authentication method.',
+	'ACP_EMAIL_SETTINGS_EXPLAIN'	=> 'This information is used when the board sends e-mails to your users. Please ensure the e-mail address you specify is valid, any bounced or undeliverable messages will likely be sent to that address. If your host does not provide a native (PHP based) e-mail service you can instead send messages directly using SMTP. This requires the address of an appropriate SMTP server.',
 
 	'ADMIN_EMAIL'					=> 'Return e-mail address',
 	'ADMIN_EMAIL_EXPLAIN'			=> 'This will be used as the return address on all e-mails, the technical contact e-mail address. It will always be used as the <samp>Return-Path</samp> and <samp>Sender</samp> address in e-mails.',
@@ -603,11 +603,12 @@ $lang = array_merge($lang, array(
 	'SMTP_PASSWORD_EXPLAIN'			=> 'Only enter a password if your SMTP server requires it.<br /><em><strong>Warning:</strong> This password will be stored as plain text in the database, visible to everybody who can access your database or who can view this configuration page.</em>',
 	'SMTP_PLAIN'					=> 'PLAIN',
 	'SMTP_PORT'						=> 'SMTP server port',
-	'SMTP_PORT_EXPLAIN'				=> 'Usually, 25 is for unencrypted SMTP,  465 is for SMTPS (with tls:// address), and 587 is for STARTTLS.',
+	'SMTP_PORT_EXPLAIN'				=> 'Usually, 25 is for unencrypted SMTP, 465 is for SMTPS with tls:// address, and 587 is for SMTP with STARTTLS.',
 	'SMTP_SERVER'					=> 'SMTP server address',
 	'SMTP_SETTINGS'					=> 'SMTP settings',
 	'SMTP_USERNAME'					=> 'SMTP username',
 	'SMTP_USERNAME_EXPLAIN'			=> 'Only enter a username if your SMTP server requires it.',
+	'SMTP_VERIFY_CERT'				=> 'Verify TLS certificate',
 	'TEST_EMAIL_SENT'				=> 'The test email has been sent.',
 	'USE_SMTP'						=> 'Use SMTP server for e-mail',
 	'USE_SMTP_EXPLAIN'				=> 'Select “Yes” if you want or have to send e-mail via a named server instead of the local mail function.',

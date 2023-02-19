@@ -1022,7 +1022,16 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	}
 	$collector = new phpbb_error_collector;
 	$collector->install();
-	$smtp->socket = fsockopen($config['smtp_host'], $config['smtp_port'], $errno, $errstr, 20);
+
+	$socket_options = array();
+	if (isset($config['smtp_verify_cert']) && !$config['smtp_verify_cert'])
+	{
+		$socket_options['ssl'] = array('verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true);
+	}
+	$socket_context = stream_context_create($socket_options);
+	$socket_address = $config['smtp_host'] . ':' . $config['smtp_port'];
+	$smtp->socket = stream_socket_client($socket_address, $errno, $errstr, 10, STREAM_CLIENT_CONNECT, $socket_context);
+
 	$collector->uninstall();
 	$error_contents = $collector->format_errors();
 

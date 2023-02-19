@@ -259,6 +259,10 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		$auth_admin->acl_clear_prefetch();
 	}
 
+	// Add new config options.
+
+	$db->sql_query("INSERT IGNORE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('smtp_verify_cert', '1')");
+
 	// Remove obsolete config values.
 
 	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('forward_pm', 'print_pm', 'email_function_name')");
