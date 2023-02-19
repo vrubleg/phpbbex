@@ -608,7 +608,7 @@ $lang = array_merge($lang, array(
 	'SMTP_SETTINGS'					=> 'SMTP settings',
 	'SMTP_USERNAME'					=> 'SMTP username',
 	'SMTP_USERNAME_EXPLAIN'			=> 'Only enter a username if your SMTP server requires it.',
-	'TEST_EMAIL_SENT'				=> 'The test email has been sent.<br>If you don’t receive it, please check your emails configuration.',
+	'TEST_EMAIL_SENT'				=> 'The test email has been sent.',
 	'USE_SMTP'						=> 'Use SMTP server for e-mail',
 	'USE_SMTP_EXPLAIN'				=> 'Select “Yes” if you want or have to send e-mail via a named server instead of the local mail function.',
 ));

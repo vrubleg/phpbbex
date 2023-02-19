@@ -549,7 +549,6 @@ class acp_board
 						'board_email'			=> array('lang' => 'ADMIN_EMAIL',			'validate' => 'email',	'type' => 'text:25:100', 'explain' => true),
 						'board_email_sig'		=> array('lang' => 'EMAIL_SIG',				'validate' => 'string',	'type' => 'textarea:5:30', 'explain' => true),
 						'board_hide_emails'		=> array('lang' => 'BOARD_HIDE_EMAILS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'send_test_email'		=> array('lang' => 'SEND_TEST_EMAIL',		'validate' => 'bool',	'type' => 'custom', 'method' => 'send_test_email', 'explain' => true),
 
 						'legend2'				=> 'SMTP_SETTINGS',
 						'smtp_delivery'			=> array('lang' => 'USE_SMTP',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
@@ -559,7 +558,8 @@ class acp_board
 						'smtp_username'			=> array('lang' => 'SMTP_USERNAME',			'validate' => 'string',	'type' => 'text:25:255', 'explain' => true),
 						'smtp_password'			=> array('lang' => 'SMTP_PASSWORD',			'validate' => 'string',	'type' => 'text:25:255', 'explain' => true),
 
-						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+						'legend3'				=> 'ACP_SUBMIT_CHANGES',
+						'send_test_email'		=> array('lang' => 'SEND_TEST_EMAIL',		'validate' => 'bool',	'type' => 'custom', 'method' => 'send_test_email', 'explain' => true),
 					)
 				);
 			break;
@@ -616,7 +616,7 @@ class acp_board
 				continue;
 			}
 
-			if ($config_name == 'auth_method' || $config_name == 'feed_news_id' || $config_name == 'feed_exclude_id')
+			if (in_array($config_name, ['auth_method', 'feed_news_id', 'feed_exclude_id', 'send_test_email']))
 			{
 				continue;
 			}
@@ -735,7 +735,7 @@ class acp_board
 			}
 		}
 
-		if ($mode == 'email' && request_var('send_test_email', ''))
+		if ($mode == 'email' && request_var('send_test_email', false))
 		{
 			if ($config['email_enable'])
 			{
@@ -751,12 +751,12 @@ class acp_board
 				));
 				$messenger->send(NOTIFY_EMAIL);
 
-				trigger_error($user->lang('TEST_EMAIL_SENT') . adm_back_link($this->u_action));
+				trigger_error($user->lang['CONFIG_UPDATED'] . '<br>' . $user->lang('TEST_EMAIL_SENT') . adm_back_link($this->u_action));
 			}
 			else
 			{
 				$user->add_lang('memberlist');
-				trigger_error($user->lang('EMAIL_DISABLED') . adm_back_link($this->u_action), E_USER_WARNING);
+				trigger_error($user->lang['CONFIG_UPDATED'] . '<br>' . $user->lang('EMAIL_DISABLED') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 		}
 
@@ -1213,7 +1213,9 @@ class acp_board
 	{
 		global $user;
 
-		return '<textarea id="' . $key . '_text" name="' . $key . '_text" placeholder="' . $user->lang('MESSAGE') . '"></textarea><br><input class="button2" type="submit" id="' . $key . '" name="' . $key . '" value="' . $user->lang('SEND_TEST_EMAIL') . '">';
+		return '<label><input type="radio" class="radio" id="' . $key . '" name="' . $key . '" value="1" onchange="document.getElementById(\'' . $key . '_text\').style.display = \'block\'"> ' . $user->lang('YES') . '</label> <label><input type="radio" class="radio" name="' . $key . '" value="0" checked="checked" onchange="document.getElementById(\'' . $key . '_text\').style.display = \'none\'"> ' . $user->lang('NO') . '</label><textarea rows="5" id="' . $key . '_text" name="' . $key . '_text" placeholder="' . $user->lang('MESSAGE') . '" style="display: none"></textarea>';
+
+		return '<input class="button2" type="submit" id="' . $key . '" name="' . $key . '" value="' . $user->lang('SEND_TEST_EMAIL') . '"><textarea id="' . $key . '_text" name="' . $key . '_text" placeholder="' . $user->lang('MESSAGE') . '"></textarea>';
 	}
 
 }
