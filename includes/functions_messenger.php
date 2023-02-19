@@ -1247,8 +1247,8 @@ class smtp_class
 	{
 		global $config, $user;
 
-		// Greet the server and parse its capabilities.
-		if (($err_msg = $this->greet_server()) !== true)
+		// Hello the server and parse its capabilities.
+		if (($err_msg = $this->hello()) !== true)
 		{
 			return $err_msg;
 		}
@@ -1303,7 +1303,7 @@ class smtp_class
 	*               False if already authenticated.
 	*               Error string message otherwise.
 	*/
-	protected function greet_server()
+	protected function hello()
 	{
 		static $local_host = null;
 
@@ -1335,13 +1335,13 @@ class smtp_class
 		$this->server_send("EHLO {$local_host}");
 		if ($err_msg = $this->server_parse('250', __LINE__))
 		{
-			// a 503 response code means that we're already authenticated.
+			// 503 response code means that we're already authenticated.
 			if ($this->numeric_response_code == 503)
 			{
 				return false;
 			}
 
-			// If EHLO fails, we try HELO.
+			// If EHLO fails, try HELO.
 			$this->server_send("HELO {$local_host}");
 			if ($err_msg = $this->server_parse('250', __LINE__))
 			{
