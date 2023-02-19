@@ -543,7 +543,6 @@ class acp_board
 						'legend1'				=> 'GENERAL_SETTINGS',
 						'email_enable'			=> array('lang' => 'ENABLE_EMAIL',			'validate' => 'bool',	'type' => 'radio:enabled_disabled', 'explain' => true),
 						'board_email_form'		=> array('lang' => 'BOARD_EMAIL_FORM',		'validate' => 'bool',	'type' => 'radio:enabled_disabled', 'explain' => true),
-						'email_function_name'	=> array('lang' => 'EMAIL_FUNCTION_NAME',	'validate' => 'string',	'type' => 'text:20:50', 'explain' => true),
 						'email_package_size'	=> array('lang' => 'EMAIL_PACKAGE_SIZE',	'validate' => 'int:0',	'type' => 'text:5:5', 'explain' => true),
 						'board_contact'			=> array('lang' => 'CONTACT_EMAIL',			'validate' => 'email',	'type' => 'text:25:100', 'explain' => true),
 						'board_contact_name'	=> array('lang' => 'CONTACT_EMAIL_NAME',	'validate' => 'string',	'type' => 'text:25:100', 'explain' => false),
@@ -555,11 +554,13 @@ class acp_board
 						'smtp_delivery'			=> array('lang' => 'USE_SMTP',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'smtp_host'				=> array('lang' => 'SMTP_SERVER',			'validate' => 'string',	'type' => 'text:25:50', 'explain' => false),
 						'smtp_port'				=> array('lang' => 'SMTP_PORT',				'validate' => 'int:0',	'type' => 'text:4:5', 'explain' => true),
+						'smtp_verify_cert'		=> array('lang' => 'SMTP_VERIFY_CERT',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'smtp_auth_method'		=> array('lang' => 'SMTP_AUTH_METHOD',		'validate' => 'string',	'type' => 'select', 'method' => 'mail_auth_select', 'explain' => true),
 						'smtp_username'			=> array('lang' => 'SMTP_USERNAME',			'validate' => 'string',	'type' => 'text:25:255', 'explain' => true),
 						'smtp_password'			=> array('lang' => 'SMTP_PASSWORD',			'validate' => 'string',	'type' => 'text:25:255', 'explain' => true),
 
-						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+						'legend3'				=> 'ACP_SUBMIT_CHANGES',
+						'send_test_email'		=> array('lang' => 'SEND_TEST_EMAIL',		'validate' => 'bool',	'type' => 'custom', 'method' => 'send_test_email', 'explain' => true),
 					)
 				);
 			break;
@@ -616,19 +617,12 @@ class acp_board
 				continue;
 			}
 
-			if ($config_name == 'auth_method' || $config_name == 'feed_news_id' || $config_name == 'feed_exclude_id')
+			if (in_array($config_name, ['auth_method', 'feed_news_id', 'feed_exclude_id', 'send_test_email']))
 			{
 				continue;
 			}
 
 			$this->new_config[$config_name] = $config_value = $cfg_array[$config_name];
-
-			if ($config_name == 'email_function_name')
-			{
-				$this->new_config['email_function_name'] = trim(str_replace(array('(', ')'), array('', ''), $this->new_config['email_function_name']));
-				$this->new_config['email_function_name'] = (empty($this->new_config['email_function_name']) || !function_exists($this->new_config['email_function_name'])) ? 'mail' : $this->new_config['email_function_name'];
-				$config_value = $this->new_config['email_function_name'];
-			}
 
 			if ($submit)
 			{
@@ -739,6 +733,31 @@ class acp_board
 				{
 					trigger_error('NO_AUTH_PLUGIN', E_USER_ERROR);
 				}
+			}
+		}
+
+		if ($mode == 'email' && request_var('send_test_email', false))
+		{
+			if ($config['email_enable'])
+			{
+				include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+
+				$messenger = new messenger(false);
+				$messenger->template('test');
+				$messenger->to($user->data['user_email'], $user->data['username']);
+				$messenger->anti_abuse_headers($config, $user);
+				$messenger->assign_vars(array(
+					'USERNAME'	=> htmlspecialchars_decode($user->data['username']),
+					'MESSAGE'	=> htmlspecialchars_decode(request_var('send_test_email_text', '', true)),
+				));
+				$messenger->send(NOTIFY_EMAIL);
+
+				trigger_error($user->lang['CONFIG_UPDATED'] . '<br>' . $user->lang('TEST_EMAIL_SENT') . adm_back_link($this->u_action));
+			}
+			else
+			{
+				$user->add_lang('memberlist');
+				trigger_error($user->lang('EMAIL_DISABLED') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 		}
 
@@ -881,7 +900,7 @@ class acp_board
 	{
 		global $user;
 
-		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5', 'POP-BEFORE-SMTP');
+		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5');
 		$s_smtp_auth_options = '';
 
 		foreach ($auth_methods as $method)
@@ -1189,6 +1208,15 @@ class acp_board
 
 		// Empty sql cache for forums table because options changed
 		$cache->destroy('sql', FORUMS_TABLE);
+	}
+
+	function send_test_email($value, $key)
+	{
+		global $user;
+
+		return '<label><input type="radio" class="radio" id="' . $key . '" name="' . $key . '" value="1" onchange="document.getElementById(\'' . $key . '_text\').style.display = \'block\'"> ' . $user->lang('YES') . '</label> <label><input type="radio" class="radio" name="' . $key . '" value="0" checked="checked" onchange="document.getElementById(\'' . $key . '_text\').style.display = \'none\'"> ' . $user->lang('NO') . '</label><textarea rows="5" id="' . $key . '_text" name="' . $key . '_text" placeholder="' . $user->lang('MESSAGE') . '" style="display: none"></textarea>';
+
+		return '<input class="button2" type="submit" id="' . $key . '" name="' . $key . '" value="' . $user->lang('SEND_TEST_EMAIL') . '"><textarea id="' . $key . '_text" name="' . $key . '_text" placeholder="' . $user->lang('MESSAGE') . '"></textarea>';
 	}
 
 }

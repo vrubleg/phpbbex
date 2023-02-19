@@ -358,7 +358,7 @@ class messenger
 		switch ($type)
 		{
 			case 'EMAIL':
-				$message = '<strong>EMAIL/' . (($config['smtp_delivery']) ? 'SMTP' : 'PHP/' . $config['email_function_name'] . '()') . '</strong>';
+				$message = '<strong>EMAIL/' . (($config['smtp_delivery']) ? 'SMTP' : 'PHP') . '</strong>';
 			break;
 
 			default:
@@ -436,11 +436,11 @@ class messenger
 		$headers[] = 'Date: ' . date('r', time());
 		$headers[] = 'Content-Type: text/plain; charset=UTF-8'; // format=flowed
 		$headers[] = 'Content-Transfer-Encoding: 8bit'; // 7bit
+		$headers[] = 'X-Mailer: phpBB3';
 
 		// SpamAssassin doesn't like these headers =(
 		// $headers[] = 'X-Priority: ' . $this->mail_priority;
 		// $headers[] = 'X-MSMail-Priority: ' . (($this->mail_priority == MAIL_LOW_PRIORITY) ? 'Low' : (($this->mail_priority == MAIL_NORMAL_PRIORITY) ? 'Normal' : 'High'));
-		// $headers[] = 'X-Mailer: phpBB3';
 		// $headers[] = 'X-MimeOLE: phpBB3';
 		// $headers[] = 'X-phpBB-Origin: phpbb://' . str_replace(array('http://', 'https://'), array('', ''), generate_board_url());
 
@@ -520,7 +520,7 @@ class messenger
 
 			if ($config['smtp_delivery'])
 			{
-				$result = smtpmail($this->addresses, mail_encode($this->subject), wordwrap(utf8_wordwrap($this->msg), 997, "\n", true), $err_msg, $headers);
+				$result = smtpmail($this->addresses, mail_encode($this->subject), wordwrap(utf8_wordwrap($this->msg, 250), 997, "\n", true), $err_msg, $headers);
 			}
 			else
 			{
@@ -622,7 +622,6 @@ class messenger
 
 /**
 * handling email and jabber queue
-* @package phpBB3
 */
 class queue
 {
@@ -828,7 +827,7 @@ class queue
 
 						if ($config['smtp_delivery'])
 						{
-							$result = smtpmail($addresses, mail_encode($subject), wordwrap(utf8_wordwrap($msg), 997, "\n", true), $err_msg, $headers);
+							$result = smtpmail($addresses, mail_encode($subject), wordwrap(utf8_wordwrap($msg, 250), 997, "\n", true), $err_msg, $headers);
 						}
 						else
 						{
@@ -1023,7 +1022,16 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	}
 	$collector = new phpbb_error_collector;
 	$collector->install();
-	$smtp->socket = fsockopen($config['smtp_host'], $config['smtp_port'], $errno, $errstr, 20);
+
+	$socket_options = array();
+	if (isset($config['smtp_verify_cert']) && !$config['smtp_verify_cert'])
+	{
+		$socket_options['ssl'] = array('verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true);
+	}
+	$socket_context = stream_context_create($socket_options);
+	$socket_address = $config['smtp_host'] . ':' . $config['smtp_port'];
+	$smtp->socket = stream_socket_client($socket_address, $errno, $errstr, 10, STREAM_CLIENT_CONNECT, $socket_context);
+
 	$collector->uninstall();
 	$error_contents = $collector->format_errors();
 
@@ -1153,13 +1161,12 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 /**
 * SMTP Class
 * Auth Mechanisms originally taken from the AUTH Modules found within the PHP Extension and Application Repository (PEAR)
-* See docs/AUTHORS for more details
-* @package phpBB3
 */
 class smtp_class
 {
 	var $server_response = '';
 	var $socket = 0;
+	var $socket_tls = false;
 	var $responses = array();
 	var $commands = array();
 	var $numeric_response_code = 0;
@@ -1248,92 +1255,48 @@ class smtp_class
 	*/
 	function log_into_server($hostname, $username, $password, $default_auth_method)
 	{
-		global $user;
+		global $config, $user;
 
-		$err_msg = '';
-
-		// Here we try to determine the *real* hostname (reverse DNS entry preferrably)
-		$local_host = $user->host;
-
-		if (function_exists('php_uname'))
+		// Hello the server and parse its capabilities.
+		if (($err_msg = $this->hello()) !== true)
 		{
-			$local_host = php_uname('n');
-
-			// Able to resolve name to IP
-			if (($addr = @gethostbyname($local_host)) !== $local_host)
-			{
-				// Able to resolve IP back to name
-				if (($name = @gethostbyaddr($addr)) !== $addr)
-				{
-					$local_host = $name;
-				}
-			}
+			return $err_msg;
 		}
 
-		// If we are authenticating through pop-before-smtp, we
-		// have to login ones before we get authenticated
-		// NOTE: on some configurations the time between an update of the auth database takes so
-		// long that the first email send does not work. This is not a biggie on a live board (only
-		// the install mail will most likely fail) - but on a dynamic ip connection this might produce
-		// severe problems and is not fixable!
-		if ($default_auth_method == 'POP-BEFORE-SMTP' && $username && $password)
+		// Handle STARTTLS extension according to RFC 3207.
+		if (!$this->socket_tls && isset($this->commands['STARTTLS']) && !preg_match('#^(tls|ssl)(v[-_.\d\w]+)?://#i', $config['smtp_host']) && function_exists('stream_socket_enable_crypto'))
 		{
-			global $config;
-
-			$errno = 0;
-			$errstr = '';
-
-			$this->server_send("QUIT");
-			fclose($this->socket);
-
-			$result = $this->pop_before_smtp($hostname, $username, $password);
-			$username = $password = $default_auth_method = '';
-
-			// We need to close the previous session, else the server is not
-			// able to get our ip for matching...
-			if (!$this->socket = @fsockopen($config['smtp_host'], $config['smtp_port'], $errno, $errstr, 10))
-			{
-				if ($errstr)
-				{
-					$errstr = utf8_convert_message($errstr);
-				}
-
-				$err_msg = (isset($user->lang['NO_CONNECT_TO_SMTP_HOST'])) ? sprintf($user->lang['NO_CONNECT_TO_SMTP_HOST'], $errno, $errstr) : "Could not connect to smtp host : $errno : $errstr";
-				return $err_msg;
-			}
-
-			// Wait for reply
+			$this->server_send('STARTTLS');
 			if ($err_msg = $this->server_parse('220', __LINE__))
 			{
-				$this->close_session($err_msg);
 				return $err_msg;
 			}
-		}
 
-		// Try EHLO first
-		$this->server_send("EHLO {$local_host}");
-		if ($err_msg = $this->server_parse('250', __LINE__))
-		{
-			// a 503 response code means that we're already authenticated
-			if ($this->numeric_response_code == 503)
+			$crypto_method = STREAM_CRYPTO_METHOD_TLS_CLIENT;
+			if ($crypto_method == STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT)
 			{
-				return false;
+				// Fix inconsistency in PHP 5.6.7 - 7.1.22.
+				$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
+				$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
 			}
 
-			// If EHLO fails, we try HELO
-			$this->server_send("HELO {$local_host}");
-			if ($err_msg = $this->server_parse('250', __LINE__))
-			{
-				return ($this->numeric_response_code == 503) ? false : $err_msg;
-			}
-		}
+			$collector = new phpbb_error_collector;
+			$collector->install();
+			$this->socket_tls = stream_socket_enable_crypto($this->socket, true, $crypto_method);
+			$collector->uninstall();
 
-		foreach ($this->responses as $response)
-		{
-			$response = explode(' ', $response);
-			$response_code = $response[0];
-			unset($response[0]);
-			$this->commands[$response_code] = implode(' ', $response);
+			if (!$this->socket_tls)
+			{
+				$err_msg = 'STARTTLS: Could not enable TLS on a socket';
+				if (count($collector->errors)) { $err_msg .= '<br /><br />' . htmlspecialchars($collector->format_errors()); }
+				return $err_msg;
+			}
+
+			// Switched to TLS. According to RFC 3207, say hello again.
+			if (($err_msg = $this->hello()) !== true)
+			{
+				return $err_msg;
+			}
 		}
 
 		// If we are not authenticated yet, something might be wrong if no username and passwd passed
@@ -1350,11 +1313,11 @@ class smtp_class
 		// Get best authentication method
 		$available_methods = explode(' ', $this->commands['AUTH']);
 
-		// Define the auth ordering if the default auth method was not found
+		// Allowed auth methods and their ordering if the default auth method was not found.
 		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5');
 		$method = '';
 
-		if (in_array($default_auth_method, $available_methods))
+		if (in_array($default_auth_method, $auth_methods) && in_array($default_auth_method, $available_methods))
 		{
 			$method = $default_auth_method;
 		}
@@ -1375,49 +1338,80 @@ class smtp_class
 			return (isset($user->lang['NO_SUPPORTED_AUTH_METHODS'])) ? $user->lang['NO_SUPPORTED_AUTH_METHODS'] : 'No supported authentication methods';
 		}
 
-		$method = strtolower(str_replace('-', '_', $method));
+		$method = 'auth_' . strtolower(str_replace('-', '_', $method));
 		return $this->$method($username, $password);
 	}
 
 	/**
-	* Pop before smtp authentication
+	* Try to EHLO or HELO the server and parse its capabilities.
+	*
+	* @return mixed True if the authentication process is supposed to continue.
+	*               False if already authenticated.
+	*               Error string message otherwise.
 	*/
-	function pop_before_smtp($hostname, $username, $password)
+	protected function hello()
 	{
-		global $user;
+		static $local_host = null;
 
-		if (!$this->socket = @fsockopen($hostname, 110, $errno, $errstr, 10))
+		// Prepare local host.
+		if ($local_host === null)
 		{
-			if ($errstr)
+			global $user;
+
+			// Here we try to determine the *real* hostname (reverse DNS entry preferrably).
+			$local_host = $user->host;
+
+			if (function_exists('php_uname'))
 			{
-				$errstr = utf8_convert_message($errstr);
+				$local_host = php_uname('n');
+
+				// Able to resolve name to IP.
+				if (($addr = @gethostbyname($local_host)) !== $local_host)
+				{
+					// Able to resolve IP back to name.
+					if (($name = @gethostbyaddr($addr)) !== $addr)
+					{
+						$local_host = $name;
+					}
+				}
+			}
+		}
+
+		// Try EHLO first.
+		$this->server_send("EHLO {$local_host}");
+		if ($err_msg = $this->server_parse('250', __LINE__))
+		{
+			// 503 response code means that we're already authenticated.
+			if ($this->numeric_response_code == 503)
+			{
+				return false;
 			}
 
-			return (isset($user->lang['NO_CONNECT_TO_SMTP_HOST'])) ? sprintf($user->lang['NO_CONNECT_TO_SMTP_HOST'], $errno, $errstr) : "Could not connect to smtp host : $errno : $errstr";
+			// If EHLO fails, try HELO.
+			$this->server_send("HELO {$local_host}");
+			if ($err_msg = $this->server_parse('250', __LINE__))
+			{
+				return ($this->numeric_response_code == 503) ? false : $err_msg;
+			}
 		}
 
-		$this->server_send("USER $username", true);
-		if ($err_msg = $this->server_parse('+OK', __LINE__))
+		// Parse response.
+		$this->commands = array();
+		foreach ($this->responses as $response)
 		{
-			return $err_msg;
+			$response = explode(' ', $response);
+			$response_code = $response[0];
+			unset($response[0]);
+			$this->commands[$response_code] = implode(' ', $response);
 		}
 
-		$this->server_send("PASS $password", true);
-		if ($err_msg = $this->server_parse('+OK', __LINE__))
-		{
-			return $err_msg;
-		}
-
-		$this->server_send('QUIT');
-		fclose($this->socket);
-
-		return false;
+		return true;
 	}
 
 	/**
 	* Plain authentication method
 	*/
-	function plain($username, $password)
+	protected function auth_plain($username, $password)
 	{
 		$this->server_send('AUTH PLAIN');
 		if ($err_msg = $this->server_parse('334', __LINE__))
@@ -1438,7 +1432,7 @@ class smtp_class
 	/**
 	* Login authentication method
 	*/
-	function login($username, $password)
+	protected function auth_login($username, $password)
 	{
 		$this->server_send('AUTH LOGIN');
 		if ($err_msg = $this->server_parse('334', __LINE__))
@@ -1464,7 +1458,7 @@ class smtp_class
 	/**
 	* cram_md5 authentication method
 	*/
-	function cram_md5($username, $password)
+	protected function auth_cram_md5($username, $password)
 	{
 		$this->server_send('AUTH CRAM-MD5');
 		if ($err_msg = $this->server_parse('334', __LINE__))
@@ -1491,7 +1485,7 @@ class smtp_class
 	* digest_md5 authentication method
 	* A real pain in the ***
 	*/
-	function digest_md5($username, $password)
+	protected function auth_digest_md5($username, $password)
 	{
 		global $config, $user;
 
@@ -1568,7 +1562,7 @@ class smtp_class
 			}
 			$cnonce = base64_encode($str);
 
-			$digest_uri = 'smtp/' . $config['smtp_host'];
+			$digest_uri = 'smtp/' . preg_replace('#^[-_.\d\w]+://#', '', $config['smtp_host']);
 
 			$auth_1 = sprintf('%s:%s:%s', pack('H32', md5(sprintf('%s:%s:%s', $username, $md5_challenge['realm'], $password))), $md5_challenge['nonce'], $cnonce);
 			$auth_2 = 'AUTHENTICATE:' . $digest_uri;
@@ -1673,7 +1667,7 @@ function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 	// On some PHP Versions mail() *may* fail if there are newlines within the subject.
 	// Newlines are used as a delimiter for lines in mail_encode() according to RFC 2045 section 6.8.
 	// Because PHP can't decide what is wanted we revert back to the non-RFC-compliant way of separating by one space (Use '' as parameter to mail_encode() results in SPACE used)
-	$result = $config['email_function_name']($to, mail_encode($subject, ''), wordwrap(utf8_wordwrap($msg), 997, "\n", true), $headers);
+	$result = mail($to, mail_encode($subject, ''), wordwrap(utf8_wordwrap($msg, 250), 997, "\n", true), $headers);
 
 	$collector->uninstall();
 	$err_msg = $collector->format_errors();
