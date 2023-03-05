@@ -441,16 +441,8 @@ function perform_authed_quick_tasks($action)
  * A wrapper for the phpBB `msg_handler` function, which is mainly used
  * to update variables before calling the actual msg_handler and is able
  * to handle various special cases.
- *
- * @global type $stk_no_error
- * @global string $phpbb_root_path
- * @param type $errno
- * @param string $msg_text
- * @param type $errfile
- * @param type $errline
- * @return boolean
  */
-function stk_msg_handler($errno, $msg_text, $errfile, $errline)
+function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace)
 {
 	// First and foremost handle the case where phpBB calls trigger error
 	// but the STK really needs to continue.
@@ -537,7 +529,7 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 			$err_types = [E_ERROR => 'Error', E_NOTICE => 'Notice', E_WARNING => 'Warning', E_DEPRECATED => 'Deprecated', E_STRICT => 'Strict'];
 			$errfile = stk_filter_root_path($errfile);
 			$msg_text = stk_filter_root_path($msg_text);
-			$backtrace = get_backtrace(1);
+			$backtrace = format_backtrace(empty($backtrace) ? array_slice(debug_backtrace(), 1) : $backtrace);
 
 			if (defined('IN_INSTALL') || defined('DEBUG') || isset($auth) && $auth->acl_get('a_'))
 			{
@@ -584,7 +576,7 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline)
 				}
 			}
 
-			$backtrace = get_backtrace(1);
+			$backtrace = format_backtrace(empty($backtrace) ? array_slice(debug_backtrace(), 1) : $backtrace);
 
 			if ((defined('DEBUG') || defined('IN_CRON') || defined('IMAGE_OUTPUT')) && isset($db))
 			{
