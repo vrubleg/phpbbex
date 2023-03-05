@@ -160,9 +160,6 @@ require($phpbb_root_path . 'language/' . $config['default_lang'] . '/common.' . 
 require($phpbb_root_path . 'language/' . $config['default_lang'] . '/acp/common.' . $phpEx);
 require($phpbb_root_path . 'language/' . $config['default_lang'] . '/install.' . $phpEx);
 
-// Set PHP error handler to ours.
-//set_error_handler('msg_handler');
-
 // Check phpBBex version.
 
 if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_version'], OLDEST_PHPBBEX_VERSION, '<'))
