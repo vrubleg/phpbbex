@@ -750,7 +750,7 @@ function stk_filter_root_path($errfile)
 
 	if (empty($root_path))
 	{
-		$root_path = phpbb_realpath(dirname(__FILE__) . '/../');
+		$root_path = phpbb_realpath(__DIR__ . '/../');
 	}
 
 	return str_replace(array($root_path, '\\'), array('[ROOT]', '/'), $errfile);
