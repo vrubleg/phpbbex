@@ -36,9 +36,9 @@ class sql_query
 	*/
 	function run_tool(&$error)
 	{
-		global $cache, $db, $dbms, $table_prefix, $template;
+		global $cache, $db, $table_prefix, $template;
 
-        if (!check_form_key('sql_query'))
+		if (!check_form_key('sql_query'))
 		{
 			$error[] = 'FORM_INVALID';
 			return;
@@ -65,6 +65,7 @@ class sql_query
 			include(PHPBB_ROOT_PATH . 'includes/functions_install.' . PHP_EXT);
 		}
 
+		$dbms = 'mysqli';
 		$dbmd = get_available_dbms($dbms);
 		$remove_remarks = $dbmd[$dbms]['COMMENTS'];
 

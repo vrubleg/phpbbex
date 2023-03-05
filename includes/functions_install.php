@@ -137,69 +137,39 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 {
 	global $phpbb_root_path, $phpEx, $config, $lang;
 
-	$dbms = $dbms_details['DRIVER'];
+	if ($dbms_details['DRIVER'] != 'mysqli')
+	{
+		$error[] = $lang['INST_ERR_DB_NO_MYSQLI'];
+		return false;
+	}
 
 	if ($load_dbal)
 	{
 		// Include the DB layer
-		include($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
+		include($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
 	}
 
 	// Instantiate it and set return on error true
-	$sql_db = 'dbal_' . $dbms;
-	$db = new $sql_db();
+	$db = new dbal_mysqli();
 	$db->sql_return_on_error(true);
 
 	// Check that we actually have a database name before going any further.....
-	if ($dbms_details['DRIVER'] != 'sqlite' && $dbms_details['DRIVER'] != 'oracle' && $dbname === '')
+	if ($dbname === '')
 	{
 		$error[] = $lang['INST_ERR_DB_NO_NAME'];
 		return false;
 	}
 
-	// Make sure we don't have a daft user who thinks having the SQLite database in the forum directory is a good idea
-	if ($dbms_details['DRIVER'] == 'sqlite' && stripos(phpbb_realpath($dbhost), phpbb_realpath('../')) === 0)
+	// Check the prefix length to ensure that index names are not too long and does not contain invalid characters
+	if (strspn($table_prefix, '-./\\') !== 0)
 	{
-		$error[] = $lang['INST_ERR_DB_FORUM_PATH'];
+		$error[] = $lang['INST_ERR_PREFIX_INVALID'];
 		return false;
 	}
 
-	// Check the prefix length to ensure that index names are not too long and does not contain invalid characters
-	switch ($dbms_details['DRIVER'])
+	if (strlen($table_prefix) > 36)
 	{
-		case 'mysql':
-		case 'mysqli':
-			if (strspn($table_prefix, '-./\\') !== 0)
-			{
-				$error[] = $lang['INST_ERR_PREFIX_INVALID'];
-				return false;
-			}
-
-		// no break;
-
-		case 'postgres':
-			$prefix_length = 36;
-		break;
-
-		case 'mssql':
-		case 'mssql_odbc':
-		case 'mssqlnative':
-			$prefix_length = 90;
-		break;
-
-		case 'sqlite':
-			$prefix_length = 200;
-		break;
-
-		case 'firebird':
-		case 'oracle':
-			$prefix_length = 6;
-		break;
-	}
-
-	if (strlen($table_prefix) > $prefix_length)
-	{
-		$error[] = sprintf($lang['INST_ERR_PREFIX_TOO_LONG'], $prefix_length);
+		$error[] = sprintf($lang['INST_ERR_PREFIX_TOO_LONG'], 36);
 		return false;
 	}
 
@@ -228,141 +198,10 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 		}
 
 		// Make sure that the user has selected a sensible DBAL for the DBMS actually installed
-		switch ($dbms_details['DRIVER'])
+		if (version_compare(mysqli_get_server_info($db->db_connect_id), '5.5.0', '<'))
 		{
-			case 'mysqli':
-				if (version_compare(mysqli_get_server_info($db->db_connect_id), '4.1.3', '<'))
-				{
-					$error[] = $lang['INST_ERR_DB_NO_MYSQLI'];
-				}
-			break;
-
-			case 'sqlite':
-				if (version_compare(sqlite_libversion(), '2.8.2', '<'))
-				{
-					$error[] = $lang['INST_ERR_DB_NO_SQLITE'];
-				}
-			break;
-
-			case 'firebird':
-				// check the version of FB, use some hackery if we can't get access to the server info
-				if ($db->service_handle !== false && function_exists('ibase_server_info'))
-				{
-					$val = @ibase_server_info($db->service_handle, IBASE_SVC_SERVER_VERSION);
-					preg_match('#V([\d.]+)#', $val, $match);
-					if ($match[1] < 2)
-					{
-						$error[] = $lang['INST_ERR_DB_NO_FIREBIRD'];
-					}
-					$db_info = @ibase_db_info($db->service_handle, $dbname, IBASE_STS_HDR_PAGES);
-
-					preg_match('/^\\s*Page size\\s*(\\d+)/m', $db_info, $regs);
-					$page_size = intval($regs[1]);
-					if ($page_size < 8192)
-					{
-						$error[] = $lang['INST_ERR_DB_NO_FIREBIRD_PS'];
-					}
-				}
-				else
-				{
-					$sql = "SELECT *
-						FROM RDB$FUNCTIONS
-						WHERE RDB$SYSTEM_FLAG IS NULL
-							AND RDB$FUNCTION_NAME = 'CHAR_LENGTH'";
-					$result = $db->sql_query($sql);
-					$row = $db->sql_fetchrow($result);
-					$db->sql_freeresult($result);
-
-					// if its a UDF, its too old
-					if ($row)
-					{
-						$error[] = $lang['INST_ERR_DB_NO_FIREBIRD'];
-					}
-					else
-					{
-						$sql = 'SELECT 1 FROM RDB$DATABASE
-							WHERE BIN_AND(10, 1) = 0';
-						$result = $db->sql_query($sql);
-						if (!$result) // This can only fail if BIN_AND is not defined
-						{
-							$error[] = $lang['INST_ERR_DB_NO_FIREBIRD'];
-						}
-						$db->sql_freeresult($result);
-					}
-
-					// Setup the stuff for our random table
-					$char_array = array_merge(range('A', 'Z'), range('0', '9'));
-					$char_len = mt_rand(7, 9);
-					$char_array_len = sizeof($char_array) - 1;
-
-					$final = '';
-
-					for ($i = 0; $i < $char_len; $i++)
-					{
-						$final .= $char_array[mt_rand(0, $char_array_len)];
-					}
-
-					// Create some random table
-					$sql = 'CREATE TABLE ' . $final . " (
-						FIELD1 VARCHAR(255) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
-						FIELD2 INTEGER DEFAULT 0 NOT NULL);";
-					$db->sql_query($sql);
-
-					// Create an index that should fail if the page size is less than 8192
-					$sql = 'CREATE INDEX ' . $final . ' ON ' . $final . '(FIELD1, FIELD2);';
-					$db->sql_query($sql);
-
-					if (ibase_errmsg() !== false)
-					{
-						$error[] = $lang['INST_ERR_DB_NO_FIREBIRD_PS'];
-					}
-					else
-					{
-						// Kill the old table
-						$db->sql_query('DROP TABLE ' . $final . ';');
-					}
-					unset($final);
-				}
-			break;
-
-			case 'oracle':
-				if ($unicode_check)
-				{
-					$sql = "SELECT *
-						FROM NLS_DATABASE_PARAMETERS
-						WHERE PARAMETER = 'NLS_RDBMS_VERSION'
-							OR PARAMETER = 'NLS_CHARACTERSET'";
-					$result = $db->sql_query($sql);
-
-					while ($row = $db->sql_fetchrow($result))
-					{
-						$stats[$row['parameter']] = $row['value'];
-					}
-					$db->sql_freeresult($result);
-
-					if (version_compare($stats['NLS_RDBMS_VERSION'], '9.2', '<') && $stats['NLS_CHARACTERSET'] !== 'UTF8')
-					{
-						$error[] = $lang['INST_ERR_DB_NO_ORACLE'];
-					}
-				}
-			break;
-
-			case 'postgres':
-				if ($unicode_check)
-				{
-					$sql = "SHOW server_encoding;";
-					$result = $db->sql_query($sql);
-					$row = $db->sql_fetchrow($result);
-					$db->sql_freeresult($result);
-
-					if ($row['server_encoding'] !== 'UNICODE' && $row['server_encoding'] !== 'UTF8')
-					{
-						$error[] = $lang['INST_ERR_DB_NO_POSTGRES'];
-					}
-				}
-			break;
+			$error[] = $lang['INST_ERR_DB_NO_MYSQLI'];
 		}
-
 	}
 
 	if ($error_connect && (!isset($error) || !sizeof($error)))
@@ -463,7 +302,6 @@ function phpbb_create_config_file_data($data, $dbms, $load_extensions, $debug = 
 	$config_data = "<?php\n\n";
 
 	$config_data_array = array(
-		'dbms'			=> $dbms,
 		'dbhost'		=> $data['dbhost'],
 		'dbport'		=> $data['dbport'],
 		'dbname'		=> $data['dbname'],

@@ -42,13 +42,13 @@ class erk_config_repair
 
 		if (isset($_POST['submit']))
 		{
-			if (!isset($available_dbms[$data['dbms']]))
+			if (!isset($available_dbms['mysqli']))
 			{
 				$error[] = 'Database Connection not available.';
 			}
 			else
 			{
-				$connect_test = $this->critical_connect_check_db(true, $error, $available_dbms[$data['dbms']], $data['table_prefix'], $data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport']);
+				$connect_test = $this->critical_connect_check_db(true, $error, $available_dbms['mysqli'], $data['table_prefix'], $data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport']);
 				if (!$connect_test)
 				{
 					$error[] = 'Database Connection failed.';
@@ -62,7 +62,6 @@ class erk_config_repair
 			$config_data = "<?php\n\n";
 
 			$config_data_array = array(
-				'dbms'			=> $available_dbms[$data['dbms']]['DRIVER'],
 				'dbhost'		=> $data['dbhost'],
 				'dbport'		=> $data['dbport'],
 				'dbname'		=> $data['dbname'],
@@ -151,15 +150,7 @@ class erk_config_repair
 										</div>
 									<?php } ?>
 									<dl>
-										<dt><label for="dbms">Database type:</label></dt>
-										<dd><select name="dbms">
-											<?php foreach (get_available_dbms() as $dbms => $dbms_data) { ?>
-												<option value="<?php echo $dbms; ?>" <?php if ($data['dbms'] == $dbms) { echo ' selected="selected"'; } ?>><?php echo $dbms_data['LABEL']; ?>
-											<?php } ?>
-										</select></dd>
-									</dl>
-									<dl>
-										<dt><label for="dbhost">Database server hostname or DSN:</label><br /><span class="explain">DSN stands for Data Source Name and is relevant only for ODBC installs.</span></dt>
+										<dt><label for="dbhost">Database server hostname:</label></dt>
 										<dd><input id="dbhost" type="text" value="<?php echo $data['dbhost']; ?>" name="dbhost" maxlength="100" size="25"/></dd>
 									</dl>
 									<dl>
@@ -213,60 +204,37 @@ class erk_config_repair
 		// Must be globalized here for when including the DB file
 		global $phpbb_root_path, $phpEx;
 
-		$dbms = $dbms_details['DRIVER'];
+		if ($dbms_details['DRIVER'] != 'mysqli')
+		{
+			$error[] = 'MySQL 5.5 and newer is required.';
+			return false;
+		}
 
 		if ($load_dbal)
 		{
 			// Include the DB layer
-			include(PHPBB_ROOT_PATH . 'includes/db/' . $dbms . '.' . PHP_EXT);
+			include(PHPBB_ROOT_PATH . 'includes/db/mysqli.' . PHP_EXT);
 		}
 
 		// Instantiate it and set return on error true
-		$sql_db = 'dbal_' . $dbms;
-		$db = new $sql_db();
+		$db = new dbal_mysqli();
 		$db->sql_return_on_error(true);
 
 		// Check that we actually have a database name before going any further.....
-		if ($dbms_details['DRIVER'] != 'sqlite' && $dbms_details['DRIVER'] != 'oracle' && $dbname === '')
+		if ($dbname === '')
 		{
 			$error[] = 'No database name specified.';
 			return false;
 		}
 
 		// Check the prefix length to ensure that index names are not too long and does not contain invalid characters
-		switch ($dbms_details['DRIVER'])
+		if (strspn($table_prefix, '-./\\') !== 0)
 		{
-			case 'mysql':
-			case 'mysqli':
-				if (strspn($table_prefix, '-./\\') !== 0)
-				{
-					$error[] = 'The table prefix you have specified is invalid for your database.';
-					return false;
-				}
-
-			// no break;
-
-			case 'postgres':
-				$prefix_length = 36;
-			break;
-
-			case 'mssql':
-			case 'mssqlnative':
-			case 'mssql_odbc':
-				$prefix_length = 90;
-			break;
-
-			case 'sqlite':
-				$prefix_length = 200;
-			break;
-
-			case 'firebird':
-			case 'oracle':
-				$prefix_length = 6;
-			break;
+			$error[] = 'The table prefix you have specified is invalid for your database.';
+			return false;
 		}
 
-		if (strlen($table_prefix) > $prefix_length)
+		if (strlen($table_prefix) > 36)
 		{
 			$error[] = 'The table prefix you have specified is invalid for your database.';
 			return false;
@@ -281,139 +249,9 @@ class erk_config_repair
 		else
 		{
 			// Make sure that the user has selected a sensible DBAL for the DBMS actually installed
-			switch ($dbms_details['DRIVER'])
+			if (version_compare(mysqli_get_server_info($db->db_connect_id), '5.5.0', '<'))
 			{
-				case 'mysqli':
-					if (version_compare(mysqli_get_server_info($db->db_connect_id), '4.1.3', '<'))
-					{
-						$error[] = 'The version of MySQL installed on this machine is incompatible with the “MySQL with MySQLi Extension” option you have selected. Please try the “MySQL” option instead.';
-					}
-				break;
-
-				case 'sqlite':
-					if (version_compare(sqlite_libversion(), '2.8.2', '<'))
-					{
-						$error[] = 'The version of the SQLite extension you have installed is too old, it must be upgraded to at least 2.8.2.';
-					}
-				break;
-
-				case 'firebird':
-					// check the version of FB, use some hackery if we can't get access to the server info
-					if ($db->service_handle !== false && function_exists('ibase_server_info'))
-					{
-						$val = @ibase_server_info($db->service_handle, IBASE_SVC_SERVER_VERSION);
-						preg_match('#V([\d.]+)#', $val, $match);
-						if ($match[1] < 2)
-						{
-							$error[] = 'The version of Firebird installed on this machine is older than 2.0, please upgrade to a newer version.';
-						}
-						$db_info = @ibase_db_info($db->service_handle, $dbname, IBASE_STS_HDR_PAGES);
-
-						preg_match('/^\\s*Page size\\s*(\\d+)/m', $db_info, $regs);
-						$page_size = intval($regs[1]);
-						if ($page_size < 8192)
-						{
-							$error[] = 'The database you selected for Firebird has a page size less than 8192, it must be at least 8192.';
-						}
-					}
-					else
-					{
-						$sql = "SELECT *
-							FROM RDB$FUNCTIONS
-							WHERE RDB$SYSTEM_FLAG IS NULL
-								AND RDB$FUNCTION_NAME = 'CHAR_LENGTH'";
-						$result = $db->sql_query($sql);
-						$row = $db->sql_fetchrow($result);
-						$db->sql_freeresult($result);
-
-						// if its a UDF, its too old
-						if ($row)
-						{
-							$error[] = 'The version of Firebird installed on this machine is older than 2.0, please upgrade to a newer version.';
-						}
-						else
-						{
-							$sql = "SELECT FIRST 0 char_length('')
-								FROM RDB\$DATABASE";
-							$result = $db->sql_query($sql);
-							if (!$result) // This can only fail if char_length is not defined
-							{
-								$error[] = 'The version of Firebird installed on this machine is older than 2.0, please upgrade to a newer version.';
-							}
-							$db->sql_freeresult($result);
-						}
-
-						// Setup the stuff for our random table
-						$char_array = array_merge(range('A', 'Z'), range('0', '9'));
-						$char_len = mt_rand(7, 9);
-						$char_array_len = sizeof($char_array) - 1;
-
-						$final = '';
-
-						for ($i = 0; $i < $char_len; $i++)
-						{
-							$final .= $char_array[mt_rand(0, $char_array_len)];
-						}
-
-						// Create some random table
-						$sql = 'CREATE TABLE ' . $final . " (
-							FIELD1 VARCHAR(255) CHARACTER SET UTF8 DEFAULT '' NOT NULL COLLATE UNICODE,
-							FIELD2 INTEGER DEFAULT 0 NOT NULL);";
-						$db->sql_query($sql);
-
-						// Create an index that should fail if the page size is less than 8192
-						$sql = 'CREATE INDEX ' . $final . ' ON ' . $final . '(FIELD1, FIELD2);';
-						$db->sql_query($sql);
-
-						if (ibase_errmsg() !== false)
-						{
-							$error[] = 'The database you selected for Firebird has a page size less than 8192, it must be at least 8192.';
-						}
-						else
-						{
-							// Kill the old table
-							$db->sql_query('DROP TABLE ' . $final . ';');
-						}
-						unset($final);
-					}
-				break;
-
-				case 'oracle':
-					if ($unicode_check)
-					{
-						$sql = "SELECT *
-							FROM NLS_DATABASE_PARAMETERS
-							WHERE PARAMETER = 'NLS_RDBMS_VERSION'
-								OR PARAMETER = 'NLS_CHARACTERSET'";
-						$result = $db->sql_query($sql);
-
-						while ($row = $db->sql_fetchrow($result))
-						{
-							$stats[$row['parameter']] = $row['value'];
-						}
-						$db->sql_freeresult($result);
-
-						if (version_compare($stats['NLS_RDBMS_VERSION'], '9.2', '<') && $stats['NLS_CHARACTERSET'] !== 'UTF8')
-						{
-							$error[] = 'The version of Oracle installed on this machine requires you to set the <var>NLS_CHARACTERSET</var> parameter to <var>UTF8</var>. Either upgrade your installation to 9.2+ or change the parameter.';
-						}
-					}
-				break;
-
-				case 'postgres':
-					if ($unicode_check)
-					{
-						$sql = "SHOW server_encoding;";
-						$result = $db->sql_query($sql);
-						$row = $db->sql_fetchrow($result);
-						$db->sql_freeresult($result);
-
-						if ($row['server_encoding'] !== 'UNICODE' && $row['server_encoding'] !== 'UTF8')
-						{
-							$error[] = 'The database you have selected was not created in <var>UNICODE</var> or <var>UTF8</var> encoding. Try installing with a database in <var>UNICODE</var> or <var>UTF8</var> encoding.';
-						}
-					}
-				break;
+				$error[] = 'MySQL 5.5 and newer is required.';
 			}
 
 			$tables = get_tables($db);

@@ -23,7 +23,7 @@ $phpEx = substr(strrchr(__FILE__, '.'), 1);
 require($phpbb_root_path . 'includes/startup.' . $phpEx);
 require($phpbb_root_path . 'config.' . $phpEx);
 
-if (!defined('PHPBB_INSTALLED') || empty($dbms) || empty($acm_type))
+if (!defined('PHPBB_INSTALLED'))
 {
 	exit;
 }
@@ -52,11 +52,11 @@ if ($id)
 	// Include files
 	require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
 	require($phpbb_root_path . 'includes/cache.' . $phpEx);
-	require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
+	require($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
 	require($phpbb_root_path . 'includes/constants.' . $phpEx);
 	require($phpbb_root_path . 'includes/functions.' . $phpEx);
 
-	$db = new $sql_db();
+	$db = new dbal_mysqli();
 	$cache = new phpbb_cache();
 
 	// Connect to DB
