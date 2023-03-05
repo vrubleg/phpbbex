@@ -442,7 +442,7 @@ function perform_authed_quick_tasks($action)
  * to update variables before calling the actual msg_handler and is able
  * to handle various special cases.
  */
-function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace)
+function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 {
 	// First and foremost handle the case where phpBB calls trigger error
 	// but the STK really needs to continue.
@@ -529,7 +529,7 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace)
 			$err_types = [E_ERROR => 'Error', E_NOTICE => 'Notice', E_WARNING => 'Warning', E_DEPRECATED => 'Deprecated', E_STRICT => 'Strict'];
 			$errfile = stk_filter_root_path($errfile);
 			$msg_text = stk_filter_root_path($msg_text);
-			$backtrace = format_backtrace(empty($backtrace) ? array_slice(debug_backtrace(), 1) : $backtrace);
+			$backtrace = format_backtrace($backtrace);
 
 			if (defined('IN_INSTALL') || defined('DEBUG') || isset($auth) && $auth->acl_get('a_'))
 			{
@@ -576,7 +576,7 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace)
 				}
 			}
 
-			$backtrace = format_backtrace(empty($backtrace) ? array_slice(debug_backtrace(), 1) : $backtrace);
+			$backtrace = format_backtrace($backtrace);
 
 			if ((defined('DEBUG') || defined('IN_CRON') || defined('IMAGE_OUTPUT')) && isset($db))
 			{

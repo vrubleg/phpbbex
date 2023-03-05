@@ -3611,7 +3611,7 @@ function phpbb_checkdnsrr($host, $type = 'MX')
 /**
 * Error and message handler, call with trigger_error if reqd
 */
-function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace)
+function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 {
 	global $cache, $db, $auth, $template, $config, $user;
 	global $phpEx, $phpbb_root_path, $msg_title, $msg_long_text;
@@ -3652,7 +3652,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace)
 			$err_types = [E_ERROR => 'Error', E_NOTICE => 'Notice', E_WARNING => 'Warning', E_DEPRECATED => 'Deprecated', E_STRICT => 'Strict'];
 			$errfile = phpbb_filter_root_path($errfile);
 			$msg_text = phpbb_filter_root_path($msg_text);
-			$backtrace = format_backtrace(empty($backtrace) ? array_slice(debug_backtrace(), 1) : $backtrace);
+			$backtrace = format_backtrace($backtrace);
 
 			if (defined('IN_INSTALL') || defined('DEBUG') || isset($auth) && $auth->acl_get('a_'))
 			{
@@ -3699,7 +3699,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace)
 				}
 			}
 
-			$backtrace = format_backtrace(empty($backtrace) ? array_slice(debug_backtrace(), 1) : $backtrace);
+			$backtrace = format_backtrace($backtrace);
 
 			if ((defined('DEBUG') || defined('IN_CRON') || defined('IMAGE_OUTPUT')) && isset($db) && $db->db_connect_id)
 			{
