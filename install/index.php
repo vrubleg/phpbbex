@@ -142,10 +142,10 @@ $mode = request_var('mode', 'install');
 $sub = request_var('sub', '');
 
 // Set PHP error handler to ours
-set_error_handler(function ($errno, $msg_text, $errfile, $errline)
+set_error_handler(function ($errno, $errstr, $errfile, $errline)
 {
 	$msg_handler = defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler';
-	$msg_handler($errno, $msg_text, $errfile, $errline, array_slice(debug_backtrace(), 1));
+	$msg_handler($errno, $errstr, $errfile, $errline, array_slice(debug_backtrace(), 1));
 });
 set_exception_handler(function ($e)
 {
