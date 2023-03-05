@@ -1132,13 +1132,11 @@ class install_install extends module
 			$this->p_master->redirect("index.$phpEx?mode=install");
 		}
 
-		$dbms = $available_dbms[$data['dbms']]['DRIVER'];
-
 		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
+		include($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
 
 		// Instantiate the database
-		$db = new $sql_db();
+		$db = new dbal_mysqli();
 		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
 
 		// NOTE: trigger_error does not work here.
@@ -1406,13 +1404,11 @@ class install_install extends module
 			$this->p_master->redirect("index.$phpEx?mode=install");
 		}
 
-		$dbms = $available_dbms[$data['dbms']]['DRIVER'];
-
 		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
+		include($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
 
 		// Instantiate the database
-		$db = new $sql_db();
+		$db = new dbal_mysqli();
 		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
 
 		// NOTE: trigger_error does not work here.

@@ -83,7 +83,7 @@ $oldest_from_version = OLDEST_FROM_VERSION;
 // Include essential scripts
 include($phpbb_root_path . 'config.' . $phpEx);
 
-if (!defined('PHPBB_INSTALLED') || empty($dbms) || empty($acm_type))
+if (!defined('PHPBB_INSTALLED'))
 {
 	die('Error! Invalid config file.');
 }
@@ -110,13 +110,13 @@ require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
 require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 require($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
-require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
+require($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
 require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
 require($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
 
 $user = new phpbb_user();
 $cache = new phpbb_cache();
-$db = new $sql_db();
+$db = new dbal_mysqli();
 
 // Add own hook handler, if present. :o
 if (file_exists($phpbb_root_path . 'includes/hooks/index.' . $phpEx))
@@ -258,6 +258,8 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		$auth_admin = new auth_admin();
 		$auth_admin->acl_clear_prefetch();
 	}
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_auth = 'acl_a_server' WHERE module_auth = 'acl_a_jabber'");
 
 	// Add new config options.
 

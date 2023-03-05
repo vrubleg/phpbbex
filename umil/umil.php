@@ -2087,7 +2087,7 @@ class umil
 	*/
 	function table_add($table_name, $table_data = array())
 	{
-		global $dbms, $user;
+		global $user;
 
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $table_name))
@@ -2133,10 +2133,8 @@ class umil
 		}
 		else
 		{*/
-			$available_dbms = get_available_dbms($dbms);
-
 			$sql_query = $this->create_table_sql($table_name, $table_data);
-			$sql_query = split_sql_file($sql_query, $available_dbms[$dbms]['DELIM']);
+			$sql_query = split_sql_file($sql_query, ';');
 
 			foreach ($sql_query as $sql)
 			{
@@ -2529,14 +2527,13 @@ class umil
 	*
 	* @param string $table_name The name of the table
 	* @param array $table_data The table data (formatted in the array format used by create_schema_files)
-	* @param string $dbms The dbms this will be built for (for testing only, leave blank to use the current DBMS)
 	*
 	* @return The sql query to run for the submitted dbms to insert the table
 	*/
-	function create_table_sql($table_name, $table_data, $dbms = '')
+	function create_table_sql($table_name, $table_data)
 	{
 		// To allow testing
-		$dbms = ($dbms) ? $dbms : $this->db_tools->sql_layer;
+		$dbms = $this->db_tools->sql_layer;
 
 		// A list of types being unsigned for better reference in some db's
 		$unsigned_types = array('UINT', 'UINT:', 'USINT', 'BOOL', 'TIMESTAMP');
