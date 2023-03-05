@@ -22,9 +22,9 @@ if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> &copy; 2015 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
 
 // Configure autoloader
-require(dirname(__FILE__).'/../classes/autoloader.php');
-autoloader::init(dirname(__FILE__).'/../classes/');
-autoloader::add_path(dirname(__FILE__).'/../modules/', 'module');
+require_once(__DIR__.'/autoloader.php');
+autoloader::init(__DIR__.'/classes/');
+autoloader::add_path(__DIR__.'/modules/', 'module');
 
 /**
  * Check if requested page uses a trailing path
