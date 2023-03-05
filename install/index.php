@@ -143,6 +143,11 @@ $sub = request_var('sub', '');
 
 // Set PHP error handler to ours
 set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');
+set_exception_handler(function ($e)
+{
+	$msg_handler = defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler';
+	$msg_handler(E_USER_ERROR, $e->getMessage(), $e->getFile(), $e->getLine(), $e->getTrace());
+});
 
 $user = new phpbb_user();
 $auth = new phpbb_auth();
