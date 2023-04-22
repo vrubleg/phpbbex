@@ -1174,7 +1174,7 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 
 /* Nice method for clearing floated blocks without having to insert any extra markup
 	From http://www.positioniseverything.net/easyclearing.html
-.clearfix:after, #tabs:after, .row:after, #content:after, fieldset dl:after, #page-body:after {
+.clearfix::after, #tabs::after, .row::after, #content::after, fieldset dl::after, #page-body::after {
 	content: ".";
 	display: block;
 	height: 0;

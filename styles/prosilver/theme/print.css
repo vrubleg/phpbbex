@@ -64,7 +64,7 @@ h3 { font-size: 14pt; margin-top: 1em; }
 	font-size: 100%;
 }
 
-html>body .postbody a:link:after, html>body .postbody a:visited:after {
+html>body .postbody a:link::after, html>body .postbody a:visited::after {
 	content: " (" attr(href) ") ";
 	font-size: 90%;
 	text-decoration: none;
@@ -92,12 +92,12 @@ hr {
 
 /* Dont want to print url for names or titles in content area */
 .postbody .author a:link, .postbody .author a:visited, 
-html>body .postbody .author a:link:after, 
-html>body .postbody .author a:visited:after,
+html>body .postbody .author a:link::after, 
+html>body .postbody .author a:visited::after,
 .postquote .quote-by a:link, .postquote .quote-by a:visited, 
-html>body .postquote .quote-by a:link:after, 
-html>body .postquote .quote-by a:visited:after,
-html>body .postbody h1 a:link:after, html>body .postbody h2 a:link:after {
+html>body .postquote .quote-by a:link::after, 
+html>body .postquote .quote-by a:visited::after,
+html>body .postbody h1 a:link::after, html>body .postbody h2 a:link::after {
 	text-decoration: none;
 	content: "";
 }

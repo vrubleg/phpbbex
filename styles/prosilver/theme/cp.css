@@ -116,7 +116,7 @@ ul.cplist {
 	margin-top: 19px;
 }
 
-.tabs-container:after {
+.tabs-container::after {
 	display: block;
 	clear: both;
 	content: '';
