@@ -602,7 +602,7 @@ p.rules a {
 	top: -20px;
 }
 
-.clear, .inner:after {
+.clear, .inner::after {
 	display: block;
 	clear: both;
 	content: '';

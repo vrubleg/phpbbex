@@ -326,12 +326,6 @@ class acp_board
 						'legend4'					=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
-				// No premium features
-				if (empty($config['premium_key']) || md5($config['premium_key']) != '9b3cf96285fd3149e5c2072c207d89b8')
-				{
-					unset($display_vars['vars']['external_links_nofollow']);
-					unset($display_vars['vars']['external_links_nofollow_exclude']);
-				}
 			break;
 
 			case 'signature':

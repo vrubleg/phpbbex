@@ -168,7 +168,7 @@ a#logo:hover {
 	color: #000000;
 }
 
-.headerbar:after, .paragraph:after {
+.headerbar::after, .paragraph::after {
 	display: block;
 	clear: both;
 	content: '';
