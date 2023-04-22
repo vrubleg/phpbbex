@@ -144,7 +144,6 @@ $lang = array_merge($lang, array(
 	'acl_f_user_lock'	=> array('lang' => 'Может закрывать свои темы', 'cat' => 'actions'),
 	'acl_f_bump'		=> array('lang' => 'Может поднимать темы', 'cat' => 'actions'),
 	'acl_f_report'		=> array('lang' => 'Может размещать жалобы', 'cat' => 'actions'),
-	'acl_f_subscribe'	=> array('lang' => 'Может подписываться на разделы', 'cat' => 'actions'),
 	'acl_f_email'		=> array('lang' => 'Может сообщать (другу) по email о теме', 'cat' => 'actions'),
 
 	'acl_f_search'		=> array('lang' => 'Может использовать поиск в разделе', 'cat' => 'misc'),

@@ -144,7 +144,6 @@ $lang = array_merge($lang, array(
 	'acl_f_user_lock'	=> array('lang' => 'Can lock own topics', 'cat' => 'actions'),
 	'acl_f_bump'		=> array('lang' => 'Can bump topics', 'cat' => 'actions'),
 	'acl_f_report'		=> array('lang' => 'Can report posts', 'cat' => 'actions'),
-	'acl_f_subscribe'	=> array('lang' => 'Can subscribe forum', 'cat' => 'actions'),
 	'acl_f_email'		=> array('lang' => 'Can e-mail topics', 'cat' => 'actions'),
 
 	'acl_f_search'		=> array('lang' => 'Can search the forum', 'cat' => 'misc'),
