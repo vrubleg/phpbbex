@@ -1364,12 +1364,17 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 	$match_id = ($mode == 'forum') ? $forum_id : $topic_id;
 	$u_url = "uid={$user->data['user_id']}";
 	$u_url .= ($mode == 'forum') ? '&amp;f' : '&amp;f=' . $forum_id . '&amp;t';
-	$is_watching = 0;
 
-	// Is user watching this thread?
-	if ($user_id != ANONYMOUS)
+	if ($user_id == ANONYMOUS)
 	{
-		$can_watch = true;
+		if ((isset($_GET['unwatch']) && $_GET['unwatch'] == $mode) || (isset($_GET['watch']) && $_GET['watch'] == $mode))
+		{
+			login_box();
+		}
+	}
+	else
+	{
+		$is_watching = false;
 
 		if ($notify_status == 'unset')
 		{
@@ -1503,33 +1508,12 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					confirm_box(false, $confirm_box_message, build_hidden_fields($s_hidden_fields));
 				}
 			}
-			else
-			{
-				$is_watching = 0;
-			}
 		}
-	}
-	else
-	{
-		if ((isset($_GET['unwatch']) && $_GET['unwatch'] == $mode) || (isset($_GET['watch']) && $_GET['watch'] == $mode))
-		{
-			login_box();
-		}
-		else
-		{
-			$can_watch = 0;
-			$is_watching = 0;
-		}
-	}
 
-	if ($can_watch)
-	{
 		$s_watching['link'] = append_sid("{$phpbb_root_path}view$mode.$phpEx", "$u_url=$match_id&amp;" . (($is_watching) ? 'unwatch' : 'watch') . "=$mode&amp;start=$start&amp;hash=" . generate_link_hash("{$mode}_$match_id"));
 		$s_watching['title'] = $user->lang[(($is_watching) ? 'STOP' : 'START') . '_WATCHING_' . strtoupper($mode)];
 		$s_watching['is_watching'] = $is_watching;
 	}
-
-	return;
 }
 
 /**
