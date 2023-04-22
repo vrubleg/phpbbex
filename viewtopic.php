@@ -479,7 +479,7 @@ if (($config['email_enable'] || $config['jab_enable']) && $config['allow_topic_n
 	watch_topic_forum('topic', $s_watching_topic, $user->data['user_id'], $forum_id, $topic_id, $notify_status, $start, $topic_data['topic_title']);
 
 	// Reset forum notification if forum notify is set
-	if ($config['allow_forum_notify'] && $auth->acl_get('f_subscribe', $forum_id))
+	if ($config['allow_forum_notify'])
 	{
 		$s_watching_forum = $s_watching_topic;
 		watch_topic_forum('forum', $s_watching_forum, $user->data['user_id'], $forum_id, 0);
@@ -664,7 +664,7 @@ $template->assign_vars(array(
 	'U_VIEW_OLDER_TOPIC'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;view=previous"),
 	'U_VIEW_NEWER_TOPIC'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;view=next"),
 	'U_PRINT_TOPIC'			=> $viewtopic_url . '&amp;view=print',
-	'U_EMAIL_TOPIC'			=> ($config['email_enable'] && $config['board_email_form'] && $user->data['is_registered'] && $auth->acl_get('f_email', $forum_id)) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;t=$topic_id") : '',
+	'U_EMAIL_TOPIC'			=> ($config['email_enable'] && $config['board_email_form'] && $user->data['is_registered'] && $auth->acl_get('u_sendemail')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;t=$topic_id") : '',
 
 	'U_WATCH_TOPIC' 		=> $s_watching_topic['link'],
 	'L_WATCH_TOPIC' 		=> $s_watching_topic['title'],

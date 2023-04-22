@@ -361,7 +361,6 @@ INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_bump', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_delete', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_download', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_edit', 1);
-INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_email', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_flash', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_icons', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_ignoreflood', 1);
@@ -378,7 +377,6 @@ INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_search', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_sigs', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_smilies', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_sticky', 1);
-INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_subscribe', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_user_lock', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_vote', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_votechg', 1);
@@ -462,7 +460,6 @@ INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_masspm', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_masspm_group', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_attach', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_bbcode', 1);
-INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_delete', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_download', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_edit', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_flash', 1);
@@ -690,7 +687,7 @@ INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 
 INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 16, auth_option_id, 0 FROM phpbb_acl_options WHERE auth_option = 'f_';
 
 # Read Only Access (f_)
-INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 17, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'f_%' AND auth_option IN ('f_', 'f_download', 'f_list', 'f_read', 'f_search', 'f_subscribe');
+INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 17, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'f_%' AND auth_option IN ('f_', 'f_download', 'f_list', 'f_read', 'f_search');
 
 # Limited Access (f_)
 INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 18, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'f_%' AND auth_option NOT IN ('f_announce', 'f_attach', 'f_bump', 'f_delete', 'f_flash', 'f_icons', 'f_ignoreflood', 'f_poll', 'f_sticky', 'f_user_lock', 'f_votechg');

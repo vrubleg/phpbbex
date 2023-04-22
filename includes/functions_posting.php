@@ -1631,6 +1631,10 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 		break;
 
 		case 'delete':
+			$sql_data[FORUMS_TABLE] = ($data['post_approved']) ? 'forum_posts = forum_posts - 1' : '';
+
+			$sql_data[TOPICS_TABLE] = 'topic_replies_real = topic_replies_real - 1' . (($data['post_approved']) ? ', topic_replies = topic_replies - 1' : '');
+
 			$sql = 'SELECT post_id
 				FROM ' . POSTS_TABLE . "
 				WHERE topic_id = $topic_id " .
@@ -1641,10 +1645,24 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 
-			$sql_data[FORUMS_TABLE] = ($data['post_approved']) ? 'forum_posts = forum_posts - 1' : '';
+			if ($row)
+			{
+				$next_post_id = (int) $row['post_id'];
+			}
+			else
+			{
+				// It can happen when the latest (yet unapproved) post is being deleted.
 
-			$sql_data[TOPICS_TABLE] = 'topic_replies_real = topic_replies_real - 1' . (($data['post_approved']) ? ', topic_replies = topic_replies - 1' : '');
-			$next_post_id = (int) $row['post_id'];
+				$sql = 'SELECT MAX(post_id) as last_post_id
+					FROM ' . POSTS_TABLE . "
+					WHERE topic_id = $topic_id " .
+						((!$auth->acl_get('m_approve', $forum_id)) ? 'AND post_approved = 1' : '');
+				$result = $db->sql_query($sql);
+				$row = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
+
+				$next_post_id = (int) $row['last_post_id'];
+			}
 		break;
 	}
 

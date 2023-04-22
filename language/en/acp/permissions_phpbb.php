@@ -99,7 +99,6 @@ $lang = array_merge($lang, array(
 	'acl_u_masspm_group'=> array('lang' => 'Can send messages to groups', 'cat' => 'pm'),
 	'acl_u_readpm'		=> array('lang' => 'Can read private messages', 'cat' => 'pm'),
 	'acl_u_pm_edit'		=> array('lang' => 'Can edit own private messages', 'cat' => 'pm'),
-	'acl_u_pm_delete'	=> array('lang' => 'Can remove private messages from own folder', 'cat' => 'pm'),
 	'acl_u_pm_attach'	=> array('lang' => 'Can attach files in private messages', 'cat' => 'pm'),
 	'acl_u_pm_download'	=> array('lang' => 'Can download files in private messages', 'cat' => 'pm'),
 	'acl_u_pm_bbcode'	=> array('lang' => 'Can use BBCode in private messages', 'cat' => 'pm'),
@@ -144,8 +143,6 @@ $lang = array_merge($lang, array(
 	'acl_f_user_lock'	=> array('lang' => 'Can lock own topics', 'cat' => 'actions'),
 	'acl_f_bump'		=> array('lang' => 'Can bump topics', 'cat' => 'actions'),
 	'acl_f_report'		=> array('lang' => 'Can report posts', 'cat' => 'actions'),
-	'acl_f_subscribe'	=> array('lang' => 'Can subscribe forum', 'cat' => 'actions'),
-	'acl_f_email'		=> array('lang' => 'Can e-mail topics', 'cat' => 'actions'),
 
 	'acl_f_search'		=> array('lang' => 'Can search the forum', 'cat' => 'misc'),
 	'acl_f_ignoreflood' => array('lang' => 'Can ignore flood limit', 'cat' => 'misc'),

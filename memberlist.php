@@ -760,11 +760,6 @@ switch ($mode)
 				{
 					trigger_error('SORRY_AUTH_READ');
 				}
-
-				if (!$auth->acl_get('f_email', $row['forum_id']))
-				{
-					trigger_error('NO_EMAIL');
-				}
 			}
 			else
 			{
@@ -772,11 +767,6 @@ switch ($mode)
 				if (!$auth->acl_getf_global('f_read'))
 				{
 					trigger_error('SORRY_AUTH_READ');
-				}
-
-				if (!$auth->acl_getf_global('f_email'))
-				{
-					trigger_error('NO_EMAIL');
 				}
 			}
 		}
