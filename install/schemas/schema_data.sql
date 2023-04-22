@@ -361,7 +361,6 @@ INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_bump', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_delete', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_download', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_edit', 1);
-INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_email', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_flash', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_icons', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_local) VALUES ('f_ignoreflood', 1);

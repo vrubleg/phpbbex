@@ -234,6 +234,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 	$permissions = array(
 		'a_jabber',
+		'f_email',
 		'f_print',
 		'f_subscribe',
 		'u_pm_emailpm',
