@@ -237,6 +237,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'f_email',
 		'f_print',
 		'f_subscribe',
+		'u_pm_delete',
 		'u_pm_emailpm',
 		'u_pm_forward',
 		'u_pm_printpm',

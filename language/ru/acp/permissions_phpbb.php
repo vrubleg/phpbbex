@@ -99,7 +99,6 @@ $lang = array_merge($lang, array(
 	'acl_u_masspm_group'=> array('lang' => 'Может рассылать ЛС группам пользователей', 'cat' => 'pm'),
 	'acl_u_readpm'		=> array('lang' => 'Может читать ЛС', 'cat' => 'pm'),
 	'acl_u_pm_edit'		=> array('lang' => 'Может редактировать собственные ЛС', 'cat' => 'pm'),
-	'acl_u_pm_delete'	=> array('lang' => 'Может удалять ЛС из своих папок', 'cat' => 'pm'),
 	'acl_u_pm_attach'	=> array('lang' => 'Может прикреплять вложения в ЛС', 'cat' => 'pm'),
 	'acl_u_pm_download'	=> array('lang' => 'Может скачивать файлы из ЛС', 'cat' => 'pm'),
 	'acl_u_pm_bbcode'	=> array('lang' => 'Может использовать BBCode в ЛС', 'cat' => 'pm'),
