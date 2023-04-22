@@ -259,7 +259,6 @@ $lang = array_merge($lang, array(
 	'NO_AUTHOR'						=> 'Не указан автор сообщения',
 	'NO_AVATAR_CATEGORY'			=> 'Нет',
 
-	'NO_AUTH_DELETE_MESSAGE'		=> 'У вас нет доступа к удалению личных сообщений.',
 	'NO_AUTH_EDIT_MESSAGE'			=> 'У вас нет доступа к редактированию личных сообщений.',
 	'NO_AUTH_GROUP_MESSAGE'			=> 'У вас нет доступа к отправке личных сообщений в группы.',
 	'NO_AUTH_PASSWORD_REMINDER'		=> 'У вас нет доступа к получению нового пароля.',
