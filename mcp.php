@@ -85,10 +85,18 @@ if ($post_id)
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
 
-	$topic_id = (int) $row['topic_id'];
-	$forum_id = (int) ($row['forum_id']) ? $row['forum_id'] : $forum_id;
+	if ($row)
+	{
+		$topic_id = (int) $row['topic_id'];
+		$forum_id = (int) $row['forum_id'];
+	}
+	else
+	{
+		$post_id = 0;
+	}
 }
-else if ($topic_id)
+
+if (!$post_id && $topic_id)
 {
 	$sql = 'SELECT forum_id
 		FROM ' . TOPICS_TABLE . "
@@ -97,7 +105,14 @@ else if ($topic_id)
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
 
-	$forum_id = (int) $row['forum_id'];
+	if ($row)
+	{
+		$forum_id = (int) $row['forum_id'];
+	}
+	else
+	{
+		$topic_id = 0;
+	}
 }
 
 // If the user doesn't have any moderator powers (globally or locally) he can't access the mcp
