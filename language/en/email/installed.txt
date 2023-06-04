@@ -4,7 +4,7 @@ Congratulations,
 
 You have successfully installed phpBBex on your server.
 
-This e-mail contains important information regarding your installation and should be kept for reference. Your password has been securely stored in our database and cannot be retrieved. In the event that it is forgotten, you will be able to reset it using the email address associated with your account.
+Your password has been securely stored in our database and cannot be retrieved. In the event that it is forgotten, you will be able to reset it using the email address associated with your account.
 
 ----------------------------
 Username: {USERNAME}
@@ -12,8 +12,6 @@ Username: {USERNAME}
 Board URL: {U_BOARD}
 ----------------------------
 
-Useful information regarding the phpBBex software can be found phpbbex.com and phpbb.com.
-
-In order to keep your board safe and secure, we highly recommended keeping current with software releases. For your convenience, a RSS feed is available on the phpbbex.com.
+Useful information regarding the phpBBex software can be found phpbbex.com and phpbb.com. In order to keep your board safe and secure, we highly recommended keeping current with phpBBex releases.
 
 {EMAIL_SIG}
