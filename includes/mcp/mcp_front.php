@@ -106,7 +106,7 @@ function mcp_front_view($id, $mode, $action)
 						'FORUM_NAME'	=> (!$global_topic) ? $forum_names[$row['forum_id']] : $user->lang['GLOBAL_ANNOUNCEMENT'],
 						'POST_ID'		=> $row['post_id'],
 						'TOPIC_TITLE'	=> $row['topic_title'],
-						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : $user->lang['NO_SUBJECT'],
+						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
 						'POST_TIME'		=> $user->format_date($row['post_time']))
 					);
 				}
@@ -220,7 +220,7 @@ function mcp_front_view($id, $mode, $action)
 
 						'FORUM_NAME'	=> (!$global_topic) ? $row['forum_name'] : $user->lang['GLOBAL_ANNOUNCEMENT'],
 						'TOPIC_TITLE'	=> $row['topic_title'],
-						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : $user->lang['NO_SUBJECT'],
+						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
 						'REPORT_TIME'	=> $user->format_date($row['report_time']),
 						'POST_TIME'		=> $user->format_date($row['post_time']),
 					));
