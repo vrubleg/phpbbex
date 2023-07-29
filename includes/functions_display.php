@@ -424,7 +424,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			$last_post_id = $row['forum_last_post_id'];
 			$last_post_subject = $row['forum_last_post_subject'];
 			$last_post_time = $user->format_date($row['forum_last_post_time']);
-			$last_post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row['forum_id_last_post'] . '&amp;p=' . $row['forum_last_post_id']) . '#p' . $row['forum_last_post_id'];
+			$last_post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['forum_last_post_id']) . '#p' . $row['forum_last_post_id'];
 		}
 		else
 		{
@@ -546,7 +546,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		{
 			$last_topic_title_full = htmlspecialchars_decode(censor_text($last_topic_row['topic_title']));
 			$last_topic_title = (utf8_strlen($last_topic_title_full) > 40) ? trim(utf8_substr($last_topic_title_full, 0, 40)) . '…' : $last_topic_title_full;
-			$last_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $last_topic_row['forum_id'] . '&amp;t=' . $last_topic_row['topic_id']);
+			$last_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $last_topic_row['topic_id']);
 
 			$template->alter_block_array('forumrow', array(
 					'LAST_TOPIC_TITLE'		=> htmlspecialchars($last_topic_title),
@@ -978,7 +978,7 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 		$folder_img = $folder_alt = $topic_type = '';
 		topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
 
-		$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $forum_id . '&amp;t=' . $topic_id);
+		$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $topic_id);
 		$view_forum_url = append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $forum_id);
 		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id)) ? true : false;
 		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id)) ? true : false;

@@ -258,7 +258,7 @@ if (!$topic_data)
 	// If post_id was submitted, we try at least to display the topic as a last resort...
 	if ($post_id && $topic_id)
 	{
-		redirect(append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id" . (($forum_id) ? "&amp;f=$forum_id" : '')));
+		redirect(append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id"));
 	}
 
 	trigger_error('NO_TOPIC');
@@ -274,7 +274,7 @@ if ($post_id)
 		// If post_id was submitted, we try at least to display the topic as a last resort...
 		if ($topic_id)
 		{
-			redirect(append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id" . (($forum_id) ? "&amp;f=$forum_id" : '')));
+			redirect(append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id"));
 		}
 
 		trigger_error('NO_TOPIC');
@@ -363,7 +363,7 @@ if (isset($_GET['e']))
 {
 	$jump_to = request_var('e', 0);
 
-	$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id");
+	$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id");
 
 	if ($user->data['user_id'] == ANONYMOUS)
 	{
@@ -464,7 +464,7 @@ if ($start < 0 || $start >= $total_posts)
 }
 
 // General Viewtopic URL for return links
-$viewtopic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start") . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($highlight_match) ? "&amp;hilit=$highlight" : ''));
+$viewtopic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start") . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($highlight_match) ? "&amp;hilit=$highlight" : ''));
 
 // Are we watching this topic?
 $s_watching_topic = array(
@@ -559,7 +559,7 @@ $topic_mod .= ($auth->acl_get('m_delete', $forum_id)) ? '<option value="delete_t
 $topic_mod .= ($auth->acl_get('m_', $forum_id)) ? '<option value="topic_logs">' . $user->lang['VIEW_TOPIC_LOGS'] . '</option>' : '';
 
 // If we've got a hightlight set pass it on to pagination.
-$pagination = generate_pagination(append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($highlight_match) ? "&amp;hilit=$highlight" : '')), $total_posts, $config['posts_per_page'], $start);
+$pagination = generate_pagination(append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id" . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($highlight_match) ? "&amp;hilit=$highlight" : '')), $total_posts, $config['posts_per_page'], $start);
 
 // Navigation links
 generate_forum_nav($topic_data);
@@ -640,7 +640,7 @@ $template->assign_vars(array(
 	'S_SELECT_SORT_KEY' 	=> $s_sort_key,
 	'S_SELECT_SORT_DAYS' 	=> $s_limit_days,
 	'S_SINGLE_MODERATOR'	=> (!empty($forum_moderators[$forum_id]) && sizeof($forum_moderators[$forum_id]) > 1) ? false : true,
-	'S_TOPIC_ACTION' 		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start")),
+	'S_TOPIC_ACTION' 		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start")),
 	'S_TOPIC_MOD' 			=> ($topic_mod != '') ? '<select name="action" id="quick-mod-select">' . $topic_mod . '</select>' : '',
 	'S_MOD_ACTION' 			=> $mod_action,
 	'U_LOCK_TOPIC'			=> ($mod_lock ? ($mod_action . "&action=" . $mod_lock) : false),
@@ -655,13 +655,13 @@ $template->assign_vars(array(
 	'S_ENABLE_FEEDS_TOPIC'	=> ($config['feed_topic'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $topic_data['forum_options'])) ? true : false,
 	'S_RATE_ENABLED'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
 
-	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id" . (($start) ? "&amp;start=$start" : ''),
-	'U_TOPIC'				=> "{$server_path}viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
+	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.$phpEx?t=$topic_id" . (($start) ? "&amp;start=$start" : ''),
+	'U_TOPIC'				=> "{$server_path}viewtopic.$phpEx?t=$topic_id",
 	'U_FORUM'				=> $server_path,
 	'U_VIEW_TOPIC' 			=> $viewtopic_url,
 	'U_VIEW_FORUM' 			=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $forum_id),
-	'U_VIEW_OLDER_TOPIC'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;view=previous"),
-	'U_VIEW_NEWER_TOPIC'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;view=next"),
+	'U_VIEW_OLDER_TOPIC'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id&amp;view=previous"),
+	'U_VIEW_NEWER_TOPIC'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id&amp;view=next"),
 	'U_PRINT_TOPIC'			=> $viewtopic_url . '&amp;view=print',
 	'U_EMAIL_TOPIC'			=> ($config['email_enable'] && $config['board_email_form'] && $user->data['is_registered'] && $auth->acl_get('u_sendemail')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;t=$topic_id") : '',
 
@@ -737,7 +737,7 @@ if (!empty($topic_data['poll_start']))
 
 		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options']) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
 		{
-			$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
+			$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
 
 			meta_refresh(5, $redirect_url);
 			if (!$unvote && !sizeof($voted_id))
@@ -826,7 +826,7 @@ if (!empty($topic_data['poll_start']))
 		//, topic_last_post_time = ' . time() . " -- for bumping topics with new votes, ignore for now
 		$db->sql_query($sql);
 
-		$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
+		$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
 		if (!empty($config['no_typical_info_pages']))
 		{
 			redirect($redirect_url);
@@ -1931,7 +1931,7 @@ if ($all_marked_read)
 	else if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id])
 	{
 		$template->assign_vars(array(
-			'U_VIEW_UNREAD_POST'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;view=unread") . '#unread',
+			'U_VIEW_UNREAD_POST'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id&amp;view=unread") . '#unread',
 		));
 	}
 }
@@ -1947,7 +1947,7 @@ else if (!$all_marked_read)
 	else if (!$last_page)
 	{
 		$template->assign_vars(array(
-			'U_VIEW_UNREAD_POST'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;view=unread") . '#unread',
+			'U_VIEW_UNREAD_POST'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id&amp;view=unread") . '#unread',
 		));
 	}
 }

@@ -1003,7 +1003,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 			$topic_forum_id = ($topic_rows[$draft['topic_id']]['forum_id']) ? $topic_rows[$draft['topic_id']]['forum_id'] : $forum_id;
 
 			$link_topic = true;
-			$view_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $topic_forum_id . '&amp;t=' . $draft['topic_id']);
+			$view_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $draft['topic_id']);
 			$title = $topic_rows[$draft['topic_id']]['topic_title'];
 
 			$insert_url = append_sid("{$phpbb_root_path}posting.$phpEx", 'f=' . $topic_forum_id . '&amp;t=' . $draft['topic_id'] . '&amp;mode=reply&amp;d=' . $draft['draft_id']);
@@ -1184,7 +1184,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 		$post_subject = censor_text($post_subject);
 
 		$post_anchor = ($mode == 'post_review') ? 'ppr' . $row['post_id'] : 'pr' . $row['post_id'];
-		$u_show_post = append_sid($phpbb_root_path . 'viewtopic.' . $phpEx, "f=$forum_id&amp;t=$topic_id&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}");
+		$u_show_post = append_sid($phpbb_root_path . 'viewtopic.' . $phpEx, "t=$topic_id&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}");
 
 		$template->assign_block_vars($mode . '_row', array(
 			'POST_AUTHOR_FULL'		=> get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -1407,9 +1407,9 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 					'AUTHOR_NAME'	=> htmlspecialchars_decode($author_name),
 
 					'U_FORUM'				=> generate_board_url() . "/viewforum.$phpEx?f=$forum_id",
-					'U_TOPIC'				=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&t=$topic_id",
-					'U_NEWEST_POST'			=> generate_board_url() . "/viewtopic.$phpEx?f=$forum_id&t=$topic_id&p=$post_id&e=$post_id",
-					'U_STOP_WATCHING_TOPIC'	=> generate_board_url() . "/viewtopic.$phpEx?uid={$addr['user_id']}&f=$forum_id&t=$topic_id&unwatch=topic",
+					'U_TOPIC'				=> generate_board_url() . "/viewtopic.$phpEx?t=$topic_id",
+					'U_NEWEST_POST'			=> generate_board_url() . "/viewtopic.$phpEx?t=$topic_id&p=$post_id&e=$post_id",
+					'U_STOP_WATCHING_TOPIC'	=> generate_board_url() . "/viewtopic.$phpEx?uid={$addr['user_id']}&t=$topic_id&unwatch=topic",
 					'U_STOP_WATCHING_FORUM'	=> generate_board_url() . "/viewforum.$phpEx?uid={$addr['user_id']}&f=$forum_id&unwatch=forum",
 				));
 
@@ -2566,7 +2566,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 	if ($post_approval)
 	{
-		$params .= '&amp;t=' . $data['topic_id'];
+		$params .= 't=' . $data['topic_id'];
 
 		if ($mode != 'post')
 		{
@@ -2576,13 +2576,17 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	}
 	else if ($mode != 'post' && $post_mode != 'edit_first_post' && $post_mode != 'edit_topic')
 	{
-		$params .= '&amp;t=' . $data['topic_id'];
+		$params .= 't=' . $data['topic_id'];
 	}
 
-	$url = (!$params) ? "{$phpbb_root_path}viewforum.$phpEx" : "{$phpbb_root_path}viewtopic.$phpEx";
-	$url = append_sid($url, 'f=' . $data['forum_id'] . $params) . $add_anchor;
-
-	return $url;
+	if (!$params)
+	{
+		return append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $data['forum_id']);
+	}
+	else
+	{
+		return append_sid("{$phpbb_root_path}viewtopic.$phpEx", $params) . $add_anchor;
+	}
 }
 
 /**
@@ -2597,7 +2601,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 *				- 'topic_last_poster_name'
 *				- 'topic_last_poster_colour'
 * @param int $bump_time The time at which topic was bumped, usually it is a current time as obtained via time().
-* @return string An URL to the bumped topic, example: ./viewtopic.php?forum_id=1&amptopic_id=2&ampp=3#p3
+* @return string An URL to the bumped topic, example: ./viewtopic.php?t=2&p=3#p3
 */
 function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 {
@@ -2682,7 +2686,7 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 
 	add_log('mod', $forum_id, $topic_id, 'LOG_BUMP_TOPIC', $post_data['topic_title']);
 
-	$url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;t=$topic_id&amp;p={$post_data['topic_last_post_id']}") . "#p{$post_data['topic_last_post_id']}";
+	$url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id&amp;p={$post_data['topic_last_post_id']}") . "#p{$post_data['topic_last_post_id']}";
 
 	return $url;
 }
