@@ -50,7 +50,7 @@ if (!$topic_id && !$post_id)
 	trigger_error('NO_TOPIC');
 }
 
-// Find topic id if user requested a newer or older topic
+// Find first unread post if requested.
 if ($view && !$post_id)
 {
 	if (!$forum_id)
@@ -106,15 +106,6 @@ if ($view && !$post_id)
 
 		$post_id = $row['post_id'];
 		$topic_id = $row['topic_id'];
-	}
-
-	// Check for global announcement correctness?
-	if ((!isset($row) || !$row['forum_id']) && !$forum_id)
-	{
-		trigger_error('NO_TOPIC');
-	}
-	else if (isset($row) && $row['forum_id'])
-	{
 		$forum_id = $row['forum_id'];
 	}
 }
