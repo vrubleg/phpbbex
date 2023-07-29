@@ -107,65 +107,6 @@ if ($view && !$post_id)
 		$post_id = $row['post_id'];
 		$topic_id = $row['topic_id'];
 	}
-	else if ($view == 'next' || $view == 'previous')
-	{
-		$sql_condition = ($view == 'next') ? '>' : '<';
-		$sql_ordering = ($view == 'next') ? 'ASC' : 'DESC';
-
-		$sql = 'SELECT forum_id, topic_last_post_time
-			FROM ' . TOPICS_TABLE . '
-			WHERE topic_id = ' . $topic_id;
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		if (!$row)
-		{
-			$user->setup('viewtopic');
-			// OK, the topic doesn't exist. This error message is not helpful, but technically correct.
-			trigger_error(($view == 'next') ? 'NO_NEWER_TOPICS' : 'NO_OLDER_TOPICS');
-		}
-		else
-		{
-			$sql = 'SELECT topic_id, forum_id
-				FROM ' . TOPICS_TABLE . '
-				WHERE forum_id = ' . $row['forum_id'] . "
-					AND topic_moved_id = 0
-					AND topic_last_post_time $sql_condition {$row['topic_last_post_time']}
-					" . (($auth->acl_get('m_approve', $row['forum_id'])) ? '' : 'AND topic_approved = 1') . "
-				ORDER BY topic_last_post_time $sql_ordering";
-			$result = $db->sql_query_limit($sql, 1);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			if (!$row)
-			{
-				$sql = 'SELECT forum_style
-					FROM ' . FORUMS_TABLE . "
-					WHERE forum_id = $forum_id";
-				$result = $db->sql_query($sql);
-				$forum_style = (int) $db->sql_fetchfield('forum_style');
-				$db->sql_freeresult($result);
-
-				$user->setup('viewtopic', $forum_style);
-				trigger_error(($view == 'next') ? 'NO_NEWER_TOPICS' : 'NO_OLDER_TOPICS');
-			}
-			else
-			{
-				$topic_id = $row['topic_id'];
-
-				// Check for global announcement correctness?
-				if (!$row['forum_id'] && !$forum_id)
-				{
-					trigger_error('NO_TOPIC');
-				}
-				else if ($row['forum_id'])
-				{
-					$forum_id = $row['forum_id'];
-				}
-			}
-		}
-	}
 
 	// Check for global announcement correctness?
 	if ((!isset($row) || !$row['forum_id']) && !$forum_id)
@@ -660,8 +601,6 @@ $template->assign_vars(array(
 	'U_FORUM'				=> $server_path,
 	'U_VIEW_TOPIC' 			=> $viewtopic_url,
 	'U_VIEW_FORUM' 			=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $forum_id),
-	'U_VIEW_OLDER_TOPIC'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id&amp;view=previous"),
-	'U_VIEW_NEWER_TOPIC'	=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id&amp;view=next"),
 	'U_PRINT_TOPIC'			=> $viewtopic_url . '&amp;view=print',
 	'U_EMAIL_TOPIC'			=> ($config['email_enable'] && $config['board_email_form'] && $user->data['is_registered'] && $auth->acl_get('u_sendemail')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;t=$topic_id") : '',
 
