@@ -32,7 +32,7 @@ if (!$post_id && (!$pm_id || !$config['allow_pm_report']))
 
 if ($post_id)
 {
-	$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$forum_id&amp;p=$post_id") . "#p$post_id";
+	$redirect_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "p=$post_id") . "#p$post_id";
 	$return_forum_url = append_sid("{$phpbb_root_path}viewforum.$phpEx", "f=$forum_id");
 	$pm_id = 0;
 }

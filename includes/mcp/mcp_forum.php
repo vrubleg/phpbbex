@@ -420,7 +420,7 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 		phpbb_update_rows_avoiding_duplicates($db, BOOKMARKS_TABLE, 'topic_id', $topic_ids, $to_topic_id);
 
 		// Link to the new topic
-		$return_link .= (($return_link) ? '<br /><br />' : '') . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $to_forum_id . '&amp;t=' . $to_topic_id) . '">', '</a>');
+		$return_link .= (($return_link) ? '<br /><br />' : '') . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $to_topic_id) . '">', '</a>');
 	}
 	else
 	{
@@ -436,7 +436,7 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 	}
 	else
 	{
-		meta_refresh(3, append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f=$to_forum_id&amp;t=$to_topic_id"));
+		meta_refresh(3, append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$to_topic_id"));
 		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
 	}
 }

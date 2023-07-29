@@ -171,8 +171,8 @@ class mcp_queue
 					}
 				}
 
-				$post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $post_info['forum_id'] . '&amp;p=' . $post_info['post_id'] . '#p' . $post_info['post_id']);
-				$topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $post_info['forum_id'] . '&amp;t=' . $post_info['topic_id']);
+				$post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $post_info['post_id'] . '#p' . $post_info['post_id']);
+				$topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $post_info['topic_id']);
 
 				$template->assign_vars(array(
 					'S_MCP_QUEUE'			=> true,
@@ -412,9 +412,9 @@ class mcp_queue
 					}
 
 					$template->assign_block_vars('postrow', array(
-						'U_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id']),
+						'U_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $row['topic_id']),
 						'U_VIEWFORUM'		=> (!$global_topic) ? append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']) : '',
-						'U_VIEWPOST'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row['forum_id'] . '&amp;p=' . $row['post_id']) . (($mode == 'unapproved_posts') ? '#p' . $row['post_id'] : ''),
+						'U_VIEWPOST'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['post_id']) . (($mode == 'unapproved_posts') ? '#p' . $row['post_id'] : ''),
 						'U_VIEW_DETAILS'	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=queue&amp;start=$start&amp;mode=approve_details&amp;f={$row['forum_id']}&amp;p={$row['post_id']}" . (($mode == 'unapproved_topics') ? "&amp;t={$row['topic_id']}" : '')),
 
 						'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
@@ -663,8 +663,8 @@ function approve_post($post_id_list, $id, $mode)
 					'POST_SUBJECT'	=> htmlspecialchars_decode(censor_text($post_data['post_subject'])),
 					'TOPIC_TITLE'	=> htmlspecialchars_decode(censor_text($post_data['topic_title'])),
 
-					'U_VIEW_TOPIC'	=> generate_board_url() . "/viewtopic.$phpEx?f={$post_data['forum_id']}&t={$post_data['topic_id']}&e=0",
-					'U_VIEW_POST'	=> generate_board_url() . "/viewtopic.$phpEx?f={$post_data['forum_id']}&t={$post_data['topic_id']}&p=$post_id&e=$post_id")
+					'U_VIEW_TOPIC'	=> generate_board_url() . "/viewtopic.$phpEx?t={$post_data['topic_id']}&e=0",
+					'U_VIEW_POST'	=> generate_board_url() . "/viewtopic.$phpEx?t={$post_data['topic_id']}&p=$post_id&e=$post_id")
 				);
 
 				$messenger->send($post_data['user_notify_type']);
@@ -695,7 +695,7 @@ function approve_post($post_id_list, $id, $mode)
 		if (sizeof($post_id_list) == 1)
 		{
 			$post_data = $post_info[$post_id_list[0]];
-			$post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "f={$post_data['forum_id']}&amp;t={$post_data['topic_id']}&amp;p={$post_data['post_id']}") . '#p' . $post_data['post_id'];
+			$post_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t={$post_data['topic_id']}&amp;p={$post_data['post_id']}") . '#p' . $post_data['post_id'];
 		}
 		unset($post_info);
 
