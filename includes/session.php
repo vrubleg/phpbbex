@@ -1896,10 +1896,6 @@ class phpbb_user extends phpbb_session
 			}
 		}
 
-		// Call phpbb_user_session_handler() in case external application want to "bend" some variables or replace classes...
-		// After calling it we continue script execution...
-		phpbb_user_session_handler();
-
 		if(!empty($this->data['is_registered']) && !defined('ADMIN_START'))
 		{
 			$config['topics_per_page_default'] = $config['topics_per_page'];

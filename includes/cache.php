@@ -371,36 +371,4 @@ class phpbb_cache extends acm
 
 		return $usernames;
 	}
-
-	/**
-	* Obtain hooks...
-	*/
-	function obtain_hooks()
-	{
-		global $phpbb_root_path, $phpEx;
-
-		if (($hook_files = $this->get('_hooks')) === false)
-		{
-			$hook_files = array();
-
-			// Now search for hooks...
-			$dh = @opendir($phpbb_root_path . 'includes/hooks/');
-
-			if ($dh)
-			{
-				while (($file = readdir($dh)) !== false)
-				{
-					if (strpos($file, 'hook_') === 0 && substr($file, -(strlen($phpEx) + 1)) === '.' . $phpEx)
-					{
-						$hook_files[] = substr($file, 0, -(strlen($phpEx) + 1));
-					}
-				}
-				closedir($dh);
-			}
-
-			$this->put('_hooks', $hook_files);
-		}
-
-		return $hook_files;
-	}
 }
