@@ -118,22 +118,6 @@ $user = new phpbb_user();
 $cache = new phpbb_cache();
 $db = new dbal_mysqli();
 
-// Add own hook handler, if present. :o
-if (file_exists($phpbb_root_path . 'includes/hooks/index.' . $phpEx))
-{
-	require($phpbb_root_path . 'includes/hooks/index.' . $phpEx);
-	$phpbb_hook = new phpbb_hook(array('exit_handler', 'phpbb_user_session_handler', 'append_sid', array('template', 'display')));
-
-	foreach ($cache->obtain_hooks() as $hook)
-	{
-		@include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
-	}
-}
-else
-{
-	$phpbb_hook = false;
-}
-
 // Connect to DB.
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false);
 unset($dbpasswd); // For safety purposes.

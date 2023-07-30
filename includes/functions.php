@@ -2104,7 +2104,6 @@ function on_page($num_items, $per_page, $start)
 
 /**
 * Append session id to url.
-* This function supports hooks.
 *
 * @param string $url The url the session id needs to be appended to (can have params)
 * @param mixed $params String or array of additional url parameters
@@ -2122,22 +2121,12 @@ function on_page($num_items, $per_page, $start)
 */
 function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 {
-	global $_SID, $_EXTRA_URL, $phpbb_hook, $config, $user;
+	global $_SID, $_EXTRA_URL, $config, $user;
 
 	if ($params === '' || (is_array($params) && empty($params)))
 	{
 		// Do not append the ? if the param-list is empty anyway.
 		$params = false;
-	}
-
-	// Developers using the hook function need to globalise the $_SID and $_EXTRA_URL on their own and also handle it appropriately.
-	// They could mimic most of what is within this function
-	if (!empty($phpbb_hook) && $phpbb_hook->call_hook(__FUNCTION__, $url, $params, $is_amp, $session_id))
-	{
-		if ($phpbb_hook->hook_return(__FUNCTION__))
-		{
-			return $phpbb_hook->hook_return_result(__FUNCTION__);
-		}
 	}
 
 	$params_is_array = is_array($params);
@@ -4731,43 +4720,15 @@ function garbage_collection()
 
 /**
 * Handler for exit calls in phpBB.
-* This function supports hooks.
 *
 * Note: This function is called after the template has been outputted.
 */
 function exit_handler()
 {
-	global $phpbb_hook, $config;
-
-	if (!empty($phpbb_hook) && $phpbb_hook->call_hook(__FUNCTION__))
-	{
-		if ($phpbb_hook->hook_return(__FUNCTION__))
-		{
-			return $phpbb_hook->hook_return_result(__FUNCTION__);
-		}
-	}
+	global $config;
 
 	// As a pre-caution... some setups display a blank page if the flush() is not there.
 	(ob_get_level() > 0) ? @ob_flush() : @flush();
 
 	exit;
-}
-
-/**
-* Handler for init calls in phpBB. This function is called in user::setup();
-* This function supports hooks.
-*/
-function phpbb_user_session_handler()
-{
-	global $phpbb_hook;
-
-	if (!empty($phpbb_hook) && $phpbb_hook->call_hook(__FUNCTION__))
-	{
-		if ($phpbb_hook->hook_return(__FUNCTION__))
-		{
-			return $phpbb_hook->hook_return_result(__FUNCTION__);
-		}
-	}
-
-	return;
 }
