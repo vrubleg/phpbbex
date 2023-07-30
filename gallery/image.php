@@ -37,7 +37,7 @@ $image_error = '';
 $image_filetype = utf8_substr($image_data['image_filename'], strlen($image_data['image_filename']) - 4, 4);
 if (!file_exists(phpbb_gallery_url::path('upload') . $image_data['image_filename']))
 {
-	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 		SET image_filemissing = 1
 		WHERE image_id = ' . $image_id;
 	$db->sql_query($sql);
@@ -108,17 +108,6 @@ switch ($mode)
 	break;
 	default:
 		$filesize_var = 'filesize_upload';
-		if (!class_exists('phpbb_gallery_hookup'))
-		{
-			phpbb_gallery_url::_include_core('hookup');
-		}
-		if (!phpbb_gallery_hookup::view_image($user->data['user_id']))
-		{
-			// Cash-MOD HookUp failed and denies to view the image
-			//trigger_error('NOT_AUTHORISED');
-			$image_error = 'not_authorised.jpg';
-		}
-
 		$image_source_path = phpbb_gallery_url::path('upload');
 		$possible_watermark = true;
 

@@ -766,7 +766,6 @@ class ucp_gallery
 			$num_images = sizeof($deleted_images);
 			if ($num_images)
 			{
-				phpbb_gallery_hookup::add_image($user->data['user_id'], 0 - $num_images);
 				phpbb_gallery::$user->update_images((0 - $num_images));
 			}
 

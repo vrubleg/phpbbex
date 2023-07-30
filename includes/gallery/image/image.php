@@ -442,7 +442,6 @@ class phpbb_gallery_image
 				'user_id'				=> $row['image_user_id'],
 				'user_images'			=> $row['images'],
 			);
-			phpbb_gallery_hookup::add_image($row['image_user_id'], (($add) ? $row['images'] : 0 - $row['images']));
 
 			$num_images = $num_images + $row['images'];
 

@@ -191,8 +191,6 @@ class phpbb_gallery_cleanup
 
 		foreach ($user_image_count as $user_id => $images)
 		{
-			phpbb_gallery_hookup::add_image($user_id, (0 - $images));
-
 			$uploader = new phpbb_gallery_user($db, $user_id, false);
 			$uploader->update_images((0 - $images));
 		}
