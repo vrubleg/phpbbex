@@ -28,17 +28,6 @@ if (!defined('PHPBB_INSTALLED'))
 	exit;
 }
 
-// Load Extensions
-if (!empty($load_extensions) && function_exists('dl'))
-{
-	$load_extensions = explode(',', $load_extensions);
-
-	foreach ($load_extensions as $extension)
-	{
-		@dl(trim($extension));
-	}
-}
-
 $id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
 $lang = (isset($_GET['lang'])) ? strval($_GET['lang']) : '';
 
