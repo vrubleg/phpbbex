@@ -112,6 +112,10 @@ p.right {
 	text-align: right;
 }
 
+.center {
+	text-align: center;
+}
+
 /* Main blocks
 ---------------------------------------- */
 #wrap {
@@ -280,18 +284,11 @@ ul.linklist li.rightside, p.rightside {
 	text-align: right;
 }
 
-ul.leftside {
+ul.linklist li.leftside, p.leftside {
 	float: left;
 	margin-left: 0;
 	margin-right: 5px;
 	text-align: left;
-}
-
-ul.rightside {
-	float: right;
-	margin-left: 5px;
-	margin-right: -5px;
-	text-align: right;
 }
 
 /* Table styles
