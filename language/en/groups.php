@@ -56,7 +56,7 @@ $lang = array_merge($lang, array(
 	'GROUP_UNDISCLOSED'					=> 'Hidden group',
 	'FORUM_UNDISCLOSED'					=> 'Moderating hidden forum(s)',
 
-	'LOGIN_EXPLAIN_GROUP'	=> 'You need to login to view group details.',
+	'LOGIN_EXPLAIN_GROUP'	=> 'Log in to view group details',
 
 	'NO_LEADERS'					=> 'You are not a leader of any group.',
 	'NOT_LEADER_OF_GROUP'			=> 'The requested operation cannot be taken because you are not a leader of the selected group.',
