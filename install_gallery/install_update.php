@@ -8,10 +8,6 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -40,6 +36,9 @@ if (!empty($setmodules))
 */
 class install_update extends module
 {
+	var $p_master;
+	var $page_title;
+
 	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
@@ -857,5 +856,3 @@ class install_update extends module
 		'ucp_module'			=> array('lang' => 'MODULES_SELECT_4UCP', 'type' => 'select', 'options' => 'module_select(\'ucp\', 0, \'\')', 'explain' => false),
 	);
 }
-
-?>

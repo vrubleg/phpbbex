@@ -393,5 +393,3 @@ function config_mapping()
 		'description_length'	=> 'description_length',
 	);
 }
-
-?>

@@ -9,8 +9,6 @@
 */
 
 /**
-* @ignore
-*
 * NOTE: This is only used for MySQL, as phpbb2 Album MOD by Smartor only was available for MySQL, so I do not stirctly care about the DBAL (e.g.: $db->sql_build_query).
 */
 
@@ -42,6 +40,8 @@ if (!empty($setmodules))
 */
 class install_convert extends module
 {
+	var $p_master;
+	var $page_title;
 	var $batch_size = 500;
 
 	function __construct(&$p_master)
@@ -1086,5 +1086,3 @@ class install_convert extends module
 		'ucp_module'			=> array('lang' => 'MODULES_SELECT_4UCP', 'type' => 'select', 'options' => 'module_select(\'ucp\', 0, \'\')', 'explain' => false),
 	);
 }
-
-?>
