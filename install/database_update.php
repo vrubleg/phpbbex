@@ -88,17 +88,6 @@ if (!defined('PHPBB_INSTALLED'))
 	die('Error! Invalid config file.');
 }
 
-// Load Extensions
-if (!empty($load_extensions) && function_exists('dl'))
-{
-	$load_extensions = explode(',', $load_extensions);
-
-	foreach ($load_extensions as $extension)
-	{
-		@dl(trim($extension));
-	}
-}
-
 // Include files
 require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
 require($phpbb_root_path . 'includes/cache.' . $phpEx);

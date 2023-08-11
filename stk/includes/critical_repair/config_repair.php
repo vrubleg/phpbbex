@@ -69,7 +69,6 @@ class erk_config_repair
 				'dbpasswd'		=> htmlspecialchars_decode($data['dbpasswd']),
 				'table_prefix'	=> $data['table_prefix'],
 				'acm_type'		=> 'file',
-				'load_extensions'	=> '',
 			);
 
 			foreach ($config_data_array as $key => $value)
