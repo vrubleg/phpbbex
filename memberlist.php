@@ -1161,20 +1161,6 @@ switch ($mode)
 			break;
 		}
 
-		$first_char = request_var('first_char', '');
-
-		if ($first_char == 'other')
-		{
-			for ($i = 97; $i < 123; $i++)
-			{
-				$sql_where .= ' AND u.username_clean NOT ' . $db->sql_like_expression(chr($i) . $db->any_char);
-			}
-		}
-		else if ($first_char)
-		{
-			$sql_where .= ' AND u.username_clean ' . $db->sql_like_expression(substr($first_char, 0, 1) . $db->any_char);
-		}
-
 		// Are we looking at a usergroup? If so, fetch additional info
 		// and further restrict the user info query
 		if ($mode == 'group')
@@ -1307,10 +1293,8 @@ switch ($mode)
 			'active'		=> array('active', ''),
 			'count'			=> (request_var('count', '') !== '') ? array('count', 0) : array('count', ''),
 			'ip'			=> array('ip', ''),
-			'first_char'	=> array('first_char', ''),
 		);
 
-		$u_first_char_params = array();
 		foreach ($check_params as $key => $call)
 		{
 			if (!isset($_REQUEST[$key]))
@@ -1322,10 +1306,6 @@ switch ($mode)
 			$param = urlencode($key) . '=' . ((is_string($param)) ? urlencode($param) : $param);
 			$params[] = $param;
 
-			if ($key != 'first_char')
-			{
-				$u_first_char_params[] = $param;
-			}
 			if ($key != 'sk' && $key != 'sd')
 			{
 				$sort_params[] = $param;
@@ -1337,7 +1317,6 @@ switch ($mode)
 		if ($mode)
 		{
 			$params[] = "mode=$mode";
-			$u_first_char_params[] = "mode=$mode";
 		}
 		$sort_params[] = "mode=$mode";
 
@@ -1345,27 +1324,6 @@ switch ($mode)
 		$sort_url = append_sid("{$phpbb_root_path}memberlist.$phpEx", implode('&amp;', $sort_params));
 
 		unset($search_params, $sort_params);
-
-		$u_first_char_params = implode('&amp;', $u_first_char_params);
-		$u_first_char_params .= ($u_first_char_params) ? '&amp;' : '';
-
-		$first_characters = array();
-		$first_characters[''] = $user->lang['ALL'];
-		for ($i = 97; $i < 123; $i++)
-		{
-			$first_characters[chr($i)] = chr($i - 32);
-		}
-		$first_characters['other'] = $user->lang['OTHER'];
-
-		foreach ($first_characters as $char => $desc)
-		{
-			$template->assign_block_vars('first_char', array(
-				'DESC'			=> $desc,
-				'VALUE'			=> $char,
-				'S_SELECTED'	=> ($first_char == $char) ? true : false,
-				'U_SORT'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", $u_first_char_params . 'first_char=' . $char) . '#memberlist',
-			));
-		}
 
 		// Some search user specific data
 		if ($mode == 'searchuser' && ($config['load_search'] || $auth->acl_get('a_')))
