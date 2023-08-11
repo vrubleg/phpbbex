@@ -87,7 +87,7 @@ if (!$auth->acl_gets('f_list', 'f_read', $forum_id) || ($forum_data['forum_type'
 		trigger_error('SORRY_AUTH_READ');
 	}
 
-	login_box('', $user->lang['LOGIN_VIEWFORUM']);
+	login_box('', $user->lang['LOGIN_EXPLAIN_VIEWFORUM']);
 }
 
 // Forum is passworded ... check whether access has been granted to this
