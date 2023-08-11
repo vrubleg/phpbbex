@@ -3,6 +3,8 @@
 <p class="{S_CONTENT_FLOW_END}<!-- IF S_USER_LOGGED_IN --> rightside<!-- ENDIF -->"><!-- IF S_USER_LOGGED_IN -->{LAST_VISIT_DATE}<!-- ELSE -->{CURRENT_TIME}<!-- ENDIF --></p>
 <!-- IF S_USER_LOGGED_IN --><p>{CURRENT_TIME}</p><!-- ENDIF -->
 
+<!-- IF S_USERS_PERSONAL_GALLERIES --><p style="text-align: center;"><!-- IF S_PERSONAL_GALLERY --><a href="{U_GALLERY_MOD}">{L_GALLERY}</a> &bull; {L_USERS_PERSONAL_ALBUMS}<!-- ELSE -->{L_GALLERY} &bull; <a href="{U_USERS_PERSONAL_GALLERIES}">{L_USERS_PERSONAL_ALBUMS}</a><!-- ENDIF --><!-- IF U_YOUR_PERSONAL_GALLERY --> &bull; <a href="{U_YOUR_PERSONAL_GALLERY}">{L_YOUR_PERSONAL_ALBUM}</a><!-- ENDIF --></p><!-- ENDIF -->
+
 <!-- IF S_DISPLAY_SEARCH or (S_USER_LOGGED_IN and not S_IS_BOT) -->
 <ul class="linklist">
 	<!-- IF S_DISPLAY_SEARCH -->
@@ -20,8 +22,6 @@
 		<div class="pagination">{TOTAL_PGALLERIES_SHORT}<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ENDIF --></div>
 	</div>
 <!-- ENDIF -->
-
-<!-- IF S_USERS_PERSONAL_GALLERIES --><h4><!-- IF S_PERSONAL_GALLERY --><a href="{U_GALLERY_MOD}">{L_GALLERY}</a>&nbsp;&lsaquo;&nbsp;{L_USERS_PERSONAL_ALBUMS}<!-- ELSE -->{L_GALLERY}&nbsp;&lsaquo;&nbsp;<a href="{U_USERS_PERSONAL_GALLERIES}">{L_USERS_PERSONAL_ALBUMS}</a><!-- ENDIF --><!-- IF U_YOUR_PERSONAL_GALLERY -->&nbsp;&raquo;&nbsp;<a href="{U_YOUR_PERSONAL_GALLERY}">{L_YOUR_PERSONAL_ALBUM}</a><!-- ENDIF --></h4><br /><!-- ENDIF -->
 
 <!-- INCLUDE gallery/recent_body.html -->
 
