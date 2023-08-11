@@ -1,9 +1,9 @@
 <!-- INCLUDE gallery/gallery_header.html -->
 
 <!-- IF S_USER_LOGGED_IN --><p class="rightside">{LAST_VISIT_DATE}</p><!-- ENDIF -->
-<p>{CURRENT_TIME}</p>
+<p class="leftside">{CURRENT_TIME}</p>
 
-<!-- IF S_USERS_PERSONAL_GALLERIES --><p style="text-align: center;"><!-- IF S_PERSONAL_GALLERY --><a href="{U_GALLERY_MOD}">{L_GALLERY}</a> &bull; {L_USERS_PERSONAL_ALBUMS}<!-- ELSE -->{L_GALLERY} &bull; <a href="{U_USERS_PERSONAL_GALLERIES}">{L_USERS_PERSONAL_ALBUMS}</a><!-- ENDIF --><!-- IF U_YOUR_PERSONAL_GALLERY --> &bull; <a href="{U_YOUR_PERSONAL_GALLERY}">{L_YOUR_PERSONAL_ALBUM}</a><!-- ENDIF --></p><!-- ENDIF -->
+<p class="center"><!-- IF S_USERS_PERSONAL_GALLERIES --><!-- IF S_PERSONAL_GALLERY --><a href="{U_GALLERY_MOD}">{L_GALLERY}</a> &bull; {L_USERS_PERSONAL_ALBUMS}<!-- ELSE -->{L_GALLERY} &bull; <a href="{U_USERS_PERSONAL_GALLERIES}">{L_USERS_PERSONAL_ALBUMS}</a><!-- ENDIF --><!-- IF U_YOUR_PERSONAL_GALLERY --> &bull; <a href="{U_YOUR_PERSONAL_GALLERY}">{L_YOUR_PERSONAL_ALBUM}</a><!-- ENDIF --><!-- ELSE -->&nbsp;<!-- ENDIF --></p>
 
 <!-- IF S_DISPLAY_SEARCH or (S_USER_LOGGED_IN and not S_IS_BOT) -->
 <ul class="linklist">
