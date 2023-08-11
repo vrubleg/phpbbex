@@ -145,7 +145,7 @@ class install_update extends module
 		));
 
 		// Check for GD-Library
-		if (@extension_loaded('gd') || can_load_dll('gd'))
+		if (@extension_loaded('gd'))
 		{
 			$passed['php'] = true;
 			$result = '<strong style="color:green">' . $user->lang['YES'] . '</strong>';
