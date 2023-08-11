@@ -641,47 +641,12 @@ class phpbb_gallery_album
 			$root_data = array('album_id' => 0);//@todo: I think this is incorrect!?
 			$sql_where = 'a.album_user_id > ' . self::PUBLIC_ALBUM;
 			$num_pegas = phpbb_gallery_config::get('num_pegas');
-			$first_char = request_var('first_char', '');
-			if ($first_char == 'other')
-			{
-				// Loop the ASCII: a-z
-				for ($i = 97; $i < 123; $i++)
-				{
-					$sql_where .= ' AND u.username_clean NOT ' . $db->sql_like_expression(chr($i) . $db->any_char);
-				}
-			}
-			else if ($first_char)
-			{
-				$sql_where .= ' AND u.username_clean ' . $db->sql_like_expression(substr($first_char, 0, 1) . $db->any_char);
-			}
-
-			if ($first_char)
-			{
-				// We do not view all personal albums, so we need to recount, for the pagination.
-				$sql_array = array(
-					'SELECT'		=> 'count(a.album_id) as pgalleries',
-					'FROM'			=> array(GALLERY_ALBUMS_TABLE => 'a'),
-
-					'LEFT_JOIN'		=> array(
-						array(
-							'FROM'		=> array(USERS_TABLE => 'u'),
-							'ON'		=> 'u.user_id = a.album_user_id',
-						),
-					),
-
-					'WHERE'			=> 'a.parent_id = 0 AND ' . $sql_where,
-				);
-				$sql = $db->sql_build_query('SELECT', $sql_array);
-				$result = $db->sql_query($sql);
-				$num_pegas = $db->sql_fetchfield('pgalleries');
-				$db->sql_freeresult($result);
-			}
 
 			$mode_personal = true;
 			$start = request_var('start', 0);
 			$limit = phpbb_gallery_config::get('pegas_per_page');
 			$template->assign_vars(array(
-				'PAGINATION'				=> generate_pagination(phpbb_gallery_url::append_sid('index', 'mode=' . $mode . (($first_char) ? '&amp;first_char=' . $first_char : '')), $num_pegas, $limit, $start),
+				'PAGINATION'				=> generate_pagination(phpbb_gallery_url::append_sid('index', 'mode=' . $mode), $num_pegas, $limit, $start),
 				'TOTAL_PGALLERIES_SHORT'	=> $user->lang('TOTAL_PEGAS_SHORT_SPRINTF', $num_pegas),
 				'PAGE_NUMBER'				=> on_page($num_pegas, $limit, $start),
 			));
