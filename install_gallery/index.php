@@ -49,7 +49,7 @@ $user->add_lang(array('acp/common', 'ucp', 'mods/info_acp_gallery', 'mods/info_u
 $template->set_custom_template('../adm/style', 'admin');
 $template->assign_var('T_TEMPLATE_PATH', '../adm/style');
 
-$mode = request_var('mode', 'overview');
+$mode = request_var('mode', 'install');
 $sub = request_var('sub', '');
 
 // the acp template is never stored in the database

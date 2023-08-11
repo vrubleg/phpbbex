@@ -103,7 +103,6 @@ $lang = array_merge($lang, array(
 	'STAGE_CREATE_TABLE_EXPLAIN'	=> 'The database tables used by phpBB Gallery have been created and populated with some initial data. Proceed to the next screen to finish installing phpBB Gallery.',
 	'STAGE_DELETE_TABLES'			=> 'Clean database',
 	'STAGE_DELETE_TABLES_EXPLAIN'	=> 'The database-content of the Gallery-MOD was deleted. Proceed to the next screen to finish uninstalling phpBB Gallery.',
-	'SUPPORT_BODY'					=> 'Full support will be provided for the current stable release of phpBB Gallery, free of charge. This includes:</p><ul><li>installation</li><li>configuration</li><li>technical questions</li><li>problems relating to potential bugs in the software</li><li>updating from Release Candidate (RC) versions to the latest stable version</li><li>converting from Smartor’s Album-MOD for phpBB 2.0.x to phpBB Gallery for phpBB3</li><li>converting from TS Gallery to phpBB Gallery</li></ul><p>The use of Beta-Versions is limited recommended. If there are updates, it’s recommended to update quickly.</p><p>Support is given on the following boards</p><ul><li><a href="http://www.flying-bits.org/">flying-bits.org - MOD-Autor nickvergessen’s board</a></li><li><a href="http://www.phpbb.de/">phpbb.de</a></li><li><a href="http://www.phpbb.com/">phpbb.com</a></li></ul><p>',
 
 	'TABLE_ALBUM'				=> 'table including the images',
 	'TABLE_ALBUM_CAT'			=> 'table including the albums',
