@@ -24,6 +24,13 @@ phpbb_gallery_url::_include('functions_display', 'phpbb');
 * Display albums
 */
 $mode = request_var('mode', 'index');
+
+// Show login box if an anonymous user doesn't have rights to see any images.
+if (!$user->data['is_registered'] && !phpbb_gallery::$auth->acl_check_global('i_view'))
+{
+	login_box(phpbb_gallery_url::append_sid('relative', 'index', ($mode == 'personal') ? 'mode=personal' : ''), $user->lang['LOGIN_EXPLAIN_VIEWPAGE']);
+}
+
 phpbb_gallery_album::display_albums((($mode == 'personal') ? 'personal' : 0), $config['load_moderators']);
 if ($mode == 'personal')
 {

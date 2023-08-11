@@ -56,7 +56,7 @@ if (!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_use
 	}
 	if (!$user->data['is_registered'])
 	{
-		login_box();
+		login_box(phpbb_gallery_url::append_sid('relative', 'album', "album_id=$album_id"), $user->lang['LOGIN_EXPLAIN_VIEWPAGE']);
 	}
 	else
 	{
@@ -136,7 +136,7 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 	{
 		$sort_by_text['u'] = $user->lang['SORT_USERNAME'];
 		$sort_by_sql['u'] = 'image_username_clean';
-		
+
 		if (phpbb_gallery_config::get('allow_rates'))
 		{
 			$sort_by_text['ra'] = $user->lang['RATING'];
