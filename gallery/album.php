@@ -56,7 +56,7 @@ if (!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_use
 	}
 	if (!$user->data['is_registered'])
 	{
-		login_box(phpbb_gallery_url::append_sid('relative', 'album', "album_id=$album_id"), $user->lang['LOGIN_EXPLAIN_VIEWPAGE']);
+		login_box(phpbb_gallery_url::append_sid('relative', 'album', "album_id=$album_id"), $user->lang['LOGIN_EXPLAIN_GALLERY_VIEW']);
 	}
 	else
 	{

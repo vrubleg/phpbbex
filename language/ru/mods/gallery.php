@@ -156,7 +156,8 @@ $lang = array_merge($lang, array(
 
 	'LAST_COMMENT'					=> 'Последний комментарий',
 	'LAST_IMAGE'					=> 'Последнее фото',
-	'LOGIN_EXPLAIN_UPLOAD'			=> 'Вы должны быть зарегистрированы и авторизованы для загрузки фотографий в этот альбом.',
+	'LOGIN_EXPLAIN_GALLERY_VIEW'	=> 'Авторизуйтесь для просмотра галереи',
+	'LOGIN_EXPLAIN_GALLERY_UPLOAD'	=> 'Авторизуйтесь для загрузки фотографий',
 
 	'MARK_ALBUMS_READ'				=> 'Отметить альбомы как просмотренные',
 	'MAX_DIMENSIONS'				=> 'Максимальное разрешение',

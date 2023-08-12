@@ -101,7 +101,7 @@ switch ($mode)
 	case 'upload_edit':
 		if (!phpbb_gallery::$auth->acl_check('i_upload', $album_id, $album_data['album_user_id']) || ($album_data['album_status'] == phpbb_gallery_album::STATUS_LOCKED))
 		{
-			phpbb_gallery_misc::not_authorised($album_backlink, $album_loginlink, 'LOGIN_EXPLAIN_UPLOAD');
+			phpbb_gallery_misc::not_authorised($album_backlink, $album_loginlink, 'LOGIN_EXPLAIN_GALLERY_UPLOAD');
 		}
 		if (!phpbb_gallery_contest::is_step('upload', $album_data))
 		{
@@ -644,7 +644,7 @@ else
 
 			if (!$error)
 			{
-				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE image_id = ' . $image_id;
 				$db->sql_query($sql);
