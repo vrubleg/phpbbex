@@ -572,8 +572,7 @@ class dbal_mysqli extends dbal
 			break;
 
 			case 'fromcache':
-				$endtime = explode(' ', microtime());
-				$endtime = $endtime[0] + $endtime[1];
+				$endtime = microtime(true);
 
 				$result = @mysqli_query($this->db_connect_id, $query);
 				while ($void = @mysqli_fetch_assoc($result))
@@ -582,8 +581,7 @@ class dbal_mysqli extends dbal
 				}
 				@mysqli_free_result($result);
 
-				$splittime = explode(' ', microtime());
-				$splittime = $splittime[0] + $splittime[1];
+				$splittime = microtime(true);
 
 				$this->sql_report('record_fromcache', $query, $endtime, $splittime);
 

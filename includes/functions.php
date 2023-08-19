@@ -373,8 +373,7 @@ function still_on_time($extra_time = 15)
 {
 	static $max_execution_time, $start_time;
 
-	$time = explode(' ', microtime());
-	$current_time = $time[0] + $time[1];
+	$current_time = microtime(true);
 
 	if (empty($max_execution_time))
 	{
@@ -4520,8 +4519,7 @@ function page_footer($run_cron = true)
 	// Output page creation time
 	if (defined('DEBUG'))
 	{
-		$mtime = explode(' ', microtime());
-		$totaltime = $mtime[0] + $mtime[1] - $starttime;
+		$totaltime = microtime(true) - $starttime;
 
 		if (!empty($_REQUEST['explain']) && $auth->acl_get('a_') && defined('DEBUG_EXTRA') && method_exists($db, 'sql_report'))
 		{
