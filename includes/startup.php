@@ -57,20 +57,8 @@ function phpbb_has_trailing_path($phpEx)
 // Check if trailing path is used
 if (phpbb_has_trailing_path($phpEx))
 {
-	if (substr(strtolower(@php_sapi_name()), 0, 3) === 'cgi')
-	{
-		$prefix = 'Status:';
-	}
-	else if (!empty($_SERVER['SERVER_PROTOCOL']) && is_string($_SERVER['SERVER_PROTOCOL']) && preg_match('#^HTTP/[0-9]\.[0-9]$#', $_SERVER['SERVER_PROTOCOL']))
-	{
-		$prefix = $_SERVER['SERVER_PROTOCOL'];
-	}
-	else
-	{
-		$prefix = 'HTTP/1.0';
-	}
-	header("$prefix 404 Not Found", true, 404);
-	echo 'Trailing paths and PATH_INFO is not supported by phpBB 3.0';
+	http_response_code(404);
+	echo 'Trailing paths are not allowed.';
 	exit;
 }
 

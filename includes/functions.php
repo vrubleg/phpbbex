@@ -2580,50 +2580,6 @@ function meta_refresh($time, $url = false, $disable_cd_check = false)
 }
 
 /**
-* Outputs correct status line header.
-*
-* Depending on php sapi one of the two following forms is used:
-*
-* Status: 404 Not Found
-*
-* HTTP/1.x 404 Not Found
-*
-* HTTP version is taken from HTTP_VERSION environment variable,
-* and defaults to 1.0.
-*
-* Sample usage:
-*
-* send_status_line(404, 'Not Found');
-*
-* @param int $code HTTP status code
-* @param string $message Message for the status code
-* @return null
-*/
-function send_status_line($code, $message)
-{
-	if (substr(strtolower(@php_sapi_name()), 0, 3) === 'cgi')
-	{
-		// in theory, we shouldn't need that due to php doing it. Reality offers a differing opinion, though
-		header("Status: $code $message", true, $code);
-	}
-	else
-	{
-		if (!empty($_SERVER['SERVER_PROTOCOL']) && is_string($_SERVER['SERVER_PROTOCOL']) && preg_match('#^HTTP/[0-9]\.[0-9]$#', $_SERVER['SERVER_PROTOCOL']))
-		{
-			$version = $_SERVER['SERVER_PROTOCOL'];
-		}
-		else
-		{
-			$version = 'HTTP/1.0';
-		}
-		header("$version $code $message", true, $code);
-	}
-}
-
-//Form validation
-
-
-/**
 * Add a secret hash   for use in links/GET requests
 * @param string  $link_name The name of the link; has to match the name used in check_link_hash, otherwise no restrictions apply
 * @return string the hash
@@ -2640,7 +2596,6 @@ function generate_link_hash($link_name)
 
 	return $user->data["hash_$link_name"];
 }
-
 
 /**
 * checks a link hash - for GET requests
@@ -3703,7 +3658,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 			}
 
 			// Do not send 200 OK, but service unavailable on errors
-			send_status_line(503, 'Service Unavailable');
+			http_response_code(503);
 
 			garbage_collection();
 
@@ -3763,7 +3718,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 
 			if ($msg_text == 'ERROR_NO_ATTACHMENT' || $msg_text == 'NO_FORUM' || $msg_text == 'NO_TOPIC' || $msg_text == 'NO_USER')
 			{
-				send_status_line(404, 'Not Found');
+				http_response_code(404);
 			}
 
 			$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
@@ -4112,7 +4067,7 @@ function phpbb_http_login($param)
 		}
 		else if ($auth_result['status'] == LOGIN_ERROR_ATTEMPTS)
 		{
-			send_status_line(401, 'Unauthorized');
+			http_response_code(401);
 
 			trigger_error('NOT_AUTHORISED');
 		}
@@ -4125,7 +4080,7 @@ function phpbb_http_login($param)
 	$param['auth_message'] = preg_replace('/[\x80-\xFF]/', '?', $param['auth_message']);
 
 	header('WWW-Authenticate: Basic realm="' . $param['auth_message'] . '"');
-	send_status_line(401, 'Unauthorized');
+	http_response_code(401);
 
 	trigger_error('NOT_AUTHORISED');
 }
