@@ -160,8 +160,7 @@ function adm_page_footer($copyright_html = true)
 	// Output page creation time
 	if (defined('DEBUG'))
 	{
-		$mtime = explode(' ', microtime());
-		$totaltime = $mtime[0] + $mtime[1] - $starttime;
+		$totaltime = microtime(true) - $starttime;
 
 		if (!empty($_REQUEST['explain']) && $auth->acl_get('a_') && defined('DEBUG_EXTRA') && method_exists($db, 'sql_report'))
 		{

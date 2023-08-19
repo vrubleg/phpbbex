@@ -193,8 +193,7 @@ if (defined('DEBUG_EXTRA') && request_var('explain', 0) && $auth->acl_get('a_'))
 	header('Content-Type: text/html; charset=UTF-8');
 	header('Cache-Control: private, no-cache="set-cookie"');
 
-	$mtime = explode(' ', microtime());
-	$totaltime = $mtime[0] + $mtime[1] - $starttime;
+	$totaltime = microtime(true) - $starttime;
 
 	if (method_exists($db, 'sql_report'))
 	{

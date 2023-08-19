@@ -244,11 +244,6 @@ class captcha
 		// Output image
 		header('Content-Type: image/png');
 		header('Cache-Control: no-store');
-		//$mtime = explode(' ', microtime());
-		//$totaltime = $mtime[0] + $mtime[1] - $starttime;
-
-		//echo $totaltime . "<br />\n";
-		//echo memory_get_usage() - $tmp;
 		imagepng($img);
 		imagedestroy($img);
 	}
