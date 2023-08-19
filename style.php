@@ -5,17 +5,6 @@
 * @license GNU Public License
 */
 
-if (isset($_GET['mtime']))
-{
-	$mtime = intval($_GET['mtime']);
-	if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH'], '"') == $mtime)
-	{
-		header($_SERVER["SERVER_PROTOCOL"] . ' 304 Not Modified');
-		die();
-	}
-	header('Etag: "' . $mtime . '"');
-}
-
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
@@ -26,6 +15,17 @@ require($phpbb_root_path . 'config.' . $phpEx);
 if (!defined('PHPBB_INSTALLED'))
 {
 	exit;
+}
+
+if (isset($_GET['mtime']))
+{
+	$mtime = intval($_GET['mtime']);
+	if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH'], '"') == $mtime)
+	{
+		http_response_code(304);
+		die();
+	}
+	header('Etag: "' . $mtime . '"');
 }
 
 $id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
@@ -130,15 +130,9 @@ if ($id)
 	$db->sql_freeresult($result);
 
 	// gzip_compression
-	if ($config['gzip_compress'])
+	if ($config['gzip_compress'] && @extension_loaded('zlib') && !headers_sent())
 	{
-		// IE6 is not able to compress the style (do not ask us why!)
-		$browser = (!empty($_SERVER['HTTP_USER_AGENT'])) ? strtolower(htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT'])) : '';
-
-		if ($browser && strpos($browser, 'msie 6.0') === false && @extension_loaded('zlib') && !headers_sent())
-		{
-			ob_start('ob_gzhandler');
-		}
+		ob_start('ob_gzhandler');
 	}
 
 	// Expire time of seven days if not recached

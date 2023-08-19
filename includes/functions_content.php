@@ -11,29 +11,6 @@ if (!defined('IN_PHPBB'))
 }
 
 /**
-* gen_sort_selects()
-* make_jumpbox()
-* bump_topic_allowed()
-* get_context()
-* phpbb_clean_search_string()
-* decode_message()
-* strip_bbcode()
-* generate_text_for_display()
-* generate_text_for_storage()
-* generate_text_for_edit()
-* make_clickable_callback()
-* make_clickable()
-* censor_text()
-* bbcode_nl2br()
-* smiley_text()
-* parse_attachments()
-* extension_allowed()
-* truncate_string()
-* get_username_string()
-* class bitfield
-*/
-
-/**
 * Generate sort selection fields
 */
 function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key, &$sort_dir, &$s_limit_days, &$s_sort_key, &$s_sort_dir, &$u_sort_param, $def_st = false, $def_sk = false, $def_sd = false)
@@ -1268,6 +1245,126 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 	}
 
 	return str_replace(array('{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}', '{TITLE}'), array($profile_url, $username_colour, $username, $title), (!$username_colour) ? $_profile_cache['tpl_profile'.$postfix] : $_profile_cache['tpl_profile_colour'.$postfix]);
+}
+
+/**
+* Get associative array with time delta.
+*/
+function get_verbal_time_delta_values($first_time, $last_time)
+{
+	if ($last_time < $first_time) { return false; }
+
+	// Solve H:M:S part.
+	$hms = ($last_time - $first_time) % (3600 * 24);
+	$delta['seconds'] = $hms % 60;
+	$delta['minutes'] = floor($hms/60) % 60;
+	$delta['hours']   = floor($hms/3600) % 60;
+
+	// Now work only with date, delta time = 0.
+	$last_time -= $hms;
+	$f = getdate($first_time);
+	$l = getdate($last_time); // the same daytime as $first_time!
+
+	$d_year = $d_mon = $d_day = 0;
+
+	// Delta day. Is negative, month overlapping.
+	$d_day += $l['mday'] - $f['mday'];
+	if ($d_day < 0)
+	{
+		$mon_length = (int) date('t', $first_time);
+		$d_day += $mon_length;
+		$d_mon--;
+	}
+	$delta['mday'] = $d_day;
+
+	// Delta month. If negative, year overlapping.
+	$d_mon += $l['mon'] - $f['mon'];
+	if ($d_mon < 0)
+	{
+		$d_mon += 12;
+		$d_year--;
+	}
+	$delta['mon'] = $d_mon;
+
+	// Delta year.
+	$d_year += $l['year'] - $f['year'];
+	$delta['year'] = $d_year;
+
+	return $delta;
+}
+
+/**
+* Spell result in appropriate form depending on integer value, i.e.: "1 answer", "2 answers", "13 answers", et cetera.
+*/
+function get_verbal_time_delta_declension($int, $expressions)
+{
+	$count = $int % 100;
+	if ($count >= 5 && $count <= 20)
+	{
+		$result = $int . ' ' . $expressions[2];
+	}
+	else
+	{
+		$count = $count % 10;
+		if ($count == 1)
+		{
+			$result = $int . ' ' . $expressions[0];
+		}
+		else if ($count >= 2 && $count <= 4)
+		{
+			$result = $int . ' ' . $expressions[1];
+		}
+		else
+		{
+			$result = $int . ' ' . $expressions[2];
+		}
+	}
+	return $result;
+}
+
+/**
+* Make a spellable phrase with time delta.
+*/
+function get_verbal_time_delta($first_time, $last_time, $accuracy = false, $max_parts = false, $keep_zeros = false)
+{
+	global $user;
+
+	if ($first_time - $last_time === 0)
+	{
+		return get_verbal_time_delta_declension(0, $user->lang['D_SECONDS']);
+	}
+
+	$delta = get_verbal_time_delta_values($first_time, $last_time);
+	if (!$delta) { return false; }
+
+	$parts = array();
+	$parts_count = 0;
+	foreach (array_reverse($delta) as $measure => $value)
+	{
+		if ($max_parts && $max_parts <= $parts_count)
+		{
+			break;
+		}
+		if (!$value && (!$keep_zeros || !$parts_count))
+		{
+			if ($measure !== $accuracy)
+			{
+				if ($parts_count) $parts_count++;
+				continue;
+			}
+			else if (count($parts))
+			{
+				break;
+			}
+		}
+		$parts_count++;
+		$parts[] = get_verbal_time_delta_declension($value, $user->lang['D_' . strtoupper($measure)]);
+		if ($measure === $accuracy)
+		{
+			break;
+		}
+	}
+	return join(' ', $parts);
 }
 
 /**

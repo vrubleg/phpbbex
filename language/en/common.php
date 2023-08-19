@@ -436,7 +436,6 @@ $lang = array_merge($lang, array(
 	'REGISTER'					=> 'Register',
 	'REGISTERED_USERS'			=> 'Registered users:',
 	'REMOVE'					=> 'Remove',
-	'REMOVE_INSTALL'			=> 'Please delete, move or rename the install directory before you use your board. If this directory is still present, only the Administration Control Panel (ACP) will be accessible.',
 	'REPLIES'					=> 'Replies',
 	'REPLY_WITH_QUOTE'			=> 'Reply with quote',
 	'REPORT_BY'					=> 'Report by',
