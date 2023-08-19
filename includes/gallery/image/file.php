@@ -240,22 +240,19 @@ class phpbb_gallery_image_file
 	* Check if the browser has the file already and set the appropriate headers.
 	* @returns false if a resend is in order.
 	*/
-	function set_modified_headers($browser)
+	function set_modified_headers()
 	{
 		// let's see if we have to send the file at all
 		$last_load = phpbb_parse_if_modified_since();
-		if (strpos(strtolower($browser), 'msie 6.0') === false)
+		if ($last_load !== false && $last_load >= $this->last_modified)
 		{
-			if ($last_load !== false && $last_load >= $this->last_modified)
-			{
-				send_status_line(304, 'Not Modified');
-				return true;
-			}
-			else
-			{
-				header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $this->last_modified) . ' GMT');
-				header('Cache-Control: max-age=1, must-revalidate');
-			}
+			http_response_code(304);
+			return true;
+		}
+		else
+		{
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $this->last_modified) . ' GMT');
+			header('Cache-Control: max-age=1, must-revalidate');
 		}
 		return false;
 	}
@@ -315,7 +312,7 @@ class phpbb_gallery_image_file
 		if ($this->browser_cache)
 		{
 			$this->set_last_modified(@filemtime($this->image_source));
-			$cached = $this->set_modified_headers($user->browser);
+			$cached = $this->set_modified_headers();
 		}
 
 		if ($cached)

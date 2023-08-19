@@ -8,68 +8,9 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 if (!defined('IN_PHPBB'))
 {
 	exit;
-}
-
-/**
-* This file contains functions, to be backwards and forwards compatible with phpBB-versions
-* Minimum requirement: phpBB 3.0.9
-*/
-
-if (!function_exists('send_status_line'))
-{
-	/**
-	* Outputs correct status line header.
-	*
-	* Depending on php sapi one of the two following forms is used:
-	*
-	* Status: 404 Not Found
-	*
-	* HTTP/1.x 404 Not Found
-	*
-	* HTTP version is taken from HTTP_VERSION environment variable,
-	* and defaults to 1.0.
-	*
-	* Sample usage:
-	*
-	* send_status_line(404, 'Not Found');
-	*
-	* @param int $code HTTP status code
-	* @param string $message Message for the status code
-	* @return void
-	*/
-	function send_status_line($code, $message)
-	{
-		if (substr(strtolower(@php_sapi_name()), 0, 3) === 'cgi')
-		{
-			// in theory, we shouldn't need that due to php doing it. Reality offers a differing opinion, though
-			header("Status: $code $message", true, $code);
-		}
-		else
-		{
-			if (!empty($_SERVER['SERVER_PROTOCOL']))
-			{
-				$version = $_SERVER['SERVER_PROTOCOL'];
-			}
-			else if (!empty($_SERVER['HTTP_VERSION']))
-			{
-				// I cannot remember where I got this from.
-				// This code path may never be reachable in reality.
-				$version = $_SERVER['HTTP_VERSION'];
-			}
-			else
-			{
-				$version = 'HTTP/1.0';
-			}
-			header("$version $code $message", true, $code);
-		}
-	}
 }
 
 if (!function_exists('phpbb_parse_http_date'))
