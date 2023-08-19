@@ -318,7 +318,7 @@ class phpbb_session
 		// if no session id is set, redirect to index.php
 		if (defined('NEED_SID') && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
 		{
-			send_status_line(401, 'Unauthorized');
+			http_response_code(401);
 			redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
 		}
 
@@ -636,7 +636,7 @@ class phpbb_session
 		// otherwise they'll index this page with the SID, duplicate content oh my!
 		if ($bot && isset($_GET['sid']))
 		{
-			send_status_line(301, 'Moved Permanently');
+			http_response_code(301);
 			redirect(build_url(array('sid')));
 		}
 
@@ -806,7 +806,7 @@ class phpbb_session
 
 				if ((int) $row['sessions'] > (int) $config['active_sessions'])
 				{
-					send_status_line(503, 'Service Unavailable');
+					http_response_code(503);
 					trigger_error('BOARD_UNAVAILABLE');
 				}
 			}
@@ -1939,7 +1939,7 @@ class phpbb_user extends phpbb_session
 		{
 			if ($this->data['is_bot'])
 			{
-				send_status_line(503, 'Service Unavailable');
+				http_response_code(503);
 			}
 
 			$message = (!empty($config['board_disable_msg'])) ? $config['board_disable_msg'] : 'BOARD_DISABLE';
@@ -1958,7 +1958,7 @@ class phpbb_user extends phpbb_session
 				{
 					if ($this->data['is_bot'])
 					{
-						send_status_line(503, 'Service Unavailable');
+						http_response_code(503);
 					}
 					trigger_error('BOARD_UNAVAILABLE');
 				}

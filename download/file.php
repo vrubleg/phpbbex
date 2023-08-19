@@ -21,13 +21,13 @@ $user->setup('viewtopic');
 
 if (!$download_id)
 {
-	send_status_line(404, 'Not Found');
+	http_response_code(404);
 	trigger_error('NO_ATTACHMENT_SELECTED');
 }
 
 if (!$config['allow_attachments'] && !$config['allow_pm_attach'])
 {
-	send_status_line(404, 'Not Found');
+	http_response_code(404);
 	trigger_error('ATTACHMENT_FUNCTIONALITY_DISABLED');
 }
 
@@ -40,13 +40,13 @@ $db->sql_freeresult($result);
 
 if (!$attachment)
 {
-	send_status_line(404, 'Not Found');
+	http_response_code(404);
 	trigger_error('ERROR_NO_ATTACHMENT');
 }
 
 if ((!$attachment['in_message'] && !$config['allow_attachments']) || ($attachment['in_message'] && !$config['allow_pm_attach']))
 {
-	send_status_line(404, 'Not Found');
+	http_response_code(404);
 	trigger_error('ATTACHMENT_FUNCTIONALITY_DISABLED');
 }
 
@@ -59,7 +59,7 @@ if ($attachment['is_orphan'])
 
 	if (!$own_attachment || ($attachment['in_message'] && !$auth->acl_get('u_pm_download')) || (!$attachment['in_message'] && !$auth->acl_get('u_download')))
 	{
-		send_status_line(404, 'Not Found');
+		http_response_code(404);
 		trigger_error('ERROR_NO_ATTACHMENT');
 	}
 
@@ -92,7 +92,7 @@ else
 		}
 		else
 		{
-			send_status_line(403, 'Forbidden');
+			http_response_code(403);
 			trigger_error('SORRY_AUTH_VIEW_ATTACH');
 		}
 	}
@@ -101,7 +101,7 @@ else
 		$row['forum_id'] = false;
 		if (!$auth->acl_get('u_pm_download'))
 		{
-			send_status_line(403, 'Forbidden');
+			http_response_code(403);
 			trigger_error('SORRY_AUTH_VIEW_ATTACH');
 		}
 
@@ -124,7 +124,7 @@ else
 
 		if (!$allowed)
 		{
-			send_status_line(403, 'Forbidden');
+			http_response_code(403);
 			trigger_error('ERROR_NO_ATTACHMENT');
 		}
 	}
@@ -133,14 +133,14 @@ else
 	$extensions = array();
 	if (!extension_allowed($row ? $row['forum_id'] : false, $attachment['extension'], $extensions))
 	{
-		send_status_line(404, 'Forbidden');
+		http_response_code(403);
 		trigger_error(sprintf($user->lang['EXTENSION_DISABLED_AFTER_POSTING'], $attachment['extension']));
 	}
 }
 
 if (!download_allowed())
 {
-	send_status_line(403, 'Forbidden');
+	http_response_code(403);
 	trigger_error($user->lang['LINKAGE_FORBIDDEN']);
 }
 
@@ -156,7 +156,7 @@ $db->sql_freeresult($result);
 
 if (!$attachment)
 {
-	send_status_line(404, 'Not Found');
+	http_response_code(404);
 	trigger_error('ERROR_NO_ATTACHMENT');
 }
 
@@ -188,7 +188,7 @@ if ($download_mode == PHYSICAL_LINK)
 	// This presenting method should no longer be used
 	if (!@is_dir($phpbb_root_path . $config['upload_path']))
 	{
-		send_status_line(500, 'Internal Server Error');
+		http_response_code(500);
 		trigger_error($user->lang['PHYSICAL_DOWNLOAD_NOT_POSSIBLE']);
 	}
 
@@ -222,7 +222,7 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 
 	if (!@file_exists($filename))
 	{
-		send_status_line(404, 'Not Found');
+		http_response_code(404);
 		trigger_error('ERROR_NO_ATTACHMENT');
 	}
 
@@ -255,11 +255,11 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 		// PHP track_errors setting On?
 		if (!empty($php_errormsg))
 		{
-			send_status_line(500, 'Internal Server Error');
+			http_response_code(500);
 			trigger_error($user->lang['UNABLE_TO_DELIVER_FILE'] . '<br />' . sprintf($user->lang['TRACKED_PHP_ERROR'], $php_errormsg));
 		}
 
-		send_status_line(500, 'Internal Server Error');
+		http_response_code(500);
 		trigger_error('UNABLE_TO_DELIVER_FILE');
 	}
 
@@ -444,7 +444,7 @@ function set_modified_headers($stamp)
 	$last_load = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) ? strtotime(trim($_SERVER['HTTP_IF_MODIFIED_SINCE'])) : false;
 	if ($last_load !== false && $last_load >= $stamp)
 	{
-		send_status_line(304, 'Not Modified');
+		http_response_code(304);
 		return true;
 	}
 	else
