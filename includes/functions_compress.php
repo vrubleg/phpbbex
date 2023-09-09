@@ -247,7 +247,7 @@ class compress_zip extends compress
 							}
 						}
 						// This is a directory, we are not writting files
-						continue;
+						break;
 					}
 					else
 					{
@@ -352,7 +352,7 @@ class compress_zip extends compress
 	/**
 	* Create the structures ... note we assume version made by is MSDOS
 	*/
-	function data($name, $data, $is_dir = false, $stat)
+	function data($name, $data, $is_dir, $stat)
 	{
 		$name = str_replace('\\', '/', $name);
 
@@ -625,7 +625,7 @@ class compress_tar extends compress
 	/**
 	* Create the structures
 	*/
-	function data($name, $data, $is_dir = false, $stat)
+	function data($name, $data, $is_dir, $stat)
 	{
 		$this->wrote = true;
 		$fzwrite = 	($this->isbz && function_exists('bzwrite')) ? 'bzwrite' : (($this->isgz && @extension_loaded('zlib')) ? 'gzwrite' : 'fwrite');

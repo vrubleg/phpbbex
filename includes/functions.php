@@ -434,7 +434,7 @@ function phpbb_hash($password)
 	$random = '';
 	$count = 6;
 
-	if (($fh = @fopen('/dev/urandom', 'rb')))
+	if (file_exists('/dev/urandom') && ($fh = fopen('/dev/urandom', 'rb')))
 	{
 		$random = fread($fh, $count);
 		fclose($fh);

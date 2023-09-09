@@ -158,21 +158,21 @@ class captcha
 		$amp_y = mt_rand(2,4);
 		$socket = mt_rand(0,100);
 
-		$dampen_x = mt_rand($this->width/5, $this->width/2);
-		$dampen_y = mt_rand($this->height/5, $this->height/2);
+		$dampen_x = mt_rand(intval($this->width/5), intval($this->width/2));
+		$dampen_y = mt_rand(intval($this->height/5), intval($this->height/2));
 		$direction_x = (mt_rand (0, 1));
 		$direction_y = (mt_rand (0, 1));
 
 		for ($i = 0; $i < $this->width; $i++)
 		{
 			$dir = ($direction_x) ? $i : ($this->width - $i);
-			imagecopy($img, $img, $i-1, sin($socket+ $i/($period_x + $dir/$dampen_x)) * $amp_x, $i, 0, 1, $this->height);
+			imagecopy($img, $img, $i-1, intval(sin($socket+ $i/($period_x + $dir/$dampen_x)) * $amp_x), $i, 0, 1, $this->height);
 		}
 		$socket = mt_rand(0,100);
 		for ($i = 0; $i < $this->height; $i++)
 		{
 			$dir = ($direction_y) ? $i : ($this->height - $i);
-			imagecopy($img, $img ,sin($socket + $i/($period_y + ($dir)/$dampen_y)) * $amp_y, $i-1, 0, $i, $this->width, 1);
+			imagecopy($img, $img, intval(sin($socket + $i/($period_y + ($dir)/$dampen_y)) * $amp_y), $i-1, 0, $i, $this->width, 1);
 		}
 		return $img;
 	}
@@ -1986,13 +1986,24 @@ class char_cube3d
 					$x_corner = $this->sum2($xvec, $zvec);
 					$y_corner = $this->sum2($yvec, $zvec);
 
-					imagefilledpolygon($img, $this->gen_poly($xo, $yo, $origin, $xvec, $x_corner,$zvec), 4, $colour1);
-					imagefilledpolygon($img, $this->gen_poly($xo, $yo, $origin, $yvec, $y_corner,$zvec), 4, $colour2);
-
+					$pol1 = $this->gen_poly($xo, $yo, $origin, $xvec, $x_corner, $zvec);
+					$pol2 = $this->gen_poly($xo, $yo, $origin, $yvec, $y_corner, $zvec);
 					$face = $this->gen_poly($xo, $yo, $origin, $xvec, $face_corner, $yvec);
 
-					imagefilledpolygon($img, $face, 4, $background);
-					imagepolygon($img, $face, 4, $colour1);
+					if (version_compare(PHP_VERSION, '8.0', '<'))
+					{
+						imagefilledpolygon($img, $pol1, 4, $colour1);
+						imagefilledpolygon($img, $pol2, 4, $colour2);
+						imagefilledpolygon($img, $face, 4, $background);
+						imagepolygon($img, $face, 4, $colour1);
+					}
+					else
+					{
+						imagefilledpolygon($img, $pol1, $colour1);
+						imagefilledpolygon($img, $pol2, $colour2);
+						imagefilledpolygon($img, $face, $background);
+						imagepolygon($img, $face, $colour1);
+					}
 				}
 			}
 		}
@@ -2108,7 +2119,7 @@ class char_cube3d
 			$max_y = ($max_y < $p[$i][1]) ? $p[$i][1] : $max_y;
 		}
 
-		return array($min_x, $min_y, $max_x, $max_y);
+		return array((int) $min_x, (int) $min_y, (int) $max_x, (int) $max_y);
 	}
 }
 
@@ -2220,7 +2231,7 @@ class colour_manager
 
 		$rgb		= colour_manager::model_convert($colour, $mode, 'rgb');
 		$store		= ($this->mode == 'rgb') ? $rgb : colour_manager::model_convert($colour, $mode, $this->mode);
-		$resource	= imagecolorallocate($this->img, $rgb[0], $rgb[1], $rgb[2]);
+		$resource	= imagecolorallocate($this->img, (int) $rgb[0], (int) $rgb[1], (int) $rgb[2]);
 		$this->colours[$resource] = $store;
 
 		return $resource;
