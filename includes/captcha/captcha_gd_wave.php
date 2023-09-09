@@ -97,7 +97,7 @@ class captcha
 		{
 			$coeff1 = ($i + 12) / 45;
 			$coeff2 = 1 - $coeff1;
-			$colors[$i] = imagecolorallocate($img, min(($coeff2 * $maxr) + ($coeff1 * $minr), 255), min(($coeff2 * $maxg) + ($coeff1 * $ming), 255), min(($coeff2 * $maxb) + ($coeff1 * $minb), 255));
+			$colors[$i] = imagecolorallocate($img, (int) min(($coeff2 * $maxr) + ($coeff1 * $minr), 255), (int) min(($coeff2 * $maxg) + ($coeff1 * $ming), 255), (int) min(($coeff2 * $maxb) + ($coeff1 * $minb), 255));
 		}
 
 		// $img_buffer is the last row of 3-space positions (converted to img-space), cached
@@ -236,8 +236,16 @@ class captcha
 					$poly2 = array_merge($img_buffer[$buffer_prev][$x - 1], $img_buffer[$buffer_prev][$x], $img_buffer[$buffer_cur][$x]);
 				}
 
-				imagefilledpolygon($img, $poly1, 3, $color);
-				imagefilledpolygon($img, $poly2, 3, $color);
+				if (version_compare(PHP_VERSION, '8.0', '<'))
+				{
+					imagefilledpolygon($img, $poly1, 3, $color);
+					imagefilledpolygon($img, $poly2, 3, $color);
+				}
+				else
+				{
+					imagefilledpolygon($img, $poly1, $color);
+					imagefilledpolygon($img, $poly2, $color);
+				}
 			}
 		}
 
@@ -256,7 +264,7 @@ class captcha
 		return ((sin($x / (3 * $factor)) + sin($y / (3 * $factor))) * 10 * $tweak);
 	}
 
-	function grid_height($x, $y, $factor = 1, $x_grid, $y_grid)
+	function grid_height($x, $y, $factor /*= 1*/, $x_grid, $y_grid)
 	{
 		return ((!($x % ($x_grid * $factor)) || !($y % ($y_grid * $factor))) ? 3 : 0);
 	}
