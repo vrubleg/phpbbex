@@ -28,74 +28,36 @@ if (isset($_GET['mtime']))
 	header('Etag: "' . $mtime . '"');
 }
 
-$id = (isset($_GET['id'])) ? intval($_GET['id']) : 0;
-$lang = (isset($_GET['lang'])) ? strval($_GET['lang']) : '';
-
-if (!$id) { exit(); }
-
-// Include files
 require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
 require($phpbb_root_path . 'includes/cache.' . $phpEx);
 require($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
 require($phpbb_root_path . 'includes/functions.' . $phpEx);
 
-// This is a simple script to grab and output the requested CSS data stored in the DB
-// We include a session_id check to try and limit 3rd party linking ... unless they
-// happen to have a current session it will output nothing. We will also cache the
-// resulting CSS data for five minutes ... anything to reduce the load on the SQL
-// server a little
+$style_id = request_var('id', 0);
+$lang = request_var('lang', '');
+
+if (!$style_id || !$lang)
+{
+	http_response_code(404);
+	die();
+}
 
 $db = new dbal_mysqli();
 $cache = new phpbb_cache();
 
-// Connect to DB
 if (!@$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false))
 {
-	exit;
+	http_response_code(503);
+	die();
 }
 unset($dbpasswd);
 
 $config = $cache->obtain_config();
-$user = false;
-
-// try to get a session ID from REQUEST array
-$sid = request_var('sid', '');
-
-if (!$sid)
-{
-	// if that failed, then look in the cookies
-	$sid = request_var($config['cookie_name'] . '_sid', '', false, true);
-}
-
-if (strspn($sid, 'abcdefABCDEF0123456789') !== strlen($sid))
-{
-	$sid = '';
-}
-
-if ($sid)
-{
-	$sql = 'SELECT u.user_id, u.user_lang
-		FROM ' . SESSIONS_TABLE . ' s, ' . USERS_TABLE . " u
-		WHERE s.session_id = '" . $db->sql_escape($sid) . "'
-			AND s.session_user_id = u.user_id";
-	$result = $db->sql_query($sql);
-	$user = $db->sql_fetchrow($result);
-	$db->sql_freeresult($result);
-}
-
-$recompile = $config['load_tplcompile'];
-if (!$user)
-{
-	$id			= ($id) ? $id : $config['default_style'];
-//		Commented out because calls do not always include the SID anymore
-//		$recompile	= false;
-	$user		= array('user_id' => ANONYMOUS);
-}
 
 $sql = 'SELECT s.style_id, c.theme_id, c.theme_data, c.theme_path, c.theme_name, c.theme_mtime, i.*, t.template_path
 	FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
-	WHERE s.style_id = ' . $id . '
+	WHERE s.style_id = ' . $style_id . '
 		AND t.template_id = s.template_id
 		AND c.theme_id = s.theme_id
 		AND i.imageset_id = s.imageset_id';
@@ -105,15 +67,24 @@ $db->sql_freeresult($result);
 
 if (!$theme)
 {
-	exit;
+	http_response_code(404);
+	die();
 }
 
-if ($user['user_id'] == ANONYMOUS)
+$sql = 'SELECT lang_dir
+	FROM ' . LANG_TABLE . "
+	WHERE lang_iso = '" . $db->sql_escape($lang) . "'";
+$result = $db->sql_query($sql);
+$lang = $db->sql_fetchfield('lang_dir');
+$db->sql_freeresult($result);
+
+if (!$lang)
 {
-	$user['user_lang'] = $config['default_lang'] = $lang;
+	http_response_code(404);
+	die();
 }
 
-$user_image_lang = (file_exists($phpbb_root_path . 'styles/' . $theme['imageset_path'] . '/imageset/' . $user['user_lang'])) ? $user['user_lang'] : $config['default_lang'];
+$user_image_lang = (file_exists($phpbb_root_path . 'styles/' . $theme['imageset_path'] . '/imageset/' . $lang) ? $lang : $config['default_lang']);
 
 // Same query in session.php
 $sql = 'SELECT *
@@ -141,7 +112,7 @@ $expire_time = 7*86400;
 $recache = false;
 
 // Re-cache stylesheet data if necessary
-if ($recompile || empty($theme['theme_data']))
+if ($config['load_tplcompile'] || empty($theme['theme_data']))
 {
 	$recache = (empty($theme['theme_data'])) ? true : false;
 	$update_time = time();
@@ -211,7 +182,7 @@ $replace = array(
 	'{T_IMAGESET_PATH}'			=> "{$phpbb_root_path}styles/" . rawurlencode($theme['imageset_path']) . '/imageset',
 	'{T_IMAGESET_LANG_PATH}'	=> "{$phpbb_root_path}styles/" . rawurlencode($theme['imageset_path']) . '/imageset/' . $user_image_lang,
 	'{T_STYLESHEET_NAME}'		=> $theme['theme_name'],
-	'{S_USER_LANG}'				=> $user['user_lang']
+	'{S_USER_LANG}'				=> $lang,
 );
 
 $theme['theme_data'] = str_replace(array_keys($replace), array_values($replace), $theme['theme_data']);
