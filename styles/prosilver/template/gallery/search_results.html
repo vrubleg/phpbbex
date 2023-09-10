@@ -29,7 +29,7 @@ function toggleElement(oElement)
 
 <!-- IF IGNORED_WORDS --> <p>{L_IGNORED_TERMS}: <strong>{IGNORED_WORDS}</strong></p><!-- ENDIF -->
 
-<!-- IF U_GALLERY_SEARCH --><p><a class="{S_CONTENT_FLOW_BEGIN}" href="{U_GALLERY_SEARCH}" title="{L_SEARCH_ADV}">{L_RETURN_TO_SEARCH_ADV}</a></p><!-- ENDIF -->
+<!-- IF U_GALLERY_SEARCH --><p><a class="nav-to-left" href="{U_GALLERY_SEARCH}" title="{L_SEARCH_ADV}">{L_RETURN_TO_SEARCH_ADV}</a></p><!-- ENDIF -->
 
 <!-- IF PAGINATION or SEARCH_MATCHES or PAGE_NUMBER -->
 	<form method="post" action="{S_SEARCH_ACTION}">
@@ -97,8 +97,8 @@ function toggleElement(oElement)
 	<form method="post" action="{S_SEARCH_ACTION}">
 
 	<fieldset class="display-options">
-		<!-- IF PREVIOUS_PAGE --><a href="{PREVIOUS_PAGE}" class="left-box {S_CONTENT_FLOW_BEGIN}">{L_PREVIOUS}</a><!-- ENDIF -->
-		<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box {S_CONTENT_FLOW_END}">{L_NEXT}</a><!-- ENDIF -->
+		<!-- IF PREVIOUS_PAGE --><a href="{PREVIOUS_PAGE}" class="left-box nav-to-left">{L_PREVIOUS}</a><!-- ENDIF -->
+		<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box nav-to-right">{L_NEXT}</a><!-- ENDIF -->
 		<!-- IF S_SELECT_SORT_KEY and SEARCH_IN_RESULTS -->
 			<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
 			<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
