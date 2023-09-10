@@ -138,39 +138,39 @@ a.topictitle:active {
 
 
 /* Arrow links */
-a.up {
+a.nav-to-up {
 	background: url("data:image/gif;base64,R0lGODlhBgAGAIABADMzMwAAACH5BAEAAAEALAAAAAAGAAYAAAIKjG8AqLmhGnyoAAA7") no-repeat left center;
 	padding-left: 10px;
 }
 
-a.up:hover {
+a.nav-to-up:hover {
 	background-position: left top;
 }
 
-a.down {
+a.nav-to-down {
 	background: url("data:image/gif;base64,R0lGODlhBgAGAIABADMzMwAAACH5BAEAAAEALAAAAAAGAAYAAAIKjA9gmavR0DunAAA7") no-repeat right center;
 	padding-right: 10px;
 }
 
-a.down:hover {
+a.nav-to-down:hover {
 	background-position: right bottom;
 }
 
-a.left {
+a.nav-to-left {
 	background: url("data:image/gif;base64,R0lGODlhBAAGAIABADMzMwAAACH5BAEAAAEALAAAAAAEAAYAAAIITACGqGnnUAEAOw==") no-repeat left 3px center;
 	padding-left: 12px;
 }
 
-a.left:hover {
+a.nav-to-left:hover {
 	background-position: left center;
 }
 
-a.right {
+a.nav-to-right {
 	background: url("data:image/gif;base64,R0lGODlhBAAGAIABADMzMwAAACH5BAEAAAEALAAAAAAEAAYAAAIIBBKGqGnnUAEAOw==") no-repeat right 3px center;
 	padding-right: 12px;
 }
 
-a.right:hover {
+a.nav-to-right:hover {
 	background-position: right center;
 }
 
