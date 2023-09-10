@@ -337,14 +337,6 @@ dl.mini dd {
 }
 
 /* PM panel adjustments */
-.reply-all a.left {
-	background-position: 3px 60%;
-}
-
-.reply-all a.left:hover {
-	background-position: 0px 60%;
-}
-
 .reply-all {
 	font-size: 11px;
 	padding-top: 5px;
