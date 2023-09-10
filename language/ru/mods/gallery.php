@@ -134,7 +134,6 @@ $lang = array_merge($lang, array(
 	'GALLERY_IMAGE'					=> 'Фото',
 	'GALLERY_VIEWS'					=> 'Просмотры',
 
-	'IGNORE_NOTUPTODATE_MESSAGE'	=> 'Напомнить через неделю',
 	'IMAGE_ALREADY_REPORTED'		=> 'На фото уже пожаловались.',
 	'IMAGE_BBCODE'					=> 'BBCode',
 	'IMAGE_COMMENTS_DISABLED'		=> 'Комментарии отключены на этой странице.',

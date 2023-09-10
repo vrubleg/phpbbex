@@ -320,9 +320,6 @@ function config_mapping()
 		'captcha_comment'			=> 'captcha_comment',
 		'captcha_upload'			=> 'captcha_upload',
 
-		'version_check_version'		=> 'mvc_version',
-		'version_check_time'		=> 'mvc_time',
-
 		'link_thumbnail'			=> 'link_thumbnail',
 		'link_image_name'			=> 'link_image_name',
 		'link_image_icon'			=> 'link_image_icon',

@@ -134,7 +134,6 @@ $lang = array_merge($lang, array(
 	'GALLERY_IMAGE'					=> 'Image',
 	'GALLERY_VIEWS'					=> 'Views',
 
-	'IGNORE_NOTUPTODATE_MESSAGE'		=> 'Remind me in 7 days',
 	'IMAGE_ALREADY_REPORTED'			=> 'The image was already reported.',
 	'IMAGE_BBCODE'						=> 'Image BBCode',
 	'IMAGE_COMMENTS_DISABLED'			=> 'Comments are disabled for this image.',

@@ -22,9 +22,6 @@ class phpbb_gallery_config_core
 	static public $prefix = '';
 
 	static public $is_dynamic = array(
-		'mvc_time',
-		'mvc_version',
-
 		'num_comments',
 		'num_images',
 		'num_pegas',
@@ -87,9 +84,6 @@ class phpbb_gallery_config_core
 		'medium_width'			=> 800,
 		'mini_thumbnail_disp'	=> true,
 		'mini_thumbnail_size'	=> 70,
-		'mvc_ignore'			=> 0,
-		'mvc_time'				=> 0,
-		'mvc_version'			=> '',
 
 		'newest_pega_user_id'	=> 0,
 		'newest_pega_username'	=> '',
