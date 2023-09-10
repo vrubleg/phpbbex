@@ -124,62 +124,54 @@ a.topictitle:active {
 }
 
 
-/* Profile searchresults */	
+/* Profile searchresults */
 .search .postprofile a {
 	color: #898989;
-	text-decoration: none; 
+	text-decoration: none;
 	font-weight: normal;
 }
 
 .search .postprofile a:hover {
 	color: #d3d3d3;
-	text-decoration: underline; 
+	text-decoration: underline;
 }
 
-/* Arrow links  */
-a.up		{ background: none no-repeat left center; }
-a.down		{ background: none no-repeat right center; }
-a.left		{ background: none no-repeat 3px 60%; }
-a.right		{ background: none no-repeat 95% 60%; }
 
-a.up, a.up:link, a.up:active, a.up:visited {
+/* Arrow links */
+a.up {
+	background: url("data:image/gif;base64,R0lGODlhBgAGAIABADMzMwAAACH5BAEAAAEALAAAAAAGAAYAAAIKjG8AqLmhGnyoAAA7") no-repeat left center;
 	padding-left: 10px;
-	text-decoration: none;
-	border-bottom-width: 0;
 }
 
 a.up:hover {
 	background-position: left top;
-	background-color: transparent;
 }
 
-a.down, a.down:link, a.down:active, a.down:visited {
+a.down {
+	background: url("data:image/gif;base64,R0lGODlhBgAGAIABADMzMwAAACH5BAEAAAEALAAAAAAGAAYAAAIKjA9gmavR0DunAAA7") no-repeat right center;
 	padding-right: 10px;
 }
 
 a.down:hover {
 	background-position: right bottom;
-	text-decoration: none;
 }
 
-a.left, a.left:active, a.left:visited {
+a.left {
+	background: url("data:image/gif;base64,R0lGODlhBAAGAIABADMzMwAAACH5BAEAAAEALAAAAAAEAAYAAAIITACGqGnnUAEAOw==") no-repeat left 3px center;
 	padding-left: 12px;
 }
 
 a.left:hover {
-	color: #d2d2d2;
-	text-decoration: none;
-	background-position: 0 60%;
+	background-position: left center;
 }
 
-a.right, a.right:active, a.right:visited {
+a.right {
+	background: url("data:image/gif;base64,R0lGODlhBAAGAIABADMzMwAAACH5BAEAAAEALAAAAAAEAAYAAAIIBBKGqGnnUAEAOw==") no-repeat right 3px center;
 	padding-right: 12px;
 }
 
 a.right:hover {
-	color: #d2d2d2;
-	text-decoration: none;
-	background-position: 100% 60%;
+	background-position: right center;
 }
 
 /* invisible skip link, used for accessibility  */
