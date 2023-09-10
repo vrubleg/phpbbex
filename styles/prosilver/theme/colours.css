@@ -297,24 +297,6 @@ a.topictitle:active {
 	color: #D31141;
 }
 
-/* Arrow links  */
-a.up		{ background-image: url("data:image/gif;base64,R0lGODlhBgAGAIABADMzMwAAACH5BAEAAAEALAAAAAAGAAYAAAIKjG8AqLmhGnyoAAA7"); }
-a.down		{ background-image: url("data:image/gif;base64,R0lGODlhBgAGAIABADMzMwAAACH5BAEAAAEALAAAAAAGAAYAAAIKjA9gmavR0DunAAA7"); }
-a.left		{ background-image: url("data:image/gif;base64,R0lGODlhBAAGAIABADMzMwAAACH5BAEAAAEALAAAAAAEAAYAAAIITACGqGnnUAEAOw=="); }
-a.right		{ background-image: url("data:image/gif;base64,R0lGODlhBAAGAIABADMzMwAAACH5BAEAAAEALAAAAAAEAAYAAAIIBBKGqGnnUAEAOw=="); }
-
-a.up:hover {
-	background-color: transparent;
-}
-
-a.left:hover {
-	color: #368AD2;
-}
-
-a.right:hover {
-	color: #368AD2;
-}
-
 
 /*
 --------------------------------------------------------------

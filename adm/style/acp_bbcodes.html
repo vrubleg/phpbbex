@@ -17,7 +17,7 @@
 		<p>{L_BBCODE_USAGE_EXPLAIN}</p>
 	<dl>
 		<dt><label for="bbcode_match">{L_EXAMPLES}</label><br /><br /><span>{L_BBCODE_USAGE_EXAMPLE}</span></dt>
-		<dd><textarea id="bbcode_match" name="bbcode_match" cols="60" rows="5">{BBCODE_MATCH}</textarea></dd>
+		<dd><textarea id="bbcode_match" name="bbcode_match" cols="60" rows="5" spellcheck="false">{BBCODE_MATCH}</textarea></dd>
 	</dl>
 	</fieldset>
 
@@ -26,7 +26,7 @@
 		<p>{L_HTML_REPLACEMENT_EXPLAIN}</p>
 	<dl>
 		<dt><label for="bbcode_tpl">{L_EXAMPLES}</label><br /><br /><span>{L_HTML_REPLACEMENT_EXAMPLE}</span></dt>
-		<dd><textarea id="bbcode_tpl" name="bbcode_tpl" cols="60" rows="8">{BBCODE_TPL}</textarea></dd>
+		<dd><textarea id="bbcode_tpl" name="bbcode_tpl" cols="60" rows="8" spellcheck="false">{BBCODE_TPL}</textarea></dd>
 	</dl>
 	</fieldset>
 
@@ -53,7 +53,7 @@
 		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
 		{S_FORM_TOKEN}
 	</fieldset>
-	
+
 	<br />
 
 	<table cellspacing="1" id="down">
@@ -85,7 +85,7 @@
 	<h1>{L_ACP_BBCODES}</h1>
 
 	<p>{L_ACP_BBCODES_EXPLAIN}</p>
-	
+
 	<form id="acp_bbcodes" method="post" action="{U_ACTION}">
 	<fieldset class="tabulated">
 	<legend>{L_ACP_BBCODES}</legend>
@@ -108,12 +108,12 @@
 					{ICON_MOVE_UP_DISABLED}
 					<a href="{bbcodes.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a>
 				<!-- ELSEIF not bbcodes.S_FIRST_ROW && not bbcodes.S_LAST_ROW-->
-					<a href="{bbcodes.U_MOVE_UP}">{ICON_MOVE_UP}</a> 
-					<a href="{bbcodes.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a> 
+					<a href="{bbcodes.U_MOVE_UP}">{ICON_MOVE_UP}</a>
+					<a href="{bbcodes.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a>
 				<!-- ELSEIF bbcodes.S_LAST_ROW && not bbcodes.S_FIRST_ROW -->
-					<a href="{bbcodes.U_MOVE_UP}">{ICON_MOVE_UP}</a>	
+					<a href="{bbcodes.U_MOVE_UP}">{ICON_MOVE_UP}</a>
 					{ICON_MOVE_DOWN_DISABLED}
-				<!-- ENDIF -->			
+				<!-- ENDIF -->
 				<a href="{bbcodes.U_EDIT}">{ICON_EDIT}</a> <a href="{bbcodes.U_DELETE}">{ICON_DELETE}</a>
 			</td>
 		</tr>

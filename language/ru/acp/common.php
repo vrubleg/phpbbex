@@ -189,7 +189,6 @@ $lang = array_merge($lang, array(
 	'ADD'					=> 'Добавить',
 	'ADMIN'					=> 'Администрирование',
 	'ADMIN_INDEX'			=> 'Главная админки',
-	'FORUM_INDEX'			=> 'Главная форума',
 	'ADMIN_PANEL'			=> 'Панель администратора',
 
 	'ADM_LOGOUT'			=> 'Выход&nbsp;из&nbsp;ACP',
@@ -214,6 +213,8 @@ $lang = array_merge($lang, array(
 	'ENABLE'				=> 'Включить',
 	'EXPORT_DOWNLOAD'		=> 'Скачать',
 	'EXPORT_STORE'			=> 'Сохранить',
+
+	'FORUM_INDEX'			=> 'Главная форума',
 
 	'GENERAL_OPTIONS'		=> 'Общие параметры',
 	'GENERAL_SETTINGS'		=> 'Общие настройки',
