@@ -371,10 +371,10 @@ class phpbb_gallery_image
 				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}">{CONTENT}</a>';
 			break;
 			case 'image_page_next':
-				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}" class="right-box right">{CONTENT}</a>';
+				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}" class="right-box nav-to-right">{CONTENT}</a>';
 			break;
 			case 'image_page_prev':
-				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}" class="left-box left">{CONTENT}</a>';
+				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}" class="left-box nav-to-left">{CONTENT}</a>';
 			break;
 			case 'image':
 				$url = $image_url;
