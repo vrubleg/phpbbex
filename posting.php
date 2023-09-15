@@ -445,7 +445,7 @@ if ($mode != 'edit')
 $post_data['enable_magic_url'] = $post_data['drafts'] = false;
 
 // User own some drafts?
-if ($user->data['is_registered'] && $auth->acl_get('u_savedrafts') && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
+if ($user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
 {
 	$sql = 'SELECT draft_id
 		FROM ' . DRAFTS_TABLE . '
@@ -492,7 +492,7 @@ $quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config[
 $spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 
 // Save Draft
-if ($save && $user->data['is_registered'] && $auth->acl_get('u_savedrafts') && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
+if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
 {
 	$subject = utf8_normalize_nfc(request_var('subject', '', true));
 	$subject = (!$subject && $mode != 'post') ? $post_data['topic_title'] : $subject;
@@ -596,7 +596,7 @@ if ($save && $user->data['is_registered'] && $auth->acl_get('u_savedrafts') && (
 }
 
 // Load requested Draft
-if ($draft_id && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $user->data['is_registered'] && $auth->acl_get('u_savedrafts'))
+if ($draft_id && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)))
 {
 	$sql = 'SELECT draft_subject, draft_message
 		FROM ' . DRAFTS_TABLE . "
@@ -1510,8 +1510,8 @@ $template->assign_vars(array(
 	'S_LINKS_ALLOWED'			=> $url_status,
 	'S_MAGIC_URL_CHECKED'		=> ($urls_checked) ? ' checked="checked"' : '',
 	'S_TYPE_TOGGLE'				=> $topic_type_toggle,
-	'S_SAVE_ALLOWED'			=> ($auth->acl_get('u_savedrafts') && $user->data['is_registered'] && $mode != 'edit') ? true : false,
-	'S_HAS_DRAFTS'				=> ($auth->acl_get('u_savedrafts') && $user->data['is_registered'] && $post_data['drafts']) ? true : false,
+	'S_SAVE_ALLOWED'			=> (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $mode != 'edit') ? true : false,
+	'S_HAS_DRAFTS'				=> (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $post_data['drafts']) ? true : false,
 	'S_FORM_ENCTYPE'			=> $form_enctype,
 
 	'S_FIRST_POST_SHOW_ALLOWED'	=> $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),

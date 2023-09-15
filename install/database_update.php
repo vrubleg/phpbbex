@@ -214,6 +214,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'u_pm_emailpm',
 		'u_pm_forward',
 		'u_pm_printpm',
+		'u_savedrafts',
 	);
 	$option_ids = array();
 
