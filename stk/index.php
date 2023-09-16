@@ -22,9 +22,6 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup('acp/common', $config['default_style']);
 
-// Load UMIL
-$umil = new umil(true);
-
 // Set a constant so we know when the STK got to a point where it savely loaded all absolutely required stuff
 define('IN_STK', true);
 

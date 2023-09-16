@@ -67,7 +67,7 @@ $auth->acl($user->data);
 $user->setup('acp/common', $config['default_style']);
 
 // Purge teh caches
-$umil = new umil(true);
+$umil = new phpbb_umil();
 $umil->cache_purge(array(
 	'data',
 	'template',

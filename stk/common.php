@@ -31,10 +31,9 @@ define('PHPBB_MSG_HANDLER', 'stk_msg_handler');
 require(STK_ROOT_PATH . 'includes/functions.php');
 require(PHPBB_ROOT_PATH . 'common.php');
 require(STK_ROOT_PATH . 'includes/plugin.php');
-require PHPBB_ROOT_PATH . 'umil/umil.php';
+require PHPBB_ROOT_PATH . 'includes/umil.php';
 
-// When not in the ERK we setup the user at this point
-// and load UML.
+// When not in the ERK we setup the user at this point and load UML.
 if (!defined('IN_ERK'))
 {
 	include STK_ROOT_PATH . 'includes/critical_repair.php';
@@ -44,7 +43,7 @@ if (!defined('IN_ERK'))
 	$auth->acl($user->data);
 	$user->setup('acp/common', $config['default_style']);
 
-	$umil = new umil(true);
+	$umil = new phpbb_umil();
 }
 
 // Load STK config when not in the erk

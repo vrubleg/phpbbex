@@ -645,22 +645,15 @@ switch (request_var('purge', 'cache'))
 		break;
 
 	case 'all':
-		if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
-		{
-			require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
+		require_once($phpbb_root_path . 'includes/umil.' . $phpEx);
 
-			$umil = new umil(true);
-			$umil->cache_purge(array(
-				'data',
-				'template',
-				'theme',
-				'imageset',
-			));
-		}
-		else
-		{
-			$cache->purge();
-		}
+		$umil = new phpbb_umil();
+		$umil->cache_purge(array(
+			'data',
+			'template',
+			'theme',
+			'imageset',
+		));
 		break;
 }
 
