@@ -2476,9 +2476,6 @@ class phpbb_umil
 	*/
 	function create_table_sql($table_name, $table_data)
 	{
-		// To allow testing
-		$dbms = $this->db_tools->sql_layer;
-
 		// A list of types being unsigned for better reference in some db's
 		$unsigned_types = array('UINT', 'UINT:', 'USINT', 'BOOL', 'TIMESTAMP');
 
@@ -2497,38 +2494,38 @@ class phpbb_umil
 			if (strpos($column_data[0], ':') !== false)
 			{
 				list($orig_column_type, $column_length) = explode(':', $column_data[0]);
-				if (!is_array($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']))
+				if (!is_array($this->db_tools->dbms_type_map[$orig_column_type . ':']))
 				{
-					$column_type = sprintf($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':'], $column_length);
+					$column_type = sprintf($this->db_tools->dbms_type_map[$orig_column_type . ':'], $column_length);
 				}
 				else
 				{
-					if (isset($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['rule']))
+					if (isset($this->db_tools->dbms_type_map[$orig_column_type . ':']['rule']))
 					{
-						switch ($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['rule'][0])
+						switch ($this->db_tools->dbms_type_map[$orig_column_type . ':']['rule'][0])
 						{
 							case 'div':
-								$column_length /= $this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['rule'][1];
+								$column_length /= $this->db_tools->dbms_type_map[$orig_column_type . ':']['rule'][1];
 								$column_length = ceil($column_length);
-								$column_type = sprintf($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':'][0], $column_length);
+								$column_type = sprintf($this->db_tools->dbms_type_map[$orig_column_type . ':'][0], $column_length);
 							break;
 						}
 					}
 
-					if (isset($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit']))
+					if (isset($this->db_tools->dbms_type_map[$orig_column_type . ':']['limit']))
 					{
-						switch ($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit'][0])
+						switch ($this->db_tools->dbms_type_map[$orig_column_type . ':']['limit'][0])
 						{
 							case 'mult':
-								$column_length *= $this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit'][1];
-								if ($column_length > $this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit'][2])
+								$column_length *= $this->db_tools->dbms_type_map[$orig_column_type . ':']['limit'][1];
+								if ($column_length > $this->db_tools->dbms_type_map[$orig_column_type . ':']['limit'][2])
 								{
-									$column_type = $this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit'][3];
+									$column_type = $this->db_tools->dbms_type_map[$orig_column_type . ':']['limit'][3];
 									$modded_array[$column_name] = $column_type;
 								}
 								else
 								{
-									$column_type = sprintf($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':'][0], $column_length);
+									$column_type = sprintf($this->db_tools->dbms_type_map[$orig_column_type . ':'][0], $column_length);
 								}
 							break;
 						}
@@ -2539,17 +2536,11 @@ class phpbb_umil
 			else
 			{
 				$orig_column_type = $column_data[0];
-				$column_type = $this->db_tools->dbms_type_map[$dbms][$column_data[0]];
+				$column_type = $this->db_tools->dbms_type_map[$column_data[0]];
 				if ($column_type == 'text' || $column_type == 'blob')
 				{
 					$modded_array[$column_name] = $column_type;
 				}
-			}
-
-			// Adjust default value if db-dependant specified
-			if (is_array($column_data[1]))
-			{
-				$column_data[1] = (isset($column_data[1][$dbms])) ? $column_data[1][$dbms] : $column_data[1]['default'];
 			}
 
 			$sql .= "\t{$column_name} {$column_type} ";

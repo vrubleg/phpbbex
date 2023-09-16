@@ -139,7 +139,7 @@ class sql_query
 		global $db;
 
 		$error	= $db->sql_error($sql);
-		$msg	= 'SQL ERROR [ ' . $db->sql_layer . ' ]<br /><br />' . $error['message'] . ' [' . $error['code'] . ']';
+		$msg	= 'MySQL ERROR<br /><br />' . $error['message'] . ' [' . $error['code'] . ']';
 
 		// Create some html to also embed the query
 		$return = $msg . '<dl class="codebox querybox">

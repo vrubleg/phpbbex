@@ -212,27 +212,10 @@ class acp_reasons
 					$other_reason_id = (int) $db->sql_fetchfield('reason_id');
 					$db->sql_freeresult($result);
 
-					switch ($db->sql_layer)
-					{
-						// The ugly one!
-						case 'mysql':
-							// Change the reports using this reason to 'other'
-							$sql = 'UPDATE ' . REPORTS_TABLE . '
-								SET reason_id = ' . $other_reason_id . ", report_text = CONCAT('" . $db->sql_escape($reason_row['reason_description']) . "\n\n', report_text)
-								WHERE reason_id = $reason_id";
-						break;
-
-						// Teh standard
-						case 'postgres':
-						case 'oracle':
-						case 'firebird':
-						case 'sqlite':
-							// Change the reports using this reason to 'other'
-							$sql = 'UPDATE ' . REPORTS_TABLE . '
-								SET reason_id = ' . $other_reason_id . ", report_text = '" . $db->sql_escape($reason_row['reason_description']) . "\n\n' || report_text
-								WHERE reason_id = $reason_id";
-						break;
-					}
+					// Change the reports using this reason to 'other'
+					$sql = 'UPDATE ' . REPORTS_TABLE . '
+						SET reason_id = ' . $other_reason_id . ", report_text = CONCAT('" . $db->sql_escape($reason_row['reason_description']) . "\n\n', report_text)
+						WHERE reason_id = $reason_id";
 					$db->sql_query($sql);
 
 					$db->sql_query('DELETE FROM ' . REPORTS_REASONS_TABLE . ' WHERE reason_id = ' . $reason_id);
