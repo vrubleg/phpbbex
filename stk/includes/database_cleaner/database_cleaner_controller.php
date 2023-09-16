@@ -52,7 +52,7 @@ class database_cleaner_controller
 			{
 				if (!function_exists('user_add'))
 				{
-					include(PHPBB_ROOT_PATH . 'includes/functions_user.' . PHP_EXT);
+					include(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 				}
 
 				// Remove existing bots
@@ -368,7 +368,7 @@ class database_cleaner_controller
 				{
 					if (!function_exists('group_delete'))
 					{
-						include(PHPBB_ROOT_PATH . 'includes/functions_user.' . PHP_EXT);
+						include(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 					}
 					// Remove it
 					$db->sql_query('SELECT group_id FROM ' . GROUPS_TABLE . ' WHERE group_name = \'' . $db->sql_escape($name) . '\'');
@@ -391,7 +391,7 @@ class database_cleaner_controller
 		// Redirect if they selected quit
 		if (isset($_POST['quit']))
 		{
-			redirect(append_sid(STK_ROOT_PATH . 'index.' . PHP_EXT));
+			redirect(append_sid(STK_ROOT_PATH . 'index.php'));
 		}
 
 		// Start by disabling the board
@@ -417,7 +417,7 @@ class database_cleaner_controller
 			// Re-add the modules
 			if (!class_exists('acp_modules'))
 			{
-				include PHPBB_ROOT_PATH . 'includes/acp/acp_modules.' . PHP_EXT;
+				include PHPBB_ROOT_PATH . 'includes/acp/acp_modules.php';
 			}
 
 			$_module = new acp_modules();
@@ -783,7 +783,7 @@ class database_cleaner_controller
 
 				if (!function_exists('adjust_language_keys_callback'))
 				{
-					include PHPBB_ROOT_PATH . 'includes/functions_install.' . PHP_EXT;
+					include PHPBB_ROOT_PATH . 'includes/functions_install.php';
 				}
 
 				// The highest next order

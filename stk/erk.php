@@ -10,15 +10,14 @@ define('IN_ERK', true);
 
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
 if (!defined('PHPBB_CACHE_PATH')) { define('PHPBB_CACHE_PATH', PHPBB_ROOT_PATH . 'cache/'); }
-if (!defined('PHP_EXT')) { define('PHP_EXT', substr(strrchr(__FILE__, '.'), 1)); }
 if (!defined('STK_DIR_NAME')) { define('STK_DIR_NAME', substr(strrchr(__DIR__, DIRECTORY_SEPARATOR), 1)); }	// Get the name of the stk directory
 if (!defined('STK_ROOT_PATH')) { define('STK_ROOT_PATH', './'); }
-if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.' . PHP_EXT); }
+if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.php'); }
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-require STK_ROOT_PATH . 'includes/critical_repair.' . PHP_EXT;
+require STK_ROOT_PATH . 'includes/critical_repair.php';
 $critical_repair = new critical_repair();
 
 // Check if there is a recent ERK allow key file, not older than 60 minutes.
@@ -56,7 +55,7 @@ $critical_repair->initialize();
 $critical_repair->run_tool('bom_sniffer');
 $critical_repair->run_tool('config_repair');
 
-require STK_ROOT_PATH . 'common.' . PHP_EXT;
+require STK_ROOT_PATH . 'common.php';
 
 // We'll run the rest of the critical repair tools automatically now
 $critical_repair->autorun_tools();

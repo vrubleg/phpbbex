@@ -14,7 +14,7 @@ class erk_config_repair
 {
 	function run()
 	{
-		if (!file_exists(PHPBB_ROOT_PATH . 'config.' . PHP_EXT))
+		if (!file_exists(PHPBB_ROOT_PATH . 'config.php'))
 		{
 			$this->repair();
 			header('Location: ' . STK_INDEX);
@@ -24,8 +24,8 @@ class erk_config_repair
 	}
 	function repair()
 	{
-		require_once(PHPBB_ROOT_PATH . 'includes/functions.' . PHP_EXT);
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_install.' . PHP_EXT);
+		require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 
 		$available_dbms = get_available_dbms();
 
@@ -84,7 +84,7 @@ class erk_config_repair
 			// Assume it will work ... if nothing goes wrong below
 			$written = true;
 
-			if (!($fp = @fopen(PHPBB_ROOT_PATH . 'config.' . PHP_EXT, 'w')))
+			if (!($fp = @fopen(PHPBB_ROOT_PATH . 'config.php', 'w')))
 			{
 				// Something went wrong ... so let's try another method
 				$written = false;
@@ -101,7 +101,7 @@ class erk_config_repair
 			if ($written)
 			{
 				// We may revert back to chmod() if we see problems with users not able to change their config.php file directly
-				phpbb_chmod(PHPBB_ROOT_PATH . 'config.' . PHP_EXT, CHMOD_READ);
+				phpbb_chmod(PHPBB_ROOT_PATH . 'config.php', CHMOD_READ);
 			}
 			else
 			{
@@ -140,7 +140,7 @@ class erk_config_repair
 							<p>
 								Through this tool you can regenerate your configuration file.
 							</p>
-							<form id="stk" method="post" action="<?php echo STK_ROOT_PATH . 'erk.' . PHP_EXT; ?>" name="support_tool_kit">
+							<form id="stk" method="post" action="<?php echo STK_ROOT_PATH . 'erk.php'; ?>" name="support_tool_kit">
 								<fieldset>
 									<?php if (!empty($error)) {?>
 										<div class="errorbox">
@@ -212,7 +212,7 @@ class erk_config_repair
 		if ($load_dbal)
 		{
 			// Include the DB layer
-			include(PHPBB_ROOT_PATH . 'includes/db/mysqli.' . PHP_EXT);
+			include(PHPBB_ROOT_PATH . 'includes/db/mysqli.php');
 		}
 
 		// Instantiate it and set return on error true

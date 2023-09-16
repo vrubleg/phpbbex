@@ -157,7 +157,7 @@ class database_cleaner_data
 						continue;
 					}
 
-					include (PHPBB_ROOT_PATH . "language/{$entry}/install." . PHP_EXT);
+					include (PHPBB_ROOT_PATH . "language/{$entry}/install.php");
 
 					if (in_array($test, $lang))
 					{

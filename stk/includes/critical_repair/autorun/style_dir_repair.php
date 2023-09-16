@@ -39,7 +39,7 @@ class erk_style_dir_repair
 			// Load the ac class
 			if (!class_exists('acp_styles'))
 			{
-				include PHPBB_ROOT_PATH . 'includes/acp/acp_styles.' . PHP_EXT;
+				include PHPBB_ROOT_PATH . 'includes/acp/acp_styles.php';
 			}
 			$this->ac = new acp_styles();
 			$this->ac->main('', 'default');	// Bit hacky

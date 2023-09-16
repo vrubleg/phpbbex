@@ -182,7 +182,7 @@ function get_columns($table)
 	{
 		if (!class_exists('phpbb_db_tools'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/db/db_tools.' . PHP_EXT);
+			include(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 		}
 		$db_tools = new phpbb_db_tools($db);
 	}
@@ -306,7 +306,7 @@ function get_phpbb_tables()
 
 	if (!function_exists('get_tables'))
 	{
-		include PHPBB_ROOT_PATH . 'includes/functions_install.' . PHP_EXT;
+		include PHPBB_ROOT_PATH . 'includes/functions_install.php';
 	}
 
 	// Function returns all tables in the database
@@ -359,9 +359,9 @@ function fetch_cleaner_data(&$data, $phpbb_version)
 	// Fetch all the files
 	if (!function_exists('filelist'))
 	{
-		include PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT;
+		include PHPBB_ROOT_PATH . 'includes/functions_admin.php';
 	}
-	$filelist = filelist(STK_ROOT_PATH . 'includes/database_cleaner/', 'data/', PHP_EXT);
+	$filelist = filelist(STK_ROOT_PATH . 'includes/database_cleaner/', 'data/', 'php');
 	$filelist = array_shift($filelist);
 	usort($filelist, 'version_compare');
 
@@ -372,7 +372,7 @@ function fetch_cleaner_data(&$data, $phpbb_version)
 		$class		= 'datafile_' . $version;
 		if (!class_exists($class))
 		{
-			include STK_ROOT_PATH . "includes/database_cleaner/data/{$version}." . PHP_EXT;
+			include STK_ROOT_PATH . "includes/database_cleaner/data/{$version}.php";
 		}
 		$_datafile = new $class();
 

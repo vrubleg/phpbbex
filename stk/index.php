@@ -8,15 +8,14 @@
 define('IN_PHPBB', true);
 
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
-if (!defined('PHP_EXT')) { define('PHP_EXT', substr(strrchr(__FILE__, '.'), 1)); }
 if (!defined('STK_DIR_NAME')) { define('STK_DIR_NAME', substr(strrchr(__DIR__, DIRECTORY_SEPARATOR), 1)); }	// Get the name of the stk directory
 if (!defined('STK_ROOT_PATH')) { define('STK_ROOT_PATH', './'); }
-if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.' . PHP_EXT); }
+if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.php'); }
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-require STK_ROOT_PATH . 'common.' . PHP_EXT;
+require STK_ROOT_PATH . 'common.php';
 
 // Setup the user
 $user->session_begin();
@@ -46,10 +45,10 @@ perform_unauthed_quick_tasks($action, $submit);
 */
 $stk_passwd = $stk_passwd_expiration = false;
 // See whether we have an emergency login file
-if (file_exists(STK_ROOT_PATH . 'passwd.' . PHP_EXT) && $user->data['user_type'] != USER_FOUNDER)
+if (file_exists(STK_ROOT_PATH . 'passwd.php') && $user->data['user_type'] != USER_FOUNDER)
 {
 	// Include the file
-	include(STK_ROOT_PATH . 'passwd.' . PHP_EXT);
+	include(STK_ROOT_PATH . 'passwd.php');
 
 	// Can we use trust this password
 	if ($stk_passwd_expiration === false || time() > $stk_passwd_expiration)
@@ -137,7 +136,7 @@ if ($stk_passwd !== false)
 				'LOGIN_ERROR'			=> (!empty($err_msg)) ? $user->lang[$err_msg] : false,
 
 				'U_ACTION'				=> append_sid(STK_INDEX, false, true, $user->session_id),
-				'U_INDEX'				=> append_sid(PHPBB_ROOT_PATH . 'index.' . PHP_EXT),
+				'U_INDEX'				=> append_sid(PHPBB_ROOT_PATH . 'index.php'),
 
 				// Identify this method in the template
 				'S_STK_LOGIN_METHOD'	=> true,
@@ -241,12 +240,12 @@ $plugin = new plugin();
 // Output common stuff
 $template->assign_vars(array(
 	'U_ACTION'		=> append_sid(STK_INDEX, $plugin->url_arg(), true, $user->session_id),
-	'U_ADM_INDEX'	=> append_sid(PHPBB_ROOT_PATH . 'adm/index.' . PHP_EXT, false, true, $user->session_id),
+	'U_ADM_INDEX'	=> append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, $user->session_id),
 	'U_STK_INDEX'	=> append_sid(STK_INDEX, false, true, $user->session_id),
 	'U_STK_LOGOUT'	=> append_sid(STK_INDEX, 'action=stklogout', true, $user->session_id),
 	'U_BACK_TOOL'	=> ($plugin->get_part('t')) ? append_sid(STK_INDEX, $plugin->url_arg(), true, $user->session_id) : false,
-	'U_INDEX'		=> append_sid(PHPBB_ROOT_PATH . 'index.' . PHP_EXT),
-	'U_LOGOUT'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.' . PHP_EXT, 'mode=logout', true, $user->session_id),
+	'U_INDEX'		=> append_sid(PHPBB_ROOT_PATH . 'index.php'),
+	'U_LOGOUT'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout', true, $user->session_id),
 
 	'USERNAME'		=> $user->data['username'],
 ));
@@ -357,7 +356,7 @@ if ($plugin->get_part('t'))
 
 					// Find user link
 					'S_FIND_USER'	=> (isset($content['find_user'])) ? true : false,
-					'U_FIND_USER'	=> (isset($content['find_user'])) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.' . PHP_EXT, array('mode' => 'searchuser', 'form' => 'select_user', 'field' => 'username', 'select_single' => 'true', 'form' => 'stk', 'field' => $content['find_user_field'])) : '',
+					'U_FIND_USER'	=> (isset($content['find_user'])) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', array('mode' => 'searchuser', 'form' => 'select_user', 'field' => 'username', 'select_single' => 'true', 'form' => 'stk', 'field' => $content['find_user_field'])) : '',
 				));
 			}
 
@@ -375,7 +374,7 @@ if ($plugin->get_part('t'))
 			}
 			else
 			{
-				confirm_box(false, $options, '', 'confirm_body.html', STK_DIR_NAME . '/index.' . PHP_EXT . $plugin->url_arg(true));
+				confirm_box(false, $options, '', 'confirm_body.html', STK_DIR_NAME . '/index.php' . $plugin->url_arg(true));
 			}
 		}
 		else

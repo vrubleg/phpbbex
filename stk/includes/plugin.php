@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 // Load functions_admin.php if required
 if (!function_exists('filelist'))
 {
-	include(PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT);
+	include(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 }
 
 class plugin
@@ -64,7 +64,7 @@ class plugin
 		$this->tool_box_path = STK_ROOT_PATH . 'tools/';
 
 		// Create a list with tools
-		$filelist = filelist($this->tool_box_path, '', PHP_EXT);
+		$filelist = filelist($this->tool_box_path, '', 'php');
 
 		// Need to do some sanitization on the result of filelist
 		foreach ($filelist as $cat => $tools)
@@ -85,7 +85,7 @@ class plugin
 			// Don't want the extension
 			foreach ($tools as $key => $tool)
 			{
-				$tools[$key] = (($pos = strpos($tool, '.' . PHP_EXT)) !== false) ? substr($tool, 0, $pos) : $tool;
+				$tools[$key] = (($pos = strpos($tool, '.php')) !== false) ? substr($tool, 0, $pos) : $tool;
 			}
 
 			$this->plugin_list[$cat] = $tools;
@@ -121,7 +121,7 @@ class plugin
 		}
 
 		// Trigger an error if the module is not found.
-		if ($this->_parts['t'] && (!$found || preg_match('#([^a-zA-Z0-9_])#', $this->_parts['t']) || !file_exists(STK_ROOT_PATH . 'tools/' . $this->_parts['c'] . '/' . $this->_parts['t'] . '.' . PHP_EXT)))
+		if ($this->_parts['t'] && (!$found || preg_match('#([^a-zA-Z0-9_])#', $this->_parts['t']) || !file_exists(STK_ROOT_PATH . 'tools/' . $this->_parts['c'] . '/' . $this->_parts['t'] . '.php')))
 		{
 			trigger_error('MODULE_NOT_ACCESS', E_USER_ERROR);
 		}
@@ -153,7 +153,7 @@ class plugin
 			return ($return) ? $tools_loaded[$tool_name] : true;
 		}
 
-		$tool_path = $this->tool_box_path . $tool_cat . '/' . $tool_name . '.' . PHP_EXT;
+		$tool_path = $this->tool_box_path . $tool_cat . '/' . $tool_name . '.php';
 		if (false === (@include $tool_path))
 		{
 			trigger_error(sprintf($user->lang['TOOL_INCLUTION_NOT_FOUND'], $tool_path), E_USER_ERROR);
@@ -161,7 +161,7 @@ class plugin
 
 		if (!class_exists($tool_name))
 		{
-			trigger_error(sprintf($user->lang['INCORRECT_CLASS'], $tool_name, PHP_EXT), E_USER_ERROR);
+			trigger_error(sprintf($user->lang['INCORRECT_CLASS'], $tool_name, 'php'), E_USER_ERROR);
 		}
 
 		// Construct the class

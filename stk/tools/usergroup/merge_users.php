@@ -141,7 +141,7 @@ class merge_users
 		$target = (int) $target['user_id'];
 
 		// Needed for the merge
-		include PHPBB_ROOT_PATH . 'includes/functions_user.' . PHP_EXT;
+		include PHPBB_ROOT_PATH . 'includes/functions_user.php';
 
 		$result = $this->merge($source, $target);
 

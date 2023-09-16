@@ -199,13 +199,13 @@ class datafile_3_0_6
 
 		// QA captcha tables
 		// Only if required
-		if (file_exists(PHPBB_ROOT_PATH . 'includes/captcha/plugins/phpbb_captcha_qa_plugin.' . PHP_EXT))
+		if (file_exists(PHPBB_ROOT_PATH . 'includes/captcha/plugins/phpbb_captcha_qa_plugin.php'))
 		{
 			global $umil;
 
 			if (!defined('CAPTCHA_QUESTIONS_TABLE'))
 			{
-				include PHPBB_ROOT_PATH . 'includes/captcha/plugins/phpbb_captcha_qa_plugin.' . PHP_EXT;
+				include PHPBB_ROOT_PATH . 'includes/captcha/plugins/phpbb_captcha_qa_plugin.php';
 			}
 
 			// Add the Q&A captcha tables to the schema if at least one of the tables

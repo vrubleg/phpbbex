@@ -255,7 +255,7 @@ class restore_deleted_users
 
 		if (!function_exists('user_add'))
 		{
-			include PHPBB_ROOT_PATH . 'includes/functions_user.' . PHP_EXT;
+			include PHPBB_ROOT_PATH . 'includes/functions_user.php';
 		}
 
 		// Registered users group?
@@ -327,7 +327,7 @@ class restore_deleted_users
 		$conflicted_params = array_flip($conflicted);
 		$conflicted_params = implode('&amp;conflicted%5B%5D', $conflicted_params);
 
-		redirect(append_sid(STK_ROOT_PATH . 'index.' . PHP_EXT, 'c=usergroup&amp;t=restore_deleted_users&amp;conflicted%5B%5D=' . $conflicted_params));
+		redirect(append_sid(STK_ROOT_PATH . 'index.php', 'c=usergroup&amp;t=restore_deleted_users&amp;conflicted%5B%5D=' . $conflicted_params));
 		exit;
 	}
 }

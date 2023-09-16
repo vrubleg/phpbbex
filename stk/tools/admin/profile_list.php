@@ -20,7 +20,7 @@ class profile_list
 
 		if (!class_exists('phpbb_db_tools'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/db/db_tools.' . PHP_EXT);
+			include(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 		}
 		$db_tools = new phpbb_db_tools($db);
 
@@ -35,7 +35,7 @@ class profile_list
 			{
 				if (!function_exists('user_delete'))
 				{
-					require PHPBB_ROOT_PATH . 'includes/functions_user.' . PHP_EXT;
+					require PHPBB_ROOT_PATH . 'includes/functions_user.php';
 				}
 
 				// Delete them all
@@ -49,7 +49,7 @@ class profile_list
 			else
 			{
 				$hidden = build_hidden_fields(array('marked_user_id' => $uids));
-				confirm_box(false, 'USERS_DELETE', $hidden, 'confirm_body.html', STK_DIR_NAME . '/index.' . PHP_EXT . '?c=admin&amp;t=profile_list&amp;sa=' . true);
+				confirm_box(false, 'USERS_DELETE', $hidden, 'confirm_body.html', STK_DIR_NAME . '/index.php' . '?c=admin&amp;t=profile_list&amp;sa=' . true);
 			}
 		}
 
@@ -216,7 +216,7 @@ class profile_list
 				'ORDER_SECTION'			=> (in_array($order_by, $timestamps)) ? (($row[$order_by]) ? $user->format_date($row[$order_by]) : $user->lang['NEVER']) : $row[$order_by],
 				'USER_INACTIVE_REASON'	=> $inactive_reason,
 
-				'U_USER_ADMIN'		=> append_sid(PHPBB_ROOT_PATH . 'adm/index.' . PHP_EXT, 'i=users&amp;mode=overview&amp;u=' . $row['user_id'], true, $user->session_id),
+				'U_USER_ADMIN'		=> append_sid(PHPBB_ROOT_PATH . 'adm/index.php', 'i=users&amp;mode=overview&amp;u=' . $row['user_id'], true, $user->session_id),
 
 				'S_USER_INACTIVE'	=> ($row['user_inactive_reason']) ? true : false,
 			));

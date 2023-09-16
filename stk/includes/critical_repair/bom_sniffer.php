@@ -97,7 +97,7 @@ class erk_bom_sniffer
 		if (file_exists(PHPBB_ROOT_PATH . 'store/bom_sniffer'))
 		{
 			// Empty dir is okay
-			if (array("" => array()) !== filelist(PHPBB_ROOT_PATH . 'store/bom_sniffer', '', PHP_EXT))	// Rather nasty, but don't know a better php 4 way atm
+			if (array("" => array()) !== filelist(PHPBB_ROOT_PATH . 'store/bom_sniffer', '', 'php'))	// Rather nasty, but don't know a better php 4 way atm
 			{
 				// Not empty try to remove the store dir
 				if ($this->recursively_remove_dir(PHPBB_ROOT_PATH . 'store/bom_sniffer') === false)
@@ -132,17 +132,17 @@ class erk_bom_sniffer
 		ksort($this->whitelist);
 
 		// Re-append extensions
-		array_walk($this->whitelist, array($this, 'readd_extensions'), PHP_EXT);
+		array_walk($this->whitelist, array($this, 'readd_extensions'), 'php');
 
 		// Init the internal cache
 		$this->cache = new _erk_bom_sniffer_cache($this);
 
 		// Here we test the stk config.php, when no issues found we'll include it
-		$this->sniff(STK_DIR_NAME, 'config.' . PHP_EXT);
+		$this->sniff(STK_DIR_NAME, 'config.php');
 		$stk_config['bom_sniffer_force_full_scan'] = true;
-		if (!file_exists(PHPBB_ROOT_PATH . 'store/bom_sniffer/stk/config.' . PHP_EXT))
+		if (!file_exists(PHPBB_ROOT_PATH . 'store/bom_sniffer/stk/config.php'))
 		{
-			include STK_ROOT_PATH . 'config.' . PHP_EXT;
+			include STK_ROOT_PATH . 'config.php';
 		}
 	}
 
@@ -162,13 +162,13 @@ class erk_bom_sniffer
 		global $critical_repair, $stk_config;
 
 		// Get all the files
-		$filelist = filelist(PHPBB_ROOT_PATH, '', PHP_EXT);
+		$filelist = filelist(PHPBB_ROOT_PATH, '', 'php');
 
 		foreach ($filelist as $directory => $files)
 		{
 			// As the install dir can be renamed, we need to check here whether this
 			// is an install directory
-			if(in_array('convert_phpbb20.' . PHP_EXT, $files) || in_array('new_normalizer.' . PHP_EXT, $files) || in_array('database_update.' . PHP_EXT, $files))
+			if(in_array('convert_phpbb20.php', $files) || in_array('new_normalizer.php', $files) || in_array('database_update.php', $files))
 			{
 				// It is and we're not forcing a full scan, skip it
 				if (!$stk_config['bom_sniffer_force_full_scan'])
@@ -456,26 +456,26 @@ class erk_bom_sniffer
 		switch ($directory)
 		{
 			case '' :
-				if ($file == 'feed.' . PHP_EXT)
+				if ($file == 'feed.php')
 				{
 					$match = '<\?xml version="1.0" encoding="UTF-8"\?>';
 				}
-				else if ($file == 'search.' . PHP_EXT || $file == 'viewtopic.' . PHP_EXT)
+				else if ($file == 'search.php' || $file == 'viewtopic.php')
 				{
 					$match = "</s\(\?:cript\|tyle\)\)\?>";
 				}
 			break;
 
 			case 'includes/' :
-				if ($file == 'functions.' . PHP_EXT)
+				if ($file == 'functions.php')
 				{
 					$match = "\?>#s',";
 				}
-				else if ($file == 'functions_messenger.' . PHP_EXT)
+				else if ($file == 'functions_messenger.php')
 				{
 					$match = 'var_export\(';
 				}
-				else if ($file == 'functions_template.' . PHP_EXT)
+				else if ($file == 'functions_template.php')
 				{
 					// This should match all occurances here. I *might* missed some :/
 					/*$match = "\?\\\?>#s'|\?>'(;| :)|' \?>(<\?php ){0,1}'|'\?\\1'|#\\\?\\>|; \?>";*/
@@ -483,52 +483,52 @@ class erk_bom_sniffer
 					// Most of them contain the opening tag or preg_replace or part of a regex
 					$match = 'preg_replace|<\?php|\?>#s';
 				}
-				else if ($file == 'message_parser.' . PHP_EXT)
+				else if ($file == 'message_parser.php')
 				{
 					$match = '\?>";';
 				}
-				else if ($file == 'template.' . PHP_EXT)
+				else if ($file == 'template.php')
 				{
 					$match = "eval\('";
 				}
 			break;
 
 			case 'includes/acm/' :
-				if ($file == 'acm_file.' . PHP_EXT)
+				if ($file == 'acm_file.php')
 				{
 					$match = '\n?>"\)|\* <\?php';
 				}
 
 			case 'includes/acp/' :
-				if ($file == 'acp_language.' . PHP_EXT)
+				if ($file == 'acp_language.php')
 				{
 					$match = "\\\$footer";
 				}
 			break;
 
 			case 'includes/db/' :
-				if ($file == 'oracle.' . PHP_EXT)
+				if ($file == 'oracle.php')
 				{
 					$match = "preg_match(_all)?|preg_replace";
 				}
 			break;
 
 			case 'includes/ucp/' :
-				if ($file == 'ucp_pm_viewfolder.' . PHP_EXT)
+				if ($file == 'ucp_pm_viewfolder.php')
 				{
 					$match = '<\?xml version="1.0"\?>';
 				}
 			break;
 
 			case 'stk/includes/' :
-				if ($file == 'functions.' . PHP_EXT)
+				if ($file == 'functions.php')
 				{
 					$match = '\?>";';
 				}
 			break;
 
 			case 'stk/includes/critical_repair/' :
-				if ($file == 'config_repair.' . PHP_EXT)
+				if ($file == 'config_repair.php')
 				{
 					$match = '(\s|{)\?>';
 				}
@@ -1006,7 +1006,7 @@ class _erk_bom_sniffer_cache
 		}
 
 		// If we've got data cached for this load it.
-		if (file_exists($this->_cache_path . 'data_stk_bom_sniffer.' . PHP_EXT))
+		if (file_exists($this->_cache_path . 'data_stk_bom_sniffer.php'))
 		{
 			$this->cache_data = $this->_readdata();
 		}
@@ -1019,7 +1019,7 @@ class _erk_bom_sniffer_cache
 	*/
 	function _readdata()
 	{
-		$file = $this->_cache_path . 'data_stk_bom_sniffer.' . PHP_EXT;
+		$file = $this->_cache_path . 'data_stk_bom_sniffer.php';
 
 		if (!file_exists($file))
 		{
@@ -1103,7 +1103,7 @@ class _erk_bom_sniffer_cache
 	*/
 	function storedata()
 	{
-		$file = $this->_cache_path . 'data_stk_bom_sniffer.' . PHP_EXT;
+		$file = $this->_cache_path . 'data_stk_bom_sniffer.php';
 
 		if ($handle = @fopen($file, 'wb'))
 		{

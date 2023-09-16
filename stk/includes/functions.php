@@ -299,7 +299,7 @@ function stk_add_lang($lang_file, $fore_lang = false)
 			continue;
 		}
 
-		if (file_exists($user->lang_path . $dir . "/{$lang_file}." . PHP_EXT))
+		if (file_exists($user->lang_path . $dir . "/{$lang_file}.php"))
 		{
 			$user->lang_name = $dir;
 			break;
@@ -309,7 +309,7 @@ function stk_add_lang($lang_file, $fore_lang = false)
 	// No language file :/
 	if (empty($user->lang_name))
 	{
-		trigger_error("Language file: {$lang_file}." . PHP_EXT . ' missing!', E_USER_ERROR);
+		trigger_error("Language file: {$lang_file}.php" . ' missing!', E_USER_ERROR);
 	}
 
 	// Add the file
@@ -336,7 +336,7 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 		case 'stklogout' :
 			setcookie('stk_token', '', (time() - 31536000));
 			$user->unset_admin();
-			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.' . PHP_EXT));
+			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 			trigger_error('STK_LOGOUT_SUCCESS');
 		break;
 
@@ -353,7 +353,7 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 
 			$template->assign_vars(array(
 				'PASS_GENERATED'			=> sprintf($user->lang['PASS_GENERATED'], $_pass_string, $user->format_date($_pass_exprire, false, true)),
-				'PASS_GENERATED_REDIRECT'	=> sprintf($user->lang['PASS_GENERATED_REDIRECT'], append_sid(STK_ROOT_PATH . 'index.' . PHP_EXT)),
+				'PASS_GENERATED_REDIRECT'	=> sprintf($user->lang['PASS_GENERATED_REDIRECT'], append_sid(STK_ROOT_PATH . 'index.php')),
 				'S_HIDDEN_FIELDS'			=> build_hidden_fields(array('pass_string' => $_pass_string, 'pass_exp' => $_pass_exprire)),
 				'U_ACTION'					=> append_sid(STK_INDEX, array('action' => 'downpasswdfile')),
 			));
@@ -376,8 +376,8 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 			}
 
 			// Create the file and let the user download it
-			header('Content-Type: text/x-delimtext; name="passwd.' . PHP_EXT . '"');
-			header('Content-disposition: attachment; filename=passwd.' . PHP_EXT);
+			header('Content-Type: text/x-delimtext; name="passwd.php' . '"');
+			header('Content-disposition: attachment; filename=passwd.php');
 
 			print ("<?php
 /**
@@ -420,7 +420,7 @@ function perform_authed_quick_tasks($action)
 
 		// If the user wants to distroy the passwd file
 		case 'delpasswdfile' :
-			if (file_exists(STK_ROOT_PATH . 'passwd.' . PHP_EXT) && false === @unlink(STK_ROOT_PATH . 'passwd.' . PHP_EXT))
+			if (file_exists(STK_ROOT_PATH . 'passwd.php') && false === @unlink(STK_ROOT_PATH . 'passwd.php'))
 			{
 				// Shouldn't happen. Kill the script
 				trigger_error($user->lang['FAIL_REMOVE_PASSWD'], E_USER_ERROR);

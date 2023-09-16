@@ -92,7 +92,7 @@ if (!class_exists('database_cleaner'))
 			}
 
 			// Data file exists?
-			if (file_exists(STK_ROOT_PATH . 'includes/database_cleaner/data/' . $this->phpbb_version . '.' . PHP_EXT) === false)
+			if (file_exists(STK_ROOT_PATH . 'includes/database_cleaner/data/' . $this->phpbb_version . '.php') === false)
 			{
 				return 'DATAFILE_NOT_FOUND';
 			}
@@ -118,17 +118,17 @@ if (!class_exists('database_cleaner'))
 			// include the required file for this version
 			if (!function_exists('fetch_cleaner_data'))
 			{
-				include STK_ROOT_PATH . 'includes/database_cleaner/functions_database_cleaner.' . PHP_EXT;
+				include STK_ROOT_PATH . 'includes/database_cleaner/functions_database_cleaner.php';
 			}
 
 			if (!class_exists('database_cleaner_data'))
 			{
-				include STK_ROOT_PATH . 'includes/database_cleaner/database_cleaner_data.' . PHP_EXT;
+				include STK_ROOT_PATH . 'includes/database_cleaner/database_cleaner_data.php';
 			}
 
 			if (!class_exists('phpbb_db_tools'))
 			{
-				include PHPBB_ROOT_PATH . 'includes/db/db_tools.' . PHP_EXT;
+				include PHPBB_ROOT_PATH . 'includes/db/db_tools.php';
 			}
 			$db_tools = new phpbb_db_tools($db);
 
@@ -151,7 +151,7 @@ if (!class_exists('database_cleaner'))
 			// Setup $this->object
 			if (!class_exists('database_cleaner_views'))
 			{
-				include STK_ROOT_PATH . 'includes/database_cleaner/database_cleaner_views.' . PHP_EXT;
+				include STK_ROOT_PATH . 'includes/database_cleaner/database_cleaner_views.php';
 			}
 			$this->object = new database_cleaner_views($this);
 
@@ -184,7 +184,7 @@ if (!class_exists('database_cleaner'))
 			// Setup $this->object
 			if (!class_exists('database_cleaner_controller'))
 			{
-				include STK_ROOT_PATH . 'includes/database_cleaner/database_cleaner_controller.' . PHP_EXT;
+				include STK_ROOT_PATH . 'includes/database_cleaner/database_cleaner_controller.php';
 			}
 			$this->object = new database_cleaner_controller($this);
 

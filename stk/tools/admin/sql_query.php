@@ -58,11 +58,11 @@ class sql_query
 
 		if (!function_exists('remove_comments'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT);
+			include(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 		}
 		if (!function_exists('split_sql_file'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/functions_install.' . PHP_EXT);
+			include(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 		}
 
 		$dbms = 'mysqli';
