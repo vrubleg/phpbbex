@@ -359,25 +359,11 @@ class phpbb_gallery_block
 		}
 		if ($this->mode & self::MODE_RANDOM)
 		{
-			switch ($db->sql_layer)
-			{
-				case 'postgres':
-					$random_sql = 'RANDOM()';
-				break;
-				case 'mssql':
-				case 'mssql_odbc':
-					$random_sql = 'NEWID()';
-				break;
-				default:
-					$random_sql = 'RAND()';
-				break;
-			}
-
 			$sql = 'SELECT image_id
 				FROM ' . GALLERY_IMAGES_TABLE . '
 				WHERE ' . $this->sql_where_auth . '
 					AND image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN . '
-				ORDER BY ' . $random_sql;
+				ORDER BY RAND()';
 			$result = $db->sql_query_limit($sql, $this->num_sql_limit);
 
 			while ($row = $db->sql_fetchrow($result))

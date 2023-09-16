@@ -200,21 +200,7 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 				$l_search_title = $user->lang['SEARCH_RANDOM'];
 				$search_results = 'image';
 
-				switch ($db->sql_layer)
-				{
-					case 'postgres':
-						$sql_order = 'RANDOM()';
-					break;
-
-					case 'mssql':
-					case 'mssql_odbc':
-						$sql_order = 'NEWID()';
-					break;
-
-					default:
-						$sql_order = 'RAND()';
-					break;
-				}
+				$sql_order = 'RAND()';
 				$sql_limit = $images_per_page;
 				$sql = 'SELECT image_id
 					FROM ' . GALLERY_IMAGES_TABLE . '
