@@ -864,7 +864,7 @@ class install_install extends module
 
 		// Time to convert the data provided into a config file
 		$available_dbms = get_available_dbms($data['dbms']);
-		$config_data = phpbb_create_config_file_data($data, $available_dbms[$data['dbms']]['DRIVER']);
+		$config_data = phpbb_create_config_file_data($data);
 
 		// Attempt to write out the config file directly. If it works, this is the easiest way to do it ...
 		if ((file_exists($phpbb_root_path . 'config.' . $phpEx) && phpbb_is_writable($phpbb_root_path . 'config.' . $phpEx)) || phpbb_is_writable($phpbb_root_path))
@@ -1105,10 +1105,10 @@ class install_install extends module
 		}
 
 		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
+		include($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
 
 		// Instantiate the database
-		$db = new dbal_mysqli();
+		$db = new dbal_mysql();
 		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
 
 		// NOTE: trigger_error does not work here.
@@ -1377,10 +1377,10 @@ class install_install extends module
 		}
 
 		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
+		include($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
 
 		// Instantiate the database
-		$db = new dbal_mysqli();
+		$db = new dbal_mysql();
 		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
 
 		// NOTE: trigger_error does not work here.

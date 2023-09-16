@@ -99,13 +99,13 @@ require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
 require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 require($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
-require($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
+require($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
 require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
 require($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
 
 $user = new phpbb_user();
 $cache = new phpbb_cache();
-$db = new dbal_mysqli();
+$db = new dbal_mysql();
 
 // Connect to DB.
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false);
@@ -873,8 +873,6 @@ set_config('dbms_version', $db->sql_server_info(true));
 switch ($db->sql_layer)
 {
 	case 'mysql':
-	case 'mysqli':
-	case 'mysql4':
 		$sql = 'OPTIMIZE TABLE ' . $table_prefix . 'auth_access, ' . $table_prefix . 'banlist, ' . $table_prefix . 'categories, ' . $table_prefix . 'config, ' . $table_prefix . 'disallow, ' . $table_prefix . 'forum_prune, ' . $table_prefix . 'forums, ' . $table_prefix . 'groups, ' . $table_prefix . 'posts, ' . $table_prefix . 'posts_text, ' . $table_prefix . 'privmsgs, ' . $table_prefix . 'privmsgs_text, ' . $table_prefix . 'ranks, ' . $table_prefix . 'search_results, ' . $table_prefix . 'search_wordlist, ' . $table_prefix . 'search_wordmatch, ' . $table_prefix . 'sessions_keys' . $table_prefix . 'smilies, ' . $table_prefix . 'themes, ' . $table_prefix . 'themes_name, ' . $table_prefix . 'topics, ' . $table_prefix . 'topics_watch, ' . $table_prefix . 'user_group, ' . $table_prefix . 'users, ' . $table_prefix . 'vote_desc, ' . $table_prefix . 'vote_results, ' . $table_prefix . 'vote_voters, ' . $table_prefix . 'words';
 		_sql($sql, $errored, $error_ary);
 	break;

@@ -42,13 +42,13 @@ class erk_config_repair
 
 		if (isset($_POST['submit']))
 		{
-			if (!isset($available_dbms['mysqli']))
+			if (!isset($available_dbms['mysql']))
 			{
 				$error[] = 'Database Connection not available.';
 			}
 			else
 			{
-				$connect_test = $this->critical_connect_check_db(true, $error, $available_dbms['mysqli'], $data['table_prefix'], $data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport']);
+				$connect_test = $this->critical_connect_check_db(true, $error, $available_dbms['mysql'], $data['table_prefix'], $data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport']);
 				if (!$connect_test)
 				{
 					$error[] = 'Database Connection failed.';
@@ -203,7 +203,7 @@ class erk_config_repair
 		// Must be globalized here for when including the DB file
 		global $phpbb_root_path, $phpEx;
 
-		if ($dbms_details['DRIVER'] != 'mysqli')
+		if ($dbms_details['DRIVER'] != 'mysql')
 		{
 			$error[] = 'MySQL 5.5 and newer is required.';
 			return false;
@@ -212,11 +212,11 @@ class erk_config_repair
 		if ($load_dbal)
 		{
 			// Include the DB layer
-			include(PHPBB_ROOT_PATH . 'includes/db/mysqli.php');
+			include(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 		}
 
 		// Instantiate it and set return on error true
-		$db = new dbal_mysqli();
+		$db = new dbal_mysql();
 		$db->sql_return_on_error(true);
 
 		// Check that we actually have a database name before going any further.....

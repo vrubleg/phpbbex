@@ -665,8 +665,7 @@ class fulltext_native extends search_backend
 
 			switch ($db->sql_layer)
 			{
-				case 'mysql4':
-				case 'mysqli':
+				case 'mysql':
 
 					// 3.x does not support SQL_CALC_FOUND_ROWS
 					// $sql_array['SELECT'] = 'SQL_CALC_FOUND_ROWS ' . $sql_array['SELECT'];
@@ -891,8 +890,7 @@ class fulltext_native extends search_backend
 		{
 			switch ($db->sql_layer)
 			{
-				case 'mysql4':
-				case 'mysqli':
+				case 'mysql':
 //					$select = 'SQL_CALC_FOUND_ROWS ' . $select;
 					$is_mysql = true;
 				break;

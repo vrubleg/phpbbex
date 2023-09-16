@@ -1365,8 +1365,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			$db->sql_transaction('begin');
 			switch ($db->sql_layer)
 			{
-				case 'mysql4':
-				case 'mysqli':
+				case 'mysql':
 					$sql = 'DELETE FROM ' . TOPICS_TABLE . '
 						USING ' . TOPICS_TABLE . ' t1, ' . TOPICS_TABLE . " t2
 						WHERE t1.topic_moved_id = t2.topic_id
@@ -1408,8 +1407,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			$db->sql_transaction('begin');
 			switch ($db->sql_layer)
 			{
-				case 'mysql4':
-				case 'mysqli':
+				case 'mysql':
 					$sql = 'UPDATE ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
 						SET t.topic_approved = p.post_approved
 						$where_sql_and t.topic_first_post_id = p.post_id";
@@ -2858,9 +2856,8 @@ function update_foes($group_id = false, $user_id = false)
 
 		switch ($db->sql_layer)
 		{
-			case 'mysqli':
-			case 'mysql4':
-				$sql = 'DELETE ' . (($db->sql_layer === 'mysqli' || version_compare($db->sql_server_info(true), '4.1', '>=')) ? 'z.*' : ZEBRA_TABLE) . '
+			case 'mysql':
+				$sql = 'DELETE z.*
 					FROM ' . ZEBRA_TABLE . ' z, ' . USER_GROUP_TABLE . ' ug
 					WHERE z.zebra_id = ug.user_id
 						AND z.foe = 1
@@ -3012,7 +3009,7 @@ function get_database_size()
 	$database_size = false;
 
 	// This code is heavily influenced by a similar routine in phpMyAdmin 2.2.0
-	if ($db->sql_layer == 'mysqli')
+	if ($db->sql_layer == 'mysql')
 	{
 		$sql = "SHOW TABLE STATUS FROM `{$db->dbname}`";
 		$result = $db->sql_query($sql, 7200);

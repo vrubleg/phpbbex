@@ -30,7 +30,7 @@ if (isset($_GET['mtime']))
 
 require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
 require($phpbb_root_path . 'includes/cache.' . $phpEx);
-require($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
+require($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
 require($phpbb_root_path . 'includes/functions.' . $phpEx);
 
@@ -43,7 +43,7 @@ if (!$style_id || !$lang)
 	die();
 }
 
-$db = new dbal_mysqli();
+$db = new dbal_mysql();
 $cache = new phpbb_cache();
 
 if (!@$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false))

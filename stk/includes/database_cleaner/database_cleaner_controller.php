@@ -731,8 +731,6 @@ class database_cleaner_controller
 				switch ($db->sql_layer)
 				{
 					// The ugly one!
-					case 'mysqli':
-					case 'mysql4':
 					case 'mysql':
 						// Change the reports using this reason to 'other'
 						$sql = 'UPDATE ' . REPORTS_TABLE . '

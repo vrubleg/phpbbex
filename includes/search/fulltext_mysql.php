@@ -39,7 +39,7 @@ class fulltext_mysql extends search_backend
 	{
 		global $db, $user;
 
-		if ($db->sql_layer != 'mysqli')
+		if ($db->sql_layer != 'mysql')
 		{
 			return $user->lang['FULLTEXT_MYSQL_NOT_SUPPORTED'];
 		}

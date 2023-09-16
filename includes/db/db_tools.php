@@ -153,20 +153,7 @@ class phpbb_db_tools
 	{
 		$this->db = $db;
 		$this->return_statements = $return_statements;
-
-		// Determine mapping database type
-		switch ($this->db->sql_layer)
-		{
-			case 'mysql':
-			case 'mysql4':
-			case 'mysqli':
-				$this->sql_layer = 'mysql';
-			break;
-
-			default:
-				$this->sql_layer = $this->db->sql_layer;
-			break;
-		}
+		$this->sql_layer = $this->db->sql_layer;
 	}
 
 	/**
@@ -179,8 +166,6 @@ class phpbb_db_tools
 		switch ($this->db->sql_layer)
 		{
 			case 'mysql':
-			case 'mysql4':
-			case 'mysqli':
 				$sql = 'SHOW TABLES';
 			break;
 

@@ -1684,8 +1684,7 @@ class acp_forums
 
 		switch ($db->sql_layer)
 		{
-			case 'mysql4':
-			case 'mysqli':
+			case 'mysql':
 
 				// Delete everything else and thank MySQL for offering multi-table deletion
 				$tables_ary = array(

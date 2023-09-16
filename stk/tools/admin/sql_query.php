@@ -65,7 +65,7 @@ class sql_query
 			include(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 		}
 
-		$dbms = 'mysqli';
+		$dbms = 'mysql';
 		$dbmd = get_available_dbms($dbms);
 		$remove_remarks = $dbmd[$dbms]['COMMENTS'];
 
