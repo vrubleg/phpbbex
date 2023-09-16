@@ -506,7 +506,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$enable_magic_url = $drafts = false;
 
 	// User own some drafts?
-	if ($auth->acl_get('u_savedrafts') && $action != 'delete')
+	if ($auth->acl_get('u_sendpm') && $action != 'delete')
 	{
 		$sql = 'SELECT draft_id
 			FROM ' . DRAFTS_TABLE . '
@@ -538,7 +538,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$url_status		= ($config['allow_post_links']) ? true : false;
 
 	// Save Draft
-	if ($save && $auth->acl_get('u_savedrafts'))
+	if ($save && $auth->acl_get('u_sendpm'))
 	{
 		$subject = utf8_normalize_nfc(request_var('subject', '', true));
 		$subject = (!$subject && $action != 'post') ? $user->lang['NEW_MESSAGE'] : $subject;
@@ -601,7 +601,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	}
 
 	// Load Draft
-	if ($draft_id && $auth->acl_get('u_savedrafts'))
+	if ($draft_id && $auth->acl_get('u_sendpm'))
 	{
 		$sql = 'SELECT draft_subject, draft_message
 			FROM ' . DRAFTS_TABLE . "
@@ -1075,8 +1075,8 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		'S_SIGNATURE_CHECKED'	=> ($sig_checked) ? ' checked="checked"' : '',
 		'S_LINKS_ALLOWED'		=> $url_status,
 		'S_MAGIC_URL_CHECKED'	=> ($urls_checked) ? ' checked="checked"' : '',
-		'S_SAVE_ALLOWED'		=> ($auth->acl_get('u_savedrafts') && $action != 'edit') ? true : false,
-		'S_HAS_DRAFTS'			=> ($auth->acl_get('u_savedrafts') && $drafts),
+		'S_SAVE_ALLOWED'		=> ($auth->acl_get('u_sendpm') && $action != 'edit') ? true : false,
+		'S_HAS_DRAFTS'			=> ($auth->acl_get('u_sendpm') && $drafts),
 		'S_FORM_ENCTYPE'		=> $form_enctype,
 
 		'S_BBCODE_IMG'			=> $img_status,

@@ -39,11 +39,6 @@ class fulltext_mysql extends search_backend
 	{
 		global $db, $user;
 
-		if ($db->sql_layer != 'mysqli')
-		{
-			return $user->lang['FULLTEXT_MYSQL_NOT_SUPPORTED'];
-		}
-
 		$result = $db->sql_query('SHOW TABLE STATUS LIKE \'' . POSTS_TABLE . '\'');
 		$info = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -769,14 +764,7 @@ class fulltext_mysql extends search_backend
 	{
 		global $db;
 
-		if (strpos($db->sql_layer, 'mysql') === false)
-		{
-			$this->stats = array();
-			return;
-		}
-
-		$sql = 'SHOW INDEX
-			FROM ' . POSTS_TABLE;
+		$sql = 'SHOW INDEX FROM ' . POSTS_TABLE;
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))

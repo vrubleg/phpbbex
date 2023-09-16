@@ -58,14 +58,14 @@ class sql_query
 
 		if (!function_exists('remove_comments'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT);
+			include(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 		}
 		if (!function_exists('split_sql_file'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/functions_install.' . PHP_EXT);
+			include(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 		}
 
-		$dbms = 'mysqli';
+		$dbms = 'mysql';
 		$dbmd = get_available_dbms($dbms);
 		$remove_remarks = $dbmd[$dbms]['COMMENTS'];
 
@@ -139,7 +139,7 @@ class sql_query
 		global $db;
 
 		$error	= $db->sql_error($sql);
-		$msg	= 'SQL ERROR [ ' . $db->sql_layer . ' ]<br /><br />' . $error['message'] . ' [' . $error['code'] . ']';
+		$msg	= 'MySQL ERROR<br /><br />' . $error['message'] . ' [' . $error['code'] . ']';
 
 		// Create some html to also embed the query
 		$return = $msg . '<dl class="codebox querybox">

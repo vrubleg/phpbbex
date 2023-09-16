@@ -88,7 +88,6 @@ $lang = array_merge($lang, array(
 
 	'acl_u_attach'		=> array('lang' => 'Может прикреплять вложения', 'cat' => 'post'),
 	'acl_u_download'	=> array('lang' => 'Может скачивать файлы', 'cat' => 'post'),
-	'acl_u_savedrafts'	=> array('lang' => 'Может сохранять черновики', 'cat' => 'post'),
 	'acl_u_chgcensors'	=> array('lang' => 'Может отключать автоцензора', 'cat' => 'post'),
 	'acl_u_sig'			=> array('lang' => 'Может использовать подпись', 'cat' => 'post'),
 	'acl_u_ignorefpedittime'	=> array('lang' => 'Может игнорировать ограничение времени на редактирование первого сообщения', 'cat' => 'post'),

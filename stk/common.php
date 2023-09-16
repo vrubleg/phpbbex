@@ -21,37 +21,36 @@ define('IN_LOGIN', true);
 
 // Make that phpBB itself understands out paths
 $phpbb_root_path = PHPBB_ROOT_PATH;
-$phpEx = PHP_EXT;
+$phpEx = 'php';
 
 // Prepare some vars
 $stk_no_error = false;
 define('PHPBB_MSG_HANDLER', 'stk_msg_handler');
 
 // Include all common stuff
-require(STK_ROOT_PATH . 'includes/functions.' . PHP_EXT);
-require(PHPBB_ROOT_PATH . 'common.' . PHP_EXT);
-require(STK_ROOT_PATH . 'includes/plugin.' . PHP_EXT);
-require PHPBB_ROOT_PATH . 'umil/umil.' . PHP_EXT;
+require(STK_ROOT_PATH . 'includes/functions.php');
+require(PHPBB_ROOT_PATH . 'common.php');
+require(STK_ROOT_PATH . 'includes/plugin.php');
+require PHPBB_ROOT_PATH . 'includes/umil.php';
 
-// When not in the ERK we setup the user at this point
-// and load UML.
+// When not in the ERK we setup the user at this point and load UML.
 if (!defined('IN_ERK'))
 {
-	include STK_ROOT_PATH . 'includes/critical_repair.' . PHP_EXT;
+	include STK_ROOT_PATH . 'includes/critical_repair.php';
 	$critical_repair = new critical_repair();
 
 	$user->session_begin();
 	$auth->acl($user->data);
 	$user->setup('acp/common', $config['default_style']);
 
-	$umil = new umil(true);
+	$umil = new phpbb_umil();
 }
 
 // Load STK config when not in the erk
 if (!isset($stk_config))
 {
 	$stk_config = array();
-	include STK_ROOT_PATH . 'config.' . PHP_EXT;
+	include STK_ROOT_PATH . 'config.php';
 }
 
 // Setup some common variables

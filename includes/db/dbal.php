@@ -49,11 +49,6 @@ class dbal
 	var $multi_insert = false;
 
 	/**
-	* Current sql layer
-	*/
-	var $sql_layer = '';
-
-	/**
 	* Wildcards for matching any (%) or exactly one (_) character within LIKE expressions
 	*/
 	var $any_char;
@@ -74,10 +69,6 @@ class dbal
 			'normal'		=> 0,
 			'total'			=> 0,
 		);
-
-		// Fill default sql layer based on the class being called.
-		// This can be changed by the specified layer itself later if needed.
-		$this->sql_layer = substr(get_class($this), 5);
 
 		// Do not change this please! This variable is used to easy the use of it - and is hardcoded.
 		$this->any_char = chr(0) . '%';
@@ -704,7 +695,7 @@ class dbal
 
 		if (!$this->return_on_error)
 		{
-			$message = 'SQL ERROR [ ' . $this->sql_layer . ' ]<br /><br />' . $this->sql_error_returned['message'] . ' [' . $this->sql_error_returned['code'] . ']';
+			$message = 'MySQL ERROR<br /><br />' . $this->sql_error_returned['message'] . ' [' . $this->sql_error_returned['code'] . ']';
 
 			// Show complete SQL error and path to administrators only
 			// Additionally show complete error on installation or if extended debug mode is enabled
@@ -807,7 +798,7 @@ class dbal
 									<br />
 									<p><b>Page generated in ' . round($totaltime, 4) . " seconds with {$this->num_queries['normal']} queries" . (($this->num_queries['cached']) ? " + {$this->num_queries['cached']} " . (($this->num_queries['cached'] == 1) ? 'query' : 'queries') . ' returning data from cache' : '') . '</b></p>
 
-									<p>Time spent on ' . $this->sql_layer . ' queries: <b>' . round($this->sql_time, 5) . 's</b> | Time spent on PHP: <b>' . round($totaltime - $this->sql_time, 5) . 's</b></p>
+									<p>Time spent on SQL queries: <b>' . round($this->sql_time, 5) . 's</b> | Time spent on PHP: <b>' . round($totaltime - $this->sql_time, 5) . 's</b></p>
 
 									<br /><br />
 									' . $this->sql_report . '
@@ -860,7 +851,7 @@ class dbal
 				else
 				{
 					$error = $this->sql_error();
-					$this->sql_report .= '<b style="color: red">FAILED</b> - ' . $this->sql_layer . ' Error ' . $error['code'] . ': ' . htmlspecialchars($error['message']);
+					$this->sql_report .= '<b style="color: red">FAILED</b> - MySQL Error ' . $error['code'] . ': ' . htmlspecialchars($error['message']);
 				}
 
 				$this->sql_report .= '</p><br /><br />';

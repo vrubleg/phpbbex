@@ -212,47 +212,10 @@ class acp_reasons
 					$other_reason_id = (int) $db->sql_fetchfield('reason_id');
 					$db->sql_freeresult($result);
 
-					switch ($db->sql_layer)
-					{
-						// The ugly one!
-						case 'mysqli':
-						case 'mysql4':
-						case 'mysql':
-							// Change the reports using this reason to 'other'
-							$sql = 'UPDATE ' . REPORTS_TABLE . '
-								SET reason_id = ' . $other_reason_id . ", report_text = CONCAT('" . $db->sql_escape($reason_row['reason_description']) . "\n\n', report_text)
-								WHERE reason_id = $reason_id";
-						break;
-
-						// Standard? What's that?
-						case 'mssql':
-						case 'mssql_odbc':
-						case 'mssqlnative':
-							// Change the reports using this reason to 'other'
-							$sql = "DECLARE @ptrval binary(16)
-
-									SELECT @ptrval = TEXTPTR(report_text)
-										FROM " . REPORTS_TABLE . "
-									WHERE reason_id = " . $reason_id . "
-
-									UPDATETEXT " . REPORTS_TABLE . ".report_text @ptrval 0 0 '" . $db->sql_escape($reason_row['reason_description']) . "\n\n'
-
-									UPDATE " . REPORTS_TABLE . '
-										SET reason_id = ' . $other_reason_id . "
-									WHERE reason_id = $reason_id";
-						break;
-
-						// Teh standard
-						case 'postgres':
-						case 'oracle':
-						case 'firebird':
-						case 'sqlite':
-							// Change the reports using this reason to 'other'
-							$sql = 'UPDATE ' . REPORTS_TABLE . '
-								SET reason_id = ' . $other_reason_id . ", report_text = '" . $db->sql_escape($reason_row['reason_description']) . "\n\n' || report_text
-								WHERE reason_id = $reason_id";
-						break;
-					}
+					// Change the reports using this reason to 'other'
+					$sql = 'UPDATE ' . REPORTS_TABLE . '
+						SET reason_id = ' . $other_reason_id . ", report_text = CONCAT('" . $db->sql_escape($reason_row['reason_description']) . "\n\n', report_text)
+						WHERE reason_id = $reason_id";
 					$db->sql_query($sql);
 
 					$db->sql_query('DELETE FROM ' . REPORTS_REASONS_TABLE . ' WHERE reason_id = ' . $reason_id);

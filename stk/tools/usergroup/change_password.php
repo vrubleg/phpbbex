@@ -68,7 +68,7 @@ class change_password
 		// Get the correct user data and make sure that he exists
 		if (!function_exists('user_get_id_name'))
 		{
-			include (PHPBB_ROOT_PATH . 'includes/functions_user.' . PHP_EXT);
+			include (PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		}
 
 		$user_id = array();
@@ -129,6 +129,6 @@ class change_password
 
 		add_log('admin', 'LOG_USER_NEW_PASSWORD', $username);
 
-		trigger_error(sprintf($user->lang['CHANGE_PASSWORD_SUCCESS'], append_sid(PHPBB_ROOT_PATH . 'memberlist.' . PHP_EXT, 'mode=viewprofile&amp;u=' . $user_id), $username));
+		trigger_error(sprintf($user->lang['CHANGE_PASSWORD_SUCCESS'], append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id), $username));
 	}
 }

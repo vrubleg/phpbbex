@@ -179,19 +179,19 @@ class reparse_bbcode
 		if (!class_exists('parse_message'))
 		{
 			global $phpbb_root_path, $phpEx; // required!
-			include PHPBB_ROOT_PATH . 'includes/message_parser.' . PHP_EXT;
+			include PHPBB_ROOT_PATH . 'includes/message_parser.php';
 		}
 
 		// Posting helper functions
 		if ($mode == BBCODE_REPARSE_POSTS && !function_exists('submit_post'))
 		{
-			include PHPBB_ROOT_PATH . 'includes/functions_posting.' . PHP_EXT;
+			include PHPBB_ROOT_PATH . 'includes/functions_posting.php';
 		}
 
 		// PM helper function
 		if ($mode == BBCODE_REPARSE_PMS && !function_exists('submit_pm'))
 		{
-			include PHPBB_ROOT_PATH . 'includes/functions_privmsgs.' . PHP_EXT;
+			include PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php';
 		}
 
 		// First step? Prepare the backup
@@ -446,7 +446,7 @@ class reparse_bbcode
 			'reparseall'	=> (!empty($_REQUEST['reparseall'])) ? true : false,
 		);
 
-		meta_refresh(1, append_sid(STK_ROOT_PATH . 'index.' . PHP_EXT, $params));
+		meta_refresh(1, append_sid(STK_ROOT_PATH . 'index.php', $params));
 		$template->assign_var('U_BACK_TOOL', false);
 
 		if ($next_mode === false)

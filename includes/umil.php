@@ -78,7 +78,7 @@ define('UMIL_VERSION', '1.0.5');
 * Version Check Function
 * 	version_check($url, $path, $file)
 */
-class umil
+class phpbb_umil
 {
 	/**
 	* This will hold the text output for the inputted command (if the mod author would like to display the command that was ran)
@@ -98,11 +98,6 @@ class umil
 	* Auto run $this->display_results after running a command
 	*/
 	var $auto_display_results = false;
-
-	/**
-	* Stand Alone option (this makes it possible to just use the single umil file and not worry about any language stuff
-	*/
-	var $stand_alone = false;
 
 	/**
 	* Were any new permissions added (used in umil_frontend)?
@@ -127,23 +122,11 @@ class umil
 	/**
 	* Constructor
 	*/
-	function __construct($stand_alone = false, $db = false)
+	function __construct()
 	{
 		// Setup $this->db
-		if ($db !== false)
-		{
-			if (!is_object($db) || !method_exists($db, 'sql_query'))
-			{
-				trigger_error('Invalid $db Object');
-			}
-
-			$this->db = $db;
-		}
-		else
-		{
-			global $db;
-			$this->db = $db;
-		}
+		global $db;
+		$this->db = $db;
 
 		// Setup $this->db_tools
 		if (!class_exists('phpbb_db_tools'))
@@ -152,45 +135,6 @@ class umil
 			include($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
 		}
 		$this->db_tools = new phpbb_db_tools($this->db);
-
-		$this->stand_alone = $stand_alone;
-
-		if (!$stand_alone)
-		{
-			global $config, $user, $phpbb_root_path, $phpEx;
-
-			/* Does not have the fall back option to use en/ if the user's language file does not exist, so we will not use it...unless that is changed.
-			if (method_exists('user', 'set_custom_lang_path'))
-			{
-				$user->set_custom_lang_path($phpbb_root_path . 'umil/language/');
-				$user->add_lang('umil');
-				$user->set_custom_lang_path($phpbb_root_path . 'language/');
-			}
-			else
-			{*/
-				// Include the umil language file.  First we check if the language file for the user's language is available, if not we check if the board's default language is available, if not we use the english file.
-				if (isset($user->data['user_lang']) && file_exists("{$phpbb_root_path}umil/language/{$user->data['user_lang']}/umil.$phpEx"))
-				{
-					$path = $user->data['user_lang'];
-				}
-				else if (file_exists("{$phpbb_root_path}umil/language/" . basename($config['default_lang']) . "/umil.$phpEx"))
-				{
-					$path = basename($config['default_lang']);
-				}
-				else if (file_exists("{$phpbb_root_path}umil/language/en/umil.$phpEx"))
-				{
-					$path = 'en';
-				}
-				else
-				{
-					trigger_error('Language Files Missing.<br /><br />Please download the latest UMIL (Unified MOD Install Library) from: <a href="http://www.phpbb.com/mods/umil/">phpBB.com/mods/umil</a>', E_USER_ERROR);
-				}
-
-				$user->add_lang('./../../umil/language/' . $path . '/umil');
-			//}
-
-			$user->add_lang(array('acp/common', 'acp/permissions'));
-		}
 	}
 
 	/**
@@ -2532,34 +2476,13 @@ class umil
 	*/
 	function create_table_sql($table_name, $table_data)
 	{
-		// To allow testing
-		$dbms = $this->db_tools->sql_layer;
-
 		// A list of types being unsigned for better reference in some db's
 		$unsigned_types = array('UINT', 'UINT:', 'USINT', 'BOOL', 'TIMESTAMP');
-		$supported_dbms = array('firebird', 'mssql', 'mssqlnative', 'mysql_40', 'mysql_41', 'oracle', 'postgres', 'sqlite');
-
-		$sql = '';
 
 		// Create Table statement
 		$generator = $textimage = false;
 
-		switch ($dbms)
-		{
-			case 'mysql_40':
-			case 'mysql_41':
-			case 'firebird':
-			case 'oracle':
-			case 'sqlite':
-			case 'postgres':
-				$sql .= "CREATE TABLE {$table_name} (\n";
-			break;
-
-			case 'mssql':
-			case 'mssqlnative':
-				$sql .= "CREATE TABLE [{$table_name}] (\n";
-			break;
-		}
+		$sql = "CREATE TABLE {$table_name} (\n";
 
 		// Table specific so we don't get overlap
 		$modded_array = array();
@@ -2571,38 +2494,38 @@ class umil
 			if (strpos($column_data[0], ':') !== false)
 			{
 				list($orig_column_type, $column_length) = explode(':', $column_data[0]);
-				if (!is_array($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']))
+				if (!is_array($this->db_tools->dbms_type_map[$orig_column_type . ':']))
 				{
-					$column_type = sprintf($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':'], $column_length);
+					$column_type = sprintf($this->db_tools->dbms_type_map[$orig_column_type . ':'], $column_length);
 				}
 				else
 				{
-					if (isset($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['rule']))
+					if (isset($this->db_tools->dbms_type_map[$orig_column_type . ':']['rule']))
 					{
-						switch ($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['rule'][0])
+						switch ($this->db_tools->dbms_type_map[$orig_column_type . ':']['rule'][0])
 						{
 							case 'div':
-								$column_length /= $this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['rule'][1];
+								$column_length /= $this->db_tools->dbms_type_map[$orig_column_type . ':']['rule'][1];
 								$column_length = ceil($column_length);
-								$column_type = sprintf($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':'][0], $column_length);
+								$column_type = sprintf($this->db_tools->dbms_type_map[$orig_column_type . ':'][0], $column_length);
 							break;
 						}
 					}
 
-					if (isset($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit']))
+					if (isset($this->db_tools->dbms_type_map[$orig_column_type . ':']['limit']))
 					{
-						switch ($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit'][0])
+						switch ($this->db_tools->dbms_type_map[$orig_column_type . ':']['limit'][0])
 						{
 							case 'mult':
-								$column_length *= $this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit'][1];
-								if ($column_length > $this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit'][2])
+								$column_length *= $this->db_tools->dbms_type_map[$orig_column_type . ':']['limit'][1];
+								if ($column_length > $this->db_tools->dbms_type_map[$orig_column_type . ':']['limit'][2])
 								{
-									$column_type = $this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':']['limit'][3];
+									$column_type = $this->db_tools->dbms_type_map[$orig_column_type . ':']['limit'][3];
 									$modded_array[$column_name] = $column_type;
 								}
 								else
 								{
-									$column_type = sprintf($this->db_tools->dbms_type_map[$dbms][$orig_column_type . ':'][0], $column_length);
+									$column_type = sprintf($this->db_tools->dbms_type_map[$orig_column_type . ':'][0], $column_length);
 								}
 							break;
 						}
@@ -2613,173 +2536,35 @@ class umil
 			else
 			{
 				$orig_column_type = $column_data[0];
-				$column_type = $this->db_tools->dbms_type_map[$dbms][$column_data[0]];
+				$column_type = $this->db_tools->dbms_type_map[$column_data[0]];
 				if ($column_type == 'text' || $column_type == 'blob')
 				{
 					$modded_array[$column_name] = $column_type;
 				}
 			}
 
-			// Adjust default value if db-dependant specified
-			if (is_array($column_data[1]))
+			$sql .= "\t{$column_name} {$column_type} ";
+
+			// For hexadecimal values do not use single quotes
+			if (!is_null($column_data[1]) && substr($column_type, -4) !== 'text' && substr($column_type, -4) !== 'blob')
 			{
-				$column_data[1] = (isset($column_data[1][$dbms])) ? $column_data[1][$dbms] : $column_data[1]['default'];
+				$sql .= (strpos($column_data[1], '0x') === 0) ? "DEFAULT {$column_data[1]} " : "DEFAULT '{$column_data[1]}' ";
+			}
+			$sql .= 'NOT NULL';
+
+			if (isset($column_data[2]))
+			{
+				if ($column_data[2] == 'auto_increment')
+				{
+					$sql .= ' auto_increment';
+				}
+				else if ($column_data[2] == 'true_sort')
+				{
+					$sql .= ' COLLATE utf8mb4_unicode_ci';
+				}
 			}
 
-			switch ($dbms)
-			{
-				case 'mysql_40':
-				case 'mysql_41':
-					$sql .= "\t{$column_name} {$column_type} ";
-
-					// For hexadecimal values do not use single quotes
-					if (!is_null($column_data[1]) && substr($column_type, -4) !== 'text' && substr($column_type, -4) !== 'blob')
-					{
-						$sql .= (strpos($column_data[1], '0x') === 0) ? "DEFAULT {$column_data[1]} " : "DEFAULT '{$column_data[1]}' ";
-					}
-					$sql .= 'NOT NULL';
-
-					if (isset($column_data[2]))
-					{
-						if ($column_data[2] == 'auto_increment')
-						{
-							$sql .= ' auto_increment';
-						}
-						else if ($dbms === 'mysql_41' && $column_data[2] == 'true_sort')
-						{
-							$sql .= ' COLLATE utf8mb4_unicode_ci';
-						}
-					}
-
-					$sql .= ",\n";
-				break;
-
-				case 'sqlite':
-					if (isset($column_data[2]) && $column_data[2] == 'auto_increment')
-					{
-						$sql .= "\t{$column_name} INTEGER PRIMARY KEY ";
-						$generator = $column_name;
-					}
-					else
-					{
-						$sql .= "\t{$column_name} {$column_type} ";
-					}
-
-					$sql .= 'NOT NULL ';
-					$sql .= (!is_null($column_data[1])) ? "DEFAULT '{$column_data[1]}'" : '';
-					$sql .= ",\n";
-				break;
-
-				case 'firebird':
-					$sql .= "\t{$column_name} {$column_type} ";
-
-					if (!is_null($column_data[1]))
-					{
-						$sql .= 'DEFAULT ' . ((is_numeric($column_data[1])) ? $column_data[1] : "'{$column_data[1]}'") . ' ';
-					}
-
-					$sql .= 'NOT NULL';
-
-					// This is a UNICODE column and thus should be given it's fair share
-					if (preg_match('/^X?STEXT_UNI|VCHAR_(CI|UNI:?)/', $column_data[0]))
-					{
-						$sql .= ' COLLATE UNICODE';
-					}
-
-					$sql .= ",\n";
-
-					if (isset($column_data[2]) && $column_data[2] == 'auto_increment')
-					{
-						$generator = $column_name;
-					}
-				break;
-
-				case 'mssql':
-				case 'mssqlnative':
-					if ($column_type == '[text]')
-					{
-						$textimage = true;
-					}
-
-					$sql .= "\t[{$column_name}] {$column_type} ";
-
-					if (!is_null($column_data[1]))
-					{
-						// For hexadecimal values do not use single quotes
-						if (strpos($column_data[1], '0x') === 0)
-						{
-							$sql .= 'DEFAULT (' . $column_data[1] . ') ';
-						}
-						else
-						{
-							$sql .= 'DEFAULT (' . ((is_numeric($column_data[1])) ? $column_data[1] : "'{$column_data[1]}'") . ') ';
-						}
-					}
-
-					if (isset($column_data[2]) && $column_data[2] == 'auto_increment')
-					{
-						$sql .= 'IDENTITY (1, 1) ';
-					}
-
-					$sql .= 'NOT NULL';
-					$sql .= " ,\n";
-				break;
-
-				case 'oracle':
-					$sql .= "\t{$column_name} {$column_type} ";
-					$sql .= (!is_null($column_data[1])) ? "DEFAULT '{$column_data[1]}' " : '';
-
-					// In Oracle empty strings ('') are treated as NULL.
-					// Therefore in oracle we allow NULL's for all DEFAULT '' entries
-					$sql .= ($column_data[1] === '') ? ",\n" : "NOT NULL,\n";
-
-					if (isset($column_data[2]) && $column_data[2] == 'auto_increment')
-					{
-						$generator = $column_name;
-					}
-				break;
-
-				case 'postgres':
-					$sql .= "\t{$column_name} {$column_type} ";
-
-					if (isset($column_data[2]) && $column_data[2] == 'auto_increment')
-					{
-						$sql .= "DEFAULT nextval('{$table_name}_seq'),\n";
-
-						// Make sure the sequence will be created before creating the table
-						$sql = "CREATE SEQUENCE {$table_name}_seq;\n\n" . $sql;
-					}
-					else
-					{
-						$sql .= (!is_null($column_data[1])) ? "DEFAULT '{$column_data[1]}' " : '';
-						$sql .= "NOT NULL";
-
-						// Unsigned? Then add a CHECK contraint
-						if (in_array($orig_column_type, $unsigned_types))
-						{
-							$sql .= " CHECK ({$column_name} >= 0)";
-						}
-
-						$sql .= ",\n";
-					}
-				break;
-			}
-		}
-
-		switch ($dbms)
-		{
-			case 'firebird':
-				// Remove last line delimiter...
-				$sql = substr($sql, 0, -2);
-				$sql .= "\n);;\n\n";
-			break;
-
-			case 'mssql':
-			case 'mssqlnative':
-				$sql = substr($sql, 0, -2);
-				$sql .= "\n) ON [PRIMARY]" . (($textimage) ? ' TEXTIMAGE_ON [PRIMARY]' : '') . "\n";
-				$sql .= "GO\n\n";
-			break;
+			$sql .= ",\n";
 		}
 
 		// Write primary key
@@ -2790,77 +2575,7 @@ class umil
 				$table_data['PRIMARY_KEY'] = array($table_data['PRIMARY_KEY']);
 			}
 
-			switch ($dbms)
-			{
-				case 'mysql_40':
-				case 'mysql_41':
-				case 'postgres':
-					$sql .= "\tPRIMARY KEY (" . implode(', ', $table_data['PRIMARY_KEY']) . "),\n";
-				break;
-
-				case 'firebird':
-					$sql .= "ALTER TABLE {$table_name} ADD PRIMARY KEY (" . implode(', ', $table_data['PRIMARY_KEY']) . ");;\n\n";
-				break;
-
-				case 'sqlite':
-					if ($generator === false || !in_array($generator, $table_data['PRIMARY_KEY']))
-					{
-						$sql .= "\tPRIMARY KEY (" . implode(', ', $table_data['PRIMARY_KEY']) . "),\n";
-					}
-				break;
-
-				case 'mssql':
-				case 'mssqlnative':
-					$sql .= "ALTER TABLE [{$table_name}] WITH NOCHECK ADD \n";
-					$sql .= "\tCONSTRAINT [PK_{$table_name}] PRIMARY KEY  CLUSTERED \n";
-					$sql .= "\t(\n";
-					$sql .= "\t\t[" . implode("],\n\t\t[", $table_data['PRIMARY_KEY']) . "]\n";
-					$sql .= "\t)  ON [PRIMARY] \n";
-					$sql .= "GO\n\n";
-				break;
-
-				case 'oracle':
-					$sql .= "\tCONSTRAINT pk_{$table_name} PRIMARY KEY (" . implode(', ', $table_data['PRIMARY_KEY']) . "),\n";
-				break;
-			}
-		}
-
-		switch ($dbms)
-		{
-			case 'oracle':
-				// UNIQUE contrains to be added?
-				if (isset($table_data['KEYS']))
-				{
-					foreach ($table_data['KEYS'] as $key_name => $key_data)
-					{
-						if (!is_array($key_data[1]))
-						{
-							$key_data[1] = array($key_data[1]);
-						}
-
-						if ($key_data[0] == 'UNIQUE')
-						{
-							$sql .= "\tCONSTRAINT u_phpbb_{$key_name} UNIQUE (" . implode(', ', $key_data[1]) . "),\n";
-						}
-					}
-				}
-
-				// Remove last line delimiter...
-				$sql = substr($sql, 0, -2);
-				$sql .= "\n)\n/\n\n";
-			break;
-
-			case 'postgres':
-				// Remove last line delimiter...
-				$sql = substr($sql, 0, -2);
-				$sql .= "\n);\n\n";
-			break;
-
-			case 'sqlite':
-				// Remove last line delimiter...
-				$sql = substr($sql, 0, -2);
-				$sql .= "\n);\n\n";
-			break;
+			$sql .= "\tPRIMARY KEY (" . implode(', ', $table_data['PRIMARY_KEY']) . "),\n";
 		}
 
 		// Write Keys
@@ -2873,115 +2588,28 @@ class umil
 					$key_data[1] = array($key_data[1]);
 				}
 
-				switch ($dbms)
+				$sql .= ($key_data[0] == 'INDEX') ? "\tKEY" : '';
+				$sql .= ($key_data[0] == 'UNIQUE') ? "\tUNIQUE" : '';
+				foreach ($key_data[1] as $key => $col_name)
 				{
-					case 'mysql_40':
-					case 'mysql_41':
-						$sql .= ($key_data[0] == 'INDEX') ? "\tKEY" : '';
-						$sql .= ($key_data[0] == 'UNIQUE') ? "\tUNIQUE" : '';
-						foreach ($key_data[1] as $key => $col_name)
+					if (isset($modded_array[$col_name]))
+					{
+						switch ($modded_array[$col_name])
 						{
-							if (isset($modded_array[$col_name]))
-							{
-								switch ($modded_array[$col_name])
-								{
-									case 'text':
-									case 'blob':
-										$key_data[1][$key] = $col_name . '(255)';
-									break;
-								}
-							}
-						}
-						$sql .= ' ' . $key_name . ' (' . implode(', ', $key_data[1]) . "),\n";
-					break;
-
-					case 'firebird':
-						$sql .= ($key_data[0] == 'INDEX') ? 'CREATE INDEX' : '';
-						$sql .= ($key_data[0] == 'UNIQUE') ? 'CREATE UNIQUE INDEX' : '';
-
-						$sql .= ' ' . $table_name . '_' . $key_name . ' ON ' . $table_name . '(' . implode(', ', $key_data[1]) . ");;\n";
-					break;
-
-					case 'mssql':
-					case 'mssqlnative':
-						$sql .= ($key_data[0] == 'INDEX') ? 'CREATE  INDEX' : '';
-						$sql .= ($key_data[0] == 'UNIQUE') ? 'CREATE  UNIQUE  INDEX' : '';
-						$sql .= " [{$key_name}] ON [{$table_name}]([" . implode('], [', $key_data[1]) . "]) ON [PRIMARY]\n";
-						$sql .= "GO\n\n";
-					break;
-
-					case 'oracle':
-						if ($key_data[0] == 'UNIQUE')
-						{
+							case 'text':
+							case 'blob':
+								$key_data[1][$key] = $col_name . '(255)';
 							break;
 						}
-
-						$sql .= ($key_data[0] == 'INDEX') ? 'CREATE INDEX' : '';
-
-						$sql .= " {$table_name}_{$key_name} ON {$table_name} (" . implode(', ', $key_data[1]) . ")\n";
-						$sql .= "/\n";
-					break;
-
-					case 'sqlite':
-						$sql .= ($key_data[0] == 'INDEX') ? 'CREATE INDEX' : '';
-						$sql .= ($key_data[0] == 'UNIQUE') ? 'CREATE UNIQUE INDEX' : '';
-
-						$sql .= " {$table_name}_{$key_name} ON {$table_name} (" . implode(', ', $key_data[1]) . ");\n";
-					break;
-
-					case 'postgres':
-						$sql .= ($key_data[0] == 'INDEX') ? 'CREATE INDEX' : '';
-						$sql .= ($key_data[0] == 'UNIQUE') ? 'CREATE UNIQUE INDEX' : '';
-
-						$sql .= " {$table_name}_{$key_name} ON {$table_name} (" . implode(', ', $key_data[1]) . ");\n";
-					break;
+					}
 				}
+				$sql .= ' ' . $key_name . ' (' . implode(', ', $key_data[1]) . "),\n";
 			}
 		}
 
-		switch ($dbms)
-		{
-			case 'mysql_40':
-				// Remove last line delimiter...
-				$sql = substr($sql, 0, -2);
-				$sql .= "\n);\n\n";
-			break;
-
-			case 'mysql_41':
-				// Remove last line delimiter...
-				$sql = substr($sql, 0, -2);
-				$sql .= "\n) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;\n\n";
-			break;
-
-			// Create Generator
-			case 'firebird':
-				if ($generator !== false)
-				{
-					$sql .= "\nCREATE GENERATOR {$table_name}_gen;;\n";
-					$sql .= 'SET GENERATOR ' . $table_name . "_gen TO 0;;\n\n";
-
-					$sql .= 'CREATE TRIGGER t_' . $table_name . ' FOR ' . $table_name . "\n";
-					$sql .= "BEFORE INSERT\nAS\nBEGIN\n";
-					$sql .= "\tNEW.{$generator} = GEN_ID({$table_name}_gen, 1);\nEND;;\n\n";
-				}
-			break;
-
-			case 'oracle':
-				if ($generator !== false)
-				{
-					$sql .= "\nCREATE SEQUENCE {$table_name}_seq\n/\n\n";
-
-					$sql .= "CREATE OR REPLACE TRIGGER t_{$table_name}\n";
-					$sql .= "BEFORE INSERT ON {$table_name}\n";
-					$sql .= "FOR EACH ROW WHEN (\n";
-					$sql .= "\tnew.{$generator} IS NULL OR new.{$generator} = 0\n";
-					$sql .= ")\nBEGIN\n";
-					$sql .= "\tSELECT {$table_name}_seq.nextval\n";
-					$sql .= "\tINTO :new.{$generator}\n";
-					$sql .= "\tFROM dual;\nEND;\n/\n\n";
-				}
-			break;
-		}
+		// Remove last line delimiter...
+		$sql = substr($sql, 0, -2);
+		$sql .= "\n) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;\n\n";
 
 		return $sql;
 	}

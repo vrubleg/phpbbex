@@ -18,13 +18,13 @@ function get_available_dbms($dbms = false, $return_unavailable = false)
 {
 	global $lang;
 	$available_dbms = array(
-		'mysqli'	=> array(
+		'mysql'	=> array(
 			'LABEL'			=> 'MySQLi',
 			'SCHEMA'		=> 'mysql',
 			'MODULE'		=> 'mysqli',
 			'DELIM'			=> ';',
 			'COMMENTS'		=> 'remove_remarks',
-			'DRIVER'		=> 'mysqli',
+			'DRIVER'		=> 'mysql',
 			'AVAILABLE'		=> true,
 		),
 	);
@@ -113,7 +113,7 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 {
 	global $phpbb_root_path, $phpEx, $config, $lang;
 
-	if ($dbms_details['DRIVER'] != 'mysqli')
+	if ($dbms_details['DRIVER'] != 'mysql')
 	{
 		$error[] = $lang['INST_ERR_DB_NO_MYSQLI'];
 		return false;
@@ -122,11 +122,11 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 	if ($load_dbal)
 	{
 		// Include the DB layer
-		include($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
+		include($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
 	}
 
 	// Instantiate it and set return on error true
-	$db = new dbal_mysqli();
+	$db = new dbal_mysql();
 	$db->sql_return_on_error(true);
 
 	// Check that we actually have a database name before going any further.....
@@ -263,14 +263,13 @@ function adjust_language_keys_callback($matches)
 * Creates the output to be stored in a phpBB config.php file
 *
 * @param	array	$data Array containing the database connection information
-* @param	string	$dbms The name of the DBAL class to use
 * @param	bool	$debug If the debug constants should be enabled by default or not
 * @param	bool	$debug_test If the DEBUG_TEST constant should be added
 *					NOTE: Only for use within the testing framework
 *
 * @return	string	The output to write to the file
 */
-function phpbb_create_config_file_data($data, $dbms, $debug = false, $debug_test = false)
+function phpbb_create_config_file_data($data, $debug = false, $debug_test = false)
 {
 	$config_data = "<?php\n\n";
 

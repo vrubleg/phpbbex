@@ -11,7 +11,7 @@ if (!defined('IN_PHPBB'))
 }
 
 // Load functions_admin.php if required
-require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.' . PHP_EXT);
+require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 class critical_repair
 {
@@ -38,7 +38,7 @@ class critical_repair
 	function initialize()
 	{
 		$this->tool_path = STK_ROOT_PATH . 'includes/critical_repair/';
-		$filelist = filelist($this->tool_path, '', PHP_EXT);
+		$filelist = filelist($this->tool_path, '', 'php');
 
 		foreach ($filelist as $directory => $tools)
 		{
@@ -79,7 +79,7 @@ class critical_repair
 			return false;
 		}
 
-		include($this->tool_path . $tool . '.' . PHP_EXT);
+		include($this->tool_path . $tool . '.php');
 
 		$tool_name = 'erk_' . $tool;
 		$run_tool = new $tool_name();
@@ -94,7 +94,7 @@ class critical_repair
 	{
 		foreach ($this->autorun_tools as $tool)
 		{
-			include($this->tool_path . 'autorun/' . $tool . '.' . PHP_EXT);
+			include($this->tool_path . 'autorun/' . $tool . '.php');
 
 			$tool_name = 'erk_' . $tool;
 			$run_tool = new $tool_name();

@@ -99,13 +99,13 @@ require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
 require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
 require($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 require($phpbb_root_path . 'includes/constants.' . $phpEx);
-require($phpbb_root_path . 'includes/db/mysqli.' . $phpEx);
+require($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
 require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
 require($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
 
 $user = new phpbb_user();
 $cache = new phpbb_cache();
-$db = new dbal_mysqli();
+$db = new dbal_mysql();
 
 // Connect to DB.
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false);
@@ -214,6 +214,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'u_pm_emailpm',
 		'u_pm_forward',
 		'u_pm_printpm',
+		'u_savedrafts',
 	);
 	$option_ids = array();
 
@@ -644,22 +645,15 @@ switch (request_var('purge', 'cache'))
 		break;
 
 	case 'all':
-		if (file_exists($phpbb_root_path . 'umil/umil.' . $phpEx))
-		{
-			require_once($phpbb_root_path . 'umil/umil.' . $phpEx);
+		require_once($phpbb_root_path . 'includes/umil.' . $phpEx);
 
-			$umil = new umil(true);
-			$umil->cache_purge(array(
-				'data',
-				'template',
-				'theme',
-				'imageset',
-			));
-		}
-		else
-		{
-			$cache->purge();
-		}
+		$umil = new phpbb_umil();
+		$umil->cache_purge(array(
+			'data',
+			'template',
+			'theme',
+			'imageset',
+		));
 		break;
 }
 
@@ -701,8 +695,6 @@ $errored = false;
 	<h1><?php echo $lang['UPDATING_TO_LATEST_STABLE']; ?></h1>
 
 	<br />
-
-	<p><?php echo $lang['DATABASE_TYPE']; ?> :: <strong><?php echo $db->sql_layer; ?></strong><br />
 <?php
 
 if ($debug_from_version !== false)
@@ -865,24 +857,6 @@ _sql($sql, $errored, $error_ary);
 
 // Update the dbms version if everything is ok...
 set_config('dbms_version', $db->sql_server_info(true));
-
-/* Optimize/vacuum analyze the tables where appropriate
-// this should be done for each version in future along with
-// the version number update
-switch ($db->sql_layer)
-{
-	case 'mysql':
-	case 'mysqli':
-	case 'mysql4':
-		$sql = 'OPTIMIZE TABLE ' . $table_prefix . 'auth_access, ' . $table_prefix . 'banlist, ' . $table_prefix . 'categories, ' . $table_prefix . 'config, ' . $table_prefix . 'disallow, ' . $table_prefix . 'forum_prune, ' . $table_prefix . 'forums, ' . $table_prefix . 'groups, ' . $table_prefix . 'posts, ' . $table_prefix . 'posts_text, ' . $table_prefix . 'privmsgs, ' . $table_prefix . 'privmsgs_text, ' . $table_prefix . 'ranks, ' . $table_prefix . 'search_results, ' . $table_prefix . 'search_wordlist, ' . $table_prefix . 'search_wordmatch, ' . $table_prefix . 'sessions_keys' . $table_prefix . 'smilies, ' . $table_prefix . 'themes, ' . $table_prefix . 'themes_name, ' . $table_prefix . 'topics, ' . $table_prefix . 'topics_watch, ' . $table_prefix . 'user_group, ' . $table_prefix . 'users, ' . $table_prefix . 'vote_desc, ' . $table_prefix . 'vote_results, ' . $table_prefix . 'vote_voters, ' . $table_prefix . 'words';
-		_sql($sql, $errored, $error_ary);
-	break;
-
-	case 'postgresql':
-		_sql("VACUUM ANALYZE", $errored, $error_ary);
-	break;
-}
-*/
 
 _write_result($no_updates, $errored, $error_ary);
 
@@ -1607,21 +1581,10 @@ function change_database_data(&$no_updates, $version)
 
 		// Changes from 3.0.3-RC1 to 3.0.3
 		case '3.0.3-RC1':
-			if ($db->sql_layer == 'oracle')
-			{
-				// log_operation is CLOB - but we can change this later
-				$sql = 'UPDATE ' . LOG_TABLE . "
-					SET log_operation = 'LOG_DELETE_TOPIC'
-					WHERE log_operation LIKE 'LOG_TOPIC_DELETED'";
-				_sql($sql, $errored, $error_ary);
-			}
-			else
-			{
-				$sql = 'UPDATE ' . LOG_TABLE . "
-					SET log_operation = 'LOG_DELETE_TOPIC'
-					WHERE log_operation = 'LOG_TOPIC_DELETED'";
-				_sql($sql, $errored, $error_ary);
-			}
+			$sql = 'UPDATE ' . LOG_TABLE . "
+				SET log_operation = 'LOG_DELETE_TOPIC'
+				WHERE log_operation = 'LOG_TOPIC_DELETED'";
+			_sql($sql, $errored, $error_ary);
 
 			$no_updates = false;
 		break;
@@ -2336,42 +2299,6 @@ function change_database_data(&$no_updates, $version)
 				_sql($sql, $errored, $error_ary);
 			}
 			$db->sql_freeresult($result);
-
-			/*
-			* Due to a bug, vanilla phpbb could not create captcha tables
-			* in 3.0.8 on firebird. It was possible for board administrators
-			* to adjust the code to work. If code was manually adjusted by
-			* board administrators, index names would not be the same as
-			* what 3.0.9 and newer expect. This code fragment drops captcha
-			* tables, destroying all entered Q&A captcha configuration, such
-			* that when Q&A is configured next the respective tables will be
-			* created with correct index names.
-			*
-			* If you wish to preserve your Q&A captcha configuration, you can
-			* manually rename indexes to the currently expected name:
-			* 	phpbb_captcha_questions_lang_iso	=> phpbb_captcha_questions_lang
-			* 	phpbb_captcha_answers_question_id	=> phpbb_captcha_answers_qid
-			*
-			* Again, this needs to be done only if a board was manually modified
-			* to fix broken captcha code.
-			*
-			if ($db_tools->sql_layer == 'firebird')
-			{
-				$changes = array(
-					'drop_tables'	=> array(
-						$table_prefix . 'captcha_questions',
-						$table_prefix . 'captcha_answers',
-						$table_prefix . 'qa_confirm',
-					),
-				);
-				$statements = $db_tools->perform_schema_changes($changes);
-
-				foreach ($statements as $sql)
-				{
-					_sql($sql, $errored, $error_ary);
-				}
-			}
-			*/
 
 			$no_updates = false;
 		break;
