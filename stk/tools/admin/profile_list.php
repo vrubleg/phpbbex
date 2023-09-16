@@ -94,24 +94,7 @@ class profile_list
 			if ($empty_only)
 			{
 				$profile_where .= (($profile_where == '') ? ' AND (' : ' OR ');
-
-				switch ($db_tools->sql_layer)
-				{
-					case 'mssql'		:
-					case 'mssqlnative'	:
-						if ($option == 'user_sig')
-						{
-							$profile_where .= "DATALENGTH({$option}) > 0";
-						}
-						else
-						{
-							$profile_where .= "{$option} <> ''";
-						}
-					break;
-
-					default:
-						$profile_where .= "{$option} <> ''";
-				}
+				$profile_where .= "{$option} <> ''";
 			}
 		}
 

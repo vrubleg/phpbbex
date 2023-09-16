@@ -1362,85 +1362,19 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 	switch ($mode)
 	{
 		case 'topic_moved':
-			$db->sql_transaction('begin');
-			switch ($db->sql_layer)
-			{
-				case 'mysql':
-					$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-						USING ' . TOPICS_TABLE . ' t1, ' . TOPICS_TABLE . " t2
-						WHERE t1.topic_moved_id = t2.topic_id
-							AND t1.forum_id = t2.forum_id";
-					$db->sql_query($sql);
-				break;
-
-				default:
-					$sql = 'SELECT t1.topic_id
-						FROM ' .TOPICS_TABLE . ' t1, ' . TOPICS_TABLE . " t2
-						WHERE t1.topic_moved_id = t2.topic_id
-							AND t1.forum_id = t2.forum_id";
-					$result = $db->sql_query($sql);
-
-					$topic_id_ary = array();
-					while ($row = $db->sql_fetchrow($result))
-					{
-						$topic_id_ary[] = $row['topic_id'];
-					}
-					$db->sql_freeresult($result);
-
-					if (!sizeof($topic_id_ary))
-					{
-						return;
-					}
-
-					$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-						WHERE ' . $db->sql_in_set('topic_id', $topic_id_ary);
-					$db->sql_query($sql);
-
-				break;
-			}
-
-			$db->sql_transaction('commit');
+			$sql = 'DELETE FROM ' . TOPICS_TABLE . '
+				USING ' . TOPICS_TABLE . ' t1, ' . TOPICS_TABLE . " t2
+				WHERE t1.topic_moved_id = t2.topic_id
+					AND t1.forum_id = t2.forum_id";
+			$db->sql_query($sql);
 			break;
 
 		case 'topic_approved':
 
-			$db->sql_transaction('begin');
-			switch ($db->sql_layer)
-			{
-				case 'mysql':
-					$sql = 'UPDATE ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-						SET t.topic_approved = p.post_approved
-						$where_sql_and t.topic_first_post_id = p.post_id";
-					$db->sql_query($sql);
-				break;
-
-				default:
-					$sql = 'SELECT t.topic_id, p.post_approved
-						FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-						$where_sql_and p.post_id = t.topic_first_post_id
-							AND p.post_approved <> t.topic_approved";
-					$result = $db->sql_query($sql);
-
-					$topic_ids = array();
-					while ($row = $db->sql_fetchrow($result))
-					{
-						$topic_ids[] = $row['topic_id'];
-					}
-					$db->sql_freeresult($result);
-
-					if (!sizeof($topic_ids))
-					{
-						return;
-					}
-
-					$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET topic_approved = 1 - topic_approved
-						WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
-					$db->sql_query($sql);
-				break;
-			}
-
-			$db->sql_transaction('commit');
+			$sql = 'UPDATE ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
+				SET t.topic_approved = p.post_approved
+				$where_sql_and t.topic_first_post_id = p.post_id";
+			$db->sql_query($sql);
 			break;
 
 		case 'post_reported':
@@ -2338,17 +2272,7 @@ function cache_moderators()
 	$cache->destroy('sql', MODERATOR_CACHE_TABLE);
 
 	// Clear table
-	switch ($db->sql_layer)
-	{
-		case 'sqlite':
-		case 'firebird':
-			$db->sql_query('DELETE FROM ' . MODERATOR_CACHE_TABLE);
-		break;
-
-		default:
-			$db->sql_query('TRUNCATE TABLE ' . MODERATOR_CACHE_TABLE);
-		break;
-	}
+	$db->sql_query('TRUNCATE TABLE ' . MODERATOR_CACHE_TABLE);
 
 	// We add moderators who have forum moderator permissions without an explicit ACL_NEVER setting
 	$hold_ary = $ug_id_ary = $sql_ary = array();
@@ -2854,39 +2778,12 @@ function update_foes($group_id = false, $user_id = false)
 			return;
 		}
 
-		switch ($db->sql_layer)
-		{
-			case 'mysql':
-				$sql = 'DELETE z.*
-					FROM ' . ZEBRA_TABLE . ' z, ' . USER_GROUP_TABLE . ' ug
-					WHERE z.zebra_id = ug.user_id
-						AND z.foe = 1
-						AND ' . $db->sql_in_set('ug.group_id', $groups);
-				$db->sql_query($sql);
-			break;
-
-			default:
-				$sql = 'SELECT user_id
-					FROM ' . USER_GROUP_TABLE . '
-					WHERE ' . $db->sql_in_set('group_id', $groups);
-				$result = $db->sql_query($sql);
-
-				$users = array();
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$users[] = (int) $row['user_id'];
-				}
-				$db->sql_freeresult($result);
-
-				if (sizeof($users))
-				{
-					$sql = 'DELETE FROM ' . ZEBRA_TABLE . '
-						WHERE ' . $db->sql_in_set('zebra_id', $users) . '
-							AND foe = 1';
-					$db->sql_query($sql);
-				}
-			break;
-		}
+		$sql = 'DELETE z.*
+			FROM ' . ZEBRA_TABLE . ' z, ' . USER_GROUP_TABLE . ' ug
+			WHERE z.zebra_id = ug.user_id
+				AND z.foe = 1
+				AND ' . $db->sql_in_set('ug.group_id', $groups);
+		$db->sql_query($sql);
 
 		return;
 	}
@@ -3006,38 +2903,30 @@ function get_database_size()
 {
 	global $db, $user, $table_prefix;
 
-	$database_size = false;
+	$sql = "SHOW TABLE STATUS FROM `{$db->dbname}`";
+	$result = $db->sql_query($sql, 7200);
 
-	// This code is heavily influenced by a similar routine in phpMyAdmin 2.2.0
-	if ($db->sql_layer == 'mysql')
+	$database_size = 0;
+	while ($row = $db->sql_fetchrow($result))
 	{
-		$sql = "SHOW TABLE STATUS FROM `{$db->dbname}`";
-		$result = $db->sql_query($sql, 7200);
-
-		$database_size = 0;
-		while ($row = $db->sql_fetchrow($result))
+		if ((isset($row['Type']) && $row['Type'] != 'MRG_MyISAM') || (isset($row['Engine']) && ($row['Engine'] == 'MyISAM' || $row['Engine'] == 'InnoDB')))
 		{
-			if ((isset($row['Type']) && $row['Type'] != 'MRG_MyISAM') || (isset($row['Engine']) && ($row['Engine'] == 'MyISAM' || $row['Engine'] == 'InnoDB')))
+			if ($table_prefix != '')
 			{
-				if ($table_prefix != '')
-				{
-					if (strpos($row['Name'], $table_prefix) !== false)
-					{
-						$database_size += $row['Data_length'] + $row['Index_length'];
-					}
-				}
-				else
+				if (strpos($row['Name'], $table_prefix) !== false)
 				{
 					$database_size += $row['Data_length'] + $row['Index_length'];
 				}
 			}
+			else
+			{
+				$database_size += $row['Data_length'] + $row['Index_length'];
+			}
 		}
-		$db->sql_freeresult($result);
 	}
+	$db->sql_freeresult($result);
 
-	$database_size = ($database_size !== false) ? get_formatted_filesize($database_size) : $user->lang['NOT_AVAILABLE'];
-
-	return $database_size;
+	return $database_size ? get_formatted_filesize($database_size) : $user->lang['NOT_AVAILABLE'];
 }
 
 /**

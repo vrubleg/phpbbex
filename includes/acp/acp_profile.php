@@ -113,58 +113,7 @@ class acp_profile
 					$db->sql_query('DELETE FROM ' . PROFILE_FIELDS_TABLE . " WHERE field_id = $field_id");
 					$db->sql_query('DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . " WHERE field_id = $field_id");
 					$db->sql_query('DELETE FROM ' . PROFILE_LANG_TABLE . " WHERE field_id = $field_id");
-
-					switch ($db->sql_layer)
-					{
-						case 'sqlite':
-							$sql = "SELECT sql
-								FROM sqlite_master
-								WHERE type = 'table'
-									AND name = '" . PROFILE_FIELDS_DATA_TABLE . "'
-								ORDER BY type DESC, name;";
-							$result = $db->sql_query($sql);
-							$row = $db->sql_fetchrow($result);
-							$db->sql_freeresult($result);
-
-							// Create a temp table and populate it, destroy the existing one
-							$db->sql_query(preg_replace('#CREATE\s+TABLE\s+"?' . PROFILE_FIELDS_DATA_TABLE . '"?#i', 'CREATE TEMPORARY TABLE ' . PROFILE_FIELDS_DATA_TABLE . '_temp', $row['sql']));
-							$db->sql_query('INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . '_temp SELECT * FROM ' . PROFILE_FIELDS_DATA_TABLE);
-							$db->sql_query('DROP TABLE ' . PROFILE_FIELDS_DATA_TABLE);
-
-							preg_match('#\((.*)\)#s', $row['sql'], $matches);
-
-							$new_table_cols = trim($matches[1]);
-							$old_table_cols = preg_split('/,(?=[\\sa-z])/im', $new_table_cols);
-							$column_list = array();
-
-							foreach ($old_table_cols as $declaration)
-							{
-								$entities = preg_split('#\s+#', trim($declaration));
-
-								if ($entities[0] == 'PRIMARY')
-								{
-									continue;
-								}
-
-								if ($entities[0] !== 'pf_' . $field_ident)
-								{
-									$column_list[] = $entities[0];
-								}
-							}
-
-							$columns = implode(',', $column_list);
-
-							$new_table_cols = preg_replace('/' . 'pf_' . $field_ident . '[^,]+,/', '', $new_table_cols);
-
-							// create a new table and fill it up. destroy the temp one
-							$db->sql_query('CREATE TABLE ' . PROFILE_FIELDS_DATA_TABLE . ' (' . $new_table_cols . ');');
-							$db->sql_query('INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . ' (' . $columns . ') SELECT ' . $columns . ' FROM ' . PROFILE_FIELDS_DATA_TABLE . '_temp;');
-							$db->sql_query('DROP TABLE ' . PROFILE_FIELDS_DATA_TABLE . '_temp');
-						break;
-
-						default:
-							$db->sql_query('ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " DROP COLUMN pf_$field_ident");
-					}
+					$db->sql_query('ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " DROP COLUMN pf_$field_ident");
 
 					$order = 0;
 
@@ -1383,262 +1332,35 @@ class acp_profile
 	{
 		global $db;
 
-		switch ($db->sql_layer)
+		// We are defining the biggest common value, because of the possibility to edit the min/max values of each field.
+		$sql = 'ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " ADD `$field_ident` ";
+
+		switch ($field_type)
 		{
-			case 'mysql':
-
-				// We are defining the biggest common value, because of the possibility to edit the min/max values of each field.
-				$sql = 'ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " ADD `$field_ident` ";
-
-				switch ($field_type)
-				{
-					case FIELD_STRING:
-						$sql .= ' VARCHAR(255) ';
-					break;
-
-					case FIELD_DATE:
-						$sql .= 'VARCHAR(10) ';
-					break;
-
-					case FIELD_TEXT:
-						$sql .= "TEXT";
-		//						ADD {$field_ident}_bbcode_uid VARCHAR(5) NOT NULL,
-		//						ADD {$field_ident}_bbcode_bitfield INT(11) UNSIGNED";
-					break;
-
-					case FIELD_BOOL:
-						$sql .= 'TINYINT(2) ';
-					break;
-
-					case FIELD_DROPDOWN:
-						$sql .= 'MEDIUMINT(8) ';
-					break;
-
-					case FIELD_INT:
-						$sql .= 'BIGINT(20) ';
-					break;
-				}
-
+			case FIELD_STRING:
+				$sql .= ' VARCHAR(255) ';
 			break;
 
-			case 'sqlite':
-
-				switch ($field_type)
-				{
-					case FIELD_STRING:
-						$type = ' VARCHAR(255) ';
-					break;
-
-					case FIELD_DATE:
-						$type = 'VARCHAR(10) ';
-					break;
-
-					case FIELD_TEXT:
-						$type = "TEXT(65535)";
-		//						ADD {$field_ident}_bbcode_uid VARCHAR(5) NOT NULL,
-		//						ADD {$field_ident}_bbcode_bitfield INT(11) UNSIGNED";
-					break;
-
-					case FIELD_BOOL:
-						$type = 'TINYINT(2) ';
-					break;
-
-					case FIELD_DROPDOWN:
-						$type = 'MEDIUMINT(8) ';
-					break;
-
-					case FIELD_INT:
-						$type = 'BIGINT(20) ';
-					break;
-				}
-
-				// We are defining the biggest common value, because of the possibility to edit the min/max values of each field.
-				if (version_compare(sqlite_libversion(), '3.0') == -1)
-				{
-					$sql = "SELECT sql
-						FROM sqlite_master
-						WHERE type = 'table'
-							AND name = '" . PROFILE_FIELDS_DATA_TABLE . "'
-						ORDER BY type DESC, name;";
-					$result = $db->sql_query($sql);
-					$row = $db->sql_fetchrow($result);
-					$db->sql_freeresult($result);
-
-					// Create a temp table and populate it, destroy the existing one
-					$db->sql_query(preg_replace('#CREATE\s+TABLE\s+"?' . PROFILE_FIELDS_DATA_TABLE . '"?#i', 'CREATE TEMPORARY TABLE ' . PROFILE_FIELDS_DATA_TABLE . '_temp', $row['sql']));
-					$db->sql_query('INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . '_temp SELECT * FROM ' . PROFILE_FIELDS_DATA_TABLE);
-					$db->sql_query('DROP TABLE ' . PROFILE_FIELDS_DATA_TABLE);
-
-					preg_match('#\((.*)\)#s', $row['sql'], $matches);
-
-					$new_table_cols = trim($matches[1]);
-					$old_table_cols = explode(',', $new_table_cols);
-					$column_list = array();
-
-					foreach ($old_table_cols as $declaration)
-					{
-						$entities = preg_split('#\s+#', trim($declaration));
-						if ($entities[0] == 'PRIMARY')
-						{
-							continue;
-						}
-						$column_list[] = $entities[0];
-					}
-
-					$columns = implode(',', $column_list);
-
-					$new_table_cols = $field_ident . ' ' . $type . ',' . $new_table_cols;
-
-					// create a new table and fill it up. destroy the temp one
-					$db->sql_query('CREATE TABLE ' . PROFILE_FIELDS_DATA_TABLE . ' (' . $new_table_cols . ');');
-					$db->sql_query('INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . ' (' . $columns . ') SELECT ' . $columns . ' FROM ' . PROFILE_FIELDS_DATA_TABLE . '_temp;');
-					$db->sql_query('DROP TABLE ' . PROFILE_FIELDS_DATA_TABLE . '_temp');
-				}
-				else
-				{
-					$sql = 'ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " ADD $field_ident [$type]";
-				}
-
+			case FIELD_DATE:
+				$sql .= 'VARCHAR(10) ';
 			break;
 
-			case 'mssql':
-			case 'mssql_odbc':
-			case 'mssqlnative':
-
-				// We are defining the biggest common value, because of the possibility to edit the min/max values of each field.
-				$sql = 'ALTER TABLE [' . PROFILE_FIELDS_DATA_TABLE . "] ADD [$field_ident] ";
-
-				switch ($field_type)
-				{
-					case FIELD_STRING:
-						$sql .= ' [VARCHAR] (255) ';
-					break;
-
-					case FIELD_DATE:
-						$sql .= '[VARCHAR] (10) ';
-					break;
-
-					case FIELD_TEXT:
-						$sql .= "[TEXT]";
-		//						ADD {$field_ident}_bbcode_uid [VARCHAR] (5) NOT NULL,
-		//						ADD {$field_ident}_bbcode_bitfield [INT] UNSIGNED";
-					break;
-
-					case FIELD_BOOL:
-					case FIELD_DROPDOWN:
-						$sql .= '[INT] ';
-					break;
-
-					case FIELD_INT:
-						$sql .= '[FLOAT] ';
-					break;
-				}
-
+			case FIELD_TEXT:
+				$sql .= "TEXT";
+//						ADD {$field_ident}_bbcode_uid VARCHAR(5) NOT NULL,
+//						ADD {$field_ident}_bbcode_bitfield INT(11) UNSIGNED";
 			break;
 
-			case 'postgres':
-
-				// We are defining the biggest common value, because of the possibility to edit the min/max values of each field.
-				$sql = 'ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " ADD COLUMN \"$field_ident\" ";
-
-				switch ($field_type)
-				{
-					case FIELD_STRING:
-						$sql .= ' VARCHAR(255) ';
-					break;
-
-					case FIELD_DATE:
-						$sql .= 'VARCHAR(10) ';
-					break;
-
-					case FIELD_TEXT:
-						$sql .= "TEXT";
-		//						ADD {$field_ident}_bbcode_uid VARCHAR(5) NOT NULL,
-		//						ADD {$field_ident}_bbcode_bitfield INT4 UNSIGNED";
-					break;
-
-					case FIELD_BOOL:
-						$sql .= 'INT2 ';
-					break;
-
-					case FIELD_DROPDOWN:
-						$sql .= 'INT4 ';
-					break;
-
-					case FIELD_INT:
-						$sql .= 'INT8 ';
-					break;
-				}
-
+			case FIELD_BOOL:
+				$sql .= 'TINYINT(2) ';
 			break;
 
-			case 'firebird':
-
-				// We are defining the biggest common value, because of the possibility to edit the min/max values of each field.
-				$sql = 'ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . ' ADD "' . strtoupper($field_ident) . '" ';
-
-				switch ($field_type)
-				{
-					case FIELD_STRING:
-						$sql .= ' VARCHAR(255) ';
-					break;
-
-					case FIELD_DATE:
-						$sql .= 'VARCHAR(10) ';
-					break;
-
-					case FIELD_TEXT:
-						$sql .= "BLOB SUB_TYPE TEXT";
-		//						ADD {$field_ident}_bbcode_uid VARCHAR(5) NOT NULL,
-		//						ADD {$field_ident}_bbcode_bitfield INTEGER UNSIGNED";
-					break;
-
-					case FIELD_BOOL:
-					case FIELD_DROPDOWN:
-						$sql .= 'INTEGER ';
-					break;
-
-					case FIELD_INT:
-						$sql .= 'DOUBLE PRECISION ';
-					break;
-				}
-
+			case FIELD_DROPDOWN:
+				$sql .= 'MEDIUMINT(8) ';
 			break;
 
-			case 'oracle':
-
-				// We are defining the biggest common value, because of the possibility to edit the min/max values of each field.
-				$sql = 'ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " ADD $field_ident ";
-
-				switch ($field_type)
-				{
-					case FIELD_STRING:
-						$sql .= ' VARCHAR2(255) ';
-					break;
-
-					case FIELD_DATE:
-						$sql .= 'VARCHAR2(10) ';
-					break;
-
-					case FIELD_TEXT:
-						$sql .= "CLOB";
-		//						ADD {$field_ident}_bbcode_uid VARCHAR2(5) NOT NULL,
-		//						ADD {$field_ident}_bbcode_bitfield NUMBER(11) UNSIGNED";
-					break;
-
-					case FIELD_BOOL:
-						$sql .= 'NUMBER(2) ';
-					break;
-
-					case FIELD_DROPDOWN:
-						$sql .= 'NUMBER(8) ';
-					break;
-
-					case FIELD_INT:
-						$sql .= 'NUMBER(20) ';
-					break;
-				}
-
+			case FIELD_INT:
+				$sql .= 'BIGINT(20) ';
 			break;
 		}
 

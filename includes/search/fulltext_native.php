@@ -648,56 +648,6 @@ class fulltext_native extends search_backend
 
 		$sql_array['WHERE'] = implode(' AND ', $sql_where);
 
-		$is_mysql = false;
-		// if the total result count is not cached yet, retrieve it from the db
-		if (!$total_results)
-		{
-			$sql = '';
-			$sql_array_count = $sql_array;
-
-			if ($left_join_topics)
-			{
-				$sql_array_count['LEFT_JOIN'][] = array(
-					'FROM'	=> array(TOPICS_TABLE => 't'),
-					'ON'	=> 'p.topic_id = t.topic_id'
-				);
-			}
-
-			switch ($db->sql_layer)
-			{
-				case 'mysql':
-
-					// 3.x does not support SQL_CALC_FOUND_ROWS
-					// $sql_array['SELECT'] = 'SQL_CALC_FOUND_ROWS ' . $sql_array['SELECT'];
-					$is_mysql = true;
-
-				break;
-
-				case 'sqlite':
-					$sql_array_count['SELECT'] = ($type == 'posts') ? 'DISTINCT p.post_id' : 'DISTINCT p.topic_id';
-					$sql = 'SELECT COUNT(' . (($type == 'posts') ? 'post_id' : 'topic_id') . ') as total_results
-							FROM (' . $db->sql_build_query('SELECT', $sql_array_count) . ')';
-
-				// no break
-
-				default:
-					$sql_array_count['SELECT'] = ($type == 'posts') ? 'COUNT(DISTINCT p.post_id) AS total_results' : 'COUNT(DISTINCT p.topic_id) AS total_results';
-					$sql = (!$sql) ? $db->sql_build_query('SELECT', $sql_array_count) : $sql;
-
-					$result = $db->sql_query($sql);
-					$total_results = (int) $db->sql_fetchfield('total_results');
-					$db->sql_freeresult($result);
-
-					if (!$total_results)
-					{
-						return false;
-					}
-				break;
-			}
-
-			unset($sql_array_count, $sql);
-		}
-
 		// Build sql strings for sorting
 		$sql_sort = $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
 
@@ -746,10 +696,9 @@ class fulltext_native extends search_backend
 			return false;
 		}
 
-		// if we use mysql and the total result count is not cached yet, retrieve it from the db
-		if (!$total_results && $is_mysql)
+		// If the cache was completely empty count the results
+		if (!$total_results)
 		{
-			// Count rows for the executed queries. Replace $select within $sql with SQL_CALC_FOUND_ROWS, and run it.
 			$sql_array_copy = $sql_array;
 			$sql_array_copy['SELECT'] = 'SQL_CALC_FOUND_ROWS p.post_id ';
 
@@ -883,63 +832,6 @@ class fulltext_native extends search_backend
 		}
 
 		$select = ($type == 'posts') ? 'p.post_id' : 't.topic_id';
-		$is_mysql = false;
-
-		// If the cache was completely empty count the results
-		if (!$total_results)
-		{
-			switch ($db->sql_layer)
-			{
-				case 'mysql':
-//					$select = 'SQL_CALC_FOUND_ROWS ' . $select;
-					$is_mysql = true;
-				break;
-
-				default:
-					if ($type == 'posts')
-					{
-						$sql = 'SELECT COUNT(p.post_id) as total_results
-							FROM ' . POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . TOPICS_TABLE . ' t ' : ' ') . "
-							WHERE $sql_author
-								$sql_topic_id
-								$sql_firstpost
-								$m_approve_fid_sql
-								$sql_fora
-								$sql_time";
-					}
-					else
-					{
-						if ($db->sql_layer == 'sqlite')
-						{
-							$sql = 'SELECT COUNT(topic_id) as total_results
-								FROM (SELECT DISTINCT t.topic_id';
-						}
-						else
-						{
-							$sql = 'SELECT COUNT(DISTINCT t.topic_id) as total_results';
-						}
-
-						$sql .= ' FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-							WHERE $sql_author
-								$sql_topic_id
-								$sql_firstpost
-								$m_approve_fid_sql
-								$sql_fora
-								AND t.topic_id = p.topic_id
-								$sql_time" . (($db->sql_layer == 'sqlite') ? ')' : '');
-					}
-					$result = $db->sql_query($sql);
-
-					$total_results = (int) $db->sql_fetchfield('total_results');
-					$db->sql_freeresult($result);
-
-					if (!$total_results)
-					{
-						return false;
-					}
-				break;
-			}
-		}
 
 		// Build the query for really selecting the post_ids
 		if ($type == 'posts')
@@ -982,9 +874,9 @@ class fulltext_native extends search_backend
 		}
 		$db->sql_freeresult($result);
 
-		if (!$total_results && $is_mysql)
+		// If the cache was completely empty count the results
+		if (!$total_results)
 		{
-			// Count rows for the executed queries. Replace $select within $sql with SQL_CALC_FOUND_ROWS, and run it.
 			$sql = str_replace('SELECT ' . $select, 'SELECT DISTINCT SQL_CALC_FOUND_ROWS p.post_id', $sql);
 
 			$result = $db->sql_query($sql);
@@ -1391,21 +1283,9 @@ class fulltext_native extends search_backend
 	{
 		global $db;
 
-		switch ($db->sql_layer)
-		{
-			case 'sqlite':
-			case 'firebird':
-				$db->sql_query('DELETE FROM ' . SEARCH_WORDLIST_TABLE);
-				$db->sql_query('DELETE FROM ' . SEARCH_WORDMATCH_TABLE);
-				$db->sql_query('DELETE FROM ' . SEARCH_RESULTS_TABLE);
-			break;
-
-			default:
-				$db->sql_query('TRUNCATE TABLE ' . SEARCH_WORDLIST_TABLE);
-				$db->sql_query('TRUNCATE TABLE ' . SEARCH_WORDMATCH_TABLE);
-				$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
-			break;
-		}
+		$db->sql_query('TRUNCATE TABLE ' . SEARCH_WORDLIST_TABLE);
+		$db->sql_query('TRUNCATE TABLE ' . SEARCH_WORDMATCH_TABLE);
+		$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
 	}
 
 	/**

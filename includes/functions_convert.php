@@ -1637,32 +1637,9 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 		switch ($sql_type)
 		{
 			case 'insert':
-				switch ($db->sql_layer)
-				{
-					case 'mysql':
-						$sql = 'VALUES ' . implode(', ', preg_replace('#^(.*?)$#', '(\1)', $sql_subary));
-					break;
-
-					case 'mssql':
-					case 'sqlite':
-					case 'mssqlnative':
-						$sql = implode(' UNION ALL ', preg_replace('#^(.*?)$#', 'SELECT \1', $sql_subary));
-					break;
-
-					default:
-						foreach ($sql_subary as $sql)
-						{
-							$sql = "INSERT INTO $table ($id_field, forum_id, auth_option_id, auth_setting) VALUES ($sql)";
-							$db->sql_query($sql);
-							$sql = '';
-						}
-				}
-
-				if ($sql != '')
-				{
-					$sql = "INSERT INTO $table ($id_field, forum_id, auth_option_id, auth_setting) $sql";
-					$db->sql_query($sql);
-				}
+				$sql = "INSERT INTO $table ($id_field, forum_id, auth_option_id, auth_setting)
+					VALUES " . implode(', ', preg_replace('#^(.*?)$#', '(\1)', $sql_subary));
+				$db->sql_query($sql);
 			break;
 
 			case 'update':
@@ -1980,17 +1957,7 @@ function update_topics_posted()
 {
 	global $db, $config;
 
-	switch ($db->sql_layer)
-	{
-		case 'sqlite':
-		case 'firebird':
-			$db->sql_query('DELETE FROM ' . TOPICS_POSTED_TABLE);
-		break;
-
-		default:
-			$db->sql_query('TRUNCATE TABLE ' . TOPICS_POSTED_TABLE);
-		break;
-	}
+	$db->sql_query('TRUNCATE TABLE ' . TOPICS_POSTED_TABLE);
 
 	// This can get really nasty... therefore we only do the last six months
 	$get_from_time = time() - (6 * 4 * 7 * 24 * 60 * 60);

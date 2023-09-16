@@ -1682,93 +1682,30 @@ class acp_forums
 		}
 		$db->sql_freeresult($result);
 
-		switch ($db->sql_layer)
+		// Delete everything else and thank MySQL for offering multi-table deletion
+		$tables_ary = array(
+			SEARCH_WORDMATCH_TABLE	=> 'post_id',
+			REPORTS_TABLE			=> 'post_id',
+			WARNINGS_TABLE			=> 'post_id',
+			BOOKMARKS_TABLE			=> 'topic_id',
+			TOPICS_WATCH_TABLE		=> 'topic_id',
+			TOPICS_POSTED_TABLE		=> 'topic_id',
+			POLL_OPTIONS_TABLE		=> 'topic_id',
+			POLL_VOTES_TABLE		=> 'topic_id',
+		);
+
+		$sql = 'DELETE ' . POSTS_TABLE;
+		$sql_using = "\nFROM " . POSTS_TABLE;
+		$sql_where = "\nWHERE " . POSTS_TABLE . ".forum_id = $forum_id\n";
+
+		foreach ($tables_ary as $table => $field)
 		{
-			case 'mysql':
-
-				// Delete everything else and thank MySQL for offering multi-table deletion
-				$tables_ary = array(
-					SEARCH_WORDMATCH_TABLE	=> 'post_id',
-					REPORTS_TABLE			=> 'post_id',
-					WARNINGS_TABLE			=> 'post_id',
-					BOOKMARKS_TABLE			=> 'topic_id',
-					TOPICS_WATCH_TABLE		=> 'topic_id',
-					TOPICS_POSTED_TABLE		=> 'topic_id',
-					POLL_OPTIONS_TABLE		=> 'topic_id',
-					POLL_VOTES_TABLE		=> 'topic_id',
-				);
-
-				$sql = 'DELETE ' . POSTS_TABLE;
-				$sql_using = "\nFROM " . POSTS_TABLE;
-				$sql_where = "\nWHERE " . POSTS_TABLE . ".forum_id = $forum_id\n";
-
-				foreach ($tables_ary as $table => $field)
-				{
-					$sql .= ", $table ";
-					$sql_using .= ", $table ";
-					$sql_where .= "\nAND $table.$field = " . POSTS_TABLE . ".$field";
-				}
-
-				$db->sql_query($sql . $sql_using . $sql_where);
-
-			break;
-
-			default:
-
-				// Delete everything else and curse your DB for not offering multi-table deletion
-				$tables_ary = array(
-					'post_id'	=>	array(
-						SEARCH_WORDMATCH_TABLE,
-						REPORTS_TABLE,
-						WARNINGS_TABLE,
-					),
-
-					'topic_id'	=>	array(
-						BOOKMARKS_TABLE,
-						TOPICS_WATCH_TABLE,
-						TOPICS_POSTED_TABLE,
-						POLL_OPTIONS_TABLE,
-						POLL_VOTES_TABLE,
-					)
-				);
-
-				// Amount of rows we select and delete in one iteration.
-				$batch_size = 500;
-
-				foreach ($tables_ary as $field => $tables)
-				{
-					$start = 0;
-
-					do
-					{
-						$sql = "SELECT $field
-							FROM " . POSTS_TABLE . '
-							WHERE forum_id = ' . $forum_id;
-						$result = $db->sql_query_limit($sql, $batch_size, $start);
-
-						$ids = array();
-						while ($row = $db->sql_fetchrow($result))
-						{
-							$ids[] = $row[$field];
-						}
-						$db->sql_freeresult($result);
-
-						if (sizeof($ids))
-						{
-							$start += sizeof($ids);
-
-							foreach ($tables as $table)
-							{
-								$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set($field, $ids));
-							}
-						}
-					}
-					while (sizeof($ids) == $batch_size);
-				}
-				unset($ids);
-
-			break;
+			$sql .= ", $table ";
+			$sql_using .= ", $table ";
+			$sql_where .= "\nAND $table.$field = " . POSTS_TABLE . ".$field";
 		}
+
+		$db->sql_query($sql . $sql_using . $sql_where);
 
 		$table_ary = array(FORUMS_ACCESS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE, POSTS_TABLE, TOPICS_TABLE, TOPICS_TRACK_TABLE);
 
