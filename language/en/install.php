@@ -23,7 +23,6 @@ $lang = array_merge($lang, array(
 	'ADMIN_TEST'				=> 'Check administrator settings',
 	'ADMIN_USERNAME'			=> 'Administrator username',
 	'ADMIN_USERNAME_EXPLAIN'	=> 'Please enter a username between 3 and 20 characters in length.',
-	'APP_MAGICK'				=> 'Imagemagick support [ Attachments ]',
 	'AUTHOR_NOTES'				=> 'Author notes<br />» %s',
 	'AVAILABLE'					=> 'Available',
 	'AVAILABLE_CONVERTORS'		=> 'Available convertors',
@@ -241,7 +240,6 @@ $lang = array_merge($lang, array(
 	'NOT_UNDERSTAND'			=> 'Could not understand %s #%d, table %s (“%s”)',
 	'NO_CONVERTORS'				=> 'No convertors are available for use.',
 	'NO_CONVERT_SPECIFIED'		=> 'No convertor specified.',
-	'NO_LOCATION'				=> 'Cannot determine location. If you know Imagemagick is installed, you may specify the location later within your administration control panel',
 	'NO_TABLES_FOUND'			=> 'No tables found.',
 
 	'OVERVIEW_BODY'				=> 'Welcome to phpBBex!<br /><br />phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a href="//phpbbex.com/forum/viewtopic.php?t=28">More...</a><br /><br />This installation system will guide you through installing phpBB3. For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>. To install, please select the appropriate tab above.',

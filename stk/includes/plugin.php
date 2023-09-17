@@ -154,7 +154,7 @@ class plugin
 		}
 
 		$tool_path = $this->tool_box_path . $tool_cat . '/' . $tool_name . '.php';
-		if (false === (@include $tool_path))
+		if (false === (@include($tool_path)))
 		{
 			trigger_error(sprintf($user->lang['TOOL_INCLUTION_NOT_FOUND'], $tool_path), E_USER_ERROR);
 		}

@@ -126,7 +126,7 @@ class resync_user_groups
 		{
 			if (!class_exists($class))
 			{
-				require STK_ROOT_PATH . "includes/resync_user_groups/{$class}.php";
+				require(STK_ROOT_PATH . "includes/resync_user_groups/{$class}.php");
 			}
 		}
 	}
