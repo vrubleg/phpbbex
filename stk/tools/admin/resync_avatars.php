@@ -94,10 +94,10 @@ class resync_avatars
 
 				$ext		= substr(strrchr($row['avatar'], '.'), 1);
 				$filename	= (int) $row['avatar'];
-				$path		= PHPBB_ROOT_PATH . $config['avatar_path'] . '/' . ((isset($avatar_group)) ? 'g' : '') . $filename . '.' . $ext;
-				if (!file_exists($path))
+				$path		= PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . ((isset($avatar_group)) ? 'g' : '') . $filename . '.' . $ext;
+				if (!file_exists($path) && isset($config['avatar_salt']))
 				{
-					$oldstyle = PHPBB_ROOT_PATH . $config['avatar_path'] . '/' . $config['avatar_salt'] . '_' . ((isset($avatar_group)) ? 'g' : '') . $filename . '.' . $ext;
+					$oldstyle = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $config['avatar_salt'] . '_' . ((isset($avatar_group)) ? 'g' : '') . $filename . '.' . $ext;
 					if (file_exists($oldstyle))
 					{
 						if (!rename($oldstyle, $path)) continue;
@@ -107,7 +107,7 @@ class resync_avatars
 			}
 			else if ($row['avatar_type'] == AVATAR_GALLERY)
 			{
-				$path	= PHPBB_ROOT_PATH . $config['avatar_gallery_path'] . "/{$row['avatar']}";
+				$path	= PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . "/{$row['avatar']}";
 			}
 
 			if (file_exists($path))

@@ -428,7 +428,7 @@ function import_avatar_gallery($gallery_name = '', $subdirs_as_galleries = false
 	if (is_dir($src_path))
 	{
 		// Do not die on failure... safe mode restrictions may be in effect.
-		copy_dir($convert->convertor['avatar_gallery_path'], path($config['avatar_gallery_path']) . $gallery_name, !$subdirs_as_galleries, false, false, $relative_path);
+		copy_dir($convert->convertor['avatar_gallery_path'], path(AVATAR_GALLERY_PATH) . $gallery_name, !$subdirs_as_galleries, false, false, $relative_path);
 
 		// only doing 1 level deep. (ibf 1.x)
 		// notes: ibf has 2 tiers: directly in the avatar directory for base gallery (handled in the above statement), plus subdirs(handled below).
@@ -474,7 +474,7 @@ function import_avatar_gallery($gallery_name = '', $subdirs_as_galleries = false
 				$dir = $dirlist[$i];
 
 				// Do not die on failure... safe mode restrictions may be in effect.
-				copy_dir(path($convert->convertor['avatar_gallery_path'], $relative_path) . $dir, path($config['avatar_gallery_path']) . $dir, true, false, false, $relative_path);
+				copy_dir(path($convert->convertor['avatar_gallery_path'], $relative_path) . $dir, path(AVATAR_GALLERY_PATH) . $dir, true, false, false, $relative_path);
 			}
 		}
 	}

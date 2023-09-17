@@ -47,13 +47,10 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_method', 'db'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_smilies_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '10240');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_gallery_path', 'images/avatars/gallery');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_height', '100');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_width', '100');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_height', '64');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_width', '64');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_path', 'images/avatars/upload');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_salt', 'phpbb_avatar');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('board_contact', 'contact@yourdomain.tld');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('board_disable', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('board_disable_msg', '{L_BOARD_DISABLE_DEFAULT}');

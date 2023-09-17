@@ -23,6 +23,8 @@ define('PHPBB_VERSION', '3.0.14');
 
 // Paths
 define('UPLOADS_PATH', 'files');
+define('AVATAR_UPLOADS_PATH', 'images/avatars/upload');
+define('AVATAR_GALLERY_PATH', 'images/avatars/gallery');
 
 // User related
 define('ANONYMOUS', 1);
