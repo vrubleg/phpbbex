@@ -247,7 +247,20 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 	// Remove obsolete config values.
 
-	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('forward_pm', 'print_pm', 'email_function_name', 'premium_key', 'img_imagick', 'upload_path', 'avatar_gallery_path', 'avatar_path', 'avatar_salt')");
+	$obsolete_values = [
+		'forward_pm',
+		'print_pm',
+		'email_function_name',
+		'premium_key',
+		'img_imagick',
+		'upload_path',
+		'avatar_gallery_path',
+		'avatar_path',
+		'avatar_salt',
+		'ranks_path',
+	];
+
+	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
 
 	// Update DB schema version.
 
