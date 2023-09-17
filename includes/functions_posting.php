@@ -113,7 +113,7 @@ function generate_smilies($mode, $forum_id)
 			$template->assign_block_vars('smiley', array(
 				'SMILEY_CODE'	=> $row['code'],
 				'A_SMILEY_CODE'	=> addslashes($row['code']),
-				'SMILEY_IMG'	=> $root_path . $config['smilies_path'] . '/' . $row['smiley_url'],
+				'SMILEY_IMG'	=> $root_path . SMILIES_PATH . '/' . $row['smiley_url'],
 				'SMILEY_WIDTH'	=> $row['smiley_width'],
 				'SMILEY_HEIGHT'	=> $row['smiley_height'],
 				'SMILEY_DESC'	=> isset($user->lang[$row['emotion']]) ? $user->lang[$row['emotion']] : $row['emotion'],
@@ -290,7 +290,7 @@ function posting_gen_topic_icons($mode, $icon_id)
 			{
 				$template->assign_block_vars('topic_icon', array(
 					'ICON_ID'		=> $id,
-					'ICON_IMG'		=> $root_path . $config['icons_path'] . '/' . $data['img'],
+					'ICON_IMG'		=> $root_path . TOPIC_ICONS_PATH . '/' . $data['img'],
 					'ICON_WIDTH'	=> $data['width'],
 					'ICON_HEIGHT'	=> $data['height'],
 

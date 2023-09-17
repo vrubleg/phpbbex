@@ -26,6 +26,9 @@ define('UPLOADS_PATH', 'files');
 define('AVATAR_UPLOADS_PATH', 'images/avatars/upload');
 define('AVATAR_GALLERY_PATH', 'images/avatars/gallery');
 define('RANK_IMAGES_PATH', 'images/ranks');
+define('SMILIES_PATH', 'images/smilies');
+define('TOPIC_ICONS_PATH', 'images/icons');
+define('FILE_ICONS_PATH', 'images/upload_icons');
 
 // User related
 define('ANONYMOUS', 1);

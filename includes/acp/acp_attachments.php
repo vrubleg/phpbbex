@@ -663,12 +663,10 @@ class acp_attachments
 						$size_format = $max_filesize['si_identifier'];
 						$ext_group_row['max_filesize'] = $max_filesize['value'];
 
-						$img_path = $config['upload_icons_path'];
-
 						$filename_list = '';
 						$no_image_select = false;
 
-						$imglist = filelist($phpbb_root_path . $img_path);
+						$imglist = filelist($phpbb_root_path . FILE_ICONS_PATH);
 
 						if (!empty($imglist['']))
 						{
@@ -714,13 +712,13 @@ class acp_attachments
 						}
 
 						$template->assign_vars(array(
-							'IMG_PATH'				=> $img_path,
+							'IMG_PATH'				=> FILE_ICONS_PATH,
 							'ACTION'				=> $action,
 							'GROUP_ID'				=> $group_id,
 							'GROUP_NAME'			=> $ext_group_row['group_name'],
 							'ALLOW_GROUP'			=> $ext_group_row['allow_group'],
 							'ALLOW_IN_PM'			=> $ext_group_row['allow_in_pm'],
-							'UPLOAD_ICON_SRC'		=> $phpbb_root_path . $img_path . '/' . $ext_group_row['upload_icon'],
+							'UPLOAD_ICON_SRC'		=> $phpbb_root_path . FILE_ICONS_PATH . '/' . $ext_group_row['upload_icon'],
 							'EXTGROUP_FILESIZE'		=> $ext_group_row['max_filesize'],
 							'ASSIGNED_EXTENSIONS'	=> $assigned_extensions,
 

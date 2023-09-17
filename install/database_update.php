@@ -258,6 +258,9 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'avatar_path',
 		'avatar_salt',
 		'ranks_path',
+		'smilies_path',
+		'icons_path',
+		'upload_icons_path',
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");

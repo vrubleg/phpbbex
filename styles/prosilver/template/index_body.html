@@ -20,7 +20,7 @@
 <!-- BEGIN announcetopic -->
 		<li class="row<!-- IF announcetopic.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF --><!-- IF announcetopic.S_POST_ANNOUNCE --> announce<!-- ENDIF -->">
 			<dl class="icon" style="background-image: url({announcetopic.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
-				<dt<!-- IF announcetopic.TOPIC_ICON_IMG --> style="background-image: url({T_ICONS_PATH}{announcetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{announcetopic.TOPIC_FOLDER_IMG_ALT}">
+				<dt<!-- IF announcetopic.TOPIC_ICON_IMG --> style="background-image: url({T_TOPIC_ICONS_PATH}{announcetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{announcetopic.TOPIC_FOLDER_IMG_ALT}">
 					<!-- IF announcetopic.S_UNREAD_TOPIC --><a rel="nofollow" href="{announcetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
 					<a href="{announcetopic.U_VIEW_TOPIC}" class="topictitle">{announcetopic.TOPIC_TITLE}</a>
 					<br />
@@ -60,7 +60,7 @@
 	<!-- BEGIN activetopic -->
 		<li class="row<!-- IF activetopic.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 			<dl class="icon" style="background-image: url({activetopic.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
-				<dt <!-- IF activetopic.TOPIC_ICON_IMG -->style="background-image: url({T_ICONS_PATH}{activetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{activetopic.TOPIC_FOLDER_IMG_ALT}">
+				<dt <!-- IF activetopic.TOPIC_ICON_IMG -->style="background-image: url({T_TOPIC_ICONS_PATH}{activetopic.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{activetopic.TOPIC_FOLDER_IMG_ALT}">
 					<!-- IF activetopic.S_UNREAD_TOPIC --><a rel="nofollow" href="{activetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
 					<a href="{activetopic.U_VIEW_TOPIC}" class="topictitle">{activetopic.TOPIC_TITLE}</a>
 					<!-- IF activetopic.S_TOPIC_UNAPPROVED or activetopic.S_POSTS_UNAPPROVED --><a href="{activetopic.U_MCP_QUEUE}">{activetopic.UNAPPROVED_IMG}</a> <!-- ENDIF -->

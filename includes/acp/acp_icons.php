@@ -46,14 +46,14 @@ class acp_icons
 				$table = SMILIES_TABLE;
 				$lang = 'SMILIES';
 				$fields = 'smiley';
-				$img_path = $config['smilies_path'];
+				$img_path = SMILIES_PATH;
 			break;
 
 			case 'icons':
 				$table = ICONS_TABLE;
 				$lang = 'ICONS';
 				$fields = 'icons';
-				$img_path = $config['icons_path'];
+				$img_path = TOPIC_ICONS_PATH;
 			break;
 		}
 

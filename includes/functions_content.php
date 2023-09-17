@@ -719,7 +719,7 @@ function smiley_text($text, $force_option = false)
 	else
 	{
 		$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : $phpbb_root_path;
-		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/(.*?) \/><!\-\- s\1 \-\->#', '<img src="' . $root_path . $config['smilies_path'] . '/\2 />', $text);
+		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/(.*?) \/><!\-\- s\1 \-\->#', '<img src="' . $root_path . SMILIES_PATH . '/\2 />', $text);
 	}
 }
 
@@ -882,7 +882,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		$upload_icon = '';
 		if (isset($extensions[$attachment['extension']]) && $extensions[$attachment['extension']]['upload_icon'])
 		{
-			$upload_icon = '<img src="' . $phpbb_root_path . $config['upload_icons_path'] . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
+			$upload_icon = '<img src="' . $phpbb_root_path . FILE_ICONS_PATH . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
 		}
 
 		$filesize = get_formatted_filesize($attachment['filesize'], false);

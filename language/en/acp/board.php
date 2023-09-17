@@ -498,9 +498,6 @@ $lang = array_merge($lang, array(
 	'ENABLE_GZIP_EXPLAIN'		=> 'Generated content will be compressed prior to sending it to the user. This can reduce network traffic but will also increase CPU usage on both server and client side. Requires zlib PHP extension to be loaded.',
 	'FORCE_SERVER_VARS'			=> 'Force server URL settings',
 	'FORCE_SERVER_VARS_EXPLAIN'	=> 'If set to yes the server settings defined here will be used in favour of the automatically determined values.',
-	'ICONS_PATH'				=> 'Post icons storage path',
-	'ICONS_PATH_EXPLAIN'		=> 'Path under your phpBBex root directory, e.g. <samp>images/icons</samp>.',
-	'PATH_SETTINGS'				=> 'Path settings',
 	'SCRIPT_PATH'				=> 'Script path',
 	'SCRIPT_PATH_EXPLAIN'		=> 'The path where phpBBex is located relative to the domain name, e.g. <samp>/phpBBex</samp>.',
 	'SERVER_NAME'				=> 'Domain name',
@@ -510,10 +507,6 @@ $lang = array_merge($lang, array(
 	'SERVER_PROTOCOL'			=> 'Server protocol',
 	'SERVER_PROTOCOL_EXPLAIN'	=> 'This is used as the server protocol if these settings are forced. If empty or not forced the protocol is determined by the cookie secure settings (<samp>http://</samp> or <samp>https://</samp>).',
 	'SERVER_URL_SETTINGS'		=> 'Server URL settings',
-	'SMILIES_PATH'				=> 'Smilies storage path',
-	'SMILIES_PATH_EXPLAIN'		=> 'Path under your phpBBex root directory, e.g. <samp>images/smilies</samp>.',
-	'UPLOAD_ICONS_PATH'			=> 'Extension group icons storage path',
-	'UPLOAD_ICONS_PATH_EXPLAIN'	=> 'Path under your phpBBex root directory, e.g. <samp>images/upload_icons</samp>.',
 ));
 
 // Security Settings
