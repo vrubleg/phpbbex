@@ -279,7 +279,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_verify_cert',
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('tpl_allow_php', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('upload_icons_path', 'images/upload_icons');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('upload_path', 'files');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('version', '3.0.14');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '{L_WARNING_POST_DEFAULT}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_expire_days', '90');

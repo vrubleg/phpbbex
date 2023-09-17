@@ -186,18 +186,18 @@ else if (($display_cat == ATTACHMENT_CATEGORY_NONE || $display_cat == ATTACHMENT
 if ($download_mode == PHYSICAL_LINK)
 {
 	// This presenting method should no longer be used
-	if (!@is_dir($phpbb_root_path . $config['upload_path']))
+	if (!@is_dir($phpbb_root_path . UPLOADS_PATH))
 	{
 		http_response_code(500);
 		trigger_error($user->lang['PHYSICAL_DOWNLOAD_NOT_POSSIBLE']);
 	}
 
-	redirect($phpbb_root_path . $config['upload_path'] . '/' . $attachment['physical_filename']);
+	redirect($phpbb_root_path . UPLOADS_PATH . '/' . $attachment['physical_filename']);
 	file_gc();
 }
 else
 {
-	send_file_to_browser($attachment, $config['upload_path'], $display_cat);
+	send_file_to_browser($attachment, UPLOADS_PATH, $display_cat);
 	file_gc();
 }
 

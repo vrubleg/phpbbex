@@ -451,7 +451,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	// Are we uploading an image *and* this image being within the image category? Only then perform additional image checks.
 	$no_image = ($cat_id == ATTACHMENT_CATEGORY_IMAGE) ? false : true;
 
-	$file->move_file($config['upload_path'], false, $no_image);
+	$file->move_file(UPLOADS_PATH, false, $no_image);
 
 	if (sizeof($file->error))
 	{
@@ -494,7 +494,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	}
 
 	// Check free disk space
-	if ($free_space = @disk_free_space($phpbb_root_path . $config['upload_path']))
+	if ($free_space = @disk_free_space($phpbb_root_path . UPLOADS_PATH))
 	{
 		if ($free_space <= $file->get('filesize'))
 		{
@@ -2227,7 +2227,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 			else
 			{
 				// insert attachment into db
-				if (!@file_exists($phpbb_root_path . $config['upload_path'] . '/' . utf8_basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
+				if (!@file_exists($phpbb_root_path . UPLOADS_PATH . '/' . utf8_basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
 				{
 					continue;
 				}

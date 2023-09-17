@@ -54,7 +54,7 @@ class resync_attachments
 		foreach ($batch as $row)
 		{
 			// Does the file still exists?
-			$path = PHPBB_ROOT_PATH . $config['upload_path'] . "/{$row['physical_filename']}";
+			$path = PHPBB_ROOT_PATH . UPLOADS_PATH . "/{$row['physical_filename']}";
 			if (file_exists($path))
 			{
 				// Yes, next please!

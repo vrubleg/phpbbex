@@ -110,8 +110,8 @@ $lang = array_merge($lang, array(
 	'NO_FILE_CAT'				=> 'None',
 	'NO_IMAGE'					=> 'No image',
 	'NO_THUMBNAIL_SUPPORT'		=> 'Thumbnail support has been disabled. For proper functionality the GD extension need to be available.',
-	'NO_UPLOAD_DIR'				=> 'The upload directory you specified does not exist.',
-	'NO_WRITE_UPLOAD'			=> 'The upload directory you specified cannot be written to. Please alter the permissions to allow the webserver to write to it.',
+	'NO_UPLOAD_DIR'				=> 'The upload directory does not exist.',
+	'NO_WRITE_UPLOAD'			=> 'The upload directory cannot be written to. Please alter the permissions to allow the webserver to write to it.',
 
 	'ONLY_ALLOWED_IN_PM'	=> 'Only allowed in private messages',
 	'ORDER_ALLOW_DENY'		=> 'Allow',
@@ -138,8 +138,5 @@ $lang = array_merge($lang, array(
 	'UPLOADING_FILES'				=> 'Uploading files',
 	'UPLOADING_FILE_TO'				=> 'Uploading file “%1$s” to post number %2$d…',
 	'UPLOAD_DENIED_FORUM'			=> 'You do not have the permission to upload files to forum “%s”.',
-	'UPLOAD_DIR'					=> 'Upload directory',
-	'UPLOAD_DIR_EXPLAIN'			=> 'Storage path for attachments. Please note that if you change this directory while already having uploaded attachments you need to manually copy the files to their new location.',
 	'UPLOAD_ICON'					=> 'Upload icon',
-	'UPLOAD_NOT_DIR'				=> 'The upload location you specified does not appear to be a directory.',
 ));

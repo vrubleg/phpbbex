@@ -166,7 +166,7 @@ if (!empty($data['attachment_data']))
 		else
 		{
 			// insert attachment into db
-			if (!@file_exists($phpbb_root_path . $config['upload_path'] . '/' . basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
+			if (!@file_exists($phpbb_root_path . UPLOADS_PATH . '/' . basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
 			{
 				continue;
 			}

@@ -1753,7 +1753,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 			else
 			{
 				// insert attachment into db
-				if (!@file_exists($phpbb_root_path . $config['upload_path'] . '/' . utf8_basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
+				if (!@file_exists($phpbb_root_path . UPLOADS_PATH . '/' . utf8_basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
 				{
 					continue;
 				}

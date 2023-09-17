@@ -482,14 +482,7 @@ function import_avatar_gallery($gallery_name = '', $subdirs_as_galleries = false
 
 function import_attachment_files($category_name = '')
 {
-	global $config, $convert, $phpbb_root_path, $db, $user;
-
-	$sql = 'SELECT config_value AS upload_path
-		FROM ' . CONFIG_TABLE . "
-		WHERE config_name = 'upload_path'";
-	$result = $db->sql_query($sql);
-	$config['upload_path'] = $db->sql_fetchfield('upload_path');
-	$db->sql_freeresult($result);
+	global $convert, $phpbb_root_path, $user;
 
 	$relative_path = empty($convert->convertor['source_path_absolute']);
 
@@ -500,7 +493,7 @@ function import_attachment_files($category_name = '')
 
 	if (is_dir(relative_base(path($convert->convertor['upload_path'], $relative_path), $relative_path)))
 	{
-		copy_dir($convert->convertor['upload_path'], path($config['upload_path']) . $category_name, true, false, true, $relative_path);
+		copy_dir($convert->convertor['upload_path'], path(UPLOADS_PATH) . $category_name, true, false, true, $relative_path);
 	}
 }
 
@@ -603,7 +596,7 @@ function import_attachment($source, $use_target = false)
 			{
 				$thumb_source = $convert->convertor['upload_path'] . $thumb_source;
 			}
-			$thumb_target = $config['upload_path'] . '/thumb_' . $result['target'];
+			$thumb_target = UPLOADS_PATH . '/thumb_' . $result['target'];
 
 			if (file_exists(relative_base($thumb_source, $result['relative_path'], __LINE__, __FILE__)))
 			{

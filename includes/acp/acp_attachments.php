@@ -103,7 +103,6 @@ class acp_attachments
 
 						'allow_attachments'		=> array('lang' => 'ALLOW_ATTACHMENTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_pm_attach'		=> array('lang' => 'ALLOW_PM_ATTACHMENTS',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'upload_path'			=> array('lang' => 'UPLOAD_DIR',			'validate' => 'wpath',	'type' => 'text:25:100', 'explain' => true),
 						'display_order'			=> array('lang' => 'DISPLAY_ORDER',			'validate' => 'bool',	'type' => 'custom', 'method' => 'display_order', 'explain' => true),
 						'attachment_quota'		=> array('lang' => 'ATTACH_QUOTA',			'validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true),
 						'max_filesize'			=> array('lang' => 'ATTACH_MAX_FILESIZE',	'validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true),
@@ -167,7 +166,7 @@ class acp_attachments
 					add_log('admin', 'LOG_CONFIG_ATTACH');
 
 					// Check Settings
-					$this->test_upload($error, $this->new_config['upload_path'], false);
+					$this->test_upload($error, UPLOADS_PATH, false);
 
 					if (!sizeof($error))
 					{
@@ -1136,15 +1135,9 @@ class acp_attachments
 			}
 		}
 
-		if (!file_exists($phpbb_root_path . $upload_dir))
+		if (!file_exists($phpbb_root_path . $upload_dir) || !is_dir($phpbb_root_path . $upload_dir))
 		{
 			$error[] = sprintf($user->lang['NO_UPLOAD_DIR'], $upload_dir);
-			return;
-		}
-
-		if (!is_dir($phpbb_root_path . $upload_dir))
-		{
-			$error[] = sprintf($user->lang['UPLOAD_NOT_DIR'], $upload_dir);
 			return;
 		}
 
