@@ -37,6 +37,11 @@ $user->theme['template_storedb'] = false;
 // Perform some quick tasks here that don't require any authentication!
 perform_unauthed_quick_tasks($action, $submit);
 
+// Set global template variables.
+$template->assign_vars(array(
+	'PHPBB_ROOT_PATH' => $phpbb_root_path,
+));
+
 /*
 * Start Login
 */
