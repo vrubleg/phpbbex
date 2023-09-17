@@ -35,7 +35,7 @@ class profile_list
 			{
 				if (!function_exists('user_delete'))
 				{
-					require PHPBB_ROOT_PATH . 'includes/functions_user.php';
+					require(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 				}
 
 				// Delete them all

@@ -255,7 +255,7 @@ class restore_deleted_users
 
 		if (!function_exists('user_add'))
 		{
-			include PHPBB_ROOT_PATH . 'includes/functions_user.php';
+			require(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		}
 
 		// Registered users group?

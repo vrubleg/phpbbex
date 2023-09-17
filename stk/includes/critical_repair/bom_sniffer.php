@@ -142,7 +142,7 @@ class erk_bom_sniffer
 		$stk_config['bom_sniffer_force_full_scan'] = true;
 		if (!file_exists(PHPBB_ROOT_PATH . 'store/bom_sniffer/stk/config.php'))
 		{
-			include STK_ROOT_PATH . 'config.php';
+			require(STK_ROOT_PATH . 'config.php');
 		}
 	}
 
