@@ -342,7 +342,7 @@ class messenger
 	/**
 	* Add error message to log
 	*/
-	function error($type, $msg)
+	static function error($type, $msg)
 	{
 		global $user, $phpEx, $phpbb_root_path, $config;
 
@@ -529,7 +529,7 @@ class messenger
 
 			if (!$result)
 			{
-				$this->error('EMAIL', $err_msg);
+				self::error('EMAIL', $err_msg);
 				return false;
 			}
 		}
@@ -590,13 +590,13 @@ class messenger
 
 			if (!$this->jabber->connect())
 			{
-				$this->error('JABBER', $user->lang['ERR_JAB_CONNECT'] . '<br />' . $this->jabber->get_log());
+				self::error('JABBER', $user->lang['ERR_JAB_CONNECT'] . '<br />' . $this->jabber->get_log());
 				return false;
 			}
 
 			if (!$this->jabber->login())
 			{
-				$this->error('JABBER', $user->lang['ERR_JAB_AUTH'] . '<br />' . $this->jabber->get_log());
+				self::error('JABBER', $user->lang['ERR_JAB_AUTH'] . '<br />' . $this->jabber->get_log());
 				return false;
 			}
 
