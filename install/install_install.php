@@ -376,45 +376,6 @@ class install_install extends module
 			));
 		}
 
-		// Can we find Imagemagick anywhere on the system?
-		$exe = (DIRECTORY_SEPARATOR == '\\') ? '.exe' : '';
-
-		$magic_home = getenv('MAGICK_HOME');
-		$img_imagick = '';
-		if (empty($magic_home))
-		{
-			$locations = array('C:/WINDOWS/', 'C:/WINNT/', 'C:/WINDOWS/SYSTEM/', 'C:/WINNT/SYSTEM/', 'C:/WINDOWS/SYSTEM32/', 'C:/WINNT/SYSTEM32/', '/usr/bin/', '/usr/sbin/', '/usr/local/bin/', '/usr/local/sbin/', '/opt/', '/usr/imagemagick/', '/usr/bin/imagemagick/');
-			$path_locations = str_replace('\\', '/', (explode(($exe) ? ';' : ':', getenv('PATH'))));
-
-			$locations = array_merge($path_locations, $locations);
-			foreach ($locations as $location)
-			{
-				// The path might not end properly, fudge it
-				if (substr($location, -1, 1) !== '/')
-				{
-					$location .= '/';
-				}
-
-				if (@file_exists($location) && @is_readable($location . 'mogrify' . $exe) && @filesize($location . 'mogrify' . $exe) > 3000)
-				{
-					$img_imagick = str_replace('\\', '/', $location);
-					continue;
-				}
-			}
-		}
-		else
-		{
-			$img_imagick = str_replace('\\', '/', $magic_home);
-		}
-
-		$template->assign_block_vars('checks', array(
-			'TITLE'		=> $lang['APP_MAGICK'],
-			'RESULT'	=> ($img_imagick) ? '<strong style="color:green">' . $lang['AVAILABLE'] . ', ' . $img_imagick . '</strong>' : '<strong style="color:blue">' . $lang['NO_LOCATION'] . '</strong>',
-
-			'S_EXPLAIN'	=> false,
-			'S_LEGEND'	=> false,
-		));
-
 		// Check permissions on files/directories we need access to
 		$template->assign_block_vars('checks', array(
 			'S_LEGEND'			=> true,
@@ -506,11 +467,9 @@ class install_install extends module
 		}
 
 		// And finally where do we want to go next (well today is taken isn't it :P)
-		$s_hidden_fields = ($img_imagick) ? '<input type="hidden" name="img_imagick" value="' . addslashes($img_imagick) . '" />' : '';
-
+		$s_hidden_fields = '';
 		$url = (!in_array(false, $passed)) ? $this->p_master->module_url . "?mode=$mode&amp;sub=database&amp;language=$language" : $this->p_master->module_url . "?mode=$mode&amp;sub=requirements&amp;language=$language	";
 		$submit = (!in_array(false, $passed)) ? $lang['INSTALL_START'] : $lang['INSTALL_TEST'];
-
 
 		$template->assign_vars(array(
 			'L_SUBMIT'	=> $submit,
@@ -634,8 +593,7 @@ class install_install extends module
 		}
 
 		// And finally where do we want to go next (well today is taken isn't it :P)
-		$s_hidden_fields = ($data['img_imagick']) ? '<input type="hidden" name="img_imagick" value="' . addslashes($data['img_imagick']) . '" />' : '';
-		$s_hidden_fields .= '<input type="hidden" name="language" value="' . $data['language'] . '" />';
+		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
 		if ($connect_test)
 		{
 			foreach ($this->db_config_options as $config_key => $vars)
@@ -679,7 +637,7 @@ class install_install extends module
 			$this->p_master->redirect("index.$phpEx?mode=install");
 		}
 
-		$s_hidden_fields = ($data['img_imagick']) ? '<input type="hidden" name="img_imagick" value="' . addslashes($data['img_imagick']) . '" />' : '';
+		$s_hidden_fields = '';
 		$passed = false;
 
 		$data['default_lang'] = ($data['default_lang'] !== '') ? $data['default_lang'] : $data['language'];
@@ -804,7 +762,6 @@ class install_install extends module
 			}
 		}
 
-		$s_hidden_fields .= ($data['img_imagick']) ? '<input type="hidden" name="img_imagick" value="' . addslashes($data['img_imagick']) . '" />' : '';
 		$s_hidden_fields .= '<input type="hidden" name="language" value="' . $data['language'] . '" />';
 
 		foreach ($this->db_config_options as $config_key => $vars)
@@ -847,8 +804,7 @@ class install_install extends module
 			$this->p_master->redirect("index.$phpEx?mode=install");
 		}
 
-		$s_hidden_fields = ($data['img_imagick']) ? '<input type="hidden" name="img_imagick" value="' . addslashes($data['img_imagick']) . '" />' : '';
-		$s_hidden_fields .= '<input type="hidden" name="language" value="' . $data['language'] . '" />';
+		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
 		$written = false;
 
 		// Create a lock file to indicate that there is an install in progress
@@ -974,8 +930,7 @@ class install_install extends module
 			$this->p_master->redirect("index.$phpEx?mode=install");
 		}
 
-		$s_hidden_fields = ($data['img_imagick']) ? '<input type="hidden" name="img_imagick" value="' . addslashes($data['img_imagick']) . '" />' : '';
-		$s_hidden_fields .= '<input type="hidden" name="language" value="' . $data['language'] . '" />';
+		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
 
 		// HTTP_HOST is having the correct browser url in most cases...
 		$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
@@ -1191,10 +1146,6 @@ class install_install extends module
 
 			'INSERT INTO ' . $data['table_prefix'] . "config (config_name, config_value)
 				VALUES ('default_lang', '" . $db->sql_escape($data['default_lang']) . "')",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['img_imagick']) . "'
-				WHERE config_name = 'img_imagick'",
 
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['server_name']) . "'
@@ -1997,7 +1948,6 @@ class install_install extends module
 			'admin_pass2'	=> request_var('admin_pass2', '', true),
 			'board_email1'	=> strtolower(request_var('board_email1', '')),
 			'board_email2'	=> strtolower(request_var('board_email2', '')),
-			'img_imagick'	=> request_var('img_imagick', ''),
 			'ftp_path'		=> request_var('ftp_path', ''),
 			'ftp_user'		=> request_var('ftp_user', ''),
 			'ftp_pass'		=> request_var('ftp_pass', ''),
