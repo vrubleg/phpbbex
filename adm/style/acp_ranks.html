@@ -6,14 +6,11 @@
 
 	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
 
-	<script type="text/javascript">
-	// <![CDATA[
+	<script>
 		function update_image(newimage)
 		{
-			document.getElementById('image').src = (newimage) ? "{RANKS_PATH}/" + encodeURI(newimage) : "./images/spacer.gif";
+			document.getElementById('image').src = (newimage) ? "{RANK_IMAGES_PATH}" + encodeURI(newimage) : "./images/spacer.gif";
 		}
-
-	// ]]>
 	</script>
 
 	<h1>{L_ACP_MANAGE_RANKS}</h1>
@@ -21,7 +18,7 @@
 	<p>{L_ACP_RANKS_EXPLAIN}</p>
 
 	<form id="acp_ranks" method="post" action="{U_ACTION}">
-	
+
 	<fieldset>
 		<legend>{L_ACP_RANKS}</legend>
 	<dl>

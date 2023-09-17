@@ -463,13 +463,13 @@ class acp_main
 
 		$avatar_dir_size = 0;
 
-		if ($avatar_dir = @opendir($phpbb_root_path . $config['avatar_path']))
+		if ($avatar_dir = @opendir($phpbb_root_path . AVATAR_UPLOADS_PATH))
 		{
 			while (($file = readdir($avatar_dir)) !== false)
 			{
 				if ($file[0] != '.' && $file != 'CVS' && strpos($file, 'index.') === false)
 				{
-					$avatar_dir_size += filesize($phpbb_root_path . $config['avatar_path'] . '/' . $file);
+					$avatar_dir_size += filesize($phpbb_root_path . AVATAR_UPLOADS_PATH . '/' . $file);
 				}
 			}
 			closedir($avatar_dir);

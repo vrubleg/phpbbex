@@ -103,7 +103,6 @@ class acp_attachments
 
 						'allow_attachments'		=> array('lang' => 'ALLOW_ATTACHMENTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_pm_attach'		=> array('lang' => 'ALLOW_PM_ATTACHMENTS',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'upload_path'			=> array('lang' => 'UPLOAD_DIR',			'validate' => 'wpath',	'type' => 'text:25:100', 'explain' => true),
 						'display_order'			=> array('lang' => 'DISPLAY_ORDER',			'validate' => 'bool',	'type' => 'custom', 'method' => 'display_order', 'explain' => true),
 						'attachment_quota'		=> array('lang' => 'ATTACH_QUOTA',			'validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true),
 						'max_filesize'			=> array('lang' => 'ATTACH_MAX_FILESIZE',	'validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true),
@@ -167,7 +166,7 @@ class acp_attachments
 					add_log('admin', 'LOG_CONFIG_ATTACH');
 
 					// Check Settings
-					$this->test_upload($error, $this->new_config['upload_path'], false);
+					$this->test_upload($error, UPLOADS_PATH, false);
 
 					if (!sizeof($error))
 					{
@@ -664,12 +663,10 @@ class acp_attachments
 						$size_format = $max_filesize['si_identifier'];
 						$ext_group_row['max_filesize'] = $max_filesize['value'];
 
-						$img_path = $config['upload_icons_path'];
-
 						$filename_list = '';
 						$no_image_select = false;
 
-						$imglist = filelist($phpbb_root_path . $img_path);
+						$imglist = filelist($phpbb_root_path . FILE_ICONS_PATH);
 
 						if (!empty($imglist['']))
 						{
@@ -715,13 +712,13 @@ class acp_attachments
 						}
 
 						$template->assign_vars(array(
-							'IMG_PATH'				=> $img_path,
+							'IMG_PATH'				=> FILE_ICONS_PATH,
 							'ACTION'				=> $action,
 							'GROUP_ID'				=> $group_id,
 							'GROUP_NAME'			=> $ext_group_row['group_name'],
 							'ALLOW_GROUP'			=> $ext_group_row['allow_group'],
 							'ALLOW_IN_PM'			=> $ext_group_row['allow_in_pm'],
-							'UPLOAD_ICON_SRC'		=> $phpbb_root_path . $img_path . '/' . $ext_group_row['upload_icon'],
+							'UPLOAD_ICON_SRC'		=> $phpbb_root_path . FILE_ICONS_PATH . '/' . $ext_group_row['upload_icon'],
 							'EXTGROUP_FILESIZE'		=> $ext_group_row['max_filesize'],
 							'ASSIGNED_EXTENSIONS'	=> $assigned_extensions,
 
@@ -1007,7 +1004,7 @@ class acp_attachments
 						'PHYSICAL_FILENAME'	=> utf8_basename($row['physical_filename']),
 						'ATTACH_ID'			=> $row['attach_id'],
 						'POST_IDS'			=> (!empty($post_ids[$row['attach_id']])) ? $post_ids[$row['attach_id']] : '',
-						'U_FILE'			=> append_sid($phpbb_root_path . 'download/file.' . $phpEx, 'mode=view&amp;id=' . $row['attach_id']))
+						'U_FILE'			=> append_sid($phpbb_root_path . 'file.' . $phpEx, 'mode=view&amp;id=' . $row['attach_id']))
 					);
 				}
 				$db->sql_freeresult($result);
@@ -1136,15 +1133,9 @@ class acp_attachments
 			}
 		}
 
-		if (!file_exists($phpbb_root_path . $upload_dir))
+		if (!file_exists($phpbb_root_path . $upload_dir) || !is_dir($phpbb_root_path . $upload_dir))
 		{
 			$error[] = sprintf($user->lang['NO_UPLOAD_DIR'], $upload_dir);
-			return;
-		}
-
-		if (!is_dir($phpbb_root_path . $upload_dir))
-		{
-			$error[] = sprintf($user->lang['UPLOAD_NOT_DIR'], $upload_dir);
 			return;
 		}
 

@@ -719,7 +719,7 @@ function smiley_text($text, $force_option = false)
 	else
 	{
 		$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : $phpbb_root_path;
-		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/(.*?) \/><!\-\- s\1 \-\->#', '<img src="' . $root_path . $config['smilies_path'] . '/\2 />', $text);
+		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/(.*?) \/><!\-\- s\1 \-\->#', '<img src="' . $root_path . SMILIES_PATH . '/\2 />', $text);
 	}
 }
 
@@ -876,13 +876,13 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 
 		// Some basics...
 		$attachment['extension'] = strtolower(trim($attachment['extension']));
-		$filename = $phpbb_root_path . $config['upload_path'] . '/' . utf8_basename($attachment['physical_filename']);
-		$thumbnail_filename = $phpbb_root_path . $config['upload_path'] . '/thumb_' . utf8_basename($attachment['physical_filename']);
+		$filename = $phpbb_root_path . UPLOADS_PATH . '/' . utf8_basename($attachment['physical_filename']);
+		$thumbnail_filename = $phpbb_root_path . UPLOADS_PATH . '/thumb_' . utf8_basename($attachment['physical_filename']);
 
 		$upload_icon = '';
 		if (isset($extensions[$attachment['extension']]) && $extensions[$attachment['extension']]['upload_icon'])
 		{
-			$upload_icon = '<img src="' . $phpbb_root_path . $config['upload_icons_path'] . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
+			$upload_icon = '<img src="' . $phpbb_root_path . FILE_ICONS_PATH . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
 		}
 
 		$filesize = get_formatted_filesize($attachment['filesize'], false);
@@ -953,14 +953,14 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				$display_cat = ATTACHMENT_CATEGORY_NONE;
 			}
 
-			$download_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+			$download_link = append_sid("{$phpbb_root_path}file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 
 			switch ($display_cat)
 			{
 				// Images
 				case ATTACHMENT_CATEGORY_IMAGE:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
-					$inline_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+					$inline_link = append_sid("{$phpbb_root_path}file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(
@@ -974,7 +974,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				// Images, but display Thumbnail
 				case ATTACHMENT_CATEGORY_THUMB:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
-					$thumbnail_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;t=1&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+					$thumbnail_link = append_sid("{$phpbb_root_path}file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;t=1&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(

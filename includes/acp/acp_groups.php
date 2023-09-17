@@ -43,7 +43,7 @@ class acp_groups
 
 
 		// Clear some vars
-		$can_upload = (file_exists($phpbb_root_path . $config['avatar_path']) && phpbb_is_writable($phpbb_root_path . $config['avatar_path']) && $file_uploads) ? true : false;
+		$can_upload = (file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH) && $file_uploads) ? true : false;
 		$group_row = array();
 
 		// Grab basic data for group, if group_id is set and exists
@@ -367,11 +367,11 @@ class acp_groups
 					else if ($avatar_select && $config['allow_avatar_local'])
 					{
 						// check avatar gallery
-						if (is_dir($phpbb_root_path . $config['avatar_gallery_path'] . '/' . $category))
+						if (is_dir($phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $category))
 						{
 							$submit_ary['avatar_type'] = AVATAR_GALLERY;
 
-							list($submit_ary['avatar_width'], $submit_ary['avatar_height']) = getimagesize($phpbb_root_path . $config['avatar_gallery_path'] . '/' . $category . '/' . $avatar_select);
+							list($submit_ary['avatar_width'], $submit_ary['avatar_height']) = getimagesize($phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $category . '/' . $avatar_select);
 							$submit_ary['avatar'] = $category . '/' . $avatar_select;
 						}
 					}

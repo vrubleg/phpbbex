@@ -47,13 +47,10 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_method', 'db'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_smilies_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '10240');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_gallery_path', 'images/avatars/gallery');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_height', '100');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_width', '100');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_height', '64');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_width', '64');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_path', 'images/avatars/upload');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_salt', 'phpbb_avatar');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('board_contact', 'contact@yourdomain.tld');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('board_disable', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('board_disable_msg', '{L_BOARD_DISABLE_DEFAULT}');
@@ -128,7 +125,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_ma
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_min_chars', '3');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('hot_threshold', '100');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('icons_path', 'images/icons');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbnail', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_display_inlined', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_link_height', '0');
@@ -238,7 +234,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '100
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_recipients', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('queue_interval', '60');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ranks_path', 'images/ranks');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_enabled', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_only_topics', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_time', 0);
@@ -267,7 +262,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_desc', '{L_CONFIG_SITE_DESC}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('sitename', '{L_CONFIG_SITENAME}');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('smilies_path', 'images/smilies');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smilies_per_page', '50');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_auth_method', 'PLAIN');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_delivery', '0');
@@ -278,8 +272,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_username', ''
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_verify_cert', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('tpl_allow_php', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('upload_icons_path', 'images/upload_icons');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('upload_path', 'files');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('version', '3.0.14');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '{L_WARNING_POST_DEFAULT}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_expire_days', '90');

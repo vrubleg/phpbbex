@@ -1901,9 +1901,9 @@ function avatar_delete($mode, $row, $clean_db = false)
 		avatar_remove_db($row[$mode . '_avatar']);
 	}
 	$filename = get_avatar_filename($row[$mode . '_avatar']);
-	if (file_exists($phpbb_root_path . $config['avatar_path'] . '/' . $filename))
+	if (file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH . '/' . $filename))
 	{
-		@unlink($phpbb_root_path . $config['avatar_path'] . '/' . $filename);
+		@unlink($phpbb_root_path . AVATAR_UPLOADS_PATH . '/' . $filename);
 		return true;
 	}
 
@@ -2010,22 +2010,8 @@ function avatar_upload($data, &$error)
 
 	$file->clean_filename('avatar', '', $data['user_id']);
 
-	$destination = $config['avatar_path'];
-
-	// Adjust destination path (no trailing slash)
-	if (substr($destination, -1, 1) == '/' || substr($destination, -1, 1) == '\\')
-	{
-		$destination = substr($destination, 0, -1);
-	}
-
-	$destination = str_replace(array('../', '..\\', './', '.\\'), '', $destination);
-	if ($destination && ($destination[0] == '/' || $destination[0] == "\\"))
-	{
-		$destination = '';
-	}
-
 	// Move file and overwrite any existing image
-	$file->move_file($destination, true);
+	$file->move_file(AVATAR_UPLOADS_PATH, true);
 
 	if (sizeof($file->error))
 	{
@@ -2068,7 +2054,7 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 
 	$avatar_list = array();
 
-	$path = $phpbb_root_path . $config['avatar_gallery_path'];
+	$path = $phpbb_root_path . AVATAR_GALLERY_PATH;
 
 	if (!file_exists($path) || !is_dir($path))
 	{
@@ -2147,13 +2133,13 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 		foreach ($avatar_row_ary as $avatar_col_ary)
 		{
 			$template->assign_block_vars($block_var . '.avatar_column', array(
-				'AVATAR_IMAGE'	=> $phpbb_root_path . $config['avatar_gallery_path'] . '/' . $avatar_col_ary['file'],
+				'AVATAR_IMAGE'	=> $phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $avatar_col_ary['file'],
 				'AVATAR_NAME'	=> $avatar_col_ary['name'],
 				'AVATAR_FILE'	=> $avatar_col_ary['filename'])
 			);
 
 			$template->assign_block_vars($block_var . '.avatar_option_column', array(
-				'AVATAR_IMAGE'	=> $phpbb_root_path . $config['avatar_gallery_path'] . '/' . $avatar_col_ary['file'],
+				'AVATAR_IMAGE'	=> $phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $avatar_col_ary['file'],
 				'S_OPTIONS_AVATAR'	=> $avatar_col_ary['filename'])
 			);
 		}
@@ -2176,11 +2162,11 @@ function avatar_get_dimensions($avatar, $avatar_type, &$error, $current_x = 0, $
 			break;
 
 		case AVATAR_UPLOAD :
-			$avatar = $phpbb_root_path . $config['avatar_path'] . '/' . get_avatar_filename($avatar);
+			$avatar = $phpbb_root_path . AVATAR_UPLOADS_PATH . '/' . get_avatar_filename($avatar);
 			break;
 
 		case AVATAR_GALLERY :
-			$avatar = $phpbb_root_path . $config['avatar_gallery_path'] . '/' . $avatar ;
+			$avatar = $phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $avatar ;
 			break;
 	}
 
@@ -2260,7 +2246,7 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 	// Can we upload?
 	if (is_null($can_upload))
 	{
-		$can_upload = ($config['allow_avatar_upload'] && file_exists($phpbb_root_path . $config['avatar_path']) && phpbb_is_writable($phpbb_root_path . $config['avatar_path']) && $change_avatar && (@ini_get('file_uploads') || strtolower(@ini_get('file_uploads')) == 'on')) ? true : false;
+		$can_upload = ($config['allow_avatar_upload'] && file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH) && $change_avatar && (@ini_get('file_uploads') || strtolower(@ini_get('file_uploads')) == 'on')) ? true : false;
 	}
 
 	if ((!empty($_FILES['uploadfile']['name']) || $data['uploadurl']) && $can_upload)
@@ -2279,14 +2265,14 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 		$sql_ary['user_avatar'] = $avatar_select;
 
 		// check avatar gallery
-		if (!is_dir($phpbb_root_path . $config['avatar_gallery_path'] . '/' . $category))
+		if (!is_dir($phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $category))
 		{
 			$sql_ary['user_avatar'] = '';
 			$sql_ary['user_avatar_type'] = $sql_ary['user_avatar_width'] = $sql_ary['user_avatar_height'] = 0;
 		}
 		else
 		{
-			list($sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']) = getimagesize($phpbb_root_path . $config['avatar_gallery_path'] . '/' . $category . '/' . urldecode($sql_ary['user_avatar']));
+			list($sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']) = getimagesize($phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $category . '/' . urldecode($sql_ary['user_avatar']));
 			$sql_ary['user_avatar'] = $category . '/' . $sql_ary['user_avatar'];
 		}
 	}
@@ -2562,7 +2548,7 @@ function group_correct_avatar($group_id, $old_entry)
 	$old_filename 	= get_avatar_filename($old_entry);
 	$new_filename 	= "g{$group_id}.{$ext}";
 
-	$avatar_path = $phpbb_root_path . $config['avatar_path'];
+	$avatar_path = $phpbb_root_path . AVATAR_UPLOADS_PATH;
 	if (@rename($avatar_path . '/'. $old_filename, $avatar_path . '/' . $new_filename))
 	{
 		$sql = 'UPDATE ' . GROUPS_TABLE . '

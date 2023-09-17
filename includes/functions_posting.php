@@ -113,7 +113,7 @@ function generate_smilies($mode, $forum_id)
 			$template->assign_block_vars('smiley', array(
 				'SMILEY_CODE'	=> $row['code'],
 				'A_SMILEY_CODE'	=> addslashes($row['code']),
-				'SMILEY_IMG'	=> $root_path . $config['smilies_path'] . '/' . $row['smiley_url'],
+				'SMILEY_IMG'	=> $root_path . SMILIES_PATH . '/' . $row['smiley_url'],
 				'SMILEY_WIDTH'	=> $row['smiley_width'],
 				'SMILEY_HEIGHT'	=> $row['smiley_height'],
 				'SMILEY_DESC'	=> isset($user->lang[$row['emotion']]) ? $user->lang[$row['emotion']] : $row['emotion'],
@@ -295,7 +295,7 @@ function posting_gen_topic_icons($mode, $icon_id)
 			{
 				$template->assign_block_vars('topic_icon', array(
 					'ICON_ID'		=> $id,
-					'ICON_IMG'		=> $root_path . $config['icons_path'] . '/' . $data['img'],
+					'ICON_IMG'		=> $root_path . TOPIC_ICONS_PATH . '/' . $data['img'],
 					'ICON_WIDTH'	=> $data['width'],
 					'ICON_HEIGHT'	=> $data['height'],
 
@@ -456,7 +456,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	// Are we uploading an image *and* this image being within the image category? Only then perform additional image checks.
 	$no_image = ($cat_id == ATTACHMENT_CATEGORY_IMAGE) ? false : true;
 
-	$file->move_file($config['upload_path'], false, $no_image);
+	$file->move_file(UPLOADS_PATH, false, $no_image);
 
 	if (sizeof($file->error))
 	{
@@ -499,7 +499,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	}
 
 	// Check free disk space
-	if ($free_space = @disk_free_space($phpbb_root_path . $config['upload_path']))
+	if ($free_space = @disk_free_space($phpbb_root_path . UPLOADS_PATH))
 	{
 		if ($free_space <= $file->get('filesize'))
 		{
@@ -822,7 +822,7 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 				$hidden .= '<input type="hidden" name="attachment_data[' . $count . '][' . $key . ']" value="' . $value . '" />';
 			}
 
-			$download_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'mode=view&amp;id=' . (int) $attach_row['attach_id'], true, ($attach_row['is_orphan']) ? $user->session_id : false);
+			$download_link = append_sid("{$phpbb_root_path}file.$phpEx", 'mode=view&amp;id=' . (int) $attach_row['attach_id'], true, ($attach_row['is_orphan']) ? $user->session_id : false);
 
 			$template->assign_block_vars('attach_row', array(
 				'FILENAME'			=> utf8_basename($attach_row['real_filename']),
@@ -2232,7 +2232,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 			else
 			{
 				// insert attachment into db
-				if (!@file_exists($phpbb_root_path . $config['upload_path'] . '/' . utf8_basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
+				if (!@file_exists($phpbb_root_path . UPLOADS_PATH . '/' . utf8_basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
 				{
 					continue;
 				}

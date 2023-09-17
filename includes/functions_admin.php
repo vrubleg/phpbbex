@@ -1279,7 +1279,7 @@ function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
 	}
 
 	$filename = ($mode == 'thumbnail') ? 'thumb_' . utf8_basename($filename) : utf8_basename($filename);
-	return @unlink($phpbb_root_path . $config['upload_path'] . '/' . $filename);
+	return @unlink($phpbb_root_path . UPLOADS_PATH . '/' . $filename);
 }
 
 /**

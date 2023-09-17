@@ -325,7 +325,7 @@ function feed_generate_content($content, $uid, $bitfield, $options)
 	$content = str_replace('<br />', '<br />' . "\n", $content);
 
 	// Convert smiley Relative paths to Absolute path, Windows style
-	$content = str_replace($phpbb_root_path . $config['smilies_path'], $board_url . '/' . $config['smilies_path'], $content);
+	$content = str_replace($phpbb_root_path . SMILE_IMAGES_PATH, $board_url . '/' . SMILE_IMAGES_PATH, $content);
 
 	// Remove "Select all" link and mouse events
 	$content = str_replace('<a href="#" onclick="selectCode(this); return false;">' . $user->lang['SELECT_ALL_CODE'] . '</a>', '', $content);
