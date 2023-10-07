@@ -203,6 +203,12 @@ if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 {
+	// Update schema.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . RANKS_TABLE . " ADD COLUMN rank_hide_title tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER rank_title");
+	$db->sql_return_on_error(false);
+
 	// Remove obsolete permissions.
 
 	$permissions = array(
