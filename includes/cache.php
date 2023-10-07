@@ -133,22 +133,25 @@ class phpbb_cache extends acm
 				ORDER BY rank_min DESC';
 			$result = $db->sql_query($sql);
 
-			$ranks = array();
+			$ranks = array('special' => [], 'normal'=> []);
+
 			while ($row = $db->sql_fetchrow($result))
 			{
 				if ($row['rank_special'])
 				{
 					$ranks['special'][$row['rank_id']] = array(
-						'rank_title'	=>	$row['rank_title'],
-						'rank_image'	=>	$row['rank_image']
+						'rank_title'		=> $row['rank_title'],
+						'rank_hide_title'	=> $row['rank_hide_title'],
+						'rank_image'		=> $row['rank_image']
 					);
 				}
 				else
 				{
 					$ranks['normal'][] = array(
-						'rank_title'	=>	$row['rank_title'],
-						'rank_min'		=>	$row['rank_min'],
-						'rank_image'	=>	$row['rank_image']
+						'rank_title'		=> $row['rank_title'],
+						'rank_hide_title'	=> $row['rank_hide_title'],
+						'rank_image'		=> $row['rank_image'],
+						'rank_min'			=> $row['rank_min'],
 					);
 				}
 			}

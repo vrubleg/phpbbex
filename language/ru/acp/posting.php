@@ -207,6 +207,7 @@ $lang = array_merge($lang, array(
 	'RANK_REMOVED'			=> 'Звание успешно удалено.',
 	'RANK_SPECIAL'			=> 'Специальное звание',
 	'RANK_TITLE'			=> 'Заголовок звания',
+	'RANK_HIDE_TITLE'		=> 'Спрятать заголовок звания',
 	'RANK_UPDATED'			=> 'Звание успешно обновлено.',
 ));
 

@@ -635,6 +635,7 @@ CREATE TABLE phpbb_profile_lang (
 CREATE TABLE phpbb_ranks (
 	rank_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	rank_title varchar(255) DEFAULT '' NOT NULL,
+	rank_hide_title tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	rank_min mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	rank_special tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	rank_image varchar(255) DEFAULT '' NOT NULL,

@@ -45,6 +45,7 @@ class acp_ranks
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 				$rank_title = utf8_normalize_nfc(request_var('title', '', true));
+				$hide_title = request_var('hide_title', 0);
 				$special_rank = request_var('special_rank', 0);
 				$min_posts = ($special_rank) ? 0 : max(0, request_var('min_posts', 0));
 				$rank_image = request_var('rank_image', '');
@@ -62,6 +63,7 @@ class acp_ranks
 
 				$sql_ary = array(
 					'rank_title'		=> $rank_title,
+					'rank_hide_title'	=> $hide_title,
 					'rank_special'		=> $special_rank,
 					'rank_min'			=> $min_posts,
 					'rank_image'		=> htmlspecialchars_decode($rank_image)
@@ -194,6 +196,7 @@ class acp_ranks
 					'S_FILENAME_LIST'	=> $filename_list,
 					'RANK_IMAGE'		=> ($edit_img) ? $phpbb_root_path . RANK_IMAGES_PATH . '/' . $edit_img : $phpbb_admin_path . 'images/spacer.gif',
 					'S_SPECIAL_RANK'	=> (isset($ranks['rank_special']) && $ranks['rank_special']) ? true : false,
+					'S_HIDE_TITLE'		=> (isset($ranks['rank_hide_title']) && $ranks['rank_hide_title']) ? true : false,
 					'MIN_POSTS'			=> (isset($ranks['rank_min']) && !$ranks['rank_special']) ? $ranks['rank_min'] : 0)
 				);
 
@@ -217,6 +220,7 @@ class acp_ranks
 			$template->assign_block_vars('ranks', array(
 				'S_RANK_IMAGE'		=> ($row['rank_image']) ? true : false,
 				'S_SPECIAL_RANK'	=> ($row['rank_special']) ? true : false,
+				'S_HIDE_TITLE'		=> ($row['rank_hide_title']) ? true : false,
 
 				'RANK_IMAGE'		=> $phpbb_root_path . RANK_IMAGES_PATH . '/' . $row['rank_image'],
 				'RANK_TITLE'		=> $row['rank_title'],

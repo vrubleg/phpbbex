@@ -209,6 +209,7 @@ $lang = array_merge($lang, array(
 	'RANK_REMOVED'			=> 'The rank was successfully deleted.',
 	'RANK_SPECIAL'			=> 'Set as special rank',
 	'RANK_TITLE'			=> 'Rank title',
+	'RANK_HIDE_TITLE'		=> 'Hide rank title',
 	'RANK_UPDATED'			=> 'The rank was successfully updated.',
 ));
 

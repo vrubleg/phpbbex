@@ -323,5 +323,8 @@ ALTER TABLE phpbb_user_browser_ids MODIFY agent varchar(250) DEFAULT '' NOT NULL
 -- Disable obsolete modules (they can be removed in the ACP safely).
 UPDATE phpbb_modules SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics');
 
+-- phpBBex 1.9.x
+ALTER TABLE phpbb_ranks ADD COLUMN rank_hide_title tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER rank_title;
+
 -- phpBBex version
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.6');

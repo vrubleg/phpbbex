@@ -26,6 +26,11 @@
 		<dd><input name="title" type="text" id="title" value="{RANK_TITLE}" maxlength="255" /></dd>
 	</dl>
 	<dl>
+		<dt><label for="hide_title">{L_RANK_HIDE_TITLE}:</label></dt>
+		<dd><label><input type="radio" class="radio" name="hide_title" value="1" id="hide_title"<!-- IF S_HIDE_TITLE --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+			<label><input type="radio" class="radio" name="hide_title" value="0"<!-- IF not S_HIDE_TITLE --> checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+	</dl>
+	<dl>
 		<dt><label for="rank_image">{L_RANK_IMAGE}:</label></dt>
 		<dd><select name="rank_image" id="rank_image" onchange="update_image(this.options[selectedIndex].value);">{S_FILENAME_LIST}</select></dd>
 		<dd><img src="{RANK_IMAGE}" id="image" alt="" /></dd>

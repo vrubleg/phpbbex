@@ -453,9 +453,6 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 	trigger_error($message);
 }
 
-// Grab ranks
-$ranks = $cache->obtain_ranks();
-
 // Grab icons
 $icons = $cache->obtain_icons();
 
