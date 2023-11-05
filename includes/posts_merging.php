@@ -41,7 +41,7 @@ if ($user->data['is_registered'])
 else
 {
 	$do_merge = $do_merge && ($current_time - $merge_post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600;
-	$do_merge = $do_merge && request_var($config['cookie_name'] . '_bid', '', false, true) == $merge_post_data['poster_browser_id'];
+	$do_merge = $do_merge && get_cookie('bid', '') == $merge_post_data['poster_browser_id'];
 }
 
 if (!$do_merge) return;

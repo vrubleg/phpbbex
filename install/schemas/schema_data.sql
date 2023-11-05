@@ -76,10 +76,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('confirm_refresh', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('check_attachment_content', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('check_dnsbl', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('chg_passforce', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('cookie_domain', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('cookie_name', 'phpbb3');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('cookie_path', '/');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('cookie_secure', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', 'Powered by {POWERED_BY}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('database_gc', '604800');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('dbms_version', '');
@@ -111,7 +107,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_topics_new', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_topics_active', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_item_statistics', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('flood_interval', '15');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('force_server_vars', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_lifetime', '43200');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_mintime', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_sid_guests', '1');
@@ -218,7 +213,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('min_search_author_
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('mime_triggers', 'body|head|html|img|plaintext|a href|pre|script|table|title');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('new_member_post_limit', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('new_member_group_default', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('no_sid', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('no_typical_info_pages', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_style', '0');
@@ -243,7 +237,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_negative',
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('rate_no_positive', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('referer_validation', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('script_path', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_block_size', '250');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_gc', '7200');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_interval', '0');
@@ -254,9 +247,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_store_resul
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_deny', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_empty_referer', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_downloads', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('server_name', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('server_port', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('server_protocol', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_gc', '3600');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '3600');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_desc', '{L_CONFIG_SITE_DESC}');

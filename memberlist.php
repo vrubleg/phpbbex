@@ -311,7 +311,7 @@ switch ($mode)
 
 						include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
 
-						$subject = sprintf($user->lang['IM_JABBER_SUBJECT'], $user->data['username'], $config['server_name']);
+						$subject = sprintf($user->lang['IM_JABBER_SUBJECT'], $user->data['username'], HTTP_HOST);
 						$message = utf8_normalize_nfc(request_var('message', '', true));
 
 						if (empty($message))

@@ -52,7 +52,6 @@ $lang = array_merge($lang, array(
 	'ACP_CAT_USERGROUP'			=> 'Пользователи и группы',
 	'ACP_CAT_USERS'				=> 'Пользователи',
 	'ACP_CLIENT_COMMUNICATION'	=> 'Средства связи',
-	'ACP_COOKIE_SETTINGS'		=> 'Настройки cookies',
 	'ACP_CRITICAL_LOGS'			=> 'Лог ошибок',
 	'ACP_CUSTOM_PROFILE_FIELDS'	=> 'Дополнительные поля в профиле',
 

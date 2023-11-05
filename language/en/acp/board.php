@@ -409,20 +409,10 @@ $lang = array_merge($lang, array(
 
 // Cookie Settings
 $lang = array_merge($lang, array(
-	'ACP_COOKIE_SETTINGS_EXPLAIN'		=> 'These details define the data used to send cookies to your users browsers. In most cases the default values for the cookie settings should be sufficient. If you do need to change any do so with care, incorrect settings can prevent users logging in.',
-
-	'COOKIE_DOMAIN'				=> 'Cookie domain',
-	'COOKIE_NAME'				=> 'Cookie name',
-	'COOKIE_PATH'				=> 'Cookie path',
-	'COOKIE_SECURE'				=> 'HTTPS cookie',
-	'COOKIE_SECURE_EXPLAIN'		=> 'If your server is running via SSL set this to enabled else leave as disabled. Having this enabled and not running via SSL will result in server errors during redirects.',
 	'ONLINE_LENGTH'				=> 'View online time span',
 	'ONLINE_LENGTH_EXPLAIN'		=> 'Number of minutes after which inactive users will not appear in “Who is online” listings. The higher this value the greater is the processing required to generate the listing.',
 	'SESSION_LENGTH'			=> 'Session length',
 	'SESSION_LENGTH_EXPLAIN'	=> 'Sessions will expire after this time, in seconds.',
-
-	'NO_SID'					=> 'Never add sid to links',
-	'NO_SID_EXPLAIN'			=> 'Warning! You can\'t log in if you set incorrect cookie settings and disable sid.',
 ));
 
 // Load Settings
@@ -496,17 +486,6 @@ $lang = array_merge($lang, array(
 
 	'ENABLE_GZIP'				=> 'Enable GZip compression',
 	'ENABLE_GZIP_EXPLAIN'		=> 'Generated content will be compressed prior to sending it to the user. This can reduce network traffic but will also increase CPU usage on both server and client side. Requires zlib PHP extension to be loaded.',
-	'FORCE_SERVER_VARS'			=> 'Force server URL settings',
-	'FORCE_SERVER_VARS_EXPLAIN'	=> 'If set to yes the server settings defined here will be used in favour of the automatically determined values.',
-	'SCRIPT_PATH'				=> 'Script path',
-	'SCRIPT_PATH_EXPLAIN'		=> 'The path where phpBBex is located relative to the domain name, e.g. <samp>/phpBBex</samp>.',
-	'SERVER_NAME'				=> 'Domain name',
-	'SERVER_NAME_EXPLAIN'		=> 'The domain name this board runs from (for example: <samp>www.example.com</samp>).',
-	'SERVER_PORT'				=> 'Server port',
-	'SERVER_PORT_EXPLAIN'		=> 'The port your server is running on, usually 80, only change if different.',
-	'SERVER_PROTOCOL'			=> 'Server protocol',
-	'SERVER_PROTOCOL_EXPLAIN'	=> 'This is used as the server protocol if these settings are forced. If empty or not forced the protocol is determined by the cookie secure settings (<samp>http://</samp> or <samp>https://</samp>).',
-	'SERVER_URL_SETTINGS'		=> 'Server URL settings',
 ));
 
 // Security Settings

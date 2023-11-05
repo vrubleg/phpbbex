@@ -932,33 +932,7 @@ class install_install extends module
 
 		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
 
-		// HTTP_HOST is having the correct browser url in most cases...
-		$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
-
-		// HTTP HOST can carry a port number...
-		if (strpos($server_name, ':') !== false)
-		{
-			$server_name = substr($server_name, 0, strpos($server_name, ':'));
-		}
-
 		$data['email_enable'] = ($data['email_enable'] !== '') ? $data['email_enable'] : true;
-		$data['server_name'] = ($data['server_name'] !== '') ? $data['server_name'] : $server_name;
-		$data['server_port'] = ($data['server_port'] !== '') ? $data['server_port'] : ((!empty($_SERVER['SERVER_PORT'])) ? (int) $_SERVER['SERVER_PORT'] : (int) getenv('SERVER_PORT'));
-		$data['server_protocol'] = ($data['server_protocol'] !== '') ? $data['server_protocol'] : ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://');
-		$data['cookie_secure'] = ($data['cookie_secure'] !== '') ? $data['cookie_secure'] : ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? true : false);
-
-		if ($data['script_path'] === '')
-		{
-			$name = (!empty($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : getenv('PHP_SELF');
-			if (!$name)
-			{
-				$name = (!empty($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : getenv('REQUEST_URI');
-			}
-
-			// Replace backslashes and doubled slashes (could happen on some proxy setups)
-			$name = str_replace(array('\\', '//'), '/', $name);
-			$data['script_path'] = str_replace('\\', '/', trim(dirname(dirname($name))));
-		}
 
 		foreach ($this->advanced_config_options as $config_key => $vars)
 		{
@@ -1030,24 +1004,6 @@ class install_install extends module
 			// Someone's been silly and tried calling this page direct
 			// So we send them back to the start to do it again properly
 			$this->p_master->redirect("index.$phpEx?mode=install");
-		}
-
-		// HTTP_HOST is having the correct browser url in most cases...
-		$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
-		$referer = (!empty($_SERVER['HTTP_REFERER'])) ? strtolower($_SERVER['HTTP_REFERER']) : getenv('HTTP_REFERER');
-
-		// HTTP HOST can carry a port number...
-		if (strpos($server_name, ':') !== false)
-		{
-			$server_name = substr($server_name, 0, strpos($server_name, ':'));
-		}
-
-		$cookie_domain = ($data['server_name'] != '') ? $data['server_name'] : $server_name;
-
-		// Try to come up with the best solution for cookie domain...
-		if (strpos($cookie_domain, 'www.') === 0)
-		{
-			$cookie_domain = str_replace('www.', '.', $cookie_domain);
 		}
 
 		// If we get here and the extension isn't loaded it should be safe to just go ahead and load it
@@ -1123,22 +1079,6 @@ class install_install extends module
 		$user_ip = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars($_SERVER['REMOTE_ADDR']) : '';
 		$user_ip = (stripos($user_ip, '::ffff:') === 0) ? substr($user_ip, 7) : $user_ip;
 
-		if ($data['script_path'] !== '/')
-		{
-			// Adjust destination path (no trailing slash)
-			if (substr($data['script_path'], -1) == '/')
-			{
-				$data['script_path'] = substr($data['script_path'], 0, -1);
-			}
-
-			$data['script_path'] = str_replace(array('../', './'), '', $data['script_path']);
-
-			if ($data['script_path'][0] != '/')
-			{
-				$data['script_path'] = '/' . $data['script_path'];
-			}
-		}
-
 		// Set default config and post data, this applies to all DB's
 		$sql_ary = array(
 			'INSERT INTO ' . $data['table_prefix'] . "config (config_name, config_value)
@@ -1148,24 +1088,12 @@ class install_install extends module
 				VALUES ('default_lang', '" . $db->sql_escape($data['default_lang']) . "')",
 
 			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['server_name']) . "'
-				WHERE config_name = 'server_name'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['server_port']) . "'
-				WHERE config_name = 'server_port'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['board_email1']) . "'
 				WHERE config_name = 'board_email'",
 
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['board_email1']) . "'
 				WHERE config_name = 'board_contact'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($cookie_domain) . "'
-				WHERE config_name = 'cookie_domain'",
 
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($lang['default_dateformat']) . "'
@@ -1194,22 +1122,6 @@ class install_install extends module
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['smtp_pass']) . "'
 				WHERE config_name = 'smtp_password'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['cookie_secure']) . "'
-				WHERE config_name = 'cookie_secure'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['force_server_vars']) . "'
-				WHERE config_name = 'force_server_vars'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['script_path']) . "'
-				WHERE config_name = 'script_path'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['server_protocol']) . "'
-				WHERE config_name = 'server_protocol'",
 
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['admin_name']) . "'
@@ -1259,26 +1171,6 @@ class install_install extends module
 				SET config_value = '1'
 				WHERE config_name = 'captcha_gd'";
 		}
-
-		$ref = substr($referer, strpos($referer, '://') + 3);
-
-		if (!(stripos($ref, $server_name) === 0))
-		{
-			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '0'
-				WHERE config_name = 'referer_validation'";
-		}
-
-		// We set a (semi-)unique cookie name to bypass login issues related to the cookie name.
-		$cookie_name = 'phpbb3_';
-		$rand_str = md5(mt_rand());
-		$rand_str = str_replace('0', 'z', base_convert($rand_str, 16, 35));
-		$rand_str = substr($rand_str, 0, 5);
-		$cookie_name .= strtolower($rand_str);
-
-		$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
-			SET config_value = '" . $db->sql_escape($cookie_name) . "'
-			WHERE config_name = 'cookie_name'";
 
 		foreach ($sql_ary as $sql)
 		{
@@ -1953,12 +1845,6 @@ class install_install extends module
 			'smtp_auth'		=> request_var('smtp_auth', ''),
 			'smtp_user'		=> request_var('smtp_user', ''),
 			'smtp_pass'		=> request_var('smtp_pass', ''),
-			'cookie_secure'	=> request_var('cookie_secure', ''),
-			'force_server_vars'	=> request_var('force_server_vars', ''),
-			'server_protocol'	=> request_var('server_protocol', ''),
-			'server_name'	=> request_var('server_name', ''),
-			'server_port'	=> request_var('server_port', ''),
-			'script_path'	=> request_var('script_path', ''),
 		);
 	}
 
@@ -1992,14 +1878,6 @@ class install_install extends module
 		'smtp_auth'				=> array('lang' => 'SMTP_AUTH_METHOD',	'type' => 'select', 'options' => '$this->module->mail_auth_select(\'{VALUE}\')', 'explain' => true),
 		'smtp_user'				=> array('lang' => 'SMTP_USERNAME',		'type' => 'text:25:255', 'explain' => true, 'options' => array('autocomplete' => 'off')),
 		'smtp_pass'				=> array('lang' => 'SMTP_PASSWORD',		'type' => 'text:25:255', 'explain' => true, 'options' => array('autocomplete' => 'off')),
-
-		'legend2'				=> 'SERVER_URL_SETTINGS',
-		'cookie_secure'			=> array('lang' => 'COOKIE_SECURE',		'type' => 'radio:enabled_disabled', 'explain' => true),
-		'force_server_vars'		=> array('lang' => 'FORCE_SERVER_VARS',	'type' => 'radio:yes_no', 'explain' => true),
-		'server_protocol'		=> array('lang' => 'SERVER_PROTOCOL',	'type' => 'text:10:10', 'explain' => true),
-		'server_name'			=> array('lang' => 'SERVER_NAME',		'type' => 'text:40:255', 'explain' => true),
-		'server_port'			=> array('lang' => 'SERVER_PORT',		'type' => 'text:5:5', 'explain' => true),
-		'script_path'			=> array('lang' => 'SCRIPT_PATH',		'type' => 'text::255', 'explain' => true),
 	);
 
 	/**

@@ -365,16 +365,9 @@ function download_allowed()
 		}
 	}
 
-	// Check for own server...
-	$server_name = $user->host;
-
-	// Forcing server vars is the only way to specify/override the protocol
-	if ($config['force_server_vars'] || !$server_name)
-	{
-		$server_name = $config['server_name'];
-	}
-
-	if (preg_match('#^.*?' . preg_quote($server_name, '#') . '.*?$#i', $hostname))
+	// Check for own server (without www)...
+	$own_host = preg_replace('#^(www\.)+#i', '', HTTP_HOST);
+	if ($own_host && preg_match('#' . preg_quote($own_host, '#') . '$#i', $hostname))
 	{
 		$allowed = true;
 	}

@@ -1126,30 +1126,15 @@ class bbcode_firstpass extends bbcode
 	{
 		global $config, $phpEx, $user;
 
-		if ($config['force_server_vars'])
-		{
-			$check_path = $config['script_path'];
-		}
-		else
-		{
-			$check_path = ($user->page['root_script_path'] != '/') ? substr($user->page['root_script_path'], 0, -1) : '/';
-		}
+		$check_path = ($user->page['root_script_path'] != '/') ? substr($user->page['root_script_path'], 0, -1) : '/';
 
 		// Is the user trying to link to a php file in this domain and script path?
 		if (strpos($url, ".{$phpEx}") !== false && strpos($url, $check_path) !== false)
 		{
-			$server_name = $user->host;
-
-			// Forcing server vars is the only way to specify/override the protocol
-			if ($config['force_server_vars'] || !$server_name)
-			{
-				$server_name = $config['server_name'];
-			}
-
 			// Check again in correct order...
 			$pos_ext = strpos($url, ".{$phpEx}");
 			$pos_path = strpos($url, $check_path);
-			$pos_domain = strpos($url, $server_name);
+			$pos_domain = strpos($url, $user->host);
 
 			if ($pos_domain !== false && $pos_path >= $pos_domain && $pos_ext >= $pos_path)
 			{

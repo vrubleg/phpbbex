@@ -166,9 +166,7 @@ class messenger
 	*/
 	function anti_abuse_headers($config, $user)
 	{
-		$host = $config['server_name'];
-		if (!preg_match('#[-_.\w\d]*#i', $host)) { $host = mail_encode($host); }
-		$this->headers('X-AntiAbuse: Host - ' . $host);
+		$this->headers('X-AntiAbuse: Host - ' . $user->host);
 		$this->headers('X-AntiAbuse: User ID - ' . $user->data['user_id']);
 		$this->headers('X-AntiAbuse: User IP - ' . $user->ip);
 	}
@@ -352,7 +350,7 @@ class messenger
 			$user->session_begin();
 		}
 
-		$calling_page = (!empty($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : $_ENV['PHP_SELF'];
+		$calling_page = (!empty($_SERVER['SCRIPT_NAME'])) ? $_SERVER['SCRIPT_NAME'] : $_ENV['SCRIPT_NAME'];
 
 		$message = '';
 		switch ($type)
@@ -391,19 +389,7 @@ class messenger
 	*/
 	function generate_message_id()
 	{
-		global $config;
-
-		$domain = 'phpbb.generated';
-		if ($config['server_name'])
-		{
-			$domain = $config['server_name'];
-		}
-		else if (!empty($_SERVER['SERVER_NAME']))
-		{
-			$domain = $_SERVER['SERVER_NAME'];
-		}
-
-		return md5(unique_id(time())) . '@' . $domain;
+		return md5(unique_id()) . '@' . HTTP_HOST;
 	}
 
 	/**

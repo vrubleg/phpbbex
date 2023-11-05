@@ -387,33 +387,7 @@ class module
 	*/
 	function redirect($page)
 	{
-		// HTTP_HOST is having the correct browser url in most cases...
-		$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
-		$server_port = (!empty($_SERVER['SERVER_PORT'])) ? (int) $_SERVER['SERVER_PORT'] : (int) getenv('SERVER_PORT');
-		$secure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 1 : 0;
-
-		$script_name = (!empty($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : getenv('PHP_SELF');
-		if (!$script_name)
-		{
-			$script_name = (!empty($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : getenv('REQUEST_URI');
-		}
-
-		// Replace backslashes and doubled slashes (could happen on some proxy setups)
-		$script_name = str_replace(array('\\', '//'), '/', $script_name);
-		$script_path = trim(dirname($script_name));
-
-		$url = (($secure) ? 'https://' : 'http://') . $server_name;
-
-		if ($server_port && !$secure && $server_port <> 80)
-		{
-			// HTTP HOST can carry a port number...
-			if (strpos($server_name, ':') === false)
-			{
-				$url .= ':' . $server_port;
-			}
-		}
-
-		$url .= $script_path . '/' . $page;
+		$url = (HTTP_SECURE ? 'https://' : 'http://') . HTTP_HOST . (HTTP_PORT ? ':' . HTTP_PORT : '') . HTTP_ROOT . $page;
 		header('Location: ' . $url);
 		exit;
 	}

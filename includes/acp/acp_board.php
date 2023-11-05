@@ -416,20 +416,6 @@ class acp_board
 				);
 			break;
 
-			case 'cookie':
-				$display_vars = array(
-					'title'	=> 'ACP_COOKIE_SETTINGS',
-					'vars'	=> array(
-						'legend1'		=> 'ACP_COOKIE_SETTINGS',
-						'no_sid'		=> array('lang' => 'NO_SID',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'cookie_domain'	=> array('lang' => 'COOKIE_DOMAIN',	'validate' => 'string',	'type' => 'text::255', 'explain' => false),
-						'cookie_name'	=> array('lang' => 'COOKIE_NAME',	'validate' => 'string',	'type' => 'text::16', 'explain' => false),
-						'cookie_path'	=> array('lang'	=> 'COOKIE_PATH',	'validate' => 'string',	'type' => 'text::255', 'explain' => false),
-						'cookie_secure'	=> array('lang' => 'COOKIE_SECURE',	'validate' => 'bool',	'type' => 'radio:disabled_enabled', 'explain' => true),
-					)
-				);
-			break;
-
 			case 'load':
 				$display_vars = array(
 					'title'	=> 'ACP_LOAD_SETTINGS',
@@ -481,14 +467,7 @@ class acp_board
 						'legend1'				=> 'ACP_SERVER_SETTINGS',
 						'gzip_compress'			=> array('lang' => 'ENABLE_GZIP',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 
-						'legend2'				=> 'SERVER_URL_SETTINGS',
-						'force_server_vars'		=> array('lang' => 'FORCE_SERVER_VARS',	'validate' => 'bool',			'type' => 'radio:yes_no', 'explain' => true),
-						'server_protocol'		=> array('lang' => 'SERVER_PROTOCOL',	'validate' => 'string',			'type' => 'text:10:10', 'explain' => true),
-						'server_name'			=> array('lang' => 'SERVER_NAME',		'validate' => 'string',			'type' => 'text:40:255', 'explain' => true),
-						'server_port'			=> array('lang' => 'SERVER_PORT',		'validate' => 'int:0',			'type' => 'text:5:5', 'explain' => true),
-						'script_path'			=> array('lang' => 'SCRIPT_PATH',		'validate' => 'script_path',	'type' => 'text::255', 'explain' => true),
-
-						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;

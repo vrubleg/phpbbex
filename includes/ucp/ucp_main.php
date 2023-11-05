@@ -257,7 +257,7 @@ class ucp_main
 					}
 					else
 					{
-						$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
+						$tracking_topics = get_cookie('track', '');
 						$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 					}
 

@@ -643,11 +643,8 @@ if (!empty($topic_data['poll_start']))
 		// Cookie based guest tracking ... I don't like this but hum ho
 		// it's oft requested. This relies on "nice" users who don't feel
 		// the need to delete cookies to mess with results.
-		if (isset($_COOKIE[$config['cookie_name'] . '_poll_' . $topic_id]))
-		{
-			$cur_voted_id = explode(',', $_COOKIE[$config['cookie_name'] . '_poll_' . $topic_id]);
-			$cur_voted_id = array_map('intval', $cur_voted_id);
-		}
+		$cur_voted_id = explode(',', get_cookie('poll_' . $topic_id, ''));
+		$cur_voted_id = array_map('intval', $cur_voted_id);
 	}
 
 	// Can not vote at all if no vote permission
@@ -744,7 +741,14 @@ if (!empty($topic_data['poll_start']))
 
 		if ($user->data['user_id'] == ANONYMOUS && !$user->data['is_bot'])
 		{
-			$user->set_cookie('poll_' . $topic_id, implode(',', $voted_id), time() + 31536000 * ($unvote ? -1 : 1));
+			if (!$unvote)
+			{
+				set_cookie('poll_' . $topic_id, implode(',', $voted_id), true);
+			}
+			else
+			{
+				del_cookie('poll_' . $topic_id);
+			}
 		}
 
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
