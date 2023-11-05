@@ -68,7 +68,7 @@ if ((!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_us
 */
 if (!phpbb_gallery_config::get('allow_hotlinking') && isset($_SERVER['HTTP_REFERER']))
 {
-	$good_referers = array($config['server_name']);
+	$good_referers = array(preg_replace('#^(www\.)+#i', '', HTTP_HOST));
 	if (phpbb_gallery_config::get('hotlinking_domains') != '')
 	{
 		$good_referers = array_merge($good_referers, explode(',', phpbb_gallery_config::get('hotlinking_domains')));
