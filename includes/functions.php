@@ -126,6 +126,42 @@ function request_var($var_name, $default, $multibyte = false, $cookie = false)
 }
 
 /**
+* Set a cookie.
+*
+* @param string $name   Name of the cookie, will be automatically prefixed.
+* @param string $data   The data to hold within the cookie.
+* @param int    $maxage 1+ - max age in seconds; null - session cookie; true - persistent cookie; 0 - delete cookie.
+*/
+function set_cookie($name, $data, $maxage)
+{
+	header('Set-Cookie: ' . rawurlencode(COOKIE_PREFIX . $name) . '=' . rawurlencode($data)
+		. ($maxage !== null ? '; Max-Age=' . ($maxage === true ? 34560000 : intval($maxage)) : '')
+		. (defined('COOKIE_PATH') && COOKIE_PATH ? '; Path=' . COOKIE_PATH : '; Path=/')
+		. (defined('COOKIE_DOMAIN') && COOKIE_DOMAIN ? '; Domain=' . COOKIE_DOMAIN : '')
+		. (defined('COOKIE_SECURE') && COOKIE_SECURE ? '; Secure' : '')
+		. '; HttpOnly', false);
+
+	if (intval($maxage) > 0)
+	{
+		$_COOKIE[COOKIE_PREFIX . $name] = $data;
+	}
+	else if (isset($_COOKIE[COOKIE_PREFIX . $name]))
+	{
+		unset($_COOKIE[COOKIE_PREFIX . $name]);
+	}
+}
+
+function del_cookie($name)
+{
+	set_cookie($name, '', 0);
+}
+
+function get_cookie($name, $default, $multibyte = false)
+{
+	return request_var(COOKIE_PREFIX . $name, $default, $multibyte, true);
+}
+
+/**
 * Sets a configuration option's value.
 *
 * Please note that this function does not update the is_dynamic value for
@@ -1224,7 +1260,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 			}
 			else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 			{
-				$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
+				$tracking_topics = get_cookie('track', '');
 				$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 
 				unset($tracking_topics['tf']);
@@ -1232,8 +1268,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				unset($tracking_topics['f']);
 				$tracking_topics['l'] = base_convert(time() - $config['board_startdate'], 10, 36);
 
-				$user->set_cookie('track', tracking_serialize($tracking_topics), time() + 31536000);
-				$_COOKIE[$config['cookie_name'] . '_track'] = tracking_serialize($tracking_topics);
+				set_cookie('track', tracking_serialize($tracking_topics), true);
 
 				unset($tracking_topics);
 
@@ -1303,7 +1338,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 		}
 		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 		{
-			$tracking = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
+			$tracking = get_cookie('track', '');
 			$tracking = ($tracking) ? tracking_unserialize($tracking) : array();
 
 			foreach ($forum_id as $f_id)
@@ -1333,8 +1368,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				unset($tracking['tf']);
 			}
 
-			$user->set_cookie('track', tracking_serialize($tracking), time() + 31536000);
-			$_COOKIE[$config['cookie_name'] . '_track'] = tracking_serialize($tracking);
+			set_cookie('track', tracking_serialize($tracking), true);
 
 			unset($tracking);
 		}
@@ -1375,7 +1409,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 		}
 		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 		{
-			$tracking = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
+			$tracking = get_cookie('track', '');
 			$tracking = ($tracking) ? tracking_unserialize($tracking) : array();
 
 			$topic_id36 = base_convert($topic_id, 10, 36);
@@ -1390,7 +1424,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 
 			// If the cookie grows larger than 10000 characters we will remove the smallest value
 			// This can result in old topics being unread - but most of the time it should be accurate...
-			if (isset($_COOKIE[$config['cookie_name'] . '_track']) && strlen($_COOKIE[$config['cookie_name'] . '_track']) > 10000)
+			if (strlen(get_cookie('track', '')) > 10000)
 			{
 				//echo 'Cookie grown too large' . print_r($tracking, true);
 
@@ -1429,8 +1463,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				}
 			}
 
-			$user->set_cookie('track', tracking_serialize($tracking), time() + 31536000);
-			$_COOKIE[$config['cookie_name'] . '_track'] = tracking_serialize($tracking);
+			set_cookie('track', tracking_serialize($tracking), true);
 		}
 
 		return;
@@ -1568,7 +1601,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 
 		if (!isset($tracking_topics) || !sizeof($tracking_topics))
 		{
-			$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
+			$tracking_topics = get_cookie('track', '');
 			$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 		}
 
@@ -1701,7 +1734,7 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 
 		if (empty($tracking_topics))
 		{
-			$tracking_topics = request_var($config['cookie_name'] . '_track', '', false, true);
+			$tracking_topics = get_cookie('track', '');
 			$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 		}
 
@@ -1779,7 +1812,7 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 		}
 		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 		{
-			$tracking_topics = (isset($_COOKIE[$config['cookie_name'] . '_track'])) ? ($_COOKIE[$config['cookie_name'] . '_track']) : '';
+			$tracking_topics = get_cookie('track', '');
 			$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : array();
 
 			if (!$user->data['is_registered'])
@@ -2156,7 +2189,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Assign sid if session id is not specified
-	if ($session_id === false && empty($config['no_sid']) && !empty($user) && empty($user->data['is_bot']) || $session_id === false && defined('NEED_SID'))
+	if ($session_id === false && defined('NEED_SID'))
 	{
 		$session_id = $_SID;
 	}
@@ -2221,50 +2254,14 @@ function generate_board_url($without_script_path = false)
 {
 	global $config, $user;
 
-	static $board_url;
 	static $domain_url;
+	static $board_url;
 
-	if (!empty($board_url))
+	if (empty($board_url))
 	{
-		return $without_script_path ? $domain_url : $board_url;
+		$domain_url = (HTTP_SECURE ? 'https://' : 'http://') . HTTP_HOST . (HTTP_PORT ? ':' . HTTP_PORT : '');
+		$board_url = rtrim($domain_url . $user->page['root_script_path'], '/');
 	}
-
-	$server_name = $user->host;
-	$server_port = (!empty($_SERVER['SERVER_PORT'])) ? (int) $_SERVER['SERVER_PORT'] : (int) getenv('SERVER_PORT');
-
-	// Forcing server vars is the only way to specify/override the protocol
-	if ($config['force_server_vars'] || !$server_name)
-	{
-		$server_protocol = ($config['server_protocol']) ? $config['server_protocol'] : (($config['cookie_secure']) ? 'https://' : 'http://');
-		$server_name = $config['server_name'];
-		$server_port = (int) $config['server_port'];
-		$script_path = $config['script_path'];
-
-		$url = $server_protocol . $server_name;
-		$cookie_secure = $config['cookie_secure'];
-	}
-	else
-	{
-		// Do not rely on cookie_secure, users seem to think that it means a secured cookie instead of an encrypted connection
-		$cookie_secure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 1 : 0;
-		$url = (($cookie_secure) ? 'https://' : 'http://') . $server_name;
-		if ($cookie_secure) $server_port = 443;
-
-		$script_path = $user->page['root_script_path'];
-	}
-
-	if ($server_port && (($cookie_secure && $server_port <> 443) || (!$cookie_secure && $server_port <> 80)))
-	{
-		// HTTP HOST can carry a port number (we fetch $user->host, but for old versions this may be true)
-		if (strpos($server_name, ':') === false)
-		{
-			$url .= ':' . $server_port;
-		}
-	}
-
-	// Strip / from the end
-	$domain_url = rtrim($url, '/');
-	$board_url = rtrim($url . $script_path, '/');
 
 	return $without_script_path ? $domain_url : $board_url;
 }
@@ -4417,8 +4414,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'T_IMAGESET_LANG_NAME'	=> $user->lang_name,
 
 		'SITE_LOGO_IMG'			=> $user->img('site_logo'),
-
-		'A_COOKIE_SETTINGS'		=> addslashes('; path=' . $config['cookie_path'] . ((!$config['cookie_domain'] || $config['cookie_domain'] == 'localhost' || $config['cookie_domain'] == '127.0.0.1') ? '' : '; domain=' . $config['cookie_domain']) . ((!$config['cookie_secure']) ? '' : '; secure')),
 	));
 
 	// Login via E-Mail

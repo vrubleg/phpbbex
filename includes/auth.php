@@ -955,10 +955,8 @@ class phpbb_auth
 				{
 					global $SID, $_SID;
 
-					$cookie_expire = time() - 31536000;
-					$user->set_cookie('u', '', $cookie_expire);
-					$user->set_cookie('sid', '', $cookie_expire);
-					unset($cookie_expire);
+					del_cookie('u');
+					del_cookie('sid');
 
 					$SID = '?sid=';
 					$user->session_id = $_SID = '';

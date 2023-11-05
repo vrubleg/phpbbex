@@ -10,16 +10,65 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-// Report all errors
+// Display all errors.
 error_reporting(E_ALL);
 
-// Check PHP version
+// Check PHP version.
 if (version_compare(PHP_VERSION, '5.6', '<')) { die('PHP 5.6+ is required.'); }
 if (@preg_match('/\p{L}/u', 'a') === false) { die('PCRE with UTF-8 support is required.'); }
 if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
 // Powered by ...
 define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> &copy; 2015 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
+
+// Detect if it's HTTPS.
+if (!defined('HTTP_SECURE'))
+{
+	define('HTTP_SECURE', isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on'
+		|| isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https'
+		|| isset($_SERVER['HTTP_FORWARDED']) && stripos($_SERVER['HTTP_FORWARDED'], 'proto=https') !== false);
+}
+
+// Define HTTP host and port.
+if (!defined('HTTP_HOST') || !defined('HTTP_PORT'))
+{
+	// Host header can also be IPv4 or IPv6, and should include port number if it's not default for current protocol.
+	if (isset($_SERVER['HTTP_HOST']) && preg_match('#^([-_.0-9a-z]+|\[[:0-9a-f]+\])(?::([1-9][0-9]*))?$#i', $_SERVER['HTTP_HOST'], $m))
+	{
+		// Set HTTP_HOST to hostname without port.
+		if (!defined('HTTP_HOST')) { define('HTTP_HOST', strtolower($m[1])); }
+		// Set HTTP_PORT if it's a non-default port only.
+		if (!defined('HTTP_PORT')) { define('HTTP_PORT', (empty($m[2]) || intval($m[2]) == (HTTP_SECURE ? 443 : 80)) ? null : intval($m[2])); }
+	}
+	else
+	{
+		die('HTTP_HOST is invalid.');
+	}
+}
+
+// Define HTTP root of phpBBex (starting and ending with /) based on SCRIPT_NAME and $phpbb_root_path.
+if (!defined('HTTP_ROOT'))
+{
+	if (empty($_SERVER['SCRIPT_NAME'])) { die('SCRIPT_NAME is invalid.'); }
+	$parts = array();
+	$parts[] = '';
+	foreach (explode('/', str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] . '/../' . $phpbb_root_path)) as $part)
+	{
+		if ($part === '' || $part == '.') { continue; }
+		if ($part == '..') { array_pop($parts); }
+		else { $parts[] = $part; }
+	}
+	$parts[] = '';
+	define('HTTP_ROOT', implode('/', $parts));
+	unset($parts);
+	unset($part);
+}
+
+// Define cookie prefix (e.g. phpbbex_path_).
+if (!defined('COOKIE_PREFIX'))
+{
+	define('COOKIE_PREFIX', 'phpbbex' . preg_replace('#[^a-z0-9]+#i', '_', HTTP_ROOT));
+}
 
 // Configure autoloader
 require_once(__DIR__.'/autoloader.php');

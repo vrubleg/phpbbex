@@ -273,8 +273,6 @@ $lang = array_merge($lang, array(
 	'RETRY_WRITE'				=> 'Retry writing config',
 	'RETRY_WRITE_EXPLAIN'		=> 'If you wish you can change the permissions on config.php to allow phpBBex to write to it. Should you wish to do that you can click Retry below to try again. Remember to return the permissions on config.php after phpBBex has finished installation.',
 
-	'SCRIPT_PATH'				=> 'Script path',
-	'SCRIPT_PATH_EXPLAIN'		=> 'The path where phpBBex is located relative to the domain name, e.g. <samp>/phpBBex</samp>.',
 	'SELECT_LANG'				=> 'Select language',
 	'SERVER_CONFIG'				=> 'Server configuration',
 	'SEARCH_INDEX_UNCONVERTED'	=> 'Search index was not converted',

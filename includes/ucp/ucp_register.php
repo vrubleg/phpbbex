@@ -233,7 +233,7 @@ class ucp_register
 			}
 
 			// Get browser id
-			$browser_id = request_var($config['cookie_name'] . '_bid', '', false, true);
+			$browser_id = get_cookie('bid', '');
 			$sql = "SELECT * FROM " . USER_BROWSER_IDS_TABLE . " WHERE browser_id='" . $db->sql_escape($browser_id) . "'";
 			$result = $db->sql_query($sql);
 			$browser = $db->sql_fetchrow($result);

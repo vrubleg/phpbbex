@@ -38,7 +38,7 @@ class phpbb_session
 		$page_array = array();
 
 		// First of all, get the request uri...
-		$script_name = (!empty($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : getenv('PHP_SELF');
+		$script_name = (!empty($_SERVER['SCRIPT_NAME'])) ? $_SERVER['SCRIPT_NAME'] : getenv('SCRIPT_NAME');
 		$args = (!empty($_SERVER['QUERY_STRING'])) ? explode('&', $_SERVER['QUERY_STRING']) : explode('&', getenv('QUERY_STRING'));
 
 		// If we are unable to get the script name we use REQUEST_URI as a failover and note it within the page array for easier support...
@@ -130,60 +130,6 @@ class phpbb_session
 	}
 
 	/**
-	* Get valid hostname/port. HTTP_HOST is used, SERVER_NAME if HTTP_HOST not present.
-	*/
-	function extract_current_hostname()
-	{
-		global $config;
-
-		// Get hostname
-		$host = (!empty($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : ((!empty($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME'] : getenv('SERVER_NAME'));
-
-		// Should be a string and lowered
-		$host = (string) strtolower($host);
-
-		// If host is equal the cookie domain or the server name (if config is set), then we assume it is valid
-		if ((isset($config['cookie_domain']) && $host === $config['cookie_domain']) || (isset($config['server_name']) && $host === $config['server_name']))
-		{
-			return $host;
-		}
-
-		// Is the host actually a IP? If so, we use the IP... (IPv4)
-		if (long2ip(ip2long($host)) === $host)
-		{
-			return $host;
-		}
-
-		// Now return the hostname (this also removes any port definition). The http:// is prepended to construct a valid URL, hosts never have a scheme assigned
-		$host = @parse_url('http://' . $host);
-		$host = (!empty($host['host'])) ? $host['host'] : '';
-
-		// Remove any portions not removed by parse_url (#)
-		$host = str_replace('#', '', $host);
-
-		// If, by any means, the host is now empty, we will use a "best approach" way to guess one
-		if (empty($host))
-		{
-			if (!empty($config['server_name']))
-			{
-				$host = $config['server_name'];
-			}
-			else if (!empty($config['cookie_domain']))
-			{
-				$host = (strpos($config['cookie_domain'], '.') === 0) ? substr($config['cookie_domain'], 1) : $config['cookie_domain'];
-			}
-			else
-			{
-				// Set to OS hostname or localhost
-				$host = (function_exists('php_uname')) ? php_uname('n') : 'localhost';
-			}
-		}
-
-		// It may be still no valid host, but for sure only a hostname (we may further expand on the cookie domain... if set)
-		return $host;
-	}
-
-	/**
 	* Start session management
 	*
 	* This is where all session activity begins. We gather various pieces of
@@ -208,7 +154,7 @@ class phpbb_session
 		$this->referer				= (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
 		$this->forwarded_for		= (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) ? htmlspecialchars((string) $_SERVER['HTTP_X_FORWARDED_FOR']) : '';
 
-		$this->host					= $this->extract_current_hostname();
+		$this->host					= HTTP_HOST;
 		$this->page					= $this->extract_current_page($phpbb_root_path);
 
 		// if the forwarded for header shall be checked we have to validate its contents
@@ -234,27 +180,16 @@ class phpbb_session
 			$this->forwarded_for = '';
 		}
 
-		if (isset($_COOKIE[$config['cookie_name'] . '_sid']) || isset($_COOKIE[$config['cookie_name'] . '_u']))
-		{
-			$this->cookie_data['u'] = request_var($config['cookie_name'] . '_u', 0, false, true);
-			$this->cookie_data['k'] = request_var($config['cookie_name'] . '_k', '', false, true);
-			$this->session_id 		= request_var($config['cookie_name'] . '_sid', '', false, true);
+		$this->session_id = get_cookie('sid', '');
 
-			$SID = (defined('NEED_SID')) ? '?sid=' . $this->session_id : '?sid=';
-			$_SID = (defined('NEED_SID')) ? $this->session_id : '';
-
-			if (empty($this->session_id))
-			{
-				$this->session_id = $_SID = request_var('sid', '');
-				$SID = '?sid=' . $this->session_id;
-				$this->cookie_data = array('u' => 0, 'k' => '');
-			}
-		}
-		else
+		if (!empty($this->session_id))
 		{
-			$this->session_id = $_SID = request_var('sid', '');
-			$SID = '?sid=' . $this->session_id;
+			$this->cookie_data['u'] = get_cookie('u', 0);
+			$this->cookie_data['k'] = get_cookie('k', '');
 		}
+
+		$SID = (defined('NEED_SID')) ? '?sid=' . $this->session_id : '?sid=';
+		$_SID = (defined('NEED_SID')) ? $this->session_id : '';
 
 		$_EXTRA_URL = array();
 
@@ -471,14 +406,13 @@ class phpbb_session
 
 		$user_id = $this->data['user_id'];
 		$agent = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249));
-		$browser_id = request_var($config['cookie_name'] . '_bid', '', false, true);
+		$browser_id = get_cookie('bid', '');
 
 		if (strlen($browser_id) != 32)
 		{
 			// Set new browser_id cookie
 			$browser_id = md5(unique_id('bid', true));
-			$cookie_expire = $this->time_now + 86400*365; // One year
-			$this->set_cookie('bid', $browser_id, $cookie_expire);
+			set_cookie('bid', $browser_id, true);
 		}
 
 		// Update stats
@@ -851,11 +785,11 @@ class phpbb_session
 
 		if (!$bot)
 		{
-			$cookie_expire = $this->time_now + (($config['max_autologin_time']) ? 86400 * (int) $config['max_autologin_time'] : 31536000);
+			$cookie_expire = (intval($config['max_autologin_time']) ? 86400 * intval($config['max_autologin_time']) : true);
 
-			$this->set_cookie('u', $this->cookie_data['u'], $cookie_expire);
-			$this->set_cookie('k', $this->cookie_data['k'], $cookie_expire);
-			$this->set_cookie('sid', $this->session_id, $cookie_expire);
+			set_cookie('u', $this->cookie_data['u'], $cookie_expire);
+			set_cookie('k', $this->cookie_data['k'], $cookie_expire);
+			set_cookie('sid', $this->session_id, $cookie_expire);
 
 			unset($cookie_expire);
 
@@ -953,11 +887,9 @@ class phpbb_session
 			$db->sql_freeresult($result);
 		}
 
-		$cookie_expire = $this->time_now - 31536000;
-		$this->set_cookie('u', '', $cookie_expire);
-		$this->set_cookie('k', '', $cookie_expire);
-		$this->set_cookie('sid', '', $cookie_expire);
-		unset($cookie_expire);
+		del_cookie('u');
+		del_cookie('k');
+		del_cookie('sid');
 
 		$SID = '?sid=';
 		$this->session_id = $_SID = '';
@@ -1055,26 +987,6 @@ class phpbb_session
 		}
 
 		return;
-	}
-
-	/**
-	* Sets a cookie
-	*
-	* Sets a cookie of the given name with the specified data for the given length of time. If no time is specified, a session cookie will be set.
-	*
-	* @param string $name		Name of the cookie, will be automatically prefixed with the phpBB cookie name. track becomes [cookie_name]_track then.
-	* @param string $cookiedata	The data to hold within the cookie
-	* @param int $cookietime	The expiration time as UNIX timestamp. If 0 is provided, a session cookie is set.
-	*/
-	function set_cookie($name, $cookiedata, $cookietime)
-	{
-		global $config;
-
-		$name_data = rawurlencode($config['cookie_name'] . '_' . $name) . '=' . rawurlencode($cookiedata);
-		$expire = gmdate('D, d-M-Y H:i:s \\G\\M\\T', $cookietime);
-		$domain = (!$config['cookie_domain'] || $config['cookie_domain'] == '127.0.0.1' || strpos($config['cookie_domain'], '.') === false) ? '' : '; domain=' . $config['cookie_domain'];
-
-		header('Set-Cookie: ' . $name_data . (($cookietime) ? '; expires=' . $expire : '') . '; path=' . $config['cookie_path'] . $domain . ((!$config['cookie_secure']) ? '' : '; secure') . '; HttpOnly', false);
 	}
 
 	/**
@@ -1501,27 +1413,22 @@ class phpbb_session
 		global $config;
 
 		// no referer - nothing to validate, user's fault for turning it off (we only check on POST; so meta can't be the reason)
-		if (empty($this->referer) || empty($this->host))
+		if (empty($this->referer))
 		{
 			return true;
 		}
 
-		$host = htmlspecialchars($this->host);
-		$ref = substr($this->referer, strpos($this->referer, '://') + 3);
+		$ref = $this->referer;
+		$ref = preg_replace('#^https?://#i', '', $ref);
 
-		if (!(stripos($ref, $host) === 0) && (!$config['force_server_vars'] || !(stripos($ref, $config['server_name']) === 0)))
+		if (!(stripos($ref, HTTP_HOST) === 0))
 		{
 			return false;
 		}
 		else if ($check_script_path && rtrim($this->page['root_script_path'], '/') !== '')
 		{
-			$ref = substr($ref, strlen($host));
-			$server_port = (!empty($_SERVER['SERVER_PORT'])) ? (int) $_SERVER['SERVER_PORT'] : (int) getenv('SERVER_PORT');
-
-			if ($server_port !== 80 && $server_port !== 443 && stripos($ref, ":$server_port") === 0)
-			{
-				$ref = substr($ref, strlen(":$server_port"));
-			}
+			$ref = substr($ref, strlen(HTTP_HOST));
+			if (HTTP_PORT) { $ref = preg_replace('#^:' . HTTP_PORT . '#', '', $ref); }
 
 			if (!(stripos(rtrim($ref, '/'), rtrim($this->page['root_script_path'], '/')) === 0))
 			{

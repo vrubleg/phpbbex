@@ -29,10 +29,9 @@ class phpbb_recaptcha extends phpbb_default_captcha
 	var $challenge;
 	var $response;
 
-	// PHP4 Constructor
 	function __construct()
 	{
-		$this->recaptcha_server = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? $this->recaptcha_server_secure : $this->recaptcha_server;
+		$this->recaptcha_server = HTTP_SECURE ? $this->recaptcha_server_secure : $this->recaptcha_server;
 	}
 
 	function init($type)
