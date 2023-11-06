@@ -86,8 +86,6 @@ class phpbb_gallery
 		$template->assign_vars(array(
 			'S_IN_GALLERY'					=> true,
 			'U_GALLERY_SEARCH'				=> phpbb_gallery_url::append_sid('search'),
-			'GALLERY_TRANSLATION_INFO'		=> (!empty($user->lang['GALLERY_TRANSLATION_INFO'])) ? $user->lang['GALLERY_TRANSLATION_INFO'] : '',
-
 			'S_GALLERY_FEEDS'				=> phpbb_gallery_config::get('feed_enable'),
 			'U_GALLERY_FEED'				=> phpbb_gallery_url::append_sid('feed'),
 		));

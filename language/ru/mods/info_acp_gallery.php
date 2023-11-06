@@ -41,10 +41,6 @@ $lang = array_merge($lang, array(
 	'GALLERY_POPUP'						=> 'Галерея',
 	'GALLERY_POPUP_HELPLINE'			=> 'Выбрать фото из галереи или загрузить новое',
 
-	// A little line where you can give yourself some credits on the translation.
-	//'GALLERY_TRANSLATION_INFO'			=> 'English "phpBB Gallery"-Translation by <a href="http://www.flying-bits.org/">nickvergessen</a>',
-	'GALLERY_TRANSLATION_INFO'			=> 'Русский перевод phpBB Gallery — <a href="http://www.phpbbguru.net/">www.phpbbguru.net</a>',
-
 	'IMAGES'							=> 'Фото',
 	'IMG_BUTTON_UPLOAD_IMAGE'			=> 'Загрузка фото',
 
