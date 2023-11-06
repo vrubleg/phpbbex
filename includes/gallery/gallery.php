@@ -83,8 +83,6 @@ class phpbb_gallery
 			self::init_popup();
 		}
 
-		define('POWERED_BY_ALT', 'phpBB Gallery © 2009 nickvergessen');
-
 		$template->assign_vars(array(
 			'S_IN_GALLERY'					=> true,
 			'U_GALLERY_SEARCH'				=> phpbb_gallery_url::append_sid('search'),
