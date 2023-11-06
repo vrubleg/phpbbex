@@ -19,7 +19,10 @@ if (@preg_match('/\p{L}/u', 'a') === false) { die('PCRE with UTF-8 support is re
 if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
 // Powered by ...
-define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> &copy; 2015 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
+if (!defined('POWERED_BY'))
+{
+	define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> &copy; 2015 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
+}
 
 // Detect if it's HTTPS.
 if (!defined('HTTP_SECURE'))
