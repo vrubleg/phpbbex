@@ -109,7 +109,7 @@ $lang = array_merge($lang, array(
 
 	'STYLE_SETTINGS_FOOTER'				=> 'Page footer',
 	'COPYRIGHT_NOTICE'					=> 'Copyrights (HTML)',
-	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'Use {POWERED_BY} placeholder to output phpBBex copyright.',
+	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'Use {POWERED_BY} or {L_POWERED_BY} placeholder to output phpBBex copyright.',
 	'STYLE_COUNTER_HTML'				=> 'Counter code (HTML)',
 
 	'AUTO'								=> 'Auto',

@@ -4550,12 +4550,12 @@ function page_footer($run_cron = true)
 	$powered_by = POWERED_BY;
 	if (!empty($config['external_links_newwindow'])) $powered_by = str_replace('<a ', '<a target="_blank" ', $powered_by);
 	if (!empty($config['external_links_nofollow']))  $powered_by = str_replace('<a ', '<a rel="nofollow" ', $powered_by);
+	$l_powered_by = $user->lang('POWERED_BY', $powered_by);
 
 	$template->assign_vars(array(
 		'DEBUG_OUTPUT'			=> (defined('DEBUG')) ? $debug_output : '',
-		'TRANSLATION_INFO'		=> (!empty($user->lang['TRANSLATION_INFO'])) ? $user->lang['TRANSLATION_INFO'] : '',
-		'CREDIT_LINE'			=> $user->lang('POWERED_BY', $powered_by),
-		'COPYRIGHT_NOTICE'		=> nl2br(trim(str_replace('{POWERED_BY}', $powered_by, $config['copyright_notice']))),
+		'L_POWERED_BY'			=> $l_powered_by,
+		'COPYRIGHT_NOTICE'		=> nl2br(str_replace(['{POWERED_BY}', '{L_POWERED_BY}'], [$powered_by, $l_powered_by], trim($config['copyright_notice']))),
 
 		'U_ACP' => ($auth->acl_get('a_') && !empty($user->data['is_registered'])) ? append_sid("{$phpbb_root_path}adm/index.$phpEx", false, true, $user->session_id) : '')
 	);

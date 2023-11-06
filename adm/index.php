@@ -183,8 +183,7 @@ function adm_page_footer($copyright_html = true)
 
 	$template->assign_vars(array(
 		'DEBUG_OUTPUT'		=> (defined('DEBUG')) ? $debug_output : '',
-		'TRANSLATION_INFO'	=> (!empty($user->lang['TRANSLATION_INFO'])) ? $user->lang['TRANSLATION_INFO'] : '',
-		'CREDIT_LINE'		=> $copyright_html ? $user->lang('POWERED_BY', POWERED_BY) : '',
+		'L_POWERED_BY'		=> $copyright_html ? $user->lang('POWERED_BY', POWERED_BY) : '',
 		'VERSION'			=> $config['version'])
 	);
 
