@@ -109,7 +109,7 @@ $lang = array_merge($lang, array(
 
 	'STYLE_SETTINGS_FOOTER'				=> 'Нижняя часть страницы',
 	'COPYRIGHT_NOTICE'					=> 'Авторские права (HTML)',
-	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'Не забудьте вставить метку {POWERED_BY} либо указать информацию о phpBBex.',
+	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'Используйте метку {POWERED_BY} чтобы вставить копирайт phpBBex.',
 	'STYLE_COUNTER_HTML'				=> 'Код счётчика (HTML)',
 
 	'AUTO'								=> 'Авто',
