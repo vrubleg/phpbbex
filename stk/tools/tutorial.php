@@ -39,8 +39,8 @@ class tutorial
 	*/
 	function tool_active()
 	{
-		// Limit access to phpBB 3.0.2
-		if (version_compare(PHPBB_VERSION, '3.0.2', '='))
+		// Limit access for old PHP versions.
+		if (version_compare(PHP_VERSION, '7.4', '<'))
 		{
 			return 'TUTORIAL_NOT_AVAILABLE';
 		}

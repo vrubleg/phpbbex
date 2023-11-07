@@ -18,9 +18,6 @@ if (!defined('IN_PHPBB'))
 * PHPBB_ADMIN_PATH
 */
 
-// phpBB Version
-define('PHPBB_VERSION', '3.0.14');
-
 // Paths
 define('UPLOADS_PATH', 'files');
 define('AVATAR_UPLOADS_PATH', 'images/avatars/upload');
