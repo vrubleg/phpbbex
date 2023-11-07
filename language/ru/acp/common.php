@@ -480,7 +480,6 @@ $lang = array_merge($lang, array(
 	'LOG_CONFIG_ATTACH'			=> '<strong>Изменены настройки вложений</strong>',
 	'LOG_CONFIG_AUTH'			=> '<strong>Изменены настройки аутентификации</strong>',
 	'LOG_CONFIG_AVATAR'			=> '<strong>Изменены настройки аватар</strong>',
-	'LOG_CONFIG_COOKIE'			=> '<strong>Изменены настройки cookies</strong>',
 	'LOG_CONFIG_EMAIL'			=> '<strong>Изменены настройки почты</strong>',
 	'LOG_CONFIG_FEATURES'		=> '<strong>Изменены возможности форума</strong>',
 	'LOG_CONFIG_LOAD'			=> '<strong>Изменены настройки нагрузки на сервер</strong>',

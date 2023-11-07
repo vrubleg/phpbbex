@@ -8,24 +8,6 @@
 define('OLDEST_PHPBBEX_VERSION', '1.7.0');
 define('NEWEST_PHPBBEX_VERSION', '1.9.6');
 
-define('UPDATES_TO_VERSION', '3.0.14');
-
-// Enter any version to update from to test updates. The version within the db will not be updated.
-define('DEBUG_FROM_VERSION', false);
-
-// Which oldest version does this updater support?
-define('OLDEST_FROM_VERSION', '3.0.0');
-
-// Return if we "just include it" to find out for which version the database update is responsible for
-if (defined('IN_PHPBB') && defined('IN_INSTALL'))
-{
-	$updates_to_version = UPDATES_TO_VERSION;
-	$debug_from_version = DEBUG_FROM_VERSION;
-	$oldest_from_version = OLDEST_FROM_VERSION;
-
-	return;
-}
-
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
@@ -73,10 +55,6 @@ if (!$allowed)
 // We are allowed, run the update!
 
 require($phpbb_root_path . 'includes/startup.' . $phpEx);
-
-$updates_to_version = UPDATES_TO_VERSION;
-$debug_from_version = DEBUG_FROM_VERSION;
-$oldest_from_version = OLDEST_FROM_VERSION;
 
 @set_time_limit(0);
 
@@ -276,6 +254,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'cookie_domain',
 		'cookie_secure',
 		'no_sid',
+		'version',
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
@@ -688,14 +667,20 @@ switch (request_var('purge', 'cache'))
 		break;
 }
 
-// Check phpBB version.
-
-if (!empty($config['version']) && version_compare($config['version'], $updates_to_version, '>='))
-{
-	die('OK');
-}
+die('OK');
 
 // Original code. One day it might be improved to be able to upgrade pure phpBB to phpBBex.
+define('UPDATES_TO_VERSION', '3.0.14');
+
+// Enter any version to update from to test updates. The version within the db will not be updated.
+define('DEBUG_FROM_VERSION', false);
+
+// Which oldest version does this updater support?
+define('OLDEST_FROM_VERSION', '3.0.0');
+
+$updates_to_version = UPDATES_TO_VERSION;
+$debug_from_version = DEBUG_FROM_VERSION;
+$oldest_from_version = OLDEST_FROM_VERSION;
 
 $inline_update = (request_var('type', 0)) ? true : false;
 
