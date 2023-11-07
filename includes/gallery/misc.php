@@ -30,7 +30,7 @@ class phpbb_gallery_misc
 
 		global $config, $user;
 
-		$gallery_display_captcha[$mode] = ($user->data['user_id'] == ANONYMOUS) && phpbb_gallery_config::get('captcha_' . $mode) && (version_compare($config['version'], '3.0.5', '>'));
+		$gallery_display_captcha[$mode] = ($user->data['user_id'] == ANONYMOUS) && phpbb_gallery_config::get('captcha_' . $mode);
 
 		return $gallery_display_captcha[$mode];
 	}

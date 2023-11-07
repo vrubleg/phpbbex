@@ -357,24 +357,13 @@ class phpbb_gallery_auth
 		global $config, $db;
 
 		$groups_ary = array();
-		// Only available in >= 3.0.6
-		if (version_compare($config['version'], '3.0.5', '>'))
-		{
-			$sql = 'SELECT ug.group_id
-				FROM ' . USER_GROUP_TABLE . ' ug
-				LEFT JOIN ' . GROUPS_TABLE . ' g
-					ON (ug.group_id = g.group_id)
-				WHERE ug.user_id = ' . (int) $user_id . '
-					AND ug.user_pending = 0
-					AND g.group_skip_auth = 0';
-		}
-		else
-		{
-			$sql = 'SELECT group_id
-				FROM ' . USER_GROUP_TABLE . '
-				WHERE user_id = ' . (int) $user_id . '
-					AND user_pending = 0';
-		}
+		$sql = 'SELECT ug.group_id
+			FROM ' . USER_GROUP_TABLE . ' ug
+			LEFT JOIN ' . GROUPS_TABLE . ' g
+				ON (ug.group_id = g.group_id)
+			WHERE ug.user_id = ' . (int) $user_id . '
+				AND ug.user_pending = 0
+				AND g.group_skip_auth = 0';
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
