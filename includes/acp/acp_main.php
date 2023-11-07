@@ -536,7 +536,6 @@ class acp_main
 			'S_TOTAL_ORPHAN'	=> ($total_orphan === false) ? false : true,
 			'GZIP_COMPRESSION'	=> ($config['gzip_compress'] && @extension_loaded('zlib')) ? $user->lang['ON'] : $user->lang['OFF'],
 			'DATABASE_INFO'		=> $db->sql_server_info(),
-			'PHPBB_VERSION'		=> $config['version'],
 			'PHPBBEX_VERSION'	=> $config['phpbbex_version'],
 
 			'U_ACTION'			=> $this->u_action,

@@ -2027,7 +2027,7 @@ inherit_from = {INHERIT_FROM}
 
 			if ($mode == 'style')
 			{
-				$style_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['style_name'], $style_row['style_copyright'], $config['version']), $this->style_cfg);
+				$style_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['style_name'], $style_row['style_copyright'], '1.0.0'), $this->style_cfg);
 
 				$style_cfg .= (!$inc_template) ? "\nrequired_template = {$style_row['template_name']}" : '';
 				$style_cfg .= (!$inc_theme) ? "\nrequired_theme = {$style_row['theme_name']}" : '';
@@ -2058,7 +2058,7 @@ inherit_from = {INHERIT_FROM}
 					$db->sql_freeresult($result);
 				}
 
-				$template_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}', '{INHERIT_FROM}'), array($mode, $style_row['template_name'], $style_row['template_copyright'], $config['version'], $use_template_name), $this->template_cfg);
+				$template_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}', '{INHERIT_FROM}'), array($mode, $style_row['template_name'], $style_row['template_copyright'], '1.0.0', $use_template_name), $this->template_cfg);
 
 				$template_cfg .= "\n\nbbcode_bitfield = {$style_row['bbcode_bitfield']}";
 
@@ -2099,7 +2099,7 @@ inherit_from = {INHERIT_FROM}
 			// Export theme core code
 			if ($mode == 'theme' || $inc_theme)
 			{
-				$theme_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['theme_name'], $style_row['theme_copyright'], $config['version']), $this->theme_cfg);
+				$theme_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['theme_name'], $style_row['theme_copyright'], '1.0.0'), $this->theme_cfg);
 
 				// Read old cfg file
 				$items = $cache->obtain_cfg_items($style_row);
@@ -2138,7 +2138,7 @@ inherit_from = {INHERIT_FROM}
 			// Export imageset core code
 			if ($mode == 'imageset' || $inc_imageset)
 			{
-				$imageset_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['imageset_name'], $style_row['imageset_copyright'], $config['version']), $this->imageset_cfg);
+				$imageset_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['imageset_name'], $style_row['imageset_copyright'], '1.0.0'), $this->imageset_cfg);
 
 				$imageset_main = array();
 
@@ -2207,7 +2207,7 @@ inherit_from = {INHERIT_FROM}
 
 				foreach ($imageset_lang as $lang => $imageset_localized)
 				{
-					$imageset_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['imageset_name'], $style_row['imageset_copyright'], $config['version']), $this->imageset_cfg);
+					$imageset_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['imageset_name'], $style_row['imageset_copyright'], '1.0.0'), $this->imageset_cfg);
 
 					foreach ($this->imageset_keys as $topic => $key_array)
 					{
