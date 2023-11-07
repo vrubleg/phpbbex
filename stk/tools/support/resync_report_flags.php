@@ -75,16 +75,8 @@ class resync_report_flags
 	{
 		global $db;
 
-		// PMs can only be reported since version 3.0.5
-		if ($type == 'pms' && version_compare(PHPBB_VERSION, '3.0.5', '<'))
-		{
-			$reported = array();
-		}
-		else
-		{
-			// Fetch the report data
-			$reported = $this->_get_reported($type);
-		}
+		// Fetch the report data
+		$reported = $this->_get_reported($type);
 
 		// Anything to do at all?
 		if (!empty($reported))
@@ -95,7 +87,7 @@ class resync_report_flags
 			$sql_where	= ($type == 'posts') ? 'post_reported' : 'message_reported';
 
 			$corrupted = array();
-			
+
 			// Set all unflagged as flagged
 			$sql = "SELECT {$sql_id}
 				FROM {$sql_from}
@@ -183,12 +175,9 @@ class resync_report_flags
 	{
 		global $db;
 
-		// PMs can only be reported since version 3.0.5
-		$sql_id = 'post_id' . (version_compare(PHPBB_VERSION, '3.0.5', '>=') ? ', pm_id' : '');
-
 		// Fetch all the closed reports
 		$pms = $posts = array();
-		$sql = 'SELECT ' . $sql_id . '
+		$sql = 'SELECT post_id, pm_id
 			FROM ' . REPORTS_TABLE . '
 			WHERE report_closed = 1';
 		$result	= $db->sql_query($sql);
@@ -294,7 +283,7 @@ class resync_report_flags
 		// needed to change the oder or add/remove modes make sure that
 		// the appropriate changes are made to the logic!
 		//
-		// First all the flags on pms and posts are set correctly, than 
+		// First all the flags on pms and posts are set correctly, than
 		// they are flipped off if needed by the status of the report and
 		// finally the topic flags are reset based upon whats left
 		$modes = array(

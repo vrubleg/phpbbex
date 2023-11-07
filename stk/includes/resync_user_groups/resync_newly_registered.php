@@ -47,7 +47,7 @@ class resync_newly_registered
 	 */
 	function can_run()
 	{
-		return (version_compare(PHPBB_VERSION, '3.0.5', '<=')) ? false : true;
+		return true;
 	}
 
 	/**

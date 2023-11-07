@@ -306,7 +306,6 @@ $lang = array_merge($lang, array(
 	'AVATAR_DIR_SIZE'			=> 'Avatar directory size',
 
 	'BOARD_STARTED'		=> 'Board started',
-	'PHPBB_VERSION'		=> 'phpBB version',
 	'PHPBBEX_VERSION'	=> 'phpBBex version',
 
 	'DATABASE_SERVER_INFO'	=> 'Database server',
