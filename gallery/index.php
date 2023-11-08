@@ -8,14 +8,9 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 define('IN_PHPBB', true);
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include('common.' . $phpEx);
-include($phpbb_root_path . 'common.' . $phpEx);
+include('common.php');
+include($phpbb_root_path . 'common.php');
 
 phpbb_gallery::setup(array('mods/gallery'));
 phpbb_gallery_url::_include('functions_display', 'phpbb');
@@ -255,7 +250,7 @@ $template->assign_vars(array(
 	'LEGEND'				=> $legend,
 	'BIRTHDAY_LIST'			=> $birthday_list,
 
-	'S_LOGIN_ACTION'			=> phpbb_gallery_url::append_sid('phpbb', 'ucp', 'mode=login&amp;redirect=' . urlencode(phpbb_gallery_url::path('relative') . "index.$phpEx" . (($mode == 'personal') ? '?mode=personal' : ''))),
+	'S_LOGIN_ACTION'			=> phpbb_gallery_url::append_sid('phpbb', 'ucp', 'mode=login&amp;redirect=' . urlencode(phpbb_gallery_url::path('relative') . 'index.php' . (($mode == 'personal') ? '?mode=personal' : ''))),
 	'S_DISPLAY_BIRTHDAY_LIST'	=> (phpbb_gallery_config::get('disp_birthdays')) ? true : false,
 
 	'U_YOUR_PERSONAL_GALLERY'		=> (phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM)) ? (phpbb_gallery::$user->get_data('personal_album_id')) ? phpbb_gallery_url::append_sid('album', 'album_id=' . phpbb_gallery::$user->get_data('personal_album_id')) : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums') : '',

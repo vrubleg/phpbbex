@@ -8,10 +8,6 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -413,8 +409,7 @@ class acp_gallery
 			}
 			else
 			{
-				global $phpEx;
-				trigger_error(sprintf($user->lang['MISSING_IMPORT_SCHEMA'], ($import_schema . '.' . $phpEx)), E_USER_WARNING);
+				trigger_error(sprintf($user->lang['MISSING_IMPORT_SCHEMA'], ($import_schema . '.php')), E_USER_WARNING);
 			}
 
 			$images_loop = 0;

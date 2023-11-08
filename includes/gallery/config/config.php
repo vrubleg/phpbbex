@@ -8,10 +8,6 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -246,13 +242,11 @@ class phpbb_gallery_config
 
 		if ($dir)
 		{
-			global $phpEx;
-
 			while (($entry = readdir($dir)) !== false)
 			{
-				if ((substr(strrchr($entry, '.'), 1) == $phpEx) && (isset($entry[0]) && $entry[0] != '_'))
+				if ((substr(strrchr($entry, '.'), 1) == 'php') && (isset($entry[0]) && $entry[0] != '_'))
 				{
-					$plugins[] = substr(basename($entry), 0, -(strlen($phpEx) + 1));
+					$plugins[] = substr(basename($entry), 0, -4);
 				}
 			}
 			closedir($dir);

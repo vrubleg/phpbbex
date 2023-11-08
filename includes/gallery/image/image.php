@@ -8,10 +8,6 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -324,7 +320,7 @@ class phpbb_gallery_image
 	*/
 	static public function generate_link($content, $mode, $image_id, $image_name, $album_id, $is_gif = false, $count = true, $additional_parameters = '', $next_image = 0)
 	{
-		global $phpEx, $user;
+		global $user;
 
 		$image_page_url = phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id{$additional_parameters}");
 		$image_url = phpbb_gallery_url::append_sid('image', "album_id=$album_id&amp;image_id=$image_id{$additional_parameters}" . ((!$count) ? '&amp;view=no_count' : ''));

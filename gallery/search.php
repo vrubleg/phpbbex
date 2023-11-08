@@ -11,14 +11,9 @@
 * @location: search.php
 */
 
-/**
-* @ignore
-*/
-
 define('IN_PHPBB', true);
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include('common.' . $phpEx);
-include($phpbb_root_path . 'common.' . $phpEx);
+include('common.php');
+include($phpbb_root_path . 'common.php');
 
 phpbb_gallery::setup(array('mods/gallery', 'search'));
 phpbb_gallery_url::_include('functions_display', 'phpbb');

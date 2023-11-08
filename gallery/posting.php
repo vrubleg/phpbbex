@@ -8,14 +8,9 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 define('IN_PHPBB', true);
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include('common.' . $phpEx);
-include($phpbb_root_path . 'common.' . $phpEx);
+include('common.php');
+include($phpbb_root_path . 'common.php');
 
 phpbb_gallery::setup(array('mods/gallery', 'posting'));
 phpbb_gallery_url::_include(array('functions_display', 'functions_posting', 'functions_user'), 'phpbb');

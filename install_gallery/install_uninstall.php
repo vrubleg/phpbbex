@@ -22,7 +22,7 @@ if (!empty($setmodules))
 	$module[] = array(
 		'module_type'		=> 'uninstall',
 		'module_title'		=> 'UNINSTALL',
-		'module_filename'	=> substr(basename(__FILE__), 0, -strlen($phpEx)-1),
+		'module_filename'	=> substr(basename(__FILE__), 0, -4),
 		'module_order'		=> 30,
 		'module_subs'		=> '',
 		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'DELETE_TABLES', 'FINAL'),
@@ -46,7 +46,7 @@ class install_uninstall extends module
 
 	function main($mode, $sub)
 	{
-		global $cache, $phpbb_root_path, $phpEx, $template, $user;
+		global $cache, $phpbb_root_path, $template, $user;
 
 		if ($user->data['user_type'] != USER_FOUNDER)
 		{
@@ -62,7 +62,7 @@ class install_uninstall extends module
 					'TITLE'			=> $user->lang['UNINSTALL_INTRO'],
 					'BODY'			=> $user->lang['UNINSTALL_INTRO_BODY'],
 					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
-					'U_ACTION'		=> append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=requirements"),
+					'U_ACTION'		=> append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=requirements"),
 				));
 			break;
 
@@ -79,7 +79,7 @@ class install_uninstall extends module
 					'TITLE'		=> $user->lang['UNINSTALL_FINISHED'],
 					'BODY'		=> $user->lang['UNINSTALL_FINISHED_EXPLAIN'],
 					'L_SUBMIT'	=> $user->lang['GOTO_INDEX'],
-					'U_ACTION'	=> append_sid($phpbb_root_path . 'index.' . $phpEx),
+					'U_ACTION'	=> append_sid($phpbb_root_path . 'index.php'),
 				));
 			break;
 		}
@@ -92,7 +92,7 @@ class install_uninstall extends module
 	*/
 	function check_requirements($mode, $sub)
 	{
-		global $user, $template, $phpbb_root_path, $phpEx;
+		global $user, $template, $phpbb_root_path;
 
 		$this->page_title = $user->lang['STAGE_REQUIREMENTS'];
 
@@ -127,7 +127,7 @@ class install_uninstall extends module
 			'S_LEGEND'	=> false,
 		));
 
-		$url = (!in_array(false, $passed)) ? append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=delete_tables") : append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=requirements");
+		$url = (!in_array(false, $passed)) ? append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=delete_tables") : append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=requirements");
 		$submit = (!in_array(false, $passed)) ? $user->lang['UNINSTALL_START'] : $user->lang['INSTALL_TEST'];
 
 		$template->assign_vars(array(
@@ -143,7 +143,7 @@ class install_uninstall extends module
 	*/
 	function delete_tables($mode, $sub)
 	{
-		global $auth, $cache, $db, $template, $user, $phpbb_root_path, $phpEx;
+		global $auth, $cache, $db, $template, $user, $phpbb_root_path;
 
 		$this->page_title = $user->lang['STAGE_DELETE_TABLES'];
 
@@ -243,7 +243,7 @@ class install_uninstall extends module
 			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
 			'L_SUBMIT'	=> $user->lang['NEXT_STEP'],
 			'S_HIDDEN'	=> '',
-			'U_ACTION'	=> append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=final"),
+			'U_ACTION'	=> append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=final"),
 		));
 	}
 }

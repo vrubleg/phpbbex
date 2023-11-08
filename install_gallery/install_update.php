@@ -22,7 +22,7 @@ if (!empty($setmodules))
 	$module[] = array(
 		'module_type'		=> 'update',
 		'module_title'		=> 'UPDATE',
-		'module_filename'	=> substr(basename(__FILE__), 0, -strlen($phpEx)-1),
+		'module_filename'	=> substr(basename(__FILE__), 0, -4),
 		'module_order'		=> 20,
 		'module_subs'		=> '',
 		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'UPDATE_DB', 'ADVANCED', 'FINAL'),
@@ -47,7 +47,7 @@ class install_update extends module
 	function main($mode, $sub)
 	{
 		global $cache, $template, $user;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		if ($user->data['user_type'] != USER_FOUNDER)
 		{
@@ -69,7 +69,7 @@ class install_update extends module
 					'TITLE'			=> $user->lang['UPDATE_INSTALLATION'],
 					'BODY'			=> $user->lang['UPDATE_INSTALLATION_EXPLAIN'],
 					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
-					'U_ACTION'		=> append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=requirements"),
+					'U_ACTION'		=> append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=requirements"),
 				));
 
 			break;
@@ -126,7 +126,7 @@ class install_update extends module
 	*/
 	function check_server_requirements($mode, $sub)
 	{
-		global $cache, $user, $template, $phpbb_root_path, $phpEx;
+		global $cache, $user, $template, $phpbb_root_path;
 
 		$this->page_title = $user->lang['STAGE_REQUIREMENTS'];
 
@@ -261,7 +261,7 @@ class install_update extends module
 		}
 
 		// Check whether all old files are deleted
-		include($phpbb_root_path . 'install/outdated_files.' . $phpEx);
+		include($phpbb_root_path . 'install/outdated_files.php');
 
 		umask(0);
 
@@ -274,7 +274,6 @@ class install_update extends module
 			{
 				$file = substr_replace($file, phpbb_gallery_url::path('relative'), 0, 8);
 			}
-			$file = preg_replace('/\.php$/i', ".$phpEx", $file);
 
 			if ($delete)
 			{
@@ -340,7 +339,7 @@ class install_update extends module
 		// Delete the class cache to get the new config directory from 1.1.2
 		$cache->destroy('class_loader');
 
-		$url = (!in_array(false, $passed)) ? append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=update_db") : append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=requirements");
+		$url = (!in_array(false, $passed)) ? append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=update_db") : append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=requirements");
 		$submit = (!in_array(false, $passed)) ? $user->lang['INSTALL_START'] : $user->lang['INSTALL_TEST'];
 
 		$template->assign_vars(array(
@@ -356,7 +355,7 @@ class install_update extends module
 	function update_db_schema($mode, $sub)
 	{
 		global $db, $user, $template, $table_prefix;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$umil = new umil(true);
 		$this->page_title = $user->lang['STAGE_UPDATE_DB'];
@@ -457,7 +456,7 @@ class install_update extends module
 			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
 			'L_SUBMIT'	=> $user->lang['NEXT_STEP'],
 			'S_HIDDEN'	=> '',
-			'U_ACTION'	=> append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=update_db&amp;step=2"),
+			'U_ACTION'	=> append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=update_db&amp;step=2"),
 		));
 	}
 
@@ -467,7 +466,7 @@ class install_update extends module
 	function update_db_data($mode, $sub)
 	{
 		global $cache, $db, $template, $user;
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$database_step = request_var('step', 0);
 
@@ -565,11 +564,11 @@ class install_update extends module
 			case '1.1.4':
 			// no break;
 
-				$next_update_url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=update_db&amp;step=4");
+				$next_update_url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=update_db&amp;step=4");
 			break;
 		}
 
-		$next_update_url = (!$next_update_url) ? append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=update_db&amp;step=4") : $next_update_url;
+		$next_update_url = (!$next_update_url) ? append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=update_db&amp;step=4") : $next_update_url;
 
 		$template->assign_vars(array(
 			'BODY'		=> $user->lang['UPDATING_DATA'],
@@ -584,7 +583,7 @@ class install_update extends module
 	*/
 	function thinout_db_schema($mode, $sub)
 	{
-		global $user, $template, $db, $phpbb_root_path, $phpEx;
+		global $user, $template, $db, $phpbb_root_path;
 
 		$this->page_title = $user->lang['STAGE_UPDATE_DB'];
 		$reparse_modules_bbcode = false;
@@ -661,11 +660,11 @@ class install_update extends module
 
 		if ($reparse_modules_bbcode)
 		{
-			$next_update_url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=advanced");
+			$next_update_url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=advanced");
 		}
 		else
 		{
-			$next_update_url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=final");
+			$next_update_url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=final");
 		}
 
 		$template->assign_vars(array(
@@ -682,7 +681,7 @@ class install_update extends module
 	*/
 	function obtain_advanced_settings($mode, $sub)
 	{
-		global $user, $template, $phpbb_root_path, $phpEx, $db;
+		global $user, $template, $phpbb_root_path, $db;
 
 		$create = request_var('create', '');
 		if ($create)
@@ -723,7 +722,7 @@ class install_update extends module
 			}
 
 			$s_hidden_fields = '';
-			$url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=final");
+			$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=final");
 		}
 		else
 		{
@@ -794,7 +793,7 @@ class install_update extends module
 				);
 			}
 			$s_hidden_fields = '<input type="hidden" name="create" value="true" />';
-			$url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=advanced");
+			$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=advanced");
 		}
 
 		$submit = $user->lang['NEXT_STEP'];

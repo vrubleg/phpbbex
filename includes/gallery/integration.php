@@ -8,10 +8,6 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -96,19 +92,19 @@ class phpbb_gallery_integration
 
 		if ($mode == 'window' && $gallery_popup)
 		{
-			global $template, $phpbb_root_path, $phpEx;
+			global $template, $phpbb_root_path;
 
 			$template->assign_vars(array(
 				'S_GALLERY_SMILIES_POPUP'	=> true,
-				'U_MORE_SMILIES' 			=> append_sid("{$phpbb_root_path}posting.$phpEx", 'mode=smilies&amp;popup_from_gallery=1'),
+				'U_MORE_SMILIES' 			=> append_sid("{$phpbb_root_path}posting.php", 'mode=smilies&amp;popup_from_gallery=1'),
 			));
 		}
 		elseif ($mode == 'inline' && defined('IN_PHPBB_GALLERY'))
 		{
-			global $template, $phpbb_root_path, $phpEx;
+			global $template, $phpbb_root_path;
 
 			$template->assign_vars(array(
-				'U_MORE_SMILIES' 			=> append_sid("{$phpbb_root_path}posting.$phpEx", 'mode=smilies&amp;popup_from_gallery=1'),
+				'U_MORE_SMILIES' 			=> append_sid("{$phpbb_root_path}posting.php", 'mode=smilies&amp;popup_from_gallery=1'),
 			));
 		}
 	}
@@ -163,7 +159,7 @@ class phpbb_gallery_integration
 
 	static public function page_header()
 	{
-		global $phpbb_root_path, $phpEx, $template, $user;
+		global $phpbb_root_path, $template, $user;
 
 		$user->add_lang('mods/info_acp_gallery');
 		phpbb_gallery_plugins::init(phpbb_gallery_url::path('gallery'));

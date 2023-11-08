@@ -11,24 +11,20 @@
 *
 */
 
-/**
-* @ignore
-*/
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
 define('NEWEST_PG_VERSION', '1.1.6');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include($phpbb_root_path . 'common.'.$phpEx);
-include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
-include($phpbb_root_path . 'includes/acp/acp_modules.' . $phpEx);
-include($phpbb_root_path . 'includes/acp/acp_bbcodes.' . $phpEx);
-include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_install.' . $phpEx);
-require($phpbb_root_path . 'install/dbal_schema.' . $phpEx);
-require($phpbb_root_path . 'umil/umil.' . $phpEx);
+include($phpbb_root_path . 'common.php');
+include($phpbb_root_path . 'includes/functions_display.php');
+include($phpbb_root_path . 'includes/acp/acp_modules.php');
+include($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
+include($phpbb_root_path . 'includes/message_parser.php');
+require($phpbb_root_path . 'includes/functions_install.php');
+require($phpbb_root_path . 'install/dbal_schema.php');
+require($phpbb_root_path . 'umil/umil.php');
 
 // Start session management
 $user->session_begin();
@@ -54,7 +50,7 @@ $user->theme['template_storedb'] = false;
 
 $install = new module();
 
-$install->create('install', "index.$phpEx", $mode, $sub);
+$install->create('install', 'index.php', $mode, $sub);
 $install->load();
 
 // Generate the page
@@ -87,7 +83,7 @@ class module
 	*/
 	function create($module_type, $module_url, $selected_mod = false, $selected_submod = false)
 	{
-		global $db, $config, $phpEx, $phpbb_root_path;
+		global $db, $config, $phpbb_root_path;
 
 		$module = array();
 
@@ -102,7 +98,7 @@ class module
 		$setmodules = 1;
 		while (($file = readdir($dir)) !== false)
 		{
-			if (preg_match('#^install_(.*?)\.' . $phpEx . '$#', $file))
+			if (preg_match('#^install_(.*?)\.php' . '$#', $file))
 			{
 				include($file);
 			}
@@ -166,7 +162,7 @@ class module
 	*/
 	function load($mode = false, $run = true)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		if ($run)
 		{
@@ -276,7 +272,7 @@ class module
 	*/
 	function generate_navigation()
 	{
-		global $user, $template, $phpbb_root_path, $phpEx, $language;
+		global $user, $template, $phpbb_root_path, $language;
 
 		if (is_array($this->module_ary))
 		{
@@ -286,7 +282,7 @@ class module
 				$cat = $cat_ary['name'];
 				$l_cat = (!empty($user->lang['CAT_' . $cat])) ? $user->lang['CAT_' . $cat] : preg_replace('#_#', ' ', $cat);
 				$cat = strtolower($cat);
-				$url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$cat");
+				$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$cat");
 
 				if ($this->mode == $cat)
 				{
@@ -303,7 +299,7 @@ class module
 						{
 							$l_option = (!empty($user->lang['SUB_' . $option])) ? $user->lang['SUB_' . $option] : preg_replace('#_#', ' ', $option);
 							$option = strtolower($option);
-							$url = append_sid("{$phpbb_root_path}install/index.$phpEx", 'mode=' . $this->mode . "&amp;sub=$option");
+							$url = append_sid("{$phpbb_root_path}install/index.php", 'mode=' . $this->mode . "&amp;sub=$option");
 
 							$template->assign_block_vars('l_block1', array(
 								'L_TITLE'		=> $l_option,

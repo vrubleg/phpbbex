@@ -8,15 +8,10 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 define('IN_PHPBB', true);
 define('IN_FEED_GALLERY', true);
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include('common.' . $phpEx);
-include($phpbb_root_path . 'common.' . $phpEx);
+include('common.php');
+include($phpbb_root_path . 'common.php');
 
 phpbb_gallery::setup(array('mods/gallery'));
 phpbb_gallery_url::_include('functions_display', 'phpbb');

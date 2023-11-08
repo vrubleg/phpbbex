@@ -8,10 +8,6 @@
 *
 */
 
-/**
-* @ignore
-*/
-
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -34,12 +30,6 @@ class phpbb_gallery_url
 	*/
 	static private $phpbb_gallery_path = 'gallery/';
 
-	/**
-	* php-file extension
-	*/
-	static private $phpEx = '.php';
-
-
 	const IMAGE_PATH = 'images/';
 	const UPLOAD_PATH = 'upload/';
 	const THUMBNAIL_PATH = 'cache/';
@@ -56,7 +46,7 @@ class phpbb_gallery_url
 	*/
 	static public function init($force_root_path = false)
 	{
-		global $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $phpbb_admin_path, $phpbb_root_path;
 
 		if ($force_root_path)
 		{
@@ -68,7 +58,6 @@ class phpbb_gallery_url
 		}
 		$phpbb_admin_path = self::$phpbb_root_path . self::$phpbb_admin_path;
 		self::$phpbb_admin_path = $phpbb_admin_path;
-		self::$phpEx = '.' . $phpEx;
 		self::$phpbb_gallery_relative = self::beautiful_path(self::$phpbb_root_path . self::$phpbb_gallery_path);
 		self::$phpbb_gallery_full_path = self::beautiful_path(generate_board_url() . '/' . self::$phpbb_gallery_path, true);
 
@@ -132,11 +121,11 @@ class phpbb_gallery_url
 		if (in_array($args[0], array('phpbb', 'admin', 'relative', 'full', 'board')))
 		{
 			$mode = array_shift($args);
-			$args[0] = self::path($mode) . self::phpEx_file($args[0]);
+			$args[0] = self::path($mode) . self::phpext_file($args[0]);
 		}
 		else
 		{
-			$args[0] = self::path() . self::phpEx_file($args[0]);
+			$args[0] = self::path() . self::phpext_file($args[0]);
 		}
 		if (isset($args[1]))
 		{
@@ -171,7 +160,7 @@ class phpbb_gallery_url
 		redirect(self::append_sid(func_get_args()));
 	}
 
-	static public function phpEx_file($file)
+	static public function phpext_file($file)
 	{
 		if ((substr($file, -1) == '/') || (strlen($file) == 0))
 		{
@@ -190,7 +179,7 @@ class phpbb_gallery_url
 			$file = 'viewimage';
 		}*/
 
-		return $file . self::$phpEx;
+		return $file . '.php';
 	}
 
 	static public function _include($file, $path = 'gallery', $sub_directory = 'includes/')
@@ -198,9 +187,9 @@ class phpbb_gallery_url
 		if (!is_array($file))
 		{
 			// Trying to break less MODs by populating the needed variables for inclusions
-			global $phpbb_admin_path, $phpbb_root_path, $phpEx;
+			global $phpbb_admin_path, $phpbb_root_path;
 
-			include(self::path($path) . $sub_directory . self::phpEx_file($file));
+			include(self::path($path) . $sub_directory . self::phpext_file($file));
 		}
 		else
 		{
@@ -213,17 +202,17 @@ class phpbb_gallery_url
 
 	static public function _file_exists($file, $path = 'gallery', $sub_directory = 'includes/')
 	{
-		return file_exists(self::path($path) . $sub_directory . self::phpEx_file($file));
+		return file_exists(self::path($path) . $sub_directory . self::phpext_file($file));
 	}
 
 	static public function _is_writable($file, $path = 'gallery', $sub_directory = 'includes/')
 	{
-		return phpbb_is_writable(self::path($path) . $sub_directory . self::phpEx_file($file));
+		return phpbb_is_writable(self::path($path) . $sub_directory . self::phpext_file($file));
 	}
 
 	static public function _return_file($file, $path = 'gallery', $sub_directory = 'includes/')
 	{
-		return self::path($path) . $sub_directory . self::phpEx_file($file);
+		return self::path($path) . $sub_directory . self::phpext_file($file);
 	}
 
 	/**

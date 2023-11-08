@@ -22,7 +22,7 @@ if (!empty($setmodules))
 	$module[] = array(
 		'module_type'		=> 'install',
 		'module_title'		=> 'INSTALL',
-		'module_filename'	=> substr(basename(__FILE__), 0, -strlen($phpEx)-1),
+		'module_filename'	=> substr(basename(__FILE__), 0, -4),
 		'module_order'		=> 10,
 		'module_subs'		=> '',
 		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'CREATE_TABLE', 'ADVANCED', 'FINAL'),
@@ -46,7 +46,7 @@ class install_install extends module
 
 	function main($mode, $sub)
 	{
-		global $cache, $phpbb_root_path, $phpEx, $template, $user;
+		global $cache, $phpbb_root_path, $template, $user;
 
 		if ($user->data['user_type'] != USER_FOUNDER)
 		{
@@ -62,7 +62,7 @@ class install_install extends module
 					'TITLE'			=> $user->lang['INSTALL_INTRO'],
 					'BODY'			=> $user->lang['INSTALL_INTRO_BODY'],
 					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
-					'U_ACTION'		=> append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=requirements"),
+					'U_ACTION'		=> append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=requirements"),
 				));
 			break;
 
@@ -99,7 +99,7 @@ class install_install extends module
 	*/
 	function check_server_requirements($mode, $sub)
 	{
-		global $user, $template, $phpbb_root_path, $phpEx;
+		global $user, $template, $phpbb_root_path;
 
 		$this->page_title = $user->lang['STAGE_REQUIREMENTS'];
 
@@ -240,7 +240,7 @@ class install_install extends module
 			$template->assign_block_vars('checks', array(
 				'S_LEGEND'			=> true,
 				'LEGEND'			=> $user->lang['FOUND_INSTALL'],
-				'LEGEND_EXPLAIN'	=> sprintf($user->lang['FOUND_INSTALL_EXPLAIN'], '<a href="' . append_sid("{$phpbb_root_path}install/index.$phpEx", 'mode=update') . '">', '</a>'),
+				'LEGEND_EXPLAIN'	=> sprintf($user->lang['FOUND_INSTALL_EXPLAIN'], '<a href="' . append_sid("{$phpbb_root_path}install/index.php", 'mode=update') . '">', '</a>'),
 			));
 			$template->assign_block_vars('checks', array(
 				'TITLE'		=> $user->lang['FOUND_VERSION'],
@@ -251,7 +251,7 @@ class install_install extends module
 			));
 		}
 
-		$url = (!in_array(false, $passed)) ? append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=create_table") : append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=requirements");
+		$url = (!in_array(false, $passed)) ? append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=create_table") : append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=requirements");
 		$submit = (!in_array(false, $passed)) ? $user->lang['INSTALL_START'] : $user->lang['INSTALL_TEST'];
 
 		$template->assign_vars(array(
@@ -267,7 +267,7 @@ class install_install extends module
 	*/
 	function load_schema($mode, $sub)
 	{
-		global $cache, $phpbb_root_path, $phpEx, $template, $user;
+		global $cache, $phpbb_root_path, $template, $user;
 
 		$umil = new umil(true);
 		$this->page_title = $user->lang['STAGE_CREATE_TABLE'];
@@ -311,7 +311,7 @@ class install_install extends module
 
 		$submit = $user->lang['NEXT_STEP'];
 
-		$url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=advanced");
+		$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=advanced");
 
 		$template->assign_vars(array(
 			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
@@ -327,7 +327,7 @@ class install_install extends module
 	*/
 	function obtain_advanced_settings($mode, $sub)
 	{
-		global $db, $template, $user, $phpbb_root_path, $phpEx;
+		global $db, $template, $user, $phpbb_root_path;
 
 		$create = request_var('create', '');
 		if ($create)
@@ -426,7 +426,7 @@ class install_install extends module
 			// Add album-BBCode
 			add_bbcode('album');
 			$s_hidden_fields = '';
-			$url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=final");
+			$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=final");
 		}
 		else
 		{
@@ -465,7 +465,7 @@ class install_install extends module
 				);
 			}
 			$s_hidden_fields = '<input type="hidden" name="create" value="true" />';
-			$url = append_sid("{$phpbb_root_path}install/index.$phpEx", "mode=$mode&amp;sub=advanced");
+			$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=advanced");
 		}
 
 		$submit = $user->lang['NEXT_STEP'];
