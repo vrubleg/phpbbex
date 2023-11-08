@@ -2406,7 +2406,7 @@ function redirect($url, $return = false, $disable_cd_check = false)
 	}
 
 	// Now, also check the protocol and for a valid url the last time...
-	$allowed_protocols = array('http', 'https', 'ftp', 'ftps');
+	$allowed_protocols = array('http', 'https');
 	$url_parts = parse_url($url);
 
 	if ($url_parts === false || empty($url_parts['scheme']) || !in_array($url_parts['scheme'], $allowed_protocols))
@@ -2417,26 +2417,6 @@ function redirect($url, $return = false, $disable_cd_check = false)
 	if ($return)
 	{
 		return $url;
-	}
-
-	// Redirect via an HTML form for PITA webservers
-	if (@preg_match('#Microsoft|WebSTAR|Xitami#', getenv('SERVER_SOFTWARE')))
-	{
-		header('Refresh: 0; URL=' . $url);
-
-		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-		echo '<html xmlns="http://www.w3.org/1999/xhtml" dir="' . $user->lang['DIRECTION'] . '" lang="' . $user->lang['USER_LANG'] . '" xml:lang="' . $user->lang['USER_LANG'] . '">';
-		echo '<head>';
-		echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
-		echo '<meta http-equiv="refresh" content="0; url=' . str_replace('&', '&amp;', $url) . '" />';
-		echo '<title>' . $user->lang['REDIRECT'] . '</title>';
-		echo '</head>';
-		echo '<body>';
-		echo '<div style="text-align: center;">' . sprintf($user->lang['URL_REDIRECT'], '<a href="' . str_replace('&', '&amp;', $url) . '">', '</a>') . '</div>';
-		echo '</body>';
-		echo '</html>';
-
-		exit;
 	}
 
 	// Behave as per HTTP/1.1 spec for others
