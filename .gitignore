@@ -1,3 +1,4 @@
+**~**
 /cache/**
 !/cache/.htaccess
 !/cache/index.htm
@@ -14,5 +15,3 @@
 !/store/.htaccess
 !/store/index.htm
 /config.php
-/work/**
-**~**
