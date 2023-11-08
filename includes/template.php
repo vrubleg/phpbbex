@@ -244,7 +244,7 @@ class phpbb_template
 	*/
 	function _tpl_load(&$handle)
 	{
-		global $user, $phpEx, $config;
+		global $user, $config;
 
 		if (!isset($this->filename[$handle]))
 		{
@@ -257,7 +257,7 @@ class phpbb_template
 		$user->theme['template_storedb'] = $this->orig_tpl_storedb;
 		$user->theme['template_inherits_id'] = $this->orig_tpl_inherits_id;
 
-		$filename = $this->cachepath . str_replace('/', '.', $this->filename[$handle]) . '.' . $phpEx;
+		$filename = $this->cachepath . str_replace('/', '.', $this->filename[$handle]) . '.php';
 		$this->files_template[$handle] = (isset($user->theme['template_id'])) ? $user->theme['template_id'] : 0;
 
 		$recompile = false;
@@ -286,7 +286,7 @@ class phpbb_template
 
 		if (!class_exists('template_compile'))
 		{
-			include($phpbb_root_path . 'includes/functions_template.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_template.php');
 		}
 
 		// Inheritance - we point to another template file for this one. Equality is also used for store_db
@@ -391,7 +391,7 @@ class phpbb_template
 					else
 					{
 						// Only bother compiling if it doesn't already exist
-						if (!file_exists($this->cachepath . str_replace('/', '.', $row['template_filename']) . '.' . $phpEx))
+						if (!file_exists($this->cachepath . str_replace('/', '.', $row['template_filename']) . '.php'))
 						{
 							$this->filename[$row['template_filename']] = $row['template_filename'];
 							$compile->compile_write($row['template_filename'], $compile->compile(trim($row['template_data'])));

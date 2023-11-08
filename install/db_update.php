@@ -14,16 +14,15 @@ define('IN_INSTALL', true);
 header('Content-Type: text/html; charset=utf-8');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-$config_path = $phpbb_root_path . 'config.' . $phpEx;
+$config_path = $phpbb_root_path . 'config.php';
 $is_installed = file_exists($config_path)
 	&& strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false
 	&& !file_exists($phpbb_root_path . 'cache/install_lock');
 
 if (!$is_installed)
 {
-	header('Location: ./index.' . $phpEx);
+	header('Location: ./index.php');
 	exit();
 }
 
@@ -54,12 +53,12 @@ if (!$allowed)
 
 // We are allowed, run the update!
 
-require($phpbb_root_path . 'includes/startup.' . $phpEx);
+require($phpbb_root_path . 'includes/startup.php');
 
 @set_time_limit(0);
 
 // Include essential scripts
-include($phpbb_root_path . 'config.' . $phpEx);
+include($phpbb_root_path . 'config.php');
 
 if (!defined('PHPBB_INSTALLED'))
 {
@@ -67,19 +66,19 @@ if (!defined('PHPBB_INSTALLED'))
 }
 
 // Include files
-require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
-require($phpbb_root_path . 'includes/cache.' . $phpEx);
-require($phpbb_root_path . 'includes/template.' . $phpEx);
-require($phpbb_root_path . 'includes/session.' . $phpEx);
-require($phpbb_root_path . 'includes/auth.' . $phpEx);
-require($phpbb_root_path . 'includes/functions.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-require($phpbb_root_path . 'includes/constants.' . $phpEx);
-require($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
-require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
-require($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
+require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
+require($phpbb_root_path . 'includes/cache.php');
+require($phpbb_root_path . 'includes/template.php');
+require($phpbb_root_path . 'includes/session.php');
+require($phpbb_root_path . 'includes/auth.php');
+require($phpbb_root_path . 'includes/functions.php');
+require($phpbb_root_path . 'includes/functions_content.php');
+require($phpbb_root_path . 'includes/functions_admin.php');
+require($phpbb_root_path . 'includes/functions_user.php');
+require($phpbb_root_path . 'includes/constants.php');
+require($phpbb_root_path . 'includes/db/mysql.php');
+require($phpbb_root_path . 'includes/utf/utf_tools.php');
+require($phpbb_root_path . 'includes/db/db_tools.php');
 
 $user = new phpbb_user();
 $cache = new phpbb_cache();
@@ -107,9 +106,9 @@ if (!isset($config['default_lang']) || !file_exists($phpbb_root_path . 'language
 {
 	die('Error! Default language is not found!');
 }
-require($phpbb_root_path . 'language/' . $config['default_lang'] . '/common.' . $phpEx);
-require($phpbb_root_path . 'language/' . $config['default_lang'] . '/acp/common.' . $phpEx);
-require($phpbb_root_path . 'language/' . $config['default_lang'] . '/install.' . $phpEx);
+require($phpbb_root_path . 'language/' . $config['default_lang'] . '/common.php');
+require($phpbb_root_path . 'language/' . $config['default_lang'] . '/acp/common.php');
+require($phpbb_root_path . 'language/' . $config['default_lang'] . '/install.php');
 
 // Check phpBBex version.
 
@@ -218,7 +217,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 		// Reset permissions cache...
 		$cache->destroy('_acl_options');
-		include_once($phpbb_root_path . 'includes/acp/auth.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/acp/auth.php');
 		$auth_admin = new auth_admin();
 		$auth_admin->acl_clear_prefetch();
 	}
@@ -655,7 +654,7 @@ switch (request_var('purge', 'cache'))
 		break;
 
 	case 'all':
-		require_once($phpbb_root_path . 'includes/umil.' . $phpEx);
+		require_once($phpbb_root_path . 'includes/umil.php');
 
 		$umil = new phpbb_umil();
 		$umil->cache_purge(array(
@@ -901,7 +900,7 @@ else
 
 	<p><?php echo ((isset($lang['INLINE_UPDATE_SUCCESSFUL'])) ? $lang['INLINE_UPDATE_SUCCESSFUL'] : 'The database update was successful. Now you need to continue the update process.'); ?></p>
 
-	<p><a href="<?php echo append_sid("{$phpbb_root_path}install/index.{$phpEx}", "mode=update&amp;sub=file_check"); ?>" class="button1"><?php echo (isset($lang['CONTINUE_UPDATE_NOW'])) ? $lang['CONTINUE_UPDATE_NOW'] : 'Continue the update process now'; ?></a></p>
+	<p><a href="<?php echo append_sid("{$phpbb_root_path}install/index.php", "mode=update&amp;sub=file_check"); ?>" class="button1"><?php echo (isset($lang['CONTINUE_UPDATE_NOW'])) ? $lang['CONTINUE_UPDATE_NOW'] : 'Continue the update process now'; ?></a></p>
 
 <?php
 }
@@ -1019,9 +1018,9 @@ function _write_result($no_updates, $errored, $error_ary)
 
 function _add_modules($modules_to_install)
 {
-	global $phpbb_root_path, $phpEx, $db;
+	global $phpbb_root_path, $db;
 
-	include_once($phpbb_root_path . 'includes/acp/acp_modules.' . $phpEx);
+	include_once($phpbb_root_path . 'includes/acp/acp_modules.php');
 
 	$_module = new acp_modules();
 
@@ -1441,7 +1440,7 @@ function database_update_info()
 *****************************************************************************/
 function change_database_data(&$no_updates, $version)
 {
-	global $db, $db_tools, $errored, $error_ary, $config, $table_prefix, $phpbb_root_path, $phpEx;
+	global $db, $db_tools, $errored, $error_ary, $config, $table_prefix, $phpbb_root_path;
 
 	switch ($version)
 	{
@@ -1510,7 +1509,7 @@ function change_database_data(&$no_updates, $version)
 			set_config('dbms_version', '');
 
 			// Add new permission u_masspm_group and duplicate settings from u_masspm
-			include_once($phpbb_root_path . 'includes/acp/auth.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/acp/auth.php');
 			$auth_admin = new auth_admin();
 
 			// Only add the new permission if it does not already exist
@@ -1995,7 +1994,7 @@ function change_database_data(&$no_updates, $version)
 			}
 
 			// Clear permissions...
-			include_once($phpbb_root_path . 'includes/acp/auth.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/acp/auth.php');
 			$auth_admin = new auth_admin();
 			$auth_admin->acl_clear_prefetch();
 
@@ -2165,9 +2164,9 @@ function change_database_data(&$no_updates, $version)
 				// On an already updated board, they can also already be in language/.../acp/attachments.php
 				// in the board root.
 				$lang_files = array(
-					"{$phpbb_root_path}install/update/new/language/$lang_dir/acp/attachments.$phpEx",
-					"{$phpbb_root_path}language/$lang_dir/install.$phpEx",
-					"{$phpbb_root_path}language/$lang_dir/acp/attachments.$phpEx",
+					"{$phpbb_root_path}install/update/new/language/$lang_dir/acp/attachments.php",
+					"{$phpbb_root_path}language/$lang_dir/install.php",
+					"{$phpbb_root_path}language/$lang_dir/acp/attachments.php",
 				);
 
 				foreach ($lang_files as $lang_file)
@@ -2453,7 +2452,7 @@ function change_database_data(&$no_updates, $version)
 			{
 				if (!class_exists('acp_bbcodes'))
 				{
-					require($phpbb_root_path . 'includes/acp/acp_bbcodes.' . $phpEx);
+					require($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
 				}
 				$bbcode_match = $row['bbcode_match'];
 				$bbcode_tpl = $row['bbcode_tpl'];

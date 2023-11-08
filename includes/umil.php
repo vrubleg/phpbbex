@@ -131,8 +131,8 @@ class phpbb_umil
 		// Setup $this->db_tools
 		if (!class_exists('phpbb_db_tools'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
+			global $phpbb_root_path;
+			include($phpbb_root_path . 'includes/db/db_tools.php');
 		}
 		$this->db_tools = new phpbb_db_tools($this->db);
 	}
@@ -477,7 +477,7 @@ class phpbb_umil
 	*/
 	function cache_purge($type = '', $style_id = 0)
 	{
-		global $auth, $cache, $user, $phpbb_root_path, $phpEx;
+		global $auth, $cache, $user, $phpbb_root_path;
 
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $type))
@@ -1070,7 +1070,7 @@ class phpbb_umil
 	*/
 	function module_add($class, $parent = 0, $data = array(), $include_path = false)
 	{
-		global $cache, $user, $phpbb_root_path, $phpEx;
+		global $cache, $user, $phpbb_root_path;
 
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $class))
@@ -1100,7 +1100,7 @@ class phpbb_umil
 			$basename = (isset($data['module_basename'])) ? $data['module_basename'] : '';
 			$basename = str_replace(array('/', '\\'), '', $basename);
 			$class = str_replace(array('/', '\\'), '', $class);
-			$info_file = "$class/info/{$class}_$basename.$phpEx";
+			$info_file = "$class/info/{$class}_$basename.php";
 
 			// The manual and automatic ways both failed...
 			if (!file_exists((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file))
@@ -1177,7 +1177,7 @@ class phpbb_umil
 
 		if (!class_exists('acp_modules'))
 		{
-			include($phpbb_root_path . 'includes/acp/acp_modules.' . $phpEx);
+			include($phpbb_root_path . 'includes/acp/acp_modules.php');
 			$user->add_lang('acp/modules');
 		}
 		$acp_modules = new acp_modules();
@@ -1265,7 +1265,7 @@ class phpbb_umil
 	*/
 	function module_remove($class, $parent = 0, $module = '', $include_path = false)
 	{
-		global $cache, $user, $phpbb_root_path, $phpEx;
+		global $cache, $user, $phpbb_root_path;
 
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $class))
@@ -1292,7 +1292,7 @@ class phpbb_umil
 			// Automatic method
 			$basename = str_replace(array('/', '\\'), '', $module['module_basename']);
 			$class = str_replace(array('/', '\\'), '', $class);
-			$info_file = "$class/info/{$class}_$basename.$phpEx";
+			$info_file = "$class/info/{$class}_$basename.php";
 
 			if (!file_exists((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file))
 			{
@@ -1392,7 +1392,7 @@ class phpbb_umil
 
 			if (!class_exists('acp_modules'))
 			{
-				include($phpbb_root_path . 'includes/acp/acp_modules.' . $phpEx);
+				include($phpbb_root_path . 'includes/acp/acp_modules.php');
 				$user->add_lang('acp/modules');
 			}
 			$acp_modules = new acp_modules();
@@ -1500,9 +1500,9 @@ class phpbb_umil
 
 		if (!class_exists('auth_admin'))
 		{
-			global $phpbb_root_path, $phpEx;
+			global $phpbb_root_path;
 
-			include($phpbb_root_path . 'includes/acp/auth.' . $phpEx);
+			include($phpbb_root_path . 'includes/acp/auth.php');
 		}
 		$auth_admin = new auth_admin();
 
@@ -2008,8 +2008,8 @@ class phpbb_umil
 
 		if (!function_exists('get_tables'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include($phpbb_root_path . 'includes/functions_install.' . $phpEx);
+			global $phpbb_root_path;
+			include($phpbb_root_path . 'includes/functions_install.php');
 		}
 
 		$tables = get_tables($this->db);
@@ -2064,8 +2064,8 @@ class phpbb_umil
 
 		if (!function_exists('get_available_dbms'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include("{$phpbb_root_path}includes/functions_install.$phpEx");
+			global $phpbb_root_path;
+			include("{$phpbb_root_path}includes/functions_install.php");
 		}
 
 		/*
@@ -2436,9 +2436,9 @@ class phpbb_umil
 	{
 		if (!function_exists('get_remote_file'))
 		{
-			global $phpbb_root_path, $phpEx;
+			global $phpbb_root_path;
 
-			include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_admin.php');
 		}
 
 		$errstr = $errno = '';

@@ -29,10 +29,10 @@ class mcp_pm_reports
 	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template, $cache;
-		global $config, $phpbb_root_path, $phpEx, $action;
+		global $config, $phpbb_root_path, $action;
 
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/functions_posting.php');
+		include_once($phpbb_root_path . 'includes/functions_privmsgs.php');
 
 		$start = request_var('start', 0);
 
@@ -42,7 +42,7 @@ class mcp_pm_reports
 		{
 			case 'close':
 			case 'delete':
-				include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 				$report_id_list = request_var('report_id_list', array(0));
 
@@ -53,7 +53,7 @@ class mcp_pm_reports
 
 				if (!function_exists('close_report'))
 				{
-					include($phpbb_root_path . 'includes/mcp/mcp_reports.' . $phpEx);
+					include($phpbb_root_path . 'includes/mcp/mcp_reports.php');
 				}
 
 				close_report($report_id_list, $mode, $action, true);
@@ -111,7 +111,7 @@ class mcp_pm_reports
 
 				if ($pm_info['bbcode_bitfield'])
 				{
-					include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+					include_once($phpbb_root_path . 'includes/bbcode.php');
 					$bbcode = new bbcode($pm_info['bbcode_bitfield']);
 					$bbcode->bbcode_second_pass($message, $pm_info['bbcode_uid'], $pm_info['bbcode_bitfield'], $pm_info['message_time']);
 				}
@@ -158,22 +158,22 @@ class mcp_pm_reports
 				$template->assign_vars(array(
 					'S_MCP_REPORT'			=> true,
 					'S_PM'					=> true,
-					'S_CLOSE_ACTION'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
+					'S_CLOSE_ACTION'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
 					'S_CAN_VIEWIP'			=> $auth->acl_getf_global('m_info'),
 					'S_POST_REPORTED'		=> $pm_info['message_reported'],
 					'S_REPORT_CLOSED'		=> $report['report_closed'],
 					'S_USER_NOTES'			=> true,
 
-					'U_MCP_REPORT'				=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
-					'U_MCP_REPORTER_NOTES'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $report['user_id']),
-					'U_MCP_USER_NOTES'			=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $pm_info['author_id']),
-					'U_MCP_WARN_REPORTER'		=> ($auth->acl_get('m_warn')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
-					'U_MCP_WARN_USER'			=> ($auth->acl_get('m_warn')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=warn&amp;mode=warn_user&amp;u=' . $pm_info['author_id']) : '',
+					'U_MCP_REPORT'				=> append_sid("{$phpbb_root_path}mcp.php", 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
+					'U_MCP_REPORTER_NOTES'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes&amp;u=' . $report['user_id']),
+					'U_MCP_USER_NOTES'			=> append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes&amp;u=' . $pm_info['author_id']),
+					'U_MCP_WARN_REPORTER'		=> ($auth->acl_get('m_warn')) ? append_sid("{$phpbb_root_path}mcp.php", 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
+					'U_MCP_WARN_USER'			=> ($auth->acl_get('m_warn')) ? append_sid("{$phpbb_root_path}mcp.php", 'i=warn&amp;mode=warn_user&amp;u=' . $pm_info['author_id']) : '',
 
 					'EDIT_IMG'				=> $user->img('icon_post_edit', $user->lang['EDIT_POST']),
 					'MINI_POST_IMG'			=> $user->img('icon_post_target', 'POST'),
 
-					'RETURN_REPORTS'			=> sprintf($user->lang['RETURN_REPORTS'], '<a href="' . append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=pm_reports' . (($pm_info['message_reported']) ? '&amp;mode=pm_reports' : '&amp;mode=pm_reports_closed') . '&amp;start=' . $start) . '">', '</a>'),
+					'RETURN_REPORTS'			=> sprintf($user->lang['RETURN_REPORTS'], '<a href="' . append_sid("{$phpbb_root_path}mcp.php", 'i=pm_reports' . (($pm_info['message_reported']) ? '&amp;mode=pm_reports' : '&amp;mode=pm_reports_closed') . '&amp;start=' . $start) . '">', '</a>'),
 					'REPORTED_IMG'				=> $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
 					'REPORT_DATE'				=> $user->format_date($report['report_time']),
 					'REPORT_ID'					=> $report_id,
@@ -272,7 +272,7 @@ class mcp_pm_reports
 						{
 							$row = $pm_by_id[$message_id];
 							$template->assign_block_vars('postrow', array(
-								'U_VIEW_DETAILS'			=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=pm_reports&amp;mode=pm_report_details&amp;r={$row['report_id']}"),
+								'U_VIEW_DETAILS'			=> append_sid("{$phpbb_root_path}mcp.php", "i=pm_reports&amp;mode=pm_report_details&amp;r={$row['report_id']}"),
 
 								'PM_AUTHOR_FULL'		=> get_username_string('full', $row['author_id'], $row['username'], $row['user_colour']),
 								'PM_AUTHOR_COLOUR'		=> get_username_string('colour', $row['author_id'], $row['username'], $row['user_colour']),

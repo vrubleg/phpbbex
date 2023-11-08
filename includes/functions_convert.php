@@ -1364,11 +1364,11 @@ function extract_variables_from_file($_filename)
 
 function get_path($src_path, $src_url, $test_file)
 {
-	global $config, $phpbb_root_path, $phpEx;
+	global $config, $phpbb_root_path;
 
 	$board_config = get_config();
 
-	$test_file = preg_replace('/\.php$/i', ".$phpEx", $test_file);
+	$test_file = preg_replace('/\.php$/i', ".php", $test_file);
 	$src_path = path($src_path);
 
 	if (@file_exists($phpbb_root_path . $src_path . $test_file))
@@ -1751,7 +1751,7 @@ function sync_post_count($offset, $limit)
 */
 function add_bots()
 {
-	global $db, $convert, $user, $config, $phpbb_root_path, $phpEx;
+	global $db, $convert, $user, $config, $phpbb_root_path;
 
 	$db->sql_query($convert->truncate_statement . BOTS_TABLE);
 
@@ -1814,7 +1814,7 @@ function add_bots()
 
 	if (!function_exists('user_add'))
 	{
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include($phpbb_root_path . 'includes/functions_user.php');
 	}
 
 	foreach ($bots as $bot_name => $bot_agent)
@@ -2078,7 +2078,7 @@ function fix_empty_primary_groups()
 */
 function remove_invalid_users()
 {
-	global $convert, $db, $phpEx, $phpbb_root_path;
+	global $convert, $db, $phpbb_root_path;
 
 	// username_clean is UNIQUE
 	$sql = 'SELECT user_id
@@ -2092,7 +2092,7 @@ function remove_invalid_users()
 	{
 		if (!function_exists('user_delete'))
 		{
-			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_user.php');
 		}
 
 		user_delete('remove', $row['user_id']);

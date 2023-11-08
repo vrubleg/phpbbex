@@ -7,8 +7,7 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include($phpbb_root_path . 'common.' . $phpEx);
+include($phpbb_root_path . 'common.php');
 
 if (!$config['feed_enable'])
 {
@@ -94,7 +93,7 @@ while ($row = $feed->get_item())
 		'updated'		=> ($updated > 0) ? feed_format_date($updated) : '',
 		'link'			=> '',
 		'title'			=> censor_text($title),
-		'category'		=> ($config['feed_item_statistics'] && !empty($row['forum_id'])) ? $board_url . '/viewforum.' . $phpEx . '?f=' . $row['forum_id'] : '',
+		'category'		=> ($config['feed_item_statistics'] && !empty($row['forum_id'])) ? $board_url . '/viewforum.php' . '?f=' . $row['forum_id'] : '',
 		'category_name'	=> ($config['feed_item_statistics'] && isset($row['forum_name'])) ? $row['forum_name'] : '',
 		'description'	=> censor_text(feed_generate_content($row[$feed->get('text')], $row[$feed->get('bbcode_uid')], $row[$feed->get('bitfield')], $options)),
 		'statistics'	=> '',
@@ -118,8 +117,8 @@ if (!$feed_updated_time)
 // FEED_IMAGE is not used (atom)
 $global_vars = array_merge($global_vars, array(
 	'FEED_IMAGE'			=> ($user->img('site_logo', '', false, '', 'src')) ? $board_url . '/' . substr($user->img('site_logo', '', false, '', 'src'), strlen($phpbb_root_path)) : '',
-	'SELF_LINK'				=> feed_append_sid('/feed.' . $phpEx, $params),
-	'FEED_LINK'				=> $board_url . '/index.' . $phpEx,
+	'SELF_LINK'				=> feed_append_sid('/feed.php', $params),
+	'FEED_LINK'				=> $board_url . '/index.php',
 	'FEED_TITLE'			=> $config['sitename'],
 	'FEED_SUBTITLE'			=> $config['site_desc'],
 	'FEED_UPDATED'			=> feed_format_date($feed_updated_time),
@@ -309,7 +308,7 @@ function feed_format_date($time)
 **/
 function feed_generate_content($content, $uid, $bitfield, $options)
 {
-	global $user, $config, $phpbb_root_path, $phpEx, $board_url;
+	global $user, $config, $phpbb_root_path, $board_url;
 
 	if (empty($content))
 	{
@@ -673,7 +672,7 @@ class phpbb_feed_base
 
 	function user_viewprofile($row)
 	{
-		global $phpEx, $user;
+		global $user;
 
 		$author_id = (int) $row[$this->get('author_id')];
 
@@ -684,7 +683,7 @@ class phpbb_feed_base
 			return $user->lang['GUEST'];
 		}
 
-		return '<a href="' . feed_append_sid('/memberlist.' . $phpEx, 'mode=viewprofile&amp;u=' . $author_id) . '">' . $row[$this->get('creator')] . '</a>';
+		return '<a href="' . feed_append_sid('/memberlist.php', 'mode=viewprofile&amp;u=' . $author_id) . '">' . $row[$this->get('creator')] . '</a>';
 	}
 }
 
@@ -718,9 +717,9 @@ class phpbb_feed_post_base extends phpbb_feed_base
 
 	function adjust_item(&$item_row, &$row)
 	{
-		global $phpEx, $config, $user;
+		global $config, $user;
 
-		$item_row['link'] = feed_append_sid('/viewtopic.' . $phpEx, "t={$row['topic_id']}&amp;p={$row['post_id']}#p{$row['post_id']}");
+		$item_row['link'] = feed_append_sid('/viewtopic.php', "t={$row['topic_id']}&amp;p={$row['post_id']}#p{$row['post_id']}");
 
 		if ($config['feed_item_statistics'])
 		{
@@ -761,9 +760,9 @@ class phpbb_feed_topic_base extends phpbb_feed_base
 
 	function adjust_item(&$item_row, &$row)
 	{
-		global $phpEx, $config, $user;
+		global $config, $user;
 
-		$item_row['link'] = feed_append_sid('/viewtopic.' . $phpEx, 't=' . $row['topic_id'] . '&amp;p=' . $row['post_id'] . '#p' . $row['post_id']);
+		$item_row['link'] = feed_append_sid('/viewtopic.php', 't=' . $row['topic_id'] . '&amp;p=' . $row['post_id'] . '#p' . $row['post_id']);
 
 		if ($config['feed_item_statistics'])
 		{
@@ -1150,9 +1149,9 @@ class phpbb_feed_forums extends phpbb_feed_base
 
 	function adjust_item(&$item_row, &$row)
 	{
-		global $phpEx, $config;
+		global $config;
 
-		$item_row['link'] = feed_append_sid('/viewforum.' . $phpEx, 'f=' . $row['forum_id']);
+		$item_row['link'] = feed_append_sid('/viewforum.php', 'f=' . $row['forum_id']);
 
 		if ($config['feed_item_statistics'])
 		{

@@ -414,8 +414,8 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 	{
 		if (!class_exists('bbcode'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+			global $phpbb_root_path;
+			include($phpbb_root_path . 'includes/bbcode.php');
 		}
 
 		if (empty($bbcode))
@@ -440,7 +440,7 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 */
 function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bbcode = false, $allow_urls = false, $allow_smilies = false)
 {
-	global $phpbb_root_path, $phpEx;
+	global $phpbb_root_path;
 
 	$uid = $bitfield = '';
 	$flags = (($allow_bbcode) ? OPTION_FLAG_BBCODE : 0) + (($allow_smilies) ? OPTION_FLAG_SMILIES : 0) + (($allow_urls) ? OPTION_FLAG_LINKS : 0);
@@ -452,7 +452,7 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 
 	if (!class_exists('parse_message'))
 	{
-		include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		include($phpbb_root_path . 'includes/message_parser.php');
 	}
 
 	$message_parser = new parse_message($text);
@@ -478,7 +478,7 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 */
 function generate_text_for_edit($text, $uid, $flags)
 {
-	global $phpbb_root_path, $phpEx;
+	global $phpbb_root_path;
 
 	decode_message($text, $uid);
 
@@ -789,7 +789,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 	}
 
 	global $template, $cache, $user;
-	global $extensions, $config, $phpbb_root_path, $phpEx;
+	global $extensions, $config, $phpbb_root_path;
 
 	//
 	$compiled_attachments = array();
@@ -953,14 +953,14 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				$display_cat = ATTACHMENT_CATEGORY_NONE;
 			}
 
-			$download_link = append_sid("{$phpbb_root_path}file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+			$download_link = append_sid("{$phpbb_root_path}file.php", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 
 			switch ($display_cat)
 			{
 				// Images
 				case ATTACHMENT_CATEGORY_IMAGE:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
-					$inline_link = append_sid("{$phpbb_root_path}file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+					$inline_link = append_sid("{$phpbb_root_path}file.php", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(
@@ -974,7 +974,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				// Images, but display Thumbnail
 				case ATTACHMENT_CATEGORY_THUMB:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
-					$thumbnail_link = append_sid("{$phpbb_root_path}file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;t=1&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+					$thumbnail_link = append_sid("{$phpbb_root_path}file.php", 'id=' . $attachment['attach_id'] . '&amp;t=1&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(
@@ -1162,9 +1162,9 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 	// We cache some common variables we need within this function
 	if (empty($_profile_cache))
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
-		$_profile_cache['base_url'] = append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile&amp;u={USER_ID}');
+		$_profile_cache['base_url'] = append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile&amp;u={USER_ID}');
 		$_profile_cache['tpl_noprofile'] = '{USERNAME}';
 		$_profile_cache['tpl_noprofile_colour'] = '<span style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</span>';
 		$_profile_cache['tpl_profile'] = '<a rel="nofollow" href="{PROFILE_URL}">{USERNAME}</a>';

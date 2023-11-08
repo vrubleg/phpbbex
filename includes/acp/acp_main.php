@@ -20,7 +20,7 @@ class acp_main
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $phpbb_root_path, $phpbb_admin_path;
 
 		// Show restore permissions notice
 		if ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm'))
@@ -36,16 +36,16 @@ class acp_main
 			$db->sql_freeresult($result);
 
 			$perm_from = '<strong' . (($user_row['user_colour']) ? ' style="color: #' . $user_row['user_colour'] . '">' : '>');
-			$perm_from .= ($user_row['user_id'] != ANONYMOUS) ? '<a href="' . append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile&amp;u=' . $user_row['user_id']) . '">' : '';
+			$perm_from .= ($user_row['user_id'] != ANONYMOUS) ? '<a href="' . append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile&amp;u=' . $user_row['user_id']) . '">' : '';
 			$perm_from .= $user_row['username'];
 			$perm_from .= ($user_row['user_id'] != ANONYMOUS) ? '</a>' : '';
 			$perm_from .= '</strong>';
 
 			$template->assign_vars(array(
 				'S_RESTORE_PERMISSIONS'		=> true,
-				'U_RESTORE_PERMISSIONS'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=restore_perm'),
+				'U_RESTORE_PERMISSIONS'		=> append_sid("{$phpbb_root_path}ucp.php", 'mode=restore_perm'),
 				'PERM_FROM'					=> $perm_from,
-				'L_PERMISSIONS_TRANSFERRED_EXPLAIN'	=> sprintf($user->lang['PERMISSIONS_TRANSFERRED_EXPLAIN'], $perm_from, append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=restore_perm')),
+				'L_PERMISSIONS_TRANSFERRED_EXPLAIN'	=> sprintf($user->lang['PERMISSIONS_TRANSFERRED_EXPLAIN'], $perm_from, append_sid("{$phpbb_root_path}ucp.php", 'mode=restore_perm')),
 			));
 
 			return;
@@ -58,7 +58,7 @@ class acp_main
 			if ($action === 'admlogout')
 			{
 				$user->unset_admin();
-				$redirect_url = append_sid("{$phpbb_root_path}index.$phpEx");
+				$redirect_url = append_sid("{$phpbb_root_path}index.php");
 				meta_refresh(3, $redirect_url);
 				trigger_error($user->lang['ADM_LOGGED_OUT'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . $redirect_url . '">', '</a>'));
 			}
@@ -177,7 +177,7 @@ class acp_main
 
 						if (!function_exists('update_last_username'))
 						{
-							include($phpbb_root_path . "includes/functions_user.$phpEx");
+							include($phpbb_root_path . "includes/functions_user.php");
 						}
 						update_last_username();
 
@@ -278,7 +278,7 @@ class acp_main
 
 						if (!function_exists('resync_rates'))
 						{
-							include($phpbb_root_path . 'includes/functions_rating.' . $phpEx);
+							include($phpbb_root_path . 'includes/functions_rating.php');
 						}
 						resync_rates();
 
@@ -539,10 +539,10 @@ class acp_main
 			'PHPBBEX_VERSION'	=> $config['phpbbex_version'],
 
 			'U_ACTION'			=> $this->u_action,
-			'U_ADMIN_LOG'		=> append_sid("{$phpbb_admin_path}index.$phpEx", 'i=logs&amp;mode=admin'),
-			'U_INACTIVE_USERS'	=> append_sid("{$phpbb_admin_path}index.$phpEx", 'i=inactive&amp;mode=list'),
-			'U_VERSIONCHECK'	=> append_sid("{$phpbb_admin_path}index.$phpEx", ''),
-			'U_VERSIONCHECK_FORCE'	=> append_sid("{$phpbb_admin_path}index.$phpEx", 'versioncheck_force=1'),
+			'U_ADMIN_LOG'		=> append_sid("{$phpbb_admin_path}index.php", 'i=logs&amp;mode=admin'),
+			'U_INACTIVE_USERS'	=> append_sid("{$phpbb_admin_path}index.php", 'i=inactive&amp;mode=list'),
+			'U_VERSIONCHECK'	=> append_sid("{$phpbb_admin_path}index.php", ''),
+			'U_VERSIONCHECK_FORCE'	=> append_sid("{$phpbb_admin_path}index.php", 'versioncheck_force=1'),
 
 			'S_ACTION_OPTIONS'	=> ($auth->acl_get('a_board')) ? true : false,
 			'S_FOUNDER'			=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
@@ -591,12 +591,12 @@ class acp_main
 
 					'REMINDED_EXPLAIN'	=> $user->lang('USER_LAST_REMINDED', (int) $row['user_reminded'], $user->format_date($row['user_reminded_time'])),
 
-					'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid("{$phpbb_admin_path}index.$phpEx", 'i=users&amp;mode=overview')),
+					'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid("{$phpbb_admin_path}index.php", 'i=users&amp;mode=overview')),
 					'USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
 					'USER_COLOR'		=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
 
-					'U_USER_ADMIN'	=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
-					'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.$phpEx", "author_id={$row['user_id']}&amp;sr=posts") : '',
+					'U_USER_ADMIN'	=> append_sid("{$phpbb_admin_path}index.php", "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
+					'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.php", "author_id={$row['user_id']}&amp;sr=posts") : '',
 				));
 			}
 
@@ -620,10 +620,10 @@ class acp_main
 		}
 		*/
 
-		if (!(stripos(PHP_OS, 'WIN') === 0) && !defined('PHPBB_DISABLE_CONFIG_CHECK') && file_exists($phpbb_root_path . 'config.' . $phpEx) && phpbb_is_writable($phpbb_root_path . 'config.' . $phpEx))
+		if (!(stripos(PHP_OS, 'WIN') === 0) && !defined('PHPBB_DISABLE_CONFIG_CHECK') && file_exists($phpbb_root_path . 'config.php') && phpbb_is_writable($phpbb_root_path . 'config.php'))
 		{
 			// World-Writable? (000x)
-			$template->assign_var('S_WRITABLE_CONFIG', (bool) (@fileperms($phpbb_root_path . 'config.' . $phpEx) & 0x0002));
+			$template->assign_var('S_WRITABLE_CONFIG', (bool) (@fileperms($phpbb_root_path . 'config.php') & 0x0002));
 		}
 
 		if (extension_loaded('mbstring'))

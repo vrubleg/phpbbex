@@ -1,3 +1,4 @@
+**~**
 /cache/**
 !/cache/.htaccess
 !/cache/index.htm
@@ -29,5 +30,3 @@
 !/gallery/images/upload/no_hotlinking.jpg
 !/gallery/images/upload/not_authorised.jpg
 /config.php
-/work/**
-**~**

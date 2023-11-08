@@ -80,7 +80,7 @@ class p_master
 	function list_modules($p_class)
 	{
 		global $auth, $db, $user, $cache;
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpbb_root_path;
 
 		// Sanitise for future path use, it's escaped as appropriate for queries
 		$this->p_class = str_replace(array('.', '/', '\\'), '', basename($p_class));
@@ -434,7 +434,7 @@ class p_master
 	*/
 	function load_active($mode = false, $module_url = false, $execute_module = true)
 	{
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $user;
+		global $phpbb_root_path, $phpbb_admin_path, $user;
 
 		$module_path = $this->include_path . $this->p_class;
 		$icat = request_var('icat', '');
@@ -446,16 +446,16 @@ class p_master
 
 		if (!class_exists("{$this->p_class}_$this->p_name"))
 		{
-			if (!file_exists("$module_path/{$this->p_class}_$this->p_name.$phpEx"))
+			if (!file_exists("$module_path/{$this->p_class}_$this->p_name.php"))
 			{
-				trigger_error($user->lang('MODULE_NOT_FIND', "$module_path/{$this->p_class}_$this->p_name.$phpEx"), E_USER_ERROR);
+				trigger_error($user->lang('MODULE_NOT_FIND', "$module_path/{$this->p_class}_$this->p_name.php"), E_USER_ERROR);
 			}
 
-			include("$module_path/{$this->p_class}_$this->p_name.$phpEx");
+			include("$module_path/{$this->p_class}_$this->p_name.php");
 
 			if (!class_exists("{$this->p_class}_$this->p_name"))
 			{
-				trigger_error($user->lang('MODULE_FILE_INCORRECT_CLASS', "$module_path/{$this->p_class}_$this->p_name.$phpEx", "{$this->p_class}_$this->p_name"), E_USER_ERROR);
+				trigger_error($user->lang('MODULE_FILE_INCORRECT_CLASS', "$module_path/{$this->p_class}_$this->p_name.php", "{$this->p_class}_$this->p_name"), E_USER_ERROR);
 			}
 
 			if (!empty($mode))
@@ -479,7 +479,7 @@ class p_master
 				}
 
 				// Not being able to overwrite ;)
-				$this->module->u_action = append_sid("{$phpbb_admin_path}index.$phpEx", "i={$this->p_name}") . (($icat) ? '&amp;icat=' . $icat : '') . "&amp;mode={$this->p_mode}";
+				$this->module->u_action = append_sid("{$phpbb_admin_path}index.php", "i={$this->p_name}") . (($icat) ? '&amp;icat=' . $icat : '') . "&amp;mode={$this->p_mode}";
 			}
 			else
 			{
@@ -857,7 +857,7 @@ class p_master
 	*/
 	function add_mod_info($module_class)
 	{
-		global $user, $phpEx;
+		global $user;
 
 		if (file_exists($user->lang_path . $user->lang_name . '/mods'))
 		{
@@ -869,9 +869,9 @@ class p_master
 			{
 				while (($entry = readdir($dir)) !== false)
 				{
-					if (strpos($entry, 'info_' . strtolower($module_class) . '_') === 0 && substr(strrchr($entry, '.'), 1) == $phpEx)
+					if (strpos($entry, 'info_' . strtolower($module_class) . '_') === 0 && substr(strrchr($entry, '.'), 1) == 'php')
 					{
-						$add_files[] = 'mods/' . substr(basename($entry), 0, -(strlen($phpEx) + 1));
+						$add_files[] = 'mods/' . substr(basename($entry), 0, -4);
 					}
 				}
 				closedir($dir);

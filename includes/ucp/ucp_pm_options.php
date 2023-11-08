@@ -15,9 +15,9 @@ if (!defined('IN_PHPBB'))
 */
 function message_options($id, $mode, $global_privmsgs_rules, $global_rule_conditions)
 {
-	global $phpbb_root_path, $phpEx, $user, $template, $auth, $config, $db;
+	global $phpbb_root_path, $user, $template, $auth, $config, $db;
 
-	$redirect_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=pm&amp;mode=options");
+	$redirect_url = append_sid("{$phpbb_root_path}ucp.php", "i=pm&amp;mode=options");
 
 	add_form_key('ucp_pm_options');
 	// Change "full folder" setting - what to do if folder is full
@@ -264,7 +264,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 
 			$db->sql_query($sql);
 
-			$meta_info = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=pm&amp;mode=$mode");
+			$meta_info = append_sid("{$phpbb_root_path}ucp.php", "i=pm&amp;mode=$mode");
 			$message = $user->lang['FOLDER_REMOVED'];
 
 			meta_refresh(3, $meta_info);
@@ -367,7 +367,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 
 		if (!$delete_id)
 		{
-			redirect(append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=' . $mode));
+			redirect(append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;mode=' . $mode));
 		}
 
 		// Do we need to confirm?
@@ -378,7 +378,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 					AND rule_id = $delete_id";
 			$db->sql_query($sql);
 
-			$meta_info = append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=' . $mode);
+			$meta_info = append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;mode=' . $mode);
 			$message = $user->lang['RULE_DELETED'];
 
 			// Reset user_message_rules if no more assigned
@@ -492,7 +492,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 
 		'DEFAULT_ACTION'		=> ($config['full_folder_action'] == 1) ? $user->lang['DELETE_OLDEST_MESSAGES'] : $user->lang['HOLD_NEW_MESSAGES'],
 
-		'U_FIND_USERNAME'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser&amp;form=ucp&amp;field=rule_string&amp;select_single=true'),
+		'U_FIND_USERNAME'		=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=ucp&amp;field=rule_string&amp;select_single=true'),
 	));
 
 	$rule_lang = $action_lang = $check_lang = array();

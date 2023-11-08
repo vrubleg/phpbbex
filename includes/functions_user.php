@@ -150,7 +150,7 @@ function user_update_name($old_name, $new_name)
 */
 function user_add($user_row, $cp_data = false)
 {
-	global $db, $user, $auth, $config, $phpbb_root_path, $phpEx;
+	global $db, $user, $auth, $config, $phpbb_root_path;
 
 	if (empty($user_row['username']) || !isset($user_row['group_id']) || !isset($user_row['user_email']) || !isset($user_row['user_type']))
 	{
@@ -258,7 +258,7 @@ function user_add($user_row, $cp_data = false)
 
 		if (!class_exists('custom_profile'))
 		{
-			include_once($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 		}
 
 		$sql = 'INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . ' ' .
@@ -339,7 +339,7 @@ function user_add($user_row, $cp_data = false)
 function user_delete($mode, $user_id, $post_username = false)
 {
 	global $cache, $config, $db, $user;
-	global $phpbb_root_path, $phpEx;
+	global $phpbb_root_path;
 
 	$sql = 'SELECT *
 		FROM ' . USERS_TABLE . '
@@ -479,7 +479,7 @@ function user_delete($mode, $user_id, $post_username = false)
 
 			if (!function_exists('delete_posts'))
 			{
-				include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+				include($phpbb_root_path . 'includes/functions_admin.php');
 			}
 
 			// Delete posts, attachments, etc.
@@ -548,7 +548,7 @@ function user_delete($mode, $user_id, $post_username = false)
 	// Clean the private messages tables from the user
 	if (!function_exists('phpbb_delete_user_pms'))
 	{
-		include($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
+		include($phpbb_root_path . 'includes/functions_privmsgs.php');
 	}
 	phpbb_delete_user_pms($user_id);
 
@@ -569,7 +569,7 @@ function user_delete($mode, $user_id, $post_username = false)
 	// Delete user's rates
 	if (!function_exists('remove_rates_batch'))
 	{
-		include($phpbb_root_path . 'includes/functions_rating.' . $phpEx);
+		include($phpbb_root_path . 'includes/functions_rating.php');
 	}
 	remove_rates_batch('user', $user_id);
 
@@ -1915,7 +1915,7 @@ function avatar_delete($mode, $row, $clean_db = false)
 */
 function avatar_remote($data, &$error)
 {
-	global $config, $db, $user, $phpbb_root_path, $phpEx;
+	global $config, $db, $user, $phpbb_root_path;
 
 	if (!preg_match('#^(http|https|ftp)://#i', $data['remotelink']))
 	{
@@ -1950,7 +1950,7 @@ function avatar_remote($data, &$error)
 	}
 
 	// Check image type
-	include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
+	include_once($phpbb_root_path . 'includes/functions_upload.php');
 	$types = fileupload::image_types();
 	$extension = strtolower(filespec::get_extension($data['remotelink']));
 
@@ -1993,10 +1993,10 @@ function avatar_remote($data, &$error)
 */
 function avatar_upload($data, &$error)
 {
-	global $phpbb_root_path, $config, $db, $user, $phpEx;
+	global $phpbb_root_path, $config, $db, $user;
 
 	// Init upload class
-	include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
+	include_once($phpbb_root_path . 'includes/functions_upload.php');
 	$upload = new fileupload('AVATAR_', array('jpg', 'jpeg', 'gif', 'png'), $config['avatar_filesize'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], (isset($config['mime_triggers']) ? explode('|', $config['mime_triggers']) : false));
 
 	if (!empty($_FILES['uploadfile']['name']))
@@ -2579,7 +2579,7 @@ function avatar_remove_db($avatar_name)
 */
 function group_delete($group_id, $group_name = false)
 {
-	global $db, $phpbb_root_path, $phpEx;
+	global $db, $phpbb_root_path;
 
 	if (!$group_name)
 	{
@@ -2638,7 +2638,7 @@ function group_delete($group_id, $group_name = false)
 	// Re-cache moderators
 	if (!function_exists('cache_moderators'))
 	{
-		include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+		include($phpbb_root_path . 'includes/functions_admin.php');
 	}
 
 	cache_moderators();
@@ -2970,7 +2970,7 @@ function remove_default_rank($group_id, $user_ids)
 */
 function group_user_attributes($action, $group_id, $user_id_ary = false, $username_ary = false, $group_name = false, $group_attributes = false)
 {
-	global $db, $auth, $phpbb_root_path, $phpEx, $config;
+	global $db, $auth, $phpbb_root_path, $config;
 
 	// We need both username and user_id info
 	$result = user_get_id_name($user_id_ary, $username_ary);
@@ -3042,7 +3042,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 			$db->sql_query($sql);
 
 			// Send approved email to users...
-			include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/functions_messenger.php');
 			$messenger = new messenger();
 
 			foreach ($email_users as $row)
@@ -3055,7 +3055,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 				$messenger->assign_vars(array(
 					'USERNAME'		=> htmlspecialchars_decode($row['username']),
 					'GROUP_NAME'	=> htmlspecialchars_decode($group_name),
-					'U_GROUP'		=> generate_board_url() . "/ucp.$phpEx?i=groups&mode=membership")
+					'U_GROUP'		=> generate_board_url() . "/ucp.php?i=groups&mode=membership")
 				);
 
 				$messenger->send($row['user_notify_type']);
@@ -3426,8 +3426,8 @@ function group_update_listings($group_id)
 	{
 		if (!function_exists('cache_moderators'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+			global $phpbb_root_path;
+			include($phpbb_root_path . 'includes/functions_admin.php');
 		}
 		cache_moderators();
 	}
@@ -3436,8 +3436,8 @@ function group_update_listings($group_id)
 	{
 		if (!function_exists('update_foes'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+			global $phpbb_root_path;
+			include($phpbb_root_path . 'includes/functions_admin.php');
 		}
 		update_foes(array($group_id));
 	}

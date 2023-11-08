@@ -22,7 +22,7 @@ class ucp_remind
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpbb_root_path;
 		global $db, $user, $auth, $template;
 
 		$username	= request_var('username', '', true);
@@ -84,7 +84,7 @@ class ucp_remind
 				WHERE user_id = " . $user_row['user_id'];
 			$db->sql_query($sql);
 
-			include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 			$messenger = new messenger(false);
 
@@ -98,21 +98,21 @@ class ucp_remind
 			$messenger->assign_vars(array(
 				'USERNAME'		=> htmlspecialchars_decode($user_row['username']),
 				'PASSWORD'		=> htmlspecialchars_decode($user_password),
-				'U_ACTIVATE'	=> "$server_url/ucp.$phpEx?mode=activate&u={$user_row['user_id']}&k=$user_actkey")
+				'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u={$user_row['user_id']}&k=$user_actkey")
 			);
 
 			$messenger->send($user_row['user_notify_type']);
 
-			meta_refresh(3, append_sid("{$phpbb_root_path}index.$phpEx"));
+			meta_refresh(3, append_sid("{$phpbb_root_path}index.php"));
 
-			$message = $user->lang['PASSWORD_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
+			$message = $user->lang['PASSWORD_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.php") . '">', '</a>');
 			trigger_error($message);
 		}
 
 		$template->assign_vars(array(
 			'USERNAME'			=> $username,
 			'EMAIL'				=> $email,
-			'S_PROFILE_ACTION'	=> append_sid($phpbb_root_path . 'ucp.' . $phpEx, 'mode=sendpassword'))
+			'S_PROFILE_ACTION'	=> append_sid($phpbb_root_path . 'ucp.php', 'mode=sendpassword'))
 		);
 
 		$this->tpl_name = 'ucp_remind';

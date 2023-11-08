@@ -27,10 +27,10 @@ class acp_language
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $table_prefix;
+		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 		global $safe_mode, $file_uploads;
 
-		include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/functions_user.php');
 
 		$this->default_variables();
 
@@ -56,7 +56,7 @@ class acp_language
 			list($_REQUEST['language_file'], ) = array_keys($missing_file);
 		}
 
-		$selected_lang_file = request_var('language_file', '|common.' . $phpEx);
+		$selected_lang_file = request_var('language_file', '|common.php');
 
 		list($this->language_directory, $this->language_file) = explode('|', $selected_lang_file);
 
@@ -73,7 +73,7 @@ class acp_language
 			$action = 'upload_file';
 			$method = request_var('method', '');
 
-			include_once($phpbb_root_path . 'includes/functions_transfer.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/functions_transfer.php');
 
 			switch ($method)
 			{
@@ -98,7 +98,7 @@ class acp_language
 		{
 			case 'upload_file':
 
-				include_once($phpbb_root_path . 'includes/functions_transfer.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_transfer.php');
 
 				$method = request_var('method', '');
 
@@ -225,7 +225,7 @@ class acp_language
 
 					case 'acp':
 						// Get acp files
-						$acp_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'acp', $phpEx);
+						$acp_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'acp', 'php');
 						$acp_files = $acp_files['acp/'];
 
 						if (!in_array($this->language_file, $acp_files))
@@ -236,7 +236,7 @@ class acp_language
 
 					case 'mods':
 						// Get mod files
-						$mods_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'mods', $phpEx);
+						$mods_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'mods', 'php');
 						$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : array();
 
 						if (!in_array($this->language_file, $mods_files))
@@ -377,7 +377,7 @@ class acp_language
 					$old_file = '/' . $this->get_filename($row['lang_iso'], $dir, $file, false, true);
 					$lang_path = 'language/' . $row['lang_iso'] . '/' . (($dir) ? $dir . '/' : '');
 
-					include_once($phpbb_root_path . 'includes/functions_transfer.' . $phpEx);
+					include_once($phpbb_root_path . 'includes/functions_transfer.php');
 					$method = request_var('method', '');
 
 					if ($method != 'ftp' && $method != 'ftp_fsock')
@@ -446,11 +446,11 @@ class acp_language
 				$email_files = $email_files['email/'];
 
 				// Get acp files
-				$acp_files = filelist($phpbb_root_path . 'language/' . $config['default_lang'], 'acp', $phpEx);
+				$acp_files = filelist($phpbb_root_path . 'language/' . $config['default_lang'], 'acp', 'php');
 				$acp_files = $acp_files['acp/'];
 
 				// Get mod files
-				$mods_files = filelist($phpbb_root_path . 'language/' . $config['default_lang'], 'mods', $phpEx);
+				$mods_files = filelist($phpbb_root_path . 'language/' . $config['default_lang'], 'mods', 'php');
 				$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : array();
 
 				// Check if our current filename matches the files
@@ -494,7 +494,7 @@ class acp_language
 					}
 				}
 
-				include_once($phpbb_root_path . 'includes/functions_transfer.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_transfer.php');
 
 				$methods = transfer::methods();
 
@@ -620,7 +620,7 @@ class acp_language
 				}
 
 				// Main language files
-				$s_lang_options = '<option value="|common.' . $phpEx . '" class="sep">' . $user->lang['LANGUAGE_FILES'] . '</option>';
+				$s_lang_options = '<option value="|common.php' . '" class="sep">' . $user->lang['LANGUAGE_FILES'] . '</option>';
 				foreach ($this->main_files as $file)
 				{
 					if (strpos($file, 'help_') === 0)
@@ -635,7 +635,7 @@ class acp_language
 				}
 
 				// Help Files
-				$s_lang_options .= '<option value="|common.' . $phpEx . '" class="sep">' . $user->lang['HELP_FILES'] . '</option>';
+				$s_lang_options .= '<option value="|common.php' . '" class="sep">' . $user->lang['HELP_FILES'] . '</option>';
 				foreach ($this->main_files as $file)
 				{
 					if (strpos($file, 'help_') !== 0)
@@ -659,7 +659,7 @@ class acp_language
 						continue;
 					}
 
-					$s_lang_options .= '<option value="|common.' . $phpEx . '" class="sep">' . $user->lang[strtoupper($check) . '_FILES'] . '</option>';
+					$s_lang_options .= '<option value="|common.php' . '" class="sep">' . $user->lang[strtoupper($check) . '_FILES'] . '</option>';
 
 					foreach (${$check . '_files'} as $file)
 					{
@@ -1009,7 +1009,7 @@ class acp_language
 					$use_method = '.tar';
 				}
 
-				include_once($phpbb_root_path . 'includes/functions_compress.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_compress.php');
 
 				if ($use_method == '.zip')
 				{
@@ -1025,25 +1025,25 @@ class acp_language
 				$email_templates = $email_templates['email/'];
 
 				// Get acp files
-				$acp_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'acp', $phpEx);
+				$acp_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'acp', 'php');
 				$acp_files = $acp_files['acp/'];
 
 				// Get mod files
-				$mod_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'mods', $phpEx);
+				$mod_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'mods', 'php');
 				$mod_files = (isset($mod_files['mods/'])) ? $mod_files['mods/'] : array();
 
 				// Add main files
 				$this->add_to_archive($compress, $this->main_files, $row['lang_iso']);
 
 				// Add search files if they exist...
-				if (file_exists($phpbb_root_path . 'language/' . $row['lang_iso'] . '/search_ignore_words.' . $phpEx))
+				if (file_exists($phpbb_root_path . 'language/' . $row['lang_iso'] . '/search_ignore_words.php'))
 				{
-					$this->add_to_archive($compress, array("search_ignore_words.$phpEx"), $row['lang_iso']);
+					$this->add_to_archive($compress, array("search_ignore_words.php"), $row['lang_iso']);
 				}
 
-				if (file_exists($phpbb_root_path . 'language/' . $row['lang_iso'] . '/search_synonyms.' . $phpEx))
+				if (file_exists($phpbb_root_path . 'language/' . $row['lang_iso'] . '/search_synonyms.php'))
 				{
-					$this->add_to_archive($compress, array("search_synonyms.$phpEx"), $row['lang_iso']);
+					$this->add_to_archive($compress, array("search_synonyms.php"), $row['lang_iso']);
 				}
 
 				// Write files in folders
@@ -1173,8 +1173,6 @@ class acp_language
 	*/
 	function default_variables()
 	{
-		global $phpEx;
-
 		$this->language_file_header = '<?php
 /**
 * @package phpBBex
@@ -1198,7 +1196,7 @@ $lang = array_merge($lang, array(
 ';
 
 		// Language files in language root directory
-		$this->main_files = array("captcha_qa.$phpEx", "captcha_recaptcha.$phpEx", "common.$phpEx", "groups.$phpEx", "install.$phpEx", "mcp.$phpEx", "memberlist.$phpEx", "posting.$phpEx", "search.$phpEx", "ucp.$phpEx", "viewforum.$phpEx", "viewtopic.$phpEx", "help_bbcode.$phpEx", "help_faq.$phpEx");
+		$this->main_files = array("captcha_qa.php", "captcha_recaptcha.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php");
 	}
 
 	/**
@@ -1358,7 +1356,7 @@ $lang = array_merge($lang, array(
 	*/
 	function compare_language_files($source_lang, $dest_lang, $directory, $file)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$return_ary = array();
 

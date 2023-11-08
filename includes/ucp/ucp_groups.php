@@ -19,7 +19,7 @@ class ucp_groups
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpbb_root_path;
 		global $db, $user, $auth, $cache, $template;
 
 		$user->add_lang('groups');
@@ -191,7 +191,7 @@ class ucp_groups
 								{
 									group_user_add($group_id, $user->data['user_id'], false, false, false, 0, 1);
 
-									include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+									include_once($phpbb_root_path . 'includes/functions_messenger.php');
 									$messenger = new messenger();
 
 									$sql = 'SELECT u.username, u.username_clean, u.user_email, u.user_notify_type, u.user_jabber, u.user_lang
@@ -213,8 +213,8 @@ class ucp_groups
 											'GROUP_NAME'		=> htmlspecialchars_decode($group_row[$group_id]['group_name']),
 											'REQUEST_USERNAME'	=> $user->data['username'],
 
-											'U_PENDING'		=> generate_board_url() . "/ucp.$phpEx?i=groups&mode=manage&action=list&g=$group_id",
-											'U_GROUP'		=> generate_board_url() . "/memberlist.$phpEx?mode=group&g=$group_id")
+											'U_PENDING'		=> generate_board_url() . "/ucp.php?i=groups&mode=manage&action=list&g=$group_id",
+											'U_GROUP'		=> generate_board_url() . "/memberlist.php?mode=group&g=$group_id")
 										);
 
 										$messenger->send($row['user_notify_type']);
@@ -323,7 +323,7 @@ class ucp_groups
 						'GROUP_STATUS'	=> $user->lang['GROUP_IS_' . $group_status],
 						'GROUP_COLOUR'	=> $row['group_colour'],
 
-						'U_VIEW_GROUP'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']),
+						'U_VIEW_GROUP'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=group&amp;g=' . $row['group_id']),
 
 						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $user->data['group_id']) ? true : false,
 						'S_ROW_COUNT'		=> ${$block . '_count'}++)
@@ -379,7 +379,7 @@ class ucp_groups
 						'S_CAN_JOIN'	=> ($row['group_type'] == GROUP_OPEN || $row['group_type'] == GROUP_FREE) ? true : false,
 						'GROUP_COLOUR'	=> $row['group_colour'],
 
-						'U_VIEW_GROUP'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']),
+						'U_VIEW_GROUP'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=group&amp;g=' . $row['group_id']),
 
 						'S_ROW_COUNT'	=> $nonmember_count++)
 					);
@@ -404,7 +404,7 @@ class ucp_groups
 				$action		= (isset($_POST['addusers'])) ? 'addusers' : request_var('action', '');
 				$group_id	= request_var('g', 0);
 
-				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				include($phpbb_root_path . 'includes/functions_display.php');
 
 				add_form_key('ucp_groups');
 
@@ -730,7 +730,7 @@ class ucp_groups
 							'GROUP_CLOSED'		=> $type_closed,
 							'GROUP_HIDDEN'		=> $type_hidden,
 
-							'U_SWATCH'			=> append_sid("{$phpbb_root_path}adm/swatch.$phpEx", 'form=ucp&amp;name=group_colour'),
+							'U_SWATCH'			=> append_sid("{$phpbb_root_path}adm/swatch.php", 'form=ucp&amp;name=group_colour'),
 							'S_UCP_ACTION'		=> $this->u_action . "&amp;action=$action&amp;g=$group_id",
 							'L_AVATAR_EXPLAIN'	=> sprintf($user->lang['AVATAR_EXPLAIN'], $config['avatar_max_width'], $config['avatar_max_height'], $config['avatar_filesize'] / 1024),
 						));
@@ -853,7 +853,7 @@ class ucp_groups
 
 							'U_ACTION'			=> $this->u_action . "&amp;g=$group_id",
 							'S_UCP_ACTION'		=> $this->u_action . "&amp;g=$group_id",
-							'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser&amp;form=ucp&amp;field=usernames'),
+							'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=ucp&amp;field=usernames'),
 						));
 
 					break;

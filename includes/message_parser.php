@@ -12,7 +12,7 @@ if (!defined('IN_PHPBB'))
 
 if (!class_exists('bbcode'))
 {
-	include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+	include($phpbb_root_path . 'includes/bbcode.php');
 }
 
 /**
@@ -1124,22 +1124,22 @@ class bbcode_firstpass extends bbcode
 	*/
 	function path_in_domain($url)
 	{
-		global $config, $phpEx, $user;
+		global $config, $user;
 
 		$check_path = ($user->page['root_script_path'] != '/') ? substr($user->page['root_script_path'], 0, -1) : '/';
 
 		// Is the user trying to link to a php file in this domain and script path?
-		if (strpos($url, ".{$phpEx}") !== false && strpos($url, $check_path) !== false)
+		if (strpos($url, '.php') !== false && strpos($url, $check_path) !== false)
 		{
 			// Check again in correct order...
-			$pos_ext = strpos($url, ".{$phpEx}");
+			$pos_ext = strpos($url, '.php');
 			$pos_path = strpos($url, $check_path);
 			$pos_domain = strpos($url, $user->host);
 
 			if ($pos_domain !== false && $pos_path >= $pos_domain && $pos_ext >= $pos_path)
 			{
 				// Ok, actually we allow linking to some files (this may be able to be extended in some way later...)
-				if (strpos($url, '/' . $check_path . '/file.' . $phpEx) !== 0)
+				if (strpos($url, '/' . $check_path . '/file.php') !== 0)
 				{
 					return false;
 				}
@@ -1471,7 +1471,7 @@ class parse_message extends bbcode_firstpass
 	*/
 	function parse_attachments($form_name, $mode, $forum_id, $submit, $preview, $refresh, $is_message = false)
 	{
-		global $config, $auth, $user, $phpbb_root_path, $phpEx, $db;
+		global $config, $auth, $user, $phpbb_root_path, $db;
 
 		$error = array();
 
@@ -1563,7 +1563,7 @@ class parse_message extends bbcode_firstpass
 			// Perform actions on temporary attachments
 			if ($delete_file)
 			{
-				include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_admin.php');
 
 				$index = array_keys(request_var('delete_file', array(0 => 0)));
 				$index = (!empty($index)) ? $index[0] : false;
@@ -1654,7 +1654,7 @@ class parse_message extends bbcode_firstpass
 			}
 			else if ($update_file && $upload_file)
 			{
-				include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_admin.php');
 
 				$filedata = upload_attachment($form_name, $forum_id, false, '', $is_message);
 				$error = array_merge($error, $filedata['error']);
@@ -1723,7 +1723,7 @@ class parse_message extends bbcode_firstpass
 	*/
 	function get_submitted_attachment_data($check_user_id = false)
 	{
-		global $user, $db, $phpbb_root_path, $phpEx, $config;
+		global $user, $db, $phpbb_root_path, $config;
 
 		$this->filename_data['filecomment'] = utf8_normalize_nfc(request_var('filecomment', '', true));
 		$attachment_data = (isset($_POST['attachment_data'])) ? $_POST['attachment_data'] : array();

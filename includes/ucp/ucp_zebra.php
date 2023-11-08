@@ -19,7 +19,7 @@ class ucp_zebra
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
+		global $config, $db, $user, $auth, $template, $phpbb_root_path;
 
 		$submit	= (isset($_POST['submit']) || isset($_GET['add']) || isset($_GET['remove'])) ? true : false;
 		$s_hidden_fields = '';
@@ -245,7 +245,7 @@ class ucp_zebra
 		$template->assign_vars(array(
 			'L_TITLE'			=> $user->lang['UCP_ZEBRA_' . $l_mode],
 
-			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser&amp;form=ucp&amp;field=add'),
+			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=ucp&amp;field=add'),
 
 			'S_USERNAME_OPTIONS'	=> $s_username_options,
 			'S_HIDDEN_FIELDS'		=> $s_hidden_fields,

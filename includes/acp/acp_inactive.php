@@ -26,9 +26,9 @@ class acp_inactive
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $table_prefix;
+		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include($phpbb_root_path . 'includes/functions_user.php');
 
 		$user->add_lang('memberlist');
 
@@ -102,7 +102,7 @@ class acp_inactive
 
 						if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !empty($inactive_users))
 						{
-							include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+							include_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 							$messenger = new messenger(false);
 
@@ -188,7 +188,7 @@ class acp_inactive
 					if ($row = $db->sql_fetchrow($result))
 					{
 						// Send the messages
-						include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+						include_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 						$messenger = new messenger();
 						$usernames = $user_ids = array();
@@ -205,7 +205,7 @@ class acp_inactive
 							$messenger->assign_vars(array(
 								'USERNAME'		=> htmlspecialchars_decode($row['username']),
 								'REGISTER_DATE'	=> $user->format_date($row['user_regdate'], false, true),
-								'U_ACTIVATE'	=> generate_board_url() . "/ucp.$phpEx?mode=activate&u=" . $row['user_id'] . '&k=' . $row['user_actkey'])
+								'U_ACTIVATE'	=> generate_board_url() . "/ucp.php?mode=activate&u=" . $row['user_id'] . '&k=' . $row['user_actkey'])
 							);
 
 							$messenger->send($row['user_notify_type']);
@@ -263,12 +263,12 @@ class acp_inactive
 
 				'REMINDED_EXPLAIN'	=> $user->lang('USER_LAST_REMINDED', (int) $row['user_reminded'], $user->format_date($row['user_reminded_time'])),
 
-				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid("{$phpbb_admin_path}index.$phpEx", 'i=users&amp;mode=overview')),
+				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid("{$phpbb_admin_path}index.php", 'i=users&amp;mode=overview')),
 				'USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
 				'USER_COLOR'		=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
 
-				'U_USER_ADMIN'	=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
-				'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.$phpEx", "author_id={$row['user_id']}&amp;sr=posts") : '',
+				'U_USER_ADMIN'	=> append_sid("{$phpbb_admin_path}index.php", "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
+				'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.php", "author_id={$row['user_id']}&amp;sr=posts") : '',
 			));
 		}
 

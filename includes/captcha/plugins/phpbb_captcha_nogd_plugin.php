@@ -15,7 +15,7 @@ if (!defined('IN_PHPBB'))
 */
 if (!class_exists('phpbb_default_captcha'))
 {
-	include($phpbb_root_path . 'includes/captcha/plugins/captcha_abstract.' . $phpEx);
+	include($phpbb_root_path . 'includes/captcha/plugins/captcha_abstract.php');
 }
 
 class phpbb_captcha_nogd extends phpbb_default_captcha
@@ -23,11 +23,11 @@ class phpbb_captcha_nogd extends phpbb_default_captcha
 
 	function __construct()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		if (!class_exists('captcha'))
 		{
-			include_once($phpbb_root_path . 'includes/captcha/captcha_non_gd.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/captcha/captcha_non_gd.php');
 		}
 	}
 

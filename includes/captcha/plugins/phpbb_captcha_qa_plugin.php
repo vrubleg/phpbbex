@@ -100,11 +100,11 @@ class phpbb_captcha_qa
 	*/
 	static function is_installed()
 	{
-		global $db, $phpbb_root_path, $phpEx;
+		global $db, $phpbb_root_path;
 
 		if (!class_exists('phpbb_db_tools'))
 		{
-			include("$phpbb_root_path/includes/db/db_tools.$phpEx");
+			include("$phpbb_root_path/includes/db/db_tools.php");
 		}
 		$db_tool = new phpbb_db_tools($db);
 
@@ -116,7 +116,7 @@ class phpbb_captcha_qa
 	*/
 	static function is_available()
 	{
-		global $config, $db, $phpbb_root_path, $phpEx, $user;
+		global $config, $db, $phpbb_root_path, $user;
 
 		// load language file for pretty display in the ACP dropdown
 		$user->add_lang('captcha_qa');
@@ -287,11 +287,11 @@ class phpbb_captcha_qa
 	*/
 	function install()
 	{
-		global $db, $phpbb_root_path, $phpEx;
+		global $db, $phpbb_root_path;
 
 		if (!class_exists('phpbb_db_tools'))
 		{
-			include("$phpbb_root_path/includes/db/db_tools.$phpEx");
+			include("$phpbb_root_path/includes/db/db_tools.php");
 		}
 		$db_tool = new phpbb_db_tools($db);
 
@@ -612,7 +612,7 @@ class phpbb_captcha_qa
 	function acp_page($id, &$module)
 	{
 		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpbb_root_path, $phpbb_admin_path;
 
 		$user->add_lang('acp/board');
 		$user->add_lang('captcha_qa');

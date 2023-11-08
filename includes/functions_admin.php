@@ -744,7 +744,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 */
 function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync = true, $post_count_sync = true, $call_delete_topics = true)
 {
-	global $db, $config, $phpbb_root_path, $phpEx;
+	global $db, $config, $phpbb_root_path;
 
 	if ($where_type === 'range')
 	{
@@ -870,12 +870,12 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 	// Remove the message from the search index
 	$search_type = basename($config['search_type']);
 
-	if (!file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.' . $phpEx))
+	if (!file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.php'))
 	{
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	include_once("{$phpbb_root_path}includes/search/$search_type.$phpEx");
+	include_once("{$phpbb_root_path}includes/search/$search_type.php");
 
 	$error = false;
 	$search = new $search_type($error);
@@ -2266,7 +2266,7 @@ function remove_comments(&$output)
 */
 function cache_moderators()
 {
-	global $db, $cache, $auth, $phpbb_root_path, $phpEx;
+	global $db, $cache, $auth, $phpbb_root_path;
 
 	// Remove cached sql results
 	$cache->destroy('sql', MODERATOR_CACHE_TABLE);
@@ -2432,11 +2432,11 @@ function cache_moderators()
 */
 function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id = 0, $topic_id = 0, $user_id = 0, $limit_days = 0, $sort_by = 'l.log_time DESC', $keywords = '')
 {
-	global $db, $user, $auth, $phpEx, $phpbb_root_path, $phpbb_admin_path;
+	global $db, $user, $auth, $phpbb_root_path, $phpbb_admin_path;
 
 	$topic_id_list = $reportee_id_list = $is_auth = $is_mod = array();
 
-	$profile_url = (defined('IN_ADMIN')) ? append_sid("{$phpbb_admin_path}index.$phpEx", 'i=users&amp;mode=overview') : append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile');
+	$profile_url = (defined('IN_ADMIN')) ? append_sid("{$phpbb_admin_path}index.php", 'i=users&amp;mode=overview') : append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile');
 
 	switch ($mode)
 	{
@@ -2597,7 +2597,7 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			'forum_id'			=> $row['forum_id'],
 			'topic_id'			=> $row['topic_id'],
 
-			'viewforum'			=> ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']) : false,
+			'viewforum'			=> ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $row['forum_id']) : false,
 			'viewalbum'			=> ((isset($row['album_id']) && $row['album_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id']) : false),
 			'viewimage'			=> ((isset($row['image_id']) && $row['image_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['image_id']) : false),
 			'action'			=> (isset($user->lang[$row['log_operation']])) ? $user->lang[$row['log_operation']] : '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
@@ -2693,8 +2693,8 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 
 		foreach ($log as $key => $row)
 		{
-			$log[$key]['viewtopic'] = (isset($is_auth[$row['topic_id']])) ? append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $row['topic_id']) : false;
-			$log[$key]['viewlogs'] = (isset($is_mod[$row['topic_id']])) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=logs&amp;mode=topic_logs&amp;t=' . $row['topic_id'], true, $user->session_id) : false;
+			$log[$key]['viewtopic'] = (isset($is_auth[$row['topic_id']])) ? append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $row['topic_id']) : false;
+			$log[$key]['viewlogs'] = (isset($is_mod[$row['topic_id']])) ? append_sid("{$phpbb_root_path}mcp.php", 'i=logs&amp;mode=topic_logs&amp;t=' . $row['topic_id'], true, $user->session_id) : false;
 		}
 	}
 
@@ -3093,7 +3093,7 @@ function tidy_database()
 */
 function add_permission_language()
 {
-	global $user, $phpEx;
+	global $user;
 
 	// First of all, our own file. We need to include it as the first file because it presets all relevant variables.
 	$user->add_lang('acp/permissions_phpbb');
@@ -3109,9 +3109,9 @@ function add_permission_language()
 		{
 			while (($file = readdir($dh)) !== false)
 			{
-				if ($file !== 'permissions_phpbb.' . $phpEx && strpos($file, 'permissions_') === 0 && substr($file, -(strlen($phpEx) + 1)) === '.' . $phpEx)
+				if ($file !== 'permissions_phpbb.php' && strpos($file, 'permissions_') === 0 && substr($file, -4) === '.php')
 				{
-					$files_to_add[] = $path . substr($file, 0, -(strlen($phpEx) + 1));
+					$files_to_add[] = $path . substr($file, 0, -4);
 				}
 			}
 			closedir($dh);

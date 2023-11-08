@@ -32,7 +32,7 @@ class acp_modules
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $module;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpbb_admin_path, $phpbb_root_path;
 
 		// Set a global define for modules we might include (the author is able to prevent execution of code by checking this constant)
 		define('MODULE_INCLUDE', true);
@@ -524,7 +524,7 @@ class acp_modules
 	*/
 	function get_module_infos($module = '', $module_class = false)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$module_class = ($module_class === false) ? $this->module_class : $module_class;
 
@@ -543,9 +543,9 @@ class acp_modules
 			while (($file = readdir($dh)) !== false)
 			{
 				// Is module?
-				if (preg_match('/^' . $module_class . '_.+\.' . $phpEx . '$/', $file))
+				if (preg_match('/^' . $module_class . '_.+\.php' . '$/', $file))
 				{
-					$class = str_replace(".$phpEx", '', $file) . '_info';
+					$class = str_replace(".php", '', $file) . '_info';
 
 					if (!class_exists($class))
 					{
@@ -572,7 +572,7 @@ class acp_modules
 
 			if (!class_exists($class))
 			{
-				include($directory . $filename . '.' . $phpEx);
+				include($directory . $filename . '.php');
 			}
 
 			// Get module title tag

@@ -20,7 +20,7 @@ class acp_groups
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $table_prefix, $file_uploads;
+		global $phpbb_root_path, $phpbb_admin_path, $table_prefix, $file_uploads;
 
 		$user->add_lang('acp/groups');
 		$this->tpl_name = 'acp_groups';
@@ -29,7 +29,7 @@ class acp_groups
 		$form_key = 'acp_groups';
 		add_form_key($form_key);
 
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include($phpbb_root_path . 'includes/functions_user.php');
 
 		// Check and set some common vars
 		$action		= (isset($_POST['add'])) ? 'add' : ((isset($_POST['addusers'])) ? 'addusers' : request_var('action', ''));
@@ -282,7 +282,7 @@ class acp_groups
 			case 'edit':
 			case 'add':
 
-				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				include($phpbb_root_path . 'includes/functions_display.php');
 
 				$data = $submit_ary = array();
 
@@ -589,7 +589,7 @@ class acp_groups
 				switch ($back_link)
 				{
 					case 'acp_users_groups':
-						$u_back = append_sid("{$phpbb_admin_path}index.$phpEx", 'i=users&amp;mode=groups&amp;u=' . request_var('u', 0));
+						$u_back = append_sid("{$phpbb_admin_path}index.php", 'i=users&amp;mode=groups&amp;u=' . request_var('u', 0));
 					break;
 
 					default:
@@ -645,7 +645,7 @@ class acp_groups
 					'GROUP_HIDDEN'		=> $type_hidden,
 
 					'U_BACK'			=> $u_back,
-					'U_SWATCH'			=> append_sid("{$phpbb_admin_path}swatch.$phpEx", 'form=settings&amp;name=group_colour'),
+					'U_SWATCH'			=> append_sid("{$phpbb_admin_path}swatch.php", 'form=settings&amp;name=group_colour'),
 					'U_ACTION'			=> "{$this->u_action}&amp;action=$action&amp;g=$group_id",
 					'L_AVATAR_EXPLAIN'	=> sprintf($user->lang['AVATAR_EXPLAIN'], $config['avatar_max_width'], $config['avatar_max_height'], round($config['avatar_filesize'] / 1024)),
 				));
@@ -674,7 +674,7 @@ class acp_groups
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$template->assign_block_vars('leader', array(
-						'U_USER_EDIT'		=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=users&amp;action=edit&amp;u={$row['user_id']}"),
+						'U_USER_EDIT'		=> append_sid("{$phpbb_admin_path}index.php", "i=users&amp;action=edit&amp;u={$row['user_id']}"),
 
 						'USERNAME'			=> $row['username'],
 						'USERNAME_COLOUR'	=> $row['user_colour'],
@@ -714,7 +714,7 @@ class acp_groups
 
 					'U_ACTION'			=> $this->u_action . "&amp;g=$group_id",
 					'U_BACK'			=> $this->u_action,
-					'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser&amp;form=list&amp;field=usernames'),
+					'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=list&amp;field=usernames'),
 					'U_DEFAULT_ALL'		=> "{$this->u_action}&amp;action=set_default_on_all&amp;g=$group_id",
 				));
 
@@ -741,7 +741,7 @@ class acp_groups
 					}
 
 					$template->assign_block_vars('member', array(
-						'U_USER_EDIT'		=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=users&amp;action=edit&amp;u={$row['user_id']}"),
+						'U_USER_EDIT'		=> append_sid("{$phpbb_admin_path}index.php", "i=users&amp;action=edit&amp;u={$row['user_id']}"),
 
 						'USERNAME'			=> $row['username'],
 						'USERNAME_COLOUR'	=> $row['user_colour'],

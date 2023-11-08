@@ -157,8 +157,8 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		// Visual Confirmation handling
 		if (!class_exists('phpbb_captcha_factory'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include ($phpbb_root_path . 'includes/captcha/captcha_factory.' . $phpEx);
+			global $phpbb_root_path;
+			include ($phpbb_root_path . 'includes/captcha/captcha_factory.php');
 		}
 
 		$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);

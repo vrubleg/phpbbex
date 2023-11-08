@@ -15,10 +15,10 @@ if (!defined('IN_PHPBB'))
 */
 function mcp_topic_view($id, $mode, $action)
 {
-	global $phpEx, $phpbb_root_path, $config;
+	global $phpbb_root_path, $config;
 	global $template, $db, $user, $auth, $cache;
 
-	$url = append_sid("{$phpbb_root_path}mcp.$phpEx?" . extra_url());
+	$url = append_sid("{$phpbb_root_path}mcp.php?" . extra_url());
 
 	$user->add_lang('viewtopic');
 
@@ -49,7 +49,7 @@ function mcp_topic_view($id, $mode, $action)
 	{
 		if (!function_exists('mcp_resync_topics'))
 		{
-			include($phpbb_root_path . 'includes/mcp/mcp_forum.' . $phpEx);
+			include($phpbb_root_path . 'includes/mcp/mcp_forum.php');
 		}
 		mcp_resync_topics(array($topic_id));
 	}
@@ -82,9 +82,9 @@ function mcp_topic_view($id, $mode, $action)
 	// Approve posts?
 	if ($action == 'approve' && $auth->acl_get('m_approve', $topic_info['forum_id']))
 	{
-		include($phpbb_root_path . 'includes/mcp/mcp_queue.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+		include($phpbb_root_path . 'includes/mcp/mcp_queue.php');
+		include_once($phpbb_root_path . 'includes/functions_posting.php');
+		include_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 		if (!sizeof($post_id_list))
 		{
@@ -159,7 +159,7 @@ function mcp_topic_view($id, $mode, $action)
 
 	if ($bbcode_bitfield !== '')
 	{
-		include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/bbcode.php');
 		$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 	}
 
@@ -239,7 +239,7 @@ function mcp_topic_view($id, $mode, $action)
 			'POST_SUBJECT'	=> $post_subject,
 			'MESSAGE'		=> $message,
 			'POST_ID'		=> $row['post_id'],
-			'RETURN_TOPIC'	=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $topic_id) . '">', '</a>'),
+			'RETURN_TOPIC'	=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $topic_id) . '">', '</a>'),
 
 			'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
 
@@ -249,8 +249,8 @@ function mcp_topic_view($id, $mode, $action)
 			'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
 
 			'U_POST_DETAILS'	=> "$url&amp;i=$id&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f=$forum_id" : ''),
-			'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $topic_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue&amp;mode=approve_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
-			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '')
+			'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $topic_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.php", 'i=queue&amp;mode=approve_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
+			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.php", 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '')
 		);
 
 		// Display not already displayed Attachments for this post, we already parsed them. ;)
@@ -272,7 +272,7 @@ function mcp_topic_view($id, $mode, $action)
 
 	if ($auth->acl_gets('m_split', 'm_merge', (int) $topic_info['forum_id']))
 	{
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/functions_posting.php');
 		$s_topic_icons = posting_gen_topic_icons('', $icon_id);
 
 		// Has the user selected a topic for merge?
@@ -303,10 +303,10 @@ function mcp_topic_view($id, $mode, $action)
 
 	$template->assign_vars(array(
 		'TOPIC_TITLE'		=> $topic_info['topic_title'],
-		'U_VIEW_TOPIC'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $topic_info['topic_id']),
+		'U_VIEW_TOPIC'		=> append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $topic_info['topic_id']),
 
 		'TO_TOPIC_ID'		=> $to_topic_id,
-		'TO_TOPIC_INFO'		=> ($to_topic_id) ? sprintf($user->lang['YOU_SELECTED_TOPIC'], $to_topic_id, '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $to_topic_id) . '">' . $to_topic_info['topic_title'] . '</a>') : '',
+		'TO_TOPIC_INFO'		=> ($to_topic_id) ? sprintf($user->lang['YOU_SELECTED_TOPIC'], $to_topic_id, '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $to_topic_id) . '">' . $to_topic_info['topic_title'] . '</a>') : '',
 
 		'SPLIT_SUBJECT'		=> $subject,
 		'POSTS_PER_PAGE'	=> $posts_per_page,
@@ -336,11 +336,11 @@ function mcp_topic_view($id, $mode, $action)
 
 		'U_SELECT_TOPIC'	=> "$url&amp;i=$id&amp;mode=forum_view&amp;action=merge_select" . (($forum_id) ? "&amp;f=$forum_id" : ''),
 
-		'RETURN_TOPIC'		=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t={$topic_info['topic_id']}&amp;start=$start") . '">', '</a>'),
-		'RETURN_FORUM'		=> sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.$phpEx", "f={$topic_info['forum_id']}&amp;start=$start") . '">', '</a>'),
+		'RETURN_TOPIC'		=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", "t={$topic_info['topic_id']}&amp;start=$start") . '">', '</a>'),
+		'RETURN_FORUM'		=> sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.php", "f={$topic_info['forum_id']}&amp;start=$start") . '">', '</a>'),
 
 		'PAGE_NUMBER'		=> on_page($total, $posts_per_page, $start),
-		'PAGINATION'		=> (!$posts_per_page) ? '' : generate_pagination(append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$id&amp;t={$topic_info['topic_id']}&amp;mode=$mode&amp;action=$action&amp;to_topic_id=$to_topic_id&amp;posts_per_page=$posts_per_page&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir"), $total, $posts_per_page, $start),
+		'PAGINATION'		=> (!$posts_per_page) ? '' : generate_pagination(append_sid("{$phpbb_root_path}mcp.php", "i=$id&amp;t={$topic_info['topic_id']}&amp;mode=$mode&amp;action=$action&amp;to_topic_id=$to_topic_id&amp;posts_per_page=$posts_per_page&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir"), $total, $posts_per_page, $start),
 		'TOTAL_POSTS'		=> ($total == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total),
 	));
 }
@@ -350,7 +350,7 @@ function mcp_topic_view($id, $mode, $action)
 */
 function split_topic($action, $topic_id, $to_forum_id, $subject)
 {
-	global $db, $template, $user, $phpEx, $phpbb_root_path, $auth, $config;
+	global $db, $template, $user, $phpbb_root_path, $auth, $config;
 
 	$post_id_list	= request_var('post_id_list', array(0));
 	$forum_id		= request_var('forum_id', 0);
@@ -560,14 +560,14 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		set_config_count('num_topics', 1, true);
 
 		// Link back to both topics
-		$return_link = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $post_info['topic_id']) . '">', '</a>') . '<br /><br />' . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $to_topic_id) . '">', '</a>');
+		$return_link = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $post_info['topic_id']) . '">', '</a>') . '<br /><br />' . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $to_topic_id) . '">', '</a>');
 	}
 	else
 	{
 		confirm_box(false, ($action == 'split_all') ? 'SPLIT_TOPIC_ALL' : 'SPLIT_TOPIC_BEYOND', $s_hidden_fields);
 	}
 
-	$redirect = request_var('redirect', "index.$phpEx");
+	$redirect = request_var('redirect', "index.php");
 	$redirect = reapply_sid($redirect);
 
 	if (!$success_msg)
@@ -576,7 +576,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 	}
 	else
 	{
-		meta_refresh(3, append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$to_topic_id"));
+		meta_refresh(3, append_sid("{$phpbb_root_path}viewtopic.php", "t=$to_topic_id"));
 		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
 	}
 }
@@ -586,7 +586,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 */
 function merge_posts($topic_id, $to_topic_id)
 {
-	global $db, $template, $user, $phpEx, $phpbb_root_path, $auth;
+	global $db, $template, $user, $phpbb_root_path, $auth;
 
 	if (!$to_topic_id)
 	{
@@ -652,13 +652,13 @@ function merge_posts($topic_id, $to_topic_id)
 
 		if ($row)
 		{
-			$return_link .= sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $topic_id) . '">', '</a>');
+			$return_link .= sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $topic_id) . '">', '</a>');
 		}
 		else
 		{
 			if (!function_exists('phpbb_update_rows_avoiding_duplicates_notify_status'))
 			{
-				include($phpbb_root_path . 'includes/functions_database_helper.' . $phpEx);
+				include($phpbb_root_path . 'includes/functions_database_helper.php');
 			}
 
 			// If the topic no longer exist, we will update the topic watch table.
@@ -669,14 +669,14 @@ function merge_posts($topic_id, $to_topic_id)
 		}
 
 		// Link to the new topic
-		$return_link .= (($return_link) ? '<br /><br />' : '') . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $to_topic_id) . '">', '</a>');
+		$return_link .= (($return_link) ? '<br /><br />' : '') . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $to_topic_id) . '">', '</a>');
 	}
 	else
 	{
 		confirm_box(false, 'MERGE_POSTS', $s_hidden_fields);
 	}
 
-	$redirect = request_var('redirect', "index.$phpEx");
+	$redirect = request_var('redirect', "index.php");
 	$redirect = reapply_sid($redirect);
 
 	if (!$success_msg)
@@ -685,7 +685,7 @@ function merge_posts($topic_id, $to_topic_id)
 	}
 	else
 	{
-		meta_refresh(3, append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$to_topic_id"));
+		meta_refresh(3, append_sid("{$phpbb_root_path}viewtopic.php", "t=$to_topic_id"));
 		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
 	}
 }

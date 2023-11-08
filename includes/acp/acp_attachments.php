@@ -21,7 +21,7 @@ class acp_attachments
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpbb_admin_path, $phpbb_root_path;
 
 		$user->add_lang(array('posting', 'viewtopic', 'acp/attachments'));
 
@@ -73,7 +73,7 @@ class acp_attachments
 		{
 			case 'attach':
 
-				include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_posting.php');
 
 				$sql = 'SELECT group_name, cat_id
 					FROM ' . EXTENSION_GROUPS_TABLE . '
@@ -730,7 +730,7 @@ class acp_attachments
 							'S_NO_IMAGE'				=> $no_image_select,
 							'S_FORUM_IDS'				=> (sizeof($forum_ids)) ? true : false,
 
-							'U_EXTENSIONS'		=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&amp;mode=extensions"),
+							'U_EXTENSIONS'		=> append_sid("{$phpbb_admin_path}index.php", "i=$id&amp;mode=extensions"),
 							'U_BACK'			=> $this->u_action,
 
 							'L_LEGEND'			=> $user->lang[strtoupper($action) . '_EXTENSION_GROUP'])
@@ -1004,7 +1004,7 @@ class acp_attachments
 						'PHYSICAL_FILENAME'	=> utf8_basename($row['physical_filename']),
 						'ATTACH_ID'			=> $row['attach_id'],
 						'POST_IDS'			=> (!empty($post_ids[$row['attach_id']])) ? $post_ids[$row['attach_id']] : '',
-						'U_FILE'			=> append_sid($phpbb_root_path . 'file.' . $phpEx, 'mode=view&amp;id=' . $row['attach_id']))
+						'U_FILE'			=> append_sid($phpbb_root_path . 'file.php', 'mode=view&amp;id=' . $row['attach_id']))
 					);
 				}
 				$db->sql_freeresult($result);

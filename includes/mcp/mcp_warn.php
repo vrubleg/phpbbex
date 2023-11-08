@@ -29,7 +29,7 @@ class mcp_warn
 	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template;
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpbb_root_path;
 
 		$action = request_var('action', array('' => ''));
 
@@ -76,12 +76,12 @@ class mcp_warn
 	*/
 	function mcp_warn_front_view()
 	{
-		global $phpEx, $phpbb_root_path, $config;
+		global $phpbb_root_path, $config;
 		global $template, $db, $user, $auth;
 
 		$template->assign_vars(array(
-			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
-			'U_POST_ACTION'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=warn&amp;mode=warn_user'),
+			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
+			'U_POST_ACTION'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=warn&amp;mode=warn_user'),
 		));
 
 		// Obtain a list of the 5 naughtiest users....
@@ -94,12 +94,12 @@ class mcp_warn
 		foreach ($highest as $row)
 		{
 			$template->assign_block_vars('highest', array(
-				'U_NOTES'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
+				'U_NOTES'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
 
 				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USERNAME'			=> $row['username'],
 				'USERNAME_COLOUR'	=> ($row['user_colour']) ? '#' . $row['user_colour'] : '',
-				'U_USER'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile&amp;u=' . $row['user_id']),
+				'U_USER'			=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile&amp;u=' . $row['user_id']),
 
 				'WARNING_TIME'	=> $user->format_date($row['user_last_warning']),
 				'WARNINGS'		=> $row['user_warnings'],
@@ -116,12 +116,12 @@ class mcp_warn
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('latest', array(
-				'U_NOTES'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
+				'U_NOTES'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
 
 				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USERNAME'			=> $row['username'],
 				'USERNAME_COLOUR'	=> ($row['user_colour']) ? '#' . $row['user_colour'] : '',
-				'U_USER'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile&amp;u=' . $row['user_id']),
+				'U_USER'			=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile&amp;u=' . $row['user_id']),
 
 				'WARNING_TIME'	=> $user->format_date($row['warning_time']),
 				'WARNINGS'		=> $row['user_warnings'],
@@ -135,7 +135,7 @@ class mcp_warn
 	*/
 	function mcp_warn_list_view($action)
 	{
-		global $phpEx, $phpbb_root_path, $config;
+		global $phpbb_root_path, $config;
 		global $template, $db, $user, $auth;
 
 		$user->add_lang('memberlist');
@@ -164,12 +164,12 @@ class mcp_warn
 		foreach ($users as $row)
 		{
 			$template->assign_block_vars('user', array(
-				'U_NOTES'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
+				'U_NOTES'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
 
 				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USERNAME'			=> $row['username'],
 				'USERNAME_COLOUR'	=> ($row['user_colour']) ? '#' . $row['user_colour'] : '',
-				'U_USER'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile&amp;u=' . $row['user_id']),
+				'U_USER'			=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile&amp;u=' . $row['user_id']),
 
 				'WARNING_TIME'	=> $user->format_date($row['user_last_warning']),
 				'WARNINGS'		=> $row['user_warnings'],
@@ -184,7 +184,7 @@ class mcp_warn
 			'S_SELECT_SORT_DAYS'	=> $s_limit_days,
 
 			'PAGE_NUMBER'		=> on_page($user_count, $config['topics_per_page'], $start),
-			'PAGINATION'		=> generate_pagination(append_sid("{$phpbb_root_path}mcp.$phpEx", "i=warn&amp;mode=list&amp;st=$st&amp;sk=$sk&amp;sd=$sd"), $user_count, $config['topics_per_page'], $start),
+			'PAGINATION'		=> generate_pagination(append_sid("{$phpbb_root_path}mcp.php", "i=warn&amp;mode=list&amp;st=$st&amp;sk=$sk&amp;sd=$sd"), $user_count, $config['topics_per_page'], $start),
 			'TOTAL_USERS'		=> ($user_count == 1) ? $user->lang['LIST_USER'] : sprintf($user->lang['LIST_USERS'], $user_count),
 		));
 	}
@@ -194,7 +194,7 @@ class mcp_warn
 	*/
 	function mcp_warn_post_view($action)
 	{
-		global $phpEx, $phpbb_root_path, $config;
+		global $phpbb_root_path, $config;
 		global $template, $db, $user, $auth;
 
 		$post_id = request_var('p', 0);
@@ -275,7 +275,7 @@ class mcp_warn
 			{
 				$msg = $user->lang['FORM_INVALID'];
 			}
-			$redirect = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "p={$post_id}#p{$post_id}");
+			$redirect = append_sid("{$phpbb_root_path}viewtopic.php", "p={$post_id}#p{$post_id}");
 			meta_refresh(2, $redirect);
 			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
@@ -289,7 +289,7 @@ class mcp_warn
 		// Second parse bbcode here
 		if ($user_row['bbcode_bitfield'])
 		{
-			include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/bbcode.php');
 
 			$bbcode = new bbcode($user_row['bbcode_bitfield']);
 			$bbcode->bbcode_second_pass($message, $user_row['bbcode_uid'], $user_row['bbcode_bitfield'], $user_row['post_time']);
@@ -301,7 +301,7 @@ class mcp_warn
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_display.php');
 		}
 
 		get_user_rank($user_row['user_rank'], $user_row['user_posts'], $rank_title, $rank_img, $rank_img_src);
@@ -339,7 +339,7 @@ class mcp_warn
 	*/
 	function mcp_warn_user_view($action)
 	{
-		global $phpEx, $phpbb_root_path, $config, $module;
+		global $phpbb_root_path, $config, $module;
 		global $template, $db, $user, $auth;
 
 		$user_id = request_var('u', 0);
@@ -401,7 +401,7 @@ class mcp_warn
 			{
 				$msg = $user->lang['FORM_INVALID'];
 			}
-			$redirect = append_sid("{$phpbb_root_path}mcp.$phpEx", "i=notes&amp;mode=user_notes&amp;u=$user_id");
+			$redirect = append_sid("{$phpbb_root_path}mcp.php", "i=notes&amp;mode=user_notes&amp;u=$user_id");
 			meta_refresh(2, $redirect);
 			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
@@ -409,7 +409,7 @@ class mcp_warn
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_display.php');
 		}
 
 		get_user_rank($user_row['user_rank'], $user_row['user_posts'], $rank_title, $rank_img, $rank_img_src);
@@ -450,7 +450,7 @@ class mcp_warn
 	*/
 	function mcp_warn_edit_view($action)
 	{
-		global $phpEx, $phpbb_root_path, $config;
+		global $phpbb_root_path, $config;
 		global $template, $db, $user, $auth;
 
 		$warning_id = request_var('warning_id', 0);
@@ -509,8 +509,8 @@ class mcp_warn
 				$msg = $user->lang['FORM_INVALID'];
 			}
 			$redirect = ($post_id && $post_row)
-				? append_sid("{$phpbb_root_path}viewtopic.$phpEx", "p={$post_id}#p{$post_id}")
-				: append_sid("{$phpbb_root_path}mcp.$phpEx", "i=notes&amp;mode=user_notes&amp;u=$user_id");
+				? append_sid("{$phpbb_root_path}viewtopic.php", "p={$post_id}#p{$post_id}")
+				: append_sid("{$phpbb_root_path}mcp.php", "i=notes&amp;mode=user_notes&amp;u=$user_id");
 			meta_refresh(2, $redirect);
 			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
@@ -526,7 +526,7 @@ class mcp_warn
 			// Second parse bbcode here
 			if ($post_row['bbcode_bitfield'])
 			{
-				include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/bbcode.php');
 
 				$bbcode = new bbcode($post_row['bbcode_bitfield']);
 				$bbcode->bbcode_second_pass($message, $post_row['bbcode_uid'], $post_row['bbcode_bitfield'], $post_row['post_time']);
@@ -539,7 +539,7 @@ class mcp_warn
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_display.php');
 		}
 
 		$rank_title = $rank_img = '';
@@ -578,7 +578,7 @@ class mcp_warn
 */
 function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warning_days = '', $warning_type = 'warning')
 {
-	global $phpEx, $phpbb_root_path, $config;
+	global $phpbb_root_path, $config;
 	global $template, $db, $user, $auth;
 
 	if (!is_numeric($warning_days))
@@ -595,11 +595,11 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warnin
 
 	if ($send_pm)
 	{
-		include_once($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/functions_privmsgs.php');
+		include_once($phpbb_root_path . 'includes/message_parser.php');
 
-		$user_row['user_lang'] = (file_exists($phpbb_root_path . 'language/' . $user_row['user_lang'] . "/mcp.$phpEx")) ? $user_row['user_lang'] : $config['default_lang'];
-		include($phpbb_root_path . 'language/' . basename($user_row['user_lang']) . "/mcp.$phpEx");
+		$user_row['user_lang'] = (file_exists($phpbb_root_path . 'language/' . $user_row['user_lang'] . "/mcp.php")) ? $user_row['user_lang'] : $config['default_lang'];
+		include($phpbb_root_path . 'language/' . basename($user_row['user_lang']) . "/mcp.php");
 
 		$message_parser = new parse_message();
 

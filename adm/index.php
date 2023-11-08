@@ -11,10 +11,9 @@ define('NEED_SID', true);
 
 // Include files
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-require($phpbb_root_path . 'common.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_module.' . $phpEx);
+require($phpbb_root_path . 'common.php');
+require($phpbb_root_path . 'includes/functions_admin.php');
+require($phpbb_root_path . 'includes/functions_module.php');
 
 // Start session management
 $user->session_begin();
@@ -63,7 +62,7 @@ $module->set_active($module_id, $mode);
 
 // Assign data to the template engine for the list of modules
 // We do this before loading the active module for correct menu display in trigger_error
-$module->assign_tpl_vars(append_sid("{$phpbb_admin_path}index.$phpEx"));
+$module->assign_tpl_vars(append_sid("{$phpbb_admin_path}index.php"));
 
 // Load and execute the relevant module
 $module->load_active();
@@ -83,7 +82,7 @@ adm_page_footer();
 function adm_page_header($page_title)
 {
 	global $config, $db, $user, $template;
-	global $phpbb_root_path, $phpbb_admin_path, $phpEx, $SID, $_SID;
+	global $phpbb_root_path, $phpbb_admin_path, $SID, $_SID;
 
 	if (defined('HEADER_INC'))
 	{
@@ -111,10 +110,10 @@ function adm_page_header($page_title)
 		'ROOT_PATH'				=> $phpbb_admin_path,
 		'PHPBB_ROOT_PATH'		=> $phpbb_root_path,
 
-		'U_LOGOUT'				=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=logout'),
-		'U_ADM_LOGOUT'			=> append_sid("{$phpbb_admin_path}index.$phpEx", 'action=admlogout'),
-		'U_ADM_INDEX'			=> append_sid("{$phpbb_admin_path}index.$phpEx"),
-		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.$phpEx"),
+		'U_LOGOUT'				=> append_sid("{$phpbb_root_path}ucp.php", 'mode=logout'),
+		'U_ADM_LOGOUT'			=> append_sid("{$phpbb_admin_path}index.php", 'action=admlogout'),
+		'U_ADM_INDEX'			=> append_sid("{$phpbb_admin_path}index.php"),
+		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.php"),
 
 		'T_IMAGES_PATH'			=> "{$phpbb_root_path}images/",
 
@@ -149,7 +148,7 @@ function adm_page_header($page_title)
 function adm_page_footer($copyright_html = true)
 {
 	global $db, $config, $template, $user, $auth, $cache;
-	global $starttime, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+	global $starttime, $phpbb_root_path, $phpbb_admin_path;
 
 	// Output page creation time
 	if (defined('DEBUG'))

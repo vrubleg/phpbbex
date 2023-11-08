@@ -20,7 +20,7 @@ class acp_manage_attachments
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpbb_admin_path, $phpbb_root_path;
 
 		$user->add_lang(array('posting', 'viewtopic', 'acp/attachments'));
 
@@ -334,8 +334,8 @@ class acp_manage_attachments
 
 				'S_IN_MESSAGE'		=> $row['in_message'],
 
-				'U_VIEW_TOPIC'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . "#p{$row['post_msg_id']}",
-				'U_FILE'			=> append_sid($phpbb_root_path . 'file.' . $phpEx, 'mode=view&amp;id=' . $row['attach_id']))
+				'U_VIEW_TOPIC'		=> append_sid("{$phpbb_root_path}viewtopic.php", "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . "#p{$row['post_msg_id']}",
+				'U_FILE'			=> append_sid($phpbb_root_path . 'file.php', 'mode=view&amp;id=' . $row['attach_id']))
 			);
 		}
 

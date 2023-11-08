@@ -82,11 +82,9 @@ autoloader::add_path(__DIR__.'/', 'phpbb');
 /**
  * Check if requested page uses a trailing path
  *
- * @param string $phpEx PHP extension
- *
  * @return bool True if trailing path is used, false if not
  */
-function phpbb_has_trailing_path($phpEx)
+function phpbb_has_trailing_path()
 {
 	// Check if path_info is being used
 	if (!empty($_SERVER['PATH_INFO']) || (!empty($_SERVER['ORIG_PATH_INFO']) && $_SERVER['SCRIPT_NAME'] != $_SERVER['ORIG_PATH_INFO']))
@@ -99,7 +97,7 @@ function phpbb_has_trailing_path($phpEx)
 	// to this, any phpBB board inside a directory that has the php extension
 	// appended to its name will stop working, i.e. if the board is at
 	// example.com/phpBB/test.php/ or example.com/test.php/
-	if (preg_match('#^[^?]+\.' . preg_quote($phpEx, '#') . '/#', $_SERVER['REQUEST_URI']))
+	if (preg_match('#^[^?]+\.php/#', $_SERVER['REQUEST_URI']))
 	{
 		return true;
 	}
@@ -108,7 +106,7 @@ function phpbb_has_trailing_path($phpEx)
 }
 
 // Check if trailing path is used
-if (phpbb_has_trailing_path($phpEx))
+if (phpbb_has_trailing_path())
 {
 	http_response_code(404);
 	echo 'Trailing paths are not allowed.';

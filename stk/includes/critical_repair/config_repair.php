@@ -201,7 +201,7 @@ class erk_config_repair
 	function critical_connect_check_db($error_connect, &$error, $dbms_details, $table_prefix, $dbhost, $dbuser, $dbpasswd, $dbname, $dbport, $prefix_may_exist = false, $load_dbal = true, $unicode_check = true)
 	{
 		// Must be globalized here for when including the DB file
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		if ($dbms_details['DRIVER'] != 'mysql')
 		{
