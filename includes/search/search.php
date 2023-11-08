@@ -38,14 +38,14 @@ class search_backend
 	{
 		if (!sizeof($this->ignore_words))
 		{
-			global $user, $phpEx;
+			global $user;
 
 			$words = array();
 
-			if (file_exists("{$user->lang_path}{$user->lang_name}/search_ignore_words.$phpEx"))
+			if (file_exists("{$user->lang_path}{$user->lang_name}/search_ignore_words.php"))
 			{
 				// include the file containing ignore words
-				include("{$user->lang_path}{$user->lang_name}/search_ignore_words.$phpEx");
+				include("{$user->lang_path}{$user->lang_name}/search_ignore_words.php");
 			}
 
 			$this->ignore_words = $words;
@@ -60,14 +60,14 @@ class search_backend
 	{
 		if (!sizeof($this->match_synonym))
 		{
-			global $user, $phpEx;
+			global $user;
 
 			$synonyms = array();
 
-			if (file_exists("{$user->lang_path}{$user->lang_name}/search_synonyms.$phpEx"))
+			if (file_exists("{$user->lang_path}{$user->lang_name}/search_synonyms.php"))
 			{
 				// include the file containing synonyms
-				include("{$user->lang_path}{$user->lang_name}/search_synonyms.$phpEx");
+				include("{$user->lang_path}{$user->lang_name}/search_synonyms.php");
 			}
 
 			$this->match_synonym = array_keys($synonyms);

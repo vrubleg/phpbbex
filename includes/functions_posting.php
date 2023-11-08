@@ -16,7 +16,7 @@ if (!defined('IN_PHPBB'))
 function generate_smilies($mode, $forum_id)
 {
 	global $auth, $db, $user, $config, $template;
-	global $phpEx, $phpbb_root_path;
+	global $phpbb_root_path;
 
 	$start = request_var('start', 0);
 
@@ -57,7 +57,7 @@ function generate_smilies($mode, $forum_id)
 		);
 
 		$template->assign_var('PAGINATION',
-			generate_pagination(append_sid("{$phpbb_root_path}posting.$phpEx", 'mode=smilies&amp;f=' . $forum_id),
+			generate_pagination(append_sid("{$phpbb_root_path}posting.php", 'mode=smilies&amp;f=' . $forum_id),
 				$smiley_count, $config['smilies_per_page'], $start, true)
 		);
 	}
@@ -125,7 +125,7 @@ function generate_smilies($mode, $forum_id)
 	{
 		$template->assign_vars(array(
 			'S_SHOW_SMILEY_LINK' 	=> true,
-			'U_MORE_SMILIES' 		=> append_sid("{$phpbb_root_path}posting.$phpEx", 'mode=smilies&amp;f=' . $forum_id))
+			'U_MORE_SMILIES' 		=> append_sid("{$phpbb_root_path}posting.php", 'mode=smilies&amp;f=' . $forum_id))
 		);
 	}
 
@@ -375,13 +375,13 @@ function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 function upload_attachment($form_name, $forum_id, $local = false, $local_storage = '', $is_message = false, $local_filedata = false)
 {
 	global $auth, $user, $config, $db, $cache;
-	global $phpbb_root_path, $phpEx;
+	global $phpbb_root_path;
 
 	$filedata = array(
 		'error'	=> array()
 	);
 
-	include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
+	include_once($phpbb_root_path . 'includes/functions_upload.php');
 	$upload = new fileupload();
 
 	if ($config['check_attachment_content'] && isset($config['mime_triggers']))
@@ -793,7 +793,7 @@ function posting_gen_inline_attachments(&$attachment_data)
 */
 function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_attach_box = true)
 {
-	global $template, $config, $phpbb_root_path, $phpEx, $user, $auth;
+	global $template, $config, $phpbb_root_path, $user, $auth;
 
 	// Some default template variables
 	$template->assign_vars(array(
@@ -817,7 +817,7 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 				$hidden .= '<input type="hidden" name="attachment_data[' . $count . '][' . $key . ']" value="' . $value . '" />';
 			}
 
-			$download_link = append_sid("{$phpbb_root_path}file.$phpEx", 'mode=view&amp;id=' . (int) $attach_row['attach_id'], true, ($attach_row['is_orphan']) ? $user->session_id : false);
+			$download_link = append_sid("{$phpbb_root_path}file.php", 'mode=view&amp;id=' . (int) $attach_row['attach_id'], true, ($attach_row['is_orphan']) ? $user->session_id : false);
 
 			$template->assign_block_vars('attach_row', array(
 				'FILENAME'			=> utf8_basename($attach_row['real_filename']),
@@ -912,7 +912,7 @@ function get_allowed_extension_sizes($forum_id = false)
 function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $msg_id = 0)
 {
 	global $user, $db, $template, $auth;
-	global $phpbb_root_path, $phpEx;
+	global $phpbb_root_path;
 
 	$topic_ids = $forum_ids = $draft_rows = array();
 
@@ -985,24 +985,24 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 			$topic_forum_id = ($topic_rows[$draft['topic_id']]['forum_id']) ? $topic_rows[$draft['topic_id']]['forum_id'] : $forum_id;
 
 			$link_topic = true;
-			$view_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $draft['topic_id']);
+			$view_url = append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $draft['topic_id']);
 			$title = $topic_rows[$draft['topic_id']]['topic_title'];
 
-			$insert_url = append_sid("{$phpbb_root_path}posting.$phpEx", 'f=' . $topic_forum_id . '&amp;t=' . $draft['topic_id'] . '&amp;mode=reply&amp;d=' . $draft['draft_id']);
+			$insert_url = append_sid("{$phpbb_root_path}posting.php", 'f=' . $topic_forum_id . '&amp;t=' . $draft['topic_id'] . '&amp;mode=reply&amp;d=' . $draft['draft_id']);
 		}
 		else if ($draft['forum_id'] && $auth->acl_get('f_read', $draft['forum_id']))
 		{
 			$link_forum = true;
-			$view_url = append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $draft['forum_id']);
+			$view_url = append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $draft['forum_id']);
 			$title = $draft['forum_name'];
 
-			$insert_url = append_sid("{$phpbb_root_path}posting.$phpEx", 'f=' . $draft['forum_id'] . '&amp;mode=post&amp;d=' . $draft['draft_id']);
+			$insert_url = append_sid("{$phpbb_root_path}posting.php", 'f=' . $draft['forum_id'] . '&amp;mode=post&amp;d=' . $draft['draft_id']);
 		}
 		else
 		{
 			// Either display as PM draft if forum_id and topic_id are empty or if access to the forums has been denied afterwards...
 			$link_pm = true;
-			$insert_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=$id&amp;mode=compose&amp;d={$draft['draft_id']}" . (($pm_action) ? "&amp;action=$pm_action" : '') . (($msg_id) ? "&amp;p=$msg_id" : ''));
+			$insert_url = append_sid("{$phpbb_root_path}ucp.php", "i=$id&amp;mode=compose&amp;d={$draft['draft_id']}" . (($pm_action) ? "&amp;action=$pm_action" : '') . (($msg_id) ? "&amp;p=$msg_id" : ''));
 		}
 
 		$template->assign_block_vars('draftrow', array(
@@ -1027,7 +1027,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id = 0, $show_quote_button = true)
 {
 	global $user, $auth, $db, $template, $bbcode, $cache;
-	global $config, $phpbb_root_path, $phpEx;
+	global $config, $phpbb_root_path;
 
 	// Go ahead and pull all data for this topic
 	$sql = 'SELECT p.post_id
@@ -1099,7 +1099,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 	// Instantiate BBCode class
 	if (!isset($bbcode) && $bbcode_bitfield !== '')
 	{
-		include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/bbcode.php');
 		$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 	}
 
@@ -1166,7 +1166,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 		$post_subject = censor_text($post_subject);
 
 		$post_anchor = ($mode == 'post_review') ? 'ppr' . $row['post_id'] : 'pr' . $row['post_id'];
-		$u_show_post = append_sid($phpbb_root_path . 'viewtopic.' . $phpEx, "t=$topic_id&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}");
+		$u_show_post = append_sid($phpbb_root_path . 'viewtopic.php', "t=$topic_id&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}");
 
 		$template->assign_block_vars($mode . '_row', array(
 			'POST_AUTHOR_FULL'		=> get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -1185,8 +1185,8 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 			'MESSAGE'			=> $message,
 			'DECODED_MESSAGE'	=> $decoded_message,
 			'POST_ID'			=> $row['post_id'],
-			'U_MINI_POST'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['post_id']) . '#p' . $row['post_id'],
-			'U_MCP_DETAILS'		=> ($auth->acl_get('m_info', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=main&amp;mode=post_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
+			'U_MINI_POST'		=> append_sid("{$phpbb_root_path}viewtopic.php", 'p=' . $row['post_id']) . '#p' . $row['post_id'],
+			'U_MCP_DETAILS'		=> ($auth->acl_get('m_info', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.php", 'i=main&amp;mode=post_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
 			'POSTER_QUOTE'		=> ($show_quote_button && $auth->acl_get('f_reply', $forum_id)) ? addslashes(get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username'])) : '')
 		);
 
@@ -1217,7 +1217,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 */
 function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id, $topic_id, $post_id, $author_name = '')
 {
-	global $db, $user, $config, $phpbb_root_path, $phpEx, $auth;
+	global $db, $user, $config, $phpbb_root_path, $auth;
 
 	$topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
 	$forum_notification = ($mode == 'post') ? true : false;
@@ -1238,7 +1238,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	// Exclude guests, current user and banned users from notifications
 	if (!function_exists('phpbb_get_banned_user_ids'))
 	{
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include($phpbb_root_path . 'includes/functions_user.php');
 	}
 	$sql_ignore_users = phpbb_get_banned_user_ids();
 	$sql_ignore_users[ANONYMOUS] = ANONYMOUS;
@@ -1356,7 +1356,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	// Now, we are able to really send out notifications
 	if (sizeof($msg_users))
 	{
-		include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/functions_messenger.php');
 		$messenger = new messenger();
 
 		$msg_list_ary = array();
@@ -1388,11 +1388,11 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 					'FORUM_NAME'	=> htmlspecialchars_decode($forum_name),
 					'AUTHOR_NAME'	=> htmlspecialchars_decode($author_name),
 
-					'U_FORUM'				=> generate_board_url() . "/viewforum.$phpEx?f=$forum_id",
-					'U_TOPIC'				=> generate_board_url() . "/viewtopic.$phpEx?t=$topic_id",
-					'U_NEWEST_POST'			=> generate_board_url() . "/viewtopic.$phpEx?t=$topic_id&p=$post_id&e=$post_id",
-					'U_STOP_WATCHING_TOPIC'	=> generate_board_url() . "/viewtopic.$phpEx?uid={$addr['user_id']}&t=$topic_id&unwatch=topic",
-					'U_STOP_WATCHING_FORUM'	=> generate_board_url() . "/viewforum.$phpEx?uid={$addr['user_id']}&f=$forum_id&unwatch=forum",
+					'U_FORUM'				=> generate_board_url() . "/viewforum.php?f=$forum_id",
+					'U_TOPIC'				=> generate_board_url() . "/viewtopic.php?t=$topic_id",
+					'U_NEWEST_POST'			=> generate_board_url() . "/viewtopic.php?t=$topic_id&p=$post_id&e=$post_id",
+					'U_STOP_WATCHING_TOPIC'	=> generate_board_url() . "/viewtopic.php?uid={$addr['user_id']}&t=$topic_id&unwatch=topic",
+					'U_STOP_WATCHING_FORUM'	=> generate_board_url() . "/viewforum.php?uid={$addr['user_id']}&f=$forum_id&unwatch=forum",
 				));
 
 				$messenger->send($addr['method']);
@@ -1454,7 +1454,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 function delete_post($forum_id, $topic_id, $post_id, &$data)
 {
 	global $db, $user, $auth;
-	global $config, $phpEx, $phpbb_root_path;
+	global $config, $phpbb_root_path;
 
 	// Specify our post mode
 	$post_mode = 'delete';
@@ -1473,7 +1473,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 	$sql_data = array();
 	$next_post_id = false;
 
-	include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+	include_once($phpbb_root_path . 'includes/functions_admin.php');
 
 	$db->sql_transaction('begin');
 
@@ -1713,7 +1713,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 */
 function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true, $update_search_index = true)
 {
-	global $db, $auth, $user, $config, $phpEx, $template, $phpbb_root_path;
+	global $db, $auth, $user, $config, $template, $phpbb_root_path;
 
 	// We do not handle erasing posts here
 	if ($mode == 'delete')
@@ -2456,14 +2456,14 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 		// Select the search method and do some additional checks to ensure it can actually be utilised
 		$search_type = basename($config['search_type']);
 
-		if (!file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.' . $phpEx))
+		if (!file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.php'))
 		{
 			trigger_error('NO_SUCH_SEARCH_MODULE');
 		}
 
 		if (!class_exists($search_type))
 		{
-			include("{$phpbb_root_path}includes/search/$search_type.$phpEx");
+			include("{$phpbb_root_path}includes/search/$search_type.php");
 		}
 
 		$error = false;
@@ -2563,11 +2563,11 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 	if (!$params)
 	{
-		return append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $data['forum_id']);
+		return append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $data['forum_id']);
 	}
 	else
 	{
-		return append_sid("{$phpbb_root_path}viewtopic.$phpEx", $params) . $add_anchor;
+		return append_sid("{$phpbb_root_path}viewtopic.php", $params) . $add_anchor;
 	}
 }
 
@@ -2587,7 +2587,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 */
 function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 {
-	global $config, $db, $user, $phpEx, $phpbb_root_path;
+	global $config, $db, $user, $phpbb_root_path;
 
 	if ($bump_time === false)
 	{
@@ -2668,7 +2668,7 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 
 	add_log('mod', $forum_id, $topic_id, 'LOG_BUMP_TOPIC', $post_data['topic_title']);
 
-	$url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id&amp;p={$post_data['topic_last_post_id']}") . "#p{$post_data['topic_last_post_id']}";
+	$url = append_sid("{$phpbb_root_path}viewtopic.php", "t=$topic_id&amp;p={$post_data['topic_last_post_id']}") . "#p{$post_data['topic_last_post_id']}";
 
 	return $url;
 }

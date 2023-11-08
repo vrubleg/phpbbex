@@ -22,7 +22,7 @@ class ucp_attachments
 
 	function main($id, $mode)
 	{
-		global $template, $user, $db, $config, $phpEx, $phpbb_root_path;
+		global $template, $user, $db, $config, $phpbb_root_path;
 
 		$start		= request_var('start', 0);
 		$sort_key	= request_var('sk', 'a');
@@ -65,7 +65,7 @@ class ucp_attachments
 			{
 				if (!function_exists('delete_attachments'))
 				{
-					include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+					include_once($phpbb_root_path . 'includes/functions_admin.php');
 				}
 
 				delete_attachments('attach', $delete_ids);
@@ -133,11 +133,11 @@ class ucp_attachments
 			{
 				if ($row['in_message'])
 				{
-					$view_topic = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=pm&amp;p={$row['post_msg_id']}");
+					$view_topic = append_sid("{$phpbb_root_path}ucp.php", "i=pm&amp;p={$row['post_msg_id']}");
 				}
 				else
 				{
-					$view_topic = append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . "#p{$row['post_msg_id']}";
+					$view_topic = append_sid("{$phpbb_root_path}viewtopic.php", "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . "#p{$row['post_msg_id']}";
 				}
 
 				$template->assign_block_vars('attachrow', array(
@@ -156,7 +156,7 @@ class ucp_attachments
 
 					'S_IN_MESSAGE'		=> $row['in_message'],
 
-					'U_VIEW_ATTACHMENT'	=> append_sid("{$phpbb_root_path}file.$phpEx", 'id=' . $row['attach_id']),
+					'U_VIEW_ATTACHMENT'	=> append_sid("{$phpbb_root_path}file.php", 'id=' . $row['attach_id']),
 					'U_VIEW_TOPIC'		=> $view_topic)
 				);
 

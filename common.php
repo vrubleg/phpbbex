@@ -10,17 +10,17 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-require($phpbb_root_path . 'includes/startup.' . $phpEx);
+require($phpbb_root_path . 'includes/startup.php');
 
-if (file_exists($phpbb_root_path . 'config.' . $phpEx))
+if (file_exists($phpbb_root_path . 'config.php'))
 {
-	require($phpbb_root_path . 'config.' . $phpEx);
+	require($phpbb_root_path . 'config.php');
 }
 
 if (!defined('PHPBB_INSTALLED'))
 {
 	// Redirect the user to the installer.
-	$url = (HTTP_SECURE ? 'https://' : 'http://') . HTTP_HOST . (HTTP_PORT ? ':' . HTTP_PORT : '') . HTTP_ROOT . 'install/index.' . $phpEx;
+	$url = (HTTP_SECURE ? 'https://' : 'http://') . HTTP_HOST . (HTTP_PORT ? ':' . HTTP_PORT : '') . HTTP_ROOT . 'install/index.php';
 	header('Location: ' . $url);
 	exit;
 }
@@ -35,18 +35,18 @@ if (defined('DEBUG_EXTRA'))
 }
 
 // Include files
-require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
-require($phpbb_root_path . 'includes/cache.' . $phpEx);
-require($phpbb_root_path . 'includes/template.' . $phpEx);
-require($phpbb_root_path . 'includes/session.' . $phpEx);
-require($phpbb_root_path . 'includes/auth.' . $phpEx);
+require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
+require($phpbb_root_path . 'includes/cache.php');
+require($phpbb_root_path . 'includes/template.php');
+require($phpbb_root_path . 'includes/session.php');
+require($phpbb_root_path . 'includes/auth.php');
 
-require($phpbb_root_path . 'includes/functions.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
+require($phpbb_root_path . 'includes/functions.php');
+require($phpbb_root_path . 'includes/functions_content.php');
 
-require($phpbb_root_path . 'includes/constants.' . $phpEx);
-require($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
-require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
+require($phpbb_root_path . 'includes/constants.php');
+require($phpbb_root_path . 'includes/db/mysql.php');
+require($phpbb_root_path . 'includes/utf/utf_tools.php');
 
 // Set PHP error handler to ours
 set_error_handler(function ($errno, $errstr, $errfile, $errline)

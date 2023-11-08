@@ -21,7 +21,6 @@ define('IN_LOGIN', true);
 
 // Make that phpBB itself understands out paths
 $phpbb_root_path = PHPBB_ROOT_PATH;
-$phpEx = 'php';
 
 // Prepare some vars
 $stk_no_error = false;

@@ -14,9 +14,9 @@ if (!defined('IN_INSTALL'))
 if (!empty($setmodules))
 {
 	// If phpBB is already installed we do not include this module
-	if (@file_exists($phpbb_root_path . 'config.' . $phpEx) && !file_exists($phpbb_root_path . 'cache/install_lock'))
+	if (@file_exists($phpbb_root_path . 'config.php') && !file_exists($phpbb_root_path . 'cache/install_lock'))
 	{
-		include_once($phpbb_root_path . 'config.' . $phpEx);
+		include_once($phpbb_root_path . 'config.php');
 
 		if (defined('PHPBB_INSTALLED'))
 		{
@@ -27,7 +27,7 @@ if (!empty($setmodules))
 	$module[] = array(
 		'module_type'		=> 'install',
 		'module_title'		=> 'INSTALL',
-		'module_filename'	=> substr(basename(__FILE__), 0, -strlen($phpEx)-1),
+		'module_filename'	=> substr(basename(__FILE__), 0, -4),
 		'module_order'		=> 10,
 		'module_subs'		=> '',
 		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'DATABASE', 'ADMINISTRATOR', 'CONFIG_FILE', 'ADVANCED', 'CREATE_TABLE', 'FINAL'),
@@ -120,7 +120,7 @@ class install_install extends module
 	*/
 	function check_server_requirements($mode, $sub)
 	{
-		global $lang, $template, $phpbb_root_path, $phpEx, $language;
+		global $lang, $template, $phpbb_root_path, $language;
 
 		$this->page_title = $lang['STAGE_REQUIREMENTS'];
 
@@ -437,7 +437,7 @@ class install_install extends module
 			'LEGEND_EXPLAIN'	=> $lang['FILES_OPTIONAL_EXPLAIN'],
 		));
 
-		$directories = array('config.' . $phpEx, 'images/avatars/upload/');
+		$directories = array('config.php', 'images/avatars/upload/');
 
 		foreach ($directories as $dir)
 		{
@@ -483,7 +483,7 @@ class install_install extends module
 	*/
 	function obtain_database_settings($mode, $sub)
 	{
-		global $lang, $template, $phpEx;
+		global $lang, $template;
 
 		$this->page_title = $lang['STAGE_DATABASE'];
 
@@ -623,7 +623,7 @@ class install_install extends module
 	*/
 	function obtain_admin_settings($mode, $sub)
 	{
-		global $lang, $template, $phpEx;
+		global $lang, $template;
 
 		$this->page_title = $lang['STAGE_ADMINISTRATOR'];
 
@@ -634,7 +634,7 @@ class install_install extends module
 		{
 			// Someone's been silly and tried calling this page direct
 			// So we send them back to the start to do it again properly
-			$this->p_master->redirect("index.$phpEx?mode=install");
+			$this->p_master->redirect("index.php?mode=install");
 		}
 
 		$s_hidden_fields = '';
@@ -790,7 +790,7 @@ class install_install extends module
 	*/
 	function create_config_file($mode, $sub)
 	{
-		global $lang, $template, $phpbb_root_path, $phpEx;
+		global $lang, $template, $phpbb_root_path;
 
 		$this->page_title = $lang['STAGE_CONFIG_FILE'];
 
@@ -801,7 +801,7 @@ class install_install extends module
 		{
 			// Someone's been silly and tried calling this page direct
 			// So we send them back to the start to do it again properly
-			$this->p_master->redirect("index.$phpEx?mode=install");
+			$this->p_master->redirect("index.php?mode=install");
 		}
 
 		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
@@ -823,12 +823,12 @@ class install_install extends module
 		$config_data = phpbb_create_config_file_data($data);
 
 		// Attempt to write out the config file directly. If it works, this is the easiest way to do it ...
-		if ((file_exists($phpbb_root_path . 'config.' . $phpEx) && phpbb_is_writable($phpbb_root_path . 'config.' . $phpEx)) || phpbb_is_writable($phpbb_root_path))
+		if ((file_exists($phpbb_root_path . 'config.php') && phpbb_is_writable($phpbb_root_path . 'config.php')) || phpbb_is_writable($phpbb_root_path))
 		{
 			// Assume it will work ... if nothing goes wrong below
 			$written = true;
 
-			if (!($fp = @fopen($phpbb_root_path . 'config.' . $phpEx, 'w')))
+			if (!($fp = @fopen($phpbb_root_path . 'config.php', 'w')))
 			{
 				// Something went wrong ... so let's try another method
 				$written = false;
@@ -845,7 +845,7 @@ class install_install extends module
 			if ($written)
 			{
 				// We may revert back to chmod() if we see problems with users not able to change their config.php file directly
-				phpbb_chmod($phpbb_root_path . 'config.' . $phpEx, CHMOD_READ);
+				phpbb_chmod($phpbb_root_path . 'config.php', CHMOD_READ);
 			}
 		}
 
@@ -855,7 +855,7 @@ class install_install extends module
 			// Note that all we check is that the file has _something_ in it
 			// We don't compare the contents exactly - if they can't upload
 			// a single file correctly, it's likely they will have other problems....
-			if (filesize($phpbb_root_path . 'config.' . $phpEx) > 10)
+			if (filesize($phpbb_root_path . 'config.php') > 10)
 			{
 				$written = true;
 			}
@@ -879,8 +879,8 @@ class install_install extends module
 			if (isset($_POST['dlconfig']))
 			{
 				// They want a copy of the file to download, so send the relevant headers and dump out the data
-				header("Content-Type: text/x-delimtext; name=\"config.$phpEx\"");
-				header("Content-disposition: attachment; filename=config.$phpEx");
+				header("Content-Type: text/x-delimtext; name=\"config.php\"");
+				header("Content-disposition: attachment; filename=config.php");
 				echo $config_data;
 				exit;
 			}
@@ -916,7 +916,7 @@ class install_install extends module
 	*/
 	function obtain_advanced_settings($mode, $sub)
 	{
-		global $lang, $template, $phpEx;
+		global $lang, $template;
 
 		$this->page_title = $lang['STAGE_ADVANCED'];
 
@@ -927,7 +927,7 @@ class install_install extends module
 		{
 			// Someone's been silly and tried calling this page direct
 			// So we send them back to the start to do it again properly
-			$this->p_master->redirect("index.$phpEx?mode=install");
+			$this->p_master->redirect("index.php?mode=install");
 		}
 
 		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
@@ -991,7 +991,7 @@ class install_install extends module
 	*/
 	function load_schema($mode, $sub)
 	{
-		global $db, $lang, $template, $phpbb_root_path, $phpEx;
+		global $db, $lang, $template, $phpbb_root_path;
 
 		$this->page_title = $lang['STAGE_CREATE_TABLE'];
 		$s_hidden_fields = '';
@@ -1003,7 +1003,7 @@ class install_install extends module
 		{
 			// Someone's been silly and tried calling this page direct
 			// So we send them back to the start to do it again properly
-			$this->p_master->redirect("index.$phpEx?mode=install");
+			$this->p_master->redirect("index.php?mode=install");
 		}
 
 		// If we get here and the extension isn't loaded it should be safe to just go ahead and load it
@@ -1012,11 +1012,11 @@ class install_install extends module
 		if (!isset($available_dbms[$data['dbms']]))
 		{
 			// Someone's been silly and tried providing a non-existant dbms
-			$this->p_master->redirect("index.$phpEx?mode=install");
+			$this->p_master->redirect("index.php?mode=install");
 		}
 
 		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
+		include($phpbb_root_path . 'includes/db/mysql.php');
 
 		// Instantiate the database
 		$db = new dbal_mysql();
@@ -1200,7 +1200,7 @@ class install_install extends module
 	*/
 	function build_search_index($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path, $phpEx, $config;
+		global $db, $lang, $phpbb_root_path, $config;
 
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
@@ -1212,11 +1212,11 @@ class install_install extends module
 		if (!isset($available_dbms[$data['dbms']]))
 		{
 			// Someone's been silly and tried providing a non-existant dbms
-			$this->p_master->redirect("index.$phpEx?mode=install");
+			$this->p_master->redirect("index.php?mode=install");
 		}
 
 		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
+		include($phpbb_root_path . 'includes/db/mysql.php');
 
 		// Instantiate the database
 		$db = new dbal_mysql();
@@ -1225,8 +1225,8 @@ class install_install extends module
 		// NOTE: trigger_error does not work here.
 		$db->sql_return_on_error(true);
 
-		include_once($phpbb_root_path . 'includes/constants.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/search/fulltext_native.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/constants.php');
+		include_once($phpbb_root_path . 'includes/search/fulltext_native.php');
 
 		// Fill the config array - it is needed by those functions we call
 		$sql = 'SELECT *
@@ -1259,9 +1259,9 @@ class install_install extends module
 	*/
 	function add_modules($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path, $phpEx;
+		global $db, $lang, $phpbb_root_path;
 
-		include_once($phpbb_root_path . 'includes/acp/acp_modules.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/acp/acp_modules.php');
 
 		$_module = new acp_modules();
 		$module_classes = array('acp', 'mcp', 'ucp');
@@ -1532,7 +1532,7 @@ class install_install extends module
 	*/
 	function add_language($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path, $phpEx;
+		global $db, $lang, $phpbb_root_path;
 
 		$dir = @opendir($phpbb_root_path . 'language');
 
@@ -1645,7 +1645,7 @@ class install_install extends module
 	*/
 	function add_bots($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path, $phpEx, $config;
+		global $db, $lang, $phpbb_root_path, $config;
 
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
@@ -1677,7 +1677,7 @@ class install_install extends module
 
 		if (!function_exists('user_add'))
 		{
-			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_user.php');
 		}
 
 		foreach ($this->bot_list as $bot_name => $bot_agent)
@@ -1726,7 +1726,7 @@ class install_install extends module
 	*/
 	function email_admin($mode, $sub)
 	{
-		global $auth, $config, $db, $lang, $template, $user, $phpbb_root_path, $phpEx;
+		global $auth, $config, $db, $lang, $template, $user, $phpbb_root_path;
 
 		$this->page_title = $lang['STAGE_FINAL'];
 
@@ -1754,7 +1754,7 @@ class install_install extends module
 
 		if ($config['email_enable'])
 		{
-			include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 			$messenger = new messenger(false);
 
@@ -1777,9 +1777,9 @@ class install_install extends module
 
 		$template->assign_vars(array(
 			'TITLE'		=> $lang['INSTALL_CONGRATS'],
-			'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['phpbbex_version'], append_sid($phpbb_root_path . 'install/index.' . $phpEx, 'mode=convert&amp;language=' . $data['language']), '../docs/README.html'),
+			'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['phpbbex_version'], append_sid($phpbb_root_path . 'install/index.php', 'mode=convert&amp;language=' . $data['language']), '../docs/README.html'),
 			'L_SUBMIT'	=> $lang['INSTALL_LOGIN'],
-			'U_ACTION'	=> append_sid($phpbb_root_path . 'adm/index.' . $phpEx),
+			'U_ACTION'	=> append_sid($phpbb_root_path . 'adm/index.php'),
 		));
 	}
 

@@ -15,7 +15,7 @@ if (!defined('IN_PHPBB'))
 */
 function mcp_front_view($id, $mode, $action)
 {
-	global $phpEx, $phpbb_root_path, $config;
+	global $phpbb_root_path, $config;
 	global $template, $db, $user, $auth, $module;
 
 	// Latest 5 unapproved
@@ -92,11 +92,11 @@ function mcp_front_view($id, $mode, $action)
 					}
 
 					$template->assign_block_vars('unapproved', array(
-						'U_POST_DETAILS'	=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue&amp;mode=approve_details&amp;f=' . $row['forum_id'] . '&amp;p=' . $row['post_id']),
-						'U_MCP_FORUM'		=> (!$global_topic) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=main&amp;mode=forum_view&amp;f=' . $row['forum_id']) : '',
-						'U_MCP_TOPIC'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=main&amp;mode=topic_view&amp;f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id']),
-						'U_FORUM'			=> (!$global_topic) ? append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']) : '',
-						'U_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $row['topic_id']),
+						'U_POST_DETAILS'	=> append_sid("{$phpbb_root_path}mcp.php", 'i=queue&amp;mode=approve_details&amp;f=' . $row['forum_id'] . '&amp;p=' . $row['post_id']),
+						'U_MCP_FORUM'		=> (!$global_topic) ? append_sid("{$phpbb_root_path}mcp.php", 'i=main&amp;mode=forum_view&amp;f=' . $row['forum_id']) : '',
+						'U_MCP_TOPIC'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=main&amp;mode=topic_view&amp;f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id']),
+						'U_FORUM'			=> (!$global_topic) ? append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $row['forum_id']) : '',
+						'U_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $row['topic_id']),
 
 						'AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour']),
 						'AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour']),
@@ -114,12 +114,12 @@ function mcp_front_view($id, $mode, $action)
 			}
 
 			$s_hidden_fields = build_hidden_fields(array(
-				'redirect'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=main' . (($forum_id) ? '&amp;f=' . $forum_id : ''))
+				'redirect'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=main' . (($forum_id) ? '&amp;f=' . $forum_id : ''))
 			));
 
 			$template->assign_vars(array(
 				'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
-				'S_MCP_QUEUE_ACTION'	=> append_sid("{$phpbb_root_path}mcp.$phpEx", "i=queue"),
+				'S_MCP_QUEUE_ACTION'	=> append_sid("{$phpbb_root_path}mcp.php", "i=queue"),
 			));
 
 			if ($total == 0)
@@ -202,11 +202,11 @@ function mcp_front_view($id, $mode, $action)
 					}
 
 					$template->assign_block_vars('report', array(
-						'U_POST_DETAILS'	=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'f=' . $row['forum_id'] . '&amp;p=' . $row['post_id'] . "&amp;i=reports&amp;mode=report_details"),
-						'U_MCP_FORUM'		=> (!$global_topic) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'f=' . $row['forum_id'] . "&amp;i=$id&amp;mode=forum_view") : '',
-						'U_MCP_TOPIC'		=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id'] . "&amp;i=$id&amp;mode=topic_view"),
-						'U_FORUM'			=> (!$global_topic) ? append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']) : '',
-						'U_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 't=' . $row['topic_id']),
+						'U_POST_DETAILS'	=> append_sid("{$phpbb_root_path}mcp.php", 'f=' . $row['forum_id'] . '&amp;p=' . $row['post_id'] . "&amp;i=reports&amp;mode=report_details"),
+						'U_MCP_FORUM'		=> (!$global_topic) ? append_sid("{$phpbb_root_path}mcp.php", 'f=' . $row['forum_id'] . "&amp;i=$id&amp;mode=forum_view") : '',
+						'U_MCP_TOPIC'		=> append_sid("{$phpbb_root_path}mcp.php", 'f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id'] . "&amp;i=$id&amp;mode=topic_view"),
+						'U_FORUM'			=> (!$global_topic) ? append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $row['forum_id']) : '',
+						'U_TOPIC'			=> append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $row['topic_id']),
 
 						'REPORTER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 						'REPORTER'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
@@ -261,7 +261,7 @@ function mcp_front_view($id, $mode, $action)
 
 		if ($total)
 		{
-			include($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_privmsgs.php');
 
 			$sql = $db->sql_build_query('SELECT', array(
 				'SELECT'	=> 'r.report_id, r.report_time, p.msg_id, p.message_subject, p.message_time, p.to_address, p.bcc_address, u.username, u.username_clean, u.user_colour, u.user_id, u2.username as author_name, u2.username_clean as author_name_clean, u2.user_colour as author_colour, u2.user_id as author_id',
@@ -298,7 +298,7 @@ function mcp_front_view($id, $mode, $action)
 				$row = $pm_by_id[$message_id];
 
 				$template->assign_block_vars('pm_report', array(
-					'U_PM_DETAILS'	=> append_sid("{$phpbb_root_path}mcp.$phpEx", 'r=' . $row['report_id'] . "&amp;i=pm_reports&amp;mode=pm_report_details"),
+					'U_PM_DETAILS'	=> append_sid("{$phpbb_root_path}mcp.php", 'r=' . $row['report_id'] . "&amp;i=pm_reports&amp;mode=pm_report_details"),
 
 					'REPORTER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 					'REPORTER'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
@@ -367,6 +367,6 @@ function mcp_front_view($id, $mode, $action)
 		);
 	}
 
-	$template->assign_var('S_MCP_ACTION', append_sid("{$phpbb_root_path}mcp.$phpEx"));
-	make_jumpbox(append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=main&amp;mode=forum_view'), 0, false, 'm_', true);
+	$template->assign_var('S_MCP_ACTION', append_sid("{$phpbb_root_path}mcp.php"));
+	make_jumpbox(append_sid("{$phpbb_root_path}mcp.php", 'i=main&amp;mode=forum_view'), 0, false, 'm_', true);
 }

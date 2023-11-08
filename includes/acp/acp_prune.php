@@ -19,10 +19,10 @@ class acp_prune
 
 	function main($id, $mode)
 	{
-		global $user, $phpEx, $phpbb_admin_path, $phpbb_root_path;
+		global $user, $phpbb_admin_path, $phpbb_root_path;
 
 		$user->add_lang('acp/prune');
-		include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/functions_user.php');
 
 		switch ($mode)
 		{
@@ -46,7 +46,7 @@ class acp_prune
 	function prune_forums($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpbb_root_path, $phpbb_admin_path;
 
 		$all_forums = request_var('all_forums', 0);
 		$forum_id = request_var('f', array(0));
@@ -223,7 +223,7 @@ class acp_prune
 	function prune_users($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpbb_root_path, $phpbb_admin_path;
 
 		$user->add_lang('memberlist');
 
@@ -294,8 +294,8 @@ class acp_prune
 				{
 					$template->assign_block_vars('users', array(
 						'USERNAME'			=> $usernames[$user_id],
-						'U_PROFILE'			=> append_sid($phpbb_root_path . 'memberlist.' . $phpEx, 'mode=viewprofile&amp;u=' . $user_id),
-						'U_USER_ADMIN'		=> ($auth->acl_get('a_user')) ? append_sid("{$phpbb_admin_path}index.$phpEx", 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
+						'U_PROFILE'			=> append_sid($phpbb_root_path . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id),
+						'U_USER_ADMIN'		=> ($auth->acl_get('a_user')) ? append_sid("{$phpbb_admin_path}index.php", 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
 					));
 				}
 
@@ -352,7 +352,7 @@ class acp_prune
 			'S_JOINED_OPTIONS'	=> $s_find_join_time,
 			'S_ACTIVE_OPTIONS'	=> $s_find_active_time,
 			'S_COUNT_OPTIONS'	=> $s_find_count,
-			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser&amp;form=acp_prune&amp;field=users'),
+			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=acp_prune&amp;field=users'),
 		));
 	}
 

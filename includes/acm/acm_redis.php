@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 // Include the abstract base
 if (!class_exists('acm_memory'))
 {
-	require("{$phpbb_root_path}includes/acm/acm_memory.$phpEx");
+	require("{$phpbb_root_path}includes/acm/acm_memory.php");
 }
 
 if (!defined('PHPBB_ACM_REDIS_PORT'))

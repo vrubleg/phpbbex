@@ -20,7 +20,7 @@ class orphaned_posts
 {
 	function display_options()
 	{
-		global $db, $template, $user, $phpbb_root_path, $phpEx;
+		global $db, $template, $user, $phpbb_root_path;
 
 		//
 		// Empty topics
@@ -55,7 +55,7 @@ class orphaned_posts
 				$template->assign_block_vars('topics', array(
 					'FORUM_ID'		=> $row['forum_id'],
 					'FORUM_NAME'	=> $row['forum_name'],
-					'U_FORUM'		=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']),
+					'U_FORUM'		=> append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $row['forum_id']),
 					'TOPIC_ID'		=> $row['topic_id'],
 					'TOPIC_TITLE'	=> $row['topic_title'],
 					'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
@@ -83,11 +83,11 @@ class orphaned_posts
 			$template->assign_block_vars('posts', array(
 				'FORUM_ID'		=> $row['forum_id'],
 				'FORUM_NAME'	=> $row['forum_name'],
-				'U_FORUM'		=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']),
+				'U_FORUM'		=> append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $row['forum_id']),
 				'POST_ID'		=> $row['post_id'],
 				'POST_SUBJECT'	=> $row['post_subject'],
 				'POST_TEXT'		=> $message,
-				'SEARCH_URL'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'keywords=' . $search_keywords . '&amp;terms=all&amp;sf=titleonly&amp;sr=topics&amp;submit=Search', true),
+				'SEARCH_URL'	=> append_sid("{$phpbb_root_path}search.php", 'keywords=' . $search_keywords . '&amp;terms=all&amp;sf=titleonly&amp;sr=topics&amp;submit=Search', true),
 				'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USER_ID'		=> $row['user_id'],
 			));
@@ -110,7 +110,7 @@ class orphaned_posts
 			$template->assign_block_vars('shadows', array(
 				'FORUM_ID'		=> $row['forum_id'],
 				'FORUM_NAME'	=> $row['forum_name'],
-				'U_FORUM'		=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']),
+				'U_FORUM'		=> append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $row['forum_id']),
 				'TOPIC_ID'		=> $row['topic_id'],
 				'TOPIC_TITLE'	=> $row['topic_title'],
 				'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
@@ -163,7 +163,7 @@ class orphaned_posts
 
 				if (!function_exists('delete_topics'))
 				{
-					include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+					include($phpbb_root_path . 'includes/functions_admin.php');
 				}
 
 				$return = delete_topics('topic_id', $topic_ids);
@@ -225,7 +225,7 @@ class orphaned_posts
 
 					if (!function_exists('delete_posts'))
 					{
-						include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+						include($phpbb_root_path . 'includes/functions_admin.php');
 					}
 
 					$return = delete_posts('post_id', $post_ids);

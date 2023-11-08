@@ -7,10 +7,9 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-require($phpbb_root_path . 'includes/startup.' . $phpEx);
-require($phpbb_root_path . 'config.' . $phpEx);
+require($phpbb_root_path . 'includes/startup.php');
+require($phpbb_root_path . 'config.php');
 
 if (!defined('PHPBB_INSTALLED'))
 {
@@ -28,11 +27,11 @@ if (isset($_GET['mtime']))
 	header('Etag: "' . $mtime . '"');
 }
 
-require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
-require($phpbb_root_path . 'includes/cache.' . $phpEx);
-require($phpbb_root_path . 'includes/db/mysql.' . $phpEx);
-require($phpbb_root_path . 'includes/constants.' . $phpEx);
-require($phpbb_root_path . 'includes/functions.' . $phpEx);
+require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
+require($phpbb_root_path . 'includes/cache.php');
+require($phpbb_root_path . 'includes/db/mysql.php');
+require($phpbb_root_path . 'includes/constants.php');
+require($phpbb_root_path . 'includes/functions.php');
 
 $style_id = request_var('id', 0);
 $lang = request_var('lang', '');
@@ -145,7 +144,7 @@ if ($config['load_tplcompile'] || empty($theme['theme_data']))
 
 if ($recache)
 {
-	include_once($phpbb_root_path . 'includes/acp/acp_styles.' . $phpEx);
+	include_once($phpbb_root_path . 'includes/acp/acp_styles.php');
 
 	$theme['theme_data'] = acp_styles::db_theme_data($theme);
 	$theme['theme_mtime'] = $update_time;

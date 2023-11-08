@@ -67,14 +67,12 @@ class acm
 			return;
 		}
 
-		global $phpEx;
-
 		if (!$this->_write('data_global'))
 		{
 			if (!function_exists('phpbb_is_writable'))
 			{
 				global $phpbb_root_path;
-				include($phpbb_root_path . 'includes/functions.' . $phpEx);
+				include($phpbb_root_path . 'includes/functions.php');
 			}
 
 			// Now, this occurred how often? ... phew, just tell the user then...
@@ -85,7 +83,7 @@ class acm
 				exit;
 			}
 
-			die('Fatal: Not able to open ' . $this->cache_dir . 'data_global.' . $phpEx);
+			die('Fatal: Not able to open ' . $this->cache_dir . 'data_global.php');
 			exit;
 		}
 
@@ -97,8 +95,6 @@ class acm
 	*/
 	function tidy()
 	{
-		global $phpEx;
-
 		$dir = @opendir($this->cache_dir);
 
 		if (!$dir)
@@ -135,7 +131,7 @@ class acm
 		}
 		closedir($dir);
 
-		if (file_exists($this->cache_dir . 'data_global.' . $phpEx))
+		if (file_exists($this->cache_dir . 'data_global.php'))
 		{
 			if (!sizeof($this->vars))
 			{
@@ -161,8 +157,6 @@ class acm
 	{
 		if ($var_name[0] == '_')
 		{
-			global $phpEx;
-
 			if (!$this->_exists($var_name))
 			{
 				return false;
@@ -235,8 +229,6 @@ class acm
 	*/
 	function destroy($var_name, $table = '')
 	{
-		global $phpEx;
-
 		if ($var_name == 'sql' && !empty($table))
 		{
 			if (!is_array($table))
@@ -296,7 +288,7 @@ class acm
 
 		if ($var_name[0] == '_')
 		{
-			$this->remove_file($this->cache_dir . 'data' . $var_name . ".$phpEx", true);
+			$this->remove_file($this->cache_dir . 'data' . $var_name . ".php", true);
 		}
 		else if (isset($this->vars[$var_name]))
 		{
@@ -316,8 +308,7 @@ class acm
 	{
 		if ($var_name[0] == '_')
 		{
-			global $phpEx;
-			return file_exists($this->cache_dir . 'data' . $var_name . ".$phpEx");
+			return file_exists($this->cache_dir . 'data' . $var_name . ".php");
 		}
 		else
 		{
@@ -454,9 +445,7 @@ class acm
 	*/
 	function _read($filename)
 	{
-		global $phpEx;
-
-		$file = "{$this->cache_dir}$filename.$phpEx";
+		$file = "{$this->cache_dir}$filename.php";
 
 		$type = substr($filename, 0, strpos($filename, '_'));
 
@@ -636,9 +625,7 @@ class acm
 	*/
 	function _write($filename, $data = null, $expires = 0, $query = '')
 	{
-		global $phpEx;
-
-		$file = "{$this->cache_dir}$filename.$phpEx";
+		$file = "{$this->cache_dir}$filename.php";
 
 		if ($handle = @fopen($file, 'wb'))
 		{
@@ -690,7 +677,7 @@ class acm
 			if (!function_exists('phpbb_chmod'))
 			{
 				global $phpbb_root_path;
-				include($phpbb_root_path . 'includes/functions.' . $phpEx);
+				include($phpbb_root_path . 'includes/functions.php');
 			}
 
 			phpbb_chmod($file, CHMOD_READ | CHMOD_WRITE);
@@ -708,8 +695,8 @@ class acm
 	{
 		if (!function_exists('phpbb_is_writable'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include($phpbb_root_path . 'includes/functions.' . $phpEx);
+			global $phpbb_root_path;
+			include($phpbb_root_path . 'includes/functions.php');
 		}
 
 		if ($check && !phpbb_is_writable($this->cache_dir))

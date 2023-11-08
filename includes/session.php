@@ -144,7 +144,7 @@ class phpbb_session
 	*/
 	function session_begin($update_session_page = true)
 	{
-		global $phpEx, $SID, $_SID, $_EXTRA_URL, $db, $config, $phpbb_root_path;
+		global $SID, $_SID, $_EXTRA_URL, $db, $config, $phpbb_root_path;
 
 		// Give us some basic information
 		$this->time_now				= time();
@@ -254,7 +254,7 @@ class phpbb_session
 		if (defined('NEED_SID') && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
 		{
 			http_response_code(401);
-			redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
+			redirect(append_sid("{$phpbb_root_path}index.php"));
 		}
 
 		// if session id is set
@@ -308,7 +308,7 @@ class phpbb_session
 
 					// Check whether the session is still valid if we have one
 					$method = basename(trim($config['auth_method']));
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'validate_session_' . $method;
 					if (function_exists($method))
@@ -446,7 +446,7 @@ class phpbb_session
 	*/
 	function session_create($user_id = false, $set_admin = false, $persist_login = false, $viewonline = true)
 	{
-		global $SID, $_SID, $db, $config, $cache, $phpbb_root_path, $phpEx;
+		global $SID, $_SID, $db, $config, $cache, $phpbb_root_path;
 
 		$this->data = array();
 
@@ -510,7 +510,7 @@ class phpbb_session
 		}
 
 		$method = basename(trim($config['auth_method']));
-		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 		$method = 'autologin_' . $method;
 		if (function_exists($method))
@@ -838,7 +838,7 @@ class phpbb_session
 	*/
 	function session_kill($new_session = true)
 	{
-		global $SID, $_SID, $db, $config, $phpbb_root_path, $phpEx;
+		global $SID, $_SID, $db, $config, $phpbb_root_path;
 
 		$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
 			WHERE session_id = '" . $db->sql_escape($this->session_id) . "'
@@ -847,7 +847,7 @@ class phpbb_session
 
 		// Allow connecting logout with external auth method logout
 		$method = basename(trim($config['auth_method']));
-		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 		$method = 'logout_' . $method;
 		if (function_exists($method))
@@ -915,7 +915,7 @@ class phpbb_session
 	*/
 	function session_gc()
 	{
-		global $db, $config, $phpbb_root_path, $phpEx;
+		global $db, $config, $phpbb_root_path;
 
 		$batch_size = 10;
 
@@ -977,7 +977,7 @@ class phpbb_session
 			// only called from CRON; should be a safe workaround until the infrastructure gets going
 			if (!class_exists('phpbb_captcha_factory'))
 			{
-				include($phpbb_root_path . "includes/captcha/captcha_factory." . $phpEx);
+				include($phpbb_root_path . 'includes/captcha/captcha_factory.php');
 			}
 			phpbb_captcha_factory::garbage_collect($config['captcha_plugin']);
 
@@ -1138,15 +1138,13 @@ class phpbb_session
 			// We show a login box here to allow founders accessing the board if banned by IP
 			if (defined('IN_LOGIN') && $this->data['user_id'] == ANONYMOUS)
 			{
-				global $phpEx;
-
 				$this->setup('ucp');
 				$this->data['is_registered'] = $this->data['is_bot'] = false;
 
 				// Set as a precaution to allow login_box() handling this case correctly as well as this function not being executed again.
 				define('IN_CHECK_BAN', 1);
 
-				login_box("index.$phpEx");
+				login_box("index.php");
 
 				// The false here is needed, else the user is able to circumvent the ban.
 				$this->session_kill(false);
@@ -1508,11 +1506,11 @@ class phpbb_user extends phpbb_session
 	*/
 	function setup($lang_set = false, $style = false)
 	{
-		global $db, $template, $config, $auth, $phpEx, $phpbb_root_path, $cache;
+		global $db, $template, $config, $auth, $phpbb_root_path, $cache;
 
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
-			$this->lang_name = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang'] . "/common.$phpEx")) ? $this->data['user_lang'] : basename($config['default_lang']);
+			$this->lang_name = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang'] . "/common.php")) ? $this->data['user_lang'] : basename($config['default_lang']);
 			$this->date_format = ($config['override_user_dateformat']) ? $config['default_dateformat'] : $this->data['user_dateformat'];
 			$this->timezone = ($config['override_user_timezone'] ? $config['board_timezone'] : $this->data['user_timezone']) * 3600;
 			$this->dst = ($config['override_user_dst'] ? $config['board_dst'] :$this->data['user_dst']) * 3600;
@@ -1535,7 +1533,7 @@ class phpbb_user extends phpbb_session
 				$lang_allowed = array();
 				while ($row = $db->sql_fetchrow($result))
 				{
-					if (file_exists($phpbb_root_path . 'language/' . $row['lang_dir'] . "/common.$phpEx"))
+					if (file_exists($phpbb_root_path . 'language/' . $row['lang_dir'] . "/common.php"))
 					{
 						$lang_allowed[$row['lang_iso']] = substr($row['lang_iso'], 0, 2);
 					}
@@ -1582,7 +1580,7 @@ class phpbb_user extends phpbb_session
 		// We include common language file here to not load it every time a custom language file is included
 		$lang = &$this->lang;
 
-		require($this->lang_path . $this->lang_name . "/common.$phpEx");
+		require($this->lang_path . $this->lang_name . "/common.php");
 
 		$this->add_lang($lang_set);
 		unset($lang_set);
@@ -1882,9 +1880,9 @@ class phpbb_user extends phpbb_session
 		// ucp profile reg_details page ... of course do not redirect if we're already in the ucp
 		if (!defined('IN_ADMIN') && !defined('ADMIN_START') && $config['chg_passforce'] && !empty($this->data['is_registered']) && $auth->acl_get('u_chgpasswd') && $this->data['user_passchg'] < time() - ($config['chg_passforce'] * 86400))
 		{
-			if (strpos($this->page['query_string'], 'mode=reg_details') === false && $this->page['page_name'] != "ucp.$phpEx")
+			if (strpos($this->page['query_string'], 'mode=reg_details') === false && $this->page['page_name'] != "ucp.php")
 			{
-				redirect(append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=profile&amp;mode=reg_details'));
+				redirect(append_sid("{$phpbb_root_path}ucp.php", 'i=profile&amp;mode=reg_details'));
 			}
 		}
 
@@ -1990,8 +1988,6 @@ class phpbb_user extends phpbb_session
 	*/
 	function add_lang($lang_set, $use_db = false, $use_help = false)
 	{
-		global $phpEx;
-
 		if (is_array($lang_set))
 		{
 			foreach ($lang_set as $key => $lang_file)
@@ -2031,8 +2027,6 @@ class phpbb_user extends phpbb_session
 	*/
 	function set_lang(&$lang, &$help, $lang_file, $use_db = false, $use_help = false)
 	{
-		global $phpEx;
-
 		// Make sure the language name is set (if the user setup did not happen it is not set)
 		if (!$this->lang_name)
 		{
@@ -2047,11 +2041,11 @@ class phpbb_user extends phpbb_session
 		{
 			if ($use_help && strpos($lang_file, '/') !== false)
 			{
-				$language_filename = $this->lang_path . $this->lang_name . '/' . substr($lang_file, 0, stripos($lang_file, '/') + 1) . 'help_' . substr($lang_file, stripos($lang_file, '/') + 1) . '.' . $phpEx;
+				$language_filename = $this->lang_path . $this->lang_name . '/' . substr($lang_file, 0, stripos($lang_file, '/') + 1) . 'help_' . substr($lang_file, stripos($lang_file, '/') + 1) . '.php';
 			}
 			else
 			{
-				$language_filename = $this->lang_path . $this->lang_name . '/' . (($use_help) ? 'help_' : '') . $lang_file . '.' . $phpEx;
+				$language_filename = $this->lang_path . $this->lang_name . '/' . (($use_help) ? 'help_' : '') . $lang_file . '.php';
 			}
 
 			if (!file_exists($language_filename))
@@ -2078,7 +2072,7 @@ class phpbb_user extends phpbb_session
 				}
 
 				// Reset the lang name
-				$this->lang_name = (file_exists($this->lang_path . $this->data['user_lang'] . "/common.$phpEx")) ? $this->data['user_lang'] : basename($config['default_lang']);
+				$this->lang_name = (file_exists($this->lang_path . $this->data['user_lang'] . "/common.php")) ? $this->data['user_lang'] : basename($config['default_lang']);
 				return;
 			}
 
@@ -2345,9 +2339,9 @@ class phpbb_user extends phpbb_session
 
 		if (!function_exists('remove_newly_registered'))
 		{
-			global $phpbb_root_path, $phpEx;
+			global $phpbb_root_path;
 
-			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_user.php');
 		}
 		if ($group = remove_newly_registered($this->data['user_id'], $this->data))
 		{

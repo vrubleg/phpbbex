@@ -37,9 +37,9 @@ class recache_moderators
 	{
 		if (!function_exists('cache_moderators'))
 		{
-			global $phpbb_root_path, $phpEx;
+			global $phpbb_root_path;
 
-			include("{$phpbb_root_path}includes/functions_admin.$phpEx");
+			include("{$phpbb_root_path}includes/functions_admin.php");
 		}
 
 		cache_moderators();

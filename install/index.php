@@ -9,9 +9,8 @@ define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-$config_path = $phpbb_root_path . 'config.' . $phpEx;
+$config_path = $phpbb_root_path . 'config.php';
 $is_installed = file_exists($config_path)
 	&& strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false
 	&& !file_exists($phpbb_root_path . 'cache/install_lock');
@@ -22,7 +21,7 @@ if ($is_installed)
 	exit();
 }
 
-require($phpbb_root_path . 'includes/startup.' . $phpEx);
+require($phpbb_root_path . 'includes/startup.php');
 
 // Try to override some limits - maybe it helps some...
 @set_time_limit(0);
@@ -53,16 +52,16 @@ else
 @ini_set('memory_limit', $mem_limit);
 
 // Include essential scripts
-require($phpbb_root_path . 'includes/functions.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
-include($phpbb_root_path . 'includes/auth.' . $phpEx);
-include($phpbb_root_path . 'includes/session.' . $phpEx);
-include($phpbb_root_path . 'includes/template.' . $phpEx);
-include($phpbb_root_path . 'includes/acm/acm_file.' . $phpEx);
-include($phpbb_root_path . 'includes/cache.' . $phpEx);
-include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
-include($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_install.' . $phpEx);
+require($phpbb_root_path . 'includes/functions.php');
+require($phpbb_root_path . 'includes/functions_content.php');
+include($phpbb_root_path . 'includes/auth.php');
+include($phpbb_root_path . 'includes/session.php');
+include($phpbb_root_path . 'includes/template.php');
+include($phpbb_root_path . 'includes/acm/acm_file.php');
+include($phpbb_root_path . 'includes/cache.php');
+include($phpbb_root_path . 'includes/functions_admin.php');
+include($phpbb_root_path . 'includes/utf/utf_tools.php');
+require($phpbb_root_path . 'includes/functions_install.php');
 
 // Try and load an appropriate language if required
 $language = basename(request_var('language', ''));
@@ -124,11 +123,11 @@ if (!file_exists($phpbb_root_path . 'language/' . $language) || !is_dir($phpbb_r
 }
 
 // And finally, load the relevant language files
-include($phpbb_root_path . 'language/' . $language . '/common.' . $phpEx);
-include($phpbb_root_path . 'language/' . $language . '/acp/common.' . $phpEx);
-include($phpbb_root_path . 'language/' . $language . '/acp/board.' . $phpEx);
-include($phpbb_root_path . 'language/' . $language . '/install.' . $phpEx);
-include($phpbb_root_path . 'language/' . $language . '/posting.' . $phpEx);
+include($phpbb_root_path . 'language/' . $language . '/common.php');
+include($phpbb_root_path . 'language/' . $language . '/acp/common.php');
+include($phpbb_root_path . 'language/' . $language . '/acp/board.php');
+include($phpbb_root_path . 'language/' . $language . '/install.php');
+include($phpbb_root_path . 'language/' . $language . '/posting.php');
 
 // usually we would need every single constant here - and it would be consistent. For 3.0.x, use a dirty hack... :(
 
@@ -171,7 +170,7 @@ $user->theme['template_storedb'] = false;
 
 $install = new module();
 
-$install->create('install', "index.$phpEx", $mode, $sub);
+$install->create('install', "index.php", $mode, $sub);
 $install->load();
 
 // Generate the page
@@ -201,7 +200,7 @@ class module
 	*/
 	function create($module_type, $module_url, $selected_mod = false, $selected_submod = false)
 	{
-		global $db, $config, $phpEx, $phpbb_root_path;
+		global $db, $config, $phpbb_root_path;
 
 		$module = array();
 
@@ -216,7 +215,7 @@ class module
 		$setmodules = 1;
 		while (($file = readdir($dir)) !== false)
 		{
-			if (preg_match('#^install_(.*?)\.' . $phpEx . '$#', $file))
+			if (preg_match('#^install_(.*?)\.php' . '$#', $file))
 			{
 				include($file);
 			}
@@ -275,7 +274,7 @@ class module
 	*/
 	function load($mode = false, $run = true)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		if ($run)
 		{
@@ -397,7 +396,7 @@ class module
 	*/
 	function generate_navigation()
 	{
-		global $lang, $template, $phpEx, $language;
+		global $lang, $template, $language;
 
 		if (is_array($this->module_ary))
 		{
@@ -629,7 +628,7 @@ class module
 	*/
 	function inst_language_select($default = '')
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$dir = @opendir($phpbb_root_path . 'language');
 

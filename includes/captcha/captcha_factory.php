@@ -20,12 +20,12 @@ class phpbb_captcha_factory
 	*/
 	static function get_instance($name)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$name = basename($name);
 		if (!class_exists($name))
 		{
-			include($phpbb_root_path . "includes/captcha/plugins/{$name}_plugin." . $phpEx);
+			include($phpbb_root_path . "includes/captcha/plugins/{$name}_plugin.php");
 		}
 		return call_user_func(array($name, 'get_instance'));
 	}
@@ -35,12 +35,12 @@ class phpbb_captcha_factory
 	*/
 	static function garbage_collect($name)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$name = basename($name);
 		if (!class_exists($name))
 		{
-			include($phpbb_root_path . "includes/captcha/plugins/{$name}_plugin." . $phpEx);
+			include($phpbb_root_path . "includes/captcha/plugins/{$name}_plugin.php");
 		}
 		call_user_func(array($name, 'garbage_collect'), 0);
 	}
@@ -50,7 +50,7 @@ class phpbb_captcha_factory
 	*/
 	static function get_captcha_types()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$captchas = array(
 			'available'		=> array(),
@@ -63,9 +63,9 @@ class phpbb_captcha_factory
 		{
 			while (($file = readdir($dp)) !== false)
 			{
-				if ((preg_match('#_plugin\.' . $phpEx . '$#', $file)))
+				if ((preg_match('#_plugin\.php' . '$#', $file)))
 				{
-					$name = preg_replace('#^(.*?)_plugin\.' . $phpEx . '$#', '\1', $file);
+					$name = preg_replace('#^(.*?)_plugin\.php' . '$#', '\1', $file);
 					if (!class_exists($name))
 					{
 						include($phpbb_root_path . "includes/captcha/plugins/$file");

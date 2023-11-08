@@ -46,7 +46,7 @@ class acp_search
 	function settings($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpbb_root_path, $phpbb_admin_path;
 
 		$submit = (isset($_POST['submit'])) ? true : false;
 
@@ -157,7 +157,7 @@ class acp_search
 							{
 								add_log('admin', 'LOG_CONFIG_SEARCH');
 							}
-							$extra_message = '<br />' . $user->lang['SWITCHED_SEARCH_BACKEND'] . '<br /><a href="' . append_sid("{$phpbb_admin_path}index.$phpEx", 'i=search&amp;mode=index') . '">&raquo; ' . $user->lang['GO_TO_SEARCH_INDEX'] . '</a>';
+							$extra_message = '<br />' . $user->lang['SWITCHED_SEARCH_BACKEND'] . '<br /><a href="' . append_sid("{$phpbb_admin_path}index.php", 'i=search&amp;mode=index') . '">&raquo; ' . $user->lang['GO_TO_SEARCH_INDEX'] . '</a>';
 						}
 						else
 						{
@@ -229,7 +229,7 @@ class acp_search
 	function index($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpbb_root_path, $phpbb_admin_path;
 
 		if (isset($_REQUEST['action']) && is_array($_REQUEST['action']))
 		{
@@ -298,7 +298,7 @@ class acp_search
 					if (method_exists($this->search, 'delete_index'))
 					{
 						// pass a reference to myself so the $search object can make use of save_state() and attributes
-						if ($error = $this->search->delete_index($this, append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&mode=$mode&action=delete", false)))
+						if ($error = $this->search->delete_index($this, append_sid("{$phpbb_admin_path}index.php", "i=$id&mode=$mode&action=delete", false)))
 						{
 							$this->state = array('');
 							$this->save_state();
@@ -359,7 +359,7 @@ class acp_search
 					if (method_exists($this->search, 'create_index'))
 					{
 						// pass a reference to acp_search so the $search object can make use of save_state() and attributes
-						if ($error = $this->search->create_index($this, append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&mode=$mode&action=create", false)))
+						if ($error = $this->search->create_index($this, append_sid("{$phpbb_admin_path}index.php", "i=$id&mode=$mode&action=create", false)))
 						{
 							$this->state = array('');
 							$this->save_state();
@@ -511,8 +511,8 @@ class acp_search
 		$template->assign_vars(array(
 			'S_INDEX'				=> true,
 			'U_ACTION'				=> $this->u_action,
-			'U_PROGRESS_BAR'		=> append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&amp;mode=$mode&amp;action=progress_bar"),
-			'UA_PROGRESS_BAR'		=> addslashes(append_sid("{$phpbb_admin_path}index.$phpEx", "i=$id&amp;mode=$mode&amp;action=progress_bar")),
+			'U_PROGRESS_BAR'		=> append_sid("{$phpbb_admin_path}index.php", "i=$id&amp;mode=$mode&amp;action=progress_bar"),
+			'UA_PROGRESS_BAR'		=> addslashes(append_sid("{$phpbb_admin_path}index.php", "i=$id&amp;mode=$mode&amp;action=progress_bar")),
 		));
 
 		if (isset($this->state[1]))
@@ -557,7 +557,7 @@ class acp_search
 
 	function get_search_types()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpbb_root_path;
 
 		$search_types = array();
 
@@ -567,9 +567,9 @@ class acp_search
 		{
 			while (($file = readdir($dp)) !== false)
 			{
-				if ((preg_match('#\.' . $phpEx . '$#', $file)) && ($file != "search.$phpEx"))
+				if ((preg_match('#\.php' . '$#', $file)) && ($file != "search.php"))
 				{
-					$search_types[] = preg_replace('#^(.*?)\.' . $phpEx . '$#', '\1', $file);
+					$search_types[] = preg_replace('#^(.*?)\.php' . '$#', '\1', $file);
 				}
 			}
 			closedir($dp);
@@ -612,15 +612,15 @@ class acp_search
 	*/
 	function init_search($type, &$search, &$error)
 	{
-		global $phpbb_root_path, $phpEx, $user;
+		global $phpbb_root_path, $user;
 
-		if (!preg_match('#^\w+$#', $type) || !file_exists("{$phpbb_root_path}includes/search/$type.$phpEx"))
+		if (!preg_match('#^\w+$#', $type) || !file_exists("{$phpbb_root_path}includes/search/$type.php"))
 		{
 			$error = $user->lang['NO_SUCH_SEARCH_MODULE'];
 			return $error;
 		}
 
-		include_once("{$phpbb_root_path}includes/search/$type.$phpEx");
+		include_once("{$phpbb_root_path}includes/search/$type.php");
 
 		if (!class_exists($type))
 		{

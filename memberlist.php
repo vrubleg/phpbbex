@@ -7,9 +7,8 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
-include($phpbb_root_path . 'common.' . $phpEx);
-include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+include($phpbb_root_path . 'common.php');
+include($phpbb_root_path . 'includes/functions_display.php');
 
 // Start session management
 $user->session_begin();
@@ -61,7 +60,7 @@ switch ($mode)
 {
 	case 'leaders':
 		// Display a listing of board admins, moderators
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include($phpbb_root_path . 'includes/functions_user.php');
 
 		$page_title = $user->lang['THE_TEAM'];
 		$template_html = 'memberlist_leaders.html';
@@ -223,7 +222,7 @@ switch ($mode)
 			else
 			{
 				$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
-				$u_group = append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']);
+				$u_group = append_sid("{$phpbb_root_path}memberlist.php", 'mode=group&amp;g=' . $row['group_id']);
 			}
 
 			$rank_title = $rank_img = '';
@@ -240,7 +239,7 @@ switch ($mode)
 				'RANK_IMG_SRC'	=> $rank_img_src,
 
 				'U_GROUP'			=> $u_group,
-				'U_PM'				=> ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
+				'U_PM'				=> ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;mode=compose&amp;u=' . $row['user_id']) : '',
 
 				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
@@ -272,7 +271,7 @@ switch ($mode)
 				$lang = 'JABBER';
 				$sql_field = 'user_jabber';
 				$s_select = (@extension_loaded('xml') && $config['jab_enable']) ? 'S_SEND_JABBER' : 'S_NO_SEND_JABBER';
-				$s_action = append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=contact&amp;action=$action&amp;u=$user_id");
+				$s_action = append_sid("{$phpbb_root_path}memberlist.php", "mode=contact&amp;action=$action&amp;u=$user_id");
 			break;
 
 			default:
@@ -309,7 +308,7 @@ switch ($mode)
 					if (check_form_key('memberlist_messaging'))
 					{
 
-						include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+						include_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 						$subject = sprintf($user->lang['IM_JABBER_SUBJECT'], $user->data['username'], HTTP_HOST);
 						$message = utf8_normalize_nfc(request_var('message', '', true));
@@ -512,7 +511,7 @@ switch ($mode)
 
 			if ($member['user_sig_bbcode_bitfield'])
 			{
-				include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/bbcode.php');
 				$bbcode = new bbcode();
 				$bbcode->bbcode_second_pass($member['user_sig'], $member['user_sig_bbcode_uid'], $member['user_sig_bbcode_bitfield']);
 			}
@@ -531,7 +530,7 @@ switch ($mode)
 		{
 			if (!class_exists('p_master'))
 			{
-				include($phpbb_root_path . 'includes/functions_module.' . $phpEx);
+				include($phpbb_root_path . 'includes/functions_module.php');
 			}
 			$module = new p_master();
 
@@ -553,7 +552,7 @@ switch ($mode)
 		$profile_fields = array();
 		if ($config['load_cpf_viewprofile'])
 		{
-			include_once($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 			$cp = new custom_profile();
 			$profile_fields = $cp->generate_profile_fields_template('grab', $user_id);
 			$profile_fields = (isset($profile_fields[$user_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields[$user_id]) : array();
@@ -608,23 +607,23 @@ switch ($mode)
 			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
-			'S_PROFILE_ACTION'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group'),
+			'S_PROFILE_ACTION'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=group'),
 			'S_GROUP_OPTIONS'	=> $group_options,
 			'S_CUSTOM_FIELDS'	=> (isset($profile_fields['row']) && sizeof($profile_fields['row'])) ? true : false,
 
-			'U_USER_ADMIN'			=> ($auth->acl_get('a_user')) ? append_sid("{$phpbb_root_path}adm/index.$phpEx", 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
-			'U_USER_BAN'			=> ($auth->acl_get('m_ban') && $user_id != $user->data['user_id']) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=ban&amp;mode=user&amp;u=' . $user_id, true, $user->session_id) : '',
-			'U_MCP_QUEUE'			=> ($auth->acl_getf_global('m_approve')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue', true, $user->session_id) : '',
+			'U_USER_ADMIN'			=> ($auth->acl_get('a_user')) ? append_sid("{$phpbb_root_path}adm/index.php", 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
+			'U_USER_BAN'			=> ($auth->acl_get('m_ban') && $user_id != $user->data['user_id']) ? append_sid("{$phpbb_root_path}mcp.php", 'i=ban&amp;mode=user&amp;u=' . $user_id, true, $user->session_id) : '',
+			'U_MCP_QUEUE'			=> ($auth->acl_getf_global('m_approve')) ? append_sid("{$phpbb_root_path}mcp.php", 'i=queue', true, $user->session_id) : '',
 
-			'U_SWITCH_PERMISSIONS'	=> ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_id) ? append_sid("{$phpbb_root_path}ucp.$phpEx", "mode=switch_perm&amp;u={$user_id}&amp;hash=" . generate_link_hash('switchperm')) : '',
+			'U_SWITCH_PERMISSIONS'	=> ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_id) ? append_sid("{$phpbb_root_path}ucp.php", "mode=switch_perm&amp;u={$user_id}&amp;hash=" . generate_link_hash('switchperm')) : '',
 
 			'S_USER_NOTES'		=> ($user_notes_enabled) ? true : false,
 			'S_WARN_USER'		=> ($warn_user_enabled) ? true : false,
 			'S_ZEBRA'			=> ($user->data['user_id'] != $user_id && $user->data['is_registered'] && $zebra_enabled) ? true : false,
-			'U_ADD_FRIEND'		=> (!$friend && !$foe && $friends_enabled) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=zebra&amp;add=' . urlencode(htmlspecialchars_decode($member['username']))) : '',
-			'U_ADD_FOE'			=> (!$friend && !$foe && $foes_enabled) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=zebra&amp;mode=foes&amp;add=' . urlencode(htmlspecialchars_decode($member['username']))) : '',
-			'U_REMOVE_FRIEND'	=> ($friend && $friends_enabled) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=zebra&amp;remove=1&amp;usernames[]=' . $user_id) : '',
-			'U_REMOVE_FOE'		=> ($foe && $foes_enabled) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=zebra&amp;remove=1&amp;mode=foes&amp;usernames[]=' . $user_id) : '',
+			'U_ADD_FRIEND'		=> (!$friend && !$foe && $friends_enabled) ? append_sid("{$phpbb_root_path}ucp.php", 'i=zebra&amp;add=' . urlencode(htmlspecialchars_decode($member['username']))) : '',
+			'U_ADD_FOE'			=> (!$friend && !$foe && $foes_enabled) ? append_sid("{$phpbb_root_path}ucp.php", 'i=zebra&amp;mode=foes&amp;add=' . urlencode(htmlspecialchars_decode($member['username']))) : '',
+			'U_REMOVE_FRIEND'	=> ($friend && $friends_enabled) ? append_sid("{$phpbb_root_path}ucp.php", 'i=zebra&amp;remove=1&amp;usernames[]=' . $user_id) : '',
+			'U_REMOVE_FOE'		=> ($foe && $foes_enabled) ? append_sid("{$phpbb_root_path}ucp.php", 'i=zebra&amp;remove=1&amp;mode=foes&amp;usernames[]=' . $user_id) : '',
 		));
 
 		if (!empty($profile_fields['row']))
@@ -822,7 +821,7 @@ switch ($mode)
 					WHERE user_id = ' . $user->data['user_id'];
 				$result = $db->sql_query($sql);
 
-				include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_messenger.php');
 				$messenger = new messenger(false);
 				$email_tpl = ($user_id) ? 'profile_send_email' : 'email_notify';
 
@@ -886,15 +885,15 @@ switch ($mode)
 					{
 						$messenger->assign_vars(array(
 							'TOPIC_NAME'	=> htmlspecialchars_decode($row['topic_title']),
-							'U_TOPIC'		=> generate_board_url() . "/viewtopic.$phpEx?t=$topic_id")
+							'U_TOPIC'		=> generate_board_url() . "/viewtopic.php?t=$topic_id")
 						);
 					}
 
 					$messenger->send($notify_type);
 				}
 
-				meta_refresh(3, append_sid("{$phpbb_root_path}index.$phpEx"));
-				$message = ($user_id) ? sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>') : sprintf($user->lang['RETURN_TOPIC'],  '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t=$topic_id") . '">', '</a>');
+				meta_refresh(3, append_sid("{$phpbb_root_path}index.php"));
+				$message = ($user_id) ? sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.php") . '">', '</a>') : sprintf($user->lang['RETURN_TOPIC'],  '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", "t=$topic_id") . '">', '</a>');
 				trigger_error($user->lang['EMAIL_SENT'] . '<br /><br />' . $message);
 			}
 		}
@@ -906,7 +905,7 @@ switch ($mode)
 				'USERNAME'		=> $row['username'],
 
 				'L_EMAIL_BODY_EXPLAIN'	=> $user->lang['EMAIL_BODY_EXPLAIN'],
-				'S_POST_ACTION'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=email&amp;u=' . $user_id))
+				'S_POST_ACTION'			=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=email&amp;u=' . $user_id))
 			);
 		}
 		else
@@ -917,7 +916,7 @@ switch ($mode)
 				'S_LANG_OPTIONS'	=> language_select($email_lang),
 
 				'L_EMAIL_BODY_EXPLAIN'	=> $user->lang['EMAIL_TOPIC_EXPLAIN'],
-				'S_POST_ACTION'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=email&amp;t=' . $topic_id))
+				'S_POST_ACTION'			=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=email&amp;t=' . $topic_id))
 			);
 		}
 
@@ -1229,7 +1228,7 @@ switch ($mode)
 				'RANK_IMG'		=> $rank_img,
 				'RANK_IMG_SRC'	=> $rank_img_src,
 
-				'U_PM'			=> ($auth->acl_get('u_sendpm') && $auth->acl_get('u_masspm_group') && $group_row['group_receive_pm'] && $config['allow_privmsg'] && $config['allow_mass_pm']) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=compose&amp;g=' . $group_id) : '',)
+				'U_PM'			=> ($auth->acl_get('u_sendpm') && $auth->acl_get('u_masspm_group') && $group_row['group_receive_pm'] && $config['allow_privmsg'] && $config['allow_mass_pm']) ? append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;mode=compose&amp;g=' . $group_id) : '',)
 			);
 
 			$sql_select = ', ug.group_leader';
@@ -1312,7 +1311,7 @@ switch ($mode)
 			}
 		}
 
-		$u_hide_find_member = append_sid("{$phpbb_root_path}memberlist.$phpEx", "start=$start" . (!empty($params) ? '&amp;' . implode('&amp;', $params) : ''));
+		$u_hide_find_member = append_sid("{$phpbb_root_path}memberlist.php", "start=$start" . (!empty($params) ? '&amp;' . implode('&amp;', $params) : ''));
 
 		if ($mode)
 		{
@@ -1320,8 +1319,8 @@ switch ($mode)
 		}
 		$sort_params[] = "mode=$mode";
 
-		$pagination_url = append_sid("{$phpbb_root_path}memberlist.$phpEx", implode('&amp;', $params));
-		$sort_url = append_sid("{$phpbb_root_path}memberlist.$phpEx", implode('&amp;', $sort_params));
+		$pagination_url = append_sid("{$phpbb_root_path}memberlist.php", implode('&amp;', $params));
+		$sort_url = append_sid("{$phpbb_root_path}memberlist.php", implode('&amp;', $sort_params));
 
 		unset($search_params, $sort_params);
 
@@ -1393,7 +1392,7 @@ switch ($mode)
 				'S_JOINED_TIME_OPTIONS'	=> $s_find_join_time,
 				'S_ACTIVE_TIME_OPTIONS'	=> $s_find_active_time,
 				'S_GROUP_SELECT'		=> $s_group_select,
-				'S_USER_SEARCH_ACTION'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=searchuser&amp;form=$form&amp;field=$field"))
+				'S_USER_SEARCH_ACTION'	=> append_sid("{$phpbb_root_path}memberlist.php", "mode=searchuser&amp;form=$form&amp;field=$field"))
 			);
 		}
 
@@ -1462,7 +1461,7 @@ switch ($mode)
 			// Load custom profile fields
 			if ($config['load_cpf_memberlist'])
 			{
-				include_once($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
+				include_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 				$cp = new custom_profile();
 
 				// Grab all profile fields from users in id cache for later use - similar to the poster cache
@@ -1495,7 +1494,7 @@ switch ($mode)
 					'S_CUSTOM_PROFILE'	=> (isset($cp_row['row']) && sizeof($cp_row['row'])) ? true : false,
 					'S_GROUP_LEADER'	=> $is_leader,
 
-					'U_VIEW_PROFILE'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=viewprofile&amp;u=' . $user_id))
+					'U_VIEW_PROFILE'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile&amp;u=' . $user_id))
 				);
 
 				if (isset($cp_row['row']) && sizeof($cp_row['row']))
@@ -1533,11 +1532,11 @@ switch ($mode)
 			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
-			'U_FIND_MEMBER'			=> ($config['load_search'] || $auth->acl_get('a_')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser') : '',
+			'U_FIND_MEMBER'			=> ($config['load_search'] || $auth->acl_get('a_')) ? append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser') : '',
 			'U_HIDE_FIND_MEMBER'	=> ($mode == 'searchuser') ? $u_hide_find_member : '',
-			'U_ALL_USERS'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx"),
-			'U_ACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=active'),
-			'U_INACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=inactive'),
+			'U_ALL_USERS'			=> append_sid("{$phpbb_root_path}memberlist.php"),
+			'U_ACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=active'),
+			'U_INACTIVE_USERS'		=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=inactive'),
 
 			'U_SORT_USERNAME'		=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_FROM'			=> $sort_url . '&amp;sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),
@@ -1567,7 +1566,7 @@ page_header($page_title, false);
 $template->set_filenames(array(
 	'body' => $template_html)
 );
-make_jumpbox(append_sid("{$phpbb_root_path}viewforum.$phpEx"));
+make_jumpbox(append_sid("{$phpbb_root_path}viewforum.php"));
 
 page_footer();
 
@@ -1576,7 +1575,7 @@ page_footer();
 */
 function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = false)
 {
-	global $config, $auth, $template, $user, $phpEx, $phpbb_root_path;
+	global $config, $auth, $template, $user, $phpbb_root_path;
 
 	$username = $data['username'];
 	$user_id = $data['user_id'];
@@ -1586,7 +1585,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 	if ((!empty($data['user_allow_viewemail']) && $auth->acl_get('u_sendemail')) || $auth->acl_get('a_user'))
 	{
-		$email = ($config['board_email_form'] && $config['email_enable']) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=email&amp;u=' . $user_id) : (($config['board_hide_emails'] && !$auth->acl_get('a_user')) ? '' : 'mailto:' . $data['user_email']);
+		$email = ($config['board_email_form'] && $config['email_enable']) ? append_sid("{$phpbb_root_path}memberlist.php", 'mode=email&amp;u=' . $user_id) : (($config['board_hide_emails'] && !$auth->acl_get('a_user')) ? '' : 'mailto:' . $data['user_email']);
 	}
 	else
 	{
@@ -1674,11 +1673,11 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 		'S_WARNINGS'	=> ($auth->acl_getf_global('m_') || $auth->acl_get('m_warn')) ? true : false,
 
-		'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.$phpEx", "author_id=$user_id&amp;sr=posts") : '',
-		'U_SEARCH_USER_TOPICS'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.$phpEx", "author_id=$user_id&amp;sr=topics&amp;sf=firstpost") : '',
-		'U_NOTES'		=> ($user_notes_enabled && $auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $user_id, true, $user->session_id) : '',
-		'U_WARN'		=> ($warn_user_enabled && $auth->acl_get('m_warn')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=warn&amp;mode=warn_user&amp;u=' . $user_id, true, $user->session_id) : '',
-		'U_PM'			=> ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($data['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',
+		'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.php", "author_id=$user_id&amp;sr=posts") : '',
+		'U_SEARCH_USER_TOPICS'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.php", "author_id=$user_id&amp;sr=topics&amp;sf=firstpost") : '',
+		'U_NOTES'		=> ($user_notes_enabled && $auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes&amp;u=' . $user_id, true, $user->session_id) : '',
+		'U_WARN'		=> ($warn_user_enabled && $auth->acl_get('m_warn')) ? append_sid("{$phpbb_root_path}mcp.php", 'i=warn&amp;mode=warn_user&amp;u=' . $user_id, true, $user->session_id) : '',
+		'U_PM'			=> ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($data['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',
 		'U_EMAIL'		=> $email,
 		'U_WWW'			=> (!empty($data['user_website'])) ? $data['user_website'] : '',
 		'U_SHORT_WWW'			=> (!empty($data['user_website'])) ? ((strlen($data['user_website']) > 55) ? substr($data['user_website'], 0, 39) . ' ... ' . substr($data['user_website'], -10) : $data['user_website']) : '',

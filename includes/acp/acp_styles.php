@@ -26,7 +26,7 @@ class acp_styles
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpbb_root_path, $phpbb_admin_path;
 
 		// Hardcoded template bitfield to add for new templates
 		$bitfield = new bitfield();
@@ -530,7 +530,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function frontend($mode, $options, $actions)
 	{
-		global $user, $template, $db, $config, $phpbb_root_path, $phpEx;
+		global $user, $template, $db, $config, $phpbb_root_path;
 
 		$sql_from = '';
 		$sql_sort = 'LOWER(' . $mode . '_name)';
@@ -625,7 +625,7 @@ inherit_from = {INHERIT_FROM}
 				'L_STYLE_ACT_DEACT'		=> $user->lang['STYLE_' . strtoupper($stylevis)],
 				'S_OPTIONS'				=> implode(' | ', $s_options),
 				'S_ACTIONS'				=> implode(' | ', $s_actions),
-				'U_PREVIEW'				=> ($mode == 'style') ? append_sid("{$phpbb_root_path}index.$phpEx", "$mode=" . $row[$mode . '_id']) : '',
+				'U_PREVIEW'				=> ($mode == 'style') ? append_sid("{$phpbb_root_path}index.php", "$mode=" . $row[$mode . '_id']) : '',
 
 				'NAME'					=> $row[$mode . '_name'],
 				'STYLE_COUNT'			=> ($mode == 'style' && isset($style_count[$row['style_id']])) ? $style_count[$row['style_id']] : 0,
@@ -704,7 +704,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function edit_template($template_id)
 	{
-		global $phpbb_root_path, $phpEx, $config, $db, $cache, $user, $template, $safe_mode;
+		global $phpbb_root_path, $config, $db, $cache, $user, $template, $safe_mode;
 
 		if (defined('PHPBB_DISABLE_ACP_EDITOR'))
 		{
@@ -946,7 +946,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function template_cache($template_id)
 	{
-		global $phpbb_root_path, $phpEx, $config, $db, $cache, $user, $template;
+		global $phpbb_root_path, $config, $db, $cache, $user, $template;
 
 		$source		= str_replace('/', '.', request_var('source', ''));
 		$file_ary	= array_diff(request_var('delete', array('')), array(''));
@@ -976,7 +976,7 @@ inherit_from = {INHERIT_FROM}
 		// Someone wants to see the cached source ... so we'll highlight it,
 		// add line numbers and indent it appropriately. This could be nasty
 		// on larger source files ...
-		if ($source && file_exists("{$phpbb_root_path}cache/{$cache_prefix}_$source.html.$phpEx"))
+		if ($source && file_exists("{$phpbb_root_path}cache/{$cache_prefix}_$source.html.php"))
 		{
 			adm_page_header($user->lang['TEMPLATE_CACHE']);
 
@@ -988,7 +988,7 @@ inherit_from = {INHERIT_FROM}
 				'FILENAME'	=> str_replace('.', '/', $source) . '.html')
 			);
 
-			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), file_get_contents("{$phpbb_root_path}cache/{$cache_prefix}_$source.html.$phpEx"));
+			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), file_get_contents("{$phpbb_root_path}cache/{$cache_prefix}_$source.html.php"));
 
 			$conf = array('highlight.bg', 'highlight.comment', 'highlight.default', 'highlight.html', 'highlight.keyword', 'highlight.string');
 			foreach ($conf as $ini_var)
@@ -1061,7 +1061,7 @@ inherit_from = {INHERIT_FROM}
 			$tpl_file	= str_replace('.', '/', $file);
 			$tpl_file	= str_replace('///', '../', $tpl_file);
 
-			$filename = "{$cache_prefix}_$file.html.$phpEx";
+			$filename = "{$cache_prefix}_$file.html.php";
 
 			if (!file_exists("{$phpbb_root_path}cache/$filename"))
 			{
@@ -1125,7 +1125,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function edit_theme($theme_id)
 	{
-		global $phpbb_root_path, $phpEx, $config, $db, $cache, $user, $template, $safe_mode;
+		global $phpbb_root_path, $config, $db, $cache, $user, $template, $safe_mode;
 
 		$this->page_title = 'EDIT_THEME';
 
@@ -1919,7 +1919,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function export($mode, $style_id)
 	{
-		global $db, $template, $user, $phpbb_root_path, $cache, $phpEx, $config;
+		global $db, $template, $user, $phpbb_root_path, $cache, $config;
 
 		$update = (isset($_POST['update'])) ? true : false;
 
@@ -2253,7 +2253,7 @@ inherit_from = {INHERIT_FROM}
 
 			if (!sizeof($error))
 			{
-				include($phpbb_root_path . 'includes/functions_compress.' . $phpEx);
+				include($phpbb_root_path . 'includes/functions_compress.php');
 
 				if ($mode == 'style')
 				{
@@ -2746,7 +2746,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function store_templates($mode, $style_id, $template_path, $filelist)
 	{
-		global $phpbb_root_path, $phpEx, $db;
+		global $phpbb_root_path, $db;
 
 		$template_path = $template_path . '/template/';
 		$includes = array();
@@ -2828,7 +2828,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function template_cache_filelist($template_path)
 	{
-		global $phpbb_root_path, $phpEx, $user;
+		global $phpbb_root_path, $user;
 
 		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_path);
 
@@ -2847,7 +2847,7 @@ inherit_from = {INHERIT_FROM}
 
 			if (is_file($phpbb_root_path . 'cache/' . $file) && (strpos($file, $cache_prefix) === 0))
 			{
-				$file_ary[] = str_replace('.', '/', preg_replace('#^' . preg_quote($cache_prefix, '#') . '_(.*?)\.html\.' . $phpEx . '$#i', '\1', $file));
+				$file_ary[] = str_replace('.', '/', preg_replace('#^' . preg_quote($cache_prefix, '#') . '_(.*?)\.html\.php' . '$#i', '\1', $file));
 			}
 		}
 		closedir($dp);
@@ -2864,7 +2864,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function clear_template_cache($template_row, $file_ary = false)
 	{
-		global $phpbb_root_path, $phpEx, $user;
+		global $phpbb_root_path, $user;
 
 		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_row['template_path']);
 
@@ -2882,7 +2882,7 @@ inherit_from = {INHERIT_FROM}
 		{
 			$file = str_replace('/', '.', $file);
 
-			$file = "{$phpbb_root_path}cache/{$cache_prefix}_$file.html.$phpEx";
+			$file = "{$phpbb_root_path}cache/{$cache_prefix}_$file.html.php";
 			if (file_exists($file) && is_file($file))
 			{
 				@unlink($file);
@@ -2898,7 +2898,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function install($mode)
 	{
-		global $phpbb_root_path, $phpEx, $config, $db, $cache, $user, $template;
+		global $phpbb_root_path, $config, $db, $cache, $user, $template;
 
 		$l_type = strtoupper($mode);
 
@@ -3075,7 +3075,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function add($mode)
 	{
-		global $phpbb_root_path, $phpEx, $config, $db, $cache, $user, $template;
+		global $phpbb_root_path, $config, $db, $cache, $user, $template;
 
 		$l_type = strtoupper($mode);
 		$element_ary = array('template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE);

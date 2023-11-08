@@ -146,9 +146,9 @@ class erk_bom_sniffer
 		}
 	}
 
-	function readd_extensions(&$file, $key, $phpEx)
+	function readd_extensions(&$file, $key, $ext)
 	{
-		$file .= ".{$phpEx}";
+		$file .= ".{$ext}";
 	}
 
 	/**
@@ -586,11 +586,11 @@ class erk_bom_sniffer
 			}
 			else
 			{
-				global $phpbb_root_path, $phpEx;
+				global $phpbb_root_path;
 
 				// Determine owner/group of common.php file and the filename we want to change here
-				$common_php_owner = @fileowner($phpbb_root_path . 'common.' . $phpEx);
-				$common_php_group = @filegroup($phpbb_root_path . 'common.' . $phpEx);
+				$common_php_owner = @fileowner($phpbb_root_path . 'common.php');
+				$common_php_group = @filegroup($phpbb_root_path . 'common.php');
 
 				// And the owner and the groups PHP is running under.
 				$php_uid = (function_exists('posix_getuid')) ? @posix_getuid() : false;

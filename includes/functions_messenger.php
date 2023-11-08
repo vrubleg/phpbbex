@@ -342,7 +342,7 @@ class messenger
 	*/
 	static function error($type, $msg)
 	{
-		global $user, $phpEx, $phpbb_root_path, $config;
+		global $user, $phpbb_root_path, $config;
 
 		// Session doesn't exist, create it
 		if (!isset($user->session_id) || $user->session_id === '')
@@ -538,7 +538,7 @@ class messenger
 	*/
 	function msg_jabber()
 	{
-		global $config, $db, $user, $phpbb_root_path, $phpEx;
+		global $config, $db, $user, $phpbb_root_path;
 
 		if (empty($config['jab_enable']) || empty($config['jab_host']) || empty($config['jab_username']) || empty($config['jab_password']))
 		{
@@ -571,7 +571,7 @@ class messenger
 
 		if (!$use_queue)
 		{
-			include_once($phpbb_root_path . 'includes/functions_jabber.' . $phpEx);
+			include_once($phpbb_root_path . 'includes/functions_jabber.php');
 			$this->jabber = new jabber($config['jab_host'], $config['jab_port'], $config['jab_username'], htmlspecialchars_decode($config['jab_password']), $config['jab_use_ssl']);
 
 			if (!$this->jabber->connect())
@@ -622,10 +622,10 @@ class queue
 	*/
 	function __construct()
 	{
-		global $phpEx, $phpbb_root_path;
+		global $phpbb_root_path;
 
 		$this->data = array();
-		$this->cache_file = "{$phpbb_root_path}cache/queue.$phpEx";
+		$this->cache_file = "{$phpbb_root_path}cache/queue.php";
 
 		// Determine EOL character (\n for UNIX, \r\n for Windows and \r for Mac)
 		$this->eol = (!defined('PHP_EOL')) ? (($eol = strtolower(substr(PHP_OS, 0, 3))) == 'win') ? "\r\n" : (($eol == 'mac') ? "\r" : "\n") : PHP_EOL;
@@ -714,7 +714,7 @@ class queue
 	*/
 	function process()
 	{
-		global $db, $config, $phpEx, $phpbb_root_path, $user;
+		global $db, $config, $phpbb_root_path, $user;
 
 		$lock_fp = $this->lock();
 
@@ -778,7 +778,7 @@ class queue
 						continue 2;
 					}
 
-					include_once($phpbb_root_path . 'includes/functions_jabber.' . $phpEx);
+					include_once($phpbb_root_path . 'includes/functions_jabber.php');
 					$this->jabber = new jabber($config['jab_host'], $config['jab_port'], $config['jab_username'], htmlspecialchars_decode($config['jab_password']), $config['jab_use_ssl']);
 
 					if (!$this->jabber->connect())
@@ -1003,8 +1003,8 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	// Ok we have error checked as much as we can to this point let's get on it already.
 	if (!class_exists('phpbb_error_collector'))
 	{
-		global $phpbb_root_path, $phpEx;
-		include($phpbb_root_path . 'includes/error_collector.' . $phpEx);
+		global $phpbb_root_path;
+		include($phpbb_root_path . 'includes/error_collector.php');
 	}
 	$collector = new phpbb_error_collector;
 	$collector->install();
@@ -1636,7 +1636,7 @@ function mail_encode($str, $eol = "\r\n")
 */
 function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 {
-	global $config, $phpbb_root_path, $phpEx;
+	global $config, $phpbb_root_path;
 
 	// We use the EOL character for the OS here because the PHP mail function does not correctly transform line endings. On Windows SMTP is used (SMTP is \r\n), on UNIX a command is used...
 	// Reference: http://bugs.php.net/bug.php?id=15841
@@ -1644,7 +1644,7 @@ function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 
 	if (!class_exists('phpbb_error_collector'))
 	{
-		include($phpbb_root_path . 'includes/error_collector.' . $phpEx);
+		include($phpbb_root_path . 'includes/error_collector.php');
 	}
 
 	$collector = new phpbb_error_collector;

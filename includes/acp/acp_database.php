@@ -21,11 +21,11 @@ class acp_database
 	function main($id, $mode)
 	{
 		global $cache, $db, $user, $auth, $template, $table_prefix;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpbb_root_path, $phpbb_admin_path;
 
 		if (!class_exists('phpbb_db_tools'))
 		{
-			require($phpbb_root_path . 'includes/db/db_tools.' . $phpEx);
+			require($phpbb_root_path . 'includes/db/db_tools.php');
 		}
 		$this->db_tools = new phpbb_db_tools($db);
 
