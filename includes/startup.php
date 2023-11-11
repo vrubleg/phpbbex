@@ -10,9 +10,6 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-// Display all errors.
-error_reporting(E_ALL);
-
 // Check PHP version.
 if (version_compare(PHP_VERSION, '5.6', '<')) { die('PHP 5.6+ is required.'); }
 if (@preg_match('/\p{L}/u', 'a') === false) { die('PCRE with UTF-8 support is required.'); }
@@ -28,6 +25,13 @@ if (!defined('POWERED_BY'))
 {
 	define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> &copy; 2015 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
 }
+
+// Error reporting.
+if (!defined('PHP_ERROR_REPORTING'))
+{
+	define('PHP_ERROR_REPORTING', defined('DEBUG') ? E_ALL : (E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED));
+}
+error_reporting(PHP_ERROR_REPORTING);
 
 // Detect if it's HTTPS.
 if (!defined('HTTP_SECURE'))
