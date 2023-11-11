@@ -90,14 +90,27 @@ class install_install extends module
 			break;
 
 			case 'create_table':
-				$this->load_schema($mode, $sub);
-			break;
+				$this->page_title = $lang['STAGE_CREATE_TABLE'];
 
-			case 'final':
+				$this->db_connect();
+				$this->load_schema($mode, $sub);
+				$this->fetch_config();
 				$this->build_search_index($mode, $sub);
 				$this->add_modules($mode, $sub);
 				$this->add_language($mode, $sub);
 				$this->add_bots($mode, $sub);
+
+				$template->assign_vars(array(
+					'BODY'		=> $lang['STAGE_CREATE_TABLE_EXPLAIN'],
+					'L_SUBMIT'	=> $lang['NEXT_STEP'],
+					'S_HIDDEN'	=> build_hidden_fields($this->get_submitted_data()),
+					'U_ACTION'	=> $this->p_master->module_url . "?mode=$mode&amp;sub=final",
+				));
+			break;
+
+			case 'final':
+				$this->db_connect();
+				$this->fetch_config();
 				$this->email_admin($mode, $sub);
 
 				// Remove the lock file
@@ -878,19 +891,16 @@ class install_install extends module
 	}
 
 	/**
-	* Load the contents of the schema into the database and then alter it based on what has been input during the installation
+	* Prepare database connection.
 	*/
-	function load_schema($mode, $sub)
+	function db_connect()
 	{
-		global $db, $lang, $template, $phpbb_root_path;
-
-		$this->page_title = $lang['STAGE_CREATE_TABLE'];
-		$s_hidden_fields = '';
+		global $phpbb_root_path, $lang, $db, $table_prefix;
 
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
 
-		if ($data['dbms'] == '')
+		if ($data['dbms'] != 'mysql')
 		{
 			// Someone's been silly and tried calling this page direct
 			// So we send them back to the start to do it again properly
@@ -899,7 +909,6 @@ class install_install extends module
 
 		// If we get here and the extension isn't loaded it should be safe to just go ahead and load it
 		$available_dbms = get_available_dbms($data['dbms']);
-
 		if (!isset($available_dbms[$data['dbms']]))
 		{
 			// Someone's been silly and tried providing a non-existant dbms
@@ -907,7 +916,7 @@ class install_install extends module
 		}
 
 		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/mysql.php');
+		require_once($phpbb_root_path . 'includes/db/mysql.php');
 
 		// Instantiate the database
 		$db = new dbal_mysql();
@@ -916,20 +925,45 @@ class install_install extends module
 		// NOTE: trigger_error does not work here.
 		$db->sql_return_on_error(true);
 
+		$table_prefix = $data['table_prefix'];
+		require_once($phpbb_root_path . 'includes/constants.php');
+	}
+
+	/**
+	* Fetch current config.
+	*/
+	function fetch_config()
+	{
+		global $db, $config;
+
+		$sql = 'SELECT * FROM ' . CONFIG_TABLE;
+		$result = $db->sql_query($sql);
+
+		$config = array();
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$config[$row['config_name']] = $row['config_value'];
+		}
+
+		$db->sql_freeresult($result);
+	}
+
+	/**
+	* Load the contents of the schema into the database and then alter it based on what has been input during the installation
+	*/
+	function load_schema($mode, $sub)
+	{
+		global $phpbb_root_path, $lang, $db;
+
+		// Obtain any submitted data
+		$data = $this->get_submitted_data();
+
 		// Ok we have the db info go ahead and read in the relevant schema
 		// and work on building the table
-		$dbms_schema = 'schemas/' . $available_dbms[$data['dbms']]['SCHEMA'] . '_schema.sql';
-
-		// How should we treat this schema?
-		$delimiter = $available_dbms[$data['dbms']]['DELIM'];
-
-		$sql_query = @file_get_contents($dbms_schema);
-
+		$sql_query = file_get_contents('schemas/mysql_schema.sql');
 		$sql_query = preg_replace('#phpbb_#i', $data['table_prefix'], $sql_query);
-
 		$sql_query = phpbb_remove_comments($sql_query);
-
-		$sql_query = split_sql_file($sql_query, $delimiter);
+		$sql_query = split_sql_file($sql_query, ';');
 
 		foreach ($sql_query as $sql)
 		{
@@ -1061,17 +1095,6 @@ class install_install extends module
 				$this->p_master->db_error($error['message'], $sql, __LINE__, __FILE__);
 			}
 		}
-
-		$submit = $lang['NEXT_STEP'];
-
-		$url = $this->p_master->module_url . "?mode=$mode&amp;sub=final";
-
-		$template->assign_vars(array(
-			'BODY'		=> $lang['STAGE_CREATE_TABLE_EXPLAIN'],
-			'L_SUBMIT'	=> $submit,
-			'S_HIDDEN'	=> build_hidden_fields($data),
-			'U_ACTION'	=> $url,
-		));
 	}
 
 	/**
@@ -1079,45 +1102,9 @@ class install_install extends module
 	*/
 	function build_search_index($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path, $config;
+		global $phpbb_root_path, $db, $config, $lang;
 
-		// Obtain any submitted data
-		$data = $this->get_submitted_data();
-		$table_prefix = $data['table_prefix'];
-
-		// If we get here and the extension isn't loaded it should be safe to just go ahead and load it
-		$available_dbms = get_available_dbms($data['dbms']);
-
-		if (!isset($available_dbms[$data['dbms']]))
-		{
-			// Someone's been silly and tried providing a non-existant dbms
-			$this->p_master->redirect("index.php?mode=install");
-		}
-
-		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/mysql.php');
-
-		// Instantiate the database
-		$db = new dbal_mysql();
-		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
-
-		// NOTE: trigger_error does not work here.
-		$db->sql_return_on_error(true);
-
-		include_once($phpbb_root_path . 'includes/constants.php');
-		include_once($phpbb_root_path . 'includes/search/fulltext_native.php');
-
-		// Fill the config array - it is needed by those functions we call
-		$sql = 'SELECT *
-			FROM ' . CONFIG_TABLE;
-		$result = $db->sql_query($sql);
-
-		$config = array();
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$config[$row['config_name']] = $row['config_value'];
-		}
-		$db->sql_freeresult($result);
+		require_once($phpbb_root_path . 'includes/search/fulltext_native.php');
 
 		$error = false;
 		$search = new fulltext_native($error);
@@ -1529,18 +1516,6 @@ class install_install extends module
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
 
-		// Fill the config array - it is needed by those functions we call
-		$sql = 'SELECT *
-			FROM ' . CONFIG_TABLE;
-		$result = $db->sql_query($sql);
-
-		$config = array();
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$config[$row['config_name']] = $row['config_value'];
-		}
-		$db->sql_freeresult($result);
-
 		$sql = 'SELECT group_id
 			FROM ' . GROUPS_TABLE . "
 			WHERE group_name = 'BOTS'";
@@ -1612,17 +1587,6 @@ class install_install extends module
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
 
-		$sql = 'SELECT *
-			FROM ' . CONFIG_TABLE;
-		$result = $db->sql_query($sql);
-
-		$config = array();
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$config[$row['config_name']] = $row['config_value'];
-		}
-		$db->sql_freeresult($result);
-
 		$user->session_begin();
 		$auth->login($data['admin_name'], $data['admin_pass1'], false, true, true);
 
@@ -1656,7 +1620,7 @@ class install_install extends module
 
 		$template->assign_vars(array(
 			'TITLE'		=> $lang['INSTALL_CONGRATS'],
-			'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['phpbbex_version'], append_sid($phpbb_root_path . 'install/index.php', 'mode=convert&amp;language=' . $data['language']), '../docs/README.html'),
+			'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['phpbbex_version'], append_sid($phpbb_root_path . 'install/index.php', 'mode=convert&amp;language=' . $data['language'])),
 			'L_SUBMIT'	=> $lang['INSTALL_LOGIN'],
 			'U_ACTION'	=> append_sid($phpbb_root_path . 'adm/index.php'),
 		));

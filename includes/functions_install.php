@@ -18,7 +18,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false)
 {
 	global $lang;
 	$available_dbms = array(
-		'mysql'	=> array(
+		'mysql' => array(
 			'LABEL'			=> 'MySQLi',
 			'SCHEMA'		=> 'mysql',
 			'MODULE'		=> 'mysqli',
