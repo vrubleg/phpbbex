@@ -2189,7 +2189,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Assign sid if session id is not specified
-	if ($session_id === false && defined('NEED_SID'))
+	if ($session_id === false && defined('NEED_SID') || $session_id === true)
 	{
 		$session_id = $_SID;
 	}
