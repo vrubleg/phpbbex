@@ -82,7 +82,7 @@ adm_page_footer();
 function adm_page_header($page_title)
 {
 	global $config, $db, $user, $template;
-	global $phpbb_root_path, $phpbb_admin_path, $SID, $_SID;
+	global $phpbb_root_path, $phpbb_admin_path;
 
 	if (defined('HEADER_INC'))
 	{
@@ -104,8 +104,6 @@ function adm_page_header($page_title)
 		'PAGE_TITLE'			=> $page_title,
 		'USERNAME'				=> $user->data['username'],
 
-		'SID'					=> $SID,
-		'_SID'					=> $_SID,
 		'SESSION_ID'			=> $user->session_id,
 		'ROOT_PATH'				=> $phpbb_admin_path,
 		'PHPBB_ROOT_PATH'		=> $phpbb_root_path,
@@ -113,7 +111,7 @@ function adm_page_header($page_title)
 		'U_LOGOUT'				=> append_sid("{$phpbb_root_path}ucp.php", 'mode=logout'),
 		'U_ADM_LOGOUT'			=> append_sid("{$phpbb_admin_path}index.php", 'action=admlogout'),
 		'U_ADM_INDEX'			=> append_sid("{$phpbb_admin_path}index.php"),
-		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.php"),
+		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.php", false, true, false),
 
 		'T_IMAGES_PATH'			=> "{$phpbb_root_path}images/",
 

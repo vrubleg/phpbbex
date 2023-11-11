@@ -2134,6 +2134,11 @@ function on_page($num_items, $per_page, $start)
 
 // Server functions (building urls, redirecting...)
 
+if (!defined('NEED_SID'))
+{
+	define('NEED_SID', false);
+}
+
 /**
 * Append session id to url.
 *
@@ -2151,7 +2156,7 @@ function on_page($num_items, $per_page, $start)
 * </code>
 *
 */
-function append_sid($url, $params = false, $is_amp = true, $session_id = false)
+function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SID)
 {
 	global $_SID, $_EXTRA_URL, $config, $user;
 
@@ -2177,7 +2182,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Handle really simple cases quickly
-	if ($_SID == '' && $session_id === false && empty($_EXTRA_URL) && !$params_is_array && !$anchor)
+	if ((!$_SID || !$session_id) && empty($_EXTRA_URL) && !$params_is_array && !$anchor)
 	{
 		if ($params === false)
 		{
@@ -2189,7 +2194,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Assign sid if session id is not specified
-	if ($session_id === false && defined('NEED_SID') || $session_id === true)
+	if ($session_id === true)
 	{
 		$session_id = $_SID;
 	}
@@ -4066,7 +4071,7 @@ function phpbb_http_login($param)
 */
 function page_header($page_title = '', $display_online_list = true, $item_id = 0, $item = 'forum')
 {
-	global $db, $config, $template, $SID, $_SID, $_EXTRA_URL, $user, $auth, $phpbb_root_path;
+	global $db, $config, $template, $_EXTRA_URL, $user, $auth, $phpbb_root_path;
 
 	if (defined('HEADER_INC'))
 	{
@@ -4213,10 +4218,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	}
 
 	$s_search_hidden_fields = empty($config['default_search_titleonly']) ? array() : array('sf' => 'titleonly', 'sr' => 'topics');
-	if ($_SID)
-	{
-		$s_search_hidden_fields['sid'] = $_SID;
-	}
 
 	if (!empty($_EXTRA_URL))
 	{
@@ -4262,8 +4263,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
 		'S_USER_NEW'					=> $user->data['user_new'],
 
-		'SID'				=> $SID,
-		'_SID'				=> $_SID,
 		'SESSION_ID'		=> $user->session_id,
 		'ROOT_PATH'			=> $web_path,
 		'BOARD_URL'			=> $board_url,

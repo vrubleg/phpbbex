@@ -144,7 +144,7 @@ class phpbb_session
 	*/
 	function session_begin($update_session_page = true)
 	{
-		global $SID, $_SID, $_EXTRA_URL, $db, $config, $phpbb_root_path;
+		global $_SID, $_EXTRA_URL, $db, $config, $phpbb_root_path;
 
 		// Give us some basic information
 		$this->time_now				= time();
@@ -188,8 +188,7 @@ class phpbb_session
 			$this->cookie_data['k'] = get_cookie('k', '');
 		}
 
-		$SID = (defined('NEED_SID')) ? '?sid=' . $this->session_id : '?sid=';
-		$_SID = (defined('NEED_SID')) ? $this->session_id : '';
+		$_SID = $this->session_id;
 
 		$_EXTRA_URL = array();
 
@@ -251,7 +250,7 @@ class phpbb_session
 		}
 
 		// if no session id is set, redirect to index.php
-		if (defined('NEED_SID') && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
+		if (defined('NEED_SID') && NEED_SID && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
 		{
 			http_response_code(401);
 			redirect(append_sid("{$phpbb_root_path}index.php"));
@@ -446,7 +445,7 @@ class phpbb_session
 	*/
 	function session_create($user_id = false, $set_admin = false, $persist_login = false, $viewonline = true)
 	{
-		global $SID, $_SID, $db, $config, $cache, $phpbb_root_path;
+		global $_SID, $db, $config, $cache, $phpbb_root_path;
 
 		$this->data = array();
 
@@ -686,7 +685,6 @@ class phpbb_session
 					$db->sql_query($sql);
 				}
 
-				$SID = '?sid=';
 				$_SID = '';
 				return true;
 			}
@@ -779,7 +777,6 @@ class phpbb_session
 		}
 
 		// refresh data
-		$SID = '?sid=' . $this->session_id;
 		$_SID = $this->session_id;
 		$this->data = array_merge($this->data, $sql_ary);
 
@@ -821,7 +818,6 @@ class phpbb_session
 				WHERE user_id = ' . (int) $this->data['user_id'];
 			$db->sql_query($sql);
 
-			$SID = '?sid=';
 			$_SID = '';
 		}
 
@@ -838,7 +834,7 @@ class phpbb_session
 	*/
 	function session_kill($new_session = true)
 	{
-		global $SID, $_SID, $db, $config, $phpbb_root_path;
+		global $_SID, $db, $config, $phpbb_root_path;
 
 		$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
 			WHERE session_id = '" . $db->sql_escape($this->session_id) . "'
@@ -891,7 +887,6 @@ class phpbb_session
 		del_cookie('k');
 		del_cookie('sid');
 
-		$SID = '?sid=';
 		$this->session_id = $_SID = '';
 
 		// To make sure a valid session is created we create one for the anonymous user
@@ -1587,10 +1582,9 @@ class phpbb_user extends phpbb_session
 
 		if (!empty($_GET['style']) && $auth->acl_get('a_styles') && !defined('ADMIN_START'))
 		{
-			global $SID, $_EXTRA_URL;
+			global $_EXTRA_URL;
 
 			$style = request_var('style', 0);
-			$SID .= '&amp;style=' . $style;
 			$_EXTRA_URL = array('style=' . $style);
 		}
 		else

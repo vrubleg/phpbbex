@@ -1229,11 +1229,6 @@ for ($i = 100; $i <= 1000 ; $i += 100)
 
 $s_hidden_fields = array('t' => $topic_id);
 
-if ($_SID)
-{
-	$s_hidden_fields['sid'] = $_SID;
-}
-
 if (!empty($_EXTRA_URL))
 {
 	foreach ($_EXTRA_URL as $url_param)

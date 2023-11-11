@@ -953,12 +953,11 @@ class phpbb_auth
 
 				if ($admin)
 				{
-					global $SID, $_SID;
+					global $_SID;
 
 					del_cookie('u');
 					del_cookie('sid');
 
-					$SID = '?sid=';
 					$user->session_id = $_SID = '';
 				}
 
