@@ -30,7 +30,7 @@ if (!empty($setmodules))
 		'module_filename'	=> substr(basename(__FILE__), 0, -4),
 		'module_order'		=> 10,
 		'module_subs'		=> '',
-		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'DATABASE', 'ADMINISTRATOR', 'CONFIG_FILE', 'ADVANCED', 'CREATE_TABLE', 'FINAL'),
+		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'DATABASE', 'ADMINISTRATOR', 'CONFIG_FILE', 'CREATE_TABLE', 'FINAL'),
 		'module_reqs'		=> ''
 	);
 }
@@ -86,11 +86,6 @@ class install_install extends module
 
 			case 'config_file':
 				$this->create_config_file($mode, $sub);
-
-			break;
-
-			case 'advanced':
-				$this->obtain_advanced_settings($mode, $sub);
 
 			break;
 
@@ -876,86 +871,10 @@ class install_install extends module
 				'BODY'		=> $lang['CONFIG_FILE_WRITTEN'],
 				'L_SUBMIT'	=> $lang['NEXT_STEP'],
 				'S_HIDDEN'	=> $s_hidden_fields,
-				'U_ACTION'	=> $this->p_master->module_url . "?mode=$mode&amp;sub=advanced",
+				'U_ACTION'	=> $this->p_master->module_url . "?mode=$mode&amp;sub=create_table",
 			));
 			return;
 		}
-	}
-
-	/**
-	* Provide an opportunity to customise some advanced settings during the install
-	* in case it is necessary for them to be set to access later
-	*/
-	function obtain_advanced_settings($mode, $sub)
-	{
-		global $lang, $template;
-
-		$this->page_title = $lang['STAGE_ADVANCED'];
-
-		// Obtain any submitted data
-		$data = $this->get_submitted_data();
-
-		if ($data['dbms'] == '')
-		{
-			// Someone's been silly and tried calling this page direct
-			// So we send them back to the start to do it again properly
-			$this->p_master->redirect("index.php?mode=install");
-		}
-
-		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
-
-		$data['email_enable'] = ($data['email_enable'] !== '') ? $data['email_enable'] : true;
-
-		foreach ($this->advanced_config_options as $config_key => $vars)
-		{
-			if (!is_array($vars) && strpos($config_key, 'legend') === false)
-			{
-				continue;
-			}
-
-			if (strpos($config_key, 'legend') !== false)
-			{
-				$template->assign_block_vars('options', array(
-					'S_LEGEND'		=> true,
-					'LEGEND'		=> $lang[$vars])
-				);
-
-				continue;
-			}
-
-			$options = isset($vars['options']) ? $vars['options'] : '';
-
-			$template->assign_block_vars('options', array(
-				'KEY'			=> $config_key,
-				'TITLE'			=> $lang[$vars['lang']],
-				'S_EXPLAIN'		=> $vars['explain'],
-				'S_LEGEND'		=> false,
-				'TITLE_EXPLAIN'	=> ($vars['explain']) ? $lang[$vars['lang'] . '_EXPLAIN'] : '',
-				'CONTENT'		=> $this->p_master->input_field($config_key, $vars['type'], $data[$config_key], $options),
-				)
-			);
-		}
-
-		$config_options = array_merge($this->db_config_options, $this->admin_config_options);
-		foreach ($config_options as $config_key => $vars)
-		{
-			if (!is_array($vars))
-			{
-				continue;
-			}
-			$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
-		}
-
-		$submit = $lang['NEXT_STEP'];
-
-		$url = $this->p_master->module_url . "?mode=$mode&amp;sub=create_table";
-
-		$template->assign_vars(array(
-			'BODY'		=> $lang['STAGE_ADVANCED_EXPLAIN'],
-			'L_SUBMIT'	=> $submit,
-			'S_HIDDEN'	=> $s_hidden_fields,
-			'U_ACTION'	=> $url,
-		));
 	}
 
 	/**
@@ -1070,30 +989,6 @@ class install_install extends module
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($lang['default_dateformat']) . "'
 				WHERE config_name = 'default_dateformat'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['email_enable']) . "'
-				WHERE config_name = 'email_enable'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_delivery']) . "'
-				WHERE config_name = 'smtp_delivery'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_host']) . "'
-				WHERE config_name = 'smtp_host'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_auth']) . "'
-				WHERE config_name = 'smtp_auth_method'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_user']) . "'
-				WHERE config_name = 'smtp_username'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_pass']) . "'
-				WHERE config_name = 'smtp_password'",
 
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['admin_name']) . "'
@@ -1768,24 +1663,6 @@ class install_install extends module
 	}
 
 	/**
-	* Generate a list of available mail server authentication methods
-	*/
-	function mail_auth_select($selected_method)
-	{
-		global $lang;
-
-		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5');
-		$s_smtp_auth_options = '';
-
-		foreach ($auth_methods as $method)
-		{
-			$s_smtp_auth_options .= '<option value="' . $method . '"' . (($selected_method == $method) ? ' selected="selected"' : '') . '>' . $lang['SMTP_' . str_replace('-', '_', $method)] . '</option>';
-		}
-
-		return $s_smtp_auth_options;
-	}
-
-	/**
 	* Get submitted data
 	*/
 	function get_submitted_data()
@@ -1805,12 +1682,6 @@ class install_install extends module
 			'admin_pass2'	=> request_var('admin_pass2', '', true),
 			'board_email1'	=> strtolower(request_var('board_email1', '')),
 			'board_email2'	=> strtolower(request_var('board_email2', '')),
-			'email_enable'	=> request_var('email_enable', ''),
-			'smtp_delivery'	=> request_var('smtp_delivery', ''),
-			'smtp_host'		=> request_var('smtp_host', ''),
-			'smtp_auth'		=> request_var('smtp_auth', ''),
-			'smtp_user'		=> request_var('smtp_user', ''),
-			'smtp_pass'		=> request_var('smtp_pass', ''),
 		);
 	}
 
@@ -1835,15 +1706,6 @@ class install_install extends module
 		'admin_pass2'			=> array('lang' => 'ADMIN_PASSWORD_CONFIRM',	'type' => 'password:25:100', 'explain' => false),
 		'board_email1'			=> array('lang' => 'CONTACT_EMAIL',				'type' => 'text:25:100', 'explain' => false),
 		'board_email2'			=> array('lang' => 'CONTACT_EMAIL_CONFIRM',		'type' => 'text:25:100', 'explain' => false),
-	);
-	var $advanced_config_options = array(
-		'legend1'				=> 'ACP_EMAIL_SETTINGS',
-		'email_enable'			=> array('lang' => 'ENABLE_EMAIL',		'type' => 'radio:enabled_disabled', 'explain' => true),
-		'smtp_delivery'			=> array('lang' => 'USE_SMTP',			'type' => 'radio:yes_no', 'explain' => true),
-		'smtp_host'				=> array('lang' => 'SMTP_SERVER',		'type' => 'text:25:50', 'explain' => false),
-		'smtp_auth'				=> array('lang' => 'SMTP_AUTH_METHOD',	'type' => 'select', 'options' => '$this->module->mail_auth_select(\'{VALUE}\')', 'explain' => true),
-		'smtp_user'				=> array('lang' => 'SMTP_USERNAME',		'type' => 'text:25:255', 'explain' => true, 'options' => array('autocomplete' => 'off')),
-		'smtp_pass'				=> array('lang' => 'SMTP_PASSWORD',		'type' => 'text:25:255', 'explain' => true, 'options' => array('autocomplete' => 'off')),
 	);
 
 	/**
