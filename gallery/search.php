@@ -635,10 +635,6 @@ if (phpbb_gallery::$display_popup)
 {
 	$s_hidden_fields['display'] = 'popup';
 }
-if ($_SID)
-{
-	$s_hidden_fields['sid'] = $_SID;
-}
 
 if (!empty($_EXTRA_URL))
 {
