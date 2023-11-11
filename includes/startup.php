@@ -27,11 +27,11 @@ if (!defined('POWERED_BY'))
 }
 
 // Error reporting.
-if (!defined('PHP_ERROR_REPORTING'))
+if (!defined('ERROR_REPORTING'))
 {
-	define('PHP_ERROR_REPORTING', defined('DEBUG') ? E_ALL : (E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED));
+	define('ERROR_REPORTING', defined('DEBUG') ? E_ALL : (E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED));
 }
-error_reporting(PHP_ERROR_REPORTING);
+error_reporting(ERROR_REPORTING);
 
 // Detect if it's HTTPS.
 if (!defined('HTTP_SECURE'))
