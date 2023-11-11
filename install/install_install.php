@@ -14,14 +14,14 @@ if (!defined('IN_INSTALL'))
 if (!empty($setmodules))
 {
 	// If phpBB is already installed we do not include this module
-	if (@file_exists($phpbb_root_path . 'config.php') && !file_exists($phpbb_root_path . 'cache/install_lock'))
+	if (file_exists($phpbb_root_path . 'config.php') && !file_exists($phpbb_root_path . 'cache/install_lock'))
 	{
-		include_once($phpbb_root_path . 'config.php');
+		require($phpbb_root_path . 'config.php');
+	}
 
-		if (defined('PHPBB_INSTALLED'))
-		{
-			return;
-		}
+	if (defined('PHPBB_INSTALLED'))
+	{
+		return;
 	}
 
 	$module[] = array(
@@ -104,7 +104,6 @@ class install_install extends module
 				$this->add_language($mode, $sub);
 				$this->add_bots($mode, $sub);
 				$this->email_admin($mode, $sub);
-				$this->disable_avatars_if_unwritable();
 
 				// Remove the lock file
 				@unlink($phpbb_root_path . 'cache/install_lock');
@@ -139,9 +138,7 @@ class install_install extends module
 		));
 
 		// Test the minimum PHP version
-		$php_version = PHP_VERSION;
-
-		if (version_compare($php_version, '5.2.2') < 0)
+		if (version_compare(PHP_VERSION, '5.6', '<'))
 		{
 			$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
 		}
@@ -165,29 +162,6 @@ class install_install extends module
 			'S_EXPLAIN'		=> false,
 			'S_LEGEND'		=> false,
 		));
-
-		// Don't check for register_globals on 5.4+
-		if (version_compare($php_version, '5.4.0-dev') < 0)
-		{
-			// Check for register_globals being enabled
-			if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on')
-			{
-				$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
-			}
-			else
-			{
-				$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
-			}
-
-			$template->assign_block_vars('checks', array(
-				'TITLE'			=> $lang['PHP_REGISTER_GLOBALS'],
-				'TITLE_EXPLAIN'	=> $lang['PHP_REGISTER_GLOBALS_EXPLAIN'],
-				'RESULT'		=> $result,
-
-				'S_EXPLAIN'		=> true,
-				'S_LEGEND'		=> false,
-			));
-		}
 
 		// Check for url_fopen
 		if (@ini_get('allow_url_fopen') == '1' || strtolower(@ini_get('allow_url_fopen')) == 'on')
@@ -816,19 +790,20 @@ class install_install extends module
 		}
 		@fclose($fp);
 
-		@chmod($phpbb_root_path . 'cache/install_lock', 0777);
+		@chmod($phpbb_root_path . 'cache/install_lock', 0666);
 
 		// Time to convert the data provided into a config file
 		$available_dbms = get_available_dbms($data['dbms']);
 		$config_data = phpbb_create_config_file_data($data);
 
 		// Attempt to write out the config file directly. If it works, this is the easiest way to do it ...
-		if ((file_exists($phpbb_root_path . 'config.php') && phpbb_is_writable($phpbb_root_path . 'config.php')) || phpbb_is_writable($phpbb_root_path))
+		$config_path = $phpbb_root_path . 'config.php';
+		if ((file_exists($config_path) && phpbb_is_writable($config_path)) || phpbb_is_writable($phpbb_root_path))
 		{
 			// Assume it will work ... if nothing goes wrong below
 			$written = true;
 
-			if (!($fp = @fopen($phpbb_root_path . 'config.php', 'w')))
+			if (!($fp = @fopen($config_path, 'w')))
 			{
 				// Something went wrong ... so let's try another method
 				$written = false;
@@ -845,17 +820,14 @@ class install_install extends module
 			if ($written)
 			{
 				// We may revert back to chmod() if we see problems with users not able to change their config.php file directly
-				phpbb_chmod($phpbb_root_path . 'config.php', CHMOD_READ);
+				phpbb_chmod($config_path, CHMOD_READ);
 			}
 		}
 
 		if (isset($_POST['dldone']))
 		{
-			// Do a basic check to make sure that the file has been uploaded
-			// Note that all we check is that the file has _something_ in it
-			// We don't compare the contents exactly - if they can't upload
-			// a single file correctly, it's likely they will have other problems....
-			if (filesize($phpbb_root_path . 'config.php') > 10)
+			// Do a basic check to make sure that the file has been uploaded.
+			if (file_exists($config_path) && strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false)
 			{
 				$written = true;
 			}
@@ -1170,6 +1142,18 @@ class install_install extends module
 			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '1'
 				WHERE config_name = 'captcha_gd'";
+		}
+
+		// Disable avatars if avatar directory isn't writable.
+		if (!phpbb_is_writable($phpbb_root_path . 'images/avatars/upload/'))
+		{
+			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
+				SET config_value = '0'
+				WHERE config_name = 'allow_avatar'";
+
+			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
+				SET config_value = '0'
+				WHERE config_name = 'allow_avatar_upload'";
 		}
 
 		foreach ($sql_ary as $sql)
@@ -1784,21 +1768,6 @@ class install_install extends module
 	}
 
 	/**
-	* Check if the avatar directory is writable and disable avatars
-	* if it isn't writable.
-	*/
-	function disable_avatars_if_unwritable()
-	{
-		global $phpbb_root_path;
-
-		if (!phpbb_is_writable($phpbb_root_path . 'images/avatars/upload/'))
-		{
-			set_config('allow_avatar', 0);
-			set_config('allow_avatar_upload', 0);
-		}
-	}
-
-	/**
 	* Generate a list of available mail server authentication methods
 	*/
 	function mail_auth_select($selected_method)
@@ -1836,9 +1805,6 @@ class install_install extends module
 			'admin_pass2'	=> request_var('admin_pass2', '', true),
 			'board_email1'	=> strtolower(request_var('board_email1', '')),
 			'board_email2'	=> strtolower(request_var('board_email2', '')),
-			'ftp_path'		=> request_var('ftp_path', ''),
-			'ftp_user'		=> request_var('ftp_user', ''),
-			'ftp_pass'		=> request_var('ftp_pass', ''),
 			'email_enable'	=> request_var('email_enable', ''),
 			'smtp_delivery'	=> request_var('smtp_delivery', ''),
 			'smtp_host'		=> request_var('smtp_host', ''),

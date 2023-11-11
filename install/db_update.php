@@ -5,15 +5,15 @@
 * @license GNU Public License
 */
 
-define('OLDEST_PHPBBEX_VERSION', '1.7.0');
-define('NEWEST_PHPBBEX_VERSION', '1.9.6');
-
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
-header('Content-Type: text/html; charset=utf-8');
+define('OLDEST_PHPBBEX_VERSION', '1.7.0');
+define('NEWEST_PHPBBEX_VERSION', '1.9.6');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
+
+header('Content-Type: text/html; charset=utf-8');
 
 $config_path = $phpbb_root_path . 'config.php';
 $is_installed = file_exists($config_path)
