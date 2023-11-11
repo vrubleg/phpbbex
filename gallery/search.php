@@ -646,7 +646,7 @@ if (!empty($_EXTRA_URL))
 }
 
 $template->assign_vars(array(
-	'S_SEARCH_ACTION'		=> phpbb_gallery_url::append_sid('search', false, true, 0), // We force no ?sid= appending by using 0
+	'S_SEARCH_ACTION'		=> phpbb_gallery_url::append_sid('search'),
 	'S_HIDDEN_FIELDS'		=> build_hidden_fields($s_hidden_fields),
 	'S_ALBUM_OPTIONS'		=> $s_albums,
 	'S_SELECT_SORT_DIR'		=> $s_sort_dir,
