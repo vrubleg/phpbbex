@@ -509,10 +509,6 @@ $s_search_hidden_fields = array(
 	't' => $topic_id,
 	'sf' => 'msgonly',
 );
-if ($_SID)
-{
-	$s_search_hidden_fields['sid'] = $_SID;
-}
 
 if (!empty($_EXTRA_URL))
 {

@@ -48,7 +48,7 @@ $lang = array_merge($lang, array(
 	'COLLIDING_USERNAMES_FOUND'	=> 'Colliding usernames were found on your old board. In order to complete the conversion please delete or rename these users so that there is only one user on your old board for each clean username.',
 	'COLLIDING_USER'			=> '» user id: <strong>%d</strong> username: <strong>%s</strong> (%d posts)',
 	'CONFIG_CONVERT'			=> 'Converting the configuration',
-	'CONFIG_FILE_UNABLE_WRITE'	=> 'It was not possible to write the configuration file. Alternative methods for this file to be created are presented below.',
+	'CONFIG_FILE_UNABLE_WRITE'	=> 'It was not possible to write the configuration file.',
 	'CONFIG_FILE_WRITTEN'		=> 'The configuration file has been written. You may now proceed to the next step of the installation.',
 	'CONFIG_PHPBB_EMPTY'		=> 'The phpBBex config variable for “%s” is empty.',
 	'CONFIG_RETRY'				=> 'Retry',
@@ -130,7 +130,7 @@ $lang = array_merge($lang, array(
 	'DLL_XML'					=> 'XML support [ Jabber ]',
 	'DLL_ZLIB'					=> 'zlib compression support [ gz, .tar.gz, .zip ]',
 	'DL_CONFIG'					=> 'Download config',
-	'DL_CONFIG_EXPLAIN'			=> 'You may download the complete config.php to your own PC. You will then need to upload the file manually, replacing any existing config.php in your phpBBex root directory. Please remember to upload the file in ASCII format (see your FTP application documentation if you are unsure how to achieve this). When you have uploaded the config.php please click “Done” to move to the next stage.',
+	'DL_CONFIG_EXPLAIN'			=> 'You may download the complete config.php to your own PC. You will then need to upload the file manually, replacing any existing config.php in your phpBBex root directory. When you have uploaded the config.php please click “Done” to move to the next stage.',
 	'DL_DOWNLOAD'				=> 'Download',
 	'DONE'						=> 'Done',
 
@@ -151,33 +151,21 @@ $lang = array_merge($lang, array(
 	'FORUM_PATH'				=> 'Board path',
 	'FORUM_PATH_EXPLAIN'		=> 'This is the <strong>relative</strong> path on disk to your former board from the <strong>root of this phpBBex installation</strong>.',
 	'FOUND'						=> 'Found',
-	'FTP_CONFIG'				=> 'Transfer config by FTP',
-	'FTP_CONFIG_EXPLAIN'		=> 'phpBBex has detected the presence of the FTP module on this server. You may attempt to install your config.php via this if you wish. You will need to supply the information listed below. Remember your username and password are those to your server! (ask your hosting provider for details if you are unsure what these are).',
-	'FTP_PATH'					=> 'FTP path',
-	'FTP_PATH_EXPLAIN'			=> 'This is the path from your root directory to that of phpBBex, e.g. <samp>htdocs/phpBBex/</samp>.',
-	'FTP_UPLOAD'				=> 'Upload',
 
 	'GPL'						=> 'General Public License',
 
 	'INITIAL_CONFIG'			=> 'Basic configuration',
 	'INITIAL_CONFIG_EXPLAIN'	=> 'Now that install has determined your server can run phpBBex you need to supply some specific information. If you do not know how to connect to your database please contact your hosting provider (in the first instance) or use the phpBBex support forums. When entering data please ensure you check it thoroughly before continuing.',
 	'INSTALL_CONGRATS'			=> 'Congratulations!',
-	'INSTALL_CONGRATS_EXPLAIN'	=> '
-		You have successfully installed phpBBex %1$s. Go live with your phpBBex!</p>
-		<p>Clicking the button below will take you to a Administration Control Panel (ACP). You should take some time to examine the options available to you. Remember that help is available online via the <a href="http://www.phpbb.com/support/documentation/3.0/">Documentation on phpbb.com</a> and the <a href="//phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forums</a>.</p>',
+	'INSTALL_CONGRATS_EXPLAIN'	=> 'You have successfully installed phpBBex %1$s. Go live with your phpBBex!',
 	'INSTALL_INTRO'				=> 'Welcome to phpBBex installation!',
-
-	'INSTALL_INTRO_BODY'		=> 'phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB 3. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a target="_blank" href="//phpbbex.com/forum/viewtopic.php?t=28">More...</a>
-
-	<p>With this option, it is possible to install phpBBex onto your server.</p><p>In order to proceed, you will need your MySQL database settings:
-
+	'INSTALL_INTRO_BODY'		=> 'phpBBex is an extended version of classic phpBB 3.0. phpBBex supports modern versions of PHP and is as lightweight as the original in contrary to newer versions of phpBB.
+	<p>In order to proceed, you will need your MySQL database settings:
 	<ul>
-		<li>The Database server hostname or DSN - the address of the MySQL database server;</li>
-		<li>The Database server port - the port of the database server (most of the time this is not needed);</li>
-		<li>The Database name - the name of the database on the server;</li>
-		<li>The Database username and Database password - the login data to access the database.</li>
+		<li>The address of the MySQL database server;</li>
+		<li>The name of the database on the server;</li>
+		<li>The login and password to access the database.</li>
 	</ul>
-
 	<p>See also:
 	<ul>
 		<li><a target="_blank" href="//phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forum</a></li>
@@ -252,14 +240,12 @@ $lang = array_merge($lang, array(
 	'PHP_OPTIONAL_MODULE_EXPLAIN'	=> '<strong>Optional</strong> - These modules or applications are optional. However, if they are available they will enable extra features.',
 	'PHP_SUPPORTED_DB'				=> 'Supported databases',
 	'PHP_SUPPORTED_DB_EXPLAIN'		=> '<strong>Required</strong> - You must have support for at least one compatible database within PHP. If no database modules are shown as available you should contact your hosting provider or review the relevant PHP installation documentation for advice.',
-	'PHP_REGISTER_GLOBALS'			=> 'PHP setting <var>register_globals</var> is disabled',
-	'PHP_REGISTER_GLOBALS_EXPLAIN'	=> 'phpBBex will still run if this setting is enabled, but if possible, it is recommended that register_globals is disabled on your PHP install for security reasons.',
 	'PHP_SAFE_MODE'					=> 'Safe mode',
 	'PHP_SETTINGS'					=> 'PHP version and settings',
-	'PHP_SETTINGS_EXPLAIN'			=> '<strong>Required</strong> - You must be running at least version 5.2.3 of PHP in order to install phpBBex. If <var>safe mode</var> is displayed below your PHP installation is running in that mode. This will impose limitations on remote administration and similar features.',
+	'PHP_SETTINGS_EXPLAIN'			=> '<strong>Required</strong> - You must be running at least version 5.6 of PHP in order to install phpBBex. If <var>safe mode</var> is displayed below your PHP installation is running in that mode. This will impose limitations on remote administration and similar features.',
 	'PHP_URL_FOPEN_SUPPORT'			=> 'PHP setting <var>allow_url_fopen</var> is enabled',
 	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Optional</strong> - This setting is optional, however certain phpBBex functions like off-site avatars will not work properly without it.',
-	'PHP_VERSION_REQD'				=> 'PHP version >= 5.2.3',
+	'PHP_VERSION_REQD'				=> 'PHP version ≥ 5.6',
 	'POST_ID'						=> 'Post ID',
 	'PREFIX_FOUND'					=> 'A scan of your tables has shown a valid installation using <strong>%s</strong> as table prefix.',
 	'PREPROCESS_STEP'				=> 'Executing pre-processing functions/queries',

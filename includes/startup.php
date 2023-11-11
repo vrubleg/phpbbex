@@ -10,19 +10,28 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-// Display all errors.
-error_reporting(E_ALL);
-
 // Check PHP version.
 if (version_compare(PHP_VERSION, '5.6', '<')) { die('PHP 5.6+ is required.'); }
 if (@preg_match('/\p{L}/u', 'a') === false) { die('PCRE with UTF-8 support is required.'); }
 if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
+
+if (file_exists($phpbb_root_path . 'config.php'))
+{
+	require($phpbb_root_path . 'config.php');
+}
 
 // Powered by ...
 if (!defined('POWERED_BY'))
 {
 	define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> &copy; 2015 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
 }
+
+// Error reporting.
+if (!defined('ERROR_REPORTING'))
+{
+	define('ERROR_REPORTING', defined('DEBUG') ? E_ALL : (E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED));
+}
+error_reporting(ERROR_REPORTING);
 
 // Detect if it's HTTPS.
 if (!defined('HTTP_SECURE'))

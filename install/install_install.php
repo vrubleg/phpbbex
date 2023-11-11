@@ -7,21 +7,15 @@
 
 if (!defined('IN_INSTALL'))
 {
-	// Someone has tried to access the file direct. This is not a good idea, so exit
 	exit;
 }
 
 if (!empty($setmodules))
 {
-	// If phpBB is already installed we do not include this module
-	if (@file_exists($phpbb_root_path . 'config.php') && !file_exists($phpbb_root_path . 'cache/install_lock'))
+	// If phpBB is already installed we do not include this module.
+	if (defined('PHPBB_INSTALLED') && !file_exists($phpbb_root_path . 'cache/install_lock'))
 	{
-		include_once($phpbb_root_path . 'config.php');
-
-		if (defined('PHPBB_INSTALLED'))
-		{
-			return;
-		}
+		return;
 	}
 
 	$module[] = array(
@@ -30,7 +24,7 @@ if (!empty($setmodules))
 		'module_filename'	=> substr(basename(__FILE__), 0, -4),
 		'module_order'		=> 10,
 		'module_subs'		=> '',
-		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'DATABASE', 'ADMINISTRATOR', 'CONFIG_FILE', 'ADVANCED', 'CREATE_TABLE', 'FINAL'),
+		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'DATABASE', 'ADMINISTRATOR', 'CREATE_TABLE', 'FINAL'),
 		'module_reqs'		=> ''
 	);
 }
@@ -84,31 +78,29 @@ class install_install extends module
 
 			break;
 
-			case 'config_file':
-				$this->create_config_file($mode, $sub);
-
-			break;
-
-			case 'advanced':
-				$this->obtain_advanced_settings($mode, $sub);
-
-			break;
-
 			case 'create_table':
-				$this->load_schema($mode, $sub);
-			break;
+				$this->page_title = $lang['STAGE_CREATE_TABLE'];
 
-			case 'final':
+				$this->db_connect();
+				$this->load_schema($mode, $sub);
+				$this->fetch_config();
 				$this->build_search_index($mode, $sub);
 				$this->add_modules($mode, $sub);
 				$this->add_language($mode, $sub);
 				$this->add_bots($mode, $sub);
-				$this->email_admin($mode, $sub);
-				$this->disable_avatars_if_unwritable();
 
-				// Remove the lock file
-				@unlink($phpbb_root_path . 'cache/install_lock');
+				$template->assign_vars(array(
+					'BODY'		=> $lang['STAGE_CREATE_TABLE_EXPLAIN'],
+					'L_SUBMIT'	=> $lang['NEXT_STEP'],
+					'S_HIDDEN'	=> build_hidden_fields($this->get_submitted_data()),
+					'U_ACTION'	=> $this->p_master->module_url . "?mode=$mode&amp;sub=final",
+				));
+			break;
 
+			case 'final':
+				$this->db_connect();
+				$this->fetch_config();
+				$this->create_config_file($mode, $sub);
 			break;
 		}
 
@@ -139,9 +131,7 @@ class install_install extends module
 		));
 
 		// Test the minimum PHP version
-		$php_version = PHP_VERSION;
-
-		if (version_compare($php_version, '5.2.2') < 0)
+		if (version_compare(PHP_VERSION, '5.6', '<'))
 		{
 			$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
 		}
@@ -165,29 +155,6 @@ class install_install extends module
 			'S_EXPLAIN'		=> false,
 			'S_LEGEND'		=> false,
 		));
-
-		// Don't check for register_globals on 5.4+
-		if (version_compare($php_version, '5.4.0-dev') < 0)
-		{
-			// Check for register_globals being enabled
-			if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on')
-			{
-				$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
-			}
-			else
-			{
-				$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
-			}
-
-			$template->assign_block_vars('checks', array(
-				'TITLE'			=> $lang['PHP_REGISTER_GLOBALS'],
-				'TITLE_EXPLAIN'	=> $lang['PHP_REGISTER_GLOBALS_EXPLAIN'],
-				'RESULT'		=> $result,
-
-				'S_EXPLAIN'		=> true,
-				'S_LEGEND'		=> false,
-			));
-		}
 
 		// Check for url_fopen
 		if (@ini_get('allow_url_fopen') == '1' || strtolower(@ini_get('allow_url_fopen')) == 'on')
@@ -775,7 +742,7 @@ class install_install extends module
 
 		$submit = $lang['NEXT_STEP'];
 
-		$url = ($passed) ? $this->p_master->module_url . "?mode=$mode&amp;sub=config_file" : $this->p_master->module_url . "?mode=$mode&amp;sub=administrator";
+		$url = ($passed) ? $this->p_master->module_url . "?mode=$mode&amp;sub=create_table" : $this->p_master->module_url . "?mode=$mode&amp;sub=administrator";
 		$s_hidden_fields .= ($passed) ? '' : '<input type="hidden" name="check" value="true" />';
 
 		$template->assign_vars(array(
@@ -786,220 +753,16 @@ class install_install extends module
 	}
 
 	/**
-	* Writes the config file to disk, or if unable to do so offers alternative methods
+	* Prepare database connection.
 	*/
-	function create_config_file($mode, $sub)
+	function db_connect()
 	{
-		global $lang, $template, $phpbb_root_path;
-
-		$this->page_title = $lang['STAGE_CONFIG_FILE'];
+		global $phpbb_root_path, $lang, $db, $table_prefix;
 
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
 
-		if ($data['dbms'] == '')
-		{
-			// Someone's been silly and tried calling this page direct
-			// So we send them back to the start to do it again properly
-			$this->p_master->redirect("index.php?mode=install");
-		}
-
-		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
-		$written = false;
-
-		// Create a lock file to indicate that there is an install in progress
-		$fp = @fopen($phpbb_root_path . 'cache/install_lock', 'wb');
-		if ($fp === false)
-		{
-			// We were unable to create the lock file - abort
-			$this->p_master->error($lang['UNABLE_WRITE_LOCK'], __LINE__, __FILE__);
-		}
-		@fclose($fp);
-
-		@chmod($phpbb_root_path . 'cache/install_lock', 0777);
-
-		// Time to convert the data provided into a config file
-		$available_dbms = get_available_dbms($data['dbms']);
-		$config_data = phpbb_create_config_file_data($data);
-
-		// Attempt to write out the config file directly. If it works, this is the easiest way to do it ...
-		if ((file_exists($phpbb_root_path . 'config.php') && phpbb_is_writable($phpbb_root_path . 'config.php')) || phpbb_is_writable($phpbb_root_path))
-		{
-			// Assume it will work ... if nothing goes wrong below
-			$written = true;
-
-			if (!($fp = @fopen($phpbb_root_path . 'config.php', 'w')))
-			{
-				// Something went wrong ... so let's try another method
-				$written = false;
-			}
-
-			if (!(@fwrite($fp, $config_data)))
-			{
-				// Something went wrong ... so let's try another method
-				$written = false;
-			}
-
-			@fclose($fp);
-
-			if ($written)
-			{
-				// We may revert back to chmod() if we see problems with users not able to change their config.php file directly
-				phpbb_chmod($phpbb_root_path . 'config.php', CHMOD_READ);
-			}
-		}
-
-		if (isset($_POST['dldone']))
-		{
-			// Do a basic check to make sure that the file has been uploaded
-			// Note that all we check is that the file has _something_ in it
-			// We don't compare the contents exactly - if they can't upload
-			// a single file correctly, it's likely they will have other problems....
-			if (filesize($phpbb_root_path . 'config.php') > 10)
-			{
-				$written = true;
-			}
-		}
-
-		$config_options = array_merge($this->db_config_options, $this->admin_config_options);
-
-		foreach ($config_options as $config_key => $vars)
-		{
-			if (!is_array($vars))
-			{
-				continue;
-			}
-			$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
-		}
-
-		if (!$written)
-		{
-			// OK, so it didn't work let's try the alternatives
-
-			if (isset($_POST['dlconfig']))
-			{
-				// They want a copy of the file to download, so send the relevant headers and dump out the data
-				header("Content-Type: text/x-delimtext; name=\"config.php\"");
-				header("Content-disposition: attachment; filename=config.php");
-				echo $config_data;
-				exit;
-			}
-
-			// The option to download the config file is always available, so output it here
-			$template->assign_vars(array(
-				'BODY'					=> $lang['CONFIG_FILE_UNABLE_WRITE'],
-				'L_DL_CONFIG'			=> $lang['DL_CONFIG'],
-				'L_DL_CONFIG_EXPLAIN'	=> $lang['DL_CONFIG_EXPLAIN'],
-				'L_DL_DONE'				=> $lang['DONE'],
-				'L_DL_DOWNLOAD'			=> $lang['DL_DOWNLOAD'],
-				'S_HIDDEN'				=> $s_hidden_fields,
-				'S_SHOW_DOWNLOAD'		=> true,
-				'U_ACTION'				=> $this->p_master->module_url . "?mode=$mode&amp;sub=config_file",
-			));
-			return;
-		}
-		else
-		{
-			$template->assign_vars(array(
-				'BODY'		=> $lang['CONFIG_FILE_WRITTEN'],
-				'L_SUBMIT'	=> $lang['NEXT_STEP'],
-				'S_HIDDEN'	=> $s_hidden_fields,
-				'U_ACTION'	=> $this->p_master->module_url . "?mode=$mode&amp;sub=advanced",
-			));
-			return;
-		}
-	}
-
-	/**
-	* Provide an opportunity to customise some advanced settings during the install
-	* in case it is necessary for them to be set to access later
-	*/
-	function obtain_advanced_settings($mode, $sub)
-	{
-		global $lang, $template;
-
-		$this->page_title = $lang['STAGE_ADVANCED'];
-
-		// Obtain any submitted data
-		$data = $this->get_submitted_data();
-
-		if ($data['dbms'] == '')
-		{
-			// Someone's been silly and tried calling this page direct
-			// So we send them back to the start to do it again properly
-			$this->p_master->redirect("index.php?mode=install");
-		}
-
-		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
-
-		$data['email_enable'] = ($data['email_enable'] !== '') ? $data['email_enable'] : true;
-
-		foreach ($this->advanced_config_options as $config_key => $vars)
-		{
-			if (!is_array($vars) && strpos($config_key, 'legend') === false)
-			{
-				continue;
-			}
-
-			if (strpos($config_key, 'legend') !== false)
-			{
-				$template->assign_block_vars('options', array(
-					'S_LEGEND'		=> true,
-					'LEGEND'		=> $lang[$vars])
-				);
-
-				continue;
-			}
-
-			$options = isset($vars['options']) ? $vars['options'] : '';
-
-			$template->assign_block_vars('options', array(
-				'KEY'			=> $config_key,
-				'TITLE'			=> $lang[$vars['lang']],
-				'S_EXPLAIN'		=> $vars['explain'],
-				'S_LEGEND'		=> false,
-				'TITLE_EXPLAIN'	=> ($vars['explain']) ? $lang[$vars['lang'] . '_EXPLAIN'] : '',
-				'CONTENT'		=> $this->p_master->input_field($config_key, $vars['type'], $data[$config_key], $options),
-				)
-			);
-		}
-
-		$config_options = array_merge($this->db_config_options, $this->admin_config_options);
-		foreach ($config_options as $config_key => $vars)
-		{
-			if (!is_array($vars))
-			{
-				continue;
-			}
-			$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
-		}
-
-		$submit = $lang['NEXT_STEP'];
-
-		$url = $this->p_master->module_url . "?mode=$mode&amp;sub=create_table";
-
-		$template->assign_vars(array(
-			'BODY'		=> $lang['STAGE_ADVANCED_EXPLAIN'],
-			'L_SUBMIT'	=> $submit,
-			'S_HIDDEN'	=> $s_hidden_fields,
-			'U_ACTION'	=> $url,
-		));
-	}
-
-	/**
-	* Load the contents of the schema into the database and then alter it based on what has been input during the installation
-	*/
-	function load_schema($mode, $sub)
-	{
-		global $db, $lang, $template, $phpbb_root_path;
-
-		$this->page_title = $lang['STAGE_CREATE_TABLE'];
-		$s_hidden_fields = '';
-
-		// Obtain any submitted data
-		$data = $this->get_submitted_data();
-
-		if ($data['dbms'] == '')
+		if ($data['dbms'] != 'mysql')
 		{
 			// Someone's been silly and tried calling this page direct
 			// So we send them back to the start to do it again properly
@@ -1008,7 +771,6 @@ class install_install extends module
 
 		// If we get here and the extension isn't loaded it should be safe to just go ahead and load it
 		$available_dbms = get_available_dbms($data['dbms']);
-
 		if (!isset($available_dbms[$data['dbms']]))
 		{
 			// Someone's been silly and tried providing a non-existant dbms
@@ -1016,7 +778,7 @@ class install_install extends module
 		}
 
 		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/mysql.php');
+		require_once($phpbb_root_path . 'includes/db/mysql.php');
 
 		// Instantiate the database
 		$db = new dbal_mysql();
@@ -1025,20 +787,45 @@ class install_install extends module
 		// NOTE: trigger_error does not work here.
 		$db->sql_return_on_error(true);
 
+		$table_prefix = $data['table_prefix'];
+		require_once($phpbb_root_path . 'includes/constants.php');
+	}
+
+	/**
+	* Fetch current config.
+	*/
+	function fetch_config()
+	{
+		global $db, $config;
+
+		$sql = 'SELECT * FROM ' . CONFIG_TABLE;
+		$result = $db->sql_query($sql);
+
+		$config = array();
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$config[$row['config_name']] = $row['config_value'];
+		}
+
+		$db->sql_freeresult($result);
+	}
+
+	/**
+	* Load the contents of the schema into the database and then alter it based on what has been input during the installation
+	*/
+	function load_schema($mode, $sub)
+	{
+		global $phpbb_root_path, $lang, $db;
+
+		// Obtain any submitted data
+		$data = $this->get_submitted_data();
+
 		// Ok we have the db info go ahead and read in the relevant schema
 		// and work on building the table
-		$dbms_schema = 'schemas/' . $available_dbms[$data['dbms']]['SCHEMA'] . '_schema.sql';
-
-		// How should we treat this schema?
-		$delimiter = $available_dbms[$data['dbms']]['DELIM'];
-
-		$sql_query = @file_get_contents($dbms_schema);
-
+		$sql_query = file_get_contents('schemas/mysql_schema.sql');
 		$sql_query = preg_replace('#phpbb_#i', $data['table_prefix'], $sql_query);
-
 		$sql_query = phpbb_remove_comments($sql_query);
-
-		$sql_query = split_sql_file($sql_query, $delimiter);
+		$sql_query = split_sql_file($sql_query, ';');
 
 		foreach ($sql_query as $sql)
 		{
@@ -1100,30 +887,6 @@ class install_install extends module
 				WHERE config_name = 'default_dateformat'",
 
 			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['email_enable']) . "'
-				WHERE config_name = 'email_enable'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_delivery']) . "'
-				WHERE config_name = 'smtp_delivery'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_host']) . "'
-				WHERE config_name = 'smtp_host'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_auth']) . "'
-				WHERE config_name = 'smtp_auth_method'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_user']) . "'
-				WHERE config_name = 'smtp_username'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['smtp_pass']) . "'
-				WHERE config_name = 'smtp_password'",
-
-			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['admin_name']) . "'
 				WHERE config_name = 'newest_username'",
 
@@ -1172,6 +935,18 @@ class install_install extends module
 				WHERE config_name = 'captcha_gd'";
 		}
 
+		// Disable avatars if avatar directory isn't writable.
+		if (!phpbb_is_writable($phpbb_root_path . 'images/avatars/upload/'))
+		{
+			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
+				SET config_value = '0'
+				WHERE config_name = 'allow_avatar'";
+
+			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
+				SET config_value = '0'
+				WHERE config_name = 'allow_avatar_upload'";
+		}
+
 		foreach ($sql_ary as $sql)
 		{
 			//$sql = trim(str_replace('|', ';', $sql));
@@ -1182,17 +957,6 @@ class install_install extends module
 				$this->p_master->db_error($error['message'], $sql, __LINE__, __FILE__);
 			}
 		}
-
-		$submit = $lang['NEXT_STEP'];
-
-		$url = $this->p_master->module_url . "?mode=$mode&amp;sub=final";
-
-		$template->assign_vars(array(
-			'BODY'		=> $lang['STAGE_CREATE_TABLE_EXPLAIN'],
-			'L_SUBMIT'	=> $submit,
-			'S_HIDDEN'	=> build_hidden_fields($data),
-			'U_ACTION'	=> $url,
-		));
 	}
 
 	/**
@@ -1200,45 +964,9 @@ class install_install extends module
 	*/
 	function build_search_index($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path, $config;
+		global $phpbb_root_path, $db, $config, $lang;
 
-		// Obtain any submitted data
-		$data = $this->get_submitted_data();
-		$table_prefix = $data['table_prefix'];
-
-		// If we get here and the extension isn't loaded it should be safe to just go ahead and load it
-		$available_dbms = get_available_dbms($data['dbms']);
-
-		if (!isset($available_dbms[$data['dbms']]))
-		{
-			// Someone's been silly and tried providing a non-existant dbms
-			$this->p_master->redirect("index.php?mode=install");
-		}
-
-		// Load the appropriate database class if not already loaded
-		include($phpbb_root_path . 'includes/db/mysql.php');
-
-		// Instantiate the database
-		$db = new dbal_mysql();
-		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
-
-		// NOTE: trigger_error does not work here.
-		$db->sql_return_on_error(true);
-
-		include_once($phpbb_root_path . 'includes/constants.php');
-		include_once($phpbb_root_path . 'includes/search/fulltext_native.php');
-
-		// Fill the config array - it is needed by those functions we call
-		$sql = 'SELECT *
-			FROM ' . CONFIG_TABLE;
-		$result = $db->sql_query($sql);
-
-		$config = array();
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$config[$row['config_name']] = $row['config_value'];
-		}
-		$db->sql_freeresult($result);
+		require_once($phpbb_root_path . 'includes/search/fulltext_native.php');
 
 		$error = false;
 		$search = new fulltext_native($error);
@@ -1650,18 +1378,6 @@ class install_install extends module
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
 
-		// Fill the config array - it is needed by those functions we call
-		$sql = 'SELECT *
-			FROM ' . CONFIG_TABLE;
-		$result = $db->sql_query($sql);
-
-		$config = array();
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$config[$row['config_name']] = $row['config_value'];
-		}
-		$db->sql_freeresult($result);
-
 		$sql = 'SELECT group_id
 			FROM ' . GROUPS_TABLE . "
 			WHERE group_name = 'BOTS'";
@@ -1722,98 +1438,112 @@ class install_install extends module
 	}
 
 	/**
-	* Sends an email to the board administrator with their password and some useful links
+	* Writes the config file to disk, or if unable to do so offers alternative methods.
+	* On success, sends the final email to the board administrator.
 	*/
-	function email_admin($mode, $sub)
+	function create_config_file($mode, $sub)
 	{
 		global $auth, $config, $db, $lang, $template, $user, $phpbb_root_path;
 
-		$this->page_title = $lang['STAGE_FINAL'];
-
-		// Obtain any submitted data
 		$data = $this->get_submitted_data();
+		$config_data = phpbb_create_config_file_data($data);
 
-		$sql = 'SELECT *
-			FROM ' . CONFIG_TABLE;
-		$result = $db->sql_query($sql);
-
-		$config = array();
-		while ($row = $db->sql_fetchrow($result))
+		if (isset($_POST['dlconfig']))
 		{
-			$config[$row['config_name']] = $row['config_value'];
-		}
-		$db->sql_freeresult($result);
-
-		$user->session_begin();
-		$auth->login($data['admin_name'], $data['admin_pass1'], false, true, true);
-
-		// OK, Now that we've reached this point we can be confident that everything
-		// is installed and working......I hope :)
-		// So it's time to send an email to the administrator confirming the details
-		// they entered
-
-		if ($config['email_enable'])
-		{
-			include_once($phpbb_root_path . 'includes/functions_messenger.php');
-
-			$messenger = new messenger(false);
-
-			$messenger->template('installed', $data['language']);
-
-			$messenger->to($data['board_email1'], $data['admin_name']);
-
-			$messenger->anti_abuse_headers($config, $user);
-
-			$messenger->assign_vars(array(
-				'USERNAME'		=> htmlspecialchars_decode($data['admin_name']),
-				'PASSWORD'		=> htmlspecialchars_decode($data['admin_pass1']))
-			);
-
-			$messenger->send(NOTIFY_EMAIL);
+			// They want a copy of the file to download, so send the relevant headers and dump out the data
+			header("Content-Type: text/x-delimtext; name=\"config.php\"");
+			header("Content-disposition: attachment; filename=config.php");
+			echo $config_data;
+			exit;
 		}
 
-		// And finally, add a note to the log
-		add_log('admin', 'LOG_INSTALL_INSTALLED', $config['phpbbex_version']);
+		$config_path = $phpbb_root_path . 'config.php';
+		$config_done = (file_exists($config_path) && strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false);
 
-		$template->assign_vars(array(
-			'TITLE'		=> $lang['INSTALL_CONGRATS'],
-			'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['phpbbex_version'], append_sid($phpbb_root_path . 'install/index.php', 'mode=convert&amp;language=' . $data['language']), '../docs/README.html'),
-			'L_SUBMIT'	=> $lang['INSTALL_LOGIN'],
-			'U_ACTION'	=> append_sid($phpbb_root_path . 'adm/index.php'),
-		));
-	}
-
-	/**
-	* Check if the avatar directory is writable and disable avatars
-	* if it isn't writable.
-	*/
-	function disable_avatars_if_unwritable()
-	{
-		global $phpbb_root_path;
-
-		if (!phpbb_is_writable($phpbb_root_path . 'images/avatars/upload/'))
+		if (!$config_done)
 		{
-			set_config('allow_avatar', 0);
-			set_config('allow_avatar_upload', 0);
-		}
-	}
-
-	/**
-	* Generate a list of available mail server authentication methods
-	*/
-	function mail_auth_select($selected_method)
-	{
-		global $lang;
-
-		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5');
-		$s_smtp_auth_options = '';
-
-		foreach ($auth_methods as $method)
-		{
-			$s_smtp_auth_options .= '<option value="' . $method . '"' . (($selected_method == $method) ? ' selected="selected"' : '') . '>' . $lang['SMTP_' . str_replace('-', '_', $method)] . '</option>';
+			// Attempt to write out the config file directly. If it works, this is the easiest way to do it ...
+			if ((file_exists($config_path) && phpbb_is_writable($config_path)) || phpbb_is_writable($phpbb_root_path))
+			{
+				$config_done = @file_put_contents($config_path, $config_data);
+				if ($config_done) { phpbb_chmod($config_path, CHMOD_READ); }
+			}
+			$config_done = (file_exists($config_path) && strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false);
 		}
 
-		return $s_smtp_auth_options;
+		if (!$config_done)
+		{
+			// OK, so it didn't work, let's tell the user to download and copy config.php manually.
+
+			$this->page_title = $lang['STAGE_CONFIG_FILE'];
+
+			$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
+			$config_options = array_merge($this->db_config_options, $this->admin_config_options);
+			foreach ($config_options as $config_key => $vars)
+			{
+				if (!is_array($vars)) { continue; }
+				$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
+			}
+
+			$template->assign_vars(array(
+				'TITLE'					=> $lang['STAGE_CONFIG_FILE'],
+				'BODY'					=> $lang['CONFIG_FILE_UNABLE_WRITE'],
+				'L_DL_CONFIG'			=> $lang['DL_CONFIG'],
+				'L_DL_CONFIG_EXPLAIN'	=> $lang['DL_CONFIG_EXPLAIN'],
+				'L_DL_DONE'				=> $lang['DONE'],
+				'L_DL_DOWNLOAD'			=> $lang['DL_DOWNLOAD'],
+				'S_HIDDEN'				=> $s_hidden_fields,
+				'S_SHOW_DOWNLOAD'		=> true,
+				'U_ACTION'				=> $this->p_master->module_url . "?mode=$mode&amp;sub=$sub",
+			));
+
+			// Create a lock file to indicate that there is an install in progress.
+			// Otherwise we won't be able to show the final message after config.php is copied manually.
+			if (@touch($phpbb_root_path . 'cache/install_lock'))
+			{
+				@chmod($phpbb_root_path . 'cache/install_lock', 0666);
+			}
+		}
+		else
+		{
+			// OK, now that we've reached this point we can be confident that everything is installed and working...
+			// So it's time to send an email to the administrator confirming the details they entered.
+
+			$this->page_title = $lang['STAGE_FINAL'];
+
+			$user->session_begin();
+			$auth->login($data['admin_name'], $data['admin_pass1'], false, true, true);
+
+			if ($config['email_enable'])
+			{
+				require_once($phpbb_root_path . 'includes/functions_messenger.php');
+				$messenger = new messenger(false);
+				$messenger->template('installed', $data['language']);
+				$messenger->to($data['board_email1'], $data['admin_name']);
+				$messenger->anti_abuse_headers($config, $user);
+				$messenger->assign_vars(array(
+					'USERNAME'		=> htmlspecialchars_decode($data['admin_name']),
+					'PASSWORD'		=> htmlspecialchars_decode($data['admin_pass1']))
+				);
+				$messenger->send(NOTIFY_EMAIL);
+			}
+
+			// And finally, add a note to the log.
+			add_log('admin', 'LOG_INSTALL_INSTALLED', $config['phpbbex_version']);
+
+			$template->assign_vars(array(
+				'TITLE'		=> $lang['INSTALL_CONGRATS'],
+				'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['phpbbex_version']),
+				'L_SUBMIT'	=> $lang['INSTALL_LOGIN'],
+				'U_ACTION'	=> append_sid($phpbb_root_path . 'adm/index.php', false, true, true),
+			));
+
+			// Remove the lock file.
+			if (file_exists($phpbb_root_path . 'cache/install_lock'))
+			{
+				@unlink($phpbb_root_path . 'cache/install_lock');
+			}
+		}
 	}
 
 	/**
@@ -1836,15 +1566,6 @@ class install_install extends module
 			'admin_pass2'	=> request_var('admin_pass2', '', true),
 			'board_email1'	=> strtolower(request_var('board_email1', '')),
 			'board_email2'	=> strtolower(request_var('board_email2', '')),
-			'ftp_path'		=> request_var('ftp_path', ''),
-			'ftp_user'		=> request_var('ftp_user', ''),
-			'ftp_pass'		=> request_var('ftp_pass', ''),
-			'email_enable'	=> request_var('email_enable', ''),
-			'smtp_delivery'	=> request_var('smtp_delivery', ''),
-			'smtp_host'		=> request_var('smtp_host', ''),
-			'smtp_auth'		=> request_var('smtp_auth', ''),
-			'smtp_user'		=> request_var('smtp_user', ''),
-			'smtp_pass'		=> request_var('smtp_pass', ''),
 		);
 	}
 
@@ -1869,15 +1590,6 @@ class install_install extends module
 		'admin_pass2'			=> array('lang' => 'ADMIN_PASSWORD_CONFIRM',	'type' => 'password:25:100', 'explain' => false),
 		'board_email1'			=> array('lang' => 'CONTACT_EMAIL',				'type' => 'text:25:100', 'explain' => false),
 		'board_email2'			=> array('lang' => 'CONTACT_EMAIL_CONFIRM',		'type' => 'text:25:100', 'explain' => false),
-	);
-	var $advanced_config_options = array(
-		'legend1'				=> 'ACP_EMAIL_SETTINGS',
-		'email_enable'			=> array('lang' => 'ENABLE_EMAIL',		'type' => 'radio:enabled_disabled', 'explain' => true),
-		'smtp_delivery'			=> array('lang' => 'USE_SMTP',			'type' => 'radio:yes_no', 'explain' => true),
-		'smtp_host'				=> array('lang' => 'SMTP_SERVER',		'type' => 'text:25:50', 'explain' => false),
-		'smtp_auth'				=> array('lang' => 'SMTP_AUTH_METHOD',	'type' => 'select', 'options' => '$this->module->mail_auth_select(\'{VALUE}\')', 'explain' => true),
-		'smtp_user'				=> array('lang' => 'SMTP_USERNAME',		'type' => 'text:25:255', 'explain' => true, 'options' => array('autocomplete' => 'off')),
-		'smtp_pass'				=> array('lang' => 'SMTP_PASSWORD',		'type' => 'text:25:255', 'explain' => true, 'options' => array('autocomplete' => 'off')),
 	);
 
 	/**

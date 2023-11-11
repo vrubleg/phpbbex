@@ -2134,6 +2134,11 @@ function on_page($num_items, $per_page, $start)
 
 // Server functions (building urls, redirecting...)
 
+if (!defined('NEED_SID'))
+{
+	define('NEED_SID', false);
+}
+
 /**
 * Append session id to url.
 *
@@ -2151,7 +2156,7 @@ function on_page($num_items, $per_page, $start)
 * </code>
 *
 */
-function append_sid($url, $params = false, $is_amp = true, $session_id = false)
+function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SID)
 {
 	global $_SID, $_EXTRA_URL, $config, $user;
 
@@ -2177,7 +2182,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Handle really simple cases quickly
-	if ($_SID == '' && $session_id === false && empty($_EXTRA_URL) && !$params_is_array && !$anchor)
+	if ((!$_SID || !$session_id) && empty($_EXTRA_URL) && !$params_is_array && !$anchor)
 	{
 		if ($params === false)
 		{
@@ -2189,7 +2194,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	}
 
 	// Assign sid if session id is not specified
-	if ($session_id === false && defined('NEED_SID'))
+	if ($session_id === true)
 	{
 		$session_id = $_SID;
 	}
@@ -2406,7 +2411,7 @@ function redirect($url, $return = false, $disable_cd_check = false)
 	}
 
 	// Now, also check the protocol and for a valid url the last time...
-	$allowed_protocols = array('http', 'https', 'ftp', 'ftps');
+	$allowed_protocols = array('http', 'https');
 	$url_parts = parse_url($url);
 
 	if ($url_parts === false || empty($url_parts['scheme']) || !in_array($url_parts['scheme'], $allowed_protocols))
@@ -2417,26 +2422,6 @@ function redirect($url, $return = false, $disable_cd_check = false)
 	if ($return)
 	{
 		return $url;
-	}
-
-	// Redirect via an HTML form for PITA webservers
-	if (@preg_match('#Microsoft|WebSTAR|Xitami#', getenv('SERVER_SOFTWARE')))
-	{
-		header('Refresh: 0; URL=' . $url);
-
-		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
-		echo '<html xmlns="http://www.w3.org/1999/xhtml" dir="' . $user->lang['DIRECTION'] . '" lang="' . $user->lang['USER_LANG'] . '" xml:lang="' . $user->lang['USER_LANG'] . '">';
-		echo '<head>';
-		echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
-		echo '<meta http-equiv="refresh" content="0; url=' . str_replace('&', '&amp;', $url) . '" />';
-		echo '<title>' . $user->lang['REDIRECT'] . '</title>';
-		echo '</head>';
-		echo '<body>';
-		echo '<div style="text-align: center;">' . sprintf($user->lang['URL_REDIRECT'], '<a href="' . str_replace('&', '&amp;', $url) . '">', '</a>') . '</div>';
-		echo '</body>';
-		echo '</html>';
-
-		exit;
 	}
 
 	// Behave as per HTTP/1.1 spec for others
@@ -4096,7 +4081,7 @@ function phpbb_http_login($param)
 */
 function page_header($page_title = '', $display_online_list = true, $item_id = 0, $item = 'forum')
 {
-	global $db, $config, $template, $SID, $_SID, $_EXTRA_URL, $user, $auth, $phpbb_root_path;
+	global $db, $config, $template, $_EXTRA_URL, $user, $auth, $phpbb_root_path;
 
 	if (defined('HEADER_INC'))
 	{
@@ -4243,10 +4228,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	}
 
 	$s_search_hidden_fields = empty($config['default_search_titleonly']) ? array() : array('sf' => 'titleonly', 'sr' => 'topics');
-	if ($_SID)
-	{
-		$s_search_hidden_fields['sid'] = $_SID;
-	}
 
 	if (!empty($_EXTRA_URL))
 	{
@@ -4297,8 +4278,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
 		'S_USER_NEW'					=> $user->data['user_new'],
 
-		'SID'				=> $SID,
-		'_SID'				=> $_SID,
 		'SESSION_ID'		=> $user->session_id,
 		'ROOT_PATH'			=> $web_path,
 		'BOARD_URL'			=> $board_url,

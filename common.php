@@ -12,11 +12,6 @@ if (!defined('IN_PHPBB'))
 
 require($phpbb_root_path . 'includes/startup.php');
 
-if (file_exists($phpbb_root_path . 'config.php'))
-{
-	require($phpbb_root_path . 'config.php');
-}
-
 if (!defined('PHPBB_INSTALLED'))
 {
 	// Redirect the user to the installer.
