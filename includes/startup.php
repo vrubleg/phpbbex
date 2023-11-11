@@ -18,6 +18,11 @@ if (version_compare(PHP_VERSION, '5.6', '<')) { die('PHP 5.6+ is required.'); }
 if (@preg_match('/\p{L}/u', 'a') === false) { die('PCRE with UTF-8 support is required.'); }
 if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
+if (file_exists($phpbb_root_path . 'config.php'))
+{
+	require($phpbb_root_path . 'config.php');
+}
+
 // Powered by ...
 if (!defined('POWERED_BY'))
 {

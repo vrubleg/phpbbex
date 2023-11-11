@@ -10,18 +10,13 @@ define('IN_INSTALL', true);
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 
-$config_path = $phpbb_root_path . 'config.php';
-$is_installed = file_exists($config_path)
-	&& strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false
-	&& !file_exists($phpbb_root_path . 'cache/install_lock');
+require($phpbb_root_path . 'includes/startup.php');
 
-if ($is_installed)
+if (defined('PHPBB_INSTALLED') && !file_exists($phpbb_root_path . 'cache/install_lock'))
 {
-	header('Location: ./../');
+	header('Location: ' . $phpbb_root_path);
 	exit();
 }
-
-require($phpbb_root_path . 'includes/startup.php');
 
 // Try to override some limits - maybe it helps some...
 @set_time_limit(0);

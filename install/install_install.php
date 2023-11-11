@@ -7,19 +7,13 @@
 
 if (!defined('IN_INSTALL'))
 {
-	// Someone has tried to access the file direct. This is not a good idea, so exit
 	exit;
 }
 
 if (!empty($setmodules))
 {
-	// If phpBB is already installed we do not include this module
-	if (file_exists($phpbb_root_path . 'config.php') && !file_exists($phpbb_root_path . 'cache/install_lock'))
-	{
-		require($phpbb_root_path . 'config.php');
-	}
-
-	if (defined('PHPBB_INSTALLED'))
+	// If phpBB is already installed we do not include this module.
+	if (defined('PHPBB_INSTALLED') && !file_exists($phpbb_root_path . 'cache/install_lock'))
 	{
 		return;
 	}

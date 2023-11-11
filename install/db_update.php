@@ -13,18 +13,15 @@ define('NEWEST_PHPBBEX_VERSION', '1.9.6');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 
-header('Content-Type: text/html; charset=utf-8');
+require($phpbb_root_path . 'includes/startup.php');
 
-$config_path = $phpbb_root_path . 'config.php';
-$is_installed = file_exists($config_path)
-	&& strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false
-	&& !file_exists($phpbb_root_path . 'cache/install_lock');
-
-if (!$is_installed)
+if (!defined('PHPBB_INSTALLED'))
 {
 	header('Location: ./index.php');
 	exit();
 }
+
+header('Content-Type: text/plain; charset=utf-8');
 
 // Check if there is a recent allow key file, not older than 60 minutes.
 
@@ -53,17 +50,7 @@ if (!$allowed)
 
 // We are allowed, run the update!
 
-require($phpbb_root_path . 'includes/startup.php');
-
 @set_time_limit(0);
-
-// Include essential scripts
-include($phpbb_root_path . 'config.php');
-
-if (!defined('PHPBB_INSTALLED'))
-{
-	die('Error! Invalid config file.');
-}
 
 // Include files
 require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');

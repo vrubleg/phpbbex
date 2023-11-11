@@ -9,7 +9,6 @@ define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 
 require($phpbb_root_path . 'includes/startup.php');
-require($phpbb_root_path . 'config.php');
 
 if (!defined('PHPBB_INSTALLED'))
 {
