@@ -151,33 +151,21 @@ $lang = array_merge($lang, array(
 	'FORUM_PATH'				=> 'Board path',
 	'FORUM_PATH_EXPLAIN'		=> 'This is the <strong>relative</strong> path on disk to your former board from the <strong>root of this phpBBex installation</strong>.',
 	'FOUND'						=> 'Found',
-	'FTP_CONFIG'				=> 'Transfer config by FTP',
-	'FTP_CONFIG_EXPLAIN'		=> 'phpBBex has detected the presence of the FTP module on this server. You may attempt to install your config.php via this if you wish. You will need to supply the information listed below. Remember your username and password are those to your server! (ask your hosting provider for details if you are unsure what these are).',
-	'FTP_PATH'					=> 'FTP path',
-	'FTP_PATH_EXPLAIN'			=> 'This is the path from your root directory to that of phpBBex, e.g. <samp>htdocs/phpBBex/</samp>.',
-	'FTP_UPLOAD'				=> 'Upload',
 
 	'GPL'						=> 'General Public License',
 
 	'INITIAL_CONFIG'			=> 'Basic configuration',
 	'INITIAL_CONFIG_EXPLAIN'	=> 'Now that install has determined your server can run phpBBex you need to supply some specific information. If you do not know how to connect to your database please contact your hosting provider (in the first instance) or use the phpBBex support forums. When entering data please ensure you check it thoroughly before continuing.',
 	'INSTALL_CONGRATS'			=> 'Congratulations!',
-	'INSTALL_CONGRATS_EXPLAIN'	=> '
-		You have successfully installed phpBBex %1$s. Go live with your phpBBex!</p>
-		<p>Clicking the button below will take you to a Administration Control Panel (ACP). You should take some time to examine the options available to you. Remember that help is available online via the <a href="http://www.phpbb.com/support/documentation/3.0/">Documentation on phpbb.com</a> and the <a href="//phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forums</a>.</p>',
+	'INSTALL_CONGRATS_EXPLAIN'	=> 'You have successfully installed phpBBex %1$s. Go live with your phpBBex!',
 	'INSTALL_INTRO'				=> 'Welcome to phpBBex installation!',
-
-	'INSTALL_INTRO_BODY'		=> 'phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB 3. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a target="_blank" href="//phpbbex.com/forum/viewtopic.php?t=28">More...</a>
-
-	<p>With this option, it is possible to install phpBBex onto your server.</p><p>In order to proceed, you will need your MySQL database settings:
-
+	'INSTALL_INTRO_BODY'		=> 'phpBBex is an extended version of classic phpBB 3.0. phpBBex supports modern versions of PHP and is as lightweight as the original in contrary to newer versions of phpBB.
+	<p>In order to proceed, you will need your MySQL database settings:
 	<ul>
-		<li>The Database server hostname or DSN - the address of the MySQL database server;</li>
-		<li>The Database server port - the port of the database server (most of the time this is not needed);</li>
-		<li>The Database name - the name of the database on the server;</li>
-		<li>The Database username and Database password - the login data to access the database.</li>
+		<li>The address of the MySQL database server;</li>
+		<li>The name of the database on the server;</li>
+		<li>The login and password to access the database.</li>
 	</ul>
-
 	<p>See also:
 	<ul>
 		<li><a target="_blank" href="//phpbbex.com/forum/viewforum.php?f=5">phpBBex Support Forum</a></li>
