@@ -124,7 +124,7 @@
 <!-- ENDIF -->
 
 <!-- IF S_RATE_ENABLED -->
-<script type="text/javascript">
+<script>
 jQuery(function($)
 {
 	$('li.rate-box').on('click', '.rate-minus, .rate-plus', function()
@@ -165,7 +165,7 @@ jQuery(function($)
 <!-- ENDIF -->
 
 <!-- IF S_QUICK_REPLY -->
-<script type="text/javascript">
+<script>
 jQuery(function($)
 {
 	var waiting = false;
@@ -177,7 +177,7 @@ jQuery(function($)
 		{
 			waiting = false;
 			$('li.no-full-quote').hide();
-			if (get_selected_text() && event.which <= 1)
+			if (window.getSelection().toString().trim() && event.which <= 1)
 			{
 				$('li.no-full-quote', post).show();
 			}

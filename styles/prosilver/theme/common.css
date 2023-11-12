@@ -85,6 +85,10 @@ p {
 	margin-bottom: 1.5em;
 }
 
+a {
+	cursor: pointer;
+}
+
 img {
 	border-width: 0;
 }
@@ -118,6 +122,13 @@ hr.divider {
 
 .center {
 	text-align: center;
+}
+
+.no-select {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 /* Main blocks

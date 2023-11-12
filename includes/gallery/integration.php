@@ -95,7 +95,6 @@ class phpbb_gallery_integration
 			global $template, $phpbb_root_path;
 
 			$template->assign_vars(array(
-				'S_GALLERY_SMILIES_POPUP'	=> true,
 				'U_MORE_SMILIES' 			=> append_sid("{$phpbb_root_path}posting.php", 'mode=smilies&amp;popup_from_gallery=1'),
 			));
 		}

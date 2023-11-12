@@ -235,21 +235,6 @@ function subPanels(p)
 }
 
 /**
-* Call print preview
-*/
-function printPage()
-{
-	if (is_ie)
-	{
-		printPreview();
-	}
-	else
-	{
-		window.print();
-	}
-}
-
-/**
 * Show/hide groups of blocks
 * c = CSS style name
 * e = checkbox element
@@ -279,78 +264,25 @@ function selectCode(a)
 {
 	// Get ID of code block
 	var e = a.parentNode.parentNode.getElementsByTagName('CODE')[0];
-	var s, r;
+	var s = window.getSelection();
 
-	// Not IE and IE9+
-	if (window.getSelection)
+	// Safari, Chrome, and modern Firefox.
+	if (s.setBaseAndExtent)
 	{
-		s = window.getSelection();
-		// Safari, Chrome, and modern Firefox
-		if (s.setBaseAndExtent)
+		try
 		{
-			try
-			{
-				s.setBaseAndExtent(e, 0, e, (e.innerText.length > 1) ? e.innerText.length - 1 : 1);
-			}
-			catch (error)
-			{
-				r = document.createRange();
-				r.setStart(e.firstChild, 0);
-				r.setEnd(e.lastChild, e.lastChild.textContent.length);
-				s.removeAllRanges();
-				s.addRange(r);
-			}
+			s.setBaseAndExtent(e, 0, e, (e.innerText.length > 1) ? e.innerText.length - 1 : 1);
+			return;
 		}
-		// Firefox and Opera
-		else
-		{
-			// workaround for bug # 42885
-			if (window.opera && e.innerHTML.substring(e.innerHTML.length - 4) === '<BR>')
-			{
-				e.innerHTML = e.innerHTML + '&nbsp;';
-			}
+		catch (e) {}
+	}
 
-			r = document.createRange();
-			r.setStart(e.firstChild, 0);
-			r.setEnd(e.lastChild, e.lastChild.textContent.length);
-			s.removeAllRanges();
-			s.addRange(r);
-		}
-	}
-	// Some older browsers
-	else if (document.getSelection)
-	{
-		s = document.getSelection();
-		r = document.createRange();
-		r.selectNodeContents(e);
-		s.removeAllRanges();
-		s.addRange(r);
-	}
-	// IE
-	else if (document.selection)
-	{
-		r = document.body.createTextRange();
-		r.moveToElementText(e);
-		r.select();
-	}
-}
-
-function get_selected_text()
-{
-	var sel = '';
-	if (window.getSelection && !is_ie)
-	{
-		sel = window.getSelection().toString();
-	}
-	else if (document.getSelection && !is_ie)
-	{
-		sel = document.getSelection();
-	}
-	else if (document.selection)
-	{
-		sel = document.selection.createRange().text;
-	}
-	return jQuery.trim(sel);
+	// Older Firefox and Opera.
+	var r = document.createRange();
+	r.setStart(e.firstChild, 0);
+	r.setEnd(e.lastChild, e.lastChild.textContent.length);
+	s.removeAllRanges();
+	s.addRange(r);
 }
 
 jQuery(function($)
