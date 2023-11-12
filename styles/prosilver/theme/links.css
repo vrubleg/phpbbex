@@ -1,8 +1,7 @@
 /* Link Styles
 ---------------------------------------- */
 
-a { cursor: pointer; }
-a:link { color: #105289; text-decoration: none; }
+a { cursor: pointer; color: #105289; text-decoration: none; }
 a:visited { color: #105289; text-decoration: none; }
 a:hover { color: #D31141; text-decoration: underline; }
 a:active { color: #368AD2; text-decoration: none; }
@@ -15,7 +14,7 @@ a:active { color: #368AD2; text-decoration: none; }
 }
 
 /* Links on gradient backgrounds */
-#search-box a:link, .navbg a:link, .forumbg .header a:link, .forabg .header a:link, th a:link {
+#search-box a, .navbg a, .forumbg .header a, .forabg .header a, th a {
 	color: #FFFFFF;
 	text-decoration: none;
 }
@@ -101,7 +100,7 @@ a.topictitle:active {
 }
 
 /* Profile links */
-.postprofile a:link, .postprofile a:visited, .postprofile dt.author a {
+.postprofile a, .postprofile a:visited, .postprofile dt.author a {
 	font-weight: bold;
 	color: #105289;
 	text-decoration: none;

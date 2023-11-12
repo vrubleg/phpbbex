@@ -32,11 +32,11 @@ function show_hide(id)
 	<ul id="url-list">
 	<!-- BEGIN domains -->
 		<li>
-			<a onclick="show_hide('domains_{domains.S_ROW_COUNT}'); return false;" href="#">{domains.DOMAIN}</a>
+			<a onclick="show_hide('domains_{domains.S_ROW_COUNT}');">{domains.DOMAIN}</a>
 			<ul id="domains_{domains.S_ROW_COUNT}" style="display: none;">
 			<!-- BEGIN urls -->
 				<li>
-					<em><a onclick="show_hide('urls_{domains.S_ROW_COUNT}_{domains.urls.S_ROW_COUNT}'); return false;" href="#">{domains.urls.URL}</a></em>
+					<em><a onclick="show_hide('urls_{domains.S_ROW_COUNT}_{domains.urls.S_ROW_COUNT}');">{domains.urls.URL}</a></em>
 					<ul id="urls_{domains.S_ROW_COUNT}_{domains.urls.S_ROW_COUNT}" style="display: none;">
 					<!-- BEGIN locations -->
 						<!-- IF domains.urls.locations.SUBJECT -->

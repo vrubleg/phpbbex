@@ -474,7 +474,7 @@ li.pagination {
 	font-size: 0.9em;
 }
 
-.pagination span a, .pagination span a:link, .pagination span a:visited, .pagination span a:active {
+.pagination span a, .pagination span a:visited, .pagination span a:active {
 	font-weight: normal;
 	text-decoration: none;
 	color: #747474;

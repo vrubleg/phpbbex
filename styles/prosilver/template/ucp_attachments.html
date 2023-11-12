@@ -13,7 +13,7 @@
 		<ul class="linklist">
 			<li class="rightside pagination">
 				<!-- IF TOTAL_ATTACHMENTS -->{TOTAL_ATTACHMENTS} {L_TITLE}<!-- ENDIF -->
-				<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+				<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 			</li>
 		</ul>
 
@@ -56,7 +56,7 @@
 		<ul class="linklist">
 			<li class="rightside pagination">
 				<!-- IF TOTAL_ATTACHMENTS -->{TOTAL_ATTACHMENTS} {L_TITLE}<!-- ENDIF -->
-				<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+				<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 			</li>
 		</ul>
 	<!-- ELSE -->
@@ -69,7 +69,7 @@
 <!-- IF S_ATTACHMENT_ROWS -->
 	<fieldset class="display-actions">
 		<input class="button2" type="submit" name="delete" value="{L_DELETE_MARKED}" />
-		<div><a href="#" onclick="marklist('ucp', 'attachment', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('ucp', 'attachment', false); return false;">{L_UNMARK_ALL}</a></div>
+		<div><a onclick="marklist('ucp', 'attachment', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('ucp', 'attachment', false);">{L_UNMARK_ALL}</a></div>
 		{S_FORM_TOKEN}
 	</fieldset>
 <!-- ENDIF -->

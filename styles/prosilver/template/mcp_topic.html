@@ -26,13 +26,13 @@ jQuery(function($)
 <div id="minitabs">
 	<ul>
 		<li id="display-panel-tab"<!-- IF not S_MERGE_VIEW --> class="activetab"<!-- ENDIF -->>
-			<a href="#minitabs" onclick="subPanels('display-panel'); return false;"><span>{L_DISPLAY_OPTIONS}</span></a>
+			<a onclick="subPanels('display-panel');"><span>{L_DISPLAY_OPTIONS}</span></a>
 		</li>
 		<li id="split-panel-tab">
-			<a href="#minitabs" onclick="subPanels('split-panel'); return false;"><span>{L_SPLIT_TOPIC}</span></a>
+			<a onclick="subPanels('split-panel');"><span>{L_SPLIT_TOPIC}</span></a>
 		</li>
 		<li id="merge-panel-tab"<!-- IF S_MERGE_VIEW --> class="activetab"<!-- ENDIF -->>
-			<a href="#minitabs" onclick="subPanels('merge-panel'); return false;"><span>{L_MERGE_POSTS}</span></a>
+			<a onclick="subPanels('merge-panel');"><span>{L_MERGE_POSTS}</span></a>
 		</li>
 	</ul>
 </div>
@@ -98,7 +98,7 @@ jQuery(function($)
 	<div class="inner">
 
 	<h3 id="review">
-		<span class="right-box"><a href="#review" onclick="viewableArea(getElementById('topicreview'), true); var rev_text = getElementById('review').getElementsByTagName('a').item(0).firstChild; if (rev_text.data == '{LA_EXPAND_VIEW}'){rev_text.data = '{LA_COLLAPSE_VIEW}'; } else if (rev_text.data == '{LA_COLLAPSE_VIEW}'){rev_text.data = '{LA_EXPAND_VIEW}'};">{L_EXPAND_VIEW}</a></span>
+		<span class="right-box"><a onclick="viewableArea(getElementById('topicreview'), true); var rev_text = getElementById('review').getElementsByTagName('a').item(0).firstChild; if (rev_text.data == '{LA_EXPAND_VIEW}'){rev_text.data = '{LA_COLLAPSE_VIEW}'; } else if (rev_text.data == '{LA_COLLAPSE_VIEW}'){rev_text.data = '{LA_EXPAND_VIEW}'};">{L_EXPAND_VIEW}</a></span>
 		{L_TOPIC_REVIEW}: {TOPIC_TITLE}
 	</h3>
 
@@ -144,7 +144,7 @@ jQuery(function($)
 	<ul class="linklist">
 		<li class="rightside pagination">
 			<!-- IF TOTAL_POSTS --> {TOTAL_POSTS}<!-- ENDIF -->
-			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 		</li>
 	</ul>
 	<!-- ENDIF -->
@@ -163,7 +163,7 @@ jQuery(function($)
 		<!-- IF S_CAN_SYNC --><option value="resync">{L_RESYNC}</option><!-- ENDIF -->
 	</select>&nbsp;
 	<input class="button1 default-submit-action" type="submit" name="mcp_topic_submit" value="{L_SUBMIT}" />
-	<div><a href="#" onclick="marklist('mcp', 'post', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('mcp', 'post', false); return false;">{L_UNMARK_ALL}</a></div>
+	<div><a onclick="marklist('mcp', 'post', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('mcp', 'post', false);">{L_UNMARK_ALL}</a></div>
 {S_HIDDEN_FIELDS}
 {S_FORM_TOKEN}
 </fieldset>

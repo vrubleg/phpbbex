@@ -70,7 +70,7 @@
 	<ul class="linklist">
 		<li class="rightside pagination">
 			<!-- IF TOTAL_TOPICS --> {TOTAL_TOPICS} <!-- ENDIF -->
-			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 		</li>
 	</ul>
 <!-- ELSEIF S_TOPIC_NOTIFY -->
@@ -83,7 +83,7 @@
 <!-- IF .topicrow or .forumrow -->
 	<fieldset class="display-actions">
 		<input type="submit" name="unwatch" value="{L_UNWATCH_MARKED}" class="button2" />
-		<div><a href="#" onclick="marklist('ucp', 't', true); marklist('ucp', 'f', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('ucp', 't', false); marklist('ucp', 'f', false); return false;">{L_UNMARK_ALL}</a></div>
+		<div><a onclick="marklist('ucp', 't', true); marklist('ucp', 'f', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('ucp', 't', false); marklist('ucp', 'f', false);">{L_UNMARK_ALL}</a></div>
 		{S_FORM_TOKEN}
 	</fieldset>
 <!-- ENDIF -->

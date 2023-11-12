@@ -158,7 +158,7 @@
 
 	<ul class="linklist">
 		<li class="pagination">
-			<!-- IF PAGINATION --><a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span><!-- ELSE -->{S_ON_PAGE}<!-- ENDIF -->
+			<!-- IF PAGINATION --><a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span><!-- ELSE -->{S_ON_PAGE}<!-- ENDIF -->
 		</li>
 	</ul>
 
@@ -168,7 +168,7 @@
 <fieldset class="display-actions">
 	<select name="action"><option value="">{L_SELECT_OPTION}</option>{S_ACTION_OPTIONS}</select>
 	<input class="button2" type="submit" name="update" value="{L_SUBMIT}" />
-	<div><a href="#" onclick="marklist('ucp', 'mark', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('ucp', 'mark', false); return false;">{L_UNMARK_ALL}</a></div>
+	<div><a onclick="marklist('ucp', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('ucp', 'mark', false);">{L_UNMARK_ALL}</a></div>
 </fieldset>
 
 <div class="panel">

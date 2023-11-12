@@ -56,7 +56,7 @@
 		</li>
 		<li class="rightside pagination">
 			<!-- IF TOTAL_REPORTS -->{TOTAL_REPORTS} <!-- ENDIF -->
-			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 		</li>
 	</ul>
 
@@ -103,7 +103,7 @@
 	<ul class="linklist">
 		<li class="rightside pagination">
 			<!-- IF TOTAL_REPORTS -->{TOTAL_REPORTS}<!-- ENDIF -->
-			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 		</li>
 	</ul>
 
@@ -117,7 +117,7 @@
 </fieldset>
 
 <fieldset class="display-actions">
-	<div><a href="#" onclick="marklist('mcp', 'marknote', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('mcp', 'marknote', false); return false;">{L_UNMARK_ALL}</a></div>
+	<div><a onclick="marklist('mcp', 'marknote', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('mcp', 'marknote', false);">{L_UNMARK_ALL}</a></div>
 </fieldset>
 <!-- ENDIF -->
 </form>

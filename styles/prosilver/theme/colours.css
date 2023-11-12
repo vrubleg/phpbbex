@@ -134,7 +134,7 @@ dl.details dd {
 	border-color: #4692BF;
 }
 
-.pagination span a, .pagination span a:link, .pagination span a:visited {
+.pagination span a, .pagination span a:visited {
 	color: #5C758C;
 	background-color: #ECEDEE;
 	border-color: #B4BAC0;
@@ -723,7 +723,7 @@ a.button2, input.button2, button {
 }
 
 /* <a> button in the style of the form buttons */
-a.button1, a.button1:link, a.button1:visited, a.button1:active, a.button2, a.button2:link, a.button2:visited, a.button2:active {
+a.button1, a.button1:visited, a.button1:active, a.button2, a.button2:visited, a.button2:active {
 	color: #000000;
 }
 

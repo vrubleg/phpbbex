@@ -57,7 +57,7 @@
 	<!-- IF PAGINATION or TOTAL_POSTS -->
 		<div class="pagination">
 			<!-- IF U_VIEW_UNREAD_POST and not S_IS_BOT --><a href="{U_VIEW_UNREAD_POST}">{L_VIEW_UNREAD_POST}</a> &bull; <!-- ENDIF -->{TOTAL_POSTS}
-			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
 
@@ -218,7 +218,7 @@ jQuery(function($)
 		<!-- ENDIF -->
 
 			<!-- IF postrow.POST_SUBJECT and postrow.POST_SUBJECT != TOPIC_TITLE --><h3 <!-- IF postrow.S_FIRST_ROW -->class="first"<!-- ENDIF -->><!-- IF postrow.POST_ICON_IMG --><img src="{T_TOPIC_ICONS_PATH}{postrow.POST_ICON_IMG}" width="{postrow.POST_ICON_IMG_WIDTH}" height="{postrow.POST_ICON_IMG_HEIGHT}" alt="" /> <!-- ENDIF --><a rel="nofollow" href="#p{postrow.POST_ID}">{postrow.POST_SUBJECT}</a></h3><!-- ENDIF -->
-			<p class="author"><!-- IF not S_IS_BOT --><a rel="nofollow" href="{postrow.U_MINI_POST}"><!-- ENDIF --><!-- IF STYLE_VT_SHOW_POST_NUMBERS -->#{postrow.POST_NUMBER}<!-- ELSE -->{postrow.MINI_POST_IMG}<!-- ENDIF --><!-- IF not S_IS_BOT --></a><!-- ENDIF -->{L_POST_BY_AUTHOR} <!-- IF S_QUICK_REPLY --><strong><a rel="nofollow" href="#postform" onclick="insert_text('[b]{postrow.POSTER_QUOTE}[/b], '); return false;"<!-- IF postrow.POST_AUTHOR_COLOUR --> style="color: {postrow.POST_AUTHOR_COLOUR};"<!-- ENDIF -->>{postrow.POST_AUTHOR}</a></strong><!-- ELSE --><strong>{postrow.POST_AUTHOR_FULL}</strong><!-- ENDIF --> &raquo; {postrow.POST_DATE} </p>
+			<p class="author"><!-- IF not S_IS_BOT --><a rel="nofollow" href="{postrow.U_MINI_POST}"><!-- ENDIF --><!-- IF STYLE_VT_SHOW_POST_NUMBERS -->#{postrow.POST_NUMBER}<!-- ELSE -->{postrow.MINI_POST_IMG}<!-- ENDIF --><!-- IF not S_IS_BOT --></a><!-- ENDIF -->{L_POST_BY_AUTHOR} <!-- IF S_QUICK_REPLY --><strong><a onclick="insert_text('[b]{postrow.POSTER_QUOTE}[/b], ');"<!-- IF postrow.POST_AUTHOR_COLOUR --> style="color: {postrow.POST_AUTHOR_COLOUR};"<!-- ENDIF -->>{postrow.POST_AUTHOR}</a></strong><!-- ELSE --><strong>{postrow.POST_AUTHOR_FULL}</strong><!-- ENDIF --> &raquo; {postrow.POST_DATE} </p>
 
 			<!-- IF postrow.S_POST_UNAPPROVED or postrow.S_POST_REPORTED -->
 				<p class="rules">
@@ -356,7 +356,7 @@ jQuery(function($)
 	<!-- IF PAGINATION or TOTAL_POSTS -->
 		<div class="pagination">
 			{TOTAL_POSTS}
-			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
 </div>
