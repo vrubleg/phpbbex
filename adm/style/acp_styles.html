@@ -65,16 +65,13 @@
 		</div>
 	<!-- ENDIF -->
 
-	<script type="text/javascript" defer="defer">
-	// <![CDATA[
+	<script defer="defer">
 		function update_image(newimage)
 		{
 			document.getElementById('newimg').src = (newimage) ? '../styles/{A_PATH}/imageset/' + encodeURI(newimage) : 'images/no_image.png';
 		}
-	// ]]>
 	</script>
-	<script type="text/javascript">
-	// <![CDATA[
+	<script>
 		/**
 		* Handle displaying/hiding the dimension fields
 		*/
@@ -100,7 +97,6 @@
 				dE('img_dimensions', -1);
 			<!-- ENDIF -->
 		}
-	// ]]>
 	</script>
 
 	<form method="post" action="{U_ACTION}">
@@ -191,9 +187,7 @@
 	</form>
 
 	<!-- IF TEMPLATE_FILE or (S_EDIT_THEME and S_THEME_IN_DB) -->
-		<script type="text/javascript" defer="defer">
-		// <![CDATA[
-
+		<script defer="defer">
 			function change_editor_height(height)
 			{
 				height = Number(height);
@@ -243,8 +237,6 @@
 					}
 				}
 			}
-
-		// ]]>
 		</script>
 
 		<form id="acp_template" method="post" action="{U_ACTION}">

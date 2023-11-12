@@ -3660,7 +3660,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 			echo '<head>';
 			echo '<meta charset="UTF-8" />';
 			echo '<title>' . $msg_title . '</title>';
-			echo '<style type="text/css">' . "\n";
+			echo '<style>' . "\n";
 			echo '* { margin: 0; padding: 0; } html { font-size: 100%; height: 100%; overflow-y: scroll; margin-bottom: 1px; background-color: #E4EDF0; } body { font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif; color: #536482; background: #E4EDF0; font-size: 62.5%; margin: 0; } ';
 			echo 'a, a:active, a:visited { color: #006699; text-decoration: none; } a:hover { color: #DD6900; text-decoration: underline; } ';
 			echo '#wrap { padding: 20px; min-width: 615px; } #page-footer { clear: both; font-size: 1em; text-align: center; } ';

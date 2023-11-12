@@ -5,7 +5,6 @@
 
 // Startup variables
 var bbcodeEnabled = true;
-var theSelection = false;
 
 /**
 * bbstyle
@@ -89,8 +88,6 @@ function prepare_url(url)
 */
 function bbfontstyle(bbopen, bbclose, event)
 {
-	theSelection = false;
-
 	var textarea = document.forms[form_name].elements[text_name];
 
 	var bbname = bbopen.match(/^\[([\w\d]+)/i);
@@ -142,7 +139,6 @@ function bbfontstyle(bbopen, bbclose, event)
 	{
 		mozWrap(textarea, bbopen, bbclose);
 		textarea.focus();
-		theSelection = '';
 		return;
 	}
 
@@ -171,7 +167,6 @@ function bbfontstyle(bbopen, bbclose, event)
 	textarea.selectionStart = sel_after ? after_pos : start_pos;
 	textarea.selectionEnd = sel_after ? after_pos : end_pos;
 	textarea.focus();
-	return;
 }
 
 /**
