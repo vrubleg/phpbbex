@@ -235,21 +235,6 @@ function subPanels(p)
 }
 
 /**
-* Call print preview
-*/
-function printPage()
-{
-	if (is_ie)
-	{
-		printPreview();
-	}
-	else
-	{
-		window.print();
-	}
-}
-
-/**
 * Show/hide groups of blocks
 * c = CSS style name
 * e = checkbox element
@@ -333,24 +318,6 @@ function selectCode(a)
 		r.moveToElementText(e);
 		r.select();
 	}
-}
-
-function get_selected_text()
-{
-	var sel = '';
-	if (window.getSelection && !is_ie)
-	{
-		sel = window.getSelection().toString();
-	}
-	else if (document.getSelection && !is_ie)
-	{
-		sel = document.getSelection();
-	}
-	else if (document.selection)
-	{
-		sel = document.selection.createRange().text;
-	}
-	return jQuery.trim(sel);
 }
 
 jQuery(function($)

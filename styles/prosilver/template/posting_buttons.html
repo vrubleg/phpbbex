@@ -1,5 +1,4 @@
-
-<script type="text/javascript">
+<script>
 	var form_name = 'postform';
 	var text_name = <!-- IF $SIG_EDIT -->'signature'<!-- ELSE -->'message'<!-- ENDIF -->;
 	var load_draft = false;
@@ -15,7 +14,7 @@
 	var bbcode = new Array();
 	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[tt]','[/tt]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]','[s]','[/s]','[spoiler]','[/spoiler]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
 </script>
-<script type="text/javascript" src="{T_SUPER_STYLE_PATH}/js/editor.js"></script>
+<script src="{T_SUPER_STYLE_PATH}/js/editor.js"></script>
 
 <!-- IF S_BBCODE_ALLOWED -->
 <div id="format-buttons">
@@ -51,7 +50,7 @@
 		<!-- IF not MAX_FONT_SIZE or MAX_FONT_SIZE >= 200 --><option value="200">{L_FONT_HUGE}</option><!-- ENDIF -->
 	</select>
 	<!-- ENDIF -->
-	<button type="button" onclick="change_palette();" title="{L_BBCODE_S_HELP}" id="bbpalette">{L_FONT_COLOR}</button>
+	<button type="button" onclick="dE('colour_palette');" title="{L_BBCODE_S_HELP}" id="bbpalette">{L_FONT_COLOR}</button>
 	<!-- BEGIN custom_tags -->
 		<button type="button" onclick="bbstyle({custom_tags.BBCODE_ID}, event)" title="{custom_tags.BBCODE_HELPLINE}">{custom_tags.BBCODE_TAG}</button>
 	<!-- END custom_tags -->
@@ -60,16 +59,7 @@
 <div id="colour_palette" style="display: none;">
 	<dl style="clear: left;">
 		<dt><label>{L_FONT_COLOR}:</label></dt>
-		<dd>
-		<script>
-			function change_palette()
-			{
-				dE('colour_palette');
-			}
-
-			colorPalette('h', 15, 10);
-		</script>
-		</dd>
+		<dd><script>colorPalette('h', 15, 10);</script></dd>
 	</dl>
 </div>
 <!-- ENDIF -->

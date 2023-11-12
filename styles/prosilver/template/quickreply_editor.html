@@ -61,7 +61,7 @@
 			<div id="smiley-box">
 				<!-- IF S_SMILIES_ALLOWED and .smiley -->
 					<!-- BEGIN smiley -->
-						<a rel="nofollow" href="#" onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
+						<a onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
 					<!-- END smiley -->
 				<!-- ENDIF -->
 				<!-- IF S_SHOW_SMILEY_LINK and S_SMILIES_ALLOWED-->
@@ -130,7 +130,7 @@
 <!-- ELSE -->
 	<input type="hidden" name="creation_time" value="0" />
 	<input type="hidden" name="form_token" value="0" />
-	<script type="text/javascript">
+	<script>
 	jQuery(function($)
 	{
 		$('#postform').submit(function()
