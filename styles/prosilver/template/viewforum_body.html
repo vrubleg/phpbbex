@@ -72,7 +72,7 @@
 		<div class="pagination">
 			<!-- IF not S_IS_BOT and U_MARK_TOPICS --><a rel="nofollow" href="{U_MARK_TOPICS}" accesskey="m">{L_MARK_TOPICS_READ}</a> &bull; <!-- ENDIF --><!-- IF TOTAL_TOPICS -->{TOTAL_TOPICS}<!-- ENDIF -->
 			<!-- IF PAGE_NUMBER -->
-				<!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+				<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 			<!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
@@ -210,7 +210,7 @@
 			<!-- IF TOTAL_TOPICS and not S_IS_BOT and U_MARK_TOPICS --><a rel="nofollow" href="{U_MARK_TOPICS}">{L_MARK_TOPICS_READ}</a> &bull;  <!-- ENDIF -->
 			<!-- IF TOTAL_POSTS and not NEWEST_USER --> {TOTAL_POSTS}<!-- ELSEIF TOTAL_TOPICS and not NEWEST_USER --> {TOTAL_TOPICS}<!-- ENDIF -->
 			<!-- IF TOTAL_USERS -->{TOTAL_USERS}<!-- ENDIF -->
-			<!-- IF PAGINATION --> &bull;  <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a>
+			<!-- IF PAGINATION --> &bull;  <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a>
 			 &bull;  <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</div>
 		<!-- ENDIF -->

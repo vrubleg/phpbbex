@@ -159,7 +159,7 @@
 
 	<!-- IF PAGINATION -->
 	<div class="pagination">
-		<a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+		<a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
 	</div>
 	<!-- ENDIF -->
 
@@ -198,13 +198,13 @@
 	<hr />
 	<!-- IF PAGINATION -->
 	<div class="pagination">
-		<a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+		<a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
 	</div>
 	<!-- ENDIF -->
 
 	<fieldset class="quick">
 		<input class="button2" type="submit" name="delmarked" value="{L_DELETE_MARKED}" />
-		<p class="small"><a href="#" onclick="marklist('user_attachments', 'mark', true);">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('user_attachments', 'mark', false);">{L_UNMARK_ALL}</a></p>
+		<p class="small"><a onclick="marklist('user_attachments', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('user_attachments', 'mark', false);">{L_UNMARK_ALL}</a></p>
 		{S_FORM_TOKEN}
 	</fieldset>
 	</form>

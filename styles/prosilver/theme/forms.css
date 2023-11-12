@@ -353,7 +353,7 @@ a.button2, input.button2, button {
 }
 
 /* <a> button in the style of the form buttons */
-a.button1, a.button1:link, a.button1:visited, a.button1:active, a.button2, a.button2:link, a.button2:visited, a.button2:active {
+a.button1, a.button1:visited, a.button1:active, a.button2, a.button2:visited, a.button2:active {
 	text-decoration: none;
 	color: #000000;
 	padding: 2px 8px;

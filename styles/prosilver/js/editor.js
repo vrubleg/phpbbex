@@ -240,21 +240,15 @@ function addquote(post_id, username)
 	if (!selection)
 	{
 		var divarea = document.getElementById('message_' + post_id);
+		if (!divarea) { return; }
 
-		if (divarea.innerText)
-		{
-			selection = divarea.innerText;
-		}
-		else if (divarea.innerHTML)
-		{
-			selection = divarea.innerHTML
-				.replace(/<br>/ig, '\n')
-				.replace(/<br\/>/ig, '\n')
-				.replace(/&lt\;/ig, '<')
-				.replace(/&gt\;/ig, '>')
-				.replace(/&amp\;/ig, '&')
-				.replace(/&nbsp\;/ig, ' ');
-		}
+		selection = divarea.innerHTML
+			.replace(/<br>/ig, '\n')
+			.replace(/<br\/>/ig, '\n')
+			.replace(/&lt\;/ig, '<')
+			.replace(/&gt\;/ig, '>')
+			.replace(/&amp\;/ig, '&')
+			.replace(/&nbsp\;/ig, ' ');
 	}
 
 	selection = selection.trim();

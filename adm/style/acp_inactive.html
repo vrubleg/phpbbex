@@ -12,7 +12,7 @@
 
 <!-- IF PAGINATION -->
 <div class="pagination">
-	<a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+	<a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
 </div>
 <!-- ENDIF -->
 
@@ -61,14 +61,14 @@
 
 <!-- IF PAGINATION -->
 	<div class="pagination">
-		<a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+		<a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
 	</div>
 <!-- ENDIF -->
 
 <fieldset class="quick">
 	<select name="action">{S_INACTIVE_OPTIONS}</select>
 	<input class="button2" type="submit" name="submit" value="{L_SUBMIT}" />
-	<p class="small"><a href="#" onclick="marklist('inactive', 'mark', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('inactive', 'mark', false); return false;">{L_UNMARK_ALL}</a></p>
+	<p class="small"><a onclick="marklist('inactive', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('inactive', 'mark', false);">{L_UNMARK_ALL}</a></p>
 	{S_FORM_TOKEN}
 </fieldset>
 

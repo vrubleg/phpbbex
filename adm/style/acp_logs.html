@@ -14,7 +14,7 @@
 
 <!-- IF PAGINATION -->
 <div class="pagination" style="float: right; margin: 15px 0 2px 0">
-	<a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+	<a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
 </div>
 <!-- ENDIF -->
 
@@ -56,7 +56,7 @@
 
 <!-- IF PAGINATION -->
 	<div class="pagination">
-		<a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+		<a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
 	</div>
 <!-- ENDIF -->
 
@@ -84,7 +84,7 @@
 	<fieldset class="quick">
 		<input class="button2" type="submit" name="delall" value="{L_DELETE_ALL}" />&nbsp;
 		<input class="button2" type="submit" name="delmarked" value="{L_DELETE_MARKED}" /><br />
-		<p class="small"><a href="#" onclick="marklist('list', 'mark', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('list', 'mark', false); return false;">{L_UNMARK_ALL}</a></p>
+		<p class="small"><a onclick="marklist('list', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('list', 'mark', false);">{L_UNMARK_ALL}</a></p>
 	</fieldset>
 <!-- ENDIF -->
 

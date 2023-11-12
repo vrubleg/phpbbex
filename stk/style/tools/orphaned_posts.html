@@ -8,7 +8,7 @@
 <form id="stk_empty_topics" method="post" action="{U_EMPTY_TOPICS}">
     <fieldset>
 	<legend>{L_EMPTY_TOPICS}</legend>
-	
+
 	<table cellspacing="1">
 		<tr>
 			<th width="70px">{L_TOPIC_ID}</th>
@@ -27,9 +27,9 @@
 		</tr>
 	<!-- END topics -->
 	</table>
-	
+
 	<div class="rightside pagination">
-		<a href="#" onclick="marklist('stk_empty_topics', 'topics', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('stk_empty_topics', 'topics', false); return false;">{L_UNMARK_ALL}</a><br /><br />
+		<a onclick="marklist('stk_empty_topics', 'topics', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('stk_empty_topics', 'topics', false);">{L_UNMARK_ALL}</a><br /><br />
 		<label for="det">{L_DELETE_EMPTY_TOPICS}:</label> <input type="submit" name="submit" id="det" class="button2" value="{L_DELETE}" />
 	</div>
 	</fieldset>
@@ -55,7 +55,7 @@
 <form id="stk_orphan_posts" method="post" action="{U_ORPHANED_POSTS}">
     <fieldset>
 	<legend>{L_ORPHANED_POSTS}</legend>
-	
+
 	<table cellspacing="1">
 		<tr>
 			<th width="70px">{L_POST_ID}</th>
@@ -81,7 +81,7 @@
 		</tr>
 	<!-- END posts -->
 	</table>
-	
+
 	<div class="rightside pagination">
 		<input type="submit" name="reassign" class="button2" value="{L_REASSIGN}" />
 		<input type="submit" name="delete" class="button2" value="{L_DELETE}" />
@@ -109,7 +109,7 @@
 <form id="stk_empty_topics" method="post" action="{U_ORPHANED_SHADOWS}">
     <fieldset>
 	<legend>{L_ORPHANED_SHADOWS}</legend>
-	
+
 	<table cellspacing="1">
 		<tr>
 			<th width="70px">{L_TOPIC_ID}</th>
@@ -130,7 +130,7 @@
 	</table>
 
 	<div class="rightside pagination">
-		<a href="#" onclick="marklist('stk_empty_topics', 'topics', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('stk_empty_topics', 'topics', false); return false;">{L_UNMARK_ALL}</a><br /><br />
+		<a onclick="marklist('stk_empty_topics', 'topics', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('stk_empty_topics', 'topics', false);">{L_UNMARK_ALL}</a><br /><br />
 		<label for="dos">{L_DELETE_SHADOWS}:</label> <input type="submit" name="submit" id="dos" class="button2" value="{L_DELETE}" />
 	</div>
     </fieldset>

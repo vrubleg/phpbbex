@@ -327,7 +327,7 @@ function feed_generate_content($content, $uid, $bitfield, $options)
 	$content = str_replace($phpbb_root_path . SMILIES_PATH, $board_url . '/' . SMILIES_PATH, $content);
 
 	// Remove "Select all" link and mouse events
-	$content = str_replace('<a href="#" onclick="selectCode(this); return false;">' . $user->lang['SELECT_ALL_CODE'] . '</a>', '', $content);
+	$content = str_replace('<a onclick="selectCode(this);">' . $user->lang['SELECT_ALL_CODE'] . '</a>', '', $content);
 	$content = preg_replace('#(onkeypress|onclick)="(.*?)"#si', '', $content);
 
 	// Firefox does not support CSS for feeds, though

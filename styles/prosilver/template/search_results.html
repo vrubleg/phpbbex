@@ -21,7 +21,7 @@
 	<!-- ENDIF -->
 
 		<div class="rightside pagination">
-			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a rel="nofollow" href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a rel="nofollow" href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</div>
 	</div>
 <!-- ENDIF -->
@@ -146,7 +146,7 @@
 <!-- IF PAGINATION or .searchresults or PAGE_NUMBER -->
 	<ul class="linklist">
 		<li class="rightside pagination">
-			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a rel="nofollow" href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a rel="nofollow" href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a rel="nofollow" href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</li>
 	</ul>
 <!-- ENDIF -->

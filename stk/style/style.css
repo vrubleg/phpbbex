@@ -112,7 +112,11 @@ hr {
 }
 
 /* General links  */
-a:link, a:visited {
+a {
+	cursor: pointer;
+}
+
+a, a:visited {
 	color: #105289;
 	text-decoration: none;
 }
@@ -1036,8 +1040,8 @@ a.button2, input.button2 {
 }
 
 /* <a> button in the style of the form buttons */
-a.button1, a.button1:link, a.button1:visited, a.button1:active,
-a.button2, a.button2:link, a.button2:visited, a.button2:active {
+a.button1, a.button1:visited, a.button1:active,
+a.button2, a.button2:visited, a.button2:active {
 	text-decoration: none;
 	color: #000000;
 	padding: 4px 8px;
@@ -1100,7 +1104,7 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 	border: 1px solid #4692BF;
 }
 
-.pagination span a, .pagination span a:link, .pagination span a:visited, .pagination span a:active {
+.pagination span a, .pagination span a, .pagination span a:visited, .pagination span a:active {
 	font-weight: normal;
 	font-size: 0.85em;
 	text-decoration: none;
@@ -1161,8 +1165,8 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 	margin-bottom: 0;
 }
 
-.errorbox a:link, .errorbox a:active, .errorbox a:visited,
-.successbox a:link, .successbox a:active, .successbox a:visited {
+.errorbox a, .errorbox a:active, .errorbox a:visited,
+.successbox a, .successbox a:active, .successbox a:visited {
 	color: #DBD7D1;
 	text-decoration: underline;
 	font-weight: bold;
@@ -1578,7 +1582,7 @@ fieldset.permissions .padding {
 	border: none;
 }
 
-.permissions-panel th a:link, .permissions-panel th a:hover, .permissions-panel th a:visited {
+.permissions-panel th a, .permissions-panel th a:hover, .permissions-panel th a:visited {
 	display: block;
 	color: #FFFFFF;
 	text-decoration: underline;
