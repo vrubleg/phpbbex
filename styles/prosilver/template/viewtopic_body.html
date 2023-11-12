@@ -174,14 +174,16 @@ jQuery(function($)
 	{
 		var post_el = null;
 		var selection = window.getSelection();
-		if (selection.toString().trim() != '')
+		if (selection && selection.toString().trim() != '')
 		{
 			var el1 = selection.anchorNode;
-			if (el1.nodeType !== Node.ELEMENT_NODE) { el1 = el1.parentElement; }
+			if (el1 && el1.nodeType !== Node.ELEMENT_NODE) { el1 = el1.parentNode; }
+			if (el1 && el1.nodeType !== Node.ELEMENT_NODE) { el1 = null; }
 			if (el1) { el1 = el1.closest('.content'); }
 
 			var el2 = selection.focusNode;
-			if (el2.nodeType !== Node.ELEMENT_NODE) { el2 = el2.parentElement; }
+			if (el2 && el2.nodeType !== Node.ELEMENT_NODE) { el2 = el2.parentNode; }
+			if (el2 && el2.nodeType !== Node.ELEMENT_NODE) { el2 = null; }
 			if (el2) { el2 = el2.closest('.content'); }
 
 			if (el1 && el1 === el2)
@@ -191,7 +193,7 @@ jQuery(function($)
 		}
 
 		var post_id = 0;
-		if (post_el)
+		if (post_el && post_el.dataset)
 		{
 			post_id = post_el.dataset.id;
 		}
