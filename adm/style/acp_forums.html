@@ -4,8 +4,7 @@
 
 <!-- IF S_EDIT_FORUM -->
 
-	<script type="text/javascript">
-	// <![CDATA[
+	<script>
 		/**
 		* Handle displaying/hiding several options based on the forum type
 		*/
@@ -94,8 +93,6 @@
 			dE('forum_display_settings', -1);
 			<!-- ENDIF -->
 		}
-
-	// ]]>
 	</script>
 
 	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
@@ -399,12 +396,10 @@
 
 <!-- ELSEIF S_CONTINUE_SYNC -->
 
-	<script type="text/javascript">
-	// <![CDATA[
+	<script>
 		var close_waitscreen = 0;
 		// no scrollbars...
 		popup('{UA_PROGRESS_BAR}', 400, 240, '_sync');
-	// ]]>
 	</script>
 
 	<h1>{L_FORUM_ADMIN}</h1>
@@ -415,8 +410,7 @@
 
 <!-- ELSE -->
 
-	<script type="text/javascript">
-	// <![CDATA[
+	<script>
 		/**
 		* Popup search progress bar
 		*/
@@ -426,7 +420,6 @@
 			// no scrollbars...
 			popup('{UA_PROGRESS_BAR}', 400, 240, '_sync');
 		}
-	// ]]>
 	</script>
 
 	<h1>{L_FORUM_ADMIN}</h1>
@@ -441,10 +434,8 @@
 	<!-- ENDIF -->
 
 	<!-- IF S_RESYNCED -->
-		<script type="text/javascript">
-		// <![CDATA[
+		<script>
 			var close_waitscreen = 1;
-		// ]]>
 		</script>
 
 		<div class="successbox">

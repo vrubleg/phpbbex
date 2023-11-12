@@ -36,9 +36,7 @@
 
 	<p>{L_ACP_BACKUP_EXPLAIN}</p>
 
-	<script type="text/javascript">
-	// <![CDATA[
-
+	<script>
 		function selector(bool)
 		{
 			var table = document.getElementById('table');
@@ -48,8 +46,6 @@
 				table.options[i].selected = bool;
 			}
 		}
-
-	// ]]>
 	</script>
 
 	<form id="acp_backup" method="post" action="{U_ACTION}">

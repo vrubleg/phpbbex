@@ -3,10 +3,6 @@
 * Includes unixsafe colour palette selector by SHS`
 */
 
-// Startup variables
-var imageTag = false;
-var theSelection = false;
-
 /**
 * Shows the help messages in the helpline window
 */
@@ -36,8 +32,6 @@ function bbstyle(bbnumber)
 */
 function bbfontstyle(bbopen, bbclose)
 {
-	theSelection = false;
-
 	var textarea = document.forms[form_name].elements[text_name];
 
 	textarea.focus();
@@ -46,7 +40,6 @@ function bbfontstyle(bbopen, bbclose)
 	{
 		mozWrap(document.forms[form_name].elements[text_name], bbopen, bbclose);
 		document.forms[form_name].elements[text_name].focus();
-		theSelection = '';
 		return;
 	}
 
@@ -61,7 +54,6 @@ function bbfontstyle(bbopen, bbclose)
 	textarea.selectionStart = new_pos;
 	textarea.selectionEnd = new_pos;
 	textarea.focus();
-	return;
 }
 
 /**

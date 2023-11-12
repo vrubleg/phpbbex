@@ -116,8 +116,7 @@
 <!-- ELSEIF S_EXTENSION_GROUPS -->
 
 	<!-- IF S_EDIT_GROUP -->
-		<script type="text/javascript" defer="defer">
-		// <![CDATA[
+		<script defer="defer">
 			function update_image(newimage)
 			{
 				if (newimage == 'no_image')
@@ -161,8 +160,6 @@
 					document.getElementById('ext').firstChild.nodeValue = str;
 				}
 			}
-
-		// ]]>
 		</script>
 
 		<form id="extgroups" method="post" action="{U_ACTION}">

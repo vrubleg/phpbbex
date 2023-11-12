@@ -1,7 +1,6 @@
 <!-- INCLUDE overall_header.html -->
 
-<script type="text/javascript">
-// <![CDATA[
+<script>
 	/**
 	* Change language
 	*/
@@ -10,7 +9,6 @@
 		document.forms['register'].change_lang.value = lang_iso;
 		document.forms['register'].submit.click();
 	}
-// ]]>
 </script>
 
 <form method="post" action="{S_UCP_ACTION}" id="register">
@@ -98,7 +96,7 @@
 	</div>
 </div>
 
-<script type="text/javascript">
+<script>
 jQuery(function($)
 {
 	$('#register').submit(function()
