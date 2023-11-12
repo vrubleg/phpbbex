@@ -15,8 +15,7 @@
 </div>
 </form>
 <!-- ELSEIF S_UPLOAD -->
-<script type="text/javascript">
-//<![CDATA[
+<script>
 	var num_displayed_fields = 1;
 	var limit_fields = {S_UPLOAD_LIMIT};
 	function add_field()
@@ -31,7 +30,6 @@
 			}
 		}
 	}
-//]]>
 </script>
 
 <h2><a href="{U_VIEW_ALBUM}">{ALBUM_NAME}</a></h2>
@@ -87,8 +85,7 @@
 			<!-- END upload_image -->
 
 			<a id="add_field_link" style="display: none;" href="javascript: add_field();">{L_ADD_UPLOAD_FIELD}</a>
-			<script type="text/javascript">
-			//<![CDATA[
+			<script>
 				for (i = 1; i < limit_fields; i++)
 				{
 					dE('upload_field_' + i);
@@ -97,7 +94,6 @@
 				{
 					dE('add_field_link');
 				}
-			//]]>
 			</script>
 		</fieldset>
 	</div>
@@ -206,10 +202,8 @@
 </div>
 <!-- ENDIF -->
 
-<script type="text/javascript">
-//<![CDATA[
+<script>
 	set_text_field(0);
-//]]>
 </script>
 
 <div class="panel bg2">
