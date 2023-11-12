@@ -120,6 +120,13 @@ hr.divider {
 	text-align: center;
 }
 
+.no-select {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 /* Main blocks
 ---------------------------------------- */
 #wrap {
