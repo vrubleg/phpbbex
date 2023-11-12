@@ -209,7 +209,7 @@
 						</li>
 					<!-- END album_row -->
 					</ul>
-					<div><a href="#" onclick="marklist('ucp_gallery', 'album_id_ary', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('ucp_gallery', 'album_id_ary', false); return false;">{L_UNMARK_ALL}</a><br /></div>
+					<div><a onclick="marklist('ucp_gallery', 'album_id_ary', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('ucp_gallery', 'album_id_ary', false);">{L_UNMARK_ALL}</a><br /></div>
 				<!-- ENDIF -->
 			<!-- ENDIF -->
 
@@ -246,7 +246,7 @@
 					</li>
 				<!-- END image_row -->
 				</ul>
-				<div><a href="#" onclick="marklist('ucp_gallery', 'image_id_ary', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('ucp_gallery', 'image_id_ary', false); return false;">{L_UNMARK_ALL}</a></div>
+				<div><a onclick="marklist('ucp_gallery', 'image_id_ary', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('ucp_gallery', 'image_id_ary', false);">{L_UNMARK_ALL}</a></div>
 			<!-- ELSE -->
 				<ul class="topiclist">
 					<li><p class="notopics"><!-- IF S_MANAGE_FAVORITES -->{L_NO_FAVORITES}<!-- ELSE -->{L_NO_SUBSCRIPTIONS}<!-- ENDIF --></p></li>
@@ -257,7 +257,7 @@
 				<ul class="linklist">
 					<li class="rightside pagination">
 						<!-- IF TOTAL_IMAGES --> {TOTAL_IMAGES}<!-- ENDIF -->
-						<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+						<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
 					</li>
 				</ul>
 			<!-- ENDIF -->

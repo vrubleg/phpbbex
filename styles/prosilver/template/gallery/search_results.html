@@ -46,7 +46,7 @@ function toggleElement(oElement)
 	<!-- ENDIF -->
 
 		<div class="pagination">
-			{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+			{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</div>
 
 	</div>
@@ -113,7 +113,7 @@ function toggleElement(oElement)
 <!-- IF PAGINATION or .imagerow or PAGE_NUMBER -->
 	<ul class="linklist">
 		<li class="rightside pagination">
-			{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
+			{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</li>
 	</ul>
 <!-- ENDIF -->
