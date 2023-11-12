@@ -6,40 +6,6 @@
 // Startup variables
 var bbcodeEnabled = true;
 var theSelection = false;
-var clientPC = navigator.userAgent.toLowerCase(); // Get client info
-var is_ie = ((clientPC.indexOf('msie') != -1) && (clientPC.indexOf('opera') == -1));
-var baseHeight;
-
-/**
-* Fix a bug involving the TextRange object. From
-* http://www.frostjedi.com/terra/scripts/demo/caretBug.html
-*/
-function initInsertions()
-{
-	var doc;
-
-	if (document.forms[form_name])
-	{
-		doc = document;
-	}
-	else
-	{
-		doc = opener.document;
-	}
-
-	var textarea = doc.forms[form_name].elements[text_name];
-
-	if (is_ie && typeof(baseHeight) != 'number')
-	{
-		textarea.focus();
-		baseHeight = doc.selection.createRange().duplicate().boundingHeight;
-
-		if (!document.forms[form_name])
-		{
-			document.body.focus();
-		}
-	}
-}
 
 /**
 * bbstyle
@@ -88,12 +54,10 @@ function insert_listitem()
 
 		var items = selected.split(/\r\n|\r|\n/);
 		selected = '';
-		var is_first = true;
-		jQuery.each(items, function(index, value)
+		items.forEach(function(value)
 		{
-			if (!is_first) selected += '\n';
-			is_first = false;
-			value = jQuery.trim(value);
+			if (selected != '') { selected += '\n'; }
+			value = value.trim();
 			if (!value) return true;
 			if (value.indexOf('[*]') !== 0) selected += '[*]';
 			selected += value;
@@ -132,7 +96,7 @@ function bbfontstyle(bbopen, bbclose, event)
 	var bbname = bbopen.match(/^\[([\w\d]+)/i);
 	if (bbname) bbname = bbname[1].toLowerCase();
 	var bbtext = '';
-	var selected = jQuery.trim((textarea.value).substring(textarea.selectionStart, textarea.selectionEnd));
+	var selected = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
 
 	switch (bbname)
 	{
@@ -174,21 +138,7 @@ function bbfontstyle(bbopen, bbclose, event)
 
 	textarea.focus();
 
-	if (is_ie)
-	{
-		// Get text selection
-		theSelection = document.selection.createRange().text;
-
-		if (theSelection)
-		{
-			// Add tags around selection
-			document.selection.createRange().text = bbopen + theSelection + bbclose;
-			textarea.focus();
-			theSelection = '';
-			return;
-		}
-	}
-	else if (textarea.selectionEnd && (textarea.selectionEnd - textarea.selectionStart > 0))
+	if (textarea.selectionEnd && (textarea.selectionEnd - textarea.selectionStart > 0))
 	{
 		mozWrap(textarea, bbopen, bbclose);
 		textarea.focus();
@@ -209,7 +159,7 @@ function bbfontstyle(bbopen, bbclose, event)
 	if (!bbtext) bbtext = '';
 
 	//The new position for the cursor after adding the bbcode
-	var caret_pos = getCaretPosition(textarea).start;
+	var caret_pos = textarea.selectionStart;
 	var start_pos = caret_pos + bbopen.length;
 	var end_pos = caret_pos + bbopen.length + bbtext.length;
 	var after_pos = caret_pos + bbopen.length + bbtext.length + bbclose.length;
@@ -218,21 +168,8 @@ function bbfontstyle(bbopen, bbclose, event)
 	insert_text(bbopen + bbtext + bbclose);
 
 	// Center the cursor when we don't have a selection
-	// Gecko and proper browsers
-	if (!isNaN(textarea.selectionStart))
-	{
-		textarea.selectionStart = sel_after ? after_pos : start_pos;
-		textarea.selectionEnd = sel_after ? after_pos : end_pos;
-	}
-	// IE
-	else if (document.selection)
-	{
-		var range = textarea.createTextRange();
-		range.move("character", sel_after ? after_pos : end_pos);
-		range.select();
-		storeCaret(textarea);
-	}
-
+	textarea.selectionStart = sel_after ? after_pos : start_pos;
+	textarea.selectionEnd = sel_after ? after_pos : end_pos;
 	textarea.focus();
 	return;
 }
@@ -264,9 +201,7 @@ function insert_text(text, spaces, popup)
 		text = ' ' + text + ' ';
 	}
 
-	// Since IE9, IE also has textarea.selectionStart, but it still needs to be treated the old way.
-	// Therefore we simply add a !is_ie here until IE fixes the text-selection completely.
-	if (!isNaN(textarea.selectionStart) && !is_ie)
+	if (!isNaN(textarea.selectionStart))
 	{
 		var sel_start = textarea.selectionStart;
 		var sel_end = textarea.selectionEnd;
@@ -275,21 +210,11 @@ function insert_text(text, spaces, popup)
 		textarea.selectionStart = sel_start + text.length;
 		textarea.selectionEnd = sel_end + text.length;
 	}
-	else if (textarea.createTextRange && textarea.caretPos)
-	{
-		if (baseHeight != textarea.caretPos.boundingHeight)
-		{
-			textarea.focus();
-			storeCaret(textarea);
-		}
-
-		var caret_pos = textarea.caretPos;
-		caret_pos.text = caret_pos.text.charAt(caret_pos.text.length - 1) == ' ' ? caret_pos.text + text + ' ' : caret_pos.text + text;
-	}
 	else
 	{
 		textarea.value = textarea.value + text;
 	}
+
 	if (!popup)
 	{
 		textarea.focus();
@@ -310,78 +235,44 @@ function attach_inline(index, filename)
 */
 function addquote(post_id, username)
 {
-	var message_name = 'message_' + post_id;
-	var theSelection = '';
-	var divarea = false;
+	var selection = window.getSelection().toString();
 
-	if (document.all)
+	if (!selection)
 	{
-		divarea = document.all[message_name];
+		var divarea = document.getElementById('message_' + post_id);
+
+		if (divarea.innerText)
+		{
+			selection = divarea.innerText;
+		}
+		else if (divarea.innerHTML)
+		{
+			selection = divarea.innerHTML
+				.replace(/<br>/ig, '\n')
+				.replace(/<br\/>/ig, '\n')
+				.replace(/&lt\;/ig, '<')
+				.replace(/&gt\;/ig, '>')
+				.replace(/&amp\;/ig, '&')
+				.replace(/&nbsp\;/ig, ' ');
+		}
+	}
+
+	selection = selection.trim();
+	if (!selection) { return; }
+
+	if (bbcodeEnabled)
+	{
+		insert_text('[quote="' + username + '"]' + selection + '[/quote]\n');
 	}
 	else
 	{
-		divarea = document.getElementById(message_name);
-	}
-
-	// Get text selection - not only the post content :(
-	// IE9 must use the document.selection method but has the *.getSelection so we just force no IE
-	if (window.getSelection && !is_ie && !window.opera)
-	{
-		theSelection = window.getSelection().toString();
-	}
-	else if (document.getSelection && !is_ie)
-	{
-		theSelection = document.getSelection();
-	}
-	else if (document.selection)
-	{
-		theSelection = document.selection.createRange().text;
-	}
-
-	if (theSelection == '' || typeof theSelection == 'undefined' || theSelection == null)
-	{
-		if (divarea.innerHTML)
+		insert_text(username + ':' + '\n');
+		var lines = split_lines(selection);
+		for (i = 0; i < lines.length; i++)
 		{
-			theSelection = divarea.innerHTML.replace(/<br>/ig, '\n');
-			theSelection = theSelection.replace(/<br\/>/ig, '\n');
-			theSelection = theSelection.replace(/&lt\;/ig, '<');
-			theSelection = theSelection.replace(/&gt\;/ig, '>');
-			theSelection = theSelection.replace(/&amp\;/ig, '&');
-			theSelection = theSelection.replace(/&nbsp\;/ig, ' ');
-		}
-		else if (document.all)
-		{
-			theSelection = divarea.innerText;
-		}
-		else if (divarea.textContent)
-		{
-			theSelection = divarea.textContent;
-		}
-		else if (divarea.firstChild.nodeValue)
-		{
-			theSelection = divarea.firstChild.nodeValue;
+			insert_text('> ' + lines[i] + '\n');
 		}
 	}
-
-	theSelection = jQuery.trim(theSelection);
-	if (theSelection)
-	{
-		if (bbcodeEnabled)
-		{
-			insert_text('[quote="' + username + '"]' + theSelection + '[/quote]\n');
-		}
-		else
-		{
-			insert_text(username + ':' + '\n');
-			var lines = split_lines(theSelection);
-			for (i = 0; i < lines.length; i++)
-			{
-				insert_text('> ' + lines[i] + '\n');
-			}
-		}
-	}
-
-	return;
 }
 
 function split_lines(text)
@@ -444,20 +335,6 @@ function mozWrap(txtarea, open, close)
 	txtarea.selectionEnd = selEnd + open.length;
 	txtarea.focus();
 	txtarea.scrollTop = scrollTop;
-
-	return;
-}
-
-/**
-* Insert at Caret position. Code from
-* http://www.faqts.com/knowledge_base/view.phtml/aid/1052/fid/130
-*/
-function storeCaret(textEl)
-{
-	if (textEl.createTextRange && document.selection)
-	{
-		textEl.caretPos = document.selection.createRange().duplicate();
-	}
 }
 
 /**
@@ -503,74 +380,4 @@ function colorPalette(dir, width, height)
 		}
 	}
 	document.write('</table>');
-}
-
-
-/**
-* Caret Position object
-*/
-function caretPosition()
-{
-	var start = null;
-	var end = null;
-}
-
-
-/**
-* Get the caret position in an textarea
-*/
-function getCaretPosition(txtarea)
-{
-	var caretPos = new caretPosition();
-
-	// simple Gecko/Opera way
-	if(txtarea.selectionStart || txtarea.selectionStart == 0)
-	{
-		caretPos.start = txtarea.selectionStart;
-		caretPos.end = txtarea.selectionEnd;
-	}
-	// dirty and slow IE way
-	else if(document.selection)
-	{
-
-		// get current selection
-		var range = document.selection.createRange();
-
-		// a new selection of the whole textarea
-		var range_all = document.body.createTextRange();
-		range_all.moveToElementText(txtarea);
-
-		// calculate selection start point by moving beginning of range_all to beginning of range
-		var sel_start;
-		for (sel_start = 0; range_all.compareEndPoints('StartToStart', range) < 0; sel_start++)
-		{
-			range_all.moveStart('character', 1);
-		}
-
-		txtarea.sel_start = sel_start;
-
-		// we ignore the end value for IE, this is already dirty enough and we don't need it
-		caretPos.start = txtarea.sel_start;
-		caretPos.end = txtarea.sel_start;
-	}
-
-	return caretPos;
-}
-
-function get_selected_text()
-{
-	var sel = '';
-	if (window.getSelection && !is_ie)
-	{
-		sel = window.getSelection().toString();
-	}
-	else if (document.getSelection && !is_ie)
-	{
-		sel = document.getSelection().toString();
-	}
-	else if (document.selection)
-	{
-		sel = document.selection.createRange().text;
-	}
-	return sel.trim();
 }
