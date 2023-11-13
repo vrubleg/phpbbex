@@ -2935,8 +2935,9 @@ function get_database_size()
 function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port = 80, $timeout = 6)
 {
 	global $user, $config;
+	$stop_at = time() + $timeout;
 
-	if ($fsock = @fsockopen($host, $port, $errno, $errstr, $timeout))
+	if ($fsock = @fsockopen($host, $port, $errno, $errstr, max(1, intval($timeout / 2))))
 	{
 		@fputs($fsock, "GET $directory/$filename HTTP/1.0\r\n");
 		@fputs($fsock, "Host: $host\r\n");
@@ -2946,7 +2947,6 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 			. ' (' . $config['num_posts'] . '; ' . $config['num_topics'] . '; ' . $config['num_users'] . ")\r\n");
 		@fputs($fsock, "Connection: close\r\n\r\n");
 
-		$timer_stop = time() + $timeout;
 		stream_set_timeout($fsock, $timeout);
 
 		$file_info = '';
@@ -2954,6 +2954,12 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 
 		while (!@feof($fsock))
 		{
+			if (time() >= $stop_at)
+			{
+				$errstr = $user->lang['FSOCK_TIMEOUT'];
+				return false;
+			}
+
 			if ($get_info)
 			{
 				$file_info .= @fread($fsock, 1024);
@@ -2970,14 +2976,6 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 					$errstr = $user->lang['FILE_NOT_FOUND'] . ': ' . $filename;
 					return false;
 				}
-			}
-
-			$stream_meta_data = stream_get_meta_data($fsock);
-
-			if (!empty($stream_meta_data['timed_out']) || time() >= $timer_stop)
-			{
-				$errstr = $user->lang['FSOCK_TIMEOUT'];
-				return false;
 			}
 		}
 		@fclose($fsock);
