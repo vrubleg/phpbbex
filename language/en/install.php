@@ -159,7 +159,7 @@ $lang = array_merge($lang, array(
 	'INSTALL_CONGRATS'			=> 'Congratulations!',
 	'INSTALL_CONGRATS_EXPLAIN'	=> 'You have successfully installed phpBBex %1$s. Go live with your phpBBex!',
 	'INSTALL_INTRO'				=> 'Welcome to phpBBex installation!',
-	'INSTALL_INTRO_BODY'		=> 'phpBBex is an extended version of classic phpBB 3.0. phpBBex supports modern versions of PHP and is as lightweight as the original in contrary to newer versions of phpBB.
+	'INSTALL_INTRO_BODY'		=> 'phpBBex is an extended fork of the classic phpBB 3.0 forum software that is as lightweight as the original in contrary to newer versions of phpBB. It is compatible with PHP 5.6+, 7.0+, 8.0+.
 	<p>In order to proceed, you will need your MySQL database settings:
 	<ul>
 		<li>The address of the MySQL database server;</li>
