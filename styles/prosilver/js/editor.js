@@ -1,7 +1,6 @@
 /**
 * Show quick quote button when text in a post is selected.
 */
-
 jQuery(function($)
 {
 	if (!document.querySelector('.quick-quote.hidden')) { return; }
@@ -64,13 +63,6 @@ jQuery(function($)
 
 /**
 * BBCode functions.
-*/
-
-// Startup variables
-var bbcodeEnabled = true;
-
-/**
-* bbstyle
 */
 function bbstyle(bbnumber, event)
 {
@@ -312,7 +304,7 @@ function addquote(post_id, username)
 	selection = selection.trim();
 	if (!selection) { return; }
 
-	if (bbcodeEnabled)
+	if (bbcode_allowed === undefined || bbcode_allowed)
 	{
 		insert_text('[quote="' + username + '"]' + selection + '[/quote]\n');
 	}
