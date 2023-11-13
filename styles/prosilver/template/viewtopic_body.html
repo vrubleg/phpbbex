@@ -164,64 +164,6 @@ jQuery(function($)
 </script>
 <!-- ENDIF -->
 
-<!-- IF S_QUICK_REPLY -->
-<script>
-jQuery(function($)
-{
-	var quoting_post_id = 0;
-
-	var check_selection = function()
-	{
-		var post_el = null;
-		var selection = window.getSelection();
-		if (selection && selection.toString().trim() != '')
-		{
-			var el1 = selection.anchorNode;
-			if (el1 && el1.nodeType !== Node.ELEMENT_NODE) { el1 = el1.parentNode; }
-			if (el1 && el1.nodeType !== Node.ELEMENT_NODE) { el1 = null; }
-			if (el1) { el1 = el1.closest('.content'); }
-
-			var el2 = selection.focusNode;
-			if (el2 && el2.nodeType !== Node.ELEMENT_NODE) { el2 = el2.parentNode; }
-			if (el2 && el2.nodeType !== Node.ELEMENT_NODE) { el2 = null; }
-			if (el2) { el2 = el2.closest('.content'); }
-
-			if (el1 && el1 === el2)
-			{
-				post_el = el1.closest('.post');
-			}
-		}
-
-		var post_id = 0;
-		if (post_el && post_el.dataset)
-		{
-			post_id = post_el.dataset.id;
-		}
-
-		if (quoting_post_id != post_id)
-		{
-			quoting_post_id = post_id;
-			$('li.partial-quote').hide();
-			if (post_id)
-			{
-				$('li.partial-quote', post_el).show();
-			}
-		}
-	};
-
-	document.body.addEventListener('mouseup', function(e)
-	{
-		setTimeout(check_selection, 50);
-	});
-
-	document.body.addEventListener('touchend', function(e)
-	{
-		setTimeout(check_selection, 50);
-	});
-});
-</script>
-<!-- ENDIF -->
-
 <!-- BEGIN postrow -->
 	<!-- IF $LAST_POST_FIRST && postrow.POST_NUMBER != 2 --><hr /><!-- ENDIF -->
 	<!-- IF postrow.POST_NUMBER == 1 --><!-- DEFINE $LAST_POST_FIRST = 1 --><!-- ELSE --><!-- DEFINE $LAST_POST_FIRST = 0 --><!-- ENDIF -->
@@ -242,7 +184,7 @@ jQuery(function($)
 					<!-- IF postrow.U_REPORT and not postrow.U_WARN --><li class="report-icon"><a rel="nofollow" href="{postrow.U_REPORT}" title="{L_REPORT_POST}"><span>{L_REPORT_POST}</span></a></li><!-- ENDIF -->
 					<!-- IF postrow.U_DELETE --><li class="delete-icon"><a rel="nofollow" href="{postrow.U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li><!-- ENDIF -->
 					<!-- IF postrow.U_EDIT --><li class="edit-icon"><a rel="nofollow" href="{postrow.U_EDIT}" title="{L_EDIT_POST}"><span>{L_EDIT_POST}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_QUOTE and not S_IS_LOCKED or S_QUICK_REPLY --><li <!-- IF not S_QUICK_REPLY or postrow.DECODED_MESSAGE -->class="quote-icon"<!-- ELSE -->class="quote-icon partial-quote" style="display: none;"<!-- ENDIF -->><!-- IF not S_QUICK_REPLY --><a rel="nofollow" href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}"><span>{L_REPLY_WITH_QUOTE}</span></a><!-- ELSE --><a rel="nofollow" href="#postform" onclick="addquote({postrow.POST_ID},'{postrow.POSTER_QUOTE}'); return false;" title="{L_QUOTE_TEXT}"><span>{L_QUOTE}</span></a><!-- ENDIF --></li><!-- ENDIF -->
+					<!-- IF postrow.U_QUOTE and not S_IS_LOCKED or S_QUICK_REPLY --><li class="quote-icon<!-- IF S_QUICK_REPLY and not postrow.DECODED_MESSAGE --> quick-quote hidden<!-- ENDIF -->"><!-- IF not S_QUICK_REPLY --><a rel="nofollow" href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}"><span>{L_REPLY_WITH_QUOTE}</span></a><!-- ELSE --><a rel="nofollow" href="#postform" onclick="addquote({postrow.POST_ID},'{postrow.POSTER_QUOTE}'); return false;" title="{L_QUOTE_TEXT}"><span>{L_QUOTE}</span></a><!-- ENDIF --></li><!-- ENDIF -->
 					<!-- IF postrow.POST_RATING_SHOW --><li class="rate-box"><span class="rate-<!-- IF postrow.USER_RATE < 0 -->minus-voted<!-- ELSEIF postrow.USER_CAN_MINUS -->minus<!-- ELSE -->no-minus<!-- ENDIF -->"></span><span class="rate-value rate-<!-- IF postrow.POST_RATING > 0 -->positive<!-- ELSEIF postrow.POST_RATING < 0 -->negative<!-- ELSE -->zero<!-- ENDIF -->"<!-- IF .postrow.postrater or not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE and not DISPLAY_RATERS --> title="<!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE and not DISPLAY_RATERS -->+{postrow.POST_RATING_POSITIVE}/−{postrow.POST_RATING_NEGATIVE}<!-- ENDIF --><!-- BEGIN postrater --><!-- IF not postrow.postrater.S_FIRST_ROW -->&#13;<!-- ENDIF -->{postrow.postrater.DATE} {postrow.postrater.RATE_TEXT} {postrow.postrater.RATER_NAME}<!-- END postrater -->"<!-- ENDIF -->><!-- IF postrow.POST_RATING_NEGATIVE != 0 or postrow.POST_RATING_POSITIVE != 0 -->{postrow.POST_RATING}<!-- ELSE -->−<!-- ENDIF --></span><span class="rate-<!-- IF postrow.USER_RATE > 0 -->plus-voted<!-- ELSEIF postrow.USER_CAN_PLUS -->plus<!-- ELSE -->no-plus<!-- ENDIF -->"></span></li><!-- ENDIF -->
 				</ul>
 			<!-- ENDIF -->

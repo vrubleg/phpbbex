@@ -127,6 +127,10 @@ hr.divider {
 	user-select: none;
 }
 
+.hidden {
+	display: none;
+}
+
 /* Main blocks
 ---------------------------------------- */
 #wrap {

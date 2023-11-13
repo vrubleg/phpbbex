@@ -1,6 +1,69 @@
 /**
-* bbCode control by subBlue design [ www.subBlue.com ]
-* Includes unixsafe colour palette selector by SHS`
+* Show quick quote button when text in a post is selected.
+*/
+
+jQuery(function($)
+{
+	if (!document.querySelector('.quick-quote.hidden')) { return; }
+
+	var last_post_el = 0;
+
+	var check_selection = function()
+	{
+		var curr_post_el = null;
+		var selection = window.getSelection();
+		if (selection && selection.toString().trim() != '')
+		{
+			var el1 = selection.anchorNode;
+			if (el1 && el1.nodeType !== Node.ELEMENT_NODE) { el1 = el1.parentNode; }
+			if (el1 && el1.nodeType !== Node.ELEMENT_NODE) { el1 = null; }
+			if (el1) { el1 = el1.closest('.content'); }
+
+			var el2 = selection.focusNode;
+			if (el2 && el2.nodeType !== Node.ELEMENT_NODE) { el2 = el2.parentNode; }
+			if (el2 && el2.nodeType !== Node.ELEMENT_NODE) { el2 = null; }
+			if (el2) { el2 = el2.closest('.content'); }
+
+			if (el1 && el1 === el2)
+			{
+				curr_post_el = el1.closest('.post');
+			}
+
+			if (curr_post_el && !curr_post_el.dataset.id)
+			{
+				curr_post_el = null;
+			}
+		}
+
+		if (last_post_el !== curr_post_el)
+		{
+			if (last_post_el)
+			{
+				var btn = last_post_el.querySelector('.quick-quote');
+				if (btn) { btn.classList.add('hidden'); }
+			}
+			if (curr_post_el)
+			{
+				var btn = curr_post_el.querySelector('.quick-quote');
+				if (btn) { btn.classList.remove('hidden'); }
+			}
+			last_post_el = curr_post_el;
+		}
+	};
+
+	document.body.addEventListener('mouseup', function(e)
+	{
+		setTimeout(check_selection, 50);
+	});
+
+	document.body.addEventListener('touchend', function(e)
+	{
+		setTimeout(check_selection, 50);
+	});
+});
+
+/**
+* BBCode functions.
 */
 
 // Startup variables
@@ -300,6 +363,7 @@ function split_lines(text)
 	}
 	return splitLines;
 }
+
 /**
 * From http://www.massless.org/mozedit/
 */
