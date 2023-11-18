@@ -8,7 +8,7 @@
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
-define('NEWEST_PHPBBEX_VERSION', '1.9.6');
+define('NEWEST_PHPBBEX_VERSION', '1.9.7');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 
@@ -230,7 +230,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 		// Reset permissions cache...
 		$cache->destroy('_acl_options');
-		include_once($phpbb_root_path . 'includes/acp/auth.php');
+		require_once($phpbb_root_path . 'includes/acp/auth.php');
 		$auth_admin = new auth_admin();
 		$auth_admin->acl_clear_prefetch();
 	}
@@ -273,7 +273,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 	// Update DB schema version.
 
-	// $db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.7' WHERE config_name = 'phpbbex_version'");
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.7' WHERE config_name = 'phpbbex_version'");
 }
 
 // Update bots if bots=1 is passed.
