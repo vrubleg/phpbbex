@@ -44,7 +44,7 @@ foreach ($curr_keys as $key)
 if (!$allowed)
 {
 	http_response_code(403);
-	die('Create an empty file at <tt>/cache/allow_upd_' . $curr_keys[0] . '.key</tt> to allow running the update.');
+	die('Create an empty file at /cache/allow_upd_' . $curr_keys[0] . '.key to allow running the script.');
 }
 
 // We are allowed, run the update!
@@ -108,9 +108,15 @@ $purge_default = 'cache';
 
 if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_version'], '1.7.0', '<'))
 {
-	if (empty($config['version']) || version_compare($config['version'], '3.0.12', '<') || version_compare($config['version'], '3.0.14', '>'))
+	if (empty($config['version']) || version_compare($config['version'], '3.0.0', '<') || version_compare($config['version'], '3.0.14', '>'))
 	{
-		die('Error! Database schema has to be phpBB 3.0.12-3.0.14 or phpBBex 1.7.0+ before running DB update.');
+		die('Error! Database schema has to be phpBB 3.0.x or phpBBex 1.x.x before running the DB update.');
+	}
+
+	if (version_compare($config['version'], '3.0.12', '<'))
+	{
+		// Oh, no, it's too old phpBB 3.0.x, we have to run the original DB update first.
+		goto original_db_update;
 	}
 
 	$sql_queries = file_get_contents('db_update.sql');
@@ -673,9 +679,19 @@ switch (request_var('purge', $purge_default))
 		break;
 }
 
-die('OK');
+echo('OK');
+garbage_collection();
+exit_handler();
+die();
 
-// Original phpBB 3.0 database update code. Unused for now.
+//
+// Original phpBB 3.0 database update code.
+//
+
+original_db_update:
+
+header('Content-Type: text/html; charset=utf-8');
+
 define('UPDATES_TO_VERSION', '3.0.14');
 
 // Enter any version to update from to test updates. The version within the db will not be updated.
@@ -687,8 +703,6 @@ define('OLDEST_FROM_VERSION', '3.0.0');
 $updates_to_version = UPDATES_TO_VERSION;
 $debug_from_version = DEBUG_FROM_VERSION;
 $oldest_from_version = OLDEST_FROM_VERSION;
-
-$inline_update = (request_var('type', 0)) ? true : false;
 
 $db_tools = new phpbb_db_tools($db, true);
 $database_update_info = database_update_info();
@@ -746,20 +760,6 @@ if (version_compare($current_version, $oldest_from_version, '<'))
 	_print_footer();
 	exit_handler();
 	exit;
-}
-
-// If the latest version and the current version are 'unequal', we will update the version_update_from, else we do not update anything.
-if ($inline_update)
-{
-	if ($current_version !== $latest_version)
-	{
-		set_config('version_update_from', $orig_version);
-	}
-}
-else
-{
-	// If not called from the update script, we will actually remove the traces
-	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name = 'version_update_from'");
 }
 
 // Schema updates
@@ -886,46 +886,20 @@ _write_result($no_updates, $errored, $error_ary);
 
 <br />
 <h1><?php echo $lang['UPDATE_COMPLETED']; ?></h1>
-
-<br />
-
-<?php
-
-if (!$inline_update)
-{
-?>
-
-	<p style="color:red"><?php echo $lang['UPDATE_FILES_NOTICE']; ?></p>
-
-	<p><?php echo $lang['COMPLETE_LOGIN_TO_BOARD']; ?></p>
+<p><?php echo $lang['UPDATE_FILES_NOTICE']; ?></p>
 
 <?php
-}
-else
-{
-?>
-
-	<p><?php echo ((isset($lang['INLINE_UPDATE_SUCCESSFUL'])) ? $lang['INLINE_UPDATE_SUCCESSFUL'] : 'The database update was successful. Now you need to continue the update process.'); ?></p>
-
-	<p><a href="<?php echo append_sid("{$phpbb_root_path}install/index.php", "mode=update&amp;sub=file_check"); ?>" class="button1"><?php echo (isset($lang['CONTINUE_UPDATE_NOW'])) ? $lang['CONTINUE_UPDATE_NOW'] : 'Continue the update process now'; ?></a></p>
-
-<?php
-}
 
 // Add database update to log
 add_log('admin', 'LOG_UPDATE_DATABASE', $orig_version, $updates_to_version);
 
 // Now we purge the session table as well as all cache files
-$cache->purge();
+// $cache->purge();
 
 _print_footer();
 
 garbage_collection();
-
-if (function_exists('exit_handler'))
-{
-	exit_handler();
-}
+exit_handler();
 
 /**
 * Print out footer

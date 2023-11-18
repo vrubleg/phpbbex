@@ -329,7 +329,6 @@ $lang = array_merge($lang, array(
 	'COLLECTED_INFORMATION'			=> 'Сведения о файлах',
 	'COLLECTED_INFORMATION_EXPLAIN'	=> 'Список ниже демонстрирует сведения о файлах, нуждающихся в обновлении. Прочтите информацию, предшествующую блоку файлов каждого типа, чтобы понять их смысл и что требуется сделать для выполнения успешного обновления.',
 	'COLLECTING_FILE_DIFFS'			=> 'Проверка различий в файлах',
-	'COMPLETE_LOGIN_TO_BOARD'		=> '<a href="../ucp.php?mode=login">Войдите на форум</a> и проверьте, что всё работает нормально. Не забудьте удалить, переименовать или переместить каталог install!',
 	'CONTINUE_UPDATE_NOW'			=> 'Продолжайте процесс обновления',		// Shown within the database update script at the end if called from the updater
 	'CONTINUE_UPDATE'				=> 'Продолжайте обновление',				// Shown after file upload to indicate the update process is not yet finished
 	'CURRENT_FILE'					=> 'Начало конфликта — код исходного файла до обновления',
