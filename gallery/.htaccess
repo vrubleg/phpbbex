@@ -1,4 +1,5 @@
-<Files "common.php">
-	Order Allow,Deny
-	Deny from All
-</Files>
+<IfModule mod_authz_core.c>
+	<Files "common.php">
+		Require all denied
+	</Files>
+</IfModule>
