@@ -17,14 +17,14 @@ define('IN_INSTALL', true);
 define('NEWEST_PG_VERSION', '1.1.6');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
-include($phpbb_root_path . 'common.php');
-include($phpbb_root_path . 'includes/functions_display.php');
-include($phpbb_root_path . 'includes/acp/acp_modules.php');
-include($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
-include($phpbb_root_path . 'includes/message_parser.php');
+require($phpbb_root_path . 'common.php');
+require($phpbb_root_path . 'includes/functions_display.php');
+require($phpbb_root_path . 'includes/acp/acp_modules.php');
+require($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
+require($phpbb_root_path . 'includes/message_parser.php');
 require($phpbb_root_path . 'includes/functions_install.php');
 require($phpbb_root_path . 'install/dbal_schema.php');
-require($phpbb_root_path . 'umil/umil.php');
+require($phpbb_root_path . 'includes/umil.php');
 
 // Start session management
 $user->session_begin();

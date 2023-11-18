@@ -269,7 +269,7 @@ class install_install extends module
 	{
 		global $cache, $phpbb_root_path, $template, $user;
 
-		$umil = new umil(true);
+		$umil = new phpbb_umil();
 		$this->page_title = $user->lang['STAGE_CREATE_TABLE'];
 		$s_hidden_fields = '';
 
@@ -332,7 +332,7 @@ class install_install extends module
 		$create = request_var('create', '');
 		if ($create)
 		{
-			$umil = new umil(true);
+			$umil = new phpbb_umil();
 
 			// Add modules
 			$choosen_acp_module = request_var('acp_module', 0);

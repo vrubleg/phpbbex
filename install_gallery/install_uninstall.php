@@ -148,7 +148,7 @@ class install_uninstall extends module
 		$this->page_title = $user->lang['STAGE_DELETE_TABLES'];
 
 		$db->sql_return_on_error(true);
-		$umil = new umil(true);
+		$umil = new phpbb_umil();
 
 		// Delete the tables
 		$umil->table_remove(array(

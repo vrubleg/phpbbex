@@ -357,7 +357,7 @@ class install_update extends module
 		global $db, $user, $template, $table_prefix;
 		global $phpbb_root_path;
 
-		$umil = new umil(true);
+		$umil = new phpbb_umil();
 		$this->page_title = $user->lang['STAGE_UPDATE_DB'];
 		$phpbb_gallery_version = get_gallery_version();
 
@@ -473,7 +473,7 @@ class install_update extends module
 		$this->page_title = $user->lang['STAGE_UPDATE_DB'];
 		$next_update_url = '';
 
-		$umil = new umil(true);
+		$umil = new phpbb_umil();
 
 		switch (phpbb_gallery_config::get('version'))
 		{
@@ -587,7 +587,7 @@ class install_update extends module
 
 		$this->page_title = $user->lang['STAGE_UPDATE_DB'];
 		$reparse_modules_bbcode = false;
-		$umil = new umil(true);
+		$umil = new phpbb_umil();
 
 		switch (phpbb_gallery_config::get('version'))
 		{
@@ -686,7 +686,7 @@ class install_update extends module
 		$create = request_var('create', '');
 		if ($create)
 		{
-			$umil = new umil(true);
+			$umil = new phpbb_umil();
 
 			// Add modules
 			$choosen_acp_module = request_var('acp_module', 0);
