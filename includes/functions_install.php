@@ -20,11 +20,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false)
 	$available_dbms = array(
 		'mysql' => array(
 			'LABEL'			=> 'MySQLi',
-			'SCHEMA'		=> 'mysql',
 			'MODULE'		=> 'mysqli',
-			'DELIM'			=> ';',
-			'COMMENTS'		=> 'remove_remarks',
-			'DRIVER'		=> 'mysql',
 			'AVAILABLE'		=> true,
 		),
 	);
@@ -113,7 +109,7 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 {
 	global $phpbb_root_path, $config, $lang;
 
-	if ($dbms_details['DRIVER'] != 'mysql')
+	if ($dbms_details['MODULE'] != 'mysqli')
 	{
 		$error[] = $lang['INST_ERR_DB_NO_MYSQLI'];
 		return false;
@@ -188,62 +184,34 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 }
 
 /**
-* Removes comments from schema files
-*
-* @deprecated		Use phpbb_remove_comments() instead.
+* Removes "/* style" as well as "# and -- style" comments.
 */
-function remove_remarks(&$sql)
+function sql_remove_comments($sql)
 {
-	// Remove # style comments
-	$sql = preg_replace('/\n{2,}/', "\n", preg_replace('/^#.*$/m', "\n", $sql));
+	// Remove /* */ comments (http://ostermiller.org/findcomment.html).
+	$sql = preg_replace('#/\*(.|[\r\n])*?\*/#', "\n", $sql);
 
-	// Return by reference
+	// Remove # and -- style comments.
+	$sql = preg_replace('/^\s*(#|--).*$/m', "\n", $sql);
+	$sql = preg_replace('/\n{2,}/', "\n", $sql);
+
+	return $sql;
 }
 
 /**
-* Removes "/* style" as well as "# style" comments from $input.
-*
-* @param string $input		Input string
-*
-* @return string			Input string with comments removed
+* Splits an SQL file into array of SQL statements.
 */
-function phpbb_remove_comments($input)
+function sql_split_queries($sql)
 {
-	if (!function_exists('remove_comments'))
-	{
-		global $phpbb_root_path;
-		require($phpbb_root_path . 'includes/functions_admin.php');
-	}
+	$sql = sql_remove_comments($sql);
 
-	// Remove /* */ comments
-	remove_comments($input);
-
-	// Remove # style comments
-	remove_remarks($input);
-
-	return $input;
-}
-
-/**
-* split_sql_file will split an uploaded sql file into single sql statements.
-* Note: expects trim() to have already been run on $sql.
-*/
-function split_sql_file($sql, $delimiter)
-{
 	$sql = str_replace("\r" , '', $sql);
-	$data = preg_split('/' . preg_quote($delimiter, '/') . '$/m', $sql);
+	$ary = preg_split('/;$/m', $sql);
 
-	$data = array_map('trim', $data);
+	$ary = array_map('trim', $ary);
+	$ary = array_filter($ary, 'strlen');
 
-	// The empty case
-	$end_data = end($data);
-
-	if (empty($end_data))
-	{
-		unset($data[key($data)]);
-	}
-
-	return $data;
+	return array_values($ary);
 }
 
 /**

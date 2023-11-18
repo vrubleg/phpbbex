@@ -56,22 +56,12 @@ class sql_query
 			return;
 		}
 
-		if (!function_exists('remove_comments'))
+		if (!function_exists('sql_split_queries'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-		}
-		if (!function_exists('split_sql_file'))
-		{
-			include(PHPBB_ROOT_PATH . 'includes/functions_install.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 		}
 
-		$dbms = 'mysql';
-		$dbmd = get_available_dbms($dbms);
-		$remove_remarks = $dbmd[$dbms]['COMMENTS'];
-
-		$delimiter = $dbmd[$dbms]['DELIM'];
-		$remove_remarks($sql_query);
-		$sql_query = split_sql_file($sql_query, $delimiter);
+		$sql_query = sql_split_queries($sql_query);
 
 		// Return on error
 		$db->sql_return_on_error(true);

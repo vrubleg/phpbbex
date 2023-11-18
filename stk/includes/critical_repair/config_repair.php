@@ -203,7 +203,7 @@ class erk_config_repair
 		// Must be globalized here for when including the DB file
 		global $phpbb_root_path;
 
-		if ($dbms_details['DRIVER'] != 'mysql')
+		if ($dbms_details['MODULE'] != 'mysqli')
 		{
 			$error[] = 'MySQL 5.5 and newer is required.';
 			return false;

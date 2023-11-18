@@ -823,9 +823,8 @@ class install_install extends module
 		// Ok we have the db info go ahead and read in the relevant schema
 		// and work on building the table
 		$sql_query = file_get_contents('schemas/mysql_schema.sql');
-		$sql_query = preg_replace('#phpbb_#i', $data['table_prefix'], $sql_query);
-		$sql_query = phpbb_remove_comments($sql_query);
-		$sql_query = split_sql_file($sql_query, ';');
+		$sql_query = str_replace('phpbb_', $data['table_prefix'], $sql_query);
+		$sql_query = sql_split_queries($sql_query);
 
 		foreach ($sql_query as $sql)
 		{
@@ -847,8 +846,7 @@ class install_install extends module
 		// Change language strings...
 		$sql_query = preg_replace_callback('#\{L_([A-Z0-9\-_]*)\}#s', 'adjust_language_keys_callback', $sql_query);
 
-		$sql_query = phpbb_remove_comments($sql_query);
-		$sql_query = split_sql_file($sql_query, ';');
+		$sql_query = sql_split_queries($sql_query);
 
 		foreach ($sql_query as $sql)
 		{

@@ -2059,10 +2059,10 @@ class phpbb_umil
 			return $this->umil_end('NO_TABLE_DATA');
 		}
 
-		if (!function_exists('get_available_dbms'))
+		if (!function_exists('sql_split_queries'))
 		{
 			global $phpbb_root_path;
-			include("{$phpbb_root_path}includes/functions_install.php");
+			require_once("{$phpbb_root_path}includes/functions_install.php");
 		}
 
 		/*
@@ -2075,7 +2075,7 @@ class phpbb_umil
 		else
 		{*/
 			$sql_query = $this->create_table_sql($table_name, $table_data);
-			$sql_query = split_sql_file($sql_query, ';');
+			$sql_query = sql_split_queries($sql_query);
 
 			foreach ($sql_query as $sql)
 			{
