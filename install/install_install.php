@@ -350,47 +350,44 @@ class install_install extends module
 			'LEGEND_EXPLAIN'	=> $lang['FILES_REQUIRED_EXPLAIN'],
 		));
 
-		$directories = array('cache/', 'files/', 'store/');
+		$paths = array('cache/', 'files/', 'store/');
 
 		umask(0);
 
 		$passed['files'] = true;
-		foreach ($directories as $dir)
+		foreach ($paths as $path)
 		{
 			$exists = $write = false;
 
 			// Try to create the directory if it does not exist
-			if (!file_exists($phpbb_root_path . $dir))
+			if (!file_exists($phpbb_root_path . $path))
 			{
-				@mkdir($phpbb_root_path . $dir, 0777);
-				phpbb_chmod($phpbb_root_path . $dir, CHMOD_READ | CHMOD_WRITE);
+				@mkdir($phpbb_root_path . $path, 0777);
+				phpbb_chmod($phpbb_root_path . $path, CHMOD_READ | CHMOD_WRITE);
 			}
 
 			// Now really check
-			if (file_exists($phpbb_root_path . $dir) && is_dir($phpbb_root_path . $dir))
+			if (file_exists($phpbb_root_path . $path) && is_dir($phpbb_root_path . $path))
 			{
-				phpbb_chmod($phpbb_root_path . $dir, CHMOD_READ | CHMOD_WRITE);
+				phpbb_chmod($phpbb_root_path . $path, CHMOD_READ | CHMOD_WRITE);
 				$exists = true;
 			}
 
 			// Now check if it is writable by storing a simple file
-			$fp = @fopen($phpbb_root_path . $dir . 'test_lock', 'wb');
+			$fp = @fopen($phpbb_root_path . $path . 'test_lock', 'wb');
 			if ($fp !== false)
 			{
 				$write = true;
 			}
 			@fclose($fp);
 
-			@unlink($phpbb_root_path . $dir . 'test_lock');
+			@unlink($phpbb_root_path . $path . 'test_lock');
 
 			$passed['files'] = ($exists && $write && $passed['files']) ? true : false;
 
-			$exists = ($exists) ? '<strong style="color:green">' . $lang['FOUND'] . '</strong>' : '<strong style="color:red">' . $lang['NOT_FOUND'] . '</strong>';
-			$write = ($write) ? ', <strong style="color:green">' . $lang['WRITABLE'] . '</strong>' : (($exists) ? ', <strong style="color:red">' . $lang['UNWRITABLE'] . '</strong>' : '');
-
 			$template->assign_block_vars('checks', array(
-				'TITLE'		=> $dir,
-				'RESULT'	=> $exists . $write,
+				'TITLE'		=> $path,
+				'RESULT'	=> (!$exists ? '<strong style="color:red">' . $lang['NOT_FOUND'] . '</strong>' : (!$write ? '<strong style="color:red">' . $lang['UNWRITABLE'] . '</strong>' : '<strong style="color:green">' . $lang['WRITABLE'] . '</strong>')),
 
 				'S_EXPLAIN'	=> false,
 				'S_LEGEND'	=> false,
@@ -404,29 +401,35 @@ class install_install extends module
 			'LEGEND_EXPLAIN'	=> $lang['FILES_OPTIONAL_EXPLAIN'],
 		));
 
-		$directories = array('config.php', 'images/avatars/upload/');
+		$paths = array('config.php', 'images/avatars/upload/');
 
-		foreach ($directories as $dir)
+		foreach ($paths as $path)
 		{
 			$write = $exists = true;
-			if (file_exists($phpbb_root_path . $dir))
+			if (file_exists($phpbb_root_path . $path))
 			{
-				if (!phpbb_is_writable($phpbb_root_path . $dir))
+				if (!phpbb_is_writable($phpbb_root_path . $path))
 				{
 					$write = false;
 				}
 			}
 			else
 			{
-				$write = $exists = false;
+				if ($path == 'config.php')
+				{
+					// If the file doesn't exist, we still can create it, so display writability of the parent directory instead of "Not Found".
+					$exists = true;
+					$write = phpbb_is_writable($phpbb_root_path);
+				}
+				else
+				{
+					$write = $exists = false;
+				}
 			}
 
-			$exists_str = ($exists) ? '<strong style="color:green">' . $lang['FOUND'] . '</strong>' : '<strong style="color:red">' . $lang['NOT_FOUND'] . '</strong>';
-			$write_str = ($write) ? ', <strong style="color:green">' . $lang['WRITABLE'] . '</strong>' : (($exists) ? ', <strong style="color:red">' . $lang['UNWRITABLE'] . '</strong>' : '');
-
 			$template->assign_block_vars('checks', array(
-				'TITLE'		=> $dir,
-				'RESULT'	=> $exists_str . $write_str,
+				'TITLE'		=> $path,
+				'RESULT'	=> (!$exists ? '<strong style="color:red">' . $lang['NOT_FOUND'] . '</strong>' : (!$write ? '<strong style="color:red">' . $lang['UNWRITABLE'] . '</strong>' : '<strong style="color:green">' . $lang['WRITABLE'] . '</strong>')),
 
 				'S_EXPLAIN'	=> false,
 				'S_LEGEND'	=> false,
@@ -823,9 +826,8 @@ class install_install extends module
 		// Ok we have the db info go ahead and read in the relevant schema
 		// and work on building the table
 		$sql_query = file_get_contents('schemas/mysql_schema.sql');
-		$sql_query = preg_replace('#phpbb_#i', $data['table_prefix'], $sql_query);
-		$sql_query = phpbb_remove_comments($sql_query);
-		$sql_query = split_sql_file($sql_query, ';');
+		$sql_query = str_replace('phpbb_', $data['table_prefix'], $sql_query);
+		$sql_query = sql_split_queries($sql_query);
 
 		foreach ($sql_query as $sql)
 		{
@@ -847,8 +849,7 @@ class install_install extends module
 		// Change language strings...
 		$sql_query = preg_replace_callback('#\{L_([A-Z0-9\-_]*)\}#s', 'adjust_language_keys_callback', $sql_query);
 
-		$sql_query = phpbb_remove_comments($sql_query);
-		$sql_query = split_sql_file($sql_query, ';');
+		$sql_query = sql_split_queries($sql_query);
 
 		foreach ($sql_query as $sql)
 		{

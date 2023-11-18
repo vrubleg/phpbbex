@@ -159,7 +159,7 @@ $lang = array_merge($lang, array(
 	'INSTALL_CONGRATS'			=> 'Поздравляем!',
 	'INSTALL_CONGRATS_EXPLAIN'	=> 'Вы успешно установили phpBBex %1$s. Теперь вы можете начать использование только что установленного форума!',
 	'INSTALL_INTRO'				=> 'Добро пожаловать в установку phpBBex!',
-	'INSTALL_INTRO_BODY'		=> 'phpBBex — это расширенная версия классического phpBB 3.0. phpBBex поддерживает современные версии PHP и такой же быстрый и лёгкий как и оригинал, в отличие от более новых версий phpBB.
+	'INSTALL_INTRO_BODY'		=> 'phpBBex — это расширенный форк классического движка форумов phpBB 3.0, который такой же легковесный, как и оригинал, в отличие от более новых версий phpBB. Соовместим с PHP 5.6+, 7.0+, 8.0+.
 	<p>Для установки phpBBex вам понадобятся следующие реквизиты доступа к базе данных MySQL:
 	<ul>
 		<li>Адрес сервера базы данных MySQL;</li>
@@ -329,7 +329,6 @@ $lang = array_merge($lang, array(
 	'COLLECTED_INFORMATION'			=> 'Сведения о файлах',
 	'COLLECTED_INFORMATION_EXPLAIN'	=> 'Список ниже демонстрирует сведения о файлах, нуждающихся в обновлении. Прочтите информацию, предшествующую блоку файлов каждого типа, чтобы понять их смысл и что требуется сделать для выполнения успешного обновления.',
 	'COLLECTING_FILE_DIFFS'			=> 'Проверка различий в файлах',
-	'COMPLETE_LOGIN_TO_BOARD'		=> '<a href="../ucp.php?mode=login">Войдите на форум</a> и проверьте, что всё работает нормально. Не забудьте удалить, переименовать или переместить каталог install!',
 	'CONTINUE_UPDATE_NOW'			=> 'Продолжайте процесс обновления',		// Shown within the database update script at the end if called from the updater
 	'CONTINUE_UPDATE'				=> 'Продолжайте обновление',				// Shown after file upload to indicate the update process is not yet finished
 	'CURRENT_FILE'					=> 'Начало конфликта — код исходного файла до обновления',

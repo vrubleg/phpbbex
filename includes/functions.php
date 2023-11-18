@@ -4633,8 +4633,6 @@ function garbage_collection()
 */
 function exit_handler()
 {
-	global $config;
-
 	// As a pre-caution... some setups display a blank page if the flush() is not there.
 	(ob_get_level() > 0) ? @ob_flush() : @flush();
 

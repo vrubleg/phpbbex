@@ -18,41 +18,33 @@ CREATE TABLE phpbb_user_browser_ids (
 	PRIMARY KEY (browser_id,user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-ALTER TABLE phpbb_bbcodes
-	ADD COLUMN bbcode_order smallint(4) DEFAULT '0' NOT NULL AFTER bbcode_id;
+ALTER TABLE phpbb_bbcodes ADD COLUMN bbcode_order smallint(4) DEFAULT '0' NOT NULL AFTER bbcode_id;
 
-ALTER TABLE phpbb_posts
-	ADD COLUMN poster_browser_id char(32) DEFAULT '' NOT NULL AFTER poster_ip,
-	ADD COLUMN post_merged int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER post_time;
+ALTER TABLE phpbb_posts ADD COLUMN poster_browser_id char(32) DEFAULT '' NOT NULL AFTER poster_ip;
+ALTER TABLE phpbb_posts ADD COLUMN post_merged int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER post_time;
 
--- Only for converting old merging data to new storing format
--- ALTER TABLE phpbb_posts ADD COLUMN post_merged int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER post_time;
--- UPDATE phpbb_posts SET post_merged = post_time, post_time=post_created WHERE post_created != 0 AND post_merged = 0;
--- ALTER TABLE phpbb_posts DROP COLUMN post_created;
+-- Convert old Posts Merging MOD data (if available) to the new format.
+UPDATE phpbb_posts SET post_merged = post_time, post_time=post_created WHERE post_created != 0 AND post_merged = 0;
+ALTER TABLE phpbb_posts DROP COLUMN post_created;
 
-ALTER TABLE phpbb_topics
-	ADD COLUMN poll_show_voters tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_vote_change,
-	ADD COLUMN topic_first_post_show tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_show_voters;
+ALTER TABLE phpbb_topics ADD COLUMN poll_show_voters tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_vote_change;
+ALTER TABLE phpbb_topics ADD COLUMN topic_first_post_show tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER poll_show_voters;
 
-ALTER TABLE phpbb_topics
-	ADD COLUMN topic_priority mediumint(8) DEFAULT '0' NOT NULL AFTER topic_type,
-	ADD INDEX topic_priority (topic_priority);
+ALTER TABLE phpbb_topics ADD COLUMN topic_priority mediumint(8) DEFAULT '0' NOT NULL AFTER topic_type;
+ALTER TABLE phpbb_topics ADD INDEX topic_priority (topic_priority);
 
-ALTER TABLE phpbb_forums
-	ADD COLUMN forum_topic_show_days smallint(4) UNSIGNED DEFAULT '0' NOT NULL AFTER forum_rules_uid,
-	ADD COLUMN forum_topic_sortby_type varchar(1) DEFAULT '' NOT NULL AFTER forum_topic_show_days,
-	ADD COLUMN forum_topic_sortby_dir varchar(1) DEFAULT '' NOT NULL AFTER forum_topic_sortby_type;
+ALTER TABLE phpbb_forums ADD COLUMN forum_topic_show_days smallint(4) UNSIGNED DEFAULT '0' NOT NULL AFTER forum_rules_uid;
+ALTER TABLE phpbb_forums ADD COLUMN forum_topic_sortby_type varchar(1) DEFAULT '' NOT NULL AFTER forum_topic_show_days;
+ALTER TABLE phpbb_forums ADD COLUMN forum_topic_sortby_dir varchar(1) DEFAULT '' NOT NULL AFTER forum_topic_sortby_type;
 
-ALTER TABLE phpbb_poll_votes
-	ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER vote_user_id;
+ALTER TABLE phpbb_poll_votes ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER vote_user_id;
 
-ALTER TABLE phpbb_users
-	ADD COLUMN user_topics_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_topic_sortby_dir,
-	ADD COLUMN user_posts_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_post_sortby_dir,
-	ADD COLUMN user_gender tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER user_birthday,
-	ADD COLUMN user_topics mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_inactive_time,
-	ADD COLUMN user_skype varchar(255) DEFAULT '' NOT NULL AFTER user_jabber,
-	ADD COLUMN user_browser varchar(150) DEFAULT '' NOT NULL AFTER user_ip;
+ALTER TABLE phpbb_users ADD COLUMN user_topics_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_topic_sortby_dir;
+ALTER TABLE phpbb_users ADD COLUMN user_posts_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_post_sortby_dir;
+ALTER TABLE phpbb_users ADD COLUMN user_gender tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER user_birthday;
+ALTER TABLE phpbb_users ADD COLUMN user_topics mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_inactive_time;
+ALTER TABLE phpbb_users ADD COLUMN user_skype varchar(255) DEFAULT '' NOT NULL AFTER user_jabber;
+ALTER TABLE phpbb_users ADD COLUMN user_browser varchar(150) DEFAULT '' NOT NULL AFTER user_ip;
 
 ALTER TABLE phpbb_warnings
 	ADD COLUMN warning_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL AFTER warning_id,
@@ -239,7 +231,7 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbn
 
 -- Reset some other options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_LETTER_NUM_SPACERS');
--- REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '60');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('delete_time', '15');
@@ -293,37 +285,5 @@ UPDATE phpbb_extension_groups SET group_name = 'AUDIO' WHERE cat_id = 3;
 UPDATE phpbb_extension_groups SET group_name = 'VIDEO' WHERE cat_id = 2;
 UPDATE phpbb_extension_groups SET cat_id = 0 WHERE cat_id = 6;
 
--- phpBBex 1.8.0
-ALTER TABLE phpbb_topics ADD INDEX topic_poster(topic_poster);
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_admin_logs_days', '365');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days', '365');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '7');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
-
--- phpBBex 1.9.5
-
-ALTER TABLE phpbb_users ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype;
-INSERT INTO phpbb_styles_imageset_data (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1);
-
--- phpBBex 1.9.6
-UPDATE phpbb_groups SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA';
-DELETE FROM phpbb_config WHERE config_name IN ('coppa_enable', 'coppa_mail', 'coppa_fax');
-ALTER TABLE phpbb_users DROP COLUMN user_aim;
-ALTER TABLE phpbb_users DROP COLUMN user_yim;
-ALTER TABLE phpbb_users DROP COLUMN user_msnm;
-ALTER TABLE phpbb_sessions DROP COLUMN session_forum_id;
--- ALTER TABLE phpbb_sessions DROP COLUMN session_album_id; -- For Gallery MOD.
-ALTER TABLE phpbb_login_attempts MODIFY attempt_browser varchar(250) DEFAULT '' NOT NULL;
-ALTER TABLE phpbb_sessions MODIFY session_browser varchar(250) DEFAULT '' NOT NULL;
-ALTER TABLE phpbb_users MODIFY user_browser varchar(250) DEFAULT '' NOT NULL;
-ALTER TABLE phpbb_user_browser_ids MODIFY agent varchar(250) DEFAULT '' NOT NULL;
-
--- Disable obsolete modules (they can be removed in the ACP safely).
-UPDATE phpbb_modules SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics');
-
--- phpBBex 1.9.x
-ALTER TABLE phpbb_ranks ADD COLUMN rank_hide_title tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER rank_title;
-
 -- phpBBex version
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.6');
+REPLACE INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.7.0');

@@ -74,9 +74,6 @@ define('UMIL_VERSION', '1.0.5');
 *	table_row_insert($table_name, $data = array())
 *	table_row_remove($table_name, $data = array())
 *	table_row_update($table_name, $data = array(), $new_data = array())
-*
-* Version Check Function
-* 	version_check($url, $path, $file)
 */
 class phpbb_umil
 {
@@ -2062,10 +2059,10 @@ class phpbb_umil
 			return $this->umil_end('NO_TABLE_DATA');
 		}
 
-		if (!function_exists('get_available_dbms'))
+		if (!function_exists('sql_split_queries'))
 		{
 			global $phpbb_root_path;
-			include("{$phpbb_root_path}includes/functions_install.php");
+			require_once("{$phpbb_root_path}includes/functions_install.php");
 		}
 
 		/*
@@ -2078,7 +2075,7 @@ class phpbb_umil
 		else
 		{*/
 			$sql_query = $this->create_table_sql($table_name, $table_data);
-			$sql_query = split_sql_file($sql_query, ';');
+			$sql_query = sql_split_queries($sql_query);
 
 			foreach ($sql_query as $sql)
 			{
@@ -2418,42 +2415,6 @@ class phpbb_umil
 		$this->db->sql_query($sql);
 
 		return $this->umil_end();
-	}
-
-	/**
-	* Version Checker
-	*
-	* Format the file like the following:
-	* http://www.phpbb.com/updatecheck/30x.txt
-	*
-	* @param string $url The url to access (ex: www.phpbb.com)
-	* @param string $path The path to access (ex: /updatecheck)
-	* @param string $file The name of the file to access (ex: 30x.txt)
-	*
-	* @return array|string Error Message if there was any error, or an array (each line in the file as a value)
-	*/
-	function version_check($url, $path, $file, $timeout = 10, $port = 80)
-	{
-		if (!function_exists('get_remote_file'))
-		{
-			global $phpbb_root_path;
-
-			include($phpbb_root_path . 'includes/functions_admin.php');
-		}
-
-		$errstr = $errno = '';
-
-		$info = get_remote_file($url, $path, $file, $errstr, $errno, $port, $timeout);
-
-		if ($info === false)
-		{
-			return $errstr . ' [ ' . $errno . ' ]';
-		}
-
-		$info = str_replace("\r\n", "\n", $info);
-		$info = explode("\n", $info);
-
-		return $info;
 	}
 
 	/**
