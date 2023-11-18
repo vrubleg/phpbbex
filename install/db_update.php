@@ -8,7 +8,6 @@
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
-define('OLDEST_PHPBBEX_VERSION', '1.7.0');
 define('NEWEST_PHPBBEX_VERSION', '1.9.6');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
@@ -61,6 +60,7 @@ require($phpbb_root_path . 'includes/auth.php');
 require($phpbb_root_path . 'includes/functions.php');
 require($phpbb_root_path . 'includes/functions_content.php');
 require($phpbb_root_path . 'includes/functions_admin.php');
+require($phpbb_root_path . 'includes/functions_install.php');
 require($phpbb_root_path . 'includes/functions_user.php');
 require($phpbb_root_path . 'includes/constants.php');
 require($phpbb_root_path . 'includes/db/mysql.php');
@@ -99,14 +99,33 @@ require($phpbb_root_path . 'language/' . $config['default_lang'] . '/install.php
 
 // Check phpBBex version.
 
-if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_version'], OLDEST_PHPBBEX_VERSION, '<'))
-{
-	die('Error! Update database schema to at least phpBBex ' . OLDEST_PHPBBEX_VERSION . ' before running this script.');
-}
-
-if (version_compare($config['phpbbex_version'], NEWEST_PHPBBEX_VERSION, '>'))
+if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_version'], NEWEST_PHPBBEX_VERSION, '>'))
 {
 	die('Error! Database schema has newer version than supported.');
+}
+
+$purge_default = 'cache';
+
+if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_version'], '1.7.0', '<'))
+{
+	if (empty($config['version']) || version_compare($config['version'], '3.0.12', '<') || version_compare($config['version'], '3.0.14', '>'))
+	{
+		die('Error! Database schema has to be phpBB 3.0.12-3.0.14 or phpBBex 1.7.0+ before running DB update.');
+	}
+
+	$sql_queries = file_get_contents('db_update.sql');
+	$sql_queries = str_replace('phpbb_', $table_prefix, $sql_queries);
+	$sql_queries = sql_split_queries($sql_queries);
+
+	$db->sql_return_on_error(true);
+	foreach ($sql_queries as $sql)
+	{
+		$db->sql_query($sql);
+	}
+	$db->sql_return_on_error(false);
+
+	$config['phpbbex_version'] = '1.7.0';
+	$purge_default = 'all';
 }
 
 if (version_compare($config['phpbbex_version'], '1.8.0', '<'))
@@ -127,6 +146,7 @@ if (version_compare($config['phpbbex_version'], '1.9.5', '<'))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
 	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.5' WHERE config_name = 'phpbbex_version'");
+	$purge_default = 'all';
 }
 
 if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
@@ -630,7 +650,7 @@ if (request_var('utf8mb4', 0))
 }
 
 // Purge cached data depending on purge argument.
-switch (request_var('purge', 'cache'))
+switch (request_var('purge', $purge_default))
 {
 	case 'none':
 		break;
@@ -655,7 +675,7 @@ switch (request_var('purge', 'cache'))
 
 die('OK');
 
-// Original code. One day it might be improved to be able to upgrade pure phpBB to phpBBex.
+// Original phpBB 3.0 database update code. Unused for now.
 define('UPDATES_TO_VERSION', '3.0.14');
 
 // Enter any version to update from to test updates. The version within the db will not be updated.
