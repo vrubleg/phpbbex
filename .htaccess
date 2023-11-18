@@ -1,58 +1,19 @@
-# With Apache 2.4 the "Order, Deny" syntax has been deprecated and moved from
-# module mod_authz_host to a new module called mod_access_compat (which may be
-# disabled) and a new "Require" syntax has been introduced to mod_authz_host.
-# We could just conditionally provide both versions, but unfortunately Apache
-# does not explicitly tell us its version if the module mod_version is not
-# available. In this case, we check for the availability of module
-# mod_authz_core (which should be on 2.4 or higher only) as a best guess.
-<IfModule mod_version.c>
-	<IfVersion < 2.4>
-		<Files "config.php">
-			Order Allow,Deny
-			Deny from All
-		</Files>
-		<Files "common.php">
-			Order Allow,Deny
-			Deny from All
-		</Files>
-	</IfVersion>
-	<IfVersion >= 2.4>
-		<Files "config.php">
-			Require all denied
-		</Files>
-		<Files "common.php">
-			Require all denied
-		</Files>
-	</IfVersion>
-</IfModule>
-<IfModule !mod_version.c>
-	<IfModule !mod_authz_core.c>
-		<Files "config.php">
-			Order Allow,Deny
-			Deny from All
-		</Files>
-		<Files "common.php">
-			Order Allow,Deny
-			Deny from All
-		</Files>
-	</IfModule>
-	<IfModule mod_authz_core.c>
-		<Files "config.php">
-			Require all denied
-		</Files>
-		<Files "common.php">
-			Require all denied
-		</Files>
-	</IfModule>
+<IfModule mod_authz_core.c>
+	<Files "config.php">
+		Require all denied
+	</Files>
+	<Files "common.php">
+		Require all denied
+	</Files>
 </IfModule>
 
-# Common
+# Common directives.
 AddDefaultCharset utf-8
 AddCharset utf-8 .html .css .js .xml .json .rss
 Options -Indexes -MultiViews
 FileETag None
 
-# Multimedia MIME types
+# MIME types.
 AddType audio/ogg						ogg oga
 AddType video/ogg						ogv
 AddType audio/webm						webma
@@ -80,6 +41,7 @@ AddType text/plain						txt log csv tsv
 AddType application/x-7z-compressed		7z
 AddType application/x-bittorrent		torrent
 
+# Default expiration.
 <IfModule mod_expires.c>
 ExpiresActive On
 ExpiresByType image/*			"access plus 1 month"
@@ -90,7 +52,7 @@ ExpiresByType text/css			"access plus 7 days"
 ExpiresByType text/javascript	"access plus 7 days"
 </IfModule>
 
-# Gzip compression for Apache 2
+# Gzip compression.
 <IfModule mod_deflate.c>
 <IfModule mod_filter.c>
 AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css
