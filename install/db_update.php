@@ -208,6 +208,10 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 	$db->sql_query("ALTER TABLE " . RANKS_TABLE . " ADD COLUMN rank_hide_title tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER rank_title");
 	$db->sql_return_on_error(false);
 
+	// Disable obsolete modules (they can be removed in the ACP safely).
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename = 'board' AND module_mode = 'cookie'");
+
 	// Remove obsolete permissions.
 
 	$permissions = array(
