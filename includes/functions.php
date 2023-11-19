@@ -179,19 +179,11 @@ function set_config($config_name, $config_value, $is_dynamic = false)
 {
 	global $db, $cache, $config;
 
-	$sql = 'UPDATE ' . CONFIG_TABLE . "
-		SET config_value = '" . $db->sql_escape($config_value) . "'
-		WHERE config_name = '" . $db->sql_escape($config_name) . "'";
+	$sql = 'REPLACE INTO ' . CONFIG_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+		'config_name'	=> $config_name,
+		'config_value'	=> $config_value,
+		'is_dynamic'	=> ($is_dynamic) ? 1 : 0));
 	$db->sql_query($sql);
-
-	if (!$db->sql_affectedrows() && !isset($config[$config_name]))
-	{
-		$sql = 'INSERT INTO ' . CONFIG_TABLE . ' ' . $db->sql_build_array('INSERT', array(
-			'config_name'	=> $config_name,
-			'config_value'	=> $config_value,
-			'is_dynamic'	=> ($is_dynamic) ? 1 : 0));
-		$db->sql_query($sql);
-	}
 
 	$config[$config_name] = $config_value;
 
