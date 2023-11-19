@@ -130,7 +130,16 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	}
 	$db->sql_return_on_error(false);
 
-	$config['phpbbex_version'] = '1.7.0';
+	// Reset CAPTCHA settings.
+	set_config('captcha_plugin', extension_loaded('gd') ? 'phpbb_captcha_gd' : 'phpbb_captcha_nogd');
+	set_config('captcha_gd_foreground_noise', '0');
+	set_config('captcha_gd_x_grid', '25');
+	set_config('captcha_gd_y_grid', '25');
+	set_config('captcha_gd_wave', '0');
+	set_config('captcha_gd_3d_noise', '1');
+	set_config('captcha_gd_fonts', '1');
+
+	set_config('phpbbex_version', '1.7.0');
 	$purge_default = 'all';
 }
 
@@ -144,14 +153,14 @@ if (version_compare($config['phpbbex_version'], '1.8.0', '<'))
 	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_critical_logs_days', '7')");
 	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_user_logs_days', '365')");
 	$db->sql_query("REPLACE INTO " . CONFIG_TABLE . " (config_name, config_value) VALUES ('keep_register_logs_days', '7')");
-	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.8.0' WHERE config_name = 'phpbbex_version'");
+	set_config('phpbbex_version', '1.8.0');
 }
 
 if (version_compare($config['phpbbex_version'], '1.9.5', '<'))
 {
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
 	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
-	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.5' WHERE config_name = 'phpbbex_version'");
+	set_config('phpbbex_version', '1.9.5');
 	$purge_default = 'all';
 }
 
@@ -188,7 +197,7 @@ if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_browser varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USER_BROWSER_IDS_TABLE . " MODIFY agent varchar(250) DEFAULT '' NOT NULL");
 
-	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.6' WHERE config_name = 'phpbbex_version'");
+	set_config('phpbbex_version', '1.9.6');
 }
 
 if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
@@ -198,6 +207,10 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 	$db->sql_return_on_error(true);
 	$db->sql_query("ALTER TABLE " . RANKS_TABLE . " ADD COLUMN rank_hide_title tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER rank_title");
 	$db->sql_return_on_error(false);
+
+	// Disable obsolete modules (they can be removed in the ACP safely).
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename = 'board' AND module_mode = 'cookie'");
 
 	// Remove obsolete permissions.
 
@@ -267,13 +280,14 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'cookie_secure',
 		'no_sid',
 		'version',
+		'captcha_gd',
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
 
 	// Update DB schema version.
 
-	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '1.9.7' WHERE config_name = 'phpbbex_version'");
+	set_config('phpbbex_version', '1.9.7');
 }
 
 // Update bots if bots=1 is passed.

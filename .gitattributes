@@ -1,0 +1,8 @@
+# Disable EOL conversion.
+* -text
+
+# Export settings.
+.editorconfig export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.gitrev export-subst

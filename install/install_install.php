@@ -925,15 +925,17 @@ class install_install extends module
 				WHERE config_name = 'dbms_version'",
 		);
 
-		if (@extension_loaded('gd'))
+		if (extension_loaded('gd'))
 		{
 			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = 'phpbb_captcha_gd'
 				WHERE config_name = 'captcha_plugin'";
-
+		}
+		else
+		{
 			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '1'
-				WHERE config_name = 'captcha_gd'";
+				SET config_value = 'phpbb_captcha_nogd'
+				WHERE config_name = 'captcha_plugin'";
 		}
 
 		// Disable avatars if avatar directory isn't writable.

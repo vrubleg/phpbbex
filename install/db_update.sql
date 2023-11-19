@@ -114,7 +114,7 @@ UPDATE phpbb_forums SET forum_flags = forum_flags|16;
 -- UPDATE phpbb_posts SET post_subject = "" WHERE post_subject LIKE "Re: %";
 
 -- Remove subjects with "Re: " (excluding first posts, it is much slower)
--- UPDATE phpbb_posts p LEFT JOIN phpbb_topics t ON t.topic_first_post_id = p.post_id SET p.post_subject = "" WHERE p.post_subject LIKE "Re: %" AND t.topic_first_post_id IS NULL;
+UPDATE phpbb_posts p LEFT JOIN phpbb_topics t ON t.topic_first_post_id = p.post_id SET p.post_subject = "" WHERE p.post_subject LIKE "Re: %" AND t.topic_first_post_id IS NULL;
 
 -- Resolve conflicts with the new system bbcodes
 DELETE FROM phpbb_bbcodes WHERE bbcode_tag IN ('s', 'tt', 'upd', 'upd=', 'spoiler', 'spoiler=');
@@ -251,16 +251,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', 
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('board_hide_emails', '0');
 UPDATE phpbb_users SET user_allow_viewemail = 0;
-
--- Reset CAPTCHA options
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_plugin', 'phpbb_captcha_nogd');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_foreground_noise', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_x_grid', '25');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_y_grid', '25');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_wave', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_3d_noise', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_fonts', '1');
 
 -- External links
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');
