@@ -134,14 +134,19 @@ function request_var($var_name, $default, $multibyte = false, $cookie = false)
 */
 function set_cookie($name, $data, $maxage)
 {
+	if ($maxage === true) { $maxage = 34560000; }
+	$delete = ($maxage !== null && intval($maxage) <= 0);
+	if ($delete) { $maxage = 0; }
+
 	header('Set-Cookie: ' . rawurlencode(COOKIE_PREFIX . $name) . '=' . rawurlencode($data)
-		. ($maxage !== null ? '; Max-Age=' . ($maxage === true ? 34560000 : intval($maxage)) : '')
+		. ($maxage !== null ? '; Max-Age=' . intval($maxage) : '') // Not supported by IE11 so we need Expires too =(
+		. ($maxage !== null ? '; Expires=' . gmdate('D, d M Y H:i:s \\G\\M\\T', $delete ? 1 : time() + $maxage) : '')
 		. (defined('COOKIE_PATH') && COOKIE_PATH ? '; Path=' . COOKIE_PATH : '; Path=/')
 		. (defined('COOKIE_DOMAIN') && COOKIE_DOMAIN ? '; Domain=' . COOKIE_DOMAIN : '')
 		. (defined('COOKIE_SECURE') && COOKIE_SECURE ? '; Secure' : '')
 		. '; HttpOnly', false);
 
-	if (intval($maxage) > 0)
+	if (!$delete)
 	{
 		$_COOKIE[COOKIE_PREFIX . $name] = $data;
 	}
