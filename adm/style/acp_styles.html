@@ -65,7 +65,7 @@
 		</div>
 	<!-- ENDIF -->
 
-	<script defer="defer">
+	<script>
 		function update_image(newimage)
 		{
 			document.getElementById('newimg').src = (newimage) ? '../styles/{A_PATH}/imageset/' + encodeURI(newimage) : 'images/no_image.png';
@@ -187,7 +187,7 @@
 	</form>
 
 	<!-- IF TEMPLATE_FILE or (S_EDIT_THEME and S_THEME_IN_DB) -->
-		<script defer="defer">
+		<script>
 			function change_editor_height(height)
 			{
 				height = Number(height);
