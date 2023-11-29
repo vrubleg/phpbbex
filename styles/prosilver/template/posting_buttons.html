@@ -2,8 +2,6 @@
 	var bbcode_allowed = {S_BBCODE_ALLOWED};
 	var form_name = 'postform';
 	var text_name = <!-- IF $SIG_EDIT -->'signature'<!-- ELSE -->'message'<!-- ENDIF -->;
-	var load_draft = false;
-	var upload = false;
 
 	lang.enter_link_url = '{LA_ENTER_LINK_URL}';
 	lang.enter_image_url = '{LA_ENTER_IMAGE_URL}';
@@ -11,8 +9,6 @@
 	lang.enter_list_start = '{LA_ENTER_LIST_START}';
 	lang.enter_title = '{LA_ENTER_TITLE}';
 
-	// Define the bbCode tags
-	var bbcode = new Array();
 	var bbtags = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[tt]','[/tt]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]','[s]','[/s]','[spoiler]','[/spoiler]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
 </script>
 <script src="{T_SUPER_STYLE_PATH}/js/editor.js"></script>
