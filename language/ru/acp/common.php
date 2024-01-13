@@ -173,7 +173,6 @@ $lang = array_merge($lang, array(
 
 	'ACP_VC_SETTINGS'					=> 'Средства против спам-ботов',
 	'ACP_VC_CAPTCHA_DISPLAY'			=> 'Просмотр визуального подтверждения',
-	'ACP_VERSION_CHECK'					=> 'Проверка обновлений',
 	'ACP_VIEW_ADMIN_PERMISSIONS'		=> 'Права администраторов',
 	'ACP_VIEW_FORUM_MOD_PERMISSIONS'	=> 'Права модераторов',
 	'ACP_VIEW_FORUM_PERMISSIONS'		=> 'Локальные права',
@@ -376,7 +375,7 @@ $lang = array_merge($lang, array(
 
 	'VALUE'						=> 'Значение',
 	'VERSIONCHECK_FAIL'			=> 'Не удалось получить сведения о последней версии.',
-	'VERSIONCHECK_FORCE_UPDATE'	=> 'Перепроверить версию',
+	'VERSIONCHECK_FORCE_UPDATE'	=> 'Проверить обновления',
 	'VIEW_ADMIN_LOG'			=> 'Лог администраторов',
 	'VIEW_INACTIVE_USERS'		=> 'Неактивированные пользователи',
 

@@ -391,7 +391,6 @@ $lang = array_merge($lang, array(
 	'PAGE_OF'				=> 'Page %1$d of %2$d',
 	'PASSWORD'				=> 'Password',
 	'PIXEL'					=> 'px',
-	'PLAY_QUICKTIME_FILE'	=> 'Play Quicktime file',
 	'PM'					=> 'PM',
 	'PM_REPORTED'			=> 'Click to view report',
 	'POST'					=> 'Post',

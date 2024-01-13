@@ -391,7 +391,6 @@ $lang = array_merge($lang, array(
 	'PAGE_OF'				=> 'Страница %1$d из %2$d',
 	'PASSWORD'				=> 'Пароль',
  	'PIXEL'					=> 'пикс.',
-	'PLAY_QUICKTIME_FILE'	=> 'Воспроизвести файл QuickTime',
 	'PM'					=> 'Личное сообщение',
 	'PM_REPORTED'			=> 'Нажмите для просмотра жалобы',
 	'POST'					=> 'Сообщение',

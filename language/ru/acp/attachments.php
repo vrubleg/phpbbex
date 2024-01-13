@@ -47,8 +47,8 @@ $lang = array_merge($lang, array(
 	'ATTACH_TO_POST'					=> 'Прикрепить файл к сообщению',
 
 	'CAT_IMAGES'				=> 'Рисунки',
-	'CAT_AUDIO_FILES'			=> 'HTML5 аудио',
-	'CAT_VIDEO_FILES'			=> 'HTML5 видео',
+	'CAT_AUDIO_FILES'			=> 'HTML5-аудио',
+	'CAT_VIDEO_FILES'			=> 'HTML5-видео',
 	'CHECK_CONTENT'				=> 'Проверять вложения',
 	'CHECK_CONTENT_EXPLAIN'		=> 'Некоторые браузеры могут быть обмануты при определении MIME-типа загружаемых файлов. Включение данной опции гарантирует, что такие файлы, вероятнее всего, будут отклоняться во время загрузки.',
 	'CREATE_GROUP'				=> 'Создать группу',
@@ -80,8 +80,8 @@ $lang = array_merge($lang, array(
 	'EXT_GROUP_DOWNLOADABLE_FILES'	=> 'Скачиваемые файлы',
 	'EXT_GROUP_IMAGES'				=> 'Изображения',
 	'EXT_GROUP_PLAIN_TEXT'			=> 'Текстовые файлы',
-	'EXT_GROUP_AUDIO'				=> 'HTML5 аудио',
-	'EXT_GROUP_VIDEO'				=> 'HTML5 видео',
+	'EXT_GROUP_AUDIO'				=> 'HTML5-аудио',
+	'EXT_GROUP_VIDEO'				=> 'HTML5-видео',
 
 	'GO_TO_EXTENSIONS'		=> 'Перейти на страницу управления расширениями',
 	'GROUP_NAME'			=> 'Имя группы',
