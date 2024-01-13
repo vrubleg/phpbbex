@@ -21,7 +21,7 @@ $help = array(
 	),
 	array(
 		0 => '1.2. General rules',
-		1 => 'Do not publish information containing:<ol><li>advertising without prior approval from the administrator;</li><li>rude and obscene words or phrases;</li><li>pornography or shocking content;</li><li>someone else’s personal information;</li><li>insults, threats, slander;</li><li>propaganda of anti-human ideas and ideologies (fascism, racism, homophobia, etc.);</li><li>incitement to violence or breach of international legislation.</li></ol>'
+		1 => 'Do not publish information containing:<ol><li>advertising without an approval from the administrator;</li><li>pornography and shocking content;</li><li>rude and obscene phrases;</li><li>slander and personal information of others;</li><li>humiliation, insults, threats;</li><li>propaganda of anti-human ideas and ideologies (fascism, racism, homophobia, etc.);</li><li>incitement of hatred, enmity, and discord;</li><li>incitement to violence and breach of international legislation.</li></ol>'
 	),
 	array(
 		0 => '1.3. Registration',

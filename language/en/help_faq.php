@@ -36,6 +36,10 @@ $help = array(
 		1 => 'User Preferences and settings'
 	),
 	array(
+		0 => 'The times are not correct!',
+		1 => 'It is possible the time displayed is from a timezone different from the one you are in. If this is the case, visit your User Control Panel and change your timezone to match your particular area. Please note that changing the timezone, like most settings, can only be done by registered users. If you are not registered, this is a good time to do so.'
+	),
+	array(
 		0 => 'What is the difference between bookmarking and subscribing?',
 		1 => 'Bookmarking in phpBBex is much like bookmarking in your web browser. You aren’t alerted when there’s an update, but you can come back to the topic later. Subscribing, however, will notify you when there is an update to the topic or forum on the board via your preferred method or methods.'
 	),
@@ -48,24 +52,12 @@ $help = array(
 		1 => 'To remove your subscriptions, go to your User Control Panel and follow the links to your subscriptions.'
 	),
 	array(
-		0 => 'The times are not correct!',
-		1 => 'It is possible the time displayed is from a timezone different from the one you are in. If this is the case, visit your User Control Panel and change your timezone to match your particular area, e.g. London, Paris, New York, Sydney, etc. Please note that changing the timezone, like most settings, can only be done by registered users. If you are not registered, this is a good time to do so.'
-	),
-	array(
-		0 => 'I changed the timezone and the time is still wrong!',
-		1 => 'If you are sure you have set the timezone and Summer Time/DST correctly and the time is still incorrect, then the time stored on the server clock is incorrect. Please notify an administrator to correct the problem.'
-	),
-	array(
 		0 => '--',
 		1 => 'Posting Issues'
 	),
 	array(
-		0 => 'What is BBCode?',
-		1 => 'BBCode is a special implementation of HTML, offering great formatting control on particular objects in a post. The use of BBCode is granted by the administrator, but it can also be disabled on a per post basis from the posting form. BBCode itself is similar in style to HTML, but tags are enclosed in square brackets [ and ] rather than &lt; and &gt;. For more information on BBCode see <a href="./faq.php?mode=bbcode">the guide</a>.'
-	),
-	array(
-		0 => 'Can I post images?',
-		1 => 'Yes, images can be shown in your posts. If the administrator has allowed attachments, you may be able to upload the image to the board. Otherwise, you must link to an image stored on a publicly accessible web server, e.g. http://www.example.com/my-picture.gif. You cannot link to pictures stored on your own PC (unless it is a publicly accessible server) nor images stored behind authentication mechanisms, e.g. hotmail or yahoo mailboxes, password protected sites, etc. To display the image use the BBCode [img] tag.'
+		0 => 'What is BBCode? How to change formatting of my messages and add images?',
+		1 => 'BBCode is a special markup language, offering great formatting control on particular objects in a post, adding images, and more. The use of BBCode is granted by the administrator, but it can also be disabled on a per post basis from the posting form. BBCode itself is similar in style to HTML, but tags are enclosed in square brackets [ and ] rather than &lt; and &gt;. For more information on BBCode see <a href="./faq.php?mode=bbcode">the guide</a>.'
 	),
 	array(
 		0 => 'What is the “Save” button for in topic posting?',
@@ -82,10 +74,6 @@ $help = array(
 	array(
 		0 => '--',
 		1 => 'User Levels and Groups'
-	),
-	array(
-		0 => 'What are my Friends and Foes lists?',
-		1 => 'You can use these lists to organise other members of the board. Members added to your friends list will be listed within your User Control Panel for quick access to see their online status and to send them private messages. Subject to template support, posts from these users may also be highlighted. If you add a user to your foes list, any posts they make will be hidden by default.'
 	),
 	array(
 		0 => 'What are Administrators?',
