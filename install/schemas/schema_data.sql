@@ -892,6 +892,8 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (5, 'mp3');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (5, 'ogg');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (5, 'opus');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (5, 'm4a');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (5, 'flac');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (5, 'wav');
 
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'm4v');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'mp4');
