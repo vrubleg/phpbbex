@@ -24,6 +24,7 @@ class phpbb_captcha_qa
 {
 	var $confirm_id;
 	var $answer;
+	var $question;
 	var $question_ids;
 	var $question_text;
 	var $question_lang;
