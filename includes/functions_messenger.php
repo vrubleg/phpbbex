@@ -21,6 +21,8 @@ class messenger
 
 	var $mail_priority = MAIL_NORMAL_PRIORITY;
 	var $use_queue = true;
+	var $queue;
+	var $jabber;
 
 	var $tpl_obj = NULL;
 	var $tpl_msg = array();
