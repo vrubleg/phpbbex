@@ -290,6 +290,29 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 	set_config('phpbbex_version', '1.9.7');
 }
 
+if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
+{
+	// Reset CAPTCHA plugin if obsolete reCAPTCHA v1 is used.
+
+	if ($config['captcha_plugin'] == 'phpbb_recaptcha')
+	{
+		set_config('captcha_plugin', extension_loaded('gd') ? 'phpbb_captcha_gd' : 'phpbb_captcha_nogd');
+	}
+
+	// Remove obsolete config values.
+
+	$obsolete_values = [
+		'recaptcha_privkey',
+		'recaptcha_pubkey',
+	];
+
+	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
+
+	// Update DB schema version.
+
+	// set_config('phpbbex_version', '1.9.8');
+}
+
 // Update bots if bots=1 is passed.
 if (request_var('bots', 0))
 {
