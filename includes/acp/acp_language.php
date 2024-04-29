@@ -1196,7 +1196,7 @@ $lang = array_merge($lang, array(
 ';
 
 		// Language files in language root directory
-		$this->main_files = array("captcha_qa.php", "captcha_recaptcha.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php");
+		$this->main_files = array("captcha_qa.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php");
 	}
 
 	/**
