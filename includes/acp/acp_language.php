@@ -620,7 +620,7 @@ class acp_language
 				}
 
 				// Main language files
-				$s_lang_options = '<option value="|common.php' . '" class="sep">' . $user->lang['LANGUAGE_FILES'] . '</option>';
+				$s_lang_options = '<optgroup label="' . $user->lang['LANGUAGE_FILES'] . '">';
 				foreach ($this->main_files as $file)
 				{
 					if (strpos($file, 'help_') === 0)
@@ -633,9 +633,10 @@ class acp_language
 					$selected = (!$this->language_directory && $this->language_file == $file) ? ' selected="selected"' : '';
 					$s_lang_options .= '<option value="|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
 				}
+				$s_lang_options .= '</optgroup>';
 
 				// Help Files
-				$s_lang_options .= '<option value="|common.php' . '" class="sep">' . $user->lang['HELP_FILES'] . '</option>';
+				$s_lang_options .= '<optgroup label="' . $user->lang['HELP_FILES'] . '">';
 				foreach ($this->main_files as $file)
 				{
 					if (strpos($file, 'help_') !== 0)
@@ -648,6 +649,7 @@ class acp_language
 					$selected = (!$this->language_directory && $this->language_file == $file) ? ' selected="selected"' : '';
 					$s_lang_options .= '<option value="|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
 				}
+				$s_lang_options .= '</optgroup>';
 
 				// Now every other language directory
 				$check_files = array('email', 'acp', 'mods');
@@ -659,7 +661,7 @@ class acp_language
 						continue;
 					}
 
-					$s_lang_options .= '<option value="|common.php' . '" class="sep">' . $user->lang[strtoupper($check) . '_FILES'] . '</option>';
+					$s_lang_options .= '<optgroup label="' . $user->lang[strtoupper($check) . '_FILES'] . '">';
 
 					foreach (${$check . '_files'} as $file)
 					{
@@ -668,6 +670,9 @@ class acp_language
 						$selected = ($this->language_directory == $check && $this->language_file == $file) ? ' selected="selected"' : '';
 						$s_lang_options .= '<option value="' . $check . '|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
 					}
+
+					$s_lang_options .= '</optgroup>';
+
 				}
 
 				// Get Language Entries - if saved within store folder, we take this one (with the option to remove it)
@@ -1196,7 +1201,7 @@ $lang = array_merge($lang, array(
 ';
 
 		// Language files in language root directory
-		$this->main_files = array("captcha_qa.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php");
+		$this->main_files = array("captcha_qa.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php", "help_rules.php");
 	}
 
 	/**
