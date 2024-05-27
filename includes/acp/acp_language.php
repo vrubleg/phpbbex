@@ -28,7 +28,7 @@ class acp_language
 	{
 		global $config, $db, $user, $auth, $template, $cache;
 		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
-		global $safe_mode, $file_uploads;
+		global $file_uploads;
 
 		include_once($phpbb_root_path . 'includes/functions_user.php');
 
@@ -253,27 +253,24 @@ class acp_language
 					break;
 				}
 
-				if (!$safe_mode)
+				$mkdir_ary = array('language', 'language/' . $row['lang_iso']);
+
+				if ($this->language_directory)
 				{
-					$mkdir_ary = array('language', 'language/' . $row['lang_iso']);
+					$mkdir_ary[] = 'language/' . $row['lang_iso'] . '/' . $this->language_directory;
+				}
 
-					if ($this->language_directory)
+				foreach ($mkdir_ary as $dir)
+				{
+					$dir = $phpbb_root_path . 'store/' . $dir;
+
+					if (!is_dir($dir))
 					{
-						$mkdir_ary[] = 'language/' . $row['lang_iso'] . '/' . $this->language_directory;
-					}
-
-					foreach ($mkdir_ary as $dir)
-					{
-						$dir = $phpbb_root_path . 'store/' . $dir;
-
-						if (!is_dir($dir))
+						if (!@mkdir($dir, 0777))
 						{
-							if (!@mkdir($dir, 0777))
-							{
-								trigger_error("Could not create directory $dir", E_USER_ERROR);
-							}
-							@chmod($dir, 0777);
+							trigger_error("Could not create directory $dir", E_USER_ERROR);
 						}
+						@chmod($dir, 0777);
 					}
 				}
 
@@ -1209,13 +1206,13 @@ $lang = array_merge($lang, array(
 	*/
 	function get_filename($lang_iso, $directory, $filename, $check_store = false, $only_return_filename = false)
 	{
-		global $phpbb_root_path, $safe_mode;
+		global $phpbb_root_path;
 
 		$check_filename = "language/$lang_iso/" . (($directory) ? $directory . '/' : '') . $filename;
 
 		if ($check_store)
 		{
-			$check_store_filename = ($safe_mode) ? "store/langfile_{$lang_iso}" . (($directory) ? '_' . $directory : '') . "_{$filename}" : "store/language/$lang_iso/" . (($directory) ? $directory . '/' : '') . $filename;
+			$check_store_filename = "store/language/$lang_iso/" . (($directory) ? $directory . '/' : '') . $filename;
 
 			if (!$only_return_filename && file_exists($phpbb_root_path . $check_store_filename))
 			{
