@@ -26,7 +26,7 @@ class acp_users
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $table_prefix, $file_uploads;
+		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
 		$user->add_lang(array('posting', 'ucp', 'acp/users'));
 		$this->tpl_name = 'acp_users';
@@ -1773,7 +1773,7 @@ class acp_users
 				include($phpbb_root_path . 'includes/functions_display.php');
 				include($phpbb_root_path . 'includes/functions_user.php');
 
-				$can_upload = (file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH) && $file_uploads) ? true : false;
+				$can_upload = (PHP_FILE_UPLOADS && file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH));
 
 				if ($submit)
 				{

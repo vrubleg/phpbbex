@@ -28,7 +28,6 @@ class acp_language
 	{
 		global $config, $db, $user, $auth, $template, $cache;
 		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
-		global $file_uploads;
 
 		include_once($phpbb_root_path . 'includes/functions_user.php');
 

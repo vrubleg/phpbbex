@@ -20,7 +20,7 @@ class acp_groups
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $table_prefix, $file_uploads;
+		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
 		$user->add_lang('acp/groups');
 		$this->tpl_name = 'acp_groups';
@@ -43,7 +43,7 @@ class acp_groups
 
 
 		// Clear some vars
-		$can_upload = (file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH) && $file_uploads) ? true : false;
+		$can_upload = (PHP_FILE_UPLOADS && file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH));
 		$group_row = array();
 
 		// Grab basic data for group, if group_id is set and exists

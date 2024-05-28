@@ -1447,7 +1447,7 @@ if (isset($captcha) && $captcha->is_solved() !== false)
 	$s_hidden_fields .= build_hidden_fields($captcha->get_hidden_fields());
 }
 
-$form_enctype = (@ini_get('file_uploads') == '0' || strtolower(@ini_get('file_uploads')) == 'off' || !$config['allow_attachments'] || !$auth->acl_get('u_attach') || !$auth->acl_get('f_attach', $forum_id)) ? '' : ' enctype="multipart/form-data"';
+$form_enctype = (!PHP_FILE_UPLOADS || !$config['allow_attachments'] || !$auth->acl_get('u_attach') || !$auth->acl_get('f_attach', $forum_id)) ? '' : ' enctype="multipart/form-data"';
 add_form_key('posting');
 
 $s_do_merge_allowed = $user->data['is_registered'] && ($mode == 'reply' || $mode == 'quote') && $post_data['topic_last_poster_id'] == $user->data['user_id'] && ($auth->acl_get('f_noapprove', $forum_id) || $auth->acl_get('m_approve', $forum_id));

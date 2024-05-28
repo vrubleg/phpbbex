@@ -39,7 +39,6 @@ define('IN_ADMIN', true);
 $phpbb_admin_path = (defined('PHPBB_ADMIN_PATH')) ? PHPBB_ADMIN_PATH : './';
 
 // Some oft used variables
-$file_uploads	= (@ini_get('file_uploads') == '1' || strtolower(@ini_get('file_uploads')) === 'on') ? true : false;
 $module_id		= request_var('i', '');
 $mode			= request_var('mode', '');
 

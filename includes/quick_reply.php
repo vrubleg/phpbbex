@@ -132,7 +132,7 @@ $qr_hidden_fields = array(
 );
 
 // Attachment entry
-$show_attach_box = (@ini_get('file_uploads') != '0' && strtolower(@ini_get('file_uploads')) != 'off' && $auth->acl_get('f_attach', $forum_id) && $auth->acl_get('u_attach') && $config['allow_attachments'] && $config['allow_' . $mode . '_attachbox']);
+$show_attach_box = (PHP_FILE_UPLOADS && $auth->acl_get('f_attach', $forum_id) && $auth->acl_get('u_attach') && $config['allow_attachments'] && $config['allow_' . $mode . '_attachbox']);
 
 add_form_key('posting');
 

@@ -467,7 +467,6 @@ class ucp_groups
 							trigger_error($user->lang['NOT_LEADER_OF_GROUP'] . $return_page);
 						}
 
-						$file_uploads = (@ini_get('file_uploads') || strtolower(@ini_get('file_uploads')) == 'on') ? true : false;
 						$user->add_lang(array('acp/groups', 'acp/common'));
 
 						$data = $submit_ary = array();
@@ -479,7 +478,7 @@ class ucp_groups
 						$avatar_select = basename(request_var('avatar_select', ''));
 						$category = basename(request_var('category', ''));
 
-						$can_upload = (file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH) && $file_uploads) ? true : false;
+						$can_upload = (PHP_FILE_UPLOADS && file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH));
 
 						// Did we submit?
 						if ($update)
