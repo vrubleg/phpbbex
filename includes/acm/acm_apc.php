@@ -17,11 +17,11 @@ if (!class_exists('acm_memory'))
 }
 
 /**
-* ACM for APC
+* ACM for APCu.
 */
 class acm extends acm_memory
 {
-	var $extension = 'apc';
+	var $extension = 'apcu';
 
 	/**
 	* Purge cache data
@@ -30,7 +30,7 @@ class acm extends acm_memory
 	*/
 	function purge()
 	{
-		apc_clear_cache('user');
+		apcu_clear_cache();
 
 		parent::purge();
 	}
@@ -44,7 +44,7 @@ class acm extends acm_memory
 	*/
 	function _read($var)
 	{
-		return apc_fetch($this->key_prefix . $var);
+		return apcu_fetch($this->key_prefix . $var);
 	}
 
 	/**
@@ -58,7 +58,7 @@ class acm extends acm_memory
 	*/
 	function _write($var, $data, $ttl = 2592000)
 	{
-		return apc_store($this->key_prefix . $var, $data, $ttl);
+		return apcu_store($this->key_prefix . $var, $data, $ttl);
 	}
 
 	/**
@@ -70,6 +70,6 @@ class acm extends acm_memory
 	*/
 	function _delete($var)
 	{
-		return apc_delete($this->key_prefix . $var);
+		return apcu_delete($this->key_prefix . $var);
 	}
 }
