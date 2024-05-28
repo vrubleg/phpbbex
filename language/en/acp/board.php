@@ -457,7 +457,7 @@ $lang = array_merge($lang, array(
 
 	'AUTH_METHOD'				=> 'Select an authentication method',
 
-	'APACHE_SETUP_BEFORE_USE'	=> 'You have to setup apache authentication before you switch phpBBex to this authentication method. Keep in mind that the username you use for apache authentication has to be the same as your phpBBex username. Apache authentication can only be used with mod_php (not with a CGI version) and safe_mode disabled.',
+	'APACHE_SETUP_BEFORE_USE'	=> 'You have to setup apache authentication before you switch phpBBex to this authentication method. Keep in mind that the username you use for apache authentication has to be the same as your phpBBex username. Apache authentication can only be used with mod_php (not with a CGI version).',
 
 	'LDAP_DN'						=> 'LDAP base <var>dn</var>',
 	'LDAP_DN_EXPLAIN'				=> 'This is the Distinguished Name, locating the user information, e.g. <samp>o=My Company,c=US</samp>.',

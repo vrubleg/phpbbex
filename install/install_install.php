@@ -138,14 +138,7 @@ class install_install extends module
 		else
 		{
 			$passed['php'] = true;
-
-			// We also give feedback on whether we're running in safe mode
-			$result = '<strong style="color:green">' . $lang['YES'];
-			if (@ini_get('safe_mode') == '1' || strtolower(@ini_get('safe_mode')) == 'on')
-			{
-				$result .= ', ' . $lang['PHP_SAFE_MODE'];
-			}
-			$result .= '</strong>';
+			$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
 		}
 
 		$template->assign_block_vars('checks', array(

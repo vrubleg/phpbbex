@@ -82,6 +82,12 @@ if (!defined('COOKIE_PREFIX'))
 	define('COOKIE_PREFIX', 'phpbbex' . preg_replace('#[^a-z0-9]+#i', '_', HTTP_ROOT));
 }
 
+// Define if file uploads are allowed.
+if (!defined('PHP_FILE_UPLOADS'))
+{
+	define('PHP_FILE_UPLOADS', in_array(strtolower((string) @ini_get('file_uploads')), ['1', 'on', 'true', 'yes']));
+}
+
 // Configure autoloader
 require_once(__DIR__.'/autoloader.php');
 autoloader::init(__DIR__.'/classes/');

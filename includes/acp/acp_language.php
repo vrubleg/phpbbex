@@ -28,7 +28,6 @@ class acp_language
 	{
 		global $config, $db, $user, $auth, $template, $cache;
 		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
-		global $safe_mode, $file_uploads;
 
 		include_once($phpbb_root_path . 'includes/functions_user.php');
 
@@ -253,27 +252,24 @@ class acp_language
 					break;
 				}
 
-				if (!$safe_mode)
+				$mkdir_ary = array('language', 'language/' . $row['lang_iso']);
+
+				if ($this->language_directory)
 				{
-					$mkdir_ary = array('language', 'language/' . $row['lang_iso']);
+					$mkdir_ary[] = 'language/' . $row['lang_iso'] . '/' . $this->language_directory;
+				}
 
-					if ($this->language_directory)
+				foreach ($mkdir_ary as $dir)
+				{
+					$dir = $phpbb_root_path . 'store/' . $dir;
+
+					if (!is_dir($dir))
 					{
-						$mkdir_ary[] = 'language/' . $row['lang_iso'] . '/' . $this->language_directory;
-					}
-
-					foreach ($mkdir_ary as $dir)
-					{
-						$dir = $phpbb_root_path . 'store/' . $dir;
-
-						if (!is_dir($dir))
+						if (!@mkdir($dir, 0777))
 						{
-							if (!@mkdir($dir, 0777))
-							{
-								trigger_error("Could not create directory $dir", E_USER_ERROR);
-							}
-							@chmod($dir, 0777);
+							trigger_error("Could not create directory $dir", E_USER_ERROR);
 						}
+						@chmod($dir, 0777);
 					}
 				}
 
@@ -620,7 +616,7 @@ class acp_language
 				}
 
 				// Main language files
-				$s_lang_options = '<option value="|common.php' . '" class="sep">' . $user->lang['LANGUAGE_FILES'] . '</option>';
+				$s_lang_options = '<optgroup label="' . $user->lang['LANGUAGE_FILES'] . '">';
 				foreach ($this->main_files as $file)
 				{
 					if (strpos($file, 'help_') === 0)
@@ -633,9 +629,10 @@ class acp_language
 					$selected = (!$this->language_directory && $this->language_file == $file) ? ' selected="selected"' : '';
 					$s_lang_options .= '<option value="|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
 				}
+				$s_lang_options .= '</optgroup>';
 
 				// Help Files
-				$s_lang_options .= '<option value="|common.php' . '" class="sep">' . $user->lang['HELP_FILES'] . '</option>';
+				$s_lang_options .= '<optgroup label="' . $user->lang['HELP_FILES'] . '">';
 				foreach ($this->main_files as $file)
 				{
 					if (strpos($file, 'help_') !== 0)
@@ -648,6 +645,7 @@ class acp_language
 					$selected = (!$this->language_directory && $this->language_file == $file) ? ' selected="selected"' : '';
 					$s_lang_options .= '<option value="|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
 				}
+				$s_lang_options .= '</optgroup>';
 
 				// Now every other language directory
 				$check_files = array('email', 'acp', 'mods');
@@ -659,7 +657,7 @@ class acp_language
 						continue;
 					}
 
-					$s_lang_options .= '<option value="|common.php' . '" class="sep">' . $user->lang[strtoupper($check) . '_FILES'] . '</option>';
+					$s_lang_options .= '<optgroup label="' . $user->lang[strtoupper($check) . '_FILES'] . '">';
 
 					foreach (${$check . '_files'} as $file)
 					{
@@ -668,6 +666,9 @@ class acp_language
 						$selected = ($this->language_directory == $check && $this->language_file == $file) ? ' selected="selected"' : '';
 						$s_lang_options .= '<option value="' . $check . '|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
 					}
+
+					$s_lang_options .= '</optgroup>';
+
 				}
 
 				// Get Language Entries - if saved within store folder, we take this one (with the option to remove it)
@@ -1196,7 +1197,7 @@ $lang = array_merge($lang, array(
 ';
 
 		// Language files in language root directory
-		$this->main_files = array("captcha_qa.php", "captcha_recaptcha.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php");
+		$this->main_files = array("captcha_qa.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php", "help_rules.php");
 	}
 
 	/**
@@ -1204,13 +1205,13 @@ $lang = array_merge($lang, array(
 	*/
 	function get_filename($lang_iso, $directory, $filename, $check_store = false, $only_return_filename = false)
 	{
-		global $phpbb_root_path, $safe_mode;
+		global $phpbb_root_path;
 
 		$check_filename = "language/$lang_iso/" . (($directory) ? $directory . '/' : '') . $filename;
 
 		if ($check_store)
 		{
-			$check_store_filename = ($safe_mode) ? "store/langfile_{$lang_iso}" . (($directory) ? '_' . $directory : '') . "_{$filename}" : "store/language/$lang_iso/" . (($directory) ? $directory . '/' : '') . $filename;
+			$check_store_filename = "store/language/$lang_iso/" . (($directory) ? $directory . '/' : '') . $filename;
 
 			if (!$only_return_filename && file_exists($phpbb_root_path . $check_store_filename))
 			{

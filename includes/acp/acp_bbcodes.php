@@ -132,11 +132,11 @@ class acp_bbcodes
 							FROM ' . BBCODES_TABLE . "
 							WHERE LOWER(bbcode_tag) = '" . $db->sql_escape(strtolower($data['bbcode_tag'])) . "'";
 						$result = $db->sql_query($sql);
-						$info = $db->sql_fetchrow($result);
+						$found = (bool) $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
 
 						// Grab the end, interrogate the last closing tag
-						if ($info['test'] === '1' || in_array(strtolower($data['bbcode_tag']), $hard_coded) || (preg_match('#\[/([^[]*)]$#', $bbcode_match, $regs) && in_array(strtolower($regs[1]), $hard_coded)))
+						if ($found || in_array(strtolower($data['bbcode_tag']), $hard_coded) || (preg_match('#\[/([^[]*)]$#', $bbcode_match, $regs) && in_array(strtolower($regs[1]), $hard_coded)))
 						{
 							trigger_error($user->lang['BBCODE_INVALID_TAG_NAME'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}

@@ -280,7 +280,7 @@ class filespec
 			return false;
 		}
 
-		$upload_mode = (@ini_get('open_basedir') || @ini_get('safe_mode') || strtolower(@ini_get('safe_mode')) == 'on') ? 'move' : 'copy';
+		$upload_mode = (@ini_get('open_basedir')) ? 'move' : 'copy';
 		$upload_mode = ($this->local) ? 'local' : $upload_mode;
 		$this->destination_file = $this->destination_path . '/' . utf8_basename($this->realname);
 
@@ -770,10 +770,11 @@ class fileupload
 			}
 		}
 
+		$stop_at = time() + $this->upload_timeout;
 		$errno = 0;
 		$errstr = '';
 
-		if (!($fsock = @fsockopen($host, $port, $errno, $errstr)))
+		if (!($fsock = @fsockopen($host, $port, $errno, $errstr, max(1, intval($this->upload_timeout / 2)))))
 		{
 			$file = new fileerror($user->lang[$this->error_prefix . 'NOT_UPLOADED']);
 			return $file;
@@ -795,10 +796,16 @@ class fileupload
 		$get_info = false;
 		$data = '';
 		$length = false;
-		$timer_stop = time() + $this->upload_timeout;
 
 		while ((!$length || $filesize < $length) && !@feof($fsock))
 		{
+			// Cancel upload if we exceed timeout
+			if (time() >= $stop_at)
+			{
+				$file = new fileerror($user->lang[$this->error_prefix . 'REMOTE_UPLOAD_TIMEOUT']);
+				return $file;
+			}
+
 			if ($get_info)
 			{
 				if ($length)
@@ -856,15 +863,6 @@ class fileupload
 					}
 				}
 			}
-
-			$stream_meta_data = stream_get_meta_data($fsock);
-
-			// Cancel upload if we exceed timeout
-			if (!empty($stream_meta_data['timed_out']) || time() >= $timer_stop)
-			{
-				$file = new fileerror($user->lang[$this->error_prefix . 'REMOTE_UPLOAD_TIMEOUT']);
-				return $file;
-			}
 		}
 		@fclose($fsock);
 
@@ -874,8 +872,7 @@ class fileupload
 			return $file;
 		}
 
-		$tmp_path = (!@ini_get('safe_mode') || strtolower(@ini_get('safe_mode')) == 'off') ? false : $phpbb_root_path . 'cache';
-		$filename = tempnam($tmp_path, unique_id() . '-');
+		$filename = tempnam(false, unique_id() . '-');
 
 		if (!($fp = @fopen($filename, 'wb')))
 		{

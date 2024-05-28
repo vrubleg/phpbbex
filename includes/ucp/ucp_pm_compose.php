@@ -51,7 +51,6 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		$address_list = array();
 	}
 
-	$submit		= (isset($_POST['post'])) ? true : false;
 	$preview	= (isset($_POST['preview'])) ? true : false;
 	$save		= (isset($_POST['save'])) ? true : false;
 	$load		= (isset($_POST['load'])) ? true : false;
@@ -62,9 +61,9 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$remove_g	= (isset($_REQUEST['remove_g'])) ? true : false;
 	$add_to		= (isset($_REQUEST['add_to'])) ? true : false;
 	$add_bcc	= (isset($_REQUEST['add_bcc'])) ? true : false;
-
 	$refresh	= isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || $save || $load
 		|| $remove_u || $remove_g || $add_to || $add_bcc;
+	$submit		= isset($_POST['post']) && !$refresh && !$preview;
 
 	$action		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : $action;
 	$select_single = ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')) ? false : true;
@@ -1041,7 +1040,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$s_hidden_fields .= (isset($check_value)) ? '<input type="hidden" name="status_switch" value="' . $check_value . '" />' : '';
 	$s_hidden_fields .= ($draft_id || isset($_REQUEST['draft_loaded'])) ? '<input type="hidden" name="draft_loaded" value="' . ((isset($_REQUEST['draft_loaded'])) ? intval($_REQUEST['draft_loaded']) : $draft_id) . '" />' : '';
 
-	$form_enctype = (@ini_get('file_uploads') == '0' || strtolower(@ini_get('file_uploads')) == 'off' || !$config['allow_pm_attach'] || !$auth->acl_get('u_pm_attach')) ? '' : ' enctype="multipart/form-data"';
+	$form_enctype = (!PHP_FILE_UPLOADS || !$config['allow_pm_attach'] || !$auth->acl_get('u_pm_attach')) ? '' : ' enctype="multipart/form-data"';
 
 	$allowed_extension_sizes = get_allowed_extension_sizes(false);
 

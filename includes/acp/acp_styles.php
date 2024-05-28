@@ -704,7 +704,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function edit_template($template_id)
 	{
-		global $phpbb_root_path, $config, $db, $cache, $user, $template, $safe_mode;
+		global $phpbb_root_path, $config, $db, $cache, $user, $template;
 
 		if (defined('PHPBB_DISABLE_ACP_EDITOR'))
 		{
@@ -754,7 +754,7 @@ inherit_from = {INHERIT_FROM}
 			$additional = '';
 
 			// If the template is stored on the filesystem try to write the file else store it in the database
-			if (!$safe_mode && !$template_info['template_storedb'] && file_exists($file) && phpbb_is_writable($file))
+			if (!$template_info['template_storedb'] && file_exists($file) && phpbb_is_writable($file))
 			{
 				if (!($fp = @fopen($file, 'wb')))
 				{
@@ -1125,7 +1125,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function edit_theme($theme_id)
 	{
-		global $phpbb_root_path, $config, $db, $cache, $user, $template, $safe_mode;
+		global $phpbb_root_path, $config, $db, $cache, $user, $template;
 
 		$this->page_title = 'EDIT_THEME';
 
@@ -1161,7 +1161,7 @@ inherit_from = {INHERIT_FROM}
 			$message = $user->lang['THEME_UPDATED'];
 
 			// If the theme is stored on the filesystem try to write the file else store it in the database
-			if (!$safe_mode && !$theme_info['theme_storedb'] && file_exists($file) && phpbb_is_writable($file))
+			if (!$theme_info['theme_storedb'] && file_exists($file) && phpbb_is_writable($file))
 			{
 				if (!($fp = @fopen($file, 'wb')))
 				{
@@ -2347,7 +2347,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function details($mode, $style_id)
 	{
-		global $template, $db, $config, $user, $safe_mode, $cache, $phpbb_root_path;
+		global $template, $db, $config, $user, $cache, $phpbb_root_path;
 
 		$update = (isset($_POST['update'])) ? true : false;
 		$l_type = strtoupper($mode);
@@ -2434,7 +2434,7 @@ inherit_from = {INHERIT_FROM}
 			{
 				// a rather elaborate check we have to do here once to avoid trouble later
 				$check = "{$phpbb_root_path}styles/" . $style_row["{$mode}_path"] . (($mode === 'theme') ? '/theme/stylesheet.css' : '/template');
-				if (($style_row["{$mode}_storedb"] != $store_db) && !$store_db && ($safe_mode || !phpbb_is_writable($check)))
+				if (($style_row["{$mode}_storedb"] != $store_db) && !$store_db && !phpbb_is_writable($check))
 				{
 					$error[] = $user->lang['EDIT_' . strtoupper($mode) . '_STORED_DB'];
 					$store_db = 1;
@@ -2514,7 +2514,7 @@ inherit_from = {INHERIT_FROM}
 						{
 							$theme_data = $this->db_theme_data($style_row);
 						}
-						else if (!$store_db && !$safe_mode && phpbb_is_writable("{$phpbb_root_path}styles/{$style_row['theme_path']}/theme/stylesheet.css"))
+						else if (!$store_db && phpbb_is_writable("{$phpbb_root_path}styles/{$style_row['theme_path']}/theme/stylesheet.css"))
 						{
 							$store_db = 1;
 							$theme_data = $style_row['theme_data'];
@@ -2545,7 +2545,7 @@ inherit_from = {INHERIT_FROM}
 						}
 						else
 						{
-							if (!$store_db && !$safe_mode && phpbb_is_writable("{$phpbb_root_path}styles/{$style_row['template_path']}/template"))
+							if (!$store_db && phpbb_is_writable("{$phpbb_root_path}styles/{$style_row['template_path']}/template"))
 							{
 								$err = $this->store_in_fs('template', $style_row['template_id']);
 								if ($err)
@@ -3920,11 +3920,11 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function _store_in_fs($mode, $id, $path)
 	{
-		global $phpbb_root_path, $db, $user, $safe_mode;
+		global $phpbb_root_path, $db, $user;
 
 		$store_db = 0;
 		$error = array();
-		if (!$safe_mode && phpbb_is_writable("{$phpbb_root_path}styles/{$path}/template"))
+		if (phpbb_is_writable("{$phpbb_root_path}styles/{$path}/template"))
 		{
 			$sql = 'SELECT *
 					FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
