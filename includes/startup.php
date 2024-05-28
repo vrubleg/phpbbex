@@ -82,9 +82,10 @@ if (!defined('COOKIE_PREFIX'))
 	define('COOKIE_PREFIX', 'phpbbex' . preg_replace('#[^a-z0-9]+#i', '_', HTTP_ROOT));
 }
 
-// Define if file uploads are allowed.
+// Detect if file uploads are allowed.
 if (!defined('PHP_FILE_UPLOADS'))
 {
+	// Booleans from php.ini are normalized as '0' and '1', but a 'on' may come from a php_admin_value in httpd.conf.
 	define('PHP_FILE_UPLOADS', in_array(strtolower((string) @ini_get('file_uploads')), ['1', 'on', 'true', 'yes']));
 }
 
