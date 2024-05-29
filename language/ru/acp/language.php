@@ -28,7 +28,6 @@ $lang = array_merge($lang, array(
 
 	'INSTALLED_LANGUAGE_PACKS'	=> 'Установленные языковые пакеты',
 	'INVALID_LANGUAGE_PACK'		=> 'Выбранный языковой пакет недопустим. Проверьте пакет и при необходимости повторно загрузите его на сервер.',
-	'INVALID_UPLOAD_METHOD'		=> 'Выбранный метод загрузки недопустим. Выберите другой метод.',
 
 	'LANGUAGE_DETAILS_UPDATED'			=> 'Сведения о языке успешно обновлены.',
 	'LANGUAGE_ENTRIES'					=> 'Языковые данные',
@@ -64,7 +63,6 @@ $lang = array_merge($lang, array(
 
 	'SELECT_DOWNLOAD_FORMAT'	=> 'Выбрать формат скачивания',
 	'SUBMIT_AND_DOWNLOAD'		=> 'Отправить форму и скачать файл',
-	'SUBMIT_AND_UPLOAD'			=> 'Отправить форму и загрузить файл на сервер',
 
 	'THOSE_MISSING_LANG_FILES'			=> 'Следующие языковые файлы отсутствуют в языковом пакете %s',
 	'THOSE_MISSING_LANG_VARIABLES'		=> 'Следующие языковые переменные отсутствуют в языковом пакете <strong>%s</strong>',
@@ -72,10 +70,6 @@ $lang = array_merge($lang, array(
 	'UNINSTALLED_LANGUAGE_PACKS'	=> 'Языковые пакеты, доступные для установки',
 
 	'UNABLE_TO_WRITE_FILE'		=> 'Не удалось записать файл в %s.',
-	'UPLOAD_COMPLETED'			=> 'Загрузка на сервер успешно завершена.',
-	'UPLOAD_FAILED'				=> 'Загрузка на сервер не удалась. Может потребоваться заменить соответствующий файл вручную.',
-	'UPLOAD_METHOD'				=> 'Метод загрузки на сервер',
-	'UPLOAD_SETTINGS'			=> 'Настройки загрузки на сервер',
 
 	'WRONG_LANGUAGE_FILE'		=> 'Выбранный языковой файл недопустим.',
 ));

@@ -173,8 +173,7 @@ class erk_config_repair
 										<dd><input id="table_prefix" type="text" value="<?php echo $data['table_prefix']; ?>" name="table_prefix" maxlength="100" size="25"/></dd>
 									</dl>
 									<p class="submit-buttons">
-										<input class="button1" type="submit" id="submit" name="submit" value="Submit" />&nbsp;
-										<input class="button2" type="reset" id="reset" name="reset" value="Reset" />
+										<input class="button1" type="submit" id="submit" name="submit" value="Submit" />
 									</p>
 								</fieldset>
 							</form>

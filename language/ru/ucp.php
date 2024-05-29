@@ -145,7 +145,7 @@ $lang = array_merge($lang, array(
 	'EXPORT_AS_CSV_EXCEL'		=> 'Экспорт в CSV (Excel)',
 	'EXPORT_AS_TXT'				=> 'Экспорт в TXT',
 	'EXPORT_AS_MSG'				=> 'Экспорт в MSG',
-	'EXPORT_FOLDER'				=> 'Этот список',
+	'EXPORT_FOLDER'				=> 'Экспортировать этот список',
 
 	'FIELD_REQUIRED'					=> 'Не заполнено поле «%s».',
 	'FIELD_TOO_SHORT'					=> 'Значение поля «%1$s» слишком короткое, минимально допустимая длина составляет %2$d символов.',
