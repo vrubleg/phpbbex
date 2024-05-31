@@ -701,27 +701,6 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 	return false;
 }
 
-//-- Wrappers for functions that only exist in newer php version
-if (!function_exists('array_fill_keys'))
-{
-	/**
-	* Fills an array with the value of the value parameter, using the values of the keys array as keys.
-	* @param Array $keys Array of values that will be used as keys. Illegal values for key will be converted to string.
-	* @param mixed $value Value to use for filling
-	*/
-	function array_fill_keys($keys, $value)
-	{
-		$array = array();
-
-		foreach ($keys as $key)
-		{
-			$array[$key] = $value;
-		}
-
-		return $array;
-	}
-}
-
 if (!function_exists('adm_back_link'))
 {
 	/**

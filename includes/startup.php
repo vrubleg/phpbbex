@@ -128,20 +128,8 @@ if (phpbb_has_trailing_path())
 	exit;
 }
 
-// Prevent date/time functions from throwing E_WARNING on PHP 5.3 by setting a default timezone
-if (function_exists('date_default_timezone_set') && function_exists('date_default_timezone_get'))
-{
-	// So what we basically want to do is set our timezone to UTC,
-	// but we don't know what other scripts (such as bridges) are involved,
-	// so we check whether a timezone is already set by calling date_default_timezone_get().
-
-	// Unfortunately, date_default_timezone_get() itself might throw E_WARNING
-	// if no timezone has been set, so we have to keep it quiet with @.
-
-	// date_default_timezone_get() tries to guess the correct timezone first
-	// and then falls back to UTC when everything fails.
-	// We just set the timezone to whatever date_default_timezone_get() returns.
-	date_default_timezone_set(@date_default_timezone_get());
-}
+// Prevent date/time functions from throwing E_WARNING by setting a default timezone.
+// date_default_timezone_get() tries to guess the correct timezone first and then falls back to UTC if everything fails.
+date_default_timezone_set(@date_default_timezone_get());
 
 $starttime = microtime(true);
