@@ -258,11 +258,10 @@ function unique_id($extra = 'c')
 	static $dss_seeded = false;
 	global $config;
 
-	$val = $config['rand_seed'] . microtime();
-	$val = md5($val);
-	$config['rand_seed'] = md5($config['rand_seed'] . $val . $extra);
+	$val = md5($config['rand_seed'] . microtime() . mt_rand() . $extra);
+	$config['rand_seed'] = md5($config['rand_seed'] . $val);
 
-	if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - rand(1,10)))
+	if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - mt_rand(1,10)))
 	{
 		set_config('rand_seed_last_update', time(), true);
 		set_config('rand_seed', $config['rand_seed'], true);
@@ -410,7 +409,7 @@ function still_on_time($extra_time = 15)
 
 	if (empty($max_execution_time))
 	{
-		$max_execution_time = (function_exists('ini_get')) ? (int) @ini_get('max_execution_time') : (int) @get_cfg_var('max_execution_time');
+		$max_execution_time = (int) @ini_get('max_execution_time');
 
 		// If zero, then set to something higher to not let the user catch the ten seconds barrier.
 		if ($max_execution_time === 0)
@@ -428,6 +427,26 @@ function still_on_time($extra_time = 15)
 	}
 
 	return (ceil($current_time - $start_time) < $max_execution_time) ? true : false;
+}
+
+/**
+* PHP 5.6- polyfill for random_bytes.
+*/
+if (!function_exists('random_bytes'))
+{
+	function random_bytes($count)
+	{
+		$random_state = unique_id();
+		$random = '';
+
+		for ($i = 0; $i < $count; $i += 16)
+		{
+			$random_state = md5(unique_id() . $random_state);
+			$random .= pack('H*', md5($random_state));
+		}
+
+		return substr($random, 0, $count);
+	}
 }
 
 /**
@@ -462,29 +481,7 @@ function still_on_time($extra_time = 15)
 function phpbb_hash($password)
 {
 	$itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-	$random_state = unique_id();
-	$random = '';
-	$count = 6;
-
-	if (file_exists('/dev/urandom') && ($fh = fopen('/dev/urandom', 'rb')))
-	{
-		$random = fread($fh, $count);
-		fclose($fh);
-	}
-
-	if (strlen($random) < $count)
-	{
-		$random = '';
-
-		for ($i = 0; $i < $count; $i += 16)
-		{
-			$random_state = md5(unique_id() . $random_state);
-			$random .= pack('H*', md5($random_state));
-		}
-		$random = substr($random, 0, $count);
-	}
-
+	$random = random_bytes(6);
 	$hash = _hash_crypt_private($password, _hash_gensalt_private($random, $itoa64), $itoa64);
 
 	if (strlen($hash) == 34)
@@ -532,7 +529,7 @@ function _hash_gensalt_private($input, &$itoa64, $iteration_count_log2 = 6)
 	}
 
 	$output = '$H$';
-	$output .= $itoa64[min($iteration_count_log2 + ((PHP_VERSION >= 5) ? 5 : 3), 30)];
+	$output .= $itoa64[min($iteration_count_log2 + 5, 30)];
 	$output .= _hash_encode64($input, 6, $itoa64);
 
 	return $output;
@@ -618,24 +615,12 @@ function _hash_crypt_private($password, $setting, &$itoa64)
 	* consequently in lower iteration counts and hashes that are
 	* quicker to crack (by non-PHP code).
 	*/
-	if (PHP_VERSION >= 5)
+	$hash = md5($salt . $password, true);
+	do
 	{
-		$hash = md5($salt . $password, true);
-		do
-		{
-			$hash = md5($hash . $password, true);
-		}
-		while (--$count);
+		$hash = md5($hash . $password, true);
 	}
-	else
-	{
-		$hash = pack('H*', md5($salt . $password));
-		do
-		{
-			$hash = pack('H*', md5($hash . $password));
-		}
-		while (--$count);
-	}
+	while (--$count);
 
 	$output = substr($setting, 0, 12);
 	$output .= _hash_encode64($hash, 16, $itoa64);

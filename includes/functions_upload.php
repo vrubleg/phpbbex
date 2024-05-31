@@ -872,7 +872,7 @@ class fileupload
 			return $file;
 		}
 
-		$filename = tempnam(false, unique_id() . '-');
+		$filename = tempnam(sys_get_temp_dir(), unique_id() . '-');
 
 		if (!($fp = @fopen($filename, 'wb')))
 		{
