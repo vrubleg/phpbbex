@@ -258,11 +258,10 @@ function unique_id($extra = 'c')
 	static $dss_seeded = false;
 	global $config;
 
-	$val = $config['rand_seed'] . microtime();
-	$val = md5($val);
-	$config['rand_seed'] = md5($config['rand_seed'] . $val . $extra);
+	$val = md5($config['rand_seed'] . microtime() . mt_rand() . $extra);
+	$config['rand_seed'] = md5($config['rand_seed'] . $val);
 
-	if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - rand(1,10)))
+	if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - mt_rand(1,10)))
 	{
 		set_config('rand_seed_last_update', time(), true);
 		set_config('rand_seed', $config['rand_seed'], true);
