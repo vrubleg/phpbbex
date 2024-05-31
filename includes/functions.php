@@ -431,6 +431,26 @@ function still_on_time($extra_time = 15)
 }
 
 /**
+* PHP 5.6- polyfill for random_bytes.
+*/
+if (!function_exists('random_bytes'))
+{
+	function random_bytes($count)
+	{
+		$random_state = unique_id();
+		$random = '';
+
+		for ($i = 0; $i < $count; $i += 16)
+		{
+			$random_state = md5(unique_id() . $random_state);
+			$random .= pack('H*', md5($random_state));
+		}
+
+		return substr($random, 0, $count);
+	}
+}
+
+/**
 *
 * @version Version 0.1 / slightly modified for phpBB 3.0.x (using $H$ as hash type identifier)
 *
@@ -462,29 +482,7 @@ function still_on_time($extra_time = 15)
 function phpbb_hash($password)
 {
 	$itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-	$random_state = unique_id();
-	$random = '';
-	$count = 6;
-
-	if (file_exists('/dev/urandom') && ($fh = fopen('/dev/urandom', 'rb')))
-	{
-		$random = fread($fh, $count);
-		fclose($fh);
-	}
-
-	if (strlen($random) < $count)
-	{
-		$random = '';
-
-		for ($i = 0; $i < $count; $i += 16)
-		{
-			$random_state = md5(unique_id() . $random_state);
-			$random .= pack('H*', md5($random_state));
-		}
-		$random = substr($random, 0, $count);
-	}
-
+	$random = random_bytes(6);
 	$hash = _hash_crypt_private($password, _hash_gensalt_private($random, $itoa64), $itoa64);
 
 	if (strlen($hash) == 34)
