@@ -986,8 +986,9 @@ class acp_board
 	{
 		global $user;
 
-		$user_char_ary = array('USERNAME_CHARS_ANY', 'USERNAME_ALPHA_ONLY', 'USERNAME_ALPHA_SPACERS', 'USERNAME_LETTER_NUM', 'USERNAME_LETTER_NUM_SPACERS', 'USERNAME_ASCII');
+		$user_char_ary = array('USERNAME_UNICHARS_SPACERS', 'USERNAME_UNICHARS_NOSPACE', 'USERNAME_LATCHARS_SPACERS', 'USERNAME_LATCHARS_NOSPACE');
 		$user_char_options = '';
+
 		foreach ($user_char_ary as $user_type)
 		{
 			$selected = ($selected_value == $user_type) ? ' selected="selected"' : '';

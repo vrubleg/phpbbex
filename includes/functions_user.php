@@ -1441,29 +1441,21 @@ function validate_username($username, $allowed_username = false)
 
 	switch ($config['allow_name_chars'])
 	{
-		case 'USERNAME_CHARS_ANY':
-			$regex = '.+';
-		break;
-
-		case 'USERNAME_ALPHA_ONLY':
+		case 'USERNAME_LATCHARS_NOSPACE':
 			$regex = '[A-Za-z0-9]+';
 		break;
 
-		case 'USERNAME_ALPHA_SPACERS':
-			$regex = '[A-Za-z0-9-_. ]+';
+		case 'USERNAME_LATCHARS_SPACERS':
+			$regex = '[-_. A-Za-z0-9]+';
 		break;
 
-		case 'USERNAME_LETTER_NUM':
+		case 'USERNAME_UNICHARS_NOSPACE':
 			$regex = '[\p{Lu}\p{Ll}\p{N}]+';
 		break;
 
-		case 'USERNAME_LETTER_NUM_SPACERS':
-			$regex = '[-_. \p{Lu}\p{Ll}\p{N}]+';
-		break;
-
-		case 'USERNAME_ASCII':
+		case 'USERNAME_UNICHARS_SPACERS':
 		default:
-			$regex = '[\x01-\x7F]+';
+			$regex = '[-_. \p{Lu}\p{Ll}\p{N}]+';
 		break;
 	}
 

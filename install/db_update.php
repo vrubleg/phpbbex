@@ -308,6 +308,13 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
 
+	// Update obsolete values.
+
+	if (!in_array($config['allow_name_chars'], ['USERNAME_UNICHARS_SPACERS', 'USERNAME_UNICHARS_NOSPACE', 'USERNAME_LATCHARS_SPACERS', 'USERNAME_LATCHARS_NOSPACE']))
+	{
+		set_config('allow_name_chars', 'USERNAME_UNICHARS_SPACERS');
+	}
+
 	// Update DB schema version.
 
 	// set_config('phpbbex_version', '1.9.8');
