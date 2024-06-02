@@ -261,7 +261,7 @@ class install_update extends module
 		}
 
 		// Check whether all old files are deleted
-		include($phpbb_root_path . 'install/outdated_files.php');
+		require($phpbb_root_path . 'install/outdated_files.php');
 
 		umask(0);
 

@@ -109,10 +109,7 @@ function add_bbcode($album_bbcode)
 {
 	global $cache, $config, $db, $phpbb_root_path;
 
-	if (!class_exists('acp_bbcodes'))
-	{
-		include($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
-	}
+	require_once($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
 	$acp_bbcodes = new acp_bbcodes();
 	$gallery_url = phpbb_gallery_url::path('full');
 

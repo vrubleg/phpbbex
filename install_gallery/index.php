@@ -17,14 +17,14 @@ define('IN_INSTALL', true);
 define('NEWEST_PG_VERSION', '1.1.6');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
-require($phpbb_root_path . 'common.php');
-require($phpbb_root_path . 'includes/functions_display.php');
-require($phpbb_root_path . 'includes/acp/acp_modules.php');
-require($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
-require($phpbb_root_path . 'includes/message_parser.php');
-require($phpbb_root_path . 'includes/functions_install.php');
-require($phpbb_root_path . 'install/dbal_schema.php');
-require($phpbb_root_path . 'includes/umil.php');
+require_once($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'includes/functions_display.php');
+require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
+require_once($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
+require_once($phpbb_root_path . 'includes/message_parser.php');
+require_once($phpbb_root_path . 'includes/functions_install.php');
+require_once($phpbb_root_path . 'install/dbal_schema.php');
+require_once($phpbb_root_path . 'includes/umil.php');
 
 // Start session management
 $user->session_begin();
@@ -100,7 +100,7 @@ class module
 		{
 			if (preg_match('#^install_(.*?)\.php' . '$#', $file))
 			{
-				include($file);
+				require_once($file);
 			}
 		}
 		closedir($dir);

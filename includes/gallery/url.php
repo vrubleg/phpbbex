@@ -189,7 +189,7 @@ class phpbb_gallery_url
 			// Trying to break less MODs by populating the needed variables for inclusions
 			global $phpbb_admin_path, $phpbb_root_path;
 
-			include(self::path($path) . $sub_directory . self::phpext_file($file));
+			require(self::path($path) . $sub_directory . self::phpext_file($file));
 		}
 		else
 		{

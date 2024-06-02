@@ -10,8 +10,8 @@
 
 define('IN_PHPBB', true);
 define('IN_FEED_GALLERY', true);
-include('common.php');
-include($phpbb_root_path . 'common.php');
+require_once('common.php');
+require_once($phpbb_root_path . 'common.php');
 
 phpbb_gallery::setup(array('mods/gallery'));
 phpbb_gallery_url::_include('functions_display', 'phpbb');

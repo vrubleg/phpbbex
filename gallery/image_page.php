@@ -9,8 +9,8 @@
 */
 
 define('IN_PHPBB', true);
-include('common.php');
-include($phpbb_root_path . 'common.php');
+require_once('common.php');
+require_once($phpbb_root_path . 'common.php');
 
 phpbb_gallery::setup(array('viewtopic', 'mods/gallery', 'mods/exif_data'));
 phpbb_gallery_url::_include('functions_display', 'phpbb');
