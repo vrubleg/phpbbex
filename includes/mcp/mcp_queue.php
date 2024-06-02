@@ -31,7 +31,7 @@ class mcp_queue
 		global $auth, $db, $user, $template, $cache;
 		global $config, $phpbb_root_path, $action;
 
-		include_once($phpbb_root_path . 'includes/functions_posting.php');
+		require_once($phpbb_root_path . 'includes/functions_posting.php');
 
 		$forum_id = request_var('f', 0);
 		$start = request_var('start', 0);
@@ -42,7 +42,7 @@ class mcp_queue
 		{
 			case 'approve':
 			case 'disapprove':
-				include_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 				$post_id_list = request_var('post_id_list', array(0));
 
@@ -126,7 +126,7 @@ class mcp_queue
 
 				if ($post_info['bbcode_bitfield'])
 				{
-					include_once($phpbb_root_path . 'includes/bbcode.php');
+					require_once($phpbb_root_path . 'includes/bbcode.php');
 					$bbcode = new bbcode($post_info['bbcode_bitfield']);
 					$bbcode->bbcode_second_pass($message, $post_info['bbcode_uid'], $post_info['bbcode_bitfield'], $post_info['post_time']);
 				}
@@ -882,7 +882,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		{
 			if (!function_exists('delete_posts'))
 			{
-				include_once($phpbb_root_path . 'includes/functions_admin.php');
+				require_once($phpbb_root_path . 'includes/functions_admin.php');
 			}
 
 			// We do not check for permissions here, because the moderator allowed approval/disapproval should be allowed to delete the disapproved posts
@@ -973,7 +973,7 @@ function disapprove_post($post_id_list, $id, $mode)
 	}
 	else
 	{
-		include_once($phpbb_root_path . 'includes/functions_display.php');
+		require_once($phpbb_root_path . 'includes/functions_display.php');
 
 		display_reasons($reason_id);
 

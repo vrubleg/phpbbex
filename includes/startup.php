@@ -17,7 +17,7 @@ if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
 if (file_exists($phpbb_root_path . 'config.php'))
 {
-	require($phpbb_root_path . 'config.php');
+	require_once($phpbb_root_path . 'config.php');
 }
 
 // Powered by ...

@@ -179,19 +179,19 @@ class reparse_bbcode
 		if (!class_exists('parse_message'))
 		{
 			global $phpbb_root_path; // required!
-			require(PHPBB_ROOT_PATH . 'includes/message_parser.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 		}
 
 		// Posting helper functions
 		if ($mode == BBCODE_REPARSE_POSTS && !function_exists('submit_post'))
 		{
-			require(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 		}
 
 		// PM helper function
 		if ($mode == BBCODE_REPARSE_PMS && !function_exists('submit_pm'))
 		{
-			require(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
 		}
 
 		// First step? Prepare the backup

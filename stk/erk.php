@@ -16,7 +16,7 @@ if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.php'); }
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 
-require(STK_ROOT_PATH . 'includes/critical_repair.php');
+require_once(STK_ROOT_PATH . 'includes/critical_repair.php');
 $critical_repair = new critical_repair();
 
 // Check if there is a recent ERK allow key file, not older than 60 minutes.
@@ -54,7 +54,7 @@ $critical_repair->initialize();
 $critical_repair->run_tool('bom_sniffer');
 $critical_repair->run_tool('config_repair');
 
-require(STK_ROOT_PATH . 'common.php');
+require_once(STK_ROOT_PATH . 'common.php');
 
 // We'll run the rest of the critical repair tools automatically now
 $critical_repair->autorun_tools();

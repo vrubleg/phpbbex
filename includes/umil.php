@@ -121,16 +121,9 @@ class phpbb_umil
 	*/
 	function __construct()
 	{
-		// Setup $this->db
-		global $db;
+		global $db, $phpbb_root_path;
 		$this->db = $db;
-
-		// Setup $this->db_tools
-		if (!class_exists('phpbb_db_tools'))
-		{
-			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/db/db_tools.php');
-		}
+		require_once($phpbb_root_path . 'includes/db/db_tools.php');
 		$this->db_tools = new phpbb_db_tools($this->db);
 	}
 
@@ -1110,7 +1103,7 @@ class phpbb_umil
 
 			if (!class_exists($classname))
 			{
-				include((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file);
+				require((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file);
 			}
 
 			$info = new $classname;
@@ -1174,7 +1167,7 @@ class phpbb_umil
 
 		if (!class_exists('acp_modules'))
 		{
-			include($phpbb_root_path . 'includes/acp/acp_modules.php');
+			require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
 			$user->add_lang('acp/modules');
 		}
 		$acp_modules = new acp_modules();
@@ -1301,7 +1294,7 @@ class phpbb_umil
 
 			if (!class_exists($classname))
 			{
-				include((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file);
+				require((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file);
 			}
 
 			$info = new $classname;
@@ -1389,7 +1382,7 @@ class phpbb_umil
 
 			if (!class_exists('acp_modules'))
 			{
-				include($phpbb_root_path . 'includes/acp/acp_modules.php');
+				require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
 				$user->add_lang('acp/modules');
 			}
 			$acp_modules = new acp_modules();
@@ -1499,7 +1492,7 @@ class phpbb_umil
 		{
 			global $phpbb_root_path;
 
-			include($phpbb_root_path . 'includes/acp/auth.php');
+			require_once($phpbb_root_path . 'includes/acp/auth.php');
 		}
 		$auth_admin = new auth_admin();
 
@@ -2006,7 +1999,7 @@ class phpbb_umil
 		if (!function_exists('get_tables'))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/functions_install.php');
+			require_once($phpbb_root_path . 'includes/functions_install.php');
 		}
 
 		$tables = get_tables($this->db);

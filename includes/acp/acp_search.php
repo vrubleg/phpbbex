@@ -618,7 +618,7 @@ class acp_search
 			return $error;
 		}
 
-		include_once("{$phpbb_root_path}includes/search/$type.php");
+		require_once("{$phpbb_root_path}includes/search/$type.php");
 
 		if (!class_exists($type))
 		{

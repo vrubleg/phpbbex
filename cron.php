@@ -8,7 +8,7 @@
 define('IN_PHPBB', true);
 define('IN_CRON', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'common.php');
 
 // Do not update users last page entry
 $user->session_begin(false);
@@ -71,7 +71,7 @@ switch ($cron_type)
 			break;
 		}
 
-		include_once($phpbb_root_path . 'includes/functions_messenger.php');
+		require_once($phpbb_root_path . 'includes/functions_messenger.php');
 		$queue = new queue();
 
 		$queue->process();
@@ -99,7 +99,7 @@ switch ($cron_type)
 			break;
 		}
 
-		include_once("{$phpbb_root_path}includes/search/$search_type.php");
+		require_once("{$phpbb_root_path}includes/search/$search_type.php");
 
 		// We do some additional checks in the module to ensure it can actually be utilised
 		$error = false;
@@ -121,7 +121,7 @@ switch ($cron_type)
 			break;
 		}
 
-		include_once($phpbb_root_path . 'includes/functions_admin.php');
+		require_once($phpbb_root_path . 'includes/functions_admin.php');
 
 		tidy_warnings();
 
@@ -134,7 +134,7 @@ switch ($cron_type)
 			break;
 		}
 
-		include_once($phpbb_root_path . 'includes/functions_admin.php');
+		require_once($phpbb_root_path . 'includes/functions_admin.php');
 
 		tidy_database();
 
@@ -170,7 +170,7 @@ switch ($cron_type)
 		// Do the forum Prune thang
 		if ($row['prune_next'] < time() && $row['enable_prune'])
 		{
-			include_once($phpbb_root_path . 'includes/functions_admin.php');
+			require_once($phpbb_root_path . 'includes/functions_admin.php');
 
 			if ($row['prune_days'])
 			{

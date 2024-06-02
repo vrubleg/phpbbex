@@ -18,10 +18,7 @@ class profile_list
 
 		page_header($user->lang['PROFILE_LIST']);
 
-		if (!class_exists('phpbb_db_tools'))
-		{
-			include(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 		$db_tools = new phpbb_db_tools($db);
 
 		$user->add_lang('memberlist');
@@ -35,7 +32,7 @@ class profile_list
 			{
 				if (!function_exists('user_delete'))
 				{
-					require(PHPBB_ROOT_PATH . 'includes/functions_user.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 				}
 
 				// Delete them all

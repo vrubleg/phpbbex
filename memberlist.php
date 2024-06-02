@@ -7,8 +7,8 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
-include($phpbb_root_path . 'includes/functions_display.php');
+require_once($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'includes/functions_display.php');
 
 // Start session management
 $user->session_begin();
@@ -60,7 +60,7 @@ switch ($mode)
 {
 	case 'leaders':
 		// Display a listing of board admins, moderators
-		include($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 
 		$page_title = $user->lang['THE_TEAM'];
 		$template_html = 'memberlist_leaders.html';
@@ -308,7 +308,7 @@ switch ($mode)
 					if (check_form_key('memberlist_messaging'))
 					{
 
-						include_once($phpbb_root_path . 'includes/functions_messenger.php');
+						require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 						$subject = sprintf($user->lang['IM_JABBER_SUBJECT'], $user->data['username'], HTTP_HOST);
 						$message = utf8_normalize_nfc(request_var('message', '', true));
@@ -511,7 +511,7 @@ switch ($mode)
 
 			if ($member['user_sig_bbcode_bitfield'])
 			{
-				include_once($phpbb_root_path . 'includes/bbcode.php');
+				require_once($phpbb_root_path . 'includes/bbcode.php');
 				$bbcode = new bbcode();
 				$bbcode->bbcode_second_pass($member['user_sig'], $member['user_sig_bbcode_uid'], $member['user_sig_bbcode_bitfield']);
 			}
@@ -530,7 +530,7 @@ switch ($mode)
 		{
 			if (!class_exists('p_master'))
 			{
-				include($phpbb_root_path . 'includes/functions_module.php');
+				require_once($phpbb_root_path . 'includes/functions_module.php');
 			}
 			$module = new p_master();
 
@@ -552,7 +552,7 @@ switch ($mode)
 		$profile_fields = array();
 		if ($config['load_cpf_viewprofile'])
 		{
-			include_once($phpbb_root_path . 'includes/functions_profile_fields.php');
+			require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 			$cp = new custom_profile();
 			$profile_fields = $cp->generate_profile_fields_template('grab', $user_id);
 			$profile_fields = (isset($profile_fields[$user_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields[$user_id]) : array();
@@ -821,7 +821,7 @@ switch ($mode)
 					WHERE user_id = ' . $user->data['user_id'];
 				$result = $db->sql_query($sql);
 
-				include_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once($phpbb_root_path . 'includes/functions_messenger.php');
 				$messenger = new messenger(false);
 				$email_tpl = ($user_id) ? 'profile_send_email' : 'email_notify';
 
@@ -1461,7 +1461,7 @@ switch ($mode)
 			// Load custom profile fields
 			if ($config['load_cpf_memberlist'])
 			{
-				include_once($phpbb_root_path . 'includes/functions_profile_fields.php');
+				require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 				$cp = new custom_profile();
 
 				// Grab all profile fields from users in id cache for later use - similar to the poster cache

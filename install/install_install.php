@@ -985,7 +985,7 @@ class install_install extends module
 	{
 		global $db, $lang, $phpbb_root_path;
 
-		include_once($phpbb_root_path . 'includes/acp/acp_modules.php');
+		require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
 
 		$_module = new acp_modules();
 		$module_classes = array('acp', 'mcp', 'ucp');
@@ -1389,7 +1389,7 @@ class install_install extends module
 
 		if (!function_exists('user_add'))
 		{
-			include($phpbb_root_path . 'includes/functions_user.php');
+			require_once($phpbb_root_path . 'includes/functions_user.php');
 		}
 
 		foreach ($this->bot_list as $bot_name => $bot_agent)

@@ -23,10 +23,7 @@ class acp_database
 		global $cache, $db, $user, $auth, $template, $table_prefix;
 		global $config, $phpbb_root_path, $phpbb_admin_path;
 
-		if (!class_exists('phpbb_db_tools'))
-		{
-			require($phpbb_root_path . 'includes/db/db_tools.php');
-		}
+		require_once($phpbb_root_path . 'includes/db/db_tools.php');
 		$this->db_tools = new phpbb_db_tools($db);
 
 		$user->add_lang('acp/database');

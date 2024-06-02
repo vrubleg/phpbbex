@@ -168,8 +168,8 @@ class acp_email
 				$db->sql_freeresult($result);
 
 				// Send the messages
-				include_once($phpbb_root_path . 'includes/functions_messenger.php');
-				include_once($phpbb_root_path . 'includes/functions_user.php');
+				require_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once($phpbb_root_path . 'includes/functions_user.php');
 				$messenger = new messenger($use_queue);
 
 				$errored = false;

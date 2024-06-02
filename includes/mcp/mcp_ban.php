@@ -22,10 +22,10 @@ class mcp_ban
 		global $config, $db, $user, $auth, $template, $cache;
 		global $phpbb_root_path;
 
-		include($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 
 		// Include the admin banning interface...
-		include($phpbb_root_path . 'includes/acp/acp_ban.php');
+		require_once($phpbb_root_path . 'includes/acp/acp_ban.php');
 
 		$bansubmit		= (isset($_POST['bansubmit'])) ? true : false;
 		$unbansubmit	= (isset($_POST['unbansubmit'])) ? true : false;

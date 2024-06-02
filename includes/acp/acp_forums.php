@@ -1643,7 +1643,7 @@ class acp_forums
 	{
 		global $db, $config, $phpbb_root_path;
 
-		include_once($phpbb_root_path . 'includes/functions_posting.php');
+		require_once($phpbb_root_path . 'includes/functions_posting.php');
 
 		$db->sql_transaction('begin');
 

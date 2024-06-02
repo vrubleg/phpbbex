@@ -24,7 +24,7 @@ class acp_captcha
 
 		$user->add_lang('acp/board');
 
-		include($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+		require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
 		$captchas = phpbb_captcha_factory::get_captcha_types();
 
 		$selected = request_var('select_captcha', $config['captcha_plugin']);

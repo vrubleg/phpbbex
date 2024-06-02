@@ -23,9 +23,9 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	// Needed for handle_message_list_actions()
 	global $refresh, $submit, $preview;
 
-	include($phpbb_root_path . 'includes/functions_posting.php');
-	include($phpbb_root_path . 'includes/functions_display.php');
-	include($phpbb_root_path . 'includes/message_parser.php');
+	require_once($phpbb_root_path . 'includes/functions_posting.php');
+	require_once($phpbb_root_path . 'includes/functions_display.php');
+	require_once($phpbb_root_path . 'includes/message_parser.php');
 
 	if (!$action)
 	{

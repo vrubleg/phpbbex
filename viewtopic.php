@@ -7,9 +7,9 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
-include($phpbb_root_path . 'includes/functions_display.php');
-include($phpbb_root_path . 'includes/bbcode.php');
+require_once($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'includes/functions_display.php');
+require_once($phpbb_root_path . 'includes/bbcode.php');
 
 // Start session management
 $user->session_begin();
@@ -1222,7 +1222,7 @@ if ($config['load_cpf_viewtopic'])
 {
 	if (!class_exists('custom_profile'))
 	{
-		include($phpbb_root_path . 'includes/functions_profile_fields.php');
+		require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 	}
 	$cp = new custom_profile();
 
@@ -1882,7 +1882,7 @@ else if (!$all_marked_read)
 $s_quick_reply = false;
 if ($config['allow_quick_reply'])
 {
-	$s_quick_reply = include($phpbb_root_path . 'includes/quick_reply.php');
+	$s_quick_reply = require($phpbb_root_path . 'includes/quick_reply.php');
 }
 
 if ($s_can_vote && !$s_quick_reply)

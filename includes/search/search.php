@@ -45,7 +45,7 @@ class search_backend
 			if (file_exists("{$user->lang_path}{$user->lang_name}/search_ignore_words.php"))
 			{
 				// include the file containing ignore words
-				include("{$user->lang_path}{$user->lang_name}/search_ignore_words.php");
+				require("{$user->lang_path}{$user->lang_name}/search_ignore_words.php");
 			}
 
 			$this->ignore_words = $words;
@@ -67,7 +67,7 @@ class search_backend
 			if (file_exists("{$user->lang_path}{$user->lang_name}/search_synonyms.php"))
 			{
 				// include the file containing synonyms
-				include("{$user->lang_path}{$user->lang_name}/search_synonyms.php");
+				require("{$user->lang_path}{$user->lang_name}/search_synonyms.php");
 			}
 
 			$this->match_synonym = array_keys($synonyms);

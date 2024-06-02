@@ -208,7 +208,7 @@ class phpbb_template
 
 		if ($filename = $this->_tpl_load($handle))
 		{
-			($include_once) ? include_once($filename) : include($filename);
+			($include_once) ? require_once($filename) : require($filename);
 		}
 		else
 		{
@@ -286,7 +286,7 @@ class phpbb_template
 
 		if (!class_exists('template_compile'))
 		{
-			include($phpbb_root_path . 'includes/functions_template.php');
+			require_once($phpbb_root_path . 'includes/functions_template.php');
 		}
 
 		// Inheritance - we point to another template file for this one. Equality is also used for store_db
@@ -648,7 +648,7 @@ class phpbb_template
 
 			if ($filename)
 			{
-				include($filename);
+				require($filename);
 				return;
 			}
 			eval(' ?>' . $this->compiled_code[$handle] . '<?php ');
@@ -671,6 +671,6 @@ class phpbb_template
 			echo 'template->_php_include(): File ' . htmlspecialchars($file) . ' does not exist or is empty';
 			return;
 		}
-		include($file);
+		require($file);
 	}
 }

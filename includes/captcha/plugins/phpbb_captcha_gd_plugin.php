@@ -15,7 +15,7 @@ if (!defined('IN_PHPBB'))
 */
 if (!class_exists('phpbb_default_captcha'))
 {
-	include($phpbb_root_path . 'includes/captcha/plugins/captcha_abstract.php');
+	require_once($phpbb_root_path . 'includes/captcha/plugins/captcha_abstract.php');
 }
 
 /**
@@ -39,7 +39,7 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 
 		if (!class_exists('captcha'))
 		{
-			include($phpbb_root_path . 'includes/captcha/captcha_gd.php');
+			require_once($phpbb_root_path . 'includes/captcha/captcha_gd.php');
 		}
 	}
 

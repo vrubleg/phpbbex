@@ -7,7 +7,7 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'common.php');
 
 if (!$config['feed_enable'])
 {

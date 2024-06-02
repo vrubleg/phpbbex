@@ -45,7 +45,7 @@ class acp_users
 		// Whois (special case)
 		if ($action == 'whois')
 		{
-			include($phpbb_root_path . 'includes/functions_user.php');
+			require_once($phpbb_root_path . 'includes/functions_user.php');
 
 			$this->page_title = 'WHOIS';
 			$this->tpl_name = 'simple_body';
@@ -156,7 +156,7 @@ class acp_users
 		{
 			case 'overview':
 
-				include($phpbb_root_path . 'includes/functions_user.php');
+				require_once($phpbb_root_path . 'includes/functions_user.php');
 
 				$user->add_lang('acp/ban');
 
@@ -314,7 +314,7 @@ class acp_users
 
 							if ($config['email_enable'])
 							{
-								include_once($phpbb_root_path . 'includes/functions_messenger.php');
+								require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 								$server_url = generate_board_url();
 
@@ -394,7 +394,7 @@ class acp_users
 							{
 								if ($config['require_activation'] == USER_ACTIVATION_ADMIN)
 								{
-									include_once($phpbb_root_path . 'includes/functions_messenger.php');
+									require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 									$messenger = new messenger(false);
 
@@ -539,7 +539,7 @@ class acp_users
 								{
 									if (!function_exists('delete_pm'))
 									{
-										include($phpbb_root_path . 'includes/functions_privmsgs.php');
+										require_once($phpbb_root_path . 'includes/functions_privmsgs.php');
 									}
 
 									do
@@ -624,7 +624,7 @@ class acp_users
 								{
 									if (!function_exists('remove_rates_batch'))
 									{
-										include($phpbb_root_path . 'includes/functions_rating.php');
+										require_once($phpbb_root_path . 'includes/functions_rating.php');
 									}
 									remove_rates_batch('user', $user_id, $delrates_type & 1, $delrates_type & 2, $delrates_from, $delrates_to);
 									$lang = 'OK';
@@ -1351,8 +1351,8 @@ class acp_users
 
 			case 'profile':
 
-				include($phpbb_root_path . 'includes/functions_user.php');
-				include($phpbb_root_path . 'includes/functions_profile_fields.php');
+				require_once($phpbb_root_path . 'includes/functions_user.php');
+				require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 
 				$cp = new custom_profile();
 
@@ -1526,7 +1526,7 @@ class acp_users
 
 			case 'prefs':
 
-				include($phpbb_root_path . 'includes/functions_user.php');
+				require_once($phpbb_root_path . 'includes/functions_user.php');
 
 				$data = array(
 					'dateformat'		=> utf8_normalize_nfc(request_var('dateformat', $user_row['user_dateformat'], true)),
@@ -1770,8 +1770,8 @@ class acp_users
 
 			case 'avatar':
 
-				include($phpbb_root_path . 'includes/functions_display.php');
-				include($phpbb_root_path . 'includes/functions_user.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_user.php');
 
 				$can_upload = (PHP_FILE_UPLOADS && file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH));
 
@@ -1877,8 +1877,8 @@ class acp_users
 
 			case 'sig':
 
-				include_once($phpbb_root_path . 'includes/functions_posting.php');
-				include_once($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_posting.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
 
 				$enable_bbcode	= ($config['allow_sig_bbcode']) ? (bool) $this->optionget($user_row, 'sig_bbcode') : false;
 				$enable_smilies	= ($config['allow_sig_smilies']) ? (bool) $this->optionget($user_row, 'sig_smilies') : false;
@@ -1889,7 +1889,7 @@ class acp_users
 
 				if ($submit || $preview)
 				{
-					include_once($phpbb_root_path . 'includes/message_parser.php');
+					require_once($phpbb_root_path . 'includes/message_parser.php');
 
 					$enable_bbcode	= ($config['allow_sig_bbcode']) ? ((request_var('disable_bbcode', false)) ? false : true) : false;
 					$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', false)) ? false : true) : false;
@@ -2145,7 +2145,7 @@ class acp_users
 
 			case 'groups':
 
-				include($phpbb_root_path . 'includes/functions_user.php');
+				require_once($phpbb_root_path . 'includes/functions_user.php');
 
 				$user->add_lang(array('groups', 'acp/groups'));
 				$group_id = request_var('g', 0);
@@ -2357,7 +2357,7 @@ class acp_users
 
 			case 'perm':
 
-				include_once($phpbb_root_path . 'includes/acp/auth.php');
+				require_once($phpbb_root_path . 'includes/acp/auth.php');
 
 				$auth_admin = new auth_admin();
 

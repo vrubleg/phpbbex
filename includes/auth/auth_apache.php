@@ -162,7 +162,7 @@ function autologin_apache()
 		{
 			global $phpbb_root_path;
 
-			include($phpbb_root_path . 'includes/functions_user.php');
+			require_once($phpbb_root_path . 'includes/functions_user.php');
 		}
 
 		// create the user if he does not exist yet

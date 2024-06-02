@@ -7,10 +7,10 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
-include($phpbb_root_path . 'includes/functions_posting.php');
-include($phpbb_root_path . 'includes/functions_display.php');
-include($phpbb_root_path . 'includes/message_parser.php');
+require_once($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'includes/functions_posting.php');
+require_once($phpbb_root_path . 'includes/functions_display.php');
+require_once($phpbb_root_path . 'includes/message_parser.php');
 
 
 // Start session management
@@ -172,7 +172,7 @@ $user->setup(array('posting', 'mcp', 'viewtopic'), $post_data['forum_style']);
 
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {
-	include($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+	require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
 	$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 	$captcha->init(CONFIRM_POST);
 }
@@ -835,7 +835,7 @@ if ($submit || $preview || $refresh)
 	// Validate username
 	if (($post_data['username'] && !$user->data['is_registered']) || ($mode == 'edit' && $post_data['poster_id'] == ANONYMOUS && $post_data['username'] && $post_data['post_username'] && $post_data['post_username'] != $post_data['username']))
 	{
-		include($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 
 		$user->add_lang('ucp');
 
@@ -1031,7 +1031,7 @@ if ($submit || $preview || $refresh)
 
 				if (!$to_forum_id)
 				{
-					include_once($phpbb_root_path . 'includes/functions_admin.php');
+					require_once($phpbb_root_path . 'includes/functions_admin.php');
 
 					$template->assign_vars(array(
 						'S_FORUM_SELECT'	=> make_forum_select(false, false, false, true, true, true),
@@ -1136,7 +1136,7 @@ if ($submit || $preview || $refresh)
 				$data['topic_replies'] = $post_data['topic_replies'];
 			}
 
-			include($phpbb_root_path . 'includes/posts_merging.php');
+			require_once($phpbb_root_path . 'includes/posts_merging.php');
 
 			// Only return the username when it is either a guest posting or we are editing a post and
 			// the username was supplied; otherwise post_data might hold the data of the post that is

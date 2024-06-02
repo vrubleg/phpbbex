@@ -88,13 +88,13 @@ class utf_normalizer
 		if (!isset($GLOBALS['utf_nfc_qc']))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_nfc_qc.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_nfc_qc.php');
 		}
 
 		if (!isset($GLOBALS['utf_canonical_decomp']))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_canonical_decomp.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_canonical_decomp.php');
 		}
 
 		// Replace any byte in the range 0x00..0x1F, except for \r, \n and \t
@@ -128,13 +128,13 @@ class utf_normalizer
 		if (!isset($GLOBALS['utf_nfc_qc']))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_nfc_qc.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_nfc_qc.php');
 		}
 
 		if (!isset($GLOBALS['utf_canonical_decomp']))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_canonical_decomp.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_canonical_decomp.php');
 		}
 
 		$str = utf_normalizer::recompose($str, $pos, $len, $GLOBALS['utf_nfc_qc'], $GLOBALS['utf_canonical_decomp']);
@@ -160,13 +160,13 @@ class utf_normalizer
 		if (!isset($GLOBALS['utf_nfkc_qc']))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_nfkc_qc.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_nfkc_qc.php');
 		}
 
 		if (!isset($GLOBALS['utf_compatibility_decomp']))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_compatibility_decomp.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_compatibility_decomp.php');
 		}
 
 		$str = utf_normalizer::recompose($str, $pos, $len, $GLOBALS['utf_nfkc_qc'], $GLOBALS['utf_compatibility_decomp']);
@@ -192,7 +192,7 @@ class utf_normalizer
 		if (!isset($GLOBALS['utf_canonical_decomp']))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_canonical_decomp.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_canonical_decomp.php');
 		}
 
 		$str = utf_normalizer::decompose($str, $pos, $len, $GLOBALS['utf_canonical_decomp']);
@@ -218,7 +218,7 @@ class utf_normalizer
 		if (!isset($GLOBALS['utf_compatibility_decomp']))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_compatibility_decomp.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_compatibility_decomp.php');
 		}
 
 		$str = utf_normalizer::decompose($str, $pos, $len, $GLOBALS['utf_compatibility_decomp']);
@@ -245,14 +245,14 @@ class utf_normalizer
 		if (!isset($utf_jamo_index, $utf_jamo_type, $utf_combining_class))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_normalizer_common.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_normalizer_common.php');
 		}
 
 		// Load the canonical composition table
 		if (!isset($utf_canonical_comp))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_canonical_comp.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_canonical_comp.php');
 		}
 
 		// Buffer the last ASCII char before the UTF-8 stuff if applicable
@@ -947,7 +947,7 @@ class utf_normalizer
 		if (!isset($utf_combining_class))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/utf/data/utf_normalizer_common.php');
+			require_once($phpbb_root_path . 'includes/utf/data/utf_normalizer_common.php');
 		}
 
 		// UTF char length array

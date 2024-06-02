@@ -415,7 +415,7 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 		if (!class_exists('bbcode'))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/bbcode.php');
+			require_once($phpbb_root_path . 'includes/bbcode.php');
 		}
 
 		if (empty($bbcode))
@@ -452,7 +452,7 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 
 	if (!class_exists('parse_message'))
 	{
-		include($phpbb_root_path . 'includes/message_parser.php');
+		require_once($phpbb_root_path . 'includes/message_parser.php');
 	}
 
 	$message_parser = new parse_message($text);

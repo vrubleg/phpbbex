@@ -43,7 +43,7 @@ if (!$s_quick_reply)
 	return false;
 }
 
-include($phpbb_root_path . 'includes/functions_posting.php');
+require_once($phpbb_root_path . 'includes/functions_posting.php');
 $user->add_lang(array('posting', 'mcp'));
 
 // Set some default variables
@@ -112,7 +112,7 @@ $s_action .= (isset($topic_id) && $topic_id) ? "&amp;t=$topic_id" : '';
 // Visual Confirmation
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {
-	include($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+	require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
 	$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 	$captcha->init(CONFIRM_POST);
 }

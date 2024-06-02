@@ -307,7 +307,7 @@ class phpbb_session
 
 					// Check whether the session is still valid if we have one
 					$method = basename(trim($config['auth_method']));
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+					require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'validate_session_' . $method;
 					if (function_exists($method))
@@ -509,7 +509,7 @@ class phpbb_session
 		}
 
 		$method = basename(trim($config['auth_method']));
-		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+		require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 		$method = 'autologin_' . $method;
 		if (function_exists($method))
@@ -843,7 +843,7 @@ class phpbb_session
 
 		// Allow connecting logout with external auth method logout
 		$method = basename(trim($config['auth_method']));
-		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+		require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 		$method = 'logout_' . $method;
 		if (function_exists($method))
@@ -970,10 +970,7 @@ class phpbb_session
 			}
 
 			// only called from CRON; should be a safe workaround until the infrastructure gets going
-			if (!class_exists('phpbb_captcha_factory'))
-			{
-				include($phpbb_root_path . 'includes/captcha/captcha_factory.php');
-			}
+			require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
 			phpbb_captcha_factory::garbage_collect($config['captcha_plugin']);
 
 			$sql = 'DELETE FROM ' . LOGIN_ATTEMPT_TABLE . '
@@ -2335,7 +2332,7 @@ class phpbb_user extends phpbb_session
 		{
 			global $phpbb_root_path;
 
-			include($phpbb_root_path . 'includes/functions_user.php');
+			require_once($phpbb_root_path . 'includes/functions_user.php');
 		}
 		if ($group = remove_newly_registered($this->data['user_id'], $this->data))
 		{

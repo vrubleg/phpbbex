@@ -7,9 +7,9 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
-include($phpbb_root_path . 'includes/functions_admin.php');
-require($phpbb_root_path . 'includes/functions_module.php');
+require_once($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'includes/functions_admin.php');
+require_once($phpbb_root_path . 'includes/functions_module.php');
 
 // Start session management
 $user->session_begin();

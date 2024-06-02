@@ -177,7 +177,7 @@ class acp_main
 
 						if (!function_exists('update_last_username'))
 						{
-							include($phpbb_root_path . "includes/functions_user.php");
+							require_once($phpbb_root_path . "includes/functions_user.php");
 						}
 						update_last_username();
 
@@ -278,7 +278,7 @@ class acp_main
 
 						if (!function_exists('resync_rates'))
 						{
-							include($phpbb_root_path . 'includes/functions_rating.php');
+							require_once($phpbb_root_path . 'includes/functions_rating.php');
 						}
 						resync_rates();
 

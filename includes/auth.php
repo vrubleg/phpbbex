@@ -905,7 +905,7 @@ class phpbb_auth
 		global $config, $db, $user, $phpbb_root_path;
 
 		$method = trim(basename($config['auth_method']));
-		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+		require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 		$method = 'login_' . $method;
 		if (function_exists($method))
@@ -918,7 +918,7 @@ class phpbb_auth
 				// we are going to use the user_add function so include functions_user.php if it wasn't defined yet
 				if (!function_exists('user_add'))
 				{
-					include($phpbb_root_path . 'includes/functions_user.php');
+					require_once($phpbb_root_path . 'includes/functions_user.php');
 				}
 
 				user_add($login['user_row'], (isset($login['cp_data'])) ? $login['cp_data'] : false);

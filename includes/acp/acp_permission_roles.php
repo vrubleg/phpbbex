@@ -22,8 +22,8 @@ class acp_permission_roles
 		global $db, $user, $auth, $template, $cache;
 		global $config, $phpbb_root_path, $phpbb_admin_path;
 
-		include_once($phpbb_root_path . 'includes/functions_user.php');
-		include_once($phpbb_root_path . 'includes/acp/auth.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/acp/auth.php');
 
 		$auth_admin = new auth_admin();
 

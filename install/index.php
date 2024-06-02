@@ -10,7 +10,7 @@ define('IN_INSTALL', true);
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 
-require($phpbb_root_path . 'includes/startup.php');
+require_once($phpbb_root_path . 'includes/startup.php');
 
 if (defined('PHPBB_INSTALLED') && !file_exists($phpbb_root_path . 'cache/install_lock'))
 {
@@ -47,16 +47,16 @@ else
 @ini_set('memory_limit', $mem_limit);
 
 // Include essential scripts
-require($phpbb_root_path . 'includes/functions.php');
-require($phpbb_root_path . 'includes/functions_content.php');
-include($phpbb_root_path . 'includes/auth.php');
-include($phpbb_root_path . 'includes/session.php');
-include($phpbb_root_path . 'includes/template.php');
-include($phpbb_root_path . 'includes/acm/acm_file.php');
-include($phpbb_root_path . 'includes/cache.php');
-include($phpbb_root_path . 'includes/functions_admin.php');
-include($phpbb_root_path . 'includes/utf/utf_tools.php');
-require($phpbb_root_path . 'includes/functions_install.php');
+require_once($phpbb_root_path . 'includes/functions.php');
+require_once($phpbb_root_path . 'includes/functions_content.php');
+require_once($phpbb_root_path . 'includes/auth.php');
+require_once($phpbb_root_path . 'includes/session.php');
+require_once($phpbb_root_path . 'includes/template.php');
+require_once($phpbb_root_path . 'includes/acm/acm_file.php');
+require_once($phpbb_root_path . 'includes/cache.php');
+require_once($phpbb_root_path . 'includes/functions_admin.php');
+require_once($phpbb_root_path . 'includes/utf/utf_tools.php');
+require_once($phpbb_root_path . 'includes/functions_install.php');
 
 // Try and load an appropriate language if required
 $language = basename(request_var('language', ''));
@@ -118,11 +118,11 @@ if (!file_exists($phpbb_root_path . 'language/' . $language) || !is_dir($phpbb_r
 }
 
 // And finally, load the relevant language files
-include($phpbb_root_path . 'language/' . $language . '/common.php');
-include($phpbb_root_path . 'language/' . $language . '/acp/common.php');
-include($phpbb_root_path . 'language/' . $language . '/acp/board.php');
-include($phpbb_root_path . 'language/' . $language . '/install.php');
-include($phpbb_root_path . 'language/' . $language . '/posting.php');
+require($phpbb_root_path . 'language/' . $language . '/common.php');
+require($phpbb_root_path . 'language/' . $language . '/acp/common.php');
+require($phpbb_root_path . 'language/' . $language . '/acp/board.php');
+require($phpbb_root_path . 'language/' . $language . '/install.php');
+require($phpbb_root_path . 'language/' . $language . '/posting.php');
 
 // usually we would need every single constant here - and it would be consistent. For 3.0.x, use a dirty hack... :(
 
@@ -212,7 +212,7 @@ class module
 		{
 			if (preg_match('#^install_(.*?)\.php' . '$#', $file))
 			{
-				include($file);
+				require_once($file);
 			}
 		}
 		closedir($dir);

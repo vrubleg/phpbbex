@@ -10,7 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-include_once($phpbb_root_path . 'includes/search/search.php');
+require_once($phpbb_root_path . 'includes/search/search.php');
 
 /**
 * phpBB's own db driven fulltext search, version 2
@@ -44,7 +44,7 @@ class fulltext_native extends search_backend
 		*/
 		if (!class_exists('utf_normalizer'))
 		{
-			include($phpbb_root_path . 'includes/utf/utf_normalizer.php');
+			require_once($phpbb_root_path . 'includes/utf/utf_normalizer.php');
 		}
 
 
@@ -1536,7 +1536,7 @@ class fulltext_native extends search_backend
 
 				if (file_exists($file))
 				{
-					$conv += include($file);
+					$conv += require_once($file);
 				}
 			}
 

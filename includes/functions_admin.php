@@ -875,7 +875,7 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	include_once("{$phpbb_root_path}includes/search/$search_type.php");
+	require_once("{$phpbb_root_path}includes/search/$search_type.php");
 
 	$error = false;
 	$search = new $search_type($error);

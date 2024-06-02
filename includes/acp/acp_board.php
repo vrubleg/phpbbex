@@ -637,7 +637,7 @@ class acp_board
 			{
 				if ($method && file_exists($phpbb_root_path . 'includes/auth/auth_' . $method . '.php'))
 				{
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+					require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'acp_' . $method;
 					if (function_exists($method))
@@ -678,7 +678,7 @@ class acp_board
 				$method = basename($cfg_array['auth_method']);
 				if ($method && in_array($method, $auth_plugins))
 				{
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+					require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'init_' . $method;
 					if (function_exists($method))
@@ -705,7 +705,7 @@ class acp_board
 		{
 			if ($config['email_enable'])
 			{
-				include_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 				$messenger = new messenger(false);
 				$messenger->template('test');

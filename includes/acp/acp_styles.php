@@ -2253,7 +2253,7 @@ inherit_from = {INHERIT_FROM}
 
 			if (!sizeof($error))
 			{
-				include($phpbb_root_path . 'includes/functions_compress.php');
+				require_once($phpbb_root_path . 'includes/functions_compress.php');
 
 				if ($mode == 'style')
 				{

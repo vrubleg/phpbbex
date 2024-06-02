@@ -28,7 +28,7 @@ class acp_inactive
 		global $config, $db, $user, $auth, $template;
 		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
-		include($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 
 		$user->add_lang('memberlist');
 
@@ -102,7 +102,7 @@ class acp_inactive
 
 						if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !empty($inactive_users))
 						{
-							include_once($phpbb_root_path . 'includes/functions_messenger.php');
+							require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 							$messenger = new messenger(false);
 
@@ -188,7 +188,7 @@ class acp_inactive
 					if ($row = $db->sql_fetchrow($result))
 					{
 						// Send the messages
-						include_once($phpbb_root_path . 'includes/functions_messenger.php');
+						require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 						$messenger = new messenger();
 						$usernames = $user_ids = array();

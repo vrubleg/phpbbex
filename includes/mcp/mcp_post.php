@@ -43,7 +43,7 @@ function mcp_post_details($id, $mode, $action)
 			if ($auth->acl_get('m_info', $post_info['forum_id']))
 			{
 				$ip = request_var('ip', '');
-				include($phpbb_root_path . 'includes/functions_user.php');
+				require_once($phpbb_root_path . 'includes/functions_user.php');
 
 				$template->assign_vars(array(
 					'RETURN_POST'	=> sprintf($user->lang['RETURN_POST'], '<a href="' . append_sid("{$phpbb_root_path}mcp.php", "i=$id&amp;mode=$mode&amp;p=$post_id") . '">', '</a>'),
@@ -124,7 +124,7 @@ function mcp_post_details($id, $mode, $action)
 
 	if ($post_info['bbcode_bitfield'])
 	{
-		include_once($phpbb_root_path . 'includes/bbcode.php');
+		require_once($phpbb_root_path . 'includes/bbcode.php');
 		$bbcode = new bbcode($post_info['bbcode_bitfield']);
 		$bbcode->bbcode_second_pass($message, $post_info['bbcode_uid'], $post_info['bbcode_bitfield'], $post_info['post_time']);
 	}
@@ -464,7 +464,7 @@ function change_poster(&$post_info, $userdata)
 
 	if (file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.php'))
 	{
-		require("{$phpbb_root_path}includes/search/$search_type.php");
+		require_once("{$phpbb_root_path}includes/search/$search_type.php");
 
 		// We do some additional checks in the module to ensure it can actually be utilised
 		$error = false;

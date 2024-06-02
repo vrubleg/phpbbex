@@ -78,7 +78,7 @@ class ucp_pm
 			$mode = 'view';
 		}
 
-		include($phpbb_root_path . 'includes/functions_privmsgs.php');
+		require_once($phpbb_root_path . 'includes/functions_privmsgs.php');
 
 		switch ($mode)
 		{
@@ -127,7 +127,7 @@ class ucp_pm
 					break;
 				}
 
-				include($phpbb_root_path . 'includes/ucp/ucp_pm_compose.php');
+				require_once($phpbb_root_path . 'includes/ucp/ucp_pm_compose.php');
 				compose_pm($id, $mode, $action, $user_folders);
 
 				$tpl_file = 'posting_body';
@@ -137,7 +137,7 @@ class ucp_pm
 				set_user_message_limit();
 				get_folder($user->data['user_id']);
 
-				include($phpbb_root_path . 'includes/ucp/ucp_pm_options.php');
+				require_once($phpbb_root_path . 'includes/ucp/ucp_pm_options.php');
 				message_options($id, $mode, $global_privmsgs_rules, $global_rule_conditions);
 
 				$tpl_file = 'ucp_pm_options';
@@ -149,7 +149,7 @@ class ucp_pm
 				$this->p_name = 'pm';
 
 				// Call another module... please do not try this at home... Hoochie Coochie Man
-				include($phpbb_root_path . 'includes/ucp/ucp_main.php');
+				require_once($phpbb_root_path . 'includes/ucp/ucp_main.php');
 
 				$module = new ucp_main($this);
 				$module->u_action = $this->u_action;
@@ -370,7 +370,7 @@ class ucp_pm
 
 				if ($action == 'view_folder')
 				{
-					include($phpbb_root_path . 'includes/ucp/ucp_pm_viewfolder.php');
+					require_once($phpbb_root_path . 'includes/ucp/ucp_pm_viewfolder.php');
 					view_folder($id, $mode, $folder_id, $folder);
 
 					$tpl_file = 'ucp_pm_viewfolder';
@@ -387,7 +387,7 @@ class ucp_pm
 						trigger_error('NO_MESSAGE');
 					}
 
-					include($phpbb_root_path . 'includes/ucp/ucp_pm_viewmessage.php');
+					require_once($phpbb_root_path . 'includes/ucp/ucp_pm_viewmessage.php');
 					view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row);
 
 					$tpl_file = ($view == 'print') ? 'ucp_pm_viewmessage_print' : 'ucp_pm_viewmessage';

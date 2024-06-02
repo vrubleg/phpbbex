@@ -29,7 +29,7 @@ class acp_language
 		global $config, $db, $user, $auth, $template, $cache;
 		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
-		include_once($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 
 		$this->default_variables();
 
@@ -552,7 +552,7 @@ class acp_language
 					else
 					{
 						$help = array();
-						include($phpbb_root_path . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
+						require_once($phpbb_root_path . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
 
 						if ($is_help_file)
 						{
@@ -869,7 +869,7 @@ class acp_language
 					$use_method = '.tar';
 				}
 
-				include_once($phpbb_root_path . 'includes/functions_compress.php');
+				require_once($phpbb_root_path . 'includes/functions_compress.php');
 
 				if ($use_method == '.zip')
 				{
@@ -1221,7 +1221,7 @@ $lang = array_merge($lang, array(
 		$return_ary = array();
 
 		$lang = array();
-		include("{$phpbb_root_path}language/{$source_lang}/" . (($directory) ? $directory . '/' : '') . $file);
+		require_once("{$phpbb_root_path}language/{$source_lang}/" . (($directory) ? $directory . '/' : '') . $file);
 		$lang_entry_src = $lang;
 
 		$lang = array();
@@ -1231,7 +1231,7 @@ $lang = array_merge($lang, array(
 			return array();
 		}
 
-		include($phpbb_root_path . $this->get_filename($dest_lang, $directory, $file, true));
+		require_once($phpbb_root_path . $this->get_filename($dest_lang, $directory, $file, true));
 
 		$lang_entry_dst = $lang;
 

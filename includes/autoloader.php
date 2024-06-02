@@ -74,7 +74,7 @@ class autoloader
 					$file = autoloader::resolve_path($path, $parts);
 					if (file_exists($file))
 					{
-						include_once($file);
+						require_once($file);
 						return true;
 					}
 				}

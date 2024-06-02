@@ -84,7 +84,7 @@ class ucp_remind
 				WHERE user_id = " . $user_row['user_id'];
 			$db->sql_query($sql);
 
-			include_once($phpbb_root_path . 'includes/functions_messenger.php');
+			require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 			$messenger = new messenger(false);
 
