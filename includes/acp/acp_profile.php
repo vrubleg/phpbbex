@@ -25,9 +25,9 @@ class acp_profile
 		global $config, $db, $user, $auth, $template, $cache;
 		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
-		include($phpbb_root_path . 'includes/functions_posting.php');
-		include($phpbb_root_path . 'includes/functions_user.php');
-		include($phpbb_root_path . 'includes/functions_profile_fields.php');
+		require_once($phpbb_root_path . 'includes/functions_posting.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 
 		$user->add_lang(array('ucp', 'acp/profile'));
 		$this->tpl_name = 'acp_profile';

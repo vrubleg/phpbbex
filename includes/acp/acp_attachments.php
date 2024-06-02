@@ -73,7 +73,7 @@ class acp_attachments
 		{
 			case 'attach':
 
-				include_once($phpbb_root_path . 'includes/functions_posting.php');
+				require_once($phpbb_root_path . 'includes/functions_posting.php');
 
 				$sql = 'SELECT group_name, cat_id
 					FROM ' . EXTENSION_GROUPS_TABLE . '

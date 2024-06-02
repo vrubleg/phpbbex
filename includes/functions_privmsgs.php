@@ -1056,7 +1056,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 		// Check if there are any attachments we need to remove
 		if (!function_exists('delete_attachments'))
 		{
-			include($phpbb_root_path . 'includes/functions_admin.php');
+			require_once($phpbb_root_path . 'includes/functions_admin.php');
 		}
 
 		delete_attachments('message', $delete_ids, false);
@@ -1242,7 +1242,7 @@ function phpbb_delete_user_pms($user_id)
 			// Check if there are any attachments we need to remove
 			if (!function_exists('delete_attachments'))
 			{
-				include($phpbb_root_path . 'includes/functions_admin.php');
+				require_once($phpbb_root_path . 'includes/functions_admin.php');
 			}
 
 			delete_attachments('message', $delete_ids, false);
@@ -1824,7 +1824,7 @@ function pm_notification($mode, $author, $recipients, $subject, $message, $msg_i
 
 	if (!function_exists('phpbb_get_banned_user_ids'))
 	{
-		include($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 	}
 	$banned_users = phpbb_get_banned_user_ids(array_keys($recipients));
 	$recipients = array_diff(array_keys($recipients), $banned_users);
@@ -1860,7 +1860,7 @@ function pm_notification($mode, $author, $recipients, $subject, $message, $msg_i
 		return;
 	}
 
-	include_once($phpbb_root_path . 'includes/functions_messenger.php');
+	require_once($phpbb_root_path . 'includes/functions_messenger.php');
 	$messenger = new messenger();
 
 	foreach ($msg_list_ary as $pos => $addr)
@@ -1977,7 +1977,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 	{
 		if (!class_exists('bbcode'))
 		{
-			include($phpbb_root_path . 'includes/bbcode.php');
+			require_once($phpbb_root_path . 'includes/bbcode.php');
 		}
 		$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 	}

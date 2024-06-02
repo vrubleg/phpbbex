@@ -258,7 +258,7 @@ function user_add($user_row, $cp_data = false)
 
 		if (!class_exists('custom_profile'))
 		{
-			include_once($phpbb_root_path . 'includes/functions_profile_fields.php');
+			require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 		}
 
 		$sql = 'INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . ' ' .
@@ -479,7 +479,7 @@ function user_delete($mode, $user_id, $post_username = false)
 
 			if (!function_exists('delete_posts'))
 			{
-				include($phpbb_root_path . 'includes/functions_admin.php');
+				require_once($phpbb_root_path . 'includes/functions_admin.php');
 			}
 
 			// Delete posts, attachments, etc.
@@ -548,7 +548,7 @@ function user_delete($mode, $user_id, $post_username = false)
 	// Clean the private messages tables from the user
 	if (!function_exists('phpbb_delete_user_pms'))
 	{
-		include($phpbb_root_path . 'includes/functions_privmsgs.php');
+		require_once($phpbb_root_path . 'includes/functions_privmsgs.php');
 	}
 	phpbb_delete_user_pms($user_id);
 
@@ -569,7 +569,7 @@ function user_delete($mode, $user_id, $post_username = false)
 	// Delete user's rates
 	if (!function_exists('remove_rates_batch'))
 	{
-		include($phpbb_root_path . 'includes/functions_rating.php');
+		require_once($phpbb_root_path . 'includes/functions_rating.php');
 	}
 	remove_rates_batch('user', $user_id);
 
@@ -1451,29 +1451,21 @@ function validate_username($username, $allowed_username = false)
 
 	switch ($config['allow_name_chars'])
 	{
-		case 'USERNAME_CHARS_ANY':
-			$regex = '.+';
-		break;
-
-		case 'USERNAME_ALPHA_ONLY':
+		case 'USERNAME_LATCHARS_NOSPACE':
 			$regex = '[A-Za-z0-9]+';
 		break;
 
-		case 'USERNAME_ALPHA_SPACERS':
-			$regex = '[A-Za-z0-9-_. ]+';
+		case 'USERNAME_LATCHARS_SPACERS':
+			$regex = '[-_. A-Za-z0-9]+';
 		break;
 
-		case 'USERNAME_LETTER_NUM':
+		case 'USERNAME_UNICHARS_NOSPACE':
 			$regex = '[\p{Lu}\p{Ll}\p{N}]+';
 		break;
 
-		case 'USERNAME_LETTER_NUM_SPACERS':
-			$regex = '[-_. \p{Lu}\p{Ll}\p{N}]+';
-		break;
-
-		case 'USERNAME_ASCII':
+		case 'USERNAME_UNICHARS_SPACERS':
 		default:
-			$regex = '[\x01-\x7F]+';
+			$regex = '[-_. \p{Lu}\p{Ll}\p{N}]+';
 		break;
 	}
 
@@ -1950,7 +1942,7 @@ function avatar_remote($data, &$error)
 	}
 
 	// Check image type
-	include_once($phpbb_root_path . 'includes/functions_upload.php');
+	require_once($phpbb_root_path . 'includes/functions_upload.php');
 	$types = fileupload::image_types();
 	$extension = strtolower(filespec::get_extension($data['remotelink']));
 
@@ -1996,7 +1988,7 @@ function avatar_upload($data, &$error)
 	global $phpbb_root_path, $config, $db, $user;
 
 	// Init upload class
-	include_once($phpbb_root_path . 'includes/functions_upload.php');
+	require_once($phpbb_root_path . 'includes/functions_upload.php');
 	$upload = new fileupload('AVATAR_', array('jpg', 'jpeg', 'gif', 'png'), $config['avatar_filesize'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], (isset($config['mime_triggers']) ? explode('|', $config['mime_triggers']) : false));
 
 	if (!empty($_FILES['uploadfile']['name']))
@@ -2638,7 +2630,7 @@ function group_delete($group_id, $group_name = false)
 	// Re-cache moderators
 	if (!function_exists('cache_moderators'))
 	{
-		include($phpbb_root_path . 'includes/functions_admin.php');
+		require_once($phpbb_root_path . 'includes/functions_admin.php');
 	}
 
 	cache_moderators();
@@ -3042,7 +3034,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 			$db->sql_query($sql);
 
 			// Send approved email to users...
-			include_once($phpbb_root_path . 'includes/functions_messenger.php');
+			require_once($phpbb_root_path . 'includes/functions_messenger.php');
 			$messenger = new messenger();
 
 			foreach ($email_users as $row)
@@ -3427,7 +3419,7 @@ function group_update_listings($group_id)
 		if (!function_exists('cache_moderators'))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/functions_admin.php');
+			require_once($phpbb_root_path . 'includes/functions_admin.php');
 		}
 		cache_moderators();
 	}
@@ -3437,7 +3429,7 @@ function group_update_listings($group_id)
 		if (!function_exists('update_foes'))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/functions_admin.php');
+			require_once($phpbb_root_path . 'includes/functions_admin.php');
 		}
 		update_foes(array($group_id));
 	}

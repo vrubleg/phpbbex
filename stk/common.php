@@ -27,15 +27,15 @@ $stk_no_error = false;
 define('PHPBB_MSG_HANDLER', 'stk_msg_handler');
 
 // Include all common stuff
-require(STK_ROOT_PATH . 'includes/functions.php');
-require(PHPBB_ROOT_PATH . 'common.php');
-require(STK_ROOT_PATH . 'includes/plugin.php');
-require(PHPBB_ROOT_PATH . 'includes/umil.php');
+require_once(STK_ROOT_PATH . 'includes/functions.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
+require_once(STK_ROOT_PATH . 'includes/plugin.php');
+require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
 
 // When not in the ERK we setup the user at this point and load UML.
 if (!defined('IN_ERK'))
 {
-	require(STK_ROOT_PATH . 'includes/critical_repair.php');
+	require_once(STK_ROOT_PATH . 'includes/critical_repair.php');
 	$critical_repair = new critical_repair();
 
 	$user->session_begin();

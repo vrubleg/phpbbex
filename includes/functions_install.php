@@ -91,7 +91,7 @@ function get_tables(&$db)
 	if (!class_exists('phpbb_db_tools'))
 	{
 		global $phpbb_root_path;
-		require($phpbb_root_path . 'includes/db/db_tools.php');
+		require_once($phpbb_root_path . 'includes/db/db_tools.php');
 	}
 
 	$db_tools = new phpbb_db_tools($db);
@@ -118,7 +118,7 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 	if ($load_dbal)
 	{
 		// Include the DB layer
-		include($phpbb_root_path . 'includes/db/mysql.php');
+		require_once($phpbb_root_path . 'includes/db/mysql.php');
 	}
 
 	// Instantiate it and set return on error true

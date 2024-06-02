@@ -12,7 +12,7 @@ define('NEWEST_PHPBBEX_VERSION', '1.9.7');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 
-require($phpbb_root_path . 'includes/startup.php');
+require_once($phpbb_root_path . 'includes/startup.php');
 
 if (!defined('PHPBB_INSTALLED'))
 {
@@ -52,20 +52,20 @@ if (!$allowed)
 @set_time_limit(0);
 
 // Include files
-require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
-require($phpbb_root_path . 'includes/cache.php');
-require($phpbb_root_path . 'includes/template.php');
-require($phpbb_root_path . 'includes/session.php');
-require($phpbb_root_path . 'includes/auth.php');
-require($phpbb_root_path . 'includes/functions.php');
-require($phpbb_root_path . 'includes/functions_content.php');
-require($phpbb_root_path . 'includes/functions_admin.php');
-require($phpbb_root_path . 'includes/functions_install.php');
-require($phpbb_root_path . 'includes/functions_user.php');
-require($phpbb_root_path . 'includes/constants.php');
-require($phpbb_root_path . 'includes/db/mysql.php');
-require($phpbb_root_path . 'includes/utf/utf_tools.php');
-require($phpbb_root_path . 'includes/db/db_tools.php');
+require_once($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
+require_once($phpbb_root_path . 'includes/cache.php');
+require_once($phpbb_root_path . 'includes/template.php');
+require_once($phpbb_root_path . 'includes/session.php');
+require_once($phpbb_root_path . 'includes/auth.php');
+require_once($phpbb_root_path . 'includes/functions.php');
+require_once($phpbb_root_path . 'includes/functions_content.php');
+require_once($phpbb_root_path . 'includes/functions_admin.php');
+require_once($phpbb_root_path . 'includes/functions_install.php');
+require_once($phpbb_root_path . 'includes/functions_user.php');
+require_once($phpbb_root_path . 'includes/constants.php');
+require_once($phpbb_root_path . 'includes/db/mysql.php');
+require_once($phpbb_root_path . 'includes/utf/utf_tools.php');
+require_once($phpbb_root_path . 'includes/db/db_tools.php');
 
 $user = new phpbb_user();
 $cache = new phpbb_cache();
@@ -307,6 +307,13 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
+
+	// Update obsolete values.
+
+	if (!in_array($config['allow_name_chars'], ['USERNAME_UNICHARS_SPACERS', 'USERNAME_UNICHARS_NOSPACE', 'USERNAME_LATCHARS_SPACERS', 'USERNAME_LATCHARS_NOSPACE']))
+	{
+		set_config('allow_name_chars', 'USERNAME_UNICHARS_SPACERS');
+	}
 
 	// Update DB schema version.
 
@@ -1038,7 +1045,7 @@ function _add_modules($modules_to_install)
 {
 	global $phpbb_root_path, $db;
 
-	include_once($phpbb_root_path . 'includes/acp/acp_modules.php');
+	require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
 
 	$_module = new acp_modules();
 
@@ -1527,7 +1534,7 @@ function change_database_data(&$no_updates, $version)
 			set_config('dbms_version', '');
 
 			// Add new permission u_masspm_group and duplicate settings from u_masspm
-			include_once($phpbb_root_path . 'includes/acp/auth.php');
+			require_once($phpbb_root_path . 'includes/acp/auth.php');
 			$auth_admin = new auth_admin();
 
 			// Only add the new permission if it does not already exist
@@ -2012,7 +2019,7 @@ function change_database_data(&$no_updates, $version)
 			}
 
 			// Clear permissions...
-			include_once($phpbb_root_path . 'includes/acp/auth.php');
+			require_once($phpbb_root_path . 'includes/acp/auth.php');
 			$auth_admin = new auth_admin();
 			$auth_admin->acl_clear_prefetch();
 
@@ -2195,7 +2202,7 @@ function change_database_data(&$no_updates, $version)
 					}
 
 					$lang = array();
-					include($lang_file);
+					require($lang_file);
 
 					foreach ($lang as $lang_key => $lang_val)
 					{
@@ -2470,7 +2477,7 @@ function change_database_data(&$no_updates, $version)
 			{
 				if (!class_exists('acp_bbcodes'))
 				{
-					require($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
+					require_once($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
 				}
 				$bbcode_match = $row['bbcode_match'];
 				$bbcode_tpl = $row['bbcode_tpl'];

@@ -31,8 +31,8 @@ class mcp_pm_reports
 		global $auth, $db, $user, $template, $cache;
 		global $config, $phpbb_root_path, $action;
 
-		include_once($phpbb_root_path . 'includes/functions_posting.php');
-		include_once($phpbb_root_path . 'includes/functions_privmsgs.php');
+		require_once($phpbb_root_path . 'includes/functions_posting.php');
+		require_once($phpbb_root_path . 'includes/functions_privmsgs.php');
 
 		$start = request_var('start', 0);
 
@@ -42,7 +42,7 @@ class mcp_pm_reports
 		{
 			case 'close':
 			case 'delete':
-				include_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 				$report_id_list = request_var('report_id_list', array(0));
 
@@ -53,7 +53,7 @@ class mcp_pm_reports
 
 				if (!function_exists('close_report'))
 				{
-					include($phpbb_root_path . 'includes/mcp/mcp_reports.php');
+					require_once($phpbb_root_path . 'includes/mcp/mcp_reports.php');
 				}
 
 				close_report($report_id_list, $mode, $action, true);
@@ -111,7 +111,7 @@ class mcp_pm_reports
 
 				if ($pm_info['bbcode_bitfield'])
 				{
-					include_once($phpbb_root_path . 'includes/bbcode.php');
+					require_once($phpbb_root_path . 'includes/bbcode.php');
 					$bbcode = new bbcode($pm_info['bbcode_bitfield']);
 					$bbcode->bbcode_second_pass($message, $pm_info['bbcode_uid'], $pm_info['bbcode_bitfield'], $pm_info['message_time']);
 				}

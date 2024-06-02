@@ -209,7 +209,7 @@ class add_user
 
 		if (!function_exists('validate_data'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/functions_user.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		}
 
 		$error = validate_data($data, array(

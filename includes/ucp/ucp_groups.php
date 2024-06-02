@@ -191,7 +191,7 @@ class ucp_groups
 								{
 									group_user_add($group_id, $user->data['user_id'], false, false, false, 0, 1);
 
-									include_once($phpbb_root_path . 'includes/functions_messenger.php');
+									require_once($phpbb_root_path . 'includes/functions_messenger.php');
 									$messenger = new messenger();
 
 									$sql = 'SELECT u.username, u.username_clean, u.user_email, u.user_notify_type, u.user_jabber, u.user_lang
@@ -404,7 +404,7 @@ class ucp_groups
 				$action		= (isset($_POST['addusers'])) ? 'addusers' : request_var('action', '');
 				$group_id	= request_var('g', 0);
 
-				include($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
 
 				add_form_key('ucp_groups');
 

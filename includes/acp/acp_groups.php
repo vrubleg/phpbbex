@@ -29,7 +29,7 @@ class acp_groups
 		$form_key = 'acp_groups';
 		add_form_key($form_key);
 
-		include($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 
 		// Check and set some common vars
 		$action		= (isset($_POST['add'])) ? 'add' : ((isset($_POST['addusers'])) ? 'addusers' : request_var('action', ''));
@@ -282,7 +282,7 @@ class acp_groups
 			case 'edit':
 			case 'add':
 
-				include($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
 
 				$data = $submit_ary = array();
 

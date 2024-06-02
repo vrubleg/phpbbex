@@ -2791,7 +2791,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 
 	if (!class_exists('phpbb_captcha_factory'))
 	{
-		include($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+		require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
 	}
 
 	$err = '';

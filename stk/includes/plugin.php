@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 // Load functions_admin.php if required
 if (!function_exists('filelist'))
 {
-	include(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 }
 
 class plugin

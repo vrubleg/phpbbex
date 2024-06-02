@@ -135,7 +135,7 @@ class acp_bots
 
 			case 'edit':
 			case 'add':
-				include_once($phpbb_root_path . 'includes/functions_user.php');
+				require_once($phpbb_root_path . 'includes/functions_user.php');
 
 				$bot_row = array(
 					'bot_name'		=> utf8_normalize_nfc(request_var('bot_name', '', true)),

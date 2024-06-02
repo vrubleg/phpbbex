@@ -22,7 +22,7 @@ class acp_prune
 		global $user, $phpbb_admin_path, $phpbb_root_path;
 
 		$user->add_lang('acp/prune');
-		include_once($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 
 		switch ($mode)
 		{

@@ -85,7 +85,7 @@ class ucp_activate
 
 		if (!$update_password)
 		{
-			include_once($phpbb_root_path . 'includes/functions_user.php');
+			require_once($phpbb_root_path . 'includes/functions_user.php');
 
 			user_active_flip('activate', $user_row['user_id']);
 
@@ -104,7 +104,7 @@ class ucp_activate
 
 		if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !$update_password)
 		{
-			include_once($phpbb_root_path . 'includes/functions_messenger.php');
+			require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 			$messenger = new messenger(false);
 

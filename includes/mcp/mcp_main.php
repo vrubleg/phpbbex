@@ -131,7 +131,7 @@ class mcp_main
 		switch ($mode)
 		{
 			case 'front':
-				include($phpbb_root_path . 'includes/mcp/mcp_front.php');
+				require_once($phpbb_root_path . 'includes/mcp/mcp_front.php');
 
 				$user->add_lang('acp/common');
 
@@ -142,7 +142,7 @@ class mcp_main
 			break;
 
 			case 'forum_view':
-				include($phpbb_root_path . 'includes/mcp/mcp_forum.php');
+				require_once($phpbb_root_path . 'includes/mcp/mcp_forum.php');
 
 				$user->add_lang('viewforum');
 
@@ -165,7 +165,7 @@ class mcp_main
 			break;
 
 			case 'topic_view':
-				include($phpbb_root_path . 'includes/mcp/mcp_topic.php');
+				require_once($phpbb_root_path . 'includes/mcp/mcp_topic.php');
 
 				mcp_topic_view($id, $mode, $action);
 
@@ -174,7 +174,7 @@ class mcp_main
 			break;
 
 			case 'post_details':
-				include($phpbb_root_path . 'includes/mcp/mcp_post.php');
+				require_once($phpbb_root_path . 'includes/mcp/mcp_post.php');
 
 				mcp_post_details($id, $mode, $action);
 
@@ -799,7 +799,7 @@ function mcp_delete_post($post_ids)
 	{
 		if (!function_exists('delete_posts'))
 		{
-			include($phpbb_root_path . 'includes/functions_admin.php');
+			require_once($phpbb_root_path . 'includes/functions_admin.php');
 		}
 
 		// Count the number of topics that are affected
@@ -983,7 +983,7 @@ function mcp_fork_topic($topic_ids)
 
 				if (!class_exists($search_type))
 				{
-					include("{$phpbb_root_path}includes/search/$search_type.php");
+					require_once("{$phpbb_root_path}includes/search/$search_type.php");
 				}
 
 				$error = false;

@@ -637,7 +637,7 @@ class acp_board
 			{
 				if ($method && file_exists($phpbb_root_path . 'includes/auth/auth_' . $method . '.php'))
 				{
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+					require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'acp_' . $method;
 					if (function_exists($method))
@@ -678,7 +678,7 @@ class acp_board
 				$method = basename($cfg_array['auth_method']);
 				if ($method && in_array($method, $auth_plugins))
 				{
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+					require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'init_' . $method;
 					if (function_exists($method))
@@ -705,7 +705,7 @@ class acp_board
 		{
 			if ($config['email_enable'])
 			{
-				include_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 				$messenger = new messenger(false);
 				$messenger->template('test');
@@ -986,8 +986,9 @@ class acp_board
 	{
 		global $user;
 
-		$user_char_ary = array('USERNAME_CHARS_ANY', 'USERNAME_ALPHA_ONLY', 'USERNAME_ALPHA_SPACERS', 'USERNAME_LETTER_NUM', 'USERNAME_LETTER_NUM_SPACERS', 'USERNAME_ASCII');
+		$user_char_ary = array('USERNAME_UNICHARS_SPACERS', 'USERNAME_UNICHARS_NOSPACE', 'USERNAME_LATCHARS_SPACERS', 'USERNAME_LATCHARS_NOSPACE');
 		$user_char_options = '';
+
 		foreach ($user_char_ary as $user_type)
 		{
 			$selected = ($selected_value == $user_type) ? ' selected="selected"' : '';

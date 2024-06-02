@@ -549,7 +549,7 @@ class acp_modules
 
 					if (!class_exists($class))
 					{
-						include($directory . $file);
+						require_once($directory . $file);
 					}
 
 					// Get module title tag
@@ -572,7 +572,7 @@ class acp_modules
 
 			if (!class_exists($class))
 			{
-				include($directory . $filename . '.php');
+				require_once($directory . $filename . '.php');
 			}
 
 			// Get module title tag

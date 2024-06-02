@@ -573,7 +573,7 @@ class messenger
 
 		if (!$use_queue)
 		{
-			include_once($phpbb_root_path . 'includes/functions_jabber.php');
+			require_once($phpbb_root_path . 'includes/functions_jabber.php');
 			$this->jabber = new jabber($config['jab_host'], $config['jab_port'], $config['jab_username'], htmlspecialchars_decode($config['jab_password']), $config['jab_use_ssl']);
 
 			if (!$this->jabber->connect())
@@ -735,7 +735,7 @@ class queue
 
 		set_config('last_queue_run', time(), true);
 
-		include($this->cache_file);
+		require_once($this->cache_file);
 
 		foreach ($this->queue_data as $object => $data_ary)
 		{
@@ -780,7 +780,7 @@ class queue
 						continue 2;
 					}
 
-					include_once($phpbb_root_path . 'includes/functions_jabber.php');
+					require_once($phpbb_root_path . 'includes/functions_jabber.php');
 					$this->jabber = new jabber($config['jab_host'], $config['jab_port'], $config['jab_username'], htmlspecialchars_decode($config['jab_password']), $config['jab_use_ssl']);
 
 					if (!$this->jabber->connect())
@@ -891,7 +891,7 @@ class queue
 
 		if (file_exists($this->cache_file))
 		{
-			include($this->cache_file);
+			require_once($this->cache_file);
 
 			foreach ($this->queue_data as $object => $data_ary)
 			{
@@ -1006,7 +1006,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	if (!class_exists('phpbb_error_collector'))
 	{
 		global $phpbb_root_path;
-		include($phpbb_root_path . 'includes/error_collector.php');
+		require_once($phpbb_root_path . 'includes/error_collector.php');
 	}
 	$collector = new phpbb_error_collector;
 	$collector->install();
@@ -1646,7 +1646,7 @@ function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 
 	if (!class_exists('phpbb_error_collector'))
 	{
-		include($phpbb_root_path . 'includes/error_collector.php');
+		require_once($phpbb_root_path . 'includes/error_collector.php');
 	}
 
 	$collector = new phpbb_error_collector;

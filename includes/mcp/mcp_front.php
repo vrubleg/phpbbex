@@ -261,7 +261,7 @@ function mcp_front_view($id, $mode, $action)
 
 		if ($total)
 		{
-			include($phpbb_root_path . 'includes/functions_privmsgs.php');
+			require_once($phpbb_root_path . 'includes/functions_privmsgs.php');
 
 			$sql = $db->sql_build_query('SELECT', array(
 				'SELECT'	=> 'r.report_id, r.report_time, p.msg_id, p.message_subject, p.message_time, p.to_address, p.bcc_address, u.username, u.username_clean, u.user_colour, u.user_id, u2.username as author_name, u2.username_clean as author_name_clean, u2.user_colour as author_colour, u2.user_id as author_id',

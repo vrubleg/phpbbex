@@ -30,7 +30,7 @@ class ucp_register
 			trigger_error('UCP_REGISTER_DISABLE');
 		}
 
-		include($phpbb_root_path . 'includes/functions_profile_fields.php');
+		require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 
 		$agreed			= (!empty($_POST['agreed'])) ? 1 : 0;
 		$submit			= (isset($_POST['submit'])) ? true : false;
@@ -130,7 +130,7 @@ class ucp_register
 		// The CAPTCHA kicks in here. We can't help that the information gets lost on language change.
 		if ($config['enable_confirm'])
 		{
-			include($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+			require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
 			$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 			$captcha->init(CONFIRM_REG);
 		}
@@ -347,7 +347,7 @@ class ucp_register
 
 				if ($config['email_enable'])
 				{
-					include_once($phpbb_root_path . 'includes/functions_messenger.php');
+					require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 					$messenger = new messenger(false);
 

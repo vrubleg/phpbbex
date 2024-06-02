@@ -326,19 +326,19 @@ function utf8_case_fold($text, $option = 'full')
 	// common is always set
 	if (!isset($uniarray['c']))
 	{
-		$uniarray['c'] = include($phpbb_root_path . 'includes/utf/data/case_fold_c.php');
+		$uniarray['c'] = require($phpbb_root_path . 'includes/utf/data/case_fold_c.php');
 	}
 
 	// only set full if we need to
 	if ($option === 'full' && !isset($uniarray['f']))
 	{
-		$uniarray['f'] = include($phpbb_root_path . 'includes/utf/data/case_fold_f.php');
+		$uniarray['f'] = require($phpbb_root_path . 'includes/utf/data/case_fold_f.php');
 	}
 
 	// only set simple if we need to
 	if ($option !== 'full' && !isset($uniarray['s']))
 	{
-		$uniarray['s'] = include($phpbb_root_path . 'includes/utf/data/case_fold_s.php');
+		$uniarray['s'] = require($phpbb_root_path . 'includes/utf/data/case_fold_s.php');
 	}
 
 	// common is always replaced
@@ -940,13 +940,8 @@ function utf8_case_fold_nfkc($text, $option = 'full')
 	// do the case fold
 	$text = utf8_case_fold($text, $option);
 
-	if (!class_exists('utf_normalizer'))
-	{
-		global $phpbb_root_path;
-		include($phpbb_root_path . 'includes/utf/utf_normalizer.php');
-	}
-
 	// convert to NFKC
+	require_once($phpbb_root_path . 'includes/utf/utf_normalizer.php');
 	utf_normalizer::nfkc($text);
 
 	// FC_NFKC_Closure, http://www.unicode.org/Public/5.0.0/ucd/DerivedNormalizationProps.txt
@@ -1057,11 +1052,8 @@ function utf8_normalize_nfc($strings)
 		return $strings;
 	}
 
-	if (!class_exists('utf_normalizer'))
-	{
-		global $phpbb_root_path;
-		include($phpbb_root_path . 'includes/utf/utf_normalizer.php');
-	}
+	global $phpbb_root_path;
+	require_once($phpbb_root_path . 'includes/utf/utf_normalizer.php');
 
 	if (!is_array($strings))
 	{
@@ -1108,7 +1100,7 @@ function utf8_clean_string($text)
 	static $homographs = array();
 	if (empty($homographs))
 	{
-		$homographs = include($phpbb_root_path . 'includes/utf/data/confusables.php');
+		$homographs = require($phpbb_root_path . 'includes/utf/data/confusables.php');
 	}
 
 	$text = utf8_case_fold_nfkc($text);

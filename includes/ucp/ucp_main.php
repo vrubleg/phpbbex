@@ -34,7 +34,7 @@ class ucp_main
 		{
 			case 'front':
 
-				include_once($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
 
 				$user->add_lang('memberlist');
 
@@ -123,7 +123,7 @@ class ucp_main
 				{
 					if (!function_exists('display_user_activity'))
 					{
-						include_once($phpbb_root_path . 'includes/functions_display.php');
+						require_once($phpbb_root_path . 'includes/functions_display.php');
 					}
 					display_user_activity($user->data);
 				}
@@ -168,7 +168,7 @@ class ucp_main
 
 			case 'subscribed':
 
-				include($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
 
 				$user->add_lang('viewforum');
 
@@ -353,7 +353,7 @@ class ucp_main
 					break;
 				}
 
-				include($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
 
 				$user->add_lang('viewforum');
 

@@ -11,10 +11,7 @@ if (!defined('IN_PHPBB'))
 }
 
 // Include the abstract base
-if (!class_exists('acm_memory'))
-{
-	require("{$phpbb_root_path}includes/acm/acm_memory.php");
-}
+require_once("{$phpbb_root_path}includes/acm/acm_memory.php");
 
 /**
 * ACM for APCu.

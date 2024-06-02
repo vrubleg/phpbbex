@@ -7,7 +7,7 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'common.php');
 
 // Start session management
 $user->session_begin();
@@ -273,7 +273,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	require("{$phpbb_root_path}includes/search/$search_type.php");
+	require_once("{$phpbb_root_path}includes/search/$search_type.php");
 
 	// We do some additional checks in the module to ensure it can actually be utilised
 	$error = false;
@@ -545,11 +545,11 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 	if ($show_results == 'posts')
 	{
-		include($phpbb_root_path . 'includes/functions_posting.php');
+		require_once($phpbb_root_path . 'includes/functions_posting.php');
 	}
 	else
 	{
-		include($phpbb_root_path . 'includes/functions_display.php');
+		require_once($phpbb_root_path . 'includes/functions_display.php');
 	}
 
 	$user->add_lang('viewtopic');
@@ -826,7 +826,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			// Instantiate BBCode if needed
 			if ($bbcode_bitfield !== '')
 			{
-				include_once($phpbb_root_path . 'includes/bbcode.php');
+				require_once($phpbb_root_path . 'includes/bbcode.php');
 				$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 			}
 

@@ -7,7 +7,7 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'common.php');
 
 // Start session management
 $user->session_begin();
@@ -43,7 +43,7 @@ $order_by = $sort_key_sql[$sort_key] . ' ' . (($sort_dir == 'a') ? 'ASC' : 'DESC
 // Whois requested
 if ($mode == 'whois' && $auth->acl_get('a_') && $session_id)
 {
-	include($phpbb_root_path . 'includes/functions_user.php');
+	require_once($phpbb_root_path . 'includes/functions_user.php');
 
 	$sql = 'SELECT u.user_id, u.username, u.user_type, s.session_ip
 		FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . " s

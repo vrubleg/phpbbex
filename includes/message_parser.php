@@ -10,10 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-if (!class_exists('bbcode'))
-{
-	include($phpbb_root_path . 'includes/bbcode.php');
-}
+require_once($phpbb_root_path . 'includes/bbcode.php');
 
 /**
 * BBCODE FIRSTPASS
@@ -1563,7 +1560,7 @@ class parse_message extends bbcode_firstpass
 			// Perform actions on temporary attachments
 			if ($delete_file)
 			{
-				include_once($phpbb_root_path . 'includes/functions_admin.php');
+				require_once($phpbb_root_path . 'includes/functions_admin.php');
 
 				$index = array_keys(request_var('delete_file', array(0 => 0)));
 				$index = (!empty($index)) ? $index[0] : false;
@@ -1654,7 +1651,7 @@ class parse_message extends bbcode_firstpass
 			}
 			else if ($update_file && $upload_file)
 			{
-				include_once($phpbb_root_path . 'includes/functions_admin.php');
+				require_once($phpbb_root_path . 'includes/functions_admin.php');
 
 				$filedata = upload_attachment($form_name, $forum_id, false, '', $is_message);
 				$error = array_merge($error, $filedata['error']);

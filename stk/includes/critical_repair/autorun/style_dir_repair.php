@@ -39,7 +39,7 @@ class erk_style_dir_repair
 			// Load the ac class
 			if (!class_exists('acp_styles'))
 			{
-				require(PHPBB_ROOT_PATH . 'includes/acp/acp_styles.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_styles.php');
 			}
 			$this->ac = new acp_styles();
 			$this->ac->main('', 'default');	// Bit hacky

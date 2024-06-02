@@ -7,9 +7,9 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-require($phpbb_root_path . 'common.php');
-require($phpbb_root_path . 'includes/functions_user.php');
-require($phpbb_root_path . 'includes/functions_module.php');
+require_once($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'includes/functions_user.php');
+require_once($phpbb_root_path . 'includes/functions_module.php');
 
 // Basic parameter data
 $id 	= request_var('i', '');
@@ -149,7 +149,7 @@ switch ($mode)
 			redirect(append_sid("{$phpbb_root_path}index.php"));
 		}
 
-		include($phpbb_root_path . 'includes/acp/auth.php');
+		require_once($phpbb_root_path . 'includes/acp/auth.php');
 
 		$auth_admin = new auth_admin();
 		if (!$auth_admin->ghost_permissions($user_id, $user->data['user_id']))

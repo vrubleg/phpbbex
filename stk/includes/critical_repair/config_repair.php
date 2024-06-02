@@ -211,7 +211,7 @@ class erk_config_repair
 		if ($load_dbal)
 		{
 			// Include the DB layer
-			include(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 		}
 
 		// Instantiate it and set return on error true

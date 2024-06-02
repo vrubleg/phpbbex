@@ -7,8 +7,8 @@
 
 define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-include($phpbb_root_path . 'common.php');
-include($phpbb_root_path . 'includes/functions_display.php');
+require_once($phpbb_root_path . 'common.php');
+require_once($phpbb_root_path . 'includes/functions_display.php');
 
 // Start session
 $user->session_begin();
@@ -272,7 +272,7 @@ $s_search_hidden_fields = empty($config['default_search_titleonly']) ? array('fi
 // Quick post
 if ($config['allow_quick_post'])
 {
-	include($phpbb_root_path . 'includes/quick_reply.php');
+	require($phpbb_root_path . 'includes/quick_reply.php');
 }
 
 if (!empty($_EXTRA_URL))

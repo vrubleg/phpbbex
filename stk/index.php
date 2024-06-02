@@ -14,7 +14,7 @@ if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.php'); }
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 
-require(STK_ROOT_PATH . 'common.php');
+require_once(STK_ROOT_PATH . 'common.php');
 
 // Setup the user
 $user->session_begin();
@@ -49,7 +49,7 @@ $stk_passwd = $stk_passwd_expiration = false;
 if (file_exists(STK_ROOT_PATH . 'passwd.php') && $user->data['user_type'] != USER_FOUNDER)
 {
 	// Include the file
-	include(STK_ROOT_PATH . 'passwd.php');
+	require(STK_ROOT_PATH . 'passwd.php');
 
 	// Can we use trust this password
 	if ($stk_passwd_expiration === false || time() > $stk_passwd_expiration)

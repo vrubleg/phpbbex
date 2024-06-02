@@ -386,7 +386,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 		'error'	=> array()
 	);
 
-	include_once($phpbb_root_path . 'includes/functions_upload.php');
+	require_once($phpbb_root_path . 'includes/functions_upload.php');
 	$upload = new fileupload();
 
 	if ($config['check_attachment_content'] && isset($config['mime_triggers']))
@@ -1098,7 +1098,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 	// Instantiate BBCode class
 	if (!isset($bbcode) && $bbcode_bitfield !== '')
 	{
-		include_once($phpbb_root_path . 'includes/bbcode.php');
+		require_once($phpbb_root_path . 'includes/bbcode.php');
 		$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 	}
 
@@ -1237,7 +1237,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	// Exclude guests, current user and banned users from notifications
 	if (!function_exists('phpbb_get_banned_user_ids'))
 	{
-		include($phpbb_root_path . 'includes/functions_user.php');
+		require_once($phpbb_root_path . 'includes/functions_user.php');
 	}
 	$sql_ignore_users = phpbb_get_banned_user_ids();
 	$sql_ignore_users[ANONYMOUS] = ANONYMOUS;
@@ -1355,7 +1355,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	// Now, we are able to really send out notifications
 	if (sizeof($msg_users))
 	{
-		include_once($phpbb_root_path . 'includes/functions_messenger.php');
+		require_once($phpbb_root_path . 'includes/functions_messenger.php');
 		$messenger = new messenger();
 
 		$msg_list_ary = array();
@@ -1472,7 +1472,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 	$sql_data = array();
 	$next_post_id = false;
 
-	include_once($phpbb_root_path . 'includes/functions_admin.php');
+	require_once($phpbb_root_path . 'includes/functions_admin.php');
 
 	$db->sql_transaction('begin');
 
@@ -2462,7 +2462,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 		if (!class_exists($search_type))
 		{
-			include("{$phpbb_root_path}includes/search/$search_type.php");
+			require_once("{$phpbb_root_path}includes/search/$search_type.php");
 		}
 
 		$error = false;

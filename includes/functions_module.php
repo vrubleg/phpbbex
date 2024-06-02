@@ -451,7 +451,7 @@ class p_master
 				trigger_error($user->lang('MODULE_NOT_FIND', "$module_path/{$this->p_class}_$this->p_name.php"), E_USER_ERROR);
 			}
 
-			include("$module_path/{$this->p_class}_$this->p_name.php");
+			require_once("$module_path/{$this->p_class}_{$this->p_name}.php");
 
 			if (!class_exists("{$this->p_class}_$this->p_name"))
 			{

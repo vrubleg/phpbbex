@@ -289,7 +289,7 @@ class mcp_warn
 		// Second parse bbcode here
 		if ($user_row['bbcode_bitfield'])
 		{
-			include_once($phpbb_root_path . 'includes/bbcode.php');
+			require_once($phpbb_root_path . 'includes/bbcode.php');
 
 			$bbcode = new bbcode($user_row['bbcode_bitfield']);
 			$bbcode->bbcode_second_pass($message, $user_row['bbcode_uid'], $user_row['bbcode_bitfield'], $user_row['post_time']);
@@ -301,7 +301,7 @@ class mcp_warn
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.php');
+			require_once($phpbb_root_path . 'includes/functions_display.php');
 		}
 
 		get_user_rank($user_row['user_rank'], $user_row['user_posts'], $rank_title, $rank_img, $rank_img_src);
@@ -409,7 +409,7 @@ class mcp_warn
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.php');
+			require_once($phpbb_root_path . 'includes/functions_display.php');
 		}
 
 		get_user_rank($user_row['user_rank'], $user_row['user_posts'], $rank_title, $rank_img, $rank_img_src);
@@ -526,7 +526,7 @@ class mcp_warn
 			// Second parse bbcode here
 			if ($post_row['bbcode_bitfield'])
 			{
-				include_once($phpbb_root_path . 'includes/bbcode.php');
+				require_once($phpbb_root_path . 'includes/bbcode.php');
 
 				$bbcode = new bbcode($post_row['bbcode_bitfield']);
 				$bbcode->bbcode_second_pass($message, $post_row['bbcode_uid'], $post_row['bbcode_bitfield'], $post_row['post_time']);
@@ -539,7 +539,7 @@ class mcp_warn
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.php');
+			require_once($phpbb_root_path . 'includes/functions_display.php');
 		}
 
 		$rank_title = $rank_img = '';
@@ -595,11 +595,11 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warnin
 
 	if ($send_pm)
 	{
-		include_once($phpbb_root_path . 'includes/functions_privmsgs.php');
-		include_once($phpbb_root_path . 'includes/message_parser.php');
+		require_once($phpbb_root_path . 'includes/functions_privmsgs.php');
+		require_once($phpbb_root_path . 'includes/message_parser.php');
 
 		$user_row['user_lang'] = (file_exists($phpbb_root_path . 'language/' . $user_row['user_lang'] . "/mcp.php")) ? $user_row['user_lang'] : $config['default_lang'];
-		include($phpbb_root_path . 'language/' . basename($user_row['user_lang']) . "/mcp.php");
+		require_once($phpbb_root_path . 'language/' . basename($user_row['user_lang']) . "/mcp.php");
 
 		$message_parser = new parse_message();
 

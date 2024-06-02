@@ -131,7 +131,7 @@ class ucp_profile
 						{
 							$message = ($config['require_activation'] == USER_ACTIVATION_SELF) ? 'ACCOUNT_EMAIL_CHANGED' : 'ACCOUNT_EMAIL_CHANGED_ADMIN';
 
-							include_once($phpbb_root_path . 'includes/functions_messenger.php');
+							require_once($phpbb_root_path . 'includes/functions_messenger.php');
 
 							$server_url = generate_board_url();
 
@@ -253,7 +253,7 @@ class ucp_profile
 
 			case 'profile_info':
 
-				include($phpbb_root_path . 'includes/functions_profile_fields.php');
+				require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
 
 				$cp = new custom_profile();
 
@@ -458,8 +458,8 @@ class ucp_profile
 					trigger_error('NO_AUTH_SIGNATURE');
 				}
 
-				include($phpbb_root_path . 'includes/functions_posting.php');
-				include($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_posting.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
 
 				$enable_bbcode	= ($config['allow_sig_bbcode']) ? (bool) $user->optionget('sig_bbcode') : false;
 				$enable_smilies	= ($config['allow_sig_smilies']) ? (bool) $user->optionget('sig_smilies') : false;
@@ -471,7 +471,7 @@ class ucp_profile
 
 				if ($submit || $preview)
 				{
-					include($phpbb_root_path . 'includes/message_parser.php');
+					require_once($phpbb_root_path . 'includes/message_parser.php');
 
 					$enable_bbcode	= ($config['allow_sig_bbcode']) ? ((request_var('disable_bbcode', false)) ? false : true) : false;
 					$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', false)) ? false : true) : false;
@@ -583,7 +583,7 @@ class ucp_profile
 
 			case 'avatar':
 
-				include($phpbb_root_path . 'includes/functions_display.php');
+				require_once($phpbb_root_path . 'includes/functions_display.php');
 
 				$display_gallery = request_var('display_gallery', '0');
 				$avatar_select = basename(request_var('avatar_select', ''));

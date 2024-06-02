@@ -79,7 +79,7 @@ class critical_repair
 			return false;
 		}
 
-		include($this->tool_path . $tool . '.php');
+		require($this->tool_path . $tool . '.php');
 
 		$tool_name = 'erk_' . $tool;
 		$run_tool = new $tool_name();
@@ -94,7 +94,7 @@ class critical_repair
 	{
 		foreach ($this->autorun_tools as $tool)
 		{
-			include($this->tool_path . 'autorun/' . $tool . '.php');
+			require($this->tool_path . 'autorun/' . $tool . '.php');
 
 			$tool_name = 'erk_' . $tool;
 			$run_tool = new $tool_name();

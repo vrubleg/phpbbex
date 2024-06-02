@@ -105,7 +105,7 @@ class phpbb_captcha_qa
 
 		if (!class_exists('phpbb_db_tools'))
 		{
-			include("$phpbb_root_path/includes/db/db_tools.php");
+			require_once("$phpbb_root_path/includes/db/db_tools.php");
 		}
 		$db_tool = new phpbb_db_tools($db);
 
@@ -292,7 +292,7 @@ class phpbb_captcha_qa
 
 		if (!class_exists('phpbb_db_tools'))
 		{
-			include("$phpbb_root_path/includes/db/db_tools.php");
+			require_once("$phpbb_root_path/includes/db/db_tools.php");
 		}
 		$db_tool = new phpbb_db_tools($db);
 

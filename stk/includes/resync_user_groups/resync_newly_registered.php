@@ -111,7 +111,7 @@ class resync_newly_registered
 		// Call the function
 		if (!function_exists('group_user_add'))
 		{
-			include(PHPBB_ROOT_PATH . 'includes/functions_user.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		}
 
 		if (($error = call_user_func_array($function, $args)) !== false)

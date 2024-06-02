@@ -416,7 +416,7 @@ class acm_memory
 		if (!function_exists('phpbb_is_writable'))
 		{
 			global $phpbb_root_path;
-			include($phpbb_root_path . 'includes/functions.php');
+			require_once($phpbb_root_path . 'includes/functions.php');
 		}
 
 		if ($check && !phpbb_is_writable($this->cache_dir))
