@@ -20,9 +20,6 @@ $forum_id	= request_var('f', 0);
 $topic_id	= request_var('t', 0);
 $post_id	= request_var('p', 0);
 
-$voted_id	= request_var('vote_id', array('' => 0));
-$voted_id = (sizeof($voted_id) > 1) ? array_unique($voted_id) : $voted_id;
-
 $start		= request_var('start', 0);
 $view		= request_var('view', '');
 
@@ -34,10 +31,6 @@ $sort_days	= request_var('st', $default_sort_days);
 $sort_key	= request_var('sk', $default_sort_key);
 $sort_dir	= request_var('sd', $default_sort_dir);
 
-$update		= request_var('update', false);
-$unvote		= request_var('unvote', false);
-
-$s_can_vote = false;
 /**
 * @todo normalize?
 */
@@ -601,6 +594,7 @@ $template->assign_vars(array(
 );
 
 // Does this topic contain a poll?
+$s_can_vote = false;
 if (!empty($topic_data['poll_start']))
 {
 	$sql = 'SELECT o.*, p.bbcode_bitfield, p.bbcode_uid
@@ -633,26 +627,22 @@ if (!empty($topic_data['poll_start']))
 		}
 		$db->sql_freeresult($result);
 	}
-	else
-	{
-		// Cookie based guest tracking ... I don't like this but hum ho
-		// it's oft requested. This relies on "nice" users who don't feel
-		// the need to delete cookies to mess with results.
-		$cur_voted_id = explode(',', get_cookie('poll_' . $topic_id, ''));
-		$cur_voted_id = array_map('intval', $cur_voted_id);
-	}
 
 	// Can not vote at all if no vote permission
-	$s_can_vote = $user->data['is_registered']
-		&& $auth->acl_get('f_vote', $forum_id)
+	$s_can_vote = $user->data['is_registered'] && $auth->acl_get('f_vote', $forum_id)
 		&& (($topic_data['poll_length'] != 0 && $topic_data['poll_start'] + $topic_data['poll_length'] > time()) || $topic_data['poll_length'] == 0)
 		&& $topic_data['topic_status'] != ITEM_LOCKED
 		&& $topic_data['forum_status'] != ITEM_LOCKED
 		&& (!sizeof($cur_voted_id) || ($auth->acl_get('f_votechg', $forum_id) && $topic_data['poll_vote_change']));
 	$s_display_results = (!$s_can_vote || ($s_can_vote && sizeof($cur_voted_id)) || $view == 'viewpoll') ? true : false;
 
-	if (($update || $unvote) && $s_can_vote)
+	$update = request_var('update', false);
+	$unvote = request_var('unvote', false);
+
+	if ($s_can_vote && ($update || $unvote))
 	{
+		$voted_id	= request_var('vote_id', array('' => 0));
+		$voted_id = (sizeof($voted_id) > 1) ? array_unique($voted_id) : $voted_id;
 
 		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options']) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
 		{
@@ -698,19 +688,16 @@ if (!empty($topic_data['poll_start']))
 					AND topic_id = ' . (int) $topic_id;
 			$db->sql_query($sql);
 
-			if ($user->data['is_registered'])
-			{
-				$sql_ary = array(
-					'topic_id'			=> (int) $topic_id,
-					'poll_option_id'	=> (int) $option,
-					'vote_user_id'		=> (int) $user->data['user_id'],
-					'vote_time'			=> (int) time(),
-					'vote_user_ip'		=> (string) $user->ip,
-				);
+			$sql_ary = array(
+				'topic_id'			=> (int) $topic_id,
+				'poll_option_id'	=> (int) $option,
+				'vote_user_id'		=> (int) $user->data['user_id'],
+				'vote_time'			=> (int) time(),
+				'vote_user_ip'		=> (string) $user->ip,
+			);
 
-				$sql = 'INSERT INTO ' . POLL_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
-				$db->sql_query($sql);
-			}
+			$sql = 'INSERT INTO ' . POLL_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+			$db->sql_query($sql);
 		}
 
 		foreach ($cur_voted_id as $option)
@@ -723,33 +710,17 @@ if (!empty($topic_data['poll_start']))
 						AND topic_id = ' . (int) $topic_id;
 				$db->sql_query($sql);
 
-				if ($user->data['is_registered'])
-				{
-					$sql = 'DELETE FROM ' . POLL_VOTES_TABLE . '
-						WHERE topic_id = ' . (int) $topic_id . '
-							AND poll_option_id = ' . (int) $option . '
-							AND vote_user_id = ' . (int) $user->data['user_id'];
-					$db->sql_query($sql);
-				}
-			}
-		}
-
-		if ($user->data['user_id'] == ANONYMOUS && !$user->data['is_bot'])
-		{
-			if (!$unvote)
-			{
-				set_cookie('poll_' . $topic_id, implode(',', $voted_id), true);
-			}
-			else
-			{
-				del_cookie('poll_' . $topic_id);
+				$sql = 'DELETE FROM ' . POLL_VOTES_TABLE . '
+					WHERE topic_id = ' . (int) $topic_id . '
+						AND poll_option_id = ' . (int) $option . '
+						AND vote_user_id = ' . (int) $user->data['user_id'];
+				$db->sql_query($sql);
 			}
 		}
 
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
 			SET poll_last_vote = ' . time() . "
 			WHERE topic_id = $topic_id";
-		//, topic_last_post_time = ' . time() . " -- for bumping topics with new votes, ignore for now
 		$db->sql_query($sql);
 
 		$redirect_url = append_sid("{$phpbb_root_path}viewtopic.php", "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
@@ -886,7 +857,7 @@ if (!empty($topic_data['poll_start']))
 		'U_VIEW_RESULTS'	=> $viewtopic_url . '&amp;view=viewpoll')
 	);
 
-	unset($poll_end, $poll_info, $voted_id);
+	unset($poll_end, $poll_info);
 }
 
 // If the user is trying to reach the second half of the topic, fetch it starting from the end
