@@ -732,12 +732,6 @@ if (!empty($topic_data['poll_start']))
 		trigger_error($user->lang[($unvote ? 'VOTE_CANCELLED' : 'VOTE_SUBMITTED')] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>'));
 	}
 
-	$poll_total = 0;
-	foreach ($poll_info as $poll_option)
-	{
-		$poll_total += $poll_option['poll_option_total'];
-	}
-
 	if ($poll_info[0]['bbcode_bitfield'])
 	{
 		$poll_bbcode = new bbcode();
@@ -772,15 +766,15 @@ if (!empty($topic_data['poll_start']))
 
 	unset($poll_bbcode);
 
-	// Get poll voters
-	$voters_total = 0;
+	// Get poll voters.
+	$poll_total = 0;
 	if($topic_data['poll_show_voters'])
 	{
 		$sql = '
 			SELECT u.user_id, u.username, u.user_colour, pv.poll_option_id, pv.vote_time
-			FROM ' . POLL_VOTES_TABLE . ' pv, ' . USERS_TABLE . ' u
+			FROM ' . POLL_VOTES_TABLE . ' pv
+			LEFT JOIN ' . USERS_TABLE . ' u ON pv.vote_user_id = u.user_id
 			WHERE pv.topic_id = ' . $topic_id . '
-				AND pv.vote_user_id = u.user_id
 			ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
 		$result = $db->sql_query($sql);
 
@@ -791,14 +785,21 @@ if (!empty($topic_data['poll_start']))
 			$voters[(int)$row['user_id']] = true;
 			$votes[(int)$row['poll_option_id']][] = $row;
 		}
-		$voters_total = count($voters);
+		$poll_total = count($voters);
 		unset($voters);
 		$db->sql_freeresult($result);
 
 		foreach ($poll_info as &$option)
 		{
 			$option['poll_option_voters'] = '';
-			if (empty($votes[(int)$option['poll_option_id']])) continue;
+			$option['poll_option_total'] = 0;
+
+			if (empty($votes[(int)$option['poll_option_id']]))
+			{
+				continue;
+			}
+
+			$option['poll_option_total'] = count($votes[(int)$option['poll_option_id']]);
 			foreach ($votes[(int)$option['poll_option_id']] as $vote)
 			{
 				$option['poll_option_voters'] .= ', ' . get_username_string('full', $vote['user_id'], $vote['username'], $vote['user_colour'], $vote['username'], false, $vote['vote_time'] ? $user->format_date($vote['vote_time']) : '');
@@ -813,23 +814,23 @@ if (!empty($topic_data['poll_start']))
 			FROM ' . POLL_VOTES_TABLE . '
 			WHERE topic_id = ' . $topic_id;
 		$result = $db->sql_query($sql);
-		$voters_total = (int) $db->sql_fetchfield('count');
+		$poll_total = (int) $db->sql_fetchfield('count');
 		$db->sql_freeresult($result);
 	}
 
 	foreach ($poll_info as $poll_option)
 	{
-		$option_pct = ($voters_total > 0) ? $poll_option['poll_option_total'] / $voters_total : 0;
+		$option_pct = ($poll_total > 0) ? $poll_option['poll_option_total'] / $poll_total : 0;
 		$option_pct_txt = sprintf("%.1d%%", round($option_pct * 100));
 
 		$template->assign_block_vars('poll_option', array(
-			'POLL_OPTION_ID' 		=> $poll_option['poll_option_id'],
-			'POLL_OPTION_CAPTION' 	=> $poll_option['poll_option_text'],
-			'POLL_OPTION_RESULT' 	=> $poll_option['poll_option_total'],
-			'POLL_OPTION_PERCENT' 	=> $option_pct_txt,
+			'POLL_OPTION_ID'		=> $poll_option['poll_option_id'],
+			'POLL_OPTION_CAPTION'	=> $poll_option['poll_option_text'],
+			'POLL_OPTION_RESULT'	=> $poll_option['poll_option_total'],
+			'POLL_OPTION_PERCENT'	=> $option_pct_txt,
 			'POLL_OPTION_PCT'		=> round($option_pct * 100),
-			'POLL_OPTION_IMG' 		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
-			'POLL_OPTION_VOTERS' 	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
+			'POLL_OPTION_IMG'		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
+			'POLL_OPTION_VOTERS'	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
 			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)) ? true : false)
 		);
 	}
@@ -839,8 +840,7 @@ if (!empty($topic_data['poll_start']))
 	$template->assign_vars(array(
 		'POLL_QUESTION'		=> $topic_data['poll_title'],
 		'POLL_VOTED'		=> count($cur_voted_id) > 0,
-		'TOTAL_VOTES' 		=> $poll_total,
-		'TOTAL_VOTERS' 		=> $voters_total,
+		'TOTAL_VOTERS'		=> $poll_total,
 		'POLL_LEFT_CAP_IMG'	=> $user->img('poll_left'),
 		'POLL_RIGHT_CAP_IMG'=> $user->img('poll_right'),
 
