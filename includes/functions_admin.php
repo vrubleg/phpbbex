@@ -3079,7 +3079,10 @@ function add_permission_language()
 	// Now search in acp and mods folder for permissions_ files.
 	foreach (array('acp/', 'mods/') as $path)
 	{
-		$dh = @opendir($user->lang_path . $user->lang_name . '/' . $path);
+		$full_path = $user->lang_path . $user->lang_name . '/' . $path;
+		if (!is_dir($full_path)) { continue; }
+
+		$dh = @opendir($full_path);
 
 		if ($dh)
 		{
