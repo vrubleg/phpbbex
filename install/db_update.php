@@ -139,6 +139,9 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	set_config('captcha_gd_3d_noise', '1');
 	set_config('captcha_gd_fonts', '1');
 
+	// Remove obsolete .htaccess file that would prevent direct access to uploaded avatars.
+	@unlink($phpbb_root_path . AVATAR_UPLOADS_PATH . '/.htaccess');
+
 	set_config('phpbbex_version', '1.7.0');
 	$purge_default = 'all';
 }
