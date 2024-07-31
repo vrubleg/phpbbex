@@ -307,6 +307,7 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	$obsolete_values = [
 		'recaptcha_privkey',
 		'recaptcha_pubkey',
+		'social_media_cover_url',
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
