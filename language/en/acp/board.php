@@ -407,7 +407,7 @@ $lang = array_merge($lang, array(
 // Cookie Settings
 $lang = array_merge($lang, array(
 	'ONLINE_LENGTH'				=> 'View online time span',
-	'ONLINE_LENGTH_EXPLAIN'		=> 'Number of minutes after which inactive users will not appear in “Who is online” listings. The higher this value the greater is the processing required to generate the listing.',
+	'ONLINE_LENGTH_EXPLAIN'		=> 'Number of minutes after which inactive users will not appear in “Who is online” listings.',
 	'SESSION_LENGTH'			=> 'Session length',
 	'SESSION_LENGTH_EXPLAIN'	=> 'Sessions will expire after this time, in seconds.',
 ));
@@ -434,7 +434,7 @@ $lang = array_merge($lang, array(
 	'YES_JUMPBOX'					=> 'Enable display of jumpbox',
 	'YES_MODERATORS'				=> 'Enable display of moderators',
 	'YES_ONLINE'					=> 'Enable online user listings',
-	'YES_ONLINE_EXPLAIN'			=> 'Display online user information on index, forum and topic pages.',
+	'YES_ONLINE_EXPLAIN'			=> 'Display online user information on index page.',
 	'YES_ONLINE_GUESTS'				=> 'Enable online guest listings',
 	'YES_ONLINE_BOTS'				=> 'Enable online bot listings',
 	'YES_ONLINE_TRACK'				=> 'Enable display of user online/offline information',
