@@ -220,8 +220,8 @@ $lang = array_merge($lang, array(
 	'IMG_ICON_TOPIC_REPORTED'		=> 'Обжалованное сообщение',
 	'IMG_ICON_TOPIC_UNAPPROVED'		=> 'Отклонённое сообщение',
 
-	'IMG_ICON_USER_ONLINE'		=> 'Пользователь в сети',
-	'IMG_ICON_USER_OFFLINE'		=> 'Пользователь не в сети',
+	'IMG_ICON_USER_ONLINE'		=> 'Пользователь онлайн',
+	'IMG_ICON_USER_OFFLINE'		=> 'Пользователь офлайн',
 	'IMG_ICON_USER_PROFILE'		=> 'Показать профиль пользователя',
 	'IMG_ICON_USER_SEARCH'		=> 'Поиск сообщений',
 	'IMG_ICON_USER_WARN'		=> 'Вынести предупреждение пользователю',

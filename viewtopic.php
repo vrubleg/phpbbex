@@ -20,9 +20,6 @@ $forum_id	= request_var('f', 0);
 $topic_id	= request_var('t', 0);
 $post_id	= request_var('p', 0);
 
-$voted_id	= request_var('vote_id', array('' => 0));
-$voted_id = (sizeof($voted_id) > 1) ? array_unique($voted_id) : $voted_id;
-
 $start		= request_var('start', 0);
 $view		= request_var('view', '');
 
@@ -34,10 +31,6 @@ $sort_days	= request_var('st', $default_sort_days);
 $sort_key	= request_var('sk', $default_sort_key);
 $sort_dir	= request_var('sd', $default_sort_dir);
 
-$update		= request_var('update', false);
-$unvote		= request_var('unvote', false);
-
-$s_can_vote = false;
 /**
 * @todo normalize?
 */
@@ -602,6 +595,7 @@ $template->assign_vars(array(
 );
 
 // Does this topic contain a poll?
+$s_can_vote = false;
 if (!empty($topic_data['poll_start']))
 {
 	$sql = 'SELECT o.*, p.bbcode_bitfield, p.bbcode_uid
@@ -634,26 +628,22 @@ if (!empty($topic_data['poll_start']))
 		}
 		$db->sql_freeresult($result);
 	}
-	else
-	{
-		// Cookie based guest tracking ... I don't like this but hum ho
-		// it's oft requested. This relies on "nice" users who don't feel
-		// the need to delete cookies to mess with results.
-		$cur_voted_id = explode(',', get_cookie('poll_' . $topic_id, ''));
-		$cur_voted_id = array_map('intval', $cur_voted_id);
-	}
 
 	// Can not vote at all if no vote permission
-	$s_can_vote = $user->data['is_registered']
-		&& $auth->acl_get('f_vote', $forum_id)
+	$s_can_vote = $user->data['is_registered'] && $auth->acl_get('f_vote', $forum_id)
 		&& (($topic_data['poll_length'] != 0 && $topic_data['poll_start'] + $topic_data['poll_length'] > time()) || $topic_data['poll_length'] == 0)
 		&& $topic_data['topic_status'] != ITEM_LOCKED
 		&& $topic_data['forum_status'] != ITEM_LOCKED
 		&& (!sizeof($cur_voted_id) || ($auth->acl_get('f_votechg', $forum_id) && $topic_data['poll_vote_change']));
 	$s_display_results = (!$s_can_vote || ($s_can_vote && sizeof($cur_voted_id)) || $view == 'viewpoll') ? true : false;
 
-	if (($update || $unvote) && $s_can_vote)
+	$update = request_var('update', false);
+	$unvote = request_var('unvote', false);
+
+	if ($s_can_vote && ($update || $unvote))
 	{
+		$voted_id	= request_var('vote_id', array('' => 0));
+		$voted_id = (sizeof($voted_id) > 1) ? array_unique($voted_id) : $voted_id;
 
 		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options']) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
 		{
@@ -699,19 +689,16 @@ if (!empty($topic_data['poll_start']))
 					AND topic_id = ' . (int) $topic_id;
 			$db->sql_query($sql);
 
-			if ($user->data['is_registered'])
-			{
-				$sql_ary = array(
-					'topic_id'			=> (int) $topic_id,
-					'poll_option_id'	=> (int) $option,
-					'vote_user_id'		=> (int) $user->data['user_id'],
-					'vote_time'			=> (int) time(),
-					'vote_user_ip'		=> (string) $user->ip,
-				);
+			$sql_ary = array(
+				'topic_id'			=> (int) $topic_id,
+				'poll_option_id'	=> (int) $option,
+				'vote_user_id'		=> (int) $user->data['user_id'],
+				'vote_time'			=> (int) time(),
+				'vote_user_ip'		=> (string) $user->ip,
+			);
 
-				$sql = 'INSERT INTO ' . POLL_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
-				$db->sql_query($sql);
-			}
+			$sql = 'INSERT INTO ' . POLL_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+			$db->sql_query($sql);
 		}
 
 		foreach ($cur_voted_id as $option)
@@ -724,33 +711,17 @@ if (!empty($topic_data['poll_start']))
 						AND topic_id = ' . (int) $topic_id;
 				$db->sql_query($sql);
 
-				if ($user->data['is_registered'])
-				{
-					$sql = 'DELETE FROM ' . POLL_VOTES_TABLE . '
-						WHERE topic_id = ' . (int) $topic_id . '
-							AND poll_option_id = ' . (int) $option . '
-							AND vote_user_id = ' . (int) $user->data['user_id'];
-					$db->sql_query($sql);
-				}
-			}
-		}
-
-		if ($user->data['user_id'] == ANONYMOUS && !$user->data['is_bot'])
-		{
-			if (!$unvote)
-			{
-				set_cookie('poll_' . $topic_id, implode(',', $voted_id), true);
-			}
-			else
-			{
-				del_cookie('poll_' . $topic_id);
+				$sql = 'DELETE FROM ' . POLL_VOTES_TABLE . '
+					WHERE topic_id = ' . (int) $topic_id . '
+						AND poll_option_id = ' . (int) $option . '
+						AND vote_user_id = ' . (int) $user->data['user_id'];
+				$db->sql_query($sql);
 			}
 		}
 
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
 			SET poll_last_vote = ' . time() . "
 			WHERE topic_id = $topic_id";
-		//, topic_last_post_time = ' . time() . " -- for bumping topics with new votes, ignore for now
 		$db->sql_query($sql);
 
 		$redirect_url = append_sid("{$phpbb_root_path}viewtopic.php", "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
@@ -760,12 +731,6 @@ if (!empty($topic_data['poll_start']))
 		}
 		meta_refresh(3, $redirect_url);
 		trigger_error($user->lang[($unvote ? 'VOTE_CANCELLED' : 'VOTE_SUBMITTED')] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>'));
-	}
-
-	$poll_total = 0;
-	foreach ($poll_info as $poll_option)
-	{
-		$poll_total += $poll_option['poll_option_total'];
 	}
 
 	if ($poll_info[0]['bbcode_bitfield'])
@@ -783,7 +748,7 @@ if (!empty($topic_data['poll_start']))
 
 		if ($poll_bbcode !== false)
 		{
-			$poll_bbcode->bbcode_second_pass($poll_info[$i]['poll_option_text'], $poll_info[$i]['bbcode_uid'], $poll_option['bbcode_bitfield']);
+			$poll_bbcode->bbcode_second_pass($poll_info[$i]['poll_option_text'], $poll_info[$i]['bbcode_uid'], $poll_info[$i]['bbcode_bitfield']);
 		}
 
 		$poll_info[$i]['poll_option_text'] = bbcode_nl2br($poll_info[$i]['poll_option_text']);
@@ -802,15 +767,15 @@ if (!empty($topic_data['poll_start']))
 
 	unset($poll_bbcode);
 
-	// Get poll voters
-	$voters_total = 0;
+	// Get poll voters.
+	$poll_total = 0;
 	if($topic_data['poll_show_voters'])
 	{
 		$sql = '
 			SELECT u.user_id, u.username, u.user_colour, pv.poll_option_id, pv.vote_time
-			FROM ' . POLL_VOTES_TABLE . ' pv, ' . USERS_TABLE . ' u
+			FROM ' . POLL_VOTES_TABLE . ' pv
+			LEFT JOIN ' . USERS_TABLE . ' u ON pv.vote_user_id = u.user_id
 			WHERE pv.topic_id = ' . $topic_id . '
-				AND pv.vote_user_id = u.user_id
 			ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
 		$result = $db->sql_query($sql);
 
@@ -821,14 +786,21 @@ if (!empty($topic_data['poll_start']))
 			$voters[(int)$row['user_id']] = true;
 			$votes[(int)$row['poll_option_id']][] = $row;
 		}
-		$voters_total = count($voters);
+		$poll_total = count($voters);
 		unset($voters);
 		$db->sql_freeresult($result);
 
 		foreach ($poll_info as &$option)
 		{
 			$option['poll_option_voters'] = '';
-			if (empty($votes[(int)$option['poll_option_id']])) continue;
+			$option['poll_option_total'] = 0;
+
+			if (empty($votes[(int)$option['poll_option_id']]))
+			{
+				continue;
+			}
+
+			$option['poll_option_total'] = count($votes[(int)$option['poll_option_id']]);
 			foreach ($votes[(int)$option['poll_option_id']] as $vote)
 			{
 				$option['poll_option_voters'] .= ', ' . get_username_string('full', $vote['user_id'], $vote['username'], $vote['user_colour'], $vote['username'], false, $vote['vote_time'] ? $user->format_date($vote['vote_time']) : '');
@@ -843,23 +815,23 @@ if (!empty($topic_data['poll_start']))
 			FROM ' . POLL_VOTES_TABLE . '
 			WHERE topic_id = ' . $topic_id;
 		$result = $db->sql_query($sql);
-		$voters_total = (int) $db->sql_fetchfield('count');
+		$poll_total = (int) $db->sql_fetchfield('count');
 		$db->sql_freeresult($result);
 	}
 
 	foreach ($poll_info as $poll_option)
 	{
-		$option_pct = ($voters_total > 0) ? $poll_option['poll_option_total'] / $voters_total : 0;
+		$option_pct = ($poll_total > 0) ? $poll_option['poll_option_total'] / $poll_total : 0;
 		$option_pct_txt = sprintf("%.1d%%", round($option_pct * 100));
 
 		$template->assign_block_vars('poll_option', array(
-			'POLL_OPTION_ID' 		=> $poll_option['poll_option_id'],
-			'POLL_OPTION_CAPTION' 	=> $poll_option['poll_option_text'],
-			'POLL_OPTION_RESULT' 	=> $poll_option['poll_option_total'],
-			'POLL_OPTION_PERCENT' 	=> $option_pct_txt,
+			'POLL_OPTION_ID'		=> $poll_option['poll_option_id'],
+			'POLL_OPTION_CAPTION'	=> $poll_option['poll_option_text'],
+			'POLL_OPTION_RESULT'	=> $poll_option['poll_option_total'],
+			'POLL_OPTION_PERCENT'	=> $option_pct_txt,
 			'POLL_OPTION_PCT'		=> round($option_pct * 100),
-			'POLL_OPTION_IMG' 		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
-			'POLL_OPTION_VOTERS' 	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
+			'POLL_OPTION_IMG'		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
+			'POLL_OPTION_VOTERS'	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
 			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)) ? true : false)
 		);
 	}
@@ -869,8 +841,7 @@ if (!empty($topic_data['poll_start']))
 	$template->assign_vars(array(
 		'POLL_QUESTION'		=> $topic_data['poll_title'],
 		'POLL_VOTED'		=> count($cur_voted_id) > 0,
-		'TOTAL_VOTES' 		=> $poll_total,
-		'TOTAL_VOTERS' 		=> $voters_total,
+		'TOTAL_VOTERS'		=> $poll_total,
 		'POLL_LEFT_CAP_IMG'	=> $user->img('poll_left'),
 		'POLL_RIGHT_CAP_IMG'=> $user->img('poll_right'),
 
@@ -887,7 +858,7 @@ if (!empty($topic_data['poll_start']))
 		'U_VIEW_RESULTS'	=> $viewtopic_url . '&amp;view=viewpoll')
 	);
 
-	unset($poll_end, $poll_info, $voted_id);
+	unset($poll_end, $poll_info);
 }
 
 // If the user is trying to reach the second half of the topic, fetch it starting from the end

@@ -552,7 +552,7 @@ class acp_language
 					else
 					{
 						$help = array();
-						require_once($phpbb_root_path . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
+						require($phpbb_root_path . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
 
 						if ($is_help_file)
 						{
@@ -1135,7 +1135,7 @@ $lang = array_merge($lang, array(
 	/**
 	* Print language entries
 	*/
-	function print_language_entries(&$lang_ary, $key_prefix = '', $input_field = true)
+	function print_language_entries($lang_ary, $key_prefix = '', $input_field = true)
 	{
 		$tpl = '';
 
@@ -1221,7 +1221,7 @@ $lang = array_merge($lang, array(
 		$return_ary = array();
 
 		$lang = array();
-		require_once("{$phpbb_root_path}language/{$source_lang}/" . (($directory) ? $directory . '/' : '') . $file);
+		require("{$phpbb_root_path}language/{$source_lang}/" . (($directory) ? $directory . '/' : '') . $file);
 		$lang_entry_src = $lang;
 
 		$lang = array();
@@ -1231,7 +1231,7 @@ $lang = array_merge($lang, array(
 			return array();
 		}
 
-		require_once($phpbb_root_path . $this->get_filename($dest_lang, $directory, $file, true));
+		require($phpbb_root_path . $this->get_filename($dest_lang, $directory, $file, true));
 
 		$lang_entry_dst = $lang;
 

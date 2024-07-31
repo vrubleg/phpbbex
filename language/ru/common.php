@@ -377,8 +377,8 @@ $lang = array_merge($lang, array(
 	),
 
 	'OCCUPATION'				=> 'Род занятий',
-	'OFFLINE'					=> 'Не в сети',
-	'ONLINE'					=> 'В сети',
+	'OFFLINE'					=> 'Офлайн',
+	'ONLINE'					=> 'Онлайн',
 	'ONLINE_BUDDIES'			=> 'Друзья',
 	'OPTIONS'					=> 'Настройки',
 

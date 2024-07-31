@@ -77,7 +77,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('check_dnsbl', '0')
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('chg_passforce', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('database_gc', '604800');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('dbms_version', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_search_titleonly', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_style', '1');
@@ -308,7 +307,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_from
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_website', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_joined', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_last_active', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('social_media_cover_url', '');
 
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cache_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('cron_lock', '0', 1);

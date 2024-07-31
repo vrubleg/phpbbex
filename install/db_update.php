@@ -139,6 +139,9 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	set_config('captcha_gd_3d_noise', '1');
 	set_config('captcha_gd_fonts', '1');
 
+	// Remove obsolete .htaccess file that would prevent direct access to uploaded avatars.
+	@unlink($phpbb_root_path . AVATAR_UPLOADS_PATH . '/.htaccess');
+
 	set_config('phpbbex_version', '1.7.0');
 	$purge_default = 'all';
 }
@@ -304,6 +307,8 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	$obsolete_values = [
 		'recaptcha_privkey',
 		'recaptcha_pubkey',
+		'social_media_cover_url',
+		'dbms_version',
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
@@ -789,12 +794,6 @@ $current_version = str_replace('rc', 'RC', strtolower($config['version']));
 $latest_version = str_replace('rc', 'RC', strtolower($updates_to_version));
 $orig_version = $config['version'];
 
-// Fill DB version
-if (empty($config['dbms_version']))
-{
-	set_config('dbms_version', $db->sql_server_info(true));
-}
-
 // Now check if the user wants to update from a version we no longer support updates from
 if (version_compare($current_version, $oldest_from_version, '<'))
 {
@@ -920,9 +919,6 @@ $sql = 'UPDATE ' . USERS_TABLE . "
 	SET user_permissions = '',
 		user_perm_from = 0";
 _sql($sql, $errored, $error_ary);
-
-// Update the dbms version if everything is ok...
-set_config('dbms_version', $db->sql_server_info(true));
 
 _write_result($no_updates, $errored, $error_ary);
 
@@ -1529,9 +1525,6 @@ function change_database_data(&$no_updates, $version)
 			$sql = 'UPDATE ' . GROUPS_TABLE . ' SET group_max_recipients = 5
 				WHERE ' . $db->sql_in_set('group_name', array('GUESTS', 'REGISTERED', 'REGISTERED_COPPA', 'BOTS'));
 			_sql($sql, $errored, $error_ary);
-
-			// Not prefilling yet
-			set_config('dbms_version', '');
 
 			// Add new permission u_masspm_group and duplicate settings from u_masspm
 			require_once($phpbb_root_path . 'includes/acp/auth.php');

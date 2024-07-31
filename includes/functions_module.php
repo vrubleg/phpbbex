@@ -859,11 +859,13 @@ class p_master
 	{
 		global $user;
 
-		if (file_exists($user->lang_path . $user->lang_name . '/mods'))
+		$full_path = $user->lang_path . $user->lang_name . '/mods';
+
+		if (is_dir($full_path))
 		{
 			$add_files = array();
 
-			$dir = @opendir($user->lang_path . $user->lang_name . '/mods');
+			$dir = @opendir($full_path);
 
 			if ($dir)
 			{
