@@ -3535,13 +3535,14 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 		$msg_text = $msg_long_text;
 	}
 
+	if (version_compare(PHP_VERSION, '8.4', '<') && $errno == E_STRICT) { $errno = E_WARNING; }
+
 	switch ($errno)
 	{
 		case E_ERROR:
 		case E_NOTICE:
 		case E_WARNING:
 		case E_DEPRECATED:
-		case E_STRICT:
 
 			// Check the error reporting level and return if the error level does not match
 			// If DEBUG is defined the default level is E_ALL
@@ -3556,7 +3557,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 				return;
 			}
 
-			$err_types = [E_ERROR => 'Error', E_NOTICE => 'Notice', E_WARNING => 'Warning', E_DEPRECATED => 'Deprecated', E_STRICT => 'Strict'];
+			$err_types = [E_ERROR => 'Error', E_NOTICE => 'Notice', E_WARNING => 'Warning', E_DEPRECATED => 'Deprecated'];
 			$errfile = phpbb_filter_root_path($errfile);
 			$msg_text = phpbb_filter_root_path($msg_text);
 			$backtrace = format_backtrace($backtrace);
