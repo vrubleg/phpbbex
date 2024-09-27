@@ -78,7 +78,7 @@ if ($config['allow_' . $mode . '_smilies'])
 }
 
 $s_topic_icons = false;
-if ($main_data['enable_icons'] && $auth->acl_get('f_icons', $forum_id) && $config['allow_' . $mode . '_icons'])
+if ($config['enable_topic_icons'] && $config['allow_' . $mode . '_icons'])
 {
 	$s_topic_icons = posting_gen_topic_icons($mode, ($mode == 'reply') ? $main_data['icon_id'] : '');
 }

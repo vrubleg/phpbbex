@@ -209,6 +209,8 @@ $lang = array_merge($lang, array(
 // Post Settings
 $lang = array_merge($lang, array(
 	'ACP_POST_SETTINGS_EXPLAIN'			=> 'Here you can set all default settings for posting.',
+
+	'ENABLE_TOPIC_ICONS'				=> 'Enable topic icons',
 	'ALLOW_POST_LINKS'					=> 'Allow links in posts/private messages',
 	'ALLOW_POST_LINKS_EXPLAIN'			=> 'If disallowed the <code>[URL]</code> BBCode tag and automatic/magic URLs are disabled.',
 	'ALLOW_POST_FLASH'					=> 'Allow use of <code>[FLASH]</code> BBCode tag in posts',

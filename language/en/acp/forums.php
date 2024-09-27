@@ -45,7 +45,6 @@ $lang = array_merge($lang, array(
 	'ENABLE_INDEXING_EXPLAIN'		=> 'If set to yes posts made to this forum will be indexed for searching.',
 	'ENABLE_RECENT'					=> 'Display active topics',
 	'ENABLE_RECENT_EXPLAIN'			=> 'If set to yes topics made to this forum will be shown in the active topics list.',
-	'ENABLE_TOPIC_ICONS'			=> 'Enable topic icons',
 
 	'FORUM_ADMIN'						=> 'Forum administration',
 	'FORUM_ADMIN_EXPLAIN'				=> 'In phpBBex everything is forum based. A category is just a special type of forum. Each forum can have an unlimited number of sub-forums and you can determine whether each may be posted to or not (i.e. whether it acts like an old category). Here you can add, edit, delete, lock, unlock individual forums as well as set certain additional controls. If your posts and topics have got out of sync you can also resynchronise a forum. <strong>You need to copy or set appropriate permissions for newly created forums to have them displayed.</strong>',

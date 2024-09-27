@@ -295,6 +295,40 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 {
+	// Remove unused columns.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . FORUMS_TABLE . " DROP COLUMN enable_icons");
+	$db->sql_return_on_error(false);
+
+	// Remove obsolete permissions.
+
+	$permissions = array(
+		'f_icons',
+	);
+	$option_ids = array();
+
+	$result = $db->sql_query('SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE. ' WHERE ' . $db->sql_in_set('auth_option', $permissions));
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$option_ids[] = (int) $row['auth_option_id'];
+	}
+	$db->sql_freeresult($result);
+
+	if (!empty($option_ids))
+	{
+		foreach (array(ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE) as $table)
+		{
+			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
+		}
+
+		// Reset permissions cache...
+		$cache->destroy('_acl_options');
+		require_once($phpbb_root_path . 'includes/acp/auth.php');
+		$auth_admin = new auth_admin();
+		$auth_admin->acl_clear_prefetch();
+	}
+
 	// Remove obsolete FORUM_FLAG_QUICK_REPLY and FORUM_FLAG_POST_REVIEW from forum_flags.
 
 	$allowed_forum_flags = FORUM_FLAG_LINK_TRACK | FORUM_FLAG_PRUNE_POLL | FORUM_FLAG_PRUNE_ANNOUNCE | FORUM_FLAG_PRUNE_STICKY | FORUM_FLAG_ACTIVE_TOPICS;
@@ -324,6 +358,10 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	{
 		set_config('allow_name_chars', 'USERNAME_UNICHARS_SPACERS');
 	}
+
+	// New config values.
+
+	set_config('enable_topic_icons', '1');
 
 	// Update DB schema version.
 

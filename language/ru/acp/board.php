@@ -209,6 +209,8 @@ $lang = array_merge($lang, array(
 // Post Settings
 $lang = array_merge($lang, array(
 	'ACP_POST_SETTINGS_EXPLAIN'			=> 'Здесь вы можете задать настройки по умолчанию для размещаемых сообщений.',
+
+	'ENABLE_TOPIC_ICONS'				=> 'Включить значки тем',
 	'ALLOW_POST_LINKS'					=> 'Разрешить ссылки в обычных/личных сообщениях',
 	'ALLOW_POST_LINKS_EXPLAIN'			=> 'В случае запрета тег BBCode <code>[URL]</code> и автоматическое преобразование текста в ссылки будут отключены.',
 	'ALLOW_POST_FLASH'					=> 'Разрешить тег BBCode <code>[FLASH]</code> в сообщениях',

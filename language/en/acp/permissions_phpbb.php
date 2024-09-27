@@ -121,7 +121,6 @@ $lang = array_merge($lang, array(
 	'acl_f_read'		=> array('lang' => 'Can read forum', 'cat' => 'post'),
 	'acl_f_post'		=> array('lang' => 'Can start new topics', 'cat' => 'post'),
 	'acl_f_reply'		=> array('lang' => 'Can reply to topics', 'cat' => 'post'),
-	'acl_f_icons'		=> array('lang' => 'Can use topic/post icons', 'cat' => 'post'),
 	'acl_f_announce'	=> array('lang' => 'Can post announcements', 'cat' => 'post'),
 	'acl_f_sticky'		=> array('lang' => 'Can post stickies', 'cat' => 'post'),
 

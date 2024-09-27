@@ -638,7 +638,7 @@ if ($submit || $preview || $refresh)
 	$post_data['topic_time_limit']	= request_var('topic_time_limit', (($mode != 'post') ? (int) $post_data['topic_time_limit'] : 0));
 	$post_data['topic_priority']	= request_var('topic_priority', (($mode != 'post') ? (int) $post_data['topic_priority'] : 0));
 
-	if ($post_data['enable_icons'] && $auth->acl_get('f_icons', $forum_id))
+	if ($config['enable_topic_icons'])
 	{
 		$post_data['icon_id'] = request_var('icon', (int) $post_data['icon_id']);
 	}
@@ -1370,7 +1370,7 @@ if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_p
 }
 
 $s_topic_icons = false;
-if ($post_data['enable_icons'] && $auth->acl_get('f_icons', $forum_id))
+if ($config['enable_topic_icons'])
 {
 	$s_topic_icons = posting_gen_topic_icons($mode, $post_data['icon_id']);
 }
