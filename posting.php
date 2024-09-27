@@ -721,17 +721,13 @@ if ($submit || $preview || $refresh)
 	// notify and show user the post made between his request and the final submit
 	if (($mode == 'reply' || $mode == 'quote') && $post_data['topic_cur_post_id'] && $post_data['topic_cur_post_id'] != $post_data['topic_last_post_id'])
 	{
-		// Only do so if it is allowed forum-wide
-		if ($post_data['forum_flags'] & FORUM_FLAG_POST_REVIEW)
+		if (topic_review($topic_id, $forum_id, 'post_review', $post_data['topic_cur_post_id']))
 		{
-			if (topic_review($topic_id, $forum_id, 'post_review', $post_data['topic_cur_post_id']))
-			{
-				$template->assign_var('S_POST_REVIEW', true);
-			}
-
-			$submit = false;
-			$refresh = true;
+			$template->assign_var('S_POST_REVIEW', true);
 		}
+
+		$submit = false;
+		$refresh = true;
 	}
 
 	// Parse Attachments - before checksum is calculated
@@ -745,7 +741,7 @@ if ($submit || $preview || $refresh)
 
 	// If editing and checksum has changed we know the post was edited while we're editing
 	// Notify and show user the changed post
-	if ($mode == 'edit' && $post_data['forum_flags'] & FORUM_FLAG_POST_REVIEW)
+	if ($mode == 'edit')
 	{
 		$edit_post_message_checksum = request_var('edit_post_message_checksum', '');
 		$edit_post_subject_checksum = request_var('edit_post_subject_checksum', '');
