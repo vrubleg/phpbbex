@@ -30,7 +30,7 @@ class acp_board
 		$user->add_lang('acp/board');
 
 		$action	= request_var('action', '');
-		$submit = (isset($_POST['submit']) || isset($_POST['allow_quick_reply_enable'])) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		$form_key = 'acp_board';
 		add_form_key($form_key);
@@ -91,7 +91,6 @@ class acp_board
 						'allow_bookmarks'		=> array('lang' => 'ALLOW_BOOKMARKS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_birthdays'		=> array('lang' => 'ALLOW_BIRTHDAYS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'login_via_email_enable'=> array('lang' => 'LOGIN_VIA_EMAIL_ENABLE', 'validate' => 'int',	'type' => 'custom', 'method' => 'login_via_email_options', 'explain' => true),
-						// 'allow_quick_reply'		=> array('lang' => 'ALLOW_QUICK_REPLY',		'validate' => 'bool',	'type' => 'custom', 'method' => 'quick_reply', 'explain' => true),
 
 						'legend2'				=> 'WARNINGS',
 						'warning_post_default'	=> array('lang' => 'WARNING_POST_DEFAULT',	'validate' => 'string',	'type' => 'textarea:1:255', 'explain' => false),
@@ -287,7 +286,6 @@ class acp_board
 						'allow_nocensors'		=> array('lang' => 'ALLOW_NO_CENSORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_bookmarks'		=> array('lang' => 'ALLOW_BOOKMARKS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'enable_post_confirm'	=> array('lang' => 'VISUAL_CONFIRM_POST',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						//'allow_quick_reply'	=> array('lang' => 'ALLOW_QUICK_REPLY',		'validate' => 'bool',	'type' => 'custom', 'method' => 'quick_reply', 'explain' => true),
 
 						'legend2'				=> 'POSTING',
 						'bump_type'				=> false,
@@ -591,11 +589,6 @@ class acp_board
 			if ($submit)
 			{
 				set_config($config_name, $config_value);
-
-				if ($config_name == 'allow_quick_reply' && isset($_POST['allow_quick_reply_enable']))
-				{
-					enable_bitfield_column_flag(FORUMS_TABLE, 'forum_flags', log(FORUM_FLAG_QUICK_REPLY, 2));
-				}
 			}
 		}
 
@@ -1054,20 +1047,6 @@ class acp_board
 
 		return h_radio('config[board_disable]', $radio_ary, $value) . '<br /><input id="' . $key . '" type="text" name="config[board_disable_msg]" maxlength="255" size="40" value="' . $this->new_config['board_disable_msg'] . '" />';
 	}
-
-	/**
-	* Global quick reply enable/disable setting and button to enable in all forums
-	*/
-	function quick_reply($value, $key)
-	{
-		global $user;
-
-		$radio_ary = array(1 => 'YES', 0 => 'NO');
-
-		return h_radio('config[allow_quick_reply]', $radio_ary, $value) .
-			'<br /><br /><input class="button2" type="submit" id="' . $key . '_enable" name="' . $key . '_enable" value="' . $user->lang['ALLOW_QUICK_REPLY_BUTTON'] . '" />';
-	}
-
 
 	/**
 	* Select default dateformat
