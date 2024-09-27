@@ -348,7 +348,7 @@ $post_data['post_subject']		= (in_array($mode, array('quote', 'edit'))) ? $post_
 $post_data['topic_time_limit']	= (isset($post_data['topic_time_limit'])) ? (($post_data['topic_time_limit']) ? (int) $post_data['topic_time_limit'] / 86400 : (int) $post_data['topic_time_limit']) : 0;
 $post_data['poll_length']		= (!empty($post_data['poll_length'])) ? (int) $post_data['poll_length'] / 86400 : 0;
 $post_data['poll_start']		= (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
-$post_data['icon_id']			= (!isset($post_data['icon_id']) || in_array($mode, array('quote', 'reply'))) ? 0 : (int) $post_data['icon_id'];
+$post_data['icon_id']			= (!isset($post_data['icon_id']) || in_array($mode, ['quote', 'reply']) || ($mode == 'edit' && $post_id != $post_data['topic_first_post_id'] && empty($post_data['post_subject']))) ? 0 : (int) $post_data['icon_id'];
 $post_data['poll_options']		= array();
 $post_data['topic_first_post_show'] = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
 
@@ -1369,8 +1369,9 @@ if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_p
 	$topic_type_toggle = posting_gen_topic_types($forum_id, $post_data['topic_type']);
 }
 
+// Don't show icon selection if not first message and subject is empty.
 $s_topic_icons = false;
-if ($config['enable_topic_icons'])
+if ($config['enable_topic_icons'] && ($mode == 'post' || ($mode == 'edit' && ($post_id == $post_data['topic_first_post_id'] || !empty($post_data['post_subject']))) || in_array($mode, ['quote', 'reply']) && !empty($post_data['post_subject'])))
 {
 	$s_topic_icons = posting_gen_topic_icons($mode, $post_data['icon_id']);
 }
