@@ -57,8 +57,8 @@ foreach ($uninit as $var_name => $default_value)
 }
 unset($uninit);
 
-$options = array('allow_' . $mode . '_icons' => 1, 'allow_' . $mode . '_checkboxes' => 2, 'allow_' . $mode . '_attachbox' => 3, 'allow_' . $mode . '_smilies' => 4);
-if ($mode == 'reply') $options['allow_reply_subject'] = 5;
+$options = array('allow_' . $mode . '_checkboxes' => 2, 'allow_' . $mode . '_attachbox' => 3, 'allow_' . $mode . '_smilies' => 4);
+$options[$mode == 'reply' ? 'allow_reply_subject' : 'allow_post_icons'] = 1;
 foreach ($options as $key => $value)
 {
 	$config[$key] = ($config['allow_quick_' . $mode . '_options'] & 1 << $value) ? 1 : 0;
@@ -78,9 +78,9 @@ if ($config['allow_' . $mode . '_smilies'])
 }
 
 $s_topic_icons = false;
-if ($config['enable_topic_icons'] && $config['allow_' . $mode . '_icons'])
+if ($config['enable_topic_icons'] && $mode == 'post' && $config['allow_post_icons'])
 {
-	$s_topic_icons = posting_gen_topic_icons($mode, ($mode == 'reply') ? $main_data['icon_id'] : '');
+	$s_topic_icons = posting_gen_topic_icons($mode, 0);
 }
 
 $bbcode_checked		= ($config['allow_bbcode']) ? !$user->optionget('bbcode') : 1;
