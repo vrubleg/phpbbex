@@ -295,6 +295,11 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 {
+	// Remove obsolete FORUM_FLAG_QUICK_REPLY and FORUM_FLAG_POST_REVIEW from forum_flags.
+
+	$allowed_forum_flags = FORUM_FLAG_LINK_TRACK | FORUM_FLAG_PRUNE_POLL | FORUM_FLAG_PRUNE_ANNOUNCE | FORUM_FLAG_PRUNE_STICKY | FORUM_FLAG_ACTIVE_TOPICS;
+	update_bitfield_column(FORUMS_TABLE, 'forum_flags', 0, $allowed_forum_flags);
+
 	// Reset CAPTCHA plugin if obsolete reCAPTCHA v1 is used.
 
 	if ($config['captcha_plugin'] == 'phpbb_recaptcha')
@@ -312,11 +317,6 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
-
-	// Remove obsolete FORUM_FLAG_QUICK_REPLY and FORUM_FLAG_POST_REVIEW from forum_flags.
-
-	$sql = 'UPDATE ' . FORUMS_TABLE . ' SET forum_flags = forum_flags & ' . 0b11111;
-	$db->sql_query($sql);
 
 	// Update obsolete values.
 
