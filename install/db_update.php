@@ -313,6 +313,11 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
 
+	// Remove obsolete FORUM_FLAG_QUICK_REPLY and FORUM_FLAG_POST_REVIEW from forum_flags.
+
+	$sql = 'UPDATE ' . FORUMS_TABLE . ' SET forum_flags = forum_flags & ' . 0b11111;
+	$db->sql_query($sql);
+
 	// Update obsolete values.
 
 	if (!in_array($config['allow_name_chars'], ['USERNAME_UNICHARS_SPACERS', 'USERNAME_UNICHARS_NOSPACE', 'USERNAME_LATCHARS_SPACERS', 'USERNAME_LATCHARS_NOSPACE']))
