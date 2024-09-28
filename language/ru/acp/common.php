@@ -756,11 +756,6 @@ $lang = array_merge($lang, array(
 	'LINK_NEWWINDOW_EXPLAIN'=> 'Открывать в новом окне',
 ));
 
-// Custom BBCode Sorting
-$lang = array_merge($lang, array(
-	'SHOW_BUTTON'		=> 'Кнопка',
-));
-
 // Login via Email
 $lang = array_merge($lang, array(
 	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Вход по email',

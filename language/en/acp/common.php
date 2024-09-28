@@ -757,11 +757,6 @@ $lang = array_merge($lang, array(
 	'LINK_NEWWINDOW_EXPLAIN'=> 'Open in new window',
 ));
 
-// Custom BBCode Sorting
-$lang = array_merge($lang, array(
-	'SHOW_BUTTON'		=> 'Button',
-));
-
 // Login via E-Mail
 $lang = array_merge($lang, array(
 	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Login via E-Mail',
