@@ -62,7 +62,7 @@ $lang = array_merge($lang, array(
 	'KEEP_REGISTER_LOGS_DAYS'		=> 'Хранить логи регистраций',
 ));
 
-// Style Settings
+// Display Settings
 $lang = array_merge($lang, array(
 	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Здесь вы можете настроить отображение различных блоков. Некоторые параметры могут не поддерживаться вашим шаблоном.',
 
@@ -73,6 +73,8 @@ $lang = array_merge($lang, array(
 	'STYLE_BACK_TO_TOP'					=> 'Кнопка «В начало страницы»',
 	'STYLE_ROUNDED_CORNERS'				=> 'Скруглять углы',
 	'STYLE_NEW_YEAR'					=> 'Зимний стиль',
+	'SKIP_TYPICAL_NOTICES'				=> 'Отключить страницы типовых уведомлений',
+	'SKIP_TYPICAL_NOTICES_EXPLAIN'		=> 'Не отображать типовые уведомления после добавления сообщений, голосования, отметки тем как прочтённых, входа на форум и выхода с него.',
 	'POSTING_TOPIC_REVIEW'				=> 'Показывать обзор темы в форме полного ответа',
 
 	'STYLE_SETTINGS_INDEX'				=> 'Главная страница',
@@ -460,8 +462,6 @@ $lang = array_merge($lang, array(
 	'YES_READ_MARKING'				=> 'Включить маркировку тем на сервере',
 	'YES_READ_MARKING_EXPLAIN'		=> 'Сохранять информацию о статусе «прочитано/не прочитано» в базе данных, а не в cookies.',
 	'YES_UNREAD_SEARCH'				=> 'Включить поиск непрочитанных сообщений',
-	'NO_TYPICAL_INFO_PAGES'			=> 'Отключить страницы типовых уведомлений',
-	'NO_TYPICAL_INFO_PAGES_EXPLAIN'	=> 'Не отображать типовые уведомления после добавления сообщений, голосования, отметки тем как прочтённых, входа на форум и выхода с него.',
 ));
 
 // Auth settings

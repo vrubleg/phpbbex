@@ -1174,7 +1174,7 @@ if ($submit || $preview || $refresh)
 			}
 			else
 			{
-				if (!empty($config['no_typical_info_pages']))
+				if (!empty($config['skip_typical_notices']))
 				{
 					redirect($redirect_url);
 				}

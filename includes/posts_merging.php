@@ -263,7 +263,7 @@ if ($auth->acl_get('f_noapprove', $data['forum_id']) || $auth->acl_get('m_approv
 //Generate redirection URL and redirecting
 $redirect_url = append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $topic_id . '&amp;p=' . $merge_post_id) . '#p' . $merge_post_id;
 
-if (!empty($config['no_typical_info_pages']))
+if (!empty($config['skip_typical_notices']))
 {
 	redirect($redirect_url);
 }

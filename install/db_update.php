@@ -355,6 +355,7 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 		'allow_quick_reply_options',
 		'allow_quick_post_options',
 		'style_posting_topic_review',
+		'no_typical_info_pages',
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
@@ -381,6 +382,7 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	set_config('allow_quick_post_attachbox', '1');
 	set_config('allow_quick_post_smilies', '1');
 	set_config('posting_topic_review', '1');
+	set_config('skip_typical_notices', '1');
 
 	// Update DB schema version.
 
