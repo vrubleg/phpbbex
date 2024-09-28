@@ -62,7 +62,7 @@ $lang = array_merge($lang, array(
 	'KEEP_REGISTER_LOGS_DAYS'		=> 'Keep registration logs for',
 ));
 
-// Style Settings
+// Display Settings
 $lang = array_merge($lang, array(
 	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can show/hide several features.',
 
@@ -73,7 +73,9 @@ $lang = array_merge($lang, array(
 	'STYLE_BACK_TO_TOP'					=> '"Back to top" button',
 	'STYLE_ROUNDED_CORNERS'				=> 'Rounded corners',
 	'STYLE_NEW_YEAR'					=> 'Winter-style headerbar',
-	'STYLE_POSTING_TOPIC_REVIEW'		=> 'Display topic review panel at posting page',
+	'SKIP_TYPICAL_NOTICES'				=> 'Skip typical notice pages',
+	'SKIP_TYPICAL_NOTICES_EXPLAIN'		=> 'Redirect instantly after posting, voting, marking topics read, login or logout.',
+	'POSTING_TOPIC_REVIEW'				=> 'Display topic review panel at posting page',
 
 	'STYLE_SETTINGS_INDEX'				=> 'Board Index',
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
@@ -460,8 +462,6 @@ $lang = array_merge($lang, array(
 	'YES_READ_MARKING'				=> 'Enable server-side topic marking',
 	'YES_READ_MARKING_EXPLAIN'		=> 'Stores read/unread status information in the database rather than a cookie.',
 	'YES_UNREAD_SEARCH'				=> 'Enable search for unread posts',
-	'NO_TYPICAL_INFO_PAGES'			=> 'No typical informational pages',
-	'NO_TYPICAL_INFO_PAGES_EXPLAIN'	=> 'Redirect instantly after posting, voting, marking topics read, login or logout.',
 ));
 
 // Auth settings

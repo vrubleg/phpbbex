@@ -55,7 +55,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		{
 			markread('all');
 
-			if (!empty($config['no_typical_info_pages']))
+			if (!empty($config['skip_typical_notices']))
 			{
 				redirect($redirect);
 			}
@@ -283,7 +283,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			$forum_ids[] = 0;
 			markread('topics', $forum_ids);
 
-			if (!empty($config['no_typical_info_pages']))
+			if (!empty($config['skip_typical_notices']))
 			{
 				redirect($redirect);
 			}
@@ -1410,7 +1410,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					$db->sql_query($sql);
 
 					$redirect_url = append_sid("{$phpbb_root_path}view$mode.php", "$u_url=$match_id&amp;start=$start");
-					if (!empty($config['no_typical_info_pages']))
+					if (!empty($config['skip_typical_notices']))
 					{
 						redirect($redirect_url);
 					}
@@ -1481,7 +1481,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					$db->sql_query($sql);
 
 					$redirect_url = append_sid("{$phpbb_root_path}view$mode.php", "$u_url=$match_id&amp;start=$start");
-					if (!empty($config['no_typical_info_pages']))
+					if (!empty($config['skip_typical_notices']))
 					{
 						redirect($redirect_url);
 					}

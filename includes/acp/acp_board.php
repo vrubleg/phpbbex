@@ -114,7 +114,6 @@ class acp_board
 						'load_online_time'		=> array('lang' => 'ONLINE_LENGTH',			'validate' => 'int:0',	'type' => 'text:4:3', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']),
 
 						'legend5'				=> 'ACP_LOAD_SETTINGS',
-						'no_typical_info_pages'	=> array('lang' => 'NO_TYPICAL_INFO_PAGES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_unreads_search'	=> array('lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_db_track'			=> array('lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 
@@ -151,7 +150,8 @@ class acp_board
 						'style_new_year'					=> array('lang' => 'STYLE_NEW_YEAR',					'validate' => 'int',	'type' => 'custom', 'function' => 'h_radio', 'params' => array('config[style_new_year]', array(-1 => 'AUTO', 1 => 'YES', 0 => 'NO'), '{CONFIG_VALUE}', '{KEY}'), 'explain' => false),
 						'style_show_sitename_in_headerbar'	=> array('lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_jumpbox'						=> array('lang' => 'YES_JUMPBOX',						'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'style_posting_topic_review'		=> array('lang' => 'STYLE_POSTING_TOPIC_REVIEW',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'skip_typical_notices'				=> array('lang' => 'SKIP_TYPICAL_NOTICES',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'posting_topic_review'				=> array('lang' => 'POSTING_TOPIC_REVIEW',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
 						'legend2'							=> 'STYLE_SETTINGS_INDEX',
 						'announce_index'					=> array('lang'	=> 'ANNOUNCE_INDEX',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -312,6 +312,7 @@ class acp_board
 						'max_post_imgs'			=> array('lang' => 'MAX_POST_IMGS',			'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true),
 						'max_post_img_width'	=> array('lang' => 'MAX_POST_IMG_WIDTH',	'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 						'max_post_img_height'	=> array('lang' => 'MAX_POST_IMG_HEIGHT',	'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
+						'posting_topic_review'	=> array('lang' => 'POSTING_TOPIC_REVIEW',	'validate' => 'bool',		'type' => 'radio:yes_no', 'explain' => false),
 
 						'legend3'							=> 'QUICK_REPLY',
 						'allow_quick_reply'					=> array('lang' => 'ALLOW_QUICK_REPLY',				'validate' => 'int',	'type' => 'select', 'method' => 'allow_quick_reply_for', 'explain' => true),
@@ -439,7 +440,6 @@ class acp_board
 						'load_online_time'	=> array('lang' => 'ONLINE_LENGTH',		'validate' => 'int:0',	'type' => 'text:4:3', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']),
 
 						'legend2'				=> 'GENERAL_OPTIONS',
-						'no_typical_info_pages'	=> array('lang' => 'NO_TYPICAL_INFO_PAGES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_db_track'			=> array('lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_db_lastread'		=> array('lang' => 'YES_READ_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'load_anon_lastread'	=> array('lang' => 'YES_ANON_READ_MARKING',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),

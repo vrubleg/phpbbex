@@ -1174,7 +1174,7 @@ if ($submit || $preview || $refresh)
 			}
 			else
 			{
-				if (!empty($config['no_typical_info_pages']))
+				if (!empty($config['skip_typical_notices']))
 				{
 					redirect($redirect_url);
 				}
@@ -1569,7 +1569,7 @@ $template->set_filenames(array(
 make_jumpbox(append_sid("{$phpbb_root_path}viewforum.php"));
 
 // Topic review
-if (($mode == 'reply' || $mode == 'quote') && !empty($config['style_posting_topic_review']))
+if (($mode == 'reply' || $mode == 'quote') && !empty($config['posting_topic_review']))
 {
 	if (topic_review($topic_id, $forum_id))
 	{

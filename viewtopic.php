@@ -430,7 +430,7 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 					AND topic_id = $topic_id";
 			$db->sql_query($sql);
 		}
-		if (!empty($config['no_typical_info_pages']))
+		if (!empty($config['skip_typical_notices']))
 		{
 			redirect($viewtopic_url);
 		}
@@ -725,7 +725,7 @@ if (!empty($topic_data['poll_start']))
 		$db->sql_query($sql);
 
 		$redirect_url = append_sid("{$phpbb_root_path}viewtopic.php", "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
-		if (!empty($config['no_typical_info_pages']))
+		if (!empty($config['skip_typical_notices']))
 		{
 			redirect($redirect_url);
 		}

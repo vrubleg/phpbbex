@@ -2895,7 +2895,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				return;
 			}
 
-			if (!empty($config['no_typical_info_pages']))
+			if (!empty($config['skip_typical_notices']))
 			{
 				redirect($redirect);
 			}

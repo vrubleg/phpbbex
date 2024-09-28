@@ -178,7 +178,7 @@ if ($mark_read == 'topics')
 		markread('topics', array($forum_id, 0));
 	}
 	$redirect_url = append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $forum_id);
-	if (!empty($config['no_typical_info_pages']))
+	if (!empty($config['skip_typical_notices']))
 	{
 		redirect($redirect_url);
 	}
