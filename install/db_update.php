@@ -104,6 +104,38 @@ if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_versi
 	die('Error! Database schema has newer version than supported.');
 }
 
+// Helper functions.
+
+function remove_permissions($permissions)
+{
+	global $db, $cache;
+
+	$option_ids = array();
+
+	$result = $db->sql_query('SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE. ' WHERE ' . $db->sql_in_set('auth_option', $permissions));
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$option_ids[] = (int) $row['auth_option_id'];
+	}
+	$db->sql_freeresult($result);
+
+	if (!empty($option_ids))
+	{
+		foreach (array(ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE) as $table)
+		{
+			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
+		}
+
+		// Reset permissions cache...
+		$cache->destroy('_acl_options');
+		require_once($phpbb_root_path . 'includes/acp/auth.php');
+		$auth_admin = new auth_admin();
+		$auth_admin->acl_clear_prefetch();
+	}
+}
+
+// Update!
+
 $purge_default = 'cache';
 
 if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_version'], '1.7.0', '<'))
@@ -217,7 +249,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 	// Remove obsolete permissions.
 
-	$permissions = array(
+	remove_permissions([
 		'a_jabber',
 		'f_email',
 		'f_print',
@@ -227,29 +259,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'u_pm_forward',
 		'u_pm_printpm',
 		'u_savedrafts',
-	);
-	$option_ids = array();
-
-	$result = $db->sql_query('SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE. ' WHERE ' . $db->sql_in_set('auth_option', $permissions));
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$option_ids[] = (int) $row['auth_option_id'];
-	}
-	$db->sql_freeresult($result);
-
-	if (!empty($option_ids))
-	{
-		foreach (array(ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE) as $table)
-		{
-			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
-		}
-
-		// Reset permissions cache...
-		$cache->destroy('_acl_options');
-		require_once($phpbb_root_path . 'includes/acp/auth.php');
-		$auth_admin = new auth_admin();
-		$auth_admin->acl_clear_prefetch();
-	}
+	]);
 
 	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_auth = 'acl_a_server' WHERE module_auth = 'acl_a_jabber'");
 
@@ -307,31 +317,9 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 
 	// Remove obsolete permissions.
 
-	$permissions = array(
+	remove_permissions([
 		'f_icons',
-	);
-	$option_ids = array();
-
-	$result = $db->sql_query('SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE. ' WHERE ' . $db->sql_in_set('auth_option', $permissions));
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$option_ids[] = (int) $row['auth_option_id'];
-	}
-	$db->sql_freeresult($result);
-
-	if (!empty($option_ids))
-	{
-		foreach (array(ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE) as $table)
-		{
-			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
-		}
-
-		// Reset permissions cache...
-		$cache->destroy('_acl_options');
-		require_once($phpbb_root_path . 'includes/acp/auth.php');
-		$auth_admin = new auth_admin();
-		$auth_admin->acl_clear_prefetch();
-	}
+	]);
 
 	// Remove obsolete FORUM_FLAG_QUICK_REPLY and FORUM_FLAG_POST_REVIEW from forum_flags.
 
