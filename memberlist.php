@@ -606,7 +606,6 @@ switch ($mode)
 			'PM_IMG'		=> $user->img('icon_contact_pm', $user->lang['SEND_PRIVATE_MESSAGE']),
 			'EMAIL_IMG'		=> $user->img('icon_contact_email', $user->lang['EMAIL']),
 			'WWW_IMG'		=> $user->img('icon_contact_www', $user->lang['WWW']),
-			'ICQ_IMG'		=> $user->img('icon_contact_icq', $user->lang['ICQ']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
 			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
 			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
@@ -1000,7 +999,7 @@ switch ($mode)
 		$select_single 	= request_var('select_single', false);
 
 		// Search URL parameters, if any of these are in the URL we do a search
-		$search_params = array('username', 'email', 'icq', 'jabber', 'search_group_id', 'joined_select', 'active_select', 'count_select', 'joined', 'active', 'count', 'ip');
+		$search_params = array('username', 'email', 'jabber', 'search_group_id', 'joined_select', 'active_select', 'count_select', 'joined', 'active', 'count', 'ip');
 
 		// We validate form and field here, only id/class allowed
 		$form = (!preg_match('/^[a-z0-9_-]+$/i', $form)) ? '' : $form;
@@ -1009,7 +1008,6 @@ switch ($mode)
 		{
 			$username	= request_var('username', '', true);
 			$email		= strtolower(request_var('email', ''));
-			$icq		= request_var('icq', '');
 			$jabber		= request_var('jabber', '');
 			$skype		= request_var('skype', '');
 			$telegram	= request_var('telegram', '');
@@ -1052,7 +1050,6 @@ switch ($mode)
 
 			$sql_where .= ($username) ? ' AND u.username_clean ' . $db->sql_like_expression(str_replace('*', $db->any_char, utf8_clean_string($username))) : '';
 			$sql_where .= ($auth->acl_get('a_user') && $email) ? ' AND u.user_email ' . $db->sql_like_expression(str_replace('*', $db->any_char, $email)) . ' ' : '';
-			$sql_where .= ($icq) ? ' AND u.user_icq ' . $db->sql_like_expression(str_replace('*', $db->any_char, $icq)) . ' ' : '';
 			$sql_where .= ($jabber) ? ' AND u.user_jabber ' . $db->sql_like_expression(str_replace('*', $db->any_char, $jabber)) . ' ' : '';
 			$sql_where .= ($skype) ? ' AND u.user_skype ' . $db->sql_like_expression(str_replace('*', $db->any_char, $skype)) . ' ' : '';
 			$sql_where .= ($telegram) ? ' AND u.user_telegram ' . $db->sql_like_expression(str_replace('*', $db->any_char, $telegram)) . ' ' : '';
@@ -1287,8 +1284,9 @@ switch ($mode)
 			'select_single'	=> array('select_single', $select_single),
 			'username'		=> array('username', '', true),
 			'email'			=> array('email', ''),
-			'icq'			=> array('icq', ''),
 			'jabber'		=> array('jabber', ''),
+			'skype'			=> array('skype', ''),
+			'telegram'		=> array('telegram', ''),
 			'search_group_id'	=> array('search_group_id', 0),
 			'joined_select'	=> array('joined_select', 'lt'),
 			'active_select'	=> array('active_select', 'lt'),
@@ -1376,7 +1374,6 @@ switch ($mode)
 			$template->assign_vars(array(
 				'USERNAME'	=> $username,
 				'EMAIL'		=> $email,
-				'ICQ'		=> $icq,
 				'JABBER'	=> $jabber,
 				'SKYPE'		=> $skype,
 				'TELEGRAM'	=> $telegram,
@@ -1531,7 +1528,6 @@ switch ($mode)
 			'PM_IMG'		=> $user->img('icon_contact_pm', $user->lang['SEND_PRIVATE_MESSAGE']),
 			'EMAIL_IMG'		=> $user->img('icon_contact_email', $user->lang['EMAIL']),
 			'WWW_IMG'		=> $user->img('icon_contact_www', $user->lang['WWW']),
-			'ICQ_IMG'		=> $user->img('icon_contact_icq', $user->lang['ICQ']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
 			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
 			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
@@ -1686,7 +1682,6 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_EMAIL'		=> $email,
 		'U_WWW'			=> (!empty($data['user_website'])) ? $data['user_website'] : '',
 		'U_SHORT_WWW'			=> (!empty($data['user_website'])) ? ((strlen($data['user_website']) > 55) ? substr($data['user_website'], 0, 39) . ' ... ' . substr($data['user_website'], -10) : $data['user_website']) : '',
-		'U_ICQ'			=> ($data['user_icq']) ? 'https://icq.im/' . urlencode($data['user_icq']) : '',
 		'U_JABBER'		=> ($data['user_jabber']) ? ('xmpp:' . $data['user_jabber']) : '',
 		'U_SKYPE'		=> ($data['user_skype']) ? ('skype:' . $data['user_skype'] . '?chat') : '',
 		'U_TELEGRAM'	=> ($data['user_telegram']) ? ('tg://resolve?domain=' . $data['user_telegram']) : '',

@@ -53,7 +53,6 @@ $lang = array_merge($lang, array(
 
 	'IM_ADD_CONTACT'		=> 'Add Contact',
 	'IM_DOWNLOAD_APP'		=> 'Download application',
-	'IM_ICQ'				=> 'Please note that users may have selected to not receive unsolicited instant messages.',
 	'IM_JABBER'				=> 'Please note that users may have selected to not receive unsolicited instant messages.',
 	'IM_JABBER_SUBJECT'		=> 'This is an automated message please do not reply! Message from user %1$s at %2$s.',
 	'IM_MESSAGE'			=> 'Your message',
@@ -93,7 +92,6 @@ $lang = array_merge($lang, array(
 	'SEARCH_USER_TOPICS'	=> 'Search user’s topics',
 	'SELECT_MARKED'			=> 'Select marked',
 	'SELECT_SORT_METHOD'	=> 'Select sort method',
-	'SEND_ICQ_MESSAGE'		=> 'Send ICQ message',
 	'SEND_IM'				=> 'Instant messaging',
 	'SEND_JABBER_MESSAGE'	=> 'Send Jabber message',
 	'SEND_MESSAGE'			=> 'Message',

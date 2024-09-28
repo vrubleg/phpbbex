@@ -231,7 +231,6 @@ $lang = array_merge($lang, array(
 	'HOME'							=> 'Home',
 
 	'ICQ'						=> 'ICQ',
-	'ICQ_STATUS'				=> 'ICQ status',
 	'IF'						=> 'If',
 	'IMAGE'						=> 'Image',
 	'IMAGE_FILETYPE_INVALID'	=> 'Image file type %d for mimetype %s not supported.',

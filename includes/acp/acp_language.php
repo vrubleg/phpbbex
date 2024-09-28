@@ -707,7 +707,7 @@ class acp_language
 				$lang_id = $db->sql_nextid();
 
 				$valid_localized = array(
-					'icon_back_top', 'icon_contact_email', 'icon_contact_icq', 'icon_contact_jabber', 'icon_contact_skype', 'icon_contact_telegram', 'icon_contact_pm', 'icon_contact_www', 'icon_post_delete', 'icon_post_edit', 'icon_post_info', 'icon_post_quote', 'icon_post_report', 'icon_user_online', 'icon_user_offline', 'icon_user_profile', 'icon_user_search', 'icon_user_warn', 'button_pm_forward', 'button_pm_new', 'button_pm_reply', 'button_topic_locked', 'button_topic_new', 'button_topic_reply', 'button_upload_image',
+					'icon_back_top', 'icon_contact_email', 'icon_contact_jabber', 'icon_contact_skype', 'icon_contact_telegram', 'icon_contact_pm', 'icon_contact_www', 'icon_post_delete', 'icon_post_edit', 'icon_post_info', 'icon_post_quote', 'icon_post_report', 'icon_user_online', 'icon_user_offline', 'icon_user_profile', 'icon_user_search', 'icon_user_warn', 'button_pm_forward', 'button_pm_new', 'button_pm_reply', 'button_topic_locked', 'button_topic_new', 'button_topic_reply', 'button_upload_image',
 				);
 
 				$sql_ary = array();

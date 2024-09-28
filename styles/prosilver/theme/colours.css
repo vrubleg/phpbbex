@@ -454,7 +454,6 @@ Colours and backgrounds for buttons.css
 /* Profile & navigation icons */
 .email-icon, .email-icon a		{ background-image: url("{IMG_ICON_CONTACT_EMAIL_SRC}"); }
 .web-icon, .web-icon a			{ background-image: url("{IMG_ICON_CONTACT_WWW_SRC}"); }
-.icq-icon, .icq-icon a			{ background-image: url("{IMG_ICON_CONTACT_ICQ_SRC}"); }
 .jabber-icon, .jabber-icon a	{ background-image: url("{IMG_ICON_CONTACT_JABBER_SRC}"); }
 .skype-icon, .skype-icon a		{ background-image: url("{IMG_ICON_CONTACT_SKYPE_SRC}"); }
 .telegram-icon, .telegram-icon a{ background-image: url("{IMG_ICON_CONTACT_TELEGRAM_SRC}"); }

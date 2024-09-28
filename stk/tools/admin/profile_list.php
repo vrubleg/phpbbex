@@ -72,6 +72,8 @@ class profile_list
 		$options = array(
 			'user_icq'			=> 'ICQ',
 			'user_jabber'		=> 'JABBER',
+			'user_skype'		=> 'SKYPE',
+			'user_telegram'		=> 'TELEGRAM',
 			'user_website'		=> 'WEBSITE',
 			'user_occ'			=> 'OCCUPATION',
 			'user_interests'	=> 'INTERESTS',
@@ -181,6 +183,8 @@ class profile_list
 				'ICQ'				=> $row['user_icq'],
 				'INTERESTS'			=> $row['user_interests'],
 				'JABBER'			=> $row['user_jabber'],
+				'SKYPE'				=> $row['user_skype'],
+				'TELEGRAM'			=> $row['user_telegram'],
 				'JOINED'			=> $user->format_date($row['user_regdate']),
 				'LOCATION'			=> $row['user_from'],
 				'OCCUPATION'		=> $row['user_occ'],
