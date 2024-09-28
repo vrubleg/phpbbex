@@ -739,32 +739,6 @@ $lang = array_merge($lang, array(
 	'DOWNLOADS'							=> 'Скачивания',
 ));
 
-// Quick reply
-$lang = array_merge($lang, array(
-	'ACP_QUICK_REPLY'			=> 'Быстрый ответ',
-	'LOG_CONFIG_QUICK_REPLY'	=> '<strong>Изменены настройки быстрого ответа</strong>',
-	'ACP_QUICK_REPLY_EXPLAIN'	=> 'Здесь вы можете настроить желаемый вид и функции быстрого ответа в темах. Вы можете включить/отключить быстрый ответ, а также управлять отображением смайликов, формой добавления вложений и т.п.',
-	'ALLOW_QUICK_REPLY'			=> 'Разрешить быстрый ответ',
-	'ALLOW_QUICK_REPLY_EXPLAIN'	=> 'Пользователи смогут отправлять сообщения на странице просмотра темы.',
-	'ALLOW_QUICK_REPLY_NONE'	=> 'Нет',
-	'ALLOW_QUICK_REPLY_REG'		=> 'Зарегистрированным пользователям',
-	'ALLOW_QUICK_REPLY_ALL'		=> 'Всем',
-	'ALLOW_REPLY_ICONS'			=> 'Значки тем',
-	'ALLOW_REPLY_SUBJECT'		=> 'Заголовок',
-	'ALLOW_REPLY_CHECKBOXES'	=> 'Чекбоксы',
-	'ALLOW_REPLY_ATTACHBOX'		=> 'Вложение файлов',
-	'ALLOW_REPLY_SMILIES'		=> 'Смайлики',
-	'ALLOW_QUICK_FULL_QUOTE'	=> 'Разрешить полное цитирование',
-	'ALLOW_QUICK_POST'			=> 'Разрешить быстрые темы',
-	'ALLOW_QUICK_POST_EXPLAIN'	=> 'Пользователи смогут начинать новые темы на странице просмотра раздела.',
-));
-
-// Posts merging
-$lang = array_merge($lang, array(
-	'MERGE_INTERVAL'				=> 'Интервал склеивания сообщений',
-	'MERGE_INTERVAL_EXPLAIN'		=> 'Количество часов, в течение которого сообщения пользователя будут склеены с его последним сообщением темы. Оставьте поле пустым или установите 0 для отключения этой функции.',
-));
-
 // Out links
 $lang = array_merge($lang, array(
 	'ACP_OUTLINKS'			=> 'Верхние ссылки',

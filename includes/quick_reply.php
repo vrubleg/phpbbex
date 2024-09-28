@@ -57,13 +57,6 @@ foreach ($uninit as $var_name => $default_value)
 }
 unset($uninit);
 
-$options = array('allow_' . $mode . '_checkboxes' => 2, 'allow_' . $mode . '_attachbox' => 3, 'allow_' . $mode . '_smilies' => 4);
-$options[$mode == 'reply' ? 'allow_reply_subject' : 'allow_post_icons'] = 1;
-foreach ($options as $key => $value)
-{
-	$config[$key] = ($config['allow_quick_' . $mode . '_options'] & 1 << $value) ? 1 : 0;
-}
-
 $bbcode_status	= ($config['allow_bbcode'] && $auth->acl_get('f_bbcode', $forum_id)) ? true : false;
 $smilies_status	= ($bbcode_status && $config['allow_smilies'] && $auth->acl_get('f_smilies', $forum_id)) ? true : false;
 $img_status		= ($bbcode_status && $auth->acl_get('f_img', $forum_id)) ? true : false;
@@ -72,13 +65,13 @@ $flash_status	= ($bbcode_status && $auth->acl_get('f_flash', $forum_id) && $conf
 $quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
 $spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 
-if ($config['allow_' . $mode . '_smilies'])
+if ($config['allow_quick_' . $mode . '_smilies'])
 {
 	generate_smilies('inline', $forum_id);
 }
 
 $s_topic_icons = false;
-if ($config['enable_topic_icons'] && $mode == 'post' && $config['allow_post_icons'])
+if ($config['enable_topic_icons'] && $mode == 'post' && $config['allow_quick_post_icons'])
 {
 	$s_topic_icons = posting_gen_topic_icons($mode, 0);
 }
@@ -132,7 +125,7 @@ $qr_hidden_fields = array(
 );
 
 // Attachment entry
-$show_attach_box = (PHP_FILE_UPLOADS && $auth->acl_get('f_attach', $forum_id) && $auth->acl_get('u_attach') && $config['allow_attachments'] && $config['allow_' . $mode . '_attachbox']);
+$show_attach_box = (PHP_FILE_UPLOADS && $auth->acl_get('f_attach', $forum_id) && $auth->acl_get('u_attach') && $config['allow_attachments'] && $config['allow_quick_' . $mode . '_attachbox']);
 
 add_form_key('posting');
 
@@ -148,7 +141,7 @@ $template->assign_vars(array(
 	'U_QR_ACTION'			=> $s_action,
 	'S_FORM_ENCTYPE'		=> ($show_attach_box) ? ' enctype="multipart/form-data"' : '',
 	'SUBJECT'				=> '',
-	'EXTRA_OPTIONS_DISPLAY'	=> ($config['allow_' . $mode . '_checkboxes']),
+	'EXTRA_OPTIONS_DISPLAY'	=> ($config['allow_quick_' . $mode . '_checkboxes']),
 
 	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
 	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>'),
@@ -166,10 +159,10 @@ $template->assign_vars(array(
 
 	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered']) ? true : false,
 	'S_SHOW_TOPIC_ICONS'		=> $s_topic_icons,
-	'S_SUBJECT_ALLOWED'			=> ($mode == 'post') || $config['allow_reply_subject'],
+	'S_SUBJECT_ALLOWED'			=> ($mode == 'post') || $config['allow_quick_reply_subject'],
 	'S_BBCODE_ALLOWED'			=> $bbcode_status,
 	'S_BBCODE_CHECKED'			=> ($bbcode_checked) ? ' checked="checked"' : '',
-	'S_SMILIES_ALLOWED'			=> ($smilies_status && $config['allow_' . $mode . '_smilies']) ? true : false,
+	'S_SMILIES_ALLOWED'			=> ($smilies_status && $config['allow_quick_' . $mode . '_smilies']) ? true : false,
 	'S_SMILIES_CHECKED'			=> ($smilies_checked) ? ' checked="checked"' : '',
 	'S_SIG_ALLOWED'				=> ($auth->acl_get('f_sigs', $forum_id) && $config['allow_sig'] && $user->data['is_registered']) ? true : false,
 	'S_SIGNATURE_CHECKED'		=> ($sig_checked) ? ' checked="checked"' : '',

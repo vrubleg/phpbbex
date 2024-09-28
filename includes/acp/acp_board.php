@@ -313,7 +313,21 @@ class acp_board
 						'max_post_img_width'	=> array('lang' => 'MAX_POST_IMG_WIDTH',	'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 						'max_post_img_height'	=> array('lang' => 'MAX_POST_IMG_HEIGHT',	'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 
-						'legend3'							=> 'EXTERNAL_LINKS',
+						'legend3'							=> 'QUICK_REPLY',
+						'allow_quick_reply'					=> array('lang' => 'ALLOW_QUICK_REPLY',				'validate' => 'int',	'type' => 'select', 'method' => 'allow_quick_reply_for', 'explain' => true),
+						'allow_quick_reply_subject'			=> array('lang' => 'ALLOW_QUICK_REPLY_SUBJECT',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_reply_checkboxes'		=> array('lang' => 'ALLOW_QUICK_REPLY_CHECKBOXES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_reply_attachbox'		=> array('lang' => 'ALLOW_QUICK_REPLY_ATTACHBOX',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_reply_smilies'			=> array('lang' => 'ALLOW_QUICK_REPLY_SMILIES',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_full_quote'			=> array('lang' => 'ALLOW_QUICK_FULL_QUOTE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'allow_quick_post'					=> array('lang' => 'ALLOW_QUICK_TOPIC',				'validate' => 'int',	'type' => 'select', 'method' => 'allow_quick_reply_for', 'explain' => true),
+						'allow_quick_post_icons'			=> array('lang' => 'ALLOW_QUICK_REPLY_ICONS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_post_checkboxes'		=> array('lang' => 'ALLOW_QUICK_REPLY_CHECKBOXES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_post_attachbox'		=> array('lang' => 'ALLOW_QUICK_REPLY_ATTACHBOX',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_post_smilies'			=> array('lang' => 'ALLOW_QUICK_REPLY_SMILIES',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'legend4'							=> 'EXTERNAL_LINKS',
 						'external_links_newwindow'			=> array('lang' => 'EXTERNAL_LINKS_NEWWINDOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'external_links_newwindow_exclude'	=> array('lang' => 'EXTERNAL_LINKS_EXCLUDE',	'validate' => 'string',	'type' => 'textarea:3:1000', 'explain' => true),
 						'external_links_nofollow'			=> array('lang' => 'EXTERNAL_LINKS_NOFOLLOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -1035,6 +1049,25 @@ class acp_board
 		}
 
 		return '<input id="' . $key . '" type="text" size="3" maxlength="4" name="config[bump_interval]" value="' . $value . '" />&nbsp;<select name="config[bump_type]">' . $s_bump_type . '</select>';
+	}
+
+	/**
+	* Quick reply
+	*/
+	function allow_quick_reply_for($value, $key = '')
+	{
+		global $user;
+
+		$options_ary = array(0 => 'ALLOW_QUICK_REPLY_NONE', 1 => 'ALLOW_QUICK_REPLY_REG', 2 => 'ALLOW_QUICK_REPLY_ALL');
+
+		$allow_quick_reply_options = '';
+		foreach ($options_ary as $key_value=>$option)
+		{
+			$selected = ($value == $key_value) ? ' selected="selected"' : '';
+			$allow_quick_reply_options .= '<option value="' . $key_value . '"' . $selected . '>' . $user->lang[$option] . '</option>';
+		}
+
+		return $allow_quick_reply_options;
 	}
 
 	/**

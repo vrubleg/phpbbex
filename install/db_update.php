@@ -301,6 +301,10 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	$db->sql_query("ALTER TABLE " . FORUMS_TABLE . " DROP COLUMN enable_icons");
 	$db->sql_return_on_error(false);
 
+	// Disable obsolete modules (they can be removed in the ACP safely).
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename = 'quick_reply' AND module_mode = 'quick_reply'");
+
 	// Remove obsolete permissions.
 
 	$permissions = array(
@@ -348,6 +352,8 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 		'recaptcha_pubkey',
 		'social_media_cover_url',
 		'dbms_version',
+		'allow_quick_reply_options',
+		'allow_quick_post_options',
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
@@ -362,6 +368,17 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	// New config values.
 
 	set_config('enable_topic_icons', '1');
+	set_config('allow_quick_reply', '2');
+	set_config('allow_quick_reply_subject', '0');
+	set_config('allow_quick_reply_checkboxes', '1');
+	set_config('allow_quick_reply_attachbox', '1');
+	set_config('allow_quick_reply_smilies', '1');
+	set_config('allow_quick_full_quote', '0');
+	set_config('allow_quick_post', '1');
+	set_config('allow_quick_post_icons', '1');
+	set_config('allow_quick_post_checkboxes', '1');
+	set_config('allow_quick_post_attachbox', '1');
+	set_config('allow_quick_post_smilies', '1');
 
 	// Update DB schema version.
 
