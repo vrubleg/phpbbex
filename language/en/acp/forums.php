@@ -43,13 +43,8 @@ $lang = array_merge($lang, array(
 	'EDIT_FORUM'					=> 'Edit forum',
 	'ENABLE_INDEXING'				=> 'Enable search indexing',
 	'ENABLE_INDEXING_EXPLAIN'		=> 'If set to yes posts made to this forum will be indexed for searching.',
-	'ENABLE_POST_REVIEW'			=> 'Enable post review',
-	'ENABLE_POST_REVIEW_EXPLAIN'	=> 'If set to yes users are able to review their post if new posts were made to the topic while users wrote theirs. This should be disabled for chat forums.',
-	'ENABLE_QUICK_REPLY'			=> 'Enable quick reply',
-	'ENABLE_QUICK_REPLY_EXPLAIN'	=> 'Enables the quick reply in this forum. This setting is not considered if the quick reply is disabled board wide. The quick reply will only be displayed for users who have permission to post in this forum.',
 	'ENABLE_RECENT'					=> 'Display active topics',
 	'ENABLE_RECENT_EXPLAIN'			=> 'If set to yes topics made to this forum will be shown in the active topics list.',
-	'ENABLE_TOPIC_ICONS'			=> 'Enable topic icons',
 
 	'FORUM_ADMIN'						=> 'Forum administration',
 	'FORUM_ADMIN_EXPLAIN'				=> 'In phpBBex everything is forum based. A category is just a special type of forum. Each forum can have an unlimited number of sub-forums and you can determine whether each may be posted to or not (i.e. whether it acts like an old category). Here you can add, edit, delete, lock, unlock individual forums as well as set certain additional controls. If your posts and topics have got out of sync you can also resynchronise a forum. <strong>You need to copy or set appropriate permissions for newly created forums to have them displayed.</strong>',

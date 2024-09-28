@@ -295,6 +295,49 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 {
+	// Remove unused columns.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . FORUMS_TABLE . " DROP COLUMN enable_icons");
+	$db->sql_return_on_error(false);
+
+	// Disable obsolete modules (they can be removed in the ACP safely).
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename = 'quick_reply' AND module_mode = 'quick_reply'");
+
+	// Remove obsolete permissions.
+
+	$permissions = array(
+		'f_icons',
+	);
+	$option_ids = array();
+
+	$result = $db->sql_query('SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE. ' WHERE ' . $db->sql_in_set('auth_option', $permissions));
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$option_ids[] = (int) $row['auth_option_id'];
+	}
+	$db->sql_freeresult($result);
+
+	if (!empty($option_ids))
+	{
+		foreach (array(ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE) as $table)
+		{
+			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
+		}
+
+		// Reset permissions cache...
+		$cache->destroy('_acl_options');
+		require_once($phpbb_root_path . 'includes/acp/auth.php');
+		$auth_admin = new auth_admin();
+		$auth_admin->acl_clear_prefetch();
+	}
+
+	// Remove obsolete FORUM_FLAG_QUICK_REPLY and FORUM_FLAG_POST_REVIEW from forum_flags.
+
+	$allowed_forum_flags = FORUM_FLAG_LINK_TRACK | FORUM_FLAG_PRUNE_POLL | FORUM_FLAG_PRUNE_ANNOUNCE | FORUM_FLAG_PRUNE_STICKY | FORUM_FLAG_ACTIVE_TOPICS;
+	update_bitfield_column(FORUMS_TABLE, 'forum_flags', 0, $allowed_forum_flags);
+
 	// Reset CAPTCHA plugin if obsolete reCAPTCHA v1 is used.
 
 	if ($config['captcha_plugin'] == 'phpbb_recaptcha')
@@ -309,6 +352,8 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 		'recaptcha_pubkey',
 		'social_media_cover_url',
 		'dbms_version',
+		'allow_quick_reply_options',
+		'allow_quick_post_options',
 	];
 
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
@@ -319,6 +364,21 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	{
 		set_config('allow_name_chars', 'USERNAME_UNICHARS_SPACERS');
 	}
+
+	// New config values.
+
+	set_config('enable_topic_icons', '1');
+	set_config('allow_quick_reply', '2');
+	set_config('allow_quick_reply_subject', '0');
+	set_config('allow_quick_reply_checkboxes', '1');
+	set_config('allow_quick_reply_attachbox', '1');
+	set_config('allow_quick_reply_smilies', '1');
+	set_config('allow_quick_full_quote', '0');
+	set_config('allow_quick_post', '1');
+	set_config('allow_quick_post_icons', '1');
+	set_config('allow_quick_post_checkboxes', '1');
+	set_config('allow_quick_post_attachbox', '1');
+	set_config('allow_quick_post_smilies', '1');
 
 	// Update DB schema version.
 

@@ -74,7 +74,7 @@
 	<dl>
 		<dt><label for="icon">{L_ICON}:</label></dt>
 		<dd>
-			<label for="icon"><input type="radio" name="icon" id="icon" value="0" checked="checked" tabindex="1" /> <!-- IF S_SHOW_TOPIC_ICONS -->{L_NO_TOPIC_ICON}<!-- ELSE -->{L_NO_PM_ICON}<!-- ENDIF --></label>
+			<label for="icon"><input type="radio" name="icon" id="icon" value="0" {S_NO_ICON_CHECKED} tabindex="1" /> <!-- IF S_SHOW_TOPIC_ICONS -->{L_NO_TOPIC_ICON}<!-- ELSE -->{L_NO_PM_ICON}<!-- ENDIF --></label>
 			<!-- BEGIN topic_icon --><label for="icon-{topic_icon.ICON_ID}"><input type="radio" name="icon" id="icon-{topic_icon.ICON_ID}" value="{topic_icon.ICON_ID}" {topic_icon.S_ICON_CHECKED} tabindex="1" /><img src="{topic_icon.ICON_IMG}" width="{topic_icon.ICON_WIDTH}" height="{topic_icon.ICON_HEIGHT}" alt="" title="" /></label> <!-- END topic_icon -->
 		</dd>
 	</dl>
@@ -142,17 +142,17 @@
 
 		<!-- IF S_DO_MERGE_ALLOWED or S_LOCK_POST_ALLOWED or S_LOCK_TOPIC_ALLOWED or S_NOTIFY_ALLOWED --><hr /><!-- ENDIF -->
 
-		<!-- IF S_DO_MERGE_ALLOWED -->
-			<div><label for="do_merge"><input type="checkbox" name="do_merge" id="do_merge"{S_DO_MERGE_CHECKED} /> {L_DO_MERGE}</label></div>
-		<!-- ENDIF -->
-		<!-- IF S_NOTIFY_ALLOWED -->
-			<div><label for="notify"><input type="checkbox" name="notify" id="notify"{S_NOTIFY_CHECKED} /> {L_NOTIFY_REPLY}</label></div>
-		<!-- ENDIF -->
 		<!-- IF S_LOCK_TOPIC_ALLOWED -->
 			<div><label for="lock_topic"><input type="checkbox" name="lock_topic" id="lock_topic"{S_LOCK_TOPIC_CHECKED} /> {L_LOCK_TOPIC}</label></div>
 		<!-- ENDIF -->
 		<!-- IF S_LOCK_POST_ALLOWED -->
 			<div><label for="lock_post"><input type="checkbox" name="lock_post" id="lock_post"{S_LOCK_POST_CHECKED} /> {L_LOCK_POST}</label></div>
+		<!-- ENDIF -->
+		<!-- IF S_NOTIFY_ALLOWED -->
+			<div><label for="notify"><input type="checkbox" name="notify" id="notify"{S_NOTIFY_CHECKED} /> {L_NOTIFY_REPLY}</label></div>
+		<!-- ENDIF -->
+		<!-- IF S_DO_MERGE_ALLOWED -->
+			<div><label for="do_merge"><input type="checkbox" name="do_merge" id="do_merge"{S_DO_MERGE_CHECKED} /> {L_DO_MERGE}</label></div>
 		<!-- ENDIF -->
 	</div>
 

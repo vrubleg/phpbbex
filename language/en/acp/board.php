@@ -133,9 +133,6 @@ $lang = array_merge($lang, array(
 	'ALLOW_PM_ATTACHMENTS'		=> 'Allow attachments in private messages',
 	'ALLOW_PM_REPORT'			=> 'Allow users to report private messages',
 	'ALLOW_PM_REPORT_EXPLAIN'	=> 'If this setting is enabled, users have the option of reporting a private message they have received or sent to the board’s moderators. These private messages will then be visible in the Moderator Control Panel.',
-	'ALLOW_QUICK_REPLY'			=> 'Allow quick reply',
-	'ALLOW_QUICK_REPLY_EXPLAIN'	=> 'This switch allows for the quick reply to be disabled board-wide. When enabled, forum specific settings will be used to determine whether the quick reply is displayed in individual forums.',
-	'ALLOW_QUICK_REPLY_BUTTON'	=> 'Submit and enable quick reply in all forums',
 	'ALLOW_SIG'					=> 'Allow signatures',
 	'ALLOW_SIG_BBCODE'			=> 'Allow BBCode in user signatures',
 	'ALLOW_SIG_FLASH'			=> 'Allow use of <code>[FLASH]</code> BBCode tag in user signatures',
@@ -212,11 +209,31 @@ $lang = array_merge($lang, array(
 // Post Settings
 $lang = array_merge($lang, array(
 	'ACP_POST_SETTINGS_EXPLAIN'			=> 'Here you can set all default settings for posting.',
+
+	'ENABLE_TOPIC_ICONS'				=> 'Enable topic icons',
 	'ALLOW_POST_LINKS'					=> 'Allow links in posts/private messages',
 	'ALLOW_POST_LINKS_EXPLAIN'			=> 'If disallowed the <code>[URL]</code> BBCode tag and automatic/magic URLs are disabled.',
 	'ALLOW_POST_FLASH'					=> 'Allow use of <code>[FLASH]</code> BBCode tag in posts',
 	'ALLOW_POST_FLASH_EXPLAIN'			=> 'If disallowed the <code>[FLASH]</code> BBCode tag is disabled in posts. Otherwise the permission system controls which users can use the <code>[FLASH]</code> BBCode tag.',
 
+	// Quick reply
+	'QUICK_REPLY'					=> 'Quick reply',
+	'ALLOW_QUICK_REPLY'				=> 'Allow quick reply',
+	'ALLOW_QUICK_REPLY_EXPLAIN'		=> 'Users can post reply directly at topic view.',
+	'ALLOW_QUICK_REPLY_NONE'		=> 'None',
+	'ALLOW_QUICK_REPLY_REG'			=> 'Registered only',
+	'ALLOW_QUICK_REPLY_ALL'			=> 'All',
+	'ALLOW_QUICK_REPLY_ICONS'		=> 'Topic icons',
+	'ALLOW_QUICK_REPLY_SUBJECT'		=> 'Subject',
+	'ALLOW_QUICK_REPLY_CHECKBOXES'	=> 'Checkboxes',
+	'ALLOW_QUICK_REPLY_ATTACHBOX'	=> 'Attachbox',
+	'ALLOW_QUICK_REPLY_SMILIES'		=> 'Smilies',
+	'ALLOW_QUICK_FULL_QUOTE'		=> 'Allow full quote',
+	'ALLOW_QUICK_TOPIC'				=> 'Allow quick topic',
+	'ALLOW_QUICK_TOPIC_EXPLAIN'		=> 'Users can start topic directly at forum view.',
+
+	'MERGE_INTERVAL'				=> 'Merging posts interval',
+	'MERGE_INTERVAL_EXPLAIN'		=> 'Number of hours a messages from the user will be merged with his topic last message. Leave empty or 0 to disable merging.',
 	'BUMP_INTERVAL'					=> 'Bump interval',
 	'BUMP_INTERVAL_EXPLAIN'			=> 'Number of minutes, hours or days between the last post to a topic and the ability to bump that topic. Setting the value to 0 disables bumping entirely.',
 	'CHAR_LIMIT'					=> 'Maximum characters per post/message',

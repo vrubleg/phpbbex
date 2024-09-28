@@ -237,7 +237,6 @@ CREATE TABLE phpbb_forums (
 	display_subforum_list tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	display_on_index tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_indexing tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
-	enable_icons tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	enable_prune tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	prune_next int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	prune_days mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,

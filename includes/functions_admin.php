@@ -3152,21 +3152,25 @@ function obtain_latest_version_info($force_update = false, $warn_fail = false, $
 }
 
 /**
- * Enables a particular flag in a bitfield column of a given table.
+ * Updates a bitfield column with OR and AND bitmasks.
  *
- * @param string	$table_name		The table to update
- * @param string	$column_name	The column containing a bitfield to update
- * @param int		$flag			The binary flag which is OR-ed with the current column value
+ * @param string	$table_name		The table to update.
+ * @param string	$column_name	The column containing a bitfield to update.
+ * @param int		$or_bits		Bitmask which is OR-ed with the current column value.
+ * @param int		$and_bits		Bitmask which is AND-ed with the current column value.
  * @param string	$sql_more		This string is attached to the sql query generated to update the table.
  *
  * @return null
  */
-function enable_bitfield_column_flag($table_name, $column_name, $flag, $sql_more = '')
+function update_bitfield_column($table_name, $column_name, $or_bits = 0, $and_bits = -1, $sql_more = '')
 {
 	global $db;
 
-	$sql = 'UPDATE ' . $table_name . '
-		SET ' . $column_name . ' = ' . $db->sql_bit_or($column_name, $flag) . '
-		' . $sql_more;
+	$sql = 'UPDATE ' . $table_name
+		. ' SET ' . $column_name . ' = ' . $column_name
+		. ($and_bits !== -1 ? ' & ' . $and_bits : '')
+		. ($or_bits !== 0 ? ' | ' . $or_bits : '')
+		. ($sql_more ? ' ' . $sql_more : '');
+
 	$db->sql_query($sql);
 }

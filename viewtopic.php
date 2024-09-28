@@ -1611,9 +1611,9 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'EDIT_REASON'		=> $row['post_edit_reason'],
 
 		'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', "{$user->lang['UNREAD_POST']} #{$post_number}") : $user->img('icon_post_target', "{$user->lang['POST']} #{$post_number}"),
-		'POST_ICON_IMG'			=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
-		'POST_ICON_IMG_WIDTH'	=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
-		'POST_ICON_IMG_HEIGHT'	=> ($topic_data['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['height'] : '',
+		'POST_ICON_IMG'			=> ($config['enable_topic_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
+		'POST_ICON_IMG_WIDTH'	=> ($config['enable_topic_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
+		'POST_ICON_IMG_HEIGHT'	=> ($config['enable_topic_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['height'] : '',
 		'ONLINE_IMG'			=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$poster_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
 		'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($user_cache[$poster_id]['online']) ? true : false),
 

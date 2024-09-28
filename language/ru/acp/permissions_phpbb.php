@@ -121,7 +121,6 @@ $lang = array_merge($lang, array(
 	'acl_f_read'		=> array('lang' => 'Может читать раздел', 'cat' => 'post'),
 	'acl_f_post'		=> array('lang' => 'Может создавать темы', 'cat' => 'post'),
 	'acl_f_reply'		=> array('lang' => 'Может отвечать в темах', 'cat' => 'post'),
-	'acl_f_icons'		=> array('lang' => 'Может использовать значки тем и сообщений', 'cat' => 'post'),
 	'acl_f_announce'	=> array('lang' => 'Может создавать объявления', 'cat' => 'post'),
 	'acl_f_sticky'		=> array('lang' => 'Может закреплять темы', 'cat' => 'post'),
 

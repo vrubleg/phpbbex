@@ -348,7 +348,7 @@ $post_data['post_subject']		= (in_array($mode, array('quote', 'edit'))) ? $post_
 $post_data['topic_time_limit']	= (isset($post_data['topic_time_limit'])) ? (($post_data['topic_time_limit']) ? (int) $post_data['topic_time_limit'] / 86400 : (int) $post_data['topic_time_limit']) : 0;
 $post_data['poll_length']		= (!empty($post_data['poll_length'])) ? (int) $post_data['poll_length'] / 86400 : 0;
 $post_data['poll_start']		= (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
-$post_data['icon_id']			= (!isset($post_data['icon_id']) || in_array($mode, array('quote', 'reply'))) ? 0 : (int) $post_data['icon_id'];
+$post_data['icon_id']			= (!isset($post_data['icon_id']) || in_array($mode, ['quote', 'reply']) || ($mode == 'edit' && $post_id != $post_data['topic_first_post_id'] && empty($post_data['post_subject']))) ? 0 : (int) $post_data['icon_id'];
 $post_data['poll_options']		= array();
 $post_data['topic_first_post_show'] = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
 
@@ -638,7 +638,7 @@ if ($submit || $preview || $refresh)
 	$post_data['topic_time_limit']	= request_var('topic_time_limit', (($mode != 'post') ? (int) $post_data['topic_time_limit'] : 0));
 	$post_data['topic_priority']	= request_var('topic_priority', (($mode != 'post') ? (int) $post_data['topic_priority'] : 0));
 
-	if ($post_data['enable_icons'] && $auth->acl_get('f_icons', $forum_id))
+	if ($config['enable_topic_icons'])
 	{
 		$post_data['icon_id'] = request_var('icon', (int) $post_data['icon_id']);
 	}
@@ -721,17 +721,13 @@ if ($submit || $preview || $refresh)
 	// notify and show user the post made between his request and the final submit
 	if (($mode == 'reply' || $mode == 'quote') && $post_data['topic_cur_post_id'] && $post_data['topic_cur_post_id'] != $post_data['topic_last_post_id'])
 	{
-		// Only do so if it is allowed forum-wide
-		if ($post_data['forum_flags'] & FORUM_FLAG_POST_REVIEW)
+		if (topic_review($topic_id, $forum_id, 'post_review', $post_data['topic_cur_post_id']))
 		{
-			if (topic_review($topic_id, $forum_id, 'post_review', $post_data['topic_cur_post_id']))
-			{
-				$template->assign_var('S_POST_REVIEW', true);
-			}
-
-			$submit = false;
-			$refresh = true;
+			$template->assign_var('S_POST_REVIEW', true);
 		}
+
+		$submit = false;
+		$refresh = true;
 	}
 
 	// Parse Attachments - before checksum is calculated
@@ -745,7 +741,7 @@ if ($submit || $preview || $refresh)
 
 	// If editing and checksum has changed we know the post was edited while we're editing
 	// Notify and show user the changed post
-	if ($mode == 'edit' && $post_data['forum_flags'] & FORUM_FLAG_POST_REVIEW)
+	if ($mode == 'edit')
 	{
 		$edit_post_message_checksum = request_var('edit_post_message_checksum', '');
 		$edit_post_subject_checksum = request_var('edit_post_subject_checksum', '');
@@ -1373,8 +1369,9 @@ if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_p
 	$topic_type_toggle = posting_gen_topic_types($forum_id, $post_data['topic_type']);
 }
 
+// Don't show icon selection if not first message and subject is empty.
 $s_topic_icons = false;
-if ($post_data['enable_icons'] && $auth->acl_get('f_icons', $forum_id))
+if ($config['enable_topic_icons'] && ($mode == 'post' || ($mode == 'edit' && ($post_id == $post_data['topic_first_post_id'] || !empty($post_data['post_subject']))) || in_array($mode, ['quote', 'reply']) && !empty($post_data['post_subject'])))
 {
 	$s_topic_icons = posting_gen_topic_icons($mode, $post_data['icon_id']);
 }

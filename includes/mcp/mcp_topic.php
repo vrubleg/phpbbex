@@ -272,8 +272,11 @@ function mcp_topic_view($id, $mode, $action)
 
 	if ($auth->acl_gets('m_split', 'm_merge', (int) $topic_info['forum_id']))
 	{
-		require_once($phpbb_root_path . 'includes/functions_posting.php');
-		$s_topic_icons = posting_gen_topic_icons('', $icon_id);
+		if ($config['enable_topic_icons'])
+		{
+			require_once($phpbb_root_path . 'includes/functions_posting.php');
+			$s_topic_icons = posting_gen_topic_icons('', $icon_id);
+		}
 
 		// Has the user selected a topic for merge?
 		if ($to_topic_id)
@@ -287,11 +290,6 @@ function mcp_topic_view($id, $mode, $action)
 			else
 			{
 				$to_topic_info = $to_topic_info[$to_topic_id];
-
-				if (!$to_topic_info['enable_icons'] || $auth->acl_get('!f_icons', $topic_info['forum_id']))
-				{
-					$s_topic_icons = false;
-				}
 			}
 		}
 	}

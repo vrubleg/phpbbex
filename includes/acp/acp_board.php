@@ -30,7 +30,7 @@ class acp_board
 		$user->add_lang('acp/board');
 
 		$action	= request_var('action', '');
-		$submit = (isset($_POST['submit']) || isset($_POST['allow_quick_reply_enable'])) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		$form_key = 'acp_board';
 		add_form_key($form_key);
@@ -91,7 +91,6 @@ class acp_board
 						'allow_bookmarks'		=> array('lang' => 'ALLOW_BOOKMARKS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_birthdays'		=> array('lang' => 'ALLOW_BIRTHDAYS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'login_via_email_enable'=> array('lang' => 'LOGIN_VIA_EMAIL_ENABLE', 'validate' => 'int',	'type' => 'custom', 'method' => 'login_via_email_options', 'explain' => true),
-						// 'allow_quick_reply'		=> array('lang' => 'ALLOW_QUICK_REPLY',		'validate' => 'bool',	'type' => 'custom', 'method' => 'quick_reply', 'explain' => true),
 
 						'legend2'				=> 'WARNINGS',
 						'warning_post_default'	=> array('lang' => 'WARNING_POST_DEFAULT',	'validate' => 'string',	'type' => 'textarea:1:255', 'explain' => false),
@@ -280,6 +279,7 @@ class acp_board
 						'legend1'				=> 'GENERAL_OPTIONS',
 						'allow_topic_notify'	=> array('lang' => 'ALLOW_TOPIC_NOTIFY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_forum_notify'	=> array('lang' => 'ALLOW_FORUM_NOTIFY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'enable_topic_icons'	=> array('lang' => 'ENABLE_TOPIC_ICONS',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_bbcode'			=> array('lang' => 'ALLOW_BBCODE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_post_flash'		=> array('lang' => 'ALLOW_POST_FLASH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_smilies'			=> array('lang' => 'ALLOW_SMILIES',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -287,7 +287,6 @@ class acp_board
 						'allow_nocensors'		=> array('lang' => 'ALLOW_NO_CENSORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_bookmarks'		=> array('lang' => 'ALLOW_BOOKMARKS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'enable_post_confirm'	=> array('lang' => 'VISUAL_CONFIRM_POST',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						//'allow_quick_reply'	=> array('lang' => 'ALLOW_QUICK_REPLY',		'validate' => 'bool',	'type' => 'custom', 'method' => 'quick_reply', 'explain' => true),
 
 						'legend2'				=> 'POSTING',
 						'bump_type'				=> false,
@@ -314,7 +313,21 @@ class acp_board
 						'max_post_img_width'	=> array('lang' => 'MAX_POST_IMG_WIDTH',	'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 						'max_post_img_height'	=> array('lang' => 'MAX_POST_IMG_HEIGHT',	'validate' => 'int:0',		'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 
-						'legend3'							=> 'EXTERNAL_LINKS',
+						'legend3'							=> 'QUICK_REPLY',
+						'allow_quick_reply'					=> array('lang' => 'ALLOW_QUICK_REPLY',				'validate' => 'int',	'type' => 'select', 'method' => 'allow_quick_reply_for', 'explain' => true),
+						'allow_quick_reply_subject'			=> array('lang' => 'ALLOW_QUICK_REPLY_SUBJECT',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_reply_checkboxes'		=> array('lang' => 'ALLOW_QUICK_REPLY_CHECKBOXES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_reply_attachbox'		=> array('lang' => 'ALLOW_QUICK_REPLY_ATTACHBOX',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_reply_smilies'			=> array('lang' => 'ALLOW_QUICK_REPLY_SMILIES',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_full_quote'			=> array('lang' => 'ALLOW_QUICK_FULL_QUOTE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'allow_quick_post'					=> array('lang' => 'ALLOW_QUICK_TOPIC',				'validate' => 'int',	'type' => 'select', 'method' => 'allow_quick_reply_for', 'explain' => true),
+						'allow_quick_post_icons'			=> array('lang' => 'ALLOW_QUICK_REPLY_ICONS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_post_checkboxes'		=> array('lang' => 'ALLOW_QUICK_REPLY_CHECKBOXES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_post_attachbox'		=> array('lang' => 'ALLOW_QUICK_REPLY_ATTACHBOX',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+						'allow_quick_post_smilies'			=> array('lang' => 'ALLOW_QUICK_REPLY_SMILIES',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
+
+						'legend4'							=> 'EXTERNAL_LINKS',
 						'external_links_newwindow'			=> array('lang' => 'EXTERNAL_LINKS_NEWWINDOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'external_links_newwindow_exclude'	=> array('lang' => 'EXTERNAL_LINKS_EXCLUDE',	'validate' => 'string',	'type' => 'textarea:3:1000', 'explain' => true),
 						'external_links_nofollow'			=> array('lang' => 'EXTERNAL_LINKS_NOFOLLOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
@@ -591,11 +604,6 @@ class acp_board
 			if ($submit)
 			{
 				set_config($config_name, $config_value);
-
-				if ($config_name == 'allow_quick_reply' && isset($_POST['allow_quick_reply_enable']))
-				{
-					enable_bitfield_column_flag(FORUMS_TABLE, 'forum_flags', log(FORUM_FLAG_QUICK_REPLY, 2));
-				}
 			}
 		}
 
@@ -1044,6 +1052,25 @@ class acp_board
 	}
 
 	/**
+	* Quick reply
+	*/
+	function allow_quick_reply_for($value, $key = '')
+	{
+		global $user;
+
+		$options_ary = array(0 => 'ALLOW_QUICK_REPLY_NONE', 1 => 'ALLOW_QUICK_REPLY_REG', 2 => 'ALLOW_QUICK_REPLY_ALL');
+
+		$allow_quick_reply_options = '';
+		foreach ($options_ary as $key_value=>$option)
+		{
+			$selected = ($value == $key_value) ? ' selected="selected"' : '';
+			$allow_quick_reply_options .= '<option value="' . $key_value . '"' . $selected . '>' . $user->lang[$option] . '</option>';
+		}
+
+		return $allow_quick_reply_options;
+	}
+
+	/**
 	* Board disable option and message
 	*/
 	function board_disable($value, $key)
@@ -1054,20 +1081,6 @@ class acp_board
 
 		return h_radio('config[board_disable]', $radio_ary, $value) . '<br /><input id="' . $key . '" type="text" name="config[board_disable_msg]" maxlength="255" size="40" value="' . $this->new_config['board_disable_msg'] . '" />';
 	}
-
-	/**
-	* Global quick reply enable/disable setting and button to enable in all forums
-	*/
-	function quick_reply($value, $key)
-	{
-		global $user;
-
-		$radio_ary = array(1 => 'YES', 0 => 'NO');
-
-		return h_radio('config[allow_quick_reply]', $radio_ary, $value) .
-			'<br /><br /><input class="button2" type="submit" id="' . $key . '_enable" name="' . $key . '_enable" value="' . $user->lang['ALLOW_QUICK_REPLY_BUTTON'] . '" />';
-	}
-
 
 	/**
 	* Select default dateformat
