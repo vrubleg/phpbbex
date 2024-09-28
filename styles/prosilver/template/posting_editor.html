@@ -142,17 +142,17 @@
 
 		<!-- IF S_DO_MERGE_ALLOWED or S_LOCK_POST_ALLOWED or S_LOCK_TOPIC_ALLOWED or S_NOTIFY_ALLOWED --><hr /><!-- ENDIF -->
 
-		<!-- IF S_DO_MERGE_ALLOWED -->
-			<div><label for="do_merge"><input type="checkbox" name="do_merge" id="do_merge"{S_DO_MERGE_CHECKED} /> {L_DO_MERGE}</label></div>
-		<!-- ENDIF -->
-		<!-- IF S_NOTIFY_ALLOWED -->
-			<div><label for="notify"><input type="checkbox" name="notify" id="notify"{S_NOTIFY_CHECKED} /> {L_NOTIFY_REPLY}</label></div>
-		<!-- ENDIF -->
 		<!-- IF S_LOCK_TOPIC_ALLOWED -->
 			<div><label for="lock_topic"><input type="checkbox" name="lock_topic" id="lock_topic"{S_LOCK_TOPIC_CHECKED} /> {L_LOCK_TOPIC}</label></div>
 		<!-- ENDIF -->
 		<!-- IF S_LOCK_POST_ALLOWED -->
 			<div><label for="lock_post"><input type="checkbox" name="lock_post" id="lock_post"{S_LOCK_POST_CHECKED} /> {L_LOCK_POST}</label></div>
+		<!-- ENDIF -->
+		<!-- IF S_NOTIFY_ALLOWED -->
+			<div><label for="notify"><input type="checkbox" name="notify" id="notify"{S_NOTIFY_CHECKED} /> {L_NOTIFY_REPLY}</label></div>
+		<!-- ENDIF -->
+		<!-- IF S_DO_MERGE_ALLOWED -->
+			<div><label for="do_merge"><input type="checkbox" name="do_merge" id="do_merge"{S_DO_MERGE_CHECKED} /> {L_DO_MERGE}</label></div>
 		<!-- ENDIF -->
 	</div>
 
