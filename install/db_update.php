@@ -134,6 +134,13 @@ function remove_permissions($permissions)
 	}
 }
 
+function remove_config_values($names)
+{
+	global $db;
+
+	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $names) . "')");
+}
+
 // Update!
 
 $purge_default = 'cache';
@@ -269,7 +276,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 
 	// Remove obsolete config values.
 
-	$obsolete_values = [
+	remove_config_values([
 		'forward_pm',
 		'print_pm',
 		'email_function_name',
@@ -294,9 +301,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'no_sid',
 		'version',
 		'captcha_gd',
-	];
-
-	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
+	]);
 
 	// Update DB schema version.
 
@@ -335,7 +340,7 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 
 	// Remove obsolete config values.
 
-	$obsolete_values = [
+	remove_config_values([
 		'recaptcha_privkey',
 		'recaptcha_pubkey',
 		'social_media_cover_url',
@@ -344,9 +349,7 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 		'allow_quick_post_options',
 		'style_posting_topic_review',
 		'no_typical_info_pages',
-	];
-
-	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $obsolete_values) . "')");
+	]);
 
 	// Update obsolete values.
 
