@@ -98,7 +98,6 @@ ul.profile-icons li a:hover { background: none; }
 /* Profile & navigation & moderator icons */
 .email-icon, .email-icon a,
 .web-icon, .web-icon a,
-.icq-icon, .icq-icon a,
 .jabber-icon, .jabber-icon a,
 .skype-icon, .skype-icon a,
 .telegram-icon, .telegram-icon a,
@@ -115,7 +114,6 @@ ul.profile-icons li a:hover { background: none; }
 /* Set profile icon dimensions */
 ul.profile-icons li.email-icon	{ width: {IMG_ICON_CONTACT_EMAIL_WIDTH}px; height: {IMG_ICON_CONTACT_EMAIL_HEIGHT}px; }
 ul.profile-icons li.web-icon	{ width: {IMG_ICON_CONTACT_WWW_WIDTH}px; height: {IMG_ICON_CONTACT_WWW_HEIGHT}px; }
-ul.profile-icons li.icq-icon	{ width: {IMG_ICON_CONTACT_ICQ_WIDTH}px; height: {IMG_ICON_CONTACT_ICQ_HEIGHT}px; }
 ul.profile-icons li.jabber-icon	{ width: {IMG_ICON_CONTACT_JABBER_WIDTH}px; height: {IMG_ICON_CONTACT_JABBER_HEIGHT}px; }
 ul.profile-icons li.skype-icon	{ width: {IMG_ICON_CONTACT_SKYPE_WIDTH}px; height: {IMG_ICON_CONTACT_SKYPE_HEIGHT}px; }
 ul.profile-icons li.telegram-icon{ width: {IMG_ICON_CONTACT_TELEGRAM_WIDTH}px; height: {IMG_ICON_CONTACT_TELEGRAM_HEIGHT}px; }
