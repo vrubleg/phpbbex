@@ -238,7 +238,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_smilies'
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_urls', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_quote_depth', '2');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('hot_threshold', '100');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('board_hide_emails', '0');
