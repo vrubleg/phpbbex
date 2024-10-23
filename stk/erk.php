@@ -51,7 +51,6 @@ if (!$allowed)
 // Init critical repair and run the tools that *must* be ran before initing anything else
 
 $critical_repair->initialize();
-$critical_repair->run_tool('bom_sniffer');
 $critical_repair->run_tool('config_repair');
 
 require_once(STK_ROOT_PATH . 'common.php');
