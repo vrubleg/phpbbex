@@ -3569,13 +3569,16 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 				echo '<br>' . "\n";
 			}
 
-			if (isset($db) && $db->db_connect_id)
+			if (defined('PHPBB_INSTALLED') && isset($db) && $db->db_connect_id)
 			{
 				$log_text = "<b>FILE:</b> {$errfile}<br><b>LINE:</b> {$errline}<br><b>TEXT:</b> {$msg_text}";
 				if (!empty($_SERVER['REQUEST_URI'])) { $log_text .= '<br><b>PAGE:</b> ' . htmlspecialchars($_SERVER['REQUEST_URI']); }
 				if ($backtrace) { $log_text .= '<br><br><b>BACKTRACE</b><br><br>' . $backtrace; }
 
+				// let's avoid loops
+				$db->sql_return_on_error(true);
 				add_log('critical', 'LOG_ERROR_GENERAL', 'PHP ' . $err_types[$errno], $log_text);
+				$db->sql_return_on_error(false);
 			}
 
 			return;
@@ -3609,7 +3612,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 
 			$backtrace = format_backtrace($backtrace);
 
-			if ((defined('DEBUG') || defined('IN_CRON') || defined('IMAGE_OUTPUT')) && isset($db) && $db->db_connect_id)
+			if (defined('PHPBB_INSTALLED') && isset($db) && $db->db_connect_id && (defined('DEBUG') || defined('IN_CRON') || defined('IMAGE_OUTPUT')))
 			{
 				$log_text = $msg_text;
 				if (!empty($_SERVER['REQUEST_URI'])) { $log_text .= '<br><br><b>PAGE:</b> ' . htmlspecialchars($_SERVER['REQUEST_URI']); }
