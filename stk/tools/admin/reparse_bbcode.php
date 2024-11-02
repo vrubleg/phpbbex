@@ -400,7 +400,6 @@ class reparse_bbcode
 			$this->poll_parser		= null;
 			unset($this->poll, $post_data, $pm_data);
 			$this->flags = array_fill_keys(array_keys($this->flags), false);
-			$_user2->keyvalues		= array();
 		}
 
 		// Finished?
