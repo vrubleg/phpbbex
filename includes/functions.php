@@ -3535,6 +3535,10 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 		$msg_text = $msg_long_text;
 	}
 
+	// E_USER_ERROR is deprecated in trigger_error since PHP 8.4. Silence it for now until it is reworked as exceptions.
+	if ($errno == E_DEPRECATED && strpos($msg_text, 'E_USER_ERROR') !== false) { return; }
+
+	// E_STRICT is deprecated since PHP 8.4. Replace it to E_WARNING to unify code for older and newer PHP versions.
 	if (version_compare(PHP_VERSION, '8.4', '<') && $errno == E_STRICT) { $errno = E_WARNING; }
 
 	switch ($errno)
