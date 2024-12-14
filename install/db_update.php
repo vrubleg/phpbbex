@@ -178,6 +178,14 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	set_config('captcha_gd_3d_noise', '1');
 	set_config('captcha_gd_fonts', '1');
 
+	// Remove obsolete config values.
+	remove_config_values([
+		'style_show_liveinternet_counter',
+		'style_google_analytics_id',
+		'copyright_notice_html',
+		'style_auto_new_year',
+	]);
+
 	// Remove obsolete .htaccess file that would prevent direct access to uploaded avatars.
 	@unlink($phpbb_root_path . AVATAR_UPLOADS_PATH . '/.htaccess');
 
@@ -331,13 +339,6 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	$allowed_forum_flags = FORUM_FLAG_LINK_TRACK | FORUM_FLAG_PRUNE_POLL | FORUM_FLAG_PRUNE_ANNOUNCE | FORUM_FLAG_PRUNE_STICKY | FORUM_FLAG_ACTIVE_TOPICS;
 	update_bitfield_column(FORUMS_TABLE, 'forum_flags', 0, $allowed_forum_flags);
 
-	// Reset CAPTCHA plugin if obsolete reCAPTCHA v1 is used.
-
-	if ($config['captcha_plugin'] == 'phpbb_recaptcha')
-	{
-		set_config('captcha_plugin', extension_loaded('gd') ? 'phpbb_captcha_gd' : 'phpbb_captcha_nogd');
-	}
-
 	// Remove obsolete config values.
 
 	remove_config_values([
@@ -356,6 +357,13 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	if (!in_array($config['allow_name_chars'], ['USERNAME_UNICHARS_SPACERS', 'USERNAME_UNICHARS_NOSPACE', 'USERNAME_LATCHARS_SPACERS', 'USERNAME_LATCHARS_NOSPACE']))
 	{
 		set_config('allow_name_chars', 'USERNAME_UNICHARS_SPACERS');
+	}
+
+	// Reset CAPTCHA plugin if obsolete reCAPTCHA v1 is used.
+
+	if ($config['captcha_plugin'] == 'phpbb_recaptcha')
+	{
+		set_config('captcha_plugin', extension_loaded('gd') ? 'phpbb_captcha_gd' : 'phpbb_captcha_nogd');
 	}
 
 	// New config values.

@@ -64,10 +64,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '30');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '90');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply', '2');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_reply_options', '28');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_quick_post_options', '28');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_online_bots', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_enable', '1');
@@ -227,7 +223,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_filesize_pm',
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbnail', '1');
 
 -- Reset some other options to phpBBex defaults
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_LETTER_NUM_SPACERS');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('edit_time', '60');
@@ -243,7 +238,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_smilies'
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_urls', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_quote_depth', '2');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('hot_threshold', '100');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('board_hide_emails', '0');
@@ -258,9 +252,6 @@ ALTER TABLE phpbb_extensions ADD UNIQUE INDEX extension (extension);
 
 -- Remove invalid skypenames
 -- UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$' AND user_skype != '';
-
--- Remove obsolete options
-DELETE FROM phpbb_config WHERE config_name IN ('style_show_liveinternet_counter', 'style_google_analytics_id', 'copyright_notice_html', 'style_auto_new_year');
 
 -- phpBBex 1.7.0
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_post_font_size', '85');

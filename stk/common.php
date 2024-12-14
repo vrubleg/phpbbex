@@ -45,13 +45,6 @@ if (!defined('IN_ERK'))
 	$umil = new phpbb_umil();
 }
 
-// Load STK config when not in the erk
-if (!isset($stk_config))
-{
-	$stk_config = array();
-	require(STK_ROOT_PATH . 'config.php');
-}
-
 // Setup some common variables
 $action = request_var('action', '');
 $submit = request_var('submit', false);
