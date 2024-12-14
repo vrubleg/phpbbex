@@ -71,7 +71,7 @@ $lang = array_merge($lang, array(
 
 // Smilies and topic icons
 $lang = array_merge($lang, array(
-	'ACP_ICONS_EXPLAIN'		=> 'From this page you can add, remove and edit the icons users may add to their topics or posts. These icons are generally displayed next to topic titles on the forum listing, or the post subjects in topic listings. You can also install and create new packages of icons.',
+	'ACP_ICONS_EXPLAIN'		=> 'From this page you can add, remove and edit the icons users may add to their topics. These icons are displayed next to topic titles on the forum listing. You can also install and create new packages of icons.',
 	'ACP_SMILIES_EXPLAIN'	=> 'Smilies or emoticons are typically small, sometimes animated images used to convey an emotion or feeling. From this page you can add, remove and edit the emoticons users can use in their posts and private messages. You can also install and create new packages of smilies.',
 	'ADD_SMILIES'			=> 'Add multiple smilies',
 	'ADD_SMILEY_CODE'		=> 'Add additional smiley code',
