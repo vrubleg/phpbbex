@@ -51,7 +51,6 @@ if (!$allowed)
 
 @set_time_limit(0);
 
-// Include files
 require_once($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
 require_once($phpbb_root_path . 'includes/cache.php');
 require_once($phpbb_root_path . 'includes/template.php');
@@ -67,11 +66,16 @@ require_once($phpbb_root_path . 'includes/db/mysql.php');
 require_once($phpbb_root_path . 'includes/utf/utf_tools.php');
 require_once($phpbb_root_path . 'includes/db/db_tools.php');
 
+// The cache, files, store, and images/avatars/upload directories have to be writeable!
+if (!phpbb_is_writable($phpbb_root_path . 'cache')) { die('Make "cache" directory writeable!'); }
+if (!phpbb_is_writable($phpbb_root_path . UPLOADS_PATH)) { die('Make "' . UPLOADS_PATH . '" directory writeable!'); }
+if (!phpbb_is_writable($phpbb_root_path . 'store')) { die('Make "store" directory writeable!'); }
+if (!phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH)) { die('Make "' . AVATAR_UPLOADS_PATH . '" directory writeable!'); }
+
 $user = new phpbb_user();
 $cache = new phpbb_cache();
 $db = new dbal_mysql();
 
-// Connect to DB.
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false);
 unset($dbpasswd); // For safety purposes.
 
