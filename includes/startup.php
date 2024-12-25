@@ -23,7 +23,7 @@ if (file_exists($phpbb_root_path . 'config.php'))
 // Powered by ...
 if (!defined('POWERED_BY'))
 {
-	define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> v1.9.7 &copy; 2001-2023 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
+	define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> v1.9.8 &copy; 2001-2025 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
 }
 
 // Error reporting.

@@ -8,7 +8,7 @@
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
-define('NEWEST_PHPBBEX_VERSION', '1.9.7');
+define('NEWEST_PHPBBEX_VERSION', '1.9.8');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 
@@ -386,10 +386,11 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	set_config('allow_quick_post_smilies', '1');
 	set_config('posting_topic_review', '1');
 	set_config('skip_typical_notices', '1');
+	set_config('hot_threshold', '0');
 
 	// Update DB schema version.
 
-	// set_config('phpbbex_version', '1.9.8');
+	set_config('phpbbex_version', '1.9.8');
 }
 
 // Update bots if bots=1 is passed.
