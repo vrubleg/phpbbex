@@ -124,9 +124,9 @@ $lang = array_merge($lang, array(
 
 	'IMG_CAT_BUTTONS'		=> 'Кнопки на других языках',
 	'IMG_CAT_CUSTOM'		=> 'Пользовательские изображения',
-	'IMG_CAT_FOLDERS'		=> 'Значки тем',
-	'IMG_CAT_FORUMS'		=> 'Значки разделов',
-	'IMG_CAT_ICONS'			=> 'Общие значки',
+	'IMG_CAT_FOLDERS'		=> 'Иконки тем',
+	'IMG_CAT_FORUMS'		=> 'Иконки разделов',
+	'IMG_CAT_ICONS'			=> 'Общие иконки',
 	'IMG_CAT_LOGOS'			=> 'Логотипы',
 	'IMG_CAT_POLLS'			=> 'Изображения опросов',
 	'IMG_CAT_UI'			=> 'Общие элементы пользовательского интерфейса',
@@ -210,8 +210,8 @@ $lang = array_merge($lang, array(
 	'IMG_ICON_POST_INFO'			=> 'Информация о сообщении',
 	'IMG_ICON_POST_QUOTE'			=> 'Цитировать сообщение',
 	'IMG_ICON_POST_REPORT'			=> 'Пожаловаться на сообщение',
-	'IMG_ICON_POST_TARGET'			=> 'Значок сообщения',
-	'IMG_ICON_POST_TARGET_UNREAD'	=> 'Значок нового сообщения',
+	'IMG_ICON_POST_TARGET'			=> 'Иконка сообщения',
+	'IMG_ICON_POST_TARGET_UNREAD'	=> 'Иконка нового сообщения',
 
 	'IMG_ICON_TOPIC_ATTACH'			=> 'Вложение',
 	'IMG_ICON_TOPIC_LATEST'			=> 'Последнее сообщение',

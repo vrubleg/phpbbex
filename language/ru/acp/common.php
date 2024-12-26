@@ -80,8 +80,8 @@ $lang = array_merge($lang, array(
 	'ACP_GROUPS_MANAGEMENT'			=> 'Группы',
 	'ACP_GROUPS_PERMISSIONS'		=> 'Права групп',
 
-	'ACP_ICONS'					=> 'Значки тем',
-	'ACP_ICONS_SMILIES'			=> 'Значки тем и смайлики',
+	'ACP_ICONS'					=> 'Иконки тем',
+	'ACP_ICONS_SMILIES'			=> 'Иконки тем и смайлики',
 	'ACP_IMAGESETS'				=> 'Наборы рисунков',
 	'ACP_INACTIVE_USERS'		=> 'Неактивированные пользователи',
 	'ACP_INDEX'					=> 'Главная страница',

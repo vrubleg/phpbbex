@@ -8,7 +8,7 @@
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
-define('NEWEST_PHPBBEX_VERSION', '1.9.7');
+define('NEWEST_PHPBBEX_VERSION', '1.9.8');
 
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
 
@@ -51,7 +51,6 @@ if (!$allowed)
 
 @set_time_limit(0);
 
-// Include files
 require_once($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
 require_once($phpbb_root_path . 'includes/cache.php');
 require_once($phpbb_root_path . 'includes/template.php');
@@ -67,11 +66,16 @@ require_once($phpbb_root_path . 'includes/db/mysql.php');
 require_once($phpbb_root_path . 'includes/utf/utf_tools.php');
 require_once($phpbb_root_path . 'includes/db/db_tools.php');
 
+// The cache, files, store, and images/avatars/upload directories have to be writeable!
+if (!phpbb_is_writable($phpbb_root_path . 'cache')) { die('Make "cache" directory writeable!'); }
+if (!phpbb_is_writable($phpbb_root_path . UPLOADS_PATH)) { die('Make "' . UPLOADS_PATH . '" directory writeable!'); }
+if (!phpbb_is_writable($phpbb_root_path . 'store')) { die('Make "store" directory writeable!'); }
+if (!phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH)) { die('Make "' . AVATAR_UPLOADS_PATH . '" directory writeable!'); }
+
 $user = new phpbb_user();
 $cache = new phpbb_cache();
 $db = new dbal_mysql();
 
-// Connect to DB.
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false);
 unset($dbpasswd); // For safety purposes.
 
@@ -382,10 +386,11 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	set_config('allow_quick_post_smilies', '1');
 	set_config('posting_topic_review', '1');
 	set_config('skip_typical_notices', '1');
+	set_config('hot_threshold', '0');
 
 	// Update DB schema version.
 
-	// set_config('phpbbex_version', '1.9.8');
+	set_config('phpbbex_version', '1.9.8');
 }
 
 // Update bots if bots=1 is passed.

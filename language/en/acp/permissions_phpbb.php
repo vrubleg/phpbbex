@@ -177,7 +177,7 @@ $lang = array_merge($lang, array(
 	'acl_a_forumdel'	=> array('lang' => 'Can delete forums', 'cat' => 'forums'),
 	'acl_a_prune'		=> array('lang' => 'Can prune forums', 'cat' => 'forums'),
 
-	'acl_a_icons'		=> array('lang' => 'Can alter topic/post icons and smilies', 'cat' => 'posting'),
+	'acl_a_icons'		=> array('lang' => 'Can alter topic icons and smilies', 'cat' => 'posting'),
 	'acl_a_words'		=> array('lang' => 'Can alter word censors', 'cat' => 'posting'),
 	'acl_a_bbcode'		=> array('lang' => 'Can define BBCode tags', 'cat' => 'posting'),
 	'acl_a_attach'		=> array('lang' => 'Can alter attachment related settings', 'cat' => 'posting'),
