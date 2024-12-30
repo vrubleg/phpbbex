@@ -501,16 +501,18 @@ class bbcode_firstpass extends bbcode
 		{
 			case 'php':
 
+				// This piece of code is a stinky ugly hack =(
+
 				$remove_tags = false;
 
 				$str_from = array('&lt;', '&gt;', '&#91;', '&#93;', '&#46;', '&#58;', '&#058;');
 				$str_to = array('<', '>', '[', ']', '.', ':', ':');
 				$code = str_replace($str_from, $str_to, $code);
 
-				if (!preg_match('/\<\?.*?\?\>/is', $code))
+				if (strpos($code, '<?php') === false && strpos($code, '<?=') === false)
 				{
 					$remove_tags = true;
-					$code = "<?php $code ?>";
+					$code = "<?php {$code}";
 				}
 
 				$conf = array('highlight.bg', 'highlight.comment', 'highlight.default', 'highlight.html', 'highlight.keyword', 'highlight.string');
@@ -522,6 +524,12 @@ class bbcode_firstpass extends bbcode
 				// Because highlight_string is specialcharing the text (but we already did this before), we have to reverse this in order to get correct results
 				$code = htmlspecialchars_decode($code);
 				$code = highlight_string($code, true);
+
+				// Starting from PHP 8.3, the output format was updated. An ugly hack to fix it.
+				if (strpos($code, '<pre><code ') === 0)
+				{
+					$code = str_replace(['<pre><code ', '</code></pre>', ''], ['<span ', '</span>'], $code);
+				}
 
 				$str_from = array('<span style="color: ', '<font color="syntax', '</font>', '<code>', '</code>','[', ']', '.', ':');
 				$str_to = array('<span class="', '<span class="syntax', '</span>', '', '', '&#91;', '&#93;', '&#46;', '&#58;');
@@ -536,14 +544,7 @@ class bbcode_firstpass extends bbcode
 
 				$code = str_replace($str_from, $str_to, $code);
 				$code = preg_replace('#^(<span class="[a-z_]+">)\n?(.*?)\n?(</span>)$#is', '$1$2$3', $code);
-
-				if ($remove_tags)
-				{
-					$code = preg_replace('#(<span class="[a-z]+">)?\?&gt;(</span>)#', '$1&nbsp;$2', $code);
-				}
-
 				$code = preg_replace('#^<span class="[a-z]+"><span class="([a-z]+)">(.*)</span></span>#s', '<span class="$1">$2</span>', $code);
-				$code = preg_replace('#(?:\s++|&nbsp;)*+</span>$#u', '</span>', $code);
 
 				// remove newline at the end
 				if (!empty($code) && substr($code, -1) == "\n")

@@ -149,19 +149,17 @@
 		</li>
 		<!-- ENDIF -->
 		<!-- ENDIF -->
-		<!-- IF U_VIEWONLINE or S_DISPLAY_MEMBERLIST or U_TEAM -->
+		<!-- IF S_DISPLAY_MEMBERLIST -->
 		<li><a rel="nofollow" href="{U_MEMBERLIST}">{L_MEMBERLIST}</a>
 		<ul>
-			<!-- IF S_DISPLAY_MEMBERLIST -->
 			<li><a rel="nofollow" style="background-position: 0 -396px;" href="{U_MEMBERLIST}">{L_MEMBERLIST_ALL_USERS}</a></li>
 			<li><a rel="nofollow" style="background-position: 0 -432px;" href="{U_MEMBERLIST_ACTIVE}">{L_MEMBERLIST_ACTIVE_USERS}</a></li>
 			<li><a rel="nofollow" style="background-position: 0 -450px;" href="{U_MEMBERLIST_INACTIVE}">{L_MEMBERLIST_INACTIVE_USERS}</a></li>
 			<li><a rel="nofollow" style="background-position: 0 -108px;" href="{U_MEMBERLIST_SEARCH}">{L_SEARCH_USERS}</a></li>
-			<!-- ENDIF -->
-			<!-- IF S_DISPLAY_MEMBERLIST and (U_VIEWONLINE or U_TEAM) --><li class="separator"></li><!-- ENDIF -->
-			<!-- IF U_VIEWONLINE --><li><a rel="nofollow" style="background-position: 0 -378px;" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a></li><!-- ENDIF -->
-			<!-- IF U_TEAM --><li><a rel="nofollow" style="background-position: 0 -414px;" href="{U_TEAM}">{L_THE_TEAM}</a></li><!-- ENDIF -->
-			</ul>
+			<li class="separator"></li>
+			<li><a rel="nofollow" style="background-position: 0 -378px;" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a></li>
+			<li><a rel="nofollow" style="background-position: 0 -414px;" href="{U_TEAM}">{L_THE_TEAM}</a></li>
+		</ul>
 		</li>
 		<!-- ENDIF -->
 		<li><a href="{U_RULES}">{L_INFORMATION}</a>

@@ -475,18 +475,29 @@ blockquote.uncited {
 	padding-top: 25px;
 }
 
+/* [tt], [code] */
+code
+{
+	font: 0.9em "Courier New", monospace;
+	color: #2E8B57;
+	background-color: #FAFAFA;
+	padding: 0px 2px;
+	border: 1px solid #C9D2D8;
+	margin: 0;
+}
+
 /* Code block */
 dl.codebox {
 	margin: 0.25em 0;
 	padding: 3px;
 	background-color: #FFFFFF;
-	border: 1px solid #d8d8d8;
+	border: 1px solid #C9D2D8;
 	font-size: 1em;
 }
 
 dl.codebox dt {
 	text-transform: uppercase;
-	border-bottom: 1px solid #CCCCCC;
+	border-bottom: 1px solid #C9D2D8;
 	margin-bottom: 3px;
 	font-size: 0.8em;
 	font-weight: bold;
@@ -498,30 +509,24 @@ blockquote dl.codebox {
 }
 
 dl.codebox code {
-	/* Also see tweaks.css */
 	overflow: auto;
 	display: block;
 	height: auto;
 	max-height: 200px;
-	white-space: normal;
-	padding-top: 5px;
-	font: 0.9em "Courier New", Courier, monospace;
+	white-space: pre;
+	background-color: #FFFFFF;
 	line-height: 1.3em;
-	color: #8b8b8b;
-	margin: 2px 0;
+	padding: 0;
+	border: 0;
+	margin: 0;
 }
 
 .syntaxbg		{ color: #FFFFFF; }
-.syntaxcomment	{ color: #000000; }
-.syntaxdefault	{ color: #bcbcbc; }
+.syntaxcomment	{ color: #FF8000; }
+.syntaxdefault	{ color: #0000BB; }
 .syntaxhtml		{ color: #000000; }
-.syntaxkeyword	{ color: #585858; }
-.syntaxstring	{ color: #a7a7a7; }
-
-.content code
-{
-	font-family: "Courier New", Courier, monospace;
-}
+.syntaxkeyword	{ color: #007700; }
+.syntaxstring	{ color: #DD0000; }
 
 /* Spoiler block */
 dl.spoilerbox
