@@ -279,16 +279,16 @@ function displayBlocks(c, e, t)
 
 function selectCode(a)
 {
-	var e = a.parentNode.parentNode.getElementsByTagName('CODE')[0];
+	var e = a.parentNode.parentNode.getElementsByTagName('code')[0];
 	var f = e;
 	while (f && f.nodeType != Node.TEXT_NODE && f.firstChild) { f = f.firstChild; }
 	var l = e;
 	while (l && l.nodeType != Node.TEXT_NODE && l.lastChild) { l = l.lastChild; }
+	if (!f || !l) { return; }
 
 	var r = document.createRange();
 	r.setStart(f, 0);
 	r.setEnd(l, l.textContent.length);
-
 	var s = window.getSelection();
 	s.removeAllRanges();
 	s.addRange(r);
