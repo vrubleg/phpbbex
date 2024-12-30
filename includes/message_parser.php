@@ -501,6 +501,8 @@ class bbcode_firstpass extends bbcode
 		{
 			case 'php':
 
+				// This piece of code is a stinky ugly hack =(
+
 				$remove_tags = false;
 
 				$str_from = array('&lt;', '&gt;', '&#91;', '&#93;', '&#46;', '&#58;', '&#058;');
@@ -522,6 +524,12 @@ class bbcode_firstpass extends bbcode
 				// Because highlight_string is specialcharing the text (but we already did this before), we have to reverse this in order to get correct results
 				$code = htmlspecialchars_decode($code);
 				$code = highlight_string($code, true);
+
+				// Starting from PHP 8.3, the output format was updated. An ugly hack to fix it.
+				if (strpos($code, '<pre><code ') === 0)
+				{
+					$code = str_replace(['<pre><code ', '</code></pre>', ''], ['<span ', '</span>'], $code);
+				}
 
 				$str_from = array('<span style="color: ', '<font color="syntax', '</font>', '<code>', '</code>','[', ']', '.', ':');
 				$str_to = array('<span class="', '<span class="syntax', '</span>', '', '', '&#91;', '&#93;', '&#46;', '&#58;');
