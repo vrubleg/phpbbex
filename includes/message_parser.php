@@ -509,10 +509,10 @@ class bbcode_firstpass extends bbcode
 				$str_to = array('<', '>', '[', ']', '.', ':', ':');
 				$code = str_replace($str_from, $str_to, $code);
 
-				if (!preg_match('/\<\?.*?\?\>/is', $code))
+				if (strpos($code, '<?php') === false && strpos($code, '<?=') === false)
 				{
 					$remove_tags = true;
-					$code = "<?php $code ?>";
+					$code = "<?php {$code}";
 				}
 
 				$conf = array('highlight.bg', 'highlight.comment', 'highlight.default', 'highlight.html', 'highlight.keyword', 'highlight.string');
@@ -544,14 +544,7 @@ class bbcode_firstpass extends bbcode
 
 				$code = str_replace($str_from, $str_to, $code);
 				$code = preg_replace('#^(<span class="[a-z_]+">)\n?(.*?)\n?(</span>)$#is', '$1$2$3', $code);
-
-				if ($remove_tags)
-				{
-					$code = preg_replace('#(<span class="[a-z]+">)?\?&gt;(</span>)#', '$1&nbsp;$2', $code);
-				}
-
 				$code = preg_replace('#^<span class="[a-z]+"><span class="([a-z]+)">(.*)</span></span>#s', '<span class="$1">$2</span>', $code);
-				$code = preg_replace('#(?:\s++|&nbsp;)*+</span>$#u', '</span>', $code);
 
 				// remove newline at the end
 				if (!empty($code) && substr($code, -1) == "\n")
