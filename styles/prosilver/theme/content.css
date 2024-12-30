@@ -513,7 +513,7 @@ dl.codebox code {
 	display: block;
 	height: auto;
 	max-height: 200px;
-	white-space: normal;
+	white-space: pre;
 	background-color: #FFFFFF;
 	line-height: 1.3em;
 	padding: 0;
