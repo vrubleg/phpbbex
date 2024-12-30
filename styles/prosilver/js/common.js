@@ -279,25 +279,17 @@ function displayBlocks(c, e, t)
 
 function selectCode(a)
 {
-	// Get ID of code block
 	var e = a.parentNode.parentNode.getElementsByTagName('CODE')[0];
-	var s = window.getSelection();
+	var f = e;
+	while (f && f.nodeType != Node.TEXT_NODE && f.firstChild) { f = f.firstChild; }
+	var l = e;
+	while (l && l.nodeType != Node.TEXT_NODE && l.lastChild) { l = l.lastChild; }
 
-	// Safari, Chrome, and modern Firefox.
-	if (s.setBaseAndExtent)
-	{
-		try
-		{
-			s.setBaseAndExtent(e, 0, e, (e.innerText.length > 1) ? e.innerText.length - 1 : 1);
-			return;
-		}
-		catch (e) {}
-	}
-
-	// Older Firefox and Opera.
 	var r = document.createRange();
-	r.setStart(e.firstChild, 0);
-	r.setEnd(e.lastChild, e.lastChild.textContent.length);
+	r.setStart(f, 0);
+	r.setEnd(l, l.textContent.length);
+
+	var s = window.getSelection();
 	s.removeAllRanges();
 	s.addRange(r);
 }
