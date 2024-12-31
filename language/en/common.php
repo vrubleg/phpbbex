@@ -275,6 +275,7 @@ $lang = array_merge($lang, array(
 	'LOGIN_ERROR_USERNAME'				=> 'You have specified an incorrect username. Please check your username and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
 	'LOGIN_FORUM'						=> 'To view or post in this forum you must enter its password.',
 	'LOGIN_INFO'						=> 'In order to login you must be registered. Registering takes only a few moments but gives you increased capabilities. Before you register please ensure you are familiar with our terms of use. Please ensure you read any forum rules as you navigate around the board.',
+	'LOGIN_EXPLAIN_VIEWINDEX'			=> 'Log in to view forum index',
 	'LOGIN_EXPLAIN_VIEWFORUM'			=> 'Log in to view this forum',
 	'LOGIN_EXPLAIN_VIEWONLINE'			=> 'Log in to view the online list',
 	'LOGIN_EXPLAIN_VIEWPAGE'			=> 'Log in to view this page',
