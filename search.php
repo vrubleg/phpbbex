@@ -80,11 +80,25 @@ switch ($search_id)
 	break;
 }
 
-// Is user able to search? Has search been disabled?
-if (!$auth->acl_get('u_search') || !$auth->acl_getf_global('f_search') || !$config['load_search'])
+// Has search been disabled?
+if (!$config['load_search'])
 {
 	$template->assign_var('S_NO_SEARCH', true);
 	trigger_error('NO_SEARCH');
+}
+
+// Is user able to search?
+if (!$auth->acl_get('u_search') || !$auth->acl_getf_global('f_search'))
+{
+	if (!$user->data['is_registered'])
+	{
+		login_box('', $user->lang['LOGIN_EXPLAIN_SEARCH']);
+	}
+	else
+	{
+		$template->assign_var('S_NO_SEARCH', true);
+		trigger_error('NO_SEARCH');
+	}
 }
 
 // Check search load limit

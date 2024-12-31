@@ -15,6 +15,13 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup('viewforum');
 
+// Show login box if an anonymous user doesn't have permissions to see any forums.
+if (!$user->data['is_registered'] && !$auth->acl_getf_global('f_list'))
+{
+	login_box('', $user->lang['LOGIN_EXPLAIN_VIEWINDEX']);
+}
+
+// Display all permitted forums.
 display_forums('', $config['load_moderators']);
 
 // Set some stats, get posts count from forums data if we... hum... retrieve all forums data
