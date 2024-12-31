@@ -35,6 +35,7 @@ $lang = array_merge($lang, array(
 
 	'JUMP_TO_POST'			=> 'Перейти к сообщению',
 
+	'LOGIN_EXPLAIN_SEARCH'		=> 'Авторизуйтесь для использования поиска',
 	'LOGIN_EXPLAIN_EGOSEARCH'	=> 'Авторизуйтесь для просмотра своих сообщений',
 	'LOGIN_EXPLAIN_UNREADSEARCH'=> 'Авторизуйтесь для просмотра непрочитанных сообщений',
 	'LOGIN_EXPLAIN_NEWPOSTS'	=> 'Авторизуйтесь для просмотра новых сообщений',
