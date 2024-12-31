@@ -4326,7 +4326,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_CONTENT_ENCODING'	=> 'UTF-8',
 		'S_TIMEZONE'			=> ($user->dst) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
 		'S_DISPLAY_ONLINE_LIST'	=> ($l_online_time) ? 1 : 0,
-		'S_DISPLAY_SEARCH'		=> (!$config['load_search']) ? 0 : (isset($auth) ? ($auth->acl_get('u_search') && $auth->acl_getf_global('f_search')) : 1),
+		'S_DISPLAY_SEARCH'		=> ($config['load_search'] && $auth->acl_get('u_search') && $auth->acl_getf_global('f_search')),
 		'S_DISPLAY_PM'			=> ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))) ? true : false,
 		'S_DISPLAY_MEMBERLIST'	=> $auth->acl_get('u_viewprofile'),
 		'S_NEW_PM'				=> ($s_privmsg_new) ? 1 : 0,
