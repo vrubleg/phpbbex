@@ -44,7 +44,6 @@ class acp_email
 			// Error checking needs to go here ... if no subject and/or no message then skip
 			// over the send and return to the form
 			$use_queue		= (isset($_POST['send_immediately'])) ? false : true;
-			$priority		= request_var('mail_priority_flag', MAIL_NORMAL_PRIORITY);
 
 			if (!check_form_key($form_key))
 			{
@@ -192,7 +191,6 @@ class acp_email
 					$messenger->anti_abuse_headers($config, $user);
 
 					$messenger->subject(htmlspecialchars_decode($subject));
-					$messenger->set_mail_priority($priority);
 
 					$messenger->assign_vars(array(
 						'CONTACT_EMAIL' => $config['board_contact'],
@@ -257,10 +255,6 @@ class acp_email
 		$select_list = '<option value="0"' . ((!$group_id) ? ' selected="selected"' : '') . '>' . $user->lang['ALL_USERS'] . '</option>';
 		$select_list .= group_select_options($group_id, $exclude);
 
-		$s_priority_options = '<option value="' . MAIL_LOW_PRIORITY . '">' . $user->lang['MAIL_LOW_PRIORITY'] . '</option>';
-		$s_priority_options .= '<option value="' . MAIL_NORMAL_PRIORITY . '" selected="selected">' . $user->lang['MAIL_NORMAL_PRIORITY'] . '</option>';
-		$s_priority_options .= '<option value="' . MAIL_HIGH_PRIORITY . '">' . $user->lang['MAIL_HIGH_PRIORITY'] . '</option>';
-
 		$template->assign_vars(array(
 			'S_WARNING'				=> (sizeof($error)) ? true : false,
 			'WARNING_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
@@ -269,8 +263,7 @@ class acp_email
 			'USERNAMES'				=> $usernames,
 			'U_FIND_USERNAME'		=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=acp_email&amp;field=usernames'),
 			'SUBJECT'				=> $subject,
-			'MESSAGE'				=> $message,
-			'S_PRIORITY_OPTIONS'	=> $s_priority_options)
+			'MESSAGE'				=> $message)
 		);
 
 	}

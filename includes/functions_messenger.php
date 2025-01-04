@@ -19,7 +19,6 @@ class messenger
 	var $addresses = array();
 	var $extra_headers = array();
 
-	var $mail_priority = MAIL_NORMAL_PRIORITY;
 	var $use_queue = true;
 	var $queue;
 	var $jabber;
@@ -50,7 +49,6 @@ class messenger
 	{
 		$this->addresses = $this->extra_headers = array();
 		$this->vars = $this->msg = $this->replyto = $this->from = '';
-		$this->mail_priority = MAIL_NORMAL_PRIORITY;
 	}
 
 	/**
@@ -171,14 +169,6 @@ class messenger
 		$this->headers('X-AntiAbuse: Host - ' . $user->host);
 		$this->headers('X-AntiAbuse: User ID - ' . $user->data['user_id']);
 		$this->headers('X-AntiAbuse: User IP - ' . $user->ip);
-	}
-
-	/**
-	* Set the email priority
-	*/
-	function set_mail_priority($priority = MAIL_NORMAL_PRIORITY)
-	{
-		$this->mail_priority = $priority;
 	}
 
 	/**
@@ -425,12 +415,6 @@ class messenger
 		$headers[] = 'Content-Type: text/plain; charset=UTF-8'; // format=flowed
 		$headers[] = 'Content-Transfer-Encoding: 8bit'; // 7bit
 		$headers[] = 'X-Mailer: phpBB3';
-
-		// SpamAssassin doesn't like these headers =(
-		// $headers[] = 'X-Priority: ' . $this->mail_priority;
-		// $headers[] = 'X-MSMail-Priority: ' . (($this->mail_priority == MAIL_LOW_PRIORITY) ? 'Low' : (($this->mail_priority == MAIL_NORMAL_PRIORITY) ? 'Normal' : 'High'));
-		// $headers[] = 'X-MimeOLE: phpBB3';
-		// $headers[] = 'X-phpBB-Origin: phpbb://' . str_replace(array('http://', 'https://'), array('', ''), generate_board_url());
 
 		if (count($this->extra_headers))
 		{
