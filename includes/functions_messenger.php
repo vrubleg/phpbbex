@@ -25,7 +25,6 @@ class messenger
 
 	var $tpl_obj = NULL;
 	var $tpl_msg = array();
-	var $eol = "\n";
 
 	/**
 	* Constructor
@@ -36,10 +35,6 @@ class messenger
 
 		$this->use_queue = (!$config['email_package_size']) ? false : $use_queue;
 		$this->subject = '';
-
-		// Determine EOL character (\n for UNIX, \r\n for Windows and \r for Mac)
-		$this->eol = (!defined('PHP_EOL')) ? (($eol = strtolower(substr(PHP_OS, 0, 3))) == 'win') ? "\r\n" : (($eol == 'mac') ? "\r" : "\n") : PHP_EOL;
-		$this->eol = (!$this->eol) ? "\n" : $this->eol;
 	}
 
 	/**
@@ -454,7 +449,7 @@ class messenger
 			$use_queue = true;
 		}
 
-		$encode_eol = ($config['smtp_delivery']) ? "\r\n" : $this->eol;
+		$encode_eol = ($config['smtp_delivery'] || PHP_VERSION_ID >= 80000) ? "\r\n" : PHP_EOL;
 
 		$default_contact = (empty($config['board_contact_name']) ? '' : (mail_encode($config['board_contact_name'], $encode_eol) . ' ')) . '<' . $config['board_contact'] . '>';
 		if (empty($this->replyto))
@@ -496,7 +491,7 @@ class messenger
 			}
 			else
 			{
-				$result = phpbb_mail($mail_to, $this->subject, $this->msg, $headers, $this->eol, $err_msg);
+				$result = phpbb_mail($mail_to, $this->subject, $this->msg, $headers, $encode_eol, $err_msg);
 			}
 
 			if (!$result)
@@ -601,7 +596,6 @@ class queue
 	var $queue_data = array();
 	var $package_size = 0;
 	var $cache_file = '';
-	var $eol = "\n";
 
 	/**
 	* constructor
@@ -612,10 +606,6 @@ class queue
 
 		$this->data = array();
 		$this->cache_file = "{$phpbb_root_path}cache/queue.php";
-
-		// Determine EOL character (\n for UNIX, \r\n for Windows and \r for Mac)
-		$this->eol = (!defined('PHP_EOL')) ? (($eol = strtolower(substr(PHP_OS, 0, 3))) == 'win') ? "\r\n" : (($eol == 'mac') ? "\r" : "\n") : PHP_EOL;
-		$this->eol = (!$this->eol) ? "\n" : $this->eol;
 	}
 
 	/**
@@ -803,7 +793,7 @@ class queue
 						}
 						else
 						{
-							$result = phpbb_mail($to, $subject, $msg, $headers, $this->eol, $err_msg);
+							$result = phpbb_mail($to, $subject, $msg, $headers, (PHP_VERSION_ID >= 80000 ? "\r\n" : PHP_EOL), $err_msg);
 						}
 
 						if (!$result)
