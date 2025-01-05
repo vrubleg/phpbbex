@@ -2918,7 +2918,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 	}
 
 	// Assign credential for username/password pair
-	$credential = ($admin) ? md5(unique_id()) : false;
+	$credential = ($admin) ? bin2hex(random_bytes(16)) : false;
 
 	$s_hidden_fields = array(
 		'sid'		=> $user->session_id,

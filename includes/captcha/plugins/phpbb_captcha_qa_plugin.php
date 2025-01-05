@@ -403,7 +403,7 @@ class phpbb_captcha_qa
 		{
 			return false;
 		}
-		$this->confirm_id = md5(unique_id());
+		$this->confirm_id = bin2hex(random_bytes(16));
 		$this->question = (int) array_rand($this->question_ids);
 
 		$sql = 'INSERT INTO ' . CAPTCHA_QA_CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(

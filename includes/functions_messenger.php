@@ -376,7 +376,7 @@ class messenger
 	*/
 	function generate_message_id()
 	{
-		return md5(unique_id()) . '@' . HTTP_HOST;
+		return bin2hex(random_bytes(16)) . '@' . HTTP_HOST;
 	}
 
 	/**

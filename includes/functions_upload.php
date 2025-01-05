@@ -109,7 +109,7 @@ class filespec
 			break;
 
 			case 'unique':
-				$this->realname = $prefix . md5(unique_id());
+				$this->realname = $prefix . bin2hex(random_bytes(16));
 			break;
 
 			case 'avatar':
@@ -120,7 +120,7 @@ class filespec
 
 			case 'unique_ext':
 			default:
-				$this->realname = $prefix . md5(unique_id()) . '.' . $this->extension;
+				$this->realname = $prefix . bin2hex(random_bytes(16)) . '.' . $this->extension;
 			break;
 		}
 	}
