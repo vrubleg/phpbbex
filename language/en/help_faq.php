@@ -21,7 +21,7 @@ $help = array(
 	),
 	array(
 		0 => 'Why can’t I login?',
-		1 => 'First, check your username and password. If they are correct, then one of two things may have happened. Some boards will also require new registrations to be activated, either by yourself or by an administrator before you can logon; this information was present during registration. If you were sent an e-mail, follow the instructions. If you did not receive an e-mail, you may have provided an incorrect e-mail address or the e-mail may have been picked up by a spam filer. If you are sure the e-mail address you provided is correct, try contacting an administrator.'
+		1 => 'First, check your username and password. If they are correct, then one of two things may have happened. Some boards will also require new registrations to be activated, either by yourself or by an administrator before you can logon; this information was present during registration. If you were sent an email, follow the instructions. If you did not receive an email, you may have provided an incorrect email address or the email may have been picked up by a spam filer. If you are sure the email address you provided is correct, try contacting an administrator.'
 	),
 	array(
 		0 => 'Why do I get logged off automatically?',
