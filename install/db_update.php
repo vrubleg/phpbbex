@@ -402,6 +402,13 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		set_config('email_force_sender', '0');
 	}
 
+	// Remove obsolete config values.
+
+	remove_config_values([
+		'rand_seed',
+		'rand_seed_last_update',
+	]);
+
 	// Update DB schema version.
 
 	// set_config('phpbbex_version', '1.9.9');

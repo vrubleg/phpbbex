@@ -253,22 +253,9 @@ function gen_rand_string_friendly($num_chars = 8)
 * Return unique id
 * @param string $extra additional entropy
 */
-function unique_id($extra = 'c')
+function unique_id()
 {
-	static $dss_seeded = false;
-	global $config;
-
-	$val = md5($config['rand_seed'] . microtime() . mt_rand() . $extra);
-	$config['rand_seed'] = md5($config['rand_seed'] . $val);
-
-	if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - mt_rand(1,10)))
-	{
-		set_config('rand_seed_last_update', time(), true);
-		set_config('rand_seed', $config['rand_seed'], true);
-		$dss_seeded = true;
-	}
-
-	return substr($val, 4, 16);
+	return bin2hex(random_bytes(8));
 }
 
 /**
