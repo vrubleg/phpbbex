@@ -467,7 +467,7 @@ class acp_gallery
 							$error_occured = true;
 						break;
 					}
-					$image_filename = md5(unique_id()) . $filetype_ext;
+					$image_filename = bin2hex(random_bytes(16)) . $filetype_ext;
 
 					if (!$error_occured || !@move_uploaded_file($image_src_full, phpbb_gallery_url::path('upload') . $image_filename))
 					{

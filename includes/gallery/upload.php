@@ -116,7 +116,7 @@ class phpbb_gallery_upload
 		}
 
 		global $user;
-		$tmp_dir = phpbb_gallery_url::path('import') . 'tmp_' . md5(unique_id()) . '/';
+		$tmp_dir = phpbb_gallery_url::path('import') . 'tmp_' . bin2hex(random_bytes(16)) . '/';
 
 		$this->zip_file->clean_filename('unique_ext'/*, $user->data['user_id'] . '_'*/);
 		$this->zip_file->move_file(substr(phpbb_gallery_url::path('import_noroot'), 0, -1), false, false, CHMOD_ALL);
