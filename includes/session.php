@@ -410,7 +410,7 @@ class phpbb_session
 		if (strlen($browser_id) != 32)
 		{
 			// Set new browser_id cookie
-			$browser_id = md5(unique_id('bid', true));
+			$browser_id = bin2hex(random_bytes(16));
 			set_cookie('bid', $browser_id, true);
 		}
 
@@ -753,7 +753,7 @@ class phpbb_session
 			$this->data['session_created'] = true;
 		}
 
-		$this->session_id = $this->data['session_id'] = md5(unique_id());
+		$this->session_id = $this->data['session_id'] = bin2hex(random_bytes(16));
 
 		$sql_ary['session_id'] = (string) $this->session_id;
 		$sql_ary['session_page'] = (string) substr($this->page['page'], 0, 199);
@@ -1310,7 +1310,7 @@ class phpbb_session
 		$user_ip = ($user_ip === false) ? $this->ip : $user_ip;
 		$key = ($key === false) ? (($this->cookie_data['k']) ? $this->cookie_data['k'] : false) : $key;
 
-		$key_id = unique_id(hexdec(substr($this->session_id, 0, 8)));
+		$key_id = unique_id();
 
 		$sql_ary = array(
 			'key_id'		=> (string) md5($key_id),

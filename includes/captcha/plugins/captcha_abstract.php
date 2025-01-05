@@ -51,10 +51,7 @@ class phpbb_default_captcha
 		global $user;
 
 		$this->code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
-		$this->seed = hexdec(substr(unique_id(), 4, 10));
-
-		// compute $seed % 0x7fffffff
-		$this->seed -= 0x7fffffff * floor($this->seed / 0x7fffffff);
+		$this->seed = random_int(0, 0x7fffffff);
 
 		$captcha = new captcha();
 		define('IMAGE_OUTPUT', 1);
@@ -227,11 +224,9 @@ class phpbb_default_captcha
 		global $db, $user;
 
 		$this->code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
-		$this->confirm_id = md5(unique_id($user->ip));
-		$this->seed = hexdec(substr(unique_id(), 4, 10));
+		$this->confirm_id = bin2hex(random_bytes(16));
+		$this->seed = random_int(0, 0x7fffffff);
 		$this->solved = 0;
-		// compute $seed % 0x7fffffff
-		$this->seed -= 0x7fffffff * floor($this->seed / 0x7fffffff);
 
 		$sql = 'INSERT INTO ' . CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 				'confirm_id'	=> (string) $this->confirm_id,
@@ -251,10 +246,8 @@ class phpbb_default_captcha
 		global $db, $user;
 
 		$this->code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
-		$this->seed = hexdec(substr(unique_id(), 4, 10));
+		$this->seed = random_int(0, 0x7fffffff);
 		$this->solved = 0;
-		// compute $seed % 0x7fffffff
-		$this->seed -= 0x7fffffff * floor($this->seed / 0x7fffffff);
 
 		$sql = 'UPDATE ' . CONFIRM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
 				'code'			=> (string) $this->code,
@@ -273,10 +266,8 @@ class phpbb_default_captcha
 		global $db, $user;
 
 		$this->code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
-		$this->seed = hexdec(substr(unique_id(), 4, 10));
+		$this->seed = random_int(0, 0x7fffffff);
 		$this->solved = 0;
-		// compute $seed % 0x7fffffff
-		$this->seed -= 0x7fffffff * floor($this->seed / 0x7fffffff);
 
 		$sql = 'UPDATE ' . CONFIRM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
 				'code'			=> (string) $this->code,

@@ -82,7 +82,7 @@ $lang = array_merge($lang, array(
 	'acl_u_viewprofile'	=> array('lang' => 'Can view profiles, memberlist and online list', 'cat' => 'profile'),
 	'acl_u_chgname'		=> array('lang' => 'Can change username', 'cat' => 'profile'),
 	'acl_u_chgpasswd'	=> array('lang' => 'Can change password', 'cat' => 'profile'),
-	'acl_u_chgemail'	=> array('lang' => 'Can change e-mail address', 'cat' => 'profile'),
+	'acl_u_chgemail'	=> array('lang' => 'Can change email address', 'cat' => 'profile'),
 	'acl_u_chgavatar'	=> array('lang' => 'Can change avatar', 'cat' => 'profile'),
 	'acl_u_chggrp'		=> array('lang' => 'Can change default usergroup', 'cat' => 'profile'),
 
@@ -107,7 +107,7 @@ $lang = array_merge($lang, array(
 
 	'acl_u_canplus'		=> array('lang' => 'Can make positive ratings', 'cat' => 'misc'),
 	'acl_u_canminus'	=> array('lang' => 'Can make negative ratings', 'cat' => 'misc'),
-	'acl_u_sendemail'	=> array('lang' => 'Can send e-mails', 'cat' => 'misc'),
+	'acl_u_sendemail'	=> array('lang' => 'Can send emails', 'cat' => 'misc'),
 	'acl_u_sendim'		=> array('lang' => 'Can send instant messages', 'cat' => 'misc'),
 	'acl_u_ignoreflood'	=> array('lang' => 'Can ignore flood limit', 'cat' => 'misc'),
 	'acl_u_hideonline'	=> array('lang' => 'Can hide online status', 'cat' => 'misc'),
@@ -207,7 +207,7 @@ $lang = array_merge($lang, array(
 	'acl_a_clearlogs'	=> array('lang' => 'Can clear logs', 'cat' => 'misc'),
 	'acl_a_modules'		=> array('lang' => 'Can manage modules', 'cat' => 'misc'),
 	'acl_a_language'	=> array('lang' => 'Can manage language packs', 'cat' => 'misc'),
-	'acl_a_email'		=> array('lang' => 'Can send mass e-mail', 'cat' => 'misc'),
+	'acl_a_email'		=> array('lang' => 'Can send mass email', 'cat' => 'misc'),
 	'acl_a_bots'		=> array('lang' => 'Can manage bots', 'cat' => 'misc'),
 	'acl_a_reasons'		=> array('lang' => 'Can manage report/denial reasons', 'cat' => 'misc'),
 	'acl_a_backup'		=> array('lang' => 'Can backup/restore database', 'cat' => 'misc'),

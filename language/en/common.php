@@ -70,7 +70,7 @@ $lang = array_merge($lang, array(
 
 	'BACK_TO_TOP'			=> 'Top',
 	'BACK_TO_PREV'			=> 'Back to previous page',
-	'BAN_TRIGGERED_BY_EMAIL'=> 'Your e-mail address is in ban list.',
+	'BAN_TRIGGERED_BY_EMAIL'=> 'Your email address is in ban list.',
 	'BAN_TRIGGERED_BY_IP'	=> 'Your IP address is in ban list.',
 	'BAN_TRIGGERED_BY_USER'	=> 'Your username is in ban list.',
 	'BBCODE_GUIDE'			=> 'BBCode guide',
@@ -133,10 +133,10 @@ $lang = array_merge($lang, array(
 	'VIEWED_COUNT_NONE'		=> 'Not viewed yet',
 
 	'EDIT_POST'							=> 'Edit post',
-	'EMAIL'								=> 'E-mail', // Short form for EMAIL_ADDRESS
-	'EMAIL_ADDRESS'						=> 'E-mail address',
-	'EMAIL_INVALID_EMAIL'				=> 'The e-mail address you entered is invalid.',
-	'EMAIL_SMTP_ERROR_RESPONSE'			=> 'Ran into problems sending e-mail at <strong>Line %1$s</strong>. Response: %2$s.',
+	'EMAIL'								=> 'Email', // Short form for EMAIL_ADDRESS
+	'EMAIL_ADDRESS'						=> 'Email address',
+	'EMAIL_INVALID_EMAIL'				=> 'The email address you entered is invalid.',
+	'EMAIL_SMTP_ERROR_RESPONSE'			=> 'Ran into problems sending email at <strong>Line %1$s</strong>. Response: %2$s.',
 	'EMPTY_SUBJECT'						=> 'You must specify a subject when posting a new topic.',
 	'EMPTY_MESSAGE_SUBJECT'				=> 'You must specify a subject when composing a new message.',
 	'ENABLED'							=> 'Enabled',
@@ -240,7 +240,7 @@ $lang = array_merge($lang, array(
 	'INFORMATION'				=> 'Information',
 	'INTERESTS'					=> 'Interests',
 	'INVALID_DIGEST_CHALLENGE'	=> 'Invalid digest challenge.',
-	'INVALID_EMAIL_LOG'			=> '<strong>%s</strong> possibly an invalid e-mail address?',
+	'INVALID_EMAIL_LOG'			=> '<strong>%s</strong> possibly an invalid email address?',
 	'IP'						=> 'IP',
 	'IP_BLACKLISTED'			=> 'Your IP %1$s has been blocked because it is blacklisted. For details please see <a href="%2$s">%2$s</a>.',
 
@@ -334,9 +334,9 @@ $lang = array_merge($lang, array(
 	'NO_AUTH_OPERATION'			=> 'You do not have the necessary permissions to complete this operation.',
 	'NO_CONNECT_TO_SMTP_HOST'	=> 'Could not connect to smtp host : %1$s : %2$s',
 	'NO_BIRTHDAYS'				=> 'No birthdays today',
-	'NO_EMAIL_MESSAGE'			=> 'E-mail message was blank.',
+	'NO_EMAIL_MESSAGE'			=> 'Email message was blank.',
 	'NO_EMAIL_RESPONSE_CODE'	=> 'Could not get mail server response codes.',
-	'NO_EMAIL_SUBJECT'			=> 'No e-mail subject specified.',
+	'NO_EMAIL_SUBJECT'			=> 'No email subject specified.',
 	'NO_FORUM'					=> 'The forum you selected does not exist.',
 	'NO_FORUMS'					=> 'This board has no forums.',
 	'NO_GROUP'					=> 'The requested usergroup does not exist.',
@@ -438,7 +438,7 @@ $lang = array_merge($lang, array(
 	'REPLY_WITH_QUOTE'			=> 'Reply with quote',
 	'REPORT_BY'					=> 'Report by',
 	'REPORT_POST'				=> 'Report this post',
-	'RESEND_ACTIVATION'			=> 'Resend activation e-mail',
+	'RESEND_ACTIVATION'			=> 'Resend activation email',
 	'RESET'						=> 'Reset',
 	'RESTORE_PERMISSIONS'		=> 'Restore permissions',
 	'RETURN_INDEX'				=> '%sReturn to the index page%s',
@@ -490,8 +490,8 @@ $lang = array_merge($lang, array(
 	'SELECT_ALL_CODE'			=> 'Select all',
 	'SELECT_DESTINATION_FORUM'	=> 'Please select a destination forum',
 	'SELECT_FORUM'				=> 'Select a forum',
-	'SEND_EMAIL'				=> 'E-mail',				// Used for submit buttons
-	'SEND_EMAIL_USER'			=> 'E-mail',				// Used as: {L_SEND_EMAIL_USER} {USERNAME} -> E-mail UserX
+	'SEND_EMAIL'				=> 'Email',				// Used for submit buttons
+	'SEND_EMAIL_USER'			=> 'Email',				// Used as: {L_SEND_EMAIL_USER} {USERNAME} -> Email UserX
 	'SEND_PRIVATE_MESSAGE'		=> 'Send private message',
 	'SETTINGS'					=> 'Settings',
 	'SIGNATURE'					=> 'Signature',
@@ -543,8 +543,8 @@ $lang = array_merge($lang, array(
 	'TOO_LONG_PASSWORD_CONFIRM'		=> 'The password confirmation you entered is too long.',
 	'TOO_LONG_USER_PASSWORD'		=> 'The password you entered is too long.',
 	'TOO_LONG_USERNAME'				=> 'The username you entered is too long.',
-	'TOO_LONG_EMAIL'				=> 'The e-mail address you entered is too long.',
-	'TOO_LONG_EMAIL_CONFIRM'		=> 'The e-mail address confirmation you entered is too long.',
+	'TOO_LONG_EMAIL'				=> 'The email address you entered is too long.',
+	'TOO_LONG_EMAIL_CONFIRM'		=> 'The email address confirmation you entered is too long.',
 	'TOO_LONG_WEBSITE'				=> 'The website address you entered is too long.',
 
 	'TOO_MANY_VOTE_OPTIONS'			=> 'You have tried to vote for too many options.',
@@ -562,8 +562,8 @@ $lang = array_merge($lang, array(
 	'TOO_SHORT_PASSWORD_CONFIRM'	=> 'The password confirmation you entered is too short.',
 	'TOO_SHORT_USER_PASSWORD'		=> 'The password you entered is too short.',
 	'TOO_SHORT_USERNAME'			=> 'The username you entered is too short.',
-	'TOO_SHORT_EMAIL'				=> 'The e-mail address you entered is too short.',
-	'TOO_SHORT_EMAIL_CONFIRM'		=> 'The e-mail address confirmation you entered is too short.',
+	'TOO_SHORT_EMAIL'				=> 'The email address you entered is too short.',
+	'TOO_SHORT_EMAIL_CONFIRM'		=> 'The email address confirmation you entered is too short.',
 	'TOO_SHORT_WEBSITE'				=> 'The website address you entered is too short.',
 
 	'TOO_SMALL'						=> 'The value you entered is too small.',
@@ -892,10 +892,10 @@ $lang = array_merge($lang, array(
 	'MEMBERLIST_INACTIVE_USERS'	=> 'Inactive',
 	'SEARCH_USERS'				=> 'Search users',
 
-	// Login via E-Mail
-	'USERNAME_OR_EMAIL'					=> 'Username or E-Mail',
-	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'You have specified an incorrect username or e-mail address. Please check your entry and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
-	'LOGIN_ERROR_EMAIL'					=> 'You have specified an incorrect e-mail address. Please check your e-mail address and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
+	// Login via email
+	'USERNAME_OR_EMAIL'					=> 'Username or email',
+	'LOGIN_ERROR_USERNAME_OR_EMAIL'		=> 'You have specified an incorrect username or email address. Please check your entry and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
+	'LOGIN_ERROR_EMAIL'					=> 'You have specified an incorrect email address. Please check your email address and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
 
 	// Advanced Warnings
 	'USER_WARNING'			=> 'Warning',

@@ -253,22 +253,9 @@ function gen_rand_string_friendly($num_chars = 8)
 * Return unique id
 * @param string $extra additional entropy
 */
-function unique_id($extra = 'c')
+function unique_id()
 {
-	static $dss_seeded = false;
-	global $config;
-
-	$val = md5($config['rand_seed'] . microtime() . mt_rand() . $extra);
-	$config['rand_seed'] = md5($config['rand_seed'] . $val);
-
-	if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - mt_rand(1,10)))
-	{
-		set_config('rand_seed_last_update', time(), true);
-		set_config('rand_seed', $config['rand_seed'], true);
-		$dss_seeded = true;
-	}
-
-	return substr($val, 4, 16);
+	return bin2hex(random_bytes(8));
 }
 
 /**
@@ -427,26 +414,6 @@ function still_on_time($extra_time = 15)
 	}
 
 	return (ceil($current_time - $start_time) < $max_execution_time) ? true : false;
-}
-
-/**
-* PHP 5.6- polyfill for random_bytes.
-*/
-if (!function_exists('random_bytes'))
-{
-	function random_bytes($count)
-	{
-		$random_state = unique_id();
-		$random = '';
-
-		for ($i = 0; $i < $count; $i += 16)
-		{
-			$random_state = md5(unique_id() . $random_state);
-			$random .= pack('H*', md5($random_state));
-		}
-
-		return substr($random, 0, $count);
-	}
 }
 
 /**
@@ -2951,7 +2918,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 	}
 
 	// Assign credential for username/password pair
-	$credential = ($admin) ? md5(unique_id()) : false;
+	$credential = ($admin) ? bin2hex(random_bytes(16)) : false;
 
 	$s_hidden_fields = array(
 		'sid'		=> $user->session_id,

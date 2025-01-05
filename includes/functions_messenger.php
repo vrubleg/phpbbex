@@ -19,14 +19,12 @@ class messenger
 	var $addresses = array();
 	var $extra_headers = array();
 
-	var $mail_priority = MAIL_NORMAL_PRIORITY;
 	var $use_queue = true;
 	var $queue;
 	var $jabber;
 
 	var $tpl_obj = NULL;
 	var $tpl_msg = array();
-	var $eol = "\n";
 
 	/**
 	* Constructor
@@ -37,10 +35,6 @@ class messenger
 
 		$this->use_queue = (!$config['email_package_size']) ? false : $use_queue;
 		$this->subject = '';
-
-		// Determine EOL character (\n for UNIX, \r\n for Windows and \r for Mac)
-		$this->eol = (!defined('PHP_EOL')) ? (($eol = strtolower(substr(PHP_OS, 0, 3))) == 'win') ? "\r\n" : (($eol == 'mac') ? "\r" : "\n") : PHP_EOL;
-		$this->eol = (!$this->eol) ? "\n" : $this->eol;
 	}
 
 	/**
@@ -50,7 +44,6 @@ class messenger
 	{
 		$this->addresses = $this->extra_headers = array();
 		$this->vars = $this->msg = $this->replyto = $this->from = '';
-		$this->mail_priority = MAIL_NORMAL_PRIORITY;
 	}
 
 	/**
@@ -171,14 +164,6 @@ class messenger
 		$this->headers('X-AntiAbuse: Host - ' . $user->host);
 		$this->headers('X-AntiAbuse: User ID - ' . $user->data['user_id']);
 		$this->headers('X-AntiAbuse: User IP - ' . $user->ip);
-	}
-
-	/**
-	* Set the email priority
-	*/
-	function set_mail_priority($priority = MAIL_NORMAL_PRIORITY)
-	{
-		$this->mail_priority = $priority;
 	}
 
 	/**
@@ -391,7 +376,7 @@ class messenger
 	*/
 	function generate_message_id()
 	{
-		return md5(unique_id()) . '@' . HTTP_HOST;
+		return bin2hex(random_bytes(16)) . '@' . HTTP_HOST;
 	}
 
 	/**
@@ -425,12 +410,6 @@ class messenger
 		$headers[] = 'Content-Type: text/plain; charset=UTF-8'; // format=flowed
 		$headers[] = 'Content-Transfer-Encoding: 8bit'; // 7bit
 		$headers[] = 'X-Mailer: phpBB3';
-
-		// SpamAssassin doesn't like these headers =(
-		// $headers[] = 'X-Priority: ' . $this->mail_priority;
-		// $headers[] = 'X-MSMail-Priority: ' . (($this->mail_priority == MAIL_LOW_PRIORITY) ? 'Low' : (($this->mail_priority == MAIL_NORMAL_PRIORITY) ? 'Normal' : 'High'));
-		// $headers[] = 'X-MimeOLE: phpBB3';
-		// $headers[] = 'X-phpBB-Origin: phpbb://' . str_replace(array('http://', 'https://'), array('', ''), generate_board_url());
 
 		if (count($this->extra_headers))
 		{
@@ -470,7 +449,7 @@ class messenger
 			$use_queue = true;
 		}
 
-		$encode_eol = ($config['smtp_delivery']) ? "\r\n" : $this->eol;
+		$encode_eol = ($config['smtp_delivery'] || PHP_VERSION_ID >= 80000) ? "\r\n" : PHP_EOL;
 
 		$default_contact = (empty($config['board_contact_name']) ? '' : (mail_encode($config['board_contact_name'], $encode_eol) . ' ')) . '<' . $config['board_contact'] . '>';
 		if (empty($this->replyto))
@@ -512,7 +491,7 @@ class messenger
 			}
 			else
 			{
-				$result = phpbb_mail($mail_to, $this->subject, $this->msg, $headers, $this->eol, $err_msg);
+				$result = phpbb_mail($mail_to, $this->subject, $this->msg, $headers, $encode_eol, $err_msg);
 			}
 
 			if (!$result)
@@ -617,7 +596,6 @@ class queue
 	var $queue_data = array();
 	var $package_size = 0;
 	var $cache_file = '';
-	var $eol = "\n";
 
 	/**
 	* constructor
@@ -628,10 +606,6 @@ class queue
 
 		$this->data = array();
 		$this->cache_file = "{$phpbb_root_path}cache/queue.php";
-
-		// Determine EOL character (\n for UNIX, \r\n for Windows and \r for Mac)
-		$this->eol = (!defined('PHP_EOL')) ? (($eol = strtolower(substr(PHP_OS, 0, 3))) == 'win') ? "\r\n" : (($eol == 'mac') ? "\r" : "\n") : PHP_EOL;
-		$this->eol = (!$this->eol) ? "\n" : $this->eol;
 	}
 
 	/**
@@ -819,7 +793,7 @@ class queue
 						}
 						else
 						{
-							$result = phpbb_mail($to, $subject, $msg, $headers, $this->eol, $err_msg);
+							$result = phpbb_mail($to, $subject, $msg, $headers, (PHP_VERSION_ID >= 80000 ? "\r\n" : PHP_EOL), $err_msg);
 						}
 
 						if (!$result)
@@ -1260,17 +1234,9 @@ class smtp_class
 				return $err_msg;
 			}
 
-			$crypto_method = STREAM_CRYPTO_METHOD_TLS_CLIENT;
-			if ($crypto_method == STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT)
-			{
-				// Fix inconsistency in PHP 5.6.7 - 7.1.22.
-				$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
-				$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
-			}
-
 			$collector = new phpbb_error_collector;
 			$collector->install();
-			$this->socket_tls = stream_socket_enable_crypto($this->socket, true, $crypto_method);
+			$this->socket_tls = stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
 			$collector->uninstall();
 
 			if (!$this->socket_tls)
@@ -1581,56 +1547,84 @@ class smtp_class
 }
 
 /**
-* Encodes the given string for proper display in UTF-8.
+* Encodes the given string for proper display in UTF-8 or US-ASCII.
 *
-* This version is using base64 encoded data. The downside of this
-* is if the mail client does not understand this encoding the user
-* is basically doomed with an unreadable subject.
+* This version is based on iconv_mime_encode() implementation
+* from symfomy/polyfill-iconv
+* https://github.com/symfony/polyfill-iconv/blob/fd324208ec59a39ebe776e6e9ec5540ad4f40aaa/Iconv.php#L355
 *
-* Please note that this version fully supports RFC 2045 section 6.8.
+* @param string $str
+* @param string $eol Lines delimiter (optional to be backwards compatible)
 *
-* @param string $eol End of line we are using (optional to be backwards compatible)
+* @return string
 */
 function mail_encode($str, $eol = "\r\n")
 {
-	// define start delimimter, end delimiter and spacer
-	$start = "=?UTF-8?B?";
-	$end = "?=";
-	$delimiter = "$eol ";
+	// Check if string contains ASCII only characters
+	$is_ascii = strlen($str) === utf8_strlen($str);
 
-	// Maximum length is 75. $split_length *must* be a multiple of 4, but <= 75 - strlen($start . $delimiter . $end)!!!
-	$split_length = 60;
-	$encoded_str = base64_encode($str);
+	$scheme = $is_ascii ? 'Q' : 'B';
 
-	// If encoded string meets the limits, we just return with the correct data.
-	if (strlen($encoded_str) <= $split_length)
+	// Define start delimiter, end delimiter
+	// Use the Quoted-Printable encoding for ASCII strings to avoid unnecessary encoding in Base64
+	$start = '=?' . ($is_ascii ? 'US-ASCII' : 'UTF-8') . '?' . $scheme . '?';
+	$end = '?=';
+
+	// Maximum encoded-word length is 75 as per RFC 2047 section 2.
+	// $split_length *must* be a multiple of 4, but <= 75 - strlen($start . $eol . $end)!!!
+	$split_length = 75 - strlen($start . $eol . $end);
+	$split_length = $split_length - $split_length % 4;
+
+	$line_length = strlen($start) + strlen($end);
+	$line_offset = strlen($start) + 1;
+	$line_data = '';
+
+	$is_quoted_printable = 'Q' === $scheme;
+
+	preg_match_all('/./us', $str, $chars);
+	$chars = $chars[0] ?? [];
+
+	$str = [];
+	foreach ($chars as $char)
 	{
-		return $start . $encoded_str . $end;
-	}
+		$encoded_char = $is_quoted_printable
+			? $char = preg_replace_callback(
+				'/[()<>@,;:\\\\".\[\]=_?\x20\x00-\x1F\x80-\xFF]/',
+				function ($matches)
+				{
+					$hex = dechex(ord($matches[0]));
+					$hex = strlen($hex) == 1 ? "0$hex" : $hex;
+					return '=' . strtoupper($hex);
+				},
+				$char
+			)
+			: base64_encode($line_data . $char);
 
-	// If there is only ASCII data, we just return what we want, correctly splitting the lines.
-	if (strlen($str) === utf8_strlen($str))
-	{
-		return $start . implode($end . $delimiter . $start, str_split($encoded_str, $split_length)) . $end;
-	}
-
-	// UTF-8 data, compose encoded lines
-	$array = utf8_str_split($str);
-	$str = '';
-
-	while (sizeof($array))
-	{
-		$text = '';
-
-		while (sizeof($array) && intval((strlen($text . $array[0]) + 2) / 3) << 2 <= $split_length)
+		if (isset($encoded_char[$split_length - $line_length]))
 		{
-			$text .= array_shift($array);
+			if (!$is_quoted_printable)
+			{
+				$line_data = base64_encode($line_data);
+			}
+			$str[] = $start . $line_data . $end;
+			$line_length = $line_offset;
+			$line_data = '';
 		}
 
-		$str .= $start . base64_encode($text) . $end . $delimiter;
+		$line_data .= $char;
+		$is_quoted_printable && $line_length += strlen($char);
 	}
 
-	return substr($str, 0, -strlen($delimiter));
+	if ($line_data !== '')
+	{
+		if (!$is_quoted_printable)
+		{
+			$line_data = base64_encode($line_data);
+		}
+		$str[] = $start . $line_data . $end;
+	}
+
+	return implode($eol . ' ', $str);
 }
 
 /**
@@ -1652,10 +1646,12 @@ function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 	$collector = new phpbb_error_collector;
 	$collector->install();
 
+	$sendmail_args = (isset($config['email_force_sender']) && $config['email_force_sender']) ? ('-f' . $config['board_email']) : '';
+
 	// On some PHP Versions mail() *may* fail if there are newlines within the subject.
 	// Newlines are used as a delimiter for lines in mail_encode() according to RFC 2045 section 6.8.
 	// Because PHP can't decide what is wanted we revert back to the non-RFC-compliant way of separating by one space (Use '' as parameter to mail_encode() results in SPACE used)
-	$result = mail($to, mail_encode($subject, ''), wordwrap(utf8_wordwrap($msg, 250), 997, "\n", true), $headers);
+	$result = mail($to, mail_encode($subject, ''), wordwrap(utf8_wordwrap($msg, 250), 997, "\n", true), $headers, $sendmail_args);
 
 	$collector->uninstall();
 	$err_msg = $collector->format_errors();

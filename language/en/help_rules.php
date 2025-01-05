@@ -25,7 +25,7 @@ $help = array(
 	),
 	array(
 		0 => '1.3. Registration',
-		1 => 'Do not:<ol><li>create several accounts;</li><li>specify a non-existent e-mail address;</li><li>use website addresses or telephone numbers as a username;</li><li>use usernames which are similar to usernames of other members of the board;</li><li>use someone else’s avatar.</li></ol>'
+		1 => 'Do not:<ol><li>create several accounts;</li><li>specify a non-existent email address;</li><li>use website addresses or telephone numbers as a username;</li><li>use usernames which are similar to usernames of other members of the board;</li><li>use someone else’s avatar.</li></ol>'
 	),
 	array(
 		0 => '--',
