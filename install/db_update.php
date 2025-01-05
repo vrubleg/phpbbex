@@ -393,6 +393,20 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	set_config('phpbbex_version', '1.9.8');
 }
 
+if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
+{
+	// New settings.
+
+	if (!isset($config['email_force_sender']))
+	{
+		set_config('email_force_sender', '0');
+	}
+
+	// Update DB schema version.
+
+	// set_config('phpbbex_version', '1.9.9');
+}
+
 // Update bots if bots=1 is passed.
 if (request_var('bots', 0))
 {
