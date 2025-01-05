@@ -1234,17 +1234,9 @@ class smtp_class
 				return $err_msg;
 			}
 
-			$crypto_method = STREAM_CRYPTO_METHOD_TLS_CLIENT;
-			if ($crypto_method == STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT)
-			{
-				// Fix inconsistency in PHP 5.6.7 - 7.1.22.
-				$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
-				$crypto_method |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
-			}
-
 			$collector = new phpbb_error_collector;
 			$collector->install();
-			$this->socket_tls = stream_socket_enable_crypto($this->socket, true, $crypto_method);
+			$this->socket_tls = stream_socket_enable_crypto($this->socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
 			$collector->uninstall();
 
 			if (!$this->socket_tls)

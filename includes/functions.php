@@ -430,26 +430,6 @@ function still_on_time($extra_time = 15)
 }
 
 /**
-* PHP 5.6- polyfill for random_bytes.
-*/
-if (!function_exists('random_bytes'))
-{
-	function random_bytes($count)
-	{
-		$random_state = unique_id();
-		$random = '';
-
-		for ($i = 0; $i < $count; $i += 16)
-		{
-			$random_state = md5(unique_id() . $random_state);
-			$random .= pack('H*', md5($random_state));
-		}
-
-		return substr($random, 0, $count);
-	}
-}
-
-/**
 *
 * @version Version 0.1 / slightly modified for phpBB 3.0.x (using $H$ as hash type identifier)
 *
