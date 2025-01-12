@@ -490,7 +490,7 @@ class compress_tar extends compress
 {
 	var $isgz = false;
 	var $isbz = false;
-	var $filename = '';
+	var $file = '';
 	var $mode = '';
 	var $type = '';
 	var $wrote = false;
@@ -504,9 +504,9 @@ class compress_tar extends compress
 		$this->isgz = preg_match('#(\.tar\.gz|\.tgz)$#', $type);
 		$this->isbz = preg_match('#\.tar\.bz2$#', $type);
 
-		$this->mode = &$mode;
-		$this->file = &$file;
-		$this->type = &$type;
+		$this->mode = $mode;
+		$this->file = $file;
+		$this->type = $type;
 		$this->open();
 	}
 
