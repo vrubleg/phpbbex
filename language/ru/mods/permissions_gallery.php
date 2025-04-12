@@ -4,15 +4,11 @@
 * permissions_gallery [Russian]
 *
 * @package phpBB Gallery
-* @version $Id$
-* @copyright (c) 2007 nickvergessen nickvergessen@gmx.de http://www.flying-bits.org
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @copyright (c) 2009 nickvergessen
+* @license GNU Public License
 *
 **/
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -32,4 +28,3 @@ $lang = array_merge($lang, array(
 	'acl_a_gallery_import'		=> array('lang' => 'Может импортировать фотографии',					'cat' => 'gallery'),
 	'acl_a_gallery_cleanup'		=> array('lang' => 'Может очищать галерею',					'cat' => 'gallery'),
 ));
-?>

@@ -4,15 +4,11 @@
 * gallery_acp [Russian]
 *
 * @package phpBB Gallery
-* @version $Id$
-* @copyright (c) 2007 nickvergessen nickvergessen@gmx.de http://www.flying-bits.org
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @copyright (c) 2009 nickvergessen
+* @license GNU Public License
 *
 **/
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -68,7 +64,7 @@ $lang = array_merge($lang, array(
 	'ALBUM_WATERMARK_EXPLAIN'		=> 'Если установлено «Нет» — водяной знак никогда не показывается, вне зависимости от установленных прав доступа.',
 	'ALBUM_WITH_CONTEST_NO_TYPE_CHANGE'	=> 'Конкурсный альбом не может быть переделан в обычный.',
 	'ALBUMS'						=> 'Альбомы',
-	
+
 	'CACHE_DIR_SIZE'				=> 'Размер кэша',
 	'CHANGE_AUTHOR_TO_GUEST'		=> 'Сменить автора на «Гостя»',
 	'CHECK'							=> 'Проверка',
@@ -162,7 +158,7 @@ $lang = array_merge($lang, array(
 	'DONT_COPY_PERMISSIONS'			=> 'Не копировать права доступа',
 
 	'EDIT_ALBUM'					=> 'Редактировать альбом',
-	
+
 	'FAKE_THUMB_SIZE'				=> 'Размер миниатюр в списке альбомов',
 	'FAKE_THUMB_SIZE_EXP'			=> '',
 	'FEED_ENABLED'					=> 'Включить каналы новостей',
@@ -182,7 +178,7 @@ $lang = array_merge($lang, array(
 	'GENERAL_ALBUM_SETTINGS'		=> 'Общие свойства альбома',
 	'GIF_ALLOWED'					=> 'GIF разрешён',
 	'GUPLOAD_DIR_SIZE'				=> 'Размер папки <em>upload</em>',
-	
+
 	'HACKING_ATTEMPT'				=> 'Попытка взлома.',
 	'HANDLE_IMAGES'					=> 'Что делать с фотографиями',
 	'HANDLE_SUBS'					=> 'Что делать со вложенными альбомами',
@@ -221,7 +217,7 @@ $lang = array_merge($lang, array(
 	'LOCKED'						=> 'Закрыт',
 	'LOOK_UP_ALBUM'					=> 'Выберите альбом',
 	'LOOK_UP_ALBUMS_EXPLAIN'		=> 'Можно выбрать несколько альбомов сразу.',
-	
+
 	'MANAGE_CRASHED_ENTRIES'		=> 'Управление повреждёнными записями',
 	'MANAGE_CRASHED_IMAGES'			=> 'Управление повреждёнными фотографиями',
 	'MANAGE_PERSONALS'				=> 'Управление личными альбомами',
@@ -256,7 +252,7 @@ $lang = array_merge($lang, array(
 	'OWN_PERSONAL_ALBUMS'			=> 'Свой личный альбом',
 	'OWN_PERSONAL_ALBUMS_EXPLAIN'	=> 'Доступ пользователя к собственному личному альбому.',
 	'PERSONAL_ALBUMS_EXPLAIN'		=> 'Доступ пользователя к личным альбомам других пользователей.',
-	
+
 	'PERMISSION'					=> 'Права доступа',
 	'PERMISSION_NEVER'				=> 'Никогда',
 	'PERMISSION_NO'					=> 'Нет',
@@ -376,10 +372,10 @@ $lang = array_merge($lang, array(
 	'RRC_PROFILE_MODE'				=> 'Режим «Последние/случайные фото в профиле',
 	'RRC_PROFILE_MODE_EXP'			=> 'Функция «Случайные фото может замедлить работу галереи.',
 	'RRC_PROFILE_ROWS'				=> 'Строки',
-	
+
 	'RSZ_HEIGHT'					=> 'Высота уменьшенного фото на странице альбома',
 	'RSZ_WIDTH'						=> 'Ширина уменьшенного фото на странице альбома',
-	
+
 	'SEARCH_SETTINGS'				=> 'Свойства поиска',
 	'SELECT_ALBUM'					=> 'Выбрать альбом',
 	'SELECT_ALBUMS'					=> 'Выбрать альбомы',
@@ -459,5 +455,3 @@ $lang = array_merge($lang, array(
 	'UP_TO_DATE'			=> 'Версия %s самая последняя',
 	'VERSION_CHECK'			=> 'Проверка версии',
 ));
-
-?>

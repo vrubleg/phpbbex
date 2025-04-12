@@ -2,14 +2,9 @@
 /**
 *
 * @package NV Image Tools
-* @version $Id$
-* @copyright (c) 2009 nickvergessen nickvergessen@gmx.de http://www.flying-bits.org/
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @copyright (c) 2009 nickvergessen
+* @license GNU Public License
 *
-*/
-
-/**
-* @ignore
 */
 
 if (!defined('IN_PHPBB'))
@@ -17,9 +12,6 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-/**
-*
-*/
 class phpbb_gallery_exif
 {
 	/**
@@ -338,5 +330,3 @@ class phpbb_gallery_exif
 		'MeteringMode',
 	);
 }
-
-?>

@@ -2,9 +2,8 @@
 /**
 *
 * @package phpBB Gallery
-* @version $Id$
-* @copyright (c) 2007 nickvergessen nickvergessen@gmx.de http://www.flying-bits.org
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @copyright (c) 2009 nickvergessen
+* @license GNU Public License
 *
 * mostly borrowed from phpBB3
 * @author: phpBB Group
@@ -14,9 +13,6 @@
 *       I didn't remove them, to have it easier when I implement this feature one day. I hope it's okay.
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;

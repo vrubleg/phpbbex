@@ -4,15 +4,11 @@
 * exif_data [English]
 *
 * @package phpBB Gallery / NV Exif Data
-* @version $Id$
-* @copyright (c) 2007 nickvergessen nickvergessen@gmx.de http://www.flying-bits.org
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @copyright (c) 2009 nickvergessen
+* @license GNU Public License
 *
 **/
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;

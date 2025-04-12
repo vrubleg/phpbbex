@@ -4,7 +4,7 @@
 * @package phpBB3
 * @version August 19, 2010
 * @copyright (c) 2010 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @license GNU Public License
 *
 * Changes made for phpBB Gallery:
 * - Restrict autoload to phpbb_gallery and phpbb_gallery_* classnames,
@@ -12,9 +12,6 @@
 *
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;

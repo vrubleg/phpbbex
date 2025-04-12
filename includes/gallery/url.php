@@ -2,9 +2,8 @@
 /**
 *
 * @package phpBB Gallery
-* @version $Id$
-* @copyright (c) 2007 nickvergessen nickvergessen@gmx.de http://www.flying-bits.org
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @copyright (c) 2009 nickvergessen
+* @license GNU Public License
 *
 */
 
@@ -220,7 +219,7 @@ class phpbb_gallery_url
 	* Resolves .. (up directory)
 	*
 	* @author	bantu		based on phpbb_own_realpath() by Chris Smith
-	* @license	http://opensource.org/licenses/gpl-license.php GNU Public License
+	* @license	GNU Public License
 	*
 	* @param	string		ugly path e.g. "../community/../gallery/"
 	* @param	bool		is it a full url, so we need to fix teh http:// at the beginning?

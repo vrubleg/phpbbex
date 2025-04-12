@@ -4,15 +4,11 @@
 * gallery_ucp [Russian]
 *
 * @package phpBB Gallery
-* @version $Id$
-* @copyright (c) 2007 nickvergessen nickvergessen@gmx.de http://www.flying-bits.org
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @copyright (c) 2009 nickvergessen
+* @license GNU Public License
 *
 **/
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -87,5 +83,3 @@ $lang = array_merge($lang, array(
 	'WATCH_NOTE'					=> 'Параметры подписки по умолчанию. Они коснутся только новых фотографий и новых комментариев.',
 	'WATCH_OWN'						=> 'Подписаться на комментарии к вашим фотографиям',
 ));
-
-?>

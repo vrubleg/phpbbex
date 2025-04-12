@@ -4,15 +4,11 @@
 * gallery_ucp [English]
 *
 * @package phpBB Gallery
-* @version $Id$
-* @copyright (c) 2007 nickvergessen nickvergessen@gmx.de http://www.flying-bits.org
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @copyright (c) 2009 nickvergessen
+* @license GNU Public License
 *
 **/
 
-/**
-* DO NOT CHANGE
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -87,5 +83,3 @@ $lang = array_merge($lang, array(
 	'WATCH_NOTE'					=> 'This option only affects on new images. All other images need to be added by the “subscribe image“ option.',
 	'WATCH_OWN'						=> 'Subscribe own images by default',
 ));
-
-?>
