@@ -192,8 +192,6 @@ $lang = array_merge($lang, array(
 	'IMG_PM_READ'		=> 'Прочитанное личное сообщение',
 	'IMG_PM_UNREAD'		=> 'Непрочитанное личное сообщение',
 
-	'IMG_ICON_BACK_TOP'		=> 'Наверх',
-
 	'IMG_ICON_CONTACT_EMAIL'	=> 'Отправить email',
 	'IMG_ICON_CONTACT_JABBER'	=> 'Jabber',
 	'IMG_ICON_CONTACT_TELEGRAM'	=> 'Telegram',
