@@ -2,15 +2,11 @@
 /**
 *
 * @package Support Toolkit - Recache moderators
-* @version $Id$
 * @copyright (c) 2010 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @license GNU Public License
 *
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;

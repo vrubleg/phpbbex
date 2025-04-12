@@ -58,7 +58,7 @@ class acp_styles
 #
 # @package phpBB3
 # @copyright (c) 2005 phpBB Group
-# @license http://opensource.org/licenses/gpl-license.php GNU Public License
+# @license GNU Public License
 #
 #
 # At the left is the name, please do not change this
