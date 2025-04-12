@@ -2,15 +2,11 @@
 /**
 *
 * @package Support Toolkit - Orphaned posts/topics
-* @version $Id$
 * @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @license GNU Public License
 *
 */
 
-/**
-* @ignore
-*/
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -101,7 +97,7 @@ class orphaned_posts
 			FROM ' . TOPICS_TABLE . ' t
 			JOIN ' . USERS_TABLE . ' u ON (u.user_id = t.topic_poster)
 			JOIN ' . FORUMS_TABLE . ' f ON (f.forum_id = t.forum_id)
-			WHERE topic_moved_id <> 0 
+			WHERE topic_moved_id <> 0
 				AND NOT EXISTS (SELECT topic_id FROM ' . TOPICS_TABLE . ' WHERE topic_id = t.topic_moved_id)';
 		$result = $db->sql_query($sql);
 

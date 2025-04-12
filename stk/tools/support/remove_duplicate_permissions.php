@@ -2,15 +2,11 @@
 /**
 *
 * @package Support Toolkit - Duplicate Permission Remover
-* @version $Id$
 * @copyright (c) 2009 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @license GNU Public License
 *
 */
 
-/**
- * @ignore
- */
 if (!defined('IN_PHPBB'))
 {
 	exit;
