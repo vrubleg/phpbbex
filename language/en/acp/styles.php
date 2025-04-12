@@ -155,15 +155,11 @@ $lang = array_merge($lang, array(
 
 	'IMG_TOPIC_READ'				=> 'Topic',
 	'IMG_TOPIC_READ_MINE'			=> 'Topic posted to',
-	'IMG_TOPIC_READ_HOT'			=> 'Topic popular',
-	'IMG_TOPIC_READ_HOT_MINE'		=> 'Topic popular posted to',
 	'IMG_TOPIC_READ_LOCKED'			=> 'Topic locked',
 	'IMG_TOPIC_READ_LOCKED_MINE'	=> 'Topic locked posted to',
 
 	'IMG_TOPIC_UNREAD'				=> 'Topic unread posts',
 	'IMG_TOPIC_UNREAD_MINE'			=> 'Topic posted to unread',
-	'IMG_TOPIC_UNREAD_HOT'			=> 'Topic popular unread posts',
-	'IMG_TOPIC_UNREAD_HOT_MINE'		=> 'Topic popular posted to unread',
 	'IMG_TOPIC_UNREAD_LOCKED'		=> 'Topic locked unread',
 	'IMG_TOPIC_UNREAD_LOCKED_MINE'	=> 'Topic locked posted to unread',
 

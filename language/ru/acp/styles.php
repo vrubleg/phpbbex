@@ -154,15 +154,11 @@ $lang = array_merge($lang, array(
 
 	'IMG_TOPIC_READ'				=> 'Тема',
 	'IMG_TOPIC_READ_MINE'			=> 'Тема с моими сообщениями',
-	'IMG_TOPIC_READ_HOT'			=> 'Популярная тема',
-	'IMG_TOPIC_READ_HOT_MINE'		=> 'Популярная тема с моими сообщениями',
 	'IMG_TOPIC_READ_LOCKED'			=> 'Закрытая тема',
 	'IMG_TOPIC_READ_LOCKED_MINE'	=> 'Закрытая тема с моими сообщениями',
 
 	'IMG_TOPIC_UNREAD'				=> 'Тема с непрочитанными сообщениями',
 	'IMG_TOPIC_UNREAD_MINE'			=> 'Тема с непрочитанными сообщениями, содержащая мои сообщения',
-	'IMG_TOPIC_UNREAD_HOT'			=> 'Популярная тема с непрочитанными сообщениями',
-	'IMG_TOPIC_UNREAD_HOT_MINE'		=> 'Популярная тема с непрочитанными сообщениями, содержащая мои сообщения',
 	'IMG_TOPIC_UNREAD_LOCKED'		=> 'Закрытая тема с непрочитанными сообщениями',
 	'IMG_TOPIC_UNREAD_LOCKED_MINE'	=> 'Закрытая тема с непрочитанными сообщениями, содержащая мои сообщения',
 

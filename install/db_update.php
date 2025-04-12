@@ -386,7 +386,6 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	set_config('allow_quick_post_smilies', '1');
 	set_config('posting_topic_review', '1');
 	set_config('skip_typical_notices', '1');
-	set_config('hot_threshold', '0');
 
 	// Update DB schema version.
 
@@ -407,6 +406,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 	remove_config_values([
 		'rand_seed',
 		'rand_seed_last_update',
+		'hot_threshold',
 	]);
 
 	// Update DB schema version.
