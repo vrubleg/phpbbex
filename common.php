@@ -22,11 +22,7 @@ if (!defined('PHPBB_INSTALLED'))
 
 if (defined('DEBUG_EXTRA'))
 {
-	$base_memory_usage = 0;
-	if (function_exists('memory_get_usage'))
-	{
-		$base_memory_usage = memory_get_usage();
-	}
+	$base_memory_usage = memory_get_usage();
 }
 
 // Include files

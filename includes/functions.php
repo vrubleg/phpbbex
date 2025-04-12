@@ -4451,16 +4451,13 @@ function page_footer($run_cron = true)
 
 		if ($auth->acl_get('a_') && defined('DEBUG_EXTRA'))
 		{
-			if (function_exists('memory_get_usage'))
+			if ($memory_usage = memory_get_usage())
 			{
-				if ($memory_usage = memory_get_usage())
-				{
-					global $base_memory_usage;
-					$memory_usage -= $base_memory_usage;
-					$memory_usage = get_formatted_filesize($memory_usage);
+				global $base_memory_usage;
+				$memory_usage -= $base_memory_usage;
+				$memory_usage = get_formatted_filesize($memory_usage);
 
-					$debug_output .= ' | Memory Usage: ' . $memory_usage;
-				}
+				$debug_output .= ' | Memory Usage: ' . $memory_usage;
 			}
 
 			$debug_output .= ' | <a href="' . build_url() . '&amp;explain=1">Explain</a>';
