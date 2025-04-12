@@ -544,7 +544,6 @@ $template->assign_vars(array(
 	'EMAIL_IMG' 		=> $user->img('icon_contact_email', 'SEND_EMAIL'),
 	'WWW_IMG' 			=> $user->img('icon_contact_www', 'VISIT_WEBSITE'),
 	'JABBER_IMG'		=> $user->img('icon_contact_jabber', 'JABBER'),
-	'SKYPE_IMG'			=> $user->img('icon_contact_skype', 'SKYPE'),
 	'TELEGRAM_IMG'		=> $user->img('icon_contact_telegram', 'TELEGRAM'),
 	'REPORT_IMG'		=> $user->img('icon_post_report', 'REPORT_POST'),
 	'REPORTED_IMG'		=> $user->img('icon_topic_reported', 'POST_REPORTED'),
@@ -1074,7 +1073,6 @@ while ($row = $db->sql_fetchrow($result))
 				'email'				=> '',
 				'www'				=> '',
 				'jabber'			=> '',
-				'skype'				=> '',
 				'telegram'			=> '',
 				'search'			=> '',
 				'age'				=> '',
@@ -1140,7 +1138,6 @@ while ($row = $db->sql_fetchrow($result))
 				'profile'		=> append_sid("{$phpbb_root_path}memberlist.php", "mode=viewprofile&amp;u=$poster_id"),
 				'www'			=> $row['user_website'],
 				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
-				'skype'			=> ($row['user_skype']) ? ('skype:' . $row['user_skype'] . '?chat') : '',
 				'telegram'		=> ($row['user_telegram']) ? ('tg://resolve?domain=' . $row['user_telegram']) : '',
 				'search'		=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.php", "author_id=$poster_id&amp;sr=posts") : '',
 
@@ -1612,7 +1609,6 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_EMAIL'		=> $user_cache[$poster_id]['email'],
 		'U_WWW'			=> $user_cache[$poster_id]['www'],
 		'U_JABBER'		=> $user_cache[$poster_id]['jabber'],
-		'U_SKYPE'		=> $user_cache[$poster_id]['skype'],
 		'U_TELEGRAM'	=> $user_cache[$poster_id]['telegram'],
 
 		'U_REPORT'			=> ($auth->acl_get('f_report', $forum_id)) ? append_sid("{$phpbb_root_path}report.php", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
