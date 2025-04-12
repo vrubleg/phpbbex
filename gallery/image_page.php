@@ -519,7 +519,6 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 				'U_EMAIL'		=> $user_cache[$user_id]['email'],
 				'U_WWW'			=> $user_cache[$user_id]['www'],
 				'U_JABBER'		=> $user_cache[$user_id]['jabber'],
-				'U_SKYPE'		=> $user_cache[$user_id]['skype'],
 				'U_TELEGRAM'	=> $user_cache[$user_id]['telegram'],
 
 				'U_GALLERY'			=> $user_cache[$user_id]['gallery_album'],
@@ -612,7 +611,6 @@ if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_us
 		'U_POSTER_EMAIL'		=> $user_cache[$user_id]['email'],
 		'U_POSTER_WWW'			=> $user_cache[$user_id]['www'],
 		'U_POSTER_JABBER'		=> $user_cache[$user_id]['jabber'],
-		'U_POSTER_SKYPE'		=> $user_cache[$user_id]['skype'],
 		'U_POSTER_TELEGRAM'		=> $user_cache[$user_id]['telegram'],
 
 		'U_POSTER_GALLERY'			=> $user_cache[$user_id]['gallery_album'],
@@ -634,7 +632,6 @@ $template->assign_vars(array(
 	'EMAIL_IMG' 		=> $user->img('icon_contact_email', 'SEND_EMAIL'),
 	'WWW_IMG' 			=> $user->img('icon_contact_www', 'VISIT_WEBSITE'),
 	'JABBER_IMG'		=> $user->img('icon_contact_jabber', 'JABBER'),
-	'SKYPE_IMG'			=> $user->img('icon_contact_skype', 'SKYPE'),
 	'TELEGRAM_IMG'		=> $user->img('icon_contact_telegram', 'TELEGRAM'),
 	'GALLERY_IMG'		=> $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
 ));

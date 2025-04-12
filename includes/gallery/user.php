@@ -432,7 +432,6 @@ class phpbb_gallery_user
 				'email'				=> '',
 				'www'				=> '',
 				'jabber'			=> '',
-				'skype'				=> '',
 				'telegram'			=> '',
 				'search'			=> '',
 				'age'				=> '',
@@ -500,7 +499,6 @@ class phpbb_gallery_user
 				'profile'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=viewprofile&amp;u=$user_id"),
 				'www'			=> $row['user_website'],
 				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
-				'skype'			=> ($row['user_skype']) ? ('skype:' . $row['user_skype'] . '?chat') : '',
 				'telegram'		=> ($row['user_telegram']) ? ('tg://resolve?domain=' . $row['user_telegram']) : '',
 				'search'		=> ($auth->acl_get('u_search')) ? phpbb_gallery_url::append_sid('phpbb', 'search', "author_id=$user_id&amp;sr=posts") : '',
 
