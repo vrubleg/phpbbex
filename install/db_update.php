@@ -76,7 +76,7 @@ $user = new phpbb_user();
 $cache = new phpbb_cache();
 $db = new dbal_mysql();
 
-$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false);
+$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false);
 unset($dbpasswd); // For safety purposes.
 
 $user->ip = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars($_SERVER['REMOTE_ADDR']) : '';

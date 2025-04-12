@@ -778,7 +778,7 @@ class install_install extends module
 
 		// Instantiate the database
 		$db = new dbal_mysql();
-		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false, false);
+		$db->sql_connect($data['dbhost'], $data['dbuser'], htmlspecialchars_decode($data['dbpasswd']), $data['dbname'], $data['dbport'], false);
 
 		// NOTE: trigger_error does not work here.
 		$db->sql_return_on_error(true);

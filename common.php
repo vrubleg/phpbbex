@@ -59,7 +59,7 @@ $cache		= new phpbb_cache();
 $db			= new dbal_mysql();
 
 // Connect to DB
-$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, defined('PHPBB_DB_NEW_LINK') ? PHPBB_DB_NEW_LINK : false);
+$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false);
 
 // We do not need this any longer, unset for safety purposes
 unset($dbpasswd);
