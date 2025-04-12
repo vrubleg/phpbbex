@@ -22,11 +22,7 @@ if (!defined('PHPBB_INSTALLED'))
 
 if (defined('DEBUG_EXTRA'))
 {
-	$base_memory_usage = 0;
-	if (function_exists('memory_get_usage'))
-	{
-		$base_memory_usage = memory_get_usage();
-	}
+	$base_memory_usage = memory_get_usage();
 }
 
 // Include files
@@ -63,7 +59,7 @@ $cache		= new phpbb_cache();
 $db			= new dbal_mysql();
 
 // Connect to DB
-$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, defined('PHPBB_DB_NEW_LINK') ? PHPBB_DB_NEW_LINK : false);
+$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false);
 
 // We do not need this any longer, unset for safety purposes
 unset($dbpasswd);

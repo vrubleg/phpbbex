@@ -44,7 +44,7 @@ if (!$style_id || !$lang)
 $db = new dbal_mysql();
 $cache = new phpbb_cache();
 
-if (!@$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false))
+if (!@$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false))
 {
 	http_response_code(503);
 	die();

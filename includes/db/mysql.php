@@ -26,7 +26,7 @@ class dbal_mysql extends dbal
 	/**
 	* Connect to server
 	*/
-	function sql_connect($sqlserver, $sqluser, $sqlpassword, $database, $port = false, $persistency = false , $new_link = false)
+	function sql_connect($sqlserver, $sqluser, $sqlpassword, $database, $port = false, $persistency = false)
 	{
 		if (!function_exists('mysqli_connect'))
 		{
