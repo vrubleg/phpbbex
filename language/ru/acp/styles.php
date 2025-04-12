@@ -200,7 +200,6 @@ $lang = array_merge($lang, array(
 
 	'IMG_ICON_CONTACT_EMAIL'	=> 'Отправить email',
 	'IMG_ICON_CONTACT_JABBER'	=> 'Jabber',
-	'IMG_ICON_CONTACT_SKYPE'	=> 'Skype',
 	'IMG_ICON_CONTACT_TELEGRAM'	=> 'Telegram',
 	'IMG_ICON_CONTACT_PM'		=> 'Отправить личное сообщение',
 	'IMG_ICON_CONTACT_WWW'		=> 'Сайт',

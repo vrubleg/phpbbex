@@ -250,9 +250,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_ne
 -- Unique index for extensions
 ALTER TABLE phpbb_extensions ADD UNIQUE INDEX extension (extension);
 
--- Remove invalid skypenames
--- UPDATE phpbb_users SET user_skype='' WHERE user_skype NOT RLIKE '^[a-zA-Z][-_.a-zA-Z0-9]{5,31}$' AND user_skype != '';
-
 -- phpBBex 1.7.0
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('min_post_font_size', '85');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_font_size', '200');

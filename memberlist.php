@@ -607,7 +607,6 @@ switch ($mode)
 			'EMAIL_IMG'		=> $user->img('icon_contact_email', $user->lang['EMAIL']),
 			'WWW_IMG'		=> $user->img('icon_contact_www', $user->lang['WWW']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
-			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
 			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
@@ -1009,7 +1008,6 @@ switch ($mode)
 			$username	= request_var('username', '', true);
 			$email		= strtolower(request_var('email', ''));
 			$jabber		= request_var('jabber', '');
-			$skype		= request_var('skype', '');
 			$telegram	= request_var('telegram', '');
 			$search_group_id	= request_var('search_group_id', 0);
 
@@ -1051,7 +1049,6 @@ switch ($mode)
 			$sql_where .= ($username) ? ' AND u.username_clean ' . $db->sql_like_expression(str_replace('*', $db->any_char, utf8_clean_string($username))) : '';
 			$sql_where .= ($auth->acl_get('a_user') && $email) ? ' AND u.user_email ' . $db->sql_like_expression(str_replace('*', $db->any_char, $email)) . ' ' : '';
 			$sql_where .= ($jabber) ? ' AND u.user_jabber ' . $db->sql_like_expression(str_replace('*', $db->any_char, $jabber)) . ' ' : '';
-			$sql_where .= ($skype) ? ' AND u.user_skype ' . $db->sql_like_expression(str_replace('*', $db->any_char, $skype)) . ' ' : '';
 			$sql_where .= ($telegram) ? ' AND u.user_telegram ' . $db->sql_like_expression(str_replace('*', $db->any_char, $telegram)) . ' ' : '';
 			$sql_where .= (is_numeric($count) && isset($find_key_match[$count_select])) ? ' AND u.user_posts ' . $find_key_match[$count_select] . ' ' . (int) $count . ' ' : '';
 
@@ -1285,7 +1282,6 @@ switch ($mode)
 			'username'		=> array('username', '', true),
 			'email'			=> array('email', ''),
 			'jabber'		=> array('jabber', ''),
-			'skype'			=> array('skype', ''),
 			'telegram'		=> array('telegram', ''),
 			'search_group_id'	=> array('search_group_id', 0),
 			'joined_select'	=> array('joined_select', 'lt'),
@@ -1375,7 +1371,6 @@ switch ($mode)
 				'USERNAME'	=> $username,
 				'EMAIL'		=> $email,
 				'JABBER'	=> $jabber,
-				'SKYPE'		=> $skype,
 				'TELEGRAM'	=> $telegram,
 				'JOINED'	=> implode('-', $joined),
 				'ACTIVE'	=> implode('-', $active),
@@ -1529,7 +1524,6 @@ switch ($mode)
 			'EMAIL_IMG'		=> $user->img('icon_contact_email', $user->lang['EMAIL']),
 			'WWW_IMG'		=> $user->img('icon_contact_www', $user->lang['WWW']),
 			'JABBER_IMG'	=> $user->img('icon_contact_jabber', $user->lang['JABBER']),
-			'SKYPE_IMG'		=> $user->img('icon_contact_skype', $user->lang['SKYPE']),
 			'TELEGRAM_IMG'	=> $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
 			'SEARCH_IMG'	=> $user->img('icon_user_search', $user->lang['SEARCH']),
 
@@ -1683,7 +1677,6 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_WWW'			=> (!empty($data['user_website'])) ? $data['user_website'] : '',
 		'U_SHORT_WWW'			=> (!empty($data['user_website'])) ? ((strlen($data['user_website']) > 55) ? substr($data['user_website'], 0, 39) . ' ... ' . substr($data['user_website'], -10) : $data['user_website']) : '',
 		'U_JABBER'		=> ($data['user_jabber']) ? ('xmpp:' . $data['user_jabber']) : '',
-		'U_SKYPE'		=> ($data['user_skype']) ? ('skype:' . $data['user_skype'] . '?chat') : '',
 		'U_TELEGRAM'	=> ($data['user_telegram']) ? ('tg://resolve?domain=' . $data['user_telegram']) : '',
 		'LOCATION'		=> ($data['user_from']) ? $data['user_from'] : '',
 
