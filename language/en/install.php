@@ -159,7 +159,7 @@ $lang = array_merge($lang, array(
 	'INSTALL_CONGRATS'			=> 'Congratulations!',
 	'INSTALL_CONGRATS_EXPLAIN'	=> 'You have successfully installed phpBBex %1$s. Go live with your phpBBex!',
 	'INSTALL_INTRO'				=> 'Welcome to phpBBex installation!',
-	'INSTALL_INTRO_BODY'		=> 'phpBBex is an extended fork of the classic phpBB 3.0 forum software that is as lightweight as the original in contrary to newer versions of phpBB. It is compatible with PHP 7.2+ and 8.0+.
+	'INSTALL_INTRO_BODY'		=> 'phpBBex is an extended fork of the classic phpBB 3.0 forum software that is as lightweight as the original in contrary to newer versions of phpBB. It is compatible with PHP 7.4 and 8.0+.
 	<p>In order to proceed, you will need your MySQL database settings:
 	<ul>
 		<li>The address of the MySQL database server;</li>
@@ -241,10 +241,10 @@ $lang = array_merge($lang, array(
 	'PHP_SUPPORTED_DB'				=> 'Supported databases',
 	'PHP_SUPPORTED_DB_EXPLAIN'		=> '<strong>Required</strong> - You must have support for at least one compatible database within PHP. If no database modules are shown as available you should contact your hosting provider or review the relevant PHP installation documentation for advice.',
 	'PHP_SETTINGS'					=> 'PHP version and settings',
-	'PHP_SETTINGS_EXPLAIN'			=> '<strong>Required</strong> - You must be running at least version 7.2 of PHP in order to install phpBBex.',
+	'PHP_SETTINGS_EXPLAIN'			=> '<strong>Required</strong> - You must be running at least version 7.4 of PHP in order to install phpBBex.',
 	'PHP_URL_FOPEN_SUPPORT'			=> 'PHP setting <var>allow_url_fopen</var> is enabled',
 	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Optional</strong> - This setting is optional, however certain phpBBex functions like off-site avatars will not work properly without it.',
-	'PHP_VERSION_REQD'				=> 'PHP version ≥ 7.2',
+	'PHP_VERSION_REQD'				=> 'PHP version ≥ 7.4',
 	'POST_ID'						=> 'Post ID',
 	'PREFIX_FOUND'					=> 'A scan of your tables has shown a valid installation using <strong>%s</strong> as table prefix.',
 	'PREPROCESS_STEP'				=> 'Executing pre-processing functions/queries',
