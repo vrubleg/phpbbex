@@ -131,7 +131,7 @@ class install_install extends module
 		));
 
 		// Test the minimum PHP version
-		if (version_compare(PHP_VERSION, '7.4', '<'))
+		if (version_compare(PHP_VERSION, '7.2', '<'))
 		{
 			$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
 		}
