@@ -106,9 +106,9 @@ function adm_back_link($u_action)
 */
 function add_bbcode($album_bbcode)
 {
-	global $cache, $config, $db, $phpbb_root_path;
+	global $cache, $config, $db;
 
-	require_once($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
 	$acp_bbcodes = new acp_bbcodes();
 	$gallery_url = phpbb_gallery_url::path('full');
 

@@ -16,15 +16,14 @@ define('IN_INSTALL', true);
 define('NEWEST_PG_VERSION', '1.1.6');
 
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
-require_once($phpbb_root_path . 'includes/functions_display.php');
-require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
-require_once($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
-require_once($phpbb_root_path . 'includes/message_parser.php');
-require_once($phpbb_root_path . 'includes/functions_install.php');
-require_once($phpbb_root_path . 'install/dbal_schema.php');
-require_once($phpbb_root_path . 'includes/umil.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
+require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_modules.php');
+require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
+require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
+require_once(PHPBB_ROOT_PATH . 'install/dbal_schema.php');
+require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
 
 // Start session management
 $user->session_begin();
@@ -83,7 +82,7 @@ class module
 	*/
 	function create($module_type, $module_url, $selected_mod = false, $selected_submod = false)
 	{
-		global $db, $config, $phpbb_root_path;
+		global $db, $config;
 
 		$module = array();
 
@@ -162,8 +161,6 @@ class module
 	*/
 	function load($mode = false, $run = true)
 	{
-		global $phpbb_root_path;
-
 		if ($run)
 		{
 			if (!empty($mode))
@@ -196,7 +193,7 @@ class module
 		}
 
 		define('HEADER_INC', true);
-		global $template, $user, $stage, $phpbb_root_path;
+		global $template, $user, $stage;
 
 		$template->assign_vars(array(
 			'L_CHANGE'				=> $user->lang['CHANGE'],
@@ -204,7 +201,7 @@ class module
 			'L_SELECT_LANG'			=> $user->lang['SELECT_LANG'],
 			'L_SKIP'				=> $user->lang['SKIP'],
 			'PAGE_TITLE'			=> $this->get_page_title(),
-			'T_IMAGE_PATH'			=> $phpbb_root_path . 'adm/images/',
+			'T_IMAGE_PATH'			=> PHPBB_ROOT_PATH . 'adm/images/',
 
 			'S_CONTENT_DIRECTION' 	=> $user->lang['DIRECTION'],
 			'S_CONTENT_FLOW_BEGIN'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
@@ -272,7 +269,7 @@ class module
 	*/
 	function generate_navigation()
 	{
-		global $user, $template, $phpbb_root_path, $language;
+		global $user, $template, $language;
 
 		if (is_array($this->module_ary))
 		{
@@ -282,7 +279,7 @@ class module
 				$cat = $cat_ary['name'];
 				$l_cat = (!empty($user->lang['CAT_' . $cat])) ? $user->lang['CAT_' . $cat] : preg_replace('#_#', ' ', $cat);
 				$cat = strtolower($cat);
-				$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$cat");
+				$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$cat");
 
 				if ($this->mode == $cat)
 				{
@@ -299,7 +296,7 @@ class module
 						{
 							$l_option = (!empty($user->lang['SUB_' . $option])) ? $user->lang['SUB_' . $option] : preg_replace('#_#', ' ', $option);
 							$option = strtolower($option);
-							$url = append_sid("{$phpbb_root_path}install/index.php", 'mode=' . $this->mode . "&amp;sub=$option");
+							$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', 'mode=' . $this->mode . "&amp;sub=$option");
 
 							$template->assign_block_vars('l_block1', array(
 								'L_TITLE'		=> $l_option,

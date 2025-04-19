@@ -14,9 +14,6 @@ if (!defined('IN_PHPBB'))
 
 class phpbb_gallery
 {
-	// We still need this, as we can not guess that.
-	static private $phpbb_root_path = '../';
-
 	static public $auth = null;
 	static public $user = null;
 

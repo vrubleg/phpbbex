@@ -46,7 +46,6 @@ class install_update extends module
 	function main($mode, $sub)
 	{
 		global $cache, $template, $user;
-		global $phpbb_root_path;
 
 		if ($user->data['user_type'] != USER_FOUNDER)
 		{
@@ -68,7 +67,7 @@ class install_update extends module
 					'TITLE'			=> $user->lang['UPDATE_INSTALLATION'],
 					'BODY'			=> $user->lang['UPDATE_INSTALLATION_EXPLAIN'],
 					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
-					'U_ACTION'		=> append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=requirements"),
+					'U_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=requirements"),
 				));
 
 			break;
@@ -125,7 +124,7 @@ class install_update extends module
 	*/
 	function check_server_requirements($mode, $sub)
 	{
-		global $cache, $user, $template, $phpbb_root_path;
+		global $cache, $user, $template;
 
 		$this->page_title = $user->lang['STAGE_REQUIREMENTS'];
 
@@ -260,7 +259,7 @@ class install_update extends module
 		}
 
 		// Check whether all old files are deleted
-		require($phpbb_root_path . 'install/outdated_files.php');
+		require(PHPBB_ROOT_PATH . 'install/outdated_files.php');
 
 		umask(0);
 
@@ -276,13 +275,13 @@ class install_update extends module
 
 			if ($delete)
 			{
-				if (@file_exists($phpbb_root_path . $file))
+				if (@file_exists(PHPBB_ROOT_PATH . $file))
 				{
 					// Try to set CHMOD and then delete it
-					@chmod($phpbb_root_path . $file, 0777);
-					@unlink($phpbb_root_path . $file);
+					@chmod(PHPBB_ROOT_PATH . $file, 0777);
+					@unlink(PHPBB_ROOT_PATH . $file);
 					// Delete failed, tell the user to delete it manually
-					if (@file_exists($phpbb_root_path . $file))
+					if (@file_exists(PHPBB_ROOT_PATH . $file))
 					{
 						if ($passed['files'])
 						{
@@ -303,7 +302,7 @@ class install_update extends module
 					}
 				}
 			}
-			elseif (@file_exists($phpbb_root_path . $file))
+			elseif (@file_exists(PHPBB_ROOT_PATH . $file))
 			{
 				if ($passed['files'])
 				{
@@ -338,7 +337,7 @@ class install_update extends module
 		// Delete the class cache to get the new config directory from 1.1.2
 		$cache->destroy('class_loader');
 
-		$url = (!in_array(false, $passed)) ? append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=update_db") : append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=requirements");
+		$url = (!in_array(false, $passed)) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db") : append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=requirements");
 		$submit = (!in_array(false, $passed)) ? $user->lang['INSTALL_START'] : $user->lang['INSTALL_TEST'];
 
 		$template->assign_vars(array(
@@ -354,7 +353,6 @@ class install_update extends module
 	function update_db_schema($mode, $sub)
 	{
 		global $db, $user, $template, $table_prefix;
-		global $phpbb_root_path;
 
 		$umil = new phpbb_umil();
 		$this->page_title = $user->lang['STAGE_UPDATE_DB'];
@@ -455,7 +453,7 @@ class install_update extends module
 			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
 			'L_SUBMIT'	=> $user->lang['NEXT_STEP'],
 			'S_HIDDEN'	=> '',
-			'U_ACTION'	=> append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=update_db&amp;step=2"),
+			'U_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db&amp;step=2"),
 		));
 	}
 
@@ -465,7 +463,6 @@ class install_update extends module
 	function update_db_data($mode, $sub)
 	{
 		global $cache, $db, $template, $user;
-		global $phpbb_root_path;
 
 		$database_step = request_var('step', 0);
 
@@ -563,11 +560,11 @@ class install_update extends module
 			case '1.1.4':
 			// no break;
 
-				$next_update_url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=update_db&amp;step=4");
+				$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db&amp;step=4");
 			break;
 		}
 
-		$next_update_url = (!$next_update_url) ? append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=update_db&amp;step=4") : $next_update_url;
+		$next_update_url = (!$next_update_url) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db&amp;step=4") : $next_update_url;
 
 		$template->assign_vars(array(
 			'BODY'		=> $user->lang['UPDATING_DATA'],
@@ -582,7 +579,7 @@ class install_update extends module
 	*/
 	function thinout_db_schema($mode, $sub)
 	{
-		global $user, $template, $db, $phpbb_root_path;
+		global $user, $template, $db;
 
 		$this->page_title = $user->lang['STAGE_UPDATE_DB'];
 		$reparse_modules_bbcode = false;
@@ -659,11 +656,11 @@ class install_update extends module
 
 		if ($reparse_modules_bbcode)
 		{
-			$next_update_url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=advanced");
+			$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=advanced");
 		}
 		else
 		{
-			$next_update_url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=final");
+			$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=final");
 		}
 
 		$template->assign_vars(array(
@@ -680,7 +677,7 @@ class install_update extends module
 	*/
 	function obtain_advanced_settings($mode, $sub)
 	{
-		global $user, $template, $phpbb_root_path, $db;
+		global $user, $template, $db;
 
 		$create = request_var('create', '');
 		if ($create)
@@ -721,7 +718,7 @@ class install_update extends module
 			}
 
 			$s_hidden_fields = '';
-			$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=final");
+			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=final");
 		}
 		else
 		{
@@ -792,7 +789,7 @@ class install_update extends module
 				);
 			}
 			$s_hidden_fields = '<input type="hidden" name="create" value="true" />';
-			$url = append_sid("{$phpbb_root_path}install/index.php", "mode=$mode&amp;sub=advanced");
+			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=advanced");
 		}
 
 		$submit = $user->lang['NEXT_STEP'];

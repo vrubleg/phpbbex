@@ -45,18 +45,15 @@ class phpbb_gallery_url
 	*/
 	static public function init($force_root_path = false)
 	{
-		global $phpbb_admin_path, $phpbb_root_path;
-
 		if ($force_root_path)
 		{
 			self::$phpbb_root_path = $force_root_path;
 		}
 		else
 		{
-			self::$phpbb_root_path = $phpbb_root_path;
+			self::$phpbb_root_path = PHPBB_ROOT_PATH;
 		}
-		$phpbb_admin_path = self::$phpbb_root_path . self::$phpbb_admin_path;
-		self::$phpbb_admin_path = $phpbb_admin_path;
+		self::$phpbb_admin_path = self::$phpbb_root_path . self::$phpbb_admin_path;
 		self::$phpbb_gallery_relative = self::beautiful_path(self::$phpbb_root_path . self::$phpbb_gallery_path);
 		self::$phpbb_gallery_full_path = self::beautiful_path(generate_board_url() . '/' . self::$phpbb_gallery_path, true);
 
@@ -185,9 +182,6 @@ class phpbb_gallery_url
 	{
 		if (!is_array($file))
 		{
-			// Trying to break less MODs by populating the needed variables for inclusions
-			global $phpbb_admin_path, $phpbb_root_path;
-
 			require(self::path($path) . $sub_directory . self::phpext_file($file));
 		}
 		else
