@@ -83,7 +83,7 @@ class filespec
 	* @param string $prefix Prefix applied to filename
 	* @access public
 	*/
-	function clean_filename($mode = 'unique', $prefix = '', $user_id = '')
+	function clean_filename($mode = 'unique', $prefix = '')
 	{
 		if ($this->init_error)
 		{
@@ -114,7 +114,7 @@ class filespec
 
 			case 'avatar':
 				$this->extension = strtolower($this->extension);
-				$this->realname = $prefix . $user_id . '.' . $this->extension;
+				$this->realname = $prefix . '.' . $this->extension;
 
 			break;
 
