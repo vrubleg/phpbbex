@@ -391,7 +391,7 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 {
-	// Resync avatars.
+	// Normalize old avatar file names.
 
 	$sql = 'SELECT user_id, user_avatar FROM ' . USERS_TABLE . ' WHERE user_avatar_type = ' . AVATAR_UPLOAD;
 	$result = $db->sql_query($sql);
@@ -402,15 +402,16 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 	{
 		$avatar = $row['user_avatar'];
 		if (!$avatar) { continue; }
-		$target_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
-		if (file_exists($target_path)) { continue; }
 
-		// Normalize old avatar file names.
 		if (strpos($avatar, '_') !== false)
 		{
+			$target_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
+			if (file_exists($target_path)) { continue; }
+
 			// Strip timestamp part.
 			$avatar = strchr($avatar, '_', true) . strrchr($avatar, '.');
 
+			// phpBB 3.0 file name in db, but phpBBex 1.5 in filesystem.
 			$old_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
 			if (file_exists($old_path))
 			{
@@ -418,15 +419,31 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 				continue;
 			}
 
-			// Normalize phpBB 3.0 avatar file names.
+			// phpBB 3.0 avatar file name in both places.
 			if (isset($config['avatar_salt']))
 			{
 				$old_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $config['avatar_salt'] . '_' . $avatar;
 				if (file_exists($old_path))
 				{
 					rename($old_path, $target_path);
-					continue;
 				}
+			}
+		}
+		else
+		{
+			// phpBBex 1.5 file name. Add current mtime to filenames.
+
+			$old_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
+			if (!file_exists($old_path)) { continue; }
+
+			[$name, $ext] = explode('.', $avatar);
+			if ($ext == 'jpeg') { $ext = 'jpg'; }
+			$avatar = $name . '_' . filemtime($old_path) . '.' . $ext;
+
+			$target_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
+			if (rename($old_path, $target_path))
+			{
+				$db->sql_query("UPDATE " . USERS_TABLE . " SET user_avatar = '" . $db->sql_escape($avatar) . "' WHERE user_id = " . intval($row['user_id']));
 			}
 		}
 	}
