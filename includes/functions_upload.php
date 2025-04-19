@@ -114,6 +114,7 @@ class filespec
 
 			case 'avatar':
 				$this->extension = strtolower($this->extension);
+				if ($this->extension == 'jpeg') { $this->extension = 'jpg'; }
 				$this->realname = $prefix . '.' . $this->extension;
 
 			break;
