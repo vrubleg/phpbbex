@@ -744,7 +744,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 */
 function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync = true, $post_count_sync = true, $call_delete_topics = true)
 {
-	global $db, $config, $phpbb_root_path;
+	global $db, $config;
 
 	if ($where_type === 'range')
 	{
@@ -870,12 +870,12 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 	// Remove the message from the search index
 	$search_type = basename($config['search_type']);
 
-	if (!file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.php'))
+	if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
 	{
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	require_once("{$phpbb_root_path}includes/search/$search_type.php");
+	require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
 
 	$error = false;
 	$search = new $search_type($error);
@@ -1262,7 +1262,7 @@ function update_posted_info(&$topic_ids)
 */
 function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
 {
-	global $db, $phpbb_root_path, $config;
+	global $db, $config;
 
 	// Because of copying topics or modifications a physical filename could be assigned more than once. If so, do not remove the file itself.
 	$sql = 'SELECT COUNT(attach_id) AS num_entries
@@ -1279,7 +1279,7 @@ function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
 	}
 
 	$filename = ($mode == 'thumbnail') ? 'thumb_' . utf8_basename($filename) : utf8_basename($filename);
-	return @unlink($phpbb_root_path . UPLOADS_PATH . '/' . $filename);
+	return @unlink(PHPBB_ROOT_PATH . UPLOADS_PATH . '/' . $filename);
 }
 
 /**
@@ -2251,7 +2251,7 @@ function auto_prune($forum_id, $prune_mode, $prune_flags, $prune_days, $prune_fr
 */
 function cache_moderators()
 {
-	global $db, $cache, $auth, $phpbb_root_path;
+	global $db, $cache, $auth;
 
 	// Remove cached sql results
 	$cache->destroy('sql', MODERATOR_CACHE_TABLE);
@@ -2417,11 +2417,11 @@ function cache_moderators()
 */
 function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id = 0, $topic_id = 0, $user_id = 0, $limit_days = 0, $sort_by = 'l.log_time DESC', $keywords = '')
 {
-	global $db, $user, $auth, $phpbb_root_path, $phpbb_admin_path;
+	global $db, $user, $auth;
 
 	$topic_id_list = $reportee_id_list = $is_auth = $is_mod = array();
 
-	$profile_url = (defined('IN_ADMIN')) ? append_sid("{$phpbb_admin_path}index.php", 'i=users&amp;mode=overview') : append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile');
+	$profile_url = (defined('IN_ADMIN')) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview') : append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile');
 
 	switch ($mode)
 	{
@@ -2577,7 +2577,7 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			'forum_id'			=> $row['forum_id'],
 			'topic_id'			=> $row['topic_id'],
 
-			'viewforum'			=> ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $row['forum_id']) : false,
+			'viewforum'			=> ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : false,
 			'action'			=> (isset($user->lang[$row['log_operation']])) ? $user->lang[$row['log_operation']] : '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
 		);
 
@@ -2671,8 +2671,8 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 
 		foreach ($log as $key => $row)
 		{
-			$log[$key]['viewtopic'] = (isset($is_auth[$row['topic_id']])) ? append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $row['topic_id']) : false;
-			$log[$key]['viewlogs'] = (isset($is_mod[$row['topic_id']])) ? append_sid("{$phpbb_root_path}mcp.php", 'i=logs&amp;mode=topic_logs&amp;t=' . $row['topic_id'], true, $user->session_id) : false;
+			$log[$key]['viewtopic'] = (isset($is_auth[$row['topic_id']])) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']) : false;
+			$log[$key]['viewlogs'] = (isset($is_mod[$row['topic_id']])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=logs&amp;mode=topic_logs&amp;t=' . $row['topic_id'], true, $user->session_id) : false;
 		}
 	}
 

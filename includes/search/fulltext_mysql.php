@@ -10,7 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-require_once($phpbb_root_path . 'includes/search/search.php');
+require_once(PHPBB_ROOT_PATH . 'includes/search/search.php');
 
 /**
 * Fulltext search for MySQL

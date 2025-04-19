@@ -23,11 +23,10 @@ class acp_profile
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
-		require_once($phpbb_root_path . 'includes/functions_posting.php');
-		require_once($phpbb_root_path . 'includes/functions_user.php');
-		require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
 
 		$user->add_lang(array('ucp', 'acp/profile'));
 		$this->tpl_name = 'acp_profile';

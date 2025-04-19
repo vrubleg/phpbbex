@@ -8,12 +8,11 @@
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'includes/startup.php');
+require_once(PHPBB_ROOT_PATH . 'includes/startup.php');
 
-if (defined('PHPBB_INSTALLED') && !file_exists($phpbb_root_path . 'cache/install_lock'))
+if (defined('PHPBB_INSTALLED') && !file_exists(PHPBB_ROOT_PATH . 'cache/install_lock'))
 {
-	header('Location: ' . $phpbb_root_path);
+	header('Location: ' . PHPBB_ROOT_PATH);
 	exit();
 }
 
@@ -46,16 +45,16 @@ else
 @ini_set('memory_limit', $mem_limit);
 
 // Include essential scripts
-require_once($phpbb_root_path . 'includes/functions.php');
-require_once($phpbb_root_path . 'includes/functions_content.php');
-require_once($phpbb_root_path . 'includes/auth.php');
-require_once($phpbb_root_path . 'includes/session.php');
-require_once($phpbb_root_path . 'includes/template.php');
-require_once($phpbb_root_path . 'includes/acm/acm_file.php');
-require_once($phpbb_root_path . 'includes/cache.php');
-require_once($phpbb_root_path . 'includes/functions_admin.php');
-require_once($phpbb_root_path . 'includes/utf/utf_tools.php');
-require_once($phpbb_root_path . 'includes/functions_install.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_content.php');
+require_once(PHPBB_ROOT_PATH . 'includes/auth.php');
+require_once(PHPBB_ROOT_PATH . 'includes/session.php');
+require_once(PHPBB_ROOT_PATH . 'includes/template.php');
+require_once(PHPBB_ROOT_PATH . 'includes/acm/acm_file.php');
+require_once(PHPBB_ROOT_PATH . 'includes/cache.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
+require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_tools.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 
 // Try and load an appropriate language if required
 $language = basename(request_var('language', ''));
@@ -68,7 +67,7 @@ if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !$language)
 		// Set correct format ... guess full xx_yy form
 		$accept_lang = substr($accept_lang, 0, 2) . '_' . substr($accept_lang, 3, 2);
 
-		if (file_exists($phpbb_root_path . 'language/' . $accept_lang) && is_dir($phpbb_root_path . 'language/' . $accept_lang))
+		if (file_exists(PHPBB_ROOT_PATH . 'language/' . $accept_lang) && is_dir(PHPBB_ROOT_PATH . 'language/' . $accept_lang))
 		{
 			$language = $accept_lang;
 			break;
@@ -77,7 +76,7 @@ if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !$language)
 		{
 			// No match on xx_yy so try xx
 			$accept_lang = substr($accept_lang, 0, 2);
-			if (file_exists($phpbb_root_path . 'language/' . $accept_lang) && is_dir($phpbb_root_path . 'language/' . $accept_lang))
+			if (file_exists(PHPBB_ROOT_PATH . 'language/' . $accept_lang) && is_dir(PHPBB_ROOT_PATH . 'language/' . $accept_lang))
 			{
 				$language = $accept_lang;
 				break;
@@ -90,7 +89,7 @@ if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !$language)
 // dir, this may or may not be English
 if (!$language)
 {
-	$dir = @opendir($phpbb_root_path . 'language');
+	$dir = @opendir(PHPBB_ROOT_PATH . 'language');
 
 	if (!$dir)
 	{
@@ -100,7 +99,7 @@ if (!$language)
 
 	while (($file = readdir($dir)) !== false)
 	{
-		$path = $phpbb_root_path . 'language/' . $file;
+		$path = PHPBB_ROOT_PATH . 'language/' . $file;
 
 		if (!is_file($path) && !is_link($path) && file_exists($path . '/iso.txt'))
 		{
@@ -111,17 +110,17 @@ if (!$language)
 	closedir($dir);
 }
 
-if (!file_exists($phpbb_root_path . 'language/' . $language) || !is_dir($phpbb_root_path . 'language/' . $language))
+if (!file_exists(PHPBB_ROOT_PATH . 'language/' . $language) || !is_dir(PHPBB_ROOT_PATH . 'language/' . $language))
 {
 	die('No language found!');
 }
 
 // And finally, load the relevant language files
-require($phpbb_root_path . 'language/' . $language . '/common.php');
-require($phpbb_root_path . 'language/' . $language . '/acp/common.php');
-require($phpbb_root_path . 'language/' . $language . '/acp/board.php');
-require($phpbb_root_path . 'language/' . $language . '/install.php');
-require($phpbb_root_path . 'language/' . $language . '/posting.php');
+require(PHPBB_ROOT_PATH . 'language/' . $language . '/common.php');
+require(PHPBB_ROOT_PATH . 'language/' . $language . '/acp/common.php');
+require(PHPBB_ROOT_PATH . 'language/' . $language . '/acp/board.php');
+require(PHPBB_ROOT_PATH . 'language/' . $language . '/install.php');
+require(PHPBB_ROOT_PATH . 'language/' . $language . '/posting.php');
 
 // usually we would need every single constant here - and it would be consistent. For 3.0.x, use a dirty hack... :(
 
@@ -194,7 +193,7 @@ class module
 	*/
 	function create($module_type, $module_url, $selected_mod = false, $selected_submod = false)
 	{
-		global $db, $config, $phpbb_root_path;
+		global $db, $config;
 
 		$module = array();
 
@@ -268,8 +267,6 @@ class module
 	*/
 	function load($mode = false, $run = true)
 	{
-		global $phpbb_root_path;
-
 		if ($run)
 		{
 			if (!empty($mode))
@@ -302,7 +299,7 @@ class module
 		}
 
 		define('HEADER_INC', true);
-		global $template, $lang, $stage, $phpbb_root_path;
+		global $template, $lang, $stage;
 
 		$template->assign_vars(array(
 			'L_CHANGE'				=> $lang['CHANGE'],
@@ -310,7 +307,7 @@ class module
 			'L_SELECT_LANG'			=> $lang['SELECT_LANG'],
 			'L_SKIP'				=> $lang['SKIP'],
 			'PAGE_TITLE'			=> $this->get_page_title(),
-			'T_IMAGE_PATH'			=> $phpbb_root_path . 'adm/images/',
+			'T_IMAGE_PATH'			=> PHPBB_ROOT_PATH . 'adm/images/',
 			'L_POWERED_BY'			=> sprintf($lang['POWERED_BY'], POWERED_BY),
 
 			'S_CONTENT_DIRECTION' 	=> $lang['DIRECTION'],
@@ -622,9 +619,7 @@ class module
 	*/
 	function inst_language_select($default = '')
 	{
-		global $phpbb_root_path;
-
-		$dir = @opendir($phpbb_root_path . 'language');
+		$dir = @opendir(PHPBB_ROOT_PATH . 'language');
 
 		if (!$dir)
 		{
@@ -633,7 +628,7 @@ class module
 
 		while ($file = readdir($dir))
 		{
-			$path = $phpbb_root_path . 'language/' . $file;
+			$path = PHPBB_ROOT_PATH . 'language/' . $file;
 
 			if ($file == '.' || $file == '..' || is_link($path) || is_file($path) || $file == 'CVS')
 			{

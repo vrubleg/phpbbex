@@ -26,9 +26,8 @@ class acp_inactive
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template;
-		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
-		require_once($phpbb_root_path . 'includes/functions_user.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 		$user->add_lang('memberlist');
 
@@ -102,7 +101,7 @@ class acp_inactive
 
 						if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !empty($inactive_users))
 						{
-							require_once($phpbb_root_path . 'includes/functions_messenger.php');
+							require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 							$messenger = new messenger(false);
 
@@ -188,7 +187,7 @@ class acp_inactive
 					if ($row = $db->sql_fetchrow($result))
 					{
 						// Send the messages
-						require_once($phpbb_root_path . 'includes/functions_messenger.php');
+						require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 						$messenger = new messenger();
 						$usernames = $user_ids = array();
@@ -263,12 +262,12 @@ class acp_inactive
 
 				'REMINDED_EXPLAIN'	=> $user->lang('USER_LAST_REMINDED', (int) $row['user_reminded'], $user->format_date($row['user_reminded_time'])),
 
-				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid("{$phpbb_admin_path}index.php", 'i=users&amp;mode=overview')),
+				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview')),
 				'USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
 				'USER_COLOR'		=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
 
-				'U_USER_ADMIN'	=> append_sid("{$phpbb_admin_path}index.php", "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
-				'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.php", "author_id={$row['user_id']}&amp;sr=posts") : '',
+				'U_USER_ADMIN'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
+				'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$row['user_id']}&amp;sr=posts") : '',
 			));
 		}
 

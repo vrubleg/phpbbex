@@ -7,10 +7,9 @@
 
 define('IN_PHPBB', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
-require_once($phpbb_root_path . 'includes/functions_user.php');
-require_once($phpbb_root_path . 'includes/functions_module.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_module.php');
 
 // Basic parameter data
 $id 	= request_var('i', '');
@@ -39,7 +38,7 @@ switch ($mode)
 		$module->load('ucp', 'activate');
 		$module->display($user->lang['UCP_ACTIVATE']);
 
-		redirect(append_sid("{$phpbb_root_path}index.php"));
+		redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 	break;
 
 	case 'resend_act':
@@ -55,7 +54,7 @@ switch ($mode)
 	case 'register':
 		if ($user->data['is_registered'] || isset($_REQUEST['not_agreed']))
 		{
-			redirect(append_sid("{$phpbb_root_path}index.php"));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 
 		$module->load('ucp', 'register');
@@ -69,7 +68,7 @@ switch ($mode)
 	case 'login':
 		if ($user->data['is_registered'])
 		{
-			redirect(append_sid("{$phpbb_root_path}index.php"));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 
 		login_box(request_var('redirect', "index.php"));
@@ -89,12 +88,12 @@ switch ($mode)
 
 		if (!empty($config['skip_typical_notices']))
 		{
-			redirect(append_sid("{$phpbb_root_path}index.php"));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 
-		meta_refresh(3, append_sid("{$phpbb_root_path}index.php"));
+		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 
-		$message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.php") . '">', '</a> ');
+		$message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a> ');
 		trigger_error($message);
 
 	break;
@@ -109,7 +108,7 @@ switch ($mode)
 		{
 			if ($user->data['is_registered'])
 			{
-				redirect(append_sid("{$phpbb_root_path}index.php"));
+				redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 			}
 
 			login_box();
@@ -126,7 +125,7 @@ switch ($mode)
 			'S_AGREEMENT'			=> true,
 			'AGREEMENT_TITLE'		=> $user->lang[$title],
 			'AGREEMENT_TEXT'		=> sprintf($user->lang[$message], $config['sitename'], generate_board_url()),
-			'U_BACK'				=> append_sid("{$phpbb_root_path}ucp.php", 'mode=login'),
+			'U_BACK'				=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login'),
 			'L_BACK'				=> $user->lang['BACK_TO_LOGIN'],
 		));
 
@@ -147,20 +146,20 @@ switch ($mode)
 
 		if (!$auth->acl_get('a_switchperm') || !$user_row || $user_id == $user->data['user_id'] || !check_link_hash(request_var('hash', ''), 'switchperm'))
 		{
-			redirect(append_sid("{$phpbb_root_path}index.php"));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 
-		require_once($phpbb_root_path . 'includes/acp/auth.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
 
 		$auth_admin = new auth_admin();
 		if (!$auth_admin->ghost_permissions($user_id, $user->data['user_id']))
 		{
-			redirect(append_sid("{$phpbb_root_path}index.php"));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 
 		add_log('admin', 'LOG_ACL_TRANSFER_PERMISSIONS', $user_row['username']);
 
-		$message = sprintf($user->lang['PERMISSIONS_TRANSFERRED'], $user_row['username']) . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.php") . '">', '</a>');
+		$message = sprintf($user->lang['PERMISSIONS_TRANSFERRED'], $user_row['username']) . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 		trigger_error($message);
 
 	break;
@@ -169,7 +168,7 @@ switch ($mode)
 
 		if (!$user->data['user_perm_from'] || !$auth->acl_get('a_switchperm'))
 		{
-			redirect(append_sid("{$phpbb_root_path}index.php"));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 
 		$auth->acl_cache($user->data);
@@ -183,7 +182,7 @@ switch ($mode)
 
 		add_log('admin', 'LOG_ACL_RESTORE_PERMISSIONS', $username);
 
-		$message = $user->lang['PERMISSIONS_RESTORED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.php") . '">', '</a>');
+		$message = $user->lang['PERMISSIONS_RESTORED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 		trigger_error($message);
 
 	break;
@@ -204,12 +203,12 @@ if (!$user->data['is_registered'])
 {
 	if ($user->data['is_bot'])
 	{
-		redirect(append_sid("{$phpbb_root_path}index.php"));
+		redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 	}
 
 	if ($id == 'pm' && $mode == 'view' && isset($_GET['p']))
 	{
-		$redirect_url = append_sid("{$phpbb_root_path}ucp.php?i=pm&p=" . request_var('p', 0));
+		$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php?i=pm&p=' . request_var('p', 0));
 		login_box($redirect_url, $user->lang['LOGIN_EXPLAIN_UCP']);
 	}
 
@@ -280,7 +279,7 @@ $module->set_active($id, $mode);
 $module->load_active();
 
 // Assign data to the template engine for the list of modules
-$module->assign_tpl_vars(append_sid("{$phpbb_root_path}ucp.php"));
+$module->assign_tpl_vars(append_sid(PHPBB_ROOT_PATH . 'ucp.php'));
 
 // Generate the page, do not display/query online list
 $module->display($module->get_page_title(), false);

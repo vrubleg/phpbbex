@@ -20,7 +20,6 @@ class acp_email
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
 		$user->add_lang('acp/email');
 		$this->tpl_name = 'acp_email';
@@ -167,8 +166,8 @@ class acp_email
 				$db->sql_freeresult($result);
 
 				// Send the messages
-				require_once($phpbb_root_path . 'includes/functions_messenger.php');
-				require_once($phpbb_root_path . 'includes/functions_user.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 				$messenger = new messenger($use_queue);
 
 				$errored = false;
@@ -233,7 +232,7 @@ class acp_email
 				}
 				else
 				{
-					$message = sprintf($user->lang['EMAIL_SEND_ERROR'], '<a href="' . append_sid("{$phpbb_admin_path}index.php", 'i=logs&amp;mode=critical') . '">', '</a>');
+					$message = sprintf($user->lang['EMAIL_SEND_ERROR'], '<a href="' . append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=logs&amp;mode=critical') . '">', '</a>');
 					trigger_error($message . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 			}
@@ -261,7 +260,7 @@ class acp_email
 			'U_ACTION'				=> $this->u_action,
 			'S_GROUP_OPTIONS'		=> $select_list,
 			'USERNAMES'				=> $usernames,
-			'U_FIND_USERNAME'		=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=acp_email&amp;field=usernames'),
+			'U_FIND_USERNAME'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_email&amp;field=usernames'),
 			'SUBJECT'				=> $subject,
 			'MESSAGE'				=> $message)
 		);

@@ -22,8 +22,7 @@ class ucp_resend
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path;
-		global $db, $user, $auth, $template;
+		global $db, $user, $auth, $template, $config;
 
 		$username	= request_var('username', '', true);
 		$email		= strtolower(request_var('email', ''));
@@ -66,7 +65,7 @@ class ucp_resend
 				trigger_error('ACCOUNT_DEACTIVATED');
 			}
 
-			require_once($phpbb_root_path . 'includes/functions_messenger.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 			$messenger = new messenger(false);
 
 			if ($config['require_activation'] == USER_ACTIVATION_SELF)
@@ -114,17 +113,17 @@ class ucp_resend
 				$db->sql_freeresult($result);
 			}
 
-			meta_refresh(3, append_sid("{$phpbb_root_path}index.php"));
+			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 
 			$message = ($config['require_activation'] == USER_ACTIVATION_ADMIN) ? $user->lang['ACTIVATION_EMAIL_SENT_ADMIN'] : $user->lang['ACTIVATION_EMAIL_SENT'];
-			$message .= '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.php") . '">', '</a>');
+			$message .= '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 			trigger_error($message);
 		}
 
 		$template->assign_vars(array(
 			'USERNAME'			=> $username,
 			'EMAIL'				=> $email,
-			'S_PROFILE_ACTION'	=> append_sid($phpbb_root_path . 'ucp.php', 'mode=resend_act'))
+			'S_PROFILE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=resend_act'))
 		);
 
 		$this->tpl_name = 'ucp_resend';

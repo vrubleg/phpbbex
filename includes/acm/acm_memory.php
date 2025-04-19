@@ -29,9 +29,9 @@ class acm_memory
 	*/
 	function __construct()
 	{
-		global $phpbb_root_path, $dbname, $table_prefix;
+		global $dbname, $table_prefix;
 
-		$this->cache_dir	= $phpbb_root_path . 'cache/';
+		$this->cache_dir	= PHPBB_ROOT_PATH . 'cache/';
 		$this->key_prefix	= substr(md5($dbname . $table_prefix), 0, 8) . '_';
 
 		if (!isset($this->extension) || !extension_loaded($this->extension))
@@ -415,8 +415,7 @@ class acm_memory
 	{
 		if (!function_exists('phpbb_is_writable'))
 		{
-			global $phpbb_root_path;
-			require_once($phpbb_root_path . 'includes/functions.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 		}
 
 		if ($check && !phpbb_is_writable($this->cache_dir))

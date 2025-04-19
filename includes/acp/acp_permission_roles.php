@@ -19,11 +19,10 @@ class acp_permission_roles
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $db, $user, $auth, $template, $cache, $config;
 
-		require_once($phpbb_root_path . 'includes/functions_user.php');
-		require_once($phpbb_root_path . 'includes/acp/auth.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
 
 		$auth_admin = new auth_admin();
 

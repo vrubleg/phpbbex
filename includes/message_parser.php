@@ -10,7 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-require_once($phpbb_root_path . 'includes/bbcode.php');
+require_once(PHPBB_ROOT_PATH . 'includes/bbcode.php');
 
 /**
 * BBCODE FIRSTPASS
@@ -1469,7 +1469,7 @@ class parse_message extends bbcode_firstpass
 	*/
 	function parse_attachments($form_name, $mode, $forum_id, $submit, $preview, $refresh, $is_message = false)
 	{
-		global $config, $auth, $user, $phpbb_root_path, $db;
+		global $config, $auth, $user, $db;
 
 		$error = array();
 
@@ -1561,7 +1561,7 @@ class parse_message extends bbcode_firstpass
 			// Perform actions on temporary attachments
 			if ($delete_file)
 			{
-				require_once($phpbb_root_path . 'includes/functions_admin.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 				$index = array_keys(request_var('delete_file', array(0 => 0)));
 				$index = (!empty($index)) ? $index[0] : false;
@@ -1652,7 +1652,7 @@ class parse_message extends bbcode_firstpass
 			}
 			else if ($update_file && $upload_file)
 			{
-				require_once($phpbb_root_path . 'includes/functions_admin.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 				$filedata = upload_attachment($form_name, $forum_id, false, '', $is_message);
 				$error = array_merge($error, $filedata['error']);
@@ -1721,7 +1721,7 @@ class parse_message extends bbcode_firstpass
 	*/
 	function get_submitted_attachment_data($check_user_id = false)
 	{
-		global $user, $db, $phpbb_root_path, $config;
+		global $user, $db, $config;
 
 		$this->filename_data['filecomment'] = utf8_normalize_nfc(request_var('filecomment', '', true));
 		$attachment_data = (isset($_POST['attachment_data'])) ? $_POST['attachment_data'] : array();

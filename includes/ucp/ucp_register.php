@@ -22,7 +22,7 @@ class ucp_register
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path;
+		global $config, $db, $user, $auth, $template;
 
 		//
 		if ($config['require_activation'] == USER_ACTIVATION_DISABLE)
@@ -30,7 +30,7 @@ class ucp_register
 			trigger_error('UCP_REGISTER_DISABLE');
 		}
 
-		require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
 
 		$agreed			= (!empty($_POST['agreed'])) ? 1 : 0;
 		$submit			= (isset($_POST['submit'])) ? true : false;
@@ -116,7 +116,7 @@ class ucp_register
 
 				'S_REGISTRATION'	=> true,
 				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
-				'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}ucp.php", 'mode=register' . $add_lang),
+				'S_UCP_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register' . $add_lang),
 				)
 			);
 
@@ -130,7 +130,7 @@ class ucp_register
 		// The CAPTCHA kicks in here. We can't help that the information gets lost on language change.
 		if ($config['enable_confirm'])
 		{
-			require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 			$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 			$captcha->init(CONFIRM_REG);
 		}
@@ -347,7 +347,7 @@ class ucp_register
 
 				if ($config['email_enable'])
 				{
-					require_once($phpbb_root_path . 'includes/functions_messenger.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 					$messenger = new messenger(false);
 
@@ -403,7 +403,7 @@ class ucp_register
 					}
 				}
 
-				$message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.php") . '">', '</a>');
+				$message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 				trigger_error($message);
 			}
 			else
@@ -469,7 +469,7 @@ class ucp_register
 			'S_CONFIRM_REFRESH'	=> ($config['enable_confirm'] && $config['confirm_refresh']) ? true : false,
 			'S_REGISTRATION'	=> true,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
-			'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}ucp.php", 'mode=register'),
+			'S_UCP_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register'),
 		));
 
 		//

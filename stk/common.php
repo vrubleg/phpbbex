@@ -19,9 +19,6 @@ define('ADMIN_START', true);
 // Reason for having it is that it allows us in the STK if we can not login and the board is disabled.
 define('IN_LOGIN', true);
 
-// Make that phpBB itself understands out paths
-$phpbb_root_path = PHPBB_ROOT_PATH;
-
 // Prepare some vars
 $stk_no_error = false;
 define('PHPBB_MSG_HANDLER', 'stk_msg_handler');

@@ -7,8 +7,7 @@
 
 define('IN_PHPBB', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
 
 if (!$config['feed_enable'])
 {
@@ -117,7 +116,7 @@ if (!$feed_updated_time)
 // Some default assignments
 // FEED_IMAGE is not used (atom)
 $global_vars = array_merge($global_vars, array(
-	'FEED_IMAGE'			=> ($user->img('site_logo', '', false, '', 'src')) ? $board_url . '/' . substr($user->img('site_logo', '', false, '', 'src'), strlen($phpbb_root_path)) : '',
+	'FEED_IMAGE'			=> ($user->img('site_logo', '', false, '', 'src')) ? $board_url . '/' . substr($user->img('site_logo', '', false, '', 'src'), strlen(PHPBB_ROOT_PATH)) : '',
 	'SELF_LINK'				=> feed_append_sid('/feed.php', $params),
 	'FEED_LINK'				=> $board_url . '/index.php',
 	'FEED_TITLE'			=> $config['sitename'],
@@ -309,7 +308,7 @@ function feed_format_date($time)
 **/
 function feed_generate_content($content, $uid, $bitfield, $options)
 {
-	global $user, $config, $phpbb_root_path, $board_url;
+	global $user, $config, $board_url;
 
 	if (empty($content))
 	{
@@ -325,7 +324,7 @@ function feed_generate_content($content, $uid, $bitfield, $options)
 	$content = str_replace('<br />', '<br />' . "\n", $content);
 
 	// Convert smiley Relative paths to Absolute path, Windows style
-	$content = str_replace($phpbb_root_path . SMILIES_PATH, $board_url . '/' . SMILIES_PATH, $content);
+	$content = str_replace(PHPBB_ROOT_PATH . SMILIES_PATH, $board_url . '/' . SMILIES_PATH, $content);
 
 	// Remove "Select all" link and mouse events
 	$content = str_replace('<a onclick="selectCode(this);">' . $user->lang['SELECT_ALL_CODE'] . '</a>', '', $content);

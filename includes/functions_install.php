@@ -90,8 +90,7 @@ function get_tables(&$db)
 {
 	if (!class_exists('phpbb_db_tools'))
 	{
-		global $phpbb_root_path;
-		require_once($phpbb_root_path . 'includes/db/db_tools.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 	}
 
 	$db_tools = new phpbb_db_tools($db);
@@ -107,7 +106,7 @@ function get_tables(&$db)
 */
 function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix, $dbhost, $dbuser, $dbpasswd, $dbname, $dbport, $prefix_may_exist = false, $load_dbal = true, $unicode_check = true)
 {
-	global $phpbb_root_path, $config, $lang;
+	global $config, $lang;
 
 	if ($dbms_details['MODULE'] != 'mysqli')
 	{
@@ -118,7 +117,7 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 	if ($load_dbal)
 	{
 		// Include the DB layer
-		require_once($phpbb_root_path . 'includes/db/mysql.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 	}
 
 	// Instantiate it and set return on error true

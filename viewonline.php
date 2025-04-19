@@ -7,8 +7,7 @@
 
 define('IN_PHPBB', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
 
 // Start session management
 $user->session_begin();
@@ -44,7 +43,7 @@ $order_by = $sort_key_sql[$sort_key] . ' ' . (($sort_dir == 'a') ? 'ASC' : 'DESC
 // Whois requested
 if ($mode == 'whois' && $auth->acl_get('a_') && $session_id)
 {
-	require_once($phpbb_root_path . 'includes/functions_user.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 	$sql = 'SELECT u.user_id, u.username, u.user_type, s.session_ip
 		FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . " s
@@ -64,7 +63,7 @@ if ($mode == 'whois' && $auth->acl_get('a_') && $session_id)
 	$template->set_filenames(array(
 		'body' => 'viewonline_whois.html')
 	);
-	make_jumpbox(append_sid("{$phpbb_root_path}viewforum.php"));
+	make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
 
 	page_footer();
 }
@@ -197,8 +196,8 @@ while ($row = $db->sql_fetchrow($result))
 		'USER_BROWSER'		=> ($auth->acl_get('a_user')) ? $row['session_browser'] : '',
 
 		'U_USER_PROFILE'	=> ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
-		'U_USER_IP'			=> append_sid("{$phpbb_root_path}viewonline.php", 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg=$show_guests&amp;sb=$show_bots&amp;start=$start&amp;sk=$sort_key&amp;sd=$sort_dir"),
-		'U_WHOIS'			=> append_sid("{$phpbb_root_path}viewonline.php", 'mode=whois&amp;s=' . $row['session_id']),
+		'U_USER_IP'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg=$show_guests&amp;sb=$show_bots&amp;start=$start&amp;sk=$sort_key&amp;sd=$sort_dir"),
+		'U_WHOIS'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=whois&amp;s=' . $row['session_id']),
 
 		'S_USER_HIDDEN'		=> $s_user_hidden,
 		'S_GUEST'			=> ($row['user_id'] == ANONYMOUS) ? true : false,
@@ -208,7 +207,7 @@ while ($row = $db->sql_fetchrow($result))
 $db->sql_freeresult($result);
 unset($prev_id, $prev_ip);
 
-$pagination = generate_pagination(append_sid("{$phpbb_root_path}viewonline.php", "sg=$show_guests&amp;sb=$show_bots&amp;sk=$sort_key&amp;sd=$sort_dir"), $counter, $config['topics_per_page'], $start);
+$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewonline.php', "sg=$show_guests&amp;sb=$show_bots&amp;sk=$sort_key&amp;sd=$sort_dir"), $counter, $config['topics_per_page'], $start);
 
 // Grab group details for legend display
 if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
@@ -243,7 +242,7 @@ while ($row = $db->sql_fetchrow($result))
 	}
 	else
 	{
-		$legend .= (($legend != '') ? ', ' : '') . '<a style="color:#' . $row['group_colour'] . '" href="' . append_sid("{$phpbb_root_path}memberlist.php", 'mode=group&amp;g=' . $row['group_id']) . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</a>';
+		$legend .= (($legend != '') ? ', ' : '') . '<a style="color:#' . $row['group_colour'] . '" href="' . append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $row['group_id']) . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</a>';
 	}
 }
 $db->sql_freeresult($result);
@@ -260,14 +259,14 @@ $template->assign_vars(array(
 	'PAGINATION'					=> $pagination,
 	'PAGE_NUMBER'					=> on_page($counter, $config['topics_per_page'], $start),
 
-	'U_SORT_USERNAME'		=> append_sid("{$phpbb_root_path}viewonline.php", 'sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
-	'U_SORT_UPDATED'		=> append_sid("{$phpbb_root_path}viewonline.php", 'sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'U_SORT_USERNAME'		=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'U_SORT_UPDATED'		=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
 
-	'U_SWITCH_GUEST_DISPLAY'	=> append_sid("{$phpbb_root_path}viewonline.php", 'sg=' . ((int) !$show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'U_SWITCH_GUEST_DISPLAY'	=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) !$show_guests) . '&amp;sb=' . ((int) $show_bots)),
 	'L_SWITCH_GUEST_DISPLAY'	=> $show_guests ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
 	'S_SWITCH_GUEST_DISPLAY'	=> $config['load_online_guests'] || $auth->acl_get('u_viewonline'),
 
-	'U_SWITCH_BOTS_DISPLAY'		=> append_sid("{$phpbb_root_path}viewonline.php", 'sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) !$show_bots)),
+	'U_SWITCH_BOTS_DISPLAY'		=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) !$show_bots)),
 	'L_SWITCH_BOTS_DISPLAY'		=> $show_bots ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
 	'S_SWITCH_BOTS_DISPLAY'		=> $config['load_online_bots'] || $auth->acl_get('u_viewonline'),
 ));
@@ -281,6 +280,6 @@ page_header($user->lang['WHO_IS_ONLINE']);
 $template->set_filenames(array(
 	'body' => 'viewonline_body.html')
 );
-make_jumpbox(append_sid("{$phpbb_root_path}viewforum.php"));
+make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
 
 page_footer();

@@ -23,9 +23,7 @@ class acp_board
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
-		global $cache;
+		global $db, $user, $auth, $template, $config, $cache;
 
 		$user->add_lang('acp/board');
 
@@ -622,7 +620,7 @@ class acp_board
 			// Retrieve a list of auth plugins and check their config values
 			$auth_plugins = array();
 
-			$dp = @opendir($phpbb_root_path . 'includes/auth');
+			$dp = @opendir(PHPBB_ROOT_PATH . 'includes/auth');
 
 			if ($dp)
 			{
@@ -642,9 +640,9 @@ class acp_board
 			$old_auth_config = array();
 			foreach ($auth_plugins as $method)
 			{
-				if ($method && file_exists($phpbb_root_path . 'includes/auth/auth_' . $method . '.php'))
+				if ($method && file_exists(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php'))
 				{
-					require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'acp_' . $method;
 					if (function_exists($method))
@@ -685,7 +683,7 @@ class acp_board
 				$method = basename($cfg_array['auth_method']);
 				if ($method && in_array($method, $auth_plugins))
 				{
-					require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'init_' . $method;
 					if (function_exists($method))
@@ -712,7 +710,7 @@ class acp_board
 		{
 			if ($config['email_enable'])
 			{
-				require_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 				$messenger = new messenger(false);
 				$messenger->template('test');
@@ -808,7 +806,7 @@ class acp_board
 
 			foreach ($auth_plugins as $method)
 			{
-				if ($method && file_exists($phpbb_root_path . 'includes/auth/auth_' . $method . '.php'))
+				if ($method && file_exists(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php'))
 				{
 					$method = 'acp_' . $method;
 					if (function_exists($method))
@@ -833,11 +831,9 @@ class acp_board
 	*/
 	function select_auth_method($selected_method, $key = '')
 	{
-		global $phpbb_root_path;
-
 		$auth_plugins = array();
 
-		$dp = @opendir($phpbb_root_path . 'includes/auth');
+		$dp = @opendir(PHPBB_ROOT_PATH . 'includes/auth');
 
 		if (!$dp)
 		{

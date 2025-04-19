@@ -9,8 +9,7 @@ define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'includes/startup.php');
+require_once(PHPBB_ROOT_PATH . 'includes/startup.php');
 
 if (!defined('PHPBB_INSTALLED'))
 {
@@ -32,7 +31,7 @@ $curr_keys = [
 $allowed = false;
 foreach ($curr_keys as $key)
 {
-	if (file_exists($phpbb_root_path . 'cache/allow_upd_' . $key . '.key'))
+	if (file_exists(PHPBB_ROOT_PATH . 'cache/allow_upd_' . $key . '.key'))
 	{
 		$allowed = true;
 		break;
@@ -49,26 +48,26 @@ if (!$allowed)
 
 @set_time_limit(0);
 
-require_once($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
-require_once($phpbb_root_path . 'includes/cache.php');
-require_once($phpbb_root_path . 'includes/template.php');
-require_once($phpbb_root_path . 'includes/session.php');
-require_once($phpbb_root_path . 'includes/auth.php');
-require_once($phpbb_root_path . 'includes/functions.php');
-require_once($phpbb_root_path . 'includes/functions_content.php');
-require_once($phpbb_root_path . 'includes/functions_admin.php');
-require_once($phpbb_root_path . 'includes/functions_install.php');
-require_once($phpbb_root_path . 'includes/functions_user.php');
-require_once($phpbb_root_path . 'includes/constants.php');
-require_once($phpbb_root_path . 'includes/db/mysql.php');
-require_once($phpbb_root_path . 'includes/utf/utf_tools.php');
-require_once($phpbb_root_path . 'includes/db/db_tools.php');
+require_once(PHPBB_ROOT_PATH . 'includes/acm/acm_' . $acm_type . '.php');
+require_once(PHPBB_ROOT_PATH . 'includes/cache.php');
+require_once(PHPBB_ROOT_PATH . 'includes/template.php');
+require_once(PHPBB_ROOT_PATH . 'includes/session.php');
+require_once(PHPBB_ROOT_PATH . 'includes/auth.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_content.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
+require_once(PHPBB_ROOT_PATH . 'includes/constants.php');
+require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
+require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_tools.php');
+require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 
 // The cache, files, store, and images/avatars/upload directories have to be writeable!
-if (!phpbb_is_writable($phpbb_root_path . 'cache')) { die('Make "cache" directory writeable!'); }
-if (!phpbb_is_writable($phpbb_root_path . UPLOADS_PATH)) { die('Make "' . UPLOADS_PATH . '" directory writeable!'); }
-if (!phpbb_is_writable($phpbb_root_path . 'store')) { die('Make "store" directory writeable!'); }
-if (!phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH)) { die('Make "' . AVATAR_UPLOADS_PATH . '" directory writeable!'); }
+if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'cache')) { die('Make "cache" directory writeable!'); }
+if (!phpbb_is_writable(PHPBB_ROOT_PATH . UPLOADS_PATH)) { die('Make "' . UPLOADS_PATH . '" directory writeable!'); }
+if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'store')) { die('Make "store" directory writeable!'); }
+if (!phpbb_is_writable(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH)) { die('Make "' . AVATAR_UPLOADS_PATH . '" directory writeable!'); }
 
 $user = new phpbb_user();
 $cache = new phpbb_cache();
@@ -91,13 +90,13 @@ while ($row = $db->sql_fetchrow($result))
 $db->sql_freeresult($result);
 
 // Load language files.
-if (!isset($config['default_lang']) || !file_exists($phpbb_root_path . 'language/' . $config['default_lang']))
+if (!isset($config['default_lang']) || !file_exists(PHPBB_ROOT_PATH . 'language/' . $config['default_lang']))
 {
 	die('Error! Default language is not found!');
 }
-require($phpbb_root_path . 'language/' . $config['default_lang'] . '/common.php');
-require($phpbb_root_path . 'language/' . $config['default_lang'] . '/acp/common.php');
-require($phpbb_root_path . 'language/' . $config['default_lang'] . '/install.php');
+require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/common.php');
+require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/acp/common.php');
+require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/install.php');
 
 // Check phpBBex version.
 
@@ -130,7 +129,7 @@ function remove_permissions($permissions)
 
 		// Reset permissions cache...
 		$cache->destroy('_acl_options');
-		require_once($phpbb_root_path . 'includes/acp/auth.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
 		$auth_admin = new auth_admin();
 		$auth_admin->acl_clear_prefetch();
 	}
@@ -189,7 +188,7 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	]);
 
 	// Remove obsolete .htaccess file that would prevent direct access to uploaded avatars.
-	@unlink($phpbb_root_path . AVATAR_UPLOADS_PATH . '/.htaccess');
+	@unlink(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/.htaccess');
 
 	set_config('phpbbex_version', '1.7.0');
 	$purge_default = 'all';
@@ -869,7 +868,7 @@ switch (request_var('purge', $purge_default))
 		break;
 
 	case 'all':
-		require_once($phpbb_root_path . 'includes/umil.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
 
 		$umil = new phpbb_umil();
 		$umil->cache_purge(array(
@@ -1192,9 +1191,9 @@ function _write_result($no_updates, $errored, $error_ary)
 
 function _add_modules($modules_to_install)
 {
-	global $phpbb_root_path, $db;
+	global $db;
 
-	require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_modules.php');
 
 	$_module = new acp_modules();
 
@@ -1614,7 +1613,7 @@ function database_update_info()
 *****************************************************************************/
 function change_database_data(&$no_updates, $version)
 {
-	global $db, $db_tools, $errored, $error_ary, $config, $table_prefix, $phpbb_root_path;
+	global $db, $db_tools, $errored, $error_ary, $config, $table_prefix;
 
 	switch ($version)
 	{
@@ -1630,9 +1629,9 @@ function change_database_data(&$no_updates, $version)
 
 			foreach ($smileys as $smiley)
 			{
-				if (file_exists($phpbb_root_path . 'images/smilies/' . $smiley))
+				if (file_exists(PHPBB_ROOT_PATH . 'images/smilies/' . $smiley))
 				{
-					list($width, $height) = getimagesize($phpbb_root_path . 'images/smilies/' . $smiley);
+					list($width, $height) = getimagesize(PHPBB_ROOT_PATH . 'images/smilies/' . $smiley);
 
 					$sql = 'UPDATE ' . SMILIES_TABLE . '
 						SET smiley_width = ' . $width . ', smiley_height = ' . $height . "
@@ -1680,7 +1679,7 @@ function change_database_data(&$no_updates, $version)
 			_sql($sql, $errored, $error_ary);
 
 			// Add new permission u_masspm_group and duplicate settings from u_masspm
-			require_once($phpbb_root_path . 'includes/acp/auth.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
 			$auth_admin = new auth_admin();
 
 			// Only add the new permission if it does not already exist
@@ -2165,7 +2164,7 @@ function change_database_data(&$no_updates, $version)
 			}
 
 			// Clear permissions...
-			require_once($phpbb_root_path . 'includes/acp/auth.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
 			$auth_admin = new auth_admin();
 			$auth_admin->acl_clear_prefetch();
 
@@ -2335,9 +2334,9 @@ function change_database_data(&$no_updates, $version)
 				// On an already updated board, they can also already be in language/.../acp/attachments.php
 				// in the board root.
 				$lang_files = array(
-					"{$phpbb_root_path}install/update/new/language/$lang_dir/acp/attachments.php",
-					"{$phpbb_root_path}language/$lang_dir/install.php",
-					"{$phpbb_root_path}language/$lang_dir/acp/attachments.php",
+					PHPBB_ROOT_PATH . "install/update/new/language/$lang_dir/acp/attachments.php",
+					PHPBB_ROOT_PATH . "language/$lang_dir/install.php",
+					PHPBB_ROOT_PATH . "language/$lang_dir/acp/attachments.php",
 				);
 
 				foreach ($lang_files as $lang_file)
@@ -2623,7 +2622,7 @@ function change_database_data(&$no_updates, $version)
 			{
 				if (!class_exists('acp_bbcodes'))
 				{
-					require_once($phpbb_root_path . 'includes/acp/acp_bbcodes.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
 				}
 				$bbcode_match = $row['bbcode_match'];
 				$bbcode_tpl = $row['bbcode_tpl'];

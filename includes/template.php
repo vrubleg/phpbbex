@@ -44,12 +44,12 @@ class phpbb_template
 	*/
 	function set_template()
 	{
-		global $phpbb_root_path, $user;
+		global $user;
 
-		if (file_exists($phpbb_root_path . 'styles/' . $user->theme['template_path'] . '/template'))
+		if (file_exists(PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_path'] . '/template'))
 		{
-			$this->root = $phpbb_root_path . 'styles/' . $user->theme['template_path'] . '/template';
-			$this->cachepath = $phpbb_root_path . 'cache/tpl_' . str_replace('_', '-', $user->theme['template_path']) . '_';
+			$this->root = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_path'] . '/template';
+			$this->cachepath = PHPBB_ROOT_PATH . 'cache/tpl_' . str_replace('_', '-', $user->theme['template_path']) . '_';
 
 			if ($this->orig_tpl_storedb === null)
 			{
@@ -66,7 +66,7 @@ class phpbb_template
 
 			if ($user->theme['template_inherits_id'])
 			{
-				$this->inherit_root = $phpbb_root_path . 'styles/' . $user->theme['template_inherit_path'] . '/template';
+				$this->inherit_root = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_inherit_path'] . '/template';
 			}
 		}
 		else
@@ -85,7 +85,7 @@ class phpbb_template
 	*/
 	function set_custom_template($template_path, $template_name, $fallback_template_path = false)
 	{
-		global $phpbb_root_path, $user;
+		global $user;
 
 		// Make sure $template_path has no ending slash
 		if (substr($template_path, -1) == '/')
@@ -94,7 +94,7 @@ class phpbb_template
 		}
 
 		$this->root = $template_path;
-		$this->cachepath = $phpbb_root_path . 'cache/ctpl_' . str_replace('_', '-', $template_name) . '_';
+		$this->cachepath = PHPBB_ROOT_PATH . 'cache/ctpl_' . str_replace('_', '-', $template_name) . '_';
 
 		if ($fallback_template_path !== false)
 		{
@@ -282,11 +282,11 @@ class phpbb_template
 			return $filename;
 		}
 
-		global $db, $phpbb_root_path;
+		global $db;
 
 		if (!class_exists('template_compile'))
 		{
-			require_once($phpbb_root_path . 'includes/functions_template.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_template.php');
 		}
 
 		// Inheritance - we point to another template file for this one. Equality is also used for store_db
@@ -661,9 +661,7 @@ class phpbb_template
 	*/
 	function _php_include($filename)
 	{
-		global $phpbb_root_path;
-
-		$file = $phpbb_root_path . $filename;
+		$file = PHPBB_ROOT_PATH . $filename;
 
 		if (!file_exists($file))
 		{

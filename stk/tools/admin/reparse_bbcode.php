@@ -178,7 +178,6 @@ class reparse_bbcode
 		// The message parser
 		if (!class_exists('parse_message'))
 		{
-			global $phpbb_root_path; // required!
 			require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 		}
 

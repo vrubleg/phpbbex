@@ -28,10 +28,9 @@ class mcp_reports
 
 	function main($id, $mode)
 	{
-		global $auth, $db, $user, $template, $cache;
-		global $config, $phpbb_root_path, $action;
+		global $auth, $db, $user, $template, $cache, $config, $action;
 
-		require_once($phpbb_root_path . 'includes/functions_posting.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 
 		$forum_id = request_var('f', 0);
 		$start = request_var('start', 0);
@@ -42,7 +41,7 @@ class mcp_reports
 		{
 			case 'close':
 			case 'delete':
-				require_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 				$report_id_list = request_var('report_id_list', array(0));
 
@@ -136,7 +135,7 @@ class mcp_reports
 
 				if ($post_info['bbcode_bitfield'])
 				{
-					require_once($phpbb_root_path . 'includes/bbcode.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/bbcode.php');
 					$bbcode = new bbcode($post_info['bbcode_bitfield']);
 					$bbcode->bbcode_second_pass($message, $post_info['bbcode_uid'], $post_info['bbcode_bitfield'], $post_info['post_time']);
 				}
@@ -182,7 +181,7 @@ class mcp_reports
 
 				$template->assign_vars(array(
 					'S_MCP_REPORT'			=> true,
-					'S_CLOSE_ACTION'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
+					'S_CLOSE_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
 					'S_CAN_VIEWIP'			=> $auth->acl_get('m_info', $post_info['forum_id']),
 					'S_POST_REPORTED'		=> $post_info['post_reported'],
 					'S_POST_UNAPPROVED'		=> !$post_info['post_approved'],
@@ -190,22 +189,22 @@ class mcp_reports
 					'S_REPORT_CLOSED'		=> $report['report_closed'],
 					'S_USER_NOTES'			=> true,
 
-					'U_EDIT'					=> ($auth->acl_get('m_edit', $post_info['forum_id'])) ? append_sid("{$phpbb_root_path}posting.php", "mode=edit&amp;f={$post_info['forum_id']}&amp;p={$post_info['post_id']}") : '',
-					'U_MCP_APPROVE'				=> append_sid("{$phpbb_root_path}mcp.php", 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
-					'U_MCP_REPORT'				=> append_sid("{$phpbb_root_path}mcp.php", 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
-					'U_MCP_REPORTER_NOTES'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes&amp;u=' . $report['user_id']),
-					'U_MCP_USER_NOTES'			=> append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes&amp;u=' . $post_info['user_id']),
-					'U_MCP_WARN_REPORTER'		=> ($auth->acl_get('m_warn')) ? append_sid("{$phpbb_root_path}mcp.php", 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
-					'U_MCP_WARN_USER'			=> ($auth->acl_get('m_warn')) ? append_sid("{$phpbb_root_path}mcp.php", 'i=warn&amp;mode=warn_user&amp;u=' . $post_info['user_id']) : '',
-					'U_VIEW_FORUM'				=> append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $post_info['forum_id']),
-					'U_VIEW_POST'				=> append_sid("{$phpbb_root_path}viewtopic.php", 'p=' . $post_info['post_id'] . '#p' . $post_info['post_id']),
-					'U_VIEW_TOPIC'				=> append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $post_info['topic_id']),
+					'U_EDIT'					=> ($auth->acl_get('m_edit', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;f={$post_info['forum_id']}&amp;p={$post_info['post_id']}") : '',
+					'U_MCP_APPROVE'				=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
+					'U_MCP_REPORT'				=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
+					'U_MCP_REPORTER_NOTES'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $report['user_id']),
+					'U_MCP_USER_NOTES'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $post_info['user_id']),
+					'U_MCP_WARN_REPORTER'		=> ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
+					'U_MCP_WARN_USER'			=> ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $post_info['user_id']) : '',
+					'U_VIEW_FORUM'				=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $post_info['forum_id']),
+					'U_VIEW_POST'				=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $post_info['post_id'] . '#p' . $post_info['post_id']),
+					'U_VIEW_TOPIC'				=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $post_info['topic_id']),
 
 					'EDIT_IMG'				=> $user->img('icon_post_edit', $user->lang['EDIT_POST']),
 					'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
 					'UNAPPROVED_IMG'		=> $user->img('icon_topic_unapproved', $user->lang['POST_UNAPPROVED']),
 
-					'RETURN_REPORTS'			=> sprintf($user->lang['RETURN_REPORTS'], '<a href="' . append_sid("{$phpbb_root_path}mcp.php", 'i=reports' . (($post_info['post_reported']) ? '&amp;mode=reports' : '&amp;mode=reports_closed') . '&amp;start=' . $start . '&amp;f=' . $post_info['forum_id']) . '">', '</a>'),
+					'RETURN_REPORTS'			=> sprintf($user->lang['RETURN_REPORTS'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports' . (($post_info['post_reported']) ? '&amp;mode=reports' : '&amp;mode=reports_closed') . '&amp;start=' . $start . '&amp;f=' . $post_info['forum_id']) . '">', '</a>'),
 					'REPORTED_IMG'				=> $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
 					'REPORT_DATE'				=> $user->format_date($report['report_time']),
 					'REPORT_ID'					=> $report_id,
@@ -386,9 +385,9 @@ class mcp_reports
 						}
 
 						$template->assign_block_vars('postrow', array(
-							'U_VIEWFORUM'				=> (!$global_topic) ? append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $row['forum_id']) : '',
-							'U_VIEWPOST'				=> append_sid("{$phpbb_root_path}viewtopic.php", 'p=' . $row['post_id']) . '#p' . $row['post_id'],
-							'U_VIEW_DETAILS'			=> append_sid("{$phpbb_root_path}mcp.php", "i=reports&amp;start=$start&amp;mode=report_details&amp;f={$row['forum_id']}&amp;r={$row['report_id']}"),
+							'U_VIEWFORUM'				=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : '',
+							'U_VIEWPOST'				=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . '#p' . $row['post_id'],
+							'U_VIEW_DETAILS'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=reports&amp;start=$start&amp;mode=report_details&amp;f={$row['forum_id']}&amp;r={$row['report_id']}"),
 
 							'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 							'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
@@ -443,7 +442,6 @@ class mcp_reports
 function close_report($report_id_list, $mode, $action, $pm = false)
 {
 	global $db, $template, $user, $config, $auth;
-	global $phpbb_root_path;
 
 	$pm_where = ($pm) ? ' AND r.post_id = 0 ' : ' AND r.pm_id = 0 ';
 	$id_column = ($pm) ? 'pm_id' : 'post_id';
@@ -708,12 +706,12 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 		{
 			if (sizeof($forum_ids) === 1)
 			{
-				$return_forum = sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.php", 'f=' . current($forum_ids)) . '">', '</a>') . '<br /><br />';
+				$return_forum = sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . current($forum_ids)) . '">', '</a>') . '<br /><br />';
 			}
 
 			if (sizeof($topic_ids) === 1)
 			{
-				$return_topic = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.php", 't=' . current($topic_ids)) . '">', '</a>') . '<br /><br />';
+				$return_topic = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . current($topic_ids)) . '">', '</a>') . '<br /><br />';
 			}
 		}
 

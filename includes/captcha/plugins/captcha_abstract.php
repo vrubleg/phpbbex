@@ -75,7 +75,7 @@ class phpbb_default_captcha
 
 	function get_template()
 	{
-		global $config, $user, $template, $phpbb_root_path;
+		global $config, $user, $template;
 
 		if ($this->is_solved())
 		{
@@ -83,7 +83,7 @@ class phpbb_default_captcha
 		}
 		else
 		{
-			$link = append_sid($phpbb_root_path . 'ucp.php',  'mode=confirm&amp;confirm_id=' . $this->confirm_id . '&amp;type=' . $this->type);
+			$link = append_sid(PHPBB_ROOT_PATH . 'ucp.php',  'mode=confirm&amp;confirm_id=' . $this->confirm_id . '&amp;type=' . $this->type);
 			$explain = $user->lang(($this->type != CONFIRM_POST) ? 'CONFIRM_EXPLAIN' : 'POST_CONFIRM_EXPLAIN', '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>');
 
 			$template->assign_vars(array(
@@ -103,7 +103,7 @@ class phpbb_default_captcha
 
 	function get_demo_template($id)
 	{
-		global $config, $user, $template, $phpbb_admin_path;
+		global $config, $user, $template;
 
 		$variables = '';
 
@@ -117,7 +117,7 @@ class phpbb_default_captcha
 
 		// acp_captcha has a delivery function; let's use it
 		$template->assign_vars(array(
-			'CONFIRM_IMAGE'		=> append_sid($phpbb_admin_path . 'index.php', 'captcha_demo=1&amp;mode=visual&amp;i=' . $id . '&amp;select_captcha=' . $this->get_class_name()) . $variables,
+			'CONFIRM_IMAGE'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'captcha_demo=1&amp;mode=visual&amp;i=' . $id . '&amp;select_captcha=' . $this->get_class_name()) . $variables,
 			'CONFIRM_ID'		=> $this->confirm_id,
 		));
 

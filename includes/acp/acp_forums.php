@@ -20,8 +20,7 @@ class acp_forums
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path;
+		global $db, $user, $auth, $template, $cache, $config;
 
 		$user->add_lang('acp/forums');
 		$this->tpl_name = 'acp_forums';
@@ -208,9 +207,9 @@ class acp_forums
 						// redirect directly to permission settings screen if authed
 						if ($action == 'add' && !$copied_permissions && $auth->acl_get('a_fauth'))
 						{
-							$message .= '<br /><br />' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . append_sid("{$phpbb_admin_path}index.php", 'i=permissions' . $acl_url) . '">', '</a>');
+							$message .= '<br /><br />' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url) . '">', '</a>');
 
-							meta_refresh(5, append_sid("{$phpbb_admin_path}index.php", 'i=permissions' . $acl_url));
+							meta_refresh(5, append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url));
 						}
 
 						trigger_error($message . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id));
@@ -611,7 +610,7 @@ class acp_forums
 					'FORUM_NAME'				=> $forum_data['forum_name'],
 					'FORUM_DATA_LINK'			=> $forum_data['forum_link'],
 					'FORUM_IMAGE'				=> $forum_data['forum_image'],
-					'FORUM_IMAGE_SRC'			=> ($forum_data['forum_image']) ? $phpbb_root_path . $forum_data['forum_image'] : '',
+					'FORUM_IMAGE_SRC'			=> ($forum_data['forum_image']) ? PHPBB_ROOT_PATH . $forum_data['forum_image'] : '',
 					'FORUM_POST'				=> FORUM_POST,
 					'FORUM_LINK'				=> FORUM_LINK,
 					'FORUM_CAT'					=> FORUM_CAT,
@@ -735,7 +734,7 @@ class acp_forums
 					// Redirect to permissions
 					if ($auth->acl_get('a_fauth'))
 					{
-						$message .= '<br /><br />' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . append_sid("{$phpbb_admin_path}index.php", 'i=permissions' . $acl_url) . '">', '</a>');
+						$message .= '<br /><br />' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url) . '">', '</a>');
 					}
 
 					trigger_error($message . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id));
@@ -809,8 +808,8 @@ class acp_forums
 
 				$template->assign_block_vars('forums', array(
 					'FOLDER_IMAGE'		=> $folder_image,
-					'FORUM_IMAGE'		=> ($row['forum_image']) ? '<img src="' . $phpbb_root_path . $row['forum_image'] . '" alt="" />' : '',
-					'FORUM_IMAGE_SRC'	=> ($row['forum_image']) ? $phpbb_root_path . $row['forum_image'] : '',
+					'FORUM_IMAGE'		=> ($row['forum_image']) ? '<img src="' . PHPBB_ROOT_PATH . $row['forum_image'] . '" alt="" />' : '',
+					'FORUM_IMAGE_SRC'	=> ($row['forum_image']) ? PHPBB_ROOT_PATH . $row['forum_image'] : '',
 					'FORUM_NAME'		=> $row['forum_name'],
 					'FORUM_DESCRIPTION'	=> generate_text_for_display($row['forum_desc'], $row['forum_desc_uid'], $row['forum_desc_bitfield'], $row['forum_desc_options']),
 					'FORUM_TOPICS'		=> $row['forum_topics'],
@@ -884,7 +883,7 @@ class acp_forums
 	*/
 	function update_forum_data(&$forum_data)
 	{
-		global $db, $user, $cache, $phpbb_root_path;
+		global $db, $user, $cache;
 
 		$errors = array();
 
@@ -922,7 +921,7 @@ class acp_forums
 			array('lang' => 'FORUM_TOPICS_PAGE', 'value' => $forum_data['forum_topics_per_page'], 'column_type' => 'TINT:0'),
 		);
 
-		if (!empty($forum_data['forum_image']) && !file_exists($phpbb_root_path . $forum_data['forum_image']))
+		if (!empty($forum_data['forum_image']) && !file_exists(PHPBB_ROOT_PATH . $forum_data['forum_image']))
 		{
 			$errors[] = $user->lang['FORUM_IMAGE_NO_EXIST'];
 		}
@@ -1628,9 +1627,9 @@ class acp_forums
 	*/
 	function delete_forum_content($forum_id)
 	{
-		global $db, $config, $phpbb_root_path;
+		global $db, $config;
 
-		require_once($phpbb_root_path . 'includes/functions_posting.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 
 		$db->sql_transaction('begin');
 
@@ -1876,17 +1875,17 @@ class acp_forums
 	*/
 	function copy_permission_page($forum_data)
 	{
-		global $phpbb_admin_path, $template, $user;
+		global $template, $user;
 
 		$acl_url = '&amp;mode=setting_forum_local&amp;forum_id[]=' . $forum_data['forum_id'];
 		$action = append_sid($this->u_action . "&amp;parent_id={$this->parent_id}&amp;f={$forum_data['forum_id']}&amp;action=copy_perm");
 
-		$l_acl = sprintf($user->lang['COPY_TO_ACL'], '<a href="' . append_sid("{$phpbb_admin_path}index.php", 'i=permissions' . $acl_url) . '">', '</a>');
+		$l_acl = sprintf($user->lang['COPY_TO_ACL'], '<a href="' . append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url) . '">', '</a>');
 
 		$this->tpl_name = 'acp_forums_copy_perm';
 
 		$template->assign_vars(array(
-			'U_ACL'				=> append_sid("{$phpbb_admin_path}index.php", 'i=permissions' . $acl_url),
+			'U_ACL'				=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url),
 			'L_ACL_LINK'		=> $l_acl,
 			'L_BACK_LINK'		=> adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id),
 			'S_COPY_ACTION'		=> $action,
