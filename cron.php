@@ -7,7 +7,8 @@
 
 define('IN_PHPBB', true);
 define('IN_CRON', true);
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
+if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
+$phpbb_root_path = PHPBB_ROOT_PATH;
 require_once($phpbb_root_path . 'common.php');
 
 // Do not update users last page entry
