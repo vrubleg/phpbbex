@@ -4300,7 +4300,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_CONTENT_DIRECTION'	=> $user->lang['DIRECTION'],
 		'S_CONTENT_FLOW_BEGIN'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
 		'S_CONTENT_FLOW_END'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-		'S_CONTENT_ENCODING'	=> 'UTF-8',
 		'S_TIMEZONE'			=> ($user->dst) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
 		'S_DISPLAY_ONLINE_LIST'	=> ($l_online_time) ? 1 : 0,
 		'S_DISPLAY_SEARCH'		=> ($config['load_search'] && $auth->acl_get('u_search') && $auth->acl_getf_global('f_search')),

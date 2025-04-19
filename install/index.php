@@ -313,7 +313,6 @@ class module
 			'S_CONTENT_DIRECTION' 	=> $lang['DIRECTION'],
 			'S_CONTENT_FLOW_BEGIN'	=> ($lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
 			'S_CONTENT_FLOW_END'	=> ($lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-			'S_CONTENT_ENCODING' 	=> 'UTF-8',
 
 			'S_USER_LANG'			=> $lang['USER_LANG'],
 			)
