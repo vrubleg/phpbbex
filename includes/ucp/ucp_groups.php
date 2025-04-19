@@ -431,19 +431,12 @@ class ucp_groups
 					$group_name = $group_row['group_name'];
 					$group_type = $group_row['group_type'];
 
-					$avatar_img = (!empty($group_row['group_avatar'])) ? get_user_avatar($group_row['group_avatar'], $group_row['group_avatar_type'], $group_row['group_avatar_width'], $group_row['group_avatar_height'], 'GROUP_AVATAR') : '<img src="' . $phpbb_root_path . 'adm/images/no_avatar.gif" alt="" />';
-
 					$template->assign_vars(array(
 						'GROUP_NAME'			=> ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
 						'GROUP_INTERNAL_NAME'	=> $group_name,
 						'GROUP_COLOUR'			=> (isset($group_row['group_colour'])) ? $group_row['group_colour'] : '',
 						'GROUP_DESC_DISP'		=> generate_text_for_display($group_row['group_desc'], $group_row['group_desc_uid'], $group_row['group_desc_bitfield'], $group_row['group_desc_options']),
 						'GROUP_TYPE'			=> $group_row['group_type'],
-
-						'AVATAR'				=> $avatar_img,
-						'AVATAR_IMAGE'			=> $avatar_img,
-						'AVATAR_WIDTH'			=> (isset($group_row['group_avatar_width'])) ? $group_row['group_avatar_width'] : '',
-						'AVATAR_HEIGHT'			=> (isset($group_row['group_avatar_height'])) ? $group_row['group_avatar_height'] : '',
 					));
 				}
 
@@ -475,11 +468,6 @@ class ucp_groups
 
 						$error = array();
 
-						$avatar_select = basename(request_var('avatar_select', ''));
-						$category = basename(request_var('category', ''));
-
-						$can_upload = (PHP_FILE_UPLOADS && file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH));
-
 						// Did we submit?
 						if ($update)
 						{
@@ -498,89 +486,6 @@ class ucp_groups
 								'message_limit'	=> request_var('group_message_limit', 0),
 								'max_recipients'=> request_var('group_max_recipients', 0),
 							);
-
-							$data['uploadurl']	= request_var('uploadurl', '');
-							$data['remotelink'] = request_var('remotelink', '');
-							$data['width']		= request_var('width', '');
-							$data['height']		= request_var('height', '');
-							$delete				= request_var('delete', '');
-
-							if (!empty($_FILES['uploadfile']['tmp_name']) || $data['uploadurl'] || $data['remotelink'])
-							{
-								// Avatar stuff
-								$var_ary = array(
-									'uploadurl'		=> array('string', true, 5, 255),
-									'remotelink'	=> array('string', true, 5, 255),
-									'width'			=> array('string', true, 1, 3),
-									'height'		=> array('string', true, 1, 3),
-								);
-
-								if (!($error = validate_data($data, $var_ary)))
-								{
-									$data['user_id'] = "g$group_id";
-
-									if ((!empty($_FILES['uploadfile']['tmp_name']) || $data['uploadurl']) && $can_upload)
-									{
-										list($submit_ary['avatar_type'], $submit_ary['avatar'], $submit_ary['avatar_width'], $submit_ary['avatar_height']) = avatar_upload($data, $error);
-									}
-									else if ($data['remotelink'])
-									{
-										list($submit_ary['avatar_type'], $submit_ary['avatar'], $submit_ary['avatar_width'], $submit_ary['avatar_height']) = avatar_remote($data, $error);
-									}
-								}
-							}
-							else if ($avatar_select && $config['allow_avatar_local'])
-							{
-								// check avatar gallery
-								if (is_dir($phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $category))
-								{
-									$submit_ary['avatar_type'] = AVATAR_GALLERY;
-
-									list($submit_ary['avatar_width'], $submit_ary['avatar_height']) = getimagesize($phpbb_root_path . AVATAR_GALLERY_PATH . '/' . $category . '/' . $avatar_select);
-									$submit_ary['avatar'] = $category . '/' . $avatar_select;
-								}
-							}
-							else if ($delete)
-							{
-								$submit_ary['avatar'] = '';
-								$submit_ary['avatar_type'] = $submit_ary['avatar_width'] = $submit_ary['avatar_height'] = 0;
-							}
-							else if ($data['width'] && $data['height'])
-							{
-								// Only update the dimensions?
-								if ($config['avatar_max_width'] || $config['avatar_max_height'])
-								{
-									if ($data['width'] > $config['avatar_max_width'] || $data['height'] > $config['avatar_max_height'])
-									{
-										$error[] = sprintf($user->lang['AVATAR_WRONG_SIZE'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], $data['width'], $data['height']);
-									}
-								}
-
-								if (!sizeof($error))
-								{
-									if ($config['avatar_min_width'] || $config['avatar_min_height'])
-									{
-										if ($data['width'] < $config['avatar_min_width'] || $data['height'] < $config['avatar_min_height'])
-										{
-											$error[] = sprintf($user->lang['AVATAR_WRONG_SIZE'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], $data['width'], $data['height']);
-										}
-									}
-								}
-
-								if (!sizeof($error))
-								{
-									$submit_ary['avatar_width'] = $data['width'];
-									$submit_ary['avatar_height'] = $data['height'];
-								}
-							}
-
-							if ((isset($submit_ary['avatar']) && $submit_ary['avatar'] && (!isset($group_row['group_avatar']))) || $delete)
-							{
-								if (isset($group_row['group_avatar']) && $group_row['group_avatar'])
-								{
-									avatar_delete('group', $group_row, true);
-								}
-							}
 
 							if (!check_form_key('ucp_groups'))
 							{
@@ -602,12 +507,8 @@ class ucp_groups
 
 								$group_attributes = array();
 								$test_variables = array(
-									'rank'			=> 'int',
 									'colour'		=> 'string',
-									'avatar'		=> 'string',
-									'avatar_type'	=> 'int',
-									'avatar_width'	=> 'int',
-									'avatar_height'	=> 'int',
+									'rank'			=> 'int',
 									'receive_pm'	=> 'int',
 									'legend'		=> 'int',
 									'message_limit'	=> 'int',
@@ -682,28 +583,11 @@ class ucp_groups
 						$type_closed	= ($group_type == GROUP_CLOSED) ? ' checked="checked"' : '';
 						$type_hidden	= ($group_type == GROUP_HIDDEN) ? ' checked="checked"' : '';
 
-						$display_gallery = (isset($_POST['display_gallery'])) ? true : false;
-
-						if ($config['allow_avatar'] && $config['allow_avatar_local'] && $display_gallery)
-						{
-							avatar_gallery($category, $avatar_select, 4);
-						}
-
-						$avatars_enabled = ($config['allow_avatar'] && (($can_upload && ($config['allow_avatar_upload'] || $config['allow_avatar_remote_upload'])) || ($config['allow_avatar_local'] || $config['allow_avatar_remote']))) ? true : false;
-
 						$template->assign_vars(array(
 							'S_EDIT'			=> true,
 							'S_INCLUDE_SWATCH'	=> true,
-							'S_FORM_ENCTYPE'	=> ($config['allow_avatar'] && $can_upload && ($config['allow_avatar_upload'] || $config['allow_avatar_remote_upload'])) ? ' enctype="multipart/form-data"' : '',
 							'S_ERROR'			=> (sizeof($error)) ? true : false,
 							'S_SPECIAL_GROUP'	=> ($group_type == GROUP_SPECIAL) ? true : false,
-							'S_AVATARS_ENABLED'	=> $avatars_enabled,
-							'S_DISPLAY_GALLERY'	=> ($config['allow_avatar'] && $config['allow_avatar_local'] && !$display_gallery) ? true : false,
-							'S_IN_GALLERY'		=> ($config['allow_avatar_local'] && $display_gallery) ? true : false,
-
-							'S_UPLOAD_AVATAR_FILE'	=> ($config['allow_avatar'] && $config['allow_avatar_upload'] && $can_upload) ? true : false,
-							'S_UPLOAD_AVATAR_URL'	=> ($config['allow_avatar'] && $config['allow_avatar_remote_upload'] && $can_upload) ? true : false,
-							'S_LINK_AVATAR'			=> ($config['allow_avatar'] && $config['allow_avatar_remote']) ? true : false,
 
 							'ERROR_MSG'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 							'GROUP_RECEIVE_PM'		=> (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
@@ -716,7 +600,6 @@ class ucp_groups
 							'S_DESC_SMILIES_CHECKED'=> $group_desc_data['allow_smilies'],
 
 							'S_RANK_OPTIONS'		=> $rank_options,
-							'AVATAR_MAX_FILESIZE'	=> $config['avatar_filesize'],
 
 							'GROUP_TYPE_FREE'		=> GROUP_FREE,
 							'GROUP_TYPE_OPEN'		=> GROUP_OPEN,
@@ -731,7 +614,6 @@ class ucp_groups
 
 							'U_SWATCH'			=> append_sid("{$phpbb_root_path}adm/swatch.php", 'form=ucp&amp;name=group_colour'),
 							'S_UCP_ACTION'		=> $this->u_action . "&amp;action=$action&amp;g=$group_id",
-							'L_AVATAR_EXPLAIN'	=> sprintf($user->lang['AVATAR_EXPLAIN'], $config['avatar_max_width'], $config['avatar_max_height'], $config['avatar_filesize'] / 1024),
 						));
 
 					break;

@@ -1206,10 +1206,7 @@ switch ($mode)
 				break;
 			}
 
-			// Misusing the avatar function for displaying group avatars...
-			$avatar_img = get_user_avatar($group_row['group_avatar'], $group_row['group_avatar_type'], $group_row['group_avatar_width'], $group_row['group_avatar_height'], 'GROUP_AVATAR');
-
-			// ... same for group rank
+			// Misusing the group rank function for displaying group rank...
 			$rank_title = $rank_img = $rank_img_src = '';
 			if ($group_row['group_rank'])
 			{
@@ -1223,7 +1220,6 @@ switch ($mode)
 				'GROUP_TYPE'	=> $user->lang['GROUP_IS_' . $group_row['l_group_type']],
 				'GROUP_RANK'	=> $rank_title,
 
-				'AVATAR_IMG'	=> $avatar_img,
 				'RANK_IMG'		=> $rank_img,
 				'RANK_IMG_SRC'	=> $rank_img_src,
 

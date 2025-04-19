@@ -29,8 +29,6 @@ $lang = array_merge($lang, array(
 
 	'GROUP_APPROVE'					=> 'Approve member',
 	'GROUP_APPROVED'				=> 'Approved members',
-	'GROUP_AVATAR'					=> 'Group avatar',
-	'GROUP_AVATAR_EXPLAIN'			=> 'This image will be displayed in the Group Control Panel.',
 	'GROUP_CLOSED'					=> 'Closed',
 	'GROUP_COLOR'					=> 'Group colour',
 	'GROUP_COLOR_EXPLAIN'			=> 'Defines the colour members’ usernames will appear in, leave blank for user default.',
@@ -44,7 +42,7 @@ $lang = array_merge($lang, array(
 	'GROUP_DEMOTE'					=> 'Demote group leader',
 	'GROUP_DESC'					=> 'Group description',
 	'GROUP_DETAILS'					=> 'Group details',
-	'GROUP_EDIT_EXPLAIN'			=> 'Here you can edit an existing group. You can change its name, description and type (open, closed, etc.). You can also set certain group wide options such as colouration, rank, etc. Changes made here override users’ current settings. Please note that group members can override group-avatar settings, unless you set appropriate user permissions.',
+	'GROUP_EDIT_EXPLAIN'			=> 'Here you can edit an existing group. You can change its name, description and type (open, closed, etc.). You can also set certain group wide options such as colouration, rank, etc. Changes made here override users’ current settings.',
 	'GROUP_ERR_USERS_EXIST'			=> 'The specified users are already members of this group.',
 	'GROUP_FOUNDER_MANAGE'			=> 'Founder manage only',
 	'GROUP_FOUNDER_MANAGE_EXPLAIN'	=> 'Restrict management of this group to founders only. Users having group permissions are still able to see this group as well as this group’s members.',

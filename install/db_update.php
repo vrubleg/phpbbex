@@ -297,7 +297,7 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'upload_path',
 		'avatar_gallery_path',
 		'avatar_path',
-		'avatar_salt',
+		// 'avatar_salt', // Keep for avatar resync.
 		'ranks_path',
 		'smilies_path',
 		'icons_path',
@@ -408,6 +408,15 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		'rand_seed_last_update',
 		'hot_threshold',
 	]);
+
+	// Remove unused columns from groups table.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . GROUPS_TABLE . " DROP COLUMN group_avatar");
+	$db->sql_query("ALTER TABLE " . GROUPS_TABLE . " DROP COLUMN group_avatar_type");
+	$db->sql_query("ALTER TABLE " . GROUPS_TABLE . " DROP COLUMN group_avatar_width");
+	$db->sql_query("ALTER TABLE " . GROUPS_TABLE . " DROP COLUMN group_avatar_height");
+	$db->sql_return_on_error(false);
 
 	// Update DB schema version.
 

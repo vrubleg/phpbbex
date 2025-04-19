@@ -466,9 +466,9 @@ class acp_users
 							$db->sql_query($sql);
 
 							// Delete old avatar if present
-							if ($user_row['user_avatar'] && $user_row['user_avatar_type'] != AVATAR_GALLERY)
+							if ($user_row['user_avatar'])
 							{
-								avatar_delete('user', $user_row);
+								avatar_delete($user_row);
 							}
 
 							add_log('admin', 'LOG_USER_DEL_AVATAR', $user_row['username']);
