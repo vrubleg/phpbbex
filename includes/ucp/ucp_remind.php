@@ -22,8 +22,7 @@ class ucp_remind
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path;
-		global $db, $user, $auth, $template;
+		global $db, $user, $auth, $template, $config;
 
 		$username	= request_var('username', '', true);
 		$email		= strtolower(request_var('email', ''));
@@ -84,7 +83,7 @@ class ucp_remind
 				WHERE user_id = " . $user_row['user_id'];
 			$db->sql_query($sql);
 
-			require_once($phpbb_root_path . 'includes/functions_messenger.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 			$messenger = new messenger(false);
 
@@ -103,16 +102,16 @@ class ucp_remind
 
 			$messenger->send($user_row['user_notify_type']);
 
-			meta_refresh(3, append_sid("{$phpbb_root_path}index.php"));
+			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 
-			$message = $user->lang['PASSWORD_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.php") . '">', '</a>');
+			$message = $user->lang['PASSWORD_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 			trigger_error($message);
 		}
 
 		$template->assign_vars(array(
 			'USERNAME'			=> $username,
 			'EMAIL'				=> $email,
-			'S_PROFILE_ACTION'	=> append_sid($phpbb_root_path . 'ucp.php', 'mode=sendpassword'))
+			'S_PROFILE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=sendpassword'))
 		);
 
 		$this->tpl_name = 'ucp_remind';

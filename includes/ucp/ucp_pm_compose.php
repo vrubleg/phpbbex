@@ -16,16 +16,15 @@ if (!defined('IN_PHPBB'))
 */
 function compose_pm($id, $mode, $action, $user_folders = array())
 {
-	global $template, $db, $auth, $user;
-	global $phpbb_root_path, $config;
+	global $template, $db, $auth, $user, $config;
 
 	// Damn php and globals - i know, this is horrible
 	// Needed for handle_message_list_actions()
 	global $refresh, $submit, $preview;
 
-	require_once($phpbb_root_path . 'includes/functions_posting.php');
-	require_once($phpbb_root_path . 'includes/functions_display.php');
-	require_once($phpbb_root_path . 'includes/message_parser.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
 	if (!$action)
 	{
@@ -76,9 +75,9 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	{
 		if ($msg_id)
 		{
-			redirect(append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;mode=view&amp;action=view_message&amp;p=' . $msg_id));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=view&amp;action=view_message&amp;p=' . $msg_id));
 		}
-		redirect(append_sid("{$phpbb_root_path}ucp.php", 'i=pm'));
+		redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm'));
 	}
 
 	// Since viewtopic.php language entries are used in several modes,
@@ -123,7 +122,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 			'S_SHOW_PM_BOX'		=> true,
 			'S_ALLOW_MASS_PM'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')) ? true : false,
 			'S_GROUP_OPTIONS'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group')) ? $group_options : '',
-			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.php", "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single=$select_single"),
+			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single=$select_single"),
 		));
 	}
 
@@ -383,7 +382,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$message_parser->message = ($action == 'reply') ? '' : $message_text;
 	unset($message_text);
 
-	$s_action = append_sid("{$phpbb_root_path}ucp.php", "i=$id&amp;mode=$mode&amp;action=$action", true, $user->session_id);
+	$s_action = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=$mode&amp;action=$action", true, $user->session_id);
 	$s_action .= (($folder_id) ? "&amp;f=$folder_id" : '') . (($msg_id) ? "&amp;p=$msg_id" : '');
 
 	// Delete triggered ?
@@ -398,7 +397,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 			delete_pm($user->data['user_id'], $msg_id, $folder_id);
 
 			// jump to next message in "history"? nope, not for the moment. But able to be included later.
-			$meta_info = append_sid("{$phpbb_root_path}ucp.php", "i=pm&amp;folder=$folder_id");
+			$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;folder=$folder_id");
 			$message = $user->lang['MESSAGE_DELETED'];
 
 			meta_refresh(3, $meta_info);
@@ -413,11 +412,11 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 				'action'	=> 'delete'
 			);
 
-			// "{$phpbb_root_path}ucp.php?i=pm&amp;mode=compose"
+			// PHPBB_ROOT_PATH . 'ucp.php?i=pm&amp;mode=compose'
 			confirm_box(false, 'DELETE_MESSAGE', build_hidden_fields($s_hidden_fields));
 		}
 
-		redirect(append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;mode=view&amp;action=view_message&amp;p=' . $msg_id));
+		redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=view&amp;action=view_message&amp;p=' . $msg_id));
 	}
 
 	// Get maximum number of allowed recipients
@@ -558,7 +557,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 				);
 				$db->sql_query($sql);
 
-				$redirect_url = append_sid("{$phpbb_root_path}ucp.php", "i=pm&amp;mode=$mode");
+				$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=$mode");
 
 				meta_refresh(3, $redirect_url);
 				$message = $user->lang['DRAFT_SAVED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $redirect_url . '">', '</a>');
@@ -728,14 +727,14 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 			// ((!$message_subject) ? $subject : $message_subject)
 			$msg_id = submit_pm($action, $subject, $pm_data);
 
-			$return_message_url = append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;mode=view&amp;p=' . $msg_id);
-			$inbox_folder_url = append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;folder=inbox');
-			$outbox_folder_url = append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;folder=outbox');
+			$return_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=view&amp;p=' . $msg_id);
+			$inbox_folder_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=inbox');
+			$outbox_folder_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=outbox');
 
 			$folder_url = '';
 			if (($folder_id > 0) && isset($user_folders[$folder_id]))
 			{
-				$folder_url = append_sid("{$phpbb_root_path}ucp.php", 'i=pm&amp;folder=' . $folder_id);
+				$folder_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $folder_id);
 			}
 
 			$return_box_url = ($action === 'post' || $action === 'edit') ? $outbox_folder_url : $inbox_folder_url;
@@ -987,7 +986,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 				else
 				{
 					$tpl_ary = array_merge($tpl_ary, array(
-						'U_VIEW'		=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=group&amp;g=' . $id),
+						'U_VIEW'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $id),
 					));
 				}
 
@@ -1052,7 +1051,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 
 		'SUBJECT'				=> (isset($message_subject)) ? $message_subject : '',
 		'MESSAGE'				=> $message_text,
-		'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>'),
+		'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
 		'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
 		'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 		'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
@@ -1092,8 +1091,8 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		'S_HIDDEN_FIELDS'			=> $s_hidden_fields,
 
 		'S_CLOSE_PROGRESS_WINDOW'	=> isset($_POST['add_file']),
-		'U_PROGRESS_BAR'			=> append_sid("{$phpbb_root_path}posting.php", 'f=0&amp;mode=popup'),
-		'UA_PROGRESS_BAR'			=> addslashes(append_sid("{$phpbb_root_path}posting.php", 'f=0&amp;mode=popup')),
+		'U_PROGRESS_BAR'			=> append_sid(PHPBB_ROOT_PATH . 'posting.php', 'f=0&amp;mode=popup'),
+		'UA_PROGRESS_BAR'			=> addslashes(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'f=0&amp;mode=popup')),
 	));
 
 	// Build custom bbcodes array

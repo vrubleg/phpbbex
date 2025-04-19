@@ -43,7 +43,7 @@ if (!$s_quick_reply)
 	return false;
 }
 
-require_once($phpbb_root_path . 'includes/functions_posting.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 $user->add_lang(array('posting', 'mcp'));
 
 // Set some default variables
@@ -99,13 +99,13 @@ $notify_set			= ($config['allow_topic_notify'] && $user->data['is_registered'] &
 $notify_checked		= ($mode == 'post') ? $user->data['user_notify'] : $notify_set;
 
 // Action URL, include session_id for security purpose
-$s_action = append_sid("{$phpbb_root_path}posting.php", "mode=$mode&amp;f=$forum_id", true, $user->session_id);
+$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode&amp;f=$forum_id", true, $user->session_id);
 $s_action .= (isset($topic_id) && $topic_id) ? "&amp;t=$topic_id" : '';
 
 // Visual Confirmation
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {
-	require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 	$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 	$captcha->init(CONFIRM_POST);
 }
@@ -144,7 +144,7 @@ $template->assign_vars(array(
 	'EXTRA_OPTIONS_DISPLAY'	=> ($config['allow_quick_' . $mode . '_checkboxes']),
 
 	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>'),
+	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
 	'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
 	'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],

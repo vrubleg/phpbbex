@@ -20,10 +20,9 @@ class acp_database
 
 	function main($id, $mode)
 	{
-		global $cache, $db, $user, $auth, $template, $table_prefix;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $cache, $db, $user, $auth, $template, $config, $table_prefix;
 
-		require_once($phpbb_root_path . 'includes/db/db_tools.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 		$this->db_tools = new phpbb_db_tools($db);
 
 		$user->add_lang('acp/database');
@@ -175,7 +174,7 @@ class acp_database
 							trigger_error($user->lang['BACKUP_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
 
-						$file_name = $phpbb_root_path . 'store/' . $matches[0];
+						$file_name = PHPBB_ROOT_PATH . 'store/' . $matches[0];
 
 						if (!file_exists($file_name) || !is_readable($file_name))
 						{
@@ -297,7 +296,7 @@ class acp_database
 							$methods[] = $type;
 						}
 
-						$dir = $phpbb_root_path . 'store/';
+						$dir = PHPBB_ROOT_PATH . 'store/';
 						$dh = @opendir($dir);
 
 						$backup_files = array();
@@ -416,8 +415,7 @@ class base_extractor
 
 		if ($store == true)
 		{
-			global $phpbb_root_path;
-			$file = $phpbb_root_path . 'store/' . $filename . $ext;
+			$file = PHPBB_ROOT_PATH . 'store/' . $filename . $ext;
 
 			$this->fp = $open($file, 'w');
 

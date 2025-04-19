@@ -10,7 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-require_once($phpbb_root_path . 'includes/startup.php');
+require_once(PHPBB_ROOT_PATH . 'includes/startup.php');
 
 if (!defined('PHPBB_INSTALLED'))
 {
@@ -26,18 +26,18 @@ if (defined('DEBUG_EXTRA'))
 }
 
 // Include files
-require_once($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.php');
-require_once($phpbb_root_path . 'includes/cache.php');
-require_once($phpbb_root_path . 'includes/template.php');
-require_once($phpbb_root_path . 'includes/session.php');
-require_once($phpbb_root_path . 'includes/auth.php');
+require_once(PHPBB_ROOT_PATH . 'includes/acm/acm_' . $acm_type . '.php');
+require_once(PHPBB_ROOT_PATH . 'includes/cache.php');
+require_once(PHPBB_ROOT_PATH . 'includes/template.php');
+require_once(PHPBB_ROOT_PATH . 'includes/session.php');
+require_once(PHPBB_ROOT_PATH . 'includes/auth.php');
 
-require_once($phpbb_root_path . 'includes/functions.php');
-require_once($phpbb_root_path . 'includes/functions_content.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_content.php');
 
-require_once($phpbb_root_path . 'includes/constants.php');
-require_once($phpbb_root_path . 'includes/db/mysql.php');
-require_once($phpbb_root_path . 'includes/utf/utf_tools.php');
+require_once(PHPBB_ROOT_PATH . 'includes/constants.php');
+require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
+require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_tools.php');
 
 // Set PHP error handler to ours
 set_error_handler(function ($errno, $errstr, $errfile, $errline)

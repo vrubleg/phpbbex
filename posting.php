@@ -7,11 +7,10 @@
 
 define('IN_PHPBB', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
-require_once($phpbb_root_path . 'includes/functions_posting.php');
-require_once($phpbb_root_path . 'includes/functions_display.php');
-require_once($phpbb_root_path . 'includes/message_parser.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
+require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
 
 // Start session management
@@ -41,7 +40,7 @@ $current_time = time();
 // Was cancel pressed? If so then redirect to the appropriate page
 if ($cancel || ($current_time - $lastclick < 2 && $submit))
 {
-	$redirect = ($post_id) ? append_sid("{$phpbb_root_path}viewtopic.php", 'p=' . $post_id) . '#p' . $post_id : (($topic_id) ? append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $topic_id) : (($forum_id) ? append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $forum_id) : append_sid("{$phpbb_root_path}index.php")));
+	$redirect = ($post_id) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $post_id) . '#p' . $post_id : (($topic_id) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_id) : (($forum_id) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) : append_sid(PHPBB_ROOT_PATH . 'index.php')));
 	redirect($redirect);
 }
 
@@ -173,7 +172,7 @@ $user->setup(array('posting', 'mcp', 'viewtopic'), $post_data['forum_style']);
 
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {
-	require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 	$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 	$captcha->init(CONFIRM_POST);
 }
@@ -196,7 +195,7 @@ if ($post_data['forum_password'])
 // Check permissions
 if ($user->data['is_bot'])
 {
-	redirect(append_sid("{$phpbb_root_path}index.php"));
+	redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 }
 
 // Is the user able to read within this forum?
@@ -319,7 +318,7 @@ if ($mode == 'bump')
 		meta_refresh(3, $meta_url);
 
 		$message = $user->lang['TOPIC_BUMPED'] . '<br /><br />' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $meta_url . '">', '</a>');
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $forum_id) . '">', '</a>');
+		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
 
 		trigger_error($message);
 	}
@@ -511,13 +510,13 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 			);
 			$db->sql_query($sql);
 
-			$meta_info = ($mode == 'post') ? append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $forum_id) : append_sid("{$phpbb_root_path}viewtopic.php", "t=$topic_id");
+			$meta_info = ($mode == 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) : append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id");
 
 			meta_refresh(3, $meta_info);
 
 			$message = $user->lang['DRAFT_SAVED'] . '<br /><br />';
 			$message .= ($mode != 'post') ? sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>') . '<br /><br />' : '';
-			$message .= sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $forum_id) . '">', '</a>');
+			$message .= sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
 
 			trigger_error($message);
 		}
@@ -832,7 +831,7 @@ if ($submit || $preview || $refresh)
 	// Validate username
 	if (($post_data['username'] && !$user->data['is_registered']) || ($mode == 'edit' && $post_data['poster_id'] == ANONYMOUS && $post_data['username'] && $post_data['post_username'] && $post_data['post_username'] != $post_data['username']))
 	{
-		require_once($phpbb_root_path . 'includes/functions_user.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 		$user->add_lang('ucp');
 
@@ -1028,7 +1027,7 @@ if ($submit || $preview || $refresh)
 
 				if (!$to_forum_id)
 				{
-					require_once($phpbb_root_path . 'includes/functions_admin.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 					$template->assign_vars(array(
 						'S_FORUM_SELECT'	=> make_forum_select(false, false, false, true, true, true),
@@ -1133,7 +1132,7 @@ if ($submit || $preview || $refresh)
 				$data['topic_replies'] = $post_data['topic_replies'];
 			}
 
-			require_once($phpbb_root_path . 'includes/posts_merging.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/posts_merging.php');
 
 			// Only return the username when it is either a guest posting or we are editing a post and
 			// the username was supplied; otherwise post_data might hold the data of the post that is
@@ -1185,7 +1184,7 @@ if ($submit || $preview || $refresh)
 				$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $redirect_url . '">', '</a>');
 			}
 
-			$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $data['forum_id']) . '">', '</a>');
+			$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $data['forum_id']) . '">', '</a>');
 			trigger_error($message);
 		}
 	}
@@ -1390,7 +1389,7 @@ $notify_set			= ($mode != 'edit' && $config['allow_topic_notify'] && $user->data
 $notify_checked		= (isset($notify)) ? $notify : (($mode == 'post') ? $user->data['user_notify'] : $notify_set);
 
 // Page title & action URL
-$s_action = append_sid("{$phpbb_root_path}posting.php", "mode=$mode&amp;f=$forum_id");
+$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode&amp;f=$forum_id");
 $s_action .= ($topic_id) ? "&amp;t=$topic_id" : '';
 $s_action .= ($post_id) ? "&amp;p=$post_id" : '';
 
@@ -1466,7 +1465,7 @@ $template->assign_vars(array(
 	'USERNAME'				=> ((!$preview && $mode != 'quote') || $preview) ? $post_data['username'] : '',
 	'SUBJECT'				=> $post_data['post_subject'],
 	'MESSAGE'				=> $post_data['post_text'],
-	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>'),
+	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
 	'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
 	'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
@@ -1479,10 +1478,10 @@ $template->assign_vars(array(
 	'TOPIC_TIME_LIMIT'		=> (int) $post_data['topic_time_limit'],
 	'TOPIC_PRIORITY'		=> (int) $post_data['topic_priority'],
 	'EDIT_REASON'			=> $post_data['post_edit_reason'],
-	'U_VIEW_FORUM'			=> append_sid("{$phpbb_root_path}viewforum.php", "f=$forum_id"),
-	'U_VIEW_TOPIC'			=> ($mode != 'post') ? append_sid("{$phpbb_root_path}viewtopic.php", "t=$topic_id") : '',
-	'U_PROGRESS_BAR'		=> append_sid("{$phpbb_root_path}posting.php", "f=$forum_id&amp;mode=popup"),
-	'UA_PROGRESS_BAR'		=> addslashes(append_sid("{$phpbb_root_path}posting.php", "f=$forum_id&amp;mode=popup")),
+	'U_VIEW_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id"),
+	'U_VIEW_TOPIC'			=> ($mode != 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id") : '',
+	'U_PROGRESS_BAR'		=> append_sid(PHPBB_ROOT_PATH . 'posting.php', "f=$forum_id&amp;mode=popup"),
+	'UA_PROGRESS_BAR'		=> addslashes(append_sid(PHPBB_ROOT_PATH . 'posting.php', "f=$forum_id&amp;mode=popup")),
 
 	'S_PRIVMSGS'				=> false,
 	'S_CLOSE_PROGRESS_WINDOW'	=> (isset($_POST['add_file'])) ? true : false,
@@ -1567,7 +1566,7 @@ $template->set_filenames(array(
 	'body' => 'posting_body.html')
 );
 
-make_jumpbox(append_sid("{$phpbb_root_path}viewforum.php"));
+make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
 
 // Topic review
 if (($mode == 'reply' || $mode == 'quote') && !empty($config['posting_topic_review']))
@@ -1611,7 +1610,6 @@ function upload_popup($forum_style = 0)
 function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 {
 	global $user, $db, $auth, $config;
-	global $phpbb_root_path;
 
 	// If moderator removing post or user itself removing post, present a confirmation screen
 	if ($auth->acl_get('m_delete', $forum_id) || ($post_data['poster_id'] == $user->data['user_id'] && $user->data['is_registered'] && $auth->acl_get('f_delete', $forum_id) && $post_id == $post_data['topic_last_post_id'] && !$post_data['post_edit_locked'] && ($post_data['post_time'] > time() - ($config['delete_time'] * 60) || !$config['delete_time'])))
@@ -1645,19 +1643,19 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 			{
 				add_log('mod', $forum_id, $topic_id, 'LOG_DELETE_TOPIC', $post_data['topic_title'], $post_username, $post_data['post_text']);
 
-				$meta_info = append_sid("{$phpbb_root_path}viewforum.php", "f=$forum_id");
+				$meta_info = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id");
 				$message = $user->lang['POST_DELETED'];
 			}
 			else
 			{
 				add_log('mod', $forum_id, $topic_id, 'LOG_DELETE_POST', $post_data['post_subject'] ? $post_data['post_subject'] : $post_data['topic_title'], $post_username, $post_data['post_text']);
 
-				$meta_info = append_sid("{$phpbb_root_path}viewtopic.php", "t=$topic_id&amp;p=$next_post_id") . "#p$next_post_id";
+				$meta_info = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;p=$next_post_id") . "#p$next_post_id";
 				$message = $user->lang['POST_DELETED'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
 			}
 
 			meta_refresh(3, $meta_info);
-			$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $forum_id) . '">', '</a>');
+			$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
 			trigger_error($message);
 		}
 		else

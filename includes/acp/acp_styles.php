@@ -25,8 +25,7 @@ class acp_styles
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $db, $user, $auth, $template, $cache, $config;
 
 		// Hardcoded template bitfield to add for new templates
 		$bitfield = new bitfield();
@@ -265,7 +264,7 @@ inherit_from = {INHERIT_FROM}
 							$template_refreshed = '';
 
 							// Only refresh database if the template is stored in the database
-							if ($template_row['template_storedb'] && file_exists("{$phpbb_root_path}styles/{$template_row['template_path']}/template/"))
+							if ($template_row['template_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/"))
 							{
 								$filelist = array('' => array());
 
@@ -276,7 +275,7 @@ inherit_from = {INHERIT_FROM}
 
 								while ($row = $db->sql_fetchrow($result))
 								{
-//									if (@filemtime("{$phpbb_root_path}styles/{$template_row['template_path']}/template/" . $row['template_filename']) > $row['template_mtime'])
+//									if (@filemtime(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/" . $row['template_filename']) > $row['template_mtime'])
 //									{
 										// get folder info from the filename
 										if (($slash_pos = strrpos($row['template_filename'], '/')) === false)
@@ -344,11 +343,11 @@ inherit_from = {INHERIT_FROM}
 
 						if (confirm_box(true))
 						{
-							if ($theme_row['theme_storedb'] && file_exists("{$phpbb_root_path}styles/{$theme_row['theme_path']}/theme/stylesheet.css"))
+							if ($theme_row['theme_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"))
 							{
 								// Save CSS contents
 								$sql_ary = array(
-									'theme_mtime'	=> (int) filemtime("{$phpbb_root_path}styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
+									'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
 									'theme_data'	=> $this->db_theme_data($theme_row)
 								);
 
@@ -405,7 +404,7 @@ inherit_from = {INHERIT_FROM}
 								$imageset_definitions = array_merge($imageset_definitions, $key_array);
 							}
 
-							$cfg_data_imageset = parse_cfg_file("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
+							$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
 
 							$db->sql_transaction('begin');
 
@@ -456,9 +455,9 @@ inherit_from = {INHERIT_FROM}
 
 							while ($row = $db->sql_fetchrow($result))
 							{
-								if (@file_exists("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg"))
+								if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg"))
 								{
-									$cfg_data_imageset_data = parse_cfg_file("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg");
+									$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg");
 									foreach ($cfg_data_imageset_data as $image_name => $value)
 									{
 										if (strpos($value, '*') !== false)
@@ -530,7 +529,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function frontend($mode, $options, $actions)
 	{
-		global $user, $template, $db, $config, $phpbb_root_path;
+		global $user, $template, $db, $config;
 
 		$sql_from = '';
 		$sql_sort = 'LOWER(' . $mode . '_name)';
@@ -625,7 +624,7 @@ inherit_from = {INHERIT_FROM}
 				'L_STYLE_ACT_DEACT'		=> $user->lang['STYLE_' . strtoupper($stylevis)],
 				'S_OPTIONS'				=> implode(' | ', $s_options),
 				'S_ACTIONS'				=> implode(' | ', $s_actions),
-				'U_PREVIEW'				=> ($mode == 'style') ? append_sid("{$phpbb_root_path}index.php", "$mode=" . $row[$mode . '_id']) : '',
+				'U_PREVIEW'				=> ($mode == 'style') ? append_sid(PHPBB_ROOT_PATH . 'index.php', "$mode=" . $row[$mode . '_id']) : '',
 
 				'NAME'					=> $row[$mode . '_name'],
 				'STYLE_COUNT'			=> ($mode == 'style' && isset($style_count[$row['style_id']])) ? $style_count[$row['style_id']] : 0,
@@ -639,21 +638,21 @@ inherit_from = {INHERIT_FROM}
 		// Grab uninstalled items
 		$new_ary = $cfg = array();
 
-		$dp = @opendir("{$phpbb_root_path}styles");
+		$dp = @opendir(PHPBB_ROOT_PATH . 'styles');
 
 		if ($dp)
 		{
 			while (($file = readdir($dp)) !== false)
 			{
-				if ($file[0] == '.' || !is_dir($phpbb_root_path . 'styles/' . $file))
+				if ($file[0] == '.' || !is_dir(PHPBB_ROOT_PATH . 'styles/' . $file))
 				{
 					continue;
 				}
 
 				$subpath = ($mode != 'style') ? "$mode/" : '';
-				if (file_exists("{$phpbb_root_path}styles/$file/$subpath$mode.cfg"))
+				if (file_exists(PHPBB_ROOT_PATH . "styles/$file/$subpath$mode.cfg"))
 				{
-					if ($cfg = file("{$phpbb_root_path}styles/$file/$subpath$mode.cfg"))
+					if ($cfg = file(PHPBB_ROOT_PATH . "styles/$file/$subpath$mode.cfg"))
 					{
 						$items = parse_cfg_file('', $cfg);
 						$name = (isset($items['name'])) ? trim($items['name']) : false;
@@ -704,7 +703,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function edit_template($template_id)
 	{
-		global $phpbb_root_path, $config, $db, $cache, $user, $template;
+		global $config, $db, $cache, $user, $template;
 
 		if (defined('PHPBB_DISABLE_ACP_EDITOR'))
 		{
@@ -750,7 +749,7 @@ inherit_from = {INHERIT_FROM}
 		if ($save_changes && $template_file)
 		{
 			// Get the filesystem location of the current file
-			$file = "{$phpbb_root_path}styles/{$template_info['template_path']}/template/$template_file";
+			$file = PHPBB_ROOT_PATH . "styles/{$template_info['template_path']}/template/$template_file";
 			$additional = '';
 
 			// If the template is stored on the filesystem try to write the file else store it in the database
@@ -806,7 +805,7 @@ inherit_from = {INHERIT_FROM}
 		// Generate a category array containing template filenames
 		if (!$template_info['template_storedb'])
 		{
-			$template_path = "{$phpbb_root_path}styles/{$template_info['template_path']}/template";
+			$template_path = PHPBB_ROOT_PATH . "styles/{$template_info['template_path']}/template";
 
 			$filelist = filelist($template_path, '', 'html');
 			$filelist[''] = array_diff($filelist[''], array('bbcode.html'));
@@ -946,7 +945,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function template_cache($template_id)
 	{
-		global $phpbb_root_path, $config, $db, $cache, $user, $template;
+		global $config, $db, $cache, $user, $template;
 
 		$source		= str_replace('/', '.', request_var('source', ''));
 		$file_ary	= array_diff(request_var('delete', array('')), array(''));
@@ -976,7 +975,7 @@ inherit_from = {INHERIT_FROM}
 		// Someone wants to see the cached source ... so we'll highlight it,
 		// add line numbers and indent it appropriately. This could be nasty
 		// on larger source files ...
-		if ($source && file_exists("{$phpbb_root_path}cache/{$cache_prefix}_$source.html.php"))
+		if ($source && file_exists(PHPBB_ROOT_PATH . "cache/{$cache_prefix}_$source.html.php"))
 		{
 			adm_page_header($user->lang['TEMPLATE_CACHE']);
 
@@ -988,7 +987,7 @@ inherit_from = {INHERIT_FROM}
 				'FILENAME'	=> str_replace('.', '/', $source) . '.html')
 			);
 
-			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), file_get_contents("{$phpbb_root_path}cache/{$cache_prefix}_$source.html.php"));
+			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), file_get_contents(PHPBB_ROOT_PATH . "cache/{$cache_prefix}_$source.html.php"));
 
 			$conf = array('highlight.bg', 'highlight.comment', 'highlight.default', 'highlight.html', 'highlight.keyword', 'highlight.string');
 			foreach ($conf as $ini_var)
@@ -1063,12 +1062,12 @@ inherit_from = {INHERIT_FROM}
 
 			$filename = "{$cache_prefix}_$file.html.php";
 
-			if (!file_exists("{$phpbb_root_path}cache/$filename"))
+			if (!file_exists(PHPBB_ROOT_PATH . "cache/$filename"))
 			{
 				continue;
 			}
 
-			$file_tpl = "{$phpbb_root_path}styles/{$template_row['template_path']}/template/$tpl_file.html";
+			$file_tpl = PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/$tpl_file.html";
 			$inherited = false;
 
 			if (isset($template_row['template_inherits_id']) && $template_row['template_inherits_id'])
@@ -1077,7 +1076,7 @@ inherit_from = {INHERIT_FROM}
 				{
 					if (!file_exists($file_tpl))
 					{
-						$file_tpl = "{$phpbb_root_path}styles/{$template_row['template_inherit_path']}/template/$tpl_file.html";
+						$file_tpl = PHPBB_ROOT_PATH . "styles/{$template_row['template_inherit_path']}/template/$tpl_file.html";
 						$inherited = true;
 					}
 				}
@@ -1085,7 +1084,7 @@ inherit_from = {INHERIT_FROM}
 				{
 					if ($file_template_db[$file . '.html'] == $template_row['template_inherits_id'])
 					{
-						$file_tpl = "{$phpbb_root_path}styles/{$template_row['template_inherit_path']}/template/$tpl_file.html";
+						$file_tpl = PHPBB_ROOT_PATH . "styles/{$template_row['template_inherit_path']}/template/$tpl_file.html";
 						$inherited = true;
 					}
 				}
@@ -1100,10 +1099,10 @@ inherit_from = {INHERIT_FROM}
 			$template->assign_block_vars('file', array(
 				'U_VIEWSOURCE'	=> $this->u_action . "&amp;action=cache&amp;id=$template_id&amp;source=$file",
 
-				'CACHED'		=> $user->format_date(filemtime("{$phpbb_root_path}cache/$filename")),
+				'CACHED'		=> $user->format_date(filemtime(PHPBB_ROOT_PATH . "cache/$filename")),
 				'FILENAME'		=> $file,
 				'FILENAME_PATH'	=> $file_tpl,
-				'FILESIZE'		=> get_formatted_filesize(filesize("{$phpbb_root_path}cache/$filename")),
+				'FILESIZE'		=> get_formatted_filesize(filesize(PHPBB_ROOT_PATH . "cache/$filename")),
 				'MODIFIED'		=> $user->format_date((!$template_row['template_storedb']) ? filemtime($file_tpl) : $filemtime[$file . '.html']))
 			);
 		}
@@ -1125,7 +1124,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function edit_theme($theme_id)
 	{
-		global $phpbb_root_path, $config, $db, $cache, $user, $template;
+		global $config, $db, $cache, $user, $template;
 
 		$this->page_title = 'EDIT_THEME';
 
@@ -1156,7 +1155,7 @@ inherit_from = {INHERIT_FROM}
 		if ($save_changes)
 		{
 			// Get the filesystem location of the current file
-			$file = "{$phpbb_root_path}styles/{$theme_info['theme_path']}/theme/$theme_file";
+			$file = PHPBB_ROOT_PATH . "styles/{$theme_info['theme_path']}/theme/$theme_file";
 			$additional = '';
 			$message = $user->lang['THEME_UPDATED'];
 
@@ -1201,7 +1200,7 @@ inherit_from = {INHERIT_FROM}
 		// Generate a category array containing theme filenames
 		if (!$theme_info['theme_storedb'])
 		{
-			$theme_path = "{$phpbb_root_path}styles/{$theme_info['theme_path']}/theme";
+			$theme_path = PHPBB_ROOT_PATH . "styles/{$theme_info['theme_path']}/theme";
 
 			$filelist = filelist($theme_path, '', 'css');
 
@@ -1308,7 +1307,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function edit_imageset($imageset_id)
 	{
-		global $db, $user, $phpbb_root_path, $cache, $template;
+		global $db, $user, $cache, $template;
 
 		$this->page_title = 'EDIT_IMAGESET';
 
@@ -1389,7 +1388,7 @@ inherit_from = {INHERIT_FROM}
 
 			$imglang = '';
 
-			if ($imgpath && !file_exists("{$phpbb_root_path}styles/$imageset_path/imageset/$imgpath"))
+			if ($imgpath && !file_exists(PHPBB_ROOT_PATH . "styles/$imageset_path/imageset/$imgpath"))
 			{
 				trigger_error($user->lang['NO_IMAGE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
 			}
@@ -1399,7 +1398,7 @@ inherit_from = {INHERIT_FROM}
 			{
 				if (!$imgwidth || !$imgheight)
 				{
-					list($imgwidth_file, $imgheight_file) = getimagesize("{$phpbb_root_path}styles/$imageset_path/imageset/$imgpath");
+					list($imgwidth_file, $imgheight_file) = getimagesize(PHPBB_ROOT_PATH . "styles/$imageset_path/imageset/$imgpath");
 					$imgwidth = ($imgwidth) ? $imgwidth : $imgwidth_file;
 					$imgheight = ($imgheight) ? $imgheight : $imgheight_file;
 				}
@@ -1455,7 +1454,7 @@ inherit_from = {INHERIT_FROM}
 		$imagesetlist = array('nolang' => array(), 'lang' => array());
 		$langs = array();
 
-		$dir = "{$phpbb_root_path}styles/$imageset_path/imageset";
+		$dir = PHPBB_ROOT_PATH . "styles/$imageset_path/imageset";
 		$dp = @opendir($dir);
 
 		if ($dp)
@@ -1583,7 +1582,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function remove($mode, $style_id)
 	{
-		global $db, $template, $user, $phpbb_root_path, $cache, $config;
+		global $db, $template, $user, $cache, $config;
 
 		$new_id = request_var('new_id', 0);
 		$update = (isset($_POST['update'])) ? true : false;
@@ -1919,7 +1918,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function export($mode, $style_id)
 	{
-		global $db, $template, $user, $phpbb_root_path, $cache, $config;
+		global $db, $template, $user, $cache, $config;
 
 		$update = (isset($_POST['update'])) ? true : false;
 
@@ -2178,7 +2177,7 @@ inherit_from = {INHERIT_FROM}
 
 				end($data);
 
-				$imageset_root = "{$phpbb_root_path}styles/{$style_row['imageset_path']}/imageset/";
+				$imageset_root = PHPBB_ROOT_PATH . "styles/{$style_row['imageset_path']}/imageset/";
 
 				if ($dh = @opendir($imageset_root))
 				{
@@ -2253,7 +2252,7 @@ inherit_from = {INHERIT_FROM}
 
 			if (!sizeof($error))
 			{
-				require_once($phpbb_root_path . 'includes/functions_compress.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_compress.php');
 
 				if ($mode == 'style')
 				{
@@ -2266,11 +2265,11 @@ inherit_from = {INHERIT_FROM}
 
 				if ($format == 'zip')
 				{
-					$compress = new compress_zip('w', $phpbb_root_path . "store/$path$ext");
+					$compress = new compress_zip('w', PHPBB_ROOT_PATH . "store/$path$ext");
 				}
 				else
 				{
-					$compress = new compress_tar('w', $phpbb_root_path . "store/$path$ext", $ext);
+					$compress = new compress_tar('w', PHPBB_ROOT_PATH . "store/$path$ext", $ext);
 				}
 
 				if (sizeof($files))
@@ -2296,7 +2295,7 @@ inherit_from = {INHERIT_FROM}
 				if (!$store)
 				{
 					$compress->download($path);
-					@unlink("{$phpbb_root_path}store/$path$ext");
+					@unlink(PHPBB_ROOT_PATH . "store/$path$ext");
 					exit;
 				}
 
@@ -2347,7 +2346,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function details($mode, $style_id)
 	{
-		global $template, $db, $config, $user, $cache, $phpbb_root_path;
+		global $template, $db, $config, $user, $cache;
 
 		$update = (isset($_POST['update'])) ? true : false;
 		$l_type = strtoupper($mode);
@@ -2433,7 +2432,7 @@ inherit_from = {INHERIT_FROM}
 			if ($mode === 'theme' || $mode === 'template')
 			{
 				// a rather elaborate check we have to do here once to avoid trouble later
-				$check = "{$phpbb_root_path}styles/" . $style_row["{$mode}_path"] . (($mode === 'theme') ? '/theme/stylesheet.css' : '/template');
+				$check = PHPBB_ROOT_PATH . 'styles/' . $style_row["{$mode}_path"] . (($mode === 'theme') ? '/theme/stylesheet.css' : '/template');
 				if (($style_row["{$mode}_storedb"] != $store_db) && !$store_db && !phpbb_is_writable($check))
 				{
 					$error[] = $user->lang['EDIT_' . strtoupper($mode) . '_STORED_DB'];
@@ -2443,7 +2442,7 @@ inherit_from = {INHERIT_FROM}
 				// themes which have to be parsed have to go into db
 				if ($mode == 'theme')
 				{
-					$cfg = parse_cfg_file("{$phpbb_root_path}styles/" . $style_row["{$mode}_path"] . "/theme/theme.cfg");
+					$cfg = parse_cfg_file(PHPBB_ROOT_PATH . 'styles/' . $style_row["{$mode}_path"] . "/theme/theme.cfg");
 
 					if (isset($cfg['parse_css_file']) && $cfg['parse_css_file'] && !$store_db)
 					{
@@ -2514,12 +2513,12 @@ inherit_from = {INHERIT_FROM}
 						{
 							$theme_data = $this->db_theme_data($style_row);
 						}
-						else if (!$store_db && phpbb_is_writable("{$phpbb_root_path}styles/{$style_row['theme_path']}/theme/stylesheet.css"))
+						else if (!$store_db && phpbb_is_writable(PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/stylesheet.css"))
 						{
 							$store_db = 1;
 							$theme_data = $style_row['theme_data'];
 
-							if ($fp = @fopen("{$phpbb_root_path}styles/{$style_row['theme_path']}/theme/stylesheet.css", 'wb'))
+							if ($fp = @fopen(PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/stylesheet.css", 'wb'))
 							{
 								$store_db = (@fwrite($fp, str_replace("styles/{$style_row['theme_path']}/theme/", './', $theme_data))) ? 0 : 1;
 							}
@@ -2527,7 +2526,7 @@ inherit_from = {INHERIT_FROM}
 						}
 
 						$sql_ary += array(
-							'theme_mtime'	=> ($store_db) ? filemtime("{$phpbb_root_path}styles/{$style_row['theme_path']}/theme/stylesheet.css") : 0,
+							'theme_mtime'	=> ($store_db) ? filemtime(PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/stylesheet.css") : 0,
 							'theme_storedb'	=> $store_db,
 							'theme_data'	=> ($store_db) ? $theme_data : '',
 						);
@@ -2545,7 +2544,7 @@ inherit_from = {INHERIT_FROM}
 						}
 						else
 						{
-							if (!$store_db && phpbb_is_writable("{$phpbb_root_path}styles/{$style_row['template_path']}/template"))
+							if (!$store_db && phpbb_is_writable(PHPBB_ROOT_PATH . "styles/{$style_row['template_path']}/template"))
 							{
 								$err = $this->store_in_fs('template', $style_row['template_id']);
 								if ($err)
@@ -2669,9 +2668,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	static function load_css_file($path, $filename)
 	{
-		global $phpbb_root_path;
-
-		$file = "{$phpbb_root_path}styles/$path/theme/$filename";
+		$file = PHPBB_ROOT_PATH . "styles/$path/theme/$filename";
 
 		if (file_exists($file) && ($content = file_get_contents($file)))
 		{
@@ -2695,17 +2692,15 @@ inherit_from = {INHERIT_FROM}
 	*
 	* @param array $theme_row is an associative array containing the theme's current database entry
 	* @param mixed $stylesheet can either be the new content for the stylesheet or false to load from the standard file
-	* @param string $root_path should only be used in case you want to use a different root path than "{$phpbb_root_path}styles/{$theme_row['theme_path']}"
+	* @param string $root_path should only be used in case you want to use a different root path than PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}"
 	*
 	* @return string Stylesheet data for theme_data column in the theme table
 	*/
 	static function db_theme_data($theme_row, $stylesheet = false, $root_path = '')
 	{
-		global $phpbb_root_path;
-
 		if (!$root_path)
 		{
-			$root_path = $phpbb_root_path . 'styles/' . $theme_row['theme_path'];
+			$root_path = PHPBB_ROOT_PATH . 'styles/' . $theme_row['theme_path'];
 		}
 
 		if (!$stylesheet)
@@ -2746,7 +2741,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function store_templates($mode, $style_id, $template_path, $filelist)
 	{
-		global $phpbb_root_path, $db;
+		global $db;
 
 		$template_path = $template_path . '/template/';
 		$includes = array();
@@ -2754,12 +2749,12 @@ inherit_from = {INHERIT_FROM}
 		{
 			foreach ($file_ary as $file)
 			{
-				if (!($fp = @fopen("{$phpbb_root_path}styles/$template_path$pathfile$file", 'r')))
+				if (!($fp = @fopen(PHPBB_ROOT_PATH . "styles/$template_path$pathfile$file", 'r')))
 				{
-					trigger_error("Could not open {$phpbb_root_path}styles/$template_path$pathfile$file", E_USER_ERROR);
+					trigger_error("Could not open styles/$template_path$pathfile$file", E_USER_ERROR);
 				}
 
-				$filesize = filesize("{$phpbb_root_path}styles/$template_path$pathfile$file");
+				$filesize = filesize(PHPBB_ROOT_PATH . "styles/$template_path$pathfile$file");
 
 				if ($filesize)
 				{
@@ -2800,8 +2795,8 @@ inherit_from = {INHERIT_FROM}
 					'template_id'			=> (int) $style_id,
 					'template_filename'		=> "$pathfile$file",
 					'template_included'		=> (isset($includes[$file])) ? implode(':', $includes[$file]) . ':' : '',
-					'template_mtime'		=> (int) filemtime("{$phpbb_root_path}styles/$template_path$pathfile$file"),
-					'template_data'			=> (string) file_get_contents("{$phpbb_root_path}styles/$template_path$pathfile$file"),
+					'template_mtime'		=> (int) filemtime(PHPBB_ROOT_PATH . "styles/$template_path$pathfile$file"),
+					'template_data'			=> (string) file_get_contents(PHPBB_ROOT_PATH . "styles/$template_path$pathfile$file"),
 				);
 
 				if ($mode == 'insert')
@@ -2828,11 +2823,11 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function template_cache_filelist($template_path)
 	{
-		global $phpbb_root_path, $user;
+		global $user;
 
 		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_path);
 
-		if (!($dp = @opendir("{$phpbb_root_path}cache")))
+		if (!($dp = @opendir(PHPBB_ROOT_PATH . 'cache')))
 		{
 			trigger_error($user->lang['TEMPLATE_ERR_CACHE_READ'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
@@ -2845,7 +2840,7 @@ inherit_from = {INHERIT_FROM}
 				continue;
 			}
 
-			if (is_file($phpbb_root_path . 'cache/' . $file) && (strpos($file, $cache_prefix) === 0))
+			if (is_file(PHPBB_ROOT_PATH . 'cache/' . $file) && (strpos($file, $cache_prefix) === 0))
 			{
 				$file_ary[] = str_replace('.', '/', preg_replace('#^' . preg_quote($cache_prefix, '#') . '_(.*?)\.html\.php' . '$#i', '\1', $file));
 			}
@@ -2864,7 +2859,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function clear_template_cache($template_row, $file_ary = false)
 	{
-		global $phpbb_root_path, $user;
+		global $user;
 
 		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_row['template_path']);
 
@@ -2882,7 +2877,7 @@ inherit_from = {INHERIT_FROM}
 		{
 			$file = str_replace('/', '.', $file);
 
-			$file = "{$phpbb_root_path}cache/{$cache_prefix}_$file.html.php";
+			$file = PHPBB_ROOT_PATH . "cache/{$cache_prefix}_$file.html.php";
 			if (file_exists($file) && is_file($file))
 			{
 				@unlink($file);
@@ -2898,7 +2893,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function install($mode)
 	{
-		global $phpbb_root_path, $config, $db, $cache, $user, $template;
+		global $config, $db, $cache, $user, $template;
 
 		$l_type = strtoupper($mode);
 
@@ -2912,7 +2907,7 @@ inherit_from = {INHERIT_FROM}
 		// Installing, obtain cfg file contents
 		if ($install_path)
 		{
-			$root_path = $phpbb_root_path . 'styles/' . $install_path . '/';
+			$root_path = PHPBB_ROOT_PATH . 'styles/' . $install_path . '/';
 			$cfg_file = ($mode == 'style') ? "$root_path$mode.cfg" : "$root_path$mode/$mode.cfg";
 
 			if (!file_exists($cfg_file))
@@ -2961,7 +2956,7 @@ inherit_from = {INHERIT_FROM}
 							$element . '_copyright'		=> '')
 						);
 
-			 			$this->test_installed($element, $error, (${'reqd_' . $element}) ? $phpbb_root_path . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name'], $style_row[$element . '_copyright']);
+			 			$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name'], $style_row[$element . '_copyright']);
 
 						if (!$style_row[$element . '_name'])
 						{
@@ -2969,7 +2964,7 @@ inherit_from = {INHERIT_FROM}
 						}
 
 						// Merge other information to installcfg... if present
-						$cfg_file = $phpbb_root_path . 'styles/' . $install_path . '/' . $element . '/' . $element . '.cfg';
+						$cfg_file = PHPBB_ROOT_PATH . 'styles/' . $install_path . '/' . $element . '/' . $element . '.cfg';
 
 						if (file_exists($cfg_file))
 						{
@@ -3017,7 +3012,7 @@ inherit_from = {INHERIT_FROM}
 			{
 				foreach ($element_ary as $element => $table)
 				{
-					${$element . '_root_path'} = (${'reqd_' . $element}) ? $phpbb_root_path . 'styles/' . ${'reqd_' . $element} . '/' : false;
+					${$element . '_root_path'} = (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . ${'reqd_' . $element} . '/' : false;
 					${$element . '_path'} = (${'reqd_' . $element}) ? ${'reqd_' . $element} : false;
 				}
 				$this->install_style($error, 'install', $root_path, $style_row['style_id'], $style_row['style_name'], $install_path, $style_row['style_copyright'], $style_row['style_active'], $style_row['style_default'], $style_row, $template_root_path, $template_path, $theme_root_path, $theme_path, $imageset_root_path, $imageset_path);
@@ -3075,7 +3070,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function add($mode)
 	{
-		global $phpbb_root_path, $config, $db, $cache, $user, $template;
+		global $config, $db, $cache, $user, $template;
 
 		$l_type = strtoupper($mode);
 		$element_ary = array('template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE);
@@ -3394,7 +3389,7 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path, $copyright, $store_db = 0)
 	{
-		global $phpbb_root_path, $db, $user;
+		global $db, $user;
 
 		// we parse the cfg here (again)
 		$cfg_data = parse_cfg_file("$root_path$mode/$mode.cfg");
@@ -3542,7 +3537,7 @@ inherit_from = {INHERIT_FROM}
 				$sql_ary += array(
 					'theme_storedb'	=> $store_db,
 					'theme_data'	=> ($store_db) ? $this->db_theme_data($sql_ary, false, $root_path) : '',
-					'theme_mtime'	=> (int) filemtime("{$phpbb_root_path}styles/$path/theme/stylesheet.css")
+					'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/$path/theme/stylesheet.css")
 				);
 			break;
 
@@ -3848,9 +3843,9 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function _store_in_db($mode, $id, $path)
 	{
-		global $phpbb_root_path, $db;
+		global $db;
 
-		$filelist = filelist("{$phpbb_root_path}styles/{$path}/template", '', 'html');
+		$filelist = filelist(PHPBB_ROOT_PATH . "styles/{$path}/template", '', 'html');
 		$this->store_templates('insert', $id, $path, $filelist);
 
 		// Okay, we do the query here -shouldn't be triggered often.
@@ -3920,11 +3915,11 @@ inherit_from = {INHERIT_FROM}
 	*/
 	function _store_in_fs($mode, $id, $path)
 	{
-		global $phpbb_root_path, $db, $user;
+		global $db, $user;
 
 		$store_db = 0;
 		$error = array();
-		if (phpbb_is_writable("{$phpbb_root_path}styles/{$path}/template"))
+		if (phpbb_is_writable(PHPBB_ROOT_PATH . "styles/{$path}/template"))
 		{
 			$sql = 'SELECT *
 					FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
@@ -3933,7 +3928,7 @@ inherit_from = {INHERIT_FROM}
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				if (!($fp = @fopen("{$phpbb_root_path}styles/{$path}/template/" . $row['template_filename'], 'wb')))
+				if (!($fp = @fopen(PHPBB_ROOT_PATH . "styles/{$path}/template/" . $row['template_filename'], 'wb')))
 				{
 					$store_db = 1;
 					$error[] = $user->lang['EDIT_TEMPLATE_STORED_DB'];

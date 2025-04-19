@@ -19,8 +19,7 @@ class acp_bbcodes
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $db, $user, $auth, $template, $cache, $config;
 
 		$user->add_lang('acp/posting');
 

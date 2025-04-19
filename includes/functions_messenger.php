@@ -171,7 +171,7 @@ class messenger
 	*/
 	function template($template_file, $template_lang = '', $template_path = '')
 	{
-		global $config, $phpbb_root_path, $user;
+		global $config, $user;
 
 		if (!trim($template_file))
 		{
@@ -196,14 +196,14 @@ class messenger
 
 			if (!$template_path)
 			{
-				$template_path = (!empty($user->lang_path)) ? $user->lang_path : $phpbb_root_path . 'language/';
+				$template_path = (!empty($user->lang_path)) ? $user->lang_path : PHPBB_ROOT_PATH . 'language/';
 				$template_path .= $template_lang . '/email';
 
 				// we can only specify default language fallback when the path is not a custom one for which we
 				// do not know the default language alternative
 				if ($template_lang !== basename($config['default_lang']))
 				{
-					$fallback_template_path = (!empty($user->lang_path)) ? $user->lang_path : $phpbb_root_path . 'language/';
+					$fallback_template_path = (!empty($user->lang_path)) ? $user->lang_path : PHPBB_ROOT_PATH . 'language/';
 					$fallback_template_path .= basename($config['default_lang']) . '/email';
 				}
 			}
@@ -329,7 +329,7 @@ class messenger
 	*/
 	static function error($type, $msg)
 	{
-		global $user, $phpbb_root_path, $config;
+		global $user, $config;
 
 		// Session doesn't exist, create it
 		if (!isset($user->session_id) || $user->session_id === '')
@@ -519,7 +519,7 @@ class messenger
 	*/
 	function msg_jabber()
 	{
-		global $config, $db, $user, $phpbb_root_path;
+		global $config, $db, $user;
 
 		if (empty($config['jab_enable']) || empty($config['jab_host']) || empty($config['jab_username']) || empty($config['jab_password']))
 		{
@@ -552,7 +552,7 @@ class messenger
 
 		if (!$use_queue)
 		{
-			require_once($phpbb_root_path . 'includes/functions_jabber.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_jabber.php');
 			$this->jabber = new jabber($config['jab_host'], $config['jab_port'], $config['jab_username'], htmlspecialchars_decode($config['jab_password']), $config['jab_use_ssl']);
 
 			if (!$this->jabber->connect())
@@ -602,10 +602,8 @@ class queue
 	*/
 	function __construct()
 	{
-		global $phpbb_root_path;
-
 		$this->data = array();
-		$this->cache_file = "{$phpbb_root_path}cache/queue.php";
+		$this->cache_file = PHPBB_ROOT_PATH . 'cache/queue.php';
 	}
 
 	/**
@@ -690,7 +688,7 @@ class queue
 	*/
 	function process()
 	{
-		global $db, $config, $phpbb_root_path, $user;
+		global $db, $config, $user;
 
 		$lock_fp = $this->lock();
 
@@ -754,7 +752,7 @@ class queue
 						continue 2;
 					}
 
-					require_once($phpbb_root_path . 'includes/functions_jabber.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/functions_jabber.php');
 					$this->jabber = new jabber($config['jab_host'], $config['jab_port'], $config['jab_username'], htmlspecialchars_decode($config['jab_password']), $config['jab_use_ssl']);
 
 					if (!$this->jabber->connect())
@@ -979,8 +977,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	// Ok we have error checked as much as we can to this point let's get on it already.
 	if (!class_exists('phpbb_error_collector'))
 	{
-		global $phpbb_root_path;
-		require_once($phpbb_root_path . 'includes/error_collector.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/error_collector.php');
 	}
 	$collector = new phpbb_error_collector;
 	$collector->install();
@@ -1632,7 +1629,7 @@ function mail_encode($str, $eol = "\r\n")
 */
 function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 {
-	global $config, $phpbb_root_path;
+	global $config;
 
 	// We use the EOL character for the OS here because the PHP mail function does not correctly transform line endings. On Windows SMTP is used (SMTP is \r\n), on UNIX a command is used...
 	// Reference: http://bugs.php.net/bug.php?id=15841
@@ -1640,7 +1637,7 @@ function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 
 	if (!class_exists('phpbb_error_collector'))
 	{
-		require_once($phpbb_root_path . 'includes/error_collector.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/error_collector.php');
 	}
 
 	$collector = new phpbb_error_collector;

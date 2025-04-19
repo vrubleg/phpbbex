@@ -8,8 +8,7 @@
 define('IN_PHPBB', true);
 define('IN_CRON', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
 
 // Do not update users last page entry
 $user->session_begin(false);
@@ -67,12 +66,12 @@ switch ($cron_type)
 {
 	case 'queue':
 
-		if (time() - $config['queue_interval'] <= $config['last_queue_run'] || !file_exists($phpbb_root_path . 'cache/queue.php'))
+		if (time() - $config['queue_interval'] <= $config['last_queue_run'] || !file_exists(PHPBB_ROOT_PATH . 'cache/queue.php'))
 		{
 			break;
 		}
 
-		require_once($phpbb_root_path . 'includes/functions_messenger.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 		$queue = new queue();
 
 		$queue->process();
@@ -95,12 +94,12 @@ switch ($cron_type)
 		// Select the search method
 		$search_type = basename($config['search_type']);
 
-		if (time() - $config['search_gc'] <= $config['search_last_gc'] || !file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.php'))
+		if (time() - $config['search_gc'] <= $config['search_last_gc'] || !file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
 		{
 			break;
 		}
 
-		require_once("{$phpbb_root_path}includes/search/$search_type.php");
+		require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
 
 		// We do some additional checks in the module to ensure it can actually be utilised
 		$error = false;
@@ -122,7 +121,7 @@ switch ($cron_type)
 			break;
 		}
 
-		require_once($phpbb_root_path . 'includes/functions_admin.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 		tidy_warnings();
 
@@ -135,7 +134,7 @@ switch ($cron_type)
 			break;
 		}
 
-		require_once($phpbb_root_path . 'includes/functions_admin.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 		tidy_database();
 
@@ -171,7 +170,7 @@ switch ($cron_type)
 		// Do the forum Prune thang
 		if ($row['prune_next'] < time() && $row['enable_prune'])
 		{
-			require_once($phpbb_root_path . 'includes/functions_admin.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 			if ($row['prune_days'])
 			{

@@ -14,9 +14,9 @@ if (!defined('IN_PHPBB'))
 if (version_compare(PHP_VERSION, '7.4', '<')) { die('PHP 7.4+ is required.'); }
 if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
-if (file_exists($phpbb_root_path . 'config.php'))
+if (file_exists(PHPBB_ROOT_PATH . 'config.php'))
 {
-	require_once($phpbb_root_path . 'config.php');
+	require_once(PHPBB_ROOT_PATH . 'config.php');
 }
 
 // Powered by ...
@@ -57,13 +57,13 @@ if (!defined('HTTP_HOST') || !defined('HTTP_PORT'))
 	}
 }
 
-// Define HTTP root of phpBBex (starting and ending with /) based on SCRIPT_NAME and $phpbb_root_path.
+// Define HTTP root of phpBBex (starting and ending with /) based on SCRIPT_NAME and PHPBB_ROOT_PATH.
 if (!defined('HTTP_ROOT'))
 {
 	if (empty($_SERVER['SCRIPT_NAME'])) { die('SCRIPT_NAME is invalid.'); }
 	$parts = array();
 	$parts[] = '';
-	foreach (explode('/', str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] . '/../' . $phpbb_root_path)) as $part)
+	foreach (explode('/', str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] . '/../' . PHPBB_ROOT_PATH)) as $part)
 	{
 		if ($part === '' || $part == '.') { continue; }
 		if ($part == '..') { array_pop($parts); }

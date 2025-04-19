@@ -26,7 +26,6 @@ class acp_users
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $table_prefix;
 
 		$user->add_lang(array('posting', 'ucp', 'acp/users'));
 		$this->tpl_name = 'acp_users';
@@ -45,7 +44,7 @@ class acp_users
 		// Whois (special case)
 		if ($action == 'whois')
 		{
-			require_once($phpbb_root_path . 'includes/functions_user.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 			$this->page_title = 'WHOIS';
 			$this->tpl_name = 'simple_body';
@@ -72,7 +71,7 @@ class acp_users
 				'ANONYMOUS_USER_ID'	=> ANONYMOUS,
 
 				'S_SELECT_USER'		=> true,
-				'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=select_user&amp;field=username&amp;select_single=true'),
+				'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=select_user&amp;field=username&amp;select_single=true'),
 			));
 
 			return;
@@ -140,7 +139,7 @@ class acp_users
 
 		$template->assign_vars(array(
 			'U_BACK'			=> $this->u_action,
-			'U_MODE_SELECT'		=> append_sid("{$phpbb_admin_path}index.php", "i=$id&amp;u=$user_id"),
+			'U_MODE_SELECT'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;u=$user_id"),
 			'U_ACTION'			=> $this->u_action . '&amp;u=' . $user_id,
 			'S_FORM_OPTIONS'	=> $s_form_options,
 			'MANAGED_USERNAME'	=> $user_row['username'])
@@ -156,7 +155,7 @@ class acp_users
 		{
 			case 'overview':
 
-				require_once($phpbb_root_path . 'includes/functions_user.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				$user->add_lang('acp/ban');
 
@@ -314,7 +313,7 @@ class acp_users
 
 							if ($config['email_enable'])
 							{
-								require_once($phpbb_root_path . 'includes/functions_messenger.php');
+								require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 								$server_url = generate_board_url();
 
@@ -394,7 +393,7 @@ class acp_users
 							{
 								if ($config['require_activation'] == USER_ACTIVATION_ADMIN)
 								{
-									require_once($phpbb_root_path . 'includes/functions_messenger.php');
+									require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 									$messenger = new messenger(false);
 
@@ -539,7 +538,7 @@ class acp_users
 								{
 									if (!function_exists('delete_pm'))
 									{
-										require_once($phpbb_root_path . 'includes/functions_privmsgs.php');
+										require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
 									}
 
 									do
@@ -624,7 +623,7 @@ class acp_users
 								{
 									if (!function_exists('remove_rates_batch'))
 									{
-										require_once($phpbb_root_path . 'includes/functions_rating.php');
+										require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
 									}
 									remove_rates_batch('user', $user_id, $delrates_type & 1, $delrates_type & 2, $delrates_from, $delrates_to);
 									$lang = 'OK';
@@ -1112,10 +1111,10 @@ class acp_users
 
 					'U_SHOW_IP'		=> $this->u_action . "&amp;u=$user_id&amp;ip=" . (($ip == 'ip') ? 'hostname' : 'ip'),
 					'U_WHOIS'		=> $this->u_action . "&amp;action=whois&amp;user_ip={$user_row['user_ip']}",
-					'U_MCP_QUEUE'	=> ($auth->acl_getf_global('m_approve')) ? append_sid("{$phpbb_root_path}mcp.php", 'i=queue', true, $user->session_id) : '',
-					'U_SEARCH_USER'	=> ($config['load_search'] && $auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.php", "author_id={$user_row['user_id']}&amp;sr=posts") : '',
+					'U_MCP_QUEUE'	=> ($auth->acl_getf_global('m_approve')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue', true, $user->session_id) : '',
+					'U_SEARCH_USER'	=> ($config['load_search'] && $auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_row['user_id']}&amp;sr=posts") : '',
 
-					'U_SWITCH_PERMISSIONS'	=> ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_row['user_id']) ? append_sid("{$phpbb_root_path}ucp.php", "mode=switch_perm&amp;u={$user_row['user_id']}&amp;hash=" . generate_link_hash('switchperm')) : '',
+					'U_SWITCH_PERMISSIONS'	=> ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_row['user_id']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', "mode=switch_perm&amp;u={$user_row['user_id']}&amp;hash=" . generate_link_hash('switchperm')) : '',
 
 					'POSTS_IN_QUEUE'	=> $user_row['posts_in_queue'],
 					'USER'				=> $user_row['username'],
@@ -1351,8 +1350,8 @@ class acp_users
 
 			case 'profile':
 
-				require_once($phpbb_root_path . 'includes/functions_user.php');
-				require_once($phpbb_root_path . 'includes/functions_profile_fields.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
 
 				$cp = new custom_profile();
 
@@ -1526,7 +1525,7 @@ class acp_users
 
 			case 'prefs':
 
-				require_once($phpbb_root_path . 'includes/functions_user.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				$data = array(
 					'dateformat'		=> utf8_normalize_nfc(request_var('dateformat', $user_row['user_dateformat'], true)),
@@ -1770,10 +1769,10 @@ class acp_users
 
 			case 'avatar':
 
-				require_once($phpbb_root_path . 'includes/functions_display.php');
-				require_once($phpbb_root_path . 'includes/functions_user.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
-				$can_upload = (PHP_FILE_UPLOADS && file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH) && phpbb_is_writable($phpbb_root_path . AVATAR_UPLOADS_PATH));
+				$can_upload = (PHP_FILE_UPLOADS && file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH) && phpbb_is_writable(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH));
 
 				if ($submit)
 				{
@@ -1804,7 +1803,7 @@ class acp_users
 				}
 
 				// Generate users avatar
-				$avatar_img = ($user_row['user_avatar']) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height'], 'USER_AVATAR', true) : '<img src="' . $phpbb_admin_path . 'images/no_avatar.gif" alt="" />';
+				$avatar_img = ($user_row['user_avatar']) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height'], 'USER_AVATAR', true) : '<img src="' . PHPBB_ADMIN_PATH . 'images/no_avatar.gif" alt="" />';
 
 				$display_gallery = (isset($_POST['display_gallery'])) ? true : false;
 				$avatar_select = basename(request_var('avatar_select', ''));
@@ -1877,8 +1876,8 @@ class acp_users
 
 			case 'sig':
 
-				require_once($phpbb_root_path . 'includes/functions_posting.php');
-				require_once($phpbb_root_path . 'includes/functions_display.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 				$enable_bbcode	= ($config['allow_sig_bbcode']) ? (bool) $this->optionget($user_row, 'sig_bbcode') : false;
 				$enable_smilies	= ($config['allow_sig_smilies']) ? (bool) $this->optionget($user_row, 'sig_smilies') : false;
@@ -1889,7 +1888,7 @@ class acp_users
 
 				if ($submit || $preview)
 				{
-					require_once($phpbb_root_path . 'includes/message_parser.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
 					$enable_bbcode	= ($config['allow_sig_bbcode']) ? ((request_var('disable_bbcode', false)) ? false : true) : false;
 					$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', false)) ? false : true) : false;
@@ -1972,7 +1971,7 @@ class acp_users
 					'S_SMILIES_CHECKED'		=> (!$enable_smilies) ? ' checked="checked"' : '',
 					'S_MAGIC_URL_CHECKED'	=> (!$enable_urls) ? ' checked="checked"' : '',
 
-					'BBCODE_STATUS'			=> ($config['allow_sig_bbcode']) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid("{$phpbb_root_path}faq.php", 'mode=bbcode') . '">', '</a>'),
+					'BBCODE_STATUS'			=> ($config['allow_sig_bbcode']) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
 					'SMILIES_STATUS'		=> ($config['allow_sig_smilies']) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
 					'IMG_STATUS'			=> ($config['allow_sig_img']) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
 					'FLASH_STATUS'			=> ($config['allow_sig_flash']) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
@@ -2104,11 +2103,11 @@ class acp_users
 				{
 					if ($row['in_message'])
 					{
-						$view_topic = append_sid("{$phpbb_root_path}ucp.php", "i=pm&amp;p={$row['post_msg_id']}");
+						$view_topic = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;p={$row['post_msg_id']}");
 					}
 					else
 					{
-						$view_topic = append_sid("{$phpbb_root_path}viewtopic.php", "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . '#p' . $row['post_msg_id'];
+						$view_topic = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . '#p' . $row['post_msg_id'];
 					}
 
 					$template->assign_block_vars('attach', array(
@@ -2126,7 +2125,7 @@ class acp_users
 
 						'S_IN_MESSAGE'		=> $row['in_message'],
 
-						'U_DOWNLOAD'		=> append_sid("{$phpbb_root_path}file.php", 'mode=view&amp;id=' . $row['attach_id']),
+						'U_DOWNLOAD'		=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id']),
 						'U_VIEW_TOPIC'		=> $view_topic)
 					);
 				}
@@ -2145,7 +2144,7 @@ class acp_users
 
 			case 'groups':
 
-				require_once($phpbb_root_path . 'includes/functions_user.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				$user->add_lang(array('groups', 'acp/groups'));
 				$group_id = request_var('g', 0);
@@ -2331,7 +2330,7 @@ class acp_users
 					foreach ($data_ary as $data)
 					{
 						$template->assign_block_vars('group', array(
-							'U_EDIT_GROUP'		=> append_sid("{$phpbb_admin_path}index.php", "i=groups&amp;mode=manage&amp;action=edit&amp;u=$user_id&amp;g={$data['group_id']}&amp;back_link=acp_users_groups"),
+							'U_EDIT_GROUP'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=groups&amp;mode=manage&amp;action=edit&amp;u=$user_id&amp;g={$data['group_id']}&amp;back_link=acp_users_groups"),
 							'U_DEFAULT'			=> $this->u_action . "&amp;action=default&amp;u=$user_id&amp;g=" . $data['group_id'],
 							'U_DEMOTE_PROMOTE'	=> $this->u_action . '&amp;action=' . (($data['group_leader']) ? 'demote' : 'promote') . "&amp;u=$user_id&amp;g=" . $data['group_id'],
 							'U_DELETE'			=> $this->u_action . "&amp;action=delete&amp;u=$user_id&amp;g=" . $data['group_id'],
@@ -2357,7 +2356,7 @@ class acp_users
 
 			case 'perm':
 
-				require_once($phpbb_root_path . 'includes/acp/auth.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
 
 				$auth_admin = new auth_admin();
 
@@ -2415,8 +2414,8 @@ class acp_users
 					'S_FORUM_OPTIONS'			=> $s_forum_options,
 
 					'U_ACTION'					=> $this->u_action . '&amp;u=' . $user_id,
-					'U_USER_PERMISSIONS'		=> append_sid("{$phpbb_admin_path}index.php" ,'i=permissions&amp;mode=setting_user_global&amp;user_id[]=' . $user_id),
-					'U_USER_FORUM_PERMISSIONS'	=> append_sid("{$phpbb_admin_path}index.php", 'i=permissions&amp;mode=setting_user_local&amp;user_id[]=' . $user_id))
+					'U_USER_PERMISSIONS'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php' ,'i=permissions&amp;mode=setting_user_global&amp;user_id[]=' . $user_id),
+					'U_USER_FORUM_PERMISSIONS'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions&amp;mode=setting_user_local&amp;user_id[]=' . $user_id))
 				);
 
 			break;

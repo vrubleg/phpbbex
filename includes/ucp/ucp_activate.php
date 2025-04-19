@@ -22,8 +22,7 @@ class ucp_activate
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path;
-		global $db, $user, $auth, $template;
+		global $db, $user, $auth, $template, $config;
 
 		$user_id = request_var('u', 0);
 		$key = request_var('k', '');
@@ -42,7 +41,7 @@ class ucp_activate
 
 		if ($user_row['user_type'] <> USER_INACTIVE && !$user_row['user_newpasswd'])
 		{
-			meta_refresh(3, append_sid("{$phpbb_root_path}index.php"));
+			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 			trigger_error('ALREADY_ACTIVATED');
 		}
 
@@ -85,7 +84,7 @@ class ucp_activate
 
 		if (!$update_password)
 		{
-			require_once($phpbb_root_path . 'includes/functions_user.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 			user_active_flip('activate', $user_row['user_id']);
 
@@ -104,7 +103,7 @@ class ucp_activate
 
 		if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !$update_password)
 		{
-			require_once($phpbb_root_path . 'includes/functions_messenger.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
 			$messenger = new messenger(false);
 
@@ -134,7 +133,7 @@ class ucp_activate
 			}
 		}
 
-		meta_refresh(3, append_sid("{$phpbb_root_path}index.php"));
+		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		trigger_error($user->lang[$message]);
 	}
 }

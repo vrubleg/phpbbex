@@ -146,12 +146,12 @@ class bbcode
 	*/
 	function bbcode_cache_init()
 	{
-		global $phpbb_root_path, $template, $user;
+		global $template, $user;
 
 		if (empty($this->template_filename))
 		{
 			$this->template_bitfield = new bitfield($user->theme['bbcode_bitfield']);
-			$this->template_filename = $phpbb_root_path . 'styles/' . $user->theme['template_path'] . '/template/bbcode.html';
+			$this->template_filename = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_path'] . '/template/bbcode.html';
 
 			if (empty($user->theme['template_inherits_id']) && !empty($template->orig_tpl_inherits_id))
 			{
@@ -162,7 +162,7 @@ class bbcode
 			{
 				if (isset($user->theme['template_inherits_id']) && $user->theme['template_inherits_id'])
 				{
-					$this->template_filename = $phpbb_root_path . 'styles/' . $user->theme['template_inherit_path'] . '/template/bbcode.html';
+					$this->template_filename = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_inherit_path'] . '/template/bbcode.html';
 					if (!@file_exists($this->template_filename))
 					{
 						trigger_error('The file ' . $this->template_filename . ' is missing.', E_USER_ERROR);

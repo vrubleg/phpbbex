@@ -20,8 +20,7 @@ class acp_attachments
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path;
+		global $db, $user, $auth, $template, $cache, $config;
 
 		$user->add_lang(array('posting', 'viewtopic', 'acp/attachments'));
 
@@ -73,7 +72,7 @@ class acp_attachments
 		{
 			case 'attach':
 
-				require_once($phpbb_root_path . 'includes/functions_posting.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 
 				$sql = 'SELECT group_name, cat_id
 					FROM ' . EXTENSION_GROUPS_TABLE . '
@@ -666,7 +665,7 @@ class acp_attachments
 						$filename_list = '';
 						$no_image_select = false;
 
-						$imglist = filelist($phpbb_root_path . FILE_ICONS_PATH);
+						$imglist = filelist(PHPBB_ROOT_PATH . FILE_ICONS_PATH);
 
 						if (!empty($imglist['']))
 						{
@@ -718,7 +717,7 @@ class acp_attachments
 							'GROUP_NAME'			=> $ext_group_row['group_name'],
 							'ALLOW_GROUP'			=> $ext_group_row['allow_group'],
 							'ALLOW_IN_PM'			=> $ext_group_row['allow_in_pm'],
-							'UPLOAD_ICON_SRC'		=> $phpbb_root_path . FILE_ICONS_PATH . '/' . $ext_group_row['upload_icon'],
+							'UPLOAD_ICON_SRC'		=> PHPBB_ROOT_PATH . FILE_ICONS_PATH . '/' . $ext_group_row['upload_icon'],
 							'EXTGROUP_FILESIZE'		=> $ext_group_row['max_filesize'],
 							'ASSIGNED_EXTENSIONS'	=> $assigned_extensions,
 
@@ -730,7 +729,7 @@ class acp_attachments
 							'S_NO_IMAGE'				=> $no_image_select,
 							'S_FORUM_IDS'				=> (sizeof($forum_ids)) ? true : false,
 
-							'U_EXTENSIONS'		=> append_sid("{$phpbb_admin_path}index.php", "i=$id&amp;mode=extensions"),
+							'U_EXTENSIONS'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;mode=extensions"),
 							'U_BACK'			=> $this->u_action,
 
 							'L_LEGEND'			=> $user->lang[strtoupper($action) . '_EXTENSION_GROUP'])
@@ -1004,7 +1003,7 @@ class acp_attachments
 						'PHYSICAL_FILENAME'	=> utf8_basename($row['physical_filename']),
 						'ATTACH_ID'			=> $row['attach_id'],
 						'POST_IDS'			=> (!empty($post_ids[$row['attach_id']])) ? $post_ids[$row['attach_id']] : '',
-						'U_FILE'			=> append_sid($phpbb_root_path . 'file.php', 'mode=view&amp;id=' . $row['attach_id']))
+						'U_FILE'			=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id']))
 					);
 				}
 				$db->sql_freeresult($result);
@@ -1121,25 +1120,25 @@ class acp_attachments
 	*/
 	function test_upload(&$error, $upload_dir, $create_directory = false)
 	{
-		global $user, $phpbb_root_path;
+		global $user;
 
 		// Does the target directory exist, is it a directory and writable.
 		if ($create_directory)
 		{
-			if (!file_exists($phpbb_root_path . $upload_dir))
+			if (!file_exists(PHPBB_ROOT_PATH . $upload_dir))
 			{
-				@mkdir($phpbb_root_path . $upload_dir, 0777);
-				phpbb_chmod($phpbb_root_path . $upload_dir, CHMOD_READ | CHMOD_WRITE);
+				@mkdir(PHPBB_ROOT_PATH . $upload_dir, 0777);
+				phpbb_chmod(PHPBB_ROOT_PATH . $upload_dir, CHMOD_READ | CHMOD_WRITE);
 			}
 		}
 
-		if (!file_exists($phpbb_root_path . $upload_dir) || !is_dir($phpbb_root_path . $upload_dir))
+		if (!file_exists(PHPBB_ROOT_PATH . $upload_dir) || !is_dir(PHPBB_ROOT_PATH . $upload_dir))
 		{
 			$error[] = sprintf($user->lang['NO_UPLOAD_DIR'], $upload_dir);
 			return;
 		}
 
-		if (!phpbb_is_writable($phpbb_root_path . $upload_dir))
+		if (!phpbb_is_writable(PHPBB_ROOT_PATH . $upload_dir))
 		{
 			$error[] = sprintf($user->lang['NO_WRITE_UPLOAD'], $upload_dir);
 			return;

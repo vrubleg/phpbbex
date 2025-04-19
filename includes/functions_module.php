@@ -39,9 +39,7 @@ class p_master
 	*/
 	function __construct($include_path = false)
 	{
-		global $phpbb_root_path;
-
-		$this->include_path = ($include_path !== false) ? $include_path : $phpbb_root_path . 'includes/';
+		$this->include_path = ($include_path !== false) ? $include_path : PHPBB_ROOT_PATH . 'includes/';
 
 		// Make sure the path ends with /
 		if (substr($this->include_path, -1) !== '/')
@@ -80,7 +78,7 @@ class p_master
 	function list_modules($p_class)
 	{
 		global $auth, $db, $user, $cache;
-		global $config, $phpbb_root_path;
+		global $config;
 
 		// Sanitise for future path use, it's escaped as appropriate for queries
 		$this->p_class = str_replace(array('.', '/', '\\'), '', basename($p_class));
@@ -434,7 +432,7 @@ class p_master
 	*/
 	function load_active($mode = false, $module_url = false, $execute_module = true)
 	{
-		global $phpbb_root_path, $phpbb_admin_path, $user;
+		global $user;
 
 		$module_path = $this->include_path . $this->p_class;
 		$icat = request_var('icat', '');
@@ -479,7 +477,7 @@ class p_master
 				}
 
 				// Not being able to overwrite ;)
-				$this->module->u_action = append_sid("{$phpbb_admin_path}index.php", "i={$this->p_name}") . (($icat) ? '&amp;icat=' . $icat : '') . "&amp;mode={$this->p_mode}";
+				$this->module->u_action = append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$this->p_name}") . (($icat) ? '&amp;icat=' . $icat : '') . "&amp;mode={$this->p_mode}";
 			}
 			else
 			{
@@ -490,7 +488,7 @@ class p_master
 				}
 				else
 				{
-					$this->module->u_action = $phpbb_root_path . (($user->page['page_dir']) ? $user->page['page_dir'] . '/' : '') . $user->page['page_name'];
+					$this->module->u_action = PHPBB_ROOT_PATH . (($user->page['page_dir']) ? $user->page['page_dir'] . '/' : '') . $user->page['page_name'];
 				}
 
 				$this->module->u_action = append_sid($this->module->u_action, "i={$this->p_name}") . (($icat) ? '&amp;icat=' . $icat : '') . "&amp;mode={$this->p_mode}";

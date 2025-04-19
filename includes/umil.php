@@ -121,9 +121,9 @@ class phpbb_umil
 	*/
 	function __construct()
 	{
-		global $db, $phpbb_root_path;
+		global $db;
 		$this->db = $db;
-		require_once($phpbb_root_path . 'includes/db/db_tools.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 		$this->db_tools = new phpbb_db_tools($this->db);
 	}
 
@@ -467,7 +467,7 @@ class phpbb_umil
 	*/
 	function cache_purge($type = '', $style_id = 0)
 	{
-		global $auth, $cache, $user, $phpbb_root_path;
+		global $auth, $cache, $user;
 
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $type))
@@ -523,7 +523,7 @@ class phpbb_umil
 					// The following is from includes/acp/acp_styles.php (edited)
 					$sql_ary = array();
 
-					$cfg_data_imageset = parse_cfg_file("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
+					$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
 
 					$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . '
 						WHERE imageset_id = ' . $style_id;
@@ -570,9 +570,9 @@ class phpbb_umil
 
 					while ($row = $this->db->sql_fetchrow($result))
 					{
-						if (@file_exists("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg"))
+						if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg"))
 						{
-							$cfg_data_imageset_data = parse_cfg_file("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg");
+							$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg");
 							foreach ($cfg_data_imageset_data as $image_name => $value)
 							{
 								if (strpos($value, '*') !== false)
@@ -652,7 +652,7 @@ class phpbb_umil
 					$this->umil_start('TEMPLATE_CACHE_PURGE', $template_row['template_name']);
 
 					// The following is from includes/acp/acp_styles.php
-					if ($template_row['template_storedb'] && file_exists("{$phpbb_root_path}styles/{$template_row['template_path']}/template/"))
+					if ($template_row['template_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/"))
 					{
 						$filelist = array('' => array());
 
@@ -663,7 +663,7 @@ class phpbb_umil
 
 						while ($row = $this->db->sql_fetchrow($result))
 						{
-//							if (@filemtime("{$phpbb_root_path}styles/{$template_row['template_path']}/template/" . $row['template_filename']) > $row['template_mtime'])
+//							if (@filemtime(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/" . $row['template_filename']) > $row['template_mtime'])
 //							{
 								// get folder info from the filename
 								if (($slash_pos = strrpos($row['template_filename'], '/')) === false)
@@ -683,11 +683,11 @@ class phpbb_umil
 						{
 							foreach ($file_ary as $file)
 							{
-								if (!($fp = @fopen("{$phpbb_root_path}styles/{$template_row['template_path']}$pathfile$file", 'r')))
+								if (!($fp = @fopen(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file", 'r')))
 								{
-									return $this->umil_end('FILE_COULD_NOT_READ', "{$phpbb_root_path}styles/{$template_row['template_path']}$pathfile$file");
+									return $this->umil_end('FILE_COULD_NOT_READ', PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file");
 								}
-								$template_data = fread($fp, filesize("{$phpbb_root_path}styles/{$template_row['template_path']}$pathfile$file"));
+								$template_data = fread($fp, filesize(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file"));
 								fclose($fp);
 
 								if (preg_match_all('#<!-- INCLUDE (.*?\.html) -->#is', $template_data, $matches))
@@ -716,8 +716,8 @@ class phpbb_umil
 									'template_id'			=> (int) $style_id,
 									'template_filename'		=> "$pathfile$file",
 									'template_included'		=> (isset($includes[$file])) ? implode(':', $includes[$file]) . ':' : '',
-									'template_mtime'		=> (int) filemtime("{$phpbb_root_path}styles/{$template_row['template_path']}$pathfile$file"),
-									'template_data'			=> (string) file_get_contents("{$phpbb_root_path}styles/{$template_row['template_path']}$pathfile$file"),
+									'template_mtime'		=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file"),
+									'template_data'			=> (string) file_get_contents(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file"),
 								);
 
 								$sql = 'UPDATE ' . STYLES_TEMPLATE_DATA_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . "
@@ -770,9 +770,9 @@ class phpbb_umil
 					$this->umil_start('THEME_CACHE_PURGE', $theme_row['theme_name']);
 
 					// The following is from includes/acp/acp_styles.php
-					if ($theme_row['theme_storedb'] && file_exists("{$phpbb_root_path}styles/{$theme_row['theme_path']}/theme/stylesheet.css"))
+					if ($theme_row['theme_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"))
 					{
-						$stylesheet = file_get_contents($phpbb_root_path . 'styles/' . $theme_row['theme_path'] . '/theme/stylesheet.css');
+						$stylesheet = file_get_contents(PHPBB_ROOT_PATH . 'styles/' . $theme_row['theme_path'] . '/theme/stylesheet.css');
 
 						// Match CSS imports
 						$matches = array();
@@ -782,12 +782,12 @@ class phpbb_umil
 						{
 							foreach ($matches[0] as $idx => $match)
 							{
-								if (!file_exists("{$phpbb_root_path}styles/{$theme_row['theme_path']}/theme/{$matches[1][$idx]}"))
+								if (!file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/{$matches[1][$idx]}"))
 								{
 									continue;
 								}
 
-								$content = trim(file_get_contents("{$phpbb_root_path}styles/{$theme_row['theme_path']}/theme/{$matches[1][$idx]}"));
+								$content = trim(file_get_contents(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/{$matches[1][$idx]}"));
 								$stylesheet = str_replace($match, $content, $stylesheet);
 							}
 						}
@@ -797,7 +797,7 @@ class phpbb_umil
 
 						// Save CSS contents
 						$sql_ary = array(
-							'theme_mtime'	=> (int) filemtime("{$phpbb_root_path}styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
+							'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
 							'theme_data'	=> $db_theme_data,
 						);
 
@@ -1060,7 +1060,7 @@ class phpbb_umil
 	*/
 	function module_add($class, $parent = 0, $data = array(), $include_path = false)
 	{
-		global $cache, $user, $phpbb_root_path;
+		global $cache, $user;
 
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $class))
@@ -1093,7 +1093,7 @@ class phpbb_umil
 			$info_file = "$class/info/{$class}_$basename.php";
 
 			// The manual and automatic ways both failed...
-			if (!file_exists((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file))
+			if (!file_exists((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file))
 			{
 				$this->umil_start('MODULE_ADD', $class, $info_file);
 				return $this->umil_end('FAIL');
@@ -1103,7 +1103,7 @@ class phpbb_umil
 
 			if (!class_exists($classname))
 			{
-				require((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file);
+				require((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file);
 			}
 
 			$info = new $classname;
@@ -1167,7 +1167,7 @@ class phpbb_umil
 
 		if (!class_exists('acp_modules'))
 		{
-			require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_modules.php');
 			$user->add_lang('acp/modules');
 		}
 		$acp_modules = new acp_modules();
@@ -1255,7 +1255,7 @@ class phpbb_umil
 	*/
 	function module_remove($class, $parent = 0, $module = '', $include_path = false)
 	{
-		global $cache, $user, $phpbb_root_path;
+		global $cache, $user;
 
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $class))
@@ -1284,7 +1284,7 @@ class phpbb_umil
 			$class = str_replace(array('/', '\\'), '', $class);
 			$info_file = "$class/info/{$class}_$basename.php";
 
-			if (!file_exists((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file))
+			if (!file_exists((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file))
 			{
 				$this->umil_start('MODULE_REMOVE', $class, $info_file);
 				return $this->umil_end('FAIL');
@@ -1294,7 +1294,7 @@ class phpbb_umil
 
 			if (!class_exists($classname))
 			{
-				require((($include_path === false) ? $phpbb_root_path . 'includes/' : $include_path) . $info_file);
+				require((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file);
 			}
 
 			$info = new $classname;
@@ -1382,7 +1382,7 @@ class phpbb_umil
 
 			if (!class_exists('acp_modules'))
 			{
-				require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_modules.php');
 				$user->add_lang('acp/modules');
 			}
 			$acp_modules = new acp_modules();
@@ -1490,9 +1490,7 @@ class phpbb_umil
 
 		if (!class_exists('auth_admin'))
 		{
-			global $phpbb_root_path;
-
-			require_once($phpbb_root_path . 'includes/acp/auth.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
 		}
 		$auth_admin = new auth_admin();
 
@@ -1998,8 +1996,7 @@ class phpbb_umil
 
 		if (!function_exists('get_tables'))
 		{
-			global $phpbb_root_path;
-			require_once($phpbb_root_path . 'includes/functions_install.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 		}
 
 		$tables = get_tables($this->db);
@@ -2054,8 +2051,7 @@ class phpbb_umil
 
 		if (!function_exists('sql_split_queries'))
 		{
-			global $phpbb_root_path;
-			require_once("{$phpbb_root_path}includes/functions_install.php");
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 		}
 
 		/*

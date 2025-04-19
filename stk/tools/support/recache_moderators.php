@@ -33,9 +33,7 @@ class recache_moderators
 	{
 		if (!function_exists('cache_moderators'))
 		{
-			global $phpbb_root_path;
-
-			require_once("{$phpbb_root_path}includes/functions_admin.php");
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 		}
 
 		cache_moderators();

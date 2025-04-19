@@ -19,12 +19,11 @@ class acp_captcha
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $db, $user, $auth, $template, $config;
 
 		$user->add_lang('acp/board');
 
-		require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 		$captchas = phpbb_captcha_factory::get_captcha_types();
 
 		$selected = request_var('select_captcha', $config['captcha_plugin']);

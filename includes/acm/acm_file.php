@@ -28,8 +28,7 @@ class acm
 	*/
 	function __construct()
 	{
-		global $phpbb_root_path;
-		$this->cache_dir = $phpbb_root_path . 'cache/';
+		$this->cache_dir = PHPBB_ROOT_PATH . 'cache/';
 	}
 
 	/**
@@ -71,8 +70,7 @@ class acm
 		{
 			if (!function_exists('phpbb_is_writable'))
 			{
-				global $phpbb_root_path;
-				require_once($phpbb_root_path . 'includes/functions.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 			}
 
 			// Now, this occurred how often? ... phew, just tell the user then...
@@ -676,8 +674,7 @@ class acm
 
 			if (!function_exists('phpbb_chmod'))
 			{
-				global $phpbb_root_path;
-				require_once($phpbb_root_path . 'includes/functions.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 			}
 
 			phpbb_chmod($file, CHMOD_READ | CHMOD_WRITE);
@@ -695,8 +692,7 @@ class acm
 	{
 		if (!function_exists('phpbb_is_writable'))
 		{
-			global $phpbb_root_path;
-			require_once($phpbb_root_path . 'includes/functions.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 		}
 
 		if ($check && !phpbb_is_writable($this->cache_dir))

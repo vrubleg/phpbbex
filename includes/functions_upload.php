@@ -253,8 +253,7 @@ class filespec
 	}
 
 	/**
-	* Move file to destination folder
-	* The phpbb_root_path variable will be applied to the destination path
+	* Move file to destination folder. The PHPBB_ROOT_PATH will be applied to the destination path.
 	*
 	* @param string $destination_path Destination path, for example AVATAR_UPLOADS_PATH
 	* @param bool $overwrite If set to true, an already existing file will be overwritten
@@ -264,7 +263,7 @@ class filespec
 	*/
 	function move_file($destination, $overwrite = false, $skip_image_check = false, $chmod = false)
 	{
-		global $user, $phpbb_root_path;
+		global $user;
 
 		if (sizeof($this->error))
 		{
@@ -272,7 +271,7 @@ class filespec
 		}
 
 		// We need to trust the admin in specifying valid upload directories and an attacker not being able to overwrite it...
-		$this->destination_path = $phpbb_root_path . $destination;
+		$this->destination_path = PHPBB_ROOT_PATH . $destination;
 
 		// Check if the destination path exist...
 		if (!file_exists($this->destination_path))
@@ -713,7 +712,7 @@ class fileupload
 	*/
 	function remote_upload($upload_url)
 	{
-		global $user, $phpbb_root_path;
+		global $user;
 
 		$upload_ary = array();
 		$upload_ary['local_mode'] = true;

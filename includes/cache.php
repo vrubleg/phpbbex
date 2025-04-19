@@ -305,7 +305,7 @@ class phpbb_cache extends acm
 	*/
 	function obtain_cfg_items($theme)
 	{
-		global $config, $phpbb_root_path;
+		global $config;
 
 		$parsed_items = array(
 			'theme'		=> array(),
@@ -323,7 +323,7 @@ class phpbb_cache extends acm
 			}
 
 			$reparse = false;
-			$filename = $phpbb_root_path . 'styles/' . $theme[$key . '_path'] . '/' . $key . '/' . $key . '.cfg';
+			$filename = PHPBB_ROOT_PATH . 'styles/' . $theme[$key . '_path'] . '/' . $key . '/' . $key . '.cfg';
 
 			if (!file_exists($filename))
 			{

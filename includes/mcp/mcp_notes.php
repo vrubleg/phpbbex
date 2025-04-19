@@ -28,8 +28,7 @@ class mcp_notes
 
 	function main($id, $mode)
 	{
-		global $auth, $db, $user, $template;
-		global $config, $phpbb_root_path;
+		global $auth, $db, $user, $template, $config;
 
 		$action = request_var('action', array('' => ''));
 
@@ -44,8 +43,8 @@ class mcp_notes
 		{
 			case 'front':
 				$template->assign_vars(array(
-					'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.php", 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
-					'U_POST_ACTION'		=> append_sid("{$phpbb_root_path}mcp.php", 'i=notes&amp;mode=user_notes'),
+					'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
+					'U_POST_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes'),
 
 					'L_TITLE'			=> $user->lang['MCP_NOTES'],
 				));
@@ -67,8 +66,7 @@ class mcp_notes
 	*/
 	function mcp_notes_user_view($action)
 	{
-		global $phpbb_root_path, $config;
-		global $template, $db, $user, $auth;
+		global $template, $db, $user, $auth, $config;
 
 		$user_id = request_var('u', 0);
 		$username = request_var('username', '', true);
@@ -171,7 +169,7 @@ class mcp_notes
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			require_once($phpbb_root_path . 'includes/functions_display.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 		}
 
 		$rank_title = $rank_img = '';

@@ -414,8 +414,7 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 	{
 		if (!class_exists('bbcode'))
 		{
-			global $phpbb_root_path;
-			require_once($phpbb_root_path . 'includes/bbcode.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/bbcode.php');
 		}
 
 		if (empty($bbcode))
@@ -440,8 +439,6 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 */
 function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bbcode = false, $allow_urls = false, $allow_smilies = false)
 {
-	global $phpbb_root_path;
-
 	$uid = $bitfield = '';
 	$flags = (($allow_bbcode) ? OPTION_FLAG_BBCODE : 0) + (($allow_smilies) ? OPTION_FLAG_SMILIES : 0) + (($allow_urls) ? OPTION_FLAG_LINKS : 0);
 
@@ -452,7 +449,7 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 
 	if (!class_exists('parse_message'))
 	{
-		require_once($phpbb_root_path . 'includes/message_parser.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 	}
 
 	$message_parser = new parse_message($text);
@@ -478,8 +475,6 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 */
 function generate_text_for_edit($text, $uid, $flags)
 {
-	global $phpbb_root_path;
-
 	decode_message($text, $uid);
 
 	return array(
@@ -710,7 +705,7 @@ function bbcode_nl2br($text)
 */
 function smiley_text($text, $force_option = false)
 {
-	global $config, $user, $phpbb_root_path;
+	global $config, $user;
 
 	if ($force_option || !$config['allow_smilies'] || !$user->optionget('viewsmilies'))
 	{
@@ -718,7 +713,7 @@ function smiley_text($text, $force_option = false)
 	}
 	else
 	{
-		$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : $phpbb_root_path;
+		$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : PHPBB_ROOT_PATH;
 		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/(.*?) \/><!\-\- s\1 \-\->#', '<img src="' . $root_path . SMILIES_PATH . '/\2 />', $text);
 	}
 }
@@ -789,7 +784,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 	}
 
 	global $template, $cache, $user;
-	global $extensions, $config, $phpbb_root_path;
+	global $extensions, $config;
 
 	//
 	$compiled_attachments = array();
@@ -876,13 +871,13 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 
 		// Some basics...
 		$attachment['extension'] = strtolower(trim($attachment['extension']));
-		$filename = $phpbb_root_path . UPLOADS_PATH . '/' . utf8_basename($attachment['physical_filename']);
-		$thumbnail_filename = $phpbb_root_path . UPLOADS_PATH . '/thumb_' . utf8_basename($attachment['physical_filename']);
+		$filename = PHPBB_ROOT_PATH . UPLOADS_PATH . '/' . utf8_basename($attachment['physical_filename']);
+		$thumbnail_filename = PHPBB_ROOT_PATH . UPLOADS_PATH . '/thumb_' . utf8_basename($attachment['physical_filename']);
 
 		$upload_icon = '';
 		if (isset($extensions[$attachment['extension']]) && $extensions[$attachment['extension']]['upload_icon'])
 		{
-			$upload_icon = '<img src="' . $phpbb_root_path . FILE_ICONS_PATH . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
+			$upload_icon = '<img src="' . PHPBB_ROOT_PATH . FILE_ICONS_PATH . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
 		}
 
 		$filesize = get_formatted_filesize($attachment['filesize'], false);
@@ -953,14 +948,14 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				$display_cat = ATTACHMENT_CATEGORY_NONE;
 			}
 
-			$download_link = append_sid("{$phpbb_root_path}file.php", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+			$download_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 
 			switch ($display_cat)
 			{
 				// Images
 				case ATTACHMENT_CATEGORY_IMAGE:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
-					$inline_link = append_sid("{$phpbb_root_path}file.php", 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+					$inline_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(
@@ -974,7 +969,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				// Images, but display Thumbnail
 				case ATTACHMENT_CATEGORY_THUMB:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
-					$thumbnail_link = append_sid("{$phpbb_root_path}file.php", 'id=' . $attachment['attach_id'] . '&amp;t=1&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
+					$thumbnail_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'id=' . $attachment['attach_id'] . '&amp;t=1&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(
@@ -1016,7 +1011,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 			);
 		}
 
-		$template->assign_var('ROOT_PATH', $phpbb_root_path);
+		$template->assign_var('ROOT_PATH', PHPBB_ROOT_PATH);
 		$template->assign_block_vars('_file', $block_array);
 
 		$compiled_attachments[] = $template->assign_display('attachment_tpl');
@@ -1162,9 +1157,7 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 	// We cache some common variables we need within this function
 	if (empty($_profile_cache))
 	{
-		global $phpbb_root_path;
-
-		$_profile_cache['base_url'] = append_sid("{$phpbb_root_path}memberlist.php", 'mode=viewprofile&amp;u={USER_ID}');
+		$_profile_cache['base_url'] = append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u={USER_ID}');
 		$_profile_cache['tpl_noprofile'] = '{USERNAME}';
 		$_profile_cache['tpl_noprofile_colour'] = '<span style="color: {USERNAME_COLOUR};" class="username-coloured">{USERNAME}</span>';
 		$_profile_cache['tpl_profile'] = '<a rel="nofollow" href="{PROFILE_URL}">{USERNAME}</a>';

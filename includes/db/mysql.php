@@ -10,7 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-require_once($phpbb_root_path . 'includes/db/dbal.php');
+require_once(PHPBB_ROOT_PATH . 'includes/db/dbal.php');
 
 /**
 * MySQLi Database Abstraction Layer

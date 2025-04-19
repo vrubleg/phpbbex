@@ -7,9 +7,8 @@
 
 define('IN_PHPBB', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
-require_once($phpbb_root_path . 'includes/functions_display.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 // Start session management
 $user->session_begin();
@@ -70,7 +69,7 @@ while ($row = $db->sql_fetchrow($result))
 	}
 	else
 	{
-		$legend[] = '<a rel="nofollow"' . $colour_text . ' href="' . append_sid("{$phpbb_root_path}memberlist.php", 'mode=group&amp;g=' . $row['group_id']) . '">' . $group_name . '</a>';
+		$legend[] = '<a rel="nofollow"' . $colour_text . ' href="' . append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $row['group_id']) . '">' . $group_name . '</a>';
 	}
 }
 $db->sql_freeresult($result);
@@ -154,10 +153,10 @@ $template->assign_vars(array(
 	'FORUM_LOCKED_IMG'		=> $user->img('forum_read_locked', 'NO_UNREAD_POSTS_LOCKED'),
 	'FORUM_UNREAD_LOCKED_IMG'	=> $user->img('forum_unread_locked', 'UNREAD_POSTS_LOCKED'),
 
-	'S_LOGIN_ACTION'			=> append_sid("{$phpbb_root_path}ucp.php", 'mode=login'),
+	'S_LOGIN_ACTION'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login'),
 	'S_DISPLAY_BIRTHDAY_LIST'	=> ($config['load_birthdays']) ? true : false,
 
-	'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid("{$phpbb_root_path}index.php", 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
+	'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 ));
 
 // Output page

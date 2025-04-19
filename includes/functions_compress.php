@@ -22,8 +22,6 @@ class compress
 	*/
 	function add_file($src, $src_rm_prefix = '', $src_add_prefix = '', $skip_files = '')
 	{
-		global $phpbb_root_path;
-
 		$skip_files = explode(',', $skip_files);
 
 		// Remove rm prefix from src path
@@ -33,24 +31,24 @@ class compress
 		// Remove initial "/" if present
 		$src_path = (substr($src_path, 0, 1) == '/') ? substr($src_path, 1) : $src_path;
 
-		if (is_file($phpbb_root_path . $src))
+		if (is_file(PHPBB_ROOT_PATH . $src))
 		{
-			$this->data($src_path, file_get_contents("$phpbb_root_path$src"), false, stat("$phpbb_root_path$src"));
+			$this->data($src_path, file_get_contents(PHPBB_ROOT_PATH . $src), false, stat(PHPBB_ROOT_PATH . $src));
 		}
-		else if (is_dir($phpbb_root_path . $src))
+		else if (is_dir(PHPBB_ROOT_PATH . $src))
 		{
 			// Clean up path, add closing / if not present
 			$src_path = ($src_path && substr($src_path, -1) != '/') ? $src_path . '/' : $src_path;
 
 			$filelist = array();
-			$filelist = filelist("$phpbb_root_path$src", '', '*');
+			$filelist = filelist(PHPBB_ROOT_PATH . $src, '', '*');
 			krsort($filelist);
 
 			/**
 			* Commented out, as adding the folders produces corrupted archives
 			if ($src_path)
 			{
-				$this->data($src_path, '', true, stat("$phpbb_root_path$src"));
+				$this->data($src_path, '', true, stat(PHPBB_ROOT_PATH . $src));
 			}
 			*/
 
@@ -64,7 +62,7 @@ class compress
 					$path = (substr($path, 0, 1) == '/') ? substr($path, 1) : $path;
 					$path = ($path && substr($path, -1) != '/') ? $path . '/' : $path;
 
-					$this->data("$src_path$path", '', true, stat("$phpbb_root_path$src$path"));
+					$this->data($src_path . $path, '', true, stat(PHPBB_ROOT_PATH . $src . $path));
 				}
 				*/
 
@@ -75,7 +73,7 @@ class compress
 						continue;
 					}
 
-					$this->data("$src_path$path$file", file_get_contents("$phpbb_root_path$src$path$file"), false, stat("$phpbb_root_path$src$path$file"));
+					$this->data($src_path . $path . $file, file_get_contents(PHPBB_ROOT_PATH . $src . $path . $file), false, stat(PHPBB_ROOT_PATH . $src . $path . $file));
 				}
 			}
 		}
@@ -455,8 +453,6 @@ class compress_zip extends compress
 	*/
 	function download($filename, $download_name = false)
 	{
-		global $phpbb_root_path;
-
 		if ($download_name === false)
 		{
 			$download_name = $filename;
@@ -468,7 +464,7 @@ class compress_zip extends compress
 		header("Content-Type: $mimetype; name=\"$download_name.zip\"");
 		header("Content-Disposition: attachment; filename=$download_name.zip");
 
-		$fp = @fopen("{$phpbb_root_path}store/$filename.zip", 'rb');
+		$fp = @fopen(PHPBB_ROOT_PATH . "store/$filename.zip", 'rb');
 		if ($fp)
 		{
 			while ($buffer = fread($fp, 1024))
@@ -687,8 +683,6 @@ class compress_tar extends compress
 	*/
 	function download($filename, $download_name = false)
 	{
-		global $phpbb_root_path;
-
 		if ($download_name === false)
 		{
 			$download_name = $filename;
@@ -717,7 +711,7 @@ class compress_tar extends compress
 		header("Content-Type: $mimetype; name=\"$download_name$this->type\"");
 		header("Content-Disposition: attachment; filename=$download_name$this->type");
 
-		$fp = @fopen("{$phpbb_root_path}store/$filename$this->type", 'rb');
+		$fp = @fopen(PHPBB_ROOT_PATH . "store/$filename$this->type", 'rb');
 		if ($fp)
 		{
 			while ($buffer = fread($fp, 1024))

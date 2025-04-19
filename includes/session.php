@@ -29,11 +29,9 @@ class phpbb_session
 	var $update_session_page = true;
 
 	/**
-	* Extract current session page
-	*
-	* @param string $root_path current root path (phpbb_root_path)
+	* Extract current session page.
 	*/
-	function extract_current_page($root_path)
+	function extract_current_page()
 	{
 		$page_array = array();
 
@@ -81,7 +79,7 @@ class phpbb_session
 		$page_name = urlencode(htmlspecialchars($page_name));
 
 		// current directory within the phpBB root (for example: adm)
-		$root_dirs = explode('/', str_replace('\\', '/', phpbb_realpath($root_path)));
+		$root_dirs = explode('/', str_replace('\\', '/', phpbb_realpath(PHPBB_ROOT_PATH)));
 		$page_dirs = explode('/', str_replace('\\', '/', phpbb_realpath('./')));
 		$intersection = array_intersect_assoc($root_dirs, $page_dirs);
 
@@ -144,7 +142,7 @@ class phpbb_session
 	*/
 	function session_begin($update_session_page = true)
 	{
-		global $_SID, $_EXTRA_URL, $db, $config, $phpbb_root_path;
+		global $_SID, $_EXTRA_URL, $db, $config;
 
 		// Give us some basic information
 		$this->time_now				= time();
@@ -155,7 +153,7 @@ class phpbb_session
 		$this->forwarded_for		= (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) ? htmlspecialchars((string) $_SERVER['HTTP_X_FORWARDED_FOR']) : '';
 
 		$this->host					= HTTP_HOST;
-		$this->page					= $this->extract_current_page($phpbb_root_path);
+		$this->page					= $this->extract_current_page();
 
 		// if the forwarded for header shall be checked we have to validate its contents
 		if ($config['forwarded_for_check'])
@@ -253,7 +251,7 @@ class phpbb_session
 		if (defined('NEED_SID') && NEED_SID && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
 		{
 			http_response_code(401);
-			redirect(append_sid("{$phpbb_root_path}index.php"));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 
 		// if session id is set
@@ -307,7 +305,7 @@ class phpbb_session
 
 					// Check whether the session is still valid if we have one
 					$method = basename(trim($config['auth_method']));
-					require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+					require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
 
 					$method = 'validate_session_' . $method;
 					if (function_exists($method))
@@ -445,7 +443,7 @@ class phpbb_session
 	*/
 	function session_create($user_id = false, $set_admin = false, $persist_login = false, $viewonline = true)
 	{
-		global $_SID, $db, $config, $cache, $phpbb_root_path;
+		global $_SID, $db, $config, $cache;
 
 		$this->data = array();
 
@@ -509,7 +507,7 @@ class phpbb_session
 		}
 
 		$method = basename(trim($config['auth_method']));
-		require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
 
 		$method = 'autologin_' . $method;
 		if (function_exists($method))
@@ -834,7 +832,7 @@ class phpbb_session
 	*/
 	function session_kill($new_session = true)
 	{
-		global $_SID, $db, $config, $phpbb_root_path;
+		global $_SID, $db, $config;
 
 		$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
 			WHERE session_id = '" . $db->sql_escape($this->session_id) . "'
@@ -843,7 +841,7 @@ class phpbb_session
 
 		// Allow connecting logout with external auth method logout
 		$method = basename(trim($config['auth_method']));
-		require_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
 
 		$method = 'logout_' . $method;
 		if (function_exists($method))
@@ -910,7 +908,7 @@ class phpbb_session
 	*/
 	function session_gc()
 	{
-		global $db, $config, $phpbb_root_path;
+		global $db, $config;
 
 		$batch_size = 10;
 
@@ -970,7 +968,7 @@ class phpbb_session
 			}
 
 			// only called from CRON; should be a safe workaround until the infrastructure gets going
-			require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 			phpbb_captcha_factory::garbage_collect($config['captcha_plugin']);
 
 			$sql = 'DELETE FROM ' . LOGIN_ATTEMPT_TABLE . '
@@ -1472,9 +1470,7 @@ class phpbb_user extends phpbb_session
 	*/
 	function __construct()
 	{
-		global $phpbb_root_path;
-
-		$this->lang_path = $phpbb_root_path . 'language/';
+		$this->lang_path = PHPBB_ROOT_PATH . 'language/';
 	}
 
 	/**
@@ -1498,7 +1494,7 @@ class phpbb_user extends phpbb_session
 	*/
 	function setup($lang_set = false, $style = false)
 	{
-		global $db, $template, $config, $auth, $phpbb_root_path, $cache;
+		global $db, $template, $config, $auth, $cache;
 
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
@@ -1525,7 +1521,7 @@ class phpbb_user extends phpbb_session
 				$lang_allowed = array();
 				while ($row = $db->sql_fetchrow($result))
 				{
-					if (file_exists($phpbb_root_path . 'language/' . $row['lang_dir'] . "/common.php"))
+					if (file_exists(PHPBB_ROOT_PATH . 'language/' . $row['lang_dir'] . "/common.php"))
 					{
 						$lang_allowed[$row['lang_iso']] = substr($row['lang_iso'], 0, 2);
 					}
@@ -1655,7 +1651,7 @@ class phpbb_user extends phpbb_session
 		{
 			$this->theme['theme_storedb'] = 1;
 
-			$stylesheet = file_get_contents("{$phpbb_root_path}styles/{$this->theme['theme_path']}/theme/stylesheet.css");
+			$stylesheet = file_get_contents(PHPBB_ROOT_PATH . "styles/{$this->theme['theme_path']}/theme/stylesheet.css");
 			// Match CSS imports
 			$matches = array();
 			preg_match_all('/@import url\(["\'](.*)["\']\);/i', $stylesheet, $matches);
@@ -1665,7 +1661,7 @@ class phpbb_user extends phpbb_session
 				$content = '';
 				foreach ($matches[0] as $idx => $match)
 				{
-					if ($content = @file_get_contents("{$phpbb_root_path}styles/{$this->theme['theme_path']}/theme/" . $matches[1][$idx]))
+					if ($content = @file_get_contents(PHPBB_ROOT_PATH . "styles/{$this->theme['theme_path']}/theme/" . $matches[1][$idx]))
 					{
 						$content = trim($content);
 					}
@@ -1696,7 +1692,7 @@ class phpbb_user extends phpbb_session
 
 		$template->set_template();
 
-		$this->img_lang = (file_exists($phpbb_root_path . 'styles/' . $this->theme['imageset_path'] . '/imageset/' . $this->lang_name)) ? $this->lang_name : $config['default_lang'];
+		$this->img_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $this->theme['imageset_path'] . '/imageset/' . $this->lang_name)) ? $this->lang_name : $config['default_lang'];
 
 		// Same query in style.php
 		$sql = 'SELECT *
@@ -1733,9 +1729,9 @@ class phpbb_user extends phpbb_session
 					AND image_lang = \'' . $db->sql_escape($this->img_lang) . '\'';
 			$result = $db->sql_query($sql);
 
-			if (@file_exists("{$phpbb_root_path}styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg"))
+			if (@file_exists(PHPBB_ROOT_PATH . "styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg"))
 			{
-				$cfg_data_imageset_data = parse_cfg_file("{$phpbb_root_path}styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg");
+				$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg");
 				foreach ($cfg_data_imageset_data as $image_name => $value)
 				{
 					if (strpos($value, '*') !== false)
@@ -1873,7 +1869,7 @@ class phpbb_user extends phpbb_session
 		{
 			if (strpos($this->page['query_string'], 'mode=reg_details') === false && $this->page['page_name'] != "ucp.php")
 			{
-				redirect(append_sid("{$phpbb_root_path}ucp.php", 'i=profile&amp;mode=reg_details'));
+				redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=reg_details'));
 			}
 		}
 
@@ -2219,7 +2215,6 @@ class phpbb_user extends phpbb_session
 	function img($img, $alt = '', $width = false, $suffix = '', $type = 'full_tag')
 	{
 		static $imgs;
-		global $phpbb_root_path;
 
 		$img_data = &$imgs[$img];
 
@@ -2233,7 +2228,7 @@ class phpbb_user extends phpbb_session
 			}
 
 			// Use URL if told so
-			$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : $phpbb_root_path;
+			$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : PHPBB_ROOT_PATH;
 
 			$path = 'styles/' . rawurlencode($this->theme['imageset_path']) . '/imageset/' . ($this->img_array[$img]['image_lang'] ? $this->img_array[$img]['image_lang'] .'/' : '') . $this->img_array[$img]['image_filename'];
 
@@ -2330,9 +2325,7 @@ class phpbb_user extends phpbb_session
 
 		if (!function_exists('remove_newly_registered'))
 		{
-			global $phpbb_root_path;
-
-			require_once($phpbb_root_path . 'includes/functions_user.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		}
 		if ($group = remove_newly_registered($this->data['user_id'], $this->data))
 		{

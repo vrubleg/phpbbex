@@ -19,8 +19,7 @@ class acp_php_info
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $db, $user, $auth, $template, $config;
 
 		if ($mode != 'info')
 		{

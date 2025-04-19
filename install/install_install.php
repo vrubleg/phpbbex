@@ -13,7 +13,7 @@ if (!defined('IN_INSTALL'))
 if (!empty($setmodules))
 {
 	// If phpBB is already installed we do not include this module.
-	if (defined('PHPBB_INSTALLED') && !file_exists($phpbb_root_path . 'cache/install_lock'))
+	if (defined('PHPBB_INSTALLED') && !file_exists(PHPBB_ROOT_PATH . 'cache/install_lock'))
 	{
 		return;
 	}
@@ -44,7 +44,7 @@ class install_install extends module
 
 	function main($mode, $sub)
 	{
-		global $lang, $template, $language, $phpbb_root_path, $cache;
+		global $lang, $template, $language, $cache;
 
 		switch ($sub)
 		{
@@ -112,7 +112,7 @@ class install_install extends module
 	*/
 	function check_server_requirements($mode, $sub)
 	{
-		global $lang, $template, $phpbb_root_path, $language;
+		global $lang, $template, $language;
 
 		$this->page_title = $lang['STAGE_REQUIREMENTS'];
 
@@ -353,28 +353,28 @@ class install_install extends module
 			$exists = $write = false;
 
 			// Try to create the directory if it does not exist
-			if (!file_exists($phpbb_root_path . $path))
+			if (!file_exists(PHPBB_ROOT_PATH . $path))
 			{
-				@mkdir($phpbb_root_path . $path, 0777);
-				phpbb_chmod($phpbb_root_path . $path, CHMOD_READ | CHMOD_WRITE);
+				@mkdir(PHPBB_ROOT_PATH . $path, 0777);
+				phpbb_chmod(PHPBB_ROOT_PATH . $path, CHMOD_READ | CHMOD_WRITE);
 			}
 
 			// Now really check
-			if (file_exists($phpbb_root_path . $path) && is_dir($phpbb_root_path . $path))
+			if (file_exists(PHPBB_ROOT_PATH . $path) && is_dir(PHPBB_ROOT_PATH . $path))
 			{
-				phpbb_chmod($phpbb_root_path . $path, CHMOD_READ | CHMOD_WRITE);
+				phpbb_chmod(PHPBB_ROOT_PATH . $path, CHMOD_READ | CHMOD_WRITE);
 				$exists = true;
 			}
 
 			// Now check if it is writable by storing a simple file
-			$fp = @fopen($phpbb_root_path . $path . 'test_lock', 'wb');
+			$fp = @fopen(PHPBB_ROOT_PATH . $path . 'test_lock', 'wb');
 			if ($fp !== false)
 			{
 				$write = true;
 			}
 			@fclose($fp);
 
-			@unlink($phpbb_root_path . $path . 'test_lock');
+			@unlink(PHPBB_ROOT_PATH . $path . 'test_lock');
 
 			$passed['files'] = ($exists && $write && $passed['files']) ? true : false;
 
@@ -399,9 +399,9 @@ class install_install extends module
 		foreach ($paths as $path)
 		{
 			$write = $exists = true;
-			if (file_exists($phpbb_root_path . $path))
+			if (file_exists(PHPBB_ROOT_PATH . $path))
 			{
-				if (!phpbb_is_writable($phpbb_root_path . $path))
+				if (!phpbb_is_writable(PHPBB_ROOT_PATH . $path))
 				{
 					$write = false;
 				}
@@ -412,7 +412,7 @@ class install_install extends module
 				{
 					// If the file doesn't exist, we still can create it, so display writability of the parent directory instead of "Not Found".
 					$exists = true;
-					$write = phpbb_is_writable($phpbb_root_path);
+					$write = phpbb_is_writable(PHPBB_ROOT_PATH);
 				}
 				else
 				{
@@ -753,7 +753,7 @@ class install_install extends module
 	*/
 	function db_connect()
 	{
-		global $phpbb_root_path, $lang, $db, $table_prefix;
+		global $lang, $db, $table_prefix;
 
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
@@ -774,7 +774,7 @@ class install_install extends module
 		}
 
 		// Load the appropriate database class if not already loaded
-		require_once($phpbb_root_path . 'includes/db/mysql.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 
 		// Instantiate the database
 		$db = new dbal_mysql();
@@ -784,7 +784,7 @@ class install_install extends module
 		$db->sql_return_on_error(true);
 
 		$table_prefix = $data['table_prefix'];
-		require_once($phpbb_root_path . 'includes/constants.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/constants.php');
 	}
 
 	/**
@@ -811,7 +811,7 @@ class install_install extends module
 	*/
 	function load_schema($mode, $sub)
 	{
-		global $phpbb_root_path, $lang, $db;
+		global $lang, $db;
 
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
@@ -928,7 +928,7 @@ class install_install extends module
 		}
 
 		// Disable avatars if avatar directory isn't writable.
-		if (!phpbb_is_writable($phpbb_root_path . 'images/avatars/upload/'))
+		if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'images/avatars/upload/'))
 		{
 			$sql_ary[] = 'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '0'
@@ -956,9 +956,9 @@ class install_install extends module
 	*/
 	function build_search_index($mode, $sub)
 	{
-		global $phpbb_root_path, $db, $config, $lang;
+		global $db, $config, $lang;
 
-		require_once($phpbb_root_path . 'includes/search/fulltext_native.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_native.php');
 
 		$error = false;
 		$search = new fulltext_native($error);
@@ -979,9 +979,9 @@ class install_install extends module
 	*/
 	function add_modules($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path;
+		global $db, $lang;
 
-		require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_modules.php');
 
 		$_module = new acp_modules();
 		$module_classes = array('acp', 'mcp', 'ucp');
@@ -1252,9 +1252,9 @@ class install_install extends module
 	*/
 	function add_language($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path;
+		global $db, $lang;
 
-		$dir = @opendir($phpbb_root_path . 'language');
+		$dir = @opendir(PHPBB_ROOT_PATH . 'language');
 
 		if (!$dir)
 		{
@@ -1263,7 +1263,7 @@ class install_install extends module
 
 		while (($file = readdir($dir)) !== false)
 		{
-			$path = $phpbb_root_path . 'language/' . $file;
+			$path = PHPBB_ROOT_PATH . 'language/' . $file;
 
 			if ($file == '.' || $file == '..' || is_link($path) || is_file($path) || $file == 'CVS')
 			{
@@ -1302,9 +1302,9 @@ class install_install extends module
 
 				while ($imageset_row = $db->sql_fetchrow($result))
 				{
-					if (@file_exists("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['lang_iso']}/imageset.cfg"))
+					if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['lang_iso']}/imageset.cfg"))
 					{
-						$cfg_data_imageset_data = parse_cfg_file("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['lang_iso']}/imageset.cfg");
+						$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH "styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['lang_iso']}/imageset.cfg");
 						foreach ($cfg_data_imageset_data as $image_name => $value)
 						{
 							if (strpos($value, '*') !== false)
@@ -1365,7 +1365,7 @@ class install_install extends module
 	*/
 	function add_bots($mode, $sub)
 	{
-		global $db, $lang, $phpbb_root_path, $config;
+		global $db, $lang, $config;
 
 		// Obtain any submitted data
 		$data = $this->get_submitted_data();
@@ -1385,7 +1385,7 @@ class install_install extends module
 
 		if (!function_exists('user_add'))
 		{
-			require_once($phpbb_root_path . 'includes/functions_user.php');
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		}
 
 		foreach ($this->bot_list as $bot_name => $bot_agent)
@@ -1435,7 +1435,7 @@ class install_install extends module
 	*/
 	function create_config_file($mode, $sub)
 	{
-		global $auth, $config, $db, $lang, $template, $user, $phpbb_root_path;
+		global $auth, $config, $db, $lang, $template, $user;
 
 		$data = $this->get_submitted_data();
 		$config_data = phpbb_create_config_file_data($data);
@@ -1449,13 +1449,13 @@ class install_install extends module
 			exit;
 		}
 
-		$config_path = $phpbb_root_path . 'config.php';
+		$config_path = PHPBB_ROOT_PATH . 'config.php';
 		$config_done = (file_exists($config_path) && strpos(file_get_contents($config_path), 'PHPBB_INSTALLED') !== false);
 
 		if (!$config_done)
 		{
 			// Attempt to write out the config file directly. If it works, this is the easiest way to do it ...
-			if ((file_exists($config_path) && phpbb_is_writable($config_path)) || phpbb_is_writable($phpbb_root_path))
+			if ((file_exists($config_path) && phpbb_is_writable($config_path)) || phpbb_is_writable(PHPBB_ROOT_PATH))
 			{
 				$config_done = @file_put_contents($config_path, $config_data);
 				if ($config_done) { phpbb_chmod($config_path, CHMOD_READ); }
@@ -1491,9 +1491,9 @@ class install_install extends module
 
 			// Create a lock file to indicate that there is an install in progress.
 			// Otherwise we won't be able to show the final message after config.php is copied manually.
-			if (@touch($phpbb_root_path . 'cache/install_lock'))
+			if (@touch(PHPBB_ROOT_PATH . 'cache/install_lock'))
 			{
-				@chmod($phpbb_root_path . 'cache/install_lock', 0666);
+				@chmod(PHPBB_ROOT_PATH . 'cache/install_lock', 0666);
 			}
 		}
 		else
@@ -1508,7 +1508,7 @@ class install_install extends module
 
 			if ($config['email_enable'])
 			{
-				require_once($phpbb_root_path . 'includes/functions_messenger.php');
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 				$messenger = new messenger(false);
 				$messenger->template('installed', $data['language']);
 				$messenger->to($data['board_email1'], $data['admin_name']);
@@ -1527,13 +1527,13 @@ class install_install extends module
 				'TITLE'		=> $lang['INSTALL_CONGRATS'],
 				'BODY'		=> sprintf($lang['INSTALL_CONGRATS_EXPLAIN'], $config['phpbbex_version']),
 				'L_SUBMIT'	=> $lang['INSTALL_LOGIN'],
-				'U_ACTION'	=> append_sid($phpbb_root_path . 'adm/index.php', false, true, true),
+				'U_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, true),
 			));
 
 			// Remove the lock file.
-			if (file_exists($phpbb_root_path . 'cache/install_lock'))
+			if (file_exists(PHPBB_ROOT_PATH . 'cache/install_lock'))
 			{
-				@unlink($phpbb_root_path . 'cache/install_lock');
+				@unlink(PHPBB_ROOT_PATH . 'cache/install_lock');
 			}
 		}
 	}

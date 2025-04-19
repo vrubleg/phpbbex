@@ -8,8 +8,7 @@
 define('IN_PHPBB', true);
 define('ADMIN_START', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
 
 // Start session management
 $user->session_begin(false);
@@ -17,7 +16,7 @@ $auth->acl($user->data);
 $user->setup();
 
 // Set custom template for admin area
-$template->set_custom_template($phpbb_root_path . 'adm/style', 'admin');
+$template->set_custom_template(PHPBB_ROOT_PATH . 'adm/style', 'admin');
 
 $template->set_filenames(array(
 	'body' => 'colour_swatch.html')
@@ -33,7 +32,7 @@ $name = (!preg_match('/^[a-z0-9_-]+$/i', $name)) ? '' : $name;
 $template->assign_vars(array(
 	'OPENER'		=> $form,
 	'NAME'			=> $name,
-	'T_IMAGES_PATH'	=> "{$phpbb_root_path}images/",
+	'T_IMAGES_PATH'	=> PHPBB_ROOT_PATH . 'images/',
 
 	'S_USER_LANG'			=> $user->lang['USER_LANG'],
 	'S_CONTENT_DIRECTION'	=> $user->lang['DIRECTION'],

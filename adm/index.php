@@ -10,10 +10,9 @@ define('ADMIN_START', true);
 define('NEED_SID', true);
 
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
-require_once($phpbb_root_path . 'includes/functions_admin.php');
-require_once($phpbb_root_path . 'includes/functions_module.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_module.php');
 
 // Start session management
 $user->session_begin();
@@ -36,15 +35,14 @@ if (!$auth->acl_get('a_'))
 // We define the admin variables now, because the user is now able to use the admin related features...
 define('IN_ADMIN', true);
 if (!defined('PHPBB_ADMIN_PATH')) { define('PHPBB_ADMIN_PATH', './'); }
-$phpbb_admin_path = PHPBB_ADMIN_PATH;
 
 // Some oft used variables
 $module_id		= request_var('i', '');
 $mode			= request_var('mode', '');
 
 // Set custom template for admin area
-$template->set_custom_template($phpbb_admin_path . 'style', 'admin');
-$template->assign_var('T_TEMPLATE_PATH', $phpbb_admin_path . 'style');
+$template->set_custom_template(PHPBB_ADMIN_PATH . 'style', 'admin');
+$template->assign_var('T_TEMPLATE_PATH', PHPBB_ADMIN_PATH . 'style');
 
 // the acp template is never stored in the database
 $user->theme['template_storedb'] = false;
@@ -60,7 +58,7 @@ $module->set_active($module_id, $mode);
 
 // Assign data to the template engine for the list of modules
 // We do this before loading the active module for correct menu display in trigger_error
-$module->assign_tpl_vars(append_sid("{$phpbb_admin_path}index.php"));
+$module->assign_tpl_vars(append_sid(PHPBB_ADMIN_PATH . 'index.php'));
 
 // Load and execute the relevant module
 $module->load_active();
@@ -80,7 +78,6 @@ adm_page_footer();
 function adm_page_header($page_title)
 {
 	global $config, $db, $user, $template;
-	global $phpbb_root_path, $phpbb_admin_path;
 
 	if (defined('HEADER_INC'))
 	{
@@ -103,26 +100,26 @@ function adm_page_header($page_title)
 		'USERNAME'				=> $user->data['username'],
 
 		'SESSION_ID'			=> $user->session_id,
-		'ROOT_PATH'				=> $phpbb_admin_path,
-		'PHPBB_ROOT_PATH'		=> $phpbb_root_path,
+		'ROOT_PATH'				=> PHPBB_ADMIN_PATH,
+		'PHPBB_ROOT_PATH'		=> PHPBB_ROOT_PATH,
 
-		'U_LOGOUT'				=> append_sid("{$phpbb_root_path}ucp.php", 'mode=logout'),
-		'U_ADM_LOGOUT'			=> append_sid("{$phpbb_admin_path}index.php", 'action=admlogout'),
-		'U_ADM_INDEX'			=> append_sid("{$phpbb_admin_path}index.php"),
-		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.php", false, true, false),
+		'U_LOGOUT'				=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout'),
+		'U_ADM_LOGOUT'			=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'action=admlogout'),
+		'U_ADM_INDEX'			=> append_sid(PHPBB_ADMIN_PATH . 'index.php'),
+		'U_INDEX'				=> append_sid(PHPBB_ROOT_PATH . 'index.php', false, true, false),
 
-		'T_IMAGES_PATH'			=> "{$phpbb_root_path}images/",
+		'T_IMAGES_PATH'			=> PHPBB_ROOT_PATH . 'images/',
 
-		'ICON_MOVE_UP'				=> '<img src="' . $phpbb_admin_path . 'images/icon_up.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
-		'ICON_MOVE_UP_DISABLED'		=> '<img src="' . $phpbb_admin_path . 'images/icon_up_disabled.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
-		'ICON_MOVE_DOWN'			=> '<img src="' . $phpbb_admin_path . 'images/icon_down.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
-		'ICON_MOVE_DOWN_DISABLED'	=> '<img src="' . $phpbb_admin_path . 'images/icon_down_disabled.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
-		'ICON_EDIT'					=> '<img src="' . $phpbb_admin_path . 'images/icon_edit.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
-		'ICON_EDIT_DISABLED'		=> '<img src="' . $phpbb_admin_path . 'images/icon_edit_disabled.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
-		'ICON_DELETE'				=> '<img src="' . $phpbb_admin_path . 'images/icon_delete.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
-		'ICON_DELETE_DISABLED'		=> '<img src="' . $phpbb_admin_path . 'images/icon_delete_disabled.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
-		'ICON_SYNC'					=> '<img src="' . $phpbb_admin_path . 'images/icon_sync.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
-		'ICON_SYNC_DISABLED'		=> '<img src="' . $phpbb_admin_path . 'images/icon_sync_disabled.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
+		'ICON_MOVE_UP'				=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
+		'ICON_MOVE_UP_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up_disabled.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
+		'ICON_MOVE_DOWN'			=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
+		'ICON_MOVE_DOWN_DISABLED'	=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down_disabled.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
+		'ICON_EDIT'					=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
+		'ICON_EDIT_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit_disabled.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
+		'ICON_DELETE'				=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
+		'ICON_DELETE_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete_disabled.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
+		'ICON_SYNC'					=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
+		'ICON_SYNC_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync_disabled.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
 
 		'S_USER_LANG'			=> $user->lang['USER_LANG'],
 		'S_CONTENT_DIRECTION'	=> $user->lang['DIRECTION'],
@@ -143,8 +140,7 @@ function adm_page_header($page_title)
 */
 function adm_page_footer($copyright_html = true)
 {
-	global $db, $config, $template, $user, $auth, $cache;
-	global $starttime, $phpbb_root_path, $phpbb_admin_path;
+	global $db, $config, $template, $user, $auth, $cache, $starttime;
 
 	// Output page creation time
 	if (defined('DEBUG'))
@@ -359,7 +355,8 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 */
 function validate_config_vars($config_vars, &$cfg_array, &$error)
 {
-	global $phpbb_root_path, $user;
+	global $user;
+
 	$type	= 0;
 	$min	= 1;
 	$max	= 2;
@@ -473,13 +470,13 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 
 				$cfg_array[$config_name] = basename($cfg_array[$config_name]);
 
-				if (!file_exists($phpbb_root_path . 'language/' . $cfg_array[$config_name] . '/'))
+				if (!file_exists(PHPBB_ROOT_PATH . 'language/' . $cfg_array[$config_name] . '/'))
 				{
 					$error[] = $user->lang['WRONG_DATA_LANG'];
 				}
 			break;
 
-			// Relative path (appended $phpbb_root_path)
+			// Relative path (appended PHPBB_ROOT_PATH).
 			case 'rpath':
 			case 'rwpath':
 				if (!$cfg_array[$config_name])
@@ -506,7 +503,7 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 			// Absolute file path
 			case 'absolute_path':
 			case 'absolute_path_writable':
-			// Path being relative (still prefixed by phpbb_root_path), but with the ability to escape the root dir...
+			// Path being relative (still prefixed by PHPBB_ROOT_PATH), but with the ability to escape the root dir...
 			case 'path':
 			case 'wpath':
 
@@ -524,7 +521,7 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 					break;
 				}
 
-				$path = in_array($config_definition['validate'], array('wpath', 'path', 'rpath', 'rwpath')) ? $phpbb_root_path . $cfg_array[$config_name] : $cfg_array[$config_name];
+				$path = in_array($config_definition['validate'], array('wpath', 'path', 'rpath', 'rwpath')) ? PHPBB_ROOT_PATH . $cfg_array[$config_name] : $cfg_array[$config_name];
 
 				if (!file_exists($path))
 				{

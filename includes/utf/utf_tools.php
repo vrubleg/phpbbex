@@ -321,24 +321,23 @@ function utf8_decode_ncr_callback($m)
 function utf8_case_fold($text, $option = 'full')
 {
 	static $uniarray = array();
-	global $phpbb_root_path;
 
 	// common is always set
 	if (!isset($uniarray['c']))
 	{
-		$uniarray['c'] = require($phpbb_root_path . 'includes/utf/data/case_fold_c.php');
+		$uniarray['c'] = require(PHPBB_ROOT_PATH . 'includes/utf/data/case_fold_c.php');
 	}
 
 	// only set full if we need to
 	if ($option === 'full' && !isset($uniarray['f']))
 	{
-		$uniarray['f'] = require($phpbb_root_path . 'includes/utf/data/case_fold_f.php');
+		$uniarray['f'] = require(PHPBB_ROOT_PATH . 'includes/utf/data/case_fold_f.php');
 	}
 
 	// only set simple if we need to
 	if ($option !== 'full' && !isset($uniarray['s']))
 	{
-		$uniarray['s'] = require($phpbb_root_path . 'includes/utf/data/case_fold_s.php');
+		$uniarray['s'] = require(PHPBB_ROOT_PATH . 'includes/utf/data/case_fold_s.php');
 	}
 
 	// common is always replaced
@@ -935,13 +934,12 @@ function utf8_case_fold_nfkc($text, $option = 'full')
 		"\xF0\x9D\x9E\xBB"	=> "\xCF\x83",
 		"\xF0\x9D\x9F\x8A"	=> "\xCF\x9D",
 	);
-	global $phpbb_root_path;
 
 	// do the case fold
 	$text = utf8_case_fold($text, $option);
 
 	// convert to NFKC
-	require_once($phpbb_root_path . 'includes/utf/utf_normalizer.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_normalizer.php');
 	utf_normalizer::nfkc($text);
 
 	// FC_NFKC_Closure, http://www.unicode.org/Public/5.0.0/ucd/DerivedNormalizationProps.txt
@@ -1027,7 +1025,6 @@ function utf8_case_fold_nfc($text, $option = 'full')
 		"\xE1\xBF\xB7"	=> "\xE1\xBF\xB6\xCD\x85",
 		"\xE1\xBF\xBC"	=> "\xCE\xA9\xCD\x85",
 	);
-	global $phpbb_root_path;
 
 	// perform a small trick, avoid further normalization on composed points that contain U+0345 in their decomposition
 	$text = strtr($text, $ypogegrammeni);
@@ -1052,8 +1049,7 @@ function utf8_normalize_nfc($strings)
 		return $strings;
 	}
 
-	global $phpbb_root_path;
-	require_once($phpbb_root_path . 'includes/utf/utf_normalizer.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_normalizer.php');
 
 	if (!is_array($strings))
 	{
@@ -1095,12 +1091,10 @@ function utf8_normalize_nfc($strings)
 */
 function utf8_clean_string($text)
 {
-	global $phpbb_root_path;
-
 	static $homographs = array();
 	if (empty($homographs))
 	{
-		$homographs = require($phpbb_root_path . 'includes/utf/data/confusables.php');
+		$homographs = require(PHPBB_ROOT_PATH . 'includes/utf/data/confusables.php');
 	}
 
 	$text = utf8_case_fold_nfkc($text);

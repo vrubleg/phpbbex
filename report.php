@@ -7,9 +7,8 @@
 
 define('IN_PHPBB', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
-require_once($phpbb_root_path . 'includes/functions_display.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 // Start session management
 $user->session_begin();
@@ -32,13 +31,13 @@ if (!$post_id && (!$pm_id || !$config['allow_pm_report']))
 
 if ($post_id)
 {
-	$redirect_url = append_sid("{$phpbb_root_path}viewtopic.php", "p=$post_id") . "#p$post_id";
-	$return_forum_url = append_sid("{$phpbb_root_path}viewforum.php", "f=$forum_id");
+	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p=$post_id") . "#p$post_id";
+	$return_forum_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id");
 	$pm_id = 0;
 }
 else
 {
-	$redirect_url = append_sid("{$phpbb_root_path}ucp.php", "i=pm&mode=view&p=$pm_id");
+	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&mode=view&p=$pm_id");
 	$return_forum_url = '';
 	$post_id = 0;
 	$forum_id = 0;
@@ -129,7 +128,7 @@ else
 
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {
-	require_once($phpbb_root_path . 'includes/captcha/captcha_factory.php');
+	require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 	$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 	$captcha->init(CONFIRM_REPORT);
 }
@@ -261,7 +260,7 @@ $template->assign_vars(array(
 	'ERROR'				=> (count($error)) ? implode('<br />', $error) : '',
 	'S_REPORT_POST'		=> ($pm_id) ? false : true,
 	'REPORT_TEXT'		=> $report_text,
-	'S_REPORT_ACTION'	=> append_sid("{$phpbb_root_path}report.php", 'f=' . $forum_id . '&amp;p=' . $post_id . '&amp;pm=' . $pm_id),
+	'S_REPORT_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'report.php', 'f=' . $forum_id . '&amp;p=' . $post_id . '&amp;pm=' . $pm_id),
 	'S_HIDDEN_FIELDS'	=> (!empty($s_hidden_fields)) ? $s_hidden_fields : null,
 
 	'S_NOTIFY'			=> $user_notify,

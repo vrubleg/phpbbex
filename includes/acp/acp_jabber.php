@@ -22,12 +22,11 @@ class acp_jabber
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $db, $user, $auth, $template, $config;
 
 		$user->add_lang('acp/board');
 
-		require_once($phpbb_root_path . 'includes/functions_jabber.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_jabber.php');
 
 		$action	= request_var('action', '');
 		$submit = (isset($_POST['submit'])) ? true : false;

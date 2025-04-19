@@ -19,8 +19,7 @@ class acp_ranks
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $db, $user, $auth, $template, $cache, $config;
 
 		$user->add_lang('acp/posting');
 
@@ -153,7 +152,7 @@ class acp_ranks
 				}
 				$db->sql_freeresult($result);
 
-				$imglist = filelist($phpbb_root_path . RANK_IMAGES_PATH, '');
+				$imglist = filelist(PHPBB_ROOT_PATH . RANK_IMAGES_PATH, '');
 				$edit_img = $filename_list = '';
 
 				foreach ($imglist as $path => $img_ary)
@@ -189,12 +188,12 @@ class acp_ranks
 				$template->assign_vars(array(
 					'S_EDIT'			=> true,
 					'U_BACK'			=> $this->u_action,
-					'RANK_IMAGES_PATH'	=> $phpbb_root_path . RANK_IMAGES_PATH . '/',
+					'RANK_IMAGES_PATH'	=> PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/',
 					'U_ACTION'			=> $this->u_action . '&amp;id=' . $rank_id,
 
 					'RANK_TITLE'		=> (isset($ranks['rank_title'])) ? $ranks['rank_title'] : '',
 					'S_FILENAME_LIST'	=> $filename_list,
-					'RANK_IMAGE'		=> ($edit_img) ? $phpbb_root_path . RANK_IMAGES_PATH . '/' . $edit_img : $phpbb_admin_path . 'images/spacer.gif',
+					'RANK_IMAGE'		=> ($edit_img) ? PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $edit_img : PHPBB_ADMIN_PATH . 'images/spacer.gif',
 					'S_SPECIAL_RANK'	=> (isset($ranks['rank_special']) && $ranks['rank_special']) ? true : false,
 					'S_HIDE_TITLE'		=> (isset($ranks['rank_hide_title']) && $ranks['rank_hide_title']) ? true : false,
 					'MIN_POSTS'			=> (isset($ranks['rank_min']) && !$ranks['rank_special']) ? $ranks['rank_min'] : 0)
@@ -222,7 +221,7 @@ class acp_ranks
 				'S_SPECIAL_RANK'	=> ($row['rank_special']) ? true : false,
 				'S_HIDE_TITLE'		=> ($row['rank_hide_title']) ? true : false,
 
-				'RANK_IMAGE'		=> $phpbb_root_path . RANK_IMAGES_PATH . '/' . $row['rank_image'],
+				'RANK_IMAGE'		=> PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $row['rank_image'],
 				'RANK_TITLE'		=> $row['rank_title'],
 				'MIN_POSTS'			=> $row['rank_min'],
 

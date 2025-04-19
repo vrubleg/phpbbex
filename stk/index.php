@@ -12,8 +12,6 @@ if (!defined('STK_DIR_NAME')) { define('STK_DIR_NAME', substr(strrchr(__DIR__, D
 if (!defined('STK_ROOT_PATH')) { define('STK_ROOT_PATH', './'); }
 if (!defined('STK_INDEX')) { define('STK_INDEX', STK_ROOT_PATH . 'index.php'); }
 
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
-
 require_once(STK_ROOT_PATH . 'common.php');
 
 // Setup the user
@@ -38,7 +36,7 @@ perform_unauthed_quick_tasks($action, $submit);
 
 // Set global template variables.
 $template->assign_vars(array(
-	'PHPBB_ROOT_PATH' => $phpbb_root_path,
+	'PHPBB_ROOT_PATH' => PHPBB_ROOT_PATH,
 ));
 
 /*

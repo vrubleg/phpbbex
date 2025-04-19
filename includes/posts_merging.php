@@ -166,7 +166,7 @@ if (!empty($data['attachment_data']))
 		else
 		{
 			// insert attachment into db
-			if (!@file_exists($phpbb_root_path . UPLOADS_PATH . '/' . basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
+			if (!@file_exists(PHPBB_ROOT_PATH . UPLOADS_PATH . '/' . basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
 			{
 				continue;
 			}
@@ -203,12 +203,12 @@ if ($merge_post_data['enable_indexing'])
 	// Select the search method and do some additional checks to ensure it can actually be utilised
 	$search_type = basename($config['search_type']);
 
-	if (!file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.php'))
+	if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
 	{
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	require_once("{$phpbb_root_path}includes/search/$search_type.php");
+	require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
 
 	$error = false;
 	$search = new $search_type($error);
@@ -261,7 +261,7 @@ if ($auth->acl_get('f_noapprove', $data['forum_id']) || $auth->acl_get('m_approv
 }
 
 //Generate redirection URL and redirecting
-$redirect_url = append_sid("{$phpbb_root_path}viewtopic.php", 't=' . $topic_id . '&amp;p=' . $merge_post_id) . '#p' . $merge_post_id;
+$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_id . '&amp;p=' . $merge_post_id) . '#p' . $merge_post_id;
 
 if (!empty($config['skip_typical_notices']))
 {
@@ -272,5 +272,5 @@ meta_refresh(3, $redirect_url);
 
 $message = (!$auth->acl_get('f_noapprove', $merge_post_data['forum_id']) && !$auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? 'POST_STORED_MOD' : 'POST_STORED';
 $message = $user->lang[$message] . (($auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? '<br /><br />' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $redirect_url . '">', '</a>') : '');
-$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid("{$phpbb_root_path}viewforum.php", 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
+$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
 trigger_error($message);

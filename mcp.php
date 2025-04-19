@@ -7,10 +7,9 @@
 
 define('IN_PHPBB', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
-$phpbb_root_path = PHPBB_ROOT_PATH;
-require_once($phpbb_root_path . 'common.php');
-require_once($phpbb_root_path . 'includes/functions_admin.php');
-require_once($phpbb_root_path . 'includes/functions_module.php');
+require_once(PHPBB_ROOT_PATH . 'common.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
+require_once(PHPBB_ROOT_PATH . 'includes/functions_module.php');
 
 // Start session management
 $user->session_begin();
@@ -39,7 +38,7 @@ if (!$user->data['is_registered'])
 {
 	if ($user->data['is_bot'])
 	{
-		redirect(append_sid("{$phpbb_root_path}index.php"));
+		redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 	}
 
 	login_box('', $user->lang['LOGIN_EXPLAIN_MCP']);
@@ -258,14 +257,14 @@ if (!$warning_id)
 $module->load_active();
 
 // Assign data to the template engine for the list of modules
-$module->assign_tpl_vars(append_sid("{$phpbb_root_path}mcp.php"));
+$module->assign_tpl_vars(append_sid(PHPBB_ROOT_PATH . 'mcp.php'));
 
 // Generate urls for letting the moderation control panel being accessed in different modes
 $template->assign_vars(array(
-	'U_MCP'			=> append_sid("{$phpbb_root_path}mcp.php", 'i=main'),
-	'U_MCP_FORUM'	=> ($forum_id) ? append_sid("{$phpbb_root_path}mcp.php", "i=main&amp;mode=forum_view&amp;f=$forum_id") : '',
-	'U_MCP_TOPIC'	=> ($forum_id && $topic_id) ? append_sid("{$phpbb_root_path}mcp.php", "i=main&amp;mode=topic_view&amp;t=$topic_id") : '',
-	'U_MCP_POST'	=> ($forum_id && $topic_id && $post_id) ? append_sid("{$phpbb_root_path}mcp.php", "i=main&amp;mode=post_details&amp;t=$topic_id&amp;p=$post_id") : '',
+	'U_MCP'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main'),
+	'U_MCP_FORUM'	=> ($forum_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f=$forum_id") : '',
+	'U_MCP_TOPIC'	=> ($forum_id && $topic_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;t=$topic_id") : '',
+	'U_MCP_POST'	=> ($forum_id && $topic_id && $post_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;t=$topic_id&amp;p=$post_id") : '',
 ));
 
 // Generate the page, do not display/query online list
