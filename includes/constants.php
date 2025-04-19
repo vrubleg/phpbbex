@@ -276,3 +276,4 @@ define('USER_BROWSER_IDS_TABLE',	$table_prefix . 'user_browser_ids');
 define('POST_RATES_TABLE',			$table_prefix . 'post_rates');
 
 // Additional tables
+define('PORTAL_CONFIG_TABLE',		$table_prefix . 'portal_config');
