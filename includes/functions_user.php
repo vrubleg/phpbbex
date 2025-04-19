@@ -1989,7 +1989,8 @@ function avatar_upload($data, &$error)
 		$file = $upload->remote_upload($data['uploadurl']);
 	}
 
-	$file->clean_filename('avatar', '', $data['user_id']);
+	$filename = $data['user_id'] . '_' . time();
+	$file->clean_filename('avatar', $filename);
 
 	// Move file and overwrite any existing image
 	$file->move_file(AVATAR_UPLOADS_PATH, true);
@@ -2000,7 +2001,7 @@ function avatar_upload($data, &$error)
 		$error = array_merge($error, $file->error);
 	}
 
-	return array(AVATAR_UPLOAD, $data['user_id'] . '.' . $file->get('extension'), $file->get('width'), $file->get('height'));
+	return array(AVATAR_UPLOAD, $filename . '.' . $file->get('extension'), $file->get('width'), $file->get('height'));
 }
 
 /**
@@ -2008,12 +2009,6 @@ function avatar_upload($data, &$error)
 */
 function get_avatar_filename($avatar)
 {
-	if (strpos($avatar, '_') !== false)
-	{
-		// Strip legacy timestamp part.
-		$avatar = strchr($avatar, '_', true) . strrchr($avatar, '.');
-	}
-
 	return $avatar;
 }
 

@@ -58,26 +58,11 @@ class resync_avatars
 			$path	= '';
 			if ($row['avatar_type'] == AVATAR_UPLOAD)
 			{
-				$avatar = $row['avatar'];
-				if (strpos($avatar, '_') !== false)
-				{
-					// Strip legacy timestamp part.
-					$avatar = strchr($avatar, '_', true) . strrchr($avatar, '.');
-				}
-				$path		= PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
-				if (!file_exists($path) && isset($config['avatar_salt']))
-				{
-					$oldstyle = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $config['avatar_salt'] . '_' . $avatar;
-					if (file_exists($oldstyle))
-					{
-						if (!rename($oldstyle, $path)) continue;
-					}
-				}
-				@chmod($path, 0666);
+				$path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $row['avatar'];
 			}
 			else if ($row['avatar_type'] == AVATAR_GALLERY)
 			{
-				$path	= PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . "/{$row['avatar']}";
+				$path = PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . "/{$row['avatar']}";
 			}
 
 			if (file_exists($path))

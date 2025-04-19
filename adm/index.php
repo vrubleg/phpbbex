@@ -9,7 +9,6 @@ define('IN_PHPBB', true);
 define('ADMIN_START', true);
 define('NEED_SID', true);
 
-// Include files
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
 $phpbb_root_path = PHPBB_ROOT_PATH;
 require_once($phpbb_root_path . 'common.php');
@@ -20,7 +19,6 @@ require_once($phpbb_root_path . 'includes/functions_module.php');
 $user->session_begin();
 $auth->acl($user->data);
 $user->setup('acp/common');
-// End session management
 
 // Have they authenticated (again) as an admin for this session?
 if (!isset($user->data['session_admin']) || !$user->data['session_admin'])

@@ -8,8 +8,6 @@
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
 
-define('NEWEST_PHPBBEX_VERSION', '1.9.8');
-
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
 $phpbb_root_path = PHPBB_ROOT_PATH;
 require_once($phpbb_root_path . 'includes/startup.php');
@@ -103,7 +101,7 @@ require($phpbb_root_path . 'language/' . $config['default_lang'] . '/install.php
 
 // Check phpBBex version.
 
-if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_version'], NEWEST_PHPBBEX_VERSION, '>'))
+if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_version'], '1.9.9', '>'))
 {
 	die('Error! Database schema has newer version than supported.');
 }
@@ -297,7 +295,6 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 		'upload_path',
 		'avatar_gallery_path',
 		'avatar_path',
-		// 'avatar_salt', // Keep for avatar resync.
 		'ranks_path',
 		'smilies_path',
 		'icons_path',
@@ -394,6 +391,63 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 {
+	// Normalize old avatar file names.
+
+	$sql = 'SELECT user_id, user_avatar FROM ' . USERS_TABLE . ' WHERE user_avatar_type = ' . AVATAR_UPLOAD;
+	$result = $db->sql_query($sql);
+	$batch = $db->sql_fetchrowset($result);
+	$db->sql_freeresult($result);
+
+	foreach ($batch as $row)
+	{
+		$avatar = $row['user_avatar'];
+		if (!$avatar) { continue; }
+
+		if (strpos($avatar, '_') !== false)
+		{
+			$target_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
+			if (file_exists($target_path)) { continue; }
+
+			// Strip timestamp part.
+			$avatar = strchr($avatar, '_', true) . strrchr($avatar, '.');
+
+			// phpBB 3.0 file name in db, but phpBBex 1.5 in filesystem.
+			$old_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
+			if (file_exists($old_path))
+			{
+				rename($old_path, $target_path);
+				continue;
+			}
+
+			// phpBB 3.0 avatar file name in both places.
+			if (isset($config['avatar_salt']))
+			{
+				$old_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $config['avatar_salt'] . '_' . $avatar;
+				if (file_exists($old_path))
+				{
+					rename($old_path, $target_path);
+				}
+			}
+		}
+		else
+		{
+			// phpBBex 1.5 file name. Add current mtime to filenames.
+
+			$old_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
+			if (!file_exists($old_path)) { continue; }
+
+			[$name, $ext] = explode('.', $avatar);
+			if ($ext == 'jpeg') { $ext = 'jpg'; }
+			$avatar = $name . '_' . filemtime($old_path) . '.' . $ext;
+
+			$target_path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
+			if (rename($old_path, $target_path))
+			{
+				$db->sql_query("UPDATE " . USERS_TABLE . " SET user_avatar = '" . $db->sql_escape($avatar) . "' WHERE user_id = " . intval($row['user_id']));
+			}
+		}
+	}
+
 	// New settings.
 
 	if (!isset($config['email_force_sender']))
@@ -407,6 +461,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		'rand_seed',
 		'rand_seed_last_update',
 		'hot_threshold',
+		'avatar_salt',
 	]);
 
 	// Remove unused columns from groups table.

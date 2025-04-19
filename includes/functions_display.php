@@ -1584,11 +1584,6 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 			{
 				return '';
 			}
-			if (strpos($avatar, '_') !== false)
-			{
-				// Strip legacy timestamp part.
-				$avatar = strchr($avatar, '_', true) . strrchr($avatar, '.');
-			}
 			$avatar_img = $phpbb_root_path . AVATAR_UPLOADS_PATH . '/' . $avatar;
 		break;
 
