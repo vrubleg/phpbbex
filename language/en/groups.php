@@ -24,7 +24,6 @@ $lang = array_merge($lang, array(
 	'CANNOT_RESIGN_GROUP'		=> 'You are not able to resign from this group. You are only able to resign from open and freely open groups.',
 	'CHANGED_DEFAULT_GROUP'		=> 'Successfully changed default group.',
 
-	'GROUP_AVATAR'						=> 'Group avatar',
 	'GROUP_CHANGE_DEFAULT'				=> 'Are you sure you want to change your default membership to the group “%s”?',
 	'GROUP_CLOSED'						=> 'Closed',
 	'GROUP_DESC'						=> 'Group description',

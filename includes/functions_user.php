@@ -407,9 +407,9 @@ function user_delete($mode, $user_id, $post_username = false)
 	// Remove reports
 	$db->sql_query('DELETE FROM ' . REPORTS_TABLE . ' WHERE user_id = ' . $user_id);
 
-	if ($user_row['user_avatar'] && $user_row['user_avatar_type'] == AVATAR_UPLOAD)
+	if ($user_row['user_avatar'])
 	{
-		avatar_delete('user', $user_row);
+		avatar_delete($user_row);
 	}
 
 	switch ($mode)
@@ -1865,24 +1865,13 @@ function phpbb_style_is_active($style_id)
 /**
 * Remove avatar
 */
-function avatar_delete($mode, $row, $clean_db = false)
+function avatar_delete($user_row)
 {
-	global $phpbb_root_path, $config, $db, $user;
+	global $phpbb_root_path;
 
-	// Check if the users avatar is actually *not* a group avatar
-	if ($mode == 'user')
-	{
-		if (strpos($row['user_avatar'], 'g') === 0 || (((int)$row['user_avatar'] !== 0) && ((int)$row['user_avatar'] !== (int)$row['user_id'])))
-		{
-			return false;
-		}
-	}
+	if (!$user_row['user_avatar'] || $user_row['user_avatar_type'] != AVATAR_UPLOAD) { return false; }
 
-	if ($clean_db)
-	{
-		avatar_remove_db($row[$mode . '_avatar']);
-	}
-	$filename = get_avatar_filename($row[$mode . '_avatar']);
+	$filename = get_avatar_filename($user_row['user_avatar']);
 	if (file_exists($phpbb_root_path . AVATAR_UPLOADS_PATH . '/' . $filename))
 	{
 		@unlink($phpbb_root_path . AVATAR_UPLOADS_PATH . '/' . $filename);
@@ -1899,11 +1888,11 @@ function avatar_remote($data, &$error)
 {
 	global $config, $db, $user, $phpbb_root_path;
 
-	if (!preg_match('#^(http|https|ftp)://#i', $data['remotelink']))
+	if (!preg_match('#^(http|https)://#i', $data['remotelink']))
 	{
 		$data['remotelink'] = 'http://' . $data['remotelink'];
 	}
-	if (!preg_match('#^(http|https|ftp)://(?:(.*?\.)*?[a-z0-9\-]+?\.[a-z]{2,4}|(?:\d{1,3}\.){3,5}\d{1,3}):?([0-9]*?).*?\.(gif|jpg|jpeg|png)$#i', $data['remotelink']))
+	if (!preg_match('#^(http|https)://(?:(.*?\.)*?[a-z0-9\-]+?\.[a-z]{2,4}|(?:\d{1,3}\.){3,5}\d{1,3}):?([0-9]*?).*?\.(gif|jpg|jpeg|png)$#i', $data['remotelink']))
 	{
 		$error[] = $user->lang['AVATAR_URL_INVALID'];
 		return false;
@@ -2007,23 +1996,15 @@ function avatar_upload($data, &$error)
 /**
 * Generates avatar filename from the database entry
 */
-function get_avatar_filename($avatar_entry)
+function get_avatar_filename($avatar)
 {
-	global $config;
-
-
-	if ($avatar_entry[0] === 'g')
+	if (strpos($avatar, '_') !== false)
 	{
-		$avatar_group = true;
-		$avatar_entry = substr($avatar_entry, 1);
+		// Strip legacy timestamp part.
+		$avatar = strchr($avatar, '_', true) . strrchr($avatar, '.');
 	}
-	else
-	{
-		$avatar_group = false;
-	}
-	$ext 			= substr(strrchr($avatar_entry, '.'), 1);
-	$avatar_entry	= intval($avatar_entry);
-	return (($avatar_group) ? 'g' : '') . $avatar_entry . '.' . $ext;
+
+	return $avatar;
 }
 
 /**
@@ -2211,16 +2192,7 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 	}
 
 	$sql_ary = array();
-
-	if ($custom_userdata === false)
-	{
-		$userdata = &$user->data;
-	}
-	else
-	{
-		$userdata = &$custom_userdata;
-	}
-
+	$userdata = ($custom_userdata === false) ? $user->data : $custom_userdata;
 	$data['user_id'] = $userdata['user_id'];
 	$change_avatar = ($custom_userdata === false) ? $auth->acl_get('u_chgavatar') : true;
 	$avatar_select = basename(request_var('avatar_select', ''));
@@ -2314,27 +2286,16 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 		// Do we actually have any data to update?
 		if (sizeof($sql_ary))
 		{
-			$ext_new = $ext_old = '';
-			if (isset($sql_ary['user_avatar']))
+			if (isset($sql_ary['user_avatar']) && !empty($userdata['user_avatar']) && $userdata['user_avatar_type'] == AVATAR_UPLOAD
+				&& ($userdata['user_avatar_type'] != $sql_ary['user_avatar_type'] || get_avatar_filename($userdata['user_avatar']) != get_avatar_filename($sql_ary['user_avatar'])))
 			{
-				$userdata = ($custom_userdata === false) ? $user->data : $custom_userdata;
-				$ext_new = (empty($sql_ary['user_avatar'])) ? '' : substr(strrchr($sql_ary['user_avatar'], '.'), 1);
-				$ext_old = (empty($userdata['user_avatar'])) ? '' : substr(strrchr($userdata['user_avatar'], '.'), 1);
-
-				if ($userdata['user_avatar_type'] == AVATAR_UPLOAD)
-				{
-					// Delete old avatar if present
-					if ((!empty($userdata['user_avatar']) && empty($sql_ary['user_avatar']))
-					   || ( !empty($userdata['user_avatar']) && !empty($sql_ary['user_avatar']) && $ext_new !== $ext_old))
-					{
-						avatar_delete('user', $userdata);
-					}
-				}
+				// Delete old avatar if present.
+				avatar_delete($userdata);
 			}
 
 			$sql = 'UPDATE ' . USERS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-				WHERE user_id = ' . (($custom_userdata === false) ? $user->data['user_id'] : $custom_userdata['user_id']);
+				WHERE user_id = ' . $userdata['user_id'];
 			$db->sql_query($sql);
 
 		}
@@ -2358,7 +2319,7 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 	$error = array();
 
 	// Attributes which also affect the users table
-	$user_attribute_ary = array('group_colour', 'group_rank', 'group_avatar', 'group_avatar_type', 'group_avatar_width', 'group_avatar_height');
+	$user_attribute_ary = array('group_colour', 'group_rank');
 
 	// Check data. Limit group name length.
 	if (!utf8_strlen($name) || utf8_strlen($name) > 60)
@@ -2418,11 +2379,6 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 			}
 			$db->sql_freeresult($result);
 
-			if (isset($sql_ary['group_avatar']) && !$sql_ary['group_avatar'])
-			{
-				remove_default_avatar($group_id, $user_ary);
-			}
-
 			if (isset($sql_ary['group_rank']) && !$sql_ary['group_rank'])
 			{
 				remove_default_rank($group_id, $user_ary);
@@ -2474,11 +2430,6 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 		if (!$group_id)
 		{
 			$group_id = $db->sql_nextid();
-
-			if (isset($sql_ary['group_avatar_type']) && $sql_ary['group_avatar_type'] == AVATAR_UPLOAD)
-			{
-				group_correct_avatar($group_id, $sql_ary['group_avatar']);
-			}
 		}
 
 		// Set user attributes
@@ -2489,12 +2440,6 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 			foreach ($user_attribute_ary as $attribute)
 			{
 				if (!isset($group_attributes[$attribute]))
-				{
-					continue;
-				}
-
-				// If we are about to set an avatar, we will not overwrite user avatars if no group avatar is set...
-				if (strpos($attribute, 'group_avatar') === 0 && !$group_attributes[$attribute])
 				{
 					continue;
 				}
@@ -2515,44 +2460,6 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 	}
 
 	return (sizeof($error)) ? $error : false;
-}
-
-
-/**
-* Changes a group avatar's filename to conform to the naming scheme
-*/
-function group_correct_avatar($group_id, $old_entry)
-{
-	global $config, $db, $phpbb_root_path;
-
-	$group_id		= (int)$group_id;
-	$ext 			= substr(strrchr($old_entry, '.'), 1);
-	$old_filename 	= get_avatar_filename($old_entry);
-	$new_filename 	= "g{$group_id}.{$ext}";
-
-	$avatar_path = $phpbb_root_path . AVATAR_UPLOADS_PATH;
-	if (@rename($avatar_path . '/'. $old_filename, $avatar_path . '/' . $new_filename))
-	{
-		$sql = 'UPDATE ' . GROUPS_TABLE . '
-			SET group_avatar = \'' . $db->sql_escape($new_filename) . "'
-			WHERE group_id = $group_id";
-		$db->sql_query($sql);
-	}
-}
-
-
-/**
-* Remove avatar also for users not having the group as default
-*/
-function avatar_remove_db($avatar_name)
-{
-	global $config, $db;
-
-	$sql = 'UPDATE ' . USERS_TABLE . "
-		SET user_avatar = '',
-		user_avatar_type = 0
-		WHERE user_avatar = '" . $db->sql_escape($avatar_name) . '\'';
-	$db->sql_query($sql);
 }
 
 
@@ -2760,17 +2667,6 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 			'group_colour'			=> $row['group_colour'],
 			'group_rank'				=> $row['group_rank'],
 		);
-
-		// Only set the group avatar if one is defined...
-		if ($row['group_avatar'])
-		{
-			$special_group_data[$row['group_id']] = array_merge($special_group_data[$row['group_id']], array(
-				'group_avatar'			=> $row['group_avatar'],
-				'group_avatar_type'		=> $row['group_avatar_type'],
-				'group_avatar_width'		=> $row['group_avatar_width'],
-				'group_avatar_height'	=> $row['group_avatar_height'])
-			);
-		}
 	}
 	$db->sql_freeresult($result);
 
@@ -2820,7 +2716,6 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 		if (isset($sql_where_ary[$gid]) && sizeof($sql_where_ary[$gid]))
 		{
 			remove_default_rank($group_id, $sql_where_ary[$gid]);
-			remove_default_avatar($group_id, $sql_where_ary[$gid]);
 			group_set_user_default($gid, $sql_where_ary[$gid], $default_data_ary);
 		}
 	}
@@ -2850,48 +2745,6 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 
 	// Return false - no error
 	return false;
-}
-
-
-/**
-* Removes the group avatar of the default group from the users in user_ids who have that group as default.
-*/
-function remove_default_avatar($group_id, $user_ids)
-{
-	global $db;
-
-	if (!is_array($user_ids))
-	{
-		$user_ids = array($user_ids);
-	}
-	if (empty($user_ids))
-	{
-		return false;
-	}
-
-	$user_ids = array_map('intval', $user_ids);
-
-	$sql = 'SELECT *
-		FROM ' . GROUPS_TABLE . '
-		WHERE group_id = ' . (int)$group_id;
-	$result = $db->sql_query($sql);
-	if (!$row = $db->sql_fetchrow($result))
-	{
-		$db->sql_freeresult($result);
-		return false;
-	}
-	$db->sql_freeresult($result);
-
-	$sql = 'UPDATE ' . USERS_TABLE . "
-		SET user_avatar = '',
-			user_avatar_type = 0,
-			user_avatar_width = 0,
-			user_avatar_height = 0
-		WHERE group_id = " . (int) $group_id . "
-		AND user_avatar = '" . $db->sql_escape($row['group_avatar']) . "'
-		AND " . $db->sql_in_set('user_id', $user_ids);
-
-	$db->sql_query($sql);
 }
 
 /**
@@ -3073,7 +2926,6 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 			foreach ($groups as $gid => $uids)
 			{
 				remove_default_rank($gid, $uids);
-				remove_default_avatar($gid, $uids);
 			}
 			group_set_user_default($group_id, $user_id_ary, $group_attributes);
 			$log = 'LOG_GROUP_DEFAULTS';
@@ -3153,10 +3005,6 @@ function group_set_user_default($group_id, $user_id_ary, $group_attributes = fal
 	$attribute_ary = array(
 		'group_colour'			=> 'string',
 		'group_rank'			=> 'int',
-		'group_avatar'			=> 'string',
-		'group_avatar_type'		=> 'int',
-		'group_avatar_width'	=> 'int',
-		'group_avatar_height'	=> 'int',
 	);
 
 	$sql_ary = array(
@@ -3179,7 +3027,7 @@ function group_set_user_default($group_id, $user_id_ary, $group_attributes = fal
 		if (isset($group_attributes[$attribute]))
 		{
 			// If we are about to set an avatar or rank, we will not overwrite with empty, unless we are not actually changing the default group
-			if ((strpos($attribute, 'group_avatar') === 0 || strpos($attribute, 'group_rank') === 0) && !$group_attributes[$attribute])
+			if ($attribute == 'group_rank' && !$group_attributes[$attribute])
 			{
 				continue;
 			}
@@ -3187,29 +3035,6 @@ function group_set_user_default($group_id, $user_id_ary, $group_attributes = fal
 			settype($group_attributes[$attribute], $type);
 			$sql_ary[str_replace('group_', 'user_', $attribute)] = $group_attributes[$attribute];
 		}
-	}
-
-	// Before we update the user attributes, we will make a list of those having now the group avatar assigned
-	if (isset($sql_ary['user_avatar']))
-	{
-		// Ok, get the original avatar data from users having an uploaded one (we need to remove these from the filesystem)
-		$sql = 'SELECT user_id, group_id, user_avatar
-			FROM ' . USERS_TABLE . '
-			WHERE ' . $db->sql_in_set('user_id', $user_id_ary) . '
-				AND user_avatar_type = ' . AVATAR_UPLOAD;
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			avatar_delete('user', $row);
-		}
-		$db->sql_freeresult($result);
-	}
-	else
-	{
-		unset($sql_ary['user_avatar_type']);
-		unset($sql_ary['user_avatar_height']);
-		unset($sql_ary['user_avatar_width']);
 	}
 
 	$sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
