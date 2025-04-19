@@ -15,7 +15,8 @@ define('IN_INSTALL', true);
 
 define('NEWEST_PG_VERSION', '1.1.6');
 
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
+if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
+$phpbb_root_path = PHPBB_ROOT_PATH;
 require_once($phpbb_root_path . 'common.php');
 require_once($phpbb_root_path . 'includes/functions_display.php');
 require_once($phpbb_root_path . 'includes/acp/acp_modules.php');
