@@ -10,13 +10,6 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-/**
-* valid external constants:
-* PHPBB_MSG_HANDLER
-* PHPBB_ROOT_PATH
-* PHPBB_ADMIN_PATH
-*/
-
 // Paths
 define('UPLOADS_PATH', 'files');
 define('AVATAR_UPLOADS_PATH', 'images/avatars/upload');

@@ -7,9 +7,8 @@
 
 define('IN_PHPBB', true);
 define('IN_INSTALL', true);
-
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './../';
-
+if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
+$phpbb_root_path = PHPBB_ROOT_PATH;
 require_once($phpbb_root_path . 'includes/startup.php');
 
 if (defined('PHPBB_INSTALLED') && !file_exists($phpbb_root_path . 'cache/install_lock'))
