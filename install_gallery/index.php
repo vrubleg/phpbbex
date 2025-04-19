@@ -206,7 +206,6 @@ class module
 			'S_CONTENT_DIRECTION' 	=> $user->lang['DIRECTION'],
 			'S_CONTENT_FLOW_BEGIN'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
 			'S_CONTENT_FLOW_END'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-			'S_CONTENT_ENCODING' 	=> 'UTF-8',
 
 			'S_USER_LANG'			=> $user->lang['USER_LANG'],
 			)
