@@ -203,10 +203,6 @@ class module
 			'PAGE_TITLE'			=> $this->get_page_title(),
 			'T_IMAGE_PATH'			=> PHPBB_ROOT_PATH . 'adm/images/',
 
-			'S_CONTENT_DIRECTION' 	=> $user->lang['DIRECTION'],
-			'S_CONTENT_FLOW_BEGIN'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
-			'S_CONTENT_FLOW_END'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-
 			'S_USER_LANG'			=> $user->lang['USER_LANG'],
 			)
 		);
