@@ -310,10 +310,6 @@ class module
 			'T_IMAGE_PATH'			=> PHPBB_ROOT_PATH . 'adm/images/',
 			'L_POWERED_BY'			=> sprintf($lang['POWERED_BY'], POWERED_BY),
 
-			'S_CONTENT_DIRECTION' 	=> $lang['DIRECTION'],
-			'S_CONTENT_FLOW_BEGIN'	=> ($lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
-			'S_CONTENT_FLOW_END'	=> ($lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-
 			'S_USER_LANG'			=> $lang['USER_LANG'],
 			)
 		);

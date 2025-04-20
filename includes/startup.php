@@ -11,7 +11,8 @@ if (!defined('IN_PHPBB'))
 }
 
 // Check PHP version.
-if (version_compare(PHP_VERSION, '7.4', '<')) { die('PHP 7.4+ is required.'); }
+if (version_compare(PHP_VERSION, '7.2', '<')) { die('PHP 7.2+ is required.'); }
+if (@preg_match('/\p{L}/u', 'a') === false) { die('PCRE with UTF-8 support is required.'); }
 if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
 if (file_exists(PHPBB_ROOT_PATH . 'config.php'))

@@ -913,7 +913,7 @@ $errored = false;
 
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $lang['DIRECTION']; ?>" lang="<?php echo $lang['USER_LANG']; ?>" xml:lang="<?php echo $lang['USER_LANG']; ?>">
+<html lang="<?php echo $lang['USER_LANG']; ?>">
 <head>
 <meta charset="utf-8" />
 <title><?php echo $lang['UPDATING_TO_LATEST_STABLE']; ?></title>

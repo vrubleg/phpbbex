@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="{S_CONTENT_DIRECTION}" lang="{S_USER_LANG}">
+<html lang="{S_USER_LANG}">
 <head>
 
 <meta charset="UTF-8" />
@@ -130,14 +130,8 @@ function switch_menu()
 			toggle.style.width = '20px';
 			handle.style.backgroundImage = 'url(images/toggle.gif)';
 			handle.style.backgroundRepeat = 'no-repeat';
-
-			<!-- IF S_CONTENT_DIRECTION eq 'rtl' -->
-				handle.style.backgroundPosition = '0% 50%';
-				toggle.style.left = '96%';
-			<!-- ELSE -->
-				handle.style.backgroundPosition = '100% 50%';
-				toggle.style.left = '0';
-			<!-- ENDIF -->
+			handle.style.backgroundPosition = '100% 50%';
+			toggle.style.left = '0';
 		break;
 
 		// show
@@ -148,14 +142,8 @@ function switch_menu()
 			toggle.style.width = '5%';
 			handle.style.backgroundImage = 'url(images/toggle.gif)';
 			handle.style.backgroundRepeat = 'no-repeat';
-
-			<!-- IF S_CONTENT_DIRECTION eq 'rtl' -->
-				handle.style.backgroundPosition = '100% 50%';
-				toggle.style.left = '75%';
-			<!-- ELSE -->
-				handle.style.backgroundPosition = '0% 50%';
-				toggle.style.left = '15%';
-			<!-- ENDIF -->
+			handle.style.backgroundPosition = '0% 50%';
+			toggle.style.left = '15%';
 		break;
 	}
 }
@@ -163,7 +151,7 @@ function switch_menu()
 </script>
 </head>
 
-<body class="{S_CONTENT_DIRECTION}">
+<body>
 
 <div id="wrap">
 	<div id="page-header">

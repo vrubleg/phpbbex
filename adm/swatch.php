@@ -35,7 +35,6 @@ $template->assign_vars(array(
 	'T_IMAGES_PATH'	=> PHPBB_ROOT_PATH . 'images/',
 
 	'S_USER_LANG'			=> $user->lang['USER_LANG'],
-	'S_CONTENT_DIRECTION'	=> $user->lang['DIRECTION'],
 ));
 
 $template->display('body');
