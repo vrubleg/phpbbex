@@ -123,7 +123,6 @@ class acp_forums
 						'forum_rules_bitfield'	=> '',
 						'forum_rules_link'		=> request_var('forum_rules_link', ''),
 						'forum_image'			=> request_var('forum_image', ''),
-						'forum_style'			=> request_var('forum_style', 0),
 						'display_subforum_list'	=> request_var('display_subforum_list', false),
 						'display_on_index'		=> request_var('display_on_index', false),
 						'forum_topic_show_days'		=> request_var('topic_show_days', 0),
@@ -420,7 +419,6 @@ class acp_forums
 							'forum_rules'			=> '',
 							'forum_rules_link'		=> '',
 							'forum_image'			=> '',
-							'forum_style'			=> 0,
 							'display_subforum_list'	=> true,
 							'display_on_index'		=> false,
 							'forum_topic_show_days'		=> 0,
@@ -500,8 +498,6 @@ class acp_forums
 				{
 					$forum_type_options .= '<option value="' . $value . '"' . (($value == $forum_data['forum_type']) ? ' selected="selected"' : '') . '>' . $user->lang['TYPE_' . $lang] . '</option>';
 				}
-
-				$styles_list = style_select($forum_data['forum_style'], true);
 
 				$topic_show_days_options = '';
 				$topic_show_days_ary = array(0 => $user->lang['ALL_DAYS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
@@ -635,7 +631,6 @@ class acp_forums
 					'S_FORUM_TYPE_OPTIONS'		=> $forum_type_options,
 					'S_STATUS_OPTIONS'			=> $statuslist,
 					'S_PARENT_OPTIONS'			=> $parents_list,
-					'S_STYLES_OPTIONS'			=> $styles_list,
 					'S_TOPIC_SHOW_DAYS_OPTIONS'		=> $topic_show_days_options,
 					'S_TOPIC_SORTBY_TYPE_OPTIONS'	=> $topic_sortby_type_options,
 					'S_TOPIC_SORTBY_DIR_OPTIONS'	=> $topic_sortby_dir_options,

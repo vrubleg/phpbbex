@@ -86,7 +86,6 @@ $lang = array_merge($lang, array(
 	'FORUM_NOT_EXIST'		=> 'The forum you selected does not exist.',
 	'FORUM_NOT_POSTABLE'	=> 'The forum you selected cannot be posted to.',
 	'FORUM_STATUS'			=> 'Forum status',
-	'FORUM_STYLE'			=> 'Forum style',
 
 	'GLOBAL_ANNOUNCEMENT'	=> 'Global announcement',
 

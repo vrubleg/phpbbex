@@ -148,7 +148,7 @@ if ($auth->acl_get('m_approve', $forum_id) && ((($mode == 'reply' || $mode == 'b
 	trigger_error(($mode == 'reply' || $mode == 'bump') ? 'TOPIC_UNAPPROVED' : 'POST_UNAPPROVED');
 }
 
-$user->setup(array('posting', 'mcp', 'viewtopic'), $post_data['forum_style']);
+$user->setup(array('posting', 'mcp', 'viewtopic'));
 
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {

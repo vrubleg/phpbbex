@@ -64,7 +64,7 @@ $sort_key	= request_var('sk', $default_sort_key);
 $sort_dir	= request_var('sd', $default_sort_dir);
 
 // Configure style, language, etc.
-$user->setup('viewforum', $forum_data['forum_style']);
+$user->setup('viewforum');
 
 // Redirect to login upon emailed notification links
 if (isset($_GET['e']) && !$user->data['is_registered'])

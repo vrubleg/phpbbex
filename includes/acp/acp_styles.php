@@ -214,11 +214,6 @@ inherit_from = {INHERIT_FROM}
 									SET user_style = ' . $config['default_style'] . "
 									WHERE user_style = $style_id";
 								$db->sql_query($sql);
-
-								$sql = 'UPDATE ' . FORUMS_TABLE . '
-									SET forum_style = 0
-									WHERE forum_style = ' . $style_id;
-								$db->sql_query($sql);
 							}
 						}
 						else if ($action == 'deactivate')
@@ -1653,11 +1648,6 @@ inherit_from = {INHERIT_FROM}
 				$sql = 'UPDATE ' . USERS_TABLE . "
 					SET user_style = $new_id
 					WHERE user_style = $style_id";
-				$db->sql_query($sql);
-
-				$sql = 'UPDATE ' . FORUMS_TABLE . "
-					SET forum_style = $new_id
-					WHERE forum_style = $style_id";
 				$db->sql_query($sql);
 
 				if ($style_id == $config['default_style'])

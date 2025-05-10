@@ -85,7 +85,6 @@ $lang = array_merge($lang, array(
 	'FORUM_RULES_TOO_LONG'				=> 'The forum rules must be less than 4000 characters.',
 	'FORUM_SETTINGS'					=> 'Forum settings',
 	'FORUM_STATUS'						=> 'Forum status',
-	'FORUM_STYLE'						=> 'Forum style',
 	'FORUM_DISPLAY_SETTINGS'			=> 'Forum displaying settings',
 	'FORUM_TOPICS_PAGE'					=> 'Topics per page',
 	'FORUM_TOPICS_PAGE_EXPLAIN'			=> 'If non-zero this value will override the default topics per page setting.',
