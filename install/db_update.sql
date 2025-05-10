@@ -78,7 +78,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dst', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');

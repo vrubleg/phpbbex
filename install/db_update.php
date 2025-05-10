@@ -461,6 +461,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		'rand_seed_last_update',
 		'hot_threshold',
 		'avatar_salt',
+		'override_user_dst',
 	]);
 
 	// Remove no longer used columns.

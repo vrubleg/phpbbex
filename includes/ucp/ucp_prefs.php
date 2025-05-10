@@ -68,7 +68,7 @@ class ucp_prefs
 					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
 					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
 					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
-					$data['dst']		= ($config['override_user_dst'])		? $config['board_dst']			: $data['dst'];
+					$data['dst']		= ($config['override_user_timezone'])	? $config['board_dst']			: $data['dst'];
 
 					$error = validate_data($data, array(
 						'dateformat'	=> array('string', false, 1, 30),
@@ -177,7 +177,6 @@ class ucp_prefs
 					'S_NOTIFY_PM'		=> $data['notifypm'],
 					'S_POPUP_PM'		=> $data['popuppm'],
 					'S_DST'				=> $data['dst'],
-					'S_DST_SHOW'		=> ($config['override_user_dst']) ? false : true,
 
 					'DATE_FORMAT'			=> $data['dateformat'],
 					'A_DATE_FORMAT'			=> addslashes($data['dateformat']),

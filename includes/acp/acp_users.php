@@ -1568,7 +1568,7 @@ class acp_users
 					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
 					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
 					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
-					$data['dst']		= ($config['override_user_dst'])		? $config['board_dst']			: $data['dst'];
+					$data['dst']		= ($config['override_user_timezone'])	? $config['board_dst']			: $data['dst'];
 
 					$error = validate_data($data, array(
 						'dateformat'	=> array('string', false, 1, 30),
@@ -1760,8 +1760,6 @@ class acp_users
 					'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
 					'S_STYLE_OPTIONS'	=> ($config['override_user_style']) ? '' : style_select($data['style']),
 					'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
-
-					'S_DST_SHOW'		=> ($config['override_user_dst']) ? false : true,
 					)
 				);
 
