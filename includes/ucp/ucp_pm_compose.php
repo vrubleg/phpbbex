@@ -201,7 +201,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		break;
 
 		case 'smilies':
-			generate_smilies('window', 0);
+			generate_smilies('window');
 		break;
 
 		default:
@@ -880,7 +880,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	// MAIN PM PAGE BEGINS HERE
 
 	// Generate smiley listing
-	generate_smilies('inline', 0);
+	generate_smilies('inline');
 
 	// Generate PM Icons
 	$s_pm_icons = false;

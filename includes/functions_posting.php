@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 /**
 * Fill smiley templates (or just the variables) with smilies, either in a window or inline
 */
-function generate_smilies($mode, $forum_id)
+function generate_smilies($mode)
 {
 	global $auth, $db, $user, $config, $template;
 
@@ -21,22 +21,7 @@ function generate_smilies($mode, $forum_id)
 
 	if ($mode == 'window')
 	{
-		if ($forum_id)
-		{
-			$sql = 'SELECT forum_style
-				FROM ' . FORUMS_TABLE . "
-				WHERE forum_id = $forum_id";
-			$result = $db->sql_query_limit($sql, 1);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			$user->setup('posting', (int) $row['forum_style']);
-		}
-		else
-		{
-			$user->setup('posting');
-		}
-
+		$user->setup('posting');
 		page_header($user->lang['SMILIES']);
 
 		$sql = 'SELECT COUNT(smiley_id) AS item_count
@@ -56,7 +41,7 @@ function generate_smilies($mode, $forum_id)
 		);
 
 		$template->assign_var('PAGINATION',
-			generate_pagination(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies&amp;f=' . $forum_id),
+			generate_pagination(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'),
 				$smiley_count, $config['smilies_per_page'], $start, true)
 		);
 	}
@@ -124,7 +109,7 @@ function generate_smilies($mode, $forum_id)
 	{
 		$template->assign_vars(array(
 			'S_SHOW_SMILEY_LINK' 	=> true,
-			'U_MORE_SMILIES' 		=> append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies&amp;f=' . $forum_id))
+			'U_MORE_SMILIES' 		=> append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'))
 		);
 	}
 

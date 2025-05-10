@@ -114,7 +114,7 @@ switch ($mode)
 
 	case 'smilies':
 		$sql = '';
-		generate_smilies('window', $forum_id);
+		generate_smilies('window');
 	break;
 
 	case 'popup':
@@ -1356,7 +1356,7 @@ if ($config['load_moderators'])
 }
 
 // Generate smiley listing
-generate_smilies('inline', $forum_id);
+generate_smilies('inline');
 
 // Generate inline attachment select box
 posting_gen_inline_attachments($attachment_data);

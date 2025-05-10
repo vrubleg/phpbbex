@@ -67,7 +67,7 @@ $spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $con
 
 if ($config['allow_quick_' . $mode . '_smilies'])
 {
-	generate_smilies('inline', $forum_id);
+	generate_smilies('inline');
 }
 
 $s_topic_icons = false;
