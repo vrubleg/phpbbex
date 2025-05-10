@@ -397,8 +397,6 @@ $lang = array_merge($lang, array(
 	'UCP_PM_COMPOSE'			=> 'Compose message',
 	'UCP_PM_DRAFTS'				=> 'Manage PM drafts',
 	'UCP_PM_OPTIONS'			=> 'Rules, folders &amp; settings',
-	'UCP_PM_POPUP'				=> 'Private messages',
-	'UCP_PM_POPUP_TITLE'		=> 'Private message popup',
 	'UCP_PM_UNREAD'				=> 'Unread messages',
 	'UCP_PM_VIEW'				=> 'View messages',
 

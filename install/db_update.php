@@ -464,6 +464,10 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		'override_user_dst',
 	]);
 
+	// Disable obsolete modules (they can be removed in the ACP safely).
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'ucp' AND module_basename = 'pm' AND module_mode = 'popup'");
+
 	// Remove no longer used columns.
 
 	$db->sql_return_on_error(true);
