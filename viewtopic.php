@@ -257,7 +257,7 @@ if ($topic_data['topic_type'] != POST_NORMAL && $topic_data['topic_time_limit'] 
 }
 
 // Setup look and feel
-$user->setup('viewtopic', $topic_data['forum_style']);
+$user->setup('viewtopic');
 
 if (!$topic_data['topic_approved'] && !$auth->acl_get('m_approve', $forum_id))
 {

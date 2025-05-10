@@ -86,7 +86,6 @@ $lang = array_merge($lang, array(
 	'FORUM_NOT_EXIST'		=> 'Выбранный вами раздел не существует.',
 	'FORUM_NOT_POSTABLE'	=> 'В выбранном вами разделе нельзя оставлять сообщения.',
 	'FORUM_STATUS'			=> 'Статус раздела',
-	'FORUM_STYLE'			=> 'Стиль раздела',
 
 	'GLOBAL_ANNOUNCEMENT'	=> 'Важная',
 

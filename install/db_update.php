@@ -461,15 +461,21 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		'rand_seed_last_update',
 		'hot_threshold',
 		'avatar_salt',
+		'override_user_dst',
 	]);
 
-	// Remove unused columns from groups table.
+	// Disable obsolete modules (they can be removed in the ACP safely).
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'ucp' AND module_basename = 'pm' AND module_mode = 'popup'");
+
+	// Remove no longer used columns.
 
 	$db->sql_return_on_error(true);
-	$db->sql_query("ALTER TABLE " . GROUPS_TABLE . " DROP COLUMN group_avatar");
-	$db->sql_query("ALTER TABLE " . GROUPS_TABLE . " DROP COLUMN group_avatar_type");
-	$db->sql_query("ALTER TABLE " . GROUPS_TABLE . " DROP COLUMN group_avatar_width");
-	$db->sql_query("ALTER TABLE " . GROUPS_TABLE . " DROP COLUMN group_avatar_height");
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_avatar');
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_avatar_type');
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_avatar_width');
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_avatar_height');
+	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_style');
 	$db->sql_return_on_error(false);
 
 	// Update DB schema version.
@@ -1436,13 +1442,7 @@ function database_update_info()
 		'3.0.4-RC1'		=> array(),
 
 		// Changes from 3.0.4 to 3.0.5-RC1
-		'3.0.4'			=> array(
-			'change_columns'	=> array(
-				FORUMS_TABLE				=> array(
-					'forum_style'			=> array('UINT', 0),
-				),
-			),
-		),
+		'3.0.4'			=> array(),
 
 		// No changes from 3.0.5-RC1 to 3.0.5
 		'3.0.5-RC1'		=> array(),

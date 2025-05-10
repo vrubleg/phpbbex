@@ -397,8 +397,6 @@ $lang = array_merge($lang, array(
 	'UCP_PM_COMPOSE'			=> 'Новое сообщение',
 	'UCP_PM_DRAFTS'				=> 'Управление черновиками',
 	'UCP_PM_OPTIONS'			=> 'Правила, папки и настройки',
-	'UCP_PM_POPUP'				=> 'Личные сообщения',
-	'UCP_PM_POPUP_TITLE'		=> 'Всплывающее окно о новом личном сообщении',
 	'UCP_PM_UNREAD'				=> 'Непрочитанные сообщения',
 	'UCP_PM_VIEW'				=> 'Просмотр сообщений',
 

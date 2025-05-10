@@ -4248,9 +4248,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'U_PM_OUTBOX'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=outbox'),
 		'U_PM_SENTBOX'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=sentbox'),
 		'U_PM_DRAFTS'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=drafts'),
-		'U_RETURN_INBOX'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=inbox'),
-		'U_POPUP_PM'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=popup'),
-		'UA_POPUP_PM'			=> addslashes(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=popup')),
 
 		'U_MEMBERLIST'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php'),
 		'U_MEMBERLIST_ACTIVE'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=active'),

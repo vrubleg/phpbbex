@@ -85,7 +85,6 @@ $lang = array_merge($lang, array(
 	'FORUM_RULES_TOO_LONG'				=> 'Правила раздела не должны превышать 4000 символов.',
 	'FORUM_SETTINGS'					=> 'Настройки раздела',
 	'FORUM_STATUS'						=> 'Статус раздела',
-	'FORUM_STYLE'						=> 'Стиль раздела',
 	'FORUM_DISPLAY_SETTINGS'			=> 'Настройки отображения раздела',
 	'FORUM_TOPICS_PAGE'					=> 'Тем на странице',
 	'FORUM_TOPICS_PAGE_EXPLAIN'			=> 'Если отлично от нуля, это значение заменит настройку количества тем на страницу по умолчанию.',

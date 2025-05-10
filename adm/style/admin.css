@@ -60,10 +60,6 @@ h2, caption {
 	margin-top: 25px;
 }
 
-.rtl h2, .rtl caption {
-	text-align: right;
-}
-
 h3, h4 {
 	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	font-size: 1.20em;
@@ -81,10 +77,6 @@ p {
 ul {
 	list-style: disc;
 	margin: 0 0 1em 2em;
-}
-
-.rtl ul {
-	margin: 0 2em 1em 0;
 }
 
 hr {
@@ -150,11 +142,6 @@ li {
 	margin-bottom: 10px;
 }
 
-.rtl #page-header {
-	text-align: left;
-	background: url("../images/phpbb_logo.png") top right no-repeat;
-}
-
 #page-header h1 {
 	color: #767676;
 	font-family: "Trebuchet MS",Helvetica,sans-serif;
@@ -199,11 +186,6 @@ li {
 	min-height: 350px;
 }
 
-.rtl #main {
-	float: right;
-	margin: 0 3% 0 0;
-}
-
 #page-body.simple-page-body {
 	padding: 0;
 	padding-right: 10px;
@@ -217,10 +199,6 @@ li {
 	line-height: normal;
 	margin: 0 0 -6px 7px;
 	min-width: 600px;
-}
-
-.rtl #tabs {
-	margin: 0 7px -6px 0;
 }
 
 #tabs ul {
@@ -244,10 +222,6 @@ li {
 	padding: 0 0 0 7px;
 	text-decoration: none;
 	position: relative;
-}
-
-.rtl #tabs a {
-	float: right;
 }
 
 #tabs a span {
@@ -339,36 +313,6 @@ span.corners-bottom span {
 /* Sub-navigation Menu
 ---------------------------------------- */
 
-/* Toggle */
-#toggle {
-	padding: 5px;
-	width: 5%;
-	height: 100px;
-	position: absolute;
-	left: 15%;
-	top: 28px;
-	margin-left: 2px;
-}
-
-.rtl #toggle {
-	left: 75%;
-	margin-right: 0;
-	margin-left: 6px;
-}
-
-#toggle-handle {
-	display: block;
-	width: 18px;
-	height: 19px;
-	float: right;
-	background-image: url(../images/toggle.gif);
-}
-
-.rtl #toggle-handle {
-	background-image: url(../images/toggle.gif);
-	background-position: 100% 50%;
-}
-
 /* Menu */
 #menu {
 	float: left;
@@ -376,12 +320,6 @@ span.corners-bottom span {
 	font-size: 1.00em;
 	padding: 0;
 	border-right: 1px solid #CCCFD3;
-}
-
-.rtl #menu {
-	float: right;
-	border: none;
-	border-left: 1px solid #CCCFD3;
 }
 
 #menu p {
@@ -413,10 +351,6 @@ span.corners-bottom span {
 	color: #138ECB;
 }
 
-.rtl #menu li span {
-	padding: 3px 8px 3px 3px;
-}
-
 #menu li a:hover, #menu li a:hover span {
 	text-decoration: none;
 	background-color: #FFFFFF;
@@ -434,19 +368,11 @@ span.corners-bottom span {
 	background: transparent url("../images/arrow_right.gif") 0% 50% no-repeat;
 }
 
-.rtl #menu li#activemenu a span {
-	background: transparent url("../images/arrow_left.gif") 100% 50% no-repeat;
-}
-
 #menu li#activemenu a:hover span, #menu li#activemenu span {
 	text-decoration: none;
 	font-weight: bold;
 	color: #BC2A4D;
 	background: #FFFFFF url("../images/arrow_right.gif") 1% 50% no-repeat;
-}
-
-.rtl #menu li#activemenu a:hover span, .rtl #menu li#activemenu span {
-	background: #FFFFFF url("../images/arrow_left.gif") 99% 50% no-repeat;
 }
 
 #menu li a:active, #menu li a:active span, #menu li#activemenu a:active span {
@@ -457,12 +383,6 @@ span.corners-bottom span {
 	text-decoration: none;
 	padding: 3px 3px 3px 12px;
 	background: url("../images/arrow_down.gif") 1% 50% no-repeat;
-}
-
-.rtl #menu li span.completed {
-	text-decoration: none;
-	padding: 3px 12px 3px 3px;
-	background: url("../images/arrow_down.gif") 99% 50% no-repeat;
 }
 
 #menu li.header {
@@ -505,10 +425,6 @@ td {
 	line-height: 1.20em;
 }
 
-.rtl th, .rtl td {
-	text-align: right;
-}
-
 table.type2 {
 	border: none;
 	background: none;
@@ -541,10 +457,6 @@ table.type3  {
 	padding: 0;
 }
 
-.rtl table.type3 {
-	float: left;
-}
-
 table.type3 thead th {
 	background-color: transparent;
 	border-top: none;
@@ -567,10 +479,6 @@ table.type3 tbody th {
 	width: 100%;
 }
 
-.rtl table.type3 tbody th {
-	text-align: right;
-}
-
 table.type3 td {
 	text-align: center;
 	padding: 1px;
@@ -581,26 +489,14 @@ th.name {
 	width: auto;
 }
 
-.rtl th.name {
-	text-align: right;
-}
-
 td.name {
 	text-align: left;
 	font-weight: bold;
 }
 
-.rtl td.name {
-	text-align: right;
-}
-
 .entry {
 	text-align: left;
 	font-weight: normal;
-}
-
-.rtl .entry {
-	text-align: right;
 }
 
 .row1 { background-color: #F9F9F9; }
@@ -631,13 +527,6 @@ fieldset {
 	border-left: 1px solid #D7D7D7;
 	background-color: #FFFFFF;
 	position: relative;
-}
-
-.rtl fieldset {
-	border-top: 1px solid #D7D7D7;
-	border-right: 1px solid #D7D7D7;
-	border-bottom: 1px solid #CCCCCC;
-	border-left: 1px solid #CCCCCC;
 }
 
 fieldset p {
@@ -675,13 +564,6 @@ input, textarea {
 
 input[type=button], input[type=submit], input[type=reset], input[type=radio], input[type=checkbox] {
 	cursor: pointer;
-}
-
-.rtl input, .rtl textarea {
-	border-left: 1px solid #D5D5C8;
-	border-top: 1px solid #AFAEAA;
-	border-right: 1px solid #AFAEAA;
-	border-bottom: 1px solid #D5D5C8;
 }
 
 input:hover, textarea:hover {
@@ -730,10 +612,6 @@ option.disabled-option {
 	color: graytext;
 }
 
-.rtl option {
-	padding: 0 0 0 1em;
-}
-
 .sep {
 	font-weight: bold;
 }
@@ -755,10 +633,6 @@ label {
 	padding: 0 5px 0 0;
 }
 
-.rtl label {
-	padding: 0 0 0 5px;
-}
-
 label input {
 	font-size: 1.00em;
 	vertical-align: middle;
@@ -774,10 +648,6 @@ fieldset.quick, p.quick {
 	border: none;
 	background-color: transparent;
 	text-align: right;
-}
-
-.rtl fieldset.quick, .rtl p.quick {
-	text-align: left;
 }
 
 fieldset.quick legend {
@@ -841,14 +711,9 @@ dt {
 	width: auto;
 }
 
-.rtl dt {
-	float: right;
-}
-
 dd { color: #666666;}
 dd + dd { padding-top: 5px;}
 dt span { padding: 0 5px 0 0;}
-.rtl dt span { padding: 0 0 0 5px;}
 
 dt .explain { font-style: italic;}
 
@@ -859,19 +724,11 @@ dt label {
 	color: #4A5A73;
 }
 
-.rtl dt label {
-	text-align: right;
-}
-
 dd label {
 	font-size: 1.00em;
 	white-space: nowrap;
 	margin: 0 10px 0 0;
 	color: #4A5A73;
-}
-
-.rtl dd label {
-	margin: 0 0 0 10px;
 }
 
 html>body dd label input { vertical-align: text-bottom;}	/* Tweak for Moz to align checkboxes/radio buttons nicely */
@@ -908,12 +765,6 @@ fieldset dt {
 	padding-top: 3px;
 }
 
-.rtl fieldset dt {
-	text-align: right;
-	border: none;
-	border-left: 1px solid #CCCCCC;
-}
-
 fieldset dd {
 	margin: 0 0 0 45%;
 	padding: 0 0 0 5px;
@@ -923,14 +774,7 @@ fieldset dd {
 	font-size: 1.00em;
 }
 
-.rtl fieldset dd {
-	margin: 0 45% 0 0;
-	padding: 0 5px 0 0;
-	border: none;
-	border-right: 1px solid #CCCCCC;
-}
-
-dd.full, .rtl dd.full {
+dd.full {
 	margin: 0;
 	border: 0;
 	padding: 0;
@@ -988,7 +832,7 @@ fieldset.submit-buttons legend {
 /* Input field styles
 ---------------------------------------- */
 
-input.radio, input.permissions-checkbox {
+input.radio, input.checkbox, input.permissions-checkbox {
 	width: auto !important;
 	background-color: transparent;
 	border: none;
@@ -1076,10 +920,6 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 	margin-top: 5px;
 	font-size: 0.85em;
 	padding-bottom: 2px;
-}
-
-.rtl .pagination {
-	text-align: left;
 }
 
 .pagination strong,
@@ -1254,10 +1094,6 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 	padding: 0;
 }
 
-.rtl .sourcenum {
-	text-align: left;
-}
-
 .source {
 	font-family: Monaco, 'Courier New', monospace;
 	font-size: 1.25em;
@@ -1306,27 +1142,14 @@ fieldset.permissions .permissions-simple {
 	padding-top: 3px;
 }
 
-.rtl fieldset.permissions .permissions-simple {
-	text-align: right;
-}
-
 fieldset.permissions .permissions-advanced {
 	padding: 10px 0 0 5px;
 	vertical-align: top;
 	clear: right;
 }
 
-.rtl fieldset.permissions .permissions-advanced {
-	padding: 10px 5px 0 0;
-	clear: left;
-}
-
 fieldset.permissions .permissions-switch {
 	float: right;
-}
-
-.rtl fieldset.permissions .permissions-switch {
-	float: left;
 }
 
 fieldset.permissions .padding {
@@ -1357,10 +1180,6 @@ fieldset.permissions .padding {
 	font-size: 0.85em;
 }
 
-.rtl .permissions-category {
-	margin: 0 7px -1px 0;
-}
-
 .permissions-category ul {
 	margin: 0;
 	padding: 0;
@@ -1382,10 +1201,6 @@ fieldset.permissions .padding {
 	padding: 0 0 0 6px;
 	text-decoration: none;
 	position: relative;
-}
-
-.rtl .permissions-category a {
-	float: right;
 }
 
 .permissions-category a span.tabbg {
@@ -1436,13 +1251,6 @@ fieldset.permissions .padding {
 	margin: 0 5px 0 0;
 }
 
-/* Most browsers will have to live with a left aligned icon in RTL mode, as (currently) only Firefox 3.0 Alpha 3 renders it correctly without destroying it
-.rtl .permissions-category a span.colour {
-	float: right;
-	margin: 0 0 0 5px;
-}
-*/
-
 .permissions-category .activetab span.colour {
 	border-color: #333333;
 }
@@ -1480,10 +1288,6 @@ fieldset.permissions .padding {
 	float: left;
 	background-color: #CADCEB;
 	width: 100%;
-}
-
-.rtl .permissions-panel {
-	float: right;
 }
 
 .permissions-panel span.corners-top {
@@ -1556,10 +1360,6 @@ fieldset.permissions .padding {
 	text-align: left;
 	width: auto;
 	text-transform: none;
-}
-
-.rtl .permissions-panel th.name {
-	text-align: right;
 }
 
 .permissions-panel th.permissions-name {
