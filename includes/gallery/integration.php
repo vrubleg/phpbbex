@@ -85,28 +85,6 @@ class phpbb_gallery_integration
 		}
 	}
 
-	static public function generate_smilies($mode, $forum_id)
-	{
-		$gallery_popup = request_var('popup_from_gallery', false);
-
-		if ($mode == 'window' && $gallery_popup)
-		{
-			global $template;
-
-			$template->assign_vars(array(
-				'U_MORE_SMILIES' 			=> append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies&amp;popup_from_gallery=1'),
-			));
-		}
-		elseif ($mode == 'inline' && defined('IN_PHPBB_GALLERY'))
-		{
-			global $template;
-
-			$template->assign_vars(array(
-				'U_MORE_SMILIES' 			=> append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies&amp;popup_from_gallery=1'),
-			));
-		}
-	}
-
 	static public function posting_display_popup()
 	{
 		if (true)//phpbb_gallery_config::get('display_popup'))

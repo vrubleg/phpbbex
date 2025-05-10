@@ -312,7 +312,7 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	display_custom_bbcodes();
 
 	// Build smilies array
-	generate_smilies('inline', 0);
+	generate_smilies('inline');
 
 	$s_hide_comment_input = (time() < ($album_data['contest_start'] + $album_data['contest_end'])) ? true : false;
 

@@ -401,7 +401,7 @@ else
 		display_custom_bbcodes();
 
 		// Build smilies array
-		generate_smilies('inline', 0);
+		generate_smilies('inline');
 	}
 
 	if ($mode == 'upload_edit')

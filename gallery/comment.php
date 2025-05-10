@@ -147,7 +147,7 @@ $template->assign_vars(array(
 display_custom_bbcodes();
 
 // Build smilies array
-generate_smilies('inline', 0);
+generate_smilies('inline');
 
 /**
 * Rating-System: now you can comment and rate in one form
