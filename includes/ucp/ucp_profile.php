@@ -577,7 +577,7 @@ class ucp_profile
 				display_custom_bbcodes();
 
 				// Generate smiley listing
-				generate_smilies('inline', 0);
+				generate_smilies('inline');
 
 			break;
 

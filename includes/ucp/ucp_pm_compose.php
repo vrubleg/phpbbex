@@ -201,7 +201,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		break;
 
 		case 'smilies':
-			generate_smilies('window', 0);
+			generate_smilies('window');
 		break;
 
 		default:
@@ -880,7 +880,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	// MAIN PM PAGE BEGINS HERE
 
 	// Generate smiley listing
-	generate_smilies('inline', 0);
+	generate_smilies('inline');
 
 	// Generate PM Icons
 	$s_pm_icons = false;
@@ -1089,10 +1089,6 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		'S_POST_ACTION'				=> $s_action,
 		'S_HIDDEN_ADDRESS_FIELD'	=> $s_hidden_address_field,
 		'S_HIDDEN_FIELDS'			=> $s_hidden_fields,
-
-		'S_CLOSE_PROGRESS_WINDOW'	=> isset($_POST['add_file']),
-		'U_PROGRESS_BAR'			=> append_sid(PHPBB_ROOT_PATH . 'posting.php', 'f=0&amp;mode=popup'),
-		'UA_PROGRESS_BAR'			=> addslashes(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'f=0&amp;mode=popup')),
 	));
 
 	// Build custom bbcodes array
