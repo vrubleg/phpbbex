@@ -169,7 +169,6 @@ $lang = array_merge($lang, array(
 	'POST_STORED'				=> 'This message has been posted successfully.',
 	'POST_STORED_MOD'			=> 'This message has been submitted successfully, but it will need to be approved by a moderator before it is publicly viewable.',
 	'POST_TOPIC_AS'				=> 'Post topic as',
-	'PROGRESS_BAR'				=> 'Progress bar',
 
 	'QUOTE_DEPTH_EXCEEDED'		=> 'You may embed only %1$d quotes within each other.',
 	'SPOILER_DEPTH_EXCEEDED'	=> 'You may embed only %1$d spoilers within each other.',

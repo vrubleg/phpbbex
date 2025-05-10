@@ -130,11 +130,9 @@ $lang = array_merge($lang, array(
 	'IMG_CAT_ICONS'			=> 'General icons',
 	'IMG_CAT_LOGOS'			=> 'Logos',
 	'IMG_CAT_POLLS'			=> 'Polling images',
-	'IMG_CAT_UI'			=> 'General user interface elements',
 	'IMG_CAT_USER'			=> 'Additional images',
 
 	'IMG_SITE_LOGO'			=> 'Main logo',
-	'IMG_UPLOAD_BAR'		=> 'Upload progress bar',
 	'IMG_POLL_LEFT'			=> 'Poll left end',
 	'IMG_POLL_CENTER'		=> 'Poll centre',
 	'IMG_POLL_RIGHT'		=> 'Poll right end',

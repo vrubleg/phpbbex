@@ -117,20 +117,6 @@ switch ($mode)
 		generate_smilies('window');
 	break;
 
-	case 'popup':
-		if ($forum_id)
-		{
-			$sql = 'SELECT forum_style
-				FROM ' . FORUMS_TABLE . '
-				WHERE forum_id = ' . $forum_id;
-		}
-		else
-		{
-			upload_popup();
-			return;
-		}
-	break;
-
 	default:
 		$sql = '';
 	break;
@@ -160,12 +146,6 @@ if (!$post_data)
 if ($auth->acl_get('m_approve', $forum_id) && ((($mode == 'reply' || $mode == 'bump') && !$post_data['topic_approved']) || ($mode == 'quote' && !$post_data['post_approved'])))
 {
 	trigger_error(($mode == 'reply' || $mode == 'bump') ? 'TOPIC_UNAPPROVED' : 'POST_UNAPPROVED');
-}
-
-if ($mode == 'popup')
-{
-	upload_popup($post_data['forum_style']);
-	return;
 }
 
 $user->setup(array('posting', 'mcp', 'viewtopic'), $post_data['forum_style']);
@@ -1480,11 +1460,8 @@ $template->assign_vars(array(
 	'EDIT_REASON'			=> $post_data['post_edit_reason'],
 	'U_VIEW_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id"),
 	'U_VIEW_TOPIC'			=> ($mode != 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id") : '',
-	'U_PROGRESS_BAR'		=> append_sid(PHPBB_ROOT_PATH . 'posting.php', "f=$forum_id&amp;mode=popup"),
-	'UA_PROGRESS_BAR'		=> addslashes(append_sid(PHPBB_ROOT_PATH . 'posting.php', "f=$forum_id&amp;mode=popup")),
 
 	'S_PRIVMSGS'				=> false,
-	'S_CLOSE_PROGRESS_WINDOW'	=> (isset($_POST['add_file'])) ? true : false,
 	'S_EDIT_POST'				=> ($mode == 'edit') ? true : false,
 	'S_EDIT_REASON'				=> ($mode == 'edit' && $auth->acl_get('m_edit', $forum_id)) ? true : false,
 	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered'] || ($mode == 'edit' && $post_data['poster_id'] == ANONYMOUS)) ? true : false,
@@ -1578,31 +1555,6 @@ if (($mode == 'reply' || $mode == 'quote') && !empty($config['posting_topic_revi
 }
 
 page_footer();
-
-/**
-* Show upload popup (progress bar)
-*/
-function upload_popup($forum_style = 0)
-{
-	global $template, $user;
-
-	($forum_style) ? $user->setup('posting', $forum_style) : $user->setup('posting');
-
-	page_header($user->lang['PROGRESS_BAR'], false);
-
-	$template->set_filenames(array(
-		'popup'	=> 'posting_progress_bar.html')
-	);
-
-	$template->assign_vars(array(
-		'PROGRESS_BAR'	=> $user->img('upload_bar', $user->lang['UPLOAD_IN_PROGRESS']))
-	);
-
-	$template->display('popup');
-
-	garbage_collection();
-	exit_handler();
-}
 
 /**
 * Do the various checks required for removing posts as well as removing it

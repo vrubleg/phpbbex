@@ -129,11 +129,9 @@ $lang = array_merge($lang, array(
 	'IMG_CAT_ICONS'			=> 'Общие иконки',
 	'IMG_CAT_LOGOS'			=> 'Логотипы',
 	'IMG_CAT_POLLS'			=> 'Изображения опросов',
-	'IMG_CAT_UI'			=> 'Общие элементы пользовательского интерфейса',
 	'IMG_CAT_USER'			=> 'Дополнительные изображения',
 
 	'IMG_SITE_LOGO'			=> 'Главный логотип',
-	'IMG_UPLOAD_BAR'		=> 'Состояние закачки',
 	'IMG_POLL_LEFT'			=> 'Опрос слева',
 	'IMG_POLL_CENTER'		=> 'Опрос в центре',
 	'IMG_POLL_RIGHT'		=> 'Опрос справа',
