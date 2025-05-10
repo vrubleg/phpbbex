@@ -230,7 +230,6 @@ $lang = array_merge($lang, array(
 	'LOOK_UP_FORUMS_EXPLAIN'=> 'Можно выбрать более одного раздела.',
 
 	'MANAGE'				=> 'Управление',
-	'MENU_TOGGLE'			=> 'Показать или скрыть боковое меню',
 	'MORE'					=> 'Подробнее',			// Not used at the moment
 	'MORE_INFORMATION'		=> 'Дополнительные сведения »',
 	'MOVE_DOWN'				=> 'Вниз',
