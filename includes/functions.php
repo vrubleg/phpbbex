@@ -2753,6 +2753,9 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 
 	$err = '';
 
+	// Don't allow robots to index login pages.
+	header('X-Robots-Tag: noindex');
+
 	// Make sure user->setup() has been called
 	if (empty($user->lang))
 	{
