@@ -2751,12 +2751,10 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 {
 	global $db, $user, $template, $auth, $config;
 
-	if (!class_exists('phpbb_captcha_factory'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
-	}
-
 	$err = '';
+
+	// Don't allow robots to index login pages.
+	header('X-Robots-Tag: noindex');
 
 	// Make sure user->setup() has been called
 	if (empty($user->lang))
@@ -2877,6 +2875,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		{
 			case LOGIN_ERROR_ATTEMPTS:
 
+				require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 				$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 				$captcha->init(CONFIRM_LOGIN);
 				// $captcha->reset();

@@ -155,11 +155,7 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 	if ($show_captcha)
 	{
 		// Visual Confirmation handling
-		if (!class_exists('phpbb_captcha_factory'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
-		}
-
+		require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 		$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 		$captcha->init(CONFIRM_LOGIN);
 		$vc_response = $captcha->validate($row);
