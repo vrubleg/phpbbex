@@ -13,40 +13,12 @@ AddCharset utf-8 .html .css .js .xml .json .rss
 Options -Indexes -MultiViews
 FileETag None
 
-# MIME types.
-AddType audio/ogg						ogg oga
-AddType video/ogg						ogv
-AddType audio/webm						webma
-AddType video/webm						webm webmv
-AddType audio/mp4						m4a
-AddType video/mp4						mp4 m4v
-AddType audio/opus						opus
-AddType audio/flac						flac
-AddType audio/aac						aac
-AddType audio/mpeg						mp1 mp2 mp3 mpg mpeg
-AddType audio/wav						wav
-AddType image/png						png
-AddType image/gif						gif
-AddType image/jpeg						jpg jpeg
-AddType image/webp						webp
-AddType image/svg+xml					svg svgz
-AddType font/ttf						ttf
-AddType font/otf						otf
-AddType font/woff						woff
-AddType font/woff2						woff2
-AddType text/javascript					js
-AddType text/css						css
-AddType text/html						html
-AddType text/plain						txt log csv tsv
-AddType application/x-7z-compressed		7z
-AddType application/x-bittorrent		torrent
-
 # Default expiration.
 <IfModule mod_expires.c>
 ExpiresActive On
 ExpiresByType image/*			"access plus 1 month"
-ExpiresByType audio/*			"access plus 3 month"
-ExpiresByType video/*			"access plus 3 month"
+ExpiresByType audio/*			"access plus 1 month"
+ExpiresByType video/*			"access plus 1 month"
 ExpiresByType font/*			"access plus 1 month"
 ExpiresByType text/css			"access plus 7 days"
 ExpiresByType text/javascript	"access plus 7 days"

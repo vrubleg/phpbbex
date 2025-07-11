@@ -163,7 +163,7 @@ $user->theme['template_storedb'] = false;
 
 $install = new module();
 
-$install->create('install', "index.php", $mode, $sub);
+$install->create('install', 'index.php', $mode, $sub);
 $install->load();
 
 // Generate the page
