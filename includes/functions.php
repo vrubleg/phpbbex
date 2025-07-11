@@ -3552,6 +3552,9 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 
 		case E_USER_ERROR:
 
+			// Don't allow robots to index error pages.
+			header('X-Robots-Tag: noindex');
+
 			if (!empty($user) && !empty($user->lang))
 			{
 				$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
@@ -3634,6 +3637,9 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 		case E_USER_NOTICE:
 
 			define('IN_ERROR_HANDLER', true);
+
+			// Don't allow robots to index error pages.
+			header('X-Robots-Tag: noindex');
 
 			if (empty($user->data))
 			{
