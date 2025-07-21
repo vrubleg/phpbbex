@@ -4402,13 +4402,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'style_ml_show_website',
 		'style_ml_show_joined',
 		'style_ml_show_last_active',
-
-		// counters
-		'style_counter_html_1',
-		'style_counter_html_2',
-		'style_counter_html_3',
-		'style_counter_html_4',
-		'style_counter_html_5',
 	);
 
 	foreach ($settings as $setting)

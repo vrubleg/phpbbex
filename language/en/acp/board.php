@@ -106,10 +106,8 @@ $lang = array_merge($lang, array(
 	'STYLE_MP_SHOW_WEBSITE'				=> 'Display user site',
 	'STYLE_MP_SHOW_LAST_ACTIVE'			=> 'Display user last active date',
 
-	'STYLE_SETTINGS_FOOTER'				=> 'Page footer',
 	'COPYRIGHT_NOTICE'					=> 'Copyrights (HTML)',
 	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'Use {POWERED_BY} or {L_POWERED_BY} placeholder to output phpBBex copyright.',
-	'STYLE_COUNTER_HTML'				=> 'Counter code (HTML)',
 
 	'AUTO'								=> 'Auto',
 	'ON_LEFT'							=> 'On Left',

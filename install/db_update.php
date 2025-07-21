@@ -462,6 +462,11 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		'hot_threshold',
 		'avatar_salt',
 		'override_user_dst',
+		'style_counter_html_1',
+		'style_counter_html_2',
+		'style_counter_html_3',
+		'style_counter_html_4',
+		'style_counter_html_5',
 	]);
 
 	// Disable obsolete modules (they can be removed in the ACP safely).
