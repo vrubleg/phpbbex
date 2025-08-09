@@ -1231,7 +1231,7 @@ class fulltext_native extends search_backend
 		// Remove common words
 		if ($config['num_posts'] >= 100 && $config['fulltext_native_common_thres'])
 		{
-			$common_threshold = ((double) $config['fulltext_native_common_thres']) / 100.0;
+			$common_threshold = ((float) $config['fulltext_native_common_thres']) / 100.0;
 			// First, get the IDs of common words
 			$sql = 'SELECT word_id, word_text
 				FROM ' . SEARCH_WORDLIST_TABLE . '
@@ -1586,7 +1586,7 @@ class fulltext_native extends search_backend
 		</dl>
 		<dl>
 			<dt><label for="fulltext_native_common_thres">' . $user->lang['COMMON_WORD_THRESHOLD'] . ':</label><br /><span>' . $user->lang['COMMON_WORD_THRESHOLD_EXPLAIN'] . '</span></dt>
-			<dd><input id="fulltext_native_common_thres" type="text" size="3" maxlength="3" name="config[fulltext_native_common_thres]" value="' . (double) $config['fulltext_native_common_thres'] . '" /> %</dd>
+			<dd><input id="fulltext_native_common_thres" type="text" size="3" maxlength="3" name="config[fulltext_native_common_thres]" value="' . (float) $config['fulltext_native_common_thres'] . '" /> %</dd>
 		</dl>
 		';
 
