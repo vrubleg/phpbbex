@@ -184,7 +184,7 @@ class phpbb_gallery_image_file
 		}
 		@chmod($destination, $this->chmod);
 
-		if ($destroy_image)
+		if ($destroy_image && PHP_VERSION_ID < 80000)
 		{
 			imagedestroy($this->image);
 		}
@@ -527,7 +527,7 @@ class phpbb_gallery_image_file
 			$dst_y = (($this->image_size['height'] * 0.5) - ($this->watermark_size[1] * 0.5));
 		}
 		imagecopy($this->image, $this->watermark, $dst_x, $dst_y, 0, 0, $this->watermark_size[0], $this->watermark_size[1]);
-		imagedestroy($this->watermark);
+		if (PHP_VERSION_ID < 80000) { imagedestroy($this->watermark); }
 
 		$this->watermarked = true;
 	}
