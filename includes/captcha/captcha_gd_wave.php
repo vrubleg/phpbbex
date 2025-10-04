@@ -253,7 +253,7 @@ class captcha
 		header('Content-Type: image/png');
 		header('Cache-Control: no-store');
 		imagepng($img);
-		imagedestroy($img);
+		if (PHP_VERSION_ID < 80000) { imagedestroy($img); }
 	}
 
 	function wave_height($x, $y, $factor = 1, $tweak = 0.7)

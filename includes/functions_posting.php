@@ -723,7 +723,7 @@ function create_thumbnail($source, $destination, $mimetype)
 				break;
 			}
 
-			imagedestroy($new_image);
+			if (PHP_VERSION_ID < 80000) { imagedestroy($new_image); }
 		}
 		else
 		{

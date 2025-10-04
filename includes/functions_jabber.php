@@ -787,7 +787,7 @@ class jabber
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, $skip_white);
 		xml_parse_into_struct($parser, $data, $vals, $index);
-		xml_parser_free($parser);
+		if (PHP_VERSION_ID < 80000) { xml_parser_free($parser); }
 
 		$i = 0;
 		$tagname = $vals[$i]['tag'];
