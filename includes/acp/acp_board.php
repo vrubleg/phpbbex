@@ -49,6 +49,7 @@ class acp_board
 						'sitename'				=> array('lang' => 'SITE_NAME',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						'site_desc'				=> array('lang' => 'SITE_DESC',				'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
 						'site_keywords'			=> array('lang' => 'SITE_KEYWORDS',			'validate' => 'string',	'type' => 'text:40:255', 'explain' => false),
+						'copyright_notice'		=> array('lang' => 'COPYRIGHT_NOTICE',		'validate' => 'string',	'type' => 'htmlarea:3:1000', 'explain' => true),
 						'board_disable'			=> array('lang' => 'DISABLE_BOARD',			'validate' => 'bool',	'type' => 'custom', 'method' => 'board_disable', 'explain' => true),
 						'board_disable_msg'		=> false,
 						'default_lang'			=> array('lang' => 'DEFAULT_LANGUAGE',		'validate' => 'lang',	'type' => 'select', 'function' => 'language_select', 'params' => array('{CONFIG_VALUE}'), 'explain' => false),
@@ -205,15 +206,7 @@ class acp_board
 						'load_cpf_viewprofile'				=> array('lang' => 'LOAD_CPF_VIEWPROFILE',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'load_cpf_viewtopic'				=> array('lang' => 'LOAD_CPF_VIEWTOPIC',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 
-						'legend8'							=> 'STYLE_SETTINGS_FOOTER',
-						'copyright_notice'					=> array('lang' => 'COPYRIGHT_NOTICE',					'validate' => 'string',	'type' => 'htmlarea:2:800', 'explain' => true),
-						'style_counter_html_1'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
-						'style_counter_html_2'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
-						'style_counter_html_3'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
-						'style_counter_html_4'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
-						'style_counter_html_5'				=> array('lang' => 'STYLE_COUNTER_HTML',				'validate' => 'string',	'type' => 'htmlarea:2:1000', 'explain' => false),
-
-						'legend9'							=> 'ACP_SUBMIT_CHANGES',
+						'legend8'							=> 'ACP_SUBMIT_CHANGES',
 					)
 				);
 			break;

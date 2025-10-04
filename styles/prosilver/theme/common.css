@@ -533,22 +533,13 @@ li.pagination {
 
 .copyright {
 	padding: 5px;
-	text-align: left;
+	text-align: center;
 	color: #555555;
 	line-height: 1.1em;
 }
 
-.counters {
-	padding: 7px;
-	float: right;
-}
-
-.counters img {
+.copyright img {
 	vertical-align: bottom;
-}
-
-.navbar + .copyright {
-	text-align: center;
 }
 
 .small {
