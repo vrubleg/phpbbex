@@ -1990,7 +1990,7 @@ class char_cube3d
 					$pol2 = $this->gen_poly($xo, $yo, $origin, $yvec, $y_corner, $zvec);
 					$face = $this->gen_poly($xo, $yo, $origin, $xvec, $face_corner, $yvec);
 
-					if (version_compare(PHP_VERSION, '8.0', '<'))
+					if (PHP_VERSION_ID < 80000)
 					{
 						imagefilledpolygon($img, $pol1, 4, $colour1);
 						imagefilledpolygon($img, $pol2, 4, $colour2);

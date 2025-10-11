@@ -236,7 +236,7 @@ class captcha
 					$poly2 = array_merge($img_buffer[$buffer_prev][$x - 1], $img_buffer[$buffer_prev][$x], $img_buffer[$buffer_cur][$x]);
 				}
 
-				if (version_compare(PHP_VERSION, '8.0', '<'))
+				if (PHP_VERSION_ID < 80000)
 				{
 					imagefilledpolygon($img, $poly1, 3, $color);
 					imagefilledpolygon($img, $poly2, 3, $color);

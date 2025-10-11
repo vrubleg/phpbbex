@@ -40,7 +40,7 @@ class tutorial
 	function tool_active()
 	{
 		// Limit access for old PHP versions.
-		if (version_compare(PHP_VERSION, '7.4', '<'))
+		if (PHP_VERSION_ID < 70400)
 		{
 			return 'TUTORIAL_NOT_AVAILABLE';
 		}
