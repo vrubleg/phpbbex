@@ -30,7 +30,7 @@ class arr
 		// Called for array of variables
 		if (is_array($index))
 		{
-			$result = array();
+			$result = [];
 			foreach ($index as $key => $value)
 			{
 				if (is_int($key))
@@ -62,7 +62,7 @@ class arr
 		}
 
 		// Default value is array
-		if (!is_array($value)) $value = array($value); // explode(',', $value);
+		if (!is_array($value)) $value = [$value]; // explode(',', $value);
 		if (count($default) == 0) return $value;
 		reset($default);
 		$key = key($default);
@@ -82,7 +82,7 @@ class arr
 		// }
 
 		// Cast value to pattern
-		$result = array();
+		$result = [];
 		foreach ($value as $key => $item)
 		{
 			settype($item, $item_type);

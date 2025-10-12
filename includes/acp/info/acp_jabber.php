@@ -9,14 +9,14 @@ class acp_jabber_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> 'acp_jabber',
 			'title'		=> 'ACP_JABBER_SETTINGS',
 			'version'	=> '1.0.0',
-			'modes'		=> array(
-				'settings'		=> array('title' => 'ACP_JABBER_SETTINGS', 'auth' => 'acl_a_server', 'cat' => array('ACP_CLIENT_COMMUNICATION')),
-			),
-		);
+			'modes'		=> [
+				'settings'		=> ['title' => 'ACP_JABBER_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_CLIENT_COMMUNICATION']],
+			],
+		];
 	}
 
 	function install()

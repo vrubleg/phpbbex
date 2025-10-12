@@ -17,17 +17,17 @@ require_once(PHPBB_ROOT_PATH . 'includes/search/search.php');
 */
 class fulltext_mysql extends search_backend
 {
-	var $stats = array();
-	var $word_length = array();
-	var $split_words = array();
+	var $stats = [];
+	var $word_length = [];
+	var $split_words = [];
 	var $search_query;
-	var $common_words = array();
+	var $common_words = [];
 
 	function __construct(&$error)
 	{
 		global $config;
 
-		$this->word_length = array('min' => $config['fulltext_mysql_min_word_len'], 'max' => $config['fulltext_mysql_max_word_len']);
+		$this->word_length = ['min' => $config['fulltext_mysql_min_word_len'], 'max' => $config['fulltext_mysql_max_word_len']];
 
 		$error = false;
 	}
@@ -65,7 +65,7 @@ class fulltext_mysql extends search_backend
 		$sql = 'SHOW VARIABLES LIKE \'ft\_%\'';
 		$result = $db->sql_query($sql);
 
-		$mysql_info = array();
+		$mysql_info = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$mysql_info[$row['Variable_name']] = $row['Value'];
@@ -92,8 +92,8 @@ class fulltext_mysql extends search_backend
 
 		if ($terms == 'all')
 		{
-			$match		= array('#\sand\s#iu', '#\sor\s#iu', '#\snot\s#iu', '#(^|\s)\+#', '#(^|\s)-#', '#(^|\s)\|#');
-			$replace	= array(' +', ' |', ' -', ' +', ' -', ' |');
+			$match		= ['#\sand\s#iu', '#\sor\s#iu', '#\snot\s#iu', '#(^|\s)\+#', '#(^|\s)-#', '#(^|\s)\|#'];
+			$replace	= [' +', ' |', ' -', ' +', ' -', ' |'];
 
 			$keywords = preg_replace($match, $replace, $keywords);
 		}
@@ -104,7 +104,7 @@ class fulltext_mysql extends search_backend
 		// Split words
 		$split_keywords = preg_replace('#([^\p{L}\p{N}\'*"()])#u', '$1$1', str_replace('\'\'', '\' \'', trim($split_keywords)));
 
-		$matches = array();
+		$matches = [];
 		preg_match_all('#(?:[^\p{L}\p{N}*"()]|^)([+\-|]?(?:[\p{L}\p{N}*"()]+\'?)*[\p{L}\p{N}*"()])(?:[^\p{L}\p{N}*"()]|$)#u', $split_keywords, $matches);
 		$this->split_words = $matches[1];
 
@@ -115,7 +115,7 @@ class fulltext_mysql extends search_backend
 		}
 
 		// to allow phrase search, we need to concatenate quoted words
-		$tmp_split_words = array();
+		$tmp_split_words = [];
 		$phrase = '';
 		foreach ($this->split_words as $word)
 		{
@@ -213,7 +213,7 @@ class fulltext_mysql extends search_backend
 		// Split words
 		$text = preg_replace('#([^\p{L}\p{N}\'*])#u', '$1$1', str_replace('\'\'', '\' \'', trim($text)));
 
-		$matches = array();
+		$matches = [];
 		preg_match_all('#(?:[^\p{L}\p{N}*]|^)([+\-|]?(?:[\p{L}\p{N}*]+\'?)*[\p{L}\p{N}*])(?:[^\p{L}\p{N}*]|$)#u', $text, $matches);
 		$text = $matches[1];
 
@@ -264,7 +264,7 @@ class fulltext_mysql extends search_backend
 		}
 
 		// generate a search_key from all the options to identify the results
-		$search_key = md5(implode('#', array(
+		$search_key = md5(implode('#', [
 			implode(', ', $this->split_words),
 			$type,
 			$fields,
@@ -275,7 +275,7 @@ class fulltext_mysql extends search_backend
 			implode(',', $ex_fid_ary),
 			implode(',', $m_approve_fid_ary),
 			implode(',', $author_ary)
-		)));
+		]));
 
 		// try reading the results from cache
 		$result_count = 0;
@@ -284,7 +284,7 @@ class fulltext_mysql extends search_backend
 			return $result_count;
 		}
 
-		$id_ary = array();
+		$id_ary = [];
 
 		$join_topic = ($type == 'posts') ? false : true;
 
@@ -339,7 +339,7 @@ class fulltext_mysql extends search_backend
 		{
 			$m_approve_fid_sql = ' AND p.post_approved = 1';
 		}
-		else if ($m_approve_fid_ary === array(-1))
+		else if ($m_approve_fid_ary === [-1])
 		{
 			$m_approve_fid_sql = '';
 		}
@@ -355,7 +355,7 @@ class fulltext_mysql extends search_backend
 		if (sizeof($author_ary) && $author_name)
 		{
 			// first one matches post of registered users, second one guests and deleted users
-			$sql_author = ' AND (' . $db->sql_in_set('p.poster_id', array_diff($author_ary, array(ANONYMOUS)), false, true) . ' OR p.post_username ' . $author_name . ')';
+			$sql_author = ' AND (' . $db->sql_in_set('p.poster_id', array_diff($author_ary, [ANONYMOUS]), false, true) . ' OR p.post_username ' . $author_name . ')';
 		}
 		else if (sizeof($author_ary))
 		{
@@ -448,7 +448,7 @@ class fulltext_mysql extends search_backend
 		}
 
 		// generate a search_key from all the options to identify the results
-		$search_key = md5(implode('#', array(
+		$search_key = md5(implode('#', [
 			'',
 			$type,
 			($firstpost_only) ? 'firstpost' : '',
@@ -461,7 +461,7 @@ class fulltext_mysql extends search_backend
 			implode(',', $m_approve_fid_ary),
 			implode(',', $author_ary),
 			$author_name,
-		)));
+		]));
 
 		// try reading the results from cache
 		$result_count = 0;
@@ -470,13 +470,13 @@ class fulltext_mysql extends search_backend
 			return $result_count;
 		}
 
-		$id_ary = array();
+		$id_ary = [];
 
 		// Create some display specific sql strings
 		if ($author_name)
 		{
 			// first one matches post of registered users, second one guests and deleted users
-			$sql_author = '(' . $db->sql_in_set('p.poster_id', array_diff($author_ary, array(ANONYMOUS)), false, true) . ' OR p.post_username ' . $author_name . ')';
+			$sql_author = '(' . $db->sql_in_set('p.poster_id', array_diff($author_ary, [ANONYMOUS]), false, true) . ' OR p.post_username ' . $author_name . ')';
 		}
 		else
 		{
@@ -512,7 +512,7 @@ class fulltext_mysql extends search_backend
 		{
 			$m_approve_fid_sql = ' AND p.post_approved = 1';
 		}
-		else if ($m_approve_fid_ary == array(-1))
+		else if ($m_approve_fid_ary == [-1])
 		{
 			$m_approve_fid_sql = '';
 		}
@@ -600,7 +600,7 @@ class fulltext_mysql extends search_backend
 
 		// Split old and new post/subject to obtain array of words
 		$split_text = $this->split_message($message);
-		$split_title = ($subject) ? $this->split_message($subject) : array();
+		$split_title = ($subject) ? $this->split_message($subject) : [];
 
 		$words = array_unique(array_merge($split_text, $split_title));
 
@@ -608,7 +608,7 @@ class fulltext_mysql extends search_backend
 		unset($split_title);
 
 		// destroy cached search results containing any of the words removed or added
-		$this->destroy_cache($words, array($poster_id));
+		$this->destroy_cache($words, [$poster_id]);
 
 		unset($words);
 	}
@@ -618,7 +618,7 @@ class fulltext_mysql extends search_backend
 	*/
 	function index_remove($post_ids, $author_ids, $forum_ids)
 	{
-		$this->destroy_cache(array(), array_unique($author_ids));
+		$this->destroy_cache([], array_unique($author_ids));
 	}
 
 	/**
@@ -629,7 +629,7 @@ class fulltext_mysql extends search_backend
 		global $db, $config;
 
 		// destroy too old cached search results
-		$this->destroy_cache(array());
+		$this->destroy_cache([]);
 
 		set_config('search_last_gc', time(), true);
 	}
@@ -652,7 +652,7 @@ class fulltext_mysql extends search_backend
 			$this->get_stats();
 		}
 
-		$alter = array();
+		$alter = [];
 
 		if (!isset($this->stats['post_subject']))
 		{
@@ -699,7 +699,7 @@ class fulltext_mysql extends search_backend
 			$this->get_stats();
 		}
 
-		$alter = array();
+		$alter = [];
 
 		if (isset($this->stats['post_subject']))
 		{
@@ -751,9 +751,9 @@ class fulltext_mysql extends search_backend
 			$this->get_stats();
 		}
 
-		return array(
+		return [
 			$user->lang['FULLTEXT_MYSQL_TOTAL_POSTS']			=> ($this->index_created()) ? $this->stats['total_posts'] : 0,
-		);
+		];
 	}
 
 	function get_stats()
@@ -808,9 +808,9 @@ class fulltext_mysql extends search_backend
 		';
 
 		// These are fields required in the config table
-		return array(
+		return [
 			'tpl'		=> $tpl,
-			'config'	=> array()
-		);
+			'config'	=> []
+		];
 	}
 }

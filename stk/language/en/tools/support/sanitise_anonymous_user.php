@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ANONYMOUS_CLEANED'					=> 'The Anonymous user’s profile data has been successfully sanitised.',
 	'ANONYMOUS_CORRECT'					=> 'The Anonymous user exists and is correctly configured.',
 	'ANONYMOUS_CREATED'					=> 'The Anonymous user has been successfully re-created.',
@@ -31,4 +31,4 @@ $lang = array_merge($lang, array(
 	'REDIRECT_NEXT_STEP'				=> 'You are being redirected to the next step.',
 
 	'SANITISE_ANONYMOUS_USER'			=> 'Sanitise Anonymous User',
-));
+]);

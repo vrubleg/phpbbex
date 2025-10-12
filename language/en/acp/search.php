@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_SEARCH_INDEX_EXPLAIN'				=> 'Here you can manage the search backend’s indexes. Since you normally use only one backend you should delete all indexes that you do not make use of. After altering some of the search settings (e.g. the number of minimum/maximum chars) it might be worth recreating the index so it reflects those changes.',
 	'ACP_SEARCH_SETTINGS_EXPLAIN'			=> 'Here you can define what search backend will be used for indexing posts and performing searches. You can set various options that can influence how much processing these actions require. Some of these settings are the same for all search engine backends.',
 
@@ -89,4 +89,4 @@ $lang = array_merge($lang, array(
 
 	'SEARCH_HIGHLIGHT_KEYWORDS'				=> 'Highlight keywords',
 	'SEARCH_HIGHLIGHT_KEYWORDS_EXPLAIN'		=> 'Creates links to viewtopic.php with hilit argument for found topics.',
-));
+]);

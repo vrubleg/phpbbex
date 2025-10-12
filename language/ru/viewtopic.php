@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ATTACHMENT'						=> 'Вложение',
 	'ATTACHMENT_FUNCTIONALITY_DISABLED'	=> 'Функция вложений отключена.',
 
@@ -96,4 +96,4 @@ $lang = array_merge($lang, array(
 	'VOTE_CANCELLED'		=> 'Ваш голос отменён.',
 	'VOTE_CONVERTED'		=> 'Изменение голосов в сконвертированных опросах не поддерживается.',
 
-));
+]);

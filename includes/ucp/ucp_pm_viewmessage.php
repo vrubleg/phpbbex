@@ -17,7 +17,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 {
 	global $user, $template, $auth, $db, $cache, $config;
 
-	$user->add_lang(array('viewtopic', 'memberlist'));
+	$user->add_lang(['viewtopic', 'memberlist']);
 
 	$msg_id		= (int) $msg_id;
 	$folder_id	= (int) $folder_id;
@@ -53,7 +53,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	}
 
 	// Assign TO/BCC Addresses to template
-	write_pm_addresses(array('to' => $message_row['to_address'], 'bcc' => $message_row['bcc_address']), $author_id);
+	write_pm_addresses(['to' => $message_row['to_address'], 'bcc' => $message_row['bcc_address']], $author_id);
 
 	$user_info = get_user_information($author_id, $message_row);
 
@@ -86,7 +86,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 
 	// Pull attachment data
 	$display_notice = false;
-	$attachments = array();
+	$attachments = [];
 
 	if ($message_row['message_attachment'] && $config['allow_pm_attach'])
 	{
@@ -123,7 +123,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	// Assign inline attachments
 	if (!empty($attachments))
 	{
-		$update_count = array();
+		$update_count = [];
 		parse_attachments(false, $message, $attachments, $update_count);
 
 		// Update the attachment download counts
@@ -182,7 +182,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 
 	$bbcode_status	= ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode')) ? true : false;
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'MESSAGE_AUTHOR_FULL'		=> get_username_string('full', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
 		'MESSAGE_AUTHOR_COLOUR'		=> get_username_string('colour', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
 		'MESSAGE_AUTHOR'			=> get_username_string('username', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
@@ -250,12 +250,12 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'S_HAS_ATTACHMENTS'	=> (sizeof($attachments)) ? true : false,
 		'S_DISPLAY_NOTICE'	=> $display_notice && $message_row['message_attachment'],
 		'S_AUTHOR_DELETED'	=> ($author_id == ANONYMOUS) ? true : false,
-		'S_SPECIAL_FOLDER'	=> in_array($folder_id, array(PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX)),
+		'S_SPECIAL_FOLDER'	=> in_array($folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]),
 		'S_PM_RECIPIENTS'	=> $num_recipients,
 		'S_BBCODE_ALLOWED'	=> ($bbcode_status) ? 1 : 0,
 
 		'U_PRINT_PM'		=> "$url&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] . "&amp;view=print",
-		'U_FORWARD_PM'		=> ($auth->acl_get('u_sendpm')) ? "$url&amp;mode=compose&amp;action=forward&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '')
+		'U_FORWARD_PM'		=> ($auth->acl_get('u_sendpm')) ? "$url&amp;mode=compose&amp;action=forward&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '']
 	);
 
 	// Display not already displayed Attachments for this post, we already parsed them. ;)
@@ -263,8 +263,8 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	{
 		foreach ($attachments as $attachment)
 		{
-			$template->assign_block_vars('attachment', array(
-				'DISPLAY_ATTACHMENT'	=> $attachment)
+			$template->assign_block_vars('attachment', [
+				'DISPLAY_ATTACHMENT'	=> $attachment]
 			);
 		}
 	}
@@ -288,7 +288,7 @@ function get_user_information($user_id, $user_row)
 
 	if (!$user_id)
 	{
-		return array();
+		return [];
 	}
 
 	if (empty($user_row))

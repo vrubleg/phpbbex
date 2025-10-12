@@ -25,7 +25,7 @@ class phpbb_captcha_factory
 		{
 			require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$name}_plugin.php");
 		}
-		return call_user_func(array($name, 'get_instance'));
+		return call_user_func([$name, 'get_instance']);
 	}
 
 	/**
@@ -38,7 +38,7 @@ class phpbb_captcha_factory
 		{
 			require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$name}_plugin.php");
 		}
-		call_user_func(array($name, 'garbage_collect'), 0);
+		call_user_func([$name, 'garbage_collect'], 0);
 	}
 
 	/**
@@ -46,10 +46,10 @@ class phpbb_captcha_factory
 	*/
 	static function get_captcha_types()
 	{
-		$captchas = array(
-			'available'		=> array(),
-			'unavailable'	=> array(),
-		);
+		$captchas = [
+			'available'		=> [],
+			'unavailable'	=> [],
+		];
 
 		$dp = @opendir(PHPBB_ROOT_PATH . 'includes/captcha/plugins');
 
@@ -65,13 +65,13 @@ class phpbb_captcha_factory
 						require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/$file");
 					}
 
-					if (call_user_func(array($name, 'is_available')))
+					if (call_user_func([$name, 'is_available']))
 					{
-						$captchas['available'][$name] = call_user_func(array($name, 'get_name'));
+						$captchas['available'][$name] = call_user_func([$name, 'get_name']);
 					}
 					else
 					{
-						$captchas['unavailable'][$name] = call_user_func(array($name, 'get_name'));
+						$captchas['unavailable'][$name] = call_user_func([$name, 'get_name']);
 					}
 				}
 			}

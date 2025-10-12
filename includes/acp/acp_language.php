@@ -48,7 +48,7 @@ class acp_language
 		$lang_id = request_var('id', 0);
 		if (isset($_POST['missing_file']))
 		{
-			$missing_file = request_var('missing_file', array('' => 0));
+			$missing_file = request_var('missing_file', ['' => 0]);
 			list($_REQUEST['language_file'], ) = array_keys($missing_file);
 		}
 
@@ -84,11 +84,11 @@ class acp_language
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
 
-				$sql_ary	= array(
+				$sql_ary	= [
 					'lang_english_name'		=> request_var('lang_english_name', $row['lang_english_name']),
 					'lang_local_name'		=> utf8_normalize_nfc(request_var('lang_local_name', $row['lang_local_name'], true)),
 					'lang_author'			=> utf8_normalize_nfc(request_var('lang_author', $row['lang_author'], true)),
-				);
+				];
 
 				$db->sql_query('UPDATE ' . LANG_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -162,7 +162,7 @@ class acp_language
 					case 'mods':
 						// Get mod files
 						$mods_files = filelist(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'], 'mods', 'php');
-						$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : array();
+						$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : [];
 
 						if (!in_array($this->language_file, $mods_files))
 						{
@@ -178,7 +178,7 @@ class acp_language
 					break;
 				}
 
-				$mkdir_ary = array('language', 'language/' . $row['lang_iso']);
+				$mkdir_ary = ['language', 'language/' . $row['lang_iso']];
 
 				if ($this->language_directory)
 				{
@@ -217,7 +217,7 @@ class acp_language
 				else
 				{
 					$name = (($this->language_directory) ? $this->language_directory . '_' : '') . $this->language_file;
-					$header = str_replace(array('{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}'), array($name, $row['lang_english_name'], date('Y-m-d', time()), $row['lang_author']), $this->language_file_header);
+					$header = str_replace(['{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}'], [$name, $row['lang_english_name'], date('Y-m-d', time()), $row['lang_author']], $this->language_file_header);
 
 					if (strpos($this->language_file, 'help_') === 0)
 					{
@@ -305,7 +305,7 @@ class acp_language
 				$db->sql_freeresult($result);
 
 				$lang_iso = $lang_entries['lang_iso'];
-				$missing_vars = $missing_files = array();
+				$missing_vars = $missing_files = [];
 
 				// Get email templates
 				$email_files = filelist(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'], 'email', 'txt');
@@ -317,7 +317,7 @@ class acp_language
 
 				// Get mod files
 				$mods_files = filelist(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'], 'mods', 'php');
-				$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : array();
+				$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : [];
 
 				// Check if our current filename matches the files
 				switch ($this->language_directory)
@@ -360,7 +360,7 @@ class acp_language
 					}
 				}
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_DETAILS'			=> true,
 					'U_ACTION'			=> $this->u_action . "&amp;action=details&amp;id=$lang_id",
 					'U_BACK'			=> $this->u_action,
@@ -368,7 +368,7 @@ class acp_language
 					'LANG_ENGLISH_NAME'	=> $lang_entries['lang_english_name'],
 					'LANG_ISO'			=> $lang_entries['lang_iso'],
 					'LANG_AUTHOR'		=> $lang_entries['lang_author'],
-					)
+					]
 				);
 
 				// If current lang is different from the default lang, then first try to grab missing/additional vars
@@ -442,19 +442,19 @@ class acp_language
 
 					if (sizeof($missing_files))
 					{
-						$template->assign_vars(array(
+						$template->assign_vars([
 							'S_MISSING_FILES'		=> true,
 							'L_MISSING_FILES'		=> sprintf($user->lang['THOSE_MISSING_LANG_FILES'], $lang_entries['lang_local_name']),
-							'MISSING_FILES'			=> implode('<br />', $missing_files))
+							'MISSING_FILES'			=> implode('<br />', $missing_files)]
 						);
 					}
 
 					if ($is_missing_var)
 					{
-						$template->assign_vars(array(
+						$template->assign_vars([
 							'S_MISSING_VARS'			=> true,
 							'L_MISSING_VARS_EXPLAIN'	=> sprintf($user->lang['THOSE_MISSING_LANG_VARIABLES'], $lang_entries['lang_local_name']),
-							'U_MISSING_ACTION'			=> $this->u_action . "&amp;action=$action&amp;id=$lang_id")
+							'U_MISSING_ACTION'			=> $this->u_action . "&amp;action=$action&amp;id=$lang_id"]
 						);
 
 						foreach ($missing_vars as $file => $vars)
@@ -464,10 +464,10 @@ class acp_language
 								continue;
 							}
 
-							$template->assign_block_vars('missing', array(
+							$template->assign_block_vars('missing', [
 								'FILE'			=> $file,
 								'TPL'			=> $this->print_language_entries($vars, '', false),
-								'KEY'			=> (strpos($file, '/') === false) ? '|' . $file : str_replace('/', '|', $file))
+								'KEY'			=> (strpos($file, '/') === false) ? '|' . $file : str_replace('/', '|', $file)]
 							);
 						}
 					}
@@ -506,7 +506,7 @@ class acp_language
 				$s_lang_options .= '</optgroup>';
 
 				// Now every other language directory
-				$check_files = array('email', 'acp', 'mods');
+				$check_files = ['email', 'acp', 'mods'];
 
 				foreach ($check_files as $check)
 				{
@@ -530,7 +530,7 @@ class acp_language
 				}
 
 				// Get Language Entries - if saved within store folder, we take this one (with the option to remove it)
-				$lang = array();
+				$lang = [];
 
 				$is_email_file = ($this->language_directory == 'email') ? true : false;
 				$is_help_file = (strpos($this->language_file, 'help_') === 0) ? true : false;
@@ -550,7 +550,7 @@ class acp_language
 					}
 					else
 					{
-						$help = array();
+						$help = [];
 						require(PHPBB_ROOT_PATH . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
 
 						if ($is_help_file)
@@ -564,13 +564,13 @@ class acp_language
 				}
 
 				// Normal language pack entries
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'U_ENTRY_ACTION'		=> $this->u_action . "&amp;action=details&amp;id=$lang_id#entries",
 					'S_EMAIL_FILE'			=> $is_email_file,
 					'S_FROM_STORE'			=> $file_from_store,
 					'S_LANG_OPTIONS'		=> $s_lang_options,
 					'PRINT_MESSAGE'			=> $print_message,
-					)
+					]
 				);
 
 				if (!$is_email_file)
@@ -590,8 +590,8 @@ class acp_language
 				}
 				else
 				{
-					$template->assign_vars(array(
-						'LANG'		=> $lang)
+					$template->assign_vars([
+						'LANG'		=> $lang]
 					);
 
 					unset($lang);
@@ -647,12 +647,12 @@ class acp_language
 				}
 				else
 				{
-					$s_hidden_fields = array(
+					$s_hidden_fields = [
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'action'	=> $action,
 						'id'		=> $lang_id,
-					);
+					];
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields($s_hidden_fields));
 				}
 			break;
@@ -668,12 +668,12 @@ class acp_language
 
 				$file = file(PHPBB_ROOT_PATH . "language/$lang_iso/iso.txt");
 
-				$lang_pack = array(
+				$lang_pack = [
 					'iso'		=> $lang_iso,
 					'name'		=> trim(htmlspecialchars($file[0])),
 					'local_name'=> trim(htmlspecialchars($file[1], ENT_COMPAT, 'UTF-8')),
 					'author'	=> trim(htmlspecialchars($file[2], ENT_COMPAT, 'UTF-8'))
-				);
+				];
 				unset($file);
 
 				$sql = 'SELECT lang_iso
@@ -694,22 +694,22 @@ class acp_language
 				}
 
 				// Add language pack
-				$sql_ary = array(
+				$sql_ary = [
 					'lang_iso'			=> $lang_pack['iso'],
 					'lang_dir'			=> $lang_pack['iso'],
 					'lang_english_name'	=> $lang_pack['name'],
 					'lang_local_name'	=> $lang_pack['local_name'],
 					'lang_author'		=> $lang_pack['author']
-				);
+				];
 
 				$db->sql_query('INSERT INTO ' . LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				$lang_id = $db->sql_nextid();
 
-				$valid_localized = array(
+				$valid_localized = [
 					'icon_contact_email', 'icon_contact_jabber', 'icon_contact_telegram', 'icon_contact_pm', 'icon_contact_www', 'icon_post_delete', 'icon_post_edit', 'icon_post_info', 'icon_post_quote', 'icon_post_report', 'icon_user_online', 'icon_user_offline', 'icon_user_profile', 'icon_user_search', 'icon_user_warn', 'button_pm_forward', 'button_pm_new', 'button_pm_reply', 'button_topic_locked', 'button_topic_new', 'button_topic_reply',
-				);
+				];
 
-				$sql_ary = array();
+				$sql_ary = [];
 
 				$sql = 'SELECT *
 					FROM ' . STYLES_IMAGESET_TABLE;
@@ -744,14 +744,14 @@ class acp_language
 								$image_name = substr($image_name, 4);
 								if (in_array($image_name, $valid_localized))
 								{
-									$sql_ary[] = array(
+									$sql_ary[] = [
 										'image_name'		=> (string) $image_name,
 										'image_filename'	=> (string) $image_filename,
 										'image_height'		=> (int) $image_height,
 										'image_width'		=> (int) $image_width,
 										'imageset_id'		=> (int) $imageset_row['imageset_id'],
 										'image_lang'		=> (string) $lang_pack['iso'],
-									);
+									];
 								}
 							}
 						}
@@ -829,9 +829,9 @@ class acp_language
 				$db->sql_freeresult($result);
 
 				$use_method = request_var('use_method', '');
-				$methods = array('.tar');
+				$methods = ['.tar'];
 
-				$available_methods = array('.tar.gz' => 'zlib', '.tar.bz2' => 'bz2', '.zip' => 'zlib');
+				$available_methods = ['.tar.gz' => 'zlib', '.tar.bz2' => 'bz2', '.zip' => 'zlib'];
 				foreach ($available_methods as $type => $module)
 				{
 					if (!@extension_loaded($module))
@@ -853,11 +853,11 @@ class acp_language
 						$radio_buttons .= '<label><input type="radio"' . ((!$radio_buttons) ? ' id="use_method"' : '') . ' class="radio" value="' . $method . '" name="use_method" /> ' . $method . '</label>';
 					}
 
-					$template->assign_vars(array(
+					$template->assign_vars([
 						'S_SELECT_METHOD'		=> true,
 						'U_BACK'				=> $this->u_action,
 						'U_ACTION'				=> $this->u_action . "&amp;action=$action&amp;id=$lang_id",
-						'RADIO_BUTTONS'			=> $radio_buttons)
+						'RADIO_BUTTONS'			=> $radio_buttons]
 					);
 
 					return;
@@ -889,7 +889,7 @@ class acp_language
 
 				// Get mod files
 				$mod_files = filelist(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'], 'mods', 'php');
-				$mod_files = (isset($mod_files['mods/'])) ? $mod_files['mods/'] : array();
+				$mod_files = (isset($mod_files['mods/'])) ? $mod_files['mods/'] : [];
 
 				// Add main files
 				$this->add_to_archive($compress, $this->main_files, $row['lang_iso']);
@@ -897,12 +897,12 @@ class acp_language
 				// Add search files if they exist...
 				if (file_exists(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'] . '/search_ignore_words.php'))
 				{
-					$this->add_to_archive($compress, array("search_ignore_words.php"), $row['lang_iso']);
+					$this->add_to_archive($compress, ["search_ignore_words.php"], $row['lang_iso']);
 				}
 
 				if (file_exists(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'] . '/search_synonyms.php'))
 				{
-					$this->add_to_archive($compress, array("search_synonyms.php"), $row['lang_iso']);
+					$this->add_to_archive($compress, ["search_synonyms.php"], $row['lang_iso']);
 				}
 
 				// Write files in folders
@@ -941,7 +941,7 @@ class acp_language
 			GROUP BY user_lang';
 		$result = $db->sql_query($sql);
 
-		$lang_count = array();
+		$lang_count = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$lang_count[$row['user_lang']] = $row['lang_count'];
@@ -953,14 +953,14 @@ class acp_language
 			ORDER BY lang_english_name';
 		$result = $db->sql_query($sql);
 
-		$installed = array();
+		$installed = [];
 
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$installed[] = $row['lang_iso'];
 			$tagstyle = ($row['lang_iso'] == $config['default_lang']) ? '*' : '';
 
-			$template->assign_block_vars('lang', array(
+			$template->assign_block_vars('lang', [
 				'U_DETAILS'			=> $this->u_action . "&amp;action=details&amp;id={$row['lang_id']}",
 				'U_DOWNLOAD'		=> $this->u_action . "&amp;action=download&amp;id={$row['lang_id']}",
 				'U_DELETE'			=> $this->u_action . "&amp;action=delete&amp;id={$row['lang_id']}",
@@ -970,11 +970,11 @@ class acp_language
 				'LOCAL_NAME'		=> $row['lang_local_name'],
 				'ISO'				=> $row['lang_iso'],
 				'USED_BY'			=> (isset($lang_count[$row['lang_iso']])) ? $lang_count[$row['lang_iso']] : 0,
-			));
+			]);
 		}
 		$db->sql_freeresult($result);
 
-		$new_ary = $iso = array();
+		$new_ary = $iso = [];
 		$dp = @opendir(PHPBB_ROOT_PATH . 'language');
 
 		if ($dp)
@@ -994,12 +994,12 @@ class acp_language
 						{
 							if (sizeof($iso) == 3)
 							{
-								$new_ary[$file] = array(
+								$new_ary[$file] = [
 									'iso'		=> $file,
 									'name'		=> trim($iso[0]),
 									'local_name'=> trim($iso[1]),
 									'author'	=> trim($iso[2])
-								);
+								];
 							}
 						}
 					}
@@ -1014,11 +1014,11 @@ class acp_language
 		{
 			foreach ($new_ary as $iso => $lang_ary)
 			{
-				$template->assign_block_vars('notinst', array(
+				$template->assign_block_vars('notinst', [
 					'ISO'			=> htmlspecialchars($lang_ary['iso']),
 					'LOCAL_NAME'	=> htmlspecialchars($lang_ary['local_name'], ENT_COMPAT, 'UTF-8'),
 					'NAME'			=> htmlspecialchars($lang_ary['name'], ENT_COMPAT, 'UTF-8'),
-					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;iso=' . urlencode($lang_ary['iso']))
+					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;iso=' . urlencode($lang_ary['iso'])]
 				);
 			}
 		}
@@ -1055,7 +1055,7 @@ $lang = array_merge($lang, array(
 ';
 
 		// Language files in language root directory
-		$this->main_files = array("captcha_qa.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php", "help_rules.php");
+		$this->main_files = ["captcha_qa.php", "common.php", "groups.php", "install.php", "mcp.php", "memberlist.php", "posting.php", "search.php", "ucp.php", "viewforum.php", "viewtopic.php", "help_bbcode.php", "help_faq.php", "help_rules.php"];
 	}
 
 	/**
@@ -1211,17 +1211,17 @@ $lang = array_merge($lang, array(
 	*/
 	function compare_language_files($source_lang, $dest_lang, $directory, $file)
 	{
-		$return_ary = array();
+		$return_ary = [];
 
-		$lang = array();
+		$lang = [];
 		require(PHPBB_ROOT_PATH . "language/{$source_lang}/" . (($directory) ? $directory . '/' : '') . $file);
 		$lang_entry_src = $lang;
 
-		$lang = array();
+		$lang = [];
 
 		if (!file_exists(PHPBB_ROOT_PATH . $this->get_filename($dest_lang, $directory, $file, true)))
 		{
-			return array();
+			return [];
 		}
 
 		require(PHPBB_ROOT_PATH . $this->get_filename($dest_lang, $directory, $file, true));

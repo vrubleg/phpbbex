@@ -22,9 +22,9 @@ class acp_attachments
 	{
 		global $db, $user, $auth, $template, $cache, $config;
 
-		$user->add_lang(array('posting', 'viewtopic', 'acp/attachments'));
+		$user->add_lang(['posting', 'viewtopic', 'acp/attachments']);
 
-		$error = $notify = array();
+		$error = $notify = [];
 		$submit = (isset($_POST['submit'])) ? true : false;
 		$action = request_var('action', '');
 
@@ -62,11 +62,11 @@ class acp_attachments
 		$this->tpl_name = 'acp_attachments';
 		$this->page_title = $l_title;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_TITLE'			=> $user->lang[$l_title],
 			'L_TITLE_EXPLAIN'	=> $user->lang[$l_title . '_EXPLAIN'],
-			'U_ACTION'			=> $this->u_action)
-		);
+			'U_ACTION'			=> $this->u_action
+		]);
 
 		switch ($mode)
 		{
@@ -80,7 +80,7 @@ class acp_attachments
 					ORDER BY cat_id';
 				$result = $db->sql_query($sql);
 
-				$s_assigned_groups = array();
+				$s_assigned_groups = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$row['group_name'] = (isset($user->lang['EXT_GROUP_' . $row['group_name']])) ? $user->lang['EXT_GROUP_' . $row['group_name']] : $row['group_name'];
@@ -90,42 +90,42 @@ class acp_attachments
 
 				$l_legend_cat_images = $user->lang['SETTINGS_CAT_IMAGES'] . ' [' . $user->lang['ASSIGNED_GROUP'] . ': ' . ((!empty($s_assigned_groups[ATTACHMENT_CATEGORY_IMAGE])) ? implode(', ', $s_assigned_groups[ATTACHMENT_CATEGORY_IMAGE]) : $user->lang['NO_EXT_GROUP']) . ']';
 
-				$display_vars = array(
+				$display_vars = [
 					'title'	=> 'ACP_ATTACHMENT_SETTINGS',
-					'vars'	=> array(
+					'vars'	=> [
 						'legend1'				=> 'ACP_ATTACHMENT_SETTINGS',
 
-						'img_max_width'			=> array('lang' => 'MAX_IMAGE_SIZE', 'validate' => 'int:0', 'type' => false, 'method' => false, 'explain' => false,),
-						'img_max_height'		=> array('lang' => 'MAX_IMAGE_SIZE', 'validate' => 'int:0', 'type' => false, 'method' => false, 'explain' => false,),
-						'img_link_width'		=> array('lang' => 'IMAGE_LINK_SIZE', 'validate' => 'int:0', 'type' => false, 'method' => false, 'explain' => false,),
-						'img_link_height'		=> array('lang' => 'IMAGE_LINK_SIZE', 'validate' => 'int:0', 'type' => false, 'method' => false, 'explain' => false,),
+						'img_max_width'			=> ['lang' => 'MAX_IMAGE_SIZE', 'validate' => 'int:0', 'type' => false, 'method' => false, 'explain' => false,],
+						'img_max_height'		=> ['lang' => 'MAX_IMAGE_SIZE', 'validate' => 'int:0', 'type' => false, 'method' => false, 'explain' => false,],
+						'img_link_width'		=> ['lang' => 'IMAGE_LINK_SIZE', 'validate' => 'int:0', 'type' => false, 'method' => false, 'explain' => false,],
+						'img_link_height'		=> ['lang' => 'IMAGE_LINK_SIZE', 'validate' => 'int:0', 'type' => false, 'method' => false, 'explain' => false,],
 
-						'allow_attachments'		=> array('lang' => 'ALLOW_ATTACHMENTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'allow_pm_attach'		=> array('lang' => 'ALLOW_PM_ATTACHMENTS',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
-						'display_order'			=> array('lang' => 'DISPLAY_ORDER',			'validate' => 'bool',	'type' => 'custom', 'method' => 'display_order', 'explain' => true),
-						'attachment_quota'		=> array('lang' => 'ATTACH_QUOTA',			'validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true),
-						'max_filesize'			=> array('lang' => 'ATTACH_MAX_FILESIZE',	'validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true),
-						'max_filesize_pm'		=> array('lang' => 'ATTACH_MAX_PM_FILESIZE','validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true),
-						'max_attachments'		=> array('lang' => 'MAX_ATTACHMENTS',		'validate' => 'int',	'type' => 'text:3:3', 'explain' => false),
-						'max_attachments_pm'	=> array('lang' => 'MAX_ATTACHMENTS_PM',	'validate' => 'int',	'type' => 'text:3:3', 'explain' => false),
-						'secure_downloads'		=> array('lang' => 'SECURE_DOWNLOADS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'secure_allow_deny'		=> array('lang' => 'SECURE_ALLOW_DENY',		'validate' => 'int',	'type' => 'custom', 'method' => 'select_allow_deny', 'explain' => true),
-						'secure_allow_empty_referer'	=> array('lang' => 'SECURE_EMPTY_REFERRER', 'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'check_attachment_content' 		=> array('lang' => 'CHECK_CONTENT', 'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'allow_attachments'		=> ['lang' => 'ALLOW_ATTACHMENTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
+						'allow_pm_attach'		=> ['lang' => 'ALLOW_PM_ATTACHMENTS',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
+						'display_order'			=> ['lang' => 'DISPLAY_ORDER',			'validate' => 'bool',	'type' => 'custom', 'method' => 'display_order', 'explain' => true],
+						'attachment_quota'		=> ['lang' => 'ATTACH_QUOTA',			'validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true],
+						'max_filesize'			=> ['lang' => 'ATTACH_MAX_FILESIZE',	'validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true],
+						'max_filesize_pm'		=> ['lang' => 'ATTACH_MAX_PM_FILESIZE','validate' => 'string',	'type' => 'custom', 'method' => 'max_filesize', 'explain' => true],
+						'max_attachments'		=> ['lang' => 'MAX_ATTACHMENTS',		'validate' => 'int',	'type' => 'text:3:3', 'explain' => false],
+						'max_attachments_pm'	=> ['lang' => 'MAX_ATTACHMENTS_PM',	'validate' => 'int',	'type' => 'text:3:3', 'explain' => false],
+						'secure_downloads'		=> ['lang' => 'SECURE_DOWNLOADS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
+						'secure_allow_deny'		=> ['lang' => 'SECURE_ALLOW_DENY',		'validate' => 'int',	'type' => 'custom', 'method' => 'select_allow_deny', 'explain' => true],
+						'secure_allow_empty_referer'	=> ['lang' => 'SECURE_EMPTY_REFERRER', 'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
+						'check_attachment_content' 		=> ['lang' => 'CHECK_CONTENT', 'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 
 						'legend2'					=> $l_legend_cat_images,
-						'img_display_inlined'		=> array('lang' => 'DISPLAY_INLINED',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'img_create_thumbnail'		=> array('lang' => 'CREATE_THUMBNAIL',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'img_max_thumb_width'		=> array('lang' => 'MAX_THUMB_WIDTH',		'validate' => 'int',	'type' => 'text:7:15', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
-						'img_min_thumb_filesize'	=> array('lang' => 'MIN_THUMB_FILESIZE',	'validate' => 'int',	'type' => 'text:7:15', 'explain' => true, 'append' => ' ' . $user->lang['BYTES']),
-						'img_max'					=> array('lang' => 'MAX_IMAGE_SIZE',		'validate' => 'int',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
-						'img_link'					=> array('lang' => 'IMAGE_LINK_SIZE',		'validate' => 'int',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
-					)
-				);
+						'img_display_inlined'		=> ['lang' => 'DISPLAY_INLINED',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
+						'img_create_thumbnail'		=> ['lang' => 'CREATE_THUMBNAIL',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
+						'img_max_thumb_width'		=> ['lang' => 'MAX_THUMB_WIDTH',		'validate' => 'int',	'type' => 'text:7:15', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
+						'img_min_thumb_filesize'	=> ['lang' => 'MIN_THUMB_FILESIZE',	'validate' => 'int',	'type' => 'text:7:15', 'explain' => true, 'append' => ' ' . $user->lang['BYTES']],
+						'img_max'					=> ['lang' => 'MAX_IMAGE_SIZE',		'validate' => 'int',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
+						'img_link'					=> ['lang' => 'IMAGE_LINK_SIZE',		'validate' => 'int',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
+					]
+				];
 
 				$this->new_config = $config;
-				$cfg_array = (isset($_REQUEST['config'])) ? request_var('config', array('' => '')) : $this->new_config;
-				$error = array();
+				$cfg_array = (isset($_REQUEST['config'])) ? request_var('config', ['' => '']) : $this->new_config;
+				$error = [];
 
 				// We validate the complete config if whished
 				validate_config_vars($display_vars['vars'], $cfg_array, $error);
@@ -146,7 +146,7 @@ class acp_attachments
 
 					$this->new_config[$config_name] = $config_value = $cfg_array[$config_name];
 
-					if (in_array($config_name, array('attachment_quota', 'max_filesize', 'max_filesize_pm')))
+					if (in_array($config_name, ['attachment_quota', 'max_filesize', 'max_filesize_pm']))
 					{
 						$size_var = request_var($config_name, '');
 						$this->new_config[$config_name] = $config_value = ($size_var == 'kb') ? round($config_value * 1024) : (($size_var == 'mb') ? round($config_value * 1048576) : $config_value);
@@ -183,8 +183,8 @@ class acp_attachments
 					$this->new_config['img_create_thumbnail'] = 0;
 				}
 
-				$template->assign_vars(array(
-					'S_THUMBNAIL_SUPPORT'	=> (!isset($supported_types['format']) || !sizeof($supported_types['format'])) ? false : true)
+				$template->assign_vars([
+					'S_THUMBNAIL_SUPPORT'	=> (!isset($supported_types['format']) || !sizeof($supported_types['format'])) ? false : true]
 				);
 
 				// Secure Download Options - Same procedure as with banning
@@ -195,7 +195,7 @@ class acp_attachments
 				$result = $db->sql_query($sql);
 
 				$defined_ips = '';
-				$ips = array();
+				$ips = [];
 
 				while ($row = $db->sql_fetchrow($result))
 				{
@@ -208,7 +208,7 @@ class acp_attachments
 				}
 				$db->sql_freeresult($result);
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_SECURE_DOWNLOADS'	=> $this->new_config['secure_downloads'],
 					'S_DEFINED_IPS'			=> ($defined_ips != '') ? true : false,
 					'S_WARNING'				=> (sizeof($error)) ? true : false,
@@ -218,7 +218,7 @@ class acp_attachments
 
 					'L_SECURE_TITLE'		=> $user->lang['DEFINE_' . $allow_deny . '_IPS'],
 					'L_IP_EXCLUDE'			=> $user->lang['EXCLUDE_FROM_' . $allow_deny . '_IP'],
-					'L_REMOVE_IPS'			=> $user->lang['REMOVE_' . $allow_deny . '_IPS'])
+					'L_REMOVE_IPS'			=> $user->lang['REMOVE_' . $allow_deny . '_IPS']]
 				);
 
 				// Output relevant options
@@ -231,9 +231,9 @@ class acp_attachments
 
 					if (strpos($config_key, 'legend') !== false)
 					{
-						$template->assign_block_vars('options', array(
+						$template->assign_block_vars('options', [
 							'S_LEGEND'		=> true,
-							'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars)
+							'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars]
 						);
 
 						continue;
@@ -257,13 +257,13 @@ class acp_attachments
 						continue;
 					}
 
-					$template->assign_block_vars('options', array(
+					$template->assign_block_vars('options', [
 						'KEY'			=> $config_key,
 						'TITLE'			=> $user->lang[$vars['lang']],
 						'S_EXPLAIN'		=> $vars['explain'],
 						'TITLE_EXPLAIN'	=> $l_explain,
 						'CONTENT'		=> $content,
-						)
+						]
 					);
 
 					unset($display_vars['vars'][$config_key]);
@@ -278,11 +278,11 @@ class acp_attachments
 					if ($submit)
 					{
 						// Change Extensions ?
-						$extension_change_list	= request_var('extension_change_list', array(0));
-						$group_select_list		= request_var('group_select', array(0));
+						$extension_change_list	= request_var('extension_change_list', [0]);
+						$group_select_list		= request_var('group_select', [0]);
 
 						// Generate correct Change List
-						$extensions = array();
+						$extensions = [];
 
 						for ($i = 0, $size = sizeof($extension_change_list); $i < $size; $i++)
 						{
@@ -309,7 +309,7 @@ class acp_attachments
 						$db->sql_freeresult($result);
 
 						// Delete Extension?
-						$extension_id_list = request_var('extension_id_list', array(0));
+						$extension_id_list = request_var('extension_id_list', [0]);
 
 						if (sizeof($extension_id_list))
 						{
@@ -356,10 +356,10 @@ class acp_attachments
 
 							if (!sizeof($error))
 							{
-								$sql_ary = array(
+								$sql_ary = [
 									'group_id'	=>	$add_extension_group,
 									'extension'	=>	$add_extension
-								);
+								];
 
 								$db->sql_query('INSERT INTO ' . EXTENSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 								add_log('admin', 'LOG_ATTACH_EXT_ADD', $add_extension);
@@ -375,11 +375,11 @@ class acp_attachments
 					$cache->destroy('_extensions');
 				}
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_EXTENSIONS'			=> true,
 					'ADD_EXTENSION'			=> (isset($add_extension)) ? $add_extension : '',
-					'GROUP_SELECT_OPTIONS'	=> (isset($_POST['add_extension_check'])) ? $this->group_select('add_group_select', $add_extension_group, 'extension_group') : $this->group_select('add_group_select', false, 'extension_group'))
-				);
+					'GROUP_SELECT_OPTIONS'	=> (isset($_POST['add_extension_check'])) ? $this->group_select('add_group_select', $add_extension_group, 'extension_group') : $this->group_select('add_group_select', false, 'extension_group')
+				]);
 
 				$sql = 'SELECT *
 					FROM ' . EXTENSIONS_TABLE . '
@@ -400,12 +400,12 @@ class acp_attachments
 							$old_group_id = $current_group_id;
 						}
 
-						$template->assign_block_vars('extensions', array(
+						$template->assign_block_vars('extensions', [
 							'S_SPACER'		=> $s_spacer,
 							'EXTENSION_ID'	=> $row['extension_id'],
 							'EXTENSION'		=> $row['extension'],
-							'GROUP_OPTIONS'	=> $this->group_select('group_select[]', $row['group_id']))
-						);
+							'GROUP_OPTIONS'	=> $this->group_select('group_select[]', $row['group_id'])
+						]);
 					}
 					while ($row = $db->sql_fetchrow($result));
 				}
@@ -448,7 +448,7 @@ class acp_attachments
 					}
 					else
 					{
-						$ext_row = array();
+						$ext_row = [];
 					}
 
 					$group_name = utf8_normalize_nfc(request_var('group_name', '', true));
@@ -484,7 +484,7 @@ class acp_attachments
 						$upload_icon	= request_var('upload_icon', 'no_image');
 						$size_select	= request_var('size_select', 'b');
 						$forum_select	= request_var('forum_select', false);
-						$allowed_forums	= request_var('allowed_forums', array(0));
+						$allowed_forums	= request_var('allowed_forums', [0]);
 						$allow_in_pm	= (isset($_POST['allow_in_pm'])) ? true : false;
 						$max_filesize	= request_var('max_filesize', 0);
 						$max_filesize	= ($size_select == 'kb') ? round($max_filesize * 1024) : (($size_select == 'mb') ? round($max_filesize * 1048576) : $max_filesize);
@@ -500,7 +500,7 @@ class acp_attachments
 							$forum_select = false;
 						}
 
-						$group_ary = array(
+						$group_ary = [
 							'group_name'	=> $group_name,
 							'cat_id'		=> request_var('special_category', ATTACHMENT_CATEGORY_NONE),
 							'allow_group'	=> ($allow_group) ? 1 : 0,
@@ -508,7 +508,7 @@ class acp_attachments
 							'max_filesize'	=> $max_filesize,
 							'allowed_forums'=> ($forum_select) ? serialize($allowed_forums) : '',
 							'allow_in_pm'	=> ($allow_in_pm) ? 1 : 0,
-						);
+						];
 
 						if ($action == 'add')
 						{
@@ -530,7 +530,7 @@ class acp_attachments
 						add_log('admin', 'LOG_ATTACH_EXTGROUP_' . strtoupper($action), $group_name);
 					}
 
-					$extension_list = request_var('extensions', array(0));
+					$extension_list = request_var('extensions', [0]);
 
 					if ($action == 'edit' && sizeof($extension_list))
 					{
@@ -556,12 +556,12 @@ class acp_attachments
 					}
 				}
 
-				$cat_lang = array(
+				$cat_lang = [
 					ATTACHMENT_CATEGORY_NONE		=> $user->lang['NO_FILE_CAT'],
 					ATTACHMENT_CATEGORY_IMAGE		=> $user->lang['CAT_IMAGES'],
 					ATTACHMENT_CATEGORY_VIDEO		=> $user->lang['CAT_VIDEO_FILES'],
 					ATTACHMENT_CATEGORY_AUDIO		=> $user->lang['CAT_AUDIO_FILES'],
-				);
+				];
 
 				$group_id = request_var('g', 0);
 				$action = (isset($_POST['add'])) ? 'add' : $action;
@@ -598,12 +598,12 @@ class acp_attachments
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'group_id'	=> $group_id,
 								'action'	=> 'delete',
-							)));
+							]));
 						}
 
 					break;
@@ -622,7 +622,7 @@ class acp_attachments
 						$ext_group_row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
 
-						$forum_ids = (!$ext_group_row['allowed_forums']) ? array() : unserialize(trim($ext_group_row['allowed_forums']));
+						$forum_ids = (!$ext_group_row['allowed_forums']) ? [] : unserialize(trim($ext_group_row['allowed_forums']));
 
 					// no break;
 
@@ -630,19 +630,19 @@ class acp_attachments
 
 						if ($action == 'add')
 						{
-							$ext_group_row = array(
+							$ext_group_row = [
 								'group_name'	=> utf8_normalize_nfc(request_var('group_name', '', true)),
 								'cat_id'		=> 0,
 								'allow_group'	=> 1,
 								'allow_in_pm'	=> 1,
 								'upload_icon'	=> '',
 								'max_filesize'	=> 0,
-							);
+							];
 
-							$forum_ids = array();
+							$forum_ids = [];
 						}
 
-						$extensions = array();
+						$extensions = [];
 
 						$sql = 'SELECT *
 							FROM ' . EXTENSIONS_TABLE . "
@@ -658,7 +658,7 @@ class acp_attachments
 							$ext_group_row['max_filesize'] = (int) $config['max_filesize'];
 						}
 
-						$max_filesize = get_formatted_filesize($ext_group_row['max_filesize'], false, array('mb', 'kb', 'b'));
+						$max_filesize = get_formatted_filesize($ext_group_row['max_filesize'], false, ['mb', 'kb', 'b']);
 						$size_format = $max_filesize['si_identifier'];
 						$ext_group_row['max_filesize'] = $max_filesize['value'];
 
@@ -710,7 +710,7 @@ class acp_attachments
 							$s_extension_options .= '<option' . ((!$row['group_id']) ? ' class="disabled"' : '') . ' value="' . $row['extension_id'] . '"' . (($row['group_id'] == $group_id && $group_id) ? ' selected="selected"' : '') . '>' . $row['extension'] . '</option>';
 						}
 
-						$template->assign_vars(array(
+						$template->assign_vars([
 							'IMG_PATH'				=> FILE_ICONS_PATH,
 							'ACTION'				=> $action,
 							'GROUP_ID'				=> $group_id,
@@ -732,8 +732,8 @@ class acp_attachments
 							'U_EXTENSIONS'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;mode=extensions"),
 							'U_BACK'			=> $this->u_action,
 
-							'L_LEGEND'			=> $user->lang[strtoupper($action) . '_EXTENSION_GROUP'])
-						);
+							'L_LEGEND'			=> $user->lang[strtoupper($action) . '_EXTENSION_GROUP']
+						]);
 
 						$s_forum_id_options = '';
 
@@ -746,7 +746,7 @@ class acp_attachments
 
 						$right = $cat_right = $padding_inc = 0;
 						$padding = $forum_list = $holding = '';
-						$padding_store = array('0' => '');
+						$padding_store = ['0' => ''];
 
 						while ($row = $db->sql_fetchrow($result))
 						{
@@ -804,9 +804,9 @@ class acp_attachments
 						$db->sql_freeresult($result);
 						unset($padding_store);
 
-						$template->assign_vars(array(
-							'S_FORUM_ID_OPTIONS'	=> $s_forum_id_options)
-						);
+						$template->assign_vars([
+							'S_FORUM_ID_OPTIONS'	=> $s_forum_id_options
+						]);
 
 					break;
 				}
@@ -822,7 +822,7 @@ class acp_attachments
 					$s_add_spacer = ($old_allow_group != $row['allow_group'] || $old_allow_pm != $row['allow_in_pm']) ? true : false;
 					$row['cat_id'] = ($row['cat_id'] < ATTACHMENT_CATEGORY_COUNT) ? intval($row['cat_id']) : ATTACHMENT_CATEGORY_NONE;
 
-					$template->assign_block_vars('groups', array(
+					$template->assign_block_vars('groups', [
 						'S_ADD_SPACER'		=> $s_add_spacer,
 						'S_ALLOWED_IN_PM'	=> ($row['allow_in_pm']) ? true : false,
 						'S_GROUP_ALLOWED'	=> ($row['allow_group']) ? true : false,
@@ -832,7 +832,7 @@ class acp_attachments
 
 						'GROUP_NAME'	=> (isset($user->lang['EXT_GROUP_' . $row['group_name']])) ? $user->lang['EXT_GROUP_' . $row['group_name']] : $row['group_name'],
 						'CATEGORY'		=> $cat_lang[$row['cat_id']],
-						)
+						]
 					);
 
 					$old_allow_group = $row['allow_group'];
@@ -846,9 +846,9 @@ class acp_attachments
 
 				if ($submit)
 				{
-					$delete_files = (isset($_POST['delete'])) ? array_keys(request_var('delete', array('' => 0))) : array();
-					$add_files = (isset($_POST['add'])) ? array_keys(request_var('add', array('' => 0))) : array();
-					$post_ids = request_var('post_id', array('' => 0));
+					$delete_files = (isset($_POST['delete'])) ? array_keys(request_var('delete', ['' => 0])) : [];
+					$add_files = (isset($_POST['add'])) ? array_keys(request_var('add', ['' => 0])) : [];
+					$post_ids = request_var('post_id', ['' => 0]);
 
 					if (sizeof($delete_files))
 					{
@@ -858,7 +858,7 @@ class acp_attachments
 								AND is_orphan = 1';
 						$result = $db->sql_query($sql);
 
-						$delete_files = array();
+						$delete_files = [];
 						while ($row = $db->sql_fetchrow($result))
 						{
 							phpbb_unlink($row['physical_filename'], 'file');
@@ -883,7 +883,7 @@ class acp_attachments
 						$notify[] = sprintf($user->lang['LOG_ATTACH_ORPHAN_DEL'], implode(', ', $delete_files));
 					}
 
-					$upload_list = array();
+					$upload_list = [];
 					foreach ($add_files as $attach_id)
 					{
 						if (!isset($delete_files[$attach_id]) && !empty($post_ids[$attach_id]))
@@ -901,7 +901,7 @@ class acp_attachments
 							FROM ' . FORUMS_TABLE;
 						$result = $db->sql_query($sql);
 
-						$forum_names = array();
+						$forum_names = [];
 						while ($row = $db->sql_fetchrow($result))
 						{
 							$forum_names[$row['forum_id']] = $row['forum_name'];
@@ -913,7 +913,7 @@ class acp_attachments
 							WHERE ' . $db->sql_in_set('post_id', $upload_list);
 						$result = $db->sql_query($sql);
 
-						$post_info = array();
+						$post_info = [];
 						while ($row = $db->sql_fetchrow($result))
 						{
 							$post_info[$row['post_id']] = $row;
@@ -932,11 +932,11 @@ class acp_attachments
 						{
 							$post_row = $post_info[$upload_list[$row['attach_id']]];
 
-							$template->assign_block_vars('upload', array(
+							$template->assign_block_vars('upload', [
 								'FILE_INFO'		=> sprintf($user->lang['UPLOADING_FILE_TO'], $row['real_filename'], $post_row['post_id']),
 								'S_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? true : false,
-								'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '')
-							);
+								'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : ''
+							]);
 
 							if (!$auth->acl_get('f_attach', $post_row['forum_id']))
 							{
@@ -944,13 +944,13 @@ class acp_attachments
 							}
 
 							// Adjust attachment entry
-							$sql_ary = array(
+							$sql_ary = [
 								'in_message'	=> 0,
 								'is_orphan'		=> 0,
 								'poster_id'		=> $post_row['poster_id'],
 								'post_msg_id'	=> $post_row['post_id'],
 								'topic_id'		=> $post_row['topic_id'],
-							);
+							];
 
 							$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -982,9 +982,9 @@ class acp_attachments
 					}
 				}
 
-				$template->assign_vars(array(
-					'S_ORPHAN'		=> true)
-				);
+				$template->assign_vars([
+					'S_ORPHAN'		=> true
+				]);
 
 				// Just get the files with is_orphan set and older than 3 hours
 				$sql = 'SELECT *
@@ -996,15 +996,15 @@ class acp_attachments
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$template->assign_block_vars('orphan', array(
+					$template->assign_block_vars('orphan', [
 						'FILESIZE'			=> get_formatted_filesize($row['filesize']),
 						'FILETIME'			=> $user->format_date($row['filetime']),
 						'REAL_FILENAME'		=> utf8_basename($row['real_filename']),
 						'PHYSICAL_FILENAME'	=> utf8_basename($row['physical_filename']),
 						'ATTACH_ID'			=> $row['attach_id'],
 						'POST_IDS'			=> (!empty($post_ids[$row['attach_id']])) ? $post_ids[$row['attach_id']] : '',
-						'U_FILE'			=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id']))
-					);
+						'U_FILE'			=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id'])
+					]);
 				}
 				$db->sql_freeresult($result);
 
@@ -1013,18 +1013,18 @@ class acp_attachments
 
 		if (sizeof($error))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_WARNING'		=> true,
-				'WARNING_MSG'	=> implode('<br />', $error))
-			);
+				'WARNING_MSG'	=> implode('<br />', $error)
+			]);
 		}
 
 		if (sizeof($notify))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_NOTIFY'		=> true,
-				'NOTIFY_MSG'	=> implode('<br />', $notify))
-			);
+				'NOTIFY_MSG'	=> implode('<br />', $notify)
+			]);
 		}
 	}
 
@@ -1035,12 +1035,12 @@ class acp_attachments
 	{
 		global $db, $user;
 
-		$types = array(
+		$types = [
 			ATTACHMENT_CATEGORY_NONE		=> $user->lang['NO_FILE_CAT'],
 			ATTACHMENT_CATEGORY_IMAGE		=> $user->lang['CAT_IMAGES'],
 			ATTACHMENT_CATEGORY_VIDEO		=> $user->lang['CAT_VIDEO_FILES'],
 			ATTACHMENT_CATEGORY_AUDIO		=> $user->lang['CAT_AUDIO_FILES'],
-		);
+		];
 
 		$cat_type = ATTACHMENT_CATEGORY_NONE;
 
@@ -1086,7 +1086,7 @@ class acp_attachments
 			ORDER BY group_name';
 		$result = $db->sql_query($sql);
 
-		$group_name = array();
+		$group_name = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$row['group_name'] = (isset($user->lang['EXT_GROUP_' . $row['group_name']])) ? $user->lang['EXT_GROUP_' . $row['group_name']] : $row['group_name'];
@@ -1094,7 +1094,7 @@ class acp_attachments
 		}
 		$db->sql_freeresult($result);
 
-		$group_name[] = array('group_id' => 0, 'group_name' => $user->lang['NOT_ASSIGNED']);
+		$group_name[] = ['group_id' => 0, 'group_name' => $user->lang['NOT_ASSIGNED']];
 
 		for ($i = 0; $i < sizeof($group_name); $i++)
 		{
@@ -1161,8 +1161,8 @@ class acp_attachments
 
 			$ip_exclude = (!empty($_POST['ipexclude'])) ? 1 : 0;
 
-			$iplist = array();
-			$hostlist = array();
+			$iplist = [];
+			$hostlist = [];
 
 			foreach ($ip_list as $item)
 			{
@@ -1244,8 +1244,8 @@ class acp_attachments
 
 			if ($row = $db->sql_fetchrow($result))
 			{
-				$iplist_tmp = array();
-				$hostlist_tmp = array();
+				$iplist_tmp = [];
+				$hostlist_tmp = [];
 				do
 				{
 					if ($row['site_ip'])
@@ -1308,7 +1308,7 @@ class acp_attachments
 		}
 		else if (isset($_POST['unsecuresubmit']))
 		{
-			$unip_sql = request_var('unip', array(0));
+			$unip_sql = request_var('unip', [0]);
 
 			if (sizeof($unip_sql))
 			{
@@ -1342,7 +1342,7 @@ class acp_attachments
 	*/
 	function display_order($value, $key = '')
 	{
-		$radio_ary = array(0 => 'DESCENDING', 1 => 'ASCENDING');
+		$radio_ary = [0 => 'DESCENDING', 1 => 'ASCENDING'];
 
 		return h_radio('config[display_order]', $radio_ary, $value, $key);
 	}
@@ -1353,7 +1353,7 @@ class acp_attachments
 	function max_filesize($value, $key = '')
 	{
 		// Determine size var and adjust the value accordingly
-		$filesize = get_formatted_filesize($value, false, array('mb', 'kb', 'b'));
+		$filesize = get_formatted_filesize($value, false, ['mb', 'kb', 'b']);
 		$size_var = $filesize['si_identifier'];
 		$value = $filesize['value'];
 
@@ -1365,7 +1365,7 @@ class acp_attachments
 	*/
 	function select_allow_deny($value, $key = '')
 	{
-		$radio_ary = array(1 => 'ORDER_ALLOW_DENY', 0 => 'ORDER_DENY_ALLOW');
+		$radio_ary = [1 => 'ORDER_ALLOW_DENY', 0 => 'ORDER_DENY_ALLOW'];
 
 		return h_radio('config[' . $key . ']', $radio_ary, $value, $key);
 	}

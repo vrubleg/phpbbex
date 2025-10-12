@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'DATE_FORMAT'		=> '|d M Y|',	// 01 Jan 2007 (with Relative days enabled)
 	'USER_LANG'			=> 'en-gb',
 
@@ -369,11 +369,11 @@ $lang = array_merge($lang, array(
 	'NO_USER_SPECIFIED'			=> 'No username was specified.',
 
 	// Nullar/Singular/Plural language entry. The key numbers define the number range in which a certain grammatical expression is valid.
-	'NUM_POSTS_IN_QUEUE'		=> array(
+	'NUM_POSTS_IN_QUEUE'		=> [
 		0			=> 'No posts in queue',		// 0
 		1			=> '1 post in queue',		// 1
 		2			=> '%d posts in queue',		// 2+
-	),
+	],
 
 	'OCCUPATION'				=> 'Occupation',
 	'OFFLINE'					=> 'Offline',
@@ -384,8 +384,8 @@ $lang = array_merge($lang, array(
 	'ONLINE_TOTAL_STR'			=> 'There are <strong>%d</strong> users online: ',
 	'ONLINE_HIDDEN_USERS'		=> '%d hidden',
 	'ONLINE_REG_USERS'			=> '%d registered',
-	'ONLINE_GUEST_USERS'		=> array(0 => '0 guests', 1 => '%d guest', 2 => '%d guests'),
-	'ONLINE_BOT_USERS'			=> array(0 => '0 bots', 1 => '1 bot', 2 => '%d bots'),
+	'ONLINE_GUEST_USERS'		=> [0 => '0 guests', 1 => '%d guest', 2 => '%d guests'],
+	'ONLINE_BOT_USERS'			=> [0 => '0 bots', 1 => '1 bot', 2 => '%d bots'],
 
 	'PAGE_OF'				=> 'Page %1$d of %2$d',
 	'PASSWORD'				=> 'Password',
@@ -673,16 +673,16 @@ $lang = array_merge($lang, array(
 	'YOU_NEW_PMS'		=> 'New private messages are waiting for you in your Inbox.',
 	'YOU_NO_NEW_PM'		=> 'No new private messages are waiting for you.',
 
-	'datetime'			=> array(
+	'datetime'			=> [
 		'TODAY'		=> 'Today',
 		'TOMORROW'	=> 'Tomorrow',
 		'YESTERDAY'	=> 'Yesterday',
-		'AGO'		=> array(
+		'AGO'		=> [
 			0		=> 'less than a minute ago',
 			1		=> '%d minute ago',
 			2		=> '%d minutes ago',
 			60		=> '1 hour ago',
-		),
+		],
 
 		'Sunday'	=> 'Sunday',
 		'Monday'	=> 'Monday',
@@ -725,9 +725,9 @@ $lang = array_merge($lang, array(
 		'Oct'		=> 'Oct',
 		'Nov'		=> 'Nov',
 		'Dec'		=> 'Dec',
-	),
+	],
 
-	'tz'				=> array(
+	'tz'				=> [
 		'-12'	=> 'UTC - 12 hours',
 		'-11'	=> 'UTC - 11 hours',
 		'-10'	=> 'UTC - 10 hours',
@@ -769,9 +769,9 @@ $lang = array_merge($lang, array(
 		'13'	=> 'UTC + 13 hours',
 		'14'	=> 'UTC + 14 hours',
 		'dst'	=> '[ <abbr title="Daylight Saving Time">DST</abbr> ]',
-	),
+	],
 
-	'tz_zones'	=> array(
+	'tz_zones'	=> [
 		'-12'	=> '[UTC - 12] Baker Island Time',
 		'-11'	=> '[UTC - 11] Niue Time, Samoa Standard Time',
 		'-10'	=> '[UTC - 10] Hawaii-Aleutian Standard Time, Cook Island Time',
@@ -812,10 +812,10 @@ $lang = array_merge($lang, array(
 		'12.75'	=> '[UTC + 12:45] Chatham Islands Time',
 		'13'	=> '[UTC + 13] Tonga Time, Phoenix Islands Time',
 		'14'	=> '[UTC + 14] Line Island Time',
-	),
+	],
 
 	// The value is only an example and will get replaced by the current time on view
-	'dateformats'	=> array(
+	'dateformats'	=> [
 		'|d M Y|{, H:i}'		=> 'Today, 13:37 / 01 Jan 2007, 13:37',
 		'|d.m.Y|{, H:i}'		=> 'Today, 13:37 / 01.01.2007, 13:37',
 		'|D, d M Y|{, H:i}'		=> 'Today, 13:37 / Mon, 01 Jan 2007, 13:37',
@@ -827,18 +827,18 @@ $lang = array_merge($lang, array(
 		'{H:i }d.m.Y'			=> '17:57 10.01.2005',
 		'd.m.Y{, H:i}'			=> '10.01.2005, 17:57',
 		'Y-m-d{ H:i}'			=> '2005-01-10 17:57',
-	),
+	],
 
 	// The default dateformat which will be used on new installs in this language
 	// Translators should change this if a the usual date format is different
 	'default_dateformat'		=> '|d M Y|{, H:i}', // Today, 13:37 / 01 Jan 2007, 13:37
 
 	// User topics count
-	'NUM_TOPICS_IN_QUEUE'		=> array(
+	'NUM_TOPICS_IN_QUEUE'		=> [
 		0			=> 'No topics in queue',	// 0
 		1			=> '1 topic in queue',		// 1
 		2			=> '%d topics in queue',	// 2+
-	),
+	],
 	'TOPIC_DAY'					=> '%.2f topics per day',
 	'TOPIC_PCT'					=> '%.2f%% of all topics',
 	'TOTAL_TOPICS'				=> 'Total topics',
@@ -848,12 +848,12 @@ $lang = array_merge($lang, array(
 	'UPD_MERGED'				=> 'Added %s:',
 
 	// Time delta
-	'D_SECONDS'					=> array('second', 'seconds', 'seconds'),
-	'D_MINUTES'					=> array('minute', 'minutes', 'minutes'),
-	'D_HOURS'					=> array('hour', 'hours', 'hours'),
-	'D_MDAY'					=> array('day', 'days', 'days'),
-	'D_MON'						=> array('month', 'months', 'months'),
-	'D_YEAR'					=> array('year', 'yaers', 'years'),
+	'D_SECONDS'					=> ['second', 'seconds', 'seconds'],
+	'D_MINUTES'					=> ['minute', 'minutes', 'minutes'],
+	'D_HOURS'					=> ['hour', 'hours', 'hours'],
+	'D_MDAY'					=> ['day', 'days', 'days'],
+	'D_MON'						=> ['month', 'months', 'months'],
+	'D_YEAR'					=> ['year', 'yaers', 'years'],
 
 	// Genders
 	'GENDER'					=> 'Gender',
@@ -910,4 +910,4 @@ $lang = array_merge($lang, array(
 	'USER_WITH_US'			=> 'With us',
 	'SPOILER'				=> 'Spoiler',
 
-));
+]);

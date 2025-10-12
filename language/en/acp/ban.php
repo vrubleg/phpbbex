@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Banning
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'1_HOUR'		=> '1 hour',
 	'30_MINS'		=> '30 minutes',
 	'6_HOURS'		=> '6 hours',
@@ -60,4 +60,4 @@ $lang = array_merge($lang, array(
 	'USER_NO_BANNED'			=> 'No banned usernames',
 	'USER_UNBAN'				=> 'Un-ban or un-exclude users by username',
 	'USER_UNBAN_EXPLAIN'		=> 'You can unban (or un-exclude) multiple users in one go using the appropriate combination of mouse and keyboard for your computer and browser. Excluded users are emphasised.',
-));
+]);

@@ -61,7 +61,7 @@ if (!defined('HTTP_HOST') || !defined('HTTP_PORT'))
 if (!defined('HTTP_ROOT'))
 {
 	if (empty($_SERVER['SCRIPT_NAME'])) { die('SCRIPT_NAME is invalid.'); }
-	$parts = array();
+	$parts = [];
 	$parts[] = '';
 	foreach (explode('/', str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] . '/../' . PHPBB_ROOT_PATH)) as $part)
 	{

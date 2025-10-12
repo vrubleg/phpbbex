@@ -60,13 +60,13 @@ class acp_ranks
 					trigger_error($user->lang['NO_RANK_TITLE'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
-				$sql_ary = array(
+				$sql_ary = [
 					'rank_title'		=> $rank_title,
 					'rank_hide_title'	=> $hide_title,
 					'rank_special'		=> $special_rank,
 					'rank_min'			=> $min_posts,
 					'rank_image'		=> htmlspecialchars_decode($rank_image)
-				);
+				];
 
 				if ($rank_id)
 				{
@@ -121,12 +121,12 @@ class acp_ranks
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'rank_id'	=> $rank_id,
 						'action'	=> 'delete',
-					)));
+					]));
 				}
 
 			break;
@@ -134,7 +134,7 @@ class acp_ranks
 			case 'edit':
 			case 'add':
 
-				$data = $ranks = $existing_imgs = array();
+				$data = $ranks = $existing_imgs = [];
 
 				$sql = 'SELECT *
 					FROM ' . RANKS_TABLE . '
@@ -185,7 +185,7 @@ class acp_ranks
 				$filename_list = '<option value=""' . (($edit_img == '') ? ' selected="selected"' : '') . '>----------</option>' . $filename_list;
 				unset($existing_imgs, $imglist);
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_EDIT'			=> true,
 					'U_BACK'			=> $this->u_action,
 					'RANK_IMAGES_PATH'	=> PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/',
@@ -196,7 +196,7 @@ class acp_ranks
 					'RANK_IMAGE'		=> ($edit_img) ? PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $edit_img : PHPBB_ADMIN_PATH . 'images/spacer.gif',
 					'S_SPECIAL_RANK'	=> (isset($ranks['rank_special']) && $ranks['rank_special']) ? true : false,
 					'S_HIDE_TITLE'		=> (isset($ranks['rank_hide_title']) && $ranks['rank_hide_title']) ? true : false,
-					'MIN_POSTS'			=> (isset($ranks['rank_min']) && !$ranks['rank_special']) ? $ranks['rank_min'] : 0)
+					'MIN_POSTS'			=> (isset($ranks['rank_min']) && !$ranks['rank_special']) ? $ranks['rank_min'] : 0]
 				);
 
 
@@ -205,8 +205,8 @@ class acp_ranks
 			break;
 		}
 
-		$template->assign_vars(array(
-			'U_ACTION'		=> $this->u_action)
+		$template->assign_vars([
+			'U_ACTION'		=> $this->u_action]
 		);
 
 		$sql = 'SELECT *
@@ -216,7 +216,7 @@ class acp_ranks
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$template->assign_block_vars('ranks', array(
+			$template->assign_block_vars('ranks', [
 				'S_RANK_IMAGE'		=> ($row['rank_image']) ? true : false,
 				'S_SPECIAL_RANK'	=> ($row['rank_special']) ? true : false,
 				'S_HIDE_TITLE'		=> ($row['rank_hide_title']) ? true : false,
@@ -226,7 +226,7 @@ class acp_ranks
 				'MIN_POSTS'			=> $row['rank_min'],
 
 				'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;id=' . $row['rank_id'],
-				'U_DELETE'			=> $this->u_action . '&amp;action=delete&amp;id=' . $row['rank_id'])
+				'U_DELETE'			=> $this->u_action . '&amp;action=delete&amp;id=' . $row['rank_id']]
 			);
 		}
 		$db->sql_freeresult($result);

@@ -32,7 +32,7 @@ class mcp_logs
 
 		$user->add_lang('acp/common');
 
-		$action = request_var('action', array('' => ''));
+		$action = request_var('action', ['' => '']);
 
 		if (is_array($action))
 		{
@@ -47,7 +47,7 @@ class mcp_logs
 		$start		= request_var('start', 0);
 		$deletemark = ($action == 'del_marked') ? true : false;
 		$deleteall	= ($action == 'del_all') ? true : false;
-		$marked		= request_var('mark', array(0));
+		$marked		= request_var('mark', [0]);
 
 		// Sort keys
 		$sort_days	= request_var('st', 0);
@@ -75,7 +75,7 @@ class mcp_logs
 					trigger_error('NOT_AUTHORISED');
 				}
 
-				$forum_list = array($forum_id);
+				$forum_list = [$forum_id];
 			break;
 
 			case 'topic_logs':
@@ -93,7 +93,7 @@ class mcp_logs
 					trigger_error('NOT_AUTHORISED');
 				}
 
-				$forum_list = array($forum_id);
+				$forum_list = [$forum_id];
 			break;
 		}
 
@@ -129,7 +129,7 @@ class mcp_logs
 			}
 			else
 			{
-				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 					'f'			=> $forum_id,
 					't'			=> $topic_id,
 					'start'		=> $start,
@@ -141,15 +141,15 @@ class mcp_logs
 					'sd'		=> $sort_dir,
 					'i'			=> $id,
 					'mode'		=> $mode,
-					'action'	=> request_var('action', array('' => ''))))
+					'action'	=> request_var('action', ['' => ''])])
 				);
 			}
 		}
 
 		// Sorting
-		$limit_days = array(0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
-		$sort_by_text = array('u' => $user->lang['SORT_USERNAME'], 't' => $user->lang['SORT_DATE'], 'i' => $user->lang['SORT_IP'], 'o' => $user->lang['SORT_ACTION']);
-		$sort_by_sql = array('u' => 'u.username_clean', 't' => 'l.log_time', 'i' => 'l.log_ip', 'o' => 'l.log_operation');
+		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+		$sort_by_text = ['u' => $user->lang['SORT_USERNAME'], 't' => $user->lang['SORT_DATE'], 'i' => $user->lang['SORT_IP'], 'o' => $user->lang['SORT_ACTION']];
+		$sort_by_sql = ['u' => 'u.username_clean', 't' => 'l.log_time', 'i' => 'l.log_ip', 'o' => 'l.log_operation'];
 
 		$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 		gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
@@ -162,11 +162,11 @@ class mcp_logs
 		$keywords_param = !empty($keywords) ? '&amp;keywords=' . urlencode(htmlspecialchars_decode($keywords)) : '';
 
 		// Grab log data
-		$log_data = array();
+		$log_data = [];
 		$log_count = 0;
 		$start = view_log('mod', $log_data, $log_count, $config['topics_per_page'], $start, $forum_list, $topic_id, 0, $sql_where, $sql_sort, $keywords);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'PAGE_NUMBER'		=> on_page($log_count, $config['topics_per_page'], $start),
 			'TOTAL'				=> ($log_count == 1) ? $user->lang['TOTAL_LOG'] : sprintf($user->lang['TOTAL_LOGS'], $log_count),
 			'PAGINATION'		=> generate_pagination($this->u_action . "&amp;$u_sort_param$keywords_param", $log_count, $config['topics_per_page'], $start),
@@ -180,14 +180,14 @@ class mcp_logs
 			'S_SELECT_SORT_DAYS'	=> $s_limit_days,
 			'S_LOGS'				=> ($log_count > 0),
 			'S_KEYWORDS'			=> $keywords,
-			)
+			]
 		);
 
 		foreach ($log_data as $row)
 		{
-			$data = array();
+			$data = [];
 
-			$checks = array('viewtopic', 'viewforum');
+			$checks = ['viewtopic', 'viewforum'];
 			foreach ($checks as $check)
 			{
 				if (isset($row[$check]) && $row[$check])
@@ -196,14 +196,14 @@ class mcp_logs
 				}
 			}
 
-			$template->assign_block_vars('log', array(
+			$template->assign_block_vars('log', [
 				'USERNAME'		=> $row['username_full'],
 				'IP'			=> $row['ip'],
 				'DATE'			=> $user->format_date($row['time']),
 				'ACTION'		=> $row['action'],
 				'DATA'			=> (sizeof($data)) ? implode(' | ', $data) : '',
 				'ID'			=> $row['id'],
-				)
+				]
 			);
 		}
 	}

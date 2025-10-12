@@ -25,13 +25,13 @@ class reset_styles
 
 		$user->add_lang('acp/board');
 
-		return array(
+		return [
 			'title'	=> 'RESET_STYLES',
-			'vars'	=> array(
+			'vars'	=> [
 				'legend1'				=> 'RESET_STYLES',
-				'style_id'				=> array('lang' => 'STYLE', 'type' => 'custom', 'function' => 'style_select2', 'explain' => true, 'default' => $config['default_style']),
-			)
-		);
+				'style_id'				=> ['lang' => 'STYLE', 'type' => 'custom', 'function' => 'style_select2', 'explain' => true, 'default' => $config['default_style']],
+			]
+		];
 	}
 
 	/**

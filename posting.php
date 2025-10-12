@@ -34,7 +34,7 @@ $refresh	= (isset($_POST['add_file']) || isset($_POST['update_file']) || isset($
 $submit		= isset($_POST['post']) && !$refresh && !$preview;
 $mode		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : request_var('mode', '');
 
-$error = $post_data = array();
+$error = $post_data = [];
 $current_time = time();
 
 // Was cancel pressed? If so then redirect to the appropriate page
@@ -44,7 +44,7 @@ if ($cancel || ($current_time - $lastclick < 2 && $submit))
 	redirect($redirect);
 }
 
-if (in_array($mode, array('post', 'reply', 'quote', 'edit', 'delete')) && !$forum_id)
+if (in_array($mode, ['post', 'reply', 'quote', 'edit', 'delete']) && !$forum_id)
 {
 	trigger_error('NO_FORUM');
 }
@@ -148,7 +148,7 @@ if ($auth->acl_get('m_approve', $forum_id) && ((($mode == 'reply' || $mode == 'b
 	trigger_error(($mode == 'reply' || $mode == 'bump') ? 'TOPIC_UNAPPROVED' : 'POST_UNAPPROVED');
 }
 
-$user->setup(array('posting', 'mcp', 'viewtopic'));
+$user->setup(['posting', 'mcp', 'viewtopic']);
 
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {
@@ -165,10 +165,10 @@ $post_id	= (!empty($post_data['post_id'])) ? (int) $post_data['post_id'] : (int)
 // Need to login to passworded forum first?
 if ($post_data['forum_password'])
 {
-	login_forum_box(array(
+	login_forum_box([
 		'forum_id'			=> $forum_id,
 		'forum_name'		=> $post_data['forum_name'],
-		'forum_password'	=> $post_data['forum_password'])
+		'forum_password'	=> $post_data['forum_password']]
 	);
 }
 
@@ -249,7 +249,7 @@ if (!$is_authed)
 }
 
 // Is the user able to post within this forum?
-if ($post_data['forum_type'] != FORUM_POST && in_array($mode, array('post', 'bump', 'quote', 'reply')))
+if ($post_data['forum_type'] != FORUM_POST && in_array($mode, ['post', 'bump', 'quote', 'reply']))
 {
 	trigger_error('USER_CANNOT_FORUM_POST');
 }
@@ -324,12 +324,12 @@ else
 
 $post_data['post_edit_locked']	= (isset($post_data['post_edit_locked'])) ? (int) $post_data['post_edit_locked'] : 0;
 $post_data['post_subject_md5']	= (isset($post_data['post_subject']) && $mode == 'edit') ? md5($post_data['post_subject']) : '';
-$post_data['post_subject']		= (in_array($mode, array('quote', 'edit'))) ? $post_data['post_subject'] : ((isset($post_data['topic_title'])) ? $post_data['topic_title'] : '');
+$post_data['post_subject']		= (in_array($mode, ['quote', 'edit'])) ? $post_data['post_subject'] : ((isset($post_data['topic_title'])) ? $post_data['topic_title'] : '');
 $post_data['topic_time_limit']	= (isset($post_data['topic_time_limit'])) ? (($post_data['topic_time_limit']) ? (int) $post_data['topic_time_limit'] / 86400 : (int) $post_data['topic_time_limit']) : 0;
 $post_data['poll_length']		= (!empty($post_data['poll_length'])) ? (int) $post_data['poll_length'] / 86400 : 0;
 $post_data['poll_start']		= (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
 $post_data['icon_id']			= (!isset($post_data['icon_id']) || in_array($mode, ['quote', 'reply']) || ($mode == 'edit' && $post_id != $post_data['topic_first_post_id'] && empty($post_data['post_subject']))) ? 0 : (int) $post_data['icon_id'];
-$post_data['poll_options']		= array();
+$post_data['poll_options']		= [];
 $post_data['topic_first_post_show'] = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
 
 // Get Poll Data
@@ -350,7 +350,7 @@ if ($post_data['poll_start'])
 
 if ($mode == 'edit')
 {
-	$original_poll_data = array(
+	$original_poll_data = [
 		'poll_title'		=> $post_data['poll_title'],
 		'poll_length'		=> $post_data['poll_length'],
 		'poll_max_options'	=> $post_data['poll_max_options'],
@@ -358,7 +358,7 @@ if ($mode == 'edit')
 		'poll_start'		=> $post_data['poll_start'],
 		'poll_last_vote'	=> $post_data['poll_last_vote'],
 		'poll_vote_change'	=> $post_data['poll_vote_change'],
-	);
+	];
 }
 
 $orig_poll_options_size = sizeof($post_data['poll_options']);
@@ -372,7 +372,7 @@ if (isset($post_data['post_text']))
 }
 
 // Set some default variables
-$uninit = array('post_attachment' => 0, 'poster_id' => $user->data['user_id'], 'enable_magic_url' => 0, 'topic_status' => 0, 'topic_type' => POST_NORMAL, 'topic_priority' => 0, 'post_subject' => '', 'topic_title' => '', 'post_time' => 0, 'post_edit_reason' => '', 'notify_set' => 0);
+$uninit = ['post_attachment' => 0, 'poster_id' => $user->data['user_id'], 'enable_magic_url' => 0, 'topic_status' => 0, 'topic_type' => POST_NORMAL, 'topic_priority' => 0, 'post_subject' => '', 'topic_title' => '', 'post_time' => 0, 'post_edit_reason' => '', 'notify_set' => 0];
 
 foreach ($uninit as $var_name => $default_value)
 {
@@ -480,13 +480,13 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 	{
 		if (confirm_box(true))
 		{
-			$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
 				'user_id'		=> (int) $user->data['user_id'],
 				'topic_id'		=> (int) $topic_id,
 				'forum_id'		=> (int) $forum_id,
 				'save_time'		=> (int) $current_time,
 				'draft_subject'	=> (string) $subject,
-				'draft_message'	=> (string) $message)
+				'draft_message'	=> (string) $message]
 			);
 			$db->sql_query($sql);
 
@@ -502,7 +502,7 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 		}
 		else
 		{
-			$s_hidden_fields = build_hidden_fields(array(
+			$s_hidden_fields = build_hidden_fields([
 				'mode'		=> $mode,
 				'save'		=> true,
 				'f'			=> $forum_id,
@@ -510,10 +510,10 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 				'subject'	=> $subject,
 				'message'	=> $message,
 				'attachment_data' => $message_parser->attachment_data,
-				)
+				]
 			);
 
-			$hidden_fields = array(
+			$hidden_fields = [
 				'icon_id'			=> 0,
 
 				'disable_bbcode'	=> false,
@@ -531,7 +531,7 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 				'poll_max_options'	=> 1,
 				'poll_length'		=> 0,
 				'poll_vote_change'	=> false,
-			);
+			];
 
 			foreach ($hidden_fields as $name => $default)
 			{
@@ -666,7 +666,7 @@ if ($submit || $preview || $refresh)
 				WHERE topic_id = $topic_id";
 			$db->sql_query($sql);
 
-			$topic_sql = array(
+			$topic_sql = [
 				'poll_title'		=> '',
 				'poll_start' 		=> 0,
 				'poll_length'		=> 0,
@@ -674,7 +674,7 @@ if ($submit || $preview || $refresh)
 				'poll_max_options'	=> 0,
 				'poll_vote_change'	=> 0,
 				'poll_show_voters'	=> 0
-			);
+			];
 
 			$sql = 'UPDATE ' . TOPICS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $topic_sql) . "
@@ -738,12 +738,12 @@ if ($submit || $preview || $refresh)
 		{
 			if (topic_review($topic_id, $forum_id, 'post_review_edit', $post_id))
 			{
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_POST_REVIEW'			=> true,
 
 					'L_POST_REVIEW'			=> $user->lang['POST_REVIEW_EDIT'],
 					'L_POST_REVIEW_EXPLAIN'	=> $user->lang['POST_REVIEW_EDIT_EXPLAIN'],
-				));
+				]);
 			}
 
 			$submit = false;
@@ -763,7 +763,7 @@ if ($submit || $preview || $refresh)
 		if (sizeof($message_parser->warn_msg))
 		{
 			$error[] = implode('<br />', $message_parser->warn_msg);
-			$message_parser->warn_msg = array();
+			$message_parser->warn_msg = [];
 		}
 
 		$message_parser->parse($post_data['enable_bbcode'], ($config['allow_post_links']) ? $post_data['enable_urls'] : false, $post_data['enable_smilies'], $img_status, $flash_status, $quote_status, $config['allow_post_links']);
@@ -771,7 +771,7 @@ if ($submit || $preview || $refresh)
 		// On a refresh we do not care about message parsing errors
 		if (sizeof($message_parser->warn_msg) && $refresh)
 		{
-			$message_parser->warn_msg = array();
+			$message_parser->warn_msg = [];
 		}
 	}
 	else
@@ -827,13 +827,13 @@ if ($submit || $preview || $refresh)
 		}
 	}
 
-	if ($config['enable_post_confirm'] && !$user->data['is_registered'] && in_array($mode, array('quote', 'post', 'reply')))
+	if ($config['enable_post_confirm'] && !$user->data['is_registered'] && in_array($mode, ['quote', 'post', 'reply']))
 	{
-		$captcha_data = array(
+		$captcha_data = [
 			'message'	=> utf8_normalize_nfc(request_var('message', '', true)),
 			'subject'	=> utf8_normalize_nfc(request_var('subject', '', true)),
 			'username'	=> utf8_normalize_nfc(request_var('username', '', true)),
-		);
+		];
 		$vc_response = $captcha->validate($captcha_data);
 		if ($vc_response)
 		{
@@ -859,7 +859,7 @@ if ($submit || $preview || $refresh)
 		($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id']/* && (!$post_data['poll_last_vote'] || $auth->acl_get('m_edit', $forum_id))*/))
 		&& $auth->acl_get('f_poll', $forum_id))
 	{
-		$poll = array(
+		$poll = [
 			'poll_reset'		=> $poll_reset,
 			'poll_title'		=> $post_data['poll_title'],
 			'poll_length'		=> $post_data['poll_length'],
@@ -873,11 +873,11 @@ if ($submit || $preview || $refresh)
 			'enable_urls'		=> $post_data['enable_urls'],
 			'enable_smilies'	=> $post_data['enable_smilies'],
 			'img_status'		=> $img_status
-		);
+		];
 
 		$message_parser->parse_poll($poll);
 
-		$post_data['poll_options'] = (isset($poll['poll_options'])) ? $poll['poll_options'] : array();
+		$post_data['poll_options'] = (isset($poll['poll_options'])) ? $poll['poll_options'] : [];
 		$post_data['poll_title'] = (isset($poll['poll_title'])) ? $poll['poll_title'] : '';
 
 		if (!$poll_reset && $post_data['poll_last_vote'] && ($poll['poll_options_size'] < $orig_poll_options_size))
@@ -888,7 +888,7 @@ if ($submit || $preview || $refresh)
 	else if ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'] && $auth->acl_get('f_poll', $forum_id))
 	{
 		// The user removed all poll options, this is equal to deleting the poll.
-		$poll = array(
+		$poll = [
 			'poll_title'		=> '',
 			'poll_length'		=> 0,
 			'poll_max_options'	=> 0,
@@ -896,10 +896,10 @@ if ($submit || $preview || $refresh)
 			'poll_start'		=> 0,
 			'poll_last_vote'	=> 0,
 			'poll_vote_change'	=> 0,
-			'poll_options'		=> array(),
-		);
+			'poll_options'		=> [],
+		];
 
-		$post_data['poll_options'] = array();
+		$post_data['poll_options'] = [];
 		$post_data['poll_title'] = '';
 		$post_data['poll_start'] = $post_data['poll_length'] = $post_data['poll_max_options'] = $post_data['poll_last_vote'] = $post_data['poll_vote_change'] = 0;
 	}
@@ -907,21 +907,21 @@ if ($submit || $preview || $refresh)
 	{
 		// We have a poll but the editing user is not permitted to create/edit it.
 		// So we just keep the original poll-data.
-		$poll = array_merge($original_poll_data, array(
+		$poll = array_merge($original_poll_data, [
 			'enable_bbcode'		=> $post_data['enable_bbcode'],
 			'enable_urls'		=> $post_data['enable_urls'],
 			'enable_smilies'	=> $post_data['enable_smilies'],
 			'img_status'		=> $img_status,
-		));
+		]);
 
 		$message_parser->parse_poll($poll);
 
-		$post_data['poll_options'] = (isset($poll['poll_options'])) ? $poll['poll_options'] : array();
+		$post_data['poll_options'] = (isset($poll['poll_options'])) ? $poll['poll_options'] : [];
 		$post_data['poll_title'] = (isset($poll['poll_title'])) ? $poll['poll_title'] : '';
 	}
 	else
 	{
-		$poll = array();
+		$poll = [];
 	}
 
 	// Check topic type
@@ -1009,9 +1009,9 @@ if ($submit || $preview || $refresh)
 				{
 					require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
-					$template->assign_vars(array(
+					$template->assign_vars([
 						'S_FORUM_SELECT'	=> make_forum_select(false, false, false, true, true, true),
-						'S_UNGLOBALISE'		=> true)
+						'S_UNGLOBALISE'		=> true]
 					);
 
 					$submit = false;
@@ -1068,7 +1068,7 @@ if ($submit || $preview || $refresh)
 				$post_data['post_edit_locked'] = ITEM_LOCKED;
 			}
 
-			$data = array(
+			$data = [
 				'topic_title'			=> (empty($post_data['topic_title'])) ? $post_data['post_subject'] : $post_data['topic_title'],
 				'topic_first_post_id'	=> (isset($post_data['topic_first_post_id'])) ? (int) $post_data['topic_first_post_id'] : 0,
 				'topic_last_post_id'	=> (isset($post_data['topic_last_post_id'])) ? (int) $post_data['topic_last_post_id'] : 0,
@@ -1104,7 +1104,7 @@ if ($submit || $preview || $refresh)
 
 				'topic_approved'		=> (isset($post_data['topic_approved'])) ? $post_data['topic_approved'] : false,
 				'post_approved'			=> (isset($post_data['post_approved'])) ? $post_data['post_approved'] : false,
-			);
+			];
 
 			if ($mode == 'edit')
 			{
@@ -1215,17 +1215,17 @@ if (!sizeof($error) && $preview)
 			$poll_end = ($post_data['poll_length'] * 86400) + (($post_data['poll_start']) ? $post_data['poll_start'] : time());
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_HAS_POLL_OPTIONS'	=> (sizeof($post_data['poll_options'])),
 			'S_IS_MULTI_CHOICE'		=> ($post_data['poll_max_options'] > 1) ? true : false,
 
 			'POLL_QUESTION'		=> $parse_poll->message,
 
 			'L_POLL_LENGTH'		=> ($post_data['poll_length']) ? sprintf($user->lang['POLL_RUN_TILL'], $user->format_date($poll_end)) : '',
-			'L_MAX_VOTES'		=> ($post_data['poll_max_options'] == 1) ? $user->lang['MAX_OPTION_SELECT'] : sprintf($user->lang['MAX_OPTIONS_SELECT'], $post_data['poll_max_options']))
+			'L_MAX_VOTES'		=> ($post_data['poll_max_options'] == 1) ? $user->lang['MAX_OPTION_SELECT'] : sprintf($user->lang['MAX_OPTIONS_SELECT'], $post_data['poll_max_options'])]
 		);
 
-		$preview_poll_options = array();
+		$preview_poll_options = [];
 		foreach ($post_data['poll_options'] as $poll_option)
 		{
 			$parse_poll->message = $poll_option;
@@ -1236,9 +1236,9 @@ if (!sizeof($error) && $preview)
 
 		foreach ($preview_poll_options as $key => $option)
 		{
-			$template->assign_block_vars('poll_option', array(
+			$template->assign_block_vars('poll_option', [
 				'POLL_OPTION_CAPTION'	=> $option,
-				'POLL_OPTION_ID'		=> $key + 1)
+				'POLL_OPTION_ID'		=> $key + 1]
 			);
 		}
 		unset($preview_poll_options);
@@ -1249,15 +1249,15 @@ if (!sizeof($error) && $preview)
 	{
 		$template->assign_var('S_HAS_ATTACHMENTS', true);
 
-		$update_count = array();
+		$update_count = [];
 		$attachment_data = $message_parser->attachment_data;
 
 		parse_attachments($forum_id, $preview_message, $attachment_data, $update_count, true);
 
 		foreach ($attachment_data as $i => $attachment)
 		{
-			$template->assign_block_vars('attachment', array(
-				'DISPLAY_ATTACHMENT'	=> $attachment)
+			$template->assign_block_vars('attachment', [
+				'DISPLAY_ATTACHMENT'	=> $attachment]
 			);
 		}
 		unset($attachment_data);
@@ -1265,12 +1265,12 @@ if (!sizeof($error) && $preview)
 
 	if (!sizeof($error))
 	{
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'PREVIEW_SUBJECT'		=> $preview_subject,
 			'PREVIEW_MESSAGE'		=> $preview_message,
 			'PREVIEW_SIGNATURE'		=> $preview_signature,
 
-			'S_DISPLAY_PREVIEW'		=> true)
+			'S_DISPLAY_PREVIEW'		=> true]
 		);
 	}
 }
@@ -1329,7 +1329,7 @@ if (sizeof($post_data['poll_options']) || !empty($post_data['poll_title']))
 // MAIN POSTING PAGE BEGINS HERE
 
 // Forum moderators?
-$moderators = array();
+$moderators = [];
 if ($config['load_moderators'])
 {
 	get_moderators($moderators, $forum_id);
@@ -1400,10 +1400,10 @@ generate_forum_rules($post_data);
 if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($captcha) && $captcha->is_solved() === false) && ($mode == 'post' || $mode == 'reply' || $mode == 'quote'))
 {
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_CONFIRM_CODE'			=> true,
 		'CAPTCHA_TEMPLATE'			=> $captcha->get_template(),
-	));
+	]);
 }
 
 $s_hidden_fields = ($mode == 'reply' || $mode == 'quote') ? '<input type="hidden" name="topic_cur_post_id" value="' . $post_data['topic_last_post_id'] . '" />' : '';
@@ -1412,10 +1412,10 @@ $s_hidden_fields .= ($draft_id || isset($_REQUEST['draft_loaded'])) ? '<input ty
 
 if ($mode == 'edit')
 {
-	$s_hidden_fields .= build_hidden_fields(array(
+	$s_hidden_fields .= build_hidden_fields([
 		'edit_post_message_checksum'	=> $post_data['post_checksum'],
 		'edit_post_subject_checksum'	=> $post_data['post_subject_md5'],
-	));
+	]);
 }
 
 // Add the confirm id/code pair to the hidden fields, else an error is displayed on next submit/preview
@@ -1433,7 +1433,7 @@ $s_do_merge_checked = $s_do_merge_allowed && (($current_time - $post_data['topic
 $allowed_extension_sizes = get_allowed_extension_sizes($forum_id);
 
 // Start assigning vars for main posting page ...
-$template->assign_vars(array(
+$template->assign_vars([
 	'L_POST_A'					=> $page_title,
 	'L_ICON'					=> ($mode == 'reply' || $mode == 'quote' || ($mode == 'edit' && $post_id != $post_data['topic_first_post_id'])) ? $user->lang['POST_ICON'] : $user->lang['TOPIC_ICON'],
 	'L_MESSAGE_BODY_EXPLAIN'	=> (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
@@ -1502,7 +1502,7 @@ $template->assign_vars(array(
 	'S_BBCODE_SPOILER'		=> $spoiler_status,
 
 	'S_POST_ACTION'			=> $s_action,
-	'S_HIDDEN_FIELDS'		=> $s_hidden_fields)
+	'S_HIDDEN_FIELDS'		=> $s_hidden_fields]
 );
 
 // Build custom bbcodes array
@@ -1512,7 +1512,7 @@ display_custom_bbcodes();
 if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id']/* && (!$post_data['poll_last_vote'] || $auth->acl_get('m_edit', $forum_id))*/))
 	&& $auth->acl_get('f_poll', $forum_id))
 {
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_SHOW_POLL_BOX'		=> true,
 		'S_POLL_VOTE_CHANGE'	=> ($auth->acl_get('f_votechg', $forum_id) && $auth->acl_get('f_vote', $forum_id)),
 		'S_POLL_SHOW_VOTERS'	=> ($mode == 'post' || $mode == 'edit' && (empty($post_data['poll_options']) || !empty($post_data['poll_show_voters'])) || $auth->acl_get('a_')),
@@ -1526,7 +1526,7 @@ if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_
 		'POLL_TITLE'			=> (isset($post_data['poll_title'])) ? $post_data['poll_title'] : '',
 		'POLL_OPTIONS'			=> (!empty($post_data['poll_options'])) ? implode("\n", $post_data['poll_options']) : '',
 		'POLL_MAX_OPTIONS'		=> (isset($post_data['poll_max_options'])) ? (int) $post_data['poll_max_options'] : 1,
-		'POLL_LENGTH'			=> $post_data['poll_length'])
+		'POLL_LENGTH'			=> $post_data['poll_length']]
 	);
 }
 
@@ -1539,8 +1539,8 @@ posting_gen_attachment_entry($attachment_data, $filename_data, $allowed);
 // Output page ...
 page_header($page_title, false);
 
-$template->set_filenames(array(
-	'body' => 'posting_body.html')
+$template->set_filenames([
+	'body' => 'posting_body.html']
 );
 
 make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
@@ -1566,15 +1566,15 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 	// If moderator removing post or user itself removing post, present a confirmation screen
 	if ($auth->acl_get('m_delete', $forum_id) || ($post_data['poster_id'] == $user->data['user_id'] && $user->data['is_registered'] && $auth->acl_get('f_delete', $forum_id) && $post_id == $post_data['topic_last_post_id'] && !$post_data['post_edit_locked'] && ($post_data['post_time'] > time() - ($config['delete_time'] * 60) || !$config['delete_time'])))
 	{
-		$s_hidden_fields = build_hidden_fields(array(
+		$s_hidden_fields = build_hidden_fields([
 			'p'		=> $post_id,
 			'f'		=> $forum_id,
-			'mode'	=> 'delete')
+			'mode'	=> 'delete']
 		);
 
 		if (confirm_box(true))
 		{
-			$data = array(
+			$data = [
 				'topic_first_post_id'	=> $post_data['topic_first_post_id'],
 				'topic_last_post_id'	=> $post_data['topic_last_post_id'],
 				'topic_replies_real'	=> $post_data['topic_replies_real'],
@@ -1585,7 +1585,7 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 				'post_time'				=> $post_data['post_time'],
 				'poster_id'				=> $post_data['poster_id'],
 				'post_postcount'		=> $post_data['post_postcount']
-			);
+			];
 
 			$next_post_id = delete_post($forum_id, $topic_id, $post_id, $data);
 			$post_username = ($post_data['poster_id'] == ANONYMOUS && !empty($post_data['post_username'])) ? $post_data['post_username'] : $post_data['username'];

@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_FILES'						=> 'Admin language files',
 	'ACP_LANGUAGE_PACKS_EXPLAIN'	=> 'Here you are able to install/remove language packs. The default language pack is marked with an asterisk (*).',
 
@@ -72,4 +72,4 @@ $lang = array_merge($lang, array(
 	'UNABLE_TO_WRITE_FILE'		=> 'The file could not be written to %s.',
 
 	'WRONG_LANGUAGE_FILE'		=> 'Selected language file is invalid.',
-));
+]);

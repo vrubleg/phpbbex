@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_ATTACHMENT_SETTINGS_EXPLAIN'	=> 'Here you can configure the main settings for attachments and the associated special categories.',
 	'ACP_EXTENSION_GROUPS_EXPLAIN'		=> 'Here you can add, delete, modify or disable your extension groups. Further options include the assignment of a special category to them, changing the download mechanism and defining an upload icon which will be displayed in front of the attachment which belongs to the group.',
 	'ACP_MANAGE_EXTENSIONS_EXPLAIN'		=> 'Here you can manage your allowed extensions. To activate your extensions, please refer to the extension groups management panel. We strongly recommend not to allow scripting extensions (such as <code>php</code>, <code>php3</code>, <code>php4</code>, <code>phtml</code>, <code>pl</code>, <code>cgi</code>, <code>py</code>, <code>rb</code>, <code>asp</code>, <code>aspx</code>, and so forth…).',
@@ -139,4 +139,4 @@ $lang = array_merge($lang, array(
 	'UPLOADING_FILE_TO'				=> 'Uploading file “%1$s” to post number %2$d…',
 	'UPLOAD_DENIED_FORUM'			=> 'You do not have the permission to upload files to forum “%s”.',
 	'UPLOAD_ICON'					=> 'Upload icon',
-));
+]);

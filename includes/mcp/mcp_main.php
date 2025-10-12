@@ -36,7 +36,7 @@ class mcp_main
 		{
 			case 'lock':
 			case 'unlock':
-				$topic_ids = (!$quickmod) ? request_var('topic_id_list', array(0)) : array(request_var('t', 0));
+				$topic_ids = (!$quickmod) ? request_var('topic_id_list', [0]) : [request_var('t', 0)];
 
 				if (!sizeof($topic_ids))
 				{
@@ -49,7 +49,7 @@ class mcp_main
 			case 'lock_post':
 			case 'unlock_post':
 
-				$post_ids = (!$quickmod) ? request_var('post_id_list', array(0)) : array(request_var('p', 0));
+				$post_ids = (!$quickmod) ? request_var('post_id_list', [0]) : [request_var('p', 0)];
 
 				if (!sizeof($post_ids))
 				{
@@ -64,7 +64,7 @@ class mcp_main
 			case 'make_global':
 			case 'make_normal':
 
-				$topic_ids = (!$quickmod) ? request_var('topic_id_list', array(0)) : array(request_var('t', 0));
+				$topic_ids = (!$quickmod) ? request_var('topic_id_list', [0]) : [request_var('t', 0)];
 
 				if (!sizeof($topic_ids))
 				{
@@ -77,7 +77,7 @@ class mcp_main
 			case 'move':
 				$user->add_lang('viewtopic');
 
-				$topic_ids = (!$quickmod) ? request_var('topic_id_list', array(0)) : array(request_var('t', 0));
+				$topic_ids = (!$quickmod) ? request_var('topic_id_list', [0]) : [request_var('t', 0)];
 
 				if (!sizeof($topic_ids))
 				{
@@ -90,7 +90,7 @@ class mcp_main
 			case 'fork':
 				$user->add_lang('viewtopic');
 
-				$topic_ids = (!$quickmod) ? request_var('topic_id_list', array(0)) : array(request_var('t', 0));
+				$topic_ids = (!$quickmod) ? request_var('topic_id_list', [0]) : [request_var('t', 0)];
 
 				if (!sizeof($topic_ids))
 				{
@@ -103,7 +103,7 @@ class mcp_main
 			case 'delete_topic':
 				$user->add_lang('viewtopic');
 
-				$topic_ids = (!$quickmod) ? request_var('topic_id_list', array(0)) : array(request_var('t', 0));
+				$topic_ids = (!$quickmod) ? request_var('topic_id_list', [0]) : [request_var('t', 0)];
 
 				if (!sizeof($topic_ids))
 				{
@@ -116,7 +116,7 @@ class mcp_main
 			case 'delete_post':
 				$user->add_lang('posting');
 
-				$post_ids = (!$quickmod) ? request_var('post_id_list', array(0)) : array(request_var('p', 0));
+				$post_ids = (!$quickmod) ? request_var('post_id_list', [0]) : [request_var('p', 0)];
 
 				if (!sizeof($post_ids))
 				{
@@ -212,7 +212,7 @@ function lock_unlock($action, $ids)
 
 	$orig_ids = $ids;
 
-	if (!check_ids($ids, $table, $sql_id, array('m_lock')))
+	if (!check_ids($ids, $table, $sql_id, ['m_lock']))
 	{
 		// Make sure that for f_user_lock only the lock action is triggered.
 		if ($action != 'lock')
@@ -222,19 +222,19 @@ function lock_unlock($action, $ids)
 
 		$ids = $orig_ids;
 
-		if (!check_ids($ids, $table, $sql_id, array('f_user_lock')))
+		if (!check_ids($ids, $table, $sql_id, ['f_user_lock']))
 		{
 			return;
 		}
 	}
 	unset($orig_ids);
 
-	$redirect = request_var('redirect', build_url(array('action', 'quickmod')));
+	$redirect = request_var('redirect', build_url(['action', 'quickmod']));
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		$sql_id . '_list'	=> $ids,
 		'action'			=> $action,
-		'redirect'			=> $redirect)
+		'redirect'			=> $redirect]
 	);
 	$success_msg = '';
 
@@ -314,14 +314,14 @@ function change_topic_type($action, $topic_ids)
 		return;
 	}
 
-	$redirect = request_var('redirect', build_url(array('action', 'quickmod')));
+	$redirect = request_var('redirect', build_url(['action', 'quickmod']));
 
-	$s_hidden_fields = array(
+	$s_hidden_fields = [
 		'topic_id_list'	=> $topic_ids,
 		'f'				=> $forum_id,
 		'action'		=> $action,
 		'redirect'		=> $redirect,
-	);
+	];
 	$success_msg = '';
 
 	if (confirm_box(true))
@@ -358,7 +358,7 @@ function change_topic_type($action, $topic_ids)
 			$row_data = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 
-			$sync_sql = array();
+			$sync_sql = [];
 
 			if ($row_data['topic_posts'])
 			{
@@ -420,10 +420,10 @@ function change_topic_type($action, $topic_ids)
 		{
 			global $template;
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_FORUM_SELECT'		=> make_forum_select(request_var('f', $forum_id), false, false, true, true),
 				'S_CAN_LEAVE_SHADOW'	=> false,
-				'ADDITIONAL_MSG'		=> (sizeof($topic_ids) == 1) ? $user->lang['SELECT_FORUM_GLOBAL_ANNOUNCEMENT'] : $user->lang['SELECT_FORUM_GLOBAL_ANNOUNCEMENTS'])
+				'ADDITIONAL_MSG'		=> (sizeof($topic_ids) == 1) ? $user->lang['SELECT_FORUM_GLOBAL_ANNOUNCEMENT'] : $user->lang['SELECT_FORUM_GLOBAL_ANNOUNCEMENTS']]
 			);
 
 			confirm_box(false, $l_new_type, build_hidden_fields($s_hidden_fields), 'mcp_move.html');
@@ -456,7 +456,7 @@ function mcp_move_topic($topic_ids)
 	global $auth, $user, $db, $template;
 
 	// Here we limit the operation to one forum only
-	$forum_id = check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_move'), true);
+	$forum_id = check_ids($topic_ids, TOPICS_TABLE, 'topic_id', ['m_move'], true);
 
 	if ($forum_id === false)
 	{
@@ -464,14 +464,14 @@ function mcp_move_topic($topic_ids)
 	}
 
 	$to_forum_id = request_var('to_forum_id', 0);
-	$redirect = request_var('redirect', build_url(array('action', 'quickmod')));
+	$redirect = request_var('redirect', build_url(['action', 'quickmod']));
 	$additional_msg = $success_msg = '';
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'topic_id_list'	=> $topic_ids,
 		'f'				=> $forum_id,
 		'action'		=> 'move',
-		'redirect'		=> $redirect)
+		'redirect'		=> $redirect]
 	);
 
 	if ($to_forum_id)
@@ -516,7 +516,7 @@ function mcp_move_topic($topic_ids)
 		$topic_data = get_topic_data($topic_ids);
 		$leave_shadow = (isset($_POST['move_leave_shadow'])) ? true : false;
 
-		$forum_sync_data = array();
+		$forum_sync_data = [];
 
 		$forum_sync_data[$forum_id] = current($topic_data);
 		$forum_sync_data[$to_forum_id] = $forum_data;
@@ -561,7 +561,7 @@ function mcp_move_topic($topic_ids)
 
 		$db->sql_transaction('begin');
 
-		$sync_sql = array();
+		$sync_sql = [];
 
 		if ($topic_posts_added)
 		{
@@ -578,7 +578,7 @@ function mcp_move_topic($topic_ids)
 		// Move topics, but do not resync yet
 		move_topics($topic_ids, $to_forum_id, false);
 
-		$forum_ids = array($to_forum_id);
+		$forum_ids = [$to_forum_id];
 		foreach ($topic_data as $topic_id => $row)
 		{
 			// Get the list of forums to resync, add a log entry
@@ -588,7 +588,7 @@ function mcp_move_topic($topic_ids)
 			// Leave a redirection if required and only if the topic is visible to users
 			if ($leave_shadow && $row['topic_approved'])
 			{
-				$shadow = array(
+				$shadow = [
 					'forum_id'				=>	(int) $row['forum_id'],
 					'icon_id'				=>	(int) $row['icon_id'],
 					'topic_attachment'		=>	(int) $row['topic_attachment'],
@@ -621,7 +621,7 @@ function mcp_move_topic($topic_ids)
 					'poll_length'			=>	(int) $row['poll_length'],
 					'poll_max_options'		=>	(int) $row['poll_max_options'],
 					'poll_last_vote'		=>	(int) $row['poll_last_vote']
-				);
+				];
 
 				$db->sql_query('INSERT INTO ' . TOPICS_TABLE . $db->sql_build_array('INSERT', $shadow));
 
@@ -659,14 +659,14 @@ function mcp_move_topic($topic_ids)
 
 		$db->sql_transaction('commit');
 
-		sync('forum', 'forum_id', array($forum_id, $to_forum_id));
+		sync('forum', 'forum_id', [$forum_id, $to_forum_id]);
 	}
 	else
 	{
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_FORUM_SELECT'		=> make_forum_select($to_forum_id, $forum_id, false, true, true, true),
 			'S_CAN_LEAVE_SHADOW'	=> true,
-			'ADDITIONAL_MSG'		=> $additional_msg)
+			'ADDITIONAL_MSG'		=> $additional_msg]
 		);
 
 		confirm_box(false, 'MOVE_TOPIC' . ((sizeof($topic_ids) == 1) ? '' : 'S'), $s_hidden_fields, 'mcp_move.html');
@@ -699,19 +699,19 @@ function mcp_delete_topic($topic_ids)
 {
 	global $auth, $user, $db;
 
-	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_delete')))
+	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', ['m_delete']))
 	{
 		return;
 	}
 
-	$redirect = request_var('redirect', build_url(array('action', 'quickmod')));
+	$redirect = request_var('redirect', build_url(['action', 'quickmod']));
 	$forum_id = request_var('f', 0);
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'topic_id_list'	=> $topic_ids,
 		'f'				=> $forum_id,
 		'action'		=> 'delete_topic',
-		'redirect'		=> $redirect)
+		'redirect'		=> $redirect]
 	);
 	$success_msg = '';
 
@@ -720,7 +720,7 @@ function mcp_delete_topic($topic_ids)
 		$success_msg = (sizeof($topic_ids) == 1) ? 'TOPIC_DELETED_SUCCESS' : 'TOPICS_DELETED_SUCCESS';
 
 		$data = get_topic_data($topic_ids);
-		$first_post_ids = array();
+		$first_post_ids = [];
 		foreach ($data as $row)
 		{
 			$first_post_ids[] = $row['topic_first_post_id'];
@@ -777,19 +777,19 @@ function mcp_delete_post($post_ids)
 {
 	global $auth, $user, $db;
 
-	if (!check_ids($post_ids, POSTS_TABLE, 'post_id', array('m_delete')))
+	if (!check_ids($post_ids, POSTS_TABLE, 'post_id', ['m_delete']))
 	{
 		return;
 	}
 
-	$redirect = request_var('redirect', build_url(array('action', 'quickmod')));
+	$redirect = request_var('redirect', build_url(['action', 'quickmod']));
 	$forum_id = request_var('f', 0);
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'post_id_list'	=> $post_ids,
 		'f'				=> $forum_id,
 		'action'		=> 'delete_post',
-		'redirect'		=> $redirect)
+		'redirect'		=> $redirect]
 	);
 	$success_msg = '';
 
@@ -809,7 +809,7 @@ function mcp_delete_post($post_ids)
 			WHERE ' . $db->sql_in_set('post_id', $post_ids);
 		$result = $db->sql_query($sql);
 
-		$topic_id_list = array();
+		$topic_id_list = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$topic_id_list[] = $row['topic_id'];
@@ -840,7 +840,7 @@ function mcp_delete_post($post_ids)
 		$topic_id = request_var('t', 0);
 
 		// Return links
-		$return_link = array();
+		$return_link = [];
 		if ($affected_topics == 1 && !$deleted_topics && $topic_id)
 		{
 			$return_link[] = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id") . '">', '</a>');
@@ -904,21 +904,21 @@ function mcp_fork_topic($topic_ids)
 {
 	global $auth, $user, $db, $template, $config;
 
-	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_')))
+	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', ['m_']))
 	{
 		return;
 	}
 
 	$to_forum_id = request_var('to_forum_id', 0);
 	$forum_id = request_var('f', 0);
-	$redirect = request_var('redirect', build_url(array('action', 'quickmod')));
+	$redirect = request_var('redirect', build_url(['action', 'quickmod']));
 	$additional_msg = $success_msg = '';
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'topic_id_list'	=> $topic_ids,
 		'f'				=> $forum_id,
 		'action'		=> 'fork',
-		'redirect'		=> $redirect)
+		'redirect'		=> $redirect]
 	);
 
 	if ($to_forum_id)
@@ -963,7 +963,7 @@ function mcp_fork_topic($topic_ids)
 		$topic_data = get_topic_data($topic_ids, 'f_post');
 
 		$total_posts = 0;
-		$new_topic_id_list = array();
+		$new_topic_id_list = [];
 
 
 		foreach ($topic_data as $topic_id => $topic_row)
@@ -997,7 +997,7 @@ function mcp_fork_topic($topic_ids)
 				$search_type = false;
 			}
 
-			$sql_ary = array(
+			$sql_ary = [
 				'forum_id'					=> (int) $to_forum_id,
 				'icon_id'					=> (int) $topic_row['icon_id'],
 				'topic_attachment'			=> (int) $topic_row['topic_attachment'],
@@ -1022,7 +1022,7 @@ function mcp_fork_topic($topic_ids)
 				'poll_length'				=> (int) $topic_row['poll_length'],
 				'poll_max_options'			=> (int) $topic_row['poll_max_options'],
 				'poll_vote_change'			=> (int) $topic_row['poll_vote_change'],
-			);
+			];
 
 			$db->sql_query('INSERT INTO ' . TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 			$new_topic_id = $db->sql_nextid();
@@ -1030,7 +1030,7 @@ function mcp_fork_topic($topic_ids)
 
 			if ($topic_row['poll_start'])
 			{
-				$poll_rows = array();
+				$poll_rows = [];
 
 				$sql = 'SELECT *
 					FROM ' . POLL_OPTIONS_TABLE . "
@@ -1039,12 +1039,12 @@ function mcp_fork_topic($topic_ids)
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$sql_ary = array(
+					$sql_ary = [
 						'poll_option_id'	=> (int) $row['poll_option_id'],
 						'topic_id'			=> (int) $new_topic_id,
 						'poll_option_text'	=> (string) $row['poll_option_text'],
 						'poll_option_total'	=> 0
-					);
+					];
 
 					$db->sql_query('INSERT INTO ' . POLL_OPTIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				}
@@ -1056,7 +1056,7 @@ function mcp_fork_topic($topic_ids)
 				ORDER BY post_time ASC";
 			$result = $db->sql_query($sql);
 
-			$post_rows = array();
+			$post_rows = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$post_rows[] = $row;
@@ -1071,7 +1071,7 @@ function mcp_fork_topic($topic_ids)
 			$total_posts += sizeof($post_rows);
 			foreach ($post_rows as $row)
 			{
-				$sql_ary = array(
+				$sql_ary = [
 					'topic_id'			=> (int) $new_topic_id,
 					'forum_id'			=> (int) $to_forum_id,
 					'poster_id'			=> (int) $row['poster_id'],
@@ -1097,7 +1097,7 @@ function mcp_fork_topic($topic_ids)
 					'post_edit_count'	=> (int) $row['post_edit_count'],
 					'post_edit_locked'	=> (int) $row['post_edit_locked'],
 					'post_postcount'	=> 0,
-				);
+				];
 
 				$db->sql_query('INSERT INTO ' . POSTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				$new_post_id = $db->sql_nextid();
@@ -1120,10 +1120,10 @@ function mcp_fork_topic($topic_ids)
 							AND in_message = 0";
 					$result = $db->sql_query($sql);
 
-					$sql_ary = array();
+					$sql_ary = [];
 					while ($attach_row = $db->sql_fetchrow($result))
 					{
-						$sql_ary[] = array(
+						$sql_ary[] = [
 							'post_msg_id'		=> (int) $new_post_id,
 							'topic_id'			=> (int) $new_topic_id,
 							'in_message'		=> 0,
@@ -1138,7 +1138,7 @@ function mcp_fork_topic($topic_ids)
 							'filesize'			=> (int) $attach_row['filesize'],
 							'filetime'			=> (int) $attach_row['filetime'],
 							'thumbnail'			=> (int) $attach_row['thumbnail']
-						);
+						];
 					}
 					$db->sql_freeresult($result);
 
@@ -1155,14 +1155,14 @@ function mcp_fork_topic($topic_ids)
 				WHERE topic_id = ' . $topic_id;
 			$result = $db->sql_query($sql);
 
-			$sql_ary = array();
+			$sql_ary = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$sql_ary[] = array(
+				$sql_ary[] = [
 					'topic_id'		=> (int) $new_topic_id,
 					'user_id'		=> (int) $row['user_id'],
 					'notify_status'	=> (int) $row['notify_status'],
-				);
+				];
 			}
 			$db->sql_freeresult($result);
 
@@ -1177,13 +1177,13 @@ function mcp_fork_topic($topic_ids)
 				WHERE topic_id = ' . $topic_id;
 			$result = $db->sql_query($sql);
 
-			$sql_ary = array();
+			$sql_ary = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$sql_ary[] = array(
+				$sql_ary[] = [
 					'topic_id'		=> (int) $new_topic_id,
 					'user_id'		=> (int) $row['user_id'],
-				);
+				];
 			}
 			$db->sql_freeresult($result);
 
@@ -1196,7 +1196,7 @@ function mcp_fork_topic($topic_ids)
 		// Sync new topics, parent forums and board stats
 		sync('topic', 'topic_id', $new_topic_id_list);
 
-		$sync_sql = array();
+		$sync_sql = [];
 
 		$sync_sql[$to_forum_id][]	= 'forum_posts = forum_posts + ' . $total_posts;
 		$sync_sql[$to_forum_id][]	= 'forum_topics = forum_topics + ' . sizeof($new_topic_id_list);
@@ -1223,10 +1223,10 @@ function mcp_fork_topic($topic_ids)
 	}
 	else
 	{
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_FORUM_SELECT'		=> make_forum_select($to_forum_id, false, false, true, true, true),
 			'S_CAN_LEAVE_SHADOW'	=> false,
-			'ADDITIONAL_MSG'		=> $additional_msg)
+			'ADDITIONAL_MSG'		=> $additional_msg]
 		);
 
 		confirm_box(false, 'FORK_TOPIC' . ((sizeof($topic_ids) == 1) ? '' : 'S'), $s_hidden_fields, 'mcp_move.html');

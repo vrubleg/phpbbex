@@ -98,29 +98,29 @@ parse_css_file = {PARSE_CSS_FILE}
 inherit_from = {INHERIT_FROM}
 ';
 
-		$this->imageset_keys = array(
-			'logos' => array(
+		$this->imageset_keys = [
+			'logos' => [
 				'site_logo',
-			),
-			'buttons'	=> array(
+			],
+			'buttons'	=> [
 				'icon_contact_email', 'icon_contact_jabber', 'icon_contact_pm', 'icon_contact_www', 'icon_post_delete', 'icon_post_edit', 'icon_post_info', 'icon_post_quote', 'icon_post_report', 'icon_user_online', 'icon_user_offline', 'icon_user_profile', 'icon_user_search', 'icon_user_warn', 'button_pm_forward', 'button_pm_new', 'button_pm_reply', 'button_topic_locked', 'button_topic_new', 'button_topic_reply',
-			),
-			'icons'		=> array(
+			],
+			'icons'		=> [
 				'icon_post_target', 'icon_post_target_unread', 'icon_topic_attach', 'icon_topic_latest', 'icon_topic_newest', 'icon_topic_reported', 'icon_topic_unapproved', 'icon_friend', 'icon_foe',
-			),
-			'forums'	=> array(
+			],
+			'forums'	=> [
 				'forum_link', 'forum_read', 'forum_read_locked', 'forum_read_subforum', 'forum_unread', 'forum_unread_locked', 'forum_unread_subforum', 'subforum_read', 'subforum_unread'
-			),
-			'folders'	=> array(
+			],
+			'folders'	=> [
 				'topic_moved', 'topic_read', 'topic_read_mine', 'topic_read_locked', 'topic_read_locked_mine', 'topic_unread', 'topic_unread_mine', 'topic_unread_locked', 'topic_unread_locked_mine', 'sticky_read', 'sticky_read_mine', 'sticky_read_locked', 'sticky_read_locked_mine', 'sticky_unread', 'sticky_unread_mine', 'sticky_unread_locked', 'sticky_unread_locked_mine', 'announce_read', 'announce_read_mine', 'announce_read_locked', 'announce_read_locked_mine', 'announce_unread', 'announce_unread_mine', 'announce_unread_locked', 'announce_unread_locked_mine', 'global_read', 'global_read_mine', 'global_read_locked', 'global_read_locked_mine', 'global_unread', 'global_unread_mine', 'global_unread_locked', 'global_unread_locked_mine', 'pm_read', 'pm_unread',
-			),
-			'polls'		=> array(
+			],
+			'polls'		=> [
 				'poll_left', 'poll_center', 'poll_right',
-			),
-			'user'		=> array(
+			],
+			'user'		=> [
 				'user_icon1', 'user_icon2', 'user_icon3', 'user_icon4', 'user_icon5', 'user_icon6', 'user_icon7', 'user_icon8', 'user_icon9', 'user_icon10',
-			),
-		);
+			],
+		];
 
 		// Execute overall actions
 		switch ($action)
@@ -218,18 +218,18 @@ inherit_from = {INHERIT_FROM}
 						}
 						else if ($action == 'deactivate')
 						{
-							$s_hidden_fields = array(
+							$s_hidden_fields = [
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'action'	=> $action,
 								'style_id'	=> $style_id,
-							);
+							];
 							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields($s_hidden_fields));
 						}
 					break;
 				}
 
-				$this->frontend('style', array('details'), array('export', 'delete'));
+				$this->frontend('style', ['details'], ['export', 'delete']);
 			break;
 
 			case 'template':
@@ -258,7 +258,7 @@ inherit_from = {INHERIT_FROM}
 							// Only refresh database if the template is stored in the database
 							if ($template_row['template_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/"))
 							{
-								$filelist = array('' => array());
+								$filelist = ['' => []];
 
 								$sql = 'SELECT template_filename, template_mtime
 									FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
@@ -295,18 +295,18 @@ inherit_from = {INHERIT_FROM}
 						}
 						else
 						{
-							confirm_box(false, ($template_row['template_storedb']) ? $user->lang['CONFIRM_TEMPLATE_REFRESH'] : $user->lang['CONFIRM_TEMPLATE_CLEAR_CACHE'], build_hidden_fields(array(
+							confirm_box(false, ($template_row['template_storedb']) ? $user->lang['CONFIRM_TEMPLATE_REFRESH'] : $user->lang['CONFIRM_TEMPLATE_CLEAR_CACHE'], build_hidden_fields([
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'action'	=> $action,
 								'id'		=> $style_id
-							)));
+							]));
 						}
 
 					break;
 				}
 
-				$this->frontend('template', array('edit', 'cache', 'details'), array('refresh', 'export', 'delete'));
+				$this->frontend('template', ['edit', 'cache', 'details'], ['refresh', 'export', 'delete']);
 			break;
 
 			case 'theme':
@@ -338,10 +338,10 @@ inherit_from = {INHERIT_FROM}
 							if ($theme_row['theme_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"))
 							{
 								// Save CSS contents
-								$sql_ary = array(
+								$sql_ary = [
 									'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
 									'theme_data'	=> $this->db_theme_data($theme_row)
-								);
+								];
 
 								$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 									WHERE theme_id = $style_id";
@@ -355,17 +355,17 @@ inherit_from = {INHERIT_FROM}
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_THEME_REFRESH'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['CONFIRM_THEME_REFRESH'], build_hidden_fields([
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'action'	=> $action,
 								'id'		=> $style_id
-							)));
+							]));
 						}
 					break;
 				}
 
-				$this->frontend('theme', array('edit', 'details'), array('refresh', 'export', 'delete'));
+				$this->frontend('theme', ['edit', 'details'], ['refresh', 'export', 'delete']);
 			break;
 
 			case 'imageset':
@@ -388,9 +388,9 @@ inherit_from = {INHERIT_FROM}
 
 						if (confirm_box(true))
 						{
-							$sql_ary = array();
+							$sql_ary = [];
 
-							$imageset_definitions = array();
+							$imageset_definitions = [];
 							foreach ($this->imageset_keys as $topic => $key_array)
 							{
 								$imageset_definitions = array_merge($imageset_definitions, $key_array);
@@ -429,14 +429,14 @@ inherit_from = {INHERIT_FROM}
 									$image_name = substr($image_name, 4);
 									if (in_array($image_name, $imageset_definitions))
 									{
-										$sql_ary[] = array(
+										$sql_ary[] = [
 											'image_name'		=> (string) $image_name,
 											'image_filename'	=> (string) $image_filename,
 											'image_height'		=> (int) $image_height,
 											'image_width'		=> (int) $image_width,
 											'imageset_id'		=> (int) $style_id,
 											'image_lang'		=> '',
-										);
+										];
 									}
 								}
 							}
@@ -475,14 +475,14 @@ inherit_from = {INHERIT_FROM}
 											$image_name = substr($image_name, 4);
 											if (in_array($image_name, $imageset_definitions))
 											{
-												$sql_ary[] = array(
+												$sql_ary[] = [
 													'image_name'		=> (string) $image_name,
 													'image_filename'	=> (string) $image_filename,
 													'image_height'		=> (int) $image_height,
 													'image_width'		=> (int) $image_width,
 													'imageset_id'		=> (int) $style_id,
 													'image_lang'		=> (string) $row['lang_dir'],
-												);
+												];
 											}
 										}
 									}
@@ -501,17 +501,17 @@ inherit_from = {INHERIT_FROM}
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_IMAGESET_REFRESH'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['CONFIRM_IMAGESET_REFRESH'], build_hidden_fields([
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'action'	=> $action,
 								'id'		=> $style_id
-							)));
+							]));
 						}
 					break;
 				}
 
-				$this->frontend('imageset', array('edit', 'details'), array('refresh', 'export', 'delete'));
+				$this->frontend('imageset', ['edit', 'details'], ['refresh', 'export', 'delete']);
 			break;
 		}
 	}
@@ -525,7 +525,7 @@ inherit_from = {INHERIT_FROM}
 
 		$sql_from = '';
 		$sql_sort = 'LOWER(' . $mode . '_name)';
-		$style_count = array();
+		$style_count = [];
 
 		switch ($mode)
 		{
@@ -566,7 +566,7 @@ inherit_from = {INHERIT_FROM}
 
 		$this->page_title = 'ACP_' . $l_prefix . 'S';
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_FRONTEND'		=> true,
 			'S_STYLE'			=> ($mode == 'style') ? true : false,
 
@@ -579,7 +579,7 @@ inherit_from = {INHERIT_FROM}
 			'L_CREATE'			=> $user->lang['CREATE_' . $l_prefix],
 
 			'U_ACTION'			=> $this->u_action,
-			)
+			]
 		);
 
 		$sql = "SELECT *
@@ -587,7 +587,7 @@ inherit_from = {INHERIT_FROM}
 			ORDER BY $sql_sort ASC";
 		$result = $db->sql_query($sql);
 
-		$installed = array();
+		$installed = [];
 
 		$basis_options = '<option class="sep" value="">' . $user->lang['OPTIONAL_BASIS'] . '</option>';
 		while ($row = $db->sql_fetchrow($result))
@@ -597,19 +597,19 @@ inherit_from = {INHERIT_FROM}
 
 			$stylevis = ($mode == 'style' && !$row['style_active']) ? 'activate' : 'deactivate';
 
-			$s_options = array();
+			$s_options = [];
 			foreach ($options as $option)
 			{
 				$s_options[] = '<a href="' . $this->u_action . "&amp;action=$option&amp;id=" . $row[$mode . '_id'] . '">' . $user->lang[strtoupper($option)] . '</a>';
 			}
 
-			$s_actions = array();
+			$s_actions = [];
 			foreach ($actions as $option)
 			{
 				$s_actions[] = '<a href="' . $this->u_action . "&amp;action=$option&amp;id=" . $row[$mode . '_id'] . '">' . $user->lang[strtoupper($option)] . '</a>';
 			}
 
-			$template->assign_block_vars('installed', array(
+			$template->assign_block_vars('installed', [
 				'S_DEFAULT_STYLE'		=> ($mode == 'style' && $row['style_id'] == $config['default_style']) ? true : false,
 				'U_EDIT'				=> $this->u_action . '&amp;action=' . (($mode == 'style') ? 'details' : 'edit') . '&amp;id=' . $row[$mode . '_id'],
 				'U_STYLE_ACT_DEACT'		=> $this->u_action . '&amp;action=' . $stylevis . '&amp;id=' . $row[$mode . '_id'],
@@ -622,13 +622,13 @@ inherit_from = {INHERIT_FROM}
 				'STYLE_COUNT'			=> ($mode == 'style' && isset($style_count[$row['style_id']])) ? $style_count[$row['style_id']] : 0,
 
 				'S_INACTIVE'			=> ($mode == 'style' && !$row['style_active']) ? true : false,
-				)
+				]
 			);
 		}
 		$db->sql_freeresult($result);
 
 		// Grab uninstalled items
-		$new_ary = $cfg = array();
+		$new_ary = $cfg = [];
 
 		$dp = @opendir(PHPBB_ROOT_PATH . 'styles');
 
@@ -653,11 +653,11 @@ inherit_from = {INHERIT_FROM}
 						{
 							// The array key is used for sorting later on.
 							// $file is appended because $name doesn't have to be unique.
-							$new_ary[$name . $file] = array(
+							$new_ary[$name . $file] = [
 								'path'		=> $file,
 								'name'		=> $name,
 								'copyright'	=> $items['copyright'],
-							);
+							];
 						}
 					}
 				}
@@ -673,17 +673,17 @@ inherit_from = {INHERIT_FROM}
 
 			foreach ($new_ary as $cfg)
 			{
-				$template->assign_block_vars('uninstalled', array(
+				$template->assign_block_vars('uninstalled', [
 					'NAME'			=> $cfg['name'],
 					'COPYRIGHT'		=> $cfg['copyright'],
-					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path']))
+					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path'])]
 				);
 			}
 		}
 		unset($new_ary);
 
-		$template->assign_vars(array(
-			'S_BASIS_OPTIONS'		=> $basis_options)
+		$template->assign_vars([
+			'S_BASIS_OPTIONS'		=> $basis_options]
 		);
 
 	}
@@ -704,7 +704,7 @@ inherit_from = {INHERIT_FROM}
 
 		$this->page_title = 'EDIT_TEMPLATE';
 
-		$filelist = $filelist_cats = array();
+		$filelist = $filelist_cats = [];
 
 		$template_data	= utf8_normalize_nfc(request_var('template_data', '', true));
 		$template_data	= htmlspecialchars_decode($template_data);
@@ -786,7 +786,7 @@ inherit_from = {INHERIT_FROM}
 			}
 
 			// destroy the cached version of the template (filename without extension)
-			$this->clear_template_cache($template_info, array(substr($template_file, 0, -5)));
+			$this->clear_template_cache($template_info, [substr($template_file, 0, -5)]);
 
 			$cache->destroy('sql', STYLES_TABLE);
 
@@ -800,7 +800,7 @@ inherit_from = {INHERIT_FROM}
 			$template_path = PHPBB_ROOT_PATH . "styles/{$template_info['template_path']}/template";
 
 			$filelist = filelist($template_path, '', 'html');
-			$filelist[''] = array_diff($filelist[''], array('bbcode.html'));
+			$filelist[''] = array_diff($filelist[''], ['bbcode.html']);
 
 			if ($template_file)
 			{
@@ -817,7 +817,7 @@ inherit_from = {INHERIT_FROM}
 				WHERE template_id = $template_id";
 			$result = $db->sql_query($sql);
 
-			$filelist = array('' => array());
+			$filelist = ['' => []];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$file_info = pathinfo($row['template_filename']);
@@ -849,13 +849,13 @@ inherit_from = {INHERIT_FROM}
 		}
 
 		// Now create the categories
-		$filelist_cats[''] = array();
+		$filelist_cats[''] = [];
 		foreach ($filelist as $pathfile => $file_ary)
 		{
 			// Use the directory name as category name
 			if (!empty($pathfile))
 			{
-				$filelist_cats[$pathfile] = array();
+				$filelist_cats[$pathfile] = [];
 				foreach ($file_ary as $file)
 				{
 					$filelist_cats[$pathfile][$pathfile . $file] = $file;
@@ -864,7 +864,7 @@ inherit_from = {INHERIT_FROM}
 			// or if it's in the main category use the word before the first underscore to group files
 			else
 			{
-				$cats = array();
+				$cats = [];
 				foreach ($file_ary as $file)
 				{
 					$cats[] = substr($file, 0, strpos($file, '_'));
@@ -906,9 +906,9 @@ inherit_from = {INHERIT_FROM}
 			}
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_EDIT_TEMPLATE'	=> true,
-			'S_HIDDEN_FIELDS'	=> build_hidden_fields(array('template_file' => $template_file)),
+			'S_HIDDEN_FIELDS'	=> build_hidden_fields(['template_file' => $template_file]),
 			'S_TEMPLATES'		=> $tpl_options,
 
 			'U_ACTION'			=> $this->u_action . "&amp;action=edit&amp;id=$template_id&amp;text_rows=$text_rows",
@@ -926,7 +926,7 @@ inherit_from = {INHERIT_FROM}
 			'SELECTED_TEMPLATE'	=> $template_info['template_name'],
 			'TEMPLATE_FILE'		=> $template_file,
 			'TEMPLATE_DATA'		=> utf8_htmlspecialchars($template_data),
-			'TEXT_ROWS'			=> $text_rows)
+			'TEXT_ROWS'			=> $text_rows]
 		);
 	}
 
@@ -940,7 +940,7 @@ inherit_from = {INHERIT_FROM}
 		global $config, $db, $cache, $user, $template;
 
 		$source		= str_replace('/', '.', request_var('source', ''));
-		$file_ary	= array_diff(request_var('delete', array('')), array(''));
+		$file_ary	= array_diff(request_var('delete', ['']), ['']);
 		$submit		= isset($_POST['submit']) ? true : false;
 
 		$sql = 'SELECT *
@@ -971,17 +971,17 @@ inherit_from = {INHERIT_FROM}
 		{
 			adm_page_header($user->lang['TEMPLATE_CACHE']);
 
-			$template->set_filenames(array(
-				'body'	=> 'viewsource.html')
+			$template->set_filenames([
+				'body'	=> 'viewsource.html']
 			);
 
-			$template->assign_vars(array(
-				'FILENAME'	=> str_replace('.', '/', $source) . '.html')
+			$template->assign_vars([
+				'FILENAME'	=> str_replace('.', '/', $source) . '.html']
 			);
 
-			$code = str_replace(array("\r\n", "\r"), array("\n", "\n"), file_get_contents(PHPBB_ROOT_PATH . "cache/{$cache_prefix}_$source.html.php"));
+			$code = str_replace(["\r\n", "\r"], ["\n", "\n"], file_get_contents(PHPBB_ROOT_PATH . "cache/{$cache_prefix}_$source.html.php"));
 
-			$conf = array('highlight.bg', 'highlight.comment', 'highlight.default', 'highlight.html', 'highlight.keyword', 'highlight.string');
+			$conf = ['highlight.bg', 'highlight.comment', 'highlight.default', 'highlight.html', 'highlight.keyword', 'highlight.string'];
 			foreach ($conf as $ini_var)
 			{
 				@ini_set($ini_var, str_replace('highlight.', 'syntax', $ini_var));
@@ -990,8 +990,8 @@ inherit_from = {INHERIT_FROM}
 			$marker = 'MARKER' . time();
 			$code = highlight_string(str_replace("\n", $marker, $code), true);
 			$code = str_replace($marker, "\n", $code);
-			$str_from = array('<span style="color: ', '<font color="syntax', '</font>', '<code>', '</code>','[', ']', '.', ':');
-			$str_to = array('<span class="', '<span class="syntax', '</span>', '', '', '&#91;', '&#93;', '&#46;', '&#58;');
+			$str_from = ['<span style="color: ', '<font color="syntax', '</font>', '<code>', '</code>','[', ']', '.', ':'];
+			$str_to = ['<span class="', '<span class="syntax', '</span>', '', '', '&#91;', '&#93;', '&#46;', '&#58;'];
 
 			$code = str_replace($str_from, $str_to, $code);
 			$code = preg_replace('#^(<span class="[a-z_]+">)\n?(.*?)\n?(</span>)$#ism', '$1$2$3', $code);
@@ -1001,9 +1001,9 @@ inherit_from = {INHERIT_FROM}
 
 			foreach ($code as $key => $line)
 			{
-				$template->assign_block_vars('source', array(
+				$template->assign_block_vars('source', [
 					'LINENUM'	=> $key + 1,
-					'LINE'		=> preg_replace('#([^ ;])&nbsp;([^ &])#', '$1 $2', $line))
+					'LINE'		=> preg_replace('#([^ ;])&nbsp;([^ &])#', '$1 $2', $line)]
 				);
 				unset($code[$key]);
 			}
@@ -1011,18 +1011,18 @@ inherit_from = {INHERIT_FROM}
 			adm_page_footer();
 		}
 
-		$filemtime = array();
+		$filemtime = [];
 		if ($template_row['template_storedb'])
 		{
-			$ids = array();
+			$ids = [];
 			if (isset($template_row['template_inherits_id']) && $template_row['template_inherits_id'])
 			{
 				$ids[] = $template_row['template_inherits_id'];
 			}
 			$ids[] = $template_row['template_id'];
 
-			$filemtime 			= array();
-			$file_template_db	= array();
+			$filemtime 			= [];
+			$file_template_db	= [];
 
 			foreach ($ids as $id)
 			{
@@ -1088,24 +1088,24 @@ inherit_from = {INHERIT_FROM}
 				$file = str_replace('.', '/', $file);
 			}
 
-			$template->assign_block_vars('file', array(
+			$template->assign_block_vars('file', [
 				'U_VIEWSOURCE'	=> $this->u_action . "&amp;action=cache&amp;id=$template_id&amp;source=$file",
 
 				'CACHED'		=> $user->format_date(filemtime(PHPBB_ROOT_PATH . "cache/$filename")),
 				'FILENAME'		=> $file,
 				'FILENAME_PATH'	=> $file_tpl,
 				'FILESIZE'		=> get_formatted_filesize(filesize(PHPBB_ROOT_PATH . "cache/$filename")),
-				'MODIFIED'		=> $user->format_date((!$template_row['template_storedb']) ? filemtime($file_tpl) : $filemtime[$file . '.html']))
+				'MODIFIED'		=> $user->format_date((!$template_row['template_storedb']) ? filemtime($file_tpl) : $filemtime[$file . '.html'])]
 			);
 		}
 		unset($filemtime);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_CACHE'			=> true,
 			'S_TEMPLATE'		=> true,
 
 			'U_ACTION'			=> $this->u_action . "&amp;action=cache&amp;id=$template_id",
-			'U_BACK'			=> $this->u_action)
+			'U_BACK'			=> $this->u_action]
 		);
 	}
 
@@ -1120,7 +1120,7 @@ inherit_from = {INHERIT_FROM}
 
 		$this->page_title = 'EDIT_THEME';
 
-		$filelist = $filelist_cats = array();
+		$filelist = $filelist_cats = [];
 
 		$theme_data		= utf8_normalize_nfc(request_var('template_data', '', true));
 		$theme_data		= htmlspecialchars_decode($theme_data);
@@ -1164,11 +1164,11 @@ inherit_from = {INHERIT_FROM}
 			else
 			{
 				// Write stylesheet to db
-				$sql_ary = array(
+				$sql_ary = [
 					'theme_mtime'		=> time(),
 					'theme_storedb'		=> 1,
 					'theme_data'		=> $this->db_theme_data($theme_info, $theme_data),
-				);
+				];
 				$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE theme_id = ' . $theme_id;
@@ -1210,13 +1210,13 @@ inherit_from = {INHERIT_FROM}
 		}
 
 		// Now create the categories
-		$filelist_cats[''] = array();
+		$filelist_cats[''] = [];
 		foreach ($filelist as $pathfile => $file_ary)
 		{
 			// Use the directory name as category name
 			if (!empty($pathfile))
 			{
-				$filelist_cats[$pathfile] = array();
+				$filelist_cats[$pathfile] = [];
 				foreach ($file_ary as $file)
 				{
 					$filelist_cats[$pathfile][$pathfile . $file] = $file;
@@ -1225,7 +1225,7 @@ inherit_from = {INHERIT_FROM}
 			// or if it's in the main category use the word before the first underscore to group files
 			else
 			{
-				$cats = array();
+				$cats = [];
 				foreach ($file_ary as $file)
 				{
 					$cats[] = substr($file, 0, strpos($file, '_'));
@@ -1267,9 +1267,9 @@ inherit_from = {INHERIT_FROM}
 			}
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_EDIT_THEME'		=> true,
-			'S_HIDDEN_FIELDS'	=> build_hidden_fields(array('template_file' => $theme_file)),
+			'S_HIDDEN_FIELDS'	=> build_hidden_fields(['template_file' => $theme_file]),
 			'S_THEME_IN_DB'		=> $theme_info['theme_storedb'],
 			'S_TEMPLATES'		=> $tpl_options,
 
@@ -1288,7 +1288,7 @@ inherit_from = {INHERIT_FROM}
 			'SELECTED_TEMPLATE'	=> $theme_info['theme_name'],
 			'TEMPLATE_FILE'		=> $theme_file,
 			'TEMPLATE_DATA'		=> utf8_htmlspecialchars($theme_data),
-			'TEXT_ROWS'			=> $text_rows)
+			'TEXT_ROWS'			=> $text_rows]
 		);
 	}
 
@@ -1407,12 +1407,12 @@ inherit_from = {INHERIT_FROM}
 				$imgfilename = $imgpath;
 			}
 
-			$sql_ary = array(
+			$sql_ary = [
 				'image_filename'	=> (string) $imgfilename,
 				'image_width'		=> (int) $imgwidth,
 				'image_height'		=> (int) $imgheight,
 				'image_lang'		=> (string) $imglang,
-			);
+			];
 
 			// already exists
 			if ($imageset_data_row)
@@ -1443,8 +1443,8 @@ inherit_from = {INHERIT_FROM}
 		}
 
 		$imglang = '';
-		$imagesetlist = array('nolang' => array(), 'lang' => array());
-		$langs = array();
+		$imagesetlist = ['nolang' => [], 'lang' => []];
+		$langs = [];
 
 		$dir = PHPBB_ROOT_PATH . "styles/$imageset_path/imageset";
 		$dp = @opendir($dir);
@@ -1486,9 +1486,9 @@ inherit_from = {INHERIT_FROM}
 		$img_options = '';
 		foreach ($this->imageset_keys as $category => $img_ary)
 		{
-			$template->assign_block_vars('category', array(
+			$template->assign_block_vars('category', [
 				'NAME'			=> $user->lang['IMG_CAT_' . strtoupper($category)]
-			));
+			]);
 
 			foreach ($img_ary as $img)
 			{
@@ -1496,20 +1496,20 @@ inherit_from = {INHERIT_FROM}
 				{
 					foreach ($langs as $language)
 					{
-						$template->assign_block_vars('category.images', array(
+						$template->assign_block_vars('category.images', [
 							'SELECTED'			=> ($img == $imgname && $language == $imgnamelang),
 							'VALUE'				=> $img . '-' . $language,
 							'TEXT'				=> $user->lang['IMG_' . strtoupper($img)] . ' [ ' . $language . ' ]'
-						));
+						]);
 					}
 				}
 				else
 				{
-					$template->assign_block_vars('category.images', array(
+					$template->assign_block_vars('category.images', [
 						'SELECTED'			=> ($img == $imgname),
 						'VALUE'				=> $img,
 						'TEXT'				=> (($category == 'custom') ? $img : $user->lang['IMG_' . strtoupper($img)])
-					));
+					]);
 				}
 			}
 		}
@@ -1524,9 +1524,9 @@ inherit_from = {INHERIT_FROM}
 		{
 			if ($type !== 'lang' || $sql_extra)
 			{
-				$template->assign_block_vars('imagesetlist', array(
+				$template->assign_block_vars('imagesetlist', [
 					'TYPE'	=> ($type == 'lang')
-				));
+				]);
 			}
 
 			foreach ($img_ary as $img)
@@ -1538,18 +1538,18 @@ inherit_from = {INHERIT_FROM}
 					$image_found = true;
 					$img_val = htmlspecialchars($img);
 				}
-				$template->assign_block_vars('imagesetlist.images', array(
+				$template->assign_block_vars('imagesetlist.images', [
 					'SELECTED'			=> $selected,
 					'TEXT'				=> $imgtext,
 					'VALUE'				=> htmlspecialchars($img)
-				));
+				]);
 			}
 		}
 
 		$imgsize_bool = (!empty($imgname) && $image_width && $image_height) ? true : false;
 		$image_request = '../styles/' . $imageset_path . '/imageset/' . ($image_lang ? $imgnamelang . '/' : '') . $image_filename;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_EDIT_IMAGESET'	=> true,
 			'L_TITLE'			=> $user->lang[$this->page_title],
 			'L_EXPLAIN'			=> $user->lang[$this->page_title . '_EXPLAIN'],
@@ -1566,7 +1566,7 @@ inherit_from = {INHERIT_FROM}
 			'ERROR'				=> !$valid_name,
 			'IMG_SRC'			=> ($image_found) ? '../styles/' . $imageset_path . '/imageset/' . $img_val : 'images/no_image.png',
 			'IMAGE_SELECT'		=> $image_found
-		));
+		]);
 	}
 
 	/**
@@ -1656,7 +1656,7 @@ inherit_from = {INHERIT_FROM}
 				}
 
 				// Remove the components
-				$components = array('template', 'theme', 'imageset');
+				$components = ['template', 'theme', 'imageset'];
 				foreach ($components as $component)
 				{
 					$new_id = request_var('new_' . $component . '_id', 0);
@@ -1678,7 +1678,7 @@ inherit_from = {INHERIT_FROM}
 
 		$this->page_title = 'DELETE_' . $l_prefix;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_DELETE'			=> true,
 
 			'L_TITLE'			=> $user->lang[$this->page_title],
@@ -1691,14 +1691,14 @@ inherit_from = {INHERIT_FROM}
 			'U_BACK'		=> $this->u_action,
 
 			'NAME'			=> $style_row[$mode . '_name'],
-			)
+			]
 		);
 
 		if ($mode == 'style')
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_DELETE_STYLE'		=> true,
-			));
+			]);
 		}
 	}
 
@@ -1715,7 +1715,7 @@ inherit_from = {INHERIT_FROM}
 			return;
 		}
 
-		$component_in_use = array();
+		$component_in_use = [];
 		if ($component != 'style')
 		{
 			$component_in_use = $this->component_in_use($component, $component_id, $style_id);
@@ -1769,7 +1769,7 @@ inherit_from = {INHERIT_FROM}
 		global $db, $template, $user;
 
 		$is_only_component = true;
-		$component_in_use = array();
+		$component_in_use = [];
 		if ($component != 'style')
 		{
 			$component_in_use = $this->component_in_use($component, $component_id, $style_id);
@@ -1847,7 +1847,7 @@ inherit_from = {INHERIT_FROM}
 			$template->assign_var('S_REPLACE_OPTIONS', $s_options);
 			if ($component == 'style')
 			{
-				$components = array('template', 'theme', 'imageset');
+				$components = ['template', 'theme', 'imageset'];
 				foreach ($components as $component)
 				{
 					$this->display_component_options($component, $style_row[$component . '_id'], false, $component_id, true);
@@ -1865,7 +1865,7 @@ inherit_from = {INHERIT_FROM}
 	{
 		global $db;
 
-		$component_in_use = array();
+		$component_in_use = [];
 
 		if ($style_id)
 		{
@@ -1915,10 +1915,10 @@ inherit_from = {INHERIT_FROM}
 		$store = request_var('store', 0);
 		$format = request_var('format', '');
 
-		$error = array();
-		$methods = array('tar');
+		$error = [];
+		$methods = ['tar'];
 
-		$available_methods = array('tar.gz' => 'zlib', 'tar.bz2' => 'bz2', 'zip' => 'zlib');
+		$available_methods = ['tar.gz' => 'zlib', 'tar.bz2' => 'bz2', 'zip' => 'zlib'];
 		foreach ($available_methods as $type => $module)
 		{
 			if (!@extension_loaded($module))
@@ -1999,7 +1999,7 @@ inherit_from = {INHERIT_FROM}
 				trigger_error($user->lang['NO_' . $l_prefix] . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
-			$var_ary = array('style_id', 'style_name', 'style_copyright', 'template_id', 'template_name', 'template_path', 'template_copyright', 'template_storedb', 'template_inherits_id', 'bbcode_bitfield', 'theme_id', 'theme_name', 'theme_path', 'theme_copyright', 'theme_storedb', 'theme_mtime', 'theme_data', 'imageset_id', 'imageset_name', 'imageset_path', 'imageset_copyright');
+			$var_ary = ['style_id', 'style_name', 'style_copyright', 'template_id', 'template_name', 'template_path', 'template_copyright', 'template_storedb', 'template_inherits_id', 'bbcode_bitfield', 'theme_id', 'theme_name', 'theme_path', 'theme_copyright', 'theme_storedb', 'theme_mtime', 'theme_data', 'imageset_id', 'imageset_name', 'imageset_path', 'imageset_copyright'];
 
 			foreach ($var_ary as $var)
 			{
@@ -2009,20 +2009,20 @@ inherit_from = {INHERIT_FROM}
 				}
 			}
 
-			$files = $data = array();
+			$files = $data = [];
 
 			if ($mode == 'style')
 			{
-				$style_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['style_name'], $style_row['style_copyright'], '1.0.0'), $this->style_cfg);
+				$style_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'], [$mode, $style_row['style_name'], $style_row['style_copyright'], '1.0.0'], $this->style_cfg);
 
 				$style_cfg .= (!$inc_template) ? "\nrequired_template = {$style_row['template_name']}" : '';
 				$style_cfg .= (!$inc_theme) ? "\nrequired_theme = {$style_row['theme_name']}" : '';
 				$style_cfg .= (!$inc_imageset) ? "\nrequired_imageset = {$style_row['imageset_name']}" : '';
 
-				$data[] = array(
+				$data[] = [
 					'src'		=> $style_cfg,
 					'prefix'	=> 'style.cfg'
-				);
+				];
 
 				unset($style_cfg);
 			}
@@ -2044,24 +2044,24 @@ inherit_from = {INHERIT_FROM}
 					$db->sql_freeresult($result);
 				}
 
-				$template_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}', '{INHERIT_FROM}'), array($mode, $style_row['template_name'], $style_row['template_copyright'], '1.0.0', $use_template_name), $this->template_cfg);
+				$template_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}', '{INHERIT_FROM}'], [$mode, $style_row['template_name'], $style_row['template_copyright'], '1.0.0', $use_template_name], $this->template_cfg);
 
 				$template_cfg .= "\n\nbbcode_bitfield = {$style_row['bbcode_bitfield']}";
 
-				$data[] = array(
+				$data[] = [
 					'src'		=> $template_cfg,
 					'prefix'	=> 'template/template.cfg'
-				);
+				];
 
 				// This is potentially nasty memory-wise ...
 				if (!$style_row['template_storedb'])
 				{
-					$files[] = array(
+					$files[] = [
 						'src'		=> "styles/{$style_row['template_path']}/template/",
 						'prefix-'	=> "styles/{$style_row['template_path']}/",
 						'prefix+'	=> false,
 						'exclude'	=> 'template.cfg'
-					);
+					];
 				}
 				else
 				{
@@ -2072,10 +2072,10 @@ inherit_from = {INHERIT_FROM}
 
 					while ($row = $db->sql_fetchrow($result))
 					{
-						$data[] = array(
+						$data[] = [
 							'src' => $row['template_data'],
 							'prefix' => 'template/' . $row['template_filename']
-						);
+						];
 					}
 					$db->sql_freeresult($result);
 				}
@@ -2085,7 +2085,7 @@ inherit_from = {INHERIT_FROM}
 			// Export theme core code
 			if ($mode == 'theme' || $inc_theme)
 			{
-				$theme_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['theme_name'], $style_row['theme_copyright'], '1.0.0'), $this->theme_cfg);
+				$theme_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'], [$mode, $style_row['theme_name'], $style_row['theme_copyright'], '1.0.0'], $this->theme_cfg);
 
 				// Read old cfg file
 				$items = $cache->obtain_cfg_items($style_row);
@@ -2096,26 +2096,26 @@ inherit_from = {INHERIT_FROM}
 					$items['parse_css_file'] = 'off';
 				}
 
-				$theme_cfg = str_replace(array('{PARSE_CSS_FILE}'), array($items['parse_css_file']), $theme_cfg);
+				$theme_cfg = str_replace(['{PARSE_CSS_FILE}'], [$items['parse_css_file']], $theme_cfg);
 
-				$files[] = array(
+				$files[] = [
 					'src'		=> "styles/{$style_row['theme_path']}/theme/",
 					'prefix-'	=> "styles/{$style_row['theme_path']}/",
 					'prefix+'	=> false,
 					'exclude'	=> ($style_row['theme_storedb']) ? 'stylesheet.css,theme.cfg' : 'theme.cfg'
-				);
+				];
 
-				$data[] = array(
+				$data[] = [
 					'src'		=> $theme_cfg,
 					'prefix'	=> 'theme/theme.cfg'
-				);
+				];
 
 				if ($style_row['theme_storedb'])
 				{
-					$data[] = array(
+					$data[] = [
 						'src'		=> $style_row['theme_data'],
 						'prefix'	=> 'theme/stylesheet.css'
-					);
+					];
 				}
 
 				unset($items, $theme_cfg);
@@ -2124,9 +2124,9 @@ inherit_from = {INHERIT_FROM}
 			// Export imageset core code
 			if ($mode == 'imageset' || $inc_imageset)
 			{
-				$imageset_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['imageset_name'], $style_row['imageset_copyright'], '1.0.0'), $this->imageset_cfg);
+				$imageset_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'], [$mode, $style_row['imageset_name'], $style_row['imageset_copyright'], '1.0.0'], $this->imageset_cfg);
 
-				$imageset_main = array();
+				$imageset_main = [];
 
 				$sql = 'SELECT image_filename, image_name, image_height, image_width
 					FROM ' . STYLES_IMAGESET_DATA_TABLE . "
@@ -2150,17 +2150,17 @@ inherit_from = {INHERIT_FROM}
 					}
 				}
 
-				$files[] = array(
+				$files[] = [
 					'src'		=> "styles/{$style_row['imageset_path']}/imageset/",
 					'prefix-'	=> "styles/{$style_row['imageset_path']}/",
 					'prefix+'	=> false,
 					'exclude'	=> 'imageset.cfg'
-				);
+				];
 
-				$data[] = array(
+				$data[] = [
 					'src'		=> trim($imageset_cfg),
 					'prefix'	=> 'imageset/imageset.cfg'
-				);
+				];
 
 				end($data);
 
@@ -2178,7 +2178,7 @@ inherit_from = {INHERIT_FROM}
 					closedir($dh);
 				}
 
-				$imageset_lang = array();
+				$imageset_lang = [];
 
 				$sql = 'SELECT image_filename, image_name, image_height, image_width, image_lang
 					FROM ' . STYLES_IMAGESET_DATA_TABLE . "
@@ -2193,7 +2193,7 @@ inherit_from = {INHERIT_FROM}
 
 				foreach ($imageset_lang as $lang => $imageset_localized)
 				{
-					$imageset_cfg = str_replace(array('{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'), array($mode, $style_row['imageset_name'], $style_row['imageset_copyright'], '1.0.0'), $this->imageset_cfg);
+					$imageset_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'], [$mode, $style_row['imageset_name'], $style_row['imageset_copyright'], '1.0.0'], $this->imageset_cfg);
 
 					foreach ($this->imageset_keys as $topic => $key_array)
 					{
@@ -2206,10 +2206,10 @@ inherit_from = {INHERIT_FROM}
 						}
 					}
 
-					$data[] = array(
+					$data[] = [
 						'src'		=> trim($imageset_cfg),
 						'prefix'	=> 'imageset/' . $lang . '/imageset.cfg'
-					);
+					];
 				}
 
 				unset($imageset_cfg);
@@ -2310,7 +2310,7 @@ inherit_from = {INHERIT_FROM}
 			$format_buttons .= '<label><input type="radio"' . ((!$format_buttons) ? ' id="format"' : '') . ' class="radio" value="' . $method . '" name="format"' . (($method == $format) ? ' checked="checked"' : '') . ' /> ' . $method . '</label>';
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_EXPORT'		=> true,
 			'S_ERROR_MSG'	=> (sizeof($error)) ? true : false,
 			'S_STYLE'		=> ($mode == 'style') ? true : false,
@@ -2324,7 +2324,7 @@ inherit_from = {INHERIT_FROM}
 
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'				=> $style_row[$mode . '_name'],
-			'FORMAT_BUTTONS'	=> $format_buttons)
+			'FORMAT_BUTTONS'	=> $format_buttons]
 		);
 	}
 
@@ -2338,8 +2338,8 @@ inherit_from = {INHERIT_FROM}
 		$update = (isset($_POST['update'])) ? true : false;
 		$l_type = strtoupper($mode);
 
-		$error = array();
-		$element_ary = array('template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE);
+		$error = [];
+		$element_ary = ['template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE];
 
 		switch ($mode)
 		{
@@ -2456,35 +2456,35 @@ inherit_from = {INHERIT_FROM}
 
 		if ($update && sizeof($error))
 		{
-			$style_row = array_merge($style_row, array(
+			$style_row = array_merge($style_row, [
 				'template_id'			=> $template_id,
 				'theme_id'				=> $theme_id,
 				'imageset_id'			=> $imageset_id,
 				'style_active'			=> $style_active,
 				$mode . '_storedb'		=> $store_db,
 				$mode . '_name'			=> $name,
-				$mode . '_copyright'	=> $copyright)
+				$mode . '_copyright'	=> $copyright]
 			);
 		}
 
 		// User has submitted form and no errors have occurred
 		if ($update && !sizeof($error))
 		{
-			$sql_ary = array(
+			$sql_ary = [
 				$mode . '_name'			=> $name,
 				$mode . '_copyright'	=> $copyright
-			);
+			];
 
 			switch ($mode)
 			{
 				case 'style':
 
-					$sql_ary += array(
+					$sql_ary += [
 						'template_id'		=> (int) $template_id,
 						'theme_id'			=> (int) $theme_id,
 						'imageset_id'		=> (int) $imageset_id,
 						'style_active'		=> (int) $style_active,
-					);
+					];
 				break;
 
 				case 'imageset':
@@ -2512,11 +2512,11 @@ inherit_from = {INHERIT_FROM}
 							fclose($fp);
 						}
 
-						$sql_ary += array(
+						$sql_ary += [
 							'theme_mtime'	=> ($store_db) ? filemtime(PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/stylesheet.css") : 0,
 							'theme_storedb'	=> $store_db,
 							'theme_data'	=> ($store_db) ? $theme_data : '',
-						);
+						];
 					}
 				break;
 
@@ -2527,7 +2527,7 @@ inherit_from = {INHERIT_FROM}
 						if ($super = $this->get_super($mode, $style_row['template_id']))
 						{
 							$error[] = (sprintf($user->lang["{$l_type}_INHERITS"], $super['template_name']));
-							$sql_ary = array();
+							$sql_ary = [];
 						}
 						else
 						{
@@ -2552,9 +2552,9 @@ inherit_from = {INHERIT_FROM}
 								$db->sql_query($sql);
 							}
 
-							$sql_ary += array(
+							$sql_ary += [
 								'template_storedb'	=> $store_db,
-							);
+							];
 						}
 					}
 				break;
@@ -2608,7 +2608,7 @@ inherit_from = {INHERIT_FROM}
 
 		if ($mode == 'template')
 		{
-			$super = array();
+			$super = [];
 			if (isset($style_row[$mode . '_inherits_id']) && $style_row['template_inherits_id'])
 			{
 				$super = $this->get_super($mode, $style_row['template_id']);
@@ -2617,7 +2617,7 @@ inherit_from = {INHERIT_FROM}
 
 		$this->page_title = 'EDIT_DETAILS_' . $l_type;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_DETAILS'				=> true,
 			'S_ERROR_MSG'			=> (sizeof($error)) ? true : false,
 			'S_STYLE'				=> ($mode == 'style') ? true : false,
@@ -2646,7 +2646,7 @@ inherit_from = {INHERIT_FROM}
 			'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'			=> $style_row[$mode . '_name'],
 			'COPYRIGHT'		=> $style_row[$mode . '_copyright'],
-			)
+			]
 		);
 	}
 
@@ -2700,7 +2700,7 @@ inherit_from = {INHERIT_FROM}
 		}
 
 		// Match CSS imports
-		$matches = array();
+		$matches = [];
 		preg_match_all('/@import url\((["\'])(.*)\1\);/i', $stylesheet, $matches);
 
 		// remove commented stylesheets (very simple parser, allows only whitespace
@@ -2731,7 +2731,7 @@ inherit_from = {INHERIT_FROM}
 		global $db;
 
 		$template_path = $template_path . '/template/';
-		$includes = array();
+		$includes = [];
 		foreach ($filelist as $pathfile => $file_ary)
 		{
 			foreach ($file_ary as $file)
@@ -2778,13 +2778,13 @@ inherit_from = {INHERIT_FROM}
 
 				// We could do this using extended inserts ... but that could be one
 				// heck of a lot of data ...
-				$sql_ary = array(
+				$sql_ary = [
 					'template_id'			=> (int) $style_id,
 					'template_filename'		=> "$pathfile$file",
 					'template_included'		=> (isset($includes[$file])) ? implode(':', $includes[$file]) . ':' : '',
 					'template_mtime'		=> (int) filemtime(PHPBB_ROOT_PATH . "styles/$template_path$pathfile$file"),
 					'template_data'			=> (string) file_get_contents(PHPBB_ROOT_PATH . "styles/$template_path$pathfile$file"),
-				);
+				];
 
 				if ($mode == 'insert')
 				{
@@ -2819,7 +2819,7 @@ inherit_from = {INHERIT_FROM}
 			trigger_error($user->lang['TEMPLATE_ERR_CACHE_READ'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
 
-		$file_ary = array();
+		$file_ary = [];
 		while ($file = readdir($dp))
 		{
 			if ($file[0] == '.')
@@ -2884,9 +2884,9 @@ inherit_from = {INHERIT_FROM}
 
 		$l_type = strtoupper($mode);
 
-		$error = $installcfg = $style_row = array();
+		$error = $installcfg = $style_row = [];
 		$root_path = $cfg_file = '';
-		$element_ary = array('template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE);
+		$element_ary = ['template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE];
 
 		$install_path = request_var('path', '');
 		$update = (isset($_POST['update'])) ? true : false;
@@ -2914,21 +2914,21 @@ inherit_from = {INHERIT_FROM}
 			$copyright	= $installcfg['copyright'];
 			$version	= $installcfg['version'];
 
-			$style_row = array(
+			$style_row = [
 				$mode . '_id'			=> 0,
 				$mode . '_name'			=> '',
 				$mode . '_copyright'	=> ''
-			);
+			];
 
 			switch ($mode)
 			{
 				case 'style':
 
-					$style_row = array(
+					$style_row = [
 						'style_id'			=> 0,
 						'style_name'		=> $installcfg['name'],
 						'style_copyright'	=> $installcfg['copyright']
-					);
+					];
 
 					$reqd_template = (isset($installcfg['required_template'])) ? $installcfg['required_template'] : false;
 					$reqd_theme = (isset($installcfg['required_theme'])) ? $installcfg['required_theme'] : false;
@@ -2937,10 +2937,10 @@ inherit_from = {INHERIT_FROM}
 					// Check to see if each element is already installed, if it is grab the id
 					foreach ($element_ary as $element => $table)
 					{
-						$style_row = array_merge($style_row, array(
+						$style_row = array_merge($style_row, [
 							$element . '_id'			=> 0,
 							$element . '_name'			=> '',
-							$element . '_copyright'		=> '')
+							$element . '_copyright'		=> '']
 						);
 
 			 			$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name'], $style_row[$element . '_copyright']);
@@ -2958,7 +2958,7 @@ inherit_from = {INHERIT_FROM}
 							$cfg_contents = parse_cfg_file($cfg_file);
 
 							// Merge only specific things. We may need them later.
-							foreach (array('inherit_from', 'parse_css_file') as $key)
+							foreach (['inherit_from', 'parse_css_file'] as $key)
 							{
 								if (!empty($cfg_contents[$key]) && !isset($installcfg[$key]))
 								{
@@ -3020,7 +3020,7 @@ inherit_from = {INHERIT_FROM}
 
 		$this->page_title = 'INSTALL_' . $l_type;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_DETAILS'			=> true,
 			'S_INSTALL'			=> true,
 			'S_ERROR_MSG'		=> (sizeof($error)) ? true : false,
@@ -3048,7 +3048,7 @@ inherit_from = {INHERIT_FROM}
 			'COPYRIGHT'			=> $style_row[$mode . '_copyright'],
 			'TEMPLATE_NAME'		=> ($mode == 'style') ? $style_row['template_name'] : '',
 			'THEME_NAME'		=> ($mode == 'style') ? $style_row['theme_name'] : '',
-			'IMAGESET_NAME'		=> ($mode == 'style') ? $style_row['imageset_name'] : '')
+			'IMAGESET_NAME'		=> ($mode == 'style') ? $style_row['imageset_name'] : '']
 		);
 	}
 
@@ -3060,10 +3060,10 @@ inherit_from = {INHERIT_FROM}
 		global $config, $db, $cache, $user, $template;
 
 		$l_type = strtoupper($mode);
-		$element_ary = array('template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE);
-		$error = array();
+		$element_ary = ['template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE];
+		$error = [];
 
-		$style_row = array(
+		$style_row = [
 			$mode . '_name'			=> utf8_normalize_nfc(request_var('name', '', true)),
 			$mode . '_copyright'	=> utf8_normalize_nfc(request_var('copyright', '', true)),
 			'template_id'			=> 0,
@@ -3072,7 +3072,7 @@ inherit_from = {INHERIT_FROM}
 			'store_db'				=> request_var('store_db', 0),
 			'style_active'			=> request_var('style_active', 1),
 			'style_default'			=> request_var('style_default', 0),
-		);
+		];
 
 		$basis = request_var('basis', 0);
 		$update = (isset($_POST['update'])) ? true : false;
@@ -3174,7 +3174,7 @@ inherit_from = {INHERIT_FROM}
 
 		$this->page_title = 'ADD_' . $l_type;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_DETAILS'			=> true,
 			'S_ADD'				=> true,
 			'S_ERROR_MSG'		=> (sizeof($error)) ? true : false,
@@ -3201,7 +3201,7 @@ inherit_from = {INHERIT_FROM}
 
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'				=> $style_row[$mode . '_name'],
-			'COPYRIGHT'			=> $style_row[$mode . '_copyright'])
+			'COPYRIGHT'			=> $style_row[$mode . '_copyright']]
 		);
 
 	}
@@ -3283,7 +3283,7 @@ inherit_from = {INHERIT_FROM}
 	{
 		global $config, $db, $user;
 
-		$element_ary = array('template', 'theme', 'imageset');
+		$element_ary = ['template', 'theme', 'imageset'];
 
 		if (!$name)
 		{
@@ -3341,14 +3341,14 @@ inherit_from = {INHERIT_FROM}
 
 		$db->sql_transaction('begin');
 
-		$sql_ary = array(
+		$sql_ary = [
 			'style_name'		=> $name,
 			'style_copyright'	=> $copyright,
 			'style_active'		=> (int) $active,
 			'template_id'		=> (int) $style_row['template_id'],
 			'theme_id'			=> (int) $style_row['theme_id'],
 			'imageset_id'		=> (int) $style_row['imageset_id'],
-		);
+		];
 
 		$sql = 'INSERT INTO ' . STYLES_TABLE . '
 			' . $db->sql_build_array('INSERT', $sql_ary);
@@ -3477,11 +3477,11 @@ inherit_from = {INHERIT_FROM}
 			return false;
 		}
 
-		$sql_ary = array(
+		$sql_ary = [
 			$mode . '_name'			=> $name,
 			$mode . '_copyright'	=> $copyright,
 			$mode . '_path'			=> $path,
-		);
+		];
 
 		switch ($mode)
 		{
@@ -3501,15 +3501,15 @@ inherit_from = {INHERIT_FROM}
 				}
 
 				// We set a pre-defined bitfield here which we may use further in 3.2
-				$sql_ary += array(
+				$sql_ary += [
 					'template_storedb'		=> $store_db,
-				);
+				];
 				if (isset($cfg_data['inherit_from']) && $cfg_data['inherit_from'])
 				{
-					$sql_ary += array(
+					$sql_ary += [
 						'template_inherits_id'	=> $inherit_id,
 						'template_inherit_path' => $inherit_path,
-					);
+					];
 				}
 			break;
 
@@ -3521,11 +3521,11 @@ inherit_from = {INHERIT_FROM}
 					$store_db = 1;
 				}
 
-				$sql_ary += array(
+				$sql_ary += [
 					'theme_storedb'	=> $store_db,
 					'theme_data'	=> ($store_db) ? $this->db_theme_data($sql_ary, false, $root_path) : '',
 					'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/$path/theme/stylesheet.css")
-				);
+				];
 			break;
 
 			// all the heavy lifting is done later
@@ -3550,7 +3550,7 @@ inherit_from = {INHERIT_FROM}
 		{
 			$cfg_data = parse_cfg_file("$root_path$mode/imageset.cfg");
 
-			$imageset_definitions = array();
+			$imageset_definitions = [];
 			foreach ($this->imageset_keys as $topic => $key_array)
 			{
 				$imageset_definitions = array_merge($imageset_definitions, $key_array);
@@ -3581,14 +3581,14 @@ inherit_from = {INHERIT_FROM}
 					$key = substr($key, 4);
 					if (in_array($key, $imageset_definitions))
 					{
-						$sql_ary = array(
+						$sql_ary = [
 							'image_name'		=> $key,
 							'image_filename'	=> str_replace('{PATH}', "styles/$path/imageset/", trim($image_filename)),
 							'image_height'		=> (int) $image_height,
 							'image_width'		=> (int) $image_width,
 							'imageset_id'		=> (int) $id,
 							'image_lang'		=> '',
-						);
+						];
 						$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 					}
 				}
@@ -3629,14 +3629,14 @@ inherit_from = {INHERIT_FROM}
 							$image_name = substr($image_name, 4);
 							if (in_array($image_name, $imageset_definitions))
 							{
-								$sql_ary = array(
+								$sql_ary = [
 									'image_name'		=> $image_name,
 									'image_filename'	=> $image_filename,
 									'image_height'		=> (int) $image_height,
 									'image_width'		=> (int) $image_width,
 									'imageset_id'		=> (int) $id,
 									'image_lang'		=> $row['lang_dir'],
-								);
+								];
 								$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 							}
 						}
@@ -3690,15 +3690,15 @@ inherit_from = {INHERIT_FROM}
 			WHERE {$mode}_inherits_id = " . (int) $id;
 		$result = $db->sql_query($sql);
 
-		$names = array();
+		$names = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 
-			$names[$row["{$mode}_id"]] = array(
+			$names[$row["{$mode}_id"]] = [
 				"{$mode}_id" => $row["{$mode}_id"],
 				"{$mode}_name" => $row["{$mode}_name"],
 				"{$mode}_path" => $row["{$mode}_path"],
-			);
+			];
 		}
 		$db->sql_freeresult($result);
 
@@ -3782,7 +3782,7 @@ inherit_from = {INHERIT_FROM}
 	{
 		global $db, $user;
 
-		$error = array();
+		$error = [];
 		$l_type = strtoupper($mode);
 		if ($super = $this->get_super($mode, $id))
 		{
@@ -3853,7 +3853,7 @@ inherit_from = {INHERIT_FROM}
 	{
 		global $db, $user;
 
-		$error = array();
+		$error = [];
 		$l_type = strtoupper($mode);
 		if ($super = $this->get_super($mode, $id))
 		{
@@ -3905,7 +3905,7 @@ inherit_from = {INHERIT_FROM}
 		global $db, $user;
 
 		$store_db = 0;
-		$error = array();
+		$error = [];
 		if (phpbb_is_writable(PHPBB_ROOT_PATH . "styles/{$path}/template"))
 		{
 			$sql = 'SELECT *

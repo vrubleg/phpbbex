@@ -29,7 +29,7 @@ class orphaned_posts
 			HAVING COUNT(p.post_id) = 0';
 		$result = $db->sql_query($sql);
 
-		$topic_ids = array();
+		$topic_ids = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$topic_ids[] = (int) $row['topic_id'];
@@ -48,7 +48,7 @@ class orphaned_posts
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$template->assign_block_vars('topics', array(
+				$template->assign_block_vars('topics', [
 					'FORUM_ID'		=> $row['forum_id'],
 					'FORUM_NAME'	=> $row['forum_name'],
 					'U_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
@@ -56,7 +56,7 @@ class orphaned_posts
 					'TOPIC_TITLE'	=> $row['topic_title'],
 					'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 					'USER_ID'		=> $row['user_id'],
-				));
+				]);
 			}
 			$db->sql_freeresult($result);
 		}
@@ -76,7 +76,7 @@ class orphaned_posts
 			$message = generate_text_for_display($row['post_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], OPTION_FLAG_BBCODE | OPTION_FLAG_SMILIES);
 			$search_keywords = urlencode((strpos($row['post_subject'], 'Re: ') === 0) ? utf8_substr($row['post_subject'], 4) : $row['post_subject']);
 
-			$template->assign_block_vars('posts', array(
+			$template->assign_block_vars('posts', [
 				'FORUM_ID'		=> $row['forum_id'],
 				'FORUM_NAME'	=> $row['forum_name'],
 				'U_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
@@ -86,7 +86,7 @@ class orphaned_posts
 				'SEARCH_URL'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'keywords=' . $search_keywords . '&amp;terms=all&amp;sf=titleonly&amp;sr=topics&amp;submit=Search', true),
 				'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USER_ID'		=> $row['user_id'],
-			));
+			]);
 		}
 		$db->sql_freeresult($result);
 
@@ -103,7 +103,7 @@ class orphaned_posts
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$template->assign_block_vars('shadows', array(
+			$template->assign_block_vars('shadows', [
 				'FORUM_ID'		=> $row['forum_id'],
 				'FORUM_NAME'	=> $row['forum_name'],
 				'U_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
@@ -111,19 +111,19 @@ class orphaned_posts
 				'TOPIC_TITLE'	=> $row['topic_title'],
 				'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USER_ID'		=> $row['user_id'],
-			));
+			]);
 		}
 		$db->sql_freeresult($result);
 
-		$template->assign_vars(array(
-			'U_EMPTY_TOPICS'	=> append_sid(STK_INDEX, array('c' => 'support', 't' => 'orphaned_posts', 'mode' => 'empty_topics')),
-			'U_ORPHANED_POSTS'	=> append_sid(STK_INDEX, array('c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_posts', 'submit' => 1)),
-			'U_ORPHANED_SHADOWS'=> append_sid(STK_INDEX, array('c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_shadows')),
-		));
+		$template->assign_vars([
+			'U_EMPTY_TOPICS'	=> append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'empty_topics']),
+			'U_ORPHANED_POSTS'	=> append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_posts', 'submit' => 1]),
+			'U_ORPHANED_SHADOWS'=> append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_shadows']),
+		]);
 
-		$template->set_filenames(array(
+		$template->set_filenames([
 			'body' => 'tools/orphaned_posts.html',
-		));
+		]);
 
 		page_header($user->lang['ORPHANED_POSTS'], false);
 		page_footer();
@@ -151,7 +151,7 @@ class orphaned_posts
 		{
 			case 'empty_topics':
 			case 'orphaned_shadows':
-				$topic_ids = request_var('topics', array(0 => 0));
+				$topic_ids = request_var('topics', [0 => 0]);
 				if (!sizeof($topic_ids))
 				{
 					trigger_error('NO_TOPICS_SELECTED');
@@ -169,7 +169,7 @@ class orphaned_posts
 			case 'orphaned_posts':
 				if (isset($_POST['reassign']))
 				{
-					$post_map = request_var('posts', array(0 => 0));
+					$post_map = request_var('posts', [0 => 0]);
 
 					foreach ($post_map as $post_id => $topic_id)
 					{
@@ -189,7 +189,7 @@ class orphaned_posts
 					$sql = 'SELECT topic_id FROM ' . TOPICS_TABLE . ' WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
 					$result = $db->sql_query($sql);
 
-					$existing_topics = array();
+					$existing_topics = [];
 					while ($row = $db->sql_fetchrow($result))
 					{
 						$existing_topics[] = (int) $row['topic_id'];
@@ -212,7 +212,7 @@ class orphaned_posts
 				}
 				else if (isset($_POST['delete']))
 				{
-					$post_ids = request_var('posts_del', array(0 => 0));
+					$post_ids = request_var('posts_del', [0 => 0]);
 
 					if (!sizeof($post_ids))
 					{

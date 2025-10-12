@@ -15,11 +15,11 @@ if (!defined('IN_PHPBB'))
 */
 class phpbb_auth
 {
-	var $acl = array();
-	var $cache = array();
-	var $acl_options = array();
+	var $acl = [];
+	var $cache = [];
+	var $acl_options = [];
 	var $acl_forum_ids = false;
-	var $role_cache = array();
+	var $role_cache = [];
 
 	/**
 	* Init permissions
@@ -28,7 +28,7 @@ class phpbb_auth
 	{
 		global $db, $cache;
 
-		$this->acl = $this->cache = $this->acl_options = array();
+		$this->acl = $this->cache = $this->acl_options = [];
 		$this->acl_forum_ids = false;
 
 		if (($this->acl_options = $cache->get('_acl_options')) === false)
@@ -39,7 +39,7 @@ class phpbb_auth
 			$result = $db->sql_query($sql);
 
 			$global = $local = 0;
-			$this->acl_options = array();
+			$this->acl_options = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				if ($row['is_global'])
@@ -103,8 +103,8 @@ class phpbb_auth
 	*/
 	function _fill_acl($user_permissions)
 	{
-		$seq_cache = array();
-		$this->acl = array();
+		$seq_cache = [];
+		$this->acl = [];
 		$user_permissions = explode("\n", $user_permissions);
 
 		foreach ($user_permissions as $f => $seq)
@@ -192,7 +192,7 @@ class phpbb_auth
 	*/
 	function acl_getf($opt, $clean = false)
 	{
-		$acl_f = array();
+		$acl_f = [];
 		$negate = false;
 
 		if (strpos($opt, '!') === 0)
@@ -217,7 +217,7 @@ class phpbb_auth
 				}
 				$result = $db->sql_query($sql);
 
-				$this->acl_forum_ids = array();
+				$this->acl_forum_ids = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$this->acl_forum_ids[] = $row['forum_id'];
@@ -356,14 +356,14 @@ class phpbb_auth
 	{
 		if ($user_id !== false && !is_array($user_id) && $opts === false && $forum_id === false)
 		{
-			$hold_ary = array($user_id => $this->acl_raw_data_single_user($user_id));
+			$hold_ary = [$user_id => $this->acl_raw_data_single_user($user_id)];
 		}
 		else
 		{
 			$hold_ary = $this->acl_raw_data($user_id, $opts, $forum_id);
 		}
 
-		$auth_ary = array();
+		$auth_ary = [];
 		foreach ($hold_ary as $user_id => $forum_ary)
 		{
 			foreach ($forum_ary as $forum_id => $auth_option_ary)
@@ -440,7 +440,7 @@ class phpbb_auth
 			{
 				$ary_key = (!$f) ? 'global' : 'local';
 
-				$bitstring = array();
+				$bitstring = [];
 				foreach ($this->acl_options[$ary_key] as $opt => $id)
 				{
 					if (isset($auth_ary[$this->acl_options['id'][$opt]]))
@@ -499,7 +499,7 @@ class phpbb_auth
 			ORDER BY role_id ASC';
 		$result = $db->sql_query($sql);
 
-		$this->role_cache = array();
+		$this->role_cache = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$this->role_cache[$row['role_id']][$row['auth_option_id']] = (int) $row['auth_setting'];
@@ -518,7 +518,7 @@ class phpbb_auth
 
 		if ($user_id !== false)
 		{
-			$user_id = (!is_array($user_id)) ? $user_id = array((int) $user_id) : array_map('intval', $user_id);
+			$user_id = (!is_array($user_id)) ? $user_id = [(int) $user_id] : array_map('intval', $user_id);
 			$where_sql = ' WHERE ' . $db->sql_in_set('user_id', $user_id);
 		}
 
@@ -538,7 +538,7 @@ class phpbb_auth
 	{
 		global $db;
 
-		$roles = array();
+		$roles = [];
 
 		$sql_id = ($user_type == 'user') ? 'user_id' : 'group_id';
 
@@ -575,7 +575,7 @@ class phpbb_auth
 		$sql_forum = ($forum_id !== false) ? ((!is_array($forum_id)) ? 'AND a.forum_id = ' . (int) $forum_id : 'AND ' . $db->sql_in_set('a.forum_id', array_map('intval', $forum_id))) : '';
 
 		$sql_opts = $sql_opts_select = $sql_opts_from = '';
-		$hold_ary = array();
+		$hold_ary = [];
 
 		if ($opts !== false)
 		{
@@ -584,7 +584,7 @@ class phpbb_auth
 			$this->build_auth_option_statement('ao.auth_option', $opts, $sql_opts);
 		}
 
-		$sql_ary = array();
+		$sql_ary = [];
 
 		// Grab non-role settings - user-specific
 		$sql_ary[] = 'SELECT a.user_id, a.forum_id, a.auth_setting, a.auth_option_id' . $sql_opts_select . '
@@ -616,7 +616,7 @@ class phpbb_auth
 			$db->sql_freeresult($result);
 		}
 
-		$sql_ary = array();
+		$sql_ary = [];
 
 		// Now grab group settings - non-role specific...
 		$sql_ary[] = 'SELECT ug.user_id, a.forum_id, a.auth_setting, a.auth_option_id' . $sql_opts_select . '
@@ -691,7 +691,7 @@ class phpbb_auth
 		$sql_forum = ($forum_id !== false) ? ((!is_array($forum_id)) ? 'AND a.forum_id = ' . (int) $forum_id : 'AND ' . $db->sql_in_set('a.forum_id', array_map('intval', $forum_id))) : '';
 
 		$sql_opts = '';
-		$hold_ary = $sql_ary = array();
+		$hold_ary = $sql_ary = [];
 
 		if ($opts !== false)
 		{
@@ -743,7 +743,7 @@ class phpbb_auth
 		$sql_forum = ($forum_id !== false) ? ((!is_array($forum_id)) ? 'AND a.forum_id = ' . (int) $forum_id : 'AND ' . $db->sql_in_set('a.forum_id', array_map('intval', $forum_id))) : '';
 
 		$sql_opts = '';
-		$hold_ary = $sql_ary = array();
+		$hold_ary = $sql_ary = [];
 
 		if ($opts !== false)
 		{
@@ -795,7 +795,7 @@ class phpbb_auth
 		// Check if the role-cache is there
 		if (($this->role_cache = $cache->get('_role_cache')) === false)
 		{
-			$this->role_cache = array();
+			$this->role_cache = [];
 
 			// We pre-fetch roles
 			$sql = 'SELECT *
@@ -817,7 +817,7 @@ class phpbb_auth
 			$cache->put('_role_cache', $this->role_cache);
 		}
 
-		$hold_ary = array();
+		$hold_ary = [];
 
 		// Grab user-specific permission settings
 		$sql = 'SELECT forum_id, auth_option_id, auth_role_id, auth_setting
@@ -932,18 +932,18 @@ class phpbb_auth
 
 				if (!$row)
 				{
-					return array(
+					return [
 						'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
 						'error_msg'		=> 'AUTH_NO_PROFILE_CREATED',
-						'user_row'		=> array('user_id' => ANONYMOUS),
-					);
+						'user_row'		=> ['user_id' => ANONYMOUS],
+					];
 				}
 
-				$login = array(
+				$login = [
 					'status'	=> LOGIN_SUCCESS,
 					'error_msg'	=> false,
 					'user_row'	=> $row,
-				);
+				];
 			}
 
 			// If login succeeded, we will log the user in... else we pass the login array through...
@@ -976,18 +976,18 @@ class phpbb_auth
 						$db->sql_query($sql);
 					}
 
-					return array(
+					return [
 						'status'		=> LOGIN_SUCCESS,
 						'error_msg'		=> false,
 						'user_row'		=> $login['user_row'],
-					);
+					];
 				}
 
-				return array(
+				return [
 					'status'		=> LOGIN_BREAK,
 					'error_msg'		=> $result,
 					'user_row'		=> $login['user_row'],
-				);
+				];
 			}
 
 			return $login;
@@ -1032,7 +1032,7 @@ class phpbb_auth
 			}
 			else
 			{
-				$sql = array();
+				$sql = [];
 
 				foreach ($auth_options as $option)
 				{

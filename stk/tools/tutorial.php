@@ -74,13 +74,13 @@ class tutorial
 		/*
 		* Method 2
 		*/
-		return array(
+		return [
 			'title'	=> 'TUTORIAL',
-			'vars'	=> array(
+			'vars'	=> [
 				'legend1'			=> 'TUTORIAL',
-				'tutorial'			=> array('lang' => 'TUTORIAL', 'type' => 'text:40:255', 'explain' => true),
-			)
-		);
+				'tutorial'			=> ['lang' => 'TUTORIAL', 'type' => 'text:40:255', 'explain' => true],
+			]
+		];
 
 		/*
 		* Method 3

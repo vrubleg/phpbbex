@@ -14,7 +14,7 @@
  */
 class route
 {
-	static protected $routes    = array();
+	static protected $routes    = [];
 	static protected $matched   = false;
 	static protected $prefix    = '';
 
@@ -29,7 +29,7 @@ class route
 	/**
 	 * Adds new route
 	 */
-	static function add($name, $route, $defaults = array(), $var_regex = null)
+	static function add($name, $route, $defaults = [], $var_regex = null)
 	{
 		self::$routes[$name] = new route(self::$prefix . $route, $defaults, $var_regex);
 	}
@@ -72,7 +72,7 @@ class route
 	/**
 	 * Builds url for given route
 	 */
-	static function format($name, array $vars = array())
+	static function format($name, array $vars = [])
 	{
 		if (!isset(self::$routes[$name]))
 		{
@@ -82,13 +82,13 @@ class route
 	}
 
 	protected $rule       = '';
-	protected $defaults   = array();
+	protected $defaults   = [];
 	protected $var_regex  = null;
 	protected $normalized = false;
 	protected $is_static  = false;
 	protected $static     = '';
 	protected $compiled   = '';
-	protected $args       = array();
+	protected $args       = [];
 
 	protected function __construct($rule, $defaults = null, $var_regex = null)
 	{
@@ -102,7 +102,7 @@ class route
 		}
 		$static_length = strcspn($rule, ':(){}');
 		$this->rule      = $rule;
-		$this->defaults  = $defaults ? $defaults : array();
+		$this->defaults  = $defaults ? $defaults : [];
 		$this->var_regex = $var_regex;
 		$this->is_static = ($static_length === strlen($rule));
 		$this->static    = ($this->is_static) ? $rule : substr($rule, 0, $static_length);
@@ -113,7 +113,7 @@ class route
 	 * all of the routed parameters as an array. A failed match will return
 	 * boolean FALSE.
 	 */
-	protected function _match($path, array $values = array())
+	protected function _match($path, array $values = [])
 	{
 		// Check required query parameters
 		if (!empty($this->args))
@@ -143,7 +143,7 @@ class route
 		if (!preg_match($this->compiled, $path, $matches)) return false;
 
 		// Parse results
-		$vars = array();
+		$vars = [];
 		foreach ($matches as $name => $value)
 		{
 			if (is_numeric($name) || $value === '') continue;
@@ -158,7 +158,7 @@ class route
 				// Array placeholder
 				if (!isset($vars[$name]))
 				{
-					$vars[$name] = array();
+					$vars[$name] = [];
 				}
 				$vars[$name][$key] = $value;
 			}
@@ -173,7 +173,7 @@ class route
 		// Instead of preg_quote, does not escape symbols ():
 		$expression = preg_replace('#[-<>.\\+*?[^\\]${}=!|\\#]#', '\\\\$0', $this->rule);
 		// Make optional parts of the URI non-capturing and optional
-		$expression = str_replace(array('(', ')'), array('(?:', ')?'), $expression);
+		$expression = str_replace(['(', ')'], ['(?:', ')?'], $expression);
 		$def_arg_regex = (is_string($this->var_regex)) ? $this->var_regex : '[^/]+';
 		$expression = preg_replace(
 			'#\\\\{:([\w\d_]+)(?:\\\\\\[([\w\d_]*)\\\\\\])?\\\\}#',
@@ -183,7 +183,7 @@ class route
 		if (is_array($this->var_regex))
 		{
 			// Replace the default regex with the user-specified regex
-			$search = $replace = array();
+			$search = $replace = [];
 			foreach ($this->var_regex as $key => $new_arg_regex)
 			{
 				$search[]  = "___{$key}>{$def_arg_regex}";
@@ -197,10 +197,10 @@ class route
 	protected function _normalize()
 	{
 		if ($this->normalized) return;
-		$this->ph_indexes = $this->ph_used = array();
+		$this->ph_indexes = $this->ph_used = [];
 		$this->rule = preg_replace_callback(
 			'#({)?:(?P<name>[\w\d_]+)(?:\[(?P<key>[\w\d_]*)\])?(?(1)})#',
-			array($this,'_normalize_ph'),
+			[$this,'_normalize_ph'],
 			$this->rule
 		);
 		unset($this->ph_indexes);
@@ -246,7 +246,7 @@ class route
 	/**
 	 * Generates a URI for the current route based on the parameters given.
 	 */
-	protected function _format(array $vars = array())
+	protected function _format(array $vars = [])
 	{
 		// Remove variables that are identical to the default values
 		foreach ($vars as $arg => $value)
@@ -303,7 +303,7 @@ class route
 	protected function build_query($vars)
 	{
 		ksort($vars);
-		$query = str_ireplace(array('%5B', '%5D'), array('[', ']'), http_build_query($vars));
+		$query = str_ireplace(['%5B', '%5D'], ['[', ']'], http_build_query($vars));
 		return (empty($query)) ? '' : ('?' . $query);
 	}
 
@@ -367,7 +367,7 @@ class route
 	}
 }
 
-function url($name, array $vars = array())
+function url($name, array $vars = [])
 {
 	return route::format($name, $vars);
 }

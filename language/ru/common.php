@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'DATE_FORMAT'		=> '|d.m.Y|',	// 01 Jan 2007 (with Relative days enabled)
 	'USER_LANG'			=> 'ru',
 
@@ -369,11 +369,11 @@ $lang = array_merge($lang, array(
 	'NO_USER_SPECIFIED'			=> 'Имя пользователя не определено.',
 
 	// Nullar/Singular/Plural language entry. The key numbers define the number range in which a certain grammatical expression is valid.
-	'NUM_POSTS_IN_QUEUE'	=> array(
+	'NUM_POSTS_IN_QUEUE'	=> [
 		0		=> 'Нет сообщений в очереди',	// 0
 		1		=> 'Сообщений в очереди: 1',	// 1
 		2		=> 'Сообщений в очереди: %d',	// 2+
-	),
+	],
 
 	'OCCUPATION'				=> 'Род занятий',
 	'OFFLINE'					=> 'Офлайн',
@@ -382,10 +382,10 @@ $lang = array_merge($lang, array(
 	'OPTIONS'					=> 'Настройки',
 
 	'ONLINE_TOTAL_STR'			=> 'Всего посетителей: <strong>%d</strong>, из них: ',
-	'ONLINE_HIDDEN_USERS'		=> array(0 => '0 скрытых', 1 => '%d скрытый', 2 => '%d скрытых'),
-	'ONLINE_REG_USERS'			=> array(0 => '0 зарегистрированных', 1 => '%d зарегистрированный', 2 => '%d зарегистрированных'),
-	'ONLINE_GUEST_USERS'		=> array(0 => '0 гостей', 1 => '%d гость', 2 => '%d гостя', 5 => '%d гостей', 21 => '%d гость', 22 => '%d гостя', 25 => '%d гостей', 31 => '%d гость', 32 => '%d гостя', 35 => '%d гостей'),
-	'ONLINE_BOT_USERS'			=> array(0 => '0 ботов', 1 => '%d бот', 2 => '%d бота', 5 => '%d ботов', 21 => '%d бот', 22 => '%d бота', 25 => '%d ботов', 31 => '%d бот', 32 => '%d бота', 35 => '%d ботов'),
+	'ONLINE_HIDDEN_USERS'		=> [0 => '0 скрытых', 1 => '%d скрытый', 2 => '%d скрытых'],
+	'ONLINE_REG_USERS'			=> [0 => '0 зарегистрированных', 1 => '%d зарегистрированный', 2 => '%d зарегистрированных'],
+	'ONLINE_GUEST_USERS'		=> [0 => '0 гостей', 1 => '%d гость', 2 => '%d гостя', 5 => '%d гостей', 21 => '%d гость', 22 => '%d гостя', 25 => '%d гостей', 31 => '%d гость', 32 => '%d гостя', 35 => '%d гостей'],
+	'ONLINE_BOT_USERS'			=> [0 => '0 ботов', 1 => '%d бот', 2 => '%d бота', 5 => '%d ботов', 21 => '%d бот', 22 => '%d бота', 25 => '%d ботов', 31 => '%d бот', 32 => '%d бота', 35 => '%d ботов'],
 
 	'PAGE_OF'				=> 'Страница %1$d из %2$d',
 	'PASSWORD'				=> 'Пароль',
@@ -673,12 +673,12 @@ $lang = array_merge($lang, array(
 	'YOU_NEW_PMS'		=> 'Вам пришли новые личные сообщения.',
 	'YOU_NO_NEW_PM'		=> 'У вас нет новых личных сообщений.',
 
-	'datetime'			=> array(
+	'datetime'			=> [
 		'TODAY'		=> 'Сегодня',
 		'TOMORROW'	=> 'Завтра',
 		'YESTERDAY'	=> 'Вчера',
 
-		'AGO'		=> array(
+		'AGO'		=> [
 			0		=> 'менее минуты назад',
 			1		=> '%d минуту назад',
 			2		=> '%d минуты назад',
@@ -696,7 +696,7 @@ $lang = array_merge($lang, array(
 			52		=> '%d минуты назад',
 			55		=> '%d минут назад',
 			60		=> '1 час назад',
-		),
+		],
 
 		'Sunday'	=> 'Воскресенье',
 		'Monday'	=> 'Понедельник',
@@ -739,9 +739,9 @@ $lang = array_merge($lang, array(
 		'Oct'		=> 'октября',
 		'Nov'		=> 'ноября',
 		'Dec'		=> 'декабря',
-	),
+	],
 
-	'tz'				=> array(
+	'tz'				=> [
 		'-12'	=> 'UTC − 12 часов',
 		'-11'	=> 'UTC − 11 часов',
 		'-10'	=> 'UTC − 10 часов',
@@ -783,9 +783,9 @@ $lang = array_merge($lang, array(
 		'13'	=> 'UTC + 13 часов',
 		'14'	=> 'UTC + 14 часов',
 		'dst'	=> '[ Летнее время ]',
-	),
+	],
 
-	'tz_zones'	=> array(
+	'tz_zones'	=> [
 		'-12'	=> '[UTC − 12] Меридиан смены дат (запад)',
 		'-11'	=> '[UTC − 11] о. Мидуэй, Самоа',
 		'-10'	=> '[UTC − 10] Гавайи, о. Кука',
@@ -826,10 +826,10 @@ $lang = array_merge($lang, array(
 		'12.75'	=> '[UTC + 12:45] о. Чатем',
 		'13'	=> '[UTC + 13] Нукуалофа',
 		'14'	=> '[UTC + 14] о. Лайн',
-	),
+	],
 
 	// The value is only an example and will get replaced by the current time on view
-	'dateformats'	=> array(
+	'dateformats'	=> [
 		'|d.m.Y|{, H:i}'		=> 'Сегодня, 09:15 / 01.01.2012, 09:15',
 		'|j M Y|{, G:i}'		=> 'Сегодня, 9:15 / 1 янв 2012, 9:15',
 		'|D, j M Y|{, G:i}'		=> 'Сегодня, 9:15 / Вт, 1 янв 2012, 9:15',
@@ -837,18 +837,18 @@ $lang = array_merge($lang, array(
 		'{H:i }d.m.Y'			=> '09:15 01.01.2012',
 		'd.m.Y{, H:i}'			=> '01.01.2012, 09:15',
 		'Y-m-d{ H:i}'			=> '2012-01-01 09:15',
-	),
+	],
 
 	// The default dateformat which will be used on new installs in this language
 	// Translators should change this if a the usual date format is different
 	'default_dateformat'		=> '|d.m.Y|{, H:i}', // Сегодня, 10:06 / 24.04.2012, 10:06
 
 	// User topics count
-	'NUM_TOPICS_IN_QUEUE'		=> array(
+	'NUM_TOPICS_IN_QUEUE'		=> [
 		0			=> 'Нет тем в очереди',	// 0
 		1			=> '1 тема в очереди',	// 1
 		2			=> '%d тем в очереди',	// 2+
-	),
+	],
 	'TOPIC_DAY'					=> '%.2f тем в день',
 	'TOPIC_PCT'					=> '%.2f%% всех тем',
 	'TOTAL_TOPICS'				=> 'Всего тем',
@@ -858,12 +858,12 @@ $lang = array_merge($lang, array(
 	'UPD_MERGED'				=> 'Добавлено %s:',
 
 	// Time delta
-	'D_SECONDS'					=> array('секунду', 'секунды', 'секунд'),
-	'D_MINUTES'					=> array('минуту', 'минуты', 'минут'),
-	'D_HOURS'					=> array('час', 'часа', 'часов'),
-	'D_MDAY'					=> array('день', 'дня', 'дней'),
-	'D_MON'						=> array('месяц', 'месяца', 'месяцев'),
-	'D_YEAR'					=> array('год', 'года', 'лет'),
+	'D_SECONDS'					=> ['секунду', 'секунды', 'секунд'],
+	'D_MINUTES'					=> ['минуту', 'минуты', 'минут'],
+	'D_HOURS'					=> ['час', 'часа', 'часов'],
+	'D_MDAY'					=> ['день', 'дня', 'дней'],
+	'D_MON'						=> ['месяц', 'месяца', 'месяцев'],
+	'D_YEAR'					=> ['год', 'года', 'лет'],
 
 	// Genders
 	'GENDER'					=> 'Пол',
@@ -920,4 +920,4 @@ $lang = array_merge($lang, array(
 	'USER_WITH_US'			=> 'С нами',
 	'SPOILER'				=> 'Спойлер',
 
-));
+]);

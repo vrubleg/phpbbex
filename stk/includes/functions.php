@@ -21,7 +21,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 {
 	global $user;
 
-	$tpl = array();
+	$tpl = [];
 
 	// Give the option to not do a request_var here and never do it for password fields.
 	if ((!isset($vars['no_request_var']) || !$vars['no_request_var']) && $tpl_type[0] != 'password')
@@ -99,7 +99,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 
 			if (isset($vars['params']))
 			{
-				$args = array();
+				$args = [];
 				foreach ($vars['params'] as $value)
 				{
 					switch ($value)
@@ -118,7 +118,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 			}
 			else
 			{
-				$args = array($default, $name);
+				$args = [$default, $name];
 			}
 
 			$return = call_user_func_array($call, $args);
@@ -183,7 +183,7 @@ function user_lang()
 
 	if (method_exists($user, 'lang'))
 	{
-		return call_user_func_array(array($user, 'lang'), $args);
+		return call_user_func_array([$user, 'lang'], $args);
 	}
 	else
 	{
@@ -261,16 +261,16 @@ function stk_add_lang($lang_file, $fore_lang = false)
 	global $config, $user;
 
 	// Internally cache some data
-	static $lang_data	= array();
-	static $lang_dirs	= array();
+	static $lang_data	= [];
+	static $lang_dirs	= [];
 
 	// Store current phpBB data
 	if (empty($lang_data))
 	{
-		$lang_data = array(
+		$lang_data = [
 			'lang_path'	=> $user->lang_path,
 			'lang_name'	=> $user->lang_name,
-		);
+		];
 	}
 
 	// Empty the lang_name
@@ -279,11 +279,11 @@ function stk_add_lang($lang_file, $fore_lang = false)
 	// Find out what languages we could use
 	if (empty($lang_dirs))
 	{
-		$lang_dirs = array(
+		$lang_dirs = [
 			$user->data['user_lang'],			// User default
 			basename($config['default_lang']),	// Board default
 			'en',								// System default
-		);
+		];
 
 		// Only unique dirs
 		$lang_dirs = array_unique($lang_dirs);
@@ -345,7 +345,7 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 		// Generate the passwd file
 		case 'genpasswdfile' :
 			// Create a 25 character alphanumeric password (easier to select with a browser and won't cause confusion like it could if it ends in "." or something).
-			$_pass_string = substr(preg_replace(array('#([^a-zA-Z0-9])#', '#0#', '#O#'), array('', 'Z', 'Y'), phpbb_hash(unique_id())), 2, 25);
+			$_pass_string = substr(preg_replace(['#([^a-zA-Z0-9])#', '#0#', '#O#'], ['', 'Z', 'Y'], phpbb_hash(unique_id())), 2, 25);
 
 			// The password is usable for 6 hours from now
 			$_pass_exprire = time() + 21600;
@@ -353,16 +353,16 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 			// Print a message and tell the user what to do and where to download this page
 			page_header($user->lang['GEN_PASS_FILE'], false);
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'PASS_GENERATED'			=> sprintf($user->lang['PASS_GENERATED'], $_pass_string, $user->format_date($_pass_exprire, false, true)),
 				'PASS_GENERATED_REDIRECT'	=> sprintf($user->lang['PASS_GENERATED_REDIRECT'], append_sid(STK_ROOT_PATH . 'index.php')),
-				'S_HIDDEN_FIELDS'			=> build_hidden_fields(array('pass_string' => $_pass_string, 'pass_exp' => $_pass_exprire)),
-				'U_ACTION'					=> append_sid(STK_INDEX, array('action' => 'downpasswdfile')),
-			));
+				'S_HIDDEN_FIELDS'			=> build_hidden_fields(['pass_string' => $_pass_string, 'pass_exp' => $_pass_exprire]),
+				'U_ACTION'					=> append_sid(STK_INDEX, ['action' => 'downpasswdfile']),
+			]);
 
-			$template->set_filenames(array(
+			$template->set_filenames([
 				'body'	=> 'gen_password.html',
-			));
+			]);
 			page_footer(false);
 		break;
 
@@ -501,7 +501,7 @@ function stk_array_walk_keys(&$array, $callback)
 		return;
 	}
 
-	$tmp_array = array();
+	$tmp_array = [];
 	foreach ($array as $key => $null)
 	{
 		$walked_key = call_user_func($callback, $key);

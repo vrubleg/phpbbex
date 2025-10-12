@@ -50,7 +50,7 @@ class sanitise_anonymous_user
 
 		// Check the groups
 		$_in_guests = false;
-		$_other		= array();
+		$_other		= [];
 		$this->_anon_groups($_in_guests, $_other);
 
 		if ($_in_guests === false || !empty($_other))
@@ -81,7 +81,7 @@ class sanitise_anonymous_user
 		$group_colour	= $db->sql_fetchfield('group_colour', 0, $result);
 		$db->sql_freeresult($result);
 
-		$clean_data = array(
+		$clean_data = [
 			'user_id'					=> ANONYMOUS,
 			'user_type'					=> USER_IGNORE,
 			'group_id'					=> $group_id,
@@ -118,7 +118,7 @@ class sanitise_anonymous_user
 			'user_actkey'				=> '',
 			'user_newpasswd'			=> '',
 			'user_allow_massemail'		=> 0,
-		);
+		];
 
 		// Return message
 		$msg = '';
@@ -139,7 +139,7 @@ class sanitise_anonymous_user
 			case 'groups' :
 				// Re-get all the group data
 				$_in_guests = false;
-				$_other		= array();
+				$_other		= [];
 				$guests_gr	= $this->_anon_groups($_in_guests, $_other);
 
 				if (!function_exists('group_user_del'))
@@ -202,7 +202,7 @@ class sanitise_anonymous_user
 
 		if (empty($groups))
 		{
-			$groups = array();
+			$groups = [];
 		}
 
 		// Get the group id of GUESTS

@@ -21,8 +21,8 @@ function mcp_front_view($id, $mode, $action)
 	if ($module->loaded('queue'))
 	{
 		$forum_list = array_values(array_intersect(get_forum_list('f_read'), get_forum_list('m_approve')));
-		$post_list = array();
-		$forum_names = array();
+		$post_list = [];
+		$forum_names = [];
 
 		$forum_id = request_var('f', 0);
 
@@ -90,7 +90,7 @@ function mcp_front_view($id, $mode, $action)
 						$row['forum_id'] = $global_id;
 					}
 
-					$template->assign_block_vars('unapproved', array(
+					$template->assign_block_vars('unapproved', [
 						'U_POST_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $row['forum_id'] . '&amp;p=' . $row['post_id']),
 						'U_MCP_FORUM'		=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=forum_view&amp;f=' . $row['forum_id']) : '',
 						'U_MCP_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=topic_view&amp;f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id']),
@@ -106,33 +106,33 @@ function mcp_front_view($id, $mode, $action)
 						'POST_ID'		=> $row['post_id'],
 						'TOPIC_TITLE'	=> $row['topic_title'],
 						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
-						'POST_TIME'		=> $user->format_date($row['post_time']))
+						'POST_TIME'		=> $user->format_date($row['post_time'])]
 					);
 				}
 				$db->sql_freeresult($result);
 			}
 
-			$s_hidden_fields = build_hidden_fields(array(
+			$s_hidden_fields = build_hidden_fields([
 				'redirect'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main' . (($forum_id) ? '&amp;f=' . $forum_id : ''))
-			));
+			]);
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
 				'S_MCP_QUEUE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue"),
-			));
+			]);
 
 			if ($total == 0)
 			{
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'L_UNAPPROVED_TOTAL'		=> $user->lang['UNAPPROVED_POSTS_ZERO_TOTAL'],
-					'S_HAS_UNAPPROVED_POSTS'	=> false)
+					'S_HAS_UNAPPROVED_POSTS'	=> false]
 				);
 			}
 			else
 			{
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'L_UNAPPROVED_TOTAL'		=> ($total == 1) ? $user->lang['UNAPPROVED_POST_TOTAL'] : sprintf($user->lang['UNAPPROVED_POSTS_TOTAL'], $total),
-					'S_HAS_UNAPPROVED_POSTS'	=> true)
+					'S_HAS_UNAPPROVED_POSTS'	=> true]
 				);
 			}
 		}
@@ -161,23 +161,23 @@ function mcp_front_view($id, $mode, $action)
 			{
 				$global_id = $forum_list[0];
 
-				$sql = $db->sql_build_query('SELECT', array(
+				$sql = $db->sql_build_query('SELECT', [
 					'SELECT'	=> 'r.report_time, p.post_id, p.post_subject, p.post_time, u.username, u.username_clean, u.user_colour, u.user_id, u2.username as author_name, u2.username_clean as author_name_clean, u2.user_colour as author_colour, u2.user_id as author_id, t.topic_id, t.topic_title, f.forum_id, f.forum_name',
 
-					'FROM'		=> array(
+					'FROM'		=> [
 						REPORTS_TABLE			=> 'r',
 						REPORTS_REASONS_TABLE	=> 'rr',
 						TOPICS_TABLE			=> 't',
-						USERS_TABLE				=> array('u', 'u2'),
+						USERS_TABLE				=> ['u', 'u2'],
 						POSTS_TABLE				=> 'p'
-					),
+					],
 
-					'LEFT_JOIN'	=> array(
-						array(
-							'FROM'	=> array(FORUMS_TABLE => 'f'),
+					'LEFT_JOIN'	=> [
+						[
+							'FROM'	=> [FORUMS_TABLE => 'f'],
 							'ON'	=> 'f.forum_id = p.forum_id'
-						)
-					),
+						]
+					],
 
 					'WHERE'		=> 'r.post_id = p.post_id
 						AND r.pm_id = 0
@@ -189,7 +189,7 @@ function mcp_front_view($id, $mode, $action)
 						AND p.forum_id IN (0, ' . implode(', ', $forum_list) . ')',
 
 					'ORDER_BY'	=> 'p.post_time DESC'
-				));
+				]);
 				$result = $db->sql_query_limit($sql, 5);
 
 				while ($row = $db->sql_fetchrow($result))
@@ -200,7 +200,7 @@ function mcp_front_view($id, $mode, $action)
 						$row['forum_id'] = $global_id;
 					}
 
-					$template->assign_block_vars('report', array(
+					$template->assign_block_vars('report', [
 						'U_POST_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . '&amp;p=' . $row['post_id'] . "&amp;i=reports&amp;mode=report_details"),
 						'U_MCP_FORUM'		=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . "&amp;i=$id&amp;mode=forum_view") : '',
 						'U_MCP_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id'] . "&amp;i=$id&amp;mode=topic_view"),
@@ -222,22 +222,22 @@ function mcp_front_view($id, $mode, $action)
 						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
 						'REPORT_TIME'	=> $user->format_date($row['report_time']),
 						'POST_TIME'		=> $user->format_date($row['post_time']),
-					));
+					]);
 				}
 			}
 
 			if ($total == 0)
 			{
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'L_REPORTS_TOTAL'	=>	$user->lang['REPORTS_ZERO_TOTAL'],
-					'S_HAS_REPORTS'		=>	false)
+					'S_HAS_REPORTS'		=>	false]
 				);
 			}
 			else
 			{
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'L_REPORTS_TOTAL'	=> ($total == 1) ? $user->lang['REPORT_TOTAL'] : sprintf($user->lang['REPORTS_TOTAL'], $total),
-					'S_HAS_REPORTS'		=> true)
+					'S_HAS_REPORTS'		=> true]
 				);
 			}
 		}
@@ -247,7 +247,7 @@ function mcp_front_view($id, $mode, $action)
 	if ($module->loaded('pm_reports') && $auth->acl_getf_global('m_report'))
 	{
 		$template->assign_var('S_SHOW_PM_REPORTS', true);
-		$user->add_lang(array('ucp'));
+		$user->add_lang(['ucp']);
 
 		$sql = 'SELECT COUNT(r.report_id) AS total
 			FROM ' . REPORTS_TABLE . ' r, ' . PRIVMSGS_TABLE . ' p
@@ -262,15 +262,15 @@ function mcp_front_view($id, $mode, $action)
 		{
 			require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
 
-			$sql = $db->sql_build_query('SELECT', array(
+			$sql = $db->sql_build_query('SELECT', [
 				'SELECT'	=> 'r.report_id, r.report_time, p.msg_id, p.message_subject, p.message_time, p.to_address, p.bcc_address, u.username, u.username_clean, u.user_colour, u.user_id, u2.username as author_name, u2.username_clean as author_name_clean, u2.user_colour as author_colour, u2.user_id as author_id',
 
-				'FROM'		=> array(
+				'FROM'		=> [
 					REPORTS_TABLE			=> 'r',
 					REPORTS_REASONS_TABLE	=> 'rr',
-					USERS_TABLE				=> array('u', 'u2'),
+					USERS_TABLE				=> ['u', 'u2'],
 					PRIVMSGS_TABLE				=> 'p'
-				),
+				],
 
 				'WHERE'		=> 'r.pm_id = p.msg_id
 					AND r.post_id = 0
@@ -280,10 +280,10 @@ function mcp_front_view($id, $mode, $action)
 					AND p.author_id = u2.user_id',
 
 				'ORDER_BY'	=> 'p.message_time DESC'
-			));
+			]);
 			$result = $db->sql_query_limit($sql, 5);
 
-			$pm_by_id = $pm_list = array();
+			$pm_by_id = $pm_list = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$pm_by_id[(int) $row['msg_id']] = $row;
@@ -296,7 +296,7 @@ function mcp_front_view($id, $mode, $action)
 			{
 				$row = $pm_by_id[$message_id];
 
-				$template->assign_block_vars('pm_report', array(
+				$template->assign_block_vars('pm_report', [
 					'U_PM_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'r=' . $row['report_id'] . "&amp;i=pm_reports&amp;mode=pm_report_details"),
 
 					'REPORTER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
@@ -313,22 +313,22 @@ function mcp_front_view($id, $mode, $action)
 					'REPORT_TIME'		=> $user->format_date($row['report_time']),
 					'PM_TIME'			=> $user->format_date($row['message_time']),
 					'RECIPIENTS'		=> implode(', ', $address_list[$row['msg_id']]),
-				));
+				]);
 			}
 		}
 
 		if ($total == 0)
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'L_PM_REPORTS_TOTAL'	=>	$user->lang['PM_REPORTS_ZERO_TOTAL'],
-				'S_HAS_PM_REPORTS'		=>	false)
+				'S_HAS_PM_REPORTS'		=>	false]
 			);
 		}
 		else
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'L_PM_REPORTS_TOTAL'	=> ($total == 1) ? $user->lang['PM_REPORT_TOTAL'] : sprintf($user->lang['PM_REPORTS_TOTAL'], $total),
-				'S_HAS_PM_REPORTS'		=> true)
+				'S_HAS_PM_REPORTS'		=> true]
 			);
 		}
 	}
@@ -344,25 +344,25 @@ function mcp_front_view($id, $mode, $action)
 			$forum_list[] = 0;
 
 			$log_count = false;
-			$log = array();
+			$log = [];
 			view_log('mod', $log, $log_count, 5, 0, $forum_list);
 
 			foreach ($log as $row)
 			{
-				$template->assign_block_vars('log', array(
+				$template->assign_block_vars('log', [
 					'USERNAME'		=> $row['username_full'],
 					'IP'			=> $row['ip'],
 					'TIME'			=> $user->format_date($row['time']),
 					'ACTION'		=> $row['action'],
 					'U_VIEW_TOPIC'	=> (!empty($row['viewtopic'])) ? $row['viewtopic'] : '',
-					'U_VIEWLOGS'	=> (!empty($row['viewlogs'])) ? $row['viewlogs'] : '')
+					'U_VIEWLOGS'	=> (!empty($row['viewlogs'])) ? $row['viewlogs'] : '']
 				);
 			}
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_SHOW_LOGS'	=> (!empty($forum_list)) ? true : false,
-			'S_HAS_LOGS'	=> (!empty($log)) ? true : false)
+			'S_HAS_LOGS'	=> (!empty($log)) ? true : false]
 		);
 	}
 

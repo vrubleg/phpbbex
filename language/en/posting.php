@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADD_ATTACHMENT'			=> 'Upload attachment',
 	'ADD_ATTACHMENT_EXPLAIN'	=> 'If you wish to attach one or more files enter the details below.',
 	'ADD_FILE'					=> 'Add the file',
@@ -289,4 +289,4 @@ $lang = array_merge($lang, array(
 	'SMILE_UBER_GEEK'			=> 'Uber Geek',
 	'SMILE_VERY_HAPPY'			=> 'Very Happy',
 
-));
+]);

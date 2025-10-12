@@ -57,7 +57,7 @@ class acp_jabber
 				trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
-			$error = array();
+			$error = [];
 
 			$message = $user->lang['JAB_SETTINGS_CHANGED'];
 			$log = 'JAB_SETTINGS_CHANGED';
@@ -85,9 +85,9 @@ class acp_jabber
 				// This feature is disabled.
 				// We update the user table to be sure all users that have IM as notify type are set to both as notify type
 				// We set this to both because users still have their jabber address entered and may want to receive jabber notifications again once it is re-enabled.
-				$sql_ary = array(
+				$sql_ary = [
 					'user_notify_type'		=> NOTIFY_BOTH,
-				);
+				];
 
 				$sql = 'UPDATE ' . USERS_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -107,7 +107,7 @@ class acp_jabber
 			trigger_error($message . adm_back_link($this->u_action));
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_ACTION'				=> $this->u_action,
 			'JAB_ENABLE'			=> $jab_enable,
 			'L_JAB_SERVER_EXPLAIN'	=> sprintf($user->lang['JAB_SERVER_EXPLAIN'], '<a href="http://www.jabber.org/">', '</a>'),
@@ -119,6 +119,6 @@ class acp_jabber
 			'JAB_USE_SSL'			=> $jab_use_ssl,
 			'S_CAN_USE_SSL'			=> jabber::can_use_ssl(),
 			'S_GTALK_NOTE'			=> (!@function_exists('dns_get_record')) ? true : false,
-		));
+		]);
 	}
 }

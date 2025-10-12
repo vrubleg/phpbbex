@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'AUTHOR'					=> 'Author',
 	'FORUM_NAME'				=> 'Forum Name',
 	'NEW_TOPIC_ID'				=> 'New Topic ID',
@@ -43,4 +43,4 @@ $lang = array_merge($lang, array(
 	'POSTS_DELETED'				=> '%d posts deleted',
 	'POSTS_REASSIGNED'			=> '%d posts re-assigned',
 	'TOPICS_DELETED'			=> '%d topics deleted',
-));
+]);

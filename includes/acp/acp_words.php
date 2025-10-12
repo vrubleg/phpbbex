@@ -31,7 +31,7 @@ class acp_words
 		$action = (isset($_POST['add'])) ? 'add' : ((isset($_POST['save'])) ? 'save' : $action);
 
 		$s_hidden_fields = '';
-		$word_info = array();
+		$word_info = [];
 
 		$this->tpl_name = 'acp_words';
 		$this->page_title = 'ACP_WORDS';
@@ -61,13 +61,13 @@ class acp_words
 
 			case 'add':
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_EDIT_WORD'		=> true,
 					'U_ACTION'			=> $this->u_action,
 					'U_BACK'			=> $this->u_action,
 					'WORD'				=> (isset($word_info['word'])) ? $word_info['word'] : '',
 					'REPLACEMENT'		=> (isset($word_info['replacement'])) ? $word_info['replacement'] : '',
-					'S_HIDDEN_FIELDS'	=> $s_hidden_fields)
+					'S_HIDDEN_FIELDS'	=> $s_hidden_fields]
 				);
 
 				return;
@@ -93,10 +93,10 @@ class acp_words
 				// Replace multiple consecutive asterisks with single one as those are not needed
 				$word = preg_replace('#\*{2,}#', '*', $word);
 
-				$sql_ary = array(
+				$sql_ary = [
 					'word'			=> $word,
 					'replacement'	=> $replacement
-				);
+				];
 
 				if ($word_id)
 				{
@@ -147,21 +147,21 @@ class acp_words
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'id'		=> $word_id,
 						'action'	=> 'delete',
-					)));
+					]));
 				}
 
 			break;
 		}
 
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_ACTION'			=> $this->u_action,
-			'S_HIDDEN_FIELDS'	=> $s_hidden_fields)
+			'S_HIDDEN_FIELDS'	=> $s_hidden_fields]
 		);
 
 		$sql = 'SELECT *
@@ -171,11 +171,11 @@ class acp_words
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$template->assign_block_vars('words', array(
+			$template->assign_block_vars('words', [
 				'WORD'			=> $row['word'],
 				'REPLACEMENT'	=> $row['replacement'],
 				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;id=' . $row['word_id'],
-				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;id=' . $row['word_id'])
+				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;id=' . $row['word_id']]
 			);
 		}
 		$db->sql_freeresult($result);

@@ -12,14 +12,14 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'RESET_STYLES'			=> 'Reset Styles',
 	'RESET_STYLES_EXPLAIN'	=> 'This tool allows you to change a board’s default style.',
 	'RESET_STYLE_COMPLETE'	=> 'The default style has been changed successfully.',
 
 	'STYLE'					=> 'Style',
 	'STYLE_EXPLAIN'			=> 'Select the style you want set as the default.',
-));
+]);

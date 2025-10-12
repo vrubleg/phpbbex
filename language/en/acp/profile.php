@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Custom profile fields
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADDED_PROFILE_FIELD'	=> 'Successfully added custom profile field.',
 	'ALPHA_ONLY'			=> 'Alphanumeric only',
 	'ALPHA_SPACERS'			=> 'Alphanumeric and spacers',
@@ -133,4 +133,4 @@ $lang = array_merge($lang, array(
 	'USER_FIELD_NAME'	=> 'Field name/title presented to the user',
 
 	'VISIBILITY_OPTION'				=> 'Visibility options',
-));
+]);

@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'BACK_TOOL'							=> 'Back to last tool',
 	'BOARD_FOUNDER_ONLY'					=> 'Only Board Founders may access the Support Toolkit.',
 
@@ -73,4 +73,4 @@ $lang = array_merge($lang, array(
 	'TOOL_NOT_AVAILABLE'					=> 'The requested tool is not available.',
 
 	'USING_STK_LOGIN'					=> 'You are logged in using the internal STK authentication method. It is advised to use this method <strong>only</strong> when you are unable to login to phpBB.<br />To disable this authentication method click <a href="%1$s">here</a>.',
-));
+]);

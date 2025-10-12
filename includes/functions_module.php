@@ -28,10 +28,10 @@ class p_master
 	var $active_module = false;
 	var $active_module_row_id = false;
 	var $acl_forum_id = false;
-	var $module_ary = array();
+	var $module_ary = [];
 
-	var $module_cache = array();
-	var $loaded_cache = array();
+	var $module_cache = [];
+	var $loaded_cache = [];
 
 	/**
 	* Constuctor
@@ -81,7 +81,7 @@ class p_master
 		global $config;
 
 		// Sanitise for future path use, it's escaped as appropriate for queries
-		$this->p_class = str_replace(array('.', '/', '\\'), '', basename($p_class));
+		$this->p_class = str_replace(['.', '/', '\\'], '', basename($p_class));
 
 		// Get cached modules
 		if (($this->module_cache = $cache->get('_modules_' . $this->p_class)) === false)
@@ -93,14 +93,14 @@ class p_master
 				ORDER BY left_id ASC";
 			$result = $db->sql_query($sql);
 
-			$rows = array();
+			$rows = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$rows[$row['module_id']] = $row;
 			}
 			$db->sql_freeresult($result);
 
-			$this->module_cache = array();
+			$this->module_cache = [];
 			foreach ($rows as $module_id => $row)
 			{
 				$this->module_cache['modules'][] = $row;
@@ -113,7 +113,7 @@ class p_master
 
 		if (empty($this->module_cache))
 		{
-			$this->module_cache = array('modules' => array(), 'parents' => array());
+			$this->module_cache = ['modules' => [], 'parents' => []];
 		}
 
 		// We "could" build a true tree with this function - maybe mod authors want to use this...
@@ -169,7 +169,7 @@ class p_master
 
 		// Now build the module array, but exclude completely empty categories...
 		$right_id = false;
-		$names = array();
+		$names = [];
 
 		foreach ($this->module_cache['modules'] as $key => $row)
 		{
@@ -228,7 +228,7 @@ class p_master
 
 			$names[$row['module_basename'] . '_' . $row['module_mode']][] = true;
 
-			$module_row = array(
+			$module_row = [
 				'depth'		=> $depth,
 
 				'id'		=> (int) $row['module_id'],
@@ -248,7 +248,7 @@ class p_master
 
 				'left'		=> $row['left_id'],
 				'right'		=> $row['right_id'],
-			);
+			];
 
 			if (function_exists($custom_func))
 			{
@@ -274,7 +274,7 @@ class p_master
 	{
 		if (empty($this->loaded_cache))
 		{
-			$this->loaded_cache = array();
+			$this->loaded_cache = [];
 
 			foreach ($this->module_ary as $row)
 			{
@@ -285,7 +285,7 @@ class p_master
 
 				if (!isset($this->loaded_cache[$row['name']]))
 				{
-					$this->loaded_cache[$row['name']] = array();
+					$this->loaded_cache[$row['name']] = [];
 				}
 
 				if (!$row['mode'])
@@ -358,7 +358,7 @@ class p_master
 		$is_auth = false;
 		if (!empty($module_auth))
 		{
-			eval('$is_auth = (int) (' . preg_replace(array('#acl_([a-z0-9_]+)(,\$id)?#', '#\$id#', '#aclf_([a-z0-9_]+)#', '#cfg_([a-z0-9_]+)#', '#request_([a-zA-Z0-9_]+)#'), array('(int) $auth->acl_get(\'\\1\'\\2)', '(int) $forum_id', '(int) $auth->acl_getf_global(\'\\1\')', '(int) $config[\'\\1\']', '!empty($_REQUEST[\'\\1\'])'), $module_auth) . ');');
+			eval('$is_auth = (int) (' . preg_replace(['#acl_([a-z0-9_]+)(,\$id)?#', '#\$id#', '#aclf_([a-z0-9_]+)#', '#cfg_([a-z0-9_]+)#', '#request_([a-zA-Z0-9_]+)#'], ['(int) $auth->acl_get(\'\\1\'\\2)', '(int) $forum_id', '(int) $auth->acl_getf_global(\'\\1\')', '(int) $config[\'\\1\']', '!empty($_REQUEST[\'\\1\'])'], $module_auth) . ');');
 		}
 
 		return $is_auth;
@@ -568,7 +568,7 @@ class p_master
 	{
 		global $db;
 
-		$parents = array();
+		$parents = [];
 
 		if ($parent_id > 0)
 		{
@@ -594,7 +594,7 @@ class p_master
 	*/
 	function get_branch($left_id, $right_id, $remaining)
 	{
-		$branch = array();
+		$branch = [];
 
 		foreach ($remaining as $key => $row)
 		{
@@ -615,7 +615,7 @@ class p_master
 	*/
 	function build_tree(&$modules, &$parents)
 	{
-		$tree = array();
+		$tree = [];
 
 		foreach ($modules as $row)
 		{
@@ -640,7 +640,7 @@ class p_master
 			$branch[$row['module_id']] = $row;
 			if (!isset($branch[$row['module_id']]['child']))
 			{
-				$branch[$row['module_id']]['child'] = array();
+				$branch[$row['module_id']]['child'] = [];
 			}
 		}
 
@@ -747,20 +747,20 @@ class p_master
 			{
 				$use_tabular_offset = (!$depth) ? 't_block1' : $tabular_offset;
 
-				$tpl_ary = array(
+				$tpl_ary = [
 					'L_TITLE'		=> $item_ary['lang'],
 					'S_SELECTED'	=> (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id) ? true : false,
 					'U_TITLE'		=> $u_title
-				);
+				];
 
 				$template->assign_block_vars($use_tabular_offset, array_merge($tpl_ary, array_change_key_case($item_ary, CASE_UPPER)));
 			}
 
-			$tpl_ary = array(
+			$tpl_ary = [
 				'L_TITLE'		=> $item_ary['lang'],
 				'S_SELECTED'	=> (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id) ? true : false,
 				'U_TITLE'		=> $u_title
-			);
+			];
 
 			$template->assign_block_vars($linear_offset, array_merge($tpl_ary, array_change_key_case($item_ary, CASE_UPPER)));
 
@@ -822,8 +822,8 @@ class p_master
 			page_header($page_title, $display_online_list);
 		}
 
-		$template->set_filenames(array(
-			'body' => $this->get_tpl_name())
+		$template->set_filenames([
+			'body' => $this->get_tpl_name()]
 		);
 
 		if (defined('IN_ADMIN') && isset($user->data['session_admin']) && $user->data['session_admin'])
@@ -861,7 +861,7 @@ class p_master
 
 		if (is_dir($full_path))
 		{
-			$add_files = array();
+			$add_files = [];
 
 			$dir = @opendir($full_path);
 

@@ -61,7 +61,7 @@ class update_email_hashes
 			$db->sql_query($sql);
 		}
 
-		meta_refresh(0, append_sid(STK_INDEX, array('c' => 'support', 't' => 'update_email_hashes', 'submit' => true, 'step' => ++$step)));
+		meta_refresh(0, append_sid(STK_INDEX, ['c' => 'support', 't' => 'update_email_hashes', 'submit' => true, 'step' => ++$step]));
 		$template->assign_var('U_BACK_TOOL', false);
 
 		trigger_error('UPDATE_EMAIL_HASHES_NOT_COMPLETE');

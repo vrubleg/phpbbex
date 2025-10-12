@@ -49,7 +49,7 @@ if ((!$attachment['in_message'] && !$config['allow_attachments']) || ($attachmen
 	trigger_error('ATTACHMENT_FUNCTIONALITY_DISABLED');
 }
 
-$row = array();
+$row = [];
 
 if ($attachment['is_orphan'])
 {
@@ -129,7 +129,7 @@ else
 	}
 
 	// disallowed?
-	$extensions = array();
+	$extensions = [];
 	if (!extension_allowed($row ? $row['forum_id'] : false, $attachment['extension'], $extensions))
 	{
 		http_response_code(403);
@@ -351,7 +351,7 @@ function download_allowed()
 	unset($url);
 
 	$allowed = ($config['secure_allow_deny']) ? false : true;
-	$iplist = array();
+	$iplist = [];
 
 	if (($ip_ary = @gethostbynamel($hostname)) !== false)
 	{

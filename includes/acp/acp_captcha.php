@@ -45,13 +45,13 @@ class acp_captcha
 		}
 		else
 		{
-			$config_vars = array(
-				'enable_confirm'		=> array('tpl' => 'REG_ENABLE', 'default' => false),
-				'enable_post_confirm'	=> array('tpl' => 'POST_ENABLE', 'default' => false),
-				'confirm_refresh'		=> array('tpl' => 'CONFIRM_REFRESH', 'default' => false),
-				'max_reg_attempts'		=> array('tpl' => 'REG_LIMIT', 'default' => 0),
-				'max_login_attempts'		=> array('tpl' => 'MAX_LOGIN_ATTEMPTS', 'default' => 0),
-			);
+			$config_vars = [
+				'enable_confirm'		=> ['tpl' => 'REG_ENABLE', 'default' => false],
+				'enable_post_confirm'	=> ['tpl' => 'POST_ENABLE', 'default' => false],
+				'confirm_refresh'		=> ['tpl' => 'CONFIRM_REFRESH', 'default' => false],
+				'max_reg_attempts'		=> ['tpl' => 'REG_LIMIT', 'default' => 0],
+				'max_login_attempts'		=> ['tpl' => 'MAX_LOGIN_ATTEMPTS', 'default' => 0],
+			];
 
 			$this->tpl_name = 'acp_captcha';
 			$this->page_title = 'ACP_VC_SETTINGS';
@@ -114,13 +114,13 @@ class acp_captcha
 					$template->assign_var($options['tpl'], (isset($_POST[$config_var])) ? request_var($config_var, $options['default']) : $config[$config_var]) ;
 				}
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'CAPTCHA_PREVIEW_TPL'	=> $demo_captcha->get_demo_template($id),
 					'S_CAPTCHA_HAS_CONFIG'	=> $demo_captcha->has_config(),
 					'CAPTCHA_SELECT'		=> $captcha_select,
 
 					'U_ACTION'				=> $this->u_action,
-				));
+				]);
 			}
 		}
 	}

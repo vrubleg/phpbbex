@@ -138,7 +138,7 @@ class phpbb_umil
 
 		// Set up the command.  This will get the arguments sent to the function.
 		$args = func_get_args();
-		$this->command = call_user_func_array(array($this, 'get_output_text'), $args);
+		$this->command = call_user_func_array([$this, 'get_output_text'], $args);
 
 		$this->result = (isset($user->lang['SUCCESS'])) ? $user->lang['SUCCESS'] : 'SUCCESS';
 		$this->db->sql_return_on_error(true);
@@ -157,7 +157,7 @@ class phpbb_umil
 
 		// Set up the result.  This will get the arguments sent to the function.
 		$args = func_get_args();
-		$result = call_user_func_array(array($this, 'get_output_text'), $args);
+		$result = call_user_func_array([$this, 'get_output_text'], $args);
 		$this->result = ($result) ? $result : $this->result;
 
 		if ($this->db->sql_error_triggered)
@@ -211,7 +211,7 @@ class phpbb_umil
 
 			if (sizeof($args))
 			{
-				$lang_args = array();
+				$lang_args = [];
 				foreach ($args as $arg)
 				{
 					$lang_args[] = (isset($user->lang[$arg])) ? $user->lang[$arg] : $arg;
@@ -289,7 +289,7 @@ class phpbb_umil
 					{
 						if (method_exists($this, $method))
 						{
-							call_user_func(array($this, $method), $params);
+							call_user_func([$this, $method], $params);
 						}
 					}
 				}
@@ -352,12 +352,12 @@ class phpbb_umil
 						}
 
 						// reverse function call
-						$method = str_replace(array('add', 'remove', 'temp'), array('temp', 'add', 'remove'), $method);
-						$method = str_replace(array('set', 'unset', 'temp'), array('temp', 'set', 'unset'), $method);
+						$method = str_replace(['add', 'remove', 'temp'], ['temp', 'add', 'remove'], $method);
+						$method = str_replace(['set', 'unset', 'temp'], ['temp', 'set', 'unset'], $method);
 
 						if (method_exists($this, $method))
 						{
-							call_user_func(array($this, $method), ((is_array($params) ? array_reverse($params) : $params)));
+							call_user_func([$this, $method], ((is_array($params) ? array_reverse($params) : $params)));
 						}
 					}
 				}
@@ -383,7 +383,7 @@ class phpbb_umil
 	{
 		if (!is_array($functions))
 		{
-			$functions = array($functions);
+			$functions = [$functions];
 		}
 
 		$return = '';
@@ -404,7 +404,7 @@ class phpbb_umil
 				{
 					if (is_array($returned['command']))
 					{
-						$this->command = call_user_func_array(array($this, 'get_output_text'), $returned['command']);
+						$this->command = call_user_func_array([$this, 'get_output_text'], $returned['command']);
 					}
 					else
 					{
@@ -444,11 +444,11 @@ class phpbb_umil
 			{
 				if (!is_array($param))
 				{
-					call_user_func(array($this, $function), $param);
+					call_user_func([$this, $function], $param);
 				}
 				else
 				{
-					call_user_func_array(array($this, $function), $param);
+					call_user_func_array([$this, $function], $param);
 				}
 			}
 			return true;
@@ -491,7 +491,7 @@ class phpbb_umil
 			case 'imageset' :
 				if ($style_id == 0)
 				{
-					$return = array();
+					$return = [];
 					$sql = 'SELECT imageset_id
 						FROM ' . STYLES_IMAGESET_TABLE;
 					$result = $this->db->sql_query($sql);
@@ -521,7 +521,7 @@ class phpbb_umil
 					$this->umil_start('IMAGESET_CACHE_PURGE', $imageset_row['imageset_name']);
 
 					// The following is from includes/acp/acp_styles.php (edited)
-					$sql_ary = array();
+					$sql_ary = [];
 
 					$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
 
@@ -553,14 +553,14 @@ class phpbb_umil
 						{
 							$image_name = substr($image_name, 4);
 
-							$sql_ary[] = array(
+							$sql_ary[] = [
 								'image_name'		=> (string) $image_name,
 								'image_filename'	=> (string) $image_filename,
 								'image_height'		=> (int) $image_height,
 								'image_width'		=> (int) $image_width,
 								'imageset_id'		=> (int) $style_id,
 								'image_lang'		=> '',
-							);
+							];
 						}
 					}
 
@@ -596,14 +596,14 @@ class phpbb_umil
 								if (strpos($image_name, 'img_') === 0 && $image_filename)
 								{
 									$image_name = substr($image_name, 4);
-									$sql_ary[] = array(
+									$sql_ary[] = [
 										'image_name'		=> (string) $image_name,
 										'image_filename'	=> (string) $image_filename,
 										'image_height'		=> (int) $image_height,
 										'image_width'		=> (int) $image_width,
 										'imageset_id'		=> (int) $style_id,
 										'image_lang'		=> (string) $row['lang_dir'],
-									);
+									];
 								}
 							}
 						}
@@ -622,7 +622,7 @@ class phpbb_umil
 			case 'template' :
 				if ($style_id == 0)
 				{
-					$return = array();
+					$return = [];
 					$sql = 'SELECT template_id
 						FROM ' . STYLES_TEMPLATE_TABLE;
 					$result = $this->db->sql_query($sql);
@@ -654,7 +654,7 @@ class phpbb_umil
 					// The following is from includes/acp/acp_styles.php
 					if ($template_row['template_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/"))
 					{
-						$filelist = array('' => array());
+						$filelist = ['' => []];
 
 						$sql = 'SELECT template_filename, template_mtime
 							FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
@@ -678,7 +678,7 @@ class phpbb_umil
 						}
 						$this->db->sql_freeresult($result);
 
-						$includes = array();
+						$includes = [];
 						foreach ($filelist as $pathfile => $file_ary)
 						{
 							foreach ($file_ary as $file)
@@ -712,13 +712,13 @@ class phpbb_umil
 
 								// We could do this using extended inserts ... but that could be one
 								// heck of a lot of data ...
-								$sql_ary = array(
+								$sql_ary = [
 									'template_id'			=> (int) $style_id,
 									'template_filename'		=> "$pathfile$file",
 									'template_included'		=> (isset($includes[$file])) ? implode(':', $includes[$file]) . ':' : '',
 									'template_mtime'		=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file"),
 									'template_data'			=> (string) file_get_contents(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file"),
-								);
+								];
 
 								$sql = 'UPDATE ' . STYLES_TEMPLATE_DATA_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . "
 									WHERE template_id = $style_id
@@ -740,7 +740,7 @@ class phpbb_umil
 			case 'theme' :
 				if ($style_id == 0)
 				{
-					$return = array();
+					$return = [];
 					$sql = 'SELECT theme_id
 						FROM ' . STYLES_THEME_TABLE;
 					$result = $this->db->sql_query($sql);
@@ -775,7 +775,7 @@ class phpbb_umil
 						$stylesheet = file_get_contents(PHPBB_ROOT_PATH . 'styles/' . $theme_row['theme_path'] . '/theme/stylesheet.css');
 
 						// Match CSS imports
-						$matches = array();
+						$matches = [];
 						preg_match_all('/@import url\(["\'](.*)["\']\);/i', $stylesheet, $matches);
 
 						if (sizeof($matches))
@@ -796,10 +796,10 @@ class phpbb_umil
 						$db_theme_data = str_replace('./', 'styles/' . $theme_row['theme_path'] . '/theme/', $stylesheet);
 
 						// Save CSS contents
-						$sql_ary = array(
+						$sql_ary = [
 							'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
 							'theme_data'	=> $db_theme_data,
-						);
+						];
 
 						$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . "
 							WHERE theme_id = $style_id";
@@ -1058,7 +1058,7 @@ class phpbb_umil
 	* 		Optionally you may not send 'modes' and it will insert all of the modules in that info file.
 	*  @param string|bool $include_path If you would like to use a custom include path, specify that here
 	*/
-	function module_add($class, $parent = 0, $data = array(), $include_path = false)
+	function module_add($class, $parent = 0, $data = [], $include_path = false)
 	{
 		global $cache, $user;
 
@@ -1081,15 +1081,15 @@ class phpbb_umil
 		// allow sending the name as a string in $data to create a category
 		if (!is_array($data))
 		{
-			$data = array('module_langname' => $data);
+			$data = ['module_langname' => $data];
 		}
 
 		if (!isset($data['module_langname']))
 		{
 			// The "automatic" way
 			$basename = (isset($data['module_basename'])) ? $data['module_basename'] : '';
-			$basename = str_replace(array('/', '\\'), '', $basename);
-			$class = str_replace(array('/', '\\'), '', $class);
+			$basename = str_replace(['/', '\\'], '', $basename);
+			$class = str_replace(['/', '\\'], '', $class);
 			$info_file = "$class/info/{$class}_$basename.php";
 
 			// The manual and automatic ways both failed...
@@ -1115,7 +1115,7 @@ class phpbb_umil
 			{
 				if (!isset($data['modes']) || in_array($mode, $data['modes']))
 				{
-					$new_module = array(
+					$new_module = [
 						'module_basename'	=> $basename,
 						'module_langname'	=> $module_info['title'],
 						'module_mode'		=> $mode,
@@ -1123,7 +1123,7 @@ class phpbb_umil
 						'module_display'	=> (isset($module_info['display'])) ? $module_info['display'] : true,
 						'before'			=> (isset($module_info['before'])) ? $module_info['before'] : false,
 						'after'				=> (isset($module_info['after'])) ? $module_info['after'] : false,
-					);
+					];
 
 					// Run the "manual" way with the data we've collected.
 					$result .= ((isset($data['spacer'])) ? $data['spacer'] : '<br />') . $this->module_add($class, $parent, $new_module);
@@ -1172,7 +1172,7 @@ class phpbb_umil
 		}
 		$acp_modules = new acp_modules();
 
-		$module_data = array(
+		$module_data = [
 			'module_enabled'	=> (isset($data['module_enabled'])) ? $data['module_enabled'] : 1,
 			'module_display'	=> (isset($data['module_display'])) ? $data['module_display'] : 1,
 			'module_basename'	=> (isset($data['module_basename'])) ? $data['module_basename'] : '',
@@ -1181,7 +1181,7 @@ class phpbb_umil
 			'module_langname'	=> (isset($data['module_langname'])) ? $data['module_langname'] : '',
 			'module_mode'		=> (isset($data['module_mode'])) ? $data['module_mode'] : '',
 			'module_auth'		=> (isset($data['module_auth'])) ? $data['module_auth'] : '',
-		);
+		];
 		$result = $acp_modules->update_module_data($module_data, true);
 
 		// update_module_data can either return a string or an empty array...
@@ -1280,8 +1280,8 @@ class phpbb_umil
 			}
 
 			// Automatic method
-			$basename = str_replace(array('/', '\\'), '', $module['module_basename']);
-			$class = str_replace(array('/', '\\'), '', $class);
+			$basename = str_replace(['/', '\\'], '', $module['module_basename']);
+			$class = str_replace(['/', '\\'], '', $class);
 			$info_file = "$class/info/{$class}_$basename.php";
 
 			if (!file_exists((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file))
@@ -1345,7 +1345,7 @@ class phpbb_umil
 				}
 			}
 
-			$module_ids = array();
+			$module_ids = [];
 			if (!is_numeric($module))
 			{
 				$module = $this->db->sql_escape($module);
@@ -1497,10 +1497,10 @@ class phpbb_umil
 		// We have to add a check to see if the !$global (if global, local, and if local, global) permission already exists.  If it does, acl_add_option currently has a bug which would break the ACL system, so we are having a work-around here.
 		if ($this->permission_exists($auth_option, !$global))
 		{
-			$sql_ary = array(
+			$sql_ary = [
 				'is_global'	=> 1,
 				'is_local'	=> 1,
-			);
+			];
 			$sql = 'UPDATE ' . ACL_OPTIONS_TABLE . '
 				SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE auth_option = \'' . $this->db->sql_escape($auth_option) . "'";
@@ -1510,11 +1510,11 @@ class phpbb_umil
 		{
 			if ($global)
 			{
-				$auth_admin->acl_add_option(array('global' => array($auth_option)));
+				$auth_admin->acl_add_option(['global' => [$auth_option]]);
 			}
 			else
 			{
-				$auth_admin->acl_add_option(array('local' => array($auth_option)));
+				$auth_admin->acl_add_option(['local' => [$auth_option]]);
 			}
 		}
 
@@ -1627,12 +1627,12 @@ class phpbb_umil
 		$role_order = $this->db->sql_fetchfield('max');
 		$role_order = (!$role_order) ? 1 : $role_order + 1;
 
-		$sql_ary = array(
+		$sql_ary = [
 			'role_name'			=> $role_name,
 			'role_description'	=> $role_description,
 			'role_type'			=> $role_type,
 			'role_order'		=> $role_order,
-		);
+		];
 
 		$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
 		$this->db->sql_query($sql);
@@ -1724,7 +1724,7 @@ class phpbb_umil
 	* @param string $type The type (role|group)
 	* @param bool $has_permission True if you want to give them permission, false if you want to deny them permission
 	*/
-	function permission_set($name, $auth_option = array(), $type = 'role', $has_permission = true)
+	function permission_set($name, $auth_option = [], $type = 'role', $has_permission = true)
 	{
 		global $auth;
 
@@ -1736,10 +1736,10 @@ class phpbb_umil
 
 		if (!is_array($auth_option))
 		{
-			$auth_option = array($auth_option);
+			$auth_option = [$auth_option];
 		}
 
-		$new_auth = array();
+		$new_auth = [];
 		$sql = 'SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE . '
 			WHERE ' . $this->db->sql_in_set('auth_option', $auth_option);
 		$result = $this->db->sql_query($sql);
@@ -1754,7 +1754,7 @@ class phpbb_umil
 			return false;
 		}
 
-		$current_auth = array();
+		$current_auth = [];
 
 		$type = (string) $type; // Prevent PHP bug.
 
@@ -1824,7 +1824,7 @@ class phpbb_umil
 			break;
 		}
 
-		$sql_ary = array();
+		$sql_ary = [];
 		switch ($type)
 		{
 			case 'role' :
@@ -1832,11 +1832,11 @@ class phpbb_umil
 				{
 					if (!isset($current_auth[$auth_option_id]))
 					{
-						$sql_ary[] = array(
+						$sql_ary[] = [
 							'role_id'			=> $role_id,
 							'auth_option_id'	=> $auth_option_id,
 							'auth_setting'		=> $has_permission,
-				        );
+				        ];
 					}
 				}
 
@@ -1848,11 +1848,11 @@ class phpbb_umil
 				{
 					if (!isset($current_auth[$auth_option_id]))
 					{
-						$sql_ary[] = array(
+						$sql_ary[] = [
 							'group_id'			=> $group_id,
 							'auth_option_id'	=> $auth_option_id,
 							'auth_setting'		=> $has_permission,
-				        );
+				        ];
 					}
 				}
 
@@ -1874,7 +1874,7 @@ class phpbb_umil
 	* @param string|array $auth_option The auth_option or array of auth_options you would like to set
 	* @param string $type The type (role|group)
 	*/
-	function permission_unset($name, $auth_option = array(), $type = 'role')
+	function permission_unset($name, $auth_option = [], $type = 'role')
 	{
 		global $auth;
 
@@ -1886,10 +1886,10 @@ class phpbb_umil
 
 		if (!is_array($auth_option))
 		{
-			$auth_option = array($auth_option);
+			$auth_option = [$auth_option];
 		}
 
-		$to_remove = array();
+		$to_remove = [];
 		$sql = 'SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE . '
 			WHERE ' . $this->db->sql_in_set('auth_option', $auth_option);
 		$result = $this->db->sql_query($sql);
@@ -2016,7 +2016,7 @@ class phpbb_umil
 	*
 	* This only supports input from the array format of db_tools or create_schema_files.
 	*/
-	function table_add($table_name, $table_data = array())
+	function table_add($table_name, $table_data = [])
 	{
 		global $user;
 
@@ -2127,7 +2127,7 @@ class phpbb_umil
 	*
 	* Add a new column to a table.
 	*/
-	function table_column_add($table_name, $column_name = '', $column_data = array())
+	function table_column_add($table_name, $column_name = '', $column_data = [])
 	{
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $table_name))
@@ -2163,7 +2163,7 @@ class phpbb_umil
 	*
 	* Alter/Update a column in a table.  You can not change a column name with this.
 	*/
-	function table_column_update($table_name, $column_name = '', $column_data = array())
+	function table_column_update($table_name, $column_name = '', $column_data = [])
 	{
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $table_name))
@@ -2236,7 +2236,7 @@ class phpbb_umil
 	*
 	* Add a new key/index to a table
 	*/
-	function table_index_add($table_name, $index_name = '', $column = array())
+	function table_index_add($table_name, $index_name = '', $column = [])
 	{
 		global $config;
 
@@ -2249,7 +2249,7 @@ class phpbb_umil
 		// Let them skip the column field and just use the index name in that case as the column as well
 		if (empty($column))
 		{
-			$column = array($index_name);
+			$column = [$index_name];
 		}
 
 		$this->get_table_name($table_name);
@@ -2263,7 +2263,7 @@ class phpbb_umil
 
 		if (!is_array($column))
 		{
-			$column = array($column);
+			$column = [$column];
 		}
 
 		$this->db_tools->sql_create_index($table_name, $index_name, $column);
@@ -2299,14 +2299,14 @@ class phpbb_umil
 	}
 
 	// Ignore, function was renamed to table_row_insert and keeping for backwards compatibility
-	function table_insert($table_name, $data = array()) { $this->table_row_insert($table_name, $data); }
+	function table_insert($table_name, $data = []) { $this->table_row_insert($table_name, $data); }
 
 	/**
 	* Table Insert
 	*
 	* Insert data into a table
 	*/
-	function table_row_insert($table_name, $data = array())
+	function table_row_insert($table_name, $data = [])
 	{
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $table_name))
@@ -2339,7 +2339,7 @@ class phpbb_umil
 	*
 	* $new_data is the new data it will be updated to (same format as you'd enter into $db->sql_build_array('UPDATE' ).
 	*/
-	function table_row_update($table_name, $data = array(), $new_data = array())
+	function table_row_update($table_name, $data = [], $new_data = [])
 	{
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $table_name))
@@ -2378,7 +2378,7 @@ class phpbb_umil
 	* array('user_id' => 123, 'user_name' => 'test user') would become:
 	* WHERE user_id = 123 AND user_name = 'test user'
 	*/
-	function table_row_remove($table_name, $data = array())
+	function table_row_remove($table_name, $data = [])
 	{
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $table_name))
@@ -2419,7 +2419,7 @@ class phpbb_umil
 	function create_table_sql($table_name, $table_data)
 	{
 		// A list of types being unsigned for better reference in some db's
-		$unsigned_types = array('UINT', 'UINT:', 'USINT', 'BOOL', 'TIMESTAMP');
+		$unsigned_types = ['UINT', 'UINT:', 'USINT', 'BOOL', 'TIMESTAMP'];
 
 		// Create Table statement
 		$generator = $textimage = false;
@@ -2427,7 +2427,7 @@ class phpbb_umil
 		$sql = "CREATE TABLE {$table_name} (\n";
 
 		// Table specific so we don't get overlap
-		$modded_array = array();
+		$modded_array = [];
 
 		// Write columns one by one...
 		foreach ($table_data['COLUMNS'] as $column_name => $column_data)
@@ -2514,7 +2514,7 @@ class phpbb_umil
 		{
 			if (!is_array($table_data['PRIMARY_KEY']))
 			{
-				$table_data['PRIMARY_KEY'] = array($table_data['PRIMARY_KEY']);
+				$table_data['PRIMARY_KEY'] = [$table_data['PRIMARY_KEY']];
 			}
 
 			$sql .= "\tPRIMARY KEY (" . implode(', ', $table_data['PRIMARY_KEY']) . "),\n";
@@ -2527,7 +2527,7 @@ class phpbb_umil
 			{
 				if (!is_array($key_data[1]))
 				{
-					$key_data[1] = array($key_data[1]);
+					$key_data[1] = [$key_data[1]];
 				}
 
 				$sql .= ($key_data[0] == 'INDEX') ? "\tKEY" : '';

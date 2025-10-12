@@ -1,7 +1,7 @@
 <?php
 class module_rating
 {
-	function __construct($config = array())
+	function __construct($config = [])
 	{
 		
 	}
@@ -37,7 +37,7 @@ class module_rating
 					AND post_id = ' . $post_id;
 			$result = $db->sql_query($sql);
 			$user_rate = $db->sql_fetchrow($result);
-			if (!$user_rate) $user_rate = array('rate' => 0, 'rate_time' => 0);
+			if (!$user_rate) $user_rate = ['rate' => 0, 'rate_time' => 0];
 
 			// Get post
 			$sql = 'SELECT p.*, t.topic_first_post_id
@@ -169,7 +169,7 @@ class module_rating
 				WHERE user_id = ' . $user_id;
 			$db->sql_query($sql);
 
-			$result = array(
+			$result = [
 				'status'				=> 'ok',
 				'user_can_minus'		=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true) && $auth->acl_get('u_canminus'),
 				'user_can_plus'			=> $config['rate_enabled'] && ($user_id != ANONYMOUS) && ($user_id != $post['poster_id']) && (empty($config['rate_only_topics']) || $post['topic_first_post_id'] == $post['post_id']) && ($rate_time > 0 ? $rate_time + $post['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true) && $auth->acl_get('u_canplus'),
@@ -185,13 +185,13 @@ class module_rating
 				'user_rated'			=> ($config['rate_no_positive'] ? 0 : $user_rated_positive) - ($config['rate_no_negative'] ? 0 : $user_rated_negative),
 				'user_rated_negative'	=> $user_rated_negative,
 				'user_rated_positive'	=> $user_rated_positive,
-			);
+			];
 
 			echo json::encode($result);
 		}
 		catch (exception $e)
 		{
-			echo json::encode(array('error' => $e->getMessage(), 'code' => $e->getCode()));
+			echo json::encode(['error' => $e->getMessage(), 'code' => $e->getCode()]);
 		}
 	}
 }

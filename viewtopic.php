@@ -105,11 +105,11 @@ if ($view && !$post_id)
 // This rather complex gaggle of code handles querying for topics but
 // also allows for direct linking to a post (and the calculation of which
 // page the post is on and the correct display of viewtopic)
-$sql_array = array(
+$sql_array = [
 	'SELECT'	=> 't.*, f.*',
 
-	'FROM'		=> array(FORUMS_TABLE => 'f'),
-);
+	'FROM'		=> [FORUMS_TABLE => 'f'],
+];
 
 // The FROM-Order is quite important here, else t.* columns can not be correctly bound.
 if ($post_id)
@@ -124,35 +124,35 @@ $sql_array['FROM'][TOPICS_TABLE] = 't';
 if ($user->data['is_registered'])
 {
 	$sql_array['SELECT'] .= ', tw.notify_status';
-	$sql_array['LEFT_JOIN'] = array();
+	$sql_array['LEFT_JOIN'] = [];
 
-	$sql_array['LEFT_JOIN'][] = array(
-		'FROM'	=> array(TOPICS_WATCH_TABLE => 'tw'),
+	$sql_array['LEFT_JOIN'][] = [
+		'FROM'	=> [TOPICS_WATCH_TABLE => 'tw'],
 		'ON'	=> 'tw.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tw.topic_id'
-	);
+	];
 
 	if ($config['allow_bookmarks'])
 	{
 		$sql_array['SELECT'] .= ', bm.topic_id as bookmarked';
-		$sql_array['LEFT_JOIN'][] = array(
-			'FROM'	=> array(BOOKMARKS_TABLE => 'bm'),
+		$sql_array['LEFT_JOIN'][] = [
+			'FROM'	=> [BOOKMARKS_TABLE => 'bm'],
 			'ON'	=> 'bm.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = bm.topic_id'
-		);
+		];
 	}
 
 	if ($config['load_db_lastread'])
 	{
 		$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
 
-		$sql_array['LEFT_JOIN'][] = array(
-			'FROM'	=> array(TOPICS_TRACK_TABLE => 'tt'),
+		$sql_array['LEFT_JOIN'][] = [
+			'FROM'	=> [TOPICS_TRACK_TABLE => 'tt'],
 			'ON'	=> 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
-		);
+		];
 
-		$sql_array['LEFT_JOIN'][] = array(
-			'FROM'	=> array(FORUMS_TRACK_TABLE => 'ft'),
+		$sql_array['LEFT_JOIN'][] = [
+			'FROM'	=> [FORUMS_TRACK_TABLE => 'ft'],
 			'ON'	=> 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
-		);
+		];
 	}
 }
 
@@ -316,13 +316,13 @@ if ($post_id)
 // Get topic tracking info
 if (!isset($topic_tracking_info))
 {
-	$topic_tracking_info = array();
+	$topic_tracking_info = [];
 
 	// Get topic tracking info
 	if ($config['load_db_lastread'] && $user->data['is_registered'])
 	{
-		$tmp_topic_data = array($topic_id => $topic_data);
-		$topic_tracking_info = get_topic_tracking($forum_id, $topic_id, $tmp_topic_data, array($forum_id => $topic_data['forum_mark_time']));
+		$tmp_topic_data = [$topic_id => $topic_data];
+		$topic_tracking_info = get_topic_tracking($forum_id, $topic_id, $tmp_topic_data, [$forum_id => $topic_data['forum_mark_time']]);
 		unset($tmp_topic_data);
 	}
 	else if ($config['load_anon_lastread'] || $user->data['is_registered'])
@@ -332,11 +332,11 @@ if (!isset($topic_tracking_info))
 }
 
 // Post ordering options
-$limit_days = array(0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
+$limit_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 
-$sort_by_text = array('t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']);
-$sort_by_sql = array('t' => 'p.post_time', 'a' => array('u.username_clean', 'p.post_id'), 's' => array('p.post_subject', 'p.post_id'));
-$join_user_sql = array('a' => true, 't' => false, 's' => false);
+$sort_by_text = ['t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
+$sort_by_sql = ['t' => 'p.post_time', 'a' => ['u.username_clean', 'p.post_id'], 's' => ['p.post_subject', 'p.post_id']];
+$join_user_sql = ['a' => true, 't' => false, 's' => false];
 
 $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 
@@ -391,11 +391,11 @@ if ($start < 0 || $start >= $total_posts)
 $viewtopic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start") . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($highlight_match) ? "&amp;hilit=$highlight" : ''));
 
 // Are we watching this topic?
-$s_watching_topic = array(
+$s_watching_topic = [
 	'link'			=> '',
 	'title'			=> '',
 	'is_watching'	=> false,
-);
+];
 
 if (($config['email_enable'] || $config['jab_enable']) && $config['allow_topic_notify'])
 {
@@ -417,10 +417,10 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 	{
 		if (!$topic_data['bookmarked'])
 		{
-			$sql = 'INSERT INTO ' . BOOKMARKS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . BOOKMARKS_TABLE . ' ' . $db->sql_build_array('INSERT', [
 				'user_id'	=> $user->data['user_id'],
 				'topic_id'	=> $topic_id,
-			));
+			]);
 			$db->sql_query($sql);
 		}
 		else
@@ -449,7 +449,7 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 $icons = $cache->obtain_icons();
 
 // Grab extensions
-$extensions = array();
+$extensions = [];
 if ($topic_data['topic_attachment'])
 {
 	$extensions = $cache->obtain_attach_extensions($forum_id);
@@ -489,7 +489,7 @@ generate_forum_nav($topic_data);
 generate_forum_rules($topic_data);
 
 // Moderators
-$forum_moderators = array();
+$forum_moderators = [];
 get_moderators($forum_moderators, $forum_id);
 
 // This is only used for print view so ...
@@ -498,10 +498,10 @@ $server_path = (!$view) ? PHPBB_ROOT_PATH : generate_board_url() . '/';
 // Replace naughty words in title
 $topic_data['topic_title'] = censor_text($topic_data['topic_title']);
 
-$s_search_hidden_fields = array(
+$s_search_hidden_fields = [
 	't' => $topic_id,
 	'sf' => 'msgonly',
-);
+];
 
 if (!empty($_EXTRA_URL))
 {
@@ -513,7 +513,7 @@ if (!empty($_EXTRA_URL))
 }
 
 // Send vars to template
-$template->assign_vars(array(
+$template->assign_vars([
 	'FORUM_ID' 		=> $forum_id,
 	'FORUM_NAME' 	=> $topic_data['forum_name'],
 	'FORUM_DESC'	=> generate_text_for_display($topic_data['forum_desc'], $topic_data['forum_desc_uid'], $topic_data['forum_desc_bitfield'], $topic_data['forum_desc_options']),
@@ -588,7 +588,7 @@ $template->assign_vars(array(
 
 	'U_POST_NEW_TOPIC' 		=> ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=post&amp;f=$forum_id") : '',
 	'U_POST_REPLY_TOPIC' 	=> ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=reply&amp;f=$forum_id&amp;t=$topic_id") : '',
-	'U_BUMP_TOPIC'			=> (bump_topic_allowed($forum_id, $topic_data['topic_bumped'], $topic_data['topic_last_post_time'], $topic_data['topic_poster'], $topic_data['topic_last_poster_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=bump&amp;f=$forum_id&amp;t=$topic_id&amp;hash=" . generate_link_hash("topic_$topic_id")) : '')
+	'U_BUMP_TOPIC'			=> (bump_topic_allowed($forum_id, $topic_data['topic_bumped'], $topic_data['topic_last_post_time'], $topic_data['topic_poster'], $topic_data['topic_last_poster_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=bump&amp;f=$forum_id&amp;t=$topic_id&amp;hash=" . generate_link_hash("topic_$topic_id")) : '']
 );
 
 // Does this topic contain a poll?
@@ -603,14 +603,14 @@ if (!empty($topic_data['poll_start']))
 		ORDER BY o.poll_option_id";
 	$result = $db->sql_query($sql);
 
-	$poll_info = array();
+	$poll_info = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$poll_info[] = $row;
 	}
 	$db->sql_freeresult($result);
 
-	$cur_voted_id = array();
+	$cur_voted_id = [];
 	if ($user->data['is_registered'])
 	{
 		$sql = 'SELECT poll_option_id
@@ -639,7 +639,7 @@ if (!empty($topic_data['poll_start']))
 
 	if ($s_can_vote && ($update || $unvote))
 	{
-		$voted_id	= request_var('vote_id', array('' => 0));
+		$voted_id	= request_var('vote_id', ['' => 0]);
 		$voted_id = (sizeof($voted_id) > 1) ? array_unique($voted_id) : $voted_id;
 
 		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options']) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
@@ -670,7 +670,7 @@ if (!empty($topic_data['poll_start']))
 
 		if ($unvote)
 		{
-			$voted_id = array();
+			$voted_id = [];
 		}
 
 		foreach ($voted_id as $option)
@@ -686,13 +686,13 @@ if (!empty($topic_data['poll_start']))
 					AND topic_id = ' . (int) $topic_id;
 			$db->sql_query($sql);
 
-			$sql_ary = array(
+			$sql_ary = [
 				'topic_id'			=> (int) $topic_id,
 				'poll_option_id'	=> (int) $option,
 				'vote_user_id'		=> (int) $user->data['user_id'],
 				'vote_time'			=> (int) time(),
 				'vote_user_ip'		=> (string) $user->ip,
-			);
+			];
 
 			$sql = 'INSERT INTO ' . POLL_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
@@ -776,8 +776,8 @@ if (!empty($topic_data['poll_start']))
 			ORDER BY pv.vote_time ASC, pv.vote_user_id ASC';
 		$result = $db->sql_query($sql);
 
-		$voters = array();
-		$votes = array();
+		$voters = [];
+		$votes = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$voters[(int)$row['user_id']] = true;
@@ -821,7 +821,7 @@ if (!empty($topic_data['poll_start']))
 		$option_pct = ($poll_total > 0) ? $poll_option['poll_option_total'] / $poll_total : 0;
 		$option_pct_txt = sprintf("%.1d%%", round($option_pct * 100));
 
-		$template->assign_block_vars('poll_option', array(
+		$template->assign_block_vars('poll_option', [
 			'POLL_OPTION_ID'		=> $poll_option['poll_option_id'],
 			'POLL_OPTION_CAPTION'	=> $poll_option['poll_option_text'],
 			'POLL_OPTION_RESULT'	=> $poll_option['poll_option_total'],
@@ -829,13 +829,13 @@ if (!empty($topic_data['poll_start']))
 			'POLL_OPTION_PCT'		=> round($option_pct * 100),
 			'POLL_OPTION_IMG'		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
 			'POLL_OPTION_VOTERS'	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
-			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)) ? true : false)
+			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)) ? true : false]
 		);
 	}
 
 	$poll_end = $topic_data['poll_length'] + $topic_data['poll_start'];
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'POLL_QUESTION'		=> $topic_data['poll_title'],
 		'POLL_VOTED'		=> count($cur_voted_id) > 0,
 		'TOTAL_VOTERS'		=> $poll_total,
@@ -852,7 +852,7 @@ if (!empty($topic_data['poll_start']))
 		'S_POLL_ACTION'		=> $viewtopic_url,
 		'S_SHOW_VOTERS'		=> ($topic_data['poll_show_voters']) ? true : false,
 
-		'U_VIEW_RESULTS'	=> $viewtopic_url . '&amp;view=viewpoll')
+		'U_VIEW_RESULTS'	=> $viewtopic_url . '&amp;view=viewpoll']
 	);
 
 	unset($poll_end, $poll_info);
@@ -893,7 +893,7 @@ else
 }
 
 // Container for user details, only process once
-$post_list = $user_cache = $id_cache = $attachments = $attach_list = $rowset = $update_count = $post_edit_list = array();
+$post_list = $user_cache = $id_cache = $attachments = $attach_list = $rowset = $update_count = $post_edit_list = [];
 $has_attachments = $display_notice = false;
 $bbcode_bitfield = '';
 
@@ -946,24 +946,24 @@ if (!sizeof($post_list))
 // We need to grab it because we do reverse ordering sometimes
 $max_post_time = 0;
 
-$sql = $db->sql_build_query('SELECT', array(
+$sql = $db->sql_build_query('SELECT', [
 	'SELECT'	=> 'u.*, z.friend, z.foe, p.*',
 
-	'FROM'		=> array(
+	'FROM'		=> [
 		USERS_TABLE		=> 'u',
 		POSTS_TABLE		=> 'p',
-	),
+	],
 
-	'LEFT_JOIN'	=> array(
-		array(
-			'FROM'	=> array(ZEBRA_TABLE => 'z'),
+	'LEFT_JOIN'	=> [
+		[
+			'FROM'	=> [ZEBRA_TABLE => 'z'],
 			'ON'	=> 'z.user_id = ' . $user->data['user_id'] . ' AND z.zebra_id = p.poster_id'
-		)
-	),
+		]
+	],
 
 	'WHERE'		=> $db->sql_in_set('p.post_id', $post_list) . '
 		AND u.user_id = p.poster_id'
-));
+]);
 
 $result = $db->sql_query($sql);
 
@@ -992,7 +992,7 @@ while ($row = $db->sql_fetchrow($result))
 		}
 	}
 
-	$rowset[$row['post_id']] = array(
+	$rowset[$row['post_id']] = [
 		'hide_post'			=> ($row['foe'] && ($view != 'show' || $post_id != $row['post_id'])) ? true : false,
 
 		'post_id'			=> $row['post_id'],
@@ -1012,7 +1012,7 @@ while ($row = $db->sql_fetchrow($result))
 
 		'post_rating_negative'	=> $row['post_rating_negative'],
 		'post_rating_positive'	=> $row['post_rating_positive'],
-		'warnings_data'			=> array(),
+		'warnings_data'			=> [],
 
 		// Make sure the icon actually exists
 		'icon_id'			=> (isset($icons[$row['icon_id']]['img'], $icons[$row['icon_id']]['height'], $icons[$row['icon_id']]['width'])) ? $row['icon_id'] : 0,
@@ -1027,7 +1027,7 @@ while ($row = $db->sql_fetchrow($result))
 		'enable_sig'		=> $row['enable_sig'],
 		'friend'			=> $row['friend'],
 		'foe'				=> $row['foe'],
-	);
+	];
 
 	// Define the global bbcode bitfield, will be used to load bbcodes
 	$bbcode_bitfield = $bbcode_bitfield | base64_decode($row['bbcode_bitfield']);
@@ -1044,7 +1044,7 @@ while ($row = $db->sql_fetchrow($result))
 	{
 		if ($poster_id == ANONYMOUS)
 		{
-			$user_cache[$poster_id] = array(
+			$user_cache[$poster_id] = [
 				'joined'		=> '',
 				'with_us'		=> '',
 				'posts'			=> '',
@@ -1082,9 +1082,9 @@ while ($row = $db->sql_fetchrow($result))
 				'user_colour'		=> $row['user_colour'],
 
 				'warnings'			=> 0,
-				'warnings_data'		=> array(),
+				'warnings_data'		=> [],
 				'allow_pm'			=> 0,
-			);
+			];
 
 			get_user_rank($row['user_rank'], false, $user_cache[$poster_id]['rank_title'], $user_cache[$poster_id]['rank_image'], $user_cache[$poster_id]['rank_image_src']);
 		}
@@ -1100,13 +1100,13 @@ while ($row = $db->sql_fetchrow($result))
 
 			$id_cache[] = $poster_id;
 
-			$user_cache[$poster_id] = array(
+			$user_cache[$poster_id] = [
 				'joined'		=> $user->format_date($row['user_regdate'], false, false, true),
 				'with_us'		=> !empty($config['style_mp_show_with_us']) ? get_verbal_time_delta($row['user_regdate'], time(), false, 2) : '',
 				'posts'			=> $row['user_posts'],
 				'topics'		=> $row['user_topics'],
 				'warnings'		=> (isset($row['user_warnings'])) ? $row['user_warnings'] : 0,
-				'warnings_data'	=> array(),
+				'warnings_data'	=> [],
 				'from'			=> (!empty($row['user_from'])) ? $row['user_from'] : '',
 
 				'rating'			=> ($config['rate_no_positive'] ? 0 : $row['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rating_negative']),
@@ -1145,7 +1145,7 @@ while ($row = $db->sql_fetchrow($result))
 				'author_colour'		=> get_username_string('colour', $poster_id, $row['username'], $row['user_colour']),
 				'author_username'	=> get_username_string('username', $poster_id, $row['username'], $row['user_colour']),
 				'author_profile'	=> get_username_string('profile', $poster_id, $row['username'], $row['user_colour']),
-			);
+			];
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $user_cache[$poster_id]['rank_title'], $user_cache[$poster_id]['rank_image'], $user_cache[$poster_id]['rank_image_src']);
 
@@ -1195,10 +1195,10 @@ if ($config['load_cpf_viewtopic'])
 	$profile_fields_tmp = $cp->generate_profile_fields_template('grab', $id_cache);
 
 	// filter out fields not to be displayed on viewtopic. Yes, it's a hack, but this shouldn't break any MODs.
-	$profile_fields_cache = array();
+	$profile_fields_cache = [];
 	foreach ($profile_fields_tmp as $profile_user_id => $profile_fields)
 	{
-		$profile_fields_cache[$profile_user_id] = array();
+		$profile_fields_cache[$profile_user_id] = [];
 		foreach ($profile_fields as $used_ident => $profile_field)
 		{
 			if ($profile_field['data']['field_show_on_vt'])
@@ -1338,12 +1338,12 @@ if ($bbcode_bitfield !== '')
 $i_total = sizeof($rowset) - 1;
 $prev_post_id = '';
 
-$template->assign_vars(array(
-	'S_NUM_POSTS' => sizeof($post_list))
+$template->assign_vars([
+	'S_NUM_POSTS' => sizeof($post_list)]
 );
 
 // Get user rates
-$user_rates = array();
+$user_rates = [];
 if ($config['rate_enabled'])
 {
 	$sql = 'SELECT *
@@ -1359,7 +1359,7 @@ if ($config['rate_enabled'])
 }
 
 // Get list of rates for displaying
-$post_raters = array();
+$post_raters = [];
 if ($config['rate_enabled'] && $config['display_raters'])
 {
 	$sql = 'SELECT r.*, u.username, u.user_colour
@@ -1373,7 +1373,7 @@ if ($config['rate_enabled'] && $config['display_raters'])
 	{
 		if (!isset($post_raters[$row['post_id']]))
 		{
-			$post_raters[$row['post_id']] = array();
+			$post_raters[$row['post_id']] = [];
 		}
 		$post_raters[$row['post_id']][] = $row;
 	}
@@ -1505,12 +1505,12 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		$template->assign_var('BUMPED_MESSAGE', sprintf($user->lang['BUMPED_BY'], $user_cache[$topic_data['topic_bumper']]['username'], $user->format_date($topic_data['topic_last_post_time'], false, true)));
 	}
 
-	$cp_row = array();
+	$cp_row = [];
 
 	//
 	if ($config['load_cpf_viewtopic'])
 	{
-		$cp_row = (isset($profile_fields_cache[$poster_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields_cache[$poster_id]) : array();
+		$cp_row = (isset($profile_fields_cache[$poster_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields_cache[$poster_id]) : [];
 	}
 
 	$post_unread = (isset($topic_tracking_info[$topic_id]) && ($row['post_time'] > $topic_tracking_info[$topic_id] || $row['post_merged'] > $topic_tracking_info[$topic_id])) ? true : false;
@@ -1544,13 +1544,13 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		!$row['post_edit_locked']
 	)));
 
-	$user_rate = isset($user_rates[$row['post_id']]) ? $user_rates[$row['post_id']] : array('rate' => 0, 'rate_time' => 0);
+	$user_rate = isset($user_rates[$row['post_id']]) ? $user_rates[$row['post_id']] : ['rate' => 0, 'rate_time' => 0];
 	$rate_time = ($topic_data['topic_first_post_id'] != $row['post_id'] || !isset($config['rate_topic_time']) || $config['rate_topic_time'] == -1) ? $config['rate_time'] : $config['rate_topic_time'];
 
 	$post_number = ($topic_data['topic_first_post_show'] && $start != 0) ? ($topic_data['topic_first_post_id'] == $row['post_id'] ? 1 : $i + $start) : $i + $start + 1;
 
 	//
-	$postrow = array(
+	$postrow = [
 		'POST_AUTHOR_FULL'		=> ($poster_id != ANONYMOUS) ? $user_cache[$poster_id]['author_full'] : get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 		'POST_AUTHOR_COLOUR'	=> ($poster_id != ANONYMOUS) ? $user_cache[$poster_id]['author_colour'] : get_username_string('colour', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 		'POST_AUTHOR'			=> ($poster_id != ANONYMOUS) ? $user_cache[$poster_id]['author_username'] : get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -1645,7 +1645,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 
 		'S_IGNORE_POST'		=> ($row['hide_post']) ? true : false,
 		'L_IGNORE_POST'		=> ($row['hide_post']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), '<a href="' . $viewtopic_url . "&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}" . '">', '</a>') : '',
-	);
+	];
 
 	if (isset($cp_row['row']) && sizeof($cp_row['row']))
 	{
@@ -1661,7 +1661,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		$is_first_row = true;
 		foreach ($post_raters[$row['post_id']] as $rater)
 		{
-			$template->assign_block_vars('postrow.postrater', array(
+			$template->assign_block_vars('postrow.postrater', [
 				'S_FIRST_ROW'	=> $is_first_row,
 				'RATER_ID'		=> $rater['user_id'],
 				'POST_ID'		=> $rater['post_id'],
@@ -1673,7 +1673,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 				'RATER_NAME'	=> get_username_string('username', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
 				'RATER_COLOUR'	=> get_username_string('colour', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
 				'RATER_FULL'	=> get_username_string('full', 		$rater['user_id'], $rater['username'], $rater['user_colour']),
-			));
+			]);
 			$is_first_row = false;
 		}
 	}
@@ -1695,7 +1695,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			break;
 		}
 
-		$template->assign_block_vars('postrow.userwarning', array(
+		$template->assign_block_vars('postrow.userwarning', [
 			'TITLE'			=> $warn_title,
 			'WARNING_ID'	=> $warning['warning_id'],
 			'ISSUER_ID'		=> $warning['issuer_id'],
@@ -1709,7 +1709,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			'TYPE'			=> $warning['warning_type'],
 			'TEXT'			=> $warning['warning_text'],
 			'U_POST'		=> ($warning['post_id']) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $warning['post_id']) . '#p' . $warning['post_id'] : '',
-		));
+		]);
 	}
 
 	// Display post warnings
@@ -1729,7 +1729,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			break;
 		}
 
-		$template->assign_block_vars('postrow.postwarning', array(
+		$template->assign_block_vars('postrow.postwarning', [
 			'TITLE'			=> $warn_title,
 			'WARNING_ID'	=> $warning['warning_id'],
 			'ISSUER_ID'		=> $warning['issuer_id'],
@@ -1742,7 +1742,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			'ACTIVE'		=> ($warning['warning_active']) ? true : false,
 			'TYPE'			=> $warning['warning_type'],
 			'TEXT'			=> $warning['warning_text'],
-		));
+		]);
 	}
 
 	if (!empty($cp_row['blockrow']))
@@ -1758,8 +1758,8 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 	{
 		foreach ($attachments[$row['post_id']] as $attachment)
 		{
-			$template->assign_block_vars('postrow.attachment', array(
-				'DISPLAY_ATTACHMENT'	=> $attachment)
+			$template->assign_block_vars('postrow.attachment', [
+				'DISPLAY_ATTACHMENT'	=> $attachment]
 			);
 		}
 	}
@@ -1813,15 +1813,15 @@ if ($all_marked_read)
 {
 	if ($post_unread)
 	{
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_VIEW_UNREAD_POST'	=> '#unread',
-		));
+		]);
 	}
 	else if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id])
 	{
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_VIEW_UNREAD_POST'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;view=unread") . '#unread',
-		));
+		]);
 	}
 }
 else if (!$all_marked_read)
@@ -1829,15 +1829,15 @@ else if (!$all_marked_read)
 	// What can happen is that we are at the last displayed page. If so, we also display the #unread link based in $post_unread
 	if ($last_page && $post_unread)
 	{
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_VIEW_UNREAD_POST'	=> '#unread',
-		));
+		]);
 	}
 	else if (!$last_page)
 	{
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_VIEW_UNREAD_POST'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;view=unread") . '#unread',
-		));
+		]);
 	}
 }
 
@@ -1870,8 +1870,8 @@ if (empty($_REQUEST['t']) && !empty($topic_id))
 // Output the page
 page_header($topic_data['topic_title'] . ' - ' . $topic_data['forum_name'], true, $forum_id);
 
-$template->set_filenames(array(
-	'body' => ($view == 'print') ? 'viewtopic_print.html' : 'viewtopic_body.html')
+$template->set_filenames([
+	'body' => ($view == 'print') ? 'viewtopic_print.html' : 'viewtopic_body.html']
 );
 make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'), $forum_id);
 

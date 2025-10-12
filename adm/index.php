@@ -66,9 +66,9 @@ $module->load_active();
 // Generate the page
 adm_page_header($module->get_page_title());
 
-$template->set_filenames(array(
+$template->set_filenames([
 	'body' => $module->get_tpl_name(),
-));
+]);
 
 adm_page_footer();
 
@@ -95,7 +95,7 @@ function adm_page_header($page_title)
 		}
 	}
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'PAGE_TITLE'			=> $page_title,
 		'USERNAME'				=> $user->data['username'],
 
@@ -122,7 +122,7 @@ function adm_page_header($page_title)
 		'ICON_SYNC_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync_disabled.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
 
 		'S_USER_LANG'			=> $user->lang['USER_LANG'],
-	));
+	]);
 
 	if (!headers_sent())
 	{
@@ -165,10 +165,10 @@ function adm_page_footer($copyright_html = true)
 		}
 	}
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'DEBUG_OUTPUT'		=> (defined('DEBUG')) ? $debug_output : '',
 		'L_POWERED_BY'		=> $copyright_html ? $user->lang('POWERED_BY', POWERED_BY) : '',
-	));
+	]);
 
 	$template->display('body');
 
@@ -285,7 +285,7 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 
 			if (isset($vars['method']))
 			{
-				$call = array($module->module, $vars['method']);
+				$call = [$module->module, $vars['method']];
 			}
 			else if (isset($vars['function']))
 			{
@@ -298,7 +298,7 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 
 			if (isset($vars['params']))
 			{
-				$args = array();
+				$args = [];
 				foreach ($vars['params'] as $value)
 				{
 					if (is_string($value)) switch ($value)
@@ -317,7 +317,7 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 			}
 			else
 			{
-				$args = array($new[$config_key], $key);
+				$args = [$new[$config_key], $key];
 			}
 
 			$return = call_user_func_array($call, $args);
@@ -445,7 +445,7 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 						$destination = substr($destination, 0, -1);
 					}
 
-					$destination = str_replace(array('../', './'), '', $destination);
+					$destination = str_replace(['../', './'], '', $destination);
 
 					if ($destination[0] != '/')
 					{
@@ -488,7 +488,7 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 					$destination = substr($destination, 0, -1);
 				}
 
-				$destination = str_replace(array('../', '..\\', './', '.\\'), '', $destination);
+				$destination = str_replace(['../', '..\\', './', '.\\'], '', $destination);
 				if ($destination && ($destination[0] == '/' || $destination[0] == "\\"))
 				{
 					$destination = '';
@@ -517,7 +517,7 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 					break;
 				}
 
-				$path = in_array($config_definition['validate'], array('wpath', 'path', 'rpath', 'rwpath')) ? PHPBB_ROOT_PATH . $cfg_array[$config_name] : $cfg_array[$config_name];
+				$path = in_array($config_definition['validate'], ['wpath', 'path', 'rpath', 'rwpath']) ? PHPBB_ROOT_PATH . $cfg_array[$config_name] : $cfg_array[$config_name];
 
 				if (!file_exists($path))
 				{
@@ -554,19 +554,19 @@ function validate_range($value_ary, &$error)
 {
 	global $user;
 
-	$column_types = array(
-		'BOOL'	=> array('php_type' => 'int', 		'min' => 0, 				'max' => 1),
-		'USINT'	=> array('php_type' => 'int',		'min' => 0, 				'max' => 65535),
-		'UINT'	=> array('php_type' => 'int', 		'min' => 0, 				'max' => (int) 0x7fffffff),
+	$column_types = [
+		'BOOL'	=> ['php_type' => 'int', 		'min' => 0, 				'max' => 1],
+		'USINT'	=> ['php_type' => 'int',		'min' => 0, 				'max' => 65535],
+		'UINT'	=> ['php_type' => 'int', 		'min' => 0, 				'max' => (int) 0x7fffffff],
 		// Do not use (int) 0x80000000 - it evaluates to different
 		// values on 32-bit and 64-bit systems.
 		// Apparently -2147483648 is a float on 32-bit systems,
 		// despite fitting in an int, thus explicit cast is needed.
-		'INT'	=> array('php_type' => 'int', 		'min' => (int) -2147483648,	'max' => (int) 0x7fffffff),
-		'TINT'	=> array('php_type' => 'int',		'min' => -128,				'max' => 127),
+		'INT'	=> ['php_type' => 'int', 		'min' => (int) -2147483648,	'max' => (int) 0x7fffffff],
+		'TINT'	=> ['php_type' => 'int',		'min' => -128,				'max' => 127],
 
-		'VCHAR'	=> array('php_type' => 'string', 	'min' => 0, 				'max' => 255),
-	);
+		'VCHAR'	=> ['php_type' => 'string', 	'min' => 0, 				'max' => 255],
+	];
 	foreach ($value_ary as $value)
 	{
 		$column = explode(':', $value['column_type']);

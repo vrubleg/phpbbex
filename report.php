@@ -81,7 +81,7 @@ if ($post_id)
 	}
 
 	// Check required permissions
-	$acl_check_ary = array('f_list' => 'POST_NOT_EXIST', 'f_read' => 'USER_CANNOT_READ', 'f_report' => 'USER_CANNOT_REPORT');
+	$acl_check_ary = ['f_list' => 'POST_NOT_EXIST', 'f_read' => 'USER_CANNOT_READ', 'f_report' => 'USER_CANNOT_REPORT'];
 
 	foreach ($acl_check_ary as $acl => $error)
 	{
@@ -133,7 +133,7 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 	$captcha->init(CONFIRM_REPORT);
 }
 
-$error	= array();
+$error	= [];
 $s_hidden_fields = '';
 
 // Submit report?
@@ -167,7 +167,7 @@ if ($submit && $reason_id)
 			$captcha->reset();
 		}
 
-		$sql_ary = array(
+		$sql_ary = [
 			'reason_id'		=> (int) $reason_id,
 			'post_id'		=> $post_id,
 			'pm_id'			=> $pm_id,
@@ -176,7 +176,7 @@ if ($submit && $reason_id)
 			'report_closed'	=> 0,
 			'report_time'	=> (int) time(),
 			'report_text'	=> (string) $report_text
-		);
+		];
 
 		$sql = 'INSERT INTO ' . REPORTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
@@ -208,7 +208,7 @@ if ($submit && $reason_id)
 				WHERE msg_id = ' . $pm_id;
 			$db->sql_query($sql);
 
-			$sql_ary = array(
+			$sql_ary = [
 				'msg_id'		=> $pm_id,
 				'user_id'		=> ANONYMOUS,
 				'author_id'		=> (int) $report_data['author_id'],
@@ -219,7 +219,7 @@ if ($submit && $reason_id)
 				'pm_marked'		=> 0,
 				'pm_forwarded'	=> 0,
 				'folder_id'		=> PRIVMSGS_INBOX,
-			);
+			];
 
 			$sql = 'INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
@@ -250,13 +250,13 @@ $page_title = ($pm_id) ? $user->lang['REPORT_MESSAGE'] : $user->lang['REPORT_POS
 
 if (isset($captcha) && $captcha->is_solved() === false)
 {
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_CONFIRM_CODE'	=> true,
 		'CAPTCHA_TEMPLATE'	=> $captcha->get_template(),
-	));
+	]);
 }
 
-$template->assign_vars(array(
+$template->assign_vars([
 	'ERROR'				=> (count($error)) ? implode('<br />', $error) : '',
 	'S_REPORT_POST'		=> ($pm_id) ? false : true,
 	'REPORT_TEXT'		=> $report_text,
@@ -264,7 +264,7 @@ $template->assign_vars(array(
 	'S_HIDDEN_FIELDS'	=> (!empty($s_hidden_fields)) ? $s_hidden_fields : null,
 
 	'S_NOTIFY'			=> $user_notify,
-	'S_CAN_NOTIFY'		=> ($user->data['is_registered']) ? true : false)
+	'S_CAN_NOTIFY'		=> ($user->data['is_registered']) ? true : false]
 );
 
 generate_forum_nav($forum_data);
@@ -272,8 +272,8 @@ generate_forum_nav($forum_data);
 // Start output of page
 page_header($page_title);
 
-$template->set_filenames(array(
-	'body' => 'report_body.html')
+$template->set_filenames([
+	'body' => 'report_body.html']
 );
 
 page_footer();

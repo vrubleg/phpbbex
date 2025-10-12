@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ALL'					=> 'All',
 
 	'CLICK_TO_DELETE'		=> 'Delete all selected users by clicking on this button. <em>(Can’t be undone!)</em>',
@@ -33,4 +33,4 @@ $lang = array_merge($lang, array(
 	'USERS_DELETE'				=> 'Delete selected users',
 	'USERS_DELETE_CONFIRM'		=> 'Are you sure that you want to delete the selected users? Deleting users through this tool <strong>will</strong> remove all their posts as well!',
 	'USERS_DELETE_SUCCESSFULL'	=> 'All selected users where deleted successfully!',
-));
+]);

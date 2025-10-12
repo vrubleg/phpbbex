@@ -28,7 +28,7 @@ class phpbb_db_tools
 	* The Column types for every database we support
 	* @var array
 	*/
-	var $dbms_type_map = array(
+	var $dbms_type_map = [
 		'INT:'		=> 'int(%d)',
 		'BINT'		=> 'bigint(20)',
 		'UINT'		=> 'mediumint(8) UNSIGNED',
@@ -56,19 +56,19 @@ class phpbb_db_tools
 		'VCHAR_UNI:'=> 'varchar(%d)',
 		'VCHAR_CI'	=> 'varchar(255)',
 		'VARBINARY'	=> 'varbinary(255)',
-	);
+	];
 
 	/**
 	* A list of types being unsigned for better reference in some db's
 	* @var array
 	*/
-	var $unsigned_types = array('UINT', 'UINT:', 'USINT', 'BOOL', 'TIMESTAMP');
+	var $unsigned_types = ['UINT', 'UINT:', 'USINT', 'BOOL', 'TIMESTAMP'];
 
 	/**
 	* A list of supported DBMS. We change this class to support more DBMS, the DBMS itself only need to follow some rules.
 	* @var array
 	*/
-	var $supported_dbms = array('mysql');
+	var $supported_dbms = ['mysql'];
 
 	/**
 	* This is set to true if user only wants to return the 'to-be-executed' SQL statement(s) (as an array).
@@ -99,7 +99,7 @@ class phpbb_db_tools
 
 		$result = $this->db->sql_query($sql);
 
-		$tables = array();
+		$tables = [];
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$name = current($row);
@@ -142,7 +142,7 @@ class phpbb_db_tools
 	function sql_create_table($table_name, $table_data)
 	{
 		// holds the DDL for a column
-		$columns = $statements = array();
+		$columns = $statements = [];
 
 		if ($this->sql_table_exists($table_name))
 		{
@@ -200,7 +200,7 @@ class phpbb_db_tools
 			{
 				if (!is_array($table_data['PRIMARY_KEY']))
 				{
-					$table_data['PRIMARY_KEY'] = array($table_data['PRIMARY_KEY']);
+					$table_data['PRIMARY_KEY'] = [$table_data['PRIMARY_KEY']];
 				}
 
 				$table_sql .= ",\n\t PRIMARY KEY (" . implode(', ', $table_data['PRIMARY_KEY']) . ')';
@@ -219,7 +219,7 @@ class phpbb_db_tools
 			{
 				if (!is_array($key_data[1]))
 				{
-					$key_data[1] = array($key_data[1]);
+					$key_data[1] = [$key_data[1]];
 				}
 
 				$old_return_statements = $this->return_statements;
@@ -269,7 +269,7 @@ class phpbb_db_tools
 			return;
 		}
 
-		$statements = array();
+		$statements = [];
 
 		// Drop tables?
 		if (!empty($schema_changes['drop_tables']))
@@ -469,7 +469,7 @@ class phpbb_db_tools
 	*/
 	function sql_list_columns($table)
 	{
-		$columns = array();
+		$columns = [];
 
 		$sql = "SHOW COLUMNS FROM $table";
 
@@ -654,7 +654,7 @@ class phpbb_db_tools
 
 		$sql = '';
 
-		$return_array = array();
+		$return_array = [];
 
 		$sql .= " {$column_type} ";
 
@@ -688,7 +688,7 @@ class phpbb_db_tools
 	function sql_column_add($table_name, $column_name, $column_data, $inline = false)
 	{
 		$column_data = $this->sql_prepare_column_data($table_name, $column_name, $column_data);
-		$statements = array();
+		$statements = [];
 
 		$after = (!empty($column_data['after'])) ? ' AFTER ' . $column_data['after'] : '';
 		$statements[] = 'ALTER TABLE `' . $table_name . '` ADD COLUMN `' . $column_name . '` ' . $column_data['column_type_sql'] . $after;
@@ -701,7 +701,7 @@ class phpbb_db_tools
 	*/
 	function sql_column_remove($table_name, $column_name, $inline = false)
 	{
-		$statements = array();
+		$statements = [];
 
 		$statements[] = 'ALTER TABLE `' . $table_name . '` DROP COLUMN `' . $column_name . '`';
 
@@ -713,7 +713,7 @@ class phpbb_db_tools
 	*/
 	function sql_index_drop($table_name, $index_name)
 	{
-		$statements = array();
+		$statements = [];
 
 		$statements[] = 'DROP INDEX ' . $index_name . ' ON ' . $table_name;
 
@@ -725,7 +725,7 @@ class phpbb_db_tools
 	*/
 	function sql_table_drop($table_name)
 	{
-		$statements = array();
+		$statements = [];
 
 		if (!$this->sql_table_exists($table_name))
 		{
@@ -742,7 +742,7 @@ class phpbb_db_tools
 	*/
 	function sql_create_primary_key($table_name, $column, $inline = false)
 	{
-		$statements = array();
+		$statements = [];
 
 		$statements[] = 'ALTER TABLE ' . $table_name . ' ADD PRIMARY KEY (' . implode(', ', $column) . ')';
 
@@ -754,7 +754,7 @@ class phpbb_db_tools
 	*/
 	function sql_create_unique_index($table_name, $index_name, $column)
 	{
-		$statements = array();
+		$statements = [];
 
 		$table_prefix = substr(CONFIG_TABLE, 0, -6); // strlen(config)
 		if (strlen($table_name . $index_name) - strlen($table_prefix) > 24)
@@ -773,7 +773,7 @@ class phpbb_db_tools
 	*/
 	function sql_create_index($table_name, $index_name, $column)
 	{
-		$statements = array();
+		$statements = [];
 
 		$table_prefix = substr(CONFIG_TABLE, 0, -6); // strlen(config)
 		if (strlen($table_name . $index_name) - strlen($table_prefix) > 24)
@@ -798,7 +798,7 @@ class phpbb_db_tools
 	*/
 	function sql_list_index($table_name)
 	{
-		$index_array = array();
+		$index_array = [];
 
 		$sql = 'SHOW KEYS FROM ' . $table_name;
 
@@ -823,7 +823,7 @@ class phpbb_db_tools
 	function sql_column_change($table_name, $column_name, $column_data, $inline = false)
 	{
 		$column_data = $this->sql_prepare_column_data($table_name, $column_name, $column_data);
-		$statements = array();
+		$statements = [];
 
 		$statements[] = 'ALTER TABLE `' . $table_name . '` CHANGE `' . $column_name . '` `' . $column_name . '` ' . $column_data['column_type_sql'];
 

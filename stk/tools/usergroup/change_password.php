@@ -19,16 +19,16 @@ class change_password
 	*/
 	function display_options()
 	{
-		return array(
+		return [
 			'title'	=> 'CHANGE_PASSWORD',
-			'vars'	=> array(
+			'vars'	=> [
 				'legend1'				=> 'CHANGE_PASSWORD',
-				'req_username'			=> array('lang' => 'USERNAME_NAME', 'type' => 'text:40:255', 'explain' => true, 'select_user' => true),
-				'req_user_id'			=> array('lang' => 'USERNAMEID', 'type' => 'text:10:50', 'explain' => true, 'select_user' => false),
-				'new_password'			=> array('lang' => 'PASSWORD', 'type' => 'password:40:255', 'explain' => false),
-				'password_confirm'		=> array('lang' => 'PASSWORD_CONFIRM', 'type' => 'password:40:255', 'explain' => false),
-			)
-		);
+				'req_username'			=> ['lang' => 'USERNAME_NAME', 'type' => 'text:40:255', 'explain' => true, 'select_user' => true],
+				'req_user_id'			=> ['lang' => 'USERNAMEID', 'type' => 'text:10:50', 'explain' => true, 'select_user' => false],
+				'new_password'			=> ['lang' => 'PASSWORD', 'type' => 'password:40:255', 'explain' => false],
+				'password_confirm'		=> ['lang' => 'PASSWORD_CONFIRM', 'type' => 'password:40:255', 'explain' => false],
+			]
+		];
 	}
 
 	/**
@@ -71,9 +71,9 @@ class change_password
 			include (PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		}
 
-		$user_id = array();
-		$username = array();
-		$user_type = array(USER_NORMAL, USER_FOUNDER);
+		$user_id = [];
+		$username = [];
+		$user_type = [USER_NORMAL, USER_FOUNDER];
 
 		if (!empty($req_user_id))
 		{
@@ -105,10 +105,10 @@ class change_password
 			return;
 		}
 
-		$data = array(
+		$data = [
 			'new_password'		=> request_var('new_password', '', true),
 			'password_confirm'	=> request_var('password_confirm', '', true),
-		);
+		];
 
 		if ($data['new_password'] != $data['password_confirm'])
 		{
@@ -116,16 +116,16 @@ class change_password
 			return;
 		}
 
-		$error = validate_data($data, array(
-			'new_password'		=> array('password'),
-			'password_confirm'	=> array('string', false, $config['min_pass_chars'], $config['max_pass_chars']),
-		));
+		$error = validate_data($data, [
+			'new_password'		=> ['password'],
+			'password_confirm'	=> ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+		]);
 		if (!empty($error))
 		{
 			return;
 		}
 
-		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array('user_password' => phpbb_hash($data['new_password']),)) . ' WHERE user_id = ' . $user_id);
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', ['user_password' => phpbb_hash($data['new_password']),]) . ' WHERE user_id = ' . $user_id);
 
 		add_log('admin', 'LOG_USER_NEW_PASSWORD', $username);
 

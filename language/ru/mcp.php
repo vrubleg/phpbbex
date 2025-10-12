@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACTION'				=> 'Действие',
 	'ACTION_NOTE'			=> 'Действие/Заметка',
 	'ADD_FEEDBACK'			=> 'Добавить заметку о пользователе',
@@ -375,18 +375,18 @@ $lang = array_merge($lang, array(
 
 	'YOU_SELECTED_TOPIC'	=> 'Вы выбрали тему номер %d: %s.',
 
-	'report_reasons'		=> array(
-		'TITLE'	=> array(
+	'report_reasons'		=> [
+		'TITLE'	=> [
 			'WAREZ'		=> 'Варез',
 			'SPAM'		=> 'Спам',
 			'OFF_TOPIC'	=> 'Оффтопик',
 			'OTHER'		=> 'Другое',
-		),
-		'DESCRIPTION' => array(
+		],
+		'DESCRIPTION' => [
 			'WAREZ'		=> 'Варез — сообщение содержит ссылки на незаконные программы',
 			'SPAM'		=> 'Спам — сообщение содержит рекламу',
 			'OFF_TOPIC'	=> 'Оффтоп — сообщение не относится к обсуждаемой теме',
 			'OTHER'		=> 'Другое',
-		)
-	),
-));
+		]
+	],
+]);

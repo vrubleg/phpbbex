@@ -60,7 +60,7 @@ class ucp_pm
 		// Folder directly specified?
 		$folder_specified = request_var('folder', '');
 
-		if (!in_array($folder_specified, array('inbox', 'outbox', 'sentbox')))
+		if (!in_array($folder_specified, ['inbox', 'outbox', 'sentbox']))
 		{
 			$folder_specified = (int) $folder_specified;
 		}
@@ -91,10 +91,10 @@ class ucp_pm
 				if (!$auth->acl_get('u_sendpm'))
 				{
 					// trigger_error('NO_AUTH_SEND_MESSAGE');
-					$template->assign_vars(array(
+					$template->assign_vars([
 						'S_NO_AUTH_SEND_MESSAGE'	=> true,
 						'S_COMPOSE_PM_VIEW'			=> true,
-					));
+					]);
 
 					$tpl_file = 'ucp_pm_viewfolder';
 					break;
@@ -179,7 +179,7 @@ class ucp_pm
 				$dest_folder	= request_var('dest_folder', PRIVMSGS_NO_BOX);
 
 				// Is moving PM triggered through mark options?
-				if (!in_array($mark_option, array('mark_important', 'delete_marked')) && $submit_mark)
+				if (!in_array($mark_option, ['mark_important', 'delete_marked']) && $submit_mark)
 				{
 					$move_pm = true;
 					$dest_folder = (int) $mark_option;
@@ -189,7 +189,7 @@ class ucp_pm
 				// Move PM
 				if ($move_pm)
 				{
-					$move_msg_ids	= (isset($_POST['marked_msg_id'])) ? request_var('marked_msg_id', array(0)) : array();
+					$move_msg_ids	= (isset($_POST['marked_msg_id'])) ? request_var('marked_msg_id', [0]) : [];
 					$cur_folder_id	= request_var('cur_folder_id', PRIVMSGS_NO_BOX);
 
 					if (move_pm($user->data['user_id'], $user->data['message_limit'], $move_msg_ids, $dest_folder, $cur_folder_id))
@@ -243,7 +243,7 @@ class ucp_pm
 					$folder_id = (int) $row['folder_id'];
 				}
 
-				$message_row = array();
+				$message_row = [];
 				if ($action == 'view_message' && $msg_id)
 				{
 					// Get Message user want to see
@@ -300,7 +300,7 @@ class ucp_pm
 				$s_folder_options = $s_to_folder_options = '';
 				foreach ($folder as $f_id => $folder_ary)
 				{
-					$option = '<option' . ((!in_array($f_id, array(PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX))) ? ' class="sep"' : '') . ' value="' . $f_id . '"' . (($f_id == $folder_id) ? ' selected="selected"' : '') . '>' . $folder_ary['folder_name'] . (($folder_ary['unread_messages']) ? ' [' . $folder_ary['unread_messages'] . '] ' : '') . '</option>';
+					$option = '<option' . ((!in_array($f_id, [PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX])) ? ' class="sep"' : '') . ' value="' . $f_id . '"' . (($f_id == $folder_id) ? ' selected="selected"' : '') . '>' . $folder_ary['folder_name'] . (($folder_ary['unread_messages']) ? ' [' . $folder_ary['unread_messages'] . '] ' : '') . '</option>';
 
 					$s_to_folder_options .= ($f_id != PRIVMSGS_OUTBOX && $f_id != PRIVMSGS_SENTBOX) ? $option : '';
 					$s_folder_options .= $option;
@@ -310,7 +310,7 @@ class ucp_pm
 				// Header for message view - folder and so on
 				$folder_status = get_folder_status($folder_id, $folder);
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'CUR_FOLDER_ID'			=> $folder_id,
 					'CUR_FOLDER_NAME'		=> $folder_status['folder_name'],
 					'NUM_NOT_MOVED'			=> $num_not_moved,
@@ -338,7 +338,7 @@ class ucp_pm
 					'FOLDER_MAX_MESSAGES'		=> $folder_status['max'],
 					'FOLDER_CUR_MESSAGES'		=> $folder_status['cur'],
 					'FOLDER_REMAINING_MESSAGES'	=> $folder_status['remaining'],
-					'FOLDER_PERCENT'			=> $folder_status['percent'])
+					'FOLDER_PERCENT'			=> $folder_status['percent']]
 				);
 
 				if ($action == 'view_folder')
@@ -350,9 +350,9 @@ class ucp_pm
 				}
 				else if ($action == 'view_message')
 				{
-					$template->assign_vars(array(
+					$template->assign_vars([
 						'S_VIEW_MESSAGE'	=> true,
-						'MSG_ID'			=> $msg_id)
+						'MSG_ID'			=> $msg_id]
 					);
 
 					if (!$msg_id)
@@ -373,9 +373,9 @@ class ucp_pm
 			break;
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_TITLE'			=> $user->lang['UCP_PM_' . strtoupper($mode)],
-			'S_UCP_ACTION'		=> $this->u_action . ((isset($action)) ? "&amp;action=$action" : ''))
+			'S_UCP_ACTION'		=> $this->u_action . ((isset($action)) ? "&amp;action=$action" : '')]
 		);
 
 		// Set desired template

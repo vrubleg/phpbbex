@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ALL_AVAILABLE'			=> 'All available',
 	'ALL_RESULTS'			=> 'All results',
 
@@ -86,4 +86,4 @@ $lang = array_merge($lang, array(
 	'SORT_TIME'					=> 'Post time',
 
 	'TOO_FEW_AUTHOR_CHARS'	=> 'You must specify at least %d characters of the authors name.',
-));
+]);

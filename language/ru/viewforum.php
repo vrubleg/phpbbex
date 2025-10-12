@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACTIVE_TOPICS'			=> 'Активные темы',
 	'ANNOUNCEMENTS'			=> 'Объявления',
 
@@ -42,4 +42,4 @@ $lang = array_merge($lang, array(
 	'VIEW_FORUM'			=> 'Просмотр раздела',
 	'VIEW_FORUM_TOPIC'		=> '1 тема',
 	'VIEW_FORUM_TOPICS'		=> 'Тем: %d',
-));
+]);

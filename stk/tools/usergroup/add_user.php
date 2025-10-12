@@ -23,24 +23,24 @@ class add_user
 
 		$user->add_lang('ucp');
 
-		return array(
+		return [
 			'title'	=> 'ADD_USER',
-			'vars'	=> array(
+			'vars'	=> [
 				'legend1'			=> 'ADD_USER',
-				'username'			=> array('lang' => 'USERNAME', 'explain' => false, 'type' => 'text:40:255'),
-				'new_password'		=> array('lang' => 'PASSWORD', 'explain' => false, 'type' => 'password:40:255'),
-				'password_confirm'	=> array('lang' => 'PASSWORD_CONFIRM', 'explain' => false, 'type' => 'password:40:255'),
-				'email'				=> array('lang' => 'EMAIL_ADDRESS', 'explain' => false, 'type' => 'text:40:255'),
-				'email_confirm'		=> array('lang' => 'CONFIRM_EMAIL', 'explain' => false, 'type' => 'text:40:255'),
-				'lang'				=> array('lang' => 'LANGUAGE', 'explain' => false, 'type' => 'select', 'function' => 'language_select'),
-				'tz'				=> array('lang' => 'TIMEZONE', 'explain' => false, 'type' => 'select', 'function' => 'tz_select'),
+				'username'			=> ['lang' => 'USERNAME', 'explain' => false, 'type' => 'text:40:255'],
+				'new_password'		=> ['lang' => 'PASSWORD', 'explain' => false, 'type' => 'password:40:255'],
+				'password_confirm'	=> ['lang' => 'PASSWORD_CONFIRM', 'explain' => false, 'type' => 'password:40:255'],
+				'email'				=> ['lang' => 'EMAIL_ADDRESS', 'explain' => false, 'type' => 'text:40:255'],
+				'email_confirm'		=> ['lang' => 'CONFIRM_EMAIL', 'explain' => false, 'type' => 'text:40:255'],
+				'lang'				=> ['lang' => 'LANGUAGE', 'explain' => false, 'type' => 'select', 'function' => 'language_select'],
+				'tz'				=> ['lang' => 'TIMEZONE', 'explain' => false, 'type' => 'select', 'function' => 'tz_select'],
 
 				'legend2'			=> 'ADD_USER_GROUP',
-				'usergroups'		=> array('lang' => 'USER_GROUPS', 'explain' => true, 'type' => 'select_multiple', 'function' => 'get_groups'),
-				'defaultgroup'		=> array('lang' => 'DEFAULT_GROUP', 'explain' => true, 'type' => 'select', 'function' => 'get_groups'),
-				'groupleader'		=> array('lang' => 'GROUP_LEADER', 'explain' => true, 'type' => 'select_multiple', 'function' => 'get_groups'),
-			),
-		);
+				'usergroups'		=> ['lang' => 'USER_GROUPS', 'explain' => true, 'type' => 'select_multiple', 'function' => 'get_groups'],
+				'defaultgroup'		=> ['lang' => 'DEFAULT_GROUP', 'explain' => true, 'type' => 'select', 'function' => 'get_groups'],
+				'groupleader'		=> ['lang' => 'GROUP_LEADER', 'explain' => true, 'type' => 'select_multiple', 'function' => 'get_groups'],
+			],
+		];
 	}
 
 	/**
@@ -52,7 +52,7 @@ class add_user
 	{
 		global $cache, $config, $db, $user;
 
-		$user->add_lang(array('acp/groups', 'ucp'));
+		$user->add_lang(['acp/groups', 'ucp']);
 
 		if (!check_form_key('add_user'))
 		{
@@ -80,7 +80,7 @@ class add_user
 		}
 
 		// Collect the user data
-		$data = array(
+		$data = [
 			'username'			=> utf8_normalize_nfc(request_var('username', '', true)),
 			'new_password'		=> request_var('new_password', '', true),
 			'password_confirm'	=> request_var('password_confirm', '', true),
@@ -88,12 +88,12 @@ class add_user
 			'email_confirm'		=> strtolower(request_var('email_confirm', '')),
 			'lang'				=> basename(request_var('lang', $user->lang_name)),
 			'tz'				=> request_var('tz', (float) $timezone),
-		);
+		];
 
 		// A bit of cache hacking to get around disallowed usernames,
 		// should be rethought in future versions (#62685)
 		$cache->destroy('_disallowed_usernames');
-		$cache->put('_disallowed_usernames', array());
+		$cache->put('_disallowed_usernames', []);
 
 		// Check vars
 		$this->validate_data($data, $error);
@@ -108,14 +108,14 @@ class add_user
 		}
 
 		// Collect the groups data
-		$groups = array(
+		$groups = [
 			'default'	=> request_var('defaultgroup', 0),
-			'groups'	=> request_var('usergroups', array(0)),
-			'leaders'	=> request_var('groupleader', array(0)),
-		);
+			'groups'	=> request_var('usergroups', [0]),
+			'leaders'	=> request_var('groupleader', [0]),
+		];
 
 		// Register the user
-		$user_row = array(
+		$user_row = [
 			'username'				=> $data['username'],
 			'user_password'			=> phpbb_hash($data['new_password']),
 			'user_email'			=> $data['email'],
@@ -129,7 +129,7 @@ class add_user
 			'user_regdate'			=> time(),
 			'user_inactive_reason'	=> 0,
 			'user_inactive_time'	=> 0,
-		);
+		];
 
 		// Determine if the user is going to be added to the Newly Registered Users group
 		$sql = 'SELECT group_id
@@ -212,21 +212,21 @@ class add_user
 			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		}
 
-		$error = validate_data($data, array(
-			'username'			=> array(
-				array('string', false, $config['min_name_chars'], $config['max_name_chars']),
-				array('username', '')),
-			'new_password'		=> array(
-				array('string', false, $config['min_pass_chars'], $config['max_pass_chars']),
-				array('password')),
-			'password_confirm'	=> array('string', false, $config['min_pass_chars'], $config['max_pass_chars']),
-			'email'				=> array(
-				array('string', false, 6, 60),
-				array('email')),
-			'email_confirm'		=> array('string', false, 6, 60),
-			'tz'				=> array('num', false, -14, 14),
-			'lang'				=> array('match', false, '#^[a-z_\-]{2,}$#i'),
-		));
+		$error = validate_data($data, [
+			'username'			=> [
+				['string', false, $config['min_name_chars'], $config['max_name_chars']],
+				['username', '']],
+			'new_password'		=> [
+				['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+				['password']],
+			'password_confirm'	=> ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+			'email'				=> [
+				['string', false, 6, 60],
+				['email']],
+			'email_confirm'		=> ['string', false, 6, 60],
+			'tz'				=> ['num', false, -14, 14],
+			'lang'				=> ['match', false, '#^[a-z_\-]{2,}$#i'],
+		]);
 		if ($data['new_password'] != $data['password_confirm'])
 		{
 			$error[] = $user->lang['NEW_PASSWORD_ERROR'];
@@ -263,7 +263,7 @@ class add_user
 			}
 
 			// Add to the group
-			if (($msg = group_user_add($group_id, array($user_id), false, false, $default, $leader)) !== false)
+			if (($msg = group_user_add($group_id, [$user_id], false, false, $default, $leader)) !== false)
 			{
 				// Something went wrong
 				$error[] = $msg;
@@ -287,7 +287,7 @@ function get_groups()
 		global $db, $user;
 
 		// Just ignore the BOTS and GUESTS groups
-		$group_ignore = array('BOTS', 'GUESTS');
+		$group_ignore = ['BOTS', 'GUESTS'];
 
 		// Get the groups and build the dropdown list
 		$sql = 'SELECT group_id, group_type, group_name

@@ -1,1 +1,1 @@
-<?php return array('𪛖'=>'𪛖');
+<?php return ['𪛖'=>'𪛖'];

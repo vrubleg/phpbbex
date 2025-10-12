@@ -6,7 +6,7 @@
  */
 class autoloader
 {
-	protected static $pathes = array();
+	protected static $pathes = [];
 	protected static $registered = false;
 
 	static function init($path = '')
@@ -20,7 +20,7 @@ class autoloader
 		$prefix = strtolower($prefix);
 		if(!isset(autoloader::$pathes[$prefix]))
 		{
-			autoloader::$pathes[$prefix] = array();
+			autoloader::$pathes[$prefix] = [];
 		}
 		$path = str_replace('\\', '/', $path);
 		if($path[strlen($path)-1] !== '/') $path .= '/';
@@ -30,7 +30,7 @@ class autoloader
 	static function register()
 	{
 		if (autoloader::$registered) return;
-		if (!spl_autoload_register(array('autoloader','load')))
+		if (!spl_autoload_register(['autoloader','load']))
 		{
 			throw new Exception('Could not register autoload function');
 		}
@@ -40,7 +40,7 @@ class autoloader
 	static function unregister()
 	{
 		if (!autoloader::$registered) return;
-		if (!spl_autoload_unregister(array('autoloader','load')))
+		if (!spl_autoload_unregister(['autoloader','load']))
 		{
 			throw new Exception('Could not unregister autoload function');
 		}

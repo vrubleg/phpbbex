@@ -37,13 +37,13 @@ function user_get_id_name(&$user_id_ary, &$username_ary, $user_type = false)
 
 	if (${$which_ary} && !is_array(${$which_ary}))
 	{
-		${$which_ary} = array(${$which_ary});
+		${$which_ary} = [${$which_ary}];
 	}
 
 	$sql_in = ($which_ary == 'user_id_ary') ? array_map('intval', ${$which_ary}) : array_map('utf8_clean_string', ${$which_ary});
 	unset(${$which_ary});
 
-	$user_id_ary = $username_ary = array();
+	$user_id_ary = $username_ary = [];
 
 	// Grab the user id/username records
 	$sql_where = ($which_ary == 'user_id_ary') ? 'user_id' : 'username_clean';
@@ -109,12 +109,12 @@ function user_update_name($old_name, $new_name)
 {
 	global $config, $db, $cache;
 
-	$update_ary = array(
-		FORUMS_TABLE			=> array('forum_last_poster_name'),
-		MODERATOR_CACHE_TABLE	=> array('username'),
-		POSTS_TABLE				=> array('post_username'),
-		TOPICS_TABLE			=> array('topic_first_poster_name', 'topic_last_poster_name'),
-	);
+	$update_ary = [
+		FORUMS_TABLE			=> ['forum_last_poster_name'],
+		MODERATOR_CACHE_TABLE	=> ['username'],
+		POSTS_TABLE				=> ['post_username'],
+		TOPICS_TABLE			=> ['topic_first_poster_name', 'topic_last_poster_name'],
+	];
 
 	foreach ($update_ary as $table => $field_ary)
 	{
@@ -159,7 +159,7 @@ function user_add($user_row, $cp_data = false)
 		return false;
 	}
 
-	$sql_ary = array(
+	$sql_ary = [
 		'username'			=> $user_row['username'],
 		'username_clean'	=> $username_clean,
 		'user_password'		=> (isset($user_row['user_password'])) ? $user_row['user_password'] : '',
@@ -168,10 +168,10 @@ function user_add($user_row, $cp_data = false)
 		'user_email_hash'	=> phpbb_email_hash($user_row['user_email']),
 		'group_id'			=> $user_row['group_id'],
 		'user_type'			=> $user_row['user_type'],
-	);
+	];
 
 	// These are the additional vars able to be specified
-	$additional_vars = array(
+	$additional_vars = [
 		'user_permissions'	=> '',
 		'user_timezone'		=> $config['board_timezone'],
 		'user_dateformat'	=> $config['default_dateformat'],
@@ -221,7 +221,7 @@ function user_add($user_row, $cp_data = false)
 		'user_sig_bbcode_bitfield'	=> '',
 
 		'user_form_salt'			=> unique_id(),
-	);
+	];
 
 	// Now fill the sql array with not required variables
 	foreach ($additional_vars as $key => $default_value)
@@ -262,15 +262,15 @@ function user_add($user_row, $cp_data = false)
 	}
 
 	// Place into appropriate group...
-	$sql = 'INSERT INTO ' . USER_GROUP_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+	$sql = 'INSERT INTO ' . USER_GROUP_TABLE . ' ' . $db->sql_build_array('INSERT', [
 		'user_id'		=> (int) $user_id,
 		'group_id'		=> (int) $user_row['group_id'],
-		'user_pending'	=> 0)
+		'user_pending'	=> 0]
 	);
 	$db->sql_query($sql);
 
 	// Now make it the users default group...
-	group_set_user_default($user_row['group_id'], array($user_id), false);
+	group_set_user_default($user_row['group_id'], [$user_id], false);
 
 	// Add to newly registered users group if user_new is 1
 	if ($config['new_member_post_limit'] && $sql_ary['user_new'])
@@ -354,7 +354,7 @@ function user_delete($mode, $user_id, $post_username = false)
 			AND p.post_id = r.post_id';
 	$result = $db->sql_query($sql);
 
-	$report_posts = $report_topics = array();
+	$report_posts = $report_topics = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$report_posts[] = $row['post_id'];
@@ -375,7 +375,7 @@ function user_delete($mode, $user_id, $post_username = false)
 				AND ' . $db->sql_in_set('post_id', $report_posts, true);
 		$result = $db->sql_query($sql);
 
-		$keep_report_topics = array();
+		$keep_report_topics = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$keep_report_topics[] = $row['topic_id'];
@@ -484,7 +484,7 @@ function user_delete($mode, $user_id, $post_username = false)
 
 	$db->sql_transaction('begin');
 
-	$table_ary = array(USERS_TABLE, USER_GROUP_TABLE, TOPICS_WATCH_TABLE, FORUMS_WATCH_TABLE, ACL_USERS_TABLE, TOPICS_TRACK_TABLE, TOPICS_POSTED_TABLE, FORUMS_TRACK_TABLE, PROFILE_FIELDS_DATA_TABLE, MODERATOR_CACHE_TABLE, DRAFTS_TABLE, BOOKMARKS_TABLE, SESSIONS_KEYS_TABLE, PRIVMSGS_FOLDER_TABLE, PRIVMSGS_RULES_TABLE);
+	$table_ary = [USERS_TABLE, USER_GROUP_TABLE, TOPICS_WATCH_TABLE, FORUMS_WATCH_TABLE, ACL_USERS_TABLE, TOPICS_TRACK_TABLE, TOPICS_POSTED_TABLE, FORUMS_TRACK_TABLE, PROFILE_FIELDS_DATA_TABLE, MODERATOR_CACHE_TABLE, DRAFTS_TABLE, BOOKMARKS_TABLE, SESSIONS_KEYS_TABLE, PRIVMSGS_FOLDER_TABLE, PRIVMSGS_RULES_TABLE];
 
 	foreach ($table_ary as $table)
 	{
@@ -575,11 +575,11 @@ function user_active_flip($mode, $user_id_ary, $reason = INACTIVE_MANUAL)
 	global $config, $db, $user, $auth;
 
 	$deactivated = $activated = 0;
-	$sql_statements = array();
+	$sql_statements = [];
 
 	if (!is_array($user_id_ary))
 	{
-		$user_id_ary = array($user_id_ary);
+		$user_id_ary = [$user_id_ary];
 	}
 
 	if (!sizeof($user_id_ary))
@@ -594,7 +594,7 @@ function user_active_flip($mode, $user_id_ary, $reason = INACTIVE_MANUAL)
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$sql_ary = array();
+		$sql_ary = [];
 
 		if ($row['user_type'] == USER_IGNORE || $row['user_type'] == USER_FOUNDER ||
 			($mode == 'activate' && $row['user_type'] != USER_INACTIVE) ||
@@ -615,11 +615,11 @@ function user_active_flip($mode, $user_id_ary, $reason = INACTIVE_MANUAL)
 			$user->reset_login_keys($row['user_id']);
 		}
 
-		$sql_ary += array(
+		$sql_ary += [
 			'user_type'				=> ($row['user_type'] == USER_NORMAL) ? USER_INACTIVE : USER_NORMAL,
 			'user_inactive_time'	=> ($row['user_type'] == USER_NORMAL) ? time() : 0,
 			'user_inactive_reason'	=> ($row['user_type'] == USER_NORMAL) ? $reason : 0,
-		);
+		];
 
 		$sql_statements[$row['user_id']] = $sql_ary;
 	}
@@ -705,7 +705,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 		$ban_end = 0;
 	}
 
-	$founder = $founder_names = array();
+	$founder = $founder_names = [];
 
 	if (!$ban_exclude)
 	{
@@ -723,7 +723,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 		$db->sql_freeresult($result);
 	}
 
-	$banlist_ary = array();
+	$banlist_ary = [];
 
 	switch ($mode)
 	{
@@ -733,7 +733,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 			// At the moment we do not support wildcard username banning
 
 			// Select the relevant user_ids.
-			$sql_usernames = array();
+			$sql_usernames = [];
 
 			foreach ($ban_list as $username)
 			{
@@ -764,7 +764,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 				WHERE ' . $db->sql_in_set('username_clean', $sql_usernames);
 
 			// Do not allow banning yourself, the guest account, or founders.
-			$non_bannable = array($user->data['user_id'], ANONYMOUS);
+			$non_bannable = [$user->data['user_id'], ANONYMOUS];
 			if (sizeof($founder))
 			{
 				$sql .= ' AND ' . $db->sql_in_set('user_id', array_merge(array_keys($founder), $non_bannable), true);
@@ -940,7 +940,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 
 	if ($row = $db->sql_fetchrow($result))
 	{
-		$banlist_ary_tmp = array();
+		$banlist_ary_tmp = [];
 		do
 		{
 			switch ($mode)
@@ -978,18 +978,18 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 	// We have some entities to ban
 	if (sizeof($banlist_ary))
 	{
-		$sql_ary = array();
+		$sql_ary = [];
 
 		foreach ($banlist_ary as $ban_entry)
 		{
-			$sql_ary[] = array(
+			$sql_ary[] = [
 				$type				=> $ban_entry,
 				'ban_start'			=> (int) $current_time,
 				'ban_end'			=> (int) $ban_end,
 				'ban_exclude'		=> (int) $ban_exclude,
 				'ban_reason'		=> (string) $ban_reason,
 				'ban_give_reason'	=> (string) $ban_give_reason,
-			);
+			];
 		}
 
 		$db->sql_multi_insert(BANLIST_TABLE, $sql_ary);
@@ -1008,7 +1008,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 				break;
 
 				case 'email':
-					$banlist_ary_sql = array();
+					$banlist_ary_sql = [];
 
 					foreach ($banlist_ary as $ban_entry)
 					{
@@ -1020,7 +1020,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 						WHERE ' . $db->sql_in_set('user_email', $banlist_ary_sql);
 					$result = $db->sql_query($sql);
 
-					$sql_in = array();
+					$sql_in = [];
 
 					if ($row = $db->sql_fetchrow($result))
 					{
@@ -1090,7 +1090,7 @@ function user_unban($mode, $ban)
 
 	if (!is_array($ban))
 	{
-		$ban = array($ban);
+		$ban = [$ban];
 	}
 
 	$unban_sql = array_map('intval', $ban);
@@ -1122,7 +1122,7 @@ function user_unban($mode, $ban)
 		$result = $db->sql_query($sql);
 
 		$l_unban_list = '';
-		$user_ids_ary = array();
+		$user_ids_ary = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$l_unban_list .= (($l_unban_list != '') ? ', ' : '') . $row['unban_info'];
@@ -1198,7 +1198,7 @@ function user_ipwhois($ip)
 		@fclose($fsk);
 	}
 
-	$match = array();
+	$match = [];
 
 	// Test for referrals from $whois_host to other whois databases, roll on rwhois
 	if (preg_match('#ReferralServer: whois://(.+)#im', $ipwhois, $match))
@@ -1247,13 +1247,13 @@ function validate_data($data, $val_ary)
 {
 	global $user;
 
-	$error = array();
+	$error = [];
 
 	foreach ($val_ary as $var => $val_seq)
 	{
 		if (!is_array($val_seq[0]))
 		{
-			$val_seq = array($val_seq);
+			$val_seq = [$val_seq];
 		}
 
 		foreach ($val_seq as $validate)
@@ -1521,7 +1521,7 @@ function validate_password($password)
 		return false;
 	}
 
-	$chars = array();
+	$chars = [];
 
 	switch ($config['pass_complex'])
 	{
@@ -1662,112 +1662,112 @@ function validate_jabber($jid)
 		}
 	}
 
-	$boundary = array(array(0, 127), array(192, 223), array(224, 239), array(240, 247), array(248, 251), array(252, 253));
+	$boundary = [[0, 127], [192, 223], [224, 239], [240, 247], [248, 251], [252, 253]];
 
 	// Prohibited Characters RFC3454 + RFC3920
-	$prohibited = array(
+	$prohibited = [
 		// Table C.1.1
-		array(0x0020, 0x0020),		// SPACE
+		[0x0020, 0x0020],		// SPACE
 		// Table C.1.2
-		array(0x00A0, 0x00A0),		// NO-BREAK SPACE
-		array(0x1680, 0x1680),		// OGHAM SPACE MARK
-		array(0x2000, 0x2001),		// EN QUAD
-		array(0x2001, 0x2001),		// EM QUAD
-		array(0x2002, 0x2002),		// EN SPACE
-		array(0x2003, 0x2003),		// EM SPACE
-		array(0x2004, 0x2004),		// THREE-PER-EM SPACE
-		array(0x2005, 0x2005),		// FOUR-PER-EM SPACE
-		array(0x2006, 0x2006),		// SIX-PER-EM SPACE
-		array(0x2007, 0x2007),		// FIGURE SPACE
-		array(0x2008, 0x2008),		// PUNCTUATION SPACE
-		array(0x2009, 0x2009),		// THIN SPACE
-		array(0x200A, 0x200A),		// HAIR SPACE
-		array(0x200B, 0x200B),		// ZERO WIDTH SPACE
-		array(0x202F, 0x202F),		// NARROW NO-BREAK SPACE
-		array(0x205F, 0x205F),		// MEDIUM MATHEMATICAL SPACE
-		array(0x3000, 0x3000),		// IDEOGRAPHIC SPACE
+		[0x00A0, 0x00A0],		// NO-BREAK SPACE
+		[0x1680, 0x1680],		// OGHAM SPACE MARK
+		[0x2000, 0x2001],		// EN QUAD
+		[0x2001, 0x2001],		// EM QUAD
+		[0x2002, 0x2002],		// EN SPACE
+		[0x2003, 0x2003],		// EM SPACE
+		[0x2004, 0x2004],		// THREE-PER-EM SPACE
+		[0x2005, 0x2005],		// FOUR-PER-EM SPACE
+		[0x2006, 0x2006],		// SIX-PER-EM SPACE
+		[0x2007, 0x2007],		// FIGURE SPACE
+		[0x2008, 0x2008],		// PUNCTUATION SPACE
+		[0x2009, 0x2009],		// THIN SPACE
+		[0x200A, 0x200A],		// HAIR SPACE
+		[0x200B, 0x200B],		// ZERO WIDTH SPACE
+		[0x202F, 0x202F],		// NARROW NO-BREAK SPACE
+		[0x205F, 0x205F],		// MEDIUM MATHEMATICAL SPACE
+		[0x3000, 0x3000],		// IDEOGRAPHIC SPACE
 		// Table C.2.1
-		array(0x0000, 0x001F),		// [CONTROL CHARACTERS]
-		array(0x007F, 0x007F),		// DELETE
+		[0x0000, 0x001F],		// [CONTROL CHARACTERS]
+		[0x007F, 0x007F],		// DELETE
 		// Table C.2.2
-		array(0x0080, 0x009F),		// [CONTROL CHARACTERS]
-		array(0x06DD, 0x06DD),		// ARABIC END OF AYAH
-		array(0x070F, 0x070F),		// SYRIAC ABBREVIATION MARK
-		array(0x180E, 0x180E),		// MONGOLIAN VOWEL SEPARATOR
-		array(0x200C, 0x200C), 		// ZERO WIDTH NON-JOINER
-		array(0x200D, 0x200D),		// ZERO WIDTH JOINER
-		array(0x2028, 0x2028),		// LINE SEPARATOR
-		array(0x2029, 0x2029),		// PARAGRAPH SEPARATOR
-		array(0x2060, 0x2060),		// WORD JOINER
-		array(0x2061, 0x2061),		// FUNCTION APPLICATION
-		array(0x2062, 0x2062),		// INVISIBLE TIMES
-		array(0x2063, 0x2063),		// INVISIBLE SEPARATOR
-		array(0x206A, 0x206F),		// [CONTROL CHARACTERS]
-		array(0xFEFF, 0xFEFF),		// ZERO WIDTH NO-BREAK SPACE
-		array(0xFFF9, 0xFFFC),		// [CONTROL CHARACTERS]
-		array(0x1D173, 0x1D17A),	// [MUSICAL CONTROL CHARACTERS]
+		[0x0080, 0x009F],		// [CONTROL CHARACTERS]
+		[0x06DD, 0x06DD],		// ARABIC END OF AYAH
+		[0x070F, 0x070F],		// SYRIAC ABBREVIATION MARK
+		[0x180E, 0x180E],		// MONGOLIAN VOWEL SEPARATOR
+		[0x200C, 0x200C], 		// ZERO WIDTH NON-JOINER
+		[0x200D, 0x200D],		// ZERO WIDTH JOINER
+		[0x2028, 0x2028],		// LINE SEPARATOR
+		[0x2029, 0x2029],		// PARAGRAPH SEPARATOR
+		[0x2060, 0x2060],		// WORD JOINER
+		[0x2061, 0x2061],		// FUNCTION APPLICATION
+		[0x2062, 0x2062],		// INVISIBLE TIMES
+		[0x2063, 0x2063],		// INVISIBLE SEPARATOR
+		[0x206A, 0x206F],		// [CONTROL CHARACTERS]
+		[0xFEFF, 0xFEFF],		// ZERO WIDTH NO-BREAK SPACE
+		[0xFFF9, 0xFFFC],		// [CONTROL CHARACTERS]
+		[0x1D173, 0x1D17A],	// [MUSICAL CONTROL CHARACTERS]
 		// Table C.3
-		array(0xE000, 0xF8FF),		// [PRIVATE USE, PLANE 0]
-		array(0xF0000, 0xFFFFD),	// [PRIVATE USE, PLANE 15]
-		array(0x100000, 0x10FFFD),	// [PRIVATE USE, PLANE 16]
+		[0xE000, 0xF8FF],		// [PRIVATE USE, PLANE 0]
+		[0xF0000, 0xFFFFD],	// [PRIVATE USE, PLANE 15]
+		[0x100000, 0x10FFFD],	// [PRIVATE USE, PLANE 16]
 		// Table C.4
-		array(0xFDD0, 0xFDEF),		// [NONCHARACTER CODE POINTS]
-		array(0xFFFE, 0xFFFF),		// [NONCHARACTER CODE POINTS]
-		array(0x1FFFE, 0x1FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x2FFFE, 0x2FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x3FFFE, 0x3FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x4FFFE, 0x4FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x5FFFE, 0x5FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x6FFFE, 0x6FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x7FFFE, 0x7FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x8FFFE, 0x8FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x9FFFE, 0x9FFFF),	// [NONCHARACTER CODE POINTS]
-		array(0xAFFFE, 0xAFFFF),	// [NONCHARACTER CODE POINTS]
-		array(0xBFFFE, 0xBFFFF),	// [NONCHARACTER CODE POINTS]
-		array(0xCFFFE, 0xCFFFF),	// [NONCHARACTER CODE POINTS]
-		array(0xDFFFE, 0xDFFFF),	// [NONCHARACTER CODE POINTS]
-		array(0xEFFFE, 0xEFFFF),	// [NONCHARACTER CODE POINTS]
-		array(0xFFFFE, 0xFFFFF),	// [NONCHARACTER CODE POINTS]
-		array(0x10FFFE, 0x10FFFF),	// [NONCHARACTER CODE POINTS]
+		[0xFDD0, 0xFDEF],		// [NONCHARACTER CODE POINTS]
+		[0xFFFE, 0xFFFF],		// [NONCHARACTER CODE POINTS]
+		[0x1FFFE, 0x1FFFF],	// [NONCHARACTER CODE POINTS]
+		[0x2FFFE, 0x2FFFF],	// [NONCHARACTER CODE POINTS]
+		[0x3FFFE, 0x3FFFF],	// [NONCHARACTER CODE POINTS]
+		[0x4FFFE, 0x4FFFF],	// [NONCHARACTER CODE POINTS]
+		[0x5FFFE, 0x5FFFF],	// [NONCHARACTER CODE POINTS]
+		[0x6FFFE, 0x6FFFF],	// [NONCHARACTER CODE POINTS]
+		[0x7FFFE, 0x7FFFF],	// [NONCHARACTER CODE POINTS]
+		[0x8FFFE, 0x8FFFF],	// [NONCHARACTER CODE POINTS]
+		[0x9FFFE, 0x9FFFF],	// [NONCHARACTER CODE POINTS]
+		[0xAFFFE, 0xAFFFF],	// [NONCHARACTER CODE POINTS]
+		[0xBFFFE, 0xBFFFF],	// [NONCHARACTER CODE POINTS]
+		[0xCFFFE, 0xCFFFF],	// [NONCHARACTER CODE POINTS]
+		[0xDFFFE, 0xDFFFF],	// [NONCHARACTER CODE POINTS]
+		[0xEFFFE, 0xEFFFF],	// [NONCHARACTER CODE POINTS]
+		[0xFFFFE, 0xFFFFF],	// [NONCHARACTER CODE POINTS]
+		[0x10FFFE, 0x10FFFF],	// [NONCHARACTER CODE POINTS]
 		// Table C.5
-		array(0xD800, 0xDFFF),		// [SURROGATE CODES]
+		[0xD800, 0xDFFF],		// [SURROGATE CODES]
 		// Table C.6
-		array(0xFFF9, 0xFFF9),		// INTERLINEAR ANNOTATION ANCHOR
-		array(0xFFFA, 0xFFFA),		// INTERLINEAR ANNOTATION SEPARATOR
-		array(0xFFFB, 0xFFFB),		// INTERLINEAR ANNOTATION TERMINATOR
-		array(0xFFFC, 0xFFFC),		// OBJECT REPLACEMENT CHARACTER
-		array(0xFFFD, 0xFFFD),		// REPLACEMENT CHARACTER
+		[0xFFF9, 0xFFF9],		// INTERLINEAR ANNOTATION ANCHOR
+		[0xFFFA, 0xFFFA],		// INTERLINEAR ANNOTATION SEPARATOR
+		[0xFFFB, 0xFFFB],		// INTERLINEAR ANNOTATION TERMINATOR
+		[0xFFFC, 0xFFFC],		// OBJECT REPLACEMENT CHARACTER
+		[0xFFFD, 0xFFFD],		// REPLACEMENT CHARACTER
 		// Table C.7
-		array(0x2FF0, 0x2FFB),		// [IDEOGRAPHIC DESCRIPTION CHARACTERS]
+		[0x2FF0, 0x2FFB],		// [IDEOGRAPHIC DESCRIPTION CHARACTERS]
 		// Table C.8
-		array(0x0340, 0x0340),		// COMBINING GRAVE TONE MARK
-		array(0x0341, 0x0341),		// COMBINING ACUTE TONE MARK
-		array(0x200E, 0x200E),		// LEFT-TO-RIGHT MARK
-		array(0x200F, 0x200F),		// RIGHT-TO-LEFT MARK
-		array(0x202A, 0x202A),		// LEFT-TO-RIGHT EMBEDDING
-		array(0x202B, 0x202B),		// RIGHT-TO-LEFT EMBEDDING
-		array(0x202C, 0x202C),		// POP DIRECTIONAL FORMATTING
-		array(0x202D, 0x202D),		// LEFT-TO-RIGHT OVERRIDE
-		array(0x202E, 0x202E),		// RIGHT-TO-LEFT OVERRIDE
-		array(0x206A, 0x206A),		// INHIBIT SYMMETRIC SWAPPING
-		array(0x206B, 0x206B),		// ACTIVATE SYMMETRIC SWAPPING
-		array(0x206C, 0x206C),		// INHIBIT ARABIC FORM SHAPING
-		array(0x206D, 0x206D),		// ACTIVATE ARABIC FORM SHAPING
-		array(0x206E, 0x206E),		// NATIONAL DIGIT SHAPES
-		array(0x206F, 0x206F),		// NOMINAL DIGIT SHAPES
+		[0x0340, 0x0340],		// COMBINING GRAVE TONE MARK
+		[0x0341, 0x0341],		// COMBINING ACUTE TONE MARK
+		[0x200E, 0x200E],		// LEFT-TO-RIGHT MARK
+		[0x200F, 0x200F],		// RIGHT-TO-LEFT MARK
+		[0x202A, 0x202A],		// LEFT-TO-RIGHT EMBEDDING
+		[0x202B, 0x202B],		// RIGHT-TO-LEFT EMBEDDING
+		[0x202C, 0x202C],		// POP DIRECTIONAL FORMATTING
+		[0x202D, 0x202D],		// LEFT-TO-RIGHT OVERRIDE
+		[0x202E, 0x202E],		// RIGHT-TO-LEFT OVERRIDE
+		[0x206A, 0x206A],		// INHIBIT SYMMETRIC SWAPPING
+		[0x206B, 0x206B],		// ACTIVATE SYMMETRIC SWAPPING
+		[0x206C, 0x206C],		// INHIBIT ARABIC FORM SHAPING
+		[0x206D, 0x206D],		// ACTIVATE ARABIC FORM SHAPING
+		[0x206E, 0x206E],		// NATIONAL DIGIT SHAPES
+		[0x206F, 0x206F],		// NOMINAL DIGIT SHAPES
 		// Table C.9
-		array(0xE0001, 0xE0001),	// LANGUAGE TAG
-		array(0xE0020, 0xE007F),	// [TAGGING CHARACTERS]
+		[0xE0001, 0xE0001],	// LANGUAGE TAG
+		[0xE0020, 0xE007F],	// [TAGGING CHARACTERS]
 		// RFC3920
-		array(0x22, 0x22),			// "
-		array(0x26, 0x26),			// &
-		array(0x27, 0x27),			// '
-		array(0x2F, 0x2F),			// /
-		array(0x3A, 0x3A),			// :
-		array(0x3C, 0x3C),			// <
-		array(0x3E, 0x3E),			// >
-		array(0x40, 0x40)			// @
-	);
+		[0x22, 0x22],			// "
+		[0x26, 0x26],			// &
+		[0x27, 0x27],			// '
+		[0x2F, 0x2F],			// /
+		[0x3A, 0x3A],			// :
+		[0x3C, 0x3C],			// <
+		[0x3E, 0x3E],			// >
+		[0x40, 0x40]			// @
+	];
 
 	$pos = 0;
 	$result = true;
@@ -1953,7 +1953,7 @@ function avatar_remote($data, &$error)
 		}
 	}
 
-	return array(AVATAR_REMOTE, $data['remotelink'], $width, $height);
+	return [AVATAR_REMOTE, $data['remotelink'], $width, $height];
 }
 
 /**
@@ -1965,7 +1965,7 @@ function avatar_upload($data, &$error)
 
 	// Init upload class
 	require_once(PHPBB_ROOT_PATH . 'includes/functions_upload.php');
-	$upload = new fileupload('AVATAR_', array('jpg', 'jpeg', 'gif', 'png'), $config['avatar_filesize'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], (isset($config['mime_triggers']) ? explode('|', $config['mime_triggers']) : false));
+	$upload = new fileupload('AVATAR_', ['jpg', 'jpeg', 'gif', 'png'], $config['avatar_filesize'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], (isset($config['mime_triggers']) ? explode('|', $config['mime_triggers']) : false));
 
 	if (!empty($_FILES['uploadfile']['name']))
 	{
@@ -1988,7 +1988,7 @@ function avatar_upload($data, &$error)
 		$error = array_merge($error, $file->error);
 	}
 
-	return array(AVATAR_UPLOAD, $filename . '.' . $file->get('extension'), $file->get('width'), $file->get('height'));
+	return [AVATAR_UPLOAD, $filename . '.' . $file->get('extension'), $file->get('width'), $file->get('height')];
 }
 
 /**
@@ -2006,13 +2006,13 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 {
 	global $user, $cache, $template, $config;
 
-	$avatar_list = array();
+	$avatar_list = [];
 
 	$path = PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH;
 
 	if (!file_exists($path) || !is_dir($path))
 	{
-		$avatar_list = array($user->lang['NO_AVATAR_CATEGORY'] => array());
+		$avatar_list = [$user->lang['NO_AVATAR_CATEGORY'] => []];
 	}
 	else
 	{
@@ -2021,7 +2021,7 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 
 		if (!$dp)
 		{
-			return array($user->lang['NO_AVATAR_CATEGORY'] => array());
+			return [$user->lang['NO_AVATAR_CATEGORY'] => []];
 		}
 
 		while (($file = readdir($dp)) !== false)
@@ -2036,11 +2036,11 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 					{
 						if (preg_match('#^[^&\'"<>]+\.(?:gif|png|jpe?g)$#i', $sub_file))
 						{
-							$avatar_list[$file][$avatar_row_count][$avatar_col_count] = array(
+							$avatar_list[$file][$avatar_row_count][$avatar_col_count] = [
 								'file'		=> rawurlencode($file) . '/' . rawurlencode($sub_file),
 								'filename'	=> rawurlencode($sub_file),
 								'name'		=> ucfirst(str_replace('_', ' ', preg_replace('#^(.*)\..*$#', '\1', $sub_file))),
-							);
+							];
 							$avatar_col_count++;
 							if ($avatar_col_count == $items_per_column)
 							{
@@ -2058,7 +2058,7 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 
 	if (!sizeof($avatar_list))
 	{
-		$avatar_list = array($user->lang['NO_AVATAR_CATEGORY'] => array());
+		$avatar_list = [$user->lang['NO_AVATAR_CATEGORY'] => []];
 	}
 
 	@ksort($avatar_list);
@@ -2072,29 +2072,29 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 		$s_category_options .= '<option value="' . $cat . '"' . (($cat == $category) ? ' selected="selected"' : '') . '>' . $cat . '</option>';
 	}
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_AVATARS_ENABLED'		=> true,
 		'S_IN_AVATAR_GALLERY'	=> true,
-		'S_CAT_OPTIONS'			=> $s_category_options)
+		'S_CAT_OPTIONS'			=> $s_category_options]
 	);
 
-	$avatar_list = (isset($avatar_list[$category])) ? $avatar_list[$category] : array();
+	$avatar_list = (isset($avatar_list[$category])) ? $avatar_list[$category] : [];
 
 	foreach ($avatar_list as $avatar_row_ary)
 	{
-		$template->assign_block_vars($block_var, array());
+		$template->assign_block_vars($block_var, []);
 
 		foreach ($avatar_row_ary as $avatar_col_ary)
 		{
-			$template->assign_block_vars($block_var . '.avatar_column', array(
+			$template->assign_block_vars($block_var . '.avatar_column', [
 				'AVATAR_IMAGE'	=> PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $avatar_col_ary['file'],
 				'AVATAR_NAME'	=> $avatar_col_ary['name'],
-				'AVATAR_FILE'	=> $avatar_col_ary['filename'])
+				'AVATAR_FILE'	=> $avatar_col_ary['filename']]
 			);
 
-			$template->assign_block_vars($block_var . '.avatar_option_column', array(
+			$template->assign_block_vars($block_var . '.avatar_option_column', [
 				'AVATAR_IMAGE'	=> PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $avatar_col_ary['file'],
-				'S_OPTIONS_AVATAR'	=> $avatar_col_ary['filename'])
+				'S_OPTIONS_AVATAR'	=> $avatar_col_ary['filename']]
 			);
 		}
 	}
@@ -2153,7 +2153,7 @@ function avatar_get_dimensions($avatar, $avatar_type, &$error, $current_x = 0, $
 			$image_data[0] = max($config['avatar_min_width'], $image_data[1]);
 		}
 	}
-	return array($image_data[0], $image_data[1]);
+	return [$image_data[0], $image_data[1]];
 }
 
 /**
@@ -2163,26 +2163,26 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 {
 	global $config, $auth, $user, $db;
 
-	$data = array(
+	$data = [
 		'uploadurl'		=> request_var('uploadurl', ''),
 		'remotelink'	=> request_var('remotelink', ''),
 		'width'			=> request_var('width', 0),
 		'height'		=> request_var('height', 0),
-	);
+	];
 
-	$error = validate_data($data, array(
-		'uploadurl'		=> array('string', true, 5, 255),
-		'remotelink'	=> array('string', true, 5, 255),
-		'width'			=> array('string', true, 1, 3),
-		'height'		=> array('string', true, 1, 3),
-	));
+	$error = validate_data($data, [
+		'uploadurl'		=> ['string', true, 5, 255],
+		'remotelink'	=> ['string', true, 5, 255],
+		'width'			=> ['string', true, 1, 3],
+		'height'		=> ['string', true, 1, 3],
+	]);
 
 	if (sizeof($error))
 	{
 		return false;
 	}
 
-	$sql_ary = array();
+	$sql_ary = [];
 	$userdata = ($custom_userdata === false) ? $user->data : $custom_userdata;
 	$data['user_id'] = $userdata['user_id'];
 	$change_avatar = ($custom_userdata === false) ? $auth->acl_get('u_chgavatar') : true;
@@ -2307,10 +2307,10 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 {
 	global $config, $db, $user, $file_upload;
 
-	$error = array();
+	$error = [];
 
 	// Attributes which also affect the users table
-	$user_attribute_ary = array('group_colour', 'group_rank');
+	$user_attribute_ary = ['group_colour', 'group_rank'];
 
 	// Check data. Limit group name length.
 	if (!utf8_strlen($name) || utf8_strlen($name) > 60)
@@ -2324,21 +2324,21 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 		$error[] = $user->lang[$err];
 	}
 
-	if (!in_array($type, array(GROUP_OPEN, GROUP_CLOSED, GROUP_HIDDEN, GROUP_SPECIAL, GROUP_FREE)))
+	if (!in_array($type, [GROUP_OPEN, GROUP_CLOSED, GROUP_HIDDEN, GROUP_SPECIAL, GROUP_FREE]))
 	{
 		$error[] = $user->lang['GROUP_ERR_TYPE'];
 	}
 
 	if (!sizeof($error))
 	{
-		$user_ary = array();
-		$sql_ary = array(
+		$user_ary = [];
+		$sql_ary = [
 			'group_name'			=> (string) $name,
 			'group_desc'			=> (string) $desc,
 			'group_desc_uid'		=> '',
 			'group_desc_bitfield'	=> '',
 			'group_type'			=> (int) $type,
-		);
+		];
 
 		// Parse description
 		if ($desc)
@@ -2396,7 +2396,7 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 						AND user_pending = 0';
 				$result = $db->sql_query($sql);
 
-				$user_id_ary = array();
+				$user_id_ary = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$user_id_ary[] = $row['user_id'];
@@ -2424,7 +2424,7 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 		}
 
 		// Set user attributes
-		$sql_ary = array();
+		$sql_ary = [];
 		if (sizeof($group_attributes))
 		{
 			// Go through the user attributes array, check if a group attribute matches it and then set it. ;)
@@ -2470,7 +2470,7 @@ function group_delete($group_id, $group_name = false)
 
 	do
 	{
-		$user_id_ary = $username_ary = array();
+		$user_id_ary = $username_ary = [];
 
 		// Batch query for group members, call group_user_del
 		$sql = 'SELECT u.user_id, u.username
@@ -2548,7 +2548,7 @@ function group_user_add($group_id, $user_id_ary = false, $username_ary = false, 
 			AND group_id = $group_id";
 	$result = $db->sql_query($sql);
 
-	$add_id_ary = $update_id_ary = array();
+	$add_id_ary = $update_id_ary = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$add_id_ary[] = (int) $row['user_id'];
@@ -2574,16 +2574,16 @@ function group_user_add($group_id, $user_id_ary = false, $username_ary = false, 
 	// Insert the new users
 	if (sizeof($add_id_ary))
 	{
-		$sql_ary = array();
+		$sql_ary = [];
 
 		foreach ($add_id_ary as $user_id)
 		{
-			$sql_ary[] = array(
+			$sql_ary[] = [
 				'user_id'		=> (int) $user_id,
 				'group_id'		=> (int) $group_id,
 				'group_leader'	=> (int) $leader,
 				'user_pending'	=> (int) $pending,
-			);
+			];
 		}
 
 		$db->sql_multi_insert(USER_GROUP_TABLE, $sql_ary);
@@ -2634,7 +2634,7 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 {
 	global $db, $auth, $config;
 
-	$group_order = array('ADMINISTRATORS', 'GLOBAL_MODERATORS', 'NEWLY_REGISTERED', 'REGISTERED', 'BOTS', 'GUESTS');
+	$group_order = ['ADMINISTRATORS', 'GLOBAL_MODERATORS', 'NEWLY_REGISTERED', 'REGISTERED', 'BOTS', 'GUESTS'];
 
 	// We need both username and user_id info
 	$result = user_get_id_name($user_id_ary, $username_ary);
@@ -2649,15 +2649,15 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 		WHERE ' . $db->sql_in_set('group_name', $group_order);
 	$result = $db->sql_query($sql);
 
-	$group_order_id = $special_group_data = array();
+	$group_order_id = $special_group_data = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$group_order_id[$row['group_name']] = $row['group_id'];
 
-		$special_group_data[$row['group_id']] = array(
+		$special_group_data[$row['group_id']] = [
 			'group_colour'			=> $row['group_colour'],
 			'group_rank'				=> $row['group_rank'],
-		);
+		];
 	}
 	$db->sql_freeresult($result);
 
@@ -2667,7 +2667,7 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 		WHERE ' . $db->sql_in_set('user_id', $user_id_ary);
 	$result = $db->sql_query($sql);
 
-	$default_groups = array();
+	$default_groups = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$default_groups[$row['user_id']] = $row['group_id'];
@@ -2684,7 +2684,7 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 		ORDER BY ug.user_id, g.group_id';
 	$result = $db->sql_query($sql);
 
-	$temp_ary = array();
+	$temp_ary = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		if ($default_groups[$row['user_id']] == $group_id && (!isset($temp_ary[$row['user_id']]) || $group_order_id[$row['group_name']] < $temp_ary[$row['user_id']]))
@@ -2695,7 +2695,7 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 	$db->sql_freeresult($result);
 
 	// sql_where_ary holds the new default groups and their users
-	$sql_where_ary = array();
+	$sql_where_ary = [];
 	foreach ($temp_ary as $uid => $gid)
 	{
 		$sql_where_ary[$gid][] = $uid;
@@ -2747,7 +2747,7 @@ function remove_default_rank($group_id, $user_ids)
 
 	if (!is_array($user_ids))
 	{
-		$user_ids = array($user_ids);
+		$user_ids = [$user_ids];
 	}
 	if (empty($user_ids))
 	{
@@ -2833,7 +2833,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 					AND ' . $db->sql_in_set('ug.user_id', $user_id_ary);
 			$result = $db->sql_query($sql);
 
-			$user_id_ary = $email_users = array();
+			$user_id_ary = $email_users = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$user_id_ary[] = $row['user_id'];
@@ -2863,10 +2863,10 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 				$messenger->to($row['user_email'], $row['username']);
 				$messenger->im($row['user_jabber'], $row['username']);
 
-				$messenger->assign_vars(array(
+				$messenger->assign_vars([
 					'USERNAME'		=> htmlspecialchars_decode($row['username']),
 					'GROUP_NAME'	=> htmlspecialchars_decode($group_name),
-					'U_GROUP'		=> generate_board_url() . "/ucp.php?i=groups&mode=membership")
+					'U_GROUP'		=> generate_board_url() . "/ucp.php?i=groups&mode=membership"]
 				);
 
 				$messenger->send($row['user_notify_type']);
@@ -2886,7 +2886,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 					AND " . $db->sql_in_set('user_id', $user_id_ary);
 			$result = $db->sql_query($sql);
 
-			$user_id_ary = $username_ary = array();
+			$user_id_ary = $username_ary = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$user_id_ary[] = $row['user_id'];
@@ -2903,12 +2903,12 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 				WHERE ' . $db->sql_in_set('user_id', $user_id_ary, false, true);
 			$result = $db->sql_query($sql);
 
-			$groups = array();
+			$groups = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				if (!isset($groups[$row['group_id']]))
 				{
-					$groups[$row['group_id']] = array();
+					$groups[$row['group_id']] = [];
 				}
 				$groups[$row['group_id']][] = $row['user_id'];
 			}
@@ -2993,14 +2993,14 @@ function group_set_user_default($group_id, $user_id_ary, $group_attributes = fal
 		return;
 	}
 
-	$attribute_ary = array(
+	$attribute_ary = [
 		'group_colour'			=> 'string',
 		'group_rank'			=> 'int',
-	);
+	];
 
-	$sql_ary = array(
+	$sql_ary = [
 		'group_id'		=> $group_id
-	);
+	];
 
 	// Were group attributes passed to the function? If not we need to obtain them
 	if ($group_attributes === false)
@@ -3103,12 +3103,12 @@ function group_memberships($group_id_ary = false, $user_id_ary = false, $return_
 
 	if ($user_id_ary)
 	{
-		$user_id_ary = (!is_array($user_id_ary)) ? array($user_id_ary) : $user_id_ary;
+		$user_id_ary = (!is_array($user_id_ary)) ? [$user_id_ary] : $user_id_ary;
 	}
 
 	if ($group_id_ary)
 	{
-		$group_id_ary = (!is_array($group_id_ary)) ? array($group_id_ary) : $group_id_ary;
+		$group_id_ary = (!is_array($group_id_ary)) ? [$group_id_ary] : $group_id_ary;
 	}
 
 	$sql = 'SELECT ug.*, u.username, u.username_clean, u.user_email
@@ -3142,7 +3142,7 @@ function group_memberships($group_id_ary = false, $user_id_ary = false, $return_
 		return false;
 	}
 
-	$return = array();
+	$return = [];
 
 	do
 	{
@@ -3162,7 +3162,7 @@ function group_update_listings($group_id)
 {
 	global $auth;
 
-	$hold_ary = $auth->acl_group_raw_data($group_id, array('a_', 'm_'));
+	$hold_ary = $auth->acl_group_raw_data($group_id, ['a_', 'm_']);
 
 	if (!sizeof($hold_ary))
 	{
@@ -3215,7 +3215,7 @@ function group_update_listings($group_id)
 		{
 			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 		}
-		update_foes(array($group_id));
+		update_foes([$group_id]);
 	}
 }
 
@@ -3299,7 +3299,7 @@ function remove_newly_registered($user_id, $user_data = false)
 *						leave empty to get complete list of banned ids
 * @return array	Array of banned users' ids if any, empty array otherwise
 */
-function phpbb_get_banned_user_ids($user_ids = array())
+function phpbb_get_banned_user_ids($user_ids = [])
 {
 	global $db;
 
@@ -3307,7 +3307,7 @@ function phpbb_get_banned_user_ids($user_ids = array())
 
 	// Get banned User ID's
 	// Ignore stale bans which were not wiped yet
-	$banned_ids_list = array();
+	$banned_ids_list = [];
 	$sql = 'SELECT ban_userid
 		FROM ' . BANLIST_TABLE . "
 		WHERE $sql_user_ids

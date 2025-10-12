@@ -7,12 +7,12 @@
 class response
 {
 	protected static $_ready     = false;
-	protected static $_stack     = array();
+	protected static $_stack     = [];
 
 	/**
 	 * Init response
 	 */
-	static function init($config = array())
+	static function init($config = [])
 	{
 		if (self::$_ready) return;
 

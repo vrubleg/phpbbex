@@ -50,51 +50,51 @@ define('CHECK_TO', 5);
 * Global private message rules
 * These rules define what to do if a rule is hit
 */
-$global_privmsgs_rules = array(
-	CHECK_SUBJECT	=> array(
-		RULE_IS_LIKE		=> array('check0' => 'message_subject', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'),
-		RULE_IS_NOT_LIKE	=> array('check0' => 'message_subject', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'),
-		RULE_IS				=> array('check0' => 'message_subject', 'function' => '{CHECK0} == {STRING}'),
-		RULE_IS_NOT			=> array('check0' => 'message_subject', 'function' => '{CHECK0} != {STRING}'),
-		RULE_BEGINS_WITH	=> array('check0' => 'message_subject', 'function' => 'preg_match("/^" . preg_quote({STRING}, "/") . "/i", {CHECK0})'),
-		RULE_ENDS_WITH		=> array('check0' => 'message_subject', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "$/i", {CHECK0})'),
-	),
+$global_privmsgs_rules = [
+	CHECK_SUBJECT	=> [
+		RULE_IS_LIKE		=> ['check0' => 'message_subject', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
+		RULE_IS_NOT_LIKE	=> ['check0' => 'message_subject', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'],
+		RULE_IS				=> ['check0' => 'message_subject', 'function' => '{CHECK0} == {STRING}'],
+		RULE_IS_NOT			=> ['check0' => 'message_subject', 'function' => '{CHECK0} != {STRING}'],
+		RULE_BEGINS_WITH	=> ['check0' => 'message_subject', 'function' => 'preg_match("/^" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
+		RULE_ENDS_WITH		=> ['check0' => 'message_subject', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "$/i", {CHECK0})'],
+	],
 
-	CHECK_SENDER	=> array(
-		RULE_IS_LIKE		=> array('check0' => 'username', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'),
-		RULE_IS_NOT_LIKE	=> array('check0' => 'username', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'),
-		RULE_IS				=> array('check0' => 'username', 'function' => '{CHECK0} == {STRING}'),
-		RULE_IS_NOT			=> array('check0' => 'username', 'function' => '{CHECK0} != {STRING}'),
-		RULE_BEGINS_WITH	=> array('check0' => 'username', 'function' => 'preg_match("/^" . preg_quote({STRING}, "/") . "/i", {CHECK0})'),
-		RULE_ENDS_WITH		=> array('check0' => 'username', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "$/i", {CHECK0})'),
-		RULE_IS_FRIEND		=> array('check0' => 'friend', 'function' => '{CHECK0} == 1'),
-		RULE_IS_FOE			=> array('check0' => 'foe', 'function' => '{CHECK0} == 1'),
-		RULE_IS_USER		=> array('check0' => 'author_id', 'function' => '{CHECK0} == {USER_ID}'),
-		RULE_IS_GROUP		=> array('check0' => 'author_in_group', 'function' => 'in_array({GROUP_ID}, {CHECK0})'),
-	),
+	CHECK_SENDER	=> [
+		RULE_IS_LIKE		=> ['check0' => 'username', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
+		RULE_IS_NOT_LIKE	=> ['check0' => 'username', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'],
+		RULE_IS				=> ['check0' => 'username', 'function' => '{CHECK0} == {STRING}'],
+		RULE_IS_NOT			=> ['check0' => 'username', 'function' => '{CHECK0} != {STRING}'],
+		RULE_BEGINS_WITH	=> ['check0' => 'username', 'function' => 'preg_match("/^" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
+		RULE_ENDS_WITH		=> ['check0' => 'username', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "$/i", {CHECK0})'],
+		RULE_IS_FRIEND		=> ['check0' => 'friend', 'function' => '{CHECK0} == 1'],
+		RULE_IS_FOE			=> ['check0' => 'foe', 'function' => '{CHECK0} == 1'],
+		RULE_IS_USER		=> ['check0' => 'author_id', 'function' => '{CHECK0} == {USER_ID}'],
+		RULE_IS_GROUP		=> ['check0' => 'author_in_group', 'function' => 'in_array({GROUP_ID}, {CHECK0})'],
+	],
 
-	CHECK_MESSAGE	=> array(
-		RULE_IS_LIKE		=> array('check0' => 'message_text', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'),
-		RULE_IS_NOT_LIKE	=> array('check0' => 'message_text', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'),
-		RULE_IS				=> array('check0' => 'message_text', 'function' => '{CHECK0} == {STRING}'),
-		RULE_IS_NOT			=> array('check0' => 'message_text', 'function' => '{CHECK0} != {STRING}'),
-	),
+	CHECK_MESSAGE	=> [
+		RULE_IS_LIKE		=> ['check0' => 'message_text', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
+		RULE_IS_NOT_LIKE	=> ['check0' => 'message_text', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'],
+		RULE_IS				=> ['check0' => 'message_text', 'function' => '{CHECK0} == {STRING}'],
+		RULE_IS_NOT			=> ['check0' => 'message_text', 'function' => '{CHECK0} != {STRING}'],
+	],
 
-	CHECK_STATUS	=> array(
-		RULE_ANSWERED		=> array('check0' => 'pm_replied', 'function' => '{CHECK0} == 1'),
-		RULE_FORWARDED		=> array('check0' => 'pm_forwarded', 'function' => '{CHECK0} == 1'),
-	),
+	CHECK_STATUS	=> [
+		RULE_ANSWERED		=> ['check0' => 'pm_replied', 'function' => '{CHECK0} == 1'],
+		RULE_FORWARDED		=> ['check0' => 'pm_forwarded', 'function' => '{CHECK0} == 1'],
+	],
 
-	CHECK_TO		=> array(
-		RULE_TO_GROUP		=> array('check0' => 'to', 'check1' => 'bcc', 'check2' => 'user_in_group', 'function' => 'in_array("g_" . {CHECK2}, {CHECK0}) || in_array("g_" . {CHECK2}, {CHECK1})'),
-		RULE_TO_ME			=> array('check0' => 'to', 'check1' => 'bcc', 'function' => 'in_array("u_" . $user_id, {CHECK0}) || in_array("u_" . $user_id, {CHECK1})'),
-	)
-);
+	CHECK_TO		=> [
+		RULE_TO_GROUP		=> ['check0' => 'to', 'check1' => 'bcc', 'check2' => 'user_in_group', 'function' => 'in_array("g_" . {CHECK2}, {CHECK0}) || in_array("g_" . {CHECK2}, {CHECK1})'],
+		RULE_TO_ME			=> ['check0' => 'to', 'check1' => 'bcc', 'function' => 'in_array("u_" . $user_id, {CHECK0}) || in_array("u_" . $user_id, {CHECK1})'],
+	]
+];
 
 /**
 * This is for defining which condition fields to show for which Rule
 */
-$global_rule_conditions = array(
+$global_rule_conditions = [
 	RULE_IS_LIKE		=> 'text',
 	RULE_IS_NOT_LIKE	=> 'text',
 	RULE_IS				=> 'text',
@@ -103,7 +103,7 @@ $global_rule_conditions = array(
 	RULE_ENDS_WITH		=> 'text',
 	RULE_IS_USER		=> 'user',
 	RULE_IS_GROUP		=> 'group'
-);
+];
 
 /**
 * Get all folder
@@ -112,7 +112,7 @@ function get_folder($user_id, $folder_id = false)
 {
 	global $db, $user, $template;
 
-	$folder = array();
+	$folder = [];
 
 	// Get folder information
 	$sql = 'SELECT folder_id, COUNT(msg_id) as num_messages, SUM(pm_unread) as num_unread
@@ -122,7 +122,7 @@ function get_folder($user_id, $folder_id = false)
 		GROUP BY folder_id';
 	$result = $db->sql_query($sql);
 
-	$num_messages = $num_unread = array();
+	$num_messages = $num_unread = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$num_messages[(int) $row['folder_id']] = $row['num_messages'];
@@ -131,7 +131,7 @@ function get_folder($user_id, $folder_id = false)
 	$db->sql_freeresult($result);
 
 	// Make sure the default boxes are defined
-	$available_folder = array(PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX);
+	$available_folder = [PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX];
 
 	foreach ($available_folder as $default_folder)
 	{
@@ -149,11 +149,11 @@ function get_folder($user_id, $folder_id = false)
 	// Adjust unread status for outbox
 	$num_unread[PRIVMSGS_OUTBOX] = $num_messages[PRIVMSGS_OUTBOX];
 
-	$folder[PRIVMSGS_INBOX] = array(
+	$folder[PRIVMSGS_INBOX] = [
 		'folder_name'		=> $user->lang['PM_INBOX'],
 		'num_messages'		=> $num_messages[PRIVMSGS_INBOX],
 		'unread_messages'	=> $num_unread[PRIVMSGS_INBOX]
-	);
+	];
 
 	// Custom Folder
 	$sql = 'SELECT folder_id, folder_name, pm_count
@@ -163,32 +163,32 @@ function get_folder($user_id, $folder_id = false)
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$folder[$row['folder_id']] = array(
+		$folder[$row['folder_id']] = [
 			'folder_name'		=> $row['folder_name'],
 			'num_messages'		=> $row['pm_count'],
 			'unread_messages'	=> ((isset($num_unread[$row['folder_id']])) ? $num_unread[$row['folder_id']] : 0)
-		);
+		];
 	}
 	$db->sql_freeresult($result);
 
-	$folder[PRIVMSGS_OUTBOX] = array(
+	$folder[PRIVMSGS_OUTBOX] = [
 		'folder_name'		=> $user->lang['PM_OUTBOX'],
 		'num_messages'		=> $num_messages[PRIVMSGS_OUTBOX],
 		'unread_messages'	=> $num_unread[PRIVMSGS_OUTBOX]
-	);
+	];
 
-	$folder[PRIVMSGS_SENTBOX] = array(
+	$folder[PRIVMSGS_SENTBOX] = [
 		'folder_name'		=> $user->lang['PM_SENTBOX'],
 		'num_messages'		=> $num_messages[PRIVMSGS_SENTBOX],
 		'unread_messages'	=> $num_unread[PRIVMSGS_SENTBOX]
-	);
+	];
 
 	// Define Folder Array for template designers (and for making custom folders usable by the template too)
 	foreach ($folder as $f_id => $folder_ary)
 	{
 		$folder_id_name = ($f_id == PRIVMSGS_INBOX) ? 'inbox' : (($f_id == PRIVMSGS_OUTBOX) ? 'outbox' : 'sentbox');
 
-		$template->assign_block_vars('folder', array(
+		$template->assign_block_vars('folder', [
 			'FOLDER_ID'			=> $f_id,
 			'FOLDER_NAME'		=> $folder_ary['folder_name'],
 			'NUM_MESSAGES'		=> $folder_ary['num_messages'],
@@ -198,7 +198,7 @@ function get_folder($user_id, $folder_id = false)
 
 			'S_CUR_FOLDER'		=> ($f_id === $folder_id) ? true : false,
 			'S_UNREAD_MESSAGES'	=> ($folder_ary['unread_messages']) ? true : false,
-			'S_CUSTOM_FOLDER'	=> ($f_id > 0) ? true : false)
+			'S_CUSTOM_FOLDER'	=> ($f_id > 0) ? true : false]
 		);
 	}
 
@@ -230,7 +230,7 @@ function clean_sentbox($num_sentbox_messages)
 			ORDER BY p.message_time ASC';
 		$result = $db->sql_query_limit($sql, ($num_sentbox_messages - $user->data['message_limit']));
 
-		$delete_ids = array();
+		$delete_ids = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$delete_ids[] = $row['msg_id'];
@@ -273,12 +273,12 @@ function check_rule(&$rules, &$rule_row, &$message_row, $user_id)
 	switch ($rule_row['rule_action'])
 	{
 		case ACTION_PLACE_INTO_FOLDER:
-			return array('action' => $rule_row['rule_action'], 'folder_id' => $rule_row['rule_folder_id']);
+			return ['action' => $rule_row['rule_action'], 'folder_id' => $rule_row['rule_folder_id']];
 		break;
 
 		case ACTION_MARK_AS_READ:
 		case ACTION_MARK_AS_IMPORTANT:
-			return array('action' => $rule_row['rule_action'], 'pm_unread' => $message_row['pm_unread'], 'pm_marked' => $message_row['pm_marked']);
+			return ['action' => $rule_row['rule_action'], 'pm_unread' => $message_row['pm_unread'], 'pm_marked' => $message_row['pm_marked']];
 		break;
 
 		case ACTION_DELETE_MESSAGE:
@@ -298,7 +298,7 @@ function check_rule(&$rules, &$rule_row, &$message_row, $user_id)
 
 			if (!$auth2->acl_get('a_') && !$auth2->acl_get('m_') && !$auth2->acl_getf_global('m_'))
 			{
-				return array('action' => $rule_row['rule_action'], 'pm_unread' => $message_row['pm_unread'], 'pm_marked' => $message_row['pm_marked']);
+				return ['action' => $rule_row['rule_action'], 'pm_unread' => $message_row['pm_unread'], 'pm_marked' => $message_row['pm_marked']];
 			}
 
 			return false;
@@ -338,10 +338,10 @@ function update_pm_counts()
 	$user->data['user_new_privmsg'] = (int) $db->sql_fetchfield('num_messages');
 	$db->sql_freeresult($result);
 
-	$db->sql_query('UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
+	$db->sql_query('UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', [
 		'user_unread_privmsg'	=> (int) $user->data['user_unread_privmsg'],
 		'user_new_privmsg'		=> (int) $user->data['user_new_privmsg'],
-	)) . ' WHERE user_id = ' . $user->data['user_id']);
+	]) . ' WHERE user_id = ' . $user->data['user_id']);
 
 	// Ok, here we need to repair something, other boxes than privmsgs_no_box and privmsgs_hold_box should not carry the pm_new flag.
 	if (!$user->data['user_new_privmsg'])
@@ -364,13 +364,13 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 
 	if (!$user->data['user_new_privmsg'])
 	{
-		return array('not_moved' => 0, 'removed' => 0);
+		return ['not_moved' => 0, 'removed' => 0];
 	}
 
 	$user_message_rules = (int) $user->data['user_message_rules'];
 	$user_id = (int) $user->data['user_id'];
 
-	$action_ary = $move_into_folder = array();
+	$action_ary = $move_into_folder = [];
 	$num_removed = 0;
 
 	// Newly processing on-hold messages
@@ -398,14 +398,14 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$action_ary[$row['msg_id']][] = array('action' => false);
+			$action_ary[$row['msg_id']][] = ['action' => false];
 		}
 		$db->sql_freeresult($result);
 	}
 	else
 	{
-		$user_rules = $zebra = $check_rows = array();
-		$user_ids = $memberships = array();
+		$user_rules = $zebra = $check_rows = [];
+		$user_ids = $memberships = [];
 
 		// First of all, grab all rules and retrieve friends/foes
 		$sql = 'SELECT *
@@ -434,13 +434,13 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$check_rows[] = array_merge($row, array(
+			$check_rows[] = array_merge($row, [
 				'to'				=> explode(':', $row['to_address']),
 				'bcc'				=> explode(':', $row['bcc_address']),
 				'friend'			=> (isset($zebra[$row['author_id']])) ? $zebra[$row['author_id']]['friend'] : 0,
 				'foe'				=> (isset($zebra[$row['author_id']])) ? $zebra[$row['author_id']]['foe'] : 0,
 				'user_in_group'		=> $user->data['group_id'],
-				'author_in_group'	=> array())
+				'author_in_group'	=> []]
 			);
 
 			$user_ids[] = $row['user_id'];
@@ -485,7 +485,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 
 			if (!$is_match)
 			{
-				$action_ary[$row['msg_id']][] = array('action' => false);
+				$action_ary[$row['msg_id']][] = ['action' => false];
 			}
 		}
 
@@ -493,7 +493,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 	}
 
 	// We place actions into arrays, to save queries.
-	$sql = $unread_ids = $delete_ids = $important_ids = array();
+	$sql = $unread_ids = $delete_ids = $important_ids = [];
 
 	foreach ($action_ary as $msg_id => $msg_ary)
 	{
@@ -578,7 +578,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 	}
 
 	// Move into folder
-	$folder = array();
+	$folder = [];
 
 	if (sizeof($move_into_folder))
 	{
@@ -650,7 +650,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 					ORDER BY msg_id ASC";
 				$result = $db->sql_query_limit($sql, (($folder[$dest_folder] + sizeof($msg_ary)) - $user->data['message_limit']));
 
-				$delete_ids = array();
+				$delete_ids = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$delete_ids[] = $row['msg_id'];
@@ -716,7 +716,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 	$num_not_moved = (int) $db->sql_fetchfield('num_messages');
 	$db->sql_freeresult($result);
 
-	return array('not_moved' => $num_not_moved, 'removed' => $num_removed);
+	return ['not_moved' => $num_not_moved, 'removed' => $num_removed];
 }
 
 /**
@@ -730,11 +730,11 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 
 	if (!is_array($move_msg_ids))
 	{
-		$move_msg_ids = array($move_msg_ids);
+		$move_msg_ids = [$move_msg_ids];
 	}
 
-	if (sizeof($move_msg_ids) && !in_array($dest_folder, array(PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX)) &&
-		!in_array($cur_folder_id, array(PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX)) && $cur_folder_id != $dest_folder)
+	if (sizeof($move_msg_ids) && !in_array($dest_folder, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX]) &&
+		!in_array($cur_folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]) && $cur_folder_id != $dest_folder)
 	{
 		// We have to check the destination folder ;)
 		if ($dest_folder != PRIVMSGS_INBOX)
@@ -788,7 +788,7 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 		// Update pm counts
 		if ($num_moved)
 		{
-			if (!in_array($cur_folder_id, array(PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX)))
+			if (!in_array($cur_folder_id, [PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX]))
 			{
 				$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
 					SET pm_count = pm_count - $num_moved
@@ -807,7 +807,7 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 			}
 		}
 	}
-	else if (in_array($cur_folder_id, array(PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX)))
+	else if (in_array($cur_folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]))
 	{
 		trigger_error('CANNOT_MOVE_SPECIAL');
 	}
@@ -863,7 +863,7 @@ function handle_mark_actions($user_id, $mark_action)
 {
 	global $db, $user;
 
-	$msg_ids		= request_var('marked_msg_id', array(0));
+	$msg_ids		= request_var('marked_msg_id', [0]);
 	$cur_folder_id	= request_var('cur_folder_id', PRIVMSGS_NO_BOX);
 	$confirm		= (isset($_POST['confirm'])) ? true : false;
 
@@ -899,12 +899,12 @@ function handle_mark_actions($user_id, $mark_action)
 			}
 			else
 			{
-				$s_hidden_fields = array(
+				$s_hidden_fields = [
 					'cur_folder_id'	=> $cur_folder_id,
 					'mark_option'	=> 'delete_marked',
 					'submit_mark'	=> true,
 					'marked_msg_id'	=> $msg_ids
-				);
+				];
 
 				confirm_box(false, 'DELETE_MARKED_PM', build_hidden_fields($s_hidden_fields));
 			}
@@ -939,7 +939,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 		{
 			return false;
 		}
-		$msg_ids = array($msg_ids);
+		$msg_ids = [$msg_ids];
 	}
 
 	if (!sizeof($msg_ids))
@@ -955,7 +955,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 			AND user_id = $user_id";
 	$result = $db->sql_query($sql);
 
-	$delete_rows = array();
+	$delete_rows = [];
 	$num_unread = $num_new = $num_deleted = 0;
 	while ($row = $db->sql_fetchrow($result))
 	{
@@ -1010,7 +1010,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 	}
 
 	// if folder id is user defined folder then decrease pm_count
-	if (!in_array($folder_id, array(PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX, PRIVMSGS_NO_BOX)))
+	if (!in_array($folder_id, [PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX, PRIVMSGS_NO_BOX]))
 	{
 		$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
 			SET pm_count = pm_count - $num_deleted
@@ -1089,7 +1089,7 @@ function phpbb_delete_user_pms($user_id)
 
 	// Get PM Information for later deleting
 	// The two queries where split, so we can use our indexes
-	$undelivered_msg = $delete_ids = array();
+	$undelivered_msg = $delete_ids = [];
 
 	// Part 1: get PMs the user received
 	$sql = 'SELECT msg_id
@@ -1141,7 +1141,7 @@ function phpbb_delete_user_pms($user_id)
 				AND folder_id <> ' . PRIVMSGS_SENTBOX;
 		$result = $db->sql_query($sql);
 
-		$delivered_msg = array();
+		$delivered_msg = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$msg_id = (int) $row['msg_id'];
@@ -1150,7 +1150,7 @@ function phpbb_delete_user_pms($user_id)
 		}
 		$db->sql_freeresult($result);
 
-		$undelivered_user = array();
+		$undelivered_user = [];
 
 		// Count the messages we delete, so we can correct the user pm data
 		$sql = 'SELECT user_id, COUNT(msg_id) as num_undelivered_privmsgs
@@ -1275,20 +1275,20 @@ function rebuild_header($check_ary)
 {
 	global $db;
 
-	$address = array();
+	$address = [];
 
 	foreach ($check_ary as $check_type => $address_field)
 	{
 		// Split Addresses into users and groups
 		preg_match_all('/:?(u|g)_([0-9]+):?/', $address_field, $match);
 
-		$u = $g = array();
+		$u = $g = [];
 		foreach ($match[1] as $id => $type)
 		{
 			${$type}[] = (int) $match[2][$id];
 		}
 
-		$_types = array('u', 'g');
+		$_types = ['u', 'g'];
 		foreach ($_types as $type)
 		{
 			if (count(${$type}))
@@ -1311,7 +1311,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 {
 	global $db, $user, $template;
 
-	$addresses = array();
+	$addresses = [];
 
 	foreach ($check_ary as $check_type => $address_field)
 	{
@@ -1320,7 +1320,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 			// Split Addresses into users and groups
 			preg_match_all('/:?(u|g)_([0-9]+):?/', $address_field, $match);
 
-			$u = $g = array();
+			$u = $g = [];
 			foreach ($match[1] as $id => $type)
 			{
 				${$type}[] = (int) $match[2][$id];
@@ -1332,7 +1332,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 			$g = $address_field['g'];
 		}
 
-		$address = array();
+		$address = [];
 		if (sizeof($u))
 		{
 			$sql = 'SELECT user_id, username, user_colour
@@ -1350,7 +1350,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 					}
 					else
 					{
-						$address['user'][$row['user_id']] = array('name' => $row['username'], 'colour' => $row['user_colour']);
+						$address['user'][$row['user_id']] = ['name' => $row['username'], 'colour' => $row['user_colour']];
 					}
 				}
 			}
@@ -1391,7 +1391,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 						if ($check_type == 'to' || $author_id == $user->data['user_id'] || $row['user_id'] == $user->data['user_id'])
 						{
 							$row['group_name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
-							$address['group'][$row['group_id']] = array('name' => $row['group_name'], 'colour' => $row['group_colour']);
+							$address['group'][$row['group_id']] = ['name' => $row['group_name'], 'colour' => $row['group_colour']];
 						}
 					}
 
@@ -1412,27 +1412,27 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 			{
 				foreach ($adr_ary as $id => $row)
 				{
-					$tpl_ary = array(
+					$tpl_ary = [
 						'IS_GROUP'	=> ($type == 'group') ? true : false,
 						'IS_USER'	=> ($type == 'user') ? true : false,
 						'UG_ID'		=> $id,
 						'NAME'		=> $row['name'],
 						'COLOUR'	=> ($row['colour']) ? '#' . $row['colour'] : '',
 						'TYPE'		=> $type,
-					);
+					];
 
 					if ($type == 'user')
 					{
-						$tpl_ary = array_merge($tpl_ary, array(
+						$tpl_ary = array_merge($tpl_ary, [
 							'U_VIEW'		=> get_username_string('profile', $id, $row['name'], $row['colour']),
 							'NAME_FULL'		=> get_username_string('full', $id, $row['name'], $row['colour']),
-						));
+						]);
 					}
 					else
 					{
-						$tpl_ary = array_merge($tpl_ary, array(
+						$tpl_ary = array_merge($tpl_ary, [
 							'U_VIEW'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $id),
-						));
+						]);
 					}
 
 					$template->assign_block_vars($check_type . '_recipient', $tpl_ary);
@@ -1462,13 +1462,13 @@ function get_folder_status($folder_id, $folder)
 		return false;
 	}
 
-	$return = array(
+	$return = [
 		'folder_name'	=> $folder['folder_name'],
 		'cur'			=> $folder['num_messages'],
 		'remaining'		=> ($user->data['message_limit']) ? $user->data['message_limit'] - $folder['num_messages'] : 0,
 		'max'			=> $user->data['message_limit'],
 		'percent'		=> ($user->data['message_limit']) ? (($user->data['message_limit'] > 0) ? round(($folder['num_messages'] / $user->data['message_limit']) * 100) : 100) : 0,
-	);
+	];
 
 	$return['message']	= sprintf($user->lang['FOLDER_STATUS_MSG'], $return['percent'], $return['cur'], $return['max']);
 
@@ -1495,17 +1495,17 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	$current_time = time();
 
 	// Collect some basic information about which tables and which rows to update/insert
-	$sql_data = array();
+	$sql_data = [];
 	$root_level = 0;
 
 	// Recipient Information
-	$recipients = $to = $bcc = array();
+	$recipients = $to = $bcc = [];
 
 	if ($mode != 'edit' && $mode != 'reparse')
 	{
 		// Build Recipient List
 		// u|g => array($user_id => 'to'|'bcc')
-		$_types = array('u', 'g');
+		$_types = ['u', 'g'];
 		foreach ($_types as $ug_type)
 		{
 			if (isset($data['address_list'][$ug_type]) && sizeof($data['address_list'][$ug_type]))
@@ -1583,7 +1583,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		case 'forward':
 		case 'post':
 		case 'quotepost':
-			$sql_data = array(
+			$sql_data = [
 				'root_level'		=> $root_level,
 				'author_id'			=> $data['from_user_id'],
 				'icon_id'			=> $data['icon_id'],
@@ -1601,12 +1601,12 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				'to_address'		=> implode(':', $to),
 				'bcc_address'		=> implode(':', $bcc),
 				'message_reported'	=> 0,
-			);
+			];
 		break;
 
 		case 'edit':
 		case 'reparse':
-			$sql_data = array(
+			$sql_data = [
 				'icon_id'			=> $data['icon_id'],
 				'enable_bbcode'		=> $data['enable_bbcode'],
 				'enable_smilies'	=> $data['enable_smilies'],
@@ -1617,7 +1617,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				'message_attachment'=> (!empty($data['attachment_data'])) ? 1 : 0,
 				'bbcode_bitfield'	=> $data['bbcode_bitfield'],
 				'bbcode_uid'		=> $data['bbcode_uid']
-			);
+			];
 			if ($mode == 'edit')
 			{
 				$sql_data['message_edit_time'] = $current_time;
@@ -1658,10 +1658,10 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		}
 		unset($sql);
 
-		$sql_ary = array();
+		$sql_ary = [];
 		foreach ($recipients as $user_id => $type)
 		{
-			$sql_ary[] = array(
+			$sql_ary[] = [
 				'msg_id'		=> (int) $data['msg_id'],
 				'user_id'		=> (int) $user_id,
 				'author_id'		=> (int) $data['from_user_id'],
@@ -1669,7 +1669,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				'pm_new'		=> 1,
 				'pm_unread'		=> 1,
 				'pm_forwarded'	=> ($mode == 'forward') ? 1 : 0
-			);
+			];
 		}
 
 		$db->sql_multi_insert(PRIVMSGS_TO_TABLE, $sql_ary);
@@ -1682,14 +1682,14 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		// Put PM into outbox
 		if ($put_in_outbox)
 		{
-			$db->sql_query('INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$db->sql_query('INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', [
 				'msg_id'		=> (int) $data['msg_id'],
 				'user_id'		=> (int) $data['from_user_id'],
 				'author_id'		=> (int) $data['from_user_id'],
 				'folder_id'		=> PRIVMSGS_OUTBOX,
 				'pm_new'		=> 0,
 				'pm_unread'		=> 0,
-				'pm_forwarded'	=> ($mode == 'forward') ? 1 : 0))
+				'pm_forwarded'	=> ($mode == 'forward') ? 1 : 0])
 			);
 		}
 	}
@@ -1704,14 +1704,14 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	}
 
 	// Submit Attachments
-	if (!empty($data['attachment_data']) && $data['msg_id'] && in_array($mode, array('post', 'reply', 'edit', 'reparse', 'quote', 'quotepost', 'forward')))
+	if (!empty($data['attachment_data']) && $data['msg_id'] && in_array($mode, ['post', 'reply', 'edit', 'reparse', 'quote', 'quotepost', 'forward']))
 	{
 		$space_taken = $files_added = 0;
-		$orphan_rows = array();
+		$orphan_rows = [];
 
 		foreach ($data['attachment_data'] as $pos => $attach_row)
 		{
-			$orphan_rows[(int) $attach_row['attach_id']] = array();
+			$orphan_rows[(int) $attach_row['attach_id']] = [];
 		}
 
 		if (sizeof($orphan_rows))
@@ -1724,7 +1724,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 					AND poster_id = ' . $user->data['user_id'];
 			$result = $db->sql_query($sql);
 
-			$orphan_rows = array();
+			$orphan_rows = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$orphan_rows[$row['attach_id']] = $row;
@@ -1759,13 +1759,13 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				$space_taken += $orphan_rows[$attach_row['attach_id']]['filesize'];
 				$files_added++;
 
-				$attach_sql = array(
+				$attach_sql = [
 					'post_msg_id'		=> $data['msg_id'],
 					'topic_id'			=> 0,
 					'is_orphan'			=> 0,
 					'poster_id'			=> $data['from_user_id'],
 					'attach_comment'	=> $attach_row['attach_comment'],
-				);
+				];
 
 				$sql = 'UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $attach_sql) . '
 					WHERE attach_id = ' . $attach_row['attach_id'] . '
@@ -1837,18 +1837,18 @@ function pm_notification($mode, $author, $recipients, $subject, $message, $msg_i
 		WHERE ' . $db->sql_in_set('user_id', $recipients);
 	$result = $db->sql_query($sql);
 
-	$msg_list_ary = array();
+	$msg_list_ary = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		if ($row['user_notify_pm'] == 1 && trim($row['user_email']))
 		{
-			$msg_list_ary[] = array(
+			$msg_list_ary[] = [
 				'method'	=> $row['user_notify_type'],
 				'email'		=> $row['user_email'],
 				'jabber'	=> $row['user_jabber'],
 				'name'		=> $row['username'],
 				'lang'		=> $row['user_lang']
-			);
+			];
 		}
 	}
 	$db->sql_freeresult($result);
@@ -1868,14 +1868,14 @@ function pm_notification($mode, $author, $recipients, $subject, $message, $msg_i
 		$messenger->to($addr['email'], $addr['name']);
 		$messenger->im($addr['jabber'], $addr['name']);
 
-		$messenger->assign_vars(array(
+		$messenger->assign_vars([
 			'SUBJECT'		=> htmlspecialchars_decode($subject),
 			'AUTHOR_NAME'	=> htmlspecialchars_decode($author),
 			'USERNAME'		=> htmlspecialchars_decode($addr['name']),
 
 			'U_INBOX'			=> generate_board_url() . "/ucp.php?i=pm&folder=inbox",
 			'U_VIEW_MESSAGE'	=> generate_board_url() . "/ucp.php?i=pm&mode=view&p=$msg_id",
-		));
+		]);
 
 		$messenger->send($addr['method']);
 	}
@@ -1900,7 +1900,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 			AND folder_id <> " . PRIVMSGS_HOLD_BOX;
 	$result = $db->sql_query($sql);
 
-	$recipients = array();
+	$recipients = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$recipients[] = (int) $row['user_id'];
@@ -1942,7 +1942,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 
 	$title = $row['message_subject'];
 
-	$rowset = array();
+	$rowset = [];
 	$bbcode_bitfield = '';
 	$folder_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm') . '&amp;folder=';
 
@@ -2027,7 +2027,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 			$previous_history_pm = $prev_id;
 		}
 
-		$template->assign_block_vars('history_row', array(
+		$template->assign_block_vars('history_row', [
 			'MESSAGE_AUTHOR_QUOTE'		=> (($decoded_message) ? addslashes(get_username_string('username', $author_id, $row['username'], $row['user_colour'], $row['username'])) : ''),
 			'MESSAGE_AUTHOR_FULL'		=> get_username_string('full', $author_id, $row['username'], $row['user_colour'], $row['username']),
 			'MESSAGE_AUTHOR_COLOUR'		=> get_username_string('colour', $author_id, $row['username'], $row['user_colour'], $row['username']),
@@ -2047,19 +2047,19 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 			'MSG_ID'			=> $row['msg_id'],
 			'U_VIEW_MESSAGE'	=> "$url&amp;f=$folder_id&amp;p=" . $row['msg_id'],
 			'U_QUOTE'			=> (!$in_post_mode && $auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "$url&amp;mode=compose&amp;action=quote&amp;f=" . $folder_id . "&amp;p=" . $row['msg_id'] : '',
-			'U_POST_REPLY_PM'	=> ($author_id != $user->data['user_id'] && $author_id != ANONYMOUS && $auth->acl_get('u_sendpm')) ? "$url&amp;mode=compose&amp;action=reply&amp;f=$folder_id&amp;p=" . $row['msg_id'] : '')
+			'U_POST_REPLY_PM'	=> ($author_id != $user->data['user_id'] && $author_id != ANONYMOUS && $auth->acl_get('u_sendpm')) ? "$url&amp;mode=compose&amp;action=reply&amp;f=$folder_id&amp;p=" . $row['msg_id'] : '']
 		);
 		unset($rowset[$i]);
 		$prev_id = $id;
 	}
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'QUOTE_IMG'			=> $user->img('icon_post_quote', $user->lang['REPLY_WITH_QUOTE']),
 		'HISTORY_TITLE'		=> $title,
 
 		'U_VIEW_NEXT_HISTORY'		=> ($next_history_pm) ? "$url&amp;p=" . $next_history_pm : '',
 		'U_VIEW_PREVIOUS_HISTORY'	=> ($previous_history_pm) ? "$url&amp;p=" . $previous_history_pm : '',
-	));
+	]);
 
 	return true;
 }
@@ -2098,13 +2098,13 @@ function get_recipient_strings($pm_by_id)
 {
 	global $db, $user;
 
-	$address_list = $recipient_list = $address = array();
+	$address_list = $recipient_list = $address = [];
 
-	$_types = array('u', 'g');
+	$_types = ['u', 'g'];
 
 	foreach ($pm_by_id as $message_id => $row)
 	{
-		$address[$message_id] = rebuild_header(array('to' => $row['to_address'], 'bcc' => $row['bcc_address']));
+		$address[$message_id] = rebuild_header(['to' => $row['to_address'], 'bcc' => $row['bcc_address']]);
 
 		foreach ($_types as $ug_type)
 		{
@@ -2112,7 +2112,7 @@ function get_recipient_strings($pm_by_id)
 			{
 				foreach ($address[$message_id][$ug_type] as $ug_id => $in_to)
 				{
-					$recipient_list[$ug_type][$ug_id] = array('name' => $user->lang['NA'], 'colour' => '');
+					$recipient_list[$ug_type][$ug_id] = ['name' => $user->lang['NA'], 'colour' => ''];
 				}
 			}
 		}
@@ -2145,7 +2145,7 @@ function get_recipient_strings($pm_by_id)
 					$row['name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['name']] : $row['name'];
 				}
 
-				$recipient_list[$ug_type][$row['id']] = array('name' => $row['name'], 'colour' => $row['colour']);
+				$recipient_list[$ug_type][$row['id']] = ['name' => $row['name'], 'colour' => $row['colour']];
 			}
 			$db->sql_freeresult($result);
 		}

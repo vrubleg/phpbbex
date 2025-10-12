@@ -29,8 +29,8 @@ class erk_config_repair
 
 		$available_dbms = get_available_dbms();
 
-		$error = array();
-		$data = array(
+		$error = [];
+		$data = [
 			'dbms'			=> (isset($_POST['dbms'])) ? $_POST['dbms'] : '',
 			'dbhost'		=> (isset($_POST['dbhost'])) ? $_POST['dbhost'] : '',
 			'dbport'		=> (isset($_POST['dbport'])) ? $_POST['dbport'] : '',
@@ -38,7 +38,7 @@ class erk_config_repair
 			'dbuser'		=> (isset($_POST['dbuser'])) ? $_POST['dbuser'] : '',
 			'dbpasswd'		=> (isset($_POST['dbpasswd'])) ? $_POST['dbpasswd'] : '',
 			'table_prefix'	=> (isset($_POST['table_prefix'])) ? $_POST['table_prefix'] : 'phpbb_',
-		);
+		];
 
 		if (isset($_POST['submit']))
 		{
@@ -61,7 +61,7 @@ class erk_config_repair
 			// Time to convert the data provided into a config file
 			$config_data = "<?php\n\n";
 
-			$config_data_array = array(
+			$config_data_array = [
 				'dbhost'		=> $data['dbhost'],
 				'dbport'		=> $data['dbport'],
 				'dbname'		=> $data['dbname'],
@@ -69,7 +69,7 @@ class erk_config_repair
 				'dbpasswd'		=> htmlspecialchars_decode($data['dbpasswd']),
 				'table_prefix'	=> $data['table_prefix'],
 				'acm_type'		=> 'file',
-			);
+			];
 
 			foreach ($config_data_array as $key => $value)
 			{

@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'CAPTCHA_QA'				=> 'Текстовое подтверждение',
 	'CONFIRM_QUESTION_EXPLAIN'	=> 'Этот вопрос предназначен для предотвращения автоматической отправки форм спам-ботами.',
 	'CONFIRM_QUESTION_WRONG'	=> 'Вы дали неправильный ответ на вопрос.',
@@ -40,4 +40,4 @@ $lang = array_merge($lang, array(
 	'QA_ERROR_MSG'				=> 'Заполните все поля и введите не менее одного ответа.',
  	'QA_LAST_QUESTION'			=> 'Нельзя удалить все вопросы, пока текстовое подтверждение выбрано в качестве используемого на форуме.',
 
-));
+]);

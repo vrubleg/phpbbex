@@ -40,7 +40,7 @@ class resync_avatars
 		// Get the batch
 		$sql = 'SELECT user_id as id, user_avatar as avatar, user_avatar_type as avatar_type
 			FROM ' . USERS_TABLE . '
-			WHERE ' . $db->sql_in_set('user_avatar_type', array(AVATAR_UPLOAD, AVATAR_GALLERY));
+			WHERE ' . $db->sql_in_set('user_avatar_type', [AVATAR_UPLOAD, AVATAR_GALLERY]);
 		$result	= $db->sql_query_limit($sql, $this->_batch_size, $begin);
 		$batch	= $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
@@ -51,7 +51,7 @@ class resync_avatars
 			trigger_error('RESYNC_AVATARS_FINISHED');
 		}
 
-		$update_sql = array();
+		$update_sql = [];
 		foreach ($batch as $row)
 		{
 			// Does teh file still exists?
@@ -91,7 +91,7 @@ class resync_avatars
 
 		// Next step
 		$template->assign_var('U_BACK_TOOL', false);
-		meta_refresh(1, append_sid(STK_INDEX, array('c' => 'admin', 't' => 'resync_avatars', 'step' => ++$step, 'submit' => true)));
+		meta_refresh(1, append_sid(STK_INDEX, ['c' => 'admin', 't' => 'resync_avatars', 'step' => ++$step, 'submit' => true]));
 		trigger_error('RESYNC_AVATARS_PROGRESS');
 	}
 }

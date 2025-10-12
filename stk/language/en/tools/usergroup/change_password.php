@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'CHANGE_PASSWORD'			=> 'Change Password',
 	'CHANGE_PASSWORD_EXPLAIN'	=> 'Change a user’s password.<br /><strong>You may enter either the Username or User ID, not both.</strong>',
 	'CHANGE_PASSWORD_SUCCESS'	=> 'The password for <a href="%s">%s</a> has been successfully changed.',
@@ -29,4 +29,4 @@ $lang = array_merge($lang, array(
 	'USERNAME_NAME_EXPLAIN'		=> 'Enter the Username of the user whose password you want to change.',
 	'USERNAMEID'				=> 'User ID',
 	'USERNAMEID_EXPLAIN'		=> 'Enter the User ID of the user whose password you want to change.',
-));
+]);

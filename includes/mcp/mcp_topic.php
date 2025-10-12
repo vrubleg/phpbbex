@@ -22,7 +22,7 @@ function mcp_topic_view($id, $mode, $action)
 	$user->add_lang('viewtopic');
 
 	$topic_id = request_var('t', 0);
-	$topic_info = get_topic_data(array($topic_id), false, true);
+	$topic_info = get_topic_data([$topic_id], false, true);
 
 	if (!sizeof($topic_info))
 	{
@@ -40,8 +40,8 @@ function mcp_topic_view($id, $mode, $action)
 	$to_topic_id	= request_var('to_topic_id', 0);
 	$to_forum_id	= request_var('to_forum_id', 0);
 	$sort			= isset($_POST['sort']) ? true : false;
-	$submitted_id_list	= request_var('post_ids', array(0));
-	$checked_ids = $post_id_list = request_var('post_id_list', array(0));
+	$submitted_id_list	= request_var('post_ids', [0]);
+	$checked_ids = $post_id_list = request_var('post_id_list', [0]);
 
 	// Resync Topic?
 	if ($action == 'resync')
@@ -50,7 +50,7 @@ function mcp_topic_view($id, $mode, $action)
 		{
 			require_once(PHPBB_ROOT_PATH . 'includes/mcp/mcp_forum.php');
 		}
-		mcp_resync_topics(array($topic_id));
+		mcp_resync_topics([$topic_id]);
 	}
 
 	// Split Topic?
@@ -102,7 +102,7 @@ function mcp_topic_view($id, $mode, $action)
 
 	$sort_days = $total = 0;
 	$sort_key = $sort_dir = '';
-	$sort_by_sql = $sort_order_sql = array();
+	$sort_by_sql = $sort_order_sql = [];
 	mcp_sorting('viewtopic', $sort_days, $sort_key, $sort_dir, $sort_by_sql, $sort_order_sql, $total, $topic_info['forum_id'], $topic_id, $where_sql);
 
 	$limit_time_sql = ($sort_days) ? 'AND p.post_time >= ' . (time() - ($sort_days * 86400)) : '';
@@ -146,7 +146,7 @@ function mcp_topic_view($id, $mode, $action)
 		ORDER BY ' . $sort_order_sql;
 	$result = $db->sql_query_limit($sql, $posts_per_page, $start);
 
-	$rowset = $post_id_list = array();
+	$rowset = $post_id_list = [];
 	$bbcode_bitfield = '';
 	while ($row = $db->sql_fetchrow($result))
 	{
@@ -162,13 +162,13 @@ function mcp_topic_view($id, $mode, $action)
 		$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 	}
 
-	$topic_tracking_info = array();
+	$topic_tracking_info = [];
 
 	// Get topic tracking info
 	if ($config['load_db_lastread'])
 	{
-		$tmp_topic_data = array($topic_id => $topic_info);
-		$topic_tracking_info = get_topic_tracking($topic_info['forum_id'], $topic_id, $tmp_topic_data, array($topic_info['forum_id'] => $topic_info['forum_mark_time']));
+		$tmp_topic_data = [$topic_id => $topic_info];
+		$topic_tracking_info = get_topic_tracking($topic_info['forum_id'], $topic_id, $tmp_topic_data, [$topic_info['forum_id'] => $topic_info['forum_mark_time']]);
 		unset($tmp_topic_data);
 	}
 	else
@@ -179,7 +179,7 @@ function mcp_topic_view($id, $mode, $action)
 	$has_unapproved_posts = false;
 
 	// Grab extensions
-	$extensions = $attachments = array();
+	$extensions = $attachments = [];
 	if ($topic_info['topic_attachment'] && sizeof($post_id_list))
 	{
 		$extensions = $cache->obtain_attach_extensions($topic_info['forum_id']);
@@ -217,7 +217,7 @@ function mcp_topic_view($id, $mode, $action)
 
 		if (!empty($attachments[$row['post_id']]))
 		{
-			$update_count = array();
+			$update_count = [];
 			parse_attachments($topic_info['forum_id'], $message, $attachments[$row['post_id']], $update_count);
 		}
 
@@ -228,7 +228,7 @@ function mcp_topic_view($id, $mode, $action)
 
 		$post_unread = (isset($topic_tracking_info[$topic_id]) && $row['post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
 
-		$template->assign_block_vars('postrow', array(
+		$template->assign_block_vars('postrow', [
 			'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 			'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 			'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
@@ -249,7 +249,7 @@ function mcp_topic_view($id, $mode, $action)
 
 			'U_POST_DETAILS'	=> "$url&amp;i=$id&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f=$forum_id" : ''),
 			'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
-			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '')
+			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '']
 		);
 
 		// Display not already displayed Attachments for this post, we already parsed them. ;)
@@ -257,8 +257,8 @@ function mcp_topic_view($id, $mode, $action)
 		{
 			foreach ($attachments[$row['post_id']] as $attachment)
 			{
-				$template->assign_block_vars('postrow.attachment', array(
-					'DISPLAY_ATTACHMENT'	=> $attachment)
+				$template->assign_block_vars('postrow.attachment', [
+					'DISPLAY_ATTACHMENT'	=> $attachment]
 				);
 			}
 		}
@@ -280,7 +280,7 @@ function mcp_topic_view($id, $mode, $action)
 		// Has the user selected a topic for merge?
 		if ($to_topic_id)
 		{
-			$to_topic_info = get_topic_data(array($to_topic_id), 'm_merge');
+			$to_topic_info = get_topic_data([$to_topic_id], 'm_merge');
 
 			if (!sizeof($to_topic_info))
 			{
@@ -293,12 +293,12 @@ function mcp_topic_view($id, $mode, $action)
 		}
 	}
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'st_old'	=> $sort_days,
 		'post_ids'	=> $post_id_list,
-	));
+	]);
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'TOPIC_TITLE'		=> $topic_info['topic_title'],
 		'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_info['topic_id']),
 
@@ -339,7 +339,7 @@ function mcp_topic_view($id, $mode, $action)
 		'PAGE_NUMBER'		=> on_page($total, $posts_per_page, $start),
 		'PAGINATION'		=> (!$posts_per_page) ? '' : generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;t={$topic_info['topic_id']}&amp;mode=$mode&amp;action=$action&amp;to_topic_id=$to_topic_id&amp;posts_per_page=$posts_per_page&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir"), $total, $posts_per_page, $start),
 		'TOTAL_POSTS'		=> ($total == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total),
-	));
+	]);
 }
 
 /**
@@ -349,7 +349,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 {
 	global $db, $template, $user, $auth, $config;
 
-	$post_id_list	= request_var('post_id_list', array(0));
+	$post_id_list	= request_var('post_id_list', [0]);
 	$forum_id		= request_var('forum_id', 0);
 	$start			= request_var('start', 0);
 
@@ -359,13 +359,13 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		return;
 	}
 
-	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_split')))
+	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', ['m_split']))
 	{
 		return;
 	}
 
 	$post_id = $post_id_list[0];
-	$post_info = get_post_data(array($post_id));
+	$post_info = get_post_data([$post_id]);
 
 	if (!sizeof($post_info))
 	{
@@ -389,7 +389,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		return;
 	}
 
-	$forum_info = get_forum_data(array($to_forum_id), 'f_post');
+	$forum_info = get_forum_data([$to_forum_id], 'f_post');
 
 	if (!sizeof($forum_info))
 	{
@@ -405,9 +405,9 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		return;
 	}
 
-	$redirect = request_var('redirect', build_url(array('quickmod')));
+	$redirect = request_var('redirect', build_url(['quickmod']));
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'i'				=> 'main',
 		'post_id_list'	=> $post_id_list,
 		'f'				=> $forum_id,
@@ -418,7 +418,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		'redirect'		=> $redirect,
 		'subject'		=> $subject,
 		'to_forum_id'	=> $to_forum_id,
-		'icon'			=> request_var('icon', 0))
+		'icon'			=> request_var('icon', 0)]
 	);
 	$success_msg = $return_link = '';
 
@@ -428,7 +428,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		{
 			$sort_days = $total = 0;
 			$sort_key = $sort_dir = '';
-			$sort_by_sql = $sort_order_sql = array();
+			$sort_by_sql = $sort_order_sql = [];
 			mcp_sorting('viewtopic', $sort_days, $sort_key, $sort_dir, $sort_by_sql, $sort_order_sql, $total, $forum_id, $topic_id);
 
 			$limit_time_sql = ($sort_days) ? 'AND t.topic_last_post_time >= ' . (time() - ($sort_days * 86400)) : '';
@@ -453,7 +453,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 			$result = $db->sql_query_limit($sql, 0, $start);
 
 			$store = false;
-			$post_id_list = array();
+			$post_id_list = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				// If split from selected post (split_beyond), we split the unapproved items too.
@@ -483,12 +483,12 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 
 		$icon_id = request_var('icon', 0);
 
-		$sql_ary = array(
+		$sql_ary = [
 			'forum_id'		=> $to_forum_id,
 			'topic_title'	=> $subject,
 			'icon_id'		=> $icon_id,
 			'topic_approved'=> 1
-		);
+		];
 
 		$sql = 'INSERT INTO ' . TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
@@ -496,7 +496,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		$to_topic_id = $db->sql_nextid();
 		move_posts($post_id_list, $to_topic_id);
 
-		$topic_info = get_topic_data(array($topic_id));
+		$topic_info = get_topic_data([$topic_id]);
 		$topic_info = $topic_info[$topic_id];
 
 		add_log('mod', $to_forum_id, $to_topic_id, 'LOG_SPLIT_DESTINATION', $subject);
@@ -514,14 +514,14 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 			WHERE topic_id = ' . $topic_id;
 		$result = $db->sql_query($sql);
 
-		$sql_ary = array();
+		$sql_ary = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$sql_ary[] = array(
+			$sql_ary[] = [
 				'topic_id'		=> (int) $to_topic_id,
 				'user_id'		=> (int) $row['user_id'],
 				'notify_status'	=> (int) $row['notify_status'],
-			);
+			];
 		}
 		$db->sql_freeresult($result);
 
@@ -536,13 +536,13 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 			WHERE topic_id = ' . $topic_id;
 		$result = $db->sql_query($sql);
 
-		$sql_ary = array();
+		$sql_ary = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$sql_ary[] = array(
+			$sql_ary[] = [
 				'topic_id'		=> (int) $to_topic_id,
 				'user_id'		=> (int) $row['user_id'],
-			);
+			];
 		}
 		$db->sql_freeresult($result);
 
@@ -591,7 +591,7 @@ function merge_posts($topic_id, $to_topic_id)
 		return;
 	}
 
-	$topic_data = get_topic_data(array($to_topic_id), 'm_merge');
+	$topic_data = get_topic_data([$to_topic_id], 'm_merge');
 
 	if (!sizeof($topic_data))
 	{
@@ -601,7 +601,7 @@ function merge_posts($topic_id, $to_topic_id)
 
 	$topic_data = $topic_data[$to_topic_id];
 
-	$post_id_list	= request_var('post_id_list', array(0));
+	$post_id_list	= request_var('post_id_list', [0]);
 	$start			= request_var('start', 0);
 
 	if (!sizeof($post_id_list))
@@ -610,14 +610,14 @@ function merge_posts($topic_id, $to_topic_id)
 		return;
 	}
 
-	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_merge')))
+	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', ['m_merge']))
 	{
 		return;
 	}
 
-	$redirect = request_var('redirect', build_url(array('quickmod')));
+	$redirect = request_var('redirect', build_url(['quickmod']));
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'i'				=> 'main',
 		'post_id_list'	=> $post_id_list,
 		'to_topic_id'	=> $to_topic_id,
@@ -625,7 +625,7 @@ function merge_posts($topic_id, $to_topic_id)
 		'action'		=> 'merge_posts',
 		'start'			=> $start,
 		'redirect'		=> $redirect,
-		't'				=> $topic_id)
+		't'				=> $topic_id]
 	);
 	$success_msg = $return_link = '';
 
@@ -659,10 +659,10 @@ function merge_posts($topic_id, $to_topic_id)
 			}
 
 			// If the topic no longer exist, we will update the topic watch table.
-			phpbb_update_rows_avoiding_duplicates_notify_status($db, TOPICS_WATCH_TABLE, 'topic_id', array($topic_id), $to_topic_id);
+			phpbb_update_rows_avoiding_duplicates_notify_status($db, TOPICS_WATCH_TABLE, 'topic_id', [$topic_id], $to_topic_id);
 
 			// If the topic no longer exist, we will update the bookmarks table.
-			phpbb_update_rows_avoiding_duplicates($db, BOOKMARKS_TABLE, 'topic_id', array($topic_id), $to_topic_id);
+			phpbb_update_rows_avoiding_duplicates($db, BOOKMARKS_TABLE, 'topic_id', [$topic_id], $to_topic_id);
 		}
 
 		// Link to the new topic

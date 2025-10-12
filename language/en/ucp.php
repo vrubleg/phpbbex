@@ -12,17 +12,17 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Privacy policy and T&C
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'TERMS_OF_USE_CONTENT' => 'By accessing this internet forum, you agree not to post any abusive, obscene, vulgar, slanderous, hateful, threatening, sexually-orientated or any other material that may violate international laws and <a href="faq.php?mode=rules">forum rules</a>. Doing so may lead to you being permanently banned. You agree that we have the right to edit or remove any public information that you posted at our discretion.',
 	'PRIVACY_POLICY' => 'This internet forum uses cookies for keeping your session. Data that you submit is tied to your account and IP address. Your account will at a bare minimum contain a uniquely identifiable name, a personal password used for logging into your account and a personal email address. Any information from your account, except password and email address, will be publicly displayed. Your password is ciphered (a one-way hash) so that it is secure and impossible to restore even if the administrator would like to do it. But you can request a new password using the “I forgot my password” feature that sends a new randomly generated password to your email. You have the option to opt-out of automatically generated emails from the internet forum, but emails that are required to reclaim access to your account may be sent anyway.',
-));
+]);
 
 // Common language entries
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACCOUNT_ACTIVE'				=> 'Your account has now been activated. Thank you for registering.',
 	'ACCOUNT_ACTIVE_ADMIN'			=> 'The account has now been activated.',
 	'ACCOUNT_ACTIVE_PROFILE'		=> 'Your account has now been successfully reactivated.',
@@ -466,20 +466,20 @@ $lang = array_merge($lang, array(
 	'YOUR_FRIENDS_EXPLAIN'		=> 'To remove usernames select them and click submit.',
 	'YOUR_WARNINGS'				=> 'Your warning level',
 
-	'PM_ACTION' => array(
+	'PM_ACTION' => [
 		'PLACE_INTO_FOLDER'	=> 'Place into folder',
 		'MARK_AS_READ'		=> 'Mark as read',
 		'MARK_AS_IMPORTANT'	=> 'Mark message',
 		'DELETE_MESSAGE'	=> 'Delete message'
-	),
-	'PM_CHECK' => array(
+	],
+	'PM_CHECK' => [
 		'SUBJECT'	=> 'Subject',
 		'SENDER'	=> 'Sender',
 		'MESSAGE'	=> 'Message',
 		'STATUS'	=> 'Message status',
 		'TO'		=> 'Sent To'
-	),
-	'PM_RULE' => array(
+	],
+	'PM_RULE' => [
 		'IS_LIKE'		=> 'is like',
 		'IS_NOT_LIKE'	=> 'is not like',
 		'IS'			=> 'is',
@@ -494,7 +494,7 @@ $lang = array_merge($lang, array(
 		'FORWARDED'		=> 'forwarded',
 		'TO_GROUP'		=> 'to my default usergroup',
 		'TO_ME'			=> 'to me'
-	),
+	],
 
 
 	'GROUPS_EXPLAIN'	=> 'Usergroups enable board admins to better administer users. By default you will be placed in a specific group, this is your default group. This group defines how you may appear to other users, for example your username colour, rank, etc. Depending on whether the administrator allows it you may be allowed to change your default group. You may also be placed in or allowed to join other groups. Some groups may give you additional permissions to view content or increase your capabilities in other areas.',
@@ -512,4 +512,4 @@ $lang = array_merge($lang, array(
 	'QUICK_REPLY_DISPLAY'		=> 'Display quick reply panel at topic view',
 	'QUICK_POST_DISPLAY'		=> 'Display quick topic post panel at forum view',
 
-));
+]);

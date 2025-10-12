@@ -18,45 +18,45 @@ class readd_module_management
 	 * The modules this class will check and re-add and/or enable if required.
 	 * The array contains all information we feed into $umil->module_exists and $umil->module_add
 	 */
-	var $check_modules = array(
-		array(
+	var $check_modules = [
+		[
 			'class' 	=> 'acp',
 			'parent'	=> 0,
 			'lang_name'	=> 'ACP_CAT_SYSTEM'
-		),
-		array(
+		],
+		[
 			'class'		=> 'acp',
 			'parent'	=> 'ACP_CAT_SYSTEM',
 			'lang_name'	=> 'ACP_MODULE_MANAGEMENT'
-		),
-		array(
+		],
+		[
 			'class'		=> 'acp',
 			'parent'	=> 'ACP_MODULE_MANAGEMENT',
 			'lang_name'	=> 'ACP',
-			'data'		=> array(
+			'data'		=> [
 				'module_basename'	=> 'modules',
-				'modes'				=> array('acp'),
-			),
-		),
-		array(
+				'modes'				=> ['acp'],
+			],
+		],
+		[
 			'class'		=> 'acp',
 			'parent'	=> 'ACP_MODULE_MANAGEMENT',
 			'lang_name'	=> 'MCP',
-			'data'		=> array(
+			'data'		=> [
 				'module_basename'	=> 'modules',
-				'modes'				=> array('mcp'),
-			),
-		),
-		array(
+				'modes'				=> ['mcp'],
+			],
+		],
+		[
 			'class'		=> 'acp',
 			'parent'	=> 'ACP_MODULE_MANAGEMENT',
 			'lang_name'	=> 'UCP',
-			'data'		=> array(
+			'data'		=> [
 				'module_basename'	=> 'modules',
-				'modes'				=> array('ucp'),
-			),
-		),
-	);
+				'modes'				=> ['ucp'],
+			],
+		],
+	];
 	
 	/**
 	* Display Options

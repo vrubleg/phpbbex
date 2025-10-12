@@ -20,7 +20,7 @@ class acp_outlinks
 	function load_out_links()
 	{
 		global $config;
-		if (empty($config['outlinks'])) return array();
+		if (empty($config['outlinks'])) return [];
 
 		// Rows separated by \n, columns separated by \t
 		$outlinks = explode("\n", $config['outlinks']);
@@ -30,22 +30,22 @@ class acp_outlinks
 			if (is_numeric($row[0]))
 			{
 				// Legacy format: id, title, url
-				$outlink = array(
+				$outlink = [
 					'title'		=> !empty($row[1]) ? $row[1] : '',
 					'url'		=> !empty($row[2]) ? $row[2] : '',
 					'nofollow'	=> 0,
 					'newwindow'	=> 0,
-				);
+				];
 			}
 			else
 			{
 				// New format: title, url, flags
-				$outlink = array(
+				$outlink = [
 					'title'		=> !empty($row[0]) ? $row[0] : '',
 					'url'		=> !empty($row[1]) ? $row[1] : '',
 					'nofollow'	=> !empty($row[2]) && (intval($row[2]) & 0x1),
 					'newwindow'	=> !empty($row[2]) && (intval($row[2]) & 0x2),
-				);
+				];
 			}
 		}
 		return $outlinks;
@@ -94,8 +94,8 @@ class acp_outlinks
 				}
 
 			case 'add':
-				$link_info = isset($id) ? $outlinks[$id] : array('title' => '', 'url' => '', 'nofollow' => 0, 'newwindow' => 0);
-				$template->assign_vars(array(
+				$link_info = isset($id) ? $outlinks[$id] : ['title' => '', 'url' => '', 'nofollow' => 0, 'newwindow' => 0];
+				$template->assign_vars([
 					'S_EDIT_LINK'		=> true,
 					'U_ACTION'			=> $this->u_action,
 					'U_BACK'			=> $this->u_action,
@@ -104,17 +104,17 @@ class acp_outlinks
 					'LINK_NOFOLLOW'		=> $link_info['nofollow'],
 					'LINK_NEWWINDOW'	=> $link_info['newwindow'],
 					'S_HIDDEN_FIELDS'	=> $s_hidden_fields
-				));
+				]);
 				return;
 
 			case 'save':
 				$id = request_var('id', -1);
-				$link_data = array(
-					'title'		=> trim(str_replace(array("\n", "\t"), '', utf8_normalize_nfc(request_var('title', '', true)))),
-					'url'		=> trim(str_replace(array("\n", "\t"), '', request_var('url', ''))),
+				$link_data = [
+					'title'		=> trim(str_replace(["\n", "\t"], '', utf8_normalize_nfc(request_var('title', '', true)))),
+					'url'		=> trim(str_replace(["\n", "\t"], '', request_var('url', ''))),
 					'nofollow'	=> request_var('nofollow', 0),
 					'newwindow'	=> request_var('newwindow', 0),
-				);
+				];
 				if (!check_form_key($form_name) || empty($link_data['title']) || empty($link_data['url']))
 				{
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
@@ -147,12 +147,12 @@ class acp_outlinks
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 						'i'			=> $acp_id,
 						'mode'		=> $acp_mode,
 						'id'		=> $id,
 						'action'	=> 'delete',
-					)));
+					]));
 				}
 				break;
 
@@ -181,14 +181,14 @@ class acp_outlinks
 				break;
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_ACTION'			=> $this->u_action,
-			'S_HIDDEN_FIELDS'	=> $s_hidden_fields)
+			'S_HIDDEN_FIELDS'	=> $s_hidden_fields]
 		);
 
 		foreach ($outlinks as $id => $row)
 		{
-			$template->assign_block_vars('items', array(
+			$template->assign_block_vars('items', [
 				'TITLE'			=> $row['title'],
 				'URL'			=> $row['url'],
 				'NOFOLLOW'		=> $row['nofollow'],
@@ -197,7 +197,7 @@ class acp_outlinks
 				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;id=' . $id,
 				'U_MOVE_UP'		=> $this->u_action . '&amp;action=move_up&amp;id=' . $id,
 				'U_MOVE_DOWN'	=> $this->u_action . '&amp;action=move_down&amp;id=' . $id,
-			));
+			]);
 		}
 	}
 }

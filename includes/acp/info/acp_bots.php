@@ -9,14 +9,14 @@ class acp_bots_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> 'acp_bots',
 			'title'		=> 'ACP_BOTS',
 			'version'	=> '1.0.0',
-			'modes'		=> array(
-				'bots'		=> array('title' => 'ACP_BOTS', 'auth' => 'acl_a_bots', 'cat' => array('ACP_GENERAL_TASKS')),
-			),
-		);
+			'modes'		=> [
+				'bots'		=> ['title' => 'ACP_BOTS', 'auth' => 'acl_a_bots', 'cat' => ['ACP_GENERAL_TASKS']],
+			],
+		];
 	}
 
 	function install()

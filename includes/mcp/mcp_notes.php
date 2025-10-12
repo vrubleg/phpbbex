@@ -30,7 +30,7 @@ class mcp_notes
 	{
 		global $auth, $db, $user, $template, $config;
 
-		$action = request_var('action', array('' => ''));
+		$action = request_var('action', ['' => '']);
 
 		if (is_array($action))
 		{
@@ -42,12 +42,12 @@ class mcp_notes
 		switch ($mode)
 		{
 			case 'front':
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
 					'U_POST_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes'),
 
 					'L_TITLE'			=> $user->lang['MCP_NOTES'],
-				));
+				]);
 
 				$this->tpl_name = 'mcp_notes_front';
 			break;
@@ -104,7 +104,7 @@ class mcp_notes
 
 		$deletemark = ($action == 'del_marked') ? true : false;
 		$deleteall	= ($action == 'del_all') ? true : false;
-		$marked		= request_var('marknote', array(0));
+		$marked		= request_var('marknote', [0]);
 		$usernote	= utf8_normalize_nfc(request_var('usernote', '', true));
 
 		// Handle any actions
@@ -113,7 +113,7 @@ class mcp_notes
 			$where_sql = '';
 			if ($deletemark && $marked)
 			{
-				$sql_in = array();
+				$sql_in = [];
 				foreach ($marked as $mark)
 				{
 					$sql_in[] = $mark;
@@ -175,9 +175,9 @@ class mcp_notes
 		$rank_title = $rank_img = '';
 		$avatar_img = get_user_avatar($userrow['user_avatar'], $userrow['user_avatar_type'], $userrow['user_avatar_width'], $userrow['user_avatar_height']);
 
-		$limit_days = array(0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
-		$sort_by_text = array('a' => $user->lang['SORT_USERNAME'], 'b' => $user->lang['SORT_DATE'], 'c' => $user->lang['SORT_IP'], 'd' => $user->lang['SORT_ACTION']);
-		$sort_by_sql = array('a' => 'u.username_clean', 'b' => 'l.log_time', 'c' => 'l.log_ip', 'd' => 'l.log_operation');
+		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+		$sort_by_text = ['a' => $user->lang['SORT_USERNAME'], 'b' => $user->lang['SORT_DATE'], 'c' => $user->lang['SORT_IP'], 'd' => $user->lang['SORT_ACTION']];
+		$sort_by_sql = ['a' => 'u.username_clean', 'b' => 'l.log_time', 'c' => 'l.log_ip', 'd' => 'l.log_operation'];
 
 		$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 		gen_sort_selects($limit_days, $sort_by_text, $st, $sk, $sd, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
@@ -189,7 +189,7 @@ class mcp_notes
 		$keywords = utf8_normalize_nfc(request_var('keywords', '', true));
 		$keywords_param = !empty($keywords) ? '&amp;keywords=' . urlencode(htmlspecialchars_decode($keywords)) : '';
 
-		$log_data = array();
+		$log_data = [];
 		$log_count = 0;
 		$start = view_log('user', $log_data, $log_count, $config['topics_per_page'], $start, 0, 0, $user_id, $sql_where, $sql_sort, $keywords);
 
@@ -199,17 +199,17 @@ class mcp_notes
 
 			foreach ($log_data as $row)
 			{
-				$template->assign_block_vars('usernotes', array(
+				$template->assign_block_vars('usernotes', [
 					'REPORT_BY'		=> $row['username_full'],
 					'REPORT_AT'		=> $user->format_date($row['time']),
 					'ACTION'		=> $row['action'],
 					'IP'			=> $row['ip'],
-					'ID'			=> $row['id'])
+					'ID'			=> $row['id']]
 				);
 			}
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_POST_ACTION'			=> $this->u_action,
 			'S_CLEAR_ALLOWED'		=> ($auth->acl_get('a_clearlogs')) ? true : false,
 			'S_SELECT_SORT_DIR'		=> $s_sort_dir,
@@ -235,7 +235,7 @@ class mcp_notes
 
 			'AVATAR_IMG'		=> $avatar_img,
 			'RANK_IMG'			=> $rank_img,
-			)
+			]
 		);
 	}
 

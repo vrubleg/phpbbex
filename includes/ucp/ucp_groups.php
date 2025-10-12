@@ -25,10 +25,10 @@ class ucp_groups
 
 		$return_page = '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '">', '</a>');
 
-		$mark_ary	= request_var('mark', array(0));
+		$mark_ary	= request_var('mark', [0]);
 		$submit		= (!empty($_POST['submit'])) ? true : false;
 		$delete		= (!empty($_POST['delete'])) ? true : false;
-		$error = $data = array();
+		$error = $data = [];
 
 		switch ($mode)
 		{
@@ -51,7 +51,7 @@ class ucp_groups
 						WHERE group_id IN ($group_id, {$user->data['group_id']})";
 					$result = $db->sql_query($sql);
 
-					$group_row = array();
+					$group_row = [];
 					while ($row = $db->sql_fetchrow($result))
 					{
 						$row['group_name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
@@ -95,10 +95,10 @@ class ucp_groups
 							}
 							else
 							{
-								$s_hidden_fields = array(
+								$s_hidden_fields = [
 									'default'		=> $group_id,
 									'change_default'=> true
-								);
+								];
 
 								confirm_box(false, sprintf($user->lang['GROUP_CHANGE_DEFAULT'], $group_row[$group_id]['group_name']), build_hidden_fields($s_hidden_fields));
 							}
@@ -142,11 +142,11 @@ class ucp_groups
 							}
 							else
 							{
-								$s_hidden_fields = array(
+								$s_hidden_fields = [
 									'selected'		=> $group_id,
 									'action'		=> 'resign',
 									'submit'		=> true
-								);
+								];
 
 								confirm_box(false, ($row['user_pending']) ? 'GROUP_RESIGN_PENDING' : 'GROUP_RESIGN_MEMBERSHIP', build_hidden_fields($s_hidden_fields));
 							}
@@ -207,13 +207,13 @@ class ucp_groups
 										$messenger->to($row['user_email'], $row['username']);
 										$messenger->im($row['user_jabber'], $row['username']);
 
-										$messenger->assign_vars(array(
+										$messenger->assign_vars([
 											'USERNAME'			=> htmlspecialchars_decode($row['username']),
 											'GROUP_NAME'		=> htmlspecialchars_decode($group_row[$group_id]['group_name']),
 											'REQUEST_USERNAME'	=> $user->data['username'],
 
 											'U_PENDING'		=> generate_board_url() . "/ucp.php?i=groups&mode=manage&action=list&g=$group_id",
-											'U_GROUP'		=> generate_board_url() . "/memberlist.php?mode=group&g=$group_id")
+											'U_GROUP'		=> generate_board_url() . "/memberlist.php?mode=group&g=$group_id"]
 										);
 
 										$messenger->send($row['user_notify_type']);
@@ -230,11 +230,11 @@ class ucp_groups
 							}
 							else
 							{
-								$s_hidden_fields = array(
+								$s_hidden_fields = [
 									'selected'		=> $group_id,
 									'action'		=> 'join',
 									'submit'		=> true
-								);
+								];
 
 								confirm_box(false, ($group_row[$group_id]['group_type'] == GROUP_FREE) ? 'GROUP_JOIN' : 'GROUP_JOIN_PENDING', build_hidden_fields($s_hidden_fields));
 							}
@@ -265,11 +265,11 @@ class ucp_groups
 							}
 							else
 							{
-								$s_hidden_fields = array(
+								$s_hidden_fields = [
 									'selected'		=> $group_id,
 									'action'		=> 'demote',
 									'submit'		=> true
-								);
+								];
 
 								confirm_box(false, 'USER_GROUP_DEMOTE', build_hidden_fields($s_hidden_fields));
 							}
@@ -285,7 +285,7 @@ class ucp_groups
 					ORDER BY g.group_type DESC, g.group_name';
 				$result = $db->sql_query($sql);
 
-				$group_id_ary = array();
+				$group_id_ary = [];
 				$leader_count = $member_count = $pending_count = 0;
 				while ($row = $db->sql_fetchrow($result))
 				{
@@ -314,7 +314,7 @@ class ucp_groups
 						break;
 					}
 
-					$template->assign_block_vars($block, array(
+					$template->assign_block_vars($block, [
 						'GROUP_ID'		=> $row['group_id'],
 						'GROUP_NAME'	=> ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'],
 						'GROUP_DESC'	=> ($row['group_type'] <> GROUP_SPECIAL) ? generate_text_for_display($row['group_desc'], $row['group_desc_uid'], $row['group_desc_bitfield'], $row['group_desc_options']) : $user->lang['GROUP_IS_SPECIAL'],
@@ -325,7 +325,7 @@ class ucp_groups
 						'U_VIEW_GROUP'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $row['group_id']),
 
 						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $user->data['group_id']) ? true : false,
-						'S_ROW_COUNT'		=> ${$block . '_count'}++)
+						'S_ROW_COUNT'		=> ${$block . '_count'}++]
 					);
 
 					$group_id_ary[] = (int) $row['group_id'];
@@ -368,7 +368,7 @@ class ucp_groups
 						break;
 					}
 
-					$template->assign_block_vars('nonmember', array(
+					$template->assign_block_vars('nonmember', [
 						'GROUP_ID'		=> $row['group_id'],
 						'GROUP_NAME'	=> ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'],
 						'GROUP_DESC'	=> ($row['group_type'] <> GROUP_SPECIAL) ? generate_text_for_display($row['group_desc'], $row['group_desc_uid'], $row['group_desc_bitfield'], $row['group_desc_options']) : $user->lang['GROUP_IS_SPECIAL'],
@@ -380,19 +380,19 @@ class ucp_groups
 
 						'U_VIEW_GROUP'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $row['group_id']),
 
-						'S_ROW_COUNT'	=> $nonmember_count++)
+						'S_ROW_COUNT'	=> $nonmember_count++]
 					);
 				}
 				$db->sql_freeresult($result);
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_CHANGE_DEFAULT'	=> ($auth->acl_get('u_chggrp')) ? true : false,
 					'S_LEADER_COUNT'	=> $leader_count,
 					'S_MEMBER_COUNT'	=> $member_count,
 					'S_PENDING_COUNT'	=> $pending_count,
 					'S_NONMEMBER_COUNT'	=> $nonmember_count,
 
-					'S_UCP_ACTION'			=> $this->u_action)
+					'S_UCP_ACTION'			=> $this->u_action]
 				);
 
 			break;
@@ -430,13 +430,13 @@ class ucp_groups
 					$group_name = $group_row['group_name'];
 					$group_type = $group_row['group_type'];
 
-					$template->assign_vars(array(
+					$template->assign_vars([
 						'GROUP_NAME'			=> ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
 						'GROUP_INTERNAL_NAME'	=> $group_name,
 						'GROUP_COLOUR'			=> (isset($group_row['group_colour'])) ? $group_row['group_colour'] : '',
 						'GROUP_DESC_DISP'		=> generate_text_for_display($group_row['group_desc'], $group_row['group_desc_uid'], $group_row['group_desc_bitfield'], $group_row['group_desc_options']),
 						'GROUP_TYPE'			=> $group_row['group_type'],
-					));
+					]);
 				}
 
 				switch ($action)
@@ -459,13 +459,13 @@ class ucp_groups
 							trigger_error($user->lang['NOT_LEADER_OF_GROUP'] . $return_page);
 						}
 
-						$user->add_lang(array('acp/groups', 'acp/common'));
+						$user->add_lang(['acp/groups', 'acp/common']);
 
-						$data = $submit_ary = array();
+						$data = $submit_ary = [];
 
 						$update	= (isset($_POST['update'])) ? true : false;
 
-						$error = array();
+						$error = [];
 
 						// Did we submit?
 						if ($update)
@@ -478,13 +478,13 @@ class ucp_groups
 							$allow_desc_urls	= request_var('desc_parse_urls', false);
 							$allow_desc_smilies	= request_var('desc_parse_smilies', false);
 
-							$submit_ary = array(
+							$submit_ary = [
 								'colour'		=> request_var('group_colour', ''),
 								'rank'			=> request_var('group_rank', 0),
 								'receive_pm'	=> isset($_REQUEST['group_receive_pm']) ? 1 : 0,
 								'message_limit'	=> request_var('group_message_limit', 0),
 								'max_recipients'=> request_var('group_max_recipients', 0),
-							);
+							];
 
 							if (!check_form_key('ucp_groups'))
 							{
@@ -492,7 +492,7 @@ class ucp_groups
 							}
 
 							// Validate submitted colour value
-							if ($colour_error = validate_data($submit_ary, array('colour'	=> array('hex_colour', true))))
+							if ($colour_error = validate_data($submit_ary, ['colour'	=> ['hex_colour', true]]))
 							{
 								// Replace "error" string with its real, localised form
 								$error = array_merge($error, $colour_error);
@@ -504,15 +504,15 @@ class ucp_groups
 								// group. This prevents existing group members being updated if no changes
 								// were made.
 
-								$group_attributes = array();
-								$test_variables = array(
+								$group_attributes = [];
+								$test_variables = [
 									'colour'		=> 'string',
 									'rank'			=> 'int',
 									'receive_pm'	=> 'int',
 									'legend'		=> 'int',
 									'message_limit'	=> 'int',
 									'max_recipients'=> 'int',
-								);
+								];
 
 								foreach ($test_variables as $test => $type)
 								{
@@ -534,26 +534,26 @@ class ucp_groups
 
 							if (sizeof($error))
 							{
-								$error = array_map(array(&$user, 'lang'), $error);
+								$error = array_map([&$user, 'lang'], $error);
 								$group_rank = $submit_ary['rank'];
 
-								$group_desc_data = array(
+								$group_desc_data = [
 									'text'			=> $group_desc,
 									'allow_bbcode'	=> $allow_desc_bbcode,
 									'allow_smilies'	=> $allow_desc_smilies,
 									'allow_urls'	=> $allow_desc_urls
-								);
+								];
 							}
 						}
 						else if (!$group_id)
 						{
 							$group_name = utf8_normalize_nfc(request_var('group_name', '', true));
-							$group_desc_data = array(
+							$group_desc_data = [
 								'text'			=> '',
 								'allow_bbcode'	=> true,
 								'allow_smilies'	=> true,
 								'allow_urls'	=> true
-							);
+							];
 							$group_rank = 0;
 							$group_type = GROUP_OPEN;
 						}
@@ -582,7 +582,7 @@ class ucp_groups
 						$type_closed	= ($group_type == GROUP_CLOSED) ? ' checked="checked"' : '';
 						$type_hidden	= ($group_type == GROUP_HIDDEN) ? ' checked="checked"' : '';
 
-						$template->assign_vars(array(
+						$template->assign_vars([
 							'S_EDIT'			=> true,
 							'S_INCLUDE_SWATCH'	=> true,
 							'S_ERROR'			=> (sizeof($error)) ? true : false,
@@ -613,7 +613,7 @@ class ucp_groups
 
 							'U_SWATCH'			=> append_sid(PHPBB_ROOT_PATH . 'adm/swatch.php', 'form=ucp&amp;name=group_colour'),
 							'S_UCP_ACTION'		=> $this->u_action . "&amp;action=$action&amp;g=$group_id",
-						));
+						]);
 
 					break;
 
@@ -635,7 +635,7 @@ class ucp_groups
 							trigger_error($user->lang['NOT_LEADER_OF_GROUP'] . $return_page);
 						}
 
-						$user->add_lang(array('acp/groups', 'acp/common'));
+						$user->add_lang(['acp/groups', 'acp/common']);
 						$start = request_var('start', 0);
 
 						// Grab the leaders - always, on every page...
@@ -649,7 +649,7 @@ class ucp_groups
 
 						while ($row = $db->sql_fetchrow($result))
 						{
-							$template->assign_block_vars('leader', array(
+							$template->assign_block_vars('leader', [
 								'USERNAME'			=> $row['username'],
 								'USERNAME_COLOUR'	=> $row['user_colour'],
 								'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
@@ -657,7 +657,7 @@ class ucp_groups
 								'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id) ? true : false,
 								'JOINED'			=> ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
 								'USER_POSTS'		=> $row['user_posts'],
-								'USER_ID'			=> $row['user_id'])
+								'USER_ID'			=> $row['user_id']]
 							);
 						}
 						$db->sql_freeresult($result);
@@ -687,8 +687,8 @@ class ucp_groups
 						{
 							if ($row['user_pending'] && !$pending)
 							{
-								$template->assign_block_vars('member', array(
-									'S_PENDING'		=> true)
+								$template->assign_block_vars('member', [
+									'S_PENDING'		=> true]
 								);
 								$template->assign_var('S_PENDING_SET', true);
 
@@ -696,15 +696,15 @@ class ucp_groups
 							}
 							else if (!$row['user_pending'] && !$approved)
 							{
-								$template->assign_block_vars('member', array(
-									'S_APPROVED'		=> true)
+								$template->assign_block_vars('member', [
+									'S_APPROVED'		=> true]
 								);
 								$template->assign_var('S_APPROVED_SET', true);
 
 								$approved = true;
 							}
 
-							$template->assign_block_vars('member', array(
+							$template->assign_block_vars('member', [
 								'USERNAME'			=> $row['username'],
 								'USERNAME_COLOUR'	=> $row['user_colour'],
 								'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
@@ -712,20 +712,20 @@ class ucp_groups
 								'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id) ? true : false,
 								'JOINED'			=> ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
 								'USER_POSTS'		=> $row['user_posts'],
-								'USER_ID'			=> $row['user_id'])
+								'USER_ID'			=> $row['user_id']]
 							);
 						}
 						$db->sql_freeresult($result);
 
 						$s_action_options = '';
-						$options = array('default' => 'DEFAULT', 'approve' => 'APPROVE', 'deleteusers' => 'DELETE');
+						$options = ['default' => 'DEFAULT', 'approve' => 'APPROVE', 'deleteusers' => 'DELETE'];
 
 						foreach ($options as $option => $lang)
 						{
 							$s_action_options .= '<option value="' . $option . '">' . $user->lang['GROUP_' . $lang] . '</option>';
 						}
 
-						$template->assign_vars(array(
+						$template->assign_vars([
 							'S_LIST'			=> true,
 							'S_ACTION_OPTIONS'	=> $s_action_options,
 							'S_ON_PAGE'			=> on_page($total_members, $config['topics_per_page'], $start),
@@ -734,7 +734,7 @@ class ucp_groups
 							'U_ACTION'			=> $this->u_action . "&amp;g=$group_id",
 							'S_UCP_ACTION'		=> $this->u_action . "&amp;g=$group_id",
 							'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=ucp&amp;field=usernames'),
-						));
+						]);
 
 					break;
 
@@ -799,7 +799,7 @@ class ucp_groups
 										ORDER BY user_id";
 									$result = $db->sql_query_limit($sql, 200, $start);
 
-									$mark_ary = array();
+									$mark_ary = [];
 									if ($row = $db->sql_fetchrow($result))
 									{
 										do
@@ -833,12 +833,12 @@ class ucp_groups
 						{
 							$user->add_lang('acp/common');
 
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 								'mark'		=> $mark_ary,
 								'g'			=> $group_id,
 								'i'			=> $id,
 								'mode'		=> $mode,
-								'action'	=> $action))
+								'action'	=> $action])
 							);
 						}
 
@@ -849,7 +849,7 @@ class ucp_groups
 
 					case 'deleteusers':
 
-						$user->add_lang(array('acp/groups', 'acp/common'));
+						$user->add_lang(['acp/groups', 'acp/common']);
 
 						if (!($row = group_memberships($group_id, $user->data['user_id'])))
 						{
@@ -882,12 +882,12 @@ class ucp_groups
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 								'mark'		=> $mark_ary,
 								'g'			=> $group_id,
 								'i'			=> $id,
 								'mode'		=> $mode,
-								'action'	=> $action))
+								'action'	=> $action])
 							);
 						}
 
@@ -898,7 +898,7 @@ class ucp_groups
 
 					case 'addusers':
 
-						$user->add_lang(array('acp/groups', 'acp/common'));
+						$user->add_lang(['acp/groups', 'acp/common']);
 
 						$names = utf8_normalize_nfc(request_var('usernames', '', true));
 
@@ -940,14 +940,14 @@ class ucp_groups
 						}
 						else
 						{
-							$s_hidden_fields = array(
+							$s_hidden_fields = [
 								'default'	=> $default,
 								'usernames'	=> $names,
 								'g'			=> $group_id,
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'action'	=> $action
-							);
+							];
 							confirm_box(false, sprintf($user->lang['GROUP_CONFIRM_ADD_USER' . ((sizeof($name_ary) == 1) ? '' : 'S')], implode(', ', $name_ary)), build_hidden_fields($s_hidden_fields));
 						}
 
@@ -968,7 +968,7 @@ class ucp_groups
 
 						while ($value = $db->sql_fetchrow($result))
 						{
-							$template->assign_block_vars('leader', array(
+							$template->assign_block_vars('leader', [
 								'GROUP_NAME'	=> ($value['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $value['group_name']] : $value['group_name'],
 								'GROUP_DESC'	=> generate_text_for_display($value['group_desc'], $value['group_desc_uid'], $value['group_desc_bitfield'], $value['group_desc_options']),
 								'GROUP_TYPE'	=> $value['group_type'],
@@ -976,7 +976,7 @@ class ucp_groups
 								'GROUP_COLOUR'	=> $value['group_colour'],
 
 								'U_LIST'	=> $this->u_action . "&amp;action=list&amp;g={$value['group_id']}",
-								'U_EDIT'	=> $this->u_action . "&amp;action=edit&amp;g={$value['group_id']}")
+								'U_EDIT'	=> $this->u_action . "&amp;action=edit&amp;g={$value['group_id']}"]
 							);
 						}
 						$db->sql_freeresult($result);

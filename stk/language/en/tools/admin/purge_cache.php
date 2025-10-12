@@ -12,9 +12,9 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'PURGE_CACHE_COMPLETE'	=> 'The cache has been purged successfully.',
-));
+]);

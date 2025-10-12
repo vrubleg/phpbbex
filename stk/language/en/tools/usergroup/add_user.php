@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADD_USER'				=> 'Add user',
 	'ADD_USER_GROUP'		=> 'Add user to groups',
 
@@ -28,4 +28,4 @@ $lang = array_merge($lang, array(
 	'USER_ADDED'			=> 'The user was sucessfully created!',
 	'USER_GROUPS'			=> 'User groups',
 	'USER_GROUPS_EXPLAIN'	=> 'Make this user a member of the selected groups.',
-));
+]);

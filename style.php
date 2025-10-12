@@ -91,7 +91,7 @@ $sql = 'SELECT *
 	AND image_lang IN ('" . $db->sql_escape($user_image_lang) . "', '')";
 $result = $db->sql_query($sql, 3600);
 
-$img_array = array();
+$img_array = [];
 while ($row = $db->sql_fetchrow($result))
 {
 	$img_array[$row['image_name']] = $row;
@@ -148,10 +148,10 @@ if ($recache)
 	$theme['theme_mtime'] = $update_time;
 
 	// Save CSS contents
-	$sql_ary = array(
+	$sql_ary = [
 		'theme_mtime'	=> $theme['theme_mtime'],
 		'theme_data'	=> $theme['theme_data']
-	);
+	];
 
 	$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 		WHERE theme_id = {$theme['theme_id']}";
@@ -173,21 +173,21 @@ else
 }
 
 // Parse Theme Data
-$replace = array(
+$replace = [
 	'{T_THEME_PATH}'			=> PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['theme_path']) . '/theme',
 	'{T_TEMPLATE_PATH}'			=> PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_path']) . '/template',
 	'{T_IMAGESET_PATH}'			=> PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_path']) . '/imageset',
 	'{T_IMAGESET_LANG_PATH}'	=> PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_path']) . '/imageset/' . $user_image_lang,
 	'{T_STYLESHEET_NAME}'		=> $theme['theme_name'],
 	'{S_USER_LANG}'				=> $lang,
-);
+];
 
 $theme['theme_data'] = str_replace(array_keys($replace), array_values($replace), $theme['theme_data']);
 
-$matches = array();
+$matches = [];
 preg_match_all('#\{IMG_([A-Za-z0-9_]*?)_(WIDTH|HEIGHT|SRC)\}#', $theme['theme_data'], $matches);
 
-$imgs = $find = $replace = array();
+$imgs = $find = $replace = [];
 if (isset($matches[0]) && sizeof($matches[0]))
 {
 	foreach ($matches[1] as $i => $img)
@@ -205,11 +205,11 @@ if (isset($matches[0]) && sizeof($matches[0]))
 		{
 			$img_data = &$img_array[$img];
 			$imgsrc = ($img_data['image_lang'] ? $img_data['image_lang'] . '/' : '') . $img_data['image_filename'];
-			$imgs[$img] = array(
+			$imgs[$img] = [
 				'src'		=> PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_path']) . '/imageset/' . $imgsrc,
 				'width'		=> $img_data['image_width'],
 				'height'	=> $img_data['image_height'],
-			);
+			];
 		}
 
 		switch ($matches[2][$i])

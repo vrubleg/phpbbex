@@ -19,7 +19,7 @@ $s_quick_reply_display = ($user->data['user_id'] == ANONYMOUS) ? $s_quick_reply_
 
 if ($config['allow_quick_' . $mode] && $s_quick_reply_display)
 {
-	$main_data = array();
+	$main_data = [];
 	$main_data = ($mode == 'reply') ? $topic_data : $forum_data;
 
 	if ($auth->acl_get('f_' . $mode, $forum_id))
@@ -44,10 +44,10 @@ if (!$s_quick_reply)
 }
 
 require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
-$user->add_lang(array('posting', 'mcp'));
+$user->add_lang(['posting', 'mcp']);
 
 // Set some default variables
-$uninit = array('post_attachment' => 0, 'poster_id' => $user->data['user_id'], 'enable_magic_url' => 0, 'topic_status' => 0, 'topic_type' => POST_NORMAL, 'post_subject' => '', 'topic_title' => '', 'post_time' => 0, 'post_edit_reason' => '', 'notify_set' => 0);
+$uninit = ['post_attachment' => 0, 'poster_id' => $user->data['user_id'], 'enable_magic_url' => 0, 'topic_status' => 0, 'topic_type' => POST_NORMAL, 'post_subject' => '', 'topic_title' => '', 'post_time' => 0, 'post_edit_reason' => '', 'notify_set' => 0];
 foreach ($uninit as $var_name => $default_value)
 {
 	if (!isset($main_data[$var_name]))
@@ -113,16 +113,16 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 // Posting uses is_solved for legacy reasons. Plugins have to use is_solved to force themselves to be displayed.
 if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($captcha) && $captcha->is_solved() === false) && ($mode == 'post' || $mode == 'reply'))
 {
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_CONFIRM_CODE'			=> true,
 		'CAPTCHA_TEMPLATE'			=> $captcha->get_template(),
-	));
+	]);
 }
 
-$qr_hidden_fields = array(
+$qr_hidden_fields = [
 	'topic_cur_post_id'		=> (isset($main_data['topic_last_post_id'])) ? (int) $main_data['topic_last_post_id'] : 0,
 	'lastclick'				=> (int) time()
-);
+];
 
 // Attachment entry
 $show_attach_box = (PHP_FILE_UPLOADS && $auth->acl_get('f_attach', $forum_id) && $auth->acl_get('u_attach') && $config['allow_attachments'] && $config['allow_quick_' . $mode . '_attachbox']);
@@ -135,7 +135,7 @@ $s_do_merge_checked = $s_do_merge_allowed && ((time() - $topic_data['topic_last_
 $allowed_extension_sizes = get_allowed_extension_sizes($forum_id);
 
 // Send vars to template
-$template->assign_vars(array(
+$template->assign_vars([
 	'S_QUICK_REPLY'			=> $s_quick_reply,
 	'QR_HIDDEN_FIELDS'		=> build_hidden_fields($qr_hidden_fields),
 	'U_QR_ACTION'			=> $s_action,
@@ -186,7 +186,7 @@ $template->assign_vars(array(
 	'S_BBCODE_QUOTE'		=> $quote_status,
 	'S_BBCODE_SPOILER'		=> $spoiler_status,
 	'S_SHOW_ATTACH_BOX'		=> $show_attach_box,
-	)
+	]
 
 );
 

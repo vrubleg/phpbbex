@@ -24,7 +24,7 @@ class filespec
 	var $filesize = 0;
 	var $width = 0;
 	var $height = 0;
-	var $image_info = array();
+	var $image_info = [];
 
 	var $destination_file = '';
 	var $destination_path = '';
@@ -33,7 +33,7 @@ class filespec
 	var $init_error = false;
 	var $local = false;
 
-	var $error = array();
+	var $error = [];
 
 	var $upload = '';
 
@@ -100,7 +100,7 @@ class filespec
 				}
 
 				// Replace any chars which may cause us problems with _
-				$bad_chars = array("'", "\\", ' ', '/', ':', '*', '?', '"', '<', '>', '|');
+				$bad_chars = ["'", "\\", ' ', '/', ':', '*', '?', '"', '<', '>', '|'];
 
 				$this->realname = rawurlencode(str_replace($bad_chars, '_', strtolower($this->realname)));
 				$this->realname = preg_replace("/%(\w{2})/", '_', $this->realname);
@@ -448,8 +448,8 @@ class fileerror extends filespec
 */
 class fileupload
 {
-	var $allowed_extensions = array();
-	var $disallowed_content = array('body', 'head', 'html', 'img', 'plaintext', 'a href', 'pre', 'script', 'table', 'title');
+	var $allowed_extensions = [];
+	var $disallowed_content = ['body', 'head', 'html', 'img', 'plaintext', 'a href', 'pre', 'script', 'table', 'title'];
 	var $max_filesize = 0;
 	var $min_width = 0;
 	var $min_height = 0;
@@ -489,8 +489,8 @@ class fileupload
 		$this->max_filesize = 0;
 		$this->min_width = $this->min_height = $this->max_width = $this->max_height = 0;
 		$this->error_prefix = '';
-		$this->allowed_extensions = array();
-		$this->disallowed_content = array();
+		$this->allowed_extensions = [];
+		$this->disallowed_content = [];
 	}
 
 	/**
@@ -533,7 +533,7 @@ class fileupload
 	{
 		if ($disallowed_content !== false && is_array($disallowed_content))
 		{
-			$this->disallowed_content = array_diff($disallowed_content, array(''));
+			$this->disallowed_content = array_diff($disallowed_content, ['']);
 		}
 	}
 
@@ -714,7 +714,7 @@ class fileupload
 	{
 		global $user;
 
-		$upload_ary = array();
+		$upload_ary = [];
 		$upload_ary['local_mode'] = true;
 
 		if (!preg_match('#^(https?://).*?\.(' . implode('|', $this->allowed_extensions) . ')$#i', $upload_url, $match))
@@ -1028,23 +1028,23 @@ class fileupload
 	*/
 	function image_types()
 	{
-		return array(
-			1 => array('gif'),
-			2 => array('jpg', 'jpeg'),
-			3 => array('png'),
-			4 => array('swf'),
-			5 => array('psd'),
-			6 => array('bmp'),
-			7 => array('tif', 'tiff'),
-			8 => array('tif', 'tiff'),
-			9 => array('jpg', 'jpeg'),
-			10 => array('jpg', 'jpeg'),
-			11 => array('jpg', 'jpeg'),
-			12 => array('jpg', 'jpeg'),
-			13 => array('swc'),
-			14 => array('iff'),
-			15 => array('wbmp'),
-			16 => array('xbm'),
-		);
+		return [
+			1 => ['gif'],
+			2 => ['jpg', 'jpeg'],
+			3 => ['png'],
+			4 => ['swf'],
+			5 => ['psd'],
+			6 => ['bmp'],
+			7 => ['tif', 'tiff'],
+			8 => ['tif', 'tiff'],
+			9 => ['jpg', 'jpeg'],
+			10 => ['jpg', 'jpeg'],
+			11 => ['jpg', 'jpeg'],
+			12 => ['jpg', 'jpeg'],
+			13 => ['swc'],
+			14 => ['iff'],
+			15 => ['wbmp'],
+			16 => ['xbm'],
+		];
 	}
 }

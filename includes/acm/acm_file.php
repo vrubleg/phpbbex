@@ -15,12 +15,12 @@ if (!defined('IN_PHPBB'))
 */
 class acm
 {
-	var $vars = array();
-	var $var_expires = array();
+	var $vars = [];
+	var $var_expires = [];
 	var $is_modified = false;
 
-	var $sql_rowset = array();
-	var $sql_row_pointer = array();
+	var $sql_rowset = [];
+	var $sql_row_pointer = [];
 	var $cache_dir = '';
 
 	/**
@@ -50,10 +50,10 @@ class acm
 		unset($this->sql_rowset);
 		unset($this->sql_row_pointer);
 
-		$this->vars = array();
-		$this->var_expires = array();
-		$this->sql_rowset = array();
-		$this->sql_row_pointer = array();
+		$this->vars = [];
+		$this->var_expires = [];
+		$this->sql_rowset = [];
+		$this->sql_row_pointer = [];
 	}
 
 	/**
@@ -214,10 +214,10 @@ class acm
 		unset($this->sql_rowset);
 		unset($this->sql_row_pointer);
 
-		$this->vars = array();
-		$this->var_expires = array();
-		$this->sql_rowset = array();
-		$this->sql_row_pointer = array();
+		$this->vars = [];
+		$this->var_expires = [];
+		$this->sql_rowset = [];
+		$this->sql_row_pointer = [];
 
 		$this->is_modified = false;
 	}
@@ -231,7 +231,7 @@ class acm
 		{
 			if (!is_array($table))
 			{
-				$table = array($table);
+				$table = [$table];
 			}
 
 			$dir = @opendir($this->cache_dir);
@@ -355,7 +355,7 @@ class acm
 		$query = preg_replace('/[\n\r\s\t]+/', ' ', $query);
 
 		$query_id = sizeof($this->sql_rowset);
-		$this->sql_rowset[$query_id] = array();
+		$this->sql_rowset[$query_id] = [];
 		$this->sql_row_pointer[$query_id] = 0;
 
 		while ($row = $db->sql_fetchrow($query_result))
@@ -462,7 +462,7 @@ class acm
 
 		if ($filename == 'data_global')
 		{
-			$this->vars = $this->var_expires = array();
+			$this->vars = $this->var_expires = [];
 
 			$time = time();
 
@@ -477,7 +477,7 @@ class acm
 					// so we discard it
 					fclose($handle);
 
-					$this->vars = $this->var_expires = array();
+					$this->vars = $this->var_expires = [];
 					$this->is_modified = false;
 
 					$this->remove_file($file);

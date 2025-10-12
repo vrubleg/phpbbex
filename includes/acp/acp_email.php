@@ -30,7 +30,7 @@ class acp_email
 
 		// Set some vars
 		$submit = (isset($_POST['submit'])) ? true : false;
-		$error = array();
+		$error = [];
 
 		$usernames	= request_var('usernames', '', true);
 		$group_id	= request_var('g', 0);
@@ -74,31 +74,31 @@ class acp_email
 				{
 					if ($group_id)
 					{
-						$sql_ary = array(
+						$sql_ary = [
 							'SELECT'	=> 'u.user_email, u.username, u.username_clean, u.user_lang, u.user_jabber, u.user_notify_type',
-							'FROM'		=> array(
+							'FROM'		=> [
 								USERS_TABLE			=> 'u',
 								USER_GROUP_TABLE	=> 'ug',
-							),
+							],
 							'WHERE'		=> 'ug.group_id = ' . $group_id . '
 								AND ug.user_pending = 0
 								AND u.user_id = ug.user_id
 								AND u.user_allow_massemail = 1
 								AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')',
 							'ORDER_BY'	=> 'u.user_lang, u.user_notify_type',
-						);
+						];
 					}
 					else
 					{
-						$sql_ary = array(
+						$sql_ary = [
 							'SELECT'	=> 'u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang, u.user_notify_type',
-							'FROM'		=> array(
+							'FROM'		=> [
 								USERS_TABLE	=> 'u',
-							),
+							],
 							'WHERE'		=> 'u.user_allow_massemail = 1
 								AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')',
 							'ORDER_BY'	=> 'u.user_lang, u.user_notify_type',
-						);
+						];
 					}
 
 					// Mail banned or not
@@ -106,14 +106,14 @@ class acp_email
 					{
 						$sql_ary['WHERE'] .= ' AND (b.ban_id IS NULL
 						        OR b.ban_exclude = 1)';
-						$sql_ary['LEFT_JOIN'] = array(
-							array(
-								'FROM'	=> array(
+						$sql_ary['LEFT_JOIN'] = [
+							[
+								'FROM'	=> [
 									BANLIST_TABLE	=> 'b',
-								),
+								],
 								'ON'	=> 'u.user_id = b.ban_userid',
-							),
-						);
+							],
+						];
 					}
 					$sql = $db->sql_build_query('SELECT', $sql_ary);
 				}
@@ -131,7 +131,7 @@ class acp_email
 				// Send with BCC
 				// Maximum number of bcc recipients
 				$max_chunk_size = (int) $config['email_max_chunk_size'];
-				$email_list = array();
+				$email_list = [];
 				$old_lang = $row['user_lang'];
 				$old_notify_type = $row['user_notify_type'];
 
@@ -191,9 +191,9 @@ class acp_email
 
 					$messenger->subject(htmlspecialchars_decode($subject));
 
-					$messenger->assign_vars(array(
+					$messenger->assign_vars([
 						'CONTACT_EMAIL' => $config['board_contact'],
-						'MESSAGE'		=> htmlspecialchars_decode($message))
+						'MESSAGE'		=> htmlspecialchars_decode($message)]
 					);
 
 					if (!($messenger->send($used_method)))
@@ -244,7 +244,7 @@ class acp_email
 			WHERE group_name IN ('BOTS', 'GUESTS')";
 		$result = $db->sql_query($sql);
 
-		$exclude = array();
+		$exclude = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$exclude[] = $row['group_id'];
@@ -254,7 +254,7 @@ class acp_email
 		$select_list = '<option value="0"' . ((!$group_id) ? ' selected="selected"' : '') . '>' . $user->lang['ALL_USERS'] . '</option>';
 		$select_list .= group_select_options($group_id, $exclude);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_WARNING'				=> (sizeof($error)) ? true : false,
 			'WARNING_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'U_ACTION'				=> $this->u_action,
@@ -262,7 +262,7 @@ class acp_email
 			'USERNAMES'				=> $usernames,
 			'U_FIND_USERNAME'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_email&amp;field=usernames'),
 			'SUBJECT'				=> $subject,
-			'MESSAGE'				=> $message)
+			'MESSAGE'				=> $message]
 		);
 
 	}

@@ -28,24 +28,24 @@ class manage_founders
 		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$template->assign_block_vars('founders', array(
+			$template->assign_block_vars('founders', [
 				'L_FOUNDER_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'L_FOUNDER_ID'		=> $row['user_id'],
 				'S_DISABLED'		=> ($row['user_id'] == $user->data['user_id']) ? true : false,
-			));
+			]);
 		}
 		$db->sql_freeresult($result);
 
 		// Additional template stuff
-		$template->assign_vars(array(
-			'U_DEMOTE_FOUNDERS'	=> append_sid(STK_INDEX, array('c' => 'usergroup', 't' => 'manage_founders', 'mode' => 'demote', 'submit' => 1)),
-			'U_FIND_USER'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', array('mode' => 'searchuser', 'form' => 'select_user', 'field' => 'username', 'select_single' => 'true', 'form' => 'stk_promote_founder', 'field' => 'username')),
-			'U_PROMOTE_FOUNDER'	=> append_sid(STK_INDEX, array('c' => 'usergroup', 't' => 'manage_founders', 'mode' => 'promote', 'submit' => 1)),
-		));
+		$template->assign_vars([
+			'U_DEMOTE_FOUNDERS'	=> append_sid(STK_INDEX, ['c' => 'usergroup', 't' => 'manage_founders', 'mode' => 'demote', 'submit' => 1]),
+			'U_FIND_USER'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', ['mode' => 'searchuser', 'form' => 'select_user', 'field' => 'username', 'select_single' => 'true', 'form' => 'stk_promote_founder', 'field' => 'username']),
+			'U_PROMOTE_FOUNDER'	=> append_sid(STK_INDEX, ['c' => 'usergroup', 't' => 'manage_founders', 'mode' => 'promote', 'submit' => 1]),
+		]);
 
-		$template->set_filenames(array(
+		$template->set_filenames([
 			'body' => 'tools/manage_founders.html',
-		));
+		]);
 
 		page_header($user->lang['MANAGE_FOUNDERS'], false);
 		page_footer();
@@ -70,7 +70,7 @@ class manage_founders
 		switch ($mode)
 		{
 			case 'demote' :
-				$req_founders	= request_var('founders', array(0 => ''));
+				$req_founders	= request_var('founders', [0 => '']);
 				if (!sizeof($req_founders))
 				{
 					trigger_error('NO_USER');
@@ -78,7 +78,7 @@ class manage_founders
 
 				// Make sure we only have users that do exist
 				$req_founders	= array_keys($req_founders);
-				$founder_ids	= array();
+				$founder_ids	= [];
 
 				$sql = 'SELECT user_id
 					FROM ' . USERS_TABLE . '
@@ -93,9 +93,9 @@ class manage_founders
 
 				// Remove founder status from these users
 				$sql = 'UPDATE ' . USERS_TABLE . '
-					SET ' . $db->sql_build_array('UPDATE', array(
+					SET ' . $db->sql_build_array('UPDATE', [
 						'user_type'	=> USER_NORMAL,
-					)) . '
+					]) . '
 					WHERE ' . $db->sql_in_set('user_id', $founder_ids);
 				$db->sql_query($sql);
 
@@ -130,7 +130,7 @@ class manage_founders
 					include (PHPBB_ROOT_PATH . 'includes/functions_user.php');
 				}
 
-				$user_id = $username = $user_type = array();
+				$user_id = $username = $user_type = [];
 
 				if (!empty($req_user_id))
 				{
@@ -164,16 +164,16 @@ class manage_founders
 
 				// Now promote the guy
 				$sql = 'UPDATE ' . USERS_TABLE . '
-					SET ' . $db->sql_build_array('UPDATE', array(
+					SET ' . $db->sql_build_array('UPDATE', [
 						'user_type'	=> USER_FOUNDER,
-					)) . '
+					]) . '
 					WHERE user_id = ' . (int) $user_id;
 				$db->sql_query($sql);
 
 				// Success?
 				if ($db->sql_affectedrows() == 1)
 				{
-					trigger_error(sprintf($user->lang['MAKE_FOUNDER_SUCCESS'], append_sid(PHPBB_ROOT_PATH . 'memberlist.php', array('mode' => 'viewprofile', 'u' => $user_id[0])), $username));
+					trigger_error(sprintf($user->lang['MAKE_FOUNDER_SUCCESS'], append_sid(PHPBB_ROOT_PATH . 'memberlist.php', ['mode' => 'viewprofile', 'u' => $user_id[0]]), $username));
 				}
 				trigger_error($user->lang['MAKE_FOUNDER_FAILED']);
 			break;

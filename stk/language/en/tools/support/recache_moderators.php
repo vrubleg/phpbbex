@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'RECACHE_MODERATORS'				=> 'Re-cache moderators',
 	'RECACHE_MODERATORS_COMPLETE'		=> 'The moderator cache has been successfully rebuilt.',
 	'RECACHE_MODERATORS_CONFIRM'		=> 'Are you sure you want to re-cache the moderators?',
-));
+]);

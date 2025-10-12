@@ -151,9 +151,9 @@ $cache = new phpbb_cache();
 $template = new phpbb_template();
 
 // Set some standard variables we want to force
-$config = array(
+$config = [
 	'load_tplcompile'	=> '1'
-);
+];
 
 $template->set_custom_template('../adm/style', 'admin');
 $template->assign_var('T_TEMPLATE_PATH', '../adm/style');
@@ -170,8 +170,8 @@ $install->load();
 $install->page_header();
 $install->generate_navigation();
 
-$template->set_filenames(array(
-	'body' => $install->get_tpl_name())
+$template->set_filenames([
+	'body' => $install->get_tpl_name()]
 );
 
 $install->page_footer();
@@ -180,7 +180,7 @@ class module
 {
 	var $id = 0;
 	var $type = 'install';
-	var $module_ary = array();
+	var $module_ary = [];
 	var $filename;
 	var $module_url = '';
 	var $tpl_name = '';
@@ -195,7 +195,7 @@ class module
 	{
 		global $db, $config;
 
-		$module = array();
+		$module = [];
 
 		// Grab module information using Bart's "neat-o-module" system (tm)
 		$dir = @opendir('.');
@@ -301,7 +301,7 @@ class module
 		define('HEADER_INC', true);
 		global $template, $lang, $stage;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_CHANGE'				=> $lang['CHANGE'],
 			'L_INSTALL_PANEL'		=> $lang['INSTALL_PANEL'],
 			'L_SELECT_LANG'			=> $lang['SELECT_LANG'],
@@ -311,7 +311,7 @@ class module
 			'L_POWERED_BY'			=> sprintf($lang['POWERED_BY'], POWERED_BY),
 
 			'S_USER_LANG'			=> $lang['USER_LANG'],
-			)
+			]
 		);
 
 		if (!headers_sent())
@@ -396,11 +396,11 @@ class module
 
 				if ($this->mode == $cat)
 				{
-					$template->assign_block_vars('t_block1', array(
+					$template->assign_block_vars('t_block1', [
 						'L_TITLE'		=> $l_cat,
 						'S_SELECTED'	=> true,
 						'U_TITLE'		=> $url,
-					));
+					]);
 
 					if (is_array($this->module_ary[$this->id]['subs']))
 					{
@@ -411,11 +411,11 @@ class module
 							$option = strtolower($option);
 							$url = $this->module_url . '?mode=' . $this->mode . "&amp;sub=$option&amp;language=$language";
 
-							$template->assign_block_vars('l_block1', array(
+							$template->assign_block_vars('l_block1', [
 								'L_TITLE'		=> $l_option,
 								'S_SELECTED'	=> ($this->sub == $option),
 								'U_TITLE'		=> $url,
-							));
+							]);
 						}
 					}
 
@@ -429,21 +429,21 @@ class module
 							$option = strtolower($option);
 							$matched = ($this->sub == $option) ? true : $matched;
 
-							$template->assign_block_vars('l_block2', array(
+							$template->assign_block_vars('l_block2', [
 								'L_TITLE'		=> $l_option,
 								'S_SELECTED'	=> ($this->sub == $option),
 								'S_COMPLETE'	=> !$matched,
-							));
+							]);
 						}
 					}
 				}
 				else
 				{
-					$template->assign_block_vars('t_block1', array(
+					$template->assign_block_vars('t_block1', [
 						'L_TITLE'		=> $l_cat,
 						'S_SELECTED'	=> false,
 						'U_TITLE'		=> $url,
-					));
+					]);
 				}
 			}
 		}
@@ -459,15 +459,15 @@ class module
 
 		if ($skip)
 		{
-			$template->assign_block_vars('checks', array(
+			$template->assign_block_vars('checks', [
 				'S_LEGEND'	=> true,
 				'LEGEND'	=> $lang['INST_ERR'],
-			));
+			]);
 
-			$template->assign_block_vars('checks', array(
+			$template->assign_block_vars('checks', [
 				'TITLE'		=> basename($file) . ' [ ' . $line . ' ]',
 				'RESULT'	=> '<b style="color:red">' . $error . '</b>',
-			));
+			]);
 
 			return;
 		}
@@ -520,29 +520,29 @@ class module
 
 		if ($skip)
 		{
-			$template->assign_block_vars('checks', array(
+			$template->assign_block_vars('checks', [
 				'S_LEGEND'	=> true,
 				'LEGEND'	=> $lang['INST_ERR_FATAL'],
-			));
+			]);
 
-			$template->assign_block_vars('checks', array(
+			$template->assign_block_vars('checks', [
 				'TITLE'		=> basename($file) . ' [ ' . $line . ' ]',
 				'RESULT'	=> '<b style="color:red">' . $error . '</b><br />&#187; SQL:' . $sql,
-			));
+			]);
 
 			return;
 		}
 
-		$template->set_filenames(array(
-			'body' => 'install_error.html')
+		$template->set_filenames([
+			'body' => 'install_error.html']
 		);
 		$this->page_header();
 		$this->generate_navigation();
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'MESSAGE_TITLE'		=> $lang['INST_ERR_FATAL_DB'],
 			'MESSAGE_TEXT'		=> '<p>' . basename($file) . ' [ ' . $line . ' ]</p><p>SQL : ' . $sql . '</p><p><b>' . $error . '</b></p>',
-		));
+		]);
 
 		// Rollback if in transaction
 		if ($db->transaction)

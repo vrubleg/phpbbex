@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_FILES'						=> 'Администраторские файлы',
 	'ACP_LANGUAGE_PACKS_EXPLAIN'	=> 'Здесь вы можете устанавливать и удалять языковые пакеты. Языковой пакет, используемый на форуме по умолчанию, помечен звёздочкой (*).',
 
@@ -72,4 +72,4 @@ $lang = array_merge($lang, array(
 	'UNABLE_TO_WRITE_FILE'		=> 'Не удалось записать файл в %s.',
 
 	'WRONG_LANGUAGE_FILE'		=> 'Выбранный языковой файл недопустим.',
-));
+]);

@@ -50,15 +50,15 @@ class resync_user_groups
 		$this->rnr	= new resync_newly_registered($this);
 
 		// Set the options
-		$vars = array();
+		$vars = [];
 		if ($this->rr->can_run() === true)
 		{
-			$vars['rr'] = array('lang' => 'RUN_RR', 'type' => 'checkbox', 'explain' => true);
+			$vars['rr'] = ['lang' => 'RUN_RR', 'type' => 'checkbox', 'explain' => true];
 		}
 
 		if ($this->rnr->can_run() === true)
 		{
-			$vars['rnr'] = array('lang' => 'RUN_RNR', 'type' => 'checkbox', 'explain' => true);
+			$vars['rnr'] = ['lang' => 'RUN_RNR', 'type' => 'checkbox', 'explain' => true];
 		}
 
 		// No need to do a thing
@@ -68,11 +68,11 @@ class resync_user_groups
 		}
 
 		// Finish the options array and return it
-		$options 			= array();
+		$options 			= [];
 		$options['title']	= 'RESYNC_USER_GROUPS';
-		$options['vars']	= array_merge(array(
+		$options['vars']	= array_merge([
 			'legend1'	=> 'RESYNC_USER_GROUPS_SETTINGS',
-		), $vars);
+		], $vars);
 
 		return $options;
 	}
@@ -122,7 +122,7 @@ class resync_user_groups
 	 */
 	function _load_classes()
 	{
-		foreach (array('resync_registered', 'resync_newly_registered') as $class)
+		foreach (['resync_registered', 'resync_newly_registered'] as $class)
 		{
 			if (!class_exists($class))
 			{

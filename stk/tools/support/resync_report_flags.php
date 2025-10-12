@@ -86,7 +86,7 @@ class resync_report_flags
 			$sql_from	= ($type == 'posts') ? POSTS_TABLE : PRIVMSGS_TABLE;
 			$sql_where	= ($type == 'posts') ? 'post_reported' : 'message_reported';
 
-			$corrupted = array();
+			$corrupted = [];
 
 			// Set all unflagged as flagged
 			$sql = "SELECT {$sql_id}
@@ -111,7 +111,7 @@ class resync_report_flags
 			}
 
 			// Reset and time for the other way around flag
-			$corrupted = array();
+			$corrupted = [];
 			$sql = "SELECT {$sql_id}
 				FROM {$sql_from}
 				WHERE {$sql_where} = 1
@@ -154,7 +154,7 @@ class resync_report_flags
 			FROM " . REPORTS_TABLE . "
 			WHERE {$sql_id} > 0";
 		$result	= $db->sql_query($sql);
-		$set	= array();
+		$set	= [];
 		while ($report = $db->sql_fetchrow($result))
 		{
 			$set[] = $report[$sql_id];
@@ -176,7 +176,7 @@ class resync_report_flags
 		global $db;
 
 		// Fetch all the closed reports
-		$pms = $posts = array();
+		$pms = $posts = [];
 		$sql = 'SELECT post_id, pm_id
 			FROM ' . REPORTS_TABLE . '
 			WHERE report_closed = 1';
@@ -195,7 +195,7 @@ class resync_report_flags
 		$db->sql_freeresult($result);
 
 		// Update all the posts
-		$queries = array();
+		$queries = [];
 		if (!empty($posts))
 		{
 			$queries[] = 'UPDATE ' . POSTS_TABLE . '
@@ -232,16 +232,16 @@ class resync_report_flags
 		global $db;
 
 		// Grep all the topics that should be flagged
-		$expected = array();
-		$sql_ary = array(
+		$expected = [];
+		$sql_ary = [
 			'SELECT'	=> 't.topic_id',
-			'FROM'		=> array(
+			'FROM'		=> [
 				POSTS_TABLE		=> 'p',
 				TOPICS_TABLE	=> 't',
-			),
+			],
 			'WHERE'		=> 'p.post_reported = 1
 								AND t.topic_id = p.topic_id',
-		);
+		];
 		$sql = $db->sql_build_query('SELECT_DISTINCT', $sql_ary);
 		$result = $db->sql_query($sql);
 		while ($topic = $db->sql_fetchrow($result))
@@ -286,16 +286,16 @@ class resync_report_flags
 		// First all the flags on pms and posts are set correctly, than
 		// they are flipped off if needed by the status of the report and
 		// finally the topic flags are reset based upon whats left
-		$modes = array(
+		$modes = [
 			'pf'	=> 'pmf',
 			'pmf'	=> 'rf',
 			'rf'	=> 'tf',
 			'tf'	=> 'finished',
-		);
+		];
 		$next = $modes[$this->mode];
 
 		// Build the link
-		$redirect = append_sid(STK_INDEX, array('c' => 'support', 't' => 'resync_report_flags', 'm' => $next, 'submit' => true));
+		$redirect = append_sid(STK_INDEX, ['c' => 'support', 't' => 'resync_report_flags', 'm' => $next, 'submit' => true]);
 		meta_refresh(3, $redirect);
 		$template->assign_var('U_BACK_TOOL', false);
 		trigger_error('RESYNC_REPORT_FLAGS_NEXT');

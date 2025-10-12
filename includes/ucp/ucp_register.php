@@ -61,9 +61,9 @@ class ucp_register
 				}
 
 				$user->lang_name = $user_lang = $use_lang;
-				$user->lang = array();
+				$user->lang = [];
 				$user->data['user_lang'] = $user->lang_name;
-				$user->add_lang(array('common', 'ucp'));
+				$user->add_lang(['common', 'ucp']);
 			}
 			else
 			{
@@ -74,27 +74,27 @@ class ucp_register
 
 		$cp = new custom_profile();
 
-		$error = $cp_data = $cp_error = array();
+		$error = $cp_data = $cp_error = [];
 
 		if (!$agreed)
 		{
 			$add_lang = ($change_lang) ? '&amp;change_lang=' . urlencode($change_lang) : '';
 
-			$s_hidden_fields = array(
+			$s_hidden_fields = [
 				'change_lang'	=> $change_lang,
-			);
+			];
 
 			// If we change the language, we want to pass on some more possible parameter.
 			if ($change_lang)
 			{
 				// We do not include the password
-				$s_hidden_fields = array_merge($s_hidden_fields, array(
+				$s_hidden_fields = array_merge($s_hidden_fields, [
 					'username'			=> utf8_normalize_nfc(request_var('username', '', true)),
 					'email'				=> strtolower(request_var('email', '')),
 					'email_confirm'		=> strtolower(request_var('email_confirm', '')),
 					'lang'				=> $user->lang_name,
 					'tz'				=> request_var('tz', (float) $config['board_timezone']),
-				));
+				]);
 
 			}
 
@@ -103,21 +103,21 @@ class ucp_register
 				FROM ' . LANG_TABLE;
 			$result = $db->sql_query($sql);
 
-			$lang_row = array();
+			$lang_row = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$lang_row[] = $row;
 			}
 			$db->sql_freeresult($result);
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_LANG_OPTIONS'	=> (sizeof($lang_row) == 1 || $config['override_user_lang']) ? '' : language_select($user_lang),
 				'L_TERMS_OF_USE'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
 
 				'S_REGISTRATION'	=> true,
 				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
 				'S_UCP_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register' . $add_lang),
-				)
+				]
 			);
 
 			unset($lang_row);
@@ -138,7 +138,7 @@ class ucp_register
 		$is_dst = $config['board_dst'];
 		$timezone = $config['board_timezone'];
 
-		$data = array(
+		$data = [
 			'username'			=> utf8_normalize_nfc(request_var('username', '', true)),
 			'new_password'		=> request_var('new_password', '', true),
 			'password_confirm'	=> request_var('password_confirm', '', true),
@@ -146,7 +146,7 @@ class ucp_register
 			'email_confirm'		=> strtolower(request_var('email_confirm', '')),
 			'lang'				=> basename(request_var('lang', $user->lang_name)),
 			'tz'				=> request_var('tz', (float) $timezone),
-		);
+		];
 
 		// Check and initialize some variables if needed
 		if ($submit)
@@ -155,29 +155,29 @@ class ucp_register
 			$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
 			$is_dst				= ($config['override_user_timezone'])	? $config['board_dst']			: $is_dst;
 
-			$error_type = array(
+			$error_type = [
 				'generic' => false,
 				'token' => false,
 				'captcha' => false,
 				'attempts' => false,
 				'dnsbl' => false,
-			);
+			];
 
-			$error = validate_data($data, array(
-				'username'			=> array(
-					array('string', false, $config['min_name_chars'], $config['max_name_chars']),
-					array('username', '')),
-				'new_password'		=> array(
-					array('string', false, $config['min_pass_chars'], $config['max_pass_chars']),
-					array('password')),
-				'password_confirm'	=> array('string', false, $config['min_pass_chars'], $config['max_pass_chars']),
-				'email'				=> array(
-					array('string', false, 6, 60),
-					array('email')),
-				'email_confirm'		=> array('string', false, 6, 60),
-				'tz'				=> array('num', false, -14, 14),
-				'lang'				=> array('language_iso_name'),
-			));
+			$error = validate_data($data, [
+				'username'			=> [
+					['string', false, $config['min_name_chars'], $config['max_name_chars']],
+					['username', '']],
+				'new_password'		=> [
+					['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+					['password']],
+				'password_confirm'	=> ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+				'email'				=> [
+					['string', false, 6, 60],
+					['email']],
+				'email_confirm'		=> ['string', false, 6, 60],
+				'tz'				=> ['num', false, -14, 14],
+				'lang'				=> ['language_iso_name'],
+			]);
 
 			$error_type['generic'] = !!sizeof($error);
 
@@ -239,14 +239,14 @@ class ucp_register
 			$browser = $db->sql_fetchrow($result);
 			if (!$browser)
 			{
-				$browser = array(
+				$browser = [
 					'browser_id' => 'none',
 					'created' => time(),
 					'last_visit' => time(),
 					'visits' => 0,
 					'agent' => trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249)),
 					'last_ip' => (!empty($_SERVER['REMOTE_ADDR'])) ? (string) $_SERVER['REMOTE_ADDR'] : '',
-				);
+				];
 			}
 			$db->sql_freeresult($result);
 
@@ -287,7 +287,7 @@ class ucp_register
 					$user_inactive_time = 0;
 				}
 
-				$user_row = array(
+				$user_row = [
 					'username'				=> $data['username'],
 					'user_password'			=> phpbb_hash($data['new_password']),
 					'user_email'			=> $data['email'],
@@ -301,7 +301,7 @@ class ucp_register
 					'user_regdate'			=> time(),
 					'user_inactive_reason'	=> $user_inactive_reason,
 					'user_inactive_time'	=> $user_inactive_time,
-				);
+				];
 
 				if ($config['new_member_post_limit'])
 				{
@@ -357,11 +357,11 @@ class ucp_register
 
 					$messenger->anti_abuse_headers($config, $user);
 
-					$messenger->assign_vars(array(
+					$messenger->assign_vars([
 						'WELCOME_MSG'	=> htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
 						'USERNAME'		=> htmlspecialchars_decode($data['username']),
 						'PASSWORD'		=> htmlspecialchars_decode($data['new_password']),
-						'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u=$user_id&k=$user_actkey")
+						'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u=$user_id&k=$user_actkey"]
 					);
 
 					$messenger->send(NOTIFY_EMAIL);
@@ -370,7 +370,7 @@ class ucp_register
 					{
 						// Grab an array of user_id's with a_user permissions ... these users can activate a user
 						$admin_ary = $auth->acl_get_list(false, 'a_user', false);
-						$admin_ary = (!empty($admin_ary[0]['a_user'])) ? $admin_ary[0]['a_user'] : array();
+						$admin_ary = (!empty($admin_ary[0]['a_user'])) ? $admin_ary[0]['a_user'] : [];
 
 						// Also include founders
 						$where_sql = ' WHERE user_type = ' . USER_FOUNDER;
@@ -391,10 +391,10 @@ class ucp_register
 							$messenger->to($row['user_email'], $row['username']);
 							$messenger->im($row['user_jabber'], $row['username']);
 
-							$messenger->assign_vars(array(
+							$messenger->assign_vars([
 								'USERNAME'			=> htmlspecialchars_decode($data['username']),
 								'U_USER_DETAILS'	=> "$server_url/memberlist.php?mode=viewprofile&u=$user_id",
-								'U_ACTIVATE'		=> "$server_url/ucp.php?mode=activate&u=$user_id&k=$user_actkey")
+								'U_ACTIVATE'		=> "$server_url/ucp.php?mode=activate&u=$user_id&k=$user_actkey"]
 							);
 
 							$messenger->send($row['user_notify_type']);
@@ -414,15 +414,15 @@ class ucp_register
 				// Display one error if user provided invalid token
 				if ($error_type['token'])
 				{
-					$error = array($user->lang['FORM_INVALID_TOKEN']);
+					$error = [$user->lang['FORM_INVALID_TOKEN']];
 				}
 			}
 		}
 
-		$s_hidden_fields = array(
+		$s_hidden_fields = [
 			'agreed'		=> 'true',
 			'change_lang'	=> 0,
-		);
+		];
 
 		if ($config['enable_confirm'])
 		{
@@ -434,9 +434,9 @@ class ucp_register
 		// Visual Confirmation - Show images
 		if ($config['enable_confirm'])
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'CAPTCHA_TEMPLATE'		=> $captcha->get_template(),
-			));
+			]);
 		}
 
 		//
@@ -452,7 +452,7 @@ class ucp_register
 			break;
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'ERROR'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'USERNAME'			=> $data['username'],
 			'PASSWORD'			=> $data['new_password'],
@@ -470,10 +470,10 @@ class ucp_register
 			'S_REGISTRATION'	=> true,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			'S_UCP_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register'),
-		));
+		]);
 
 		//
-		$user->profile_fields = array();
+		$user->profile_fields = [];
 
 		// Generate profile fields -> Template Block Variable profile_fields
 		$cp->generate_profile_fields('register', $user->get_iso_lang_id());

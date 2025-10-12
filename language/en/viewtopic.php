@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ATTACHMENT'						=> 'Attachment',
 	'ATTACHMENT_FUNCTIONALITY_DISABLED'	=> 'The attachments feature has been disabled.',
 
@@ -96,4 +96,4 @@ $lang = array_merge($lang, array(
 	'VOTE_CANCELLED'		=> 'Your vote has been cancelled.',
 	'VOTE_CONVERTED'		=> 'Changing votes is not supported for converted polls.',
 
-));
+]);

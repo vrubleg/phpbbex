@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'RESYNC_USER_GROUPS'			=> 'Resynchronise user groups',
 	'RESYNC_USER_GROUPS_EXPLAIN'	=> 'This tool is designed to check whether all users are part of the correct default groups <em>(Registered Users and Newly Registered Users)</em>.',
 	'RESYNC_USER_GROUPS_NO_RUN'		=> 'All groups seem to be up to date!',
@@ -30,4 +30,4 @@ $lang = array_merge($lang, array(
 	'RUN_RR_FINISHED'				=> 'The users have been resynchronised successfully!',
 
 	'SELECT_RUN_GROUP'	=> 'Select at least one group type that will be resynchronised.',
-));
+]);

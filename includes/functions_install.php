@@ -17,23 +17,23 @@ if (!defined('IN_PHPBB'))
 function get_available_dbms($dbms = false, $return_unavailable = false)
 {
 	global $lang;
-	$available_dbms = array(
-		'mysql' => array(
+	$available_dbms = [
+		'mysql' => [
 			'LABEL'			=> 'MySQLi',
 			'MODULE'		=> 'mysqli',
 			'AVAILABLE'		=> true,
-		),
-	);
+		],
+	];
 
 	if ($dbms)
 	{
 		if (isset($available_dbms[$dbms]))
 		{
-			$available_dbms = array($dbms => $available_dbms[$dbms]);
+			$available_dbms = [$dbms => $available_dbms[$dbms]];
 		}
 		else
 		{
-			return array();
+			return [];
 		}
 	}
 
@@ -156,7 +156,7 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 		if (!$prefix_may_exist)
 		{
 			$temp_prefix = strtolower($table_prefix);
-			$table_ary = array($temp_prefix . 'attachments', $temp_prefix . 'config', $temp_prefix . 'sessions', $temp_prefix . 'topics', $temp_prefix . 'users');
+			$table_ary = [$temp_prefix . 'attachments', $temp_prefix . 'config', $temp_prefix . 'sessions', $temp_prefix . 'topics', $temp_prefix . 'users'];
 
 			$tables = get_tables($db);
 			$tables = array_map('strtolower', $tables);
@@ -240,7 +240,7 @@ function phpbb_create_config_file_data($data, $debug = false, $debug_test = fals
 {
 	$config_data = "<?php\n\n";
 
-	$config_data_array = array(
+	$config_data_array = [
 		'dbhost'		=> $data['dbhost'],
 		'dbport'		=> $data['dbport'],
 		'dbname'		=> $data['dbname'],
@@ -248,7 +248,7 @@ function phpbb_create_config_file_data($data, $debug = false, $debug_test = fals
 		'dbpasswd'		=> htmlspecialchars_decode($data['dbpasswd']),
 		'table_prefix'	=> $data['table_prefix'],
 		'acm_type'		=> 'file',
-	);
+	];
 
 	foreach ($config_data_array as $key => $value)
 	{

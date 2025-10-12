@@ -19,14 +19,14 @@ class sql_query
 	*/
 	function display_options()
 	{
-		return array(
+		return [
 			'title'	=> 'SQL_QUERY',
-			'vars'	=> array(
+			'vars'	=> [
 				'legend1'			=> 'SQL_QUERY_LEGEND',
-				'sql_query'			=> array('lang' => 'SQL_QUERY', 'type' => 'textarea:20:255', 'explain' => true),
-				'show_results'		=> array('lang' => 'SHOW_RESULTS', 'type' => 'checkbox', 'explain' => true),
-			)
-		);
+				'sql_query'			=> ['lang' => 'SQL_QUERY', 'type' => 'textarea:20:255', 'explain' => true],
+				'show_results'		=> ['lang' => 'SHOW_RESULTS', 'type' => 'checkbox', 'explain' => true],
+			]
+		];
 	}
 
 	/**
@@ -81,7 +81,7 @@ class sql_query
 			if (isset($_POST['show_results']))
 			{
 				// Display the query
-				$template->assign_block_vars('queries', array('QUERY' => $sql));
+				$template->assign_block_vars('queries', ['QUERY' => $sql]);
 
 				$cnt = 0;
 				while ($row = $db->sql_fetchrow($result))
@@ -91,17 +91,17 @@ class sql_query
 						// Assign the return fields
 						foreach (array_keys($row) as $key)
 						{
-							$template->assign_block_vars('queries.headings', array('FIELD_NAME' => $key));
+							$template->assign_block_vars('queries.headings', ['FIELD_NAME' => $key]);
 						}
 					}
 
 					// Set row class
-					$template->assign_block_vars('queries.resultdata', array('ROWSTYLE' => ($cnt % 2 == 0) ? 1 : 2));
+					$template->assign_block_vars('queries.resultdata', ['ROWSTYLE' => ($cnt % 2 == 0) ? 1 : 2]);
 
 					// Output resultset
 					foreach ($row as $value)
 					{
-						$template->assign_block_vars('queries.resultdata.resultdatafields', array('VALUE' => $value));
+						$template->assign_block_vars('queries.resultdata.resultdatafields', ['VALUE' => $value]);
 					}
 
 					$cnt++;

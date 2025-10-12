@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Forum Admin
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'AUTO_PRUNE_DAYS'			=> 'Автоочистка по дате последнего сообщения',
 	'AUTO_PRUNE_DAYS_EXPLAIN'	=> 'Количество дней с последнего сообщения, по прошествии которых тема будет удалена.',
 	'AUTO_PRUNE_FREQ'			=> 'Частота автоматической очистки',
@@ -133,4 +133,4 @@ $lang = array_merge($lang, array(
 	'TYPE_LINK'			=> 'Ссылка',
 
 	'UNLOCKED'			=> 'Открыт',
-));
+]);

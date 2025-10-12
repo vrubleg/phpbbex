@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ERROR_QUERY'					=> 'Query containing the error',
 
 	'NO_RESULTS'					=> 'No Results',
@@ -29,4 +29,4 @@ $lang = array_merge($lang, array(
 
 	'SQL_QUERY_LEGEND'				=> 'SQL Query',
 	'SQL_QUERY_SUCCESS'				=> 'The SQL query has been run successfully.',
-));
+]);

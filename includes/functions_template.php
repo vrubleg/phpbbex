@@ -34,8 +34,8 @@ class template_compile
 	var $template;
 
 	// Various storage arrays
-	var $block_names = array();
-	var $block_else_level = array();
+	var $block_names = [];
+	var $block_else_level = [];
 
 	/**
 	* constuctor
@@ -67,13 +67,13 @@ class template_compile
 		{
 			global $db, $user;
 
-			$sql_ary = array(
+			$sql_ary = [
 				'template_id'			=> $this->template->files_template[$handle],
 				'template_filename'		=> $this->template->filename[$handle],
 				'template_included'		=> '',
 				'template_mtime'		=> time(),
 				'template_data'			=> trim(@file_get_contents($this->template->files[$handle])),
-			);
+			];
 
 			$sql = 'INSERT INTO ' . STYLES_TEMPLATE_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
@@ -88,11 +88,11 @@ class template_compile
 	function remove_php_tags(&$code)
 	{
 		// This matches the information gathered from the internal PHP lexer
-		$match = array(
+		$match = [
 			'#<([\?%])=?.*?\1>#s',
 			'#<script\s+language\s*=\s*(["\']?)php\1\s*>.*?</script\s*>#s',
 			'#<\?php(?:\r\n?|[ \n\t]).*?\?>#s'
-		);
+		];
 
 		$code = preg_replace($match, '', $code);
 	}
@@ -138,7 +138,7 @@ class template_compile
 		{
 			$this->compile_var_tags($text_blocks[$i]);
 		}
-		$compile_blocks = array();
+		$compile_blocks = [];
 
 		for ($curr_tb = 0, $tb_size = sizeof($blocks); $curr_tb < $tb_size; $curr_tb++)
 		{
@@ -270,7 +270,7 @@ class template_compile
 	function compile_var_tags(&$text_blocks)
 	{
 		// change template varrefs into PHP varrefs
-		$varrefs = array();
+		$varrefs = [];
 
 		// This one will handle varrefs WITH namespaces
 		preg_match_all('#\{((?:[a-z0-9\-_]+\.)+)(\$)?([A-Z0-9\-_]+)\}#', $text_blocks, $varrefs, PREG_SET_ORDER);
@@ -424,7 +424,7 @@ class template_compile
 			[^\s(),]+)/x', $tag_args, $match);
 
 		$tokens = $match[0];
-		$is_arg_stack = array();
+		$is_arg_stack = [];
 
 		for ($i = 0, $size = sizeof($tokens); $i < $size; $i++)
 		{
@@ -563,9 +563,9 @@ class template_compile
 		}
 
 		// If there are no valid tokens left or only control/compare characters left, we do skip this statement
-		if (!sizeof($tokens) || str_replace(array(' ', '=', '!', '<', '>', '&', '|', '%', '(', ')'), '', implode('', $tokens)) == '')
+		if (!sizeof($tokens) || str_replace([' ', '=', '!', '<', '>', '&', '|', '%', '(', ')'], '', implode('', $tokens)) == '')
 		{
-			$tokens = array('false');
+			$tokens = ['false'];
 		}
 		return (($elseif) ? '} else if (' : 'if (') . (implode(' ', $tokens) . ') { ');
 	}
@@ -591,13 +591,13 @@ class template_compile
 		// Are we a string?
 		if ($match[3] && $match[5])
 		{
-			$match[4] = str_replace(array('\\\'', '\\\\', '\''), array('\'', '\\', '\\\''), $match[4]);
+			$match[4] = str_replace(['\\\'', '\\\\', '\''], ['\'', '\\', '\\\''], $match[4]);
 
 			// Compile reference, we allow template variables in defines...
 			$match[4] = $this->compile($match[4]);
 
 			// Now replace the php code
-			$match[4] = "'" . str_replace(array('<?php echo ', '; ?>'), array("' . ", " . '"), $match[4]) . "'";
+			$match[4] = "'" . str_replace(['<?php echo ', '; ?>'], ["' . ", " . '"], $match[4]) . "'";
 		}
 		else
 		{

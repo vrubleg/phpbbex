@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // User pruning
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_PRUNE_USERS_EXPLAIN'	=> 'This section allows you to delete or deactivate users on your board. Accounts can be filtered in a variety of ways; by post count, most recent activity, etc. Criteria may be combined to narrow down which accounts are affected. For example, you can prune users with fewer than 10 posts, who were also inactive after 2002-01-01. Alternatively, you may skip the criteria selection completely by entering a list of users (each on a separate line) into the text field. Take care with this facility! Once a user is deleted, there is no way to reverse the action.',
 
 	'DEACTIVATE_DELETE'			=> 'Deactivate or delete',
@@ -40,10 +40,10 @@ $lang = array_merge($lang, array(
 	'USER_PRUNE_FAILURE'		=> 'No users fit the selected criteria.',
 
 	'WRONG_ACTIVE_JOINED_DATE'	=> 'The date entered is wrong, it is expected in <kbd>YYYY-MM-DD</kbd> format.',
-));
+]);
 
 // Forum Pruning
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_PRUNE_FORUMS_EXPLAIN'	=> 'This will delete any topic which has not been posted to or viewed within the number of days you select. If you do not enter a number then all topics will be deleted. By default, it will not remove topics in which polls are still running nor will it remove stickies and announcements.',
 
 	'FORUM_PRUNE'		=> 'Forum prune',
@@ -66,4 +66,4 @@ $lang = array_merge($lang, array(
 	'PRUNE_SUCCESS'					=> 'Pruning of forums was successful.',
 
 	'TOPICS_PRUNED'		=> 'Topics pruned',
-));
+]);

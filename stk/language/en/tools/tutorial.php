@@ -18,7 +18,7 @@ if (!defined('IN_PHPBB'))
 */
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -36,7 +36,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters you may want to copy&paste:
 // ’ » “ ” …
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'TUTORIAL'			=> 'This is a tutorial',
 	'TUTORIAL_EXPLAIN'	=> 'This is an explanation for the tutorial',
-));
+]);

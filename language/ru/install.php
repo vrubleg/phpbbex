@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADMIN_CONFIG'				=> 'Настройки администратора',
 	'ADMIN_PASSWORD'			=> 'Пароль администратора',
 	'ADMIN_PASSWORD_CONFIRM'	=> 'Подтверждение пароля администратора',
@@ -308,10 +308,10 @@ $lang = array_merge($lang, array(
 
 	'WELCOME_INSTALL'			=> 'Вас приветствует программа установки phpBBex.',
 	'WRITABLE'					=> 'допускает запись',
-));
+]);
 
 // Updater
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ALL_FILES_UP_TO_DATE'		=> 'Все файлы соответствуют самой последней версии phpBB. Теперь <a href="../ucp.php?mode=login">войдите на форум</a> и проверьте, что всё работает нормально.',
 	'ARCHIVE_FILE'				=> 'Файл-источник в архиве',
 
@@ -495,10 +495,10 @@ $lang = array_merge($lang, array(
 	'VIEWING_FILE_DIFF'				=> 'Просмотр различий в файлах',
 
 	'WRONG_INFO_FILE_FORMAT'	=> 'Ошибочный формат файла сведений об обновлении',
-));
+]);
 
 // Default database schema entries…
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'CONFIG_BOARD_EMAIL_SIG'		=> 'Спасибо, Администрация',
 	'CONFIG_SITE_DESC'				=> 'Краткое описание вашего форума',
 	'CONFIG_SITENAME'				=> 'Ваш phpBBex',
@@ -519,4 +519,4 @@ $lang = array_merge($lang, array(
 
 	'WARNING_POST_DEFAULT'			=> 'Нарушение правил',
 	'BOARD_DISABLE_DEFAULT'			=> 'Извините, идет обновление форума. Зайдите через 1 час.',
-));
+]);
