@@ -1033,6 +1033,7 @@ class fileupload
 			IMAGETYPE_JPEG => ['jpg', 'jpeg'],
 			IMAGETYPE_PNG => ['png'],
 			IMAGETYPE_BMP => ['bmp'],
+			IMAGETYPE_WEBP => ['webp'],
 		];
 	}
 }
