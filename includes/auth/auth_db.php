@@ -39,20 +39,20 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 	// do not allow empty password
 	if (!$password)
 	{
-		return array(
+		return [
 			'status'	=> LOGIN_ERROR_PASSWORD,
 			'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
-			'user_row'	=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'	=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	if (!$username)
 	{
-		return array(
+		return [
 			'status'	=> LOGIN_ERROR_USERNAME,
 			'error_msg'	=> 'LOGIN_ERROR_USERNAME',
-			'user_row'	=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'	=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	$browser = trim(substr($browser, 0, 249));
@@ -100,7 +100,7 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		$attempts = (int) $db->sql_fetchfield('attempts');
 		$db->sql_freeresult($result);
 
-		$attempt_data = array(
+		$attempt_data = [
 			'attempt_ip'			=> $ip,
 			'attempt_browser'		=> $browser,
 			'attempt_forwarded_for'	=> $forwarded_for,
@@ -108,7 +108,7 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 			'user_id'				=> ($row) ? (int) $row['user_id'] : 0,
 			'username'				=> $username,
 			'username_clean'		=> $username_clean,
-		);
+		];
 		$sql = 'INSERT INTO ' . LOGIN_ATTEMPT_TABLE . $db->sql_build_array('INSERT', $attempt_data);
 		$result = $db->sql_query($sql);
 	}
@@ -121,11 +121,11 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 	{
 		if ($config['ip_login_limit_max'] && $attempts >= $config['ip_login_limit_max'])
 		{
-			return array(
+			return [
 				'status'		=> LOGIN_ERROR_ATTEMPTS,
 				'error_msg'		=> 'LOGIN_ERROR_ATTEMPTS',
-				'user_row'		=> array('user_id' => ANONYMOUS),
-			);
+				'user_row'		=> ['user_id' => ANONYMOUS],
+			];
 		}
 
 		switch ($config['login_via_email_enable'])
@@ -140,11 +140,11 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 				$error_msg = 'LOGIN_ERROR_USERNAME';
 			break;
 		}
-		return array(
+		return [
 			'status'	=> LOGIN_ERROR_USERNAME,
 			'error_msg'	=> $error_msg,
-			'user_row'	=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'	=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	$show_captcha = ($config['max_login_attempts'] && $row['user_login_attempts'] >= $config['max_login_attempts']) ||
@@ -161,11 +161,11 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		$vc_response = $captcha->validate($row);
 		if ($vc_response)
 		{
-			return array(
+			return [
 				'status'		=> LOGIN_ERROR_ATTEMPTS,
 				'error_msg'		=> 'LOGIN_ERROR_ATTEMPTS',
 				'user_row'		=> $row,
-			);
+			];
 		}
 		else
 		{
@@ -212,11 +212,11 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 						AND user_login_attempts < ' . LOGIN_ATTEMPTS_MAX;
 				$db->sql_query($sql);
 
-				return array(
+				return [
 					'status'		=> LOGIN_ERROR_PASSWORD_CONVERT,
 					'error_msg'		=> 'LOGIN_ERROR_PASSWORD_CONVERT',
 					'user_row'		=> $row,
-				);
+				];
 			}
 		}
 	}
@@ -255,19 +255,19 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		// User inactive...
 		if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
 		{
-			return array(
+			return [
 				'status'		=> LOGIN_ERROR_INACTIVE,
 				'error_msg'		=> 'LOGIN_ERROR_INACTIVE',
 				'user_row'		=> $row,
-			);
+			];
 		}
 
 		// Successful login... set user_login_attempts to zero...
-		return array(
+		return [
 			'status'		=> LOGIN_SUCCESS,
 			'error_msg'		=> false,
 			'user_row'		=> $row,
-		);
+		];
 	}
 
 	// Password incorrect - increase login attempts
@@ -278,9 +278,9 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 	$db->sql_query($sql);
 
 	// Give status about wrong password...
-	return array(
+	return [
 		'status'		=> ($show_captcha) ? LOGIN_ERROR_ATTEMPTS : LOGIN_ERROR_PASSWORD,
 		'error_msg'		=> ($show_captcha) ? 'LOGIN_ERROR_ATTEMPTS' : 'LOGIN_ERROR_PASSWORD',
 		'user_row'		=> $row,
-	);
+	];
 }

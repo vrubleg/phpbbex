@@ -36,8 +36,8 @@ function generate_smilies($mode)
 		}
 		$db->sql_freeresult($result);
 
-		$template->set_filenames(array(
-			'body' => 'posting_smilies.html')
+		$template->set_filenames([
+			'body' => 'posting_smilies.html']
 		);
 
 		$template->assign_var('PAGINATION',
@@ -78,7 +78,7 @@ function generate_smilies($mode)
 		$result = $db->sql_query($sql, 3600);
 	}
 
-	$smilies = array();
+	$smilies = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		if (empty($smilies[$row['smiley_url']]))
@@ -94,22 +94,22 @@ function generate_smilies($mode)
 
 		foreach ($smilies as $row)
 		{
-			$template->assign_block_vars('smiley', array(
+			$template->assign_block_vars('smiley', [
 				'SMILEY_CODE'	=> $row['code'],
 				'A_SMILEY_CODE'	=> addslashes($row['code']),
 				'SMILEY_IMG'	=> $root_path . SMILIES_PATH . '/' . $row['smiley_url'],
 				'SMILEY_WIDTH'	=> $row['smiley_width'],
 				'SMILEY_HEIGHT'	=> $row['smiley_height'],
 				'SMILEY_DESC'	=> isset($user->lang[$row['emotion']]) ? $user->lang[$row['emotion']] : $row['emotion'],
-			));
+			]);
 		}
 	}
 
 	if ($mode == 'inline' && $display_link)
 	{
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_SHOW_SMILEY_LINK' 	=> true,
-			'U_MORE_SMILIES' 		=> append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'))
+			'U_MORE_SMILIES' 		=> append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies')]
 		);
 	}
 
@@ -137,11 +137,11 @@ function update_post_information($type, $ids, $return_update_sql = false)
 	}
 	if (!is_array($ids))
 	{
-		$ids = array($ids);
+		$ids = [$ids];
 	}
 
 
-	$update_sql = $empty_forums = $not_empty_forums = array();
+	$update_sql = $empty_forums = $not_empty_forums = [];
 
 	if ($type != 'topic')
 	{
@@ -173,7 +173,7 @@ function update_post_information($type, $ids, $return_update_sql = false)
 	}
 	$result = $db->sql_query($sql);
 
-	$last_post_ids = array();
+	$last_post_ids = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		if (sizeof($ids) == 1)
@@ -272,14 +272,14 @@ function posting_gen_topic_icons($mode, $icon_id)
 		{
 			if ($data['display'])
 			{
-				$template->assign_block_vars('topic_icon', array(
+				$template->assign_block_vars('topic_icon', [
 					'ICON_ID'		=> $id,
 					'ICON_IMG'		=> $root_path . TOPIC_ICONS_PATH . '/' . $data['img'],
 					'ICON_WIDTH'	=> $data['width'],
 					'ICON_HEIGHT'	=> $data['height'],
 
 					'S_CHECKED'			=> ($id == $icon_id) ? true : false,
-					'S_ICON_CHECKED'	=> ($id == $icon_id) ? ' checked="checked"' : '')
+					'S_ICON_CHECKED'	=> ($id == $icon_id) ? ' checked="checked"' : '']
 				);
 			}
 		}
@@ -299,13 +299,13 @@ function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 
 	$toggle = false;
 
-	$topic_types = array(
-		'sticky'	=> array('const' => POST_STICKY, 'lang' => 'POST_STICKY'),
-		'announce'	=> array('const' => POST_ANNOUNCE, 'lang' => 'POST_ANNOUNCEMENT'),
-		'global'	=> array('const' => POST_GLOBAL, 'lang' => 'POST_GLOBAL')
-	);
+	$topic_types = [
+		'sticky'	=> ['const' => POST_STICKY, 'lang' => 'POST_STICKY'],
+		'announce'	=> ['const' => POST_ANNOUNCE, 'lang' => 'POST_ANNOUNCEMENT'],
+		'global'	=> ['const' => POST_GLOBAL, 'lang' => 'POST_GLOBAL']
+	];
 
-	$topic_type_array = array();
+	$topic_type_array = [];
 
 	foreach ($topic_types as $auth_key => $topic_value)
 	{
@@ -316,20 +316,20 @@ function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 		{
 			$toggle = true;
 
-			$topic_type_array[] = array(
+			$topic_type_array[] = [
 				'VALUE'			=> $topic_value['const'],
 				'S_CHECKED'		=> ($cur_topic_type == $topic_value['const'] || ($forum_id == 0 && $topic_value['const'] == POST_GLOBAL)) ? ' checked="checked"' : '',
 				'L_TOPIC_TYPE'	=> $user->lang[$topic_value['lang']]
-			);
+			];
 		}
 	}
 
 	if ($toggle)
 	{
-		$topic_type_array = array_merge(array(0 => array(
+		$topic_type_array = array_merge([0 => [
 			'VALUE'			=> POST_NORMAL,
 			'S_CHECKED'		=> ($cur_topic_type == POST_NORMAL) ? ' checked="checked"' : '',
-			'L_TOPIC_TYPE'	=> $user->lang['POST_NORMAL'])),
+			'L_TOPIC_TYPE'	=> $user->lang['POST_NORMAL']]],
 
 			$topic_type_array
 		);
@@ -339,9 +339,9 @@ function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 			$template->assign_block_vars('topic_type', $array);
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_TOPIC_TYPE_STICKY'	=> ($auth->acl_get('f_sticky', $forum_id)),
-			'S_TOPIC_TYPE_ANNOUNCE'	=> ($auth->acl_get('f_announce', $forum_id)))
+			'S_TOPIC_TYPE_ANNOUNCE'	=> ($auth->acl_get('f_announce', $forum_id))]
 		);
 	}
 
@@ -360,9 +360,9 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 {
 	global $auth, $user, $config, $db, $cache;
 
-	$filedata = array(
-		'error'	=> array()
-	);
+	$filedata = [
+		'error'	=> []
+	];
 
 	require_once(PHPBB_ROOT_PATH . 'includes/functions_upload.php');
 	$upload = new fileupload();
@@ -373,7 +373,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	}
 	else if (!$config['check_attachment_content'])
 	{
-		$upload->set_disallowed_content(array());
+		$upload->set_disallowed_content([]);
 	}
 
 	if (!$local)
@@ -524,17 +524,17 @@ function get_img_size_format($width, $height)
 
 	if ($width > $height)
 	{
-		return array(
+		return [
 			round($width * ($max_width / $width)),
 			round($height * ($max_width / $width))
-		);
+		];
 	}
 	else
 	{
-		return array(
+		return [
 			round($width * ($max_width / $height)),
 			round($height * ($max_width / $height))
-		);
+		];
 	}
 }
 
@@ -581,8 +581,8 @@ function get_supported_image_types($type = false)
 		}
 		else
 		{
-			$new_type = array();
-			$go_through_types = array(IMG_GIF, IMG_JPG, IMG_PNG, IMG_WBMP);
+			$new_type = [];
+			$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG, IMG_WBMP];
 
 			foreach ($go_through_types as $check_type)
 			{
@@ -593,14 +593,14 @@ function get_supported_image_types($type = false)
 			}
 		}
 
-		return array(
+		return [
 			'gd'		=> ($new_type) ? true : false,
 			'format'	=> $new_type,
 			'version'	=> (function_exists('imagecreatetruecolor')) ? 2 : 1
-		);
+		];
 	}
 
-	return array('gd' => false);
+	return ['gd' => false];
 }
 
 /**
@@ -625,14 +625,14 @@ function create_thumbnail($source, $destination, $mimetype)
 		return false;
 	}
 
-	list($width, $height, $type, ) = $dimension;
+	[$width, $height, $type, ] = $dimension;
 
 	if (empty($width) || empty($height))
 	{
 		return false;
 	}
 
-	list($new_width, $new_height) = get_img_size_format($width, $height);
+	[$new_width, $new_height] = get_img_size_format($width, $height);
 
 	// Do not create a thumbnail if the resulting width/height is bigger than the original one
 	if ($new_width >= $width && $new_height >= $height)
@@ -773,11 +773,11 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 	global $template, $config, $user, $auth;
 
 	// Some default template variables
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_SHOW_ATTACH_BOX'	=> $show_attach_box,
 		'S_HAS_ATTACHMENTS'	=> sizeof($attachment_data),
 		'FILE_COMMENT'		=> (isset($filename_data['filecomment'])) ? $filename_data['filecomment'] : '',
-	));
+	]);
 
 	if (sizeof($attachment_data))
 	{
@@ -796,7 +796,7 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 
 			$download_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . (int) $attach_row['attach_id'], true, ($attach_row['is_orphan']) ? $user->session_id : false);
 
-			$template->assign_block_vars('attach_row', array(
+			$template->assign_block_vars('attach_row', [
 				'FILENAME'			=> utf8_basename($attach_row['real_filename']),
 				'A_FILENAME'		=> addslashes(utf8_basename($attach_row['real_filename'])),
 				'FILE_COMMENT'		=> $attach_row['attach_comment'],
@@ -805,7 +805,7 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 				'ASSOC_INDEX'		=> $count,
 
 				'U_VIEW_ATTACHMENT'	=> $download_link,
-				'S_HIDDEN'			=> $hidden)
+				'S_HIDDEN'			=> $hidden]
 			);
 		}
 	}
@@ -850,7 +850,7 @@ function get_upload_max_filesize()
 function get_allowed_extension_sizes($forum_id = false)
 {
 	global $config, $cache, $auth;
-	$result = array();
+	$result = [];
 	$can_ignore = $auth->acl_get('a_') || $forum_id !== false && $auth->acl_get('m_', $forum_id);
 
 	$extensions = $cache->obtain_attach_extensions($forum_id);
@@ -890,7 +890,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 {
 	global $user, $db, $template, $auth;
 
-	$topic_ids = $forum_ids = $draft_rows = array();
+	$topic_ids = $forum_ids = $draft_rows = [];
 
 	// Load those drafts not connected to forums/topics
 	// If forum_id == 0 AND topic_id == 0 then this is a PM draft
@@ -928,7 +928,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 		return;
 	}
 
-	$topic_rows = array();
+	$topic_rows = [];
 	if (sizeof($topic_ids))
 	{
 		$sql = 'SELECT topic_id, forum_id, topic_title
@@ -981,7 +981,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 			$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=compose&amp;d={$draft['draft_id']}" . (($pm_action) ? "&amp;action=$pm_action" : '') . (($msg_id) ? "&amp;p=$msg_id" : ''));
 		}
 
-		$template->assign_block_vars('draftrow', array(
+		$template->assign_block_vars('draftrow', [
 			'DRAFT_ID'		=> $draft['draft_id'],
 			'DATE'			=> $user->format_date($draft['save_time']),
 			'DRAFT_SUBJECT'	=> $draft['draft_subject'],
@@ -992,7 +992,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 
 			'S_LINK_PM'		=> $link_pm,
 			'S_LINK_TOPIC'	=> $link_topic,
-			'S_LINK_FORUM'	=> $link_forum)
+			'S_LINK_FORUM'	=> $link_forum]
 		);
 	}
 }
@@ -1016,7 +1016,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 	$sql .= ($mode == 'post_review') ? 'ASC' : 'DESC';
 	$result = $db->sql_query_limit($sql, $config['posts_per_page']);
 
-	$post_list = array();
+	$post_list = [];
 
 	while ($row = $db->sql_fetchrow($result))
 	{
@@ -1036,29 +1036,29 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 		$mode = 'post_review';
 	}
 
-	$sql = $db->sql_build_query('SELECT', array(
+	$sql = $db->sql_build_query('SELECT', [
 		'SELECT'	=> 'u.username, u.user_id, u.user_colour, p.*, z.friend, z.foe',
 
-		'FROM'		=> array(
+		'FROM'		=> [
 			USERS_TABLE		=> 'u',
 			POSTS_TABLE		=> 'p',
-		),
+		],
 
-		'LEFT_JOIN'	=> array(
-			array(
-				'FROM'	=> array(ZEBRA_TABLE => 'z'),
+		'LEFT_JOIN'	=> [
+			[
+				'FROM'	=> [ZEBRA_TABLE => 'z'],
 				'ON'	=> 'z.user_id = ' . $user->data['user_id'] . ' AND z.zebra_id = p.poster_id'
-			)
-		),
+			]
+		],
 
 		'WHERE'		=> $db->sql_in_set('p.post_id', $post_list) . '
 			AND u.user_id = p.poster_id'
-	));
+	]);
 
 	$result = $db->sql_query($sql);
 
 	$bbcode_bitfield = '';
-	$rowset = array();
+	$rowset = [];
 	$has_attachments = false;
 	while ($row = $db->sql_fetchrow($result))
 	{
@@ -1080,7 +1080,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 	}
 
 	// Grab extensions
-	$extensions = $attachments = array();
+	$extensions = $attachments = [];
 	if ($has_attachments && $auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id))
 	{
 		$extensions = $cache->obtain_attach_extensions($forum_id);
@@ -1135,7 +1135,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 
 		if (!empty($attachments[$row['post_id']]))
 		{
-			$update_count = array();
+			$update_count = [];
 			parse_attachments($forum_id, $message, $attachments[$row['post_id']], $update_count);
 		}
 
@@ -1144,7 +1144,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 		$post_anchor = ($mode == 'post_review') ? 'ppr' . $row['post_id'] : 'pr' . $row['post_id'];
 		$u_show_post = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}");
 
-		$template->assign_block_vars($mode . '_row', array(
+		$template->assign_block_vars($mode . '_row', [
 			'POST_AUTHOR_FULL'		=> get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 			'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 			'POST_AUTHOR'			=> get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -1163,7 +1163,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 			'POST_ID'			=> $row['post_id'],
 			'U_MINI_POST'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . '#p' . $row['post_id'],
 			'U_MCP_DETAILS'		=> ($auth->acl_get('m_info', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=post_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
-			'POSTER_QUOTE'		=> ($show_quote_button && $auth->acl_get('f_reply', $forum_id)) ? addslashes(get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username'])) : '')
+			'POSTER_QUOTE'		=> ($show_quote_button && $auth->acl_get('f_reply', $forum_id)) ? addslashes(get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username'])) : '']
 		);
 
 		// Display not already displayed Attachments for this post, we already parsed them. ;)
@@ -1171,8 +1171,8 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 		{
 			foreach ($attachments[$row['post_id']] as $attachment)
 			{
-				$template->assign_block_vars($mode . '_row.attachment', array(
-					'DISPLAY_ATTACHMENT'	=> $attachment)
+				$template->assign_block_vars($mode . '_row.attachment', [
+					'DISPLAY_ATTACHMENT'	=> $attachment]
 				);
 			}
 		}
@@ -1220,7 +1220,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	$sql_ignore_users[ANONYMOUS] = ANONYMOUS;
 	$sql_ignore_users[$user->data['user_id']] = $user->data['user_id'];
 
-	$notify_rows = array();
+	$notify_rows = [];
 
 	// -- get forum_userids	|| topic_userids
 	$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
@@ -1235,7 +1235,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$notify_user_id = (int) $row['user_id'];
-		$notify_rows[$notify_user_id] = array(
+		$notify_rows[$notify_user_id] = [
 			'user_id'		=> $notify_user_id,
 			'username'		=> $row['username'],
 			'user_email'	=> $row['user_email'],
@@ -1245,7 +1245,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 			'template'		=> ($topic_notification) ? 'topic_notify' : 'newtopic_notify',
 			'method'		=> $row['user_notify_type'],
 			'allowed'		=> false
-		);
+		];
 
 		// Add users who have been already notified to ignore list
 		$sql_ignore_users[$notify_user_id] = $notify_user_id;
@@ -1267,7 +1267,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$notify_user_id = (int) $row['user_id'];
-			$notify_rows[$notify_user_id] = array(
+			$notify_rows[$notify_user_id] = [
 				'user_id'		=> $notify_user_id,
 				'username'		=> $row['username'],
 				'user_email'	=> $row['user_email'],
@@ -1277,7 +1277,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 				'template'		=> 'forum_notify',
 				'method'		=> $row['user_notify_type'],
 				'allowed'		=> false
-			);
+			];
 		}
 		$db->sql_freeresult($result);
 	}
@@ -1300,7 +1300,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	}
 
 	// Now, we have to do a little step before really sending, we need to distinguish our users a little bit. ;)
-	$msg_users = $delete_ids = $update_notification = array();
+	$msg_users = $delete_ids = $update_notification = [];
 	foreach ($notify_rows as $user_id => $row)
 	{
 		if (!$row['allowed'] || !trim($row['user_email']))
@@ -1335,7 +1335,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 		$messenger = new messenger();
 
-		$msg_list_ary = array();
+		$msg_list_ary = [];
 		foreach ($msg_users as $row)
 		{
 			$pos = (!isset($msg_list_ary[$row['template']])) ? 0 : sizeof($msg_list_ary[$row['template']]);
@@ -1358,7 +1358,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 				$messenger->to($addr['email'], $addr['name']);
 				$messenger->im($addr['jabber'], $addr['name']);
 
-				$messenger->assign_vars(array(
+				$messenger->assign_vars([
 					'USERNAME'		=> htmlspecialchars_decode($addr['name']),
 					'TOPIC_TITLE'	=> htmlspecialchars_decode($topic_title),
 					'FORUM_NAME'	=> htmlspecialchars_decode($forum_name),
@@ -1369,7 +1369,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 					'U_NEWEST_POST'			=> generate_board_url() . "/viewtopic.php?t=$topic_id&p=$post_id&e=$post_id",
 					'U_STOP_WATCHING_TOPIC'	=> generate_board_url() . "/viewtopic.php?uid={$addr['user_id']}&t=$topic_id&unwatch=topic",
 					'U_STOP_WATCHING_FORUM'	=> generate_board_url() . "/viewforum.php?uid={$addr['user_id']}&f=$forum_id&unwatch=forum",
-				));
+				]);
 
 				$messenger->send($addr['method']);
 			}
@@ -1446,7 +1446,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 	{
 		$post_mode = 'delete_last_post';
 	}
-	$sql_data = array();
+	$sql_data = [];
 	$next_post_id = false;
 
 	require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
@@ -1456,7 +1456,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 	// we must make sure to update forums that contain the shadow'd topic
 	if ($post_mode == 'delete_topic')
 	{
-		$shadow_forum_ids = array();
+		$shadow_forum_ids = [];
 
 		$sql = 'SELECT forum_id
 			FROM ' . TOPICS_TABLE . '
@@ -1486,12 +1486,12 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 		}
 	}
 
-	if (!delete_posts('post_id', array($post_id), false, false))
+	if (!delete_posts('post_id', [$post_id], false, false))
 	{
 		// Try to delete topic, we may had an previous error causing inconsistency
 		if ($post_mode == 'delete_topic')
 		{
-			delete_topics('topic_id', array($topic_id), false);
+			delete_topics('topic_id', [$topic_id], false);
 		}
 		trigger_error('ALREADY_DELETED');
 	}
@@ -1512,7 +1512,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 				update_post_information('forum', $updated_forum);
 			}
 
-			delete_topics('topic_id', array($topic_id), false);
+			delete_topics('topic_id', [$topic_id], false);
 
 			$sql_data[FORUMS_TABLE] .= 'forum_topics_real = forum_topics_real - 1';
 			$sql_data[FORUMS_TABLE] .= ($data['topic_approved']) ? ', forum_posts = forum_posts - 1, forum_topics = forum_topics - 1' : '';
@@ -1638,11 +1638,11 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 
 	$db->sql_transaction('begin');
 
-	$where_sql = array(
+	$where_sql = [
 		FORUMS_TABLE	=> "forum_id = $forum_id",
 		TOPICS_TABLE	=> "topic_id = $topic_id",
 		USERS_TABLE		=> 'user_id = ' . $data['poster_id']
-	);
+	];
 
 	foreach ($sql_data as $table => $update_sql)
 	{
@@ -1677,7 +1677,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 
 	if ($data['post_reported'] && ($post_mode != 'delete_topic'))
 	{
-		sync('topic_reported', 'topic_id', array($topic_id));
+		sync('topic_reported', 'topic_id', [$topic_id]);
 	}
 
 	return $next_post_id;
@@ -1720,7 +1720,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	$data['topic_title'] = truncate_string($data['topic_title'], 90);
 
 	// Collect some basic information about which tables and which rows to update/insert
-	$sql_data = $topic_row = array();
+	$sql_data = $topic_row = [];
 	$poster_id = ($mode == 'edit' || $mode == 'reparse') ? $data['poster_id'] : (int) $user->data['user_id'];
 
 	// Retrieve some additional information if not present
@@ -1764,7 +1764,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	{
 		case 'post':
 		case 'reply':
-			$sql_data[POSTS_TABLE]['sql'] = array(
+			$sql_data[POSTS_TABLE]['sql'] = [
 				'forum_id'			=> $data['forum_id'],
 				'poster_id'			=> (int) $user->data['user_id'],
 				'icon_id'			=> $data['icon_id'],
@@ -1785,7 +1785,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'bbcode_uid'		=> $data['bbcode_uid'],
 				'post_postcount'	=> ($auth->acl_get('f_postcount', $data['forum_id'])) ? 1 : 0,
 				'post_edit_locked'	=> $data['post_edit_locked']
-			);
+			];
 		break;
 
 		case 'edit_first_post':
@@ -1807,19 +1807,19 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				{
 					$data['post_edit_reason']		= truncate_string($data['post_edit_reason'], 255, 255, false);
 
-					$sql_data[POSTS_TABLE]['sql']	= array(
+					$sql_data[POSTS_TABLE]['sql']	= [
 						'post_edit_time'	=> $current_time,
 						'post_edit_reason'	=> $data['post_edit_reason'],
 						'post_edit_user'	=> (int) $data['post_edit_user'],
-					);
+					];
 
 					$sql_data[POSTS_TABLE]['stat'][] = 'post_edit_count = post_edit_count + 1';
 				}
 				else if (empty($data['post_edit_reason']) && $auth->acl_get('m_edit', $data['forum_id']))
 				{
-					$sql_data[POSTS_TABLE]['sql'] = array(
+					$sql_data[POSTS_TABLE]['sql'] = [
 						'post_edit_reason'	=> '',
-					);
+					];
 				}
 			}
 
@@ -1833,10 +1833,10 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 			if (!isset($sql_data[POSTS_TABLE]['sql']))
 			{
-				$sql_data[POSTS_TABLE]['sql'] = array();
+				$sql_data[POSTS_TABLE]['sql'] = [];
 			}
 
-			$sql_data[POSTS_TABLE]['sql'] = array_merge($sql_data[POSTS_TABLE]['sql'], array(
+			$sql_data[POSTS_TABLE]['sql'] = array_merge($sql_data[POSTS_TABLE]['sql'], [
 				'forum_id'			=> $data['forum_id'],
 				'poster_id'			=> $data['poster_id'],
 				'icon_id'			=> $data['icon_id'],
@@ -1851,7 +1851,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'post_attachment'	=> (!empty($data['attachment_data'])) ? 1 : 0,
 				'bbcode_bitfield'	=> $data['bbcode_bitfield'],
 				'bbcode_uid'		=> $data['bbcode_uid'],
-				'post_edit_locked'	=> $data['post_edit_locked'])
+				'post_edit_locked'	=> $data['post_edit_locked']]
 			);
 
 			if ($update_message)
@@ -1863,13 +1863,13 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	}
 
 	$post_approved = $sql_data[POSTS_TABLE]['sql']['post_approved'];
-	$topic_row = array();
+	$topic_row = [];
 
 	// And the topic ladies and gentlemen
 	switch ($post_mode)
 	{
 		case 'post':
-			$sql_data[TOPICS_TABLE]['sql'] = array(
+			$sql_data[TOPICS_TABLE]['sql'] = [
 				'topic_poster'				=> (int) $user->data['user_id'],
 				'topic_time'				=> $current_time,
 				'topic_last_view_time'		=> $current_time,
@@ -1883,7 +1883,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'topic_time_limit'			=> ($topic_type != POST_NORMAL) ? ($data['topic_time_limit'] * 86400) : 0,
 				'topic_priority'			=> ($topic_type != POST_NORMAL && isset($data['topic_priority'])) ? intval($data['topic_priority']) : 0,
 				'topic_attachment'			=> (!empty($data['attachment_data'])) ? 1 : 0,
-			);
+			];
 
 			if (isset($poll['poll_options']) && !empty($poll['poll_options']))
 			{
@@ -1899,13 +1899,13 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 					$poll_length = 1;
 				}
 
-				$sql_data[TOPICS_TABLE]['sql'] = array_merge($sql_data[TOPICS_TABLE]['sql'], array(
+				$sql_data[TOPICS_TABLE]['sql'] = array_merge($sql_data[TOPICS_TABLE]['sql'], [
 					'poll_title'		=> $poll['poll_title'],
 					'poll_start'		=> $poll_start,
 					'poll_max_options'	=> $poll['poll_max_options'],
 					'poll_length'		=> $poll_length,
 					'poll_vote_change'	=> $poll['poll_vote_change'],
-					'poll_show_voters'	=> $poll['poll_show_voters'])
+					'poll_show_voters'	=> $poll['poll_show_voters']]
 				);
 			}
 
@@ -1951,7 +1951,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				}
 			}
 
-			$sql_data[TOPICS_TABLE]['sql'] = array(
+			$sql_data[TOPICS_TABLE]['sql'] = [
 				'forum_id'					=> $data['forum_id'],
 				'icon_id'					=> $data['icon_id'],
 				'topic_approved'			=> (!$post_approval) ? 0 : $data['topic_approved'],
@@ -1969,7 +1969,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'topic_last_view_time'		=> $current_time,
 
 				'topic_attachment'			=> (!empty($data['attachment_data'])) ? 1 : (isset($data['topic_attachment']) ? $data['topic_attachment'] : 0),
-			);
+			];
 
 			// Correctly set back the topic replies and forum posts... only if the topic was approved before and now gets disapproved
 			if (!$post_approval && $data['topic_approved'])
@@ -2033,8 +2033,8 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 		$data['topic_id'] = $db->sql_nextid();
 
-		$sql_data[POSTS_TABLE]['sql'] = array_merge($sql_data[POSTS_TABLE]['sql'], array(
-			'topic_id' => $data['topic_id'])
+		$sql_data[POSTS_TABLE]['sql'] = array_merge($sql_data[POSTS_TABLE]['sql'], [
+			'topic_id' => $data['topic_id']]
 		);
 		unset($sql_data[TOPICS_TABLE]['sql']);
 	}
@@ -2044,8 +2044,8 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	{
 		if ($post_mode == 'reply')
 		{
-			$sql_data[POSTS_TABLE]['sql'] = array_merge($sql_data[POSTS_TABLE]['sql'], array(
-				'topic_id' => $data['topic_id'])
+			$sql_data[POSTS_TABLE]['sql'] = array_merge($sql_data[POSTS_TABLE]['sql'], [
+				'topic_id' => $data['topic_id']]
 			);
 		}
 
@@ -2055,7 +2055,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 		if ($post_mode == 'post')
 		{
-			$sql_data[TOPICS_TABLE]['sql'] = array(
+			$sql_data[TOPICS_TABLE]['sql'] = [
 				'topic_first_post_id'		=> $data['post_id'],
 				'topic_last_post_id'		=> $data['post_id'],
 				'topic_last_post_time'		=> $current_time,
@@ -2063,7 +2063,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'topic_last_poster_name'	=> (!$user->data['is_registered'] && $username) ? $username : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
 				'topic_last_poster_colour'	=> $user->data['user_colour'],
 				'topic_last_post_subject'	=> (string) $subject,
-			);
+			];
 		}
 
 		unset($sql_data[POSTS_TABLE]['sql']);
@@ -2090,7 +2090,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	// Update Poll Tables
 	if (isset($poll['poll_options']))
 	{
-		$cur_poll_options = array();
+		$cur_poll_options = [];
 
 		if ($mode == 'edit' || $mode == 'reparse')
 		{
@@ -2100,7 +2100,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				ORDER BY poll_option_id';
 			$result = $db->sql_query($sql);
 
-			$cur_poll_options = array();
+			$cur_poll_options = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$cur_poll_options[] = $row;
@@ -2108,7 +2108,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 			$db->sql_freeresult($result);
 		}
 
-		$sql_insert_ary = array();
+		$sql_insert_ary = [];
 
 		for ($i = 0, $size = sizeof($poll['poll_options']); $i < $size; $i++)
 		{
@@ -2117,11 +2117,11 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				if (empty($cur_poll_options[$i]))
 				{
 					// If we add options we need to put them to the end to be able to preserve votes...
-					$sql_insert_ary[] = array(
+					$sql_insert_ary[] = [
 						'poll_option_id'	=> (int) sizeof($cur_poll_options) + 1 + sizeof($sql_insert_ary),
 						'topic_id'			=> (int) $data['topic_id'],
 						'poll_option_text'	=> (string) $poll['poll_options'][$i]
-					);
+					];
 				}
 				else if ($poll['poll_options'][$i] != $cur_poll_options[$i]['poll_option_text'])
 				{
@@ -2157,14 +2157,14 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	}
 
 	// Submit Attachments
-	if (!empty($data['attachment_data']) && $data['post_id'] && in_array($mode, array('post', 'reply', 'quote', 'edit', 'reparse')))
+	if (!empty($data['attachment_data']) && $data['post_id'] && in_array($mode, ['post', 'reply', 'quote', 'edit', 'reparse']))
 	{
 		$space_taken = $files_added = 0;
-		$orphan_rows = array();
+		$orphan_rows = [];
 
 		foreach ($data['attachment_data'] as $pos => $attach_row)
 		{
-			$orphan_rows[(int) $attach_row['attach_id']] = array();
+			$orphan_rows[(int) $attach_row['attach_id']] = [];
 		}
 
 		if (sizeof($orphan_rows))
@@ -2176,7 +2176,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 					AND poster_id = ' . $user->data['user_id'];
 			$result = $db->sql_query($sql);
 
-			$orphan_rows = array();
+			$orphan_rows = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$orphan_rows[$row['attach_id']] = $row;
@@ -2211,13 +2211,13 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				$space_taken += $orphan_rows[$attach_row['attach_id']]['filesize'];
 				$files_added++;
 
-				$attach_sql = array(
+				$attach_sql = [
 					'post_msg_id'		=> $data['post_id'],
 					'topic_id'			=> $data['topic_id'],
 					'is_orphan'			=> 0,
 					'poster_id'			=> $poster_id,
 					'attach_comment'	=> $attach_row['attach_comment'],
-				);
+				];
 
 				$sql = 'UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $attach_sql) . '
 					WHERE attach_id = ' . $attach_row['attach_id'] . '
@@ -2402,7 +2402,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	}
 
 	// Update forum stats
-	$where_sql = array(POSTS_TABLE => 'post_id = ' . $data['post_id'], TOPICS_TABLE => 'topic_id = ' . $data['topic_id'], FORUMS_TABLE => 'forum_id = ' . $data['forum_id'], USERS_TABLE => 'user_id = ' . $poster_id);
+	$where_sql = [POSTS_TABLE => 'post_id = ' . $data['post_id'], TOPICS_TABLE => 'topic_id = ' . $data['topic_id'], FORUMS_TABLE => 'forum_id = ' . $data['forum_id'], USERS_TABLE => 'user_id = ' . $poster_id];
 
 	foreach ($sql_data as $table => $update_ary)
 	{

@@ -31,14 +31,14 @@ class purge_sessions
 	{
 		global $db, $user;
 
-		$tables = array(CONFIRM_TABLE, SESSIONS_TABLE, SESSIONS_KEYS_TABLE);
+		$tables = [CONFIRM_TABLE, SESSIONS_TABLE, SESSIONS_KEYS_TABLE];
 		foreach ($tables as $table)
 		{
 			$db->sql_query("DELETE FROM $table");
 		}
 
 		// Restore the current admin session
-		$sql_ary = array(
+		$sql_ary = [
 			'session_id'			=> (string) $user->session_id,
 			'session_user_id'		=> (int) $user->data['user_id'],
 			'session_start'			=> (int) $user->time_now,
@@ -51,7 +51,7 @@ class purge_sessions
 			'session_autologin'		=> (int) $user->data['session_autologin'],
 			'session_admin'			=> 1,
 			'session_viewonline'	=> (int) $user->data['session_viewonline'],
-		);
+		];
 
 		$sql = 'INSERT INTO ' . SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);

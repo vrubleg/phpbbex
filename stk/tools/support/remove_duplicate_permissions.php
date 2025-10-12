@@ -23,7 +23,7 @@ class remove_duplicate_permissions
 	{
 		global $db;
 
-		$acl_options = $acl_duplicates = array();
+		$acl_options = $acl_duplicates = [];
 
 		$sql = 'SELECT auth_option, auth_option_id FROM ' . ACL_OPTIONS_TABLE;
 		$result = $db->sql_query($sql);
@@ -47,11 +47,11 @@ class remove_duplicate_permissions
 
 		foreach ($acl_duplicates as $dup_id => $orig_id)
 		{
-			$tables = array(
+			$tables = [
 				ACL_GROUPS_TABLE		=> 'group_id',
 				ACL_ROLES_DATA_TABLE	=> 'role_id',
 				ACL_USERS_TABLE			=> 'user_id',
-			);
+			];
 
 			foreach ($tables as $table => $column)
 			{
@@ -82,11 +82,11 @@ class remove_duplicate_permissions
 					}
 					else
 					{
-						$sql_ary = array(
+						$sql_ary = [
 							$column				=> $row[$column],
 							'auth_option_id'	=> $orig_id,
 							'auth_setting'		=> $row['auth_setting'],
-						);
+						];
 
 						if (isset($row['forum_id']))
 						{
@@ -100,7 +100,7 @@ class remove_duplicate_permissions
 			}
 		}
 
-		$tables = array(ACL_GROUPS_TABLE, ACL_OPTIONS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE);
+		$tables = [ACL_GROUPS_TABLE, ACL_OPTIONS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE];
 
 		foreach ($tables as $table)
 		{

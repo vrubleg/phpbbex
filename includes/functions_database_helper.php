@@ -31,7 +31,7 @@ function phpbb_update_rows_avoiding_duplicates($db, $table, $column, $from_value
 		WHERE " . $db->sql_in_set($column, $from_values);
 	$result = $db->sql_query($sql);
 
-	$old_user_ids = array();
+	$old_user_ids = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$old_user_ids[$row[$column]][] = (int) $row['user_id'];
@@ -43,14 +43,14 @@ function phpbb_update_rows_avoiding_duplicates($db, $table, $column, $from_value
 		WHERE $column = " . (int) $to_value;
 	$result = $db->sql_query($sql);
 
-	$new_user_ids = array();
+	$new_user_ids = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$new_user_ids[$row[$column]][] = (int) $row['user_id'];
 	}
 	$db->sql_freeresult($result);
 
-	$queries = array();
+	$queries = [];
 	foreach ($from_values as $from_value)
 	{
 		if (!isset($old_user_ids[$from_value]))
@@ -116,7 +116,7 @@ function phpbb_update_rows_avoiding_duplicates_notify_status($db, $table, $colum
 		WHERE " . $db->sql_in_set($column, $from_values);
 	$result = $db->sql_query($sql);
 
-	$old_user_ids = array();
+	$old_user_ids = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$old_user_ids[(int) $row['notify_status']][$row[$column]][] = (int) $row['user_id'];
@@ -128,18 +128,18 @@ function phpbb_update_rows_avoiding_duplicates_notify_status($db, $table, $colum
 		WHERE $column = " . (int) $to_value;
 	$result = $db->sql_query($sql);
 
-	$new_user_ids = array();
+	$new_user_ids = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$new_user_ids[$row[$column]][] = (int) $row['user_id'];
 	}
 	$db->sql_freeresult($result);
 
-	$queries = array();
-	$extra_updates = array(
+	$queries = [];
+	$extra_updates = [
 		0 => 'notify_status = 0',
 		1 => '',
-	);
+	];
 	foreach ($from_values as $from_value)
 	{
 		foreach ($extra_updates as $notify_status => $extra_update)

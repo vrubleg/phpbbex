@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADD_ATTACHMENT'			=> 'Добавить вложения',
 	'ADD_ATTACHMENT_EXPLAIN'	=> 'Если вы не хотите добавлять вложения, оставьте поля пустыми.',
 	'ADD_FILE'					=> 'Добавить файл',
@@ -289,4 +289,4 @@ $lang = array_merge($lang, array(
 	'SMILE_UBER_GEEK'			=> 'Мегаботан',
 	'SMILE_VERY_HAPPY'			=> 'Очень доволен',
 
-));
+]);

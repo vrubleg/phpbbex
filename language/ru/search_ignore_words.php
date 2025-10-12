@@ -10,7 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-$words = array(
+$words = [
 	'href',
 	'lol',
 	'www',
@@ -486,4 +486,4 @@ $words = array(
 	'я',
 	'является',
 	'являются',
-);
+];

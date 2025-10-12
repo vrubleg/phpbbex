@@ -10,7 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-$synonyms = array(
+$synonyms = [
 	'abcense'			=> 'absence',
 	'abridgement'		=> 'abridgment',
 	'accomodate'		=> 'accommodate',
@@ -182,4 +182,4 @@ $synonyms = array(
 	'withold'	=> 'withhold',
 
 	'yeild'	=> 'yield',
-);
+];

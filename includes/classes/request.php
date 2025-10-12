@@ -7,7 +7,7 @@
 class request
 {
 	protected static $ready      = false;
-	protected static $stack      = array();
+	protected static $stack      = [];
 	protected static $is_https   = false;
 	protected static $method     = '';
 	protected static $uri        = '';
@@ -66,7 +66,7 @@ class request
 		{
 			if (strpos($value, "\r") !== false)
 			{
-				$value = str_replace(array("\r\n", "\r"), "\n", $value);
+				$value = str_replace(["\r\n", "\r"], "\n", $value);
 			}
 		}
 		return $value;
@@ -83,7 +83,7 @@ class request
 	 */
 	static function push($uri, $args = null)
 	{
-		self::$stack[] = array(
+		self::$stack[] = [
 			'method'    => self::$method,
 			'uri'       => self::$uri,
 			'get_vars'  => self::$get_vars,
@@ -91,7 +91,7 @@ class request
 			'uri_vars'  => self::$uri_vars,
 			'vars'      => self::$vars,
 			'route'     => self::$route,
-		);
+		];
 
 		// Format url from route name ($uri) and $args
 		if ($args !== null)
@@ -103,8 +103,8 @@ class request
 		// Reset internal vars
 		self::$method    = 'GET';
 		self::$uri       = $uri;
-		self::$get_vars  = array();
-		self::$post_vars = array();
+		self::$get_vars  = [];
+		self::$post_vars = [];
 		self::$uri_vars  = null;
 		self::$vars      = null;
 		self::$route     = null;
@@ -194,10 +194,10 @@ class request
 		}
 		else
 		{
-			self::$uri_vars = array();
+			self::$uri_vars = [];
 			self::$route = false;
 		}
-		self::$vars = array_merge(self::$post_vars, self::$get_vars, empty(self::$uri_vars) ? array() : self::$uri_vars);
+		self::$vars = array_merge(self::$post_vars, self::$get_vars, empty(self::$uri_vars) ? [] : self::$uri_vars);
 		return self::$route;
 	}
 

@@ -37,7 +37,7 @@ class phpbb_cache extends acm
 		}
 		else
 		{
-			$config = $cached_config = array();
+			$config = $cached_config = [];
 
 			$sql = 'SELECT config_name, config_value, is_dynamic
 				FROM ' . CONFIG_TABLE;
@@ -74,7 +74,7 @@ class phpbb_cache extends acm
 				FROM ' . WORDS_TABLE;
 			$result = $db->sql_query($sql);
 
-			$censors = array();
+			$censors = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$censors['match'][] = get_censor_preg_expression($row['word']);
@@ -103,7 +103,7 @@ class phpbb_cache extends acm
 				ORDER BY icons_order';
 			$result = $db->sql_query($sql);
 
-			$icons = array();
+			$icons = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$icons[$row['icons_id']]['img'] = $row['icons_url'];
@@ -133,26 +133,26 @@ class phpbb_cache extends acm
 				ORDER BY rank_min DESC';
 			$result = $db->sql_query($sql);
 
-			$ranks = array('special' => [], 'normal'=> []);
+			$ranks = ['special' => [], 'normal'=> []];
 
 			while ($row = $db->sql_fetchrow($result))
 			{
 				if ($row['rank_special'])
 				{
-					$ranks['special'][$row['rank_id']] = array(
+					$ranks['special'][$row['rank_id']] = [
 						'rank_title'		=> $row['rank_title'],
 						'rank_hide_title'	=> $row['rank_hide_title'],
 						'rank_image'		=> $row['rank_image']
-					);
+					];
 				}
 				else
 				{
-					$ranks['normal'][] = array(
+					$ranks['normal'][] = [
 						'rank_title'		=> $row['rank_title'],
 						'rank_hide_title'	=> $row['rank_hide_title'],
 						'rank_image'		=> $row['rank_image'],
 						'rank_min'			=> $row['rank_min'],
-					);
+					];
 				}
 			}
 			$db->sql_freeresult($result);
@@ -176,10 +176,10 @@ class phpbb_cache extends acm
 		{
 			global $db;
 
-			$extensions = array(
-				'_allowed_post'	=> array(),
-				'_allowed_pm'	=> array(),
-			);
+			$extensions = [
+				'_allowed_post'	=> [],
+				'_allowed_pm'	=> [],
+			];
 
 			// The rule is to only allow those extensions defined. ;)
 			$sql = 'SELECT e.extension, g.*
@@ -192,16 +192,16 @@ class phpbb_cache extends acm
 			{
 				$extension = strtolower(trim($row['extension']));
 
-				$extensions[$extension] = array(
+				$extensions[$extension] = [
 					'display_cat'	=> ($row['cat_id'] < ATTACHMENT_CATEGORY_COUNT) ? intval($row['cat_id']) : ATTACHMENT_CATEGORY_NONE,
 					'download_mode'	=> (int) $row['download_mode'],
 					'upload_icon'	=> trim($row['upload_icon']),
 					'max_filesize'	=> (int) $row['max_filesize'],
 					'allow_group'	=> $row['allow_group'],
 					'allow_in_pm'	=> $row['allow_in_pm'],
-				);
+				];
 
-				$allowed_forums = ($row['allowed_forums']) ? unserialize(trim($row['allowed_forums'])) : array();
+				$allowed_forums = ($row['allowed_forums']) ? unserialize(trim($row['allowed_forums'])) : [];
 
 				// Store allowed extensions forum wise
 				if ($row['allow_group'])
@@ -223,7 +223,7 @@ class phpbb_cache extends acm
 		if ($forum_id === false)
 		{
 			// We are checking for private messages, therefore we only need to get the pm extensions...
-			$return = array('_allowed_' => array());
+			$return = ['_allowed_' => []];
 
 			foreach ($extensions['_allowed_pm'] as $extension => $check)
 			{
@@ -240,7 +240,7 @@ class phpbb_cache extends acm
 		else
 		{
 			$forum_id = (int) $forum_id;
-			$return = array('_allowed_' => array());
+			$return = ['_allowed_' => []];
 
 			foreach ($extensions['_allowed_post'] as $extension => $check)
 			{
@@ -266,7 +266,7 @@ class phpbb_cache extends acm
 
 		if (!isset($extensions['_allowed_']))
 		{
-			$extensions['_allowed_'] = array();
+			$extensions['_allowed_'] = [];
 		}
 
 		return $extensions;
@@ -287,7 +287,7 @@ class phpbb_cache extends acm
 			ORDER BY LENGTH(bot_agent) DESC';
 			$result = $db->sql_query($sql);
 
-			$bots = array();
+			$bots = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$bots[] = $row;
@@ -307,11 +307,11 @@ class phpbb_cache extends acm
 	{
 		global $config;
 
-		$parsed_items = array(
-			'theme'		=> array(),
-			'template'	=> array(),
-			'imageset'	=> array()
-		);
+		$parsed_items = [
+			'theme'		=> [],
+			'template'	=> [],
+			'imageset'	=> []
+		];
 
 		foreach ($parsed_items as $key => $parsed_array)
 		{
@@ -319,7 +319,7 @@ class phpbb_cache extends acm
 
 			if ($parsed_array === false)
 			{
-				$parsed_array = array();
+				$parsed_array = [];
 			}
 
 			$reparse = false;
@@ -362,7 +362,7 @@ class phpbb_cache extends acm
 				FROM ' . DISALLOW_TABLE;
 			$result = $db->sql_query($sql);
 
-			$usernames = array();
+			$usernames = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$usernames[] = str_replace('%', '.*?', preg_quote(utf8_clean_string($row['disallow_username']), '#'));

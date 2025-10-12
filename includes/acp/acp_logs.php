@@ -31,7 +31,7 @@ class acp_logs
 		$start		= request_var('start', 0);
 		$deletemark = (!empty($_POST['delmarked'])) ? true : false;
 		$deleteall	= (!empty($_POST['delall'])) ? true : false;
-		$marked		= request_var('mark', array(0));
+		$marked		= request_var('mark', [0]);
 
 		// Sort keys
 		$sort_days	= request_var('st', 0);
@@ -50,7 +50,7 @@ class acp_logs
 
 				if ($deletemark && sizeof($marked))
 				{
-					$sql_in = array();
+					$sql_in = [];
 					foreach ($marked as $mark)
 					{
 						$sql_in[] = $mark;
@@ -71,7 +71,7 @@ class acp_logs
 			}
 			else
 			{
-				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 					'f'			=> $forum_id,
 					'start'		=> $start,
 					'delmarked'	=> $deletemark,
@@ -82,15 +82,15 @@ class acp_logs
 					'sd'		=> $sort_dir,
 					'i'			=> $id,
 					'mode'		=> $mode,
-					'action'	=> $action))
+					'action'	=> $action])
 				);
 			}
 		}
 
 		// Sorting
-		$limit_days = array(0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
-		$sort_by_text = array('u' => $user->lang['SORT_USERNAME'], 't' => $user->lang['SORT_DATE'], 'i' => $user->lang['SORT_IP'], 'o' => $user->lang['SORT_ACTION']);
-		$sort_by_sql = array('u' => 'u.username_clean', 't' => 'l.log_time', 'i' => 'l.log_ip', 'o' => 'l.log_operation');
+		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+		$sort_by_text = ['u' => $user->lang['SORT_USERNAME'], 't' => $user->lang['SORT_DATE'], 'i' => $user->lang['SORT_IP'], 'o' => $user->lang['SORT_ACTION']];
+		$sort_by_sql = ['u' => 'u.username_clean', 't' => 'l.log_time', 'i' => 'l.log_ip', 'o' => 'l.log_operation'];
 
 		$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 		gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
@@ -112,18 +112,18 @@ class acp_logs
 		{
 			$forum_box = '<option value="0">' . $user->lang['ALL_FORUMS'] . '</option>' . make_forum_select($forum_id, false, true);
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_SHOW_FORUMS'			=> true,
-				'S_FORUM_BOX'			=> $forum_box)
+				'S_FORUM_BOX'			=> $forum_box]
 			);
 		}
 
 		// Grab log data
-		$log_data = array();
+		$log_data = [];
 		$log_count = 0;
 		$start = view_log($mode, $log_data, $log_count, $config['topics_per_page'], $start, $forum_id, 0, 0, $sql_where, $sql_sort, $keywords);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_TITLE'		=> $l_title,
 			'L_EXPLAIN'		=> $l_title_explain,
 			'U_ACTION'		=> $this->u_action . "&amp;$u_sort_param$keywords_param&amp;start=$start",
@@ -136,14 +136,14 @@ class acp_logs
 			'S_SORT_DIR'	=> $s_sort_dir,
 			'S_CLEARLOGS'	=> $auth->acl_get('a_clearlogs'),
 			'S_KEYWORDS'	=> $keywords,
-			)
+			]
 		);
 
 		foreach ($log_data as $row)
 		{
-			$data = array();
+			$data = [];
 
-			$checks = array('viewtopic', 'viewlogs', 'viewforum');
+			$checks = ['viewtopic', 'viewlogs', 'viewforum'];
 			if ($mode == 'gallery')
 			{
 				$checks = array('viewimage', 'viewalbum');
@@ -156,7 +156,7 @@ class acp_logs
 				}
 			}
 
-			$template->assign_block_vars('log', array(
+			$template->assign_block_vars('log', [
 				'USERNAME'			=> $row['username_full'],
 				'REPORTEE_USERNAME'	=> ($row['reportee_username'] && $row['user_id'] != $row['reportee_id']) ? $row['reportee_username_full'] : '',
 
@@ -165,7 +165,7 @@ class acp_logs
 				'ACTION'			=> $row['action'],
 				'DATA'				=> (sizeof($data)) ? implode(' | ', $data) : '',
 				'ID'				=> $row['id'],
-				)
+				]
 			);
 		}
 	}

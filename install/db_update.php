@@ -80,7 +80,7 @@ $user->ip = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars($_SERVER['REMOT
 $user->ip = (stripos($user->ip, '::ffff:') === 0) ? substr($user->ip, 7) : $user->ip;
 
 // Load config.
-$config = array();
+$config = [];
 $sql = 'SELECT * FROM ' . CONFIG_TABLE;
 $result = $db->sql_query($sql);
 while ($row = $db->sql_fetchrow($result))
@@ -111,7 +111,7 @@ function remove_permissions($permissions)
 {
 	global $db, $cache;
 
-	$option_ids = array();
+	$option_ids = [];
 
 	$result = $db->sql_query('SELECT auth_option_id FROM ' . ACL_OPTIONS_TABLE. ' WHERE ' . $db->sql_in_set('auth_option', $permissions));
 	while ($row = $db->sql_fetchrow($result))
@@ -122,7 +122,7 @@ function remove_permissions($permissions)
 
 	if (!empty($option_ids))
 	{
-		foreach (array(ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE) as $table)
+		foreach ([ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE] as $table)
 		{
 			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
 		}
@@ -491,7 +491,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 // Update bots if bots=1 is passed.
 if (request_var('bots', 0))
 {
-	$bots_updates = array(
+	$bots_updates = [
 		// Bot deletions.
 		'Aport [Bot]'				=> false,
 		'Alta Vista [Bot]'			=> false,
@@ -573,7 +573,7 @@ if (request_var('bots', 0))
 		'MailRu [Bot]'				=> 'Mail.Ru/',
 		'Feedly [Bot]'				=> 'Feedly/',
 		'Feedspot [Bot]'			=> 'Feedspot/',
-	);
+	];
 
 	// Get BOTS group.
 	$sql = 'SELECT group_id, group_colour
@@ -602,7 +602,7 @@ if (request_var('bots', 0))
 
 			$bot_ip = '';
 
-			$user_row = array(
+			$user_row = [
 				'user_type'				=> USER_IGNORE,
 				'group_id'				=> $group_row['group_id'],
 				'username'				=> $bot_name,
@@ -615,17 +615,17 @@ if (request_var('bots', 0))
 				'user_timezone'			=> 0,
 				'user_dateformat'		=> $config['default_dateformat'],
 				'user_allow_massemail'	=> 0,
-			);
+			];
 
 			$bot_user_id = user_add($user_row);
 
-			$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
 				'bot_active'	=> 1,
 				'bot_name'		=> (string) $bot_name,
 				'user_id'		=> (int) $bot_user_id,
 				'bot_agent'		=> (string) $bot_agent,
 				'bot_ip'		=> (string) $bot_ip,
-			));
+			]);
 
 			$db->sql_query($sql);
 		}
@@ -658,7 +658,7 @@ if (request_var('bots', 0))
 		FROM ' . BOTS_TABLE;
 	$result = $db->sql_query($sql);
 
-	$bot_user_ids = array();
+	$bot_user_ids = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$bot_user_ids[] = (int) $row['user_id'];
@@ -882,12 +882,12 @@ switch (request_var('purge', $purge_default))
 		require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
 
 		$umil = new phpbb_umil();
-		$umil->cache_purge(array(
+		$umil->cache_purge([
 			'data',
 			'template',
 			'theme',
 			'imageset',
-		));
+		]);
 		break;
 }
 
@@ -919,7 +919,7 @@ $oldest_from_version = OLDEST_FROM_VERSION;
 $db_tools = new phpbb_db_tools($db, true);
 $database_update_info = database_update_info();
 
-$error_ary = array();
+$error_ary = [];
 $errored = false;
 
 ?>
@@ -1008,7 +1008,7 @@ for ($i = 0; $i < sizeof($versions); $i++)
 	// We run one index after the other... to be consistent with schema changes...
 	foreach ($schema_changes as $key => $changes)
 	{
-		$statements = $db_tools->perform_schema_changes(array($key => $changes));
+		$statements = $db_tools->perform_schema_changes([$key => $changes]);
 
 		foreach ($statements as $sql)
 		{
@@ -1020,7 +1020,7 @@ for ($i = 0; $i < sizeof($versions); $i++)
 _write_result($no_updates, $errored, $error_ary);
 
 // Data updates
-$error_ary = array();
+$error_ary = [];
 $errored = $no_updates = false;
 
 ?>
@@ -1054,7 +1054,7 @@ for ($i = 0; $i < sizeof($versions); $i++)
 
 _write_result($no_updates, $errored, $error_ary);
 
-$error_ary = array();
+$error_ary = [];
 $errored = $no_updates = false;
 
 ?>
@@ -1222,7 +1222,7 @@ function _add_modules($modules_to_install)
 		$result = $db->sql_query($sql);
 
 		// There may be more than one categories with the same name
-		$categories = array();
+		$categories = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$categories[] = (int) $row['module_id'];
@@ -1257,7 +1257,7 @@ function _add_modules($modules_to_install)
 			}
 
 			// Build the module sql row
-			$module_row = array(
+			$module_row = [
 				'module_basename'	=> $module_data['base'],
 				'module_enabled'	=> (isset($module_data['enabled'])) ? (int) $module_data['enabled'] : 1,
 				'module_display'	=> (isset($module_data['display'])) ? (int) $module_data['display'] : 1,
@@ -1266,7 +1266,7 @@ function _add_modules($modules_to_install)
 				'module_langname'	=> $module_data['title'],
 				'module_mode'		=> $module_mode,
 				'module_auth'		=> $module_data['auth'],
-			);
+			];
 
 			$_module->update_module_data($module_row, true);
 
@@ -1327,288 +1327,288 @@ function _add_modules($modules_to_install)
 *****************************************************************************/
 function database_update_info()
 {
-	return array(
+	return [
 		// Changes from 3.0.0 to the next version
-		'3.0.0'			=> array(
+		'3.0.0'			=> [
 			// Add the following columns
-			'add_columns'		=> array(
-				FORUMS_TABLE			=> array(
-					'display_subforum_list'		=> array('BOOL', 1),
-				),
-				SESSIONS_TABLE			=> array(
-					'session_forum_id'		=> array('UINT', 0),
-				),
-			),
-			'drop_keys'		=> array(
-				GROUPS_TABLE			=> array('group_legend'),
-			),
-			'add_index'		=> array(
-				SESSIONS_TABLE			=> array(
-					'session_forum_id'		=> array('session_forum_id'),
-				),
-				GROUPS_TABLE			=> array(
-					'group_legend_name'		=> array('group_legend', 'group_name'),
-				),
-			),
-		),
+			'add_columns'		=> [
+				FORUMS_TABLE			=> [
+					'display_subforum_list'		=> ['BOOL', 1],
+				],
+				SESSIONS_TABLE			=> [
+					'session_forum_id'		=> ['UINT', 0],
+				],
+			],
+			'drop_keys'		=> [
+				GROUPS_TABLE			=> ['group_legend'],
+			],
+			'add_index'		=> [
+				SESSIONS_TABLE			=> [
+					'session_forum_id'		=> ['session_forum_id'],
+				],
+				GROUPS_TABLE			=> [
+					'group_legend_name'		=> ['group_legend', 'group_name'],
+				],
+			],
+		],
 		// No changes from 3.0.1-RC1 to 3.0.1
-		'3.0.1-RC1'		=> array(),
+		'3.0.1-RC1'		=> [],
 		// No changes from 3.0.1 to 3.0.2-RC1
-		'3.0.1'			=> array(),
+		'3.0.1'			=> [],
 		// Changes from 3.0.2-RC1 to 3.0.2-RC2
-		'3.0.2-RC1'		=> array(
-			'change_columns'	=> array(
-				DRAFTS_TABLE			=> array(
-					'draft_subject'		=> array('STEXT_UNI', ''),
-				),
-				FORUMS_TABLE	=> array(
-					'forum_last_post_subject' => array('STEXT_UNI', ''),
-				),
-				POSTS_TABLE		=> array(
-					'post_subject'			=> array('STEXT_UNI', '', 'true_sort'),
-				),
-				PRIVMSGS_TABLE	=> array(
-					'message_subject'		=> array('STEXT_UNI', ''),
-				),
-				TOPICS_TABLE	=> array(
-					'topic_title'				=> array('STEXT_UNI', '', 'true_sort'),
-					'topic_last_post_subject'	=> array('STEXT_UNI', ''),
-				),
-			),
-			'drop_keys'		=> array(
-				SESSIONS_TABLE			=> array('session_forum_id'),
-			),
-			'add_index'		=> array(
-				SESSIONS_TABLE			=> array(
-					'session_fid'		=> array('session_forum_id'),
-				),
-			),
-		),
+		'3.0.2-RC1'		=> [
+			'change_columns'	=> [
+				DRAFTS_TABLE			=> [
+					'draft_subject'		=> ['STEXT_UNI', ''],
+				],
+				FORUMS_TABLE	=> [
+					'forum_last_post_subject' => ['STEXT_UNI', ''],
+				],
+				POSTS_TABLE		=> [
+					'post_subject'			=> ['STEXT_UNI', '', 'true_sort'],
+				],
+				PRIVMSGS_TABLE	=> [
+					'message_subject'		=> ['STEXT_UNI', ''],
+				],
+				TOPICS_TABLE	=> [
+					'topic_title'				=> ['STEXT_UNI', '', 'true_sort'],
+					'topic_last_post_subject'	=> ['STEXT_UNI', ''],
+				],
+			],
+			'drop_keys'		=> [
+				SESSIONS_TABLE			=> ['session_forum_id'],
+			],
+			'add_index'		=> [
+				SESSIONS_TABLE			=> [
+					'session_fid'		=> ['session_forum_id'],
+				],
+			],
+		],
 		// No changes from 3.0.2-RC2 to 3.0.2
-		'3.0.2-RC2'		=> array(),
+		'3.0.2-RC2'		=> [],
 
 		// Changes from 3.0.2 to 3.0.3-RC1
-		'3.0.2'			=> array(
+		'3.0.2'			=> [
 			// Add the following columns
-			'add_columns'		=> array(
-				STYLES_TEMPLATE_TABLE			=> array(
-					'template_inherits_id'		=> array('UINT:4', 0),
-					'template_inherit_path'		=> array('VCHAR', ''),
-				),
-				GROUPS_TABLE					=> array(
-					'group_max_recipients'		=> array('UINT', 0),
-				),
-			),
-		),
+			'add_columns'		=> [
+				STYLES_TEMPLATE_TABLE			=> [
+					'template_inherits_id'		=> ['UINT:4', 0],
+					'template_inherit_path'		=> ['VCHAR', ''],
+				],
+				GROUPS_TABLE					=> [
+					'group_max_recipients'		=> ['UINT', 0],
+				],
+			],
+		],
 
 		// No changes from 3.0.3-RC1 to 3.0.3
-		'3.0.3-RC1'		=> array(),
+		'3.0.3-RC1'		=> [],
 
 		// Changes from 3.0.3 to 3.0.4-RC1
-		'3.0.3'			=> array(
-			'add_columns'		=> array(
-				PROFILE_FIELDS_TABLE			=> array(
-					'field_show_profile'		=> array('BOOL', 0),
-				),
-			),
-			'change_columns'	=> array(
-				STYLES_TABLE				=> array(
-					'style_id'				=> array('UINT', NULL, 'auto_increment'),
-					'template_id'			=> array('UINT', 0),
-					'theme_id'				=> array('UINT', 0),
-					'imageset_id'			=> array('UINT', 0),
-				),
-				STYLES_IMAGESET_TABLE		=> array(
-					'imageset_id'				=> array('UINT', NULL, 'auto_increment'),
-				),
-				STYLES_IMAGESET_DATA_TABLE	=> array(
-					'image_id'				=> array('UINT', NULL, 'auto_increment'),
-					'imageset_id'			=> array('UINT', 0),
-				),
-				STYLES_THEME_TABLE			=> array(
-					'theme_id'				=> array('UINT', NULL, 'auto_increment'),
-				),
-				STYLES_TEMPLATE_TABLE		=> array(
-					'template_id'			=> array('UINT', NULL, 'auto_increment'),
-				),
-				STYLES_TEMPLATE_DATA_TABLE	=> array(
-					'template_id'			=> array('UINT', 0),
-				),
-				FORUMS_TABLE				=> array(
-					'forum_style'			=> array('UINT', 0),
-				),
-				USERS_TABLE					=> array(
-					'user_style'			=> array('UINT', 0),
-				),
-			),
-		),
+		'3.0.3'			=> [
+			'add_columns'		=> [
+				PROFILE_FIELDS_TABLE			=> [
+					'field_show_profile'		=> ['BOOL', 0],
+				],
+			],
+			'change_columns'	=> [
+				STYLES_TABLE				=> [
+					'style_id'				=> ['UINT', NULL, 'auto_increment'],
+					'template_id'			=> ['UINT', 0],
+					'theme_id'				=> ['UINT', 0],
+					'imageset_id'			=> ['UINT', 0],
+				],
+				STYLES_IMAGESET_TABLE		=> [
+					'imageset_id'				=> ['UINT', NULL, 'auto_increment'],
+				],
+				STYLES_IMAGESET_DATA_TABLE	=> [
+					'image_id'				=> ['UINT', NULL, 'auto_increment'],
+					'imageset_id'			=> ['UINT', 0],
+				],
+				STYLES_THEME_TABLE			=> [
+					'theme_id'				=> ['UINT', NULL, 'auto_increment'],
+				],
+				STYLES_TEMPLATE_TABLE		=> [
+					'template_id'			=> ['UINT', NULL, 'auto_increment'],
+				],
+				STYLES_TEMPLATE_DATA_TABLE	=> [
+					'template_id'			=> ['UINT', 0],
+				],
+				FORUMS_TABLE				=> [
+					'forum_style'			=> ['UINT', 0],
+				],
+				USERS_TABLE					=> [
+					'user_style'			=> ['UINT', 0],
+				],
+			],
+		],
 
 		// Changes from 3.0.4-RC1 to 3.0.4
-		'3.0.4-RC1'		=> array(),
+		'3.0.4-RC1'		=> [],
 
 		// Changes from 3.0.4 to 3.0.5-RC1
-		'3.0.4'			=> array(),
+		'3.0.4'			=> [],
 
 		// No changes from 3.0.5-RC1 to 3.0.5
-		'3.0.5-RC1'		=> array(),
+		'3.0.5-RC1'		=> [],
 
 		// Changes from 3.0.5 to 3.0.6-RC1
-		'3.0.5'		=> array(
-			'add_columns'		=> array(
-				CONFIRM_TABLE			=> array(
-					'attempts'		=> array('UINT', 0),
-				),
-				USERS_TABLE			=> array(
-					'user_new'			=> array('BOOL', 1),
-					'user_reminded'		=> array('TINT:4', 0),
-					'user_reminded_time'=> array('TIMESTAMP', 0),
-				),
-				GROUPS_TABLE			=> array(
-					'group_skip_auth'		=> array('BOOL', 0, 'after' => 'group_founder_manage'),
-				),
-				PRIVMSGS_TABLE		=> array(
-					'message_reported'	=> array('BOOL', 0),
-				),
-				REPORTS_TABLE		=> array(
-					'pm_id'				=> array('UINT', 0),
-				),
-				PROFILE_FIELDS_TABLE			=> array(
-					'field_show_on_vt'		=> array('BOOL', 0),
-				),
-				FORUMS_TABLE		=> array(
-					'forum_options'			=> array('UINT:20', 0),
-				),
-			),
-			'change_columns'		=> array(
-				USERS_TABLE				=> array(
-					'user_options'		=> array('UINT:11', 230271),
-				),
-			),
-			'add_index'		=> array(
-				REPORTS_TABLE		=> array(
-					'post_id'		=> array('post_id'),
-					'pm_id'			=> array('pm_id'),
-				),
-				POSTS_TABLE			=> array(
-					'post_username'		=> array('post_username:255'),
-				),
-			),
-		),
+		'3.0.5'		=> [
+			'add_columns'		=> [
+				CONFIRM_TABLE			=> [
+					'attempts'		=> ['UINT', 0],
+				],
+				USERS_TABLE			=> [
+					'user_new'			=> ['BOOL', 1],
+					'user_reminded'		=> ['TINT:4', 0],
+					'user_reminded_time'=> ['TIMESTAMP', 0],
+				],
+				GROUPS_TABLE			=> [
+					'group_skip_auth'		=> ['BOOL', 0, 'after' => 'group_founder_manage'],
+				],
+				PRIVMSGS_TABLE		=> [
+					'message_reported'	=> ['BOOL', 0],
+				],
+				REPORTS_TABLE		=> [
+					'pm_id'				=> ['UINT', 0],
+				],
+				PROFILE_FIELDS_TABLE			=> [
+					'field_show_on_vt'		=> ['BOOL', 0],
+				],
+				FORUMS_TABLE		=> [
+					'forum_options'			=> ['UINT:20', 0],
+				],
+			],
+			'change_columns'		=> [
+				USERS_TABLE				=> [
+					'user_options'		=> ['UINT:11', 230271],
+				],
+			],
+			'add_index'		=> [
+				REPORTS_TABLE		=> [
+					'post_id'		=> ['post_id'],
+					'pm_id'			=> ['pm_id'],
+				],
+				POSTS_TABLE			=> [
+					'post_username'		=> ['post_username:255'],
+				],
+			],
+		],
 
 		// No changes from 3.0.6-RC1 to 3.0.6-RC2
-		'3.0.6-RC1'		=> array(),
+		'3.0.6-RC1'		=> [],
 		// No changes from 3.0.6-RC2 to 3.0.6-RC3
-		'3.0.6-RC2'		=> array(),
+		'3.0.6-RC2'		=> [],
 		// No changes from 3.0.6-RC3 to 3.0.6-RC4
-		'3.0.6-RC3'		=> array(),
+		'3.0.6-RC3'		=> [],
 		// No changes from 3.0.6-RC4 to 3.0.6
-		'3.0.6-RC4'		=> array(),
+		'3.0.6-RC4'		=> [],
 
 		// Changes from 3.0.6 to 3.0.7-RC1
-		'3.0.6'		=> array(
-			'drop_keys'		=> array(
-				LOG_TABLE			=> array('log_time'),
-			),
-			'add_index'		=> array(
-				TOPICS_TRACK_TABLE	=> array(
-					'topic_id'		=> array('topic_id'),
-				),
-			),
-		),
+		'3.0.6'		=> [
+			'drop_keys'		=> [
+				LOG_TABLE			=> ['log_time'],
+			],
+			'add_index'		=> [
+				TOPICS_TRACK_TABLE	=> [
+					'topic_id'		=> ['topic_id'],
+				],
+			],
+		],
 
 		// No changes from 3.0.7-RC1 to 3.0.7-RC2
-		'3.0.7-RC1'		=> array(),
+		'3.0.7-RC1'		=> [],
 		// No changes from 3.0.7-RC2 to 3.0.7
-		'3.0.7-RC2'		=> array(),
+		'3.0.7-RC2'		=> [],
 		// No changes from 3.0.7 to 3.0.7-PL1
-		'3.0.7'		=> array(),
+		'3.0.7'		=> [],
 		// No changes from 3.0.7-PL1 to 3.0.8-RC1
-		'3.0.7-PL1'		=> array(),
+		'3.0.7-PL1'		=> [],
 		// No changes from 3.0.8-RC1 to 3.0.8
-		'3.0.8-RC1'		=> array(),
+		'3.0.8-RC1'		=> [],
 		// Changes from 3.0.8 to 3.0.9-RC1
-		'3.0.8'			=> array(
-			'add_tables'		=> array(
-				LOGIN_ATTEMPT_TABLE	=> array(
-					'COLUMNS'			=> array(
+		'3.0.8'			=> [
+			'add_tables'		=> [
+				LOGIN_ATTEMPT_TABLE	=> [
+					'COLUMNS'			=> [
 						// this column was removed from the database updater
 						// after 3.0.9-RC3 was released. It might still exist
 						// in 3.0.9-RCX installations and has to be dropped in
 						// 3.0.15 after the db_tools class is capable of properly
 						// removing a primary key.
 						// 'attempt_id'			=> array('UINT', NULL, 'auto_increment'),
-						'attempt_ip'			=> array('VCHAR:40', ''),
-						'attempt_browser'		=> array('VCHAR:150', ''),
-						'attempt_forwarded_for'	=> array('VCHAR:255', ''),
-						'attempt_time'			=> array('TIMESTAMP', 0),
-						'user_id'				=> array('UINT', 0),
-						'username'				=> array('VCHAR_UNI:255', 0),
-						'username_clean'		=> array('VCHAR_CI', 0),
-					),
+						'attempt_ip'			=> ['VCHAR:40', ''],
+						'attempt_browser'		=> ['VCHAR:150', ''],
+						'attempt_forwarded_for'	=> ['VCHAR:255', ''],
+						'attempt_time'			=> ['TIMESTAMP', 0],
+						'user_id'				=> ['UINT', 0],
+						'username'				=> ['VCHAR_UNI:255', 0],
+						'username_clean'		=> ['VCHAR_CI', 0],
+					],
 					//'PRIMARY_KEY'		=> 'attempt_id',
-					'KEYS'				=> array(
-						'att_ip'			=> array('INDEX', array('attempt_ip', 'attempt_time')),
-						'att_for'	=> array('INDEX', array('attempt_forwarded_for', 'attempt_time')),
-						'att_time'			=> array('INDEX', array('attempt_time')),
-						'user_id'				=> array('INDEX', 'user_id'),
-					),
-				),
-			),
-			'change_columns'	=> array(
-				BBCODES_TABLE	=> array(
-					'bbcode_id'	=> array('USINT', 0),
-				),
-			),
-		),
+					'KEYS'				=> [
+						'att_ip'			=> ['INDEX', ['attempt_ip', 'attempt_time']],
+						'att_for'	=> ['INDEX', ['attempt_forwarded_for', 'attempt_time']],
+						'att_time'			=> ['INDEX', ['attempt_time']],
+						'user_id'				=> ['INDEX', 'user_id'],
+					],
+				],
+			],
+			'change_columns'	=> [
+				BBCODES_TABLE	=> [
+					'bbcode_id'	=> ['USINT', 0],
+				],
+			],
+		],
 		// No changes from 3.0.9-RC1 to 3.0.9-RC2
-		'3.0.9-RC1'		=> array(),
+		'3.0.9-RC1'		=> [],
 		// No changes from 3.0.9-RC2 to 3.0.9-RC3
-		'3.0.9-RC2'		=> array(),
+		'3.0.9-RC2'		=> [],
 		// No changes from 3.0.9-RC3 to 3.0.9-RC4
-		'3.0.9-RC3'     => array(),
+		'3.0.9-RC3'     => [],
 		// No changes from 3.0.9-RC4 to 3.0.9
-		'3.0.9-RC4'     => array(),
+		'3.0.9-RC4'     => [],
 		// No changes from 3.0.9 to 3.0.10-RC1
-		'3.0.9'			=> array(),
+		'3.0.9'			=> [],
 		// No changes from 3.0.10-RC1 to 3.0.10-RC2
-		'3.0.10-RC1'	=> array(),
+		'3.0.10-RC1'	=> [],
 		// No changes from 3.0.10-RC2 to 3.0.10-RC3
-		'3.0.10-RC2'	=> array(),
+		'3.0.10-RC2'	=> [],
 		// No changes from 3.0.10-RC3 to 3.0.10
-		'3.0.10-RC3'	=> array(),
+		'3.0.10-RC3'	=> [],
 		// No changes from 3.0.10 to 3.0.11-RC1
-		'3.0.10'		=> array(),
+		'3.0.10'		=> [],
 		// Changes from 3.0.11-RC1 to 3.0.11-RC2
-		'3.0.11-RC1'	=> array(
-			'add_columns'		=> array(
-				PROFILE_FIELDS_TABLE			=> array(
-					'field_show_novalue'		=> array('BOOL', 0),
-				),
-			),
-		),
+		'3.0.11-RC1'	=> [
+			'add_columns'		=> [
+				PROFILE_FIELDS_TABLE			=> [
+					'field_show_novalue'		=> ['BOOL', 0],
+				],
+			],
+		],
 		// No changes from 3.0.11-RC2 to 3.0.11
-		'3.0.11-RC2'	=> array(),
+		'3.0.11-RC2'	=> [],
 		// No changes from 3.0.11 to 3.0.12-RC1
-		'3.0.11'		=> array(),
+		'3.0.11'		=> [],
 		// No changes from 3.0.12-RC1 to 3.0.12-RC2
-		'3.0.12-RC1'	=> array(),
+		'3.0.12-RC1'	=> [],
 		// No changes from 3.0.12-RC2 to 3.0.12-RC3
-		'3.0.12-RC2'	=> array(),
+		'3.0.12-RC2'	=> [],
 		// No changes from 3.0.12-RC3 to 3.0.12
-		'3.0.12-RC3'	=> array(),
+		'3.0.12-RC3'	=> [],
 		// No changes from 3.0.12 to 3.0.13-RC1
-		'3.0.12'		=> array(),
+		'3.0.12'		=> [],
 		// No changes from 3.0.13-RC1 to 3.0.13
-		'3.0.13-RC1'	=> array(),
+		'3.0.13-RC1'	=> [],
 		// No changes from 3.0.13 to 3.0.13-PL1
-		'3.0.13'		=> array(),
+		'3.0.13'		=> [],
 		// No changes from 3.0.13-PL1 to 3.0.14-RC1
-		'3.0.13-PL1'	=> array(),
+		'3.0.13-PL1'	=> [],
 		// No changes from 3.0.14-RC1 to 3.0.14
-		'3.0.14-RC1'	=> array(),
+		'3.0.14-RC1'	=> [],
 
 		/** @todo DROP LOGIN_ATTEMPT_TABLE.attempt_id in 3.0.15-RC1 */
-	);
+	];
 }
 
 /****************************************************************************
@@ -1630,13 +1630,13 @@ function change_database_data(&$no_updates, $version)
 			_sql($sql, $errored, $error_ary);
 
 			// Update smiley sizes
-			$smileys = array('icon_e_surprised.gif', 'icon_eek.gif', 'icon_cool.gif', 'icon_lol.gif', 'icon_mad.gif', 'icon_razz.gif', 'icon_redface.gif', 'icon_cry.gif', 'icon_evil.gif', 'icon_twisted.gif', 'icon_rolleyes.gif', 'icon_exclaim.gif', 'icon_question.gif', 'icon_idea.gif', 'icon_arrow.gif', 'icon_neutral.gif', 'icon_mrgreen.gif', 'icon_e_ugeek.gif');
+			$smileys = ['icon_e_surprised.gif', 'icon_eek.gif', 'icon_cool.gif', 'icon_lol.gif', 'icon_mad.gif', 'icon_razz.gif', 'icon_redface.gif', 'icon_cry.gif', 'icon_evil.gif', 'icon_twisted.gif', 'icon_rolleyes.gif', 'icon_exclaim.gif', 'icon_question.gif', 'icon_idea.gif', 'icon_arrow.gif', 'icon_neutral.gif', 'icon_mrgreen.gif', 'icon_e_ugeek.gif'];
 
 			foreach ($smileys as $smiley)
 			{
 				if (file_exists(PHPBB_ROOT_PATH . 'images/smilies/' . $smiley))
 				{
-					list($width, $height) = getimagesize(PHPBB_ROOT_PATH . 'images/smilies/' . $smiley);
+					[$width, $height] = getimagesize(PHPBB_ROOT_PATH . 'images/smilies/' . $smiley);
 
 					$sql = 'UPDATE ' . SMILIES_TABLE . '
 						SET smiley_width = ' . $width . ', smiley_height = ' . $height . "
@@ -1680,7 +1680,7 @@ function change_database_data(&$no_updates, $version)
 
 			// Set maximum number of recipients for the registered users, bots, guests group
 			$sql = 'UPDATE ' . GROUPS_TABLE . ' SET group_max_recipients = 5
-				WHERE ' . $db->sql_in_set('group_name', array('GUESTS', 'REGISTERED', 'REGISTERED_COPPA', 'BOTS'));
+				WHERE ' . $db->sql_in_set('group_name', ['GUESTS', 'REGISTERED', 'REGISTERED_COPPA', 'BOTS']);
 			_sql($sql, $errored, $error_ary);
 
 			// Add new permission u_masspm_group and duplicate settings from u_masspm
@@ -1690,13 +1690,13 @@ function change_database_data(&$no_updates, $version)
 			// Only add the new permission if it does not already exist
 			if (empty($auth_admin->acl_options['id']['u_masspm_group']))
 			{
-				$auth_admin->acl_add_option(array('global' => array('u_masspm_group')));
+				$auth_admin->acl_add_option(['global' => ['u_masspm_group']]);
 
 				// Now the tricky part, filling the permission
 				$old_id = $auth_admin->acl_options['id']['u_masspm'];
 				$new_id = $auth_admin->acl_options['id']['u_masspm_group'];
 
-				$tables = array(ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE);
+				$tables = [ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE];
 
 				foreach ($tables as $table)
 				{
@@ -1705,7 +1705,7 @@ function change_database_data(&$no_updates, $version)
 						WHERE auth_option_id = ' . $old_id;
 					$result = _sql($sql, $errored, $error_ary);
 
-					$sql_ary = array();
+					$sql_ary = [];
 					while ($row = $db->sql_fetchrow($result))
 					{
 						$row['auth_option_id'] = $new_id;
@@ -1788,12 +1788,12 @@ function change_database_data(&$no_updates, $version)
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$sql_ary = array(
+				$sql_ary = [
 					'field_required'	=> 0,
 					'field_show_on_reg'	=> 0,
 					'field_hide'		=> 0,
 					'field_show_profile'=> 0,
-				);
+				];
 
 				if ($row['field_required'])
 				{
@@ -1852,9 +1852,9 @@ function change_database_data(&$no_updates, $version)
 			{
 				if (strlen($row['user_password']) == 32)
 				{
-					$sql_ary = array(
+					$sql_ary = [
 						'user_password'	=> phpbb_hash($row['user_password']),
-					);
+					];
 
 					_sql('UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE user_id = ' . $row['user_id'], $errored, $error_ary);
 				}
@@ -1877,7 +1877,7 @@ function change_database_data(&$no_updates, $version)
 				HAVING COUNT(*) >= 2';
 			$result = $db->sql_query($sql);
 
-			$auth_options = array();
+			$auth_options = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$auth_options[] = $row['auth_option'];
@@ -1913,11 +1913,11 @@ function change_database_data(&$no_updates, $version)
 			}
 
 			// Now make auth_option UNIQUE, by dropping the old index and adding a UNIQUE one.
-			$changes = array(
-				'drop_keys'			=> array(
-					ACL_OPTIONS_TABLE		=> array('auth_option'),
-				),
-			);
+			$changes = [
+				'drop_keys'			=> [
+					ACL_OPTIONS_TABLE		=> ['auth_option'],
+				],
+			];
 
 			$statements = $db_tools->perform_schema_changes($changes);
 
@@ -1926,13 +1926,13 @@ function change_database_data(&$no_updates, $version)
 				_sql($sql, $errored, $error_ary);
 			}
 
-			$changes = array(
-				'add_unique_index'	=> array(
-					ACL_OPTIONS_TABLE		=> array(
-						'auth_option'		=> array('auth_option'),
-					),
-				),
-			);
+			$changes = [
+				'add_unique_index'	=> [
+					ACL_OPTIONS_TABLE		=> [
+						'auth_option'		=> ['auth_option'],
+					],
+				],
+			];
 
 			$statements = $db_tools->perform_schema_changes($changes);
 
@@ -1982,54 +1982,54 @@ function change_database_data(&$no_updates, $version)
 			set_config('allow_pm_report', '1');
 
 			// Install modules
-			$modules_to_install = array(
-				'feed'					=> array(
+			$modules_to_install = [
+				'feed'					=> [
 					'base'		=> 'board',
 					'class'		=> 'acp',
 					'title'		=> 'ACP_FEED_SETTINGS',
 					'auth'		=> 'acl_a_board',
 					'cat'		=> 'ACP_BOARD_CONFIGURATION',
-					'after'		=> array('signature', 'ACP_SIGNATURE_SETTINGS')
-				),
-				'warnings'				=> array(
+					'after'		=> ['signature', 'ACP_SIGNATURE_SETTINGS']
+				],
+				'warnings'				=> [
 					'base'		=> 'users',
 					'class'		=> 'acp',
 					'title'		=> 'ACP_USER_WARNINGS',
 					'auth'		=> 'acl_a_user',
 					'display'	=> 0,
 					'cat'		=> 'ACP_CAT_USERS',
-					'after'		=> array('feedback', 'ACP_USER_FEEDBACK')
-				),
-				'setting_forum_copy'	=> array(
+					'after'		=> ['feedback', 'ACP_USER_FEEDBACK']
+				],
+				'setting_forum_copy'	=> [
 					'base'		=> 'permissions',
 					'class'		=> 'acp',
 					'title'		=> 'ACP_FORUM_PERMISSIONS_COPY',
 					'auth'		=> 'acl_a_fauth && acl_a_authusers && acl_a_authgroups && acl_a_mauth',
 					'cat'		=> 'ACP_FORUM_BASED_PERMISSIONS',
-					'after'		=> array('setting_forum_local', 'ACP_FORUM_PERMISSIONS')
-				),
-				'pm_reports'			=> array(
+					'after'		=> ['setting_forum_local', 'ACP_FORUM_PERMISSIONS']
+				],
+				'pm_reports'			=> [
 					'base'		=> 'pm_reports',
 					'class'		=> 'mcp',
 					'title'		=> 'MCP_PM_REPORTS_OPEN',
 					'auth'		=> 'aclf_m_report',
 					'cat'		=> 'MCP_REPORTS'
-				),
-				'pm_reports_closed'		=> array(
+				],
+				'pm_reports_closed'		=> [
 					'base'		=> 'pm_reports',
 					'class'		=> 'mcp',
 					'title'		=> 'MCP_PM_REPORTS_CLOSED',
 					'auth'		=> 'aclf_m_report',
 					'cat'		=> 'MCP_REPORTS'
-				),
-				'pm_report_details'		=> array(
+				],
+				'pm_report_details'		=> [
 					'base'		=> 'pm_reports',
 					'class'		=> 'mcp',
 					'title'		=> 'MCP_PM_REPORT_DETAILS',
 					'auth'		=> 'aclf_m_report',
 					'cat'		=> 'MCP_REPORTS'
-				),
-			);
+				],
+			];
 
 			_add_modules($modules_to_install);
 
@@ -2295,9 +2295,9 @@ function change_database_data(&$no_updates, $version)
 
 				if ($user_email_hash != $row['user_email_hash'])
 				{
-					$sql_ary = array(
+					$sql_ary = [
 						'user_email_hash'	=> $user_email_hash,
-					);
+					];
 
 					$sql = 'UPDATE ' . USERS_TABLE . '
 						SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -2328,7 +2328,7 @@ function change_database_data(&$no_updates, $version)
 				FROM ' . LANG_TABLE;
 			$result = $db->sql_query($sql);
 
-			$extension_groups_updated = array();
+			$extension_groups_updated = [];
 			while ($lang_dir = $db->sql_fetchfield('lang_dir'))
 			{
 				$lang_dir = basename($lang_dir);
@@ -2338,11 +2338,11 @@ function change_database_data(&$no_updates, $version)
 				// or they are in language/.../install.php when we're updating from 3.0.7-PL1 or earlier.
 				// On an already updated board, they can also already be in language/.../acp/attachments.php
 				// in the board root.
-				$lang_files = array(
+				$lang_files = [
 					PHPBB_ROOT_PATH . "install/update/new/language/$lang_dir/acp/attachments.php",
 					PHPBB_ROOT_PATH . "language/$lang_dir/install.php",
 					PHPBB_ROOT_PATH . "language/$lang_dir/acp/attachments.php",
-				);
+				];
 
 				foreach ($lang_files as $lang_file)
 				{
@@ -2351,7 +2351,7 @@ function change_database_data(&$no_updates, $version)
 						continue;
 					}
 
-					$lang = array();
+					$lang = [];
 					require($lang_file);
 
 					foreach ($lang as $lang_key => $lang_val)
@@ -2361,9 +2361,9 @@ function change_database_data(&$no_updates, $version)
 							continue;
 						}
 
-						$sql_ary = array(
+						$sql_ary = [
 							'group_name'	=> substr($lang_key, 10), // Strip off 'EXT_GROUP_'
-						);
+						];
 
 						$sql = 'UPDATE ' . EXTENSION_GROUPS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
@@ -2377,16 +2377,16 @@ function change_database_data(&$no_updates, $version)
 			$db->sql_freeresult($result);
 
 			// Install modules
-			$modules_to_install = array(
-				'post'					=> array(
+			$modules_to_install = [
+				'post'					=> [
 					'base'		=> 'board',
 					'class'		=> 'acp',
 					'title'		=> 'ACP_POST_SETTINGS',
 					'auth'		=> 'acl_a_board',
 					'cat'		=> 'ACP_MESSAGES',
-					'after'		=> array('message', 'ACP_MESSAGE_SETTINGS')
-				),
-			);
+					'after'		=> ['message', 'ACP_MESSAGE_SETTINGS']
+				],
+			];
 
 			_add_modules($modules_to_install);
 
@@ -2402,28 +2402,28 @@ function change_database_data(&$no_updates, $version)
 			$batch_size = 500;
 
 			// Set of affected forums we have to resync
-			$sync_forum_ids = array();
+			$sync_forum_ids = [];
 
 			do
 			{
-				$sql_array = array(
+				$sql_array = [
 					'SELECT'	=> 't1.topic_id, t1.forum_id',
-					'FROM'		=> array(
+					'FROM'		=> [
 						TOPICS_TABLE	=> 't1',
-					),
-					'LEFT_JOIN'	=> array(
-						array(
-							'FROM'	=> array(TOPICS_TABLE	=> 't2'),
+					],
+					'LEFT_JOIN'	=> [
+						[
+							'FROM'	=> [TOPICS_TABLE	=> 't2'],
 							'ON'	=> 't1.topic_moved_id = t2.topic_id',
-						),
-					),
+						],
+					],
 					'WHERE'		=> 't1.topic_moved_id <> 0
 								AND t2.topic_id IS NULL',
-				);
+				];
 				$sql = $db->sql_build_query('SELECT', $sql_array);
 				$result = $db->sql_query_limit($sql, $batch_size);
 
-				$topic_ids = array();
+				$topic_ids = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$topic_ids[] = (int) $row['topic_id'];
@@ -2479,9 +2479,9 @@ function change_database_data(&$no_updates, $version)
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$sql_ary = array(
+				$sql_ary = [
 					'group_name'	=> substr($row['group_name'], 10), // Strip off 'EXT_GROUP_'
-				);
+				];
 
 				$sql = 'UPDATE ' . EXTENSION_GROUPS_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -2539,7 +2539,7 @@ function change_database_data(&$no_updates, $version)
 				WHERE style_active = 0';
 			$result = $db->sql_query($sql);
 
-			$deactivated_style_ids = array();
+			$deactivated_style_ids = [];
 			while ($style_id = $db->sql_fetchfield('style_id', false, $result))
 			{
 				$deactivated_style_ids[] = (int) $style_id;
@@ -2557,26 +2557,26 @@ function change_database_data(&$no_updates, $version)
 			// Delete orphan private messages
 			$batch_size = 500;
 
-			$sql_array = array(
+			$sql_array = [
 				'SELECT'	=> 'p.msg_id',
-				'FROM'		=> array(
+				'FROM'		=> [
 					PRIVMSGS_TABLE	=> 'p',
-				),
-				'LEFT_JOIN'	=> array(
-					array(
-						'FROM'	=> array(PRIVMSGS_TO_TABLE => 't'),
+				],
+				'LEFT_JOIN'	=> [
+					[
+						'FROM'	=> [PRIVMSGS_TO_TABLE => 't'],
 						'ON'	=> 'p.msg_id = t.msg_id',
-					),
-				),
+					],
+				],
 				'WHERE'		=> 't.user_id IS NULL',
-			);
+			];
 			$sql = $db->sql_build_query('SELECT', $sql_array);
 
 			do
 			{
 				$result = $db->sql_query_limit($sql, $batch_size);
 
-				$delete_pms = array();
+				$delete_pms = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$delete_pms[] = (int) $row['msg_id'];

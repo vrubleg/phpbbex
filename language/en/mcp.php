@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACTION'				=> 'Action',
 	'ACTION_NOTE'			=> 'Action/Note',
 	'ADD_FEEDBACK'			=> 'Add feedback',
@@ -375,18 +375,18 @@ $lang = array_merge($lang, array(
 
 	'YOU_SELECTED_TOPIC'	=> 'You selected topic number %d: %s.',
 
-	'report_reasons'		=> array(
-		'TITLE'	=> array(
+	'report_reasons'		=> [
+		'TITLE'	=> [
 			'WAREZ'		=> 'Warez',
 			'SPAM'		=> 'Spam',
 			'OFF_TOPIC'	=> 'Off-topic',
 			'OTHER'		=> 'Other',
-		),
-		'DESCRIPTION' => array(
+		],
+		'DESCRIPTION' => [
 			'WAREZ'		=> 'The message contains links to illegal or pirated software.',
 			'SPAM'		=> 'The reported message has the only purpose to advertise for a website or another product.',
 			'OFF_TOPIC'	=> 'The reported message is off topic.',
 			'OTHER'		=> 'The reported message does not fit into any other category, please use the further information field.',
-		)
-	),
-));
+		]
+	],
+]);

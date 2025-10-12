@@ -28,13 +28,13 @@ class ucp_zebra
 
 		if ($submit)
 		{
-			$data = $error = array();
+			$data = $error = [];
 			$updated = false;
 
-			$var_ary = array(
-				'usernames'	=> array(0),
+			$var_ary = [
+				'usernames'	=> [0],
 				'add'		=> '',
-			);
+			];
 
 			foreach ($var_ary as $var => $default)
 			{
@@ -76,7 +76,7 @@ class ucp_zebra
 								AND u.user_id = z.zebra_id';
 						$result = $db->sql_query($sql);
 
-						$friends = $foes = array();
+						$friends = $foes = [];
 						while ($row = $db->sql_fetchrow($result))
 						{
 							if ($row['friend'])
@@ -110,7 +110,7 @@ class ucp_zebra
 
 						// remove the user himself from the username array
 						$n = sizeof($data['add']);
-						$data['add'] = array_diff($data['add'], array(utf8_clean_string($user->data['username'])));
+						$data['add'] = array_diff($data['add'], [utf8_clean_string($user->data['username'])]);
 
 						if (sizeof($data['add']) < $n)
 						{
@@ -127,7 +127,7 @@ class ucp_zebra
 									AND user_type <> ' . USER_INACTIVE;
 							$result = $db->sql_query($sql);
 
-							$user_id_ary = array();
+							$user_id_ary = [];
 							while ($row = $db->sql_fetchrow($result))
 							{
 								if ($row['user_id'] != ANONYMOUS && $row['user_type'] != USER_IGNORE)
@@ -150,8 +150,8 @@ class ucp_zebra
 								// Remove users from foe list if they are admins or moderators
 								if ($mode == 'foes')
 								{
-									$perms = array();
-									foreach ($auth->acl_get_list($user_id_ary, array('a_', 'm_')) as $forum_id => $forum_ary)
+									$perms = [];
+									foreach ($auth->acl_get_list($user_id_ary, ['a_', 'm_']) as $forum_id => $forum_ary)
 									{
 										foreach ($forum_ary as $auth_option => $user_ary)
 										{
@@ -175,14 +175,14 @@ class ucp_zebra
 								{
 									$sql_mode = ($mode == 'friends') ? 'friend' : 'foe';
 
-									$sql_ary = array();
+									$sql_ary = [];
 									foreach ($user_id_ary as $zebra_id)
 									{
-										$sql_ary[] = array(
+										$sql_ary[] = [
 											'user_id'		=> (int) $user->data['user_id'],
 											'zebra_id'		=> (int) $zebra_id,
 											$sql_mode		=> 1
-										);
+										];
 									}
 
 									if (class_exists('phpbb_gallery_integration'))
@@ -216,11 +216,11 @@ class ucp_zebra
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 						'mode'		=> $mode,
 						'submit'	=> true,
 						'usernames'	=> $data['usernames'],
-						'add'		=> $data['add']))
+						'add'		=> $data['add']])
 					);
 				}
 			}
@@ -242,14 +242,14 @@ class ucp_zebra
 		}
 		$db->sql_freeresult($result);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_TITLE'			=> $user->lang['UCP_ZEBRA_' . $l_mode],
 
 			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=ucp&amp;field=add'),
 
 			'S_USERNAME_OPTIONS'	=> $s_username_options,
 			'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
-			'S_UCP_ACTION'			=> $this->u_action)
+			'S_UCP_ACTION'			=> $this->u_action]
 		);
 
 		$this->tpl_name = 'ucp_zebra_' . $mode;

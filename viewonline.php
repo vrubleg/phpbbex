@@ -36,7 +36,7 @@ if (!$auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel'))
 
 
 // Sorting and order
-$sort_key_sql = array('a' => 'u.username_clean', 'b' => 's.session_time');
+$sort_key_sql = ['a' => 'u.username_clean', 'b' => 's.session_time'];
 if (!isset($sort_key_sql[$sort_key])) { $sort_key = 'b'; }
 $order_by = $sort_key_sql[$sort_key] . ' ' . (($sort_dir == 'a') ? 'ASC' : 'DESC');
 
@@ -60,9 +60,9 @@ if ($mode == 'whois' && $auth->acl_get('a_') && $session_id)
 	// Output the page
 	page_header($user->lang['WHO_IS_ONLINE']);
 
-	$template->set_filenames(array(
-		'body' => 'viewonline_whois.html')
-	);
+	$template->set_filenames([
+		'body' => 'viewonline_whois.html'
+	]);
 	make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
 
 	page_footer();
@@ -107,7 +107,7 @@ $sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colo
 	ORDER BY ' . $order_by;
 $result = $db->sql_query($sql);
 
-$prev_id = $prev_ip = $user_list = array();
+$prev_id = $prev_ip = $user_list = [];
 $logged_visible_online = $logged_hidden_online = $counter = 0;
 
 while ($row = $db->sql_fetchrow($result))
@@ -187,7 +187,7 @@ while ($row = $db->sql_fetchrow($result))
 		continue;
 	}
 
-	$template->assign_block_vars('user_row', array(
+	$template->assign_block_vars('user_row', [
 		'USERNAME' 			=> $row['username'],
 		'USERNAME_COLOUR'	=> $row['user_colour'],
 		'USERNAME_FULL'		=> $username_full,
@@ -202,7 +202,7 @@ while ($row = $db->sql_fetchrow($result))
 		'S_USER_HIDDEN'		=> $s_user_hidden,
 		'S_GUEST'			=> ($row['user_id'] == ANONYMOUS) ? true : false,
 		'S_USER_TYPE'		=> $row['user_type'],
-	));
+	]);
 }
 $db->sql_freeresult($result);
 unset($prev_id, $prev_ip);
@@ -251,7 +251,7 @@ $db->sql_freeresult($result);
 meta_refresh(60);
 
 // Send data to template
-$template->assign_vars(array(
+$template->assign_vars([
 	'TOTAL_REGISTERED_USERS_ONLINE'	=> $user->lang('ONLINE_REG_USERS', $logged_visible_online + $logged_hidden_online) . ($logged_hidden_online ? (' (' . $user->lang('ONLINE_HIDDEN_USERS', $logged_hidden_online) . ')') : ''),
 	'TOTAL_GUEST_USERS_ONLINE'		=> $user->lang('ONLINE_GUEST_USERS', $guest_counter),
 	'TOTAL_BOT_USERS_ONLINE'		=> $user->lang('ONLINE_BOT_USERS', $logged_bots_online),
@@ -269,7 +269,7 @@ $template->assign_vars(array(
 	'U_SWITCH_BOTS_DISPLAY'		=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) !$show_bots)),
 	'L_SWITCH_BOTS_DISPLAY'		=> $show_bots ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
 	'S_SWITCH_BOTS_DISPLAY'		=> $config['load_online_bots'] || $auth->acl_get('u_viewonline'),
-));
+]);
 
 // We do not need to load the who is online box here. ;)
 $config['load_online'] = false;
@@ -277,9 +277,9 @@ $config['load_online'] = false;
 // Output the page
 page_header($user->lang['WHO_IS_ONLINE']);
 
-$template->set_filenames(array(
-	'body' => 'viewonline_body.html')
-);
+$template->set_filenames([
+	'body' => 'viewonline_body.html'
+]);
 make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
 
 page_footer();

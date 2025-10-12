@@ -37,7 +37,7 @@ switch ($mode)
 
 // Pull the array data from the lang pack
 $switch_column = $found_switch = false;
-$help_blocks = array();
+$help_blocks = [];
 foreach ($user->help as $help_ary)
 {
 	if ($help_ary[0] == '--')
@@ -49,10 +49,10 @@ foreach ($user->help as $help_ary)
 			continue;
 		}
 
-		$template->assign_block_vars('faq_block', array(
+		$template->assign_block_vars('faq_block', [
 			'BLOCK_TITLE'		=> $help_ary[1],
 			'SWITCH_COLUMN'		=> $switch_column,
-		));
+		]);
 
 		if ($switch_column)
 		{
@@ -61,25 +61,25 @@ foreach ($user->help as $help_ary)
 		continue;
 	}
 
-	$template->assign_block_vars('faq_block.faq_row', array(
+	$template->assign_block_vars('faq_block.faq_row', [
 		'FAQ_QUESTION'		=> $help_ary[0],
-		'FAQ_ANSWER'		=> $help_ary[1])
-	);
+		'FAQ_ANSWER'		=> $help_ary[1]
+	]);
 }
 
 // Lets build a page ...
-$template->assign_vars(array(
+$template->assign_vars([
 	'L_FAQ_TITLE'				=> $l_title,
 	'L_BACK_TO_TOP'				=> $user->lang['BACK_TO_TOP'],
 
 	'SWITCH_COLUMN_MANUALLY'	=> (!$found_switch) ? true : false,
-));
+]);
 
 page_header($l_title, false);
 
-$template->set_filenames(array(
-	'body' => 'faq_body.html')
-);
+$template->set_filenames([
+	'body' => 'faq_body.html'
+]);
 make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
 
 page_footer();

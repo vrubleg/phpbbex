@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Common
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_ADMINISTRATORS'		=> 'Administrators',
 	'ACP_ADMIN_LOGS'			=> 'Admin log',
 	'ACP_ADMIN_ROLES'			=> 'Admin roles',
@@ -269,17 +269,17 @@ $lang = array_merge($lang, array(
 	'USER_CONTROL_PANEL'	=> 'User Control Panel',
 
 	'WARNING'				=> 'Warning',
-));
+]);
 
 // PHP info
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_PHP_INFO_EXPLAIN'	=> 'This page lists information on the version of PHP installed on this server. It includes details of loaded modules, available variables and default settings. This information may be useful when diagnosing problems. Please be aware that some hosting companies will limit what information is displayed here for security reasons. You are advised to not give out any details on this page except when asked by official team members on the support forums.',
 
 	'NO_PHPINFO_AVAILABLE'	=> 'Information about your PHP configuration is unable to be determined. Phpinfo() has been disabled for security reasons.',
-));
+]);
 
 // Logs
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_ADMIN_LOGS_EXPLAIN'	=> 'This lists all the actions carried out by board administrators. You can sort by username, date, IP or action. If you have appropriate permissions you can also clear individual operations or the log as a whole.',
 	'ACP_CRITICAL_LOGS_EXPLAIN'	=> 'This lists the actions carried out by the board itself. This log provides you with information you are able to use for solving specific problems, for example non-delivery of emails. You can sort by username, date, IP or action. If you have appropriate permissions you can also clear individual operations or the log as a whole.',
 	'ACP_MOD_LOGS_EXPLAIN'		=> 'This lists all actions done on forums, topics and posts as well as actions carried out on users by moderators, including banning. You can sort by username, date, IP or action. If you have appropriate permissions you can also clear individual operations or the log as a whole.',
@@ -294,10 +294,10 @@ $lang = array_merge($lang, array(
 	'SORT_IP'		=> 'IP address',
 	'SORT_DATE'		=> 'Date',
 	'SORT_ACTION'	=> 'Log action',
-));
+]);
 
 // Index page
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADMIN_INTRO'				=> 'Thank you for choosing phpBBex as your board solution. This screen will give you a quick overview of all the various statistics of your board. The links on the left hand side of this screen allow you to control every aspect of your board experience. Each page will have instructions on how to use the tools.',
 	'ADMIN_LOG'					=> 'Logged administrator actions',
 	'ADMIN_LOG_INDEX_EXPLAIN'	=> 'This gives an overview of the last five actions carried out by board administrators. A full copy of the log can be viewed from the appropriate menu item or following the link below.',
@@ -380,10 +380,10 @@ $lang = array_merge($lang, array(
 
 	'WELCOME_PHPBB'			=> 'Welcome to phpBBex',
 	'WRITABLE_CONFIG'		=> 'Your config.php is currently world-writable. Change the permissions to 640 or at least to 644 (for example: <samp>chmod 640 config.php</samp>).',
-));
+]);
 
 // Inactive Users
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'INACTIVE_DATE'					=> 'Inactive date',
 	'INACTIVE_REASON'				=> 'Reason',
 	'INACTIVE_REASON_MANUAL'		=> 'Account deactivated by administrator',
@@ -405,10 +405,10 @@ $lang = array_merge($lang, array(
 	'SORT_REMINDER'		=> 'Reminder sent',
 
 	'USER_IS_INACTIVE'		=> 'User is inactive',
-));
+]);
 
 // Log Entries
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'LOG_ACL_ADD_USER_GLOBAL_U_'		=> '<strong>Added or edited users’ user permissions</strong><br />» %s',
 	'LOG_ACL_ADD_GROUP_GLOBAL_U_'		=> '<strong>Added or edited groups’ user permissions</strong><br />» %s',
 	'LOG_ACL_ADD_USER_GLOBAL_M_'		=> '<strong>Added or edited users’ global moderator permissions</strong><br />» %s',
@@ -727,20 +727,20 @@ $lang = array_merge($lang, array(
 	'LOG_REGISTER_OK'				=> '<strong style="color: green;">User registered successfully</strong><br /><strong>Name:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>Browser ID:</strong> %4$s<br /><strong>First request:</strong> %6$s seconds ago<br /><strong>Requested:</strong> %7$s pages',
 	'LOG_REGISTER_REJECTED_BOT'		=> '<strong style="color: orange;">An attempt to register a bot was rejected</strong><br /><strong>Name:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>Browser ID:</strong> %4$s<br /><strong>First request:</strong> %6$s seconds ago<br /><strong>Requested:</strong> %7$s pages<br /><strong>Errors:</strong><br />%3$s',
 	'LOG_REGISTER_REJECTED_USER'	=> '<strong style="color: red;">An attempt to register a user was rejected</strong><br /><strong>Name:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>Browser ID:</strong> %4$s<br /><strong>First request:</strong> %6$s seconds ago<br /><strong>Requested:</strong> %7$s pages<br /><strong>Errors:</strong><br />%3$s',
-));
+]);
 
 // Manage attachments module for phpBB3 MOD
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_MANAGE_ATTACHMENTS'			=> 'Manage attachments',
 	'ACP_MANAGE_ATTACHMENTS_EXPLAIN'	=> 'Here you can manage files attached to posts. You are able to delete the files or reassign them to existing posts. Reassigning to posts requires a valid post ID, you have to determine this ID by yourself. This will reassign the already assigned attachment to the post you entered.',
 	'LOG_ATTACH_DEL'					=> '<strong>Attachments deleted</strong><br />» %s',
 	'LOG_ATTACH_REASSIGNED'				=> '<strong>Attachment reassigned to Post</strong><br />» ID %1$d - %2$s',
 	'TOTAL_SIZE'						=> 'Total size',
 	'DOWNLOADS'							=> 'Downloads',
-));
+]);
 
 // Out links
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_OUTLINKS'			=> 'Top links',
 	'ACP_OUTLINKS_EXPLAIN'	=> 'From this control panel you can add, edit, and remove links in top menu.',
 	'TITLE'					=> 'Title',
@@ -754,13 +754,13 @@ $lang = array_merge($lang, array(
 	'LINK_NOFOLLOW_EXPLAIN'	=> 'For search robots',
 	'LINK_NEWWINDOW'		=> 'New window',
 	'LINK_NEWWINDOW_EXPLAIN'=> 'Open in new window',
-));
+]);
 
 // Login via email
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Login via email',
 	'LOGIN_VIA_EMAIL_ENABLE_EXPLAIN'	=> 'Allow users to login using either their username or email address. With the silent option, there will be no text indicating that this is possible.',
 	'LOGIN_VIA_EMAIL_SILENT'			=> 'Yes, silently',
 	'LOGIN_VIA_EMAIL_ONLY'				=> 'Email only',
 	'EMAIL_REUSE_DISABLED'				=> 'This is disabled while <em>Login via email</em> is enabled.',
-));
+]);

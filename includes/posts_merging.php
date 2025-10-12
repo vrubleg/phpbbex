@@ -81,16 +81,16 @@ generate_text_for_storage($merge_post_data['post_text'], $merge_post_data['bbcod
 $poster_id = (int) $merge_post_data['poster_id'];
 
 // Prepare post data for update
-$sql_data[POSTS_TABLE]['sql'] = array(
+$sql_data[POSTS_TABLE]['sql'] = [
 	'bbcode_uid'		=> $merge_post_data['bbcode_uid'],
 	'bbcode_bitfield'	=> $merge_post_data['bbcode_bitfield'],
 	'post_text'			=> $merge_post_data['post_text'],
 	'post_checksum'		=> md5($merge_post_data['post_text']),
 	'post_merged'		=> $current_time,
 	'post_attachment'	=> (!empty($data['attachment_data'])) ? 1 : ($merge_post_data['post_attachment'] ? 1 : 0),
-);
+];
 
-$sql_data[TOPICS_TABLE]['sql'] = array(
+$sql_data[TOPICS_TABLE]['sql'] = [
 	'topic_last_post_id'		=> $merge_post_id,
 	'topic_last_poster_id'		=> $poster_id,
 	'topic_last_poster_name'	=> (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
@@ -98,16 +98,16 @@ $sql_data[TOPICS_TABLE]['sql'] = array(
 	'topic_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
 	'topic_last_post_time'		=> $current_time,
 	'topic_attachment'			=> (!empty($data['attachment_data']) || (isset($merge_post_data['topic_attachment']) && $merge_post_data['topic_attachment'])) ? 1 : 0,
-);
+];
 
-$sql_data[FORUMS_TABLE]['sql'] = array(
+$sql_data[FORUMS_TABLE]['sql'] = [
 	'forum_last_post_id'		=> $merge_post_id,
 	'forum_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
 	'forum_last_post_time'		=> $current_time,
 	'forum_last_poster_id'		=> $poster_id,
 	'forum_last_poster_name'	=> (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
 	'forum_last_poster_colour'	=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
-);
+];
 
 // Update post information - submit merged post
 $sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . " WHERE post_id = $merge_post_id";
@@ -123,11 +123,11 @@ $db->sql_query($sql);
 if (!empty($data['attachment_data']))
 {
 	$space_taken = $files_added = 0;
-	$orphan_rows = array();
+	$orphan_rows = [];
 
 	foreach ($data['attachment_data'] as $pos => $attach_row)
 	{
-		$orphan_rows[(int) $attach_row['attach_id']] = array();
+		$orphan_rows[(int) $attach_row['attach_id']] = [];
 	}
 
 	if (sizeof($orphan_rows))
@@ -139,7 +139,7 @@ if (!empty($data['attachment_data']))
 				AND poster_id = ' . $user->data['user_id'];
 		$result = $db->sql_query($sql);
 
-		$orphan_rows = array();
+		$orphan_rows = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$orphan_rows[$row['attach_id']] = $row;
@@ -174,13 +174,13 @@ if (!empty($data['attachment_data']))
 			$space_taken += $orphan_rows[$attach_row['attach_id']]['filesize'];
 			$files_added++;
 
-			$attach_sql = array(
+			$attach_sql = [
 				'post_msg_id'		=> $merge_post_id,
 				'topic_id'			=> $topic_id,
 				'is_orphan'			=> 0,
 				'poster_id'			=> $poster_id,
 				'attach_comment'	=> $attach_row['attach_comment'],
-			);
+			];
 
 			$sql = 'UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $attach_sql) . '
 				WHERE attach_id = ' . $attach_row['attach_id'] . '

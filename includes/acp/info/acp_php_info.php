@@ -9,14 +9,14 @@ class acp_php_info_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> 'acp_php_info',
 			'title'		=> 'ACP_PHP_INFO',
 			'version'	=> '1.0.0',
-			'modes'		=> array(
-				'info'		=> array('title' => 'ACP_PHP_INFO', 'auth' => 'acl_a_phpinfo', 'cat' => array('ACP_GENERAL_TASKS')),
-			),
-		);
+			'modes'		=> [
+				'info'		=> ['title' => 'ACP_PHP_INFO', 'auth' => 'acl_a_phpinfo', 'cat' => ['ACP_GENERAL_TASKS']],
+			],
+		];
 	}
 
 	function install()

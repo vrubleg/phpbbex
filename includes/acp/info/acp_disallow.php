@@ -9,14 +9,14 @@ class acp_disallow_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> 'acp_disallow',
 			'title'		=> 'ACP_DISALLOW',
 			'version'	=> '1.0.0',
-			'modes'		=> array(
-				'usernames'		=> array('title' => 'ACP_DISALLOW_USERNAMES', 'auth' => 'acl_a_names', 'cat' => array('ACP_USER_SECURITY')),
-			),
-		);
+			'modes'		=> [
+				'usernames'		=> ['title' => 'ACP_DISALLOW_USERNAMES', 'auth' => 'acl_a_names', 'cat' => ['ACP_USER_SECURITY']],
+			],
+		];
 	}
 
 	function install()

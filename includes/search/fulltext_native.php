@@ -17,14 +17,14 @@ require_once(PHPBB_ROOT_PATH . 'includes/search/search.php');
 */
 class fulltext_native extends search_backend
 {
-	var $stats = array();
-	var $word_length = array();
+	var $stats = [];
+	var $word_length = [];
 	var $search_query;
-	var $common_words = array();
+	var $common_words = [];
 
-	var $must_contain_ids = array();
-	var $must_not_contain_ids = array();
-	var $must_exclude_one_ids = array();
+	var $must_contain_ids = [];
+	var $must_not_contain_ids = [];
+	var $must_exclude_one_ids = [];
 
 	/**
 	* Initialises the fulltext_native search backend with min/max word length and makes sure the UTF-8 normalizer is loaded.
@@ -37,7 +37,7 @@ class fulltext_native extends search_backend
 	{
 		global $config;
 
-		$this->word_length = array('min' => $config['fulltext_native_min_chars'], 'max' => $config['fulltext_native_max_chars']);
+		$this->word_length = ['min' => $config['fulltext_native_min_chars'], 'max' => $config['fulltext_native_max_chars']];
 
 		/**
 		* Load the UTF tools
@@ -152,20 +152,20 @@ class fulltext_native extends search_backend
 			$keywords .= ')';
 		}
 
-		$match = array(
+		$match = [
 			'#  +#',
 			'#\|\|+#',
 			'#(\+|\-)(?:\+|\-)+#',
 			'#\(\|#',
 			'#\|\)#',
-		);
-		$replace = array(
+		];
+		$replace = [
 			' ',
 			'|',
 			'$1',
 			'(',
 			')',
-		);
+		];
 
 		$keywords = preg_replace($match, $replace, $keywords);
 		$num_keywords = sizeof(explode(' ', $keywords));
@@ -181,7 +181,7 @@ class fulltext_native extends search_backend
 		// the user wants to search for any word, convert the search query
 		if ($terms == 'any')
 		{
-			$words = array();
+			$words = [];
 
 			preg_match_all('#([^\\s+\\-|()]+)(?:$|[\\s+\\-|()])#u', $keywords, $words);
 			if (sizeof($words[1]))
@@ -193,11 +193,11 @@ class fulltext_native extends search_backend
 		// set the search_query which is shown to the user
 		$this->search_query = $keywords;
 
-		$exact_words = array();
+		$exact_words = [];
 		preg_match_all('#([^\\s+\\-|()]+)(?:$|[\\s+\\-|()])#u', $keywords, $exact_words);
 		$exact_words = $exact_words[1];
 
-		$common_ids = $words = array();
+		$common_ids = $words = [];
 
 		if (sizeof($exact_words))
 		{
@@ -223,17 +223,17 @@ class fulltext_native extends search_backend
 		}
 
 		// Handle +, - without preceeding whitespace character
-		$match		= array('#(\S)\+#', '#(\S)-#');
-		$replace	= array('$1 +', '$1 +');
+		$match		= ['#(\S)\+#', '#(\S)-#'];
+		$replace	= ['$1 +', '$1 +'];
 
 		$keywords = preg_replace($match, $replace, $keywords);
 
 		// now analyse the search query, first split it using the spaces
 		$query = explode(' ', $keywords);
 
-		$this->must_contain_ids = array();
-		$this->must_not_contain_ids = array();
-		$this->must_exclude_one_ids = array();
+		$this->must_contain_ids = [];
+		$this->must_not_contain_ids = [];
+		$this->must_exclude_one_ids = [];
 
 		$mode = '';
 		$ignore_no_id = true;
@@ -289,8 +289,8 @@ class fulltext_native extends search_backend
 			// if this is an array of words then retrieve an id for each
 			if (is_array($word))
 			{
-				$non_common_words = array();
-				$id_words = array();
+				$non_common_words = [];
+				$id_words = [];
 				foreach ($word as $i => $word_part)
 				{
 					if (strpos($word_part, '*') !== false)
@@ -420,7 +420,7 @@ class fulltext_native extends search_backend
 		sort($must_exclude_one_ids);
 
 		// generate a search_key from all the options to identify the results
-		$search_key = md5(implode('#', array(
+		$search_key = md5(implode('#', [
 			serialize($must_contain_ids),
 			serialize($must_not_contain_ids),
 			serialize($must_exclude_one_ids),
@@ -434,7 +434,7 @@ class fulltext_native extends search_backend
 			implode(',', $m_approve_fid_ary),
 			implode(',', $author_ary),
 			$author_name,
-		)));
+		]));
 
 		// try reading the results from cache
 		$total_results = 0;
@@ -443,24 +443,24 @@ class fulltext_native extends search_backend
 			return $total_results;
 		}
 
-		$id_ary = array();
+		$id_ary = [];
 
-		$sql_where = array();
+		$sql_where = [];
 		$group_by = false;
 		$m_num = 0;
 		$w_num = 0;
 
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'	=> ($type == 'posts') ? 'p.post_id' : 'p.topic_id',
-			'FROM'		=> array(
-				SEARCH_WORDMATCH_TABLE	=> array(),
-				SEARCH_WORDLIST_TABLE	=> array(),
-			),
-			'LEFT_JOIN' => array(array(
-				'FROM'	=> array(POSTS_TABLE => 'p'),
+			'FROM'		=> [
+				SEARCH_WORDMATCH_TABLE	=> [],
+				SEARCH_WORDLIST_TABLE	=> [],
+			],
+			'LEFT_JOIN' => [[
+				'FROM'	=> [POSTS_TABLE => 'p'],
 				'ON'	=> 'm0.post_id = p.post_id',
-			)),
-		);
+			]],
+		];
 
 		$title_match = '';
 		$left_join_topics = false;
@@ -499,16 +499,16 @@ class fulltext_native extends search_backend
 			{
 				$group_by = true;
 
-				$word_id_sql = array();
-				$word_ids = array();
+				$word_id_sql = [];
+				$word_ids = [];
 				foreach ($subquery as $id)
 				{
 					if (is_string($id))
 					{
-						$sql_array['LEFT_JOIN'][] = array(
-							'FROM'	=> array(SEARCH_WORDLIST_TABLE => 'w' . $w_num),
+						$sql_array['LEFT_JOIN'][] = [
+							'FROM'	=> [SEARCH_WORDLIST_TABLE => 'w' . $w_num],
 							'ON'	=> "w$w_num.word_text LIKE $id"
-						);
+						];
 						$word_ids[] = "w$w_num.word_id";
 
 						$w_num++;
@@ -557,10 +557,10 @@ class fulltext_native extends search_backend
 		{
 			if (is_string($subquery))
 			{
-				$sql_array['LEFT_JOIN'][] = array(
-					'FROM'	=> array(SEARCH_WORDLIST_TABLE => 'w' . $w_num),
+				$sql_array['LEFT_JOIN'][] = [
+					'FROM'	=> [SEARCH_WORDLIST_TABLE => 'w' . $w_num],
 					'ON'	=> "w$w_num.word_text LIKE $subquery"
-				);
+				];
 
 				$this->must_not_contain_ids[$key] = "w$w_num.word_id";
 
@@ -571,10 +571,10 @@ class fulltext_native extends search_backend
 
 		if (sizeof($this->must_not_contain_ids))
 		{
-			$sql_array['LEFT_JOIN'][] = array(
-				'FROM'	=> array(SEARCH_WORDMATCH_TABLE => 'm' . $m_num),
+			$sql_array['LEFT_JOIN'][] = [
+				'FROM'	=> [SEARCH_WORDMATCH_TABLE => 'm' . $m_num],
 				'ON'	=> $db->sql_in_set("m$m_num.word_id", $this->must_not_contain_ids) . (($title_match) ? " AND m$m_num.$title_match" : '') . " AND m$m_num.post_id = m0.post_id"
-			);
+			];
 
 			$sql_where[] = "m$m_num.word_id IS NULL";
 			$m_num++;
@@ -582,25 +582,25 @@ class fulltext_native extends search_backend
 
 		foreach ($this->must_exclude_one_ids as $ids)
 		{
-			$is_null_joins = array();
+			$is_null_joins = [];
 			foreach ($ids as $id)
 			{
 				if (is_string($id))
 				{
-					$sql_array['LEFT_JOIN'][] = array(
-						'FROM'	=> array(SEARCH_WORDLIST_TABLE => 'w' . $w_num),
+					$sql_array['LEFT_JOIN'][] = [
+						'FROM'	=> [SEARCH_WORDLIST_TABLE => 'w' . $w_num],
 						'ON'	=> "w$w_num.word_text LIKE $id"
-					);
+					];
 					$id = "w$w_num.word_id";
 
 					$group_by = true;
 					$w_num++;
 				}
 
-				$sql_array['LEFT_JOIN'][] = array(
-					'FROM'	=> array(SEARCH_WORDMATCH_TABLE => 'm' . $m_num),
+				$sql_array['LEFT_JOIN'][] = [
+					'FROM'	=> [SEARCH_WORDMATCH_TABLE => 'm' . $m_num],
 					'ON'	=> "m$m_num.word_id = $id AND m$m_num.post_id = m0.post_id" . (($title_match) ? " AND m$m_num.$title_match" : '')
-				);
+				];
 				$is_null_joins[] = "m$m_num.word_id IS NULL";
 
 				$m_num++;
@@ -612,7 +612,7 @@ class fulltext_native extends search_backend
 		{
 			$sql_where[] = 'p.post_approved = 1';
 		}
-		else if ($m_approve_fid_ary !== array(-1))
+		else if ($m_approve_fid_ary !== [-1])
 		{
 			$sql_where[] = '(p.post_approved = 1 OR ' . $db->sql_in_set('p.forum_id', $m_approve_fid_ary, true) . ')';
 		}
@@ -627,7 +627,7 @@ class fulltext_native extends search_backend
 			if ($author_name)
 			{
 				// first one matches post of registered users, second one guests and deleted users
-				$sql_author = '(' . $db->sql_in_set('p.poster_id', array_diff($author_ary, array(ANONYMOUS)), false, true) . ' OR p.post_username ' . $author_name . ')';
+				$sql_author = '(' . $db->sql_in_set('p.poster_id', array_diff($author_ary, [ANONYMOUS]), false, true) . ' OR p.post_username ' . $author_name . ')';
 			}
 			else
 			{
@@ -670,10 +670,10 @@ class fulltext_native extends search_backend
 
 		if ($left_join_topics)
 		{
-			$sql_array['LEFT_JOIN'][] = array(
-				'FROM'	=> array(TOPICS_TABLE => 't'),
+			$sql_array['LEFT_JOIN'][] = [
+				'FROM'	=> [TOPICS_TABLE => 't'],
 				'ON'	=> 'p.topic_id = t.topic_id'
-			);
+			];
 		}
 
 		$sql_array['WHERE'] = implode(' AND ', $sql_where);
@@ -758,7 +758,7 @@ class fulltext_native extends search_backend
 		}
 
 		// generate a search_key from all the options to identify the results
-		$search_key = md5(implode('#', array(
+		$search_key = md5(implode('#', [
 			'',
 			$type,
 			($firstpost_only) ? 'firstpost' : '',
@@ -771,7 +771,7 @@ class fulltext_native extends search_backend
 			implode(',', $m_approve_fid_ary),
 			implode(',', $author_ary),
 			$author_name,
-		)));
+		]));
 
 		// try reading the results from cache
 		$total_results = 0;
@@ -780,13 +780,13 @@ class fulltext_native extends search_backend
 			return $total_results;
 		}
 
-		$id_ary = array();
+		$id_ary = [];
 
 		// Create some display specific sql strings
 		if ($author_name)
 		{
 			// first one matches post of registered users, second one guests and deleted users
-			$sql_author = '(' . $db->sql_in_set('p.poster_id', array_diff($author_ary, array(ANONYMOUS)), false, true) . ' OR p.post_username ' . $author_name . ')';
+			$sql_author = '(' . $db->sql_in_set('p.poster_id', array_diff($author_ary, [ANONYMOUS]), false, true) . ' OR p.post_username ' . $author_name . ')';
 		}
 		else
 		{
@@ -822,7 +822,7 @@ class fulltext_native extends search_backend
 		{
 			$m_approve_fid_sql = ' AND p.post_approved = 1';
 		}
-		else if ($m_approve_fid_ary == array(-1))
+		else if ($m_approve_fid_ary == [-1])
 		{
 			$m_approve_fid_sql = '';
 		}
@@ -920,7 +920,7 @@ class fulltext_native extends search_backend
 	{
 		global $user;
 
-		$match = $words = array();
+		$match = $words = [];
 
 		/**
 		* Taken from the original code
@@ -1011,15 +1011,15 @@ class fulltext_native extends search_backend
 		$split_text = $this->split_message($message);
 		$split_title = $this->split_message($subject);
 
-		$cur_words = array('post' => array(), 'title' => array());
+		$cur_words = ['post' => [], 'title' => []];
 
-		$words = array();
+		$words = [];
 		if ($mode == 'edit')
 		{
-			$words['add']['post'] = array();
-			$words['add']['title'] = array();
-			$words['del']['post'] = array();
-			$words['del']['title'] = array();
+			$words['add']['post'] = [];
+			$words['add']['title'] = [];
+			$words['del']['post'] = [];
+			$words['del']['title'] = [];
 
 			$sql = 'SELECT w.word_id, w.word_text, m.title_match
 				FROM ' . SEARCH_WORDLIST_TABLE . ' w, ' . SEARCH_WORDMATCH_TABLE . " m
@@ -1043,8 +1043,8 @@ class fulltext_native extends search_backend
 		{
 			$words['add']['post'] = $split_text;
 			$words['add']['title'] = $split_title;
-			$words['del']['post'] = array();
-			$words['del']['title'] = array();
+			$words['del']['post'] = [];
+			$words['del']['title'] = [];
 		}
 		unset($split_text);
 		unset($split_title);
@@ -1063,7 +1063,7 @@ class fulltext_native extends search_backend
 				WHERE ' . $db->sql_in_set('word_text', $unique_add_words);
 			$result = $db->sql_query($sql);
 
-			$word_ids = array();
+			$word_ids = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$word_ids[$row['word_text']] = $row['word_id'];
@@ -1074,11 +1074,11 @@ class fulltext_native extends search_backend
 			$db->sql_transaction('begin');
 			if (sizeof($new_words))
 			{
-				$sql_ary = array();
+				$sql_ary = [];
 
 				foreach ($new_words as $word)
 				{
-					$sql_ary[] = array('word_text' => (string) $word, 'word_count' => 0);
+					$sql_ary[] = ['word_text' => (string) $word, 'word_count' => 0];
 				}
 				$db->sql_return_on_error(true);
 				$db->sql_multi_insert(SEARCH_WORDLIST_TABLE, $sql_ary);
@@ -1098,7 +1098,7 @@ class fulltext_native extends search_backend
 
 			if (sizeof($word_ary))
 			{
-				$sql_in = array();
+				$sql_in = [];
 				foreach ($word_ary as $word)
 				{
 					$sql_in[] = $cur_words[$word_in][$word];
@@ -1144,7 +1144,7 @@ class fulltext_native extends search_backend
 		$db->sql_transaction('commit');
 
 		// destroy cached search results containing any of the words removed or added
-		$this->destroy_cache(array_unique(array_merge($words['add']['post'], $words['add']['title'], $words['del']['post'], $words['del']['title'])), array($poster_id));
+		$this->destroy_cache(array_unique(array_merge($words['add']['post'], $words['add']['title'], $words['del']['post'], $words['del']['title'])), [$poster_id]);
 
 		unset($unique_add_words);
 		unset($words);
@@ -1166,7 +1166,7 @@ class fulltext_native extends search_backend
 					AND w.word_id = m.word_id';
 			$result = $db->sql_query($sql);
 
-			$message_word_ids = $title_word_ids = $word_texts = array();
+			$message_word_ids = $title_word_ids = $word_texts = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				if ($row['title_match'])
@@ -1226,7 +1226,7 @@ class fulltext_native extends search_backend
 			return;
 		}
 
-		$destroy_cache_words = array();
+		$destroy_cache_words = [];
 
 		// Remove common words
 		if ($config['num_posts'] >= 100 && $config['fulltext_native_common_thres'])
@@ -1239,7 +1239,7 @@ class fulltext_native extends search_backend
 					OR word_common = 1';
 			$result = $db->sql_query($sql);
 
-			$sql_in = array();
+			$sql_in = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$sql_in[] = $row['word_id'];
@@ -1313,9 +1313,9 @@ class fulltext_native extends search_backend
 			$this->get_stats();
 		}
 
-		return array(
+		return [
 			$user->lang['TOTAL_WORDS']		=> $this->stats['total_words'],
-			$user->lang['TOTAL_MATCHES']	=> $this->stats['total_matches']);
+			$user->lang['TOTAL_MATCHES']	=> $this->stats['total_matches']];
 	}
 
 	function get_stats()
@@ -1342,15 +1342,15 @@ class fulltext_native extends search_backend
 	*/
 	function cleanup($text, $allowed_chars = null)
 	{
-		static $conv = array(), $conv_loaded = array();
-		$words = $allow = array();
+		static $conv = [], $conv_loaded = [];
+		$words = $allow = [];
 
-		$utf_len_mask = array(
+		$utf_len_mask = [
 			"\xC0"	=>	2,
 			"\xD0"	=>	2,
 			"\xE0"	=>	3,
 			"\xF0"	=>	4
-		);
+		];
 
 		/**
 		* Replace HTML entities and NCRs
@@ -1591,9 +1591,9 @@ class fulltext_native extends search_backend
 		';
 
 		// These are fields required in the config table
-		return array(
+		return [
 			'tpl'		=> $tpl,
-			'config'	=> array('fulltext_native_load_upd' => 'bool', 'fulltext_native_min_chars' => 'integer:0:255', 'fulltext_native_max_chars' => 'integer:0:255', 'fulltext_native_common_thres' => 'double:0:100')
-		);
+			'config'	=> ['fulltext_native_load_upd' => 'bool', 'fulltext_native_min_chars' => 'integer:0:255', 'fulltext_native_max_chars' => 'integer:0:255', 'fulltext_native_common_thres' => 'double:0:100']
+		];
 	}
 }

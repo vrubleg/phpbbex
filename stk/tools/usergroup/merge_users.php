@@ -22,18 +22,18 @@ class merge_users
 	{
 		global $user;
 
-		return array(
+		return [
 			'title'		=> 'MERGE_USERS',
 			'explain'	=> true,
-			'vars'		=> array(
+			'vars'		=> [
 				'legend1'		=> 'MERGE_USERS',
-				'source_name'	=> array('lang' => 'MERGE_USERS_USER_SOURCE_NAME', 'type' => 'text:40:255', 'explain' => true, 'select_user' => true),
-				'source_id'		=> array('lang' => 'MERGE_USERS_USER_SOURCE_ID', 'type' => 'text:10:50', 'explain' => false, 'select_user' => false),
-				'target_name'	=> array('lang' => 'MERGE_USERS_USER_TARGET_NAME', 'type' => 'text:40:255', 'explain' => false, 'select_user' => true),
-				'target_id'		=> array('lang' => 'MERGE_USERS_USER_TARGET_ID', 'type' => 'text:10:50', 'explain' => false, 'select_user' => false),
-				'delete'		=> array('lang' => 'MERGE_USERS_REMOVE_SOURCE', 'type' => 'checkbox', 'explain' => true, 'default' => true),
-			),
-		);
+				'source_name'	=> ['lang' => 'MERGE_USERS_USER_SOURCE_NAME', 'type' => 'text:40:255', 'explain' => true, 'select_user' => true],
+				'source_id'		=> ['lang' => 'MERGE_USERS_USER_SOURCE_ID', 'type' => 'text:10:50', 'explain' => false, 'select_user' => false],
+				'target_name'	=> ['lang' => 'MERGE_USERS_USER_TARGET_NAME', 'type' => 'text:40:255', 'explain' => false, 'select_user' => true],
+				'target_id'		=> ['lang' => 'MERGE_USERS_USER_TARGET_ID', 'type' => 'text:10:50', 'explain' => false, 'select_user' => false],
+				'delete'		=> ['lang' => 'MERGE_USERS_REMOVE_SOURCE', 'type' => 'checkbox', 'explain' => true, 'default' => true],
+			],
+		];
 	}
 
 	/**
@@ -193,14 +193,14 @@ class merge_users
 
 		$groups = $this->get_group_memberships($target['user_id']);
 
-		$types = array(
+		$types = [
 			'id'		=> 'user_id',
 			'name'		=> 'username',
 			'colour'	=> 'user_colour',
-		);
+		];
 
-		$sql = array(
-		);
+		$sql = [
+		];
 
 		foreach ($this->get_group_memberships($source['user_id']) as $group)
 		{
@@ -209,22 +209,22 @@ class merge_users
 				if ($groups[$group['id']]['leader'] != $group['leader'] || $groups[$group['id']]['pending'] != $group['pending'])
 				{
 					$sql[] = 'UPDATE ' . USER_GROUP_TABLE . '
-						SET ' . $db->sql_build_array('UPDATE', array(
+						SET ' . $db->sql_build_array('UPDATE', [
 							'group_leader'	=> ($group['leader']) ? 1 : $groups[$group['id']]['leader'],
 							'user_pending'	=> (!$group['pending']) ? 0 : $groups[$group['id']]['pending'],
-						)) . "
+						]) . "
 						WHERE user_id = {$target['user_id']}
 							AND group_id = {$group['id']}";
 				}
 			}
 			else
 			{
-				$sql[] = 'INSERT INTO ' . USER_GROUP_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+				$sql[] = 'INSERT INTO ' . USER_GROUP_TABLE . ' ' . $db->sql_build_array('INSERT', [
 					'group_id'		=> $group['id'],
 					'user_id'		=> $target['user_id'],
 					'group_leader'	=> $group['leader'],
 					'user_pending'	=> $group['pending'],
-				));
+				]);
 			}
 		}
 
@@ -234,7 +234,7 @@ class merge_users
 		 * sessions
 		 * sessions_keys
 		 */
-		foreach (array(
+		foreach ([
 			'acl_users'		=> null,
 			'attachments'	=> 'poster_id',
 
@@ -244,135 +244,135 @@ class merge_users
 
 			'drafts'	=> 'user_id',
 
-			'forums'		=> array(
-				array(
+			'forums'		=> [
+				[
 					'forum_last_poster_id'		=> 'id',
 					'forum_last_poster_name'	=> 'name',
 					'forum_last_poster_colour'	=> 'colour',
-				),
-				array(
+				],
+				[
 					'forum_last_poster_id',
-					array('forum_last_poster_id', 'forum_last_poster_name', 'forum_last_poster_colour'),
-				),
-			),
+					['forum_last_poster_id', 'forum_last_poster_name', 'forum_last_poster_colour'],
+				],
+			],
 
 			'forums_track'	=> null,
 			'forums_watch'	=> null,
 
-			'log'	=> array(
-				array(
+			'log'	=> [
+				[
 					'user_id'		=> 'id',
 					'reportee_id'	=> 'id',
-				),
-				array(
+				],
+				[
 					'user_id',
 					'user_id',
-				),
-				array(
+				],
+				[
 					'reportee_id',
 					'reportee_id',
-				),
-			),
+				],
+			],
 
-			'moderator_cache' => array(
-				array(
+			'moderator_cache' => [
+				[
 					'user_id'		=> 'id',
 					'username'		=> 'name',
-				),
-				array(
+				],
+				[
 					'user_id',
-					array('user_id', 'username'),
-				),
-			),
+					['user_id', 'username'],
+				],
+			],
 
 			'poll_votes'			=> 'vote_user_id',
-			'posts'					=> array(
-				array(
+			'posts'					=> [
+				[
 					'poster_id'		=> 'id',
 					'post_username'	=> 'name',
-				),
-				array(
+				],
+				[
 					'poster_id',
-					array('poster_id', 'post_username'),
-				),
-			),
-			'privmsgs'				=> array(
-				array(
+					['poster_id', 'post_username'],
+				],
+			],
+			'privmsgs'				=> [
+				[
 					'author_id'		=> 'id',
-				),
-				array(
+				],
+				[
 					'author_id',
 					'author_id',
-				),
+				],
 				null,
-			),
+			],
 			// Only custom folders making this easy as 3.14159
-			'privmsgs_folder'		=> array(
-				array(
+			'privmsgs_folder'		=> [
+				[
 					'user_id'		=> 'id',
-				),
-				array(
+				],
+				[
 					'user_id',
 					'user_id',
-				),
-			),
-			'privmsgs_rules'		=> array(
-				array(
+				],
+			],
+			'privmsgs_rules'		=> [
+				[
 					'user_id'		=> 'id',
 					'rule_user_id'	=> 'id',
 					'rule_string'	=> 'name', // Not all the time
-				),
+				],
 				// Rules referencing our source user
-				array(
+				[
 					'rule_user_id',
-					array('rule_user_id', 'rule_string'),
-				),
+					['rule_user_id', 'rule_string'],
+				],
 				// Rules created by our source user
-				array(
+				[
 					'user_id',
 					'user_id',
-				),
-			),
-			'privmsgs_to'			=> array(
-				array(
+				],
+			],
+			'privmsgs_to'			=> [
+				[
 					'user_id'	=> 'id', // Destination user
 					'author_id'	=> 'id', // Author
-				),
-				array(
+				],
+				[
 					'user_id',
 					'user_id',
-				),
-				array(
+				],
+				[
 					'author_id',
 					'author_id',
-				),
-			),
+				],
+			],
 			'profile_fields_data'	=> null,
 
 			'reports'	=> 'user_id',
 
-			'topics'		=> array(
-				array(
+			'topics'		=> [
+				[
 					'topic_poster'				=> 'id',
 					'topic_first_poster_name'	=> 'name',
 					'topic_first_poster_colour'	=> 'colour',
 					'topic_last_poster_id'		=> 'id',
 					'topic_last_poster_name'	=> 'name',
 					'topic_last_poster_colour'	=> 'colour',
-				),
-				array(
+				],
+				[
 					'topic_poster',
 					'topic_poster',
-				),
-				array(
-					array('topic_first_poster_name', 'topic_first_poster_colour'),
-					array('topic_first_poster_name', 'topic_first_poster_colour'),
-				),
-				array(
+				],
+				[
+					['topic_first_poster_name', 'topic_first_poster_colour'],
+					['topic_first_poster_name', 'topic_first_poster_colour'],
+				],
+				[
 					'topic_last_poster_id',
-					array('topic_last_poster_id', 'topic_last_poster_name', 'topic_last_poster_colour'),
-				),
-			),
+					['topic_last_poster_id', 'topic_last_poster_name', 'topic_last_poster_colour'],
+				],
+			],
 			'topics_posted'	=> null,
 			'topics_track'	=> null,
 			'topics_watch'	=> null,
@@ -380,7 +380,7 @@ class merge_users
 			'warnings'		=> 'user_id',
 
 			'zebra'			=> null,
-		) as $key => $data)
+		] as $key => $data)
 		{
 			if (is_string($data))
 			{
@@ -418,16 +418,16 @@ class merge_users
 					$find = array_shift($update);
 					$replace = array_shift($update);
 
-					$update = $where = array();
+					$update = $where = [];
 
 					if (!is_array($find))
 					{
-						$find = array($find);
+						$find = [$find];
 					}
 
 					if (!is_array($replace))
 					{
-						$replace = array($replace);
+						$replace = [$replace];
 					}
 
 					foreach ($find as $column)
@@ -455,7 +455,7 @@ class merge_users
 			}
 		}
 
-		$update['target'] = $update['source'] = $update = array();
+		$update['target'] = $update['source'] = $update = [];
 
 		if ($source['user_type'] !== $target['user_type'])
 		{
@@ -498,7 +498,7 @@ class merge_users
 			$update['target']['user_ip']		= $source['user_ip'];
 		}
 
-		foreach (array('lastvisit', 'lastmark', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime', 'full_folder') as $var)
+		foreach (['lastvisit', 'lastmark', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime', 'full_folder'] as $var)
 		{
 			if ($source['user_' . $var] > $target['user_' . $var])
 			{
@@ -513,7 +513,7 @@ class merge_users
 			$update['target']['user_lastpage'] = $source['user_lastpage'];
 		}
 
-		foreach (array('posts', 'warnings', 'login_attempts', 'new_privmsg', 'unread_privmsg') as $var)
+		foreach (['posts', 'warnings', 'login_attempts', 'new_privmsg', 'unread_privmsg'] as $var)
 		{
 			if ($source['user_' . $var])
 			{
@@ -540,7 +540,7 @@ class merge_users
 			$update['target']['user_notify_type'] = NOTIFY_BOTH;
 		}
 
-		foreach (array('birthday', 'avatar', 'sig', 'from', 'icq', 'jabber', 'skype', 'telegram', 'website', 'occ', 'interests') as $var)
+		foreach (['birthday', 'avatar', 'sig', 'from', 'icq', 'jabber', 'skype', 'telegram', 'website', 'occ', 'interests'] as $var)
 		{
 			if (!$target['user_' . $var] && $source['user_' . $var])
 			{
@@ -596,24 +596,24 @@ class merge_users
 	{
 		global $db;
 
-		$acls['source'] = $acls['target'] = $acls = array();
+		$acls['source'] = $acls['target'] = $acls = [];
 
-		$sql_ary = array(
+		$sql_ary = [
 			'SELECT'	=> 'au.*, ard.auth_setting AS role_setting',
-			'FROM'		=> array(
+			'FROM'		=> [
 				ACL_USERS_TABLE => 'au',
-			),
-			'LEFT_JOIN'	=> array(
-				array(
-					'FROM'	=> array(
+			],
+			'LEFT_JOIN'	=> [
+				[
+					'FROM'	=> [
 						ACL_ROLES_DATA_TABLE => 'ard',
-					),
+					],
 					'ON'	=> 'au.auth_role_id = ard.role_id
 								AND au.auth_option_id = ard.auth_option_id',
-				),
-			),
-			'WHERE'		=> $db->sql_in_set('user_id', array($source['user_id'], $target['user_id'])),
-		);
+				],
+			],
+			'WHERE'		=> $db->sql_in_set('user_id', [$source['user_id'], $target['user_id']]),
+		];
 		$sql = $db->sql_build_query('SELECT', $sql_ary);
 
 		$result = $db->sql_query($sql);
@@ -625,23 +625,23 @@ class merge_users
 
 			if (!isset($acls[$key][(int) $row['auth_option_id']]))
 			{
-				$acls['source'][(int) $row['auth_option_id']] = $acls['target'][(int) $row['auth_option_id']] = array();
+				$acls['source'][(int) $row['auth_option_id']] = $acls['target'][(int) $row['auth_option_id']] = [];
 			}
 
-			$acls[$key][(int) $row['auth_option_id']][(int) $row['forum_id']] = array(
+			$acls[$key][(int) $row['auth_option_id']][(int) $row['forum_id']] = [
 				'role'		=> (int) $row['auth_role_id'],
 				'setting'	=> $setting,
-			);
+			];
 		}
 		$db->sql_freeresult($result);
 
-		$sql = array();
+		$sql = [];
 
 		foreach ($acls['source'] as $id => $forums)
 		{
 			foreach ($forums as $fid => $data)
 			{
-				$insert = $update = array();
+				$insert = $update = [];
 
 				if (isset($acls['target'][$id][$fid]))
 				{
@@ -656,10 +656,10 @@ class merge_users
 						else if ($data['role'] && !$acls['target'][$id][$fid]['role'])
 						{
 							// Source has a role, target doesn't, favour roles
-							$update = array(
+							$update = [
 								'auth_role_id'	=> $data['role'],
 								'auth_setting'	=> 0,
-							);
+							];
 						}
 						else
 						{
@@ -699,9 +699,9 @@ class merge_users
 							if ($acls['target'][$id][$fid]['setting'] === ACL_NO)
 							{
 								// Overwrite an ACL_NO
-								$update = array(
+								$update = [
 									'auth_setting'	=> $data['setting'],
-								);
+								];
 							}
 							else
 							{
@@ -711,10 +711,10 @@ class merge_users
 						else if ($data['role'] && !$acls['target'][$id][$fid]['role'])
 						{
 							// Source has a role overwrite
-							$update = array(
+							$update = [
 								'auth_role_id'	=> $data['role'],
 								'auth_setting'	=> 0,
-							);
+							];
 						}
 						else
 						{
@@ -726,11 +726,11 @@ class merge_users
 				else
 				{
 					// Target has nothing set here, insert
-					$insert = array(
+					$insert = [
 						'user_id'			=> $target['user_id'],
 						'forum_id'			=> $fid,
 						'auth_option_id'	=> $id,
-					);
+					];
 
 					if ($data['role'])
 					{
@@ -763,7 +763,7 @@ class merge_users
 	{
 		global $db;
 
-		$bookmarks = array();
+		$bookmarks = [];
 
 		$sql = 'SELECT topic_id
 			FROM ' . BOOKMARKS_TABLE . "
@@ -777,7 +777,7 @@ class merge_users
 		}
 		$db->sql_freeresult($result);
 
-		$sql = array();
+		$sql = [];
 
 		if (!empty($bookmarks))
 		{
@@ -816,7 +816,7 @@ class merge_users
 				OR bcc_address LIKE '%u_{$source['user_id']}%'";
 		$result = $db->sql_query($sql);
 
-		$sql = array();
+		$sql = [];
 
 		while ($row = $db->sql_fetchrow($result))
  		{
@@ -844,10 +844,10 @@ class merge_users
 
 
  			$sql[] = 'UPDATE ' . PRIVMSGS_TABLE . '
- 				SET ' . $db->sql_build_array('UPDATE', array(
+ 				SET ' . $db->sql_build_array('UPDATE', [
 					'to_address'	=> $to_address,
 					'bcc_address'	=> $bcc_address,
- 			)) . '
+ 			]) . '
  			WHERE msg_id = ' . (int) $row['msg_id'];
  		}
 
@@ -858,7 +858,7 @@ class merge_users
 	{
 		global $db;
 
-		$fields = array();
+		$fields = [];
 
 		$sql = 'SELECT *
 			FROM ' . PROFILE_FIELDS_DATA_TABLE . "
@@ -878,7 +878,7 @@ class merge_users
 
 		if (empty($fields['source']))
 		{
-			return array();
+			return [];
 		}
 
 		foreach ($fields['source'] as $name => $value)
@@ -891,24 +891,24 @@ class merge_users
 
 		if (empty($update))
 		{
-			return array();
+			return [];
 		}
 
-		return array(
+		return [
 			'UPDATE ' . PROFILE_FIELDS_DATA_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $update) . "
 				WHERE user_id = {$target['user_id']}",
 			'DELETE
 				FROM ' . PROFILE_FIELDS_DATA_TABLE . "
 				WHERE user_id = {$source['user_id']}",
-		);
+		];
 	}
 
 	function merge_topics_posted($source, $target)
 	{
 		global $db;
 
-		$posted = array();
+		$posted = [];
 
 		$sql = 'SELECT topic_id, topic_posted
 			FROM ' . TOPICS_POSTED_TABLE . "
@@ -926,7 +926,7 @@ class merge_users
 		}
 		$db->sql_freeresult($result);
 
-		$sql = array();
+		$sql = [];
 
 		if (!empty($posted))
 		{
@@ -959,7 +959,7 @@ class merge_users
 	{
 		global $db;
 
-		$friends = $foes = array();
+		$friends = $foes = [];
 
 		$sql = 'SELECT zebra_id, friend, foe
 			FROM ' . ZEBRA_TABLE . "
@@ -981,7 +981,7 @@ class merge_users
 		}
 		$db->sql_freeresult($result);
 
-		$sql = array();
+		$sql = [];
 
 		if (!empty($friends) || !empty($foes))
 		{
@@ -1005,7 +1005,7 @@ class merge_users
 		global $db;
 
 		$table = $this->table_name($mode . 's_watch');
-		$watches = array();
+		$watches = [];
 
 		$sql = "SELECT {$mode}_id, notify_status
 			FROM $table
@@ -1025,7 +1025,7 @@ class merge_users
 
 		$result = $db->sql_query($sql);
 
-		$sql = array();
+		$sql = [];
 
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -1034,11 +1034,11 @@ class merge_users
 			// Don't update anything if both users are watching
 			if (!isset($watches[$id]))
 			{
-				$sql[] = "INSERT INTO $table " . $db->sql_build_array('INSERT', array(
+				$sql[] = "INSERT INTO $table " . $db->sql_build_array('INSERT', [
 					'user_id'		=> $target['user_id'],
 					"{$mode}_id"	=> $id,
 					'notify_status'	=> 0,	// So emails are sent
-				));
+				]);
 			}
 		}
 		$db->sql_freeresult($result);
@@ -1056,7 +1056,7 @@ class merge_users
 		global $db;
 
 		$table = $this->table_name($mode . 's_track');
-		$marks = array();
+		$marks = [];
 
 		$sql = "SELECT {$mode}_id, mark_time
 			FROM $table
@@ -1076,7 +1076,7 @@ class merge_users
 
 		$result = $db->sql_query($sql);
 
-		$sql = array();
+		$sql = [];
 
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -1093,11 +1093,11 @@ class merge_users
 			else if (!isset($marks[$id]))
 			{
 				// Shouldn't mess up topics tracking without a forum_id
-				$sql[] = "INSERT INTO $table " . $db->sql_build_array('INSERT', array(
+				$sql[] = "INSERT INTO $table " . $db->sql_build_array('INSERT', [
 					'user_id'	=> $target['user_id'],
 					"{$mode}_id"=> $id,
 					'mark_time'	=> $time,
-				));
+				]);
 			}
 		}
 		$db->sql_freeresult($result);
@@ -1133,23 +1133,23 @@ class merge_users
 		$db->sql_freeresult($result);
 
 		// Cast some values
-		return array_merge($data, array(
+		return array_merge($data, [
 			'user_id'	=> (int) $data['user_id'],
-		));
+		]);
 	}
 
 	function get_group_memberships($user)
 	{
-		$groups		= array();
+		$groups		= [];
 		$group_set	= group_memberships(false, (int) $user);
 
 		foreach ($group_set as $group)
 		{
-			$groups[(int) $group['group_id']] = array(
+			$groups[(int) $group['group_id']] = [
 				'id'		=> (int) $group['group_id'],
 				'leader'	=> (bool) $group['group_leader'],
 				'pending'	=> (bool) $group['user_pending'],
-			);
+			];
 		}
 		return $groups;
 	}

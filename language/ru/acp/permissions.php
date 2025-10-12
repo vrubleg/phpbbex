@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_PERMISSIONS_EXPLAIN'	=> '
 		<p>Права доступа чрезвычайно детализированы и сгруппированы в четыре основных раздела:</p>
 
@@ -277,4 +277,4 @@ $lang = array_merge($lang, array(
 
 	'WRONG_PERMISSION_TYPE'				=> 'Выбран неправильный тип прав.',
 	'WRONG_PERMISSION_SETTING_FORMAT'	=> 'Права установлены в неверном формате, их обработка невозможна.',
-));
+]);

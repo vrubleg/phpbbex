@@ -249,7 +249,7 @@ class utf_normalizer
 		$tmp = '';
 		$i = $tmp_pos = $last_cc = 0;
 
-		$buffer = ($pos) ? array(++$i => $str[$pos - 1]) : array();
+		$buffer = ($pos) ? [++$i => $str[$pos - 1]] : [];
 
 		// UTF char length array
 		// This array is used to determine the length of a UTF character.
@@ -257,30 +257,30 @@ class utf_normalizer
 		// the position of the cursor--, if $utf_len_mask[$c] does not exist, the byte is an ASCII char.
 		// Otherwise, if $utf_len_mask[$c] is greater than 0, we have a the leading byte of a multibyte character
 		// whose length is $utf_len_mask[$c] and if it is equal to 0, the byte is a trailing byte.
-		$utf_len_mask = array(
+		$utf_len_mask = [
 			// Leading bytes masks
 			"\xC0" => 2, "\xD0" => 2, "\xE0" => 3, "\xF0" => 4,
 			// Trailing bytes masks
 			"\x80" => 0, "\x90" => 0, "\xA0" => 0, "\xB0" => 0
-		);
+		];
 
-		$extra_check = array(
+		$extra_check = [
 			"\xED" => 1, "\xEF" => 1, "\xC0" => 1, "\xC1" => 1, "\xE0" => 1, "\xF0" => 1,
 			"\xF4" => 1, "\xF5" => 1, "\xF6" => 1, "\xF7" => 1, "\xF8" => 1, "\xF9" => 1,
 			"\xFA" => 1, "\xFB" => 1, "\xFC" => 1, "\xFD" => 1, "\xFE" => 1, "\xFF" => 1
-		);
+		];
 
-		$utf_validation_mask = array(
+		$utf_validation_mask = [
 			2	=> "\xE0\xC0",
 			3	=> "\xF0\xC0\xC0",
 			4	=> "\xF8\xC0\xC0\xC0"
-		);
+		];
 
-		$utf_validation_check = array(
+		$utf_validation_check = [
 			2	=> "\xC0\x80",
 			3	=> "\xE0\x80\x80",
 			4	=> "\xF0\x80\x80\x80"
-		);
+		];
 
 		// Main loop
 		do
@@ -480,7 +480,7 @@ class utf_normalizer
 				//  2 - If the sequence does not end at the end of the string, it must end with a non-starter and be
 				// immediately followed by a starter that is not on the QC list
 				//
-				$utf_seq = array();
+				$utf_seq = [];
 				$last_cc = 0;
 				$lpos = $pos;
 				$pos += $utf_len;
@@ -510,7 +510,7 @@ class utf_normalizer
 				else
 				{
 					// The char is not decomposable
-					$utf_seq = array($utf_char);
+					$utf_seq = [$utf_char];
 				}
 
 
@@ -541,7 +541,7 @@ class utf_normalizer
 						if (isset($decomp_map[$utf_char]))
 						{
 							// The char is a composite, decompose for storage
-							$decomp_seq = array();
+							$decomp_seq = [];
 							$_pos = 0;
 							$_len = strlen($decomp_map[$utf_char]);
 
@@ -614,7 +614,7 @@ class utf_normalizer
 									if (isset($decomp_map[$utf_char]))
 									{
 										// Decompose the character
-										$decomp_seq = array();
+										$decomp_seq = [];
 										$_pos = 0;
 										$_len = strlen($decomp_map[$utf_char]);
 
@@ -767,7 +767,7 @@ class utf_normalizer
 					$starter = $utf_seq[$k++];
 					$nf_seq = '';
 				}
-				$utf_sort = array();
+				$utf_sort = [];
 
 				// We add an empty char at the end of the UTF char sequence. It will act as a starter and trigger the sort/combine routine
 				// at the end of the string without altering it
@@ -864,7 +864,7 @@ class utf_normalizer
 							}
 
 							// Reset the array and go on
-							$utf_sort = array();
+							$utf_sort = [];
 							$starter = $utf_char;
 						}
 					}
@@ -940,41 +940,41 @@ class utf_normalizer
 		}
 
 		// UTF char length array
-		$utf_len_mask = array(
+		$utf_len_mask = [
 			// Leading bytes masks
 			"\xC0" => 2, "\xD0" => 2, "\xE0" => 3, "\xF0" => 4,
 			// Trailing bytes masks
 			"\x80" => 0, "\x90" => 0, "\xA0" => 0, "\xB0" => 0
-		);
+		];
 
 		// Some extra checks are triggered on the first byte of a UTF sequence
-		$extra_check = array(
+		$extra_check = [
 			"\xED" => 1, "\xEF" => 1, "\xC0" => 1, "\xC1" => 1, "\xE0" => 1, "\xF0" => 1,
 			"\xF4" => 1, "\xF5" => 1, "\xF6" => 1, "\xF7" => 1, "\xF8" => 1, "\xF9" => 1,
 			"\xFA" => 1, "\xFB" => 1, "\xFC" => 1, "\xFD" => 1, "\xFE" => 1, "\xFF" => 1
-		);
+		];
 
 		// These masks are used to check if a UTF sequence is well formed. Here are the only 3 lengths we acknowledge:
 		//   - 2-byte: 110? ???? 10?? ????
 		//   - 3-byte: 1110 ???? 10?? ???? 10?? ????
 		//   - 4-byte: 1111 0??? 10?? ???? 10?? ???? 10?? ????
 		// Note that 5- and 6- byte sequences are automatically discarded
-		$utf_validation_mask = array(
+		$utf_validation_mask = [
 			2	=> "\xE0\xC0",
 			3	=> "\xF0\xC0\xC0",
 			4	=> "\xF8\xC0\xC0\xC0"
-		);
+		];
 
-		$utf_validation_check = array(
+		$utf_validation_check = [
 			2	=> "\xC0\x80",
 			3	=> "\xE0\x80\x80",
 			4	=> "\xF0\x80\x80\x80"
-		);
+		];
 
 		$tmp = '';
 		$starter_pos = $pos;
 		$tmp_pos = $last_cc = $sort = $dump = 0;
-		$utf_sort = array();
+		$utf_sort = [];
 
 
 		// Main loop
@@ -1026,7 +1026,7 @@ class utf_normalizer
 					$pos += $spn;
 					$tmp_pos = $starter_pos = $pos;
 
-					$utf_sort = array();
+					$utf_sort = [];
 					$last_cc = 0;
 
 					continue;
@@ -1101,7 +1101,7 @@ class utf_normalizer
 								}
 
 								$tmp_pos = $starter_pos = $pos;
-								$utf_sort = array();
+								$utf_sort = [];
 								$last_cc = 0;
 							}
 						}
@@ -1137,7 +1137,7 @@ class utf_normalizer
 							}
 
 							$tmp_pos = $starter_pos = $pos;
-							$utf_sort = array();
+							$utf_sort = [];
 							$last_cc = 0;
 						}
 					}
@@ -1180,7 +1180,7 @@ class utf_normalizer
 								{
 									$tmp .= implode('', $utf_chars);
 								}
-								$utf_sort = array();
+								$utf_sort = [];
 							}
 
 							// Add a replacement char then another replacement char for every trailing byte.
@@ -1215,7 +1215,7 @@ class utf_normalizer
 											{
 												$tmp .= implode('', $utf_chars);
 											}
-											$utf_sort = array();
+											$utf_sort = [];
 										}
 
 										$tmp .= UTF8_REPLACEMENT;
@@ -1241,7 +1241,7 @@ class utf_normalizer
 											{
 												$tmp .= implode('', $utf_chars);
 											}
-											$utf_sort = array();
+											$utf_sort = [];
 										}
 
 										$tmp .= UTF8_REPLACEMENT;
@@ -1267,7 +1267,7 @@ class utf_normalizer
 											{
 												$tmp .= implode('', $utf_chars);
 											}
-											$utf_sort = array();
+											$utf_sort = [];
 										}
 
 										$tmp .= UTF8_REPLACEMENT;
@@ -1292,7 +1292,7 @@ class utf_normalizer
 											{
 												$tmp .= implode('', $utf_chars);
 											}
-											$utf_sort = array();
+											$utf_sort = [];
 										}
 
 										$tmp .= UTF8_REPLACEMENT;
@@ -1317,7 +1317,7 @@ class utf_normalizer
 											{
 												$tmp .= implode('', $utf_chars);
 											}
-											$utf_sort = array();
+											$utf_sort = [];
 										}
 
 										$tmp .= UTF8_REPLACEMENT;
@@ -1342,7 +1342,7 @@ class utf_normalizer
 											{
 												$tmp .= implode('', $utf_chars);
 											}
-											$utf_sort = array();
+											$utf_sort = [];
 										}
 
 										$tmp .= UTF8_REPLACEMENT;
@@ -1413,7 +1413,7 @@ class utf_normalizer
 					}
 
 					$last_cc = 0;
-					$utf_sort = array();
+					$utf_sort = [];
 					$starter_pos = $pos;
 				}
 			}
@@ -1450,7 +1450,7 @@ class utf_normalizer
 				}
 
 				$last_cc = 0;
-				$utf_sort = array();
+				$utf_sort = [];
 				$starter_pos = $pos;
 			}
 		}

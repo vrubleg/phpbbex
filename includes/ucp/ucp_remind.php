@@ -94,10 +94,10 @@ class ucp_remind
 
 			$messenger->anti_abuse_headers($config, $user);
 
-			$messenger->assign_vars(array(
+			$messenger->assign_vars([
 				'USERNAME'		=> htmlspecialchars_decode($user_row['username']),
 				'PASSWORD'		=> htmlspecialchars_decode($user_password),
-				'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u={$user_row['user_id']}&k=$user_actkey")
+				'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u={$user_row['user_id']}&k=$user_actkey"]
 			);
 
 			$messenger->send($user_row['user_notify_type']);
@@ -108,10 +108,10 @@ class ucp_remind
 			trigger_error($message);
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'USERNAME'			=> $username,
 			'EMAIL'				=> $email,
-			'S_PROFILE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=sendpassword'))
+			'S_PROFILE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=sendpassword')]
 		);
 
 		$this->tpl_name = 'ucp_remind';

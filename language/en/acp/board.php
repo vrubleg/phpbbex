@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Board Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Here you can determine the basic operation of your board, give it a fitting name and description, and among other settings adjust the default values for timezone and language.',
 	'ACTIVE_TOPICS_DAYS'			=> 'Topic is active for',
 	'ACTIVE_TOPICS_DAYS_EXPLAIN'	=> 'Default activity period for "Active topics" page. Set this value to 0 to display all topics.',
@@ -48,20 +48,20 @@ $lang = array_merge($lang, array(
 	'WARNINGS_EXPIRE'				=> 'Warning duration',
 	'WARNINGS_EXPIRE_EXPLAIN'		=> 'Number of days that will elapse before a warning will automatically expire from a user’s record. Set this value to 0 to make warnings permanent.',
 	'WARNING_POST_DEFAULT'			=> 'Default warning message',
-));
+]);
 
 // Logging settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_LOGGING_SETTINGS_EXPLAIN'	=> 'Here you can determine logging settings of your board.',
 	'KEEP_ADMIN_LOGS_DAYS'			=> 'Keep administrator logs for',
 	'KEEP_MOD_LOGS_DAYS'			=> 'Keep moderator logs for',
 	'KEEP_CRITICAL_LOGS_DAYS'		=> 'Keep error logs for',
 	'KEEP_USER_LOGS_DAYS'			=> 'Keep user logs for',
 	'KEEP_REGISTER_LOGS_DAYS'		=> 'Keep registration logs for',
-));
+]);
 
 // Display Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_STYLE_SETTINGS_EXPLAIN'		=> 'Here you can show/hide several features.',
 
 	'STYLE_SETTINGS_GENERAL'			=> 'General',
@@ -112,10 +112,10 @@ $lang = array_merge($lang, array(
 	'AUTO'								=> 'Auto',
 	'ON_LEFT'							=> 'On Left',
 	'ON_RIGHT'							=> 'On Right',
-));
+]);
 
 // Board Features
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_BOARD_FEATURES_EXPLAIN'	=> 'Here you can enable/disable several board features.',
 
 	'ALLOW_ATTACHMENTS'			=> 'Allow attachments',
@@ -155,10 +155,10 @@ $lang = array_merge($lang, array(
 	'RATE_NO_NEGATIVE'			=> 'No negative',
 	'RATE_NO_POSITIVE'			=> 'No positive',
 	'DISPLAY_RATERS'			=> 'Display who and how rated messages',
-));
+]);
 
 // Avatar Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_AVATAR_SETTINGS_EXPLAIN'	=> 'Avatars are generally small, unique images a user can associate with themselves. Depending on the style they are usually displayed below the username when viewing topics. Here you can determine how users can define their avatars. Please note that in order to upload avatars you need to have created the directory you name below and ensure it can be written to by the web server. Please also note that file size limits are only imposed on uploaded avatars, they do not apply to remotely linked images.',
 
 	'ALLOW_AVATARS'					=> 'Enable avatars',
@@ -175,10 +175,10 @@ $lang = array_merge($lang, array(
 	'MAX_AVATAR_FILESIZE_EXPLAIN'	=> 'For uploaded avatar files. If this value is 0, the uploaded filesize is only limited by your PHP configuration.',
 	'MIN_AVATAR_SIZE'				=> 'Minimum avatar dimensions',
 	'MIN_AVATAR_SIZE_EXPLAIN'		=> 'Width x Height in pixels.',
-));
+]);
 
 // Message Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_MESSAGE_SETTINGS_EXPLAIN'		=> 'Here you can set all default settings for private messaging.',
 
 	'ALLOW_BBCODE_PM'			=> 'Allow BBCode in private messages',
@@ -202,10 +202,10 @@ $lang = array_merge($lang, array(
 	'PM_EDIT_TIME_EXPLAIN'		=> 'Limits the time available to edit a private message not already delivered. Setting the value to 0 disables this behaviour.',
 	'PM_MAX_RECIPIENTS'			=> 'Maximum number of allowed recipients',
 	'PM_MAX_RECIPIENTS_EXPLAIN'	=> 'The maximum number of allowed recipients in a private message. If 0 is entered, an unlimited number is allowed. This setting can be adjusted for every group within the group settings page.',
-));
+]);
 
 // Post Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_POST_SETTINGS_EXPLAIN'			=> 'Here you can set all default settings for posting.',
 
 	'ENABLE_TOPIC_ICONS'				=> 'Enable topic icons',
@@ -274,10 +274,10 @@ $lang = array_merge($lang, array(
 	'EXTERNAL_LINKS_NOFOLLOW'		=> 'Add attribute rel="nofollow"',
 	'EXTERNAL_LINKS_EXCLUDE'		=> 'Exclude',
 	'EXTERNAL_LINKS_EXCLUDE_EXPLAIN'=> 'Domains or URLs which is not treated as external. Exceptions are placed on separate lines or can be separated by commas.',
-));
+]);
 
 // Signature Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_SIGNATURE_SETTINGS_EXPLAIN'	=> 'Here you can set all default settings for signatures.',
 
 	'MIN_SIG_FONT_SIZE'				=> 'Minimum signature font size',
@@ -298,10 +298,10 @@ $lang = array_merge($lang, array(
 	'MAX_SIG_SMILIES_EXPLAIN'		=> 'Maximum smilies allowed in user signatures. Set to 0 for unlimited smilies.',
 	'MAX_SIG_URLS'					=> 'Maximum signature links',
 	'MAX_SIG_URLS_EXPLAIN'			=> 'Maximum number of links in user signatures. Set to 0 for unlimited links.',
-));
+]);
 
 // Registration Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_REGISTER_SETTINGS_EXPLAIN'		=> 'Here you are able to define registration and profile related settings.',
 
 	'ACC_ACTIVATION'				=> 'Account activation',
@@ -332,10 +332,10 @@ $lang = array_merge($lang, array(
 	'USERNAME_UNICHARS_SPACERS'	=> 'Any alphanumeric and spacers',
 	'USERNAME_LENGTH'			=> 'Username length',
 	'USERNAME_LENGTH_EXPLAIN'	=> 'Minimum and maximum number of characters in usernames.',
-));
+]);
 
 // Feeds
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_FEED_MANAGEMENT'				=> 'General syndication feeds settings',
 	'ACP_FEED_MANAGEMENT_EXPLAIN'		=> 'This module makes available various ATOM feeds, parsing any BBCode in posts to make them readable in external feeds.',
 
@@ -372,10 +372,10 @@ $lang = array_merge($lang, array(
 	'ACP_FEED_ITEM_STATISTICS_EXPLAIN'	=> 'Display individual statistics underneath feed items<br />(e.g. posted by, date and time, replies, views)',
 	'ACP_FEED_EXCLUDE_ID'				=> 'Exclude these forums',
 	'ACP_FEED_EXCLUDE_ID_EXPLAIN'		=> 'Content from these will be <strong>not included in feeds</strong>. Select no forum to pull data from all forums.<br />Select/Deselect multiple forums by holding <samp>CTRL</samp> and clicking.',
-));
+]);
 
 // Visual Confirmation Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_VC_SETTINGS_EXPLAIN'				=> 'Here you can select and configure plugins, which are designed to block automated form submissions by spambots. These plugins typically work by challenging the user with a <em>CAPTCHA</em>, a test which is designed to be difficult for computers to solve.',
 	'AVAILABLE_CAPTCHAS'					=> 'Available plugins',
 	'CAPTCHA_UNAVAILABLE'					=> 'The plugin cannot be selected as its requirements are not met.',
@@ -414,18 +414,18 @@ $lang = array_merge($lang, array(
 	'VISUAL_CONFIRM_REG_EXPLAIN'			=> 'Requires new users to pass the anti-spambot task to help prevent automated registrations.',
 	'VISUAL_CONFIRM_REFRESH'				=> 'Allow users to refresh the anti-spambot task',
 	'VISUAL_CONFIRM_REFRESH_EXPLAIN'		=> 'Allows users to request a new anti-spambot task if they are unable to solve the current task during registration. Some plugins might not support this option.',
-));
+]);
 
 // Cookie Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ONLINE_LENGTH'				=> 'View online time span',
 	'ONLINE_LENGTH_EXPLAIN'		=> 'Number of minutes after which inactive users will not appear in “Who is online” listings.',
 	'SESSION_LENGTH'			=> 'Session length',
 	'SESSION_LENGTH_EXPLAIN'	=> 'Sessions will expire after this time, in seconds.',
-));
+]);
 
 // Load Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_LOAD_SETTINGS_EXPLAIN'	=> 'Here you can enable and disable certain board functions to reduce the amount of processing required. On most servers there is no need to disable any functions. However on certain systems or in shared hosting environments it may be beneficial to disable capabilities you do not really need. You can also specify limits for system load and active sessions beyond which the board will go offline.',
 
 	'CUSTOM_PROFILE_FIELDS'			=> 'Custom profile fields',
@@ -456,10 +456,10 @@ $lang = array_merge($lang, array(
 	'YES_READ_MARKING'				=> 'Enable server-side topic marking',
 	'YES_READ_MARKING_EXPLAIN'		=> 'Stores read/unread status information in the database rather than a cookie.',
 	'YES_UNREAD_SEARCH'				=> 'Enable search for unread posts',
-));
+]);
 
 // Auth settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_AUTH_SETTINGS_EXPLAIN'	=> 'phpBBex supports authentication plug-ins, or modules. These allow you determine how users are authenticated when they log into the board. By default three plug-ins are provided; DB, LDAP and Apache. Not all methods require additional information so only fill out fields if they are relevant to the selected method.',
 
 	'AUTH_METHOD'				=> 'Select an authentication method',
@@ -485,18 +485,18 @@ $lang = array_merge($lang, array(
 	'LDAP_USER_EXPLAIN'				=> 'Leave blank to use anonymous binding. If filled in phpBBex uses the specified distinguished name on login attempts to find the correct user, e.g. <samp>uid=Username,ou=MyUnit,o=MyCompany,c=US</samp>. Required for Active Directory Servers.',
 	'LDAP_USER_FILTER'				=> 'LDAP user filter',
 	'LDAP_USER_FILTER_EXPLAIN'		=> 'Optionally you can further limit the searched objects with additional filters. For example <samp>objectClass=posixGroup</samp> would result in the use of <samp>(&amp;(uid=$username)(objectClass=posixGroup))</samp>',
-));
+]);
 
 // Server Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_SERVER_SETTINGS_EXPLAIN'	=> 'Here you define server settings.',
 
 	'ENABLE_GZIP'				=> 'Enable GZip compression',
 	'ENABLE_GZIP_EXPLAIN'		=> 'Generated content will be compressed prior to sending it to the user. This reduces network traffic but will also increase CPU usage.',
-));
+]);
 
 // Security Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_SECURITY_SETTINGS_EXPLAIN'		=> 'Here you are able to define session and login related settings.',
 
 	'ALL'							=> 'All',
@@ -544,10 +544,10 @@ $lang = array_merge($lang, array(
 	'REFERER_VALID_EXPLAIN'			=> 'If enabled, the referer of POST requests will be checked against the host/script path settings. This may cause issues with boards using several domains and or external logins.',
 	'TPL_ALLOW_PHP'					=> 'Allow php in templates',
 	'TPL_ALLOW_PHP_EXPLAIN'			=> 'If this option is enabled, <code>PHP</code> and <code>INCLUDEPHP</code> statements will be recognised and parsed in templates.',
-));
+]);
 
 // Email Settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_EMAIL_SETTINGS_EXPLAIN'	=> 'This information is used when the board sends emails to your users. Please ensure the email address you specify is valid, any bounced or undeliverable messages will likely be sent to that address. If your host does not provide a native (PHP based) email service you can instead send messages directly using SMTP. This requires the address of an appropriate SMTP server.',
 
 	'ADMIN_EMAIL'					=> 'Return email address',
@@ -589,10 +589,10 @@ $lang = array_merge($lang, array(
 	'TEST_EMAIL_SENT'				=> 'The test email has been sent.',
 	'USE_SMTP'						=> 'Use SMTP server for email',
 	'USE_SMTP_EXPLAIN'				=> 'Select “Yes” if you want or have to send email via a named server instead of the local mail function.',
-));
+]);
 
 // Jabber settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_JABBER_SETTINGS_EXPLAIN'	=> 'Here you can enable and control the use of Jabber for instant messaging and board notifications. Jabber is an open source protocol and therefore available for use by anyone. Some Jabber servers include gateways or transports which allow you to contact users on other networks. Not all servers offer all transports and changes in protocols can prevent transports from operating. Please be sure to enter already registered account details - phpBBex will use the details you enter here as is.',
 
 	'JAB_ENABLE'				=> 'Enable Jabber',
@@ -611,4 +611,4 @@ $lang = array_merge($lang, array(
 	'JAB_USE_SSL_EXPLAIN'		=> 'If enabled a secure connection is tried to be established. The Jabber port will be modified to 5223 if port 5222 is specified.',
 	'JAB_USERNAME'				=> 'Jabber username or JID',
 	'JAB_USERNAME_EXPLAIN'		=> 'Specify a registered username or a valid JID. The username will not be checked for validity. If you only specify a username, then your JID will be the username and the server you specified above. Else, specify a valid JID, for example user@jabber.org.',
-));
+]);

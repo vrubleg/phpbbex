@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'DAMAGED_POSTS'			=> 'Damaged Posts',
 	'DAMAGED_POSTS_EXPLAIN'	=> 'The following post IDs contain user information that is too damaged to restore. Please visit the <a href="https://www.phpbb.com/community/viewforum.php?f=46">support forums</a> to receive assistance to resolve this issue.',
 
@@ -31,4 +31,4 @@ $lang = array_merge($lang, array(
 
 	'USER_RESTORED_SUCCESSFULLY'	=> 'The selected user has been restored successfully.',
 	'USERS_RESTORED_SUCCESSFULLY'	=> 'The selected users have been restored successfully.',
-));
+]);

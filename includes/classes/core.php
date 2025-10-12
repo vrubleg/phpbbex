@@ -3,14 +3,14 @@ class http_exception extends exception {}
 
 class core
 {
-	protected static $_modules = array();
+	protected static $_modules = [];
 
 	static function init()
 	{
 		set_exception_handler('core::exception_handler');
 		// set_error_handler('core::exception_error_handler');
 		request::init(false);
-		response::init(array('gzip' => true));
+		response::init(['gzip' => true]);
 	}
 
 	static function exception_error_handler($errno, $errstr, $file, $line)
@@ -48,7 +48,7 @@ class core
 			$module = core::module(get('module', ''));
 			$method = 'action_' . get('action', '');
 			if (!method_exists($module, $method)) throw new http_exception('Action Not Found', 404);
-			call_user_func(array($module, $method)); // $module->{$method}();
+			call_user_func([$module, $method]); // $module->{$method}();
 		}
 		catch (http_exception $e)
 		{

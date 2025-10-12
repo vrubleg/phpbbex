@@ -7,7 +7,7 @@
 class cookie
 {
 	protected static $ready     = false;
-	protected static $vars      = array();
+	protected static $vars      = [];
 	protected static $prefix    = '';
 	protected static $expire    = 0;
 	protected static $path      = '/';
@@ -17,7 +17,7 @@ class cookie
 	/**
 	 * Prepares internal variables
 	 */
-	static function init($config = array())
+	static function init($config = [])
 	{
 		if (self::$ready) return;
 

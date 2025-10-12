@@ -30,7 +30,7 @@ class ucp_attachments
 
 		$delete		= (isset($_POST['delete'])) ? true : false;
 		$confirm	= (isset($_POST['confirm'])) ? true : false;
-		$delete_ids	= array_keys(request_var('attachment', array(0)));
+		$delete_ids	= array_keys(request_var('attachment', [0]));
 
 		if ($delete && sizeof($delete_ids))
 		{
@@ -42,7 +42,7 @@ class ucp_attachments
 					AND ' . $db->sql_in_set('attach_id', $delete_ids);
 			$result = $db->sql_query($sql);
 
-			$delete_ids = array();
+			$delete_ids = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$delete_ids[] = $row['attach_id'];
@@ -52,9 +52,9 @@ class ucp_attachments
 
 		if ($delete && sizeof($delete_ids))
 		{
-			$s_hidden_fields = array(
+			$s_hidden_fields = [
 				'delete'	=> 1
-			);
+			];
 
 			foreach ($delete_ids as $attachment_id)
 			{
@@ -81,10 +81,10 @@ class ucp_attachments
 		}
 
 		// Select box eventually
-		$sort_key_text = array('a' => $user->lang['SORT_FILENAME'], 'b' => $user->lang['SORT_COMMENT'], 'c' => $user->lang['SORT_EXTENSION'], 'd' => $user->lang['SORT_SIZE'], 'e' => $user->lang['SORT_DOWNLOADS'], 'f' => $user->lang['SORT_POST_TIME'], 'g' => $user->lang['SORT_TOPIC_TITLE']);
-		$sort_key_sql = array('a' => 'a.real_filename', 'b' => 'a.attach_comment', 'c' => 'a.extension', 'd' => 'a.filesize', 'e' => 'a.download_count', 'f' => 'a.filetime', 'g' => 't.topic_title');
+		$sort_key_text = ['a' => $user->lang['SORT_FILENAME'], 'b' => $user->lang['SORT_COMMENT'], 'c' => $user->lang['SORT_EXTENSION'], 'd' => $user->lang['SORT_SIZE'], 'e' => $user->lang['SORT_DOWNLOADS'], 'f' => $user->lang['SORT_POST_TIME'], 'g' => $user->lang['SORT_TOPIC_TITLE']];
+		$sort_key_sql = ['a' => 'a.real_filename', 'b' => 'a.attach_comment', 'c' => 'a.extension', 'd' => 'a.filesize', 'e' => 'a.download_count', 'f' => 'a.filetime', 'g' => 't.topic_title'];
 
-		$sort_dir_text = array('a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']);
+		$sort_dir_text = ['a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']];
 
 		$s_sort_key = '';
 		foreach ($sort_key_text as $key => $value)
@@ -140,7 +140,7 @@ class ucp_attachments
 					$view_topic = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . "#p{$row['post_msg_id']}";
 				}
 
-				$template->assign_block_vars('attachrow', array(
+				$template->assign_block_vars('attachrow', [
 					'ROW_NUMBER'		=> $row_count + ($start + 1),
 					'FILENAME'			=> $row['real_filename'],
 					'COMMENT'			=> bbcode_nl2br($row['attach_comment']),
@@ -157,7 +157,7 @@ class ucp_attachments
 					'S_IN_MESSAGE'		=> $row['in_message'],
 
 					'U_VIEW_ATTACHMENT'	=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'id=' . $row['attach_id']),
-					'U_VIEW_TOPIC'		=> $view_topic)
+					'U_VIEW_TOPIC'		=> $view_topic]
 				);
 
 				$row_count++;
@@ -166,7 +166,7 @@ class ucp_attachments
 		}
 		$db->sql_freeresult($result);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'PAGE_NUMBER'			=> on_page($num_attachments, $config['topics_per_page'], $start),
 			'PAGINATION'			=> generate_pagination($this->u_action . "&amp;sk=$sort_key&amp;sd=$sort_dir", $num_attachments, $config['topics_per_page'], $start),
 			'TOTAL_ATTACHMENTS'		=> $num_attachments,
@@ -185,7 +185,7 @@ class ucp_attachments
 			'S_DISPLAY_PAGINATION'	=> ($num_attachments) ? true : false,
 			'S_UCP_ACTION'			=> $this->u_action,
 			'S_SORT_OPTIONS' 		=> $s_sort_key,
-			'S_ORDER_SELECT'		=> $s_sort_dir)
+			'S_ORDER_SELECT'		=> $s_sort_dir]
 		);
 
 		$this->tpl_name = 'ucp_attachments';

@@ -49,16 +49,16 @@ class resync_registered
 		$batch = $this->_fetch_users();
 		$g = $this->_get_group_ids();
 
-		$insert_reg = array();
+		$insert_reg = [];
 
 		foreach ($batch as $row)
 		{
-			$insert_reg[] = array(
+			$insert_reg[] = [
 				'group_id'		=> $g['REGISTERED'],
 				'user_id'		=> $row['user_id'],
 				'group_leader'	=> false,
 				'user_pending'	=> false,
-			);
+			];
 		}
 
 		$db->sql_multi_insert(USER_GROUP_TABLE, $insert_reg);
@@ -81,7 +81,7 @@ class resync_registered
 		$g = $this->_get_group_ids();
 
 		// Now figure out whether there are users that aren't part in any of these
-		$batch	= $users	= array();
+		$batch	= $users	= [];
 		$data	= group_memberships($g);
 		if (!empty($data))
 		{
@@ -115,10 +115,10 @@ class resync_registered
 	{
 		global $db;
 
-		$g = array();
+		$g = [];
 		$sql = 'SELECT group_id, group_name
 			FROM ' . GROUPS_TABLE . '
-			WHERE ' . $db->sql_in_set('group_name', array('REGISTERED'));
+			WHERE ' . $db->sql_in_set('group_name', ['REGISTERED']);
 		$result	= $db->sql_query_limit($sql, 2, 0);
 		while ($row = $db->sql_fetchrow($result))
 		{

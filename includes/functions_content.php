@@ -17,30 +17,30 @@ function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key,
 {
 	global $user;
 
-	$sort_dir_text = array('a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']);
+	$sort_dir_text = ['a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']];
 
-	$sorts = array(
-		'st'	=> array(
+	$sorts = [
+		'st'	=> [
 			'key'		=> 'sort_days',
 			'default'	=> $def_st,
 			'options'	=> $limit_days,
 			'output'	=> &$s_limit_days,
-		),
+		],
 
-		'sk'	=> array(
+		'sk'	=> [
 			'key'		=> 'sort_key',
 			'default'	=> $def_sk,
 			'options'	=> $sort_by_text,
 			'output'	=> &$s_sort_key,
-		),
+		],
 
-		'sd'	=> array(
+		'sd'	=> [
 			'key'		=> 'sort_dir',
 			'default'	=> $def_sd,
 			'options'	=> $sort_dir_text,
 			'output'	=> &$s_sort_dir,
-		),
-	);
+		],
+	];
 	$u_sort_param  = '';
 
 	foreach ($sorts as $name => $sort_ary)
@@ -96,7 +96,7 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 	$result = $db->sql_query($sql, 600);
 
 	$right = $padding = 0;
-	$padding_store = array('0' => 0);
+	$padding_store = ['0' => 0];
 	$display_jumpbox = false;
 	$iteration = 0;
 
@@ -139,38 +139,38 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 
 		if (!$display_jumpbox)
 		{
-			$template->assign_block_vars('jumpbox_forums', array(
+			$template->assign_block_vars('jumpbox_forums', [
 				'FORUM_ID'		=> ($select_all) ? 0 : -1,
 				'FORUM_NAME'	=> ($select_all) ? $user->lang['ALL_FORUMS'] : $user->lang['SELECT_FORUM'],
-				'S_FORUM_COUNT'	=> $iteration)
+				'S_FORUM_COUNT'	=> $iteration]
 			);
 
 			$iteration++;
 			$display_jumpbox = true;
 		}
 
-		$template->assign_block_vars('jumpbox_forums', array(
+		$template->assign_block_vars('jumpbox_forums', [
 			'FORUM_ID'		=> $row['forum_id'],
 			'FORUM_NAME'	=> $row['forum_name'],
 			'SELECTED'		=> ($row['forum_id'] == $forum_id) ? ' selected="selected"' : '',
 			'S_FORUM_COUNT'	=> $iteration,
 			'S_IS_CAT'		=> ($row['forum_type'] == FORUM_CAT) ? true : false,
 			'S_IS_LINK'		=> ($row['forum_type'] == FORUM_LINK) ? true : false,
-			'S_IS_POST'		=> ($row['forum_type'] == FORUM_POST) ? true : false)
+			'S_IS_POST'		=> ($row['forum_type'] == FORUM_POST) ? true : false]
 		);
 
 		for ($i = 0; $i < $padding; $i++)
 		{
-			$template->assign_block_vars('jumpbox_forums.level', array());
+			$template->assign_block_vars('jumpbox_forums.level', []);
 		}
 		$iteration++;
 	}
 	$db->sql_freeresult($result);
 	unset($padding_store);
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_DISPLAY_JUMPBOX'	=> $display_jumpbox,
-		'S_JUMPBOX_ACTION'	=> $action)
+		'S_JUMPBOX_ACTION'	=> $action]
 	);
 
 	return;
@@ -223,11 +223,11 @@ function get_context($text, $words, $length = 400)
 	$text = preg_replace('/ +/', ' ', strtr($text, "\t\n\r\x0C ", '     '));
 
 	// we need to turn the entities back into their original form, to not cut the message in between them
-	$entities = array('&lt;', '&gt;', '&#91;', '&#93;', '&#46;', '&#58;', '&#058;');
-	$characters = array('<', '>', '[', ']', '.', ':', ':');
+	$entities = ['&lt;', '&gt;', '&#91;', '&#93;', '&#46;', '&#58;', '&#058;'];
+	$characters = ['<', '>', '[', ']', '.', ':', ':'];
 	$text = str_replace($entities, $characters, $text);
 
-	$word_indizes = array();
+	$word_indizes = [];
 	if (sizeof($words))
 	{
 		$match = '';
@@ -345,7 +345,7 @@ function phpbb_clean_search_string($search_string)
 	// That means one after a whitespace or the beginning of the string or one before a whitespace or the end of the string.
 	$search_string = preg_replace('#(?<=^|\s)\*+(?=\s|$)#', '', $search_string);
 	$search_string = trim($search_string);
-	$search_string = preg_replace(array('#\s+#u', '#\*+#u'), array(' ', '*'), $search_string);
+	$search_string = preg_replace(['#\s+#u', '#\*+#u'], [' ', '*'], $search_string);
 	return $search_string;
 }
 
@@ -359,19 +359,19 @@ function decode_message(&$message, $bbcode_uid = '')
 
 	if ($bbcode_uid)
 	{
-		$match = array('<br />', "[/*:m:$bbcode_uid]", ":u:$bbcode_uid", ":o:$bbcode_uid", ":$bbcode_uid");
-		$replace = array("\n", '', '', '', '');
+		$match = ['<br />', "[/*:m:$bbcode_uid]", ":u:$bbcode_uid", ":o:$bbcode_uid", ":$bbcode_uid"];
+		$replace = ["\n", '', '', '', ''];
 	}
 	else
 	{
-		$match = array('<br />');
-		$replace = array("\n");
+		$match = ['<br />'];
+		$replace = ["\n"];
 	}
 
 	$message = str_replace($match, $replace, $message);
 
 	$match = get_preg_expression('bbcode_htm');
-	$replace = array('\1', '\1', '\2', '\1', '', '');
+	$replace = ['\1', '\1', '\2', '\1', '', ''];
 
 	$message = preg_replace($match, $replace, $message);
 }
@@ -389,7 +389,7 @@ function strip_bbcode(&$text, $uid = '')
 	$text = preg_replace("#\[\/?[a-z0-9\*\+\-]+(?:=(?:&quot;.*&quot;|[^\]]*))?(?::[a-z])?(\:$uid)\]#", ' ', $text);
 
 	$match = get_preg_expression('bbcode_htm');
-	$replace = array('\1', '\1', '\2', '\1', '', '');
+	$replace = ['\1', '\1', '\2', '\1', '', ''];
 
 	$text = preg_replace($match, $replace, $text);
 }
@@ -477,12 +477,12 @@ function generate_text_for_edit($text, $uid, $flags)
 {
 	decode_message($text, $uid);
 
-	return array(
+	return [
 		'allow_bbcode'	=> ($flags & OPTION_FLAG_BBCODE) ? 1 : 0,
 		'allow_smilies'	=> ($flags & OPTION_FLAG_SMILIES) ? 1 : 0,
 		'allow_urls'	=> ($flags & OPTION_FLAG_LINKS) ? 1 : 0,
 		'text'			=> $text
-	);
+	];
 }
 
 /**
@@ -502,7 +502,7 @@ function get_attrs_for_external_link($url)
 		static $newwindow_exclude;
 		if (!is_array($newwindow_exclude))
 		{
-			$newwindow_exclude = empty($config['external_links_newwindow_exclude']) ? array() : explode("\n", str_replace(array("\r\n", ','), "\n", $config['external_links_newwindow_exclude']));
+			$newwindow_exclude = empty($config['external_links_newwindow_exclude']) ? [] : explode("\n", str_replace(["\r\n", ','], "\n", $config['external_links_newwindow_exclude']));
 			$newwindow_exclude = array_filter(array_map('trim', $newwindow_exclude));
 		}
 
@@ -523,7 +523,7 @@ function get_attrs_for_external_link($url)
 		static $nofollow_exclude;
 		if (!is_array($nofollow_exclude))
 		{
-			$nofollow_exclude = empty($config['external_links_nofollow_exclude']) ? array() : explode("\n", str_replace(array("\r\n", ','), "\n", $config['external_links_nofollow_exclude']));
+			$nofollow_exclude = empty($config['external_links_nofollow_exclude']) ? [] : explode("\n", str_replace(["\r\n", ','], "\n", $config['external_links_nofollow_exclude']));
 			$nofollow_exclude = array_filter(array_map('trim', $nofollow_exclude));
 		}
 
@@ -591,7 +591,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$url	= 'http://' . $url;
 
 		case MAGIC_URL_FULL:
-			if (in_array(strtolower($url), array('http://', 'https://')))
+			if (in_array(strtolower($url), ['http://', 'https://']))
 			{
 				return $whitespace . $url . $append;
 			}
@@ -673,7 +673,7 @@ function censor_text($text)
 		// We check here if the user is having viewing censors disabled (and also allowed to do so).
 		if (!$user->optionget('viewcensors') && $config['allow_nocensors'] && $auth->acl_get('u_chgcensors'))
 		{
-			$censors = array();
+			$censors = [];
 		}
 		else
 		{
@@ -696,7 +696,7 @@ function bbcode_nl2br($text)
 {
 	// custom BBCodes might contain carriage returns so they
 	// are not converted into <br /> so now revert that
-	$text = str_replace(array("\n", "\r"), array('<br />', "\n"), $text);
+	$text = str_replace(["\n", "\r"], ['<br />', "\n"], $text);
 	return $text;
 }
 
@@ -787,12 +787,12 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 	global $extensions, $config;
 
 	//
-	$compiled_attachments = array();
+	$compiled_attachments = [];
 
 	if (!isset($template->filename['attachment_tpl']))
 	{
-		$template->set_filenames(array(
-			'attachment_tpl'	=> 'attachment.html')
+		$template->set_filenames([
+			'attachment_tpl'	=> 'attachment.html']
 		);
 	}
 
@@ -802,7 +802,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 	}
 
 	// Look for missing attachment information...
-	$attach_ids = array();
+	$attach_ids = [];
 	foreach ($attachments as $pos => $attachment)
 	{
 		// If is_orphan is set, we need to retrieve the attachments again...
@@ -817,7 +817,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 	{
 		global $db;
 
-		$new_attachment_data = array();
+		$new_attachment_data = [];
 
 		$sql = 'SELECT *
 			FROM ' . ATTACHMENTS_TABLE . '
@@ -867,7 +867,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		// We need to reset/empty the _file block var, because this function might be called more than once
 		$template->destroy_block_vars('_file');
 
-		$block_array = array();
+		$block_array = [];
 
 		// Some basics...
 		$attachment['extension'] = strtolower(trim($attachment['extension']));
@@ -884,13 +884,13 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 
 		$comment = bbcode_nl2br(censor_text($attachment['attach_comment']));
 
-		$block_array += array(
+		$block_array += [
 			'UPLOAD_ICON'		=> $upload_icon,
 			'FILESIZE'			=> $filesize['value'],
 			'SIZE_LANG'			=> $filesize['unit'],
 			'DOWNLOAD_NAME'		=> utf8_basename($attachment['real_filename']),
 			'COMMENT'			=> $comment,
-		);
+		];
 
 		$denied = false;
 
@@ -898,10 +898,10 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		{
 			$denied = true;
 
-			$block_array += array(
+			$block_array += [
 				'S_DENIED'			=> true,
 				'DENIED_MESSAGE'	=> sprintf($user->lang['EXTENSION_DISABLED_AFTER_POSTING'], $attachment['extension'])
-			);
+			];
 		}
 
 		if (!$denied)
@@ -958,10 +958,10 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 					$inline_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'id=' . $attachment['attach_id'] . '&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
-					$block_array += array(
+					$block_array += [
 						'S_IMAGE'		=> true,
 						'U_INLINE_LINK'		=> $inline_link,
-					);
+					];
 
 					$update_count[] = $attachment['attach_id'];
 				break;
@@ -972,10 +972,10 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 					$thumbnail_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'id=' . $attachment['attach_id'] . '&amp;t=1&amp;filename=' . urlencode(utf8_basename($attachment['real_filename'])));
 					$download_link .= '&amp;mode=view';
 
-					$block_array += array(
+					$block_array += [
 						'S_THUMBNAIL'		=> true,
 						'THUMB_IMAGE'		=> $thumbnail_link,
-					);
+					];
 
 					$update_count[] = $attachment['attach_id'];
 				break;
@@ -985,30 +985,30 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				case ATTACHMENT_CATEGORY_AUDIO:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 
-					$block_array += array(
+					$block_array += [
 						'S_VIDEO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_VIDEO) ? true : false,
 						'S_AUDIO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_AUDIO) ? true : false,
 						'U_FORUM'		=> generate_board_url(),
 						'ATTACH_ID'		=> $attachment['attach_id'],
 						'MIME'			=> get_attachment_mime($display_cat, $attachment['extension']),
-					);
+					];
 				break;
 
 				default:
 					$l_downloaded_viewed = 'DOWNLOAD_COUNT';
 
-					$block_array += array(
+					$block_array += [
 						'S_FILE'		=> true,
-					);
+					];
 				break;
 			}
 
 			$l_download_count = (!isset($attachment['download_count']) || $attachment['download_count'] == 0) ? $user->lang[$l_downloaded_viewed . '_NONE'] : (($attachment['download_count'] == 1) ? sprintf($user->lang[$l_downloaded_viewed], $attachment['download_count']) : sprintf($user->lang[$l_downloaded_viewed . 'S'], $attachment['download_count']));
 
-			$block_array += array(
+			$block_array += [
 				'U_DOWNLOAD_LINK'		=> $download_link,
 				'L_DOWNLOAD_COUNT'		=> $l_download_count
-			);
+			];
 		}
 
 		$template->assign_var('ROOT_PATH', PHPBB_ROOT_PATH);
@@ -1022,11 +1022,11 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 
 	$tpl_size = sizeof($attachments);
 
-	$unset_tpl = array();
+	$unset_tpl = [];
 
 	preg_match_all('#<!\-\- ia([0-9]+) \-\->(.*?)<!\-\- ia\1 \-\->#', $message, $matches, PREG_PATTERN_ORDER);
 
-	$replace = array();
+	$replace = [];
 	foreach ($matches[0] as $num => $capture)
 	{
 		// Flip index if we are displaying the reverse way
@@ -1087,7 +1087,7 @@ function extension_allowed($forum_id, $extension, &$extensions)
 */
 function truncate_string($string, $max_length = 60, $max_store_length = 255, $allow_reply = false, $append = '')
 {
-	$chars = array();
+	$chars = [];
 
 	$strip_reply = false;
 	$stripped = false;
@@ -1214,7 +1214,7 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 			// For anonymous the link leads to a login page.
 			if ($user_id && $user_id != ANONYMOUS && ($user->data['user_id'] == ANONYMOUS || $auth->acl_get('u_viewprofile')))
 			{
-				$profile_url = ($custom_profile_url !== false) ? $custom_profile_url . '&amp;u=' . (int) $user_id : str_replace(array('={USER_ID}', '=%7BUSER_ID%7D'), '=' . (int) $user_id, $_profile_cache['base_url']);
+				$profile_url = ($custom_profile_url !== false) ? $custom_profile_url . '&amp;u=' . (int) $user_id : str_replace(['={USER_ID}', '=%7BUSER_ID%7D'], '=' . (int) $user_id, $_profile_cache['base_url']);
 			}
 			else
 			{
@@ -1234,10 +1234,10 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 
 	if (($mode == 'full' && !$profile_url) || $mode == 'no_profile')
 	{
-		return str_replace(array('{USERNAME_COLOUR}', '{USERNAME}', '{TITLE}'), array($username_colour, $username, $title), (!$username_colour) ? $_profile_cache['tpl_noprofile'.$postfix] : $_profile_cache['tpl_noprofile_colour'.$postfix]);
+		return str_replace(['{USERNAME_COLOUR}', '{USERNAME}', '{TITLE}'], [$username_colour, $username, $title], (!$username_colour) ? $_profile_cache['tpl_noprofile'.$postfix] : $_profile_cache['tpl_noprofile_colour'.$postfix]);
 	}
 
-	return str_replace(array('{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}', '{TITLE}'), array($profile_url, $username_colour, $username, $title), (!$username_colour) ? $_profile_cache['tpl_profile'.$postfix] : $_profile_cache['tpl_profile_colour'.$postfix]);
+	return str_replace(['{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}', '{TITLE}'], [$profile_url, $username_colour, $username, $title], (!$username_colour) ? $_profile_cache['tpl_profile'.$postfix] : $_profile_cache['tpl_profile_colour'.$postfix]);
 }
 
 /**
@@ -1330,7 +1330,7 @@ function get_verbal_time_delta($first_time, $last_time, $accuracy = false, $max_
 	$delta = get_verbal_time_delta_values($first_time, $last_time);
 	if (!$delta) { return false; }
 
-	$parts = array();
+	$parts = [];
 	$parts_count = 0;
 	foreach (array_reverse($delta) as $measure => $value)
 	{

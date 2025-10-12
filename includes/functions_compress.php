@@ -40,7 +40,7 @@ class compress
 			// Clean up path, add closing / if not present
 			$src_path = ($src_path && substr($src_path, -1) != '/') ? $src_path . '/' : $src_path;
 
-			$filelist = array();
+			$filelist = [];
 			$filelist = filelist(PHPBB_ROOT_PATH . $src, '', '*');
 			krsort($filelist);
 
@@ -105,7 +105,7 @@ class compress
 	*/
 	function add_data($src, $name)
 	{
-		$stat = array();
+		$stat = [];
 		$stat[2] = 436; //384
 		$stat[4] = $stat[5] = 0;
 		$stat[7] = strlen($src);
@@ -119,8 +119,8 @@ class compress
 	*/
 	function methods()
 	{
-		$methods = array('.tar');
-		$available_methods = array('.tar.gz' => 'zlib', '.tar.bz2' => 'bz2', '.zip' => 'zlib');
+		$methods = ['.tar'];
+		$available_methods = ['.tar.gz' => 'zlib', '.tar.bz2' => 'bz2', '.zip' => 'zlib'];
 
 		foreach ($available_methods as $type => $module)
 		{
@@ -150,8 +150,8 @@ class compress
 */
 class compress_zip extends compress
 {
-	var $datasec = array();
-	var $ctrl_dir = array();
+	var $datasec = [];
+	var $ctrl_dir = [];
 	var $eof_cdh = "\x50\x4b\x05\x06\x00\x00\x00\x00";
 
 	var $old_offset = 0;

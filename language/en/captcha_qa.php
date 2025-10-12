@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'CAPTCHA_QA'				=> 'Q&amp;A',
 	'CONFIRM_QUESTION_EXPLAIN'	=> 'This question is a means of preventing automated form submissions by spambots.',
 	'CONFIRM_QUESTION_WRONG'	=> 'You have provided an invalid answer to the question.',
@@ -40,4 +40,4 @@ $lang = array_merge($lang, array(
 	'QA_ERROR_MSG'				=> 'Please fill in all fields and enter at least one answer.',
 	'QA_LAST_QUESTION'			=> 'You cannot delete all questions while the plugin is active.',
 
-));
+]);

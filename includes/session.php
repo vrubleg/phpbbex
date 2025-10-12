@@ -15,9 +15,9 @@ if (!defined('IN_PHPBB'))
 */
 class phpbb_session
 {
-	var $cookie_data = array();
-	var $page = array();
-	var $data = array();
+	var $cookie_data = [];
+	var $page = [];
+	var $data = [];
 	var $browser = '';
 	var $referer = '';
 	var $forwarded_for = '';
@@ -33,7 +33,7 @@ class phpbb_session
 	*/
 	function extract_current_page()
 	{
-		$page_array = array();
+		$page_array = [];
 
 		// First of all, get the request uri...
 		$script_name = (!empty($_SERVER['SCRIPT_NAME'])) ? $_SERVER['SCRIPT_NAME'] : getenv('SCRIPT_NAME');
@@ -48,15 +48,15 @@ class phpbb_session
 		}
 
 		// Replace backslashes and doubled slashes (could happen on some proxy setups)
-		$script_name = str_replace(array('\\', '//'), '/', $script_name);
+		$script_name = str_replace(['\\', '//'], '/', $script_name);
 
 		// Now, remove the sid and let us get a clean query string...
-		$use_args = array();
+		$use_args = [];
 
 		// Since some browser do not encode correctly we need to do this with some "special" characters...
 		// " -> %22, ' => %27, < -> %3C, > -> %3E
-		$find = array('"', "'", '<', '>');
-		$replace = array('%22', '%27', '%3C', '%3E');
+		$find = ['"', "'", '<', '>'];
+		$replace = ['%22', '%27', '%3C', '%3E'];
 
 		foreach ($args as $key => $argument)
 		{
@@ -113,7 +113,7 @@ class phpbb_session
 		$script_path .= (substr($script_path, -1, 1) == '/') ? '' : '/';
 		$root_script_path .= (substr($root_script_path, -1, 1) == '/') ? '' : '/';
 
-		$page_array += array(
+		$page_array += [
 			'page_name'			=> $page_name,
 			'page_dir'			=> $page_dir,
 
@@ -122,7 +122,7 @@ class phpbb_session
 			'root_script_path'	=> str_replace(' ', '%20', htmlspecialchars($root_script_path)),
 
 			'page'				=> preg_replace_callback('/[^\x00-\x7F]+/', function ($m) { return urlencode($m[0]); }, $page),
-		);
+		];
 
 		return $page_array;
 	}
@@ -146,7 +146,7 @@ class phpbb_session
 
 		// Give us some basic information
 		$this->time_now				= time();
-		$this->cookie_data			= array('u' => 0, 'k' => '');
+		$this->cookie_data			= ['u' => 0, 'k' => ''];
 		$this->update_session_page	= $update_session_page;
 		$this->browser				= (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
 		$this->referer				= (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
@@ -188,7 +188,7 @@ class phpbb_session
 
 		$_SID = $this->session_id;
 
-		$_EXTRA_URL = array();
+		$_EXTRA_URL = [];
 
 		// Why no forwarded_for et al? Well, too easily spoofed. With the results of my recent requests
 		// it's pretty clear that in the majority of cases you'll at least be left with a proxy/cache ip.
@@ -339,7 +339,7 @@ class phpbb_session
 						if ($this->time_now - $this->data['session_time'] > 60 || ($this->update_session_page && $this->data['session_page'] != $this->page['page']))
 						{
 							$this->data['session_time'] = $this->time_now;
-							$sql_ary = array('session_time' => $this->time_now);
+							$sql_ary = ['session_time' => $this->time_now];
 
 							if ($this->update_session_page)
 							{
@@ -445,7 +445,7 @@ class phpbb_session
 	{
 		global $_SID, $db, $config, $cache;
 
-		$this->data = array();
+		$this->data = [];
 
 		/* Garbage collection ... remove old sessions updating user information
 		// if necessary. It means (potentially) 11 queries but only infrequently
@@ -568,7 +568,7 @@ class phpbb_session
 		if ($bot && isset($_GET['sid']))
 		{
 			http_response_code(301);
-			redirect(build_url(array('sid')));
+			redirect(build_url(['sid']));
 		}
 
 		// If no data was returned one or more of the following occurred:
@@ -665,7 +665,7 @@ class phpbb_session
 				{
 					$this->data['session_time'] = $this->data['session_last_visit'] = $this->time_now;
 
-					$sql_ary = array('session_time' => $this->time_now, 'session_last_visit' => $this->time_now, 'session_admin' => 0);
+					$sql_ary = ['session_time' => $this->time_now, 'session_last_visit' => $this->time_now, 'session_admin' => 0];
 
 					if ($this->update_session_page)
 					{
@@ -697,7 +697,7 @@ class phpbb_session
 		$set_admin = ($set_admin && $this->data['is_registered']) ? true : false;
 
 		// Create or update the session
-		$sql_ary = array(
+		$sql_ary = [
 			'session_user_id'		=> (int) $this->data['user_id'],
 			'session_start'			=> (int) $this->time_now,
 			'session_last_visit'	=> (int) $this->data['session_last_visit'],
@@ -708,7 +708,7 @@ class phpbb_session
 			'session_autologin'		=> ($session_autologin) ? 1 : 0,
 			'session_admin'			=> ($set_admin) ? 1 : 0,
 			'session_viewonline'	=> ($viewonline) ? 1 : 0,
-		);
+		];
 
 		if ($this->update_session_page)
 		{
@@ -871,7 +871,7 @@ class phpbb_session
 			}
 
 			// Reset the data array
-			$this->data = array();
+			$this->data = [];
 
 			$sql = 'SELECT *
 				FROM ' . USERS_TABLE . '
@@ -930,7 +930,7 @@ class phpbb_session
 			GROUP BY session_user_id, session_page';
 		$result = $db->sql_query_limit($sql, $batch_size);
 
-		$del_user_id = array();
+		$del_user_id = [];
 		$del_sessions = 0;
 
 		while ($row = $db->sql_fetchrow($result))
@@ -1000,7 +1000,7 @@ class phpbb_session
 
 		$banned = false;
 		$cache_ttl = 3600;
-		$where_sql = array();
+		$where_sql = [];
 
 		$sql = 'SELECT ban_ip, ban_userid, ban_email, ban_exclude, ban_give_reason, ban_end
 			FROM ' . BANLIST_TABLE . '
@@ -1216,9 +1216,9 @@ class phpbb_session
 			return false;
 		}
 
-		$dnsbl_check = array(
+		$dnsbl_check = [
 			'sbl.spamhaus.org'	=> 'http://www.spamhaus.org/query/bl?ip=',
-		);
+		];
 
 		if ($mode == 'register')
 		{
@@ -1232,13 +1232,13 @@ class phpbb_session
 
 			// Need to be listed on all servers...
 			$listed = true;
-			$info = array();
+			$info = [];
 
 			foreach ($dnsbl_check as $dnsbl => $lookup)
 			{
 				if (phpbb_checkdnsrr($reverse_ip . '.' . $dnsbl . '.', 'A') === true)
 				{
-					$info = array($dnsbl, $lookup . $ip);
+					$info = [$dnsbl, $lookup . $ip];
 				}
 				else
 				{
@@ -1310,17 +1310,17 @@ class phpbb_session
 
 		$key_id = unique_id();
 
-		$sql_ary = array(
+		$sql_ary = [
 			'key_id'		=> (string) md5($key_id),
 			'last_ip'		=> (string) $this->ip,
 			'last_login'	=> (int) time()
-		);
+		];
 
 		if (!$key)
 		{
-			$sql_ary += array(
+			$sql_ary += [
 				'user_id'	=> (int) $user_id
-			);
+			];
 		}
 
 		if ($key)
@@ -1449,9 +1449,9 @@ class phpbb_session
 */
 class phpbb_user extends phpbb_session
 {
-	var $lang = array();
-	var $help = array();
-	var $theme = array();
+	var $lang = [];
+	var $help = [];
+	var $theme = [];
 	var $date_format;
 	var $timezone;
 	var $dst;
@@ -1459,11 +1459,11 @@ class phpbb_user extends phpbb_session
 	var $lang_id = false;
 	var $lang_path;
 	var $img_lang;
-	var $img_array = array();
+	var $img_array = [];
 	var $profile_fields;
 
 	// Able to add new options (up to id 31)
-	var $keyoptions = array('viewimg' => 0, 'viewflash' => 1, 'viewsmilies' => 2, 'viewsigs' => 3, 'viewavatars' => 4, 'viewcensors' => 5, 'attachsig' => 6, 'bbcode' => 8, 'smilies' => 9, 'popuppm' => 10, 'viewquickreply' => 11, 'viewquickpost' => 12, 'sig_bbcode' => 15, 'sig_smilies' => 16, 'sig_links' => 17);
+	var $keyoptions = ['viewimg' => 0, 'viewflash' => 1, 'viewsmilies' => 2, 'viewsigs' => 3, 'viewavatars' => 4, 'viewcensors' => 5, 'attachsig' => 6, 'bbcode' => 8, 'smilies' => 9, 'popuppm' => 10, 'viewquickreply' => 11, 'viewquickpost' => 12, 'sig_bbcode' => 15, 'sig_smilies' => 16, 'sig_links' => 17];
 
 	/**
 	* Constructor to set the lang path
@@ -1518,7 +1518,7 @@ class phpbb_user extends phpbb_session
 				$sql = 'SELECT * FROM ' . LANG_TABLE;
 				$result = $db->sql_query($sql, 3600);
 
-				$lang_allowed = array();
+				$lang_allowed = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					if (file_exists(PHPBB_ROOT_PATH . 'language/' . $row['lang_dir'] . "/common.php"))
@@ -1578,7 +1578,7 @@ class phpbb_user extends phpbb_session
 			global $_EXTRA_URL;
 
 			$style = request_var('style', 0);
-			$_EXTRA_URL = array('style=' . $style);
+			$_EXTRA_URL = ['style=' . $style];
 		}
 		else
 		{
@@ -1628,10 +1628,10 @@ class phpbb_user extends phpbb_session
 		// We are only interested in the theme configuration for now
 		$parsed_items = $parsed_items['theme'];
 
-		$check_for = array(
+		$check_for = [
 			'parse_css_file'	=> (int) 0,
 			'pagination_sep'	=> (string) ', '
-		);
+		];
 
 		foreach ($check_for as $key => $default_value)
 		{
@@ -1653,7 +1653,7 @@ class phpbb_user extends phpbb_session
 
 			$stylesheet = file_get_contents(PHPBB_ROOT_PATH . "styles/{$this->theme['theme_path']}/theme/stylesheet.css");
 			// Match CSS imports
-			$matches = array();
+			$matches = [];
 			preg_match_all('/@import url\(["\'](.*)["\']\);/i', $stylesheet, $matches);
 
 			if (sizeof($matches))
@@ -1676,11 +1676,11 @@ class phpbb_user extends phpbb_session
 
 			$stylesheet = str_replace('./', 'styles/' . $this->theme['theme_path'] . '/theme/', $stylesheet);
 
-			$sql_ary = array(
+			$sql_ary = [
 				'theme_data'	=> $stylesheet,
 				'theme_mtime'	=> time(),
 				'theme_storedb'	=> 1
-			);
+			];
 
 			$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -1720,7 +1720,7 @@ class phpbb_user extends phpbb_session
 		{
 			// Attention: this code ignores the image definition list from acp_styles and just takes everything
 			// that the config file contains
-			$sql_ary = array();
+			$sql_ary = [];
 
 			$db->sql_transaction('begin');
 
@@ -1738,12 +1738,12 @@ class phpbb_user extends phpbb_session
 					{
 						if (substr($value, -1, 1) === '*')
 						{
-							list($image_filename, $image_height) = explode('*', $value);
+							[$image_filename, $image_height] = explode('*', $value);
 							$image_width = 0;
 						}
 						else
 						{
-							list($image_filename, $image_height, $image_width) = explode('*', $value);
+							[$image_filename, $image_height, $image_width] = explode('*', $value);
 						}
 					}
 					else
@@ -1755,14 +1755,14 @@ class phpbb_user extends phpbb_session
 					if (strpos($image_name, 'img_') === 0 && $image_filename)
 					{
 						$image_name = substr($image_name, 4);
-						$sql_ary[] = array(
+						$sql_ary[] = [
 							'image_name'		=> (string) $image_name,
 							'image_filename'	=> (string) $image_filename,
 							'image_height'		=> (int) $image_height,
 							'image_width'		=> (int) $image_width,
 							'imageset_id'		=> (int) $this->theme['imageset_id'],
 							'image_lang'		=> (string) $this->img_lang,
-						);
+						];
 					}
 				}
 			}
@@ -2085,8 +2085,8 @@ class phpbb_user extends phpbb_session
 	function format_date($gmepoch, $format = false, $forcedate = false, $notime = false)
 	{
 		static $midnight;
-		static $format_cache = array();
-		static $date_cache = array();
+		static $format_cache = [];
+		static $date_cache = [];
 
 		$format = (!$format) ? $this->date_format : $format;
 		$now = time();
@@ -2094,23 +2094,23 @@ class phpbb_user extends phpbb_session
 
 		if (!isset($format_cache[$format]))
 		{
-			$format_cache[$format] = array(
-				'full'		=> str_replace(array('{', '}'), '', $format),
-				'notime'	=> str_replace(array('{', '}'), '', preg_replace('#{.*?}#i', '', $format)),
-			);
+			$format_cache[$format] = [
+				'full'		=> str_replace(['{', '}'], '', $format),
+				'notime'	=> str_replace(['{', '}'], '', preg_replace('#{.*?}#i', '', $format)),
+			];
 		}
 		$format = $format_cache[$format][$notime?'notime':'full'];
 
 		if (!isset($date_cache[$format]))
 		{
 			// Is the user requesting a friendly date format (i.e. 'Today 12:42')?
-			$date_cache[$format] = array(
+			$date_cache[$format] = [
 				'is_short'		=> strpos($format, '|'),
 				'format_short'	=> substr($format, 0, strpos($format, '|')) . '||' . substr(strrchr($format, '|'), 1),
 				'format_long'	=> str_replace('|', '', $format),
 				// Filter out values that are not strings (e.g. arrays) for strtr().
 				'lang'			=> array_filter($this->lang['datetime'], 'is_string'),
-			);
+			];
 
 			// Short representation of month in format? Some languages use different terms for the long and short format of May
 			if ((strpos($format, '\M') === false && strpos($format, 'M') !== false) || (strpos($format, '\r') === false && strpos($format, 'r') !== false))
@@ -2126,12 +2126,12 @@ class phpbb_user extends phpbb_session
 		// A small tolerence is given for times in the future but in the same minute are displayed as '< than a minute ago'
 		if ($delta <= 3600 && $delta > -60 && ($delta >= -5 || floor($now / 60) == floor($gmepoch / 60)) && $date_cache[$format]['is_short'] !== false && !$forcedate && isset($this->lang['datetime']['AGO']))
 		{
-			return $this->lang(array('datetime', 'AGO'), max(0, (int) floor($delta / 60)));
+			return $this->lang(['datetime', 'AGO'], max(0, (int) floor($delta / 60)));
 		}
 
 		if (!$midnight)
 		{
-			list($d, $m, $y) = explode(' ', gmdate('j n Y', time() + $zone_offset));
+			[$d, $m, $y] = explode(' ', gmdate('j n Y', time() + $zone_offset));
 			$midnight = gmmktime(0, 0, 0, $m, $d, $y) - $zone_offset;
 		}
 
@@ -2204,7 +2204,7 @@ class phpbb_user extends phpbb_session
 			FROM ' . PROFILE_FIELDS_DATA_TABLE . "
 			WHERE user_id = $user_id";
 		$result = $db->sql_query_limit($sql, 1);
-		$this->profile_fields = (!($row = $db->sql_fetchrow($result))) ? array() : $row;
+		$this->profile_fields = (!($row = $db->sql_fetchrow($result))) ? [] : $row;
 		$db->sql_freeresult($result);
 	}
 
@@ -2356,7 +2356,7 @@ class phpbb_user extends phpbb_session
 			WHERE f.forum_password <> ''";
 		$result = $db->sql_query($sql);
 
-		$forum_ids = array();
+		$forum_ids = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$forum_id = (int) $row['forum_id'];

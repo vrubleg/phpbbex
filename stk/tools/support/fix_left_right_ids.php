@@ -44,7 +44,7 @@ class fix_left_right_ids
 		{
 			// Now start fixing the modules for this class
 			$i = 1;
-			$where = array('module_class = \'' . $row['module_class'] .'\'');
+			$where = ['module_class = \'' . $row['module_class'] .'\''];
 			$changes_made = (($this->fixem($i, 'module_id', MODULES_TABLE, 0, $where)) || $changes_made) ? true : false;
 		}
 		$db->sql_freeresult($result);
@@ -69,7 +69,7 @@ class fix_left_right_ids
 	}
 
 	// I <3 recursion.
-	function fixem(&$i, $pkey, $table, $parent_id = 0, $where = array())
+	function fixem(&$i, $pkey, $table, $parent_id = 0, $where = [])
 	{
 		global $db;
 
@@ -85,7 +85,7 @@ class fix_left_right_ids
 			// First we update the left_id for this module
 			if ($row['left_id'] != $i)
 			{
-				$db->sql_query('UPDATE ' . $table . ' SET ' . $db->sql_build_array('UPDATE', array('left_id' => $i)) . " WHERE $pkey = {$row[$pkey]}");
+				$db->sql_query('UPDATE ' . $table . ' SET ' . $db->sql_build_array('UPDATE', ['left_id' => $i]) . " WHERE $pkey = {$row[$pkey]}");
 				$changes_made = true;
 			}
 			$i++;
@@ -96,7 +96,7 @@ class fix_left_right_ids
 			// Then we come back and update the right_id for this module
 			if ($row['right_id'] != $i)
 			{
-				$db->sql_query('UPDATE ' . $table . ' SET ' . $db->sql_build_array('UPDATE', array('right_id' => $i)) . " WHERE $pkey = {$row[$pkey]}");
+				$db->sql_query('UPDATE ' . $table . ' SET ' . $db->sql_build_array('UPDATE', ['right_id' => $i]) . " WHERE $pkey = {$row[$pkey]}");
 				$changes_made = true;
 			}
 			$i++;

@@ -10,7 +10,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-$words = array(
+$words = [
 	'a',
 	'about',
 	'after',
@@ -262,4 +262,4 @@ $words = array(
 	'ROTF',
 	'ROTFLMAO',
 	'YMMV',
-);
+];

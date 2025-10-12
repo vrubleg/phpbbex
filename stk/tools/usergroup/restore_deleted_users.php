@@ -21,7 +21,7 @@ class restore_deleted_users
 	{
 		global $db, $template;
 
-		$conflicted = request_var('conflicted', array(0 => 0));
+		$conflicted = request_var('conflicted', [0 => 0]);
 
 		// Find all guest posters
 		if (empty($conflicted))
@@ -48,7 +48,7 @@ class restore_deleted_users
 		$users	= $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
 
-		$damaged = array();
+		$damaged = [];
 
 		// Make sure there's always a username
 		foreach ($users as $key => $data)
@@ -67,14 +67,14 @@ class restore_deleted_users
 			trigger_error('NO_DELETED_USERS');
 		}
 
-		$return = array('title'	=> $title);
+		$return = ['title'	=> $title];
 		if (!empty($users))
 		{
 			// Build the output
-			$user_vars = array();
+			$user_vars = [];
 			foreach ($users as $u)
 			{
-				$user_vars["{$var}[{$u['post_id']}]"] = array('lang' => $u['post_username'], 'explain' => false, 'type' => $type);
+				$user_vars["{$var}[{$u['post_id']}]"] = ['lang' => $u['post_username'], 'explain' => false, 'type' => $type];
 			}
 
 			if (empty($conflicted))
@@ -84,11 +84,11 @@ class restore_deleted_users
 			}
 
 			// Return usable data
-			$return = array_merge($return, array(
-				'vars'	=> array_merge(array(
+			$return = array_merge($return, [
+				'vars'	=> array_merge([
 					'legend1'	=> 'SELECT_USERS',
-				), $user_vars),
-			));
+				], $user_vars),
+			]);
 		}
 
 		if (!empty($damaged) && empty($conflicted))
@@ -99,14 +99,14 @@ class restore_deleted_users
 					AND ' . $db->sql_in_set('post_username', $damaged);
 			$result = $db->sql_query($sql);
 
-			$post_ids = array();
+			$post_ids = [];
 			while($row = $db->sql_fetchrow($result))
 			{
 				$post_ids[] = (int)$row['post_id'];
 			}
 
 			$return['vars']['legend2'] = 'DAMAGED_POSTS';
-			$return['vars']['damaged_posts'] = array('lang' => 'DAMAGED_POSTS', 'default' => implode(', ', $post_ids), 'explain' => true, 'type' => 'text:40:255');
+			$return['vars']['damaged_posts'] = ['lang' => 'DAMAGED_POSTS', 'default' => implode(', ', $post_ids), 'explain' => true, 'type' => 'text:40:255'];
 		}
 
 		if (!empty($users))
@@ -141,7 +141,7 @@ class restore_deleted_users
 		if (isset($_REQUEST['post']))
 		{
 			// Get the selected users
-			$posts = array_keys(request_var('post', array(0 => 0)));
+			$posts = array_keys(request_var('post', [0 => 0]));
 			if (empty($posts))
 			{
 				$error[] = 'NO_USER_SELECTED';
@@ -149,7 +149,7 @@ class restore_deleted_users
 			}
 
 			// Get all the selected usernames
-			$selected = array();
+			$selected = [];
 			$sql = 'SELECT post_id, post_username
 				FROM ' . POSTS_TABLE . '
 				WHERE ' . $db->sql_in_set('post_id', $posts);
@@ -177,10 +177,10 @@ class restore_deleted_users
 		}
 		else
 		{
-			$conflicted = request_var('conflicted', array(0 => ''), true);
+			$conflicted = request_var('conflicted', [0 => ''], true);
 
 			// Get the usernames used for the posts
-			$original = array();
+			$original = [];
 			$sql = 'SELECT post_id, post_username
 				FROM ' . POSTS_TABLE . '
 				WHERE ' . $db->sql_in_set('post_id', array_keys($conflicted));
@@ -210,10 +210,10 @@ class restore_deleted_users
 		}
 
 		// Clear the cache
-		$umil->cache_purge(array(
-			array('auth'),
-			array('data'),
-		));
+		$umil->cache_purge([
+			['auth'],
+			['data'],
+		]);
 
 		trigger_error(((sizeof($non_conflicted) > 1) ? 'USERS_RESTORED_SUCCESSFULLY' : 'USER_RESTORED_SUCCESSFULLY'));
 	}
@@ -228,7 +228,7 @@ class restore_deleted_users
 	{
 		global $db;
 
-		$conflicted = array();
+		$conflicted = [];
 		$sql = 'SELECT username_clean
 			FROM ' . USERS_TABLE . '
 			WHERE ' . $db->sql_in_set('username_clean', $users);
@@ -268,13 +268,13 @@ class restore_deleted_users
 		$db->sql_freeresult($result);
 
 		// Setup the user
-		$user_ary = array(
+		$user_ary = [
 			'username'		=> $newname,
 			'group_id'		=> $gid,
 			'user_email'	=> $config['board_email'],	// Use the board email
 			'user_type'		=> USER_NORMAL,
 			'user_password'	=> gen_rand_string(12),
-		);
+		];
 
 		// Add the user
 		$user_id = user_add($user_ary);

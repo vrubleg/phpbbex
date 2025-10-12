@@ -11,7 +11,7 @@ if (!defined('IN_PHPBB'))
 }
 
 // Check PHP version.
-if (version_compare(PHP_VERSION, '7.2', '<')) { die('PHP 7.2+ is required.'); }
+if (PHP_VERSION_ID < 70200) { die('PHP 7.2+ is required.'); }
 if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
 if (file_exists(PHPBB_ROOT_PATH . 'config.php'))
@@ -61,7 +61,7 @@ if (!defined('HTTP_HOST') || !defined('HTTP_PORT'))
 if (!defined('HTTP_ROOT'))
 {
 	if (empty($_SERVER['SCRIPT_NAME'])) { die('SCRIPT_NAME is invalid.'); }
-	$parts = array();
+	$parts = [];
 	$parts[] = '';
 	foreach (explode('/', str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] . '/../' . PHPBB_ROOT_PATH)) as $part)
 	{

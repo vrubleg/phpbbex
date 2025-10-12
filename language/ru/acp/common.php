@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Common
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_ADMINISTRATORS'		=> 'Администраторы',
 	'ACP_ADMIN_LOGS'			=> 'Лог администраторов',
 	'ACP_ADMIN_ROLES'			=> 'Администраторские роли',
@@ -269,17 +269,17 @@ $lang = array_merge($lang, array(
 	'USER_CONTROL_PANEL'	=> 'Панель пользователя',
 
 	'WARNING'				=> 'Внимание',
-));
+]);
 
 // PHP info
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_PHP_INFO_EXPLAIN'	=> 'Эта страница отображает сведения о версии PHP, установленной на данном сервере. Она включает подробные сведения о загруженных модулях, доступных переменных и настройках по умолчанию. Эта информация может быть полезной при диагностировании различных неполадок. Некоторые хостинг-компании ограничивают отображение этой информации по соображениям безопасности. Не разглашайте никаких сведений с этой страницы никому, кроме официальных членов группы поддержки.',
 
 	'NO_PHPINFO_AVAILABLE'	=> 'Информация о конфигурации PHP недоступна. Функция phpinfo() отключена по соображениям безопасности.',
-));
+]);
 
 // Logs
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_ADMIN_LOGS_EXPLAIN'	=> 'Это список действий, выполненных администраторами форума. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
 	'ACP_CRITICAL_LOGS_EXPLAIN'	=> 'Это список действий, выполненных самим форумом. Этот журнал предоставляет информацию, которую можно использовать для решения некоторых проблем. Например, с доставкой электронных сообщений. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
 	'ACP_MOD_LOGS_EXPLAIN'		=> 'Это список всех действий, выполненных модераторами в разделах, темах и сообщениях. Вы можете сортировать список по имени пользователя, дате, IP-адресу или по действию. При наличии необходимых прав вы можете удалить отдельные записи или очистить весь лог целиком.',
@@ -294,10 +294,10 @@ $lang = array_merge($lang, array(
 	'SORT_IP'		=> 'IP-адрес',
 	'SORT_DATE'		=> 'Дата',
 	'SORT_ACTION'	=> 'Действие',
-));
+]);
 
 // Index page
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADMIN_INTRO'				=> 'Благодарим за выбор phpBBex в качестве решения для создания форума. Данная страница предоставляет краткий обзор различной статистики. Ссылки слева позволяют управлять всеми аспектами работы вашего форума. Каждая страница содержит инструкции по использованию текущего инструмента.',
 	'ADMIN_LOG'					=> 'Действия администрации',
 	'ADMIN_LOG_INDEX_EXPLAIN'	=> 'Ниже находится список пяти последних действий, выполненных администраторами форума. Полную копию журнала можно просмотреть, выбрав соответствующую ссылку в меню или нажав ссылку ниже «Лог администраторов».',
@@ -380,10 +380,10 @@ $lang = array_merge($lang, array(
 
 	'WELCOME_PHPBB'			=> 'Добро пожаловать в phpBBex',
 	'WRITABLE_CONFIG'		=> 'Файл config.php доступен для записи для всех. Измените права доступа на 640 или по крайней мере на 644 (например: <samp>chmod 640 config.php</samp>).',
-));
+]);
 
 // Inactive Users
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'INACTIVE_DATE'					=> 'Дата деактивации',
 	'INACTIVE_REASON'				=> 'Причина',
 	'INACTIVE_REASON_MANUAL'		=> 'Учётная запись отключена администратором',
@@ -405,10 +405,10 @@ $lang = array_merge($lang, array(
 	'SORT_REMINDER'		=> 'Дата напоминания',
 
 	'USER_IS_INACTIVE'		=> 'Пользователь не активирован',
-));
+]);
 
 // Log Entries
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'LOG_ACL_ADD_USER_GLOBAL_U_'		=> '<strong>Добавлены или изменены пользовательские права пользователей</strong><br />» %s',
 	'LOG_ACL_ADD_GROUP_GLOBAL_U_'		=> '<strong>Добавлены или изменены пользовательские права групп</strong><br />» %s',
 	'LOG_ACL_ADD_USER_GLOBAL_M_'		=> '<strong>Добавлены или изменены супермодераторские права пользователей</strong><br />» %s',
@@ -726,20 +726,20 @@ $lang = array_merge($lang, array(
 	'LOG_REGISTER_OK'				=> '<strong style="color: green;">Пользователь зарегистрирован</strong><br /><strong>Имя:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>ID браузера:</strong> %4$s<br /><strong>Первый запрос:</strong> %6$s секунд назад<br /><strong>Запрошено:</strong> %7$s страниц',
 	'LOG_REGISTER_REJECTED_BOT'		=> '<strong style="color: orange;">Регистрация бота отклонена</strong><br /><strong>Имя:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>ID браузера:</strong> %4$s<br /><strong>Первый запрос:</strong> %6$s секунд назад<br /><strong>Запрошено:</strong> %7$s страниц<br /><strong>Ошибки:</strong><br />%3$s',
 	'LOG_REGISTER_REJECTED_USER'	=> '<strong style="color: red;">Регистрация пользователя отклонена</strong><br /><strong>Имя:</strong> %1$s<br /><strong>Email:</strong> %2$s<br /><strong>User Agent:</strong> %5$s<br /><strong>ID браузера:</strong> %4$s<br /><strong>Первый запрос:</strong> %6$s секунд назад<br /><strong>Запрошено:</strong> %7$s страниц<br /><strong>Ошибки:</strong><br />%3$s',
-));
+]);
 
 // Manage attachments module for phpBB3 MOD
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_MANAGE_ATTACHMENTS'			=> 'Управление вложениями',
 	'ACP_MANAGE_ATTACHMENTS_EXPLAIN'	=> 'Здесь вы можете управлять файлами, прикреплёнными к сообщениям. Вы можете удалить такие файлы или прикрепить их к другим уже существующим сообщениям. Во втором случае вам потребуется правильный идентификатор сообщения(ID), который вы должны указать самостоятельно. После этого вложение будет прикреплено к указанному вами сообщению.',
 	'LOG_ATTACH_DEL'					=> '<strong>Вложения удалены</strong><br />» %s',
 	'LOG_ATTACH_REASSIGNED'				=> '<strong>Вложение прикреплено к другому к сообщению</strong><br />» ID %1$d - %2$s',
 	'TOTAL_SIZE'						=> 'Общий размер',
 	'DOWNLOADS'							=> 'Скачивания',
-));
+]);
 
 // Out links
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_OUTLINKS'			=> 'Верхние ссылки',
 	'ACP_OUTLINKS_EXPLAIN'	=> 'С помощью этой панели вы можете добавлять, удалять и изменять ссылки в верхнем меню.',
 	'TITLE'					=> 'Название',
@@ -753,13 +753,13 @@ $lang = array_merge($lang, array(
 	'LINK_NOFOLLOW_EXPLAIN'	=> 'Для поисковых роботов',
 	'LINK_NEWWINDOW'		=> 'Новое окно',
 	'LINK_NEWWINDOW_EXPLAIN'=> 'Открывать в новом окне',
-));
+]);
 
 // Login via Email
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Вход по email',
 	'LOGIN_VIA_EMAIL_ENABLE_EXPLAIN'	=> 'Разрешить пользователям входить в систему используя имя пользователя или email. В скрытом режиме не будет индикации о возможности входа по email.',
 	'LOGIN_VIA_EMAIL_SILENT'			=> 'Да, скрыто',
 	'LOGIN_VIA_EMAIL_ONLY'				=> 'Только по email',
 	'EMAIL_REUSE_DISABLED'				=> 'Заблокировано, поскольку включён <em>вход по email</em>.',
-));
+]);

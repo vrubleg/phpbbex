@@ -20,10 +20,10 @@ class resync_newly_registered
 	 * Array used to link steps to groups
 	 * @var Array
 	 */
-	var $groups	= array(
+	var $groups	= [
 		0	=> 'REGISTERED',
 		1	=> 'NEWLY_REGISTERED',
-	);
+	];
 
 	/**
 	 * The `resync_user_groups` object
@@ -76,7 +76,7 @@ class resync_newly_registered
 			}
 			else
 			{
-				meta_refresh(3, append_sid(STK_ROOT_PATH, array('c' => 'usergroup', 't' => 'resync_user_groups', 'step' => ++$step, 'submit' => true, 'rr' => $this->parent->run_rr, 'rnr' => $this->parent->run_rnr)));
+				meta_refresh(3, append_sid(STK_ROOT_PATH, ['c' => 'usergroup', 't' => 'resync_user_groups', 'step' => ++$step, 'submit' => true, 'rr' => $this->parent->run_rr, 'rnr' => $this->parent->run_rnr]));
 				$template->assign_var('U_BACK_TOOL', false);
 				trigger_error('RUN_RNR_NOT_FINISHED');
 			}
@@ -84,27 +84,27 @@ class resync_newly_registered
 
 		// Prepare the correct function call
 		$function	= '';
-		$args		= array();
+		$args		= [];
 		switch ($group_name)
 		{
 			// Users with not enough posts
 			case 'REGISTERED':
 				$function	= 'group_user_add';
-				$args		= array(
+				$args		= [
 					$nr_gid,
 					$users,
 					false,
 					false,
 					$config['new_member_group_default'],
-				);
+				];
 			break;
 
 			case 'NEWLY_REGISTERED':
 				$function	= 'group_user_del';
-				$args		= array(
+				$args		= [
 					$nr_gid,
 					$users,
-				);
+				];
 			break;
 		}
 
@@ -127,7 +127,7 @@ class resync_newly_registered
 		$this->_fix_new_flag($users, $group_name);
 
 		// Next batch
-		meta_refresh(3, append_sid(STK_ROOT_PATH, array('c' => 'usergroup', 't' => 'resync_user_groups', 'step' => $step, 'last' => array_pop($users), 'submit' => true, 'rr' => $this->parent->run_rr, 'rnr' => $this->parent->run_rnr)));
+		meta_refresh(3, append_sid(STK_ROOT_PATH, ['c' => 'usergroup', 't' => 'resync_user_groups', 'step' => $step, 'last' => array_pop($users), 'submit' => true, 'rr' => $this->parent->run_rr, 'rnr' => $this->parent->run_rnr]));
 		$template->assign_var('U_BACK_TOOL', false);
 		trigger_error('RUN_RNR_NOT_FINISHED');
 	}
@@ -143,7 +143,7 @@ class resync_newly_registered
 	{
 		global $config, $db;
 
-		$users = array();
+		$users = [];
 
 		// Get the group_id of the NEWLY_REGISTERED users group
 		$sql = 'SELECT group_id
@@ -168,22 +168,22 @@ class resync_newly_registered
 		}
 		$sql_where = "u.user_posts {$sql_token} " . (int) $config['new_member_post_limit'];
 
-		$sql_ary = array(
+		$sql_ary = [
 			'SELECT'	=> 'u.user_id',
-			'FROM'		=> array(
+			'FROM'		=> [
 				USERS_TABLE			=> 'u',
 				USER_GROUP_TABLE	=> 'ug',
-			),
-			'LEFT_JOIN'	=> array(
-				array(
-					'FROM'	=> array(
+			],
+			'LEFT_JOIN'	=> [
+				[
+					'FROM'	=> [
 						GROUPS_TABLE => 'g',
-					),
+					],
 					'ON'	=> "g.group_name = '" . $group_name . "'",
-				),
-			),
+				],
+			],
 			'WHERE'			=> "ug.group_id = g.group_id AND ug.user_id > {$last} AND (u.user_id = ug.user_id AND {$sql_where})",
-		);
+		];
 		$sql	= $db->sql_build_query('SELECT', $sql_ary);
 		$result	= $db->sql_query_limit($sql, $this->parent->batch_size, 0);
 		while ($row = $db->sql_fetchrow($result))

@@ -61,7 +61,7 @@ class acp_disallow
 				trigger_error($user->lang['DISALLOWED_ALREADY'] . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
-			$sql = 'INSERT INTO ' . DISALLOW_TABLE . ' ' . $db->sql_build_array('INSERT', array('disallow_username' => $disallowed_user));
+			$sql = 'INSERT INTO ' . DISALLOW_TABLE . ' ' . $db->sql_build_array('INSERT', ['disallow_username' => $disallowed_user]);
 			$db->sql_query($sql);
 
 			$cache->destroy('_disallowed_usernames');
@@ -103,9 +103,9 @@ class acp_disallow
 		}
 		$db->sql_freeresult($result);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_ACTION'				=> $this->u_action,
-			'S_DISALLOWED_NAMES'	=> $disallow_select)
+			'S_DISALLOWED_NAMES'	=> $disallow_select]
 		);
 	}
 }

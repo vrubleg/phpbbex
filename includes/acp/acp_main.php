@@ -40,12 +40,12 @@ class acp_main
 			$perm_from .= ($user_row['user_id'] != ANONYMOUS) ? '</a>' : '';
 			$perm_from .= '</strong>';
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_RESTORE_PERMISSIONS'		=> true,
 				'U_RESTORE_PERMISSIONS'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm'),
 				'PERM_FROM'					=> $perm_from,
 				'L_PERMISSIONS_TRANSFERRED_EXPLAIN'	=> sprintf($user->lang['PERMISSIONS_TRANSFERRED_EXPLAIN'], $perm_from, append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm')),
-			));
+			]);
 
 			return;
 		}
@@ -110,11 +110,11 @@ class acp_main
 
 				if ($confirm)
 				{
-					confirm_box(false, $user->lang[$confirm_lang], build_hidden_fields(array(
+					confirm_box(false, $user->lang[$confirm_lang], build_hidden_fields([
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'action'	=> $action,
-					)));
+					]));
 				}
 			}
 			else
@@ -307,7 +307,7 @@ class acp_main
 							WHERE forum_type <> ' . FORUM_CAT;
 						$result = $db->sql_query($sql);
 
-						$forum_ids = array();
+						$forum_ids = [];
 						while ($row = $db->sql_fetchrow($result))
 						{
 							$forum_ids[] = $row['forum_id'];
@@ -330,23 +330,23 @@ class acp_main
 								GROUP BY p.poster_id, p.topic_id';
 							$result = $db->sql_query($sql);
 
-							$posted = array();
+							$posted = [];
 							while ($row = $db->sql_fetchrow($result))
 							{
 								$posted[$row['poster_id']][] = $row['topic_id'];
 							}
 							$db->sql_freeresult($result);
 
-							$sql_ary = array();
+							$sql_ary = [];
 							foreach ($posted as $user_id => $topic_row)
 							{
 								foreach ($topic_row as $topic_id)
 								{
-									$sql_ary[] = array(
+									$sql_ary[] = [
 										'user_id'		=> (int) $user_id,
 										'topic_id'		=> (int) $topic_id,
 										'topic_posted'	=> 1,
-									);
+									];
 								}
 							}
 							unset($posted);
@@ -382,7 +382,7 @@ class acp_main
 							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
 
-						$tables = array(CONFIRM_TABLE, SESSIONS_TABLE);
+						$tables = [CONFIRM_TABLE, SESSIONS_TABLE];
 
 						foreach ($tables as $table)
 						{
@@ -390,7 +390,7 @@ class acp_main
 						}
 
 						// let's restore the admin session
-						$reinsert_ary = array(
+						$reinsert_ary = [
 								'session_id'			=> (string) $user->session_id,
 								'session_page'			=> (string) substr($user->page['page'], 0, 199),
 								'session_user_id'		=> (int) $user->data['user_id'],
@@ -403,7 +403,7 @@ class acp_main
 								'session_autologin'		=> (int) $user->data['session_autologin'],
 								'session_admin'			=> 1,
 								'session_viewonline'	=> (int) $user->data['session_viewonline'],
-						);
+						];
 
 						$sql = 'INSERT INTO ' . SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $reinsert_ary);
 						$db->sql_query($sql);
@@ -417,11 +417,11 @@ class acp_main
 		// Version check
 		$user->add_lang('install');
 
-		if ($auth->acl_get('a_server') && version_compare(PHP_VERSION, '7.4.0', '<'))
+		if ($auth->acl_get('a_server') && PHP_VERSION_ID < 70400)
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_PHP_VERSION_OLD'	=> true,
-			));
+			]);
 		}
 
 		$latest_version_info = false;
@@ -436,11 +436,11 @@ class acp_main
 			$announcement_url = trim($info[1]);
 			$announcement_url = (strpos($announcement_url, '&amp;') === false) ? str_replace('&', '&amp;', $announcement_url) : $announcement_url;
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_VERSION_UP_TO_DATE'	=> phpbb_version_compare($latest_version, $config['phpbbex_version'], '<='),
 				'UPDATE_INSTRUCTIONS'	=> $user->lang('UPDATE_INSTRUCTIONS', $latest_version, $announcement_url),
 				'U_UPDATE_ANNOUNCEMENT'	=> $announcement_url,
-			));
+			]);
 		}
 
 		// Get forum statistics
@@ -518,7 +518,7 @@ class acp_main
 
 		$dbsize = get_database_size();
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'TOTAL_POSTS'		=> $total_posts,
 			'POSTS_PER_DAY'		=> $posts_per_day,
 			'TOTAL_TOPICS'		=> $total_topics,
@@ -545,10 +545,10 @@ class acp_main
 
 			'S_ACTION_OPTIONS'	=> ($auth->acl_get('a_board')) ? true : false,
 			'S_FOUNDER'			=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
-			)
+			]
 		);
 
-		$log_data = array();
+		$log_data = [];
 		$log_count = false;
 
 		if ($auth->acl_get('a_viewlogs'))
@@ -557,11 +557,11 @@ class acp_main
 
 			foreach ($log_data as $row)
 			{
-				$template->assign_block_vars('log', array(
+				$template->assign_block_vars('log', [
 					'USERNAME'	=> $row['username_full'],
 					'IP'		=> $row['ip'],
 					'DATE'		=> $user->format_date($row['time']),
-					'ACTION'	=> $row['action'])
+					'ACTION'	=> $row['action']]
 				);
 			}
 		}
@@ -570,14 +570,14 @@ class acp_main
 		{
 			$user->add_lang('memberlist');
 
-			$inactive = array();
+			$inactive = [];
 			$inactive_count = 0;
 
 			view_inactive_users($inactive, $inactive_count, 10);
 
 			foreach ($inactive as $row)
 			{
-				$template->assign_block_vars('inactive', array(
+				$template->assign_block_vars('inactive', [
 					'INACTIVE_DATE'	=> $user->format_date($row['user_inactive_time']),
 					'REMINDED_DATE'	=> $user->format_date($row['user_reminded_time']),
 					'JOINED'		=> $user->format_date($row['user_regdate']),
@@ -596,18 +596,18 @@ class acp_main
 
 					'U_USER_ADMIN'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
 					'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$row['user_id']}&amp;sr=posts") : '',
-				));
+				]);
 			}
 
-			$option_ary = array('activate' => 'ACTIVATE', 'delete' => 'DELETE');
+			$option_ary = ['activate' => 'ACTIVATE', 'delete' => 'DELETE'];
 			if ($config['email_enable'])
 			{
-				$option_ary += array('remind' => 'REMIND');
+				$option_ary += ['remind' => 'REMIND'];
 			}
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_INACTIVE_USERS'		=> true,
-				'S_INACTIVE_OPTIONS'	=> build_select($option_ary))
+				'S_INACTIVE_OPTIONS'	=> build_select($option_ary)]
 			);
 		}
 
@@ -627,13 +627,13 @@ class acp_main
 
 		if (extension_loaded('mbstring'))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_MBSTRING_LOADED'						=> true,
 				'S_MBSTRING_FUNC_OVERLOAD_FAIL'			=> defined('MB_OVERLOAD_MAIL') && defined('MB_OVERLOAD_STRING') && (intval(@ini_get('mbstring.func_overload')) & (MB_OVERLOAD_MAIL | MB_OVERLOAD_STRING)),
 				'S_MBSTRING_ENCODING_TRANSLATION_FAIL'	=> (@ini_get('mbstring.encoding_translation') != 0),
-				'S_MBSTRING_HTTP_INPUT_FAIL'			=> !in_array(@ini_get('mbstring.http_input'), array('pass', '')),
-				'S_MBSTRING_HTTP_OUTPUT_FAIL'			=> !in_array(@ini_get('mbstring.http_output'), array('pass', '')),
-			));
+				'S_MBSTRING_HTTP_INPUT_FAIL'			=> !in_array(@ini_get('mbstring.http_input'), ['pass', '']),
+				'S_MBSTRING_HTTP_OUTPUT_FAIL'			=> !in_array(@ini_get('mbstring.http_output'), ['pass', '']),
+			]);
 		}
 
 		$this->tpl_name = 'acp_main';

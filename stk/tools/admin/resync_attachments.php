@@ -50,7 +50,7 @@ class resync_attachments
 			trigger_error('RESYNC_ATTACHMENTS_FINISHED');
 		}
 
-		$delete_ids = array();
+		$delete_ids = [];
 		foreach ($batch as $row)
 		{
 			// Does the file still exists?
@@ -72,7 +72,7 @@ class resync_attachments
 
 		// Next step
 		$template->assign_var('U_BACK_TOOL', false);
-		meta_refresh(3, append_sid(STK_INDEX, array('c' => 'admin', 't' => 'resync_attachments', 'step' => ++$step, 'submit' => true)));
+		meta_refresh(3, append_sid(STK_INDEX, ['c' => 'admin', 't' => 'resync_attachments', 'step' => ++$step, 'submit' => true]));
 		trigger_error('RESYNC_ATTACHMENTS_PROGRESS');
 	}
 }

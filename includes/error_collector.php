@@ -16,12 +16,12 @@ class phpbb_error_collector
 
 	function __construct()
 	{
-		$this->errors = array();
+		$this->errors = [];
 	}
 
 	function install()
 	{
-		set_error_handler(array(&$this, 'error_handler'));
+		set_error_handler([&$this, 'error_handler']);
 	}
 
 	function uninstall()
@@ -31,7 +31,7 @@ class phpbb_error_collector
 
 	function error_handler($errno, $msg_text, $errfile, $errline)
 	{
-		$this->errors[] = array($errno, $msg_text, $errfile, $errline);
+		$this->errors[] = [$errno, $msg_text, $errfile, $errline];
 	}
 
 	function format_errors()
@@ -44,7 +44,7 @@ class phpbb_error_collector
 				$text .= "<br />\n";
 			}
 
-			list($errno, $msg_text, $errfile, $errline) = $error;
+			[$errno, $msg_text, $errfile, $errline] = $error;
 
 			// Prevent leakage of local path to phpBB install
 			$errfile = phpbb_filter_root_path($errfile);

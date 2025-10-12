@@ -21,9 +21,9 @@ class acp_manage_attachments
 	{
 		global $db, $user, $auth, $template, $cache, $config;
 
-		$user->add_lang(array('posting', 'viewtopic', 'acp/attachments'));
+		$user->add_lang(['posting', 'viewtopic', 'acp/attachments']);
 
-		$error = $notify = array();
+		$error = $notify = [];
 		$submit = (isset($_POST['submit'])) ? true : false;
 		$action = request_var('action', '');
 		$start = request_var('start', 0);
@@ -44,20 +44,20 @@ class acp_manage_attachments
 		$this->tpl_name = 'acp_manage_attachments';
 		$this->page_title = 'ACP_MANAGE_ATTACHMENTS';
 
-		$template->assign_vars(array(
-			'U_ACTION'			=> $this->u_action)
+		$template->assign_vars([
+			'U_ACTION'			=> $this->u_action]
 		);
 
 		if ($submit)
 		{
-			$delete_files = (isset($_POST['delete'])) ? array_keys(request_var('delete', array('' => 0))) : array();
-			$add_files = (isset($_POST['add'])) ? array_keys(request_var('add', array('' => 0))) : array();
-			$post_ids = request_var('post_id', array('' => 0));
+			$delete_files = (isset($_POST['delete'])) ? array_keys(request_var('delete', ['' => 0])) : [];
+			$add_files = (isset($_POST['add'])) ? array_keys(request_var('add', ['' => 0])) : [];
+			$post_ids = request_var('post_id', ['' => 0]);
 
-			$current_post_ids = request_var('current_post_id', array('' => 0));
-			$current_topic_ids = request_var('current_topic_id', array('' => 0));
+			$current_post_ids = request_var('current_post_id', ['' => 0]);
+			$current_topic_ids = request_var('current_topic_id', ['' => 0]);
 			$next_post_ids = $post_ids;
-			$unset_topic_ids = $unset_post_ids = array();
+			$unset_topic_ids = $unset_post_ids = [];
 
 
 			if (sizeof($delete_files) && sizeof($add_files))
@@ -80,7 +80,7 @@ class acp_manage_attachments
 					FROM ' . POSTS_TABLE . '
 					WHERE ' . $db->sql_in_set('post_id', $next_post_ids);
 				$result = $db->sql_query($sql);
-				$next_topic_ids = array();
+				$next_topic_ids = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$next_topic_ids[] = $row['topic_id'];
@@ -108,7 +108,7 @@ class acp_manage_attachments
 				$notify[] = sprintf($user->lang['LOG_ATTACH_DEL'], implode(', ', $deleted_filenames));
 			}
 
-			$upload_list = array();
+			$upload_list = [];
 			foreach ($add_files as $attach_id)
 			{
 				if (!in_array($attach_id, array_keys($delete_files)) && !empty($post_ids[$attach_id]) && $post_ids[$attach_id] != $current_post_ids[$attach_id])
@@ -126,7 +126,7 @@ class acp_manage_attachments
 					FROM ' . FORUMS_TABLE;
 				$result = $db->sql_query($sql, 86400);
 
-				$forum_names = array();
+				$forum_names = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$forum_names[$row['forum_id']] = $row['forum_name'];
@@ -138,7 +138,7 @@ class acp_manage_attachments
 					WHERE ' . $db->sql_in_set('post_id', $upload_list);
 				$result = $db->sql_query($sql);
 
-				$post_info = array();
+				$post_info = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$post_info[$row['post_id']] = $row;
@@ -156,10 +156,10 @@ class acp_manage_attachments
 				{
 					$post_row = $post_info[$upload_list[$row['attach_id']]];
 
-					$template->assign_block_vars('upload', array(
+					$template->assign_block_vars('upload', [
 						'FILE_INFO'		=> sprintf($user->lang['LOG_ATTACH_REASSIGNED'], $post_row['post_id'], $row['real_filename']),
 						'S_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? true : false,
-						'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '')
+						'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '']
 					);
 
 					if (!$auth->acl_get('f_attach', $post_row['forum_id']))
@@ -168,13 +168,13 @@ class acp_manage_attachments
 					}
 
 					// Adjust attachment entry
-					$sql_ary = array(
+					$sql_ary = [
 						'in_message'	=> 0,
 						'is_orphan'		=> 0,
 						'poster_id'		=> $post_row['poster_id'],
 						'post_msg_id'	=> $post_row['post_id'],
 						'topic_id'		=> $post_row['topic_id'],
-					);
+					];
 
 					$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
 						SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -214,9 +214,9 @@ class acp_manage_attachments
 		}
 
 		// Sorting
-		$limit_days = array(0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
-		$sort_by_text = array('f' => $user->lang['FILENAME'], 't' => $user->lang['FILEDATE'], 's' => $user->lang['FILESIZE'], 'x' => $user->lang['EXTENSION'], 'd' => $user->lang['DOWNLOADS'],'p' => $user->lang['ATTACH_POST_ID'], 'u' => $user->lang['AUTHOR']);
-		$sort_by_sql = array('f' => 'a.real_filename', 't' => 'a.filetime', 's' => 'a.filesize', 'x' => 'a.extension', 'd' => 'a.download_count', 'p' => 'a.post_msg_id', 'u' => 'u.username');
+		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+		$sort_by_text = ['f' => $user->lang['FILENAME'], 't' => $user->lang['FILEDATE'], 's' => $user->lang['FILESIZE'], 'x' => $user->lang['EXTENSION'], 'd' => $user->lang['DOWNLOADS'],'p' => $user->lang['ATTACH_POST_ID'], 'u' => $user->lang['AUTHOR']];
+		$sort_by_sql = ['f' => 'a.real_filename', 't' => 'a.filetime', 's' => 'a.filesize', 'x' => 'a.extension', 'd' => 'a.download_count', 'p' => 'a.post_msg_id', 'u' => 'u.username'];
 
 		$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 		gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
@@ -268,7 +268,7 @@ class acp_manage_attachments
 			$sql_start = $start;
 		}
 
-		$attachments_list = array();
+		$attachments_list = [];
 
 		// Just get the files
 		$sql = 'SELECT a.*, u.username, u.user_colour, t.topic_title
@@ -288,7 +288,7 @@ class acp_manage_attachments
 		}
 		$db->sql_freeresult($result);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'TOTAL_FILES'		=> $num_files,
 			'TOTAL_SIZE'		=> $total_size,
 			'PAGINATION'		=> generate_pagination($this->u_action . "&amp;$u_sort_param", $num_files, $config['posts_per_page'], $start, true),
@@ -297,11 +297,11 @@ class acp_manage_attachments
 			'S_ON_PAGE'			=> on_page($num_files, $config['posts_per_page'], $start),
 			'S_LIMIT_DAYS'		=> $s_limit_days,
 			'S_SORT_KEY'		=> $s_sort_key,
-			'S_SORT_DIR'		=> $s_sort_dir)
+			'S_SORT_DIR'		=> $s_sort_dir]
 		);
 
 		// Grab extensions
-		$extensions = array();
+		$extensions = [];
 		$extensions = $cache->obtain_attach_extensions(true);
 
 		for ($i = 0, $end = sizeof($attachments_list); $i < $end; ++$i)
@@ -316,7 +316,7 @@ class acp_manage_attachments
 			$l_downloaded_viewed = ($display_cat == ATTACHMENT_CATEGORY_NONE) ? 'DOWNLOAD_COUNT' : 'VIEWED_COUNT';
 			$l_download_count = (!isset($row['download_count']) || $row['download_count'] == 0) ? $user->lang[$l_downloaded_viewed . '_NONE'] : (($row['download_count'] == 1) ? sprintf($user->lang[$l_downloaded_viewed], $row['download_count']) : sprintf($user->lang[$l_downloaded_viewed . 'S'], $row['download_count']));
 
-			$template->assign_block_vars('attachments', array(
+			$template->assign_block_vars('attachments', [
 				'ATTACHMENT_POSTER'	=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['username']),
 				'FILESIZE'			=> $row['filesize'] . ' ' . $size_lang,
 				'FILETIME'			=> $user->format_date($row['filetime']),
@@ -334,23 +334,23 @@ class acp_manage_attachments
 				'S_IN_MESSAGE'		=> $row['in_message'],
 
 				'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . "#p{$row['post_msg_id']}",
-				'U_FILE'			=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id']))
+				'U_FILE'			=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id'])]
 			);
 		}
 
 		if (sizeof($error))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_WARNING'		=> true,
-				'WARNING_MSG'	=> implode('<br />', $error))
+				'WARNING_MSG'	=> implode('<br />', $error)]
 			);
 		}
 
 		if (sizeof($notify))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_NOTIFY'		=> true,
-				'NOTIFY_MSG'	=> implode('<br />', $notify))
+				'NOTIFY_MSG'	=> implode('<br />', $notify)]
 			);
 		}
 	}

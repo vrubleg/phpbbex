@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_PERMISSIONS_EXPLAIN'	=> '
 		<p>Permissions are highly granular and grouped into four major sections, which are:</p>
 
@@ -277,4 +277,4 @@ $lang = array_merge($lang, array(
 
 	'WRONG_PERMISSION_TYPE'				=> 'Wrong permission type selected.',
 	'WRONG_PERMISSION_SETTING_FORMAT'	=> 'The permission settings are in a wrong format, phpBBex is not able to process them correctly.',
-));
+]);

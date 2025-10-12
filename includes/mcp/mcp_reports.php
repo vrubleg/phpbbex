@@ -43,7 +43,7 @@ class mcp_reports
 			case 'delete':
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 
-				$report_id_list = request_var('report_id_list', array(0));
+				$report_id_list = request_var('report_id_list', [0]);
 
 				if (!sizeof($report_id_list))
 				{
@@ -59,7 +59,7 @@ class mcp_reports
 		{
 			case 'report_details':
 
-				$user->add_lang(array('posting', 'viewforum', 'viewtopic'));
+				$user->add_lang(['posting', 'viewforum', 'viewtopic']);
 
 				$post_id = request_var('p', 0);
 
@@ -90,7 +90,7 @@ class mcp_reports
 				$post_id = $report['post_id'];
 				$report_id = $report['report_id'];
 
-				$post_info = get_post_data(array($post_id), 'm_report', true);
+				$post_info = get_post_data([$post_id], 'm_report', true);
 
 				if (!sizeof($post_info))
 				{
@@ -99,7 +99,7 @@ class mcp_reports
 
 				$post_info = $post_info[$post_id];
 
-				$reason = array('title' => $report['reason_title'], 'description' => $report['reason_description']);
+				$reason = ['title' => $report['reason_title'], 'description' => $report['reason_description']];
 				if (isset($user->lang['report_reasons']['TITLE'][strtoupper($reason['title'])]) && isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($reason['title'])]))
 				{
 					$reason['description'] = $user->lang['report_reasons']['DESCRIPTION'][strtoupper($reason['title'])];
@@ -108,19 +108,19 @@ class mcp_reports
 
 				if (topic_review($post_info['topic_id'], $post_info['forum_id'], 'topic_review', 0, false))
 				{
-					$template->assign_vars(array(
+					$template->assign_vars([
 						'S_TOPIC_REVIEW'	=> true,
 						'S_BBCODE_ALLOWED'	=> $post_info['enable_bbcode'],
-						'TOPIC_TITLE'		=> $post_info['topic_title'])
+						'TOPIC_TITLE'		=> $post_info['topic_title']]
 					);
 				}
 
-				$topic_tracking_info = $extensions = $attachments = array();
+				$topic_tracking_info = $extensions = $attachments = [];
 				// Get topic tracking info
 				if ($config['load_db_lastread'])
 				{
-					$tmp_topic_data = array($post_info['topic_id'] => $post_info);
-					$topic_tracking_info = get_topic_tracking($post_info['forum_id'], $post_info['topic_id'], $tmp_topic_data, array($post_info['forum_id'] => $post_info['forum_mark_time']));
+					$tmp_topic_data = [$post_info['topic_id'] => $post_info];
+					$topic_tracking_info = get_topic_tracking($post_info['forum_id'], $post_info['topic_id'], $tmp_topic_data, [$post_info['forum_id'] => $post_info['forum_mark_time']]);
 					unset($tmp_topic_data);
 				}
 				else
@@ -161,7 +161,7 @@ class mcp_reports
 
 					if (sizeof($attachments))
 					{
-						$update_count = array();
+						$update_count = [];
 						parse_attachments($post_info['forum_id'], $message, $attachments, $update_count);
 					}
 
@@ -172,14 +172,14 @@ class mcp_reports
 
 						foreach ($attachments as $attachment)
 						{
-							$template->assign_block_vars('attachment', array(
-								'DISPLAY_ATTACHMENT'	=> $attachment)
+							$template->assign_block_vars('attachment', [
+								'DISPLAY_ATTACHMENT'	=> $attachment]
 							);
 						}
 					}
 				}
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_MCP_REPORT'			=> true,
 					'S_CLOSE_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
 					'S_CAN_VIEWIP'			=> $auth->acl_get('m_info', $post_info['forum_id']),
@@ -230,7 +230,7 @@ class mcp_reports
 					'POST_ID'				=> $post_info['post_id'],
 
 					'U_LOOKUP_IP'			=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? $this->u_action . '&amp;r=' . $report_id . '&amp;p=' . $post_id . '&amp;f=' . $forum_id . '&amp;lookup=' . $post_info['poster_ip'] . '#ip' : '',
-				));
+				]);
 
 				$this->tpl_name = 'mcp_post';
 
@@ -240,7 +240,7 @@ class mcp_reports
 			case 'reports_closed':
 				$topic_id = request_var('t', 0);
 
-				$forum_info = array();
+				$forum_info = [];
 				$forum_list_reports = get_forum_list('m_report', false, true);
 				$forum_list_read = array_flip(get_forum_list('f_read', true, true)); // Flipped so we can isset() the forum IDs
 
@@ -256,7 +256,7 @@ class mcp_reports
 
 				if ($topic_id)
 				{
-					$topic_info = get_topic_data(array($topic_id));
+					$topic_info = get_topic_data([$topic_id]);
 
 					if (!sizeof($topic_info))
 					{
@@ -274,7 +274,7 @@ class mcp_reports
 					}
 				}
 
-				$forum_list = array();
+				$forum_list = [];
 
 				if (!$forum_id)
 				{
@@ -299,7 +299,7 @@ class mcp_reports
 				}
 				else
 				{
-					$forum_info = get_forum_data(array($forum_id), 'm_report');
+					$forum_info = get_forum_data([$forum_id], 'm_report');
 
 					if (!sizeof($forum_info))
 					{
@@ -307,12 +307,12 @@ class mcp_reports
 					}
 
 					$forum_info = $forum_info[$forum_id];
-					$forum_list = array($forum_id);
+					$forum_list = [$forum_id];
 					$global_id = $forum_id;
 				}
 
 				$forum_list[] = 0;
-				$forum_data = array();
+				$forum_data = [];
 
 				$forum_options = '<option value="0"' . (($forum_id == 0) ? ' selected="selected"' : '') . '>' . $user->lang['ALL_FORUMS'] . '</option>';
 				foreach ($forum_list_reports as $row)
@@ -324,7 +324,7 @@ class mcp_reports
 
 				$sort_days = $total = 0;
 				$sort_key = $sort_dir = '';
-				$sort_by_sql = $sort_order_sql = array();
+				$sort_by_sql = $sort_order_sql = [];
 				mcp_sorting($mode, $sort_days, $sort_key, $sort_dir, $sort_by_sql, $sort_order_sql, $total, $forum_id, $topic_id);
 
 				$forum_topics = ($total == -1) ? $forum_info['forum_topics'] : $total;
@@ -354,7 +354,7 @@ class mcp_reports
 				$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
 				$i = 0;
-				$report_ids = array();
+				$report_ids = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$report_ids[] = $row['report_id'];
@@ -375,7 +375,7 @@ class mcp_reports
 						ORDER BY ' . $sort_order_sql;
 					$result = $db->sql_query($sql);
 
-					$report_data = $rowset = array();
+					$report_data = $rowset = [];
 					while ($row = $db->sql_fetchrow($result))
 					{
 						$global_topic = ($row['forum_id']) ? false : true;
@@ -384,7 +384,7 @@ class mcp_reports
 							$row['forum_id'] = $global_id;
 						}
 
-						$template->assign_block_vars('postrow', array(
+						$template->assign_block_vars('postrow', [
 							'U_VIEWFORUM'				=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : '',
 							'U_VIEWPOST'				=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . '#p' . $row['post_id'],
 							'U_VIEW_DETAILS'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=reports&amp;start=$start&amp;mode=report_details&amp;f={$row['forum_id']}&amp;r={$row['report_id']}"),
@@ -405,7 +405,7 @@ class mcp_reports
 							'POST_TIME'		=> $user->format_date($row['post_time']),
 							'REPORT_ID'		=> $row['report_id'],
 							'REPORT_TIME'	=> $user->format_date($row['report_time']),
-							'TOPIC_TITLE'	=> $row['topic_title'])
+							'TOPIC_TITLE'	=> $row['topic_title']]
 						);
 					}
 					$db->sql_freeresult($result);
@@ -413,7 +413,7 @@ class mcp_reports
 				}
 
 				// Now display the page
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'L_EXPLAIN'				=> ($mode == 'reports') ? $user->lang['MCP_REPORTS_OPEN_EXPLAIN'] : $user->lang['MCP_REPORTS_CLOSED_EXPLAIN'],
 					'L_TITLE'				=> ($mode == 'reports') ? $user->lang['MCP_REPORTS_OPEN'] : $user->lang['MCP_REPORTS_CLOSED'],
 					'L_ONLY_TOPIC'			=> ($topic_id) ? sprintf($user->lang['ONLY_TOPIC'], $topic_info['topic_title']) : '',
@@ -427,7 +427,7 @@ class mcp_reports
 					'TOPIC_ID'				=> $topic_id,
 					'TOTAL'					=> $total,
 					'TOTAL_REPORTS'			=> ($total == 1) ? $user->lang['LIST_REPORT'] : sprintf($user->lang['LIST_REPORTS'], $total),
-					)
+					]
 				);
 
 				$this->tpl_name = 'mcp_reports';
@@ -453,7 +453,7 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 		WHERE ' . $db->sql_in_set('r.report_id', $report_id_list) . $pm_where;
 	$result = $db->sql_query($sql);
 
-	$post_id_list = array();
+	$post_id_list = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$post_id_list[] = $row[$id_column];
@@ -469,7 +469,7 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 	}
 	else
 	{
-		if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_report')))
+		if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', ['m_report']))
 		{
 			trigger_error('NOT_AUTHORISED');
 		}
@@ -477,30 +477,30 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 
 	if ($action == 'delete' && strpos($user->data['session_page'], 'mode=report_details') !== false)
 	{
-		$redirect = request_var('redirect', build_url(array('mode', 'r', 'quickmod')) . '&amp;mode=reports');
+		$redirect = request_var('redirect', build_url(['mode', 'r', 'quickmod']) . '&amp;mode=reports');
 	}
 	elseif ($action == 'delete' && strpos($user->data['session_page'], 'mode=pm_report_details') !== false)
 	{
-		$redirect = request_var('redirect', build_url(array('mode', 'r', 'quickmod')) . '&amp;mode=pm_reports');
+		$redirect = request_var('redirect', build_url(['mode', 'r', 'quickmod']) . '&amp;mode=pm_reports');
 	}
 	else if ($action == 'close' && !request_var('r', 0))
 	{
-		$redirect = request_var('redirect', build_url(array('mode', 'p', 'quickmod')) . '&amp;mode=' . $module);
+		$redirect = request_var('redirect', build_url(['mode', 'p', 'quickmod']) . '&amp;mode=' . $module);
 	}
 	else
 	{
-		$redirect = request_var('redirect', build_url(array('quickmod')));
+		$redirect = request_var('redirect', build_url(['quickmod']));
 	}
 	$success_msg = '';
-	$forum_ids = array();
-	$topic_ids = array();
+	$forum_ids = [];
+	$topic_ids = [];
 
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'i'					=> $module,
 		'mode'				=> $mode,
 		'report_id_list'	=> $report_id_list,
 		'action'			=> $action,
-		'redirect'			=> $redirect)
+		'redirect'			=> $redirect]
 	);
 
 	if (confirm_box(true))
@@ -514,7 +514,7 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 				AND r.user_id = u.user_id' . $pm_where;
 		$result = $db->sql_query($sql);
 
-		$reports = $close_report_posts = $close_report_topics = $notify_reporters = $report_id_list = array();
+		$reports = $close_report_posts = $close_report_topics = $notify_reporters = $report_id_list = [];
 		while ($report = $db->sql_fetchrow($result))
 		{
 			$reports[$report['report_id']] = $report;
@@ -552,7 +552,7 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 						AND ' . $db->sql_in_set('post_id', $close_report_posts, true);
 				$result = $db->sql_query($sql);
 
-				$keep_report_topics = array();
+				$keep_report_topics = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$keep_report_topics[] = $row['topic_id'];
@@ -648,19 +648,19 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 
 				if ($pm)
 				{
-					$messenger->assign_vars(array(
+					$messenger->assign_vars([
 						'USERNAME'		=> htmlspecialchars_decode($reporter['username']),
 						'CLOSER_NAME'	=> htmlspecialchars_decode($user->data['username']),
 						'PM_SUBJECT'	=> htmlspecialchars_decode(censor_text($post_info[$post_id]['message_subject'])),
-					));
+					]);
 				}
 				else
 				{
-					$messenger->assign_vars(array(
+					$messenger->assign_vars([
 						'USERNAME'		=> htmlspecialchars_decode($reporter['username']),
 						'CLOSER_NAME'	=> htmlspecialchars_decode($user->data['username']),
 						'POST_SUBJECT'	=> htmlspecialchars_decode(censor_text($post_info[$post_id]['post_subject'])),
-						'TOPIC_TITLE'	=> htmlspecialchars_decode(censor_text($post_info[$post_id]['topic_title'])))
+						'TOPIC_TITLE'	=> htmlspecialchars_decode(censor_text($post_info[$post_id]['topic_title']))]
 					);
 				}
 

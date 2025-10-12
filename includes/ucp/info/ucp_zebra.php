@@ -9,15 +9,15 @@ class ucp_zebra_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> 'ucp_zebra',
 			'title'		=> 'UCP_ZEBRA',
 			'version'	=> '1.0.0',
-			'modes'		=> array(
-				'friends'		=> array('title' => 'UCP_ZEBRA_FRIENDS', 'auth' => '', 'cat' => array('UCP_ZEBRA')),
-				'foes'			=> array('title' => 'UCP_ZEBRA_FOES', 'auth' => '', 'cat' => array('UCP_ZEBRA')),
-			),
-		);
+			'modes'		=> [
+				'friends'		=> ['title' => 'UCP_ZEBRA_FRIENDS', 'auth' => '', 'cat' => ['UCP_ZEBRA']],
+				'foes'			=> ['title' => 'UCP_ZEBRA_FOES', 'auth' => '', 'cat' => ['UCP_ZEBRA']],
+			],
+		];
 	}
 
 	function install()

@@ -16,15 +16,15 @@ if (!defined('IN_PHPBB'))
 class messenger
 {
 	var $vars, $msg, $replyto, $from, $subject;
-	var $addresses = array();
-	var $extra_headers = array();
+	var $addresses = [];
+	var $extra_headers = [];
 
 	var $use_queue = true;
 	var $queue;
 	var $jabber;
 
 	var $tpl_obj = NULL;
-	var $tpl_msg = array();
+	var $tpl_msg = [];
 
 	/**
 	* Constructor
@@ -42,7 +42,7 @@ class messenger
 	*/
 	function reset()
 	{
-		$this->addresses = $this->extra_headers = array();
+		$this->addresses = $this->extra_headers = [];
 		$this->vars = $this->msg = $this->replyto = $this->from = '';
 	}
 
@@ -210,14 +210,14 @@ class messenger
 
 			$tpl->set_custom_template($template_path, $template_lang . '_email', $fallback_template_path);
 
-			$tpl->set_filenames(array(
+			$tpl->set_filenames([
 				'body'		=> $template_file . '.txt',
-			));
+			]);
 		}
 
 		$this->tpl_obj = &$this->tpl_msg[$template_lang . $template_file];
 		$this->vars = &$this->tpl_obj->_rootref;
-		$this->tpl_msg = array();
+		$this->tpl_msg = [];
 
 		return true;
 	}
@@ -255,23 +255,23 @@ class messenger
 		// We add some standard variables we always use, no need to specify them always
 		if (!isset($this->vars['U_BOARD']))
 		{
-			$this->assign_vars(array(
+			$this->assign_vars([
 				'U_BOARD'	=> generate_board_url(),
-			));
+			]);
 		}
 
 		if (!isset($this->vars['EMAIL_SIG']))
 		{
-			$this->assign_vars(array(
+			$this->assign_vars([
 				'EMAIL_SIG'	=> str_replace('<br />', "\n", "-- \n" . htmlspecialchars_decode($config['board_email_sig'])),
-			));
+			]);
 		}
 
 		if (!isset($this->vars['SITENAME']))
 		{
-			$this->assign_vars(array(
+			$this->assign_vars([
 				'SITENAME'	=> htmlspecialchars_decode($config['sitename']),
-			));
+			]);
 		}
 
 		// Parse message through template
@@ -283,7 +283,7 @@ class messenger
 		// We now try and pull a subject from the email body ... if it exists,
 		// do this here because the subject may contain a variable
 		$drop_header = '';
-		$match = array();
+		$match = [];
 		if (preg_match('#^(Subject:(.*?))$#m', $this->msg, $match))
 		{
 			$this->subject = (trim($match[2]) != '') ? trim($match[2]) : (($this->subject != '') ? $this->subject : $user->lang['NO_EMAIL_SUBJECT']);
@@ -387,7 +387,7 @@ class messenger
 		global $config;
 
 		// We could use keys here, but we won't do this for 3.0.x to retain backwards compatibility
-		$headers = array();
+		$headers = [];
 
 		$headers[] = 'From: ' . $this->from;
 
@@ -502,12 +502,12 @@ class messenger
 		}
 		else
 		{
-			$this->queue->put('email', array(
+			$this->queue->put('email', [
 				'to'			=> $to,
 				'addresses'		=> $this->addresses,
 				'subject'		=> $this->subject,
 				'msg'			=> $this->msg,
-				'headers'		=> $headers)
+				'headers'		=> $headers]
 			);
 		}
 
@@ -543,7 +543,7 @@ class messenger
 			$use_queue = true;
 		}
 
-		$addresses = array();
+		$addresses = [];
 		foreach ($this->addresses['im'] as $type => $uid_ary)
 		{
 			$addresses[] = $uid_ary['uid'];
@@ -576,10 +576,10 @@ class messenger
 		}
 		else
 		{
-			$this->queue->put('jabber', array(
+			$this->queue->put('jabber', [
 				'addresses'		=> $addresses,
 				'subject'		=> $this->subject,
-				'msg'			=> $this->msg)
+				'msg'			=> $this->msg]
 			);
 		}
 		unset($addresses);
@@ -592,8 +592,8 @@ class messenger
 */
 class queue
 {
-	var $data = array();
-	var $queue_data = array();
+	var $data = [];
+	var $queue_data = [];
 	var $package_size = 0;
 	var $cache_file = '';
 
@@ -602,7 +602,7 @@ class queue
 	*/
 	function __construct()
 	{
-		$this->data = array();
+		$this->data = [];
 		$this->cache_file = PHPBB_ROOT_PATH . 'cache/queue.php';
 	}
 
@@ -611,9 +611,9 @@ class queue
 	*/
 	function init($object, $package_size)
 	{
-		$this->data[$object] = array();
+		$this->data[$object] = [];
 		$this->data[$object]['package_size'] = $package_size;
-		$this->data[$object]['data'] = array();
+		$this->data[$object]['data'] = [];
 	}
 
 	/**
@@ -912,7 +912,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 		// Ok this is rather confusing all things considered,
 		// but we have to grab bcc and cc headers and treat them differently
 		// Something we really didn't take into consideration originally
-		$headers_used = array();
+		$headers_used = [];
 
 		foreach ($headers as $header)
 		{
@@ -938,7 +938,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 		return false;
 	}
 
-	$mail_rcpt = $mail_to = $mail_cc = array();
+	$mail_rcpt = $mail_to = $mail_cc = [];
 
 	// Build correct addresses for RCPT TO command and the client side display (TO, CC)
 	if (isset($addresses['to']) && sizeof($addresses['to']))
@@ -982,10 +982,10 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	$collector = new phpbb_error_collector;
 	$collector->install();
 
-	$socket_options = array();
+	$socket_options = [];
 	if (isset($config['smtp_verify_cert']) && !$config['smtp_verify_cert'])
 	{
-		$socket_options['ssl'] = array('verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true);
+		$socket_options['ssl'] = ['verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true];
 	}
 	$socket_context = stream_context_create($socket_options);
 	$socket_address = $config['smtp_host'] . ':' . $config['smtp_port'];
@@ -1126,18 +1126,18 @@ class smtp_class
 	var $server_response = '';
 	var $socket = 0;
 	var $socket_tls = false;
-	var $responses = array();
-	var $commands = array();
+	var $responses = [];
+	var $commands = [];
 	var $numeric_response_code = 0;
 
 	var $backtrace = false;
-	var $backtrace_log = array();
+	var $backtrace_log = [];
 
 	function __construct()
 	{
 		// Always create a backtrace for admins to identify SMTP problems
 		$this->backtrace = true;
-		$this->backtrace_log = array();
+		$this->backtrace_log = [];
 	}
 
 	/**
@@ -1171,7 +1171,7 @@ class smtp_class
 		global $user;
 
 		$this->server_response = '';
-		$this->responses = array();
+		$this->responses = [];
 		$this->numeric_response_code = 0;
 
 		while (substr($this->server_response, 3, 1) != ' ')
@@ -1265,7 +1265,7 @@ class smtp_class
 		$available_methods = explode(' ', $this->commands['AUTH']);
 
 		// Allowed auth methods and their ordering if the default auth method was not found.
-		$auth_methods = array('PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5');
+		$auth_methods = ['PLAIN', 'LOGIN', 'CRAM-MD5', 'DIGEST-MD5'];
 		$method = '';
 
 		if (in_array($default_auth_method, $auth_methods) && in_array($default_auth_method, $available_methods))
@@ -1347,7 +1347,7 @@ class smtp_class
 		}
 
 		// Parse response.
-		$this->commands = array();
+		$this->commands = [];
 		foreach ($this->responses as $response)
 		{
 			$response = explode(' ', $response);
@@ -1449,7 +1449,7 @@ class smtp_class
 		$md5_challenge = base64_decode($this->responses[0]);
 
 		// Parse the md5 challenge - from AUTH_SASL (PEAR)
-		$tokens = array();
+		$tokens = [];
 		while (preg_match('/^([a-z-]+)=("[^"]+(?<!\\\)"|[^,]+)/i', $md5_challenge, $matches))
 		{
 			// Ignore these as per rfc2831
@@ -1468,12 +1468,12 @@ class smtp_class
 				}
 				else
 				{
-					$tokens[$matches[1]] = array($tokens[$matches[1]], preg_replace('/^"(.*)"$/', '\\1', $matches[2]));
+					$tokens[$matches[1]] = [$tokens[$matches[1]], preg_replace('/^"(.*)"$/', '\\1', $matches[2])];
 				}
 			}
 			else if (!empty($tokens[$matches[1]])) // Any other multiple instance = failure
 			{
-				$tokens = array();
+				$tokens = [];
 				break;
 			}
 			else
@@ -1500,7 +1500,7 @@ class smtp_class
 		// Required: nonce, algorithm
 		if (empty($tokens['nonce']) || empty($tokens['algorithm']))
 		{
-			$tokens = array();
+			$tokens = [];
 		}
 		$md5_challenge = $tokens;
 

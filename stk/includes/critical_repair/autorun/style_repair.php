@@ -55,7 +55,7 @@ class erk_style_repair
 		{
 			// Not so lucky...need to add a style into the database to access the Support Toolkit (can not guarentee this style will work for the board however).
 			$template_id = $theme_id = $imageset_id = $style_id = $style_name = false;
-			foreach (array('template', 'theme', 'imageset') as $mode)
+			foreach (['template', 'theme', 'imageset'] as $mode)
 			{
 				$var = $mode . '_id';
 				$subpath = ($mode != 'style') ? "$mode/" : '';
@@ -88,11 +88,11 @@ class erk_style_repair
 								$items = parse_cfg_file('', $cfg);
 								$name = (isset($items['name'])) ? trim($items['name']) : false;
 
-								$sql_ary = array(
+								$sql_ary = [
 									$mode . '_name'			=> $name,
 									$mode . '_copyright'	=> $items['copyright'],
 									$mode . '_path'			=> $file,
-								);
+								];
 
 								if ($mode == 'theme')
 								{
@@ -119,14 +119,14 @@ class erk_style_repair
 			if ($template_id && $theme_id && $imageset_id)
 			{
 				// We've got one of each, so we can add a new style and repair this.
-				$sql_ary = array(
+				$sql_ary = [
 					'style_name'		=> $style_name,
 					'style_copyright'	=> '',
 					'style_active'		=> 1,
 					'template_id'		=> $template_id,
 					'theme_id'			=> $theme_id,
 					'imageset_id'		=> $imageset_id,
-				);
+				];
 				$db->sql_query('INSERT INTO ' . STYLES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				$style_id = $db->sql_nextid();
 

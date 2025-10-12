@@ -51,7 +51,7 @@ class acp_search
 
 		$search_types = $this->get_search_types();
 
-		$settings = array(
+		$settings = [
 			'search_interval'			=> 'float',
 			'search_anonymous_interval'	=> 'float',
 			'load_search'				=> 'bool',
@@ -61,7 +61,7 @@ class acp_search
 			'search_store_results'		=> 'integer',
 			'default_search_titleonly'	=> 'bool',
 			'search_highlight_keywords'	=> 'bool',
-		);
+		];
 
 		$search = null;
 		$error = false;
@@ -83,9 +83,9 @@ class acp_search
 
 				if (!$submit)
 				{
-					$template->assign_block_vars('backend', array(
+					$template->assign_block_vars('backend', [
 						'NAME'		=> $name,
-						'SETTINGS'	=> $vars['tpl'])
+						'SETTINGS'	=> $vars['tpl']]
 					);
 				}
 				else if (is_array($vars['config']))
@@ -97,7 +97,7 @@ class acp_search
 		unset($search);
 		unset($error);
 
-		$cfg_array = (isset($_REQUEST['config'])) ? request_var('config', array('' => ''), true) : array();
+		$cfg_array = (isset($_REQUEST['config'])) ? request_var('config', ['' => ''], true) : [];
 		$updated = request_var('updated', false);
 
 		foreach ($settings as $config_name => $var_type)
@@ -165,13 +165,13 @@ class acp_search
 					}
 					else
 					{
-						confirm_box(false, $user->lang['CONFIRM_SEARCH_BACKEND'], build_hidden_fields(array(
+						confirm_box(false, $user->lang['CONFIRM_SEARCH_BACKEND'], build_hidden_fields([
 							'i'			=> $id,
 							'mode'		=> $mode,
 							'submit'	=> true,
 							'updated'	=> $updated,
-							'config'	=> array('search_type' => $cfg_array['search_type']),
-						)));
+							'config'	=> ['search_type' => $cfg_array['search_type']],
+						]));
 					}
 				}
 				else
@@ -207,7 +207,7 @@ class acp_search
 		$this->tpl_name = 'acp_search';
 		$this->page_title = 'ACP_SEARCH_SETTINGS';
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'LIMIT_SEARCH_LOAD'		=> (float) $config['limit_search_load'],
 			'MIN_SEARCH_AUTHOR_CHARS'	=> (int) $config['min_search_author_chars'],
 			'SEARCH_INTERVAL'		=> (float) $config['search_interval'],
@@ -221,7 +221,7 @@ class acp_search
 			'S_HIGHLIGHT_KEYWORDS'	=> !empty($config['search_highlight_keywords']),
 			'S_SETTINGS'			=> true,
 
-			'U_ACTION'				=> $this->u_action)
+			'U_ACTION'				=> $this->u_action]
 		);
 	}
 
@@ -231,7 +231,7 @@ class acp_search
 
 		if (isset($_REQUEST['action']) && is_array($_REQUEST['action']))
 		{
-			$action = request_var('action', array('' => false));
+			$action = request_var('action', ['' => false]);
 			$action = key($action);
 		}
 		else
@@ -243,7 +243,7 @@ class acp_search
 		if (isset($_POST['cancel']))
 		{
 			$action = '';
-			$this->state = array();
+			$this->state = [];
 			$this->save_state();
 		}
 
@@ -298,7 +298,7 @@ class acp_search
 						// pass a reference to myself so the $search object can make use of save_state() and attributes
 						if ($error = $this->search->delete_index($this, append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&mode=$mode&action=delete", false)))
 						{
-							$this->state = array('');
+							$this->state = [''];
 							$this->save_state();
 							trigger_error($error . adm_back_link($this->u_action) . $this->close_popup_js(), E_USER_WARNING);
 						}
@@ -315,7 +315,7 @@ class acp_search
 									AND post_id <= ' . (int) ($post_counter + $this->batch_size);
 							$result = $db->sql_query($sql);
 
-							$ids = $posters = $forum_ids = array();
+							$ids = $posters = $forum_ids = [];
 							while ($row = $db->sql_fetchrow($result))
 							{
 								$ids[] = $row['post_id'];
@@ -346,7 +346,7 @@ class acp_search
 
 					$this->search->tidy();
 
-					$this->state = array('');
+					$this->state = [''];
 					$this->save_state();
 
 					add_log('admin', 'LOG_SEARCH_INDEX_REMOVED', $name);
@@ -359,7 +359,7 @@ class acp_search
 						// pass a reference to acp_search so the $search object can make use of save_state() and attributes
 						if ($error = $this->search->create_index($this, append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&mode=$mode&action=create", false)))
 						{
-							$this->state = array('');
+							$this->state = [''];
 							$this->save_state();
 							trigger_error($error . adm_back_link($this->u_action) . $this->close_popup_js(), E_USER_WARNING);
 						}
@@ -435,7 +435,7 @@ class acp_search
 
 					$this->search->tidy();
 
-					$this->state = array('');
+					$this->state = [''];
 					$this->save_state();
 
 					add_log('admin', 'LOG_SEARCH_INDEX_CREATED', $name);
@@ -458,43 +458,43 @@ class acp_search
 
 			$name = ucfirst(strtolower(str_replace('_', ' ', $type)));
 
-			$data = array();
+			$data = [];
 			if (method_exists($search, 'index_stats'))
 			{
 				$data = $search->index_stats();
 			}
 
-			$statistics = array();
+			$statistics = [];
 			foreach ($data as $statistic => $value)
 			{
 				$n = sizeof($statistics);
 				if ($n && sizeof($statistics[$n - 1]) < 3)
 				{
-					$statistics[$n - 1] += array('statistic_2' => $statistic, 'value_2' => $value);
+					$statistics[$n - 1] += ['statistic_2' => $statistic, 'value_2' => $value];
 				}
 				else
 				{
-					$statistics[] = array('statistic_1' => $statistic, 'value_1' => $value);
+					$statistics[] = ['statistic_1' => $statistic, 'value_1' => $value];
 				}
 			}
 
-			$template->assign_block_vars('backend', array(
+			$template->assign_block_vars('backend', [
 				'L_NAME'			=> $name,
 				'NAME'				=> $type,
 
 				'S_ACTIVE'			=> ($type == $config['search_type']) ? true : false,
-				'S_HIDDEN_FIELDS'	=> build_hidden_fields(array('search_type' => $type)),
+				'S_HIDDEN_FIELDS'	=> build_hidden_fields(['search_type' => $type]),
 				'S_INDEXED'			=> (bool) $search->index_created(),
-				'S_STATS'			=> (bool) sizeof($statistics))
+				'S_STATS'			=> (bool) sizeof($statistics)]
 			);
 
 			foreach ($statistics as $statistic)
 			{
-				$template->assign_block_vars('backend.data', array(
+				$template->assign_block_vars('backend.data', [
 					'STATISTIC_1'	=> $statistic['statistic_1'],
 					'VALUE_1'		=> $statistic['value_1'],
 					'STATISTIC_2'	=> (isset($statistic['statistic_2'])) ? $statistic['statistic_2'] : '',
-					'VALUE_2'		=> (isset($statistic['value_2'])) ? $statistic['value_2'] : '')
+					'VALUE_2'		=> (isset($statistic['value_2'])) ? $statistic['value_2'] : '']
 				);
 			}
 		}
@@ -506,20 +506,20 @@ class acp_search
 		$this->tpl_name = 'acp_search';
 		$this->page_title = 'ACP_SEARCH_INDEX';
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_INDEX'				=> true,
 			'U_ACTION'				=> $this->u_action,
 			'U_PROGRESS_BAR'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;mode=$mode&amp;action=progress_bar"),
 			'UA_PROGRESS_BAR'		=> addslashes(append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;mode=$mode&amp;action=progress_bar")),
-		));
+		]);
 
 		if (isset($this->state[1]))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_CONTINUE_INDEXING'	=> $this->state[1],
 				'U_CONTINUE_INDEXING'	=> $this->u_action . '&amp;action=' . $this->state[1],
 				'L_CONTINUE'			=> ($this->state[1] == 'create') ? $user->lang['CONTINUE_INDEXING'] : $user->lang['CONTINUE_DELETING_INDEX'],
-				'L_CONTINUE_EXPLAIN'	=> ($this->state[1] == 'create') ? $user->lang['CONTINUE_INDEXING_EXPLAIN'] : $user->lang['CONTINUE_DELETING_INDEX_EXPLAIN'])
+				'L_CONTINUE_EXPLAIN'	=> ($this->state[1] == 'create') ? $user->lang['CONTINUE_INDEXING_EXPLAIN'] : $user->lang['CONTINUE_DELETING_INDEX_EXPLAIN']]
 			);
 		}
 	}
@@ -532,13 +532,13 @@ class acp_search
 
 		adm_page_header($user->lang[$l_type]);
 
-		$template->set_filenames(array(
-			'body'	=> 'progress_bar.html')
+		$template->set_filenames([
+			'body'	=> 'progress_bar.html']
 		);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_PROGRESS'			=> $user->lang[$l_type],
-			'L_PROGRESS_EXPLAIN'	=> $user->lang[$l_type . '_EXPLAIN'])
+			'L_PROGRESS_EXPLAIN'	=> $user->lang[$l_type . '_EXPLAIN']]
 		);
 
 		adm_page_footer();
@@ -553,7 +553,7 @@ class acp_search
 
 	function get_search_types()
 	{
-		$search_types = array();
+		$search_types = [];
 
 		$dp = @opendir(PHPBB_ROOT_PATH . 'includes/search');
 

@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ABOUT_USER'			=> 'Профиль',
 	'ACTIVE_IN_FORUM'		=> 'Наиболее активен в разделе',
 	'ACTIVE_IN_TOPIC'		=> 'Наиболее активен в теме',
@@ -106,10 +106,10 @@ $lang = array_merge($lang, array(
 	'USER_LAST_IP'			=> 'Последний IP',
 	'USER_BAN'				=> 'Блокировка',
 	'USER_FORUM'			=> 'Статистика пользователя',
-	'USER_LAST_REMINDED'	=> array(
+	'USER_LAST_REMINDED'	=> [
 		0		=> 'Нет напоминаний, отправленных в это время',
 		1		=> 'Отправлено %1$d напоминание<br />» %2$s',
-	),
+	],
 	'USER_ONLINE'			=> 'Онлайн',
 	'USER_PRESENCE'			=> 'Присутствие на форуме',
 	'USERS_PER_PAGE'		=> 'Пользователей на странице',
@@ -118,4 +118,4 @@ $lang = array_merge($lang, array(
 	'VISITED'				=> 'Последнее посещение',
 
 	'WWW'					=> 'Сайт',
-));
+]);

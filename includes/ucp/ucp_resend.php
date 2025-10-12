@@ -75,10 +75,10 @@ class ucp_resend
 
 				$messenger->anti_abuse_headers($config, $user);
 
-				$messenger->assign_vars(array(
+				$messenger->assign_vars([
 					'WELCOME_MSG'	=> htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
 					'USERNAME'		=> htmlspecialchars_decode($user_row['username']),
-					'U_ACTIVATE'	=> generate_board_url() . "/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}")
+					'U_ACTIVATE'	=> generate_board_url() . "/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}"]
 				);
 
 				$messenger->send(NOTIFY_EMAIL);
@@ -102,10 +102,10 @@ class ucp_resend
 
 					$messenger->anti_abuse_headers($config, $user);
 
-					$messenger->assign_vars(array(
+					$messenger->assign_vars([
 						'USERNAME'			=> htmlspecialchars_decode($user_row['username']),
 						'U_USER_DETAILS'	=> generate_board_url() . "/memberlist.php?mode=viewprofile&u={$user_row['user_id']}",
-						'U_ACTIVATE'		=> generate_board_url() . "/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}")
+						'U_ACTIVATE'		=> generate_board_url() . "/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}"]
 					);
 
 					$messenger->send($row['user_notify_type']);
@@ -120,10 +120,10 @@ class ucp_resend
 			trigger_error($message);
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'USERNAME'			=> $username,
 			'EMAIL'				=> $email,
-			'S_PROFILE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=resend_act'))
+			'S_PROFILE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=resend_act')]
 		);
 
 		$this->tpl_name = 'ucp_resend';

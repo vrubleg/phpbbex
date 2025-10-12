@@ -57,7 +57,7 @@ else
 }
 $result = $db->sql_query($sql);
 
-$legend = array();
+$legend = [];
 while ($row = $db->sql_fetchrow($result))
 {
 	$colour_text = ($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . '"' : '';
@@ -111,10 +111,10 @@ if ($config['load_birthdays'] && $config['allow_birthdays'] && $auth->acl_gets('
 }
 
 // Images for display topic rows
-$template->assign_vars(array(
+$template->assign_vars([
 	'NEWEST_POST_IMG'		=> $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
 	'LAST_POST_IMG'			=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
-));
+]);
 
 // Last active topics
 $template->assign_var('S_ACTIVE_TOPICS_ON_INDEX', !empty($config['active_topics_on_index']));
@@ -136,7 +136,7 @@ if (class_exists('phpbb_gallery_integration'))
 }
 
 // Assign index specific vars
-$template->assign_vars(array(
+$template->assign_vars([
 	'S_ON_INDEX'	=> true,
 	'U_CANONICAL'	=> generate_board_url() . '/',
 
@@ -157,13 +157,13 @@ $template->assign_vars(array(
 	'S_DISPLAY_BIRTHDAY_LIST'	=> ($config['load_birthdays']) ? true : false,
 
 	'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
-));
+]);
 
 // Output page
 page_header($user->lang['INDEX']);
 
-$template->set_filenames(array(
-	'body' => 'index_body.html')
+$template->set_filenames([
+	'body' => 'index_body.html']
 );
 
 page_footer();

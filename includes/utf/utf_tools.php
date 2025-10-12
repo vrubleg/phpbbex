@@ -116,7 +116,7 @@ function utf8_str_split($str, $split_len = 1)
 	$len = utf8_strlen($str);
 	if ($len <= $split_len)
 	{
-		return array($str);
+		return [$str];
 	}
 
 	preg_match_all('/.{' . $split_len . '}|[^\x00]{1,' . $split_len . '}$/us', $str, $ar);
@@ -320,7 +320,7 @@ function utf8_decode_ncr_callback($m)
 */
 function utf8_case_fold($text, $option = 'full')
 {
-	static $uniarray = array();
+	static $uniarray = [];
 
 	// common is always set
 	if (!isset($uniarray['c']))
@@ -367,7 +367,7 @@ function utf8_case_fold($text, $option = 'full')
 */
 function utf8_case_fold_nfkc($text, $option = 'full')
 {
-	static $fc_nfkc_closure = array(
+	static $fc_nfkc_closure = [
 		"\xCD\xBA"	=> "\x20\xCE\xB9",
 		"\xCF\x92"	=> "\xCF\x85",
 		"\xCF\x93"	=> "\xCF\x8D",
@@ -933,7 +933,7 @@ function utf8_case_fold_nfkc($text, $option = 'full')
 		"\xF0\x9D\x9E\xA8"	=> "\xCF\x89",
 		"\xF0\x9D\x9E\xBB"	=> "\xCF\x83",
 		"\xF0\x9D\x9F\x8A"	=> "\xCF\x9D",
-	);
+	];
 
 	// do the case fold
 	$text = utf8_case_fold($text, $option);
@@ -958,8 +958,8 @@ function utf8_case_fold_nfkc($text, $option = 'full')
 */
 function utf8_case_fold_nfc($text, $option = 'full')
 {
-	static $uniarray = array();
-	static $ypogegrammeni = array(
+	static $uniarray = [];
+	static $ypogegrammeni = [
 		"\xCD\xBA"		=> "\x20\xCD\x85",
 		"\xE1\xBE\x80"	=> "\xE1\xBC\x80\xCD\x85",
 		"\xE1\xBE\x81"	=> "\xE1\xBC\x81\xCD\x85",
@@ -1024,7 +1024,7 @@ function utf8_case_fold_nfc($text, $option = 'full')
 		"\xE1\xBF\xB4"	=> "\xCF\x8E\xCD\x85",
 		"\xE1\xBF\xB7"	=> "\xE1\xBF\xB6\xCD\x85",
 		"\xE1\xBF\xBC"	=> "\xCE\xA9\xCD\x85",
-	);
+	];
 
 	// perform a small trick, avoid further normalization on composed points that contain U+0345 in their decomposition
 	$text = strtr($text, $ypogegrammeni);
@@ -1091,7 +1091,7 @@ function utf8_normalize_nfc($strings)
 */
 function utf8_clean_string($text)
 {
-	static $homographs = array();
+	static $homographs = [];
 	if (empty($homographs))
 	{
 		$homographs = require(PHPBB_ROOT_PATH . 'includes/utf/data/confusables.php');
@@ -1149,7 +1149,7 @@ function utf8_wordwrap($string, $width = 75, $break = "\n", $cut = false)
 {
 	// We first need to explode on $break, not destroying existing (intended) breaks
 	$lines = explode($break, $string);
-	$new_lines = array(0 => '');
+	$new_lines = [0 => ''];
 	$index = 0;
 
 	foreach ($lines as $line)
@@ -1227,7 +1227,7 @@ function utf8_str_replace($search, $replace, $subject)
 {
 	if (!is_array($search))
 	{
-		$search = array($search);
+		$search = [$search];
 		if (is_array($replace))
 		{
 			$replace = (string) $replace;

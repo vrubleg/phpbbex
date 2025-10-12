@@ -132,7 +132,7 @@ class erk_style_dir_repair
 		global $db, $stk_no_error;
 
 		// Fetch all the style dirs
-		$style_dirs = array();
+		$style_dirs = [];
 		if ($handle = opendir(PHPBB_ROOT_PATH . 'styles/'))
 		{
 			while (false !== ($file = readdir($handle)))

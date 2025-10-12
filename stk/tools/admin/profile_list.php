@@ -26,7 +26,7 @@ class profile_list
 		// Handle delete
 		if (isset($_REQUEST['sa']))
 		{
-			$uids = request_var('marked_user_id', array(0, 0));
+			$uids = request_var('marked_user_id', [0, 0]);
 
 			if (confirm_box(true))
 			{
@@ -45,7 +45,7 @@ class profile_list
 			}
 			else
 			{
-				$hidden = build_hidden_fields(array('marked_user_id' => $uids));
+				$hidden = build_hidden_fields(['marked_user_id' => $uids]);
 				confirm_box(false, 'USERS_DELETE', $hidden, 'confirm_body.html', STK_DIR_NAME . '/index.php' . '?c=admin&amp;t=profile_list&amp;sa=' . true);
 			}
 		}
@@ -69,7 +69,7 @@ class profile_list
 		/*
 		* Filter stuff
 		*/
-		$options = array(
+		$options = [
 			'user_icq'			=> 'ICQ',
 			'user_jabber'		=> 'JABBER',
 			'user_skype'		=> 'SKYPE',
@@ -79,16 +79,16 @@ class profile_list
 			'user_interests'	=> 'INTERESTS',
 			'user_from'			=> 'LOCATION',
 			'user_sig'			=> 'SIGNATURE',
-		);
+		];
 
 		$profile_where = '';
 		foreach ($options as $option => $lang_key)
 		{
-			$template->assign_block_vars('options', array(
+			$template->assign_block_vars('options', [
 				'OPTION'	=> $option,
 				'LANG'		=> $user->lang[$lang_key],
 				'SELECTED'	=> ($display == $option) ? true : false,
-			));
+			]);
 
 			if ($empty_only)
 			{
@@ -113,23 +113,23 @@ class profile_list
 		/*
 		* Order stuff
 		*/
-		$order = array(
+		$order = [
 			'user_regdate'			=> 'JOINED',
 			'username_clean'		=> 'USERNAME',
 			'user_lastvisit'		=> 'LAST_VISIT',
 			'user_lastpost_time'	=> 'LAST_POST',
 			'user_warnings'			=> 'WARNINGS',
 			'user_posts'			=> 'POSTS',
-		);
-		$timestamps = array('user_regdate', 'user_lastvisit', 'user_lastpost_time');
+		];
+		$timestamps = ['user_regdate', 'user_lastvisit', 'user_lastpost_time'];
 
 		foreach ($order as $option => $lang_key)
 		{
-			$template->assign_block_vars('order', array(
+			$template->assign_block_vars('order', [
 				'OPTION'	=> $option,
 				'LANG'		=> $user->lang[$lang_key],
 				'SELECTED'	=> ($order_by == $option) ? true : false,
-			));
+			]);
 		}
 
 		$order_sql = ' ORDER BY user_regdate DESC';
@@ -178,7 +178,7 @@ class profile_list
 				break;
 			}
 
-			$template->assign_block_vars('users', array(
+			$template->assign_block_vars('users', [
 				'EMAIL'				=> $row['user_email'],
 				'ICQ'				=> $row['user_icq'],
 				'INTERESTS'			=> $row['user_interests'],
@@ -203,13 +203,13 @@ class profile_list
 				'U_USER_ADMIN'		=> append_sid(PHPBB_ROOT_PATH . 'adm/index.php', 'i=users&amp;mode=overview&amp;u=' . $row['user_id'], true, $user->session_id),
 
 				'S_USER_INACTIVE'	=> ($row['user_inactive_reason']) ? true : false,
-			));
+			]);
 		}
 		$db->sql_freeresult($result);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_DISPLAY_ACTION'		=> append_sid(STK_INDEX, 't=profile_list&amp;go=1'),
-			'U_SELECTED_ACTION'		=> append_sid(STK_INDEX, array('c' => 'admin', 't' => 'profile_list', 'sa' => true)),
+			'U_SELECTED_ACTION'		=> append_sid(STK_INDEX, ['c' => 'admin', 't' => 'profile_list', 'sa' => true]),
 
 			'LIMIT'					=> $limit,
 			'OPTION_SECTION'		=> (isset($options[$display]) && $display != 'user_sig') ? $user->lang[$options[$display]] : '',
@@ -220,11 +220,11 @@ class profile_list
 			'S_DISPLAY_ALL'			=> (!isset($options[$display])) ? true : false,
 			'S_DISPLAY_SIG'			=> ($display == 'user_sig') ? true : false,
 			'S_EMPTY_CHECKED'		=> $empty_only,
-		));
+		]);
 
-		$template->set_filenames(array(
+		$template->set_filenames([
 			'body' => 'tools/profile_list.html',
-		));
+		]);
 
 		page_footer();
 	}

@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Custom profile fields
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADDED_PROFILE_FIELD'	=> 'Дополнительное поле успешно добавлено в профиль.',
 	'ALPHA_ONLY'			=> 'Только буквенно-цифровые',
 	'ALPHA_SPACERS'			=> 'Только буквенно-цифровые и разделители',
@@ -133,4 +133,4 @@ $lang = array_merge($lang, array(
 	'USER_FIELD_NAME'	=> 'Имя поля/заголовок, показываемый пользователю',
 
 	'VISIBILITY_OPTION'				=> 'Видимость поля',
-));
+]);

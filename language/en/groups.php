@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ALREADY_DEFAULT_GROUP'		=> 'The selected group is already your default group.',
 	'ALREADY_IN_GROUP'			=> 'You are already a member of the selected group.',
 	'ALREADY_IN_GROUP_PENDING'	=> 'You already requested joining the selected group.',
@@ -70,4 +70,4 @@ $lang = array_merge($lang, array(
 	'USER_GROUP_DEMOTE'			=> 'Demote leadership',
 	'USER_GROUP_DEMOTE_CONFIRM'	=> 'Are you sure you want to demote as group leader from the selected group?',
 	'USER_GROUP_DEMOTED'		=> 'Successfully demoted your leadership.',
-));
+]);

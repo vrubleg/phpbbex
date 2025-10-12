@@ -40,7 +40,7 @@ class tutorial
 	function tool_active()
 	{
 		// Limit access for old PHP versions.
-		if (version_compare(PHP_VERSION, '7.4', '<'))
+		if (PHP_VERSION_ID < 70400)
 		{
 			return 'TUTORIAL_NOT_AVAILABLE';
 		}
@@ -74,13 +74,13 @@ class tutorial
 		/*
 		* Method 2
 		*/
-		return array(
+		return [
 			'title'	=> 'TUTORIAL',
-			'vars'	=> array(
+			'vars'	=> [
 				'legend1'			=> 'TUTORIAL',
-				'tutorial'			=> array('lang' => 'TUTORIAL', 'type' => 'text:40:255', 'explain' => true),
-			)
-		);
+				'tutorial'			=> ['lang' => 'TUTORIAL', 'type' => 'text:40:255', 'explain' => true],
+			]
+		];
 
 		/*
 		* Method 3

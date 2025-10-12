@@ -86,7 +86,7 @@ class phpbb_default_captcha
 			$link = append_sid(PHPBB_ROOT_PATH . 'ucp.php',  'mode=confirm&amp;confirm_id=' . $this->confirm_id . '&amp;type=' . $this->type);
 			$explain = $user->lang(($this->type != CONFIRM_POST) ? 'CONFIRM_EXPLAIN' : 'POST_CONFIRM_EXPLAIN', '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>');
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'CONFIRM_IMAGE_LINK'		=> $link,
 				'CONFIRM_IMAGE'				=> '<img src="' . $link . '" />',
 				'CONFIRM_IMG'				=> '<img src="' . $link . '" />',
@@ -95,7 +95,7 @@ class phpbb_default_captcha
 				'S_TYPE'					=> $this->type,
 				'S_CONFIRM_REFRESH'			=> ($config['enable_confirm'] && $config['confirm_refresh'] && $this->type == CONFIRM_REG) ? true : false,
 				'L_CONFIRM_EXPLAIN'			=> $explain,
-			));
+			]);
 
 			return 'captcha_default.html';
 		}
@@ -116,17 +116,17 @@ class phpbb_default_captcha
 		}
 
 		// acp_captcha has a delivery function; let's use it
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'CONFIRM_IMAGE'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'captcha_demo=1&amp;mode=visual&amp;i=' . $id . '&amp;select_captcha=' . $this->get_class_name()) . $variables,
 			'CONFIRM_ID'		=> $this->confirm_id,
-		));
+		]);
 
 		return 'captcha_default_acp_demo.html';
 	}
 
 	function get_hidden_fields()
 	{
-		$hidden_fields = array();
+		$hidden_fields = [];
 
 		// this is required for posting.php - otherwise we would forget about the captcha being already solved
 		if ($this->solved)
@@ -150,7 +150,7 @@ class phpbb_default_captcha
 
 		if ($row = $db->sql_fetchrow($result))
 		{
-			$sql_in = array();
+			$sql_in = [];
 			do
 			{
 				$sql_in[] = (string) $row['session_id'];
@@ -228,12 +228,12 @@ class phpbb_default_captcha
 		$this->seed = random_int(0, 0x7fffffff);
 		$this->solved = 0;
 
-		$sql = 'INSERT INTO ' . CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+		$sql = 'INSERT INTO ' . CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', [
 				'confirm_id'	=> (string) $this->confirm_id,
 				'session_id'	=> (string) $user->session_id,
 				'confirm_type'	=> (int) $this->type,
 				'code'			=> (string) $this->code,
-				'seed'			=> (int) $this->seed)
+				'seed'			=> (int) $this->seed]
 		);
 		$db->sql_query($sql);
 	}
@@ -249,9 +249,9 @@ class phpbb_default_captcha
 		$this->seed = random_int(0, 0x7fffffff);
 		$this->solved = 0;
 
-		$sql = 'UPDATE ' . CONFIRM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
+		$sql = 'UPDATE ' . CONFIRM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', [
 				'code'			=> (string) $this->code,
-				'seed'			=> (int) $this->seed)) . '
+				'seed'			=> (int) $this->seed]) . '
 				WHERE
 				confirm_id = \'' . $db->sql_escape($this->confirm_id) . '\'
 					AND session_id = \'' . $db->sql_escape($user->session_id) . '\'';
@@ -269,9 +269,9 @@ class phpbb_default_captcha
 		$this->seed = random_int(0, 0x7fffffff);
 		$this->solved = 0;
 
-		$sql = 'UPDATE ' . CONFIRM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
+		$sql = 'UPDATE ' . CONFIRM_TABLE . ' SET ' . $db->sql_build_array('UPDATE', [
 				'code'			=> (string) $this->code,
-				'seed'			=> (int) $this->seed)) . '
+				'seed'			=> (int) $this->seed]) . '
 				, attempts = attempts + 1
 				WHERE
 				confirm_id = \'' . $db->sql_escape($this->confirm_id) . '\'

@@ -21,22 +21,22 @@ class phpbb_template
 	* if it's a root-level variable, it'll be like this:
 	* --> $this->_tpldata[.][0][varname] == value
 	*/
-	var $_tpldata = array('.' => array(0 => array()));
+	var $_tpldata = ['.' => [0 => []]];
 	var $_rootref;
 
 	// Root dir and hash of filenames for each template handle.
 	var $root = '';
 	var $cachepath = '';
-	var $files = array();
-	var $filename = array();
-	var $files_inherit = array();
-	var $files_template = array();
+	var $files = [];
+	var $filename = [];
+	var $files_inherit = [];
+	var $files_template = [];
 	var $inherit_root = '';
 	var $orig_tpl_storedb;
 	var $orig_tpl_inherits_id;
 
 	// this will hash handle names to the compiled/uncompiled code for that handle.
-	var $compiled_code = array();
+	var $compiled_code = [];
 
 	/**
 	* Set template location
@@ -156,7 +156,7 @@ class phpbb_template
 	*/
 	function destroy()
 	{
-		$this->_tpldata = array('.' => array(0 => array()));
+		$this->_tpldata = ['.' => [0 => []]];
 		$this->_rootref = &$this->_tpldata['.'][0];
 	}
 
@@ -313,8 +313,8 @@ class phpbb_template
 
 		if (isset($user->theme['template_storedb']) && $user->theme['template_storedb'])
 		{
-			$rows = array();
-			$ids = array();
+			$rows = [];
+			$ids = [];
 			// Inheritance
 			if (isset($user->theme['template_inherits_id']) && $user->theme['template_inherits_id'])
 			{

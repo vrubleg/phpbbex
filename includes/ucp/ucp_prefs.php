@@ -25,14 +25,14 @@ class ucp_prefs
 		global $config, $db, $user, $auth, $template;
 
 		$submit = (isset($_POST['submit'])) ? true : false;
-		$error = $data = array();
+		$error = $data = [];
 		$s_hidden_fields = '';
 
 		switch ($mode)
 		{
 			case 'personal':
 				add_form_key('ucp_prefs_personal');
-				$data = array(
+				$data = [
 					'notifymethod'	=> request_var('notifymethod', $user->data['user_notify_type']),
 					'dateformat'	=> request_var('dateformat', $user->data['user_dateformat'], true),
 					'lang'			=> basename(request_var('lang', $user->data['user_lang'])),
@@ -46,7 +46,7 @@ class ucp_prefs
 					'notifypm'		=> request_var('notifypm', (bool) $user->data['user_notify_pm']),
 					'popuppm'		=> request_var('popuppm', (bool) $user->optionget('popuppm')),
 					'allowpm'		=> request_var('allowpm', (bool) $user->data['user_allow_pm']),
-				);
+				];
 
 				if ($data['notifymethod'] == NOTIFY_IM && (!$config['jab_enable'] || !$user->data['user_jabber'] || !@extension_loaded('xml')))
 				{
@@ -70,11 +70,11 @@ class ucp_prefs
 					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
 					$data['dst']		= ($config['override_user_timezone'])	? $config['board_dst']			: $data['dst'];
 
-					$error = validate_data($data, array(
-						'dateformat'	=> array('string', false, 1, 30),
-						'lang'			=> array('language_iso_name'),
-						'tz'			=> array('num', false, -14, 14),
-					));
+					$error = validate_data($data, [
+						'dateformat'	=> ['string', false, 1, 30],
+						'lang'			=> ['language_iso_name'],
+						'tz'			=> ['num', false, -14, 14],
+					]);
 
 					if (!check_form_key('ucp_prefs_personal'))
 					{
@@ -85,7 +85,7 @@ class ucp_prefs
 					{
 						$user->optionset('popuppm', $data['popuppm']);
 
-						$sql_ary = array(
+						$sql_ary = [
 							'user_allow_pm'			=> $data['allowpm'],
 							'user_allow_viewemail'	=> $data['viewemail'],
 							'user_allow_massemail'	=> $data['massemail'],
@@ -99,7 +99,7 @@ class ucp_prefs
 							'user_lang'				=> $data['lang'],
 							'user_timezone'			=> $data['tz'],
 							'user_style'			=> $data['style'],
-						);
+						];
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -163,7 +163,7 @@ class ucp_prefs
 				}
 				$db->sql_freeresult($result);
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'ERROR'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 
 					'S_NOTIFY_EMAIL'	=> ($data['notifymethod'] == NOTIFY_EMAIL) ? true : false,
@@ -192,7 +192,7 @@ class ucp_prefs
 					'S_STYLE_OPTIONS'		=> ($config['override_user_style']) ? '' : style_select($data['style']),
 					'S_TZ_OPTIONS'			=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
 					'S_CAN_HIDE_ONLINE'		=> ($auth->acl_get('u_hideonline')) ? true : false,
-					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && @extension_loaded('xml')) ? true : false)
+					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && @extension_loaded('xml')) ? true : false]
 				);
 
 			break;
@@ -201,7 +201,7 @@ class ucp_prefs
 
 				add_form_key('ucp_prefs_view');
 
-				$data = array(
+				$data = [
 					'topic_sk'		=> request_var('topic_sk', (!empty($user->data['user_topic_sortby_type'])) ? $user->data['user_topic_sortby_type'] : 't'),
 					'topic_sd'		=> request_var('topic_sd', (!empty($user->data['user_topic_sortby_dir'])) ? $user->data['user_topic_sortby_dir'] : 'd'),
 					'topic_st'		=> request_var('topic_st', (!empty($user->data['user_topic_show_days'])) ? $user->data['user_topic_show_days'] : 0),
@@ -222,7 +222,7 @@ class ucp_prefs
 
 					'quickreply'	=> request_var('quickreply', (bool) $user->optionget('viewquickreply')),
 					'quickpost'		=> request_var('quickpost', (bool) $user->optionget('viewquickpost')),
-				);
+				];
 
 				if ($data['user_topics_per_page'] > 100)
 				{
@@ -252,12 +252,12 @@ class ucp_prefs
 
 				if ($submit)
 				{
-					$error = validate_data($data, array(
-						'topic_sk'	=> array('string', false, 1, 1),
-						'topic_sd'	=> array('string', false, 1, 1),
-						'post_sk'	=> array('string', false, 1, 1),
-						'post_sd'	=> array('string', false, 1, 1),
-					));
+					$error = validate_data($data, [
+						'topic_sk'	=> ['string', false, 1, 1],
+						'topic_sd'	=> ['string', false, 1, 1],
+						'post_sk'	=> ['string', false, 1, 1],
+						'post_sd'	=> ['string', false, 1, 1],
+					]);
 
 					if (!check_form_key('ucp_prefs_view'))
 					{
@@ -279,7 +279,7 @@ class ucp_prefs
 							$user->optionset('viewcensors', $data['wordcensor']);
 						}
 
-						$sql_ary = array(
+						$sql_ary = [
 							'user_options'				=> $user->data['user_options'],
 							'user_topic_sortby_type'	=> $data['topic_sk'],
 							'user_post_sortby_type'		=> $data['post_sk'],
@@ -291,7 +291,7 @@ class ucp_prefs
 
 							'user_topics_per_page' => $data['user_topics_per_page'],
 							'user_posts_per_page' => $data['user_posts_per_page'],
-						);
+						];
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -307,21 +307,21 @@ class ucp_prefs
 					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
 				}
 
-				$sort_dir_text = array('a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']);
+				$sort_dir_text = ['a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']];
 
 				// Topic ordering options
-				$limit_topic_days = array(0 => $user->lang['ALL_TOPICS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
+				$limit_topic_days = [0 => $user->lang['ALL_TOPICS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 
-				$sort_by_topic_text = array('t' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES'], 'v' => $user->lang['VIEWS'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']);
-				$sort_by_topic_sql = array('t' => 't.topic_last_post_time', 'c' => 't.topic_time', 'r' => 't.topic_replies', 'v' => 't.topic_views', 'a' => 't.topic_first_poster_name', 's' => 't.topic_title');
+				$sort_by_topic_text = ['t' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES'], 'v' => $user->lang['VIEWS'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
+				$sort_by_topic_sql = ['t' => 't.topic_last_post_time', 'c' => 't.topic_time', 'r' => 't.topic_replies', 'v' => 't.topic_views', 'a' => 't.topic_first_poster_name', 's' => 't.topic_title'];
 
 				// Post ordering options
-				$limit_post_days = array(0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']);
+				$limit_post_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 
-				$sort_by_post_text = array('t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']);
-				$sort_by_post_sql = array('t' => 'p.post_id', 'a' => 'u.username_clean', 's' => 'p.post_subject');
+				$sort_by_post_text = ['t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
+				$sort_by_post_sql = ['t' => 'p.post_id', 'a' => 'u.username_clean', 's' => 'p.post_subject'];
 
-				$_options = array('topic', 'post');
+				$_options = ['topic', 'post'];
 				foreach ($_options as $sort_option)
 				{
 					${'s_limit_' . $sort_option . '_days'} = '<select name="' . $sort_option . '_st">';
@@ -349,7 +349,7 @@ class ucp_prefs
 					${'s_sort_' . $sort_option . '_dir'} .= '</select>';
 				}
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'ERROR'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 
 					'S_IMAGES'			=> $data['images'],
@@ -375,18 +375,18 @@ class ucp_prefs
 
 					'USER_TOPICS_PER_PAGE'	=> $data['user_topics_per_page'] ? $data['user_topics_per_page'] : $config['topics_per_page'],
 					'USER_POSTS_PER_PAGE'	=> $data['user_posts_per_page'] ? $data['user_posts_per_page'] : $config['posts_per_page'],
-				));
+				]);
 
 			break;
 
 			case 'post':
 
-				$data = array(
+				$data = [
 					'bbcode'	=> request_var('bbcode', $user->optionget('bbcode')),
 					'smilies'	=> request_var('smilies', $user->optionget('smilies')),
 					'sig'		=> request_var('sig', $user->optionget('attachsig')),
 					'notify'	=> request_var('notify', (bool) $user->data['user_notify']),
-				);
+				];
 				add_form_key('ucp_prefs_post');
 
 				if ($submit)
@@ -397,10 +397,10 @@ class ucp_prefs
 						$user->optionset('smilies', $data['smilies']);
 						$user->optionset('attachsig', $data['sig']);
 
-						$sql_ary = array(
+						$sql_ary = [
 							'user_options'	=> $user->data['user_options'],
 							'user_notify'	=> $data['notify'],
-						);
+						];
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -418,20 +418,20 @@ class ucp_prefs
 					trigger_error($message);
 				}
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_BBCODE'	=> $data['bbcode'],
 					'S_SMILIES'	=> $data['smilies'],
 					'S_SIG'		=> $data['sig'],
-					'S_NOTIFY'	=> $data['notify'])
+					'S_NOTIFY'	=> $data['notify']]
 				);
 			break;
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_TITLE'			=> $user->lang['UCP_PREFS_' . strtoupper($mode)],
 
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
-			'S_UCP_ACTION'		=> $this->u_action)
+			'S_UCP_ACTION'		=> $this->u_action]
 		);
 
 		$this->tpl_name = 'ucp_prefs_' . $mode;

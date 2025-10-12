@@ -30,7 +30,7 @@ class mcp_ban
 		$unbansubmit	= (isset($_POST['unbansubmit'])) ? true : false;
 		$current_time	= time();
 
-		$user->add_lang(array('acp/ban', 'acp/users'));
+		$user->add_lang(['acp/ban', 'acp/users']);
 		$this->tpl_name = 'mcp_ban';
 
 		// Ban submitted?
@@ -60,7 +60,7 @@ class mcp_ban
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 						'mode'				=> $mode,
 						'ban'				=> $ban,
 						'bansubmit'			=> true,
@@ -68,13 +68,13 @@ class mcp_ban
 						'banlengthother'	=> $ban_len_other,
 						'banexclude'		=> $ban_exclude,
 						'banreason'			=> $ban_reason,
-						'bangivereason'		=> $ban_give_reason)));
+						'bangivereason'		=> $ban_give_reason]));
 				}
 			}
 		}
 		else if ($unbansubmit)
 		{
-			$ban = request_var('unban', array(''));
+			$ban = request_var('unban', ['']);
 
 			if ($ban)
 			{
@@ -86,16 +86,16 @@ class mcp_ban
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 						'mode'			=> $mode,
 						'unbansubmit'	=> true,
-						'unban'			=> $ban)));
+						'unban'			=> $ban]));
 				}
 			}
 		}
 
 		// Ban length options
-		$ban_end_text = array(0 => $user->lang['PERMANENT'], 30 => $user->lang['30_MINS'], 60 => $user->lang['1_HOUR'], 360 => $user->lang['6_HOURS'], 1440 => $user->lang['1_DAY'], 10080 => $user->lang['7_DAYS'], 20160 => $user->lang['2_WEEKS'], 40320 => $user->lang['1_MONTH'], -1 => $user->lang['UNTIL']);
+		$ban_end_text = [0 => $user->lang['PERMANENT'], 30 => $user->lang['30_MINS'], 60 => $user->lang['1_HOUR'], 360 => $user->lang['6_HOURS'], 1440 => $user->lang['1_DAY'], 10080 => $user->lang['7_DAYS'], 20160 => $user->lang['2_WEEKS'], 40320 => $user->lang['1_MONTH'], -1 => $user->lang['UNTIL']];
 
 		$ban_end_options = '';
 		foreach ($ban_end_text as $length => $text)
@@ -129,7 +129,7 @@ class mcp_ban
 
 		acp_ban::display_ban_options($mode);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_TITLE'				=> $this->page_title,
 			'L_EXPLAIN'				=> $l_ban_explain,
 			'L_UNBAN_TITLE'			=> $l_unban_title,
@@ -142,7 +142,7 @@ class mcp_ban
 
 			'U_ACTION'			=> $this->u_action,
 			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp_ban&amp;field=ban'),
-		));
+		]);
 
 		if ($mode === 'email' && !$auth->acl_get('a_user'))
 		{
@@ -154,7 +154,7 @@ class mcp_ban
 		$user_id = request_var('u', 0);
 		$username = $pre_fill = false;
 
-		if ($user_id && $user_id <> ANONYMOUS)
+		if ($user_id && $user_id != ANONYMOUS)
 		{
 			$sql = 'SELECT username, user_email, user_ip
 				FROM ' . USERS_TABLE . '

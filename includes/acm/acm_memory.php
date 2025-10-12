@@ -17,11 +17,11 @@ class acm_memory
 {
 	var $key_prefix;
 
-	var $vars = array();
+	var $vars = [];
 	var $is_modified = false;
 
-	var $sql_rowset = array();
-	var $sql_row_pointer = array();
+	var $sql_rowset = [];
+	var $sql_row_pointer = [];
 	var $cache_dir = '';
 
 	/**
@@ -62,7 +62,7 @@ class acm_memory
 			return true;
 		}
 
-		$this->vars = array();
+		$this->vars = [];
 		return false;
 	}
 
@@ -76,9 +76,9 @@ class acm_memory
 		unset($this->sql_rowset);
 		unset($this->sql_row_pointer);
 
-		$this->vars = array();
-		$this->sql_rowset = array();
-		$this->sql_row_pointer = array();
+		$this->vars = [];
+		$this->sql_rowset = [];
+		$this->sql_row_pointer = [];
 	}
 
 	/**
@@ -170,9 +170,9 @@ class acm_memory
 		unset($this->sql_rowset);
 		unset($this->sql_row_pointer);
 
-		$this->vars = array();
-		$this->sql_rowset = array();
-		$this->sql_row_pointer = array();
+		$this->vars = [];
+		$this->sql_rowset = [];
+		$this->sql_row_pointer = [];
 
 		$this->is_modified = false;
 	}
@@ -187,7 +187,7 @@ class acm_memory
 		{
 			if (!is_array($table))
 			{
-				$table = array($table);
+				$table = [$table];
 			}
 
 			foreach ($table as $table_name)
@@ -292,7 +292,7 @@ class acm_memory
 			return;
 		}
 
-		$tables = array();
+		$tables = [];
 		foreach ($regs as $match)
 		{
 			if ($match[0][0] == 'F')
@@ -319,7 +319,7 @@ class acm_memory
 
 			if ($temp === false)
 			{
-				$temp = array();
+				$temp = [];
 			}
 
 			$temp[$hash] = true;
@@ -330,7 +330,7 @@ class acm_memory
 
 		// store them in the right place
 		$query_id = sizeof($this->sql_rowset);
-		$this->sql_rowset[$query_id] = array();
+		$this->sql_rowset[$query_id] = [];
 		$this->sql_row_pointer[$query_id] = 0;
 
 		while ($row = $db->sql_fetchrow($query_result))

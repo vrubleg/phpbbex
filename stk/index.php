@@ -35,9 +35,9 @@ $user->theme['template_storedb'] = false;
 perform_unauthed_quick_tasks($action, $submit);
 
 // Set global template variables.
-$template->assign_vars(array(
+$template->assign_vars([
 	'PHPBB_ROOT_PATH' => PHPBB_ROOT_PATH,
-));
+]);
 
 /*
 * Start Login
@@ -126,7 +126,7 @@ if ($stk_passwd !== false)
 		{
 			add_form_key('stk_login_form');
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				// Password field related
 				'TITLE'			=> $user->lang['SUPPORT_TOOL_KIT_PASSWORD'],
 				'TITLE_EXPLAIN'	=> $user->lang['SUPPORT_TOOL_KIT_PASSWORD_EXPLAIN'],
@@ -139,23 +139,23 @@ if ($stk_passwd !== false)
 
 				// Identify this method in the template
 				'S_STK_LOGIN_METHOD'	=> true,
-			));
+			]);
 
 			page_header($user->lang['LOGIN'], false);
 
-			$template->set_filenames(array(
+			$template->set_filenames([
 				'body' => 'login_body.html',
-			));
+			]);
 
 			page_footer(false);
 		}
 	}
 
 	// Tell the template engine we're logged through this
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_STK_LOGIN'			=> true,
-		'STK_LOGIN_DISABLE_MSG'	=> sprintf($user->lang['USING_STK_LOGIN'], append_sid(STK_INDEX, array('action' => 'delpasswdfile'))),
-	));
+		'STK_LOGIN_DISABLE_MSG'	=> sprintf($user->lang['USING_STK_LOGIN'], append_sid(STK_INDEX, ['action' => 'delpasswdfile'])),
+	]);
 
 	// Don't use "Anonymous" as username
 	$user->data['username'] = $user->lang['EMERGENCY_LOGIN_NAME'];
@@ -168,7 +168,7 @@ else
 		$user->add_lang('ucp');
 
 		// Assign a string only used here
-		$template->assign_var('GEN_PASS_FILE_EXPLAIN', sprintf($user->lang['GEN_PASS_FILE_EXPLAIN'], append_sid(STK_INDEX, array('action' => 'genpasswdfile'))));
+		$template->assign_var('GEN_PASS_FILE_EXPLAIN', sprintf($user->lang['GEN_PASS_FILE_EXPLAIN'], append_sid(STK_INDEX, ['action' => 'genpasswdfile'])));
 
 		// A user can potentially access this file directly
 		login_box('', $user->lang['STK_NON_LOGIN'], '', false, false);
@@ -237,7 +237,7 @@ if (isset($_POST['cancel']))
 $plugin = new plugin();
 
 // Output common stuff
-$template->assign_vars(array(
+$template->assign_vars([
 	'U_ACTION'		=> append_sid(STK_INDEX, $plugin->url_arg(), true, $user->session_id),
 	'U_ADM_INDEX'	=> append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, $user->session_id),
 	'U_STK_INDEX'	=> append_sid(STK_INDEX, false, true, $user->session_id),
@@ -247,7 +247,7 @@ $template->assign_vars(array(
 	'U_LOGOUT'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout', true, $user->session_id),
 
 	'USERNAME'		=> $user->data['username'],
-));
+]);
 
 // Does the user want to run a tool?
 if ($plugin->get_part('t'))
@@ -273,7 +273,7 @@ if ($plugin->get_part('t'))
 		}
 	}
 
-	$error = array();
+	$error = [];
 	if ($submit)
 	{
 		// In run_tool do whatever is required.  If there is an error, put it into the array and the display options will be ran again
@@ -299,16 +299,16 @@ if ($plugin->get_part('t'))
 
 				foreach ($error as $e)
 				{
-					$template->assign_block_vars('errormsgrow', array(
+					$template->assign_block_vars('errormsgrow', [
 						'MSG'	=> $e,
-					));
+					]);
 				}
 			}
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'L_TITLE'			=> $user->lang[$options['title']],
 				'L_TITLE_EXPLAIN'	=> (isset($user->lang[$options['title'] . '_EXPLAIN'])) ? $user->lang[$options['title'] . '_EXPLAIN'] : '',
-			));
+			]);
 
 			foreach ($options['vars'] as $name => $vars)
 			{
@@ -319,9 +319,9 @@ if ($plugin->get_part('t'))
 
 				if (strpos($name, 'legend') !== false)
 				{
-					$template->assign_block_vars('options', array(
+					$template->assign_block_vars('options', [
 						'S_LEGEND'		=> true,
-						'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars)
+						'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars]
 					);
 
 					continue;
@@ -346,7 +346,7 @@ if ($plugin->get_part('t'))
 					continue;
 				}
 
-				$template->assign_block_vars('options', array(
+				$template->assign_block_vars('options', [
 					'KEY'			=> $name,
 					'TITLE'			=> (isset($user->lang[$vars['lang']])) ? $user->lang[$vars['lang']] : $vars['lang'],
 					'S_EXPLAIN'		=> $vars['explain'],
@@ -355,13 +355,13 @@ if ($plugin->get_part('t'))
 
 					// Find user link
 					'S_FIND_USER'	=> (isset($content['find_user'])) ? true : false,
-					'U_FIND_USER'	=> (isset($content['find_user'])) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', array('mode' => 'searchuser', 'form' => 'select_user', 'field' => 'username', 'select_single' => 'true', 'form' => 'stk', 'field' => $content['find_user_field'])) : '',
-				));
+					'U_FIND_USER'	=> (isset($content['find_user'])) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', ['mode' => 'searchuser', 'form' => 'select_user', 'field' => 'username', 'select_single' => 'true', 'form' => 'stk', 'field' => $content['find_user_field']]) : '',
+				]);
 			}
 
-			$template->set_filenames(array(
+			$template->set_filenames([
 				'body' => 'tool_options.html',
-			));
+			]);
 
 			page_footer();
 		}
@@ -398,15 +398,15 @@ else
 	}
 
 	// Category title and desc if available
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'L_TITLE'			=> $user->lang['CAT_' . strtoupper($plugin->get_part('c'))],
 		'L_TITLE_EXPLAIN'	=> isset($user->lang['CAT_' . strtoupper($plugin->get_part('c')) . '_EXPLAIN']) ? $user->lang['CAT_' . strtoupper($plugin->get_part('c')) . '_EXPLAIN'] : '',
 		'CAT'				=> $plugin->get_part('c'),
-	));
+	]);
 
-	$template->set_filenames(array(
+	$template->set_filenames([
 		'body' => 'index_body.html',
-	));
+	]);
 
 	page_footer();
 }

@@ -9,16 +9,16 @@ class mcp_ban_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> 'mcp_ban',
 			'title'		=> 'MCP_BAN',
 			'version'	=> '1.0.0',
-			'modes'		=> array(
-				'user'		=> array('title' => 'MCP_BAN_USERNAMES', 'auth' => 'acl_m_ban', 'cat' => array('MCP_BAN')),
-				'ip'		=> array('title' => 'MCP_BAN_IPS', 'auth' => 'acl_m_ban', 'cat' => array('MCP_BAN')),
-				'email'		=> array('title' => 'MCP_BAN_EMAILS', 'auth' => 'acl_m_ban', 'cat' => array('MCP_BAN')),
-			),
-		);
+			'modes'		=> [
+				'user'		=> ['title' => 'MCP_BAN_USERNAMES', 'auth' => 'acl_m_ban', 'cat' => ['MCP_BAN']],
+				'ip'		=> ['title' => 'MCP_BAN_IPS', 'auth' => 'acl_m_ban', 'cat' => ['MCP_BAN']],
+				'email'		=> ['title' => 'MCP_BAN_EMAILS', 'auth' => 'acl_m_ban', 'cat' => ['MCP_BAN']],
+			],
+		];
 	}
 
 	function install()

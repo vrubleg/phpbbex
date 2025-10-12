@@ -432,31 +432,31 @@ class dbal_mysql extends dbal
 	{
 		if ($this->connect_error)
 		{
-			$error = array(
+			$error = [
 				'message'	=> $this->connect_error,
 				'code'		=> '',
-			);
+			];
 		}
 		else if ($this->db_connect_id)
 		{
-			$error = array(
+			$error = [
 				'message'	=> @mysqli_error($this->db_connect_id),
 				'code'		=> @mysqli_errno($this->db_connect_id)
-			);
+			];
 		}
 		else if (function_exists('mysqli_connect_error'))
 		{
-			$error = array(
+			$error = [
 				'message'	=> @mysqli_connect_error(),
 				'code'		=> @mysqli_connect_errno(),
-			);
+			];
 		}
 		else
 		{
-			$error = array(
+			$error = [
 				'message'	=> '',
 				'code'		=> '',
-			);
+			];
 		}
 
 		return $error;
@@ -544,7 +544,7 @@ class dbal_mysql extends dbal
 								// make <unknown> HTML safe
 								if (!empty($row['Source_function']))
 								{
-									$row['Source_function'] = str_replace(array('<', '>'), array('&lt;', '&gt;'), $row['Source_function']);
+									$row['Source_function'] = str_replace(['<', '>'], ['&lt;', '&gt;'], $row['Source_function']);
 								}
 
 								// remove unsupported features

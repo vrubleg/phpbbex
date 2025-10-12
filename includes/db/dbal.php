@@ -21,8 +21,8 @@ class dbal
 	var $return_on_error = false;
 	var $transaction = false;
 	var $sql_time = 0;
-	var $num_queries = array();
-	var $open_queries = array();
+	var $num_queries = [];
+	var $open_queries = [];
 
 	var $curtime = 0;
 	var $query_hold = '';
@@ -40,7 +40,7 @@ class dbal
 	// Holding the last sql query on sql error
 	var $sql_error_sql = '';
 	// Holding the error information - only populated if sql_error_triggered is set
-	var $sql_error_returned = array();
+	var $sql_error_returned = [];
 
 	// Holding transaction count
 	var $transactions = 0;
@@ -64,11 +64,11 @@ class dbal
 	*/
 	function __construct()
 	{
-		$this->num_queries = array(
+		$this->num_queries = [
 			'cached'		=> 0,
 			'normal'		=> 0,
 			'total'			=> 0,
-		);
+		];
 
 		// Do not change this please! This variable is used to easy the use of it - and is hardcoded.
 		$this->any_char = chr(0) . '%';
@@ -167,7 +167,7 @@ class dbal
 
 		if ($query_id !== false)
 		{
-			$result = array();
+			$result = [];
 			while ($row = $this->sql_fetchrow($query_id))
 			{
 				$result[] = $row;
@@ -263,8 +263,8 @@ class dbal
 	*/
 	function sql_like_expression($expression)
 	{
-		$expression = utf8_str_replace(array('_', '%'), array("\_", "\%"), $expression);
-		$expression = utf8_str_replace(array(chr(0) . "\_", chr(0) . "\%"), array('_', '%'), $expression);
+		$expression = utf8_str_replace(['_', '%'], ["\_", "\%"], $expression);
+		$expression = utf8_str_replace([chr(0) . "\_", chr(0) . "\%"], ['_', '%'], $expression);
 
 		return $this->_sql_like_expression('LIKE \'' . $this->sql_escape($expression) . '\'');
 	}
@@ -359,7 +359,7 @@ class dbal
 			return false;
 		}
 
-		$fields = $values = array();
+		$fields = $values = [];
 
 		if ($query == 'INSERT' || $query == 'INSERT_SELECT')
 		{
@@ -386,7 +386,7 @@ class dbal
 		}
 		else if ($query == 'UPDATE' || $query == 'SELECT')
 		{
-			$values = array();
+			$values = [];
 			foreach ($assoc_ary as $key => $var)
 			{
 				$values[] = "$key = " . $this->_sql_validate_value($var);
@@ -433,7 +433,7 @@ class dbal
 
 		if (!is_array($array))
 		{
-			$array = array($array);
+			$array = [$array];
 		}
 
 		if (sizeof($array) == 1)
@@ -445,7 +445,7 @@ class dbal
 		}
 		else
 		{
-			return $field . ($negate ? ' NOT IN ' : ' IN ') . '(' . implode(', ', array_map(array($this, '_sql_validate_value'), $array)) . ')';
+			return $field . ($negate ? ' NOT IN ' : ' IN ') . '(' . implode(', ', array_map([$this, '_sql_validate_value'], $array)) . ')';
 		}
 	}
 
@@ -515,7 +515,7 @@ class dbal
 
 		if ($this->multi_insert)
 		{
-			$ary = array();
+			$ary = [];
 			foreach ($sql_ary as $id => $_sql_ary)
 			{
 				// If by accident the sql array is only one-dimensional we build a normal insert statement
@@ -524,7 +524,7 @@ class dbal
 					return $this->sql_query('INSERT INTO ' . $table . ' ' . $this->sql_build_array('INSERT', $sql_ary));
 				}
 
-				$values = array();
+				$values = [];
 				foreach ($_sql_ary as $key => $var)
 				{
 					$values[] = $this->_sql_validate_value($var);
@@ -591,7 +591,7 @@ class dbal
 				$sql = str_replace('_', ' ', $query) . ' ' . $array['SELECT'] . ' FROM ';
 
 				// Build table array. We also build an alias array for later checks.
-				$table_array = $aliases = array();
+				$table_array = $aliases = [];
 				$used_multi_alias = false;
 
 				foreach ($array['FROM'] as $table_name => $alias)
@@ -622,13 +622,13 @@ class dbal
 					$join = current($array['LEFT_JOIN']);
 
 					// Determine the table used there (even if there are more than one used, we only want to have one
-					preg_match('/(' . implode('|', $aliases) . ')\.[^\s]+/U', str_replace(array('(', ')', 'AND', 'OR', ' '), '', $join['ON']), $matches);
+					preg_match('/(' . implode('|', $aliases) . ')\.[^\s]+/U', str_replace(['(', ')', 'AND', 'OR', ' '], '', $join['ON']), $matches);
 
 					// If there is a first join match, we need to make sure the table order is correct
 					if (!empty($matches[1]))
 					{
 						$first_join_match = trim($matches[1]);
-						$table_array = $last = array();
+						$table_array = $last = [];
 
 						foreach ($array['FROM'] as $table_name => $alias)
 						{

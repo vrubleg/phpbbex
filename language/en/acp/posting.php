@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // BBCodes
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_BBCODES_EXPLAIN'		=> 'BBCode is a special implementation of HTML offering greater control over what and how something is displayed. From this page you can add, remove and edit custom BBCodes.',
 	'ADD_BBCODE'				=> 'Add a new BBCode',
 
@@ -55,7 +55,7 @@ $lang = array_merge($lang, array(
 	'TOKEN_DEFINITION'		=> 'What can it be?',
 	'TOO_MANY_BBCODES'		=> 'You cannot create any more BBCodes. Please remove one or more BBCodes then try again.',
 
-	'tokens'	=>	array(
+	'tokens'	=>	[
 		'TEXT'			=> 'Any text, including foreign characters, numbers, etc… You should not use this token in HTML tags. Instead try to use IDENTIFIER, INTTEXT or SIMPLETEXT.',
 		'SIMPLETEXT'	=> 'Characters from the latin alphabet (A-Z), numbers, spaces, commas, dots, minus, plus, hyphen and underscore',
 		'INTTEXT'		=> 'Unicode letter characters, numbers, spaces, commas, dots, minus, plus, hyphen, underscore and whitespaces.',
@@ -66,11 +66,11 @@ $lang = array_merge($lang, array(
 		'LOCAL_URL'		=> 'A local URL. The URL must be relative to the topic page and cannot contain a server name or protocol, as links are prefixed with “%s”',
 		'RELATIVE_URL'	=> 'A relative URL. You can use this to match parts of a URL, but be careful: a full URL is a valid relative URL. When you want to use relative URLs of your board, use the LOCAL_URL token.',
 		'COLOR'			=> 'A HTML colour, can be either in the numeric form <samp>#FF1234</samp> or a <a href="http://www.w3.org/TR/CSS21/syndata.html#value-def-color">CSS colour keyword</a> such as <samp>fuchsia</samp> or <samp>InactiveBorder</samp>'
-	)
-));
+	]
+]);
 
 // Smilies and topic icons
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_ICONS_EXPLAIN'		=> 'From this page you can add, remove and edit the icons users may add to their topics. These icons are displayed next to topic titles on the forum listing. You can also install and create new packages of icons.',
 	'ACP_SMILIES_EXPLAIN'	=> 'Smilies or emoticons are typically small, sometimes animated images used to convey an emotion or feeling. From this page you can add, remove and edit the emoticons users can use in their posts and private messages. You can also install and create new packages of smilies.',
 	'ADD_SMILIES'			=> 'Add multiple smilies',
@@ -169,10 +169,10 @@ $lang = array_merge($lang, array(
 	'TOO_MANY_SMILIES'			=> 'Limit of %d smilies reached.',
 
 	'WRONG_PAK_TYPE'	=> 'The specified package does not contain the appropriate data.',
-));
+]);
 
 // Word censors
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_WORDS_EXPLAIN'		=> 'From this control panel you can add, edit, and remove words that will be automatically censored on your forums. People are still allowed to register with usernames containing these words. Wildcards (*) are accepted in the word field, e.g. *test* will match detestable, test* would match testing, *test would match detest.',
 	'ADD_WORD'				=> 'Add new word',
 
@@ -189,10 +189,10 @@ $lang = array_merge($lang, array(
 	'WORD_ADDED'		=> 'The word censor has been successfully added.',
 	'WORD_REMOVED'		=> 'The selected word censor has been successfully removed.',
 	'WORD_UPDATED'		=> 'The selected word censor has been successfully updated.',
-));
+]);
 
 // Ranks
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_RANKS_EXPLAIN'		=> 'Using this form you can add, edit, view and delete ranks. You can also create special ranks which can be applied to a user via the user management facility.',
 	'ADD_RANK'				=> 'Add new rank',
 
@@ -212,10 +212,10 @@ $lang = array_merge($lang, array(
 	'RANK_TITLE'			=> 'Rank title',
 	'RANK_HIDE_TITLE'		=> 'Hide rank title',
 	'RANK_UPDATED'			=> 'The rank was successfully updated.',
-));
+]);
 
 // Disallow Usernames
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_DISALLOW_EXPLAIN'	=> 'Here you can control usernames which will not be allowed to be used. Disallowed usernames are allowed to contain a wildcard character of *.',
 	'ADD_DISALLOW_EXPLAIN'	=> 'You can disallow a username using the wildcard character * to match any character.',
 	'ADD_DISALLOW_TITLE'	=> 'Add a disallowed username',
@@ -228,10 +228,10 @@ $lang = array_merge($lang, array(
 
 	'NO_DISALLOWED'				=> 'No disallowed usernames',
 	'NO_USERNAME_SPECIFIED'		=> 'You haven’t selected or entered a username to operate with.',
-));
+]);
 
 // Reasons
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_REASONS_EXPLAIN'	=> 'Here you can manage the reasons used in reports and denial messages when disapproving posts. There is one default reason (marked with a *) you are not able to remove, this reason is normally used for custom messages if no reason fits.',
 	'ADD_NEW_REASON'		=> 'Add new reason',
 	'AVAILABLE_TITLES'		=> 'Available localised reason titles',
@@ -258,4 +258,4 @@ $lang = array_merge($lang, array(
 	'REASON_UPDATED'			=> 'Report/denial reason successfully updated.',
 
 	'USED_IN_REPORTS'		=> 'Used in reports',
-));
+]);

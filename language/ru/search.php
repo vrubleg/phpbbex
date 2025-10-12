@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ALL_AVAILABLE'			=> 'Все имеющиеся',
 	'ALL_RESULTS'			=> 'Все дни',
 
@@ -86,4 +86,4 @@ $lang = array_merge($lang, array(
 	'SORT_TIME'					=> 'Время ответа',
 
 	'TOO_FEW_AUTHOR_CHARS'	=> 'Вы должны ввести не менее %d символов имени автора.',
-));
+]);

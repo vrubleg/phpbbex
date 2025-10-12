@@ -33,9 +33,9 @@ class acp_database
 		$action	= request_var('action', '');
 		$submit = (isset($_POST['submit'])) ? true : false;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'MODE'	=> $mode
-		));
+		]);
 
 		switch ($mode)
 		{
@@ -47,7 +47,7 @@ class acp_database
 				{
 					case 'download':
 						$type	= request_var('type', '');
-						$table	= array_intersect($this->db_tools->sql_list_tables(), request_var('table', array('')));
+						$table	= array_intersect($this->db_tools->sql_list_tables(), request_var('table', ['']));
 						$format	= request_var('method', '');
 						$where	= request_var('where', '');
 
@@ -126,18 +126,18 @@ class acp_database
 						{
 							if (strlen($table_prefix) === 0 || stripos($table_name, $table_prefix) === 0)
 							{
-								$template->assign_block_vars('tables', array(
+								$template->assign_block_vars('tables', [
 									'TABLE'	=> $table_name
-								));
+								]);
 							}
 						}
 						unset($tables);
 
-						$template->assign_vars(array(
+						$template->assign_vars([
 							'U_ACTION'	=> $this->u_action . '&amp;action=download'
-						));
+						]);
 
-						$available_methods = array('gzip' => 'zlib', 'bzip2' => 'bz2');
+						$available_methods = ['gzip' => 'zlib', 'bzip2' => 'bz2'];
 
 						foreach ($available_methods as $type => $module)
 						{
@@ -146,14 +146,14 @@ class acp_database
 								continue;
 							}
 
-							$template->assign_block_vars('methods', array(
+							$template->assign_block_vars('methods', [
 								'TYPE'	=> $type
-							));
+							]);
 						}
 
-						$template->assign_block_vars('methods', array(
+						$template->assign_block_vars('methods', [
 							'TYPE'	=> 'text'
-						));
+						]);
 					break;
 				}
 			break;
@@ -191,7 +191,7 @@ class acp_database
 							}
 							else
 							{
-								confirm_box(false, $user->lang['DELETE_SELECTED_BACKUP'], build_hidden_fields(array('delete' => $delete, 'file' => $file)));
+								confirm_box(false, $user->lang['DELETE_SELECTED_BACKUP'], build_hidden_fields(['delete' => $delete, 'file' => $file]));
 							}
 						}
 						else if ($download || confirm_box(true))
@@ -280,12 +280,12 @@ class acp_database
 						}
 						else if (!$download)
 						{
-							confirm_box(false, $user->lang['RESTORE_SELECTED_BACKUP'], build_hidden_fields(array('file' => $file)));
+							confirm_box(false, $user->lang['RESTORE_SELECTED_BACKUP'], build_hidden_fields(['file' => $file]));
 						}
 
 					default:
-						$methods = array('sql');
-						$available_methods = array('sql.gz' => 'zlib', 'sql.bz2' => 'bz2');
+						$methods = ['sql'];
+						$available_methods = ['sql.gz' => 'zlib', 'sql.bz2' => 'bz2'];
 
 						foreach ($available_methods as $type => $module)
 						{
@@ -299,7 +299,7 @@ class acp_database
 						$dir = PHPBB_ROOT_PATH . 'store/';
 						$dh = @opendir($dir);
 
-						$backup_files = array();
+						$backup_files = [];
 
 						if ($dh)
 						{
@@ -322,17 +322,17 @@ class acp_database
 
 							foreach ($backup_files as $name => $file)
 							{
-								$template->assign_block_vars('files', array(
+								$template->assign_block_vars('files', [
 									'FILE'		=> $file,
 									'NAME'		=> $user->format_date($name, 'd-m-Y H:i:s', true),
 									'SUPPORTED'	=> true,
-								));
+								]);
 							}
 						}
 
-						$template->assign_vars(array(
+						$template->assign_vars([
 							'U_ACTION'	=> $this->u_action . '&amp;action=submit'
-						));
+						]);
 					break;
 				}
 			break;
@@ -525,15 +525,15 @@ class mysql_extractor extends base_extractor
 
 			// Get field information
 			$field = mysqli_fetch_fields($result);
-			$field_set = array();
+			$field_set = [];
 
 			for ($j = 0; $j < $fields_cnt; $j++)
 			{
 				$field_set[] = $field[$j]->name;
 			}
 
-			$search			= array("\\", "'", "\x00", "\x0a", "\x0d", "\x1a", '"');
-			$replace		= array("\\\\", "\\'", '\0', '\n', '\r', '\Z', '\\"');
+			$search			= ["\\", "'", "\x00", "\x0a", "\x0d", "\x1a", '"'];
+			$replace		= ["\\\\", "\\'", '\0', '\n', '\r', '\Z', '\\"'];
 			$fields			= implode(', ', $field_set);
 			$sql_data		= 'INSERT INTO ' . $table_name . ' (' . $fields . ') VALUES ';
 			$first_set		= true;
@@ -542,7 +542,7 @@ class mysql_extractor extends base_extractor
 
 			while ($row = mysqli_fetch_row($result))
 			{
-				$values	= array();
+				$values	= [];
 				if ($first_set)
 				{
 					$query = $sql_data . '(';
@@ -668,7 +668,7 @@ function fgetd(&$fp, $delim, $read, $seek, $eof, $buffer = 8192)
 
 function fgetd_seekless(&$fp, $delim, $read, $seek, $eof, $buffer = 8192)
 {
-	static $array = array();
+	static $array = [];
 	static $record = '';
 
 	if (!sizeof($array))

@@ -27,7 +27,7 @@ class acp_ban
 		$unbansubmit = (isset($_POST['unbansubmit'])) ? true : false;
 		$current_time = time();
 
-		$user->add_lang(array('acp/ban', 'acp/users'));
+		$user->add_lang(['acp/ban', 'acp/users']);
 		$this->tpl_name = 'acp_ban';
 		$form_key = 'acp_ban';
 		add_form_key($form_key);
@@ -57,7 +57,7 @@ class acp_ban
 		}
 		else if ($unbansubmit)
 		{
-			$ban = request_var('unban', array(''));
+			$ban = request_var('unban', ['']);
 
 			if ($ban)
 			{
@@ -93,7 +93,7 @@ class acp_ban
 
 		self::display_ban_options($mode);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_TITLE'				=> $this->page_title,
 			'L_EXPLAIN'				=> $l_ban_explain,
 			'L_UNBAN_TITLE'			=> $l_unban_title,
@@ -106,7 +106,7 @@ class acp_ban
 
 			'U_ACTION'			=> $this->u_action,
 			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_ban&amp;field=ban'),
-		));
+		]);
 	}
 
 	/**
@@ -117,7 +117,7 @@ class acp_ban
 		global $user, $db, $template;
 
 		// Ban length options
-		$ban_end_text = array(0 => $user->lang['PERMANENT'], 30 => $user->lang['30_MINS'], 60 => $user->lang['1_HOUR'], 360 => $user->lang['6_HOURS'], 1440 => $user->lang['1_DAY'], 10080 => $user->lang['7_DAYS'], 20160 => $user->lang['2_WEEKS'], 40320 => $user->lang['1_MONTH'], -1 => $user->lang['UNTIL']);
+		$ban_end_text = [0 => $user->lang['PERMANENT'], 30 => $user->lang['30_MINS'], 60 => $user->lang['1_HOUR'], 360 => $user->lang['6_HOURS'], 1440 => $user->lang['1_DAY'], 10080 => $user->lang['7_DAYS'], 20160 => $user->lang['2_WEEKS'], 40320 => $user->lang['1_MONTH'], -1 => $user->lang['UNTIL']];
 
 		$ban_end_options = '';
 		foreach ($ban_end_text as $length => $text)
@@ -168,8 +168,8 @@ class acp_ban
 		}
 		$result = $db->sql_query($sql);
 
-		$banned_options = $excluded_options = array();
-		$ban_length = $ban_reasons = $ban_give_reasons = array();
+		$banned_options = $excluded_options = [];
+		$ban_length = $ban_reasons = $ban_give_reasons = [];
 
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -211,11 +211,11 @@ class acp_ban
 		{
 			foreach ($ban_length as $ban_id => $length)
 			{
-				$template->assign_block_vars('ban_length', array(
+				$template->assign_block_vars('ban_length', [
 					'BAN_ID'	=> (int) $ban_id,
 					'LENGTH'	=> $length,
 					'A_LENGTH'	=> addslashes($length),
-				));
+				]);
 			}
 		}
 
@@ -223,11 +223,11 @@ class acp_ban
 		{
 			foreach ($ban_reasons as $ban_id => $reason)
 			{
-				$template->assign_block_vars('ban_reason', array(
+				$template->assign_block_vars('ban_reason', [
 					'BAN_ID'	=> $ban_id,
 					'REASON'	=> $reason,
 					'A_REASON'	=> addslashes($reason),
-				));
+				]);
 			}
 		}
 
@@ -235,11 +235,11 @@ class acp_ban
 		{
 			foreach ($ban_give_reasons as $ban_id => $reason)
 			{
-				$template->assign_block_vars('ban_give_reason', array(
+				$template->assign_block_vars('ban_give_reason', [
 					'BAN_ID'	=> $ban_id,
 					'REASON'	=> $reason,
 					'A_REASON'	=> addslashes($reason),
-				));
+				]);
 			}
 		}
 
@@ -258,10 +258,10 @@ class acp_ban
 			$options .= '</optgroup>';
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_BAN_END_OPTIONS'	=> $ban_end_options,
 			'S_BANNED_OPTIONS'	=> ($banned_options || $excluded_options) ? true : false,
 			'BANNED_OPTIONS'	=> $options,
-		));
+		]);
 	}
 }

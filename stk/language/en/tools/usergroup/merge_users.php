@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'MERGE_USERS'						=> 'Merge users',
 	'MERGE_USERS_EXPLAIN'				=> 'Tool to move a user account’s assets into another account; the source user’s settings and group memberships are copied. Assets include user permissions, attachments, bans, bookmarks, drafts, forum/topic tracking, forum/topic watching, log entries, poll votes, posts, private messages, reports, topics, warnings and friends and foes.<br /><strong>You may enter either the Username or User ID, not both.</strong>',
 
@@ -41,4 +41,4 @@ $lang = array_merge($lang, array(
 
 	'BOTH_SOURCE_USER'		=> 'Fill in one source field only.',
 	'BOTH_TARGET_USER'		=> 'Fill in one target field only.',
-));
+]);

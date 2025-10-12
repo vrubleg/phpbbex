@@ -21,9 +21,9 @@ define('SEARCH_RESULT_INCOMPLETE', 2);
 */
 class search_backend
 {
-	var $ignore_words = array();
-	var $match_synonym = array();
-	var $replace_synonym = array();
+	var $ignore_words = [];
+	var $match_synonym = [];
+	var $replace_synonym = [];
 
 	function __construct(&$error)
 	{
@@ -40,7 +40,7 @@ class search_backend
 		{
 			global $user;
 
-			$words = array();
+			$words = [];
 
 			if (file_exists("{$user->lang_path}{$user->lang_name}/search_ignore_words.php"))
 			{
@@ -62,7 +62,7 @@ class search_backend
 		{
 			global $user;
 
-			$synonyms = array();
+			$synonyms = [];
 
 			if (file_exists("{$user->lang_path}{$user->lang_name}/search_synonyms.php"))
 			{
@@ -173,12 +173,12 @@ class search_backend
 
 				if (!$db->sql_fetchrow($result))
 				{
-					$sql_ary = array(
+					$sql_ary = [
 						'search_key'		=> $search_key,
 						'search_time'		=> time(),
 						'search_keywords'	=> $keywords,
 						'search_authors'	=> ' ' . implode(' ', $author_ary) . ' '
-					);
+					];
 
 					$sql = 'INSERT INTO ' . SEARCH_RESULTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 					$db->sql_query($sql);
@@ -191,7 +191,7 @@ class search_backend
 				WHERE user_id = ' . $user->data['user_id'];
 			$db->sql_query($sql);
 
-			$store = array(-1 => $result_count, -2 => $sort_dir);
+			$store = [-1 => $result_count, -2 => $sort_dir];
 			$id_range = range($start, $start + $length - 1);
 		}
 		else

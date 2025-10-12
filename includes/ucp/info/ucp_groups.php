@@ -9,15 +9,15 @@ class ucp_groups_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> 'ucp_groups',
 			'title'		=> 'UCP_USERGROUPS',
 			'version'	=> '1.0.0',
-			'modes'		=> array(
-				'membership'	=> array('title' => 'UCP_USERGROUPS_MEMBER', 'auth' => '', 'cat' => array('UCP_USERGROUPS')),
-				'manage'		=> array('title' => 'UCP_USERGROUPS_MANAGE', 'auth' => '', 'cat' => array('UCP_USERGROUPS')),
-			),
-		);
+			'modes'		=> [
+				'membership'	=> ['title' => 'UCP_USERGROUPS_MEMBER', 'auth' => '', 'cat' => ['UCP_USERGROUPS']],
+				'manage'		=> ['title' => 'UCP_USERGROUPS_MANAGE', 'auth' => '', 'cat' => ['UCP_USERGROUPS']],
+			],
+		];
 	}
 
 	function install()

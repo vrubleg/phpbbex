@@ -60,8 +60,8 @@ function init_ldap()
 		htmlspecialchars_decode($config['ldap_base_dn']),
 		ldap_user_filter($user->data['username']),
 		(empty($config['ldap_email'])) ?
-			array(htmlspecialchars_decode($config['ldap_uid'])) :
-			array(htmlspecialchars_decode($config['ldap_uid']), htmlspecialchars_decode($config['ldap_email'])),
+			[htmlspecialchars_decode($config['ldap_uid'])] :
+			[htmlspecialchars_decode($config['ldap_uid']), htmlspecialchars_decode($config['ldap_email'])],
 		0,
 		1
 	);
@@ -99,29 +99,29 @@ function login_ldap(&$username, &$password)
 	// do not allow empty password
 	if (!$password)
 	{
-		return array(
+		return [
 			'status'	=> LOGIN_ERROR_PASSWORD,
 			'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
-			'user_row'	=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'	=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	if (!$username)
 	{
-		return array(
+		return [
 			'status'	=> LOGIN_ERROR_USERNAME,
 			'error_msg'	=> 'LOGIN_ERROR_USERNAME',
-			'user_row'	=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'	=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	if (!@extension_loaded('ldap'))
 	{
-		return array(
+		return [
 			'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
 			'error_msg'		=> 'LDAP_NO_LDAP_EXTENSION',
-			'user_row'		=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'		=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	$config['ldap_port'] = (int) $config['ldap_port'];
@@ -136,11 +136,11 @@ function login_ldap(&$username, &$password)
 
 	if (!$ldap)
 	{
-		return array(
+		return [
 			'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
 			'error_msg'		=> 'LDAP_NO_SERVER_CONNECTION',
-			'user_row'		=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'		=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	@ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -150,11 +150,11 @@ function login_ldap(&$username, &$password)
 	{
 		if (!@ldap_bind($ldap, htmlspecialchars_decode($config['ldap_user']), htmlspecialchars_decode($config['ldap_password'])))
 		{
-			return array(
+			return [
 				'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
 				'error_msg'		=> 'LDAP_NO_SERVER_CONNECTION',
-				'user_row'		=> array('user_id' => ANONYMOUS),
-			);
+				'user_row'		=> ['user_id' => ANONYMOUS],
+			];
 		}
 	}
 
@@ -163,8 +163,8 @@ function login_ldap(&$username, &$password)
 		htmlspecialchars_decode($config['ldap_base_dn']),
 		ldap_user_filter($username),
 		(empty($config['ldap_email'])) ?
-			array(htmlspecialchars_decode($config['ldap_uid'])) :
-			array(htmlspecialchars_decode($config['ldap_uid']), htmlspecialchars_decode($config['ldap_email'])),
+			[htmlspecialchars_decode($config['ldap_uid'])] :
+			[htmlspecialchars_decode($config['ldap_uid']), htmlspecialchars_decode($config['ldap_email'])],
 		0,
 		1
 	);
@@ -191,19 +191,19 @@ function login_ldap(&$username, &$password)
 				// User inactive...
 				if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
 				{
-					return array(
+					return [
 						'status'		=> LOGIN_ERROR_INACTIVE,
 						'error_msg'		=> 'LOGIN_ERROR_INACTIVE',
 						'user_row'		=> $row,
-					);
+					];
 				}
 
 				// Successful login... set user_login_attempts to zero...
-				return array(
+				return [
 					'status'		=> LOGIN_SUCCESS,
 					'error_msg'		=> false,
 					'user_row'		=> $row,
-				);
+				];
 			}
 			else
 			{
@@ -222,7 +222,7 @@ function login_ldap(&$username, &$password)
 				}
 
 				// generate user account data
-				$ldap_user_row = array(
+				$ldap_user_row = [
 					'username'		=> $username,
 					'user_password'	=> phpbb_hash($password),
 					'user_email'	=> (!empty($config['ldap_email'])) ? utf8_htmlspecialchars($ldap_result[0][htmlspecialchars_decode($config['ldap_email'])][0]) : '',
@@ -230,16 +230,16 @@ function login_ldap(&$username, &$password)
 					'user_type'		=> USER_NORMAL,
 					'user_ip'		=> $user->ip,
 					'user_new'		=> ($config['new_member_post_limit']) ? 1 : 0,
-				);
+				];
 
 				unset($ldap_result);
 
 				// this is the user's first login so create an empty profile
-				return array(
+				return [
 					'status'		=> LOGIN_SUCCESS_CREATE_PROFILE,
 					'error_msg'		=> false,
 					'user_row'		=> $ldap_user_row,
-				);
+				];
 			}
 		}
 		else
@@ -248,21 +248,21 @@ function login_ldap(&$username, &$password)
 			@ldap_close($ldap);
 
 			// Give status about wrong password...
-			return array(
+			return [
 				'status'		=> LOGIN_ERROR_PASSWORD,
 				'error_msg'		=> 'LOGIN_ERROR_PASSWORD',
-				'user_row'		=> array('user_id' => ANONYMOUS),
-			);
+				'user_row'		=> ['user_id' => ANONYMOUS],
+			];
 		}
 	}
 
 	@ldap_close($ldap);
 
-	return array(
+	return [
 		'status'	=> LOGIN_ERROR_USERNAME,
 		'error_msg'	=> 'LOGIN_ERROR_USERNAME',
-		'user_row'	=> array('user_id' => ANONYMOUS),
-	);
+		'user_row'	=> ['user_id' => ANONYMOUS],
+	];
 }
 
 /**
@@ -290,7 +290,7 @@ function ldap_user_filter($username)
 */
 function phpbb_ldap_escape($string)
 {
-	return str_replace(array('*', '\\', '(', ')'), array('\\*', '\\\\', '\\(', '\\)'), $string);
+	return str_replace(['*', '\\', '(', ')'], ['\\*', '\\\\', '\\(', '\\)'], $string);
 }
 
 /**
@@ -338,8 +338,8 @@ function acp_ldap(&$new)
 	';
 
 	// These are fields required in the config table
-	return array(
+	return [
 		'tpl'		=> $tpl,
-		'config'	=> array('ldap_server', 'ldap_port', 'ldap_base_dn', 'ldap_uid', 'ldap_user_filter', 'ldap_email', 'ldap_user', 'ldap_password')
-	);
+		'config'	=> ['ldap_server', 'ldap_port', 'ldap_base_dn', 'ldap_uid', 'ldap_user_filter', 'ldap_email', 'ldap_user', 'ldap_password']
+	];
 }

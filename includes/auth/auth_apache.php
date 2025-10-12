@@ -42,29 +42,29 @@ function login_apache(&$username, &$password)
 	// do not allow empty password
 	if (!$password)
 	{
-		return array(
+		return [
 			'status'	=> LOGIN_ERROR_PASSWORD,
 			'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
-			'user_row'	=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'	=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	if (!$username)
 	{
-		return array(
+		return [
 			'status'	=> LOGIN_ERROR_USERNAME,
 			'error_msg'	=> 'LOGIN_ERROR_USERNAME',
-			'user_row'	=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'	=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	if (!isset($_SERVER['PHP_AUTH_USER']))
 	{
-		return array(
+		return [
 			'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
 			'error_msg'		=> 'LOGIN_ERROR_EXTERNAL_AUTH_APACHE',
-			'user_row'		=> array('user_id' => ANONYMOUS),
-		);
+			'user_row'		=> ['user_id' => ANONYMOUS],
+		];
 	}
 
 	$php_auth_user = $_SERVER['PHP_AUTH_USER'];
@@ -74,11 +74,11 @@ function login_apache(&$username, &$password)
 	{
 		if ($php_auth_user !== $username)
 		{
-			return array(
+			return [
 				'status'	=> LOGIN_ERROR_USERNAME,
 				'error_msg'	=> 'LOGIN_ERROR_USERNAME',
-				'user_row'	=> array('user_id' => ANONYMOUS),
-			);
+				'user_row'	=> ['user_id' => ANONYMOUS],
+			];
 		}
 
 		$sql = 'SELECT user_id, username, user_password, user_passchg, user_email, user_type
@@ -93,35 +93,35 @@ function login_apache(&$username, &$password)
 			// User inactive...
 			if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
 			{
-				return array(
+				return [
 					'status'		=> LOGIN_ERROR_INACTIVE,
 					'error_msg'		=> 'LOGIN_ERROR_INACTIVE',
 					'user_row'		=> $row,
-				);
+				];
 			}
 
 			// Successful login...
-			return array(
+			return [
 				'status'		=> LOGIN_SUCCESS,
 				'error_msg'		=> false,
 				'user_row'		=> $row,
-			);
+			];
 		}
 
 		// this is the user's first login so create an empty profile
-		return array(
+		return [
 			'status'		=> LOGIN_SUCCESS_CREATE_PROFILE,
 			'error_msg'		=> false,
 			'user_row'		=> user_row_apache($php_auth_user, $php_auth_pw),
-		);
+		];
 	}
 
 	// Not logged into apache
-	return array(
+	return [
 		'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
 		'error_msg'		=> 'LOGIN_ERROR_EXTERNAL_AUTH_APACHE',
-		'user_row'		=> array('user_id' => ANONYMOUS),
-	);
+		'user_row'		=> ['user_id' => ANONYMOUS],
+	];
 }
 
 /**
@@ -135,7 +135,7 @@ function autologin_apache()
 
 	if (!isset($_SERVER['PHP_AUTH_USER']))
 	{
-		return array();
+		return [];
 	}
 
 	$php_auth_user = $_SERVER['PHP_AUTH_USER'];
@@ -155,7 +155,7 @@ function autologin_apache()
 
 		if ($row)
 		{
-			return ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE) ? array() : $row;
+			return ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE) ? [] : $row;
 		}
 
 		if (!function_exists('user_add'))
@@ -179,7 +179,7 @@ function autologin_apache()
 		}
 	}
 
-	return array();
+	return [];
 }
 
 /**
@@ -203,7 +203,7 @@ function user_row_apache($username, $password)
 	}
 
 	// generate user account data
-	return array(
+	return [
 		'username'		=> $username,
 		'user_password'	=> phpbb_hash($password),
 		'user_email'	=> '',
@@ -211,7 +211,7 @@ function user_row_apache($username, $password)
 		'user_type'		=> USER_NORMAL,
 		'user_ip'		=> $user->ip,
 		'user_new'		=> ($config['new_member_post_limit']) ? 1 : 0,
-	);
+	];
 }
 
 /**

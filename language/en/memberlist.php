@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ABOUT_USER'			=> 'Profile',
 	'ACTIVE_IN_FORUM'		=> 'Most active forum',
 	'ACTIVE_IN_TOPIC'		=> 'Most active topic',
@@ -106,10 +106,10 @@ $lang = array_merge($lang, array(
 	'USER_LAST_IP'			=> 'Last IP',
 	'USER_BAN'				=> 'Banning',
 	'USER_FORUM'			=> 'User statistics',
-	'USER_LAST_REMINDED'	=> array(
+	'USER_LAST_REMINDED'	=> [
 		0		=> 'No reminder sent at this time',
 		1		=> '%1$d reminder sent<br />» %2$s',
-	),
+	],
 	'USER_ONLINE'			=> 'Online',
 	'USER_PRESENCE'			=> 'Board presence',
 	'USERS_PER_PAGE'		=> 'Users per page',
@@ -118,4 +118,4 @@ $lang = array_merge($lang, array(
 	'VISITED'				=> 'Last visited',
 
 	'WWW'					=> 'Website',
-));
+]);

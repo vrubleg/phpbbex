@@ -24,7 +24,7 @@ class plugin
 	 * @var array
 	 * @access private
 	 */
-	var $ignore_tools = array('index.htm', 'tutorial.php');
+	var $ignore_tools = ['index.htm', 'tutorial.php'];
 
 	/**
 	 * List containing all available tools and in which category they belong.
@@ -34,9 +34,9 @@ class plugin
 	 * @var array
 	 * @access private
 	 */
-	var $plugin_list = array(
-		'support'	=> array('erk'),
-	);
+	var $plugin_list = [
+		'support'	=> ['erk'],
+	];
 
 	/**
 	 * Path to the tools directory
@@ -49,10 +49,10 @@ class plugin
 	/**
 	 * Parts, used to build the query string
 	 */
-	var $_parts = array(
+	var $_parts = [
 		'c' => 'support',
 		't' => '',
-	);
+	];
 
 	/**
 	 * Constructor
@@ -79,7 +79,7 @@ class plugin
 
 			if (!isset($this->plugin_list[$cat]))
 			{
-				$this->plugin_list[$cat] = array();
+				$this->plugin_list[$cat] = [];
 			}
 
 			// Don't want the extension
@@ -146,7 +146,7 @@ class plugin
 	{
 		global $user;
 
-		static $tools_loaded = array();
+		static $tools_loaded = [];
 
 		if (isset($tools_loaded[$tool_name]))
 		{
@@ -187,7 +187,7 @@ class plugin
 	 */
 	function url_arg($string = false)
 	{
-		$args	= array();
+		$args	= [];
 		$str	= '?';
 
 		// Run through the parts
@@ -242,7 +242,7 @@ class plugin
 		foreach ($cats as $cat)
 		{
 			// Ignore all categories that are empty (excluding "main" and erk)
-			if (empty($this->plugin_list[$cat]) && !in_array($cat, array('main', 'erk')))
+			if (empty($this->plugin_list[$cat]) && !in_array($cat, ['main', 'erk']))
 			{
 				continue;
 			}
@@ -251,11 +251,11 @@ class plugin
 			$_s_active = ($cat == $this->_parts['c']) ? true : false;
 
 			// Assign to the template
-			$template->assign_block_vars('top_nav', array(
+			$template->assign_block_vars('top_nav', [
 				'L_TITLE'		=> $user->lang['CAT_' . strtoupper($cat)],
 				'S_SELECTED'	=> $_s_active,
-				'U_TITLE'		=> append_sid(STK_INDEX, array('c' => $cat)),
-			));
+				'U_TITLE'		=> append_sid(STK_INDEX, ['c' => $cat]),
+			]);
 		}
 	}
 
@@ -271,7 +271,7 @@ class plugin
 		$tool_list = $this->plugin_list[$this->_parts['c']];
 
 		// Run through the tools and collect all info we need
-		$tpl_data = array();
+		$tpl_data = [];
 		foreach ($tool_list as $tool)
 		{
 			$class = $this->load_tool($this->_parts['c'], $tool);
@@ -293,9 +293,9 @@ class plugin
 			else
 			{
 				// For us lazy people
-				$info = array(
+				$info = [
 					'NAME'			=> (isset($user->lang[strtoupper($tool)])) ? $user->lang[strtoupper($tool)] : strtoupper($tool),
-				);
+				];
 			}
 
 			$tpl_data[$tool] = $info['NAME'];
@@ -310,11 +310,11 @@ class plugin
 			$_s_active = ($tool == $this->_parts['t']) ? true : false;
 
 			// Assign to the template
-			$template->assign_block_vars('left_nav', array(
+			$template->assign_block_vars('left_nav', [
 				'L_TITLE'		=> $name,
 				'S_SELECTED'	=> $_s_active,
-				'U_TITLE'		=> append_sid(STK_INDEX, array('c' => $this->_parts['c'], 't' => $tool)),
-			));
+				'U_TITLE'		=> append_sid(STK_INDEX, ['c' => $this->_parts['c'], 't' => $tool]),
+			]);
 		}
 	}
 }

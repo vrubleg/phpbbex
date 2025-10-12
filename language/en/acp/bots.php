@@ -12,11 +12,11 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // Bot settings
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'BOTS'				=> 'Manage bots',
 	'BOTS_EXPLAIN'		=> '“Bots”, “spiders” or “crawlers” are automated agents most commonly used by search engines to update their databases. Since they rarely make proper use of sessions they can distort visitor counts, increase load and sometimes fail to index sites correctly. Here you can define a special type of user to overcome these problems.',
 	'BOT_ACTIVATE'		=> 'Activate',
@@ -48,4 +48,4 @@ $lang = array_merge($lang, array(
 
 	'NO_BOT'		=> 'Found no bot with the specified ID.',
 	'NO_BOT_GROUP'	=> 'Unable to find special bot group.',
-));
+]);

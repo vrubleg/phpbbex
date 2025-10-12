@@ -18,12 +18,12 @@ class critical_repair
 	/**
 	* @var Array Tools that are autoran
 	*/
-	var $autorun_tools = array();
+	var $autorun_tools = [];
 
 	/**
 	* @var Array Tools that are manually invoked
 	*/
-	var $manual_tools = array();
+	var $manual_tools = [];
 
 	/**
 	* @var string Location for the tools
@@ -116,7 +116,7 @@ class critical_repair
 	{
 		if (!is_array($msg))
 		{
-			$msg = array($msg);
+			$msg = [$msg];
 		}
 
 		// Send headers

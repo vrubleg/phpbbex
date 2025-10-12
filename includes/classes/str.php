@@ -198,7 +198,7 @@ class str
 	 */
 	public static function transliterate($str)
 	{
-		$replace_pairs = array(
+		$replace_pairs = [
 			// Upper accents
 			'À' => 'A',  'Ô' => 'O',  'Ď' => 'D',  'Ḟ' => 'F',  'Ë' => 'E',  'Š' => 'S',  'Ơ' => 'O',
 			'Ă' => 'A',  'Ř' => 'R',  'Ț' => 'T',  'Ň' => 'N',  'Ā' => 'A',  'Ķ' => 'K',  'Ĕ' => 'E',
@@ -247,7 +247,7 @@ class str
 			'ї' => 'yi', 'і' => 'i',
 			// Other symbols
 			'№' => 'N',  '€' => 'E',
-		);
+		];
 		return strtr($str, $replace_pairs);
 	}
 

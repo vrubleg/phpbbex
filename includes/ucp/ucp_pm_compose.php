@@ -14,7 +14,7 @@ if (!defined('IN_PHPBB'))
 * Compose private message
 * Called from ucp_pm with mode == 'compose'
 */
-function compose_pm($id, $mode, $action, $user_folders = array())
+function compose_pm($id, $mode, $action, $user_folders = [])
 {
 	global $template, $db, $auth, $user, $config;
 
@@ -43,11 +43,11 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$reply_to_all	= request_var('reply_to_all', 0);
 
 	// Do NOT use request_var or specialchars here
-	$address_list	= isset($_REQUEST['address_list']) ? $_REQUEST['address_list'] : array();
+	$address_list	= isset($_REQUEST['address_list']) ? $_REQUEST['address_list'] : [];
 
 	if (!is_array($address_list))
 	{
-		$address_list = array();
+		$address_list = [];
 	}
 
 	$preview	= (isset($_POST['preview'])) ? true : false;
@@ -67,7 +67,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$action		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : $action;
 	$select_single = ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')) ? false : true;
 
-	$error = array();
+	$error = [];
 	$current_time = time();
 
 	// Was cancel pressed? If so then redirect to the appropriate page
@@ -118,12 +118,12 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 			$db->sql_freeresult($result);
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_SHOW_PM_BOX'		=> true,
 			'S_ALLOW_MASS_PM'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')) ? true : false,
 			'S_GROUP_OPTIONS'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group')) ? $group_options : '',
 			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single=$select_single"),
-		));
+		]);
 	}
 
 	$sql = '';
@@ -305,12 +305,12 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 				// Add the original author as the recipient if quoting a post or only replying and not having checked "reply to all"
 				if ($action == 'quotepost' || !$reply_to_all)
 				{
-					$address_list = array('u' => array($post['author_id'] => 'to'));
+					$address_list = ['u' => [$post['author_id'] => 'to']];
 				}
 				else
 				{
 					// We try to include every previously listed member from the TO Header - Reply to all
-					$address_list = rebuild_header(array('to' => $post['to_address']));
+					$address_list = rebuild_header(['to' => $post['to_address']]);
 
 					// Add the author (if he is already listed then this is no shame (it will be overwritten))
 					$address_list['u'][$post['author_id']] = 'to';
@@ -325,7 +325,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 			else if ($action == 'edit' && !sizeof($address_list) && !$refresh && !$submit && !$preview)
 			{
 				// Rebuild TO and BCC Header
-				$address_list = rebuild_header(array('to' => $post['to_address'], 'bcc' => $post['bcc_address']));
+				$address_list = rebuild_header(['to' => $post['to_address'], 'bcc' => $post['bcc_address']]);
 			}
 
 			if ($action == 'quotepost')
@@ -406,11 +406,11 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		}
 		else
 		{
-			$s_hidden_fields = array(
+			$s_hidden_fields = [
 				'p'			=> $msg_id,
 				'f'			=> $folder_id,
 				'action'	=> 'delete'
-			);
+			];
 
 			// PHPBB_ROOT_PATH . 'ucp.php?i=pm&amp;mode=compose'
 			confirm_box(false, 'DELETE_MESSAGE', build_hidden_fields($s_hidden_fields));
@@ -435,10 +435,10 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	if (($action == 'reply' || $action == 'quote') && $max_recipients && $reply_to_all)
 	{
 		// We try to include every previously listed member from the TO Header
-		$list = rebuild_header(array('to' => $post['to_address']));
+		$list = rebuild_header(['to' => $post['to_address']]);
 
 		// Can be an empty array too ;)
-		$list = (!empty($list['u'])) ? $list['u'] : array();
+		$list = (!empty($list['u'])) ? $list['u'] : [];
 		$list[$post['author_id']] = 'to';
 
 		if (isset($list[$user->data['user_id']]))
@@ -457,7 +457,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	// Check mass pm to group permission
 	if ((!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm_group')) && !empty($address_list['g']))
 	{
-		$address_list = array();
+		$address_list = [];
 		$error[] = $user->lang['NO_AUTH_GROUP_MESSAGE'];
 	}
 
@@ -493,7 +493,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		$db->sql_freeresult($result);
 	}
 
-	if (!in_array($action, array('quote', 'edit', 'delete', 'forward')))
+	if (!in_array($action, ['quote', 'edit', 'delete', 'forward']))
 	{
 		$enable_sig		= ($config['allow_sig'] && $config['allow_sig_pm'] && $auth->acl_get('u_sig') && $user->optionget('attachsig'));
 		$enable_smilies	= ($config['allow_smilies'] && $auth->acl_get('u_pm_smilies') && $user->optionget('smilies'));
@@ -546,14 +546,14 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		{
 			if (confirm_box(true))
 			{
-				$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+				$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
 					'user_id'		=> $user->data['user_id'],
 					'topic_id'		=> 0,
 					'forum_id'		=> 0,
 					'save_time'		=> $current_time,
 					'draft_subject'	=> $subject,
 					'draft_message'	=> $message
-					)
+					]
 				);
 				$db->sql_query($sql);
 
@@ -566,7 +566,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 			}
 			else
 			{
-				$s_hidden_fields = build_hidden_fields(array(
+				$s_hidden_fields = build_hidden_fields([
 					'mode'		=> $mode,
 					'action'	=> $action,
 					'save'		=> true,
@@ -574,7 +574,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 					'message'	=> $message,
 					'u'			=> $to_user_id,
 					'g'			=> $to_group_id,
-					'p'			=> $msg_id)
+					'p'			=> $msg_id]
 				);
 				$s_hidden_fields .= build_address_field($address_list);
 
@@ -661,7 +661,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		if (sizeof($message_parser->warn_msg) && !($remove_u || $remove_g || $add_to || $add_bcc))
 		{
 			$error[] = implode('<br />', $message_parser->warn_msg);
-			$message_parser->warn_msg = array();
+			$message_parser->warn_msg = [];
 		}
 
 		// Parse message
@@ -704,7 +704,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		// Store message, sync counters
 		if (!sizeof($error) && $submit)
 		{
-			$pm_data = array(
+			$pm_data = [
 				'msg_id'				=> (int) $msg_id,
 				'from_user_id'			=> $user->data['user_id'],
 				'from_user_ip'			=> $user->ip,
@@ -722,7 +722,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 				'attachment_data'		=> $message_parser->attachment_data,
 				'filename_data'			=> $message_parser->filename_data,
 				'address_list'			=> $address_list
-			);
+			];
 
 			// ((!$message_subject) ? $subject : $message_subject)
 			$msg_id = submit_pm($action, $subject, $pm_data);
@@ -789,15 +789,15 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		{
 			$template->assign_var('S_HAS_ATTACHMENTS', true);
 
-			$update_count = array();
+			$update_count = [];
 			$attachment_data = $message_parser->attachment_data;
 
 			parse_attachments(false, $preview_message, $attachment_data, $update_count, true);
 
 			foreach ($attachment_data as $i => $attachment)
 			{
-				$template->assign_block_vars('attachment', array(
-					'DISPLAY_ATTACHMENT'	=> $attachment)
+				$template->assign_block_vars('attachment', [
+					'DISPLAY_ATTACHMENT'	=> $attachment]
 				);
 			}
 			unset($attachment_data);
@@ -807,12 +807,12 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 
 		if (!sizeof($error))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'PREVIEW_SUBJECT'		=> $preview_subject,
 				'PREVIEW_MESSAGE'		=> $preview_message,
 				'PREVIEW_SIGNATURE'		=> $preview_signature,
 
-				'S_DISPLAY_PREVIEW'		=> true)
+				'S_DISPLAY_PREVIEW'		=> true]
 			);
 		}
 		unset($message_text);
@@ -851,7 +851,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 
 	if ($action == 'forward' && !$preview && !$refresh && !$submit)
 	{
-		$fwd_to_field = write_pm_addresses(array('to' => $post['to_address']), 0, true);
+		$fwd_to_field = write_pm_addresses(['to' => $post['to_address']], 0, true);
 
 		if ($config['allow_post_links'])
 		{
@@ -862,7 +862,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 			$quote_username_text = $quote_username . ' (' . generate_board_url() . "/memberlist.php?mode=viewprofile&amp;u={$post['author_id']})";
 		}
 
-		$forward_text = array();
+		$forward_text = [];
 		$forward_text[] = $user->lang['FWD_ORIGINAL_MESSAGE'];
 		$forward_text[] = sprintf($user->lang['FWD_SUBJECT'], censor_text($message_subject));
 		$forward_text[] = sprintf($user->lang['FWD_DATE'], $user->format_date($message_time, false, true));
@@ -897,7 +897,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	if (sizeof($address_list))
 	{
 		// Get Usernames and Group Names
-		$result = array();
+		$result = [];
 		if (!empty($address_list['u']))
 		{
 			$sql = 'SELECT user_id as id, username as name, user_colour as colour
@@ -932,8 +932,8 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 			$result['g'] = $db->sql_query($sql);
 		}
 
-		$u = $g = array();
-		$_types = array('u', 'g');
+		$u = $g = [];
+		$_types = ['u', 'g'];
 		foreach ($_types as $type)
 		{
 			if (isset($result[$type]) && $result[$type])
@@ -945,7 +945,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 						$row['name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['name']] : $row['name'];
 					}
 
-					${$type}[$row['id']] = array('name' => $row['name'], 'colour' => $row['colour']);
+					${$type}[$row['id']] = ['name' => $row['name'], 'colour' => $row['colour']];
 				}
 				$db->sql_freeresult($result[$type]);
 			}
@@ -967,27 +967,27 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 				$type = ($type == 'u') ? 'u' : 'g';
 				$id = (int) $id;
 
-				$tpl_ary = array(
+				$tpl_ary = [
 					'IS_GROUP'	=> ($type == 'g') ? true : false,
 					'IS_USER'	=> ($type == 'u') ? true : false,
 					'UG_ID'		=> $id,
 					'NAME'		=> ${$type}[$id]['name'],
 					'COLOUR'	=> (${$type}[$id]['colour']) ? '#' . ${$type}[$id]['colour'] : '',
 					'TYPE'		=> $type,
-				);
+				];
 
 				if ($type == 'u')
 				{
-					$tpl_ary = array_merge($tpl_ary, array(
+					$tpl_ary = array_merge($tpl_ary, [
 						'U_VIEW'		=> get_username_string('profile', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
 						'NAME_FULL'		=> get_username_string('full', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
-					));
+					]);
 				}
 				else
 				{
-					$tpl_ary = array_merge($tpl_ary, array(
+					$tpl_ary = array_merge($tpl_ary, [
 						'U_VIEW'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $id),
-					));
+					]);
 				}
 
 				$template->assign_block_vars($field . '_recipient', $tpl_ary);
@@ -1044,7 +1044,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	$allowed_extension_sizes = get_allowed_extension_sizes(false);
 
 	// Start assigning vars for main posting page ...
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'L_POST_A'					=> $page_title,
 		'L_ICON'					=> $user->lang['PM_ICON'],
 		'L_MESSAGE_BODY_EXPLAIN'	=> (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
@@ -1089,7 +1089,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 		'S_POST_ACTION'				=> $s_action,
 		'S_HIDDEN_ADDRESS_FIELD'	=> $s_hidden_address_field,
 		'S_HIDDEN_FIELDS'			=> $s_hidden_fields,
-	));
+	]);
 
 	// Build custom bbcodes array
 	display_custom_bbcodes();
@@ -1103,7 +1103,7 @@ function compose_pm($id, $mode, $action, $user_folders = array())
 	// Message History
 	if ($action == 'reply' || $action == 'quote' || $action == 'forward')
 	{
-		if (message_history($msg_id, $user->data['user_id'], $post, array(), true))
+		if (message_history($msg_id, $user->data['user_id'], $post, [], true))
 		{
 			$template->assign_var('S_DISPLAY_HISTORY', true);
 		}
@@ -1140,11 +1140,11 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 	}
 
 	// Add Selected Groups
-	$group_list = request_var('group_list', array(0));
+	$group_list = request_var('group_list', [0]);
 
 	// Build usernames to add
 	$usernames = request_var('username', '', true);
-	$usernames = (empty($usernames)) ? array() : array($usernames);
+	$usernames = (empty($usernames)) ? [] : [$usernames];
 
 	$username_list = request_var('username_list', '', true);
 	if ($username_list)
@@ -1183,13 +1183,13 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 		}
 
 		// User ID's to add...
-		$user_id_ary = array();
+		$user_id_ary = [];
 
 		// Reveal the correct user_ids
 		if (sizeof($usernames))
 		{
-			$user_id_ary = array();
-			user_get_id_name($user_id_ary, $usernames, array(USER_NORMAL, USER_FOUNDER, USER_INACTIVE));
+			$user_id_ary = [];
+			user_get_id_name($user_id_ary, $usernames, [USER_NORMAL, USER_FOUNDER, USER_INACTIVE]);
 
 			// If there are users not existing, we will at least print a notice...
 			if (!sizeof($user_id_ary))
@@ -1199,7 +1199,7 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 		}
 
 		// Add Friends if specified
-		$friend_list = (isset($_REQUEST['add_' . $type]) && is_array($_REQUEST['add_' . $type])) ? array_map('intval', array_keys($_REQUEST['add_' . $type])) : array();
+		$friend_list = (isset($_REQUEST['add_' . $type]) && is_array($_REQUEST['add_' . $type])) ? array_map('intval', array_keys($_REQUEST['add_' . $type])) : [];
 		$user_id_ary = array_merge($user_id_ary, $friend_list);
 
 		foreach ($user_id_ary as $user_id)
@@ -1279,7 +1279,7 @@ function num_recipients($address_list)
 */
 function get_recipients($address_list, $num_recipients = 1)
 {
-	$recipient = array();
+	$recipient = [];
 
 	$count = 0;
 	foreach ($address_list as $field => $adr_ary)

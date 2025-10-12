@@ -25,7 +25,7 @@ if (!defined('IN_PHPBB'))
 class jabber
 {
 	var $connection = null;
-	var $session = array();
+	var $session = [];
 	var $timeout = 10;
 
 	var $server;
@@ -39,7 +39,7 @@ class jabber
 	var $enable_logging;
 	var $log_array;
 
-	var $features = array();
+	var $features = [];
 
 	/**
 	*/
@@ -72,7 +72,7 @@ class jabber
 		}
 
 		$this->enable_logging		= true;
-		$this->log_array			= array();
+		$this->log_array			= [];
 	}
 
 	/**
@@ -161,7 +161,7 @@ class jabber
 			}
 
 			$this->send('</stream:stream>');
-			$this->session = array();
+			$this->session = [];
 			return fclose($this->connection);
 		}
 
@@ -342,7 +342,7 @@ class jabber
 		}
 
 		$type = strtolower($type);
-		$type = (in_array($type, array('dnd', 'away', 'chat', 'xa'))) ? '<show>'. $type .'</show>' : '';
+		$type = (in_array($type, ['dnd', 'away', 'chat', 'xa'])) ? '<show>'. $type .'</show>' : '';
 
 		$unavailable = ($unavailable) ? " type='unavailable'" : '';
 		$message = ($message) ? '<status>' . utf8_htmlspecialchars($message) .'</status>' : '';
@@ -371,7 +371,7 @@ class jabber
 		{
 			foreach ($xml as $key => $value)
 			{
-				$this->response(array($key => $value));
+				$this->response([$key => $value]);
 			}
 			return;
 		}
@@ -383,7 +383,7 @@ class jabber
 			{
 				foreach (reset($xml) as $value)
 				{
-					$this->response(array(key($xml) => array(0 => $value)));
+					$this->response([key($xml) => [0 => $value]]);
 				}
 				return;
 			}
@@ -449,7 +449,7 @@ class jabber
 				if (isset($xml['stream:features'][0]['#']['mechanisms'][0]['@']['xmlns']) && $xml['stream:features'][0]['#']['mechanisms'][0]['@']['xmlns'] == 'urn:ietf:params:xml:ns:xmpp-sasl')
 				{
 					// Now decide on method
-					$methods = array();
+					$methods = [];
 
 					foreach ($xml['stream:features'][0]['#']['mechanisms'][0]['#']['mechanism'] as $value)
 					{
@@ -524,15 +524,15 @@ class jabber
 						$decoded['qop'] = 'auth';
 					}
 
-					$response = array(
+					$response = [
 						'username'	=> $this->username,
-						'response'	=> $this->encrypt_password(array_merge($decoded, array('nc' => '00000001'))),
+						'response'	=> $this->encrypt_password(array_merge($decoded, ['nc' => '00000001'])),
 						'charset'	=> 'utf-8',
 						'nc'		=> '00000001',
 						'qop'		=> 'auth',			// only auth being supported
-					);
+					];
 
-					foreach (array('nonce', 'digest-uri', 'realm', 'cnonce') as $key)
+					foreach (['nonce', 'digest-uri', 'realm', 'cnonce'] as $key)
 					{
 						if (isset($decoded[$key]))
 						{
@@ -674,7 +674,7 @@ class jabber
 			return false;
 		}
 
-		if (!in_array($type, array('chat', 'normal', 'error', 'groupchat', 'headline')))
+		if (!in_array($type, ['chat', 'normal', 'error', 'groupchat', 'headline']))
 		{
 			$type = 'normal';
 		}
@@ -694,7 +694,7 @@ class jabber
 	function encrypt_password($data)
 	{
 		// let's me think about <challenge> again...
-		foreach (array('realm', 'cnonce', 'digest-uri') as $key)
+		foreach (['realm', 'cnonce', 'digest-uri'] as $key)
 		{
 			if (!isset($data[$key]))
 			{
@@ -728,7 +728,7 @@ class jabber
 	function parse_data($data)
 	{
 		$data = explode(',', $data);
-		$pairs = array();
+		$pairs = [];
 		$key = false;
 
 		foreach ($data as $pair)
@@ -759,7 +759,7 @@ class jabber
 	*/
 	function implode_data($data)
 	{
-		$return = array();
+		$return = [];
 		foreach ($data as $key => $value)
 		{
 			$return[] = $key . '="' . $value . '"';
@@ -782,7 +782,7 @@ class jabber
 			$data = '<root>'. $data . '</root>';
 		}
 
-		$vals = $index = $array = array();
+		$vals = $index = $array = [];
 		$parser = xml_parser_create($encoding);
 		xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, $skip_white);
@@ -792,7 +792,7 @@ class jabber
 		$i = 0;
 		$tagname = $vals[$i]['tag'];
 
-		$array[$tagname][0]['@'] = (isset($vals[$i]['attributes'])) ? $vals[$i]['attributes'] : array();
+		$array[$tagname][0]['@'] = (isset($vals[$i]['attributes'])) ? $vals[$i]['attributes'] : [];
 		$array[$tagname][0]['#'] = $this->_xml_depth($vals, $i);
 
 		if (substr($data, 0, 5) != '<?xml')
@@ -810,7 +810,7 @@ class jabber
 	*/
 	function _xml_depth($vals, &$i)
 	{
-		$children = array();
+		$children = [];
 
 		if (isset($vals[$i]['value']))
 		{
@@ -843,7 +843,7 @@ class jabber
 
 					$tagname = $vals[$i]['tag'];
 					$size = (isset($children[$tagname])) ? sizeof($children[$tagname]) : 0;
-					$children[$tagname][$size]['#'] = (isset($vals[$i]['value'])) ? $vals[$i]['value'] : array();
+					$children[$tagname][$size]['#'] = (isset($vals[$i]['value'])) ? $vals[$i]['value'] : [];
 
 					if (isset($vals[$i]['attributes']))
 					{

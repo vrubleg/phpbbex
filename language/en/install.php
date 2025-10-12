@@ -12,10 +12,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADMIN_CONFIG'				=> 'Administrator configuration',
 	'ADMIN_PASSWORD'			=> 'Administrator password',
 	'ADMIN_PASSWORD_CONFIRM'	=> 'Confirm administrator password',
@@ -306,10 +306,10 @@ $lang = array_merge($lang, array(
 
 	'WELCOME_INSTALL'			=> 'Welcome to phpBBex Installation',
 	'WRITABLE'					=> 'Writable',
-));
+]);
 
 // Updater
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ALL_FILES_UP_TO_DATE'		=> 'All files are up to date with the latest phpBB version. You should now <a href="../ucp.php?mode=login">login to your board</a> and check if everything is working fine.',
 	'ARCHIVE_FILE'				=> 'Source file within archive',
 
@@ -493,10 +493,10 @@ $lang = array_merge($lang, array(
 	'VIEWING_FILE_DIFF'				=> 'Viewing file differences',
 
 	'WRONG_INFO_FILE_FORMAT'	=> 'Wrong info file format',
-));
+]);
 
 // Default database schema entries...
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'CONFIG_BOARD_EMAIL_SIG'		=> 'Thanks, The Management',
 	'CONFIG_SITE_DESC'				=> 'A short text to describe your forum',
 	'CONFIG_SITENAME'				=> 'Your phpBBex',
@@ -517,4 +517,4 @@ $lang = array_merge($lang, array(
 
 	'WARNING_POST_DEFAULT'			=> 'Violation of rules',
 	'BOARD_DISABLE_DEFAULT'			=> 'Forum in maintenance',
-));
+]);

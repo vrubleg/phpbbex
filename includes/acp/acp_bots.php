@@ -23,7 +23,7 @@ class acp_bots
 
 		$action = request_var('action', '');
 		$submit = (isset($_POST['submit'])) ? true : false;
-		$mark	= request_var('mark', array(0));
+		$mark	= request_var('mark', [0]);
 		$bot_id	= request_var('id', 0);
 
 		if (isset($_POST['add']))
@@ -31,7 +31,7 @@ class acp_bots
 			$action = 'add';
 		}
 
-		$error = array();
+		$error = [];
 
 		$user->add_lang('acp/bots');
 		$this->tpl_name = 'acp_bots';
@@ -88,7 +88,7 @@ class acp_bots
 							WHERE bot_id $sql_id";
 						$result = $db->sql_query($sql);
 
-						$user_id_ary = $bot_name_ary = array();
+						$user_id_ary = $bot_name_ary = [];
 						while ($row = $db->sql_fetchrow($result))
 						{
 							$user_id_ary[] = (int) $row['user_id'];
@@ -104,7 +104,7 @@ class acp_bots
 
 						if (sizeof($user_id_ary))
 						{
-							$_tables = array(USERS_TABLE, USER_GROUP_TABLE);
+							$_tables = [USERS_TABLE, USER_GROUP_TABLE];
 							foreach ($_tables as $table)
 							{
 								$sql = "DELETE FROM $table
@@ -122,11 +122,11 @@ class acp_bots
 					}
 					else
 					{
-						confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+						confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 							'mark'		=> $mark,
 							'id'		=> $bot_id,
 							'mode'		=> $mode,
-							'action'	=> $action))
+							'action'	=> $action])
 						);
 					}
 				}
@@ -136,14 +136,14 @@ class acp_bots
 			case 'add':
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
-				$bot_row = array(
+				$bot_row = [
 					'bot_name'		=> utf8_normalize_nfc(request_var('bot_name', '', true)),
 					'bot_agent'		=> request_var('bot_agent', ''),
 					'bot_ip'		=> request_var('bot_ip', ''),
 					'bot_active'	=> request_var('bot_active', true),
 					'bot_lang'		=> request_var('bot_lang', $config['default_lang']),
 					'bot_style'		=> request_var('bot_style' , $config['default_style']),
-				);
+				];
 
 				if ($submit)
 				{
@@ -215,7 +215,7 @@ class acp_bots
 							}
 
 
-							$user_id = user_add(array(
+							$user_id = user_add([
 								'user_type'				=> (int) USER_IGNORE,
 								'group_id'				=> (int) $group_row['group_id'],
 								'username'				=> (string) $bot_row['bot_name'],
@@ -226,14 +226,14 @@ class acp_bots
 								'user_lang'				=> (string) $bot_row['bot_lang'],
 								'user_style'			=> (int) $bot_row['bot_style'],
 								'user_allow_massemail'	=> 0,
-							));
+							]);
 
-							$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+							$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
 								'user_id'		=> (int) $user_id,
 								'bot_name'		=> (string) $bot_row['bot_name'],
 								'bot_active'	=> (int) $bot_row['bot_active'],
 								'bot_agent'		=> (string) $bot_row['bot_agent'],
-								'bot_ip'		=> (string) $bot_row['bot_ip'])
+								'bot_ip'		=> (string) $bot_row['bot_ip']]
 							);
 							$db->sql_query($sql);
 
@@ -253,10 +253,10 @@ class acp_bots
 								trigger_error($user->lang['NO_BOT'] . adm_back_link($this->u_action . "&amp;id=$bot_id&amp;action=$action"), E_USER_WARNING);
 							}
 
-							$sql_ary = array(
+							$sql_ary = [
 								'user_style'	=> (int) $bot_row['bot_style'],
 								'user_lang'		=> (string) $bot_row['bot_lang'],
-							);
+							];
 
 							if ($bot_row['bot_name'] !== $row['bot_name'])
 							{
@@ -267,11 +267,11 @@ class acp_bots
 							$sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$row['user_id']}";
 							$db->sql_query($sql);
 
-							$sql = 'UPDATE ' . BOTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
+							$sql = 'UPDATE ' . BOTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', [
 								'bot_name'		=> (string) $bot_row['bot_name'],
 								'bot_active'	=> (int) $bot_row['bot_active'],
 								'bot_agent'		=> (string) $bot_row['bot_agent'],
-								'bot_ip'		=> (string) $bot_row['bot_ip'])
+								'bot_ip'		=> (string) $bot_row['bot_ip']]
 							) . " WHERE bot_id = $bot_id";
 							$db->sql_query($sql);
 
@@ -312,7 +312,7 @@ class acp_bots
 				}
 
 				$s_active_options = '';
-				$_options = array('0' => 'NO', '1' => 'YES');
+				$_options = ['0' => 'NO', '1' => 'YES'];
 				foreach ($_options as $value => $lang)
 				{
 					$selected = ($bot_row['bot_active'] == $value) ? ' selected="selected"' : '';
@@ -324,7 +324,7 @@ class acp_bots
 
 				$l_title = ($action == 'edit') ? 'EDIT' : 'ADD';
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'L_TITLE'		=> $user->lang['BOT_' . $l_title],
 					'U_ACTION'		=> $this->u_action . "&amp;id=$bot_id&amp;action=$action",
 					'U_BACK'		=> $this->u_action,
@@ -339,7 +339,7 @@ class acp_bots
 					'S_STYLE_OPTIONS'	=> $style_select,
 					'S_LANG_OPTIONS'	=> $lang_select,
 					'S_ERROR'			=> (sizeof($error)) ? true : false,
-					)
+					]
 				);
 
 				return;
@@ -348,15 +348,15 @@ class acp_bots
 		}
 
 		$s_options = '';
-		$_options = array('activate' => 'BOT_ACTIVATE', 'deactivate' => 'BOT_DEACTIVATE', 'delete' => 'DELETE');
+		$_options = ['activate' => 'BOT_ACTIVATE', 'deactivate' => 'BOT_DEACTIVATE', 'delete' => 'DELETE'];
 		foreach ($_options as $value => $lang)
 		{
 			$s_options .= '<option value="' . $value . '">' . $user->lang[$lang] . '</option>';
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_ACTION'		=> $this->u_action,
-			'S_BOT_OPTIONS'	=> $s_options)
+			'S_BOT_OPTIONS'	=> $s_options]
 		);
 
 		$sql = 'SELECT b.bot_id, b.bot_name, b.bot_active, u.user_lastvisit
@@ -370,7 +370,7 @@ class acp_bots
 			$active_lang = (!$row['bot_active']) ? 'BOT_ACTIVATE' : 'BOT_DEACTIVATE';
 			$active_value = (!$row['bot_active']) ? 'activate' : 'deactivate';
 
-			$template->assign_block_vars('bots', array(
+			$template->assign_block_vars('bots', [
 				'BOT_NAME'		=> $row['bot_name'],
 				'BOT_ID'		=> $row['bot_id'],
 				'LAST_VISIT'	=> ($row['user_lastvisit']) ? $user->format_date($row['user_lastvisit']) : $user->lang['BOT_NEVER'],
@@ -378,7 +378,7 @@ class acp_bots
 				'U_ACTIVATE_DEACTIVATE'	=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=$active_value",
 				'L_ACTIVATE_DEACTIVATE'	=> $user->lang[$active_lang],
 				'U_EDIT'				=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=edit",
-				'U_DELETE'				=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=delete")
+				'U_DELETE'				=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=delete"]
 			);
 		}
 		$db->sql_freeresult($result);

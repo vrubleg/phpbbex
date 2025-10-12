@@ -13,7 +13,7 @@ require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 // Start session management
 $user->session_begin();
 $auth->acl($user->data);
-$user->setup(array('memberlist', 'groups'));
+$user->setup(['memberlist', 'groups']);
 
 // Grab data
 $mode		= request_var('mode', '');
@@ -24,7 +24,7 @@ $group_id	= request_var('g', 0);
 $topic_id	= request_var('t', 0);
 
 // Check our mode...
-if (!in_array($mode, array('', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'all', 'active', 'inactive')))
+if (!in_array($mode, ['', 'group', 'viewprofile', 'email', 'contact', 'searchuser', 'leaders', 'all', 'active', 'inactive']))
 {
 	trigger_error('NO_MODE');
 }
@@ -65,9 +65,9 @@ switch ($mode)
 		$page_title = $user->lang['THE_TEAM'];
 		$template_html = 'memberlist_leaders.html';
 
-		$user_ary = $auth->acl_get_list(false, array('a_', 'm_'), false);
+		$user_ary = $auth->acl_get_list(false, ['a_', 'm_'], false);
 
-		$admin_id_ary = $global_mod_id_ary = $mod_id_ary = $forum_id_ary = array();
+		$admin_id_ary = $global_mod_id_ary = $mod_id_ary = $forum_id_ary = [];
 		foreach ($user_ary as $forum_id => $forum_ary)
 		{
 			foreach ($forum_ary as $auth_option => $id_ary)
@@ -116,7 +116,7 @@ switch ($mode)
 		// Get group memberships for the admin id ary...
 		$admin_memberships = group_memberships($admin_group_id, $admin_id_ary);
 
-		$admin_user_ids = array();
+		$admin_user_ids = [];
 
 		if (!empty($admin_memberships))
 		{
@@ -132,33 +132,33 @@ switch ($mode)
 			FROM ' . FORUMS_TABLE;
 		$result = $db->sql_query($sql);
 
-		$forums = array();
+		$forums = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$forums[$row['forum_id']] = $row['forum_name'];
 		}
 		$db->sql_freeresult($result);
 
-		$sql = $db->sql_build_query('SELECT', array(
+		$sql = $db->sql_build_query('SELECT', [
 			'SELECT'	=> 'u.user_id, u.group_id as default_group, u.username, u.username_clean, u.user_colour, u.user_rank, u.user_posts, u.user_allow_pm, g.group_id, g.group_name, g.group_colour, g.group_type, ug.user_id as ug_user_id',
 
-			'FROM'		=> array(
+			'FROM'		=> [
 				USERS_TABLE		=> 'u',
 				GROUPS_TABLE	=> 'g'
-			),
+			],
 
-			'LEFT_JOIN'	=> array(
-				array(
-					'FROM'	=> array(USER_GROUP_TABLE => 'ug'),
+			'LEFT_JOIN'	=> [
+				[
+					'FROM'	=> [USER_GROUP_TABLE => 'ug'],
 					'ON'	=> 'ug.group_id = g.group_id AND ug.user_pending = 0 AND ug.user_id = ' . $user->data['user_id']
-				)
-			),
+				]
+			],
 
 			'WHERE'		=> $db->sql_in_set('u.user_id', array_unique(array_merge($admin_id_ary, $mod_id_ary)), false, true) . '
 				AND u.group_id = g.group_id',
 
 			'ORDER_BY'	=> 'g.group_name ASC, u.username_clean ASC'
-		));
+		]);
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -228,7 +228,7 @@ switch ($mode)
 			$rank_title = $rank_img = '';
 			get_user_rank($row['user_rank'], (($row['user_id'] == ANONYMOUS) ? false : $row['user_posts']), $rank_title, $rank_img, $rank_img_src);
 
-			$template->assign_block_vars($which_row, array(
+			$template->assign_block_vars($which_row, [
 				'USER_ID'		=> $row['user_id'],
 				'FORUMS'		=> $s_forum_select,
 				'RANK_TITLE'	=> $rank_title,
@@ -245,12 +245,12 @@ switch ($mode)
 				'USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
 				'USER_COLOR'		=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
 				'U_VIEW_PROFILE'	=> get_username_string('profile', $row['user_id'], $row['username'], $row['user_colour']),
-			));
+			]);
 		}
 		$db->sql_freeresult($result);
 
-		$template->assign_vars(array(
-			'PM_IMG'		=> $user->img('icon_contact_pm', $user->lang['SEND_PRIVATE_MESSAGE']))
+		$template->assign_vars([
+			'PM_IMG'		=> $user->img('icon_contact_pm', $user->lang['SEND_PRIVATE_MESSAGE'])]
 		);
 	break;
 
@@ -326,11 +326,11 @@ switch ($mode)
 						$messenger->replyto($user->data['user_email']);
 						$messenger->im($row['user_jabber'], $row['username']);
 
-						$messenger->assign_vars(array(
+						$messenger->assign_vars([
 							'BOARD_CONTACT'	=> $config['board_contact'],
 							'FROM_USERNAME'	=> htmlspecialchars_decode($user->data['username']),
 							'TO_USERNAME'	=> htmlspecialchars_decode($row['username']),
-							'MESSAGE'		=> htmlspecialchars_decode($message))
+							'MESSAGE'		=> htmlspecialchars_decode($message)]
 						);
 
 						$messenger->send(NOTIFY_IM);
@@ -346,7 +346,7 @@ switch ($mode)
 		}
 
 		// Send vars to the template
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'IM_CONTACT'	=> $row[$sql_field],
 
 			'USERNAME'		=> $row['username'],
@@ -359,7 +359,7 @@ switch ($mode)
 			'L_IM_SENT_JABBER'	=> sprintf($user->lang['IM_SENT_JABBER'], $row['username']),
 
 			$s_select			=> true,
-			'S_IM_ACTION'		=> $s_action)
+			'S_IM_ACTION'		=> $s_action]
 		);
 
 	break;
@@ -403,7 +403,7 @@ switch ($mode)
 		// Get group memberships
 		// Also get visiting user's groups to determine hidden group memberships if necessary.
 		$auth_hidden_groups = ($user_id === (int) $user->data['user_id'] || $auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? true : false;
-		$sql_uid_ary = ($auth_hidden_groups) ? array($user_id) : array($user_id, (int) $user->data['user_id']);
+		$sql_uid_ary = ($auth_hidden_groups) ? [$user_id] : [$user_id, (int) $user->data['user_id']];
 
 		// Do the SQL thang
 		$sql = 'SELECT g.group_id, g.group_name, g.group_type, ug.user_id
@@ -414,7 +414,7 @@ switch ($mode)
 		$result = $db->sql_query($sql);
 
 		// Divide data into profile data and current user data
-		$profile_groups = $user_groups = array();
+		$profile_groups = $user_groups = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$row['user_id'] = (int) $row['user_id'];
@@ -432,7 +432,7 @@ switch ($mode)
 		$db->sql_freeresult($result);
 
 		// Filter out hidden groups and sort groups by name
-		$group_data = $group_sort = array();
+		$group_data = $group_sort = [];
 		foreach ($profile_groups as $row)
 		{
 			if ($row['group_type'] == GROUP_SPECIAL)
@@ -554,13 +554,13 @@ switch ($mode)
 		$template->assign_vars(show_profile($member, $user_notes_enabled, $warn_user_enabled));
 
 		// Custom Profile Fields
-		$profile_fields = array();
+		$profile_fields = [];
 		if ($config['load_cpf_viewprofile'])
 		{
 			require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
 			$cp = new custom_profile();
 			$profile_fields = $cp->generate_profile_fields_template('grab', $user_id);
-			$profile_fields = (isset($profile_fields[$user_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields[$user_id]) : array();
+			$profile_fields = (isset($profile_fields[$user_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields[$user_id]) : [];
 		}
 
 		// If the user has m_approve permission or a_user permission, then list then display unapproved posts
@@ -587,7 +587,7 @@ switch ($mode)
 			$member['topics_in_queue'] = 0;
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_POSTS_IN_QUEUE'	=> $user->lang('NUM_POSTS_IN_QUEUE', $member['posts_in_queue']),
 			'L_TOPICS_IN_QUEUE'	=> $user->lang('NUM_TOPICS_IN_QUEUE', $member['topics_in_queue']),
 
@@ -627,7 +627,7 @@ switch ($mode)
 			'U_ADD_FOE'			=> (!$friend && !$foe && $foes_enabled) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;mode=foes&amp;add=' . urlencode(htmlspecialchars_decode($member['username']))) : '',
 			'U_REMOVE_FRIEND'	=> ($friend && $friends_enabled) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;remove=1&amp;usernames[]=' . $user_id) : '',
 			'U_REMOVE_FOE'		=> ($foe && $foes_enabled) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;remove=1&amp;mode=foes&amp;usernames[]=' . $user_id) : '',
-		));
+		]);
 
 		if (!empty($profile_fields['row']))
 		{
@@ -668,9 +668,9 @@ switch ($mode)
 				break;
 			}
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_USER_INACTIVE'		=> true,
-				'USER_INACTIVE_REASON'	=> $inactive_reason)
+				'USER_INACTIVE_REASON'	=> $inactive_reason]
 			);
 		}
 
@@ -772,7 +772,7 @@ switch ($mode)
 			trigger_error('NO_EMAIL');
 		}
 
-		$error = array();
+		$error = [];
 
 		$name		= utf8_normalize_nfc(request_var('name', '', true));
 		$email		= request_var('email', '');
@@ -828,9 +828,9 @@ switch ($mode)
 				$messenger = new messenger(false);
 				$email_tpl = ($user_id) ? 'profile_send_email' : 'email_notify';
 
-				$mail_to_users = array();
+				$mail_to_users = [];
 
-				$mail_to_users[] = array(
+				$mail_to_users[] = [
 					'email_lang'		=> $email_lang,
 					'email'				=> $email,
 					'name'				=> $name,
@@ -840,12 +840,12 @@ switch ($mode)
 					'user_notify_type'	=> ($user_id) ? $row['user_notify_type'] : NOTIFY_EMAIL,
 					'topic_title'		=> (!$user_id) ? $row['topic_title'] : '',
 					'forum_id'			=> (!$user_id) ? $row['forum_id'] : 0,
-				);
+				];
 
 				// Ok, now the same email if CC specified, but without exposing the users email address
 				if ($cc)
 				{
-					$mail_to_users[] = array(
+					$mail_to_users[] = [
 						'email_lang'		=> $user->lang_name,
 						'email'				=> $user->data['user_email'],
 						'name'				=> $user->data['username'],
@@ -855,7 +855,7 @@ switch ($mode)
 						'user_notify_type'	=> ($user_id) ? $user->data['user_notify_type'] : NOTIFY_EMAIL,
 						'topic_title'		=> (!$user_id) ? $row['topic_title'] : '',
 						'forum_id'			=> (!$user_id) ? $row['forum_id'] : 0,
-					);
+					];
 				}
 
 				foreach ($mail_to_users as $row)
@@ -877,18 +877,18 @@ switch ($mode)
 
 					$messenger->anti_abuse_headers($config, $user);
 
-					$messenger->assign_vars(array(
+					$messenger->assign_vars([
 						'BOARD_CONTACT'	=> $config['board_contact'],
 						'TO_USERNAME'	=> htmlspecialchars_decode($row['to_name']),
 						'FROM_USERNAME'	=> htmlspecialchars_decode($user->data['username']),
-						'MESSAGE'		=> htmlspecialchars_decode($message))
+						'MESSAGE'		=> htmlspecialchars_decode($message)]
 					);
 
 					if ($topic_id)
 					{
-						$messenger->assign_vars(array(
+						$messenger->assign_vars([
 							'TOPIC_NAME'	=> htmlspecialchars_decode($row['topic_title']),
-							'U_TOPIC'		=> generate_board_url() . "/viewtopic.php?t=$topic_id")
+							'U_TOPIC'		=> generate_board_url() . "/viewtopic.php?t=$topic_id"]
 						);
 					}
 
@@ -903,31 +903,31 @@ switch ($mode)
 
 		if ($user_id)
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_SEND_USER'	=> true,
 				'USERNAME'		=> $row['username'],
 
 				'L_EMAIL_BODY_EXPLAIN'	=> $user->lang['EMAIL_BODY_EXPLAIN'],
-				'S_POST_ACTION'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=email&amp;u=' . $user_id))
+				'S_POST_ACTION'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=email&amp;u=' . $user_id)]
 			);
 		}
 		else
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'EMAIL'				=> $email,
 				'NAME'				=> $name,
 				'S_LANG_OPTIONS'	=> language_select($email_lang),
 
 				'L_EMAIL_BODY_EXPLAIN'	=> $user->lang['EMAIL_TOPIC_EXPLAIN'],
-				'S_POST_ACTION'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=email&amp;t=' . $topic_id))
+				'S_POST_ACTION'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=email&amp;t=' . $topic_id)]
 			);
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'ERROR_MESSAGE'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'SUBJECT'			=> $subject,
 			'MESSAGE'			=> $message,
-			)
+			]
 		);
 
 	break;
@@ -939,8 +939,8 @@ switch ($mode)
 		$template_html = 'memberlist_body.html';
 
 		// Sorting
-		$sort_key_text = array('a' => $user->lang['SORT_USERNAME'], 'b' => $user->lang['SORT_LOCATION'], 'c' => $user->lang['SORT_JOINED'], 'd' => $user->lang['SORT_POST_COUNT'], 'f' => $user->lang['WEBSITE'], 't' => $user->lang['SORT_TOPICS_COUNT']);
-		$sort_key_sql = array('a' => 'u.username_clean', 'b' => 'u.user_from', 'c' => 'u.user_regdate', 'd' => 'u.user_posts', 'f' => 'u.user_website', 't' => 'u.user_topics');
+		$sort_key_text = ['a' => $user->lang['SORT_USERNAME'], 'b' => $user->lang['SORT_LOCATION'], 'c' => $user->lang['SORT_JOINED'], 'd' => $user->lang['SORT_POST_COUNT'], 'f' => $user->lang['WEBSITE'], 't' => $user->lang['SORT_TOPICS_COUNT']];
+		$sort_key_sql = ['a' => 'u.username_clean', 'b' => 'u.user_from', 'c' => 'u.user_regdate', 'd' => 'u.user_posts', 'f' => 'u.user_website', 't' => 'u.user_topics'];
 
 		if ($auth->acl_get('u_viewonline'))
 		{
@@ -972,7 +972,7 @@ switch ($mode)
 			}
 		}
 
-		$sort_dir_text = array('a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']);
+		$sort_dir_text = ['a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']];
 
 		$s_sort_key = '';
 		foreach ($sort_key_text as $key => $value)
@@ -998,7 +998,7 @@ switch ($mode)
 		$select_single 	= request_var('select_single', false);
 
 		// Search URL parameters, if any of these are in the URL we do a search
-		$search_params = array('username', 'email', 'jabber', 'search_group_id', 'joined_select', 'active_select', 'count_select', 'joined', 'active', 'count', 'ip');
+		$search_params = ['username', 'email', 'jabber', 'search_group_id', 'joined_select', 'active_select', 'count_select', 'joined', 'active', 'count', 'ip'];
 
 		// We validate form and field here, only id/class allowed
 		$form = (!preg_match('/^[a-z0-9_-]+$/i', $form)) ? '' : $form;
@@ -1021,9 +1021,9 @@ switch ($mode)
 			$count			= (request_var('count', '') !== '') ? request_var('count', 0) : '';
 			$ipdomain		= request_var('ip', '');
 
-			$find_key_match = array('lt' => '<', 'gt' => '>', 'eq' => '=');
+			$find_key_match = ['lt' => '<', 'gt' => '>', 'eq' => '='];
 
-			$find_count = array('lt' => $user->lang['LESS_THAN'], 'eq' => $user->lang['EQUAL_TO'], 'gt' => $user->lang['MORE_THAN']);
+			$find_count = ['lt' => $user->lang['LESS_THAN'], 'eq' => $user->lang['EQUAL_TO'], 'gt' => $user->lang['MORE_THAN']];
 			$s_find_count = '';
 			foreach ($find_count as $key => $value)
 			{
@@ -1031,7 +1031,7 @@ switch ($mode)
 				$s_find_count .= '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
 			}
 
-			$find_time = array('lt' => $user->lang['BEFORE'], 'gt' => $user->lang['AFTER']);
+			$find_time = ['lt' => $user->lang['BEFORE'], 'gt' => $user->lang['AFTER']];
 			$s_find_join_time = '';
 			foreach ($find_time as $key => $value)
 			{
@@ -1092,7 +1092,7 @@ switch ($mode)
 
 					if ($hostnames !== false)
 					{
-						$ips = "'" . implode('\', \'', array_map(array($db, 'sql_escape'), preg_replace('#([0-9]{1,3}\.[0-9]{1,3}[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})#', "\\1", gethostbynamel($ipdomain)))) . "'";
+						$ips = "'" . implode('\', \'', array_map([$db, 'sql_escape'], preg_replace('#([0-9]{1,3}\.[0-9]{1,3}[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})#', "\\1", gethostbynamel($ipdomain)))) . "'";
 					}
 					else
 					{
@@ -1121,7 +1121,7 @@ switch ($mode)
 
 					if ($row = $db->sql_fetchrow($result))
 					{
-						$ip_sql = array();
+						$ip_sql = [];
 						do
 						{
 							$ip_sql[] = $row['poster_id'];
@@ -1213,7 +1213,7 @@ switch ($mode)
 				get_user_rank($group_row['group_rank'], false, $rank_title, $rank_img, $rank_img_src);
 			}
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'GROUP_DESC'	=> generate_text_for_display($group_row['group_desc'], $group_row['group_desc_uid'], $group_row['group_desc_bitfield'], $group_row['group_desc_options']),
 				'GROUP_NAME'	=> ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'],
 				'GROUP_COLOR'	=> $group_row['group_colour'],
@@ -1223,7 +1223,7 @@ switch ($mode)
 				'RANK_IMG'		=> $rank_img,
 				'RANK_IMG_SRC'	=> $rank_img_src,
 
-				'U_PM'			=> ($auth->acl_get('u_sendpm') && $auth->acl_get('u_masspm_group') && $group_row['group_receive_pm'] && $config['allow_privmsg'] && $config['allow_mass_pm']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;g=' . $group_id) : '',)
+				'U_PM'			=> ($auth->acl_get('u_sendpm') && $auth->acl_get('u_masspm_group') && $group_row['group_receive_pm'] && $config['allow_privmsg'] && $config['allow_mass_pm']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;g=' . $group_id) : '',]
 			);
 
 			$sql_select = ', ug.group_leader';
@@ -1265,29 +1265,29 @@ switch ($mode)
 		}
 
 		// Build a relevant pagination_url
-		$params = $sort_params = array();
+		$params = $sort_params = [];
 
 		// We do not use request_var() here directly to save some calls (not all variables are set)
-		$check_params = array(
-			'g'				=> array('g', 0),
-			'sk'			=> array('sk', $default_key),
-			'sd'			=> array('sd', 'a'),
-			'form'			=> array('form', ''),
-			'field'			=> array('field', ''),
-			'select_single'	=> array('select_single', $select_single),
-			'username'		=> array('username', '', true),
-			'email'			=> array('email', ''),
-			'jabber'		=> array('jabber', ''),
-			'telegram'		=> array('telegram', ''),
-			'search_group_id'	=> array('search_group_id', 0),
-			'joined_select'	=> array('joined_select', 'lt'),
-			'active_select'	=> array('active_select', 'lt'),
-			'count_select'	=> array('count_select', 'eq'),
-			'joined'		=> array('joined', ''),
-			'active'		=> array('active', ''),
-			'count'			=> (request_var('count', '') !== '') ? array('count', 0) : array('count', ''),
-			'ip'			=> array('ip', ''),
-		);
+		$check_params = [
+			'g'				=> ['g', 0],
+			'sk'			=> ['sk', $default_key],
+			'sd'			=> ['sd', 'a'],
+			'form'			=> ['form', ''],
+			'field'			=> ['field', ''],
+			'select_single'	=> ['select_single', $select_single],
+			'username'		=> ['username', '', true],
+			'email'			=> ['email', ''],
+			'jabber'		=> ['jabber', ''],
+			'telegram'		=> ['telegram', ''],
+			'search_group_id'	=> ['search_group_id', 0],
+			'joined_select'	=> ['joined_select', 'lt'],
+			'active_select'	=> ['active_select', 'lt'],
+			'count_select'	=> ['count_select', 'eq'],
+			'joined'		=> ['joined', ''],
+			'active'		=> ['active', ''],
+			'count'			=> (request_var('count', '') !== '') ? ['count', 0] : ['count', ''],
+			'ip'			=> ['ip', ''],
+		];
 
 		foreach ($check_params as $key => $call)
 		{
@@ -1325,7 +1325,7 @@ switch ($mode)
 			$page_title = $user->lang['SEARCH_USERS'];
 			$group_selected = request_var('search_group_id', 0);
 			$s_group_select = '<option value="0"' . ((!$group_selected) ? ' selected="selected"' : '') . '>&nbsp;</option>';
-			$group_ids = array();
+			$group_ids = [];
 
 			/**
 			* @todo add this to a separate function (function is responsible for returning the groups the user is able to see based on the users group membership)
@@ -1363,7 +1363,7 @@ switch ($mode)
 				trigger_error('NO_GROUP');
 			}
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'USERNAME'	=> $username,
 				'EMAIL'		=> $email,
 				'JABBER'	=> $jabber,
@@ -1385,7 +1385,7 @@ switch ($mode)
 				'S_JOINED_TIME_OPTIONS'	=> $s_find_join_time,
 				'S_ACTIVE_TIME_OPTIONS'	=> $s_find_active_time,
 				'S_GROUP_SELECT'		=> $s_group_select,
-				'S_USER_SEARCH_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=$form&amp;field=$field"))
+				'S_USER_SEARCH_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=$form&amp;field=$field")]
 			);
 		}
 
@@ -1398,7 +1398,7 @@ switch ($mode)
 			ORDER BY $order_by";
 		$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
-		$user_list = array();
+		$user_list = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$user_list[] = (int) $row['user_id'];
@@ -1416,7 +1416,7 @@ switch ($mode)
 				GROUP BY session_user_id';
 			$result = $db->sql_query($sql);
 
-			$session_times = array();
+			$session_times = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$session_times[$row['session_user_id']] = $row['session_time'];
@@ -1441,7 +1441,7 @@ switch ($mode)
 			}
 			$result = $db->sql_query($sql);
 
-			$id_cache = array();
+			$id_cache = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$row['session_time'] = (!empty($session_times[$row['user_id']])) ? $session_times[$row['user_id']] : 0;
@@ -1475,19 +1475,19 @@ switch ($mode)
 				$is_leader = (isset($row['group_leader']) && $row['group_leader']) ? true : false;
 				$leaders_set = ($leaders_set || $is_leader);
 
-				$cp_row = array();
+				$cp_row = [];
 				if ($config['load_cpf_memberlist'])
 				{
-					$cp_row = (isset($profile_fields_cache[$user_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields_cache[$user_id]) : array();
+					$cp_row = (isset($profile_fields_cache[$user_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields_cache[$user_id]) : [];
 				}
 
-				$memberrow = array_merge(show_profile($row), array(
+				$memberrow = array_merge(show_profile($row), [
 					'ROW_NUMBER'		=> $i + ($start + 1),
 
 					'S_CUSTOM_PROFILE'	=> (isset($cp_row['row']) && sizeof($cp_row['row'])) ? true : false,
 					'S_GROUP_LEADER'	=> $is_leader,
 
-					'U_VIEW_PROFILE'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id))
+					'U_VIEW_PROFILE'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id)]
 				);
 
 				if (isset($cp_row['row']) && sizeof($cp_row['row']))
@@ -1510,7 +1510,7 @@ switch ($mode)
 		}
 
 		// Generate page
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'PAGINATION'	=> generate_pagination($pagination_url, $total_users, $config['topics_per_page'], $start),
 			'PAGE_NUMBER'	=> on_page($total_users, $config['topics_per_page'], $start),
 			'TOTAL_USERS'	=> ($total_users == 1) ? $user->lang['LIST_USER'] : sprintf($user->lang['LIST_USERS'], $total_users),
@@ -1547,15 +1547,15 @@ switch ($mode)
 			'S_LEADERS_SET'		=> $leaders_set,
 			'S_MODE_SELECT'		=> $s_sort_key,
 			'S_ORDER_SELECT'	=> $s_sort_dir,
-			'S_MODE_ACTION'		=> $pagination_url)
+			'S_MODE_ACTION'		=> $pagination_url]
 		);
 }
 
 // Output the page
 page_header($page_title, false);
 
-$template->set_filenames(array(
-	'body' => $template_html)
+$template->set_filenames([
+	'body' => $template_html]
 );
 make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
 
@@ -1606,7 +1606,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 	if ($config['allow_birthdays'] && $data['user_birthday'])
 	{
-		list($bday_day, $bday_month, $bday_year) = array_map('intval', explode('-', $data['user_birthday']));
+		[$bday_day, $bday_month, $bday_year] = array_map('intval', explode('-', $data['user_birthday']));
 
 		if ($bday_year)
 		{
@@ -1627,7 +1627,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 	}
 
 	// Dump it out to the template
-	return array(
+	return [
 		'AGE'			=> $age,
 		'RANK_TITLE'	=> $rank_title,
 		'JOINED'		=> $user->format_date($data['user_regdate']),
@@ -1687,7 +1687,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'S_USER_ALLOW_VIEWEMAIL'	=> (strpos($email,"mailto:") === 0),
 
 		'L_VIEWING_PROFILE'	=> sprintf($user->lang['VIEWING_PROFILE'], $username),
-	);
+	];
 }
 
 function _sort_last_active($first, $second)

@@ -48,7 +48,7 @@ class acp_prune
 		global $db, $user, $auth, $template, $cache, $config;
 
 		$all_forums = request_var('all_forums', 0);
-		$forum_id = request_var('f', array(0));
+		$forum_id = request_var('f', [0]);
 		$submit = (isset($_POST['submit'])) ? true : false;
 
 		if ($all_forums)
@@ -58,7 +58,7 @@ class acp_prune
 				ORDER BY left_id';
 			$result = $db->sql_query($sql);
 
-			$forum_id = array();
+			$forum_id = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$forum_id[] = $row['forum_id'];
@@ -83,8 +83,8 @@ class acp_prune
 				$prunedate_posted = time() - ($prune_posted * 86400);
 				$prunedate_viewed = time() - ($prune_viewed * 86400);
 
-				$template->assign_vars(array(
-					'S_PRUNED'		=> true)
+				$template->assign_vars([
+					'S_PRUNED'		=> true]
 				);
 
 				$sql_forum = (sizeof($forum_id)) ? ' AND ' . $db->sql_in_set('forum_id', $forum_id) : '';
@@ -99,7 +99,7 @@ class acp_prune
 
 				if ($row = $db->sql_fetchrow($result))
 				{
-					$prune_ids = array();
+					$prune_ids = [];
 					$p_result['topics'] = 0;
 					$p_result['posts'] = 0;
 					$log_data = '';
@@ -134,10 +134,10 @@ class acp_prune
 
 						$prune_ids[] = $row['forum_id'];
 
-						$template->assign_block_vars('pruned', array(
+						$template->assign_block_vars('pruned', [
 							'FORUM_NAME'	=> $row['forum_name'],
 							'NUM_TOPICS'	=> $p_result['topics'],
-							'NUM_POSTS'		=> $p_result['posts'])
+							'NUM_POSTS'		=> $p_result['posts']]
 						);
 
 						$log_data .= (($log_data != '') ? ', ' : '') . $row['forum_name'];
@@ -154,7 +154,7 @@ class acp_prune
 			}
 			else
 			{
-				confirm_box(false, $user->lang['PRUNE_FORUM_CONFIRM'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['PRUNE_FORUM_CONFIRM'], build_hidden_fields([
 					'i'				=> $id,
 					'mode'			=> $mode,
 					'submit'		=> 1,
@@ -166,7 +166,7 @@ class acp_prune
 					'prune_old_polls'	=> request_var('prune_old_polls', 0),
 					'prune_announce'	=> request_var('prune_announce', 0),
 					'prune_sticky'		=> request_var('prune_sticky', 0),
-				)));
+				]));
 			}
 		}
 
@@ -174,10 +174,10 @@ class acp_prune
 		// display a select box to use for pruning.
 		if (!sizeof($forum_id))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'U_ACTION'			=> $this->u_action,
 				'S_SELECT_FORUM'	=> true,
-				'S_FORUM_OPTIONS'	=> make_forum_select(false, false, true))
+				'S_FORUM_OPTIONS'	=> make_forum_select(false, false, true)]
 			);
 		}
 		else
@@ -206,12 +206,12 @@ class acp_prune
 
 			$l_selected_forums = (sizeof($forum_id) == 1) ? 'SELECTED_FORUM' : 'SELECTED_FORUMS';
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'L_SELECTED_FORUMS'		=> $user->lang[$l_selected_forums],
 				'U_ACTION'				=> $this->u_action,
 				'U_BACK'				=> $this->u_action,
 				'FORUM_LIST'			=> $forum_list,
-				'S_HIDDEN_FIELDS'		=> $s_hidden_fields)
+				'S_HIDDEN_FIELDS'		=> $s_hidden_fields]
 			);
 		}
 	}
@@ -234,7 +234,7 @@ class acp_prune
 
 			if (confirm_box(true))
 			{
-				$user_ids = $usernames = array();
+				$user_ids = $usernames = [];
 				$this->get_prune_users($user_ids, $usernames);
 
 				if (sizeof($user_ids))
@@ -279,7 +279,7 @@ class acp_prune
 			else
 			{
 				// We list the users which will be pruned...
-				$user_ids = $usernames = array();
+				$user_ids = $usernames = [];
 				$this->get_prune_users($user_ids, $usernames);
 
 				if (!sizeof($user_ids))
@@ -290,19 +290,19 @@ class acp_prune
 				// Assign to template
 				foreach ($user_ids as $user_id)
 				{
-					$template->assign_block_vars('users', array(
+					$template->assign_block_vars('users', [
 						'USERNAME'			=> $usernames[$user_id],
 						'U_PROFILE'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id),
 						'U_USER_ADMIN'		=> ($auth->acl_get('a_user')) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
-					));
+					]);
 				}
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'S_DEACTIVATE'		=> ($action == 'deactivate') ? true : false,
 					'S_DELETE'			=> ($action == 'delete') ? true : false,
-				));
+				]);
 
-				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
 					'i'				=> $id,
 					'mode'			=> $mode,
 					'prune'			=> 1,
@@ -319,11 +319,11 @@ class acp_prune
 					'deleteposts'	=> request_var('deleteposts', 0),
 
 					'action'		=> request_var('action', ''),
-				)), 'confirm_body_prune.html');
+				]), 'confirm_body_prune.html');
 			}
 		}
 
-		$find_count = array('lt' => $user->lang['LESS_THAN'], 'eq' => $user->lang['EQUAL_TO'], 'gt' => $user->lang['MORE_THAN']);
+		$find_count = ['lt' => $user->lang['LESS_THAN'], 'eq' => $user->lang['EQUAL_TO'], 'gt' => $user->lang['MORE_THAN']];
 		$s_find_count = '';
 
 		foreach ($find_count as $key => $value)
@@ -332,7 +332,7 @@ class acp_prune
 			$s_find_count .= '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
 		}
 
-		$find_time = array('lt' => $user->lang['BEFORE'], 'gt' => $user->lang['AFTER']);
+		$find_time = ['lt' => $user->lang['BEFORE'], 'gt' => $user->lang['AFTER']];
 		$s_find_join_time = '';
 		foreach ($find_time as $key => $value)
 		{
@@ -345,13 +345,13 @@ class acp_prune
 			$s_find_active_time .= '<option value="' . $key . '">' . $value . '</option>';
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_ACTION'			=> $this->u_action,
 			'S_JOINED_OPTIONS'	=> $s_find_join_time,
 			'S_ACTIVE_OPTIONS'	=> $s_find_active_time,
 			'S_COUNT_OPTIONS'	=> $s_find_count,
 			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_prune&amp;field=users'),
-		));
+		]);
 	}
 
 	/**
@@ -379,8 +379,8 @@ class acp_prune
 			$joined = request_var('joined', '');
 			$active = request_var('active', '');
 
-			$active = ($active) ? explode('-', $active) : array();
-			$joined = ($joined) ? explode('-', $joined) : array();
+			$active = ($active) ? explode('-', $active) : [];
+			$joined = ($joined) ? explode('-', $joined) : [];
 
 			if ((sizeof($active) && sizeof($active) != 3) || (sizeof($joined) && sizeof($joined) != 3))
 			{
@@ -389,8 +389,8 @@ class acp_prune
 
 			$count = request_var('count', '');
 
-			$key_match = array('lt' => '<', 'gt' => '>', 'eq' => '=');
-			$sort_by_types = array('username', 'user_email', 'user_posts', 'user_regdate', 'user_lastvisit');
+			$key_match = ['lt' => '<', 'gt' => '>', 'eq' => '='];
+			$sort_by_types = ['username', 'user_email', 'user_posts', 'user_regdate', 'user_lastvisit'];
 
 			$where_sql = '';
 			$where_sql .= ($username) ? ' AND username_clean ' . $db->sql_like_expression(str_replace('*', $db->any_char, utf8_clean_string($username))) : '';
@@ -424,7 +424,7 @@ class acp_prune
 			FROM ' . BOTS_TABLE;
 		$result = $db->sql_query($sql);
 
-		$bot_ids = array();
+		$bot_ids = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$bot_ids[] = $row['user_id'];
@@ -440,7 +440,7 @@ class acp_prune
 		$result = $db->sql_query($sql);
 
 		$where_sql = '';
-		$user_ids = $usernames = array();
+		$user_ids = $usernames = [];
 
 		while ($row = $db->sql_fetchrow($result))
 		{
