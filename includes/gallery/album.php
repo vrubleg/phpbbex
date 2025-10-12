@@ -440,7 +440,7 @@ class phpbb_gallery_album
 		{
 			foreach ($album_parents as $parent_album_id => $parent_data)
 			{
-				list($parent_name, $parent_type) = array_values($parent_data);
+				[$parent_name, $parent_type] = array_values($parent_data);
 
 				$template->assign_block_vars('navlinks', [
 					'FORUM_NAME'	=> $parent_name,

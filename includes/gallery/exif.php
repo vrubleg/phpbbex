@@ -178,7 +178,7 @@ class phpbb_gallery_exif
 		}
 		if (isset($this->data["EXIF"]["FocalLength"]))
 		{
-			list($num, $den) = explode("/", $this->data["EXIF"]["FocalLength"]);
+			[$num, $den] = explode("/", $this->data["EXIF"]["FocalLength"]);
 			if ($den)
 			{
 				$this->prepared_data['exif_focal'] = sprintf($user->lang['EXIF_FOCAL_EXP'], ($num / $den));
@@ -186,7 +186,7 @@ class phpbb_gallery_exif
 		}
 		if (isset($this->data["EXIF"]["ExposureTime"]))
 		{
-			list($num, $den) = explode("/", $this->data["EXIF"]["ExposureTime"]);
+			[$num, $den] = explode("/", $this->data["EXIF"]["ExposureTime"]);
 			$exif_exposure = '';
 			if (($num > $den) && $den)
 			{
@@ -203,7 +203,7 @@ class phpbb_gallery_exif
 		}
 		if (isset($this->data["EXIF"]["FNumber"]))
 		{
-			list($num, $den) = explode("/", $this->data["EXIF"]["FNumber"]);
+			[$num, $den] = explode("/", $this->data["EXIF"]["FNumber"]);
 			if ($den)
 			{
 				$this->prepared_data['exif_aperture'] = "F/" . ($num / $den);
@@ -237,7 +237,7 @@ class phpbb_gallery_exif
 		}
 		if (isset($this->data["EXIF"]["ExposureBiasValue"]))
 		{
-			list($num,$den) = explode("/", $this->data["EXIF"]["ExposureBiasValue"]);
+			[$num,$den] = explode("/", $this->data["EXIF"]["ExposureBiasValue"]);
 			if ($den)
 			{
 				if (($num / $den) == 0)

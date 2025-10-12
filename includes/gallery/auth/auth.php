@@ -194,8 +194,8 @@ class phpbb_gallery_auth
 
 		foreach ($acl_array as $acl_row)
 		{
-			list ($acls, $a_ids) = explode('::', $acl_row);
-			list ($bits, $i_count, $a_count) = explode(':', $acls);
+			 [$acls, $a_ids] = explode('::', $acl_row);
+			 [$bits, $i_count, $a_count] = explode(':', $acls);
 
 			foreach (explode(':', $a_ids) as $a_id)
 			{

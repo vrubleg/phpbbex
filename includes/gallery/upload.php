@@ -541,7 +541,7 @@ class phpbb_gallery_upload
 		foreach ($uploaded_ids as $row => $check)
 		{
 			if (strpos($check, '$') == false) continue;
-			list($image_id, $filename) = explode('$', $check);
+			[$image_id, $filename] = explode('$', $check);
 			$image_ids[] = (int) $image_id;
 			$filenames[$image_id] = $filename;
 			$this->array_id2row[$image_id] = $row;

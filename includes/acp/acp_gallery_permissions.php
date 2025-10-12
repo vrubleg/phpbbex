@@ -761,7 +761,7 @@ class acp_gallery_permissions
 					{
 						// Inherit permissions of one [c_mask][v_mask]
 						$v_mask = (int) $v_mask;
-						list($ci_mask, $vi_mask) = explode("_", $i_mask);
+						[$ci_mask, $vi_mask] = explode("_", $i_mask);
 						$ci_mask = (int) $ci_mask;
 						$vi_mask = (int) $vi_mask;
 						if (isset($auth_settings[$ci_mask][$vi_mask]))
