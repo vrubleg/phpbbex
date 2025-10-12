@@ -194,11 +194,10 @@ class acp_ranks
 					'RANK_TITLE'		=> (isset($ranks['rank_title'])) ? $ranks['rank_title'] : '',
 					'S_FILENAME_LIST'	=> $filename_list,
 					'RANK_IMAGE'		=> ($edit_img) ? PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $edit_img : PHPBB_ADMIN_PATH . 'images/spacer.gif',
-					'S_SPECIAL_RANK'	=> (isset($ranks['rank_special']) && $ranks['rank_special']) ? true : false,
-					'S_HIDE_TITLE'		=> (isset($ranks['rank_hide_title']) && $ranks['rank_hide_title']) ? true : false,
-					'MIN_POSTS'			=> (isset($ranks['rank_min']) && !$ranks['rank_special']) ? $ranks['rank_min'] : 0]
-				);
-
+					'S_SPECIAL_RANK'	=> (isset($ranks['rank_special']) && $ranks['rank_special']),
+					'S_HIDE_TITLE'		=> (isset($ranks['rank_hide_title']) && $ranks['rank_hide_title']),
+					'MIN_POSTS'			=> (isset($ranks['rank_min']) && !$ranks['rank_special']) ? $ranks['rank_min'] : 0,
+				]);
 
 				return;
 

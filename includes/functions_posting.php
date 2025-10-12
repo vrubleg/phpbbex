@@ -278,7 +278,7 @@ function posting_gen_topic_icons($mode, $icon_id)
 					'ICON_WIDTH'	=> $data['width'],
 					'ICON_HEIGHT'	=> $data['height'],
 
-					'S_CHECKED'			=> ($id == $icon_id) ? true : false,
+					'S_CHECKED'			=> ($id == $icon_id),
 					'S_ICON_CHECKED'	=> ($id == $icon_id) ? ' checked="checked"' : '']
 				);
 			}
@@ -378,7 +378,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 
 	if (!$local)
 	{
-		$filedata['post_attach'] = ($upload->is_valid($form_name)) ? true : false;
+		$filedata['post_attach'] = $upload->is_valid($form_name);
 	}
 	else
 	{
@@ -543,64 +543,46 @@ function get_img_size_format($width, $height)
 */
 function get_supported_image_types($type = false)
 {
-	if (@extension_loaded('gd'))
+	if (!@extension_loaded('gd')) { return false; }
+
+	$format = imagetypes();
+
+	if ($type !== false)
 	{
-		$format = imagetypes();
 		$new_type = 0;
 
-		if ($type !== false)
+		switch ($type)
 		{
-			// Type is one of the IMAGETYPE constants - it is fetched from getimagesize()
-			// We do not use the constants here, because some were not available in PHP 4.3.x
-			switch ($type)
-			{
-				// GIF
-				case 1:
-					$new_type = ($format & IMG_GIF) ? IMG_GIF : false;
-				break;
+			case IMAGETYPE_GIF:
+				$new_type = ($format & IMG_GIF) ? IMG_GIF : false;
+			break;
 
-				// JPG, JPC, JP2
-				case 2:
-				case 9:
-				case 10:
-				case 11:
-				case 12:
-					$new_type = ($format & IMG_JPG) ? IMG_JPG : false;
-				break;
+			case IMAGETYPE_JPEG:
+				$new_type = ($format & IMG_JPG) ? IMG_JPG : false;
+			break;
 
-				// PNG
-				case 3:
-					$new_type = ($format & IMG_PNG) ? IMG_PNG : false;
-				break;
-
-				// WBMP
-				case 15:
-					$new_type = ($format & IMG_WBMP) ? IMG_WBMP : false;
-				break;
-			}
-		}
-		else
-		{
-			$new_type = [];
-			$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG, IMG_WBMP];
-
-			foreach ($go_through_types as $check_type)
-			{
-				if ($format & $check_type)
-				{
-					$new_type[] = $check_type;
-				}
-			}
+			case IMAGETYPE_PNG:
+				$new_type = ($format & IMG_PNG) ? IMG_PNG : false;
+			break;
 		}
 
-		return [
-			'gd'		=> ($new_type) ? true : false,
-			'format'	=> $new_type,
-			'version'	=> (function_exists('imagecreatetruecolor')) ? 2 : 1
-		];
+		return $new_type;
 	}
+	else
+	{
+		$supported_types = [];
+		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG];
 
-	return ['gd' => false];
+		foreach ($go_through_types as $check_type)
+		{
+			if ($format & $check_type)
+			{
+				$supported_types[] = $check_type;
+			}
+		}
+
+		return sizeof($supported_types) ? $supported_types : false;
+	}
 }
 
 /**
@@ -641,95 +623,60 @@ function create_thumbnail($source, $destination, $mimetype)
 	}
 
 	// Create a thumbnail.
+
+	$type = get_supported_image_types($type);
+	if (!$type) { return false; }
+
+	switch ($type)
 	{
-		$type = get_supported_image_types($type);
+		case IMG_GIF:
+			$image = @imagecreatefromgif($source);
+		break;
 
-		if ($type['gd'])
-		{
-			// If the type is not supported, we are not able to create a thumbnail
-			if ($type['format'] === false)
-			{
-				return false;
-			}
+		case IMG_JPG:
+			@ini_set('gd.jpeg_ignore_warning', 1);
+			$image = @imagecreatefromjpeg($source);
+		break;
 
-			switch ($type['format'])
-			{
-				case IMG_GIF:
-					$image = @imagecreatefromgif($source);
-				break;
-
-				case IMG_JPG:
-					@ini_set('gd.jpeg_ignore_warning', 1);
-					$image = @imagecreatefromjpeg($source);
-				break;
-
-				case IMG_PNG:
-					$image = @imagecreatefrompng($source);
-				break;
-
-				case IMG_WBMP:
-					$image = @imagecreatefromwbmp($source);
-				break;
-			}
-
-			if (empty($image))
-			{
-				return false;
-			}
-
-			if ($type['version'] == 1)
-			{
-				$new_image = imagecreate($new_width, $new_height);
-
-				if ($new_image === false)
-				{
-					return false;
-				}
-
-				imagecopyresized($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-			}
-			else
-			{
-				$new_image = imagecreatetruecolor($new_width, $new_height);
-
-				if ($new_image === false)
-				{
-					return false;
-				}
-
-				// Preserve alpha transparency (png for example)
-				@imagealphablending($new_image, false);
-				@imagesavealpha($new_image, true);
-
-				imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-			}
-
-			switch ($type['format'])
-			{
-				case IMG_GIF:
-					imagegif($new_image, $destination);
-				break;
-
-				case IMG_JPG:
-					imagejpeg($new_image, $destination, 90);
-				break;
-
-				case IMG_PNG:
-					imagepng($new_image, $destination);
-				break;
-
-				case IMG_WBMP:
-					imagewbmp($new_image, $destination);
-				break;
-			}
-
-			if (PHP_VERSION_ID < 80000) { imagedestroy($new_image); }
-		}
-		else
-		{
-			return false;
-		}
+		case IMG_PNG:
+			$image = @imagecreatefrompng($source);
+		break;
 	}
+
+	if (empty($image))
+	{
+		return false;
+	}
+
+	$new_image = imagecreatetruecolor($new_width, $new_height);
+
+	if ($new_image === false)
+	{
+		return false;
+	}
+
+	// Preserve alpha transparency (png for example)
+	@imagealphablending($new_image, false);
+	@imagesavealpha($new_image, true);
+
+	imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+	switch ($type)
+	{
+		case IMG_GIF:
+			imagegif($new_image, $destination);
+		break;
+
+		case IMG_JPG:
+			imagejpeg($new_image, $destination, 90);
+		break;
+
+		case IMG_PNG:
+			imagepng($new_image, $destination);
+		break;
+	}
+
+	if (PHP_VERSION_ID < 80000) { imagedestroy($new_image); }
 
 	if (!file_exists($destination))
 	{
@@ -1150,7 +1097,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 			'POST_AUTHOR'			=> get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 			'U_POST_AUTHOR'			=> get_username_string('profile', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 
-			'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
+			'S_HAS_ATTACHMENTS'	=> !empty($attachments[$row['post_id']]),
 			'S_FRIEND'			=> ($row['friend']) ? true : false,
 			'S_IGNORE_POST'		=> ($row['foe']) ? true : false,
 			'L_IGNORE_POST'		=> ($row['foe']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), "<a href=\"{$u_show_post}\" onclick=\"dE('{$post_anchor}', 1); return false;\">", '</a>') : '',
@@ -1195,8 +1142,8 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 {
 	global $db, $user, $config, $auth;
 
-	$topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
-	$forum_notification = ($mode == 'post') ? true : false;
+	$topic_notification = ($mode == 'reply' || $mode == 'quote');
+	$forum_notification = ($mode == 'post');
 
 	if (!$topic_notification && !$forum_notification)
 	{

@@ -23,8 +23,8 @@ class acp_ban
 
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
-		$bansubmit	= (isset($_POST['bansubmit'])) ? true : false;
-		$unbansubmit = (isset($_POST['unbansubmit'])) ? true : false;
+		$bansubmit	= isset($_POST['bansubmit']);
+		$unbansubmit = isset($_POST['unbansubmit']);
 		$current_time = time();
 
 		$user->add_lang(['acp/ban', 'acp/users']);
@@ -102,7 +102,7 @@ class acp_ban
 			'L_BAN_EXCLUDE_EXPLAIN'	=> $l_ban_exclude_explain,
 			'L_NO_BAN_CELL'			=> $l_no_ban_cell,
 
-			'S_USERNAME_BAN'	=> ($mode == 'user') ? true : false,
+			'S_USERNAME_BAN'	=> ($mode == 'user'),
 
 			'U_ACTION'			=> $this->u_action,
 			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_ban&amp;field=ban'),
@@ -260,7 +260,7 @@ class acp_ban
 
 		$template->assign_vars([
 			'S_BAN_END_OPTIONS'	=> $ban_end_options,
-			'S_BANNED_OPTIONS'	=> ($banned_options || $excluded_options) ? true : false,
+			'S_BANNED_OPTIONS'	=> ($banned_options || $excluded_options),
 			'BANNED_OPTIONS'	=> $options,
 		]);
 	}

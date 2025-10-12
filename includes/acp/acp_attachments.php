@@ -25,7 +25,7 @@ class acp_attachments
 		$user->add_lang(['posting', 'viewtopic', 'acp/attachments']);
 
 		$error = $notify = [];
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$action = request_var('action', '');
 
 		$form_key = 'acp_attach';
@@ -65,7 +65,7 @@ class acp_attachments
 		$template->assign_vars([
 			'L_TITLE'			=> $user->lang[$l_title],
 			'L_TITLE_EXPLAIN'	=> $user->lang[$l_title . '_EXPLAIN'],
-			'U_ACTION'			=> $this->u_action
+			'U_ACTION'			=> $this->u_action,
 		]);
 
 		switch ($mode)
@@ -178,14 +178,14 @@ class acp_attachments
 				$supported_types = get_supported_image_types();
 
 				// Check Thumbnail Support
-				if (!isset($supported_types['format']) || !sizeof($supported_types['format']))
+				if (!$supported_types)
 				{
 					$this->new_config['img_create_thumbnail'] = 0;
 				}
 
 				$template->assign_vars([
-					'S_THUMBNAIL_SUPPORT'	=> (!isset($supported_types['format']) || !sizeof($supported_types['format'])) ? false : true]
-				);
+					'S_THUMBNAIL_SUPPORT'	=> (bool) $supported_types,
+				]);
 
 				// Secure Download Options - Same procedure as with banning
 				$allow_deny = ($this->new_config['secure_allow_deny']) ? 'ALLOWED' : 'DISALLOWED';
@@ -210,8 +210,8 @@ class acp_attachments
 
 				$template->assign_vars([
 					'S_SECURE_DOWNLOADS'	=> $this->new_config['secure_downloads'],
-					'S_DEFINED_IPS'			=> ($defined_ips != '') ? true : false,
-					'S_WARNING'				=> (sizeof($error)) ? true : false,
+					'S_DEFINED_IPS'			=> ($defined_ips != ''),
+					'S_WARNING'				=> (sizeof($error) > 0),
 
 					'WARNING_MSG'			=> implode('<br />', $error),
 					'DEFINED_IPS'			=> $defined_ips,
@@ -337,7 +337,7 @@ class acp_attachments
 					// Add Extension?
 					$add_extension			= strtolower(request_var('add_extension', ''));
 					$add_extension_group	= request_var('add_group_select', 0);
-					$add					= (isset($_POST['add_extension_check'])) ? true : false;
+					$add					= isset($_POST['add_extension_check']);
 
 					if ($add_extension && $add)
 					{
@@ -378,7 +378,7 @@ class acp_attachments
 				$template->assign_vars([
 					'S_EXTENSIONS'			=> true,
 					'ADD_EXTENSION'			=> (isset($add_extension)) ? $add_extension : '',
-					'GROUP_SELECT_OPTIONS'	=> (isset($_POST['add_extension_check'])) ? $this->group_select('add_group_select', $add_extension_group, 'extension_group') : $this->group_select('add_group_select', false, 'extension_group')
+					'GROUP_SELECT_OPTIONS'	=> (isset($_POST['add_extension_check'])) ? $this->group_select('add_group_select', $add_extension_group, 'extension_group') : $this->group_select('add_group_select', false, 'extension_group'),
 				]);
 
 				$sql = 'SELECT *
@@ -404,7 +404,7 @@ class acp_attachments
 							'S_SPACER'		=> $s_spacer,
 							'EXTENSION_ID'	=> $row['extension_id'],
 							'EXTENSION'		=> $row['extension'],
-							'GROUP_OPTIONS'	=> $this->group_select('group_select[]', $row['group_id'])
+							'GROUP_OPTIONS'	=> $this->group_select('group_select[]', $row['group_id']),
 						]);
 					}
 					while ($row = $db->sql_fetchrow($result));
@@ -485,10 +485,10 @@ class acp_attachments
 						$size_select	= request_var('size_select', 'b');
 						$forum_select	= request_var('forum_select', false);
 						$allowed_forums	= request_var('allowed_forums', [0]);
-						$allow_in_pm	= (isset($_POST['allow_in_pm'])) ? true : false;
+						$allow_in_pm	= isset($_POST['allow_in_pm']);
 						$max_filesize	= request_var('max_filesize', 0);
 						$max_filesize	= ($size_select == 'kb') ? round($max_filesize * 1024) : (($size_select == 'mb') ? round($max_filesize * 1048576) : $max_filesize);
-						$allow_group	= (isset($_POST['allow_group'])) ? true : false;
+						$allow_group	= isset($_POST['allow_group']);
 
 						if ($max_filesize == $config['max_filesize'])
 						{
@@ -727,12 +727,12 @@ class acp_attachments
 							'S_FILENAME_LIST'			=> $filename_list,
 							'S_EDIT_GROUP'				=> true,
 							'S_NO_IMAGE'				=> $no_image_select,
-							'S_FORUM_IDS'				=> (sizeof($forum_ids)) ? true : false,
+							'S_FORUM_IDS'				=> (sizeof($forum_ids) > 0),
 
 							'U_EXTENSIONS'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;mode=extensions"),
 							'U_BACK'			=> $this->u_action,
 
-							'L_LEGEND'			=> $user->lang[strtoupper($action) . '_EXTENSION_GROUP']
+							'L_LEGEND'			=> $user->lang[strtoupper($action) . '_EXTENSION_GROUP'],
 						]);
 
 						$s_forum_id_options = '';
@@ -819,7 +819,7 @@ class acp_attachments
 				$old_allow_group = $old_allow_pm = 1;
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$s_add_spacer = ($old_allow_group != $row['allow_group'] || $old_allow_pm != $row['allow_in_pm']) ? true : false;
+					$s_add_spacer = ($old_allow_group != $row['allow_group'] || $old_allow_pm != $row['allow_in_pm']);
 					$row['cat_id'] = ($row['cat_id'] < ATTACHMENT_CATEGORY_COUNT) ? intval($row['cat_id']) : ATTACHMENT_CATEGORY_NONE;
 
 					$template->assign_block_vars('groups', [
@@ -935,7 +935,7 @@ class acp_attachments
 							$template->assign_block_vars('upload', [
 								'FILE_INFO'		=> sprintf($user->lang['UPLOADING_FILE_TO'], $row['real_filename'], $post_row['post_id']),
 								'S_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? true : false,
-								'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : ''
+								'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '',
 							]);
 
 							if (!$auth->acl_get('f_attach', $post_row['forum_id']))
@@ -1003,7 +1003,7 @@ class acp_attachments
 						'PHYSICAL_FILENAME'	=> utf8_basename($row['physical_filename']),
 						'ATTACH_ID'			=> $row['attach_id'],
 						'POST_IDS'			=> (!empty($post_ids[$row['attach_id']])) ? $post_ids[$row['attach_id']] : '',
-						'U_FILE'			=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id'])
+						'U_FILE'			=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id']),
 					]);
 				}
 				$db->sql_freeresult($result);
@@ -1015,7 +1015,7 @@ class acp_attachments
 		{
 			$template->assign_vars([
 				'S_WARNING'		=> true,
-				'WARNING_MSG'	=> implode('<br />', $error)
+				'WARNING_MSG'	=> implode('<br />', $error),
 			]);
 		}
 
@@ -1023,7 +1023,7 @@ class acp_attachments
 		{
 			$template->assign_vars([
 				'S_NOTIFY'		=> true,
-				'NOTIFY_MSG'	=> implode('<br />', $notify)
+				'NOTIFY_MSG'	=> implode('<br />', $notify),
 			]);
 		}
 	}

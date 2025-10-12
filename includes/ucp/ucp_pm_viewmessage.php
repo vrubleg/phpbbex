@@ -180,7 +180,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	// Number of "to" recipients
 	$num_recipients = (int) preg_match_all('/:?(u|g)_([0-9]+):?/', $message_row['to_address'], $match);
 
-	$bbcode_status	= ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode')) ? true : false;
+	$bbcode_status	= ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode'));
 
 	$template->assign_vars([
 		'MESSAGE_AUTHOR_FULL'		=> get_username_string('full', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
@@ -212,7 +212,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'S_AUTHOR_GENDER_F'	=> $user_info['user_gender'] == GENDER_F,
 
 		'ONLINE_IMG'		=> (!$config['load_onlinetrack']) ? '' : ((isset($user_info['online']) && $user_info['online']) ? $user->img('icon_user_online', $user->lang['ONLINE']) : $user->img('icon_user_offline', $user->lang['OFFLINE'])),
-		'S_ONLINE'			=> (!$config['load_onlinetrack']) ? false : ((isset($user_info['online']) && $user_info['online']) ? true : false),
+		'S_ONLINE'			=> (!$config['load_onlinetrack']) ? false : (isset($user_info['online']) && $user_info['online']),
 		'DELETE_IMG'		=> $user->img('icon_post_delete', $user->lang['DELETE_MESSAGE']),
 		'INFO_IMG'			=> $user->img('icon_post_info', $user->lang['VIEW_PM_INFO']),
 		'PROFILE_IMG'		=> $user->img('icon_user_profile', $user->lang['READ_PROFILE']),
@@ -247,9 +247,9 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 
 		'U_PM_ACTION'		=> $url . '&amp;mode=compose&amp;f=' . $folder_id . '&amp;p=' . $message_row['msg_id'],
 
-		'S_HAS_ATTACHMENTS'	=> (sizeof($attachments)) ? true : false,
+		'S_HAS_ATTACHMENTS'	=> (sizeof($attachments) > 0),
 		'S_DISPLAY_NOTICE'	=> $display_notice && $message_row['message_attachment'],
-		'S_AUTHOR_DELETED'	=> ($author_id == ANONYMOUS) ? true : false,
+		'S_AUTHOR_DELETED'	=> ($author_id == ANONYMOUS),
 		'S_SPECIAL_FOLDER'	=> in_array($folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]),
 		'S_PM_RECIPIENTS'	=> $num_recipients,
 		'S_BBCODE_ALLOWED'	=> ($bbcode_status) ? 1 : 0,
@@ -324,7 +324,7 @@ function get_user_information($user_id, $user_row)
 		$update_time = $config['load_online_time'] * 60;
 		if ($row)
 		{
-			$user_row['online'] = (time() - $update_time < $row['online_time'] && ($row['viewonline'] || $auth->acl_get('u_viewonline'))) ? true : false;
+			$user_row['online'] = (time() - $update_time < $row['online_time'] && ($row['viewonline'] || $auth->acl_get('u_viewonline')));
 		}
 	}
 

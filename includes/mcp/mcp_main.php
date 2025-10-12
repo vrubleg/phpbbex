@@ -30,7 +30,7 @@ class mcp_main
 	{
 		global $auth, $db, $user, $template, $action, $config;
 
-		$quickmod = ($mode == 'quickmod') ? true : false;
+		$quickmod = ($mode == 'quickmod');
 
 		switch ($action)
 		{
@@ -514,7 +514,7 @@ function mcp_move_topic($topic_ids)
 	if (confirm_box(true))
 	{
 		$topic_data = get_topic_data($topic_ids);
-		$leave_shadow = (isset($_POST['move_leave_shadow'])) ? true : false;
+		$leave_shadow = isset($_POST['move_leave_shadow']);
 
 		$forum_sync_data = [];
 

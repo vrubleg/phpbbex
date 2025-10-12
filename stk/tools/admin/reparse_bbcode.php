@@ -202,7 +202,7 @@ class reparse_bbcode
 //		}
 
 		// Greb our batch
-		$bitfield = (empty($_REQUEST['reparseall'])) ? true : false;
+		$bitfield = empty($_REQUEST['reparseall']);
 
 		// The MSSQL DBMS doesn't break correctly out of the loop
 		// when it is finished reparsing the last post. Therefore
@@ -441,7 +441,7 @@ class reparse_bbcode
 			'submit'	=> true,
 			'mode'		=> $_next_mode,
 			'step'		=> $_next_step,
-			'reparseall'	=> (!empty($_REQUEST['reparseall'])) ? true : false,
+			'reparseall'	=> !empty($_REQUEST['reparseall']),
 		];
 
 		meta_refresh(1, append_sid(STK_ROOT_PATH . 'index.php', $params));

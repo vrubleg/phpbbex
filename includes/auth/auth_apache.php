@@ -227,7 +227,7 @@ function validate_session_apache(&$user)
 		$php_auth_user = '';
 		set_var($php_auth_user, $_SERVER['PHP_AUTH_USER'], 'string', true);
 
-		return ($php_auth_user === $user['username']) ? true : false;
+		return ($php_auth_user === $user['username']);
 	}
 
 	// PHP_AUTH_USER is not set. A valid session is now determined by the user type (anonymous/bot or not)

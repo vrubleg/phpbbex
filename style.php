@@ -111,7 +111,7 @@ $recache = false;
 // Re-cache stylesheet data if necessary
 if ($config['load_tplcompile'] || empty($theme['theme_data']))
 {
-	$recache = (empty($theme['theme_data'])) ? true : false;
+	$recache = empty($theme['theme_data']);
 	$update_time = time();
 
 	// We test for stylesheet.css because it is faster and most likely the only file changed on common themes

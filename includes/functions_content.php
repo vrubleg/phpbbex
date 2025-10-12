@@ -142,8 +142,8 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 			$template->assign_block_vars('jumpbox_forums', [
 				'FORUM_ID'		=> ($select_all) ? 0 : -1,
 				'FORUM_NAME'	=> ($select_all) ? $user->lang['ALL_FORUMS'] : $user->lang['SELECT_FORUM'],
-				'S_FORUM_COUNT'	=> $iteration]
-			);
+				'S_FORUM_COUNT'	=> $iteration,
+			]);
 
 			$iteration++;
 			$display_jumpbox = true;
@@ -154,10 +154,10 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 			'FORUM_NAME'	=> $row['forum_name'],
 			'SELECTED'		=> ($row['forum_id'] == $forum_id) ? ' selected="selected"' : '',
 			'S_FORUM_COUNT'	=> $iteration,
-			'S_IS_CAT'		=> ($row['forum_type'] == FORUM_CAT) ? true : false,
-			'S_IS_LINK'		=> ($row['forum_type'] == FORUM_LINK) ? true : false,
-			'S_IS_POST'		=> ($row['forum_type'] == FORUM_POST) ? true : false]
-		);
+			'S_IS_CAT'		=> ($row['forum_type'] == FORUM_CAT),
+			'S_IS_LINK'		=> ($row['forum_type'] == FORUM_LINK),
+			'S_IS_POST'		=> ($row['forum_type'] == FORUM_POST),
+		]);
 
 		for ($i = 0; $i < $padding; $i++)
 		{
@@ -170,8 +170,8 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 
 	$template->assign_vars([
 		'S_DISPLAY_JUMPBOX'	=> $display_jumpbox,
-		'S_JUMPBOX_ACTION'	=> $action]
-	);
+		'S_JUMPBOX_ACTION'	=> $action,
+	]);
 
 	return;
 }
@@ -986,8 +986,8 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 
 					$block_array += [
-						'S_VIDEO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_VIDEO) ? true : false,
-						'S_AUDIO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_AUDIO) ? true : false,
+						'S_VIDEO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_VIDEO),
+						'S_AUDIO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_AUDIO),
 						'U_FORUM'		=> generate_board_url(),
 						'ATTACH_ID'		=> $attachment['attach_id'],
 						'MIME'			=> get_attachment_mime($display_cat, $attachment['extension']),

@@ -36,7 +36,7 @@ class acp_users
 		$user_id	= request_var('u', 0);
 		$action		= request_var('action', '');
 
-		$submit		= (isset($_POST['update']) && !isset($_POST['cancel'])) ? true : false;
+		$submit		= (isset($_POST['update']) && !isset($_POST['cancel']));
 
 		$form_name = 'acp_users';
 		add_form_key($form_name);
@@ -890,7 +890,7 @@ class acp_users
 
 					// Which updates do we need to do?
 					$update_username = ($user_row['username'] != $data['username']) ? $data['username'] : false;
-					$update_password = ($data['new_password'] && !phpbb_check_hash($data['new_password'], $user_row['user_password'])) ? true : false;
+					$update_password = ($data['new_password'] && !phpbb_check_hash($data['new_password'], $user_row['user_password']));
 					$update_email = ($data['email'] != $user_row['user_email']) ? $data['email'] : false;
 
 					if (!sizeof($error))
@@ -1100,14 +1100,14 @@ class acp_users
 					'L_NAME_CHARS_EXPLAIN'		=> sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
 					'L_CHANGE_PASSWORD_EXPLAIN'	=> sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
 					'L_POSTS_IN_QUEUE'			=> $user->lang('NUM_POSTS_IN_QUEUE', $user_row['posts_in_queue']),
-					'S_FOUNDER'					=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+					'S_FOUNDER'					=> ($user->data['user_type'] == USER_FOUNDER),
 
 					'S_OVERVIEW'		=> true,
 					'S_USER_IP'			=> ($user_row['user_ip']) ? true : false,
-					'S_USER_FOUNDER'	=> ($user_row['user_type'] == USER_FOUNDER) ? true : false,
+					'S_USER_FOUNDER'	=> ($user_row['user_type'] == USER_FOUNDER),
 					'S_ACTION_OPTIONS'	=> $s_action_options,
-					'S_OWN_ACCOUNT'		=> ($user_id == $user->data['user_id']) ? true : false,
-					'S_USER_INACTIVE'	=> ($user_row['user_type'] == USER_INACTIVE) ? true : false,
+					'S_OWN_ACCOUNT'		=> ($user_id == $user->data['user_id']),
+					'S_USER_INACTIVE'	=> ($user_row['user_type'] == USER_INACTIVE),
 
 					'U_SHOW_IP'		=> $this->u_action . "&amp;u=$user_id&amp;ip=" . (($ip == 'ip') ? 'hostname' : 'ip'),
 					'U_WHOIS'		=> $this->u_action . "&amp;action=whois&amp;user_ip={$user_row['user_ip']}",
@@ -1136,8 +1136,8 @@ class acp_users
 
 				// Set up general vars
 				$start		= request_var('start', 0);
-				$deletemark = (isset($_POST['delmarked'])) ? true : false;
-				$deleteall	= (isset($_POST['delall'])) ? true : false;
+				$deletemark = isset($_POST['delmarked']);
+				$deleteall	= isset($_POST['delall']);
 				$marked		= request_var('mark', [0]);
 				$message	= utf8_normalize_nfc(request_var('message', '', true));
 
@@ -1238,9 +1238,9 @@ class acp_users
 
 				// Set up general vars
 				$start		= request_var('start', 0);
-				$deletemark	= (isset($_POST['delmarked'])) ? true : false;
-				$deleteall	= (isset($_POST['delall'])) ? true : false;
-				$confirm	= (isset($_POST['confirm'])) ? true : false;
+				$deletemark	= isset($_POST['delmarked']);
+				$deleteall	= isset($_POST['delall']);
+				$confirm	= isset($_POST['confirm']);
 				$marked		= request_var('mark', [0]);
 				$message	= utf8_normalize_nfc(request_var('message', '', true));
 
@@ -1727,9 +1727,9 @@ class acp_users
 					'MASS_EMAIL'		=> $data['massemail'],
 					'ALLOW_PM'			=> $data['allowpm'],
 					'HIDE_ONLINE'		=> $data['hideonline'],
-					'NOTIFY_EMAIL'		=> ($data['notifymethod'] == NOTIFY_EMAIL) ? true : false,
-					'NOTIFY_IM'			=> ($data['notifymethod'] == NOTIFY_IM) ? true : false,
-					'NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH) ? true : false,
+					'NOTIFY_EMAIL'		=> ($data['notifymethod'] == NOTIFY_EMAIL),
+					'NOTIFY_IM'			=> ($data['notifymethod'] == NOTIFY_IM),
+					'NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH),
 					'NOTIFY_PM'			=> $data['notifypm'],
 					'POPUP_PM'			=> $data['popuppm'],
 					'DST'				=> $data['dst'],
@@ -1803,7 +1803,7 @@ class acp_users
 				// Generate users avatar
 				$avatar_img = ($user_row['user_avatar']) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height'], 'USER_AVATAR', true) : '<img src="' . PHPBB_ADMIN_PATH . 'images/no_avatar.gif" alt="" />';
 
-				$display_gallery = (isset($_POST['display_gallery'])) ? true : false;
+				$display_gallery = isset($_POST['display_gallery']);
 				$avatar_select = basename(request_var('avatar_select', ''));
 				$category = basename(request_var('category', ''));
 
@@ -1815,11 +1815,11 @@ class acp_users
 				$template->assign_vars([
 					'S_AVATAR'			=> true,
 					'S_CAN_UPLOAD'		=> $can_upload,
-					'S_UPLOAD_FILE'		=> ($config['allow_avatar'] && $can_upload && $config['allow_avatar_upload']) ? true : false,
-					'S_REMOTE_UPLOAD'	=> ($config['allow_avatar'] && $can_upload && $config['allow_avatar_remote_upload']) ? true : false,
-					'S_ALLOW_REMOTE'	=> ($config['allow_avatar'] && $config['allow_avatar_remote']) ? true : false,
-					'S_DISPLAY_GALLERY'	=> ($config['allow_avatar'] && $config['allow_avatar_local'] && !$display_gallery) ? true : false,
-					'S_IN_GALLERY'		=> ($config['allow_avatar'] && $config['allow_avatar_local'] && $display_gallery) ? true : false,
+					'S_UPLOAD_FILE'		=> ($config['allow_avatar'] && $can_upload && $config['allow_avatar_upload']),
+					'S_REMOTE_UPLOAD'	=> ($config['allow_avatar'] && $can_upload && $config['allow_avatar_remote_upload']),
+					'S_ALLOW_REMOTE'	=> ($config['allow_avatar'] && $config['allow_avatar_remote']),
+					'S_DISPLAY_GALLERY'	=> ($config['allow_avatar'] && $config['allow_avatar_local'] && !$display_gallery),
+					'S_IN_GALLERY'		=> ($config['allow_avatar'] && $config['allow_avatar_local'] && $display_gallery),
 
 					'AVATAR_IMAGE'			=> $avatar_img,
 					'AVATAR_MAX_FILESIZE'	=> $config['avatar_filesize'],
@@ -1882,7 +1882,7 @@ class acp_users
 				$enable_urls	= ($config['allow_sig_links']) ? (bool) $this->optionget($user_row, 'sig_links') : false;
 				$signature		= utf8_normalize_nfc(request_var('signature', (string) $user_row['user_sig'], true));
 
-				$preview		= (isset($_POST['preview'])) ? true : false;
+				$preview		= isset($_POST['preview']);
 
 				if ($submit || $preview)
 				{
@@ -1981,8 +1981,8 @@ class acp_users
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],
 					'S_BBCODE_IMG'			=> ($config['allow_sig_img']) ? true : false,
 					'S_BBCODE_FLASH'		=> ($config['allow_sig_flash']) ? true : false,
-					'S_LINKS_ALLOWED'		=> ($config['allow_sig_links']) ? true : false]
-				);
+					'S_LINKS_ALLOWED'		=> ($config['allow_sig_links']) ? true : false,
+				]);
 
 				// Assigning custom bbcodes
 				display_custom_bbcodes();
@@ -1992,7 +1992,7 @@ class acp_users
 			case 'attach':
 
 				$start		= request_var('start', 0);
-				$deletemark = (isset($_POST['delmarked'])) ? true : false;
+				$deletemark = isset($_POST['delmarked']);
 				$marked		= request_var('mark', [0]);
 
 				// Sort keys
@@ -2337,9 +2337,9 @@ class acp_users
 							'GROUP_NAME'		=> ($group_type == 'special') ? $user->lang['G_' . $data['group_name']] : $data['group_name'],
 							'L_DEMOTE_PROMOTE'	=> ($data['group_leader']) ? $user->lang['GROUP_DEMOTE'] : $user->lang['GROUP_PROMOTE'],
 
-							'S_IS_MEMBER'		=> ($group_type != 'pending') ? true : false,
-							'S_NO_DEFAULT'		=> ($user_row['group_id'] != $data['group_id']) ? true : false,
-							'S_SPECIAL_GROUP'	=> ($group_type == 'special') ? true : false,
+							'S_IS_MEMBER'		=> ($group_type != 'pending'),
+							'S_NO_DEFAULT'		=> ($user_row['group_id'] != $data['group_id']),
+							'S_SPECIAL_GROUP'	=> ($group_type == 'special'),
 							]
 						);
 					}
@@ -2408,13 +2408,13 @@ class acp_users
 				$template->assign_vars([
 					'S_PERMISSIONS'				=> true,
 
-					'S_GLOBAL'					=> (!$forum_id) ? true : false,
+					'S_GLOBAL'					=> (!$forum_id),
 					'S_FORUM_OPTIONS'			=> $s_forum_options,
 
 					'U_ACTION'					=> $this->u_action . '&amp;u=' . $user_id,
 					'U_USER_PERMISSIONS'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php' ,'i=permissions&amp;mode=setting_user_global&amp;user_id[]=' . $user_id),
-					'U_USER_FORUM_PERMISSIONS'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions&amp;mode=setting_user_local&amp;user_id[]=' . $user_id)]
-				);
+					'U_USER_FORUM_PERMISSIONS'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions&amp;mode=setting_user_local&amp;user_id[]=' . $user_id),
+				]);
 
 			break;
 
@@ -2422,7 +2422,7 @@ class acp_users
 
 		// Assign general variables
 		$template->assign_vars([
-			'S_ERROR'			=> (sizeof($error)) ? true : false,
+			'S_ERROR'			=> (sizeof($error) > 0),
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '']
 		);
 	}

@@ -376,7 +376,7 @@ class install_install extends module
 
 			@unlink(PHPBB_ROOT_PATH . $path . 'test_lock');
 
-			$passed['files'] = ($exists && $write && $passed['files']) ? true : false;
+			$passed['files'] = ($exists && $write && $passed['files']);
 
 			$template->assign_block_vars('checks', [
 				'TITLE'		=> $path,

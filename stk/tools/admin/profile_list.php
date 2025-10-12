@@ -55,7 +55,7 @@ class profile_list
 		$limit = request_var('limit', 20);
 		$order_by = request_var('order', '');
 		$order_dir = (request_var('dir', 'DESC') == 'DESC') ? 'DESC' : 'ASC';
-		$empty_only = (!isset($_GET['go']) || isset($_POST['empty_only']) || isset($_GET['empty_only'])) ? true : false;
+		$empty_only = (!isset($_GET['go']) || isset($_POST['empty_only']) || isset($_GET['empty_only']));
 
 		// Build Pagination URL
 		$base_url = 't=profile_list&amp;go=1';
@@ -87,7 +87,7 @@ class profile_list
 			$template->assign_block_vars('options', [
 				'OPTION'	=> $option,
 				'LANG'		=> $user->lang[$lang_key],
-				'SELECTED'	=> ($display == $option) ? true : false,
+				'SELECTED'	=> ($display == $option),
 			]);
 
 			if ($empty_only)
@@ -128,7 +128,7 @@ class profile_list
 			$template->assign_block_vars('order', [
 				'OPTION'	=> $option,
 				'LANG'		=> $user->lang[$lang_key],
-				'SELECTED'	=> ($order_by == $option) ? true : false,
+				'SELECTED'	=> ($order_by == $option),
 			]);
 		}
 
@@ -216,9 +216,9 @@ class profile_list
 			'ORDER_SECTION'			=> ($order_by == 'username_clean') ? '' : ((isset($order[$order_by])) ? $user->lang[$order[$order_by]] : $user->lang['JOINED']),
 			'PAGINATION'			=> generate_pagination($base_url, $count, $limit, $start, true),
 
-			'S_DESC'				=> ($order_dir == 'DESC') ? true : false,
-			'S_DISPLAY_ALL'			=> (!isset($options[$display])) ? true : false,
-			'S_DISPLAY_SIG'			=> ($display == 'user_sig') ? true : false,
+			'S_DESC'				=> ($order_dir == 'DESC'),
+			'S_DISPLAY_ALL'			=> !isset($options[$display]),
+			'S_DISPLAY_SIG'			=> ($display == 'user_sig'),
 			'S_EMPTY_CHECKED'		=> $empty_only,
 		]);
 

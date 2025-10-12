@@ -460,7 +460,7 @@ $s_forum_rules = '';
 gen_forum_auth_level('topic', $forum_id, $topic_data['forum_status']);
 
 // Quick mod tools
-$allow_change_type = ($auth->acl_get('m_', $forum_id) || ($user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster'])) ? true : false;
+$allow_change_type = ($auth->acl_get('m_', $forum_id) || ($user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster']));
 
 $mod_action = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f=$forum_id&amp;t=$topic_id&amp;quickmod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id);
 $mod_lock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster'] && $topic_data['topic_status'] == ITEM_UNLOCKED)) ? (($topic_data['topic_status'] == ITEM_UNLOCKED) ? 'lock' : 'unlock') : false;
@@ -562,13 +562,13 @@ $template->assign_vars([
 	'U_LOCK_TOPIC'			=> ($mod_lock ? ($mod_action . "&action=" . $mod_lock) : false),
 
 	'S_VIEWTOPIC'			=> true,
-	'S_DISPLAY_SEARCHBOX'	=> ($auth->acl_get('u_search') && $auth->acl_get('f_search', $forum_id) && $config['load_search']) ? true : false,
+	'S_DISPLAY_SEARCHBOX'	=> ($auth->acl_get('u_search') && $auth->acl_get('f_search', $forum_id) && $config['load_search']),
 	'S_SEARCHBOX_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'search.php'),
 	'S_SEARCH_LOCAL_HIDDEN_FIELDS'	=> build_hidden_fields($s_search_hidden_fields),
 
-	'S_DISPLAY_POST_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
-	'S_DISPLAY_REPLY_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
-	'S_ENABLE_FEEDS_TOPIC'	=> ($config['feed_topic'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $topic_data['forum_options'])) ? true : false,
+	'S_DISPLAY_POST_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)),
+	'S_DISPLAY_REPLY_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS)),
+	'S_ENABLE_FEEDS_TOPIC'	=> ($config['feed_topic'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $topic_data['forum_options'])),
 	'S_RATE_ENABLED'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
 
 	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.php?t=$topic_id" . (($start) ? "&amp;start=$start" : ''),
@@ -633,7 +633,7 @@ if (!empty($topic_data['poll_start']))
 		&& $topic_data['topic_status'] != ITEM_LOCKED
 		&& $topic_data['forum_status'] != ITEM_LOCKED
 		&& (!sizeof($cur_voted_id) || ($auth->acl_get('f_votechg', $forum_id) && $topic_data['poll_vote_change']));
-	$s_display_results = (!$s_can_vote || ($s_can_vote && sizeof($cur_voted_id)) || $view == 'viewpoll') ? true : false;
+	$s_display_results = (!$s_can_vote || ($s_can_vote && sizeof($cur_voted_id)) || $view == 'viewpoll');
 
 	$update = request_var('update', false);
 	$unvote = request_var('unvote', false);
@@ -830,8 +830,8 @@ if (!empty($topic_data['poll_start']))
 			'POLL_OPTION_PCT'		=> round($option_pct * 100),
 			'POLL_OPTION_IMG'		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
 			'POLL_OPTION_VOTERS'	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
-			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)) ? true : false]
-		);
+			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)),
+		]);
 	}
 
 	$poll_end = $topic_data['poll_length'] + $topic_data['poll_start'];
@@ -849,12 +849,12 @@ if (!empty($topic_data['poll_start']))
 		'S_HAS_POLL'		=> true,
 		'S_CAN_VOTE'		=> $s_can_vote,
 		'S_DISPLAY_RESULTS'	=> $s_display_results,
-		'S_IS_MULTI_CHOICE'	=> ($topic_data['poll_max_options'] > 1) ? true : false,
+		'S_IS_MULTI_CHOICE'	=> ($topic_data['poll_max_options'] > 1),
 		'S_POLL_ACTION'		=> $viewtopic_url,
 		'S_SHOW_VOTERS'		=> ($topic_data['poll_show_voters']) ? true : false,
 
-		'U_VIEW_RESULTS'	=> $viewtopic_url . '&amp;view=viewpoll']
-	);
+		'U_VIEW_RESULTS'	=> $viewtopic_url . '&amp;view=viewpoll',
+	]);
 
 	unset($poll_end, $poll_info);
 }
@@ -998,7 +998,7 @@ while ($row = $db->sql_fetchrow($result))
 	}
 
 	$rowset[$row['post_id']] = [
-		'hide_post'			=> ($row['foe'] && ($view != 'show' || $post_id != $row['post_id'])) ? true : false,
+		'hide_post'			=> ($row['foe'] && ($view != 'show' || $post_id != $row['post_id'])),
 
 		'post_id'			=> $row['post_id'],
 		'post_time'			=> $row['post_time'],
@@ -1235,7 +1235,7 @@ if ($config['load_onlinetrack'] && sizeof($id_cache))
 	$update_time = $config['load_online_time'] * 60;
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$user_cache[$row['session_user_id']]['online'] = (time() - $update_time < $row['online_time'] && (($row['viewonline']) || $auth->acl_get('u_viewonline'))) ? true : false;
+		$user_cache[$row['session_user_id']]['online'] = (time() - $update_time < $row['online_time'] && (($row['viewonline']) || $auth->acl_get('u_viewonline')));
 	}
 	$db->sql_freeresult($result);
 }
@@ -1526,7 +1526,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		$cp_row = (isset($profile_fields_cache[$poster_id])) ? $cp->generate_profile_fields_template('show', false, $profile_fields_cache[$poster_id]) : [];
 	}
 
-	$post_unread = (isset($topic_tracking_info[$topic_id]) && ($row['post_time'] > $topic_tracking_info[$topic_id] || $row['post_merged'] > $topic_tracking_info[$topic_id])) ? true : false;
+	$post_unread = (isset($topic_tracking_info[$topic_id]) && ($row['post_time'] > $topic_tracking_info[$topic_id] || $row['post_merged'] > $topic_tracking_info[$topic_id]));
 
 	$s_first_unread = false;
 	if (!$first_unread && $post_unread)
@@ -1596,7 +1596,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'S_POSTER_GENDER_M'	=> $user_cache[$poster_id]['gender'] == GENDER_M,
 		'S_POSTER_GENDER_F'	=> $user_cache[$poster_id]['gender'] == GENDER_F,
 
-		'POST_DATE'			=> $user->format_date($row['post_time'], false, ($view == 'print') ? true : false),
+		'POST_DATE'			=> $user->format_date($row['post_time'], false, ($view == 'print')),
 		'POST_SUBJECT'		=> $row['post_subject'],
 		'MESSAGE'			=> $message,
 		'DECODED_MESSAGE'	=> $decoded_message,
@@ -1649,14 +1649,14 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'USER_CAN_MINUS'		=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && (empty($config['rate_only_topics']) || $topic_data['topic_first_post_id'] == $row['post_id']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true) && ($user_rate['rate'] >= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_negative'] ? $user_rate['rate'] != 0 : true) && $auth->acl_get('u_canminus'),
 		'USER_CAN_PLUS'			=> $config['rate_enabled'] && ($user->data['user_id'] != ANONYMOUS) && ($user->data['user_id'] != $poster_id) && (empty($config['rate_only_topics']) || $topic_data['topic_first_post_id'] == $row['post_id']) && ($rate_time > 0 ? $rate_time + $row['post_time'] > time() : true) && ($user_rate['rate'] <= 0) && ($user_rate['rate'] != 0 && $config['rate_change_time'] > 0 ? $config['rate_change_time'] + $user_rate['rate_time'] > time() : true) && ($config['rate_no_positive'] ? $user_rate['rate'] != 0 : true) && $auth->acl_get('u_canplus'),
 
-		'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
-		'S_POST_UNAPPROVED'	=> ($row['post_approved']) ? false : true,
-		'S_POST_REPORTED'	=> ($row['post_reported'] && $auth->acl_get('m_report', $forum_id)) ? true : false,
+		'S_HAS_ATTACHMENTS'	=> !empty($attachments[$row['post_id']]),
+		'S_POST_UNAPPROVED'	=> !$row['post_approved'],
+		'S_POST_REPORTED'	=> ($row['post_reported'] && $auth->acl_get('m_report', $forum_id)),
 		'S_DISPLAY_NOTICE'	=> $display_notice && $row['post_attachment'],
 		'S_FRIEND'			=> ($row['friend']) ? true : false,
 		'S_UNREAD_POST'		=> $post_unread,
 		'S_FIRST_UNREAD'	=> $s_first_unread,
-		'S_CUSTOM_FIELDS'	=> (isset($cp_row['row']) && sizeof($cp_row['row'])) ? true : false,
+		'S_CUSTOM_FIELDS'	=> (isset($cp_row['row']) && sizeof($cp_row['row'])),
 		'S_ANONYMOUS'		=> ($poster_id == ANONYMOUS),
 		'S_TOPIC_POSTER'	=> ($poster_id != ANONYMOUS ? ($topic_data['topic_poster'] == $poster_id) : (!empty($topic_data['topic_first_poster_name']) && $topic_data['topic_first_poster_name'] == $row['post_username'])),
 
@@ -1806,7 +1806,7 @@ if (isset($user->data['session_page']) && !$user->data['is_bot'] && (strpos($use
 	}
 }
 
-$last_page = ((floor($start / $config['posts_per_page']) + 1) == max(ceil($total_posts / $config['posts_per_page']), 1)) ? true : false;
+$last_page = ((floor($start / $config['posts_per_page']) + 1) == max(ceil($total_posts / $config['posts_per_page']), 1));
 if ($last_page)
 {
 	$max_post_time = max($topic_data['topic_last_post_time'], $max_post_time);

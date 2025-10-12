@@ -47,7 +47,7 @@ class acp_search
 	{
 		global $db, $user, $auth, $template, $cache, $config;
 
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		$search_types = $this->get_search_types();
 
@@ -482,7 +482,7 @@ class acp_search
 				'L_NAME'			=> $name,
 				'NAME'				=> $type,
 
-				'S_ACTIVE'			=> ($type == $config['search_type']) ? true : false,
+				'S_ACTIVE'			=> ($type == $config['search_type']),
 				'S_HIDDEN_FIELDS'	=> build_hidden_fields(['search_type' => $type]),
 				'S_INDEXED'			=> (bool) $search->index_created(),
 				'S_STATS'			=> (bool) sizeof($statistics)]

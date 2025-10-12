@@ -24,7 +24,7 @@ class ucp_prefs
 	{
 		global $config, $db, $user, $auth, $template;
 
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$error = $data = [];
 		$s_hidden_fields = '';
 
@@ -166,9 +166,9 @@ class ucp_prefs
 				$template->assign_vars([
 					'ERROR'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 
-					'S_NOTIFY_EMAIL'	=> ($data['notifymethod'] == NOTIFY_EMAIL) ? true : false,
-					'S_NOTIFY_IM'		=> ($data['notifymethod'] == NOTIFY_IM) ? true : false,
-					'S_NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH) ? true : false,
+					'S_NOTIFY_EMAIL'	=> ($data['notifymethod'] == NOTIFY_EMAIL),
+					'S_NOTIFY_IM'		=> ($data['notifymethod'] == NOTIFY_IM),
+					'S_NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH),
 					'S_HIDE_ALL_EMAILS'	=> $config['board_hide_emails'],
 					'S_VIEW_EMAIL'		=> $data['viewemail'],
 					'S_MASS_EMAIL'		=> $data['massemail'],
@@ -192,8 +192,8 @@ class ucp_prefs
 					'S_STYLE_OPTIONS'		=> ($config['override_user_style']) ? '' : style_select($data['style']),
 					'S_TZ_OPTIONS'			=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
 					'S_CAN_HIDE_ONLINE'		=> ($auth->acl_get('u_hideonline')) ? true : false,
-					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && @extension_loaded('xml')) ? true : false]
-				);
+					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && @extension_loaded('xml')),
+				]);
 
 			break;
 
@@ -364,7 +364,7 @@ class ucp_prefs
 					'S_QUICKPOST'		=> $data['quickpost'],
 					'QUICK_POST'		=> ($config['allow_quick_post']) ? true : false,
 
-					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']) ? true : false,
+					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']),
 
 					'S_TOPIC_SORT_DAYS'		=> $s_limit_topic_days,
 					'S_TOPIC_SORT_KEY'		=> $s_sort_topic_key,

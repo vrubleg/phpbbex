@@ -22,7 +22,7 @@ class acp_bots
 		global $config, $db, $user, $auth, $template, $cache;
 
 		$action = request_var('action', '');
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$mark	= request_var('mark', [0]);
 		$bot_id	= request_var('id', 0);
 
@@ -338,7 +338,7 @@ class acp_bots
 					'S_ACTIVE_OPTIONS'	=> $s_active_options,
 					'S_STYLE_OPTIONS'	=> $style_select,
 					'S_LANG_OPTIONS'	=> $lang_select,
-					'S_ERROR'			=> (sizeof($error)) ? true : false,
+					'S_ERROR'			=> (sizeof($error) > 0),
 					]
 				);
 

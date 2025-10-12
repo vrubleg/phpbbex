@@ -49,7 +49,7 @@ switch ($mode)
 }
 
 $start	= request_var('start', 0);
-$submit = (isset($_POST['submit'])) ? true : false;
+$submit = isset($_POST['submit']);
 
 $default_key = 'c';
 $sort_key = request_var('sk', $default_key);
@@ -402,7 +402,7 @@ switch ($mode)
 
 		// Get group memberships
 		// Also get visiting user's groups to determine hidden group memberships if necessary.
-		$auth_hidden_groups = ($user_id === (int) $user->data['user_id'] || $auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? true : false;
+		$auth_hidden_groups = ($user_id === (int) $user->data['user_id'] || $auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'));
 		$sql_uid_ary = ($auth_hidden_groups) ? [$user_id] : [$user_id, (int) $user->data['user_id']];
 
 		// Do the SQL thang
@@ -474,8 +474,8 @@ switch ($mode)
 
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
-		$foe = ($row && $row['foe']) ? true : false;
-		$friend = ($row && $row['friend']) ? true : false;
+		$foe = ($row && $row['foe']);
+		$friend = ($row && $row['friend']);
 		$db->sql_freeresult($result);
 
 		if ($config['load_onlinetrack'])
@@ -537,11 +537,11 @@ switch ($mode)
 			$module->list_modules('ucp');
 			$module->list_modules('mcp');
 
-			$user_notes_enabled = ($module->loaded('notes', 'user_notes')) ? true : false;
-			$warn_user_enabled = ($module->loaded('warn', 'warn_user')) ? true : false;
-			$zebra_enabled = ($module->loaded('zebra')) ? true : false;
-			$friends_enabled = ($module->loaded('zebra', 'friends')) ? true : false;
-			$foes_enabled = ($module->loaded('zebra', 'foes')) ? true : false;
+			$user_notes_enabled = $module->loaded('notes', 'user_notes');
+			$warn_user_enabled = $module->loaded('warn', 'warn_user');
+			$zebra_enabled = $module->loaded('zebra');
+			$friends_enabled = $module->loaded('zebra', 'friends');
+			$foes_enabled = $module->loaded('zebra', 'foes');
 
 			unset($module);
 		}
@@ -612,7 +612,7 @@ switch ($mode)
 
 			'S_PROFILE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group'),
 			'S_GROUP_OPTIONS'	=> $group_options,
-			'S_CUSTOM_FIELDS'	=> (isset($profile_fields['row']) && sizeof($profile_fields['row'])) ? true : false,
+			'S_CUSTOM_FIELDS'	=> (isset($profile_fields['row']) && sizeof($profile_fields['row'])),
 
 			'U_USER_ADMIN'			=> ($auth->acl_get('a_user')) ? append_sid(PHPBB_ROOT_PATH . 'adm/index.php', 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
 			'U_USER_BAN'			=> ($auth->acl_get('m_ban') && $user_id != $user->data['user_id']) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=ban&amp;mode=user&amp;u=' . $user_id, true, $user->session_id) : '',
@@ -620,9 +620,9 @@ switch ($mode)
 
 			'U_SWITCH_PERMISSIONS'	=> ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_id) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', "mode=switch_perm&amp;u={$user_id}&amp;hash=" . generate_link_hash('switchperm')) : '',
 
-			'S_USER_NOTES'		=> ($user_notes_enabled) ? true : false,
-			'S_WARN_USER'		=> ($warn_user_enabled) ? true : false,
-			'S_ZEBRA'			=> ($user->data['user_id'] != $user_id && $user->data['is_registered'] && $zebra_enabled) ? true : false,
+			'S_USER_NOTES'		=> ($user_notes_enabled),
+			'S_WARN_USER'		=> ($warn_user_enabled),
+			'S_ZEBRA'			=> ($user->data['user_id'] != $user_id && $user->data['is_registered'] && $zebra_enabled),
 			'U_ADD_FRIEND'		=> (!$friend && !$foe && $friends_enabled) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;add=' . urlencode(htmlspecialchars_decode($member['username']))) : '',
 			'U_ADD_FOE'			=> (!$friend && !$foe && $foes_enabled) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;mode=foes&amp;add=' . urlencode(htmlspecialchars_decode($member['username']))) : '',
 			'U_REMOVE_FRIEND'	=> ($friend && $friends_enabled) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;remove=1&amp;usernames[]=' . $user_id) : '',
@@ -779,8 +779,8 @@ switch ($mode)
 		$email_lang = request_var('lang', $config['default_lang']);
 		$subject	= utf8_normalize_nfc(request_var('subject', '', true));
 		$message	= utf8_normalize_nfc(request_var('message', '', true));
-		$cc			= (isset($_POST['cc_email'])) ? true : false;
-		$submit		= (isset($_POST['submit'])) ? true : false;
+		$cc			= isset($_POST['cc_email']);
+		$submit		= isset($_POST['submit']);
 
 		if ($submit)
 		{
@@ -1375,7 +1375,7 @@ switch ($mode)
 
 				'S_IP_SEARCH_ALLOWED'	=> ($auth->acl_getf_global('m_info')) ? true : false,
 				'S_EMAIL_SEARCH_ALLOWED'=> ($auth->acl_get('a_user')) ? true : false,
-				'S_IN_SEARCH_POPUP'		=> ($form && $field) ? true : false,
+				'S_IN_SEARCH_POPUP'		=> ($form && $field),
 				'S_SEARCH_USER'			=> true,
 				'S_FORM_NAME'			=> $form,
 				'S_FIELD_NAME'			=> $field,
@@ -1472,7 +1472,7 @@ switch ($mode)
 			{
 				$user_id = $user_list[$i];
 				$row =& $id_cache[$user_id];
-				$is_leader = (isset($row['group_leader']) && $row['group_leader']) ? true : false;
+				$is_leader = (isset($row['group_leader']) && $row['group_leader']);
 				$leaders_set = ($leaders_set || $is_leader);
 
 				$cp_row = [];
@@ -1484,11 +1484,11 @@ switch ($mode)
 				$memberrow = array_merge(show_profile($row), [
 					'ROW_NUMBER'		=> $i + ($start + 1),
 
-					'S_CUSTOM_PROFILE'	=> (isset($cp_row['row']) && sizeof($cp_row['row'])) ? true : false,
+					'S_CUSTOM_PROFILE'	=> (isset($cp_row['row']) && sizeof($cp_row['row'])),
 					'S_GROUP_LEADER'	=> $is_leader,
 
-					'U_VIEW_PROFILE'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id)]
-				);
+					'U_VIEW_PROFILE'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id),
+				]);
 
 				if (isset($cp_row['row']) && sizeof($cp_row['row']))
 				{
@@ -1542,7 +1542,7 @@ switch ($mode)
 			'U_SORT_RANK'			=> $sort_url . '&amp;sk=m&amp;sd=' . (($sort_key == 'm' && $sort_dir == 'd') ? 'a' : 'd'),
 			'U_LIST_CHAR'			=> $sort_url . '&amp;sk=a&amp;sd=' . (($sort_key == 'l' && $sort_dir == 'a') ? 'd' : 'a'),
 
-			'S_SHOW_GROUP'		=> ($mode == 'group') ? true : false,
+			'S_SHOW_GROUP'		=> ($mode == 'group'),
 			'S_VIEWONLINE'		=> $auth->acl_get('u_viewonline'),
 			'S_LEADERS_SET'		=> $leaders_set,
 			'S_MODE_SELECT'		=> $s_sort_key,
@@ -1586,7 +1586,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 	if ($config['load_onlinetrack'])
 	{
 		$update_time = $config['load_online_time'] * 60;
-		$online = (time() - $update_time < $data['session_time'] && ((isset($data['session_viewonline']) && $data['session_viewonline']) || $auth->acl_get('u_viewonline'))) ? true : false;
+		$online = (time() - $update_time < $data['session_time'] && ((isset($data['session_viewonline']) && $data['session_viewonline']) || $auth->acl_get('u_viewonline')));
 	}
 	else
 	{
@@ -1657,12 +1657,12 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 		'AVATAR_IMG'		=> get_user_avatar($data['user_avatar'], $data['user_avatar_type'], $data['user_avatar_width'], $data['user_avatar_height']),
 		'ONLINE_IMG'		=> (!$config['load_onlinetrack']) ? '' : (($online) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
-		'S_ONLINE'			=> ($config['load_onlinetrack'] && $online) ? true : false,
+		'S_ONLINE'			=> ($config['load_onlinetrack'] && $online),
 		'RANK_IMG'			=> $rank_img,
 		'RANK_IMG_SRC'		=> $rank_img_src,
 		'S_JABBER_ENABLED'	=> ($config['jab_enable']) ? true : false,
 
-		'S_WARNINGS'	=> ($auth->acl_getf_global('m_') || $auth->acl_get('m_warn')) ? true : false,
+		'S_WARNINGS'	=> ($auth->acl_getf_global('m_') || $auth->acl_get('m_warn')),
 
 		'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id=$user_id&amp;sr=posts") : '',
 		'U_SEARCH_USER_TOPICS'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id=$user_id&amp;sr=topics&amp;sf=firstpost") : '',

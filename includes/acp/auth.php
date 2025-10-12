@@ -69,7 +69,7 @@ class auth_admin extends phpbb_auth
 		global $db, $user;
 
 		$hold_ary = [];
-		$view_user_mask = ($mode == 'view' && $group_id === false) ? true : false;
+		$view_user_mask = ($mode == 'view' && $group_id === false);
 
 		if ($auth_option === false || $scope === false)
 		{
@@ -266,7 +266,7 @@ class auth_admin extends phpbb_auth
 		$l_acl_type = (isset($user->lang['ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)])) ? $user->lang['ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)] : 'ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type);
 
 		// Allow trace for viewing permissions and in user mode
-		$show_trace = ($mode == 'view' && $user_mode == 'user') ? true : false;
+		$show_trace = ($mode == 'view' && $user_mode == 'user');
 
 		// Get names
 		if ($user_mode == 'user')
@@ -441,14 +441,14 @@ class auth_admin extends phpbb_auth
 
 					'L_ACL_TYPE'	=> $l_acl_type,
 
-					'S_LOCAL'		=> ($local) ? true : false,
-					'S_GLOBAL'		=> (!$local) ? true : false,
+					'S_LOCAL'		=> $local,
+					'S_GLOBAL'		=> !$local,
 					'S_NUM_CATS'	=> sizeof($categories),
-					'S_VIEW'		=> ($mode == 'view') ? true : false,
+					'S_VIEW'		=> ($mode == 'view'),
 					'S_NUM_OBJECTS'	=> sizeof($content_array),
-					'S_USER_MODE'	=> ($user_mode == 'user') ? true : false,
-					'S_GROUP_MODE'	=> ($user_mode == 'group') ? true : false]
-				);
+					'S_USER_MODE'	=> ($user_mode == 'user'),
+					'S_GROUP_MODE'	=> ($user_mode == 'group'),
+				]);
 
 				foreach ($content_array as $ug_id => $ug_array)
 				{
@@ -525,14 +525,14 @@ class auth_admin extends phpbb_auth
 					'USER_GROUPS_CUSTOM'	=> ($user_mode == 'user' && isset($user_groups_custom[$ug_id]) && sizeof($user_groups_custom[$ug_id])) ? implode(', ', $user_groups_custom[$ug_id]) : '',
 					'L_ACL_TYPE'			=> $l_acl_type,
 
-					'S_LOCAL'		=> ($local) ? true : false,
-					'S_GLOBAL'		=> (!$local) ? true : false,
+					'S_LOCAL'		=> $local,
+					'S_GLOBAL'		=> !$local,
 					'S_NUM_CATS'	=> sizeof($categories),
-					'S_VIEW'		=> ($mode == 'view') ? true : false,
+					'S_VIEW'		=> ($mode == 'view'),
 					'S_NUM_OBJECTS'	=> sizeof($content_array),
-					'S_USER_MODE'	=> ($user_mode == 'user') ? true : false,
-					'S_GROUP_MODE'	=> ($user_mode == 'group') ? true : false]
-				);
+					'S_USER_MODE'	=> ($user_mode == 'user'),
+					'S_GROUP_MODE'	=> ($user_mode == 'group'),
+				]);
 
 				foreach ($content_array as $forum_id => $forum_array)
 				{
@@ -1095,12 +1095,12 @@ class auth_admin extends phpbb_auth
 		foreach ($category_array as $cat => $cat_array)
 		{
 			$template->assign_block_vars($tpl_cat, [
-				'S_YES'		=> ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']) ? true : false,
-				'S_NEVER'	=> ($cat_array['S_NEVER'] && !$cat_array['S_YES'] && !$cat_array['S_NO']) ? true : false,
-				'S_NO'		=> ($cat_array['S_NO'] && !$cat_array['S_NEVER'] && !$cat_array['S_YES']) ? true : false,
+				'S_YES'		=> ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']),
+				'S_NEVER'	=> ($cat_array['S_NEVER'] && !$cat_array['S_YES'] && !$cat_array['S_NO']),
+				'S_NO'		=> ($cat_array['S_NO'] && !$cat_array['S_NEVER'] && !$cat_array['S_YES']),
 
-				'CAT_NAME'	=> $user->lang['permission_cat'][$cat]]
-			);
+				'CAT_NAME'	=> $user->lang['permission_cat'][$cat],
+			]);
 
 			/*	Sort permissions by name (more naturaly and user friendly than sorting by a primary key)
 			*	Commented out due to it's memory consumption and time needed
@@ -1122,8 +1122,8 @@ class auth_admin extends phpbb_auth
 				if ($s_view)
 				{
 					$template->assign_block_vars($tpl_cat . '.' . $tpl_mask, [
-						'S_YES'		=> ($allowed == ACL_YES) ? true : false,
-						'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
+						'S_YES'		=> ($allowed == ACL_YES),
+						'S_NEVER'	=> ($allowed == ACL_NEVER),
 
 						'UG_ID'			=> $ug_id,
 						'FORUM_ID'		=> $forum_id,
@@ -1133,15 +1133,15 @@ class auth_admin extends phpbb_auth
 						'U_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&amp;mode=trace&amp;u=$ug_id&amp;f=$forum_id&amp;auth=$permission") : '',
 						'UA_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&mode=trace&u=$ug_id&f=$forum_id&auth=$permission", false) : '',
 
-						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang']]
-					);
+						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'],
+					]);
 				}
 				else
 				{
 					$template->assign_block_vars($tpl_cat . '.' . $tpl_mask, [
-						'S_YES'		=> ($allowed == ACL_YES) ? true : false,
-						'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
-						'S_NO'		=> ($allowed == ACL_NO) ? true : false,
+						'S_YES'		=> ($allowed == ACL_YES),
+						'S_NEVER'	=> ($allowed == ACL_NEVER),
+						'S_NO'		=> ($allowed == ACL_NO),
 
 						'UG_ID'			=> $ug_id,
 						'FORUM_ID'		=> $forum_id,
@@ -1151,8 +1151,8 @@ class auth_admin extends phpbb_auth
 						'U_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&amp;mode=trace&amp;u=$ug_id&amp;f=$forum_id&amp;auth=$permission") : '',
 						'UA_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&mode=trace&u=$ug_id&f=$forum_id&auth=$permission", false) : '',
 
-						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang']]
-					);
+						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'],
+					]);
 				}
 			}
 		}

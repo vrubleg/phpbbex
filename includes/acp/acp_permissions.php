@@ -231,8 +231,8 @@ class acp_permissions
 					if (confirm_box(true))
 					{
 						// All users/groups selected?
-						$all_users = (isset($_POST['all_users'])) ? true : false;
-						$all_groups = (isset($_POST['all_groups'])) ? true : false;
+						$all_users = isset($_POST['all_users']);
+						$all_groups = isset($_POST['all_groups']);
 
 						if ($all_users || $all_groups)
 						{
@@ -410,8 +410,8 @@ class acp_permissions
 				case 'usergroup':
 				case 'usergroup_view':
 
-					$all_users = (isset($_POST['all_users'])) ? true : false;
-					$all_groups = (isset($_POST['all_groups'])) ? true : false;
+					$all_users = isset($_POST['all_users']);
+					$all_groups = isset($_POST['all_groups']);
 
 					if ((sizeof($user_id) && !$all_users) || (sizeof($group_id) && !$all_groups))
 					{
@@ -444,8 +444,8 @@ class acp_permissions
 					}
 
 					$template->assign_vars([
-						'S_SELECT_USERGROUP'		=> ($victim == 'usergroup') ? true : false,
-						'S_SELECT_USERGROUP_VIEW'	=> ($victim == 'usergroup_view') ? true : false,
+						'S_SELECT_USERGROUP'		=> ($victim == 'usergroup'),
+						'S_SELECT_USERGROUP_VIEW'	=> ($victim == 'usergroup_view'),
 						'S_DEFINED_USER_OPTIONS'	=> $items['user_ids_options'],
 						'S_DEFINED_GROUP_OPTIONS'	=> $items['group_ids_options'],
 						'S_ADD_GROUP_OPTIONS'		=> group_select_options(false, $items['group_ids'], false),	// Show all groups
@@ -464,11 +464,11 @@ class acp_permissions
 				'ANONYMOUS_USER_ID'		=> ANONYMOUS,
 
 				'S_SELECT_VICTIM'		=> true,
-				'S_ALLOW_ALL_SELECT'	=> (sizeof($forum_id) > 5) ? false : true,
-				'S_CAN_SELECT_USER'		=> ($auth->acl_get('a_authusers')) ? true : false,
-				'S_CAN_SELECT_GROUP'	=> ($auth->acl_get('a_authgroups')) ? true : false,
-				'S_HIDDEN_FIELDS'		=> $s_hidden_fields]
-			);
+				'S_ALLOW_ALL_SELECT'	=> (sizeof($forum_id) <= 5),
+				'S_CAN_SELECT_USER'		=> ($auth->acl_get('a_authusers')),
+				'S_CAN_SELECT_GROUP'	=> ($auth->acl_get('a_authgroups')),
+				'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
+			]);
 
 			// Let the forum names being displayed
 			if (sizeof($forum_id))
@@ -487,9 +487,9 @@ class acp_permissions
 				$db->sql_freeresult($result);
 
 				$template->assign_vars([
-					'S_FORUM_NAMES'		=> (sizeof($forum_names)) ? true : false,
-					'FORUM_NAMES'		=> implode(', ', $forum_names)]
-				);
+					'S_FORUM_NAMES'		=> (sizeof($forum_names) > 0),
+					'FORUM_NAMES'		=> implode(', ', $forum_names),
+				]);
 			}
 
 			return;
@@ -516,7 +516,7 @@ class acp_permissions
 			);
 
 			$hold_ary = $auth_admin->get_mask('set', (sizeof($user_id)) ? $user_id : false, (sizeof($group_id)) ? $group_id : false, (sizeof($forum_id)) ? $forum_id : false, $permission_type, $permission_scope, ACL_NO);
-			$auth_admin->display_mask('set', $permission_type, $hold_ary, ((sizeof($user_id)) ? 'user' : 'group'), (($permission_scope == 'local') ? true : false));
+			$auth_admin->display_mask('set', $permission_type, $hold_ary, ((sizeof($user_id)) ? 'user' : 'group'), ($permission_scope == 'local'));
 		}
 		else
 		{
@@ -525,7 +525,7 @@ class acp_permissions
 			);
 
 			$hold_ary = $auth_admin->get_mask('view', (sizeof($user_id)) ? $user_id : false, (sizeof($group_id)) ? $group_id : false, (sizeof($forum_id)) ? $forum_id : false, $permission_type, $permission_scope, ACL_NEVER);
-			$auth_admin->display_mask('view', $permission_type, $hold_ary, ((sizeof($user_id)) ? 'user' : 'group'), (($permission_scope == 'local') ? true : false));
+			$auth_admin->display_mask('view', $permission_type, $hold_ary, ((sizeof($user_id)) ? 'user' : 'group'), ($permission_scope == 'local'));
 		}
 	}
 
@@ -1047,13 +1047,13 @@ class acp_permissions
 					'WHO'			=> $row['group_name'],
 					'INFORMATION'	=> $information,
 
-					'S_SETTING_NO'		=> ($row['auth_setting'] == ACL_NO) ? true : false,
-					'S_SETTING_YES'		=> ($row['auth_setting'] == ACL_YES) ? true : false,
-					'S_SETTING_NEVER'	=> ($row['auth_setting'] == ACL_NEVER) ? true : false,
-					'S_TOTAL_NO'		=> ($total == ACL_NO) ? true : false,
-					'S_TOTAL_YES'		=> ($total == ACL_YES) ? true : false,
-					'S_TOTAL_NEVER'		=> ($total == ACL_NEVER) ? true : false]
-				);
+					'S_SETTING_NO'		=> ($row['auth_setting'] == ACL_NO),
+					'S_SETTING_YES'		=> ($row['auth_setting'] == ACL_YES),
+					'S_SETTING_NEVER'	=> ($row['auth_setting'] == ACL_NEVER),
+					'S_TOTAL_NO'		=> ($total == ACL_NO),
+					'S_TOTAL_YES'		=> ($total == ACL_YES),
+					'S_TOTAL_NEVER'		=> ($total == ACL_NEVER),
+				]);
 			}
 		}
 
@@ -1083,13 +1083,13 @@ class acp_permissions
 			'WHO'			=> $userdata['username'],
 			'INFORMATION'	=> $information,
 
-			'S_SETTING_NO'		=> ($auth_setting == ACL_NO) ? true : false,
-			'S_SETTING_YES'		=> ($auth_setting == ACL_YES) ? true : false,
-			'S_SETTING_NEVER'	=> ($auth_setting == ACL_NEVER) ? true : false,
+			'S_SETTING_NO'		=> ($auth_setting == ACL_NO),
+			'S_SETTING_YES'		=> ($auth_setting == ACL_YES),
+			'S_SETTING_NEVER'	=> ($auth_setting == ACL_NEVER),
 			'S_TOTAL_NO'		=> false,
-			'S_TOTAL_YES'		=> ($total == ACL_YES) ? true : false,
-			'S_TOTAL_NEVER'		=> ($total == ACL_NEVER) ? true : false]
-		);
+			'S_TOTAL_YES'		=> ($total == ACL_YES),
+			'S_TOTAL_NEVER'		=> ($total == ACL_NEVER),
+		]);
 
 		if ($forum_id != 0 && isset($auth->acl_options['global'][$permission]))
 		{
@@ -1125,9 +1125,9 @@ class acp_permissions
 					'S_SETTING_YES'		=> $auth_setting,
 					'S_SETTING_NEVER'	=> !$auth_setting,
 					'S_TOTAL_NO'		=> false,
-					'S_TOTAL_YES'		=> ($total == ACL_YES) ? true : false,
-					'S_TOTAL_NEVER'		=> ($total == ACL_NEVER) ? true : false]
-				);
+					'S_TOTAL_YES'		=> ($total == ACL_YES),
+					'S_TOTAL_NEVER'		=> ($total == ACL_NEVER),
+				]);
 			}
 		}
 
@@ -1138,22 +1138,22 @@ class acp_permissions
 				'WHO'			=> $userdata['username'],
 				'INFORMATION'	=> $user->lang['TRACE_USER_FOUNDER'],
 
-				'S_SETTING_NO'		=> ($auth_setting == ACL_NO) ? true : false,
-				'S_SETTING_YES'		=> ($auth_setting == ACL_YES) ? true : false,
-				'S_SETTING_NEVER'	=> ($auth_setting == ACL_NEVER) ? true : false,
+				'S_SETTING_NO'		=> ($auth_setting == ACL_NO),
+				'S_SETTING_YES'		=> ($auth_setting == ACL_YES),
+				'S_SETTING_NEVER'	=> ($auth_setting == ACL_NEVER),
 				'S_TOTAL_NO'		=> false,
 				'S_TOTAL_YES'		=> true,
-				'S_TOTAL_NEVER'		=> false]
-			);
+				'S_TOTAL_NEVER'		=> false,
+			]);
 
 			$total = ACL_YES;
 		}
 
 		// Total value...
 		$template->assign_vars([
-			'S_RESULT_NO'		=> ($total == ACL_NO) ? true : false,
-			'S_RESULT_YES'		=> ($total == ACL_YES) ? true : false,
-			'S_RESULT_NEVER'	=> ($total == ACL_NEVER) ? true : false,
+			'S_RESULT_NO'		=> ($total == ACL_NO),
+			'S_RESULT_YES'		=> ($total == ACL_YES),
+			'S_RESULT_NEVER'	=> ($total == ACL_NEVER),
 		]);
 	}
 
@@ -1166,7 +1166,7 @@ class acp_permissions
 
 		$user->add_lang('acp/forums');
 
-		$submit = isset($_POST['submit']) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		if ($submit)
 		{

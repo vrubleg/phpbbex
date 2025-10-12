@@ -30,7 +30,7 @@ class acp_forums
 		add_form_key($form_key);
 
 		$action		= request_var('action', '');
-		$update		= (isset($_POST['update'])) ? true : false;
+		$update		= isset($_POST['update']);
 		$forum_id	= request_var('f', 0);
 
 		$this->parent_id	= request_var('parent_id', 0);
@@ -186,7 +186,7 @@ class acp_forums
 						if ($forum_perm_from && $forum_perm_from != $forum_data['forum_id'] &&
 							($action != 'edit' || empty($forum_id) || ($auth->acl_get('a_fauth') && $auth->acl_get('a_authusers') && $auth->acl_get('a_authgroups') && $auth->acl_get('a_mauth'))))
 						{
-							copy_forum_permissions($forum_perm_from, $forum_data['forum_id'], ($action == 'edit') ? true : false);
+							copy_forum_permissions($forum_perm_from, $forum_data['forum_id'], ($action == 'edit'));
 							cache_moderators();
 							$copied_permissions = true;
 						}
@@ -559,7 +559,7 @@ class acp_forums
 					}
 
 					$template->assign_vars([
-						'S_HAS_SUBFORUMS'		=> ($forum_data['right_id'] - $forum_data['left_id'] > 1) ? true : false,
+						'S_HAS_SUBFORUMS'		=> ($forum_data['right_id'] - $forum_data['left_id'] > 1),
 						'S_FORUMS_LIST'			=> $forums_list]
 					);
 				}
@@ -591,10 +591,10 @@ class acp_forums
 
 				$template->assign_vars([
 					'S_EDIT_FORUM'		=> true,
-					'S_ERROR'			=> (sizeof($errors)) ? true : false,
+					'S_ERROR'			=> (sizeof($errors) > 0),
 					'S_PARENT_ID'		=> $this->parent_id,
 					'S_FORUM_PARENT_ID'	=> $forum_data['parent_id'],
-					'S_ADD_ACTION'		=> ($action == 'add') ? true : false,
+					'S_ADD_ACTION'		=> ($action == 'add'),
 
 					'U_BACK'		=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
 					'U_EDIT_ACTION'	=> $this->u_action . "&amp;parent_id={$this->parent_id}&amp;action=$action&amp;f=$forum_id",
@@ -621,7 +621,7 @@ class acp_forums
 					'S_BBCODE_CHECKED'			=> ($forum_rules_data['allow_bbcode']) ? true : false,
 					'S_SMILIES_CHECKED'			=> ($forum_rules_data['allow_smilies']) ? true : false,
 					'S_URLS_CHECKED'			=> ($forum_rules_data['allow_urls']) ? true : false,
-					'S_FORUM_PASSWORD_SET'		=> (empty($forum_data['forum_password'])) ? false : true,
+					'S_FORUM_PASSWORD_SET'		=> empty($forum_data['forum_password']),
 
 					'FORUM_DESC'				=> $forum_desc_data['text'],
 					'S_DESC_BBCODE_CHECKED'		=> ($forum_desc_data['allow_bbcode']) ? true : false,
@@ -636,23 +636,23 @@ class acp_forums
 					'S_TOPIC_SORTBY_DIR_OPTIONS'	=> $topic_sortby_dir_options,
 					'S_FORUM_OPTIONS'			=> make_forum_select(($action == 'add') ? $forum_data['parent_id'] : false, ($action == 'edit') ? $forum_data['forum_id'] : false, true, false, false),
 					'S_SHOW_DISPLAY_ON_INDEX'	=> $s_show_display_on_index,
-					'S_FORUM_POST'				=> ($forum_data['forum_type'] == FORUM_POST) ? true : false,
-					'S_FORUM_ORIG_POST'			=> (isset($old_forum_type) && $old_forum_type == FORUM_POST) ? true : false,
-					'S_FORUM_ORIG_CAT'			=> (isset($old_forum_type) && $old_forum_type == FORUM_CAT) ? true : false,
-					'S_FORUM_ORIG_LINK'			=> (isset($old_forum_type) && $old_forum_type == FORUM_LINK) ? true : false,
-					'S_FORUM_LINK'				=> ($forum_data['forum_type'] == FORUM_LINK) ? true : false,
-					'S_FORUM_CAT'				=> ($forum_data['forum_type'] == FORUM_CAT) ? true : false,
+					'S_FORUM_POST'				=> ($forum_data['forum_type'] == FORUM_POST),
+					'S_FORUM_ORIG_POST'			=> (isset($old_forum_type) && $old_forum_type == FORUM_POST),
+					'S_FORUM_ORIG_CAT'			=> (isset($old_forum_type) && $old_forum_type == FORUM_CAT),
+					'S_FORUM_ORIG_LINK'			=> (isset($old_forum_type) && $old_forum_type == FORUM_LINK),
+					'S_FORUM_LINK'				=> ($forum_data['forum_type'] == FORUM_LINK),
+					'S_FORUM_CAT'				=> ($forum_data['forum_type'] == FORUM_CAT),
 					'S_ENABLE_INDEXING'			=> ($forum_data['enable_indexing']) ? true : false,
 					'S_DISPLAY_SUBFORUM_LIST'	=> ($forum_data['display_subforum_list']) ? true : false,
 					'S_DISPLAY_ON_INDEX'		=> ($forum_data['display_on_index']) ? true : false,
 					'S_PRUNE_ENABLE'			=> ($forum_data['enable_prune']) ? true : false,
-					'S_FORUM_LINK_TRACK'		=> ($forum_data['forum_flags'] & FORUM_FLAG_LINK_TRACK) ? true : false,
-					'S_PRUNE_OLD_POLLS'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_POLL) ? true : false,
-					'S_PRUNE_ANNOUNCE'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_ANNOUNCE) ? true : false,
-					'S_PRUNE_STICKY'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_STICKY) ? true : false,
+					'S_FORUM_LINK_TRACK'		=> ($forum_data['forum_flags'] & FORUM_FLAG_LINK_TRACK),
+					'S_PRUNE_OLD_POLLS'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_POLL),
+					'S_PRUNE_ANNOUNCE'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_ANNOUNCE),
+					'S_PRUNE_STICKY'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_STICKY),
 					'S_DISPLAY_ACTIVE_TOPICS'	=> ($forum_data['forum_type'] == FORUM_POST) ? ($forum_data['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS) : true,
 					'S_ENABLE_ACTIVE_TOPICS'	=> ($forum_data['forum_type'] == FORUM_CAT) ? ($forum_data['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS) : false,
-					'S_CAN_COPY_PERMISSIONS'	=> ($action != 'edit' || empty($forum_id) || ($auth->acl_get('a_fauth') && $auth->acl_get('a_authusers') && $auth->acl_get('a_authgroups') && $auth->acl_get('a_mauth'))) ? true : false,
+					'S_CAN_COPY_PERMISSIONS'	=> ($action != 'edit' || empty($forum_id) || ($auth->acl_get('a_fauth') && $auth->acl_get('a_authusers') && $auth->acl_get('a_authgroups') && $auth->acl_get('a_mauth'))),
 				]);
 
 				return;
@@ -700,13 +700,13 @@ class acp_forums
 					'U_BACK'				=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
 
 					'FORUM_NAME'			=> $forum_data['forum_name'],
-					'S_FORUM_POST'			=> ($forum_data['forum_type'] == FORUM_POST) ? true : false,
-					'S_FORUM_LINK'			=> ($forum_data['forum_type'] == FORUM_LINK) ? true : false,
-					'S_HAS_SUBFORUMS'		=> ($forum_data['right_id'] - $forum_data['left_id'] > 1) ? true : false,
+					'S_FORUM_POST'			=> ($forum_data['forum_type'] == FORUM_POST),
+					'S_FORUM_LINK'			=> ($forum_data['forum_type'] == FORUM_LINK),
+					'S_HAS_SUBFORUMS'		=> ($forum_data['right_id'] - $forum_data['left_id'] > 1),
 					'S_FORUMS_LIST'			=> $forums_list,
-					'S_ERROR'				=> (sizeof($errors)) ? true : false,
-					'ERROR_MSG'				=> (sizeof($errors)) ? implode('<br />', $errors) : '']
-				);
+					'S_ERROR'				=> (sizeof($errors) > 0),
+					'ERROR_MSG'				=> (sizeof($errors)) ? implode('<br />', $errors) : '',
+				]);
 
 				return;
 			break;
@@ -810,8 +810,8 @@ class acp_forums
 					'FORUM_TOPICS'		=> $row['forum_topics'],
 					'FORUM_POSTS'		=> $row['forum_posts'],
 
-					'S_FORUM_LINK'		=> ($forum_type == FORUM_LINK) ? true : false,
-					'S_FORUM_POST'		=> ($forum_type == FORUM_POST) ? true : false,
+					'S_FORUM_LINK'		=> ($forum_type == FORUM_LINK),
+					'S_FORUM_POST'		=> ($forum_type == FORUM_POST),
 
 					'U_FORUM'			=> $this->u_action . '&amp;parent_id=' . $row['forum_id'],
 					'U_MOVE_UP'			=> $url . '&amp;action=move_up',

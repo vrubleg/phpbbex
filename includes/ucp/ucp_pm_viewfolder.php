@@ -18,7 +18,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 {
 	global $user, $template, $auth, $db, $cache, $config;
 
-	$submit_export = (isset($_POST['submit_export'])) ? true : false;
+	$submit_export = isset($_POST['submit_export']);
 
 	$folder_info = get_pm_from($folder_id, $folder, $user->data['user_id']);
 
@@ -158,24 +158,24 @@ function view_folder($id, $mode, $folder_id, $folder)
 
 					'S_PM_UNREAD'		=> ($row['pm_unread']) ? true : false,
 					'S_PM_DELETED'		=> ($row['pm_deleted']) ? true : false,
-					'S_PM_REPORTED'		=> (isset($row['report_id'])) ? true : false,
-					'S_AUTHOR_DELETED'	=> ($row['author_id'] == ANONYMOUS) ? true : false,
+					'S_PM_REPORTED'		=> isset($row['report_id']),
+					'S_AUTHOR_DELETED'	=> ($row['author_id'] == ANONYMOUS),
 
 					'U_VIEW_PM'			=> ($row['pm_deleted']) ? '' : $view_message_url,
 					'U_REMOVE_PM'		=> ($row['pm_deleted']) ? $remove_message_url : '',
 					'U_MCP_REPORT'		=> (isset($row['report_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $row['report_id']) : '',
-					'RECIPIENTS'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? implode(', ', $address_list[$message_id]) : '']
-				);
+					'RECIPIENTS'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? implode(', ', $address_list[$message_id]) : '',
+				]);
 			}
 			unset($folder_info['rowset']);
 
 			$template->assign_vars([
-				'S_SHOW_RECIPIENTS'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? true : false,
+				'S_SHOW_RECIPIENTS'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX),
 				'S_SHOW_COLOUR_LEGEND'	=> true,
 
 				'REPORTED_IMG'			=> $user->img('icon_topic_reported', 'PM_REPORTED'),
-				'S_PM_ICONS'			=> ($config['enable_pm_icons']) ? true : false]
-			);
+				'S_PM_ICONS'			=> ($config['enable_pm_icons']) ? true : false,
+			]);
 		}
 	}
 	else

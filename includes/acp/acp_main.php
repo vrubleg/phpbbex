@@ -544,7 +544,7 @@ class acp_main
 			'U_VERSIONCHECK_FORCE'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'versioncheck_force=1'),
 
 			'S_ACTION_OPTIONS'	=> ($auth->acl_get('a_board')) ? true : false,
-			'S_FOUNDER'			=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+			'S_FOUNDER'			=> ($user->data['user_type'] == USER_FOUNDER),
 			]
 		);
 

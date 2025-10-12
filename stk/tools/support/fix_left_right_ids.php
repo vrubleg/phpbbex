@@ -45,7 +45,7 @@ class fix_left_right_ids
 			// Now start fixing the modules for this class
 			$i = 1;
 			$where = ['module_class = \'' . $row['module_class'] .'\''];
-			$changes_made = (($this->fixem($i, 'module_id', MODULES_TABLE, 0, $where)) || $changes_made) ? true : false;
+			$changes_made = (($this->fixem($i, 'module_id', MODULES_TABLE, 0, $where)) || $changes_made);
 		}
 		$db->sql_freeresult($result);
 
@@ -53,7 +53,7 @@ class fix_left_right_ids
 		* Fix the Left/Right ID's for the forums table
 		*/
 		$i = 1;
-		$changes_made = (($this->fixem($i, 'forum_id', FORUMS_TABLE)) || $changes_made) ? true : false;
+		$changes_made = (($this->fixem($i, 'forum_id', FORUMS_TABLE)) || $changes_made);
 
 		// Purge the cache so the next time a page with modules is viewed it is not getting an old version from the cache
 		$cache->purge();
@@ -91,7 +91,7 @@ class fix_left_right_ids
 			$i++;
 
 			// Then we go through any children and update their left/right id's
-			$changes_made = (($this->fixem($i, $pkey, $table, $row[$pkey], $where)) || $changes_made) ? true : false;
+			$changes_made = (($this->fixem($i, $pkey, $table, $row[$pkey], $where)) || $changes_made);
 
 			// Then we come back and update the right_id for this module
 			if ($row['right_id'] != $i)

@@ -72,7 +72,7 @@ class filespec
 		$this->width = $this->height = 0;
 		$this->file_moved = false;
 
-		$this->local = (isset($upload_ary['local_mode'])) ? true : false;
+		$this->local = isset($upload_ary['local_mode']);
 		$this->upload = $upload_namespace;
 	}
 
@@ -146,7 +146,7 @@ class filespec
 	*/
 	function is_image()
 	{
-		return (strpos($this->mimetype, 'image/') !== false) ? true : false;
+		return (strpos($this->mimetype, 'image/') !== false);
 	}
 
 	/**
@@ -982,7 +982,7 @@ class fileupload
 	*/
 	function valid_extension(&$file)
 	{
-		return (in_array($file->get('extension'), $this->allowed_extensions)) ? true : false;
+		return in_array($file->get('extension'), $this->allowed_extensions);
 	}
 
 	/**
@@ -1011,7 +1011,7 @@ class fileupload
 	*/
 	function is_valid($form_name)
 	{
-		return (isset($_FILES[$form_name]) && $_FILES[$form_name]['name'] != 'none') ? true : false;
+		return (isset($_FILES[$form_name]) && $_FILES[$form_name]['name'] != 'none');
 	}
 
 
@@ -1029,22 +1029,10 @@ class fileupload
 	function image_types()
 	{
 		return [
-			1 => ['gif'],
-			2 => ['jpg', 'jpeg'],
-			3 => ['png'],
-			4 => ['swf'],
-			5 => ['psd'],
-			6 => ['bmp'],
-			7 => ['tif', 'tiff'],
-			8 => ['tif', 'tiff'],
-			9 => ['jpg', 'jpeg'],
-			10 => ['jpg', 'jpeg'],
-			11 => ['jpg', 'jpeg'],
-			12 => ['jpg', 'jpeg'],
-			13 => ['swc'],
-			14 => ['iff'],
-			15 => ['wbmp'],
-			16 => ['xbm'],
+			IMAGETYPE_GIF => ['gif'],
+			IMAGETYPE_JPEG => ['jpg', 'jpeg'],
+			IMAGETYPE_PNG => ['png'],
+			IMAGETYPE_BMP => ['bmp'],
 		];
 	}
 }

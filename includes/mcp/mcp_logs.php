@@ -45,8 +45,8 @@ class mcp_logs
 
 		// Set up general vars
 		$start		= request_var('start', 0);
-		$deletemark = ($action == 'del_marked') ? true : false;
-		$deleteall	= ($action == 'del_all') ? true : false;
+		$deletemark = ($action == 'del_marked');
+		$deleteall	= ($action == 'del_all');
 		$marked		= request_var('mark', [0]);
 
 		// Sort keys

@@ -44,7 +44,7 @@ if (!$user->data['is_registered'])
 	login_box('', $user->lang['LOGIN_EXPLAIN_MCP']);
 }
 
-$quickmod = (isset($_REQUEST['quickmod'])) ? true : false;
+$quickmod = isset($_REQUEST['quickmod']);
 $action = request_var('action', '');
 $action_ary = request_var('action', ['' => 0]);
 
@@ -717,7 +717,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 		case 'pm_reports_closed':
 		case 'reports':
 		case 'reports_closed':
-			$pm = (strpos($mode, 'pm_') === 0) ? true : false;
+			$pm = (strpos($mode, 'pm_') === 0);
 
 			$type = ($pm) ? 'pm_reports' : 'reports';
 			$default_key = 't';

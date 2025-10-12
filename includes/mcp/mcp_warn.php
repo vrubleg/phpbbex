@@ -195,7 +195,7 @@ class mcp_warn
 
 		$post_id = request_var('p', 0);
 		$forum_id = request_var('f', 0);
-		$notify = (isset($_REQUEST['notify_user'])) ? true : false;
+		$notify = isset($_REQUEST['notify_user']);
 		$warning = utf8_normalize_nfc(request_var('warning', '', true));
 		$warning_type = request_var('warning_type', 'warning');
 		$warning_days = request_var('warning_days', 0);
@@ -339,7 +339,7 @@ class mcp_warn
 
 		$user_id = request_var('u', 0);
 		$username = request_var('username', '', true);
-		$notify = (isset($_REQUEST['notify_user'])) ? true : false;
+		$notify = isset($_REQUEST['notify_user']);
 		$warning = utf8_normalize_nfc(request_var('warning', '', true));
 		$warning_type = request_var('warning_type', 'warning');
 		$warning_days = request_var('warning_days', 0);

@@ -2266,7 +2266,7 @@ class colour_manager
 					'max_value'			=> 80,		// 0 - 100
 				];
 
-				$alt = ($mode == 'ahsv') ? true : false;
+				$alt = ($mode == 'ahsv');
 				$params = array_merge($default_params, $params);
 
 				$min_hue		= 0;

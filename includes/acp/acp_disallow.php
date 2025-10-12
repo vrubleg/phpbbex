@@ -32,8 +32,8 @@ class acp_disallow
 		$form_key = 'acp_disallow';
 		add_form_key($form_key);
 
-		$disallow = (isset($_POST['disallow'])) ? true : false;
-		$allow = (isset($_POST['allow'])) ? true : false;
+		$disallow = isset($_POST['disallow']);
+		$allow = isset($_POST['allow']);
 
 		if (($allow || $disallow) && !check_form_key($form_key))
 		{

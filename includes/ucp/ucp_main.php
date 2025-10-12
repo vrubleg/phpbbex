@@ -85,7 +85,7 @@ class ucp_main
 					$topic_id = $row['topic_id'];
 
 					$folder_img = $folder_alt = $topic_type = '';
-					$unread_topic = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$topic_id]) ? true : false;
+					$unread_topic = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$topic_id]);
 					topic_status($row, $row['topic_replies'], $unread_topic, $folder_img, $folder_alt, $topic_type);
 
 					$template->assign_block_vars('topicrow', [
@@ -108,7 +108,7 @@ class ucp_main
 						'TOPIC_FOLDER_IMG_SRC'	=> $user->img($folder_img, $folder_alt, false, '', 'src'),
 						'ATTACH_ICON_IMG'		=> ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $user->img('icon_topic_attach', '') : '',
 
-						'S_USER_POSTED'		=> (!empty($row['topic_posted']) && $row['topic_posted']) ? true : false,
+						'S_USER_POSTED'		=> (!empty($row['topic_posted']) && $row['topic_posted']),
 						'S_UNREAD'			=> $unread_topic,
 
 						'U_TOPIC_AUTHOR'		=> get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
@@ -174,7 +174,7 @@ class ucp_main
 
 				add_form_key('ucp_front_subscribed');
 
-				$unwatch = (isset($_POST['unwatch'])) ? true : false;
+				$unwatch = isset($_POST['unwatch']);
 
 				if ($unwatch)
 				{
@@ -277,7 +277,7 @@ class ucp_main
 							$forum_check = (isset($tracking_topics['f'][$forum_id])) ? (int) (base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate']) : $user->data['user_lastmark'];
 						}
 
-						$unread_forum = ($row['forum_last_post_time'] > $forum_check) ? true : false;
+						$unread_forum = ($row['forum_last_post_time'] > $forum_check);
 
 						// Which folder should we display?
 						if ($row['forum_status'] == ITEM_LOCKED)
@@ -398,15 +398,15 @@ class ucp_main
 
 			case 'drafts':
 
-				$pm_drafts = ($this->p_master->p_name == 'pm') ? true : false;
+				$pm_drafts = ($this->p_master->p_name == 'pm');
 				$template->assign_var('S_SHOW_DRAFTS', true);
 
 				$user->add_lang('posting');
 
-				$edit		= (isset($_REQUEST['edit'])) ? true : false;
-				$submit		= (isset($_POST['submit'])) ? true : false;
+				$edit		= isset($_REQUEST['edit']);
+				$submit		= isset($_POST['submit']);
 				$draft_id	= ($edit) ? intval($_REQUEST['edit']) : 0;
-				$delete		= (isset($_POST['delete'])) ? true : false;
+				$delete		= isset($_POST['delete']);
 
 				$s_hidden_fields = ($edit) ? '<input type="hidden" name="edit" value="' . $draft_id . '" />' : '';
 				$draft_subject = $draft_message = '';
@@ -585,7 +585,7 @@ class ucp_main
 		$template->assign_vars([
 			'L_TITLE'			=> $user->lang['UCP_MAIN_' . strtoupper($mode)],
 
-			'S_DISPLAY_MARK_ALL'	=> ($mode == 'watched' || ($mode == 'drafts' && !isset($_GET['edit']))) ? true : false,
+			'S_DISPLAY_MARK_ALL'	=> ($mode == 'watched' || ($mode == 'drafts' && !isset($_GET['edit']))),
 			'S_HIDDEN_FIELDS'		=> (isset($s_hidden_fields)) ? $s_hidden_fields : '',
 			'S_UCP_ACTION'			=> $this->u_action,
 
@@ -735,7 +735,7 @@ class ucp_main
 			$forum_id = $row['forum_id'];
 			$topic_id = (isset($row['b_topic_id'])) ? $row['b_topic_id'] : $row['topic_id'];
 
-			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
+			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 
 			// Replies
 			$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
@@ -771,8 +771,8 @@ class ucp_main
 				'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 				'U_LAST_POST_AUTHOR'		=> get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 
-				'S_DELETED_TOPIC'	=> (!$row['topic_id']) ? true : false,
-				'S_GLOBAL_TOPIC'	=> (!$forum_id) ? true : false,
+				'S_DELETED_TOPIC'	=> !$row['topic_id'],
+				'S_GLOBAL_TOPIC'	=> !$forum_id,
 
 				'PAGINATION'		=> topic_generate_pagination($replies, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id")),
 				'REPLIES'			=> $replies,
@@ -790,7 +790,7 @@ class ucp_main
 				'ATTACH_ICON_IMG'		=> ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
 
 				'S_TOPIC_TYPE'			=> $row['topic_type'],
-				'S_USER_POSTED'			=> (!empty($row['topic_posted'])) ? true : false,
+				'S_USER_POSTED'			=> !empty($row['topic_posted']),
 				'S_UNREAD_TOPIC'		=> $unread_topic,
 
 				'U_NEWEST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;view=unread') . '#unread',

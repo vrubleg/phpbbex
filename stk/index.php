@@ -354,7 +354,7 @@ if ($plugin->get_part('t'))
 					'CONTENT'		=> $content['tpl'],
 
 					// Find user link
-					'S_FIND_USER'	=> (isset($content['find_user'])) ? true : false,
+					'S_FIND_USER'	=> isset($content['find_user']),
 					'U_FIND_USER'	=> (isset($content['find_user'])) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', ['mode' => 'searchuser', 'form' => 'select_user', 'field' => 'username', 'select_single' => 'true', 'form' => 'stk', 'field' => $content['find_user_field']]) : '',
 				]);
 			}

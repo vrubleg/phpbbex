@@ -102,8 +102,8 @@ class mcp_notes
 			$this->u_action .= "&amp;u=$user_id";
 		}
 
-		$deletemark = ($action == 'del_marked') ? true : false;
-		$deleteall	= ($action == 'del_all') ? true : false;
+		$deletemark = ($action == 'del_marked');
+		$deleteall	= ($action == 'del_all');
 		$marked		= request_var('marknote', [0]);
 		$usernote	= utf8_normalize_nfc(request_var('usernote', '', true));
 

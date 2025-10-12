@@ -71,8 +71,8 @@ class custom_profile
 				'LANG_EXPLAIN'	=> $row['lang_explain'],
 				'FIELD'			=> $tpl_snippet,
 				'FIELD_ID'		=> ($type == FIELD_DATE || ($type == FIELD_BOOL && $row['field_length'] == '1')) ? '' : 'pf_' . $row['field_ident'],
-				'S_REQUIRED'	=> ($row['field_required']) ? true : false]
-			);
+				'S_REQUIRED'	=> ($row['field_required']) ? true : false,
+			]);
 		}
 		$db->sql_freeresult($result);
 	}

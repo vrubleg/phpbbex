@@ -568,7 +568,7 @@ inherit_from = {INHERIT_FROM}
 
 		$template->assign_vars([
 			'S_FRONTEND'		=> true,
-			'S_STYLE'			=> ($mode == 'style') ? true : false,
+			'S_STYLE'			=> ($mode == 'style'),
 
 			'L_TITLE'			=> $user->lang[$this->page_title],
 			'L_EXPLAIN'			=> $user->lang[$this->page_title . '_EXPLAIN'],
@@ -579,8 +579,7 @@ inherit_from = {INHERIT_FROM}
 			'L_CREATE'			=> $user->lang['CREATE_' . $l_prefix],
 
 			'U_ACTION'			=> $this->u_action,
-			]
-		);
+		]);
 
 		$sql = "SELECT *
 			FROM $sql_from
@@ -610,7 +609,7 @@ inherit_from = {INHERIT_FROM}
 			}
 
 			$template->assign_block_vars('installed', [
-				'S_DEFAULT_STYLE'		=> ($mode == 'style' && $row['style_id'] == $config['default_style']) ? true : false,
+				'S_DEFAULT_STYLE'		=> ($mode == 'style' && $row['style_id'] == $config['default_style']),
 				'U_EDIT'				=> $this->u_action . '&amp;action=' . (($mode == 'style') ? 'details' : 'edit') . '&amp;id=' . $row[$mode . '_id'],
 				'U_STYLE_ACT_DEACT'		=> $this->u_action . '&amp;action=' . $stylevis . '&amp;id=' . $row[$mode . '_id'],
 				'L_STYLE_ACT_DEACT'		=> $user->lang['STYLE_' . strtoupper($stylevis)],
@@ -621,9 +620,8 @@ inherit_from = {INHERIT_FROM}
 				'NAME'					=> $row[$mode . '_name'],
 				'STYLE_COUNT'			=> ($mode == 'style' && isset($style_count[$row['style_id']])) ? $style_count[$row['style_id']] : 0,
 
-				'S_INACTIVE'			=> ($mode == 'style' && !$row['style_active']) ? true : false,
-				]
-			);
+				'S_INACTIVE'			=> ($mode == 'style' && !$row['style_active']),
+			]);
 		}
 		$db->sql_freeresult($result);
 
@@ -710,7 +708,7 @@ inherit_from = {INHERIT_FROM}
 		$template_data	= htmlspecialchars_decode($template_data);
 		$template_file	= utf8_normalize_nfc(request_var('template_file', '', true));
 		$text_rows		= max(5, min(999, request_var('text_rows', 20)));
-		$save_changes	= (isset($_POST['save'])) ? true : false;
+		$save_changes	= isset($_POST['save']);
 
 		// make sure template_file path doesn't go upwards
 		$template_file = preg_replace('#\.{2,}#', '.', $template_file);
@@ -941,7 +939,7 @@ inherit_from = {INHERIT_FROM}
 
 		$source		= str_replace('/', '.', request_var('source', ''));
 		$file_ary	= array_diff(request_var('delete', ['']), ['']);
-		$submit		= isset($_POST['submit']) ? true : false;
+		$submit		= isset($_POST['submit']);
 
 		$sql = 'SELECT *
 			FROM ' . STYLES_TEMPLATE_TABLE . "
@@ -1126,7 +1124,7 @@ inherit_from = {INHERIT_FROM}
 		$theme_data		= htmlspecialchars_decode($theme_data);
 		$theme_file		= utf8_normalize_nfc(request_var('template_file', '', true));
 		$text_rows		= max(5, min(999, request_var('text_rows', 20)));
-		$save_changes	= (isset($_POST['save'])) ? true : false;
+		$save_changes	= isset($_POST['save']);
 
 		// make sure theme_file path doesn't go upwards
 		$theme_file = str_replace('..', '.', $theme_file);
@@ -1308,7 +1306,7 @@ inherit_from = {INHERIT_FROM}
 			trigger_error($user->lang['NO_IMAGESET'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
 
-		$update		= (isset($_POST['update'])) ? true : false;
+		$update		= isset($_POST['update']);
 
 		$imgname	= request_var('imgname', 'site_logo');
 		$imgname	= preg_replace('#[^a-z0-9\-+_]#i', '', $imgname);
@@ -1546,7 +1544,7 @@ inherit_from = {INHERIT_FROM}
 			}
 		}
 
-		$imgsize_bool = (!empty($imgname) && $image_width && $image_height) ? true : false;
+		$imgsize_bool = (!empty($imgname) && $image_width && $image_height);
 		$image_request = '../styles/' . $imageset_path . '/imageset/' . ($image_lang ? $imgnamelang . '/' : '') . $image_filename;
 
 		$template->assign_vars([
@@ -1577,7 +1575,7 @@ inherit_from = {INHERIT_FROM}
 		global $db, $template, $user, $cache, $config;
 
 		$new_id = request_var('new_id', 0);
-		$update = (isset($_POST['update'])) ? true : false;
+		$update = isset($_POST['update']);
 		$sql_where = '';
 
 		switch ($mode)
@@ -1907,7 +1905,7 @@ inherit_from = {INHERIT_FROM}
 	{
 		global $db, $template, $user, $cache, $config;
 
-		$update = (isset($_POST['update'])) ? true : false;
+		$update = isset($_POST['update']);
 
 		$inc_template = request_var('inc_template', 0);
 		$inc_theme = request_var('inc_theme', 0);
@@ -2312,8 +2310,8 @@ inherit_from = {INHERIT_FROM}
 
 		$template->assign_vars([
 			'S_EXPORT'		=> true,
-			'S_ERROR_MSG'	=> (sizeof($error)) ? true : false,
-			'S_STYLE'		=> ($mode == 'style') ? true : false,
+			'S_ERROR_MSG'	=> (sizeof($error) > 0),
+			'S_STYLE'		=> ($mode == 'style'),
 
 			'L_TITLE'		=> $user->lang[$this->page_title],
 			'L_EXPLAIN'		=> $user->lang[$this->page_title . '_EXPLAIN'],
@@ -2335,7 +2333,7 @@ inherit_from = {INHERIT_FROM}
 	{
 		global $template, $db, $config, $user, $cache;
 
-		$update = (isset($_POST['update'])) ? true : false;
+		$update = isset($_POST['update']);
 		$l_type = strtoupper($mode);
 
 		$error = [];
@@ -2619,11 +2617,11 @@ inherit_from = {INHERIT_FROM}
 
 		$template->assign_vars([
 			'S_DETAILS'				=> true,
-			'S_ERROR_MSG'			=> (sizeof($error)) ? true : false,
-			'S_STYLE'				=> ($mode == 'style') ? true : false,
-			'S_TEMPLATE'			=> ($mode == 'template') ? true : false,
-			'S_THEME'				=> ($mode == 'theme') ? true : false,
-			'S_IMAGESET'			=> ($mode == 'imageset') ? true : false,
+			'S_ERROR_MSG'			=> (sizeof($error) > 0),
+			'S_STYLE'				=> ($mode == 'style'),
+			'S_TEMPLATE'			=> ($mode == 'template'),
+			'S_THEME'				=> ($mode == 'theme'),
+			'S_IMAGESET'			=> ($mode == 'imageset'),
 			'S_STORE_DB'			=> (isset($style_row[$mode . '_storedb'])) ? $style_row[$mode . '_storedb'] : 0,
 			'S_STORE_DB_DISABLED'	=> (isset($style_row[$mode . '_inherits_id'])) ? $style_row[$mode . '_inherits_id'] : 0,
 			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,
@@ -2889,7 +2887,7 @@ inherit_from = {INHERIT_FROM}
 		$element_ary = ['template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE];
 
 		$install_path = request_var('path', '');
-		$update = (isset($_POST['update'])) ? true : false;
+		$update = isset($_POST['update']);
 
 		// Installing, obtain cfg file contents
 		if ($install_path)
@@ -3023,12 +3021,12 @@ inherit_from = {INHERIT_FROM}
 		$template->assign_vars([
 			'S_DETAILS'			=> true,
 			'S_INSTALL'			=> true,
-			'S_ERROR_MSG'		=> (sizeof($error)) ? true : false,
+			'S_ERROR_MSG'		=> (sizeof($error) > 0),
 			'S_LOCATION'		=> (isset($installcfg['inherit_from']) && $installcfg['inherit_from']) ? false : true,
-			'S_STYLE'			=> ($mode == 'style') ? true : false,
-			'S_TEMPLATE'		=> ($mode == 'template') ? true : false,
+			'S_STYLE'			=> ($mode == 'style'),
+			'S_TEMPLATE'		=> ($mode == 'template'),
 			'S_SUPERTEMPLATE'	=> (isset($installcfg['inherit_from'])) ? $installcfg['inherit_from'] : '',
-			'S_THEME'			=> ($mode == 'theme') ? true : false,
+			'S_THEME'			=> ($mode == 'theme'),
 
 			'S_STORE_DB'			=> (isset($style_row[$mode . '_storedb'])) ? $style_row[$mode . '_storedb'] : 0,
 			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,
@@ -3075,7 +3073,7 @@ inherit_from = {INHERIT_FROM}
 		];
 
 		$basis = request_var('basis', 0);
-		$update = (isset($_POST['update'])) ? true : false;
+		$update = isset($_POST['update']);
 
 		if ($basis)
 		{
@@ -3177,10 +3175,10 @@ inherit_from = {INHERIT_FROM}
 		$template->assign_vars([
 			'S_DETAILS'			=> true,
 			'S_ADD'				=> true,
-			'S_ERROR_MSG'		=> (sizeof($error)) ? true : false,
-			'S_STYLE'			=> ($mode == 'style') ? true : false,
-			'S_TEMPLATE'		=> ($mode == 'template') ? true : false,
-			'S_THEME'			=> ($mode == 'theme') ? true : false,
+			'S_ERROR_MSG'		=> (sizeof($error) > 0),
+			'S_STYLE'			=> ($mode == 'style'),
+			'S_TEMPLATE'		=> ($mode == 'template'),
+			'S_THEME'			=> ($mode == 'theme'),
 			'S_BASIS'			=> ($basis) ? true : false,
 
 			'S_STORE_DB'			=> (isset($style_row['storedb'])) ? $style_row['storedb'] : 0,

@@ -367,8 +367,8 @@ class phpbb_session
 							}
 						}
 
-						$this->data['is_registered'] = ($this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER)) ? true : false;
-						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS) ? true : false;
+						$this->data['is_registered'] = ($this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER));
+						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS);
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
 						$this->update_browser_id();
@@ -632,7 +632,7 @@ class phpbb_session
 			}
 		}
 
-		$this->data['is_registered'] = (!$bot && $this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER)) ? true : false;
+		$this->data['is_registered'] = (!$bot && $this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER));
 		$this->data['is_bot'] = ($bot) ? true : false;
 
 		// If our friend is a bot, we re-assign a previously assigned session
@@ -693,8 +693,8 @@ class phpbb_session
 			}
 		}
 
-		$session_autologin = (($this->cookie_data['k'] || $persist_login) && $this->data['is_registered']) ? true : false;
-		$set_admin = ($set_admin && $this->data['is_registered']) ? true : false;
+		$session_autologin = (($this->cookie_data['k'] || $persist_login) && $this->data['is_registered']);
+		$set_admin = ($set_admin && $this->data['is_registered']);
 
 		// Create or update the session
 		$sql_ary = [

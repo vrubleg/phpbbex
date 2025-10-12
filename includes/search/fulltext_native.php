@@ -1298,7 +1298,7 @@ class fulltext_native extends search_backend
 			$this->get_stats();
 		}
 
-		return ($this->stats['total_words'] && $this->stats['total_matches']) ? true : false;
+		return ($this->stats['total_words'] && $this->stats['total_matches']);
 	}
 
 	/**

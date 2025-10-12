@@ -63,7 +63,7 @@ class jabber
 		}
 
 		$this->password				= $password;
-		$this->use_ssl				= ($use_ssl && self::can_use_ssl()) ? true : false;
+		$this->use_ssl				= ($use_ssl && self::can_use_ssl());
 
 		// Change port if we use SSL
 		if ($this->port == 5222 && $this->use_ssl)
@@ -80,7 +80,7 @@ class jabber
 	*/
 	static function can_use_ssl()
 	{
-		return (@extension_loaded('openssl')) ? true : false;
+		return @extension_loaded('openssl');
 	}
 
 	/**
@@ -173,7 +173,7 @@ class jabber
 	*/
 	function connected()
 	{
-		return (is_resource($this->connection) && !feof($this->connection)) ? true : false;
+		return (is_resource($this->connection) && !feof($this->connection));
 	}
 
 
