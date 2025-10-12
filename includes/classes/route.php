@@ -147,7 +147,7 @@ class route
 		foreach ($matches as $name => $value)
 		{
 			if (is_numeric($name) || $value === '') continue;
-			list($key, $name) = explode('___', $name);
+			[$key, $name] = explode('___', $name);
 			if ($key === '')
 			{
 				// Regular placeholder

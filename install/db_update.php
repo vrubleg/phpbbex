@@ -1636,7 +1636,7 @@ function change_database_data(&$no_updates, $version)
 			{
 				if (file_exists(PHPBB_ROOT_PATH . 'images/smilies/' . $smiley))
 				{
-					list($width, $height) = getimagesize(PHPBB_ROOT_PATH . 'images/smilies/' . $smiley);
+					[$width, $height] = getimagesize(PHPBB_ROOT_PATH . 'images/smilies/' . $smiley);
 
 					$sql = 'UPDATE ' . SMILIES_TABLE . '
 						SET smiley_width = ' . $width . ', smiley_height = ' . $height . "

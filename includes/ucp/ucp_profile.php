@@ -287,7 +287,7 @@ class ucp_profile
 
 					if ($user->data['user_birthday'])
 					{
-						list($data['bday_day'], $data['bday_month'], $data['bday_year']) = explode('-', $user->data['user_birthday']);
+						[$data['bday_day'], $data['bday_month'], $data['bday_year']] = explode('-', $user->data['user_birthday']);
 					}
 
 					$data['bday_day'] = request_var('bday_day', $data['bday_day']);

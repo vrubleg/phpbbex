@@ -54,7 +54,7 @@ class captcha
 		{
 			$characters[$i] = new char_cube3d($captcha_bitmaps, $code[$i]);
 
-			list($min, $max) = $characters[$i]->range();
+			[$min, $max] = $characters[$i]->range();
 			$sizes[$i] = mt_rand($min, $max);
 
 			$box = $characters[$i]->dimensions($sizes[$i]);
@@ -106,7 +106,7 @@ class captcha
 			{
 				$noise[$i] = new char_cube3d($noise_bitmaps, mt_rand(1, sizeof($noise_bitmaps['data'])));
 
-				list($min, $max) = $noise[$i]->range();
+				[$min, $max] = $noise[$i]->range();
 				//$box = $noise[$i]->dimensions($sizes[$i]);
 			}
 			$xoffset = 0;
@@ -1927,7 +1927,7 @@ class char_cube3d
 		// Swap "x" with "y"
 		if ($weight > 0)
 		{
-			list($this->x, $this->y) = [$this->y, $this->x];
+			[$this->x, $this->y] = [$this->y, $this->x];
 		}
 
 		$this->abs_x = [$this->basis_matrix[$this->x][0], $this->basis_matrix[$this->x][1]];

@@ -535,12 +535,12 @@ class phpbb_umil
 						{
 							if (substr($value, -1, 1) === '*')
 							{
-								list($image_filename, $image_height) = explode('*', $value);
+								[$image_filename, $image_height] = explode('*', $value);
 								$image_width = 0;
 							}
 							else
 							{
-								list($image_filename, $image_height, $image_width) = explode('*', $value);
+								[$image_filename, $image_height, $image_width] = explode('*', $value);
 							}
 						}
 						else
@@ -579,12 +579,12 @@ class phpbb_umil
 								{
 									if (substr($value, -1, 1) === '*')
 									{
-										list($image_filename, $image_height) = explode('*', $value);
+										[$image_filename, $image_height] = explode('*', $value);
 										$image_width = 0;
 									}
 									else
 									{
-										list($image_filename, $image_height, $image_width) = explode('*', $value);
+										[$image_filename, $image_height, $image_width] = explode('*', $value);
 									}
 								}
 								else
@@ -2435,7 +2435,7 @@ class phpbb_umil
 			// Get type
 			if (strpos($column_data[0], ':') !== false)
 			{
-				list($orig_column_type, $column_length) = explode(':', $column_data[0]);
+				[$orig_column_type, $column_length] = explode(':', $column_data[0]);
 				if (!is_array($this->db_tools->dbms_type_map[$orig_column_type . ':']))
 				{
 					$column_type = sprintf($this->db_tools->dbms_type_map[$orig_column_type . ':'], $column_length);

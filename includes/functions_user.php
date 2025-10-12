@@ -1583,7 +1583,7 @@ function validate_email($email, $allowed_email = false)
 	// The idea for this is from reading the UseBB blog/announcement. :)
 	if ($config['email_check_mx'])
 	{
-		list(, $domain) = explode('@', $email);
+		[, $domain] = explode('@', $email);
 
 		if (phpbb_checkdnsrr($domain, 'A') === false && phpbb_checkdnsrr($domain, 'MX') === false)
 		{
@@ -2196,11 +2196,11 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 
 	if ((!empty($_FILES['uploadfile']['name']) || $data['uploadurl']) && $can_upload)
 	{
-		list($sql_ary['user_avatar_type'], $sql_ary['user_avatar'], $sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']) = avatar_upload($data, $error);
+		[$sql_ary['user_avatar_type'], $sql_ary['user_avatar'], $sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']] = avatar_upload($data, $error);
 	}
 	else if ($data['remotelink'] && $change_avatar && $config['allow_avatar_remote'])
 	{
-		list($sql_ary['user_avatar_type'], $sql_ary['user_avatar'], $sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']) = avatar_remote($data, $error);
+		[$sql_ary['user_avatar_type'], $sql_ary['user_avatar'], $sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']] = avatar_remote($data, $error);
 	}
 	else if ($avatar_select && $change_avatar && $config['allow_avatar_local'])
 	{
@@ -2217,7 +2217,7 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 		}
 		else
 		{
-			list($sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']) = getimagesize(PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $category . '/' . urldecode($sql_ary['user_avatar']));
+			[$sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']] = getimagesize(PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $category . '/' . urldecode($sql_ary['user_avatar']));
 			$sql_ary['user_avatar'] = $category . '/' . $sql_ary['user_avatar'];
 		}
 	}
@@ -2234,7 +2234,7 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 		{
 			if ($dims = avatar_get_dimensions($userdata['user_avatar'], $userdata['user_avatar_type'], $error, $data['width'], $data['height']))
 			{
-				list($guessed_x, $guessed_y) = $dims;
+				[$guessed_x, $guessed_y] = $dims;
 				if (empty($data['width']))
 				{
 					$data['width'] = $guessed_x;

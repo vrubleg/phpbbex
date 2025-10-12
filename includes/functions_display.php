@@ -609,7 +609,7 @@ function generate_forum_nav(&$forum_data)
 	{
 		foreach ($forum_parents as $parent_forum_id => $parent_data)
 		{
-			list($parent_name, $parent_type) = array_values($parent_data);
+			[$parent_name, $parent_type] = array_values($parent_data);
 
 			// Skip this parent if the user does not have the permission to view it
 			if (!$auth->acl_get('f_list', $parent_forum_id))

@@ -410,12 +410,12 @@ inherit_from = {INHERIT_FROM}
 								{
 									if (substr($value, -1, 1) === '*')
 									{
-										list($image_filename, $image_height) = explode('*', $value);
+										[$image_filename, $image_height] = explode('*', $value);
 										$image_width = 0;
 									}
 									else
 									{
-										list($image_filename, $image_height, $image_width) = explode('*', $value);
+										[$image_filename, $image_height, $image_width] = explode('*', $value);
 									}
 								}
 								else
@@ -456,12 +456,12 @@ inherit_from = {INHERIT_FROM}
 										{
 											if (substr($value, -1, 1) === '*')
 											{
-												list($image_filename, $image_height) = explode('*', $value);
+												[$image_filename, $image_height] = explode('*', $value);
 												$image_width = 0;
 											}
 											else
 											{
-												list($image_filename, $image_height, $image_width) = explode('*', $value);
+												[$image_filename, $image_height, $image_width] = explode('*', $value);
 											}
 										}
 										else
@@ -1331,7 +1331,7 @@ inherit_from = {INHERIT_FROM}
 
 		if (strpos($imgname, '-') !== false)
 		{
-			list($imgname, $imgnamelang) = explode('-', $imgname);
+			[$imgname, $imgnamelang] = explode('-', $imgname);
 			$sql_extra = " AND image_lang IN ('" . $db->sql_escape($imgnamelang) . "', '')";
 		}
 
@@ -1390,7 +1390,7 @@ inherit_from = {INHERIT_FROM}
 			{
 				if (!$imgwidth || !$imgheight)
 				{
-					list($imgwidth_file, $imgheight_file) = getimagesize(PHPBB_ROOT_PATH . "styles/$imageset_path/imageset/$imgpath");
+					[$imgwidth_file, $imgheight_file] = getimagesize(PHPBB_ROOT_PATH . "styles/$imageset_path/imageset/$imgpath");
 					$imgwidth = ($imgwidth) ? $imgwidth : $imgwidth_file;
 					$imgheight = ($imgheight) ? $imgheight : $imgheight_file;
 				}
@@ -1400,7 +1400,7 @@ inherit_from = {INHERIT_FROM}
 
 			if (strpos($imgpath, '/') !== false)
 			{
-				list($imglang, $imgfilename) = explode('/', $imgpath);
+				[$imglang, $imgfilename] = explode('/', $imgpath);
 			}
 			else
 			{
@@ -3562,12 +3562,12 @@ inherit_from = {INHERIT_FROM}
 				{
 					if (substr($value, -1, 1) === '*')
 					{
-						list($image_filename, $image_height) = explode('*', $value);
+						[$image_filename, $image_height] = explode('*', $value);
 						$image_width = 0;
 					}
 					else
 					{
-						list($image_filename, $image_height, $image_width) = explode('*', $value);
+						[$image_filename, $image_height, $image_width] = explode('*', $value);
 					}
 				}
 				else
@@ -3610,12 +3610,12 @@ inherit_from = {INHERIT_FROM}
 						{
 							if (substr($value, -1, 1) === '*')
 							{
-								list($image_filename, $image_height) = explode('*', $value);
+								[$image_filename, $image_height] = explode('*', $value);
 								$image_width = 0;
 							}
 							else
 							{
-								list($image_filename, $image_height, $image_width) = explode('*', $value);
+								[$image_filename, $image_height, $image_width] = explode('*', $value);
 							}
 						}
 						else

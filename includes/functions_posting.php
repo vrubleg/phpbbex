@@ -625,14 +625,14 @@ function create_thumbnail($source, $destination, $mimetype)
 		return false;
 	}
 
-	list($width, $height, $type, ) = $dimension;
+	[$width, $height, $type, ] = $dimension;
 
 	if (empty($width) || empty($height))
 	{
 		return false;
 	}
 
-	list($new_width, $new_height) = get_img_size_format($width, $height);
+	[$new_width, $new_height] = get_img_size_format($width, $height);
 
 	// Do not create a thumbnail if the resulting width/height is bigger than the original one
 	if ($new_width >= $width && $new_height >= $height)

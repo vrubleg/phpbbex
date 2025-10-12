@@ -2119,12 +2119,12 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SI
 	$anchor = '';
 	if (strpos($url, '#') !== false)
 	{
-		list($url, $anchor) = explode('#', $url, 2);
+		[$url, $anchor] = explode('#', $url, 2);
 		$anchor = '#' . $anchor;
 	}
 	else if (!$params_is_array && strpos($params, '#') !== false)
 	{
-		list($params, $anchor) = explode('#', $params, 2);
+		[$params, $anchor] = explode('#', $params, 2);
 		$anchor = '#' . $anchor;
 	}
 
@@ -3989,7 +3989,7 @@ function phpbb_http_login($param)
 	// Decode encoded information (IIS, CGI, FastCGI etc.)
 	if (!is_null($username) && is_null($password) && strpos($username, 'Basic ') === 0)
 	{
-		list($username, $password) = explode(':', base64_decode(substr($username, 6)), 2);
+		[$username, $password] = explode(':', base64_decode(substr($username, 6)), 2);
 	}
 
 	if (!is_null($username) && !is_null($password))

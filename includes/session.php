@@ -1738,12 +1738,12 @@ class phpbb_user extends phpbb_session
 					{
 						if (substr($value, -1, 1) === '*')
 						{
-							list($image_filename, $image_height) = explode('*', $value);
+							[$image_filename, $image_height] = explode('*', $value);
 							$image_width = 0;
 						}
 						else
 						{
-							list($image_filename, $image_height, $image_width) = explode('*', $value);
+							[$image_filename, $image_height, $image_width] = explode('*', $value);
 						}
 					}
 					else
@@ -2131,7 +2131,7 @@ class phpbb_user extends phpbb_session
 
 		if (!$midnight)
 		{
-			list($d, $m, $y) = explode(' ', gmdate('j n Y', time() + $zone_offset));
+			[$d, $m, $y] = explode(' ', gmdate('j n Y', time() + $zone_offset));
 			$midnight = gmmktime(0, 0, 0, $m, $d, $y) - $zone_offset;
 		}
 

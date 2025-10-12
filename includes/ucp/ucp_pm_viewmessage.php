@@ -165,7 +165,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	$now = getdate(time() + $user->timezone + $user->dst - date('Z'));
 	if ($config['allow_birthdays'] && !empty($user_info['user_birthday']))
 	{
-		list($bday_day, $bday_month, $bday_year) = array_map('intval', explode('-', $user_info['user_birthday']));
+		[$bday_day, $bday_month, $bday_year] = array_map('intval', explode('-', $user_info['user_birthday']));
 		if ($bday_year)
 		{
 			$diff = $now['mon'] - $bday_month;

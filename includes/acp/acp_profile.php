@@ -444,7 +444,7 @@ class acp_profile
 							}
 							else
 							{
-								list($cp->vars['field_default_value_day'], $cp->vars['field_default_value_month'], $cp->vars['field_default_value_year']) = explode('-', $var);
+								[$cp->vars['field_default_value_day'], $cp->vars['field_default_value_month'], $cp->vars['field_default_value_year']] = explode('-', $var);
 							}
 						}
 					}

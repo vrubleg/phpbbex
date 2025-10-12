@@ -44,7 +44,7 @@ class phpbb_error_collector
 				$text .= "<br />\n";
 			}
 
-			list($errno, $msg_text, $errfile, $errline) = $error;
+			[$errno, $msg_text, $errfile, $errline] = $error;
 
 			// Prevent leakage of local path to phpBB install
 			$errfile = phpbb_filter_root_path($errfile);

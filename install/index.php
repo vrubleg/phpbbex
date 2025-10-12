@@ -632,7 +632,7 @@ class module
 
 			if (file_exists($path . '/iso.txt'))
 			{
-				list($displayname, $localname) = @file($path . '/iso.txt');
+				[$displayname, $localname] = @file($path . '/iso.txt');
 				$lang[$localname] = $file;
 			}
 		}

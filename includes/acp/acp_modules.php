@@ -176,7 +176,7 @@ class acp_modules
 						break;
 					}
 
-					list($module_basename, $module_mode) = explode('::', $quick_install);
+					[$module_basename, $module_mode] = explode('::', $quick_install);
 
 					// Check if module name and mode exist...
 					$fileinfo = $this->get_module_infos($module_basename);

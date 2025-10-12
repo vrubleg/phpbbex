@@ -1311,12 +1311,12 @@ class install_install extends module
 							{
 								if (substr($value, -1, 1) === '*')
 								{
-									list($image_filename, $image_height) = explode('*', $value);
+									[$image_filename, $image_height] = explode('*', $value);
 									$image_width = 0;
 								}
 								else
 								{
-									list($image_filename, $image_height, $image_width) = explode('*', $value);
+									[$image_filename, $image_height, $image_width] = explode('*', $value);
 								}
 							}
 							else

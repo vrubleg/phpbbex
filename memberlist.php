@@ -1601,7 +1601,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 	if ($config['allow_birthdays'] && $data['user_birthday'])
 	{
-		list($bday_day, $bday_month, $bday_year) = array_map('intval', explode('-', $data['user_birthday']));
+		[$bday_day, $bday_month, $bday_year] = array_map('intval', explode('-', $data['user_birthday']));
 
 		if ($bday_year)
 		{

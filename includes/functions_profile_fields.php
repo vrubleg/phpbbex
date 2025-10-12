@@ -698,14 +698,14 @@ class custom_profile
 			{
 				$profile_row['field_default_value'] = sprintf('%2d-%2d-%4d', $now['mday'], $now['mon'], $now['year']);
 			}
-			list($day, $month, $year) = explode('-', ((!isset($user->profile_fields[$user_ident]) || $preview) ? $profile_row['field_default_value'] : $user->profile_fields[$user_ident]));
+			[$day, $month, $year] = explode('-', ((!isset($user->profile_fields[$user_ident]) || $preview) ? $profile_row['field_default_value'] : $user->profile_fields[$user_ident]));
 		}
 		else
 		{
 			if ($preview && $profile_row['field_default_value'] == 'now')
 			{
 				$profile_row['field_default_value'] = sprintf('%2d-%2d-%4d', $now['mday'], $now['mon'], $now['year']);
-				list($day, $month, $year) = explode('-', ((!isset($user->profile_fields[$user_ident]) || $preview) ? $profile_row['field_default_value'] : $user->profile_fields[$user_ident]));
+				[$day, $month, $year] = explode('-', ((!isset($user->profile_fields[$user_ident]) || $preview) ? $profile_row['field_default_value'] : $user->profile_fields[$user_ident]));
 			}
 			else
 			{
@@ -916,7 +916,7 @@ class custom_profile
 						$now = getdate();
 						$profile_row['field_default_value'] = sprintf('%2d-%2d-%4d', $now['mday'], $now['mon'], $now['year']);
 					}
-					list($day, $month, $year) = explode('-', $profile_row['field_default_value']);
+					[$day, $month, $year] = explode('-', $profile_row['field_default_value']);
 				}
 				else
 				{

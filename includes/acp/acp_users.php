@@ -1393,7 +1393,7 @@ class acp_users
 
 				if ($user_row['user_birthday'])
 				{
-					list($data['bday_day'], $data['bday_month'], $data['bday_year']) = explode('-', $user_row['user_birthday']);
+					[$data['bday_day'], $data['bday_month'], $data['bday_year']] = explode('-', $user_row['user_birthday']);
 				}
 
 				$data['bday_day']		= request_var('bday_day', $data['bday_day']);

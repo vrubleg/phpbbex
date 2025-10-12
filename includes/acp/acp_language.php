@@ -49,12 +49,12 @@ class acp_language
 		if (isset($_POST['missing_file']))
 		{
 			$missing_file = request_var('missing_file', ['' => 0]);
-			list($_REQUEST['language_file'], ) = array_keys($missing_file);
+			[$_REQUEST['language_file'], ] = array_keys($missing_file);
 		}
 
 		$selected_lang_file = request_var('language_file', '|common.php');
 
-		list($this->language_directory, $this->language_file) = explode('|', $selected_lang_file);
+		[$this->language_directory, $this->language_file] = explode('|', $selected_lang_file);
 
 		$this->language_directory = basename($this->language_directory);
 		$this->language_file = basename($this->language_file);
@@ -725,12 +725,12 @@ class acp_language
 							{
 								if (substr($value, -1, 1) === '*')
 								{
-									list($image_filename, $image_height) = explode('*', $value);
+									[$image_filename, $image_height] = explode('*', $value);
 									$image_width = 0;
 								}
 								else
 								{
-									list($image_filename, $image_height, $image_width) = explode('*', $value);
+									[$image_filename, $image_height, $image_width] = explode('*', $value);
 								}
 							}
 							else

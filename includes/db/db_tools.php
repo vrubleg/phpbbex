@@ -607,7 +607,7 @@ class phpbb_db_tools
 		// Get type
 		if (strpos($column_data[0], ':') !== false)
 		{
-			list($orig_column_type, $column_length) = explode(':', $column_data[0]);
+			[$orig_column_type, $column_length] = explode(':', $column_data[0]);
 			if (!is_array($this->dbms_type_map[$orig_column_type . ':']))
 			{
 				$column_type = sprintf($this->dbms_type_map[$orig_column_type . ':'], $column_length);

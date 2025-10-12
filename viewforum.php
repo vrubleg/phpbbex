@@ -128,7 +128,7 @@ $active_forum_ary = $moderators = [];
 
 if ($forum_data['left_id'] != $forum_data['right_id'] - 1)
 {
-	list($active_forum_ary, $moderators) = display_forums($forum_data, $config['load_moderators'], $config['load_moderators']);
+	[$active_forum_ary, $moderators] = display_forums($forum_data, $config['load_moderators'], $config['load_moderators']);
 	if(!isset($moderators[$forum_id])) get_moderators($moderators, $forum_id);
 }
 else
