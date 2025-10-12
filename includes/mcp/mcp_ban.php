@@ -154,7 +154,7 @@ class mcp_ban
 		$user_id = request_var('u', 0);
 		$username = $pre_fill = false;
 
-		if ($user_id && $user_id <> ANONYMOUS)
+		if ($user_id && $user_id != ANONYMOUS)
 		{
 			$sql = 'SELECT username, user_email, user_ip
 				FROM ' . USERS_TABLE . '

@@ -39,7 +39,7 @@ class ucp_activate
 			trigger_error('NO_USER');
 		}
 
-		if ($user_row['user_type'] <> USER_INACTIVE && !$user_row['user_newpasswd'])
+		if ($user_row['user_type'] != USER_INACTIVE && !$user_row['user_newpasswd'])
 		{
 			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 			trigger_error('ALREADY_ACTIVATED');
