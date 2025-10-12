@@ -28,7 +28,7 @@ require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
 // Start session management
 $user->session_begin();
 $auth->acl($user->data);
-$user->setup(array('install', 'mods/install_gallery'));
+$user->setup(['install', 'mods/install_gallery']);
 
 if (!defined('GALLERY_FAVORITES_TABLE'))
 {
@@ -36,7 +36,7 @@ if (!defined('GALLERY_FAVORITES_TABLE'))
 }
 
 //need some module-names
-$user->add_lang(array('acp/common', 'ucp', 'mods/info_acp_gallery', 'mods/info_ucp_gallery'));
+$user->add_lang(['acp/common', 'ucp', 'mods/info_acp_gallery', 'mods/info_ucp_gallery']);
 
 $template->set_custom_template('../adm/style', 'admin');
 $template->assign_var('T_TEMPLATE_PATH', '../adm/style');
@@ -56,8 +56,8 @@ $install->load();
 $install->page_header();
 $install->generate_navigation();
 
-$template->set_filenames(array(
-	'body' => $install->get_tpl_name())
+$template->set_filenames([
+	'body' => $install->get_tpl_name()]
 );
 
 $install->page_footer();
@@ -69,7 +69,7 @@ class module
 {
 	var $id = 0;
 	var $type = 'install';
-	var $module_ary = array();
+	var $module_ary = [];
 	var $filename;
 	var $module_url = '';
 	var $tpl_name = '';
@@ -84,7 +84,7 @@ class module
 	{
 		global $db, $config;
 
-		$module = array();
+		$module = [];
 
 		// Grab module information using Bart's "neat-o-module" system (tm)
 		$dir = @opendir('.');
@@ -195,7 +195,7 @@ class module
 		define('HEADER_INC', true);
 		global $template, $user, $stage;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_CHANGE'				=> $user->lang['CHANGE'],
 			'L_INSTALL_PANEL'		=> $user->lang['INSTALL_PANEL'],
 			'L_SELECT_LANG'			=> $user->lang['SELECT_LANG'],
@@ -204,7 +204,7 @@ class module
 			'T_IMAGE_PATH'			=> PHPBB_ROOT_PATH . 'adm/images/',
 
 			'S_USER_LANG'			=> $user->lang['USER_LANG'],
-			)
+			]
 		);
 
 		header('Content-type: text/html; charset=UTF-8');
@@ -278,11 +278,11 @@ class module
 
 				if ($this->mode == $cat)
 				{
-					$template->assign_block_vars('t_block1', array(
+					$template->assign_block_vars('t_block1', [
 						'L_TITLE'		=> $l_cat,
 						'S_SELECTED'	=> true,
 						'U_TITLE'		=> $url,
-					));
+					]);
 
 					if (is_array($this->module_ary[$this->id]['subs']))
 					{
@@ -293,11 +293,11 @@ class module
 							$option = strtolower($option);
 							$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', 'mode=' . $this->mode . "&amp;sub=$option");
 
-							$template->assign_block_vars('l_block1', array(
+							$template->assign_block_vars('l_block1', [
 								'L_TITLE'		=> $l_option,
 								'S_SELECTED'	=> ($this->sub == $option),
 								'U_TITLE'		=> $url,
-							));
+							]);
 						}
 					}
 
@@ -311,21 +311,21 @@ class module
 							$option = strtolower($option);
 							$matched = ($this->sub == $option) ? true : $matched;
 
-							$template->assign_block_vars('l_block2', array(
+							$template->assign_block_vars('l_block2', [
 								'L_TITLE'		=> $l_option,
 								'S_SELECTED'	=> ($this->sub == $option),
 								'S_COMPLETE'	=> !$matched,
-							));
+							]);
 						}
 					}
 				}
 				else
 				{
-					$template->assign_block_vars('t_block1', array(
+					$template->assign_block_vars('t_block1', [
 						'L_TITLE'		=> $l_cat,
 						'S_SELECTED'	=> false,
 						'U_TITLE'		=> $url,
-					));
+					]);
 				}
 			}
 		}
@@ -341,15 +341,15 @@ class module
 
 		if ($skip)
 		{
-			$template->assign_block_vars('checks', array(
+			$template->assign_block_vars('checks', [
 				'S_LEGEND'	=> true,
 				'LEGEND'	=> $lang['INST_ERR'],
-			));
+			]);
 
-			$template->assign_block_vars('checks', array(
+			$template->assign_block_vars('checks', [
 				'TITLE'		=> basename($file) . ' [ ' . $line . ' ]',
 				'RESULT'	=> '<b style="color:red">' . $error . '</b>',
-			));
+			]);
 
 			return;
 		}

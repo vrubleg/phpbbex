@@ -114,7 +114,7 @@ class phpbb_gallery_url
 			$args = $args[0];
 		}
 
-		if (in_array($args[0], array('phpbb', 'admin', 'relative', 'full', 'board')))
+		if (in_array($args[0], ['phpbb', 'admin', 'relative', 'full', 'board']))
 		{
 			$mode = array_shift($args);
 			$args[0] = self::path($mode) . self::phpext_file($args[0]);
@@ -128,12 +128,12 @@ class phpbb_gallery_url
 			$args[1] .= phpbb_gallery::$display_popup;
 		}
 
-		$params = $args + array(
+		$params = $args + [
 			0	=> '',
 			1	=> phpbb_gallery::$display_popup,
 			2	=> true,
 			3	=> false,
-		);
+		];
 
 		return append_sid($params[0], $params[1], $params[2], $params[3]);
 	}

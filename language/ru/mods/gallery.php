@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADD_UPLOAD_FIELD'				=> 'Добавить несколько файлов',
 	'ALBUM'							=> 'Альбом',
 	'ALBUM_IS_CATEGORY'				=> 'Вы обращаетесь не к альбому, а к категории.<br />Нельзя загружать фотографии в категорию.',
@@ -36,10 +36,10 @@ $lang = array_merge($lang, array(
 	'ALL'							=> 'Все',
 	'ALL_IMAGES'					=> 'Все фото',
 	'ALLOW_COMMENTS'				=> 'Разрешить комментарии к фотографии.',
-	'ALLOW_COMMENTS_ARY'			=> array(
+	'ALLOW_COMMENTS_ARY'			=> [
 		0	=> 'Разрешить комментарии к фотографии.',
 		2	=> 'Разрешить комментарии к фотографиям.',
-	),
+	],
 	'ALLOWED_FILETYPES'				=> 'Разрешённые типы файлов',
 	'APPROVE'						=> 'Одобрить',
 	'APPROVE_IMAGE'					=> 'Одобрить фото',
@@ -203,15 +203,15 @@ $lang = array_merge($lang, array(
 	'RATE_IMAGE'					=> 'Оценить фото',
 	'RATES_COUNT'					=> 'Количество голосов',
 	'RATING'						=> 'Оценка',
-	'RATING_STRINGS'				=> array(
+	'RATING_STRINGS'				=> [
 		0	=> 'не оценено',
 		1	=> '%2$s (1 голос)',
 		2	=> '%2$s (%1$s голосов)',
-	),
-	'RATING_STRINGS_USER'			=> array(
+	],
+	'RATING_STRINGS_USER'			=> [
 		1	=> '%2$s (1 голос, ваша оценка: %3$s)',
 		2	=> '%2$s (%1$s голосов, ваша оценка: %3$s)',
-	),
+	],
 	'RATING_SUCCESSFUL'				=> 'Фото оценено.',
 	'READ_REPORT'					=> 'Читать жалобу',
 	'RECENT_COMMENTS'				=> 'Последние комментарии',
@@ -253,22 +253,22 @@ $lang = array_merge($lang, array(
 	'SUBALBUM'						=> 'Вложенный альбом',
 
 	'THUMBNAIL_SIZE'				=> 'Размер миниатюры (точек)',
-	'TOTAL_COMMENTS_SPRINTF'		=> array(
+	'TOTAL_COMMENTS_SPRINTF'		=> [
 		0	=> 'Комментариев: <strong>0</strong>',
 		1	=> 'Комментариев: <strong>%d</strong>',
 		2	=> 'Комментариев: <strong>%d</strong>',
-	),
+	],
 	'TOTAL_IMAGES'					=> 'Фотографий',
-	'TOTAL_PEGAS_SHORT_SPRINTF'		=> array(
+	'TOTAL_PEGAS_SHORT_SPRINTF'		=> [
 		0	=> 'Нет личных альбомов',
 		1	=> '%d личный альбом',
 		2	=> 'Личных альбомов: %d',
-	),
-	'TOTAL_PEGAS_SPRINTF'		=> array(
+	],
+	'TOTAL_PEGAS_SPRINTF'		=> [
 		0	=> 'Личных альбомов: <strong>0</strong>',
 		1	=> 'Личных альбомов: <strong>%d</strong>',
 		2	=> 'Личных альбомов: <strong>%d</strong>',
-	),
+	],
 
 	'UNFAVORITE_IMAGE'				=> 'Удалить из избранного',
 	'UNFAVORITED_IMAGE'				=> 'Фотография удалена из избранного.',
@@ -290,24 +290,24 @@ $lang = array_merge($lang, array(
 	'UPLOADED_ON_DATE'				=> 'Дата',
 	'USE_SAME_NAME'					=> 'Использовать единое название и описание для всех фотографий.',
 	'USE_NUM'						=> 'Впишите {NUM} для автоматической нумерации. Начать нумерацию с: ',
-	'USER_REACHED_QUOTA'			=> array(
+	'USER_REACHED_QUOTA'			=> [
 		0	=> 'Вы не можете более загружать фотографии.<br />Свяжитесь с администрацией для получения дополнительных сведений.',
 		1	=> 'Вы не можете загрузить более чем <strong>одно</strong> фото.<br />Свяжитесь с администрацией для получения дополнительных сведений.',
 		2	=> 'Вы не можете загрузить более чем <strong>%s</strong> фотографий.<br />Свяжитесь с администрацией для получения дополнительных сведений.',
-	),
-	'USER_REACHED_QUOTA_SHORT'		=> array(
+	],
+	'USER_REACHED_QUOTA_SHORT'		=> [
 		0	=> 'Вы не можете более загружать фотографии.',
 		1	=> 'Вы не можете загрузить более чем <strong>одно</strong> фото.',
 		2	=> 'Вы не можете загрузить более чем <strong>%s</strong> фотографий.',
-	),
+	],
 	'USERNAME_BEGINS_WITH'			=> 'Имя пользователя начинается с',
 	'USERS_PERSONAL_ALBUMS'			=> 'Личные альбомы',
 
 	'VIEW_ALBUM'					=> 'Просмотр альбома',
-	'VIEW_ALBUM_IMAGES'				=> array(
+	'VIEW_ALBUM_IMAGES'				=> [
 		1	=> '1 фото',
 		2	=> '%s фото',
-	),
+	],
 	'VIEW_IMAGE'					=> 'Просмотр фото',
 	'VIEW_LATEST_IMAGE'				=> 'Просмотр последнего фото',
 	'VIEW_SEARCH_RECENT'			=> 'Последние фото',
@@ -327,4 +327,4 @@ $lang = array_merge($lang, array(
 	'YOUR_COMMENT'					=> 'Ваш комментарий',
 	'YOUR_PERSONAL_ALBUM'			=> 'Ваш личный альбом',
 	'YOUR_RATING'					=> 'Ваша оценка',
-));
+]);

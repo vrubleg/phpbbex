@@ -21,7 +21,7 @@ class phpbb_gallery_image_file
 {
 	public $chmod = 0777;
 
-	public $errors = array();
+	public $errors = [];
 	private $browser_cache = true;
 	private $last_modified = 0;
 
@@ -33,7 +33,7 @@ class phpbb_gallery_image_file
 	public $image_content_type;
 	public $image_name = '';
 	public $image_quality = 100;
-	public $image_size = array();
+	public $image_size = [];
 	public $image_source = '';
 	public $image_type;
 
@@ -48,7 +48,7 @@ class phpbb_gallery_image_file
 	public $thumb_width = 0;
 
 	public $watermark;
-	public $watermark_size = array();
+	public $watermark_size = [];
 	public $watermark_source = '';
 	public $watermarked = false;
 
@@ -343,7 +343,7 @@ class phpbb_gallery_image_file
 		}
 	}
 
-	public function create_thumbnail($max_width, $max_height, $print_details = false, $additional_height = 0, $image_size = array())
+	public function create_thumbnail($max_width, $max_height, $print_details = false, $additional_height = 0, $image_size = [])
 	{
 		$this->resize_image($max_width, $max_height, (($print_details) ? $additional_height : 0));
 
@@ -419,13 +419,13 @@ class phpbb_gallery_image_file
 	{
 		if (!function_exists('imagerotate'))
 		{
-			$this->errors[] = array('ROTATE_IMAGE_FUNCTION', $angle);
+			$this->errors[] = ['ROTATE_IMAGE_FUNCTION', $angle];
 			return;
 		}
 
 		if (($angle <= 0) || (($angle % 90) != 0))
 		{
-			$this->errors[] = array('ROTATE_IMAGE_ANGLE', $angle);
+			$this->errors[] = ['ROTATE_IMAGE_ANGLE', $angle];
 			return;
 		}
 
@@ -442,11 +442,11 @@ class phpbb_gallery_image_file
 				// image would be to wide/high
 				if ($this->image_size['height'] > $this->max_width)
 				{
-					$this->errors[] = array('ROTATE_IMAGE_WIDTH');
+					$this->errors[] = ['ROTATE_IMAGE_WIDTH'];
 				}
 				if ($this->image_size['width'] > $this->max_height)
 				{
-					$this->errors[] = array('ROTATE_IMAGE_HEIGHT');
+					$this->errors[] = ['ROTATE_IMAGE_HEIGHT'];
 				}
 				return;
 			}
@@ -472,7 +472,7 @@ class phpbb_gallery_image_file
 		$this->watermark_source = $watermark_source;
 		if (!$this->watermark_source || !file_exists($this->watermark_source))
 		{
-			$this->errors[] = array('WATERMARK_IMAGE_SOURCE');
+			$this->errors[] = ['WATERMARK_IMAGE_SOURCE'];
 			return;
 		}
 
@@ -504,7 +504,7 @@ class phpbb_gallery_image_file
 		// Get the watermark as resource.
 		if (($this->watermark = $imagecreate($this->watermark_source)) === false)
 		{
-			$this->errors[] = array('WATERMARK_IMAGE_IMAGECREATE');
+			$this->errors[] = ['WATERMARK_IMAGE_IMAGECREATE'];
 		}
 
 		// Where do we display the watermark? up-left, down-right, ...?
@@ -539,11 +539,11 @@ class phpbb_gallery_image_file
 	*									Array-Format: $image_id => $filename
 	* @param	array		$locations	Array of valid url::path()s where the image should be deleted from
 	*/
-	static public function delete($files, $locations = array('thumbnail', 'medium', 'upload'))
+	static public function delete($files, $locations = ['thumbnail', 'medium', 'upload'])
 	{
 		if (!is_array($files))
 		{
-			$files = array(1 => $files);
+			$files = [1 => $files];
 		}
 
 		foreach ($files as $image_id => $file)

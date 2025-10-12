@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'CHOOSE_ACTION'					=> 'Выберите желаемое действие',
 
 	'GALLERY_MCP_MAIN'				=> 'Главная',
@@ -104,29 +104,29 @@ $lang = array_merge($lang, array(
 	'REPORTER'						=> 'Пожаловался',
 	'REPORTER_AND_ALBUM'			=> 'Жалующийся и альбом',
 
-	'WAITING_APPROVED_IMAGE'		=> array(
+	'WAITING_APPROVED_IMAGE'		=> [
 		0			=> 'Нет одобренных фотографий.',
 		1			=> 'Всего <span style="font-weight: bold;">1</span> фотографий одобрено.',
 		2			=> 'Всего <span style="font-weight: bold;">%s</span> фотографий одобрено.',
-	),
-	'WAITING_LOCKED_IMAGE'			=> array(
+	],
+	'WAITING_LOCKED_IMAGE'			=> [
 		0			=> 'Нет блокированных фотографий.',
 		1			=> 'Всего <span style="font-weight: bold;">1</span> фотография блокорована.',
 		2			=> 'Всего <span style="font-weight: bold;">%s</span> фотографий блокировано.',
-	),
-	'WAITING_REPORTED_DONE'			=> array(
+	],
+	'WAITING_REPORTED_DONE'			=> [
 		0			=> 'Нет рассмотренных жалоб.',
 		1			=> 'Всего <span style="font-weight: bold;">1</span> жалоба рассмотрена.',
 		2			=> 'Всего <span style="font-weight: bold;">%s</span> жалоб рассмотрено.',
-	),
-	'WAITING_REPORTED_IMAGE'		=> array(
+	],
+	'WAITING_REPORTED_IMAGE'		=> [
 		0			=> 'Нет жалоб на рассмотрение.',
 		1			=> 'Всего <span style="font-weight: bold;">1</span> жалоба на рассмотрение.',
 		2			=> 'Всего <span style="font-weight: bold;">%s</span> жалоб на рассмотрение.',
-	),
-	'WAITING_UNAPPROVED_IMAGE'		=> array(
+	],
+	'WAITING_UNAPPROVED_IMAGE'		=> [
 		0			=> 'Нет фотографий, ожидающих одобрения.',
 		1			=> 'Всего <span style="font-weight: bold;">1</span> фотография ожидает одобрения.',
 		2			=> 'Всего <span style="font-weight: bold;">%s</span> фотографий ожидают одобрения.',
-	),
-));
+	],
+]);

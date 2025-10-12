@@ -58,13 +58,13 @@ class phpbb_gallery_comment
 			return;
 		}
 
-		$data = $data + array(
+		$data = $data + [
 			'comment_user_id'		=> $user->data['user_id'],
 			'comment_username'		=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : $comment_username,
 			'comment_user_colour'	=> $user->data['user_colour'],
 			'comment_user_ip'		=> $user->ip,
 			'comment_time'			=> time(),
-		);
+		];
 
 		$db->sql_query('INSERT INTO ' . GALLERY_COMMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $data));
 		$newest_comment_id = (int) $db->sql_nextid();
@@ -91,10 +91,10 @@ class phpbb_gallery_comment
 			return;
 		}
 
-		$data = $data + array(
+		$data = $data + [
 			'comment_edit_time'		=> time(),
 			'comment_edit_user_id'	=> $user->data['user_id'],
-		);
+		];
 
 		$sql = 'UPDATE ' . GALLERY_COMMENTS_TABLE . '
 			SET ' . $db->sql_build_array('UPDATE', $data) . '
@@ -112,7 +112,7 @@ class phpbb_gallery_comment
 		global $db;
 
 		$sql_where = $sql_where_image = '';
-		$resync = array();
+		$resync = [];
 		if ($image_ids != false)
 		{
 			$image_ids = self::cast_mixed_int2array($image_ids);
@@ -128,10 +128,10 @@ class phpbb_gallery_comment
 		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$resync[$row['comment_image_id']] = array(
+			$resync[$row['comment_image_id']] = [
 				'last_comment'	=> $row['last_comment'],
 				'num_comments'	=> $row['num_comments'],
-			);
+			];
 		}
 		$db->sql_freeresult($result);
 
@@ -171,7 +171,7 @@ class phpbb_gallery_comment
 			GROUP BY comment_image_id';
 		$result = $db->sql_query($sql);
 
-		$image_ids = array();
+		$image_ids = [];
 		$total_comments = 0;
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -223,7 +223,7 @@ class phpbb_gallery_comment
 		}
 		else
 		{
-			return array((int) $ids);
+			return [(int) $ids];
 		}
 	}
 }

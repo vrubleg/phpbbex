@@ -79,9 +79,9 @@ class phpbb_gallery_misc
 					WHERE user_id = ' . $user->data['user_id'];
 				$db->sql_query($sql);
 
-				phpbb_gallery::$user->update_data(array(
+				phpbb_gallery::$user->update_data([
 						'user_lastmark'		=> time(),
-				));
+				]);
 			}
 
 			return;
@@ -91,7 +91,7 @@ class phpbb_gallery_misc
 			// Mark album read
 			if (!is_array($album_id))
 			{
-				$album_id = array($album_id);
+				$album_id = [$album_id];
 			}
 
 			$sql = 'SELECT album_id
@@ -100,7 +100,7 @@ class phpbb_gallery_misc
 					AND " . $db->sql_in_set('album_id', $album_id);
 			$result = $db->sql_query($sql);
 
-			$sql_update = array();
+			$sql_update = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$sql_update[] = $row['album_id'];
@@ -118,14 +118,14 @@ class phpbb_gallery_misc
 
 			if ($sql_insert = array_diff($album_id, $sql_update))
 			{
-				$sql_ary = array();
+				$sql_ary = [];
 				foreach ($sql_insert as $a_id)
 				{
-					$sql_ary[] = array(
+					$sql_ary[] = [
 						'user_id'	=> (int) $user->data['user_id'],
 						'album_id'	=> (int) $a_id,
 						'mark_time'	=> time()
-					);
+					];
 				}
 
 				$db->sql_multi_insert(GALLERY_ATRACK_TABLE, $sql_ary);
@@ -150,11 +150,11 @@ class phpbb_gallery_misc
 			{
 				$db->sql_return_on_error(true);
 
-				$sql_ary = array(
+				$sql_ary = [
 					'user_id'		=> (int) $user->data['user_id'],
 					'album_id'		=> (int) $album_id,
 					'mark_time'		=> time(),
-				);
+				];
 
 				$db->sql_query('INSERT INTO ' . GALLERY_ATRACK_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 

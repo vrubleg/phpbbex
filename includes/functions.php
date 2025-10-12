@@ -3213,11 +3213,11 @@ function add_log()
 		break;
 
 		case 'gallery':
-			$sql_ary += array(
+			$sql_ary += [
 				'log_type'	=> LOG_GALLERY,
 				'album_id'	=> $album_id,
 				'image_id'	=> $image_id,
-			);
+			];
 		break;
 
 		default:

@@ -32,7 +32,7 @@ class phpbb_gallery_user
 	/**
 	* Users data in the table
 	*/
-	private $data = array();
+	private $data = [];
 
 	/**
 	* Constructor
@@ -147,13 +147,13 @@ class phpbb_gallery_user
 			$suc = $this->update_image_count($num);
 			if ($suc === false)
 			{
-				$suc = $this->update(array('user_images' => max(0, $num)));
+				$suc = $this->update(['user_images' => max(0, $num)]);
 			}
 		}
 
 		if ($suc === false)
 		{
-			$suc = $this->insert(array('user_images' => max(0, $num)));
+			$suc = $this->insert(['user_images' => max(0, $num)]);
 		}
 
 		return $suc;
@@ -167,9 +167,9 @@ class phpbb_gallery_user
 	*/
 	private function update($data)
 	{
-		$sql_ary = array_merge($this->validate_data($data), array(
+		$sql_ary = array_merge($this->validate_data($data), [
 			'user_last_update'	=> time(),
-		));
+		]);
 		unset($sql_ary['user_id']);
 
 		$sql = 'UPDATE ' . GALLERY_USERS_TABLE . '
@@ -217,10 +217,10 @@ class phpbb_gallery_user
 	*/
 	private function insert($data)
 	{
-		$sql_ary = array_merge(self::$default_values, $this->validate_data($data), array(
+		$sql_ary = array_merge(self::$default_values, $this->validate_data($data), [
 			'user_id'			=> $this->id,
 			'user_last_update'	=> time(),
-		));
+		]);
 
 		$this->db->sql_return_on_error(true);
 
@@ -274,9 +274,9 @@ class phpbb_gallery_user
 	{
 		global $db;
 
-		$sql_ary = array_merge(self::validate_data($data), array(
+		$sql_ary = array_merge(self::validate_data($data), [
 			'user_last_update'	=> time(),
-		));
+		]);
 		unset($sql_ary['user_id']);
 
 		$sql_where = self::sql_build_where($user_ids);
@@ -324,7 +324,7 @@ class phpbb_gallery_user
 	*/
 	static public function validate_data($data, $inc = false)
 	{
-		$validated_data = array();
+		$validated_data = [];
 		foreach ($data as $name => $value)
 		{
 			switch ($name)
@@ -364,7 +364,7 @@ class phpbb_gallery_user
 	/**
 	* Default values for new users.
 	*/
-	static protected $default_values = array(
+	static protected $default_values = [
 		'user_images'		=> 0,
 		'personal_album_id'	=> 0,
 		'user_lastmark'		=> 0,
@@ -385,7 +385,7 @@ class phpbb_gallery_user
 		'watch_com'			=> false,
 		// Automatically subscribe user to new personal galleries?
 		'subscribe_pegas'	=> false,
-	);
+	];
 
 	/**
 	*
@@ -398,7 +398,7 @@ class phpbb_gallery_user
 
 		if ($user_id == ANONYMOUS)
 		{
-			$user_cache[$user_id] = array(
+			$user_cache[$user_id] = [
 				'joined'		=> '',
 				'with_us'		=> '',
 				'posts'			=> '',
@@ -442,7 +442,7 @@ class phpbb_gallery_user
 
 				'warnings'			=> 0,
 				'allow_pm'			=> 0,
-			);
+			];
 
 			get_user_rank($row['user_rank'], false, $user_cache[$user_id]['rank_title'], $user_cache[$user_id]['rank_image'], $user_cache[$user_id]['rank_image_src']);
 		}
@@ -456,7 +456,7 @@ class phpbb_gallery_user
 
 			$id_cache[] = $user_id;
 
-			$user_cache[$user_id] = array(
+			$user_cache[$user_id] = [
 				'joined'		=> $user->format_date($row['user_regdate'], false, false, true),
 				'with_us'		=> !empty($config['style_mp_show_with_us']) ? get_verbal_time_delta($row['user_regdate'], time(), false, 2) : '',
 				'posts'			=> $row['user_posts'],
@@ -500,7 +500,7 @@ class phpbb_gallery_user
 				'gallery_album'		=> ($row['personal_album_id'] && phpbb_gallery_config::get('viewtopic_icon')) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
 				'gallery_images'	=> (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
 				'gallery_search'	=> (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', "user_id=$user_id") : '',
-			);
+			];
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $user_cache[$user_id]['rank_title'], $user_cache[$user_id]['rank_image'], $user_cache[$user_id]['rank_image_src']);
 

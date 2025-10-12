@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_GALLERY_CLEANUP_EXPLAIN'	=> 'Here you can delete some remains.',
 	'ACP_GALLERY_OVERVIEW'			=> 'phpBBex Gallery',
 	'ACP_GALLERY_OVERVIEW_EXPLAIN'	=> 'Here are some statistics about your gallery.',
@@ -439,12 +439,12 @@ $lang = array_merge($lang, array(
 	'WATERMARK_WIDTH_EXP'			=> 'To avoid small images from being covered by the watermark, you may enter a minimum width of the image here. If the image is smaller, the watermark will not be viewed.',
 
 	'ZIP_ALLOWED'					=> 'Allowed to upload ZIP archives',
-));
+]);
 
 /**
 * A copy of Handyman` s MOD version check, to view it on the gallery overview
 */
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ANNOUNCEMENT_TOPIC'	=> 'Release Announcement',
 	'CURRENT_VERSION'		=> 'Current Version',
 	'DOWNLOAD_LATEST'		=> 'Download Latest Version',
@@ -454,4 +454,4 @@ $lang = array_merge($lang, array(
 	'RELEASE_ANNOUNCEMENT'	=> 'Annoucement Topic',
 	'UP_TO_DATE'			=> '%s is up to date',
 	'VERSION_CHECK'			=> 'MOD Version Check',
-));
+]);

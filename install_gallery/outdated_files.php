@@ -16,7 +16,7 @@ if (!defined('IN_INSTALL'))
 	exit;
 }
 
-$outdated_files = array(
+$outdated_files = [
 	'adm/style/acp_gallery.html',
 	'adm/style/gallery_config.html',
 	'gallery/album_personal.php',
@@ -148,4 +148,4 @@ $outdated_files = array(
 	'styles/subsilver2/theme/images/lytebox/pause_grey.png',
 	'styles/subsilver2/theme/images/lytebox/play_grey.png',
 	'styles/subsilver2/theme/images/lytebox/prev_grey.gif',
-);
+];

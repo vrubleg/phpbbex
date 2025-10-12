@@ -82,7 +82,7 @@ class phpbb_gallery_cleanup
 
 		$delete_pegas = array_merge($unwanted_pegas, $obsolent_pegas);
 
-		$delete_images = $delete_albums = $user_image_count = array();
+		$delete_images = $delete_albums = $user_image_count = [];
 		$num_pegas = 0;
 
 		$sql = 'SELECT album_id, parent_id
@@ -104,7 +104,7 @@ class phpbb_gallery_cleanup
 			WHERE ' . $db->sql_in_set('image_album_id', $delete_albums, false, true);
 		$result = $db->sql_query($sql);
 
-		$filenames = array();
+		$filenames = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$delete_images[] = (int) $row['image_id'];
@@ -142,20 +142,20 @@ class phpbb_gallery_cleanup
 			// Update the config for the statistic on the index
 			if (phpbb_gallery_config::get('num_pegas') > 0)
 			{
-				$sql_array = array(
+				$sql_array = [
 					'SELECT'		=> 'a.album_id, u.user_id, u.username, u.user_colour',
-					'FROM'			=> array(GALLERY_ALBUMS_TABLE => 'a'),
+					'FROM'			=> [GALLERY_ALBUMS_TABLE => 'a'],
 
-					'LEFT_JOIN'		=> array(
-						array(
-							'FROM'		=> array(USERS_TABLE => 'u'),
+					'LEFT_JOIN'		=> [
+						[
+							'FROM'		=> [USERS_TABLE => 'u'],
 							'ON'		=> 'u.user_id = a.album_user_id',
-						),
-					),
+						],
+					],
 
 					'WHERE'			=> 'a.album_user_id <> ' . phpbb_gallery_album::PUBLIC_ALBUM . ' AND a.parent_id = 0',
 					'ORDER_BY'		=> 'a.album_id DESC',
-				);
+				];
 				$sql = $db->sql_build_query('SELECT', $sql_array);
 
 				$result = $db->sql_query_limit($sql, 1);
@@ -189,9 +189,9 @@ class phpbb_gallery_cleanup
 			$uploader = new phpbb_gallery_user($db, $user_id, false);
 			$uploader->update_images((0 - $images));
 		}
-		phpbb_gallery_user::update_users($delete_pegas, array('personal_album_id' => 0));
+		phpbb_gallery_user::update_users($delete_pegas, ['personal_album_id' => 0]);
 
-		$return = array();
+		$return = [];
 		if ($obsolent_pegas)
 		{
 			$return[] = 'CLEAN_PERSONALS_DONE';
@@ -234,7 +234,7 @@ class phpbb_gallery_cleanup
 			FROM ' . GALLERY_IMAGES_TABLE . '
 			' . $sql_where;
 		$result = $db->sql_query($sql);
-		$image_ids = $filenames = $update_albums = array();
+		$image_ids = $filenames = $update_albums = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$image_ids[] = (int) $row['image_id'];

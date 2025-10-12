@@ -28,10 +28,10 @@ class phpbb_gallery_upload
 	*/
 	public $loaded_files = 0;
 	public $uploaded_files = 0;
-	public $errors = array();
-	public $images = array();
-	public $image_data = array();
-	public $array_id2row = array();
+	public $errors = [];
+	public $images = [];
+	public $image_data = [];
+	public $array_id2row = [];
 	private $album_id = 0;
 	private $file_count = 0;
 	private $image_num = 0;
@@ -40,9 +40,9 @@ class phpbb_gallery_upload
 	private $exif_data = false;
 	private $sent_quota_error = false;
 	private $username = '';
-	private $file_descriptions = array();
-	private $file_names = array();
-	private $file_rotating = array();
+	private $file_descriptions = [];
+	private $file_names = [];
+	private $file_rotating = [];
 
 	/**
 	* Constructor
@@ -212,30 +212,30 @@ class phpbb_gallery_upload
 			$message_parser->parse(true, true, true, true, false, true, true, true);
 		}
 
-		$sql_ary = array(
+		$sql_ary = [
 			'image_status'				=> ($needs_approval) ? phpbb_gallery_image::STATUS_UNAPPROVED : phpbb_gallery_image::STATUS_APPROVED,
 			'image_contest'				=> ($is_in_contest) ? phpbb_gallery_image::IN_CONTEST : phpbb_gallery_image::NO_CONTEST,
 			'image_desc'				=> $message_parser->message,
 			'image_desc_uid'			=> $message_parser->bbcode_uid,
 			'image_desc_bitfield'		=> $message_parser->bbcode_bitfield,
 			'image_time'				=> time() + $this->file_count,
-		);
+		];
 		$new_image_name = $this->get_name();
 		if (($new_image_name != '') && ($new_image_name != $this->image_data[$image_id]['image_name']))
 		{
-			$sql_ary = array_merge($sql_ary, array(
+			$sql_ary = array_merge($sql_ary, [
 				'image_name'		=> $new_image_name,
 				'image_name_clean'	=> utf8_clean_string($new_image_name),
-			));
+			]);
 		}
 
 		// Rotate image
 		if ($this->prepare_file_update($image_id))
 		{
-			$sql_ary = array_merge($sql_ary, array(
+			$sql_ary = array_merge($sql_ary, [
 				'image_exif_data'		=> $this->exif_data,
 				'image_has_exif'		=> $this->exif_status,
-			));
+			]);
 		}
 
 		global $db;
@@ -268,7 +268,7 @@ class phpbb_gallery_upload
 		}
 		@chmod($this->file->destination_file, 0777);
 
-		if (in_array($this->file->extension, array('jpg', 'jpeg')))
+		if (in_array($this->file->extension, ['jpg', 'jpeg']))
 		{
 			$this->get_exif();
 		}
@@ -374,7 +374,7 @@ class phpbb_gallery_upload
 
 		$image_name = str_replace("_", " ", utf8_substr($this->file->uploadname, 0, utf8_strrpos($this->file->uploadname, '.')));
 
-		$sql_ary = array(
+		$sql_ary = [
 			'image_name'			=> $image_name,
 			'image_name_clean'		=> utf8_clean_string($image_name),
 			'image_filename' 		=> $this->file->realname,
@@ -396,7 +396,7 @@ class phpbb_gallery_upload
 			'image_desc'			=> '',
 			'image_desc_uid'		=> '',
 			'image_desc_bitfield'	=> '',
-		);
+		];
 
 		$sql = 'INSERT INTO ' . GALLERY_IMAGES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
@@ -420,7 +420,7 @@ class phpbb_gallery_upload
 			WHERE image_status = ' . phpbb_gallery_image::STATUS_ORPHAN . '
 				AND image_time < ' . $prunetime;
 		$result = $db->sql_query($sql);
-		$images = $filenames = array();
+		$images = $filenames = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$images[] = (int) $row['image_id'];
@@ -537,7 +537,7 @@ class phpbb_gallery_upload
 	{
 		global $db;
 
-		$image_ids = $filenames = array();
+		$image_ids = $filenames = [];
 		foreach ($uploaded_ids as $row => $check)
 		{
 			if (strpos($check, '$') == false) continue;
@@ -574,7 +574,7 @@ class phpbb_gallery_upload
 	{
 		global $user;
 
-		$extensions = $types = array();
+		$extensions = $types = [];
 		if (phpbb_gallery_config::get('allow_jpg'))
 		{
 			$types[] = $user->lang['FILETYPES_JPG'];
@@ -605,7 +605,7 @@ class phpbb_gallery_upload
 	*/
 	public function generate_hidden_fields()
 	{
-		$checks = array();
+		$checks = [];
 		foreach ($this->images as $image_id)
 		{
 			$checks[] = $image_id . '$' . substr($this->image_data[$image_id]['image_filename'], 0, 8);

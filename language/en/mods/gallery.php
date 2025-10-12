@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ADD_UPLOAD_FIELD'				=> 'Add more upload fields',
 	'ALBUM'							=> 'Album',
 	'ALBUM_IS_CATEGORY'				=> 'The album you cheated to, is a category-album.<br />You can’t upload to categories.',
@@ -36,10 +36,10 @@ $lang = array_merge($lang, array(
 	'ALL'							=> 'All',
 	'ALL_IMAGES'					=> 'All image',
 	'ALLOW_COMMENTS'				=> 'Allow comments for this image.',
-	'ALLOW_COMMENTS_ARY'			=> array(
+	'ALLOW_COMMENTS_ARY'			=> [
 		0	=> 'Allow comments for this image.',
 		2	=> 'Allow comments for these images.',
-	),
+	],
 	'ALLOWED_FILETYPES'				=> 'Allowed filetypes',
 	'APPROVE'						=> 'Approve',
 	'APPROVE_IMAGE'					=> 'Approve image',
@@ -203,15 +203,15 @@ $lang = array_merge($lang, array(
 	'RATE_IMAGE'					=> 'Rate the image',
 	'RATES_COUNT'					=> 'Number of ratings',
 	'RATING'						=> 'Rating',
-	'RATING_STRINGS'				=> array(
+	'RATING_STRINGS'				=> [
 		0	=> 'not rated',
 		1	=> '%2$s (1 rating)',
 		2	=> '%2$s (%1$s ratings)',
-	),
-	'RATING_STRINGS_USER'			=> array(
+	],
+	'RATING_STRINGS_USER'			=> [
 		1	=> '%2$s (1 rating, your rating: %3$s)',
 		2	=> '%2$s (%1$s ratings, your rating: %3$s)',
-	),
+	],
 	'RATING_SUCCESSFUL'				=> 'The image has been rated successfully.',
 	'READ_REPORT'					=> 'Read report',
 	'RECENT_COMMENTS'				=> 'Recent comments',
@@ -253,22 +253,22 @@ $lang = array_merge($lang, array(
 	'SUBALBUM'						=> 'Subalbum',
 
 	'THUMBNAIL_SIZE'				=> 'Thumbnail size (pixels)',
-	'TOTAL_COMMENTS_SPRINTF'		=> array(
+	'TOTAL_COMMENTS_SPRINTF'		=> [
 		0	=> 'Total comments <strong>0</strong>',
 		1	=> 'Total comments <strong>%d</strong>',
 		2	=> 'Total comments <strong>%d</strong>',
-	),
+	],
 	'TOTAL_IMAGES'					=> 'Total images',
-	'TOTAL_PEGAS_SHORT_SPRINTF'		=> array(
+	'TOTAL_PEGAS_SHORT_SPRINTF'		=> [
 		0	=> '0 personal galleries',
 		1	=> '%d personal gallery',
 		2	=> '%d personal galleries',
-	),
-	'TOTAL_PEGAS_SPRINTF'		=> array(
+	],
+	'TOTAL_PEGAS_SPRINTF'		=> [
 		0	=> 'Total personal galleries <strong>0</strong>',
 		1	=> 'Total personal galleries <strong>%d</strong>',
 		2	=> 'Total personal galleries <strong>%d</strong>',
-	),
+	],
 
 	'UNFAVORITE_IMAGE'				=> 'Remove from favorites',
 	'UNFAVORITED_IMAGE'				=> 'The image was removed from your favorites.',
@@ -290,24 +290,24 @@ $lang = array_merge($lang, array(
 	'UPLOADED_ON_DATE'				=> 'Uploaded',
 	'USE_SAME_NAME'					=> 'Use the same image name and description for all images.',
 	'USE_NUM'						=> 'Add {NUM} for numbers. Start counting at:',
-	'USER_REACHED_QUOTA'			=> array(
+	'USER_REACHED_QUOTA'			=> [
 		0	=> 'You are not allowed to upload <strong>any</strong> images.<br />Please contact the administrator for more information.',
 		1	=> 'You are not allowed to upload more than <strong>1</strong> image.<br />Please contact the administrator for more information.',
 		2	=> 'You are not allowed to upload more than <strong>%s</strong> images.<br />Please contact the administrator for more information.',
-	),
-	'USER_REACHED_QUOTA_SHORT'		=> array(
+	],
+	'USER_REACHED_QUOTA_SHORT'		=> [
 		0	=> 'You are not allowed to upload <strong>any</strong> images.',
 		1	=> 'You are not allowed to upload more than <strong>1</strong> image.',
 		2	=> 'You are not allowed to upload more than <strong>%s</strong> images.',
-	),
+	],
 	'USERNAME_BEGINS_WITH'			=> 'Username begins with',
 	'USERS_PERSONAL_ALBUMS'			=> 'Users Personal Albums',
 
 	'VIEW_ALBUM'					=> 'View album',
-	'VIEW_ALBUM_IMAGES'				=> array(
+	'VIEW_ALBUM_IMAGES'				=> [
 		1	=> '1 image',
 		2	=> '%s images',
-	),
+	],
 	'VIEW_IMAGE'					=> 'View image',
 	'VIEW_LATEST_IMAGE'				=> 'View the latest image',
 	'VIEW_SEARCH_RECENT'			=> 'View recent images',
@@ -327,4 +327,4 @@ $lang = array_merge($lang, array(
 	'YOUR_COMMENT'					=> 'Your comment',
 	'YOUR_PERSONAL_ALBUM'			=> 'Your Personal Album',
 	'YOUR_RATING'					=> 'Your rating',
-));
+]);

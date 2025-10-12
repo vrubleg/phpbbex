@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_GALLERY_ALBUM_MANAGEMENT'		=> 'Album management',
 	'ACP_GALLERY_ALBUM_PERMISSIONS'		=> 'Permissions',
 	'ACP_GALLERY_ALBUM_PERMISSIONS_COPY'=> 'Copy permissions',
@@ -43,8 +43,8 @@ $lang = array_merge($lang, array(
 	'PERSONAL_ALBUM'					=> 'Personal album',
 	'PHPBB_GALLERY'						=> 'phpBB Gallery',
 
-	'TOTAL_IMAGES_SPRINTF'				=> array(
+	'TOTAL_IMAGES_SPRINTF'				=> [
 		0		=> 'Total images <strong>0</strong>',
 		1		=> 'Total images <strong>%d</strong>',
-	),
-));
+	],
+]);

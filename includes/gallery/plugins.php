@@ -14,7 +14,7 @@ if (!defined('IN_PHPBB'))
 
 class phpbb_gallery_plugins
 {
-	static public $plugins		= array();
+	static public $plugins		= [];
 	static public $slideshow	= false;
 
 	static public function init($path)
@@ -132,7 +132,7 @@ class phpbb_gallery_plugins
 	{
 		global $db, $user;
 
-		$images = array();
+		$images = [];
 
 		if (in_array('highslide', self::$plugins))
 		{

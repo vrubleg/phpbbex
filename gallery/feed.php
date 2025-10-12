@@ -12,7 +12,7 @@ define('IN_FEED_GALLERY', true);
 require_once('common.php');
 require_once(PHPBB_ROOT_PATH . 'common.php');
 
-phpbb_gallery::setup(array('mods/gallery'));
+phpbb_gallery::setup(['mods/gallery']);
 phpbb_gallery_url::_include('functions_display', 'phpbb');
 
 if (!phpbb_gallery_config::get('feed_enable'))

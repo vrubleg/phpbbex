@@ -29,11 +29,11 @@ class phpbb_gallery_report
 		{
 			return;
 		}
-		$data = $data + array(
+		$data = $data + [
 			'reporter_id'				=> $user->data['user_id'],
 			'report_time'				=> time(),
 			'report_status'				=> self::OPEN,
-		);
+		];
 		$sql = 'INSERT INTO ' . GALLERY_REPORTS_TABLE . ' ' . $db->sql_build_array('INSERT', $data);
 		$db->sql_query($sql);
 
@@ -55,10 +55,10 @@ class phpbb_gallery_report
 	{
 		global $db, $user;
 
-		$sql_ary = array(
+		$sql_ary = [
 			'report_manager'		=> (int) (($user_id) ? $user_id : $user->data['user_id']),
 			'report_status'			=> $new_status,
-		);
+		];
 		$report_ids = self::cast_mixed_int2array($report_ids);
 
 		$sql = 'UPDATE ' . GALLERY_REPORTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -185,7 +185,7 @@ class phpbb_gallery_report
 		}
 		else
 		{
-			return array((int) $ids);
+			return [(int) $ids];
 		}
 	}
 }

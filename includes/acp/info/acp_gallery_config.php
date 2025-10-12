@@ -19,13 +19,13 @@ class acp_gallery_config_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> 'acp_gallery_config',
 			'title'		=> 'PHPBB_GALLERY',
 			'version'	=> '1.0.0',
-			'modes'		=> array(
-				'main'			=> array('title' => 'ACP_GALLERY_CONFIGURE_GALLERY', 'auth' => 'acl_a_gallery_manage', 'cat' => array('PHPBB_GALLERY')),
-			),
-		);
+			'modes'		=> [
+				'main'			=> ['title' => 'ACP_GALLERY_CONFIGURE_GALLERY', 'auth' => 'acl_a_gallery_manage', 'cat' => ['PHPBB_GALLERY']],
+			],
+		];
 	}
 }

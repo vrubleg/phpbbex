@@ -18,15 +18,15 @@ if (!defined('IN_INSTALL'))
 
 if (!empty($setmodules))
 {
-	$module[] = array(
+	$module[] = [
 		'module_type'		=> 'update',
 		'module_title'		=> 'UPDATE',
 		'module_filename'	=> substr(basename(__FILE__), 0, -4),
 		'module_order'		=> 20,
 		'module_subs'		=> '',
-		'module_stages'		=> array('INTRO', 'REQUIREMENTS', 'UPDATE_DB', 'ADVANCED', 'FINAL'),
+		'module_stages'		=> ['INTRO', 'REQUIREMENTS', 'UPDATE_DB', 'ADVANCED', 'FINAL'],
 		'module_reqs'		=> ''
-	);
+	];
 }
 
 /**
@@ -63,12 +63,12 @@ class install_update extends module
 			case 'intro':
 				$this->page_title = $user->lang['SUB_INTRO'];
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'TITLE'			=> $user->lang['UPDATE_INSTALLATION'],
 					'BODY'			=> $user->lang['UPDATE_INSTALLATION_EXPLAIN'],
 					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
 					'U_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=requirements"),
-				));
+				]);
 
 			break;
 
@@ -107,12 +107,12 @@ class install_update extends module
 				phpbb_gallery_config::set('version', NEWEST_PG_VERSION);
 				$cache->purge();
 
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'TITLE'		=> $user->lang['INSTALL_CONGRATS'],
 					'BODY'		=> sprintf($user->lang['INSTALL_CONGRATS_EXPLAIN'], NEWEST_PG_VERSION),
 					'L_SUBMIT'	=> $user->lang['GOTO_GALLERY'],
 					'U_ACTION'	=> phpbb_gallery_url::append_sid('index'),
-				));
+				]);
 			break;
 		}
 
@@ -128,19 +128,19 @@ class install_update extends module
 
 		$this->page_title = $user->lang['STAGE_REQUIREMENTS'];
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'TITLE'		=> $user->lang['REQUIREMENTS_TITLE'],
 			'BODY'		=> $user->lang['REQUIREMENTS_EXPLAIN'],
-		));
+		]);
 
-		$passed = array('php' => false, 'files' => false, 'dirs' => false,);
+		$passed = ['php' => false, 'files' => false, 'dirs' => false,];
 
 		// Test for basic PHP settings
-		$template->assign_block_vars('checks', array(
+		$template->assign_block_vars('checks', [
 			'S_LEGEND'			=> true,
 			'LEGEND'			=> $user->lang['PHP_SETTINGS'],
 			'LEGEND_EXPLAIN'	=> $user->lang['PHP_SETTINGS_EXP'],
-		));
+		]);
 
 		// Check for GD-Library
 		if (@extension_loaded('gd'))
@@ -153,20 +153,20 @@ class install_update extends module
 			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong>';
 		}
 
-		$template->assign_block_vars('checks', array(
+		$template->assign_block_vars('checks', [
 			'TITLE'			=> $user->lang['REQ_GD_LIBRARY'],
 			'RESULT'		=> $result,
 
 			'S_EXPLAIN'		=> false,
 			'S_LEGEND'		=> false,
-		));
+		]);
 
 		// Test for optional PHP settings
-		$template->assign_block_vars('checks', array(
+		$template->assign_block_vars('checks', [
 			'S_LEGEND'			=> true,
 			'LEGEND'			=> $user->lang['PHP_SETTINGS_OPTIONAL'],
 			'LEGEND_EXPLAIN'	=> $user->lang['PHP_SETTINGS_OPTIONAL_EXP'],
-		));
+		]);
 
 		// Image rotate
 		if (function_exists('imagerotate'))
@@ -178,14 +178,14 @@ class install_update extends module
 			$gd_info = gd_info();
 			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong><br />' . sprintf($user->lang['OPTIONAL_IMAGEROTATE_EXP'], $gd_info['GD Version']);
 		}
-		$template->assign_block_vars('checks', array(
+		$template->assign_block_vars('checks', [
 			'TITLE'			=> $user->lang['OPTIONAL_IMAGEROTATE'],
 			'TITLE_EXPLAIN'	=> $user->lang['OPTIONAL_IMAGEROTATE_EXPLAIN'],
 			'RESULT'		=> $result,
 
 			'S_EXPLAIN'		=> true,
 			'S_LEGEND'		=> false,
-		));
+		]);
 
 		// Exif data
 		if (function_exists('exif_read_data'))
@@ -196,28 +196,28 @@ class install_update extends module
 		{
 			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong><br />' . $user->lang['OPTIONAL_EXIFDATA_EXP'];
 		}
-		$template->assign_block_vars('checks', array(
+		$template->assign_block_vars('checks', [
 			'TITLE'			=> $user->lang['OPTIONAL_EXIFDATA'],
 			'TITLE_EXPLAIN'	=> $user->lang['OPTIONAL_EXIFDATA_EXPLAIN'],
 			'RESULT'		=> $result,
 
 			'S_EXPLAIN'		=> true,
 			'S_LEGEND'		=> false,
-		));
+		]);
 
 		// Check permissions on files/directories we need access to
-		$template->assign_block_vars('checks', array(
+		$template->assign_block_vars('checks', [
 			'S_LEGEND'			=> true,
 			'LEGEND'			=> $user->lang['FILES_REQUIRED'],
 			'LEGEND_EXPLAIN'	=> $user->lang['FILES_REQUIRED_EXPLAIN'],
-		));
+		]);
 
-		$directories = array(
+		$directories = [
 			'import',
 			'upload',
 			'medium',
 			'thumbnail',
-		);
+		];
 
 		umask(0);
 
@@ -249,13 +249,13 @@ class install_update extends module
 
 			$write = ($write) ? '<strong style="color:green">' . $user->lang['WRITABLE'] . '</strong>' : '<strong style="color:red">' . $user->lang['UNWRITABLE'] . '</strong>';
 
-			$template->assign_block_vars('checks', array(
+			$template->assign_block_vars('checks', [
 				'TITLE'		=> phpbb_gallery_url::_return_file('', $dir . '_noroot', ''),
 				'RESULT'	=> $write,
 
 				'S_EXPLAIN'	=> false,
 				'S_LEGEND'	=> false,
-			));
+			]);
 		}
 
 		// Check whether all old files are deleted
@@ -285,19 +285,19 @@ class install_update extends module
 					{
 						if ($passed['files'])
 						{
-							$template->assign_block_vars('checks', array(
+							$template->assign_block_vars('checks', [
 								'S_LEGEND'			=> true,
 								'LEGEND'			=> $user->lang['FILES_OUTDATED'],
 								'LEGEND_EXPLAIN'	=> $user->lang['FILES_OUTDATED_EXPLAIN'],
-							));
+							]);
 						}
-						$template->assign_block_vars('checks', array(
+						$template->assign_block_vars('checks', [
 							'TITLE'		=> $file,
 							'RESULT'	=> '<strong style="color:red">' . $user->lang['FILE_DELETE_FAIL'] . '</strong>',
 
 							'S_EXPLAIN'	=> false,
 							'S_LEGEND'	=> false,
-						));
+						]);
 						$passed['files'] = false;
 					}
 				}
@@ -306,32 +306,32 @@ class install_update extends module
 			{
 				if ($passed['files'])
 				{
-					$template->assign_block_vars('checks', array(
+					$template->assign_block_vars('checks', [
 						'S_LEGEND'			=> true,
 						'LEGEND'			=> $user->lang['FILES_OUTDATED'],
 						'LEGEND_EXPLAIN'	=> $user->lang['FILES_OUTDATED_EXPLAIN'],
-					));
+					]);
 				}
-				$template->assign_block_vars('checks', array(
+				$template->assign_block_vars('checks', [
 					'TITLE'		=> $file,
 					'RESULT'	=> '<strong style="color:red">' . $user->lang['FILE_STILL_EXISTS'] . '</strong>',
 
 					'S_EXPLAIN'	=> false,
 					'S_LEGEND'	=> false,
-				));
+				]);
 				$passed['files'] = false;
 			}
 		}
 		if (!$passed['files'])
 		{
-			$template->assign_block_vars('checks', array(
+			$template->assign_block_vars('checks', [
 				'TITLE'			=> '<strong>' . $user->lang['FILES_DELETE_OUTDATED'] . '</strong>',
 				'TITLE_EXPLAIN'	=> $user->lang['FILES_DELETE_OUTDATED_EXPLAIN'],
 				'RESULT'		=> '<input class="button1" type="submit" id="delete" onclick="this.className = \'button1 disabled\';" name="delete" value="' . $user->lang['FILES_DELETE_OUTDATED'] . '" />',
 
 				'S_EXPLAIN'	=> true,
 				'S_LEGEND'	=> false,
-			));
+			]);
 		}
 
 		// Delete the class cache to get the new config directory from 1.1.2
@@ -340,11 +340,11 @@ class install_update extends module
 		$url = (!in_array(false, $passed)) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db") : append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=requirements");
 		$submit = (!in_array(false, $passed)) ? $user->lang['INSTALL_START'] : $user->lang['INSTALL_TEST'];
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'L_SUBMIT'	=> $submit,
 			'S_HIDDEN'	=> '',
 			'U_ACTION'	=> $url,
-		));
+		]);
 	}
 
 	/**
@@ -371,35 +371,35 @@ class install_update extends module
 			case '1.0.5':
 			case '1.0.5.1':
 			case '1.0.6':
-				$umil->table_column_add(array(
-					array(GALLERY_USERS_TABLE, 'user_permissions', array('MTEXT', '')),
-					array(GALLERY_USERS_TABLE, 'user_permissions_changed', array('TIMESTAMP', 0)),
-					array(GALLERY_USERS_TABLE, 'user_last_update', array('TIMESTAMP', 0)),
-					array(GALLERY_USERS_TABLE, 'user_allow_comments', array('TINT:1', 1)),
-					array(GALLERY_IMAGES_TABLE, 'image_allow_comments', array('TINT:1', 1)),
-					array(GALLERY_COMMENTS_TABLE, 'comment_signature', array('BOOL', 0)),
-					array(GALLERY_ALBUMS_TABLE, 'album_feed', array('BOOL', 1)),
-					array(GALLERY_ALBUMS_TABLE, 'album_auth_access', array('TINT:1', 0)),
-					array(GALLERY_ROLES_TABLE, 'a_restrict', array('UINT:3', 0)),
-				));
+				$umil->table_column_add([
+					[GALLERY_USERS_TABLE, 'user_permissions', ['MTEXT', '']],
+					[GALLERY_USERS_TABLE, 'user_permissions_changed', ['TIMESTAMP', 0]],
+					[GALLERY_USERS_TABLE, 'user_last_update', ['TIMESTAMP', 0]],
+					[GALLERY_USERS_TABLE, 'user_allow_comments', ['TINT:1', 1]],
+					[GALLERY_IMAGES_TABLE, 'image_allow_comments', ['TINT:1', 1]],
+					[GALLERY_COMMENTS_TABLE, 'comment_signature', ['BOOL', 0]],
+					[GALLERY_ALBUMS_TABLE, 'album_feed', ['BOOL', 1]],
+					[GALLERY_ALBUMS_TABLE, 'album_auth_access', ['TINT:1', 0]],
+					[GALLERY_ROLES_TABLE, 'a_restrict', ['UINT:3', 0]],
+				]);
 				// Remove duplicated rates, before creating the unique index
 				remove_duplicated_rates();
-				$umil->table_column_update(array(
-					array(GALLERY_RATES_TABLE, 'rate_image_id', array('UINT', 0)),
-				));
-				$umil->db_tools->sql_create_unique_index(GALLERY_RATES_TABLE, 'id_uid', array('rate_image_id', 'rate_user_id'));
-				$umil->table_index_remove(array(
-					array(GALLERY_RATES_TABLE, 'rate_image_id'),
-					array(GALLERY_RATES_TABLE, 'rate_user_id'),
-					array(GALLERY_RATES_TABLE, 'rate_user_ip'),
-					array(GALLERY_RATES_TABLE, 'rate_point'),
-				));
+				$umil->table_column_update([
+					[GALLERY_RATES_TABLE, 'rate_image_id', ['UINT', 0]],
+				]);
+				$umil->db_tools->sql_create_unique_index(GALLERY_RATES_TABLE, 'id_uid', ['rate_image_id', 'rate_user_id']);
+				$umil->table_index_remove([
+					[GALLERY_RATES_TABLE, 'rate_image_id'],
+					[GALLERY_RATES_TABLE, 'rate_user_id'],
+					[GALLERY_RATES_TABLE, 'rate_user_ip'],
+					[GALLERY_RATES_TABLE, 'rate_point'],
+				]);
 			// no break;
 
 			case '1.1.0-A1':
-				$umil->table_column_add(array(
-					array(GALLERY_USERS_TABLE, 'subscribe_pegas', array('TINT:1', 0)),
-				));
+				$umil->table_column_add([
+					[GALLERY_USERS_TABLE, 'subscribe_pegas', ['TINT:1', 0]],
+				]);
 			// no break;
 
 			case '1.1.0-B1':
@@ -412,10 +412,10 @@ class install_update extends module
 				* Renaming workaround
 				*/
 				// Add new columns
-				$umil->table_column_add(array(
-					array(GALLERY_ROLES_TABLE, 'a_count', array('UINT', 0)),
-					array(GALLERY_ROLES_TABLE, 'a_unlimited', array('UINT:3', 0)),
-				));
+				$umil->table_column_add([
+					[GALLERY_ROLES_TABLE, 'a_count', ['UINT', 0]],
+					[GALLERY_ROLES_TABLE, 'a_unlimited', ['UINT:3', 0]],
+				]);
 				$db->sql_return_on_error(true);
 				// Copy content
 				$sql = 'UPDATE ' . GALLERY_ROLES_TABLE . '
@@ -425,10 +425,10 @@ class install_update extends module
 				if (!$db->sql_error_triggered)
 				{
 					// Remove old columns
-					$umil->table_column_remove(array(
-						array(GALLERY_ROLES_TABLE, 'album_count'),
-						array(GALLERY_ROLES_TABLE, 'album_unlimited'),
-					));
+					$umil->table_column_remove([
+						[GALLERY_ROLES_TABLE, 'album_count'],
+						[GALLERY_ROLES_TABLE, 'album_unlimited'],
+					]);
 				}
 				$db->sql_return_on_error(false);
 				/**
@@ -444,17 +444,17 @@ class install_update extends module
 		}
 
 		// These two columns seem to miss sometimes, so we just ensure they got added here
-		$umil->table_column_add(array(
-			array(GALLERY_ALBUMS_TABLE, 'album_feed', array('BOOL', 1)),
-			array(GALLERY_ALBUMS_TABLE, 'album_auth_access', array('TINT:1', 0)),
-		));
+		$umil->table_column_add([
+			[GALLERY_ALBUMS_TABLE, 'album_feed', ['BOOL', 1]],
+			[GALLERY_ALBUMS_TABLE, 'album_auth_access', ['TINT:1', 0]],
+		]);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
 			'L_SUBMIT'	=> $user->lang['NEXT_STEP'],
 			'S_HIDDEN'	=> '',
 			'U_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db&amp;step=2"),
-		));
+		]);
 	}
 
 	/**
@@ -488,14 +488,14 @@ class install_update extends module
 					$sql = 'SELECT *
 						FROM ' . GALLERY_CONFIG_TABLE;
 					$result = $db->sql_query($sql);
-					$old_config = array();
+					$old_config = [];
 					while ($row = $db->sql_fetchrow($result))
 					{
 						$old_config[$row['config_name']] = $row['config_value'];
 					}
 					$db->sql_freeresult($result);
 
-					$others = array('gallery_total_images', 'gallery_viewtopic_icon', 'gallery_viewtopic_images', 'gallery_viewtopic_link');
+					$others = ['gallery_total_images', 'gallery_viewtopic_icon', 'gallery_viewtopic_images', 'gallery_viewtopic_link'];
 					foreach ($others as $config_name)
 					{
 						if (isset($config[$config_name]))
@@ -566,12 +566,12 @@ class install_update extends module
 
 		$next_update_url = (!$next_update_url) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db&amp;step=4") : $next_update_url;
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'BODY'		=> $user->lang['UPDATING_DATA'],
 			'L_SUBMIT'	=> $user->lang['NEXT_STEP'],
 			'S_HIDDEN'	=> '',
 			'U_ACTION'	=> $next_update_url,
-		));
+		]);
 	}
 
 	/**
@@ -590,13 +590,13 @@ class install_update extends module
 			case '1.0.5':
 			case '1.0.5.1':
 			case '1.0.6':
-				$umil->table_column_remove(array(
-					array(GALLERY_IMAGES_TABLE,	'image_thumbnail'),
-				));
+				$umil->table_column_remove([
+					[GALLERY_IMAGES_TABLE,	'image_thumbnail'],
+				]);
 
-				$umil->table_remove(array(
+				$umil->table_remove([
 					GALLERY_CONFIG_TABLE,
-				));
+				]);
 			// no break;
 
 			case '1.1.0-A1':
@@ -613,7 +613,7 @@ class install_update extends module
 		}
 
 		// Remove some old configs
-		$old_configs = array('gallery_user_images_profil', 'gallery_personal_album_profil');
+		$old_configs = ['gallery_user_images_profil', 'gallery_personal_album_profil'];
 		$sql = 'DELETE FROM ' . CONFIG_TABLE . '
 			WHERE ' . $db->sql_in_set('config_name', $old_configs);
 		$db->sql_query($sql);
@@ -627,7 +627,7 @@ class install_update extends module
 				AND a.album_name IS NULL';
 		$result = $db->sql_query($sql);
 
-		$orphan_perms = array();
+		$orphan_perms = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$orphan_perms[] = $row['perm_id'];
@@ -643,7 +643,7 @@ class install_update extends module
 			FROM ' . GALLERY_PERMISSIONS_TABLE;
 		$result = $db->sql_query($sql);
 
-		$p_masks = array();
+		$p_masks = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$p_masks[] = $row['perm_role_id'];
@@ -663,12 +663,12 @@ class install_update extends module
 			$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=final");
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'BODY'		=> $user->lang['UPDATE_DATABASE_SCHEMA'],
 			'L_SUBMIT'	=> $user->lang['NEXT_STEP'],
 			'S_HIDDEN'	=> '',
 			'U_ACTION'	=> $next_update_url,
-		));
+		]);
 	}
 
 	/**
@@ -722,11 +722,11 @@ class install_update extends module
 		}
 		else
 		{
-			$data = array(
+			$data = [
 				'acp_module'		=> phpbb_gallery_constants::MODULE_DEFAULT_ACP,
 				'log_module'		=> phpbb_gallery_constants::MODULE_DEFAULT_LOG,
 				'ucp_module'		=> phpbb_gallery_constants::MODULE_DEFAULT_UCP,
-			);
+			];
 			$modules = $this->gallery_config_options;
 			switch (phpbb_gallery_config::get('version'))
 			{
@@ -769,23 +769,23 @@ class install_update extends module
 
 				if (strpos($config_key, 'legend') !== false)
 				{
-					$template->assign_block_vars('options', array(
+					$template->assign_block_vars('options', [
 						'S_LEGEND'		=> true,
-						'LEGEND'		=> $user->lang[$vars])
+						'LEGEND'		=> $user->lang[$vars]]
 					);
 
 					continue;
 				}
 
 				$options = isset($vars['options']) ? $vars['options'] : '';
-				$template->assign_block_vars('options', array(
+				$template->assign_block_vars('options', [
 					'KEY'			=> $config_key,
 					'TITLE'			=> $user->lang[$vars['lang']],
 					'S_EXPLAIN'		=> $vars['explain'],
 					'S_LEGEND'		=> false,
 					'TITLE_EXPLAIN'	=> ($vars['explain']) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '',
 					'CONTENT'		=> $this->p_master->input_field($config_key, $vars['type'], $data[$config_key], $options),
-					)
+					]
 				);
 			}
 			$s_hidden_fields = '<input type="hidden" name="create" value="true" />';
@@ -794,22 +794,22 @@ class install_update extends module
 
 		$submit = $user->lang['NEXT_STEP'];
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'TITLE'		=> $user->lang['STAGE_ADVANCED'],
 			'BODY'		=> $user->lang['STAGE_ADVANCED_EXPLAIN'],
 			'L_SUBMIT'	=> $submit,
 			'S_HIDDEN'	=> $s_hidden_fields,
 			'U_ACTION'	=> $url,
-		));
+		]);
 	}
 
 	/**
 	* The information below will be used to build the input fields presented to the user
 	*/
-	var $gallery_config_options = array(
+	var $gallery_config_options = [
 		'legend1'				=> 'MODULES_PARENT_SELECT',
-		'acp_module'			=> array('lang' => 'MODULES_SELECT_4ACP', 'type' => 'select', 'options' => 'module_select(\'acp\', 31, \'ACP_CAT_DOT_MODS\')', 'explain' => false),
-		'log_module'			=> array('lang' => 'MODULES_SELECT_4LOG', 'type' => 'select', 'options' => 'module_select(\'acp\', 25, \'ACP_FORUM_LOGS\')', 'explain' => false),
-		'ucp_module'			=> array('lang' => 'MODULES_SELECT_4UCP', 'type' => 'select', 'options' => 'module_select(\'ucp\', 0, \'\')', 'explain' => false),
-	);
+		'acp_module'			=> ['lang' => 'MODULES_SELECT_4ACP', 'type' => 'select', 'options' => 'module_select(\'acp\', 31, \'ACP_CAT_DOT_MODS\')', 'explain' => false],
+		'log_module'			=> ['lang' => 'MODULES_SELECT_4LOG', 'type' => 'select', 'options' => 'module_select(\'acp\', 25, \'ACP_FORUM_LOGS\')', 'explain' => false],
+		'ucp_module'			=> ['lang' => 'MODULES_SELECT_4UCP', 'type' => 'select', 'options' => 'module_select(\'ucp\', 0, \'\')', 'explain' => false],
+	];
 }

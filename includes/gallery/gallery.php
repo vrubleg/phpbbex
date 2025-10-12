@@ -27,7 +27,7 @@ class phpbb_gallery
 	{
 		global $auth, $config, $db, $template, $user, $cache;
 
-		$lang_sets = array('mods/info_acp_gallery');
+		$lang_sets = ['mods/info_acp_gallery'];
 		if (is_array($lang_set))
 		{
 			$lang_sets = array_merge($lang_sets, $lang_set);
@@ -75,21 +75,21 @@ class phpbb_gallery
 			self::init_popup();
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_IN_GALLERY'					=> true,
 			'U_GALLERY_SEARCH'				=> phpbb_gallery_url::append_sid('search'),
 			'S_GALLERY_FEEDS'				=> phpbb_gallery_config::get('feed_enable'),
 			'U_GALLERY_FEED'				=> phpbb_gallery_url::append_sid('feed'),
-		));
+		]);
 
 		// Okay, this is not the best way, but we disable the phpbb feeds and display the ones of the gallery.
 		$config['feed_overall'] = $config['feed_overall_forums'] = $config['feed_topics_new'] = $config['feed_topics_active'] = false;
 
-		$template->assign_block_vars('navlinks', array(
+		$template->assign_block_vars('navlinks', [
 			'FORUM_NAME'	=> $user->lang['GALLERY'],
 			'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('index'),
 			'FIRST'			=> true,
-		));
+		]);
 
 		self::$loaded = true;
 	}
@@ -131,12 +131,12 @@ class phpbb_gallery
 
 		$can_upload = phpbb_gallery::$auth->acl_album_ids('i_upload', 'bool');
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_IN_GALLERY_POPUP'			=> (request_var('display', '') == 'popup') ? true : false,
 
 			'U_POPUP_OWN'		=> phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id']),
 			'U_POPUP_RECENT'	=> phpbb_gallery_url::append_sid('search', 'search_id=recent'),
 			'U_POPUP_UPLOAD'	=> ($can_upload) ? phpbb_gallery_url::append_sid('posting', 'mode=upload') : '',
-		));
+		]);
 	}
 }

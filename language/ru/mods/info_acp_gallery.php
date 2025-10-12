@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_GALLERY_ALBUM_MANAGEMENT'		=> 'Управление альбомом',
 	'ACP_GALLERY_ALBUM_PERMISSIONS'		=> 'Права доступа',
 	'ACP_GALLERY_ALBUM_PERMISSIONS_COPY'=> 'Копирование прав доступа',
@@ -43,8 +43,8 @@ $lang = array_merge($lang, array(
 	'PERSONAL_ALBUM'					=> 'Фотоальбом',
 	'PHPBB_GALLERY'						=> 'Галерея',
 
-	'TOTAL_IMAGES_SPRINTF'				=> array(
+	'TOTAL_IMAGES_SPRINTF'				=> [
 		0		=> 'Фотографий в галерее: <strong>0</strong>',
 		1		=> 'Фотографий в галерее: <strong>%d</strong>',
-	),
-));
+	],
+]);

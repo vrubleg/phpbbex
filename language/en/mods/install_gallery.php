@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'BBCODES_NEEDS_REPARSE'		=> 'The BBCode needs to be rebuild.',
 
 	'CAT_CONVERT'				=> 'convert phpBB2',
@@ -118,4 +118,4 @@ $lang = array_merge($lang, array(
 	'UPDATE_INSTALLATION_EXPLAIN'	=> 'Here you can Update your phpBB Gallery-Version.',
 
 	'VERSION_NOT_SUPPORTED'		=> 'Sorry, but your updates prior to 1.0.6 are not supported from this install/update-system.',
-));
+]);

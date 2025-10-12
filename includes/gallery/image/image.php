@@ -51,24 +51,24 @@ class phpbb_gallery_image
 	{
 		global $db, $user;
 
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'		=> '*',
-			'FROM'			=> array(GALLERY_IMAGES_TABLE => 'i'),
+			'FROM'			=> [GALLERY_IMAGES_TABLE => 'i'],
 			'WHERE'			=> 'i.image_id = ' . (int) $image_id,
-		);
+		];
 
 		if ($extended_info)
 		{
-			$sql_array['LEFT_JOIN'] = array(
-				array(
-					'FROM'		=> array(GALLERY_WATCH_TABLE => 'w'),
+			$sql_array['LEFT_JOIN'] = [
+				[
+					'FROM'		=> [GALLERY_WATCH_TABLE => 'w'],
 					'ON'		=> 'i.image_id = w.image_id AND w.user_id = ' . $user->data['user_id'],
-				),
-				array(
-					'FROM'		=> array(GALLERY_FAVORITES_TABLE => 'f'),
+				],
+				[
+					'FROM'		=> [GALLERY_FAVORITES_TABLE => 'f'],
 					'ON'		=> 'i.image_id = f.image_id AND f.user_id = ' . $user->data['user_id'],
-				),
-			);
+				],
+			];
 		}
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 
@@ -127,7 +127,7 @@ class phpbb_gallery_image
 	*									Format: $image_id => $filename
 	* @param	bool		$skip_files	If set to true, we won't try to delete the source files.
 	*/
-	static public function delete_images($images, $filenames = array(), $resync_albums = true, $skip_files = false)
+	static public function delete_images($images, $filenames = [], $resync_albums = true, $skip_files = false)
 	{
 		global $db;
 
@@ -139,7 +139,7 @@ class phpbb_gallery_image
 		if (!$skip_files)
 		{
 			// Delete the files from the disc...
-			$need_filenames = array();
+			$need_filenames = [];
 			foreach ($images as $image)
 			{
 				if (!isset($filenames[$image]))
@@ -164,7 +164,7 @@ class phpbb_gallery_image
 			WHERE ' . $db->sql_in_set('image_id', $images) . '
 			GROUP BY image_album_id, image_contest_rank';
 		$result = $db->sql_query($sql);
-		$resync_album_ids = $resync_contests = array();
+		$resync_album_ids = $resync_contests = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			if ($row['image_contest_rank'])
@@ -204,12 +204,12 @@ class phpbb_gallery_image
 	{
 		if (empty($images))
 		{
-			return array();
+			return [];
 		}
 
 		global $db;
 
-		$filenames = array();
+		$filenames = [];
 		$sql = 'SELECT image_id, image_filename
 			FROM ' . GALLERY_IMAGES_TABLE . '
 			WHERE ' . $db->sql_in_set('image_id', $images);
@@ -256,7 +256,7 @@ class phpbb_gallery_image
 
 		$s_username_hidden = $image_data['image_contest'] && !phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) && ($user->data['user_id'] != $image_data['image_user_id'] || $image_data['image_user_id'] == ANONYMOUS);
 
-		$template->assign_block_vars($template_block, array(
+		$template->assign_block_vars($template_block, [
 			'IMAGE_ID'		=> $image_data['image_id'],
 			'UC_IMAGE_NAME'	=> ($display & phpbb_gallery_block::DISPLAY_IMAGENAME) ? self::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id'], false, true, "&amp;sk={$sk}&amp;sd={$sd}&amp;st={$st}") : '',
 			'UC_THUMBNAIL'	=> self::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id']),
@@ -302,7 +302,7 @@ class phpbb_gallery_image
 			'U_MOVE'	=> (phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id)) ? phpbb_gallery_url::append_sid('mcp', "action=images_move&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id'] . "&amp;redirect=redirect") : '',
 			'U_EDIT'	=> $s_allowed_edit ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id']) : '',
 			'U_DELETE'	=> $s_allowed_delete ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id']) : '',
-		));
+		]);
 	}
 
 	/**
@@ -337,20 +337,20 @@ class phpbb_gallery_image
 			break;
 			case 'thumbnail':
 				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" />';
-				$content = str_replace(array('{U_THUMBNAIL}', '{IMAGE_NAME}'), array($thumb_url, $image_name), $content);
+				$content = str_replace(['{U_THUMBNAIL}', '{IMAGE_NAME}'], [$thumb_url, $image_name], $content);
 			break;
 			case 'fake_thumbnail':
 				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="max-width: {FAKE_THUMB_SIZE}px; max-height: {FAKE_THUMB_SIZE}px;" />';
-				$content = str_replace(array('{U_THUMBNAIL}', '{IMAGE_NAME}', '{FAKE_THUMB_SIZE}'), array($thumb_url, $image_name, phpbb_gallery_config::get('mini_thumbnail_size')), $content);
+				$content = str_replace(['{U_THUMBNAIL}', '{IMAGE_NAME}', '{FAKE_THUMB_SIZE}'], [$thumb_url, $image_name, phpbb_gallery_config::get('mini_thumbnail_size')], $content);
 			break;
 			case 'medium':
 				$content = '<img src="{U_MEDIUM}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" />';
-				$content = str_replace(array('{U_MEDIUM}', '{IMAGE_NAME}'), array($medium_url, $image_name), $content);
+				$content = str_replace(['{U_MEDIUM}', '{IMAGE_NAME}'], [$medium_url, $image_name], $content);
 				//cheat for animated/transparent gifs
 				if ($is_gif)
 				{
 					$content = '<img src="{U_MEDIUM}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="max-width: {MEDIUM_WIDTH_SIZE}px; max-height: {MEDIUM_HEIGHT_SIZE}px;" />';
-					$content = str_replace(array('{U_MEDIUM}', '{IMAGE_NAME}', '{MEDIUM_HEIGHT_SIZE}', '{MEDIUM_WIDTH_SIZE}'), array($image_url, $image_name, phpbb_gallery_config::get('medium_height'), phpbb_gallery_config::get('medium_width')), $content);
+					$content = str_replace(['{U_MEDIUM}', '{IMAGE_NAME}', '{MEDIUM_HEIGHT_SIZE}', '{MEDIUM_WIDTH_SIZE}'], [$image_url, $image_name, phpbb_gallery_config::get('medium_height'), phpbb_gallery_config::get('medium_width')], $content);
 				}
 			break;
 			case 'lastimage_icon':
@@ -395,7 +395,7 @@ class phpbb_gallery_image
 			break;
 		}
 
-		return str_replace(array('{IMAGE_URL}', '{IMAGE_NAME}', '{CONTENT}'), array($url, $image_name, $content), $tpl);
+		return str_replace(['{IMAGE_URL}', '{IMAGE_NAME}', '{CONTENT}'], [$url, $image_name, $content], $tpl);
 	}
 
 	/**
@@ -433,10 +433,10 @@ class phpbb_gallery_image
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$sql_ary = array(
+			$sql_ary = [
 				'user_id'				=> $row['image_user_id'],
 				'user_images'			=> $row['images'],
-			);
+			];
 
 			$num_images = $num_images + $row['images'];
 

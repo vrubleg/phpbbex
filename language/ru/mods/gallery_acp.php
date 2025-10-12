@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_GALLERY_CLEANUP_EXPLAIN'	=> 'Здесь можно очистить галерею от ошибочных файлов и данных.',
 	'ACP_GALLERY_OVERVIEW'			=> 'Галерея phpBBex',
 	'ACP_GALLERY_OVERVIEW_EXPLAIN'	=> 'Здесь находится обзорная статистика по галерее.',
@@ -439,12 +439,12 @@ $lang = array_merge($lang, array(
 	'WATERMARK_WIDTH_EXP'			=> 'Чтобы избежать перекрытия водяным знаком маленьких фотографий, можно ввести их минимальную высоту и ширину, при которых будет отображаться водяной знак.',
 
 	'ZIP_ALLOWED'					=> 'ZIP-архивы разрешены',
-));
+]);
 
 /**
 * A copy of Handyman` s MOD version check, to view it on the gallery overview
 */
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ANNOUNCEMENT_TOPIC'	=> 'объявление о выпуске',
 	'CURRENT_VERSION'		=> 'Текущая версия',
 	'DOWNLOAD_LATEST'		=> 'Скачать последнюю версию',
@@ -454,4 +454,4 @@ $lang = array_merge($lang, array(
 	'RELEASE_ANNOUNCEMENT'	=> 'объявление о выпуске',
 	'UP_TO_DATE'			=> 'Версия %s самая последняя',
 	'VERSION_CHECK'			=> 'Проверка версии',
-));
+]);

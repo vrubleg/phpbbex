@@ -146,7 +146,7 @@ class acp_logs
 			$checks = ['viewtopic', 'viewlogs', 'viewforum'];
 			if ($mode == 'gallery')
 			{
-				$checks = array('viewimage', 'viewalbum');
+				$checks = ['viewimage', 'viewalbum'];
 			}
 			foreach ($checks as $check)
 			{

@@ -26,7 +26,7 @@ class phpbb_gallery_feed
 
 	private $feed_time = 0;
 	private $sql_where = '';
-	private $images_data = array();
+	private $images_data = [];
 
 	public function __construct($album_id)
 	{
@@ -64,7 +64,7 @@ class phpbb_gallery_feed
 			FROM ' . GALLERY_ALBUMS_TABLE . '
 			WHERE album_feed = 1';
 		$result = $db->sql_query($sql);
-		$feed_albums = array();
+		$feed_albums = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$feed_albums[] = (int) $row['album_id'];
@@ -103,23 +103,23 @@ class phpbb_gallery_feed
 	{
 		global $db;
 
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'		=> 'i.*',
-			'FROM'			=> array(GALLERY_IMAGES_TABLE => 'i'),
+			'FROM'			=> [GALLERY_IMAGES_TABLE => 'i'],
 
 			'WHERE'			=> $this->sql_where . ' AND i.image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN,
 			'ORDER_BY'		=> 'i.image_time DESC',
-		);
+		];
 
 		if ($album_data == false)
 		{
 			$sql_array['SELECT'] .= ', a.album_name, a.album_status, a.album_id, a.album_user_id';
-			$sql_array['LEFT_JOIN'] = array(
-				array(
-					'FROM'		=> array(GALLERY_ALBUMS_TABLE => 'a'),
+			$sql_array['LEFT_JOIN'] = [
+				[
+					'FROM'		=> [GALLERY_ALBUMS_TABLE => 'a'],
 					'ON'		=> 'i.image_album_id = a.album_id',
-				),
-			);
+				],
+			];
 		}
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query_limit($sql, phpbb_gallery_config::get('feed_limit'));

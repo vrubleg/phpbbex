@@ -39,12 +39,12 @@ class phpbb_gallery_exif
 	/**
 	* Exif data array with all allowed groups and keys.
 	*/
-	public $data		= array();
+	public $data		= [];
 
 	/**
 	* Filtered data array. We don't have empty or invalid values here.
 	*/
-	public $prepared_data	= array();
+	public $prepared_data	= [];
 
 	/**
 	* Does the image have exif data?
@@ -161,7 +161,7 @@ class phpbb_gallery_exif
 	{
 		global $user;
 
-		$this->prepared_data = array();
+		$this->prepared_data = [];
 		if (isset($this->data["EXIF"]["DateTimeOriginal"]))
 		{
 			$timestamp_year = substr($this->data["EXIF"]["DateTimeOriginal"], 0, 4);
@@ -276,15 +276,15 @@ class phpbb_gallery_exif
 
 			foreach ($this->prepared_data as $exif => $value)
 			{
-				$template->assign_block_vars($block, array(
+				$template->assign_block_vars($block, [
 					'EXIF_NAME'			=> $user->lang[strtoupper($exif)],
 					'EXIF_VALUE'		=> htmlspecialchars($value),
-				));
+				]);
 			}
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_EXIF_DATA'	=> true,
 				'S_VIEWEXIF'	=> $expand_view,
-			));
+			]);
 		}
 	}
 
@@ -311,12 +311,12 @@ class phpbb_gallery_exif
 	* There are lots of possible Exif Groups and Values.
 	* But you will never heard of the missing ones. so we just allow the most common ones.
 	*/
-	static private $allowed_groups		= array(
+	static private $allowed_groups		= [
 		'EXIF',
 		'IFD0',
-	);
+	];
 
-	static private $allowed_keys		= array(
+	static private $allowed_keys		= [
 		'DateTimeOriginal',
 		'FocalLength',
 		'ExposureTime',
@@ -328,5 +328,5 @@ class phpbb_gallery_exif
 		'ExposureProgram',
 		'ExposureBiasValue',
 		'MeteringMode',
-	);
+	];
 }

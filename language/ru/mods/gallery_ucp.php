@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACCESS_CONTROL_ALL'			=> 'Все',
 	'ACCESS_CONTROL_REGISTERED'		=> 'Зарегистрированные',
 	'ACCESS_CONTROL_NOT_FOES'		=> 'Зарегистрированные, кроме ваших недругов',
@@ -82,4 +82,4 @@ $lang = array_merge($lang, array(
 	'WATCH_FAVO'					=> 'Подписаться на избранные вами фотографии',
 	'WATCH_NOTE'					=> 'Параметры подписки по умолчанию. Они коснутся только новых фотографий и новых комментариев.',
 	'WATCH_OWN'						=> 'Подписаться на комментарии к вашим фотографиям',
-));
+]);

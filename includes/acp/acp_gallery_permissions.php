@@ -28,7 +28,7 @@ class acp_gallery_permissions
 
 		phpbb_gallery::init();
 
-		$user->add_lang(array('mods/gallery_acp', 'mods/gallery'));
+		$user->add_lang(['mods/gallery_acp', 'mods/gallery']);
 		$this->tpl_name = 'gallery_permissions';
 		$this->page_title = $user->lang['ALBUM_AUTH_TITLE'];
 		add_form_key('acp_gallery');
@@ -39,45 +39,45 @@ class acp_gallery_permissions
 		* All our beautiful permissions
 		*/
 		$permissions = new stdclass();
-		$permissions->cats['full'] = array(
-			'i'		=> array('i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'),
-			'c'		=> array('c_read', 'c_post', 'c_edit', 'c_delete'),
-			'm'		=> array('m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'),
-			'misc'	=> array('a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'),
-		);
+		$permissions->cats['full'] = [
+			'i'		=> ['i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
+			'c'		=> ['c_read', 'c_post', 'c_edit', 'c_delete'],
+			'm'		=> ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'],
+			'misc'	=> ['a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'],
+		];
 		$permissions->p_masks['full'] = array_merge($permissions->cats['full']['i'], $permissions->cats['full']['c'], $permissions->cats['full']['m'], $permissions->cats['full']['misc']);
 
 		// Permissions for the normal albums
-		$permissions->cats[phpbb_gallery_auth::PUBLIC_ALBUM] = array(
-			'i'		=> array('i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'),
-			'c'		=> array('c_read', 'c_post', 'c_edit', 'c_delete'),
-			'm'		=> array('m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'),
-			'misc'	=> array('a_list', 'i_count', 'i_unlimited'/*, 'a_count', 'a_unlimited', 'a_restrict'*/),
-		);
+		$permissions->cats[phpbb_gallery_auth::PUBLIC_ALBUM] = [
+			'i'		=> ['i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
+			'c'		=> ['c_read', 'c_post', 'c_edit', 'c_delete'],
+			'm'		=> ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'],
+			'misc'	=> ['a_list', 'i_count', 'i_unlimited'/*, 'a_count', 'a_unlimited', 'a_restrict'*/],
+		];
 		$permissions->p_masks[phpbb_gallery_auth::PUBLIC_ALBUM] = array_merge($permissions->cats[phpbb_gallery_auth::PUBLIC_ALBUM]['i'], $permissions->cats[phpbb_gallery_auth::PUBLIC_ALBUM]['c'], $permissions->cats[phpbb_gallery_auth::PUBLIC_ALBUM]['m'], $permissions->cats[phpbb_gallery_auth::PUBLIC_ALBUM]['misc']);
-		$permissions->p_masks_anti[phpbb_gallery_auth::PUBLIC_ALBUM] = array('a_count', 'a_unlimited', 'a_restrict');
+		$permissions->p_masks_anti[phpbb_gallery_auth::PUBLIC_ALBUM] = ['a_count', 'a_unlimited', 'a_restrict'];
 
 		// Permissions for own personal albums
 		// Note: we set i_view to 1 as default on storing the permissions
-		$permissions->cats[phpbb_gallery_auth::OWN_ALBUM] = array(
-			'i'		=> array(/*'i_view', */'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'),
-			'c'		=> array('c_read', 'c_post', 'c_edit', 'c_delete'),
-			'm'		=> array('m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'),
-			'misc'	=> array('a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'),
-		);
+		$permissions->cats[phpbb_gallery_auth::OWN_ALBUM] = [
+			'i'		=> [/*'i_view', */'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
+			'c'		=> ['c_read', 'c_post', 'c_edit', 'c_delete'],
+			'm'		=> ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'],
+			'misc'	=> ['a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'],
+		];
 		$permissions->p_masks[phpbb_gallery_auth::OWN_ALBUM] = array_merge($permissions->cats[phpbb_gallery_auth::OWN_ALBUM]['i'], $permissions->cats[phpbb_gallery_auth::OWN_ALBUM]['c'], $permissions->cats[phpbb_gallery_auth::OWN_ALBUM]['m'], $permissions->cats[phpbb_gallery_auth::OWN_ALBUM]['misc']);
-		$permissions->p_masks_anti[phpbb_gallery_auth::OWN_ALBUM] = array();// Note: we set i_view to 1 as default, so it's not needed on anti array('i_view');
+		$permissions->p_masks_anti[phpbb_gallery_auth::OWN_ALBUM] = [];// Note: we set i_view to 1 as default, so it's not needed on anti array('i_view');
 
 		// Permissions for personal albums of other users
 		// Note: Do !NOT! hide the i_upload. It's used for the moving-permissions
-		$permissions->cats[phpbb_gallery_auth::PERSONAL_ALBUM] = array(
-			'i'		=> array('i_view', 'i_watermark', 'i_upload', /*'i_approve', 'i_edit', 'i_delete', */'i_report', 'i_rate'),
-			'c'		=> array('c_read', 'c_post', 'c_edit', 'c_delete'),
-			'm'		=> array('m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'),
-			'misc'	=> array('a_list'/*, 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'*/),
-		);
+		$permissions->cats[phpbb_gallery_auth::PERSONAL_ALBUM] = [
+			'i'		=> ['i_view', 'i_watermark', 'i_upload', /*'i_approve', 'i_edit', 'i_delete', */'i_report', 'i_rate'],
+			'c'		=> ['c_read', 'c_post', 'c_edit', 'c_delete'],
+			'm'		=> ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'],
+			'misc'	=> ['a_list'/*, 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'*/],
+		];
 		$permissions->p_masks[phpbb_gallery_auth::PERSONAL_ALBUM] = array_merge($permissions->cats[phpbb_gallery_auth::PERSONAL_ALBUM]['i'], $permissions->cats[phpbb_gallery_auth::PERSONAL_ALBUM]['c'], $permissions->cats[phpbb_gallery_auth::PERSONAL_ALBUM]['m'], $permissions->cats[phpbb_gallery_auth::PERSONAL_ALBUM]['misc']);
-		$permissions->p_masks_anti[phpbb_gallery_auth::PERSONAL_ALBUM] = array('i_approve', 'i_edit', 'i_delete', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict');
+		$permissions->p_masks_anti[phpbb_gallery_auth::PERSONAL_ALBUM] = ['i_approve', 'i_edit', 'i_delete', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'];
 
 		switch ($mode)
 		{
@@ -120,19 +120,19 @@ class acp_gallery_permissions
 		global $cache, $template;
 
 		// Send contants to the template
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'C_OWN_PERSONAL_ALBUMS'	=> phpbb_gallery_auth::OWN_ALBUM,
 			'C_PERSONAL_ALBUMS'		=> phpbb_gallery_auth::PERSONAL_ALBUM,
-		));
+		]);
 
 		$submit = (isset($_POST['submit'])) ? true : false;
 		$albums = $cache->obtain_album_list();
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'U_ACTION'					=> $this->u_action . '&amp;action=v_mask',
 			'S_PERMISSION_C_MASK'		=> true,
 			'ALBUM_LIST'				=> phpbb_gallery_album::get_albumbox(true, '', phpbb_gallery_auth::SETTING_PERMISSIONS),
-		));
+		]);
 	}
 
 	function permissions_v_mask()
@@ -142,9 +142,9 @@ class acp_gallery_permissions
 
 		$submit = (isset($_POST['submit'])) ? true : false;
 		$delete = (isset($_POST['delete'])) ? true : false;
-		$album_id = request_var('album_id', array(0));
-		$group_id = request_var('group_id', array(0));
-		$user_id = request_var('user_id', array(0));
+		$album_id = request_var('album_id', [0]);
+		$group_id = request_var('group_id', [0]);
+		$user_id = request_var('user_id', [0]);
 		$p_system = request_var('p_system', 0);
 
 		if (!$p_system && !sizeof($album_id))
@@ -165,7 +165,7 @@ class acp_gallery_permissions
 						AND ' . $db->sql_in_set('perm_group_id', $group_id);
 				$result = $db->sql_query($sql);
 
-				$outdated_p_masks = array();
+				$outdated_p_masks = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$outdated_p_masks[] = $row['perm_role_id'];
@@ -192,7 +192,7 @@ class acp_gallery_permissions
 					WHERE ' . $db->sql_in_set('perm_role_id', $outdated_p_masks, false, true);
 				$result = $db->sql_query($sql);
 
-				$still_used_p_masks = array();
+				$still_used_p_masks = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$still_used_p_masks[] = $row['perm_role_id'];
@@ -216,7 +216,7 @@ class acp_gallery_permissions
 						AND ' . $db->sql_in_set('perm_user_id', $user_id);
 				$result = $db->sql_query($sql);
 
-				$outdated_p_masks = array();
+				$outdated_p_masks = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$outdated_p_masks[] = $row['perm_role_id'];
@@ -243,7 +243,7 @@ class acp_gallery_permissions
 					WHERE ' . $db->sql_in_set('perm_role_id', $outdated_p_masks, false, true);
 				$result = $db->sql_query($sql);
 
-				$still_used_p_masks = array();
+				$still_used_p_masks = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$still_used_p_masks[] = $row['perm_role_id'];
@@ -276,7 +276,7 @@ class acp_gallery_permissions
 				ORDER BY left_id';
 			$result = $db->sql_query($sql);
 
-			$a_names = array();
+			$a_names = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$a_names[] = $row['album_name'];
@@ -285,24 +285,24 @@ class acp_gallery_permissions
 		}
 
 		// Get the groups for selected album/p_system
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'		=> 'g.group_name, g.group_id, g.group_type',
-			'FROM'			=> array(GROUPS_TABLE => 'g'),
+			'FROM'			=> [GROUPS_TABLE => 'g'],
 
-			'LEFT_JOIN'		=> array(
-				array(
-					'FROM'		=> array(GALLERY_PERMISSIONS_TABLE => 'p'),
+			'LEFT_JOIN'		=> [
+				[
+					'FROM'		=> [GALLERY_PERMISSIONS_TABLE => 'p'],
 					'ON'		=> 'p.perm_group_id = g.group_id',
-				),
-			),
+				],
+			],
 
 			'WHERE'			=> ((!$p_system) ? $db->sql_in_set('p.perm_album_id', $album_id, false, true) : $db->sql_in_set('p.perm_system', $p_system, false, true)),
 			'GROUP_BY'		=> 'g.group_id, g.group_type, g.group_name',
-		);
+		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query($sql);
 
-		$set_groups = array();
+		$set_groups = [];
 		$s_defined_group_options = '';
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -325,24 +325,24 @@ class acp_gallery_permissions
 		$db->sql_freeresult($result);
 
 		// Get the users for selected album/p_system
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'		=> 'u.username, u.user_id',
-			'FROM'			=> array(USERS_TABLE => 'u'),
+			'FROM'			=> [USERS_TABLE => 'u'],
 
-			'LEFT_JOIN'		=> array(
-				array(
-					'FROM'		=> array(GALLERY_PERMISSIONS_TABLE => 'p'),
+			'LEFT_JOIN'		=> [
+				[
+					'FROM'		=> [GALLERY_PERMISSIONS_TABLE => 'p'],
 					'ON'		=> 'p.perm_user_id = u.user_id',
-				),
-			),
+				],
+			],
 
 			'WHERE'			=> ((!$p_system) ? $db->sql_in_set('p.perm_album_id', $album_id, false, true) : $db->sql_in_set('p.perm_system', $p_system, false, true)),
 			'GROUP_BY'		=> 'u.user_id, u.username',
-		);
+		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query($sql);
 
-		$set_users = array();
+		$set_users = [];
 		$s_defined_user_options = '';
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -352,12 +352,12 @@ class acp_gallery_permissions
 		$db->sql_freeresult($result);
 
 		// Setting permissions screen
-		$s_hidden_fields = build_hidden_fields(array(
+		$s_hidden_fields = build_hidden_fields([
 			'album_id'		=> $album_id,
 			'p_system'		=> $p_system,
-		));
+		]);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_HIDDEN_FIELDS'			=> $s_hidden_fields,
 			'U_ACTION'					=> $this->u_action . '&amp;action=v_mask',
 			'S_PERMISSION_V_MASK'		=> true,
@@ -373,7 +373,7 @@ class acp_gallery_permissions
 			'S_DEFINED_USER_OPTIONS'	=> $s_defined_user_options,
 			'U_FIND_USERNAME'			=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', 'mode=searchuser&amp;form=add_user&amp;field=username&amp;select_single=true'),
 			'ANONYMOUS_USER_ID'			=> ANONYMOUS,
-		));
+		]);
 	}
 
 	function permissions_p_mask()
@@ -388,10 +388,10 @@ class acp_gallery_permissions
 
 		$submit = (isset($_POST['submit'])) ? true : false;
 		$delete = (isset($_POST['delete'])) ? true : false;
-		$album_id = request_var('album_id', array(0));
-		$group_id = request_var('group_id', array(0));
-		$user_id = request_var('user_id', array(0));
-		$username = request_var('username', array(''), true);
+		$album_id = request_var('album_id', [0]);
+		$group_id = request_var('group_id', [0]);
+		$user_id = request_var('user_id', [0]);
+		$username = request_var('username', [''], true);
 		$usernames = request_var('usernames', '', true);
 		$p_system = request_var('p_system', 0);
 
@@ -435,7 +435,7 @@ class acp_gallery_permissions
 		// Create the loops for the javascript
 		for ($i = 0; $i < sizeof($permissions->cats[$p_system]); $i++)
 		{
-			$template->assign_block_vars('c_rows', array());
+			$template->assign_block_vars('c_rows', []);
 		}
 
 
@@ -447,15 +447,15 @@ class acp_gallery_permissions
 				WHERE ' . $db->sql_in_set('group_id', $victim_id);
 			$result = $db->sql_query($sql);
 
-			$victim_list = array();
+			$victim_list = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$row['group_name'] = (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']);
-				$victim_row = array(
+				$victim_row = [
 					'victim_id'		=> $row['group_id'],
 					'victim_name'	=> $row['group_name'],
 					'victim_colour'	=> $row['group_colour'],
-				);
+				];
 				$victim_list[$row['group_id']] = $victim_row;
 			}
 			$db->sql_freeresult($result);
@@ -468,14 +468,14 @@ class acp_gallery_permissions
 				WHERE ' . $db->sql_in_set('user_id', $victim_id);
 			$result = $db->sql_query($sql);
 
-			$victim_list = array();
+			$victim_list = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$victim_row = array(
+				$victim_row = [
 					'victim_id'		=> $row['user_id'],
 					'victim_name'	=> $row['username'],
 					'victim_colour'	=> $row['user_colour'],
-				);
+				];
 				$victim_list[$row['user_id']] = $victim_row;
 			}
 			$db->sql_freeresult($result);
@@ -488,7 +488,7 @@ class acp_gallery_permissions
 				AND ' . $db->sql_in_set('perm_' . $victim_mode . '_id', $victim_id);
 		$result = $db->sql_query($sql);
 
-		$p_masks = $fetch_roles = array();
+		$p_masks = $fetch_roles = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$fetch_roles[] = $row['perm_role_id'];
@@ -497,7 +497,7 @@ class acp_gallery_permissions
 		$db->sql_freeresult($result);
 
 		// Fetch the roles
-		$roles = array();
+		$roles = [];
 		if (!empty($fetch_roles))
 		{
 			$sql = 'SELECT *
@@ -519,19 +519,19 @@ class acp_gallery_permissions
 			foreach ($album_id as $album)
 			{
 				$album_row = $album_list[$album];
-				$template->assign_block_vars('c_mask', array(
+				$template->assign_block_vars('c_mask', [
 					'C_MASK_ID'				=> $album_row['album_id'],
 					'C_MASK_NAME'			=> $album_row['album_name'],
 					'INHERIT_C_MASKS'		=> $this->inherit_albums($album_list, $album_id, $album_row['album_id']),
-				));
+				]);
 				foreach ($victim_id as $victim)
 				{
 					$victim_row = $victim_list[$victim];
-					$template->assign_block_vars('c_mask.v_mask', array(
+					$template->assign_block_vars('c_mask.v_mask', [
 						'VICTIM_ID'				=> $victim_row['victim_id'],
 						'VICTIM_NAME'			=> '<span' . (($victim_row['victim_colour']) ? (' style="color: #' . $victim_row['victim_colour'] . '"') : '') . '>' . $victim_row['victim_name'] . '</span>',
 						'INHERIT_VICTIMS'		=> $this->inherit_victims($album_list, $album_id, $victim_list, $album_row['album_id'], $victim_row['victim_id']),
-					));
+					]);
 					$role_id = (isset($p_masks[$album_row['album_id']][$victim_row['victim_id']])) ? $p_masks[$album_row['album_id']][$victim_row['victim_id']] : 0;
 					foreach ($permissions->cats[$p_system] as $category => $permission_values)
 					{
@@ -554,16 +554,16 @@ class acp_gallery_permissions
 								}
 							}
 						}
-						$template->assign_block_vars('c_mask.v_mask.category', array(
+						$template->assign_block_vars('c_mask.v_mask.category', [
 							'CAT_NAME'				=> $user->lang['PERMISSION_' . strtoupper($category)],
 							'PERM_GROUP_ID'			=> $category,
 							'S_YES'					=> ($acl_s_yes && !$acl_s_never && !$acl_s_no) ? true : false,
 							'S_NEVER'				=> ($acl_s_never && !$acl_s_yes && !$acl_s_no) ? true : false,
 							'S_NO'					=> ($acl_s_no && !$acl_s_never && !$acl_s_yes) ? true : false,
-						));
+						]);
 						foreach ($permission_values as $permission)
 						{
-							$template->assign_block_vars('c_mask.v_mask.category.mask', array(
+							$template->assign_block_vars('c_mask.v_mask.category.mask', [
 								'PERMISSION'			=> $user->lang['PERMISSION_' . strtoupper($permission)],
 								'PERMISSION_EXPLAIN'	=> (isset($user->lang['PERMISSION_' . strtoupper($permission) . '_EXPLAIN'])) ? $user->lang['PERMISSION_' . strtoupper($permission) . '_EXPLAIN'] : '',
 								'S_FIELD_NAME'			=> 'setting[' . $album_row['album_id'] . '][' . $victim_row['victim_id'] . '][' . $permission . ']',
@@ -572,7 +572,7 @@ class acp_gallery_permissions
 								'S_NEVER'				=> ((isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NEVER)) ? true : false),
 								'S_VALUE'				=> ((isset($roles[$role_id][$permission])) ? $roles[$role_id][$permission] : 0),
 								'S_COUNT_FIELD'			=> (substr($permission, -6, 6) == '_count') ? true : false,
-							));
+							]);
 						}
 					}
 				}
@@ -580,28 +580,28 @@ class acp_gallery_permissions
 		}
 		else
 		{
-			$template->assign_block_vars('c_mask', array(
+			$template->assign_block_vars('c_mask', [
 				'C_MASK_ID'				=> $p_system,
 				'C_MASK_NAME'			=> (($p_system == phpbb_gallery_auth::OWN_ALBUM) ? $user->lang['OWN_PERSONAL_ALBUMS'] : $user->lang['PERSONAL_ALBUMS']),
-			));
+			]);
 			foreach ($victim_id as $victim)
 			{
 				$victim_row = $victim_list[$victim];
-				$template->assign_block_vars('c_mask.v_mask', array(
+				$template->assign_block_vars('c_mask.v_mask', [
 					'VICTIM_ID'				=> $victim_row['victim_id'],
 					'VICTIM_NAME'			=> '<span' . (($victim_row['victim_colour']) ? (' style="color: #' . $victim_row['victim_colour'] . '"') : '') . '>' . $victim_row['victim_name'] . '</span>',
 					'INHERIT_VICTIMS'		=> $this->p_system_inherit_victims($p_system, $victim_list, $victim_row['victim_id']),
-				));
+				]);
 				$role_id = (isset($p_masks[$p_system][$victim_row['victim_id']])) ? $p_masks[$p_system][$victim_row['victim_id']] : 0;
 				foreach ($permissions->cats[$p_system] as $category => $permission_values)
 				{
-					$template->assign_block_vars('c_mask.v_mask.category', array(
+					$template->assign_block_vars('c_mask.v_mask.category', [
 						'CAT_NAME'				=> $user->lang['PERMISSION_' . strtoupper($category)],
 						'PERM_GROUP_ID'			=> $category,
-					));
+					]);
 					foreach ($permission_values as $permission)
 					{
-						$template->assign_block_vars('c_mask.v_mask.category.mask', array(
+						$template->assign_block_vars('c_mask.v_mask.category.mask', [
 							'PERMISSION'			=> $user->lang['PERMISSION_' . strtoupper($permission)],
 							'PERMISSION_EXPLAIN'	=> (isset($user->lang['PERMISSION_' . strtoupper($permission) . '_EXPLAIN'])) ? $user->lang['PERMISSION_' . strtoupper($permission) . '_EXPLAIN'] : '',
 							'S_FIELD_NAME'			=> 'setting[' . $p_system . '][' . $victim_row['victim_id'] . '][' . $permission . ']',
@@ -610,25 +610,25 @@ class acp_gallery_permissions
 							'S_NEVER'				=> ((isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NEVER)) ? true : false),
 							'S_VALUE'				=> ((isset($roles[$role_id][$permission])) ? $roles[$role_id][$permission] : 0),
 							'S_COUNT_FIELD'			=> (substr($permission, -6, 6) == '_count') ? true : false,
-						));
+						]);
 					}
 				}
 			}
 		}
 
 		// Setting permissions screen
-		$s_hidden_fields = build_hidden_fields(array(
+		$s_hidden_fields = build_hidden_fields([
 			'user_id'		=> $user_id,
 			'group_id'		=> $group_id,
 			'album_id'		=> $album_id,
 			'p_system'		=> $p_system,
-		));
+		]);
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_HIDDEN_FIELDS'			=> $s_hidden_fields,
 			'U_ACTION'					=> $this->u_action . '&amp;action=set',
 			'S_PERMISSION_P_MASK'		=> true,
-		));
+		]);
 	}
 
 	function permissions_set()
@@ -637,9 +637,9 @@ class acp_gallery_permissions
 
 		// Send contants to the template
 		$submit = (isset($_POST['submit'])) ? true : false;
-		$album_id = request_var('album_id', array(0));
-		$group_id = request_var('group_id', array(0));
-		$user_id = request_var('user_id', array(0));
+		$album_id = request_var('album_id', [0]);
+		$group_id = request_var('group_id', [0]);
+		$user_id = request_var('user_id', [0]);
 		$p_system = request_var('p_system', phpbb_gallery_auth::PUBLIC_ALBUM);
 
 		if (!sizeof($group_id) && !sizeof($user_id))
@@ -674,17 +674,17 @@ class acp_gallery_permissions
 			*/
 			//		$auth_settings = request_var('setting', array(0 => array(0 => array('' => 0))));
 			$p_mask_count = 0;
-			$auth_settings = $p_mask_storage = $c_mask_storage = $v_mask_storage = array();
+			$auth_settings = $p_mask_storage = $c_mask_storage = $v_mask_storage = [];
 			foreach ($_POST['setting'] as $c_mask => $v_sets)
 			{
 				$c_mask = (int) $c_mask;
 				$c_mask_storage[] = $c_mask;
-				$auth_settings[$c_mask] = array();
+				$auth_settings[$c_mask] = [];
 				foreach ($v_sets as $v_mask => $p_sets)
 				{
 					$v_mask = (int) $v_mask;
 					$v_mask_storage[] = $v_mask;
-					$auth_settings[$c_mask][$v_mask] = array();
+					$auth_settings[$c_mask][$v_mask] = [];
 					$is_moderator = false;
 					foreach ($p_sets as $p_mask => $value)
 					{
@@ -718,7 +718,7 @@ class acp_gallery_permissions
 
 					$p_mask_storage[$p_mask_count]['p_mask'] = $auth_settings[$c_mask][$v_mask];
 					$p_mask_storage[$p_mask_count]['is_moderator'] = $is_moderator;
-					$p_mask_storage[$p_mask_count]['usage'][] = array('c_mask' => $c_mask, 'v_mask' => $v_mask);
+					$p_mask_storage[$p_mask_count]['usage'][] = ['c_mask' => $c_mask, 'v_mask' => $v_mask];
 					$auth_settings[$c_mask][$v_mask] = $p_mask_count;
 					$p_mask_count++;
 				}
@@ -745,7 +745,7 @@ class acp_gallery_permissions
 									// and just use the same p_mask
 									unset($p_mask_storage[$auth_settings[$c_mask][$v_mask]]);
 									$auth_settings[$c_mask][$v_mask] = $auth_settings[$i_mask][$v_mask];
-									$p_mask_storage[$auth_settings[$c_mask][$v_mask]]['usage'][] = array('c_mask' => $c_mask, 'v_mask' => $v_mask);
+									$p_mask_storage[$auth_settings[$c_mask][$v_mask]]['usage'][] = ['c_mask' => $c_mask, 'v_mask' => $v_mask];
 								}
 								// We take all permissions of another c_mask, so:
 								break;
@@ -777,7 +777,7 @@ class acp_gallery_permissions
 									unset($p_mask_storage[$auth_settings[$c_mask][$v_mask]]);
 								}
 								$auth_settings[$c_mask][$v_mask] = $auth_settings[$ci_mask][$vi_mask];
-								$p_mask_storage[$auth_settings[$c_mask][$v_mask]]['usage'][] = array('c_mask' => $c_mask, 'v_mask' => $v_mask);
+								$p_mask_storage[$auth_settings[$c_mask][$v_mask]]['usage'][] = ['c_mask' => $c_mask, 'v_mask' => $v_mask];
 							}
 							else
 							{
@@ -797,7 +797,7 @@ class acp_gallery_permissions
 					AND ' . $db->sql_in_set('perm_' . $victim_mode . '_id', $v_mask_storage);
 			$result = $db->sql_query($sql);
 
-			$outdated_p_masks = array();
+			$outdated_p_masks = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$outdated_p_masks[] = $row['perm_role_id'];
@@ -823,7 +823,7 @@ class acp_gallery_permissions
 				WHERE ' . $db->sql_in_set('perm_role_id', $outdated_p_masks, false, true);
 			$result = $db->sql_query($sql);
 
-			$still_used_p_masks = array();
+			$still_used_p_masks = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$still_used_p_masks[] = $row['perm_role_id'];
@@ -836,7 +836,7 @@ class acp_gallery_permissions
 					AND ' . $db->sql_in_set('role_id', $still_used_p_masks, true, true);
 			$db->sql_query($sql);
 
-			$group_names = array();
+			$group_names = [];
 			if (!$p_system)
 			{
 				if ($victim_mode == 'group')
@@ -869,7 +869,7 @@ class acp_gallery_permissions
 				}
 			}
 
-			$sql_permissions = $sql_moderators = array();
+			$sql_permissions = $sql_moderators = [];
 			foreach ($p_mask_storage as $p_set)
 			{
 				// Check whether the p_mask is already in the DB
@@ -905,38 +905,38 @@ class acp_gallery_permissions
 				{
 					if (!$p_system)
 					{
-						$sql_permissions[] = array(
+						$sql_permissions[] = [
 							'perm_role_id'					=> $role_id,
 							'perm_album_id'					=> $usage['c_mask'],
 							'perm_' . $victim_mode . '_id'	=> $usage['v_mask'],
-						);
+						];
 						if ($p_set['is_moderator'])
 						{
 							if ($victim_mode == 'group')
 							{
-								$sql_moderators[] = array(
+								$sql_moderators[] = [
 									'album_id'		=> $usage['c_mask'],
 									'group_id'		=> $usage['v_mask'],
 									'group_name'	=> $victim_names[$usage['v_mask']],
-								);
+								];
 							}
 							else
 							{
-								$sql_moderators[] = array(
+								$sql_moderators[] = [
 									'album_id'		=> $usage['c_mask'],
 									'user_id'		=> $usage['v_mask'],
 									'username'		=> $victim_names[$usage['v_mask']],
-								);
+								];
 							}
 						}
 					}
 					else
 					{
-						$sql_permissions[] = array(
+						$sql_permissions[] = [
 							'perm_role_id'					=> $role_id,
 							'perm_system'					=> $usage['c_mask'],
 							'perm_' . $victim_mode . '_id'	=> $usage['v_mask'],
-						);
+						];
 					}
 				}
 			}
@@ -965,7 +965,7 @@ class acp_gallery_permissions
 		if ($submit)
 		{
 			$src = request_var('src_album_id', 0);
-			$dest = request_var('dest_album_ids', array(0));
+			$dest = request_var('dest_album_ids', [0]);
 
 			$sql = 'SELECT album_id
 				FROM ' . GALLERY_ALBUMS_TABLE . '
@@ -994,18 +994,18 @@ class acp_gallery_permissions
 				{
 					foreach ($dest as $album_id)
 					{
-						$perm_data[] = array(
+						$perm_data[] = [
 							'perm_role_id'					=> $row['perm_role_id'],
 							'perm_album_id'					=> $album_id,
 							'perm_user_id'					=> $row['perm_user_id'],
 							'perm_group_id'					=> $row['perm_group_id'],
 							'perm_system'					=> $row['perm_system'],
-						);
+						];
 					}
 				}
 				$db->sql_freeresult($result);
 
-				$modscache_ary = array();
+				$modscache_ary = [];
 				$sql = 'SELECT * FROM ' . GALLERY_MODSCACHE_TABLE . '
 					WHERE album_id = ' . $src;
 				$result = $db->sql_query($sql);
@@ -1013,14 +1013,14 @@ class acp_gallery_permissions
 				{
 					foreach ($dest as $album_id)
 					{
-						$modscache_ary[] = array(
+						$modscache_ary[] = [
 							'album_id'			=> $album_id,
 							'user_id'			=> $row['user_id'],
 							'username'			=> $row['username'],
 							'group_id'			=> $row['group_id'],
 							'group_name'		=> $row['group_name'],
 							'display_on_index'	=> $row['display_on_index'],
-						);
+						];
 					}
 				}
 				$db->sql_freeresult($result);
@@ -1044,11 +1044,11 @@ class acp_gallery_permissions
 			}
 			else
 			{
-				$s_hidden_fields = array(
+				$s_hidden_fields = [
 					'submit'			=> $submit,
 					'src_album_id'		=> $src,
 					'dest_album_ids'	=> $dest,
-				);
+				];
 
 				$s_hidden_fields = build_hidden_fields($s_hidden_fields);
 
@@ -1056,10 +1056,10 @@ class acp_gallery_permissions
 			}
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_ALBUM_OPTIONS'		=> phpbb_gallery_album::get_albumbox(true, ''),
 			'S_COPY_PERMISSIONS'	=> true,
-		));
+		]);
 	}
 
 	/**
@@ -1120,13 +1120,13 @@ class acp_gallery_permissions
 		// We submit a "wrong" array on the check (to make it more easy) so we convert it here
 		if ($check_inherit_album && $check_inherit_victim)
 		{
-			$converted_victims = array();
+			$converted_victims = [];
 			foreach ($allowed_victims as $victim)
 			{
-				$converted_victims[] = array(
+				$converted_victims[] = [
 					'victim_id'		=> $victim,
 					'victim_name'	=> '',
-				);
+				];
 			}
 			$allowed_victims = $converted_victims;
 			unset ($converted_victims);
@@ -1185,13 +1185,13 @@ class acp_gallery_permissions
 		// We submit a "wrong" array on the check (to make it more easy) so we convert it here
 		if ($check_inherit_victim)
 		{
-			$converted_groups = array();
+			$converted_groups = [];
 			foreach ($allowed_victims as $victim)
 			{
-				$converted_victims[] = array(
+				$converted_victims[] = [
 					'victim_id'		=> $victim,
 					'victim_name'	=> '',
-				);
+				];
 			}
 			$allowed_victims = $converted_victims;
 			unset ($converted_victims);

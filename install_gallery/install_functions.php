@@ -116,12 +116,12 @@ function add_bbcode($album_bbcode)
 	$bbcode_tpl = '<a href="' . $gallery_url . 'image.php?image_id={NUMBER}"><img src="' . $gallery_url . 'image.php?mode=thumbnail&amp;image_id={NUMBER}" alt="{NUMBER}" /></a>';
 
 	$sql_ary = $acp_bbcodes->build_regexp($bbcode_match, $bbcode_tpl);
-	$sql_ary = array_merge($sql_ary, array(
+	$sql_ary = array_merge($sql_ary, [
 		'bbcode_match'			=> $bbcode_match,
 		'bbcode_tpl'			=> $bbcode_tpl,
 		'display_on_posting'	=> true,
 		'bbcode_helpline'		=> 'GALLERY_HELPLINE_ALBUM',
-	));
+	]);
 
 	$sql = 'UPDATE ' . BBCODES_TABLE . '
 		SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
@@ -170,7 +170,7 @@ function add_bbcode($album_bbcode)
 * @function: recalc_btree
 * @fixed with recalc_btree_adv.diff from http://www.phpbb.com/bugs/phpbb3/41555
 */
-function recalc_btree($sql_id, $sql_table, $where_options = array())
+function recalc_btree($sql_id, $sql_table, $where_options = [])
 {
 	global $db;
 
@@ -182,7 +182,7 @@ function recalc_btree($sql_id, $sql_table, $where_options = array())
 	$sql_where = '';
 	if ($where_options)
 	{
-		$options = array();
+		$options = [];
 		foreach ($where_options as $option)
 		{
 			$options[] = "{$option['fieldname']} = '" . $db->sql_escape($option['fieldvalue']) . "'";
@@ -283,7 +283,7 @@ function remove_duplicated_rates()
 
 function config_mapping()
 {
-	return array(
+	return [
 		'gallery_total_images'		=> 'disp_total_images',
 		'gallery_viewtopic_icon'	=> 'viewtopic_icon',
 		'gallery_viewtopic_images'	=> 'viewtopic_images',
@@ -380,5 +380,5 @@ function config_mapping()
 		'images_per_album'		=> 'album_images',
 		'upload_images'			=> 'num_uploads',
 		'description_length'	=> 'description_length',
-	);
+	];
 }

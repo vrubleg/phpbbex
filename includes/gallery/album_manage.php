@@ -63,7 +63,7 @@ class phpbb_gallery_album_manage
 	{
 		global $db, $user, $cache;
 
-		$errors = array();
+		$errors = [];
 
 		if (!$album_data['album_name'])
 		{
@@ -306,7 +306,7 @@ class phpbb_gallery_album_manage
 					}
 					else
 					{
-						return array($user->lang['NO_DESTINATION_ALBUM']);
+						return [$user->lang['NO_DESTINATION_ALBUM']];
 					}
 				}
 				else if ($album_data_sql['type_action'] == 'delete')
@@ -315,7 +315,7 @@ class phpbb_gallery_album_manage
 				}
 				else
 				{
-					return array($user->lang['NO_ALBUM_ACTION']);
+					return [$user->lang['NO_ALBUM_ACTION']];
 				}
 			}
 			else if ($row['album_type'] == phpbb_gallery_album::TYPE_CONTEST && $album_data_sql['album_type'] == phpbb_gallery_album::TYPE_CONTEST)
@@ -422,7 +422,7 @@ class phpbb_gallery_album_manage
 	{
 		global $db, $user;
 
-		$to_data = $moved_ids = $errors = array();
+		$to_data = $moved_ids = $errors = [];
 
 		// Get the parent data
 		if ($to_id > 0)
@@ -434,13 +434,13 @@ class phpbb_gallery_album_manage
 		$from_data = $moved_albums[0];
 		$diff = sizeof($moved_albums) * 2;
 
-		$moved_ids = array();
+		$moved_ids = [];
 		for ($i = 0, $end = sizeof($moved_albums); $i < $end; ++$i)
 		{
 			// Can not select child as parent
 			if ($moved_albums[$i]['album_id'] == $to_id)
 			{
-				return array($user->lang['ALBUM_PARENT_INVALID']);
+				return [$user->lang['ALBUM_PARENT_INVALID']];
 			}
 			$moved_ids[] = $moved_albums[$i]['album_id'];
 		}
@@ -528,9 +528,9 @@ class phpbb_gallery_album_manage
 
 		$album_data = phpbb_gallery_album::get_info($album_id);
 
-		$errors = array();
+		$errors = [];
 		$log_action_images = $log_action_albums = $images_to_name = $subalbums_to_name = '';
-		$album_ids = array($album_id);
+		$album_ids = [$album_id];
 
 		if ($action_images == 'delete')
 		{
@@ -671,7 +671,7 @@ class phpbb_gallery_album_manage
 				AND album_user_id = " . $this->user_id;
 		$db->sql_query($sql);
 
-		$log_action = implode('_', array($log_action_images, $log_action_albums));
+		$log_action = implode('_', [$log_action_images, $log_action_albums]);
 
 		/**
 		* Log what we did
@@ -777,7 +777,7 @@ class phpbb_gallery_album_manage
 			phpbb_gallery_album::update_info($to_id);
 		}
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -798,7 +798,7 @@ class phpbb_gallery_album_manage
 				AND image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN;
 		$result = $db->sql_query($sql);
 
-		$image_counts = array();
+		$image_counts = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$image_counts[$row['image_user_id']] = (!empty($image_counts[$row['image_user_id']])) ? $image_counts[$row['image_user_id']] + 1 : 1;
@@ -810,7 +810,7 @@ class phpbb_gallery_album_manage
 			WHERE image_album_id = ' . $album_id;
 		$result = $db->sql_query($sql);
 
-		$filenames = $deleted_images = array();
+		$filenames = $deleted_images = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$deleted_images[] = $row['image_id'];
@@ -873,7 +873,7 @@ class phpbb_gallery_album_manage
 		$cache->destroy('sql', GALLERY_WATCH_TABLE);
 		$cache->destroy('_albums');
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -900,7 +900,7 @@ class phpbb_gallery_album_manage
 				AND ' . (($action == 'move_up') ? "right_id < {$album_row['right_id']} ORDER BY right_id DESC" : "left_id > {$album_row['left_id']} ORDER BY left_id ASC");
 		$result = $db->sql_query_limit($sql, $steps);
 
-		$target = array();
+		$target = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$target = $row;

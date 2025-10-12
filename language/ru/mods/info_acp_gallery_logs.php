@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'LOG_ALBUM_ADD'							=> '<strong>Создан новый альбом</strong><br />» %s',
 	'LOG_ALBUM_DEL_ALBUM'					=> '<strong>Удалён альбом</strong><br />» %s',
 	'LOG_ALBUM_DEL_ALBUMS'					=> '<strong>Удалён альбом и вложенные альбомы</strong><br />» %s',
@@ -51,4 +51,4 @@ $lang = array_merge($lang, array(
 
 	'LOGVIEW_VIEWALBUM'					=> 'Просмотр альбома',
 	'LOGVIEW_VIEWIMAGE'					=> 'Просмотр фото',
-));
+]);

@@ -29,17 +29,17 @@ class phpbb_gallery_auth
 	const ACL_YES		= 1;
 	const ACL_NEVER		= 2;
 
-	static private $_permission_i = array('i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate');
-	static private $_permission_c = array('c_read', 'c_post', 'c_edit', 'c_delete');
-	static private $_permission_m = array('m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status');
-	static private $_permission_misc = array('a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict');
-	static private $_permissions = array();
-	static private $_permissions_flipped = array();
+	static private $_permission_i = ['i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'];
+	static private $_permission_c = ['c_read', 'c_post', 'c_edit', 'c_delete'];
+	static private $_permission_m = ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'];
+	static private $_permission_misc = ['a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'];
+	static private $_permissions = [];
+	static private $_permissions_flipped = [];
 
-	private $_auth_data = array();
-	private $_auth_data_never = array();
+	private $_auth_data = [];
+	private $_auth_data_never = [];
 
-	private $acl_cache = array();
+	private $acl_cache = [];
 
 	/**
 	* Create a auth-object for a given user
@@ -50,7 +50,7 @@ class phpbb_gallery_auth
 	public function __construct($user_id, $album_id = false)
 	{
 		self::$_permissions = array_merge(self::$_permission_i, self::$_permission_c, self::$_permission_m, self::$_permission_misc);
-		self::$_permissions_flipped = array_flip(array_merge(self::$_permissions, array('m_')));
+		self::$_permissions_flipped = array_flip(array_merge(self::$_permissions, ['m_']));
 		self::$_permissions_flipped['i_count'] = 'i_count';
 		self::$_permissions_flipped['a_count'] = 'a_count';
 
@@ -106,21 +106,21 @@ class phpbb_gallery_auth
 			}
 		}
 
-		$sql_array = array(
+		$sql_array = [
 			'SELECT'		=> "p.perm_album_id, $sql_select p.perm_system",
-			'FROM'			=> array(GALLERY_PERMISSIONS_TABLE => 'p'),
+			'FROM'			=> [GALLERY_PERMISSIONS_TABLE => 'p'],
 
-			'LEFT_JOIN'		=> array(
-				array(
-					'FROM'		=> array(GALLERY_ROLES_TABLE => 'pr'),
+			'LEFT_JOIN'		=> [
+				[
+					'FROM'		=> [GALLERY_ROLES_TABLE => 'pr'],
 					'ON'		=> 'p.perm_role_id = pr.role_id',
-				),
-			),
+				],
+			],
 
 			'WHERE'			=> 'p.perm_user_id = ' . $user_id . ' OR ' . $db->sql_in_set('p.perm_group_id', $user_groups_ary, false, true),
 			'GROUP_BY'		=> 'p.perm_system, p.perm_album_id',
 			'ORDER_BY'		=> 'p.perm_system DESC, p.perm_album_id ASC',
-		);
+		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 
 		$db->sql_return_on_error(true);
@@ -167,7 +167,7 @@ class phpbb_gallery_auth
 	*/
 	private static function serialize_auth_data($auth_data)
 	{
-		$acl_array = array();
+		$acl_array = [];
 
 		foreach ($auth_data as $a_id => $obj)
 		{
@@ -324,7 +324,7 @@ class phpbb_gallery_auth
 	{
 		global $db;
 
-		$zebra = array('foe' => array(), 'friend' => array());
+		$zebra = ['foe' => [], 'friend' => []];
 		$sql = 'SELECT *
 			FROM ' . ZEBRA_TABLE . '
 			WHERE zebra_id = ' . (int) $user_id;
@@ -351,7 +351,7 @@ class phpbb_gallery_auth
 	{
 		global $config, $db;
 
-		$groups_ary = array();
+		$groups_ary = [];
 		$sql = 'SELECT ug.group_id
 			FROM ' . USER_GROUP_TABLE . ' ug
 			LEFT JOIN ' . GROUPS_TABLE . ' g
@@ -537,11 +537,11 @@ class phpbb_gallery_auth
 		if (!is_int($bit))
 		{
 			// No support for *_count permissions.
-			return ($mode == 'array') ? array() : '';
+			return ($mode == 'array') ? [] : '';
 		}
 
 		$album_list = '';
-		$album_array = array();
+		$album_array = [];
 		$albums = $cache->obtain_album_list();
 		foreach ($albums as $album)
 		{
@@ -594,12 +594,12 @@ class phpbb_gallery_auth
 
 		$locked = ($album_status == ITEM_LOCKED && !$this->acl_check('m_', $album_id, $album_user_id)) ? true : false;
 
-		$rules = array(
+		$rules = [
 			($this->acl_check('i_view', $album_id, $album_user_id) && !$locked) ? $user->lang['ALBUM_VIEW_CAN'] : $user->lang['ALBUM_VIEW_CANNOT'],
 			($this->acl_check('i_upload', $album_id, $album_user_id) && !$locked) ? $user->lang['ALBUM_UPLOAD_CAN'] : $user->lang['ALBUM_UPLOAD_CANNOT'],
 			($this->acl_check('i_edit', $album_id, $album_user_id) && !$locked) ? $user->lang['ALBUM_EDIT_CAN'] : $user->lang['ALBUM_EDIT_CANNOT'],
 			($this->acl_check('i_delete', $album_id, $album_user_id) && !$locked) ? $user->lang['ALBUM_DELETE_CAN'] : $user->lang['ALBUM_DELETE_CANNOT'],
-		);
+		];
 		if (phpbb_gallery_config::get('allow_comments') && $this->acl_check('c_read', $album_id, $album_user_id))
 		{
 			$rules[] = ($this->acl_check('c_post', $album_id, $album_user_id) && !$locked) ? $user->lang['ALBUM_COMMENT_CAN'] : $user->lang['ALBUM_COMMENT_CANNOT'];
@@ -611,7 +611,7 @@ class phpbb_gallery_auth
 
 		foreach ($rules as $rule)
 		{
-			$template->assign_block_vars('rules', array('RULE' => $rule));
+			$template->assign_block_vars('rules', ['RULE' => $rule]);
 		}
 
 		return;

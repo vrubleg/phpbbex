@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'LOG_ALBUM_ADD'							=> '<strong>Created new album</strong><br />» %s',
 	'LOG_ALBUM_DEL_ALBUM'					=> '<strong>Deleted album</strong><br />» %s',
 	'LOG_ALBUM_DEL_ALBUMS'					=> '<strong>Deleted album and its subalbums</strong><br />» %s',
@@ -51,4 +51,4 @@ $lang = array_merge($lang, array(
 
 	'LOGVIEW_VIEWALBUM'					=> 'View album',
 	'LOGVIEW_VIEWIMAGE'					=> 'View image',
-));
+]);

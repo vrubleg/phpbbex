@@ -155,9 +155,9 @@ class phpbb_gallery_image_rating
 				}
 				for ($i = 1; $i <= phpbb_gallery_config::get('max_rating'); $i++)
 				{
-					$template->assign_block_vars('rate_scale', array(
+					$template->assign_block_vars('rate_scale', [
 						'RATE_POINT'	=> $i,
-					));
+					]);
 				}
 			break;
 		}
@@ -328,12 +328,12 @@ class phpbb_gallery_image_rating
 	{
 		global $db, $user;
 
-		$sql_ary = array(
+		$sql_ary = [
 			'rate_image_id'	=> $this->image_id,
 			'rate_user_id'	=> $user_id,
 			'rate_user_ip'	=> ($user_ip) ? $user_ip : $user->ip,
 			'rate_point'	=> $points,
-		);
+		];
 		$db->sql_query('INSERT INTO ' . GALLERY_RATES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 	}
 

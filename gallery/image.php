@@ -11,7 +11,7 @@ define('IN_PHPBB', true);
 require_once('common.php');
 require_once(PHPBB_ROOT_PATH . 'common.php');
 
-phpbb_gallery::setup(array('mods/gallery'), false);
+phpbb_gallery::setup(['mods/gallery'], false);
 //phpbb_gallery_url::_include('functions_display', 'phpbb');
 
 // Get general album information
@@ -62,7 +62,7 @@ if ((!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_us
 */
 if (!phpbb_gallery_config::get('allow_hotlinking') && isset($_SERVER['HTTP_REFERER']))
 {
-	$good_referers = array(preg_replace('#^(www\.)+#i', '', HTTP_HOST));
+	$good_referers = [preg_replace('#^(www\.)+#i', '', HTTP_HOST)];
 	if (phpbb_gallery_config::get('hotlinking_domains') != '')
 	{
 		$good_referers = array_merge($good_referers, explode(',', phpbb_gallery_config::get('hotlinking_domains')));
@@ -182,12 +182,12 @@ if (($mode == 'medium') || ($mode == 'thumbnail'))
 			if ($mode == 'thumbnail')
 			{
 				$image_data['filesize_cache'] = @filesize($image_source);
-				$sql_ary = array('filesize_cache' => $image_data['filesize_cache']);
+				$sql_ary = ['filesize_cache' => $image_data['filesize_cache']];
 			}
 			else
 			{
 				$image_data['filesize_medium'] = @filesize($image_source);
-				$sql_ary = array('filesize_medium' => $image_data['filesize_medium']);
+				$sql_ary = ['filesize_medium' => $image_data['filesize_medium']];
 			}
 			$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE ' . $db->sql_in_set('image_id', $image_id);

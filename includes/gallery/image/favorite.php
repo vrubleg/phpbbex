@@ -29,10 +29,10 @@ class phpbb_gallery_image_favorite
 
 		foreach ($image_ids as $image_id)
 		{
-			$sql_ary = array(
+			$sql_ary = [
 				'image_id'		=> $image_id,
 				'user_id'		=> $user_id,
-			);
+			];
 			$sql = 'INSERT INTO ' . GALLERY_FAVORITES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
 		}
@@ -99,7 +99,7 @@ class phpbb_gallery_image_favorite
 		}
 		else
 		{
-			return array((int) $ids);
+			return [(int) $ids];
 		}
 	}
 }

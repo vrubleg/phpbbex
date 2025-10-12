@@ -47,7 +47,7 @@ class phpbb_gallery_integration
 		$db->sql_freeresult($result);
 		if (!$member_gallery)
 		{
-			$member_gallery = array('user_images' => 0, 'personal_album_id' => 0);
+			$member_gallery = ['user_images' => 0, 'personal_album_id' => 0];
 		}
 		$member = array_merge($member, $member_gallery);
 
@@ -56,32 +56,32 @@ class phpbb_gallery_integration
 
 		if (phpbb_gallery_config::get('rrc_profile_mode'))
 		{
-			$ints = array(
+			$ints = [
 				phpbb_gallery_config::get('rrc_profile_rows'),
 				phpbb_gallery_config::get('rrc_profile_columns'),
 				0, 0,
-			);
+			];
 
 			$gallery_block = new phpbb_gallery_block(phpbb_gallery_config::get('rrc_profile_mode'), phpbb_gallery_config::get('rrc_profile_display'), $ints, false, phpbb_gallery_config::get('rrc_profile_pegas'));
 			$gallery_block->add_users($user_id);
 			$gallery_block->display();
 		}
 
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'TOTAL_IMAGES'		=> phpbb_gallery_config::get('profile_user_images'),
 			'IMAGES'			=> $member['user_images'],
 			'IMAGES_DAY'		=> sprintf($user->lang['IMAGE_DAY'], $images_per_day),
 			'IMAGES_PCT'		=> sprintf($user->lang['IMAGE_PCT'], $percentage_images),
 			'U_SEARCH_GALLERY'	=> phpbb_gallery_url::append_sid('search', 'user_id=' . $user_id),
-		));
+		]);
 
 		// View information about the personal album, only when the user is allowed to see it.
 		if (phpbb_gallery::$auth->acl_check('i_view', phpbb_gallery_auth::PERSONAL_ALBUM) || (($user_id == $user->data['user_id']) && phpbb_gallery::$auth->acl_check('i_view', phpbb_gallery_auth::OWN_ALBUM)))
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'SHOW_PERSONAL_ALBUM_OF'	=> sprintf($user->lang['SHOW_PERSONAL_ALBUM_OF'], $member['username']),
 				'U_GALLERY'			=> ($member['personal_album_id'] && phpbb_gallery_config::get('profile_pega')) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $member['personal_album_id']) : '',
-			));
+			]);
 		}
 	}
 
@@ -93,12 +93,12 @@ class phpbb_gallery_integration
 
 			// Initial load of some needed stuff, like permissions, album data, ...
 			phpbb_gallery::init();
-			$user->add_lang(array('mods/info_acp_gallery', 'mods/gallery'));
+			$user->add_lang(['mods/info_acp_gallery', 'mods/gallery']);
 
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_GALLERY_POPUP'	=> true,
 				'U_GALLERY_POPUP'	=> phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id'] . '&amp;display=popup'),
-			));
+			]);
 		}
 	}
 
@@ -113,10 +113,10 @@ class phpbb_gallery_integration
 			ORDER BY u.username_clean, a.album_user_id, a.left_id ASC';
 		$result = $db->sql_query($sql);
 
-		$albums = array();
+		$albums = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$albums[$row['album_id']] = array(
+			$albums[$row['album_id']] = [
 				'album_id'			=> $row['album_id'],
 				'parent_id'			=> $row['parent_id'],
 				'album_name'		=> $row['album_name'],
@@ -126,7 +126,7 @@ class phpbb_gallery_integration
 				'album_user_id'		=> $row['album_user_id'],
 				'display_in_rrc'	=> $row['display_in_rrc'],
 				'album_auth_access'	=> $row['album_auth_access'],
-			);
+			];
 		}
 		$db->sql_freeresult($result);
 
@@ -156,11 +156,11 @@ class phpbb_gallery_integration
 	{
 		global $db, $cache;
 
-		$update_ary = array(
-			GALLERY_ALBUMS_TABLE	=> array('album_last_username'),
-			GALLERY_COMMENTS_TABLE	=> array('comment_username'),
-			GALLERY_IMAGES_TABLE	=> array('image_username'),
-		);
+		$update_ary = [
+			GALLERY_ALBUMS_TABLE	=> ['album_last_username'],
+			GALLERY_COMMENTS_TABLE	=> ['comment_username'],
+			GALLERY_IMAGES_TABLE	=> ['image_username'],
+		];
 
 		foreach ($update_ary as $table => $field_ary)
 		{
@@ -173,9 +173,9 @@ class phpbb_gallery_integration
 			}
 		}
 
-		$update_clean_ary = array(
-			GALLERY_IMAGES_TABLE	=> array('image_username_clean'),
-		);
+		$update_clean_ary = [
+			GALLERY_IMAGES_TABLE	=> ['image_username_clean'],
+		];
 
 		foreach ($update_clean_ary as $table => $field_ary)
 		{
@@ -210,7 +210,7 @@ class phpbb_gallery_integration
 	*/
 	static public function user_delete($mode, $user_id, $post_username, $table_ary)
 	{
-		return array_merge($table_ary, array(GALLERY_MODSCACHE_TABLE));
+		return array_merge($table_ary, [GALLERY_MODSCACHE_TABLE]);
 	}
 
 	/**
@@ -327,12 +327,12 @@ class phpbb_gallery_integration
 
 			if ($row)
 			{
-				$template->assign_vars(array(
+				$template->assign_vars([
 					'GALLERY_IMG'		=> $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
 					'U_GALLERY'			=> (phpbb_gallery_config::get('viewtopic_icon') && $row['personal_album_id']) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
 					'GALLERY_IMAGES'	=> (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
 					'U_GALLERY_SEARCH'	=> (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $message_row['author_id']) : '',
-				));
+				]);
 			}
 		}
 	}

@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'EXIF-DATA'					=> 'Данные EXIF',
 	'EXIF_APERTURE'				=> 'Диафрагма',
 	'EXIF_CAM_MODEL'			=> 'Модель камеры',
@@ -84,4 +84,4 @@ $lang = array_merge($lang, array(
 		'EXIF_WHITEB_MANU'			=> 'Ручной',
 
 	'SHOW_EXIF'					=> 'показать/скрыть',
-));
+]);

@@ -35,7 +35,7 @@ class phpbb_gallery_class_loader
 	private $phpbb_root_path;
 	private $php_ext;
 	private $cache;
-	private $cached_paths = array();
+	private $cached_paths = [];
 
 	/**
 	* Creates a new phpbb_class_loader, which loads files with the given
@@ -67,7 +67,7 @@ class phpbb_gallery_class_loader
 
 			if ($this->cached_paths === false)
 			{
-				$this->cached_paths = array();
+				$this->cached_paths = [];
 			}
 		}
 
@@ -79,7 +79,7 @@ class phpbb_gallery_class_loader
 	*/
 	public function register()
 	{
-		spl_autoload_register(array($this, 'load_class'));
+		spl_autoload_register([$this, 'load_class']);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class phpbb_gallery_class_loader
 	*/
 	public function unregister()
 	{
-		spl_autoload_unregister(array($this, 'load_class'));
+		spl_autoload_unregister([$this, 'load_class']);
 	}
 
 	/**

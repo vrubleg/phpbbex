@@ -11,9 +11,9 @@ define('IN_PHPBB', true);
 require_once('common.php');
 require_once(PHPBB_ROOT_PATH . 'common.php');
 
-phpbb_gallery::setup(array('mods/gallery', 'posting'));
-phpbb_gallery_url::_include(array('functions_display', 'functions_posting', 'functions_user'), 'phpbb');
-phpbb_gallery_url::_include(array('bbcode', 'message_parser'), 'phpbb');
+phpbb_gallery::setup(['mods/gallery', 'posting']);
+phpbb_gallery_url::_include(['functions_display', 'functions_posting', 'functions_user'], 'phpbb');
+phpbb_gallery_url::_include(['bbcode', 'message_parser'], 'phpbb');
 
 add_form_key('gallery');
 $submit = (isset($_POST['submit'])) ? true : false;
@@ -63,7 +63,7 @@ if ($album_data['album_type'] == phpbb_gallery_album::TYPE_CAT)
 	trigger_error('ALBUM_IS_CATEGORY');
 }
 
-if (!in_array($mode, array('rate', 'add', 'edit', 'delete')))
+if (!in_array($mode, ['rate', 'add', 'edit', 'delete']))
 {
 	phpbb_gallery_misc::not_authorised($image_backlink, $image_loginlink);
 }
@@ -127,7 +127,7 @@ $url_status		= ($config['allow_post_links']) ? true : false;
 $flash_status	= false;
 $quote_status	= true;
 
-$template->assign_vars(array(
+$template->assign_vars([
 	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
 	'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
 	'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
@@ -141,7 +141,7 @@ $template->assign_vars(array(
 	'S_BBCODE_URL'			=> $url_status,
 	'S_BBCODE_FLASH'		=> $flash_status,
 	'S_BBCODE_QUOTE'		=> $quote_status,
-));
+]);
 
 // Build custom bbcodes array
 display_custom_bbcodes();
@@ -171,9 +171,9 @@ if (phpbb_gallery_config::get('allow_rates') && ($mode != 'edit'))
 
 			$message .= $user->lang['RATING_SUCCESSFUL'] . '<br />';
 		}
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_ALLOWED_TO_RATE'			=> $rating->is_allowed(),
-		));
+		]);
 	}
 	if ($mode == 'rate')
 	{
@@ -239,13 +239,13 @@ if ($mode == 'add')
 		{
 			$message_parser->parse(true, true, true, true, false, true, true, true);
 		}
-		$sql_ary = array(
+		$sql_ary = [
 			'comment_image_id'		=> $image_id,
 			'comment'				=> $message_parser->message,
 			'comment_uid'			=> $message_parser->bbcode_uid,
 			'comment_bitfield'		=> $message_parser->bbcode_bitfield,
 			'comment_signature'		=> ($auth->acl_get('u_sig') && isset($_POST['attach_sig'])),
-		);
+		];
 		if ((!$error) && ($sql_ary['comment'] != ''))
 		{
 			if (phpbb_gallery_misc::display_captcha('comment'))
@@ -282,14 +282,14 @@ if ($mode == 'add')
 	{
 		if (!$submit || !$captcha->is_solved())
 		{
-			$template->assign_vars(array(
+			$template->assign_vars([
 				'S_CONFIRM_CODE'			=> true,
 				'CAPTCHA_TEMPLATE'			=> $captcha->get_template(),
-			));
+			]);
 		}
-		$template->assign_vars(array(
+		$template->assign_vars([
 			'S_CAPTCHA_HIDDEN_FIELDS'	=> $s_captcha_hidden_fields,
-		));
+		]);
 	}
 }
 else if ($mode == 'edit')
@@ -303,7 +303,7 @@ else if ($mode == 'edit')
 			trigger_error('FORM_INVALID');
 		}
 
-		$sql_ary = array();
+		$sql_ary = [];
 		$comment_plain = request_var('message', '', true);
 
 		if ($comment_username_req)
@@ -320,9 +320,9 @@ else if ($mode == 'edit')
 				$comment_username = '';
 			}
 
-			$sql_ary = array(
+			$sql_ary = [
 				'comment_username'	=> $comment_username,
-			);
+			];
 		}
 
 		if ($comment_plain == '')
@@ -341,13 +341,13 @@ else if ($mode == 'edit')
 			$message_parser->parse(true, true, true, true, false, true, true, true);
 		}
 
-		$sql_ary = array_merge($sql_ary, array(
+		$sql_ary = array_merge($sql_ary, [
 			'comment'				=> $message_parser->message,
 			'comment_uid'			=> $message_parser->bbcode_uid,
 			'comment_bitfield'		=> $message_parser->bbcode_bitfield,
 			'comment_edit_count'	=> $comment_data['comment_edit_count'] + 1,
 			'comment_signature'		=> ($auth->acl_get('u_sig') && isset($_POST['attach_sig'])),
-		));
+		]);
 
 		if (!$error)
 		{
@@ -370,12 +370,12 @@ else if ($mode == 'edit')
 }
 else if ($mode == 'delete')
 {
-	$s_hidden_fields = build_hidden_fields(array(
+	$s_hidden_fields = build_hidden_fields([
 		'album_id'		=> $album_id,
 		'image_id'		=> $image_id,
 		'comment_id'	=> $comment_id,
 		'mode'			=> 'delete',
-	));
+	]);
 
 	if (confirm_box(true))
 	{
@@ -402,7 +402,7 @@ else if ($mode == 'delete')
 	}
 }
 
-$template->assign_vars(array(
+$template->assign_vars([
 	'ERROR'					=> $error,
 	'MESSAGE'				=> (isset($comment_plain)) ? $comment_plain : '',
 	'USERNAME'				=> (isset($comment_username)) ? $comment_username : '',
@@ -417,7 +417,7 @@ $template->assign_vars(array(
 
 	'S_SIGNATURE_CHECKED'	=> (isset($sig_checked) && $sig_checked) ? ' checked="checked"' : '',
 	'S_ALBUM_ACTION'		=> phpbb_gallery_url::append_sid('comment', "mode=$mode&amp;album_id=$album_id&amp;image_id=$image_id" . (($comment_id) ? "&amp;comment_id=$comment_id" : '')),
-));
+]);
 
 if ($submit && !$error)
 {
@@ -430,8 +430,8 @@ if ($submit && !$error)
 
 page_header((($mode == 'add') ? $user->lang['POST_COMMENT'] : $user->lang['EDIT_COMMENT']), false);
 
-$template->set_filenames(array(
+$template->set_filenames([
 	'body' => 'gallery/comment_body.html',
-));
+]);
 
 page_footer();

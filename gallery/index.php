@@ -11,7 +11,7 @@ define('IN_PHPBB', true);
 require_once('common.php');
 require_once(PHPBB_ROOT_PATH . 'common.php');
 
-phpbb_gallery::setup(array('mods/gallery'));
+phpbb_gallery::setup(['mods/gallery']);
 phpbb_gallery_url::_include('functions_display', 'phpbb');
 
 /**
@@ -28,9 +28,9 @@ if (!$user->data['is_registered'] && !phpbb_gallery::$auth->acl_check_global('i_
 phpbb_gallery_album::display_albums((($mode == 'personal') ? 'personal' : 0), $config['load_moderators']);
 if ($mode == 'personal')
 {
-	$template->assign_block_vars('navlinks', array(
+	$template->assign_block_vars('navlinks', [
 		'FORUM_NAME'	=> $user->lang['PERSONAL_ALBUMS'],
-		'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('index', 'mode=personal'))
+		'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('index', 'mode=personal')]
 	);
 
 	$subscribe_pegas = phpbb_gallery::$user->get_data('subscribe_pegas', false);
@@ -44,12 +44,12 @@ if ($mode == 'personal')
 
 		if ($watch_pegas == 'watch')
 		{
-			phpbb_gallery::$user->update_data(array('subscribe_pegas' => true));
+			phpbb_gallery::$user->update_data(['subscribe_pegas' => true]);
 			$message = $user->lang['WATCHING_PEGAS'] . '<br />';
 		}
 		if ($watch_pegas == 'unwatch')
 		{
-			phpbb_gallery::$user->update_data(array('subscribe_pegas' => false));
+			phpbb_gallery::$user->update_data(['subscribe_pegas' => false]);
 			$message = $user->lang['UNWATCHED_PEGAS'] . '<br />';
 		}
 
@@ -59,13 +59,13 @@ if ($mode == 'personal')
 		trigger_error($message);
 	}
 
-	$template->assign_vars(array(
+	$template->assign_vars([
 		'S_PERSONAL_GALLERY'	=> true,
 
 		'L_WATCH_TOPIC'				=> ($subscribe_pegas) ? $user->lang['UNWATCH_PEGAS'] : $user->lang['WATCH_PEGAS'],
 		'U_WATCH_TOPIC'				=> ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('index', "mode=personal&amp;pegas={$watch_mode}&amp;hash=" . generate_link_hash("{$watch_mode}_pegas")) : '',
 		'S_WATCHING_TOPIC'			=> ($subscribe_pegas) ? true : false,
-	));
+	]);
 }
 /**
 * Add a personal albums category to the album listing if the user has permission to view personal albums
@@ -100,15 +100,15 @@ else if (phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth-
 	}
 	$db->sql_freeresult($result);
 
-	$template->assign_block_vars('albumrow', array(
+	$template->assign_block_vars('albumrow', [
 		'S_IS_CAT'				=> true,
 		'S_NO_CAT'				=> false,
 		'S_LIST_SUBALBUMS'		=> true,
 		'S_SUBALBUMS'			=> true,
 		'U_VIEWALBUM'			=> phpbb_gallery_url::append_sid('index', 'mode=personal'),
 		'ALBUM_NAME'			=> $user->lang['USERS_PERSONAL_ALBUMS'],
-	));
-	$template->assign_block_vars('albumrow', array(
+	]);
+	$template->assign_block_vars('albumrow', [
 		'S_IS_CAT'				=> false,
 		'S_NO_CAT'				=> false,
 		'S_LIST_SUBALBUMS'		=> true,
@@ -129,13 +129,13 @@ else if (phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth-
 		'UC_FAKE_THUMBNAIL'		=> (phpbb_gallery_config::get('mini_thumbnail_disp')) ? phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $lastimage_image_id, $lastimage_name, $lastimage_album_id) : '',
 		'UC_IMAGE_NAME'			=> phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $lastimage_image_id, $lastimage_name, $lastimage_album_id),
 		'UC_LASTIMAGE_ICON'		=> phpbb_gallery_image::generate_link('lastimage_icon', phpbb_gallery_config::get('link_image_icon'), $lastimage_image_id, $lastimage_name, $lastimage_album_id),
-	));
+	]);
 
 	// Assign subforums loop for style authors
-	$template->assign_block_vars('albumrow.subalbum', array(
+	$template->assign_block_vars('albumrow.subalbum', [
 		'U_SUBALBUM'	=> ((phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM)) ? (phpbb_gallery::$user->get_data('personal_album_id')) ? phpbb_gallery_url::append_sid('album', 'album_id=' . phpbb_gallery::$user->get_data('personal_album_id')) : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums') : ''),
 		'SUBALBUM_NAME'	=> $user->lang['YOUR_PERSONAL_ALBUM'],
-	));
+	]);
 }
 
 /**
@@ -152,12 +152,12 @@ else if (phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth-
 */
 if (phpbb_gallery_config::get('rrc_gindex_mode'))
 {
-	$ints = array(
+	$ints = [
 		phpbb_gallery_config::get('rrc_gindex_rows'),
 		phpbb_gallery_config::get('rrc_gindex_columns'),
 		phpbb_gallery_config::get('rrc_gindex_crows'),
 		phpbb_gallery_config::get('rrc_gindex_contests'),
-	);
+	];
 	$gallery_block = new phpbb_gallery_block(phpbb_gallery_config::get('rrc_gindex_mode'), phpbb_gallery_config::get('rrc_gindex_display'), $ints, phpbb_gallery_config::get('rrc_gindex_comments'), phpbb_gallery_config::get('rrc_gindex_pegas'));
 	$gallery_block->display();
 }
@@ -190,7 +190,7 @@ if (phpbb_gallery_config::get('disp_whoisonline'))
 	}
 	$result = $db->sql_query($sql);
 
-	$legend = array();
+	$legend = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$colour_text = ($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . '"' : '';
@@ -238,7 +238,7 @@ if ($config['allow_birthdays'] && phpbb_gallery_config::get('disp_birthdays'))
 }
 
 // Output page
-$template->assign_vars(array(
+$template->assign_vars([
 	'TOTAL_IMAGES'		=> (phpbb_gallery_config::get('disp_statistic')) ? $user->lang('TOTAL_IMAGES_SPRINTF', phpbb_gallery_config::get('num_images')) : '',
 	'TOTAL_COMMENTS'	=> (phpbb_gallery_config::get('allow_comments')) ? $user->lang('TOTAL_COMMENTS_SPRINTF', phpbb_gallery_config::get('num_comments')) : '',
 	'TOTAL_PGALLERIES'	=> (phpbb_gallery::$auth->acl_check('a_list', phpbb_gallery_auth::PERSONAL_ALBUM)) ? $user->lang('TOTAL_PEGAS_SPRINTF', phpbb_gallery_config::get('num_pegas')) : '',
@@ -265,12 +265,12 @@ $template->assign_vars(array(
 	'U_G_SEARCH_RECENT'				=> phpbb_gallery_url::append_sid('search', 'search_id=recent'),
 	'U_G_SEARCH_SELF'				=> phpbb_gallery_url::append_sid('search', 'search_id=egosearch'),
 	'U_G_SEARCH_TOPRATED'			=> (phpbb_gallery_config::get('allow_rates')) ? phpbb_gallery_url::append_sid('search', 'search_id=toprated') : '',
-));
+]);
 
 page_header($user->lang['GALLERY'] . (($mode == 'personal') ? ' - ' . $user->lang['PERSONAL_ALBUMS'] : ''));
 
-$template->set_filenames(array(
-	'body' => 'gallery/index_body.html')
+$template->set_filenames([
+	'body' => 'gallery/index_body.html']
 );
 
 page_footer();

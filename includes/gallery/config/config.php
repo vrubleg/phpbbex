@@ -133,7 +133,7 @@ class phpbb_gallery_config
 	*/
 	static public function install()
 	{
-		$plugins = self::get_classes(array('core'), true);
+		$plugins = self::get_classes(['core'], true);
 
 		foreach ($plugins as $plugin_name)
 		{
@@ -159,14 +159,14 @@ class phpbb_gallery_config
 		$cache->destroy(self::$cache_file);
 	}
 
-	static private $is_dynamic = array();
+	static private $is_dynamic = [];
 
-	static private $default_config = array();
+	static private $default_config = [];
 
 	/**
 	* Functions for loading the configs from core and plugins
 	*/
-	static private $config = array();
+	static private $config = [];
 
 	static private $loaded = false;
 
@@ -235,7 +235,7 @@ class phpbb_gallery_config
 
 	static private function get_plugins_list()
 	{
-		$plugins = array();
+		$plugins = [];
 		$plugins[] = 'core';
 		$dir = @opendir(phpbb_gallery_url::_return_file('plugins/', 'phpbb', 'includes/gallery/config/'));
 
@@ -255,7 +255,7 @@ class phpbb_gallery_config
 
 	static private function get_classes($plugins, $display_error = false)
 	{
-		$classes = array();
+		$classes = [];
 
 		foreach ($plugins as $plugin_name)
 		{

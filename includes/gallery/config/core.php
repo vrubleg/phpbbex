@@ -16,13 +16,13 @@ class phpbb_gallery_config_core
 {
 	static public $prefix = '';
 
-	static public $is_dynamic = array(
+	static public $is_dynamic = [
 		'num_comments',
 		'num_images',
 		'num_pegas',
-	);
+	];
 
-	static public $configs = array(
+	static public $configs = [
 		'album_columns'		=> 3,
 		'album_display'		=> 254,
 		'album_images'		=> 2500,
@@ -129,5 +129,5 @@ class phpbb_gallery_config_core
 		'watermark_position'	=> 20,
 		'watermark_source'		=> 'gallery/images/watermark.png',
 		'watermark_width'		=> 200,
-	);
+	];
 }

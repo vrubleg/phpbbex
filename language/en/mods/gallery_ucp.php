@@ -16,10 +16,10 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACCESS_CONTROL_ALL'			=> 'Everyone',
 	'ACCESS_CONTROL_REGISTERED'		=> 'Registered users',
 	'ACCESS_CONTROL_NOT_FOES'		=> 'Registered users, except your foes',
@@ -82,4 +82,4 @@ $lang = array_merge($lang, array(
 	'WATCH_FAVO'					=> 'Subscribe favorite images by default',
 	'WATCH_NOTE'					=> 'This option only affects on new images. All other images need to be added by the “subscribe image“ option.',
 	'WATCH_OWN'						=> 'Subscribe own images by default',
-));
+]);

@@ -29,10 +29,10 @@ class phpbb_gallery_notification
 
 		foreach ($image_ids as $image_id)
 		{
-			$sql_ary = array(
+			$sql_ary = [
 				'image_id'		=> $image_id,
 				'user_id'		=> $user_id,
-			);
+			];
 			$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
 		}
@@ -52,10 +52,10 @@ class phpbb_gallery_notification
 
 		foreach ($album_ids as $album_id)
 		{
-			$sql_ary = array(
+			$sql_ary = [
 				'album_id'		=> $album_id,
 				'user_id'		=> $user_id,
-			);
+			];
 			$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
 		}
@@ -161,7 +161,7 @@ class phpbb_gallery_notification
 		}
 		$db->sql_freeresult($result);
 
-		$notify_rows = array();
+		$notify_rows = [];
 
 		// -- get album_userids	|| image_userids
 		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
@@ -174,7 +174,7 @@ class phpbb_gallery_notification
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$notify_rows[$row['user_id']] = array(
+			$notify_rows[$row['user_id']] = [
 				'user_id'		=> $row['user_id'],
 				'username'		=> $row['username'],
 				'user_email'	=> $row['user_email'],
@@ -184,7 +184,7 @@ class phpbb_gallery_notification
 				'template'		=> "new{$mode_notification}_notify",
 				'method'		=> $row['user_notify_type'],
 				'allowed'		=> false
-			);
+			];
 		}
 		$db->sql_freeresult($result);
 
@@ -206,21 +206,21 @@ class phpbb_gallery_notification
 		}
 
 		// Make sure users are allowed to view the album
-		$i_view_ary = $groups_ary = $groups_row = array();
-		$sql_array = array(
+		$i_view_ary = $groups_ary = $groups_row = [];
+		$sql_array = [
 			'SELECT'		=> 'pr.i_view, p.perm_system, p.perm_group_id, p.perm_user_id',
-			'FROM'			=> array(GALLERY_PERMISSIONS_TABLE => 'p'),
+			'FROM'			=> [GALLERY_PERMISSIONS_TABLE => 'p'],
 
-			'LEFT_JOIN'		=> array(
-				array(
-					'FROM'		=> array(GALLERY_ROLES_TABLE => 'pr'),
+			'LEFT_JOIN'		=> [
+				[
+					'FROM'		=> [GALLERY_ROLES_TABLE => 'pr'],
 					'ON'		=> 'p.perm_role_id = pr.role_id',
-				),
-			),
+				],
+			],
 
 			'WHERE'			=> (($album['album_user_id'] == phpbb_gallery_album::PUBLIC_ALBUM) ? 'p.perm_album_id = ' . $album_id : 'p.perm_system <> ' . phpbb_gallery_album::PUBLIC_ALBUM),
 			'ORDER_BY'		=> 'pr.i_view ASC',
-		);
+		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
@@ -281,7 +281,7 @@ class phpbb_gallery_notification
 		}
 
 		// Now, we have to do a little step before really sending, we need to distinguish our users a little bit. ;)
-		$msg_users = $delete_ids = $update_notification = array();
+		$msg_users = $delete_ids = $update_notification = [];
 		foreach ($notify_rows as $user_id => $row)
 		{
 			if (($i_view_ary[$row['user_id']] != phpbb_gallery_auth::ACL_YES) || !trim($row['user_email']))
@@ -305,7 +305,7 @@ class phpbb_gallery_notification
 			}
 			$messenger = new messenger();
 
-			$msg_list_ary = array();
+			$msg_list_ary = [];
 			foreach ($msg_users as $row)
 			{
 				$pos = (!isset($msg_list_ary[$row['template']])) ? 0 : sizeof($msg_list_ary[$row['template']]);
@@ -327,7 +327,7 @@ class phpbb_gallery_notification
 					$messenger->to($addr['email'], $addr['name']);
 					$messenger->im($addr['jabber'], $addr['name']);
 
-					$messenger->assign_vars(array(
+					$messenger->assign_vars([
 						'USERNAME'		=> htmlspecialchars_decode($addr['name']),
 						'IMAGE_NAME'	=> htmlspecialchars_decode($image_name),
 						'ALBUM_NAME'	=> htmlspecialchars_decode($album_data['album_name']),
@@ -337,7 +337,7 @@ class phpbb_gallery_notification
 						'U_NEWEST_POST'			=> phpbb_gallery_url::create_link('full', 'viewtopic', "album_id=$album_id&amp;image_id=$image_id"),
 						'U_STOP_WATCHING_IMAGE'	=> phpbb_gallery_url::create_link('full', 'image_page', "mode=unwatch&amp;album_id=$album_id&amp;image_id=$image_id"),
 						'U_STOP_WATCHING_ALBUM'	=> phpbb_gallery_url::create_link('full', 'album', "mode=unwatch&amp;album_id=$album_id"),
-					));
+					]);
 
 					$messenger->send($addr['method']);
 				}
@@ -367,7 +367,7 @@ class phpbb_gallery_notification
 		}
 		else
 		{
-			return array((int) $ids);
+			return [(int) $ids];
 		}
 	}
 }
