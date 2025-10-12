@@ -1032,19 +1032,7 @@ class fileupload
 			IMAGETYPE_GIF => ['gif'],
 			IMAGETYPE_JPEG => ['jpg', 'jpeg'],
 			IMAGETYPE_PNG => ['png'],
-			IMAGETYPE_SWF => ['swf'],
-			IMAGETYPE_PSD => ['psd'],
 			IMAGETYPE_BMP => ['bmp'],
-			IMAGETYPE_TIFF_II => ['tif', 'tiff'],
-			IMAGETYPE_TIFF_MM => ['tif', 'tiff'],
-			IMAGETYPE_JPC => ['jpg', 'jpeg'],
-			IMAGETYPE_JP2 => ['jpg', 'jpeg'],
-			IMAGETYPE_JPX => ['jpg', 'jpeg'],
-			IMAGETYPE_JB2 => ['jpg', 'jpeg'],
-			IMAGETYPE_SWC => ['swc'],
-			IMAGETYPE_IFF => ['iff'],
-			IMAGETYPE_WBMP => ['wbmp'],
-			IMAGETYPE_XBM => ['xbm'],
 		];
 	}
 }

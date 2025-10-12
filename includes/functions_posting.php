@@ -558,19 +558,11 @@ function get_supported_image_types($type = false)
 			break;
 
 			case IMAGETYPE_JPEG:
-			case IMAGETYPE_JPC:
-			case IMAGETYPE_JP2:
-			case IMAGETYPE_JPX:
-			case IMAGETYPE_JB2:
 				$new_type = ($format & IMG_JPG) ? IMG_JPG : false;
 			break;
 
 			case IMAGETYPE_PNG:
 				$new_type = ($format & IMG_PNG) ? IMG_PNG : false;
-			break;
-
-			case IMAGETYPE_WBMP:
-				$new_type = ($format & IMG_WBMP) ? IMG_WBMP : false;
 			break;
 		}
 
@@ -579,7 +571,7 @@ function get_supported_image_types($type = false)
 	else
 	{
 		$supported_types = [];
-		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG, IMG_WBMP];
+		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG];
 
 		foreach ($go_through_types as $check_type)
 		{
@@ -649,10 +641,6 @@ function create_thumbnail($source, $destination, $mimetype)
 		case IMG_PNG:
 			$image = @imagecreatefrompng($source);
 		break;
-
-		case IMG_WBMP:
-			$image = @imagecreatefromwbmp($source);
-		break;
 	}
 
 	if (empty($image))
@@ -685,10 +673,6 @@ function create_thumbnail($source, $destination, $mimetype)
 
 		case IMG_PNG:
 			imagepng($new_image, $destination);
-		break;
-
-		case IMG_WBMP:
-			imagewbmp($new_image, $destination);
 		break;
 	}
 
