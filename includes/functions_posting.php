@@ -568,6 +568,10 @@ function get_supported_image_types($type = false)
 			case IMAGETYPE_WEBP:
 				$new_type = ($format & IMG_WEBP) ? IMG_WEBP : false;
 			break;
+
+			case IMAGETYPE_BMP:
+				$new_type = ($format & IMG_BMP) ? IMG_BMP : false;
+			break;
 		}
 
 		return $new_type;
@@ -575,7 +579,7 @@ function get_supported_image_types($type = false)
 	else
 	{
 		$supported_types = [];
-		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG, IMG_WEBP];
+		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG, IMG_WEBP, IMG_BMP];
 
 		foreach ($go_through_types as $check_type)
 		{
@@ -649,6 +653,10 @@ function create_thumbnail($source, $destination, $mimetype)
 		case IMG_WEBP:
 			$image = @imagecreatefromwebp($source);
 		break;
+
+		case IMG_BMP:
+			$image = @imagecreatefrombmp($source);
+		break;
 	}
 
 	if (empty($image))
@@ -685,6 +693,10 @@ function create_thumbnail($source, $destination, $mimetype)
 
 		case IMG_WEBP:
 			imagewebp($new_image, $destination);
+		break;
+
+		case IMG_BMP:
+			imagebmp($new_image, $destination, true);
 		break;
 	}
 
