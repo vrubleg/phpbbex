@@ -1029,22 +1029,22 @@ class fileupload
 	function image_types()
 	{
 		return [
-			1 => ['gif'],
-			2 => ['jpg', 'jpeg'],
-			3 => ['png'],
-			4 => ['swf'],
-			5 => ['psd'],
-			6 => ['bmp'],
-			7 => ['tif', 'tiff'],
-			8 => ['tif', 'tiff'],
-			9 => ['jpg', 'jpeg'],
-			10 => ['jpg', 'jpeg'],
-			11 => ['jpg', 'jpeg'],
-			12 => ['jpg', 'jpeg'],
-			13 => ['swc'],
-			14 => ['iff'],
-			15 => ['wbmp'],
-			16 => ['xbm'],
+			IMAGETYPE_GIF => ['gif'],
+			IMAGETYPE_JPEG => ['jpg', 'jpeg'],
+			IMAGETYPE_PNG => ['png'],
+			IMAGETYPE_SWF => ['swf'],
+			IMAGETYPE_PSD => ['psd'],
+			IMAGETYPE_BMP => ['bmp'],
+			IMAGETYPE_TIFF_II => ['tif', 'tiff'],
+			IMAGETYPE_TIFF_MM => ['tif', 'tiff'],
+			IMAGETYPE_JPC => ['jpg', 'jpeg'],
+			IMAGETYPE_JP2 => ['jpg', 'jpeg'],
+			IMAGETYPE_JPX => ['jpg', 'jpeg'],
+			IMAGETYPE_JB2 => ['jpg', 'jpeg'],
+			IMAGETYPE_SWC => ['swc'],
+			IMAGETYPE_IFF => ['iff'],
+			IMAGETYPE_WBMP => ['wbmp'],
+			IMAGETYPE_XBM => ['xbm'],
 		];
 	}
 }
