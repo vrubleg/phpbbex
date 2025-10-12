@@ -248,8 +248,8 @@ class acp_icons
 
 				$template->assign_vars([
 					'S_EDIT'		=> true,
-					'S_SMILIES'		=> ($mode == 'smilies') ? true : false,
-					'S_ADD'			=> ($action == 'add') ? true : false,
+					'S_SMILIES'		=> ($mode == 'smilies'),
+					'S_ADD'			=> ($action == 'add'),
 
 					'S_ORDER_LIST_DISPLAY'		=> $order_list . $order_lists[1],
 					'S_ORDER_LIST_UNDISPLAY'	=> $order_list . $order_lists[0],
@@ -282,7 +282,7 @@ class acp_icons
 						'CODE'		=> ($mode == 'smilies' && isset($img_row['code'])) ? $img_row['code'] : '',
 						'EMOTION'	=> ($mode == 'smilies' && isset($img_row['emotion'])) ? $img_row['emotion'] : '',
 
-						'S_ID'				=> (isset($img_row[$fields . '_id'])) ? true : false,
+						'S_ID'				=> (isset($img_row[$fields . '_id'])),
 						'ID'				=> (isset($img_row[$fields . '_id'])) ? $img_row[$fields . '_id'] : 0,
 						'WIDTH'				=> (!empty($img_row[$fields .'_width'])) ? $img_row[$fields .'_width'] : $img_row['width'],
 						'HEIGHT'			=> (!empty($img_row[$fields .'_height'])) ? $img_row[$fields .'_height'] : $img_row['height'],
@@ -871,7 +871,7 @@ class acp_icons
 			'NOTICE'			=> $notice,
 			'COLSPAN'			=> ($mode == 'smilies') ? 5 : 3,
 
-			'S_SMILIES'			=> ($mode == 'smilies') ? true : false,
+			'S_SMILIES'			=> ($mode == 'smilies'),
 
 			'U_ACTION'			=> $this->u_action,
 			'U_IMPORT'			=> $this->u_action . '&amp;action=import',
@@ -894,7 +894,7 @@ class acp_icons
 			$alt_text = ($mode == 'smilies') ? $row['code'] : '';
 
 			$template->assign_block_vars('items', [
-				'S_SPACER'		=> (!$spacer && !$row['display_on_posting']) ? true : false,
+				'S_SPACER'		=> (!$spacer && !$row['display_on_posting']),
 				'ALT_TEXT'		=> $alt_text,
 				'IMG_SRC'		=> PHPBB_ROOT_PATH . $img_path . '/' . $row[$fields . '_url'],
 				'WIDTH'			=> $row[$fields . '_width'],

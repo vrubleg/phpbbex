@@ -26,8 +26,8 @@ class mcp_ban
 		// Include the admin banning interface...
 		require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_ban.php');
 
-		$bansubmit		= (isset($_POST['bansubmit'])) ? true : false;
-		$unbansubmit	= (isset($_POST['unbansubmit'])) ? true : false;
+		$bansubmit		= isset($_POST['bansubmit']);
+		$unbansubmit	= isset($_POST['unbansubmit']);
 		$current_time	= time();
 
 		$user->add_lang(['acp/ban', 'acp/users']);
@@ -37,7 +37,7 @@ class mcp_ban
 		if ($bansubmit)
 		{
 			// Grab the list of entries
-			$ban				= request_var('ban', '', ($mode === 'user') ? true : false);
+			$ban				= request_var('ban', '', ($mode === 'user'));
 
 			if ($mode === 'user')
 			{
@@ -138,7 +138,7 @@ class mcp_ban
 			'L_BAN_EXCLUDE_EXPLAIN'	=> $l_ban_exclude_explain,
 			'L_NO_BAN_CELL'			=> $l_no_ban_cell,
 
-			'S_USERNAME_BAN'	=> ($mode == 'user') ? true : false,
+			'S_USERNAME_BAN'	=> ($mode == 'user'),
 
 			'U_ACTION'			=> $this->u_action,
 			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp_ban&amp;field=ban'),

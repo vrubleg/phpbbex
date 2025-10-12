@@ -24,7 +24,7 @@ class acp_manage_attachments
 		$user->add_lang(['posting', 'viewtopic', 'acp/attachments']);
 
 		$error = $notify = [];
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$action = request_var('action', '');
 		$start = request_var('start', 0);
 
@@ -158,9 +158,9 @@ class acp_manage_attachments
 
 					$template->assign_block_vars('upload', [
 						'FILE_INFO'		=> sprintf($user->lang['LOG_ATTACH_REASSIGNED'], $post_row['post_id'], $row['real_filename']),
-						'S_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? true : false,
-						'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '']
-					);
+						'S_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])),
+						'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '',
+					]);
 
 					if (!$auth->acl_get('f_attach', $post_row['forum_id']))
 					{

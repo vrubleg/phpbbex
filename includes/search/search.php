@@ -97,7 +97,7 @@ class search_backend
 		else
 		{
 			$result_count = $stored_ids[-1];
-			$reverse_ids = ($stored_ids[-2] != $sort_dir) ? true : false;
+			$reverse_ids = ($stored_ids[-2] != $sort_dir);
 			$complete = true;
 
 			// change the start to the actual end of the current request if the sort direction differs

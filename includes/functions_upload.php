@@ -72,7 +72,7 @@ class filespec
 		$this->width = $this->height = 0;
 		$this->file_moved = false;
 
-		$this->local = (isset($upload_ary['local_mode'])) ? true : false;
+		$this->local = isset($upload_ary['local_mode']);
 		$this->upload = $upload_namespace;
 	}
 
@@ -146,7 +146,7 @@ class filespec
 	*/
 	function is_image()
 	{
-		return (strpos($this->mimetype, 'image/') !== false) ? true : false;
+		return (strpos($this->mimetype, 'image/') !== false);
 	}
 
 	/**
@@ -982,7 +982,7 @@ class fileupload
 	*/
 	function valid_extension(&$file)
 	{
-		return (in_array($file->get('extension'), $this->allowed_extensions)) ? true : false;
+		return in_array($file->get('extension'), $this->allowed_extensions);
 	}
 
 	/**
@@ -1011,7 +1011,7 @@ class fileupload
 	*/
 	function is_valid($form_name)
 	{
-		return (isset($_FILES[$form_name]) && $_FILES[$form_name]['name'] != 'none') ? true : false;
+		return (isset($_FILES[$form_name]) && $_FILES[$form_name]['name'] != 'none');
 	}
 
 

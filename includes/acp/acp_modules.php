@@ -254,7 +254,7 @@ class acp_modules
 				$module_data['module_langname'] = utf8_normalize_nfc(request_var('module_langname', (string) $module_row['module_langname'], true));
 				$module_data['module_mode'] = request_var('module_mode', (string) $module_row['module_mode']);
 
-				$submit = (isset($_POST['submit'])) ? true : false;
+				$submit = isset($_POST['submit']);
 
 				if ($submit)
 				{
@@ -431,8 +431,8 @@ class acp_modules
 					'MODULE_ENABLED'	=> ($row['module_enabled']) ? true : false,
 					'MODULE_DISPLAYED'	=> ($row['module_display']) ? true : false,
 
-					'S_ACP_CAT_SYSTEM'			=> ($this->module_class == 'acp' && $row['module_langname'] == 'ACP_CAT_SYSTEM') ? true : false,
-					'S_ACP_MODULE_MANAGEMENT'	=> ($this->module_class == 'acp' && ($row['module_basename'] == 'modules' || $row['module_langname'] == 'ACP_MODULE_MANAGEMENT')) ? true : false,
+					'S_ACP_CAT_SYSTEM'			=> ($this->module_class == 'acp' && $row['module_langname'] == 'ACP_CAT_SYSTEM'),
+					'S_ACP_MODULE_MANAGEMENT'	=> ($this->module_class == 'acp' && ($row['module_basename'] == 'modules' || $row['module_langname'] == 'ACP_MODULE_MANAGEMENT')),
 
 					'U_MODULE'			=> $this->u_action . '&amp;parent_id=' . $row['module_id'],
 					'U_MOVE_UP'			=> $url . '&amp;action=move_up',

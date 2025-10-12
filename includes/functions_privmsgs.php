@@ -196,10 +196,10 @@ function get_folder($user_id, $folder_id = false)
 
 			'U_FOLDER'			=> ($f_id > 0) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $f_id) : append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $folder_id_name),
 
-			'S_CUR_FOLDER'		=> ($f_id === $folder_id) ? true : false,
+			'S_CUR_FOLDER'		=> ($f_id === $folder_id),
 			'S_UNREAD_MESSAGES'	=> ($folder_ary['unread_messages']) ? true : false,
-			'S_CUSTOM_FOLDER'	=> ($f_id > 0) ? true : false]
-		);
+			'S_CUSTOM_FOLDER'	=> ($f_id > 0),
+		]);
 	}
 
 	if ($folder_id !== false && $folder_id !== PRIVMSGS_HOLD_BOX && !isset($folder[$folder_id]))
@@ -865,7 +865,7 @@ function handle_mark_actions($user_id, $mark_action)
 
 	$msg_ids		= request_var('marked_msg_id', [0]);
 	$cur_folder_id	= request_var('cur_folder_id', PRIVMSGS_NO_BOX);
-	$confirm		= (isset($_POST['confirm'])) ? true : false;
+	$confirm		= isset($_POST['confirm']);
 
 	if (!sizeof($msg_ids))
 	{
@@ -1413,8 +1413,8 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 				foreach ($adr_ary as $id => $row)
 				{
 					$tpl_ary = [
-						'IS_GROUP'	=> ($type == 'group') ? true : false,
-						'IS_USER'	=> ($type == 'user') ? true : false,
+						'IS_GROUP'	=> ($type == 'group'),
+						'IS_USER'	=> ($type == 'user'),
 						'UG_ID'		=> $id,
 						'NAME'		=> $row['name'],
 						'COLOUR'	=> ($row['colour']) ? '#' . $row['colour'] : '',
@@ -2041,7 +2041,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 			'DECODED_MESSAGE'	=> $decoded_message,
 
 			'S_CURRENT_MSG'		=> ($row['msg_id'] == $msg_id),
-			'S_AUTHOR_DELETED'	=> ($author_id == ANONYMOUS) ? true : false,
+			'S_AUTHOR_DELETED'	=> ($author_id == ANONYMOUS),
 			'S_IN_POST_MODE'	=> $in_post_mode,
 
 			'MSG_ID'			=> $row['msg_id'],

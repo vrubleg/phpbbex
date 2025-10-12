@@ -736,7 +736,7 @@ class fulltext_mysql extends search_backend
 			$this->get_stats();
 		}
 
-		return (isset($this->stats['post_text']) && isset($this->stats['post_subject']) && isset($this->stats['post_content'])) ? true : false;
+		return (isset($this->stats['post_text']) && isset($this->stats['post_subject']) && isset($this->stats['post_content']));
 	}
 
 	/**

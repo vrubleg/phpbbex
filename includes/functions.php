@@ -413,7 +413,7 @@ function still_on_time($extra_time = 15)
 		$start_time = (empty($starttime)) ? $current_time : $starttime;
 	}
 
-	return (ceil($current_time - $start_time) < $max_execution_time) ? true : false;
+	return (ceil($current_time - $start_time) < $max_execution_time);
 }
 
 /**
@@ -479,10 +479,10 @@ function phpbb_check_hash($password, $hash)
 	$itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 	if (strlen($hash) == 34)
 	{
-		return (_hash_crypt_private($password, $hash, $itoa64) === $hash) ? true : false;
+		return (_hash_crypt_private($password, $hash, $itoa64) === $hash);
 	}
 
-	return (md5($password) === $hash) ? true : false;
+	return (md5($password) === $hash);
 }
 
 /**
@@ -835,7 +835,7 @@ function phpbb_is_writable($file)
 					unlink($result);
 
 					// Ensure the file is actually in the directory (returned realpathed)
-					return (strpos($result, $file) === 0) ? true : false;
+					return (strpos($result, $file) === 0);
 				}
 			}
 			else
@@ -876,7 +876,7 @@ function phpbb_is_writable($file)
 */
 function is_absolute($path)
 {
-	return (isset($path[0]) && $path[0] == '/' || preg_match('#^[a-z]:[/\\\]#i', $path)) ? true : false;
+	return (isset($path[0]) && $path[0] == '/' || preg_match('#^[a-z]:[/\\\]#i', $path));
 }
 
 /**
@@ -993,7 +993,7 @@ function phpbb_own_realpath($path)
 	$max = sizeof($bits) - 1;
 
 	// Check if we are able to resolve symlinks, Windows cannot.
-	$symlink_resolve = (function_exists('readlink')) ? true : false;
+	$symlink_resolve = function_exists('readlink');
 
 	foreach ($bits as $i => $bit)
 	{
@@ -2802,7 +2802,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		}
 
 		$username	= request_var('username', '', true);
-		$autologin	= (!empty($_POST['autologin'])) ? true : false;
+		$autologin	= (!empty($_POST['autologin']));
 		$viewonline = (!empty($_POST['viewonline'])) ? 0 : 1;
 		$admin 		= ($admin) ? 1 : 0;
 		$viewonline = ($admin) ? $user->data['session_viewonline'] : $viewonline;
@@ -2939,7 +2939,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		'U_TERMS_USE'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
 		'U_PRIVACY'				=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
 
-		'S_DISPLAY_FULL_LOGIN'	=> ($s_display) ? true : false,
+		'S_DISPLAY_FULL_LOGIN'	=> $s_display,
 		'S_HIDDEN_FIELDS' 		=> $s_hidden_fields,
 
 		'S_ADMIN_AUTH'			=> $admin,
@@ -3681,9 +3681,9 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 			$template->assign_vars([
 				'MESSAGE_TITLE'		=> $msg_title,
 				'MESSAGE_TEXT'		=> $msg_text,
-				'S_USER_WARNING'	=> ($errno == E_USER_WARNING) ? true : false,
-				'S_USER_NOTICE'		=> ($errno == E_USER_NOTICE) ? true : false]
-			);
+				'S_USER_WARNING'	=> ($errno == E_USER_WARNING),
+				'S_USER_NOTICE'		=> ($errno == E_USER_NOTICE),
+			]);
 
 			// We do not want the cron script to be called on error messages
 			define('IN_CRON', true);
@@ -3894,7 +3894,7 @@ function obtain_users_online_string($online_users)
 */
 function phpbb_optionget($bit, $data)
 {
-	return ($data & 1 << (int) $bit) ? true : false;
+	return (bool) ($data & 1 << (int) $bit);
 }
 
 /**
@@ -4275,11 +4275,11 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'U_RESTORE_PERMISSIONS'	=> ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm') : '',
 		'U_FEED'				=> generate_board_url() . "/feed.php",
 
-		'S_USER_LOGGED_IN'		=> ($user->data['user_id'] != ANONYMOUS) ? true : false,
+		'S_USER_LOGGED_IN'		=> ($user->data['user_id'] != ANONYMOUS),
 		'S_AUTOLOGIN_ENABLED'	=> ($config['allow_autologin']) ? true : false,
 		'S_BOARD_DISABLED'		=> ($config['board_disable']) ? true : false,
-		'S_REGISTERED_USER'		=> (!empty($user->data['is_registered'])) ? true : false,
-		'S_IS_BOT'				=> (!empty($user->data['is_bot'])) ? true : false,
+		'S_REGISTERED_USER'		=> !empty($user->data['is_registered']),
+		'S_IS_BOT'				=> !empty($user->data['is_bot']),
 		'S_USER_PM_POPUP'		=> $user->optionget('popuppm'),
 		'S_USER_LANG'			=> $user_lang,
 		'S_USER_BROWSER'		=> (isset($user->data['session_browser'])) ? $user->data['session_browser'] : $user->lang['UNKNOWN_BROWSER'],
@@ -4287,10 +4287,10 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_TIMEZONE'			=> ($user->dst) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
 		'S_DISPLAY_ONLINE_LIST'	=> ($l_online_time) ? 1 : 0,
 		'S_DISPLAY_SEARCH'		=> ($config['load_search'] && $auth->acl_get('u_search') && $auth->acl_getf_global('f_search')),
-		'S_DISPLAY_PM'			=> ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))) ? true : false,
+		'S_DISPLAY_PM'			=> ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))),
 		'S_DISPLAY_MEMBERLIST'	=> $auth->acl_get('u_viewprofile'),
 		'S_NEW_PM'				=> ($s_privmsg_new) ? 1 : 0,
-		'S_REGISTER_ENABLED'	=> ($config['require_activation'] != USER_ACTIVATION_DISABLE) ? true : false,
+		'S_REGISTER_ENABLED'	=> ($config['require_activation'] != USER_ACTIVATION_DISABLE),
 		'S_FORUM_ID'			=> $forum_id,
 		'S_TOPIC_ID'			=> $topic_id,
 
@@ -4304,7 +4304,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_ENABLE_FEEDS_TOPICS_ACTIVE'	=> ($config['feed_topics_active']) ? true : false,
 		'S_ENABLE_FEEDS_NEWS'		=> ($s_feed_news) ? true : false,
 
-		'S_LOAD_UNREADS'			=> ($config['load_unreads_search'] && ($config['load_anon_lastread'] || $user->data['is_registered'])) ? true : false,
+		'S_LOAD_UNREADS'			=> ($config['load_unreads_search'] && ($config['load_anon_lastread'] || $user->data['is_registered'])),
 
 		'S_SEARCH_HIDDEN_FIELDS'	=> build_hidden_fields($s_search_hidden_fields),
 

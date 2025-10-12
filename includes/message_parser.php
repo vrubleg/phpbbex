@@ -900,7 +900,7 @@ class bbcode_firstpass extends bbcode
 							else
 							{
 								$end_tag = array_pop($end_tags);
-								$error = ($end_tag != $tag) ? true : false;
+								$error = ($end_tag != $tag);
 							}
 						}
 
@@ -1475,11 +1475,11 @@ class parse_message extends bbcode_firstpass
 
 		$num_attachments = sizeof($this->attachment_data);
 		$this->filename_data['filecomment'] = utf8_normalize_nfc(request_var('filecomment', '', true));
-		$upload_file = (isset($_FILES[$form_name]) && $_FILES[$form_name]['name'] != 'none' && trim($_FILES[$form_name]['name'])) ? true : false;
+		$upload_file = (isset($_FILES[$form_name]) && $_FILES[$form_name]['name'] != 'none' && trim($_FILES[$form_name]['name']));
 
-		$add_file		= (isset($_POST['add_file'])) ? true : false;
-		$delete_file	= (isset($_POST['delete_file'])) ? true : false;
-		$update_file	= (isset($_POST['update_file'])) ? true : false;
+		$add_file		= isset($_POST['add_file']);
+		$delete_file	= isset($_POST['delete_file']);
+		$update_file	= isset($_POST['update_file']);
 
 		// First of all adjust comments if changed
 		$actual_comment_list = utf8_normalize_nfc(request_var('comment_list', [''], true));

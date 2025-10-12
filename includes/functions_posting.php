@@ -278,7 +278,7 @@ function posting_gen_topic_icons($mode, $icon_id)
 					'ICON_WIDTH'	=> $data['width'],
 					'ICON_HEIGHT'	=> $data['height'],
 
-					'S_CHECKED'			=> ($id == $icon_id) ? true : false,
+					'S_CHECKED'			=> ($id == $icon_id),
 					'S_ICON_CHECKED'	=> ($id == $icon_id) ? ' checked="checked"' : '']
 				);
 			}
@@ -378,7 +378,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 
 	if (!$local)
 	{
-		$filedata['post_attach'] = ($upload->is_valid($form_name)) ? true : false;
+		$filedata['post_attach'] = $upload->is_valid($form_name);
 	}
 	else
 	{
@@ -1150,7 +1150,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 			'POST_AUTHOR'			=> get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 			'U_POST_AUTHOR'			=> get_username_string('profile', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 
-			'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
+			'S_HAS_ATTACHMENTS'	=> !empty($attachments[$row['post_id']]),
 			'S_FRIEND'			=> ($row['friend']) ? true : false,
 			'S_IGNORE_POST'		=> ($row['foe']) ? true : false,
 			'L_IGNORE_POST'		=> ($row['foe']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), "<a href=\"{$u_show_post}\" onclick=\"dE('{$post_anchor}', 1); return false;\">", '</a>') : '',
@@ -1195,8 +1195,8 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 {
 	global $db, $user, $config, $auth;
 
-	$topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
-	$forum_notification = ($mode == 'post') ? true : false;
+	$topic_notification = ($mode == 'reply' || $mode == 'quote');
+	$forum_notification = ($mode == 'post');
 
 	if (!$topic_notification && !$forum_notification)
 	{

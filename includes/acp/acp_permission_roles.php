@@ -31,7 +31,7 @@ class acp_permission_roles
 
 		$this->tpl_name = 'acp_permission_roles';
 
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$role_id = request_var('role_id', 0);
 		$action = request_var('action', '');
 		$action = (isset($_POST['add'])) ? 'add' : $action;
@@ -468,21 +468,21 @@ class acp_permission_roles
 			$template->assign_block_vars('auth', [
 				'CAT_NAME'	=> $user->lang['permission_cat'][$cat],
 
-				'S_YES'		=> ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']) ? true : false,
-				'S_NEVER'	=> ($cat_array['S_NEVER'] && !$cat_array['S_YES'] && !$cat_array['S_NO']) ? true : false,
-				'S_NO'		=> ($cat_array['S_NO'] && !$cat_array['S_NEVER'] && !$cat_array['S_YES']) ? true : false]
-			);
+				'S_YES'		=> ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']),
+				'S_NEVER'	=> ($cat_array['S_NEVER'] && !$cat_array['S_YES'] && !$cat_array['S_NO']),
+				'S_NO'		=> ($cat_array['S_NO'] && !$cat_array['S_NEVER'] && !$cat_array['S_YES']),
+			]);
 
 			foreach ($cat_array['permissions'] as $permission => $allowed)
 			{
 				$template->assign_block_vars('auth.mask', [
-					'S_YES'		=> ($allowed == ACL_YES) ? true : false,
-					'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
-					'S_NO'		=> ($allowed == ACL_NO) ? true : false,
+					'S_YES'		=> ($allowed == ACL_YES),
+					'S_NEVER'	=> ($allowed == ACL_NEVER),
+					'S_NO'		=> ($allowed == ACL_NO),
 
 					'FIELD_NAME'	=> $permission,
-					'PERMISSION'	=> $user->lang['acl_' . $permission]['lang']]
-				);
+					'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'],
+				]);
 			}
 		}
 	}

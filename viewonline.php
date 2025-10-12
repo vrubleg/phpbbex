@@ -200,7 +200,7 @@ while ($row = $db->sql_fetchrow($result))
 		'U_WHOIS'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=whois&amp;s=' . $row['session_id']),
 
 		'S_USER_HIDDEN'		=> $s_user_hidden,
-		'S_GUEST'			=> ($row['user_id'] == ANONYMOUS) ? true : false,
+		'S_GUEST'			=> ($row['user_id'] == ANONYMOUS),
 		'S_USER_TYPE'		=> $row['user_type'],
 	]);
 }

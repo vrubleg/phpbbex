@@ -532,10 +532,10 @@ class acp_language
 				// Get Language Entries - if saved within store folder, we take this one (with the option to remove it)
 				$lang = [];
 
-				$is_email_file = ($this->language_directory == 'email') ? true : false;
-				$is_help_file = (strpos($this->language_file, 'help_') === 0) ? true : false;
+				$is_email_file = ($this->language_directory == 'email');
+				$is_help_file = (strpos($this->language_file, 'help_') === 0);
 
-				$file_from_store = (file_exists(PHPBB_ROOT_PATH . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, true, true))) ? true : false;
+				$file_from_store = (file_exists(PHPBB_ROOT_PATH . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, true, true)));
 				$no_store_filename = $this->get_filename($lang_iso, $this->language_directory, $this->language_file);
 
 				if (!$file_from_store && !file_exists(PHPBB_ROOT_PATH . $no_store_filename))
@@ -1114,7 +1114,7 @@ $lang = array_merge($lang, array(
 		}
 
 		// If more then 270 characters, then we present a textarea, else an input field
-		$textarea = (utf8_strlen($value) > 270) ? true : false;
+		$textarea = (utf8_strlen($value) > 270);
 		$tpl = '';
 
 		$tpl .= ($textarea) ? '<textarea name="' : '<input type="text" name="';

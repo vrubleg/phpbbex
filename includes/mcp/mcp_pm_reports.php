@@ -301,7 +301,7 @@ class mcp_pm_reports
 
 					'S_PM'					=> true,
 					'S_MCP_ACTION'			=> $this->u_action,
-					'S_CLOSED'				=> ($mode == 'pm_reports_closed') ? true : false,
+					'S_CLOSED'				=> ($mode == 'pm_reports_closed'),
 
 					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir", $total, $config['topics_per_page'], $start),
 					'PAGE_NUMBER'			=> on_page($total, $config['topics_per_page'], $start),

@@ -231,8 +231,8 @@ class acp_profile
 				$field_id = request_var('field_id', 0);
 				$step = request_var('step', 1);
 
-				$submit = (isset($_REQUEST['next']) || isset($_REQUEST['prev'])) ? true : false;
-				$save = (isset($_REQUEST['save'])) ? true : false;
+				$submit = (isset($_REQUEST['next']) || isset($_REQUEST['prev']));
+				$save = isset($_REQUEST['save']);
 
 				// The language id of default language
 				$this->edit_lang_id = $this->lang_defs['iso'][$config['default_lang']];
@@ -681,7 +681,7 @@ class acp_profile
 
 				$template->assign_vars([
 					'S_EDIT'			=> true,
-					'S_EDIT_MODE'		=> ($action == 'edit') ? true : false,
+					'S_EDIT_MODE'		=> ($action == 'edit'),
 					'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 
 					'L_TITLE'			=> $user->lang['STEP_' . $step . '_TITLE_' . strtoupper($action)],
@@ -712,15 +712,15 @@ class acp_profile
 							'FIELD_TYPE'		=> $user->lang['FIELD_' . strtoupper($cp->profile_types[$field_type])],
 							'FIELD_IDENT'		=> $cp->vars['field_ident'],
 							'LANG_NAME'			=> $cp->vars['lang_name'],
-							'LANG_EXPLAIN'		=> $cp->vars['lang_explain']]
-						);
+							'LANG_EXPLAIN'		=> $cp->vars['lang_explain'],
+						]);
 
 						// String and Text needs to set default values here...
 						if ($field_type == FIELD_STRING || $field_type == FIELD_TEXT)
 						{
 							$template->assign_vars([
-								'S_TEXT'		=> ($field_type == FIELD_TEXT) ? true : false,
-								'S_STRING'		=> ($field_type == FIELD_STRING) ? true : false,
+								'S_TEXT'		=> ($field_type == FIELD_TEXT),
+								'S_STRING'		=> ($field_type == FIELD_STRING),
 
 								'L_DEFAULT_VALUE_EXPLAIN'	=> $user->lang[strtoupper($cp->profile_types[$field_type]) . '_DEFAULT_VALUE_EXPLAIN'],
 								'LANG_DEFAULT_VALUE'		=> $cp->vars['lang_default_value']]
@@ -746,14 +746,14 @@ class acp_profile
 							}
 
 							$template->assign_vars([
-								'S_BOOL'		=> ($field_type == FIELD_BOOL) ? true : false,
-								'S_DROPDOWN'	=> ($field_type == FIELD_DROPDOWN) ? true : false,
+								'S_BOOL'		=> ($field_type == FIELD_BOOL),
+								'S_DROPDOWN'	=> ($field_type == FIELD_DROPDOWN),
 
 								'L_LANG_OPTIONS_EXPLAIN'	=> $user->lang[strtoupper($cp->profile_types[$field_type]) . '_ENTRIES_EXPLAIN'],
 								'LANG_OPTIONS'				=> ($field_type == FIELD_DROPDOWN) ? implode("\n", $cp->vars['lang_options']) : '',
 								'FIRST_LANG_OPTION'			=> ($field_type == FIELD_BOOL) ? $cp->vars['lang_options'][0] : '',
-								'SECOND_LANG_OPTION'		=> ($field_type == FIELD_BOOL) ? $cp->vars['lang_options'][1] : '']
-							);
+								'SECOND_LANG_OPTION'		=> ($field_type == FIELD_BOOL) ? $cp->vars['lang_options'][1] : ''
+							]);
 						}
 
 					break;
@@ -822,7 +822,7 @@ class acp_profile
 			$active_value = (!$row['field_active']) ? 'activate' : 'deactivate';
 			$id = $row['field_id'];
 
-			$s_need_edit = (sizeof($this->lang_defs['diff'][$row['field_id']])) ? true : false;
+			$s_need_edit = (sizeof($this->lang_defs['diff'][$row['field_id']]) > 0);
 
 			if ($s_need_edit)
 			{

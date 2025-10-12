@@ -26,7 +26,7 @@ function mcp_front_view($id, $mode, $action)
 
 		$forum_id = request_var('f', 0);
 
-		$template->assign_var('S_SHOW_UNAPPROVED', (!empty($forum_list)) ? true : false);
+		$template->assign_var('S_SHOW_UNAPPROVED', !empty($forum_list));
 
 		if (!empty($forum_list))
 		{
@@ -143,7 +143,7 @@ function mcp_front_view($id, $mode, $action)
 	{
 		$forum_list = array_values(array_intersect(get_forum_list('f_read'), get_forum_list('m_report')));
 
-		$template->assign_var('S_SHOW_REPORTS', (!empty($forum_list)) ? true : false);
+		$template->assign_var('S_SHOW_REPORTS', !empty($forum_list));
 
 		if (!empty($forum_list))
 		{
@@ -361,9 +361,9 @@ function mcp_front_view($id, $mode, $action)
 		}
 
 		$template->assign_vars([
-			'S_SHOW_LOGS'	=> (!empty($forum_list)) ? true : false,
-			'S_HAS_LOGS'	=> (!empty($log)) ? true : false]
-		);
+			'S_SHOW_LOGS'	=> !empty($forum_list),
+			'S_HAS_LOGS'	=> !empty($log),
+		]);
 	}
 
 	$template->assign_var('S_MCP_ACTION', append_sid(PHPBB_ROOT_PATH . 'mcp.php'));

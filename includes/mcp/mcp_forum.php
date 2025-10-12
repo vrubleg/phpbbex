@@ -22,7 +22,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 	// merge_topic is the quickmod action, merge_topics is the mcp_forum action, and merge_select is the mcp_topic action
-	$merge_select = ($action == 'merge_select' || $action == 'merge_topic' || $action == 'merge_topics') ? true : false;
+	$merge_select = ($action == 'merge_select' || $action == 'merge_topic' || $action == 'merge_topics');
 
 	if ($merge_select)
 	{
@@ -109,7 +109,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		'S_CAN_LOCK'			=> $auth->acl_get('m_lock', $forum_id),
 		'S_CAN_SYNC'			=> $auth->acl_get('m_', $forum_id),
 		'S_CAN_APPROVE'			=> $auth->acl_get('m_approve', $forum_id),
-		'S_MERGE_SELECT'		=> ($merge_select) ? true : false,
+		'S_MERGE_SELECT'		=> $merge_select,
 		'S_CAN_MAKE_NORMAL'		=> $auth->acl_gets('f_sticky', 'f_announce', $forum_id),
 		'S_CAN_MAKE_STICKY'		=> $auth->acl_get('f_sticky', $forum_id),
 		'S_CAN_MAKE_ANNOUNCE'	=> $auth->acl_get('f_announce', $forum_id),
@@ -199,7 +199,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		}
 		else
 		{
-			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
+			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 		}
 
 		// Get folder img, topic status/type related information
@@ -208,8 +208,8 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 		$topic_title = censor_text($row['topic_title']);
 
-		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $row['forum_id'])) ? true : false;
-		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $row['forum_id'])) ? true : false;
+		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $row['forum_id']));
+		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $row['forum_id']));
 		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? $url . '&amp;i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . '&amp;t=' . $row['topic_id'] : '';
 
 		$topic_row = [
@@ -239,7 +239,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 			'LAST_POST_SUBJECT'	=> $row['topic_last_post_subject'],
 			'LAST_VIEW_TIME'	=> $user->format_date($row['topic_last_view_time']),
 
-			'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && empty($row['topic_moved_id']) && $auth->acl_get('m_report', $row['forum_id'])) ? true : false,
+			'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && empty($row['topic_moved_id']) && $auth->acl_get('m_report', $row['forum_id'])),
 			'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
 			'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
 			'S_UNREAD_TOPIC'		=> $unread_topic,
@@ -267,12 +267,12 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 			$topic_row = array_merge($topic_row, [
 				'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;f=$forum_id&amp;t={$row['topic_id']}&amp;mode=topic_view"),
 
-				'S_SELECT_TOPIC'	=> ($merge_select && !in_array($row['topic_id'], $source_topic_ids)) ? true : false,
+				'S_SELECT_TOPIC'	=> ($merge_select && !in_array($row['topic_id'], $source_topic_ids)),
 				'U_SELECT_TOPIC'	=> $u_select_topic,
 				'U_MCP_QUEUE'		=> $u_mcp_queue,
 				'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=topic_view&amp;t=' . $row['topic_id'] . '&amp;action=reports') : '',
 				'TOPIC_ID'			=> $row['topic_id'],
-				'S_TOPIC_CHECKED'	=> ($topic_id_list && in_array($row['topic_id'], $topic_id_list)) ? true : false,
+				'S_TOPIC_CHECKED'	=> ($topic_id_list && in_array($row['topic_id'], $topic_id_list)),
 			]);
 		}
 

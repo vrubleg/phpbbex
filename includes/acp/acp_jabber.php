@@ -29,7 +29,7 @@ class acp_jabber
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_jabber.php');
 
 		$action	= request_var('action', '');
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		if ($mode != 'settings')
 		{
@@ -118,7 +118,7 @@ class acp_jabber
 			'JAB_PACKAGE_SIZE'		=> $jab_package_size,
 			'JAB_USE_SSL'			=> $jab_use_ssl,
 			'S_CAN_USE_SSL'			=> jabber::can_use_ssl(),
-			'S_GTALK_NOTE'			=> (!@function_exists('dns_get_record')) ? true : false,
+			'S_GTALK_NOTE'			=> (!@function_exists('dns_get_record')),
 		]);
 	}
 }

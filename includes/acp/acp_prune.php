@@ -49,7 +49,7 @@ class acp_prune
 
 		$all_forums = request_var('all_forums', 0);
 		$forum_id = request_var('f', [0]);
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		if ($all_forums)
 		{
@@ -72,7 +72,7 @@ class acp_prune
 			{
 				$prune_posted = request_var('prune_days', 0);
 				$prune_viewed = request_var('prune_vieweddays', 0);
-				$prune_all = (!$prune_posted && !$prune_viewed) ? true : false;
+				$prune_all = (!$prune_posted && !$prune_viewed);
 
 				$prune_flags = 0;
 				$prune_flags += (request_var('prune_old_polls', 0)) ? 2 : 0;
@@ -225,7 +225,7 @@ class acp_prune
 
 		$user->add_lang('memberlist');
 
-		$prune = (isset($_POST['prune'])) ? true : false;
+		$prune = isset($_POST['prune']);
 
 		if ($prune)
 		{
@@ -298,8 +298,8 @@ class acp_prune
 				}
 
 				$template->assign_vars([
-					'S_DEACTIVATE'		=> ($action == 'deactivate') ? true : false,
-					'S_DELETE'			=> ($action == 'delete') ? true : false,
+					'S_DEACTIVATE'		=> ($action == 'deactivate'),
+					'S_DELETE'			=> ($action == 'delete'),
 				]);
 
 				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([

@@ -29,7 +29,7 @@ class acp_email
 		add_form_key($form_key);
 
 		// Set some vars
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$error = [];
 
 		$usernames	= request_var('usernames', '', true);
@@ -255,7 +255,7 @@ class acp_email
 		$select_list .= group_select_options($group_id, $exclude);
 
 		$template->assign_vars([
-			'S_WARNING'				=> (sizeof($error)) ? true : false,
+			'S_WARNING'				=> (sizeof($error) > 0),
 			'WARNING_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'U_ACTION'				=> $this->u_action,
 			'S_GROUP_OPTIONS'		=> $select_list,

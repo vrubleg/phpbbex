@@ -233,9 +233,9 @@ class p_master
 
 				'id'		=> (int) $row['module_id'],
 				'parent'	=> (int) $row['parent_id'],
-				'cat'		=> ($row['right_id'] > $row['left_id'] + 1) ? true : false,
+				'cat'		=> ($row['right_id'] > $row['left_id'] + 1),
 
-				'is_duplicate'	=> ($row['module_basename'] && sizeof($names[$row['module_basename'] . '_' . $row['module_mode']]) > 1) ? true : false,
+				'is_duplicate'	=> ($row['module_basename'] && sizeof($names[$row['module_basename'] . '_' . $row['module_mode']]) > 1),
 
 				'name'		=> (string) $row['module_basename'],
 				'mode'		=> (string) $row['module_mode'],
@@ -299,10 +299,10 @@ class p_master
 
 		if ($module_mode === false)
 		{
-			return (isset($this->loaded_cache[$module_basename])) ? true : false;
+			return isset($this->loaded_cache[$module_basename]);
 		}
 
-		return (!empty($this->loaded_cache[$module_basename][$module_mode])) ? true : false;
+		return !empty($this->loaded_cache[$module_basename][$module_mode]);
 	}
 
 	/**
@@ -749,7 +749,7 @@ class p_master
 
 				$tpl_ary = [
 					'L_TITLE'		=> $item_ary['lang'],
-					'S_SELECTED'	=> (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id) ? true : false,
+					'S_SELECTED'	=> (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id),
 					'U_TITLE'		=> $u_title
 				];
 
@@ -758,7 +758,7 @@ class p_master
 
 			$tpl_ary = [
 				'L_TITLE'		=> $item_ary['lang'],
-				'S_SELECTED'	=> (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id) ? true : false,
+				'S_SELECTED'	=> (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id),
 				'U_TITLE'		=> $u_title
 			];
 

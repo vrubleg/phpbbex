@@ -38,7 +38,7 @@ class acp_groups
 		$leader		= request_var('leader', 0);
 		$default	= request_var('default', 0);
 		$start		= request_var('start', 0);
-		$update		= (isset($_POST['update'])) ? true : false;
+		$update		= isset($_POST['update']);
 
 
 		// Clear some vars
@@ -493,12 +493,12 @@ class acp_groups
 
 				$template->assign_vars([
 					'S_EDIT'			=> true,
-					'S_ADD_GROUP'		=> ($action == 'add') ? true : false,
-					'S_GROUP_PERM'		=> ($action == 'add' && $auth->acl_get('a_authgroups') && $auth->acl_gets('a_aauth', 'a_fauth', 'a_mauth', 'a_uauth')) ? true : false,
+					'S_ADD_GROUP'		=> ($action == 'add'),
+					'S_GROUP_PERM'		=> ($action == 'add' && $auth->acl_get('a_authgroups') && $auth->acl_gets('a_aauth', 'a_fauth', 'a_mauth', 'a_uauth')),
 					'S_INCLUDE_SWATCH'	=> true,
-					'S_ERROR'			=> (sizeof($error)) ? true : false,
-					'S_SPECIAL_GROUP'	=> ($group_type == GROUP_SPECIAL) ? true : false,
-					'S_USER_FOUNDER'	=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+					'S_ERROR'			=> (sizeof($error) > 0),
+					'S_SPECIAL_GROUP'	=> ($group_type == GROUP_SPECIAL),
+					'S_USER_FOUNDER'	=> ($user->data['user_type'] == USER_FOUNDER),
 
 					'ERROR_MSG'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 					'GROUP_NAME'			=> ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
@@ -563,7 +563,7 @@ class acp_groups
 
 						'USERNAME'			=> $row['username'],
 						'USERNAME_COLOUR'	=> $row['user_colour'],
-						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id) ? true : false,
+						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id),
 						'JOINED'			=> ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
 						'USER_POSTS'		=> $row['user_posts'],
 						'USER_ID'			=> $row['user_id'],
@@ -590,7 +590,7 @@ class acp_groups
 
 				$template->assign_vars([
 					'S_LIST'			=> true,
-					'S_GROUP_SPECIAL'	=> ($group_row['group_type'] == GROUP_SPECIAL) ? true : false,
+					'S_GROUP_SPECIAL'	=> ($group_row['group_type'] == GROUP_SPECIAL),
 					'S_ACTION_OPTIONS'	=> $s_action_options,
 
 					'S_ON_PAGE'		=> on_page($total_members, $config['topics_per_page'], $start),
@@ -630,7 +630,7 @@ class acp_groups
 
 						'USERNAME'			=> $row['username'],
 						'USERNAME_COLOUR'	=> $row['user_colour'],
-						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id) ? true : false,
+						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id),
 						'JOINED'			=> ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
 						'USER_POSTS'		=> $row['user_posts'],
 						'USER_ID'			=> $row['user_id']]
@@ -702,7 +702,7 @@ class acp_groups
 					'U_EDIT'		=> "{$this->u_action}&amp;action=edit&amp;g=$group_id",
 					'U_DELETE'		=> ($auth->acl_get('a_groupdel')) ? "{$this->u_action}&amp;action=delete&amp;g=$group_id" : '',
 
-					'S_GROUP_SPECIAL'	=> ($row['group_type'] == GROUP_SPECIAL) ? true : false,
+					'S_GROUP_SPECIAL'	=> ($row['group_type'] == GROUP_SPECIAL),
 
 					'GROUP_NAME'	=> $group_name,
 					'TOTAL_MEMBERS'	=> $row['total_members'],

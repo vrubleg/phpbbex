@@ -118,7 +118,7 @@ class mcp_queue
 					$topic_tracking_info = get_complete_topic_tracking($post_info['forum_id'], $post_info['topic_id']);
 				}
 
-				$post_unread = (isset($topic_tracking_info[$post_info['topic_id']]) && $post_info['post_time'] > $topic_tracking_info[$post_info['topic_id']]) ? true : false;
+				$post_unread = (isset($topic_tracking_info[$post_info['topic_id']]) && $post_info['post_time'] > $topic_tracking_info[$post_info['topic_id']]);
 
 				// Process message, leave it uncensored
 				$message = $post_info['post_text'];
@@ -480,7 +480,7 @@ function approve_post($post_id_list, $id, $mode)
 
 	if (confirm_box(true))
 	{
-		$notify_poster = (isset($_REQUEST['notify_poster'])) ? true : false;
+		$notify_poster = isset($_REQUEST['notify_poster']);
 
 		// If Topic -> total_topics = total_topics+1, total_posts = total_posts+1, forum_topics = forum_topics+1, forum_posts = forum_posts+1
 		// If Post -> total_posts = total_posts+1, forum_posts = forum_posts+1, topic_replies = topic_replies+1
@@ -781,7 +781,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		'redirect'		=> $redirect]
 	);
 
-	$notify_poster = (isset($_REQUEST['notify_poster'])) ? true : false;
+	$notify_poster = isset($_REQUEST['notify_poster']);
 	$disapprove_reason = '';
 
 	if ($reason_id)

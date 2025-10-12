@@ -26,8 +26,8 @@ class ucp_groups
 		$return_page = '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '">', '</a>');
 
 		$mark_ary	= request_var('mark', [0]);
-		$submit		= (!empty($_POST['submit'])) ? true : false;
-		$delete		= (!empty($_POST['delete'])) ? true : false;
+		$submit		= !empty($_POST['submit']);
+		$delete		= !empty($_POST['delete']);
 		$error = $data = [];
 
 		switch ($mode)
@@ -324,7 +324,7 @@ class ucp_groups
 
 						'U_VIEW_GROUP'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $row['group_id']),
 
-						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $user->data['group_id']) ? true : false,
+						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $user->data['group_id']),
 						'S_ROW_COUNT'		=> ${$block . '_count'}++]
 					);
 
@@ -375,7 +375,7 @@ class ucp_groups
 						'GROUP_SPECIAL'	=> ($row['group_type'] != GROUP_SPECIAL) ? false : true,
 						'GROUP_CLOSED'	=> ($row['group_type'] != GROUP_CLOSED || $auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? false : true,
 						'GROUP_STATUS'	=> $user->lang['GROUP_IS_' . $group_status],
-						'S_CAN_JOIN'	=> ($row['group_type'] == GROUP_OPEN || $row['group_type'] == GROUP_FREE) ? true : false,
+						'S_CAN_JOIN'	=> ($row['group_type'] == GROUP_OPEN || $row['group_type'] == GROUP_FREE),
 						'GROUP_COLOUR'	=> $row['group_colour'],
 
 						'U_VIEW_GROUP'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $row['group_id']),
@@ -392,8 +392,8 @@ class ucp_groups
 					'S_PENDING_COUNT'	=> $pending_count,
 					'S_NONMEMBER_COUNT'	=> $nonmember_count,
 
-					'S_UCP_ACTION'			=> $this->u_action]
-				);
+					'S_UCP_ACTION'			=> $this->u_action,
+				]);
 
 			break;
 
@@ -463,7 +463,7 @@ class ucp_groups
 
 						$data = $submit_ary = [];
 
-						$update	= (isset($_POST['update'])) ? true : false;
+						$update	= isset($_POST['update']);
 
 						$error = [];
 
@@ -585,8 +585,8 @@ class ucp_groups
 						$template->assign_vars([
 							'S_EDIT'			=> true,
 							'S_INCLUDE_SWATCH'	=> true,
-							'S_ERROR'			=> (sizeof($error)) ? true : false,
-							'S_SPECIAL_GROUP'	=> ($group_type == GROUP_SPECIAL) ? true : false,
+							'S_ERROR'			=> (sizeof($error) > 0),
+							'S_SPECIAL_GROUP'	=> ($group_type == GROUP_SPECIAL),
 
 							'ERROR_MSG'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 							'GROUP_RECEIVE_PM'		=> (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
@@ -654,11 +654,11 @@ class ucp_groups
 								'USERNAME_COLOUR'	=> $row['user_colour'],
 								'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 								'U_USER_VIEW'		=> get_username_string('profile', $row['user_id'], $row['username']),
-								'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id) ? true : false,
+								'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id),
 								'JOINED'			=> ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
 								'USER_POSTS'		=> $row['user_posts'],
-								'USER_ID'			=> $row['user_id']]
-							);
+								'USER_ID'			=> $row['user_id'],
+							]);
 						}
 						$db->sql_freeresult($result);
 
@@ -709,11 +709,11 @@ class ucp_groups
 								'USERNAME_COLOUR'	=> $row['user_colour'],
 								'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 								'U_USER_VIEW'		=> get_username_string('profile', $row['user_id'], $row['username']),
-								'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id) ? true : false,
+								'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id),
 								'JOINED'			=> ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
 								'USER_POSTS'		=> $row['user_posts'],
-								'USER_ID'			=> $row['user_id']]
-							);
+								'USER_ID'			=> $row['user_id'],
+							]);
 						}
 						$db->sql_freeresult($result);
 

@@ -116,7 +116,7 @@ function mcp_post_details($id, $mode, $action)
 		$topic_tracking_info = get_complete_topic_tracking($post_info['forum_id'], $post_info['topic_id']);
 	}
 
-	$post_unread = (isset($topic_tracking_info[$post_info['topic_id']]) && $post_info['post_time'] > $topic_tracking_info[$post_info['topic_id']]) ? true : false;
+	$post_unread = (isset($topic_tracking_info[$post_info['topic_id']]) && $post_info['post_time'] > $topic_tracking_info[$post_info['topic_id']]);
 
 	// Process message, leave it uncensored
 	$message = $post_info['post_text'];

@@ -273,7 +273,7 @@ class phpbb_template
 				$this->files[$handle] = $this->files_inherit[$handle];
 				$this->files_template[$handle] = $user->theme['template_inherits_id'];
 			}
-			$recompile = (@filemtime($filename) < filemtime($this->files[$handle])) ? true : false;
+			$recompile = (@filemtime($filename) < filemtime($this->files[$handle]));
 		}
 
 		// Recompile page if the original template is newer, otherwise load the compiled version

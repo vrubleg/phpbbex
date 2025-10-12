@@ -22,7 +22,7 @@ $reason_id		= request_var('reason_id', 0);
 $report_text	= utf8_normalize_nfc(request_var('report_text', '', true));
 $user_notify	= ($user->data['is_registered']) ? request_var('notify', 0) : false;
 
-$submit = (isset($_POST['submit'])) ? true : false;
+$submit = isset($_POST['submit']);
 
 if (!$post_id && (!$pm_id || !$config['allow_pm_report']))
 {

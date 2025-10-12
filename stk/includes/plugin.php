@@ -248,7 +248,7 @@ class plugin
 			}
 
 			// Active cat?
-			$_s_active = ($cat == $this->_parts['c']) ? true : false;
+			$_s_active = ($cat == $this->_parts['c']);
 
 			// Assign to the template
 			$template->assign_block_vars('top_nav', [
@@ -307,7 +307,7 @@ class plugin
 		// Now go ahead and build the template
 		foreach ($tpl_data as $tool => $name)
 		{
-			$_s_active = ($tool == $this->_parts['t']) ? true : false;
+			$_s_active = ($tool == $this->_parts['t']);
 
 			// Assign to the template
 			$template->assign_block_vars('left_nav', [

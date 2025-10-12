@@ -117,7 +117,7 @@ function make_forum_select($select_id = false, $ignore_id = false, $ignore_acl =
 		if ($return_array)
 		{
 			// Include some more information...
-			$selected = (is_array($select_id)) ? ((in_array($row['forum_id'], $select_id)) ? true : false) : (($row['forum_id'] == $select_id) ? true : false);
+			$selected = (is_array($select_id)) ? in_array($row['forum_id'], $select_id) : ($row['forum_id'] == $select_id);
 			$forum_list[$row['forum_id']] = array_merge(['padding' => $padding, 'selected' => ($selected && !$disabled), 'disabled' => $disabled], $row);
 		}
 		else

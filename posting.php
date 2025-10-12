@@ -25,12 +25,12 @@ $forum_id	= request_var('f', 0);
 $draft_id	= request_var('d', 0);
 $lastclick	= request_var('lastclick', 0);
 
-$preview	= (isset($_POST['preview'])) ? true : false;
-$save		= (isset($_POST['save'])) ? true : false;
-$load		= (isset($_POST['load'])) ? true : false;
-$delete		= (isset($_POST['delete'])) ? true : false;
-$cancel		= (isset($_POST['cancel']) && !isset($_POST['save'])) ? true : false;
-$refresh	= (isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load) ? true : false;
+$preview	= isset($_POST['preview']);
+$save		= isset($_POST['save']);
+$load		= isset($_POST['load']);
+$delete		= isset($_POST['delete']);
+$cancel		= (isset($_POST['cancel']) && !isset($_POST['save']));
+$refresh	= (isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load);
 $submit		= isset($_POST['post']) && !$refresh && !$preview;
 $mode		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : request_var('mode', '');
 
@@ -414,9 +414,9 @@ $post_data['enable_urls'] = $post_data['enable_magic_url'];
 
 if ($mode != 'edit')
 {
-	$post_data['enable_sig']		= ($config['allow_sig'] && $user->optionget('attachsig')) ? true: false;
-	$post_data['enable_smilies']	= ($config['allow_smilies'] && $user->optionget('smilies')) ? true : false;
-	$post_data['enable_bbcode']		= ($config['allow_bbcode'] && $user->optionget('bbcode')) ? true : false;
+	$post_data['enable_sig']		= ($config['allow_sig'] && $user->optionget('attachsig'));
+	$post_data['enable_smilies']	= ($config['allow_smilies'] && $user->optionget('smilies'));
+	$post_data['enable_bbcode']		= ($config['allow_bbcode'] && $user->optionget('bbcode'));
 	$post_data['enable_urls']		= true;
 }
 
@@ -461,11 +461,11 @@ if ($mode == 'edit' && $post_data['bbcode_uid'])
 }
 
 // HTML, BBCode, Smilies, Images and Flash status
-$bbcode_status	= ($config['allow_bbcode'] && $auth->acl_get('f_bbcode', $forum_id)) ? true : false;
-$smilies_status	= ($config['allow_smilies'] && $auth->acl_get('f_smilies', $forum_id)) ? true : false;
-$img_status		= ($bbcode_status && $auth->acl_get('f_img', $forum_id)) ? true : false;
+$bbcode_status	= ($config['allow_bbcode'] && $auth->acl_get('f_bbcode', $forum_id));
+$smilies_status	= ($config['allow_smilies'] && $auth->acl_get('f_smilies', $forum_id));
+$img_status		= ($bbcode_status && $auth->acl_get('f_img', $forum_id));
 $url_status		= ($config['allow_post_links']) ? true : false;
-$flash_status	= ($bbcode_status && $auth->acl_get('f_flash', $forum_id) && $config['allow_post_flash']) ? true : false;
+$flash_status	= ($bbcode_status && $auth->acl_get('f_flash', $forum_id) && $config['allow_post_flash']);
 $quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
 $spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 
@@ -486,8 +486,8 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 				'forum_id'		=> (int) $forum_id,
 				'save_time'		=> (int) $current_time,
 				'draft_subject'	=> (string) $subject,
-				'draft_message'	=> (string) $message]
-			);
+				'draft_message'	=> (string) $message,
+			]);
 			$db->sql_query($sql);
 
 			$meta_info = ($mode == 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) : append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id");
@@ -510,8 +510,7 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 				'subject'	=> $subject,
 				'message'	=> $message,
 				'attachment_data' => $message_parser->attachment_data,
-				]
-			);
+			]);
 
 			$hidden_fields = [
 				'icon_id'			=> 0,
@@ -626,22 +625,22 @@ if ($submit || $preview || $refresh)
 	$post_data['enable_bbcode']		= (!$bbcode_status || isset($_POST['disable_bbcode'])) ? false : true;
 	$post_data['enable_smilies']	= (!$smilies_status || isset($_POST['disable_smilies'])) ? false : true;
 	$post_data['enable_urls']		= (isset($_POST['disable_magic_url'])) ? 0 : 1;
-	$post_data['enable_sig']		= (!$config['allow_sig'] || !$auth->acl_get('f_sigs', $forum_id) || !$auth->acl_get('u_sig')) ? false : ((isset($_POST['attach_sig']) && $user->data['is_registered']) ? true : false);
+	$post_data['enable_sig']		= (!$config['allow_sig'] || !$auth->acl_get('f_sigs', $forum_id) || !$auth->acl_get('u_sig')) ? false : (isset($_POST['attach_sig']) && $user->data['is_registered']);
 
 	if ($config['allow_topic_notify'] && $user->data['is_registered'])
 	{
-		$notify = (isset($_POST['notify'])) ? true : false;
+		$notify = isset($_POST['notify']);
 	}
 	else
 	{
 		$notify = false;
 	}
 
-	$topic_lock			= (isset($_POST['lock_topic'])) ? true : false;
-	$post_lock			= (isset($_POST['lock_post'])) ? true : false;
+	$topic_lock			= isset($_POST['lock_topic']);
+	$post_lock			= isset($_POST['lock_post']);
 	$poll_delete		= isset($_POST['poll_title']) && trim($_POST['poll_title']) === '' && isset($_POST['poll_option_text']) && trim($_POST['poll_option_text']) === '' || isset($_POST['poll_delete']);
 	$poll_reset			= isset($_POST['poll_reset']);
-	$topic_first_post_show = (isset($_POST['topic_first_post_show'])) ? true : false;
+	$topic_first_post_show = isset($_POST['topic_first_post_show']);
 
 	if ($submit)
 	{
@@ -673,7 +672,7 @@ if ($submit || $preview || $refresh)
 				'poll_last_vote'	=> 0,
 				'poll_max_options'	=> 0,
 				'poll_vote_change'	=> 0,
-				'poll_show_voters'	=> 0
+				'poll_show_voters'	=> 0,
 			];
 
 			$sql = 'UPDATE ' . TOPICS_TABLE . '
@@ -752,7 +751,7 @@ if ($submit || $preview || $refresh)
 	}
 
 	// Check checksum ... don't re-parse message if the same
-	$update_message = ($mode != 'edit' || $message_md5 != $post_data['post_checksum'] || $status_switch || strlen($post_data['bbcode_uid']) < BBCODE_UID_LEN) ? true : false;
+	$update_message = ($mode != 'edit' || $message_md5 != $post_data['post_checksum'] || $status_switch || strlen($post_data['bbcode_uid']) < BBCODE_UID_LEN);
 
 	// Also check if subject got updated...
 	$update_subject = $mode != 'edit' || ($post_data['post_subject_md5'] && $post_data['post_subject_md5'] != md5($post_data['post_subject']));
@@ -872,7 +871,7 @@ if ($submit || $preview || $refresh)
 			'enable_bbcode'		=> $post_data['enable_bbcode'],
 			'enable_urls'		=> $post_data['enable_urls'],
 			'enable_smilies'	=> $post_data['enable_smilies'],
-			'img_status'		=> $img_status
+			'img_status'		=> $img_status,
 		];
 
 		$message_parser->parse_poll($poll);
@@ -1034,7 +1033,7 @@ if ($submit || $preview || $refresh)
 		{
 			// Lock/Unlock Topic
 			$change_topic_status = $post_data['topic_status'];
-			$perm_lock_unlock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED)) ? true : false;
+			$perm_lock_unlock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED));
 
 			if ($post_data['topic_status'] == ITEM_LOCKED && !$topic_lock && $perm_lock_unlock)
 			{
@@ -1121,7 +1120,7 @@ if ($submit || $preview || $refresh)
 			$post_author_name = ((!$user->data['is_registered'] || $mode == 'edit') && $post_data['username'] !== '') ? $post_data['username'] : '';
 
 			// The last parameter tells submit_post if search indexer has to be run
-			$redirect_url = submit_post($mode, $post_data['post_subject'], $post_author_name, $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject) ? true : false);
+			$redirect_url = submit_post($mode, $post_data['post_subject'], $post_author_name, $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject));
 
 			// Show/Unshow first post on every page
 			if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id']))
@@ -1217,7 +1216,7 @@ if (!sizeof($error) && $preview)
 
 		$template->assign_vars([
 			'S_HAS_POLL_OPTIONS'	=> (sizeof($post_data['poll_options'])),
-			'S_IS_MULTI_CHOICE'		=> ($post_data['poll_max_options'] > 1) ? true : false,
+			'S_IS_MULTI_CHOICE'		=> ($post_data['poll_max_options'] > 1),
 
 			'POLL_QUESTION'		=> $parse_poll->message,
 
@@ -1462,28 +1461,28 @@ $template->assign_vars([
 	'U_VIEW_TOPIC'			=> ($mode != 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id") : '',
 
 	'S_PRIVMSGS'				=> false,
-	'S_EDIT_POST'				=> ($mode == 'edit') ? true : false,
-	'S_EDIT_REASON'				=> ($mode == 'edit' && $auth->acl_get('m_edit', $forum_id)) ? true : false,
-	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered'] || ($mode == 'edit' && $post_data['poster_id'] == ANONYMOUS)) ? true : false,
+	'S_EDIT_POST'				=> ($mode == 'edit'),
+	'S_EDIT_REASON'				=> ($mode == 'edit' && $auth->acl_get('m_edit', $forum_id)),
+	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered'] || ($mode == 'edit' && $post_data['poster_id'] == ANONYMOUS)),
 	'S_SHOW_TOPIC_ICONS'		=> $s_topic_icons,
-	'S_DELETE_ALLOWED'			=> ($mode == 'edit' && (($post_id == $post_data['topic_last_post_id'] && $post_data['poster_id'] == $user->data['user_id'] && $auth->acl_get('f_delete', $forum_id) && !$post_data['post_edit_locked'] && ($post_data['post_time'] > time() - ($config['delete_time'] * 60) || !$config['delete_time'])) || $auth->acl_get('m_delete', $forum_id))) ? true : false,
+	'S_DELETE_ALLOWED'			=> ($mode == 'edit' && (($post_id == $post_data['topic_last_post_id'] && $post_data['poster_id'] == $user->data['user_id'] && $auth->acl_get('f_delete', $forum_id) && !$post_data['post_edit_locked'] && ($post_data['post_time'] > time() - ($config['delete_time'] * 60) || !$config['delete_time'])) || $auth->acl_get('m_delete', $forum_id))),
 	'S_BBCODE_ALLOWED'			=> ($bbcode_status) ? 1 : 0,
 	'S_BBCODE_CHECKED'			=> ($bbcode_checked) ? ' checked="checked"' : '',
 	'S_SMILIES_ALLOWED'			=> $smilies_status,
 	'S_SMILIES_CHECKED'			=> ($smilies_checked) ? ' checked="checked"' : '',
-	'S_SIG_ALLOWED'				=> ($auth->acl_get('f_sigs', $forum_id) && $config['allow_sig'] && $user->data['is_registered']) ? true : false,
+	'S_SIG_ALLOWED'				=> ($auth->acl_get('f_sigs', $forum_id) && $config['allow_sig'] && $user->data['is_registered']),
 	'S_SIGNATURE_CHECKED'		=> ($sig_checked) ? ' checked="checked"' : '',
 	'S_NOTIFY_ALLOWED'			=> (!$user->data['is_registered'] || ($mode == 'edit' && $user->data['user_id'] != $post_data['poster_id']) || !$config['allow_topic_notify'] || !$config['email_enable']) ? false : true,
 	'S_NOTIFY_CHECKED'			=> ($notify_checked) ? ' checked="checked"' : '',
-	'S_LOCK_TOPIC_ALLOWED'		=> (($mode == 'edit' || $mode == 'reply' || $mode == 'quote') && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED))) ? true : false,
+	'S_LOCK_TOPIC_ALLOWED'		=> (($mode == 'edit' || $mode == 'reply' || $mode == 'quote') && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED))),
 	'S_LOCK_TOPIC_CHECKED'		=> ($lock_topic_checked) ? ' checked="checked"' : '',
-	'S_LOCK_POST_ALLOWED'		=> ($mode == 'edit' && $auth->acl_get('m_edit', $forum_id)) ? true : false,
+	'S_LOCK_POST_ALLOWED'		=> ($mode == 'edit' && $auth->acl_get('m_edit', $forum_id)),
 	'S_LOCK_POST_CHECKED'		=> ($lock_post_checked) ? ' checked="checked"' : '',
 	'S_LINKS_ALLOWED'			=> $url_status,
 	'S_MAGIC_URL_CHECKED'		=> ($urls_checked) ? ' checked="checked"' : '',
 	'S_TYPE_TOGGLE'				=> $topic_type_toggle,
-	'S_SAVE_ALLOWED'			=> (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $mode != 'edit') ? true : false,
-	'S_HAS_DRAFTS'				=> (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $post_data['drafts']) ? true : false,
+	'S_SAVE_ALLOWED'			=> (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $mode != 'edit'),
+	'S_HAS_DRAFTS'				=> (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $post_data['drafts']),
 	'S_FORM_ENCTYPE'			=> $form_enctype,
 
 	'S_FIRST_POST_SHOW_ALLOWED'	=> $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),
@@ -1517,7 +1516,7 @@ if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_
 		'S_POLL_VOTE_CHANGE'	=> ($auth->acl_get('f_votechg', $forum_id) && $auth->acl_get('f_vote', $forum_id)),
 		'S_POLL_SHOW_VOTERS'	=> ($mode == 'post' || $mode == 'edit' && (empty($post_data['poll_options']) || !empty($post_data['poll_show_voters'])) || $auth->acl_get('a_')),
 		'S_POLL_RESET'			=> ($mode == 'edit' && $orig_poll_options_size),
-		'S_POLL_RESET_CHECKED'	=> (!empty($poll_reset)) ? true : false,
+		'S_POLL_RESET_CHECKED'	=> !empty($poll_reset),
 
 		'L_POLL_OPTIONS_EXPLAIN'	=> sprintf($user->lang['POLL_OPTIONS_' . (($mode == 'edit') ? 'EDIT_' : '') . 'EXPLAIN'], $config['max_poll_options']),
 

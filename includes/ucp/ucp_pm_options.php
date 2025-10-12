@@ -487,8 +487,8 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 		'S_DELETE_CHECKED'		=> $s_delete_checked,
 		'S_HOLD_CHECKED'		=> $s_hold_checked,
 		'S_MOVE_CHECKED'		=> $s_move_checked,
-		'S_MAX_FOLDER_REACHED'	=> ($num_user_folder >= $config['pm_max_boxes']) ? true : false,
-		'S_MAX_FOLDER_ZERO'		=> ($config['pm_max_boxes'] == 0) ? true : false,
+		'S_MAX_FOLDER_REACHED'	=> ($num_user_folder >= $config['pm_max_boxes']),
+		'S_MAX_FOLDER_ZERO'		=> ($config['pm_max_boxes'] == 0),
 
 		'DEFAULT_ACTION'		=> ($config['full_folder_action'] == 1) ? $user->lang['DELETE_OLDEST_MESSAGES'] : $user->lang['HOLD_NEW_MESSAGES'],
 
@@ -544,11 +544,11 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 		$check_option = 0;
 	}
 
-	define_check_option(($check_option && !isset($back['rule'])) ? true : false, $check_option, $check_lang);
+	define_check_option(($check_option && !isset($back['rule'])), $check_option, $check_lang);
 
 	if ($check_option && !isset($back['rule']))
 	{
-		define_rule_option(($rule_option && !isset($back['cond'])) ? true : false, $rule_option, $rule_lang, $global_privmsgs_rules[$check_option]);
+		define_rule_option(($rule_option && !isset($back['cond'])), $rule_option, $rule_lang, $global_privmsgs_rules[$check_option]);
 	}
 
 	if ($rule_option && !isset($back['cond']))
@@ -560,7 +560,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 		}
 		else
 		{
-			define_cond_option(($cond_option && !isset($back['action'])) ? true : false, $cond_option, $rule_option, $global_rule_conditions);
+			define_cond_option(($cond_option && !isset($back['action'])), $cond_option, $rule_option, $global_rule_conditions);
 		}
 	}
 
@@ -695,8 +695,8 @@ function define_cond_option($hardcoded, $cond_option, $rule_option, $global_rule
 
 	$template->assign_vars([
 		'S_COND_DEFINED'	=> true,
-		'S_COND_SELECT'		=> (!$hardcoded && isset($global_rule_conditions[$rule_option])) ? true : false]
-	);
+		'S_COND_SELECT'		=> (!$hardcoded && isset($global_rule_conditions[$rule_option])),
+	]);
 
 	// Define COND_OPTION
 	if (!isset($global_rule_conditions[$rule_option]))

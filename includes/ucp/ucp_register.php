@@ -33,7 +33,7 @@ class ucp_register
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
 
 		$agreed			= (!empty($_POST['agreed'])) ? 1 : 0;
-		$submit			= (isset($_POST['submit'])) ? true : false;
+		$submit			= isset($_POST['submit']);
 		$change_lang	= request_var('change_lang', '');
 		$user_lang		= request_var('lang', $user->lang_name);
 
@@ -466,7 +466,7 @@ class ucp_register
 
 			'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
 			'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz']),
-			'S_CONFIRM_REFRESH'	=> ($config['enable_confirm'] && $config['confirm_refresh']) ? true : false,
+			'S_CONFIRM_REFRESH'	=> ($config['enable_confirm'] && $config['confirm_refresh']),
 			'S_REGISTRATION'	=> true,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			'S_UCP_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register'),

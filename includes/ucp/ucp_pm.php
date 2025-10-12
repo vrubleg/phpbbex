@@ -173,8 +173,8 @@ class ucp_pm
 
 
 				// First Handle Mark actions and moving messages
-				$submit_mark	= (isset($_POST['submit_mark'])) ? true : false;
-				$move_pm		= (isset($_POST['move_pm'])) ? true : false;
+				$submit_mark	= isset($_POST['submit_mark']);
+				$move_pm		= isset($_POST['move_pm']);
 				$mark_option	= request_var('mark_option', '');
 				$dest_folder	= request_var('dest_folder', PRIVMSGS_NO_BOX);
 
@@ -330,16 +330,16 @@ class ucp_pm
 					'U_CREATE_FOLDER'		=> $this->u_action . '&amp;mode=options',
 					'U_CURRENT_FOLDER'		=> $this->u_action . '&amp;folder=' . $folder_id,
 
-					'S_IN_INBOX'			=> ($folder_id == PRIVMSGS_INBOX) ? true : false,
-					'S_IN_OUTBOX'			=> ($folder_id == PRIVMSGS_OUTBOX) ? true : false,
-					'S_IN_SENTBOX'			=> ($folder_id == PRIVMSGS_SENTBOX) ? true : false,
+					'S_IN_INBOX'			=> ($folder_id == PRIVMSGS_INBOX),
+					'S_IN_OUTBOX'			=> ($folder_id == PRIVMSGS_OUTBOX),
+					'S_IN_SENTBOX'			=> ($folder_id == PRIVMSGS_SENTBOX),
 
 					'FOLDER_STATUS'				=> $folder_status['message'],
 					'FOLDER_MAX_MESSAGES'		=> $folder_status['max'],
 					'FOLDER_CUR_MESSAGES'		=> $folder_status['cur'],
 					'FOLDER_REMAINING_MESSAGES'	=> $folder_status['remaining'],
-					'FOLDER_PERCENT'			=> $folder_status['percent']]
-				);
+					'FOLDER_PERCENT'			=> $folder_status['percent'],
+				]);
 
 				if ($action == 'view_folder')
 				{

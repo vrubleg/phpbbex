@@ -50,16 +50,16 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$address_list = [];
 	}
 
-	$preview	= (isset($_POST['preview'])) ? true : false;
-	$save		= (isset($_POST['save'])) ? true : false;
-	$load		= (isset($_POST['load'])) ? true : false;
-	$cancel		= (isset($_POST['cancel']) && !isset($_POST['save'])) ? true : false;
-	$delete		= (isset($_POST['delete'])) ? true : false;
+	$preview	= isset($_POST['preview']);
+	$save		= isset($_POST['save']);
+	$load		= isset($_POST['load']);
+	$cancel		= (isset($_POST['cancel']) && !isset($_POST['save']));
+	$delete		= isset($_POST['delete']);
 
-	$remove_u	= (isset($_REQUEST['remove_u'])) ? true : false;
-	$remove_g	= (isset($_REQUEST['remove_g'])) ? true : false;
-	$add_to		= (isset($_REQUEST['add_to'])) ? true : false;
-	$add_bcc	= (isset($_REQUEST['add_bcc'])) ? true : false;
+	$remove_u	= isset($_REQUEST['remove_u']);
+	$remove_g	= isset($_REQUEST['remove_g']);
+	$add_to		= isset($_REQUEST['add_to']);
+	$add_bcc	= isset($_REQUEST['add_bcc']);
 	$refresh	= isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || $save || $load
 		|| $remove_u || $remove_g || $add_to || $add_bcc;
 	$submit		= isset($_POST['post']) && !$refresh && !$preview;
@@ -120,7 +120,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 
 		$template->assign_vars([
 			'S_SHOW_PM_BOX'		=> true,
-			'S_ALLOW_MASS_PM'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')) ? true : false,
+			'S_ALLOW_MASS_PM'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')),
 			'S_GROUP_OPTIONS'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group')) ? $group_options : '',
 			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single=$select_single"),
 		]);
@@ -527,10 +527,10 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$message_parser->bbcode_uid = $bbcode_uid;
 	}
 
-	$bbcode_status	= ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode')) ? true : false;
-	$smilies_status	= ($config['allow_smilies'] && $config['auth_smilies_pm'] && $auth->acl_get('u_pm_smilies')) ? true : false;
-	$img_status		= ($config['auth_img_pm'] && $auth->acl_get('u_pm_img')) ? true : false;
-	$flash_status	= ($config['auth_flash_pm'] && $auth->acl_get('u_pm_flash')) ? true : false;
+	$bbcode_status	= ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode'));
+	$smilies_status	= ($config['allow_smilies'] && $config['auth_smilies_pm'] && $auth->acl_get('u_pm_smilies'));
+	$img_status		= ($config['auth_img_pm'] && $auth->acl_get('u_pm_img'));
+	$flash_status	= ($config['auth_flash_pm'] && $auth->acl_get('u_pm_flash'));
 	$quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
 	$spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 	$url_status		= ($config['allow_post_links']) ? true : false;
@@ -643,7 +643,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$enable_bbcode 		= (!$bbcode_status || isset($_POST['disable_bbcode'])) ? false : true;
 		$enable_smilies		= (!$smilies_status || isset($_POST['disable_smilies'])) ? false : true;
 		$enable_urls 		= (isset($_POST['disable_magic_url'])) ? 0 : 1;
-		$enable_sig			= (!$config['allow_sig'] ||!$config['allow_sig_pm']) ? false : ((isset($_POST['attach_sig'])) ? true : false);
+		$enable_sig			= (!$config['allow_sig'] ||!$config['allow_sig_pm']) ? false : (isset($_POST['attach_sig']));
 
 		if ($submit)
 		{
@@ -968,8 +968,8 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 				$id = (int) $id;
 
 				$tpl_ary = [
-					'IS_GROUP'	=> ($type == 'g') ? true : false,
-					'IS_USER'	=> ($type == 'u') ? true : false,
+					'IS_GROUP'	=> ($type == 'g'),
+					'IS_USER'	=> ($type == 'u'),
 					'UG_ID'		=> $id,
 					'NAME'		=> ${$type}[$id]['name'],
 					'COLOUR'	=> (${$type}[$id]['colour']) ? '#' . ${$type}[$id]['colour'] : '',
@@ -1073,7 +1073,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		'S_SIGNATURE_CHECKED'	=> ($sig_checked) ? ' checked="checked"' : '',
 		'S_LINKS_ALLOWED'		=> $url_status,
 		'S_MAGIC_URL_CHECKED'	=> ($urls_checked) ? ' checked="checked"' : '',
-		'S_SAVE_ALLOWED'		=> ($auth->acl_get('u_sendpm') && $action != 'edit') ? true : false,
+		'S_SAVE_ALLOWED'		=> ($auth->acl_get('u_sendpm') && $action != 'edit'),
 		'S_HAS_DRAFTS'			=> ($auth->acl_get('u_sendpm') && $drafts),
 		'S_FORM_ENCTYPE'		=> $form_enctype,
 

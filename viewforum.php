@@ -265,7 +265,7 @@ if ($start < 0 || $start > $topics_count)
 $post_alt = ($forum_data['forum_status'] == ITEM_LOCKED) ? $user->lang['FORUM_LOCKED'] : $user->lang['POST_NEW_TOPIC'];
 
 // Display active topics?
-$s_display_active = ($forum_data['forum_type'] == FORUM_CAT && ($forum_data['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS)) ? true : false;
+$s_display_active = ($forum_data['forum_type'] == FORUM_CAT && ($forum_data['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS));
 
 $s_search_hidden_fields = empty($config['default_search_titleonly']) ? ['fid' => [$forum_id]] : ['sf' => 'titleonly', 'sr' => 'topics', 'fid' => [$forum_id]];
 
@@ -305,9 +305,9 @@ $template->assign_vars([
 
 	'L_NO_TOPICS' 			=> ($forum_data['forum_status'] == ITEM_LOCKED) ? $user->lang['POST_FORUM_LOCKED'] : $user->lang['NO_TOPICS'],
 
-	'S_DISPLAY_POST_INFO'	=> ($forum_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
+	'S_DISPLAY_POST_INFO'	=> ($forum_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)),
 
-	'S_IS_POSTABLE'			=> ($forum_data['forum_type'] == FORUM_POST) ? true : false,
+	'S_IS_POSTABLE'			=> ($forum_data['forum_type'] == FORUM_POST),
 	'S_USER_CAN_POST'		=> ($auth->acl_get('f_post', $forum_id)) ? true : false,
 	'S_DISPLAY_ACTIVE'		=> $s_display_active,
 	'S_SELECT_SORT_DIR'		=> $s_sort_dir,
@@ -317,11 +317,11 @@ $template->assign_vars([
 	'S_WATCH_FORUM_TITLE'	=> $s_watching_forum['title'],
 	'S_WATCHING_FORUM'		=> $s_watching_forum['is_watching'],
 	'S_FORUM_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id" . (($start == 0) ? '' : "&amp;start=$start")),
-	'S_DISPLAY_SEARCHBOX'	=> ($auth->acl_get('u_search') && $auth->acl_get('f_search', $forum_id) && $config['load_search']) ? true : false,
+	'S_DISPLAY_SEARCHBOX'	=> ($auth->acl_get('u_search') && $auth->acl_get('f_search', $forum_id) && $config['load_search']),
 	'S_SEARCHBOX_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'search.php'),
 	'S_SEARCH_LOCAL_HIDDEN_FIELDS'	=> build_hidden_fields($s_search_hidden_fields),
 	'S_SINGLE_MODERATOR'	=> (!empty($moderators[$forum_id]) && sizeof($moderators[$forum_id]) > 1) ? false : true,
-	'S_IS_LOCKED'			=> ($forum_data['forum_status'] == ITEM_LOCKED) ? true : false,
+	'S_IS_LOCKED'			=> ($forum_data['forum_status'] == ITEM_LOCKED),
 	'S_VIEWFORUM'			=> true,
 
 	'U_MCP_FORUM'			=> ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f=$forum_id&amp;i=main&amp;mode=forum_view", true, $user->session_id) : '',
@@ -638,7 +638,7 @@ if (sizeof($topic_list))
 		}
 		else
 		{
-			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
+			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 		}
 
 		// Get folder img, topic status/type related information
@@ -649,8 +649,8 @@ if (sizeof($topic_list))
 		$view_topic_url_params = 't=' . $topic_id;
 		$view_topic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params);
 
-		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $topic_forum_id)) ? true : false;
-		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $topic_forum_id)) ? true : false;
+		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $topic_forum_id));
+		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $topic_forum_id));
 		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$topic_id", true, $user->session_id) : '';
 
 		// Send vars to template
@@ -687,17 +687,17 @@ if (sizeof($topic_list))
 			'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
 
 			'S_TOPIC_TYPE'			=> $row['topic_type'],
-			'S_USER_POSTED'			=> (isset($row['topic_posted']) && $row['topic_posted']) ? true : false,
+			'S_USER_POSTED'			=> (isset($row['topic_posted']) && $row['topic_posted']),
 			'S_UNREAD_TOPIC'		=> $unread_topic,
-			'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && $auth->acl_get('m_report', $topic_forum_id)) ? true : false,
+			'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && $auth->acl_get('m_report', $topic_forum_id)),
 			'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
 			'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
 			'S_HAS_POLL'			=> ($row['poll_start']) ? true : false,
-			'S_POST_ANNOUNCE'		=> ($row['topic_type'] == POST_ANNOUNCE) ? true : false,
-			'S_POST_GLOBAL'			=> ($row['topic_type'] == POST_GLOBAL) ? true : false,
-			'S_POST_STICKY'			=> ($row['topic_type'] == POST_STICKY) ? true : false,
-			'S_TOPIC_LOCKED'		=> ($row['topic_status'] == ITEM_LOCKED) ? true : false,
-			'S_TOPIC_MOVED'			=> ($row['topic_status'] == ITEM_MOVED) ? true : false,
+			'S_POST_ANNOUNCE'		=> ($row['topic_type'] == POST_ANNOUNCE),
+			'S_POST_GLOBAL'			=> ($row['topic_type'] == POST_GLOBAL),
+			'S_POST_STICKY'			=> ($row['topic_type'] == POST_STICKY),
+			'S_TOPIC_LOCKED'		=> ($row['topic_status'] == ITEM_LOCKED),
+			'S_TOPIC_MOVED'			=> ($row['topic_status'] == ITEM_MOVED),
 
 			'U_NEWEST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;view=unread') . '#unread',
 			'U_LAST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],

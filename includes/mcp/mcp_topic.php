@@ -39,7 +39,7 @@ function mcp_topic_view($id, $mode, $action)
 	$forum_id		= request_var('f', 0);
 	$to_topic_id	= request_var('to_topic_id', 0);
 	$to_forum_id	= request_var('to_forum_id', 0);
-	$sort			= isset($_POST['sort']) ? true : false;
+	$sort			= isset($_POST['sort']);
 	$submitted_id_list	= request_var('post_ids', [0]);
 	$checked_ids = $post_id_list = request_var('post_id_list', [0]);
 
@@ -226,7 +226,7 @@ function mcp_topic_view($id, $mode, $action)
 			$has_unapproved_posts = true;
 		}
 
-		$post_unread = (isset($topic_tracking_info[$topic_id]) && $row['post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
+		$post_unread = (isset($topic_tracking_info[$topic_id]) && $row['post_time'] > $topic_tracking_info[$topic_id]);
 
 		$template->assign_block_vars('postrow', [
 			'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
@@ -244,13 +244,13 @@ function mcp_topic_view($id, $mode, $action)
 
 			'S_POST_REPORTED'	=> ($row['post_reported'] && $auth->acl_get('m_report', $topic_info['forum_id'])),
 			'S_POST_UNAPPROVED'	=> (!$row['post_approved'] && $auth->acl_get('m_approve', $topic_info['forum_id'])),
-			'S_CHECKED'			=> (($submitted_id_list && !in_array(intval($row['post_id']), $submitted_id_list)) || in_array(intval($row['post_id']), $checked_ids)) ? true : false,
-			'S_HAS_ATTACHMENTS'	=> (!empty($attachments[$row['post_id']])) ? true : false,
+			'S_CHECKED'			=> (($submitted_id_list && !in_array(intval($row['post_id']), $submitted_id_list)) || in_array(intval($row['post_id']), $checked_ids)),
+			'S_HAS_ATTACHMENTS'	=> !empty($attachments[$row['post_id']]),
 
 			'U_POST_DETAILS'	=> "$url&amp;i=$id&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f=$forum_id" : ''),
 			'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
-			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '']
-		);
+			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
+		]);
 
 		// Display not already displayed Attachments for this post, we already parsed them. ;)
 		if (!empty($attachments[$row['post_id']]))
@@ -322,9 +322,9 @@ function mcp_topic_view($id, $mode, $action)
 		'S_CAN_LOCK'		=> ($auth->acl_get('m_lock', $topic_info['forum_id'])) ? true : false,
 		'S_CAN_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? true : false,
 		'S_CAN_SYNC'		=> $auth->acl_get('m_', $topic_info['forum_id']),
-		'S_REPORT_VIEW'		=> ($action == 'reports') ? true : false,
-		'S_MERGE_VIEW'		=> ($action == 'merge') ? true : false,
-		'S_SPLIT_VIEW'		=> ($action == 'split') ? true : false,
+		'S_REPORT_VIEW'		=> ($action == 'reports'),
+		'S_MERGE_VIEW'		=> ($action == 'merge'),
+		'S_SPLIT_VIEW'		=> ($action == 'split'),
 
 		'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 

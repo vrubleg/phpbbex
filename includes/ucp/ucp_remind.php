@@ -26,7 +26,7 @@ class ucp_remind
 
 		$username	= request_var('username', '', true);
 		$email		= strtolower(request_var('email', ''));
-		$submit		= (isset($_POST['submit'])) ? true : false;
+		$submit		= isset($_POST['submit']);
 
 		if ($submit)
 		{

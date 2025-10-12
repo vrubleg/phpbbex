@@ -25,7 +25,7 @@ class acp_reasons
 
 		// Set up general vars
 		$action = request_var('action', '');
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$reason_id = request_var('id', 0);
 
 		$this->tpl_name = 'acp_reasons';
@@ -58,7 +58,7 @@ class acp_reasons
 						$error[] = $user->lang['NO_REASON_INFO'];
 					}
 
-					$check_double = ($action == 'add') ? true : false;
+					$check_double = ($action == 'add');
 
 					if ($action == 'edit')
 					{
@@ -175,7 +175,7 @@ class acp_reasons
 					'S_AVAILABLE_TITLES'	=> implode(', ', array_map('htmlspecialchars', array_keys($user->lang['report_reasons']['TITLE']))),
 					'S_EDIT_REASON'			=> true,
 					'S_TRANSLATED'			=> $translated,
-					'S_ERROR'				=> (sizeof($error)) ? true : false,
+					'S_ERROR'				=> (sizeof($error) > 0),
 					]
 				);
 
@@ -299,7 +299,7 @@ class acp_reasons
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$translated = false;
-			$other_reason = ($row['reason_title'] == 'other') ? true : false;
+			$other_reason = ($row['reason_title'] == 'other');
 
 			// If the reason is defined within the language file, we will use the localized version, else just use the database entry...
 			if (isset($user->lang['report_reasons']['TITLE'][strtoupper($row['reason_title'])]) && isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])]))
