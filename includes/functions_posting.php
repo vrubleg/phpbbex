@@ -545,6 +545,10 @@ function get_supported_image_types($type = false)
 {
 	if (!@extension_loaded('gd')) { return false; }
 
+	// AVIF is available in PHP 8.1+.
+	if (!defined('IMAGETYPE_AVIF')) { define('IMAGETYPE_AVIF', 19); }
+	if (!defined('IMG_AVIF')) { define('IMG_AVIF', 256); }
+
 	$format = imagetypes();
 
 	if ($type !== false)
@@ -569,6 +573,10 @@ function get_supported_image_types($type = false)
 				$new_type = ($format & IMG_WEBP) ? IMG_WEBP : false;
 			break;
 
+			case IMAGETYPE_AVIF:
+				$new_type = ($format & IMG_AVIF) ? IMG_AVIF : false;
+			break;
+
 			case IMAGETYPE_BMP:
 				$new_type = ($format & IMG_BMP) ? IMG_BMP : false;
 			break;
@@ -579,7 +587,7 @@ function get_supported_image_types($type = false)
 	else
 	{
 		$supported_types = [];
-		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG, IMG_WEBP, IMG_BMP];
+		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG, IMG_WEBP, IMG_AVIF, IMG_BMP];
 
 		foreach ($go_through_types as $check_type)
 		{
@@ -654,6 +662,10 @@ function create_thumbnail($source, $destination, $mimetype)
 			$image = @imagecreatefromwebp($source);
 		break;
 
+		case IMG_AVIF:
+			$image = @imagecreatefromavif($source);
+		break;
+
 		case IMG_BMP:
 			$image = @imagecreatefrombmp($source);
 		break;
@@ -693,6 +705,10 @@ function create_thumbnail($source, $destination, $mimetype)
 
 		case IMG_WEBP:
 			imagewebp($new_image, $destination);
+		break;
+
+		case IMG_AVIF:
+			imageavif($new_image, $destination);
 		break;
 
 		case IMG_BMP:

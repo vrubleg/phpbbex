@@ -1028,12 +1028,16 @@ class fileupload
 	*/
 	function image_types()
 	{
+		// AVIF is available in PHP 8.1+.
+		if (!defined('IMAGETYPE_AVIF')) { define('IMAGETYPE_AVIF', 19); }
+
 		return [
 			IMAGETYPE_GIF => ['gif'],
 			IMAGETYPE_JPEG => ['jpg', 'jpeg'],
 			IMAGETYPE_PNG => ['png'],
 			IMAGETYPE_BMP => ['bmp'],
 			IMAGETYPE_WEBP => ['webp'],
+			IMAGETYPE_AVIF => ['avif'],
 		];
 	}
 }
