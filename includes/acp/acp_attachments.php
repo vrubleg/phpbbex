@@ -824,8 +824,8 @@ class acp_attachments
 
 					$template->assign_block_vars('groups', [
 						'S_ADD_SPACER'		=> $s_add_spacer,
-						'S_ALLOWED_IN_PM'	=> ($row['allow_in_pm']) ? true : false,
-						'S_GROUP_ALLOWED'	=> ($row['allow_group']) ? true : false,
+						'S_ALLOWED_IN_PM'	=> (bool) $row['allow_in_pm'],
+						'S_GROUP_ALLOWED'	=> (bool) $row['allow_group'],
 
 						'U_EDIT'		=> $this->u_action . "&amp;action=edit&amp;g={$row['group_id']}",
 						'U_DELETE'		=> $this->u_action . "&amp;action=delete&amp;g={$row['group_id']}",
@@ -934,7 +934,7 @@ class acp_attachments
 
 							$template->assign_block_vars('upload', [
 								'FILE_INFO'		=> sprintf($user->lang['UPLOADING_FILE_TO'], $row['real_filename'], $post_row['post_id']),
-								'S_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? true : false,
+								'S_DENIED'		=> !$auth->acl_get('f_attach', $post_row['forum_id']),
 								'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '',
 							]);
 

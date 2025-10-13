@@ -167,10 +167,6 @@ else
 
 $sql_array['WHERE'] .= ' AND f.forum_id = t.forum_id';
 
-// Join to forum table on topic forum_id unless topic forum_id is zero
-// whereupon we join on the forum_id passed as a parameter ... this
-// is done so navigation, forum name, etc. remain consistent with where
-// user clicked to view a global topic
 $sql = $db->sql_build_query('SELECT', $sql_array);
 $result = $db->sql_query($sql);
 $topic_data = $db->sql_fetchrow($result);
@@ -551,11 +547,11 @@ $template->assign_vars([
 	'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
 	'WARN_IMG'			=> $user->img('icon_user_warn', 'WARN_USER'),
 
-	'S_IS_LOCKED'			=> ($topic_data['topic_status'] == ITEM_UNLOCKED && $topic_data['forum_status'] == ITEM_UNLOCKED) ? false : true,
+	'S_IS_LOCKED'			=> ($topic_data['topic_status'] != ITEM_UNLOCKED || $topic_data['forum_status'] != ITEM_UNLOCKED),
 	'S_SELECT_SORT_DIR' 	=> $s_sort_dir,
 	'S_SELECT_SORT_KEY' 	=> $s_sort_key,
 	'S_SELECT_SORT_DAYS' 	=> $s_limit_days,
-	'S_SINGLE_MODERATOR'	=> (!empty($forum_moderators[$forum_id]) && sizeof($forum_moderators[$forum_id]) > 1) ? false : true,
+	'S_SINGLE_MODERATOR'	=> count($forum_moderators[$forum_id] ?? []) == 1,
 	'S_TOPIC_ACTION' 		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start")),
 	'S_TOPIC_MOD' 			=> ($topic_mod != '') ? '<select name="action" id="quick-mod-select">' . $topic_mod . '</select>' : '',
 	'S_MOD_ACTION' 			=> $mod_action,
@@ -851,7 +847,7 @@ if (!empty($topic_data['poll_start']))
 		'S_DISPLAY_RESULTS'	=> $s_display_results,
 		'S_IS_MULTI_CHOICE'	=> ($topic_data['poll_max_options'] > 1),
 		'S_POLL_ACTION'		=> $viewtopic_url,
-		'S_SHOW_VOTERS'		=> ($topic_data['poll_show_voters']) ? true : false,
+		'S_SHOW_VOTERS'		=> (bool) $topic_data['poll_show_voters'],
 
 		'U_VIEW_RESULTS'	=> $viewtopic_url . '&amp;view=viewpoll',
 	]);
@@ -1609,7 +1605,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'POST_ICON_IMG_WIDTH'	=> ($config['enable_topic_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
 		'POST_ICON_IMG_HEIGHT'	=> ($config['enable_topic_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['height'] : '',
 		'ONLINE_IMG'			=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$poster_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
-		'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($user_cache[$poster_id]['online']) ? true : false),
+		'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (bool) $user_cache[$poster_id]['online'],
 
 		'U_EDIT'			=> ($edit_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
 		'U_QUOTE'			=> ($quote_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=quote&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
@@ -1653,14 +1649,14 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'S_POST_UNAPPROVED'	=> !$row['post_approved'],
 		'S_POST_REPORTED'	=> ($row['post_reported'] && $auth->acl_get('m_report', $forum_id)),
 		'S_DISPLAY_NOTICE'	=> $display_notice && $row['post_attachment'],
-		'S_FRIEND'			=> ($row['friend']) ? true : false,
+		'S_FRIEND'			=> (bool) $row['friend'],
 		'S_UNREAD_POST'		=> $post_unread,
 		'S_FIRST_UNREAD'	=> $s_first_unread,
 		'S_CUSTOM_FIELDS'	=> (isset($cp_row['row']) && sizeof($cp_row['row'])),
 		'S_ANONYMOUS'		=> ($poster_id == ANONYMOUS),
 		'S_TOPIC_POSTER'	=> ($poster_id != ANONYMOUS ? ($topic_data['topic_poster'] == $poster_id) : (!empty($topic_data['topic_first_poster_name']) && $topic_data['topic_first_poster_name'] == $row['post_username'])),
 
-		'S_IGNORE_POST'		=> ($row['hide_post']) ? true : false,
+		'S_IGNORE_POST'		=> (bool) $row['hide_post'],
 		'L_IGNORE_POST'		=> ($row['hide_post']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), '<a href="' . $viewtopic_url . "&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}" . '">', '</a>') : '',
 	];
 
@@ -1722,7 +1718,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			'ISSUER_FULL'	=> get_username_string('full', 		$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
 			'TIME'			=> $user->format_date($warning['warning_time']),
 			'EXPIRES'		=> $user->format_date($warning['warning_time'] + $warning['warning_days'] * 86400),
-			'ACTIVE'		=> ($warning['warning_active']) ? true : false,
+			'ACTIVE'		=> (bool) $warning['warning_active'],
 			'TYPE'			=> $warning['warning_type'],
 			'TEXT'			=> $warning['warning_text'],
 			'U_POST'		=> ($warning['post_id']) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $warning['post_id']) . '#p' . $warning['post_id'] : '',
@@ -1756,7 +1752,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			'ISSUER_FULL'	=> get_username_string('full', 		$warning['issuer_id'], $warning['issuer_name'], $warning['issuer_colour']),
 			'TIME'			=> $user->format_date($warning['warning_time']),
 			'EXPIRES'		=> $user->format_date($warning['warning_time'] + $warning['warning_days'] * 86400),
-			'ACTIVE'		=> ($warning['warning_active']) ? true : false,
+			'ACTIVE'		=> (bool) $warning['warning_active'],
 			'TYPE'			=> $warning['warning_type'],
 			'TEXT'			=> $warning['warning_text'],
 		]);

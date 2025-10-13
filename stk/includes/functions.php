@@ -61,7 +61,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 			$name_no	= (!$default) ? ' checked="checked"' : '';
 
 			$tpl_type_cond = explode('_', $tpl_type[1]);
-			$type_no = ($tpl_type_cond[0] == 'disabled' || $tpl_type_cond[0] == 'enabled') ? false : true;
+			$type_no = ($tpl_type_cond[0] != 'disabled' && $tpl_type_cond[0] != 'enabled');
 
 			$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $name_no . ' class="radio" /> ' . (($type_no) ? $user->lang['NO'] : $user->lang['DISABLED']) . '</label>';
 			$tpl_yes = '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="1"' . $name_yes . ' class="radio" /> ' . (($type_no) ? $user->lang['YES'] : $user->lang['ENABLED']) . '</label>';
@@ -463,7 +463,7 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 	// We encounter an error while in the ERK, this need some special treatment
 	if (defined('IN_ERK'))
 	{
-		$critical_repair->trigger_error($msg_text, ($errno == E_USER_ERROR ? false : true));
+		$critical_repair->trigger_error($msg_text, ($errno != E_USER_ERROR));
 	}
 	else if (!defined('IN_STK'))
 	{
@@ -482,7 +482,7 @@ function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 			$critical_repair = new critical_repair();
 		}
 
-		$critical_repair->trigger_error($msg_text, ($errno == E_USER_ERROR ? false : true));
+		$critical_repair->trigger_error($msg_text, ($errno != E_USER_ERROR));
 	}
 
 	// Normal phpBB msg_handler.

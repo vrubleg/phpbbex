@@ -404,6 +404,6 @@ class acp_bots
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		return ($row) ? false : true;
+		return !$row;
 	}
 }

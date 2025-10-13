@@ -175,7 +175,7 @@ class mcp_warn
 
 		$template->assign_vars([
 			'U_POST_ACTION'			=> $this->u_action,
-			'S_CLEAR_ALLOWED'		=> ($auth->acl_get('a_clearlogs')) ? true : false,
+			'S_CLEAR_ALLOWED'		=> (bool) $auth->acl_get('a_clearlogs'),
 			'S_SELECT_SORT_DIR'		=> $s_sort_dir,
 			'S_SELECT_SORT_KEY'		=> $s_sort_key,
 			'S_SELECT_SORT_DAYS'	=> $s_limit_days,
@@ -246,7 +246,7 @@ class mcp_warn
 		{
 			$auth2 = new phpbb_auth();
 			$auth2->acl($user_row);
-			$s_can_notify = ($auth2->acl_get('u_readpm')) ? true : false;
+			$s_can_notify = (bool) $auth2->acl_get('u_readpm');
 			unset($auth2);
 		}
 		else
@@ -371,7 +371,7 @@ class mcp_warn
 		{
 			$auth2 = new phpbb_auth();
 			$auth2->acl($user_row);
-			$s_can_notify = ($auth2->acl_get('u_readpm')) ? true : false;
+			$s_can_notify = (bool) $auth2->acl_get('u_readpm');
 			unset($auth2);
 		}
 		else

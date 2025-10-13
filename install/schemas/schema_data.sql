@@ -848,6 +848,7 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (1, 'gif');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (1, 'png');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (1, 'jpeg');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (1, 'jpg');
+INSERT INTO phpbb_extensions (group_id, extension) VALUES (1, 'webp');
 
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (2, 'zip');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (2, '7z');
@@ -893,7 +894,6 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'm4v');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'mp4');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (6, 'webm');
 
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (7, 'webp');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (7, 'avi');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (7, 'wma');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (7, 'wmv');

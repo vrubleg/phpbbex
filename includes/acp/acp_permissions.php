@@ -978,7 +978,7 @@ class acp_permissions
 			'PERMISSION_USERNAME'	=> $userdata['username'],
 			'FORUM_NAME'			=> $forum_name,
 
-			'S_GLOBAL_TRACE'		=> ($forum_id) ? false : true,
+			'S_GLOBAL_TRACE'		=> !$forum_id,
 
 			'U_BACK'				=> ($back) ? build_url(['f', 'back']) . "&amp;f=$back" : '']
 		);

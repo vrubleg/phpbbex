@@ -1069,7 +1069,7 @@ function extension_allowed($forum_id, $extension, &$extensions)
 		$extensions = $cache->obtain_attach_extensions($forum_id);
 	}
 
-	return (!isset($extensions['_allowed_'][$extension])) ? false : true;
+	return isset($extensions['_allowed_'][$extension]);
 }
 
 /**

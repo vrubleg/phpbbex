@@ -211,7 +211,7 @@ class mcp_notes
 
 		$template->assign_vars([
 			'U_POST_ACTION'			=> $this->u_action,
-			'S_CLEAR_ALLOWED'		=> ($auth->acl_get('a_clearlogs')) ? true : false,
+			'S_CLEAR_ALLOWED'		=> (bool) $auth->acl_get('a_clearlogs'),
 			'S_SELECT_SORT_DIR'		=> $s_sort_dir,
 			'S_SELECT_SORT_KEY'		=> $s_sort_key,
 			'S_SELECT_SORT_DAYS'	=> $s_limit_days,

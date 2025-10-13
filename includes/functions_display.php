@@ -235,7 +235,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		}
 		else if ($row['forum_type'] != FORUM_CAT)
 		{
-			$subforums[$parent_id][$forum_id]['display'] = ($row['display_on_index']) ? true : false;
+			$subforums[$parent_id][$forum_id]['display'] = (bool) $row['display_on_index'];
 			$subforums[$parent_id][$forum_id]['name'] = $row['forum_name'];
 			$subforums[$parent_id][$forum_id]['orig_forum_last_post_time'] = $row['forum_last_post_time'];
 			$subforums[$parent_id][$forum_id]['children'] = [];
@@ -475,7 +475,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			'S_UNREAD_FORUM'	=> $forum_unread,
 			'S_AUTH_READ'		=> $auth->acl_get('f_read', $row['forum_id']),
 			'S_LOCKED_FORUM'	=> ($row['forum_status'] == ITEM_LOCKED),
-			'S_LIST_SUBFORUMS'	=> ($row['display_subforum_list']) ? true : false,
+			'S_LIST_SUBFORUMS'	=> (bool) $row['display_subforum_list'],
 			'S_SUBFORUMS'		=> (sizeof($subforums_list) > 0),
 			'S_FEED_ENABLED'	=> ($config['feed_forum'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $row['forum_options']) && $row['forum_type'] == FORUM_POST),
 
@@ -1012,7 +1012,7 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 			'S_TOPIC_REPORTED'		=> ($row['topic_reported'] && $auth->acl_get('m_report', $forum_id)),
 			'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
 			'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
-			'S_HAS_POLL'			=> ($row['poll_start']) ? true : false,
+			'S_HAS_POLL'			=> (bool) $row['poll_start'],
 			'S_POST_ANNOUNCE'		=> ($row['topic_type'] == POST_ANNOUNCE),
 			'S_POST_GLOBAL'			=> ($row['topic_type'] == POST_GLOBAL),
 			'S_POST_STICKY'			=> ($row['topic_type'] == POST_STICKY),

@@ -447,6 +447,10 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		}
 	}
 
+	// Update file types.
+
+	$db->sql_query("INSERT INTO " . EXTENSIONS_TABLE . " (group_id, extension) VALUES (1, 'webp') ON DUPLICATE KEY UPDATE group_id = 1");
+
 	// New settings.
 
 	if (!isset($config['email_force_sender']))

@@ -318,7 +318,7 @@ function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 
 			$topic_type_array[] = [
 				'VALUE'			=> $topic_value['const'],
-				'S_CHECKED'		=> ($cur_topic_type == $topic_value['const'] || ($forum_id == 0 && $topic_value['const'] == POST_GLOBAL)) ? ' checked="checked"' : '',
+				'S_CHECKED'		=> ($cur_topic_type == $topic_value['const']) ? ' checked="checked"' : '',
 				'L_TOPIC_TYPE'	=> $user->lang[$topic_value['lang']]
 			];
 		}
@@ -432,7 +432,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	$file->clean_filename('unique', $user->data['user_id'] . '_');
 
 	// Are we uploading an image *and* this image being within the image category? Only then perform additional image checks.
-	$no_image = ($cat_id == ATTACHMENT_CATEGORY_IMAGE) ? false : true;
+	$no_image = ($cat_id != ATTACHMENT_CATEGORY_IMAGE);
 
 	$file->move_file(UPLOADS_PATH, false, $no_image);
 
@@ -545,6 +545,10 @@ function get_supported_image_types($type = false)
 {
 	if (!@extension_loaded('gd')) { return false; }
 
+	// AVIF is available in PHP 8.1+.
+	if (!defined('IMAGETYPE_AVIF')) { define('IMAGETYPE_AVIF', 19); }
+	if (!defined('IMG_AVIF')) { define('IMG_AVIF', 256); }
+
 	$format = imagetypes();
 
 	if ($type !== false)
@@ -564,6 +568,18 @@ function get_supported_image_types($type = false)
 			case IMAGETYPE_PNG:
 				$new_type = ($format & IMG_PNG) ? IMG_PNG : false;
 			break;
+
+			case IMAGETYPE_WEBP:
+				$new_type = ($format & IMG_WEBP) ? IMG_WEBP : false;
+			break;
+
+			case IMAGETYPE_AVIF:
+				$new_type = ($format & IMG_AVIF) ? IMG_AVIF : false;
+			break;
+
+			case IMAGETYPE_BMP:
+				$new_type = ($format & IMG_BMP) ? IMG_BMP : false;
+			break;
 		}
 
 		return $new_type;
@@ -571,7 +587,7 @@ function get_supported_image_types($type = false)
 	else
 	{
 		$supported_types = [];
-		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG];
+		$go_through_types = [IMG_GIF, IMG_JPG, IMG_PNG, IMG_WEBP, IMG_AVIF, IMG_BMP];
 
 		foreach ($go_through_types as $check_type)
 		{
@@ -641,6 +657,18 @@ function create_thumbnail($source, $destination, $mimetype)
 		case IMG_PNG:
 			$image = @imagecreatefrompng($source);
 		break;
+
+		case IMG_WEBP:
+			$image = @imagecreatefromwebp($source);
+		break;
+
+		case IMG_AVIF:
+			$image = @imagecreatefromavif($source);
+		break;
+
+		case IMG_BMP:
+			$image = @imagecreatefrombmp($source);
+		break;
 	}
 
 	if (empty($image))
@@ -673,6 +701,18 @@ function create_thumbnail($source, $destination, $mimetype)
 
 		case IMG_PNG:
 			imagepng($new_image, $destination);
+		break;
+
+		case IMG_WEBP:
+			imagewebp($new_image, $destination);
+		break;
+
+		case IMG_AVIF:
+			imageavif($new_image, $destination);
+		break;
+
+		case IMG_BMP:
+			imagebmp($new_image, $destination, true);
 		break;
 	}
 
@@ -1098,8 +1138,8 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 			'U_POST_AUTHOR'			=> get_username_string('profile', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 
 			'S_HAS_ATTACHMENTS'	=> !empty($attachments[$row['post_id']]),
-			'S_FRIEND'			=> ($row['friend']) ? true : false,
-			'S_IGNORE_POST'		=> ($row['foe']) ? true : false,
+			'S_FRIEND'			=> (bool) $row['friend'],
+			'S_IGNORE_POST'		=> (bool) $row['foe'],
 			'L_IGNORE_POST'		=> ($row['foe']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), "<a href=\"{$u_show_post}\" onclick=\"dE('{$post_anchor}', 1); return false;\">", '</a>') : '',
 
 			'POST_SUBJECT'		=> $post_subject,

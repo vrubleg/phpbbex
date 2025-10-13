@@ -3439,7 +3439,7 @@ function phpbb_checkdnsrr($host, $type = 'MX')
 	// If we're looking for an A record we can use gethostbyname()
 	if ($type == 'A' && function_exists('gethostbyname'))
 	{
-		return (@gethostbyname($host_fqdn) == $host_fqdn) ? false : true;
+		return (@gethostbyname($host_fqdn) != $host_fqdn);
 	}
 
 	if (function_exists('checkdnsrr'))
@@ -4291,8 +4291,8 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'U_FEED'				=> generate_board_url() . "/feed.php",
 
 		'S_USER_LOGGED_IN'		=> ($user->data['user_id'] != ANONYMOUS),
-		'S_AUTOLOGIN_ENABLED'	=> ($config['allow_autologin']) ? true : false,
-		'S_BOARD_DISABLED'		=> ($config['board_disable']) ? true : false,
+		'S_AUTOLOGIN_ENABLED'	=> (bool) $config['allow_autologin'],
+		'S_BOARD_DISABLED'		=> (bool) $config['board_disable'],
 		'S_REGISTERED_USER'		=> !empty($user->data['is_registered']),
 		'S_IS_BOT'				=> !empty($user->data['is_bot']),
 		'S_USER_PM_POPUP'		=> $user->optionget('popuppm'),
@@ -4312,12 +4312,12 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_LOGIN_ACTION'		=> ((!defined('ADMIN_START')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login') : append_sid("index.php", false, true, $user->session_id)),
 		'S_LOGIN_REDIRECT'		=> build_hidden_fields(['redirect' => build_url()]),
 
-		'S_ENABLE_FEEDS'			=> ($config['feed_enable']) ? true : false,
-		'S_ENABLE_FEEDS_OVERALL'	=> ($config['feed_overall']) ? true : false,
-		'S_ENABLE_FEEDS_FORUMS'		=> ($config['feed_overall_forums']) ? true : false,
-		'S_ENABLE_FEEDS_TOPICS'		=> ($config['feed_topics_new']) ? true : false,
-		'S_ENABLE_FEEDS_TOPICS_ACTIVE'	=> ($config['feed_topics_active']) ? true : false,
-		'S_ENABLE_FEEDS_NEWS'		=> ($s_feed_news) ? true : false,
+		'S_ENABLE_FEEDS'			=> (bool) $config['feed_enable'],
+		'S_ENABLE_FEEDS_OVERALL'	=> (bool) $config['feed_overall'],
+		'S_ENABLE_FEEDS_FORUMS'		=> (bool) $config['feed_overall_forums'],
+		'S_ENABLE_FEEDS_TOPICS'		=> (bool) $config['feed_topics_new'],
+		'S_ENABLE_FEEDS_TOPICS_ACTIVE'	=> (bool) $config['feed_topics_active'],
+		'S_ENABLE_FEEDS_NEWS'		=> (bool) $s_feed_news,
 
 		'S_LOAD_UNREADS'			=> ($config['load_unreads_search'] && ($config['load_anon_lastread'] || $user->data['is_registered'])),
 

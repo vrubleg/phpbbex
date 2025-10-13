@@ -336,7 +336,7 @@ function download_allowed()
 
 	if (!$url)
 	{
-		return ($config['secure_allow_empty_referer']) ? true : false;
+		return (bool) $config['secure_allow_empty_referer'];
 	}
 
 	// Split URL into domain and script part
@@ -344,13 +344,13 @@ function download_allowed()
 
 	if ($url === false)
 	{
-		return ($config['secure_allow_empty_referer']) ? true : false;
+		return (bool) $config['secure_allow_empty_referer'];
 	}
 
 	$hostname = $url['host'];
 	unset($url);
 
-	$allowed = ($config['secure_allow_deny']) ? false : true;
+	$allowed = !$config['secure_allow_deny'];
 	$iplist = [];
 
 	if (($ip_ary = @gethostbynamel($hostname)) !== false)
@@ -391,12 +391,12 @@ function download_allowed()
 					{
 						if ($row['ip_exclude'])
 						{
-							$allowed = ($config['secure_allow_deny']) ? false : true;
+							$allowed = !$config['secure_allow_deny'];
 							break 2;
 						}
 						else
 						{
-							$allowed = ($config['secure_allow_deny']) ? true : false;
+							$allowed = (bool) $config['secure_allow_deny'];
 						}
 					}
 				}
@@ -408,12 +408,12 @@ function download_allowed()
 				{
 					if ($row['ip_exclude'])
 					{
-						$allowed = ($config['secure_allow_deny']) ? false : true;
+						$allowed = !$config['secure_allow_deny'];
 						break;
 					}
 					else
 					{
-						$allowed = ($config['secure_allow_deny']) ? true : false;
+						$allowed = (bool) $config['secure_allow_deny'];
 					}
 				}
 			}

@@ -87,8 +87,6 @@ $lang = array_merge($lang, [
 	'FORUM_NOT_POSTABLE'	=> 'The forum you selected cannot be posted to.',
 	'FORUM_STATUS'			=> 'Forum status',
 
-	'GLOBAL_ANNOUNCEMENT'	=> 'Global announcement',
-
 	'IP_INFO'				=> 'IP address information',
 	'IPS_POSTED_FROM'		=> 'IP addresses this user has posted from',
 
@@ -288,8 +286,6 @@ $lang = array_merge($lang, [
 
 	'SEARCH_POSTS_BY_USER'				=> 'Search posts by',
 	'SELECT_ACTION'						=> 'Select desired action',
-	'SELECT_FORUM_GLOBAL_ANNOUNCEMENT'	=> 'Please select the forum you wish this global announcement to be displayed.',
-	'SELECT_FORUM_GLOBAL_ANNOUNCEMENTS'	=> 'One or more of the selected topics are global announcements. Please select the forum you wish these to be displayed.',
 	'SELECT_MERGE'						=> 'Select for merge',
 	'SELECT_TOPICS_FROM'				=> 'Select topics from',
 	'SELECT_TOPIC'						=> 'Select topic',

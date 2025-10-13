@@ -258,14 +258,14 @@ if (isset($captcha) && $captcha->is_solved() === false)
 
 $template->assign_vars([
 	'ERROR'				=> (count($error)) ? implode('<br />', $error) : '',
-	'S_REPORT_POST'		=> ($pm_id) ? false : true,
+	'S_REPORT_POST'		=> !$pm_id,
 	'REPORT_TEXT'		=> $report_text,
 	'S_REPORT_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'report.php', 'f=' . $forum_id . '&amp;p=' . $post_id . '&amp;pm=' . $pm_id),
 	'S_HIDDEN_FIELDS'	=> (!empty($s_hidden_fields)) ? $s_hidden_fields : null,
 
 	'S_NOTIFY'			=> $user_notify,
-	'S_CAN_NOTIFY'		=> ($user->data['is_registered']) ? true : false]
-);
+	'S_CAN_NOTIFY'		=> (bool) $user->data['is_registered'],
+]);
 
 generate_forum_nav($forum_data);
 

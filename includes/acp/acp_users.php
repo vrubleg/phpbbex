@@ -1103,7 +1103,7 @@ class acp_users
 					'S_FOUNDER'					=> ($user->data['user_type'] == USER_FOUNDER),
 
 					'S_OVERVIEW'		=> true,
-					'S_USER_IP'			=> ($user_row['user_ip']) ? true : false,
+					'S_USER_IP'			=> (bool) $user_row['user_ip'],
 					'S_USER_FOUNDER'	=> ($user_row['user_type'] == USER_FOUNDER),
 					'S_ACTION_OPTIONS'	=> $s_action_options,
 					'S_OWN_ACCOUNT'		=> ($user_id == $user->data['user_id']),
@@ -1721,7 +1721,7 @@ class acp_users
 
 				$template->assign_vars([
 					'S_PREFS'			=> true,
-					'S_JABBER_DISABLED'	=> ($config['jab_enable'] && $user_row['user_jabber'] && @extension_loaded('xml')) ? false : true,
+					'S_JABBER_DISABLED'	=> !($config['jab_enable'] && $user_row['user_jabber'] && @extension_loaded('xml')),
 
 					'VIEW_EMAIL'		=> $data['viewemail'],
 					'MASS_EMAIL'		=> $data['massemail'],
@@ -1760,8 +1760,7 @@ class acp_users
 					'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
 					'S_STYLE_OPTIONS'	=> ($config['override_user_style']) ? '' : style_select($data['style']),
 					'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
-					]
-				);
+				]);
 
 			break;
 
@@ -1888,9 +1887,9 @@ class acp_users
 				{
 					require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
-					$enable_bbcode	= ($config['allow_sig_bbcode']) ? ((request_var('disable_bbcode', false)) ? false : true) : false;
-					$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', false)) ? false : true) : false;
-					$enable_urls	= ($config['allow_sig_links']) ? ((request_var('disable_magic_url', false)) ? false : true) : false;
+					$enable_bbcode	= ($config['allow_sig_bbcode']) ? !request_var('disable_bbcode', false) : false;
+					$enable_smilies	= ($config['allow_sig_smilies']) ? !request_var('disable_smilies', false) : false;
+					$enable_urls	= ($config['allow_sig_links']) ? !request_var('disable_magic_url', false) : false;
 
 					// Signature Lines Limit
 					if($config['max_sig_lines'])
@@ -1979,9 +1978,9 @@ class acp_users
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],
-					'S_BBCODE_IMG'			=> ($config['allow_sig_img']) ? true : false,
-					'S_BBCODE_FLASH'		=> ($config['allow_sig_flash']) ? true : false,
-					'S_LINKS_ALLOWED'		=> ($config['allow_sig_links']) ? true : false,
+					'S_BBCODE_IMG'			=> (bool) $config['allow_sig_img'],
+					'S_BBCODE_FLASH'		=> (bool) $config['allow_sig_flash'],
+					'S_LINKS_ALLOWED'		=> (bool) $config['allow_sig_links'],
 				]);
 
 				// Assigning custom bbcodes

@@ -216,9 +216,9 @@ class acp_ranks
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('ranks', [
-				'S_RANK_IMAGE'		=> ($row['rank_image']) ? true : false,
-				'S_SPECIAL_RANK'	=> ($row['rank_special']) ? true : false,
-				'S_HIDE_TITLE'		=> ($row['rank_hide_title']) ? true : false,
+				'S_RANK_IMAGE'		=> (bool) $row['rank_image'],
+				'S_SPECIAL_RANK'	=> (bool) $row['rank_special'],
+				'S_HIDE_TITLE'		=> (bool) $row['rank_hide_title'],
 
 				'RANK_IMAGE'		=> PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $row['rank_image'],
 				'RANK_TITLE'		=> $row['rank_title'],

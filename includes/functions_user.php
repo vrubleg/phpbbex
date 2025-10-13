@@ -2302,7 +2302,7 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 		}
 	}
 
-	return (sizeof($error)) ? false : true;
+	return !sizeof($error);
 }
 
 //
@@ -3164,7 +3164,7 @@ function group_memberships($group_id_ary = false, $user_id_ary = false, $return_
 	if ($return_bool)
 	{
 		$db->sql_freeresult($result);
-		return ($row) ? true : false;
+		return (bool) $row;
 	}
 
 	if (!$row)

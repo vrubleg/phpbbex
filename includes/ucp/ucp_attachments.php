@@ -181,8 +181,8 @@ class ucp_attachments
 			'U_SORT_POST_TIME'		=> $this->u_action . "&amp;sk=f&amp;sd=" . (($sort_key == 'f' && $sort_dir == 'a') ? 'd' : 'a'),
 			'U_SORT_TOPIC_TITLE'	=> $this->u_action . "&amp;sk=g&amp;sd=" . (($sort_key == 'g' && $sort_dir == 'a') ? 'd' : 'a'),
 
-			'S_DISPLAY_MARK_ALL'	=> ($num_attachments) ? true : false,
-			'S_DISPLAY_PAGINATION'	=> ($num_attachments) ? true : false,
+			'S_DISPLAY_MARK_ALL'	=> (bool) $num_attachments,
+			'S_DISPLAY_PAGINATION'	=> (bool) $num_attachments,
 			'S_UCP_ACTION'			=> $this->u_action,
 			'S_SORT_OPTIONS' 		=> $s_sort_key,
 			'S_ORDER_SELECT'		=> $s_sort_dir]

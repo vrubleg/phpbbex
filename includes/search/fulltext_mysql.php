@@ -286,7 +286,7 @@ class fulltext_mysql extends search_backend
 
 		$id_ary = [];
 
-		$join_topic = ($type == 'posts') ? false : true;
+		$join_topic = ($type != 'posts');
 
 		// Build sql strings for sorting
 		$sql_sort = $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');

@@ -247,7 +247,7 @@ class phpbb_cache extends acm
 				// Check for allowed forums
 				if (is_array($check))
 				{
-					$allowed = (!in_array($forum_id, $check)) ? false : true;
+					$allowed = in_array($forum_id, $check);
 				}
 				else
 				{

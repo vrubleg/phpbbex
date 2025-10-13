@@ -38,7 +38,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 		$_module->list_modules('ucp');
 		$_module->set_active('zebra');
 
-		$zebra_enabled = ($_module->active_module === false) ? false : true;
+		$zebra_enabled = ($_module->active_module !== false);
 
 		unset($_module);
 
@@ -156,8 +156,8 @@ function view_folder($id, $mode, $folder_id, $folder)
 					'PM_IMG'			=> ($row_indicator) ? $user->img('pm_' . $row_indicator, '') : '',
 					'ATTACH_ICON_IMG'	=> ($auth->acl_get('u_pm_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
 
-					'S_PM_UNREAD'		=> ($row['pm_unread']) ? true : false,
-					'S_PM_DELETED'		=> ($row['pm_deleted']) ? true : false,
+					'S_PM_UNREAD'		=> (bool) $row['pm_unread'],
+					'S_PM_DELETED'		=> (bool) $row['pm_deleted'],
 					'S_PM_REPORTED'		=> isset($row['report_id']),
 					'S_AUTHOR_DELETED'	=> ($row['author_id'] == ANONYMOUS),
 
@@ -174,7 +174,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 				'S_SHOW_COLOUR_LEGEND'	=> true,
 
 				'REPORTED_IMG'			=> $user->img('icon_topic_reported', 'PM_REPORTED'),
-				'S_PM_ICONS'			=> ($config['enable_pm_icons']) ? true : false,
+				'S_PM_ICONS'			=> (bool) $config['enable_pm_icons'],
 			]);
 		}
 	}
@@ -450,7 +450,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 		'S_SELECT_SORT_DIR'		=> $s_sort_dir,
 		'S_SELECT_SORT_KEY'		=> $s_sort_key,
 		'S_SELECT_SORT_DAYS'	=> $s_limit_days,
-		'S_TOPIC_ICONS'			=> ($config['enable_pm_icons']) ? true : false,
+		'S_TOPIC_ICONS'			=> (bool) $config['enable_pm_icons'],
 
 		'U_POST_NEW_TOPIC'	=> ($auth->acl_get('u_sendpm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose') : '',
 		'S_PM_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f=$folder_id" . (($start !== 0) ? "&amp;start=$start" : '')),

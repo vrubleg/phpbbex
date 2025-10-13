@@ -39,7 +39,7 @@ class acp_language
 		$action		= (isset($_POST['submit_file'])) ? 'submit_file' : $action;
 		$action		= (isset($_POST['remove_store'])) ? 'details' : $action;
 
-		$submit = (empty($action)) ? false : true;
+		$submit = !empty($action);
 		$action = (empty($action)) ? request_var('action', '') : $action;
 
 		$form_name = 'acp_lang';

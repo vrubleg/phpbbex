@@ -328,60 +328,8 @@ function change_topic_type($action, $topic_ids)
 	{
 		$sql = 'UPDATE ' . TOPICS_TABLE . "
 			SET topic_type = $new_topic_type
-			WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
-				AND forum_id <> 0';
+			WHERE " . $db->sql_in_set('topic_id', $topic_ids);
 		$db->sql_query($sql);
-
-		// Reset forum id if a global topic is within the array
-		$to_forum_id = request_var('to_forum_id', 0);
-
-		if ($to_forum_id)
-		{
-			$sql = 'UPDATE ' . TOPICS_TABLE . "
-				SET topic_type = $new_topic_type, forum_id = $to_forum_id
-				WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
-					AND forum_id = 0';
-			$db->sql_query($sql);
-
-			// Update forum_ids for all posts
-			$sql = 'UPDATE ' . POSTS_TABLE . "
-				SET forum_id = $to_forum_id
-				WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
-					AND forum_id = 0';
-			$db->sql_query($sql);
-
-			// Do a little forum sync stuff
-			$sql = 'SELECT SUM(t.topic_replies + t.topic_approved) as topic_posts, COUNT(t.topic_approved) as topics_authed
-				FROM ' . TOPICS_TABLE . ' t
-				WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
-			$result = $db->sql_query($sql);
-			$row_data = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			$sync_sql = [];
-
-			if ($row_data['topic_posts'])
-			{
-				$sync_sql[$to_forum_id][]	= 'forum_posts = forum_posts + ' . (int) $row_data['topic_posts'];
-			}
-
-			if ($row_data['topics_authed'])
-			{
-				$sync_sql[$to_forum_id][]	= 'forum_topics = forum_topics + ' . (int) $row_data['topics_authed'];
-			}
-
-			$sync_sql[$to_forum_id][]	= 'forum_topics_real = forum_topics_real + ' . (int) sizeof($topic_ids);
-
-			foreach ($sync_sql as $forum_id_key => $array)
-			{
-				$sql = 'UPDATE ' . FORUMS_TABLE . '
-					SET ' . implode(', ', $array) . '
-					WHERE forum_id = ' . $forum_id_key;
-				$db->sql_query($sql);
-			}
-
-			sync('forum', 'forum_id', $to_forum_id);
-		}
 
 		$success_msg = (sizeof($topic_ids) == 1) ? 'TOPIC_TYPE_CHANGED' : 'TOPICS_TYPE_CHANGED';
 
@@ -397,41 +345,7 @@ function change_topic_type($action, $topic_ids)
 	}
 	else
 	{
-		// Global topic involved?
-		$global_involved = false;
-
-		if ($new_topic_type != POST_GLOBAL)
-		{
-			$sql = 'SELECT forum_id
-				FROM ' . TOPICS_TABLE . '
-				WHERE ' . $db->sql_in_set('topic_id', $topic_ids) . '
-					AND forum_id = 0';
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			if ($row)
-			{
-				$global_involved = true;
-			}
-		}
-
-		if ($global_involved)
-		{
-			global $template;
-
-			$template->assign_vars([
-				'S_FORUM_SELECT'		=> make_forum_select(request_var('f', $forum_id), false, false, true, true),
-				'S_CAN_LEAVE_SHADOW'	=> false,
-				'ADDITIONAL_MSG'		=> (sizeof($topic_ids) == 1) ? $user->lang['SELECT_FORUM_GLOBAL_ANNOUNCEMENT'] : $user->lang['SELECT_FORUM_GLOBAL_ANNOUNCEMENTS']]
-			);
-
-			confirm_box(false, $l_new_type, build_hidden_fields($s_hidden_fields), 'mcp_move.html');
-		}
-		else
-		{
-			confirm_box(false, $l_new_type, build_hidden_fields($s_hidden_fields));
-		}
+		confirm_box(false, $l_new_type, build_hidden_fields($s_hidden_fields));
 	}
 
 	$redirect = request_var('redirect', "index.php");
@@ -666,8 +580,8 @@ function mcp_move_topic($topic_ids)
 		$template->assign_vars([
 			'S_FORUM_SELECT'		=> make_forum_select($to_forum_id, $forum_id, false, true, true, true),
 			'S_CAN_LEAVE_SHADOW'	=> true,
-			'ADDITIONAL_MSG'		=> $additional_msg]
-		);
+			'ADDITIONAL_MSG'		=> $additional_msg,
+		]);
 
 		confirm_box(false, 'MOVE_TOPIC' . ((sizeof($topic_ids) == 1) ? '' : 'S'), $s_hidden_fields, 'mcp_move.html');
 	}
@@ -1226,8 +1140,8 @@ function mcp_fork_topic($topic_ids)
 		$template->assign_vars([
 			'S_FORUM_SELECT'		=> make_forum_select($to_forum_id, false, false, true, true, true),
 			'S_CAN_LEAVE_SHADOW'	=> false,
-			'ADDITIONAL_MSG'		=> $additional_msg]
-		);
+			'ADDITIONAL_MSG'		=> $additional_msg,
+		]);
 
 		confirm_box(false, 'FORK_TOPIC' . ((sizeof($topic_ids) == 1) ? '' : 'S'), $s_hidden_fields, 'mcp_move.html');
 	}

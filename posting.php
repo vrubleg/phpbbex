@@ -464,7 +464,7 @@ if ($mode == 'edit' && $post_data['bbcode_uid'])
 $bbcode_status	= ($config['allow_bbcode'] && $auth->acl_get('f_bbcode', $forum_id));
 $smilies_status	= ($config['allow_smilies'] && $auth->acl_get('f_smilies', $forum_id));
 $img_status		= ($bbcode_status && $auth->acl_get('f_img', $forum_id));
-$url_status		= ($config['allow_post_links']) ? true : false;
+$url_status		= (bool) $config['allow_post_links'];
 $flash_status	= ($bbcode_status && $auth->acl_get('f_flash', $forum_id) && $config['allow_post_flash']);
 $quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
 $spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
@@ -622,8 +622,8 @@ if ($submit || $preview || $refresh)
 		$post_data['icon_id'] = request_var('icon', (int) $post_data['icon_id']);
 	}
 
-	$post_data['enable_bbcode']		= (!$bbcode_status || isset($_POST['disable_bbcode'])) ? false : true;
-	$post_data['enable_smilies']	= (!$smilies_status || isset($_POST['disable_smilies'])) ? false : true;
+	$post_data['enable_bbcode']		= ($bbcode_status && !isset($_POST['disable_bbcode']));
+	$post_data['enable_smilies']	= ($smilies_status && !isset($_POST['disable_smilies']));
 	$post_data['enable_urls']		= (isset($_POST['disable_magic_url'])) ? 0 : 1;
 	$post_data['enable_sig']		= (!$config['allow_sig'] || !$auth->acl_get('f_sigs', $forum_id) || !$auth->acl_get('u_sig')) ? false : (isset($_POST['attach_sig']) && $user->data['is_registered']);
 
@@ -975,197 +975,140 @@ if ($submit || $preview || $refresh)
 	// Store message, sync counters
 	if (!sizeof($error) && $submit)
 	{
-		// Check if we want to de-globalize the topic... and ask for new forum
-		if ($post_data['topic_type'] != POST_GLOBAL)
+		// Lock/Unlock Topic
+		$change_topic_status = $post_data['topic_status'];
+		$perm_lock_unlock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED));
+
+		if ($post_data['topic_status'] == ITEM_LOCKED && !$topic_lock && $perm_lock_unlock)
 		{
-			$sql = 'SELECT topic_type, forum_id
-				FROM ' . TOPICS_TABLE . "
-				WHERE topic_id = $topic_id";
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			if ($row && !$row['forum_id'] && $row['topic_type'] == POST_GLOBAL)
-			{
-				$to_forum_id = request_var('to_forum_id', 0);
-
-				if ($to_forum_id)
-				{
-					$sql = 'SELECT forum_type
-						FROM ' . FORUMS_TABLE . '
-						WHERE forum_id = ' . $to_forum_id;
-					$result = $db->sql_query($sql);
-					$forum_type = (int) $db->sql_fetchfield('forum_type');
-					$db->sql_freeresult($result);
-
-					if ($forum_type != FORUM_POST || !$auth->acl_get('f_post', $to_forum_id) || !$auth->acl_get('f_noapprove', $to_forum_id))
-					{
-						$to_forum_id = 0;
-					}
-				}
-
-				if (!$to_forum_id)
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-
-					$template->assign_vars([
-						'S_FORUM_SELECT'	=> make_forum_select(false, false, false, true, true, true),
-						'S_UNGLOBALISE'		=> true]
-					);
-
-					$submit = false;
-					$refresh = true;
-				}
-				else
-				{
-					if (!$auth->acl_get('f_post', $to_forum_id))
-					{
-						// This will only be triggered if the user tried to trick the forum.
-						trigger_error('NOT_AUTHORISED');
-					}
-
-					$forum_id = $to_forum_id;
-				}
-			}
+			$change_topic_status = ITEM_UNLOCKED;
+		}
+		else if ($post_data['topic_status'] == ITEM_UNLOCKED && $topic_lock && $perm_lock_unlock)
+		{
+			$change_topic_status = ITEM_LOCKED;
 		}
 
-		if ($submit)
+		if ($change_topic_status != $post_data['topic_status'])
 		{
-			// Lock/Unlock Topic
-			$change_topic_status = $post_data['topic_status'];
-			$perm_lock_unlock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED));
+			$sql = 'UPDATE ' . TOPICS_TABLE . "
+				SET topic_status = $change_topic_status
+				WHERE topic_id = $topic_id
+					AND topic_moved_id = 0";
+			$db->sql_query($sql);
 
-			if ($post_data['topic_status'] == ITEM_LOCKED && !$topic_lock && $perm_lock_unlock)
-			{
-				$change_topic_status = ITEM_UNLOCKED;
-			}
-			else if ($post_data['topic_status'] == ITEM_UNLOCKED && $topic_lock && $perm_lock_unlock)
-			{
-				$change_topic_status = ITEM_LOCKED;
-			}
+			$user_lock = ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $post_data['topic_poster']) ? 'USER_' : '';
 
-			if ($change_topic_status != $post_data['topic_status'])
+			add_log('mod', $forum_id, $topic_id, 'LOG_' . $user_lock . (($change_topic_status == ITEM_LOCKED) ? 'LOCK' : 'UNLOCK'), $post_data['topic_title']);
+		}
+
+		// Lock/Unlock Post Edit
+		if ($mode == 'edit' && $post_data['post_edit_locked'] == ITEM_LOCKED && !$post_lock && $auth->acl_get('m_edit', $forum_id))
+		{
+			$post_data['post_edit_locked'] = ITEM_UNLOCKED;
+		}
+		else if ($mode == 'edit' && $post_data['post_edit_locked'] == ITEM_UNLOCKED && $post_lock && $auth->acl_get('m_edit', $forum_id))
+		{
+			$post_data['post_edit_locked'] = ITEM_LOCKED;
+		}
+
+		$data = [
+			'topic_title'			=> (empty($post_data['topic_title'])) ? $post_data['post_subject'] : $post_data['topic_title'],
+			'topic_first_post_id'	=> (isset($post_data['topic_first_post_id'])) ? (int) $post_data['topic_first_post_id'] : 0,
+			'topic_last_post_id'	=> (isset($post_data['topic_last_post_id'])) ? (int) $post_data['topic_last_post_id'] : 0,
+			'topic_time_limit'		=> (int) $post_data['topic_time_limit'],
+			'topic_priority'		=> (int) $post_data['topic_priority'],
+			'topic_attachment'		=> (isset($post_data['topic_attachment'])) ? (int) $post_data['topic_attachment'] : 0,
+			'post_id'				=> (int) $post_id,
+			'topic_id'				=> (int) $topic_id,
+			'forum_id'				=> (int) $forum_id,
+			'icon_id'				=> (int) $post_data['icon_id'],
+			'poster_id'				=> (int) $post_data['poster_id'],
+			'enable_sig'			=> (bool) $post_data['enable_sig'],
+			'enable_bbcode'			=> (bool) $post_data['enable_bbcode'],
+			'enable_smilies'		=> (bool) $post_data['enable_smilies'],
+			'enable_urls'			=> (bool) $post_data['enable_urls'],
+			'enable_indexing'		=> (bool) $post_data['enable_indexing'],
+			'message_md5'			=> (string) $message_md5,
+			'post_time'				=> (isset($post_data['post_time'])) ? (int) $post_data['post_time'] : $current_time,
+			'post_checksum'			=> (isset($post_data['post_checksum'])) ? (string) $post_data['post_checksum'] : '',
+			'post_edit_reason'		=> $post_data['post_edit_reason'],
+			'post_edit_user'		=> ($mode == 'edit') ? $user->data['user_id'] : ((isset($post_data['post_edit_user'])) ? (int) $post_data['post_edit_user'] : 0),
+			'forum_parents'			=> $post_data['forum_parents'],
+			'forum_name'			=> $post_data['forum_name'],
+			'notify'				=> $notify,
+			'notify_set'			=> $post_data['notify_set'],
+			'poster_ip'				=> (isset($post_data['poster_ip'])) ? $post_data['poster_ip'] : $user->ip,
+			'post_edit_locked'		=> (int) $post_data['post_edit_locked'],
+			'bbcode_bitfield'		=> $message_parser->bbcode_bitfield,
+			'bbcode_uid'			=> $message_parser->bbcode_uid,
+			'message'				=> $message_parser->message,
+			'attachment_data'		=> $message_parser->attachment_data,
+			'filename_data'			=> $message_parser->filename_data,
+
+			'topic_approved'		=> (isset($post_data['topic_approved'])) ? $post_data['topic_approved'] : false,
+			'post_approved'			=> (isset($post_data['post_approved'])) ? $post_data['post_approved'] : false,
+		];
+
+		if ($mode == 'edit')
+		{
+			$data['topic_replies_real'] = $post_data['topic_replies_real'];
+			$data['topic_replies'] = $post_data['topic_replies'];
+		}
+
+		require_once(PHPBB_ROOT_PATH . 'includes/posts_merging.php');
+
+		// Only return the username when it is either a guest posting or we are editing a post and
+		// the username was supplied; otherwise post_data might hold the data of the post that is
+		// being quoted (which could result in the username being returned being that of the quoted
+		// post's poster, not the poster of the current post). See: PHPBB3-11769 for more information.
+		$post_author_name = ((!$user->data['is_registered'] || $mode == 'edit') && $post_data['username'] !== '') ? $post_data['username'] : '';
+
+		// The last parameter tells submit_post if search indexer has to be run
+		$redirect_url = submit_post($mode, $post_data['post_subject'], $post_author_name, $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject));
+
+		// Show/Unshow first post on every page
+		if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id']))
+		{
+			if ($mode == 'post')
 			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
-					SET topic_status = $change_topic_status
-					WHERE topic_id = $topic_id
-						AND topic_moved_id = 0";
+				$topic_id = $data['topic_id'];
+			}
+			if ($post_data['topic_first_post_show'] != $topic_first_post_show && $user->data['is_registered'])
+			{
+				$sql = 'UPDATE ' . TOPICS_TABLE . '
+					SET topic_first_post_show = ' . (($topic_first_post_show) ? 1 : 0) . "
+					WHERE topic_id = $topic_id";
 				$db->sql_query($sql);
-
-				$user_lock = ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $post_data['topic_poster']) ? 'USER_' : '';
-
-				add_log('mod', $forum_id, $topic_id, 'LOG_' . $user_lock . (($change_topic_status == ITEM_LOCKED) ? 'LOCK' : 'UNLOCK'), $post_data['topic_title']);
 			}
-
-			// Lock/Unlock Post Edit
-			if ($mode == 'edit' && $post_data['post_edit_locked'] == ITEM_LOCKED && !$post_lock && $auth->acl_get('m_edit', $forum_id))
-			{
-				$post_data['post_edit_locked'] = ITEM_UNLOCKED;
-			}
-			else if ($mode == 'edit' && $post_data['post_edit_locked'] == ITEM_UNLOCKED && $post_lock && $auth->acl_get('m_edit', $forum_id))
-			{
-				$post_data['post_edit_locked'] = ITEM_LOCKED;
-			}
-
-			$data = [
-				'topic_title'			=> (empty($post_data['topic_title'])) ? $post_data['post_subject'] : $post_data['topic_title'],
-				'topic_first_post_id'	=> (isset($post_data['topic_first_post_id'])) ? (int) $post_data['topic_first_post_id'] : 0,
-				'topic_last_post_id'	=> (isset($post_data['topic_last_post_id'])) ? (int) $post_data['topic_last_post_id'] : 0,
-				'topic_time_limit'		=> (int) $post_data['topic_time_limit'],
-				'topic_priority'		=> (int) $post_data['topic_priority'],
-				'topic_attachment'		=> (isset($post_data['topic_attachment'])) ? (int) $post_data['topic_attachment'] : 0,
-				'post_id'				=> (int) $post_id,
-				'topic_id'				=> (int) $topic_id,
-				'forum_id'				=> (int) $forum_id,
-				'icon_id'				=> (int) $post_data['icon_id'],
-				'poster_id'				=> (int) $post_data['poster_id'],
-				'enable_sig'			=> (bool) $post_data['enable_sig'],
-				'enable_bbcode'			=> (bool) $post_data['enable_bbcode'],
-				'enable_smilies'		=> (bool) $post_data['enable_smilies'],
-				'enable_urls'			=> (bool) $post_data['enable_urls'],
-				'enable_indexing'		=> (bool) $post_data['enable_indexing'],
-				'message_md5'			=> (string) $message_md5,
-				'post_time'				=> (isset($post_data['post_time'])) ? (int) $post_data['post_time'] : $current_time,
-				'post_checksum'			=> (isset($post_data['post_checksum'])) ? (string) $post_data['post_checksum'] : '',
-				'post_edit_reason'		=> $post_data['post_edit_reason'],
-				'post_edit_user'		=> ($mode == 'edit') ? $user->data['user_id'] : ((isset($post_data['post_edit_user'])) ? (int) $post_data['post_edit_user'] : 0),
-				'forum_parents'			=> $post_data['forum_parents'],
-				'forum_name'			=> $post_data['forum_name'],
-				'notify'				=> $notify,
-				'notify_set'			=> $post_data['notify_set'],
-				'poster_ip'				=> (isset($post_data['poster_ip'])) ? $post_data['poster_ip'] : $user->ip,
-				'post_edit_locked'		=> (int) $post_data['post_edit_locked'],
-				'bbcode_bitfield'		=> $message_parser->bbcode_bitfield,
-				'bbcode_uid'			=> $message_parser->bbcode_uid,
-				'message'				=> $message_parser->message,
-				'attachment_data'		=> $message_parser->attachment_data,
-				'filename_data'			=> $message_parser->filename_data,
-
-				'topic_approved'		=> (isset($post_data['topic_approved'])) ? $post_data['topic_approved'] : false,
-				'post_approved'			=> (isset($post_data['post_approved'])) ? $post_data['post_approved'] : false,
-			];
-
-			if ($mode == 'edit')
-			{
-				$data['topic_replies_real'] = $post_data['topic_replies_real'];
-				$data['topic_replies'] = $post_data['topic_replies'];
-			}
-
-			require_once(PHPBB_ROOT_PATH . 'includes/posts_merging.php');
-
-			// Only return the username when it is either a guest posting or we are editing a post and
-			// the username was supplied; otherwise post_data might hold the data of the post that is
-			// being quoted (which could result in the username being returned being that of the quoted
-			// post's poster, not the poster of the current post). See: PHPBB3-11769 for more information.
-			$post_author_name = ((!$user->data['is_registered'] || $mode == 'edit') && $post_data['username'] !== '') ? $post_data['username'] : '';
-
-			// The last parameter tells submit_post if search indexer has to be run
-			$redirect_url = submit_post($mode, $post_data['post_subject'], $post_author_name, $post_data['topic_type'], $poll, $data, $update_message, ($update_message || $update_subject));
-
-			// Show/Unshow first post on every page
-			if ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id']))
-			{
-				if ($mode == 'post')
-				{
-					$topic_id = $data['topic_id'];
-				}
-				if ($post_data['topic_first_post_show'] != $topic_first_post_show && $user->data['is_registered'])
-				{
-					$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET topic_first_post_show = ' . (($topic_first_post_show) ? 1 : 0) . "
-						WHERE topic_id = $topic_id";
-					$db->sql_query($sql);
-				}
-			}
-
-			if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($captcha) && $captcha->is_solved() === true) && ($mode == 'post' || $mode == 'reply' || $mode == 'quote'))
-			{
-				$captcha->reset();
-			}
-
-			// Check the permissions for post approval.
-			// Moderators must go through post approval like ordinary users.
-			if ((!$auth->acl_get('f_noapprove', $data['forum_id']) && empty($data['force_approved_state'])) || (isset($data['force_approved_state']) && !$data['force_approved_state']))
-			{
-				meta_refresh(10, $redirect_url);
-				$message = ($mode == 'edit') ? $user->lang['POST_EDITED_MOD'] : $user->lang['POST_STORED_MOD'];
-				$message .= (($user->data['user_id'] == ANONYMOUS) ? '' : ' '. $user->lang['POST_APPROVAL_NOTIFY']);
-			}
-			else
-			{
-				if (!empty($config['skip_typical_notices']))
-				{
-					redirect($redirect_url);
-				}
-
-				meta_refresh(3, $redirect_url);
-				$message = ($mode == 'edit') ? 'POST_EDITED' : 'POST_STORED';
-				$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $redirect_url . '">', '</a>');
-			}
-
-			$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $data['forum_id']) . '">', '</a>');
-			trigger_error($message);
 		}
+
+		if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($captcha) && $captcha->is_solved() === true) && ($mode == 'post' || $mode == 'reply' || $mode == 'quote'))
+		{
+			$captcha->reset();
+		}
+
+		// Check the permissions for post approval.
+		// Moderators must go through post approval like ordinary users.
+		if ((!$auth->acl_get('f_noapprove', $data['forum_id']) && empty($data['force_approved_state'])) || (isset($data['force_approved_state']) && !$data['force_approved_state']))
+		{
+			meta_refresh(10, $redirect_url);
+			$message = ($mode == 'edit') ? $user->lang['POST_EDITED_MOD'] : $user->lang['POST_STORED_MOD'];
+			$message .= (($user->data['user_id'] == ANONYMOUS) ? '' : ' '. $user->lang['POST_APPROVAL_NOTIFY']);
+		}
+		else
+		{
+			if (!empty($config['skip_typical_notices']))
+			{
+				redirect($redirect_url);
+			}
+
+			meta_refresh(3, $redirect_url);
+			$message = ($mode == 'edit') ? 'POST_EDITED' : 'POST_STORED';
+			$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $redirect_url . '">', '</a>');
+		}
+
+		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $data['forum_id']) . '">', '</a>');
+		trigger_error($message);
 	}
 }
 
@@ -1472,7 +1415,7 @@ $template->assign_vars([
 	'S_SMILIES_CHECKED'			=> ($smilies_checked) ? ' checked="checked"' : '',
 	'S_SIG_ALLOWED'				=> ($auth->acl_get('f_sigs', $forum_id) && $config['allow_sig'] && $user->data['is_registered']),
 	'S_SIGNATURE_CHECKED'		=> ($sig_checked) ? ' checked="checked"' : '',
-	'S_NOTIFY_ALLOWED'			=> (!$user->data['is_registered'] || ($mode == 'edit' && $user->data['user_id'] != $post_data['poster_id']) || !$config['allow_topic_notify'] || !$config['email_enable']) ? false : true,
+	'S_NOTIFY_ALLOWED'			=> ($user->data['is_registered'] && ($mode != 'edit' || $user->data['user_id'] == $post_data['poster_id']) && $config['allow_topic_notify'] && $config['email_enable']),
 	'S_NOTIFY_CHECKED'			=> ($notify_checked) ? ' checked="checked"' : '',
 	'S_LOCK_TOPIC_ALLOWED'		=> (($mode == 'edit' || $mode == 'reply' || $mode == 'quote') && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED))),
 	'S_LOCK_TOPIC_CHECKED'		=> ($lock_topic_checked) ? ' checked="checked"' : '',

@@ -191,7 +191,7 @@ class ucp_prefs
 					'S_LANG_OPTIONS'		=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
 					'S_STYLE_OPTIONS'		=> ($config['override_user_style']) ? '' : style_select($data['style']),
 					'S_TZ_OPTIONS'			=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
-					'S_CAN_HIDE_ONLINE'		=> ($auth->acl_get('u_hideonline')) ? true : false,
+					'S_CAN_HIDE_ONLINE'		=> (bool) $auth->acl_get('u_hideonline'),
 					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && @extension_loaded('xml')),
 				]);
 
@@ -360,9 +360,9 @@ class ucp_prefs
 					'S_DISABLE_CENSORS'	=> $data['wordcensor'],
 
 					'S_QUICKREPLY'		=> $data['quickreply'],
-					'QUICK_REPLY'		=> ($config['allow_quick_reply']) ? true : false,
+					'QUICK_REPLY'		=> (bool) $config['allow_quick_reply'],
 					'S_QUICKPOST'		=> $data['quickpost'],
-					'QUICK_POST'		=> ($config['allow_quick_post']) ? true : false,
+					'QUICK_POST'		=> (bool) $config['allow_quick_post'],
 
 					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']),
 

@@ -197,7 +197,7 @@ function get_folder($user_id, $folder_id = false)
 			'U_FOLDER'			=> ($f_id > 0) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $f_id) : append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $folder_id_name),
 
 			'S_CUR_FOLDER'		=> ($f_id === $folder_id),
-			'S_UNREAD_MESSAGES'	=> ($folder_ary['unread_messages']) ? true : false,
+			'S_UNREAD_MESSAGES'	=> (bool) $folder_ary['unread_messages'],
 			'S_CUSTOM_FOLDER'	=> ($f_id > 0),
 		]);
 	}
@@ -263,7 +263,7 @@ function check_rule(&$rules, &$rule_row, &$message_row, $user_id)
 
 	// Evil Statement
 	$result = false;
-	eval('$result = (' . $evaluate . ') ? true : false;');
+	eval('$result = boolval(' . $evaluate . ');');
 
 	if (!$result)
 	{

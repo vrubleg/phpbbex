@@ -532,7 +532,7 @@ class acp_main
 			'DBSIZE'			=> $dbsize,
 			'UPLOAD_DIR_SIZE'	=> $upload_dir_size,
 			'TOTAL_ORPHAN'		=> $total_orphan,
-			'S_TOTAL_ORPHAN'	=> ($total_orphan === false) ? false : true,
+			'S_TOTAL_ORPHAN'	=> ($total_orphan !== false),
 			'GZIP_COMPRESSION'	=> ($config['gzip_compress'] && @extension_loaded('zlib')) ? $user->lang['ON'] : $user->lang['OFF'],
 			'DATABASE_INFO'		=> $db->sql_server_info(),
 			'PHPBBEX_VERSION'	=> $config['phpbbex_version'],
@@ -543,7 +543,7 @@ class acp_main
 			'U_VERSIONCHECK'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', ''),
 			'U_VERSIONCHECK_FORCE'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'versioncheck_force=1'),
 
-			'S_ACTION_OPTIONS'	=> ($auth->acl_get('a_board')) ? true : false,
+			'S_ACTION_OPTIONS'	=> (bool) $auth->acl_get('a_board'),
 			'S_FOUNDER'			=> ($user->data['user_type'] == USER_FOUNDER),
 			]
 		);

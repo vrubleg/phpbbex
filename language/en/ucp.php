@@ -184,8 +184,6 @@ $lang = array_merge($lang, [
 	'FWD_FROM'					=> 'From: %s',
 	'FWD_TO'					=> 'To: %s',
 
-	'GLOBAL_ANNOUNCEMENT'		=> 'Global announcement',
-
 	'HIDE_ONLINE'				=> 'Hide my online status',
 	'HIDE_ONLINE_EXPLAIN'		=> 'Changing this setting won’t become effective until your next visit to the board.',
 	'HOLD_NEW_MESSAGES'			=> 'Do not accept new messages (New messages will be held back until enough space is available)',

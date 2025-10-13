@@ -263,8 +263,6 @@ class mcp_queue
 						trigger_error('NOT_MODERATOR');
 					}
 
-					$global_id = $forum_list[0];
-
 					$forum_list = implode(', ', $forum_list);
 
 					$sql = 'SELECT SUM(forum_topics) as sum_forum_topics
@@ -285,7 +283,6 @@ class mcp_queue
 
 					$forum_info = $forum_info[$forum_id];
 					$forum_list = $forum_id;
-					$global_id = $forum_id;
 				}
 
 				$forum_options = '<option value="0"' . (($forum_id == 0) ? ' selected="selected"' : '') . '>' . $user->lang['ALL_FORUMS'] . '</option>';
@@ -399,12 +396,6 @@ class mcp_queue
 
 				foreach ($rowset as $row)
 				{
-					$global_topic = ($row['forum_id']) ? false : true;
-					if ($global_topic)
-					{
-						$row['forum_id'] = $global_id;
-					}
-
 					if (empty($row['post_username']))
 					{
 						$row['post_username'] = $user->lang['GUEST'];
@@ -412,7 +403,7 @@ class mcp_queue
 
 					$template->assign_block_vars('postrow', [
 						'U_TOPIC'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']),
-						'U_VIEWFORUM'		=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : '',
+						'U_VIEWFORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
 						'U_VIEWPOST'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . (($mode == 'unapproved_posts') ? '#p' . $row['post_id'] : ''),
 						'U_VIEW_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;start=$start&amp;mode=approve_details&amp;f={$row['forum_id']}&amp;p={$row['post_id']}" . (($mode == 'unapproved_topics') ? "&amp;t={$row['topic_id']}" : '')),
 
@@ -422,7 +413,7 @@ class mcp_queue
 						'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 
 						'POST_ID'		=> $row['post_id'],
-						'FORUM_NAME'	=> (!$global_topic) ? $forum_names[$row['forum_id']] : $user->lang['GLOBAL_ANNOUNCEMENT'],
+						'FORUM_NAME'	=> $forum_names[$row['forum_id']],
 						'POST_SUBJECT'	=> ($row['post_subject'] != '') ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
 						'TOPIC_TITLE'	=> $row['topic_title'],
 						'POST_TIME'		=> $user->format_date($row['post_time'])]
@@ -439,7 +430,7 @@ class mcp_queue
 
 					'S_FORUM_OPTIONS'		=> $forum_options,
 					'S_MCP_ACTION'			=> build_url(['t', 'f', 'sd', 'st', 'sk']),
-					'S_TOPICS'				=> ($mode == 'unapproved_posts') ? false : true,
+					'S_TOPICS'				=> ($mode != 'unapproved_posts'),
 
 					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;f=$forum_id&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir", $total, $config['topics_per_page'], $start),
 					'PAGE_NUMBER'			=> on_page($total, $config['topics_per_page'], $start),

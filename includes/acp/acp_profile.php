@@ -700,13 +700,13 @@ class acp_profile
 						// Build common create options
 						$template->assign_vars([
 							'S_STEP_ONE'		=> true,
-							'S_FIELD_REQUIRED'	=> ($cp->vars['field_required']) ? true : false,
-							'S_FIELD_SHOW_NOVALUE'=> ($cp->vars['field_show_novalue']) ? true : false,
-							'S_SHOW_ON_REG'		=> ($cp->vars['field_show_on_reg']) ? true : false,
-							'S_SHOW_ON_VT'		=> ($cp->vars['field_show_on_vt']) ? true : false,
-							'S_FIELD_HIDE'		=> ($cp->vars['field_hide']) ? true : false,
-							'S_SHOW_PROFILE'	=> ($cp->vars['field_show_profile']) ? true : false,
-							'S_FIELD_NO_VIEW'	=> ($cp->vars['field_no_view']) ? true : false,
+							'S_FIELD_REQUIRED'	=> (bool) $cp->vars['field_required'],
+							'S_FIELD_SHOW_NOVALUE'=> (bool) $cp->vars['field_show_novalue'],
+							'S_SHOW_ON_REG'		=> (bool) $cp->vars['field_show_on_reg'],
+							'S_SHOW_ON_VT'		=> (bool) $cp->vars['field_show_on_vt'],
+							'S_FIELD_HIDE'		=> (bool) $cp->vars['field_hide'],
+							'S_SHOW_PROFILE'	=> (bool) $cp->vars['field_show_profile'],
+							'S_FIELD_NO_VIEW'	=> (bool) $cp->vars['field_no_view'],
 
 							'L_LANG_SPECIFIC'	=> sprintf($user->lang['LANG_SPECIFIC_OPTIONS'], $config['default_lang']),
 							'FIELD_TYPE'		=> $user->lang['FIELD_' . strtoupper($cp->profile_types[$field_type])],

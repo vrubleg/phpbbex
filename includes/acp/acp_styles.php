@@ -1349,7 +1349,7 @@ inherit_from = {INHERIT_FROM}
 		$imgsize		= ($imageset_data_row['image_width'] && $imageset_data_row['image_height']) ? 1 : 0;
 
 		// Check to see whether the selected image exists in the table
-		$valid_name = ($update) ? false : true;
+		$valid_name = !$update;
 
 		foreach ($this->imageset_keys as $category => $img_ary)
 		{
@@ -3022,7 +3022,7 @@ inherit_from = {INHERIT_FROM}
 			'S_DETAILS'			=> true,
 			'S_INSTALL'			=> true,
 			'S_ERROR_MSG'		=> (sizeof($error) > 0),
-			'S_LOCATION'		=> (isset($installcfg['inherit_from']) && $installcfg['inherit_from']) ? false : true,
+			'S_LOCATION'		=> empty($installcfg['inherit_from']),
 			'S_STYLE'			=> ($mode == 'style'),
 			'S_TEMPLATE'		=> ($mode == 'template'),
 			'S_SUPERTEMPLATE'	=> (isset($installcfg['inherit_from'])) ? $installcfg['inherit_from'] : '',
@@ -3179,7 +3179,7 @@ inherit_from = {INHERIT_FROM}
 			'S_STYLE'			=> ($mode == 'style'),
 			'S_TEMPLATE'		=> ($mode == 'template'),
 			'S_THEME'			=> ($mode == 'theme'),
-			'S_BASIS'			=> ($basis) ? true : false,
+			'S_BASIS'			=> (bool) $basis,
 
 			'S_STORE_DB'			=> (isset($style_row['storedb'])) ? $style_row['storedb'] : 0,
 			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,

@@ -102,7 +102,7 @@ class resync_registered
 		// Return the correct stuff
 		if ($missing)
 		{
-			return (empty($batch)) ? false : true;
+			return !empty($batch);
 		}
 		return $batch;
 	}
