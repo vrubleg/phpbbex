@@ -288,8 +288,6 @@ class mcp_reports
 						trigger_error('NOT_MODERATOR');
 					}
 
-					$global_id = $forum_list[0];
-
 					$sql = 'SELECT SUM(forum_topics) as sum_forum_topics
 						FROM ' . FORUMS_TABLE . '
 						WHERE ' . $db->sql_in_set('forum_id', $forum_list);
@@ -308,7 +306,6 @@ class mcp_reports
 
 					$forum_info = $forum_info[$forum_id];
 					$forum_list = [$forum_id];
-					$global_id = $forum_id;
 				}
 
 				$forum_list[] = 0;
@@ -378,14 +375,8 @@ class mcp_reports
 					$report_data = $rowset = [];
 					while ($row = $db->sql_fetchrow($result))
 					{
-						$global_topic = ($row['forum_id']) ? false : true;
-						if ($global_topic)
-						{
-							$row['forum_id'] = $global_id;
-						}
-
 						$template->assign_block_vars('postrow', [
-							'U_VIEWFORUM'				=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : '',
+							'U_VIEWFORUM'				=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
 							'U_VIEWPOST'				=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . '#p' . $row['post_id'],
 							'U_VIEW_DETAILS'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=reports&amp;start=$start&amp;mode=report_details&amp;f={$row['forum_id']}&amp;r={$row['report_id']}"),
 
@@ -399,7 +390,7 @@ class mcp_reports
 							'REPORTER'				=> get_username_string('username', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
 							'U_REPORTER'			=> get_username_string('profile', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
 
-							'FORUM_NAME'	=> (!$global_topic) ? $forum_data[$row['forum_id']]['forum_name'] : $user->lang['GLOBAL_ANNOUNCEMENT'],
+							'FORUM_NAME'	=> $forum_data[$row['forum_id']]['forum_name'],
 							'POST_ID'		=> $row['post_id'],
 							'POST_SUBJECT'	=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
 							'POST_TIME'		=> $user->format_date($row['post_time']),

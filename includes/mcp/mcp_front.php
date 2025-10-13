@@ -40,8 +40,6 @@ function mcp_front_view($id, $mode, $action)
 
 			if ($total)
 			{
-				$global_id = $forum_list[0];
-
 				$sql = 'SELECT forum_id, forum_name
 					FROM ' . FORUMS_TABLE . '
 					WHERE ' . $db->sql_in_set('forum_id', $forum_list);
@@ -84,17 +82,11 @@ function mcp_front_view($id, $mode, $action)
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$global_topic = ($row['forum_id']) ? false : true;
-					if ($global_topic)
-					{
-						$row['forum_id'] = $global_id;
-					}
-
 					$template->assign_block_vars('unapproved', [
 						'U_POST_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $row['forum_id'] . '&amp;p=' . $row['post_id']),
-						'U_MCP_FORUM'		=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=forum_view&amp;f=' . $row['forum_id']) : '',
+						'U_MCP_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=forum_view&amp;f=' . $row['forum_id']),
 						'U_MCP_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=topic_view&amp;f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id']),
-						'U_FORUM'			=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : '',
+						'U_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
 						'U_TOPIC'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']),
 
 						'AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour']),
@@ -102,7 +94,7 @@ function mcp_front_view($id, $mode, $action)
 						'AUTHOR_COLOUR'		=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour']),
 						'U_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour']),
 
-						'FORUM_NAME'	=> (!$global_topic) ? $forum_names[$row['forum_id']] : $user->lang['GLOBAL_ANNOUNCEMENT'],
+						'FORUM_NAME'	=> $forum_names[$row['forum_id']],
 						'POST_ID'		=> $row['post_id'],
 						'TOPIC_TITLE'	=> $row['topic_title'],
 						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
@@ -159,8 +151,6 @@ function mcp_front_view($id, $mode, $action)
 
 			if ($total)
 			{
-				$global_id = $forum_list[0];
-
 				$sql = $db->sql_build_query('SELECT', [
 					'SELECT'	=> 'r.report_time, p.post_id, p.post_subject, p.post_time, u.username, u.username_clean, u.user_colour, u.user_id, u2.username as author_name, u2.username_clean as author_name_clean, u2.user_colour as author_colour, u2.user_id as author_id, t.topic_id, t.topic_title, f.forum_id, f.forum_name',
 
@@ -194,17 +184,11 @@ function mcp_front_view($id, $mode, $action)
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$global_topic = ($row['forum_id']) ? false : true;
-					if ($global_topic)
-					{
-						$row['forum_id'] = $global_id;
-					}
-
 					$template->assign_block_vars('report', [
 						'U_POST_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . '&amp;p=' . $row['post_id'] . "&amp;i=reports&amp;mode=report_details"),
-						'U_MCP_FORUM'		=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . "&amp;i=$id&amp;mode=forum_view") : '',
+						'U_MCP_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . "&amp;i=$id&amp;mode=forum_view"),
 						'U_MCP_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id'] . "&amp;i=$id&amp;mode=topic_view"),
-						'U_FORUM'			=> (!$global_topic) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : '',
+						'U_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
 						'U_TOPIC'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']),
 
 						'REPORTER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
@@ -217,7 +201,7 @@ function mcp_front_view($id, $mode, $action)
 						'AUTHOR_COLOUR'		=> get_username_string('colour', $row['author_id'], $row['author_name'], $row['author_colour']),
 						'U_AUTHOR'			=> get_username_string('profile', $row['author_id'], $row['author_name'], $row['author_colour']),
 
-						'FORUM_NAME'	=> (!$global_topic) ? $row['forum_name'] : $user->lang['GLOBAL_ANNOUNCEMENT'],
+						'FORUM_NAME'	=> $row['forum_name'],
 						'TOPIC_TITLE'	=> $row['topic_title'],
 						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
 						'REPORT_TIME'	=> $user->format_date($row['report_time']),
