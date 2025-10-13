@@ -202,7 +202,7 @@ class profile_list
 
 				'U_USER_ADMIN'		=> append_sid(PHPBB_ROOT_PATH . 'adm/index.php', 'i=users&amp;mode=overview&amp;u=' . $row['user_id'], true, $user->session_id),
 
-				'S_USER_INACTIVE'	=> ($row['user_inactive_reason']) ? true : false,
+				'S_USER_INACTIVE'	=> (bool) $row['user_inactive_reason'],
 			]);
 		}
 		$db->sql_freeresult($result);

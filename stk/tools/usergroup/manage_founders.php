@@ -31,7 +31,7 @@ class manage_founders
 			$template->assign_block_vars('founders', [
 				'L_FOUNDER_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'L_FOUNDER_ID'		=> $row['user_id'],
-				'S_DISABLED'		=> ($row['user_id'] == $user->data['user_id']) ? true : false,
+				'S_DISABLED'		=> ($row['user_id'] == $user->data['user_id']),
 			]);
 		}
 		$db->sql_freeresult($result);

@@ -590,7 +590,7 @@ function define_check_option($hardcoded, $check_option, $check_lang)
 
 	$template->assign_vars([
 		'S_CHECK_DEFINED'	=> true,
-		'S_CHECK_SELECT'	=> ($hardcoded) ? false : true,
+		'S_CHECK_SELECT'	=> !$hardcoded,
 		'CHECK_CURRENT'		=> isset($check_lang[$check_option]) ? $check_lang[$check_option] : '',
 		'S_CHECK_OPTIONS'	=> $s_check_options,
 		'CHECK_OPTION'		=> $check_option]
@@ -637,7 +637,7 @@ function define_action_option($hardcoded, $action_option, $action_lang, $folder)
 
 	$template->assign_vars([
 		'S_ACTION_DEFINED'	=> true,
-		'S_ACTION_SELECT'	=> ($hardcoded) ? false : true,
+		'S_ACTION_SELECT'	=> !$hardcoded,
 		'ACTION_CURRENT'	=> $l_action,
 		'S_ACTION_OPTIONS'	=> $s_action_options,
 		'ACTION_OPTION'		=> $action_option]

@@ -635,13 +635,13 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'PAGINATION'		=> generate_pagination($u_search, $total_match_count, $per_page, $start),
 		'PAGE_NUMBER'		=> on_page($total_match_count, $per_page, $start),
 		'TOTAL_MATCHES'		=> $total_match_count,
-		'SEARCH_IN_RESULTS'	=> ($search_id) ? false : true,
+		'SEARCH_IN_RESULTS'	=> !$search_id,
 
 		'S_SELECT_SORT_DIR'		=> $s_sort_dir,
 		'S_SELECT_SORT_KEY'		=> $s_sort_key,
 		'S_SELECT_SORT_DAYS'	=> $s_limit_days,
 		'S_SEARCH_ACTION'		=> $u_search,
-		'S_SHOW_TOPICS'			=> ($show_results == 'posts') ? false : true,
+		'S_SHOW_TOPICS'			=> ($show_results != 'posts'),
 
 		'GOTO_PAGE_IMG'		=> $user->img('icon_post_target', 'GOTO_PAGE'),
 		'NEWEST_POST_IMG'	=> $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),

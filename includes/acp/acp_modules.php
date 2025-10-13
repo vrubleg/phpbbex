@@ -294,7 +294,7 @@ class acp_modules
 				}
 
 				// Category/not category?
-				$is_cat = (!$module_data['module_basename']) ? true : false;
+				$is_cat = !$module_data['module_basename'];
 
 				// Get module information
 				$module_infos = $this->get_module_infos();
@@ -428,8 +428,8 @@ class acp_modules
 				$template->assign_block_vars('modules', [
 					'MODULE_IMAGE'		=> $module_image,
 					'MODULE_TITLE'		=> $langname,
-					'MODULE_ENABLED'	=> ($row['module_enabled']) ? true : false,
-					'MODULE_DISPLAYED'	=> ($row['module_display']) ? true : false,
+					'MODULE_ENABLED'	=> (bool) $row['module_enabled'],
+					'MODULE_DISPLAYED'	=> (bool) $row['module_display'],
 
 					'S_ACP_CAT_SYSTEM'			=> ($this->module_class == 'acp' && $row['module_langname'] == 'ACP_CAT_SYSTEM'),
 					'S_ACP_MODULE_MANAGEMENT'	=> ($this->module_class == 'acp' && ($row['module_basename'] == 'modules' || $row['module_langname'] == 'ACP_MODULE_MANAGEMENT')),
@@ -454,8 +454,8 @@ class acp_modules
 			$template->assign_vars([
 				'S_NO_MODULES'		=> true,
 				'MODULE_TITLE'		=> $langname,
-				'MODULE_ENABLED'	=> ($row['module_enabled']) ? true : false,
-				'MODULE_DISPLAYED'	=> ($row['module_display']) ? true : false,
+				'MODULE_ENABLED'	=> (bool) $row['module_enabled'],
+				'MODULE_DISPLAYED'	=> (bool) $row['module_display'],
 
 				'U_EDIT'			=> $url . '&amp;action=edit',
 				'U_DELETE'			=> $url . '&amp;action=delete',

@@ -644,7 +644,7 @@ class acp_groups
 
 		$template->assign_vars([
 			'U_ACTION'		=> $this->u_action,
-			'S_GROUP_ADD'	=> ($auth->acl_get('a_groupadd')) ? true : false,
+			'S_GROUP_ADD'	=> (bool) $auth->acl_get('a_groupadd'),
 		]);
 
 		// Get us all the groups

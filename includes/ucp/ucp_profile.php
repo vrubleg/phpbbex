@@ -246,8 +246,8 @@ class ucp_profile
 
 					'S_FORCE_PASSWORD'	=> ($auth->acl_get('u_chgpasswd') && $config['chg_passforce'] && $user->data['user_passchg'] < time() - ($config['chg_passforce'] * 86400)),
 					'S_CHANGE_USERNAME' => ($config['allow_namechange'] && $auth->acl_get('u_chgname')),
-					'S_CHANGE_EMAIL'	=> ($auth->acl_get('u_chgemail')) ? true : false,
-					'S_CHANGE_PASSWORD'	=> ($auth->acl_get('u_chgpasswd')) ? true : false,
+					'S_CHANGE_EMAIL'	=> (bool) $auth->acl_get('u_chgemail'),
+					'S_CHANGE_PASSWORD'	=> (bool) $auth->acl_get('u_chgpasswd'),
 				]);
 			break;
 
@@ -473,9 +473,9 @@ class ucp_profile
 				{
 					require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
-					$enable_bbcode	= ($config['allow_sig_bbcode']) ? ((request_var('disable_bbcode', false)) ? false : true) : false;
-					$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', false)) ? false : true) : false;
-					$enable_urls	= ($config['allow_sig_links']) ? ((request_var('disable_magic_url', false)) ? false : true) : false;
+					$enable_bbcode	= ($config['allow_sig_bbcode']) ? !request_var('disable_bbcode', false) : false;
+					$enable_smilies	= ($config['allow_sig_smilies']) ? !request_var('disable_smilies', false) : false;
+					$enable_urls	= ($config['allow_sig_links']) ? !request_var('disable_magic_url', false) : false;
 
 					if (!sizeof($error))
 					{
@@ -568,9 +568,9 @@ class ucp_profile
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],
-					'S_BBCODE_IMG'			=> ($config['allow_sig_img']) ? true : false,
-					'S_BBCODE_FLASH'		=> ($config['allow_sig_flash']) ? true : false,
-					'S_LINKS_ALLOWED'		=> ($config['allow_sig_links']) ? true : false,
+					'S_BBCODE_IMG'			=> (bool) $config['allow_sig_img'],
+					'S_BBCODE_FLASH'		=> (bool) $config['allow_sig_flash'],
+					'S_LINKS_ALLOWED'		=> (bool) $config['allow_sig_links'],
 				]);
 
 				// Build custom bbcodes array

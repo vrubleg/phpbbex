@@ -65,7 +65,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	$submit		= isset($_POST['post']) && !$refresh && !$preview;
 
 	$action		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : $action;
-	$select_single = ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')) ? false : true;
+	$select_single = (!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm'));
 
 	$error = [];
 	$current_time = time();
@@ -533,7 +533,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	$flash_status	= ($config['auth_flash_pm'] && $auth->acl_get('u_pm_flash'));
 	$quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
 	$spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
-	$url_status		= ($config['allow_post_links']) ? true : false;
+	$url_status		= (bool) $config['allow_post_links'];
 
 	// Save Draft
 	if ($save && $auth->acl_get('u_sendpm'))
@@ -640,14 +640,14 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 
 		$icon_id			= request_var('icon', 0);
 
-		$enable_bbcode 		= (!$bbcode_status || isset($_POST['disable_bbcode'])) ? false : true;
-		$enable_smilies		= (!$smilies_status || isset($_POST['disable_smilies'])) ? false : true;
-		$enable_urls 		= (isset($_POST['disable_magic_url'])) ? 0 : 1;
+		$enable_bbcode 		= ($bbcode_status && !isset($_POST['disable_bbcode']));
+		$enable_smilies		= ($smilies_status && !isset($_POST['disable_smilies']));
+		$enable_urls		= !isset($_POST['disable_magic_url']);
 		$enable_sig			= (!$config['allow_sig'] ||!$config['allow_sig_pm']) ? false : (isset($_POST['attach_sig']));
 
 		if ($submit)
 		{
-			$status_switch	= (($enable_bbcode+1) << 8) + (($enable_smilies+1) << 4) + (($enable_urls+1) << 2) + (($enable_sig+1) << 1);
+			$status_switch = (($enable_bbcode+1) << 8) + (($enable_smilies+1) << 4) + (($enable_urls+1) << 2) + (($enable_sig+1) << 1);
 			$status_switch = ($status_switch != $check_value);
 		}
 		else

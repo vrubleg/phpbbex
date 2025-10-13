@@ -179,11 +179,11 @@ function mcp_post_details($id, $mode, $action)
 		'S_CAN_LOCK_POST'		=> $auth->acl_get('m_lock', $post_info['forum_id']),
 		'S_CAN_DELETE_POST'		=> $auth->acl_get('m_delete', $post_info['forum_id']),
 
-		'S_POST_REPORTED'		=> ($post_info['post_reported']) ? true : false,
-		'S_POST_UNAPPROVED'		=> (!$post_info['post_approved']) ? true : false,
-		'S_POST_LOCKED'			=> ($post_info['post_edit_locked']) ? true : false,
+		'S_POST_REPORTED'		=> (bool) $post_info['post_reported'],
+		'S_POST_UNAPPROVED'		=> !$post_info['post_approved'],
+		'S_POST_LOCKED'			=> (bool) $post_info['post_edit_locked'],
 		'S_USER_NOTES'			=> true,
-		'S_CLEAR_ALLOWED'		=> ($auth->acl_get('a_clearlogs')) ? true : false,
+		'S_CLEAR_ALLOWED'		=> (bool) $auth->acl_get('a_clearlogs'),
 
 		'U_EDIT'				=> ($auth->acl_get('m_edit', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;f={$post_info['forum_id']}&amp;p={$post_info['post_id']}") : '',
 		'U_FIND_USERNAME'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp_chgposter&amp;field=username&amp;select_single=true'),
@@ -269,7 +269,7 @@ function mcp_post_details($id, $mode, $action)
 					'REASON_DESC'	=> $row['reason_description'],
 					'REPORTER'		=> ($row['user_id'] != ANONYMOUS) ? $row['username'] : $user->lang['GUEST'],
 					'U_REPORTER'	=> ($row['user_id'] != ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
-					'USER_NOTIFY'	=> ($row['user_notify']) ? true : false,
+					'USER_NOTIFY'	=> (bool) $row['user_notify'],
 					'REPORT_TIME'	=> $user->format_date($row['report_time']),
 					'REPORT_TEXT'	=> bbcode_nl2br(trim($row['report_text'])),
 				]);

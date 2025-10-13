@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 $s_quick_reply = false;
 $mode = (isset($topic_id)) ? 'reply' : 'post';
 
-$s_quick_reply_userprefs = ($user->optionget('viewquick' . $mode)) ? true : false;
+$s_quick_reply_userprefs = (bool) $user->optionget('viewquick' . $mode);
 $s_quick_reply_guests = ($user->data['user_id'] == ANONYMOUS && $config['allow_quick_' . $mode] == 2);
 $s_quick_reply_display = ($user->data['user_id'] == ANONYMOUS) ? $s_quick_reply_guests : $s_quick_reply_userprefs;
 
@@ -60,7 +60,7 @@ unset($uninit);
 $bbcode_status	= ($config['allow_bbcode'] && $auth->acl_get('f_bbcode', $forum_id));
 $smilies_status	= ($bbcode_status && $config['allow_smilies'] && $auth->acl_get('f_smilies', $forum_id));
 $img_status		= ($bbcode_status && $auth->acl_get('f_img', $forum_id));
-$url_status		= ($config['allow_post_links']) ? true : false;
+$url_status		= (bool) $config['allow_post_links'];
 $flash_status	= ($bbcode_status && $auth->acl_get('f_flash', $forum_id) && $config['allow_post_flash']);
 $quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
 $spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
@@ -166,7 +166,7 @@ $template->assign_vars([
 	'S_SMILIES_CHECKED'			=> ($smilies_checked) ? ' checked="checked"' : '',
 	'S_SIG_ALLOWED'				=> ($auth->acl_get('f_sigs', $forum_id) && $config['allow_sig'] && $user->data['is_registered']),
 	'S_SIGNATURE_CHECKED'		=> ($sig_checked) ? ' checked="checked"' : '',
-	'S_NOTIFY_ALLOWED'			=> (!$user->data['is_registered'] || !$config['allow_topic_notify'] || !$config['email_enable']) ? false : true,
+	'S_NOTIFY_ALLOWED'			=> ($user->data['is_registered'] && $config['allow_topic_notify'] && $config['email_enable']),
 	'S_NOTIFY_CHECKED'			=> ($notify_checked) ? ' checked="checked"' : '',
 	'S_LOCK_TOPIC_ALLOWED'		=> (($mode == 'reply') && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($main_data['topic_poster']) && $user->data['user_id'] == $main_data['topic_poster'] && $main_data['topic_status'] == ITEM_UNLOCKED))),
 	'S_LOCK_TOPIC_CHECKED'		=> ($lock_topic_checked) ? ' checked="checked"' : '',

@@ -1368,8 +1368,8 @@ switch ($mode)
 				'COUNT'		=> $count,
 				'IP'		=> $ipdomain,
 
-				'S_IP_SEARCH_ALLOWED'	=> ($auth->acl_getf_global('m_info')) ? true : false,
-				'S_EMAIL_SEARCH_ALLOWED'=> ($auth->acl_get('a_user')) ? true : false,
+				'S_IP_SEARCH_ALLOWED'	=> (bool) $auth->acl_getf_global('m_info'),
+				'S_EMAIL_SEARCH_ALLOWED'=> (bool) $auth->acl_get('a_user'),
 				'S_IN_SEARCH_POPUP'		=> ($form && $field),
 				'S_SEARCH_USER'			=> true,
 				'S_FORM_NAME'			=> $form,
@@ -1655,7 +1655,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'S_ONLINE'			=> ($config['load_onlinetrack'] && $online),
 		'RANK_IMG'			=> $rank_img,
 		'RANK_IMG_SRC'		=> $rank_img_src,
-		'S_JABBER_ENABLED'	=> ($config['jab_enable']) ? true : false,
+		'S_JABBER_ENABLED'	=> (bool) $config['jab_enable'],
 
 		'S_WARNINGS'	=> ($auth->acl_getf_global('m_') || $auth->acl_get('m_warn')),
 

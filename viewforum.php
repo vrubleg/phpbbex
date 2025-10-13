@@ -308,7 +308,7 @@ $template->assign_vars([
 	'S_DISPLAY_POST_INFO'	=> ($forum_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)),
 
 	'S_IS_POSTABLE'			=> ($forum_data['forum_type'] == FORUM_POST),
-	'S_USER_CAN_POST'		=> ($auth->acl_get('f_post', $forum_id)) ? true : false,
+	'S_USER_CAN_POST'		=> (bool) $auth->acl_get('f_post', $forum_id),
 	'S_DISPLAY_ACTIVE'		=> $s_display_active,
 	'S_SELECT_SORT_DIR'		=> $s_sort_dir,
 	'S_SELECT_SORT_KEY'		=> $s_sort_key,
@@ -320,7 +320,7 @@ $template->assign_vars([
 	'S_DISPLAY_SEARCHBOX'	=> ($auth->acl_get('u_search') && $auth->acl_get('f_search', $forum_id) && $config['load_search']),
 	'S_SEARCHBOX_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'search.php'),
 	'S_SEARCH_LOCAL_HIDDEN_FIELDS'	=> build_hidden_fields($s_search_hidden_fields),
-	'S_SINGLE_MODERATOR'	=> (!empty($moderators[$forum_id]) && sizeof($moderators[$forum_id]) > 1) ? false : true,
+	'S_SINGLE_MODERATOR'	=> count($moderators[$forum_id] ?? []) == 1,
 	'S_IS_LOCKED'			=> ($forum_data['forum_status'] == ITEM_LOCKED),
 	'S_VIEWFORUM'			=> true,
 
@@ -692,7 +692,7 @@ if (sizeof($topic_list))
 			'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && $auth->acl_get('m_report', $topic_forum_id)),
 			'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
 			'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
-			'S_HAS_POLL'			=> ($row['poll_start']) ? true : false,
+			'S_HAS_POLL'			=> (bool) $row['poll_start'],
 			'S_POST_ANNOUNCE'		=> ($row['topic_type'] == POST_ANNOUNCE),
 			'S_POST_GLOBAL'			=> ($row['topic_type'] == POST_GLOBAL),
 			'S_POST_STICKY'			=> ($row['topic_type'] == POST_STICKY),

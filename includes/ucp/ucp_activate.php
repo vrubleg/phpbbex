@@ -62,7 +62,7 @@ class ucp_activate
 			trigger_error('NO_AUTH_OPERATION');
 		}
 
-		$update_password = ($user_row['user_newpasswd']) ? true : false;
+		$update_password = (bool) $user_row['user_newpasswd'];
 
 		if ($update_password)
 		{

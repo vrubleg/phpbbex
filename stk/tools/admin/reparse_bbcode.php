@@ -332,10 +332,10 @@ class reparse_bbcode
 			// Update the post flags
 			$this->flags['enable_bbcode']		= ($config['allow_bbcode']) ? $this->data['enable_bbcode'] : false;
 			$this->flags['enable_magic_url']	= ($config['allow_post_links']) ? $this->data['enable_magic_url'] : false;
-			$this->flags['enable_smilies']		= ($this->data['enable_smilies']) ? true : false;
-			$this->flags['img_status']			= ($config['allow_bbcode']) ? true : false;
-			$this->flags['flash_status']		= ($config['allow_bbcode'] && $config['allow_post_flash']) ? true : false;
-			$this->flags['enable_urls']			= ($config['allow_post_links']) ? true : false;
+			$this->flags['enable_smilies']		= (bool) $this->data['enable_smilies'];
+			$this->flags['img_status']			= (bool) $config['allow_bbcode'];
+			$this->flags['flash_status']		= ($config['allow_bbcode'] && $config['allow_post_flash']);
+			$this->flags['enable_urls']			= (bool) $config['allow_post_links'];
 
 			// Reparse them!
 			$pm_data = $post_data = $sig_data = [];

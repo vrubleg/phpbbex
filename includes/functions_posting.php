@@ -432,7 +432,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	$file->clean_filename('unique', $user->data['user_id'] . '_');
 
 	// Are we uploading an image *and* this image being within the image category? Only then perform additional image checks.
-	$no_image = ($cat_id == ATTACHMENT_CATEGORY_IMAGE) ? false : true;
+	$no_image = ($cat_id != ATTACHMENT_CATEGORY_IMAGE);
 
 	$file->move_file(UPLOADS_PATH, false, $no_image);
 
@@ -1138,8 +1138,8 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 			'U_POST_AUTHOR'			=> get_username_string('profile', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 
 			'S_HAS_ATTACHMENTS'	=> !empty($attachments[$row['post_id']]),
-			'S_FRIEND'			=> ($row['friend']) ? true : false,
-			'S_IGNORE_POST'		=> ($row['foe']) ? true : false,
+			'S_FRIEND'			=> (bool) $row['friend'],
+			'S_IGNORE_POST'		=> (bool) $row['foe'],
 			'L_IGNORE_POST'		=> ($row['foe']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), "<a href=\"{$u_show_post}\" onclick=\"dE('{$post_anchor}', 1); return false;\">", '</a>') : '',
 
 			'POST_SUBJECT'		=> $post_subject,

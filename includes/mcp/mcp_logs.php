@@ -174,7 +174,7 @@ class mcp_logs
 			'L_TITLE'			=> $user->lang['MCP_LOGS'],
 
 			'U_POST_ACTION'			=> $this->u_action . "&amp;$u_sort_param$keywords_param&amp;start=$start",
-			'S_CLEAR_ALLOWED'		=> ($auth->acl_get('a_clearlogs')) ? true : false,
+			'S_CLEAR_ALLOWED'		=> (bool) $auth->acl_get('a_clearlogs'),
 			'S_SELECT_SORT_DIR'		=> $s_sort_dir,
 			'S_SELECT_SORT_KEY'		=> $s_sort_key,
 			'S_SELECT_SORT_DAYS'	=> $s_limit_days,

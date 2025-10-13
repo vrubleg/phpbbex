@@ -71,7 +71,7 @@ class custom_profile
 				'LANG_EXPLAIN'	=> $row['lang_explain'],
 				'FIELD'			=> $tpl_snippet,
 				'FIELD_ID'		=> ($type == FIELD_DATE || ($type == FIELD_BOOL && $row['field_length'] == '1')) ? '' : 'pf_' . $row['field_ident'],
-				'S_REQUIRED'	=> ($row['field_required']) ? true : false,
+				'S_REQUIRED'	=> (bool) $row['field_required'],
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -834,7 +834,7 @@ class custom_profile
 	{
 		global $template;
 
-		$preview = ($mode == 'preview') ? true : false;
+		$preview = ($mode == 'preview');
 
 		// set template filename
 		$template->set_filenames([
@@ -1134,11 +1134,11 @@ class custom_profile_admin extends custom_profile
 		$always_now = request_var('always_now', -1);
 		if ($always_now == -1)
 		{
-			$s_checked = ($this->vars['field_default_value'] == 'now') ? true : false;
+			$s_checked = ($this->vars['field_default_value'] == 'now');
 		}
 		else
 		{
-			$s_checked = ($always_now) ? true : false;
+			$s_checked = (bool) $always_now;
 		}
 
 		$options = [

@@ -1210,9 +1210,9 @@ class auth_admin extends phpbb_auth
 					];
 				}
 
-				$content_array[$forum_id][$cat]['S_YES'] |= ($auth_setting == ACL_YES) ? true : false;
-				$content_array[$forum_id][$cat]['S_NEVER'] |= ($auth_setting == ACL_NEVER) ? true : false;
-				$content_array[$forum_id][$cat]['S_NO'] |= ($auth_setting == ACL_NO) ? true : false;
+				$content_array[$forum_id][$cat]['S_YES'] |= ($auth_setting == ACL_YES);
+				$content_array[$forum_id][$cat]['S_NEVER'] |= ($auth_setting == ACL_NEVER);
+				$content_array[$forum_id][$cat]['S_NO'] |= ($auth_setting == ACL_NO);
 
 				$content_array[$forum_id][$cat]['permissions'][$permission] = $auth_setting;
 			}
