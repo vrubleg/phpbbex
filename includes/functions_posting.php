@@ -318,7 +318,7 @@ function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 
 			$topic_type_array[] = [
 				'VALUE'			=> $topic_value['const'],
-				'S_CHECKED'		=> ($cur_topic_type == $topic_value['const'] || ($forum_id == 0 && $topic_value['const'] == POST_GLOBAL)) ? ' checked="checked"' : '',
+				'S_CHECKED'		=> ($cur_topic_type == $topic_value['const']) ? ' checked="checked"' : '',
 				'L_TOPIC_TYPE'	=> $user->lang[$topic_value['lang']]
 			];
 		}
