@@ -896,26 +896,17 @@ function check_ids(&$ids, $table, $sql_id, $acl_list = false, $single_forum = fa
 		}
 
 		// Limit forum to a specific forum id?
-		// This can get really tricky, because we do not want to create a failure on global topics. :)
-		if ($row['forum_id'])
+		if ($single_forum !== true && $row['forum_id'] == (int) $single_forum)
 		{
-			if ($single_forum !== true && $row['forum_id'] == (int) $single_forum)
-			{
-				$forum_id = (int) $single_forum;
-			}
-			else if ($forum_id === false)
-			{
-				$forum_id = $row['forum_id'];
-			}
-
-			if ($row['forum_id'] == $forum_id)
-			{
-				$ids[] = $row[$sql_id];
-			}
+			$forum_id = (int) $single_forum;
 		}
-		else
+		else if ($forum_id === false)
 		{
-			// Always add a global topic
+			$forum_id = $row['forum_id'];
+		}
+
+		if ($row['forum_id'] == $forum_id)
+		{
 			$ids[] = $row[$sql_id];
 		}
 	}

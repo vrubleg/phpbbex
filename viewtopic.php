@@ -167,10 +167,6 @@ else
 
 $sql_array['WHERE'] .= ' AND f.forum_id = t.forum_id';
 
-// Join to forum table on topic forum_id unless topic forum_id is zero
-// whereupon we join on the forum_id passed as a parameter ... this
-// is done so navigation, forum name, etc. remain consistent with where
-// user clicked to view a global topic
 $sql = $db->sql_build_query('SELECT', $sql_array);
 $result = $db->sql_query($sql);
 $topic_data = $db->sql_fetchrow($result);

@@ -916,34 +916,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			$result_topic_id = $row['topic_id'];
 			$topic_title = censor_text($row['topic_title']);
 
-			// we need to select a forum id for this global topic
-			if (!$forum_id)
-			{
-				if (!isset($g_forum_id))
-				{
-					// Get a list of forums the user cannot read
-					$forum_ary = array_unique(array_keys($auth->acl_getf('!f_read', true)));
-
-					// Determine first forum the user is able to read (must not be a category)
-					$sql = 'SELECT forum_id
-						FROM ' . FORUMS_TABLE . '
-						WHERE forum_type = ' . FORUM_POST;
-
-					if (sizeof($forum_ary))
-					{
-						$sql .= ' AND ' . $db->sql_in_set('forum_id', $forum_ary, true);
-					}
-
-					$result = $db->sql_query_limit($sql, 1);
-					$g_forum_id = (int) $db->sql_fetchfield('forum_id');
-				}
-				$u_forum_id = $g_forum_id;
-			}
-			else
-			{
-				$u_forum_id = $forum_id;
-			}
-
 			$view_topic_url_params = "t=$result_topic_id" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit=$u_hilit" : '');
 			$view_topic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params);
 

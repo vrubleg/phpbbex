@@ -203,7 +203,6 @@ $lang = array_merge($lang, [
 	'TOPIC_PRIORITY_EXPLAIN'	=> '<i>(topics with higher priority are displayed above the other)</i>',
 
 	'UNAUTHORISED_BBCODE'		=> 'You cannot use certain BBCodes: %s.',
-	'UNGLOBALISE_EXPLAIN'		=> 'To switch this topic back from being global to a normal topic, you need to select the forum you wish this topic to be displayed.',
 	'UPDATE_COMMENT'			=> 'Update comment',
 	'UPDATE_FILE'				=> 'Update file',
 	'URL_INVALID'				=> 'The URL you specified is invalid.',

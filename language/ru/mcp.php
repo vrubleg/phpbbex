@@ -87,8 +87,6 @@ $lang = array_merge($lang, [
 	'FORUM_NOT_POSTABLE'	=> 'В выбранном вами разделе нельзя оставлять сообщения.',
 	'FORUM_STATUS'			=> 'Статус раздела',
 
-	'GLOBAL_ANNOUNCEMENT'	=> 'Важная',
-
 	'IP_INFO'				=> 'Информация об IP-адресе',
 	'IPS_POSTED_FROM'		=> 'IP-адреса, с которых пользователь отправлял сообщения',
 
@@ -288,8 +286,6 @@ $lang = array_merge($lang, [
 
 	'SEARCH_POSTS_BY_USER'				=> 'Поиск сообщений по',
 	'SELECT_ACTION'						=> 'Выбрать желаемое действие',
-	'SELECT_FORUM_GLOBAL_ANNOUNCEMENT'	=> 'Пожалуйста, выберите раздел, в котором будет отображаться эта важная тема.',
-	'SELECT_FORUM_GLOBAL_ANNOUNCEMENTS'	=> 'Одна или более из выбранных тем являются важными. Пожалуйста, выберите раздел, в котором они будут отображаться.',
 	'SELECT_MERGE'						=> 'Выбрать для объединения',
 	'SELECT_TOPICS_FROM'				=> 'Выбрать темы из',
 	'SELECT_TOPIC'						=> 'Выбрать тему',
