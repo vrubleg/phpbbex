@@ -2173,7 +2173,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SI
 
 		foreach ($params as $key => $item)
 		{
-			if ($item === NULL)
+			if ($item === null)
 			{
 				continue;
 			}
@@ -3471,7 +3471,7 @@ function phpbb_checkdnsrr($host, $type = 'MX')
 		return false;
 	}
 
-	return NULL;
+	return null;
 }
 
 // Handler, header and footer

@@ -41,11 +41,11 @@ class dbal_mysql extends dbal
 		$this->server = ($this->persistency) ? 'p:' . (($sqlserver) ? $sqlserver : 'localhost') : $sqlserver;
 
 		$this->dbname = $database;
-		$port = (!$port) ? NULL : $port;
+		$port = (!$port) ? null : $port;
 
 		// If port is set and it is not numeric, most likely mysqli socket is set.
 		// Try to map it to the $socket parameter.
-		$socket = NULL;
+		$socket = null;
 		if ($port)
 		{
 			if (is_numeric($port))
@@ -55,7 +55,7 @@ class dbal_mysql extends dbal
 			else
 			{
 				$socket = $port;
-				$port = NULL;
+				$port = null;
 			}
 		}
 

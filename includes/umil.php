@@ -2574,7 +2574,7 @@ class phpbb_umil
 			$table_prefix = $this->table_prefix;
 		}
 
-		static $constants = NULL;
+		static $constants = null;
 
 		if (is_null($constants))
 		{

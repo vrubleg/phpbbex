@@ -23,7 +23,7 @@ class messenger
 	var $queue;
 	var $jabber;
 
-	var $tpl_obj = NULL;
+	var $tpl_obj = null;
 	var $tpl_msg = [];
 
 	/**

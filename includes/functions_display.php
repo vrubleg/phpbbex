@@ -1371,7 +1371,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					AND user_id = $user_id";
 			$result = $db->sql_query($sql);
 
-			$notify_status = ($row = $db->sql_fetchrow($result)) ? $row['notify_status'] : NULL;
+			$notify_status = ($row = $db->sql_fetchrow($result)) ? $row['notify_status'] : null;
 			$db->sql_freeresult($result);
 		}
 

@@ -564,7 +564,7 @@ class phpbb_template
 			$search_key = key($key);
 			$search_value = current($key);
 
-			$key = NULL;
+			$key = null;
 			foreach ($this->_tpldata[$blockname] as $i => $val_ary)
 			{
 				if (isset($val_ary[$search_key]) && $val_ary[$search_key] === $search_value)
@@ -575,7 +575,7 @@ class phpbb_template
 			}
 
 			// key/value pair not found
-			if ($key === NULL)
+			if ($key === null)
 			{
 				return false;
 			}

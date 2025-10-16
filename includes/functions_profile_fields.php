@@ -459,7 +459,7 @@ class custom_profile
 			{
 				$value = $this->get_profile_value($ident_ary);
 
-				if ($value === NULL)
+				if ($value === null)
 				{
 					continue;
 				}
@@ -504,7 +504,7 @@ class custom_profile
 			case 'int':
 				if (($value === '' || $value === null) && !$ident_ary['data']['field_show_novalue'])
 				{
-					return NULL;
+					return null;
 				}
 				return (int) $value;
 			break;
@@ -513,7 +513,7 @@ class custom_profile
 			case 'text':
 				if (!$value && !$ident_ary['data']['field_show_novalue'])
 				{
-					return NULL;
+					return null;
 				}
 
 				$value = make_clickable($value);
@@ -531,7 +531,7 @@ class custom_profile
 
 				if (!$day && !$month && !$year && !$ident_ary['data']['field_show_novalue'])
 				{
-					return NULL;
+					return null;
 				}
 				else if ($day && $month && $year)
 				{
@@ -554,7 +554,7 @@ class custom_profile
 
 				if ($value == $ident_ary['data']['field_novalue'] && !$ident_ary['data']['field_show_novalue'])
 				{
-					return NULL;
+					return null;
 				}
 
 				$value = (int) $value;
@@ -568,7 +568,7 @@ class custom_profile
 					}
 					else
 					{
-						return NULL;
+						return null;
 					}
 				}
 
@@ -590,11 +590,11 @@ class custom_profile
 
 				if ($ident_ary['data']['field_length'] == 1)
 				{
-					return (isset($this->options_lang[$field_id][$lang_id][(int) $value])) ? $this->options_lang[$field_id][$lang_id][(int) $value] : NULL;
+					return (isset($this->options_lang[$field_id][$lang_id][(int) $value])) ? $this->options_lang[$field_id][$lang_id][(int) $value] : null;
 				}
 				else if (!$value)
 				{
-					return NULL;
+					return null;
 				}
 				else
 				{
@@ -627,13 +627,13 @@ class custom_profile
 		{
 			if (isset($_REQUEST[$profile_row['field_ident']]))
 			{
-				$value = ($_REQUEST[$profile_row['field_ident']] === '') ? NULL : request_var($profile_row['field_ident'], $default_value);
+				$value = ($_REQUEST[$profile_row['field_ident']] === '') ? null : request_var($profile_row['field_ident'], $default_value);
 			}
 			else
 			{
 				if (!$preview && array_key_exists($user_ident, $user->profile_fields) && is_null($user->profile_fields[$user_ident]))
 				{
-					$value = NULL;
+					$value = null;
 				}
 				else if (!isset($user->profile_fields[$user_ident]) || $preview)
 				{
@@ -885,7 +885,7 @@ class custom_profile
 			else if ($row['field_default_value'] === '' && $row['field_type'] == FIELD_INT)
 			{
 				// We cannot insert an empty string into an integer column.
-				$row['field_default_value'] = NULL;
+				$row['field_default_value'] = null;
 			}
 
 			$cp_data['pf_' . $row['field_ident']] = (in_array($row['field_type'], [FIELD_TEXT, FIELD_STRING])) ? $row['lang_default_value'] : $row['field_default_value'];
@@ -948,7 +948,7 @@ class custom_profile
 			case FIELD_INT:
 				if (isset($_REQUEST[$var_name]) && $_REQUEST[$var_name] === '')
 				{
-					$var = NULL;
+					$var = null;
 				}
 				else
 				{

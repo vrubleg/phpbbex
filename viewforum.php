@@ -207,7 +207,7 @@ $s_watching_forum = [
 
 if (($config['email_enable'] || $config['jab_enable']) && $config['allow_forum_notify'] && $forum_data['forum_type'] == FORUM_POST)
 {
-	$notify_status = (isset($forum_data['notify_status'])) ? $forum_data['notify_status'] : NULL;
+	$notify_status = (isset($forum_data['notify_status'])) ? $forum_data['notify_status'] : null;
 	watch_topic_forum('forum', $s_watching_forum, $user->data['user_id'], $forum_id, 0, $notify_status, $start, $forum_data['forum_name']);
 }
 

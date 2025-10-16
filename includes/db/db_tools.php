@@ -22,7 +22,7 @@ class phpbb_db_tools
 	/**
 	* @var object DB object
 	*/
-	var $db = NULL;
+	var $db = null;
 
 	/**
 	* The Column types for every database we support
