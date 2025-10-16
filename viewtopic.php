@@ -1526,9 +1526,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			|| ($topic_data['topic_first_post_id'] == $row['post_id'] && $auth->acl_get('u_ignorefpedittime')))
 	)));
 
-	$quote_allowed = $auth->acl_get('m_edit', $forum_id) || ($topic_data['topic_status'] != ITEM_LOCKED &&
-		($user->data['user_id'] == ANONYMOUS || $auth->acl_get('f_reply', $forum_id))
-	);
+	$quote_allowed = ($topic_data['topic_status'] != ITEM_LOCKED && $auth->acl_get('f_reply', $forum_id) || $auth->acl_get('m_edit', $forum_id));
 
 	$delete_allowed = ($user->data['is_registered'] && ($auth->acl_get('m_delete', $forum_id) || (
 		$user->data['user_id'] == $poster_id &&
