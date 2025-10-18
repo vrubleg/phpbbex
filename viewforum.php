@@ -55,9 +55,9 @@ if (!$forum_data)
 	trigger_error('NO_FORUM');
 }
 
-$default_sort_days	= (!empty($forum_data['forum_topic_show_days'])) ? $forum_data['forum_topic_show_days'] : 0;
-$default_sort_key	= (!empty($forum_data['forum_topic_sortby_type'])) ? $forum_data['forum_topic_sortby_type'] : ((!empty($user->data['user_topic_sortby_type'])) ? $user->data['user_topic_sortby_type'] : 't');
-$default_sort_dir	= (!empty($forum_data['forum_topic_sortby_dir'])) ? $forum_data['forum_topic_sortby_dir'] : ((!empty($user->data['user_topic_sortby_dir'])) ? $user->data['user_topic_sortby_dir'] : 'd');
+$default_sort_days	= $forum_data['forum_topic_show_days'] ?: 0;
+$default_sort_key	= $forum_data['forum_topic_sortby_type'] ?: $user->data['user_topic_sortby_type'] ?: 't';
+$default_sort_dir	= $forum_data['forum_topic_sortby_dir'] ?: $user->data['user_topic_sortby_dir'] ?: 'd';
 
 $sort_days	= request_var('st', $default_sort_days);
 $sort_key	= request_var('sk', $default_sort_key);
@@ -603,7 +603,7 @@ if (sizeof($topic_list))
 		if ($config['load_db_lastread'] && $user->data['is_registered'])
 		{
 			$topic_tracking_info = get_topic_tracking($forum_id, $topic_list, $rowset, [$forum_id => $forum_data['mark_time']], $global_announce_list);
-			$mark_time_forum = (!empty($forum_data['mark_time'])) ? $forum_data['mark_time'] : $user->data['user_lastmark'];
+			$mark_time_forum = $forum_data['mark_time'] ?: $user->data['user_lastmark'];
 		}
 		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
 		{
