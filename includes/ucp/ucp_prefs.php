@@ -202,11 +202,11 @@ class ucp_prefs
 				add_form_key('ucp_prefs_view');
 
 				$data = [
-					'topic_sk'		=> request_var('topic_sk', (!empty($user->data['user_topic_sortby_type'])) ? $user->data['user_topic_sortby_type'] : 't'),
-					'topic_sd'		=> request_var('topic_sd', (!empty($user->data['user_topic_sortby_dir'])) ? $user->data['user_topic_sortby_dir'] : 'd'),
+					'topic_sk'		=> request_var('topic_sk', $user->data['user_topic_sortby_type'] ?: 't'),
+					'topic_sd'		=> request_var('topic_sd', $user->data['user_topic_sortby_dir'] ?: 'd'),
 
-					'post_sk'		=> request_var('post_sk', (!empty($user->data['user_post_sortby_type'])) ? $user->data['user_post_sortby_type'] : 't'),
-					'post_sd'		=> request_var('post_sd', (!empty($user->data['user_post_sortby_dir'])) ? $user->data['user_post_sortby_dir'] : 'a'),
+					'post_sk'		=> request_var('post_sk', $user->data['user_post_sortby_type'] ?: 't'),
+					'post_sd'		=> request_var('post_sd', $user->data['user_post_sortby_dir'] ?: 'a'),
 
 					'user_topics_per_page'	=> (int) request_var('user_topics_per_page', $user->data['user_topics_per_page'] ?? 0),
 					'user_posts_per_page'	=> (int) request_var('user_posts_per_page', $user->data['user_posts_per_page'] ?? 0),

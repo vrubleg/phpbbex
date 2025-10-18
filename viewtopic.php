@@ -24,8 +24,8 @@ $start		= request_var('start', 0);
 $view		= request_var('view', '');
 
 $default_sort_days	= 0;
-$default_sort_key	= (!empty($user->data['user_post_sortby_type'])) ? $user->data['user_post_sortby_type'] : 't';
-$default_sort_dir	= (!empty($user->data['user_post_sortby_dir'])) ? $user->data['user_post_sortby_dir'] : 'a';
+$default_sort_key	= $user->data['user_post_sortby_type'] ?: 't';
+$default_sort_dir	= $user->data['user_post_sortby_dir'] ?: 'a';
 
 $sort_days	= request_var('st', $default_sort_days);
 $sort_key	= request_var('sk', $default_sort_key);
