@@ -499,7 +499,7 @@ class bbcode
 
 		if ($bbcode_id != -1 && !$skip_bitfield_check && !$this->template_bitfield->get($bbcode_id))
 		{
-			return (isset($bbcode_hardtpl[$tpl_name])) ? $bbcode_hardtpl[$tpl_name] : false;
+			return $bbcode_hardtpl[$tpl_name] ?? false;
 		}
 
 		if (empty($this->bbcode_template))
@@ -532,7 +532,7 @@ class bbcode
 			}
 		}
 
-		return (isset($this->bbcode_template[$tpl_name])) ? $this->bbcode_template[$tpl_name] : ((isset($bbcode_hardtpl[$tpl_name])) ? $bbcode_hardtpl[$tpl_name] : false);
+		return $this->bbcode_template[$tpl_name] ?? ($bbcode_hardtpl[$tpl_name] ?? false);
 	}
 
 	/**

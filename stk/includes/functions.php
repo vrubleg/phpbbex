@@ -30,7 +30,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 	}
 	else
 	{
-		$default = (isset($vars['default'])) ? $vars['default'] : '';
+		$default = $vars['default'] ?? '';
 	}
 
 	switch ($tpl_type[0])

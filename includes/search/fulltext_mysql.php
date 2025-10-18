@@ -766,7 +766,7 @@ class fulltext_mysql extends search_backend
 		while ($row = $db->sql_fetchrow($result))
 		{
 			// deal with older MySQL versions which didn't use Index_type
-			$index_type = (isset($row['Index_type'])) ? $row['Index_type'] : $row['Comment'];
+			$index_type = $row['Index_type'] ?? $row['Comment'];
 
 			if ($index_type == 'FULLTEXT')
 			{

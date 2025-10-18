@@ -362,7 +362,7 @@ class module
 			return '';
 		}
 
-		return (isset($lang[$this->module->page_title])) ? $lang[$this->module->page_title] : $this->module->page_title;
+		return $lang[$this->module->page_title] ?? $this->module->page_title;
 	}
 
 	/**

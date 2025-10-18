@@ -151,9 +151,9 @@ class ucp_register
 		// Check and initialize some variables if needed
 		if ($submit)
 		{
-			$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
-			$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
-			$is_dst				= ($config['override_user_timezone'])	? $config['board_dst']			: $is_dst;
+			$data['lang']		= ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+			$data['tz']			= ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
+			$is_dst				= ($config['override_user_timezone']) ? $config['board_dst'] : $is_dst;
 
 			$error_type = [
 				'generic' => false,

@@ -313,7 +313,7 @@ class acp_reasons
 			$template->assign_block_vars('reasons', [
 				'REASON_TITLE'			=> $row['reason_title'],
 				'REASON_DESCRIPTION'	=> $row['reason_description'],
-				'REASON_COUNT'			=> (isset($reason_count[$row['reason_id']])) ? $reason_count[$row['reason_id']] : 0,
+				'REASON_COUNT'			=> $reason_count[$row['reason_id']] ?? 0,
 
 				'S_TRANSLATED'		=> $translated,
 				'S_OTHER_REASON'	=> $other_reason,
@@ -321,8 +321,8 @@ class acp_reasons
 				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;id=' . $row['reason_id'],
 				'U_DELETE'		=> (!$other_reason) ? $this->u_action . '&amp;action=delete&amp;id=' . $row['reason_id'] : '',
 				'U_MOVE_UP'		=> $this->u_action . '&amp;action=move_up&amp;order=' . $row['reason_order'],
-				'U_MOVE_DOWN'	=> $this->u_action . '&amp;action=move_down&amp;order=' . $row['reason_order']]
-			);
+				'U_MOVE_DOWN'	=> $this->u_action . '&amp;action=move_down&amp;order=' . $row['reason_order'],
+			]);
 		}
 		$db->sql_freeresult($result);
 	}

@@ -266,7 +266,7 @@ if ($plugin->get_part('t'))
 			}
 			else
 			{
-				$msg = isset($user->lang[$msg]) ? $user->lang[$msg] : $msg;
+				$msg = $user->lang[$msg] ?? $msg;
 			}
 
 			trigger_error($msg);
@@ -307,7 +307,7 @@ if ($plugin->get_part('t'))
 
 			$template->assign_vars([
 				'L_TITLE'			=> $user->lang[$options['title']],
-				'L_TITLE_EXPLAIN'	=> (isset($user->lang[$options['title'] . '_EXPLAIN'])) ? $user->lang[$options['title'] . '_EXPLAIN'] : '',
+				'L_TITLE_EXPLAIN'	=> $user->lang[$options['title'] . '_EXPLAIN'] ?? '',
 			]);
 
 			foreach ($options['vars'] as $name => $vars)
@@ -321,7 +321,7 @@ if ($plugin->get_part('t'))
 				{
 					$template->assign_block_vars('options', [
 						'S_LEGEND'		=> true,
-						'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars]
+						'LEGEND'		=> $user->lang[$vars] ?? $vars]
 					);
 
 					continue;
@@ -332,11 +332,11 @@ if ($plugin->get_part('t'))
 				$l_explain = '';
 				if ($vars['explain'] && isset($vars['lang_explain']))
 				{
-					$l_explain = (isset($user->lang[$vars['lang_explain']])) ? $user->lang[$vars['lang_explain']] : $vars['lang_explain'];
+					$l_explain = $user->lang[$vars['lang_explain']] ?? $vars['lang_explain'];
 				}
 				else if ($vars['explain'])
 				{
-					$l_explain = (isset($user->lang[$vars['lang'] . '_EXPLAIN'])) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '';
+					$l_explain = $user->lang[$vars['lang'] . '_EXPLAIN'] ?? '';
 				}
 
 				$content = build_cfg_template($type, $name, $vars);
@@ -348,7 +348,7 @@ if ($plugin->get_part('t'))
 
 				$template->assign_block_vars('options', [
 					'KEY'			=> $name,
-					'TITLE'			=> (isset($user->lang[$vars['lang']])) ? $user->lang[$vars['lang']] : $vars['lang'],
+					'TITLE'			=> $user->lang[$vars['lang']] ?? $vars['lang'],
 					'S_EXPLAIN'		=> $vars['explain'],
 					'TITLE_EXPLAIN'	=> $l_explain,
 					'CONTENT'		=> $content['tpl'],

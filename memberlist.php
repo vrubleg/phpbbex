@@ -487,8 +487,8 @@ switch ($mode)
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 
-			$member['session_time'] = (isset($row['session_time'])) ? $row['session_time'] : 0;
-			$member['session_viewonline'] = (isset($row['session_viewonline'])) ? $row['session_viewonline'] :	0;
+			$member['session_time'] = $row['session_time'] ?? 0;
+			$member['session_viewonline'] = $row['session_viewonline'] ?? 0;
 			unset($row);
 		}
 
@@ -1629,7 +1629,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'VISITED'		=> (empty($last_visit)) ? ' - ' : $user->format_date($last_visit),
 		'POSTS'			=> ($data['user_posts']) ? $data['user_posts'] : 0,
 		'TOPICS'		=> ($data['user_topics']) ? $data['user_topics'] : 0,
-		'WARNINGS'		=> isset($data['user_warnings']) ? $data['user_warnings'] : 0,
+		'WARNINGS'		=> $data['user_warnings'] ?? 0,
 
 		'S_RATING'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
 		'RATING'			=> ($config['rate_no_positive'] ? 0 : $data['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $data['user_rating_negative']),

@@ -616,7 +616,7 @@ class custom_profile
 	{
 		global $user;
 
-		$profile_row['field_ident'] = (isset($profile_row['var_name'])) ? $profile_row['var_name'] : 'pf_' . $profile_row['field_ident'];
+		$profile_row['field_ident'] = $profile_row['var_name'] ?? 'pf_' . $profile_row['field_ident'];
 		$user_ident = $profile_row['field_ident'];
 		// checkbox - set the value to "true" if it has been set to 1
 		if ($profile_row['field_type'] == FIELD_BOOL && $profile_row['field_length'] == 2)
@@ -687,7 +687,7 @@ class custom_profile
 	{
 		global $user, $template;
 
-		$profile_row['field_ident'] = (isset($profile_row['var_name'])) ? $profile_row['var_name'] : 'pf_' . $profile_row['field_ident'];
+		$profile_row['field_ident'] = $profile_row['var_name'] ?? 'pf_' . $profile_row['field_ident'];
 		$user_ident = $profile_row['field_ident'];
 
 		$now = getdate();

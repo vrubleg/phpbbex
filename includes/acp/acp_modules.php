@@ -187,7 +187,7 @@ class acp_modules
 						$module_data = [
 							'module_basename'	=> $module_basename,
 							'module_enabled'	=> 0,
-							'module_display'	=> (isset($fileinfo['modes'][$module_mode]['display'])) ? $fileinfo['modes'][$module_mode]['display'] : 1,
+							'module_display'	=> $fileinfo['modes'][$module_mode]['display'] ?? 1,
 							'parent_id'			=> $this->parent_id,
 							'module_class'		=> $this->module_class,
 							'module_langname'	=> $fileinfo['modes'][$module_mode]['title'],
@@ -610,7 +610,7 @@ class acp_modules
 			}
 			else if ($row['left_id'] > $right + 1)
 			{
-				$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : '';
+				$padding = $padding_store[$row['parent_id']] ?? '';
 			}
 
 			$right = $row['right_id'];

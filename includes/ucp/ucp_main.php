@@ -586,7 +586,7 @@ class ucp_main
 			'L_TITLE'			=> $user->lang['UCP_MAIN_' . strtoupper($mode)],
 
 			'S_DISPLAY_MARK_ALL'	=> ($mode == 'watched' || ($mode == 'drafts' && !isset($_GET['edit']))),
-			'S_HIDDEN_FIELDS'		=> (isset($s_hidden_fields)) ? $s_hidden_fields : '',
+			'S_HIDDEN_FIELDS'		=> $s_hidden_fields ?? '',
 			'S_UCP_ACTION'			=> $this->u_action,
 
 			'LAST_POST_IMG'			=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
@@ -697,7 +697,7 @@ class ucp_main
 		$topic_list = $topic_forum_list = $global_announce_list = $rowset = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$topic_id = (isset($row['b_topic_id'])) ? $row['b_topic_id'] : $row['topic_id'];
+			$topic_id = $row['b_topic_id'] ?? $row['topic_id'];
 
 			$topic_list[] = $topic_id;
 			$rowset[$topic_id] = $row;
@@ -733,7 +733,7 @@ class ucp_main
 			$row = &$rowset[$topic_id];
 
 			$forum_id = $row['forum_id'];
-			$topic_id = (isset($row['b_topic_id'])) ? $row['b_topic_id'] : $row['topic_id'];
+			$topic_id = $row['b_topic_id'] ?? $row['topic_id'];
 
 			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 

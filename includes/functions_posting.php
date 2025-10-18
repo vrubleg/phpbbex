@@ -100,7 +100,7 @@ function generate_smilies($mode)
 				'SMILEY_IMG'	=> $root_path . SMILIES_PATH . '/' . $row['smiley_url'],
 				'SMILEY_WIDTH'	=> $row['smiley_width'],
 				'SMILEY_HEIGHT'	=> $row['smiley_height'],
-				'SMILEY_DESC'	=> isset($user->lang[$row['emotion']]) ? $user->lang[$row['emotion']] : $row['emotion'],
+				'SMILEY_DESC'	=> $user->lang[$row['emotion']] ?? $row['emotion'],
 			]);
 		}
 	}
@@ -763,7 +763,7 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 	$template->assign_vars([
 		'S_SHOW_ATTACH_BOX'	=> $show_attach_box,
 		'S_HAS_ATTACHMENTS'	=> sizeof($attachment_data),
-		'FILE_COMMENT'		=> (isset($filename_data['filecomment'])) ? $filename_data['filecomment'] : '',
+		'FILE_COMMENT'		=> $filename_data['filecomment'] ?? '',
 	]);
 
 	if (sizeof($attachment_data))
@@ -1951,11 +1951,11 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'poll_start'				=> (isset($poll['poll_options'])) ? $poll_start : 0,
 				'poll_max_options'			=> (isset($poll['poll_options'])) ? $poll['poll_max_options'] : 1,
 				'poll_length'				=> (isset($poll['poll_options'])) ? $poll_length : 0,
-				'poll_vote_change'			=> (isset($poll['poll_vote_change'])) ? $poll['poll_vote_change'] : 0,
-				'poll_show_voters'			=> (isset($poll['poll_show_voters'])) ? $poll['poll_show_voters'] : 0,
+				'poll_vote_change'			=> $poll['poll_vote_change'] ?? 0,
+				'poll_show_voters'			=> $poll['poll_show_voters'] ?? 0,
 				'topic_last_view_time'		=> $current_time,
 
-				'topic_attachment'			=> (!empty($data['attachment_data'])) ? 1 : (isset($data['topic_attachment']) ? $data['topic_attachment'] : 0),
+				'topic_attachment'			=> (!empty($data['attachment_data'])) ? 1 : ($data['topic_attachment'] ?? 0),
 			];
 
 			// Correctly set back the topic replies and forum posts... only if the topic was approved before and now gets disapproved

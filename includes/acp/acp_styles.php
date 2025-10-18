@@ -2133,7 +2133,7 @@ inherit_from = {INHERIT_FROM}
 				$result = $db->sql_query($sql);
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$imageset_main[$row['image_name']] = $row['image_filename'] . ($row['image_height'] ? '*' . $row['image_height']: '') . ($row['image_width'] ? '*' . $row['image_width']: '');
+					$imageset_main[$row['image_name']] = $row['image_filename'] . ($row['image_height'] ? '*' . $row['image_height'] : '') . ($row['image_width'] ? '*' . $row['image_width'] : '');
 				}
 				$db->sql_freeresult($result);
 
@@ -2185,7 +2185,7 @@ inherit_from = {INHERIT_FROM}
 				$result = $db->sql_query($sql);
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$imageset_lang[$row['image_lang']][$row['image_name']] = $row['image_filename'] . ($row['image_height'] ? '*' . $row['image_height']: '') . ($row['image_width'] ? '*' . $row['image_width']: '');
+					$imageset_lang[$row['image_lang']][$row['image_name']] = $row['image_filename'] . ($row['image_height'] ? '*' . $row['image_height'] : '') . ($row['image_width'] ? '*' . $row['image_width'] : '');
 				}
 				$db->sql_freeresult($result);
 
@@ -2622,10 +2622,10 @@ inherit_from = {INHERIT_FROM}
 			'S_TEMPLATE'			=> ($mode == 'template'),
 			'S_THEME'				=> ($mode == 'theme'),
 			'S_IMAGESET'			=> ($mode == 'imageset'),
-			'S_STORE_DB'			=> (isset($style_row[$mode . '_storedb'])) ? $style_row[$mode . '_storedb'] : 0,
-			'S_STORE_DB_DISABLED'	=> (isset($style_row[$mode . '_inherits_id'])) ? $style_row[$mode . '_inherits_id'] : 0,
-			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,
-			'S_STYLE_DEFAULT'		=> (isset($style_row['style_default'])) ? $style_row['style_default'] : 0,
+			'S_STORE_DB'			=> $style_row[$mode . '_storedb'] ?? 0,
+			'S_STORE_DB_DISABLED'	=> $style_row[$mode . '_inherits_id'] ?? 0,
+			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 			'S_SUPERTEMPLATE'		=> (isset($style_row[$mode . '_inherits_id']) && $style_row[$mode . '_inherits_id']) ? $super['template_name'] : 0,
 
 			'S_TEMPLATE_OPTIONS'	=> ($mode == 'style') ? $template_options : '',
@@ -2928,9 +2928,9 @@ inherit_from = {INHERIT_FROM}
 						'style_copyright'	=> $installcfg['copyright']
 					];
 
-					$reqd_template = (isset($installcfg['required_template'])) ? $installcfg['required_template'] : false;
-					$reqd_theme = (isset($installcfg['required_theme'])) ? $installcfg['required_theme'] : false;
-					$reqd_imageset = (isset($installcfg['required_imageset'])) ? $installcfg['required_imageset'] : false;
+					$reqd_template = $installcfg['required_template'] ?? false;
+					$reqd_theme = $installcfg['required_theme'] ?? false;
+					$reqd_imageset = $installcfg['required_imageset'] ?? false;
 
 					// Check to see if each element is already installed, if it is grab the id
 					foreach ($element_ary as $element => $table)
@@ -3025,12 +3025,12 @@ inherit_from = {INHERIT_FROM}
 			'S_LOCATION'		=> empty($installcfg['inherit_from']),
 			'S_STYLE'			=> ($mode == 'style'),
 			'S_TEMPLATE'		=> ($mode == 'template'),
-			'S_SUPERTEMPLATE'	=> (isset($installcfg['inherit_from'])) ? $installcfg['inherit_from'] : '',
+			'S_SUPERTEMPLATE'	=> $installcfg['inherit_from'] ?? '',
 			'S_THEME'			=> ($mode == 'theme'),
 
-			'S_STORE_DB'			=> (isset($style_row[$mode . '_storedb'])) ? $style_row[$mode . '_storedb'] : 0,
-			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,
-			'S_STYLE_DEFAULT'		=> (isset($style_row['style_default'])) ? $style_row['style_default'] : 0,
+			'S_STORE_DB'			=> $style_row[$mode . '_storedb'] ?? 0,
+			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 
 			'U_ACTION'			=> $this->u_action . "&amp;action=install&amp;path=" . urlencode($install_path),
 			'U_BACK'			=> $this->u_action,
@@ -3114,9 +3114,9 @@ inherit_from = {INHERIT_FROM}
 
 			if (!sizeof($error))
 			{
-				$style_row['template_id']	= (isset($row['template_id'])) ? $row['template_id'] : $style_row['template_id'];
-				$style_row['theme_id']		= (isset($row['theme_id'])) ? $row['theme_id'] : $style_row['theme_id'];
-				$style_row['imageset_id']	= (isset($row['imageset_id'])) ? $row['imageset_id'] : $style_row['imageset_id'];
+				$style_row['template_id']	= $row['template_id'] ?? $style_row['template_id'];
+				$style_row['theme_id']		= $row['theme_id'] ?? $style_row['theme_id'];
+				$style_row['imageset_id']	= $row['imageset_id'] ?? $style_row['imageset_id'];
 			}
 		}
 
@@ -3181,9 +3181,9 @@ inherit_from = {INHERIT_FROM}
 			'S_THEME'			=> ($mode == 'theme'),
 			'S_BASIS'			=> (bool) $basis,
 
-			'S_STORE_DB'			=> (isset($style_row['storedb'])) ? $style_row['storedb'] : 0,
-			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,
-			'S_STYLE_DEFAULT'		=> (isset($style_row['style_default'])) ? $style_row['style_default'] : 0,
+			'S_STORE_DB'			=> $style_row['storedb'] ?? 0,
+			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 			'S_TEMPLATE_OPTIONS'	=> ($mode == 'style') ? $template_options : '',
 			'S_THEME_OPTIONS'		=> ($mode == 'style') ? $theme_options : '',
 			'S_IMAGESET_OPTIONS'	=> ($mode == 'style') ? $imageset_options : '',
@@ -3206,9 +3206,9 @@ inherit_from = {INHERIT_FROM}
 
 	/**
 
-					$reqd_template = (isset($installcfg['required_template'])) ? $installcfg['required_template'] : false;
-					$reqd_theme = (isset($installcfg['required_theme'])) ? $installcfg['required_theme'] : false;
-					$reqd_imageset = (isset($installcfg['required_imageset'])) ? $installcfg['required_imageset'] : false;
+					$reqd_template = $installcfg['required_template'] ?? false;
+					$reqd_theme = $installcfg['required_theme'] ?? false;
+					$reqd_imageset = $installcfg['required_imageset'] ?? false;
 
 					// Check to see if each element is already installed, if it is grab the id
 					foreach ($element_ary as $element => $table)

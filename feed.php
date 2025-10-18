@@ -562,7 +562,7 @@ class phpbb_feed_base
 	*/
 	function get($key)
 	{
-		return (isset($this->keys[$key])) ? $this->keys[$key] : null;
+		return $this->keys[$key] ?? null;
 	}
 
 	function get_readable_forums()

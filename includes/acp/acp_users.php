@@ -1048,8 +1048,8 @@ class acp_users
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
 
-					$user_row['session_time'] = (isset($row['session_time'])) ? $row['session_time'] : 0;
-					$user_row['session_viewonline'] = (isset($row['session_viewonline'])) ? $row['session_viewonline'] : 0;
+					$user_row['session_time'] = $row['session_time'] ?? 0;
+					$user_row['session_viewonline'] = $row['session_viewonline'] ?? 0;
 					unset($row);
 				}
 
@@ -1564,11 +1564,11 @@ class acp_users
 
 				if ($submit)
 				{
-					$data['style']		= ($config['override_user_style'])		? $config['default_style']		: $data['style'];
-					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
-					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
-					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
-					$data['dst']		= ($config['override_user_timezone'])	? $config['board_dst']			: $data['dst'];
+					$data['style']		= ($config['override_user_style']) ? $config['default_style'] : $data['style'];
+					$data['lang']		= ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+					$data['dateformat']	= ($config['override_user_dateformat']) ? $config['default_dateformat'] : $data['dateformat'];
+					$data['tz']			= ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
+					$data['dst']		= ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
 					$error = validate_data($data, [
 						'dateformat'	=> ['string', false, 1, 30],

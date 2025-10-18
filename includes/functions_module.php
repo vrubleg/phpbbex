@@ -740,7 +740,7 @@ class p_master
 			$u_title = $module_url . $delim . 'i=' . (($item_ary['cat']) ? $item_ary['id'] : $item_ary['name'] . (($item_ary['is_duplicate']) ? '&amp;icat=' . $current_id : '') . '&amp;mode=' . $item_ary['mode']);
 
 			// Was not allowed in categories before - /*!$item_ary['cat'] && */
-			$u_title .= (isset($item_ary['url_extra'])) ? $item_ary['url_extra'] : '';
+			$u_title .= $item_ary['url_extra'] ?? '';
 
 			// Only output a categories items if it's currently selected
 			if (!$depth || ($depth && (in_array($item_ary['parent'], array_values($this->module_cache['parents'])) || $item_ary['parent'] == $this->p_parent)))
@@ -788,7 +788,7 @@ class p_master
 			return '';
 		}
 
-		return (isset($user->lang[$this->module->page_title])) ? $user->lang[$this->module->page_title] : $this->module->page_title;
+		return $user->lang[$this->module->page_title] ?? $this->module->page_title;
 	}
 
 	/**

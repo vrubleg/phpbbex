@@ -60,7 +60,7 @@ function request_var($var_name, $default, $multibyte = false, $cookie = false)
 		{
 			return (is_array($default)) ? [] : $default;
 		}
-		$_REQUEST[$var_name] = isset($_POST[$var_name]) ? $_POST[$var_name] : $_GET[$var_name];
+		$_REQUEST[$var_name] = $_POST[$var_name] ?? $_GET[$var_name];
 	}
 
 	$super_global = ($cookie) ? '_COOKIE' : '_REQUEST';
@@ -366,8 +366,8 @@ function get_formatted_filesize($value, $string_only = true, $allowed_units = fa
 	$value = round($value, 2);
 
 	// Lookup units in language dictionary
-	$unit_info['si_unit'] = (isset($user->lang[$unit_info['si_unit']])) ? $user->lang[$unit_info['si_unit']] : $unit_info['si_unit'];
-	$unit_info['iec_unit'] = (isset($user->lang[$unit_info['iec_unit']])) ? $user->lang[$unit_info['iec_unit']] : $unit_info['iec_unit'];
+	$unit_info['si_unit'] = $user->lang[$unit_info['si_unit']] ?? $unit_info['si_unit'];
+	$unit_info['iec_unit'] = $user->lang[$unit_info['iec_unit']] ?? $unit_info['iec_unit'];
 
 	// Default to IEC
 	$unit_info['unit'] = $unit_info['iec_unit'];
@@ -1290,7 +1290,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 
 			foreach ($forum_id as $f_id)
 			{
-				$topic_ids36 = (isset($tracking['tf'][$f_id])) ? $tracking['tf'][$f_id] : [];
+				$topic_ids36 = $tracking['tf'][$f_id] ?? [];
 
 				if (isset($tracking['tf'][$f_id]))
 				{
@@ -1476,7 +1476,7 @@ function get_topic_tracking($forum_id, $topic_ids, &$rowset, $forum_mark_time, $
 			$mark_time[$forum_id] = $forum_mark_time[$forum_id];
 		}
 
-		$user_lastmark = (isset($mark_time[$forum_id])) ? $mark_time[$forum_id] : $user->data['user_lastmark'];
+		$user_lastmark = $mark_time[$forum_id] ?? $user->data['user_lastmark'];
 
 		foreach ($topic_ids as $topic_id)
 		{
@@ -1534,7 +1534,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 			}
 			$db->sql_freeresult($result);
 
-			$user_lastmark = (isset($mark_time[$forum_id])) ? $mark_time[$forum_id] : $user->data['user_lastmark'];
+			$user_lastmark = $mark_time[$forum_id] ?? $user->data['user_lastmark'];
 
 			foreach ($topic_ids as $topic_id)
 			{
@@ -1589,13 +1589,13 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 				$mark_time[$forum_id] = base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate'];
 			}
 
-			$user_lastmark = (isset($mark_time[$forum_id])) ? $mark_time[$forum_id] : $user_lastmark;
+			$user_lastmark = $mark_time[$forum_id] ?? $user_lastmark;
 
 			foreach ($topic_ids as $topic_id)
 			{
 				if ($global_announce_list && isset($global_announce_list[$topic_id]))
 				{
-					$last_read[$topic_id] = (isset($mark_time[0])) ? $mark_time[0] : $user_lastmark;
+					$last_read[$topic_id] = $mark_time[0] ?? $user_lastmark;
 				}
 				else
 				{
@@ -1773,7 +1773,7 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 
 	// Handle update of unapproved topics info.
 	// Only update for moderators having m_approve permission for the forum.
-	$sql_update_unapproved = ($auth->acl_get('m_approve', $forum_id)) ? '': 'AND t.topic_approved = 1';
+	$sql_update_unapproved = ($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_approved = 1';
 
 	// Check the forum for any left unread topics.
 	// If there are none, we mark the forum as read.
@@ -3026,14 +3026,14 @@ function login_forum_box($forum_data)
 	page_header($user->lang['LOGIN'], false);
 
 	$template->assign_vars([
-		'FORUM_NAME'			=> isset($forum_data['forum_name']) ? $forum_data['forum_name'] : '',
+		'FORUM_NAME'			=> $forum_data['forum_name'] ?? '',
 		'S_LOGIN_ACTION'		=> build_url(['f']),
-		'S_HIDDEN_FIELDS'		=> build_hidden_fields(['f' => $forum_data['forum_id']])]
-	);
+		'S_HIDDEN_FIELDS'		=> build_hidden_fields(['f' => $forum_data['forum_id']]),
+	]);
 
 	$template->set_filenames([
-		'body' => 'login_forum.html']
-	);
+		'body' => 'login_forum.html'
+	]);
 
 	page_footer();
 }
@@ -4282,7 +4282,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_IS_BOT'				=> !empty($user->data['is_bot']),
 		'S_USER_PM_POPUP'		=> $user->optionget('popuppm'),
 		'S_USER_LANG'			=> $user_lang,
-		'S_USER_BROWSER'		=> (isset($user->data['session_browser'])) ? $user->data['session_browser'] : $user->lang['UNKNOWN_BROWSER'],
+		'S_USER_BROWSER'		=> $user->data['session_browser'] ?? $user->lang['UNKNOWN_BROWSER'],
 		'S_USERNAME'			=> $user->data['username'],
 		'S_TIMEZONE'			=> ($user->dst) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
 		'S_DISPLAY_ONLINE_LIST'	=> ($l_online_time) ? 1 : 0,

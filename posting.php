@@ -319,18 +319,18 @@ if (isset($post_data['poster_id']) && $post_data['poster_id'] == ANONYMOUS)
 }
 else
 {
-	$post_data['quote_username'] = isset($post_data['username']) ? $post_data['username'] : '';
+	$post_data['quote_username'] = $post_data['username'] ?? '';
 }
 
 $post_data['post_edit_locked']	= (isset($post_data['post_edit_locked'])) ? (int) $post_data['post_edit_locked'] : 0;
 $post_data['post_subject_md5']	= (isset($post_data['post_subject']) && $mode == 'edit') ? md5($post_data['post_subject']) : '';
-$post_data['post_subject']		= (in_array($mode, ['quote', 'edit'])) ? $post_data['post_subject'] : ((isset($post_data['topic_title'])) ? $post_data['topic_title'] : '');
+$post_data['post_subject']		= (in_array($mode, ['quote', 'edit'])) ? $post_data['post_subject'] : ($post_data['topic_title'] ?? '');
 $post_data['topic_time_limit']	= (isset($post_data['topic_time_limit'])) ? (($post_data['topic_time_limit']) ? (int) $post_data['topic_time_limit'] / 86400 : (int) $post_data['topic_time_limit']) : 0;
 $post_data['poll_length']		= (!empty($post_data['poll_length'])) ? (int) $post_data['poll_length'] / 86400 : 0;
 $post_data['poll_start']		= (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
 $post_data['icon_id']			= (!isset($post_data['icon_id']) || in_array($mode, ['quote', 'reply']) || ($mode == 'edit' && $post_id != $post_data['topic_first_post_id'] && empty($post_data['post_subject']))) ? 0 : (int) $post_data['icon_id'];
 $post_data['poll_options']		= [];
-$post_data['topic_first_post_show'] = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
+$post_data['topic_first_post_show'] = $post_data['topic_first_post_show'] ?? 0;
 
 // Get Poll Data
 if ($post_data['poll_start'])
@@ -852,7 +852,7 @@ if ($submit || $preview || $refresh)
 		$error[] = $user->lang['EMPTY_SUBJECT'];
 	}
 
-	$post_data['poll_last_vote'] = (isset($post_data['poll_last_vote'])) ? $post_data['poll_last_vote'] : 0;
+	$post_data['poll_last_vote'] = $post_data['poll_last_vote'] ?? 0;
 
 	if ($post_data['poll_option_text'] &&
 		($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id']/* && (!$post_data['poll_last_vote'] || $auth->acl_get('m_edit', $forum_id))*/))
@@ -876,8 +876,8 @@ if ($submit || $preview || $refresh)
 
 		$message_parser->parse_poll($poll);
 
-		$post_data['poll_options'] = (isset($poll['poll_options'])) ? $poll['poll_options'] : [];
-		$post_data['poll_title'] = (isset($poll['poll_title'])) ? $poll['poll_title'] : '';
+		$post_data['poll_options'] = $poll['poll_options'] ?? [];
+		$post_data['poll_title'] = $poll['poll_title'] ?? '';
 
 		if (!$poll_reset && $post_data['poll_last_vote'] && ($poll['poll_options_size'] < $orig_poll_options_size))
 		{
@@ -915,8 +915,8 @@ if ($submit || $preview || $refresh)
 
 		$message_parser->parse_poll($poll);
 
-		$post_data['poll_options'] = (isset($poll['poll_options'])) ? $poll['poll_options'] : [];
-		$post_data['poll_title'] = (isset($poll['poll_title'])) ? $poll['poll_title'] : '';
+		$post_data['poll_options'] = $poll['poll_options'] ?? [];
+		$post_data['poll_title'] = $poll['poll_title'] ?? '';
 	}
 	else
 	{
@@ -1037,7 +1037,7 @@ if ($submit || $preview || $refresh)
 			'forum_name'			=> $post_data['forum_name'],
 			'notify'				=> $notify,
 			'notify_set'			=> $post_data['notify_set'],
-			'poster_ip'				=> (isset($post_data['poster_ip'])) ? $post_data['poster_ip'] : $user->ip,
+			'poster_ip'				=> $post_data['poster_ip'] ?? $user->ip,
 			'post_edit_locked'		=> (int) $post_data['post_edit_locked'],
 			'bbcode_bitfield'		=> $message_parser->bbcode_bitfield,
 			'bbcode_uid'			=> $message_parser->bbcode_uid,
@@ -1045,8 +1045,8 @@ if ($submit || $preview || $refresh)
 			'attachment_data'		=> $message_parser->attachment_data,
 			'filename_data'			=> $message_parser->filename_data,
 
-			'topic_approved'		=> (isset($post_data['topic_approved'])) ? $post_data['topic_approved'] : false,
-			'post_approved'			=> (isset($post_data['post_approved'])) ? $post_data['post_approved'] : false,
+			'topic_approved'		=> $post_data['topic_approved'] ?? false,
+			'post_approved'			=> $post_data['post_approved'] ?? false,
 		];
 
 		if ($mode == 'edit')
@@ -1303,12 +1303,12 @@ $smilies_checked	= (isset($post_data['enable_smilies'])) ? !$post_data['enable_s
 $urls_checked		= (isset($post_data['enable_urls'])) ? !$post_data['enable_urls'] : 0;
 $sig_checked		= $post_data['enable_sig'];
 $lock_topic_checked	= (isset($topic_lock) && $topic_lock) ? $topic_lock : (($post_data['topic_status'] == ITEM_LOCKED) ? 1 : 0);
-$lock_post_checked	= (isset($post_lock)) ? $post_lock : $post_data['post_edit_locked'];
-$first_post_show_checked = (isset($post_data['topic_first_post_show'])) ? $post_data['topic_first_post_show'] : 0;
+$lock_post_checked	= $post_lock ?? $post_data['post_edit_locked'];
+$first_post_show_checked = $post_data['topic_first_post_show'] ?? 0;
 
 // If the user is replying or posting and not already watching this topic but set to always being notified we need to overwrite this setting
 $notify_set			= ($mode != 'edit' && $config['allow_topic_notify'] && $user->data['is_registered'] && !$post_data['notify_set']) ? $user->data['user_notify'] : $post_data['notify_set'];
-$notify_checked		= (isset($notify)) ? $notify : (($mode == 'post') ? $user->data['user_notify'] : $notify_set);
+$notify_checked		= $notify ?? (($mode == 'post') ? $user->data['user_notify'] : $notify_set);
 
 // Page title & action URL
 $s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode&amp;f=$forum_id");
@@ -1465,7 +1465,7 @@ if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_
 
 		'VOTE_CHANGE_CHECKED'	=> (!empty($post_data['poll_vote_change']) || ($mode == 'post' || $mode == 'edit' && empty($post_data['poll_options'])) && !$submit && !$preview && !$refresh) ? ' checked="checked"' : '',
 		'SHOW_VOTERS_CHECKED'	=> (!empty($post_data['poll_show_voters']) || ($mode == 'post' || $mode == 'edit' && empty($post_data['poll_options'])) && !$submit && !$preview && !$refresh) ? ' checked="checked"' : '',
-		'POLL_TITLE'			=> (isset($post_data['poll_title'])) ? $post_data['poll_title'] : '',
+		'POLL_TITLE'			=> $post_data['poll_title'] ?? '',
 		'POLL_OPTIONS'			=> (!empty($post_data['poll_options'])) ? implode("\n", $post_data['poll_options']) : '',
 		'POLL_MAX_OPTIONS'		=> (isset($post_data['poll_max_options'])) ? (int) $post_data['poll_max_options'] : 1,
 		'POLL_LENGTH'			=> $post_data['poll_length']]

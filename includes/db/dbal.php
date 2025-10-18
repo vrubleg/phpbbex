@@ -248,7 +248,7 @@ class dbal
 			}
 
 			$row = $this->sql_fetchrow($query_id);
-			return (isset($row[$field])) ? $row[$field] : false;
+			return $row[$field] ?? false;
 		}
 
 		return false;

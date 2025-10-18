@@ -123,7 +123,7 @@ class route
 			{
 				if (!isset($values[$arg])) return false;
 				$var_regex = is_array($this->var_regex)
-					? (isset($this->var_regex[$arg]) ? $this->var_regex[$arg] : null)
+					? ($this->var_regex[$arg] ?? null)
 					: $this->var_regex;
 				if (!empty($var_regex) && !preg_match('#^'.$var_regex.'$#uD', $values[$arg])) return false;
 			}
@@ -214,7 +214,7 @@ class route
 	protected function _normalize_ph($ph)
 	{
 		$name = $ph[2];
-		$key = isset($ph[3]) ? $ph[3] : false;
+		$key = $ph[3] ?? false;
 		if ($key === false)
 		{
 			$ph = '{:'.$name.'}';
@@ -315,7 +315,7 @@ class route
 		{
 			$placeholder = $match[0];
 			$name = $match['name'];
-			$key = isset($match['key']) ? $match['key'] : false;
+			$key = $match['key'] ?? false;
 			$value = null;
 			$need_unset = false;
 

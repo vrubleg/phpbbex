@@ -46,7 +46,7 @@ class arr
 		}
 
 		// Normal call
-		$value = isset($array[$index]) ? $array[$index] : null;
+		$value = $array[$index] ?? null;
 		if (is_null($value)) return $default;
 		if (!$autocast || is_null($default)) return $value;
 

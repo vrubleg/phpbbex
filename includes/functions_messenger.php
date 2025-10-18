@@ -928,13 +928,13 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 
 	if (trim($subject) == '')
 	{
-		$err_msg = (isset($user->lang['NO_EMAIL_SUBJECT'])) ? $user->lang['NO_EMAIL_SUBJECT'] : 'No email subject specified';
+		$err_msg = $user->lang['NO_EMAIL_SUBJECT'] ?? 'No email subject specified';
 		return false;
 	}
 
 	if (trim($message) == '')
 	{
-		$err_msg = (isset($user->lang['NO_EMAIL_MESSAGE'])) ? $user->lang['NO_EMAIL_MESSAGE'] : 'Email message was blank';
+		$err_msg = $user->lang['NO_EMAIL_MESSAGE'] ?? 'Email message was blank';
 		return false;
 	}
 
@@ -1178,7 +1178,7 @@ class smtp_class
 		{
 			if (!($this->server_response = fgets($this->socket, 256)))
 			{
-				return (isset($user->lang['NO_EMAIL_RESPONSE_CODE'])) ? $user->lang['NO_EMAIL_RESPONSE_CODE'] : 'Could not get mail server response codes';
+				return $user->lang['NO_EMAIL_RESPONSE_CODE'] ?? 'Could not get mail server response codes';
 			}
 			$this->responses[] = substr(rtrim($this->server_response), 4);
 			$this->numeric_response_code = (int) substr($this->server_response, 0, 3);
@@ -1258,7 +1258,7 @@ class smtp_class
 
 		if (!isset($this->commands['AUTH']))
 		{
-			return (isset($user->lang['SMTP_NO_AUTH_SUPPORT'])) ? $user->lang['SMTP_NO_AUTH_SUPPORT'] : 'SMTP server does not support authentication';
+			return $user->lang['SMTP_NO_AUTH_SUPPORT'] ?? 'SMTP server does not support authentication';
 		}
 
 		// Get best authentication method
@@ -1286,7 +1286,7 @@ class smtp_class
 
 		if (!$method)
 		{
-			return (isset($user->lang['NO_SUPPORTED_AUTH_METHODS'])) ? $user->lang['NO_SUPPORTED_AUTH_METHODS'] : 'No supported authentication methods';
+			return $user->lang['NO_SUPPORTED_AUTH_METHODS'] ?? 'No supported authentication methods';
 		}
 
 		$method = 'auth_' . strtolower(str_replace('-', '_', $method));
@@ -1523,7 +1523,7 @@ class smtp_class
 		}
 		else
 		{
-			return (isset($user->lang['INVALID_DIGEST_CHALLENGE'])) ? $user->lang['INVALID_DIGEST_CHALLENGE'] : 'Invalid digest challenge';
+			return $user->lang['INVALID_DIGEST_CHALLENGE'] ?? 'Invalid digest challenge';
 		}
 
 		$base64_method_digest_md5 = base64_encode($input_string);

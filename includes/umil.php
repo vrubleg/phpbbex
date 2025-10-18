@@ -140,7 +140,7 @@ class phpbb_umil
 		$args = func_get_args();
 		$this->command = call_user_func_array([$this, 'get_output_text'], $args);
 
-		$this->result = (isset($user->lang['SUCCESS'])) ? $user->lang['SUCCESS'] : 'SUCCESS';
+		$this->result = $user->lang['SUCCESS'] ?? 'SUCCESS';
 		$this->db->sql_return_on_error(true);
 
 		//$this->db->sql_transaction('begin');
@@ -162,7 +162,7 @@ class phpbb_umil
 
 		if ($this->db->sql_error_triggered)
 		{
-			if ($this->result == ((isset($user->lang['SUCCESS'])) ? $user->lang['SUCCESS'] : 'SUCCESS'))
+			if ($this->result == ($user->lang['SUCCESS'] ?? 'SUCCESS'))
 			{
 				$this->result = 'SQL ERROR ' . $this->db->sql_error_returned['message'];
 			}
@@ -214,14 +214,14 @@ class phpbb_umil
 				$lang_args = [];
 				foreach ($args as $arg)
 				{
-					$lang_args[] = (isset($user->lang[$arg])) ? $user->lang[$arg] : $arg;
+					$lang_args[] = $user->lang[$arg] ?? $arg;
 				}
 
-				return @vsprintf(((isset($user->lang[$lang_key])) ? $user->lang[$lang_key] : $lang_key), $lang_args);
+				return @vsprintf(($user->lang[$lang_key] ?? $lang_key), $lang_args);
 			}
 			else
 			{
-				return ((isset($user->lang[$lang_key])) ? $user->lang[$lang_key] : $lang_key);
+				return ($user->lang[$lang_key] ?? $lang_key);
 			}
 		}
 
@@ -1087,7 +1087,7 @@ class phpbb_umil
 		if (!isset($data['module_langname']))
 		{
 			// The "automatic" way
-			$basename = (isset($data['module_basename'])) ? $data['module_basename'] : '';
+			$basename = $data['module_basename'] ?? '';
 			$basename = str_replace(['/', '\\'], '', $basename);
 			$class = str_replace(['/', '\\'], '', $class);
 			$info_file = "$class/info/{$class}_$basename.php";
@@ -1120,13 +1120,13 @@ class phpbb_umil
 						'module_langname'	=> $module_info['title'],
 						'module_mode'		=> $mode,
 						'module_auth'		=> $module_info['auth'],
-						'module_display'	=> (isset($module_info['display'])) ? $module_info['display'] : true,
-						'before'			=> (isset($module_info['before'])) ? $module_info['before'] : false,
-						'after'				=> (isset($module_info['after'])) ? $module_info['after'] : false,
+						'module_display'	=> $module_info['display'] ?? true,
+						'before'			=> $module_info['before'] ?? false,
+						'after'				=> $module_info['after'] ?? false,
 					];
 
 					// Run the "manual" way with the data we've collected.
-					$result .= ((isset($data['spacer'])) ? $data['spacer'] : '<br />') . $this->module_add($class, $parent, $new_module);
+					$result .= ($data['spacer'] ?? '<br />') . $this->module_add($class, $parent, $new_module);
 				}
 			}
 
@@ -1134,8 +1134,8 @@ class phpbb_umil
 		}
 
 		// The "manual" way
-		$this->umil_start('MODULE_ADD', $class, ((isset($user->lang[$data['module_langname']])) ? $user->lang[$data['module_langname']] : $data['module_langname']));
-		add_log('admin', 'LOG_MODULE_ADD', ((isset($user->lang[$data['module_langname']])) ? $user->lang[$data['module_langname']] : $data['module_langname']));
+		$this->umil_start('MODULE_ADD', $class, ($user->lang[$data['module_langname']] ?? $data['module_langname']));
+		add_log('admin', 'LOG_MODULE_ADD', ($user->lang[$data['module_langname']] ?? $data['module_langname']));
 
 		$class = $this->db->sql_escape($class);
 
@@ -1173,14 +1173,14 @@ class phpbb_umil
 		$acp_modules = new acp_modules();
 
 		$module_data = [
-			'module_enabled'	=> (isset($data['module_enabled'])) ? $data['module_enabled'] : 1,
-			'module_display'	=> (isset($data['module_display'])) ? $data['module_display'] : 1,
-			'module_basename'	=> (isset($data['module_basename'])) ? $data['module_basename'] : '',
+			'module_enabled'	=> $data['module_enabled'] ?? 1,
+			'module_display'	=> $data['module_display'] ?? 1,
+			'module_basename'	=> $data['module_basename'] ?? '',
 			'module_class'		=> $class,
 			'parent_id'			=> (int) $parent,
-			'module_langname'	=> (isset($data['module_langname'])) ? $data['module_langname'] : '',
-			'module_mode'		=> (isset($data['module_mode'])) ? $data['module_mode'] : '',
-			'module_auth'		=> (isset($data['module_auth'])) ? $data['module_auth'] : '',
+			'module_langname'	=> $data['module_langname'] ?? '',
+			'module_mode'		=> $data['module_mode'] ?? '',
+			'module_auth'		=> $data['module_auth'] ?? '',
 		];
 		$result = $acp_modules->update_module_data($module_data, true);
 
@@ -1317,7 +1317,7 @@ class phpbb_umil
 
 			if (!$this->module_exists($class, $parent, $module))
 			{
-				$this->umil_start('MODULE_REMOVE', $class, ((isset($user->lang[$module])) ? $user->lang[$module] : $module));
+				$this->umil_start('MODULE_REMOVE', $class, ($user->lang[$module] ?? $module));
 				return $this->umil_end('MODULE_NOT_EXIST');
 			}
 
@@ -1377,8 +1377,8 @@ class phpbb_umil
 				$module_ids[] = $module;
 			}
 
-			$this->umil_start('MODULE_REMOVE', $class, ((isset($user->lang[$module_name])) ? $user->lang[$module_name] : $module_name));
-			add_log('admin', 'LOG_MODULE_REMOVED', ((isset($user->lang[$module_name])) ? $user->lang[$module_name] : $module_name));
+			$this->umil_start('MODULE_REMOVE', $class, ($user->lang[$module_name] ?? $module_name));
+			add_log('admin', 'LOG_MODULE_REMOVED', ($user->lang[$module_name] ?? $module_name));
 
 			if (!class_exists('acp_modules'))
 			{
@@ -1393,7 +1393,7 @@ class phpbb_umil
 				$result = $acp_modules->delete_module($module_id);
 				if (!empty($result))
 				{
-					if ($this->result == ((isset($user->lang['SUCCESS'])) ? $user->lang['SUCCESS'] : 'SUCCESS'))
+					if ($this->result == ($user->lang['SUCCESS'] ?? 'SUCCESS'))
 					{
 						$this->result = implode('<br />', $result);
 					}

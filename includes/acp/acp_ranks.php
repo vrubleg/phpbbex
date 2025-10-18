@@ -191,7 +191,7 @@ class acp_ranks
 					'RANK_IMAGES_PATH'	=> PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/',
 					'U_ACTION'			=> $this->u_action . '&amp;id=' . $rank_id,
 
-					'RANK_TITLE'		=> (isset($ranks['rank_title'])) ? $ranks['rank_title'] : '',
+					'RANK_TITLE'		=> $ranks['rank_title'] ?? '',
 					'S_FILENAME_LIST'	=> $filename_list,
 					'RANK_IMAGE'		=> ($edit_img) ? PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $edit_img : PHPBB_ADMIN_PATH . 'images/spacer.gif',
 					'S_SPECIAL_RANK'	=> (isset($ranks['rank_special']) && $ranks['rank_special']),

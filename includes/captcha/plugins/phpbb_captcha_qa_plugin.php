@@ -697,7 +697,7 @@ class phpbb_captcha_qa
 			{
 				if ($question = $this->acp_get_question_data($question_id))
 				{
-					$answers = (isset($input_answers[$lang])) ? $input_answers[$lang] : implode("\n", $question['answers']);
+					$answers = $input_answers[$lang] ?? implode("\n", $question['answers']);
 
 					$template->assign_vars([
 						'QUESTION_TEXT'		=> ($input_question) ? $input_question : $question['question_text'],

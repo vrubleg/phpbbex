@@ -115,7 +115,7 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 		{
 			// Ok, if the $padding_store for this parent is empty there is something wrong. For now we will skip over it.
 			// @todo digging deep to find out "how" this can happen.
-			$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : $padding;
+			$padding = $padding_store[$row['parent_id']] ?? $padding;
 		}
 
 		$right = $row['right_id'];
@@ -1033,7 +1033,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		$index = ($config['display_order']) ? ($tpl_size-($matches[1][$num] + 1)) : $matches[1][$num];
 
 		$replace['from'][] = $matches[0][$num];
-		$replace['to'][] = (isset($attachments[$index])) ? $attachments[$index] : sprintf($user->lang['MISSING_INLINE_ATTACHMENT'], $matches[2][array_search($index, $matches[1])]);
+		$replace['to'][] = $attachments[$index] ?? sprintf($user->lang['MISSING_INLINE_ATTACHMENT'], $matches[2][array_search($index, $matches[1])]);
 
 		$unset_tpl[] = $index;
 	}

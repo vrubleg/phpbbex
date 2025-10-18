@@ -162,7 +162,7 @@ function user_add($user_row, $cp_data = false)
 	$sql_ary = [
 		'username'			=> $user_row['username'],
 		'username_clean'	=> $username_clean,
-		'user_password'		=> (isset($user_row['user_password'])) ? $user_row['user_password'] : '',
+		'user_password'		=> $user_row['user_password'] ?? '',
 		'user_pass_convert'	=> 0,
 		'user_email'		=> strtolower($user_row['user_email']),
 		'user_email_hash'	=> phpbb_email_hash($user_row['user_email']),
@@ -226,7 +226,7 @@ function user_add($user_row, $cp_data = false)
 	// Now fill the sql array with not required variables
 	foreach ($additional_vars as $key => $default_value)
 	{
-		$sql_ary[$key] = (isset($user_row[$key])) ? $user_row[$key] : $default_value;
+		$sql_ary[$key] = $user_row[$key] ?? $default_value;
 	}
 
 	// Any additional variables in $user_row not covered above?
@@ -2078,7 +2078,7 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 		'S_CAT_OPTIONS'			=> $s_category_options]
 	);
 
-	$avatar_list = (isset($avatar_list[$category])) ? $avatar_list[$category] : [];
+	$avatar_list = $avatar_list[$category] ?? [];
 
 	foreach ($avatar_list as $avatar_row_ary)
 	{

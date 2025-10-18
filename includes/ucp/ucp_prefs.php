@@ -65,10 +65,10 @@ class ucp_prefs
 						$data['style'] = (int) $user->data['user_style'];
 					}
 
-					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
-					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
-					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
-					$data['dst']		= ($config['override_user_timezone'])	? $config['board_dst']			: $data['dst'];
+					$data['lang']		= ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+					$data['dateformat']	= ($config['override_user_dateformat']) ? $config['default_dateformat'] : $data['dateformat'];
+					$data['tz']			= ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
+					$data['dst']		= ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
 					$error = validate_data($data, [
 						'dateformat'	=> ['string', false, 1, 30],

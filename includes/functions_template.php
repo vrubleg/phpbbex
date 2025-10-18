@@ -242,7 +242,7 @@ class template_compile
 		for ($i = 0, $size = sizeof($text_blocks); $i < $size; $i++)
 		{
 			$trim_check_text = trim($text_blocks[$i]);
-			$template_php .= (!$no_echo) ? (($trim_check_text != '') ? $text_blocks[$i] : '') . ((isset($compile_blocks[$i])) ? $compile_blocks[$i] : '') : (($trim_check_text != '') ? $text_blocks[$i] : '') . ((isset($compile_blocks[$i])) ? $compile_blocks[$i] : '');
+			$template_php .= (!$no_echo) ? (($trim_check_text != '') ? $text_blocks[$i] : '') . ($compile_blocks[$i] ?? '') : (($trim_check_text != '') ? $text_blocks[$i] : '') . ($compile_blocks[$i] ?? '');
 		}
 
 		// Remove unused opening/closing tags
@@ -734,7 +734,7 @@ class template_compile
 
 		// Append the variable reference.
 		$varref .= "['$varname']";
-		$varref = ($echo) ? "<?php if (isset($varref)) echo $varref; ?>" : ((isset($varref)) ? $varref : '');
+		$varref = ($echo) ? "<?php if (isset($varref)) echo $varref; ?>" : ($varref ?? '');
 
 		return $varref;
 	}

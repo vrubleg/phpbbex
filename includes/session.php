@@ -1501,7 +1501,7 @@ class phpbb_user extends phpbb_session
 			$this->lang_name = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang'] . "/common.php")) ? $this->data['user_lang'] : basename($config['default_lang']);
 			$this->date_format = ($config['override_user_dateformat']) ? $config['default_dateformat'] : $this->data['user_dateformat'];
 			$this->timezone = ($config['override_user_timezone'] ? $config['board_timezone'] : $this->data['user_timezone']) * 3600;
-			$this->dst = ($config['override_user_timezone'] ? $config['board_dst'] :$this->data['user_dst']) * 3600;
+			$this->dst = ($config['override_user_timezone'] ? $config['board_dst'] : $this->data['user_dst']) * 3600;
 		}
 		else
 		{
@@ -1635,7 +1635,7 @@ class phpbb_user extends phpbb_session
 
 		foreach ($check_for as $key => $default_value)
 		{
-			$this->theme[$key] = (isset($parsed_items[$key])) ? $parsed_items[$key] : $default_value;
+			$this->theme[$key] = $parsed_items[$key] ?? $default_value;
 			settype($this->theme[$key], gettype($default_value));
 
 			if (is_string($default_value))
@@ -2099,7 +2099,7 @@ class phpbb_user extends phpbb_session
 				'notime'	=> str_replace(['{', '}'], '', preg_replace('#{.*?}#i', '', $format)),
 			];
 		}
-		$format = $format_cache[$format][$notime?'notime':'full'];
+		$format = $format_cache[$format][$notime ? 'notime' : 'full'];
 
 		if (!isset($date_cache[$format]))
 		{
