@@ -234,7 +234,7 @@ class phpbb_gallery_user
 		$this->data = $sql_ary;
 		$this->entry_exists = true;
 
-		return ($error) ? false : true;
+		return !$error;
 	}
 
 	/**

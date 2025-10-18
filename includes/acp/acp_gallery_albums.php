@@ -482,7 +482,7 @@ class acp_gallery_albums
 					'ALBUM_IMAGE'				=> $album_data['album_image'],
 					'ALBUM_IMAGE_SRC'			=> ($album_data['album_image']) ? phpbb_gallery_url::path('phpbb') . $album_data['album_image'] : '',
 					/*
-					'S_ALBUM_PASSWORD_SET'		=> (empty($album_data['album_password'])) ? false : true,
+					'S_ALBUM_PASSWORD_SET'		=> !empty($album_data['album_password']),
 					*/
 
 					'ALBUM_DESC'				=> $album_desc_data['text'],

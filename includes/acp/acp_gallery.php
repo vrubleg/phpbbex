@@ -395,7 +395,7 @@ class acp_gallery
 
 		$import_schema = request_var('import_schema', '');
 		$images = request_var('images', [''], true);
-		$submit = (isset($_POST['submit'])) ? true : ((empty($images)) ? false : true);
+		$submit = (isset($_POST['submit'])) ? true : !empty($images);
 
 		if ($import_schema)
 		{
