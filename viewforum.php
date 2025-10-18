@@ -55,7 +55,7 @@ if (!$forum_data)
 	trigger_error('NO_FORUM');
 }
 
-$default_sort_days	= (!empty($forum_data['forum_topic_show_days'])) ? $forum_data['forum_topic_show_days'] : ((!empty($user->data['user_topic_show_days'])) ? $user->data['user_topic_show_days'] : 0);
+$default_sort_days	= (!empty($forum_data['forum_topic_show_days'])) ? $forum_data['forum_topic_show_days'] : 0;
 $default_sort_key	= (!empty($forum_data['forum_topic_sortby_type'])) ? $forum_data['forum_topic_sortby_type'] : ((!empty($user->data['user_topic_sortby_type'])) ? $user->data['user_topic_sortby_type'] : 't');
 $default_sort_dir	= (!empty($forum_data['forum_topic_sortby_dir'])) ? $forum_data['forum_topic_sortby_dir'] : ((!empty($user->data['user_topic_sortby_dir'])) ? $user->data['user_topic_sortby_dir'] : 'd');
 
