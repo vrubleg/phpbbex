@@ -272,7 +272,7 @@ class module
 			foreach ($this->module_ary as $cat_ary)
 			{
 				$cat = $cat_ary['name'];
-				$l_cat = $user->lang['CAT_' . $cat] ?? preg_replace('#_#', ' ', $cat);
+				$l_cat = $user->lang['CAT_' . $cat] ?? str_replace('_', ' ', $cat);
 				$cat = strtolower($cat);
 				$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$cat");
 
@@ -289,7 +289,7 @@ class module
 						$subs = $this->module_ary[$this->id]['subs'];
 						foreach ($subs as $option)
 						{
-							$l_option = $user->lang['SUB_' . $option] ?? preg_replace('#_#', ' ', $option);
+							$l_option = $user->lang['SUB_' . $option] ?? str_replace('_', ' ', $option);
 							$option = strtolower($option);
 							$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', 'mode=' . $this->mode . "&amp;sub=$option");
 
@@ -307,7 +307,7 @@ class module
 						$matched = false;
 						foreach ($subs as $option)
 						{
-							$l_option = $user->lang['STAGE_' . $option] ?? preg_replace('#_#', ' ', $option);
+							$l_option = $user->lang['STAGE_' . $option] ?? str_replace('_', ' ', $option);
 							$option = strtolower($option);
 							$matched = ($this->sub == $option) ? true : $matched;
 
