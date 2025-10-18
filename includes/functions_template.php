@@ -288,19 +288,19 @@ class template_compile
 		// transform vars prefixed by L_ into their language variable pendant if nothing is set within the tpldata array
 		if (strpos($text_blocks, '{L_') !== false)
 		{
-			$text_blocks = preg_replace('#\{L_([A-Z0-9\-_]+)\}#', "<?php echo ((isset(\$this->_rootref['L_\\1'])) ? \$this->_rootref['L_\\1'] : ((isset(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '{ \\1 }')); ?>", $text_blocks);
+			$text_blocks = preg_replace('#\{L_([A-Z0-9\-_]+)\}#', "<?php echo (\$this->_rootref['L_\\1'] ?? \$user->lang['\\1'] ?? '{ \\1 }'); ?>", $text_blocks);
 		}
 
 		// Handle addslashed language variables prefixed with LA_
 		// If a template variable already exist, it will be used in favor of it...
 		if (strpos($text_blocks, '{LA_') !== false)
 		{
-			$text_blocks = preg_replace('#\{LA_([A-Z0-9\-_]+)\}#', "<?php echo ((isset(\$this->_rootref['LA_\\1'])) ? \$this->_rootref['LA_\\1'] : ((isset(\$this->_rootref['L_\\1'])) ? addslashes(\$this->_rootref['L_\\1']) : ((isset(\$user->lang['\\1'])) ? addslashes(\$user->lang['\\1']) : '{ \\1 }'))); ?>", $text_blocks);
+			$text_blocks = preg_replace('#\{LA_([A-Z0-9\-_]+)\}#', "<?php echo (\$this->_rootref['LA_\\1'] ?? addslashes(\$this->_rootref['L_\\1'] ?? \$user->lang['\\1'] ?? '{ \\1 }')); ?>", $text_blocks);
 		}
 
 		// Handle remaining varrefs
-		$text_blocks = preg_replace('#\{([A-Z0-9\-_]+)\}#', "<?php echo (isset(\$this->_rootref['\\1'])) ? \$this->_rootref['\\1'] : ''; ?>", $text_blocks);
-		$text_blocks = preg_replace('#\{\$([A-Z0-9\-_]+)\}#', "<?php echo (isset(\$this->_tpldata['DEFINE']['.']['\\1'])) ? \$this->_tpldata['DEFINE']['.']['\\1'] : ''; ?>", $text_blocks);
+		$text_blocks = preg_replace('#\{([A-Z0-9\-_]+)\}#', "<?php echo \$this->_rootref['\\1'] ?? ''; ?>", $text_blocks);
+		$text_blocks = preg_replace('#\{\$([A-Z0-9\-_]+)\}#', "<?php echo \$this->_tpldata['DEFINE']['.']['\\1'] ?? ''; ?>", $text_blocks);
 
 		return;
 	}
@@ -374,7 +374,7 @@ class template_compile
 		if (sizeof($block) < 2)
 		{
 			// Block is not nested.
-			$tag_template_php = '$_' . $tag_args . "_count = (isset(\$this->_tpldata['$tag_args'])) ? sizeof(\$this->_tpldata['$tag_args']) : 0;";
+			$tag_template_php = '$_' . $tag_args . "_count = sizeof(\$this->_tpldata['$tag_args'] ?? []);";
 			$varref = "\$this->_tpldata['$tag_args']";
 		}
 		else
@@ -388,7 +388,7 @@ class template_compile
 			$varref = $this->generate_block_data_ref($namespace, false);
 
 			// Create the for loop code to iterate over this block.
-			$tag_template_php = '$_' . $tag_args . '_count = (isset(' . $varref . ')) ? sizeof(' . $varref . ') : 0;';
+			$tag_template_php = '$_' . $tag_args . '_count = sizeof(' . $varref . ' ?? []);';
 		}
 
 		$tag_template_php .= 'if ($_' . $tag_args . '_count) {';
@@ -525,7 +525,7 @@ class template_compile
 					if (preg_match('#^((?:[a-z0-9\-_]+\.)+)?(\$)?(?=[A-Z])([A-Z0-9\-_]+)#s', $token, $varrefs))
 					{
 						$token = (!empty($varrefs[1])) ? $this->generate_block_data_ref(substr($varrefs[1], 0, -1), true, $varrefs[2]) . '[\'' . $varrefs[3] . '\']' : (($varrefs[2]) ? '$this->_tpldata[\'DEFINE\'][\'.\'][\'' . $varrefs[3] . '\']' : '$this->_rootref[\'' . $varrefs[3] . '\']');
-						$token = '(isset(' . $token . ') ? ' . $token . ' : \'\')';
+						$token = '(' . $token . ' ?? \'\')';
 					}
 					else if (preg_match('#^\.((?:[a-z0-9\-_]+\.?)+)$#s', $token, $varrefs))
 					{
@@ -734,7 +734,7 @@ class template_compile
 
 		// Append the variable reference.
 		$varref .= "['$varname']";
-		$varref = ($echo) ? "<?php if (isset($varref)) echo $varref; ?>" : ($varref ?? '');
+		$varref = ($echo) ? "<?php echo $varref ?? ''; ?>" : ($varref ?? '');
 
 		return $varref;
 	}
