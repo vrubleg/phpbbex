@@ -79,7 +79,7 @@ function module_select($module_class, $default_id, $default_langname)
 			$selected = ' selected="selected"';
 			$found_selected = true;
 		}
-		$module_options .= '<option value="' . $row['module_id'] . '"' . $selected .'>' . ((isset($user->lang[$row['module_langname']])) ? $user->lang[$row['module_langname']] : $row['module_langname']) . '</option>';
+		$module_options .= '<option value="' . $row['module_id'] . '"' . $selected .'>' . ($user->lang[$row['module_langname']] ?? $row['module_langname']) . '</option>';
 	}
 	if (!$found_selected && $default_id)
 	{

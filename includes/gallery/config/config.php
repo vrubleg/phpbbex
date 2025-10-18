@@ -21,7 +21,7 @@ class phpbb_gallery_config
 			self::load();
 		}
 
-		return isset(self::$config[$key]) ? self::$config[$key] : null;
+		return self::$config[$key] ?? null;
 	}
 
 	static public function get_array()

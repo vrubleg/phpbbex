@@ -777,7 +777,7 @@ class install_update extends module
 					continue;
 				}
 
-				$options = isset($vars['options']) ? $vars['options'] : '';
+				$options = $vars['options'] ?? '';
 				$template->assign_block_vars('options', [
 					'KEY'			=> $config_key,
 					'TITLE'			=> $user->lang[$vars['lang']],

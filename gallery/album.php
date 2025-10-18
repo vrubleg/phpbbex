@@ -273,7 +273,7 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 // Page is ready loaded, mark album as "read"
 phpbb_gallery_misc::markread('album', $album_id);
 
-$watch_mode = ($album_data['watch_id']) ?  'unwatch' : 'watch';
+$watch_mode = ($album_data['watch_id']) ? 'unwatch' : 'watch';
 
 $template->assign_vars([
 	'S_IN_ALBUM'				=> true, // used for some templating in subsilver2

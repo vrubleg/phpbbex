@@ -134,7 +134,7 @@ $sort_key	= request_var('sk', ($album_data['album_sort_key']) ? $album_data['alb
 $sort_dir	= request_var('sd', ($album_data['album_sort_dir']) ? $album_data['album_sort_dir'] : phpbb_gallery_config::get('default_sort_dir'));
 
 $sort_by_sql = ['t' => 'image_time', 'n' => 'image_name_clean', 'u' => 'image_username_clean', 'vc' => 'image_view_count', 'ra' => 'image_rate_avg', 'r' => 'image_rates', 'c' => 'image_comments', 'lc' => 'image_last_comment'];
-$sql_sort_by = (isset($sort_by_sql[$sort_key])) ? $sort_by_sql[$sort_key] : $sort_by_sql['t'];
+$sql_sort_by = $sort_by_sql[$sort_key] ?? $sort_by_sql['t'];
 if ($sort_dir == 'd')
 {
 	$sql_next_condition = '<';
@@ -208,8 +208,8 @@ elseif ($image_data['image_desc'])
 	$image_desc = sprintf($user->lang['CONTEST_IMAGE_DESC'], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true));
 }
 
-$favorite_mode = (($image_data['favorite_id']) ?  'un' : '') . 'favorite';
-$watch_mode = (($image_data['watch_id']) ?  'un' : '') . 'watch';
+$favorite_mode = (($image_data['favorite_id']) ? 'un' : '') . 'favorite';
+$watch_mode = (($image_data['watch_id']) ? 'un' : '') . 'watch';
 
 $template->assign_vars([
 	'U_VIEW_ALBUM'		=> phpbb_gallery_url::append_sid('album', "album_id=$album_id"),

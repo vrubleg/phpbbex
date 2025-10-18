@@ -162,7 +162,7 @@ class phpbb_gallery_album
 			}
 			else if ($row['left_id'] > $right + 1)
 			{
-				$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : '';
+				$padding = $padding_store[$row['parent_id']] ?? '';
 			}
 
 			$right = $row['right_id'];
@@ -460,9 +460,9 @@ class phpbb_gallery_album
 			'ALBUM_ID' 		=> $album_data['album_id'],
 			'ALBUM_NAME'	=> $album_data['album_name'],
 			'ALBUM_DESC'	=> generate_text_for_display($album_data['album_desc'], $album_data['album_desc_uid'], $album_data['album_desc_bitfield'], $album_data['album_desc_options']),
-			'ALBUM_CONTEST_START'	=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_START' . ((($album_data['contest_start']) < time())? 'ED' : 'S')], $user->format_date(($album_data['contest_start']), false, true)) : '',
-			'ALBUM_CONTEST_RATING'	=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_RATING_START' . ((($album_data['contest_start'] + $album_data['contest_rating']) < time())? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_rating']), false, true)) : '',
-			'ALBUM_CONTEST_END'		=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_END' . ((($album_data['contest_start'] + $album_data['contest_end']) < time())? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)) : '',
+			'ALBUM_CONTEST_START'	=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_START' . ((($album_data['contest_start']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start']), false, true)) : '',
+			'ALBUM_CONTEST_RATING'	=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_RATING_START' . ((($album_data['contest_start'] + $album_data['contest_rating']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_rating']), false, true)) : '',
+			'ALBUM_CONTEST_END'		=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_END' . ((($album_data['contest_start'] + $album_data['contest_end']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)) : '',
 			'U_VIEW_ALBUM'	=> phpbb_gallery_url::append_sid('album', 'album_id=' . $album_data['album_id']),
 		]);
 
@@ -963,7 +963,7 @@ class phpbb_gallery_album
 				'UNAPPROVED_IMAGES'		=> (phpbb_gallery::$auth->acl_check('m_status', $album_id, $row['album_user_id'])) ? ($row['album_images_real'] - $row['album_images']) : 0,
 				'ALBUM_FOLDER_IMG'		=> $user->img($folder_image, $folder_alt),
 				'ALBUM_FOLDER_IMG_SRC'	=> $user->img($folder_image, $folder_alt, false, '', 'src'),
-				'ALBUM_FOLDER_IMG_ALT'	=> isset($user->lang[$folder_alt]) ? $user->lang[$folder_alt] : '',
+				'ALBUM_FOLDER_IMG_ALT'	=> $user->lang[$folder_alt] ?? '',
 				'ALBUM_IMAGE'			=> ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
 				'LAST_IMAGE_TIME'		=> $lastimage_time,
 				'LAST_USER_FULL'		=> ($s_username_hidden) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),

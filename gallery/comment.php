@@ -404,8 +404,8 @@ else if ($mode == 'delete')
 
 $template->assign_vars([
 	'ERROR'					=> $error,
-	'MESSAGE'				=> (isset($comment_plain)) ? $comment_plain : '',
-	'USERNAME'				=> (isset($comment_username)) ? $comment_username : '',
+	'MESSAGE'				=> $comment_plain ?? '',
+	'USERNAME'				=> $comment_username ?? '',
 	'REQ_USERNAME'			=> (!empty($comment_username_req)) ? true : false,
 	'L_COMMENT_LENGTH'		=> sprintf($user->lang['COMMENT_LENGTH'], phpbb_gallery_config::get('comment_length')),
 

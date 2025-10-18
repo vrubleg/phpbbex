@@ -173,7 +173,7 @@ class acp_gallery_config
 			{
 				$template->assign_block_vars('options', [
 					'S_LEGEND'		=> true,
-					'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars]
+					'LEGEND'		=> $user->lang[$vars] ?? $vars]
 				);
 
 				continue;
@@ -190,7 +190,7 @@ class acp_gallery_config
 			$l_explain = '';
 			if ($vars['explain'])
 			{
-				$l_explain = (isset($user->lang[$vars['lang'] . '_EXP'])) ? $user->lang[$vars['lang'] . '_EXP'] : '';
+				$l_explain = $user->lang[$vars['lang'] . '_EXP'] ?? '';
 			}
 
 			$content = build_cfg_template($type, $config_key, $this->new_config, $config_key, $vars);
@@ -202,7 +202,7 @@ class acp_gallery_config
 
 			$template->assign_block_vars('options', [
 				'KEY'			=> $config_key,
-				'TITLE'			=> (isset($user->lang[$vars['lang']])) ? $user->lang[$vars['lang']] : $vars['lang'],
+				'TITLE'			=> $user->lang[$vars['lang']] ?? $vars['lang'],
 				'S_EXPLAIN'		=> $vars['explain'],
 				'TITLE_EXPLAIN'	=> $l_explain,
 				'CONTENT'		=> $content,

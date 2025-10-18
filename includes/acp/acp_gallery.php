@@ -121,7 +121,7 @@ class acp_gallery
 					}
 					if (is_array($user_id))
 					{
-						$user_id = (isset($user_id[0])) ? $user_id[0] : 0;
+						$user_id = $user_id[0] ?? 0;
 					}
 
 					$sql = 'SELECT username, user_colour, user_id
