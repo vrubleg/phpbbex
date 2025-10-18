@@ -1621,5 +1621,5 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 		}
 	}
 
-	return '<img src="' . (str_replace(' ', '%20', $avatar_img)) . '" width="' . $avatar_width . '" height="' . $avatar_height . '" alt="' . ((!empty($user->lang[$alt])) ? $user->lang[$alt] : $alt) . '" />';
+	return '<img src="' . (str_replace(' ', '%20', $avatar_img)) . '" width="' . $avatar_width . '" height="' . $avatar_height . '" alt="' . ($user->lang[$alt] ?? $alt) . '" />';
 }

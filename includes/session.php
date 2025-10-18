@@ -2237,7 +2237,7 @@ class phpbb_user extends phpbb_session
 			$img_data['height'] = $this->img_array[$img]['image_height'];
 		}
 
-		$alt = (!empty($this->lang[$alt])) ? $this->lang[$alt] : $alt;
+		$alt = $this->lang[$alt] ?? $alt;
 
 		switch ($type)
 		{

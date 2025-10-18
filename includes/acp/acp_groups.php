@@ -695,7 +695,7 @@ class acp_groups
 
 			foreach ($row_ary as $group_id => $row)
 			{
-				$group_name = (!empty($user->lang['G_' . $row['group_name']])) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
+				$group_name = $user->lang['G_' . $row['group_name']] ?? $row['group_name'];
 
 				$template->assign_block_vars('groups', [
 					'U_LIST'		=> "{$this->u_action}&amp;action=list&amp;g=$group_id",

@@ -3557,8 +3557,8 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 
 			if (!empty($user) && !empty($user->lang))
 			{
-				$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
-				$msg_title = (!isset($msg_title)) ? $user->lang['GENERAL_ERROR'] : ((!empty($user->lang[$msg_title])) ? $user->lang[$msg_title] : $msg_title);
+				$msg_text = $user->lang[$msg_text] ?? $msg_text;
+				$msg_title = (!isset($msg_title)) ? $user->lang['GENERAL_ERROR'] : ($user->lang[$msg_title] ?? $msg_title);
 
 				$l_notify = '';
 
@@ -3659,8 +3659,8 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 				http_response_code(404);
 			}
 
-			$msg_text = (!empty($user->lang[$msg_text])) ? $user->lang[$msg_text] : $msg_text;
-			$msg_title = (!isset($msg_title)) ? $user->lang['INFORMATION'] : ((!empty($user->lang[$msg_title])) ? $user->lang[$msg_title] : $msg_title);
+			$msg_text = $user->lang[$msg_text] ?? $msg_text;
+			$msg_title = (!isset($msg_title)) ? $user->lang['INFORMATION'] : ($user->lang[$msg_title] ?? $msg_title);
 
 			if (!defined('HEADER_INC'))
 			{

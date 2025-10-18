@@ -243,7 +243,7 @@ class p_master
 
 				'url_extra'	=> (function_exists($url_func)) ? $url_func($row['module_mode'], $row) : '',
 
-				'lang'		=> ($row['module_basename'] && function_exists($lang_func)) ? $lang_func($row['module_mode'], $row['module_langname']) : ((!empty($user->lang[$row['module_langname']])) ? $user->lang[$row['module_langname']] : $row['module_langname']),
+				'lang'		=> ($row['module_basename'] && function_exists($lang_func)) ? $lang_func($row['module_mode'], $row['module_langname']) : ($user->lang[$row['module_langname']] ?? $row['module_langname']),
 				'langname'	=> $row['module_langname'],
 
 				'left'		=> $row['left_id'],

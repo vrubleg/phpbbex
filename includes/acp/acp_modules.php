@@ -726,7 +726,7 @@ class acp_modules
 	{
 		global $user;
 
-		return (!empty($user->lang[$module_langname])) ? $user->lang[$module_langname] : $module_langname;
+		return $user->lang[$module_langname] ?? $module_langname;
 	}
 
 	/**
