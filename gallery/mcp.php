@@ -58,7 +58,7 @@ if ($album_id)
 }
 
 // Some other variables
-$submit = (isset($_POST['submit'])) ? true : false;
+$submit = isset($_POST['submit']);
 $redirect = request_var('redirect', $mode);
 $moving_target = request_var('moving_target', 0);
 $image_id = ($image_id && !$option_id) ? $image_id : $option_id;
@@ -75,11 +75,11 @@ switch ($mode)
 	case 'report_details':
 		if ($album_id)
 		{
-			$access_denied = (!phpbb_gallery::$auth->acl_check('m_report', $album_id, $album_data['album_user_id'])) ? true : false;
+			$access_denied = (!phpbb_gallery::$auth->acl_check('m_report', $album_id, $album_data['album_user_id']));
 		}
 		else
 		{
-			$access_denied = (!sizeof(phpbb_gallery::$auth->acl_album_ids('m_report'))) ? true : false;
+			$access_denied = (!sizeof(phpbb_gallery::$auth->acl_album_ids('m_report')));
 		}
 	break;
 	case 'queue_unapproved':
@@ -88,34 +88,34 @@ switch ($mode)
 	case 'queue_details':
 		if ($album_id)
 		{
-			$access_denied = (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id'])) ? true : false;
+			$access_denied = (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']));
 		}
 		else
 		{
-			$access_denied = (!sizeof(phpbb_gallery::$auth->acl_album_ids('m_status'))) ? true : false;
+			$access_denied = (!sizeof(phpbb_gallery::$auth->acl_album_ids('m_status')));
 		}
 	break;
 	case 'overview':
-		$access_denied = (!phpbb_gallery::$auth->acl_check_global('m_')) ? true : false;
+		$access_denied = (!phpbb_gallery::$auth->acl_check_global('m_'));
 	break;
 }
 switch ($action)
 {
 	case 'images_move':
-		$access_denied = (!phpbb_gallery::$auth->acl_check('m_move', $album_id, $album_data['album_user_id']) || ($moving_target && !phpbb_gallery::$auth->acl_check('i_upload', $moving_target))) ? true : false;
+		$access_denied = (!phpbb_gallery::$auth->acl_check('m_move', $album_id, $album_data['album_user_id']) || ($moving_target && !phpbb_gallery::$auth->acl_check('i_upload', $moving_target)));
 	break;
 	case 'images_unapprove':
 	case 'images_approve':
 	case 'images_lock':
-		$access_denied = (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id'])) ? true : false;
+		$access_denied = (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']));
 	break;
 	case 'images_delete':
-		$access_denied = (!phpbb_gallery::$auth->acl_check('m_delete', $album_id, $album_data['album_user_id'])) ? true : false;
+		$access_denied = (!phpbb_gallery::$auth->acl_check('m_delete', $album_id, $album_data['album_user_id']));
 	break;
 	case 'reports_close':
 	case 'reports_open':
 	case 'reports_delete':
-		$access_denied = (!phpbb_gallery::$auth->acl_check('m_report', $album_id, $album_data['album_user_id'])) ? true : false;
+		$access_denied = (!phpbb_gallery::$auth->acl_check('m_report', $album_id, $album_data['album_user_id']));
 	break;
 }
 
@@ -242,10 +242,10 @@ $template->assign_block_vars('navlinks', [
 ]);
 
 $template->assign_vars([
-	'S_ALLOWED_MOVE'	=> (phpbb_gallery::$auth->acl_check('m_move', $album_id, $album_data['album_user_id'])) ? true : false,
-	'S_ALLOWED_STATUS'	=> (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id'])) ? true : false,
-	'S_ALLOWED_DELETE'	=> (phpbb_gallery::$auth->acl_check('m_delete', $album_id, $album_data['album_user_id'])) ? true : false,
-	'S_ALLOWED_REPORT'	=> (phpbb_gallery::$auth->acl_check('m_report', $album_id, $album_data['album_user_id'])) ? true : false,
+	'S_ALLOWED_MOVE'	=> (bool) phpbb_gallery::$auth->acl_check('m_move', $album_id, $album_data['album_user_id']),
+	'S_ALLOWED_STATUS'	=> (bool) phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']),
+	'S_ALLOWED_DELETE'	=> (bool) phpbb_gallery::$auth->acl_check('m_delete', $album_id, $album_data['album_user_id']),
+	'S_ALLOWED_REPORT'	=> (bool) phpbb_gallery::$auth->acl_check('m_report', $album_id, $album_data['album_user_id']),
 	'EDIT_IMG'		=> $user->img('icon_post_edit', 'EDIT_IMAGE'),
 	'DELETE_IMG'	=> $user->img('icon_post_delete', 'DELETE_IMAGE'),
 	'ALBUM_NAME'	=> $album_data['album_name'],

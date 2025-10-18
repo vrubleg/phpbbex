@@ -34,7 +34,7 @@ class acp_gallery_config
 
 		$user->add_lang(['mods/gallery_acp', 'mods/gallery']);
 
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		$form_key = 'acp_time';
 		add_form_key($form_key);
@@ -155,7 +155,7 @@ class acp_gallery_config
 			'L_TITLE'			=> $user->lang[$this->display_vars['title']],
 			'L_TITLE_EXPLAIN'	=> $user->lang[$this->display_vars['title'] . '_EXPLAIN'],
 
-			'S_ERROR'			=> (sizeof($error)) ? true : false,
+			'S_ERROR'			=> (sizeof($error) > 0),
 			'ERROR_MSG'			=> implode('<br />', $error),
 
 			'U_ACTION'			=> $this->u_action]

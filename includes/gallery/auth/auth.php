@@ -592,7 +592,7 @@ class phpbb_gallery_auth
 	{
 		global $template, $user;
 
-		$locked = ($album_status == ITEM_LOCKED && !$this->acl_check('m_', $album_id, $album_user_id)) ? true : false;
+		$locked = ($album_status == ITEM_LOCKED && !$this->acl_check('m_', $album_id, $album_user_id));
 
 		$rules = [
 			($this->acl_check('i_view', $album_id, $album_user_id) && !$locked) ? $user->lang['ALBUM_VIEW_CAN'] : $user->lang['ALBUM_VIEW_CANNOT'],

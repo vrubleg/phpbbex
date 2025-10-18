@@ -261,9 +261,9 @@ class phpbb_gallery_image
 			'UC_IMAGE_NAME'	=> ($display & phpbb_gallery_block::DISPLAY_IMAGENAME) ? self::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id'], false, true, "&amp;sk={$sk}&amp;sd={$sd}&amp;st={$st}") : '',
 			'UC_THUMBNAIL'	=> self::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id']),
 			'U_ALBUM'		=> ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $image_data['image_album_id']) : '',
-			'S_UNAPPROVED'	=> (phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) && ($image_data['image_status'] == self::STATUS_UNAPPROVED)) ? true : false,
-			'S_LOCKED'		=> ($image_data['image_status'] == self::STATUS_LOCKED) ? true : false,
-			'S_REPORTED'	=> (phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id) && $image_data['image_reported']) ? true : false,
+			'S_UNAPPROVED'	=> (phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) && ($image_data['image_status'] == self::STATUS_UNAPPROVED)),
+			'S_LOCKED'		=> ($image_data['image_status'] == self::STATUS_LOCKED),
+			'S_REPORTED'	=> (phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id) && $image_data['image_reported']),
 
 			'ALBUM_NAME'		=> ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ((isset($image_data['album_name'])) ? ((utf8_strlen(htmlspecialchars_decode($image_data['album_name'])) > phpbb_gallery_config::get('shortnames') + 3) ? htmlspecialchars(utf8_substr(htmlspecialchars_decode($image_data['album_name']), 0, phpbb_gallery_config::get('shortnames')) . '...') : ($image_data['album_name'])) : '') : '',
 			'ALBUM_NAME_FULL'	=> ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ($image_data['album_name'] ?? '') : '',

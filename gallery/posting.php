@@ -16,7 +16,7 @@ phpbb_gallery_url::_include(['functions_display', 'functions_posting', 'function
 phpbb_gallery_url::_include(['bbcode', 'message_parser'], 'phpbb');
 
 add_form_key('gallery');
-$submit = (isset($_POST['submit'])) ? true : false;
+$submit = isset($_POST['submit']);
 $mode = request_var('mode', '');
 $album_id = request_var('album_id', 0);
 $image_id = request_var('image_id', 0);
@@ -374,10 +374,10 @@ else
 	if ($mode != 'upload')
 	{
 		// Load BBCodes and smilies data
-		$bbcode_status	= ($config['allow_bbcode']) ? true : false;
-		$smilies_status	= ($config['allow_smilies']) ? true : false;
-		$img_status		= ($bbcode_status) ? true : false;
-		$url_status		= ($config['allow_post_links']) ? true : false;
+		$bbcode_status	= (bool) $config['allow_bbcode'];
+		$smilies_status	= (bool) $config['allow_smilies'];
+		$img_status		= $bbcode_status;
+		$url_status		= (bool) $config['allow_post_links'];
 		$flash_status	= false;
 		$quote_status	= true;
 
@@ -697,8 +697,8 @@ else
 
 			'NUM_IMAGES'		=> 1,
 			'S_ALLOW_ROTATE'	=> (phpbb_gallery_config::get('allow_rotate') && function_exists('imagerotate')),
-			'S_MOVE_PERSONAL'	=> ((phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM) || phpbb_gallery::$user->get_data('personal_album_id')) || ($user->data['user_id'] != $image_data['image_user_id'])) ? true : false,
-			'S_MOVE_MODERATOR'	=> ($user->data['user_id'] != $image_data['image_user_id']) ? true : false,
+			'S_MOVE_PERSONAL'	=> ((phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM) || phpbb_gallery::$user->get_data('personal_album_id')) || ($user->data['user_id'] != $image_data['image_user_id'])),
+			'S_MOVE_MODERATOR'	=> ($user->data['user_id'] != $image_data['image_user_id']),
 		]);
 	}
 }

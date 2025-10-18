@@ -216,7 +216,7 @@ $template->assign_vars([
 
 	'UC_PREVIOUS_IMAGE'	=> (!empty($previous_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
 	'UC_PREVIOUS'		=> (!empty($previous_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_prev', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
-	'UC_IMAGE'			=> phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, ((substr($image_data['image_filename'], 0 -3) == 'gif') ? true : false), false, '', !empty($next_data) ? $next_data['image_id'] : 0),
+	'UC_IMAGE'			=> phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, (substr($image_data['image_filename'], 0 -3) == 'gif'), false, '', !empty($next_data) ? $next_data['image_id'] : 0),
 	'UC_NEXT_IMAGE'		=> (!empty($next_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
 	'UC_NEXT'			=> (!empty($next_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_next', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
 
@@ -244,7 +244,7 @@ $template->assign_vars([
 	'U_BOOKMARK_TOPIC'	=> ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode=$favorite_mode&amp;album_id=$album_id&amp;image_id=$image_id&amp;hash=" . generate_link_hash("{$favorite_mode}_$image_id")) : '',
 	'L_WATCH_TOPIC'		=> ($image_data['watch_id']) ? $user->lang['UNWATCH_IMAGE'] : $user->lang['WATCH_IMAGE'],
 	'U_WATCH_TOPIC'		=> ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode=$watch_mode&amp;album_id=$album_id&amp;image_id=$image_id&amp;hash=" . generate_link_hash("{$watch_mode}_$image_id")) : '',
-	'S_WATCHING_TOPIC'	=> ($image_data['watch_id']) ? true : false,
+	'S_WATCHING_TOPIC'	=> (bool) $image_data['watch_id'],
 	'S_ALBUM_ACTION'	=> phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id"),
 	'S_ENABLE_FEEDS_ALBUM'	=> $album_data['album_feed'] && (phpbb_gallery_config::get('feed_enable_pegas') || !$album_data['album_user_id']),
 
@@ -286,7 +286,7 @@ if (phpbb_gallery_config::get('allow_rates'))
 	$template->assign_vars([
 		'IMAGE_RATING'			=> $rating->get_image_rating($user_rating),
 		'S_ALLOWED_TO_RATE'		=> (!$user_rating && $rating->is_allowed()),
-		'S_VIEW_RATE'			=> (phpbb_gallery::$auth->acl_check('i_rate', $album_id, $album_data['album_user_id'])) ? true : false,
+		'S_VIEW_RATE'			=> (bool) phpbb_gallery::$auth->acl_check('i_rate', $album_id, $album_data['album_user_id']),
 		'S_COMMENT_ACTION'		=> phpbb_gallery_url::append_sid('comment', "album_id=$album_id&amp;image_id=$image_id&amp;mode=rate"),
 	]);
 	unset($rating);
@@ -301,10 +301,10 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	$user->add_lang('posting');
 	phpbb_gallery_url::_include('functions_posting', 'phpbb');
 
-	$bbcode_status	= ($config['allow_bbcode']) ? true : false;
-	$smilies_status	= ($config['allow_smilies']) ? true : false;
-	$img_status		= ($bbcode_status) ? true : false;
-	$url_status		= ($config['allow_post_links']) ? true : false;
+	$bbcode_status	= (bool) $config['allow_bbcode'];
+	$smilies_status	= (bool) $config['allow_smilies'];
+	$img_status		= $bbcode_status;
+	$url_status		= (bool) $config['allow_post_links'];
 	$flash_status	= false;
 	$quote_status	= true;
 
@@ -314,7 +314,7 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	// Build smilies array
 	generate_smilies('inline');
 
-	$s_hide_comment_input = (time() < ($album_data['contest_start'] + $album_data['contest_end'])) ? true : false;
+	$s_hide_comment_input = (time() < ($album_data['contest_start'] + $album_data['contest_end']));
 
 	$template->assign_vars([
 		'S_ALLOWED_TO_COMMENT'	=> true,
@@ -372,7 +372,7 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 	$template->assign_vars([
 		'S_ALLOWED_READ_COMMENTS'	=> true,
 		'IMAGE_COMMENTS'			=> $image_data['image_comments'],
-		'SORT_ASC'					=> ($sort_order == 'ASC') ? true : false,
+		'SORT_ASC'					=> ($sort_order == 'ASC'),
 	]);
 
 	if ($image_data['image_comments'] > 0)
@@ -437,7 +437,7 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 			$update_time = $config['load_online_time'] * 60;
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$user_cache[$row['session_user_id']]['online'] = (time() - $update_time < $row['online_time'] && (($row['viewonline']) || $auth->acl_get('u_viewonline'))) ? true : false;
+				$user_cache[$row['session_user_id']]['online'] = (time() - $update_time < $row['online_time'] && (($row['viewonline']) || $auth->acl_get('u_viewonline')));
 			}
 			$db->sql_freeresult($result);
 		}
@@ -510,7 +510,7 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 				'POSTER_RATED_NEGATIVE'		=> $user_cache[$user_id]['rated_negative'],
 
 				'ONLINE_IMG'		=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$user_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
-				'S_ONLINE'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($user_cache[$user_id]['online']) ? true : false),
+				'S_ONLINE'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (bool) $user_cache[$user_id]['online'],
 
 				'U_PROFILE'		=> $user_cache[$user_id]['profile'],
 				'U_SEARCH'		=> $user_cache[$user_id]['search'],
@@ -602,7 +602,7 @@ if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_us
 		'POSTER_RATED_NEGATIVE'		=> $user_cache[$user_id]['rated_negative'],
 
 		'POSTER_ONLINE_IMG'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$user_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
-		'S_POSTER_ONLINE'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($user_cache[$user_id]['online']) ? true : false),
+		'S_POSTER_ONLINE'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (bool) $user_cache[$user_id]['online'],
 
 		'U_POSTER_PROFILE'		=> $user_cache[$user_id]['profile'],
 		'U_POSTER_SEARCH'		=> $user_cache[$user_id]['search'],

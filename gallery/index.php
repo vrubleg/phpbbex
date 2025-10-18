@@ -64,7 +64,7 @@ if ($mode == 'personal')
 
 		'L_WATCH_TOPIC'				=> ($subscribe_pegas) ? $user->lang['UNWATCH_PEGAS'] : $user->lang['WATCH_PEGAS'],
 		'U_WATCH_TOPIC'				=> ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('index', "mode=personal&amp;pegas={$watch_mode}&amp;hash=" . generate_link_hash("{$watch_mode}_pegas")) : '',
-		'S_WATCHING_TOPIC'			=> ($subscribe_pegas) ? true : false,
+		'S_WATCHING_TOPIC'			=> (bool) $subscribe_pegas,
 	]);
 }
 /**
@@ -250,11 +250,11 @@ $template->assign_vars([
 	'BIRTHDAY_LIST'			=> $birthday_list,
 
 	'S_LOGIN_ACTION'			=> phpbb_gallery_url::append_sid('phpbb', 'ucp', 'mode=login&amp;redirect=' . urlencode(phpbb_gallery_url::path('relative') . 'index.php' . (($mode == 'personal') ? '?mode=personal' : ''))),
-	'S_DISPLAY_BIRTHDAY_LIST'	=> (phpbb_gallery_config::get('disp_birthdays')) ? true : false,
+	'S_DISPLAY_BIRTHDAY_LIST'	=> (bool) phpbb_gallery_config::get('disp_birthdays'),
 
 	'U_YOUR_PERSONAL_GALLERY'		=> (phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM)) ? (phpbb_gallery::$user->get_data('personal_album_id')) ? phpbb_gallery_url::append_sid('album', 'album_id=' . phpbb_gallery::$user->get_data('personal_album_id')) : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums') : '',
 	'U_USERS_PERSONAL_GALLERIES'	=> (phpbb_gallery::$auth->acl_check('a_list', phpbb_gallery_auth::PERSONAL_ALBUM)) ? phpbb_gallery_url::append_sid('index', 'mode=personal') : '',
-	'S_USERS_PERSONAL_GALLERIES'	=> (!phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth->acl_check('a_list', phpbb_gallery_auth::PERSONAL_ALBUM)) ? true : false,
+	'S_USERS_PERSONAL_GALLERIES'	=> (!phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth->acl_check('a_list', phpbb_gallery_auth::PERSONAL_ALBUM)),
 
 	'U_MCP'							=> (phpbb_gallery::$auth->acl_check_global('m_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=overview') : '',
 	'U_MARK_ALBUMS'					=> ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('index', 'hash=' . generate_link_hash('global') . '&amp;mark=albums') : '',

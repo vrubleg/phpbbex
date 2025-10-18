@@ -77,7 +77,7 @@ class phpbb_gallery_exif
 	{
 		if (self::$function_exists === null)
 		{
-			self::$function_exists = (function_exists('exif_read_data')) ? true : false;
+			self::$function_exists = function_exists('exif_read_data');
 		}
 		if ($image_id)
 		{

@@ -384,7 +384,7 @@ class acp_gallery
 			'U_FIND_USERNAME'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', 'mode=searchuser&amp;form=action_create_pega_form&amp;field=username&amp;select_single=true'),
 			'S_SELECT_ALBUM'		=> phpbb_gallery_album::get_albumbox(false, 'reset_album_id', false, false, false, phpbb_gallery_album::PUBLIC_ALBUM, phpbb_gallery_album::TYPE_UPLOAD),
 
-			'S_FOUNDER'				=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+			'S_FOUNDER'				=> ($user->data['user_type'] == USER_FOUNDER),
 			'U_ACTION'				=> $this->u_action,
 		]);
 	}
@@ -677,7 +677,7 @@ class acp_gallery
 
 			$start_time = time();
 			$import_schema = md5($start_time);
-			$filename = (request_var('filename', '') == 'filename') ? true : false;
+			$filename = (request_var('filename', '') == 'filename');
 			$image_name = request_var('image_name', '', true);
 			$num_offset = request_var('image_num', 0);
 
@@ -780,9 +780,9 @@ class acp_gallery
 	{
 		global $auth, $cache, $db, $template, $user;
 
-		$delete = (isset($_POST['delete'])) ? true : false;
-		$prune = (isset($_POST['prune'])) ? true : false;
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$delete = isset($_POST['delete']);
+		$prune = isset($_POST['prune']);
+		$submit = isset($_POST['submit']);
 
 		$missing_sources = request_var('source', [0]);
 		$missing_entries = request_var('entry', [''], true);
@@ -1188,7 +1188,7 @@ class acp_gallery
 			'U_FIND_USERNAME'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', 'mode=searchuser&amp;form=acp_gallery&amp;field=prune_usernames'),
 			'S_SELECT_ALBUM'		=> phpbb_gallery_album::get_albumbox(false, '', false, false, false, phpbb_gallery_album::PUBLIC_ALBUM, phpbb_gallery_album::TYPE_UPLOAD),
 
-			'S_FOUNDER'				=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+			'S_FOUNDER'				=> ($user->data['user_type'] == USER_FOUNDER),
 		]);
 	}
 }

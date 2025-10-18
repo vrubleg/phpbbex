@@ -137,7 +137,7 @@ class phpbb_gallery_album
 		$c_access_own = $c_access_personal = false;
 		$padding_store = ['0' => ''];
 		$padding = $album_list = '';
-		$check_album_type = ($requested_album_type >= 0) ? true : false;
+		$check_album_type = ($requested_album_type >= 0);
 
 		// Sometimes it could happen that albums will be displayed here not be displayed within the index page
 		// This is the result of albums not displayed at index and a parent of a album with no permissions.
@@ -756,7 +756,7 @@ class phpbb_gallery_album
 			}
 			else if ($row['album_type'])
 			{
-				$subalbums[$parent_id][$album_id]['display'] = ($row['display_on_index']) ? true : false;
+				$subalbums[$parent_id][$album_id]['display'] = (bool) $row['display_on_index'];
 				$subalbums[$parent_id][$album_id]['name'] = $row['album_name'];
 				$subalbums[$parent_id][$album_id]['orig_album_last_image_time'] = $row['album_last_image_time'];
 				$subalbums[$parent_id][$album_id]['children'] = [];
@@ -852,7 +852,7 @@ class phpbb_gallery_album
 			}
 
 			$album_id = $row['album_id'];
-			$album_unread = (isset($album_tracking_info[$album_id]) && ($row['orig_album_last_image_time'] > $album_tracking_info[$album_id]) && ($user->data['user_id'] != ANONYMOUS)) ? true : false;
+			$album_unread = (isset($album_tracking_info[$album_id]) && ($row['orig_album_last_image_time'] > $album_tracking_info[$album_id]) && ($user->data['user_id'] != ANONYMOUS));
 
 			$folder_image = $folder_alt = $l_subalbums = '';
 			$subalbums_list = [];
@@ -862,7 +862,7 @@ class phpbb_gallery_album
 			{
 				foreach ($subalbums[$album_id] as $subalbum_id => $subalbum_row)
 				{
-					$subalbum_unread = (isset($album_tracking_info[$subalbum_id]) && $subalbum_row['orig_album_last_image_time'] > $album_tracking_info[$subalbum_id] && ($user->data['user_id'] != ANONYMOUS)) ? true : false;
+					$subalbum_unread = (isset($album_tracking_info[$subalbum_id]) && $subalbum_row['orig_album_last_image_time'] > $album_tracking_info[$subalbum_id] && ($user->data['user_id'] != ANONYMOUS));
 
 					if (!$subalbum_unread && !empty($subalbum_row['children']) && ($user->data['user_id'] != ANONYMOUS))
 					{
@@ -944,17 +944,17 @@ class phpbb_gallery_album
 				$s_subalbums_list[] = '<a href="' . $subalbum['link'] . '" class="subforum ' . (($subalbum['unread']) ? 'unread' : 'read') . '" title="' . (($subalbum['unread']) ? $user->lang['NEW_IMAGES'] : $user->lang['NO_NEW_IMAGES']) . '">' . $subalbum['name'] . '</a>';
 			}
 			$s_subalbums_list = (string) implode(', ', $s_subalbums_list);
-			$catless = ($row['parent_id'] == $root_data['album_id']) ? true : false;
+			$catless = ($row['parent_id'] == $root_data['album_id']);
 
 			$s_username_hidden = ($lastimage_album_type == self::TYPE_CONTEST) && $lastimage_contest_marked && !phpbb_gallery::$auth->acl_check('m_status', $album_id, $row['album_user_id']) && ($user->data['user_id'] != $row['album_last_user_id'] || $row['album_last_user_id'] == ANONYMOUS);
 
 			$template->assign_block_vars('albumrow', [
 				'S_IS_CAT'			=> false,
 				'S_NO_CAT'			=> $catless && !$last_catless,
-				'S_LOCKED_ALBUM'	=> ($row['album_status'] == self::STATUS_LOCKED) ? true : false,
-				'S_UNREAD_ALBUM'	=> ($album_unread) ? true : false,
-				'S_LIST_SUBALBUMS'	=> ($row['display_subalbum_list']) ? true : false,
-				'S_SUBALBUMS'		=> (sizeof($subalbums_list)) ? true : false,
+				'S_LOCKED_ALBUM'	=> ($row['album_status'] == self::STATUS_LOCKED),
+				'S_UNREAD_ALBUM'	=> $album_unread,
+				'S_LIST_SUBALBUMS'	=> (bool) $row['display_subalbum_list'],
+				'S_SUBALBUMS'		=> (sizeof($subalbums_list) > 0),
 
 				'ALBUM_ID'				=> $row['album_id'],
 				'ALBUM_NAME'			=> $row['album_name'],
@@ -997,7 +997,7 @@ class phpbb_gallery_album
 
 		$template->assign_vars([
 			'U_MARK_ALBUMS'		=> ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('album', 'hash=' . generate_link_hash('global') . '&amp;album_id=' . $root_data['album_id'] . '&amp;mark=albums') : '',
-			'S_HAS_SUBALBUM'	=> ($visible_albums) ? true : false,
+			'S_HAS_SUBALBUM'	=> (bool) $visible_albums,
 			'L_SUBFORUM'		=> ($visible_albums == 1) ? $user->lang['SUBALBUM'] : $user->lang['SUBALBUMS'],
 			'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 			'FAKE_THUMB_SIZE'	=> phpbb_gallery_config::get('mini_thumbnail_size'),

@@ -448,7 +448,7 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 		'S_SEARCH_ACTION'		=> $u_search,
 
 		'U_SEARCH_WORDS'	=> $u_search,
-		'SEARCH_IMAGES'		=> ($search_results == 'image') ? true : false,
+		'SEARCH_IMAGES'		=> ($search_results == 'image'),
 		'S_THUMBNAIL_SIZE'	=> phpbb_gallery_config::get('thumbnail_height') + 20 + ((phpbb_gallery_config::get('thumbnail_infoline')) ? phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT : 0),
 	]);
 

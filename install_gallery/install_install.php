@@ -219,7 +219,7 @@ class install_install extends module
 
 			@unlink(phpbb_gallery_url::_return_file('', $dir, '') . 'test_lock');
 
-			$passed['dirs'] = ($write && $passed['dirs']) ? true : false;
+			$passed['dirs'] = ($write && $passed['dirs']);
 
 			$write = ($write) ? '<strong style="color:green">' . $user->lang['WRITABLE'] . '</strong>' : '<strong style="color:red">' . $user->lang['UNWRITABLE'] . '</strong>';
 

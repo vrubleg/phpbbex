@@ -62,7 +62,7 @@ class phpbb_gallery_mcp
 		foreach ($nav_tabs as $navtab)
 		{
 			$template->assign_block_vars('tabs', [
-				'TAB_ACTIVE'	=> (strrpos(substr($mode, 0, 5), substr($navtab['mode_s'], 0, 5)) !== false) ? true : false,
+				'TAB_ACTIVE'	=> (strrpos(substr($mode, 0, 5), substr($navtab['mode_s'], 0, 5)) !== false),
 				'TAB_NAME'		=> $user->lang[$navtab['name']],
 				'U_TAB'			=> phpbb_gallery_url::append_sid('mcp', 'mode=' .  $navtab['mode'] . '&amp;album_id=' . $album_id),
 			]);
@@ -73,7 +73,7 @@ class phpbb_gallery_mcp
 				foreach ($nav_subsections[$mode_s] as $navsubsection)
 				{
 					$template->assign_block_vars('tabs.modes', [
-						'MODE_ACTIVE'		=> ($navsubsection['mode'] == $mode) ? true : false,
+						'MODE_ACTIVE'		=> ($navsubsection['mode'] == $mode),
 						'MODE_NAME'			=> $user->lang[$navsubsection['name']],
 						'U_MODE'			=> phpbb_gallery_url::append_sid('mcp', 'mode=' .  $navsubsection['mode'] . '&amp;album_id=' . $album_id . (($option_id && (($navsubsection['mode'] == 'report_details') || ($navsubsection['mode'] == 'queue_details'))) ? '&amp;option_id=' . $option_id : '')),
 					]);
@@ -151,8 +151,8 @@ class phpbb_gallery_mcp
 				'RATING'			=> ($row['image_rate_avg'] / 100),
 				'STATUS'			=> $user->lang['QUEUE_STATUS_' . $row['image_status']],
 				'IMAGE_ID'			=> $row['image_id'],
-				'S_REPORTED'		=> (isset($row['report_status']) && ($row['report_status'] == phpbb_gallery_report::OPEN)) ? true : false,
-				'S_UNAPPROVED'		=> ($row['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED) ? true : false,
+				'S_REPORTED'		=> (isset($row['report_status']) && ($row['report_status'] == phpbb_gallery_report::OPEN)),
+				'S_UNAPPROVED'		=> ($row['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED),
 				'U_IMAGE'			=> phpbb_gallery_url::append_sid('image', "album_id=$album_id&amp;image_id=" . $row['image_id']),
 				'U_IMAGE_PAGE'		=> phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=" . $row['image_id']),
 				'U_REPORT'			=> phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id=$album_id&amp;option_id=" . $row['report_id']),
@@ -162,7 +162,7 @@ class phpbb_gallery_mcp
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'S_SORT_DESC'			=> ($sort_dir == 'DESC') ? true : false,
+			'S_SORT_DESC'			=> ($sort_dir == 'DESC'),
 			'S_SORT_KEY'			=> $sort_key,
 
 			'TITLE'					=> $user->lang['IMAGES'],
@@ -245,7 +245,7 @@ class phpbb_gallery_mcp
 				'REPORT_TIME'		=> $user->format_date($row['report_time']),
 				'REPORT_ID'			=> $row['report_id'],
 				'REPORT_NOTE'		=> $row['report_note'],
-				'REPORT_STATUS'		=> ($row['report_status'] == phpbb_gallery_report::OPEN) ? true : false,
+				'REPORT_STATUS'		=> ($row['report_status'] == phpbb_gallery_report::OPEN),
 				'STATUS'			=> $user->lang['REPORT_STATUS_' . $row['report_status']] . ' ' . $user->lang['QUEUE_STATUS_' . $row['image_status']],
 			]);
 		}
@@ -341,7 +341,7 @@ class phpbb_gallery_mcp
 		$desc_string = $user->lang('WAITING_' . $case . '_IMAGE', $count_images);
 
 		$template->assign_vars([
-			'S_SORT_DESC'			=> ($sort_dir == 'DESC') ? true : false,
+			'S_SORT_DESC'			=> ($sort_dir == 'DESC'),
 			'S_SORT_KEY'			=> $sort_key,
 
 			'TITLE'					=> $user->lang['IMAGES'],
@@ -473,7 +473,7 @@ class phpbb_gallery_mcp
 
 
 		$template->assign_vars([
-			'S_SORT_DESC'			=> ($sort_dir == 'DESC') ? true : false,
+			'S_SORT_DESC'			=> ($sort_dir == 'DESC'),
 			'S_SORT_KEY'			=> $sort_key,
 
 			'TITLE'					=> $user->lang['REPORTED_IMAGES'],

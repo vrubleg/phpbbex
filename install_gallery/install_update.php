@@ -245,7 +245,7 @@ class install_update extends module
 
 			@unlink(phpbb_gallery_url::_return_file('', $dir, '') . 'test_lock');
 
-			$passed['dirs'] = ($write && $passed['dirs']) ? true : false;
+			$passed['dirs'] = ($write && $passed['dirs']);
 
 			$write = ($write) ? '<strong style="color:green">' . $user->lang['WRITABLE'] . '</strong>' : '<strong style="color:red">' . $user->lang['UNWRITABLE'] . '</strong>';
 
@@ -264,7 +264,7 @@ class install_update extends module
 		umask(0);
 
 		$passed['files'] = true;
-		$delete = (isset($_POST['delete'])) ? true : false;
+		$delete = isset($_POST['delete']);
 		foreach ($outdated_files as $file)
 		{
 			// Replace gallery root path with the constant.

@@ -45,7 +45,7 @@ class acp_gallery_albums
 		add_form_key($form_key);
 
 		$action		= request_var('action', '');
-		$update		= (isset($_POST['update'])) ? true : false;
+		$update		= isset($_POST['update']);
 		$album_id	= request_var('a', 0);
 
 		$this->parent_id	= request_var('parent_id', 0);
@@ -446,7 +446,7 @@ class acp_gallery_albums
 					}
 
 					$template->assign_vars([
-						'S_HAS_SUBALBUMS'		=> ($album_data['right_id'] - $album_data['left_id'] > 1) ? true : false,
+						'S_HAS_SUBALBUMS'		=> ($album_data['right_id'] - $album_data['left_id'] > 1),
 						'S_ALBUMS_LIST'			=> $albums_list,
 					]);
 				}
@@ -466,10 +466,10 @@ class acp_gallery_albums
 
 				$template->assign_vars([
 					'S_EDIT_ALBUM'		=> true,
-					'S_ERROR'			=> (sizeof($errors)) ? true : false,
+					'S_ERROR'			=> (sizeof($errors) > 0),
 					'S_PARENT_ID'		=> $this->parent_id,
 					'S_ALBUM_PARENT_ID'	=> $album_data['parent_id'],
-					'S_ADD_ACTION'		=> ($action == 'add') ? true : false,
+					'S_ADD_ACTION'		=> ($action == 'add'),
 
 					'U_BACK'			=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
 					'U_EDIT_ACTION'		=> $this->u_action . "&amp;parent_id={$this->parent_id}&amp;action=$action&amp;a=$album_id",
@@ -486,33 +486,33 @@ class acp_gallery_albums
 					*/
 
 					'ALBUM_DESC'				=> $album_desc_data['text'],
-					'S_DESC_BBCODE_CHECKED'		=> ($album_desc_data['allow_bbcode']) ? true : false,
-					'S_DESC_SMILIES_CHECKED'	=> ($album_desc_data['allow_smilies']) ? true : false,
-					'S_DESC_URLS_CHECKED'		=> ($album_desc_data['allow_urls']) ? true : false,
+					'S_DESC_BBCODE_CHECKED'		=> (bool) $album_desc_data['allow_bbcode'],
+					'S_DESC_SMILIES_CHECKED'	=> (bool) $album_desc_data['allow_smilies'],
+					'S_DESC_URLS_CHECKED'		=> (bool) $album_desc_data['allow_urls'],
 
 					'S_ALBUM_TYPE_OPTIONS'		=> $album_type_options,
 					'S_STATUS_OPTIONS'			=> $statuslist,
 					'S_PARENT_OPTIONS'			=> $parents_list,
 					'S_ALBUM_OPTIONS'			=> phpbb_gallery_album::get_albumbox(true, '', ($action == 'add') ? $album_data['parent_id'] : false, false, ($action == 'edit') ? $album_data['album_id'] : false),
 
-					'S_ALBUM_ORIG_UPLOAD'		=> (isset($old_album_type) && $old_album_type == phpbb_gallery_album::TYPE_UPLOAD) ? true : false,
-					'S_ALBUM_ORIG_CAT'			=> (isset($old_album_type) && $old_album_type == phpbb_gallery_album::TYPE_CAT) ? true : false,
-					'S_ALBUM_ORIG_CONTEST'		=> (isset($old_album_type) && $old_album_type == phpbb_gallery_album::TYPE_CONTEST) ? true : false,
-					'S_ALBUM_UPLOAD'			=> ($album_data['album_type'] == phpbb_gallery_album::TYPE_UPLOAD) ? true : false,
-					'S_ALBUM_CAT'				=> ($album_data['album_type'] == phpbb_gallery_album::TYPE_CAT) ? true : false,
-					'S_ALBUM_CONTEST'			=> ($album_data['album_type'] == phpbb_gallery_album::TYPE_CONTEST) ? true : false,
+					'S_ALBUM_ORIG_UPLOAD'		=> (isset($old_album_type) && $old_album_type == phpbb_gallery_album::TYPE_UPLOAD),
+					'S_ALBUM_ORIG_CAT'			=> (isset($old_album_type) && $old_album_type == phpbb_gallery_album::TYPE_CAT),
+					'S_ALBUM_ORIG_CONTEST'		=> (isset($old_album_type) && $old_album_type == phpbb_gallery_album::TYPE_CONTEST),
+					'S_ALBUM_UPLOAD'			=> ($album_data['album_type'] == phpbb_gallery_album::TYPE_UPLOAD),
+					'S_ALBUM_CAT'				=> ($album_data['album_type'] == phpbb_gallery_album::TYPE_CAT),
+					'S_ALBUM_CONTEST'			=> ($album_data['album_type'] == phpbb_gallery_album::TYPE_CONTEST),
 					'ALBUM_UPLOAD'				=> phpbb_gallery_album::TYPE_UPLOAD,
 					'ALBUM_CAT'					=> phpbb_gallery_album::TYPE_CAT,
 					'ALBUM_CONTEST'				=> phpbb_gallery_album::TYPE_CONTEST,
 					'S_CAN_COPY_PERMISSIONS'	=> true,
 
-					'S_ALBUM_WATERMARK'			=> ($album_data['album_watermark']) ? true : false,
+					'S_ALBUM_WATERMARK'			=> (bool) $album_data['album_watermark'],
 					'ALBUM_SORT_KEY_OPTIONS'	=> $album_sort_key_options,
 					'ALBUM_SORT_DIR_OPTIONS'	=> $album_sort_dir_options,
-					'S_DISPLAY_SUBALBUM_LIST'	=> ($album_data['display_subalbum_list']) ? true : false,
-					'S_DISPLAY_ON_INDEX'		=> ($album_data['display_on_index']) ? true : false,
-					'S_DISPLAY_IN_RRC'			=> ($album_data['display_in_rrc']) ? true : false,
-					'S_FEED_ENABLED'			=> ($album_data['album_feed']) ? true : false,
+					'S_DISPLAY_SUBALBUM_LIST'	=> (bool) $album_data['display_subalbum_list'],
+					'S_DISPLAY_ON_INDEX'		=> (bool) $album_data['display_on_index'],
+					'S_DISPLAY_IN_RRC'			=> (bool) $album_data['display_in_rrc'],
+					'S_FEED_ENABLED'			=> (bool) $album_data['album_feed'],
 
 					'S_CONTEST_START'			=> $user->format_date($contest_data['contest_start'], 'Y-m-d H:i'),
 					'CONTEST_RATING'			=> $user->format_date($contest_data['contest_start'] + $contest_data['contest_rating'], 'Y-m-d H:i'),
@@ -564,11 +564,11 @@ class acp_gallery_albums
 					'U_BACK'				=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
 
 					'ALBUM_NAME'			=> $album_data['album_name'],
-					'S_ALBUM_POST'			=> (in_array($album_data['album_type'], [phpbb_gallery_album::TYPE_UPLOAD, phpbb_gallery_album::TYPE_CONTEST])) ? true : false,
-					'S_HAS_SUBALBUMS'		=> ($album_data['right_id'] - $album_data['left_id'] > 1) ? true : false,
+					'S_ALBUM_POST'			=> (in_array($album_data['album_type'], [phpbb_gallery_album::TYPE_UPLOAD, phpbb_gallery_album::TYPE_CONTEST])),
+					'S_HAS_SUBALBUMS'		=> ($album_data['right_id'] - $album_data['left_id'] > 1),
 					'S_ALBUMS_LIST'			=> $albums_list,
 
-					'S_ERROR'				=> (sizeof($errors)) ? true : false,
+					'S_ERROR'				=> (sizeof($errors) > 0),
 					'ERROR_MSG'				=> (sizeof($errors)) ? implode('<br />', $errors) : '',
 				]);
 
@@ -639,7 +639,7 @@ class acp_gallery_albums
 					'ALBUM_DESCRIPTION'	=> generate_text_for_display($row['album_desc'], $row['album_desc_uid'], $row['album_desc_bitfield'], $row['album_desc_options']),
 					'ALBUM_IMAGES'		=> $row['album_images'],
 
-					'S_ALBUM_POST'		=> ($album_type != phpbb_gallery_album::TYPE_CAT) ? true : false,
+					'S_ALBUM_POST'		=> ($album_type != phpbb_gallery_album::TYPE_CAT),
 
 					'U_ALBUM'			=> $this->u_action . '&amp;parent_id=' . $row['album_id'],
 					'U_MOVE_UP'			=> $url . '&amp;action=move_up',

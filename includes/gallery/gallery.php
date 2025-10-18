@@ -132,7 +132,7 @@ class phpbb_gallery
 		$can_upload = phpbb_gallery::$auth->acl_album_ids('i_upload', 'bool');
 
 		$template->assign_vars([
-			'S_IN_GALLERY_POPUP'			=> (request_var('display', '') == 'popup') ? true : false,
+			'S_IN_GALLERY_POPUP'			=> (request_var('display', '') == 'popup'),
 
 			'U_POPUP_OWN'		=> phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id']),
 			'U_POPUP_RECENT'	=> phpbb_gallery_url::append_sid('search', 'search_id=recent'),

@@ -32,7 +32,7 @@ class acp_gallery_permissions
 		$this->tpl_name = 'gallery_permissions';
 		$this->page_title = $user->lang['ALBUM_AUTH_TITLE'];
 		add_form_key('acp_gallery');
-		$submit = (isset($_POST['submit_edit_options'])) ? true : ((isset($_POST['submit_add_options'])) ? true : false);
+		$submit = (isset($_POST['submit_edit_options'])) ? true : isset($_POST['submit_add_options']);
 		$action = request_var('action', '');
 
 		/**
@@ -125,7 +125,7 @@ class acp_gallery_permissions
 			'C_PERSONAL_ALBUMS'		=> phpbb_gallery_auth::PERSONAL_ALBUM,
 		]);
 
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$albums = $cache->obtain_album_list();
 
 		$template->assign_vars([
@@ -140,8 +140,8 @@ class acp_gallery_permissions
 		global $cache, $db, $template, $user;
 		$user->add_lang('acp/permissions');
 
-		$submit = (isset($_POST['submit'])) ? true : false;
-		$delete = (isset($_POST['delete'])) ? true : false;
+		$submit = isset($_POST['submit']);
+		$delete = isset($_POST['delete']);
 		$album_id = request_var('album_id', [0]);
 		$group_id = request_var('group_id', [0]);
 		$user_id = request_var('user_id', [0]);
@@ -386,8 +386,8 @@ class acp_gallery_permissions
 			trigger_error('FORM_INVALID');
 		}
 
-		$submit = (isset($_POST['submit'])) ? true : false;
-		$delete = (isset($_POST['delete'])) ? true : false;
+		$submit = isset($_POST['submit']);
+		$delete = isset($_POST['delete']);
 		$album_id = request_var('album_id', [0]);
 		$group_id = request_var('group_id', [0]);
 		$user_id = request_var('user_id', [0]);
@@ -557,9 +557,9 @@ class acp_gallery_permissions
 						$template->assign_block_vars('c_mask.v_mask.category', [
 							'CAT_NAME'				=> $user->lang['PERMISSION_' . strtoupper($category)],
 							'PERM_GROUP_ID'			=> $category,
-							'S_YES'					=> ($acl_s_yes && !$acl_s_never && !$acl_s_no) ? true : false,
-							'S_NEVER'				=> ($acl_s_never && !$acl_s_yes && !$acl_s_no) ? true : false,
-							'S_NO'					=> ($acl_s_no && !$acl_s_never && !$acl_s_yes) ? true : false,
+							'S_YES'					=> ($acl_s_yes && !$acl_s_never && !$acl_s_no),
+							'S_NEVER'				=> ($acl_s_never && !$acl_s_yes && !$acl_s_no),
+							'S_NO'					=> ($acl_s_no && !$acl_s_never && !$acl_s_yes),
 						]);
 						foreach ($permission_values as $permission)
 						{
@@ -567,11 +567,11 @@ class acp_gallery_permissions
 								'PERMISSION'			=> $user->lang['PERMISSION_' . strtoupper($permission)],
 								'PERMISSION_EXPLAIN'	=> (isset($user->lang['PERMISSION_' . strtoupper($permission) . '_EXPLAIN'])) ? $user->lang['PERMISSION_' . strtoupper($permission) . '_EXPLAIN'] : '',
 								'S_FIELD_NAME'			=> 'setting[' . $album_row['album_id'] . '][' . $victim_row['victim_id'] . '][' . $permission . ']',
-								'S_NO'					=> ((isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NO)) ? true : false),
-								'S_YES'					=> ((isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_YES)) ? true : false),
-								'S_NEVER'				=> ((isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NEVER)) ? true : false),
+								'S_NO'					=> (isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NO)),
+								'S_YES'					=> (isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_YES)),
+								'S_NEVER'				=> (isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NEVER)),
 								'S_VALUE'				=> ($roles[$role_id][$permission] ?? 0),
-								'S_COUNT_FIELD'			=> (substr($permission, -6, 6) == '_count') ? true : false,
+								'S_COUNT_FIELD'			=> (substr($permission, -6, 6) == '_count'),
 							]);
 						}
 					}
@@ -605,11 +605,11 @@ class acp_gallery_permissions
 							'PERMISSION'			=> $user->lang['PERMISSION_' . strtoupper($permission)],
 							'PERMISSION_EXPLAIN'	=> (isset($user->lang['PERMISSION_' . strtoupper($permission) . '_EXPLAIN'])) ? $user->lang['PERMISSION_' . strtoupper($permission) . '_EXPLAIN'] : '',
 							'S_FIELD_NAME'			=> 'setting[' . $p_system . '][' . $victim_row['victim_id'] . '][' . $permission . ']',
-							'S_NO'					=> ((isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NO)) ? true : false),
-							'S_YES'					=> ((isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_YES)) ? true : false),
-							'S_NEVER'				=> ((isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NEVER)) ? true : false),
+							'S_NO'					=> (isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NO)),
+							'S_YES'					=> (isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_YES)),
+							'S_NEVER'				=> (isset($roles[$role_id][$permission]) && ($roles[$role_id][$permission] == phpbb_gallery_auth::ACL_NEVER)),
 							'S_VALUE'				=> ($roles[$role_id][$permission] ?? 0),
-							'S_COUNT_FIELD'			=> (substr($permission, -6, 6) == '_count') ? true : false,
+							'S_COUNT_FIELD'			=> (substr($permission, -6, 6) == '_count'),
 						]);
 					}
 				}
@@ -636,7 +636,7 @@ class acp_gallery_permissions
 		global $cache, $db, $permissions, $template, $user;
 
 		// Send contants to the template
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$album_id = request_var('album_id', [0]);
 		$group_id = request_var('group_id', [0]);
 		$user_id = request_var('user_id', [0]);
@@ -960,7 +960,7 @@ class acp_gallery_permissions
 	{
 		global $cache, $db, $template, $user;
 
-		$submit = isset($_POST['submit']) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		if ($submit)
 		{

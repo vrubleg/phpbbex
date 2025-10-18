@@ -34,7 +34,7 @@ class ucp_gallery
 
 		$mode = request_var('mode', '');
 		$action = request_var('action', '');
-		$cancel = (isset($_POST['cancel'])) ? true : false;
+		$cancel = isset($_POST['cancel']);
 		if ($cancel)
 		{
 			$action = '';
@@ -116,7 +116,7 @@ class ucp_gallery
 	{
 		global $db, $template, $user;
 
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 
 		if($submit)
 		{
@@ -238,7 +238,7 @@ class ucp_gallery
 		$albums = (int) $db->sql_fetchfield('albums');
 		$db->sql_freeresult($result);
 
-		$s_allowed_create = (phpbb_gallery::$auth->acl_check('a_unlimited', phpbb_gallery_auth::OWN_ALBUM) || (phpbb_gallery::$auth->acl_check('a_count', phpbb_gallery_auth::OWN_ALBUM) > $albums)) ? true : false;
+		$s_allowed_create = (phpbb_gallery::$auth->acl_check('a_unlimited', phpbb_gallery_auth::OWN_ALBUM) || (phpbb_gallery::$auth->acl_check('a_count', phpbb_gallery_auth::OWN_ALBUM) > $albums));
 		$template->assign_vars([
 			'S_MANAGE_SUBALBUMS'			=> true,
 			'U_CREATE_SUBALBUM'				=> ($s_allowed_create) ? ($this->u_action . '&amp;action=create' . (($parent_id) ? '&amp;parent_id=' . $parent_id : '')) : '',
@@ -338,7 +338,7 @@ class ucp_gallery
 			trigger_error('NO_MORE_SUBALBUMS_ALLOWED');
 		}
 
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$redirect = request_var('redirect', '');
 
 		if (!$submit)
@@ -465,7 +465,7 @@ class ucp_gallery
 		$album_id = request_var('album_id', 0);
 		phpbb_gallery_album::check_user($album_id);
 
-		$submit = (isset($_POST['submit'])) ? true : false;
+		$submit = isset($_POST['submit']);
 		$redirect = request_var('redirect', '');
 		if (!$submit)
 		{
@@ -498,7 +498,7 @@ class ucp_gallery
 
 			$template->assign_vars([
 				'S_EDIT_SUBALBUM'			=> true,
-				'S_PERSONAL_ALBUM'			=> ($album_id == phpbb_gallery::$user->get_data('personal_album_id')) ? true : false,
+				'S_PERSONAL_ALBUM'			=> ($album_id == phpbb_gallery::$user->get_data('personal_album_id')),
 				'S_AUTH_ACCESS_OPTIONS'		=> $s_access_options,
 				'L_ALBUM_ACCESS_EXPLAIN'	=> $user->lang('ALBUM_ACCESS_EXPLAIN', '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq') . '#f6r0">', '</a>'),
 
@@ -511,9 +511,9 @@ class ucp_gallery
 				'ALBUM_NAME' 				=> $album_data['album_name'],
 				'ALBUM_DESC'				=> $album_desc_data['text'],
 				'ALBUM_TYPE'				=> $album_data['album_type'],
-				'S_DESC_BBCODE_CHECKED'		=> ($album_desc_data['allow_bbcode']) ? true : false,
-				'S_DESC_SMILIES_CHECKED'	=> ($album_desc_data['allow_smilies']) ? true : false,
-				'S_DESC_URLS_CHECKED'		=> ($album_desc_data['allow_urls']) ? true : false,
+				'S_DESC_BBCODE_CHECKED'		=> (bool) $album_desc_data['allow_bbcode'],
+				'S_DESC_SMILIES_CHECKED'	=> (bool) $album_desc_data['allow_smilies'],
+				'S_DESC_URLS_CHECKED'		=> (bool) $album_desc_data['allow_urls'],
 
 				'S_MODE' 					=> 'edit',
 			]);

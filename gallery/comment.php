@@ -16,7 +16,7 @@ phpbb_gallery_url::_include(['functions_display', 'functions_posting', 'function
 phpbb_gallery_url::_include(['bbcode', 'message_parser'], 'phpbb');
 
 add_form_key('gallery');
-$submit = (isset($_POST['submit'])) ? true : false;
+$submit = isset($_POST['submit']);
 $mode = request_var('mode', '');
 $album_id = request_var('album_id', 0);
 $image_id = request_var('image_id', 0);
@@ -120,10 +120,10 @@ switch ($mode)
 }
 
 
-$bbcode_status	= ($config['allow_bbcode']) ? true : false;
-$smilies_status	= ($config['allow_smilies']) ? true : false;
-$img_status		= ($bbcode_status) ? true : false;
-$url_status		= ($config['allow_post_links']) ? true : false;
+$bbcode_status	= (bool) $config['allow_bbcode'];
+$smilies_status	= (bool) $config['allow_smilies'];
+$img_status		= $bbcode_status;
+$url_status		= (bool) $config['allow_post_links'];
 $flash_status	= false;
 $quote_status	= true;
 
@@ -294,7 +294,7 @@ if ($mode == 'add')
 }
 else if ($mode == 'edit')
 {
-	$comment_username_req = ($comment_data['comment_user_id'] == ANONYMOUS) ? true : false;
+	$comment_username_req = ($comment_data['comment_user_id'] == ANONYMOUS);
 
 	if ($submit)
 	{
@@ -406,7 +406,7 @@ $template->assign_vars([
 	'ERROR'					=> $error,
 	'MESSAGE'				=> $comment_plain ?? '',
 	'USERNAME'				=> $comment_username ?? '',
-	'REQ_USERNAME'			=> (!empty($comment_username_req)) ? true : false,
+	'REQ_USERNAME'			=> !empty($comment_username_req),
 	'L_COMMENT_LENGTH'		=> sprintf($user->lang['COMMENT_LENGTH'], phpbb_gallery_config::get('comment_length')),
 
 	'IMAGE_RSZ_WIDTH'		=> phpbb_gallery_config::get('medium_width'),

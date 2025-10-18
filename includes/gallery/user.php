@@ -179,7 +179,7 @@ class phpbb_gallery_user
 
 		$this->data = array_merge($this->data, $sql_ary);
 
-		return ($this->db->sql_affectedrows() == 1) ? true : false;
+		return ($this->db->sql_affectedrows() == 1);
 	}
 
 	/**
@@ -286,7 +286,7 @@ class phpbb_gallery_user
 			' . $sql_where;
 		$db->sql_query($sql);
 
-		return ($db->sql_affectedrows() != 0) ? true : false;
+		return ($db->sql_affectedrows() != 0);
 	}
 
 	/**

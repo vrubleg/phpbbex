@@ -171,7 +171,7 @@ if (($mode == 'medium') || ($mode == 'thumbnail'))
 
 		if (($image_size['width'] > $resize_width) || ($image_size['height'] > $resize_height))
 		{
-			$put_details = (phpbb_gallery_config::get('thumbnail_infoline') && ($mode == 'thumbnail')) ? true : false;
+			$put_details = (phpbb_gallery_config::get('thumbnail_infoline') && ($mode == 'thumbnail'));
 			$image_tools->create_thumbnail($resize_width, $resize_height, $put_details, phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT, $image_size);
 		}
 
