@@ -54,7 +54,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '1.1.0',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'album_id'					=> ['UINT', NULL, 'auto_increment'],
+					'album_id'					=> ['UINT', null, 'auto_increment'],
 					'parent_id'					=> ['UINT', 0],
 					'left_id'					=> ['UINT', 1],
 					'right_id'					=> ['UINT', 2],
@@ -108,8 +108,8 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '1.1.1',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'comment_id'			=> ['UINT', NULL, 'auto_increment'],
-					'comment_image_id'		=> ['UINT', NULL],
+					'comment_id'			=> ['UINT', null, 'auto_increment'],
+					'comment_image_id'		=> ['UINT', null],
 					'comment_user_id'		=> ['UINT', 0],
 					'comment_username'		=> ['VCHAR', ''],
 					'comment_user_colour'	=> ['VCHAR:6', ''],
@@ -150,7 +150,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '0.4.1',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'contest_id'			=> ['UINT', NULL, 'auto_increment'],
+					'contest_id'			=> ['UINT', null, 'auto_increment'],
 					'contest_album_id'		=> ['UINT', 0],
 					'contest_start'			=> ['UINT:11', 0],
 					'contest_rating'		=> ['UINT:11', 0],
@@ -169,7 +169,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '0.0.0',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'album_id'				=> ['UINT', NULL, 'auto_increment'],
+					'album_id'				=> ['UINT', null, 'auto_increment'],
 					'parent_id'				=> ['UINT', 0],
 					'left_id'				=> ['UINT', 1],
 					'right_id'				=> ['UINT', 2],
@@ -198,7 +198,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '1.1.1',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'favorite_id'			=> ['UINT', NULL, 'auto_increment'],
+					'favorite_id'			=> ['UINT', null, 'auto_increment'],
 					'user_id'				=> ['UINT', 0],
 					'image_id'				=> ['UINT', 0],
 				],
@@ -215,7 +215,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '1.1.1',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'image_id'				=> ['UINT', NULL, 'auto_increment'],
+					'image_id'				=> ['UINT', null, 'auto_increment'],
 					'image_filename'		=> ['VCHAR:255', ''],
 					'image_name'			=> ['VCHAR:255', ''],
 					'image_name_clean'		=> ['VCHAR:255', ''],
@@ -282,7 +282,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '0.4.1',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'perm_id'			=> ['UINT', NULL, 'auto_increment'],
+					'perm_id'			=> ['UINT', null, 'auto_increment'],
 					'perm_role_id'		=> ['UINT', 0],
 					'perm_album_id'		=> ['UINT', 0],
 					'perm_user_id'		=> ['UINT', 0],
@@ -312,7 +312,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '0.3.1',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'report_id'				=> ['UINT', NULL, 'auto_increment'],
+					'report_id'				=> ['UINT', null, 'auto_increment'],
 					'report_album_id'		=> ['UINT', 0],
 					'report_image_id'		=> ['UINT', 0],
 					'reporter_id'			=> ['UINT', 0],
@@ -330,7 +330,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '1.1.3',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'role_id'			=> ['UINT', NULL, 'auto_increment'],
+					'role_id'			=> ['UINT', null, 'auto_increment'],
 					'a_list'			=> ['UINT:3', 0],
 					'i_view'			=> ['UINT:3', 0],
 					'i_watermark'		=> ['UINT:3', 0],
@@ -392,7 +392,7 @@ class phpbb_gallery_dbal_schema
 			'modified'		=> '1.1.1',
 			'structure'		=> [
 				'COLUMNS'		=> [
-					'watch_id'		=> ['UINT', NULL, 'auto_increment'],
+					'watch_id'		=> ['UINT', null, 'auto_increment'],
 					'album_id'		=> ['UINT', 0],
 					'image_id'		=> ['UINT', 0],
 					'user_id'		=> ['UINT', 0],
