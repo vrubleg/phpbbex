@@ -390,7 +390,7 @@ class module
 			foreach ($this->module_ary as $cat_ary)
 			{
 				$cat = $cat_ary['name'];
-				$l_cat = $lang['CAT_' . $cat] ?? preg_replace('#_#', ' ', $cat);
+				$l_cat = $lang['CAT_' . $cat] ?? str_replace('_', ' ', $cat);
 				$cat = strtolower($cat);
 				$url = $this->module_url . "?mode=$cat&amp;language=$language";
 
@@ -407,7 +407,7 @@ class module
 						$subs = $this->module_ary[$this->id]['subs'];
 						foreach ($subs as $option)
 						{
-							$l_option = $lang['SUB_' . $option] ?? preg_replace('#_#', ' ', $option);
+							$l_option = $lang['SUB_' . $option] ?? str_replace('_', ' ', $option);
 							$option = strtolower($option);
 							$url = $this->module_url . '?mode=' . $this->mode . "&amp;sub=$option&amp;language=$language";
 
@@ -425,7 +425,7 @@ class module
 						$matched = false;
 						foreach ($subs as $option)
 						{
-							$l_option = $lang['STAGE_' . $option] ?? preg_replace('#_#', ' ', $option);
+							$l_option = $lang['STAGE_' . $option] ?? str_replace('_', ' ', $option);
 							$option = strtolower($option);
 							$matched = ($this->sub == $option) ? true : $matched;
 
