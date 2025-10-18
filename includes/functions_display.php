@@ -486,7 +486,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			$l_post_click_count		=> $post_click_count,
 			'FORUM_FOLDER_IMG'		=> $user->img($folder_image, $folder_alt),
 			'FORUM_FOLDER_IMG_SRC'	=> $user->img($folder_image, $folder_alt, false, '', 'src'),
-			'FORUM_FOLDER_IMG_ALT'	=> isset($user->lang[$folder_alt]) ? $user->lang[$folder_alt] : '',
+			'FORUM_FOLDER_IMG_ALT'	=> $user->lang[$folder_alt] ?? '',
 			'FORUM_IMAGE'			=> ($row['forum_image']) ? '<img src="' . PHPBB_ROOT_PATH . $row['forum_image'] . '" alt="' . $user->lang[$folder_alt] . '" />' : '',
 			'FORUM_IMAGE_SRC'		=> ($row['forum_image']) ? PHPBB_ROOT_PATH . $row['forum_image'] : '',
 			'LAST_POST_ID'			=> $last_post_id,
@@ -1371,7 +1371,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					AND user_id = $user_id";
 			$result = $db->sql_query($sql);
 
-			$notify_status = ($row = $db->sql_fetchrow($result)) ? $row['notify_status'] : NULL;
+			$notify_status = ($row = $db->sql_fetchrow($result)) ? $row['notify_status'] : null;
 			$db->sql_freeresult($result);
 		}
 
@@ -1621,5 +1621,5 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 		}
 	}
 
-	return '<img src="' . (str_replace(' ', '%20', $avatar_img)) . '" width="' . $avatar_width . '" height="' . $avatar_height . '" alt="' . ((!empty($user->lang[$alt])) ? $user->lang[$alt] : $alt) . '" />';
+	return '<img src="' . (str_replace(' ', '%20', $avatar_img)) . '" width="' . $avatar_width . '" height="' . $avatar_height . '" alt="' . ($user->lang[$alt] ?? $alt) . '" />';
 }

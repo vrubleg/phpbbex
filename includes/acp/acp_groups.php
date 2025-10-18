@@ -507,9 +507,9 @@ class acp_groups
 					'GROUP_RECEIVE_PM'		=> (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
 					'GROUP_FOUNDER_MANAGE'	=> (isset($group_row['group_founder_manage']) && $group_row['group_founder_manage']) ? ' checked="checked"' : '',
 					'GROUP_LEGEND'			=> (isset($group_row['group_legend']) && $group_row['group_legend']) ? ' checked="checked"' : '',
-					'GROUP_MESSAGE_LIMIT'	=> (isset($group_row['group_message_limit'])) ? $group_row['group_message_limit'] : 0,
-					'GROUP_MAX_RECIPIENTS'	=> (isset($group_row['group_max_recipients'])) ? $group_row['group_max_recipients'] : 0,
-					'GROUP_COLOUR'			=> (isset($group_row['group_colour'])) ? $group_row['group_colour'] : '',
+					'GROUP_MESSAGE_LIMIT'	=> $group_row['group_message_limit'] ?? 0,
+					'GROUP_MAX_RECIPIENTS'	=> $group_row['group_max_recipients'] ?? 0,
+					'GROUP_COLOUR'			=> $group_row['group_colour'] ?? '',
 					'GROUP_SKIP_AUTH'		=> (!empty($group_row['group_skip_auth'])) ? ' checked="checked"' : '',
 
 					'S_DESC_BBCODE_CHECKED'	=> $group_desc_data['allow_bbcode'],
@@ -695,7 +695,7 @@ class acp_groups
 
 			foreach ($row_ary as $group_id => $row)
 			{
-				$group_name = (!empty($user->lang['G_' . $row['group_name']]))? $user->lang['G_' . $row['group_name']] : $row['group_name'];
+				$group_name = $user->lang['G_' . $row['group_name']] ?? $row['group_name'];
 
 				$template->assign_block_vars('groups', [
 					'U_LIST'		=> "{$this->u_action}&amp;action=list&amp;g=$group_id",

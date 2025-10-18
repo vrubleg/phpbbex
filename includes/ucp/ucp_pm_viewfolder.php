@@ -434,7 +434,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 	}
 	else
 	{
-		$pm_count = (!empty($folder[$folder_id]['num_messages'])) ? $folder[$folder_id]['num_messages'] : 0;
+		$pm_count = $folder[$folder_id]['num_messages'] ?? 0;
 		$sql_limit_time = '';
 	}
 

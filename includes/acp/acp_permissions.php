@@ -589,7 +589,7 @@ class acp_permissions
 			}
 
 			$selected = ($setting == $default_option) ? ' selected="selected"' : '';
-			$l_setting = (isset($user->lang['permission_type'][$permission_scope][$setting])) ? $user->lang['permission_type'][$permission_scope][$setting] : $user->lang['permission_type'][$setting];
+			$l_setting = $user->lang['permission_type'][$permission_scope][$setting] ?? $user->lang['permission_type'][$setting];
 			$s_dropdown_options .= '<option value="' . $setting . '"' . $selected . '>' . $l_setting . '</option>';
 		}
 
@@ -747,8 +747,8 @@ class acp_permissions
 			trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
 
-		$auth_settings = (isset($_POST['setting'])) ? $_POST['setting'] : [];
-		$auth_roles = (isset($_POST['role'])) ? $_POST['role'] : [];
+		$auth_settings = $_POST['setting'] ?? [];
+		$auth_roles = $_POST['role'] ?? [];
 		$ug_ids = $forum_ids = [];
 
 		// We need to go through the auth settings

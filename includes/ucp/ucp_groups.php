@@ -433,7 +433,7 @@ class ucp_groups
 					$template->assign_vars([
 						'GROUP_NAME'			=> ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
 						'GROUP_INTERNAL_NAME'	=> $group_name,
-						'GROUP_COLOUR'			=> (isset($group_row['group_colour'])) ? $group_row['group_colour'] : '',
+						'GROUP_COLOUR'			=> $group_row['group_colour'] ?? '',
 						'GROUP_DESC_DISP'		=> generate_text_for_display($group_row['group_desc'], $group_row['group_desc_uid'], $group_row['group_desc_bitfield'], $group_row['group_desc_options']),
 						'GROUP_TYPE'			=> $group_row['group_type'],
 					]);
@@ -590,8 +590,8 @@ class ucp_groups
 
 							'ERROR_MSG'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 							'GROUP_RECEIVE_PM'		=> (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
-							'GROUP_MESSAGE_LIMIT'	=> (isset($group_row['group_message_limit'])) ? $group_row['group_message_limit'] : 0,
-							'GROUP_MAX_RECIPIENTS'	=> (isset($group_row['group_max_recipients'])) ? $group_row['group_max_recipients'] : 0,
+							'GROUP_MESSAGE_LIMIT'	=> $group_row['group_message_limit'] ?? 0,
+							'GROUP_MAX_RECIPIENTS'	=> $group_row['group_max_recipients'] ?? 0,
 
 							'GROUP_DESC'			=> $group_desc_data['text'],
 							'S_DESC_BBCODE_CHECKED'	=> $group_desc_data['allow_bbcode'],

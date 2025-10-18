@@ -737,7 +737,7 @@ function mcp_delete_post($post_ids)
 		{
 			$post_username = ($row['poster_id'] == ANONYMOUS && !empty($row['post_username'])) ? $row['post_username'] : $row['username'];
 			decode_message($row['post_text'], $row['bbcode_uid']);
-			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_DELETE_POST', $row['post_subject'] ? $row['post_subject'] : $row['topic_title'], $post_username, $row['post_text']);
+			add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_DELETE_POST', $row['post_subject'] ?: $row['topic_title'], $post_username, $row['post_text']);
 		}
 
 		// Now delete the posts, topics and forums are automatically resync'ed

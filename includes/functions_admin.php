@@ -84,7 +84,7 @@ function make_forum_select($select_id = false, $ignore_id = false, $ignore_acl =
 		}
 		else if ($row['left_id'] > $right + 1)
 		{
-			$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : '';
+			$padding = $padding_store[$row['parent_id']] ?? '';
 		}
 
 		$right = $row['right_id'];
@@ -221,7 +221,7 @@ function get_forum_list($acl_list = 'f_list', $id_only = true, $postable_only = 
 			{
 				// Ok, if the $padding_store for this parent is empty there is something wrong. For now we will skip over it.
 				// @todo digging deep to find out "how" this can happen.
-				$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : $padding;
+				$padding = $padding_store[$row['parent_id']] ?? $padding;
 			}
 
 			$right = $row['right_id'];
@@ -2585,7 +2585,7 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			'viewforum'			=> ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : false,
 			'viewalbum'			=> ((isset($row['album_id']) && $row['album_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id']) : false),
 			'viewimage'			=> ((isset($row['image_id']) && $row['image_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['image_id']) : false),
-			'action'			=> (isset($user->lang[$row['log_operation']])) ? $user->lang[$row['log_operation']] : '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
+			'action'			=> $user->lang[$row['log_operation']] ?? '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
 		];
 
 		if (!empty($row['log_data']))
@@ -2934,7 +2934,7 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 		@fputs($fsock, "GET $directory/$filename HTTP/1.0\r\n");
 		@fputs($fsock, "Host: $host\r\n");
 		@fputs($fsock, "Referer: ".generate_board_url()."\r\n");
-		@fputs($fsock, 'User-Agent: phpBBex/' . (isset($config['phpbbex_version']) ? $config['phpbbex_version'] : '?')
+		@fputs($fsock, 'User-Agent: phpBBex/' . ($config['phpbbex_version'] ?? '?')
 			. ' PHP/' . PHP_VERSION . ' ' . PHP_OS
 			. ' (' . $config['num_posts'] . '; ' . $config['num_topics'] . '; ' . $config['num_users'] . ")\r\n");
 		@fputs($fsock, "Connection: close\r\n\r\n");

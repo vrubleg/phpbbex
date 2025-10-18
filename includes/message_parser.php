@@ -600,13 +600,13 @@ class bbcode_firstpass extends bbcode
 				{
 					$out .= substr($in, 0, $pos);
 					$in = substr($in, $pos);
-					$stx = (isset($buffer[3])) ? $buffer[3] : '';
+					$stx = $buffer[3] ?? '';
 					$code_block = '';
 				}
 				else
 				{
 					// Already opened block, just append to the current block
-					$code_block .= substr($in, 0, $pos) . ((isset($buffer[2])) ? $buffer[2] : '');
+					$code_block .= substr($in, 0, $pos) . ($buffer[2] ?? '');
 					$in = substr($in, $pos);
 				}
 
@@ -998,7 +998,7 @@ class bbcode_firstpass extends bbcode
 		$var2 = str_replace("\r\n", "\n", str_replace('\"', '"', trim($var2)));
 
 		$txt = $var2;
-		$email = ($var1) ? $var1 : $var2;
+		$email = $var1 ?: $var2;
 
 		$validated = true;
 
@@ -1068,7 +1068,7 @@ class bbcode_firstpass extends bbcode
 		$args = str_replace("\r\n", "\n", str_replace('\"', '"', trim($args)));
 		$text = str_replace("\r\n", "\n", str_replace('\"', '"', trim($text)));
 
-		$url = ($args) ? $args : $text;
+		$url = $args ?: $text;
 		if (!$url)
 		{
 			return '[url' . (($args) ? '=' . $args : '') . ']' . $text . '[/url]';
@@ -1435,7 +1435,7 @@ class parse_message extends bbcode_firstpass
 
 				// (assertion)
 				$match[] = preg_quote($row['code'], '#');
-				$replace[] = '<!-- s' . $row['code'] . ' --><img src="{SMILIES_PATH}/' . $row['smiley_url'] . '" alt="' . $row['code'] . '" title="' . (isset($user->lang[$row['emotion']]) ? $user->lang[$row['emotion']] : $row['emotion']) . '" /><!-- s' . $row['code'] . ' -->';
+				$replace[] = '<!-- s' . $row['code'] . ' --><img src="{SMILIES_PATH}/' . $row['smiley_url'] . '" alt="' . $row['code'] . '" title="' . ($user->lang[$row['emotion']] ?? $row['emotion']) . '" /><!-- s' . $row['code'] . ' -->';
 			}
 			$db->sql_freeresult($result);
 		}
@@ -1702,7 +1702,7 @@ class parse_message extends bbcode_firstpass
 
 						// Refresh attachment data
 						$this->attachment_data[$index]['real_filename'] = $filedata['real_filename'];
-						$this->attachment_data[$index]['attach_comment'] = ($this->filename_data['filecomment']) ? $this->filename_data['filecomment'] : $this->attachment_data[$index]['attach_comment'];
+						$this->attachment_data[$index]['attach_comment'] = $this->filename_data['filecomment'] ?: $this->attachment_data[$index]['attach_comment'];
 						$this->message = preg_replace("#\[attachment=$index\](.*?)\[\/attachment\]#e", "'[attachment=$index]' . \$filename . '[/attachment]'", $this->message);
 						$this->filename_data['filecomment'] = '';
 					}
@@ -1724,7 +1724,7 @@ class parse_message extends bbcode_firstpass
 		global $user, $db, $config;
 
 		$this->filename_data['filecomment'] = utf8_normalize_nfc(request_var('filecomment', '', true));
-		$attachment_data = (isset($_POST['attachment_data'])) ? $_POST['attachment_data'] : [];
+		$attachment_data = $_POST['attachment_data'] ?? [];
 		$this->attachment_data = [];
 
 		$check_user_id = ($check_user_id === false) ? $user->data['user_id'] : $check_user_id;

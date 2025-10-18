@@ -993,7 +993,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
 				if ($user_id == $user->data['user_id'])
@@ -1048,8 +1048,8 @@ class acp_users
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
 
-					$user_row['session_time'] = (isset($row['session_time'])) ? $row['session_time'] : 0;
-					$user_row['session_viewonline'] = (isset($row['session_viewonline'])) ? $row['session_viewonline'] : 0;
+					$user_row['session_time'] = $row['session_time'] ?? 0;
+					$user_row['session_viewonline'] = $row['session_viewonline'] ?? 0;
 					unset($row);
 				}
 
@@ -1468,7 +1468,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
 				$s_birthday_day_options = '<option value="0"' . ((!$data['bday_day']) ? ' selected="selected"' : '') . '>--</option>';
@@ -1541,13 +1541,13 @@ class acp_users
 					'popuppm'			=> request_var('popuppm', $this->optionget($user_row, 'popuppm')),
 					'allowpm'			=> request_var('allowpm', $user_row['user_allow_pm']),
 
-					'topic_sk'			=> request_var('topic_sk', ($user_row['user_topic_sortby_type']) ? $user_row['user_topic_sortby_type'] : 't'),
-					'topic_sd'			=> request_var('topic_sd', ($user_row['user_topic_sortby_dir']) ? $user_row['user_topic_sortby_dir'] : 'd'),
-					'topic_st'			=> request_var('topic_st', ($user_row['user_topic_show_days']) ? $user_row['user_topic_show_days'] : 0),
+					'topic_sk'			=> request_var('topic_sk', $user_row['user_topic_sortby_type'] ?: 't'),
+					'topic_sd'			=> request_var('topic_sd', $user_row['user_topic_sortby_dir'] ?: 'd'),
+					'topic_st'			=> request_var('topic_st', $user_row['user_topic_show_days'] ?: 0),
 
-					'post_sk'			=> request_var('post_sk', ($user_row['user_post_sortby_type']) ? $user_row['user_post_sortby_type'] : 't'),
-					'post_sd'			=> request_var('post_sd', ($user_row['user_post_sortby_dir']) ? $user_row['user_post_sortby_dir'] : 'a'),
-					'post_st'			=> request_var('post_st', ($user_row['user_post_show_days']) ? $user_row['user_post_show_days'] : 0),
+					'post_sk'			=> request_var('post_sk', $user_row['user_post_sortby_type'] ?: 't'),
+					'post_sd'			=> request_var('post_sd', $user_row['user_post_sortby_dir'] ?: 'a'),
+					'post_st'			=> request_var('post_st', $user_row['user_post_show_days'] ?: 0),
 
 					'view_images'		=> request_var('view_images', $this->optionget($user_row, 'viewimg')),
 					'view_flash'		=> request_var('view_flash', $this->optionget($user_row, 'viewflash')),
@@ -1564,11 +1564,11 @@ class acp_users
 
 				if ($submit)
 				{
-					$data['style']		= ($config['override_user_style'])		? $config['default_style']		: $data['style'];
-					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
-					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
-					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
-					$data['dst']		= ($config['override_user_timezone'])	? $config['board_dst']			: $data['dst'];
+					$data['style']		= ($config['override_user_style']) ? $config['default_style'] : $data['style'];
+					$data['lang']		= ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+					$data['dateformat']	= ($config['override_user_dateformat']) ? $config['default_dateformat'] : $data['dateformat'];
+					$data['tz']			= ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
+					$data['dst']		= ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
 					$error = validate_data($data, [
 						'dateformat'	=> ['string', false, 1, 30],
@@ -1660,7 +1660,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
 				$dateformat_options = '';
@@ -1785,7 +1785,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
 				if (!$config['allow_avatar'] && $user_row['user_avatar_type'])
@@ -1944,7 +1944,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
 				$signature_preview = '';
@@ -1974,7 +1974,7 @@ class acp_users
 					'FLASH_STATUS'			=> ($config['allow_sig_flash']) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 					'URL_STATUS'			=> ($config['allow_sig_links']) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 
-					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ? $config['max_sig_lines'] : $user->lang['NO']),
+					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ?: $user->lang['NO']),
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],

@@ -151,9 +151,9 @@ class ucp_register
 		// Check and initialize some variables if needed
 		if ($submit)
 		{
-			$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
-			$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
-			$is_dst				= ($config['override_user_timezone'])	? $config['board_dst']			: $is_dst;
+			$data['lang']		= ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+			$data['tz']			= ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
+			$is_dst				= ($config['override_user_timezone']) ? $config['board_dst'] : $is_dst;
 
 			$error_type = [
 				'generic' => false,
@@ -188,7 +188,7 @@ class ucp_register
 			}
 
 			// Replace "error" strings with their real, localised form
-			$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
+			$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 
 			if ($config['enable_confirm'])
 			{

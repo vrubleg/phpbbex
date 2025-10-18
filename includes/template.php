@@ -258,7 +258,7 @@ class phpbb_template
 		$user->theme['template_inherits_id'] = $this->orig_tpl_inherits_id;
 
 		$filename = $this->cachepath . str_replace('/', '.', $this->filename[$handle]) . '.php';
-		$this->files_template[$handle] = (isset($user->theme['template_id'])) ? $user->theme['template_id'] : 0;
+		$this->files_template[$handle] = $user->theme['template_id'] ?? 0;
 
 		$recompile = false;
 		if (!file_exists($filename) || @filesize($filename) === 0 || defined('DEBUG_EXTRA'))
@@ -564,7 +564,7 @@ class phpbb_template
 			$search_key = key($key);
 			$search_value = current($key);
 
-			$key = NULL;
+			$key = null;
 			foreach ($this->_tpldata[$blockname] as $i => $val_ary)
 			{
 				if (isset($val_ary[$search_key]) && $val_ary[$search_key] === $search_value)
@@ -575,7 +575,7 @@ class phpbb_template
 			}
 
 			// key/value pair not found
-			if ($key === NULL)
+			if ($key === null)
 			{
 				return false;
 			}

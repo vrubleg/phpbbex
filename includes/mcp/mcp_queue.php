@@ -667,7 +667,7 @@ function approve_post($post_id_list, $id, $mode)
 
 		foreach ($post_info as $post_id => $post_data)
 		{
-			$username = ($post_data['post_username']) ? $post_data['post_username'] : $post_data['username'];
+			$username = $post_data['post_username'] ?: $post_data['username'];
 
 			if ($post_id == $post_data['topic_first_post_id'] && $post_id == $post_data['topic_last_post_id'])
 			{

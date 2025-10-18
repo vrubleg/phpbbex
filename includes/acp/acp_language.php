@@ -969,7 +969,7 @@ class acp_language
 				'TAG'				=> $tagstyle,
 				'LOCAL_NAME'		=> $row['lang_local_name'],
 				'ISO'				=> $row['lang_iso'],
-				'USED_BY'			=> (isset($lang_count[$row['lang_iso']])) ? $lang_count[$row['lang_iso']] : 0,
+				'USED_BY'			=> $lang_count[$row['lang_iso']] ?? 0,
 			]);
 		}
 		$db->sql_freeresult($result);

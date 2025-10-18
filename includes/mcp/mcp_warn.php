@@ -321,10 +321,10 @@ class mcp_warn
 			'RANK_IMG'			=> $rank_img,
 
 			'WARNING_DEFAULT'	=> $config['warning_post_default'],
-			'WARNING_DAYS'		=> (isset($warning_row['warning_days']) ? $warning_row['warning_days'] : $config['warnings_expire_days']),
-			'WARNING_TYPE'		=> (isset($warning_row['warning_type'])) ? $warning_row['warning_type'] : 'warning',
-			'WARNING_ID'		=> (isset($warning_row['warning_id'])) ? $warning_row['warning_id'] : '',
-			'WARNING'			=> (isset($warning_row['warning_text'])) ? $warning_row['warning_text'] : '',
+			'WARNING_DAYS'		=> $warning_row['warning_days'] ?? $config['warnings_expire_days'],
+			'WARNING_TYPE'		=> $warning_row['warning_type'] ?? 'warning',
+			'WARNING_ID'		=> $warning_row['warning_id'] ?? '',
+			'WARNING'			=> $warning_row['warning_text'] ?? '',
 
 			'S_CAN_NOTIFY'		=> $s_can_notify,
 		]);
@@ -429,10 +429,10 @@ class mcp_warn
 			'RANK_IMG'			=> $rank_img,
 
 			'WARNING_DEFAULT'	=> $config['warning_post_default'],
-			'WARNING_DAYS'		=> (isset($warning_row['warning_days']) ? $warning_row['warning_days'] : $config['warnings_expire_days']),
-			'WARNING_TYPE'		=> (isset($warning_row['warning_type'])) ? $warning_row['warning_type'] : 'warning',
-			'WARNING_ID'		=> (isset($warning_row['warning_id'])) ? $warning_row['warning_id'] : '',
-			'WARNING'			=> (isset($warning_row['warning_text'])) ? $warning_row['warning_text'] : '',
+			'WARNING_DAYS'		=> $warning_row['warning_days'] ?? $config['warnings_expire_days'],
+			'WARNING_TYPE'		=> $warning_row['warning_type'] ?? 'warning',
+			'WARNING_ID'		=> $warning_row['warning_id'] ?? '',
+			'WARNING'			=> $warning_row['warning_text'] ?? '',
 
 			'S_CAN_NOTIFY'		=> $s_can_notify,
 		]);
@@ -557,10 +557,10 @@ class mcp_warn
 			'RANK_IMG'			=> $rank_img,
 
 			'WARNING_DEFAULT'	=> $config['warning_post_default'],
-			'WARNING_DAYS'		=> (isset($warning_row['warning_days']) ? $warning_row['warning_days'] : $config['warnings_expire_days']),
-			'WARNING_TYPE'		=> (isset($warning_row['warning_type'])) ? $warning_row['warning_type'] : 'warning',
-			'WARNING_ID'		=> (isset($warning_row['warning_id'])) ? $warning_row['warning_id'] : '',
-			'WARNING'			=> (isset($warning_row['warning_text'])) ? $warning_row['warning_text'] : '',
+			'WARNING_DAYS'		=> $warning_row['warning_days'] ?? $config['warnings_expire_days'],
+			'WARNING_TYPE'		=> $warning_row['warning_type'] ?? 'warning',
+			'WARNING_ID'		=> $warning_row['warning_id'] ?? '',
+			'WARNING'			=> $warning_row['warning_text'] ?? '',
 
 			'S_CAN_NOTIFY'		=> false,
 		]);

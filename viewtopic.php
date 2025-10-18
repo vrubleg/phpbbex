@@ -65,7 +65,7 @@ if ($view && !$post_id)
 		// Get topic tracking info
 		$topic_tracking_info = get_complete_topic_tracking($forum_id, $topic_id);
 
-		$topic_last_read = (isset($topic_tracking_info[$topic_id])) ? $topic_tracking_info[$topic_id] : 0;
+		$topic_last_read = $topic_tracking_info[$topic_id] ?? 0;
 
 		$sql = 'SELECT post_id, topic_id, forum_id
 			FROM ' . POSTS_TABLE . "
@@ -395,7 +395,7 @@ $s_watching_topic = [
 
 if (($config['email_enable'] || $config['jab_enable']) && $config['allow_topic_notify'])
 {
-	$notify_status = (isset($topic_data['notify_status'])) ? $topic_data['notify_status'] : null;
+	$notify_status = $topic_data['notify_status'] ?? null;
 	watch_topic_forum('topic', $s_watching_topic, $user->data['user_id'], $forum_id, $topic_id, $notify_status, $start, $topic_data['topic_title']);
 
 	// Reset forum notification if forum notify is set
@@ -825,7 +825,7 @@ if (!empty($topic_data['poll_start']))
 			'POLL_OPTION_PERCENT'	=> $option_pct_txt,
 			'POLL_OPTION_PCT'		=> round($option_pct * 100),
 			'POLL_OPTION_IMG'		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
-			'POLL_OPTION_VOTERS'	=> isset($poll_option['poll_option_voters']) ? $poll_option['poll_option_voters'] : '',
+			'POLL_OPTION_VOTERS'	=> $poll_option['poll_option_voters'] ?? '',
 			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)),
 		]);
 	}
@@ -896,10 +896,10 @@ $bbcode_bitfield = '';
 
 // Go ahead and pull all data for this topic
 $sql = 'SELECT p.post_id
-	FROM ' . POSTS_TABLE . ' p' . (($join_user_sql[$sort_key]) ? ', ' . USERS_TABLE . ' u': '') . "
+	FROM ' . POSTS_TABLE . ' p' . (($join_user_sql[$sort_key]) ? ', ' . USERS_TABLE . ' u' : '') . "
 	WHERE p.topic_id = $topic_id
 		" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p.post_approved = 1' : '') . "
-		" . (($join_user_sql[$sort_key]) ? 'AND u.user_id = p.poster_id': '') . "
+		" . (($join_user_sql[$sort_key]) ? 'AND u.user_id = p.poster_id' : '') . "
 		$limit_posts_time
 	ORDER BY $sql_sort_order";
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
@@ -1110,9 +1110,9 @@ while ($row = $db->sql_fetchrow($result))
 				'with_us'		=> !empty($config['style_mp_show_with_us']) ? get_verbal_time_delta($row['user_regdate'], time(), false, 2) : '',
 				'posts'			=> $row['user_posts'],
 				'topics'		=> $row['user_topics'],
-				'warnings'		=> (isset($row['user_warnings'])) ? $row['user_warnings'] : 0,
+				'warnings'		=> $row['user_warnings'] ?? 0,
 				'warnings_data'	=> [],
-				'from'			=> (!empty($row['user_from'])) ? $row['user_from'] : '',
+				'from'			=> $row['user_from'] ?? '',
 
 				'rating'			=> ($config['rate_no_positive'] ? 0 : $row['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rating_negative']),
 				'rating_positive'	=> $row['user_rating_positive'],
@@ -1122,8 +1122,8 @@ while ($row = $db->sql_fetchrow($result))
 				'rated_negative'	=> $row['user_rated_negative'],
 
 				'sig'					=> $user_sig,
-				'sig_bbcode_uid'		=> (!empty($row['user_sig_bbcode_uid'])) ? $row['user_sig_bbcode_uid'] : '',
-				'sig_bbcode_bitfield'	=> (!empty($row['user_sig_bbcode_bitfield'])) ? $row['user_sig_bbcode_bitfield'] : '',
+				'sig_bbcode_uid'		=> $row['user_sig_bbcode_uid'] ?? '',
+				'sig_bbcode_bitfield'	=> $row['user_sig_bbcode_bitfield'] ?? '',
 
 				'viewonline'	=> $row['user_allow_viewonline'],
 				'allow_pm'		=> $row['user_allow_pm'],
@@ -1539,9 +1539,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			|| ($topic_data['topic_first_post_id'] == $row['post_id'] && $auth->acl_get('u_ignorefpedittime')))
 	)));
 
-	$quote_allowed = $auth->acl_get('m_edit', $forum_id) || ($topic_data['topic_status'] != ITEM_LOCKED &&
-		($user->data['user_id'] == ANONYMOUS || $auth->acl_get('f_reply', $forum_id))
-	);
+	$quote_allowed = ($topic_data['topic_status'] != ITEM_LOCKED && $auth->acl_get('f_reply', $forum_id) || $auth->acl_get('m_edit', $forum_id));
 
 	$delete_allowed = ($user->data['is_registered'] && ($auth->acl_get('m_delete', $forum_id) || (
 		$user->data['user_id'] == $poster_id &&
@@ -1553,7 +1551,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		!$row['post_edit_locked']
 	)));
 
-	$user_rate = isset($user_rates[$row['post_id']]) ? $user_rates[$row['post_id']] : ['rate' => 0, 'rate_time' => 0];
+	$user_rate = $user_rates[$row['post_id']] ?? ['rate' => 0, 'rate_time' => 0];
 	$rate_time = ($topic_data['topic_first_post_id'] != $row['post_id'] || !isset($config['rate_topic_time']) || $config['rate_topic_time'] == -1) ? $config['rate_time'] : $config['rate_topic_time'];
 
 	$post_number = ($topic_data['topic_first_post_show'] && $start != 0) ? ($topic_data['topic_first_post_id'] == $row['post_id'] ? 1 : $i + $start) : $i + $start + 1;
@@ -1814,7 +1812,7 @@ if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'
 	markread('topic', $forum_id, $topic_id, $max_post_time);
 
 	// Update forum info
-	$all_marked_read = update_forum_tracking_info($forum_id, $topic_data['forum_last_post_time'], (isset($topic_data['forum_mark_time'])) ? $topic_data['forum_mark_time'] : false, false);
+	$all_marked_read = update_forum_tracking_info($forum_id, $topic_data['forum_last_post_time'], $topic_data['forum_mark_time'] ?? false, false);
 }
 else
 {

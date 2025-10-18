@@ -30,7 +30,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 	}
 	else
 	{
-		$default = (isset($vars['default'])) ? $vars['default'] : '';
+		$default = $vars['default'] ?? '';
 	}
 
 	switch ($tpl_type[0])
@@ -46,7 +46,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 			$size = (int) $tpl_type[1];
 			$maxlength = (int) $tpl_type[2];
 
-			$tpl['tpl'] = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . (($maxlength) ? $maxlength : 255) . '" name="' . $name . '" value="' . $default . '" />';
+			$tpl['tpl'] = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '" value="' . $default . '" />';
 		break;
 
 		case 'textarea':

@@ -31,13 +31,13 @@ class erk_config_repair
 
 		$error = [];
 		$data = [
-			'dbms'			=> (isset($_POST['dbms'])) ? $_POST['dbms'] : '',
-			'dbhost'		=> (isset($_POST['dbhost'])) ? $_POST['dbhost'] : '',
-			'dbport'		=> (isset($_POST['dbport'])) ? $_POST['dbport'] : '',
-			'dbname'		=> (isset($_POST['dbname'])) ? $_POST['dbname'] : '',
-			'dbuser'		=> (isset($_POST['dbuser'])) ? $_POST['dbuser'] : '',
-			'dbpasswd'		=> (isset($_POST['dbpasswd'])) ? $_POST['dbpasswd'] : '',
-			'table_prefix'	=> (isset($_POST['table_prefix'])) ? $_POST['table_prefix'] : 'phpbb_',
+			'dbms'			=> $_POST['dbms'] ?? '',
+			'dbhost'		=> $_POST['dbhost'] ?? '',
+			'dbport'		=> $_POST['dbport'] ?? '',
+			'dbname'		=> $_POST['dbname'] ?? '',
+			'dbuser'		=> $_POST['dbuser'] ?? '',
+			'dbpasswd'		=> $_POST['dbpasswd'] ?? '',
+			'table_prefix'	=> $_POST['table_prefix'] ?? 'phpbb_',
 		];
 
 		if (isset($_POST['submit']))
@@ -239,7 +239,7 @@ class erk_config_repair
 		if (is_array($db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false)))
 		{
 			$db_error = $db->sql_error();
-			$error[] = 'Could not connect to the database, see error message below.' . '<br />' . (($db_error['message']) ? $db_error['message'] : 'No error message given.');
+			$error[] = 'Could not connect to the database, see error message below.' . '<br />' . ($db_error['message'] ?: 'No error message given.');
 		}
 		else
 		{

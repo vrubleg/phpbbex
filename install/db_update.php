@@ -1417,23 +1417,23 @@ function database_update_info()
 			],
 			'change_columns'	=> [
 				STYLES_TABLE				=> [
-					'style_id'				=> ['UINT', NULL, 'auto_increment'],
+					'style_id'				=> ['UINT', null, 'auto_increment'],
 					'template_id'			=> ['UINT', 0],
 					'theme_id'				=> ['UINT', 0],
 					'imageset_id'			=> ['UINT', 0],
 				],
 				STYLES_IMAGESET_TABLE		=> [
-					'imageset_id'				=> ['UINT', NULL, 'auto_increment'],
+					'imageset_id'				=> ['UINT', null, 'auto_increment'],
 				],
 				STYLES_IMAGESET_DATA_TABLE	=> [
-					'image_id'				=> ['UINT', NULL, 'auto_increment'],
+					'image_id'				=> ['UINT', null, 'auto_increment'],
 					'imageset_id'			=> ['UINT', 0],
 				],
 				STYLES_THEME_TABLE			=> [
-					'theme_id'				=> ['UINT', NULL, 'auto_increment'],
+					'theme_id'				=> ['UINT', null, 'auto_increment'],
 				],
 				STYLES_TEMPLATE_TABLE		=> [
-					'template_id'			=> ['UINT', NULL, 'auto_increment'],
+					'template_id'			=> ['UINT', null, 'auto_increment'],
 				],
 				STYLES_TEMPLATE_DATA_TABLE	=> [
 					'template_id'			=> ['UINT', 0],

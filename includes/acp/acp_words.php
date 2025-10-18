@@ -65,8 +65,8 @@ class acp_words
 					'S_EDIT_WORD'		=> true,
 					'U_ACTION'			=> $this->u_action,
 					'U_BACK'			=> $this->u_action,
-					'WORD'				=> (isset($word_info['word'])) ? $word_info['word'] : '',
-					'REPLACEMENT'		=> (isset($word_info['replacement'])) ? $word_info['replacement'] : '',
+					'WORD'				=> $word_info['word'] ?? '',
+					'REPLACEMENT'		=> $word_info['replacement'] ?? '',
 					'S_HIDDEN_FIELDS'	=> $s_hidden_fields]
 				);
 

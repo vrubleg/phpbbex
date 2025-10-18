@@ -68,8 +68,8 @@ class acp_permission_roles
 
 		$template->assign_vars([
 			'L_TITLE'		=> $user->lang[$this->page_title],
-			'L_EXPLAIN'		=> $user->lang[$this->page_title . '_EXPLAIN']]
-		);
+			'L_EXPLAIN'		=> $user->lang[$this->page_title . '_EXPLAIN'],
+		]);
 
 		// Take action... admin submitted something
 		if ($submit || $action == 'remove')
@@ -99,7 +99,7 @@ class acp_permission_roles
 					{
 						$this->remove_role($role_id, $permission_type);
 
-						$role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
+						$role_name = $user->lang[$role_row['role_name']] ?? $role_row['role_name'];
 						add_log('admin', 'LOG_' . strtoupper($permission_type) . 'ROLE_REMOVED', $role_name);
 						trigger_error($user->lang['ROLE_DELETED'] . adm_back_link($this->u_action));
 					}
@@ -206,7 +206,7 @@ class acp_permission_roles
 					// Now add the auth settings
 					$auth_admin->acl_set_role($role_id, $auth_settings);
 
-					$role_name = (!empty($user->lang[$role_name])) ? $user->lang[$role_name] : $role_name;
+					$role_name = $user->lang[$role_name] ?? $role_name;
 					add_log('admin', 'LOG_' . strtoupper($permission_type) . 'ROLE_' . strtoupper($action), $role_name);
 
 					trigger_error($user->lang['ROLE_' . strtoupper($action) . '_SUCCESS'] . adm_back_link($this->u_action));
@@ -308,8 +308,7 @@ class acp_permission_roles
 					'ROLE_NAME'			=> $role_row['role_name'],
 					'ROLE_DESCRIPTION'	=> $role_row['role_description'],
 					'L_ACL_TYPE'		=> $user->lang['ACL_TYPE_' . strtoupper($permission_type)],
-					]
-				);
+				]);
 
 				// We need to fill the auth options array with ACL_NO options ;)
 				$sql = 'SELECT auth_option_id, auth_option
@@ -341,12 +340,12 @@ class acp_permission_roles
 
 					if (sizeof($hold_ary))
 					{
-						$role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
+						$role_name = $user->lang[$role_row['role_name']] ?? $role_row['role_name'];
 
 						$template->assign_vars([
 							'S_DISPLAY_ROLE_MASK'	=> true,
-							'L_ROLE_ASSIGNED_TO'	=> sprintf($user->lang['ROLE_ASSIGNED_TO'], $role_name)]
-						);
+							'L_ROLE_ASSIGNED_TO'	=> sprintf($user->lang['ROLE_ASSIGNED_TO'], $role_name),
+						]);
 
 						$auth_admin->display_role_mask($hold_ary);
 					}
@@ -405,18 +404,18 @@ class acp_permission_roles
 		$s_role_options = '';
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$role_name = (!empty($user->lang[$row['role_name']])) ? $user->lang[$row['role_name']] : $row['role_name'];
+			$role_name = $user->lang[$row['role_name']] ?? $row['role_name'];
 
 			$template->assign_block_vars('roles', [
 				'ROLE_NAME'				=> $role_name,
-				'ROLE_DESCRIPTION'		=> (!empty($user->lang[$row['role_description']])) ? $user->lang[$row['role_description']] : nl2br($row['role_description']),
+				'ROLE_DESCRIPTION'		=> $user->lang[$row['role_description']] ?? nl2br($row['role_description']),
 
 				'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;role_id=' . $row['role_id'],
 				'U_REMOVE'			=> $this->u_action . '&amp;action=remove&amp;role_id=' . $row['role_id'],
 				'U_MOVE_UP'			=> $this->u_action . '&amp;action=move_up&amp;order=' . $row['role_order'],
 				'U_MOVE_DOWN'		=> $this->u_action . '&amp;action=move_down&amp;order=' . $row['role_order'],
-				'U_DISPLAY_ITEMS'	=> ($row['role_id'] == $display_item) ? '' : $this->u_action . '&amp;display_item=' . $row['role_id'] . '#assigned_to']
-			);
+				'U_DISPLAY_ITEMS'	=> ($row['role_id'] == $display_item) ? '' : $this->u_action . '&amp;display_item=' . $row['role_id'] . '#assigned_to',
+			]);
 
 			$s_role_options .= '<option value="' . $row['role_id'] . '">' . $role_name . '</option>';
 

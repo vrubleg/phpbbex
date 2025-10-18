@@ -42,9 +42,9 @@ $params = false;
 if ($forum_id || $topic_id || $mode)
 {
 	$params = [
-		'f'		=> ($forum_id) ? $forum_id : NULL,
-		't'		=> ($topic_id) ? $topic_id : NULL,
-		'mode'	=> ($mode) ? $mode : NULL,
+		'f'		=> ($forum_id) ? $forum_id : null,
+		't'		=> ($topic_id) ? $topic_id : null,
+		'mode'	=> ($mode) ? $mode : null,
 	];
 }
 
@@ -67,12 +67,12 @@ $feed->open();
 while ($row = $feed->get_item())
 {
 	// BBCode options to correctly disable urls, smilies, bbcode...
-	if ($feed->get('options') === NULL)
+	if ($feed->get('options') === null)
 	{
 		// Allow all combinations
 		$options = 7;
 
-		if ($feed->get('enable_bbcode') !== NULL && $feed->get('enable_smilies') !== NULL && $feed->get('enable_magic_url') !== NULL)
+		if ($feed->get('enable_bbcode') !== null && $feed->get('enable_smilies') !== null && $feed->get('enable_magic_url') !== null)
 		{
 			$options = (($row[$feed->get('enable_bbcode')]) ? OPTION_FLAG_BBCODE : 0) + (($row[$feed->get('enable_smilies')]) ? OPTION_FLAG_SMILIES : 0) + (($row[$feed->get('enable_magic_url')]) ? OPTION_FLAG_LINKS : 0);
 		}
@@ -84,11 +84,11 @@ while ($row = $feed->get_item())
 
 	$title = (isset($row[$feed->get('title')]) && $row[$feed->get('title')] !== '') ? $row[$feed->get('title')] : ((isset($row[$feed->get('title2')])) ? $row[$feed->get('title2')] : '');
 
-	$published = ($feed->get('published') !== NULL) ? (int) $row[$feed->get('published')] : 0;
-	$updated = ($feed->get('updated') !== NULL) ? (int) $row[$feed->get('updated')] : 0;
+	$published = ($feed->get('published') !== null) ? (int) $row[$feed->get('published')] : 0;
+	$updated = ($feed->get('updated') !== null) ? (int) $row[$feed->get('updated')] : 0;
 
 	$item_row = [
-		'author'		=> ($feed->get('creator') !== NULL) ? $row[$feed->get('creator')] : '',
+		'author'		=> ($feed->get('creator') !== null) ? $row[$feed->get('creator')] : '',
 		'published'		=> ($published > 0) ? feed_format_date($published) : '',
 		'updated'		=> ($updated > 0) ? feed_format_date($updated) : '',
 		'link'			=> '',
@@ -154,7 +154,7 @@ switch ($mode)
 			$result = $db->sql_query($sql);
 			$topic_title = $db->sql_fetchfield('topic_title');
 			$db->sql_freeresult($result);
-			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($topic_title ? $topic_title : $user->lang['TOPIC']);
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($topic_title ?: $user->lang['TOPIC']);
 		}
 		else if ($forum_id)
 		{
@@ -164,7 +164,7 @@ switch ($mode)
 			$result = $db->sql_query($sql);
 			$forum_name = $db->sql_fetchfield('forum_name');
 			$db->sql_freeresult($result);
-			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($forum_name ? $forum_name : $user->lang['FORUM']);
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($forum_name ?: $user->lang['FORUM']);
 		}
 		else
 		{
@@ -562,7 +562,7 @@ class phpbb_feed_base
 	*/
 	function get($key)
 	{
-		return (isset($this->keys[$key])) ? $this->keys[$key] : NULL;
+		return $this->keys[$key] ?? null;
 	}
 
 	function get_readable_forums()

@@ -136,7 +136,7 @@ class ucp_main
 				$percentage_topics = ($config['num_topics']) ? min(100, ($user->data['user_topics'] / $config['num_topics']) * 100) : 0;
 
 				$template->assign_vars([
-					'USER_COLOR'		=> (!empty($user->data['user_colour'])) ? $user->data['user_colour'] : '',
+					'USER_COLOR'		=> $user->data['user_colour'] ?? '',
 					'JOINED'			=> $user->format_date($user->data['user_regdate']),
 					'VISITED'			=> (empty($last_visit)) ? ' - ' : $user->format_date($last_visit),
 					'WARNINGS'			=> ($user->data['user_warnings']) ? $user->data['user_warnings'] : 0,
@@ -148,8 +148,8 @@ class ucp_main
 					'TOPICS_PCT'			=> sprintf($user->lang['TOPIC_PCT'], $percentage_topics),
 					'U_SEARCH_USER_TOPICS'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', 'author_id=' . $user->data['user_id'] . '&amp;sr=topics&amp;sf=firstpost') : '',
 
-					'OCCUPATION'	=> (!empty($row['user_occ'])) ? $row['user_occ'] : '',
-					'INTERESTS'		=> (!empty($row['user_interests'])) ? $row['user_interests'] : '',
+					'OCCUPATION'	=> $row['user_occ'] ?? '',
+					'INTERESTS'		=> $row['user_interests'] ?? '',
 
 //					'S_GROUP_OPTIONS'	=> $group_options,
 
@@ -586,7 +586,7 @@ class ucp_main
 			'L_TITLE'			=> $user->lang['UCP_MAIN_' . strtoupper($mode)],
 
 			'S_DISPLAY_MARK_ALL'	=> ($mode == 'watched' || ($mode == 'drafts' && !isset($_GET['edit']))),
-			'S_HIDDEN_FIELDS'		=> (isset($s_hidden_fields)) ? $s_hidden_fields : '',
+			'S_HIDDEN_FIELDS'		=> $s_hidden_fields ?? '',
 			'S_UCP_ACTION'			=> $this->u_action,
 
 			'LAST_POST_IMG'			=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
@@ -697,7 +697,7 @@ class ucp_main
 		$topic_list = $topic_forum_list = $global_announce_list = $rowset = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$topic_id = (isset($row['b_topic_id'])) ? $row['b_topic_id'] : $row['topic_id'];
+			$topic_id = $row['b_topic_id'] ?? $row['topic_id'];
 
 			$topic_list[] = $topic_id;
 			$rowset[$topic_id] = $row;
@@ -733,7 +733,7 @@ class ucp_main
 			$row = &$rowset[$topic_id];
 
 			$forum_id = $row['forum_id'];
-			$topic_id = (isset($row['b_topic_id'])) ? $row['b_topic_id'] : $row['topic_id'];
+			$topic_id = $row['b_topic_id'] ?? $row['topic_id'];
 
 			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 

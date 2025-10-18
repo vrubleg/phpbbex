@@ -83,7 +83,7 @@ class acp_attachments
 				$s_assigned_groups = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$row['group_name'] = (isset($user->lang['EXT_GROUP_' . $row['group_name']])) ? $user->lang['EXT_GROUP_' . $row['group_name']] : $row['group_name'];
+					$row['group_name'] = $user->lang['EXT_GROUP_' . $row['group_name']] ?? $row['group_name'];
 					$s_assigned_groups[$row['cat_id']][] = $row['group_name'];
 				}
 				$db->sql_freeresult($result);
@@ -199,7 +199,7 @@ class acp_attachments
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$value = ($row['site_ip']) ? $row['site_ip'] : $row['site_hostname'];
+					$value = $row['site_ip'] ?: $row['site_hostname'];
 					if ($value)
 					{
 						$defined_ips .= '<option' . (($row['ip_exclude']) ? ' class="sep"' : '') . ' value="' . $row['site_id'] . '">' . $value . '</option>';
@@ -233,8 +233,8 @@ class acp_attachments
 					{
 						$template->assign_block_vars('options', [
 							'S_LEGEND'		=> true,
-							'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars]
-						);
+							'LEGEND'		=> $user->lang[$vars] ?? $vars,
+						]);
 
 						continue;
 					}
@@ -244,11 +244,11 @@ class acp_attachments
 					$l_explain = '';
 					if ($vars['explain'] && isset($vars['lang_explain']))
 					{
-						$l_explain = (isset($user->lang[$vars['lang_explain']])) ? $user->lang[$vars['lang_explain']] : $vars['lang_explain'];
+						$l_explain = $user->lang[$vars['lang_explain']] ?? $vars['lang_explain'];
 					}
 					else if ($vars['explain'])
 					{
-						$l_explain = (isset($user->lang[$vars['lang'] . '_EXPLAIN'])) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '';
+						$l_explain = $user->lang[$vars['lang'] . '_EXPLAIN'] ?? '';
 					}
 
 					$content = build_cfg_template($type, $config_key, $this->new_config, $config_key, $vars);
@@ -377,7 +377,7 @@ class acp_attachments
 
 				$template->assign_vars([
 					'S_EXTENSIONS'			=> true,
-					'ADD_EXTENSION'			=> (isset($add_extension)) ? $add_extension : '',
+					'ADD_EXTENSION'			=> $add_extension ?? '',
 					'GROUP_SELECT_OPTIONS'	=> (isset($_POST['add_extension_check'])) ? $this->group_select('add_group_select', $add_extension_group, 'extension_group') : $this->group_select('add_group_select', false, 'extension_group'),
 				]);
 
@@ -526,7 +526,7 @@ class acp_attachments
 							$group_id = $db->sql_nextid();
 						}
 
-						$group_name = (isset($user->lang['EXT_GROUP_' . $group_name])) ? $user->lang['EXT_GROUP_' . $group_name] : $group_name;
+						$group_name = $user->lang['EXT_GROUP_' . $group_name] ?? $group_name;
 						add_log('admin', 'LOG_ATTACH_EXTGROUP_' . strtoupper($action), $group_name);
 					}
 
@@ -830,7 +830,7 @@ class acp_attachments
 						'U_EDIT'		=> $this->u_action . "&amp;action=edit&amp;g={$row['group_id']}",
 						'U_DELETE'		=> $this->u_action . "&amp;action=delete&amp;g={$row['group_id']}",
 
-						'GROUP_NAME'	=> (isset($user->lang['EXT_GROUP_' . $row['group_name']])) ? $user->lang['EXT_GROUP_' . $row['group_name']] : $row['group_name'],
+						'GROUP_NAME'	=> $user->lang['EXT_GROUP_' . $row['group_name']] ?? $row['group_name'],
 						'CATEGORY'		=> $cat_lang[$row['cat_id']],
 						]
 					);
@@ -1089,7 +1089,7 @@ class acp_attachments
 		$group_name = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$row['group_name'] = (isset($user->lang['EXT_GROUP_' . $row['group_name']])) ? $user->lang['EXT_GROUP_' . $row['group_name']] : $row['group_name'];
+			$row['group_name'] = $user->lang['EXT_GROUP_' . $row['group_name']] ?? $row['group_name'];
 			$group_name[] = $row;
 		}
 		$db->sql_freeresult($result);
@@ -1322,7 +1322,7 @@ class acp_attachments
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$l_unip_list .= (($l_unip_list != '') ? ', ' : '') . (($row['site_ip']) ? $row['site_ip'] : $row['site_hostname']);
+					$l_unip_list .= (($l_unip_list != '') ? ', ' : '') . ($row['site_ip'] ?: $row['site_hostname']);
 				}
 				$db->sql_freeresult($result);
 

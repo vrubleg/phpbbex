@@ -55,9 +55,9 @@ if (!$forum_data)
 	trigger_error('NO_FORUM');
 }
 
-$default_sort_days	= (!empty($forum_data['forum_topic_show_days']))	? $forum_data['forum_topic_show_days']	: ((!empty($user->data['user_topic_show_days']))	? $user->data['user_topic_show_days']	: 0);
-$default_sort_key	= (!empty($forum_data['forum_topic_sortby_type']))	? $forum_data['forum_topic_sortby_type']: ((!empty($user->data['user_topic_sortby_type']))	? $user->data['user_topic_sortby_type']	: 't');
-$default_sort_dir	= (!empty($forum_data['forum_topic_sortby_dir']))	? $forum_data['forum_topic_sortby_dir']	: ((!empty($user->data['user_topic_sortby_dir']))	? $user->data['user_topic_sortby_dir']	: 'd');
+$default_sort_days	= (!empty($forum_data['forum_topic_show_days'])) ? $forum_data['forum_topic_show_days'] : ((!empty($user->data['user_topic_show_days'])) ? $user->data['user_topic_show_days'] : 0);
+$default_sort_key	= (!empty($forum_data['forum_topic_sortby_type'])) ? $forum_data['forum_topic_sortby_type'] : ((!empty($user->data['user_topic_sortby_type'])) ? $user->data['user_topic_sortby_type'] : 't');
+$default_sort_dir	= (!empty($forum_data['forum_topic_sortby_dir'])) ? $forum_data['forum_topic_sortby_dir'] : ((!empty($user->data['user_topic_sortby_dir'])) ? $user->data['user_topic_sortby_dir'] : 'd');
 
 $sort_days	= request_var('st', $default_sort_days);
 $sort_key	= request_var('sk', $default_sort_key);
@@ -207,7 +207,7 @@ $s_watching_forum = [
 
 if (($config['email_enable'] || $config['jab_enable']) && $config['allow_forum_notify'] && $forum_data['forum_type'] == FORUM_POST)
 {
-	$notify_status = (isset($forum_data['notify_status'])) ? $forum_data['notify_status'] : NULL;
+	$notify_status = $forum_data['notify_status'] ?? null;
 	watch_topic_forum('forum', $s_watching_forum, $user->data['user_id'], $forum_id, 0, $notify_status, $start, $forum_data['forum_name']);
 }
 

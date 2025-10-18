@@ -166,7 +166,7 @@ function get_folder($user_id, $folder_id = false)
 		$folder[$row['folder_id']] = [
 			'folder_name'		=> $row['folder_name'],
 			'num_messages'		=> $row['pm_count'],
-			'unread_messages'	=> ((isset($num_unread[$row['folder_id']])) ? $num_unread[$row['folder_id']] : 0)
+			'unread_messages'	=> $num_unread[$row['folder_id']] ?? 0,
 		];
 	}
 	$db->sql_freeresult($result);
@@ -1570,7 +1570,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	{
 		case 'reply':
 		case 'quote':
-			$root_level = ($data['reply_from_root_level']) ? $data['reply_from_root_level'] : $data['reply_from_msg_id'];
+			$root_level = $data['reply_from_root_level'] ?: $data['reply_from_msg_id'];
 
 			// Set message_replied switch for this user
 			$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '

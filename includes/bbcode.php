@@ -438,7 +438,7 @@ class bbcode
 						}
 
 						// Replace {L_*} lang strings
-						$bbcode_tpl = preg_replace_callback('/{L_([A-Z0-9_]+)}/', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : ucwords(strtolower(str_replace('_', ' ', $m[1]))); }, $bbcode_tpl);
+						$bbcode_tpl = preg_replace_callback('/{L_([A-Z0-9_]+)}/', function ($m) use ($user) { return $user->lang[$m[1]] ?? ucwords(strtolower(str_replace('_', ' ', $m[1]))); }, $bbcode_tpl);
 
 						if (!empty($rowset[$bbcode_id]['second_pass_replace']))
 						{
@@ -499,7 +499,7 @@ class bbcode
 
 		if ($bbcode_id != -1 && !$skip_bitfield_check && !$this->template_bitfield->get($bbcode_id))
 		{
-			return (isset($bbcode_hardtpl[$tpl_name])) ? $bbcode_hardtpl[$tpl_name] : false;
+			return $bbcode_hardtpl[$tpl_name] ?? false;
 		}
 
 		if (empty($this->bbcode_template))
@@ -532,7 +532,7 @@ class bbcode
 			}
 		}
 
-		return (isset($this->bbcode_template[$tpl_name])) ? $this->bbcode_template[$tpl_name] : ((isset($bbcode_hardtpl[$tpl_name])) ? $bbcode_hardtpl[$tpl_name] : false);
+		return $this->bbcode_template[$tpl_name] ?? ($bbcode_hardtpl[$tpl_name] ?? false);
 	}
 
 	/**
@@ -555,7 +555,7 @@ class bbcode
 			'upd_subject'			=> ['{SUBJECT}'	=> '$1'],
 		];
 
-		$tpl = preg_replace_callback('/{L_([A-Z0-9_]+)}/', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : ucwords(strtolower(str_replace('_', ' ', $m[1]))); }, $tpl);
+		$tpl = preg_replace_callback('/{L_([A-Z0-9_]+)}/', function ($m) use ($user) { return $user->lang[$m[1]] ?? ucwords(strtolower(str_replace('_', ' ', $m[1]))); }, $tpl);
 
 		if (!empty($replacements[$tpl_name]))
 		{

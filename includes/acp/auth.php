@@ -453,14 +453,14 @@ class auth_admin extends phpbb_auth
 				foreach ($content_array as $ug_id => $ug_array)
 				{
 					// Build role dropdown options
-					$current_role_id = (isset($cur_roles[$ug_id][$forum_id])) ? $cur_roles[$ug_id][$forum_id] : 0;
+					$current_role_id = $cur_roles[$ug_id][$forum_id] ?? 0;
 
 					$s_role_options = '';
 
 					foreach ($roles as $role_id => $role_row)
 					{
-						$role_description = (!empty($user->lang[$role_row['role_description']])) ? $user->lang[$role_row['role_description']] : nl2br($role_row['role_description']);
-						$role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
+						$role_description = $user->lang[$role_row['role_description']] ?? nl2br($role_row['role_description']);
+						$role_name = $user->lang[$role_row['role_name']] ?? $role_row['role_name'];
 
 						$title = ($role_description) ? ' title="' . $role_description . '"' : '';
 						$s_role_options .= '<option value="' . $role_id . '"' . (($role_id == $current_role_id) ? ' selected="selected"' : '') . $title . '>' . $role_name . '</option>';
@@ -537,14 +537,14 @@ class auth_admin extends phpbb_auth
 				foreach ($content_array as $forum_id => $forum_array)
 				{
 					// Build role dropdown options
-					$current_role_id = (isset($cur_roles[$ug_id][$forum_id])) ? $cur_roles[$ug_id][$forum_id] : 0;
+					$current_role_id = $cur_roles[$ug_id][$forum_id] ?? 0;
 
 					$s_role_options = '';
 
 					foreach ($roles as $role_id => $role_row)
 					{
-						$role_description = (!empty($user->lang[$role_row['role_description']])) ? $user->lang[$role_row['role_description']] : nl2br($role_row['role_description']);
-						$role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
+						$role_description = $user->lang[$role_row['role_description']] ?? nl2br($role_row['role_description']);
+						$role_name = $user->lang[$role_row['role_name']] ?? $role_row['role_name'];
 
 						$title = ($role_description) ? ' title="' . $role_description . '"' : '';
 						$s_role_options .= '<option value="' . $role_id . '"' . (($role_id == $current_role_id) ? ' selected="selected"' : '') . $title . '>' . $role_name . '</option>';

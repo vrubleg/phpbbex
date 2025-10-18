@@ -45,8 +45,8 @@ class jabber
 	*/
 	function __construct($server, $port, $username, $password, $use_ssl = false)
 	{
-		$this->connect_server		= ($server) ? $server : 'localhost';
-		$this->port					= ($port) ? $port : 5222;
+		$this->connect_server		= $server ?: 'localhost';
+		$this->port					= $port ?: 5222;
 
 		// Get the server and the username
 		if (strpos($username, '@') === false)
@@ -792,7 +792,7 @@ class jabber
 		$i = 0;
 		$tagname = $vals[$i]['tag'];
 
-		$array[$tagname][0]['@'] = (isset($vals[$i]['attributes'])) ? $vals[$i]['attributes'] : [];
+		$array[$tagname][0]['@'] = $vals[$i]['attributes'] ?? [];
 		$array[$tagname][0]['#'] = $this->_xml_depth($vals, $i);
 
 		if (substr($data, 0, 5) != '<?xml')
@@ -823,7 +823,7 @@ class jabber
 			{
 				case 'open':
 
-					$tagname = (isset($vals[$i]['tag'])) ? $vals[$i]['tag'] : '';
+					$tagname = $vals[$i]['tag'] ?? '';
 					$size = (isset($children[$tagname])) ? sizeof($children[$tagname]) : 0;
 
 					if (isset($vals[$i]['attributes']))
@@ -843,7 +843,7 @@ class jabber
 
 					$tagname = $vals[$i]['tag'];
 					$size = (isset($children[$tagname])) ? sizeof($children[$tagname]) : 0;
-					$children[$tagname][$size]['#'] = (isset($vals[$i]['value'])) ? $vals[$i]['value'] : [];
+					$children[$tagname][$size]['#'] = $vals[$i]['value'] ?? [];
 
 					if (isset($vals[$i]['attributes']))
 					{

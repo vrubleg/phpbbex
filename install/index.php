@@ -362,7 +362,7 @@ class module
 			return '';
 		}
 
-		return (isset($lang[$this->module->page_title])) ? $lang[$this->module->page_title] : $this->module->page_title;
+		return $lang[$this->module->page_title] ?? $this->module->page_title;
 	}
 
 	/**
@@ -390,7 +390,7 @@ class module
 			foreach ($this->module_ary as $cat_ary)
 			{
 				$cat = $cat_ary['name'];
-				$l_cat = (!empty($lang['CAT_' . $cat])) ? $lang['CAT_' . $cat] : preg_replace('#_#', ' ', $cat);
+				$l_cat = $lang['CAT_' . $cat] ?? preg_replace('#_#', ' ', $cat);
 				$cat = strtolower($cat);
 				$url = $this->module_url . "?mode=$cat&amp;language=$language";
 
@@ -407,7 +407,7 @@ class module
 						$subs = $this->module_ary[$this->id]['subs'];
 						foreach ($subs as $option)
 						{
-							$l_option = (!empty($lang['SUB_' . $option])) ? $lang['SUB_' . $option] : preg_replace('#_#', ' ', $option);
+							$l_option = $lang['SUB_' . $option] ?? preg_replace('#_#', ' ', $option);
 							$option = strtolower($option);
 							$url = $this->module_url . '?mode=' . $this->mode . "&amp;sub=$option&amp;language=$language";
 
@@ -425,7 +425,7 @@ class module
 						$matched = false;
 						foreach ($subs as $option)
 						{
-							$l_option = (!empty($lang['STAGE_' . $option])) ? $lang['STAGE_' . $option] : preg_replace('#_#', ' ', $option);
+							$l_option = $lang['STAGE_' . $option] ?? preg_replace('#_#', ' ', $option);
 							$option = strtolower($option);
 							$matched = ($this->sub == $option) ? true : $matched;
 
@@ -570,7 +570,7 @@ class module
 				$maxlength = (int) $tpl_type[2];
 				$autocomplete = (isset($options['autocomplete']) && $options['autocomplete'] == 'off') ? ' autocomplete="off"' : '';
 
-				$tpl = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . (($maxlength) ? $maxlength : 255) . '" name="' . $name . '"' . $autocomplete . ' value="' . $value . '" />';
+				$tpl = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '"' . $autocomplete . ' value="' . $value . '" />';
 			break;
 
 			case 'textarea':

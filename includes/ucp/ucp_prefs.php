@@ -65,10 +65,10 @@ class ucp_prefs
 						$data['style'] = (int) $user->data['user_style'];
 					}
 
-					$data['lang']		= ($config['override_user_lang'])		? $config['default_lang']		: $data['lang'];
-					$data['dateformat']	= ($config['override_user_dateformat'])	? $config['default_dateformat']	: $data['dateformat'];
-					$data['tz']			= ($config['override_user_timezone'])	? $config['board_timezone']		: $data['tz'];
-					$data['dst']		= ($config['override_user_timezone'])	? $config['board_dst']			: $data['dst'];
+					$data['lang']		= ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+					$data['dateformat']	= ($config['override_user_dateformat']) ? $config['default_dateformat'] : $data['dateformat'];
+					$data['tz']			= ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
+					$data['dst']		= ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
 					$error = validate_data($data, [
 						'dateformat'	=> ['string', false, 1, 30],
@@ -112,7 +112,7 @@ class ucp_prefs
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
 				$dateformat_options = '';
@@ -210,8 +210,8 @@ class ucp_prefs
 					'post_sd'		=> request_var('post_sd', (!empty($user->data['user_post_sortby_dir'])) ? $user->data['user_post_sortby_dir'] : 'a'),
 					'post_st'		=> request_var('post_st', (!empty($user->data['user_post_show_days'])) ? $user->data['user_post_show_days'] : 0),
 
-					'user_topics_per_page'	=> (int) request_var('user_topics_per_page', (!empty($user->data['user_topics_per_page'])) ? $user->data['user_topics_per_page'] : 0),
-					'user_posts_per_page'	=> (int) request_var('user_posts_per_page', (!empty($user->data['user_posts_per_page'])) ? $user->data['user_posts_per_page'] : 0),
+					'user_topics_per_page'	=> (int) request_var('user_topics_per_page', $user->data['user_topics_per_page'] ?? 0),
+					'user_posts_per_page'	=> (int) request_var('user_posts_per_page', $user->data['user_posts_per_page'] ?? 0),
 
 					'images'		=> request_var('images', (bool) $user->optionget('viewimg')),
 					'flash'			=> request_var('flash', (bool) $user->optionget('viewflash')),
@@ -304,7 +304,7 @@ class ucp_prefs
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return (!empty($user->lang[$m[1]])) ? $user->lang[$m[1]] : $m[1]; }, $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
 				$sort_dir_text = ['a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']];
