@@ -611,7 +611,7 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 	}
 	unset($rowset);
 
-	page_header(($l_search_title) ? $l_search_title : $user->lang['SEARCH']);
+	page_header($l_search_title ?: $user->lang['SEARCH']);
 
 	$template->set_filenames([
 		'body' => 'gallery/search_results.html']

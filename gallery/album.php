@@ -23,8 +23,8 @@ $start		= request_var('start', 0);
 $mode		= request_var('mode', '');
 $album_data	= phpbb_gallery_album::get_info($album_id);
 $sort_days	= request_var('st', 0);
-$sort_key	= request_var('sk', ($album_data['album_sort_key']) ? $album_data['album_sort_key'] : phpbb_gallery_config::get('default_sort_key'));
-$sort_dir	= request_var('sd', ($album_data['album_sort_dir']) ? $album_data['album_sort_dir'] : phpbb_gallery_config::get('default_sort_dir'));
+$sort_key	= request_var('sk', $album_data['album_sort_key'] ?: phpbb_gallery_config::get('default_sort_key'));
+$sort_dir	= request_var('sd', $album_data['album_sort_dir'] ?: phpbb_gallery_config::get('default_sort_dir'));
 
 /**
 * Did the contest end?

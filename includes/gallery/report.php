@@ -39,7 +39,7 @@ class phpbb_gallery_report
 
 		$report_id = (int) $db->sql_nextid();
 
-		$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+		$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 			SET image_reported = ' . $report_id . '
 			WHERE image_id = ' . (int) $data['report_image_id'];
 		$db->sql_query($sql);
@@ -56,7 +56,7 @@ class phpbb_gallery_report
 		global $db, $user;
 
 		$sql_ary = [
-			'report_manager'		=> (int) (($user_id) ? $user_id : $user->data['user_id']),
+			'report_manager'		=> (int) ($user_id ?: $user->data['user_id']),
 			'report_status'			=> $new_status,
 		];
 		$report_ids = self::cast_mixed_int2array($report_ids);

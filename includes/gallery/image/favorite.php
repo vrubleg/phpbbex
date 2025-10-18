@@ -25,7 +25,7 @@ class phpbb_gallery_image_favorite
 		global $db, $user;
 
 		$image_ids = self::cast_mixed_int2array($image_ids);
-		$user_id = (int) (($user_id) ? $user_id : $user->data['user_id']);
+		$user_id = (int) ($user_id ?: $user->data['user_id']);
 
 		foreach ($image_ids as $image_id)
 		{
@@ -54,7 +54,7 @@ class phpbb_gallery_image_favorite
 		global $db, $user;
 
 		$image_ids = self::cast_mixed_int2array($image_ids);
-		$user_id = (int) (($user_id) ? $user_id : $user->data['user_id']);
+		$user_id = (int) ($user_id ?: $user->data['user_id']);
 
 		$sql = 'DELETE FROM ' . GALLERY_FAVORITES_TABLE . '
 			WHERE user_id = ' . $user_id . '

@@ -404,7 +404,7 @@ class ucp_gallery
 			{
 				trigger_error('MISSING_ALBUM_NAME');
 			}
-			$album_data['parent_id'] = ($album_data['parent_id']) ? $album_data['parent_id'] : phpbb_gallery::$user->get_data('personal_album_id');
+			$album_data['parent_id'] = $album_data['parent_id'] ?: phpbb_gallery::$user->get_data('personal_album_id');
 			generate_text_for_storage($album_data['album_desc'], $album_data['album_desc_uid'], $album_data['album_desc_bitfield'], $album_data['album_desc_options'], request_var('desc_parse_bbcode', false), request_var('desc_parse_urls', false), request_var('desc_parse_smilies', false));
 
 			/**
@@ -452,7 +452,7 @@ class ucp_gallery
 			phpbb_gallery_auth::set_user_permissions('all', '');
 
 			trigger_error($user->lang['CREATED_SUBALBUM'] . '<br /><br />
-				<a href="' . (($redirect) ? phpbb_gallery_url::append_sid('album', "album_id=$redirect_album_id") : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=manage&amp;parent_id=' . (($album_data['parent_id']) ? $album_data['parent_id'] : phpbb_gallery::$user->get_data('personal_album_id')))) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
+				<a href="' . (($redirect) ? phpbb_gallery_url::append_sid('album', "album_id=$redirect_album_id") : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=manage&amp;parent_id=' . ($album_data['parent_id'] ?: phpbb_gallery::$user->get_data('personal_album_id')))) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
 		}
 	}
 
@@ -673,7 +673,7 @@ class ucp_gallery
 			$cache->destroy('_albums');
 
 			trigger_error($user->lang['EDITED_SUBALBUM'] . '<br /><br />
-				<a href="' . (($redirect) ? phpbb_gallery_url::append_sid('album', "album_id=$album_id") : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=manage&amp;parent_id=' . (($album_data['parent_id']) ? $album_data['parent_id'] : phpbb_gallery::$user->get_data('personal_album_id')))) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
+				<a href="' . (($redirect) ? phpbb_gallery_url::append_sid('album', "album_id=$album_id") : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=manage&amp;parent_id=' . ($album_data['parent_id'] ?: phpbb_gallery::$user->get_data('personal_album_id')))) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
 		}
 	}
 

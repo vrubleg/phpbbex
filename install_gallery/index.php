@@ -408,7 +408,7 @@ class module
 				$size = (int) $tpl_type[1];
 				$maxlength = (int) $tpl_type[2];
 
-				$tpl = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . (($maxlength) ? $maxlength : 255) . '" name="' . $name . '" value="' . $value . '" />';
+				$tpl = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '" value="' . $value . '" />';
 			break;
 
 			case 'textarea':

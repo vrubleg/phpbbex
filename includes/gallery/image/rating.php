@@ -300,8 +300,8 @@ class phpbb_gallery_image_rating
 			default:
 				global $user;
 
-				$user_id = ($user_id) ? $user_id : $user->data['user_id'];
-				$points = ($points) ? $points : request_var('rating', 0);
+				$user_id = $user_id ?: $user->data['user_id'];
+				$points = $points ?: request_var('rating', 0);
 				$points = max(1, min($points, phpbb_gallery_config::get('max_rating')));
 			break;
 		}

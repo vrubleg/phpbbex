@@ -276,7 +276,7 @@ class phpbb_gallery_image
 			'S_RATINGS'		=> (($display & phpbb_gallery_block::DISPLAY_RATINGS) ? ((phpbb_gallery_config::get('allow_rates') && phpbb_gallery::$auth->acl_check('i_rate', $image_data['image_album_id'], $album_user_id)) ? $image_data['rating'] : '') : ''),
 			'U_RATINGS'		=> phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#rating',
 			'L_COMMENTS'	=> ($image_data['image_comments'] == 1) ? $user->lang['COMMENT'] : $user->lang['COMMENTS'],
-			'S_COMMENTS'	=> (($display & phpbb_gallery_block::DISPLAY_COMMENTS) ? ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_check('c_read', $image_data['image_album_id'], $album_user_id)) ? (($image_data['image_comments']) ? $image_data['image_comments'] : $user->lang['NO_COMMENTS']) : '') : ''),
+			'S_COMMENTS'	=> (($display & phpbb_gallery_block::DISPLAY_COMMENTS) ? ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_check('c_read', $image_data['image_album_id'], $album_user_id)) ? ($image_data['image_comments'] ?: $user->lang['NO_COMMENTS']) : '') : ''),
 			'U_COMMENTS'	=> phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#comments',
 
 			'S_MOD_ACTION'		=> phpbb_gallery_url::append_sid('mcp', "album_id={$image_data['image_album_id']}&amp;image_id={$image_data['image_id']}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),

@@ -534,7 +534,7 @@ class acp_gallery
 						}
 
 						// Try to get real filesize from temporary folder (not always working) ;)
-						$sql_ary['filesize_upload'] = (@filesize(phpbb_gallery_url::path('upload') . $image_filename)) ? @filesize(phpbb_gallery_url::path('upload') . $image_filename) : 0;
+						$sql_ary['filesize_upload'] = @filesize(phpbb_gallery_url::path('upload') . $image_filename) ?: 0;
 
 						if ($filename || ($image_name == ''))
 						{

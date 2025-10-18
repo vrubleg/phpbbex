@@ -413,7 +413,7 @@ class phpbb_gallery_upload
 	static public function prune_orphan($time = 0)
 	{
 		global $db;
-		$prunetime = (int) (($time) ? $time : (time() - 1800));
+		$prunetime = (int) ($time ?: (time() - 1800));
 
 		$sql = 'SELECT image_id, image_filename
 			FROM ' . GALLERY_IMAGES_TABLE . '

@@ -25,7 +25,7 @@ class phpbb_gallery_notification
 		global $db, $user;
 
 		$image_ids = self::cast_mixed_int2array($image_ids);
-		$user_id = (int) (($user_id) ? $user_id : $user->data['user_id']);
+		$user_id = (int) ($user_id ?: $user->data['user_id']);
 
 		foreach ($image_ids as $image_id)
 		{
@@ -48,7 +48,7 @@ class phpbb_gallery_notification
 		global $db, $user;
 
 		$album_ids = self::cast_mixed_int2array($album_ids);
-		$user_id = (int) (($user_id) ? $user_id : $user->data['user_id']);
+		$user_id = (int) ($user_id ?: $user->data['user_id']);
 
 		foreach ($album_ids as $album_id)
 		{
@@ -72,7 +72,7 @@ class phpbb_gallery_notification
 		global $db, $user;
 
 		$image_ids = self::cast_mixed_int2array($image_ids);
-		$user_ids = self::cast_mixed_int2array((($user_ids) ? $user_ids : $user->data['user_id']));
+		$user_ids = self::cast_mixed_int2array(($user_ids ?: $user->data['user_id']));
 
 		$sql = 'DELETE FROM ' . GALLERY_WATCH_TABLE . '
 			WHERE ' . $db->sql_in_set('user_id', $user_ids) . '
@@ -91,7 +91,7 @@ class phpbb_gallery_notification
 		global $db, $user;
 
 		$album_ids = self::cast_mixed_int2array($album_ids);
-		$user_ids = self::cast_mixed_int2array((($user_ids) ? $user_ids : $user->data['user_id']));
+		$user_ids = self::cast_mixed_int2array(($user_ids ?: $user->data['user_id']));
 
 		$sql = 'DELETE FROM ' . GALLERY_WATCH_TABLE . '
 			WHERE ' . $db->sql_in_set('user_id', $user_ids) . '
