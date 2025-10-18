@@ -814,7 +814,7 @@ if ($submit || $preview || $refresh)
 
 		$user->add_lang('ucp');
 
-		if (($result = validate_username($post_data['username'], (!empty($post_data['post_username'])) ? $post_data['post_username'] : '')) !== false)
+		if (($result = validate_username($post_data['username'], $post_data['post_username'] ?? '')) !== false)
 		{
 			$error[] = $user->lang[$result . '_USERNAME'];
 		}

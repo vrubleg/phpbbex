@@ -136,7 +136,7 @@ class ucp_main
 				$percentage_topics = ($config['num_topics']) ? min(100, ($user->data['user_topics'] / $config['num_topics']) * 100) : 0;
 
 				$template->assign_vars([
-					'USER_COLOR'		=> (!empty($user->data['user_colour'])) ? $user->data['user_colour'] : '',
+					'USER_COLOR'		=> $user->data['user_colour'] ?? '',
 					'JOINED'			=> $user->format_date($user->data['user_regdate']),
 					'VISITED'			=> (empty($last_visit)) ? ' - ' : $user->format_date($last_visit),
 					'WARNINGS'			=> ($user->data['user_warnings']) ? $user->data['user_warnings'] : 0,
@@ -148,8 +148,8 @@ class ucp_main
 					'TOPICS_PCT'			=> sprintf($user->lang['TOPIC_PCT'], $percentage_topics),
 					'U_SEARCH_USER_TOPICS'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', 'author_id=' . $user->data['user_id'] . '&amp;sr=topics&amp;sf=firstpost') : '',
 
-					'OCCUPATION'	=> (!empty($row['user_occ'])) ? $row['user_occ'] : '',
-					'INTERESTS'		=> (!empty($row['user_interests'])) ? $row['user_interests'] : '',
+					'OCCUPATION'	=> $row['user_occ'] ?? '',
+					'INTERESTS'		=> $row['user_interests'] ?? '',
 
 //					'S_GROUP_OPTIONS'	=> $group_options,
 

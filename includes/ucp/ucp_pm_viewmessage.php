@@ -196,7 +196,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'AUTHOR_POSTS'		=> (int) $user_info['user_posts'],
 		'AUTHOR_TOPICS'		=> (int) $user_info['user_topics'],
 		'AUTHOR_WARNINGS'	=> (int) $user_info['user_warnings'],
-		'AUTHOR_FROM'		=> (!empty($user_info['user_from'])) ? $user_info['user_from'] : '',
+		'AUTHOR_FROM'		=> $user_info['user_from'] ?? '',
 		'AUTHOR_AGE'		=> $user_age,
 
 		'S_RATE_ENABLED'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($author_id != ANONYMOUS),
@@ -231,7 +231,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'MESSAGE_ID'		=> $message_row['msg_id'],
 
 		'U_PM'			=> ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($user_info['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;u=' . $author_id) : '',
-		'U_WWW'			=> (!empty($user_info['user_website'])) ? $user_info['user_website'] : '',
+		'U_WWW'			=> $user_info['user_website'] ?? '',
 		'U_JABBER'		=> ($user_info['user_jabber']) ? ('xmpp:' . $user_info['user_jabber']) : '',
 		'U_TELEGRAM'	=> ($user_info['user_telegram']) ? ('tg://resolve?domain=' . $user_info['user_telegram']) : '',
 

@@ -1103,7 +1103,7 @@ while ($row = $db->sql_fetchrow($result))
 				'topics'		=> $row['user_topics'],
 				'warnings'		=> $row['user_warnings'] ?? 0,
 				'warnings_data'	=> [],
-				'from'			=> (!empty($row['user_from'])) ? $row['user_from'] : '',
+				'from'			=> $row['user_from'] ?? '',
 
 				'rating'			=> ($config['rate_no_positive'] ? 0 : $row['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rating_negative']),
 				'rating_positive'	=> $row['user_rating_positive'],
@@ -1113,8 +1113,8 @@ while ($row = $db->sql_fetchrow($result))
 				'rated_negative'	=> $row['user_rated_negative'],
 
 				'sig'					=> $user_sig,
-				'sig_bbcode_uid'		=> (!empty($row['user_sig_bbcode_uid'])) ? $row['user_sig_bbcode_uid'] : '',
-				'sig_bbcode_bitfield'	=> (!empty($row['user_sig_bbcode_bitfield'])) ? $row['user_sig_bbcode_bitfield'] : '',
+				'sig_bbcode_uid'		=> $row['user_sig_bbcode_uid'] ?? '',
+				'sig_bbcode_bitfield'	=> $row['user_sig_bbcode_bitfield'] ?? '',
 
 				'viewonline'	=> $row['user_allow_viewonline'],
 				'allow_pm'		=> $row['user_allow_pm'],

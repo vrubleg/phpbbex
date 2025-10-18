@@ -363,7 +363,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 	if (isset($_POST['delete_rule']) && !isset($_POST['cancel']))
 	{
 		$delete_id = array_keys(request_var('delete_rule', [0 => 0]));
-		$delete_id = (!empty($delete_id[0])) ? $delete_id[0] : 0;
+		$delete_id = $delete_id[0] ?? 0;
 
 		if (!$delete_id)
 		{

@@ -261,7 +261,7 @@ $template->assign_vars([
 	'S_REPORT_POST'		=> !$pm_id,
 	'REPORT_TEXT'		=> $report_text,
 	'S_REPORT_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'report.php', 'f=' . $forum_id . '&amp;p=' . $post_id . '&amp;pm=' . $pm_id),
-	'S_HIDDEN_FIELDS'	=> (!empty($s_hidden_fields)) ? $s_hidden_fields : null,
+	'S_HIDDEN_FIELDS'	=> $s_hidden_fields ?? '',
 
 	'S_NOTIFY'			=> $user_notify,
 	'S_CAN_NOTIFY'		=> (bool) $user->data['is_registered'],
