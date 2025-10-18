@@ -485,6 +485,8 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_avatar_width');
 	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_avatar_height');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_style');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_show_days');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_show_days');
 	$db->sql_return_on_error(false);
 
 	// Update DB schema version.

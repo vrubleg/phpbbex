@@ -1543,11 +1543,9 @@ class acp_users
 
 					'topic_sk'			=> request_var('topic_sk', $user_row['user_topic_sortby_type'] ?: 't'),
 					'topic_sd'			=> request_var('topic_sd', $user_row['user_topic_sortby_dir'] ?: 'd'),
-					'topic_st'			=> request_var('topic_st', $user_row['user_topic_show_days'] ?: 0),
 
 					'post_sk'			=> request_var('post_sk', $user_row['user_post_sortby_type'] ?: 't'),
 					'post_sd'			=> request_var('post_sd', $user_row['user_post_sortby_dir'] ?: 'a'),
-					'post_st'			=> request_var('post_st', $user_row['user_post_show_days'] ?: 0),
 
 					'view_images'		=> request_var('view_images', $this->optionget($user_row, 'viewimg')),
 					'view_flash'		=> request_var('view_flash', $this->optionget($user_row, 'viewflash')),
@@ -1620,9 +1618,6 @@ class acp_users
 							'user_topic_sortby_dir'		=> $data['topic_sd'],
 							'user_post_sortby_dir'		=> $data['post_sd'],
 
-							'user_topic_show_days'	=> $data['topic_st'],
-							'user_post_show_days'	=> $data['post_st'],
-
 							'user_notify'	=> $data['notify'],
 						];
 
@@ -1694,14 +1689,6 @@ class acp_users
 				$_options = ['topic', 'post'];
 				foreach ($_options as $sort_option)
 				{
-					${'s_limit_' . $sort_option . '_days'} = '<select name="' . $sort_option . '_st">';
-					foreach (${'limit_' . $sort_option . '_days'} as $day => $text)
-					{
-						$selected = ($data[$sort_option . '_st'] == $day) ? ' selected="selected"' : '';
-						${'s_limit_' . $sort_option . '_days'} .= '<option value="' . $day . '"' . $selected . '>' . $text . '</option>';
-					}
-					${'s_limit_' . $sort_option . '_days'} .= '</select>';
-
 					${'s_sort_' . $sort_option . '_key'} = '<select name="' . $sort_option . '_sk">';
 					foreach (${'sort_by_' . $sort_option . '_text'} as $key => $text)
 					{
@@ -1744,10 +1731,8 @@ class acp_users
 					'VIEW_AVATARS'		=> $data['view_avatars'],
 					'VIEW_WORDCENSOR'	=> $data['view_wordcensor'],
 
-					'S_TOPIC_SORT_DAYS'		=> $s_limit_topic_days,
 					'S_TOPIC_SORT_KEY'		=> $s_sort_topic_key,
 					'S_TOPIC_SORT_DIR'		=> $s_sort_topic_dir,
-					'S_POST_SORT_DAYS'		=> $s_limit_post_days,
 					'S_POST_SORT_KEY'		=> $s_sort_post_key,
 					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
 

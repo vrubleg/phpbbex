@@ -204,11 +204,9 @@ class ucp_prefs
 				$data = [
 					'topic_sk'		=> request_var('topic_sk', (!empty($user->data['user_topic_sortby_type'])) ? $user->data['user_topic_sortby_type'] : 't'),
 					'topic_sd'		=> request_var('topic_sd', (!empty($user->data['user_topic_sortby_dir'])) ? $user->data['user_topic_sortby_dir'] : 'd'),
-					'topic_st'		=> request_var('topic_st', (!empty($user->data['user_topic_show_days'])) ? $user->data['user_topic_show_days'] : 0),
 
 					'post_sk'		=> request_var('post_sk', (!empty($user->data['user_post_sortby_type'])) ? $user->data['user_post_sortby_type'] : 't'),
 					'post_sd'		=> request_var('post_sd', (!empty($user->data['user_post_sortby_dir'])) ? $user->data['user_post_sortby_dir'] : 'a'),
-					'post_st'		=> request_var('post_st', (!empty($user->data['user_post_show_days'])) ? $user->data['user_post_show_days'] : 0),
 
 					'user_topics_per_page'	=> (int) request_var('user_topics_per_page', $user->data['user_topics_per_page'] ?? 0),
 					'user_posts_per_page'	=> (int) request_var('user_posts_per_page', $user->data['user_posts_per_page'] ?? 0),
@@ -286,9 +284,6 @@ class ucp_prefs
 							'user_topic_sortby_dir'		=> $data['topic_sd'],
 							'user_post_sortby_dir'		=> $data['post_sd'],
 
-							'user_topic_show_days'	=> $data['topic_st'],
-							'user_post_show_days'	=> $data['post_st'],
-
 							'user_topics_per_page' => $data['user_topics_per_page'],
 							'user_posts_per_page' => $data['user_posts_per_page'],
 						];
@@ -324,14 +319,6 @@ class ucp_prefs
 				$_options = ['topic', 'post'];
 				foreach ($_options as $sort_option)
 				{
-					${'s_limit_' . $sort_option . '_days'} = '<select name="' . $sort_option . '_st">';
-					foreach (${'limit_' . $sort_option . '_days'} as $day => $text)
-					{
-						$selected = ($data[$sort_option . '_st'] == $day) ? ' selected="selected"' : '';
-						${'s_limit_' . $sort_option . '_days'} .= '<option value="' . $day . '"' . $selected . '>' . $text . '</option>';
-					}
-					${'s_limit_' . $sort_option . '_days'} .= '</select>';
-
 					${'s_sort_' . $sort_option . '_key'} = '<select name="' . $sort_option . '_sk">';
 					foreach (${'sort_by_' . $sort_option . '_text'} as $key => $text)
 					{
@@ -366,10 +353,8 @@ class ucp_prefs
 
 					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']),
 
-					'S_TOPIC_SORT_DAYS'		=> $s_limit_topic_days,
 					'S_TOPIC_SORT_KEY'		=> $s_sort_topic_key,
 					'S_TOPIC_SORT_DIR'		=> $s_sort_topic_dir,
-					'S_POST_SORT_DAYS'		=> $s_limit_post_days,
 					'S_POST_SORT_KEY'		=> $s_sort_post_key,
 					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
 
