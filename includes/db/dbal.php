@@ -891,7 +891,7 @@ class dbal
 				foreach (array_values($row) as $val)
 				{
 					$class = ($class == 'row1') ? 'row2' : 'row1';
-					$this->html_hold .= '<td class="' . $class . '">' . (($val) ? $val : '&nbsp;') . '</td>';
+					$this->html_hold .= '<td class="' . $class . '">' . ($val ?: '&nbsp;') . '</td>';
 				}
 				$this->html_hold .= '</tr>';
 

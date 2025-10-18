@@ -53,7 +53,7 @@ class core
 		catch (http_exception $e)
 		{
 			$message = $e->getMessage();
-			$code = $e->getCode() ? $e->getCode() : 500;
+			$code = $e->getCode() ?: 500;
 			response::status($code);
 			echo('<h1>' . $code . ' ' . $message . '</h1>');
 		}

@@ -1193,7 +1193,7 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 			// Build correct username
 			if ($guest_username === false)
 			{
-				$username = ($username) ? $username : $user->lang['GUEST'];
+				$username = $username ?: $user->lang['GUEST'];
 			}
 			else
 			{

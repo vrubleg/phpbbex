@@ -1389,8 +1389,8 @@ inherit_from = {INHERIT_FROM}
 				if (!$imgwidth || !$imgheight)
 				{
 					[$imgwidth_file, $imgheight_file] = getimagesize(PHPBB_ROOT_PATH . "styles/$imageset_path/imageset/$imgpath");
-					$imgwidth = ($imgwidth) ? $imgwidth : $imgwidth_file;
-					$imgheight = ($imgheight) ? $imgheight : $imgheight_file;
+					$imgwidth = $imgwidth ?: $imgwidth_file;
+					$imgheight = $imgheight ?: $imgheight_file;
 				}
 				$imgwidth	= ($imgname != 'poll_center') ? (int) $imgwidth : 0;
 				$imgheight	= (int) $imgheight;
@@ -2998,7 +2998,7 @@ inherit_from = {INHERIT_FROM}
 				foreach ($element_ary as $element => $table)
 				{
 					${$element . '_root_path'} = (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . ${'reqd_' . $element} . '/' : false;
-					${$element . '_path'} = (${'reqd_' . $element}) ? ${'reqd_' . $element} : false;
+					${$element . '_path'} = (${'reqd_' . $element}) ?: false;
 				}
 				$this->install_style($error, 'install', $root_path, $style_row['style_id'], $style_row['style_name'], $install_path, $style_row['style_copyright'], $style_row['style_active'], $style_row['style_default'], $style_row, $template_root_path, $template_path, $theme_root_path, $theme_path, $imageset_root_path, $imageset_path);
 			}
@@ -3323,7 +3323,7 @@ inherit_from = {INHERIT_FROM}
 			// and do the install if necessary
 			if (!$style_row[$element . '_id'])
 			{
-				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ? ${$element . '_root_path'} : $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_path'}) ? ${$element . '_path'} : $path, $style_row[$element . '_copyright']);
+				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_path'}) ?: $path, $style_row[$element . '_copyright']);
 			}
 		}
 

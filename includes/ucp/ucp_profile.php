@@ -564,7 +564,7 @@ class ucp_profile
 					'MIN_FONT_SIZE'			=> isset($config['min_sig_font_size']) ? (int) $config['min_sig_font_size'] : 100,
 					'MAX_FONT_SIZE'			=> isset($config['max_sig_font_size']) ? (int) $config['max_sig_font_size'] : 100,
 
-					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ? $config['max_sig_lines'] : $user->lang['NO']),
+					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ?: $user->lang['NO']),
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],

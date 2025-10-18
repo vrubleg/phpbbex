@@ -1541,13 +1541,13 @@ class acp_users
 					'popuppm'			=> request_var('popuppm', $this->optionget($user_row, 'popuppm')),
 					'allowpm'			=> request_var('allowpm', $user_row['user_allow_pm']),
 
-					'topic_sk'			=> request_var('topic_sk', ($user_row['user_topic_sortby_type']) ? $user_row['user_topic_sortby_type'] : 't'),
-					'topic_sd'			=> request_var('topic_sd', ($user_row['user_topic_sortby_dir']) ? $user_row['user_topic_sortby_dir'] : 'd'),
-					'topic_st'			=> request_var('topic_st', ($user_row['user_topic_show_days']) ? $user_row['user_topic_show_days'] : 0),
+					'topic_sk'			=> request_var('topic_sk', $user_row['user_topic_sortby_type'] ?: 't'),
+					'topic_sd'			=> request_var('topic_sd', $user_row['user_topic_sortby_dir'] ?: 'd'),
+					'topic_st'			=> request_var('topic_st', $user_row['user_topic_show_days'] ?: 0),
 
-					'post_sk'			=> request_var('post_sk', ($user_row['user_post_sortby_type']) ? $user_row['user_post_sortby_type'] : 't'),
-					'post_sd'			=> request_var('post_sd', ($user_row['user_post_sortby_dir']) ? $user_row['user_post_sortby_dir'] : 'a'),
-					'post_st'			=> request_var('post_st', ($user_row['user_post_show_days']) ? $user_row['user_post_show_days'] : 0),
+					'post_sk'			=> request_var('post_sk', $user_row['user_post_sortby_type'] ?: 't'),
+					'post_sd'			=> request_var('post_sd', $user_row['user_post_sortby_dir'] ?: 'a'),
+					'post_st'			=> request_var('post_st', $user_row['user_post_show_days'] ?: 0),
 
 					'view_images'		=> request_var('view_images', $this->optionget($user_row, 'viewimg')),
 					'view_flash'		=> request_var('view_flash', $this->optionget($user_row, 'viewflash')),
@@ -1974,7 +1974,7 @@ class acp_users
 					'FLASH_STATUS'			=> ($config['allow_sig_flash']) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
 					'URL_STATUS'			=> ($config['allow_sig_links']) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 
-					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ? $config['max_sig_lines'] : $user->lang['NO']),
+					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ?: $user->lang['NO']),
 
 					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
 					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],

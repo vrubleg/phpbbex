@@ -1154,7 +1154,7 @@ if (!sizeof($error) && $preview)
 
 		if ($post_data['poll_length'])
 		{
-			$poll_end = ($post_data['poll_length'] * 86400) + (($post_data['poll_start']) ? $post_data['poll_start'] : time());
+			$poll_end = ($post_data['poll_length'] * 86400) + ($post_data['poll_start'] ?: time());
 		}
 
 		$template->assign_vars([
@@ -1542,7 +1542,7 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 			}
 			else
 			{
-				add_log('mod', $forum_id, $topic_id, 'LOG_DELETE_POST', $post_data['post_subject'] ? $post_data['post_subject'] : $post_data['topic_title'], $post_username, $post_data['post_text']);
+				add_log('mod', $forum_id, $topic_id, 'LOG_DELETE_POST', $post_data['post_subject'] ?: $post_data['topic_title'], $post_username, $post_data['post_text']);
 
 				$meta_info = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;p=$next_post_id") . "#p$next_post_id";
 				$message = $user->lang['POST_DELETED'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');

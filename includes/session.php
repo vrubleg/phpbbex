@@ -349,7 +349,7 @@ class phpbb_session
 							// Update the last visit time once an hour
 							if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
 							{
-								$sql_ary['session_last_visit'] = $this->data['user_lastvisit'] ? $this->data['user_lastvisit'] : $this->time_now;
+								$sql_ary['session_last_visit'] = $this->data['user_lastvisit'] ?: $this->time_now;
 								$this->data['user_lastvisit'] = $this->time_now;
 								$sql = 'UPDATE ' . USERS_TABLE . '
 									SET user_lastvisit = ' . (int) $this->time_now . '
@@ -579,7 +579,7 @@ class phpbb_session
 		if (!is_array($this->data) || !count($this->data))
 		{
 			$this->cookie_data['k'] = '';
-			$this->cookie_data['u'] = ($bot) ? $bot : ANONYMOUS;
+			$this->cookie_data['u'] = $bot ?: ANONYMOUS;
 
 			if (!$bot)
 			{
@@ -603,7 +603,7 @@ class phpbb_session
 
 		if ($this->data['user_id'] != ANONYMOUS && !$bot)
 		{
-			$this->data['session_last_visit'] = (isset($this->data['session_time']) && $this->data['session_time']) ? $this->data['session_time'] : (($this->data['user_lastvisit']) ? $this->data['user_lastvisit'] : time());
+			$this->data['session_last_visit'] = (isset($this->data['session_time']) && $this->data['session_time']) ? $this->data['session_time'] : ($this->data['user_lastvisit'] ?: time());
 		}
 		else
 		{
@@ -1306,7 +1306,7 @@ class phpbb_session
 
 		$user_id = ($user_id === false) ? $this->data['user_id'] : $user_id;
 		$user_ip = ($user_ip === false) ? $this->ip : $user_ip;
-		$key = ($key === false) ? (($this->cookie_data['k']) ? $this->cookie_data['k'] : false) : $key;
+		$key = ($key === false) ? ($this->cookie_data['k'] ?: false) : $key;
 
 		$key_id = unique_id();
 
@@ -1583,7 +1583,7 @@ class phpbb_user extends phpbb_session
 		else
 		{
 			// Set up style
-			$style = ($style) ? $style : ((!$config['override_user_style']) ? $this->data['user_style'] : $config['default_style']);
+			$style = $style ?: ((!$config['override_user_style']) ? $this->data['user_style'] : $config['default_style']);
 		}
 
 		$sql = 'SELECT s.style_id, t.template_storedb, t.template_path, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_path, c.theme_name, c.theme_storedb, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name

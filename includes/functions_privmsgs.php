@@ -1570,7 +1570,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	{
 		case 'reply':
 		case 'quote':
-			$root_level = ($data['reply_from_root_level']) ? $data['reply_from_root_level'] : $data['reply_from_msg_id'];
+			$root_level = $data['reply_from_root_level'] ?: $data['reply_from_msg_id'];
 
 			// Set message_replied switch for this user
 			$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '

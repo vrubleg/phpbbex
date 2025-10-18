@@ -158,7 +158,7 @@ class phpbb_umil
 		// Set up the result.  This will get the arguments sent to the function.
 		$args = func_get_args();
 		$result = call_user_func_array([$this, 'get_output_text'], $args);
-		$this->result = ($result) ? $result : $this->result;
+		$this->result = $result ?: $this->result;
 
 		if ($this->db->sql_error_triggered)
 		{

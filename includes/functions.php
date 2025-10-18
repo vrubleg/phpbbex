@@ -1332,7 +1332,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 		if ($config['load_db_lastread'] && $user->data['is_registered'])
 		{
 			$sql = 'UPDATE ' . TOPICS_TRACK_TABLE . '
-				SET mark_time = ' . (($post_time) ? $post_time : time()) . "
+				SET mark_time = ' . ($post_time ?: time()) . "
 				WHERE user_id = {$user->data['user_id']}
 					AND topic_id = $topic_id";
 			$db->sql_query($sql);
@@ -1366,7 +1366,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				$tracking['tf'][$forum_id][$topic_id36] = true;
 			}
 
-			$post_time = ($post_time) ? $post_time : time();
+			$post_time = $post_time ?: time();
 			$tracking['t'][$topic_id36] = base_convert($post_time - $config['board_startdate'], 10, 36);
 
 			// If the cookie grows larger than 10000 characters we will remove the smallest value
@@ -2843,7 +2843,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		if ($result['status'] == LOGIN_SUCCESS)
 		{
 			$redirect = request_var('redirect', PHPBB_ROOT_PATH . 'index.php');
-			$message = ($l_success) ? $l_success : $user->lang['LOGIN_REDIRECT'];
+			$message = $l_success ?: $user->lang['LOGIN_REDIRECT'];
 			$l_redirect = ($admin) ? $user->lang['PROCEED_TO_ACP'] : (($redirect === PHPBB_ROOT_PATH . 'index.php' || $redirect === 'index.php') ? $user->lang['RETURN_INDEX'] : $user->lang['RETURN_PAGE']);
 
 			// append/replace SID (may change during the session for AOL users)

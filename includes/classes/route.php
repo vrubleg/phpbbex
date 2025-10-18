@@ -102,7 +102,7 @@ class route
 		}
 		$static_length = strcspn($rule, ':(){}');
 		$this->rule      = $rule;
-		$this->defaults  = $defaults ? $defaults : [];
+		$this->defaults  = $defaults ?: [];
 		$this->var_regex = $var_regex;
 		$this->is_static = ($static_length === strlen($rule));
 		$this->static    = ($this->is_static) ? $rule : substr($rule, 0, $static_length);

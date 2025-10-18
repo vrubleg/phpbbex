@@ -45,8 +45,8 @@ class jabber
 	*/
 	function __construct($server, $port, $username, $password, $use_ssl = false)
 	{
-		$this->connect_server		= ($server) ? $server : 'localhost';
-		$this->port					= ($port) ? $port : 5222;
+		$this->connect_server		= $server ?: 'localhost';
+		$this->port					= $port ?: 5222;
 
 		// Get the server and the username
 		if (strpos($username, '@') === false)

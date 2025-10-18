@@ -38,7 +38,7 @@ class dbal_mysql extends dbal
 		$this->user = $sqluser;
 
 		// If persistent connection, set dbhost to localhost when empty and prepend it with 'p:' prefix
-		$this->server = ($this->persistency) ? 'p:' . (($sqlserver) ? $sqlserver : 'localhost') : $sqlserver;
+		$this->server = ($this->persistency) ? 'p:' . ($sqlserver ?: 'localhost') : $sqlserver;
 
 		$this->dbname = $database;
 		$port = (!$port) ? null : $port;

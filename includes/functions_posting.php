@@ -520,7 +520,7 @@ function get_img_size_format($width, $height)
 	global $config;
 
 	// Maximum Width the Image can take
-	$max_width = ($config['img_max_thumb_width']) ? $config['img_max_thumb_width'] : 400;
+	$max_width = $config['img_max_thumb_width'] ?: 400;
 
 	if ($width > $height)
 	{
@@ -945,7 +945,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 				(!$topic_rows[$draft['topic_id']]['forum_id'] && $auth->acl_getf_global('f_read'))
 			))
 		{
-			$topic_forum_id = ($topic_rows[$draft['topic_id']]['forum_id']) ? $topic_rows[$draft['topic_id']]['forum_id'] : $forum_id;
+			$topic_forum_id = $topic_rows[$draft['topic_id']]['forum_id'] ?: $forum_id;
 
 			$link_topic = true;
 			$view_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $draft['topic_id']);
@@ -1814,7 +1814,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 			// Could be simplified by only adding to the log if the edit is not tracked - but this may confuse admins/mods
 			if ($user->data['user_id'] != $poster_id)
 			{
-				$log_subject = ($subject) ? $subject : $data['topic_title'];
+				$log_subject = $subject ?: $data['topic_title'];
 				add_log('mod', $data['forum_id'], $data['topic_id'], 'LOG_POST_EDITED', $log_subject, (!empty($username)) ? $username : $user->lang['GUEST']);
 			}
 
@@ -1874,7 +1874,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 			if (isset($poll['poll_options']) && !empty($poll['poll_options']))
 			{
-				$poll_start = ($poll['poll_start']) ? $poll['poll_start'] : $current_time;
+				$poll_start = $poll['poll_start'] ?: $current_time;
 				$poll_length = $poll['poll_length'] * 86400;
 				if ($poll_length < 0)
 				{

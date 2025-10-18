@@ -998,7 +998,7 @@ class bbcode_firstpass extends bbcode
 		$var2 = str_replace("\r\n", "\n", str_replace('\"', '"', trim($var2)));
 
 		$txt = $var2;
-		$email = ($var1) ? $var1 : $var2;
+		$email = $var1 ?: $var2;
 
 		$validated = true;
 
@@ -1068,7 +1068,7 @@ class bbcode_firstpass extends bbcode
 		$args = str_replace("\r\n", "\n", str_replace('\"', '"', trim($args)));
 		$text = str_replace("\r\n", "\n", str_replace('\"', '"', trim($text)));
 
-		$url = ($args) ? $args : $text;
+		$url = $args ?: $text;
 		if (!$url)
 		{
 			return '[url' . (($args) ? '=' . $args : '') . ']' . $text . '[/url]';
@@ -1702,7 +1702,7 @@ class parse_message extends bbcode_firstpass
 
 						// Refresh attachment data
 						$this->attachment_data[$index]['real_filename'] = $filedata['real_filename'];
-						$this->attachment_data[$index]['attach_comment'] = ($this->filename_data['filecomment']) ? $this->filename_data['filecomment'] : $this->attachment_data[$index]['attach_comment'];
+						$this->attachment_data[$index]['attach_comment'] = $this->filename_data['filecomment'] ?: $this->attachment_data[$index]['attach_comment'];
 						$this->message = preg_replace("#\[attachment=$index\](.*?)\[\/attachment\]#e", "'[attachment=$index]' . \$filename . '[/attachment]'", $this->message);
 						$this->filename_data['filecomment'] = '';
 					}

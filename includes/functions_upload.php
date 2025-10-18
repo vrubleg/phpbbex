@@ -67,7 +67,7 @@ class filespec
 		$this->extension = strtolower($this->get_extension($this->realname));
 
 		// Try to get real filesize from temporary folder (not always working) ;)
-		$this->filesize = (@filesize($this->filename)) ? @filesize($this->filename) : $this->filesize;
+		$this->filesize = (@filesize($this->filename)) ?: $this->filesize;
 
 		$this->width = $this->height = 0;
 		$this->file_moved = false;
@@ -344,7 +344,7 @@ class filespec
 		}
 
 		// Try to get real filesize from destination folder
-		$this->filesize = (@filesize($this->destination_file)) ? @filesize($this->destination_file) : $this->filesize;
+		$this->filesize = (@filesize($this->destination_file)) ?: $this->filesize;
 
 		if ($this->is_image() && !$skip_image_check)
 		{

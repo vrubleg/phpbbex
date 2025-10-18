@@ -199,7 +199,7 @@ class acp_attachments
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$value = ($row['site_ip']) ? $row['site_ip'] : $row['site_hostname'];
+					$value = $row['site_ip'] ?: $row['site_hostname'];
 					if ($value)
 					{
 						$defined_ips .= '<option' . (($row['ip_exclude']) ? ' class="sep"' : '') . ' value="' . $row['site_id'] . '">' . $value . '</option>';
@@ -1322,7 +1322,7 @@ class acp_attachments
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$l_unip_list .= (($l_unip_list != '') ? ', ' : '') . (($row['site_ip']) ? $row['site_ip'] : $row['site_hostname']);
+					$l_unip_list .= (($l_unip_list != '') ? ', ' : '') . ($row['site_ip'] ?: $row['site_hostname']);
 				}
 				$db->sql_freeresult($result);
 

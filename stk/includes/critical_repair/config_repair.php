@@ -239,7 +239,7 @@ class erk_config_repair
 		if (is_array($db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false)))
 		{
 			$db_error = $db->sql_error();
-			$error[] = 'Could not connect to the database, see error message below.' . '<br />' . (($db_error['message']) ? $db_error['message'] : 'No error message given.');
+			$error[] = 'Could not connect to the database, see error message below.' . '<br />' . ($db_error['message'] ?: 'No error message given.');
 		}
 		else
 		{

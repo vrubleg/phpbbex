@@ -154,7 +154,7 @@ switch ($mode)
 			$result = $db->sql_query($sql);
 			$topic_title = $db->sql_fetchfield('topic_title');
 			$db->sql_freeresult($result);
-			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($topic_title ? $topic_title : $user->lang['TOPIC']);
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($topic_title ?: $user->lang['TOPIC']);
 		}
 		else if ($forum_id)
 		{
@@ -164,7 +164,7 @@ switch ($mode)
 			$result = $db->sql_query($sql);
 			$forum_name = $db->sql_fetchfield('forum_name');
 			$db->sql_freeresult($result);
-			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($forum_name ? $forum_name : $user->lang['FORUM']);
+			$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . ($forum_name ?: $user->lang['FORUM']);
 		}
 		else
 		{

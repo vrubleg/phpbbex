@@ -81,7 +81,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 	make_jumpbox($url . "&amp;i=$id&amp;action=$action&amp;mode=$mode" . (($merge_select) ? $selected_ids : ''), $forum_id, false, 'm_', true);
 
-	$topics_per_page = ($forum_info['forum_topics_per_page']) ? $forum_info['forum_topics_per_page'] : $config['topics_per_page'];
+	$topics_per_page = $forum_info['forum_topics_per_page'] ?: $config['topics_per_page'];
 
 	$sort_days = $total = 0;
 	$sort_key = $sort_dir = '';
