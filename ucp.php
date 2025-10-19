@@ -25,8 +25,8 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup('ucp');
 
-// Setting a variable to let the style designer know where he is...
-$template->assign_var('S_IN_UCP', true);
+// Setting a variable to let the style designer know where he is. Exclude special pages.
+$template->assign_var('S_IN_UCP', !in_array($mode, ['login', 'logout', 'confirm', 'sendpassword', 'activate', 'register', 'terms', 'privacy']));
 
 $module = new p_master();
 $default = false;
