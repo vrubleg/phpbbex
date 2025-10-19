@@ -68,7 +68,7 @@ class add_user
 		{
 			$timezone = ($is_dst) ? $timezone - 1 : $timezone;
 
-			if (!isset($user->lang['tz_zones'][(string) $timezone]))
+			if (!isset($user->lang['tz'][(string) $timezone]))
 			{
 				$timezone = $config['board_timezone'];
 			}

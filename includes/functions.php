@@ -1156,26 +1156,17 @@ function style_select($default = '', $all = false)
 /**
 * Pick a timezone
 */
-function tz_select($default = '', $truncate = false)
+function tz_select($default = '')
 {
 	global $user;
 
 	$tz_select = '';
-	foreach ($user->lang['tz_zones'] as $offset => $zone)
+	foreach ($user->lang['tz'] as $offset => $zone)
 	{
-		if ($truncate)
-		{
-			$zone_trunc = truncate_string($zone, 50, 255, false, '...');
-		}
-		else
-		{
-			$zone_trunc = $zone;
-		}
-
 		if (is_numeric($offset))
 		{
 			$selected = ($offset == $default) ? ' selected="selected"' : '';
-			$tz_select .= '<option title="' . $zone . '" value="' . $offset . '"' . $selected . '>' . $zone_trunc . '</option>';
+			$tz_select .= '<option value="' . $offset . '"' . $selected . '>' . $zone . '</option>';
 		}
 	}
 
@@ -4284,7 +4275,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_USER_LANG'			=> $user_lang,
 		'S_USER_BROWSER'		=> $user->data['session_browser'] ?? $user->lang['UNKNOWN_BROWSER'],
 		'S_USERNAME'			=> $user->data['username'],
-		'S_TIMEZONE'			=> ($user->dst) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
+		'S_TIMEZONE'			=> sprintf($user->lang['CURRENT_TIMEZONE'], $user->lang['tz'][$tz], ($user->dst) ? $user->lang['DST'] : ''),
 		'S_DISPLAY_ONLINE_LIST'	=> ($l_online_time) ? 1 : 0,
 		'S_DISPLAY_SEARCH'		=> ($config['load_search'] && $auth->acl_get('u_search') && $auth->acl_getf_global('f_search')),
 		'S_DISPLAY_PM'			=> ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))),
