@@ -518,7 +518,7 @@ $lang = array_merge($lang, [
 	'SUBMIT'					=> 'Отправить',
 
 	'TB'				=> 'ТБ',
-	'TERMS_OF_USE'		=> 'Общие правила',
+	'TERMS_OF_USE'		=> 'Условия использования',
 	'TEST_CONNECTION'	=> 'Проверить подключение',
 	'THE_TEAM'			=> 'Наша команда',
 	'TIB'				=> 'ТБ',

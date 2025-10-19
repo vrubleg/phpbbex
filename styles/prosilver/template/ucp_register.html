@@ -1,16 +1,5 @@
 <!-- INCLUDE overall_header.html -->
 
-<script>
-	/**
-	* Change language
-	*/
-	function change_language(lang_iso)
-	{
-		document.forms['register'].change_lang.value = lang_iso;
-		document.forms['register'].submit.click();
-	}
-</script>
-
 <form method="post" action="{S_UCP_ACTION}" id="register">
 
 <div class="panel">
@@ -46,6 +35,13 @@
 	<!-- ENDIF -->
 
 	<!-- IF S_LANG_OPTIONS -->
+	<script>
+	function change_language(lang_iso)
+	{
+		document.forms['register'].change_lang.value = lang_iso;
+		document.forms['register'].submit();
+	}
+	</script>
 	<dl>
 		<dt><label for="lang">{L_LANGUAGE}:</label></dt>
 		<dd><select name="lang" id="lang" onchange="change_language(this.value); return false;" tabindex="6" title="{L_LANGUAGE}">{S_LANG_OPTIONS}</select></dd>
@@ -83,12 +79,22 @@
 
 <div class="panel">
 	<div class="inner">
+	<div class="content">
+		<h2>{L_TERMS_OF_USE}</h2>
+		<p>{L_TERMS_OF_USE_CONTENT}</p>
+	</div>
+	</div>
+</div>
+
+<div class="panel">
+	<div class="inner">
 
 	<fieldset class="submit-buttons">
 		{S_HIDDEN_FIELDS}
 		<input type="hidden" name="creation_time" value="0" />
 		<input type="hidden" name="form_token" value="0" />
-		<input type="submit" tabindex="9" name="submit" id="submit" value="{L_SUBMIT}" class="button1 default-submit-action" />
+		<input type="submit" tabindex="9" name="agree" value="{L_AGREE}" class="button1 default-submit-action" />&nbsp;
+		<input type="submit" tabindex="10" name="disagree" value="{L_NOT_AGREE}" class="button2" />
 	</fieldset>
 
 	</div>
