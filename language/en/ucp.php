@@ -64,7 +64,7 @@ $lang = array_merge($lang, [
 	'BACK_TO_DRAFTS'			=> 'Back to saved drafts',
 	'BACK_TO_LOGIN'				=> 'Back to login screen',
 	'BIRTHDAY'					=> 'Birthday',
-	'BIRTHDAY_EXPLAIN'			=> 'Setting a year will list your age when it is your birthday.',
+	'BIRTHDAY_EXPLAIN'			=> 'Setting a year will display age in your profile.',
 	'BOARD_DATE_FORMAT'			=> 'My date format',
 	'BOARD_DATE_FORMAT_EXPLAIN'	=> 'The syntax used is identical to the PHP <a href="http://www.php.net/date">date()</a> function.',
 	'BOARD_DST'					=> 'Summer Time/<abbr title="Daylight Saving Time">DST</abbr> is in effect',
@@ -373,9 +373,9 @@ $lang = array_merge($lang, [
 
 	'UCP'						=> 'User Control Panel',
 	'UCP_ACTIVATE'				=> 'Activate account',
-	'UCP_ADMIN_ACTIVATE'		=> 'Please note that you will need to enter a valid email address before your account is activated. The administrator will review your account and if approved you will receive an email at the address you specified.',
+	'UCP_ADMIN_ACTIVATE'		=> 'Enter a valid email address. The administrator will review your account and if approved you will receive an email at the address you specified.',
 	'UCP_ATTACHMENTS'			=> 'Attachments',
-	'UCP_EMAIL_ACTIVATE'		=> 'Please note that you will need to enter a valid email address before your account is activated. You will receive an email at the address you provide that contains an account activation link.',
+	'UCP_EMAIL_ACTIVATE'		=> 'Enter a valid email address. You will receive an email at the address you provide that contains an account activation link.',
 
 	'UCP_MAIN'					=> 'Overview',
 	'UCP_MAIN_ATTACHMENTS'		=> 'Manage attachments',
