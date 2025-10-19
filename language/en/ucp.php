@@ -18,7 +18,7 @@ if (empty($lang) || !is_array($lang))
 // Privacy policy and T&C
 $lang = array_merge($lang, [
 	'TERMS_OF_USE_CONTENT' => 'By accessing this internet forum, you agree not to post any abusive, obscene, vulgar, slanderous, hateful, threatening, sexually-orientated or any other material that may violate international laws and <a href="faq.php?mode=rules">forum rules</a>. Doing so may lead to you being permanently banned. You agree that we have the right to edit or remove any public information that you posted at our discretion.',
-	'PRIVACY_POLICY' => 'This internet forum uses cookies for keeping your session. Data that you submit is tied to your account and IP address. Your account will at a bare minimum contain a uniquely identifiable name, a personal password used for logging into your account and a personal email address. Any information from your account, except password and email address, will be publicly displayed. Your password is ciphered (a one-way hash) so that it is secure and impossible to restore even if the administrator would like to do it. But you can request a new password using the “I forgot my password” feature that sends a new randomly generated password to your email. You have the option to opt-out of automatically generated emails from the internet forum, but emails that are required to reclaim access to your account may be sent anyway.',
+	'PRIVACY_POLICY_CONTENT' => 'This internet forum uses cookies for keeping your session. Data that you submit is tied to your account and IP address. Your account will at a bare minimum contain a uniquely identifiable name, a personal password used for logging into your account and a personal email address. Any information from your account, except password and email address, will be publicly displayed. Your password is ciphered (a one-way hash) so that it is secure and impossible to restore even if the administrator would like to do it. But you can request a new password using the “I forgot my password” feature that sends a new randomly generated password to your email. You have the option to opt-out of automatically generated emails from the internet forum, but emails that are required to reclaim access to your account may be sent anyway.',
 ]);
 
 // Common language entries
@@ -64,7 +64,7 @@ $lang = array_merge($lang, [
 	'BACK_TO_DRAFTS'			=> 'Back to saved drafts',
 	'BACK_TO_LOGIN'				=> 'Back to login screen',
 	'BIRTHDAY'					=> 'Birthday',
-	'BIRTHDAY_EXPLAIN'			=> 'Setting a year will list your age when it is your birthday.',
+	'BIRTHDAY_EXPLAIN'			=> 'Setting a year will display age in your profile.',
 	'BOARD_DATE_FORMAT'			=> 'My date format',
 	'BOARD_DATE_FORMAT_EXPLAIN'	=> 'The syntax used is identical to the PHP <a href="http://www.php.net/date">date()</a> function.',
 	'BOARD_DST'					=> 'Summer Time/<abbr title="Daylight Saving Time">DST</abbr> is in effect',
@@ -89,9 +89,8 @@ $lang = array_merge($lang, [
 	'CONFIRM_CHANGES'			=> 'Confirm changes',
 	'CONFIRM_EMAIL'				=> 'Confirm email address',
 	'CONFIRM_EMAIL_EXPLAIN'		=> 'You only need to specify this if you are changing your email address.',
-	'CONFIRM_EXPLAIN'			=> 'To prevent automated registrations the board requires you to enter a confirmation code. The code is displayed in the image you should see below. If you are visually impaired or cannot otherwise read this code please contact the %sBoard Administrator%s.',
 	'VC_REFRESH'				=> 'Refresh confirmation code',
-	'VC_REFRESH_EXPLAIN'		=> 'If you cannot read the code you can request a new one by clicking the button.',
+	'VC_REFRESH_EXPLAIN'		=> 'If you cannot read the code, you can request a new one by clicking the button.',
 
 	'CONFIRM_PASSWORD'			=> 'Confirm password',
 	'CONFIRM_PASSWORD_EXPLAIN'	=> 'You only need to confirm your password if you changed it above.',
@@ -320,7 +319,6 @@ $lang = array_merge($lang, [
 	'POST_REPLY_PM'				=> 'Reply to message',
 	'PRINT_PM'					=> 'Print view',
 	'PREFERENCES_UPDATED'		=> 'Your preferences have been updated.',
-	'PROFILE_INFO_NOTICE'		=> 'Please note that this information may be viewable to other members. Be careful when including any personal details. Any fields marked with a * must be completed.',
 	'PROFILE_UPDATED'			=> 'Your profile has been updated.',
 
 	'RECIPIENT'							=> 'Recipient',
@@ -354,7 +352,7 @@ $lang = array_merge($lang, [
 	'SEARCH_YOUR_TOPICS'		=> 'Show your topics',
 	'SEND_PASSWORD'				=> 'Send password',
 	'SENT_AT'					=> 'Sent',			// Used before dates in private messages
-	'SHOW_EMAIL'				=> 'Users can contact me by email',
+	'SHOW_EMAIL'				=> 'Show email address',
 	'SIGNATURE_EXPLAIN'			=> 'This is a block of text that can be added to posts you make. There is a %1$d character limit and %2$s lines limit.',
 	'SIGNATURE_PREVIEW'			=> 'Your signature will appear like this in posts',
 	'SIGNATURE_TOO_LONG'		=> 'Your signature is too long.',
@@ -366,30 +364,30 @@ $lang = array_merge($lang, [
 	'SORT_POST_TIME'			=> 'Post time',
 	'SORT_SIZE'					=> 'File size',
 
-	'TIMEZONE'					=> 'Timezone',
+	'TIMEZONE'					=> 'Time zone',
 	'TO'						=> 'To',
 	'TOO_MANY_RECIPIENTS'		=> 'You tried to send a private message to too many recipients.',
 	'TOO_MANY_REGISTERS'		=> 'You have exceeded the maximum number of registration attempts for this session. Please try again later.',
 
 	'UCP'						=> 'User Control Panel',
 	'UCP_ACTIVATE'				=> 'Activate account',
-	'UCP_ADMIN_ACTIVATE'		=> 'Please note that you will need to enter a valid email address before your account is activated. The administrator will review your account and if approved you will receive an email at the address you specified.',
+	'UCP_ADMIN_ACTIVATE'		=> 'You will receive an email when administrator approves your account.',
 	'UCP_ATTACHMENTS'			=> 'Attachments',
-	'UCP_EMAIL_ACTIVATE'		=> 'Please note that you will need to enter a valid email address before your account is activated. You will receive an email at the address you provide that contains an account activation link.',
+	'UCP_EMAIL_ACTIVATE'		=> 'You will receive an email with an account activation link.',
 
 	'UCP_MAIN'					=> 'Overview',
-	'UCP_MAIN_ATTACHMENTS'		=> 'Manage attachments',
-	'UCP_MAIN_BOOKMARKS'		=> 'Manage bookmarks',
-	'UCP_MAIN_DRAFTS'			=> 'Manage drafts',
+	'UCP_MAIN_ATTACHMENTS'		=> 'Attachments',
+	'UCP_MAIN_BOOKMARKS'		=> 'Bookmarks',
+	'UCP_MAIN_DRAFTS'			=> 'Drafts',
 	'UCP_MAIN_FRONT'			=> 'Front page',
-	'UCP_MAIN_SUBSCRIBED'		=> 'Manage subscriptions',
+	'UCP_MAIN_SUBSCRIBED'		=> 'Subscriptions',
 
 	'UCP_NO_ATTACHMENTS'		=> 'You have posted no files.',
 
 	'UCP_PREFS'					=> 'Board preferences',
-	'UCP_PREFS_PERSONAL'		=> 'Edit global settings',
-	'UCP_PREFS_POST'			=> 'Edit posting defaults',
-	'UCP_PREFS_VIEW'			=> 'Edit display options',
+	'UCP_PREFS_PERSONAL'		=> 'Global settings',
+	'UCP_PREFS_POST'			=> 'Posting defaults',
+	'UCP_PREFS_VIEW'			=> 'Display options',
 
 	'UCP_PM'					=> 'Private messages',
 	'UCP_PM_COMPOSE'			=> 'Compose message',
@@ -399,13 +397,13 @@ $lang = array_merge($lang, [
 	'UCP_PM_VIEW'				=> 'View messages',
 
 	'UCP_PROFILE'				=> 'Profile',
-	'UCP_PROFILE_AVATAR'		=> 'Edit avatar',
-	'UCP_PROFILE_PROFILE_INFO'	=> 'Edit profile',
-	'UCP_PROFILE_REG_DETAILS'	=> 'Edit account settings',
-	'UCP_PROFILE_SIGNATURE'		=> 'Edit signature',
+	'UCP_PROFILE_AVATAR'		=> 'Avatar',
+	'UCP_PROFILE_PROFILE_INFO'	=> 'Public info',
+	'UCP_PROFILE_REG_DETAILS'	=> 'Account info',
+	'UCP_PROFILE_SIGNATURE'		=> 'Signature',
 
 	'UCP_USERGROUPS'			=> 'Usergroups',
-	'UCP_USERGROUPS_MEMBER'		=> 'Edit memberships',
+	'UCP_USERGROUPS_MEMBER'		=> 'Memberships',
 	'UCP_USERGROUPS_MANAGE'		=> 'Manage groups',
 
 	'UCP_REGISTER_DISABLE'			=> 'Creating a new account is currently not possible.',

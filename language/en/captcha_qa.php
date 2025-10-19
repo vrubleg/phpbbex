@@ -16,13 +16,12 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, [
-	'CAPTCHA_QA'				=> 'Q&amp;A',
-	'CONFIRM_QUESTION_EXPLAIN'	=> 'This question is a means of preventing automated form submissions by spambots.',
+	'CAPTCHA_QA'				=> 'Text question',
 	'CONFIRM_QUESTION_WRONG'	=> 'You have provided an invalid answer to the question.',
 
 	'QUESTION_ANSWERS'			=> 'Answers',
 	'ANSWERS_EXPLAIN'			=> 'Please enter valid answers to the question, one per line.',
-	'CONFIRM_QUESTION'			=> 'Question',
+	'CONFIRM_QUESTION'			=> 'Anti-spam question',
 
 	'ANSWER'					=> 'Answer',
 	'EDIT_QUESTION'				=> 'Edit Question',

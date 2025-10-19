@@ -260,6 +260,7 @@ class ucp_profile
 				$cp_data = $cp_error = [];
 
 				$data = [
+					'viewemail'		=> request_var('viewemail', (bool) $user->data['user_allow_viewemail']),
 					'icq'			=> request_var('icq', $user->data['user_icq']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user->data['user_jabber'], true)),
 					'skype'			=> utf8_normalize_nfc(request_var('skype', $user->data['user_skype'], true)),
@@ -359,6 +360,7 @@ class ucp_profile
 						}
 
 						$sql_ary = [
+							'user_allow_viewemail'	=> $data['viewemail'],
 							'user_icq'		=> $data['icq'],
 							'user_jabber'	=> $data['jabber'],
 							'user_skype'	=> $data['skype'],
@@ -429,6 +431,9 @@ class ucp_profile
 
 				$template->assign_vars([
 					'ERROR'		=> (sizeof($error)) ? implode('<br />', $error) : '',
+
+					'S_HIDE_ALL_EMAILS'	=> $config['board_hide_emails'],
+					'S_VIEW_EMAIL'		=> $data['viewemail'],
 
 					'ICQ'		=> $data['icq'],
 					'JABBER'	=> $data['jabber'],

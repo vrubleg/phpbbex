@@ -1,34 +1,20 @@
 <!-- INCLUDE overall_header.html -->
 
-<script>
-	/**
-	* Change language
-	*/
-	function change_language(lang_iso)
-	{
-		document.forms['register'].change_lang.value = lang_iso;
-		document.forms['register'].submit.click();
-	}
-</script>
-
 <form method="post" action="{S_UCP_ACTION}" id="register">
 
 <div class="panel">
 	<div class="inner">
 
-	<h2>{SITENAME} - {L_REGISTRATION}</h2>
+	<h2>{L_REGISTRATION}</h2>
 
 	<fieldset class="fields2">
 	<!-- IF ERROR --><dl><dd class="error">{ERROR}</dd></dl><!-- ENDIF -->
-	<!-- IF L_REG_COND -->
-		<dl><dd><strong>{L_REG_COND}</strong></dd></dl>
-	<!-- ENDIF -->
 	<dl>
 		<dt><label for="username">{L_USERNAME}:</label><br /><span>{L_USERNAME_EXPLAIN}</span></dt>
 		<dd><input type="text" tabindex="1" name="username" id="username" size="25" value="{USERNAME}" class="inputbox autowidth" title="{L_USERNAME}" autocomplete="username" /></dd>
 	</dl>
 	<dl>
-		<dt><label for="email">{L_EMAIL_ADDRESS}:</label></dt>
+		<dt><label for="email">{L_EMAIL_ADDRESS}:</label><!-- IF L_REG_COND --><br /><span>{L_REG_COND}</span><!-- ENDIF --></dt>
 		<dd><input type="text" tabindex="2" name="email" id="email" size="25" maxlength="100" value="{EMAIL}" class="inputbox autowidth" title="{L_EMAIL_ADDRESS}" autocomplete="email" /></dd>
 	</dl>
 	<dl>
@@ -49,6 +35,13 @@
 	<!-- ENDIF -->
 
 	<!-- IF S_LANG_OPTIONS -->
+	<script>
+	function change_language(lang_iso)
+	{
+		document.forms['register'].change_lang.value = lang_iso;
+		document.forms['register'].submit();
+	}
+	</script>
 	<dl>
 		<dt><label for="lang">{L_LANGUAGE}:</label></dt>
 		<dd><select name="lang" id="lang" onchange="change_language(this.value); return false;" tabindex="6" title="{L_LANGUAGE}">{S_LANG_OPTIONS}</select></dd>
@@ -74,13 +67,24 @@
 	<!-- END profile_fields -->
 	<!-- ENDIF -->
 
+	<!-- IF CAPTCHA_TEMPLATE -->
+		<hr />
+		<!-- DEFINE $CAPTCHA_TAB_INDEX = 8 -->
+		<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
+	<!-- ENDIF -->
+
 	</fieldset>
 	</div>
 </div>
-<!-- IF CAPTCHA_TEMPLATE -->
-	<!-- DEFINE $CAPTCHA_TAB_INDEX = 8 -->
-	<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
-<!-- ENDIF -->
+
+<div class="panel">
+	<div class="inner">
+	<div class="content">
+		<h2>{L_TERMS_OF_USE}</h2>
+		<p>{L_TERMS_OF_USE_CONTENT}</p>
+	</div>
+	</div>
+</div>
 
 <div class="panel">
 	<div class="inner">
@@ -89,7 +93,8 @@
 		{S_HIDDEN_FIELDS}
 		<input type="hidden" name="creation_time" value="0" />
 		<input type="hidden" name="form_token" value="0" />
-		<input type="submit" tabindex="9" name="submit" id="submit" value="{L_SUBMIT}" class="button1 default-submit-action" />
+		<input type="submit" tabindex="9" name="agree" value="{L_AGREE}" class="button1 default-submit-action" />&nbsp;
+		<input type="submit" tabindex="10" name="disagree" value="{L_NOT_AGREE}" class="button2" />
 	</fieldset>
 
 	</div>

@@ -83,18 +83,12 @@ class phpbb_default_captcha
 		}
 		else
 		{
-			$link = append_sid(PHPBB_ROOT_PATH . 'ucp.php',  'mode=confirm&amp;confirm_id=' . $this->confirm_id . '&amp;type=' . $this->type);
-			$explain = $user->lang(($this->type != CONFIRM_POST) ? 'CONFIRM_EXPLAIN' : 'POST_CONFIRM_EXPLAIN', '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>');
-
 			$template->assign_vars([
-				'CONFIRM_IMAGE_LINK'		=> $link,
-				'CONFIRM_IMAGE'				=> '<img src="' . $link . '" />',
-				'CONFIRM_IMG'				=> '<img src="' . $link . '" />',
-				'CONFIRM_ID'				=> $this->confirm_id,
-				'S_CONFIRM_CODE'			=> true,
-				'S_TYPE'					=> $this->type,
-				'S_CONFIRM_REFRESH'			=> ($config['enable_confirm'] && $config['confirm_refresh'] && $this->type == CONFIRM_REG),
-				'L_CONFIRM_EXPLAIN'			=> $explain,
+				'CAPTCHA_IMAGE_URL'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php',  'mode=confirm&amp;confirm_id=' . $this->confirm_id . '&amp;type=' . $this->type),
+				'CONFIRM_ID'		=> $this->confirm_id,
+				'S_CONFIRM_CODE'	=> true,
+				'S_TYPE'			=> $this->type,
+				'S_CONFIRM_REFRESH'	=> ($config['enable_confirm'] && $config['confirm_refresh'] && $this->type == CONFIRM_REG),
 			]);
 
 			return 'captcha_default.html';
@@ -117,7 +111,7 @@ class phpbb_default_captcha
 
 		// acp_captcha has a delivery function; let's use it
 		$template->assign_vars([
-			'CONFIRM_IMAGE'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'captcha_demo=1&amp;mode=visual&amp;i=' . $id . '&amp;select_captcha=' . $this->get_class_name()) . $variables,
+			'CAPTCHA_IMAGE_URL'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'captcha_demo=1&amp;mode=visual&amp;i=' . $id . '&amp;select_captcha=' . $this->get_class_name()) . $variables,
 			'CONFIRM_ID'		=> $this->confirm_id,
 		]);
 

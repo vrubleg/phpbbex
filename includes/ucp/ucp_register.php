@@ -24,27 +24,21 @@ class ucp_register
 	{
 		global $config, $db, $user, $auth, $template;
 
-		//
 		if ($config['require_activation'] == USER_ACTIVATION_DISABLE)
 		{
 			trigger_error('UCP_REGISTER_DISABLE');
 		}
 
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
+		if (isset($_POST['disagree']))
+		{
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
+		}
 
-		$agreed			= (!empty($_POST['agreed'])) ? 1 : 0;
-		$submit			= isset($_POST['submit']);
+		$submit			= isset($_POST['agree']);
 		$change_lang	= request_var('change_lang', '');
 		$user_lang		= request_var('lang', $user->lang_name);
 
-		if ($agreed)
-		{
-			add_form_key('ucp_register');
-		}
-		else
-		{
-			add_form_key('ucp_register_terms');
-		}
+		add_form_key('ucp_register');
 
 		if ($change_lang || $user_lang != $config['default_lang'])
 		{
@@ -55,9 +49,6 @@ class ucp_register
 				if ($change_lang)
 				{
 					$submit = false;
-
-					// Setting back agreed to let the user view the agreement in his/her language
-					$agreed = (empty($_GET['change_lang'])) ? 0 : $agreed;
 				}
 
 				$user->lang_name = $user_lang = $use_lang;
@@ -72,60 +63,9 @@ class ucp_register
 			}
 		}
 
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
 		$cp = new custom_profile();
-
 		$error = $cp_data = $cp_error = [];
-
-		if (!$agreed)
-		{
-			$add_lang = ($change_lang) ? '&amp;change_lang=' . urlencode($change_lang) : '';
-
-			$s_hidden_fields = [
-				'change_lang'	=> $change_lang,
-			];
-
-			// If we change the language, we want to pass on some more possible parameter.
-			if ($change_lang)
-			{
-				// We do not include the password
-				$s_hidden_fields = array_merge($s_hidden_fields, [
-					'username'			=> utf8_normalize_nfc(request_var('username', '', true)),
-					'email'				=> strtolower(request_var('email', '')),
-					'email_confirm'		=> strtolower(request_var('email_confirm', '')),
-					'lang'				=> $user->lang_name,
-					'tz'				=> request_var('tz', (float) $config['board_timezone']),
-				]);
-
-			}
-
-			// Checking amount of available languages
-			$sql = 'SELECT lang_id
-				FROM ' . LANG_TABLE;
-			$result = $db->sql_query($sql);
-
-			$lang_row = [];
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$lang_row[] = $row;
-			}
-			$db->sql_freeresult($result);
-
-			$template->assign_vars([
-				'S_LANG_OPTIONS'	=> (sizeof($lang_row) == 1 || $config['override_user_lang']) ? '' : language_select($user_lang),
-				'L_TERMS_OF_USE'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
-
-				'S_REGISTRATION'	=> true,
-				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
-				'S_UCP_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register' . $add_lang),
-				]
-			);
-
-			unset($lang_row);
-
-			$this->tpl_name = 'ucp_agreement';
-			return;
-		}
-
 
 		// The CAPTCHA kicks in here. We can't help that the information gets lost on language change.
 		if ($config['enable_confirm'])
@@ -420,7 +360,6 @@ class ucp_register
 		}
 
 		$s_hidden_fields = [
-			'agreed'		=> 'true',
 			'change_lang'	=> 0,
 		];
 
@@ -463,6 +402,7 @@ class ucp_register
 			'L_REG_COND'				=> $l_reg_cond,
 			'L_USERNAME_EXPLAIN'		=> sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
 			'L_PASSWORD_EXPLAIN'		=> sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
+			'L_TERMS_OF_USE_CONTENT'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
 
 			'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
 			'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz']),

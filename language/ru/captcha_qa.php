@@ -16,13 +16,12 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, [
-	'CAPTCHA_QA'				=> 'Текстовое подтверждение',
-	'CONFIRM_QUESTION_EXPLAIN'	=> 'Этот вопрос предназначен для предотвращения автоматической отправки форм спам-ботами.',
+	'CAPTCHA_QA'				=> 'Текстовый вопрос',
 	'CONFIRM_QUESTION_WRONG'	=> 'Вы дали неправильный ответ на вопрос.',
 
 	'QUESTION_ANSWERS'			=> 'Ответы',
 	'ANSWERS_EXPLAIN'			=> 'Введите правильные ответы на вопрос. Каждый ответ вводите на отдельной строке.',
-	'CONFIRM_QUESTION'			=> 'Вопрос',
+	'CONFIRM_QUESTION'			=> 'Анти-спам вопрос',
 
 	'ANSWER'					=> 'Ответ',
 	'EDIT_QUESTION'				=> 'Редактирование вопроса',

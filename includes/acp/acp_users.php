@@ -55,8 +55,8 @@ class acp_users
 
 			$template->assign_vars([
 				'MESSAGE_TITLE'		=> sprintf($user->lang['IP_WHOIS_FOR'], $domain),
-				'MESSAGE_TEXT'		=> nl2br($ipwhois)]
-			);
+				'MESSAGE_TEXT'		=> nl2br($ipwhois),
+			]);
 
 			return;
 		}
@@ -207,8 +207,8 @@ class acp_users
 									'action'		=> $action,
 									'update'		=> true,
 									'delete'		=> 1,
-									'delete_type'	=> $delete_type])
-								);
+									'delete_type'	=> $delete_type,
+								]));
 							}
 						}
 						else
@@ -493,8 +493,8 @@ class acp_users
 									'i'				=> $id,
 									'mode'			=> $mode,
 									'action'		=> $action,
-									'update'		=> true])
-								);
+									'update'		=> true,
+								]));
 							}
 
 						break;
@@ -515,8 +515,8 @@ class acp_users
 									'i'				=> $id,
 									'mode'			=> $mode,
 									'action'		=> $action,
-									'update'		=> true])
-								);
+									'update'		=> true,
+								]));
 							}
 
 						break;
@@ -670,8 +670,8 @@ class acp_users
 									'S_SELECT_FORUM'		=> true,
 									'U_ACTION'				=> $this->u_action . "&amp;action=$action&amp;u=$user_id",
 									'U_BACK'				=> $this->u_action . "&amp;u=$user_id",
-									'S_FORUM_OPTIONS'		=> make_forum_select(false, false, true, true)]
-								);
+									'S_FORUM_OPTIONS'		=> make_forum_select(false, false, true, true),
+								]);
 
 								return;
 							}
@@ -1217,8 +1217,8 @@ class acp_users
 					'S_LIMIT_DAYS'	=> $s_limit_days,
 					'S_SORT_KEY'	=> $s_sort_key,
 					'S_SORT_DIR'	=> $s_sort_dir,
-					'S_CLEARLOGS'	=> $auth->acl_get('a_clearlogs')]
-				);
+					'S_CLEARLOGS'	=> $auth->acl_get('a_clearlogs'),
+				]);
 
 				foreach ($log_data as $row)
 				{
@@ -1227,8 +1227,8 @@ class acp_users
 						'IP'			=> $row['ip'],
 						'DATE'			=> $user->format_date($row['time']),
 						'ACTION'		=> nl2br($row['action']),
-						'ID'			=> $row['id']]
-					);
+						'ID'			=> $row['id'],
+					]);
 				}
 
 			break;
@@ -1367,6 +1367,7 @@ class acp_users
 				$user_row['iso_lang_id'] = $row['lang_id'];
 
 				$data = [
+					'viewemail'		=> request_var('viewemail', $user_row['user_allow_viewemail']),
 					'icq'			=> request_var('icq', $user_row['user_icq']),
 					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user_row['user_jabber'], true)),
 					'skype'			=> utf8_normalize_nfc(request_var('skype', $user_row['user_skype'], true)),
@@ -1444,6 +1445,7 @@ class acp_users
 					if (!sizeof($error))
 					{
 						$sql_ary = [
+							'user_allow_viewemail'	=> $data['viewemail'],
 							'user_icq'		=> $data['icq'],
 							'user_jabber'	=> $data['jabber'],
 							'user_skype'	=> $data['skype'],
@@ -1496,6 +1498,8 @@ class acp_users
 				unset($now);
 
 				$template->assign_vars([
+					'VIEW_EMAIL'	=> $data['viewemail'],
+
 					'ICQ'			=> $data['icq'],
 					'JABBER'		=> $data['jabber'],
 					'SKYPE'			=> $data['skype'],
@@ -1513,8 +1517,8 @@ class acp_users
 					'S_BIRTHDAY_MONTH_OPTIONS'	=> $s_birthday_month_options,
 					'S_BIRTHDAY_YEAR_OPTIONS'	=> $s_birthday_year_options,
 
-					'S_PROFILE'		=> true]
-				);
+					'S_PROFILE'		=> true,
+				]);
 
 				// Get additional profile fields and assign them to the template block var 'profile_fields'
 				$user->get_profile_fields($user_id);
@@ -1533,7 +1537,6 @@ class acp_users
 					'tz'				=> request_var('tz', (float) $user_row['user_timezone']),
 					'style'				=> request_var('style', $user_row['user_style']),
 					'dst'				=> request_var('dst', $user_row['user_dst']),
-					'viewemail'			=> request_var('viewemail', $user_row['user_allow_viewemail']),
 					'massemail'			=> request_var('massemail', $user_row['user_allow_massemail']),
 					'hideonline'		=> request_var('hideonline', !$user_row['user_allow_viewonline']),
 					'notifymethod'		=> request_var('notifymethod', $user_row['user_notify_type']),
@@ -1601,7 +1604,6 @@ class acp_users
 							'user_options'			=> $user_row['user_options'],
 
 							'user_allow_pm'			=> $data['allowpm'],
-							'user_allow_viewemail'	=> $data['viewemail'],
 							'user_allow_massemail'	=> $data['massemail'],
 							'user_allow_viewonline'	=> !$data['hideonline'],
 							'user_notify_type'		=> $data['notifymethod'],
@@ -1710,7 +1712,6 @@ class acp_users
 					'S_PREFS'			=> true,
 					'S_JABBER_DISABLED'	=> !($config['jab_enable'] && $user_row['user_jabber'] && @extension_loaded('xml')),
 
-					'VIEW_EMAIL'		=> $data['viewemail'],
 					'MASS_EMAIL'		=> $data['massemail'],
 					'ALLOW_PM'			=> $data['allowpm'],
 					'HIDE_ONLINE'		=> $data['hideonline'],
@@ -1744,7 +1745,7 @@ class acp_users
 
 					'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
 					'S_STYLE_OPTIONS'	=> ($config['override_user_style']) ? '' : style_select($data['style']),
-					'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz'], true),
+					'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz']),
 				]);
 
 			break;
@@ -2108,8 +2109,8 @@ class acp_users
 						'S_IN_MESSAGE'		=> $row['in_message'],
 
 						'U_DOWNLOAD'		=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id']),
-						'U_VIEW_TOPIC'		=> $view_topic]
-					);
+						'U_VIEW_TOPIC'		=> $view_topic,
+					]);
 				}
 				$db->sql_freeresult($result);
 
@@ -2201,8 +2202,8 @@ class acp_users
 								'i'				=> $id,
 								'mode'			=> $mode,
 								'action'		=> $action,
-								'g'				=> $group_id])
-							);
+								'g'				=> $group_id,
+							]));
 						}
 
 					break;
@@ -2224,8 +2225,8 @@ class acp_users
 								'i'				=> $id,
 								'mode'			=> $mode,
 								'action'		=> $action,
-								'g'				=> $group_id])
-							);
+								'g'				=> $group_id,
+							]));
 						}
 
 					break;
@@ -2324,8 +2325,7 @@ class acp_users
 							'S_IS_MEMBER'		=> ($group_type != 'pending'),
 							'S_NO_DEFAULT'		=> ($user_row['group_id'] != $data['group_id']),
 							'S_SPECIAL_GROUP'	=> ($group_type == 'special'),
-							]
-						);
+						]);
 					}
 				}
 

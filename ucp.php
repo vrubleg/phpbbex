@@ -25,9 +25,6 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup('ucp');
 
-// Setting a variable to let the style designer know where he is...
-$template->assign_var('S_IN_UCP', true);
-
 $module = new p_master();
 $default = false;
 
@@ -52,7 +49,7 @@ switch ($mode)
 	break;
 
 	case 'register':
-		if ($user->data['is_registered'] || isset($_REQUEST['not_agreed']))
+		if ($user->data['is_registered'])
 		{
 			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
@@ -101,8 +98,8 @@ switch ($mode)
 	case 'terms':
 	case 'privacy':
 
-		$message = ($mode == 'terms') ? 'TERMS_OF_USE_CONTENT' : 'PRIVACY_POLICY';
-		$title = ($mode == 'terms') ? 'TERMS_USE' : 'PRIVACY';
+		$message = ($mode == 'terms') ? 'TERMS_OF_USE_CONTENT' : 'PRIVACY_POLICY_CONTENT';
+		$title = ($mode == 'terms') ? 'TERMS_OF_USE' : 'PRIVACY_POLICY';
 
 		if (empty($user->lang[$message]))
 		{
@@ -195,8 +192,11 @@ switch ($mode)
 // We use this approach because it does not impose large code changes
 if (!$default)
 {
-	return true;
+	return;
 }
+
+// Setting a variable to let the style designer know where he is. Exclude special pages.
+$template->assign_var('S_IN_UCP', true);
 
 // Only registered users can go beyond this point
 if (!$user->data['is_registered'])

@@ -6,10 +6,18 @@
 
 <div class="panel">
 	<div class="inner">
-	<p>{L_PROFILE_INFO_NOTICE}</p>
 
 	<fieldset>
 	<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
+	<!-- IF not S_HIDE_ALL_EMAILS -->
+	<dl>
+		<dt><label for="viewemail1">{L_SHOW_EMAIL}:</label></dt>
+		<dd>
+			<label for="viewemail1"><input type="radio" name="viewemail" id="viewemail1" value="1"<!-- IF S_VIEW_EMAIL --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+			<label for="viewemail0"><input type="radio" name="viewemail" id="viewemail0" value="0"<!-- IF not S_VIEW_EMAIL --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+		</dd>
+	</dl>
+	<!-- ENDIF -->
 	<dl>
 		<dt><label for="jabber">{L_JABBER}:</label></dt>
 		<dd><input type="text" name="jabber" id="jabber" maxlength="255" value="{JABBER}" class="inputbox" /></dd>
@@ -57,11 +65,11 @@
 		</dl>
 	<!-- ENDIF -->
 	<dl>
-		<dt><label for="gender_x">{L_GENDER}:</label><br /><span>{L_GENDER_EXPLAIN}</span></dt>
+		<dt><label for="gender_x">{L_GENDER}:</label></dt>
 		<dd>
+			<label for="gender_x"><input type="radio" name="gender" id="gender_x" value="0"<!-- IF S_GENDER_X --> checked="checked"<!-- ENDIF --> /> {L_GENDER_X}</label>
 			<label for="gender_m"><input type="radio" name="gender" id="gender_m" value="1"<!-- IF S_GENDER_M --> checked="checked"<!-- ENDIF --> /> {L_GENDER_M}</label>
 			<label for="gender_f"><input type="radio" name="gender" id="gender_f" value="2"<!-- IF S_GENDER_F --> checked="checked"<!-- ENDIF --> /> {L_GENDER_F}</label>
-			<label for="gender_x"><input type="radio" name="gender" id="gender_x" value="0"<!-- IF S_GENDER_X --> checked="checked"<!-- ENDIF --> /> {L_GENDER_X}</label>
 		</dd>
 	</dl>
 	<!-- BEGIN profile_fields -->
