@@ -3,6 +3,11 @@
 	<fieldset>
 		<legend>{L_USER_PROFILE}</legend>
 	<dl>
+		<dt><label for="viewemail">{L_SHOW_EMAIL}:</label></dt>
+		<dd><label><input type="radio" class="radio" name="viewemail" value="1"<!-- IF VIEW_EMAIL --> id="viewemail" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
+			<label><input type="radio" class="radio" name="viewemail" value="0"<!-- IF not VIEW_EMAIL --> id="viewemail" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+	</dl>
+	<dl>
 		<dt><label for="jabber">{L_JABBER}:</label></dt>
 		<dd><input type="text" id="jabber" name="jabber" value="{JABBER}" /></dd>
 	</dl>

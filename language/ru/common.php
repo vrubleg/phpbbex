@@ -867,7 +867,7 @@ $lang = array_merge($lang, [
 
 	// Genders
 	'GENDER'					=> 'Пол',
-	'GENDER_X'					=> 'Не указан',
+	'GENDER_X'					=> 'Нет',
 	'GENDER_M'					=> 'Мужской',
 	'GENDER_F'					=> 'Женский',
 

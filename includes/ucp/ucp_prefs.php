@@ -38,9 +38,7 @@ class ucp_prefs
 					'lang'			=> basename(request_var('lang', $user->data['user_lang'])),
 					'style'			=> request_var('style', (int) $user->data['user_style']),
 					'tz'			=> request_var('tz', (float) $user->data['user_timezone']),
-
 					'dst'			=> request_var('dst', (bool) $user->data['user_dst']),
-					'viewemail'		=> request_var('viewemail', (bool) $user->data['user_allow_viewemail']),
 					'massemail'		=> request_var('massemail', (bool) $user->data['user_allow_massemail']),
 					'hideonline'	=> request_var('hideonline', (bool) !$user->data['user_allow_viewonline']),
 					'notifypm'		=> request_var('notifypm', (bool) $user->data['user_notify_pm']),
@@ -87,7 +85,6 @@ class ucp_prefs
 
 						$sql_ary = [
 							'user_allow_pm'			=> $data['allowpm'],
-							'user_allow_viewemail'	=> $data['viewemail'],
 							'user_allow_massemail'	=> $data['massemail'],
 							'user_allow_viewonline'	=> ($auth->acl_get('u_hideonline')) ? !$data['hideonline'] : $user->data['user_allow_viewonline'],
 							'user_notify_type'		=> $data['notifymethod'],
@@ -169,8 +166,6 @@ class ucp_prefs
 					'S_NOTIFY_EMAIL'	=> ($data['notifymethod'] == NOTIFY_EMAIL),
 					'S_NOTIFY_IM'		=> ($data['notifymethod'] == NOTIFY_IM),
 					'S_NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH),
-					'S_HIDE_ALL_EMAILS'	=> $config['board_hide_emails'],
-					'S_VIEW_EMAIL'		=> $data['viewemail'],
 					'S_MASS_EMAIL'		=> $data['massemail'],
 					'S_ALLOW_PM'		=> $data['allowpm'],
 					'S_HIDE_ONLINE'		=> $data['hideonline'],
