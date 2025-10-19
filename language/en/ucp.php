@@ -371,9 +371,9 @@ $lang = array_merge($lang, [
 
 	'UCP'						=> 'User Control Panel',
 	'UCP_ACTIVATE'				=> 'Activate account',
-	'UCP_ADMIN_ACTIVATE'		=> 'Enter a valid email address. The administrator will review your account and if approved you will receive an email at the address you specified.',
+	'UCP_ADMIN_ACTIVATE'		=> 'You will receive an email when administrator approves your account.',
 	'UCP_ATTACHMENTS'			=> 'Attachments',
-	'UCP_EMAIL_ACTIVATE'		=> 'Enter a valid email address. You will receive an email at the address you provide that contains an account activation link.',
+	'UCP_EMAIL_ACTIVATE'		=> 'You will receive an email with an account activation link.',
 
 	'UCP_MAIN'					=> 'Overview',
 	'UCP_MAIN_ATTACHMENTS'		=> 'Attachments',

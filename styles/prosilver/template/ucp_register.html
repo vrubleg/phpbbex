@@ -71,13 +71,15 @@
 	<!-- END profile_fields -->
 	<!-- ENDIF -->
 
+	<!-- IF CAPTCHA_TEMPLATE -->
+		<hr />
+		<!-- DEFINE $CAPTCHA_TAB_INDEX = 8 -->
+		<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
+	<!-- ENDIF -->
+
 	</fieldset>
 	</div>
 </div>
-<!-- IF CAPTCHA_TEMPLATE -->
-	<!-- DEFINE $CAPTCHA_TAB_INDEX = 8 -->
-	<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
-<!-- ENDIF -->
 
 <div class="panel">
 	<div class="inner">
