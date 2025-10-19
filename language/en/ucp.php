@@ -90,7 +90,7 @@ $lang = array_merge($lang, [
 	'CONFIRM_EMAIL'				=> 'Confirm email address',
 	'CONFIRM_EMAIL_EXPLAIN'		=> 'You only need to specify this if you are changing your email address.',
 	'VC_REFRESH'				=> 'Refresh confirmation code',
-	'VC_REFRESH_EXPLAIN'		=> 'If you cannot read the code you can request a new one by clicking the button.',
+	'VC_REFRESH_EXPLAIN'		=> 'If you cannot read the code, you can request a new one by clicking the button.',
 
 	'CONFIRM_PASSWORD'			=> 'Confirm password',
 	'CONFIRM_PASSWORD_EXPLAIN'	=> 'You only need to confirm your password if you changed it above.',
@@ -364,7 +364,7 @@ $lang = array_merge($lang, [
 	'SORT_POST_TIME'			=> 'Post time',
 	'SORT_SIZE'					=> 'File size',
 
-	'TIMEZONE'					=> 'Timezone',
+	'TIMEZONE'					=> 'Time zone',
 	'TO'						=> 'To',
 	'TOO_MANY_RECIPIENTS'		=> 'You tried to send a private message to too many recipients.',
 	'TOO_MANY_REGISTERS'		=> 'You have exceeded the maximum number of registration attempts for this session. Please try again later.',

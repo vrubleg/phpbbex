@@ -20,15 +20,12 @@
 
 	<fieldset class="fields2">
 	<!-- IF ERROR --><dl><dd class="error">{ERROR}</dd></dl><!-- ENDIF -->
-	<!-- IF L_REG_COND -->
-		<dl><dd><strong>{L_REG_COND}</strong></dd></dl>
-	<!-- ENDIF -->
 	<dl>
 		<dt><label for="username">{L_USERNAME}:</label><br /><span>{L_USERNAME_EXPLAIN}</span></dt>
 		<dd><input type="text" tabindex="1" name="username" id="username" size="25" value="{USERNAME}" class="inputbox autowidth" title="{L_USERNAME}" autocomplete="username" /></dd>
 	</dl>
 	<dl>
-		<dt><label for="email">{L_EMAIL_ADDRESS}:</label></dt>
+		<dt><label for="email">{L_EMAIL_ADDRESS}:</label><!-- IF L_REG_COND --><br /><span>{L_REG_COND}</span><!-- ENDIF --></dt>
 		<dd><input type="text" tabindex="2" name="email" id="email" size="25" maxlength="100" value="{EMAIL}" class="inputbox autowidth" title="{L_EMAIL_ADDRESS}" autocomplete="email" /></dd>
 	</dl>
 	<dl>
