@@ -320,7 +320,6 @@ $lang = array_merge($lang, [
 	'POST_REPLY_PM'				=> 'Ответить',
 	'PRINT_PM'					=> 'Для печати',
 	'PREFERENCES_UPDATED'		=> 'Ваши настройки обновлены.',
-	'PROFILE_INFO_NOTICE'		=> 'Пожалуйста, помните, что эта информация может быть доступна другим пользователям. Будьте осторожны при выборе указываемых персональных данных. Любые поля, обозначенные звёздочкой (*), должны быть заполнены.',
 	'PROFILE_UPDATED'			=> 'Ваш профиль обновлён.',
 
 	'RECIPIENT'							=> 'Получатель',
@@ -400,8 +399,8 @@ $lang = array_merge($lang, [
 
 	'UCP_PROFILE'				=> 'Профиль',
 	'UCP_PROFILE_AVATAR'		=> 'Аватара',
-	'UCP_PROFILE_PROFILE_INFO'	=> 'Личные данные',
-	'UCP_PROFILE_REG_DETAILS'	=> 'Регистрационные данные',
+	'UCP_PROFILE_PROFILE_INFO'	=> 'Публичные данные',
+	'UCP_PROFILE_REG_DETAILS'	=> 'Учётные данные',
 	'UCP_PROFILE_SIGNATURE'		=> 'Подпись',
 
 	'UCP_USERGROUPS'			=> 'Группы',

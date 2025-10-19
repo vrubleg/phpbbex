@@ -320,7 +320,6 @@ $lang = array_merge($lang, [
 	'POST_REPLY_PM'				=> 'Reply to message',
 	'PRINT_PM'					=> 'Print view',
 	'PREFERENCES_UPDATED'		=> 'Your preferences have been updated.',
-	'PROFILE_INFO_NOTICE'		=> 'Please note that this information may be viewable to other members. Be careful when including any personal details. Any fields marked with a * must be completed.',
 	'PROFILE_UPDATED'			=> 'Your profile has been updated.',
 
 	'RECIPIENT'							=> 'Recipient',
@@ -378,18 +377,18 @@ $lang = array_merge($lang, [
 	'UCP_EMAIL_ACTIVATE'		=> 'Enter a valid email address. You will receive an email at the address you provide that contains an account activation link.',
 
 	'UCP_MAIN'					=> 'Overview',
-	'UCP_MAIN_ATTACHMENTS'		=> 'Manage attachments',
-	'UCP_MAIN_BOOKMARKS'		=> 'Manage bookmarks',
-	'UCP_MAIN_DRAFTS'			=> 'Manage drafts',
+	'UCP_MAIN_ATTACHMENTS'		=> 'Attachments',
+	'UCP_MAIN_BOOKMARKS'		=> 'Bookmarks',
+	'UCP_MAIN_DRAFTS'			=> 'Drafts',
 	'UCP_MAIN_FRONT'			=> 'Front page',
-	'UCP_MAIN_SUBSCRIBED'		=> 'Manage subscriptions',
+	'UCP_MAIN_SUBSCRIBED'		=> 'Subscriptions',
 
 	'UCP_NO_ATTACHMENTS'		=> 'You have posted no files.',
 
 	'UCP_PREFS'					=> 'Board preferences',
-	'UCP_PREFS_PERSONAL'		=> 'Edit global settings',
-	'UCP_PREFS_POST'			=> 'Edit posting defaults',
-	'UCP_PREFS_VIEW'			=> 'Edit display options',
+	'UCP_PREFS_PERSONAL'		=> 'Global settings',
+	'UCP_PREFS_POST'			=> 'Posting defaults',
+	'UCP_PREFS_VIEW'			=> 'Display options',
 
 	'UCP_PM'					=> 'Private messages',
 	'UCP_PM_COMPOSE'			=> 'Compose message',
@@ -399,13 +398,13 @@ $lang = array_merge($lang, [
 	'UCP_PM_VIEW'				=> 'View messages',
 
 	'UCP_PROFILE'				=> 'Profile',
-	'UCP_PROFILE_AVATAR'		=> 'Edit avatar',
-	'UCP_PROFILE_PROFILE_INFO'	=> 'Edit profile',
-	'UCP_PROFILE_REG_DETAILS'	=> 'Edit account settings',
-	'UCP_PROFILE_SIGNATURE'		=> 'Edit signature',
+	'UCP_PROFILE_AVATAR'		=> 'Avatar',
+	'UCP_PROFILE_PROFILE_INFO'	=> 'Public info',
+	'UCP_PROFILE_REG_DETAILS'	=> 'Account info',
+	'UCP_PROFILE_SIGNATURE'		=> 'Signature',
 
 	'UCP_USERGROUPS'			=> 'Usergroups',
-	'UCP_USERGROUPS_MEMBER'		=> 'Edit memberships',
+	'UCP_USERGROUPS_MEMBER'		=> 'Memberships',
 	'UCP_USERGROUPS_MANAGE'		=> 'Manage groups',
 
 	'UCP_REGISTER_DISABLE'			=> 'Creating a new account is currently not possible.',
