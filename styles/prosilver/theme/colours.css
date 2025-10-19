@@ -236,25 +236,11 @@ ul.topiclist dd.searchextra {
 	color: #333333;
 }
 
-/* Post body styles
-----------------------------------------*/
-.postbody {
-	color: #333333;
-}
-
 /* Content container styles
 ----------------------------------------*/
-.content {
-	color: #333333;
-}
-
 .content h2, .panel h2 {
 	color: #115098;
 	border-bottom-color:  #CCCCCC;
-}
-
-dl.faq dt {
-	color: #333333;
 }
 
 .posthilit {
