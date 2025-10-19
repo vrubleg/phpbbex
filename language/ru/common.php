@@ -416,7 +416,7 @@ $lang = array_merge($lang, [
 	'PREVIEW'				=> 'Предпросмотр',
 	'PREVIOUS'				=> 'Пред.',		// Used in pagination
 	'PREVIOUS_STEP'			=> 'Назад',
-	'PRIVACY'				=> 'Соглашение о конфиденциальности',
+	'PRIVACY_POLICY'		=> 'Соглашение о конфиденциальности',
 	'PRIVATE_MESSAGE'		=> 'Личное сообщение',
 	'PRIVATE_MESSAGES'		=> 'Личные сообщения',
 	'PRIVATE_MESSAGING'		=> 'Личные сообщения',
@@ -518,7 +518,7 @@ $lang = array_merge($lang, [
 	'SUBMIT'					=> 'Отправить',
 
 	'TB'				=> 'ТБ',
-	'TERMS_USE'			=> 'Общие правила',
+	'TERMS_OF_USE'		=> 'Общие правила',
 	'TEST_CONNECTION'	=> 'Проверить подключение',
 	'THE_TEAM'			=> 'Наша команда',
 	'TIB'				=> 'ТБ',

@@ -2927,8 +2927,8 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 
 		'U_SEND_PASSWORD' 		=> ($config['email_enable']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=sendpassword') : '',
 		'U_RESEND_ACTIVATION'	=> ($config['require_activation'] == USER_ACTIVATION_SELF && $config['email_enable']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=resend_act') : '',
-		'U_TERMS_USE'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
-		'U_PRIVACY'				=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
+		'U_TERMS_OF_USE'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
+		'U_PRIVACY_POLICY'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
 
 		'S_DISPLAY_FULL_LOGIN'	=> $s_display,
 		'S_HIDDEN_FIELDS' 		=> $s_hidden_fields,
@@ -4261,8 +4261,8 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'U_SEARCH_UNREAD'		=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts'),
 		'U_SEARCH_ACTIVE_TOPICS'=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics'),
 		'U_TEAM'				=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=leaders'),
-		'U_TERMS_USE'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
-		'U_PRIVACY'				=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
+		'U_TERMS_OF_USE'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
+		'U_PRIVACY_POLICY'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
 		'U_RESTORE_PERMISSIONS'	=> ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm') : '',
 		'U_FEED'				=> generate_board_url() . "/feed.php",
 

@@ -101,8 +101,8 @@ switch ($mode)
 	case 'terms':
 	case 'privacy':
 
-		$message = ($mode == 'terms') ? 'TERMS_OF_USE_CONTENT' : 'PRIVACY_POLICY';
-		$title = ($mode == 'terms') ? 'TERMS_USE' : 'PRIVACY';
+		$message = ($mode == 'terms') ? 'TERMS_OF_USE_CONTENT' : 'PRIVACY_POLICY_CONTENT';
+		$title = ($mode == 'terms') ? 'TERMS_OF_USE' : 'PRIVACY_POLICY';
 
 		if (empty($user->lang[$message]))
 		{

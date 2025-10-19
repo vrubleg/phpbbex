@@ -112,7 +112,7 @@ class ucp_register
 
 			$template->assign_vars([
 				'S_LANG_OPTIONS'	=> (sizeof($lang_row) == 1 || $config['override_user_lang']) ? '' : language_select($user_lang),
-				'L_TERMS_OF_USE'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
+				'L_TERMS_OF_USE_CONTENT' => sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
 
 				'S_REGISTRATION'	=> true,
 				'S_HIDDEN_FIELDS'	=> build_hidden_fields($s_hidden_fields),
