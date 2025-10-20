@@ -83,7 +83,6 @@ class ucp_register
 			'new_password'		=> request_var('new_password', '', true),
 			'password_confirm'	=> request_var('password_confirm', '', true),
 			'email'				=> strtolower(request_var('email', '')),
-			'email_confirm'		=> strtolower(request_var('email_confirm', '')),
 			'lang'				=> basename(request_var('lang', $user->lang_name)),
 			'tz'				=> request_var('tz', (float) $timezone),
 		];
@@ -114,7 +113,6 @@ class ucp_register
 				'email'				=> [
 					['string', false, 6, 60],
 					['email']],
-				'email_confirm'		=> ['string', false, 6, 60],
 				'tz'				=> ['num', false, -14, 14],
 				'lang'				=> ['language_iso_name'],
 			]);
@@ -164,11 +162,6 @@ class ucp_register
 				if ($data['new_password'] != $data['password_confirm'])
 				{
 					$error[] = $user->lang['NEW_PASSWORD_ERROR'];
-				}
-
-				if ($data['email'] != $data['email_confirm'])
-				{
-					$error[] = $user->lang['NEW_EMAIL_ERROR'];
 				}
 			}
 
@@ -397,7 +390,6 @@ class ucp_register
 			'PASSWORD'			=> $data['new_password'],
 			'PASSWORD_CONFIRM'	=> $data['password_confirm'],
 			'EMAIL'				=> $data['email'],
-			'EMAIL_CONFIRM'		=> $data['email_confirm'],
 
 			'L_REG_COND'				=> $l_reg_cond,
 			'L_USERNAME_EXPLAIN'		=> sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),

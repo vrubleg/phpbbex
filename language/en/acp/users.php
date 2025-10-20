@@ -36,7 +36,6 @@ $lang = array_merge($lang, [
 	'CANNOT_REMOVE_YOURSELF'		=> 'You are not allowed to remove your own user account.',
 	'CANNOT_SET_FOUNDER_IGNORED'	=> 'You are not able to promote ignored users to be founders.',
 	'CANNOT_SET_FOUNDER_INACTIVE'	=> 'You need to activate users before you promote them to founders, only activated users are able to be promoted.',
-	'CONFIRM_EMAIL_EXPLAIN'			=> 'You only need to specify this if you are changing the users email address.',
 
 	'DELETE_POSTS'			=> 'Delete posts',
 	'DELETE_USER'			=> 'Delete user',

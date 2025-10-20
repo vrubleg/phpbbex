@@ -40,7 +40,6 @@ class ucp_profile
 				$data = [
 					'username'			=> utf8_normalize_nfc(request_var('username', $user->data['username'], true)),
 					'email'				=> strtolower(request_var('email', $user->data['user_email'])),
-					'email_confirm'		=> strtolower(request_var('email_confirm', '')),
 					'new_password'		=> request_var('new_password', '', true),
 					'cur_password'		=> request_var('cur_password', '', true),
 					'password_confirm'	=> request_var('password_confirm', '', true),
@@ -59,7 +58,6 @@ class ucp_profile
 						'email'				=> [
 							['string', false, 6, 60],
 							['email']],
-						'email_confirm'		=> ['string', true, 6, 60],
 					];
 
 					if ($auth->acl_get('u_chgname') && $config['allow_namechange'])
@@ -71,11 +69,6 @@ class ucp_profile
 					}
 
 					$error = validate_data($data, $check_ary);
-
-					if ($auth->acl_get('u_chgemail') && $data['email'] != $user->data['user_email'] && $data['email_confirm'] != $data['email'])
-					{
-						$error[] = ($data['email_confirm']) ? 'NEW_EMAIL_ERROR' : 'NEW_EMAIL_CONFIRM_EMPTY';
-					}
 
 					if ($auth->acl_get('u_chgpasswd') && $data['new_password'] && $data['password_confirm'] != $data['new_password'])
 					{

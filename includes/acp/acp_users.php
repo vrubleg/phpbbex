@@ -835,7 +835,6 @@ class acp_users
 						'username'			=> utf8_normalize_nfc(request_var('user', $user_row['username'], true)),
 						'user_founder'		=> request_var('user_founder', ($user_row['user_type'] == USER_FOUNDER) ? 1 : 0),
 						'email'				=> strtolower(request_var('user_email', $user_row['user_email'])),
-						'email_confirm'		=> strtolower(request_var('email_confirm', '')),
 						'new_password'		=> request_var('new_password', '', true),
 						'password_confirm'	=> request_var('password_confirm', '', true),
 					];
@@ -867,7 +866,6 @@ class acp_users
 								['string', false, 6, 60],
 								['email', $user_row['user_email']]
 							],
-							'email_confirm'		=> ['string', true, 6, 60]
 						];
 					}
 
@@ -876,11 +874,6 @@ class acp_users
 					if ($data['new_password'] && $data['password_confirm'] != $data['new_password'])
 					{
 						$error[] = 'NEW_PASSWORD_ERROR';
-					}
-
-					if ($data['email'] != $user_row['user_email'] && $data['email_confirm'] != $data['email'])
-					{
-						$error[] = 'NEW_EMAIL_ERROR';
 					}
 
 					if (!check_form_key($form_name))
