@@ -23,7 +23,6 @@ $lang = array_merge($lang, [
 	'ADMIN_TEST'				=> 'Check administrator settings',
 	'ADMIN_USERNAME'			=> 'Administrator username',
 	'ADMIN_USERNAME_EXPLAIN'	=> 'Please enter a username between 3 and 20 characters in length.',
-	'AUTHOR_NOTES'				=> 'Author notes<br />» %s',
 	'AVAILABLE'					=> 'Available',
 
 	'BACKUP_NOTICE'					=> 'Please backup your board before updating in case any problems arise during the update process.',
@@ -37,7 +36,6 @@ $lang = array_merge($lang, [
 	'CAT_UPDATE'				=> 'Update',
 	'CHANGE'					=> 'Change',
 	'CHECK_TABLE_PREFIX'		=> 'Please check your table prefix and try again.',
-	'CLEAN_VERIFY'				=> 'Cleaning up and verifying the final structure',
 	'CONFIG_FILE_UNABLE_WRITE'	=> 'It was not possible to write the configuration file.',
 	'CONFIG_FILE_WRITTEN'		=> 'The configuration file has been written. You may now proceed to the next step of the installation.',
 	'CONFIG_RETRY'				=> 'Retry',
@@ -324,8 +322,6 @@ $lang = array_merge($lang, [
 	'NUM_CONFLICTS'					=> 'Number of conflicts',
 	'NUMBER_OF_FILES_COLLECTED'		=> 'Currently differences from %1$d of %2$d files have been checked.<br />Please wait until all files are checked.',
 
-	'OLD_UPDATE_FILES'		=> 'Update files are out of date. The update files found are for updating from phpBB %1$s to phpBB %2$s but the latest version of phpBB is %3$s.',
-
 	'PACKAGE_UPDATES_TO'				=> 'Current package updates to version',
 	'PERFORM_DATABASE_UPDATE'			=> 'Perform database update',
 	'PERFORM_DATABASE_UPDATE_EXPLAIN'	=> 'Below you will find a button to the database update script. The database update can take a while, so please do not stop the execution if it seems to hang. After the database update has been performed just follow the instructions to continue the update process.',
@@ -371,12 +367,6 @@ $lang = array_merge($lang, [
 	'UPDATE_INSTALLATION'			=> 'Update phpBB installation',
 	'UPDATE_INSTALLATION_EXPLAIN'	=> 'With this option, it is possible to update your phpBB installation to the latest version.<br />During the process all of your files will be checked for their integrity. You are able to review all differences and files before the update.<br /><br />The file update itself can be done in two different ways.</p><h2>Manual Update</h2><p>With this update you only download your personal set of changed files to make sure you do not lose your file modifications you may have done. After you downloaded this package you need to manually upload the files to their correct position under your phpBB root directory. Once done, you are able to do the file check stage again to see if you moved the files to their correct location.</p><h2>Automatic Update with FTP</h2><p>This method is similar to the first one but without the need to download the changed files and uploading them on your own. This will be done for you. In order to use this method you need to know your FTP login details since you will be asked for them. Once finished you will be redirected to the file check again to make sure everything got updated correctly.<br /><br />',
 	'UPDATE_INSTRUCTIONS'			=> 'A new release <strong>%1$s</strong> is available. Please read more information to learn about what it has to offer, and how to upgrade.',
-	'UPDATE_INSTRUCTIONS_INCOMPLETE'	=> '
-
-		<h1>Incomplete update detected</h1>
-
-		<p>phpBB detected an incomplete automatic update. Please make sure you followed every step within the automatic update tool. Below you will find the link again, or go directly to your install directory.</p>
-	',
 	'UPDATE_METHOD'					=> 'Update method',
 	'UPDATE_METHOD_EXPLAIN'			=> 'You are now able to choose your preferred update method. Using the FTP upload will present you with a form you need to enter your FTP account details into. With this method the files will be automatically moved to the new location and backups of the old files being created by appending .bak to the filename. If you choose to download the modified files you are able to unpack and upload them to their correct location manually later.',
 	'UPDATE_REQUIRES_FILE'			=> 'The updater requires that the following file is present: %s',
