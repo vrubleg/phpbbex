@@ -541,7 +541,6 @@ $lang = array_merge($lang, [
 	'TOO_LONG_USER_PASSWORD'		=> 'Пароль слишком длинный.',
 	'TOO_LONG_USERNAME'				=> 'Имя пользователя слишком длинное.',
 	'TOO_LONG_EMAIL'				=> 'Адрес email слишком длинный.',
-	'TOO_LONG_EMAIL_CONFIRM'		=> 'Подтверждение адреса email слишком длинное.',
 	'TOO_LONG_WEBSITE'				=> 'Адрес сайта слишком длинный.',
 
 	'TOO_MANY_VOTE_OPTIONS'			=> 'Вы выбрали слишком много вариантов ответа при голосовании.',
@@ -560,7 +559,6 @@ $lang = array_merge($lang, [
 	'TOO_SHORT_USER_PASSWORD'		=> 'Пароль слишком короткий.',
 	'TOO_SHORT_USERNAME'			=> 'Имя пользователя слишком короткое.',
 	'TOO_SHORT_EMAIL'				=> 'Адрес email слишком короткий.',
-	'TOO_SHORT_EMAIL_CONFIRM'		=> 'Подтверждение адреса email слишком короткое.',
 	'TOO_SHORT_WEBSITE'				=> 'Адрес сайта слишком короткий.',
 
 	'TOO_SMALL'						=> 'Введённое значение слишком мало.',

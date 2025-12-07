@@ -541,7 +541,6 @@ $lang = array_merge($lang, [
 	'TOO_LONG_USER_PASSWORD'		=> 'The password you entered is too long.',
 	'TOO_LONG_USERNAME'				=> 'The username you entered is too long.',
 	'TOO_LONG_EMAIL'				=> 'The email address you entered is too long.',
-	'TOO_LONG_EMAIL_CONFIRM'		=> 'The email address confirmation you entered is too long.',
 	'TOO_LONG_WEBSITE'				=> 'The website address you entered is too long.',
 
 	'TOO_MANY_VOTE_OPTIONS'			=> 'You have tried to vote for too many options.',
@@ -560,7 +559,6 @@ $lang = array_merge($lang, [
 	'TOO_SHORT_USER_PASSWORD'		=> 'The password you entered is too short.',
 	'TOO_SHORT_USERNAME'			=> 'The username you entered is too short.',
 	'TOO_SHORT_EMAIL'				=> 'The email address you entered is too short.',
-	'TOO_SHORT_EMAIL_CONFIRM'		=> 'The email address confirmation you entered is too short.',
 	'TOO_SHORT_WEBSITE'				=> 'The website address you entered is too short.',
 
 	'TOO_SMALL'						=> 'The value you entered is too small.',

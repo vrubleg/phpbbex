@@ -87,8 +87,6 @@ $lang = array_merge($lang, [
 	'CLICK_RETURN_FOLDER'		=> '%1$sВернуться в папку «%3$s»%2$s',
 	'CONFIRMATION'				=> 'Подтверждение регистрации',
 	'CONFIRM_CHANGES'			=> 'Подтвердите изменения',
-	'CONFIRM_EMAIL'				=> 'Подтвердите email',
-	'CONFIRM_EMAIL_EXPLAIN'		=> 'Указывайте email только если вы хотите его поменять.',
 	'VC_REFRESH'				=> 'Обновить код подтверждения',
 	'VC_REFRESH_EXPLAIN'		=> 'Если не можете прочесть данный код, вы можете запросить новый, нажав на эту кнопку.',
 
@@ -227,8 +225,6 @@ $lang = array_merge($lang, [
 	'MOVE_TO_FOLDER'				=> 'Переместить в папку',
 	'MOVE_UP'						=> 'Сдвинуть вверх',
 
-	'NEW_EMAIL_CONFIRM_EMPTY'		=> 'Вы не ввели подтверждение адреса email.',
-	'NEW_EMAIL_ERROR'				=> 'Введённые вами адреса email не совпадают.',
 	'NEW_FOLDER_NAME'				=> 'Новое имя папки',
 	'NEW_PASSWORD'					=> 'Новый пароль',
 	'NEW_PASSWORD_CONFIRM_EMPTY'	=> 'Вы не ввели подтверждение пароля.',

@@ -18,16 +18,12 @@
 		<dd><input type="text" tabindex="2" name="email" id="email" size="25" maxlength="100" value="{EMAIL}" class="inputbox autowidth" title="{L_EMAIL_ADDRESS}" autocomplete="email" /></dd>
 	</dl>
 	<dl>
-		<dt><label for="email_confirm">{L_CONFIRM_EMAIL}:</label></dt>
-		<dd><input type="text" tabindex="3" name="email_confirm" id="email_confirm" size="25" maxlength="100" value="{EMAIL_CONFIRM}" class="inputbox autowidth" title="{L_CONFIRM_EMAIL}" autocomplete="email" /></dd>
-	</dl>
-	<dl>
 		<dt><label for="new_password">{L_PASSWORD}:</label><br /><span>{L_PASSWORD_EXPLAIN}</span></dt>
-		<dd><input type="password" tabindex="4" name="new_password" id="new_password" size="25" value="{PASSWORD}" class="inputbox autowidth" title="{L_NEW_PASSWORD}" autocomplete="new-password" /></dd>
+		<dd><input type="password" tabindex="3" name="new_password" id="new_password" size="25" value="{PASSWORD}" class="inputbox autowidth" title="{L_NEW_PASSWORD}" autocomplete="new-password" /></dd>
 	</dl>
 	<dl>
 		<dt><label for="password_confirm">{L_CONFIRM_PASSWORD}:</label></dt>
-		<dd><input type="password" tabindex="5" name="password_confirm" id="password_confirm" size="25" value="{PASSWORD_CONFIRM}" class="inputbox autowidth" title="{L_CONFIRM_PASSWORD}" autocomplete="new-password" /></dd>
+		<dd><input type="password" tabindex="4" name="password_confirm" id="password_confirm" size="25" value="{PASSWORD_CONFIRM}" class="inputbox autowidth" title="{L_CONFIRM_PASSWORD}" autocomplete="new-password" /></dd>
 	</dl>
 
 	<!-- IF S_LANG_OPTIONS and S_TZ_OPTIONS -->
@@ -44,13 +40,13 @@
 	</script>
 	<dl>
 		<dt><label for="lang">{L_LANGUAGE}:</label></dt>
-		<dd><select name="lang" id="lang" onchange="change_language(this.value); return false;" tabindex="6" title="{L_LANGUAGE}">{S_LANG_OPTIONS}</select></dd>
+		<dd><select name="lang" id="lang" onchange="change_language(this.value); return false;" tabindex="5" title="{L_LANGUAGE}">{S_LANG_OPTIONS}</select></dd>
 	</dl>
 	<!-- ENDIF -->
 	<!-- IF S_TZ_OPTIONS -->
 	<dl>
 		<dt><label for="tz">{L_TIMEZONE}:</label></dt>
-		<dd><select name="tz" id="tz" tabindex="7" class="autowidth">{S_TZ_OPTIONS}</select></dd>
+		<dd><select name="tz" id="tz" tabindex="6" class="autowidth">{S_TZ_OPTIONS}</select></dd>
 	</dl>
 	<!-- ENDIF -->
 
@@ -69,7 +65,7 @@
 
 	<!-- IF CAPTCHA_TEMPLATE -->
 		<hr />
-		<!-- DEFINE $CAPTCHA_TAB_INDEX = 8 -->
+		<!-- DEFINE $CAPTCHA_TAB_INDEX = 7 -->
 		<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
 	<!-- ENDIF -->
 
@@ -93,8 +89,8 @@
 		{S_HIDDEN_FIELDS}
 		<input type="hidden" name="creation_time" value="0" />
 		<input type="hidden" name="form_token" value="0" />
-		<input type="submit" tabindex="9" name="agree" value="{L_AGREE}" class="button1 default-submit-action" />&nbsp;
-		<input type="submit" tabindex="10" name="disagree" value="{L_NOT_AGREE}" class="button2" />
+		<input type="submit" tabindex="8" name="agree" value="{L_AGREE}" class="button1 default-submit-action" />&nbsp;
+		<input type="submit" tabindex="9" name="disagree" value="{L_NOT_AGREE}" class="button2" />
 	</fieldset>
 
 	</div>

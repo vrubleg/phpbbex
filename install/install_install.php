@@ -610,7 +610,7 @@ class install_install extends module
 			$error = [];
 
 			// Check the entered email address and password
-			if ($data['admin_name'] == '' || $data['admin_pass1'] == '' || $data['admin_pass2'] == '' || $data['board_email1'] == '' || $data['board_email2'] == '')
+			if ($data['admin_name'] == '' || $data['admin_pass1'] == '' || $data['admin_pass2'] == '' || $data['board_email'] == '')
 			{
 				$error[] = $lang['INST_ERR_MISSING_DATA'];
 			}
@@ -642,12 +642,7 @@ class install_install extends module
 				$error[] = $lang['INST_ERR_PASSWORD_TOO_LONG'];
 			}
 
-			if ($data['board_email1'] != $data['board_email2'] && $data['board_email1'] != '')
-			{
-				$error[] = $lang['INST_ERR_EMAIL_MISMATCH'];
-			}
-
-			if ($data['board_email1'] != '' && !preg_match('/^' . get_preg_expression('email') . '$/i', $data['board_email1']))
+			if ($data['board_email'] != '' && !preg_match('/^' . get_preg_expression('email') . '$/i', $data['board_email']))
 			{
 				$error[] = $lang['INST_ERR_EMAIL_INVALID'];
 			}
@@ -869,11 +864,11 @@ class install_install extends module
 				VALUES ('default_lang', '" . $db->sql_escape($data['default_lang']) . "')",
 
 			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['board_email1']) . "'
+				SET config_value = '" . $db->sql_escape($data['board_email']) . "'
 				WHERE config_name = 'board_email'",
 
 			'UPDATE ' . $data['table_prefix'] . "config
-				SET config_value = '" . $db->sql_escape($data['board_email1']) . "'
+				SET config_value = '" . $db->sql_escape($data['board_email']) . "'
 				WHERE config_name = 'board_contact'",
 
 			'UPDATE ' . $data['table_prefix'] . "config
@@ -885,7 +880,7 @@ class install_install extends module
 				WHERE config_name = 'newest_username'",
 
 			'UPDATE ' . $data['table_prefix'] . "users
-				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_ip = '" . $db->sql_escape($user_ip) . "', user_lang = '" . $db->sql_escape($data['default_lang']) . "', user_email='" . $db->sql_escape($data['board_email1']) . "', user_dateformat='" . $db->sql_escape($lang['default_dateformat']) . "', user_email_hash = " . $db->sql_escape(phpbb_email_hash($data['board_email1'])) . ", username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
+				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_ip = '" . $db->sql_escape($user_ip) . "', user_lang = '" . $db->sql_escape($data['default_lang']) . "', user_email='" . $db->sql_escape($data['board_email']) . "', user_dateformat='" . $db->sql_escape($lang['default_dateformat']) . "', user_email_hash = " . $db->sql_escape(phpbb_email_hash($data['board_email'])) . ", username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
 				WHERE username = 'Admin'",
 
 			'UPDATE ' . $data['table_prefix'] . "moderator_cache
@@ -1511,7 +1506,7 @@ class install_install extends module
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 				$messenger = new messenger(false);
 				$messenger->template('installed', $data['language']);
-				$messenger->to($data['board_email1'], $data['admin_name']);
+				$messenger->to($data['board_email'], $data['admin_name']);
 				$messenger->anti_abuse_headers($config, $user);
 				$messenger->assign_vars([
 					'USERNAME'		=> htmlspecialchars_decode($data['admin_name']),
@@ -1556,8 +1551,7 @@ class install_install extends module
 			'admin_name'	=> utf8_normalize_nfc(request_var('admin_name', '', true)),
 			'admin_pass1'	=> request_var('admin_pass1', '', true),
 			'admin_pass2'	=> request_var('admin_pass2', '', true),
-			'board_email1'	=> strtolower(request_var('board_email1', '')),
-			'board_email2'	=> strtolower(request_var('board_email2', '')),
+			'board_email'	=> strtolower(request_var('board_email', '')),
 		];
 	}
 
@@ -1580,8 +1574,7 @@ class install_install extends module
 		'admin_name'			=> ['lang' => 'ADMIN_USERNAME',			'type' => 'text:25:100', 'explain' => true],
 		'admin_pass1'			=> ['lang' => 'ADMIN_PASSWORD',			'type' => 'password:25:100', 'explain' => true],
 		'admin_pass2'			=> ['lang' => 'ADMIN_PASSWORD_CONFIRM',	'type' => 'password:25:100', 'explain' => false],
-		'board_email1'			=> ['lang' => 'CONTACT_EMAIL',				'type' => 'text:25:100', 'explain' => false],
-		'board_email2'			=> ['lang' => 'CONTACT_EMAIL_CONFIRM',		'type' => 'text:25:100', 'explain' => false],
+		'board_email'			=> ['lang' => 'CONTACT_EMAIL',				'type' => 'text:25:100', 'explain' => false],
 	];
 
 	/**
