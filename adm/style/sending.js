@@ -62,27 +62,7 @@ jQuery(function($)
 			}
 
 			// Submit form
-			if (window.opera && e.ctrlKey)
-			{
-				// Prevent creation of new tab in Opera
-				// Unfortunately this method does not work with the button with name="submit"
-				if ($submit.attr('name') == 'submit') return false;
-				$submit.triggerHandler('click');
-				if ($submit.attr('name'))
-				{
-					var $input = $('<input type="hidden" />').attr('name', $submit.attr('name')).val($submit.val());
-					$form.append($input).submit();
-					$input.remove();
-				}
-				else
-				{
-					$form.submit();
-				}
-			}
-			else
-			{
-				$submit.click();
-			}
+			$submit.click();
 			return false;
 		}
 
