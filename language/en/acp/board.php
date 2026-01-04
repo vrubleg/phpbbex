@@ -19,7 +19,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	'ACP_BOARD_SETTINGS_EXPLAIN'	=> 'Here you can determine the basic operation of your board, give it a fitting name and description, and among other settings adjust the default values for timezone and language.',
 	'ACTIVE_TOPICS_DAYS'			=> 'Topic is active for',
-	'ACTIVE_TOPICS_DAYS_EXPLAIN'	=> 'Default activity period for "Active topics" page. Set this value to 0 to display all topics.',
+	'ACTIVE_TOPICS_DAYS_EXPLAIN'	=> 'Default time period for the "Active topics" page.',
 	'ACTIVE_USERS_DAYS'				=> 'User is active for',
 	'ACTIVE_USERS_DAYS_EXPLAIN'		=> 'The user is considered active for entered number of days.',
 	'AUTO_GUEST_LANG'				=> 'Detect language for guests',
@@ -107,7 +107,7 @@ $lang = array_merge($lang, [
 	'STYLE_MP_SHOW_LAST_ACTIVE'			=> 'Display user last active date',
 
 	'COPYRIGHT_NOTICE'					=> 'Copyrights (HTML)',
-	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'Use {POWERED_BY} or {L_POWERED_BY} placeholder to output phpBBex copyright.',
+	'COPYRIGHT_NOTICE_EXPLAIN'			=> 'You can use language strings like {L_POWERED_BY}.',
 
 	'AUTO'								=> 'Auto',
 	'ON_LEFT'							=> 'On Left',

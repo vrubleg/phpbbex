@@ -412,7 +412,7 @@ $lang = array_merge($lang, [
 	'POST_TIME'				=> 'Post time',
 	'POST_TOPIC'			=> 'Post a new topic',
 	'POST_UNAPPROVED'		=> 'This post is waiting for approval',
-	'POWERED_BY'			=> 'Powered by %s',
+	'POWERED_BY'			=> 'Powered by <a href="//phpbbex.com/">phpBBex</a>',
 	'PREVIEW'				=> 'Preview',
 	'PREVIOUS'				=> 'Previous',		// Used in pagination
 	'PREVIOUS_STEP'			=> 'Previous',

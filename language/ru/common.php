@@ -412,7 +412,7 @@ $lang = array_merge($lang, [
 	'POST_TIME'				=> 'Время ответа',
 	'POST_TOPIC'			=> 'Новая тема',
 	'POST_UNAPPROVED'		=> 'Это сообщение ожидает проверки',
-	'POWERED_BY'			=> 'Создано на основе %s',
+	'POWERED_BY'			=> 'Создано на основе <a href="//phpbbex.com/">phpBBex</a>',
 	'PREVIEW'				=> 'Предпросмотр',
 	'PREVIOUS'				=> 'Пред.',		// Used in pagination
 	'PREVIOUS_STEP'			=> 'Назад',

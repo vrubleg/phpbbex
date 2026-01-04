@@ -491,7 +491,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 
 	// Update DB schema version.
 
-	// set_config('phpbbex_version', '1.9.9');
+	set_config('phpbbex_version', '1.9.9');
 }
 
 // Update bots if bots=1 is passed.
@@ -1122,9 +1122,7 @@ function _print_footer()
 		</div>
 	</div>
 
-	<div id="page-footer">
-		Powered by ' . POWERED_BY . '
-	</div>
+	<div id="page-footer">Powered by <a href="//phpbbex.com/">phpBBex</a></div>
 </div>
 
 </body>

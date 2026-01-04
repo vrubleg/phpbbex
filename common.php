@@ -20,11 +20,6 @@ if (!defined('PHPBB_INSTALLED'))
 	exit;
 }
 
-if (defined('DEBUG_EXTRA'))
-{
-	$base_memory_usage = memory_get_usage();
-}
-
 // Include files
 require_once(PHPBB_ROOT_PATH . 'includes/acm/acm_' . $acm_type . '.php');
 require_once(PHPBB_ROOT_PATH . 'includes/cache.php');

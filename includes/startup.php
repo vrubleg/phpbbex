@@ -19,12 +19,6 @@ if (file_exists(PHPBB_ROOT_PATH . 'config.php'))
 	require_once(PHPBB_ROOT_PATH . 'config.php');
 }
 
-// Powered by ...
-if (!defined('POWERED_BY'))
-{
-	define('POWERED_BY', '<a href="//phpbbex.com/">phpBBex</a> v1.9.8 &copy; 2001-2025 <a href="//phpbb.com/">phpBB</a> Group, <a href="//vegalogic.com/">Vegalogic</a> Software');
-}
-
 // Error reporting.
 if (!defined('PHP_ERROR_REPORTING'))
 {

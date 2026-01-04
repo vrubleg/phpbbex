@@ -4432,40 +4432,25 @@ function page_footer($run_cron = true)
 	// Output page creation time
 	if (defined('DEBUG'))
 	{
-		$totaltime = microtime(true) - $starttime;
-
-		if (!empty($_REQUEST['explain']) && $auth->acl_get('a_') && defined('DEBUG_EXTRA') && method_exists($db, 'sql_report'))
+		if (!empty($_REQUEST['explain']) && $auth->acl_get('a_') && defined('DEBUG_EXTRA'))
 		{
 			$db->sql_report('display');
 		}
 
-		$debug_output = sprintf('Time : %.3fs | ' . $db->sql_num_queries() . ' Queries | GZIP : ' . (($config['gzip_compress'] && @extension_loaded('zlib')) ? 'On' : 'Off') . (($user->load) ? ' | Load : ' . $user->load : ''), $totaltime);
+		$debug_output = 'Time: ' . sprintf('%.3fs', microtime(true) - $starttime)
+			. ' | Memory: ' . get_formatted_filesize(memory_get_peak_usage())
+			. (($user->load) ? ' | Load: ' . $user->load : '')
+			. ' | SQL: ' . $db->sql_num_queries() . ' queries';
 
 		if ($auth->acl_get('a_') && defined('DEBUG_EXTRA'))
 		{
-			if ($memory_usage = memory_get_usage())
-			{
-				global $base_memory_usage;
-				$memory_usage -= $base_memory_usage;
-				$memory_usage = get_formatted_filesize($memory_usage);
-
-				$debug_output .= ' | Memory Usage: ' . $memory_usage;
-			}
-
 			$debug_output .= ' | <a href="' . build_url() . '&amp;explain=1">Explain</a>';
 		}
 	}
 
-	$powered_by = POWERED_BY;
-	if (!empty($config['external_links_newwindow'])) $powered_by = str_replace('<a ', '<a target="_blank" ', $powered_by);
-	if (!empty($config['external_links_nofollow']))  $powered_by = str_replace('<a ', '<a rel="nofollow" ', $powered_by);
-	$l_powered_by = $user->lang('POWERED_BY', $powered_by);
-
 	$template->assign_vars([
-		'DEBUG_OUTPUT'			=> (defined('DEBUG')) ? $debug_output : '',
-		'L_POWERED_BY'			=> $l_powered_by,
-		'COPYRIGHT_NOTICE'		=> nl2br(str_replace(['{POWERED_BY}', '{L_POWERED_BY}'], [$powered_by, $l_powered_by], trim($config['copyright_notice']))),
-
+		'DEBUG_OUTPUT'			=> $debug_output ?? '',
+		'COPYRIGHT_NOTICE'		=> nl2br(preg_replace_callback('#{L_([_A-Z0-9]+)}#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[0]; }, trim($config['copyright_notice']))),
 		'U_ACP' => ($auth->acl_get('a_') && !empty($user->data['is_registered'])) ? append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, $user->session_id) : '']
 	);
 

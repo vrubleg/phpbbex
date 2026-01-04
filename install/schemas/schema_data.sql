@@ -1,8 +1,8 @@
 # -- Config
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_sessions', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '30');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '90');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '0');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '365');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_attachments', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_autologin', '1');
@@ -224,7 +224,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PASS_TYPE_ANY');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.8');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.9');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_edit_time', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_boxes', '4');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');

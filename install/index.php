@@ -308,7 +308,6 @@ class module
 			'L_SKIP'				=> $lang['SKIP'],
 			'PAGE_TITLE'			=> $this->get_page_title(),
 			'T_IMAGE_PATH'			=> PHPBB_ROOT_PATH . 'adm/images/',
-			'L_POWERED_BY'			=> sprintf($lang['POWERED_BY'], POWERED_BY),
 
 			'S_USER_LANG'			=> $lang['USER_LANG'],
 			]
@@ -495,9 +494,7 @@ class module
 		echo '		</div>';
 		echo '		</div>';
 		echo '	</div>';
-		echo '	<div id="page-footer">';
-		echo '		Powered by ' . POWERED_BY;
-		echo '	</div>';
+		echo '	<div id="page-footer">Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
 		echo '</div>';
 		echo '</body>';
 		echo '</html>';

@@ -1570,6 +1570,10 @@ class phpbb_user extends phpbb_session
 
 		require($this->lang_path . $this->lang_name . "/common.php");
 
+		// Adjust link in the "Powered by phpBBex" language string.
+		if (!empty($config['external_links_newwindow'])) { $lang['POWERED_BY'] = str_replace('<a ', '<a target="_blank" ', $lang['POWERED_BY']); }
+		if (!empty($config['external_links_nofollow']))  { $lang['POWERED_BY'] = str_replace('<a ', '<a rel="nofollow" ', $lang['POWERED_BY']); }
+
 		$this->add_lang($lang_set);
 		unset($lang_set);
 
