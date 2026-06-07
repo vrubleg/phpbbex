@@ -1868,10 +1868,9 @@ function avatar_delete($user_row)
 {
 	if (!$user_row['user_avatar'] || $user_row['user_avatar_type'] != AVATAR_UPLOAD) { return false; }
 
-	$filename = get_avatar_filename($user_row['user_avatar']);
-	if (file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $filename))
+	if (file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $user_row['user_avatar']))
 	{
-		@unlink(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $filename);
+		@unlink(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $user_row['user_avatar']);
 		return true;
 	}
 
@@ -1992,14 +1991,6 @@ function avatar_upload($data, &$error)
 }
 
 /**
-* Generates avatar filename from the database entry
-*/
-function get_avatar_filename($avatar)
-{
-	return $avatar;
-}
-
-/**
 * Avatar Gallery
 */
 function avatar_gallery($category, $avatar_select, $items_per_column, $block_var = 'avatar_row')
@@ -2116,7 +2107,7 @@ function avatar_get_dimensions($avatar, $avatar_type, &$error, $current_x = 0, $
 			break;
 
 		case AVATAR_UPLOAD :
-			$avatar = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . get_avatar_filename($avatar);
+			$avatar = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
 			break;
 
 		case AVATAR_GALLERY :
@@ -2278,7 +2269,7 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 		if (sizeof($sql_ary))
 		{
 			if (isset($sql_ary['user_avatar']) && !empty($userdata['user_avatar']) && $userdata['user_avatar_type'] == AVATAR_UPLOAD
-				&& ($userdata['user_avatar_type'] != $sql_ary['user_avatar_type'] || get_avatar_filename($userdata['user_avatar']) != get_avatar_filename($sql_ary['user_avatar'])))
+				&& ($userdata['user_avatar_type'] != $sql_ary['user_avatar_type'] || $userdata['user_avatar'] != $sql_ary['user_avatar']))
 			{
 				// Delete old avatar if present.
 				avatar_delete($userdata);
