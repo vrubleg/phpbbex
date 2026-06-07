@@ -2098,7 +2098,12 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 		$can_upload = (PHP_FILE_UPLOADS && $config['allow_avatar_upload'] && file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH) && phpbb_is_writable(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH) && $change_avatar);
 	}
 
-	if ((!empty($_FILES['uploadfile']['name']) || $data['uploadurl']) && $can_upload)
+	if (isset($_POST['delete']) && $change_avatar)
+	{
+		$sql_ary['user_avatar'] = '';
+		$sql_ary['user_avatar_type'] = $sql_ary['user_avatar_width'] = $sql_ary['user_avatar_height'] = 0;
+	}
+	else if ((!empty($_FILES['uploadfile']['name']) || $data['uploadurl']) && $can_upload)
 	{
 		[$sql_ary['user_avatar_type'], $sql_ary['user_avatar'], $sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']] = avatar_upload($data, $error);
 	}
@@ -2120,11 +2125,6 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 			[$sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']] = getimagesize(PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $category . '/' . urldecode($sql_ary['user_avatar']));
 			$sql_ary['user_avatar'] = $category . '/' . $sql_ary['user_avatar'];
 		}
-	}
-	else if (isset($_POST['delete']) && $change_avatar)
-	{
-		$sql_ary['user_avatar'] = '';
-		$sql_ary['user_avatar_type'] = $sql_ary['user_avatar_width'] = $sql_ary['user_avatar_height'] = 0;
 	}
 	else if (!empty($userdata['user_avatar']) && ($dims = avatar_get_dimensions($userdata['user_avatar'], $userdata['user_avatar_type'], $error)))
 	{
