@@ -614,7 +614,7 @@ class ucp_profile
 				{
 					$error[] = $user->lang['AVATAR_NOT_ALLOWED'];
 				}
-				else if (($user->data['user_avatar_type'] != AVATAR_UPLOAD && $user->data['user_avatar_type'] != AVATAR_GALLERY)
+				else if (($user->data['user_avatar_type'] && $user->data['user_avatar_type'] != AVATAR_UPLOAD && $user->data['user_avatar_type'] != AVATAR_GALLERY)
 					|| (($user->data['user_avatar_type'] == AVATAR_UPLOAD) && !$config['allow_avatar_upload'])
 					|| (($user->data['user_avatar_type'] == AVATAR_GALLERY) && !$config['allow_avatar_local']))
 				{

@@ -1771,7 +1771,7 @@ class acp_users
 				{
 					$error[] = $user->lang['USER_AVATAR_NOT_ALLOWED'];
 				}
-				else if (($user_row['user_avatar_type'] != AVATAR_UPLOAD && $user_row['user_avatar_type'] != AVATAR_GALLERY)
+				else if (($user_row['user_avatar_type'] && $user_row['user_avatar_type'] != AVATAR_UPLOAD && $user_row['user_avatar_type'] != AVATAR_GALLERY)
 					|| (($user_row['user_avatar_type'] == AVATAR_UPLOAD) && !$config['allow_avatar_upload'])
 					|| (($user_row['user_avatar_type'] == AVATAR_GALLERY) && !$config['allow_avatar_local']))
 				{
