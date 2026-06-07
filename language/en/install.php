@@ -169,7 +169,7 @@ $lang = array_merge($lang, [
 	'PHP_SETTINGS'					=> 'PHP version and settings',
 	'PHP_SETTINGS_EXPLAIN'			=> '<strong>Required</strong> - You must be running at least version 7.2 of PHP in order to install phpBBex.',
 	'PHP_URL_FOPEN_SUPPORT'			=> 'PHP setting <var>allow_url_fopen</var> is enabled',
-	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Optional</strong> - This setting is optional, however certain phpBBex functions like off-site avatars will not work properly without it.',
+	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Optional</strong> - This setting is optional, however certain phpBBex functions will not work properly without it.',
 	'PHP_VERSION_REQD'				=> 'PHP version ≥ 7.2',
 	'POST_ID'						=> 'Post ID',
 

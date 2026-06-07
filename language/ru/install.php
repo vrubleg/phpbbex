@@ -171,7 +171,7 @@ $lang = array_merge($lang, [
 	'PHP_SETTINGS'					=> 'Версия и настройки PHP',
 	'PHP_SETTINGS_EXPLAIN'			=> 'Для установки phpBBex <strong>требуется</strong> версия PHP не ниже 7.2.',
 	'PHP_URL_FOPEN_SUPPORT'			=> 'Параметр PHP <var>allow_url_fopen</var> включён',
-	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Необязательно</strong>. Хотя этот параметр не является обязательным, некоторые функции phpBBex, типа внешних аватар, не будут работать должным образом. ',
+	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Необязательно</strong>. Хотя этот параметр не является обязательным, некоторые функции phpBBex не будут работать должным образом. ',
 	'PHP_VERSION_REQD'				=> 'Версия PHP ≥ 7.2',
 	'POST_ID'						=> 'Идентификатор сообщения',
 
