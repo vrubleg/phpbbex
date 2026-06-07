@@ -1802,6 +1802,7 @@ class acp_users
 					'AVATAR_MAX_FILESIZE'	=> $config['avatar_filesize'],
 					'USER_AVATAR_WIDTH'		=> $user_row['user_avatar_width'],
 					'USER_AVATAR_HEIGHT'	=> $user_row['user_avatar_height'],
+					'UPLOAD_AVATAR_URL'		=> request_var('uploadurl', '') ?: ($user_row['user_avatar_type'] == AVATAR_REMOTE ? $user_row['user_avatar'] : ''),
 
 					'L_AVATAR_EXPLAIN'	=> sprintf($user->lang['AVATAR_EXPLAIN'], $config['avatar_max_width'], $config['avatar_max_height'], round($config['avatar_filesize'] / 1024))]
 				);

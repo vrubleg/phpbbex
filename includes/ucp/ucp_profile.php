@@ -648,6 +648,7 @@ class ucp_profile
 						'S_UPLOAD_AVATAR_FILE'	=> ($can_upload && $config['allow_avatar_upload']),
 						'S_UPLOAD_AVATAR_URL'	=> ($can_upload && $config['allow_avatar_remote_upload']),
 						'S_DISPLAY_GALLERY'		=> ($auth->acl_get('u_chgavatar') && $config['allow_avatar_local']),
+						'UPLOAD_AVATAR_URL'		=> request_var('uploadurl', '') ?: ($user->data['user_avatar_type'] == AVATAR_REMOTE ? $user->data['user_avatar'] : ''),
 					]);
 				}
 
