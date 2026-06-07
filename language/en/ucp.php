@@ -196,10 +196,6 @@ $lang = array_merge($lang, [
 	'JOIN_SELECTED'				=> 'Join selected',
 
 	'LANGUAGE'					=> 'Language',
-	'LINK_REMOTE_AVATAR'		=> 'Link off-site',
-	'LINK_REMOTE_AVATAR_EXPLAIN'=> 'Enter the URL of the location containing the avatar image you wish to link to.',
-	'LINK_REMOTE_SIZE'			=> 'Avatar dimensions',
-	'LINK_REMOTE_SIZE_EXPLAIN'	=> 'Specify the width and height of the avatar, leave blank to attempt automatic verification.',
 	'LOGIN_EXPLAIN_UCP'			=> 'Login to access the User Control Panel',
 	'LOGIN_REDIRECT'			=> 'You have been successfully logged in.',
 	'LOGOUT_FAILED'				=> 'You were not logged out, as the request did not match your session. Please contact the board administrator if you continue to experience problems.',

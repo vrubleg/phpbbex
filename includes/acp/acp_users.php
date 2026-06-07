@@ -1771,9 +1771,9 @@ class acp_users
 				{
 					$error[] = $user->lang['USER_AVATAR_NOT_ALLOWED'];
 				}
-				else if ((($user_row['user_avatar_type'] == AVATAR_UPLOAD) && !$config['allow_avatar_upload']) ||
-				 (($user_row['user_avatar_type'] == AVATAR_REMOTE) && !$config['allow_avatar_remote']) ||
-				 (($user_row['user_avatar_type'] == AVATAR_GALLERY) && !$config['allow_avatar_local']))
+				else if (($user_row['user_avatar_type'] != AVATAR_UPLOAD && $user_row['user_avatar_type'] != AVATAR_GALLERY)
+					|| (($user_row['user_avatar_type'] == AVATAR_UPLOAD) && !$config['allow_avatar_upload'])
+					|| (($user_row['user_avatar_type'] == AVATAR_GALLERY) && !$config['allow_avatar_local']))
 				{
 					$error[] = $user->lang['USER_AVATAR_TYPE_NOT_ALLOWED'];
 				}
@@ -1795,7 +1795,6 @@ class acp_users
 					'S_CAN_UPLOAD'		=> $can_upload,
 					'S_UPLOAD_FILE'		=> ($config['allow_avatar'] && $can_upload && $config['allow_avatar_upload']),
 					'S_REMOTE_UPLOAD'	=> ($config['allow_avatar'] && $can_upload && $config['allow_avatar_remote_upload']),
-					'S_ALLOW_REMOTE'	=> ($config['allow_avatar'] && $config['allow_avatar_remote']),
 					'S_DISPLAY_GALLERY'	=> ($config['allow_avatar'] && $config['allow_avatar_local'] && !$display_gallery),
 					'S_IN_GALLERY'		=> ($config['allow_avatar'] && $config['allow_avatar_local'] && $display_gallery),
 

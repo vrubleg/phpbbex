@@ -614,9 +614,9 @@ class ucp_profile
 				{
 					$error[] = $user->lang['AVATAR_NOT_ALLOWED'];
 				}
-				else if ((($user->data['user_avatar_type'] == AVATAR_UPLOAD) && !$config['allow_avatar_upload']) ||
-				 (($user->data['user_avatar_type'] == AVATAR_REMOTE) && !$config['allow_avatar_remote']) ||
-				 (($user->data['user_avatar_type'] == AVATAR_GALLERY) && !$config['allow_avatar_local']))
+				else if (($user->data['user_avatar_type'] != AVATAR_UPLOAD && $user->data['user_avatar_type'] != AVATAR_GALLERY)
+					|| (($user->data['user_avatar_type'] == AVATAR_UPLOAD) && !$config['allow_avatar_upload'])
+					|| (($user->data['user_avatar_type'] == AVATAR_GALLERY) && !$config['allow_avatar_local']))
 				{
 					$error[] = $user->lang['AVATAR_TYPE_NOT_ALLOWED'];
 				}
@@ -625,6 +625,8 @@ class ucp_profile
 					'ERROR'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 					'AVATAR'		=> get_user_avatar($user->data['user_avatar'], $user->data['user_avatar_type'], $user->data['user_avatar_width'], $user->data['user_avatar_height'], 'USER_AVATAR', true),
 					'AVATAR_SIZE'	=> $config['avatar_filesize'],
+					'AVATAR_WIDTH'	=> $user->data['user_avatar_width'],
+					'AVATAR_HEIGHT'	=> $user->data['user_avatar_height'],
 
 					'U_GALLERY'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=avatar&amp;display_gallery=1'),
 
@@ -639,16 +641,12 @@ class ucp_profile
 				}
 				else if ($config['allow_avatar'])
 				{
-					$avatars_enabled = (($can_upload && ($config['allow_avatar_upload'] || $config['allow_avatar_remote_upload'])) || ($auth->acl_get('u_chgavatar') && ($config['allow_avatar_local'] || $config['allow_avatar_remote'])));
+					$avatars_enabled = (($can_upload && ($config['allow_avatar_upload'] || $config['allow_avatar_remote_upload'])) || ($auth->acl_get('u_chgavatar') && $config['allow_avatar_local']));
 
 					$template->assign_vars([
-						'AVATAR_WIDTH'	=> request_var('width', $user->data['user_avatar_width']),
-						'AVATAR_HEIGHT'	=> request_var('height', $user->data['user_avatar_height']),
-
 						'S_AVATARS_ENABLED'		=> $avatars_enabled,
 						'S_UPLOAD_AVATAR_FILE'	=> ($can_upload && $config['allow_avatar_upload']),
 						'S_UPLOAD_AVATAR_URL'	=> ($can_upload && $config['allow_avatar_remote_upload']),
-						'S_LINK_AVATAR'			=> ($auth->acl_get('u_chgavatar') && $config['allow_avatar_remote']),
 						'S_DISPLAY_GALLERY'		=> ($auth->acl_get('u_chgavatar') && $config['allow_avatar_local']),
 					]);
 				}

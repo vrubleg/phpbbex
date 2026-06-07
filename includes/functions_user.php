@@ -1878,84 +1878,6 @@ function avatar_delete($user_row)
 }
 
 /**
-* Remote avatar linkage
-*/
-function avatar_remote($data, &$error)
-{
-	global $config, $db, $user;
-
-	if (!preg_match('#^(http|https)://#i', $data['remotelink']))
-	{
-		$data['remotelink'] = 'http://' . $data['remotelink'];
-	}
-	if (!preg_match('#^(http|https)://(?:(.*?\.)*?[a-z0-9\-]+?\.[a-z]{2,4}|(?:\d{1,3}\.){3,5}\d{1,3}):?([0-9]*?).*?\.(gif|jpg|jpeg|png)$#i', $data['remotelink']))
-	{
-		$error[] = $user->lang['AVATAR_URL_INVALID'];
-		return false;
-	}
-
-	// Make sure getimagesize works...
-	if (($image_data = @getimagesize($data['remotelink'])) === false && (empty($data['width']) || empty($data['height'])))
-	{
-		$error[] = $user->lang['UNABLE_GET_IMAGE_SIZE'];
-		return false;
-	}
-
-	if (!empty($image_data) && ($image_data[0] < 2 || $image_data[1] < 2))
-	{
-		$error[] = $user->lang['AVATAR_NO_SIZE'];
-		return false;
-	}
-
-	$width = ($data['width'] && $data['height']) ? $data['width'] : $image_data[0];
-	$height = ($data['width'] && $data['height']) ? $data['height'] : $image_data[1];
-
-	if ($width < 2 || $height < 2)
-	{
-		$error[] = $user->lang['AVATAR_NO_SIZE'];
-		return false;
-	}
-
-	// Check image type
-	require_once(PHPBB_ROOT_PATH . 'includes/functions_upload.php');
-	$types = fileupload::image_types();
-	$extension = strtolower(filespec::get_extension($data['remotelink']));
-
-	if (!empty($image_data) && (!isset($types[$image_data[2]]) || !in_array($extension, $types[$image_data[2]])))
-	{
-		if (!isset($types[$image_data[2]]))
-		{
-			$error[] = $user->lang['UNABLE_GET_IMAGE_SIZE'];
-		}
-		else
-		{
-			$error[] = sprintf($user->lang['IMAGE_FILETYPE_MISMATCH'], $types[$image_data[2]][0], $extension);
-		}
-		return false;
-	}
-
-	if ($config['avatar_max_width'] || $config['avatar_max_height'])
-	{
-		if ($width > $config['avatar_max_width'] || $height > $config['avatar_max_height'])
-		{
-			$error[] = sprintf($user->lang['AVATAR_WRONG_SIZE'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], $width, $height);
-			return false;
-		}
-	}
-
-	if ($config['avatar_min_width'] || $config['avatar_min_height'])
-	{
-		if ($width < $config['avatar_min_width'] || $height < $config['avatar_min_height'])
-		{
-			$error[] = sprintf($user->lang['AVATAR_WRONG_SIZE'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], $width, $height);
-			return false;
-		}
-	}
-
-	return [AVATAR_REMOTE, $data['remotelink'], $width, $height];
-}
-
-/**
 * Avatar upload using the upload class
 */
 function avatar_upload($data, &$error)
@@ -2103,14 +2025,11 @@ function avatar_get_dimensions($avatar, $avatar_type, &$error, $current_x = 0, $
 
 	switch ($avatar_type)
 	{
-		case AVATAR_REMOTE :
-			break;
-
-		case AVATAR_UPLOAD :
+		case AVATAR_UPLOAD:
 			$avatar = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $avatar;
 			break;
 
-		case AVATAR_GALLERY :
+		case AVATAR_GALLERY:
 			$avatar = PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $avatar ;
 			break;
 	}
@@ -2156,16 +2075,10 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 
 	$data = [
 		'uploadurl'		=> request_var('uploadurl', ''),
-		'remotelink'	=> request_var('remotelink', ''),
-		'width'			=> request_var('width', 0),
-		'height'		=> request_var('height', 0),
 	];
 
 	$error = validate_data($data, [
 		'uploadurl'		=> ['string', true, 5, 255],
-		'remotelink'	=> ['string', true, 5, 255],
-		'width'			=> ['string', true, 1, 3],
-		'height'		=> ['string', true, 1, 3],
 	]);
 
 	if (sizeof($error))
@@ -2188,10 +2101,6 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 	if ((!empty($_FILES['uploadfile']['name']) || $data['uploadurl']) && $can_upload)
 	{
 		[$sql_ary['user_avatar_type'], $sql_ary['user_avatar'], $sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']] = avatar_upload($data, $error);
-	}
-	else if ($data['remotelink'] && $change_avatar && $config['allow_avatar_remote'])
-	{
-		[$sql_ary['user_avatar_type'], $sql_ary['user_avatar'], $sql_ary['user_avatar_width'], $sql_ary['user_avatar_height']] = avatar_remote($data, $error);
 	}
 	else if ($avatar_select && $change_avatar && $config['allow_avatar_local'])
 	{
@@ -2217,25 +2126,12 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 		$sql_ary['user_avatar'] = '';
 		$sql_ary['user_avatar_type'] = $sql_ary['user_avatar_width'] = $sql_ary['user_avatar_height'] = 0;
 	}
-	else if (!empty($userdata['user_avatar']))
+	else if (!empty($userdata['user_avatar']) && ($dims = avatar_get_dimensions($userdata['user_avatar'], $userdata['user_avatar_type'], $error)))
 	{
 		// Only update the dimensions
 
-		if (empty($data['width']) || empty($data['height']))
-		{
-			if ($dims = avatar_get_dimensions($userdata['user_avatar'], $userdata['user_avatar_type'], $error, $data['width'], $data['height']))
-			{
-				[$guessed_x, $guessed_y] = $dims;
-				if (empty($data['width']))
-				{
-					$data['width'] = $guessed_x;
-				}
-				if (empty($data['height']))
-				{
-					$data['height'] = $guessed_y;
-				}
-			}
-		}
+		[$data['width'], $data['height']] = $dims;
+
 		if (($config['avatar_max_width'] || $config['avatar_max_height']) &&
 			(($data['width'] != $userdata['user_avatar_width']) || $data['height'] != $userdata['user_avatar_height']))
 		{
