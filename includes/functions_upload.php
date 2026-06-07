@@ -769,7 +769,7 @@ class fileupload
 		fputs($fsock, "Connection: close\r\n\r\n");
 
 		// Set a proper timeout for the socket
-		socket_set_timeout($fsock, $this->upload_timeout);
+		stream_set_timeout($fsock, $this->upload_timeout);
 
 		$get_info = false;
 		$data = '';

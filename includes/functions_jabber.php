@@ -84,31 +84,6 @@ class jabber
 	}
 
 	/**
-	* Able to use TLS?
-	*/
-	static function can_use_tls()
-	{
-		if (!@extension_loaded('openssl') || !function_exists('stream_socket_enable_crypto') || !function_exists('stream_get_meta_data') || !function_exists('socket_set_blocking') || !function_exists('stream_get_wrappers'))
-		{
-			return false;
-		}
-
-		/**
-		* Make sure the encryption stream is supported
-		* Also seem to work without the crypto stream if correctly compiled
-
-		$streams = stream_get_wrappers();
-
-		if (!in_array('streams.crypto', $streams))
-		{
-			return false;
-		}
-		*/
-
-		return true;
-	}
-
-	/**
 	* Sets the resource which is used. No validation is done here, only escaping.
 	* @param string $name
 	* @access public
@@ -237,8 +212,8 @@ class jabber
 
 		if ($this->connection = @fsockopen($server, $port, $errorno, $errorstr, $this->timeout))
 		{
-			socket_set_blocking($this->connection, 0);
-			socket_set_timeout($this->connection, 60);
+			stream_set_blocking($this->connection, 0);
+			stream_set_timeout($this->connection, 60);
 
 			return true;
 		}
@@ -436,7 +411,7 @@ class jabber
 				}
 
 				// Let's use TLS if SSL is not enabled and we can actually use it
-				if (!$this->session['ssl'] && self::can_use_tls() && self::can_use_ssl() && isset($xml['stream:features'][0]['#']['starttls']))
+				if (!$this->session['ssl'] && self::can_use_ssl() && isset($xml['stream:features'][0]['#']['starttls']))
 				{
 					$this->add_to_log('Switching to TLS.');
 					$this->send("<starttls xmlns='urn:ietf:params:xml:ns:xmpp-tls'/>\n");
@@ -555,7 +530,7 @@ class jabber
 			case 'proceed':
 				// continue switching to TLS
 				$meta = stream_get_meta_data($this->connection);
-				socket_set_blocking($this->connection, 1);
+				stream_set_blocking($this->connection, 1);
 
 				if (!stream_socket_enable_crypto($this->connection, true, STREAM_CRYPTO_METHOD_TLS_CLIENT))
 				{
@@ -563,7 +538,7 @@ class jabber
 					return false;
 				}
 
-				socket_set_blocking($this->connection, $meta['blocked']);
+				stream_set_blocking($this->connection, $meta['blocked']);
 				$this->session['tls'] = true;
 
 				// new stream
