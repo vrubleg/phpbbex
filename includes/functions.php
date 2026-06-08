@@ -2934,7 +2934,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		'S_HIDDEN_FIELDS' 		=> $s_hidden_fields,
 
 		'S_ADMIN_AUTH'			=> $admin,
-		'USERNAME'				=> ($admin) ? ($config['login_via_email_enable'] == LOGIN_VIA_EMAIL_ONLY ? $user->data['user_email'] : $user->data['username']) : '',
+		'USERNAME'				=> ($admin) ? (($config['allow_login_via_email'] ?? 0) == ALLOW_LOGIN_VIA_EMAIL_ONLY ? $user->data['user_email'] : $user->data['username']) : '',
 
 		'USERNAME_CREDENTIAL'	=> 'username',
 		'PASSWORD_CREDENTIAL'	=> ($admin) ? 'password_' . $credential : 'password',
@@ -4337,12 +4337,12 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	]);
 
 	// Login via E-Mail
-	switch ($config['login_via_email_enable'])
+	switch ($config['allow_login_via_email'] ?? 0)
 	{
-		case LOGIN_VIA_EMAIL_YES:
+		case ALLOW_LOGIN_VIA_EMAIL_YES:
 			$template->assign_var('L_LOGIN_NAME', $user->lang['USERNAME_OR_EMAIL']);
 		break;
-		case LOGIN_VIA_EMAIL_ONLY:
+		case ALLOW_LOGIN_VIA_EMAIL_ONLY:
 			$template->assign_var('L_LOGIN_NAME', $user->lang['EMAIL']);
 		break;
 		default:

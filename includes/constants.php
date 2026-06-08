@@ -28,7 +28,7 @@ define('USER_ACTIVATION_ADMIN', 2);
 define('USER_ACTIVATION_DISABLE', 3);
 
 define('AVATAR_UPLOAD', 1);
-define('AVATAR_REMOTE', 2);
+define('AVATAR_REMOTE', 2); // Deprecated
 define('AVATAR_GALLERY', 3);
 
 define('USER_NORMAL', 0);
@@ -201,10 +201,9 @@ define('GENDER_M', 1);
 define('GENDER_F', 2);
 
 // Login via E-Mail
-define('LOGIN_VIA_EMAIL_NO',		0);
-define('LOGIN_VIA_EMAIL_YES',		1);
-define('LOGIN_VIA_EMAIL_SILENT',	2);
-define('LOGIN_VIA_EMAIL_ONLY',		3);
+define('ALLOW_LOGIN_VIA_EMAIL_NO',      0);
+define('ALLOW_LOGIN_VIA_EMAIL_YES',     1);
+define('ALLOW_LOGIN_VIA_EMAIL_ONLY',    2);
 
 // Table names
 define('ACL_GROUPS_TABLE',			$table_prefix . 'acl_groups');

@@ -494,6 +494,27 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 	set_config('phpbbex_version', '1.9.9');
 }
 
+if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
+{
+	// Update cached module rights.
+
+	$db->sql_query('UPDATE ' . MODULES_TABLE . "
+		SET module_auth = 'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)'
+		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'avatar'");
+
+	// Remove obsolete config values.
+
+	remove_config_values([
+		'allow_avatar_remote',
+		'login_via_email_enable',
+	]);
+
+	// New defaults.
+
+	set_config('allow_login_via_email', '1');
+	set_config('allow_emailreuse', '0');
+}
+
 // Update bots if bots=1 is passed.
 if (request_var('bots', 0))
 {

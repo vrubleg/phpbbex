@@ -125,7 +125,6 @@ $lang = array_merge($lang, [
 	'ALLOW_BOOKMARKS_EXPLAIN'	=> 'User is able to store personal bookmarks.',
 	'ALLOW_BBCODE'				=> 'Allow BBCode',
 	'ALLOW_FORUM_NOTIFY'		=> 'Allow subscribing to forums',
-	'ALLOW_NAME_CHANGE'			=> 'Allow username changes',
 	'ALLOW_NO_CENSORS'			=> 'Allow disabling of word censoring',
 	'ALLOW_NO_CENSORS_EXPLAIN'	=> 'Users can choose to disable the automatic word censoring of posts and private messages.',
 	'ALLOW_PM_ATTACHMENTS'		=> 'Allow attachments in private messages',
@@ -164,8 +163,6 @@ $lang = array_merge($lang, [
 	'ALLOW_AVATARS'					=> 'Enable avatars',
 	'ALLOW_AVATARS_EXPLAIN'			=> 'Allow general usage of avatars;<br />If you disable avatars in general or avatars of a certain mode, the disabled avatars will no longer be shown on the board, but users will still be able to download their own avatars in the User Control Panel.',
 	'ALLOW_AVATAR_LOCAL'			=> 'Enable gallery avatars',
-	'ALLOW_AVATAR_REMOTE'			=> 'Enable remote avatars',
-	'ALLOW_AVATAR_REMOTE_EXPLAIN'	=> 'Not recommended! Avatars linked to from another website.',
 	'ALLOW_AVATAR_REMOTE_UPLOAD'			=> 'Enable remote avatar uploading',
 	'ALLOW_AVATAR_REMOTE_UPLOAD_EXPLAIN'	=> 'Allow uploading of avatars from another website.',
 	'ALLOW_AVATAR_UPLOAD'			=> 'Enable avatar uploading',
@@ -315,6 +312,7 @@ $lang = array_merge($lang, [
 	'ACC_DISABLE'				=> 'Disable registration',
 	'ACC_NONE'					=> 'No activation (immediate access)',
 	'ACC_USER'					=> 'By user (email verification)',
+	'ALLOW_NAME_CHANGE'			=> 'Allow username changes',
 	'ALLOW_EMAIL_REUSE'			=> 'Allow email address re-use',
 	'ALLOW_EMAIL_REUSE_EXPLAIN'	=> 'Different users can register with the same email address.',
 	'MAX_CHARS'					=> 'Max',
@@ -332,6 +330,10 @@ $lang = array_merge($lang, [
 	'USERNAME_UNICHARS_SPACERS'	=> 'Any alphanumeric and spacers',
 	'USERNAME_LENGTH'			=> 'Username length',
 	'USERNAME_LENGTH_EXPLAIN'	=> 'Minimum and maximum number of characters in usernames.',
+
+	'ALLOW_LOGIN_VIA_EMAIL'			=> 'Login via email',
+	'ALLOW_LOGIN_VIA_EMAIL_EXPLAIN'	=> 'Allow users to login using either their username or email address.',
+	'ALLOW_LOGIN_VIA_EMAIL_ONLY'	=> 'Email only',
 ]);
 
 // Feeds

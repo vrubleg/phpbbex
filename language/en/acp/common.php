@@ -755,12 +755,3 @@ $lang = array_merge($lang, [
 	'LINK_NEWWINDOW'		=> 'New window',
 	'LINK_NEWWINDOW_EXPLAIN'=> 'Open in new window',
 ]);
-
-// Login via email
-$lang = array_merge($lang, [
-	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Login via email',
-	'LOGIN_VIA_EMAIL_ENABLE_EXPLAIN'	=> 'Allow users to login using either their username or email address. With the silent option, there will be no text indicating that this is possible.',
-	'LOGIN_VIA_EMAIL_SILENT'			=> 'Yes, silently',
-	'LOGIN_VIA_EMAIL_ONLY'				=> 'Email only',
-	'EMAIL_REUSE_DISABLED'				=> 'This is disabled while <em>Login via email</em> is enabled.',
-]);

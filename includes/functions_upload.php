@@ -183,7 +183,7 @@ class filespec
 	/**
 	* Get file extension
 	*/
-	function get_extension($filename)
+	static function get_extension($filename)
 	{
 		if (strpos($filename, '.') === false)
 		{
@@ -192,28 +192,6 @@ class filespec
 
 		$filename = explode('.', $filename);
 		return array_pop($filename);
-	}
-
-	/**
-	* Get mimetype. Utilize mime_content_type if the function exist.
-	* Not used at the moment...
-	*/
-	function get_mimetype($filename)
-	{
-		$mimetype = '';
-
-		if (function_exists('mime_content_type'))
-		{
-			$mimetype = mime_content_type($filename);
-		}
-
-		// Some browsers choke on a mimetype of application/octet-stream
-		if (!$mimetype || $mimetype == 'application/octet-stream')
-		{
-			$mimetype = 'application/octetstream';
-		}
-
-		return $mimetype;
 	}
 
 	/**
@@ -791,7 +769,7 @@ class fileupload
 		fputs($fsock, "Connection: close\r\n\r\n");
 
 		// Set a proper timeout for the socket
-		socket_set_timeout($fsock, $this->upload_timeout);
+		stream_set_timeout($fsock, $this->upload_timeout);
 
 		$get_info = false;
 		$data = '';
@@ -1026,7 +1004,7 @@ class fileupload
 	/**
 	* Return image type/extension mapping
 	*/
-	function image_types()
+	static function image_types()
 	{
 		// AVIF is available in PHP 8.1+.
 		if (!defined('IMAGETYPE_AVIF')) { define('IMAGETYPE_AVIF', 19); }

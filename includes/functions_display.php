@@ -1591,7 +1591,7 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 		break;
 
 		case AVATAR_REMOTE:
-			if (!$config['allow_avatar_remote'] && !$ignore_config)
+			if (!$ignore_config)
 			{
 				return '';
 			}

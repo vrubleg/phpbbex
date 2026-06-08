@@ -85,6 +85,10 @@ p {
 	margin-bottom: 1.5em;
 }
 
+ul {
+	list-style-type: disc;
+}
+
 img {
 	border-width: 0;
 }

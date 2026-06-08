@@ -83,7 +83,7 @@ $lang = array_merge($lang, [
 	'acl_u_chgname'		=> ['lang' => 'Может менять имя', 'cat' => 'profile'],
 	'acl_u_chgpasswd'	=> ['lang' => 'Может менять пароль', 'cat' => 'profile'],
 	'acl_u_chgemail'	=> ['lang' => 'Может менять email-адрес', 'cat' => 'profile'],
-	'acl_u_chgavatar'	=> ['lang' => 'Может менять аватару', 'cat' => 'profile'],
+	'acl_u_chgavatar'	=> ['lang' => 'Может менять аватар', 'cat' => 'profile'],
 	'acl_u_chggrp'		=> ['lang' => 'Может менять группу по умолчанию', 'cat' => 'profile'],
 
 	'acl_u_attach'		=> ['lang' => 'Может прикреплять вложения', 'cat' => 'post'],

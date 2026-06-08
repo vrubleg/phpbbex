@@ -157,7 +157,7 @@ $lang = array_merge($lang, [
 	'ACP_USERS_LOGS'				=> 'Лог пользователей',
 	'ACP_USERS_PERMISSIONS'			=> 'Права пользователей',
 	'ACP_USER_ATTACH'				=> 'Вложения',
-	'ACP_USER_AVATAR'				=> 'Аватара',
+	'ACP_USER_AVATAR'				=> 'Аватар',
 	'ACP_USER_FEEDBACK'				=> 'Заметки о пользователе',
 	'ACP_USER_GROUPS'				=> 'Группы',
 	'ACP_USER_MANAGEMENT'			=> 'Пользователи',
@@ -476,7 +476,7 @@ $lang = array_merge($lang, [
 
 	'LOG_CONFIG_ATTACH'			=> '<strong>Изменены настройки вложений</strong>',
 	'LOG_CONFIG_AUTH'			=> '<strong>Изменены настройки аутентификации</strong>',
-	'LOG_CONFIG_AVATAR'			=> '<strong>Изменены настройки аватар</strong>',
+	'LOG_CONFIG_AVATAR'			=> '<strong>Изменены настройки аватаров</strong>',
 	'LOG_CONFIG_EMAIL'			=> '<strong>Изменены настройки почты</strong>',
 	'LOG_CONFIG_FEATURES'		=> '<strong>Изменены возможности форума</strong>',
 	'LOG_CONFIG_LOAD'			=> '<strong>Изменены настройки нагрузки на сервер</strong>',
@@ -682,7 +682,7 @@ $lang = array_merge($lang, [
 	'LOG_USER_BAN_EMAIL'	=> '<strong>Заблокирован email-адрес через раздел Управление пользователями</strong> по причине "<em>%1$s</em>"<br />» %2$s',
 	'LOG_USER_DELETED'		=> '<strong>Удалён пользователь</strong><br />» %s',
 	'LOG_USER_DEL_ATTACH'	=> '<strong>Удалены все вложения пользователя</strong><br />» %s',
-	'LOG_USER_DEL_AVATAR'	=> '<strong>Удалена аватара пользователя</strong><br />» %s',
+	'LOG_USER_DEL_AVATAR'	=> '<strong>Удалён аватар пользователя</strong><br />» %s',
 	'LOG_USER_DEL_OUTBOX'	=> '<strong>Очищена папка «Исходящие» пользователя</strong><br />» %s',
 	'LOG_USER_DEL_POSTS'	=> '<strong>Удалены все сообщения пользователя</strong><br />» %s',
 	'LOG_USER_DEL_SIG'		=> '<strong>Удалена подпись пользователя</strong><br />» %s',
@@ -697,7 +697,7 @@ $lang = array_merge($lang, [
 	'LOG_USER_USER_UPDATE'	=> '<strong>Обновлена информация о пользователе</strong><br />» %s',
 
 	'LOG_USER_ACTIVE_USER'		=> '<strong>Активирована учётная запись пользователя</strong>',
-	'LOG_USER_DEL_AVATAR_USER'	=> '<strong>Удалена аватара пользователя</strong>',
+	'LOG_USER_DEL_AVATAR_USER'	=> '<strong>Удалён аватар пользователя</strong>',
 	'LOG_USER_DEL_SIG_USER'		=> '<strong>Удалена подпись пользователя</strong>',
 	'LOG_USER_FEEDBACK'			=> '<strong>Добавлена заметка о пользователе</strong><br />» %s',
 	'LOG_USER_GENERAL'			=> '<strong>Добавлен элемент:</strong><br />» %s',
@@ -753,13 +753,4 @@ $lang = array_merge($lang, [
 	'LINK_NOFOLLOW_EXPLAIN'	=> 'Для поисковых роботов',
 	'LINK_NEWWINDOW'		=> 'Новое окно',
 	'LINK_NEWWINDOW_EXPLAIN'=> 'Открывать в новом окне',
-]);
-
-// Login via Email
-$lang = array_merge($lang, [
-	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Вход по email',
-	'LOGIN_VIA_EMAIL_ENABLE_EXPLAIN'	=> 'Разрешить пользователям входить в систему используя имя пользователя или email. В скрытом режиме не будет индикации о возможности входа по email.',
-	'LOGIN_VIA_EMAIL_SILENT'			=> 'Да, скрыто',
-	'LOGIN_VIA_EMAIL_ONLY'				=> 'Только по email',
-	'EMAIL_REUSE_DISABLED'				=> 'Заблокировано, поскольку включён <em>вход по email</em>.',
 ]);
