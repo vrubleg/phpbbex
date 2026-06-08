@@ -452,7 +452,7 @@ class acp_board
 					'title'	=> 'ACP_AUTH_SETTINGS',
 					'vars'	=> [
 						'legend1'		=> 'ACP_AUTH_SETTINGS',
-						'auth_method'	=> ['lang' => 'AUTH_METHOD',	'validate' => 'string',	'type' => 'select', 'method' => 'select_auth_method', 'explain' => false]
+						'auth_method'	=> ['lang' => 'AUTH_METHOD',	'validate' => 'string',	'type' => 'select', 'method' => 'select_auth_method', 'explain' => false],
 
 						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
