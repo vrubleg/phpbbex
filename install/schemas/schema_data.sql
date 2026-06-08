@@ -16,6 +16,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_birthdays', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_bookmarks', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_emailreuse', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_forum_notify', '1');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_login_via_email', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_mass_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_name_chars', 'USERNAME_UNICHARS_SPACERS');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_namechange', '0');
@@ -177,7 +178,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_search', '1')
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_tplcompile', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_unreads_search', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_user_activity', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('login_via_email_enable', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments', '30');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_autologin_time', '0');

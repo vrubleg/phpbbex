@@ -125,7 +125,6 @@ $lang = array_merge($lang, [
 	'ALLOW_BOOKMARKS_EXPLAIN'	=> 'Пользователи смогут сохранять личные закладки на любимые темы.',
 	'ALLOW_BBCODE'				=> 'Разрешить BBCode',
 	'ALLOW_FORUM_NOTIFY'		=> 'Разрешить подписку на разделы',
-	'ALLOW_NAME_CHANGE'			=> 'Разрешить смену имени пользователя',
 	'ALLOW_NO_CENSORS'			=> 'Разрешить отключение автоцензора',
 	'ALLOW_NO_CENSORS_EXPLAIN'	=> 'Пользователи смогут по выбору отключать автоцензор в обычных и личных сообщениях.',
 	'ALLOW_PM_ATTACHMENTS'		=> 'Разрешить вложения в личных сообщениях',
@@ -313,6 +312,7 @@ $lang = array_merge($lang, [
 	'ACC_DISABLE'				=> 'Отключить регистрацию',
 	'ACC_NONE'					=> 'Без активации (немедленный доступ)',
 	'ACC_USER'					=> 'Пользователем (email-подтверждение)',
+	'ALLOW_NAME_CHANGE'			=> 'Разрешить смену имени пользователя',
 	'ALLOW_EMAIL_REUSE'			=> 'Разрешить повторное использование email-адреса',
 	'ALLOW_EMAIL_REUSE_EXPLAIN'	=> 'Разные пользователи смогут регистрироваться с одинаковым email-адресом.',
 	'MAX_CHARS'					=> 'макс.',
@@ -330,6 +330,10 @@ $lang = array_merge($lang, [
 	'USERNAME_UNICHARS_SPACERS'	=> 'Любые буквы, цифры и разделители',
 	'USERNAME_LENGTH'			=> 'Длина имени пользователя',
 	'USERNAME_LENGTH_EXPLAIN'	=> 'Минимальное и максимальное количество символов в именах пользователей.',
+
+	'ALLOW_LOGIN_VIA_EMAIL'			=> 'Вход по email',
+	'ALLOW_LOGIN_VIA_EMAIL_EXPLAIN'	=> 'Разрешить пользователям входить в систему используя имя пользователя или email-адрес.',
+	'ALLOW_LOGIN_VIA_EMAIL_ONLY'	=> 'Только по email',
 ]);
 
 // Feeds

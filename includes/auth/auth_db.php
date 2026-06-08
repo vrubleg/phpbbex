@@ -64,13 +64,12 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 		WHERE ";
 	$where_username = "username_clean = '" . $db->sql_escape($username_clean) . "'";
 	$where_email = "user_email = '" . $db->sql_escape(strtolower($username)) . "'";
-	switch ($config['login_via_email_enable'])
+	switch ($config['allow_login_via_email'] ?? 0)
 	{
-		case LOGIN_VIA_EMAIL_SILENT:
-		case LOGIN_VIA_EMAIL_YES:
+		case ALLOW_LOGIN_VIA_EMAIL_YES:
 			$sql .= $where_username . ' OR ' . $where_email;
 		break;
-		case LOGIN_VIA_EMAIL_ONLY:
+		case ALLOW_LOGIN_VIA_EMAIL_ONLY:
 			$sql .= $where_email;
 		break;
 		default:
@@ -128,12 +127,12 @@ function login_db($username, $password, $ip = '', $browser = '', $forwarded_for 
 			];
 		}
 
-		switch ($config['login_via_email_enable'])
+		switch ($config['allow_login_via_email'] ?? 0)
 		{
-			case LOGIN_VIA_EMAIL_YES:
+			case ALLOW_LOGIN_VIA_EMAIL_YES:
 				$error_msg = 'LOGIN_ERROR_USERNAME_OR_EMAIL';
 			break;
-			case LOGIN_VIA_EMAIL_ONLY:
+			case ALLOW_LOGIN_VIA_EMAIL_ONLY:
 				$error_msg = 'LOGIN_ERROR_EMAIL';
 			break;
 			default:

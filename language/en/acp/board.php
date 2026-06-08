@@ -125,7 +125,6 @@ $lang = array_merge($lang, [
 	'ALLOW_BOOKMARKS_EXPLAIN'	=> 'User is able to store personal bookmarks.',
 	'ALLOW_BBCODE'				=> 'Allow BBCode',
 	'ALLOW_FORUM_NOTIFY'		=> 'Allow subscribing to forums',
-	'ALLOW_NAME_CHANGE'			=> 'Allow username changes',
 	'ALLOW_NO_CENSORS'			=> 'Allow disabling of word censoring',
 	'ALLOW_NO_CENSORS_EXPLAIN'	=> 'Users can choose to disable the automatic word censoring of posts and private messages.',
 	'ALLOW_PM_ATTACHMENTS'		=> 'Allow attachments in private messages',
@@ -313,6 +312,7 @@ $lang = array_merge($lang, [
 	'ACC_DISABLE'				=> 'Disable registration',
 	'ACC_NONE'					=> 'No activation (immediate access)',
 	'ACC_USER'					=> 'By user (email verification)',
+	'ALLOW_NAME_CHANGE'			=> 'Allow username changes',
 	'ALLOW_EMAIL_REUSE'			=> 'Allow email address re-use',
 	'ALLOW_EMAIL_REUSE_EXPLAIN'	=> 'Different users can register with the same email address.',
 	'MAX_CHARS'					=> 'Max',
@@ -330,6 +330,10 @@ $lang = array_merge($lang, [
 	'USERNAME_UNICHARS_SPACERS'	=> 'Any alphanumeric and spacers',
 	'USERNAME_LENGTH'			=> 'Username length',
 	'USERNAME_LENGTH_EXPLAIN'	=> 'Minimum and maximum number of characters in usernames.',
+
+	'ALLOW_LOGIN_VIA_EMAIL'			=> 'Login via email',
+	'ALLOW_LOGIN_VIA_EMAIL_EXPLAIN'	=> 'Allow users to login using either their username or email address.',
+	'ALLOW_LOGIN_VIA_EMAIL_ONLY'	=> 'Email only',
 ]);
 
 // Feeds

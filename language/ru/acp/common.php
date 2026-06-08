@@ -754,12 +754,3 @@ $lang = array_merge($lang, [
 	'LINK_NEWWINDOW'		=> 'Новое окно',
 	'LINK_NEWWINDOW_EXPLAIN'=> 'Открывать в новом окне',
 ]);
-
-// Login via Email
-$lang = array_merge($lang, [
-	'LOGIN_VIA_EMAIL_ENABLE'			=> 'Вход по email',
-	'LOGIN_VIA_EMAIL_ENABLE_EXPLAIN'	=> 'Разрешить пользователям входить в систему используя имя пользователя или email. В скрытом режиме не будет индикации о возможности входа по email.',
-	'LOGIN_VIA_EMAIL_SILENT'			=> 'Да, скрыто',
-	'LOGIN_VIA_EMAIL_ONLY'				=> 'Только по email',
-	'EMAIL_REUSE_DISABLED'				=> 'Заблокировано, поскольку включён <em>вход по email</em>.',
-]);

@@ -506,7 +506,13 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 
 	remove_config_values([
 		'allow_avatar_remote',
+		'login_via_email_enable',
 	]);
+
+	// New defaults.
+
+	set_config('allow_login_via_email', '1');
+	set_config('allow_emailreuse', '0');
 }
 
 // Update bots if bots=1 is passed.

@@ -88,7 +88,6 @@ class acp_board
 						'allow_nocensors'		=> ['lang' => 'ALLOW_NO_CENSORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'allow_bookmarks'		=> ['lang' => 'ALLOW_BOOKMARKS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'allow_birthdays'		=> ['lang' => 'ALLOW_BIRTHDAYS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'login_via_email_enable'=> ['lang' => 'LOGIN_VIA_EMAIL_ENABLE', 'validate' => 'int',	'type' => 'custom', 'method' => 'login_via_email_options', 'explain' => true],
 
 						'legend2'				=> 'WARNINGS',
 						'warning_post_default'	=> ['lang' => 'WARNING_POST_DEFAULT',	'validate' => 'string',	'type' => 'textarea:1:255', 'explain' => false],
@@ -256,7 +255,7 @@ class acp_board
 						'auth_flash_pm'			=> ['lang' => 'ALLOW_FLASH_PM',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'enable_pm_icons'		=> ['lang' => 'ENABLE_PM_ICONS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 
-						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+						'legend3'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -322,7 +321,7 @@ class acp_board
 						'external_links_nofollow'			=> ['lang' => 'EXTERNAL_LINKS_NOFOLLOW',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'external_links_nofollow_exclude'	=> ['lang' => 'EXTERNAL_LINKS_EXCLUDE',	'validate' => 'string',	'type' => 'textarea:3:1000', 'explain' => true],
 
-						'legend4'					=> 'ACP_SUBMIT_CHANGES',
+						'legend5'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -350,7 +349,7 @@ class acp_board
 						'max_sig_img_width'		=> ['lang' => 'MAX_SIG_IMG_WIDTH',		'validate' => 'int:0',	'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
 						'max_sig_img_height'	=> ['lang' => 'MAX_SIG_IMG_HEIGHT',	'validate' => 'int:0',	'type' => 'text:5:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
 
-						'legend3'					=> 'ACP_SUBMIT_CHANGES',
+						'legend3'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -371,19 +370,15 @@ class acp_board
 						'allow_name_chars'		=> ['lang' => 'USERNAME_CHARS',	'validate' => 'string',	'type' => 'select', 'method' => 'select_username_chars', 'explain' => true],
 						'pass_complex'			=> ['lang' => 'PASSWORD_TYPE',		'validate' => 'string',	'type' => 'select', 'method' => 'select_password_chars', 'explain' => true],
 						'chg_passforce'			=> ['lang' => 'FORCE_PASS_CHANGE',	'validate' => 'int:0',	'type' => 'text:3:3', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
-
-						'legend2'				=> 'GENERAL_OPTIONS',
-						'allow_namechange'		=> ['lang' => 'ALLOW_NAME_CHANGE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
+						'allow_login_via_email'	=> ['lang' => 'ALLOW_LOGIN_VIA_EMAIL', 'validate' => 'int',	'type' => 'custom', 'method' => 'allow_login_via_email_options', 'explain' => true],
 						'allow_emailreuse'		=> ['lang' => 'ALLOW_EMAIL_REUSE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'enable_confirm'		=> ['lang' => 'VISUAL_CONFIRM_REG',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'max_login_attempts'	=> ['lang' => 'MAX_LOGIN_ATTEMPTS',	'validate' => 'int:0',	'type' => 'text:3:3', 'explain' => true],
-						'max_reg_attempts'		=> ['lang' => 'REG_LIMIT',				'validate' => 'int:0',	'type' => 'text:4:4', 'explain' => true],
+						'allow_namechange'		=> ['lang' => 'ALLOW_NAME_CHANGE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 
-						'legend3'			=> 'ACP_SUBMIT_CHANGES',
+						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
-				// Login via E-Mail
-				if ($config['login_via_email_enable'])
+
+				if ($config['allow_login_via_email'] ?? 0)
 				{
 					unset($display_vars['vars']['allow_emailreuse']);
 				}
@@ -413,6 +408,8 @@ class acp_board
 						'legend4'					=> 'ACP_FEED_SETTINGS_OTHER',
 						'feed_overall_forums'		=> ['lang'	=> 'ACP_FEED_OVERALL_FORUMS',		'validate' => 'bool',	'type' => 'radio:enabled_disabled',	'explain' => true ],
 						'feed_exclude_id'			=> ['lang' => 'ACP_FEED_EXCLUDE_ID',			'validate' => 'string',	'type' => 'custom', 'method' => 'select_exclude_forums', 'explain' => true],
+
+						'legend5'					=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -456,6 +453,8 @@ class acp_board
 					'vars'	=> [
 						'legend1'		=> 'ACP_AUTH_SETTINGS',
 						'auth_method'	=> ['lang' => 'AUTH_METHOD',	'validate' => 'string',	'type' => 'select', 'method' => 'select_auth_method', 'explain' => false]
+
+						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -497,6 +496,7 @@ class acp_board
 						'form_token_lifetime'	=> ['lang' => 'FORM_TIME_MAX',			'validate' => 'int:-1',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'form_token_sid_guests'	=> ['lang' => 'FORM_SID_GUESTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 
+						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -948,18 +948,17 @@ class acp_board
 	/**
 	* Login via E-Mail options
 	*/
-	function login_via_email_options($value, $key = '')
+	function allow_login_via_email_options($value, $key = '')
 	{
 		global $config, $user;
 
 		$radio_ary = [
-			LOGIN_VIA_EMAIL_YES		=> 'YES',
-			LOGIN_VIA_EMAIL_NO		=> 'NO',
-			LOGIN_VIA_EMAIL_SILENT	=> 'LOGIN_VIA_EMAIL_SILENT',
-			LOGIN_VIA_EMAIL_ONLY	=> 'LOGIN_VIA_EMAIL_ONLY',
+			ALLOW_LOGIN_VIA_EMAIL_YES   => 'YES',
+			ALLOW_LOGIN_VIA_EMAIL_NO    => 'NO',
+			ALLOW_LOGIN_VIA_EMAIL_ONLY  => 'ALLOW_LOGIN_VIA_EMAIL_ONLY',
 		];
 
-		return h_radio('config[login_via_email_enable]', $radio_ary, $value, $key);
+		return h_radio('config[allow_login_via_email]', $radio_ary, $value, $key);
 	}
 
 	/**

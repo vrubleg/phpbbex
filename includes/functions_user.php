@@ -1596,7 +1596,7 @@ function validate_email($email, $allowed_email = false)
 		return ($ban_reason === true) ? 'EMAIL_BANNED' : $ban_reason;
 	}
 
-	if (!$config['allow_emailreuse'] || $config['login_via_email_enable'])
+	if (!$config['allow_emailreuse'] || ($config['allow_login_via_email'] ?? 0))
 	{
 		$sql = 'SELECT user_email_hash
 			FROM ' . USERS_TABLE . "
