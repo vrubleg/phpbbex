@@ -65,7 +65,7 @@ class acp_board
 						'active_topics_days'	=> ['lang' => 'ACTIVE_TOPICS_DAYS',	'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => ['{CONFIG_VALUE}', '{KEY}', true], 'explain' => true],
 						'active_users_days'		=> ['lang' => 'ACTIVE_USERS_DAYS',		'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => ['{CONFIG_VALUE}', '{KEY}', false], 'explain' => true],
 
-						'legend5'					=> 'ACP_SUBMIT_CHANGES',
+						'legend5'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -114,7 +114,7 @@ class acp_board
 						'load_unreads_search'	=> ['lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'load_db_track'			=> ['lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 
-						'legend6'					=> 'ACP_SUBMIT_CHANGES',
+						'legend6'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -228,6 +228,8 @@ class acp_board
 						'avatar_filesize'		=> ['lang' => 'MAX_AVATAR_FILESIZE',	'validate' => 'int:0',	'type' => 'text:4:10', 'explain' => true, 'append' => ' ' . $user->lang['BYTES']],
 						'avatar_min'			=> ['lang' => 'MIN_AVATAR_SIZE',		'validate' => 'int:0',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
 						'avatar_max'			=> ['lang' => 'MAX_AVATAR_SIZE',		'validate' => 'int:0',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
+
+						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
