@@ -11,7 +11,7 @@ if (!defined('IN_PHPBB'))
 }
 
 // Check PHP version.
-if (PHP_VERSION_ID < 70200) { die('PHP 7.2+ is required.'); }
+if (PHP_VERSION_ID < 70400) { die('PHP 7.4+ is required.'); }
 if (!extension_loaded('mbstring')) { die('mbstring is required.'); }
 
 if (file_exists(PHPBB_ROOT_PATH . 'config.php'))

@@ -91,7 +91,7 @@ $lang = array_merge($lang, [
 	'INSTALL_CONGRATS'			=> 'Поздравляем!',
 	'INSTALL_CONGRATS_EXPLAIN'	=> 'Вы успешно установили phpBBex %1$s. Теперь вы можете начать использование только что установленного форума!',
 	'INSTALL_INTRO'				=> 'Добро пожаловать в установку phpBBex!',
-	'INSTALL_INTRO_BODY'		=> 'phpBBex — это расширенный форк классического движка форумов phpBB 3.0, который такой же легковесный, как и оригинал, в отличие от более новых версий phpBB. Соовместим с PHP 7.2+ и 8.0+.
+	'INSTALL_INTRO_BODY'		=> 'phpBBex — это расширенный форк классического движка форумов phpBB 3.0, который такой же легковесный, как и оригинал, в отличие от более новых версий phpBB. Соовместим с PHP 7.4+ и 8.0+.
 	<p>Для установки phpBBex вам понадобятся следующие реквизиты доступа к базе данных MySQL:
 	<ul>
 		<li>Адрес сервера базы данных MySQL;</li>
@@ -169,10 +169,10 @@ $lang = array_merge($lang, [
 	'PHP_SUPPORTED_DB'				=> 'Поддерживаемые базы данных',
 	'PHP_SUPPORTED_DB_EXPLAIN'		=> 'Ваша версия PHP должна поддерживать <strong>не менее одной</strong> из поддерживаемых баз данных.',
 	'PHP_SETTINGS'					=> 'Версия и настройки PHP',
-	'PHP_SETTINGS_EXPLAIN'			=> 'Для установки phpBBex <strong>требуется</strong> версия PHP не ниже 7.2.',
+	'PHP_SETTINGS_EXPLAIN'			=> 'Для установки phpBBex <strong>требуется</strong> версия PHP не ниже 7.4.',
 	'PHP_URL_FOPEN_SUPPORT'			=> 'Параметр PHP <var>allow_url_fopen</var> включён',
 	'PHP_URL_FOPEN_SUPPORT_EXPLAIN'	=> '<strong>Необязательно</strong>. Хотя этот параметр не является обязательным, некоторые функции phpBBex не будут работать должным образом. ',
-	'PHP_VERSION_REQD'				=> 'Версия PHP ≥ 7.2',
+	'PHP_VERSION_REQD'				=> 'Версия PHP ≥ 7.4',
 	'POST_ID'						=> 'Идентификатор сообщения',
 
 	'REQUIREMENTS_TITLE'		=> 'Программная совместимость',
