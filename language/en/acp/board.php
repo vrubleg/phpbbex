@@ -79,7 +79,6 @@ $lang = array_merge($lang, [
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
 
 	'STYLE_SETTINGS_VIEWTOPIC'			=> 'View Topic',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons',
 	'STYLE_VT_SHOW_POST_NUMBERS'		=> 'Display post numbers',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Profile',

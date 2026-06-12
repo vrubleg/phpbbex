@@ -866,7 +866,6 @@ $lang = array_merge($lang, [
 	'BAN_X_DAYS'			=> 'Бан на %d дней',
 
 	// Other
-	'SOCIAL_SHARE_IN'		=> 'Поделиться в',
 	'USER_WITH_US'			=> 'С нами',
 	'SPOILER'				=> 'Спойлер',
 

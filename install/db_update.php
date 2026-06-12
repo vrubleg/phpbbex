@@ -544,6 +544,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		'load_jumpbox',
 		'load_unreads_search',
 		'load_anon_lastread',
+		'style_show_social_buttons',
 	]);
 
 	// New defaults.

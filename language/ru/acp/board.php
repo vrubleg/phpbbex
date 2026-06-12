@@ -79,7 +79,6 @@ $lang = array_merge($lang, [
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Отображать кнопки RSS в списке разделов',
 
 	'STYLE_SETTINGS_VIEWTOPIC'			=> 'Просмотр темы',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Отображать кнопки социальных сетей',
 	'STYLE_VT_SHOW_POST_NUMBERS'		=> 'Отображать номера сообщений',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Профиль',

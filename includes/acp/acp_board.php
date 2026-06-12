@@ -153,7 +153,6 @@ class acp_board
 						'style_show_feeds_in_forumlist'		=> ['lang' => 'STYLE_SHOW_FEEDS_IN_FORUMLIST',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 
 						'legend3'							=> 'STYLE_SETTINGS_VIEWTOPIC',
-						'style_show_social_buttons'			=> ['lang' => 'STYLE_SHOW_SOCIAL_BUTTONS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'style_vt_show_post_numbers'		=> ['lang' => 'STYLE_VT_SHOW_POST_NUMBERS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'display_raters'					=> ['lang' => 'DISPLAY_RATERS',					'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 
