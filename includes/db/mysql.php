@@ -266,7 +266,7 @@ class dbal_mysql extends dbal
 		if ($query_id !== false)
 		{
 			$result = @mysqli_fetch_assoc($query_id);
-			return $result !== null ? $result : false;
+			return $result ?? false;
 		}
 
 		return false;

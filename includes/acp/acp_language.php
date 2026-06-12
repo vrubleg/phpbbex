@@ -162,7 +162,7 @@ class acp_language
 					case 'mods':
 						// Get mod files
 						$mods_files = filelist(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'], 'mods', 'php');
-						$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : [];
+						$mods_files = $mods_files['mods/'] ?? [];
 
 						if (!in_array($this->language_file, $mods_files))
 						{
@@ -317,7 +317,7 @@ class acp_language
 
 				// Get mod files
 				$mods_files = filelist(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'], 'mods', 'php');
-				$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : [];
+				$mods_files = $mods_files['mods/'] ?? [];
 
 				// Check if our current filename matches the files
 				switch ($this->language_directory)
@@ -889,7 +889,7 @@ class acp_language
 
 				// Get mod files
 				$mod_files = filelist(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'], 'mods', 'php');
-				$mod_files = (isset($mod_files['mods/'])) ? $mod_files['mods/'] : [];
+				$mod_files = $mod_files['mods/'] ?? [];
 
 				// Add main files
 				$this->add_to_archive($compress, $this->main_files, $row['lang_iso']);

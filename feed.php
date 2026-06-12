@@ -82,7 +82,7 @@ while ($row = $feed->get_item())
 		$options = $row[$feed->get('options')];
 	}
 
-	$title = (isset($row[$feed->get('title')]) && $row[$feed->get('title')] !== '') ? $row[$feed->get('title')] : ((isset($row[$feed->get('title2')])) ? $row[$feed->get('title2')] : '');
+	$title = (isset($row[$feed->get('title')]) && $row[$feed->get('title')] !== '') ? $row[$feed->get('title')] : ($row[$feed->get('title2')] ?? '');
 
 	$published = ($feed->get('published') !== null) ? (int) $row[$feed->get('published')] : 0;
 	$updated = ($feed->get('updated') !== null) ? (int) $row[$feed->get('updated')] : 0;
