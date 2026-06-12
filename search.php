@@ -662,6 +662,23 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'U_SEARCH_ACTIVE_TOPICS_IN'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics' . $u_amp_search_forum),
 	]);
 
+	// Search in topic: get topic title
+	if (!$search_id && $topic_id)
+	{
+		$sql = 'SELECT topic_title FROM ' . TOPICS_TABLE . ' WHERE topic_id = ' . $topic_id;
+		$result = $db->sql_query($sql);
+		$row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		if ($row)
+		{
+			$template->assign_vars([
+				'SEARCH_TOPIC'		=> censor_text($row['topic_title']),
+				'U_SEARCH_TOPIC'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit=$u_hilit" : '')),
+			]);
+		}
+	}
+
 	if ($sql_where)
 	{
 		if ($show_results == 'posts')
@@ -1086,14 +1103,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					$is_first_row = false;
 				}
 			}
-		}
-
-		if ($topic_id && ($topic_id == $result_topic_id))
-		{
-			$template->assign_vars([
-				'SEARCH_TOPIC'		=> $topic_title,
-				'U_SEARCH_TOPIC'	=> $view_topic_url
-			]);
 		}
 	}
 	unset($rowset);
