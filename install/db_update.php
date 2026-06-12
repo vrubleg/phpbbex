@@ -507,12 +507,25 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	remove_config_values([
 		'allow_avatar_remote',
 		'login_via_email_enable',
+		'auth_method',
+		'ldap_base_dn',
+		'ldap_email',
+		'ldap_password',
+		'ldap_port',
+		'ldap_server',
+		'ldap_uid',
+		'ldap_user',
+		'ldap_user_filter',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
 	set_config('allow_emailreuse', '0');
+
+	// Disable obsolete modules (they can be removed in the ACP safely).
+
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename = 'board' AND module_mode = 'auth'");
 }
 
 // Update bots if bots=1 is passed.

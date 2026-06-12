@@ -304,33 +304,18 @@ class phpbb_session
 					$session_expired = false;
 
 					// Check whether the session is still valid if we have one
-					$method = basename(trim($config['auth_method']));
-					require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
-
-					$method = 'validate_session_' . $method;
-					if (function_exists($method))
+					// Check the session length timeframe if autologin is not enabled.
+					// Else check the autologin length... and also removing those having autologin enabled but no longer allowed board-wide.
+					if (!$this->data['session_autologin'])
 					{
-						if (!$method($this->data))
+						if ($this->data['session_time'] < $this->time_now - ($config['session_length'] + 60))
 						{
 							$session_expired = true;
 						}
 					}
-
-					if (!$session_expired)
+					else if (!$config['allow_autologin'] || ($config['max_autologin_time'] && $this->data['session_time'] < $this->time_now - (86400 * (int) $config['max_autologin_time']) + 60))
 					{
-						// Check the session length timeframe if autologin is not enabled.
-						// Else check the autologin length... and also removing those having autologin enabled but no longer allowed board-wide.
-						if (!$this->data['session_autologin'])
-						{
-							if ($this->data['session_time'] < $this->time_now - ($config['session_length'] + 60))
-							{
-								$session_expired = true;
-							}
-						}
-						else if (!$config['allow_autologin'] || ($config['max_autologin_time'] && $this->data['session_time'] < $this->time_now - (86400 * (int) $config['max_autologin_time']) + 60))
-						{
-							$session_expired = true;
-						}
+						$session_expired = true;
 					}
 
 					if (!$session_expired)
@@ -503,26 +488,6 @@ class phpbb_session
 			if ($bot)
 			{
 				break;
-			}
-		}
-
-		$method = basename(trim($config['auth_method']));
-		require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
-
-		$method = 'autologin_' . $method;
-		if (function_exists($method))
-		{
-			$user_data = $method();
-
-			if ($user_id === false || (isset($user_data['user_id']) && $user_id == $user_data['user_id']))
-			{
-				$this->data = $user_data;
-			}
-
-			if (sizeof($this->data))
-			{
-				$this->cookie_data['k'] = '';
-				$this->cookie_data['u'] = $this->data['user_id'];
 			}
 		}
 
@@ -838,16 +803,6 @@ class phpbb_session
 			WHERE session_id = '" . $db->sql_escape($this->session_id) . "'
 				AND session_user_id = " . (int) $this->data['user_id'];
 		$db->sql_query($sql);
-
-		// Allow connecting logout with external auth method logout
-		$method = basename(trim($config['auth_method']));
-		require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
-
-		$method = 'logout_' . $method;
-		if (function_exists($method))
-		{
-			$method($this->data, $new_session);
-		}
 
 		if ($this->data['user_id'] != ANONYMOUS)
 		{

@@ -22,7 +22,6 @@ $lang = array_merge($lang, [
 	'ACP_ADMIN_ROLES'			=> 'Admin roles',
 	'ACP_ATTACHMENTS'			=> 'Attachments',
 	'ACP_ATTACHMENT_SETTINGS'	=> 'Attachment settings',
-	'ACP_AUTH_SETTINGS'			=> 'Authentication',
 	'ACP_AUTOMATION'			=> 'Automation',
 	'ACP_AVATAR_SETTINGS'		=> 'Avatar settings',
 
