@@ -50,7 +50,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('attachment_quota',
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_bbcode_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_flash_pm', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_img_pm', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_method', 'db');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_smilies_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '10240');
@@ -150,14 +149,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '7');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_base_dn', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_email', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_password', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_port', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_server', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_uid', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_user', '');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ldap_user_filter', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_load', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_search_load', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_anon_lastread', '0');
@@ -167,7 +158,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_viewprofi
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_viewtopic', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_db_lastread', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_db_track', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_jumpbox', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_online', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_online_bots', '0');

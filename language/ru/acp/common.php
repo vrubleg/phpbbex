@@ -22,7 +22,6 @@ $lang = array_merge($lang, [
 	'ACP_ADMIN_ROLES'			=> 'Администраторские роли',
 	'ACP_ATTACHMENTS'			=> 'Вложения',
 	'ACP_ATTACHMENT_SETTINGS'	=> 'Настройки вложений',
-	'ACP_AUTH_SETTINGS'			=> 'Аутентификация',
 	'ACP_AUTOMATION'			=> 'Автоматизация',
 	'ACP_AVATAR_SETTINGS'		=> 'Аватары',
 

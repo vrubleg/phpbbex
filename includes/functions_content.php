@@ -80,15 +80,9 @@ function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key,
 /**
 * Generate Jumpbox
 */
-function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list = false, $force_display = false)
+function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list = false)
 {
 	global $config, $auth, $template, $user, $db;
-
-	// We only return if the jumpbox is not forced to be displayed (in case it is needed for functionality)
-	if (!$config['load_jumpbox'] && $force_display === false)
-	{
-		return;
-	}
 
 	$sql = 'SELECT forum_id, forum_name, parent_id, forum_type, left_id, right_id
 		FROM ' . FORUMS_TABLE . '
@@ -172,8 +166,6 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 		'S_DISPLAY_JUMPBOX'	=> $display_jumpbox,
 		'S_JUMPBOX_ACTION'	=> $action,
 	]);
-
-	return;
 }
 
 /**

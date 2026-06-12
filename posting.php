@@ -1481,11 +1481,7 @@ posting_gen_attachment_entry($attachment_data, $filename_data, $allowed);
 // Output page ...
 page_header($page_title, false);
 
-$template->set_filenames([
-	'body' => 'posting_body.html']
-);
-
-make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
+$template->set_filenames(['body' => 'posting_body.html']);
 
 // Topic review
 if (($mode == 'reply' || $mode == 'quote') && !empty($config['posting_topic_review']))

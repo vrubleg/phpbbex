@@ -107,6 +107,53 @@ if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_versi
 
 // Helper functions.
 
+function remove_module($module_class, $module_basename, $module_mode = null)
+{
+	global $db;
+
+	$sql = 'SELECT * FROM ' . MODULES_TABLE . "
+		WHERE module_class = '" . $db->sql_escape($module_class) . "'
+			AND module_basename = '" . $db->sql_escape($module_basename) . "'
+			AND module_mode = '" . $db->sql_escape($module_mode) . "'";
+	$result = $db->sql_query($sql);
+	$row = $db->sql_fetchrow($result);
+	$db->sql_freeresult($result);
+
+	if (!$row) { return true; }
+
+	$row['module_id'] = (int) $row['module_id'];
+	$row['left_id'] = (int) $row['left_id'];
+	$row['right_id'] = (int) $row['right_id'];
+
+	if ($row['left_id'] + 1 != $row['right_id'])
+	{
+		// Can't remove, it has some children. Should not happen.
+		return false;
+	}
+
+	$sql = 'DELETE FROM ' . MODULES_TABLE . "
+		WHERE module_class = '" . $db->sql_escape($module_class) . "'
+			AND module_id = {$row['module_id']}";
+	$db->sql_query($sql);
+
+	// Resync tree
+	$diff = 2;
+
+	$sql = 'UPDATE ' . MODULES_TABLE . "
+		SET right_id = right_id - $diff
+		WHERE module_class = '" . $db->sql_escape($module_class) . "'
+			AND left_id < {$row['right_id']} AND right_id > {$row['right_id']}";
+	$db->sql_query($sql);
+
+	$sql = 'UPDATE ' . MODULES_TABLE . "
+		SET left_id = left_id - $diff, right_id = right_id - $diff
+		WHERE module_class = '" . $db->sql_escape($module_class) . "'
+			AND left_id > {$row['right_id']}";
+	$db->sql_query($sql);
+
+	return true;
+}
+
 function remove_permissions($permissions)
 {
 	global $db, $cache;
@@ -217,10 +264,6 @@ if (version_compare($config['phpbbex_version'], '1.9.5', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 {
-	// Disable obsolete modules (they can be removed in the ACP safely).
-
-	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename IN ('update', 'send_statistics')");
-
 	// The COPPA group is not special anymore.
 
 	$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA'");
@@ -258,10 +301,6 @@ if (version_compare($config['phpbbex_version'], '1.9.7', '<'))
 	$db->sql_return_on_error(true);
 	$db->sql_query("ALTER TABLE " . RANKS_TABLE . " ADD COLUMN rank_hide_title tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER rank_title");
 	$db->sql_return_on_error(false);
-
-	// Disable obsolete modules (they can be removed in the ACP safely).
-
-	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename = 'board' AND module_mode = 'cookie'");
 
 	// Remove obsolete permissions.
 
@@ -323,10 +362,6 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	$db->sql_return_on_error(true);
 	$db->sql_query("ALTER TABLE " . FORUMS_TABLE . " DROP COLUMN enable_icons");
 	$db->sql_return_on_error(false);
-
-	// Disable obsolete modules (they can be removed in the ACP safely).
-
-	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'acp' AND module_basename = 'quick_reply' AND module_mode = 'quick_reply'");
 
 	// Remove obsolete permissions.
 
@@ -473,10 +508,6 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		'style_counter_html_5',
 	]);
 
-	// Disable obsolete modules (they can be removed in the ACP safely).
-
-	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_enabled = 0 WHERE module_class = 'ucp' AND module_basename = 'pm' AND module_mode = 'popup'");
-
 	// Remove no longer used columns.
 
 	$db->sql_return_on_error(true);
@@ -496,23 +527,42 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 {
-	// Update cached module rights.
-
-	$db->sql_query('UPDATE ' . MODULES_TABLE . "
-		SET module_auth = 'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)'
-		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'avatar'");
-
 	// Remove obsolete config values.
 
 	remove_config_values([
 		'allow_avatar_remote',
 		'login_via_email_enable',
+		'auth_method',
+		'ldap_base_dn',
+		'ldap_email',
+		'ldap_password',
+		'ldap_port',
+		'ldap_server',
+		'ldap_uid',
+		'ldap_user',
+		'ldap_user_filter',
+		'load_jumpbox',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
 	set_config('allow_emailreuse', '0');
+
+	// Remove obsolete modules.
+
+	remove_module('acp', 'board', 'auth');
+	remove_module('acp', 'update', 'version_check');
+	remove_module('acp', 'send_statistics', 'send_statistics');
+	remove_module('acp', 'board', 'cookie');
+	remove_module('acp', 'quick_reply', 'quick_reply');
+	remove_module('ucp', 'pm', 'popup');
+
+	// Update cached module rights.
+
+	$db->sql_query('UPDATE ' . MODULES_TABLE . "
+		SET module_auth = 'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)'
+		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'avatar'");
 }
 
 // Update bots if bots=1 is passed.
@@ -1867,32 +1917,6 @@ function change_database_data(&$no_updates, $version)
 				WHERE config_name = 'search_indexing_state'";
 			_sql($sql, $errored, $error_ary);
 
-			// Hash old MD5 passwords
-			$sql = 'SELECT user_id, user_password
-					FROM ' . USERS_TABLE . '
-					WHERE user_pass_convert = 1';
-			$result = _sql($sql, $errored, $error_ary);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				if (strlen($row['user_password']) == 32)
-				{
-					$sql_ary = [
-						'user_password'	=> phpbb_hash($row['user_password']),
-					];
-
-					_sql('UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE user_id = ' . $row['user_id'], $errored, $error_ary);
-				}
-			}
-			$db->sql_freeresult($result);
-
-			// Adjust bot entry
-			$sql = 'UPDATE ' . BOTS_TABLE . "
-				SET bot_agent = 'ichiro/'
-				WHERE bot_agent = 'ichiro/2'";
-			_sql($sql, $errored, $error_ary);
-
-
 			// Before we are able to add a unique key to auth_option, we need to remove duplicate entries
 
 			// We get duplicate entries first
@@ -2414,14 +2438,6 @@ function change_database_data(&$no_updates, $version)
 			];
 
 			_add_modules($modules_to_install);
-
-			// update
-			$sql = 'UPDATE ' . MODULES_TABLE . '
-				SET module_auth = \'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_remote || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)\'
-				WHERE module_class = \'ucp\'
-					AND module_basename = \'profile\'
-					AND module_mode = \'avatar\'';
-			_sql($sql, $errored, $error_ary);
 
 			// Delete shadow topics pointing to not existing topics
 			$batch_size = 500;

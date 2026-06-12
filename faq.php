@@ -80,6 +80,5 @@ page_header($l_title, false);
 $template->set_filenames([
 	'body' => 'faq_body.html'
 ]);
-make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
 
 page_footer();

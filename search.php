@@ -1100,10 +1100,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 	page_header($l_search_title ?: $user->lang['SEARCH']);
 
-	$template->set_filenames([
-		'body' => 'search_results.html']
-	);
-	make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
+	$template->set_filenames(['body' => 'search_results.html']);
 
 	page_footer();
 }
@@ -1262,9 +1259,6 @@ if ($auth->acl_get('a_search'))
 // Output the basic page
 page_header($user->lang['SEARCH']);
 
-$template->set_filenames([
-	'body' => 'search_body.html']
-);
-make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
+$template->set_filenames(['body' => 'search_body.html']);
 
 page_footer();

@@ -60,10 +60,7 @@ if ($mode == 'whois' && $auth->acl_get('a_') && $session_id)
 	// Output the page
 	page_header($user->lang['WHO_IS_ONLINE']);
 
-	$template->set_filenames([
-		'body' => 'viewonline_whois.html'
-	]);
-	make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
+	$template->set_filenames(['body' => 'viewonline_whois.html']);
 
 	page_footer();
 }
@@ -277,9 +274,6 @@ $config['load_online'] = false;
 // Output the page
 page_header($user->lang['WHO_IS_ONLINE']);
 
-$template->set_filenames([
-	'body' => 'viewonline_body.html'
-]);
-make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
+$template->set_filenames(['body' => 'viewonline_body.html']);
 
 page_footer();

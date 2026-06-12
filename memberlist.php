@@ -1569,10 +1569,7 @@ switch ($mode)
 // Output the page
 page_header($page_title, false);
 
-$template->set_filenames([
-	'body' => $template_html]
-);
-make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
+$template->set_filenames(['body' => $template_html]);
 
 page_footer();
 

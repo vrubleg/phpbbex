@@ -898,102 +898,238 @@ class phpbb_auth
 	}
 
 	/**
-	* Authentication plug-ins is largely down to Sergey Kanareykin, our thanks to him.
+	* Login via the integrated user table.
 	*/
 	function login($username, $password, $autologin = false, $viewonline = 1, $admin = 0)
 	{
-		global $config, $db, $user;
+		global $db, $config, $user;
 
-		$method = trim(basename($config['auth_method']));
-		require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
-
-		$method = 'login_' . $method;
-		if (function_exists($method))
+		if (!$password)
 		{
-			$login = $method($username, $password, $user->ip, $user->browser, $user->forwarded_for);
-
-			// If the auth module wants us to create an empty profile do so and then treat the status as LOGIN_SUCCESS
-			if ($login['status'] == LOGIN_SUCCESS_CREATE_PROFILE)
-			{
-				// we are going to use the user_add function so include functions_user.php if it wasn't defined yet
-				if (!function_exists('user_add'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-				}
-
-				user_add($login['user_row'], $login['cp_data'] ?? false);
-
-				$sql = 'SELECT user_id, username, user_password, user_passchg, user_email, user_type
-					FROM ' . USERS_TABLE . "
-					WHERE username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if (!$row)
-				{
-					return [
-						'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
-						'error_msg'		=> 'AUTH_NO_PROFILE_CREATED',
-						'user_row'		=> ['user_id' => ANONYMOUS],
-					];
-				}
-
-				$login = [
-					'status'	=> LOGIN_SUCCESS,
-					'error_msg'	=> false,
-					'user_row'	=> $row,
-				];
-			}
-
-			// If login succeeded, we will log the user in... else we pass the login array through...
-			if ($login['status'] == LOGIN_SUCCESS)
-			{
-				$old_session_id = $user->session_id;
-
-				if ($admin)
-				{
-					global $_SID;
-
-					del_cookie('u');
-					del_cookie('sid');
-
-					$user->session_id = $_SID = '';
-				}
-
-				$result = $user->session_create($login['user_row']['user_id'], $admin, $autologin, $viewonline);
-
-				// Successful session creation
-				if ($result === true)
-				{
-					// If admin re-authentication we remove the old session entry because a new one has been created...
-					if ($admin)
-					{
-						// the login array is used because the user ids do not differ for re-authentication
-						$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
-							WHERE session_id = '" . $db->sql_escape($old_session_id) . "'
-							AND session_user_id = {$login['user_row']['user_id']}";
-						$db->sql_query($sql);
-					}
-
-					return [
-						'status'		=> LOGIN_SUCCESS,
-						'error_msg'		=> false,
-						'user_row'		=> $login['user_row'],
-					];
-				}
-
-				return [
-					'status'		=> LOGIN_BREAK,
-					'error_msg'		=> $result,
-					'user_row'		=> $login['user_row'],
-				];
-			}
-
-			return $login;
+			return [
+				'status'	=> LOGIN_ERROR_PASSWORD,
+				'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
+				'user_row'	=> ['user_id' => ANONYMOUS],
+			];
 		}
 
-		trigger_error('Authentication method not found', E_USER_ERROR);
+		if (!$username)
+		{
+			return [
+				'status'	=> LOGIN_ERROR_USERNAME,
+				'error_msg'	=> 'LOGIN_ERROR_USERNAME',
+				'user_row'	=> ['user_id' => ANONYMOUS],
+			];
+		}
+
+		$username_clean = utf8_clean_string($username);
+
+		$sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
+			FROM ' . USERS_TABLE . "
+			WHERE ";
+		$where_username = "username_clean = '" . $db->sql_escape($username_clean) . "'";
+		$where_email = "user_email = '" . $db->sql_escape(strtolower($username)) . "'";
+		switch ($config['allow_login_via_email'] ?? 0)
+		{
+			case ALLOW_LOGIN_VIA_EMAIL_YES:
+				$sql .= $where_username . ' OR ' . $where_email;
+			break;
+			case ALLOW_LOGIN_VIA_EMAIL_ONLY:
+				$sql .= $where_email;
+			break;
+			default:
+				$sql .= $where_username;
+			break;
+		}
+		$result = $db->sql_query($sql);
+		$row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		$forwarded_for = trim(substr($user->forwarded_for, 0, 149));
+
+		if (($user->ip && !$config['ip_login_limit_use_forwarded']) || ($forwarded_for && $config['ip_login_limit_use_forwarded']))
+		{
+			$sql = 'SELECT COUNT(*) AS attempts
+				FROM ' . LOGIN_ATTEMPT_TABLE . '
+				WHERE attempt_time > ' . (time() - (int) $config['ip_login_limit_time']);
+			if ($config['ip_login_limit_use_forwarded'])
+			{
+				$sql .= " AND attempt_forwarded_for = '" . $db->sql_escape($forwarded_for) . "'";
+			}
+			else
+			{
+				$sql .= " AND attempt_ip = '" . $db->sql_escape($user->ip) . "' ";
+			}
+
+			$result = $db->sql_query($sql);
+			$attempts = (int) $db->sql_fetchfield('attempts');
+			$db->sql_freeresult($result);
+
+			$attempt_data = [
+				'attempt_ip'			=> $user->ip,
+				'attempt_browser'		=> trim(substr($user->browser, 0, 249)),
+				'attempt_forwarded_for'	=> $forwarded_for,
+				'attempt_time'			=> time(),
+				'user_id'				=> ($row) ? (int) $row['user_id'] : 0,
+				'username'				=> $username,
+				'username_clean'		=> $username_clean,
+			];
+			$sql = 'INSERT INTO ' . LOGIN_ATTEMPT_TABLE . $db->sql_build_array('INSERT', $attempt_data);
+			$result = $db->sql_query($sql);
+		}
+		else
+		{
+			$attempts = 0;
+		}
+
+		if (!$row)
+		{
+			if ($config['ip_login_limit_max'] && $attempts >= $config['ip_login_limit_max'])
+			{
+				return [
+					'status'		=> LOGIN_ERROR_ATTEMPTS,
+					'error_msg'		=> 'LOGIN_ERROR_ATTEMPTS',
+					'user_row'		=> ['user_id' => ANONYMOUS],
+				];
+			}
+
+			switch ($config['allow_login_via_email'] ?? 0)
+			{
+				case ALLOW_LOGIN_VIA_EMAIL_YES:
+					$error_msg = 'LOGIN_ERROR_USERNAME_OR_EMAIL';
+				break;
+				case ALLOW_LOGIN_VIA_EMAIL_ONLY:
+					$error_msg = 'LOGIN_ERROR_EMAIL';
+				break;
+				default:
+					$error_msg = 'LOGIN_ERROR_USERNAME';
+				break;
+			}
+
+			return [
+				'status'	=> LOGIN_ERROR_USERNAME,
+				'error_msg'	=> $error_msg,
+				'user_row'	=> ['user_id' => ANONYMOUS],
+			];
+		}
+
+		$show_captcha = ($config['max_login_attempts'] && $row['user_login_attempts'] >= $config['max_login_attempts']) ||
+			($config['ip_login_limit_max'] && $attempts >= $config['ip_login_limit_max']);
+
+		// If there are too much login attempts, we need to check for an confirm image
+		if ($show_captcha)
+		{
+			// Visual Confirmation handling
+			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
+			$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
+			$captcha->init(CONFIRM_LOGIN);
+			$vc_response = $captcha->validate($row);
+			if ($vc_response)
+			{
+				return [
+					'status'		=> LOGIN_ERROR_ATTEMPTS,
+					'error_msg'		=> 'LOGIN_ERROR_ATTEMPTS',
+					'user_row'		=> $row,
+				];
+			}
+			else
+			{
+				$captcha->reset();
+			}
+		}
+
+		// If the password convert flag is set ask the user to request a new password
+		if ($row['user_pass_convert'])
+		{
+			return [
+				'status'		=> LOGIN_ERROR_PASSWORD_CONVERT,
+				'error_msg'		=> 'LOGIN_ERROR_PASSWORD_CONVERT',
+				'user_row'		=> $row,
+			];
+		}
+
+		// Check password ...
+		if (!phpbb_check_hash($password, $row['user_password']))
+		{
+			// Password incorrect - increase login attempts
+			$sql = 'UPDATE ' . USERS_TABLE . '
+				SET user_login_attempts = user_login_attempts + 1
+				WHERE user_id = ' . (int) $row['user_id'] . '
+					AND user_login_attempts < ' . LOGIN_ATTEMPTS_MAX;
+			$db->sql_query($sql);
+
+			// Give status about wrong password...
+			return [
+				'status'		=> ($show_captcha) ? LOGIN_ERROR_ATTEMPTS : LOGIN_ERROR_PASSWORD,
+				'error_msg'		=> ($show_captcha) ? 'LOGIN_ERROR_ATTEMPTS' : 'LOGIN_ERROR_PASSWORD',
+				'user_row'		=> $row,
+			];
+		}
+
+		$sql = 'DELETE FROM ' . LOGIN_ATTEMPT_TABLE . '
+			WHERE user_id = ' . $row['user_id'];
+		$db->sql_query($sql);
+
+		if ($row['user_login_attempts'] != 0)
+		{
+			// Successful, reset login attempts (the user passed all stages)
+			$sql = 'UPDATE ' . USERS_TABLE . '
+				SET user_login_attempts = 0
+				WHERE user_id = ' . $row['user_id'];
+			$db->sql_query($sql);
+		}
+
+		// User inactive...
+		if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
+		{
+			return [
+				'status'		=> LOGIN_ERROR_INACTIVE,
+				'error_msg'		=> 'LOGIN_ERROR_INACTIVE',
+				'user_row'		=> $row,
+			];
+		}
+
+		// Successful login...
+
+		$old_session_id = $user->session_id;
+
+		if ($admin)
+		{
+			global $_SID;
+
+			del_cookie('u');
+			del_cookie('sid');
+
+			$user->session_id = $_SID = '';
+		}
+
+		$result = $user->session_create($row['user_id'], $admin, $autologin, $viewonline);
+
+		// Successful session creation
+		if ($result !== true)
+		{
+			return [
+				'status'		=> LOGIN_BREAK,
+				'error_msg'		=> $result,
+				'user_row'		=> $row,
+			];
+		}
+
+		// If admin re-authentication we remove the old session entry because a new one has been created...
+		if ($admin)
+		{
+			// the login array is used because the user ids do not differ for re-authentication
+			$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
+				WHERE session_id = '" . $db->sql_escape($old_session_id) . "'
+				AND session_user_id = {$row['user_id']}";
+			$db->sql_query($sql);
+		}
+
+		return [
+			'status'		=> LOGIN_SUCCESS,
+			'error_msg'		=> false,
+			'user_row'		=> $row,
+		];
 	}
 
 	/**

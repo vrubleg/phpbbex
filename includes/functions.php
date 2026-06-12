@@ -2942,10 +2942,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 
 	page_header($user->lang['LOGIN'], false);
 
-	$template->set_filenames([
-		'body' => 'login_body.html']
-	);
-	make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'));
+	$template->set_filenames(['body' => 'login_body.html']);
 
 	page_footer();
 }
@@ -3022,9 +3019,7 @@ function login_forum_box($forum_data)
 		'S_HIDDEN_FIELDS'		=> build_hidden_fields(['f' => $forum_data['forum_id']]),
 	]);
 
-	$template->set_filenames([
-		'body' => 'login_forum.html'
-	]);
+	$template->set_filenames(['body' => 'login_forum.html']);
 
 	page_footer();
 }

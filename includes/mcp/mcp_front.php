@@ -351,5 +351,5 @@ function mcp_front_view($id, $mode, $action)
 	}
 
 	$template->assign_var('S_MCP_ACTION', append_sid(PHPBB_ROOT_PATH . 'mcp.php'));
-	make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=forum_view'), 0, false, 'm_', true);
+	make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=forum_view'), 0, false, 'm_');
 }

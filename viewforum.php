@@ -140,11 +140,7 @@ else
 // Dump out the page header and load viewforum template
 page_header($forum_data['forum_name'], true, $forum_id);
 
-$template->set_filenames([
-	'body' => 'viewforum_body.html'
-]);
-
-make_jumpbox(append_sid(PHPBB_ROOT_PATH . 'viewforum.php'), $forum_id);
+$template->set_filenames(['body' => 'viewforum_body.html']);
 
 $template->assign_vars([
 	'U_CANONICAL' 			=> generate_board_url() . "/viewforum.php?f=$forum_id" . (($start) ? "&amp;start=$start" : ''),

@@ -97,7 +97,7 @@ function mcp_topic_view($id, $mode, $action)
 	}
 
 	// Jumpbox, sort selects and that kind of things
-	make_jumpbox($url . "&amp;i=$id&amp;mode=forum_view", $topic_info['forum_id'], false, 'm_', true);
+	make_jumpbox($url . "&amp;i=$id&amp;mode=forum_view", $topic_info['forum_id'], false, 'm_');
 	$where_sql = ($action == 'reports') ? 'WHERE post_reported = 1 AND ' : 'WHERE';
 
 	$sort_days = $total = 0;

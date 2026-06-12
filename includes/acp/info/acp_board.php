@@ -26,7 +26,6 @@ class acp_board_info
 
 				'email'		=> ['title' => 'ACP_EMAIL_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_CLIENT_COMMUNICATION']],
 
-				'auth'		=> ['title' => 'ACP_AUTH_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_SERVER_CONFIGURATION']],
 				'server'	=> ['title' => 'ACP_SERVER_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_SERVER_CONFIGURATION']],
 				'security'	=> ['title' => 'ACP_SECURITY_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_SERVER_CONFIGURATION']],
 				'load'		=> ['title' => 'ACP_LOAD_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_SERVER_CONFIGURATION']],

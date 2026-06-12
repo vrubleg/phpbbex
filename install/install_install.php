@@ -131,7 +131,7 @@ class install_install extends module
 		]);
 
 		// Test the minimum PHP version
-		if (PHP_VERSION_ID < 70200)
+		if (PHP_VERSION_ID < 70400)
 		{
 			$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
 		}

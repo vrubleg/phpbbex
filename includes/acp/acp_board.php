@@ -65,7 +65,7 @@ class acp_board
 						'active_topics_days'	=> ['lang' => 'ACTIVE_TOPICS_DAYS',	'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => ['{CONFIG_VALUE}', '{KEY}', true], 'explain' => true],
 						'active_users_days'		=> ['lang' => 'ACTIVE_USERS_DAYS',		'validate' => 'int',	'type' => 'select', 'method' => 'select_days', 'params' => ['{CONFIG_VALUE}', '{KEY}', false], 'explain' => true],
 
-						'legend5'					=> 'ACP_SUBMIT_CHANGES',
+						'legend5'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -114,7 +114,7 @@ class acp_board
 						'load_unreads_search'	=> ['lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'load_db_track'			=> ['lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 
-						'legend6'					=> 'ACP_SUBMIT_CHANGES',
+						'legend6'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -146,7 +146,6 @@ class acp_board
 						'style_rounded_corners'				=> ['lang' => 'STYLE_ROUNDED_CORNERS',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'style_new_year'					=> ['lang' => 'STYLE_NEW_YEAR',					'validate' => 'int',	'type' => 'custom', 'function' => 'h_radio', 'params' => ['config[style_new_year]', [-1 => 'AUTO', 1 => 'YES', 0 => 'NO'], '{CONFIG_VALUE}', '{KEY}'], 'explain' => false],
 						'style_show_sitename_in_headerbar'	=> ['lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_jumpbox'						=> ['lang' => 'YES_JUMPBOX',						'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'skip_typical_notices'				=> ['lang' => 'SKIP_TYPICAL_NOTICES',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'posting_topic_review'				=> ['lang' => 'POSTING_TOPIC_REVIEW',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 
@@ -228,6 +227,8 @@ class acp_board
 						'avatar_filesize'		=> ['lang' => 'MAX_AVATAR_FILESIZE',	'validate' => 'int:0',	'type' => 'text:4:10', 'explain' => true, 'append' => ' ' . $user->lang['BYTES']],
 						'avatar_min'			=> ['lang' => 'MIN_AVATAR_SIZE',		'validate' => 'int:0',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
 						'avatar_max'			=> ['lang' => 'MAX_AVATAR_SIZE',		'validate' => 'int:0',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']],
+
+						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -420,41 +421,17 @@ class acp_board
 					'vars'	=> [
 						'legend1'			=> 'GENERAL_SETTINGS',
 						'limit_load'		=> ['lang' => 'LIMIT_LOAD',		'validate' => 'string',	'type' => 'text:4:4', 'explain' => true],
-						'session_length'	=> ['lang' => 'SESSION_LENGTH',	'validate' => 'int:60',	'type' => 'text:5:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'active_sessions'	=> ['lang' => 'LIMIT_SESSIONS',	'validate' => 'int:0',	'type' => 'text:4:4', 'explain' => true],
-						'load_online_time'	=> ['lang' => 'ONLINE_LENGTH',		'validate' => 'int:0',	'type' => 'text:4:3', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']],
 
 						'legend2'				=> 'GENERAL_OPTIONS',
 						'load_db_track'			=> ['lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_db_lastread'		=> ['lang' => 'YES_READ_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_anon_lastread'	=> ['lang' => 'YES_ANON_READ_MARKING',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'load_online'			=> ['lang' => 'YES_ONLINE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'load_onlinetrack'		=> ['lang' => 'YES_ONLINE_TRACK',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'load_birthdays'		=> ['lang' => 'YES_BIRTHDAYS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'load_unreads_search'	=> ['lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_moderators'		=> ['lang' => 'YES_MODERATORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_jumpbox'			=> ['lang' => 'YES_JUMPBOX',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'load_user_activity'	=> ['lang' => 'LOAD_USER_ACTIVITY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_tplcompile'		=> ['lang' => 'RECOMPILE_STYLES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 
-						'legend3'				=> 'CUSTOM_PROFILE_FIELDS',
-						'load_cpf_memberlist'	=> ['lang' => 'LOAD_CPF_MEMBERLIST',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_cpf_viewprofile'	=> ['lang' => 'LOAD_CPF_VIEWPROFILE',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_cpf_viewtopic'	=> ['lang' => 'LOAD_CPF_VIEWTOPIC',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-
-						'legend4'					=> 'ACP_SUBMIT_CHANGES',
-					]
-				];
-			break;
-
-			case 'auth':
-				$display_vars = [
-					'title'	=> 'ACP_AUTH_SETTINGS',
-					'vars'	=> [
-						'legend1'		=> 'ACP_AUTH_SETTINGS',
-						'auth_method'	=> ['lang' => 'AUTH_METHOD',	'validate' => 'string',	'type' => 'select', 'method' => 'select_auth_method', 'explain' => false],
-
-						'legend2'				=> 'ACP_SUBMIT_CHANGES',
+						'legend3'					=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -478,6 +455,7 @@ class acp_board
 						'legend1'				=> 'ACP_SECURITY_SETTINGS',
 						'allow_autologin'		=> ['lang' => 'ALLOW_AUTOLOGIN',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'max_autologin_time'	=> ['lang' => 'AUTOLOGIN_LENGTH',		'validate' => 'int:0',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
+						'session_length'		=> ['lang' => 'SESSION_LENGTH',	'validate' => 'int:60',	'type' => 'text:5:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'ip_check'				=> ['lang' => 'IP_VALID',				'validate' => 'int',	'type' => 'custom', 'method' => 'select_ip_check', 'explain' => true],
 						'browser_check'			=> ['lang' => 'BROWSER_VALID',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'forwarded_for_check'	=> ['lang' => 'FORWARDED_FOR_VALID',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
@@ -583,7 +561,7 @@ class acp_board
 				continue;
 			}
 
-			if (in_array($config_name, ['auth_method', 'feed_news_id', 'feed_exclude_id', 'send_test_email']))
+			if (in_array($config_name, ['feed_news_id', 'feed_exclude_id', 'send_test_email']))
 			{
 				continue;
 			}
@@ -604,97 +582,6 @@ class acp_board
 
 			$this->store_feed_forums(FORUM_OPTION_FEED_NEWS, 'feed_news_id');
 			$this->store_feed_forums(FORUM_OPTION_FEED_EXCLUDE, 'feed_exclude_id');
-		}
-
-		if ($mode == 'auth')
-		{
-			// Retrieve a list of auth plugins and check their config values
-			$auth_plugins = [];
-
-			$dp = @opendir(PHPBB_ROOT_PATH . 'includes/auth');
-
-			if ($dp)
-			{
-				while (($file = readdir($dp)) !== false)
-				{
-					if (preg_match('#^auth_(.*?)\.php' . '$#', $file))
-					{
-						$auth_plugins[] = basename(preg_replace('#^auth_(.*?)\.php' . '$#', '\1', $file));
-					}
-				}
-				closedir($dp);
-
-				sort($auth_plugins);
-			}
-
-			$updated_auth_settings = false;
-			$old_auth_config = [];
-			foreach ($auth_plugins as $method)
-			{
-				if ($method && file_exists(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
-
-					$method = 'acp_' . $method;
-					if (function_exists($method))
-					{
-						if ($fields = $method($this->new_config))
-						{
-							// Check if we need to create config fields for this plugin and save config when submit was pressed
-							foreach ($fields['config'] as $field)
-							{
-								if (!isset($config[$field]))
-								{
-									set_config($field, '');
-								}
-
-								if (!isset($cfg_array[$field]) || strpos($field, 'legend') !== false)
-								{
-									continue;
-								}
-
-								$old_auth_config[$field] = $this->new_config[$field];
-								$config_value = $cfg_array[$field];
-								$this->new_config[$field] = $config_value;
-
-								if ($submit)
-								{
-									$updated_auth_settings = true;
-									set_config($field, $config_value);
-								}
-							}
-						}
-						unset($fields);
-					}
-				}
-			}
-
-			if ($submit && (($cfg_array['auth_method'] != $this->new_config['auth_method']) || $updated_auth_settings))
-			{
-				$method = basename($cfg_array['auth_method']);
-				if ($method && in_array($method, $auth_plugins))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php');
-
-					$method = 'init_' . $method;
-					if (function_exists($method))
-					{
-						if ($error = $method())
-						{
-							foreach ($old_auth_config as $config_name => $config_value)
-							{
-								set_config($config_name, $config_value);
-							}
-							trigger_error($error . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-					}
-					set_config('auth_method', basename($cfg_array['auth_method']));
-				}
-				else
-				{
-					trigger_error('NO_AUTH_PLUGIN', E_USER_ERROR);
-				}
-			}
 		}
 
 		if ($mode == 'email' && request_var('send_test_email', false))
@@ -789,66 +676,6 @@ class acp_board
 
 			unset($display_vars['vars'][$config_key]);
 		}
-
-		if ($mode == 'auth')
-		{
-			$template->assign_var('S_AUTH', true);
-
-			foreach ($auth_plugins as $method)
-			{
-				if ($method && file_exists(PHPBB_ROOT_PATH . 'includes/auth/auth_' . $method . '.php'))
-				{
-					$method = 'acp_' . $method;
-					if (function_exists($method))
-					{
-						$fields = $method($this->new_config);
-
-						if ($fields['tpl'])
-						{
-							$template->assign_block_vars('auth_tpl', [
-								'TPL'	=> $fields['tpl']]
-							);
-						}
-						unset($fields);
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	* Select auth method
-	*/
-	function select_auth_method($selected_method, $key = '')
-	{
-		$auth_plugins = [];
-
-		$dp = @opendir(PHPBB_ROOT_PATH . 'includes/auth');
-
-		if (!$dp)
-		{
-			return '';
-		}
-
-		while (($file = readdir($dp)) !== false)
-		{
-			if (preg_match('#^auth_(.*?)\.php' . '$#', $file))
-			{
-				$auth_plugins[] = preg_replace('#^auth_(.*?)\.php' . '$#', '\1', $file);
-			}
-		}
-		closedir($dp);
-
-		sort($auth_plugins);
-
-		$auth_select = '';
-		foreach ($auth_plugins as $method)
-		{
-			$selected = ($selected_method == $method) ? ' selected="selected"' : '';
-			$auth_select .= '<option value="' . $method . '"' . $selected . '>' . ucfirst($method) . '</option>';
-		}
-
-		return $auth_select;
 	}
 
 	/**
