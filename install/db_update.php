@@ -1880,32 +1880,6 @@ function change_database_data(&$no_updates, $version)
 				WHERE config_name = 'search_indexing_state'";
 			_sql($sql, $errored, $error_ary);
 
-			// Hash old MD5 passwords
-			$sql = 'SELECT user_id, user_password
-					FROM ' . USERS_TABLE . '
-					WHERE user_pass_convert = 1';
-			$result = _sql($sql, $errored, $error_ary);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				if (strlen($row['user_password']) == 32)
-				{
-					$sql_ary = [
-						'user_password'	=> phpbb_hash($row['user_password']),
-					];
-
-					_sql('UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE user_id = ' . $row['user_id'], $errored, $error_ary);
-				}
-			}
-			$db->sql_freeresult($result);
-
-			// Adjust bot entry
-			$sql = 'UPDATE ' . BOTS_TABLE . "
-				SET bot_agent = 'ichiro/'
-				WHERE bot_agent = 'ichiro/2'";
-			_sql($sql, $errored, $error_ary);
-
-
 			// Before we are able to add a unique key to auth_option, we need to remove duplicate entries
 
 			// We get duplicate entries first
