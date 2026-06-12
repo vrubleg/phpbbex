@@ -87,16 +87,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		$sql_array['LEFT_JOIN'][] = ['FROM' => [FORUMS_TRACK_TABLE => 'ft'], 'ON' => 'ft.user_id = ' . $user->data['user_id'] . ' AND ft.forum_id = f.forum_id'];
 		$sql_array['SELECT'] .= ', ft.mark_time';
 	}
-	else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-	{
-		$tracking_topics = get_cookie('track', '');
-		$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : [];
-
-		if (!$user->data['is_registered'])
-		{
-			$user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate']) : 0;
-		}
-	}
 
 	if ($show_active)
 	{
@@ -176,14 +166,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		if ($config['load_db_lastread'] && $user->data['is_registered'])
 		{
 			$forum_tracking_info[$forum_id] = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_lastmark'];
-		}
-		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-		{
-			if (!$user->data['is_registered'])
-			{
-				$user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate']) : 0;
-			}
-			$forum_tracking_info[$forum_id] = (isset($tracking_topics['f'][$forum_id])) ? (int) (base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate']) : $user->data['user_lastmark'];
 		}
 
 		// Count the difference of real to public topics, so we can display an information to moderators
@@ -521,7 +503,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	}
 
 	$template->assign_vars([
-		'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . '&amp;f=' . $root_data['forum_id'] . '&amp;mark=forums') : '',
+		'U_MARK_FORUMS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . '&amp;f=' . $root_data['forum_id'] . '&amp;mark=forums') : '',
 		'S_HAS_SUBFORUM'	=> ($visible_forums > 0),
 		'L_SUBFORUM'		=> ($visible_forums == 1) ? $user->lang['SUBFORUM'] : $user->lang['SUBFORUMS'],
 		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),

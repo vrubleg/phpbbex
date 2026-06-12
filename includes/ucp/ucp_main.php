@@ -255,11 +255,6 @@ class ucp_main
 
 						$sql_array['SELECT'] .= ', ft.mark_time ';
 					}
-					else
-					{
-						$tracking_topics = get_cookie('track', '');
-						$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : [];
-					}
 
 					$sql = $db->sql_build_query('SELECT', $sql_array);
 					$result = $db->sql_query($sql);
@@ -271,10 +266,6 @@ class ucp_main
 						if ($config['load_db_lastread'])
 						{
 							$forum_check = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_lastmark'];
-						}
-						else
-						{
-							$forum_check = (isset($tracking_topics['f'][$forum_id])) ? (int) (base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate']) : $user->data['user_lastmark'];
 						}
 
 						$unread_forum = ($row['forum_last_post_time'] > $forum_check);

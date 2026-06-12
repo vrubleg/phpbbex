@@ -151,7 +151,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_day
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_load', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_search_load', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_anon_lastread', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_birthdays', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_memberlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_viewprofile', '1');
@@ -166,7 +165,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_online_time',
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_onlinetrack', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_search', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_tplcompile', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_unreads_search', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_user_activity', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments', '30');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments_pm', '1');
@@ -267,7 +265,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_back_to_top'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_rounded_corners', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_new_year', '-1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_sitename_in_headerbar', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_social_buttons', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_show_feeds_in_forumlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_vt_show_post_numbers', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('display_raters', '0');

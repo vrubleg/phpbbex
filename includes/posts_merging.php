@@ -225,7 +225,7 @@ if ($merge_post_data['enable_indexing'])
 markread('post', $forum_id, $topic_id, $current_time);
 markread('topic', $forum_id, $topic_id, $current_time);
 
-//
+// Update forum tracking info
 if ($config['load_db_lastread'] && $user->data['is_registered'])
 {
 	$sql = 'SELECT mark_time
@@ -235,14 +235,7 @@ if ($config['load_db_lastread'] && $user->data['is_registered'])
 	$result = $db->sql_query($sql);
 	$f_mark_time = (int) $db->sql_fetchfield('mark_time');
 	$db->sql_freeresult($result);
-}
-else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-{
-	$f_mark_time = false;
-}
 
-if (($config['load_db_lastread'] && $user->data['is_registered']) || $config['load_anon_lastread'] || $user->data['is_registered'])
-{
 	// Update forum info
 	$sql = 'SELECT forum_last_post_time
 		FROM ' . FORUMS_TABLE . '

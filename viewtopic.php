@@ -321,10 +321,6 @@ if (!isset($topic_tracking_info))
 		$topic_tracking_info = get_topic_tracking($forum_id, $topic_id, $tmp_topic_data, [$forum_id => $topic_data['forum_mark_time']]);
 		unset($tmp_topic_data);
 	}
-	else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-	{
-		$topic_tracking_info = get_complete_topic_tracking($forum_id, $topic_id);
-	}
 }
 
 // Post ordering options

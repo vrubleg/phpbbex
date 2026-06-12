@@ -323,7 +323,7 @@ $template->assign_vars([
 	'U_MCP_FORUM'			=> ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f=$forum_id&amp;i=main&amp;mode=forum_view", true, $user->session_id) : '',
 	'U_POST_NEW_TOPIC'	=> ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=post&amp;f=' . $forum_id) : '',
 	'U_VIEW_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id" . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($start == 0) ? '' : "&amp;start=$start")),
-	'U_MARK_TOPICS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . "&amp;f=$forum_id&amp;mark=topics") : '',
+	'U_MARK_TOPICS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . "&amp;f=$forum_id&amp;mark=topics") : '',
 ]);
 
 // Grab icons
@@ -558,7 +558,7 @@ $template->assign_vars([
 );
 
 $topic_list = ($store_reverse) ? array_merge($announcement_list, array_reverse($topic_list)) : array_merge($announcement_list, $topic_list);
-$topic_tracking_info = $tracking_topics = [];
+$topic_tracking_info = [];
 
 // Okay, lets dump out the page ...
 if (sizeof($topic_list))
@@ -584,13 +584,6 @@ if (sizeof($topic_list))
 				$topic_tracking_info += get_topic_tracking($f_id, $topic_row['topics'], $rowset, [$f_id => $topic_row['forum_mark_time']], false);
 			}
 		}
-		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-		{
-			foreach ($topic_forum_list as $f_id => $topic_row)
-			{
-				$topic_tracking_info += get_complete_topic_tracking($f_id, $topic_row['topics'], false);
-			}
-		}
 
 		unset($topic_forum_list);
 	}
@@ -600,16 +593,6 @@ if (sizeof($topic_list))
 		{
 			$topic_tracking_info = get_topic_tracking($forum_id, $topic_list, $rowset, [$forum_id => $forum_data['mark_time']], $global_announce_list);
 			$mark_time_forum = $forum_data['mark_time'] ?: $user->data['user_lastmark'];
-		}
-		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-		{
-			$topic_tracking_info = get_complete_topic_tracking($forum_id, $topic_list, $global_announce_list);
-
-			if (!$user->data['is_registered'])
-			{
-				$user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate']) : 0;
-			}
-			$mark_time_forum = (isset($tracking_topics['f'][$forum_id])) ? (int) (base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate']) : $user->data['user_lastmark'];
 		}
 	}
 

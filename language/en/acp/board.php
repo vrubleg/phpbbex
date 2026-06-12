@@ -79,7 +79,6 @@ $lang = array_merge($lang, [
 	'STYLE_SHOW_FEEDS_IN_FORUMLIST'		=> 'Display RSS feeds in forum list',
 
 	'STYLE_SETTINGS_VIEWTOPIC'			=> 'View Topic',
-	'STYLE_SHOW_SOCIAL_BUTTONS'			=> 'Display social buttons',
 	'STYLE_VT_SHOW_POST_NUMBERS'		=> 'Display post numbers',
 
 	'STYLE_SETTINGS_PROFILE'			=> 'Profile',
@@ -441,8 +440,6 @@ $lang = array_merge($lang, [
 	'LOAD_USER_ACTIVITY_EXPLAIN'	=> 'Displays active topic/forum in user profiles and user control panel. It is recommended to disable this on boards with more than one million posts.',
 	'RECOMPILE_STYLES'				=> 'Recompile stale style components',
 	'RECOMPILE_STYLES_EXPLAIN'		=> 'Check for updated style components on filesystem and recompile.',
-	'YES_ANON_READ_MARKING'			=> 'Enable topic marking for guests',
-	'YES_ANON_READ_MARKING_EXPLAIN'	=> 'Stores read/unread status information for guests. If disabled, posts are always marked read for guests.',
 	'YES_BIRTHDAYS'					=> 'Display birthday list',
 	'YES_MODERATORS'				=> 'Enable display of moderators',
 	'YES_ONLINE'					=> 'Enable online user listings',
@@ -453,9 +450,8 @@ $lang = array_merge($lang, [
 	'YES_ONLINE_TRACK_EXPLAIN'		=> 'Display online information for user in profiles and topic pages.',
 	'YES_POST_MARKING'				=> 'Enable dotted topics',
 	'YES_POST_MARKING_EXPLAIN'		=> 'Indicates whether user has posted to a topic.',
-	'YES_READ_MARKING'				=> 'Enable server-side topic marking',
-	'YES_READ_MARKING_EXPLAIN'		=> 'Stores read/unread status information in the database rather than a cookie.',
-	'YES_UNREAD_SEARCH'				=> 'Enable search for unread posts',
+	'YES_READ_MARKING'				=> 'Enable unread topics',
+	'YES_READ_MARKING_EXPLAIN'		=> 'Stores read/unread status information in the DB for registered users. If disabled, posts are always marked read.',
 ]);
 
 // Server Settings

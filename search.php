@@ -56,12 +56,12 @@ switch ($search_id)
 
 	// Search for unread posts needs to be allowed and user to be logged in if topics tracking for guests is disabled
 	case 'unreadposts':
-		if (!$config['load_unreads_search'])
+		if (!$config['load_db_lastread'])
 		{
 			$template->assign_var('S_NO_SEARCH', true);
 			trigger_error('NO_SEARCH_UNREADS');
 		}
-		else if (!$config['load_anon_lastread'] && !$user->data['is_registered'])
+		else if (!$user->data['is_registered'])
 		{
 			login_box('', $user->lang['LOGIN_EXPLAIN_UNREADSEARCH']);
 		}
@@ -650,7 +650,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
 		'U_SEARCH_WORDS'	=> $u_search,
-		'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
+		'U_MARK_FORUMS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 
 		// Search in current forums
 		'U_SEARCH_IN'				=> append_sid(PHPBB_ROOT_PATH . 'search.php', $u_qst_search_forum),
@@ -661,6 +661,23 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'U_SEARCH_UNREAD_IN'		=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts' . $u_amp_search_forum),
 		'U_SEARCH_ACTIVE_TOPICS_IN'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics' . $u_amp_search_forum),
 	]);
+
+	// Search in topic: get topic title
+	if (!$search_id && $topic_id)
+	{
+		$sql = 'SELECT topic_title FROM ' . TOPICS_TABLE . ' WHERE topic_id = ' . $topic_id;
+		$result = $db->sql_query($sql);
+		$row = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		if ($row)
+		{
+			$template->assign_vars([
+				'SEARCH_TOPIC'		=> censor_text($row['topic_title']),
+				'U_SEARCH_TOPIC'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit=$u_hilit" : '')),
+			]);
+		}
+	}
 
 	if ($sql_where)
 	{
@@ -710,12 +727,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 							AND ft.forum_id = f.forum_id)';
 					$sql_select .= ', tt.mark_time, ft.mark_time as f_mark_time';
 				}
-			}
-
-			if ($config['load_anon_lastread'] || ($user->data['is_registered'] && !$config['load_db_lastread']))
-			{
-				$tracking_topics = get_cookie('track', '');
-				$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : [];
 			}
 
 			$sql = "SELECT $sql_select
@@ -782,15 +793,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				if ($user->data['is_registered'] && $config['load_db_lastread'])
 				{
 					$topic_tracking_info[$forum_id] = get_topic_tracking($forum_id, $forum['topic_list'], $forum['rowset'], [$forum_id => $forum['mark_time']], ($forum_id) ? false : $forum['topic_list']);
-				}
-				else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-				{
-					$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $forum['topic_list'], ($forum_id) ? false : $forum['topic_list']);
-
-					if (!$user->data['is_registered'])
-					{
-						$user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate']) : 0;
-					}
 				}
 			}
 			unset($forums);
@@ -1086,14 +1088,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					$is_first_row = false;
 				}
 			}
-		}
-
-		if ($topic_id && ($topic_id == $result_topic_id))
-		{
-			$template->assign_vars([
-				'SEARCH_TOPIC'		=> $topic_title,
-				'U_SEARCH_TOPIC'	=> $view_topic_url
-			]);
 		}
 	}
 	unset($rowset);

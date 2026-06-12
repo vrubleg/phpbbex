@@ -156,7 +156,7 @@ $template->assign_vars([
 	'S_LOGIN_ACTION'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login'),
 	'S_DISPLAY_BIRTHDAY_LIST'	=> (bool) $config['load_birthdays'],
 
-	'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
+	'U_MARK_FORUMS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 ]);
 
 // Output page
