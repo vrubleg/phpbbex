@@ -151,7 +151,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_day
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_load', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_search_load', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_anon_lastread', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_birthdays', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_memberlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_viewprofile', '1');

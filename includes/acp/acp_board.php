@@ -422,7 +422,6 @@ class acp_board
 						'legend2'				=> 'GENERAL_OPTIONS',
 						'load_db_track'			=> ['lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_db_lastread'		=> ['lang' => 'YES_READ_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'load_anon_lastread'	=> ['lang' => 'YES_ANON_READ_MARKING',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_user_activity'	=> ['lang' => 'LOAD_USER_ACTIVITY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_tplcompile'		=> ['lang' => 'RECOMPILE_STYLES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 

@@ -650,7 +650,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
 		'U_SEARCH_WORDS'	=> $u_search,
-		'U_MARK_FORUMS'		=> ($user->data['is_registered'] || $config['load_anon_lastread']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
+		'U_MARK_FORUMS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 
 		// Search in current forums
 		'U_SEARCH_IN'				=> append_sid(PHPBB_ROOT_PATH . 'search.php', $u_qst_search_forum),
@@ -729,12 +729,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				}
 			}
 
-			if ($config['load_anon_lastread'] || ($user->data['is_registered'] && !$config['load_db_lastread']))
-			{
-				$tracking_topics = get_cookie('track', '');
-				$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : [];
-			}
-
 			$sql = "SELECT $sql_select
 				FROM $sql_from
 				WHERE $sql_where";
@@ -799,15 +793,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				if ($user->data['is_registered'] && $config['load_db_lastread'])
 				{
 					$topic_tracking_info[$forum_id] = get_topic_tracking($forum_id, $forum['topic_list'], $forum['rowset'], [$forum_id => $forum['mark_time']], ($forum_id) ? false : $forum['topic_list']);
-				}
-				else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-				{
-					$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $forum['topic_list'], ($forum_id) ? false : $forum['topic_list']);
-
-					if (!$user->data['is_registered'])
-					{
-						$user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate']) : 0;
-					}
 				}
 			}
 			unset($forums);

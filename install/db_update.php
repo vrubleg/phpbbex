@@ -543,6 +543,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		'ldap_user_filter',
 		'load_jumpbox',
 		'load_unreads_search',
+		'load_anon_lastread',
 	]);
 
 	// New defaults.

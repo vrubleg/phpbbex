@@ -1196,25 +1196,6 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				$db->sql_query('DELETE FROM ' . FORUMS_TRACK_TABLE . " WHERE user_id = {$user->data['user_id']}");
 				$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_lastmark = ' . time() . " WHERE user_id = {$user->data['user_id']}");
 			}
-			else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-			{
-				$tracking_topics = get_cookie('track', '');
-				$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : [];
-
-				unset($tracking_topics['tf']);
-				unset($tracking_topics['t']);
-				unset($tracking_topics['f']);
-				$tracking_topics['l'] = base_convert(time() - $config['board_startdate'], 10, 36);
-
-				set_cookie('track', tracking_serialize($tracking_topics), true);
-
-				unset($tracking_topics);
-
-				if ($user->data['is_registered'])
-				{
-					$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_lastmark = ' . time() . " WHERE user_id = {$user->data['user_id']}");
-				}
-			}
 		}
 
 		return;
@@ -1274,42 +1255,6 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				$db->sql_multi_insert(FORUMS_TRACK_TABLE, $sql_ary);
 			}
 		}
-		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-		{
-			$tracking = get_cookie('track', '');
-			$tracking = ($tracking) ? tracking_unserialize($tracking) : [];
-
-			foreach ($forum_id as $f_id)
-			{
-				$topic_ids36 = $tracking['tf'][$f_id] ?? [];
-
-				if (isset($tracking['tf'][$f_id]))
-				{
-					unset($tracking['tf'][$f_id]);
-				}
-
-				foreach ($topic_ids36 as $topic_id36)
-				{
-					unset($tracking['t'][$topic_id36]);
-				}
-
-				if (isset($tracking['f'][$f_id]))
-				{
-					unset($tracking['f'][$f_id]);
-				}
-
-				$tracking['f'][$f_id] = base_convert(time() - $config['board_startdate'], 10, 36);
-			}
-
-			if (isset($tracking['tf']) && empty($tracking['tf']))
-			{
-				unset($tracking['tf']);
-			}
-
-			set_cookie('track', tracking_serialize($tracking), true);
-
-			unset($tracking);
-		}
 
 		return;
 	}
@@ -1344,64 +1289,6 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 
 				$db->sql_return_on_error(false);
 			}
-		}
-		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-		{
-			$tracking = get_cookie('track', '');
-			$tracking = ($tracking) ? tracking_unserialize($tracking) : [];
-
-			$topic_id36 = base_convert($topic_id, 10, 36);
-
-			if (!isset($tracking['t'][$topic_id36]))
-			{
-				$tracking['tf'][$forum_id][$topic_id36] = true;
-			}
-
-			$post_time = $post_time ?: time();
-			$tracking['t'][$topic_id36] = base_convert($post_time - $config['board_startdate'], 10, 36);
-
-			// If the cookie grows larger than 10000 characters we will remove the smallest value
-			// This can result in old topics being unread - but most of the time it should be accurate...
-			if (strlen(get_cookie('track', '')) > 10000)
-			{
-				//echo 'Cookie grown too large' . print_r($tracking, true);
-
-				// We get the ten most minimum stored time offsets and its associated topic ids
-				$time_keys = [];
-				for ($i = 0; $i < 10 && sizeof($tracking['t']); $i++)
-				{
-					$min_value = min($tracking['t']);
-					$m_tkey = array_search($min_value, $tracking['t']);
-					unset($tracking['t'][$m_tkey]);
-
-					$time_keys[$m_tkey] = $min_value;
-				}
-
-				// Now remove the topic ids from the array...
-				foreach ($tracking['tf'] as $f_id => $topic_id_ary)
-				{
-					foreach ($time_keys as $m_tkey => $min_value)
-					{
-						if (isset($topic_id_ary[$m_tkey]))
-						{
-							$tracking['f'][$f_id] = $min_value;
-							unset($tracking['tf'][$f_id][$m_tkey]);
-						}
-					}
-				}
-
-				if ($user->data['is_registered'])
-				{
-					$user->data['user_lastmark'] = intval(base_convert(max($time_keys) + $config['board_startdate'], 36, 10));
-					$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_lastmark = ' . $user->data['user_lastmark'] . " WHERE user_id = {$user->data['user_id']}");
-				}
-				else
-				{
-					$tracking['l'] = max($time_keys);
-				}
-			}
-
-			set_cookie('track', tracking_serialize($tracking), true);
 		}
 
 		return;
@@ -1533,68 +1420,6 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 			}
 		}
 	}
-	else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-	{
-		global $tracking_topics;
-
-		if (!isset($tracking_topics) || !sizeof($tracking_topics))
-		{
-			$tracking_topics = get_cookie('track', '');
-			$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : [];
-		}
-
-		if (!$user->data['is_registered'])
-		{
-			$user_lastmark = (isset($tracking_topics['l'])) ? base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate'] : 0;
-		}
-		else
-		{
-			$user_lastmark = $user->data['user_lastmark'];
-		}
-
-		foreach ($topic_ids as $topic_id)
-		{
-			$topic_id36 = base_convert($topic_id, 10, 36);
-
-			if (isset($tracking_topics['t'][$topic_id36]))
-			{
-				$last_read[$topic_id] = base_convert($tracking_topics['t'][$topic_id36], 36, 10) + $config['board_startdate'];
-			}
-		}
-
-		$topic_ids = array_diff($topic_ids, array_keys($last_read));
-
-		if (sizeof($topic_ids))
-		{
-			$mark_time = [];
-			if ($global_announce_list && sizeof($global_announce_list))
-			{
-				if (isset($tracking_topics['f'][0]))
-				{
-					$mark_time[0] = base_convert($tracking_topics['f'][0], 36, 10) + $config['board_startdate'];
-				}
-			}
-
-			if (isset($tracking_topics['f'][$forum_id]))
-			{
-				$mark_time[$forum_id] = base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate'];
-			}
-
-			$user_lastmark = $mark_time[$forum_id] ?? $user_lastmark;
-
-			foreach ($topic_ids as $topic_id)
-			{
-				if ($global_announce_list && isset($global_announce_list[$topic_id]))
-				{
-					$last_read[$topic_id] = $mark_time[0] ?? $user_lastmark;
-				}
-				else
-				{
-					$last_read[$topic_id] = $user_lastmark;
-				}
-			}
-		}
-	}
 
 	return $last_read;
 }
@@ -1666,63 +1491,6 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 		}
 		$db->sql_freeresult($result);
 	}
-	else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-	{
-		global $tracking_topics;
-
-		if (empty($tracking_topics))
-		{
-			$tracking_topics = get_cookie('track', '');
-			$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : [];
-		}
-
-		if (!$user->data['is_registered'])
-		{
-			$user_lastmark = (isset($tracking_topics['l'])) ? base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate'] : 0;
-		}
-		else
-		{
-			$user_lastmark = (int) $user->data['user_lastmark'];
-		}
-
-		$sql = 'SELECT t.topic_id, t.forum_id, t.topic_last_post_time
-			FROM ' . TOPICS_TABLE . ' t
-			WHERE t.topic_last_post_time > ' . $user_lastmark . "
-			$sql_extra
-			$sql_sort";
-		$result = $db->sql_query_limit($sql, $sql_limit, $sql_limit_offset);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$forum_id = (int) $row['forum_id'];
-			$topic_id = (int) $row['topic_id'];
-			$topic_id36 = base_convert($topic_id, 10, 36);
-
-			if (isset($tracking_topics['t'][$topic_id36]))
-			{
-				$last_read = base_convert($tracking_topics['t'][$topic_id36], 36, 10) + $config['board_startdate'];
-
-				if ($row['topic_last_post_time'] > $last_read)
-				{
-					$unread_topics[$topic_id] = $last_read;
-				}
-			}
-			else if (isset($tracking_topics['f'][$forum_id]))
-			{
-				$mark_time = base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate'];
-
-				if ($row['topic_last_post_time'] > $mark_time)
-				{
-					$unread_topics[$topic_id] = $mark_time;
-				}
-			}
-			else
-			{
-				$unread_topics[$topic_id] = $user_lastmark;
-			}
-		}
-		$db->sql_freeresult($result);
-	}
 
 	return $unread_topics;
 }
@@ -1747,18 +1515,6 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 		if ($config['load_db_lastread'] && $user->data['is_registered'])
 		{
 			$mark_time_forum = (!empty($f_mark_time)) ? $f_mark_time : $user->data['user_lastmark'];
-		}
-		else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-		{
-			$tracking_topics = get_cookie('track', '');
-			$tracking_topics = ($tracking_topics) ? tracking_unserialize($tracking_topics) : [];
-
-			if (!$user->data['is_registered'])
-			{
-				$user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $config['board_startdate']) : 0;
-			}
-
-			$mark_time_forum = (isset($tracking_topics['f'][$forum_id])) ? (int) (base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate']) : $user->data['user_lastmark'];
 		}
 	}
 
@@ -1793,42 +1549,6 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 			$db->sql_freeresult($result);
 		}
 	}
-	else if ($config['load_anon_lastread'] || $user->data['is_registered'])
-	{
-		// Get information from cookie
-		$row = false;
-
-		if (!isset($tracking_topics['tf'][$forum_id]))
-		{
-			// We do not need to mark read, this happened before. Therefore setting this to true
-			$row = true;
-		}
-		else
-		{
-			$sql = 'SELECT t.topic_id
-				FROM ' . TOPICS_TABLE . ' t
-				WHERE t.forum_id = ' . $forum_id . '
-					AND t.topic_last_post_time > ' . $mark_time_forum . '
-					AND t.topic_moved_id = 0 ' .
-					$sql_update_unapproved;
-			$result = $db->sql_query($sql);
-
-			$check_forum = $tracking_topics['tf'][$forum_id];
-			$unread = false;
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				if (!isset($check_forum[base_convert($row['topic_id'], 10, 36)]))
-				{
-					$unread = true;
-					break;
-				}
-			}
-			$db->sql_freeresult($result);
-
-			$row = $unread;
-		}
-	}
 	else
 	{
 		$row = true;
@@ -1841,127 +1561,6 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 	}
 
 	return false;
-}
-
-/**
-* Transform an array into a serialized format
-*/
-function tracking_serialize($input)
-{
-	$out = '';
-	foreach ($input as $key => $value)
-	{
-		if (is_array($value))
-		{
-			$out .= $key . ':(' . tracking_serialize($value) . ');';
-		}
-		else
-		{
-			$out .= $key . ':' . $value . ';';
-		}
-	}
-	return $out;
-}
-
-/**
-* Transform a serialized array into an actual array
-*/
-function tracking_unserialize($string, $max_depth = 3)
-{
-	$n = strlen($string);
-	if ($n > 10010)
-	{
-		die('Invalid data supplied');
-	}
-	$data = $stack = [];
-	$key = '';
-	$mode = 0;
-	$level = &$data;
-	for ($i = 0; $i < $n; ++$i)
-	{
-		switch ($mode)
-		{
-			case 0:
-				switch ($string[$i])
-				{
-					case ':':
-						$level[$key] = 0;
-						$mode = 1;
-					break;
-					case ')':
-						unset($level);
-						$level = array_pop($stack);
-						$mode = 3;
-					break;
-					default:
-						$key .= $string[$i];
-				}
-			break;
-
-			case 1:
-				switch ($string[$i])
-				{
-					case '(':
-						if (sizeof($stack) >= $max_depth)
-						{
-							die('Invalid data supplied');
-						}
-						$stack[] = &$level;
-						$level[$key] = [];
-						$level = &$level[$key];
-						$key = '';
-						$mode = 0;
-					break;
-					default:
-						$level[$key] = $string[$i];
-						$mode = 2;
-					break;
-				}
-			break;
-
-			case 2:
-				switch ($string[$i])
-				{
-					case ')':
-						unset($level);
-						$level = array_pop($stack);
-						$mode = 3;
-					break;
-					case ';':
-						$key = '';
-						$mode = 0;
-					break;
-					default:
-						$level[$key] .= $string[$i];
-					break;
-				}
-			break;
-
-			case 3:
-				switch ($string[$i])
-				{
-					case ')':
-						unset($level);
-						$level = array_pop($stack);
-					break;
-					case ';':
-						$key = '';
-						$mode = 0;
-					break;
-					default:
-						die('Invalid data supplied');
-					break;
-				}
-			break;
-		}
-	}
-
-	if (sizeof($stack) != 0 || ($mode != 0 && $mode != 3))
-	{
-		die('Invalid data supplied');
-	}
-
-	return $level;
 }
 
 // Pagination functions
