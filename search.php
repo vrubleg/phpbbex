@@ -56,12 +56,12 @@ switch ($search_id)
 
 	// Search for unread posts needs to be allowed and user to be logged in if topics tracking for guests is disabled
 	case 'unreadposts':
-		if (!$config['load_unreads_search'])
+		if (!$config['load_db_lastread'])
 		{
 			$template->assign_var('S_NO_SEARCH', true);
 			trigger_error('NO_SEARCH_UNREADS');
 		}
-		else if (!$config['load_anon_lastread'] && !$user->data['is_registered'])
+		else if (!$user->data['is_registered'])
 		{
 			login_box('', $user->lang['LOGIN_EXPLAIN_UNREADSEARCH']);
 		}

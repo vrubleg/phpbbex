@@ -455,7 +455,6 @@ $lang = array_merge($lang, [
 	'YES_POST_MARKING_EXPLAIN'		=> 'Указывать, оставлял ли пользователь сообщения в теме.',
 	'YES_READ_MARKING'				=> 'Включить маркировку тем на сервере',
 	'YES_READ_MARKING_EXPLAIN'		=> 'Сохранять информацию о статусе «прочитано/не прочитано» в базе данных, а не в cookies.',
-	'YES_UNREAD_SEARCH'				=> 'Включить поиск непрочитанных сообщений',
 ]);
 
 // Server Settings

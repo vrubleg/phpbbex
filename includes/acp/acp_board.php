@@ -110,11 +110,7 @@ class acp_board
 						'load_onlinetrack'		=> ['lang' => 'YES_ONLINE_TRACK',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_online_time'		=> ['lang' => 'ONLINE_LENGTH',			'validate' => 'int:0',	'type' => 'text:4:3', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']],
 
-						'legend5'				=> 'ACP_LOAD_SETTINGS',
-						'load_unreads_search'	=> ['lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_db_track'			=> ['lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-
-						'legend6'				=> 'ACP_SUBMIT_CHANGES',
+						'legend5'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -427,7 +423,6 @@ class acp_board
 						'load_db_track'			=> ['lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_db_lastread'		=> ['lang' => 'YES_READ_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_anon_lastread'	=> ['lang' => 'YES_ANON_READ_MARKING',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'load_unreads_search'	=> ['lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'load_user_activity'	=> ['lang' => 'LOAD_USER_ACTIVITY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_tplcompile'		=> ['lang' => 'RECOMPILE_STYLES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 

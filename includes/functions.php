@@ -4290,7 +4290,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_ENABLE_FEEDS_TOPICS_ACTIVE'	=> (bool) $config['feed_topics_active'],
 		'S_ENABLE_FEEDS_NEWS'		=> (bool) $s_feed_news,
 
-		'S_LOAD_UNREADS'			=> ($config['load_unreads_search'] && ($config['load_anon_lastread'] || $user->data['is_registered'])),
+		'S_LOAD_UNREADS'			=> ($config['load_db_lastread'] && $user->data['is_registered']),
 
 		'S_SEARCH_HIDDEN_FIELDS'	=> build_hidden_fields($s_search_hidden_fields),
 
