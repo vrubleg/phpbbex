@@ -422,29 +422,17 @@ class acp_board
 					'vars'	=> [
 						'legend1'			=> 'GENERAL_SETTINGS',
 						'limit_load'		=> ['lang' => 'LIMIT_LOAD',		'validate' => 'string',	'type' => 'text:4:4', 'explain' => true],
-						'session_length'	=> ['lang' => 'SESSION_LENGTH',	'validate' => 'int:60',	'type' => 'text:5:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'active_sessions'	=> ['lang' => 'LIMIT_SESSIONS',	'validate' => 'int:0',	'type' => 'text:4:4', 'explain' => true],
-						'load_online_time'	=> ['lang' => 'ONLINE_LENGTH',		'validate' => 'int:0',	'type' => 'text:4:3', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']],
 
 						'legend2'				=> 'GENERAL_OPTIONS',
 						'load_db_track'			=> ['lang' => 'YES_POST_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_db_lastread'		=> ['lang' => 'YES_READ_MARKING',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_anon_lastread'	=> ['lang' => 'YES_ANON_READ_MARKING',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'load_online'			=> ['lang' => 'YES_ONLINE',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'load_onlinetrack'		=> ['lang' => 'YES_ONLINE_TRACK',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'load_birthdays'		=> ['lang' => 'YES_BIRTHDAYS',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'load_unreads_search'	=> ['lang' => 'YES_UNREAD_SEARCH',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_moderators'		=> ['lang' => 'YES_MODERATORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_jumpbox'			=> ['lang' => 'YES_JUMPBOX',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 						'load_user_activity'	=> ['lang' => 'LOAD_USER_ACTIVITY',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'load_tplcompile'		=> ['lang' => 'RECOMPILE_STYLES',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 
-						'legend3'				=> 'CUSTOM_PROFILE_FIELDS',
-						'load_cpf_memberlist'	=> ['lang' => 'LOAD_CPF_MEMBERLIST',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_cpf_viewprofile'	=> ['lang' => 'LOAD_CPF_VIEWPROFILE',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-						'load_cpf_viewtopic'	=> ['lang' => 'LOAD_CPF_VIEWTOPIC',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
-
-						'legend4'					=> 'ACP_SUBMIT_CHANGES',
+						'legend3'					=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -468,6 +456,7 @@ class acp_board
 						'legend1'				=> 'ACP_SECURITY_SETTINGS',
 						'allow_autologin'		=> ['lang' => 'ALLOW_AUTOLOGIN',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'max_autologin_time'	=> ['lang' => 'AUTOLOGIN_LENGTH',		'validate' => 'int:0',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
+						'session_length'		=> ['lang' => 'SESSION_LENGTH',	'validate' => 'int:60',	'type' => 'text:5:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'ip_check'				=> ['lang' => 'IP_VALID',				'validate' => 'int',	'type' => 'custom', 'method' => 'select_ip_check', 'explain' => true],
 						'browser_check'			=> ['lang' => 'BROWSER_VALID',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'forwarded_for_check'	=> ['lang' => 'FORWARDED_FOR_VALID',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
