@@ -444,7 +444,6 @@ $lang = array_merge($lang, [
 	'YES_ANON_READ_MARKING'			=> 'Enable topic marking for guests',
 	'YES_ANON_READ_MARKING_EXPLAIN'	=> 'Stores read/unread status information for guests. If disabled, posts are always marked read for guests.',
 	'YES_BIRTHDAYS'					=> 'Display birthday list',
-	'YES_JUMPBOX'					=> 'Enable display of jumpbox',
 	'YES_MODERATORS'				=> 'Enable display of moderators',
 	'YES_ONLINE'					=> 'Enable online user listings',
 	'YES_ONLINE_EXPLAIN'			=> 'Display online user information on index page.',

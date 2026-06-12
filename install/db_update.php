@@ -541,6 +541,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		'ldap_uid',
 		'ldap_user',
 		'ldap_user_filter',
+		'load_jumpbox',
 	]);
 
 	// New defaults.

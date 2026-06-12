@@ -79,7 +79,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		}
 	}
 
-	make_jumpbox($url . "&amp;i=$id&amp;action=$action&amp;mode=$mode" . (($merge_select) ? $selected_ids : ''), $forum_id, false, 'm_', true);
+	make_jumpbox($url . "&amp;i=$id&amp;action=$action&amp;mode=$mode" . (($merge_select) ? $selected_ids : ''), $forum_id, false, 'm_');
 
 	$topics_per_page = $forum_info['forum_topics_per_page'] ?: $config['topics_per_page'];
 

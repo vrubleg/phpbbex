@@ -145,12 +145,15 @@
 
 <!-- IF PAGINATION or .searchresults or PAGE_NUMBER -->
 	<ul class="linklist">
+		<!-- IF SEARCH_TOPIC -->
+			<li class="leftside"><a class="left-box nav-to-left" href="{U_SEARCH_TOPIC}" accesskey="r">{L_RETURN_TO}: {SEARCH_TOPIC}</a></li>
+		<!-- ELSEIF S_SEARCH_ACTION -->
+			<li class="leftside"><a class="left-box nav-to-left" href="{U_SEARCH}" title="{L_SEARCH_ADV}" accesskey="r">{L_RETURN_TO_SEARCH_ADV}</a></li>
+		<!-- ENDIF -->
 		<li class="rightside pagination">
 			<!-- IF U_MARK_FORUMS and S_SHOW_TOPICS --><a rel="nofollow" href="{U_MARK_FORUMS}" accesskey="m">{L_MARK_FORUMS_READ}</a> &bull; <!-- ENDIF -->{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</li>
 	</ul>
 <!-- ENDIF -->
-
-<!-- INCLUDE jumpbox.html -->
 
 <!-- INCLUDE overall_footer.html -->
