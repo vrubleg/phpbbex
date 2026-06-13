@@ -700,8 +700,8 @@ class phpbb_captcha_qa
 					$answers = $input_answers[$lang] ?? implode("\n", $question['answers']);
 
 					$template->assign_vars([
-						'QUESTION_TEXT'		=> ($input_question) ? $input_question : $question['question_text'],
-						'LANG_ISO'			=> ($input_lang) ? $input_lang : $question['lang_iso'],
+						'QUESTION_TEXT'		=> $input_question ?: $question['question_text'],
+						'LANG_ISO'			=> $input_lang ?: $question['lang_iso'],
 						'STRICT'			=> (isset($_REQUEST['strict'])) ? $input_strict : $question['strict'],
 						'ANSWERS'			=> $answers,
 					]);

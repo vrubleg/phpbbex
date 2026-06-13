@@ -330,7 +330,7 @@ $post_data['poll_length']		= (!empty($post_data['poll_length'])) ? (int) $post_d
 $post_data['poll_start']		= (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
 $post_data['icon_id']			= (!isset($post_data['icon_id']) || in_array($mode, ['quote', 'reply']) || ($mode == 'edit' && $post_id != $post_data['topic_first_post_id'] && empty($post_data['post_subject']))) ? 0 : (int) $post_data['icon_id'];
 $post_data['poll_options']		= [];
-$post_data['topic_first_post_show'] = $post_data['topic_first_post_show'] ?? 0;
+$post_data['topic_first_post_show'] ??= 0;
 
 // Get Poll Data
 if ($post_data['poll_start'])
@@ -852,7 +852,7 @@ if ($submit || $preview || $refresh)
 		$error[] = $user->lang['EMPTY_SUBJECT'];
 	}
 
-	$post_data['poll_last_vote'] = $post_data['poll_last_vote'] ?? 0;
+	$post_data['poll_last_vote'] ??= 0;
 
 	if ($post_data['poll_option_text'] &&
 		($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id']/* && (!$post_data['poll_last_vote'] || $auth->acl_get('m_edit', $forum_id))*/))

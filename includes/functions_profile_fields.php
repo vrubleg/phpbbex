@@ -590,7 +590,7 @@ class custom_profile
 
 				if ($ident_ary['data']['field_length'] == 1)
 				{
-					return (isset($this->options_lang[$field_id][$lang_id][(int) $value])) ? $this->options_lang[$field_id][$lang_id][(int) $value] : null;
+					return $this->options_lang[$field_id][$lang_id][(int) $value] ?? null;
 				}
 				else if (!$value)
 				{

@@ -1070,7 +1070,7 @@ for ($i = 0; $i < sizeof($versions); $i++)
 	$version = $versions[$i];
 	$schema_changes = $database_update_info[$version];
 
-	$next_version = (isset($versions[$i + 1])) ? $versions[$i + 1] : $updates_to_version;
+	$next_version = $versions[$i + 1] ?? $updates_to_version;
 
 	// If the installed version to be updated to is < than the current version, and if the current version is >= as the version to be updated to next, we will skip the process
 	if (version_compare($version, $current_version, '<') && version_compare($current_version, $next_version, '>='))
@@ -1121,7 +1121,7 @@ $versions = array_keys($database_update_info);
 for ($i = 0; $i < sizeof($versions); $i++)
 {
 	$version = $versions[$i];
-	$next_version = (isset($versions[$i + 1])) ? $versions[$i + 1] : $updates_to_version;
+	$next_version = $versions[$i + 1] ?? $updates_to_version;
 
 	// If the installed version to be updated to is < than the current version, and if the current version is >= as the version to be updated to next, we will skip the process
 	if (version_compare($version, $current_version, '<') && version_compare($current_version, $next_version, '>='))

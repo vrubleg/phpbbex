@@ -112,7 +112,7 @@ class acp_jabber
 			'JAB_ENABLE'			=> $jab_enable,
 			'L_JAB_SERVER_EXPLAIN'	=> sprintf($user->lang['JAB_SERVER_EXPLAIN'], '<a href="http://www.jabber.org/">', '</a>'),
 			'JAB_HOST'				=> $jab_host,
-			'JAB_PORT'				=> ($jab_port) ? $jab_port : '',
+			'JAB_PORT'				=> $jab_port ?: '',
 			'JAB_USERNAME'			=> $jab_username,
 			'JAB_PASSWORD'			=> $jab_password,
 			'JAB_PACKAGE_SIZE'		=> $jab_package_size,

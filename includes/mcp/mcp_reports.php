@@ -223,7 +223,7 @@ class mcp_reports
 					'U_VIEW_REPORTER_PROFILE'	=> get_username_string('profile', $report['user_id'], $report['username'], $report['user_colour']),
 
 					'POST_PREVIEW'			=> $message,
-					'POST_SUBJECT'			=> ($post_info['post_subject']) ? $post_info['post_subject'] : ('Re: ' . $post_info['topic_title']),
+					'POST_SUBJECT'			=> $post_info['post_subject'] ?: 'Re: ' . $post_info['topic_title'],
 					'POST_DATE'				=> $user->format_date($post_info['post_time']),
 					'POST_IP'				=> $post_info['poster_ip'],
 					'POST_IPADDR'			=> ($auth->acl_get('m_info', $post_info['forum_id']) && request_var('lookup', '')) ? @gethostbyaddr($post_info['poster_ip']) : '',
@@ -392,7 +392,7 @@ class mcp_reports
 
 							'FORUM_NAME'	=> $forum_data[$row['forum_id']]['forum_name'],
 							'POST_ID'		=> $row['post_id'],
-							'POST_SUBJECT'	=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
+							'POST_SUBJECT'	=> $row['post_subject'] ?: 'Re: ' . $row['topic_title'],
 							'POST_TIME'		=> $user->format_date($row['post_time']),
 							'REPORT_ID'		=> $row['report_id'],
 							'REPORT_TIME'	=> $user->format_date($row['report_time']),

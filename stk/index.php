@@ -400,7 +400,7 @@ else
 	// Category title and desc if available
 	$template->assign_vars([
 		'L_TITLE'			=> $user->lang['CAT_' . strtoupper($plugin->get_part('c'))],
-		'L_TITLE_EXPLAIN'	=> isset($user->lang['CAT_' . strtoupper($plugin->get_part('c')) . '_EXPLAIN']) ? $user->lang['CAT_' . strtoupper($plugin->get_part('c')) . '_EXPLAIN'] : '',
+		'L_TITLE_EXPLAIN'	=> $user->lang['CAT_' . strtoupper($plugin->get_part('c')) . '_EXPLAIN'] ?? '',
 		'CAT'				=> $plugin->get_part('c'),
 	]);
 

@@ -42,9 +42,9 @@ $params = false;
 if ($forum_id || $topic_id || $mode)
 {
 	$params = [
-		'f'		=> ($forum_id) ? $forum_id : null,
-		't'		=> ($topic_id) ? $topic_id : null,
-		'mode'	=> ($mode) ? $mode : null,
+		'f'		=> $forum_id ?: null,
+		't'		=> $topic_id ?: null,
+		'mode'	=> $mode ?: null,
 	];
 }
 
@@ -82,7 +82,7 @@ while ($row = $feed->get_item())
 		$options = $row[$feed->get('options')];
 	}
 
-	$title = (isset($row[$feed->get('title')]) && $row[$feed->get('title')] !== '') ? $row[$feed->get('title')] : ((isset($row[$feed->get('title2')])) ? $row[$feed->get('title2')] : '');
+	$title = (isset($row[$feed->get('title')]) && $row[$feed->get('title')] !== '') ? $row[$feed->get('title')] : ($row[$feed->get('title2')] ?? '');
 
 	$published = ($feed->get('published') !== null) ? (int) $row[$feed->get('published')] : 0;
 	$updated = ($feed->get('updated') !== null) ? (int) $row[$feed->get('updated')] : 0;

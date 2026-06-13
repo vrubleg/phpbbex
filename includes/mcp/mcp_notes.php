@@ -225,8 +225,8 @@ class mcp_notes
 
 			'RANK_TITLE'		=> $rank_title,
 			'JOINED'			=> $user->format_date($userrow['user_regdate']),
-			'POSTS'				=> ($userrow['user_posts']) ? $userrow['user_posts'] : 0,
-			'WARNINGS'			=> ($userrow['user_warnings']) ? $userrow['user_warnings'] : 0,
+			'POSTS'				=> $userrow['user_posts'] ?: 0,
+			'WARNINGS'			=> $userrow['user_warnings'] ?: 0,
 
 			'USERNAME_FULL'		=> get_username_string('full', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
 			'USERNAME_COLOUR'	=> get_username_string('colour', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),

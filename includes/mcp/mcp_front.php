@@ -97,7 +97,7 @@ function mcp_front_view($id, $mode, $action)
 						'FORUM_NAME'	=> $forum_names[$row['forum_id']],
 						'POST_ID'		=> $row['post_id'],
 						'TOPIC_TITLE'	=> $row['topic_title'],
-						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
+						'SUBJECT'		=> $row['post_subject'] ?: 'Re: ' . $row['topic_title'],
 						'POST_TIME'		=> $user->format_date($row['post_time'])]
 					);
 				}
@@ -203,7 +203,7 @@ function mcp_front_view($id, $mode, $action)
 
 						'FORUM_NAME'	=> $row['forum_name'],
 						'TOPIC_TITLE'	=> $row['topic_title'],
-						'SUBJECT'		=> ($row['post_subject']) ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
+						'SUBJECT'		=> $row['post_subject'] ?: 'Re: ' . $row['topic_title'],
 						'REPORT_TIME'	=> $user->format_date($row['report_time']),
 						'POST_TIME'		=> $user->format_date($row['post_time']),
 					]);

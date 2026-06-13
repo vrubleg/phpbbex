@@ -353,8 +353,8 @@ class ucp_prefs
 					'S_POST_SORT_KEY'		=> $s_sort_post_key,
 					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
 
-					'USER_TOPICS_PER_PAGE'	=> $data['user_topics_per_page'] ? $data['user_topics_per_page'] : $config['topics_per_page'],
-					'USER_POSTS_PER_PAGE'	=> $data['user_posts_per_page'] ? $data['user_posts_per_page'] : $config['posts_per_page'],
+					'USER_TOPICS_PER_PAGE'	=> $data['user_topics_per_page'] ?: $config['topics_per_page'],
+					'USER_POSTS_PER_PAGE'	=> $data['user_posts_per_page'] ?: $config['posts_per_page'],
 				]);
 
 			break;

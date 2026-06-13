@@ -402,7 +402,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 		return $filedata;
 	}
 
-	$cat_id = (isset($extensions[$file->get('extension')]['display_cat'])) ? $extensions[$file->get('extension')]['display_cat'] : ATTACHMENT_CATEGORY_NONE;
+	$cat_id = $extensions[$file->get('extension')]['display_cat'] ?? ATTACHMENT_CATEGORY_NONE;
 	if ($cat_id >= ATTACHMENT_CATEGORY_COUNT) { $cat_id = ATTACHMENT_CATEGORY_NONE; }
 
 	// Do we have to create a thumbnail?

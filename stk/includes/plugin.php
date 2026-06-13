@@ -294,7 +294,7 @@ class plugin
 			{
 				// For us lazy people
 				$info = [
-					'NAME'			=> (isset($user->lang[strtoupper($tool)])) ? $user->lang[strtoupper($tool)] : strtoupper($tool),
+					'NAME'			=> $user->lang[strtoupper($tool)] ?? strtoupper($tool),
 				];
 			}
 

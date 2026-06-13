@@ -585,7 +585,7 @@ class acp_main
 
 					'REASON'		=> $row['inactive_reason'],
 					'USER_ID'		=> $row['user_id'],
-					'POSTS'			=> ($row['user_posts']) ? $row['user_posts'] : 0,
+					'POSTS'			=> $row['user_posts'] ?: 0,
 					'REMINDED'		=> $row['user_reminded'],
 
 					'REMINDED_EXPLAIN'	=> $user->lang('USER_LAST_REMINDED', (int) $row['user_reminded'], $user->format_date($row['user_reminded_time'])),

@@ -263,7 +263,8 @@ class auth_admin extends phpbb_auth
 		$tpl_category = 'category';
 		$tpl_mask = 'mask';
 
-		$l_acl_type = (isset($user->lang['ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)])) ? $user->lang['ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)] : 'ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type);
+		$l_acl_type = 'ACL_TYPE_' . ($local ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type);
+		$l_acl_type = $user->lang[$l_acl_type] ?? $l_acl_type;
 
 		// Allow trace for viewing permissions and in user mode
 		$show_trace = ($mode == 'view' && $user_mode == 'user');
@@ -808,8 +809,7 @@ class auth_admin extends phpbb_auth
 		$id_field = $ug_type . '_id';
 
 		// Get any flags as required
-		reset($auth);
-		$flag = key($auth);
+		$flag = array_key_first($auth);
 		$flag = substr($flag, 0, strpos($flag, '_') + 1);
 
 		// This ID (the any-flag) is set if one or more permissions are true...
@@ -922,8 +922,7 @@ class auth_admin extends phpbb_auth
 		global $db;
 
 		// Get any-flag as required
-		reset($auth);
-		$flag = key($auth);
+		$flag = array_key_first($auth);
 		$flag = substr($flag, 0, strpos($flag, '_') + 1);
 
 		// Remove any-flag from auth ary
