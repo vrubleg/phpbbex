@@ -15,9 +15,12 @@ if (!defined('IN_PHPBB'))
 class reclean_usernames
 {
 	/**
-	* Display Options
-	*
-	* Output the options available
+	* Batch size.
+	*/
+	var $batch_size = 500;
+
+	/**
+	* Display Options.
 	*/
 	function display_options()
 	{
@@ -33,27 +36,28 @@ class reclean_usernames
 	{
 		global $db, $template;
 
-		$part = request_var('part', 0);
-		$limit = 500;
+		$step = request_var('step', 0);
 		$i = 0;
 
-        $sql = 'SELECT user_id, username, username_clean FROM ' . USERS_TABLE;
-        $result = $db->sql_query_limit($sql, $limit, ($part * $limit));
-        while ($row = $db->sql_fetchrow($result))
-        {
-        	$i++;
-        	$username_clean = $db->sql_escape(utf8_clean_string($row['username']));
+		$sql = 'SELECT user_id, username, username_clean FROM ' . USERS_TABLE;
+		$result = $db->sql_query_limit($sql, $this->batch_size, ($step * $this->batch_size));
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$i++;
+			$username_clean = utf8_clean_string($row['username']);
 
-        	if ($username_clean != $row['username_clean'])
-        	{
-        		$db->sql_query('UPDATE ' . USERS_TABLE . " SET username_clean = '$username_clean' WHERE user_id = {$row['user_id']}");
+			if ($username_clean != $row['username_clean'])
+			{
+				$db->sql_query('UPDATE ' . USERS_TABLE . "
+					SET username_clean = '" . $db->sql_escape($username_clean) . "'
+					WHERE user_id = {$row['user_id']}");
 			}
 		}
 		$db->sql_freeresult($result);
 
-		if ($i == $limit)
+		if ($i == $this->batch_size)
 		{
-			meta_refresh(0, append_sid(STK_INDEX, 't=reclean_usernames&amp;submit=1&amp;part=' . (++$part)));
+			meta_refresh(0, append_sid(STK_INDEX, ['c' => 'support', 't' => 'reclean_usernames', 'submit' => true, 'step' => ++$step]));
 			$template->assign_var('U_BACK_TOOL', false);
 
 			trigger_error('RECLEAN_USERNAMES_NOT_COMPLETE');
