@@ -566,6 +566,14 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	$db->sql_query('UPDATE ' . MODULES_TABLE . "
 		SET module_auth = 'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)'
 		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'avatar'");
+
+	// Drop user_email_hash.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_email_hash');
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
+	$db->sql_return_on_error(false);
 }
 
 // Update bots if bots=1 is passed.
@@ -2331,38 +2339,6 @@ function change_database_data(&$no_updates, $version)
 
 		// Changes from 3.0.7-RC1 to 3.0.7-RC2
 		case '3.0.7-RC1':
-
-			$sql = 'SELECT user_id, user_email, user_email_hash
-				FROM ' . USERS_TABLE . '
-				WHERE user_type <> ' . USER_IGNORE . "
-					AND user_email <> ''";
-			$result = $db->sql_query($sql);
-
-			$i = 0;
-			while ($row = $db->sql_fetchrow($result))
-			{
-				// Snapshot of the phpbb_email_hash() function
-				// We cannot call it directly because the auto updater updates the DB first. :/
-				$user_email_hash = sprintf('%u', crc32(strtolower($row['user_email']))) . strlen($row['user_email']);
-
-				if ($user_email_hash != $row['user_email_hash'])
-				{
-					$sql_ary = [
-						'user_email_hash'	=> $user_email_hash,
-					];
-
-					$sql = 'UPDATE ' . USERS_TABLE . '
-						SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-						WHERE user_id = ' . (int) $row['user_id'];
-					_sql($sql, $errored, $error_ary, ($i % 100 == 0));
-
-					++$i;
-				}
-			}
-			$db->sql_freeresult($result);
-
-			$no_updates = false;
-
 		break;
 
 		// No changes from 3.0.7-RC2 to 3.0.7

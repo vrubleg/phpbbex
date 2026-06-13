@@ -596,18 +596,6 @@ function _hash_crypt_private($password, $setting, &$itoa64)
 }
 
 /**
-* Hashes an email address to a big integer
-*
-* @param string $email		Email address
-*
-* @return string			Unsigned Big Integer
-*/
-function phpbb_email_hash($email)
-{
-	return sprintf('%u', crc32(strtolower($email))) . strlen($email);
-}
-
-/**
 * Wrapper for version_compare() that allows using uppercase A and B
 * for alpha and beta releases.
 *
