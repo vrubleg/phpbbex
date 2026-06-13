@@ -309,8 +309,8 @@ class mcp_warn
 			'POST'				=> $message,
 			'RANK_TITLE'		=> $rank_title,
 			'JOINED'			=> $user->format_date($user_row['user_regdate']),
-			'POSTS'				=> ($user_row['user_posts']) ? $user_row['user_posts'] : 0,
-			'WARNINGS'			=> ($user_row['user_warnings']) ? $user_row['user_warnings'] : 0,
+			'POSTS'				=> $user_row['user_posts'] ?: 0,
+			'WARNINGS'			=> $user_row['user_warnings'] ?: 0,
 
 			'USERNAME_FULL'		=> get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
 			'USERNAME_COLOUR'	=> get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
@@ -417,8 +417,8 @@ class mcp_warn
 			'POST'				=> false,
 			'RANK_TITLE'		=> $rank_title,
 			'JOINED'			=> $user->format_date($user_row['user_regdate']),
-			'POSTS'				=> ($user_row['user_posts']) ? $user_row['user_posts'] : 0,
-			'WARNINGS'			=> ($user_row['user_warnings']) ? $user_row['user_warnings'] : 0,
+			'POSTS'				=> $user_row['user_posts'] ?: 0,
+			'WARNINGS'			=> $user_row['user_warnings'] ?: 0,
 
 			'USERNAME_FULL'		=> get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
 			'USERNAME_COLOUR'	=> get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
@@ -545,8 +545,8 @@ class mcp_warn
 			'POST'				=> $message,
 			'RANK_TITLE'		=> $rank_title,
 			'JOINED'			=> $user->format_date($user_row['user_regdate']),
-			'POSTS'				=> ($user_row['user_posts']) ? $user_row['user_posts'] : 0,
-			'WARNINGS'			=> ($user_row['user_warnings']) ? $user_row['user_warnings'] : 0,
+			'POSTS'				=> $user_row['user_posts'] ?: 0,
+			'WARNINGS'			=> $user_row['user_warnings'] ?: 0,
 
 			'USERNAME_FULL'		=> get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
 			'USERNAME_COLOUR'	=> get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),

@@ -191,7 +191,7 @@ class mcp_pm_reports
 					'U_VIEW_REPORTER_PROFILE'	=> get_username_string('profile', $report['user_id'], $report['username'], $report['user_colour']),
 
 					'POST_PREVIEW'			=> $message,
-					'POST_SUBJECT'			=> ($pm_info['message_subject']) ? $pm_info['message_subject'] : $user->lang['NO_SUBJECT'],
+					'POST_SUBJECT'			=> $pm_info['message_subject'] ?: $user->lang['NO_SUBJECT'],
 					'POST_DATE'				=> $user->format_date($pm_info['message_time']),
 					'POST_IP'				=> $pm_info['author_ip'],
 					'POST_IPADDR'			=> ($auth->acl_getf_global('m_info') && request_var('lookup', '')) ? @gethostbyaddr($pm_info['author_ip']) : '',
@@ -283,7 +283,7 @@ class mcp_pm_reports
 								'REPORTER'				=> get_username_string('username', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
 								'U_REPORTER'			=> get_username_string('profile', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
 
-								'PM_SUBJECT'			=> ($row['message_subject']) ? $row['message_subject'] : $user->lang['NO_SUBJECT'],
+								'PM_SUBJECT'			=> $row['message_subject'] ?: $user->lang['NO_SUBJECT'],
 								'PM_TIME'				=> $user->format_date($row['message_time']),
 								'REPORT_ID'				=> $row['report_id'],
 								'REPORT_TIME'			=> $user->format_date($row['report_time']),

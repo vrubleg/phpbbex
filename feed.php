@@ -42,9 +42,9 @@ $params = false;
 if ($forum_id || $topic_id || $mode)
 {
 	$params = [
-		'f'		=> ($forum_id) ? $forum_id : null,
-		't'		=> ($topic_id) ? $topic_id : null,
-		'mode'	=> ($mode) ? $mode : null,
+		'f'		=> $forum_id ?: null,
+		't'		=> $topic_id ?: null,
+		'mode'	=> $mode ?: null,
 	];
 }
 
