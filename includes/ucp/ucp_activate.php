@@ -79,6 +79,9 @@ class ucp_activate
 				WHERE user_id = ' . $user_row['user_id'];
 			$db->sql_query($sql);
 
+			// Invalidate sessions and persistent login keys of the user.
+			$user->reset_login_keys($user_row['user_id']);
+
 			add_log('user', $user_row['user_id'], 'LOG_USER_NEW_PASSWORD', $user_row['username']);
 		}
 
