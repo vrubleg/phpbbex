@@ -12,7 +12,6 @@ require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
-
 // Start session management
 $user->session_begin();
 $auth->acl($user->data);
@@ -22,7 +21,7 @@ $mode = request_var('mode', '');
 if ($mode == 'smilies')
 {
 	generate_smilies('window'); // stops execution
-	exit(); // unreachable
+	return; // unreachable
 }
 
 $user->setup(['posting', 'mcp', 'viewtopic']);
@@ -76,6 +75,9 @@ switch ($mode)
 			trigger_error('NO_FORUM');
 		}
 
+		$topic_id = 0;
+		$post_id = 0;
+
 	break;
 
 	case 'bump':
@@ -101,6 +103,7 @@ switch ($mode)
 		}
 
 		$forum_id = (int) $post_data['forum_id'];
+		$post_id = 0;
 
 		// Not able to reply to unapproved topics.
 		if (!$post_data['topic_approved'])
@@ -1309,9 +1312,10 @@ $notify_set			= ($mode != 'edit' && $config['allow_topic_notify'] && $user->data
 $notify_checked		= $notify ?? (($mode == 'post') ? $user->data['user_notify'] : $notify_set);
 
 // Page title & action URL
-$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode" . (($mode == 'post') ? "&amp;f=$forum_id" : ''));
-$s_action .= ($topic_id) ? "&amp;t=$topic_id" : '';
-$s_action .= ($post_id) ? "&amp;p=$post_id" : '';
+$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode"
+	. (($mode == 'post') ? "&amp;f=$forum_id" : '')
+	. (($topic_id) ? "&amp;t=$topic_id" : '')
+	. (($post_id) ? "&amp;p=$post_id" : ''));
 
 switch ($mode)
 {
@@ -1442,8 +1446,8 @@ $template->assign_vars([
 	'S_BBCODE_SPOILER'		=> $spoiler_status,
 
 	'S_POST_ACTION'			=> $s_action,
-	'S_HIDDEN_FIELDS'		=> $s_hidden_fields]
-);
+	'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
+]);
 
 // Build custom bbcodes array
 display_custom_bbcodes();
@@ -1466,8 +1470,8 @@ if (($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_
 		'POLL_TITLE'			=> $post_data['poll_title'] ?? '',
 		'POLL_OPTIONS'			=> (!empty($post_data['poll_options'])) ? implode("\n", $post_data['poll_options']) : '',
 		'POLL_MAX_OPTIONS'		=> (isset($post_data['poll_max_options'])) ? (int) $post_data['poll_max_options'] : 1,
-		'POLL_LENGTH'			=> $post_data['poll_length']]
-	);
+		'POLL_LENGTH'			=> $post_data['poll_length'],
+	]);
 }
 
 // Show attachment box for adding attachments if true
