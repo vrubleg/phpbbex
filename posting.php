@@ -17,6 +17,13 @@ require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 $user->session_begin();
 $auth->acl($user->data);
 
+$mode = request_var('mode', '');
+
+if ($mode == 'smilies')
+{
+	generate_smilies('window'); // stops execution
+	exit(); // unreachable
+}
 
 // Grab only parameters needed here
 $post_id	= request_var('p', 0);
@@ -32,7 +39,7 @@ $delete		= isset($_POST['delete']);
 $cancel		= (isset($_POST['cancel']) && !isset($_POST['save']));
 $refresh	= (isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load);
 $submit		= isset($_POST['post']) && !$refresh && !$preview;
-$mode		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : request_var('mode', '');
+$mode		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : $mode;
 
 $error = $post_data = [];
 $current_time = time();
@@ -110,11 +117,6 @@ switch ($mode)
 				AND (f.forum_id = t.forum_id
 					OR f.forum_id = $forum_id)" .
 				(($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND p.post_approved = 1');
-	break;
-
-	case 'smilies':
-		$sql = '';
-		generate_smilies('window');
 	break;
 
 	default:
@@ -1278,7 +1280,7 @@ if ($config['load_moderators'])
 }
 
 // Generate smiley listing
-generate_smilies('inline');
+generate_smilies();
 
 // Generate inline attachment select box
 posting_gen_inline_attachments($attachment_data);

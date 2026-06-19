@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 /**
 * Fill smiley templates (or just the variables) with smilies, either in a window or inline
 */
-function generate_smilies($mode)
+function generate_smilies($mode = 'inline')
 {
 	global $auth, $db, $user, $config, $template;
 
@@ -36,9 +36,7 @@ function generate_smilies($mode)
 		}
 		$db->sql_freeresult($result);
 
-		$template->set_filenames([
-			'body' => 'posting_smilies.html']
-		);
+		$template->set_filenames(['body' => 'posting_smilies.html']);
 
 		$template->assign_var('PAGINATION',
 			generate_pagination(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'),
