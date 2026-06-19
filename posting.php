@@ -25,6 +25,8 @@ if ($mode == 'smilies')
 	exit(); // unreachable
 }
 
+$user->setup(['posting', 'mcp', 'viewtopic']);
+
 // Grab only parameters needed here
 $post_id	= request_var('p', 0);
 $topic_id	= request_var('t', 0);
@@ -51,106 +53,105 @@ if ($cancel || ($current_time - $lastclick < 2 && $submit))
 	redirect($redirect);
 }
 
-if (in_array($mode, ['post', 'reply', 'quote', 'edit', 'delete']) && !$forum_id)
-{
-	trigger_error('NO_FORUM');
-}
-
 // We need to know some basic information in all cases before we do anything.
 switch ($mode)
 {
 	case 'post':
+
+		if (!$forum_id)
+		{
+			trigger_error('NO_FORUM');
+		}
+
 		$sql = 'SELECT *
 			FROM ' . FORUMS_TABLE . "
-			WHERE forum_id = $forum_id";
+			WHERE forum_id = {$forum_id}";
+
+		$result = $db->sql_query($sql);
+		$post_data = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		if (!$post_data)
+		{
+			trigger_error('NO_FORUM');
+		}
+
 	break;
 
 	case 'bump':
 	case 'reply':
+
 		if (!$topic_id)
 		{
 			trigger_error('NO_TOPIC');
 		}
 
-		// Force forum id
-		$sql = 'SELECT forum_id
-			FROM ' . TOPICS_TABLE . '
-			WHERE topic_id = ' . $topic_id;
-		$result = $db->sql_query($sql);
-		$f_id = (int) $db->sql_fetchfield('forum_id');
-		$db->sql_freeresult($result);
-
-		$forum_id = (!$f_id) ? $forum_id : $f_id;
-
 		$sql = 'SELECT f.*, t.*
 			FROM ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . " f
-			WHERE t.topic_id = $topic_id
-				AND (f.forum_id = t.forum_id
-					OR f.forum_id = $forum_id)" .
-			(($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_approved = 1');
+			WHERE t.topic_id = {$topic_id}
+				AND f.forum_id = t.forum_id";
+
+		$result = $db->sql_query($sql);
+		$post_data = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		if (!$post_data)
+		{
+			trigger_error('NO_TOPIC');
+		}
+
+		$forum_id = (int) $post_data['forum_id'];
+
+		// Not able to reply to unapproved topics.
+		if (!$post_data['topic_approved'])
+		{
+			trigger_error('TOPIC_UNAPPROVED');
+		}
+
 	break;
 
 	case 'quote':
 	case 'edit':
 	case 'delete':
+
 		if (!$post_id)
 		{
-			$user->setup('posting');
 			trigger_error('NO_POST');
 		}
 
-		// Force forum id
-		$sql = 'SELECT forum_id
-			FROM ' . POSTS_TABLE . '
-			WHERE post_id = ' . $post_id;
-		$result = $db->sql_query($sql);
-		$f_id = (int) $db->sql_fetchfield('forum_id');
-		$db->sql_freeresult($result);
-
-		$forum_id = (!$f_id) ? $forum_id : $f_id;
-
 		$sql = 'SELECT f.*, t.*, p.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_sig_bbcode_bitfield
 			FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . ' f, ' . USERS_TABLE . " u
-			WHERE p.post_id = $post_id
+			WHERE p.post_id = {$post_id}
 				AND t.topic_id = p.topic_id
 				AND u.user_id = p.poster_id
-				AND (f.forum_id = t.forum_id
-					OR f.forum_id = $forum_id)" .
-				(($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND p.post_approved = 1');
+				AND f.forum_id = t.forum_id";
+
+		$result = $db->sql_query($sql);
+		$post_data = $db->sql_fetchrow($result);
+		$db->sql_freeresult($result);
+
+		if (!$post_data)
+		{
+			trigger_error('NO_POST');
+		}
+
+		$forum_id = (int) $post_data['forum_id'];
+		$topic_id = (int) $post_data['topic_id'];
+
+		// Not able to reply to unapproved posts.
+		if (!$post_data['post_approved'] && ($mode == 'quote' || !$auth->acl_get('m_approve', $forum_id)))
+		{
+			trigger_error('POST_UNAPPROVED');
+		}
+
 	break;
 
 	default:
-		$sql = '';
+
+		trigger_error('NO_POST_MODE');
+
 	break;
 }
-
-if (!$sql)
-{
-	$user->setup('posting');
-	trigger_error('NO_POST_MODE');
-}
-
-$result = $db->sql_query($sql);
-$post_data = $db->sql_fetchrow($result);
-$db->sql_freeresult($result);
-
-if (!$post_data)
-{
-	if (!($mode == 'post' || $mode == 'bump' || $mode == 'reply'))
-	{
-		$user->setup('posting');
-	}
-	trigger_error(($mode == 'post' || $mode == 'bump' || $mode == 'reply') ? 'NO_TOPIC' : 'NO_POST');
-}
-
-// Not able to reply to unapproved posts/topics
-// TODO: add more descriptive language key
-if ($auth->acl_get('m_approve', $forum_id) && ((($mode == 'reply' || $mode == 'bump') && !$post_data['topic_approved']) || ($mode == 'quote' && !$post_data['post_approved'])))
-{
-	trigger_error(($mode == 'reply' || $mode == 'bump') ? 'TOPIC_UNAPPROVED' : 'POST_UNAPPROVED');
-}
-
-$user->setup(['posting', 'mcp', 'viewtopic']);
 
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {
@@ -158,11 +159,6 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 	$captcha = phpbb_captcha_factory::get_instance($config['captcha_plugin']);
 	$captcha->init(CONFIRM_POST);
 }
-
-// Use post_row values in favor of submitted ones...
-$forum_id	= (!empty($post_data['forum_id'])) ? (int) $post_data['forum_id'] : (int) $forum_id;
-$topic_id	= (!empty($post_data['topic_id'])) ? (int) $post_data['topic_id'] : (int) $topic_id;
-$post_id	= (!empty($post_data['post_id'])) ? (int) $post_data['post_id'] : (int) $post_id;
 
 // Need to login to passworded forum first?
 if ($post_data['forum_password'])
