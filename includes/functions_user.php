@@ -1599,7 +1599,7 @@ function validate_email($email, $allowed_email = false)
 	{
 		$sql = 'SELECT user_email
 			FROM ' . USERS_TABLE . "
-			WHERE user_email = " . $db->sql_escape($email);
+			WHERE user_email = '" . $db->sql_escape($email) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
