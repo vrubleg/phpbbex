@@ -1229,7 +1229,7 @@ class parse_message extends bbcode_firstpass
 		$this->message = preg_replace($match, $replace, trim($this->message));
 
 		// Store message length...
-		$message_length = ($mode == 'post') ? utf8_strlen($this->message) : utf8_strlen(preg_replace('#\[\/?[a-z\*\+\-]+(=[\S]+)?\]#ius', ' ', $this->message));
+		$message_length = ($mode == 'post') ? utf8_strlen($this->message) : utf8_strlen(preg_replace('#\[/?[a-z*+\-]+(=[\S]+)?\]#ius', ' ', $this->message));
 
 		// Maximum message length check. 0 disables this check completely.
 		if ((int) $config['max_' . $mode . '_chars'] > 0 && $message_length > (int) $config['max_' . $mode . '_chars'])
@@ -1838,7 +1838,7 @@ class parse_message extends bbcode_firstpass
 		}
 		else
 		{
-			if (utf8_strlen(preg_replace('#\[\/?[a-z\*\+\-]+(=[\S]+)?\]#ius', ' ', $this->message)) > 100)
+			if (utf8_strlen(preg_replace('#\[/?[a-z*+\-]+(=[\S]+)?\]#ius', ' ', $this->message)) > 100)
 			{
 				$this->warn_msg[] = $user->lang['POLL_TITLE_TOO_LONG'];
 			}
