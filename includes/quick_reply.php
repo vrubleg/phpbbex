@@ -99,7 +99,7 @@ $notify_set			= ($config['allow_topic_notify'] && $user->data['is_registered'] &
 $notify_checked		= ($mode == 'post') ? $user->data['user_notify'] : $notify_set;
 
 // Action URL, include session_id for security purpose
-$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode&amp;f=$forum_id", true, $user->session_id);
+$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode" . (($mode == 'post') ? "&amp;f=$forum_id" : ''), true, $user->session_id);
 $s_action .= (isset($topic_id) && $topic_id) ? "&amp;t=$topic_id" : '';
 
 // Visual Confirmation

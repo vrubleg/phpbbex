@@ -1309,7 +1309,7 @@ $notify_set			= ($mode != 'edit' && $config['allow_topic_notify'] && $user->data
 $notify_checked		= $notify ?? (($mode == 'post') ? $user->data['user_notify'] : $notify_set);
 
 // Page title & action URL
-$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode&amp;f=$forum_id");
+$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode" . (($mode == 'post') ? "&amp;f=$forum_id" : ''));
 $s_action .= ($topic_id) ? "&amp;t=$topic_id" : '';
 $s_action .= ($post_id) ? "&amp;p=$post_id" : '';
 

@@ -579,8 +579,8 @@ $template->assign_vars([
 	'S_BOOKMARKED_TOPIC'	=> ($user->data['is_registered'] && $config['allow_bookmarks'] && $topic_data['bookmarked']),
 
 	'U_POST_NEW_TOPIC' 		=> ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=post&amp;f=$forum_id") : '',
-	'U_POST_REPLY_TOPIC' 	=> ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=reply&amp;f=$forum_id&amp;t=$topic_id") : '',
-	'U_BUMP_TOPIC'			=> (bump_topic_allowed($forum_id, $topic_data['topic_bumped'], $topic_data['topic_last_post_time'], $topic_data['topic_poster'], $topic_data['topic_last_poster_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=bump&amp;f=$forum_id&amp;t=$topic_id&amp;hash=" . generate_link_hash("topic_$topic_id")) : '']
+	'U_POST_REPLY_TOPIC' 	=> ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=reply&amp;t=$topic_id") : '',
+	'U_BUMP_TOPIC'			=> (bump_topic_allowed($forum_id, $topic_data['topic_bumped'], $topic_data['topic_last_post_time'], $topic_data['topic_poster'], $topic_data['topic_last_poster_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=bump&amp;t=$topic_id&amp;hash=" . generate_link_hash("topic_$topic_id")) : '']
 );
 
 // Does this topic contain a poll?
@@ -1588,10 +1588,10 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'ONLINE_IMG'			=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$poster_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
 		'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (bool) $user_cache[$poster_id]['online'],
 
-		'U_EDIT'			=> ($edit_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
-		'U_QUOTE'			=> ($quote_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=quote&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
+		'U_EDIT'			=> ($edit_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;p={$row['post_id']}") : '',
+		'U_QUOTE'			=> ($quote_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=quote&amp;p={$row['post_id']}") : '',
 		'U_INFO'			=> ($auth->acl_get('m_info', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;f=$forum_id&amp;p=" . $row['post_id'], true, $user->session_id) : '',
-		'U_DELETE'			=> ($delete_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=delete&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
+		'U_DELETE'			=> ($delete_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=delete&amp;p={$row['post_id']}") : '',
 
 		'U_PROFILE'		=> $user_cache[$poster_id]['profile'],
 		'U_SEARCH'		=> $user_cache[$poster_id]['search'],

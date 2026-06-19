@@ -524,7 +524,7 @@ class ucp_main
 						$view_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $draft['topic_id']);
 						$title = $topic_rows[$draft['topic_id']]['topic_title'];
 
-						$insert_url = append_sid(PHPBB_ROOT_PATH . 'posting.php', 'f=' . $topic_rows[$draft['topic_id']]['forum_id'] . '&amp;t=' . $draft['topic_id'] . '&amp;mode=reply&amp;d=' . $draft['draft_id']);
+						$insert_url = append_sid(PHPBB_ROOT_PATH . 'posting.php', 't=' . $draft['topic_id'] . '&amp;mode=reply&amp;d=' . $draft['draft_id']);
 					}
 					else if ($auth->acl_get('f_read', $draft['forum_id']))
 					{
