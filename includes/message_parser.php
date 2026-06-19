@@ -1534,7 +1534,7 @@ class parse_message extends bbcode_firstpass
 					];
 
 					$this->attachment_data = array_merge([0 => $new_entry], $this->attachment_data);
-					$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#', function ($m) {
+					$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[/attachment\]#', function ($m) {
 						return '[attachment=' . ($m[1] + 1) . ']' . $m[2] .'[/attachment]';
 					}, $this->message);
 					$this->filename_data['filecomment'] = '';
@@ -1598,7 +1598,7 @@ class parse_message extends bbcode_firstpass
 					}
 
 					unset($this->attachment_data[$index]);
-					$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#', function ($m) use ($index) {
+					$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[/attachment\]#', function ($m) use ($index) {
 						return ($m[1] == $index) ? '' : (($m[1] > $index) ? '[attachment=' . ($m[1] - 1) . ']' . $m[2] .'[/attachment]' : $m[0]);
 					}, $this->message);
 
@@ -1639,7 +1639,7 @@ class parse_message extends bbcode_firstpass
 						];
 
 						$this->attachment_data = array_merge([0 => $new_entry], $this->attachment_data);
-						$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#', function ($m) {
+						$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[/attachment\]#', function ($m) {
 							return '[attachment=' . ($m[1] + 1) . ']' . $m[2] .'[/attachment]';
 						}, $this->message);
 						$this->filename_data['filecomment'] = '';
@@ -1703,7 +1703,9 @@ class parse_message extends bbcode_firstpass
 						// Refresh attachment data
 						$this->attachment_data[$index]['real_filename'] = $filedata['real_filename'];
 						$this->attachment_data[$index]['attach_comment'] = $this->filename_data['filecomment'] ?: $this->attachment_data[$index]['attach_comment'];
-						$this->message = preg_replace("#\[attachment=$index\](.*?)\[\/attachment\]#e", "'[attachment=$index]' . \$filename . '[/attachment]'", $this->message);
+						$this->message = preg_replace_callback("#\[attachment=$index\](.*?)\[/attachment\]#", function ($m) use ($index, $filename) {
+							return "[attachment=$index]{$filename}[/attachment]";
+						}, $this->message);
 						$this->filename_data['filecomment'] = '';
 					}
 				}
