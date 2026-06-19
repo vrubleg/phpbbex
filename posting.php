@@ -1370,7 +1370,7 @@ $form_enctype = (!PHP_FILE_UPLOADS || !$config['allow_attachments'] || !$auth->a
 add_form_key('posting');
 
 $s_do_merge_allowed = $user->data['is_registered'] && ($mode == 'reply' || $mode == 'quote') && $post_data['topic_last_poster_id'] == $user->data['user_id'] && ($auth->acl_get('f_noapprove', $forum_id) || $auth->acl_get('m_approve', $forum_id));
-$s_do_merge_checked = $s_do_merge_allowed && (($current_time - $post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
+$s_do_merge_checked = $s_do_merge_allowed && (($submit || $preview || $refresh) ? request_var('do_merge', false) : (($current_time - $post_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600));
 
 $allowed_extension_sizes = get_allowed_extension_sizes($forum_id);
 
