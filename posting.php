@@ -964,15 +964,6 @@ if ($submit || $preview || $refresh)
 		$error[] = implode('<br />', $message_parser->warn_msg);
 	}
 
-	// DNSBL check
-	if ($config['check_dnsbl'] && !$refresh)
-	{
-		if (($dnsbl = $user->check_dnsbl('post')) !== false)
-		{
-			$error[] = sprintf($user->lang['IP_BLACKLISTED'], $user->ip, $dnsbl[1]);
-		}
-	}
-
 	// Store message, sync counters
 	if (!sizeof($error) && $submit)
 	{

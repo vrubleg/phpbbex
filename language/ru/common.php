@@ -241,7 +241,6 @@ $lang = array_merge($lang, [
 	'INVALID_DIGEST_CHALLENGE'	=> 'Неверный запрос аутентификации.',
 	'INVALID_EMAIL_LOG'			=> 'Возможно, введён неверный адрес email: <strong>%s</strong>',
 	'IP'						=> 'IP',
-	'IP_BLACKLISTED'			=> 'Ваш IP-адрес %1$s был внесён в черный список и заблокирован. Для получения дополнительной информации перейдите по ссылке <a href="%2$s">%2$s</a>.',
 
 	'JABBER'				=> 'Jabber',
 	'JOINED'				=> 'Зарегистрирован',
