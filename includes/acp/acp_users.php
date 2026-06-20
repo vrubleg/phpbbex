@@ -946,7 +946,6 @@ class acp_users
 						{
 							$sql_ary += [
 								'user_email'		=> $update_email,
-								'user_email_hash'	=> phpbb_email_hash($update_email),
 							];
 
 							add_log('user', $user_id, 'LOG_USER_UPDATE_EMAIL', $user_row['username'], $user_row['user_email'], $update_email);

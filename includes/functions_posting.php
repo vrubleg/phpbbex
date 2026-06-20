@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 /**
 * Fill smiley templates (or just the variables) with smilies, either in a window or inline
 */
-function generate_smilies($mode)
+function generate_smilies($mode = 'inline')
 {
 	global $auth, $db, $user, $config, $template;
 
@@ -36,9 +36,7 @@ function generate_smilies($mode)
 		}
 		$db->sql_freeresult($result);
 
-		$template->set_filenames([
-			'body' => 'posting_smilies.html']
-		);
+		$template->set_filenames(['body' => 'posting_smilies.html']);
 
 		$template->assign_var('PAGINATION',
 			generate_pagination(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'),
@@ -945,13 +943,11 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 				(!$topic_rows[$draft['topic_id']]['forum_id'] && $auth->acl_getf_global('f_read'))
 			))
 		{
-			$topic_forum_id = $topic_rows[$draft['topic_id']]['forum_id'] ?: $forum_id;
-
 			$link_topic = true;
 			$view_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $draft['topic_id']);
 			$title = $topic_rows[$draft['topic_id']]['topic_title'];
 
-			$insert_url = append_sid(PHPBB_ROOT_PATH . 'posting.php', 'f=' . $topic_forum_id . '&amp;t=' . $draft['topic_id'] . '&amp;mode=reply&amp;d=' . $draft['draft_id']);
+			$insert_url = append_sid(PHPBB_ROOT_PATH . 'posting.php', 't=' . $draft['topic_id'] . '&amp;mode=reply&amp;d=' . $draft['draft_id']);
 		}
 		else if ($draft['forum_id'] && $auth->acl_get('f_read', $draft['forum_id']))
 		{

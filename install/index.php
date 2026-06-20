@@ -302,6 +302,7 @@ class module
 		global $template, $lang, $stage;
 
 		$template->assign_vars([
+			'L_POWERED_BY'			=> $lang['POWERED_BY'],
 			'L_CHANGE'				=> $lang['CHANGE'],
 			'L_INSTALL_PANEL'		=> $lang['INSTALL_PANEL'],
 			'L_SELECT_LANG'			=> $lang['SELECT_LANG'],
@@ -310,8 +311,7 @@ class module
 			'T_IMAGE_PATH'			=> PHPBB_ROOT_PATH . 'adm/images/',
 
 			'S_USER_LANG'			=> $lang['USER_LANG'],
-			]
-		);
+		]);
 
 		if (!headers_sent())
 		{

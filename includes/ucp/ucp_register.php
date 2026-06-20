@@ -102,33 +102,13 @@ class ucp_register
 				'dnsbl' => false,
 			];
 
-			$error = validate_data($data, [
-				'username'			=> [
-					['string', false, $config['min_name_chars'], $config['max_name_chars']],
-					['username', '']],
-				'new_password'		=> [
-					['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
-					['password']],
-				'password_confirm'	=> ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
-				'email'				=> [
-					['string', false, 6, 60],
-					['email']],
-				'tz'				=> ['num', false, -14, 14],
-				'lang'				=> ['language_iso_name'],
-			]);
-
-			$error_type['generic'] = !!sizeof($error);
-
 			if (!check_form_key('ucp_register'))
 			{
 				$error[] = $user->lang['FORM_INVALID'];
 				$error_type['token'] = true;
 			}
 
-			// Replace "error" strings with their real, localised form
-			$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
-
-			if ($config['enable_confirm'])
+			if (!sizeof($error) && $config['enable_confirm'])
 			{
 				$vc_response = $captcha->validate($data);
 				if ($vc_response !== false)
@@ -145,7 +125,7 @@ class ucp_register
 			}
 
 			// DNSBL check
-			if ($config['check_dnsbl'])
+			if (!sizeof($error) && $config['check_dnsbl'])
 			{
 				if (($dnsbl = $user->check_dnsbl('register')) !== false)
 				{
@@ -154,11 +134,32 @@ class ucp_register
 				}
 			}
 
-			// validate custom profile fields
-			$cp->submit_cp_field('register', $user->get_iso_lang_id(), $cp_data, $error);
-
+			// Do not reveal whether a username or email address is registered if the form is already invalid.
 			if (!sizeof($error))
 			{
+				$validation_errors = validate_data($data, [
+					'username'			=> [
+						['string', false, $config['min_name_chars'], $config['max_name_chars']],
+						['username', '']],
+					'new_password'		=> [
+						['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+						['password']],
+					'password_confirm'	=> ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+					'email'				=> [
+						['string', false, 6, 60],
+						['email']],
+					'tz'				=> ['num', false, -14, 14],
+					'lang'				=> ['language_iso_name'],
+				]);
+
+				// Replace "error" strings with their real, localised form
+				$validation_errors = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $validation_errors);
+				$error = array_merge($error, $validation_errors);
+				$error_type['generic'] = !!sizeof($validation_errors);
+
+				// validate custom profile fields
+				$cp->submit_cp_field('register', $user->get_iso_lang_id(), $cp_data, $error);
+
 				if ($data['new_password'] != $data['password_confirm'])
 				{
 					$error[] = $user->lang['NEW_PASSWORD_ERROR'];

@@ -200,10 +200,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 					AND msg_id = $msg_id";
 		break;
 
-		case 'smilies':
-			generate_smilies('window');
-		break;
-
 		default:
 			trigger_error('NO_ACTION_MODE', E_USER_ERROR);
 		break;
@@ -880,7 +876,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	// MAIN PM PAGE BEGINS HERE
 
 	// Generate smiley listing
-	generate_smilies('inline');
+	generate_smilies();
 
 	// Generate PM Icons
 	$s_pm_icons = false;

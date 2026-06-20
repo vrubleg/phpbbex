@@ -886,7 +886,6 @@ CREATE TABLE phpbb_users (
 	user_passchg int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_pass_convert tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_email varchar(100) DEFAULT '' NOT NULL,
-	user_email_hash bigint(20) DEFAULT '0' NOT NULL,
 	user_birthday varchar(10) DEFAULT '' NOT NULL,
 	user_gender tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_lastvisit int(11) UNSIGNED DEFAULT '0' NOT NULL,
@@ -955,10 +954,10 @@ CREATE TABLE phpbb_users (
 	user_reminded tinyint(4) DEFAULT '0' NOT NULL,
 	user_reminded_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (user_id),
-	KEY user_birthday (user_birthday),
-	KEY user_email_hash (user_email_hash),
+	UNIQUE username_clean (username_clean),
+	KEY user_email (user_email),
 	KEY user_type (user_type),
-	UNIQUE username_clean (username_clean)
+	KEY user_birthday (user_birthday)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 
