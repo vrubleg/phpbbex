@@ -1584,7 +1584,7 @@ function validate_email($email, $allowed_email = false)
 	{
 		[, $domain] = explode('@', $email);
 
-		if (phpbb_checkdnsrr($domain, 'A') === false && phpbb_checkdnsrr($domain, 'MX') === false)
+		if (!checkdnsrr($domain, 'A') && !checkdnsrr($domain, 'MX'))
 		{
 			return 'DOMAIN_NO_MX_RECORD';
 		}
