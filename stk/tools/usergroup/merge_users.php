@@ -158,6 +158,9 @@ class merge_users
 			$db->sql_query($sql);
 		}
 
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
+		resync_rates();
+
 		$db->sql_transaction('commit');
 
 		// Delete source user
@@ -296,6 +299,7 @@ class merge_users
 					['poster_id', 'post_username'],
 				],
 			],
+			'post_rates'			=> null,
 			'privmsgs'				=> [
 				[
 					'author_id'		=> 'id',
@@ -901,6 +905,31 @@ class merge_users
 			'DELETE
 				FROM ' . PROFILE_FIELDS_DATA_TABLE . "
 				WHERE user_id = {$source['user_id']}",
+		];
+	}
+
+	function merge_post_rates($source, $target)
+	{
+		return [
+			// Keep the target user's vote if both users rated the same post.
+			'DELETE source_rate
+				FROM ' . POST_RATES_TABLE . ' source_rate
+				INNER JOIN ' . POST_RATES_TABLE . " target_rate
+					ON target_rate.post_id = source_rate.post_id
+						AND target_rate.user_id = {$target['user_id']}
+				WHERE source_rate.user_id = {$source['user_id']}",
+			'UPDATE ' . POST_RATES_TABLE . "
+				SET user_id = {$target['user_id']}
+				WHERE user_id = {$source['user_id']}",
+			// Posts are reassigned before these queries run.
+			// Remove votes that would consequently become ratings of the merged user's own posts.
+			'DELETE rate
+				FROM ' . POST_RATES_TABLE . ' rate
+				INNER JOIN ' . POSTS_TABLE . " post
+					ON post.post_id = rate.post_id
+				WHERE rate.user_id = {$target['user_id']}
+					AND post.poster_id = {$target['user_id']}",
+
 		];
 	}
 
