@@ -293,20 +293,30 @@ class merge_users
 				[
 					'poster_id'		=> 'id',
 					'post_username'	=> 'name',
+					'post_edit_user'	=> 'id',
 				],
 				[
 					'poster_id',
 					['poster_id', 'post_username'],
 				],
+				[
+					'post_edit_user',
+					'post_edit_user',
+				],
 			],
 			'post_rates'			=> null,
 			'privmsgs'				=> [
 				[
-					'author_id'		=> 'id',
+					'author_id'			=> 'id',
+					'message_edit_user'	=> 'id',
 				],
 				[
 					'author_id',
 					'author_id',
+				],
+				[
+					'message_edit_user',
+					'message_edit_user',
 				],
 				null,
 			],
@@ -363,6 +373,7 @@ class merge_users
 					'topic_last_poster_id'		=> 'id',
 					'topic_last_poster_name'	=> 'name',
 					'topic_last_poster_colour'	=> 'colour',
+					'topic_bumper'				=> 'id',
 				],
 				[
 					'topic_poster',
@@ -376,12 +387,29 @@ class merge_users
 					'topic_last_poster_id',
 					['topic_last_poster_id', 'topic_last_poster_name', 'topic_last_poster_colour'],
 				],
+				[
+					'topic_bumper',
+					'topic_bumper',
+				],
 			],
 			'topics_posted'	=> null,
 			'topics_track'	=> null,
 			'topics_watch'	=> null,
 
-			'warnings'		=> 'user_id',
+			'warnings'		=> [
+				[
+					'user_id'	=> 'id',
+					'issuer_id'	=> 'id',
+				],
+				[
+					'user_id',
+					'user_id',
+				],
+				[
+					'issuer_id',
+					'issuer_id',
+				],
+			],
 
 			'zebra'			=> null,
 		] as $key => $data)
@@ -517,7 +545,7 @@ class merge_users
 			$update['target']['user_lastpage'] = $source['user_lastpage'];
 		}
 
-		foreach (['posts', 'warnings', 'login_attempts', 'new_privmsg', 'unread_privmsg'] as $var)
+		foreach (['topics', 'posts', 'warnings', 'login_attempts', 'new_privmsg', 'unread_privmsg'] as $var)
 		{
 			if ($source['user_' . $var])
 			{
@@ -567,10 +595,11 @@ class merge_users
 		}
 
 		// Options
-		if (($source['user_options'] | $target['user_options']) !== $source['user_options'])
+		$merged_options = (int) $source['user_options'] | (int) $target['user_options'];
+		if ($merged_options !== (int) $target['user_options'])
 		{
 			// Any bits set in source OR target are set
-			$source['user_options'] = $source['user_options'] | $target['user_options'];
+			$update['target']['user_options'] = $merged_options;
 		}
 
 		// Update user_new if both 1 and passes threshold
@@ -986,47 +1015,39 @@ class merge_users
 
 	function merge_zebra($source, $target)
 	{
-		global $db;
+		return [
+			// Keep the target user's relationship when both users reference the same user.
+			'DELETE source_zebra
+				FROM ' . ZEBRA_TABLE . ' source_zebra
+				INNER JOIN ' . ZEBRA_TABLE . " target_zebra
+					ON target_zebra.zebra_id = source_zebra.zebra_id
+						AND target_zebra.user_id = {$target['user_id']}
+				WHERE source_zebra.user_id = {$source['user_id']}",
 
-		$friends = $foes = [];
+			// Move remaining relationships to the new user.
+			'UPDATE ' . ZEBRA_TABLE . "
+				SET user_id	= {$target['user_id']}
+				WHERE user_id = {$source['user_id']}",
 
-		$sql = 'SELECT zebra_id, friend, foe
-			FROM ' . ZEBRA_TABLE . "
-			WHERE user_id = {$target['user_id']}
-				AND zebra_id <> {$target['user_id']}";
+			// Keep existing relationships with the target when another user has both
+			// source and target in their friends/foes list.
+			'DELETE source_zebra
+				FROM ' . ZEBRA_TABLE . ' source_zebra
+				INNER JOIN ' . ZEBRA_TABLE . " target_zebra
+					ON target_zebra.user_id = source_zebra.user_id
+						AND target_zebra.zebra_id = {$target['user_id']}
+				WHERE source_zebra.zebra_id = {$source['user_id']}",
 
-		$result = $db->sql_query($sql);
+			// Redirect other users' references to the source user.
+			'UPDATE ' . ZEBRA_TABLE . "
+				SET zebra_id = {$target['user_id']}
+				WHERE zebra_id = {$source['user_id']}",
 
-		while ($row = $db->sql_fetchrow($result))
-		{
-			if ($row['friend'])
-			{
-				$friends[] = (int) $row['zebra_id'];
-			}
-			else if ($row['foe'])
-			{
-				$foes[] = (int) $row['zebra_id'];
-			}
-		}
-		$db->sql_freeresult($result);
-
-		$sql = [];
-
-		if (!empty($friends) || !empty($foes))
-		{
-			// Delete duplicates
-			$sql[] = 'DELETE
-				FROM ' . ZEBRA_TABLE . "
-				WHERE user_id = {$source['user_id']}
-					AND " . $db->sql_in_set('zebra_id', array_merge($friends, $foes));
-		}
-
-		// Update remaining
-		$sql[] = 'UPDATE ' . ZEBRA_TABLE . "
-			SET user_id	= {$target['user_id']}
-			WHERE user_id = {$source['user_id']}";
-
-		return $sql;
+			// Merging relationships between the two users can create a self-reference.
+			'DELETE FROM ' . ZEBRA_TABLE . "
+				WHERE user_id = {$target['user_id']}
+					AND zebra_id = {$target['user_id']}",
+		];
 	}
 
 	function merge_watch_tables($mode, $source, $target)
