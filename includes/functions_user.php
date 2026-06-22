@@ -1865,9 +1865,21 @@ function phpbb_style_is_active($style_id)
 */
 function avatar_delete($user_row)
 {
+	global $db;
+
 	if (!$user_row['user_avatar'] || $user_row['user_avatar_type'] != AVATAR_UPLOAD) { return false; }
 
-	if (file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $user_row['user_avatar']))
+	// Check if the same avatar file is used by another user (may happen after merging users).
+	$sql = 'SELECT user_id
+		FROM ' . USERS_TABLE . "
+		WHERE user_avatar = '" . $db->sql_escape($user_row['user_avatar']) . "'
+			AND user_avatar_type = " . AVATAR_UPLOAD . '
+			AND user_id <> ' . (int) $user_row['user_id'];
+	$result = $db->sql_query_limit($sql, 1);
+	$is_shared = (bool) $db->sql_fetchfield('user_id');
+	$db->sql_freeresult($result);
+
+	if (!$is_shared && file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $user_row['user_avatar']))
 	{
 		@unlink(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $user_row['user_avatar']);
 		return true;
