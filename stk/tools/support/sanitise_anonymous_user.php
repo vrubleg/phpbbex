@@ -99,7 +99,6 @@ class sanitise_anonymous_user
 			'user_ip'					=> '',
 			'user_birthday'				=> '',
 			'user_lastpage'				=> '',
-			'user_last_confirm_key'		=> '',
 			'user_post_sortby_type'		=> 't',
 			'user_post_sortby_dir'		=> 'a',
 			'user_topic_sortby_type'	=> 't',
