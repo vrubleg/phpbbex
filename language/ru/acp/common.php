@@ -301,7 +301,6 @@ $lang = array_merge($lang, [
 	'AVATAR_DIR_SIZE'			=> 'Размер каталога с аватарами',
 
 	'BOARD_STARTED'		=> 'Дата запуска форума',
-	'PHPBBEX_VERSION'	=> 'Версия phpBBex',
 
 	'DATABASE_SERVER_INFO'	=> 'Сервер базы данных',
 	'DATABASE_SIZE'			=> 'Размер базы данных',
@@ -329,6 +328,8 @@ $lang = array_merge($lang, [
 	'NUMBER_ORPHAN'		=> 'Потерянных вложений',
 
 	'PHP_VERSION_OLD'	=> 'Версия PHP на данном сервере устарела. Рекомендуется обновиться до PHP 7.4 или новее.',
+	'PHPBBEX_VERSION'	=> 'Версия phpBBex',
+	'UPDATE_AVAILABLE'	=> 'Доступна новая версия: <strong>%1$s</strong>. Прочтите дополнительные сведения, чтобы получить информацию о нововведениях и способах обновления.',
 
 	'POSTS_PER_DAY'		=> 'Сообщений в день',
 

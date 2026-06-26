@@ -438,7 +438,7 @@ class acp_main
 
 			$template->assign_vars([
 				'S_VERSION_UP_TO_DATE'	=> phpbb_version_compare($latest_version, $config['phpbbex_version'], '<='),
-				'UPDATE_INSTRUCTIONS'	=> $user->lang('UPDATE_INSTRUCTIONS', $latest_version, $announcement_url),
+				'L_UPDATE_AVAILABLE'	=> $user->lang('UPDATE_AVAILABLE', $latest_version, $announcement_url),
 				'U_UPDATE_ANNOUNCEMENT'	=> $announcement_url,
 			]);
 		}

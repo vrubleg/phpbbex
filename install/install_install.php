@@ -1535,7 +1535,7 @@ class install_install extends module
 	/**
 	* Specific PHP modules we may require for certain optional or extended features
 	*/
-	var $php_dlls_other = ['zlib', 'ftp', 'gd', 'xml'];
+	var $php_dlls_other = ['zlib', 'gd', 'xml'];
 
 	/**
 	* A list of the web-crawlers/bots we recognise by default.
