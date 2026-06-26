@@ -574,6 +574,10 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_last_confirm_key');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_type');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_dir');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_type');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_dir');
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_return_on_error(false);
 }

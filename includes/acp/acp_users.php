@@ -1536,12 +1536,6 @@ class acp_users
 					'popuppm'			=> request_var('popuppm', $this->optionget($user_row, 'popuppm')),
 					'allowpm'			=> request_var('allowpm', $user_row['user_allow_pm']),
 
-					'topic_sk'			=> request_var('topic_sk', $user_row['user_topic_sortby_type'] ?: 't'),
-					'topic_sd'			=> request_var('topic_sd', $user_row['user_topic_sortby_dir'] ?: 'd'),
-
-					'post_sk'			=> request_var('post_sk', $user_row['user_post_sortby_type'] ?: 't'),
-					'post_sd'			=> request_var('post_sd', $user_row['user_post_sortby_dir'] ?: 'a'),
-
 					'view_images'		=> request_var('view_images', $this->optionget($user_row, 'viewimg')),
 					'view_flash'		=> request_var('view_flash', $this->optionget($user_row, 'viewflash')),
 					'view_smilies'		=> request_var('view_smilies', $this->optionget($user_row, 'viewsmilies')),
@@ -1567,11 +1561,6 @@ class acp_users
 						'dateformat'	=> ['string', false, 1, 30],
 						'lang'			=> ['match', false, '#^[a-z_\-]{2,}$#i'],
 						'tz'			=> ['num', false, -14, 14],
-
-						'topic_sk'		=> ['string', false, 1, 1],
-						'topic_sd'		=> ['string', false, 1, 1],
-						'post_sk'		=> ['string', false, 1, 1],
-						'post_sd'		=> ['string', false, 1, 1],
 					]);
 
 					if (!check_form_key($form_name))
@@ -1606,11 +1595,6 @@ class acp_users
 							'user_lang'				=> $data['lang'],
 							'user_timezone'			=> $data['tz'],
 							'user_style'			=> $data['style'],
-
-							'user_topic_sortby_type'	=> $data['topic_sk'],
-							'user_post_sortby_type'		=> $data['post_sk'],
-							'user_topic_sortby_dir'		=> $data['topic_sd'],
-							'user_post_sortby_dir'		=> $data['post_sd'],
 
 							'user_notify'	=> $data['notify'],
 						];
@@ -1670,36 +1654,6 @@ class acp_users
 				}
 				$dateformat_options .= '>' . $user->lang['CUSTOM_DATEFORMAT'] . '</option>';
 
-				$sort_dir_text = ['a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']];
-
-				// Topic ordering options
-				$limit_topic_days = [0 => $user->lang['ALL_TOPICS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-				$sort_by_topic_text = ['t' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES'], 'v' => $user->lang['VIEWS'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
-
-				// Post ordering options
-				$limit_post_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-				$sort_by_post_text = ['t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
-
-				$_options = ['topic', 'post'];
-				foreach ($_options as $sort_option)
-				{
-					${'s_sort_' . $sort_option . '_key'} = '<select name="' . $sort_option . '_sk">';
-					foreach (${'sort_by_' . $sort_option . '_text'} as $key => $text)
-					{
-						$selected = ($data[$sort_option . '_sk'] == $key) ? ' selected="selected"' : '';
-						${'s_sort_' . $sort_option . '_key'} .= '<option value="' . $key . '"' . $selected . '>' . $text . '</option>';
-					}
-					${'s_sort_' . $sort_option . '_key'} .= '</select>';
-
-					${'s_sort_' . $sort_option . '_dir'} = '<select name="' . $sort_option . '_sd">';
-					foreach ($sort_dir_text as $key => $value)
-					{
-						$selected = ($data[$sort_option . '_sd'] == $key) ? ' selected="selected"' : '';
-						${'s_sort_' . $sort_option . '_dir'} .= '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
-					}
-					${'s_sort_' . $sort_option . '_dir'} .= '</select>';
-				}
-
 				$template->assign_vars([
 					'S_PREFS'			=> true,
 					'S_JABBER_DISABLED'	=> !($config['jab_enable'] && $user_row['user_jabber'] && @extension_loaded('xml')),
@@ -1723,11 +1677,6 @@ class acp_users
 					'VIEW_SIGS'			=> $data['view_sigs'],
 					'VIEW_AVATARS'		=> $data['view_avatars'],
 					'VIEW_WORDCENSOR'	=> $data['view_wordcensor'],
-
-					'S_TOPIC_SORT_KEY'		=> $s_sort_topic_key,
-					'S_TOPIC_SORT_DIR'		=> $s_sort_topic_dir,
-					'S_POST_SORT_KEY'		=> $s_sort_post_key,
-					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
 
 					'DATE_FORMAT'			=> $data['dateformat'],
 					'S_DATEFORMAT_OPTIONS'	=> ($config['override_user_dateformat']) ? '' : $dateformat_options,

@@ -433,10 +433,6 @@ $lang = array_merge($lang, [
 	'VIEW_PREVIOUS_PM'			=> 'Предыдущее ЛС',
 	'VIEW_SIGS'					=> 'Показывать подписи',
 	'VIEW_SMILIES'				=> 'Заменять смайлики изображениями',
-	'VIEW_TOPICS_DIR'			=> 'Порядок сортировки тем',
-	'VIEW_TOPICS_KEY'			=> 'Поле сортировки тем',
-	'VIEW_POSTS_DIR'			=> 'Порядок сортировки сообщений',
-	'VIEW_POSTS_KEY'			=> 'Поле сортировки сообщений',
 	'USER_TOPICS_PER_PAGE'		=> 'Тем на страницу',
 	'USER_POSTS_PER_PAGE'		=> 'Сообщений на страницу',
 

@@ -56,8 +56,8 @@ if (!$forum_data)
 }
 
 $default_sort_days	= $forum_data['forum_topic_show_days'] ?: 0;
-$default_sort_key	= $forum_data['forum_topic_sortby_type'] ?: $user->data['user_topic_sortby_type'] ?: 't';
-$default_sort_dir	= $forum_data['forum_topic_sortby_dir'] ?: $user->data['user_topic_sortby_dir'] ?: 'd';
+$default_sort_key	= $forum_data['forum_topic_sortby_type'] ?: 't';
+$default_sort_dir	= $forum_data['forum_topic_sortby_dir'] ?: 'd';
 
 $sort_days	= request_var('st', $default_sort_days);
 $sort_key	= request_var('sk', $default_sort_key);

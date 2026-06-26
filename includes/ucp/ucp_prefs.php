@@ -197,12 +197,6 @@ class ucp_prefs
 				add_form_key('ucp_prefs_view');
 
 				$data = [
-					'topic_sk'		=> request_var('topic_sk', $user->data['user_topic_sortby_type'] ?: 't'),
-					'topic_sd'		=> request_var('topic_sd', $user->data['user_topic_sortby_dir'] ?: 'd'),
-
-					'post_sk'		=> request_var('post_sk', $user->data['user_post_sortby_type'] ?: 't'),
-					'post_sd'		=> request_var('post_sd', $user->data['user_post_sortby_dir'] ?: 'a'),
-
 					'user_topics_per_page'	=> (int) request_var('user_topics_per_page', $user->data['user_topics_per_page'] ?? 0),
 					'user_posts_per_page'	=> (int) request_var('user_posts_per_page', $user->data['user_posts_per_page'] ?? 0),
 
@@ -245,12 +239,7 @@ class ucp_prefs
 
 				if ($submit)
 				{
-					$error = validate_data($data, [
-						'topic_sk'	=> ['string', false, 1, 1],
-						'topic_sd'	=> ['string', false, 1, 1],
-						'post_sk'	=> ['string', false, 1, 1],
-						'post_sd'	=> ['string', false, 1, 1],
-					]);
+					$error = [];
 
 					if (!check_form_key('ucp_prefs_view'))
 					{
@@ -274,10 +263,6 @@ class ucp_prefs
 
 						$sql_ary = [
 							'user_options'				=> $user->data['user_options'],
-							'user_topic_sortby_type'	=> $data['topic_sk'],
-							'user_post_sortby_type'		=> $data['post_sk'],
-							'user_topic_sortby_dir'		=> $data['topic_sd'],
-							'user_post_sortby_dir'		=> $data['post_sd'],
 
 							'user_topics_per_page' => $data['user_topics_per_page'],
 							'user_posts_per_page' => $data['user_posts_per_page'],
@@ -297,40 +282,6 @@ class ucp_prefs
 					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
-				$sort_dir_text = ['a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']];
-
-				// Topic ordering options
-				$limit_topic_days = [0 => $user->lang['ALL_TOPICS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-
-				$sort_by_topic_text = ['t' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES'], 'v' => $user->lang['VIEWS'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
-				$sort_by_topic_sql = ['t' => 't.topic_last_post_time', 'c' => 't.topic_time', 'r' => 't.topic_replies', 'v' => 't.topic_views', 'a' => 't.topic_first_poster_name', 's' => 't.topic_title'];
-
-				// Post ordering options
-				$limit_post_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-
-				$sort_by_post_text = ['t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
-				$sort_by_post_sql = ['t' => 'p.post_id', 'a' => 'u.username_clean', 's' => 'p.post_subject'];
-
-				$_options = ['topic', 'post'];
-				foreach ($_options as $sort_option)
-				{
-					${'s_sort_' . $sort_option . '_key'} = '<select name="' . $sort_option . '_sk">';
-					foreach (${'sort_by_' . $sort_option . '_text'} as $key => $text)
-					{
-						$selected = ($data[$sort_option . '_sk'] == $key) ? ' selected="selected"' : '';
-						${'s_sort_' . $sort_option . '_key'} .= '<option value="' . $key . '"' . $selected . '>' . $text . '</option>';
-					}
-					${'s_sort_' . $sort_option . '_key'} .= '</select>';
-
-					${'s_sort_' . $sort_option . '_dir'} = '<select name="' . $sort_option . '_sd">';
-					foreach ($sort_dir_text as $key => $value)
-					{
-						$selected = ($data[$sort_option . '_sd'] == $key) ? ' selected="selected"' : '';
-						${'s_sort_' . $sort_option . '_dir'} .= '<option value="' . $key . '"' . $selected . '>' . $value . '</option>';
-					}
-					${'s_sort_' . $sort_option . '_dir'} .= '</select>';
-				}
-
 				$template->assign_vars([
 					'ERROR'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 
@@ -347,11 +298,6 @@ class ucp_prefs
 					'QUICK_POST'		=> (bool) $config['allow_quick_post'],
 
 					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']),
-
-					'S_TOPIC_SORT_KEY'		=> $s_sort_topic_key,
-					'S_TOPIC_SORT_DIR'		=> $s_sort_topic_dir,
-					'S_POST_SORT_KEY'		=> $s_sort_post_key,
-					'S_POST_SORT_DIR'		=> $s_sort_post_dir,
 
 					'USER_TOPICS_PER_PAGE'	=> $data['user_topics_per_page'] ?: $config['topics_per_page'],
 					'USER_POSTS_PER_PAGE'	=> $data['user_posts_per_page'] ?: $config['posts_per_page'],

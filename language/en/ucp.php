@@ -433,10 +433,6 @@ $lang = array_merge($lang, [
 	'VIEW_PREVIOUS_PM'			=> 'Previous PM',
 	'VIEW_SIGS'					=> 'Display signatures',
 	'VIEW_SMILIES'				=> 'Display smilies as images',
-	'VIEW_TOPICS_DIR'			=> 'Display topic order direction',
-	'VIEW_TOPICS_KEY'			=> 'Display topics ordering by',
-	'VIEW_POSTS_DIR'			=> 'Display post order direction',
-	'VIEW_POSTS_KEY'			=> 'Display posts ordering by',
 	'USER_TOPICS_PER_PAGE'		=> 'Topics per page',
 	'USER_POSTS_PER_PAGE'		=> 'Posts per page',
 
