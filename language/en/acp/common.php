@@ -25,7 +25,6 @@ $lang = array_merge($lang, [
 	'ACP_AUTOMATION'			=> 'Automation',
 	'ACP_AVATAR_SETTINGS'		=> 'Avatar settings',
 
-	'ACP_BACKUP'				=> 'Backup',
 	'ACP_BAN'					=> 'Banning',
 	'ACP_BAN_EMAILS'			=> 'Ban emails',
 	'ACP_BAN_IPS'				=> 'Ban IPs',
@@ -127,7 +126,6 @@ $lang = array_merge($lang, [
 	'ACP_REGISTER_SETTINGS'		=> 'User registration settings',
 	'ACP_REGISTER_LOGS'			=> 'Registrations log',
 
-	'ACP_RESTORE'				=> 'Restore',
 
 	'ACP_FEED'					=> 'Feed management',
 	'ACP_FEED_SETTINGS'			=> 'Feed settings',
@@ -522,9 +520,6 @@ $lang = array_merge($lang, [
 	'LOG_DISALLOW_ADD'		=> '<strong>Added disallowed username</strong><br />» %s',
 	'LOG_DISALLOW_DELETE'	=> '<strong>Deleted disallowed username</strong>',
 
-	'LOG_DB_BACKUP'			=> '<strong>Database backup</strong>',
-	'LOG_DB_DELETE'			=> '<strong>Deleted database backup</strong>',
-	'LOG_DB_RESTORE'		=> '<strong>Restored database backup</strong>',
 
 	'LOG_DOWNLOAD_EXCLUDE_IP'	=> '<strong>Excluded IP/hostname from download list</strong><br />» %s',
 	'LOG_DOWNLOAD_IP'			=> '<strong>Added IP/hostname to download list</strong><br />» %s',

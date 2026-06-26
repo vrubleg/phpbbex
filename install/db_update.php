@@ -561,6 +561,14 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	remove_module('acp', 'board', 'cookie');
 	remove_module('acp', 'quick_reply', 'quick_reply');
 	remove_module('ucp', 'pm', 'popup');
+	remove_module('acp', 'database', 'backup');
+	remove_module('acp', 'database', 'restore');
+
+	// Remove obsolete permissions.
+
+	remove_permissions([
+		'a_backup',
+	]);
 
 	// Update cached module rights.
 

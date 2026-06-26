@@ -210,6 +210,5 @@ $lang = array_merge($lang, [
 	'acl_a_email'		=> ['lang' => 'Can send mass email', 'cat' => 'misc'],
 	'acl_a_bots'		=> ['lang' => 'Can manage bots', 'cat' => 'misc'],
 	'acl_a_reasons'		=> ['lang' => 'Can manage report/denial reasons', 'cat' => 'misc'],
-	'acl_a_backup'		=> ['lang' => 'Can backup/restore database', 'cat' => 'misc'],
 	'acl_a_search'		=> ['lang' => 'Can manage search backends and settings', 'cat' => 'misc'],
 ]);

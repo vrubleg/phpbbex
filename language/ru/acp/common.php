@@ -25,7 +25,6 @@ $lang = array_merge($lang, [
 	'ACP_AUTOMATION'			=> 'Автоматизация',
 	'ACP_AVATAR_SETTINGS'		=> 'Аватары',
 
-	'ACP_BACKUP'				=> 'Резервное копирование',
 	'ACP_BAN'					=> 'Блокировка доступа',
 	'ACP_BAN_EMAILS'			=> 'Чёрный список email',
 	'ACP_BAN_IPS'				=> 'Чёрный список IP',
@@ -127,7 +126,6 @@ $lang = array_merge($lang, [
 	'ACP_REGISTER_SETTINGS'		=> 'Регистрация пользователей',
 	'ACP_REGISTER_LOGS'			=> 'Лог регистраций',
 
-	'ACP_RESTORE'				=> 'Восстановление',
 
 	'ACP_FEED'					=> 'Каналы новостей',
 	'ACP_FEED_SETTINGS'			=> 'Каналы новостей',
@@ -522,9 +520,6 @@ $lang = array_merge($lang, [
 	'LOG_DISALLOW_ADD'		=> '<strong>Запрещено имя</strong><br />» %s',
 	'LOG_DISALLOW_DELETE'	=> '<strong>Разрешено имя</strong>',
 
-	'LOG_DB_BACKUP'			=> '<strong>Резервное копирование базы данных</strong>',
-	'LOG_DB_DELETE'			=> '<strong>Удаление резервной копии базы данных</strong>',
-	'LOG_DB_RESTORE'		=> '<strong>Восстановление базы данных</strong>',
 
 	'LOG_DOWNLOAD_EXCLUDE_IP'	=> '<strong>Исключён IP-адрес/хост из списка скачивания</strong><br />» %s',
 	'LOG_DOWNLOAD_IP'			=> '<strong>Добавлен IP-адрес/хост в список скачивания</strong><br />» %s',
