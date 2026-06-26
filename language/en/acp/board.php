@@ -517,8 +517,6 @@ $lang = array_merge($lang, [
 
 	'ADMIN_EMAIL'					=> 'Return email address',
 	'ADMIN_EMAIL_EXPLAIN'			=> 'This will be used as the return address on all emails, the technical contact email address. It will always be used as the <samp>Sender</samp> address in emails.',
-	'BOARD_EMAIL_FORM'				=> 'Users send email via board',
-	'BOARD_EMAIL_FORM_EXPLAIN'		=> 'Instead of showing the users email address users are able to send emails via the board.',
 	'BOARD_HIDE_EMAILS'				=> 'Hide email addresses of all users',
 	'BOARD_HIDE_EMAILS_EXPLAIN'		=> 'This function keeps email addresses completely private.',
 	'CONTACT_EMAIL'					=> 'Contact email address',

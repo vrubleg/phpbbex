@@ -477,7 +477,6 @@ class acp_board
 					'vars'	=> [
 						'legend1'				=> 'GENERAL_SETTINGS',
 						'email_enable'			=> ['lang' => 'ENABLE_EMAIL',			'validate' => 'bool',	'type' => 'radio:enabled_disabled', 'explain' => true],
-						'board_email_form'		=> ['lang' => 'BOARD_EMAIL_FORM',		'validate' => 'bool',	'type' => 'radio:enabled_disabled', 'explain' => true],
 						'email_package_size'	=> ['lang' => 'EMAIL_PACKAGE_SIZE',	'validate' => 'int:0',	'type' => 'text:5:5', 'explain' => true],
 						'board_contact'			=> ['lang' => 'CONTACT_EMAIL',			'validate' => 'email',	'type' => 'text:25:100', 'explain' => true],
 						'board_contact_name'	=> ['lang' => 'CONTACT_EMAIL_NAME',	'validate' => 'string',	'type' => 'text:25:100', 'explain' => false],

@@ -546,6 +546,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		'load_anon_lastread',
 		'style_show_social_buttons',
 		'check_dnsbl',
+		'board_email_form',
 	]);
 
 	// New defaults.
@@ -568,6 +569,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 
 	remove_permissions([
 		'a_backup',
+		'u_sendemail',
 	]);
 
 	// Update cached module rights.
@@ -588,6 +590,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_dir');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topics_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_return_on_error(false);
 }

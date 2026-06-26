@@ -484,7 +484,6 @@ $lang = array_merge($lang, [
 	'SELECT_DESTINATION_FORUM'	=> 'Выберите раздел назначения',
 	'SELECT_FORUM'				=> 'Выберите раздел',
 	'SEND_EMAIL'				=> 'Отправить email',				// Used for submit buttons
-	'SEND_EMAIL_USER'			=> 'Отправить письмо пользователю',	// Used as: {L_SEND_EMAIL_USER} {USERNAME} -> Email UserX
 	'SEND_PRIVATE_MESSAGE'		=> 'Отправить личное сообщение',
 	'SETTINGS'					=> 'Настройки',
 	'SIGNATURE'					=> 'Подпись',

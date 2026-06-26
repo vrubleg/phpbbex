@@ -568,8 +568,6 @@ $template->assign_vars([
 	'U_VIEW_TOPIC' 			=> $viewtopic_url,
 	'U_VIEW_FORUM' 			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id),
 	'U_PRINT_TOPIC'			=> $viewtopic_url . '&amp;view=print',
-	'U_EMAIL_TOPIC'			=> ($config['email_enable'] && $config['board_email_form'] && $user->data['is_registered'] && $auth->acl_get('u_sendemail')) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=email&amp;t=$topic_id") : '',
-
 	'U_WATCH_TOPIC' 		=> $s_watching_topic['link'],
 	'L_WATCH_TOPIC' 		=> $s_watching_topic['title'],
 	'S_WATCHING_TOPIC'		=> $s_watching_topic['is_watching'],
@@ -1141,9 +1139,9 @@ while ($row = $db->sql_fetchrow($result))
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $user_cache[$poster_id]['rank_title'], $user_cache[$poster_id]['rank_image'], $user_cache[$poster_id]['rank_image_src']);
 
-			if ((!empty($row['user_allow_viewemail']) && $auth->acl_get('u_sendemail')) || $auth->acl_get('a_email'))
+			if ((!empty($row['user_allow_viewemail']) || $auth->acl_get('a_email')) && !empty($row['user_email']))
 			{
-				$user_cache[$poster_id]['email'] = ($config['board_email_form'] && $config['email_enable']) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=email&amp;u=$poster_id") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
+				$user_cache[$poster_id]['email'] = (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
 			}
 			else
 			{

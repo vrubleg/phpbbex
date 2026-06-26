@@ -107,7 +107,6 @@ $lang = array_merge($lang, [
 
 	'acl_u_canplus'		=> ['lang' => 'Может ставить положительные оценки', 'cat' => 'misc'],
 	'acl_u_canminus'	=> ['lang' => 'Может ставить отрицательные оценки', 'cat' => 'misc'],
-	'acl_u_sendemail'	=> ['lang' => 'Может посылать email-сообщения', 'cat' => 'misc'],
 	'acl_u_sendim'		=> ['lang' => 'Может использовать систему мгновенных сообщений', 'cat' => 'misc'],
 	'acl_u_ignoreflood'	=> ['lang' => 'Может игнорировать флуд-контроль', 'cat' => 'misc'],
 	'acl_u_hideonline'	=> ['lang' => 'Может прятать статус присутствия', 'cat' => 'misc'],
