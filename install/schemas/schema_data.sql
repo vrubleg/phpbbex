@@ -14,7 +14,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remot
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_bbcode', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_birthdays', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_bookmarks', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_emailreuse', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_forum_notify', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_login_via_email', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_mass_pm', '1');

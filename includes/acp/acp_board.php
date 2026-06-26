@@ -367,17 +367,11 @@ class acp_board
 						'pass_complex'			=> ['lang' => 'PASSWORD_TYPE',		'validate' => 'string',	'type' => 'select', 'method' => 'select_password_chars', 'explain' => true],
 						'chg_passforce'			=> ['lang' => 'FORCE_PASS_CHANGE',	'validate' => 'int:0',	'type' => 'text:3:3', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
 						'allow_login_via_email'	=> ['lang' => 'ALLOW_LOGIN_VIA_EMAIL', 'validate' => 'int',	'type' => 'custom', 'method' => 'allow_login_via_email_options', 'explain' => true],
-						'allow_emailreuse'		=> ['lang' => 'ALLOW_EMAIL_REUSE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'allow_namechange'		=> ['lang' => 'ALLOW_NAME_CHANGE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 
 						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
-
-				if ($config['allow_login_via_email'] ?? 0)
-				{
-					unset($display_vars['vars']['allow_emailreuse']);
-				}
 			break;
 
 			case 'feed':

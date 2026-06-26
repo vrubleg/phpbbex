@@ -1594,19 +1594,16 @@ function validate_email($email, $allowed_email = false)
 		return ($ban_reason === true) ? 'EMAIL_BANNED' : $ban_reason;
 	}
 
-	if (!$config['allow_emailreuse'] || ($config['allow_login_via_email'] ?? 0))
-	{
-		$sql = 'SELECT user_email
-			FROM ' . USERS_TABLE . "
-			WHERE user_email = '" . $db->sql_escape($email) . "'";
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
+	$sql = 'SELECT user_email
+		FROM ' . USERS_TABLE . "
+		WHERE user_email = '" . $db->sql_escape($email) . "'";
+	$result = $db->sql_query($sql);
+	$row = $db->sql_fetchrow($result);
+	$db->sql_freeresult($result);
 
-		if ($row)
-		{
-			return 'EMAIL_TAKEN';
-		}
+	if ($row)
+	{
+		return 'EMAIL_TAKEN';
 	}
 
 	return false;

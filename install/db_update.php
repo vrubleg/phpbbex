@@ -553,12 +553,12 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		'check_dnsbl',
 		'board_email_form',
 		'board_hide_emails',
+		'allow_emailreuse',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
-	set_config('allow_emailreuse', '0');
 
 	// Remove obsolete modules.
 
