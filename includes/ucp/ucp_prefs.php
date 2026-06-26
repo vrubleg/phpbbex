@@ -197,9 +197,6 @@ class ucp_prefs
 				add_form_key('ucp_prefs_view');
 
 				$data = [
-					'user_topics_per_page'	=> (int) request_var('user_topics_per_page', $user->data['user_topics_per_page'] ?? 0),
-					'user_posts_per_page'	=> (int) request_var('user_posts_per_page', $user->data['user_posts_per_page'] ?? 0),
-
 					'images'		=> request_var('images', (bool) $user->optionget('viewimg')),
 					'flash'			=> request_var('flash', (bool) $user->optionget('viewflash')),
 					'smilies'		=> request_var('smilies', (bool) $user->optionget('viewsmilies')),
@@ -210,32 +207,6 @@ class ucp_prefs
 					'quickreply'	=> request_var('quickreply', (bool) $user->optionget('viewquickreply')),
 					'quickpost'		=> request_var('quickpost', (bool) $user->optionget('viewquickpost')),
 				];
-
-				if ($data['user_topics_per_page'] > 100)
-				{
-					$data['user_topics_per_page'] = 100;
-				}
-				if ($data['user_topics_per_page'] < 10 && $data['user_topics_per_page'] != 0)
-				{
-					$data['user_topics_per_page'] = 10;
-				}
-				if ($data['user_topics_per_page'] == $config['topics_per_page_default'])
-				{
-					$data['user_topics_per_page'] = 0;
-				}
-
-				if ($data['user_posts_per_page'] > 100)
-				{
-					$data['user_posts_per_page'] = 100;
-				}
-				if ($data['user_posts_per_page'] < 10 && $data['user_posts_per_page'] != 0)
-				{
-					$data['user_posts_per_page'] = 10;
-				}
-				if ($data['user_posts_per_page'] == $config['posts_per_page_default'])
-				{
-					$data['user_posts_per_page'] = 0;
-				}
 
 				if ($submit)
 				{
@@ -263,9 +234,6 @@ class ucp_prefs
 
 						$sql_ary = [
 							'user_options'				=> $user->data['user_options'],
-
-							'user_topics_per_page' => $data['user_topics_per_page'],
-							'user_posts_per_page' => $data['user_posts_per_page'],
 						];
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -298,9 +266,6 @@ class ucp_prefs
 					'QUICK_POST'		=> (bool) $config['allow_quick_post'],
 
 					'S_CHANGE_CENSORS'		=> ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']),
-
-					'USER_TOPICS_PER_PAGE'	=> $data['user_topics_per_page'] ?: $config['topics_per_page'],
-					'USER_POSTS_PER_PAGE'	=> $data['user_posts_per_page'] ?: $config['posts_per_page'],
 				]);
 
 			break;

@@ -917,8 +917,6 @@ CREATE TABLE phpbb_users (
 	user_message_rules tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_full_folder int(11) DEFAULT '-3' NOT NULL,
 	user_emailtime int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	user_topics_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	user_posts_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_notify tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_notify_pm tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	user_notify_type tinyint(4) DEFAULT '0' NOT NULL,

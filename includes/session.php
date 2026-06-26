@@ -1644,20 +1644,6 @@ class phpbb_user extends phpbb_session
 			}
 		}
 
-		if(!empty($this->data['is_registered']) && !defined('ADMIN_START'))
-		{
-			$config['topics_per_page_default'] = $config['topics_per_page'];
-			if ($this->data['user_topics_per_page'] > 0)
-			{
-				$config['topics_per_page'] = $this->data['user_topics_per_page'];
-			}
-			$config['posts_per_page_default'] = $config['posts_per_page'];
-			if ($this->data['user_posts_per_page'] > 0)
-			{
-				$config['posts_per_page'] = $this->data['user_posts_per_page'];
-			}
-		}
-
 		// If this function got called from the error handler we are finished here.
 		if (defined('IN_ERROR_HANDLER'))
 		{

@@ -39,8 +39,6 @@ ALTER TABLE phpbb_forums ADD COLUMN forum_topic_sortby_dir varchar(1) DEFAULT ''
 
 ALTER TABLE phpbb_poll_votes ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER vote_user_id;
 
-ALTER TABLE phpbb_users ADD COLUMN user_topics_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_emailtime;
-ALTER TABLE phpbb_users ADD COLUMN user_posts_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_topics_per_page;
 ALTER TABLE phpbb_users ADD COLUMN user_gender tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER user_birthday;
 ALTER TABLE phpbb_users ADD COLUMN user_topics mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_inactive_time;
 ALTER TABLE phpbb_users ADD COLUMN user_skype varchar(255) DEFAULT '' NOT NULL AFTER user_jabber;
