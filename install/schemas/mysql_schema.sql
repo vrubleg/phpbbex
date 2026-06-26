@@ -22,7 +22,6 @@ CREATE TABLE phpbb_attachments (
 	KEY is_orphan (is_orphan)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_acl_groups (
 	group_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -34,7 +33,6 @@ CREATE TABLE phpbb_acl_groups (
 	KEY auth_role_id (auth_role_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_acl_options (
 	auth_option_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	auth_option varchar(50) DEFAULT '' NOT NULL,
@@ -44,7 +42,6 @@ CREATE TABLE phpbb_acl_options (
 	PRIMARY KEY (auth_option_id),
 	UNIQUE auth_option (auth_option)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_acl_roles (
 	role_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -57,7 +54,6 @@ CREATE TABLE phpbb_acl_roles (
 	KEY role_order (role_order)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_acl_roles_data (
 	role_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	auth_option_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -65,7 +61,6 @@ CREATE TABLE phpbb_acl_roles_data (
 	PRIMARY KEY (role_id, auth_option_id),
 	KEY ath_op_id (auth_option_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_acl_users (
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -77,7 +72,6 @@ CREATE TABLE phpbb_acl_users (
 	KEY auth_option_id (auth_option_id),
 	KEY auth_role_id (auth_role_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_banlist (
 	ban_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -96,7 +90,6 @@ CREATE TABLE phpbb_banlist (
 	KEY ban_ip (ban_ip, ban_exclude)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_bbcodes (
 	bbcode_id smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
 	bbcode_order smallint(4) DEFAULT '0' NOT NULL,
@@ -113,13 +106,11 @@ CREATE TABLE phpbb_bbcodes (
 	KEY display_on_post (display_on_posting)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_bookmarks (
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (topic_id, user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_bots (
 	bot_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -132,7 +123,6 @@ CREATE TABLE phpbb_bots (
 	KEY bot_active (bot_active)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_config (
 	config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
 	config_value varchar(1000) DEFAULT '' NOT NULL,
@@ -140,7 +130,6 @@ CREATE TABLE phpbb_config (
 	PRIMARY KEY (config_name),
 	KEY is_dynamic (is_dynamic)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_confirm (
 	confirm_id char(32) DEFAULT '' NOT NULL,
@@ -153,13 +142,11 @@ CREATE TABLE phpbb_confirm (
 	KEY confirm_type (confirm_type)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_disallow (
 	disallow_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	disallow_username varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (disallow_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_drafts (
 	draft_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -173,7 +160,6 @@ CREATE TABLE phpbb_drafts (
 	KEY save_time (save_time)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_extensions (
 	extension_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	group_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -181,7 +167,6 @@ CREATE TABLE phpbb_extensions (
 	PRIMARY KEY (extension_id),
 	UNIQUE INDEX extension (extension)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_extension_groups (
 	group_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -195,7 +180,6 @@ CREATE TABLE phpbb_extension_groups (
 	allow_in_pm tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (group_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_forums (
 	forum_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -246,7 +230,6 @@ CREATE TABLE phpbb_forums (
 	KEY forum_lastpost_id (forum_last_post_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_forums_access (
 	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -254,14 +237,12 @@ CREATE TABLE phpbb_forums_access (
 	PRIMARY KEY (forum_id, user_id, session_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_forums_track (
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	mark_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (user_id, forum_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_forums_watch (
 	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -271,7 +252,6 @@ CREATE TABLE phpbb_forums_watch (
 	KEY user_id (user_id),
 	KEY notify_stat (notify_status)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_groups (
 	group_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -295,7 +275,6 @@ CREATE TABLE phpbb_groups (
 	KEY group_legend_name (group_legend, group_name)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_icons (
 	icons_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	icons_url varchar(255) DEFAULT '' NOT NULL,
@@ -307,7 +286,6 @@ CREATE TABLE phpbb_icons (
 	KEY display_on_posting (display_on_posting)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_lang (
 	lang_id tinyint(4) NOT NULL auto_increment,
 	lang_iso varchar(30) DEFAULT '' NOT NULL,
@@ -318,7 +296,6 @@ CREATE TABLE phpbb_lang (
 	PRIMARY KEY (lang_id),
 	KEY lang_iso (lang_iso)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_log (
 	log_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -339,7 +316,6 @@ CREATE TABLE phpbb_log (
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_login_attempts (
 	attempt_ip varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL,
 	attempt_browser varchar(250) DEFAULT '' NOT NULL,
@@ -354,7 +330,6 @@ CREATE TABLE phpbb_login_attempts (
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_moderator_cache (
 	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -365,7 +340,6 @@ CREATE TABLE phpbb_moderator_cache (
 	KEY disp_idx (display_on_index),
 	KEY forum_id (forum_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_modules (
 	module_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -385,7 +359,6 @@ CREATE TABLE phpbb_modules (
 	KEY class_left_id (module_class, left_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_poll_options (
 	poll_option_id tinyint(4) DEFAULT '0' NOT NULL,
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -394,7 +367,6 @@ CREATE TABLE phpbb_poll_options (
 	KEY poll_opt_id (poll_option_id),
 	KEY topic_id (topic_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_poll_votes (
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -407,7 +379,6 @@ CREATE TABLE phpbb_poll_votes (
 	KEY vote_user_ip (vote_user_ip)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_post_rates (
 	user_id mediumint(8) unsigned NOT NULL,
 	post_id mediumint(8) unsigned NOT NULL,
@@ -417,7 +388,6 @@ CREATE TABLE phpbb_post_rates (
 	KEY post_id (post_id),
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_posts (
 	post_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -460,7 +430,6 @@ CREATE TABLE phpbb_posts (
 	KEY tid_post_time (topic_id, post_time)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_privmsgs (
 	msg_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	root_level mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -491,7 +460,6 @@ CREATE TABLE phpbb_privmsgs (
 	KEY root_level (root_level)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_privmsgs_folder (
 	folder_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -500,7 +468,6 @@ CREATE TABLE phpbb_privmsgs_folder (
 	PRIMARY KEY (folder_id),
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_privmsgs_rules (
 	rule_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -515,7 +482,6 @@ CREATE TABLE phpbb_privmsgs_rules (
 	PRIMARY KEY (rule_id),
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_privmsgs_to (
 	msg_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -532,7 +498,6 @@ CREATE TABLE phpbb_privmsgs_to (
 	KEY author_id (author_id),
 	KEY usr_flder_id (user_id, folder_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_profile_fields (
 	field_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -559,12 +524,10 @@ CREATE TABLE phpbb_profile_fields (
 	KEY fld_ordr (field_order)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_profile_fields_data (
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_profile_fields_lang (
 	field_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -575,7 +538,6 @@ CREATE TABLE phpbb_profile_fields_lang (
 	PRIMARY KEY (field_id, lang_id, option_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_profile_lang (
 	field_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	lang_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -584,7 +546,6 @@ CREATE TABLE phpbb_profile_lang (
 	lang_default_value varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (field_id, lang_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_ranks (
 	rank_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -595,7 +556,6 @@ CREATE TABLE phpbb_ranks (
 	rank_image varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (rank_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_reports (
 	report_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -612,7 +572,6 @@ CREATE TABLE phpbb_reports (
 	KEY pm_id (pm_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_reports_reasons (
 	reason_id smallint(4) UNSIGNED NOT NULL auto_increment,
 	reason_title varchar(255) DEFAULT '' NOT NULL,
@@ -621,7 +580,6 @@ CREATE TABLE phpbb_reports_reasons (
 	PRIMARY KEY (reason_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_search_results (
 	search_key varchar(32) DEFAULT '' NOT NULL,
 	search_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
@@ -629,7 +587,6 @@ CREATE TABLE phpbb_search_results (
 	search_authors mediumtext NOT NULL,
 	PRIMARY KEY (search_key)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_search_wordlist (
 	word_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -641,7 +598,6 @@ CREATE TABLE phpbb_search_wordlist (
 	KEY wrd_cnt (word_count)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_search_wordmatch (
 	post_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	word_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -650,7 +606,6 @@ CREATE TABLE phpbb_search_wordmatch (
 	KEY word_id (word_id),
 	KEY post_id (post_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_sessions (
 	session_id char(32) DEFAULT '' NOT NULL,
@@ -670,7 +625,6 @@ CREATE TABLE phpbb_sessions (
 	KEY session_user_id (session_user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_sessions_keys (
 	key_id char(32) DEFAULT '' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -680,7 +634,6 @@ CREATE TABLE phpbb_sessions_keys (
 	KEY last_login (last_login)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_sitelist (
 	site_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	site_ip varchar(40) DEFAULT '' NOT NULL,
@@ -688,7 +641,6 @@ CREATE TABLE phpbb_sitelist (
 	ip_exclude tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (site_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_smilies (
 	smiley_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -702,7 +654,6 @@ CREATE TABLE phpbb_smilies (
 	PRIMARY KEY (smiley_id),
 	KEY display_on_post (display_on_posting)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_styles (
 	style_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -719,7 +670,6 @@ CREATE TABLE phpbb_styles (
 	KEY imageset_id (imageset_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_styles_template (
 	template_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	template_name varchar(100) DEFAULT '' NOT NULL,
@@ -733,7 +683,6 @@ CREATE TABLE phpbb_styles_template (
 	UNIQUE tmplte_nm (template_name)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_styles_template_data (
 	template_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	template_filename varchar(100) DEFAULT '' NOT NULL,
@@ -743,7 +692,6 @@ CREATE TABLE phpbb_styles_template_data (
 	KEY tid (template_id),
 	KEY tfn (template_filename)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_styles_theme (
 	theme_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -757,7 +705,6 @@ CREATE TABLE phpbb_styles_theme (
 	UNIQUE theme_name (theme_name)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_styles_imageset (
 	imageset_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	imageset_name varchar(100) DEFAULT '' NOT NULL,
@@ -766,7 +713,6 @@ CREATE TABLE phpbb_styles_imageset (
 	PRIMARY KEY (imageset_id),
 	UNIQUE imgset_nm (imageset_name)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_styles_imageset_data (
 	image_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -779,7 +725,6 @@ CREATE TABLE phpbb_styles_imageset_data (
 	PRIMARY KEY (image_id),
 	KEY i_d (imageset_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_topics (
 	topic_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -830,7 +775,6 @@ CREATE TABLE phpbb_topics (
 	KEY fid_time_moved (forum_id, topic_last_post_time, topic_moved_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_topics_track (
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -841,14 +785,12 @@ CREATE TABLE phpbb_topics_track (
 	KEY forum_id (forum_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_topics_posted (
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_posted tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (user_id, topic_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_topics_watch (
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -859,7 +801,6 @@ CREATE TABLE phpbb_topics_watch (
 	KEY notify_stat (notify_status)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_user_group (
 	group_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -869,7 +810,6 @@ CREATE TABLE phpbb_user_group (
 	KEY user_id (user_id),
 	KEY group_leader (group_leader)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_users (
 	user_id mediumint(8) UNSIGNED NOT NULL auto_increment,
@@ -953,7 +893,6 @@ CREATE TABLE phpbb_users (
 	KEY user_birthday (user_birthday)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_warnings (
 	warning_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	warning_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
@@ -972,14 +911,12 @@ CREATE TABLE phpbb_warnings (
 	KEY post_id (post_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_words (
 	word_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	word varchar(255) DEFAULT '' NOT NULL,
 	replacement varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (word_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_zebra (
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -989,7 +926,6 @@ CREATE TABLE phpbb_zebra (
 	PRIMARY KEY (user_id, zebra_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-
 CREATE TABLE phpbb_user_confirm_keys (
 	confirm_key varchar(10) NOT NULL,
 	user_id mediumint(8) UNSIGNED NOT NULL,
@@ -997,7 +933,6 @@ CREATE TABLE phpbb_user_confirm_keys (
 	PRIMARY KEY  (confirm_key),
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 
 CREATE TABLE phpbb_user_browser_ids (
 	browser_id char(32) DEFAULT '' NOT NULL,
