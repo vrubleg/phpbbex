@@ -415,8 +415,6 @@ class acp_main
 		}
 
 		// Version check
-		$user->add_lang('install');
-
 		if ($auth->acl_get('a_server') && PHP_VERSION_ID < 70400)
 		{
 			$template->assign_vars([
@@ -610,14 +608,6 @@ class acp_main
 				'S_INACTIVE_OPTIONS'	=> build_select($option_ary)]
 			);
 		}
-
-		// Warn if install is still present
-		/*
-		if (file_exists(PHPBB_ROOT_PATH . 'install') && !is_file(PHPBB_ROOT_PATH . 'install'))
-		{
-			$template->assign_var('S_REMOVE_INSTALL', true);
-		}
-		*/
 
 		if (!(stripos(PHP_OS, 'WIN') === 0) && !defined('PHPBB_DISABLE_CONFIG_CHECK') && file_exists(PHPBB_ROOT_PATH . 'config.php') && phpbb_is_writable(PHPBB_ROOT_PATH . 'config.php'))
 		{
