@@ -158,10 +158,6 @@ $lang = array_merge($lang, [
 
 	'OVERVIEW_BODY'				=> 'Welcome to phpBBex!<br /><br />phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a href="//phpbbex.com/forum/viewtopic.php?t=28">More...</a><br /><br />This installation system will guide you through installing phpBB3. For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>. To install, please select the appropriate tab above.',
 
-	'PCRE_UTF_SUPPORT'				=> 'PCRE UTF-8 and "(?|(a)|(b))" construction support',
-	'PCRE_UTF_SUPPORT_EXPLAIN'		=> 'phpBBex will <strong>not</strong> run if your PHP installation is not compiled with UTF-8 support in the PCRE extension or your PCRE version is obsolete.',
-	'PHP_GETIMAGESIZE_SUPPORT'			=> 'PHP function getimagesize() is available',
-	'PHP_GETIMAGESIZE_SUPPORT_EXPLAIN'	=> '<strong>Required</strong> - In order for phpBBex to function correctly, the getimagesize function needs to be available.',
 	'PHP_OPTIONAL_MODULE'			=> 'Optional modules',
 	'PHP_OPTIONAL_MODULE_EXPLAIN'	=> '<strong>Optional</strong> - These modules or applications are optional. However, if they are available they will enable extra features.',
 	'PHP_SUPPORTED_DB'				=> 'Supported databases',
