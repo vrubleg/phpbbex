@@ -483,7 +483,6 @@ class acp_board
 						'board_email'			=> ['lang' => 'ADMIN_EMAIL',			'validate' => 'email',	'type' => 'text:25:100', 'explain' => true],
 						'email_force_sender'	=> ['lang' => 'EMAIL_FORCE_SENDER',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'board_email_sig'		=> ['lang' => 'EMAIL_SIG',				'validate' => 'string',	'type' => 'textarea:5:30', 'explain' => true],
-						'board_hide_emails'		=> ['lang' => 'BOARD_HIDE_EMAILS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 
 						'legend2'				=> 'SMTP_SETTINGS',
 						'smtp_delivery'			=> ['lang' => 'USE_SMTP',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],

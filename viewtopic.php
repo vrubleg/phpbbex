@@ -1141,7 +1141,7 @@ while ($row = $db->sql_fetchrow($result))
 
 			if ((!empty($row['user_allow_viewemail']) || $auth->acl_get('a_email')) && !empty($row['user_email']))
 			{
-				$user_cache[$poster_id]['email'] = (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
+				$user_cache[$poster_id]['email'] = 'mailto:' . $row['user_email'];
 			}
 			else
 			{

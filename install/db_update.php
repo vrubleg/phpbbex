@@ -527,6 +527,11 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 {
+	if ($config['board_hide_emails'] ?? 0)
+	{
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_allow_viewemail = 0');
+	}
+
 	// Remove obsolete config values.
 
 	remove_config_values([
@@ -547,6 +552,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		'style_show_social_buttons',
 		'check_dnsbl',
 		'board_email_form',
+		'board_hide_emails',
 	]);
 
 	// New defaults.
@@ -578,7 +584,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		SET module_auth = 'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)'
 		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'avatar'");
 
-	// Drop user_email_hash.
+	// Update users table.
 
 	$db->sql_return_on_error(true);
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
@@ -591,6 +597,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topics_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_return_on_error(false);
 }

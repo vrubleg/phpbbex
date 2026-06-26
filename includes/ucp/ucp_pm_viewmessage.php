@@ -334,7 +334,7 @@ function get_user_information($user_id, $user_row)
 
 	if ((!empty($user_row['user_allow_viewemail']) || $auth->acl_get('a_email')) && !empty($user_row['user_email']))
 	{
-		$user_row['email'] = (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $user_row['user_email']);
+		$user_row['email'] = 'mailto:' . $user_row['user_email'];
 	}
 
 	return $user_row;

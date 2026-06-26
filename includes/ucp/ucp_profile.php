@@ -424,8 +424,7 @@ class ucp_profile
 				$template->assign_vars([
 					'ERROR'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 
-					'S_HIDE_ALL_EMAILS'	=> $config['board_hide_emails'],
-					'S_VIEW_EMAIL'		=> $data['viewemail'],
+					'S_VIEW_EMAIL'	=> $data['viewemail'],
 
 					'ICQ'		=> $data['icq'],
 					'JABBER'	=> $data['jabber'],

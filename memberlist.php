@@ -1331,7 +1331,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 	if ((!empty($data['user_allow_viewemail']) || $auth->acl_get('a_user')) && !empty($data['user_email']))
 	{
-		$email = (($config['board_hide_emails'] && !$auth->acl_get('a_user')) ? '' : 'mailto:' . $data['user_email']);
+		$email = 'mailto:' . $data['user_email'];
 	}
 	else
 	{
