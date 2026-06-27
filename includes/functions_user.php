@@ -1436,6 +1436,12 @@ function validate_username($username, $allowed_username = false)
 		return 'INVALID_CHARS';
 	}
 
+	// Don't allow usernames that look like email addresses.
+	if (preg_match('/^' . get_preg_expression('email') . '$/i', $username))
+	{
+		return 'USERNAME_LIKE_EMAIL';
+	}
+
 	switch ($config['allow_name_chars'])
 	{
 		case 'USERNAME_LATCHARS_NOSPACE':
@@ -1457,12 +1463,6 @@ function validate_username($username, $allowed_username = false)
 	}
 
 	if (!preg_match('#^' . $regex . '$#u', $username))
-	{
-		return 'INVALID_CHARS';
-	}
-
-	// Don't allow a username that look like a e-mail address.
-	if (preg_match('/^' . get_preg_expression('email') . '$/i', strtolower($username)))
 	{
 		return 'INVALID_CHARS';
 	}

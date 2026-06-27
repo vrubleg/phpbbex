@@ -415,8 +415,9 @@ $lang = array_merge($lang, [
 	'USERNAME_LATCHARS_SPACERS_EXPLAIN' => 'Must be between %1$d and %2$d chars long and use latin alphanumeric, space, dot or hyphen characters.',
 	'USERNAME_UNICHARS_NOSPACE_EXPLAIN' => 'Must be between %1$d and %2$d chars long and use alphanumeric characters without spaces.',
 	'USERNAME_UNICHARS_SPACERS_EXPLAIN' => 'Must be between %1$d and %2$d chars long and use alphanumeric, space, dot or hyphen characters.',
-	'USERNAME_TAKEN_USERNAME'		=> 'The username you entered is already in use, please select an alternative.',
+	'USERNAME_TAKEN_USERNAME'		=> 'The username you entered is already in use. Please choose a different name.',
 	'USERNAME_DISALLOWED_USERNAME'	=> 'The username you entered has been disallowed or contains a disallowed word. Please choose a different name.',
+	'USERNAME_LIKE_EMAIL_USERNAME'	=> 'Username cannot look like an email address. Please choose a different name.',
 	'USER_NOT_FOUND_OR_INACTIVE'	=> 'The usernames you specified could either not be found or are not activated users.',
 
 	'VIEW_AVATARS'				=> 'Display avatars',

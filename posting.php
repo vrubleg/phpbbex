@@ -815,15 +815,15 @@ if ($submit || $preview || $refresh)
 
 		$user->add_lang('ucp');
 
-		if (($result = validate_username($post_data['username'], $post_data['post_username'] ?? '')) !== false)
-		{
-			$error[] = $user->lang[$result . '_USERNAME'];
-		}
-
 		if (($result = validate_string($post_data['username'], false, $config['min_name_chars'], $config['max_name_chars'])) !== false)
 		{
 			$min_max_amount = ($result == 'TOO_SHORT') ? $config['min_name_chars'] : $config['max_name_chars'];
 			$error[] = sprintf($user->lang['FIELD_' . $result], $user->lang['USERNAME'], $min_max_amount);
+		}
+
+		if (($result = validate_username($post_data['username'], $post_data['post_username'] ?? '')) !== false)
+		{
+			$error[] = $user->lang[$result . '_USERNAME'];
 		}
 	}
 
