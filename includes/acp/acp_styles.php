@@ -270,10 +270,8 @@ inherit_from = {INHERIT_FROM}
 			break;
 
 			case 'theme':
-
 				switch ($action)
 				{
-					// Refresh theme data stored in the database
 					case 'refresh':
 
 						$sql = 'SELECT *
@@ -288,30 +286,17 @@ inherit_from = {INHERIT_FROM}
 							trigger_error($user->lang['NO_THEME'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
 
-						if (!$theme_row['theme_storedb'])
-						{
-							trigger_error($user->lang['THEME_ERR_REFRESH_FS'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
 						if (confirm_box(true))
 						{
-							if ($theme_row['theme_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"))
-							{
-								// Save CSS contents
-								$sql_ary = [
-									'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
-									'theme_data'	=> $this->db_theme_data($theme_row)
-								];
+							$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
+								SET theme_mtime = ' . time() . "
+								WHERE theme_id = $style_id";
+							$db->sql_query($sql);
 
-								$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-									WHERE theme_id = $style_id";
-								$db->sql_query($sql);
+							$cache->destroy('sql', STYLES_THEME_TABLE);
 
-								$cache->destroy('sql', STYLES_THEME_TABLE);
-
-								add_log('admin', 'LOG_THEME_REFRESHED', $theme_row['theme_name']);
-								trigger_error($user->lang['THEME_REFRESHED'] . adm_back_link($this->u_action));
-							}
+							add_log('admin', 'LOG_THEME_REFRESHED', $theme_row['theme_name']);
+							trigger_error($user->lang['THEME_REFRESHED'] . adm_back_link($this->u_action));
 						}
 						else
 						{
@@ -1081,7 +1066,7 @@ inherit_from = {INHERIT_FROM}
 
 			case 'theme':
 				$sql_from = STYLES_THEME_TABLE;
-				$sql_select = 'theme_id, theme_name, theme_path, theme_storedb';
+				$sql_select = 'theme_id, theme_name, theme_path';
 			break;
 
 			case 'imageset':
@@ -1485,7 +1470,7 @@ inherit_from = {INHERIT_FROM}
 				trigger_error($user->lang['NO_' . $l_prefix] . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
-			$var_ary = ['style_id', 'style_name', 'style_copyright', 'template_id', 'template_name', 'template_path', 'template_copyright', 'template_inherits_id', 'bbcode_bitfield', 'theme_id', 'theme_name', 'theme_path', 'theme_copyright', 'theme_storedb', 'theme_mtime', 'theme_data', 'imageset_id', 'imageset_name', 'imageset_path', 'imageset_copyright'];
+			$var_ary = ['style_id', 'style_name', 'style_copyright', 'template_id', 'template_name', 'template_path', 'template_copyright', 'template_inherits_id', 'bbcode_bitfield', 'theme_id', 'theme_name', 'theme_path', 'theme_copyright', 'theme_mtime', 'imageset_id', 'imageset_name', 'imageset_path', 'imageset_copyright'];
 
 			foreach ($var_ary as $var)
 			{
@@ -1568,21 +1553,13 @@ inherit_from = {INHERIT_FROM}
 					'src'		=> "styles/{$style_row['theme_path']}/theme/",
 					'prefix-'	=> "styles/{$style_row['theme_path']}/",
 					'prefix+'	=> false,
-					'exclude'	=> ($style_row['theme_storedb']) ? 'stylesheet.css,theme.cfg' : 'theme.cfg'
+					'exclude'	=> 'theme.cfg'
 				];
 
 				$data[] = [
 					'src'		=> $theme_cfg,
 					'prefix'	=> 'theme/theme.cfg'
 				];
-
-				if ($style_row['theme_storedb'])
-				{
-					$data[] = [
-						'src'		=> $style_row['theme_data'],
-						'prefix'	=> 'theme/stylesheet.css'
-					];
-				}
 
 				unset($items, $theme_cfg);
 			}
@@ -1851,8 +1828,6 @@ inherit_from = {INHERIT_FROM}
 
 			$style_active = request_var('style_active', 0);
 			$style_default = request_var('style_default', 0);
-			$store_db = request_var('store_db', 0);
-
 			// If the admin selected the style to be the default style, but forgot to activate it... we will do it for him
 			if ($style_default)
 			{
@@ -1882,26 +1857,6 @@ inherit_from = {INHERIT_FROM}
 				$error[] = $user->lang[$l_type . '_ERR_STYLE_NAME'];
 			}
 
-			if ($mode === 'theme')
-			{
-				// a rather elaborate check we have to do here once to avoid trouble later
-				$check = PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/stylesheet.css";
-				if (($style_row["{$mode}_storedb"] != $store_db) && !$store_db && !phpbb_is_writable($check))
-				{
-					$error[] = $user->lang['EDIT_' . strtoupper($mode) . '_STORED_DB'];
-					$store_db = 1;
-				}
-
-				// themes which have to be parsed have to go into db
-				$cfg = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/theme.cfg");
-
-				if (isset($cfg['parse_css_file']) && $cfg['parse_css_file'] && !$store_db)
-				{
-					$error[] = $user->lang['EDIT_THEME_STORE_PARSED'];
-					$store_db = 1;
-				}
-			}
-
 			if (!sizeof($error))
 			{
 				// Check length settings
@@ -1924,7 +1879,6 @@ inherit_from = {INHERIT_FROM}
 				'theme_id'				=> $theme_id,
 				'imageset_id'			=> $imageset_id,
 				'style_active'			=> $style_active,
-				$mode . '_storedb'		=> ($mode === 'theme') ? $store_db : ($style_row[$mode . '_storedb'] ?? 0),
 				$mode . '_name'			=> $name,
 				$mode . '_copyright'	=> $copyright]
 			);
@@ -1954,33 +1908,6 @@ inherit_from = {INHERIT_FROM}
 				break;
 
 				case 'theme':
-
-					if ($style_row['theme_storedb'] != $store_db)
-					{
-						$theme_data = '';
-
-						if (!$style_row['theme_storedb'])
-						{
-							$theme_data = $this->db_theme_data($style_row);
-						}
-						else if (!$store_db && phpbb_is_writable(PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/stylesheet.css"))
-						{
-							$store_db = 1;
-							$theme_data = $style_row['theme_data'];
-
-							if ($fp = @fopen(PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/stylesheet.css", 'wb'))
-							{
-								$store_db = (@fwrite($fp, str_replace("styles/{$style_row['theme_path']}/theme/", './', $theme_data))) ? 0 : 1;
-							}
-							fclose($fp);
-						}
-
-						$sql_ary += [
-							'theme_mtime'	=> ($store_db) ? filemtime(PHPBB_ROOT_PATH . "styles/{$style_row['theme_path']}/theme/stylesheet.css") : 0,
-							'theme_storedb'	=> $store_db,
-							'theme_data'	=> ($store_db) ? $theme_data : '',
-						];
-					}
 				break;
 			}
 
@@ -2048,8 +1975,6 @@ inherit_from = {INHERIT_FROM}
 			'S_TEMPLATE'			=> ($mode == 'template'),
 			'S_THEME'				=> ($mode == 'theme'),
 			'S_IMAGESET'			=> ($mode == 'imageset'),
-			'S_STORE_DB'			=> ($mode === 'theme') ? ($style_row['theme_storedb'] ?? 0) : 0,
-			'S_STORE_DB_DISABLED'	=> ($mode === 'theme') ? ($style_row['theme_inherits_id'] ?? 0) : 0,
 			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
 			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 			'S_SUPERTEMPLATE'		=> (isset($style_row[$mode . '_inherits_id']) && $style_row[$mode . '_inherits_id']) ? $super['template_name'] : 0,
@@ -2064,87 +1989,12 @@ inherit_from = {INHERIT_FROM}
 			'L_TITLE'				=> $user->lang[$this->page_title],
 			'L_EXPLAIN'				=> $user->lang[$this->page_title . '_EXPLAIN'],
 			'L_NAME'				=> $user->lang[$l_type . '_NAME'],
-			'L_LOCATION'			=> ($mode == 'template' || $mode == 'theme') ? $user->lang[$l_type . '_LOCATION'] : '',
-			'L_LOCATION_EXPLAIN'	=> ($mode == 'template' || $mode == 'theme') ? $user->lang[$l_type . '_LOCATION_EXPLAIN'] : '',
 
 			'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'			=> $style_row[$mode . '_name'],
 			'COPYRIGHT'		=> $style_row[$mode . '_copyright'],
 			]
 		);
-	}
-
-	/**
-	* Load css file contents
-	*/
-	static function load_css_file($path, $filename)
-	{
-		$file = PHPBB_ROOT_PATH . "styles/$path/theme/$filename";
-
-		if (file_exists($file) && ($content = file_get_contents($file)))
-		{
-			$content = trim($content);
-		}
-		else
-		{
-			$content = '';
-		}
-		if (defined('DEBUG'))
-		{
-			$content = "/* BEGIN @include $filename */ \n $content \n /* END @include $filename */ \n";
-		}
-
-		return $content;
-	}
-
-	/**
-	* Returns a string containing the value that should be used for the theme_data column in the theme database table.
-	* Includes contents of files loaded via @import
-	*
-	* @param array $theme_row is an associative array containing the theme's current database entry
-	* @param mixed $stylesheet can either be the new content for the stylesheet or false to load from the standard file
-	* @param string $root_path should only be used in case you want to use a different root path than PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}"
-	*
-	* @return string Stylesheet data for theme_data column in the theme table
-	*/
-	static function db_theme_data($theme_row, $stylesheet = false, $root_path = '')
-	{
-		if (!$root_path)
-		{
-			$root_path = PHPBB_ROOT_PATH . 'styles/' . $theme_row['theme_path'];
-		}
-
-		if (!$stylesheet)
-		{
-			$stylesheet = '';
-			if (file_exists($root_path . '/theme/stylesheet.css'))
-			{
-				$stylesheet = file_get_contents($root_path . '/theme/stylesheet.css');
-			}
-		}
-
-		// Match CSS imports
-		$matches = [];
-		preg_match_all('/@import url\((["\'])(.*)\1\);/i', $stylesheet, $matches);
-
-		// remove commented stylesheets (very simple parser, allows only whitespace
-		// around an @import statement)
-		preg_match_all('#/\*\s*@import url\((["\'])(.*)\1\);\s\*/#i', $stylesheet, $commented);
-		$matches[2] = array_diff($matches[2], $commented[2]);
-
-		if (sizeof($matches))
-		{
-			foreach ($matches[0] as $idx => $match)
-			{
-				if (isset($matches[2][$idx]))
-				{
-					$stylesheet = str_replace($match, acp_styles::load_css_file($theme_row['theme_path'], $matches[2][$idx]), $stylesheet);
-				}
-			}
-		}
-
-		// adjust paths
-		return str_replace('./', 'styles/' . $theme_row['theme_path'] . '/theme/', $stylesheet);
 	}
 
 	/**
@@ -2334,7 +2184,6 @@ inherit_from = {INHERIT_FROM}
 			trigger_error($user->lang['NO_' . $l_type] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
 
-		$style_row['store_db'] = ($mode === 'theme') ? request_var('store_db', 0) : 0;
 		$style_row['style_active'] = request_var('style_active', 1);
 		$style_row['style_default'] = request_var('style_default', 0);
 
@@ -2352,15 +2201,14 @@ inherit_from = {INHERIT_FROM}
 			}
 			else
 			{
-				$style_row['store_db'] = $this->install_element($mode, $error, 'install', $root_path, $style_row[$mode . '_id'], $style_row[$mode . '_name'], $install_path, $style_row[$mode . '_copyright'], $style_row['store_db']);
+				$this->install_element($mode, $error, 'install', $root_path, $style_row[$mode . '_id'], $style_row[$mode . '_name'], $install_path, $style_row[$mode . '_copyright']);
 			}
 
 			if (!sizeof($error))
 			{
 				$cache->destroy('sql', STYLES_TABLE);
 
-				$message = ($mode === 'theme' && $style_row['store_db']) ? '_ADDED_DB' : '_ADDED';
-				trigger_error($user->lang[$l_type . $message] . adm_back_link($this->u_action));
+				trigger_error($user->lang[$l_type . '_ADDED'] . adm_back_link($this->u_action));
 			}
 		}
 
@@ -2376,7 +2224,6 @@ inherit_from = {INHERIT_FROM}
 			'S_SUPERTEMPLATE'	=> $installcfg['inherit_from'] ?? '',
 			'S_THEME'			=> ($mode == 'theme'),
 
-			'S_STORE_DB'			=> ($mode === 'theme') ? ($style_row['theme_storedb'] ?? 0) : 0,
 			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
 			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 
@@ -2386,8 +2233,6 @@ inherit_from = {INHERIT_FROM}
 			'L_TITLE'				=> $user->lang[$this->page_title],
 			'L_EXPLAIN'				=> $user->lang[$this->page_title . '_EXPLAIN'],
 			'L_NAME'				=> $user->lang[$l_type . '_NAME'],
-			'L_LOCATION'			=> ($mode == 'template' || $mode == 'theme') ? $user->lang[$l_type . '_LOCATION'] : '',
-			'L_LOCATION_EXPLAIN'	=> ($mode == 'template' || $mode == 'theme') ? $user->lang[$l_type . '_LOCATION_EXPLAIN'] : '',
 
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'				=> $style_row[$mode . '_name'],
@@ -2415,7 +2260,6 @@ inherit_from = {INHERIT_FROM}
 			'template_id'			=> 0,
 			'theme_id'				=> 0,
 			'imageset_id'			=> 0,
-			'store_db'				=> ($mode === 'theme') ? request_var('store_db', 0) : 0,
 			'style_active'			=> request_var('style_active', 1),
 			'style_default'			=> request_var('style_default', 0),
 		];
@@ -2494,8 +2338,7 @@ inherit_from = {INHERIT_FROM}
 			{
 				$cache->destroy('sql', STYLES_TABLE);
 
-				$message = ($mode === 'theme' && $style_row['store_db']) ? '_ADDED_DB' : '_ADDED';
-				trigger_error($user->lang[$l_type . $message] . adm_back_link($this->u_action));
+				trigger_error($user->lang[$l_type . '_ADDED'] . adm_back_link($this->u_action));
 			}
 		}
 
@@ -2529,7 +2372,6 @@ inherit_from = {INHERIT_FROM}
 			'S_THEME'			=> ($mode == 'theme'),
 			'S_BASIS'			=> (bool) $basis,
 
-			'S_STORE_DB'			=> ($mode === 'theme') ? ($style_row['store_db'] ?? 0) : 0,
 			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
 			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 			'S_TEMPLATE_OPTIONS'	=> ($mode == 'style') ? $template_options : '',
@@ -2542,8 +2384,6 @@ inherit_from = {INHERIT_FROM}
 			'L_TITLE'				=> $user->lang[$this->page_title],
 			'L_EXPLAIN'				=> $user->lang[$this->page_title . '_EXPLAIN'],
 			'L_NAME'				=> $user->lang[$l_type . '_NAME'],
-			'L_LOCATION'			=> ($mode == 'template' || $mode == 'theme') ? $user->lang[$l_type . '_LOCATION'] : '',
-			'L_LOCATION_EXPLAIN'	=> ($mode == 'template' || $mode == 'theme') ? $user->lang[$l_type . '_LOCATION_EXPLAIN'] : '',
 
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'				=> $style_row[$mode . '_name'],
@@ -2720,13 +2560,12 @@ inherit_from = {INHERIT_FROM}
 	/**
 	* Install/add an element, doing various checks as we go
 	*/
-	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path, $copyright, $store_db = 0)
+	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path, $copyright)
 	{
 		global $db, $user;
 
 		// we parse the cfg here (again)
 		$cfg_data = parse_cfg_file("$root_path$mode/$mode.cfg");
-		$store_db = ($mode === 'theme') ? $store_db : 0;
 
 		switch ($mode)
 		{
@@ -2792,9 +2631,7 @@ inherit_from = {INHERIT_FROM}
 				$select_bf = '';
 			}
 
-			$select_storedb = ($mode === 'theme') ? ", {$mode}_storedb" : '';
-
-			$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path$select_storedb $select_bf
+			$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path$select_bf
 				FROM $sql_from
 				WHERE {$mode}_name = '" . $db->sql_escape($cfg_data['inherit_from']) . "'
 					AND {$mode}_inherits_id = 0";
@@ -2810,8 +2647,6 @@ inherit_from = {INHERIT_FROM}
 				$inherit_id = $row["{$mode}_id"];
 				$inherit_path = $row["{$mode}_path"];
 				$inherit_bf = ($mode === 'template') ? $row["bbcode_bitfield"] : false;
-				$cfg_data['store_db'] = ($mode === 'theme') ? $row["{$mode}_storedb"] : 0;
-				$store_db = ($mode === 'theme') ? $row["{$mode}_storedb"] : 0;
 			}
 		}
 		else
@@ -2858,22 +2693,11 @@ inherit_from = {INHERIT_FROM}
 				}
 			break;
 
+			// all the heavy lifting is done later
 			case 'theme':
-				// We are only interested in the theme configuration for now
-
-				if (isset($cfg_data['parse_css_file']) && $cfg_data['parse_css_file'])
-				{
-					$store_db = 1;
-				}
-
-				$sql_ary += [
-					'theme_storedb'	=> $store_db,
-					'theme_data'	=> ($store_db) ? $this->db_theme_data($sql_ary, false, $root_path) : '',
-					'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/$path/theme/stylesheet.css")
-				];
+				$sql_ary['theme_mtime'] = (int) filemtime(PHPBB_ROOT_PATH . "styles/$path/theme/stylesheet.css");
 			break;
 
-			// all the heavy lifting is done later
 			case 'imageset':
 			break;
 		}
@@ -2989,11 +2813,7 @@ inherit_from = {INHERIT_FROM}
 
 		$db->sql_transaction('commit');
 
-		$log = ($mode === 'theme' && $store_db) ? 'LOG_' . $l_type . '_ADD_DB' : 'LOG_' . $l_type . '_ADD_FS';
-		add_log('admin', $log, $name);
-
-		// Return store_db in case it had to be altered
-		return $store_db;
+		add_log('admin', 'LOG_' . $l_type . '_ADD_FS', $name);
 	}
 
 	/**

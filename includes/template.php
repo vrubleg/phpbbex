@@ -275,7 +275,7 @@ class phpbb_template
 			require_once(PHPBB_ROOT_PATH . 'includes/functions_template.php');
 		}
 
-		// Inheritance - we point to another template file for this one. Equality is also used for store_db
+		// Inheritance - we point to another template file for this one.
 		if (isset($user->theme['template_inherits_id']) && $user->theme['template_inherits_id'] && !file_exists($this->files[$handle]))
 		{
 			$this->files[$handle] = $this->files_inherit[$handle];

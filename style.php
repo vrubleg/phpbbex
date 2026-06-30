@@ -52,7 +52,7 @@ unset($dbpasswd);
 
 $config = $cache->obtain_config();
 
-$sql = 'SELECT s.style_id, c.theme_id, c.theme_data, c.theme_path, c.theme_name, c.theme_mtime, i.*, t.template_path
+$sql = 'SELECT s.style_id, c.theme_id, c.theme_path, c.theme_name, c.theme_mtime, i.*, t.template_path
 	FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
 	WHERE s.style_id = ' . $style_id . '
 		AND t.template_id = s.template_id
@@ -98,59 +98,49 @@ while ($row = $db->sql_fetchrow($result))
 }
 $db->sql_freeresult($result);
 
-// gzip_compression
-if ($config['gzip_compress'] && @extension_loaded('zlib') && !headers_sent())
+$theme_dir_path = PHPBB_ROOT_PATH . 'styles/' . $theme['theme_path'] . '/theme/';
+$theme_css_path = $theme_dir_path . 'stylesheet.css';
+
+if (!file_exists($theme_css_path))
 {
-	ob_start('ob_gzhandler');
+	http_response_code(503);
+	die();
 }
 
-// Expire time of seven days if not recached
-$expire_time = 7*86400;
-$recache = false;
+$theme_mtime = filemtime($theme_css_path);
+$theme_data = file_get_contents($theme_css_path);
 
-// Re-cache stylesheet data if necessary
-if ($config['load_tplcompile'] || empty($theme['theme_data']))
-{
-	$recache = empty($theme['theme_data']);
-	$update_time = time();
-
-	// We test for stylesheet.css because it is faster and most likely the only file changed on common themes
-	if (!$recache && $theme['theme_mtime'] < @filemtime(PHPBB_ROOT_PATH . 'styles/' . $theme['theme_path'] . '/theme/stylesheet.css'))
+// Match CSS imports (skipping commented out ones).
+$theme_data = preg_replace_callback(
+	'#/\*.*?\*/(*SKIP)(*FAIL)|@import\s+url\(\s*(["\'])([-_.a-z0-9]+)\1\s*\)\s*;#is',
+	function ($m) use ($theme_dir_path, &$theme_mtime)
 	{
-		$recache = true;
-		$update_time = @filemtime(PHPBB_ROOT_PATH . 'styles/' . $theme['theme_path'] . '/theme/stylesheet.css');
-	}
-	else if (!$recache)
-	{
-		$last_change = $theme['theme_mtime'];
-		$dir = @opendir(PHPBB_ROOT_PATH . "styles/{$theme['theme_path']}/theme");
-
-		if ($dir)
+		$filename = $m[2];
+		$import_path = $theme_dir_path . $filename;
+		$content = '';
+		if (file_exists($import_path))
 		{
-			while (($entry = readdir($dir)) !== false)
-			{
-				if (substr(strrchr($entry, '.'), 1) == 'css' && $last_change < @filemtime(PHPBB_ROOT_PATH . "styles/{$theme['theme_path']}/theme/{$entry}"))
-				{
-					$recache = true;
-					break;
-				}
-			}
-			closedir($dir);
+			$theme_mtime = max($theme_mtime, filemtime($import_path));
+			$content = trim(file_get_contents($import_path));
 		}
-	}
-}
+		if (defined('DEBUG'))
+		{
+			$content = "/* BEGIN @include $filename */ \n $content \n /* END @include $filename */ \n";
+		}
+		return $content;
+	},
+	$theme_data);
+
+$theme_data = str_replace('./', "styles/{$theme['theme_path']}/theme/", $theme_data);
+
+$recache = ($theme_mtime > (int) $theme['theme_mtime']);
 
 if ($recache)
 {
-	require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_styles.php');
+	$theme['theme_mtime'] = $theme_mtime;
 
-	$theme['theme_data'] = acp_styles::db_theme_data($theme);
-	$theme['theme_mtime'] = $update_time;
-
-	// Save CSS contents
 	$sql_ary = [
 		'theme_mtime'	=> $theme['theme_mtime'],
-		'theme_data'	=> $theme['theme_data']
 	];
 
 	$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
@@ -162,17 +152,17 @@ if ($recache)
 
 header('Content-Type: text/css; charset=UTF-8');
 
-// Only set the expire time if the theme changed data is older than 5 minutes - to cope with changes from the ACP
+// Only set the expire time if the theme changed data is older than 5 minutes.
 if ($recache || $theme['theme_mtime'] > (time() - 300))
 {
 	header('Cache-Control: no-cache');
 }
 else
 {
+	$expire_time = 7*86400;
 	header('Cache-Control: public, max-age=' . $expire_time);
 }
 
-// Parse Theme Data
 $replace = [
 	'{T_THEME_PATH}'			=> PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['theme_path']) . '/theme',
 	'{T_TEMPLATE_PATH}'			=> PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_path']) . '/template',
@@ -182,10 +172,10 @@ $replace = [
 	'{S_USER_LANG}'				=> $lang,
 ];
 
-$theme['theme_data'] = str_replace(array_keys($replace), array_values($replace), $theme['theme_data']);
+$theme_data = str_replace(array_keys($replace), array_values($replace), $theme_data);
 
 $matches = [];
-preg_match_all('#\{IMG_([A-Za-z0-9_]*?)_(WIDTH|HEIGHT|SRC)\}#', $theme['theme_data'], $matches);
+preg_match_all('#\{IMG_([A-Za-z0-9_]*?)_(WIDTH|HEIGHT|SRC)\}#', $theme_data, $matches);
 
 $imgs = $find = $replace = [];
 if (isset($matches[0]) && sizeof($matches[0]))
@@ -230,11 +220,17 @@ if (isset($matches[0]) && sizeof($matches[0]))
 
 	if (sizeof($find))
 	{
-		$theme['theme_data'] = str_replace($find, $replace, $theme['theme_data']);
+		$theme_data = str_replace($find, $replace, $theme_data);
 	}
 }
 
-echo $theme['theme_data'];
+// gzip_compression
+if ($config['gzip_compress'] && @extension_loaded('zlib') && !headers_sent())
+{
+	ob_start('ob_gzhandler');
+}
+
+echo $theme_data;
 
 if (!empty($cache))
 {

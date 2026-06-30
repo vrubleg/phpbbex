@@ -94,11 +94,6 @@ class erk_style_repair
 									$mode . '_path'			=> $file,
 								];
 
-								if ($mode == 'theme')
-								{
-									$sql_ary['theme_data'] = '';
-								}
-
 								$db->sql_query('INSERT INTO ' . $table_prefix . 'styles_' . $mode . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 
 								${$var} = $db->sql_nextid();

@@ -691,44 +691,12 @@ class phpbb_umil
 
 					$this->umil_start('THEME_CACHE_PURGE', $theme_row['theme_name']);
 
-					// The following is from includes/acp/acp_styles.php
-					if ($theme_row['theme_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"))
-					{
-						$stylesheet = file_get_contents(PHPBB_ROOT_PATH . 'styles/' . $theme_row['theme_path'] . '/theme/stylesheet.css');
+					$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
+						SET theme_mtime = ' . time() . "
+						WHERE theme_id = $style_id";
+					$this->db->sql_query($sql);
 
-						// Match CSS imports
-						$matches = [];
-						preg_match_all('/@import url\(["\'](.*)["\']\);/i', $stylesheet, $matches);
-
-						if (sizeof($matches))
-						{
-							foreach ($matches[0] as $idx => $match)
-							{
-								if (!file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/{$matches[1][$idx]}"))
-								{
-									continue;
-								}
-
-								$content = trim(file_get_contents(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/{$matches[1][$idx]}"));
-								$stylesheet = str_replace($match, $content, $stylesheet);
-							}
-						}
-
-						// adjust paths
-						$db_theme_data = str_replace('./', 'styles/' . $theme_row['theme_path'] . '/theme/', $stylesheet);
-
-						// Save CSS contents
-						$sql_ary = [
-							'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
-							'theme_data'	=> $db_theme_data,
-						];
-
-						$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . "
-							WHERE theme_id = $style_id";
-						$this->db->sql_query($sql);
-
-						$cache->destroy('sql', STYLES_THEME_TABLE);
-					}
+					$cache->destroy('sql', STYLES_THEME_TABLE);
 
 					return $this->umil_end();
 				}

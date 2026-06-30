@@ -657,12 +657,11 @@ $lang = array_merge($lang, [
 	'LOG_TEMPLATE_EXPORT'			=> '<strong>Экспортирован шаблон</strong><br />» %s',
 	'LOG_TEMPLATE_REFRESHED'		=> '<strong>Обновлён шаблон</strong><br />» %s',
 
-	'LOG_THEME_ADD_DB'			=> '<strong>Добавлена тема в базу данных</strong><br />» %s',
 	'LOG_THEME_ADD_FS'			=> '<strong>Добавлена тема на сервер</strong><br />» %s',
 	'LOG_THEME_DELETE'			=> '<strong>Удалена тема</strong><br />» %s',
 	'LOG_THEME_EDIT_DETAILS'	=> '<strong>Изменена информация о теме</strong><br />» %s',
 	'LOG_THEME_EXPORT'			=> '<strong>Экспортирована тема</strong><br />» %s',
-	'LOG_THEME_REFRESHED'		=> '<strong>Обновлена тема</strong><br />» %s',
+	'LOG_THEME_REFRESHED'		=> '<strong>Обновлена версия таблицы стилей темы</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'	=> '<strong>Обновлена база данных с версии %1$s до версии %2$s</strong>',
 	'LOG_UPDATE_PHPBB'		=> '<strong>Обновлён phpBB с версии %1$s до версии %2$s</strong>',

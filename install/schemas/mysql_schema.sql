@@ -687,9 +687,7 @@ CREATE TABLE phpbb_styles_theme (
 	theme_name varchar(100) DEFAULT '' NOT NULL,
 	theme_copyright varchar(255) DEFAULT '' NOT NULL,
 	theme_path varchar(100) DEFAULT '' NOT NULL,
-	theme_storedb tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	theme_mtime int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	theme_data mediumtext NOT NULL,
 	PRIMARY KEY (theme_id),
 	UNIQUE theme_name (theme_name)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;

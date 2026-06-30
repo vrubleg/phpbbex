@@ -601,6 +601,8 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_query("DROP TABLE {$table_prefix}styles_template_data");
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_storedb');
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_data');
 	$db->sql_return_on_error(false);
 }
 
