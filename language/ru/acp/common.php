@@ -201,13 +201,9 @@ $lang = array_merge($lang, [
 	'DISABLE'					=> 'Отключить',
 	'DOWNLOAD'					=> 'Скачать',
 	'DOWNLOAD_AS'				=> 'Скачать как',
-	'DOWNLOAD_STORE'			=> 'Скачать или сохранить на сервере',
-	'DOWNLOAD_STORE_EXPLAIN'	=> 'Вы можете напрямую скачать файл или сохранить его на сервере в каталоге <samp>store/</samp>.',
 
 	'EDIT'					=> 'Изменить',
 	'ENABLE'				=> 'Включить',
-	'EXPORT_DOWNLOAD'		=> 'Скачать',
-	'EXPORT_STORE'			=> 'Сохранить',
 
 	'FORUM_INDEX'			=> 'Главная форума',
 
@@ -563,7 +559,6 @@ $lang = array_merge($lang, [
 	'LOG_IMAGESET_DELETE'			=> '<strong>Удалён набор рисунков</strong><br />» %s',
 	'LOG_IMAGESET_EDIT_DETAILS'		=> '<strong>Изменена информация о наборе рисунков</strong><br />» %s',
 	'LOG_IMAGESET_EDIT'				=> '<strong>Изменён набор рисунков</strong><br />» %s',
-	'LOG_IMAGESET_EXPORT'			=> '<strong>Экспортирован набор рисунков</strong><br />» %s',
 	'LOG_IMAGESET_LANG_MISSING'		=> '<strong>Отсутствует локализация «%2$s» для набора рисунков</strong><br />» «%1$s»',
 	'LOG_IMAGESET_LANG_REFRESHED'	=> '<strong>Обновлена локализация набора рисунков «%2$s»</strong><br />» %1$s',
 	'LOG_IMAGESET_REFRESHED'		=> '<strong>Обновлён набор рисунков</strong><br />» %s',
@@ -648,19 +643,16 @@ $lang = array_merge($lang, [
 	'LOG_STYLE_ADD'				=> '<strong>Добавлен стиль</strong><br />» %s',
 	'LOG_STYLE_DELETE'			=> '<strong>Удалён стиль</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'	=> '<strong>Изменён стиль</strong><br />» %s',
-	'LOG_STYLE_EXPORT'			=> '<strong>Экспортирован стиль</strong><br />» %s',
 
 	'LOG_TEMPLATE_ADD_FS'			=> '<strong>Добавлен шаблон на сервер</strong><br />» %s',
 	'LOG_TEMPLATE_CACHE_CLEARED'	=> '<strong>Удалена кэшированная версия файлов шаблона <em>%1$s</em></strong><br />» %2$s',
 	'LOG_TEMPLATE_DELETE'			=> '<strong>Удалён шаблон</strong><br />» %s',
 	'LOG_TEMPLATE_EDIT_DETAILS'		=> '<strong>Изменена информация о шаблоне</strong><br />» %s',
-	'LOG_TEMPLATE_EXPORT'			=> '<strong>Экспортирован шаблон</strong><br />» %s',
 	'LOG_TEMPLATE_REFRESHED'		=> '<strong>Обновлён шаблон</strong><br />» %s',
 
 	'LOG_THEME_ADD_FS'			=> '<strong>Добавлена тема на сервер</strong><br />» %s',
 	'LOG_THEME_DELETE'			=> '<strong>Удалена тема</strong><br />» %s',
 	'LOG_THEME_EDIT_DETAILS'	=> '<strong>Изменена информация о теме</strong><br />» %s',
-	'LOG_THEME_EXPORT'			=> '<strong>Экспортирована тема</strong><br />» %s',
 	'LOG_THEME_REFRESHED'		=> '<strong>Обновлена версия таблицы стилей темы</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'	=> '<strong>Обновлена база данных с версии %1$s до версии %2$s</strong>',

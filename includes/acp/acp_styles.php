@@ -17,10 +17,6 @@ class acp_styles
 	var $tpl_name;
 	var $page_title;
 
-	var $style_cfg;
-	var $template_cfg;
-	var $theme_cfg;
-	var $imageset_cfg;
 	var $imageset_keys;
 
 	function main($id, $mode)
@@ -49,54 +45,6 @@ class acp_styles
 		$action = request_var('action', '');
 		$action = (isset($_POST['add'])) ? 'add' : $action;
 		$style_id = request_var('id', 0);
-
-		// Fill the configuration variables
-		$this->style_cfg = $this->template_cfg = $this->theme_cfg = $this->imageset_cfg = '
-#
-# phpBB {MODE} configuration file
-#
-# @package phpBB3
-# @copyright (c) 2005 phpBB Group
-# @license GNU Public License
-#
-#
-# At the left is the name, please do not change this
-# At the right the value is entered
-# For on/off options the valid values are on, off, 1, 0, true and false
-#
-# Values get trimmed, if you want to add a space in front or at the end of
-# the value, then enclose the value with single or double quotes.
-# Single and double quotes do not need to be escaped.
-#
-#
-
-# General Information about this {MODE}
-name = {NAME}
-copyright = {COPYRIGHT}
-version = {VERSION}
-';
-
-		$this->theme_cfg .= '
-# Some configuration options
-
-#
-# You have to turn this option on if you want to use the
-# path template variables ({T_IMAGESET_PATH} for example) within
-# your css file.
-# This is mostly the case if you want to use language specific
-# images within your css file.
-#
-parse_css_file = {PARSE_CSS_FILE}
-';
-
-		$this->template_cfg .= '
-# Some configuration options
-
-# Template inheritance
-# See http://blog.phpbb.com/2008/07/31/templating-just-got-easier/
-# Set value to empty or this template name to ignore template inheritance.
-inherit_from = {INHERIT_FROM}
-';
 
 		$this->imageset_keys = [
 			'logos' => [
@@ -129,14 +77,6 @@ inherit_from = {INHERIT_FROM}
 				if ($style_id)
 				{
 					$this->remove($mode, $style_id);
-					return;
-				}
-			break;
-
-			case 'export':
-				if ($style_id)
-				{
-					$this->export($mode, $style_id);
 					return;
 				}
 			break;
@@ -225,7 +165,7 @@ inherit_from = {INHERIT_FROM}
 					break;
 				}
 
-				$this->frontend('style', ['details'], ['export', 'delete']);
+				$this->frontend('style', ['details'], ['delete']);
 			break;
 
 			case 'template':
@@ -266,7 +206,7 @@ inherit_from = {INHERIT_FROM}
 					break;
 				}
 
-				$this->frontend('template', ['cache', 'details'], ['refresh', 'export', 'delete']);
+				$this->frontend('template', ['cache', 'details'], ['refresh', 'delete']);
 			break;
 
 			case 'theme':
@@ -310,7 +250,7 @@ inherit_from = {INHERIT_FROM}
 					break;
 				}
 
-				$this->frontend('theme', ['details'], ['refresh', 'export', 'delete']);
+				$this->frontend('theme', ['details'], ['refresh', 'delete']);
 			break;
 
 			case 'imageset':
@@ -456,7 +396,7 @@ inherit_from = {INHERIT_FROM}
 					break;
 				}
 
-				$this->frontend('imageset', ['edit', 'details'], ['refresh', 'export', 'delete']);
+				$this->frontend('imageset', ['edit', 'details'], ['refresh', 'delete']);
 			break;
 		}
 	}
@@ -1369,406 +1309,6 @@ inherit_from = {INHERIT_FROM}
 		}
 
 		return $component_in_use;
-	}
-
-	/**
-	* Export style or style elements
-	*/
-	function export($mode, $style_id)
-	{
-		global $db, $template, $user, $cache, $config;
-
-		$update = isset($_POST['update']);
-
-		$inc_template = request_var('inc_template', 0);
-		$inc_theme = request_var('inc_theme', 0);
-		$inc_imageset = request_var('inc_imageset', 0);
-		$store = request_var('store', 0);
-		$format = request_var('format', '');
-
-		$error = [];
-		$methods = ['tar'];
-
-		$available_methods = ['tar.gz' => 'zlib', 'tar.bz2' => 'bz2', 'zip' => 'zlib'];
-		foreach ($available_methods as $type => $module)
-		{
-			if (!@extension_loaded($module))
-			{
-				continue;
-			}
-
-			$methods[] = $type;
-		}
-
-		if (!in_array($format, $methods))
-		{
-			$format = 'tar';
-		}
-
-		switch ($mode)
-		{
-			case 'style':
-				if ($update && ($inc_template + $inc_theme + $inc_imageset) < 1)
-				{
-					$error[] = $user->lang['STYLE_ERR_MORE_ELEMENTS'];
-				}
-
-				$name = 'style_name';
-
-				$sql_select = 's.style_id, s.style_name, s.style_copyright';
-				$sql_select .= ($inc_template) ? ', t.*' : ', t.template_name';
-				$sql_select .= ($inc_theme) ? ', c.*' : ', c.theme_name';
-				$sql_select .= ($inc_imageset) ? ', i.*' : ', i.imageset_name';
-				$sql_from = STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i';
-				$sql_where = "s.style_id = $style_id AND t.template_id = s.template_id AND c.theme_id = s.theme_id AND i.imageset_id = s.imageset_id";
-
-				$l_prefix = 'STYLE';
-			break;
-
-			case 'template':
-				$name = 'template_name';
-
-				$sql_select = '*';
-				$sql_from = STYLES_TEMPLATE_TABLE;
-				$sql_where = "template_id = $style_id";
-
-				$l_prefix = 'TEMPLATE';
-			break;
-
-			case 'theme':
-				$name = 'theme_name';
-
-				$sql_select = '*';
-				$sql_from = STYLES_THEME_TABLE;
-				$sql_where = "theme_id = $style_id";
-
-				$l_prefix = 'THEME';
-			break;
-
-			case 'imageset':
-				$name = 'imageset_name';
-
-				$sql_select = '*';
-				$sql_from = STYLES_IMAGESET_TABLE;
-				$sql_where = "imageset_id = $style_id";
-
-				$l_prefix = 'IMAGESET';
-			break;
-		}
-
-		if ($update && !sizeof($error))
-		{
-			$sql = "SELECT $sql_select
-				FROM $sql_from
-				WHERE $sql_where";
-			$result = $db->sql_query($sql);
-			$style_row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			if (!$style_row)
-			{
-				trigger_error($user->lang['NO_' . $l_prefix] . adm_back_link($this->u_action), E_USER_WARNING);
-			}
-
-			$var_ary = ['style_id', 'style_name', 'style_copyright', 'template_id', 'template_name', 'template_path', 'template_copyright', 'template_inherits_id', 'bbcode_bitfield', 'theme_id', 'theme_name', 'theme_path', 'theme_copyright', 'theme_mtime', 'imageset_id', 'imageset_name', 'imageset_path', 'imageset_copyright'];
-
-			foreach ($var_ary as $var)
-			{
-				if (!isset($style_row[$var]))
-				{
-					$style_row[$var] = '';
-				}
-			}
-
-			$files = $data = [];
-
-			if ($mode == 'style')
-			{
-				$style_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'], [$mode, $style_row['style_name'], $style_row['style_copyright'], '1.0.0'], $this->style_cfg);
-
-				$style_cfg .= (!$inc_template) ? "\nrequired_template = {$style_row['template_name']}" : '';
-				$style_cfg .= (!$inc_theme) ? "\nrequired_theme = {$style_row['theme_name']}" : '';
-				$style_cfg .= (!$inc_imageset) ? "\nrequired_imageset = {$style_row['imageset_name']}" : '';
-
-				$data[] = [
-					'src'		=> $style_cfg,
-					'prefix'	=> 'style.cfg'
-				];
-
-				unset($style_cfg);
-			}
-
-			// Export template core code
-			if ($mode == 'template' || $inc_template)
-			{
-				$use_template_name = $style_row['template_name'];
-
-				// Add the inherit from variable, depending on it's use...
-				if ($style_row['template_inherits_id'])
-				{
-					// Get the template name
-					$sql = 'SELECT template_name
-						FROM ' . STYLES_TEMPLATE_TABLE . '
-						WHERE template_id = ' . (int) $style_row['template_inherits_id'];
-					$result = $db->sql_query($sql);
-					$use_template_name = (string) $db->sql_fetchfield('template_name');
-					$db->sql_freeresult($result);
-				}
-
-				$template_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}', '{INHERIT_FROM}'], [$mode, $style_row['template_name'], $style_row['template_copyright'], '1.0.0', $use_template_name], $this->template_cfg);
-
-				$template_cfg .= "\n\nbbcode_bitfield = {$style_row['bbcode_bitfield']}";
-
-				$data[] = [
-					'src'		=> $template_cfg,
-					'prefix'	=> 'template/template.cfg'
-				];
-
-				$files[] = [
-					'src'		=> "styles/{$style_row['template_path']}/template/",
-					'prefix-'	=> "styles/{$style_row['template_path']}/",
-					'prefix+'	=> false,
-					'exclude'	=> 'template.cfg'
-				];
-				unset($template_cfg);
-			}
-
-			// Export theme core code
-			if ($mode == 'theme' || $inc_theme)
-			{
-				$theme_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'], [$mode, $style_row['theme_name'], $style_row['theme_copyright'], '1.0.0'], $this->theme_cfg);
-
-				// Read old cfg file
-				$items = $cache->obtain_cfg_items($style_row);
-				$items = $items['theme'];
-
-				if (!isset($items['parse_css_file']))
-				{
-					$items['parse_css_file'] = 'off';
-				}
-
-				$theme_cfg = str_replace(['{PARSE_CSS_FILE}'], [$items['parse_css_file']], $theme_cfg);
-
-				$files[] = [
-					'src'		=> "styles/{$style_row['theme_path']}/theme/",
-					'prefix-'	=> "styles/{$style_row['theme_path']}/",
-					'prefix+'	=> false,
-					'exclude'	=> 'theme.cfg'
-				];
-
-				$data[] = [
-					'src'		=> $theme_cfg,
-					'prefix'	=> 'theme/theme.cfg'
-				];
-
-				unset($items, $theme_cfg);
-			}
-
-			// Export imageset core code
-			if ($mode == 'imageset' || $inc_imageset)
-			{
-				$imageset_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'], [$mode, $style_row['imageset_name'], $style_row['imageset_copyright'], '1.0.0'], $this->imageset_cfg);
-
-				$imageset_main = [];
-
-				$sql = 'SELECT image_filename, image_name, image_height, image_width
-					FROM ' . STYLES_IMAGESET_DATA_TABLE . "
-					WHERE imageset_id = $style_id
-						AND image_lang = ''";
-				$result = $db->sql_query($sql);
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$imageset_main[$row['image_name']] = $row['image_filename'] . ($row['image_height'] ? '*' . $row['image_height'] : '') . ($row['image_width'] ? '*' . $row['image_width'] : '');
-				}
-				$db->sql_freeresult($result);
-
-				foreach ($this->imageset_keys as $topic => $key_array)
-				{
-					foreach ($key_array as $key)
-					{
-						if (isset($imageset_main[$key]))
-						{
-							$imageset_cfg .= "\nimg_" . $key . ' = ' . str_replace("styles/{$style_row['imageset_path']}/imageset/", '{PATH}', $imageset_main[$key]);
-						}
-					}
-				}
-
-				$files[] = [
-					'src'		=> "styles/{$style_row['imageset_path']}/imageset/",
-					'prefix-'	=> "styles/{$style_row['imageset_path']}/",
-					'prefix+'	=> false,
-					'exclude'	=> 'imageset.cfg'
-				];
-
-				$data[] = [
-					'src'		=> trim($imageset_cfg),
-					'prefix'	=> 'imageset/imageset.cfg'
-				];
-
-				end($data);
-
-				$imageset_root = PHPBB_ROOT_PATH . "styles/{$style_row['imageset_path']}/imageset/";
-
-				if ($dh = @opendir($imageset_root))
-				{
-					while (($fname = readdir($dh)) !== false)
-					{
-						if ($fname[0] != '.' && $fname != 'CVS' && is_dir("$imageset_root$fname"))
-						{
-							$files[key($files)]['exclude'] .= ',' . $fname . '/imageset.cfg';
-						}
-					}
-					closedir($dh);
-				}
-
-				$imageset_lang = [];
-
-				$sql = 'SELECT image_filename, image_name, image_height, image_width, image_lang
-					FROM ' . STYLES_IMAGESET_DATA_TABLE . "
-					WHERE imageset_id = $style_id
-						AND image_lang <> ''";
-				$result = $db->sql_query($sql);
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$imageset_lang[$row['image_lang']][$row['image_name']] = $row['image_filename'] . ($row['image_height'] ? '*' . $row['image_height'] : '') . ($row['image_width'] ? '*' . $row['image_width'] : '');
-				}
-				$db->sql_freeresult($result);
-
-				foreach ($imageset_lang as $lang => $imageset_localized)
-				{
-					$imageset_cfg = str_replace(['{MODE}', '{NAME}', '{COPYRIGHT}', '{VERSION}'], [$mode, $style_row['imageset_name'], $style_row['imageset_copyright'], '1.0.0'], $this->imageset_cfg);
-
-					foreach ($this->imageset_keys as $topic => $key_array)
-					{
-						foreach ($key_array as $key)
-						{
-							if (isset($imageset_localized[$key]))
-							{
-								$imageset_cfg .= "\nimg_" . $key . ' = ' . str_replace("styles/{$style_row['imageset_path']}/imageset/", '{PATH}', $imageset_localized[$key]);
-							}
-						}
-					}
-
-					$data[] = [
-						'src'		=> trim($imageset_cfg),
-						'prefix'	=> 'imageset/' . $lang . '/imageset.cfg'
-					];
-				}
-
-				unset($imageset_cfg);
-			}
-
-			switch ($format)
-			{
-				case 'tar':
-					$ext = '.tar';
-				break;
-
-				case 'zip':
-					$ext = '.zip';
-				break;
-
-				case 'tar.gz':
-					$ext = '.tar.gz';
-				break;
-
-				case 'tar.bz2':
-					$ext = '.tar.bz2';
-				break;
-
-				default:
-					$error[] = $user->lang[$l_prefix . '_ERR_ARCHIVE'];
-			}
-
-			if (!sizeof($error))
-			{
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_compress.php');
-
-				if ($mode == 'style')
-				{
-					$path = preg_replace('#[^\w-]+#', '_', $style_row['style_name']);
-				}
-				else
-				{
-					$path = $style_row[$mode . '_path'];
-				}
-
-				if ($format == 'zip')
-				{
-					$compress = new compress_zip('w', PHPBB_ROOT_PATH . "store/$path$ext");
-				}
-				else
-				{
-					$compress = new compress_tar('w', PHPBB_ROOT_PATH . "store/$path$ext", $ext);
-				}
-
-				if (sizeof($files))
-				{
-					foreach ($files as $file_ary)
-					{
-						$compress->add_file($file_ary['src'], $file_ary['prefix-'], $file_ary['prefix+'], $file_ary['exclude']);
-					}
-				}
-
-				if (sizeof($data))
-				{
-					foreach ($data as $data_ary)
-					{
-						$compress->add_data($data_ary['src'], $data_ary['prefix']);
-					}
-				}
-
-				$compress->close();
-
-				add_log('admin', 'LOG_' . $l_prefix . '_EXPORT', $style_row[$mode . '_name']);
-
-				if (!$store)
-				{
-					$compress->download($path);
-					@unlink(PHPBB_ROOT_PATH . "store/$path$ext");
-					exit;
-				}
-
-				trigger_error(sprintf($user->lang[$l_prefix . '_EXPORTED'], "store/$path$ext") . adm_back_link($this->u_action));
-			}
-		}
-
-		$sql = "SELECT {$mode}_id, {$mode}_name
-			FROM " . (($mode == 'style') ? STYLES_TABLE : $sql_from) . "
-			WHERE {$mode}_id = $style_id";
-		$result = $db->sql_query($sql);
-		$style_row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		if (!$style_row)
-		{
-			trigger_error($user->lang['NO_' . $l_prefix] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-
-		$this->page_title = $l_prefix . '_EXPORT';
-
-		$format_buttons = '';
-		foreach ($methods as $method)
-		{
-			$format_buttons .= '<label><input type="radio"' . ((!$format_buttons) ? ' id="format"' : '') . ' class="radio" value="' . $method . '" name="format"' . (($method == $format) ? ' checked="checked"' : '') . ' /> ' . $method . '</label>';
-		}
-
-		$template->assign_vars([
-			'S_EXPORT'		=> true,
-			'S_ERROR_MSG'	=> (sizeof($error) > 0),
-			'S_STYLE'		=> ($mode == 'style'),
-
-			'L_TITLE'		=> $user->lang[$this->page_title],
-			'L_EXPLAIN'		=> $user->lang[$this->page_title . '_EXPLAIN'],
-			'L_NAME'		=> $user->lang[$l_prefix . '_NAME'],
-
-			'U_ACTION'		=> $this->u_action . '&amp;action=export&amp;id=' . $style_id,
-			'U_BACK'		=> $this->u_action,
-
-			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
-			'NAME'				=> $style_row[$mode . '_name'],
-			'FORMAT_BUTTONS'	=> $format_buttons]
-		);
 	}
 
 	/**

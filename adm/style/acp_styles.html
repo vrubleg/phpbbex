@@ -209,65 +209,6 @@
 	</fieldset>
 	</form>
 
-<!-- ELSEIF S_EXPORT -->
-
-	<a href="{U_BACK}" style="float: right;">&laquo; {L_BACK}</a>
-
-	<h1>{L_TITLE}</h1>
-
-	<p>{L_EXPLAIN}</p>
-
-	<!-- IF S_ERROR_MSG -->
-		<div class="errorbox">
-			<h3>{L_WARNING}</h3>
-			<p>{ERROR_MSG}</p>
-		</div>
-	<!-- ENDIF -->
-
-	<form id="acp_styles" method="post" action="{U_ACTION}">
-
-	<fieldset>
-		<legend>{L_TITLE}</legend>
-	<dl>
-		<dt><label>{L_NAME}:</label></dt>
-		<dd><strong>{NAME}</strong></dd>
-	</dl>
-	<!-- IF S_STYLE -->
-		<dl>
-			<dt><label for="inc_template">{L_INCLUDE_TEMPLATE}:</label></dt>
-			<dd><label><input type="radio" class="radio" id="inc_template" name="inc_template" value="1" checked="checked" /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="inc_template" value="0" /> {L_NO}</label></dd>
-		</dl>
-		<dl>
-			<dt><label for="inc_theme">{L_INCLUDE_THEME}:</label></dt>
-			<dd><label><input type="radio" class="radio" id="inc_theme" name="inc_theme" value="1" checked="checked" /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="inc_theme" value="0" /> {L_NO}</label></dd>
-		</dl>
-		<dl>
-			<dt><label for="inc_imageset">{L_INCLUDE_IMAGESET}:</label></dt>
-			<dd><label><input type="radio" class="radio" id="inc_imageset" name="inc_imageset" value="1" checked="checked" /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="inc_imageset" value="0" /> {L_NO}</label></dd>
-		</dl>
-	<!-- ENDIF -->
-	<dl>
-		<dt><label for="store">{L_DOWNLOAD_STORE}:</label><br /><span>{L_DOWNLOAD_STORE_EXPLAIN}</span></dt>
-		<dd><label><input type="radio" class="radio" id="store" name="store" value="1" checked="checked" /> {L_EXPORT_STORE}</label>
-			<label><input type="radio" class="radio" name="store" value="0" /> {L_EXPORT_DOWNLOAD}</label></dd>
-	</dl>
-	<dl>
-		<dt><label for="format">{L_ARCHIVE_FORMAT}:</label></dt>
-		<dd>{FORMAT_BUTTONS}</dd>
-	</dl>
-
-	<p class="quick">
-		{S_FORM_TOKEN}
-		<input class="button1" type="submit" name="update" value="{L_SUBMIT}" />
-	</p>
-	</fieldset>
-
-
-	</form>
-
 <!-- ELSEIF S_FRONTEND -->
 
 	<h1>{L_TITLE}</h1>

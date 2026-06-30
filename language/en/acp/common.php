@@ -201,13 +201,9 @@ $lang = array_merge($lang, [
 	'DISABLE'					=> 'Disable',
 	'DOWNLOAD'					=> 'Download',
 	'DOWNLOAD_AS'				=> 'Download as',
-	'DOWNLOAD_STORE'			=> 'Download or store file',
-	'DOWNLOAD_STORE_EXPLAIN'	=> 'You may directly download the file or save it in your <samp>store/</samp> folder.',
 
 	'EDIT'					=> 'Edit',
 	'ENABLE'				=> 'Enable',
-	'EXPORT_DOWNLOAD'		=> 'Download',
-	'EXPORT_STORE'			=> 'Store',
 
 	'FORUM_INDEX'			=> 'Board index',
 
@@ -563,7 +559,6 @@ $lang = array_merge($lang, [
 	'LOG_IMAGESET_DELETE'			=> '<strong>Deleted imageset</strong><br />» %s',
 	'LOG_IMAGESET_EDIT_DETAILS'		=> '<strong>Edited imageset details</strong><br />» %s',
 	'LOG_IMAGESET_EDIT'				=> '<strong>Edited imageset</strong><br />» %s',
-	'LOG_IMAGESET_EXPORT'			=> '<strong>Exported imageset</strong><br />» %s',
 	'LOG_IMAGESET_LANG_MISSING'		=> '<strong>Imageset misses “%2$s” localisation</strong><br />» %1$s',
 	'LOG_IMAGESET_LANG_REFRESHED'	=> '<strong>Refreshed “%2$s” localisation of imageset</strong><br />» %1$s',
 	'LOG_IMAGESET_REFRESHED'		=> '<strong>Refreshed imageset</strong><br />» %s',
@@ -649,19 +644,16 @@ $lang = array_merge($lang, [
 	'LOG_STYLE_ADD'				=> '<strong>Added new style</strong><br />» %s',
 	'LOG_STYLE_DELETE'			=> '<strong>Deleted style</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'	=> '<strong>Edited style</strong><br />» %s',
-	'LOG_STYLE_EXPORT'			=> '<strong>Exported style</strong><br />» %s',
 
 	'LOG_TEMPLATE_ADD_FS'			=> '<strong>Add new template set on filesystem</strong><br />» %s',
 	'LOG_TEMPLATE_CACHE_CLEARED'	=> '<strong>Deleted cached versions of template files in template set <em>%1$s</em></strong><br />» %2$s',
 	'LOG_TEMPLATE_DELETE'			=> '<strong>Deleted template set</strong><br />» %s',
 	'LOG_TEMPLATE_EDIT_DETAILS'		=> '<strong>Edited template details</strong><br />» %s',
-	'LOG_TEMPLATE_EXPORT'			=> '<strong>Exported template set</strong><br />» %s',
 	'LOG_TEMPLATE_REFRESHED'		=> '<strong>Refreshed template set</strong><br />» %s',
 
 	'LOG_THEME_ADD_FS'			=> '<strong>Add new theme on filesystem</strong><br />» %s',
 	'LOG_THEME_DELETE'			=> '<strong>Theme deleted</strong><br />» %s',
 	'LOG_THEME_EDIT_DETAILS'	=> '<strong>Edited theme details</strong><br />» %s',
-	'LOG_THEME_EXPORT'			=> '<strong>Exported theme</strong><br />» %s',
 	'LOG_THEME_REFRESHED'		=> '<strong>Refreshed theme stylesheet version</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'	=> '<strong>Updated Database from version %1$s to version %2$s</strong>',
