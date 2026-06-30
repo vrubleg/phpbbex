@@ -298,7 +298,7 @@ class install_install extends module
 			'LEGEND_EXPLAIN'	=> $lang['FILES_REQUIRED_EXPLAIN'],
 		]);
 
-		$paths = ['cache/', 'files/', 'store/'];
+		$paths = ['cache/', 'files/'];
 
 		umask(0);
 

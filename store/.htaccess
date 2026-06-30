@@ -1,5 +1,0 @@
-<IfModule mod_authz_core.c>
-	<Files *>
-		Require all denied
-	</Files>
-</IfModule>

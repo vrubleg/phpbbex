@@ -63,10 +63,9 @@ require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_tools.php');
 require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 
-// The cache, files, store, and images/avatars/upload directories have to be writeable!
+// The cache, files, and images/avatars/upload directories have to be writeable!
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'cache')) { die('Make "cache" directory writeable!'); }
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . UPLOADS_PATH)) { die('Make "' . UPLOADS_PATH . '" directory writeable!'); }
-if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'store')) { die('Make "store" directory writeable!'); }
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH)) { die('Make "' . AVATAR_UPLOADS_PATH . '" directory writeable!'); }
 
 $user = new phpbb_user();

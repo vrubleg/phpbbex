@@ -11,6 +11,3 @@
 /images/avatars/gallery/**
 !/images/avatars/gallery/.htaccess
 !/images/avatars/gallery/index.htm
-/store/**
-!/store/.htaccess
-!/store/index.htm
