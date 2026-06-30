@@ -741,9 +741,9 @@ inherit_from = {INHERIT_FROM}
 			$tpl_file	= str_replace('.', '/', $file);
 			$tpl_file	= str_replace('///', '../', $tpl_file);
 
-			$filename = "{$cache_prefix}_$file.html.php";
+			$cache_file = PHPBB_ROOT_PATH . "cache/{$cache_prefix}_{$file}.html.php";
 
-			if (!file_exists(PHPBB_ROOT_PATH . "cache/$filename"))
+			if (!file_exists($cache_file))
 			{
 				continue;
 			}
@@ -763,12 +763,12 @@ inherit_from = {INHERIT_FROM}
 			$template->assign_block_vars('file', [
 				'U_VIEWSOURCE'	=> $this->u_action . "&amp;action=cache&amp;id=$template_id&amp;source=$file",
 
-				'CACHED'		=> $user->format_date(filemtime(PHPBB_ROOT_PATH . "cache/$filename")),
+				'CACHED'		=> $user->format_date(filemtime($cache_file)),
 				'FILENAME'		=> $file,
 				'FILENAME_PATH'	=> $file_tpl,
-				'FILESIZE'		=> get_formatted_filesize(filesize(PHPBB_ROOT_PATH . "cache/$filename")),
-				'MODIFIED'		=> $user->format_date(filemtime($file_tpl))]
-			);
+				'FILESIZE'		=> get_formatted_filesize(filesize($cache_file)),
+				'MODIFIED'		=> file_exists($file_tpl) ? $user->format_date(filemtime($file_tpl)) : '-',
+			]);
 		}
 
 		$template->assign_vars([
