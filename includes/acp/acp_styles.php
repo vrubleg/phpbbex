@@ -155,7 +155,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('style', ['details'], ['delete']);
+				$this->frontend('style', ['details', 'activate_deactivate', 'delete', 'preview']);
 			break;
 
 			case 'template':
@@ -196,7 +196,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('template', ['details'], ['refresh', 'delete']);
+				$this->frontend('template', ['details', 'refresh', 'delete']);
 			break;
 
 			case 'theme':
@@ -240,7 +240,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('theme', ['details'], ['refresh', 'delete']);
+				$this->frontend('theme', ['details', 'refresh', 'delete']);
 			break;
 
 			case 'imageset':
@@ -386,7 +386,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('imageset', ['edit', 'details'], ['refresh', 'delete']);
+				$this->frontend('imageset', ['edit', 'details', 'refresh', 'delete']);
 			break;
 		}
 	}
@@ -394,7 +394,7 @@ class acp_styles
 	/**
 	* Build Frontend with supplied options
 	*/
-	function frontend($mode, $options, $actions)
+	function frontend($mode, $actions)
 	{
 		global $user, $template, $db, $config;
 
@@ -471,26 +471,28 @@ class acp_styles
 
 			$stylevis = ($mode == 'style' && !$row['style_active']) ? 'activate' : 'deactivate';
 
-			$s_options = [];
-			foreach ($options as $option)
-			{
-				$s_options[] = '<a href="' . $this->u_action . "&amp;action=$option&amp;id=" . $row[$mode . '_id'] . '">' . $user->lang[strtoupper($option)] . '</a>';
-			}
-
 			$s_actions = [];
 			foreach ($actions as $option)
 			{
-				$s_actions[] = '<a href="' . $this->u_action . "&amp;action=$option&amp;id=" . $row[$mode . '_id'] . '">' . $user->lang[strtoupper($option)] . '</a>';
+				switch ($option)
+				{
+					case 'activate_deactivate':
+						$s_actions[] = '<a href="' . $this->u_action . '&amp;action=' . $stylevis . '&amp;id=' . $row[$mode . '_id'] . '">' . $user->lang['STYLE_' . strtoupper($stylevis)] . '</a>';
+					break;
+
+					case 'preview':
+						$s_actions[] = '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php', "$mode=" . $row[$mode . '_id']) . '">' . $user->lang['PREVIEW'] . '</a>';
+					break;
+
+					default:
+						$s_actions[] = '<a href="' . $this->u_action . "&amp;action=$option&amp;id=" . $row[$mode . '_id'] . '">' . $user->lang[strtoupper($option)] . '</a>';
+					break;
+				}
 			}
 
 			$template->assign_block_vars('installed', [
 				'S_DEFAULT_STYLE'		=> ($mode == 'style' && $row['style_id'] == $config['default_style']),
-				'U_EDIT'				=> $this->u_action . '&amp;action=' . (($mode == 'style') ? 'details' : 'edit') . '&amp;id=' . $row[$mode . '_id'],
-				'U_STYLE_ACT_DEACT'		=> $this->u_action . '&amp;action=' . $stylevis . '&amp;id=' . $row[$mode . '_id'],
-				'L_STYLE_ACT_DEACT'		=> $user->lang['STYLE_' . strtoupper($stylevis)],
-				'S_OPTIONS'				=> implode(' | ', $s_options),
 				'S_ACTIONS'				=> implode(' | ', $s_actions),
-				'U_PREVIEW'				=> ($mode == 'style') ? append_sid(PHPBB_ROOT_PATH . 'index.php', "$mode=" . $row[$mode . '_id']) : '',
 
 				'NAME'					=> $row[$mode . '_name'],
 				'STYLE_COUNT'			=> ($mode == 'style' && isset($style_count[$row['style_id']])) ? $style_count[$row['style_id']] : 0,
