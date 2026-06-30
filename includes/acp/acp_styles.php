@@ -166,8 +166,6 @@ inherit_from = {INHERIT_FROM}
 					{
 						case 'imageset':
 							return $this->edit_imageset($style_id);
-						case 'theme':
-							return $this->edit_theme($style_id);
 					}
 				}
 			break;
@@ -327,7 +325,7 @@ inherit_from = {INHERIT_FROM}
 					break;
 				}
 
-				$this->frontend('theme', ['edit', 'details'], ['refresh', 'export', 'delete']);
+				$this->frontend('theme', ['details'], ['refresh', 'export', 'delete']);
 			break;
 
 			case 'imageset':
@@ -777,189 +775,6 @@ inherit_from = {INHERIT_FROM}
 
 			'U_ACTION'			=> $this->u_action . "&amp;action=cache&amp;id=$template_id",
 			'U_BACK'			=> $this->u_action]
-		);
-	}
-
-	/**
-	* Provides a css editor and a basic easier to use stylesheet editing tool for less experienced (or lazy) users
-	*
-	* @param int $theme_id specifies which theme is being edited
-	*/
-	function edit_theme($theme_id)
-	{
-		global $config, $db, $cache, $user, $template;
-
-		$this->page_title = 'EDIT_THEME';
-
-		$filelist = $filelist_cats = [];
-
-		$theme_data		= utf8_normalize_nfc(request_var('template_data', '', true));
-		$theme_data		= htmlspecialchars_decode($theme_data);
-		$theme_file		= utf8_normalize_nfc(request_var('template_file', '', true));
-		$text_rows		= max(5, min(999, request_var('text_rows', 20)));
-		$save_changes	= isset($_POST['save']);
-
-		// make sure theme_file path doesn't go upwards
-		$theme_file = str_replace('..', '.', $theme_file);
-
-		// Retrieve some information about the theme
-		$sql = 'SELECT theme_storedb, theme_path, theme_name, theme_data
-			FROM ' . STYLES_THEME_TABLE . "
-			WHERE theme_id = $theme_id";
-		$result = $db->sql_query($sql);
-
-		if (!($theme_info = $db->sql_fetchrow($result)))
-		{
-			trigger_error($user->lang['NO_THEME'] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-		$db->sql_freeresult($result);
-
-		// save changes to the theme if the user submitted any
-		if ($save_changes)
-		{
-			// Get the filesystem location of the current file
-			$file = PHPBB_ROOT_PATH . "styles/{$theme_info['theme_path']}/theme/$theme_file";
-			$additional = '';
-			$message = $user->lang['THEME_UPDATED'];
-
-			// If the theme is stored on the filesystem try to write the file else store it in the database
-			if (!$theme_info['theme_storedb'] && file_exists($file) && phpbb_is_writable($file))
-			{
-				if (!($fp = @fopen($file, 'wb')))
-				{
-					trigger_error($user->lang['NO_THEME'] . adm_back_link($this->u_action), E_USER_WARNING);
-				}
-				fwrite($fp, $theme_data);
-				fclose($fp);
-			}
-			else
-			{
-				// Write stylesheet to db
-				$sql_ary = [
-					'theme_mtime'		=> time(),
-					'theme_storedb'		=> 1,
-					'theme_data'		=> $this->db_theme_data($theme_info, $theme_data),
-				];
-				$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
-					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-					WHERE theme_id = ' . $theme_id;
-				$db->sql_query($sql);
-
-				$cache->destroy('sql', STYLES_THEME_TABLE);
-
-				// notify the user if the theme was not stored in the db before his modification
-				if (!$theme_info['theme_storedb'])
-				{
-					add_log('admin', 'LOG_THEME_EDIT_DETAILS', $theme_info['theme_name']);
-					$message .= '<br />' . $user->lang['EDIT_THEME_STORED_DB'];
-				}
-			}
-			$cache->destroy('sql', STYLES_THEME_TABLE);
-			add_log('admin', (!$theme_info['theme_storedb']) ? 'LOG_THEME_EDIT_FILE' : 'LOG_THEME_EDIT', $theme_info['theme_name'], (!$theme_info['theme_storedb']) ? $theme_file : '');
-
-			trigger_error($message . adm_back_link($this->u_action . "&amp;action=edit&amp;id=$theme_id&amp;template_file=$theme_file&amp;text_rows=$text_rows"));
-		}
-
-		// Generate a category array containing theme filenames
-		if (!$theme_info['theme_storedb'])
-		{
-			$theme_path = PHPBB_ROOT_PATH . "styles/{$theme_info['theme_path']}/theme";
-
-			$filelist = filelist($theme_path, '', 'css');
-
-			if ($theme_file)
-			{
-				if (!file_exists($theme_path . "/$theme_file") || !($theme_data = file_get_contents($theme_path . "/$theme_file")))
-				{
-					trigger_error($user->lang['NO_THEME'] . adm_back_link($this->u_action), E_USER_WARNING);
-				}
-			}
-		}
-		else
-		{
-			$theme_data = &$theme_info['theme_data'];
-		}
-
-		// Now create the categories
-		$filelist_cats[''] = [];
-		foreach ($filelist as $pathfile => $file_ary)
-		{
-			// Use the directory name as category name
-			if (!empty($pathfile))
-			{
-				$filelist_cats[$pathfile] = [];
-				foreach ($file_ary as $file)
-				{
-					$filelist_cats[$pathfile][$pathfile . $file] = $file;
-				}
-			}
-			// or if it's in the main category use the word before the first underscore to group files
-			else
-			{
-				$cats = [];
-				foreach ($file_ary as $file)
-				{
-					$cats[] = substr($file, 0, strpos($file, '_'));
-					$filelist_cats[substr($file, 0, strpos($file, '_'))][$file] = $file;
-				}
-
-				$cats = array_values(array_unique($cats));
-
-				// we don't need any single element categories so put them into the misc '' category
-				for ($i = 0, $n = sizeof($cats); $i < $n; $i++)
-				{
-					if (sizeof($filelist_cats[$cats[$i]]) == 1 && $cats[$i] !== '')
-					{
-						$filelist_cats[''][key($filelist_cats[$cats[$i]])] = current($filelist_cats[$cats[$i]]);
-						unset($filelist_cats[$cats[$i]]);
-					}
-				}
-				unset($cats);
-			}
-		}
-		unset($filelist);
-
-		// Generate list of categorised theme files
-		$tpl_options = '';
-		ksort($filelist_cats);
-		foreach ($filelist_cats as $category => $tpl_ary)
-		{
-			ksort($tpl_ary);
-
-			if (!empty($category))
-			{
-				$tpl_options .= '<option class="sep" value="">' . $category . '</option>';
-			}
-
-			foreach ($tpl_ary as $filename => $file)
-			{
-				$selected = ($theme_file == $filename) ? ' selected="selected"' : '';
-				$tpl_options .= '<option value="' . $filename . '"' . $selected . '>' . $file . '</option>';
-			}
-		}
-
-		$template->assign_vars([
-			'S_EDIT_THEME'		=> true,
-			'S_HIDDEN_FIELDS'	=> build_hidden_fields(['template_file' => $theme_file]),
-			'S_THEME_IN_DB'		=> $theme_info['theme_storedb'],
-			'S_TEMPLATES'		=> $tpl_options,
-
-			'U_ACTION'			=> $this->u_action . "&amp;action=edit&amp;id=$theme_id&amp;text_rows=$text_rows",
-			'U_BACK'			=> $this->u_action,
-
-			'L_EDIT'			=> $user->lang['EDIT_THEME'],
-			'L_EDIT_EXPLAIN'	=> $user->lang['EDIT_THEME_EXPLAIN'],
-			'L_EDITOR'			=> $user->lang['THEME_EDITOR'],
-			'L_EDITOR_HEIGHT'	=> $user->lang['THEME_EDITOR_HEIGHT'],
-			'L_FILE'			=> $user->lang['THEME_FILE'],
-			'L_SELECT'			=> $user->lang['SELECT_THEME'],
-			'L_SELECTED'		=> $user->lang['SELECTED_THEME'],
-			'L_SELECTED_FILE'	=> $user->lang['SELECTED_THEME_FILE'],
-
-			'SELECTED_THEME_NAME'	=> $theme_info['theme_name'],
-			'TEMPLATE_FILE'		=> $theme_file,
-			'TEMPLATE_DATA'		=> utf8_htmlspecialchars($theme_data),
-			'TEXT_ROWS'			=> $text_rows]
 		);
 	}
 
