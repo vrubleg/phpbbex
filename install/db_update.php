@@ -584,7 +584,7 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		SET module_auth = 'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)'
 		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'avatar'");
 
-	// Update users table.
+	// Update schema.
 
 	$db->sql_return_on_error(true);
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
@@ -599,6 +599,8 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
+	$db->sql_query("DROP TABLE {$table_prefix}styles_template_data");
+	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
 	$db->sql_return_on_error(false);
 }
 
@@ -883,7 +885,6 @@ if (request_var('utf8mb4', 0))
 			case SESSIONS_KEYS_TABLE:
 			case SITELIST_TABLE:
 			case SMILIES_TABLE:
-			case STYLES_TEMPLATE_DATA_TABLE:
 			case STYLES_IMAGESET_DATA_TABLE:
 			case TOPICS_POSTED_TABLE:
 			case TOPICS_TRACK_TABLE:
@@ -1542,9 +1543,6 @@ function database_update_info()
 				],
 				STYLES_TEMPLATE_TABLE		=> [
 					'template_id'			=> ['UINT', null, 'auto_increment'],
-				],
-				STYLES_TEMPLATE_DATA_TABLE	=> [
-					'template_id'			=> ['UINT', 0],
 				],
 				FORUMS_TABLE				=> [
 					'forum_style'			=> ['UINT', 0],
@@ -2354,12 +2352,6 @@ function change_database_data(&$no_updates, $version)
 			set_config('feed_limit_topic', (string) (isset($config['feed_overall_topics_limit']) ? (int) $config['feed_overall_topics_limit'] : 10));
 			set_config('feed_topics_new', (!empty($config['feed_overall_topics']) ? '1' : '0'));
 			set_config('feed_topics_active', (!empty($config['feed_overall_topics']) ? '1' : '0'));
-
-			// Delete all text-templates from the template_data
-			$sql = 'DELETE FROM ' . STYLES_TEMPLATE_DATA_TABLE . '
-				WHERE template_filename ' . $db->sql_like_expression($db->any_char . '.txt');
-			_sql($sql, $errored, $error_ary);
-
 			$no_updates = false;
 		break;
 
