@@ -210,7 +210,6 @@ function user_add($user_row, $cp_data = false)
 		'user_last_privmsg'		=> 0,
 		'user_message_rules'	=> 0,
 		'user_full_folder'		=> PRIVMSGS_NO_BOX,
-		'user_emailtime'		=> 0,
 
 		'user_notify'			=> 0,
 		'user_notify_pm'		=> 1,
@@ -1447,6 +1446,12 @@ function validate_username($username, $allowed_username = false)
 		return 'INVALID_CHARS';
 	}
 
+	// Don't allow usernames that look like email addresses.
+	if (preg_match('/^' . get_preg_expression('email') . '$/i', $username))
+	{
+		return 'USERNAME_LIKE_EMAIL';
+	}
+
 	switch ($config['allow_name_chars'])
 	{
 		case 'USERNAME_LATCHARS_NOSPACE':
@@ -1468,12 +1473,6 @@ function validate_username($username, $allowed_username = false)
 	}
 
 	if (!preg_match('#^' . $regex . '$#u', $username))
-	{
-		return 'INVALID_CHARS';
-	}
-
-	// Don't allow a username that look like a e-mail address.
-	if (preg_match('/^' . get_preg_expression('email') . '$/i', strtolower($username)))
 	{
 		return 'INVALID_CHARS';
 	}
@@ -1594,7 +1593,7 @@ function validate_email($email, $allowed_email = false)
 	{
 		[, $domain] = explode('@', $email);
 
-		if (phpbb_checkdnsrr($domain, 'A') === false && phpbb_checkdnsrr($domain, 'MX') === false)
+		if (!checkdnsrr($domain, 'A') && !checkdnsrr($domain, 'MX'))
 		{
 			return 'DOMAIN_NO_MX_RECORD';
 		}
@@ -1605,19 +1604,16 @@ function validate_email($email, $allowed_email = false)
 		return ($ban_reason === true) ? 'EMAIL_BANNED' : $ban_reason;
 	}
 
-	if (!$config['allow_emailreuse'] || ($config['allow_login_via_email'] ?? 0))
-	{
-		$sql = 'SELECT user_email
-			FROM ' . USERS_TABLE . "
-			WHERE user_email = '" . $db->sql_escape($email) . "'";
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
+	$sql = 'SELECT user_email
+		FROM ' . USERS_TABLE . "
+		WHERE user_email = '" . $db->sql_escape($email) . "'";
+	$result = $db->sql_query($sql);
+	$row = $db->sql_fetchrow($result);
+	$db->sql_freeresult($result);
 
-		if ($row)
-		{
-			return 'EMAIL_TAKEN';
-		}
+	if ($row)
+	{
+		return 'EMAIL_TAKEN';
 	}
 
 	return false;
@@ -1875,9 +1871,21 @@ function phpbb_style_is_active($style_id)
 */
 function avatar_delete($user_row)
 {
+	global $db;
+
 	if (!$user_row['user_avatar'] || $user_row['user_avatar_type'] != AVATAR_UPLOAD) { return false; }
 
-	if (file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $user_row['user_avatar']))
+	// Check if the same avatar file is used by another user (may happen after merging users).
+	$sql = 'SELECT user_id
+		FROM ' . USERS_TABLE . "
+		WHERE user_avatar = '" . $db->sql_escape($user_row['user_avatar']) . "'
+			AND user_avatar_type = " . AVATAR_UPLOAD . '
+			AND user_id <> ' . (int) $user_row['user_id'];
+	$result = $db->sql_query_limit($sql, 1);
+	$is_shared = (bool) $db->sql_fetchfield('user_id');
+	$db->sql_freeresult($result);
+
+	if (!$is_shared && file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $user_row['user_avatar']))
 	{
 		@unlink(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $user_row['user_avatar']);
 		return true;

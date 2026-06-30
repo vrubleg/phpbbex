@@ -18,10 +18,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 {
 	global $template, $db, $auth, $user, $config;
 
-	// Damn php and globals - i know, this is horrible
-	// Needed for handle_message_list_actions()
-	global $refresh, $submit, $preview;
-
 	require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 	require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 	require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
@@ -448,7 +444,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	}
 
 	// Handle User/Group adding/removing
-	handle_message_list_actions($address_list, $error, $remove_u, $remove_g, $add_to, $add_bcc);
+	handle_message_list_actions($address_list, $error, $remove_u, $remove_g, $add_to, $add_bcc, $refresh, $submit);
 
 	// Check mass pm to group permission
 	if ((!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm_group')) && !empty($address_list['g']))
@@ -1109,7 +1105,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 /**
 * For composing messages, handle list actions
 */
-function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove_g, $add_to, $add_bcc)
+function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove_g, $add_to, $add_bcc, &$refresh, &$submit)
 {
 	global $auth, $db, $user;
 
@@ -1141,27 +1137,23 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 	// Build usernames to add
 	$usernames = request_var('username', '', true);
 	$usernames = (empty($usernames)) ? [] : [$usernames];
-
 	$username_list = request_var('username_list', '', true);
 	if ($username_list)
 	{
 		$usernames = array_merge($usernames, explode("\n", $username_list));
 	}
+	$usernames = array_values(array_unique(array_filter(array_map('trim', $usernames), function ($username) { return $username !== ''; })));
 
 	// If add to or add bcc not pressed, users could still have usernames listed they want to add...
 	if (!$add_to && !$add_bcc && (sizeof($group_list) || sizeof($usernames)))
 	{
 		$add_to = true;
 
-		global $refresh, $submit, $preview;
-
-		$refresh = true;
-		$submit = false;
-
-		// Preview is only true if there was also a message entered
-		if (request_var('message', ''))
+		// A submitted message can be sent immediately after resolving its recipients.
+		// Other actions still need to refresh the recipient list first.
+		if (!$submit)
 		{
-			$preview = true;
+			$refresh = true;
 		}
 	}
 
@@ -1181,16 +1173,22 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 		// User ID's to add...
 		$user_id_ary = [];
 
-		// Reveal the correct user_ids
-		if (sizeof($usernames))
+		// Map usernames to user_ids.
+		if ($expected_count = sizeof(array_unique(array_filter(array_map('utf8_clean_string', $usernames), function ($username) { return $username !== ''; }))))
 		{
 			$user_id_ary = [];
 			user_get_id_name($user_id_ary, $usernames, [USER_NORMAL, USER_FOUNDER, USER_INACTIVE]);
 
-			// If there are users not existing, we will at least print a notice...
-			if (!sizeof($user_id_ary))
+			// Do not submit if any requested username could not be resolved.
+			if (sizeof($user_id_ary) != $expected_count)
 			{
 				$error[] = $user->lang['PM_NO_USERS'];
+
+				if ($submit)
+				{
+					$submit = false;
+					$refresh = true;
+				}
 			}
 		}
 

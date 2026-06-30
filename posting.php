@@ -815,15 +815,15 @@ if ($submit || $preview || $refresh)
 
 		$user->add_lang('ucp');
 
-		if (($result = validate_username($post_data['username'], $post_data['post_username'] ?? '')) !== false)
-		{
-			$error[] = $user->lang[$result . '_USERNAME'];
-		}
-
 		if (($result = validate_string($post_data['username'], false, $config['min_name_chars'], $config['max_name_chars'])) !== false)
 		{
 			$min_max_amount = ($result == 'TOO_SHORT') ? $config['min_name_chars'] : $config['max_name_chars'];
 			$error[] = sprintf($user->lang['FIELD_' . $result], $user->lang['USERNAME'], $min_max_amount);
+		}
+
+		if (($result = validate_username($post_data['username'], $post_data['post_username'] ?? '')) !== false)
+		{
+			$error[] = $user->lang[$result . '_USERNAME'];
 		}
 	}
 
@@ -962,15 +962,6 @@ if ($submit || $preview || $refresh)
 	if (sizeof($message_parser->warn_msg))
 	{
 		$error[] = implode('<br />', $message_parser->warn_msg);
-	}
-
-	// DNSBL check
-	if ($config['check_dnsbl'] && !$refresh)
-	{
-		if (($dnsbl = $user->check_dnsbl('post')) !== false)
-		{
-			$error[] = sprintf($user->lang['IP_BLACKLISTED'], $user->ip, $dnsbl[1]);
-		}
 	}
 
 	// Store message, sync counters

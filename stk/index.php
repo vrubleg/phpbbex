@@ -28,9 +28,6 @@ stk_add_lang('common');
 // Do not use the normal template path (to prevent issues with boards using alternate styles)
 $template->set_custom_template(STK_ROOT_PATH . 'style', 'stk');
 
-// Work around for a bug in phpBB3.
-$user->theme['template_storedb'] = false;
-
 // Perform some quick tasks here that don't require any authentication!
 perform_unauthed_quick_tasks($action, $submit);
 

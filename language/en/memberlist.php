@@ -27,25 +27,13 @@ $lang = array_merge($lang, [
 
 	'BEFORE'				=> 'Before',
 
-	'CC_EMAIL'				=> 'Send a copy of this email to yourself.',
 	'CONTACT_USER'			=> 'Contact',
 
-	'DEST_LANG'				=> 'Language',
-	'DEST_LANG_EXPLAIN'		=> 'Select an appropriate language (if available) for the recipient of this message.',
-
-	'EMAIL_BODY_EXPLAIN'	=> 'This message will be sent as plain text, do not include any HTML or BBCode. The return address for this message will be set to your email address.',
 	'EMAIL_DISABLED'		=> 'Sorry but all email related functions have been disabled.',
-	'EMAIL_SENT'			=> 'The email has been sent.',
-	'EMAIL_TOPIC_EXPLAIN'	=> 'This message will be sent as plain text, do not include any HTML or BBCode. Please note that the topic information is already included in the message. The return address for this message will be set to your email address.',
-	'EMPTY_ADDRESS_EMAIL'	=> 'You must provide a valid email address for the recipient.',
-	'EMPTY_MESSAGE_EMAIL'	=> 'You must enter a message to be emailed.',
 	'EMPTY_MESSAGE_IM'		=> 'You must enter a message to be send.',
-	'EMPTY_NAME_EMAIL'		=> 'You must enter the real name of the recipient.',
-	'EMPTY_SUBJECT_EMAIL'	=> 'You must specify a subject for the email.',
 	'EQUAL_TO'				=> 'Equal to',
 
 	'FIND_USERNAME_EXPLAIN'	=> 'You do not need to fill out all fields. To match partial data use * as a wildcard. When entering dates use the format <kbd>YYYY-MM-DD</kbd>, e.g. <samp>2004-02-29</samp>.',
-	'FLOOD_EMAIL_LIMIT'		=> 'You cannot send another email at this time. Please try again later.',
 
 	'GROUP_LEADER'			=> 'Group leader',
 
@@ -76,7 +64,6 @@ $lang = array_merge($lang, [
 
 	'MORE_THAN'				=> 'More than',
 
-	'NO_EMAIL'				=> 'You are not permitted to send email to this user.',
 	'NO_VIEW_USERS'			=> 'You are not authorised to view the member list or profiles.',
 
 	'ORDER'					=> 'Order',
@@ -84,8 +71,6 @@ $lang = array_merge($lang, [
 
 	'POST_IP'				=> 'Posted from IP/domain',
 
-	'REAL_NAME'				=> 'Recipient name',
-	'RECIPIENT'				=> 'Recipient',
 	'REMOVE_FOE'			=> 'Remove foe',
 	'REMOVE_FRIEND'			=> 'Remove friend',
 

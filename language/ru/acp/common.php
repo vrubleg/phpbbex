@@ -25,7 +25,6 @@ $lang = array_merge($lang, [
 	'ACP_AUTOMATION'			=> 'Автоматизация',
 	'ACP_AVATAR_SETTINGS'		=> 'Аватары',
 
-	'ACP_BACKUP'				=> 'Резервное копирование',
 	'ACP_BAN'					=> 'Блокировка доступа',
 	'ACP_BAN_EMAILS'			=> 'Чёрный список email',
 	'ACP_BAN_IPS'				=> 'Чёрный список IP',
@@ -127,7 +126,6 @@ $lang = array_merge($lang, [
 	'ACP_REGISTER_SETTINGS'		=> 'Регистрация пользователей',
 	'ACP_REGISTER_LOGS'			=> 'Лог регистраций',
 
-	'ACP_RESTORE'				=> 'Восстановление',
 
 	'ACP_FEED'					=> 'Каналы новостей',
 	'ACP_FEED_SETTINGS'			=> 'Каналы новостей',
@@ -202,14 +200,9 @@ $lang = array_merge($lang, [
 	'DIRECTORY_NOT_WRITABLE'	=> 'Запись в каталог «%s» запрещена.',
 	'DISABLE'					=> 'Отключить',
 	'DOWNLOAD'					=> 'Скачать',
-	'DOWNLOAD_AS'				=> 'Скачать как',
-	'DOWNLOAD_STORE'			=> 'Скачать или сохранить на сервере',
-	'DOWNLOAD_STORE_EXPLAIN'	=> 'Вы можете напрямую скачать файл или сохранить его на сервере в каталоге <samp>store/</samp>.',
 
 	'EDIT'					=> 'Изменить',
 	'ENABLE'				=> 'Включить',
-	'EXPORT_DOWNLOAD'		=> 'Скачать',
-	'EXPORT_STORE'			=> 'Сохранить',
 
 	'FORUM_INDEX'			=> 'Главная форума',
 
@@ -303,7 +296,6 @@ $lang = array_merge($lang, [
 	'AVATAR_DIR_SIZE'			=> 'Размер каталога с аватарами',
 
 	'BOARD_STARTED'		=> 'Дата запуска форума',
-	'PHPBBEX_VERSION'	=> 'Версия phpBBex',
 
 	'DATABASE_SERVER_INFO'	=> 'Сервер базы данных',
 	'DATABASE_SIZE'			=> 'Размер базы данных',
@@ -331,6 +323,8 @@ $lang = array_merge($lang, [
 	'NUMBER_ORPHAN'		=> 'Потерянных вложений',
 
 	'PHP_VERSION_OLD'	=> 'Версия PHP на данном сервере устарела. Рекомендуется обновиться до PHP 7.4 или новее.',
+	'PHPBBEX_VERSION'	=> 'Версия phpBBex',
+	'UPDATE_AVAILABLE'	=> 'Доступна новая версия: <strong>%1$s</strong>. Прочтите дополнительные сведения, чтобы получить информацию о нововведениях и способах обновления.',
 
 	'POSTS_PER_DAY'		=> 'Сообщений в день',
 
@@ -522,9 +516,6 @@ $lang = array_merge($lang, [
 	'LOG_DISALLOW_ADD'		=> '<strong>Запрещено имя</strong><br />» %s',
 	'LOG_DISALLOW_DELETE'	=> '<strong>Разрешено имя</strong>',
 
-	'LOG_DB_BACKUP'			=> '<strong>Резервное копирование базы данных</strong>',
-	'LOG_DB_DELETE'			=> '<strong>Удаление резервной копии базы данных</strong>',
-	'LOG_DB_RESTORE'		=> '<strong>Восстановление базы данных</strong>',
 
 	'LOG_DOWNLOAD_EXCLUDE_IP'	=> '<strong>Исключён IP-адрес/хост из списка скачивания</strong><br />» %s',
 	'LOG_DOWNLOAD_IP'			=> '<strong>Добавлен IP-адрес/хост в список скачивания</strong><br />» %s',
@@ -567,7 +558,6 @@ $lang = array_merge($lang, [
 	'LOG_IMAGESET_DELETE'			=> '<strong>Удалён набор рисунков</strong><br />» %s',
 	'LOG_IMAGESET_EDIT_DETAILS'		=> '<strong>Изменена информация о наборе рисунков</strong><br />» %s',
 	'LOG_IMAGESET_EDIT'				=> '<strong>Изменён набор рисунков</strong><br />» %s',
-	'LOG_IMAGESET_EXPORT'			=> '<strong>Экспортирован набор рисунков</strong><br />» %s',
 	'LOG_IMAGESET_LANG_MISSING'		=> '<strong>Отсутствует локализация «%2$s» для набора рисунков</strong><br />» «%1$s»',
 	'LOG_IMAGESET_LANG_REFRESHED'	=> '<strong>Обновлена локализация набора рисунков «%2$s»</strong><br />» %1$s',
 	'LOG_IMAGESET_REFRESHED'		=> '<strong>Обновлён набор рисунков</strong><br />» %s',
@@ -588,7 +578,6 @@ $lang = array_merge($lang, [
 	'LOG_LANGUAGE_PACK_DELETED'		=> '<strong>Удалён языковой пакет</strong><br />» %s',
 	'LOG_LANGUAGE_PACK_INSTALLED'	=> '<strong>Установлен языковой пакет</strong><br />» %s',
 	'LOG_LANGUAGE_PACK_UPDATED'		=> '<strong>Обновлена информация о языковом пакете</strong><br />» %s',
-	'LOG_LANGUAGE_FILE_SUBMITTED'	=> '<strong>Отправлен языковой файл и помещён в каталог store</strong><br />» %s',
 
 	'LOG_MASS_EMAIL'		=> '<strong>Произведена массовая рассылка почты</strong><br />» %s',
 
@@ -652,25 +641,17 @@ $lang = array_merge($lang, [
 	'LOG_STYLE_ADD'				=> '<strong>Добавлен стиль</strong><br />» %s',
 	'LOG_STYLE_DELETE'			=> '<strong>Удалён стиль</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'	=> '<strong>Изменён стиль</strong><br />» %s',
-	'LOG_STYLE_EXPORT'			=> '<strong>Экспортирован стиль</strong><br />» %s',
 
-	'LOG_TEMPLATE_ADD_DB'			=> '<strong>Добавлен шаблон в базу данных</strong><br />» %s',
 	'LOG_TEMPLATE_ADD_FS'			=> '<strong>Добавлен шаблон на сервер</strong><br />» %s',
 	'LOG_TEMPLATE_CACHE_CLEARED'	=> '<strong>Удалена кэшированная версия файлов шаблона <em>%1$s</em></strong><br />» %2$s',
 	'LOG_TEMPLATE_DELETE'			=> '<strong>Удалён шаблон</strong><br />» %s',
-	'LOG_TEMPLATE_EDIT'				=> '<strong>Изменён шаблон <em>%1$s</em></strong><br />» %2$s',
 	'LOG_TEMPLATE_EDIT_DETAILS'		=> '<strong>Изменена информация о шаблоне</strong><br />» %s',
-	'LOG_TEMPLATE_EXPORT'			=> '<strong>Экспортирован шаблон</strong><br />» %s',
 	'LOG_TEMPLATE_REFRESHED'		=> '<strong>Обновлён шаблон</strong><br />» %s',
 
-	'LOG_THEME_ADD_DB'			=> '<strong>Добавлена тема в базу данных</strong><br />» %s',
 	'LOG_THEME_ADD_FS'			=> '<strong>Добавлена тема на сервер</strong><br />» %s',
 	'LOG_THEME_DELETE'			=> '<strong>Удалена тема</strong><br />» %s',
 	'LOG_THEME_EDIT_DETAILS'	=> '<strong>Изменена информация о теме</strong><br />» %s',
-	'LOG_THEME_EDIT'			=> '<strong>Изменена тема <em>%1$s</em></strong>',
-	'LOG_THEME_EDIT_FILE'		=> '<strong>Изменение темы оформления стиля <em>%1$s</em></strong><br />» Изменён файл <em>%2$s</em>',
-	'LOG_THEME_EXPORT'			=> '<strong>Экспортирована тема</strong><br />» %s',
-	'LOG_THEME_REFRESHED'		=> '<strong>Обновлена тема</strong><br />» %s',
+	'LOG_THEME_REFRESHED'		=> '<strong>Обновлена версия таблицы стилей темы</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'	=> '<strong>Обновлена база данных с версии %1$s до версии %2$s</strong>',
 	'LOG_UPDATE_PHPBB'		=> '<strong>Обновлён phpBB с версии %1$s до версии %2$s</strong>',

@@ -121,7 +121,7 @@ class install_install extends module
 			'BODY'		=> $lang['REQUIREMENTS_EXPLAIN'],
 		]);
 
-		$passed = ['php' => false, 'db' => false, 'files' => false, 'pcre' => false, 'imagesize' => false,];
+		$passed = ['php' => false, 'db' => false, 'files' => false,];
 
 		// Test for basic PHP settings
 		$template->assign_block_vars('checks', [
@@ -162,51 +162,6 @@ class install_install extends module
 		$template->assign_block_vars('checks', [
 			'TITLE'			=> $lang['PHP_URL_FOPEN_SUPPORT'],
 			'TITLE_EXPLAIN'	=> $lang['PHP_URL_FOPEN_SUPPORT_EXPLAIN'],
-			'RESULT'		=> $result,
-
-			'S_EXPLAIN'		=> true,
-			'S_LEGEND'		=> false,
-		]);
-
-
-		// Check for getimagesize
-		if (@function_exists('getimagesize'))
-		{
-			$passed['imagesize'] = true;
-			$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
-		}
-		else
-		{
-			$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
-		}
-
-		$template->assign_block_vars('checks', [
-			'TITLE'			=> $lang['PHP_GETIMAGESIZE_SUPPORT'],
-			'TITLE_EXPLAIN'	=> $lang['PHP_GETIMAGESIZE_SUPPORT_EXPLAIN'],
-			'RESULT'		=> $result,
-
-			'S_EXPLAIN'		=> true,
-			'S_LEGEND'		=> false,
-		]);
-
-		// Check for PCRE UTF-8 and "(?|(a)|(b))" construction support
-		$pattern = '#(?|([\pL])|([\d]))#u';
-		$match1 = $match2 = [];
-		if (@preg_match('//u', '')
-			&& @preg_match($pattern, 'Ъ', $match1) && isset($match1[1]) && $match1[1] === 'Ъ'
-			&& @preg_match($pattern, '1', $match2) && isset($match2[1]) && $match2[1] === '1')
-		{
-			$passed['pcre'] = true;
-			$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
-		}
-		else
-		{
-			$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
-		}
-
-		$template->assign_block_vars('checks', [
-			'TITLE'			=> $lang['PCRE_UTF_SUPPORT'],
-			'TITLE_EXPLAIN'	=> $lang['PCRE_UTF_SUPPORT_EXPLAIN'],
 			'RESULT'		=> $result,
 
 			'S_EXPLAIN'		=> true,
@@ -343,7 +298,7 @@ class install_install extends module
 			'LEGEND_EXPLAIN'	=> $lang['FILES_REQUIRED_EXPLAIN'],
 		]);
 
-		$paths = ['cache/', 'files/', 'store/'];
+		$paths = ['cache/', 'files/'];
 
 		umask(0);
 
@@ -1580,7 +1535,7 @@ class install_install extends module
 	/**
 	* Specific PHP modules we may require for certain optional or extended features
 	*/
-	var $php_dlls_other = ['zlib', 'ftp', 'gd', 'xml'];
+	var $php_dlls_other = ['zlib', 'gd', 'xml'];
 
 	/**
 	* A list of the web-crawlers/bots we recognise by default.

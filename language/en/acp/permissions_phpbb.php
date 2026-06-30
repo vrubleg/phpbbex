@@ -107,7 +107,6 @@ $lang = array_merge($lang, [
 
 	'acl_u_canplus'		=> ['lang' => 'Can make positive ratings', 'cat' => 'misc'],
 	'acl_u_canminus'	=> ['lang' => 'Can make negative ratings', 'cat' => 'misc'],
-	'acl_u_sendemail'	=> ['lang' => 'Can send emails', 'cat' => 'misc'],
 	'acl_u_sendim'		=> ['lang' => 'Can send instant messages', 'cat' => 'misc'],
 	'acl_u_ignoreflood'	=> ['lang' => 'Can ignore flood limit', 'cat' => 'misc'],
 	'acl_u_hideonline'	=> ['lang' => 'Can hide online status', 'cat' => 'misc'],
@@ -210,6 +209,5 @@ $lang = array_merge($lang, [
 	'acl_a_email'		=> ['lang' => 'Can send mass email', 'cat' => 'misc'],
 	'acl_a_bots'		=> ['lang' => 'Can manage bots', 'cat' => 'misc'],
 	'acl_a_reasons'		=> ['lang' => 'Can manage report/denial reasons', 'cat' => 'misc'],
-	'acl_a_backup'		=> ['lang' => 'Can backup/restore database', 'cat' => 'misc'],
 	'acl_a_search'		=> ['lang' => 'Can manage search backends and settings', 'cat' => 'misc'],
 ]);

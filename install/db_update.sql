@@ -39,8 +39,6 @@ ALTER TABLE phpbb_forums ADD COLUMN forum_topic_sortby_dir varchar(1) DEFAULT ''
 
 ALTER TABLE phpbb_poll_votes ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' NOT NULL AFTER vote_user_id;
 
-ALTER TABLE phpbb_users ADD COLUMN user_topics_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_topic_sortby_dir;
-ALTER TABLE phpbb_users ADD COLUMN user_posts_per_page mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_post_sortby_dir;
 ALTER TABLE phpbb_users ADD COLUMN user_gender tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER user_birthday;
 ALTER TABLE phpbb_users ADD COLUMN user_topics mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_inactive_time;
 ALTER TABLE phpbb_users ADD COLUMN user_skype varchar(255) DEFAULT '' NOT NULL AFTER user_jabber;
@@ -237,8 +235,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_quote_depth',
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('topics_per_page', '50');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('board_hide_emails', '0');
-UPDATE phpbb_users SET user_allow_viewemail = 0;
 
 -- External links
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('external_links_newwindow', '0');

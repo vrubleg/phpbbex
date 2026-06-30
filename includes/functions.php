@@ -2977,86 +2977,6 @@ function short_ipv6($ip, $length)
 	return $ip;
 }
 
-/**
-* Wrapper for php's checkdnsrr function.
-*
-* @param string $host	Fully-Qualified Domain Name
-* @param string $type	Resource record type to lookup
-*						Supported types are: MX (default), A, AAAA, NS, TXT, CNAME
-*						Other types may work or may not work
-*
-* @return mixed		true if entry found,
-*					false if entry not found,
-*					null if this function is not supported by this environment
-*
-* Since null can also be returned, you probably want to compare the result
-* with === true or === false,
-*
-* @author bantu
-*/
-function phpbb_checkdnsrr($host, $type = 'MX')
-{
-	// The dot indicates to search the DNS root (helps those having DNS prefixes on the same domain)
-	if (substr($host, -1) == '.')
-	{
-		$host_fqdn = $host;
-		$host = substr($host, 0, -1);
-	}
-	else
-	{
-		$host_fqdn = $host . '.';
-	}
-	// $host		has format	some.host.example.com
-	// $host_fqdn	has format	some.host.example.com.
-
-	// If we're looking for an A record we can use gethostbyname()
-	if ($type == 'A' && function_exists('gethostbyname'))
-	{
-		return (@gethostbyname($host_fqdn) != $host_fqdn);
-	}
-
-	if (function_exists('checkdnsrr'))
-	{
-		return checkdnsrr($host_fqdn, $type);
-	}
-
-	if (function_exists('dns_get_record'))
-	{
-		// dns_get_record() expects an integer as second parameter
-		// We have to convert the string $type to the corresponding integer constant.
-		$type_constant = 'DNS_' . $type;
-		$type_param = (defined($type_constant)) ? constant($type_constant) : DNS_ANY;
-
-		// dns_get_record() might throw E_WARNING and return false for records that do not exist
-		$resultset = @dns_get_record($host_fqdn, $type_param);
-
-		if (empty($resultset) || !is_array($resultset))
-		{
-			return false;
-		}
-		else if ($type_param == DNS_ANY)
-		{
-			// $resultset is a non-empty array
-			return true;
-		}
-
-		foreach ($resultset as $result)
-		{
-			if (
-				isset($result['host']) && $result['host'] == $host &&
-				isset($result['type']) && $result['type'] == $type
-			)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	return null;
-}
-
 // Handler, header and footer
 
 /**
@@ -3906,7 +3826,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'T_IMAGES_PATH'			=> "{$web_path}images/",
 		'T_SMILIES_PATH'		=> $web_path . SMILIES_PATH . '/',
 		'T_TOPIC_ICONS_PATH'	=> $web_path . TOPIC_ICONS_PATH . '/',
-		'T_STYLESHEET_LINK'		=> (!$user->theme['theme_storedb']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_path']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_name . '&amp;mtime=' . $user->theme['theme_mtime']),
+		'T_STYLESHEET_LINK'		=> (!$user->theme['parse_css_file']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_path']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_name . '&amp;mtime=' . $user->theme['theme_mtime']),
 		'T_STYLESHEET_NAME'		=> $user->theme['theme_name'],
 
 		'T_THEME_NAME'			=> rawurlencode($user->theme['theme_path']),

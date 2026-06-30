@@ -107,7 +107,6 @@ $lang = array_merge($lang, [
 
 	'acl_u_canplus'		=> ['lang' => 'Может ставить положительные оценки', 'cat' => 'misc'],
 	'acl_u_canminus'	=> ['lang' => 'Может ставить отрицательные оценки', 'cat' => 'misc'],
-	'acl_u_sendemail'	=> ['lang' => 'Может посылать email-сообщения', 'cat' => 'misc'],
 	'acl_u_sendim'		=> ['lang' => 'Может использовать систему мгновенных сообщений', 'cat' => 'misc'],
 	'acl_u_ignoreflood'	=> ['lang' => 'Может игнорировать флуд-контроль', 'cat' => 'misc'],
 	'acl_u_hideonline'	=> ['lang' => 'Может прятать статус присутствия', 'cat' => 'misc'],
@@ -210,6 +209,5 @@ $lang = array_merge($lang, [
 	'acl_a_email'		=> ['lang' => 'Может осуществлять массовую рассылку почты', 'cat' => 'misc'],
 	'acl_a_bots'		=> ['lang' => 'Может управлять ботами', 'cat' => 'misc'],
 	'acl_a_reasons'		=> ['lang' => 'Может управлять списком жалоб/причин', 'cat' => 'misc'],
-	'acl_a_backup'		=> ['lang' => 'Может сохранять/восстанавливать базу данных', 'cat' => 'misc'],
 	'acl_a_search'		=> ['lang' => 'Может управлять поисковыми индексами/установками поиска', 'cat' => 'misc'],
 ]);

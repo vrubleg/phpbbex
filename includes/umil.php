@@ -651,84 +651,6 @@ class phpbb_umil
 
 					$this->umil_start('TEMPLATE_CACHE_PURGE', $template_row['template_name']);
 
-					// The following is from includes/acp/acp_styles.php
-					if ($template_row['template_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/"))
-					{
-						$filelist = ['' => []];
-
-						$sql = 'SELECT template_filename, template_mtime
-							FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
-							WHERE template_id = $style_id";
-						$result = $this->db->sql_query($sql);
-
-						while ($row = $this->db->sql_fetchrow($result))
-						{
-//							if (@filemtime(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/" . $row['template_filename']) > $row['template_mtime'])
-//							{
-								// get folder info from the filename
-								if (($slash_pos = strrpos($row['template_filename'], '/')) === false)
-								{
-									$filelist[''][] = $row['template_filename'];
-								}
-								else
-								{
-									$filelist[substr($row['template_filename'], 0, $slash_pos + 1)][] = substr($row['template_filename'], $slash_pos + 1, strlen($row['template_filename']) - $slash_pos - 1);
-								}
-//							}
-						}
-						$this->db->sql_freeresult($result);
-
-						$includes = [];
-						foreach ($filelist as $pathfile => $file_ary)
-						{
-							foreach ($file_ary as $file)
-							{
-								if (!($fp = @fopen(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file", 'r')))
-								{
-									return $this->umil_end('FILE_COULD_NOT_READ', PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file");
-								}
-								$template_data = fread($fp, filesize(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file"));
-								fclose($fp);
-
-								if (preg_match_all('#<!-- INCLUDE (.*?\.html) -->#is', $template_data, $matches))
-								{
-									foreach ($matches[1] as $match)
-									{
-										$includes[trim($match)][] = $file;
-									}
-								}
-							}
-						}
-
-						foreach ($filelist as $pathfile => $file_ary)
-						{
-							foreach ($file_ary as $file)
-							{
-								// Skip index.
-								if (strpos($file, 'index.') === 0)
-								{
-									continue;
-								}
-
-								// We could do this using extended inserts ... but that could be one
-								// heck of a lot of data ...
-								$sql_ary = [
-									'template_id'			=> (int) $style_id,
-									'template_filename'		=> "$pathfile$file",
-									'template_included'		=> (isset($includes[$file])) ? implode(':', $includes[$file]) . ':' : '',
-									'template_mtime'		=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file"),
-									'template_data'			=> (string) file_get_contents(PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}$pathfile$file"),
-								];
-
-								$sql = 'UPDATE ' . STYLES_TEMPLATE_DATA_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . "
-									WHERE template_id = $style_id
-										AND template_filename = '" . $this->db->sql_escape("$pathfile$file") . "'";
-								$this->db->sql_query($sql);
-							}
-						}
-						unset($filelist);
-					}
-
 					// Purge the forum's cache as well.
 					$cache->purge();
 
@@ -769,44 +691,12 @@ class phpbb_umil
 
 					$this->umil_start('THEME_CACHE_PURGE', $theme_row['theme_name']);
 
-					// The following is from includes/acp/acp_styles.php
-					if ($theme_row['theme_storedb'] && file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"))
-					{
-						$stylesheet = file_get_contents(PHPBB_ROOT_PATH . 'styles/' . $theme_row['theme_path'] . '/theme/stylesheet.css');
+					$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
+						SET theme_mtime = ' . time() . "
+						WHERE theme_id = $style_id";
+					$this->db->sql_query($sql);
 
-						// Match CSS imports
-						$matches = [];
-						preg_match_all('/@import url\(["\'](.*)["\']\);/i', $stylesheet, $matches);
-
-						if (sizeof($matches))
-						{
-							foreach ($matches[0] as $idx => $match)
-							{
-								if (!file_exists(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/{$matches[1][$idx]}"))
-								{
-									continue;
-								}
-
-								$content = trim(file_get_contents(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/{$matches[1][$idx]}"));
-								$stylesheet = str_replace($match, $content, $stylesheet);
-							}
-						}
-
-						// adjust paths
-						$db_theme_data = str_replace('./', 'styles/' . $theme_row['theme_path'] . '/theme/', $stylesheet);
-
-						// Save CSS contents
-						$sql_ary = [
-							'theme_mtime'	=> (int) filemtime(PHPBB_ROOT_PATH . "styles/{$theme_row['theme_path']}/theme/stylesheet.css"),
-							'theme_data'	=> $db_theme_data,
-						];
-
-						$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . "
-							WHERE theme_id = $style_id";
-						$this->db->sql_query($sql);
-
-						$cache->destroy('sql', STYLES_THEME_TABLE);
-					}
+					$cache->destroy('sql', STYLES_THEME_TABLE);
 
 					return $this->umil_end();
 				}

@@ -241,7 +241,6 @@ $lang = array_merge($lang, [
 	'INVALID_DIGEST_CHALLENGE'	=> 'Неверный запрос аутентификации.',
 	'INVALID_EMAIL_LOG'			=> 'Возможно, введён неверный адрес email: <strong>%s</strong>',
 	'IP'						=> 'IP',
-	'IP_BLACKLISTED'			=> 'Ваш IP-адрес %1$s был внесён в черный список и заблокирован. Для получения дополнительной информации перейдите по ссылке <a href="%2$s">%2$s</a>.',
 
 	'JABBER'				=> 'Jabber',
 	'JOINED'				=> 'Зарегистрирован',
@@ -485,7 +484,6 @@ $lang = array_merge($lang, [
 	'SELECT_DESTINATION_FORUM'	=> 'Выберите раздел назначения',
 	'SELECT_FORUM'				=> 'Выберите раздел',
 	'SEND_EMAIL'				=> 'Отправить email',				// Used for submit buttons
-	'SEND_EMAIL_USER'			=> 'Отправить письмо пользователю',	// Used as: {L_SEND_EMAIL_USER} {USERNAME} -> Email UserX
 	'SEND_PRIVATE_MESSAGE'		=> 'Отправить личное сообщение',
 	'SETTINGS'					=> 'Настройки',
 	'SIGNATURE'					=> 'Подпись',

@@ -11,9 +11,6 @@
 /images/avatars/gallery/**
 !/images/avatars/gallery/.htaccess
 !/images/avatars/gallery/index.htm
-/store/**
-!/store/.htaccess
-!/store/index.htm
 /gallery/images/cache/**
 !/gallery/images/cache/.htaccess
 !/gallery/images/cache/index.htm

@@ -99,7 +99,6 @@ class ucp_register
 				'token' => false,
 				'captcha' => false,
 				'attempts' => false,
-				'dnsbl' => false,
 			];
 
 			if (!check_form_key('ucp_register'))
@@ -121,16 +120,6 @@ class ucp_register
 				{
 					$error[] = $user->lang['TOO_MANY_REGISTERS'];
 					$error_type['attempts'] = true;
-				}
-			}
-
-			// DNSBL check
-			if (!sizeof($error) && $config['check_dnsbl'])
-			{
-				if (($dnsbl = $user->check_dnsbl('register')) !== false)
-				{
-					$error[] = sprintf($user->lang['IP_BLACKLISTED'], $user->ip, $dnsbl[1]);
-					$error_type['dnsbl'] = true;
 				}
 			}
 

@@ -1149,103 +1149,6 @@ class phpbb_session
 	}
 
 	/**
-	* Check if ip is blacklisted
-	* This should be called only where absolutly necessary
-	*
-	* Only IPv4 (rbldns does not support AAAA records/IPv6 lookups)
-	*
-	* @author satmd (from the php manual)
-	* @param string $mode register/post - spamcop for example is ommitted for posting
-	* @return false if ip is not blacklisted, else an array([checked server], [lookup])
-	*/
-	function check_dnsbl($mode, $ip = false)
-	{
-		if ($ip === false)
-		{
-			$ip = $this->ip;
-		}
-
-		// Neither Spamhaus nor Spamcop supports IPv6 addresses.
-		if (strpos($ip, ':') !== false)
-		{
-			return false;
-		}
-
-		$dnsbl_check = [
-			'sbl.spamhaus.org'	=> 'http://www.spamhaus.org/query/bl?ip=',
-		];
-
-		if ($mode == 'register')
-		{
-			$dnsbl_check['bl.spamcop.net'] = 'http://spamcop.net/bl.shtml?';
-		}
-
-		if ($ip)
-		{
-			$quads = explode('.', $ip);
-			$reverse_ip = $quads[3] . '.' . $quads[2] . '.' . $quads[1] . '.' . $quads[0];
-
-			// Need to be listed on all servers...
-			$listed = true;
-			$info = [];
-
-			foreach ($dnsbl_check as $dnsbl => $lookup)
-			{
-				if (phpbb_checkdnsrr($reverse_ip . '.' . $dnsbl . '.', 'A') === true)
-				{
-					$info = [$dnsbl, $lookup . $ip];
-				}
-				else
-				{
-					$listed = false;
-				}
-			}
-
-			if ($listed)
-			{
-				return $info;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	* Check if URI is blacklisted
-	* This should be called only where absolutly necessary, for example on the submitted website field
-	* This function is not in use at the moment and is only included for testing purposes, it may not work at all!
-	* This means it is untested at the moment and therefore commented out
-	*
-	* @param string $uri URI to check
-	* @return true if uri is on blacklist, else false. Only blacklist is checked (~zero FP), no grey lists
-	function check_uribl($uri)
-	{
-		// Normally parse_url() is not intended to parse uris
-		// We need to get the top-level domain name anyway... change.
-		$uri = parse_url($uri);
-
-		if ($uri === false || empty($uri['host']))
-		{
-			return false;
-		}
-
-		$uri = trim($uri['host']);
-
-		if ($uri)
-		{
-			// One problem here... the return parameter for the "windows" method is different from what
-			// we expect... this may render this check useless...
-			if (phpbb_checkdnsrr($uri . '.multi.uribl.com.', 'A') === true)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-	*/
-
-	/**
 	* Set/Update a persistent login key
 	*
 	* This method creates or updates a persistent session key. When a user makes
@@ -1545,7 +1448,7 @@ class phpbb_user extends phpbb_session
 			$style = $style ?: ((!$config['override_user_style']) ? $this->data['user_style'] : $config['default_style']);
 		}
 
-		$sql = 'SELECT s.style_id, t.template_storedb, t.template_path, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_path, c.theme_name, c.theme_storedb, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
+		$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 			WHERE s.style_id = $style
 				AND t.template_id = s.template_id
@@ -1565,7 +1468,7 @@ class phpbb_user extends phpbb_session
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
-			$sql = 'SELECT s.style_id, t.template_storedb, t.template_path, t.template_id, t.bbcode_bitfield, c.theme_path, c.theme_name, c.theme_storedb, c.theme_id, i.imageset_path, i.imageset_id, i.imageset_name
+			$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
 				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 				WHERE s.style_id = $style
 					AND t.template_id = s.template_id
@@ -1601,52 +1504,6 @@ class phpbb_user extends phpbb_session
 			{
 				$this->theme[$key] = htmlspecialchars($this->theme[$key]);
 			}
-		}
-
-		// If the style author specified the theme needs to be cached
-		// (because of the used paths and variables) than make sure it is the case.
-		// For example, if the theme uses language-specific images it needs to be stored in db.
-		if (!$this->theme['theme_storedb'] && $this->theme['parse_css_file'])
-		{
-			$this->theme['theme_storedb'] = 1;
-
-			$stylesheet = file_get_contents(PHPBB_ROOT_PATH . "styles/{$this->theme['theme_path']}/theme/stylesheet.css");
-			// Match CSS imports
-			$matches = [];
-			preg_match_all('/@import url\(["\'](.*)["\']\);/i', $stylesheet, $matches);
-
-			if (sizeof($matches))
-			{
-				$content = '';
-				foreach ($matches[0] as $idx => $match)
-				{
-					if ($content = @file_get_contents(PHPBB_ROOT_PATH . "styles/{$this->theme['theme_path']}/theme/" . $matches[1][$idx]))
-					{
-						$content = trim($content);
-					}
-					else
-					{
-						$content = '';
-					}
-					$stylesheet = str_replace($match, $content, $stylesheet);
-				}
-				unset($content);
-			}
-
-			$stylesheet = str_replace('./', 'styles/' . $this->theme['theme_path'] . '/theme/', $stylesheet);
-
-			$sql_ary = [
-				'theme_data'	=> $stylesheet,
-				'theme_mtime'	=> time(),
-				'theme_storedb'	=> 1
-			];
-
-			$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
-				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-				WHERE theme_id = ' . $this->theme['theme_id'];
-			$db->sql_query($sql);
-
-			unset($sql_ary);
 		}
 
 		$template->set_template();
@@ -1738,20 +1595,6 @@ class phpbb_user extends phpbb_session
 			{
 				$db->sql_transaction('commit');
 				add_log('admin', 'LOG_IMAGESET_LANG_MISSING', $this->theme['imageset_name'], $this->img_lang);
-			}
-		}
-
-		if(!empty($this->data['is_registered']) && !defined('ADMIN_START'))
-		{
-			$config['topics_per_page_default'] = $config['topics_per_page'];
-			if ($this->data['user_topics_per_page'] > 0)
-			{
-				$config['topics_per_page'] = $this->data['user_topics_per_page'];
-			}
-			$config['posts_per_page_default'] = $config['posts_per_page'];
-			if ($this->data['user_posts_per_page'] > 0)
-			{
-				$config['posts_per_page'] = $this->data['user_posts_per_page'];
 			}
 		}
 

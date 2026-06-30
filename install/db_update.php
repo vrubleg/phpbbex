@@ -63,10 +63,9 @@ require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_tools.php');
 require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 
-// The cache, files, store, and images/avatars/upload directories have to be writeable!
+// The cache, files, and images/avatars/upload directories have to be writeable!
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'cache')) { die('Make "cache" directory writeable!'); }
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . UPLOADS_PATH)) { die('Make "' . UPLOADS_PATH . '" directory writeable!'); }
-if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'store')) { die('Make "store" directory writeable!'); }
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH)) { die('Make "' . AVATAR_UPLOADS_PATH . '" directory writeable!'); }
 
 $user = new phpbb_user();
@@ -527,6 +526,11 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 {
+	if ($config['board_hide_emails'] ?? 0)
+	{
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_allow_viewemail = 0');
+	}
+
 	// Remove obsolete config values.
 
 	remove_config_values([
@@ -545,12 +549,15 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		'load_unreads_search',
 		'load_anon_lastread',
 		'style_show_social_buttons',
+		'check_dnsbl',
+		'board_email_form',
+		'board_hide_emails',
+		'allow_emailreuse',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
-	set_config('allow_emailreuse', '0');
 
 	// Remove obsolete modules.
 
@@ -560,6 +567,15 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	remove_module('acp', 'board', 'cookie');
 	remove_module('acp', 'quick_reply', 'quick_reply');
 	remove_module('ucp', 'pm', 'popup');
+	remove_module('acp', 'database', 'backup');
+	remove_module('acp', 'database', 'restore');
+
+	// Remove obsolete permissions.
+
+	remove_permissions([
+		'a_backup',
+		'u_sendemail',
+	]);
 
 	// Update cached module rights.
 
@@ -567,12 +583,25 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 		SET module_auth = 'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)'
 		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'avatar'");
 
-	// Drop user_email_hash.
+	// Update schema.
 
 	$db->sql_return_on_error(true);
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_email_hash');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_last_confirm_key');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_type');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_dir');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_type');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_dir');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topics_per_page');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
+	$db->sql_query("DROP TABLE {$table_prefix}styles_template_data");
+	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_storedb');
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_data');
 	$db->sql_return_on_error(false);
 }
 
@@ -857,7 +886,6 @@ if (request_var('utf8mb4', 0))
 			case SESSIONS_KEYS_TABLE:
 			case SITELIST_TABLE:
 			case SMILIES_TABLE:
-			case STYLES_TEMPLATE_DATA_TABLE:
 			case STYLES_IMAGESET_DATA_TABLE:
 			case TOPICS_POSTED_TABLE:
 			case TOPICS_TRACK_TABLE:
@@ -1516,9 +1544,6 @@ function database_update_info()
 				],
 				STYLES_TEMPLATE_TABLE		=> [
 					'template_id'			=> ['UINT', null, 'auto_increment'],
-				],
-				STYLES_TEMPLATE_DATA_TABLE	=> [
-					'template_id'			=> ['UINT', 0],
 				],
 				FORUMS_TABLE				=> [
 					'forum_style'			=> ['UINT', 0],
@@ -2328,12 +2353,6 @@ function change_database_data(&$no_updates, $version)
 			set_config('feed_limit_topic', (string) (isset($config['feed_overall_topics_limit']) ? (int) $config['feed_overall_topics_limit'] : 10));
 			set_config('feed_topics_new', (!empty($config['feed_overall_topics']) ? '1' : '0'));
 			set_config('feed_topics_active', (!empty($config['feed_overall_topics']) ? '1' : '0'));
-
-			// Delete all text-templates from the template_data
-			$sql = 'DELETE FROM ' . STYLES_TEMPLATE_DATA_TABLE . '
-				WHERE template_filename ' . $db->sql_like_expression($db->any_char . '.txt');
-			_sql($sql, $errored, $error_ary);
-
 			$no_updates = false;
 		break;
 

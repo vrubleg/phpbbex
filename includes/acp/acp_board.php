@@ -367,17 +367,11 @@ class acp_board
 						'pass_complex'			=> ['lang' => 'PASSWORD_TYPE',		'validate' => 'string',	'type' => 'select', 'method' => 'select_password_chars', 'explain' => true],
 						'chg_passforce'			=> ['lang' => 'FORCE_PASS_CHANGE',	'validate' => 'int:0',	'type' => 'text:3:3', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
 						'allow_login_via_email'	=> ['lang' => 'ALLOW_LOGIN_VIA_EMAIL', 'validate' => 'int',	'type' => 'custom', 'method' => 'allow_login_via_email_options', 'explain' => true],
-						'allow_emailreuse'		=> ['lang' => 'ALLOW_EMAIL_REUSE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'allow_namechange'		=> ['lang' => 'ALLOW_NAME_CHANGE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false],
 
 						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
-
-				if ($config['allow_login_via_email'] ?? 0)
-				{
-					unset($display_vars['vars']['allow_emailreuse']);
-				}
 			break;
 
 			case 'feed':
@@ -453,7 +447,6 @@ class acp_board
 						'browser_check'			=> ['lang' => 'BROWSER_VALID',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'forwarded_for_check'	=> ['lang' => 'FORWARDED_FOR_VALID',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'referer_validation'	=> ['lang' => 'REFERER_VALID',		'validate' => 'int:0:3','type' => 'custom', 'method' => 'select_ref_check', 'explain' => true],
-						'check_dnsbl'			=> ['lang' => 'CHECK_DNSBL',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'email_check_mx'		=> ['lang' => 'EMAIL_CHECK_MX',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'max_pass_chars'		=> ['lang' => 'PASSWORD_LENGTH', 'validate' => 'int:8:255', 'type' => false, 'method' => false, 'explain' => false,],
 						'min_pass_chars'		=> ['lang' => 'PASSWORD_LENGTH',	'validate' => 'int:1',	'type' => 'custom', 'method' => 'password_length', 'explain' => true],
@@ -478,14 +471,12 @@ class acp_board
 					'vars'	=> [
 						'legend1'				=> 'GENERAL_SETTINGS',
 						'email_enable'			=> ['lang' => 'ENABLE_EMAIL',			'validate' => 'bool',	'type' => 'radio:enabled_disabled', 'explain' => true],
-						'board_email_form'		=> ['lang' => 'BOARD_EMAIL_FORM',		'validate' => 'bool',	'type' => 'radio:enabled_disabled', 'explain' => true],
 						'email_package_size'	=> ['lang' => 'EMAIL_PACKAGE_SIZE',	'validate' => 'int:0',	'type' => 'text:5:5', 'explain' => true],
 						'board_contact'			=> ['lang' => 'CONTACT_EMAIL',			'validate' => 'email',	'type' => 'text:25:100', 'explain' => true],
 						'board_contact_name'	=> ['lang' => 'CONTACT_EMAIL_NAME',	'validate' => 'string',	'type' => 'text:25:100', 'explain' => false],
 						'board_email'			=> ['lang' => 'ADMIN_EMAIL',			'validate' => 'email',	'type' => 'text:25:100', 'explain' => true],
 						'email_force_sender'	=> ['lang' => 'EMAIL_FORCE_SENDER',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'board_email_sig'		=> ['lang' => 'EMAIL_SIG',				'validate' => 'string',	'type' => 'textarea:5:30', 'explain' => true],
-						'board_hide_emails'		=> ['lang' => 'BOARD_HIDE_EMAILS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 
 						'legend2'				=> 'SMTP_SETTINGS',
 						'smtp_delivery'			=> ['lang' => 'USE_SMTP',				'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
