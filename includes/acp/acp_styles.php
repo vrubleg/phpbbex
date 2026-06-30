@@ -110,16 +110,6 @@ class acp_styles
 				}
 			break;
 
-			case 'cache':
-				if ($style_id)
-				{
-					switch ($mode)
-					{
-						case 'template':
-							return $this->template_cache($style_id);
-					}
-				}
-			break;
 		}
 
 		switch ($mode)
@@ -206,7 +196,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('template', ['cache', 'details'], ['refresh', 'delete']);
+				$this->frontend('template', ['details'], ['refresh', 'delete']);
 			break;
 
 			case 'theme':
@@ -569,138 +559,6 @@ class acp_styles
 			'S_BASIS_OPTIONS'		=> $basis_options]
 		);
 
-	}
-
-	/**
-	* Allows the admin to view cached versions of template files and clear single template cache files
-	*
-	* @param int $template_id specifies which template's cache is shown
-	*/
-	function template_cache($template_id)
-	{
-		global $config, $db, $cache, $user, $template;
-
-		$source		= str_replace('/', '.', request_var('source', ''));
-		$file_ary	= array_diff(request_var('delete', ['']), ['']);
-		$submit		= isset($_POST['submit']);
-
-		$sql = 'SELECT *
-			FROM ' . STYLES_TEMPLATE_TABLE . "
-			WHERE template_id = $template_id";
-		$result = $db->sql_query($sql);
-		$template_row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		if (!$template_row)
-		{
-			trigger_error($user->lang['NO_TEMPLATE'] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-
-		// User wants to delete one or more files ...
-		if ($submit && $file_ary)
-		{
-			$this->clear_template_cache($template_row, $file_ary);
-			trigger_error($user->lang['TEMPLATE_CACHE_CLEARED'] . adm_back_link($this->u_action . "&amp;action=cache&amp;id=$template_id"));
-		}
-
-		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_row['template_path']);
-
-		// Someone wants to see the cached source ... so we'll highlight it,
-		// add line numbers and indent it appropriately. This could be nasty
-		// on larger source files ...
-		if ($source && file_exists(PHPBB_ROOT_PATH . "cache/{$cache_prefix}_$source.html.php"))
-		{
-			adm_page_header($user->lang['TEMPLATE_CACHE']);
-
-			$template->set_filenames([
-				'body'	=> 'viewsource.html']
-			);
-
-			$template->assign_vars([
-				'FILENAME'	=> str_replace('.', '/', $source) . '.html']
-			);
-
-			$code = str_replace(["\r\n", "\r"], ["\n", "\n"], file_get_contents(PHPBB_ROOT_PATH . "cache/{$cache_prefix}_$source.html.php"));
-
-			$conf = ['highlight.bg', 'highlight.comment', 'highlight.default', 'highlight.html', 'highlight.keyword', 'highlight.string'];
-			foreach ($conf as $ini_var)
-			{
-				@ini_set($ini_var, str_replace('highlight.', 'syntax', $ini_var));
-			}
-
-			$marker = 'MARKER' . time();
-			$code = highlight_string(str_replace("\n", $marker, $code), true);
-			$code = str_replace($marker, "\n", $code);
-			$str_from = ['<span style="color: ', '<font color="syntax', '</font>', '<code>', '</code>','[', ']', '.', ':'];
-			$str_to = ['<span class="', '<span class="syntax', '</span>', '', '', '&#91;', '&#93;', '&#46;', '&#58;'];
-
-			$code = str_replace($str_from, $str_to, $code);
-			$code = preg_replace('#^(<span class="[a-z_]+">)\n?(.*?)\n?(</span>)$#ism', '$1$2$3', $code);
-			$code = substr($code, strlen('<span class="syntaxhtml">'));
-			$code = substr($code, 0, -1 * strlen('</ span>'));
-			$code = explode("\n", $code);
-
-			foreach ($code as $key => $line)
-			{
-				$template->assign_block_vars('source', [
-					'LINENUM'	=> $key + 1,
-					'LINE'		=> preg_replace('#([^ ;])&nbsp;([^ &])#', '$1 $2', $line)]
-				);
-				unset($code[$key]);
-			}
-
-			adm_page_footer();
-		}
-
-		// Get a list of cached template files and then retrieve additional information about them
-		$file_ary = $this->template_cache_filelist($template_row['template_path']);
-
-		foreach ($file_ary as $file)
-		{
-			$file		= str_replace('/', '.', $file);
-
-			// perform some dirty guessing to get the path right.
-			// We assume that three dots in a row were '../'
-			$tpl_file	= str_replace('.', '/', $file);
-			$tpl_file	= str_replace('///', '../', $tpl_file);
-
-			$cache_file = PHPBB_ROOT_PATH . "cache/{$cache_prefix}_{$file}.html.php";
-
-			if (!file_exists($cache_file))
-			{
-				continue;
-			}
-
-			$file_tpl = PHPBB_ROOT_PATH . "styles/{$template_row['template_path']}/template/$tpl_file.html";
-			$inherited = false;
-
-			if (isset($template_row['template_inherits_id']) && $template_row['template_inherits_id'])
-			{
-				if (!file_exists($file_tpl))
-				{
-					$file_tpl = PHPBB_ROOT_PATH . "styles/{$template_row['template_inherit_path']}/template/$tpl_file.html";
-					$inherited = true;
-				}
-			}
-
-			$template->assign_block_vars('file', [
-				'U_VIEWSOURCE'	=> $this->u_action . "&amp;action=cache&amp;id=$template_id&amp;source=$file",
-
-				'CACHED'		=> $user->format_date(filemtime($cache_file)),
-				'FILENAME'		=> $file,
-				'FILENAME_PATH'	=> $file_tpl,
-				'FILESIZE'		=> get_formatted_filesize(filesize($cache_file)),
-				'MODIFIED'		=> file_exists($file_tpl) ? $user->format_date(filemtime($file_tpl)) : '-',
-			]);
-		}
-
-		$template->assign_vars([
-			'S_CACHE'			=> true,
-			'S_TEMPLATE'		=> true,
-
-			'U_ACTION'			=> $this->u_action . "&amp;action=cache&amp;id=$template_id",
-			'U_BACK'			=> $this->u_action]
-		);
 	}
 
 	/**

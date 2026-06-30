@@ -36,11 +36,6 @@ $lang = array_merge($lang, [
 	'BACKGROUND_REPEAT'		=> 'Background repeat',
 	'BOLD'					=> 'Bold',
 
-	'CACHE'							=> 'Cache',
-	'CACHE_CACHED'					=> 'Cached',
-	'CACHE_FILENAME'				=> 'Template file',
-	'CACHE_FILESIZE'				=> 'File size',
-	'CACHE_MODIFIED'				=> 'Modified',
 	'CONFIRM_IMAGESET_REFRESH'		=> 'Are you sure you wish to refresh all imageset data? The settings from the imageset configuration file will overwrite all modifications to the imageset which have been carried out with the imageset editor.',
 	'CONFIRM_TEMPLATE_CLEAR_CACHE'	=> 'Are you sure you wish to clear all cached versions of your template files?',
 	'CONFIRM_THEME_REFRESH'			=> 'Are you sure you wish to refresh the theme stylesheet version? This will force browsers to reload the parsed stylesheet.',
@@ -305,10 +300,7 @@ $lang = array_merge($lang, [
 	'STYLE_USED_BY'				=> 'Used by (including robots)',
 
 	'TEMPLATE_ADDED'			=> 'Template set added and stored on filesystem.',
-	'TEMPLATE_CACHE'			=> 'Template cache',
-	'TEMPLATE_CACHE_EXPLAIN'	=> 'By default phpBBex caches the compiled version of its templates. This decreases the load on the server each time a page is viewed and thus may reduce the page generation time. Here you can view the cache status of each file and delete individual files or the entire cache.',
 	'TEMPLATE_CACHE_CLEARED'	=> 'Template cache cleared successfully.',
-	'TEMPLATE_CACHE_EMPTY'		=> 'There are no cached templates.',
 	'TEMPLATE_DELETED'			=> 'Template set deleted successfully.',
 	'TEMPLATE_DELETE_DEPENDENT'	=> 'The template set cannot be deleted as there are one or more other template sets inheriting from it:',
 	'TEMPLATE_DELETED_FS'		=> 'Template set removed from database but some files may remain on the filesystem.',

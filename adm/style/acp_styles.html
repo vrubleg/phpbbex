@@ -162,53 +162,6 @@
 	</fieldset>
 	</form>
 
-<!-- ELSEIF S_CACHE -->
-
-	<a href="{U_BACK}" style="float: right;">&laquo; {L_BACK}</a>
-
-	<h1>{L_TEMPLATE_CACHE}</h1>
-
-	<p>{L_TEMPLATE_CACHE_EXPLAIN}</p>
-
-	<form id="acp_styles" method="post" action="{U_ACTION}">
-	<fieldset class="tabulated">
-	<legend>{L_TEMPLATE_CACHE}</legend>
-
-	<table cellspacing="1">
-	<thead>
-	<tr>
-		<th>{L_CACHE_FILENAME}</th>
-		<th>{L_CACHE_FILESIZE}</th>
-		<th>{L_CACHE_CACHED}</th>
-		<th>{L_CACHE_MODIFIED}</th>
-		<th>{L_MARK}</th>
-	</tr>
-	</thead>
-	<tbody>
-	<!-- BEGIN file -->
-		<!-- IF file.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
-			<td><a href="{file.U_VIEWSOURCE}" onclick="popup(this.href, 750, 550, '_source'); return false;">{file.FILENAME_PATH}</a></td>
-			<td>{file.FILESIZE}</td>
-			<td>{file.CACHED}</td>
-			<td>{file.MODIFIED}</td>
-			<td><input type="checkbox" class="radio" name="delete[]" value="{file.FILENAME}" /></td>
-		</tr>
-	<!-- BEGINELSE -->
-		<tr class="row1">
-			<td colspan="5">{L_TEMPLATE_CACHE_EMPTY}</td>
-		</tr>
-	<!-- END file -->
-	</tbody>
-	</table>
-
-	<p class="quick">
-		<span class="small"><a onclick="marklist('acp_styles', 'delete', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('acp_styles', 'delete', false);">{L_UNMARK_ALL}</a></span><br />
-		{S_FORM_TOKEN}
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_DELETE_MARKED}" />
-	</p>
-	</fieldset>
-	</form>
-
 <!-- ELSEIF S_FRONTEND -->
 
 	<h1>{L_TITLE}</h1>
