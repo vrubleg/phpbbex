@@ -200,7 +200,6 @@ $lang = array_merge($lang, [
 	'DIRECTORY_NOT_WRITABLE'	=> 'Запись в каталог «%s» запрещена.',
 	'DISABLE'					=> 'Отключить',
 	'DOWNLOAD'					=> 'Скачать',
-	'DOWNLOAD_AS'				=> 'Скачать как',
 
 	'EDIT'					=> 'Изменить',
 	'ENABLE'				=> 'Включить',

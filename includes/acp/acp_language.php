@@ -814,126 +814,6 @@ class acp_language
 
 			break;
 
-			case 'download':
-
-				if (!$lang_id)
-				{
-					trigger_error($user->lang['NO_LANG_ID'] . adm_back_link($this->u_action), E_USER_WARNING);
-				}
-
-				$sql = 'SELECT *
-					FROM ' . LANG_TABLE . '
-					WHERE lang_id = ' . $lang_id;
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				$use_method = request_var('use_method', '');
-				$methods = ['.tar'];
-
-				$available_methods = ['.tar.gz' => 'zlib', '.tar.bz2' => 'bz2', '.zip' => 'zlib'];
-				foreach ($available_methods as $type => $module)
-				{
-					if (!@extension_loaded($module))
-					{
-						continue;
-					}
-
-					$methods[] = $type;
-				}
-
-				// Let the user decide in which format he wants to have the pack
-				if (!$use_method)
-				{
-					$this->page_title = 'SELECT_DOWNLOAD_FORMAT';
-
-					$radio_buttons = '';
-					foreach ($methods as $method)
-					{
-						$radio_buttons .= '<label><input type="radio"' . ((!$radio_buttons) ? ' id="use_method"' : '') . ' class="radio" value="' . $method . '" name="use_method" /> ' . $method . '</label>';
-					}
-
-					$template->assign_vars([
-						'S_SELECT_METHOD'		=> true,
-						'U_BACK'				=> $this->u_action,
-						'U_ACTION'				=> $this->u_action . "&amp;action=$action&amp;id=$lang_id",
-						'RADIO_BUTTONS'			=> $radio_buttons]
-					);
-
-					return;
-				}
-
-				if (!in_array($use_method, $methods))
-				{
-					$use_method = '.tar';
-				}
-
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_compress.php');
-
-				if ($use_method == '.zip')
-				{
-					$compress = new compress_zip('w', PHPBB_ROOT_PATH . 'store/lang_' . $row['lang_iso'] . $use_method);
-				}
-				else
-				{
-					$compress = new compress_tar('w', PHPBB_ROOT_PATH . 'store/lang_' . $row['lang_iso'] . $use_method, $use_method);
-				}
-
-				// Get email templates
-				$email_templates = filelist(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'], 'email', 'txt');
-				$email_templates = $email_templates['email/'];
-
-				// Get acp files
-				$acp_files = filelist(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'], 'acp', 'php');
-				$acp_files = $acp_files['acp/'];
-
-				// Get mod files
-				$mod_files = filelist(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'], 'mods', 'php');
-				$mod_files = $mod_files['mods/'] ?? [];
-
-				// Add main files
-				$this->add_to_archive($compress, $this->main_files, $row['lang_iso']);
-
-				// Add search files if they exist...
-				if (file_exists(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'] . '/search_ignore_words.php'))
-				{
-					$this->add_to_archive($compress, ["search_ignore_words.php"], $row['lang_iso']);
-				}
-
-				if (file_exists(PHPBB_ROOT_PATH . 'language/' . $row['lang_iso'] . '/search_synonyms.php'))
-				{
-					$this->add_to_archive($compress, ["search_synonyms.php"], $row['lang_iso']);
-				}
-
-				// Write files in folders
-				$this->add_to_archive($compress, $email_templates, $row['lang_iso'], 'email');
-				$this->add_to_archive($compress, $acp_files, $row['lang_iso'], 'acp');
-				$this->add_to_archive($compress, $mod_files, $row['lang_iso'], 'mods');
-
-				// Write ISO File
-				$iso_src = htmlspecialchars_decode($row['lang_english_name']) . "\n";
-				$iso_src .= htmlspecialchars_decode($row['lang_local_name']) . "\n";
-				$iso_src .= htmlspecialchars_decode($row['lang_author']);
-				$compress->add_data($iso_src, 'language/' . $row['lang_iso'] . '/iso.txt');
-
-				// index.htm files
-				$compress->add_data('', 'language/' . $row['lang_iso'] . '/index.htm');
-				$compress->add_data('', 'language/' . $row['lang_iso'] . '/email/index.htm');
-				$compress->add_data('', 'language/' . $row['lang_iso'] . '/acp/index.htm');
-
-				if (sizeof($mod_files))
-				{
-					$compress->add_data('', 'language/' . $row['lang_iso'] . '/mods/index.htm');
-				}
-
-				$compress->close();
-
-				$compress->download('lang_' . $row['lang_iso']);
-				@unlink(PHPBB_ROOT_PATH . 'store/lang_' . $row['lang_iso'] . $use_method);
-
-				exit;
-
-			break;
 		}
 
 		$sql = 'SELECT user_lang, COUNT(user_lang) AS lang_count
@@ -962,7 +842,6 @@ class acp_language
 
 			$template->assign_block_vars('lang', [
 				'U_DETAILS'			=> $this->u_action . "&amp;action=details&amp;id={$row['lang_id']}",
-				'U_DOWNLOAD'		=> $this->u_action . "&amp;action=download&amp;id={$row['lang_id']}",
 				'U_DELETE'			=> $this->u_action . "&amp;action=delete&amp;id={$row['lang_id']}",
 
 				'ENGLISH_NAME'		=> $row['lang_english_name'],

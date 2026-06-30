@@ -61,7 +61,6 @@ $lang = array_merge($lang, [
 
 	'REMOVE_FROM_STORAGE_FOLDER'		=> 'Remove from storage folder',
 
-	'SELECT_DOWNLOAD_FORMAT'	=> 'Select download format',
 	'SUBMIT_AND_DOWNLOAD'		=> 'Submit and download file',
 
 	'THOSE_MISSING_LANG_FILES'			=> 'The following language files are missing from the %s language folder',

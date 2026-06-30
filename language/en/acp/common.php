@@ -200,7 +200,6 @@ $lang = array_merge($lang, [
 	'DIRECTORY_NOT_WRITABLE'	=> 'The entered path “%s” is not writable.',
 	'DISABLE'					=> 'Disable',
 	'DOWNLOAD'					=> 'Download',
-	'DOWNLOAD_AS'				=> 'Download as',
 
 	'EDIT'					=> 'Edit',
 	'ENABLE'				=> 'Enable',

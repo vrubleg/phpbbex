@@ -2,29 +2,7 @@
 
 <a name="maincontent"></a>
 
-<!-- IF S_SELECT_METHOD -->
-
-	<a href="{U_BACK}" style="float: right;">&laquo; {L_BACK}</a>
-
-	<h1>{L_SELECT_DOWNLOAD_FORMAT}</h1>
-
-	<form id="selectmethod" method="post" action="{U_ACTION}">
-
-	<fieldset>
-		<legend>{L_DOWNLOAD_AS}</legend>
-	<dl>
-		<dt><label for="use_method">{L_DOWNLOAD_AS}:</label></dt>
-		<dd>{RADIO_BUTTONS}</dd>
-	</dl>
-
-	<p class="quick">
-		<input type="submit" class="button2" value="{L_DOWNLOAD}" name="download" />
-	</p>
-	</fieldset>
-
-	</form>
-
-<!-- ELSEIF S_DETAILS -->
+<!-- IF S_DETAILS -->
 
 	<a href="{U_BACK}" style="float: right;">&laquo; {L_BACK}</a>
 
@@ -176,7 +154,7 @@
 		<td>{lang.LOCAL_NAME}</td>
 		<td style="text-align: center;"><strong>{lang.ISO}</strong></td>
 		<td style="text-align: center;">{lang.USED_BY}</td>
-		<td style="text-align: center;">&nbsp;<a href="{lang.U_DOWNLOAD}">{L_DOWNLOAD}</a>&nbsp;|&nbsp;<a href="{lang.U_DELETE}">{L_DELETE}</a></td>
+		<td style="text-align: center;"><a href="{lang.U_DELETE}">{L_DELETE}</a></td>
 	</tr>
 	<!-- END lang -->
 	<!-- IF .notinst -->
