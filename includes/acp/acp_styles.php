@@ -166,8 +166,6 @@ inherit_from = {INHERIT_FROM}
 					{
 						case 'imageset':
 							return $this->edit_imageset($style_id);
-						case 'template':
-							return $this->edit_template($style_id);
 						case 'theme':
 							return $this->edit_theme($style_id);
 					}
@@ -270,7 +268,7 @@ inherit_from = {INHERIT_FROM}
 					break;
 				}
 
-				$this->frontend('template', ['edit', 'cache', 'details'], ['refresh', 'export', 'delete']);
+				$this->frontend('template', ['cache', 'details'], ['refresh', 'export', 'delete']);
 			break;
 
 			case 'theme':
@@ -651,185 +649,6 @@ inherit_from = {INHERIT_FROM}
 	}
 
 	/**
-	* Provides a template editor which allows saving changes to template files on the filesystem or in the database.
-	*
-	* @param int $template_id specifies which template set is being edited
-	*/
-	function edit_template($template_id)
-	{
-		global $config, $db, $cache, $user, $template;
-
-		if (defined('PHPBB_DISABLE_ACP_EDITOR'))
-		{
-			trigger_error($user->lang['EDITOR_DISABLED'] . adm_back_link($this->u_action));
-		}
-
-		$this->page_title = 'EDIT_TEMPLATE';
-
-		$filelist = $filelist_cats = [];
-
-		$template_data	= utf8_normalize_nfc(request_var('template_data', '', true));
-		$template_data	= htmlspecialchars_decode($template_data);
-		$template_file	= utf8_normalize_nfc(request_var('template_file', '', true));
-		$text_rows		= max(5, min(999, request_var('text_rows', 20)));
-		$save_changes	= isset($_POST['save']);
-
-		// make sure template_file path doesn't go upwards
-		$template_file = preg_replace('#\.{2,}#', '.', $template_file);
-
-		// Retrieve some information about the template
-		$sql = 'SELECT template_path, template_name
-			FROM ' . STYLES_TEMPLATE_TABLE . "
-			WHERE template_id = $template_id";
-		$result = $db->sql_query($sql);
-		$template_info = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		if (!$template_info)
-		{
-			trigger_error($user->lang['NO_TEMPLATE'] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-
-		if ($save_changes && !check_form_key('acp_styles'))
-		{
-			trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-		else if (!$save_changes)
-		{
-			add_form_key('acp_styles');
-		}
-
-		// save changes to the template if the user submitted any
-		if ($save_changes && $template_file)
-		{
-			// Get the filesystem location of the current file
-			$file = PHPBB_ROOT_PATH . "styles/{$template_info['template_path']}/template/$template_file";
-			if (file_exists($file) && phpbb_is_writable($file))
-			{
-				if (!($fp = @fopen($file, 'wb')))
-				{
-					// File exists and is writeable, but still not able to be written to
-					trigger_error(sprintf($user->lang['TEMPLATE_FILE_NOT_WRITABLE'], htmlspecialchars($template_file)) . adm_back_link($this->u_action), E_USER_WARNING);
-				}
-				fwrite($fp, $template_data);
-				fclose($fp);
-			}
-			else
-			{
-				trigger_error(sprintf($user->lang['TEMPLATE_FILE_NOT_WRITABLE'], htmlspecialchars($template_file)) . adm_back_link($this->u_action), E_USER_WARNING);
-			}
-
-			// destroy the cached version of the template (filename without extension)
-			$this->clear_template_cache($template_info, [substr($template_file, 0, -5)]);
-
-			$cache->destroy('sql', STYLES_TABLE);
-
-			add_log('admin', 'LOG_TEMPLATE_EDIT', $template_info['template_name'], $template_file);
-			trigger_error($user->lang['TEMPLATE_FILE_UPDATED'] . adm_back_link($this->u_action . "&amp;action=edit&amp;id=$template_id&amp;text_rows=$text_rows&amp;template_file=$template_file"));
-		}
-
-		// Generate a category array containing template filenames
-		$template_path = PHPBB_ROOT_PATH . "styles/{$template_info['template_path']}/template";
-
-		$filelist = filelist($template_path, '', 'html');
-		$filelist[''] = array_diff($filelist[''], ['bbcode.html']);
-
-		if ($template_file)
-		{
-			if (!file_exists($template_path . "/$template_file") || !($template_data = file_get_contents($template_path . "/$template_file")))
-			{
-				trigger_error($user->lang['NO_TEMPLATE'] . adm_back_link($this->u_action), E_USER_WARNING);
-			}
-		}
-
-		if (empty($filelist['']))
-		{
-			trigger_error($user->lang['NO_TEMPLATE'] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-
-		// Now create the categories
-		$filelist_cats[''] = [];
-		foreach ($filelist as $pathfile => $file_ary)
-		{
-			// Use the directory name as category name
-			if (!empty($pathfile))
-			{
-				$filelist_cats[$pathfile] = [];
-				foreach ($file_ary as $file)
-				{
-					$filelist_cats[$pathfile][$pathfile . $file] = $file;
-				}
-			}
-			// or if it's in the main category use the word before the first underscore to group files
-			else
-			{
-				$cats = [];
-				foreach ($file_ary as $file)
-				{
-					$cats[] = substr($file, 0, strpos($file, '_'));
-					$filelist_cats[substr($file, 0, strpos($file, '_'))][$file] = $file;
-				}
-
-				$cats = array_values(array_unique($cats));
-
-				// we don't need any single element categories so put them into the misc '' category
-				for ($i = 0, $n = sizeof($cats); $i < $n; $i++)
-				{
-					if (sizeof($filelist_cats[$cats[$i]]) == 1 && $cats[$i] !== '')
-					{
-						$filelist_cats[''][key($filelist_cats[$cats[$i]])] = current($filelist_cats[$cats[$i]]);
-						unset($filelist_cats[$cats[$i]]);
-					}
-				}
-				unset($cats);
-			}
-		}
-		unset($filelist);
-
-		// Generate list of categorised template files
-		$tpl_options = '';
-		ksort($filelist_cats);
-		foreach ($filelist_cats as $category => $tpl_ary)
-		{
-			ksort($tpl_ary);
-
-			if (!empty($category))
-			{
-				$tpl_options .= '<option class="sep" value="">' . $category . '</option>';
-			}
-
-			foreach ($tpl_ary as $filename => $file)
-			{
-				$selected = ($template_file == $filename) ? ' selected="selected"' : '';
-				$tpl_options .= '<option value="' . $filename . '"' . $selected . '>' . $file . '</option>';
-			}
-		}
-
-		$template->assign_vars([
-			'S_EDIT_TEMPLATE'	=> true,
-			'S_HIDDEN_FIELDS'	=> build_hidden_fields(['template_file' => $template_file]),
-			'S_TEMPLATES'		=> $tpl_options,
-
-			'U_ACTION'			=> $this->u_action . "&amp;action=edit&amp;id=$template_id&amp;text_rows=$text_rows",
-			'U_BACK'			=> $this->u_action,
-
-			'L_EDIT'			=> $user->lang['EDIT_TEMPLATE'],
-			'L_EDIT_EXPLAIN'	=> $user->lang['EDIT_TEMPLATE_EXPLAIN'],
-			'L_EDITOR'			=> $user->lang['TEMPLATE_EDITOR'],
-			'L_EDITOR_HEIGHT'	=> $user->lang['TEMPLATE_EDITOR_HEIGHT'],
-			'L_FILE'			=> $user->lang['TEMPLATE_FILE'],
-			'L_SELECT'			=> $user->lang['SELECT_TEMPLATE'],
-			'L_SELECTED'		=> $user->lang['SELECTED_TEMPLATE'],
-			'L_SELECTED_FILE'	=> $user->lang['SELECTED_TEMPLATE_FILE'],
-
-			'SELECTED_TEMPLATE'	=> $template_info['template_name'],
-			'TEMPLATE_FILE'		=> $template_file,
-			'TEMPLATE_DATA'		=> utf8_htmlspecialchars($template_data),
-			'TEXT_ROWS'			=> $text_rows]
-		);
-	}
-
-	/**
 	* Allows the admin to view cached versions of template files and clear single template cache files
 	*
 	* @param int $template_id specifies which template's cache is shown
@@ -1137,7 +956,7 @@ inherit_from = {INHERIT_FROM}
 			'L_SELECTED'		=> $user->lang['SELECTED_THEME'],
 			'L_SELECTED_FILE'	=> $user->lang['SELECTED_THEME_FILE'],
 
-			'SELECTED_TEMPLATE'	=> $theme_info['theme_name'],
+			'SELECTED_THEME_NAME'	=> $theme_info['theme_name'],
 			'TEMPLATE_FILE'		=> $theme_file,
 			'TEMPLATE_DATA'		=> utf8_htmlspecialchars($theme_data),
 			'TEXT_ROWS'			=> $text_rows]

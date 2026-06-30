@@ -162,7 +162,7 @@
 	</fieldset>
 	</form>
 
-<!-- ELSEIF S_EDIT_TEMPLATE or S_EDIT_THEME -->
+<!-- ELSEIF S_EDIT_THEME -->
 
 	<a href="{U_BACK}" style="float: right;">&laquo; {L_BACK}</a>
 
@@ -170,11 +170,11 @@
 
 	<p>{L_EDIT_EXPLAIN}</p>
 
-	<p>{L_SELECTED}: <strong>{SELECTED_TEMPLATE}</strong></p>
+	<p>{L_SELECTED}: <strong>{SELECTED_THEME_NAME}</strong></p>
 
 	<form id="acp_styles" method="post" action="{U_ACTION}">
 
-	<!-- IF S_EDIT_TEMPLATE or (S_EDIT_THEME and not S_THEME_IN_DB) -->
+	<!-- IF not S_THEME_IN_DB -->
 	<fieldset>
 		<legend>{L_SELECT}</legend>
 	<dl>
@@ -186,7 +186,7 @@
 	<!-- ENDIF -->
 	</form>
 
-	<!-- IF TEMPLATE_FILE or (S_EDIT_THEME and S_THEME_IN_DB) -->
+	<!-- IF TEMPLATE_FILE or S_THEME_IN_DB -->
 		<script>
 			function change_editor_height(height)
 			{
@@ -243,7 +243,7 @@
 
 		<fieldset>
 			<legend>{L_EDITOR}</legend>
-		<!-- IF S_EDIT_TEMPLATE or (S_EDIT_THEME and not S_THEME_IN_DB) -->
+		<!-- IF not S_THEME_IN_DB -->
 		<dl>
 			<dt><label>{L_SELECTED_FILE}:</label></dt>
 			<dd>{TEMPLATE_FILE}</dd>
