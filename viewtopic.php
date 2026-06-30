@@ -817,7 +817,6 @@ if (!empty($topic_data['poll_start']))
 			'POLL_OPTION_RESULT'	=> $poll_option['poll_option_total'],
 			'POLL_OPTION_PERCENT'	=> $option_pct_txt,
 			'POLL_OPTION_PCT'		=> round($option_pct * 100),
-			'POLL_OPTION_IMG'		=> $user->img('poll_center', $option_pct_txt, round($option_pct * 250)),
 			'POLL_OPTION_VOTERS'	=> $poll_option['poll_option_voters'] ?? '',
 			'POLL_OPTION_VOTED'		=> (in_array($poll_option['poll_option_id'], $cur_voted_id)),
 		]);
@@ -829,8 +828,6 @@ if (!empty($topic_data['poll_start']))
 		'POLL_QUESTION'		=> $topic_data['poll_title'],
 		'POLL_VOTED'		=> count($cur_voted_id) > 0,
 		'TOTAL_VOTERS'		=> $poll_total,
-		'POLL_LEFT_CAP_IMG'	=> $user->img('poll_left'),
-		'POLL_RIGHT_CAP_IMG'=> $user->img('poll_right'),
 
 		'L_MAX_VOTES'		=> ($topic_data['poll_max_options'] == 1) ? $user->lang['MAX_OPTION_SELECT'] : sprintf($user->lang['MAX_OPTIONS_SELECT'], $topic_data['poll_max_options']),
 		'L_POLL_LENGTH'		=> ($topic_data['poll_length']) ? sprintf($user->lang[($poll_end > time()) ? 'POLL_RUN_TILL' : 'POLL_ENDED_AT'], $user->format_date($poll_end)) : '',

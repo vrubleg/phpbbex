@@ -108,16 +108,8 @@ $lang = array_merge($lang, [
 	'IMG_CAT_FORUMS'		=> 'Иконки разделов',
 	'IMG_CAT_ICONS'			=> 'Общие иконки',
 	'IMG_CAT_LOGOS'			=> 'Логотипы',
-	'IMG_CAT_POLLS'			=> 'Изображения опросов',
-	'IMG_CAT_USER'			=> 'Дополнительные изображения',
 
 	'IMG_SITE_LOGO'			=> 'Главный логотип',
-	'IMG_POLL_LEFT'			=> 'Опрос слева',
-	'IMG_POLL_CENTER'		=> 'Опрос в центре',
-	'IMG_POLL_RIGHT'		=> 'Опрос справа',
-	'IMG_ICON_FRIEND'		=> 'Добавить в список друзей',
-	'IMG_ICON_FOE'			=> 'Добавить в список недругов',
-
 	'IMG_FORUM_LINK'			=> 'Ссылка на раздел',
 	'IMG_FORUM_READ'			=> 'Раздел',
 	'IMG_FORUM_READ_LOCKED'		=> 'Раздел закрыт',
@@ -203,16 +195,6 @@ $lang = array_merge($lang, [
 	'IMG_BUTTON_TOPIC_NEW'		=> 'Новая тема',
 	'IMG_BUTTON_TOPIC_REPLY'	=> 'Ответить на тему',
 
-	'IMG_USER_ICON1'		=> 'Пользовательское изображение 1',
-	'IMG_USER_ICON2'		=> 'Пользовательское изображение 2',
-	'IMG_USER_ICON3'		=> 'Пользовательское изображение 3',
-	'IMG_USER_ICON4'		=> 'Пользовательское изображение 4',
-	'IMG_USER_ICON5'		=> 'Пользовательское изображение 5',
-	'IMG_USER_ICON6'		=> 'Пользовательское изображение 6',
-	'IMG_USER_ICON7'		=> 'Пользовательское изображение 7',
-	'IMG_USER_ICON8'		=> 'Пользовательское изображение 8',
-	'IMG_USER_ICON9'		=> 'Пользовательское изображение 9',
-	'IMG_USER_ICON10'		=> 'Пользовательское изображение 10',
 
 	'INACTIVE_STYLES'			=> 'Неактивные стили',
 	'INCLUDE_DIMENSIONS'		=> 'Учесть размеры',

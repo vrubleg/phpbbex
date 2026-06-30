@@ -109,16 +109,8 @@ $lang = array_merge($lang, [
 	'IMG_CAT_FORUMS'		=> 'Forum icons',
 	'IMG_CAT_ICONS'			=> 'General icons',
 	'IMG_CAT_LOGOS'			=> 'Logos',
-	'IMG_CAT_POLLS'			=> 'Polling images',
-	'IMG_CAT_USER'			=> 'Additional images',
 
 	'IMG_SITE_LOGO'			=> 'Main logo',
-	'IMG_POLL_LEFT'			=> 'Poll left end',
-	'IMG_POLL_CENTER'		=> 'Poll centre',
-	'IMG_POLL_RIGHT'		=> 'Poll right end',
-	'IMG_ICON_FRIEND'		=> 'Add as friend',
-	'IMG_ICON_FOE'			=> 'Add as foe',
-
 	'IMG_FORUM_LINK'			=> 'Forum link',
 	'IMG_FORUM_READ'			=> 'Forum',
 	'IMG_FORUM_READ_LOCKED'		=> 'Forum locked',
@@ -204,16 +196,6 @@ $lang = array_merge($lang, [
 	'IMG_BUTTON_TOPIC_NEW'		=> 'New topic',
 	'IMG_BUTTON_TOPIC_REPLY'	=> 'Reply topic',
 
-	'IMG_USER_ICON1'		=> 'User defined image 1',
-	'IMG_USER_ICON2'		=> 'User defined image 2',
-	'IMG_USER_ICON3'		=> 'User defined image 3',
-	'IMG_USER_ICON4'		=> 'User defined image 4',
-	'IMG_USER_ICON5'		=> 'User defined image 5',
-	'IMG_USER_ICON6'		=> 'User defined image 6',
-	'IMG_USER_ICON7'		=> 'User defined image 7',
-	'IMG_USER_ICON8'		=> 'User defined image 8',
-	'IMG_USER_ICON9'		=> 'User defined image 9',
-	'IMG_USER_ICON10'		=> 'User defined image 10',
 
 	'INACTIVE_STYLES'			=> 'Inactive styles',
 	'INCLUDE_DIMENSIONS'		=> 'Include dimensions',
