@@ -614,12 +614,18 @@ class acp_styles
 		$imageset_data_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		$image_filename	= $imageset_data_row['image_filename'];
-		$image_width	= $imageset_data_row['image_width'];
-		$image_height	= $imageset_data_row['image_height'];
-		$image_lang		= $imageset_data_row['image_lang'];
-		$image_id		= $imageset_data_row['image_id'];
-		$imgsize		= ($imageset_data_row['image_width'] && $imageset_data_row['image_height']) ? 1 : 0;
+		$image_filename = $image_width = $image_height = $image_lang = '';
+		$image_id = $imgsize = 0;
+
+		if ($imageset_data_row)
+		{
+			$image_filename	= $imageset_data_row['image_filename'];
+			$image_width	= $imageset_data_row['image_width'];
+			$image_height	= $imageset_data_row['image_height'];
+			$image_lang		= $imageset_data_row['image_lang'];
+			$image_id		= $imageset_data_row['image_id'];
+			$imgsize		= ($imageset_data_row['image_width'] && $imageset_data_row['image_height']) ? 1 : 0;
+		}
 
 		// Check to see whether the selected image exists in the table
 		$valid_name = !$update;
