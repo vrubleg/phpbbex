@@ -93,7 +93,7 @@
 	<!-- ENDIF -->
 	<!-- BEGIN uninstalled -->
 		<tr>
-			<td<!-- IF S_STYLE --> colspan="2"<!-- ENDIF -->><strong>{uninstalled.NAME}</strong><br /><span>{L_COPYRIGHT}: {uninstalled.COPYRIGHT}</span></td>
+			<td<!-- IF S_STYLE --> colspan="2"<!-- ENDIF -->><strong>{uninstalled.NAME}</strong><!-- IF uninstalled.COPYRIGHT --><br /><span>{L_COPYRIGHT}: {uninstalled.COPYRIGHT}</span><!-- ENDIF --></td>
 			<td style="text-align: center;"><a href="{uninstalled.U_INSTALL}">{L_INSTALL}</a></td>
 		</tr>
 	<!-- END uninstalled -->
@@ -134,10 +134,12 @@
 		<dt><label for="name">{L_NAME}:</label></dt>
 		<dd><!-- IF S_INSTALL --><strong id="name">{NAME}</strong><!-- ELSE --><input type="text" id="name" name="name" value="{NAME}" /><!-- ENDIF --></dd>
 	</dl>
+	<!-- IF COPYRIGHT -->
 	<dl>
-		<dt><label for="copyright">{L_COPYRIGHT}:</label></dt>
-		<dd><!-- IF S_INSTALL --><strong id="copyright">{COPYRIGHT}</strong><!-- ELSE --><input type="text" id="copyright" name="copyright" value="{COPYRIGHT}" /><!-- ENDIF --></dd>
+		<dt><label>{L_COPYRIGHT}:</label></dt>
+		<dd><strong>{COPYRIGHT}</strong></dd>
 	</dl>
+	<!-- ENDIF -->
 	<!-- IF S_SUPERTEMPLATE -->
 	<dl>
 		<dt><label for="inheriting">{L_INHERITING_FROM}:</label></dt>

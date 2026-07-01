@@ -482,7 +482,7 @@ class acp_styles
 							$new_ary[$name . $file] = [
 								'path'		=> $file,
 								'name'		=> $name,
-								'copyright'	=> $items['copyright'],
+								'copyright'	=> $items['copyright'] ?? '',
 							];
 						}
 					}
@@ -501,16 +501,16 @@ class acp_styles
 			{
 				$template->assign_block_vars('uninstalled', [
 					'NAME'			=> $cfg['name'],
-					'COPYRIGHT'		=> $cfg['copyright'],
-					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path'])]
-				);
+					'COPYRIGHT'		=> $cfg['copyright'] ?? '',
+					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path']),
+				]);
 			}
 		}
 		unset($new_ary);
 
 		$template->assign_vars([
-			'S_BASIS_OPTIONS'		=> $basis_options]
-		);
+			'S_BASIS_OPTIONS'		=> $basis_options,
+		]);
 
 	}
 
@@ -636,8 +636,7 @@ class acp_styles
 			'U_BACK'		=> $this->u_action,
 
 			'NAME'			=> $style_row[$mode . '_name'],
-			]
-		);
+		]);
 
 		if ($mode == 'style')
 		{
@@ -894,7 +893,6 @@ class acp_styles
 		if ($update)
 		{
 			$name = utf8_normalize_nfc(request_var('name', '', true));
-			$copyright = utf8_normalize_nfc(request_var('copyright', '', true));
 
 			$template_id = request_var('template_id', 0);
 			$theme_id = request_var('theme_id', 0);
@@ -938,11 +936,6 @@ class acp_styles
 				{
 					$error[] = $user->lang[$l_type . '_ERR_NAME_LONG'];
 				}
-
-				if (utf8_strlen($copyright) > 60)
-				{
-					$error[] = $user->lang[$l_type . '_ERR_COPY_LONG'];
-				}
 			}
 		}
 
@@ -954,8 +947,7 @@ class acp_styles
 				'imageset_id'			=> $imageset_id,
 				'style_active'			=> $style_active,
 				$mode . '_name'			=> $name,
-				$mode . '_copyright'	=> $copyright]
-			);
+			]);
 		}
 
 		// User has submitted form and no errors have occurred
@@ -963,7 +955,6 @@ class acp_styles
 		{
 			$sql_ary = [
 				$mode . '_name'			=> $name,
-				$mode . '_copyright'	=> $copyright
 			];
 
 			switch ($mode)
@@ -1040,6 +1031,12 @@ class acp_styles
 			}
 		}
 
+		// Get optional copyright information from the related cfg file.
+		$cfg_file = ($mode == 'style')
+			? PHPBB_ROOT_PATH . "styles/{$style_row['style_name']}/style.cfg"
+			: PHPBB_ROOT_PATH . "styles/{$style_row[$mode . '_path']}/$mode/$mode.cfg";
+		$copyright = (file_exists($cfg_file) ? (parse_cfg_file($cfg_file)['copyright'] ?? '') : '');
+
 		$this->page_title = 'EDIT_DETAILS_' . $l_type;
 
 		$template->assign_vars([
@@ -1066,9 +1063,8 @@ class acp_styles
 
 			'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'			=> $style_row[$mode . '_name'],
-			'COPYRIGHT'		=> $style_row[$mode . '_copyright'],
-			]
-		);
+			'COPYRIGHT'		=> $copyright,
+		]);
 	}
 
 	/**
@@ -1192,7 +1188,6 @@ class acp_styles
 			$style_row = [
 				$mode . '_id'			=> 0,
 				$mode . '_name'			=> '',
-				$mode . '_copyright'	=> ''
 			];
 
 			switch ($mode)
@@ -1202,7 +1197,6 @@ class acp_styles
 					$style_row = [
 						'style_id'			=> 0,
 						'style_name'		=> $installcfg['name'] ?? '',
-						'style_copyright'	=> $installcfg['copyright'] ?? '',
 					];
 
 					$reqd_template = $installcfg['required_template'] ?? false;
@@ -1215,10 +1209,9 @@ class acp_styles
 						$style_row = array_merge($style_row, [
 							$element . '_id'			=> 0,
 							$element . '_name'			=> '',
-							$element . '_copyright'		=> '']
-						);
+						]);
 
-			 			$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name'], $style_row[$element . '_copyright']);
+						$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name']);
 
 						if (!$style_row[$element . '_name'])
 						{
@@ -1246,15 +1239,15 @@ class acp_styles
 				break;
 
 				case 'template':
-					$this->test_installed('template', $error, $root_path, false, $style_row['template_id'], $style_row['template_name'], $style_row['template_copyright']);
+					$this->test_installed('template', $error, $root_path, false, $style_row['template_id'], $style_row['template_name']);
 				break;
 
 				case 'theme':
-					$this->test_installed('theme', $error, $root_path, false, $style_row['theme_id'], $style_row['theme_name'], $style_row['theme_copyright']);
+					$this->test_installed('theme', $error, $root_path, false, $style_row['theme_id'], $style_row['theme_name']);
 				break;
 
 				case 'imageset':
-					$this->test_installed('imageset', $error, $root_path, false, $style_row['imageset_id'], $style_row['imageset_name'], $style_row['imageset_copyright']);
+					$this->test_installed('imageset', $error, $root_path, false, $style_row['imageset_id'], $style_row['imageset_name']);
 				break;
 			}
 		}
@@ -1276,11 +1269,11 @@ class acp_styles
 					${$element . '_root_path'} = (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . ${'reqd_' . $element} . '/' : false;
 					${$element . '_path'} = (${'reqd_' . $element}) ?: false;
 				}
-				$this->install_style($error, 'install', $root_path, $style_row['style_id'], $style_row['style_name'], $install_path, $style_row['style_copyright'], $style_row['style_active'], $style_row['style_default'], $style_row, $template_root_path, $template_path, $theme_root_path, $theme_path, $imageset_root_path, $imageset_path);
+				$this->install_style($error, 'install', $root_path, $style_row['style_id'], $style_row['style_name'], $install_path, $style_row['style_active'], $style_row['style_default'], $style_row, $template_root_path, $template_path, $theme_root_path, $theme_path, $imageset_root_path, $imageset_path);
 			}
 			else
 			{
-				$this->install_element($mode, $error, 'install', $root_path, $style_row[$mode . '_id'], $style_row[$mode . '_name'], $install_path, $style_row[$mode . '_copyright']);
+				$this->install_element($mode, $error, 'install', $root_path, $style_row[$mode . '_id'], $style_row[$mode . '_name'], $install_path);
 			}
 
 			if (!sizeof($error))
@@ -1315,11 +1308,11 @@ class acp_styles
 
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'				=> $style_row[$mode . '_name'],
-			'COPYRIGHT'			=> $style_row[$mode . '_copyright'],
+			'COPYRIGHT'			=> $copyright,
 			'TEMPLATE_NAME'		=> ($mode == 'style') ? $style_row['template_name'] : '',
 			'THEME_NAME'		=> ($mode == 'style') ? $style_row['theme_name'] : '',
-			'IMAGESET_NAME'		=> ($mode == 'style') ? $style_row['imageset_name'] : '']
-		);
+			'IMAGESET_NAME'		=> ($mode == 'style') ? $style_row['imageset_name'] : '',
+		]);
 	}
 
 	/**
@@ -1335,7 +1328,6 @@ class acp_styles
 
 		$style_row = [
 			$mode . '_name'			=> utf8_normalize_nfc(request_var('name', '', true)),
-			$mode . '_copyright'	=> utf8_normalize_nfc(request_var('copyright', '', true)),
 			'template_id'			=> 0,
 			'theme_id'				=> 0,
 			'imageset_id'			=> 0,
@@ -1410,7 +1402,7 @@ class acp_styles
 			{
 				$style_row['style_id'] = 0;
 
-				$this->install_style($error, 'add', '', $style_row['style_id'], $style_row['style_name'], '', $style_row['style_copyright'], $style_row['style_active'], $style_row['style_default'], $style_row);
+				$this->install_style($error, 'add', '', $style_row['style_id'], $style_row['style_name'], '', $style_row['style_active'], $style_row['style_default'], $style_row);
 			}
 
 			if (!sizeof($error))
@@ -1466,30 +1458,14 @@ class acp_styles
 
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'				=> $style_row[$mode . '_name'],
-			'COPYRIGHT'			=> $style_row[$mode . '_copyright']]
-		);
+		]);
 
 	}
 
 	/**
-
-					$reqd_template = $installcfg['required_template'] ?? false;
-					$reqd_theme = $installcfg['required_theme'] ?? false;
-					$reqd_imageset = $installcfg['required_imageset'] ?? false;
-
-					// Check to see if each element is already installed, if it is grab the id
-					foreach ($element_ary as $element => $table)
-					{
-						$style_row = array_merge($style_row, array(
-							$element . '_id'			=> 0,
-							$element . '_name'			=> '',
-							$element . '_copyright'		=> '')
-						);
-
-			 			$this->test_installed($element, $error, $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name'], $style_row[$element . '_copyright']);
 	* Is this element installed? If not, grab its cfg details
 	*/
-	function test_installed($element, &$error, $root_path, $reqd_name, &$id, &$name, &$copyright)
+	function test_installed($element, &$error, $root_path, $reqd_name, &$id, &$name)
 	{
 		global $db, $user;
 
@@ -1533,7 +1509,6 @@ class acp_styles
 			$cfg = parse_cfg_file("$root_path$element/$element.cfg", $cfg);
 
 			$name = $cfg['name'];
-			$copyright = $cfg['copyright'];
 			$id = 0;
 
 			unset($cfg);
@@ -1544,7 +1519,7 @@ class acp_styles
 	/**
 	* Install/Add style
 	*/
-	function install_style(&$error, $action, $root_path, &$id, $name, $path, $copyright, $active, $default, &$style_row, $template_root_path = false, $template_path = false, $theme_root_path = false, $theme_path = false, $imageset_root_path = false, $imageset_path = false)
+	function install_style(&$error, $action, $root_path, &$id, $name, $path, $active, $default, &$style_row, $template_root_path = false, $template_path = false, $theme_root_path = false, $theme_path = false, $imageset_root_path = false, $imageset_path = false)
 	{
 		global $config, $db, $user;
 
@@ -1559,11 +1534,6 @@ class acp_styles
 		if (utf8_strlen($name) > 30)
 		{
 			$error[] = $user->lang['STYLE_ERR_NAME_LONG'];
-		}
-
-		if (utf8_strlen($copyright) > 60)
-		{
-			$error[] = $user->lang['STYLE_ERR_COPY_LONG'];
 		}
 
 		// Check if the name already exist
@@ -1590,7 +1560,7 @@ class acp_styles
 			// and do the install if necessary
 			if (!$style_row[$element . '_id'])
 			{
-				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_path'}) ?: $path, $style_row[$element . '_copyright']);
+				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_path'}) ?: $path);
 			}
 		}
 
@@ -1608,7 +1578,6 @@ class acp_styles
 
 		$sql_ary = [
 			'style_name'		=> $name,
-			'style_copyright'	=> $copyright,
 			'style_active'		=> (int) $active,
 			'template_id'		=> (int) $style_row['template_id'],
 			'theme_id'			=> (int) $style_row['theme_id'],
@@ -1639,7 +1608,7 @@ class acp_styles
 	/**
 	* Install/add an element, doing various checks as we go
 	*/
-	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path, $copyright)
+	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path)
 	{
 		global $db, $user;
 
@@ -1663,6 +1632,11 @@ class acp_styles
 
 		$l_type = strtoupper($mode);
 
+		if (!version_compare($cfg_data['version'] ?? '', PHPBBEX_VERSION, '=='))
+		{
+			$error[] = sprintf($user->lang[$l_type . '_ERR_VERSION'], PHPBBEX_VERSION, $cfg_data['version'] ?? '');
+		}
+
 		if (!$name)
 		{
 			$error[] = $user->lang[$l_type . '_ERR_STYLE_NAME'];
@@ -1672,11 +1646,6 @@ class acp_styles
 		if (utf8_strlen($name) > 30)
 		{
 			$error[] = $user->lang[$l_type . '_ERR_NAME_LONG'];
-		}
-
-		if (utf8_strlen($copyright) > 60)
-		{
-			$error[] = $user->lang[$l_type . '_ERR_COPY_LONG'];
 		}
 
 		// Check if the name already exist
@@ -1742,7 +1711,6 @@ class acp_styles
 
 		$sql_ary = [
 			$mode . '_name'			=> $name,
-			$mode . '_copyright'	=> $copyright,
 			$mode . '_path'			=> $path,
 		];
 

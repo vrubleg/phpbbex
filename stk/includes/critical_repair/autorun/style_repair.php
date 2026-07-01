@@ -90,7 +90,6 @@ class erk_style_repair
 
 								$sql_ary = [
 									$mode . '_name'			=> $name,
-									$mode . '_copyright'	=> $items['copyright'],
 									$mode . '_path'			=> $file,
 								];
 
@@ -116,7 +115,6 @@ class erk_style_repair
 				// We've got one of each, so we can add a new style and repair this.
 				$sql_ary = [
 					'style_name'		=> $style_name,
-					'style_copyright'	=> '',
 					'style_active'		=> 1,
 					'template_id'		=> $template_id,
 					'theme_id'			=> $theme_id,
