@@ -697,31 +697,22 @@ class fileupload
 
 		if (!preg_match('#^(https?://).*?\.(' . implode('|', $this->allowed_extensions) . ')$#i', $upload_url, $match))
 		{
-			$file = new fileerror($user->lang[$this->error_prefix . 'URL_INVALID']);
-			return $file;
+			return new fileerror($user->lang[$this->error_prefix . 'URL_INVALID']);
 		}
 
 		if (empty($match[2]))
 		{
-			$file = new fileerror($user->lang[$this->error_prefix . 'URL_INVALID']);
-			return $file;
+			return new fileerror($user->lang[$this->error_prefix . 'URL_INVALID']);
 		}
-
-		$url = parse_url($upload_url);
-
-		$host = $url['host'];
-		$path = $url['path'];
-		$port = (!empty($url['port'])) ? (int) $url['port'] : 80;
 
 		$upload_ary['type'] = 'application/octet-stream';
 
+		$url = parse_url($upload_url);
 		$url['path'] = explode('.', $url['path']);
 		$ext = array_pop($url['path']);
 
 		$url['path'] = implode('', $url['path']);
 		$upload_ary['name'] = utf8_basename($url['path']) . (($ext) ? '.' . $ext : '');
-		$filename = $url['path'];
-		$filesize = 0;
 
 		$remote_max_filesize = $this->max_filesize;
 		if (!$remote_max_filesize)
@@ -748,125 +739,111 @@ class fileupload
 			}
 		}
 
-		$stop_at = time() + $this->upload_timeout;
-		$errno = 0;
-		$errstr = '';
-
-		if (!($fsock = @fsockopen($host, $port, $errno, $errstr, max(1, intval($this->upload_timeout / 2)))))
+		if (!extension_loaded('curl'))
 		{
-			$file = new fileerror($user->lang[$this->error_prefix . 'NOT_UPLOADED']);
-			return $file;
+			return new fileerror($user->lang[$this->error_prefix . 'NOT_UPLOADED']);
 		}
 
-		// Make sure $path not beginning with /
-		if (strpos($path, '/') === 0)
+		$curl = curl_init($upload_url);
+		if (!$curl)
 		{
-			$path = substr($path, 1);
-		}
-
-		fputs($fsock, 'GET /' . $path . " HTTP/1.1\r\n");
-		fputs($fsock, "HOST: " . $host . "\r\n");
-		fputs($fsock, "Connection: close\r\n\r\n");
-
-		// Set a proper timeout for the socket
-		stream_set_timeout($fsock, $this->upload_timeout);
-
-		$get_info = false;
-		$data = '';
-		$length = false;
-
-		while ((!$length || $filesize < $length) && !@feof($fsock))
-		{
-			// Cancel upload if we exceed timeout
-			if (time() >= $stop_at)
-			{
-				$file = new fileerror($user->lang[$this->error_prefix . 'REMOTE_UPLOAD_TIMEOUT']);
-				return $file;
-			}
-
-			if ($get_info)
-			{
-				if ($length)
-				{
-					// Don't attempt to read past end of file if server indicated length
-					$block = @fread($fsock, min($length - $filesize, 1024));
-				}
-				else
-				{
-					$block = @fread($fsock, 1024);
-				}
-
-				$filesize += strlen($block);
-
-				if ($remote_max_filesize && $filesize > $remote_max_filesize)
-				{
-					$max_filesize = get_formatted_filesize($remote_max_filesize, false);
-
-					$file = new fileerror(sprintf($user->lang[$this->error_prefix . 'WRONG_FILESIZE'], $max_filesize['value'], $max_filesize['unit']));
-					return $file;
-				}
-
-				$data .= $block;
-			}
-			else
-			{
-				$line = @fgets($fsock, 1024);
-
-				if ($line == "\r\n")
-				{
-					$get_info = true;
-				}
-				else
-				{
-					if (stripos($line, 'content-type: ') !== false)
-					{
-						$upload_ary['type'] = rtrim(str_replace('content-type: ', '', strtolower($line)));
-					}
-					else if ($this->max_filesize && stripos($line, 'content-length: ') !== false)
-					{
-						$length = (int) str_replace('content-length: ', '', strtolower($line));
-
-						if ($remote_max_filesize && $length && $length > $remote_max_filesize)
-						{
-							$max_filesize = get_formatted_filesize($remote_max_filesize, false);
-
-							$file = new fileerror(sprintf($user->lang[$this->error_prefix . 'WRONG_FILESIZE'], $max_filesize['value'], $max_filesize['unit']));
-							return $file;
-						}
-					}
-					else if (stripos($line, '404 not found') !== false)
-					{
-						$file = new fileerror($user->lang[$this->error_prefix . 'URL_NOT_FOUND']);
-						return $file;
-					}
-				}
-			}
-		}
-		@fclose($fsock);
-
-		if (empty($data))
-		{
-			$file = new fileerror($user->lang[$this->error_prefix . 'EMPTY_REMOTE_DATA']);
-			return $file;
+			return new fileerror($user->lang[$this->error_prefix . 'NOT_UPLOADED']);
 		}
 
 		$filename = tempnam(sys_get_temp_dir(), unique_id() . '-');
-
 		if (!($fp = @fopen($filename, 'wb')))
 		{
-			$file = new fileerror($user->lang[$this->error_prefix . 'NOT_UPLOADED']);
-			return $file;
+			return new fileerror($user->lang[$this->error_prefix . 'NOT_UPLOADED']);
 		}
 
-		$upload_ary['size'] = fwrite($fp, $data);
+		$filesize = 0;
+		$filesize_exceeded = false;
+
+		curl_setopt_array($curl, [
+			CURLOPT_PROTOCOLS		=> CURLPROTO_HTTP | CURLPROTO_HTTPS,
+			CURLOPT_REDIR_PROTOCOLS	=> CURLPROTO_HTTP | CURLPROTO_HTTPS,
+			CURLOPT_FOLLOWLOCATION	=> true,
+			CURLOPT_MAXREDIRS		=> 3,
+			CURLOPT_SSL_VERIFYHOST	=> false,
+			CURLOPT_SSL_VERIFYPEER	=> false,
+			CURLOPT_CONNECTTIMEOUT	=> max(1, intval($this->upload_timeout / 2)),
+			CURLOPT_TIMEOUT			=> $this->upload_timeout,
+			CURLOPT_HEADERFUNCTION	=> function ($curl, $header) use (&$upload_ary, &$filesize_exceeded, $remote_max_filesize)
+			{
+				$length = strlen($header);
+				$header = trim($header);
+
+				if (stripos($header, 'content-type:') === 0)
+				{
+					$upload_ary['type'] = trim(substr($header, strlen('content-type:')));
+				}
+				else if (stripos($header, 'content-length:') === 0)
+				{
+					$content_length = (int) trim(substr($header, strlen('content-length:')));
+					if ($remote_max_filesize && $content_length && $content_length > $remote_max_filesize)
+					{
+						$filesize_exceeded = true;
+						return 0;
+					}
+				}
+
+				return $length;
+			},
+			CURLOPT_WRITEFUNCTION	=> function ($curl, $data) use ($fp, &$filesize, &$filesize_exceeded, $remote_max_filesize)
+			{
+				$filesize += strlen($data);
+
+				if ($remote_max_filesize && $filesize > $remote_max_filesize)
+				{
+					$filesize_exceeded = true;
+					return 0;
+				}
+
+				$written = fwrite($fp, $data);
+
+				return ($written === false) ? 0 : $written;
+			},
+		]);
+
+		$downloaded = curl_exec($curl);
+		$curl_errno = curl_errno($curl);
+		$http_status = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+		if (PHP_VERSION_ID < 80000) { curl_close($curl); }
 		fclose($fp);
-		unset($data);
 
+		$error = null;
+
+		if ($filesize_exceeded)
+		{
+			$max_filesize = get_formatted_filesize($remote_max_filesize, false);
+			$error = new fileerror(sprintf($user->lang[$this->error_prefix . 'WRONG_FILESIZE'], $max_filesize['value'], $max_filesize['unit']));
+		}
+		else if (!$downloaded || $curl_errno)
+		{
+			$error = new fileerror(($curl_errno == CURLE_OPERATION_TIMEDOUT)
+				? $user->lang[$this->error_prefix . 'REMOTE_UPLOAD_TIMEOUT']
+				: $user->lang[$this->error_prefix . 'NOT_UPLOADED']);
+		}
+		else if ($http_status < 200 || $http_status >= 300)
+		{
+			$error = new fileerror($user->lang[$this->error_prefix . 'URL_NOT_FOUND']);
+		}
+		else if (!$filesize)
+		{
+			$error = new fileerror($user->lang[$this->error_prefix . 'EMPTY_REMOTE_DATA']);
+		}
+
+		if ($error)
+		{
+			@unlink($filename);
+			return $error;
+		}
+
+		$upload_ary['size'] = $filesize;
 		$upload_ary['tmp_name'] = $filename;
-
 		$file = new filespec($upload_ary, $this);
 		$this->common_checks($file);
-
 		return $file;
 	}
 
