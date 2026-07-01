@@ -10,6 +10,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+define('PHPBBEX_VERSION', '1.10.0');
+
 // Paths
 define('UPLOADS_PATH', 'files');
 define('AVATAR_UPLOADS_PATH', 'images/avatars/upload');
