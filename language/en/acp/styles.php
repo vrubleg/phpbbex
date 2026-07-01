@@ -29,11 +29,6 @@ $lang = array_merge($lang, [
 	'ADD_THEME'				=> 'Create theme',
 	'ADD_THEME_EXPLAIN'		=> 'Here you can add a new theme. Depending on your server configuration and file permissions you may have additional options here. For example you may be able to base this theme on an existing one. You may also be able to upload or import (from the store directory) a theme archive. If you upload or import an archive the theme name can be optionally taken from the archive name (to do this leave the theme name blank).',
 
-	'BACKGROUND'			=> 'Background',
-	'BACKGROUND_COLOUR'		=> 'Background colour',
-	'BACKGROUND_IMAGE'		=> 'Background image',
-	'BACKGROUND_REPEAT'		=> 'Background repeat',
-	'BOLD'					=> 'Bold',
 
 	'CONFIRM_IMAGESET_REFRESH'		=> 'Are you sure you wish to refresh all imageset data? The settings from the imageset configuration file will overwrite the current imageset data in the database.',
 	'CONFIRM_TEMPLATE_CLEAR_CACHE'	=> 'Are you sure you wish to clear all cached versions of your template files?',
@@ -45,7 +40,6 @@ $lang = array_merge($lang, [
 	'CREATE_THEME'					=> 'Create new theme',
 
 	'DEACTIVATE_DEFAULT'		=> 'You cannot deactivate the default style.',
-	'DELETE_FROM_FS'			=> 'Delete from filesystem',
 	'DELETE_IMAGESET'			=> 'Delete imageset',
 	'DELETE_IMAGESET_EXPLAIN'	=> 'Here you can remove the selected imageset from the database. Please note that there is no undo capability.',
 	'DELETE_STYLE'				=> 'Delete style',
@@ -65,21 +59,12 @@ $lang = array_merge($lang, [
 	'EDIT_DETAILS_TEMPLATE_EXPLAIN'		=> 'Here you can edit certain template details such as its name.',
 	'EDIT_DETAILS_THEME'				=> 'Edit theme details',
 	'EDIT_DETAILS_THEME_EXPLAIN'		=> 'Here you can edit certain theme details such as its name.',
-	'FOREGROUND'			=> 'Foreground',
-	'FONT_COLOUR'			=> 'Font colour',
-	'FONT_FACE'				=> 'Font face',
-	'FONT_FACE_EXPLAIN'		=> 'You can specify multiple fonts separated by commas. If a user doesn’t have the first font installed the first other working font will be chosen.',
-	'FONT_SIZE'				=> 'Font size',
 
-
-	'HIDE_CSS'				=> 'Hide raw CSS',
 
 	'IMAGESET_ADDED'			=> 'New imageset added on filesystem.',
-	'IMAGESET_ADDED_DB'			=> 'New imageset added to database.',
 	'IMAGESET_DELETED'			=> 'Imageset deleted successfully.',
 	'IMAGESET_DELETED_FS'		=> 'Imageset removed from database but some files may remain on the filesystem.',
 	'IMAGESET_DETAILS_UPDATED'	=> 'Imageset details successfully updated.',
-	'IMAGESET_ERR_ARCHIVE'		=> 'Please select an archive method.',
 	'IMAGESET_ERR_COPY_LONG'	=> 'The copyright can be no longer than 60 characters.',
 	'IMAGESET_ERR_NAME_CHARS'	=> 'The imageset name can only contain alphanumeric characters, -, +, _ and space.',
 	'IMAGESET_ERR_NAME_EXIST'	=> 'A imageset with that name already exists.',
@@ -88,7 +73,6 @@ $lang = array_merge($lang, [
 	'IMAGESET_ERR_STYLE_NAME'	=> 'You must supply a name for this imageset.',
 	'IMAGESET_NAME'				=> 'Imageset name',
 	'IMAGESET_REFRESHED'		=> 'Imageset refreshed successfully.',
-	'ITALIC'					=> 'Italic',
 
 
 	'INACTIVE_STYLES'			=> 'Inactive styles',
@@ -110,9 +94,7 @@ $lang = array_merge($lang, [
 	'KEEP_TEMPLATE'				=> 'Keep “%s” template',
 	'KEEP_THEME'				=> 'Keep “%s” theme',
 
-	'LINE_SPACING'				=> 'Line spacing',
 
-	'NO_CLASS'					=> 'Cannot find class in stylesheet.',
 	'NO_IMAGESET'				=> 'Cannot find imageset on filesystem.',
 	'NO_STYLE'					=> 'Cannot find style on filesystem.',
 	'NO_TEMPLATE'				=> 'Cannot find template on filesystem.',
@@ -121,7 +103,6 @@ $lang = array_merge($lang, [
 	'NO_UNINSTALLED_STYLE'		=> 'No uninstalled styles detected.',
 	'NO_UNINSTALLED_TEMPLATE'	=> 'No uninstalled templates detected.',
 	'NO_UNINSTALLED_THEME'		=> 'No uninstalled themes detected.',
-	'NO_UNIT'					=> 'None',
 
 	'ONLY_IMAGESET'			=> 'This is the only remaining imageset, you cannot delete it.',
 	'ONLY_STYLE'			=> 'This is the only remaining style, you cannot delete it.',
@@ -130,10 +111,6 @@ $lang = array_merge($lang, [
 	'OPTIONAL_BASIS'		=> 'Optional basis',
 
 	'REFRESH'					=> 'Refresh',
-	'REPEAT_NO'					=> 'None',
-	'REPEAT_X'					=> 'Only horizontally',
-	'REPEAT_Y'					=> 'Only vertically',
-	'REPEAT_ALL'				=> 'Both directions',
 	'REPLACE_IMAGESET'			=> 'Replace imageset with',
 	'REPLACE_IMAGESET_EXPLAIN'	=> 'This imageset will replace the one you are deleting in any styles that use it.',
 	'REPLACE_STYLE'				=> 'Replace style with',
@@ -154,7 +131,6 @@ $lang = array_merge($lang, [
 	'STYLE_DEFAULT'				=> 'Make default style',
 	'STYLE_DELETED'				=> 'Style deleted successfully.',
 	'STYLE_DETAILS_UPDATED'		=> 'Style edited successfully.',
-	'STYLE_ERR_ARCHIVE'			=> 'Please select an archive method.',
 	'STYLE_ERR_COPY_LONG'		=> 'The copyright can be no longer than 60 characters.',
 	'STYLE_ERR_NAME_CHARS'		=> 'The style name can only contain alphanumeric characters, -, +, _ and space.',
 	'STYLE_ERR_NAME_EXIST'		=> 'A style with that name already exists.',
@@ -174,7 +150,6 @@ $lang = array_merge($lang, [
 	'TEMPLATE_DELETE_DEPENDENT'	=> 'The template set cannot be deleted as there are one or more other template sets inheriting from it:',
 	'TEMPLATE_DELETED_FS'		=> 'Template set removed from database but some files may remain on the filesystem.',
 	'TEMPLATE_DETAILS_UPDATED'	=> 'Template details successfully updated.',
-	'TEMPLATE_ERR_ARCHIVE'		=> 'Please select an archive method.',
 	'TEMPLATE_ERR_CACHE_READ'	=> 'The cache directory used to store cached versions of template files could not be opened.',
 	'TEMPLATE_ERR_COPY_LONG'	=> 'The copyright can be no longer than 60 characters.',
 	'TEMPLATE_ERR_NAME_CHARS'	=> 'The template name can only contain alphanumeric characters, -, +, _ and space.',
@@ -187,12 +162,9 @@ $lang = array_merge($lang, [
 	'TEMPLATE_NAME'				=> 'Template name',
 
 	'THEME_ADDED'				=> 'New theme added on filesystem.',
-	'THEME_CLASS_ADDED'			=> 'Custom class added successfully.',
 	'THEME_DELETED'				=> 'Theme deleted successfully.',
 	'THEME_DELETED_FS'			=> 'Theme removed from database but files remain on the filesystem.',
 	'THEME_DETAILS_UPDATED'		=> 'Theme details successfully updated.',
-	'THEME_ERR_ARCHIVE'			=> 'Please select an archive method.',
-	'THEME_ERR_CLASS_CHARS'		=> 'Only alphanumeric characters plus ., :, -, _ and # are valid in class names.',
 	'THEME_ERR_COPY_LONG'		=> 'The copyright can be no longer than 60 characters.',
 	'THEME_ERR_NAME_CHARS'		=> 'The theme name can only contain alphanumeric characters, -, +, _ and space.',
 	'THEME_ERR_NAME_EXIST'		=> 'A theme with that name already exists.',
@@ -202,11 +174,9 @@ $lang = array_merge($lang, [
 	'THEME_NAME'				=> 'Theme name',
 	'THEME_REFRESHED'			=> 'Theme stylesheet version refreshed successfully.',
 
-	'UNDERLINE'				=> 'Underline',
 	'UNINSTALLED_IMAGESET'	=> 'Uninstalled imagesets',
 	'UNINSTALLED_STYLE'		=> 'Uninstalled styles',
 	'UNINSTALLED_TEMPLATE'	=> 'Uninstalled templates',
 	'UNINSTALLED_THEME'		=> 'Uninstalled themes',
-	'UNSET'					=> 'Undefined',
 
 ]);
