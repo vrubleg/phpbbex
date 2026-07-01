@@ -45,123 +45,6 @@
 	</fieldset>
 	</form>
 
-<!-- ELSEIF S_EDIT_IMAGESET -->
-
-	<a href="{U_BACK}" style="float: right;">&laquo; {L_BACK}</a>
-
-	<h1>{L_TITLE}</h1>
-
-	<p>{L_EXPLAIN}</p>
-
-	<!-- IF SUCCESS -->
-		<div class="successbox">
-			<p>{L_IMAGESET_UPDATED}</p>
-		</div>
-	<!-- ENDIF -->
-
-	<!-- IF ERROR -->
-		<div class="errorbox">
-			<p>{L_NO_IMAGE}</p>
-		</div>
-	<!-- ENDIF -->
-
-	<script>
-		function update_image(newimage)
-		{
-			document.getElementById('newimg').src = (newimage) ? '../styles/{A_PATH}/imageset/' + encodeURI(newimage) : 'images/no_image.png';
-		}
-	</script>
-	<script>
-		/**
-		* Handle displaying/hiding the dimension fields
-		*/
-		function display_options(value)
-		{
-			if (value == 0)
-			{
-				dE('img_dimensions', -1);
-			}
-			else
-			{
-				dE('img_dimensions', 1);
-			}
-		}
-
-		/**
-		* Init the wanted display functionality if javascript is enabled.
-		* If javascript is not available, the user is still able to properly administer.
-		*/
-		onload = function()
-		{
-			<!-- IF not IMAGE_SIZE -->
-				dE('img_dimensions', -1);
-			<!-- ENDIF -->
-		}
-	</script>
-
-	<form method="post" action="{U_ACTION}">
-
-	<fieldset class="quick" style="text-align: left;">
-		<legend>{L_SELECT_IMAGE}</legend>
-		{L_SELECT_IMAGE}: <select name="imgname" onchange="this.form.submit();">
-		<!-- BEGIN category -->
-			<option class="sep" value="" disabled="disabled">{category.NAME}</option>
-				<!-- BEGIN images --><option value="{category.images.VALUE}"<!-- IF category.images.SELECTED--> selected="selected"<!-- ENDIF -->>&nbsp;&nbsp;&nbsp;&nbsp;{category.images.TEXT}</option>
-				<!-- END images -->
-			<!-- END category -->
-		</select>&nbsp; <input class="button1" type="submit" value="{L_SELECT}" tabindex="100" />
-	</fieldset>
-
-	<fieldset>
-		<legend>{L_EDIT_IMAGESET}</legend>
-	<dl>
-		<dt><label>{L_CURRENT_IMAGE}:</label></dt>
-		<dd><img src="<!-- IF IMAGE_REQUEST -->{IMAGE_REQUEST}<!-- ELSE -->images/no_image.png<!-- ENDIF -->" alt="" /></dd>
-	</dl>
-	<dl>
-		<dt><label>{L_SELECTED_IMAGE}:</label></dt>
-		<dd><img src="{IMG_SRC}" id="newimg" alt="" /></dd>
-	</dl>
-	</fieldset>
-
-	<fieldset>
-	<legend>{L_IMAGE}</legend>
-	<dl>
-		<dt><label for="imgpath">{L_IMAGE}:</label></dt>
-		<dd><select id="imgpath" name="imgpath" onchange="update_image(this.options[selectedIndex].value);"><option value=""<!-- IF not IMAGE_SELECT--> selected="selected"<!-- ENDIF -->>{L_NO_IMAGE}</option>
-			<!-- BEGIN imagesetlist -->
-			<option class="sep" value=""><!-- IF imagesetlist.TYPE -->{L_LOCALISED_IMAGES}<!-- ELSE -->{L_GLOBAL_IMAGES}<!-- ENDIF --></option>
-				<!-- BEGIN images -->
-				<option value="{imagesetlist.images.VALUE}"<!-- IF imagesetlist.images.SELECTED--> selected="selected"<!-- ENDIF -->>{imagesetlist.images.TEXT}</option>
-				<!-- END images -->
-			<!-- END imagesetlist -->
-			</select>
-		</dd>
-	</dl>
-	<dl>
-		<dt><label for="imgsize">{L_INCLUDE_DIMENSIONS}:</label><br /><span>{L_DIMENSIONS_EXPLAIN}</span></dt>
-		<dd><label><input type="radio" class="radio" name="imgsize" id="imgsize" onclick="display_options(1);" value="1"<!-- IF IMAGE_SIZE --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="imgsize" onclick="display_options(0);" value="0"<!-- IF not IMAGE_SIZE --> checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
-	</dl>
-	<div id="img_dimensions">
-		<dl>
-			<dt><label for="imgwidth">{L_IMAGE_WIDTH}:</label><br /><span>{L_AUTOMATIC_EXPLAIN}</span></dt>
-			<dd><input id="imgwidth" type="text" name="imgwidth" value="{IMAGE_SIZE}" /></dd>
-		</dl>
-		<dl>
-			<dt><label for="imgheight">{L_IMAGE_HEIGHT}:</label><br /><span>{L_AUTOMATIC_EXPLAIN}</span></dt>
-			<dd><input id="imgheight" type="text" name="imgheight" value="{IMAGE_HEIGHT}" /></dd>
-		</dl>
-	</div>
-	</fieldset>
-
-	<fieldset class="submit-buttons">
-		<legend>{L_SUBMIT}</legend>
-		<input class="button1" type="submit" name="update" value="{L_SUBMIT}" />
-		{S_FORM_TOKEN}
-	</fieldset>
-	</form>
-
 <!-- ELSEIF S_FRONTEND -->
 
 	<h1>{L_TITLE}</h1>
@@ -210,7 +93,7 @@
 	<!-- ENDIF -->
 	<!-- BEGIN uninstalled -->
 		<tr>
-			<td<!-- IF S_STYLE --> colspan="2"<!-- ENDIF -->><strong>{uninstalled.NAME}</strong><br /><span>{L_COPYRIGHT}: {uninstalled.COPYRIGHT}</span></td>
+			<td<!-- IF S_STYLE --> colspan="2"<!-- ENDIF -->><strong>{uninstalled.NAME}</strong><!-- IF uninstalled.COPYRIGHT --><br /><span>{L_COPYRIGHT}: {uninstalled.COPYRIGHT}</span><!-- ENDIF --></td>
 			<td style="text-align: center;"><a href="{uninstalled.U_INSTALL}">{L_INSTALL}</a></td>
 		</tr>
 	<!-- END uninstalled -->
@@ -251,10 +134,12 @@
 		<dt><label for="name">{L_NAME}:</label></dt>
 		<dd><!-- IF S_INSTALL --><strong id="name">{NAME}</strong><!-- ELSE --><input type="text" id="name" name="name" value="{NAME}" /><!-- ENDIF --></dd>
 	</dl>
+	<!-- IF COPYRIGHT -->
 	<dl>
-		<dt><label for="copyright">{L_COPYRIGHT}:</label></dt>
-		<dd><!-- IF S_INSTALL --><strong id="copyright">{COPYRIGHT}</strong><!-- ELSE --><input type="text" id="copyright" name="copyright" value="{COPYRIGHT}" /><!-- ENDIF --></dd>
+		<dt><label>{L_COPYRIGHT}:</label></dt>
+		<dd><strong>{COPYRIGHT}</strong></dd>
 	</dl>
+	<!-- ENDIF -->
 	<!-- IF S_SUPERTEMPLATE -->
 	<dl>
 		<dt><label for="inheriting">{L_INHERITING_FROM}:</label></dt>

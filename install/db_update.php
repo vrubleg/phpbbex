@@ -99,7 +99,7 @@ require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/install.php'
 
 // Check phpBBex version.
 
-if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_version'], '1.9.9', '>'))
+if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_version'], '1.10.0', '>'))
 {
 	die('Error! Database schema has newer version than supported.');
 }
@@ -524,7 +524,8 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 	set_config('phpbbex_version', '1.9.9');
 }
 
-if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
+// Not ready yet. Replace '<=' by '<' before the release.
+if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 {
 	if ($config['board_hide_emails'] ?? 0)
 	{
@@ -600,9 +601,15 @@ if (version_compare($config['phpbbex_version'], '1.9.9.1', '<'))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_query("DROP TABLE {$table_prefix}styles_template_data");
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN style_copyright');
+	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_copyright');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_data');
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_copyright');
+	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP COLUMN imageset_copyright');
 	$db->sql_return_on_error(false);
+
+	set_config('phpbbex_version', '1.10.0');
 }
 
 // Update bots if bots=1 is passed.

@@ -17,8 +17,6 @@ class acp_styles
 	var $tpl_name;
 	var $page_title;
 
-	var $imageset_keys;
-
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache, $config;
@@ -46,30 +44,6 @@ class acp_styles
 		$action = (isset($_POST['add'])) ? 'add' : $action;
 		$style_id = request_var('id', 0);
 
-		$this->imageset_keys = [
-			'logos' => [
-				'site_logo',
-			],
-			'buttons'	=> [
-				'icon_contact_email', 'icon_contact_jabber', 'icon_contact_pm', 'icon_contact_www', 'icon_post_delete', 'icon_post_edit', 'icon_post_info', 'icon_post_quote', 'icon_post_report', 'icon_user_online', 'icon_user_offline', 'icon_user_profile', 'icon_user_search', 'icon_user_warn', 'button_pm_forward', 'button_pm_new', 'button_pm_reply', 'button_topic_locked', 'button_topic_new', 'button_topic_reply', 'button_upload_image',
-			],
-			'icons'		=> [
-				'icon_post_target', 'icon_post_target_unread', 'icon_topic_attach', 'icon_topic_latest', 'icon_topic_newest', 'icon_topic_reported', 'icon_topic_unapproved', 'icon_friend', 'icon_foe',
-			],
-			'forums'	=> [
-				'forum_link', 'forum_read', 'forum_read_locked', 'forum_read_subforum', 'forum_unread', 'forum_unread_locked', 'forum_unread_subforum', 'subforum_read', 'subforum_unread'
-			],
-			'folders'	=> [
-				'topic_moved', 'topic_read', 'topic_read_mine', 'topic_read_locked', 'topic_read_locked_mine', 'topic_unread', 'topic_unread_mine', 'topic_unread_locked', 'topic_unread_locked_mine', 'sticky_read', 'sticky_read_mine', 'sticky_read_locked', 'sticky_read_locked_mine', 'sticky_unread', 'sticky_unread_mine', 'sticky_unread_locked', 'sticky_unread_locked_mine', 'announce_read', 'announce_read_mine', 'announce_read_locked', 'announce_read_locked_mine', 'announce_unread', 'announce_unread_mine', 'announce_unread_locked', 'announce_unread_locked_mine', 'global_read', 'global_read_mine', 'global_read_locked', 'global_read_locked_mine', 'global_unread', 'global_unread_mine', 'global_unread_locked', 'global_unread_locked_mine', 'pm_read', 'pm_unread',
-			],
-			'polls'		=> [
-				'poll_left', 'poll_center', 'poll_right',
-			],
-			'user'		=> [
-				'user_icon1', 'user_icon2', 'user_icon3', 'user_icon4', 'user_icon5', 'user_icon6', 'user_icon7', 'user_icon8', 'user_icon9', 'user_icon10',
-			],
-		];
-
 		// Execute overall actions
 		switch ($action)
 		{
@@ -96,17 +70,6 @@ class acp_styles
 				{
 					$this->details($mode, $style_id);
 					return;
-				}
-			break;
-
-			case 'edit':
-				if ($style_id)
-				{
-					switch ($mode)
-					{
-						case 'imageset':
-							return $this->edit_imageset($style_id);
-					}
 				}
 			break;
 
@@ -265,12 +228,6 @@ class acp_styles
 						{
 							$sql_ary = [];
 
-							$imageset_definitions = [];
-							foreach ($this->imageset_keys as $topic => $key_array)
-							{
-								$imageset_definitions = array_merge($imageset_definitions, $key_array);
-							}
-
 							$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
 
 							$db->sql_transaction('begin');
@@ -302,17 +259,14 @@ class acp_styles
 								if (strpos($image_name, 'img_') === 0 && $image_filename)
 								{
 									$image_name = substr($image_name, 4);
-									if (in_array($image_name, $imageset_definitions))
-									{
-										$sql_ary[] = [
-											'image_name'		=> (string) $image_name,
-											'image_filename'	=> (string) $image_filename,
-											'image_height'		=> (int) $image_height,
-											'image_width'		=> (int) $image_width,
-											'imageset_id'		=> (int) $style_id,
-											'image_lang'		=> '',
-										];
-									}
+									$sql_ary[] = [
+										'image_name'		=> (string) $image_name,
+										'image_filename'	=> (string) $image_filename,
+										'image_height'		=> (int) $image_height,
+										'image_width'		=> (int) $image_width,
+										'imageset_id'		=> (int) $style_id,
+										'image_lang'		=> '',
+									];
 								}
 							}
 
@@ -348,17 +302,14 @@ class acp_styles
 										if (strpos($image_name, 'img_') === 0 && $image_filename)
 										{
 											$image_name = substr($image_name, 4);
-											if (in_array($image_name, $imageset_definitions))
-											{
-												$sql_ary[] = [
-													'image_name'		=> (string) $image_name,
-													'image_filename'	=> (string) $image_filename,
-													'image_height'		=> (int) $image_height,
-													'image_width'		=> (int) $image_width,
-													'imageset_id'		=> (int) $style_id,
-													'image_lang'		=> (string) $row['lang_dir'],
-												];
-											}
+											$sql_ary[] = [
+												'image_name'		=> (string) $image_name,
+												'image_filename'	=> (string) $image_filename,
+												'image_height'		=> (int) $image_height,
+												'image_width'		=> (int) $image_width,
+												'imageset_id'		=> (int) $style_id,
+												'image_lang'		=> (string) $row['lang_dir'],
+											];
 										}
 									}
 								}
@@ -386,7 +337,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('imageset', ['edit', 'details', 'refresh', 'delete']);
+				$this->frontend('imageset', ['details', 'refresh', 'delete']);
 			break;
 		}
 	}
@@ -531,7 +482,7 @@ class acp_styles
 							$new_ary[$name . $file] = [
 								'path'		=> $file,
 								'name'		=> $name,
-								'copyright'	=> $items['copyright'],
+								'copyright'	=> $items['copyright'] ?? '',
 							];
 						}
 					}
@@ -550,294 +501,17 @@ class acp_styles
 			{
 				$template->assign_block_vars('uninstalled', [
 					'NAME'			=> $cfg['name'],
-					'COPYRIGHT'		=> $cfg['copyright'],
-					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path'])]
-				);
+					'COPYRIGHT'		=> $cfg['copyright'] ?? '',
+					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path']),
+				]);
 			}
 		}
 		unset($new_ary);
 
 		$template->assign_vars([
-			'S_BASIS_OPTIONS'		=> $basis_options]
-		);
-
-	}
-
-	/**
-	* Edit imagesets
-	*
-	* @param int $imageset_id specifies which imageset is being edited
-	*/
-	function edit_imageset($imageset_id)
-	{
-		global $db, $user, $cache, $template;
-
-		$this->page_title = 'EDIT_IMAGESET';
-
-		if (!$imageset_id)
-		{
-			trigger_error($user->lang['NO_IMAGESET'] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-
-		$update		= isset($_POST['update']);
-
-		$imgname	= request_var('imgname', 'site_logo');
-		$imgname	= preg_replace('#[^a-z0-9\-+_]#i', '', $imgname);
-		$sql_extra = $imgnamelang = '';
-
-		$sql = 'SELECT imageset_path, imageset_name
-			FROM ' . STYLES_IMAGESET_TABLE . "
-			WHERE imageset_id = $imageset_id";
-		$result = $db->sql_query($sql);
-		$imageset_row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		if (!$imageset_row)
-		{
-			trigger_error($user->lang['NO_IMAGESET'] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-
-		$imageset_path		= $imageset_row['imageset_path'];
-		$imageset_name		= $imageset_row['imageset_name'];
-
-		if (strpos($imgname, '-') !== false)
-		{
-			[$imgname, $imgnamelang] = explode('-', $imgname);
-			$sql_extra = " AND image_lang IN ('" . $db->sql_escape($imgnamelang) . "', '')";
-		}
-
-		$sql = 'SELECT image_filename, image_width, image_height, image_lang, image_id
-			FROM ' . STYLES_IMAGESET_DATA_TABLE . "
-			WHERE imageset_id = $imageset_id
-				AND image_name = '" . $db->sql_escape($imgname) . "'$sql_extra";
-		$result = $db->sql_query($sql);
-		$imageset_data_row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		$image_filename	= $imageset_data_row['image_filename'];
-		$image_width	= $imageset_data_row['image_width'];
-		$image_height	= $imageset_data_row['image_height'];
-		$image_lang		= $imageset_data_row['image_lang'];
-		$image_id		= $imageset_data_row['image_id'];
-		$imgsize		= ($imageset_data_row['image_width'] && $imageset_data_row['image_height']) ? 1 : 0;
-
-		// Check to see whether the selected image exists in the table
-		$valid_name = !$update;
-
-		foreach ($this->imageset_keys as $category => $img_ary)
-		{
-			if (in_array($imgname, $img_ary))
-			{
-				$valid_name = true;
-				break;
-			}
-		}
-
-		if ($update && isset($_POST['imgpath']) && $valid_name)
-		{
-			// If imgwidth and imgheight are non-zero grab the actual size
-			// from the image itself ... we ignore width settings for the poll center image
-			$imgwidth	= request_var('imgwidth', 0);
-			$imgheight	= request_var('imgheight', 0);
-			$imgsize	= request_var('imgsize', 0);
-			$imgpath	= request_var('imgpath', '');
-			$imgpath	= str_replace('..', '.', $imgpath);
-
-			// If no dimensions selected, we reset width and height to 0 ;)
-			if (!$imgsize)
-			{
-				$imgwidth = $imgheight = 0;
-			}
-
-			$imglang = '';
-
-			if ($imgpath && !file_exists(PHPBB_ROOT_PATH . "styles/$imageset_path/imageset/$imgpath"))
-			{
-				trigger_error($user->lang['NO_IMAGE_ERROR'] . adm_back_link($this->u_action), E_USER_WARNING);
-			}
-
-			// Determine width/height. If dimensions included and no width/height given, we detect them automatically...
-			if ($imgsize && $imgpath)
-			{
-				if (!$imgwidth || !$imgheight)
-				{
-					[$imgwidth_file, $imgheight_file] = getimagesize(PHPBB_ROOT_PATH . "styles/$imageset_path/imageset/$imgpath");
-					$imgwidth = $imgwidth ?: $imgwidth_file;
-					$imgheight = $imgheight ?: $imgheight_file;
-				}
-				$imgwidth	= ($imgname != 'poll_center') ? (int) $imgwidth : 0;
-				$imgheight	= (int) $imgheight;
-			}
-
-			if (strpos($imgpath, '/') !== false)
-			{
-				[$imglang, $imgfilename] = explode('/', $imgpath);
-			}
-			else
-			{
-				$imgfilename = $imgpath;
-			}
-
-			$sql_ary = [
-				'image_filename'	=> (string) $imgfilename,
-				'image_width'		=> (int) $imgwidth,
-				'image_height'		=> (int) $imgheight,
-				'image_lang'		=> (string) $imglang,
-			];
-
-			// already exists
-			if ($imageset_data_row)
-			{
-				$sql = 'UPDATE ' . STYLES_IMAGESET_DATA_TABLE . '
-					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-					WHERE image_id = $image_id";
-				$db->sql_query($sql);
-			}
-			// does not exist
-			else if (!$imageset_data_row)
-			{
-				$sql_ary['image_name']	= $imgname;
-				$sql_ary['imageset_id']	= (int) $imageset_id;
-				$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-			}
-
-			$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
-
-			add_log('admin', 'LOG_IMAGESET_EDIT', $imageset_name);
-
-			$template->assign_var('SUCCESS', true);
-
-			$image_filename = $imgfilename;
-			$image_width	= $imgwidth;
-			$image_height	= $imgheight;
-			$image_lang		= $imglang;
-		}
-
-		$imglang = '';
-		$imagesetlist = ['nolang' => [], 'lang' => []];
-		$langs = [];
-
-		$dir = PHPBB_ROOT_PATH . "styles/$imageset_path/imageset";
-		$dp = @opendir($dir);
-
-		if ($dp)
-		{
-			while (($file = readdir($dp)) !== false)
-			{
-				if ($file[0] != '.' && strtoupper($file) != 'CVS' && !is_file($dir . '/' . $file) && !is_link($dir . '/' . $file))
-				{
-					$langs[] = $file;
-				}
-				else if (preg_match('#\.(?:gif|jpg|png)$#', $file))
-				{
-					$imagesetlist['nolang'][] = $file;
-				}
-			}
-
-			if ($sql_extra)
-			{
-				$dp2 = @opendir("$dir/$imgnamelang");
-
-				if ($dp2)
-				{
-					while (($file2 = readdir($dp2)) !== false)
-					{
-						if (preg_match('#\.(?:gif|jpg|png)$#', $file2))
-						{
-							$imagesetlist['lang'][] = "$imgnamelang/$file2";
-						}
-					}
-					closedir($dp2);
-				}
-			}
-			closedir($dp);
-		}
-
-		// Generate list of image options
-		$img_options = '';
-		foreach ($this->imageset_keys as $category => $img_ary)
-		{
-			$template->assign_block_vars('category', [
-				'NAME'			=> $user->lang['IMG_CAT_' . strtoupper($category)]
-			]);
-
-			foreach ($img_ary as $img)
-			{
-				if ($category == 'buttons')
-				{
-					foreach ($langs as $language)
-					{
-						$template->assign_block_vars('category.images', [
-							'SELECTED'			=> ($img == $imgname && $language == $imgnamelang),
-							'VALUE'				=> $img . '-' . $language,
-							'TEXT'				=> $user->lang['IMG_' . strtoupper($img)] . ' [ ' . $language . ' ]'
-						]);
-					}
-				}
-				else
-				{
-					$template->assign_block_vars('category.images', [
-						'SELECTED'			=> ($img == $imgname),
-						'VALUE'				=> $img,
-						'TEXT'				=> (($category == 'custom') ? $img : $user->lang['IMG_' . strtoupper($img)])
-					]);
-				}
-			}
-		}
-
-		// Make sure the list of possible images is sorted alphabetically
-		sort($imagesetlist['lang']);
-		sort($imagesetlist['nolang']);
-
-		$image_found = false;
-		$img_val = '';
-		foreach ($imagesetlist as $type => $img_ary)
-		{
-			if ($type !== 'lang' || $sql_extra)
-			{
-				$template->assign_block_vars('imagesetlist', [
-					'TYPE'	=> ($type == 'lang')
-				]);
-			}
-
-			foreach ($img_ary as $img)
-			{
-				$imgtext = preg_replace('/^([^\/]+\/)/', '', $img);
-				$selected = (!empty($imgname) && strpos($image_filename, $imgtext) !== false);
-				if ($selected)
-				{
-					$image_found = true;
-					$img_val = htmlspecialchars($img);
-				}
-				$template->assign_block_vars('imagesetlist.images', [
-					'SELECTED'			=> $selected,
-					'TEXT'				=> $imgtext,
-					'VALUE'				=> htmlspecialchars($img)
-				]);
-			}
-		}
-
-		$imgsize_bool = (!empty($imgname) && $image_width && $image_height);
-		$image_request = '../styles/' . $imageset_path . '/imageset/' . ($image_lang ? $imgnamelang . '/' : '') . $image_filename;
-
-		$template->assign_vars([
-			'S_EDIT_IMAGESET'	=> true,
-			'L_TITLE'			=> $user->lang[$this->page_title],
-			'L_EXPLAIN'			=> $user->lang[$this->page_title . '_EXPLAIN'],
-			'IMAGE_OPTIONS'		=> $img_options,
-			'IMAGE_SIZE'		=> $image_width,
-			'IMAGE_HEIGHT'		=> $image_height,
-			'IMAGE_REQUEST'		=> (empty($image_filename)) ? 'images/no_image.png' : $image_request,
-			'U_ACTION'			=> $this->u_action . "&amp;action=edit&amp;id=$imageset_id",
-			'U_BACK'			=> $this->u_action,
-			'NAME'				=> $imageset_name,
-			'A_NAME'			=> addslashes($imageset_name),
-			'PATH'				=> $imageset_path,
-			'A_PATH'			=> addslashes($imageset_path),
-			'ERROR'				=> !$valid_name,
-			'IMG_SRC'			=> ($image_found) ? '../styles/' . $imageset_path . '/imageset/' . $img_val : 'images/no_image.png',
-			'IMAGE_SELECT'		=> $image_found
+			'S_BASIS_OPTIONS'		=> $basis_options,
 		]);
+
 	}
 
 	/**
@@ -962,8 +636,7 @@ class acp_styles
 			'U_BACK'		=> $this->u_action,
 
 			'NAME'			=> $style_row[$mode . '_name'],
-			]
-		);
+		]);
 
 		if ($mode == 'style')
 		{
@@ -1220,7 +893,6 @@ class acp_styles
 		if ($update)
 		{
 			$name = utf8_normalize_nfc(request_var('name', '', true));
-			$copyright = utf8_normalize_nfc(request_var('copyright', '', true));
 
 			$template_id = request_var('template_id', 0);
 			$theme_id = request_var('theme_id', 0);
@@ -1264,11 +936,6 @@ class acp_styles
 				{
 					$error[] = $user->lang[$l_type . '_ERR_NAME_LONG'];
 				}
-
-				if (utf8_strlen($copyright) > 60)
-				{
-					$error[] = $user->lang[$l_type . '_ERR_COPY_LONG'];
-				}
 			}
 		}
 
@@ -1280,8 +947,7 @@ class acp_styles
 				'imageset_id'			=> $imageset_id,
 				'style_active'			=> $style_active,
 				$mode . '_name'			=> $name,
-				$mode . '_copyright'	=> $copyright]
-			);
+			]);
 		}
 
 		// User has submitted form and no errors have occurred
@@ -1289,7 +955,6 @@ class acp_styles
 		{
 			$sql_ary = [
 				$mode . '_name'			=> $name,
-				$mode . '_copyright'	=> $copyright
 			];
 
 			switch ($mode)
@@ -1366,6 +1031,12 @@ class acp_styles
 			}
 		}
 
+		// Get optional copyright information from the related cfg file.
+		$cfg_file = ($mode == 'style')
+			? PHPBB_ROOT_PATH . "styles/{$style_row['style_name']}/style.cfg"
+			: PHPBB_ROOT_PATH . "styles/{$style_row[$mode . '_path']}/$mode/$mode.cfg";
+		$copyright = (file_exists($cfg_file) ? (parse_cfg_file($cfg_file)['copyright'] ?? '') : '');
+
 		$this->page_title = 'EDIT_DETAILS_' . $l_type;
 
 		$template->assign_vars([
@@ -1392,9 +1063,8 @@ class acp_styles
 
 			'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'			=> $style_row[$mode . '_name'],
-			'COPYRIGHT'		=> $style_row[$mode . '_copyright'],
-			]
-		);
+			'COPYRIGHT'		=> $copyright,
+		]);
 	}
 
 	/**
@@ -1506,14 +1176,18 @@ class acp_styles
 		// Installing
 		if (sizeof($installcfg))
 		{
-			$name		= $installcfg['name'];
-			$copyright	= $installcfg['copyright'];
-			$version	= $installcfg['version'];
+			$name		= $installcfg['name'] ?? '';
+			$copyright	= $installcfg['copyright'] ?? '';
+			$version	= $installcfg['version'] ?? '';
+
+			if (!version_compare($version, PHPBBEX_VERSION, '=='))
+			{
+				$error[] = sprintf($user->lang[$l_type . '_ERR_VERSION'], PHPBBEX_VERSION, $version);
+			}
 
 			$style_row = [
 				$mode . '_id'			=> 0,
 				$mode . '_name'			=> '',
-				$mode . '_copyright'	=> ''
 			];
 
 			switch ($mode)
@@ -1522,8 +1196,7 @@ class acp_styles
 
 					$style_row = [
 						'style_id'			=> 0,
-						'style_name'		=> $installcfg['name'],
-						'style_copyright'	=> $installcfg['copyright']
+						'style_name'		=> $installcfg['name'] ?? '',
 					];
 
 					$reqd_template = $installcfg['required_template'] ?? false;
@@ -1536,10 +1209,9 @@ class acp_styles
 						$style_row = array_merge($style_row, [
 							$element . '_id'			=> 0,
 							$element . '_name'			=> '',
-							$element . '_copyright'		=> '']
-						);
+						]);
 
-			 			$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name'], $style_row[$element . '_copyright']);
+						$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name']);
 
 						if (!$style_row[$element . '_name'])
 						{
@@ -1567,15 +1239,15 @@ class acp_styles
 				break;
 
 				case 'template':
-					$this->test_installed('template', $error, $root_path, false, $style_row['template_id'], $style_row['template_name'], $style_row['template_copyright']);
+					$this->test_installed('template', $error, $root_path, false, $style_row['template_id'], $style_row['template_name']);
 				break;
 
 				case 'theme':
-					$this->test_installed('theme', $error, $root_path, false, $style_row['theme_id'], $style_row['theme_name'], $style_row['theme_copyright']);
+					$this->test_installed('theme', $error, $root_path, false, $style_row['theme_id'], $style_row['theme_name']);
 				break;
 
 				case 'imageset':
-					$this->test_installed('imageset', $error, $root_path, false, $style_row['imageset_id'], $style_row['imageset_name'], $style_row['imageset_copyright']);
+					$this->test_installed('imageset', $error, $root_path, false, $style_row['imageset_id'], $style_row['imageset_name']);
 				break;
 			}
 		}
@@ -1597,11 +1269,11 @@ class acp_styles
 					${$element . '_root_path'} = (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . ${'reqd_' . $element} . '/' : false;
 					${$element . '_path'} = (${'reqd_' . $element}) ?: false;
 				}
-				$this->install_style($error, 'install', $root_path, $style_row['style_id'], $style_row['style_name'], $install_path, $style_row['style_copyright'], $style_row['style_active'], $style_row['style_default'], $style_row, $template_root_path, $template_path, $theme_root_path, $theme_path, $imageset_root_path, $imageset_path);
+				$this->install_style($error, 'install', $root_path, $style_row['style_id'], $style_row['style_name'], $install_path, $style_row['style_active'], $style_row['style_default'], $style_row, $template_root_path, $template_path, $theme_root_path, $theme_path, $imageset_root_path, $imageset_path);
 			}
 			else
 			{
-				$this->install_element($mode, $error, 'install', $root_path, $style_row[$mode . '_id'], $style_row[$mode . '_name'], $install_path, $style_row[$mode . '_copyright']);
+				$this->install_element($mode, $error, 'install', $root_path, $style_row[$mode . '_id'], $style_row[$mode . '_name'], $install_path);
 			}
 
 			if (!sizeof($error))
@@ -1636,11 +1308,11 @@ class acp_styles
 
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'				=> $style_row[$mode . '_name'],
-			'COPYRIGHT'			=> $style_row[$mode . '_copyright'],
+			'COPYRIGHT'			=> $copyright,
 			'TEMPLATE_NAME'		=> ($mode == 'style') ? $style_row['template_name'] : '',
 			'THEME_NAME'		=> ($mode == 'style') ? $style_row['theme_name'] : '',
-			'IMAGESET_NAME'		=> ($mode == 'style') ? $style_row['imageset_name'] : '']
-		);
+			'IMAGESET_NAME'		=> ($mode == 'style') ? $style_row['imageset_name'] : '',
+		]);
 	}
 
 	/**
@@ -1656,7 +1328,6 @@ class acp_styles
 
 		$style_row = [
 			$mode . '_name'			=> utf8_normalize_nfc(request_var('name', '', true)),
-			$mode . '_copyright'	=> utf8_normalize_nfc(request_var('copyright', '', true)),
 			'template_id'			=> 0,
 			'theme_id'				=> 0,
 			'imageset_id'			=> 0,
@@ -1731,7 +1402,7 @@ class acp_styles
 			{
 				$style_row['style_id'] = 0;
 
-				$this->install_style($error, 'add', '', $style_row['style_id'], $style_row['style_name'], '', $style_row['style_copyright'], $style_row['style_active'], $style_row['style_default'], $style_row);
+				$this->install_style($error, 'add', '', $style_row['style_id'], $style_row['style_name'], '', $style_row['style_active'], $style_row['style_default'], $style_row);
 			}
 
 			if (!sizeof($error))
@@ -1787,30 +1458,14 @@ class acp_styles
 
 			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
 			'NAME'				=> $style_row[$mode . '_name'],
-			'COPYRIGHT'			=> $style_row[$mode . '_copyright']]
-		);
+		]);
 
 	}
 
 	/**
-
-					$reqd_template = $installcfg['required_template'] ?? false;
-					$reqd_theme = $installcfg['required_theme'] ?? false;
-					$reqd_imageset = $installcfg['required_imageset'] ?? false;
-
-					// Check to see if each element is already installed, if it is grab the id
-					foreach ($element_ary as $element => $table)
-					{
-						$style_row = array_merge($style_row, array(
-							$element . '_id'			=> 0,
-							$element . '_name'			=> '',
-							$element . '_copyright'		=> '')
-						);
-
-			 			$this->test_installed($element, $error, $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name'], $style_row[$element . '_copyright']);
 	* Is this element installed? If not, grab its cfg details
 	*/
-	function test_installed($element, &$error, $root_path, $reqd_name, &$id, &$name, &$copyright)
+	function test_installed($element, &$error, $root_path, $reqd_name, &$id, &$name)
 	{
 		global $db, $user;
 
@@ -1854,7 +1509,6 @@ class acp_styles
 			$cfg = parse_cfg_file("$root_path$element/$element.cfg", $cfg);
 
 			$name = $cfg['name'];
-			$copyright = $cfg['copyright'];
 			$id = 0;
 
 			unset($cfg);
@@ -1865,7 +1519,7 @@ class acp_styles
 	/**
 	* Install/Add style
 	*/
-	function install_style(&$error, $action, $root_path, &$id, $name, $path, $copyright, $active, $default, &$style_row, $template_root_path = false, $template_path = false, $theme_root_path = false, $theme_path = false, $imageset_root_path = false, $imageset_path = false)
+	function install_style(&$error, $action, $root_path, &$id, $name, $path, $active, $default, &$style_row, $template_root_path = false, $template_path = false, $theme_root_path = false, $theme_path = false, $imageset_root_path = false, $imageset_path = false)
 	{
 		global $config, $db, $user;
 
@@ -1880,11 +1534,6 @@ class acp_styles
 		if (utf8_strlen($name) > 30)
 		{
 			$error[] = $user->lang['STYLE_ERR_NAME_LONG'];
-		}
-
-		if (utf8_strlen($copyright) > 60)
-		{
-			$error[] = $user->lang['STYLE_ERR_COPY_LONG'];
 		}
 
 		// Check if the name already exist
@@ -1911,7 +1560,7 @@ class acp_styles
 			// and do the install if necessary
 			if (!$style_row[$element . '_id'])
 			{
-				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_path'}) ?: $path, $style_row[$element . '_copyright']);
+				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_path'}) ?: $path);
 			}
 		}
 
@@ -1929,7 +1578,6 @@ class acp_styles
 
 		$sql_ary = [
 			'style_name'		=> $name,
-			'style_copyright'	=> $copyright,
 			'style_active'		=> (int) $active,
 			'template_id'		=> (int) $style_row['template_id'],
 			'theme_id'			=> (int) $style_row['theme_id'],
@@ -1960,7 +1608,7 @@ class acp_styles
 	/**
 	* Install/add an element, doing various checks as we go
 	*/
-	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path, $copyright)
+	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path)
 	{
 		global $db, $user;
 
@@ -1984,6 +1632,11 @@ class acp_styles
 
 		$l_type = strtoupper($mode);
 
+		if (!version_compare($cfg_data['version'] ?? '', PHPBBEX_VERSION, '=='))
+		{
+			$error[] = sprintf($user->lang[$l_type . '_ERR_VERSION'], PHPBBEX_VERSION, $cfg_data['version'] ?? '');
+		}
+
 		if (!$name)
 		{
 			$error[] = $user->lang[$l_type . '_ERR_STYLE_NAME'];
@@ -1993,11 +1646,6 @@ class acp_styles
 		if (utf8_strlen($name) > 30)
 		{
 			$error[] = $user->lang[$l_type . '_ERR_NAME_LONG'];
-		}
-
-		if (utf8_strlen($copyright) > 60)
-		{
-			$error[] = $user->lang[$l_type . '_ERR_COPY_LONG'];
 		}
 
 		// Check if the name already exist
@@ -2063,7 +1711,6 @@ class acp_styles
 
 		$sql_ary = [
 			$mode . '_name'			=> $name,
-			$mode . '_copyright'	=> $copyright,
 			$mode . '_path'			=> $path,
 		];
 
@@ -2114,12 +1761,6 @@ class acp_styles
 		{
 			$cfg_data = parse_cfg_file("$root_path$mode/imageset.cfg");
 
-			$imageset_definitions = [];
-			foreach ($this->imageset_keys as $topic => $key_array)
-			{
-				$imageset_definitions = array_merge($imageset_definitions, $key_array);
-			}
-
 			foreach ($cfg_data as $key => $value)
 			{
 				if (strpos($value, '*') !== false)
@@ -2143,18 +1784,15 @@ class acp_styles
 				if (strpos($key, 'img_') === 0 && $image_filename)
 				{
 					$key = substr($key, 4);
-					if (in_array($key, $imageset_definitions))
-					{
-						$sql_ary = [
-							'image_name'		=> $key,
-							'image_filename'	=> str_replace('{PATH}', "styles/$path/imageset/", trim($image_filename)),
-							'image_height'		=> (int) $image_height,
-							'image_width'		=> (int) $image_width,
-							'imageset_id'		=> (int) $id,
-							'image_lang'		=> '',
-						];
-						$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-					}
+					$sql_ary = [
+						'image_name'		=> $key,
+						'image_filename'	=> str_replace('{PATH}', "styles/$path/imageset/", trim($image_filename)),
+						'image_height'		=> (int) $image_height,
+						'image_width'		=> (int) $image_width,
+						'imageset_id'		=> (int) $id,
+						'image_lang'		=> '',
+					];
+					$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				}
 			}
 			unset($cfg_data);
@@ -2191,18 +1829,15 @@ class acp_styles
 						if (strpos($image_name, 'img_') === 0 && $image_filename)
 						{
 							$image_name = substr($image_name, 4);
-							if (in_array($image_name, $imageset_definitions))
-							{
-								$sql_ary = [
-									'image_name'		=> $image_name,
-									'image_filename'	=> $image_filename,
-									'image_height'		=> (int) $image_height,
-									'image_width'		=> (int) $image_width,
-									'imageset_id'		=> (int) $id,
-									'image_lang'		=> $row['lang_dir'],
-								];
-								$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-							}
+							$sql_ary = [
+								'image_name'		=> $image_name,
+								'image_filename'	=> $image_filename,
+								'image_height'		=> (int) $image_height,
+								'image_width'		=> (int) $image_width,
+								'imageset_id'		=> (int) $id,
+								'image_lang'		=> $row['lang_dir'],
+							];
+							$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 						}
 					}
 					unset($cfg_data_imageset_data);
