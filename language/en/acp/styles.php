@@ -71,6 +71,7 @@ $lang = array_merge($lang, [
 	'IMAGESET_ERR_NAME_LONG'	=> 'The imageset name can be no longer than 30 characters.',
 	'IMAGESET_ERR_NOT_IMAGESET'	=> 'The archive you specified does not contain a valid imageset.',
 	'IMAGESET_ERR_STYLE_NAME'	=> 'You must supply a name for this imageset.',
+	'IMAGESET_ERR_VERSION'		=> 'The imageset version must match phpBBex %1$s. Found version: %2$s.',
 	'IMAGESET_NAME'				=> 'Imageset name',
 	'IMAGESET_REFRESHED'		=> 'Imageset refreshed successfully.',
 
@@ -138,6 +139,7 @@ $lang = array_merge($lang, [
 	'STYLE_ERR_NO_IDS'			=> 'You must select a template, theme and imageset for this style.',
 	'STYLE_ERR_NOT_STYLE'		=> 'The imported or uploaded file did not contain a valid style archive.',
 	'STYLE_ERR_STYLE_NAME'		=> 'You must supply a name for this style.',
+	'STYLE_ERR_VERSION'			=> 'The style version must match phpBBex %1$s. Found version: %2$s.',
 	'STYLE_IMAGESET'			=> 'Imageset',
 	'STYLE_NAME'				=> 'Style name',
 	'STYLE_TEMPLATE'			=> 'Template',
@@ -158,6 +160,7 @@ $lang = array_merge($lang, [
 	'TEMPLATE_ERR_NOT_TEMPLATE'	=> 'The archive you specified does not contain a valid template set.',
 	'TEMPLATE_ERR_REQUIRED_OR_INCOMPLETE' => 'The new template set requires the template %s to be installed and not inheriting itself.',
 	'TEMPLATE_ERR_STYLE_NAME'	=> 'You must supply a name for this template.',
+	'TEMPLATE_ERR_VERSION'		=> 'The template version must match phpBBex %1$s. Found version: %2$s.',
 	'TEMPLATE_INHERITS'			=> 'This template sets inherits from %s and thus cannot have a different storage setting than its super template.',
 	'TEMPLATE_NAME'				=> 'Template name',
 
@@ -171,6 +174,7 @@ $lang = array_merge($lang, [
 	'THEME_ERR_NAME_LONG'		=> 'The theme name can be no longer than 30 characters.',
 	'THEME_ERR_NOT_THEME'		=> 'The archive you specified does not contain a valid theme.',
 	'THEME_ERR_STYLE_NAME'		=> 'You must supply a name for this theme.',
+	'THEME_ERR_VERSION'			=> 'The theme version must match phpBBex %1$s. Found version: %2$s.',
 	'THEME_NAME'				=> 'Theme name',
 	'THEME_REFRESHED'			=> 'Theme stylesheet version refreshed successfully.',
 

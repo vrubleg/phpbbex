@@ -1180,9 +1180,14 @@ class acp_styles
 		// Installing
 		if (sizeof($installcfg))
 		{
-			$name		= $installcfg['name'];
-			$copyright	= $installcfg['copyright'];
-			$version	= $installcfg['version'];
+			$name		= $installcfg['name'] ?? '';
+			$copyright	= $installcfg['copyright'] ?? '';
+			$version	= $installcfg['version'] ?? '';
+
+			if (!version_compare($version, PHPBBEX_VERSION, '=='))
+			{
+				$error[] = sprintf($user->lang[$l_type . '_ERR_VERSION'], PHPBBEX_VERSION, $version);
+			}
 
 			$style_row = [
 				$mode . '_id'			=> 0,
@@ -1196,8 +1201,8 @@ class acp_styles
 
 					$style_row = [
 						'style_id'			=> 0,
-						'style_name'		=> $installcfg['name'],
-						'style_copyright'	=> $installcfg['copyright']
+						'style_name'		=> $installcfg['name'] ?? '',
+						'style_copyright'	=> $installcfg['copyright'] ?? '',
 					];
 
 					$reqd_template = $installcfg['required_template'] ?? false;
