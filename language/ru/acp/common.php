@@ -557,7 +557,6 @@ $lang = array_merge($lang, [
 	'LOG_IMAGESET_ADD_FS'			=> '<strong>Добавлен набор рисунков на сервер</strong><br />» %s',
 	'LOG_IMAGESET_DELETE'			=> '<strong>Удалён набор рисунков</strong><br />» %s',
 	'LOG_IMAGESET_EDIT_DETAILS'		=> '<strong>Изменена информация о наборе рисунков</strong><br />» %s',
-	'LOG_IMAGESET_EDIT'				=> '<strong>Изменён набор рисунков</strong><br />» %s',
 	'LOG_IMAGESET_LANG_MISSING'		=> '<strong>Отсутствует локализация «%2$s» для набора рисунков</strong><br />» «%1$s»',
 	'LOG_IMAGESET_LANG_REFRESHED'	=> '<strong>Обновлена локализация набора рисунков «%2$s»</strong><br />» %1$s',
 	'LOG_IMAGESET_REFRESHED'		=> '<strong>Обновлён набор рисунков</strong><br />» %s',
