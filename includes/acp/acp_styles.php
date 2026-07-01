@@ -17,8 +17,6 @@ class acp_styles
 	var $tpl_name;
 	var $page_title;
 
-	var $imageset_keys;
-
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache, $config;
@@ -45,24 +43,6 @@ class acp_styles
 		$action = request_var('action', '');
 		$action = (isset($_POST['add'])) ? 'add' : $action;
 		$style_id = request_var('id', 0);
-
-		$this->imageset_keys = [
-			'logos' => [
-				'site_logo',
-			],
-			'buttons'	=> [
-				'icon_contact_email', 'icon_contact_jabber', 'icon_contact_pm', 'icon_contact_www', 'icon_post_delete', 'icon_post_edit', 'icon_post_info', 'icon_post_quote', 'icon_post_report', 'icon_user_online', 'icon_user_offline', 'icon_user_profile', 'icon_user_search', 'icon_user_warn', 'button_pm_forward', 'button_pm_new', 'button_pm_reply', 'button_topic_locked', 'button_topic_new', 'button_topic_reply',
-			],
-			'icons'		=> [
-				'icon_post_target', 'icon_post_target_unread', 'icon_topic_attach', 'icon_topic_latest', 'icon_topic_newest', 'icon_topic_reported', 'icon_topic_unapproved',
-			],
-			'forums'	=> [
-				'forum_link', 'forum_read', 'forum_read_locked', 'forum_read_subforum', 'forum_unread', 'forum_unread_locked', 'forum_unread_subforum', 'subforum_read', 'subforum_unread'
-			],
-			'folders'	=> [
-				'topic_moved', 'topic_read', 'topic_read_mine', 'topic_read_locked', 'topic_read_locked_mine', 'topic_unread', 'topic_unread_mine', 'topic_unread_locked', 'topic_unread_locked_mine', 'sticky_read', 'sticky_read_mine', 'sticky_read_locked', 'sticky_read_locked_mine', 'sticky_unread', 'sticky_unread_mine', 'sticky_unread_locked', 'sticky_unread_locked_mine', 'announce_read', 'announce_read_mine', 'announce_read_locked', 'announce_read_locked_mine', 'announce_unread', 'announce_unread_mine', 'announce_unread_locked', 'announce_unread_locked_mine', 'global_read', 'global_read_mine', 'global_read_locked', 'global_read_locked_mine', 'global_unread', 'global_unread_mine', 'global_unread_locked', 'global_unread_locked_mine', 'pm_read', 'pm_unread',
-			],
-		];
 
 		// Execute overall actions
 		switch ($action)
@@ -248,12 +228,6 @@ class acp_styles
 						{
 							$sql_ary = [];
 
-							$imageset_definitions = [];
-							foreach ($this->imageset_keys as $topic => $key_array)
-							{
-								$imageset_definitions = array_merge($imageset_definitions, $key_array);
-							}
-
 							$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
 
 							$db->sql_transaction('begin');
@@ -285,17 +259,14 @@ class acp_styles
 								if (strpos($image_name, 'img_') === 0 && $image_filename)
 								{
 									$image_name = substr($image_name, 4);
-									if (in_array($image_name, $imageset_definitions))
-									{
-										$sql_ary[] = [
-											'image_name'		=> (string) $image_name,
-											'image_filename'	=> (string) $image_filename,
-											'image_height'		=> (int) $image_height,
-											'image_width'		=> (int) $image_width,
-											'imageset_id'		=> (int) $style_id,
-											'image_lang'		=> '',
-										];
-									}
+									$sql_ary[] = [
+										'image_name'		=> (string) $image_name,
+										'image_filename'	=> (string) $image_filename,
+										'image_height'		=> (int) $image_height,
+										'image_width'		=> (int) $image_width,
+										'imageset_id'		=> (int) $style_id,
+										'image_lang'		=> '',
+									];
 								}
 							}
 
@@ -331,17 +302,14 @@ class acp_styles
 										if (strpos($image_name, 'img_') === 0 && $image_filename)
 										{
 											$image_name = substr($image_name, 4);
-											if (in_array($image_name, $imageset_definitions))
-											{
-												$sql_ary[] = [
-													'image_name'		=> (string) $image_name,
-													'image_filename'	=> (string) $image_filename,
-													'image_height'		=> (int) $image_height,
-													'image_width'		=> (int) $image_width,
-													'imageset_id'		=> (int) $style_id,
-													'image_lang'		=> (string) $row['lang_dir'],
-												];
-											}
+											$sql_ary[] = [
+												'image_name'		=> (string) $image_name,
+												'image_filename'	=> (string) $image_filename,
+												'image_height'		=> (int) $image_height,
+												'image_width'		=> (int) $image_width,
+												'imageset_id'		=> (int) $style_id,
+												'image_lang'		=> (string) $row['lang_dir'],
+											];
 										}
 									}
 								}
@@ -1820,12 +1788,6 @@ class acp_styles
 		{
 			$cfg_data = parse_cfg_file("$root_path$mode/imageset.cfg");
 
-			$imageset_definitions = [];
-			foreach ($this->imageset_keys as $topic => $key_array)
-			{
-				$imageset_definitions = array_merge($imageset_definitions, $key_array);
-			}
-
 			foreach ($cfg_data as $key => $value)
 			{
 				if (strpos($value, '*') !== false)
@@ -1849,18 +1811,15 @@ class acp_styles
 				if (strpos($key, 'img_') === 0 && $image_filename)
 				{
 					$key = substr($key, 4);
-					if (in_array($key, $imageset_definitions))
-					{
-						$sql_ary = [
-							'image_name'		=> $key,
-							'image_filename'	=> str_replace('{PATH}', "styles/$path/imageset/", trim($image_filename)),
-							'image_height'		=> (int) $image_height,
-							'image_width'		=> (int) $image_width,
-							'imageset_id'		=> (int) $id,
-							'image_lang'		=> '',
-						];
-						$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-					}
+					$sql_ary = [
+						'image_name'		=> $key,
+						'image_filename'	=> str_replace('{PATH}', "styles/$path/imageset/", trim($image_filename)),
+						'image_height'		=> (int) $image_height,
+						'image_width'		=> (int) $image_width,
+						'imageset_id'		=> (int) $id,
+						'image_lang'		=> '',
+					];
+					$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				}
 			}
 			unset($cfg_data);
@@ -1897,18 +1856,15 @@ class acp_styles
 						if (strpos($image_name, 'img_') === 0 && $image_filename)
 						{
 							$image_name = substr($image_name, 4);
-							if (in_array($image_name, $imageset_definitions))
-							{
-								$sql_ary = [
-									'image_name'		=> $image_name,
-									'image_filename'	=> $image_filename,
-									'image_height'		=> (int) $image_height,
-									'image_width'		=> (int) $image_width,
-									'imageset_id'		=> (int) $id,
-									'image_lang'		=> $row['lang_dir'],
-								];
-								$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-							}
+							$sql_ary = [
+								'image_name'		=> $image_name,
+								'image_filename'	=> $image_filename,
+								'image_height'		=> (int) $image_height,
+								'image_width'		=> (int) $image_width,
+								'imageset_id'		=> (int) $id,
+								'image_lang'		=> $row['lang_dir'],
+							];
+							$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 						}
 					}
 					unset($cfg_data_imageset_data);
