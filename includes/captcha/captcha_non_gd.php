@@ -172,43 +172,7 @@ class captcha
 
 			// Adler-32 hash generation
 			// Note: The hash is _backwards_ so we must reverse it
-
-			if (@extension_loaded('hash'))
-			{
-				$adler_hash = strrev(hash('adler32', $raw_image, true));
-			}
-			else if (@extension_loaded('mhash'))
-			{
-				$adler_hash = strrev(mhash(MHASH_ADLER32, $raw_image));
-			}
-			else
-			{
-				// Optimized Adler-32 loop ported from the GNU Classpath project
-				$temp_length = $length;
-				$s1 = 1;
-				$s2 = $index = 0;
-
-				while ($temp_length > 0)
-				{
-					// We can defer the modulo operation:
-					// s1 maximally grows from 65521 to 65521 + 255 * 3800
-					// s2 maximally grows by 3800 * median(s1) = 2090079800 < 2^31
-					$substract_value = ($temp_length < 3800) ? $temp_length : 3800;
-					$temp_length -= $substract_value;
-
-					while (--$substract_value >= 0)
-					{
-						$s1 += ord($raw_image[$index]);
-						$s2 += $s1;
-
-						$index++;
-					}
-
-					$s1 %= 65521;
-					$s2 %= 65521;
-				}
-				$adler_hash = pack('N', ($s2 << 16) | $s1);
-			}
+			$adler_hash = strrev(hash('adler32', $raw_image, true));
 
 			// This is the same thing as gzcompress($raw_image, 0) but does not need zlib
 			$raw_image = pack('C3v2', 0x78, 0x01, 0x01, $length, ~$length) . $raw_image . $adler_hash;
