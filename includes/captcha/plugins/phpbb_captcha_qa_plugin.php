@@ -208,14 +208,18 @@ class phpbb_captcha_qa
 
 		if ($this->is_available())
 		{
-			$sql = 'SELECT question_text
-				FROM ' . CAPTCHA_QUESTIONS_TABLE . "
-				WHERE lang_iso = '" . $db->sql_escape($config['default_lang']) . "'";
+			$sql = 'SELECT q.question_text, a.answer_text
+				FROM ' . CAPTCHA_QUESTIONS_TABLE . ' q
+				JOIN ' . CAPTCHA_ANSWERS_TABLE . " a
+					ON q.question_id = a.question_id
+				WHERE q.lang_iso = '" . $db->sql_escape($config['default_lang']) . "'
+				ORDER BY RAND()";
 			$result = $db->sql_query_limit($sql, 1);
 			if ($row = $db->sql_fetchrow($result))
 			{
 				$template->assign_vars([
 					'QA_CONFIRM_QUESTION'		=> $row['question_text'],
+					'QA_CONFIRM_ANSWER'			=> $row['answer_text'],
 				]);
 			}
 			$db->sql_freeresult($result);
@@ -831,7 +835,7 @@ class phpbb_captcha_qa
 			'question_text'	=> request_var('question_text', '', true),
 			'strict'		=> request_var('strict', false),
 			'lang_iso'		=> request_var('lang_iso', ''),
-			'answers'		=> (strlen($answers)) ? explode("\n", $answers) : '',
+			'answers'		=> (strlen($answers)) ? explode("\n", $answers) : [],
 		];
 
 		return $question;
@@ -947,8 +951,7 @@ class phpbb_captcha_qa
 
 		if (!isset($langs[$question_data['lang_iso']]) ||
 			!strlen($question_data['question_text']) ||
-			!sizeof($question_data['answers']) ||
-			!is_array($question_data['answers']))
+			!sizeof($question_data['answers']))
 		{
 			return false;
 		}
