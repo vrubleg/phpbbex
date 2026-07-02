@@ -16,8 +16,8 @@ if (!defined('IN_PHPBB'))
 class captcha
 {
 	var $filtered_pngs;
-	var $width = 320;
-	var $height = 50;
+	var $width = 360;
+	var $height = 96;
 
 	/**
 	* Define filtered pngs on init
@@ -33,7 +33,7 @@ class captcha
 	*/
 	function execute($code, $seed)
 	{
-		$img_height = $this->height - 10;
+		$img_height = 0;
 		$img_width = 0;
 
 		mt_srand($seed);
@@ -54,11 +54,13 @@ class captcha
 			if (empty($hold_chars[$char]))
 			{
 				$hold_chars[$char] = str_split(base64_decode($this->filtered_pngs[$char]['data']), $raw_width + 1);
+				$img_height = max($img_height, sizeof($hold_chars[$char]));
 			}
 		}
 
 		$offset_x = mt_rand(0, $this->width - $img_width);
-		$offset_y = mt_rand(0, $this->height - $img_height);
+		$img_height = min($img_height, $this->height);
+		$offset_y = mt_rand(0, max(0, $this->height - $img_height));
 
 		$image = '';
 		for ($i = 0; $i < $this->height; $i++)
