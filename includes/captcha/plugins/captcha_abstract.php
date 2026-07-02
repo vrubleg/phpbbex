@@ -119,10 +119,10 @@ class phpbb_default_captcha
 			}
 		}
 
-		$demo_code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
 		$demo_seed = random_int(0, 0x7fffffff);
-		$variables .= '&amp;demo_code=' . rawurlencode($demo_code);
 		$variables .= '&amp;demo_seed=' . $demo_seed;
+		$demo_code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
+		$variables .= '&amp;demo_code=' . rawurlencode($demo_code);
 
 		// acp_captcha has a delivery function; let's use it
 		$template->assign_vars([

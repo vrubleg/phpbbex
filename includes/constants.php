@@ -189,8 +189,8 @@ define('REFERER_VALIDATE_PATH', 2);
 @define('CHMOD_EXECUTE', 1);
 
 // Captcha code length
-define('CAPTCHA_MIN_CHARS', 4);
-define('CAPTCHA_MAX_CHARS', 7);
+define('CAPTCHA_MIN_CHARS', 6);
+define('CAPTCHA_MAX_CHARS', 8);
 
 // Additional constants
 define('VOTE_CONVERTED', 127);

@@ -115,16 +115,23 @@ class captcha
 
 		// Initial captcha-letter offset in planar-space
 		$plane_offset_x = mt_rand(3, 8);
-		$plane_offset_y = mt_rand( 12, 15);
+		$plane_offset_y = mt_rand(12, 15);
 
 		// character map
 		$map = $this->captcha_bitmaps();
+
+		// Check if the code can fit (max 8 chars currently).
+		$code_len = strlen($code);
+		if ($code_len && $plane_offset_x + (($code_len - 1) * 11) + $map['width'] - 1 > $plane_x)
+		{
+			throw new exception('too many chars');
+		}
 
 		// matrix
 		$plane = [];
 
 		// for each character, we'll silkscreen it into our boolean pixel plane
-		for ($c = 0, $code_num = strlen($code); $c < $code_num; ++$c)
+		for ($c = 0; $c < $code_len; ++$c)
 		{
 			$letter = $code[$c];
 
