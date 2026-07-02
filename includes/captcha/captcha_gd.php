@@ -156,24 +156,26 @@ class captcha
 		$period_y = mt_rand(7,14);
 		$amp_x = mt_rand(5,10);
 		$amp_y = mt_rand(2,4);
-		$socket = mt_rand(0,100);
 
 		$dampen_x = mt_rand(intval($this->width/5), intval($this->width/2));
 		$dampen_y = mt_rand(intval($this->height/5), intval($this->height/2));
 		$direction_x = (mt_rand (0, 1));
 		$direction_y = (mt_rand (0, 1));
 
+		$socket = mt_rand(0,100);
 		for ($i = 0; $i < $this->width; $i++)
 		{
 			$dir = ($direction_x) ? $i : ($this->width - $i);
 			imagecopy($img, $img, $i-1, intval(sin($socket+ $i/($period_x + $dir/$dampen_x)) * $amp_x), $i, 0, 1, $this->height);
 		}
+
 		$socket = mt_rand(0,100);
 		for ($i = 0; $i < $this->height; $i++)
 		{
 			$dir = ($direction_y) ? $i : ($this->height - $i);
 			imagecopy($img, $img, intval(sin($socket + $i/($period_y + ($dir)/$dampen_y)) * $amp_y), $i-1, 0, $i, $this->width, 1);
 		}
+
 		return $img;
 	}
 
