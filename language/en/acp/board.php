@@ -398,6 +398,7 @@ $lang = array_merge($lang, [
 	'CAPTCHA_NO_GD'							=> 'Simple image',
 	'CAPTCHA_PREVIEW_MSG'					=> 'Your changes have not been saved, this is just a preview.',
 	'CAPTCHA_PREVIEW_EXPLAIN'				=> 'The plugin as it would look like using the current selection.',
+	'CAPTCHA_PREVIEW_ANSWER'				=> 'Answer',
 
 	'CAPTCHA_SELECT'						=> 'Installed plugins',
 	'CAPTCHA_SELECT_EXPLAIN'				=> 'The dropdown holds the plugins recognised by the board. Grey entries are not available right now and might need configuration prior to use.',

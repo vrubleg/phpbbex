@@ -50,8 +50,18 @@ class phpbb_default_captcha
 	{
 		global $user;
 
-		$this->code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
-		$this->seed = random_int(0, 0x7fffffff);
+		$this->code = request_var('demo_code', '');
+		$this->seed = request_var('demo_seed', 0);
+
+		if (!$this->code || !preg_match('#^[A-Z0-9]+$#', $this->code))
+		{
+			$this->code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
+		}
+
+		if (!$this->seed)
+		{
+			$this->seed = random_int(0, 0x7fffffff);
+		}
 
 		$captcha = new captcha();
 		define('IMAGE_OUTPUT', 1);
@@ -109,9 +119,15 @@ class phpbb_default_captcha
 			}
 		}
 
+		$demo_code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
+		$demo_seed = random_int(0, 0x7fffffff);
+		$variables .= '&amp;demo_code=' . rawurlencode($demo_code);
+		$variables .= '&amp;demo_seed=' . $demo_seed;
+
 		// acp_captcha has a delivery function; let's use it
 		$template->assign_vars([
 			'CAPTCHA_IMAGE_URL'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'captcha_demo=1&amp;mode=visual&amp;i=' . $id . '&amp;select_captcha=' . $this->get_class_name()) . $variables,
+			'CAPTCHA_CODE'		=> $demo_code,
 			'CONFIRM_ID'		=> $this->confirm_id,
 		]);
 
