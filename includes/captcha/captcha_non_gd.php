@@ -58,6 +58,11 @@ class captcha
 			}
 		}
 
+		if ($img_width > $this->width)
+		{
+			throw new exception('too many chars');
+		}
+
 		$offset_x = mt_rand(0, $this->width - $img_width);
 		$img_height = min($img_height, $this->height);
 		$offset_y = mt_rand(0, max(0, $this->height - $img_height));

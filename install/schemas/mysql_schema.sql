@@ -135,7 +135,7 @@ CREATE TABLE phpbb_confirm (
 	confirm_id char(32) DEFAULT '' NOT NULL,
 	session_id char(32) DEFAULT '' NOT NULL,
 	confirm_type tinyint(3) DEFAULT '0' NOT NULL,
-	code varchar(8) DEFAULT '' NOT NULL,
+	code varchar(32) DEFAULT '' NOT NULL,
 	seed int(10) UNSIGNED DEFAULT '0' NOT NULL,
 	attempts mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (session_id, confirm_id),

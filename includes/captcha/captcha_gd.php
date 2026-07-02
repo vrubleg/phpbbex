@@ -1690,6 +1690,23 @@ class captcha
 			'Y' =>	$chars['Y'][mt_rand(0, min(sizeof($chars['Y']), $config['captcha_gd_fonts']) -1)],
 			'Z' =>	$chars['Z'][mt_rand(0, min(sizeof($chars['Z']), $config['captcha_gd_fonts']) -1)],
 
+			'0' => [
+				[0,0,1,1,1,1,1,0,0],
+				[0,1,0,0,0,0,0,1,0],
+				[1,0,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,1,1],
+				[1,0,0,0,0,0,1,0,1],
+				[1,0,0,0,0,1,0,0,1],
+				[1,0,0,0,1,0,0,0,1],
+				[1,0,0,1,0,0,0,0,1],
+				[1,0,1,0,0,0,0,0,1],
+				[1,1,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,0,1],
+				[1,0,0,0,0,0,0,0,1],
+				[0,1,0,0,0,0,0,1,0],
+				[0,0,1,1,1,1,1,0,0],
+			],
 			'1' => [
 				[0,0,0,1,1,0,0,0,0],
 				[0,0,1,0,1,0,0,0,0],
@@ -1869,6 +1886,11 @@ class char_cube3d
 	*/
 	function __construct(&$bitmaps, $letter)
 	{
+		if (!isset($bitmaps['data'][$letter]))
+		{
+			throw new exception('unsupported character');
+		}
+
 		$this->bitmap			= $bitmaps['data'][$letter];
 		$this->bitmap_width		= $bitmaps['width'];
 		$this->bitmap_height	= $bitmaps['height'];

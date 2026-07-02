@@ -53,7 +53,7 @@ class phpbb_default_captcha
 		$this->code = request_var('demo_code', '');
 		$this->seed = request_var('demo_seed', 0);
 
-		if (!$this->code || !preg_match('#^[A-Z0-9]+$#', $this->code))
+		if (!$this->code || !preg_match('#^[A-Z0-9]{1,32}$#', $this->code))
 		{
 			$this->code = gen_rand_string_friendly(mt_rand(CAPTCHA_MIN_CHARS, CAPTCHA_MAX_CHARS));
 		}
