@@ -15,9 +15,10 @@ if (!defined('IN_PHPBB'))
 */
 class captcha
 {
+	var $width  = CAPTCHA_WIDTH;
+	var $height = CAPTCHA_HEIGHT;
+
 	var $filtered_pngs;
-	var $width = 360;
-	var $height = 96;
 
 	/**
 	* Define filtered pngs on init

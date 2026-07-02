@@ -95,6 +95,8 @@ class phpbb_default_captcha
 		{
 			$template->assign_vars([
 				'CAPTCHA_IMAGE_URL'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php',  'mode=confirm&amp;confirm_id=' . $this->confirm_id . '&amp;type=' . $this->type),
+				'CAPTCHA_WIDTH'		=> CAPTCHA_WIDTH,
+				'CAPTCHA_HEIGHT'	=> CAPTCHA_HEIGHT,
 				'CONFIRM_ID'		=> $this->confirm_id,
 				'S_CONFIRM_CODE'	=> true,
 				'S_TYPE'			=> $this->type,
@@ -127,6 +129,8 @@ class phpbb_default_captcha
 		// acp_captcha has a delivery function; let's use it
 		$template->assign_vars([
 			'CAPTCHA_IMAGE_URL'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'captcha_demo=1&amp;mode=visual&amp;i=' . $id . '&amp;select_captcha=' . $this->get_class_name()) . $variables,
+			'CAPTCHA_WIDTH'		=> CAPTCHA_WIDTH,
+			'CAPTCHA_HEIGHT'	=> CAPTCHA_HEIGHT,
 			'CAPTCHA_CODE'		=> $demo_code,
 			'CONFIRM_ID'		=> $this->confirm_id,
 		]);

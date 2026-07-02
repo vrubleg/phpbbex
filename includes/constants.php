@@ -191,6 +191,8 @@ define('REFERER_VALIDATE_PATH', 2);
 // Captcha code length
 define('CAPTCHA_MIN_CHARS', 6);
 define('CAPTCHA_MAX_CHARS', 8);
+define('CAPTCHA_WIDTH', 360);
+define('CAPTCHA_HEIGHT', 96);
 
 // Additional constants
 define('VOTE_CONVERTED', 127);

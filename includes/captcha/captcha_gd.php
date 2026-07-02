@@ -16,8 +16,8 @@ if (!defined('IN_PHPBB'))
 */
 class captcha
 {
-	var $width = 360;
-	var $height = 96;
+	var $width  = CAPTCHA_WIDTH;
+	var $height = CAPTCHA_HEIGHT;
 
 
 	/**

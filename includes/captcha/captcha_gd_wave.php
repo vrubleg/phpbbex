@@ -12,8 +12,8 @@
 */
 class captcha
 {
-	var $width		= 360;
-	var $height		= 96;
+	var $width  = CAPTCHA_WIDTH;
+	var $height = CAPTCHA_HEIGHT;
 
 	function execute($code, $seed)
 	{
