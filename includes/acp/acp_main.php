@@ -435,7 +435,7 @@ class acp_main
 			$announcement_url = (strpos($announcement_url, '&amp;') === false) ? str_replace('&', '&amp;', $announcement_url) : $announcement_url;
 
 			$template->assign_vars([
-				'S_VERSION_UP_TO_DATE'	=> phpbb_version_compare($latest_version, $config['phpbbex_version'], '<='),
+				'S_VERSION_UP_TO_DATE'	=> version_compare($latest_version, $config['phpbbex_version'], '<='),
 				'L_UPDATE_AVAILABLE'	=> $user->lang('UPDATE_AVAILABLE', $latest_version, $announcement_url),
 				'U_UPDATE_ANNOUNCEMENT'	=> $announcement_url,
 			]);

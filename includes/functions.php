@@ -255,22 +255,6 @@ function unique_id()
 }
 
 /**
-* Wrapper for mt_rand() which allows swapping $min and $max parameters.
-*
-* PHP does not allow us to swap the order of the arguments for mt_rand() anymore.
-* (since PHP 5.3.4, see http://bugs.php.net/46587)
-*
-* @param int $min		Lowest value to be returned
-* @param int $max		Highest value to be returned
-*
-* @return int			Random integer between $min and $max (or $max and $min)
-*/
-function phpbb_mt_rand($min, $max)
-{
-	return ($min > $max) ? mt_rand($max, $min) : mt_rand($min, $max);
-}
-
-/**
 * Wrapper for getdate() which returns the equivalent array for UTC timestamps.
 *
 * @param int $time		Unix timestamp (optional)
@@ -589,34 +573,6 @@ function _hash_crypt_private($password, $setting, &$itoa64)
 	$output .= _hash_encode64($hash, 16, $itoa64);
 
 	return $output;
-}
-
-/**
-* Wrapper for version_compare() that allows using uppercase A and B
-* for alpha and beta releases.
-*
-* See http://www.php.net/manual/en/function.version-compare.php
-*
-* @param string $version1		First version number
-* @param string $version2		Second version number
-* @param string $operator		Comparison operator (optional)
-*
-* @return mixed					Boolean (true, false) if comparison operator is specified.
-*								Integer (-1, 0, 1) otherwise.
-*/
-function phpbb_version_compare($version1, $version2, $operator = null)
-{
-	$version1 = strtolower($version1);
-	$version2 = strtolower($version2);
-
-	if (is_null($operator))
-	{
-		return version_compare($version1, $version2);
-	}
-	else
-	{
-		return version_compare($version1, $version2, $operator);
-	}
 }
 
 /**
