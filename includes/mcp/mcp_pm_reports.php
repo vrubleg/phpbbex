@@ -136,8 +136,7 @@ class mcp_pm_reports
 
 					if (sizeof($attachments))
 					{
-						$update_count = [];
-						parse_attachments(0, $message, $attachments, $update_count);
+						parse_attachments(0, $message, $attachments);
 					}
 
 					// Display not already displayed Attachments for this post, we already parsed them. ;)

@@ -1020,7 +1020,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 					if (!empty($attachments[$row['post_id']]))
 					{
-						parse_attachments($forum_id, $row['post_text'], $attachments[$row['post_id']], $update_count);
+						parse_attachments($forum_id, $row['post_text'], $attachments[$row['post_id']]);
 
 						// we only display inline attachments
 						unset($attachments[$row['post_id']]);
