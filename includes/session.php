@@ -356,7 +356,11 @@ class phpbb_session
 						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS);
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
-						$this->update_browser_id();
+						if (!$this->data['is_bot'])
+						{
+							$this->handle_browser_tracking(false);
+						}
+
 						return true;
 					}
 				}
@@ -380,41 +384,6 @@ class phpbb_session
 
 		// If we reach here then no (valid) session exists. So we'll create a new one
 		return $this->session_create();
-	}
-
-	function update_browser_id()
-	{
-		global $db, $config;
-
-		$user_id = $this->data['user_id'];
-		$agent = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249));
-		$browser_id = get_cookie('bid', '');
-
-		if (strlen($browser_id) != 32)
-		{
-			// Set new browser_id cookie
-			$browser_id = bin2hex(random_bytes(16));
-			set_cookie('bid', $browser_id, true);
-		}
-
-		// Update stats
-		$sql = "INSERT INTO " . USER_BROWSER_IDS_TABLE . "
-			SET browser_id='" . $db->sql_escape($browser_id) . "', user_id='" . $db->sql_escape($user_id) . "',
-				created=" . $this->time_now . ", last_visit=" . $this->time_now . ", visits=1,
-				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'
-			ON DUPLICATE KEY UPDATE last_visit=" . $this->time_now . ", visits=visits+1,
-				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'";
-		$db->sql_query($sql);
-
-		// Garbage collection
-		if(rand(0, 1000) == 1)
-		{
-			$sql = "DELETE FROM " . USER_BROWSER_IDS_TABLE . "
-				WHERE  (visits = 1 AND user_id = " . ANONYMOUS . " AND last_visit+3600*12 < " . $this->time_now . ")
-					OR (visits > 1 AND user_id = " . ANONYMOUS . " AND last_visit+86400*7 < " . $this->time_now . ")
-					OR (last_visit+86400*365 < " . $this->time_now . ")";
-			$db->sql_query($sql);
-		}
 	}
 
 	/**
@@ -726,12 +695,15 @@ class phpbb_session
 
 		$db->sql_return_on_error(false);
 
-		// Save Useragent
-		$sql = 'UPDATE ' . USERS_TABLE . "
-			SET user_browser = '" . $db->sql_escape($sql_ary['session_browser']) . "',
-				user_ip = '" . $db->sql_escape($sql_ary['session_ip']) . "'
-			WHERE user_id = " . (int) $this->data['user_id'];
-		$db->sql_query($sql);
+		// Save UA and IP of the registered user.
+		if ($this->data['user_id'] != ANONYMOUS)
+		{
+			$sql = 'UPDATE ' . USERS_TABLE . "
+				SET user_browser = '" . $db->sql_escape($sql_ary['session_browser']) . "',
+					user_ip = '" . $db->sql_escape($sql_ary['session_ip']) . "'
+				WHERE user_id = " . (int) $this->data['user_id'];
+			$db->sql_query($sql);
+		}
 
 		// Regenerate autologin/persistent login key
 		if ($session_autologin)
@@ -752,6 +724,8 @@ class phpbb_session
 			set_cookie('sid', $this->session_id, $cookie_expire);
 
 			unset($cookie_expire);
+
+			$this->handle_browser_tracking(true);
 
 			$sql = 'SELECT COUNT(session_id) AS sessions
 					FROM ' . SESSIONS_TABLE . '
@@ -785,6 +759,54 @@ class phpbb_session
 		}
 
 		return true;
+	}
+
+	function handle_browser_tracking($fresh_session)
+	{
+		global $db, $config;
+
+		if ($this->data['is_bot']) { return; }
+
+		$browser_id = get_cookie('bid', '');
+
+		if (!$browser_id && $fresh_session)
+		{
+			// The client might not accept cookies. Wait till the next request with this session.
+			return;
+		}
+
+		if (!preg_match('#[0-9a-f]{32}#', $browser_id))
+		{
+			// Set new browser_id cookie.
+			$browser_id = bin2hex(random_bytes(16));
+			set_cookie('bid', $browser_id, true);
+		}
+		else if ($fresh_session)
+		{
+			// Refresh existing browser_id cookie.
+			set_cookie('bid', $browser_id, true);
+		}
+
+		$browser_ua = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249));
+
+		// Update stats.
+		$sql = "INSERT INTO " . BROWSER_TRACKING_TABLE . "
+			SET browser_id='" . $db->sql_escape($browser_id) . "', user_id='" . $db->sql_escape($this->data['user_id']) . "',
+				tracking_first_time=" . $this->time_now . ", tracking_last_time=" . $this->time_now . ", tracking_hits=1,
+				browser_ua = '" . $db->sql_escape($browser_ua) . "', tracking_first_ip = '" . $db->sql_escape($this->ip) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'
+			ON DUPLICATE KEY UPDATE tracking_last_time=" . $this->time_now . ", tracking_hits=tracking_hits+1,
+				browser_ua = '" . $db->sql_escape($browser_ua) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'";
+		$db->sql_query($sql);
+
+		// Garbage collection.
+		if(rand(0, 1000) == 1)
+		{
+			$sql = "DELETE FROM " . BROWSER_TRACKING_TABLE . "
+				WHERE  (tracking_hits = 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+3600*12 < " . $this->time_now . ")
+					OR (tracking_hits > 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+86400*7 < " . $this->time_now . ")
+					OR (tracking_last_time+86400*365 < " . $this->time_now . ")";
+			$db->sql_query($sql);
+		}
 	}
 
 	/**

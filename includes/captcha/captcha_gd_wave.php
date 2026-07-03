@@ -12,12 +12,22 @@
 */
 class captcha
 {
-	var $width		= 360;
-	var $height		= 96;
+	var $width  = CAPTCHA_WIDTH;
+	var $height = CAPTCHA_HEIGHT;
 
 	function execute($code, $seed)
 	{
-		global $starttime;
+		if (!preg_match('#^[A-Z0-9]*$#', $code))
+		{
+			throw new exception('unsupported char');
+		}
+
+		$code_len = strlen($code);
+
+		if ($code_len > 30)
+		{
+			throw new exception('too many chars');
+		}
 
 		// seed the random generator
 		mt_srand($seed);
@@ -42,7 +52,7 @@ class captcha
 		// 2) 3-space. (planar-space with z/height aspect)
 		// 3) image space (pixels on the screen)
 		// resolution of the planar-space we're embedding the text code in
-		$plane_x	= 100;
+		$plane_x	= max(100, $code_len * 10);
 		$plane_y	= 30;
 
 		$subdivision_factor = 3;
@@ -115,18 +125,24 @@ class captcha
 
 		// Initial captcha-letter offset in planar-space
 		$plane_offset_x = mt_rand(3, 8);
-		$plane_offset_y = mt_rand( 12, 15);
+		$plane_offset_y = mt_rand(12, 15);
 
 		// character map
 		$map = $this->captcha_bitmaps();
+
+		// Spread characters evenly across the fixed plane width.
+		$plane_margin_x = 3;
+		$plane_text_width = $plane_x - (2 * $plane_margin_x) - $map['width'];
+		$plane_step_x = ($code_len > 1) ? $plane_text_width / ($code_len - 1) : 0;
 
 		// matrix
 		$plane = [];
 
 		// for each character, we'll silkscreen it into our boolean pixel plane
-		for ($c = 0, $code_num = strlen($code); $c < $code_num; ++$c)
+		for ($c = 0; $c < $code_len; ++$c)
 		{
 			$letter = $code[$c];
+			$plane_offset_x = (int) round($plane_margin_x + ($c * $plane_step_x));
 
 			for ($x = $map['width'] - 1; $x >= 0; --$x)
 			{
@@ -138,7 +154,6 @@ class captcha
 					}
 				}
 			}
-			$plane_offset_x += 11;
 		}
 
 		// calculate our first buffer, we can't actually draw polys with these yet
@@ -687,6 +702,22 @@ class captcha
 					[0,1,0,0,0,0,0,0,0],
 					[1,0,0,0,0,0,0,0,1],
 					[1,1,1,1,1,1,1,1,1],
+					[0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0],
+				],
+				'0' => [
+					[0,0,0,1,1,1,0,0,0],
+					[0,0,1,0,0,0,1,0,0],
+					[0,1,0,0,0,0,0,1,0],
+					[1,0,0,0,0,0,1,0,1],
+					[1,0,0,0,0,1,0,0,1],
+					[1,0,0,0,1,0,0,0,1],
+					[1,0,0,1,0,0,0,0,1],
+					[1,0,1,0,0,0,0,0,1],
+					[0,1,0,0,0,0,0,1,0],
+					[0,0,1,0,0,0,1,0,0],
+					[0,0,0,1,1,1,0,0,0],
 					[0,0,0,0,0,0,0,0,0],
 					[0,0,0,0,0,0,0,0,0],
 					[0,0,0,0,0,0,0,0,0],

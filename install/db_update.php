@@ -288,7 +288,6 @@ if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 	$db->sql_query("ALTER TABLE " . LOGIN_ATTEMPT_TABLE . " MODIFY attempt_browser varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " MODIFY session_browser varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_browser varchar(250) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USER_BROWSER_IDS_TABLE . " MODIFY agent varchar(250) DEFAULT '' NOT NULL");
 
 	set_config('phpbbex_version', '1.9.6');
 }
@@ -607,7 +606,25 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_data');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_copyright');
 	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP COLUMN imageset_copyright');
+	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 	$db->sql_return_on_error(false);
+
+	// Migrate phpbb_user_browser_ids to the new phpbb_browser_tracking.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE {$table_prefix}user_browser_ids RENAME TO " . BROWSER_TRACKING_TABLE);
+	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE created tracking_first_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE last_visit tracking_last_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE visits tracking_hits int(11) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE agent browser_ua varchar(250) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " ADD COLUMN tracking_first_ip varchar(40) DEFAULT '' NOT NULL AFTER browser_ua");
+	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE last_ip tracking_last_ip varchar(40) DEFAULT '' NOT NULL");
+	$db->sql_return_on_error(false);
+	$db->sql_query("UPDATE " . BROWSER_TRACKING_TABLE . " SET tracking_first_ip = tracking_last_ip WHERE tracking_first_ip = ''");
+
+	// Update anonymous user.
+
+	$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_browser = '', user_ip = '' WHERE user_id = " . ANONYMOUS);
 
 	set_config('phpbbex_version', '1.10.0');
 }
@@ -902,7 +919,7 @@ if (request_var('utf8mb4', 0))
 			case WORDS_TABLE:
 			case ZEBRA_TABLE:
 			case USER_CONFIRM_KEYS_TABLE:
-			case USER_BROWSER_IDS_TABLE:
+			case BROWSER_TRACKING_TABLE:
 			case POST_RATES_TABLE:
 			// Standard QA CAPTCHA tables.
 			case "{$table_prefix}captcha_questions":

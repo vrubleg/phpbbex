@@ -133,7 +133,6 @@ class acp_captcha
 		global $db, $user, $config;
 
 		$captcha = phpbb_captcha_factory::get_instance($selected);
-		$captcha->init(CONFIRM_REG);
 		$captcha->execute_demo();
 
 		garbage_collection();

@@ -217,8 +217,7 @@ function mcp_topic_view($id, $mode, $action)
 
 		if (!empty($attachments[$row['post_id']]))
 		{
-			$update_count = [];
-			parse_attachments($topic_info['forum_id'], $message, $attachments[$row['post_id']], $update_count);
+			parse_attachments($topic_info['forum_id'], $message, $attachments[$row['post_id']]);
 		}
 
 		if (!$row['post_approved'])

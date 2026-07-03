@@ -7,14 +7,15 @@ CREATE TABLE phpbb_user_confirm_keys (
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-CREATE TABLE phpbb_user_browser_ids (
+CREATE TABLE phpbb_browser_tracking (
 	browser_id char(32) DEFAULT '' NOT NULL,
 	user_id mediumint(8) UNSIGNED NOT NULL,
-	created int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	visits int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	agent varchar(250) DEFAULT '' NOT NULL,
-	last_ip varchar(40) DEFAULT '' NOT NULL,
+	tracking_first_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	tracking_last_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	tracking_hits int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	browser_ua varchar(250) DEFAULT '' NOT NULL,
+	tracking_first_ip varchar(40) DEFAULT '' NOT NULL,
+	tracking_last_ip varchar(40) DEFAULT '' NOT NULL,
 	PRIMARY KEY (browser_id,user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 

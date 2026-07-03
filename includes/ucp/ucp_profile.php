@@ -586,6 +586,9 @@ class ucp_profile
 				$category = basename(request_var('category', ''));
 
 				$can_upload = (PHP_FILE_UPLOADS && file_exists(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH) && phpbb_is_writable(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH) && $auth->acl_get('u_chgavatar'));
+				$can_upload_file = ($can_upload && $config['allow_avatar_upload']);
+				$can_upload_url = ($can_upload && $config['allow_avatar_remote_upload'] && extension_loaded('curl'));
+				$can_use_gallery = ($auth->acl_get('u_chgavatar') && $config['allow_avatar_local']);
 
 				add_form_key('ucp_avatar');
 
@@ -628,24 +631,24 @@ class ucp_profile
 
 					'U_GALLERY'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=avatar&amp;display_gallery=1'),
 
-					'S_FORM_ENCTYPE'	=> ($can_upload && ($config['allow_avatar_upload'] || $config['allow_avatar_remote_upload'])) ? ' enctype="multipart/form-data"' : '',
+					'S_FORM_ENCTYPE'	=> ($can_upload_file || $can_upload_url) ? ' enctype="multipart/form-data"' : '',
 
 					'L_AVATAR_EXPLAIN'	=> sprintf($user->lang['AVATAR_EXPLAIN'], $config['avatar_max_width'], $config['avatar_max_height'], $config['avatar_filesize'] / 1024),
 				]);
 
-				if ($config['allow_avatar'] && $display_gallery && $auth->acl_get('u_chgavatar') && $config['allow_avatar_local'])
+				if ($config['allow_avatar'] && $display_gallery && $can_use_gallery)
 				{
 					avatar_gallery($category, $avatar_select, 4);
 				}
 				else if ($config['allow_avatar'])
 				{
-					$avatars_enabled = (($can_upload && ($config['allow_avatar_upload'] || $config['allow_avatar_remote_upload'])) || ($auth->acl_get('u_chgavatar') && $config['allow_avatar_local']));
+					$avatars_enabled = ($can_upload_file || $can_upload_url || $can_use_gallery);
 
 					$template->assign_vars([
 						'S_AVATARS_ENABLED'		=> $avatars_enabled,
-						'S_UPLOAD_AVATAR_FILE'	=> ($can_upload && $config['allow_avatar_upload']),
-						'S_UPLOAD_AVATAR_URL'	=> ($can_upload && $config['allow_avatar_remote_upload']),
-						'S_DISPLAY_GALLERY'		=> ($auth->acl_get('u_chgavatar') && $config['allow_avatar_local']),
+						'S_UPLOAD_AVATAR_FILE'	=> $can_upload_file,
+						'S_UPLOAD_AVATAR_URL'	=> $can_upload_url,
+						'S_DISPLAY_GALLERY'		=> $can_use_gallery,
 						'UPLOAD_AVATAR_URL'		=> request_var('uploadurl', '') ?: ($user->data['user_avatar_type'] == AVATAR_REMOTE ? $user->data['user_avatar'] : ''),
 					]);
 				}

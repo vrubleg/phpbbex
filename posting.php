@@ -1183,10 +1183,9 @@ if (!sizeof($error) && $preview)
 	{
 		$template->assign_var('S_HAS_ATTACHMENTS', true);
 
-		$update_count = [];
 		$attachment_data = $message_parser->attachment_data;
 
-		parse_attachments($forum_id, $preview_message, $attachment_data, $update_count, true);
+		parse_attachments($forum_id, $preview_message, $attachment_data, true);
 
 		foreach ($attachment_data as $i => $attachment)
 		{

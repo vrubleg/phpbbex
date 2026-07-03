@@ -881,7 +881,7 @@ else
 }
 
 // Container for user details, only process once
-$post_list = $user_cache = $id_cache = $attachments = $attach_list = $rowset = $update_count = $post_edit_list = [];
+$post_list = $user_cache = $id_cache = $attachments = $attach_list = $rowset = $post_edit_list = [];
 $has_attachments = $display_notice = false;
 $bbcode_bitfield = '';
 
@@ -1431,7 +1431,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 
 	if (!empty($attachments[$row['post_id']]))
 	{
-		parse_attachments($forum_id, $message, $attachments[$row['post_id']], $update_count);
+		parse_attachments($forum_id, $message, $attachments[$row['post_id']]);
 	}
 
 	// Replace naughty words such as farty pants
@@ -1773,22 +1773,13 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 }
 unset($rowset, $user_cache);
 
-// Update topic view and if necessary attachment view counters ... but only for humans and if this is the first 'page view'
-if (isset($user->data['session_page']) && !$user->data['is_bot'] && (strpos($user->data['session_page'], '&t=' . $topic_id) === false || isset($user->data['session_created'])))
+// Update topic view for humans if their session was not just creeated with this request
+if (!$user->data['is_bot'] && !isset($user->data['session_created']))
 {
 	$sql = 'UPDATE ' . TOPICS_TABLE . '
 		SET topic_views = topic_views + 1, topic_last_view_time = ' . time() . "
 		WHERE topic_id = $topic_id";
 	$db->sql_query($sql);
-
-	// Update the attachment download counts
-	if (sizeof($update_count))
-	{
-		$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
-			SET download_count = download_count + 1
-			WHERE ' . $db->sql_in_set('attach_id', array_unique($update_count));
-		$db->sql_query($sql);
-	}
 }
 
 $last_page = ((floor($start / $config['posts_per_page']) + 1) == max(ceil($total_posts / $config['posts_per_page']), 1));

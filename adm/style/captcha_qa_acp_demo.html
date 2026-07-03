@@ -1,7 +1,10 @@
 <dl>
 	<dt><label>{L_CONFIRM_QUESTION}:</label></dt>
-
-	<dd>
-		<!-- IF QA_CONFIRM_QUESTION -->{QA_CONFIRM_QUESTION}<!-- ELSE -->{L_CONFIRM_QUESTION}<!-- ENDIF -->
-	</dd>
+	<dd><!-- IF QA_CONFIRM_QUESTION -->{QA_CONFIRM_QUESTION}<!-- ELSE -->{L_NO_QUESTIONS}<!-- ENDIF --></dd>
 </dl>
+<!-- IF QA_CONFIRM_ANSWER -->
+<dl>
+	<dt><label>{L_CAPTCHA_PREVIEW_ANSWER}:</label></dt>
+	<dd>{QA_CONFIRM_ANSWER}</dd>
+</dl>
+<!-- ENDIF -->

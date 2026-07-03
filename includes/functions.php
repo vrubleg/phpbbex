@@ -222,31 +222,27 @@ function set_config_count($config_name, $increment, $is_dynamic = false)
 }
 
 /**
-* Generates an alphanumeric random string of given length
-*
-* @return string
+* Generates an alphanumeric random string of given length.
 */
-function gen_rand_string($num_chars = 8)
+function gen_rand_string($num_chars = 8, $char_set = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 {
-	// [a, z] + [0, 9] = 36
-	return substr(strtoupper(base_convert(unique_id(), 16, 36)), 0, $num_chars);
+	$rand_str = '';
+
+	for ($i = 0; $i < $num_chars; $i++)
+	{
+		$rand_str .= $char_set[random_int(0, strlen($char_set) - 1)];
+	}
+
+	return $rand_str;
 }
 
 /**
-* Generates a user-friendly alphanumeric random string of given length
+* Generates a user-friendly alphanumeric random string of given length.
 * We remove 0 and O so users cannot confuse those in passwords etc.
-*
-* @return string
 */
 function gen_rand_string_friendly($num_chars = 8)
 {
-	$rand_str = unique_id();
-
-	// Remove Z and Y from the base_convert(), replace 0 with Z and O with Y
-	// [a, z] + [0, 9] - {z, y} = [a, z] + [0, 9] - {0, o} = 34
-	$rand_str = str_replace(['0', 'O'], ['Z', 'Y'], strtoupper(base_convert($rand_str, 16, 34)));
-
-	return substr($rand_str, 0, $num_chars);
+	return gen_rand_string($num_chars, 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789');
 }
 
 /**
@@ -256,22 +252,6 @@ function gen_rand_string_friendly($num_chars = 8)
 function unique_id()
 {
 	return bin2hex(random_bytes(8));
-}
-
-/**
-* Wrapper for mt_rand() which allows swapping $min and $max parameters.
-*
-* PHP does not allow us to swap the order of the arguments for mt_rand() anymore.
-* (since PHP 5.3.4, see http://bugs.php.net/46587)
-*
-* @param int $min		Lowest value to be returned
-* @param int $max		Highest value to be returned
-*
-* @return int			Random integer between $min and $max (or $max and $min)
-*/
-function phpbb_mt_rand($min, $max)
-{
-	return ($min > $max) ? mt_rand($max, $min) : mt_rand($min, $max);
 }
 
 /**
@@ -593,34 +573,6 @@ function _hash_crypt_private($password, $setting, &$itoa64)
 	$output .= _hash_encode64($hash, 16, $itoa64);
 
 	return $output;
-}
-
-/**
-* Wrapper for version_compare() that allows using uppercase A and B
-* for alpha and beta releases.
-*
-* See http://www.php.net/manual/en/function.version-compare.php
-*
-* @param string $version1		First version number
-* @param string $version2		Second version number
-* @param string $operator		Comparison operator (optional)
-*
-* @return mixed					Boolean (true, false) if comparison operator is specified.
-*								Integer (-1, 0, 1) otherwise.
-*/
-function phpbb_version_compare($version1, $version2, $operator = null)
-{
-	$version1 = strtolower($version1);
-	$version2 = strtolower($version2);
-
-	if (is_null($operator))
-	{
-		return version_compare($version1, $version2);
-	}
-	else
-	{
-		return version_compare($version1, $version2, $operator);
-	}
 }
 
 /**

@@ -1,4 +1,10 @@
 <dl>
 	<dt><label>{L_PREVIEW}:</label><br /><span>{L_CAPTCHA_PREVIEW_EXPLAIN}</span></dt>
-	<dd><img src="{CAPTCHA_IMAGE_URL}" alt="{L_PREVIEW}" /></dd>
+	<dd><img src="{CAPTCHA_IMAGE_URL}" width="{CAPTCHA_WIDTH}" height="{CAPTCHA_HEIGHT}" alt="{L_PREVIEW}" /></dd>
 </dl>
+<!-- IF CAPTCHA_CODE -->
+<dl>
+	<dt><label>{L_CAPTCHA_PREVIEW_ANSWER}:</label></dt>
+	<dd>{CAPTCHA_CODE}</dd>
+</dl>
+<!-- ENDIF -->

@@ -1118,8 +1118,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 
 		if (!empty($attachments[$row['post_id']]))
 		{
-			$update_count = [];
-			parse_attachments($forum_id, $message, $attachments[$row['post_id']], $update_count);
+			parse_attachments($forum_id, $message, $attachments[$row['post_id']]);
 		}
 
 		$post_subject = censor_text($post_subject);

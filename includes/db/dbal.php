@@ -380,10 +380,6 @@ class dbal
 
 			$query = ($query == 'INSERT') ? ' (' . implode(', ', $fields) . ') VALUES (' . implode(', ', $values) . ')' : ' (' . implode(', ', $fields) . ') SELECT ' . implode(', ', $values) . ' ';
 		}
-		else if ($query == 'MULTI_INSERT')
-		{
-			trigger_error('The MULTI_INSERT query value is no longer supported. Please use sql_multi_insert() instead.', E_USER_ERROR);
-		}
 		else if ($query == 'UPDATE' || $query == 'SELECT')
 		{
 			$values = [];

@@ -22,6 +22,7 @@ $lang = array_merge($lang, [
 	'QUESTION_ANSWERS'			=> 'Answers',
 	'ANSWERS_EXPLAIN'			=> 'Please enter valid answers to the question, one per line.',
 	'CONFIRM_QUESTION'			=> 'Anti-spam question',
+	'NO_QUESTIONS'				=> 'No questions',
 
 	'ANSWER'					=> 'Answer',
 	'EDIT_QUESTION'				=> 'Edit Question',
@@ -38,5 +39,4 @@ $lang = array_merge($lang, [
 
 	'QA_ERROR_MSG'				=> 'Please fill in all fields and enter at least one answer.',
 	'QA_LAST_QUESTION'			=> 'You cannot delete all questions while the plugin is active.',
-
 ]);

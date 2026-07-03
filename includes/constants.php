@@ -190,8 +190,10 @@ define('REFERER_VALIDATE_PATH', 2);
 @define('CHMOD_EXECUTE', 1);
 
 // Captcha code length
-define('CAPTCHA_MIN_CHARS', 4);
-define('CAPTCHA_MAX_CHARS', 7);
+define('CAPTCHA_MIN_CHARS', 6);
+define('CAPTCHA_MAX_CHARS', 8);
+define('CAPTCHA_WIDTH', 360);
+define('CAPTCHA_HEIGHT', 96);
 
 // Additional constants
 define('VOTE_CONVERTED', 127);
@@ -288,7 +290,7 @@ define('GALLERY_WATCH_TABLE',			$table_prefix . 'gallery_watch');
 
 // phpBBex tables
 define('USER_CONFIRM_KEYS_TABLE',	$table_prefix . 'user_confirm_keys');
-define('USER_BROWSER_IDS_TABLE',	$table_prefix . 'user_browser_ids');
+define('BROWSER_TRACKING_TABLE',	$table_prefix . 'browser_tracking');
 define('POST_RATES_TABLE',			$table_prefix . 'post_rates');
 
 // Additional tables

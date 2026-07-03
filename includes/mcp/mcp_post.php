@@ -151,8 +151,7 @@ function mcp_post_details($id, $mode, $action)
 		if (sizeof($attachments))
 		{
 			$user->add_lang('viewtopic');
-			$update_count = [];
-			parse_attachments($post_info['forum_id'], $message, $attachments, $update_count);
+			parse_attachments($post_info['forum_id'], $message, $attachments);
 		}
 
 		// Display not already displayed Attachments for this post, we already parsed them. ;)

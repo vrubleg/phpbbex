@@ -344,8 +344,8 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 
 		// Generate the passwd file
 		case 'genpasswdfile' :
-			// Create a 25 character alphanumeric password (easier to select with a browser and won't cause confusion like it could if it ends in "." or something).
-			$_pass_string = substr(preg_replace(['#([^a-zA-Z0-9])#', '#0#', '#O#'], ['', 'Z', 'Y'], phpbb_hash(unique_id())), 2, 25);
+			// Create a 25 character alphanumeric password.
+			$_pass_string = gen_rand_string_friendly(25);
 
 			// The password is usable for 6 hours from now
 			$_pass_exprire = time() + 21600;

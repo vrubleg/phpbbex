@@ -123,17 +123,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	// Assign inline attachments
 	if (!empty($attachments))
 	{
-		$update_count = [];
-		parse_attachments(false, $message, $attachments, $update_count);
-
-		// Update the attachment download counts
-		if (sizeof($update_count))
-		{
-			$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
-				SET download_count = download_count + 1
-				WHERE ' . $db->sql_in_set('attach_id', array_unique($update_count));
-			$db->sql_query($sql);
-		}
+		parse_attachments(false, $message, $attachments);
 	}
 
 	$user_info['sig'] = '';

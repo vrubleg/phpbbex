@@ -765,10 +765,9 @@ function get_attachment_mime($category, $extension)
 * @param mixed $forum_id The forum id the attachments are displayed in (false if in private message)
 * @param string &$message The post/private message
 * @param array &$attachments The attachments to parse for (inline) display. The attachments array will hold templated data after parsing.
-* @param array &$update_count The attachment counts to be updated - will be filled
 * @param bool $preview If set to true the attachments are parsed for preview. Within preview mode the comments are fetched from the given $attachments array and not fetched from the database.
 */
-function parse_attachments($forum_id, &$message, &$attachments, &$update_count, $preview = false)
+function parse_attachments($forum_id, &$message, &$attachments, $preview = false)
 {
 	if (!sizeof($attachments))
 	{
@@ -954,8 +953,6 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 						'S_IMAGE'		=> true,
 						'U_INLINE_LINK'		=> $inline_link,
 					];
-
-					$update_count[] = $attachment['attach_id'];
 				break;
 
 				// Images, but display Thumbnail
@@ -968,8 +965,6 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 						'S_THUMBNAIL'		=> true,
 						'THUMB_IMAGE'		=> $thumbnail_link,
 					];
-
-					$update_count[] = $attachment['attach_id'];
 				break;
 
 				// HTML5 <video> and <audio>
