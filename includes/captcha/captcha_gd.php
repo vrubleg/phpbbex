@@ -19,13 +19,17 @@ class captcha
 	var $width  = CAPTCHA_WIDTH;
 	var $height = CAPTCHA_HEIGHT;
 
-
 	/**
 	* Create the image containing $code with a seed of $seed
 	*/
 	function execute($code, $seed)
 	{
 		global $config;
+
+		if (!preg_match('#^[A-Z0-9]*$#', $code))
+		{
+			throw new exception('unsupported char');
+		}
 
 		mt_srand($seed);
 
@@ -62,15 +66,28 @@ class captcha
 			$bounding_boxes[$i] = $box;
 		}
 
-
-		// Redistribute leftover x-space
 		$offset = [];
-		for ($i = 0; $i < $code_len; ++$i)
+		if ($code_len && $width_avail < $code_len)
 		{
-			$denom = ($code_len - $i);
-			$denom = max(1.3, $denom);
-			$offset[$i] = phpbb_mt_rand(0, (int) round((1.5 * $width_avail) / $denom));
-			$width_avail -= $offset[$i];
+			// Less than one spare pixel per character are left.
+			// Split a tight or negative amount of horizontal space evenly.
+			$offset = array_fill(0, $code_len, intdiv($width_avail, $code_len));
+			if ($offset[0] < 0)
+			{
+				// Fix for the left-clipping bias.
+				$offset[0] = intdiv($offset[0], 2);
+			}
+		}
+		else
+		{
+			// Redistribute leftover x-space randomly.
+			for ($i = 0; $i < $code_len; ++$i)
+			{
+				$denom = ($code_len - $i);
+				$denom = max(1.3, $denom);
+				$offset[$i] = phpbb_mt_rand(0, (int) round((1.5 * $width_avail) / $denom));
+				$width_avail -= $offset[$i];
+			}
 		}
 
 		if ($config['captcha_gd_x_grid'])
@@ -97,7 +114,6 @@ class captcha
 			$this->wave($img);
 		}
 
-
 		if ($config['captcha_gd_3d_noise'])
 		{
 			$xoffset = mt_rand(0,9);
@@ -114,30 +130,42 @@ class captcha
 			{
 				$dimm = $bounding_boxes[$i];
 				$xoffset += ($offset[$i] - $dimm[0]);
-				$yoffset = mt_rand(-$dimm[1], $this->height - $dimm[3]);
+
+				// Pick a random Y offset, centering the object if it is larger than the canvas.
+				$ymin = -$dimm[1];
+				$ymax = $this->height - $dimm[3];
+				$yoffset = ($ymin <= $ymax) ? mt_rand($ymin, $ymax) : (int) floor(($ymin + $ymax) / 2);
 
 				$noise[$i]->drawchar($sizes[$i], $xoffset, $yoffset, $img, $colour->get_resource('background'), $scheme);
 				$xoffset += $dimm[2];
 			}
 		}
+
 		$xoffset = 5;
 		for ($i = 0; $i < $code_len; ++$i)
 		{
 			$dimm = $bounding_boxes[$i];
 			$xoffset += ($offset[$i] - $dimm[0]);
-			$yoffset = mt_rand(-$dimm[1], $this->height - $dimm[3]);
+
+			// Pick a random Y offset, centering the object if it is larger than the canvas.
+			$ymin = -$dimm[1];
+			$ymax = $this->height - $dimm[3];
+			$yoffset = ($ymin <= $ymax) ? mt_rand($ymin, $ymax) : (int) floor(($ymin + $ymax) / 2);
 
 			$characters[$i]->drawchar($sizes[$i], $xoffset, $yoffset, $img, $colour->get_resource('background'), $scheme);
 			$xoffset += $dimm[2];
 		}
+
 		if ($config['captcha_gd_wave'])
 		{
 			$this->wave($img);
 		}
+
 		if ($config['captcha_gd_foreground_noise'])
 		{
 			$this->noise_line($img, 0, 0, $this->width, $this->height, $colour->get_resource('background'), $scheme, $bg_colours);
 		}
+
 		// Send image
 		header('Content-Type: image/png');
 		header('Cache-Control: no-store');
@@ -1886,11 +1914,6 @@ class char_cube3d
 	*/
 	function __construct(&$bitmaps, $letter)
 	{
-		if (!isset($bitmaps['data'][$letter]))
-		{
-			throw new exception('unsupported character');
-		}
-
 		$this->bitmap			= $bitmaps['data'][$letter];
 		$this->bitmap_width		= $bitmaps['width'];
 		$this->bitmap_height	= $bitmaps['height'];

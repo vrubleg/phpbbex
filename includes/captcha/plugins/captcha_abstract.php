@@ -132,7 +132,6 @@ class phpbb_default_captcha
 			'CAPTCHA_WIDTH'		=> CAPTCHA_WIDTH,
 			'CAPTCHA_HEIGHT'	=> CAPTCHA_HEIGHT,
 			'CAPTCHA_CODE'		=> $demo_code,
-			'CONFIRM_ID'		=> $this->confirm_id,
 		]);
 
 		return 'captcha_default_acp_demo.html';
