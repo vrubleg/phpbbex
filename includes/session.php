@@ -356,7 +356,11 @@ class phpbb_session
 						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS);
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
-						$this->update_browser_id();
+						if (!$this->data['is_bot'])
+						{
+							$this->update_browser_id();
+						}
+
 						return true;
 					}
 				}
@@ -392,12 +396,13 @@ class phpbb_session
 
 		if (strlen($browser_id) != 32)
 		{
-			// Set new browser_id cookie
 			$browser_id = bin2hex(random_bytes(16));
-			set_cookie('bid', $browser_id, true);
 		}
 
-		// Update stats
+		// Refresh browser_id cookie.
+		set_cookie('bid', $browser_id, true);
+
+		// Update stats.
 		$sql = "INSERT INTO " . USER_BROWSER_IDS_TABLE . "
 			SET browser_id='" . $db->sql_escape($browser_id) . "', user_id='" . $db->sql_escape($user_id) . "',
 				created=" . $this->time_now . ", last_visit=" . $this->time_now . ", visits=1,
@@ -406,7 +411,7 @@ class phpbb_session
 				agent = '" . $db->sql_escape($agent) . "', last_ip = '" . $db->sql_escape($this->ip) . "'";
 		$db->sql_query($sql);
 
-		// Garbage collection
+		// Garbage collection.
 		if(rand(0, 1000) == 1)
 		{
 			$sql = "DELETE FROM " . USER_BROWSER_IDS_TABLE . "
