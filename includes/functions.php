@@ -222,43 +222,27 @@ function set_config_count($config_name, $increment, $is_dynamic = false)
 }
 
 /**
-* Generates an alphanumeric random string of given length
-*
-* @return string
+* Generates an alphanumeric random string of given length.
 */
-function gen_rand_string($num_chars = 8)
+function gen_rand_string($num_chars = 8, $char_set = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
 {
 	$rand_str = '';
 
-	while (strlen($rand_str) < $num_chars)
+	for ($i = 0; $i < $num_chars; $i++)
 	{
-		// [a, z] + [0, 9] = 36
-		$random_int = random_int(0, 36 - 1);
-		$rand_str .= base_convert($random_int, 10, 36);
+		$rand_str .= $char_set[random_int(0, strlen($char_set) - 1)];
 	}
 
-	return strtoupper($rand_str);
+	return $rand_str;
 }
 
 /**
-* Generates a user-friendly alphanumeric random string of given length
+* Generates a user-friendly alphanumeric random string of given length.
 * We remove 0 and O so users cannot confuse those in passwords etc.
-*
-* @return string
 */
 function gen_rand_string_friendly($num_chars = 8)
 {
-	$rand_str = '';
-
-	while (strlen($rand_str) < $num_chars)
-	{
-		// [a, z] + [0, 9] - {z, y} = [a, z] + [0, 9] - {0, o} = 34
-		$random_int = random_int(0, 34 - 1);
-		$rand_str .= base_convert($random_int, 10, 34);
-	}
-
-	// Remove Z and Y from the base_convert(), replace 0 with Z and O with Y
-	return str_replace(['0', 'O'], ['Z', 'Y'], strtoupper($rand_str));
+	return gen_rand_string($num_chars, 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789');
 }
 
 /**
