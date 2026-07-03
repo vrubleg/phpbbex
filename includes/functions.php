@@ -228,8 +228,16 @@ function set_config_count($config_name, $increment, $is_dynamic = false)
 */
 function gen_rand_string($num_chars = 8)
 {
-	// [a, z] + [0, 9] = 36
-	return substr(strtoupper(base_convert(unique_id(), 16, 36)), 0, $num_chars);
+	$rand_str = '';
+
+	while (strlen($rand_str) < $num_chars)
+	{
+		// [a, z] + [0, 9] = 36
+		$random_int = random_int(0, 36 - 1);
+		$rand_str .= base_convert($random_int, 10, 36);
+	}
+
+	return strtoupper($rand_str);
 }
 
 /**
@@ -240,13 +248,17 @@ function gen_rand_string($num_chars = 8)
 */
 function gen_rand_string_friendly($num_chars = 8)
 {
-	$rand_str = unique_id();
+	$rand_str = '';
+
+	while (strlen($rand_str) < $num_chars)
+	{
+		// [a, z] + [0, 9] - {z, y} = [a, z] + [0, 9] - {0, o} = 34
+		$random_int = random_int(0, 34 - 1);
+		$rand_str .= base_convert($random_int, 10, 34);
+	}
 
 	// Remove Z and Y from the base_convert(), replace 0 with Z and O with Y
-	// [a, z] + [0, 9] - {z, y} = [a, z] + [0, 9] - {0, o} = 34
-	$rand_str = str_replace(['0', 'O'], ['Z', 'Y'], strtoupper(base_convert($rand_str, 16, 34)));
-
-	return substr($rand_str, 0, $num_chars);
+	return str_replace(['0', 'O'], ['Z', 'Y'], strtoupper($rand_str));
 }
 
 /**
