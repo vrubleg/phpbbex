@@ -155,23 +155,30 @@ class ucp_register
 				}
 			}
 
-			// Get browser id
+			// Get browser tracking data.
+			$tracking = [];
 			$browser_id = get_cookie('bid', '');
-			$sql = "SELECT * FROM " . USER_BROWSER_IDS_TABLE . " WHERE browser_id='" . $db->sql_escape($browser_id) . "'";
-			$result = $db->sql_query($sql);
-			$browser = $db->sql_fetchrow($result);
-			if (!$browser)
+
+			if ($browser_id)
 			{
-				$browser = [
+				$sql = "SELECT * FROM " . BROWSER_TRACKING_TABLE . " WHERE browser_id='" . $db->sql_escape($browser_id) . "'";
+				$result = $db->sql_query($sql);
+				$tracking = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
+			}
+
+			if (!$tracking)
+			{
+				$tracking = [
 					'browser_id' => 'none',
-					'created' => time(),
-					'last_visit' => time(),
-					'visits' => 0,
-					'agent' => trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249)),
-					'last_ip' => (!empty($_SERVER['REMOTE_ADDR'])) ? (string) $_SERVER['REMOTE_ADDR'] : '',
+					'tracking_first_time' => time(),
+					'tracking_last_time' => time(),
+					'tracking_hits' => 0,
+					'browser_ua' => trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249)),
+					'tracking_first_ip' => (!empty($_SERVER['REMOTE_ADDR'])) ? (string) $_SERVER['REMOTE_ADDR'] : '',
+					'tracking_last_ip' => (!empty($_SERVER['REMOTE_ADDR'])) ? (string) $_SERVER['REMOTE_ADDR'] : '',
 				];
 			}
-			$db->sql_freeresult($result);
 
 			if (!sizeof($error))
 			{
@@ -243,7 +250,7 @@ class ucp_register
 				// Log registration
 				$user_id_orig = $user->data['user_id'];
 				$user->data['user_id'] = $user_id;
-				add_log('register', 'LOG_REGISTER_OK', $data['username'], $data['email'], '', $browser['browser_id'], $browser['agent'], time() - $browser['created'], $browser['visits']);
+				add_log('register', 'LOG_REGISTER_OK', $data['username'], $data['email'], '', $tracking['browser_id'], $tracking['browser_ua'], time() - $tracking['tracking_first_time'], $tracking['tracking_hits']);
 				$user->data['user_id'] = $user_id_orig;
 
 				// Okay, captcha, your job is done.
@@ -332,7 +339,7 @@ class ucp_register
 			else
 			{
 				// Log registration
-				add_log('register', 'LOG_REGISTER_REJECTED_' . ($error_type['token'] ? 'BOT' : 'USER'), $data['username'], $data['email'], implode("\n", $error), $browser['browser_id'], $browser['agent'], time() - $browser['created'], $browser['visits']);
+				add_log('register', 'LOG_REGISTER_REJECTED_' . ($error_type['token'] ? 'BOT' : 'USER'), $data['username'], $data['email'], implode("\n", $error), $tracking['browser_id'], $tracking['browser_ua'], time() - $tracking['tracking_first_time'], $tracking['tracking_hits']);
 
 				// Display one error if user provided invalid token
 				if ($error_type['token'])

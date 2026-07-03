@@ -273,7 +273,7 @@ define('ZEBRA_TABLE',				$table_prefix . 'zebra');
 
 // phpBBex tables
 define('USER_CONFIRM_KEYS_TABLE',	$table_prefix . 'user_confirm_keys');
-define('USER_BROWSER_IDS_TABLE',	$table_prefix . 'user_browser_ids');
+define('BROWSER_TRACKING_TABLE',	$table_prefix . 'browser_tracking');
 define('POST_RATES_TABLE',			$table_prefix . 'post_rates');
 
 // Additional tables
