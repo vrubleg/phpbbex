@@ -610,6 +610,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 	$db->sql_return_on_error(false);
 
+	// Update anonymous user.
+
+	$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_browser = '', user_ip = '' WHERE user_id = " . ANONYMOUS);
+
 	set_config('phpbbex_version', '1.10.0');
 }
 
