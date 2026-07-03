@@ -358,7 +358,7 @@ class phpbb_session
 
 						if (!$this->data['is_bot'])
 						{
-							$this->update_browser_id();
+							$this->update_browser_id(false);
 						}
 
 						return true;
@@ -386,21 +386,34 @@ class phpbb_session
 		return $this->session_create();
 	}
 
-	function update_browser_id()
+	function update_browser_id($fresh_session)
 	{
 		global $db, $config;
 
-		$user_id = $this->data['user_id'];
-		$agent = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249));
+		if ($this->data['is_bot']) { return; }
+
 		$browser_id = get_cookie('bid', '');
 
-		if (strlen($browser_id) != 32)
+		if (!$browser_id && $fresh_session)
 		{
-			$browser_id = bin2hex(random_bytes(16));
+			// The client might not accept cookies. Wait till the next request with this session.
+			return;
 		}
 
-		// Refresh browser_id cookie.
-		set_cookie('bid', $browser_id, true);
+		if (!preg_match('#[0-9a-f]{32}#', $browser_id))
+		{
+			// Set new browser_id cookie.
+			$browser_id = bin2hex(random_bytes(16));
+			set_cookie('bid', $browser_id, true);
+		}
+		else if ($fresh_session)
+		{
+			// Refresh browser_id cookie.
+			set_cookie('bid', $browser_id, true);
+		}
+
+		$user_id = $this->data['user_id'];
+		$agent = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249));
 
 		// Update stats.
 		$sql = "INSERT INTO " . USER_BROWSER_IDS_TABLE . "
@@ -760,6 +773,8 @@ class phpbb_session
 			set_cookie('sid', $this->session_id, $cookie_expire);
 
 			unset($cookie_expire);
+
+			$this->update_browser_id(true);
 
 			$sql = 'SELECT COUNT(session_id) AS sessions
 					FROM ' . SESSIONS_TABLE . '
