@@ -1751,7 +1751,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'poster_id'			=> (int) $user->data['user_id'],
 				'icon_id'			=> $data['icon_id'],
 				'poster_ip'			=> $user->ip,
-				'poster_browser_id'	=> get_cookie('bid', ''),
+				'poster_browser_id'	=> $user->data['browser_id'],
 				'post_time'			=> $current_time,
 				'post_approved'		=> $post_approval,
 				'enable_bbcode'		=> $data['enable_bbcode'],

@@ -465,11 +465,11 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 		}
 	}
 
-	if ($action == 'delete' && strpos($user->data['session_page'], 'mode=report_details') !== false)
+	if ($action == 'delete' && $mode == 'report_details')
 	{
 		$redirect = request_var('redirect', build_url(['mode', 'r', 'quickmod']) . '&amp;mode=reports');
 	}
-	elseif ($action == 'delete' && strpos($user->data['session_page'], 'mode=pm_report_details') !== false)
+	elseif ($action == 'delete' && $mode == 'pm_report_details')
 	{
 		$redirect = request_var('redirect', build_url(['mode', 'r', 'quickmod']) . '&amp;mode=pm_reports');
 	}

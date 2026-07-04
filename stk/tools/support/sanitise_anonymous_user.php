@@ -98,7 +98,6 @@ class sanitise_anonymous_user
 			'user_permissions'			=> '',
 			'user_ip'					=> '',
 			'user_birthday'				=> '',
-			'user_lastpage'				=> '',
 			'user_avatar'				=> '',
 			'user_sig'					=> '',
 			'user_sig_bbcode_uid'		=> '',

@@ -13,8 +13,8 @@ $download_id = request_var('id', 0);
 $mode = request_var('mode', '');
 $thumbnail = request_var('t', false);
 
-// Start session management, do not update session page.
-$user->session_begin(false);
+// Start session management.
+$user->session_begin();
 $auth->acl($user->data);
 $user->setup('viewtopic');
 

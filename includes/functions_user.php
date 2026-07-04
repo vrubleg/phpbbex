@@ -195,7 +195,6 @@ function user_add($user_row, $cp_data = false)
 		'user_lastmark'			=> time(),
 		'user_lastvisit'		=> 0,
 		'user_lastpost_time'	=> 0,
-		'user_lastpage'			=> '',
 		'user_posts'			=> 0,
 		'user_dst'				=> (int) $config['board_dst'],
 		'user_colour'			=> '',

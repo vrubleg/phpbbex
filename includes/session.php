@@ -18,7 +18,7 @@ class phpbb_session
 	var $cookie_data = [];
 	var $page = [];
 	var $data = [];
-	var $browser = '';
+	var $browser_ua = '';
 	var $referer = '';
 	var $forwarded_for = '';
 	var $host = '';
@@ -26,7 +26,6 @@ class phpbb_session
 	var $ip = '';
 	var $load = 0;
 	var $time_now = 0;
-	var $update_session_page = true;
 
 	/**
 	* Extract current session page.
@@ -136,21 +135,17 @@ class phpbb_session
 	* new one ... pretty logical heh? We also examine the system load (if we're
 	* running on a system which makes such information readily available) and
 	* halt if it's above an admin definable limit.
-	*
-	* @param bool $update_session_page if true the session page gets updated.
-	*			This can be set to circumvent certain scripts to update the users last visited page.
 	*/
-	function session_begin($update_session_page = true)
+	function session_begin()
 	{
 		global $_SID, $_EXTRA_URL, $db, $config;
 
 		// Give us some basic information
 		$this->time_now				= time();
 		$this->cookie_data			= ['u' => 0, 'k' => ''];
-		$this->update_session_page	= $update_session_page;
-		$this->browser				= (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
-		$this->referer				= (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
-		$this->forwarded_for		= (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) ? htmlspecialchars((string) $_SERVER['HTTP_X_FORWARDED_FOR']) : '';
+		$this->browser_ua			= trim(substr(htmlspecialchars($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 250));
+		$this->referer				= htmlspecialchars($_SERVER['HTTP_REFERER'] ?? '');
+		$this->forwarded_for		= htmlspecialchars($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
 
 		$this->host					= HTTP_HOST;
 		$this->page					= $this->extract_current_page();
@@ -268,10 +263,6 @@ class phpbb_session
 			// Did the session exist in the DB?
 			if (isset($this->data['user_id']))
 			{
-				// Validate IP length according to admin ... enforces an IP
-				// check on bots if admin requires this
-//				$quadcheck = ($config['ip_check_bot'] && $this->data['user_type'] & USER_BOT) ? 4 : $config['ip_check'];
-
 				if (strpos($this->ip, ':') !== false && strpos($this->data['session_ip'], ':') !== false)
 				{
 					$s_ip = short_ipv6($this->data['session_ip'], $config['ip_check']);
@@ -283,8 +274,8 @@ class phpbb_session
 					$u_ip = implode('.', array_slice(explode('.', $this->ip), 0, $config['ip_check']));
 				}
 
-				$s_browser = ($config['browser_check']) ? trim(strtolower(substr($this->data['session_browser'], 0, 249))) : '';
-				$u_browser = ($config['browser_check']) ? trim(strtolower(substr($this->browser, 0, 249))) : '';
+				$s_browser = ($config['browser_check']) ? strtolower($this->data['session_browser']) : '';
+				$u_browser = ($config['browser_check']) ? strtolower($this->browser_ua) : '';
 
 				$s_forwarded_for = ($config['forwarded_for_check']) ? substr($this->data['session_forwarded_for'], 0, 254) : '';
 				$u_forwarded_for = ($config['forwarded_for_check']) ? substr($this->forwarded_for, 0, 254) : '';
@@ -320,16 +311,11 @@ class phpbb_session
 
 					if (!$session_expired)
 					{
-						// Only update session DB a minute or so after last update or if page changes
-						if ($this->time_now - $this->data['session_time'] > 60 || ($this->update_session_page && $this->data['session_page'] != $this->page['page']))
+						// Only update session DB a minute or so after last update.
+						if ($this->time_now - $this->data['session_time'] > 60)
 						{
 							$this->data['session_time'] = $this->time_now;
 							$sql_ary = ['session_time' => $this->time_now];
-
-							if ($this->update_session_page)
-							{
-								$sql_ary['session_page'] = substr($this->page['page'], 0, 199);
-							}
 
 							// Update the last visit time once an hour
 							if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
@@ -356,11 +342,7 @@ class phpbb_session
 						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS);
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
-						if (!$this->data['is_bot'])
-						{
-							$this->handle_browser_tracking(false);
-						}
-
+						$this->handle_browser_tracking(false);
 						return true;
 					}
 				}
@@ -426,7 +408,7 @@ class phpbb_session
 
 		foreach ($active_bots as $row)
 		{
-			if ($row['bot_agent'] && preg_match('#' . str_replace('\*', '.*?', preg_quote($row['bot_agent'], '#')) . '#i', $this->browser))
+			if ($row['bot_agent'] && preg_match('#' . str_replace('\*', '.*?', preg_quote($row['bot_agent'], '#')) . '#i', $this->browser_ua))
 			{
 				$bot = $row['user_id'];
 			}
@@ -495,14 +477,6 @@ class phpbb_session
 			$this->data = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 			$bot = false;
-		}
-
-		// Bot user, if they have a SID in the Request URI we need to get rid of it
-		// otherwise they'll index this page with the SID, duplicate content oh my!
-		if ($bot && isset($_GET['sid']))
-		{
-			http_response_code(301);
-			redirect(build_url(['sid']));
 		}
 
 		// If no data was returned one or more of the following occurred:
@@ -584,8 +558,8 @@ class phpbb_session
 				$u_ip = implode('.', array_slice(explode('.', $this->ip), 0, $config['ip_check']));
 			}
 
-			$s_browser = ($config['browser_check']) ? trim(strtolower(substr($this->data['session_browser'], 0, 249))) : '';
-			$u_browser = ($config['browser_check']) ? trim(strtolower(substr($this->browser, 0, 249))) : '';
+			$s_browser = ($config['browser_check']) ? strtolower($this->data['session_browser']) : '';
+			$u_browser = ($config['browser_check']) ? strtolower($this->browser_ua) : '';
 
 			$s_forwarded_for = ($config['forwarded_for_check']) ? substr($this->data['session_forwarded_for'], 0, 254) : '';
 			$u_forwarded_for = ($config['forwarded_for_check']) ? substr($this->forwarded_for, 0, 254) : '';
@@ -594,17 +568,12 @@ class phpbb_session
 			{
 				$this->session_id = $this->data['session_id'];
 
-				// Only update session DB a minute or so after last update or if page changes
-				if ($this->time_now - $this->data['session_time'] > 60 || ($this->update_session_page && $this->data['session_page'] != $this->page['page']))
+				// Only update session DB a minute or so after last update.
+				if ($this->time_now - $this->data['session_time'] > 60)
 				{
 					$this->data['session_time'] = $this->data['session_last_visit'] = $this->time_now;
 
 					$sql_ary = ['session_time' => $this->time_now, 'session_last_visit' => $this->time_now, 'session_admin' => 0];
-
-					if ($this->update_session_page)
-					{
-						$sql_ary['session_page'] = substr($this->page['page'], 0, 199);
-					}
 
 					$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 						WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
@@ -618,6 +587,7 @@ class phpbb_session
 				}
 
 				$_SID = '';
+				$this->handle_browser_tracking(false);
 				return true;
 			}
 			else
@@ -636,18 +606,13 @@ class phpbb_session
 			'session_start'			=> (int) $this->time_now,
 			'session_last_visit'	=> (int) $this->data['session_last_visit'],
 			'session_time'			=> (int) $this->time_now,
-			'session_browser'		=> (string) trim(substr($this->browser, 0, 249)),
+			'session_browser'		=> (string) $this->browser_ua,
 			'session_forwarded_for'	=> (string) $this->forwarded_for,
 			'session_ip'			=> (string) $this->ip,
 			'session_autologin'		=> ($session_autologin) ? 1 : 0,
 			'session_admin'			=> ($set_admin) ? 1 : 0,
 			'session_viewonline'	=> ($viewonline) ? 1 : 0,
 		];
-
-		if ($this->update_session_page)
-		{
-			$sql_ary['session_page'] = (string) substr($this->page['page'], 0, 199);
-		}
 
 		$db->sql_return_on_error(true);
 
@@ -676,19 +641,9 @@ class phpbb_session
 			}
 		}
 
-		// Something quite important: session_page always holds the *last* page visited, except for the *first* visit.
-		// We are not able to simply have an empty session_page btw, therefore we need to tell phpBB how to detect this special case.
-		// If the session id is empty, we have a completely new one and will set an "identifier" here. This identifier is able to be checked later.
-		if (empty($this->data['session_id']))
-		{
-			// This is a temporary variable, only set for the very first visit
-			$this->data['session_created'] = true;
-		}
-
 		$this->session_id = $this->data['session_id'] = bin2hex(random_bytes(16));
 
 		$sql_ary['session_id'] = (string) $this->session_id;
-		$sql_ary['session_page'] = (string) substr($this->page['page'], 0, 199);
 
 		$sql = 'INSERT INTO ' . SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
@@ -725,8 +680,6 @@ class phpbb_session
 
 			unset($cookie_expire);
 
-			$this->handle_browser_tracking(true);
-
 			$sql = 'SELECT COUNT(session_id) AS sessions
 					FROM ' . SESSIONS_TABLE . '
 					WHERE session_user_id = ' . (int) $this->data['user_id'] . '
@@ -758,6 +711,7 @@ class phpbb_session
 			$_SID = '';
 		}
 
+		$this->handle_browser_tracking(true);
 		return true;
 	}
 
@@ -765,44 +719,55 @@ class phpbb_session
 	{
 		global $db, $config;
 
+		$this->data['browser_id'] = '';
+		$this->data['tracking_hits'] = 0;
+		$this->data['tracking_first_time'] = $this->data['tracking_last_time'] = $this->time_now;
+		$this->data['tracking_first_ip'] = $this->data['tracking_last_ip'] = $this->ip;
+
 		if ($this->data['is_bot']) { return; }
 
-		$browser_id = get_cookie('bid', '');
+		$this->data['browser_id'] = get_cookie('bid', '');
 
-		if (!$browser_id && $fresh_session)
+		// Set a new browser_id cookie if required.
+		// Delay persisting it until the next request to avoid storing it for clients that ignore cookies.
+		if (!$this->data['browser_id'] || !preg_match('#[0-9a-f]{32}#', $this->data['browser_id']))
 		{
-			// The client might not accept cookies. Wait till the next request with this session.
+			$this->data['browser_id'] = bin2hex(random_bytes(16));
+			set_cookie('bid', $this->data['browser_id'], true);
 			return;
 		}
 
-		if (!preg_match('#[0-9a-f]{32}#', $browser_id))
+		// Refresh existing browser_id cookie on every session refresh.
+		if ($fresh_session)
 		{
-			// Set new browser_id cookie.
-			$browser_id = bin2hex(random_bytes(16));
-			set_cookie('bid', $browser_id, true);
+			set_cookie('bid', $this->data['browser_id'], true);
 		}
-		else if ($fresh_session)
-		{
-			// Refresh existing browser_id cookie.
-			set_cookie('bid', $browser_id, true);
-		}
-
-		$browser_ua = trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249));
 
 		// Update stats.
 		$sql = "INSERT INTO " . BROWSER_TRACKING_TABLE . "
-			SET browser_id='" . $db->sql_escape($browser_id) . "', user_id='" . $db->sql_escape($this->data['user_id']) . "',
+			SET browser_id='" . $db->sql_escape($this->data['browser_id']) . "', user_id='" . $db->sql_escape($this->data['user_id']) . "',
 				tracking_first_time=" . $this->time_now . ", tracking_last_time=" . $this->time_now . ", tracking_hits=1,
-				browser_ua = '" . $db->sql_escape($browser_ua) . "', tracking_first_ip = '" . $db->sql_escape($this->ip) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'
+				browser_ua = '" . $db->sql_escape($this->browser_ua) . "', tracking_first_ip = '" . $db->sql_escape($this->ip) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'
 			ON DUPLICATE KEY UPDATE tracking_last_time=" . $this->time_now . ", tracking_hits=tracking_hits+1,
-				browser_ua = '" . $db->sql_escape($browser_ua) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'";
+				browser_ua = '" . $db->sql_escape($this->browser_ua) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'";
 		$db->sql_query($sql);
+
+		// Read current stats.
+		$sql = "SELECT * FROM " . BROWSER_TRACKING_TABLE . " WHERE browser_id='" . $db->sql_escape($this->data['browser_id']) . "'";
+		$result = $db->sql_query($sql);
+		if ($tracking = $db->sql_fetchrow($result))
+		{
+			$this->data['tracking_hits'] = $tracking['tracking_hits'];
+			$this->data['tracking_first_time'] = $tracking['tracking_first_time'];
+			$this->data['tracking_first_ip'] = $tracking['tracking_first_ip'];
+		}
+		$db->sql_freeresult($result);
 
 		// Garbage collection.
 		if(rand(0, 1000) == 1)
 		{
 			$sql = "DELETE FROM " . BROWSER_TRACKING_TABLE . "
-				WHERE  (tracking_hits = 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+3600*12 < " . $this->time_now . ")
+				WHERE (tracking_hits <= 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+3600*12 < " . $this->time_now . ")
 					OR (tracking_hits > 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+86400*7 < " . $this->time_now . ")
 					OR (tracking_last_time+86400*365 < " . $this->time_now . ")";
 			$db->sql_query($sql);
@@ -901,10 +866,10 @@ class phpbb_session
 		$db->sql_query($sql);
 
 		// Get expired sessions, only most recent for each user
-		$sql = 'SELECT session_user_id, session_page, MAX(session_time) AS recent_time
+		$sql = 'SELECT session_user_id, MAX(session_time) AS recent_time
 			FROM ' . SESSIONS_TABLE . '
 			WHERE session_time < ' . ($this->time_now - $config['session_length']) . '
-			GROUP BY session_user_id, session_page';
+			GROUP BY session_user_id';
 		$result = $db->sql_query_limit($sql, $batch_size);
 
 		$del_user_id = [];
@@ -913,8 +878,8 @@ class phpbb_session
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $row['recent_time'] . ", user_lastpage = '" . $db->sql_escape($row['session_page']) . "'
-				WHERE user_id = " . (int) $row['session_user_id'];
+				SET user_lastvisit = ' . (int) $row['recent_time'] . '
+				WHERE user_id = ' . (int) $row['session_user_id'];
 			$db->sql_query($sql);
 
 			$del_user_id[] = (int) $row['session_user_id'];
@@ -1238,7 +1203,7 @@ class phpbb_session
 		$db->sql_query($sql);
 
 		// If the user is logged in, update last visit info first before deleting sessions
-		$sql = 'SELECT session_time, session_page
+		$sql = 'SELECT session_time
 			FROM ' . SESSIONS_TABLE . '
 			WHERE session_user_id = ' . (int) $user_id . '
 			ORDER BY session_time DESC';
@@ -1249,8 +1214,8 @@ class phpbb_session
 		if ($row)
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $row['session_time'] . ", user_lastpage = '" . $db->sql_escape($row['session_page']) . "'
-				WHERE user_id = " . (int) $user_id;
+				SET user_lastvisit = ' . (int) $row['session_time'] . '
+				WHERE user_id = ' . (int) $user_id;
 			$db->sql_query($sql);
 		}
 
