@@ -440,8 +440,7 @@ class acp_board
 					'title'	=> 'ACP_SECURITY_SETTINGS',
 					'vars'	=> [
 						'legend1'				=> 'ACP_SECURITY_SETTINGS',
-						'allow_autologin'		=> ['lang' => 'ALLOW_AUTOLOGIN',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'max_autologin_time'	=> ['lang' => 'AUTOLOGIN_LENGTH',		'validate' => 'int:0',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
+						'max_autologin_time'	=> ['lang' => 'AUTOLOGIN_LENGTH',		'validate' => 'int:0:730',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
 						'session_length'		=> ['lang' => 'SESSION_LENGTH',	'validate' => 'int:60',	'type' => 'text:5:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'ip_check'				=> ['lang' => 'IP_VALID',				'validate' => 'int',	'type' => 'custom', 'method' => 'select_ip_check', 'explain' => true],
 						'browser_check'			=> ['lang' => 'BROWSER_VALID',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],

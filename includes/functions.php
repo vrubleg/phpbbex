@@ -3721,7 +3721,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'U_FEED'				=> generate_board_url() . "/feed.php",
 
 		'S_USER_LOGGED_IN'		=> ($user->data['user_id'] != ANONYMOUS),
-		'S_AUTOLOGIN_ENABLED'	=> (bool) $config['allow_autologin'],
+		'S_AUTOLOGIN_ENABLED'	=> !empty($config['max_autologin_time']),
 		'S_BOARD_DISABLED'		=> (bool) $config['board_disable'],
 		'S_REGISTERED_USER'		=> !empty($user->data['is_registered']),
 		'S_IS_BOT'				=> !empty($user->data['is_bot']),

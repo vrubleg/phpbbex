@@ -526,6 +526,8 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 // Not ready yet. Replace '<=' by '<' before the release.
 if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 {
+	// Migrate settings.
+
 	if ($config['board_hide_emails'] ?? 0)
 	{
 		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_allow_viewemail = 0');
@@ -553,11 +555,13 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'board_email_form',
 		'board_hide_emails',
 		'allow_emailreuse',
+		'allow_autologin',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
+	set_config('max_autologin_time', '400');
 
 	// Remove obsolete modules.
 

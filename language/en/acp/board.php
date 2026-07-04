@@ -466,10 +466,8 @@ $lang = array_merge($lang, [
 	'ACP_SECURITY_SETTINGS_EXPLAIN'		=> 'Here you are able to define session and login related settings.',
 
 	'ALL'							=> 'All',
-	'ALLOW_AUTOLOGIN'				=> 'Allow persistent logins',
-	'ALLOW_AUTOLOGIN_EXPLAIN'		=> 'Determines whether users can autologin when they visit the board.',
-	'AUTOLOGIN_LENGTH'				=> 'Persistent login key expiration length (in days)',
-	'AUTOLOGIN_LENGTH_EXPLAIN'		=> 'Number of days after which persistent login keys are removed or zero to disable.',
+	'AUTOLOGIN_LENGTH'				=> 'Persistent login key expiration',
+	'AUTOLOGIN_LENGTH_EXPLAIN'		=> 'Number of days after which persistent login keys are removed.',
 	'BROWSER_VALID'					=> 'Validate browser',
 	'BROWSER_VALID_EXPLAIN'			=> 'Enables browser validation for each session improving security.',
 	'CLASS_B'						=> 'A.B',

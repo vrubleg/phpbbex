@@ -296,7 +296,7 @@ class phpbb_session
 
 					// Check whether the session is still valid if we have one
 					// Check the session length timeframe if autologin is not enabled.
-					// Else check the autologin length... and also removing those having autologin enabled but no longer allowed board-wide.
+					// Else check the autologin length.
 					if (!$this->data['session_autologin'])
 					{
 						if ($this->data['session_time'] < $this->time_now - ($config['session_length'] + 60))
@@ -304,7 +304,7 @@ class phpbb_session
 							$session_expired = true;
 						}
 					}
-					else if (!$config['allow_autologin'] || ($config['max_autologin_time'] && $this->data['session_time'] < $this->time_now - (86400 * (int) $config['max_autologin_time']) + 60))
+					else if (!$config['max_autologin_time'] || $this->data['session_time'] < $this->time_now - (86400 * $config['max_autologin_time']) + 60)
 					{
 						$session_expired = true;
 					}
@@ -390,9 +390,8 @@ class phpbb_session
 			$this->session_gc();
 		}*/
 
-		// Do we allow autologin on this board? No? Then override anything
-		// that may be requested here
-		if (!$config['allow_autologin'])
+		// Do we allow autologin on this board? No? Then override anything that may be requested here.
+		if (!$config['max_autologin_time'])
 		{
 			$this->cookie_data['k'] = $persist_login = false;
 		}
@@ -672,7 +671,7 @@ class phpbb_session
 
 		if (!$bot)
 		{
-			$cookie_expire = (intval($config['max_autologin_time']) ? 86400 * intval($config['max_autologin_time']) : true);
+			$cookie_expire = ($config['max_autologin_time']) ? 86400 * (int) $config['max_autologin_time'] : null;
 
 			set_cookie('u', $this->cookie_data['u'], $cookie_expire);
 			set_cookie('k', $this->cookie_data['k'], $cookie_expire);
@@ -905,9 +904,13 @@ class phpbb_session
 			if ($config['max_autologin_time'])
 			{
 				$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
-					WHERE last_login < ' . (time() - (86400 * (int) $config['max_autologin_time']));
-				$db->sql_query($sql);
+					WHERE last_login < ' . (time() - (86400 * $config['max_autologin_time']));
 			}
+			else
+			{
+				$sql = 'TRUNCATE TABLE ' . SESSIONS_KEYS_TABLE;
+			}
+			$db->sql_query($sql);
 
 			// only called from CRON; should be a safe workaround until the infrastructure gets going
 			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
