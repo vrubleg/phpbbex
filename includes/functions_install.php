@@ -231,12 +231,10 @@ function adjust_language_keys_callback($matches)
 *
 * @param	array	$data Array containing the database connection information
 * @param	bool	$debug If the debug constants should be enabled by default or not
-* @param	bool	$debug_test If the DEBUG_TEST constant should be added
-*					NOTE: Only for use within the testing framework
 *
 * @return	string	The output to write to the file
 */
-function phpbb_create_config_file_data($data, $debug = false, $debug_test = false)
+function phpbb_create_config_file_data($data, $debug = false)
 {
 	$config_data = "<?php\n\n";
 
@@ -266,11 +264,6 @@ function phpbb_create_config_file_data($data, $debug = false, $debug_test = fals
 	{
 		$config_data .= "// @define('DEBUG', true);\n";
 		$config_data .= "// @define('DEBUG_EXTRA', true);\n";
-	}
-
-	if ($debug_test)
-	{
-		$config_data .= "@define('DEBUG_TEST', true);\n";
 	}
 
 	return $config_data;
