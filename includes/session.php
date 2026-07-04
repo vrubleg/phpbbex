@@ -280,14 +280,12 @@ class phpbb_session
 				$s_forwarded_for = ($config['forwarded_for_check']) ? substr($this->data['session_forwarded_for'], 0, 254) : '';
 				$u_forwarded_for = ($config['forwarded_for_check']) ? substr($this->forwarded_for, 0, 254) : '';
 
-				// referer checks
-				$check_referer_path = (isset($config['referer_validation']) && $config['referer_validation'] == REFERER_VALIDATE_PATH);
 				$referer_valid = true;
 
 				// we assume HEAD and TRACE to be foul play and thus only whitelist GET
 				if (!empty($config['referer_validation']) && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) !== 'get')
 				{
-					$referer_valid = $this->validate_referer($check_referer_path);
+					$referer_valid = $this->validate_referer();
 				}
 
 				if ($u_ip === $s_ip && $s_browser === $u_browser && $s_forwarded_for === $u_forwarded_for && $referer_valid)
@@ -1242,12 +1240,9 @@ class phpbb_session
 
 	/**
 	* Check if the request originated from the same page.
-	* @param bool $check_script_path If true, the path will be checked as well
 	*/
-	function validate_referer($check_script_path = false)
+	function validate_referer()
 	{
-		global $config;
-
 		// no referer - nothing to validate, user's fault for turning it off (we only check on POST; so meta can't be the reason)
 		if (empty($this->referer))
 		{
@@ -1260,16 +1255,6 @@ class phpbb_session
 		if (!(stripos($ref, HTTP_HOST) === 0))
 		{
 			return false;
-		}
-		else if ($check_script_path && rtrim($this->page['root_script_path'], '/') !== '')
-		{
-			$ref = substr($ref, strlen(HTTP_HOST));
-			if (HTTP_PORT) { $ref = preg_replace('#^:' . HTTP_PORT . '#', '', $ref); }
-
-			if (!(stripos(rtrim($ref, '/'), rtrim($this->page['root_script_path'], '/')) === 0))
-			{
-				return false;
-			}
 		}
 
 		return true;

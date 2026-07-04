@@ -565,6 +565,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('allow_login_via_email', '1');
 	set_config('max_autologin_time', '400');
 	set_config('session_length', '43200');
+	set_config('referer_validation', '1');
 
 	// Remove obsolete modules.
 

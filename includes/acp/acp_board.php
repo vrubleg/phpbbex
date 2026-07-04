@@ -445,7 +445,7 @@ class acp_board
 						'ip_check'				=> ['lang' => 'IP_VALID',				'validate' => 'int',	'type' => 'custom', 'method' => 'select_ip_check', 'explain' => true],
 						'browser_check'			=> ['lang' => 'BROWSER_VALID',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'forwarded_for_check'	=> ['lang' => 'FORWARDED_FOR_VALID',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'referer_validation'	=> ['lang' => 'REFERER_VALID',		'validate' => 'int:0:3','type' => 'custom', 'method' => 'select_ref_check', 'explain' => true],
+						'referer_validation'	=> ['lang' => 'REFERER_VALID',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'email_check_mx'		=> ['lang' => 'EMAIL_CHECK_MX',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'max_pass_chars'		=> ['lang' => 'PASSWORD_LENGTH', 'validate' => 'int:8:255', 'type' => false, 'method' => false, 'explain' => false,],
 						'min_pass_chars'		=> ['lang' => 'PASSWORD_LENGTH',	'validate' => 'int:1',	'type' => 'custom', 'method' => 'password_length', 'explain' => true],
@@ -694,16 +694,6 @@ class acp_board
 		$radio_ary = [4 => 'ALL', 3 => 'CLASS_C', 2 => 'CLASS_B', 0 => 'NO_IP_VALIDATION'];
 
 		return h_radio('config[ip_check]', $radio_ary, $value, $key);
-	}
-
-	/**
-	* Select referer validation
-	*/
-	function select_ref_check($value, $key = '')
-	{
-		$radio_ary = [REFERER_VALIDATE_PATH => 'REF_PATH', REFERER_VALIDATE_HOST => 'REF_HOST', REFERER_VALIDATE_NONE => 'NO_REF_VALIDATION'];
-
-		return h_radio('config[referer_validation]', $radio_ary, $value, $key);
 	}
 
 	/**

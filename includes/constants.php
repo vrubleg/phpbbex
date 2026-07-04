@@ -177,11 +177,6 @@ define('FIELD_BOOL', 4);
 define('FIELD_DROPDOWN', 5);
 define('FIELD_DATE', 6);
 
-// referer validation
-define('REFERER_VALIDATE_NONE', 0);
-define('REFERER_VALIDATE_HOST', 1);
-define('REFERER_VALIDATE_PATH', 2);
-
 // phpbb_chmod() permissions
 @define('CHMOD_ALL', 7);
 @define('CHMOD_READ', 4);
