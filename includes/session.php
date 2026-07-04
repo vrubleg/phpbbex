@@ -901,10 +901,10 @@ class phpbb_session
 		$db->sql_query($sql);
 
 		// Get expired sessions, only most recent for each user
-		$sql = 'SELECT session_user_id, session_page, MAX(session_time) AS recent_time
+		$sql = 'SELECT session_user_id, MAX(session_time) AS recent_time
 			FROM ' . SESSIONS_TABLE . '
 			WHERE session_time < ' . ($this->time_now - $config['session_length']) . '
-			GROUP BY session_user_id, session_page';
+			GROUP BY session_user_id';
 		$result = $db->sql_query_limit($sql, $batch_size);
 
 		$del_user_id = [];
@@ -913,8 +913,8 @@ class phpbb_session
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $row['recent_time'] . ", user_lastpage = '" . $db->sql_escape($row['session_page']) . "'
-				WHERE user_id = " . (int) $row['session_user_id'];
+				SET user_lastvisit = ' . (int) $row['recent_time'] . '
+				WHERE user_id = ' . (int) $row['session_user_id'];
 			$db->sql_query($sql);
 
 			$del_user_id[] = (int) $row['session_user_id'];
@@ -1238,7 +1238,7 @@ class phpbb_session
 		$db->sql_query($sql);
 
 		// If the user is logged in, update last visit info first before deleting sessions
-		$sql = 'SELECT session_time, session_page
+		$sql = 'SELECT session_time
 			FROM ' . SESSIONS_TABLE . '
 			WHERE session_user_id = ' . (int) $user_id . '
 			ORDER BY session_time DESC';
@@ -1249,8 +1249,8 @@ class phpbb_session
 		if ($row)
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $row['session_time'] . ", user_lastpage = '" . $db->sql_escape($row['session_page']) . "'
-				WHERE user_id = " . (int) $user_id;
+				SET user_lastvisit = ' . (int) $row['session_time'] . '
+				WHERE user_id = ' . (int) $user_id;
 			$db->sql_query($sql);
 		}
 

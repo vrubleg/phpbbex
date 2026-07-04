@@ -539,12 +539,6 @@ class merge_users
 			}
 		}
 
-		if (isset($update['target']['user_lastvisit']))
-		{
-			// Updating lastvisit, update other last stuff
-			$update['target']['user_lastpage'] = $source['user_lastpage'];
-		}
-
 		foreach (['topics', 'posts', 'warnings', 'login_attempts', 'new_privmsg', 'unread_privmsg'] as $var)
 		{
 			if ($source['user_' . $var])

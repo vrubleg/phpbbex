@@ -814,7 +814,6 @@ CREATE TABLE phpbb_users (
 	user_lastvisit int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_lastmark int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_lastpost_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	user_lastpage varchar(200) DEFAULT '' NOT NULL,
 	user_last_search int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_rating_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
 	user_rating_negative mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
