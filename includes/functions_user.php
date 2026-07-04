@@ -120,9 +120,9 @@ function user_update_name($old_name, $new_name)
 	{
 		foreach ($field_ary as $field)
 		{
-			$sql = "UPDATE $table
-				SET $field = '" . $db->sql_escape($new_name) . "'
-				WHERE $field = '" . $db->sql_escape($old_name) . "'";
+			$sql = "UPDATE {$table}
+				SET {$field} = '" . $db->sql_escape($new_name) . "'
+				WHERE {$field} = '" . $db->sql_escape($old_name) . "'";
 			$db->sql_query($sql);
 		}
 	}
@@ -427,27 +427,27 @@ function user_delete($mode, $user_id, $post_username = false)
 			{
 				$sql = 'UPDATE ' . FORUMS_TABLE . '
 					SET forum_last_poster_id = ' . ANONYMOUS . ", forum_last_poster_name = '" . $db->sql_escape($post_username) . "', forum_last_poster_colour = ''
-					WHERE forum_last_poster_id = $user_id";
+					WHERE forum_last_poster_id = {$user_id}";
 				$db->sql_query($sql);
 
 				$sql = 'UPDATE ' . POSTS_TABLE . '
 					SET poster_id = ' . ANONYMOUS . ", post_username = '" . $db->sql_escape($post_username) . "'
-					WHERE poster_id = $user_id";
+					WHERE poster_id = {$user_id}";
 				$db->sql_query($sql);
 
 				$sql = 'UPDATE ' . TOPICS_TABLE . '
 					SET topic_poster = ' . ANONYMOUS . ", topic_first_poster_name = '" . $db->sql_escape($post_username) . "', topic_first_poster_colour = ''
-					WHERE topic_poster = $user_id";
+					WHERE topic_poster = {$user_id}";
 				$db->sql_query($sql);
 
 				$sql = 'UPDATE ' . TOPICS_TABLE . '
 					SET topic_last_poster_id = ' . ANONYMOUS . ", topic_last_poster_name = '" . $db->sql_escape($post_username) . "', topic_last_poster_colour = ''
-					WHERE topic_last_poster_id = $user_id";
+					WHERE topic_last_poster_id = {$user_id}";
 				$db->sql_query($sql);
 
 				$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
 					SET poster_id = ' . ANONYMOUS . "
-					WHERE poster_id = $user_id";
+					WHERE poster_id = {$user_id}";
 				$db->sql_query($sql);
 
 				// Since we change every post by this author, we need to count this amount towards the anonymous user
@@ -485,8 +485,8 @@ function user_delete($mode, $user_id, $post_username = false)
 
 	foreach ($table_ary as $table)
 	{
-		$sql = "DELETE FROM $table
-			WHERE user_id = $user_id";
+		$sql = "DELETE FROM {$table}
+			WHERE user_id = {$user_id}";
 		$db->sql_query($sql);
 	}
 
@@ -811,7 +811,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 							$ip_2_counter = 256;
 							$ip_2_fragment = 256;
 
-							$banlist_ary[] = "$ip_1_counter.*";
+							$banlist_ary[] = "{$ip_1_counter}.*";
 						}
 
 						while ($ip_2_counter <= $ip_2_end)
@@ -824,7 +824,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 								$ip_3_counter = 256;
 								$ip_3_fragment = 256;
 
-								$banlist_ary[] = "$ip_1_counter.$ip_2_counter.*";
+								$banlist_ary[] = "{$ip_1_counter}.{$ip_2_counter}.*";
 							}
 
 							while ($ip_3_counter <= $ip_3_end)
@@ -837,12 +837,12 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 									$ip_4_counter = 256;
 									$ip_4_fragment = 256;
 
-									$banlist_ary[] = "$ip_1_counter.$ip_2_counter.$ip_3_counter.*";
+									$banlist_ary[] = "{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.*";
 								}
 
 								while ($ip_4_counter <= $ip_4_end)
 								{
-									$banlist_ary[] = "$ip_1_counter.$ip_2_counter.$ip_3_counter.$ip_4_counter";
+									$banlist_ary[] = "{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.{$ip_4_counter}";
 									$ip_4_counter++;
 								}
 								$ip_3_counter++;
@@ -924,11 +924,11 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 	}
 
 	// Fetch currently set bans of the specified type and exclude state. Prevent duplicate bans.
-	$sql_where = ($type == 'ban_userid') ? 'ban_userid <> 0' : "$type <> ''";
+	$sql_where = ($type == 'ban_userid') ? 'ban_userid <> 0' : "{$type} <> ''";
 
-	$sql = "SELECT $type
+	$sql = "SELECT {$type}
 		FROM " . BANLIST_TABLE . "
-		WHERE $sql_where
+		WHERE {$sql_where}
 			AND ban_exclude = " . (int) $ban_exclude;
 	$result = $db->sql_query($sql);
 
@@ -1036,7 +1036,7 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 			if (isset($sql_where) && $sql_where)
 			{
 				$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
-					$sql_where";
+					{$sql_where}";
 				$db->sql_query($sql);
 
 				if ($mode == 'user')
@@ -1187,7 +1187,7 @@ function user_ipwhois($ip)
 	if (($fsk = @fsockopen($whois_host, 43)))
 	{
 		// CRLF as per RFC3912
-		fputs($fsk, "$ip\r\n");
+		fputs($fsk, "{$ip}\r\n");
 		while (!feof($fsk))
 		{
 			$ipwhois .= fgets($fsk, 1024);
@@ -1217,7 +1217,7 @@ function user_ipwhois($ip)
 
 		if (($fsk = @fsockopen($server, $port)))
 		{
-			fputs($fsk, "$ip\r\n");
+			fputs($fsk, "{$ip}\r\n");
 			while (!feof($fsk))
 			{
 				$buffer .= fgets($fsk, 1024);
@@ -1945,11 +1945,11 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 
 		while (($file = readdir($dp)) !== false)
 		{
-			if ($file[0] != '.' && preg_match('#^[^&"\'<>]+$#i', $file) && is_dir("$path/$file"))
+			if ($file[0] != '.' && preg_match('#^[^&"\'<>]+$#i', $file) && is_dir("{$path}/{$file}"))
 			{
 				$avatar_row_count = $avatar_col_count = 0;
 
-				if ($dp2 = @opendir("$path/$file"))
+				if ($dp2 = @opendir("{$path}/{$file}"))
 				{
 					while (($sub_file = readdir($dp2)) !== false)
 					{
@@ -2270,13 +2270,13 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 
 			$sql = 'UPDATE ' . GROUPS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-				WHERE group_id = $group_id";
+				WHERE group_id = {$group_id}";
 			$db->sql_query($sql);
 
 			// Since we may update the name too, we need to do this on other tables too...
 			$sql = 'UPDATE ' . MODERATOR_CACHE_TABLE . "
 				SET group_name = '" . $db->sql_escape($sql_ary['group_name']) . "'
-				WHERE group_id = $group_id";
+				WHERE group_id = {$group_id}";
 			$db->sql_query($sql);
 
 			// One special case is the group skip auth setting. If this was changed we need to purge permissions for this group
@@ -2368,7 +2368,7 @@ function group_delete($group_id, $group_name = false)
 		// Batch query for group members, call group_user_del
 		$sql = 'SELECT u.user_id, u.username
 			FROM ' . USER_GROUP_TABLE . ' ug, ' . USERS_TABLE . " u
-			WHERE ug.group_id = $group_id
+			WHERE ug.group_id = {$group_id}
 				AND u.user_id = ug.user_id";
 		$result = $db->sql_query_limit($sql, 200, $start);
 
@@ -2395,12 +2395,12 @@ function group_delete($group_id, $group_name = false)
 
 	// Delete group
 	$sql = 'DELETE FROM ' . GROUPS_TABLE . "
-		WHERE group_id = $group_id";
+		WHERE group_id = {$group_id}";
 	$db->sql_query($sql);
 
 	// Delete auth entries from the groups table
 	$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . "
-		WHERE group_id = $group_id";
+		WHERE group_id = {$group_id}";
 	$db->sql_query($sql);
 
 	// Re-cache moderators
@@ -2438,7 +2438,7 @@ function group_user_add($group_id, $user_id_ary = false, $username_ary = false, 
 	$sql = 'SELECT user_id, group_leader
 		FROM ' . USER_GROUP_TABLE . '
 		WHERE ' . $db->sql_in_set('user_id', $user_id_ary) . "
-			AND group_id = $group_id";
+			AND group_id = {$group_id}";
 	$result = $db->sql_query($sql);
 
 	$add_id_ary = $update_id_ary = [];
@@ -2487,7 +2487,7 @@ function group_user_add($group_id, $user_id_ary = false, $username_ary = false, 
 		$sql = 'UPDATE ' . USER_GROUP_TABLE . '
 			SET group_leader = 1
 			WHERE ' . $db->sql_in_set('user_id', $update_id_ary) . "
-				AND group_id = $group_id";
+				AND group_id = {$group_id}";
 		$db->sql_query($sql);
 	}
 
@@ -2572,7 +2572,7 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 		FROM ' . USER_GROUP_TABLE . ' ug, ' . GROUPS_TABLE . ' g
 		WHERE ' . $db->sql_in_set('ug.user_id', $user_id_ary) . "
 			AND g.group_id = ug.group_id
-			AND g.group_id <> $group_id
+			AND g.group_id <> {$group_id}
 			AND g.group_type = " . GROUP_SPECIAL . '
 		ORDER BY ug.user_id, g.group_id';
 	$result = $db->sql_query($sql);
@@ -2606,7 +2606,7 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 	unset($special_group_data);
 
 	$sql = 'DELETE FROM ' . USER_GROUP_TABLE . "
-		WHERE group_id = $group_id
+		WHERE group_id = {$group_id}
 			AND " . $db->sql_in_set('user_id', $user_id_ary);
 	$db->sql_query($sql);
 
@@ -2695,7 +2695,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 		case 'promote':
 
 			$sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . "
-				WHERE group_id = $group_id
+				WHERE group_id = {$group_id}
 					AND user_pending = 1
 					AND " . $db->sql_in_set('user_id', $user_id_ary);
 			$result = $db->sql_query_limit($sql, 1);
@@ -2708,7 +2708,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 
 			$sql = 'UPDATE ' . USER_GROUP_TABLE . '
 				SET group_leader = ' . (($action == 'promote') ? 1 : 0) . "
-				WHERE group_id = $group_id
+				WHERE group_id = {$group_id}
 					AND user_pending = 0
 					AND " . $db->sql_in_set('user_id', $user_id_ary);
 			$db->sql_query($sql);
@@ -2741,7 +2741,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 
 			$sql = 'UPDATE ' . USER_GROUP_TABLE . "
 				SET user_pending = 0
-				WHERE group_id = $group_id
+				WHERE group_id = {$group_id}
 					AND " . $db->sql_in_set('user_id', $user_id_ary);
 			$db->sql_query($sql);
 
@@ -2774,7 +2774,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 			// We only set default group for approved members of the group
 			$sql = 'SELECT user_id
 				FROM ' . USER_GROUP_TABLE . "
-				WHERE group_id = $group_id
+				WHERE group_id = {$group_id}
 					AND user_pending = 0
 					AND " . $db->sql_in_set('user_id', $user_id_ary);
 			$result = $db->sql_query($sql);
@@ -2900,7 +2900,7 @@ function group_set_user_default($group_id, $user_id_ary, $group_attributes = fal
 	{
 		$sql = 'SELECT ' . implode(', ', array_keys($attribute_ary)) . '
 			FROM ' . GROUPS_TABLE . "
-			WHERE group_id = $group_id";
+			WHERE group_id = {$group_id}";
 		$result = $db->sql_query($sql);
 		$group_attributes = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -3203,7 +3203,7 @@ function phpbb_get_banned_user_ids($user_ids = [])
 	$banned_ids_list = [];
 	$sql = 'SELECT ban_userid
 		FROM ' . BANLIST_TABLE . "
-		WHERE $sql_user_ids
+		WHERE {$sql_user_ids}
 			AND ban_exclude <> 1
 			AND (ban_end > " . time() . '
 				OR ban_end = 0)';

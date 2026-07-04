@@ -828,9 +828,9 @@ class auth_admin extends phpbb_auth
 			$auth_option_ids[] = (int) $this->acl_options['id'][$auth_option];
 		}
 
-		$sql = "DELETE FROM $table
-			WHERE $forum_sql
-				AND $ug_id_sql
+		$sql = "DELETE FROM {$table}
+			WHERE {$forum_sql}
+				AND {$ug_id_sql}
 				AND " . $db->sql_in_set('auth_option_id', $auth_option_ids);
 		$db->sql_query($sql);
 
@@ -849,9 +849,9 @@ class auth_admin extends phpbb_auth
 
 		if (sizeof($role_ids))
 		{
-			$sql = "DELETE FROM $table
-				WHERE $forum_sql
-					AND $ug_id_sql
+			$sql = "DELETE FROM {$table}
+				WHERE {$forum_sql}
+					AND {$ug_id_sql}
 					AND auth_option_id = 0
 					AND " . $db->sql_in_set('auth_role_id', $role_ids);
 			$db->sql_query($sql);
@@ -1022,8 +1022,8 @@ class auth_admin extends phpbb_auth
 			$db->sql_freeresult($result);
 
 			// First of all, lets grab the items having roles with the specified auth options assigned
-			$sql = "SELECT auth_role_id, $id_field, forum_id
-				FROM $table, " . ACL_ROLES_TABLE . " r
+			$sql = "SELECT auth_role_id, {$id_field}, forum_id
+				FROM {$table}, " . ACL_ROLES_TABLE . " r
 				WHERE auth_role_id <> 0
 					AND auth_role_id = r.role_id
 					AND r.role_type = '{$permission_type}'
@@ -1076,7 +1076,7 @@ class auth_admin extends phpbb_auth
 			$where_sql[] = $db->sql_in_set('auth_option_id', array_map('intval', $option_id_ary));
 		}
 
-		$sql = "DELETE FROM $table
+		$sql = "DELETE FROM {$table}
 			WHERE " . implode(' AND ', $where_sql);
 		$db->sql_query($sql);
 
@@ -1129,8 +1129,8 @@ class auth_admin extends phpbb_auth
 						'FIELD_NAME'	=> $permission,
 						'S_FIELD_NAME'	=> 'setting[' . $ug_id . '][' . $forum_id . '][' . $permission . ']',
 
-						'U_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&amp;mode=trace&amp;u=$ug_id&amp;f=$forum_id&amp;auth=$permission") : '',
-						'UA_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&mode=trace&u=$ug_id&f=$forum_id&auth=$permission", false) : '',
+						'U_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&amp;mode=trace&amp;u={$ug_id}&amp;f={$forum_id}&amp;auth={$permission}") : '',
+						'UA_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&mode=trace&u={$ug_id}&f={$forum_id}&auth={$permission}", false) : '',
 
 						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'],
 					]);
@@ -1147,8 +1147,8 @@ class auth_admin extends phpbb_auth
 						'FIELD_NAME'	=> $permission,
 						'S_FIELD_NAME'	=> 'setting[' . $ug_id . '][' . $forum_id . '][' . $permission . ']',
 
-						'U_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&amp;mode=trace&amp;u=$ug_id&amp;f=$forum_id&amp;auth=$permission") : '',
-						'UA_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&mode=trace&u=$ug_id&f=$forum_id&auth=$permission", false) : '',
+						'U_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&amp;mode=trace&amp;u={$ug_id}&amp;f={$forum_id}&amp;auth={$permission}") : '',
+						'UA_TRACE'		=> ($show_trace) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=permissions&mode=trace&u={$ug_id}&f={$forum_id}&auth={$permission}", false) : '',
 
 						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'],
 					]);
@@ -1259,7 +1259,7 @@ class auth_admin extends phpbb_auth
 
 		$sql = 'UPDATE ' . USERS_TABLE . "
 			SET user_permissions = '" . $db->sql_escape($user_permissions) . "',
-				user_perm_from = $from_user_id
+				user_perm_from = {$from_user_id}
 			WHERE user_id = " . $to_user_id;
 		$db->sql_query($sql);
 

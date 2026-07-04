@@ -183,13 +183,13 @@ class template_compile
 						{
 							$var = substr($temp, 2, -1);
 							//$file = $this->template->_tpldata['DEFINE']['.'][$var];
-							$temp = "\$this->_tpldata['DEFINE']['.']['$var']";
+							$temp = "\$this->_tpldata['DEFINE']['.']['{$var}']";
 						}
 						else
 						{
 							$var = substr($temp, 1, -1);
 							//$file = $this->template->_rootref[$var];
-							$temp = "\$this->_rootref['$var']";
+							$temp = "\$this->_rootref['{$var}']";
 						}
 					}
 					else
@@ -358,8 +358,8 @@ class template_compile
 		if (sizeof($block) < 2)
 		{
 			// Block is not nested.
-			$tag_template_php = '$_' . $tag_args . "_count = sizeof(\$this->_tpldata['$tag_args'] ?? []);";
-			$varref = "\$this->_tpldata['$tag_args']";
+			$tag_template_php = '$_' . $tag_args . "_count = sizeof(\$this->_tpldata['{$tag_args}'] ?? []);";
+			$varref = "\$this->_tpldata['{$tag_args}']";
 		}
 		else
 		{
@@ -535,7 +535,7 @@ class template_compile
 							// Add the block reference for the last child.
 							$varref .= "['" . $blocks[0] . "']";
 						}
-						$token = "!empty($varref)";
+						$token = "!empty({$varref})";
 					}
 					else if (!empty($token))
 					{
@@ -616,10 +616,10 @@ class template_compile
 		// Process dynamic includes
 		if ($tag_args[0] == '$')
 		{
-			return "if (isset($tag_args)) { \$this->_tpl_include($tag_args); }";
+			return "if (isset({$tag_args})) { \$this->_tpl_include({$tag_args}); }";
 		}
 
-		return "\$this->_tpl_include('$tag_args');";
+		return "\$this->_tpl_include('{$tag_args}');";
 	}
 
 	/**
@@ -628,7 +628,7 @@ class template_compile
 	*/
 	function compile_tag_include_php($tag_args)
 	{
-		return "\$this->_php_include('$tag_args');";
+		return "\$this->_php_include('{$tag_args}');";
 	}
 
 	/**
@@ -658,11 +658,11 @@ class template_compile
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
-					$expr = "!(((int)$is_arg / (int)$expr_arg) % (int)$expr_arg)";
+					$expr = "!(((int){$is_arg} / (int){$expr_arg}) % (int){$expr_arg})";
 				}
 				else
 				{
-					$expr = "!((int)$is_arg & 1)";
+					$expr = "!((int){$is_arg} & 1)";
 				}
 			break;
 
@@ -671,11 +671,11 @@ class template_compile
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
-					$expr = "(((int)$is_arg / (int)$expr_arg) % (int)$expr_arg)";
+					$expr = "(((int){$is_arg} / (int){$expr_arg}) % (int){$expr_arg})";
 				}
 				else
 				{
-					$expr = "((int)$is_arg & 1)";
+					$expr = "((int){$is_arg} & 1)";
 				}
 			break;
 
@@ -684,14 +684,14 @@ class template_compile
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
-					$expr = "!((int)$is_arg % (int)$expr_arg)";
+					$expr = "!((int){$is_arg} % (int){$expr_arg})";
 				}
 			break;
 		}
 
 		if ($negate_expr)
 		{
-			$expr = "!($expr)";
+			$expr = "!({$expr})";
 		}
 
 		array_splice($tokens, 0, $expr_end, $expr);
@@ -717,8 +717,8 @@ class template_compile
 		// Prepend the necessary code to stick this in an echo line.
 
 		// Append the variable reference.
-		$varref .= "['$varname']";
-		$varref = ($echo) ? "<?php echo $varref ?? ''; ?>" : ($varref ?? '');
+		$varref .= "['{$varname}']";
+		$varref = ($echo) ? "<?php echo {$varref} ?? ''; ?>" : ($varref ?? '');
 
 		return $varref;
 	}

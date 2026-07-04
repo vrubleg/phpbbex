@@ -174,7 +174,7 @@ class mcp_queue
 
 				$template->assign_vars([
 					'S_MCP_QUEUE'			=> true,
-					'U_APPROVE_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;p=$post_id&amp;f=$forum_id"),
+					'U_APPROVE_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;p={$post_id}&amp;f={$forum_id}"),
 					'S_CAN_VIEWIP'			=> $auth->acl_get('m_info', $post_info['forum_id']),
 					'S_POST_REPORTED'		=> $post_info['post_reported'],
 					'S_POST_UNAPPROVED'		=> !$post_info['post_approved'],
@@ -191,7 +191,7 @@ class mcp_queue
 
 					'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
 
-					'RETURN_QUEUE'			=> sprintf($user->lang['RETURN_QUEUE'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue' . (($topic_id) ? '&amp;mode=unapproved_topics' : '&amp;mode=unapproved_posts')) . "&amp;start=$start\">", '</a>'),
+					'RETURN_QUEUE'			=> sprintf($user->lang['RETURN_QUEUE'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue' . (($topic_id) ? '&amp;mode=unapproved_topics' : '&amp;mode=unapproved_posts')) . "&amp;start={$start}\">", '</a>'),
 					'RETURN_POST'			=> sprintf($user->lang['RETURN_POST'], '<a href="' . $post_url . '">', '</a>'),
 					'RETURN_TOPIC_SIMPLE'	=> sprintf($user->lang['RETURN_TOPIC_SIMPLE'], '<a href="' . $topic_url . '">', '</a>'),
 					'REPORTED_IMG'			=> $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
@@ -266,7 +266,7 @@ class mcp_queue
 
 					$sql = 'SELECT SUM(forum_topics) as sum_forum_topics
 						FROM ' . FORUMS_TABLE . "
-						WHERE forum_id IN (0, $forum_list)";
+						WHERE forum_id IN (0, {$forum_list})";
 					$result = $db->sql_query($sql);
 					$forum_info['forum_topics'] = (int) $db->sql_fetchfield('sum_forum_topics');
 					$db->sql_freeresult($result);
@@ -304,14 +304,14 @@ class mcp_queue
 				{
 					$sql = 'SELECT p.post_id
 						FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t' . (($sort_order_sql[0] == 'u') ? ', ' . USERS_TABLE . ' u' : '') . "
-						WHERE p.forum_id IN (0, $forum_list)
+						WHERE p.forum_id IN (0, {$forum_list})
 							AND p.post_approved = 0
 							" . (($sort_order_sql[0] == 'u') ? 'AND u.user_id = p.poster_id' : '') . '
 							' . (($topic_id) ? 'AND p.topic_id = ' . $topic_id : '') . "
 							AND t.topic_id = p.topic_id
 							AND t.topic_first_post_id <> p.post_id
-							$limit_time_sql
-						ORDER BY $sort_order_sql";
+							{$limit_time_sql}
+						ORDER BY {$sort_order_sql}";
 					$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
 					$i = 0;
@@ -359,10 +359,10 @@ class mcp_queue
 				{
 					$sql = 'SELECT t.forum_id, t.topic_id, t.topic_title, t.topic_title AS post_subject, t.topic_time AS post_time, t.topic_poster AS poster_id, t.topic_first_post_id AS post_id, t.topic_first_poster_name AS username, t.topic_first_poster_colour AS user_colour
 						FROM ' . TOPICS_TABLE . " t
-						WHERE forum_id IN (0, $forum_list)
+						WHERE forum_id IN (0, {$forum_list})
 							AND topic_approved = 0
-							$limit_time_sql
-						ORDER BY $sort_order_sql";
+							{$limit_time_sql}
+						ORDER BY {$sort_order_sql}";
 					$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
 					$rowset = [];
@@ -404,7 +404,7 @@ class mcp_queue
 						'U_TOPIC'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']),
 						'U_VIEWFORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
 						'U_VIEWPOST'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . (($mode == 'unapproved_posts') ? '#p' . $row['post_id'] : ''),
-						'U_VIEW_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;start=$start&amp;mode=approve_details&amp;f={$row['forum_id']}&amp;p={$row['post_id']}" . (($mode == 'unapproved_topics') ? "&amp;t={$row['topic_id']}" : '')),
+						'U_VIEW_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;start={$start}&amp;mode=approve_details&amp;f={$row['forum_id']}&amp;p={$row['post_id']}" . (($mode == 'unapproved_topics') ? "&amp;t={$row['topic_id']}" : '')),
 
 						'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 						'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
@@ -431,7 +431,7 @@ class mcp_queue
 					'S_MCP_ACTION'			=> build_url(['t', 'f', 'sd', 'st', 'sk']),
 					'S_TOPICS'				=> ($mode != 'unapproved_posts'),
 
-					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;f=$forum_id&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir", $total, $config['topics_per_page'], $start),
+					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;f={$forum_id}&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $total, $config['topics_per_page'], $start),
 					'PAGE_NUMBER'			=> on_page($total, $config['topics_per_page'], $start),
 					'TOPIC_ID'				=> $topic_id,
 					'TOTAL'					=> ($total == 1) ? (($mode == 'unapproved_posts') ? $user->lang['VIEW_TOPIC_POST'] : $user->lang['VIEW_FORUM_TOPIC']) : sprintf((($mode == 'unapproved_posts') ? $user->lang['VIEW_TOPIC_POSTS'] : $user->lang['VIEW_FORUM_TOPICS']), $total),
@@ -652,7 +652,7 @@ function approve_post($post_id_list, $id, $mode)
 					'TOPIC_TITLE'	=> htmlspecialchars_decode(censor_text($post_data['topic_title'])),
 
 					'U_VIEW_TOPIC'	=> generate_board_url() . "/viewtopic.php?t={$post_data['topic_id']}&e=0",
-					'U_VIEW_POST'	=> generate_board_url() . "/viewtopic.php?t={$post_data['topic_id']}&p=$post_id&e=$post_id"]
+					'U_VIEW_POST'	=> generate_board_url() . "/viewtopic.php?t={$post_data['topic_id']}&p={$post_id}&e={$post_id}"]
 				);
 
 				$messenger->send($post_data['user_notify_type']);
@@ -742,7 +742,7 @@ function approve_post($post_id_list, $id, $mode)
 			$add_message = '<br /><br />' . sprintf($user->lang['RETURN_POST'], '<a href="' . $post_url . '">', '</a>');
 		}
 
-		trigger_error($user->lang[$success_msg] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"$redirect\">", '</a>') . $add_message);
+		trigger_error($user->lang[$success_msg] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>') . $add_message);
 	}
 }
 
@@ -758,7 +758,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		trigger_error('NOT_AUTHORISED');
 	}
 
-	$redirect = request_var('redirect', build_url(['t', 'mode', 'quickmod']) . "&amp;mode=$mode");
+	$redirect = request_var('redirect', build_url(['t', 'mode', 'quickmod']) . "&amp;mode={$mode}");
 	$reason = utf8_normalize_nfc(request_var('reason', '', true));
 	$reason_id = request_var('reason_id', 0);
 	$success_msg = $additional_msg = '';
@@ -778,7 +778,7 @@ function disapprove_post($post_id_list, $id, $mode)
 	{
 		$sql = 'SELECT reason_title, reason_description
 			FROM ' . REPORTS_REASONS_TABLE . "
-			WHERE reason_id = $reason_id";
+			WHERE reason_id = {$reason_id}";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -999,6 +999,6 @@ function disapprove_post($post_id_list, $id, $mode)
 	else
 	{
 		meta_refresh(3, $redirect);
-		trigger_error($user->lang[$success_msg] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"$redirect\">", '</a>'));
+		trigger_error($user->lang[$success_msg] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>'));
 	}
 }

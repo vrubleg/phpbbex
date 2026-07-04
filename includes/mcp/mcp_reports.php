@@ -68,7 +68,7 @@ class mcp_reports
 
 				$sql = 'SELECT r.post_id, r.user_id, r.report_id, r.report_closed, report_time, r.report_text, rr.reason_title, rr.reason_description, u.username, u.username_clean, u.user_colour
 					FROM ' . REPORTS_TABLE . ' r, ' . REPORTS_REASONS_TABLE . ' rr, ' . USERS_TABLE . ' u
-					WHERE ' . (($report_id) ? 'r.report_id = ' . $report_id : "r.post_id = $post_id") . '
+					WHERE ' . (($report_id) ? 'r.report_id = ' . $report_id : "r.post_id = {$post_id}") . '
 						AND rr.reason_id = r.reason_id
 						AND r.user_id = u.user_id
 						AND r.pm_id = 0
@@ -338,15 +338,15 @@ class mcp_reports
 				$sql = 'SELECT r.report_id
 					FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . REPORTS_TABLE . ' r ' . (($sort_order_sql[0] == 'u') ? ', ' . USERS_TABLE . ' u' : '') . (($sort_order_sql[0] == 'r') ? ', ' . USERS_TABLE . ' ru' : '') . '
 					WHERE ' . $db->sql_in_set('p.forum_id', $forum_list) . "
-						$report_state
+						{$report_state}
 						AND r.post_id = p.post_id
 						" . (($sort_order_sql[0] == 'u') ? 'AND u.user_id = p.poster_id' : '') . '
 						' . (($sort_order_sql[0] == 'r') ? 'AND ru.user_id = r.user_id' : '') . '
 						' . (($topic_id) ? 'AND p.topic_id = ' . $topic_id : '') . "
 						AND t.topic_id = p.topic_id
 						AND r.pm_id = 0
-						$limit_time_sql
-					ORDER BY $sort_order_sql";
+						{$limit_time_sql}
+					ORDER BY {$sort_order_sql}";
 				$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
 				$i = 0;
@@ -377,7 +377,7 @@ class mcp_reports
 						$template->assign_block_vars('postrow', [
 							'U_VIEWFORUM'				=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
 							'U_VIEWPOST'				=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . '#p' . $row['post_id'],
-							'U_VIEW_DETAILS'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=reports&amp;start=$start&amp;mode=report_details&amp;f={$row['forum_id']}&amp;r={$row['report_id']}"),
+							'U_VIEW_DETAILS'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=reports&amp;start={$start}&amp;mode=report_details&amp;f={$row['forum_id']}&amp;r={$row['report_id']}"),
 
 							'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 							'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
@@ -412,7 +412,7 @@ class mcp_reports
 					'S_FORUM_OPTIONS'		=> $forum_options,
 					'S_CLOSED'				=> ($mode == 'reports_closed'),
 
-					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;f=$forum_id&amp;t=$topic_id&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir", $total, $config['topics_per_page'], $start),
+					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;f={$forum_id}&amp;t={$topic_id}&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $total, $config['topics_per_page'], $start),
 					'PAGE_NUMBER'			=> on_page($total, $config['topics_per_page'], $start),
 					'TOPIC_ID'				=> $topic_id,
 					'TOTAL'					=> $total,
@@ -438,7 +438,7 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 	$module = ($pm) ? 'pm_reports' : 'reports';
 	$pm_prefix = ($pm) ? 'PM_' : '';
 
-	$sql = "SELECT r.$id_column
+	$sql = "SELECT r.{$id_column}
 		FROM " . REPORTS_TABLE . ' r
 		WHERE ' . $db->sql_in_set('r.report_id', $report_id_list) . $pm_where;
 	$result = $db->sql_query($sql);
@@ -497,7 +497,7 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 	{
 		$post_info = ($pm) ? get_pm_data($post_id_list) : get_post_data($post_id_list, 'm_report');
 
-		$sql = "SELECT r.report_id, r.$id_column, r.report_closed, r.user_id, r.user_notify, u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang, u.user_notify_type
+		$sql = "SELECT r.report_id, r.{$id_column}, r.report_closed, r.user_id, r.user_notify, u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang, u.user_notify_type
 			FROM " . REPORTS_TABLE . ' r, ' . USERS_TABLE . ' u
 			WHERE ' . $db->sql_in_set('r.report_id', $report_id_list) . '
 				' . (($action == 'close') ? 'AND r.report_closed = 0' : '') . '
@@ -705,6 +705,6 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 			}
 		}
 
-		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_forum . $return_topic . sprintf($user->lang['RETURN_PAGE'], "<a href=\"$redirect\">", '</a>'));
+		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_forum . $return_topic . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>'));
 	}
 }

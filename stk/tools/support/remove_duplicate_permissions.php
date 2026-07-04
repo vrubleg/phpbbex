@@ -60,7 +60,7 @@ class remove_duplicate_permissions
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$sql = 'SELECT auth_option_id, auth_setting FROM ' . $table . "
-						WHERE $column = '" . $db->sql_escape($row[$column]) . "'
+						WHERE {$column} = '" . $db->sql_escape($row[$column]) . "'
 						AND auth_option_id = " . (int) $orig_id . 
 						((isset($row['forum_id'])) ? ' AND forum_id = ' . (int) $row['forum_id'] : '');
 					$result1 = $db->sql_query($sql);
@@ -74,7 +74,7 @@ class remove_duplicate_permissions
 							// If one was set to never we'll assume it should be never.
 							$sql = 'UPDATE ' . $table . "
 								SET auth_setting = 0
-								WHERE $column = '" . $db->sql_escape($row[$column]) . "'
+								WHERE {$column} = '" . $db->sql_escape($row[$column]) . "'
 								AND auth_option_id = " . (int) $orig_id .
 								((isset($row['forum_id'])) ? ' AND forum_id = ' . (int) $row['forum_id'] : '');
 							$db->sql_query($sql);

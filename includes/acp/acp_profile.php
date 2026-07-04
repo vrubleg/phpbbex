@@ -102,17 +102,17 @@ class acp_profile
 				{
 					$sql = 'SELECT field_ident
 						FROM ' . PROFILE_FIELDS_TABLE . "
-						WHERE field_id = $field_id";
+						WHERE field_id = {$field_id}";
 					$result = $db->sql_query($sql);
 					$field_ident = (string) $db->sql_fetchfield('field_ident');
 					$db->sql_freeresult($result);
 
 					$db->sql_transaction('begin');
 
-					$db->sql_query('DELETE FROM ' . PROFILE_FIELDS_TABLE . " WHERE field_id = $field_id");
-					$db->sql_query('DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . " WHERE field_id = $field_id");
-					$db->sql_query('DELETE FROM ' . PROFILE_LANG_TABLE . " WHERE field_id = $field_id");
-					$db->sql_query('ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " DROP COLUMN pf_$field_ident");
+					$db->sql_query('DELETE FROM ' . PROFILE_FIELDS_TABLE . " WHERE field_id = {$field_id}");
+					$db->sql_query('DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . " WHERE field_id = {$field_id}");
+					$db->sql_query('DELETE FROM ' . PROFILE_LANG_TABLE . " WHERE field_id = {$field_id}");
+					$db->sql_query('ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " DROP COLUMN pf_{$field_ident}");
 
 					$order = 0;
 
@@ -127,7 +127,7 @@ class acp_profile
 						if ($row['field_order'] != $order)
 						{
 							$sql = 'UPDATE ' . PROFILE_FIELDS_TABLE . "
-								SET field_order = $order
+								SET field_order = {$order}
 								WHERE field_id = {$row['field_id']}";
 							$db->sql_query($sql);
 						}
@@ -173,12 +173,12 @@ class acp_profile
 
 				$sql = 'UPDATE ' . PROFILE_FIELDS_TABLE . "
 					SET field_active = 1
-					WHERE field_id = $field_id";
+					WHERE field_id = {$field_id}";
 				$db->sql_query($sql);
 
 				$sql = 'SELECT field_ident
 					FROM ' . PROFILE_FIELDS_TABLE . "
-					WHERE field_id = $field_id";
+					WHERE field_id = {$field_id}";
 				$result = $db->sql_query($sql);
 				$field_ident = (string) $db->sql_fetchfield('field_ident');
 				$db->sql_freeresult($result);
@@ -198,12 +198,12 @@ class acp_profile
 
 				$sql = 'UPDATE ' . PROFILE_FIELDS_TABLE . "
 					SET field_active = 0
-					WHERE field_id = $field_id";
+					WHERE field_id = {$field_id}";
 				$db->sql_query($sql);
 
 				$sql = 'SELECT field_ident
 					FROM ' . PROFILE_FIELDS_TABLE . "
-					WHERE field_id = $field_id";
+					WHERE field_id = {$field_id}";
 				$result = $db->sql_query($sql);
 				$field_ident = (string) $db->sql_fetchfield('field_ident');
 				$db->sql_freeresult($result);
@@ -219,8 +219,8 @@ class acp_profile
 				$order_total = $field_order * 2 + (($action == 'move_up') ? -1 : 1);
 
 				$sql = 'UPDATE ' . PROFILE_FIELDS_TABLE . "
-					SET field_order = $order_total - field_order
-					WHERE field_order IN ($field_order, " . (($action == 'move_up') ? $field_order - 1 : $field_order + 1) . ')';
+					SET field_order = {$order_total} - field_order
+					WHERE field_order IN ({$field_order}, " . (($action == 'move_up') ? $field_order - 1 : $field_order + 1) . ')';
 				$db->sql_query($sql);
 
 			break;
@@ -248,7 +248,7 @@ class acp_profile
 					$sql = 'SELECT l.*, f.*
 						FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . ' f
 						WHERE l.lang_id = ' . $this->edit_lang_id . "
-							AND f.field_id = $field_id
+							AND f.field_id = {$field_id}
 							AND l.field_id = f.field_id";
 					$result = $db->sql_query($sql);
 					$field_row = $db->sql_fetchrow($result);
@@ -260,7 +260,7 @@ class acp_profile
 						$sql = 'SELECT l.*, f.*
 							FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . ' f
 							WHERE l.lang_id <> ' . $this->edit_lang_id . "
-							AND f.field_id = $field_id
+							AND f.field_id = {$field_id}
 							AND l.field_id = f.field_id";
 						$result = $db->sql_query($sql);
 						$field_row = $db->sql_fetchrow($result);
@@ -279,7 +279,7 @@ class acp_profile
 					$sql = 'SELECT *
 						FROM ' . PROFILE_FIELDS_LANG_TABLE . '
 						WHERE lang_id = ' . $this->edit_lang_id . "
-							AND field_id = $field_id
+							AND field_id = {$field_id}
 						ORDER BY option_id ASC";
 					$result = $db->sql_query($sql);
 
@@ -495,7 +495,7 @@ class acp_profile
 					$sql = 'SELECT *
 						FROM ' . PROFILE_FIELDS_LANG_TABLE . '
 						WHERE lang_id <> ' . $this->edit_lang_id . "
-							AND field_id = $field_id
+							AND field_id = {$field_id}
 						ORDER BY option_id ASC";
 					$result = $db->sql_query($sql);
 
@@ -510,7 +510,7 @@ class acp_profile
 					$sql = 'SELECT lang_id, lang_name, lang_explain, lang_default_value
 						FROM ' . PROFILE_LANG_TABLE . '
 						WHERE lang_id <> ' . $this->edit_lang_id . "
-							AND field_id = $field_id
+							AND field_id = {$field_id}
 						ORDER BY lang_id ASC";
 					$result = $db->sql_query($sql);
 
@@ -687,7 +687,7 @@ class acp_profile
 					'L_TITLE'			=> $user->lang['STEP_' . $step . '_TITLE_' . strtoupper($action)],
 					'L_EXPLAIN'			=> $user->lang['STEP_' . $step . '_EXPLAIN_' . strtoupper($action)],
 
-					'U_ACTION'			=> $this->u_action . "&amp;action=$action&amp;step=$step",
+					'U_ACTION'			=> $this->u_action . "&amp;action={$action}&amp;step={$step}",
 					'U_BACK'			=> $this->u_action]
 				);
 
@@ -834,10 +834,10 @@ class acp_profile
 				'FIELD_TYPE'		=> $user->lang['FIELD_' . strtoupper($cp->profile_types[$row['field_type']])],
 
 				'L_ACTIVATE_DEACTIVATE'		=> $user->lang[$active_lang],
-				'U_ACTIVATE_DEACTIVATE'		=> $this->u_action . "&amp;action=$active_value&amp;field_id=$id",
-				'U_EDIT'					=> $this->u_action . "&amp;action=edit&amp;field_id=$id",
-				'U_TRANSLATE'				=> $this->u_action . "&amp;action=edit&amp;field_id=$id&amp;step=3",
-				'U_DELETE'					=> $this->u_action . "&amp;action=delete&amp;field_id=$id",
+				'U_ACTIVATE_DEACTIVATE'		=> $this->u_action . "&amp;action={$active_value}&amp;field_id={$id}",
+				'U_EDIT'					=> $this->u_action . "&amp;action=edit&amp;field_id={$id}",
+				'U_TRANSLATE'				=> $this->u_action . "&amp;action=edit&amp;field_id={$id}&amp;step=3",
+				'U_DELETE'					=> $this->u_action . "&amp;action=delete&amp;field_id={$id}",
 				'U_MOVE_UP'					=> $this->u_action . "&amp;action=move_up&amp;order={$row['field_order']}",
 				'U_MOVE_DOWN'				=> $this->u_action . "&amp;action=move_down&amp;order={$row['field_order']}",
 
@@ -1045,7 +1045,7 @@ class acp_profile
 		{
 			$sql = 'UPDATE ' . PROFILE_FIELDS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $profile_fields) . "
-				WHERE field_id = $field_id";
+				WHERE field_id = {$field_id}";
 			$db->sql_query($sql);
 		}
 
@@ -1100,7 +1100,7 @@ class acp_profile
 			foreach ($empty_lang as $lang_id => $NULL)
 			{
 				$sql = 'DELETE FROM ' . PROFILE_LANG_TABLE . "
-					WHERE field_id = $field_id
+					WHERE field_id = {$field_id}
 					AND lang_id = " . (int) $lang_id;
 				$db->sql_query($sql);
 			}
@@ -1134,7 +1134,7 @@ class acp_profile
 			if ($action != 'create')
 			{
 				$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . "
-					WHERE field_id = $field_id
+					WHERE field_id = {$field_id}
 						AND lang_id = " . (int) $default_lang_id;
 				$db->sql_query($sql);
 			}
@@ -1186,7 +1186,7 @@ class acp_profile
 					if ($action != 'create')
 					{
 						$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . "
-							WHERE field_id = $field_id
+							WHERE field_id = {$field_id}
 							AND lang_id = " . (int) $lang_id;
 						$db->sql_query($sql);
 					}
@@ -1207,7 +1207,7 @@ class acp_profile
 			foreach ($empty_lang as $lang_id => $NULL)
 			{
 				$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . "
-					WHERE field_id = $field_id
+					WHERE field_id = {$field_id}
 					AND lang_id = " . (int) $lang_id;
 				$db->sql_query($sql);
 			}
@@ -1297,8 +1297,8 @@ class acp_profile
 			return;
 		}
 
-		$sql = "SELECT $check_key
-			FROM $table
+		$sql = "SELECT {$check_key}
+			FROM {$table}
 			WHERE " . implode(' AND ', $where_sql);
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -1310,14 +1310,14 @@ class acp_profile
 
 			if (sizeof($sql_ary))
 			{
-				$db->sql_query("INSERT INTO $table " . $db->sql_build_array('INSERT', $sql_ary));
+				$db->sql_query("INSERT INTO {$table} " . $db->sql_build_array('INSERT', $sql_ary));
 			}
 		}
 		else
 		{
 			if (sizeof($sql_ary))
 			{
-				$sql = "UPDATE $table SET " . $db->sql_build_array('UPDATE', $sql_ary) . '
+				$sql = "UPDATE {$table} SET " . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . implode(' AND ', $where_sql);
 				$db->sql_query($sql);
 			}
@@ -1332,7 +1332,7 @@ class acp_profile
 		global $db;
 
 		// We are defining the biggest common value, because of the possibility to edit the min/max values of each field.
-		$sql = 'ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " ADD `$field_ident` ";
+		$sql = 'ALTER TABLE ' . PROFILE_FIELDS_DATA_TABLE . " ADD `{$field_ident}` ";
 
 		switch ($field_type)
 		{

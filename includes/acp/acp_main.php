@@ -386,7 +386,7 @@ class acp_main
 
 						foreach ($tables as $table)
 						{
-							$db->sql_query("TRUNCATE TABLE $table");
+							$db->sql_query("TRUNCATE TABLE {$table}");
 						}
 
 						// let's restore the admin session

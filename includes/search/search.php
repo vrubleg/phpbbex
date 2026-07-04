@@ -269,7 +269,7 @@ class search_backend
 
 			$sql = 'SELECT search_key
 				FROM ' . SEARCH_RESULTS_TABLE . "
-				WHERE search_keywords LIKE '%*%' $sql_where";
+				WHERE search_keywords LIKE '%*%' {$sql_where}";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -290,7 +290,7 @@ class search_backend
 
 			$sql = 'SELECT search_key
 				FROM ' . SEARCH_RESULTS_TABLE . "
-				WHERE $sql_where";
+				WHERE {$sql_where}";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))

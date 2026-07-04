@@ -375,11 +375,11 @@ class fulltext_mysql extends search_backend
 		$sql_where_options .= ($sort_days) ? ' AND p.post_time >= ' . (time() - ($sort_days * 86400)) : '';
 		$sql_where_options .= $sql_match_where;
 
-		$sql = "SELECT $sql_select
-			FROM $sql_from$sql_sort_table" . POSTS_TABLE . " p
-			WHERE MATCH ($sql_match) AGAINST ('" . $db->sql_escape(htmlspecialchars_decode($this->search_query)) . "' IN BOOLEAN MODE)
-				$sql_where_options
-			ORDER BY $sql_sort";
+		$sql = "SELECT {$sql_select}
+			FROM {$sql_from}{$sql_sort_table}" . POSTS_TABLE . " p
+			WHERE MATCH ({$sql_match}) AGAINST ('" . $db->sql_escape(htmlspecialchars_decode($this->search_query)) . "' IN BOOLEAN MODE)
+				{$sql_where_options}
+			ORDER BY {$sql_sort}";
 		$result = $db->sql_query_limit($sql, $config['search_block_size'], $start);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -529,30 +529,30 @@ class fulltext_mysql extends search_backend
 		{
 			$sql = "SELECT {$calc_results}p.post_id
 				FROM " . $sql_sort_table . POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . TOPICS_TABLE . ' t ' : ' ') . "
-				WHERE $sql_author
-					$sql_topic_id
-					$sql_firstpost
-					$m_approve_fid_sql
-					$sql_fora
-					$sql_sort_join
-					$sql_time
-				ORDER BY $sql_sort";
+				WHERE {$sql_author}
+					{$sql_topic_id}
+					{$sql_firstpost}
+					{$m_approve_fid_sql}
+					{$sql_fora}
+					{$sql_sort_join}
+					{$sql_time}
+				ORDER BY {$sql_sort}";
 			$field = 'post_id';
 		}
 		else
 		{
 			$sql = "SELECT {$calc_results}t.topic_id
 				FROM " . $sql_sort_table . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-				WHERE $sql_author
-					$sql_topic_id
-					$sql_firstpost
-					$m_approve_fid_sql
-					$sql_fora
+				WHERE {$sql_author}
+					{$sql_topic_id}
+					{$sql_firstpost}
+					{$m_approve_fid_sql}
+					{$sql_fora}
 					AND t.topic_id = p.topic_id
-					$sql_sort_join
-					$sql_time
+					{$sql_sort_join}
+					{$sql_time}
 				GROUP BY t.topic_id
-				ORDER BY $sql_sort";
+				ORDER BY {$sql_sort}";
 			$field = 'topic_id';
 		}
 

@@ -517,7 +517,7 @@ class dbal_mysql extends dbal
 						@mysqli_query($this->db_connect_id, 'SET profiling = 1;');
 					}
 
-					if ($result = @mysqli_query($this->db_connect_id, "EXPLAIN $explain_query"))
+					if ($result = @mysqli_query($this->db_connect_id, "EXPLAIN {$explain_query}"))
 					{
 						while ($row = @mysqli_fetch_assoc($result))
 						{

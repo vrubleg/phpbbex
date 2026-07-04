@@ -36,7 +36,7 @@ function recalc_nested_sets(&$new_id, $pkey, $table, $parent_id = 0, $where = []
 		// First we update the left_id for this module
 		if ($row['left_id'] != $new_id)
 		{
-			$db->sql_query('UPDATE ' . $table . ' SET ' . $db->sql_build_array('UPDATE', ['left_id' => $new_id]) . " WHERE $pkey = {$row[$pkey]}");
+			$db->sql_query('UPDATE ' . $table . ' SET ' . $db->sql_build_array('UPDATE', ['left_id' => $new_id]) . " WHERE {$pkey} = {$row[$pkey]}");
 		}
 		$new_id++;
 
@@ -46,7 +46,7 @@ function recalc_nested_sets(&$new_id, $pkey, $table, $parent_id = 0, $where = []
 		// Then we come back and update the right_id for this module
 		if ($row['right_id'] != $new_id)
 		{
-			$db->sql_query('UPDATE ' . $table . ' SET ' . $db->sql_build_array('UPDATE', ['right_id' => $new_id]) . " WHERE $pkey = {$row[$pkey]}");
+			$db->sql_query('UPDATE ' . $table . ' SET ' . $db->sql_build_array('UPDATE', ['right_id' => $new_id]) . " WHERE {$pkey} = {$row[$pkey]}");
 		}
 		$new_id++;
 	}
@@ -171,8 +171,8 @@ function group_select_options($group_id, $exclude_ids = false, $manage_founder =
 
 	$sql = 'SELECT group_id, group_name, group_type
 		FROM ' . GROUPS_TABLE . "
-		$exclude_sql
-		$sql_founder
+		{$exclude_sql}
+		{$sql_founder}
 		ORDER BY group_type DESC, group_name ASC";
 	$result = $db->sql_query($sql);
 
@@ -276,8 +276,8 @@ function get_forum_branch($forum_id, $type = 'all', $order = 'descending', $incl
 
 	$sql = 'SELECT f2.*
 		FROM ' . FORUMS_TABLE . ' f1
-		LEFT JOIN ' . FORUMS_TABLE . " f2 ON ($condition)
-		WHERE f1.forum_id = $forum_id
+		LEFT JOIN ' . FORUMS_TABLE . " f2 ON ({$condition})
+		WHERE f1.forum_id = {$forum_id}
 		ORDER BY f2.left_id " . (($order == 'descending') ? 'ASC' : 'DESC');
 	$result = $db->sql_query($sql);
 
@@ -471,16 +471,16 @@ function filelist($rootdir, $dir = '', $type = 'gif|jpg|jpeg|png')
 
 	while (($fname = readdir($dh)) !== false)
 	{
-		if (is_file("$rootdir$dir$fname"))
+		if (is_file("{$rootdir}{$dir}{$fname}"))
 		{
-			if (filesize("$rootdir$dir$fname") && preg_match('#\.' . $type . '$#i', $fname))
+			if (filesize("{$rootdir}{$dir}{$fname}") && preg_match('#\.' . $type . '$#i', $fname))
 			{
 				$matches[$dir][] = $fname;
 			}
 		}
-		else if ($fname[0] != '.' && is_dir("$rootdir$dir$fname"))
+		else if ($fname[0] != '.' && is_dir("{$rootdir}{$dir}{$fname}"))
 		{
-			$matches += filelist($rootdir, "$dir$fname", $type);
+			$matches += filelist($rootdir, "{$dir}{$fname}", $type);
 		}
 	}
 	closedir($dh);
@@ -529,8 +529,8 @@ function move_topics($topic_ids, $forum_id, $auto_sync = true)
 	$table_ary = [TOPICS_TABLE, POSTS_TABLE, LOG_TABLE, DRAFTS_TABLE, TOPICS_TRACK_TABLE];
 	foreach ($table_ary as $table)
 	{
-		$sql = "UPDATE $table
-			SET forum_id = $forum_id
+		$sql = "UPDATE {$table}
+			SET forum_id = {$forum_id}
 			WHERE " . $db->sql_in_set('topic_id', $topic_ids);
 		$db->sql_query($sql);
 	}
@@ -598,12 +598,12 @@ function move_posts($post_ids, $topic_id, $auto_sync = true)
 	$db->sql_freeresult($result);
 
 	$sql = 'UPDATE ' . POSTS_TABLE . '
-		SET forum_id = ' . (int) $forum_row['forum_id'] . ", topic_id = $topic_id
+		SET forum_id = ' . (int) $forum_row['forum_id'] . ", topic_id = {$topic_id}
 		WHERE " . $db->sql_in_set('post_id', $post_ids);
 	$db->sql_query($sql);
 
 	$sql = 'UPDATE ' . ATTACHMENTS_TABLE . "
-		SET topic_id = $topic_id, in_message = 0
+		SET topic_id = {$topic_id}, in_message = 0
 		WHERE " . $db->sql_in_set('post_msg_id', $post_ids);
 	$db->sql_query($sql);
 
@@ -695,7 +695,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 
 	foreach ($table_ary as $table)
 	{
-		$sql = "DELETE FROM $table
+		$sql = "DELETE FROM {$table}
 			WHERE " . $db->sql_in_set('topic_id', $topic_ids);
 		$db->sql_query($sql);
 	}
@@ -823,7 +823,7 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 
 	foreach ($table_ary as $table)
 	{
-		$sql = "DELETE FROM $table
+		$sql = "DELETE FROM {$table}
 			WHERE " . $db->sql_in_set('post_id', $post_ids);
 		$db->sql_query($sql);
 	}
@@ -875,7 +875,7 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
+	require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
 
 	$error = false;
 	$search = new $search_type($error);
@@ -1327,7 +1327,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 		else if ($where_type == 'range')
 		{
 			// Only check a range of topics/forums. For instance: 'topic_id BETWEEN 1 AND 60'
-			$where_sql = 'WHERE (' . $mode[0] . ".$where_ids)";
+			$where_sql = 'WHERE (' . $mode[0] . ".{$where_ids})";
 			$where_sql_and = $where_sql . "\n\tAND";
 		}
 		else
@@ -1373,7 +1373,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			$sql = 'UPDATE ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
 				SET t.topic_approved = p.post_approved
-				$where_sql_and t.topic_first_post_id = p.post_id";
+				{$where_sql_and} t.topic_first_post_id = p.post_id";
 			$db->sql_query($sql);
 			break;
 
@@ -1384,7 +1384,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			$sql = 'SELECT p.post_id, p.post_reported
 				FROM ' . POSTS_TABLE . " p
-				$where_sql
+				{$where_sql}
 				GROUP BY p.post_id, p.post_reported";
 			$result = $db->sql_query($sql);
 
@@ -1448,7 +1448,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			$sql = 'SELECT DISTINCT(t.topic_id)
 				FROM ' . POSTS_TABLE . " t
-				$where_sql_and t.post_reported = 1";
+				{$where_sql_and} t.post_reported = 1";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1459,7 +1459,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			$sql = 'SELECT t.topic_id, t.topic_reported
 				FROM ' . TOPICS_TABLE . " t
-				$where_sql";
+				{$where_sql}";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1489,7 +1489,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			$sql = 'SELECT p.post_id, p.post_attachment
 				FROM ' . POSTS_TABLE . " p
-				$where_sql
+				{$where_sql}
 				GROUP BY p.post_id, p.post_attachment";
 			$result = $db->sql_query($sql);
 
@@ -1553,7 +1553,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			$sql = 'SELECT DISTINCT(t.topic_id)
 				FROM ' . POSTS_TABLE . " t
-				$where_sql_and t.post_attachment = 1";
+				{$where_sql_and} t.post_attachment = 1";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1564,7 +1564,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			$sql = 'SELECT t.topic_id, t.topic_attachment
 				FROM ' . TOPICS_TABLE . " t
-				$where_sql";
+				{$where_sql}";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1595,7 +1595,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			// 1: Get the list of all forums
 			$sql = 'SELECT f.*
 				FROM ' . FORUMS_TABLE . " f
-				$where_sql";
+				{$where_sql}";
 			$result = $db->sql_query($sql);
 
 			$forum_data = $forum_ids = $post_ids = $last_post_id = $post_info = [];
@@ -1803,7 +1803,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			$sql = 'SELECT t.topic_id, t.forum_id, t.topic_moved_id, t.topic_approved, ' . (($sync_extra) ? 't.topic_attachment, t.topic_reported, ' : '') . 't.topic_poster, t.topic_time, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_first_poster_name, t.topic_first_poster_colour, t.topic_last_post_id, t.topic_last_post_subject, t.topic_last_poster_id, t.topic_last_poster_name, t.topic_last_poster_colour, t.topic_last_post_time
 				FROM ' . TOPICS_TABLE . " t
-				$where_sql";
+				{$where_sql}";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1837,7 +1837,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			// NOTE: 't.post_approved' in the GROUP BY is causing a major slowdown.
 			$sql = 'SELECT t.topic_id, t.post_approved, COUNT(t.post_id) AS total_posts, MIN(t.post_id) AS first_post_id, MAX(t.post_id) AS last_post_id
 				FROM ' . POSTS_TABLE . " t
-				$where_sql
+				{$where_sql}
 				GROUP BY t.topic_id, t.post_approved";
 			$result = $db->sql_query($sql);
 
@@ -2070,7 +2070,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 				// if they are not, use sync('post_reported') first
 				$sql = 'SELECT t.topic_id, p.post_id
 					FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-					$where_sql_and p.topic_id = t.topic_id
+					{$where_sql_and} p.topic_id = t.topic_id
 						AND p.post_reported = 1
 					GROUP BY t.topic_id, p.post_id";
 				$result = $db->sql_query($sql);
@@ -2086,7 +2086,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 				// if they are not, use sync('post_attachment') first
 				$sql = 'SELECT t.topic_id, p.post_id
 					FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-					$where_sql_and p.topic_id = t.topic_id
+					{$where_sql_and} p.topic_id = t.topic_id
 						AND p.post_attachment = 1
 					GROUP BY t.topic_id, p.post_id";
 				$result = $db->sql_query($sql);
@@ -2169,19 +2169,19 @@ function prune($forum_id, $prune_mode, $prune_date, $prune_flags = 0, $auto_sync
 
 	if ($prune_mode == 'posted')
 	{
-		$sql_and .= " AND topic_last_post_time < $prune_date";
+		$sql_and .= " AND topic_last_post_time < {$prune_date}";
 	}
 
 	if ($prune_mode == 'viewed')
 	{
-		$sql_and .= " AND topic_last_view_time < $prune_date";
+		$sql_and .= " AND topic_last_view_time < {$prune_date}";
 	}
 
 	$sql = 'SELECT topic_id
 		FROM ' . TOPICS_TABLE . '
 		WHERE ' . $db->sql_in_set('forum_id', $forum_id) . "
 			AND poll_start = 0
-			$sql_and";
+			{$sql_and}";
 	$result = $db->sql_query($sql);
 
 	$topic_list = [];
@@ -2197,8 +2197,8 @@ function prune($forum_id, $prune_mode, $prune_date, $prune_flags = 0, $auto_sync
 			FROM ' . TOPICS_TABLE . '
 			WHERE ' . $db->sql_in_set('forum_id', $forum_id) . "
 				AND poll_start > 0
-				AND poll_last_vote < $prune_date
-				$sql_and";
+				AND poll_last_vote < {$prune_date}
+				{$sql_and}";
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -2222,7 +2222,7 @@ function auto_prune($forum_id, $prune_mode, $prune_flags, $prune_days, $prune_fr
 
 	$sql = 'SELECT forum_name
 		FROM ' . FORUMS_TABLE . "
-		WHERE forum_id = $forum_id";
+		WHERE forum_id = {$forum_id}";
 	$result = $db->sql_query($sql, 3600);
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
@@ -2235,8 +2235,8 @@ function auto_prune($forum_id, $prune_mode, $prune_flags, $prune_days, $prune_fr
 		prune($forum_id, $prune_mode, $prune_date, $prune_flags, true);
 
 		$sql = 'UPDATE ' . FORUMS_TABLE . "
-			SET prune_next = $next_prune
-			WHERE forum_id = $forum_id";
+			SET prune_next = {$next_prune}
+			WHERE forum_id = {$forum_id}";
 		$db->sql_query($sql);
 
 		add_log('admin', 'LOG_AUTO_PRUNE', $row['forum_name']);
@@ -2505,18 +2505,18 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			$sql_keywords .= $db->sql_in_set('l.log_operation', $operations) . ' OR ';
 		}
 		$sql_lower = $db->sql_lower_text('l.log_data');
-		$sql_keywords .= "$sql_lower " . implode(" OR $sql_lower ", $keywords) . ')';
+		$sql_keywords .= "{$sql_lower} " . implode(" OR {$sql_lower} ", $keywords) . ')';
 	}
 
 	if ($log_count !== false)
 	{
 		$sql = 'SELECT COUNT(l.log_id) AS total_entries
 			FROM ' . LOG_TABLE . ' l, ' . USERS_TABLE . " u
-			WHERE l.log_type = $log_type
+			WHERE l.log_type = {$log_type}
 				AND l.user_id = u.user_id
-				AND l.log_time >= $limit_days
-				$sql_keywords
-				$sql_forum";
+				AND l.log_time >= {$limit_days}
+				{$sql_keywords}
+				{$sql_forum}";
 		$result = $db->sql_query($sql);
 		$log_count = (int) $db->sql_fetchfield('total_entries');
 		$db->sql_freeresult($result);
@@ -2539,12 +2539,12 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 
 	$sql = "SELECT l.*, u.username, u.username_clean, u.user_colour
 		FROM " . LOG_TABLE . " l, " . USERS_TABLE . " u
-		WHERE l.log_type = $log_type
+		WHERE l.log_type = {$log_type}
 			AND u.user_id = l.user_id
-			" . (($limit_days) ? "AND l.log_time >= $limit_days" : '') . "
-			$sql_keywords
-			$sql_forum
-		ORDER BY $sort_by";
+			" . (($limit_days) ? "AND l.log_time >= {$limit_days}" : '') . "
+			{$sql_keywords}
+			{$sql_forum}
+		ORDER BY {$sort_by}";
 	$result = $db->sql_query_limit($sql, $limit, $offset);
 
 	$i = 0;
@@ -2803,7 +2803,7 @@ function view_inactive_users(&$users, &$user_count, $limit = 0, $offset = 0, $li
 	$sql = 'SELECT COUNT(user_id) AS user_count
 		FROM ' . USERS_TABLE . '
 		WHERE user_type = ' . USER_INACTIVE .
-		(($limit_days) ? " AND user_inactive_time >= $limit_days" : '');
+		(($limit_days) ? " AND user_inactive_time >= {$limit_days}" : '');
 	$result = $db->sql_query($sql);
 	$user_count = (int) $db->sql_fetchfield('user_count');
 	$db->sql_freeresult($result);
@@ -2822,8 +2822,8 @@ function view_inactive_users(&$users, &$user_count, $limit = 0, $offset = 0, $li
 	$sql = 'SELECT *
 		FROM ' . USERS_TABLE . '
 		WHERE user_type = ' . USER_INACTIVE .
-		(($limit_days) ? " AND user_inactive_time >= $limit_days" : '') . "
-		ORDER BY $sort_by";
+		(($limit_days) ? " AND user_inactive_time >= {$limit_days}" : '') . "
+		ORDER BY {$sort_by}";
 	$result = $db->sql_query_limit($sql, $limit, $offset);
 
 	while ($row = $db->sql_fetchrow($result))
@@ -2864,8 +2864,8 @@ function view_warned_users(&$users, &$user_count, $limit = 0, $offset = 0, $limi
 	$sql = 'SELECT user_id, username, user_colour, user_warnings, user_last_warning
 		FROM ' . USERS_TABLE . '
 		WHERE user_warnings > 0
-		' . (($limit_days) ? "AND user_last_warning >= $limit_days" : '') . "
-		ORDER BY $sort_by";
+		' . (($limit_days) ? "AND user_last_warning >= {$limit_days}" : '') . "
+		ORDER BY {$sort_by}";
 	$result = $db->sql_query_limit($sql, $limit, $offset);
 	$users = $db->sql_fetchrowset($result);
 	$db->sql_freeresult($result);
@@ -2873,7 +2873,7 @@ function view_warned_users(&$users, &$user_count, $limit = 0, $offset = 0, $limi
 	$sql = 'SELECT count(user_id) AS user_count
 		FROM ' . USERS_TABLE . '
 		WHERE user_warnings > 0
-		' . (($limit_days) ? "AND user_last_warning >= $limit_days" : '');
+		' . (($limit_days) ? "AND user_last_warning >= {$limit_days}" : '');
 	$result = $db->sql_query($sql);
 	$user_count = (int) $db->sql_fetchfield('user_count');
 	$db->sql_freeresult($result);
@@ -2924,8 +2924,8 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 
 	if ($fsock = @fsockopen($host, $port, $errno, $errstr, max(1, intval($timeout / 2))))
 	{
-		@fputs($fsock, "GET $directory/$filename HTTP/1.0\r\n");
-		@fputs($fsock, "Host: $host\r\n");
+		@fputs($fsock, "GET {$directory}/{$filename} HTTP/1.0\r\n");
+		@fputs($fsock, "Host: {$host}\r\n");
 		@fputs($fsock, "Referer: ".generate_board_url()."\r\n");
 		@fputs($fsock, 'User-Agent: phpBBex/' . ($config['phpbbex_version'] ?? '?')
 			. ' PHP/' . PHP_VERSION . ' ' . PHP_OS
@@ -2998,7 +2998,7 @@ function tidy_warnings()
 
 	$sql = 'SELECT * FROM ' . WARNINGS_TABLE . "
 		WHERE warning_active = 1 AND warning_days > 0
-		AND (warning_time + warning_days * 86400) < $current_time";
+		AND (warning_time + warning_days * 86400) < {$current_time}";
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
@@ -3019,8 +3019,8 @@ function tidy_warnings()
 
 		foreach ($user_list as $user_id => $value)
 		{
-			$sql = 'UPDATE ' . USERS_TABLE . " SET user_warnings = user_warnings - $value
-				WHERE user_id = $user_id";
+			$sql = 'UPDATE ' . USERS_TABLE . " SET user_warnings = user_warnings - {$value}
+				WHERE user_id = {$user_id}";
 			$db->sql_query($sql);
 		}
 

@@ -115,7 +115,7 @@ class acp_modules
 				$sql = 'SELECT *
 					FROM ' . MODULES_TABLE . "
 					WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
-						AND module_id = $module_id";
+						AND module_id = {$module_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -128,7 +128,7 @@ class acp_modules
 				$sql = 'UPDATE ' . MODULES_TABLE . '
 					SET module_enabled = ' . (($action == 'enable') ? 1 : 0) . "
 					WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
-						AND module_id = $module_id";
+						AND module_id = {$module_id}";
 				$db->sql_query($sql);
 
 				add_log('admin', 'LOG_MODULE_' . strtoupper($action), $this->lang_name($row['module_langname']));
@@ -146,7 +146,7 @@ class acp_modules
 				$sql = 'SELECT *
 					FROM ' . MODULES_TABLE . "
 					WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
-						AND module_id = $module_id";
+						AND module_id = {$module_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -505,7 +505,7 @@ class acp_modules
 		$sql = 'SELECT *
 			FROM ' . MODULES_TABLE . "
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
-				AND module_id = $module_id";
+				AND module_id = {$module_id}";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -682,10 +682,10 @@ class acp_modules
 
 		$sql = 'SELECT m2.*
 			FROM ' . MODULES_TABLE . ' m1
-			LEFT JOIN ' . MODULES_TABLE . " m2 ON ($condition)
+			LEFT JOIN ' . MODULES_TABLE . " m2 ON ({$condition})
 			WHERE m1.module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND m2.module_class = '" . $db->sql_escape($this->module_class) . "'
-				AND m1.module_id = $module_id
+				AND m1.module_id = {$module_id}
 			ORDER BY m2.left_id " . (($order == 'descending') ? 'ASC' : 'DESC');
 		$result = $db->sql_query($sql);
 
@@ -860,7 +860,7 @@ class acp_modules
 
 		// Resync parents
 		$sql = 'UPDATE ' . MODULES_TABLE . "
-			SET right_id = right_id - $diff
+			SET right_id = right_id - {$diff}
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND left_id < " . (int) $from_data['right_id'] . '
 				AND right_id > ' . (int) $from_data['right_id'];
@@ -868,7 +868,7 @@ class acp_modules
 
 		// Resync righthand side of tree
 		$sql = 'UPDATE ' . MODULES_TABLE . "
-			SET left_id = left_id - $diff, right_id = right_id - $diff
+			SET left_id = left_id - {$diff}, right_id = right_id - {$diff}
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND left_id > " . (int) $from_data['right_id'];
 		$db->sql_query($sql);
@@ -879,7 +879,7 @@ class acp_modules
 
 			// Resync new parents
 			$sql = 'UPDATE ' . MODULES_TABLE . "
-				SET right_id = right_id + $diff
+				SET right_id = right_id + {$diff}
 				WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 					AND " . (int) $to_data['right_id'] . ' BETWEEN left_id AND right_id
 					AND ' . $db->sql_in_set('module_id', $moved_ids, true);
@@ -887,7 +887,7 @@ class acp_modules
 
 			// Resync the righthand side of the tree
 			$sql = 'UPDATE ' . MODULES_TABLE . "
-				SET left_id = left_id + $diff, right_id = right_id + $diff
+				SET left_id = left_id + {$diff}, right_id = right_id + {$diff}
 				WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 					AND left_id > " . (int) $to_data['right_id'] . '
 					AND ' . $db->sql_in_set('module_id', $moved_ids, true);
@@ -918,7 +918,7 @@ class acp_modules
 		}
 
 		$sql = 'UPDATE ' . MODULES_TABLE . "
-			SET left_id = left_id $diff, right_id = right_id $diff
+			SET left_id = left_id {$diff}, right_id = right_id {$diff}
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND " . $db->sql_in_set('module_id', $moved_ids);
 		$db->sql_query($sql);
@@ -944,7 +944,7 @@ class acp_modules
 		$diff = 2;
 		$sql = 'DELETE FROM ' . MODULES_TABLE . "
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
-				AND module_id = $module_id";
+				AND module_id = {$module_id}";
 		$db->sql_query($sql);
 
 		$row['right_id'] = (int) $row['right_id'];
@@ -952,13 +952,13 @@ class acp_modules
 
 		// Resync tree
 		$sql = 'UPDATE ' . MODULES_TABLE . "
-			SET right_id = right_id - $diff
+			SET right_id = right_id - {$diff}
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND left_id < {$row['right_id']} AND right_id > {$row['right_id']}";
 		$db->sql_query($sql);
 
 		$sql = 'UPDATE ' . MODULES_TABLE . "
-			SET left_id = left_id - $diff, right_id = right_id - $diff
+			SET left_id = left_id - {$diff}, right_id = right_id - {$diff}
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND left_id > {$row['right_id']}";
 		$db->sql_query($sql);

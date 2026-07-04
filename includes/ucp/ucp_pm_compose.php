@@ -118,7 +118,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			'S_SHOW_PM_BOX'		=> true,
 			'S_ALLOW_MASS_PM'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')),
 			'S_GROUP_OPTIONS'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group')) ? $group_options : '',
-			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single=$select_single"),
+			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single={$select_single}"),
 		]);
 	}
 
@@ -154,7 +154,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			{
 				$sql = 'SELECT p.post_id as msg_id, p.forum_id, p.post_text as message_text, p.poster_id as author_id, p.post_time as message_time, p.bbcode_bitfield, p.bbcode_uid, p.enable_sig, p.enable_smilies, p.enable_magic_url, t.topic_title as message_subject, u.username as quote_username
 					FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . USERS_TABLE . " u
-					WHERE p.post_id = $msg_id
+					WHERE p.post_id = {$msg_id}
 						AND t.topic_id = p.topic_id
 						AND u.user_id = p.poster_id";
 			}
@@ -165,7 +165,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 					WHERE t.user_id = ' . $user->data['user_id'] . "
 						AND p.author_id = u.user_id
 						AND t.msg_id = p.msg_id
-						AND p.msg_id = $msg_id";
+						AND p.msg_id = {$msg_id}";
 			}
 		break;
 
@@ -180,7 +180,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 				FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
 				WHERE t.user_id = ' . $user->data['user_id'] . '
 					AND t.folder_id = ' . PRIVMSGS_OUTBOX . "
-					AND t.msg_id = $msg_id
+					AND t.msg_id = {$msg_id}
 					AND t.msg_id = p.msg_id";
 		break;
 
@@ -193,7 +193,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			$sql = 'SELECT msg_id, pm_unread, pm_new, author_id, folder_id
 				FROM ' . PRIVMSGS_TO_TABLE . '
 				WHERE user_id = ' . $user->data['user_id'] . "
-					AND msg_id = $msg_id";
+					AND msg_id = {$msg_id}";
 		break;
 
 		default:
@@ -225,7 +225,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 				$sql = 'SELECT p.*, t.folder_id
 					FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
 					WHERE t.user_id = ' . $user->data['user_id'] . "
-						AND t.msg_id = $msg_id
+						AND t.msg_id = {$msg_id}
 						AND t.msg_id = p.msg_id";
 				$result = $db->sql_query($sql);
 				$post = $db->sql_fetchrow($result);
@@ -374,8 +374,8 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	$message_parser->message = ($action == 'reply') ? '' : $message_text;
 	unset($message_text);
 
-	$s_action = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=$mode&amp;action=$action", true, $user->session_id);
-	$s_action .= (($folder_id) ? "&amp;f=$folder_id" : '') . (($msg_id) ? "&amp;p=$msg_id" : '');
+	$s_action = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode={$mode}&amp;action={$action}", true, $user->session_id);
+	$s_action .= (($folder_id) ? "&amp;f={$folder_id}" : '') . (($msg_id) ? "&amp;p={$msg_id}" : '');
 
 	// Delete triggered ?
 	if ($action == 'delete')
@@ -389,7 +389,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			delete_pm($user->data['user_id'], $msg_id, $folder_id);
 
 			// jump to next message in "history"? nope, not for the moment. But able to be included later.
-			$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;folder=$folder_id");
+			$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;folder={$folder_id}");
 			$message = $user->lang['MESSAGE_DELETED'];
 
 			meta_refresh(3, $meta_info);
@@ -476,7 +476,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		// Do not change to SELECT *
 		$sql = 'SELECT attach_id, is_orphan, attach_comment, real_filename
 			FROM ' . ATTACHMENTS_TABLE . "
-			WHERE post_msg_id = $msg_id
+			WHERE post_msg_id = {$msg_id}
 				AND in_message = 1
 				AND is_orphan = 0
 			ORDER BY filetime DESC";
@@ -503,7 +503,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			WHERE forum_id = 0
 				AND topic_id = 0
 				AND user_id = ' . $user->data['user_id'] .
-				(($draft_id) ? " AND draft_id <> $draft_id" : '');
+				(($draft_id) ? " AND draft_id <> {$draft_id}" : '');
 		$result = $db->sql_query_limit($sql, 1);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -549,7 +549,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 				);
 				$db->sql_query($sql);
 
-				$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=$mode");
+				$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode={$mode}");
 
 				meta_refresh(3, $redirect_url);
 				$message = $user->lang['DRAFT_SAVED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $redirect_url . '">', '</a>');
@@ -595,7 +595,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	{
 		$sql = 'SELECT draft_subject, draft_message
 			FROM ' . DRAFTS_TABLE . "
-			WHERE draft_id = $draft_id
+			WHERE draft_id = {$draft_id}
 				AND topic_id = 0
 				AND forum_id = 0
 				AND user_id = " . $user->data['user_id'];

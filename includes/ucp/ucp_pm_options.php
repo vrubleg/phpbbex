@@ -138,7 +138,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 			$sql = 'SELECT folder_name, pm_count
 				FROM ' . PRIVMSGS_FOLDER_TABLE . "
 				WHERE user_id = {$user->data['user_id']}
-					AND folder_id = $rename_folder_id";
+					AND folder_id = {$rename_folder_id}";
 			$result = $db->sql_query_limit($sql, 1);
 			$folder_row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -150,7 +150,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 
 			$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
 				SET folder_name = '" . $db->sql_escape($new_folder_name) . "'
-				WHERE folder_id = $rename_folder_id
+				WHERE folder_id = {$rename_folder_id}
 					AND user_id = {$user->data['user_id']}";
 			$db->sql_query($sql);
 			$msg = $user->lang['FOLDER_RENAMED'];
@@ -185,7 +185,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 		$sql = 'SELECT folder_name, pm_count
 			FROM ' . PRIVMSGS_FOLDER_TABLE . "
 			WHERE user_id = {$user->data['user_id']}
-				AND folder_id = $remove_folder_id";
+				AND folder_id = {$remove_folder_id}";
 		$result = $db->sql_query_limit($sql, 1);
 		$folder_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -209,7 +209,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 			$sql = 'SELECT msg_id
 				FROM ' . PRIVMSGS_TO_TABLE . '
 				WHERE user_id = ' . $user->data['user_id'] . "
-					AND folder_id = $remove_folder_id";
+					AND folder_id = {$remove_folder_id}";
 			$result = $db->sql_query($sql);
 
 			$msg_ids = [];
@@ -242,7 +242,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 			// Remove folder
 			$sql = 'DELETE FROM ' . PRIVMSGS_FOLDER_TABLE . "
 				WHERE user_id = {$user->data['user_id']}
-					AND folder_id = $remove_folder_id";
+					AND folder_id = {$remove_folder_id}";
 			$db->sql_query($sql);
 
 			// Check full folder option. If the removed folder has been specified as destination switch back to inbox
@@ -264,7 +264,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 
 			$db->sql_query($sql);
 
-			$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=$mode");
+			$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode={$mode}");
 			$message = $user->lang['FOLDER_REMOVED'];
 
 			meta_refresh(3, $meta_info);
@@ -375,7 +375,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 		{
 			$sql = 'DELETE FROM ' . PRIVMSGS_RULES_TABLE . '
 				WHERE user_id = ' . $user->data['user_id'] . "
-					AND rule_id = $delete_id";
+					AND rule_id = {$delete_id}";
 			$db->sql_query($sql);
 
 			$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=' . $mode);
@@ -749,7 +749,7 @@ function define_cond_option($hardcoded, $cond_option, $rule_option, $global_rule
 			{
 				$sql = 'SELECT username
 					FROM ' . USERS_TABLE . "
-					WHERE user_id = $rule_user_id";
+					WHERE user_id = {$rule_user_id}";
 				$result = $db->sql_query($sql);
 				$rule_string = $db->sql_fetchfield('username');
 				$db->sql_freeresult($result);

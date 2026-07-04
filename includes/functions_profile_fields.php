@@ -52,8 +52,8 @@ class custom_profile
 		$sql = 'SELECT l.*, f.*
 			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
 			WHERE f.field_active = 1
-				$sql_where
-				AND l.lang_id = $lang_id
+				{$sql_where}
+				AND l.lang_id = {$lang_id}
 				AND l.field_id = f.field_id
 			ORDER BY f.field_order";
 		$result = $db->sql_query($sql);
@@ -242,9 +242,9 @@ class custom_profile
 		{
 			$sql = 'SELECT option_id, lang_value
 				FROM ' . PROFILE_FIELDS_LANG_TABLE . "
-					WHERE field_id = $field_id
-					AND lang_id = $lang_id
-					AND field_type = $field_type
+					WHERE field_id = {$field_id}
+					AND lang_id = {$lang_id}
+					AND field_type = {$field_type}
 				ORDER BY option_id";
 			$result = $db->sql_query($sql);
 
@@ -287,9 +287,9 @@ class custom_profile
 
 		$sql = 'SELECT l.*, f.*
 			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
-			WHERE l.lang_id = $lang_id
+			WHERE l.lang_id = {$lang_id}
 				AND f.field_active = 1
-				$sql_where
+				{$sql_where}
 				AND l.field_id = f.field_id
 			ORDER BY f.field_order";
 		$result = $db->sql_query($sql);
@@ -370,7 +370,7 @@ class custom_profile
 
 		$sql = 'UPDATE ' . PROFILE_FIELDS_DATA_TABLE . '
 			SET ' . $db->sql_build_array('UPDATE', $cp_data_sql) . "
-			WHERE user_id = $user_id";
+			WHERE user_id = {$user_id}";
 		$db->sql_query($sql);
 
 		if (!$db->sql_affectedrows())
@@ -718,19 +718,19 @@ class custom_profile
 		$profile_row['s_day_options'] = '<option value="0"' . ((!$day) ? ' selected="selected"' : '') . '>--</option>';
 		for ($i = 1; $i < 32; $i++)
 		{
-			$profile_row['s_day_options'] .= '<option value="' . $i . '"' . (($i == $day) ? ' selected="selected"' : '') . ">$i</option>";
+			$profile_row['s_day_options'] .= '<option value="' . $i . '"' . (($i == $day) ? ' selected="selected"' : '') . ">{$i}</option>";
 		}
 
 		$profile_row['s_month_options'] = '<option value="0"' . ((!$month) ? ' selected="selected"' : '') . '>--</option>';
 		for ($i = 1; $i < 13; $i++)
 		{
-			$profile_row['s_month_options'] .= '<option value="' . $i . '"' . (($i == $month) ? ' selected="selected"' : '') . ">$i</option>";
+			$profile_row['s_month_options'] .= '<option value="' . $i . '"' . (($i == $month) ? ' selected="selected"' : '') . ">{$i}</option>";
 		}
 
 		$profile_row['s_year_options'] = '<option value="0"' . ((!$year) ? ' selected="selected"' : '') . '>--</option>';
 		for ($i = $now['year'] - 100; $i <= $now['year'] + 100; $i++)
 		{
-			$profile_row['s_year_options'] .= '<option value="' . $i . '"' . (($i == $year) ? ' selected="selected"' : '') . ">$i</option>";
+			$profile_row['s_year_options'] .= '<option value="' . $i . '"' . (($i == $year) ? ' selected="selected"' : '') . ">{$i}</option>";
 		}
 		unset($now);
 

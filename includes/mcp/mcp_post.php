@@ -45,8 +45,8 @@ function mcp_post_details($id, $mode, $action)
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				$template->assign_vars([
-					'RETURN_POST'	=> sprintf($user->lang['RETURN_POST'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;mode=$mode&amp;p=$post_id") . '">', '</a>'),
-					'U_RETURN_POST'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;mode=$mode&amp;p=$post_id"),
+					'RETURN_POST'	=> sprintf($user->lang['RETURN_POST'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;mode={$mode}&amp;p={$post_id}") . '">', '</a>'),
+					'U_RETURN_POST'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;mode={$mode}&amp;p={$post_id}"),
 					'L_RETURN_POST'	=> sprintf($user->lang['RETURN_POST'], '', ''),
 					'WHOIS'			=> user_ipwhois($ip),
 				]);
@@ -169,9 +169,9 @@ function mcp_post_details($id, $mode, $action)
 	}
 
 	$template->assign_vars([
-		'U_MCP_ACTION'			=> "$url&amp;i=main&amp;quickmod=1&amp;mode=post_details", // Use this for mode paramaters
-		'U_POST_ACTION'			=> "$url&amp;i=$id&amp;mode=post_details", // Use this for action parameters
-		'U_APPROVE_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;p=$post_id&amp;f={$post_info['forum_id']}"),
+		'U_MCP_ACTION'			=> "{$url}&amp;i=main&amp;quickmod=1&amp;mode=post_details", // Use this for mode paramaters
+		'U_POST_ACTION'			=> "{$url}&amp;i={$id}&amp;mode=post_details", // Use this for action parameters
+		'U_APPROVE_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;p={$post_id}&amp;f={$post_info['forum_id']}"),
 
 		'S_CAN_VIEWIP'			=> $auth->acl_get('m_info', $post_info['forum_id']),
 		'S_CAN_CHGPOSTER'		=> $auth->acl_get('m_chgposter', $post_info['forum_id']),
@@ -195,7 +195,7 @@ function mcp_post_details($id, $mode, $action)
 
 		'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
 
-		'RETURN_TOPIC'			=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p=$post_id") . "#p$post_id\">", '</a>'),
+		'RETURN_TOPIC'			=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p={$post_id}") . "#p{$post_id}\">", '</a>'),
 		'RETURN_FORUM'			=> sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$post_info['forum_id']}&amp;start={$start}") . '">', '</a>'),
 		'REPORTED_IMG'			=> $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
 		'UNAPPROVED_IMG'		=> $user->img('icon_topic_unapproved', $user->lang['POST_UNAPPROVED']),
@@ -214,8 +214,8 @@ function mcp_post_details($id, $mode, $action)
 		'POST_IPADDR'			=> ($auth->acl_get('m_info', $post_info['forum_id']) && request_var('lookup', '')) ? @gethostbyaddr($post_info['poster_ip']) : '',
 		'POST_ID'				=> $post_info['post_id'],
 
-		'U_LOOKUP_IP'			=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? "$url&amp;i=$id&amp;mode=$mode&amp;lookup={$post_info['poster_ip']}#ip" : '',
-		'U_WHOIS'				=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;mode=$mode&amp;action=whois&amp;p=$post_id&amp;ip={$post_info['poster_ip']}") : '',
+		'U_LOOKUP_IP'			=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? "{$url}&amp;i={$id}&amp;mode={$mode}&amp;lookup={$post_info['poster_ip']}#ip" : '',
+		'U_WHOIS'				=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;mode={$mode}&amp;action=whois&amp;p={$post_id}&amp;ip={$post_info['poster_ip']}") : '',
 	]);
 
 	// Get User Notes
@@ -243,7 +243,7 @@ function mcp_post_details($id, $mode, $action)
 	{
 		$sql = 'SELECT r.*, re.*, u.user_id, u.username
 			FROM ' . REPORTS_TABLE . ' r, ' . USERS_TABLE . ' u, ' . REPORTS_REASONS_TABLE . " re
-			WHERE r.post_id = $post_id
+			WHERE r.post_id = {$post_id}
 				AND r.reason_id = re.reason_id
 				AND u.user_id = r.user_id
 			ORDER BY r.report_time DESC";
@@ -286,7 +286,7 @@ function mcp_post_details($id, $mode, $action)
 		if ($rdns_ip_num != 'all')
 		{
 			$template->assign_vars([
-				'U_LOOKUP_ALL'	=> "$url&amp;i=main&amp;mode=post_details&amp;rdns=all"]
+				'U_LOOKUP_ALL'	=> "{$url}&amp;i=main&amp;mode=post_details&amp;rdns=all"]
 			);
 		}
 
@@ -359,8 +359,8 @@ function mcp_post_details($id, $mode, $action)
 				'NUM_POSTS'		=> $row['postings'],
 				'L_POST_S'		=> ($row['postings'] == 1) ? $user->lang['POST'] : $user->lang['POSTS'],
 
-				'U_LOOKUP_IP'	=> ($rdns_ip_num == $row['poster_ip'] || $rdns_ip_num == 'all') ? '' : "$url&amp;i=$id&amp;mode=post_details&amp;rdns={$row['poster_ip']}#ip",
-				'U_WHOIS'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;mode=$mode&amp;action=whois&amp;p=$post_id&amp;ip={$row['poster_ip']}")]
+				'U_LOOKUP_IP'	=> ($rdns_ip_num == $row['poster_ip'] || $rdns_ip_num == 'all') ? '' : "{$url}&amp;i={$id}&amp;mode=post_details&amp;rdns={$row['poster_ip']}#ip",
+				'U_WHOIS'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;mode={$mode}&amp;action=whois&amp;p={$post_id}&amp;ip={$row['poster_ip']}")]
 			);
 		}
 		$db->sql_freeresult($result);
@@ -398,7 +398,7 @@ function change_poster(&$post_info, $userdata)
 
 	$sql = 'UPDATE ' . POSTS_TABLE . "
 		SET poster_id = {$userdata['user_id']}
-		WHERE post_id = $post_id";
+		WHERE post_id = {$post_id}";
 	$db->sql_query($sql);
 
 	// Resync topic/forum if needed
@@ -462,7 +462,7 @@ function change_poster(&$post_info, $userdata)
 
 	if (file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
 	{
-		require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
+		require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
 
 		// We do some additional checks in the module to ensure it can actually be utilised
 		$error = false;

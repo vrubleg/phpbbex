@@ -43,9 +43,9 @@ if ($user->data['is_registered'])
 	$lastread_select .= ', fw.notify_status';
 }
 
-$sql = "SELECT f.* $lastread_select
-	FROM $sql_from
-	WHERE f.forum_id = $forum_id";
+$sql = "SELECT f.* {$lastread_select}
+	FROM {$sql_from}
+	WHERE f.forum_id = {$forum_id}";
 $result = $db->sql_query($sql);
 $forum_data = $db->sql_fetchrow($result);
 $db->sql_freeresult($result);
@@ -143,8 +143,8 @@ page_header($forum_data['forum_name'], true, $forum_id);
 $template->set_filenames(['body' => 'viewforum_body.html']);
 
 $template->assign_vars([
-	'U_CANONICAL' 			=> generate_board_url() . "/viewforum.php?f=$forum_id" . (($start) ? "&amp;start=$start" : ''),
-	'U_VIEW_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id" . (($start == 0) ? '' : "&amp;start=$start")),
+	'U_CANONICAL' 			=> generate_board_url() . "/viewforum.php?f={$forum_id}" . (($start) ? "&amp;start={$start}" : ''),
+	'U_VIEW_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}" . (($start == 0) ? '' : "&amp;start={$start}")),
 ]);
 
 // Not postable forum or showing active topics?
@@ -222,8 +222,8 @@ if ($sort_days)
 
 	$sql = 'SELECT COUNT(topic_id) AS num_topics
 		FROM ' . TOPICS_TABLE . "
-		WHERE forum_id = $forum_id
-			AND (topic_last_post_time >= $min_post_time
+		WHERE forum_id = {$forum_id}
+			AND (topic_last_post_time >= {$min_post_time}
 				OR topic_type = " . POST_ANNOUNCE . " OR topic_type = " . POST_GLOBAL . ")
 		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND topic_approved = 1');
 	$result = $db->sql_query($sql);
@@ -234,7 +234,7 @@ if ($sort_days)
 	{
 		$start = 0;
 	}
-	$sql_limit_time = "AND t.topic_last_post_time >= $min_post_time";
+	$sql_limit_time = "AND t.topic_last_post_time >= {$min_post_time}";
 
 	// Make sure we have information about day selection ready
 	$template->assign_var('S_SORT_DAYS', true);
@@ -306,7 +306,7 @@ $template->assign_vars([
 	'S_WATCH_FORUM_LINK'	=> $s_watching_forum['link'],
 	'S_WATCH_FORUM_TITLE'	=> $s_watching_forum['title'],
 	'S_WATCHING_FORUM'		=> $s_watching_forum['is_watching'],
-	'S_FORUM_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id" . (($start == 0) ? '' : "&amp;start=$start")),
+	'S_FORUM_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}" . (($start == 0) ? '' : "&amp;start={$start}")),
 	'S_DISPLAY_SEARCHBOX'	=> ($auth->acl_get('u_search') && $auth->acl_get('f_search', $forum_id) && $config['load_search']),
 	'S_SEARCHBOX_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'search.php'),
 	'S_SEARCH_LOCAL_HIDDEN_FIELDS'	=> build_hidden_fields($s_search_hidden_fields),
@@ -314,10 +314,10 @@ $template->assign_vars([
 	'S_IS_LOCKED'			=> ($forum_data['forum_status'] == ITEM_LOCKED),
 	'S_VIEWFORUM'			=> true,
 
-	'U_MCP_FORUM'			=> ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f=$forum_id&amp;i=main&amp;mode=forum_view", true, $user->session_id) : '',
+	'U_MCP_FORUM'			=> ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&amp;i=main&amp;mode=forum_view", true, $user->session_id) : '',
 	'U_POST_NEW_TOPIC'	=> ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=post&amp;f=' . $forum_id) : '',
-	'U_VIEW_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id" . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($start == 0) ? '' : "&amp;start=$start")),
-	'U_MARK_TOPICS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . "&amp;f=$forum_id&amp;mark=topics") : '',
+	'U_VIEW_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($start == 0) ? '' : "&amp;start={$start}")),
+	'U_MARK_TOPICS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . "&amp;f={$forum_id}&amp;mark=topics") : '',
 ]);
 
 // Grab icons
@@ -440,10 +440,10 @@ else
 // Grab just the sorted topic ids
 $sql = 'SELECT t.topic_id
 	FROM ' . TOPICS_TABLE . " t
-	WHERE $sql_where
+	WHERE {$sql_where}
 		AND t.topic_type IN (" . POST_NORMAL . ', ' . POST_STICKY . ")
-		$sql_approved
-		$sql_limit_time
+		{$sql_approved}
+		{$sql_limit_time}
 	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', t.topic_priority ' . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
@@ -546,7 +546,7 @@ if ($s_display_active)
 $total_topic_count = $topics_count + sizeof($announcement_list) - sizeof($global_announce_list);
 
 $template->assign_vars([
-	'PAGINATION'	=> generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id" . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '')), $topics_count, $config['topics_per_page'], $start),
+	'PAGINATION'	=> generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '')), $topics_count, $config['topics_per_page'], $start),
 	'PAGE_NUMBER'	=> on_page($topics_count, $config['topics_per_page'], $start),
 	'TOTAL_TOPICS'	=> ($s_display_active) ? false : (($total_topic_count == 1) ? $user->lang['VIEW_FORUM_TOPIC'] : sprintf($user->lang['VIEW_FORUM_TOPICS'], $total_topic_count))]
 );
@@ -624,7 +624,7 @@ if (sizeof($topic_list))
 
 		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $topic_forum_id));
 		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $topic_forum_id));
-		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$topic_id", true, $user->session_id) : '';
+		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t={$topic_id}", true, $user->session_id) : '';
 
 		// Send vars to template
 		$template->assign_block_vars('topicrow', [

@@ -55,8 +55,8 @@ class ucp_main
 				$topic_lists = $rowset = [];
 				if (sizeof($forum_ary))
 				{
-					$sql = "SELECT t.* $sql_select
-						FROM $sql_from
+					$sql = "SELECT t.* {$sql_select}
+						FROM {$sql_from}
 						WHERE " . $db->sql_in_set('t.forum_id', $forum_ary) . "
 							AND t.topic_type = " . POST_GLOBAL . '
 						ORDER BY t.topic_priority DESC, t.topic_time DESC';
@@ -112,10 +112,10 @@ class ucp_main
 						'S_UNREAD'			=> $unread_topic,
 
 						'U_TOPIC_AUTHOR'		=> get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-						'U_LAST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;p=" . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
+						'U_LAST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;p=" . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
 						'U_LAST_POST_AUTHOR'	=> get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-						'U_NEWEST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;view=unread") . '#unread',
-						'U_VIEW_TOPIC'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id")]
+						'U_NEWEST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;view=unread") . '#unread',
+						'U_VIEW_TOPIC'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}")]
 					);
 				}
 
@@ -217,8 +217,8 @@ class ucp_main
 					{
 						$msg = $user->lang['FORM_INVALID'];
 					}
-					$message = $msg . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=subscribed") . '">', '</a>');
-					meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=subscribed"));
+					$message = $msg . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=subscribed") . '">', '</a>');
+					meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=subscribed"));
 					trigger_error($message);
 				}
 
@@ -443,7 +443,7 @@ class ucp_main
 
 							$sql = 'UPDATE ' . DRAFTS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $draft_row) . "
-								WHERE draft_id = $draft_id
+								WHERE draft_id = {$draft_id}
 									AND user_id = " . $user->data['user_id'];
 							$db->sql_query($sql);
 
@@ -468,7 +468,7 @@ class ucp_main
 					$sql = 'SELECT d.*, f.forum_name
 						FROM ' . DRAFTS_TABLE . ' d, ' . FORUMS_TABLE . ' f
 						WHERE d.user_id = ' . $user->data['user_id'] . ' ' .
-							(($edit) ? "AND d.draft_id = $draft_id" : '') . '
+							(($edit) ? "AND d.draft_id = {$draft_id}" : '') . '
 							AND f.forum_id = d.forum_id
 						ORDER BY d.save_time DESC';
 				}
@@ -476,7 +476,7 @@ class ucp_main
 				{
 					$sql = 'SELECT * FROM ' . DRAFTS_TABLE . '
 						WHERE user_id = ' . $user->data['user_id'] . ' ' .
-							(($edit) ? "AND draft_id = $draft_id" : '') . '
+							(($edit) ? "AND draft_id = {$draft_id}" : '') . '
 							AND forum_id = 0
 							AND topic_id = 0
 						ORDER BY save_time DESC';
@@ -537,7 +537,7 @@ class ucp_main
 					else if ($pm_drafts)
 					{
 						$link_pm = true;
-						$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=compose&amp;d=" . $draft['draft_id']);
+						$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=compose&amp;d=" . $draft['draft_id']);
 					}
 
 					$template_row = [
@@ -740,7 +740,7 @@ class ucp_main
 			$folder_img = $folder_alt = $topic_type = '';
 			topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
 
-			$view_topic_url_params = "t=$topic_id";
+			$view_topic_url_params = "t={$topic_id}";
 			$view_topic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params);
 
 			// Send vars to template
@@ -765,7 +765,7 @@ class ucp_main
 				'S_DELETED_TOPIC'	=> !$row['topic_id'],
 				'S_GLOBAL_TOPIC'	=> !$forum_id,
 
-				'PAGINATION'		=> topic_generate_pagination($replies, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id")),
+				'PAGINATION'		=> topic_generate_pagination($replies, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}")),
 				'REPLIES'			=> $replies,
 				'VIEWS'				=> $row['topic_views'],
 				'TOPIC_TITLE'		=> censor_text($row['topic_title']),

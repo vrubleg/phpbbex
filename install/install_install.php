@@ -58,7 +58,7 @@ class install_install extends module
 					'BODY'			=> $lang['INSTALL_INTRO_BODY'],
 					'L_SUBMIT'		=> $lang['NEXT_STEP'],
 					'S_LANG_SELECT'	=> '<select id="language" name="language">' . $this->p_master->inst_language_select($language) . '</select>',
-					'U_ACTION'		=> $this->p_master->module_url . "?mode=$mode&amp;sub=requirements&amp;language=$language",
+					'U_ACTION'		=> $this->p_master->module_url . "?mode={$mode}&amp;sub=requirements&amp;language={$language}",
 				]);
 
 			break;
@@ -93,7 +93,7 @@ class install_install extends module
 					'BODY'		=> $lang['STAGE_CREATE_TABLE_EXPLAIN'],
 					'L_SUBMIT'	=> $lang['NEXT_STEP'],
 					'S_HIDDEN'	=> build_hidden_fields($this->get_submitted_data()),
-					'U_ACTION'	=> $this->p_master->module_url . "?mode=$mode&amp;sub=final",
+					'U_ACTION'	=> $this->p_master->module_url . "?mode={$mode}&amp;sub=final",
 				]);
 			break;
 
@@ -386,7 +386,7 @@ class install_install extends module
 
 		// And finally where do we want to go next (well today is taken isn't it :P)
 		$s_hidden_fields = '';
-		$url = (!in_array(false, $passed)) ? $this->p_master->module_url . "?mode=$mode&amp;sub=database&amp;language=$language" : $this->p_master->module_url . "?mode=$mode&amp;sub=requirements&amp;language=$language	";
+		$url = (!in_array(false, $passed)) ? $this->p_master->module_url . "?mode={$mode}&amp;sub=database&amp;language={$language}" : $this->p_master->module_url . "?mode={$mode}&amp;sub=requirements&amp;language={$language}	";
 		$submit = (!in_array(false, $passed)) ? $lang['INSTALL_START'] : $lang['INSTALL_TEST'];
 
 		$template->assign_vars([
@@ -524,7 +524,7 @@ class install_install extends module
 			}
 		}
 
-		$url = ($connect_test) ? $this->p_master->module_url . "?mode=$mode&amp;sub=administrator" : $this->p_master->module_url . "?mode=$mode&amp;sub=database";
+		$url = ($connect_test) ? $this->p_master->module_url . "?mode={$mode}&amp;sub=administrator" : $this->p_master->module_url . "?mode={$mode}&amp;sub=database";
 		$s_hidden_fields .= ($connect_test) ? '' : '<input type="hidden" name="testdb" value="true" />';
 
 		$submit = $lang['NEXT_STEP'];
@@ -688,7 +688,7 @@ class install_install extends module
 
 		$submit = $lang['NEXT_STEP'];
 
-		$url = ($passed) ? $this->p_master->module_url . "?mode=$mode&amp;sub=create_table" : $this->p_master->module_url . "?mode=$mode&amp;sub=administrator";
+		$url = ($passed) ? $this->p_master->module_url . "?mode={$mode}&amp;sub=create_table" : $this->p_master->module_url . "?mode={$mode}&amp;sub=administrator";
 		$s_hidden_fields .= ($passed) ? '' : '<input type="hidden" name="check" value="true" />';
 
 		$template->assign_vars([
@@ -813,7 +813,7 @@ class install_install extends module
 		// Set default config and post data, this applies to all DB's
 		$sql_ary = [
 			'INSERT INTO ' . $data['table_prefix'] . "config (config_name, config_value)
-				VALUES ('board_startdate', '$current_time')",
+				VALUES ('board_startdate', '{$current_time}')",
 
 			'INSERT INTO ' . $data['table_prefix'] . "config (config_name, config_value)
 				VALUES ('default_lang', '" . $db->sql_escape($data['default_lang']) . "')",
@@ -852,16 +852,16 @@ class install_install extends module
 					OR topic_last_poster_name = 'Admin'",
 
 			'UPDATE ' . $data['table_prefix'] . "users
-				SET user_regdate = $current_time",
+				SET user_regdate = {$current_time}",
 
 			'UPDATE ' . $data['table_prefix'] . "posts
-				SET post_time = $current_time, poster_ip = '" . $db->sql_escape($user_ip) . "'",
+				SET post_time = {$current_time}, poster_ip = '" . $db->sql_escape($user_ip) . "'",
 
 			'UPDATE ' . $data['table_prefix'] . "topics
-				SET topic_time = $current_time, topic_last_post_time = $current_time",
+				SET topic_time = {$current_time}, topic_last_post_time = {$current_time}",
 
 			'UPDATE ' . $data['table_prefix'] . "forums
-				SET forum_last_post_time = $current_time",
+				SET forum_last_post_time = {$current_time}",
 		];
 
 		if (extension_loaded('gd'))
@@ -1222,7 +1222,7 @@ class install_install extends module
 
 			if (is_dir($path) && file_exists($path . '/iso.txt'))
 			{
-				$lang_file = file("$path/iso.txt");
+				$lang_file = file("{$path}/iso.txt");
 
 				$lang_pack = [
 					'lang_iso'			=> basename($path),
@@ -1389,7 +1389,7 @@ class install_install extends module
 				'L_DL_DOWNLOAD'			=> $lang['DL_DOWNLOAD'],
 				'S_HIDDEN'				=> $s_hidden_fields,
 				'S_SHOW_DOWNLOAD'		=> true,
-				'U_ACTION'				=> $this->p_master->module_url . "?mode=$mode&amp;sub=$sub",
+				'U_ACTION'				=> $this->p_master->module_url . "?mode={$mode}&amp;sub={$sub}",
 			]);
 
 			// Create a lock file to indicate that there is an install in progress.

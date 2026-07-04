@@ -48,7 +48,7 @@ class ucp_groups
 
 					$sql = 'SELECT group_id, group_name, group_type
 						FROM ' . GROUPS_TABLE . "
-						WHERE group_id IN ($group_id, {$user->data['group_id']})";
+						WHERE group_id IN ({$group_id}, {$user->data['group_id']})";
 					$result = $db->sql_query($sql);
 
 					$group_row = [];
@@ -197,7 +197,7 @@ class ucp_groups
 										FROM ' . USER_GROUP_TABLE . ' ug, ' . USERS_TABLE . " u
 										WHERE ug.user_id = u.user_id
 											AND ug.group_leader = 1
-											AND ug.group_id = $group_id";
+											AND ug.group_id = {$group_id}";
 									$result = $db->sql_query($sql);
 
 									while ($row = $db->sql_fetchrow($result))
@@ -212,8 +212,8 @@ class ucp_groups
 											'GROUP_NAME'		=> htmlspecialchars_decode($group_row[$group_id]['group_name']),
 											'REQUEST_USERNAME'	=> $user->data['username'],
 
-											'U_PENDING'		=> generate_board_url() . "/ucp.php?i=groups&mode=manage&action=list&g=$group_id",
-											'U_GROUP'		=> generate_board_url() . "/memberlist.php?mode=group&g=$group_id"]
+											'U_PENDING'		=> generate_board_url() . "/ucp.php?i=groups&mode=manage&action=list&g={$group_id}",
+											'U_GROUP'		=> generate_board_url() . "/memberlist.php?mode=group&g={$group_id}"]
 										);
 
 										$messenger->send($row['user_notify_type']);
@@ -338,7 +338,7 @@ class ucp_groups
 				$sql = 'SELECT group_id, group_name, group_colour, group_desc, group_desc_uid, group_desc_bitfield, group_desc_options, group_type, group_founder_manage
 					FROM ' . GROUPS_TABLE . '
 					WHERE ' . ((sizeof($group_id_ary)) ? $db->sql_in_set('group_id', $group_id_ary, true) . ' AND ' : '') . "
-						group_type $sql_and
+						group_type {$sql_and}
 					ORDER BY group_type DESC, group_name";
 				$result = $db->sql_query($sql);
 
@@ -411,7 +411,7 @@ class ucp_groups
 				{
 					$sql = 'SELECT *
 						FROM ' . GROUPS_TABLE . "
-						WHERE group_id = $group_id";
+						WHERE group_id = {$group_id}";
 					$result = $db->sql_query($sql);
 					$group_row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
@@ -612,7 +612,7 @@ class ucp_groups
 							'GROUP_HIDDEN'		=> $type_hidden,
 
 							'U_SWATCH'			=> append_sid(PHPBB_ROOT_PATH . 'adm/swatch.php', 'form=ucp&amp;name=group_colour'),
-							'S_UCP_ACTION'		=> $this->u_action . "&amp;action=$action&amp;g=$group_id",
+							'S_UCP_ACTION'		=> $this->u_action . "&amp;action={$action}&amp;g={$group_id}",
 						]);
 
 					break;
@@ -641,7 +641,7 @@ class ucp_groups
 						// Grab the leaders - always, on every page...
 						$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_colour, u.user_regdate, u.user_posts, u.group_id, ug.group_leader, ug.user_pending
 							FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . " ug
-							WHERE ug.group_id = $group_id
+							WHERE ug.group_id = {$group_id}
 								AND u.user_id = ug.user_id
 								AND ug.group_leader = 1
 							ORDER BY ug.user_pending DESC, u.username_clean";
@@ -665,7 +665,7 @@ class ucp_groups
 						// Total number of group members (non-leaders)
 						$sql = 'SELECT COUNT(user_id) AS total_members
 							FROM ' . USER_GROUP_TABLE . "
-							WHERE group_id = $group_id
+							WHERE group_id = {$group_id}
 								AND group_leader = 0";
 						$result = $db->sql_query($sql);
 						$total_members = (int) $db->sql_fetchfield('total_members');
@@ -674,7 +674,7 @@ class ucp_groups
 						// Grab the members
 						$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_colour, u.user_regdate, u.user_posts, u.group_id, ug.group_leader, ug.user_pending
 							FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . " ug
-							WHERE ug.group_id = $group_id
+							WHERE ug.group_id = {$group_id}
 								AND u.user_id = ug.user_id
 								AND ug.group_leader = 0
 							ORDER BY ug.user_pending DESC, u.username_clean";
@@ -729,10 +729,10 @@ class ucp_groups
 							'S_LIST'			=> true,
 							'S_ACTION_OPTIONS'	=> $s_action_options,
 							'S_ON_PAGE'			=> on_page($total_members, $config['topics_per_page'], $start),
-							'PAGINATION'		=> generate_pagination($this->u_action . "&amp;action=$action&amp;g=$group_id", $total_members, $config['topics_per_page'], $start),
+							'PAGINATION'		=> generate_pagination($this->u_action . "&amp;action={$action}&amp;g={$group_id}", $total_members, $config['topics_per_page'], $start),
 
-							'U_ACTION'			=> $this->u_action . "&amp;g=$group_id",
-							'S_UCP_ACTION'		=> $this->u_action . "&amp;g=$group_id",
+							'U_ACTION'			=> $this->u_action . "&amp;g={$group_id}",
+							'S_UCP_ACTION'		=> $this->u_action . "&amp;g={$group_id}",
 							'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=ucp&amp;field=usernames'),
 						]);
 
@@ -795,7 +795,7 @@ class ucp_groups
 								{
 									$sql = 'SELECT user_id
 										FROM ' . USER_GROUP_TABLE . "
-										WHERE group_id = $group_id
+										WHERE group_id = {$group_id}
 										ORDER BY user_id";
 									$result = $db->sql_query_limit($sql, 200, $start);
 

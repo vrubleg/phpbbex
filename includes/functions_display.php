@@ -954,7 +954,7 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 		$view_forum_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id);
 		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id));
 		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id));
-		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$topic_id", true, $user->session_id) : '';
+		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t={$topic_id}", true, $user->session_id) : '';
 		$s_type_switch = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 
 		$template->assign_block_vars($tpl_loopname, [
@@ -1239,8 +1239,8 @@ function display_user_activity(&$userdata)
 		WHERE poster_id = ' . $userdata['user_id'] . "
 			AND post_postcount = 1
 			AND (post_approved = 1
-				$sql_m_approve)
-			$forum_sql
+				{$sql_m_approve})
+			{$forum_sql}
 		GROUP BY forum_id
 		ORDER BY num_posts DESC";
 	$result = $db->sql_query_limit($sql, 1);
@@ -1267,8 +1267,8 @@ function display_user_activity(&$userdata)
 		WHERE poster_id = ' . $userdata['user_id'] . "
 			AND post_postcount = 1
 			AND (post_approved = 1
-				$sql_m_approve)
-			$forum_sql_topic
+				{$sql_m_approve})
+			{$forum_sql_topic}
 		GROUP BY topic_id
 		ORDER BY num_posts DESC";
 	$result = $db->sql_query_limit($sql, 1);
@@ -1348,9 +1348,9 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 		if ($notify_status == 'unset')
 		{
 			$sql = "SELECT notify_status
-				FROM $table_sql
-				WHERE $where_sql = $match_id
-					AND user_id = $user_id";
+				FROM {$table_sql}
+				WHERE {$where_sql} = {$match_id}
+					AND user_id = {$user_id}";
 			$result = $db->sql_query($sql);
 
 			$notify_status = ($row = $db->sql_fetchrow($result)) ? $row['notify_status'] : null;
@@ -1365,21 +1365,21 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 				$uid = request_var('uid', 0);
 				$token = request_var('hash', '');
 
-				if ($token && check_link_hash($token, "{$mode}_$match_id") || confirm_box(true))
+				if ($token && check_link_hash($token, "{$mode}_{$match_id}") || confirm_box(true))
 				{
 					if ($uid != $user_id || $_GET['unwatch'] != $mode)
 					{
-						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view$mode.php", "$u_url=$match_id&amp;start=$start");
+						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
 						$message = $user->lang['ERR_UNWATCHING'] . '<br /><br />' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
 						trigger_error($message);
 					}
 
 					$sql = 'DELETE FROM ' . $table_sql . "
-						WHERE $where_sql = $match_id
-							AND user_id = $user_id";
+						WHERE {$where_sql} = {$match_id}
+							AND user_id = {$user_id}";
 					$db->sql_query($sql);
 
-					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view$mode.php", "$u_url=$match_id&amp;start=$start");
+					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
 					if (!empty($config['skip_typical_notices']))
 					{
 						redirect($redirect_url);
@@ -1422,8 +1422,8 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 				{
 					$sql = 'UPDATE ' . $table_sql . "
 						SET notify_status = " . NOTIFY_YES . "
-						WHERE $where_sql = $match_id
-							AND user_id = $user_id";
+						WHERE {$where_sql} = {$match_id}
+							AND user_id = {$user_id}";
 					$db->sql_query($sql);
 				}
 			}
@@ -1435,22 +1435,22 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 				$uid = request_var('uid', 0);
 				$token = request_var('hash', '');
 
-				if ($token && check_link_hash($token, "{$mode}_$match_id") || confirm_box(true))
+				if ($token && check_link_hash($token, "{$mode}_{$match_id}") || confirm_box(true))
 				{
 					if ($uid != $user_id || $_GET['watch'] != $mode)
 					{
-						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view$mode.php", "$u_url=$match_id&amp;start=$start");
+						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
 						$message = $user->lang['ERR_WATCHING'] . '<br /><br />' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
 						trigger_error($message);
 					}
 
 					$is_watching = true;
 
-					$sql = 'INSERT INTO ' . $table_sql . " (user_id, $where_sql, notify_status)
-						VALUES ($user_id, $match_id, " . NOTIFY_YES . ')';
+					$sql = 'INSERT INTO ' . $table_sql . " (user_id, {$where_sql}, notify_status)
+						VALUES ({$user_id}, {$match_id}, " . NOTIFY_YES . ')';
 					$db->sql_query($sql);
 
-					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view$mode.php", "$u_url=$match_id&amp;start=$start");
+					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
 					if (!empty($config['skip_typical_notices']))
 					{
 						redirect($redirect_url);
@@ -1479,7 +1479,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 			}
 		}
 
-		$s_watching['link'] = append_sid(PHPBB_ROOT_PATH . "view$mode.php", "$u_url=$match_id&amp;" . (($is_watching) ? 'unwatch' : 'watch') . "=$mode&amp;start=$start&amp;hash=" . generate_link_hash("{$mode}_$match_id"));
+		$s_watching['link'] = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;" . (($is_watching) ? 'unwatch' : 'watch') . "={$mode}&amp;start={$start}&amp;hash=" . generate_link_hash("{$mode}_{$match_id}"));
 		$s_watching['title'] = $user->lang[(($is_watching) ? 'STOP' : 'START') . '_WATCHING_' . strtoupper($mode)];
 		$s_watching['is_watching'] = $is_watching;
 	}

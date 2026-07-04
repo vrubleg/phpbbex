@@ -171,7 +171,7 @@ class merge_users
 
 		$sql = 'SELECT DISTINCT group_id
 			FROM ' . USER_GROUP_TABLE . "
-			WHERE user_id IN ($source, $target)";
+			WHERE user_id IN ({$source}, {$target})";
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -419,9 +419,9 @@ class merge_users
 				// Simple
 				$table = $this->table_name($key);
 
-				$sql[] = "UPDATE $table
-					SET $data = {$target['user_id']}
-					WHERE $data = {$source['user_id']}";
+				$sql[] = "UPDATE {$table}
+					SET {$data} = {$target['user_id']}
+					WHERE {$data} = {$source['user_id']}";
 			}
 			else if (is_null($data))
 			{
@@ -480,7 +480,7 @@ class merge_users
 						$update[$column] = $target[$types[$columns[$column]]];
 					}
 
-					$sql[] = "UPDATE $table
+					$sql[] = "UPDATE {$table}
 						SET " . $db->sql_build_array('UPDATE', $update) . '
 						WHERE ' . implode(' AND ', $where);
 				}
@@ -778,8 +778,8 @@ class merge_users
 					$sql[] = 'UPDATE ' . ACL_USERS_TABLE . '
 						SET ' . $db->sql_build_array('UPDATE', $update) . "
 						WHERE user_id = {$target['user_id']}
-							AND forum_id = $fid
-							AND auth_option_id = $id";
+							AND forum_id = {$fid}
+							AND auth_option_id = {$id}";
 				}
 			}
 		}
@@ -1052,7 +1052,7 @@ class merge_users
 		$watches = [];
 
 		$sql = "SELECT {$mode}_id, notify_status
-			FROM $table
+			FROM {$table}
 			WHERE user_id = {$target['user_id']}";
 
 		$result = $db->sql_query($sql);
@@ -1064,7 +1064,7 @@ class merge_users
 		$db->sql_freeresult($result);
 
 		$sql = "SELECT {$mode}_id, notify_status
-			FROM $table
+			FROM {$table}
 			WHERE user_id = {$source['user_id']}";
 
 		$result = $db->sql_query($sql);
@@ -1078,7 +1078,7 @@ class merge_users
 			// Don't update anything if both users are watching
 			if (!isset($watches[$id]))
 			{
-				$sql[] = "INSERT INTO $table " . $db->sql_build_array('INSERT', [
+				$sql[] = "INSERT INTO {$table} " . $db->sql_build_array('INSERT', [
 					'user_id'		=> $target['user_id'],
 					"{$mode}_id"	=> $id,
 					'notify_status'	=> 0,	// So emails are sent
@@ -1089,7 +1089,7 @@ class merge_users
 
 		// Clean up
 		$sql[] = "DELETE
-			FROM $table
+			FROM {$table}
 			WHERE user_id = {$source['user_id']}";
 
 		return $sql;
@@ -1103,7 +1103,7 @@ class merge_users
 		$marks = [];
 
 		$sql = "SELECT {$mode}_id, mark_time
-			FROM $table
+			FROM {$table}
 			WHERE user_id = {$target['user_id']}";
 
 		$result = $db->sql_query($sql);
@@ -1115,7 +1115,7 @@ class merge_users
 		$db->sql_freeresult($result);
 
 		$sql = "SELECT {$mode}_id, mark_time
-			FROM $table
+			FROM {$table}
 			WHERE user_id = {$source['user_id']}";
 
 		$result = $db->sql_query($sql);
@@ -1129,15 +1129,15 @@ class merge_users
 
 			if (isset($marks[$id]) && $time > $marks[$id]['time'])
 			{
-				$sql[] = "UPDATE $table
-					SET mark_time = $time
+				$sql[] = "UPDATE {$table}
+					SET mark_time = {$time}
 					WHERE user_id = {$target['user_id']}
-						AND {$mode}_id = $id";
+						AND {$mode}_id = {$id}";
 			}
 			else if (!isset($marks[$id]))
 			{
 				// Shouldn't mess up topics tracking without a forum_id
-				$sql[] = "INSERT INTO $table " . $db->sql_build_array('INSERT', [
+				$sql[] = "INSERT INTO {$table} " . $db->sql_build_array('INSERT', [
 					'user_id'	=> $target['user_id'],
 					"{$mode}_id"=> $id,
 					'mark_time'	=> $time,
@@ -1147,7 +1147,7 @@ class merge_users
 		$db->sql_freeresult($result);
 
 		$sql[] = "DELETE
-			FROM $table
+			FROM {$table}
 			WHERE user_id = {$source['user_id']}";
 
 		return $sql;

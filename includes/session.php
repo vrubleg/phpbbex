@@ -93,7 +93,7 @@ class phpbb_session
 		}
 
 		// Current page from phpBB root (for example: adm/index.php?i=10&b=2)
-		$page = (($page_dir) ? $page_dir . '/' : '') . $page_name . (($query_string) ? "?$query_string" : '');
+		$page = (($page_dir) ? $page_dir . '/' : '') . $page_name . (($query_string) ? "?{$query_string}" : '');
 
 		// The script path from the webroot to the current directory (for example: /phpBB3/adm/) : always prefixed with / and ends in /
 		$script_path = trim(str_replace('\\', '/', dirname($script_name)));
@@ -1238,7 +1238,7 @@ class phpbb_session
 		$sql_where .= ($user_id === (int) $this->data['user_id']) ? " AND session_id <> '" . $db->sql_escape($this->session_id) . "'" : '';
 
 		$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
-			WHERE $sql_where";
+			WHERE {$sql_where}";
 		$db->sql_query($sql);
 
 		// We're changing the password of the current user and they have a key
@@ -1437,7 +1437,7 @@ class phpbb_user extends phpbb_session
 
 		$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
-			WHERE s.style_id = $style
+			WHERE s.style_id = {$style}
 				AND t.template_id = s.template_id
 				AND c.theme_id = s.theme_id
 				AND i.imageset_id = s.imageset_id";
@@ -1451,13 +1451,13 @@ class phpbb_user extends phpbb_session
 			$style = $this->data['user_style'] = $config['default_style'];
 
 			$sql = 'UPDATE ' . USERS_TABLE . "
-				SET user_style = $style
+				SET user_style = {$style}
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
 			$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
 				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
-				WHERE s.style_id = $style
+				WHERE s.style_id = {$style}
 					AND t.template_id = s.template_id
 					AND c.theme_id = s.theme_id
 					AND i.imageset_id = s.imageset_id";
@@ -1991,7 +1991,7 @@ class phpbb_user extends phpbb_session
 
 		$sql = 'SELECT *
 			FROM ' . PROFILE_FIELDS_DATA_TABLE . "
-			WHERE user_id = $user_id";
+			WHERE user_id = {$user_id}";
 		$result = $db->sql_query_limit($sql, 1);
 		$this->profile_fields = (!($row = $db->sql_fetchrow($result))) ? [] : $row;
 		$db->sql_freeresult($result);

@@ -58,12 +58,12 @@ class erk_style_repair
 			foreach (['template', 'theme', 'imageset'] as $mode)
 			{
 				$var = $mode . '_id';
-				$subpath = ($mode != 'style') ? "$mode/" : '';
+				$subpath = ($mode != 'style') ? "{$mode}/" : '';
 
 				$result = $db->sql_query('SELECT * FROM ' . $table_prefix . 'styles_' . $mode);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
-				if ($row && file_exists(PHPBB_ROOT_PATH . "styles/{$mode}_path/$subpath$mode.cfg"))
+				if ($row && file_exists(PHPBB_ROOT_PATH . "styles/{$mode}_path/{$subpath}{$mode}.cfg"))
 				{
 					// There already is one of this item in the database, so no need to add it.
 					${$var} = $row[$var];
@@ -81,9 +81,9 @@ class erk_style_repair
 				{
 					while (($file = readdir($dp)) !== false)
 					{
-						if ($file[0] != '.' && file_exists(PHPBB_ROOT_PATH . "styles/$file/$subpath$mode.cfg"))
+						if ($file[0] != '.' && file_exists(PHPBB_ROOT_PATH . "styles/{$file}/{$subpath}{$mode}.cfg"))
 						{
-							if ($cfg = file(PHPBB_ROOT_PATH . "styles/$file/$subpath$mode.cfg"))
+							if ($cfg = file(PHPBB_ROOT_PATH . "styles/{$file}/{$subpath}{$mode}.cfg"))
 							{
 								$items = parse_cfg_file('', $cfg);
 								$name = (isset($items['name'])) ? trim($items['name']) : false;

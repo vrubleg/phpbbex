@@ -133,8 +133,8 @@ class acp_inactive
 						}
 
 						// For activate we really need to redirect, else a refresh can result in users being deactivated again
-						$u_action = $this->u_action . "&amp;$u_sort_param&amp;start=$start";
-						$u_action .= ($per_page != $config['topics_per_page']) ? "&amp;users_per_page=$per_page" : '';
+						$u_action = $this->u_action . "&amp;{$u_sort_param}&amp;start={$start}";
+						$u_action .= ($per_page != $config['topics_per_page']) ? "&amp;users_per_page={$per_page}" : '';
 
 						redirect($u_action);
 					}
@@ -229,8 +229,8 @@ class acp_inactive
 					$db->sql_freeresult($result);
 
 					// For remind we really need to redirect, else a refresh can result in more than one reminder
-					$u_action = $this->u_action . "&amp;$u_sort_param&amp;start=$start";
-					$u_action .= ($per_page != $config['topics_per_page']) ? "&amp;users_per_page=$per_page" : '';
+					$u_action = $this->u_action . "&amp;{$u_sort_param}&amp;start={$start}";
+					$u_action .= ($per_page != $config['topics_per_page']) ? "&amp;users_per_page={$per_page}" : '';
 
 					redirect($u_action);
 
@@ -285,10 +285,10 @@ class acp_inactive
 			'S_SORT_KEY'	=> $s_sort_key,
 			'S_SORT_DIR'	=> $s_sort_dir,
 			'S_ON_PAGE'		=> on_page($inactive_count, $per_page, $start),
-			'PAGINATION'	=> generate_pagination($this->u_action . "&amp;$u_sort_param&amp;users_per_page=$per_page", $inactive_count, $per_page, $start, true),
+			'PAGINATION'	=> generate_pagination($this->u_action . "&amp;{$u_sort_param}&amp;users_per_page={$per_page}", $inactive_count, $per_page, $start, true),
 			'USERS_PER_PAGE'	=> $per_page,
 
-			'U_ACTION'		=> $this->u_action . "&amp;$u_sort_param&amp;users_per_page=$per_page&amp;start=$start",
+			'U_ACTION'		=> $this->u_action . "&amp;{$u_sort_param}&amp;users_per_page={$per_page}&amp;start={$start}",
 		]);
 
 		$this->tpl_name = 'acp_inactive';

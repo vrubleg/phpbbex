@@ -93,7 +93,7 @@ class acp_prune
 				$sql = 'SELECT forum_id, forum_name
 					FROM ' . FORUMS_TABLE . '
 					WHERE forum_type = ' . FORUM_POST . "
-						$sql_forum
+						{$sql_forum}
 					ORDER BY left_id ASC";
 				$result = $db->sql_query($sql);
 
@@ -424,7 +424,7 @@ class acp_prune
 			FROM ' . USERS_TABLE . '
 			WHERE user_id <> ' . ANONYMOUS . '
 				AND user_type <> ' . USER_FOUNDER . "
-			$where_sql";
+			{$where_sql}";
 		$result = $db->sql_query($sql);
 
 		$where_sql = '';

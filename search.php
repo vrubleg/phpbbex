@@ -150,7 +150,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 		$sql = 'SELECT user_id
 			FROM ' . USERS_TABLE . "
-			WHERE $sql_where
+			WHERE {$sql_where}
 				AND user_type <> " . USER_IGNORE;
 		$result = $db->sql_query_limit($sql, 100);
 
@@ -164,7 +164,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 		$sql = 'SELECT 1 as guest_post
 			FROM ' . POSTS_TABLE . "
-			WHERE $sql_where
+			WHERE {$sql_where}
 				AND poster_id = " . ANONYMOUS;
 		$result = $db->sql_query_limit($sql, 1);
 		$found_guest_post = $db->sql_fetchfield('guest_post');
@@ -213,7 +213,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		FROM ' . FORUMS_TABLE . ' f
 		LEFT JOIN ' . FORUMS_ACCESS_TABLE . " fa ON (fa.forum_id = f.forum_id
 			AND fa.session_id = '" . $db->sql_escape($user->session_id) . "')
-		$not_in_fid
+		{$not_in_fid}
 		ORDER BY f.left_id";
 	$result = $db->sql_query($sql);
 
@@ -287,7 +287,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
+	require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
 
 	// We do some additional checks in the module to ensure it can actually be utilised
 	$error = false;
@@ -342,7 +342,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$sql = 'SELECT t.topic_last_post_time, t.topic_id
 					FROM ' . TOPICS_TABLE . " t
 					WHERE t.topic_moved_id = 0
-						$last_post_time_sql
+						{$last_post_time_sql}
 						" . str_replace(['p.', 'post_'], ['t.', 'topic_'], $m_approve_fid_sql) . '
 						' . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '') . '
 					ORDER BY t.topic_last_post_time DESC';
@@ -378,26 +378,26 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				if ($show_results == 'posts')
 				{
 					$sql = "SELECT p.post_id
-						FROM $sort_join" . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
+						FROM {$sort_join}" . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
 						WHERE t.topic_replies = 0
 							AND p.topic_id = t.topic_id
-							$last_post_time
-							$m_approve_fid_sql
+							{$last_post_time}
+							{$m_approve_fid_sql}
 							" . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '') . "
-							$sql_sort";
+							{$sql_sort}";
 					$field = 'post_id';
 				}
 				else
 				{
 					$sql = 'SELECT DISTINCT ' . $sort_by_sql[$sort_key] . ", p.topic_id
-						FROM $sort_join" . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
+						FROM {$sort_join}" . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
 						WHERE t.topic_replies = 0
 							AND t.topic_moved_id = 0
 							AND p.topic_id = t.topic_id
-							$last_post_time
-							$m_approve_fid_sql
+							{$last_post_time}
+							{$m_approve_fid_sql}
 							" . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '') . "
-						$sql_sort";
+						{$sql_sort}";
 					$field = 'topic_id';
 				}
 			break;
@@ -435,9 +435,9 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					$sql = 'SELECT p.post_id
 						FROM ' . POSTS_TABLE . ' p
 						WHERE p.post_time > ' . $user->data['session_last_visit'] . "
-							$m_approve_fid_sql
+							{$m_approve_fid_sql}
 							" . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '') . "
-						$sql_sort";
+						{$sql_sort}";
 					$field = 'post_id';
 				}
 				else
@@ -448,7 +448,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 							AND t.topic_moved_id = 0
 							' . str_replace(['p.', 'post_'], ['t.', 'topic_'], $m_approve_fid_sql) . '
 							' . ((sizeof($ex_fid_ary)) ? 'AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '') . "
-						$sql_sort";
+						{$sql_sort}";
 /*
 		[Fix] queued replies missing from "view new posts" (Bug #42705 - Patch by Paul)
 		- Creates temporary table, query is far from optimized
@@ -674,7 +674,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		{
 			$template->assign_vars([
 				'SEARCH_TOPIC'		=> censor_text($row['topic_title']),
-				'U_SEARCH_TOPIC'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit=$u_hilit" : '')),
+				'U_SEARCH_TOPIC'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit={$u_hilit}" : '')),
 			]);
 		}
 	}
@@ -701,7 +701,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					LEFT JOIN ' . TOPICS_TABLE . ' t ON (p.topic_id = t.topic_id)
 					LEFT JOIN ' . FORUMS_TABLE . ' f ON (p.forum_id = f.forum_id)
 					LEFT JOIN ' . USERS_TABLE . " u ON (p.poster_id = u.user_id)
-				WHERE $sql_where";
+				WHERE {$sql_where}";
 		}
 		else
 		{
@@ -729,9 +729,9 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				}
 			}
 
-			$sql = "SELECT $sql_select
-				FROM $sql_from
-				WHERE $sql_where";
+			$sql = "SELECT {$sql_select}
+				FROM {$sql_from}
+				WHERE {$sql_where}";
 		}
 		$sql .= ' ORDER BY ' . $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC');
 		$result = $db->sql_query($sql);
@@ -918,7 +918,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			$result_topic_id = $row['topic_id'];
 			$topic_title = censor_text($row['topic_title']);
 
-			$view_topic_url_params = "t=$result_topic_id" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit=$u_hilit" : '');
+			$view_topic_url_params = "t={$result_topic_id}" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit={$u_hilit}" : '');
 			$view_topic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params);
 
 			$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
@@ -937,7 +937,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 				$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id));
 				$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id));
-				$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $user->session_id) : '';
+				$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t={$result_topic_id}", true, $user->session_id) : '';
 
 				$row['topic_title'] = preg_replace('#(?!<.*)(?<!\w)(' . $hilit . ')(?!\w|[^<>]*(?:</s(?:cript|tyle))?>)#is', '<span class="posthilit">$1</span>', $row['topic_title']);
 
@@ -992,7 +992,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					$template->assign_block_vars('searchresults', [
 						'S_IGNORE_POST' => true,
 
-						'L_IGNORE_POST' => sprintf($user->lang['POST_BY_FOE'], $row['username'], "<a href=\"$u_search&amp;start=$start&amp;p=" . $row['post_id'] . '&amp;view=show#p' . $row['post_id'] . '">', '</a>')]
+						'L_IGNORE_POST' => sprintf($user->lang['POST_BY_FOE'], $row['username'], "<a href=\"{$u_search}&amp;start={$start}&amp;p=" . $row['post_id'] . '&amp;view=show#p' . $row['post_id'] . '">', '</a>')]
 					);
 
 					continue;

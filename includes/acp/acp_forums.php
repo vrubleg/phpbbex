@@ -228,7 +228,7 @@ class acp_forums
 
 				$sql = 'SELECT *
 					FROM ' . FORUMS_TABLE . "
-					WHERE forum_id = $forum_id";
+					WHERE forum_id = {$forum_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -258,7 +258,7 @@ class acp_forums
 
 				$sql = 'SELECT forum_name, forum_topics_real
 					FROM ' . FORUMS_TABLE . "
-					WHERE forum_id = $forum_id";
+					WHERE forum_id = {$forum_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -303,13 +303,13 @@ class acp_forums
 
 						$start += $batch_size;
 
-						$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;f=$forum_id&amp;action=sync&amp;start=$start&amp;topics_done=$topics_done&amp;total={$row['forum_topics_real']}";
+						$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;f={$forum_id}&amp;action=sync&amp;start={$start}&amp;topics_done={$topics_done}&amp;total={$row['forum_topics_real']}";
 
 						meta_refresh(0, $url);
 
 						$template->assign_vars([
-							'U_PROGRESS_BAR'		=> $this->u_action . "&amp;action=progress_bar&amp;start=$topics_done&amp;total={$row['forum_topics_real']}",
-							'UA_PROGRESS_BAR'		=> addslashes($this->u_action . "&amp;action=progress_bar&amp;start=$topics_done&amp;total={$row['forum_topics_real']}"),
+							'U_PROGRESS_BAR'		=> $this->u_action . "&amp;action=progress_bar&amp;start={$topics_done}&amp;total={$row['forum_topics_real']}",
+							'UA_PROGRESS_BAR'		=> addslashes($this->u_action . "&amp;action=progress_bar&amp;start={$topics_done}&amp;total={$row['forum_topics_real']}"),
 							'S_CONTINUE_SYNC'		=> true,
 							'L_PROGRESS_EXPLAIN'	=> sprintf($user->lang['SYNC_IN_PROGRESS_EXPLAIN'], $topics_done, $row['forum_topics_real']),
 						]);
@@ -318,7 +318,7 @@ class acp_forums
 					}
 				}
 
-				$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;f=$forum_id&amp;action=sync_forum";
+				$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;f={$forum_id}&amp;action=sync_forum";
 				meta_refresh(0, $url);
 
 				$template->assign_vars([
@@ -336,7 +336,7 @@ class acp_forums
 
 				$sql = 'SELECT forum_name, forum_type
 					FROM ' . FORUMS_TABLE . "
-					WHERE forum_id = $forum_id";
+					WHERE forum_id = {$forum_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -516,7 +516,7 @@ class acp_forums
 				$sql = 'SELECT forum_id
 					FROM ' . FORUMS_TABLE . '
 					WHERE forum_type = ' . FORUM_POST . "
-						AND forum_id <> $forum_id";
+						AND forum_id <> {$forum_id}";
 				$result = $db->sql_query_limit($sql, 1);
 
 				$postable_forum_exists = false;
@@ -585,7 +585,7 @@ class acp_forums
 					'S_ADD_ACTION'		=> ($action == 'add'),
 
 					'U_BACK'		=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
-					'U_EDIT_ACTION'	=> $this->u_action . "&amp;parent_id={$this->parent_id}&amp;action=$action&amp;f=$forum_id",
+					'U_EDIT_ACTION'	=> $this->u_action . "&amp;parent_id={$this->parent_id}&amp;action={$action}&amp;f={$forum_id}",
 
 					'L_COPY_PERMISSIONS_EXPLAIN'	=> $user->lang['COPY_PERMISSIONS_' . strtoupper($action) . '_EXPLAIN'],
 					'L_TITLE'						=> $user->lang[$this->page_title],
@@ -667,7 +667,7 @@ class acp_forums
 				$sql = 'SELECT forum_id
 					FROM ' . FORUMS_TABLE . '
 					WHERE forum_type = ' . FORUM_POST . "
-						AND forum_id <> $forum_id";
+						AND forum_id <> {$forum_id}";
 				$result = $db->sql_query_limit($sql, 1);
 
 				if ($db->sql_fetchrow($result))
@@ -682,7 +682,7 @@ class acp_forums
 
 				$template->assign_vars([
 					'S_DELETE_FORUM'		=> true,
-					'U_ACTION'				=> $this->u_action . "&amp;parent_id={$parent_id}&amp;action=delete&amp;f=$forum_id",
+					'U_ACTION'				=> $this->u_action . "&amp;parent_id={$parent_id}&amp;action=delete&amp;f={$forum_id}",
 					'U_BACK'				=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
 
 					'FORUM_NAME'			=> $forum_data['forum_name'],
@@ -757,7 +757,7 @@ class acp_forums
 
 		$sql = 'SELECT *
 			FROM ' . FORUMS_TABLE . "
-			WHERE parent_id = $this->parent_id
+			WHERE parent_id = {$this->parent_id}
 			ORDER BY left_id";
 		$result = $db->sql_query($sql);
 
@@ -785,7 +785,7 @@ class acp_forums
 					}
 				}
 
-				$url = $this->u_action . "&amp;parent_id=$this->parent_id&amp;f={$row['forum_id']}";
+				$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;f={$row['forum_id']}";
 
 				$template->assign_block_vars('forums', [
 					'FOLDER_IMAGE'		=> $folder_image,
@@ -846,14 +846,14 @@ class acp_forums
 
 		$sql = 'SELECT *
 			FROM ' . FORUMS_TABLE . "
-			WHERE forum_id = $forum_id";
+			WHERE forum_id = {$forum_id}";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
 		if (!$row)
 		{
-			trigger_error("Forum #$forum_id does not exist", E_USER_ERROR);
+			trigger_error("Forum #{$forum_id} does not exist", E_USER_ERROR);
 		}
 
 		return $row;
@@ -1148,7 +1148,7 @@ class acp_forums
 						$db->sql_freeresult($result);
 
 						$sql = 'UPDATE ' . FORUMS_TABLE . "
-							SET parent_id = $subforums_to_id
+							SET parent_id = {$subforums_to_id}
 							WHERE parent_id = {$row['forum_id']}";
 						$db->sql_query($sql);
 					}
@@ -1257,14 +1257,14 @@ class acp_forums
 
 		// Resync parents
 		$sql = 'UPDATE ' . FORUMS_TABLE . "
-			SET right_id = right_id - $diff, forum_parents = ''
+			SET right_id = right_id - {$diff}, forum_parents = ''
 			WHERE left_id < " . $from_data['right_id'] . "
 				AND right_id > " . $from_data['right_id'];
 		$db->sql_query($sql);
 
 		// Resync righthand side of tree
 		$sql = 'UPDATE ' . FORUMS_TABLE . "
-			SET left_id = left_id - $diff, right_id = right_id - $diff, forum_parents = ''
+			SET left_id = left_id - {$diff}, right_id = right_id - {$diff}, forum_parents = ''
 			WHERE left_id > " . $from_data['right_id'];
 		$db->sql_query($sql);
 
@@ -1275,14 +1275,14 @@ class acp_forums
 
 			// Resync new parents
 			$sql = 'UPDATE ' . FORUMS_TABLE . "
-				SET right_id = right_id + $diff, forum_parents = ''
+				SET right_id = right_id + {$diff}, forum_parents = ''
 				WHERE " . $to_data['right_id'] . ' BETWEEN left_id AND right_id
 					AND ' . $db->sql_in_set('forum_id', $moved_ids, true);
 			$db->sql_query($sql);
 
 			// Resync the righthand side of the tree
 			$sql = 'UPDATE ' . FORUMS_TABLE . "
-				SET left_id = left_id + $diff, right_id = right_id + $diff, forum_parents = ''
+				SET left_id = left_id + {$diff}, right_id = right_id + {$diff}, forum_parents = ''
 				WHERE left_id > " . $to_data['right_id'] . '
 					AND ' . $db->sql_in_set('forum_id', $moved_ids, true);
 			$db->sql_query($sql);
@@ -1312,7 +1312,7 @@ class acp_forums
 		}
 
 		$sql = 'UPDATE ' . FORUMS_TABLE . "
-			SET left_id = left_id $diff, right_id = right_id $diff, forum_parents = ''
+			SET left_id = left_id {$diff}, right_id = right_id {$diff}, forum_parents = ''
 			WHERE " . $db->sql_in_set('forum_id', $moved_ids);
 		$db->sql_query($sql);
 
@@ -1330,9 +1330,9 @@ class acp_forums
 
 		foreach ($table_ary as $table)
 		{
-			$sql = "UPDATE $table
-				SET forum_id = $to_id
-				WHERE forum_id = $from_id";
+			$sql = "UPDATE {$table}
+				SET forum_id = {$to_id}
+				WHERE forum_id = {$from_id}";
 			$db->sql_query($sql);
 		}
 		unset($table_ary);
@@ -1341,8 +1341,8 @@ class acp_forums
 
 		foreach ($table_ary as $table)
 		{
-			$sql = "DELETE FROM $table
-				WHERE forum_id = $from_id";
+			$sql = "DELETE FROM {$table}
+				WHERE forum_id = {$from_id}";
 			$db->sql_query($sql);
 		}
 
@@ -1465,7 +1465,7 @@ class acp_forums
 
 					$sql = 'SELECT forum_id
 						FROM ' . FORUMS_TABLE . "
-						WHERE parent_id = $forum_id";
+						WHERE parent_id = {$forum_id}";
 					$result = $db->sql_query($sql);
 
 					while ($row = $db->sql_fetchrow($result))
@@ -1478,21 +1478,21 @@ class acp_forums
 					$forum_data = $this->get_forum_info($forum_id);
 
 					$sql = 'UPDATE ' . FORUMS_TABLE . "
-						SET parent_id = $subforums_to_id
-						WHERE parent_id = $forum_id";
+						SET parent_id = {$subforums_to_id}
+						WHERE parent_id = {$forum_id}";
 					$db->sql_query($sql);
 
 					$diff = 2;
 					$sql = 'DELETE FROM ' . FORUMS_TABLE . "
-						WHERE forum_id = $forum_id";
+						WHERE forum_id = {$forum_id}";
 					$db->sql_query($sql);
 
 					$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . "
-						WHERE forum_id = $forum_id";
+						WHERE forum_id = {$forum_id}";
 					$db->sql_query($sql);
 
 					$sql = 'DELETE FROM ' . ACL_USERS_TABLE . "
-						WHERE forum_id = $forum_id";
+						WHERE forum_id = {$forum_id}";
 					$db->sql_query($sql);
 				}
 			}
@@ -1506,26 +1506,26 @@ class acp_forums
 		{
 			$diff = 2;
 			$sql = 'DELETE FROM ' . FORUMS_TABLE . "
-				WHERE forum_id = $forum_id";
+				WHERE forum_id = {$forum_id}";
 			$db->sql_query($sql);
 
 			$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . "
-				WHERE forum_id = $forum_id";
+				WHERE forum_id = {$forum_id}";
 			$db->sql_query($sql);
 
 			$sql = 'DELETE FROM ' . ACL_USERS_TABLE . "
-				WHERE forum_id = $forum_id";
+				WHERE forum_id = {$forum_id}";
 			$db->sql_query($sql);
 		}
 
 		// Resync tree
 		$sql = 'UPDATE ' . FORUMS_TABLE . "
-			SET right_id = right_id - $diff
+			SET right_id = right_id - {$diff}
 			WHERE left_id < {$forum_data['right_id']} AND right_id > {$forum_data['right_id']}";
 		$db->sql_query($sql);
 
 		$sql = 'UPDATE ' . FORUMS_TABLE . "
-			SET left_id = left_id - $diff, right_id = right_id - $diff
+			SET left_id = left_id - {$diff}, right_id = right_id - {$diff}
 			WHERE left_id > {$forum_data['right_id']}";
 		$db->sql_query($sql);
 
@@ -1611,7 +1611,7 @@ class acp_forums
 		// Select then delete all attachments
 		$sql = 'SELECT a.topic_id
 			FROM ' . POSTS_TABLE . ' p, ' . ATTACHMENTS_TABLE . " a
-			WHERE p.forum_id = $forum_id
+			WHERE p.forum_id = {$forum_id}
 				AND a.in_message = 0
 				AND a.topic_id = p.topic_id";
 		$result = $db->sql_query($sql);
@@ -1657,13 +1657,13 @@ class acp_forums
 
 		$sql = 'DELETE ' . POSTS_TABLE;
 		$sql_using = "\nFROM " . POSTS_TABLE;
-		$sql_where = "\nWHERE " . POSTS_TABLE . ".forum_id = $forum_id\n";
+		$sql_where = "\nWHERE " . POSTS_TABLE . ".forum_id = {$forum_id}\n";
 
 		foreach ($tables_ary as $table => $field)
 		{
-			$sql .= ", $table ";
-			$sql_using .= ", $table ";
-			$sql_where .= "\nAND $table.$field = " . POSTS_TABLE . ".$field";
+			$sql .= ", {$table} ";
+			$sql_using .= ", {$table} ";
+			$sql_where .= "\nAND {$table}.{$field} = " . POSTS_TABLE . ".{$field}";
 		}
 
 		$db->sql_query($sql . $sql_using . $sql_where);
@@ -1672,7 +1672,7 @@ class acp_forums
 
 		foreach ($table_ary as $table)
 		{
-			$db->sql_query("DELETE FROM $table WHERE forum_id = $forum_id");
+			$db->sql_query("DELETE FROM {$table} WHERE forum_id = {$forum_id}");
 		}
 
 		// Set forum ids to 0
@@ -1680,7 +1680,7 @@ class acp_forums
 
 		foreach ($table_ary as $table)
 		{
-			$db->sql_query("UPDATE $table SET forum_id = 0 WHERE forum_id = $forum_id");
+			$db->sql_query("UPDATE {$table} SET forum_id = 0 WHERE forum_id = {$forum_id}");
 		}
 
 		// Adjust users post counts

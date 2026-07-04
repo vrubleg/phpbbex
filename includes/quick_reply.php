@@ -98,8 +98,8 @@ if ($mode != 'post' && $config['allow_topic_notify'] && $user->data['is_register
 $notify_set			= ($config['allow_topic_notify'] && $user->data['is_registered'] && !$main_data['notify_set']) ? $user->data['user_notify'] : $main_data['notify_set'];
 $notify_checked		= ($mode == 'post') ? $user->data['user_notify'] : $notify_set;
 
-$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode" . (($mode == 'post') ? "&amp;f=$forum_id" : ''));
-$s_action .= (isset($topic_id) && $topic_id) ? "&amp;t=$topic_id" : '';
+$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode={$mode}" . (($mode == 'post') ? "&amp;f={$forum_id}" : ''));
+$s_action .= (isset($topic_id) && $topic_id) ? "&amp;t={$topic_id}" : '';
 
 // Visual Confirmation
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])

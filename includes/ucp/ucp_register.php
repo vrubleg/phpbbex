@@ -266,7 +266,7 @@ class ucp_register
 						'WELCOME_MSG'	=> htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
 						'USERNAME'		=> htmlspecialchars_decode($data['username']),
 						'PASSWORD'		=> htmlspecialchars_decode($data['new_password']),
-						'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u=$user_id&k=$user_actkey"]
+						'U_ACTIVATE'	=> "{$server_url}/ucp.php?mode=activate&u={$user_id}&k={$user_actkey}"]
 					);
 
 					$messenger->send(NOTIFY_EMAIL);
@@ -298,8 +298,8 @@ class ucp_register
 
 							$messenger->assign_vars([
 								'USERNAME'			=> htmlspecialchars_decode($data['username']),
-								'U_USER_DETAILS'	=> "$server_url/memberlist.php?mode=viewprofile&u=$user_id",
-								'U_ACTIVATE'		=> "$server_url/ucp.php?mode=activate&u=$user_id&k=$user_actkey"]
+								'U_USER_DETAILS'	=> "{$server_url}/memberlist.php?mode=viewprofile&u={$user_id}",
+								'U_ACTIVATE'		=> "{$server_url}/ucp.php?mode=activate&u={$user_id}&k={$user_actkey}"]
 							);
 
 							$messenger->send($row['user_notify_type']);

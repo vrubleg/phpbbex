@@ -937,10 +937,10 @@ function phpbb_own_realpath($path)
 
 	foreach ($bits as $i => $bit)
 	{
-		if (@is_dir("$resolved/$bit") || ($i == $max && @is_file("$resolved/$bit")))
+		if (@is_dir("{$resolved}/{$bit}") || ($i == $max && @is_file("{$resolved}/{$bit}")))
 		{
 			// Path Exists
-			if ($symlink_resolve && is_link("$resolved/$bit") && ($link = readlink("$resolved/$bit")))
+			if ($symlink_resolve && is_link("{$resolved}/{$bit}") && ($link = readlink("{$resolved}/{$bit}")))
 			{
 				// Resolved a symlink.
 				$resolved = $link . (($i == $max) ? '' : '/');
@@ -1078,7 +1078,7 @@ function style_select($default = '', $all = false)
 	$sql_where = (!$all) ? 'WHERE style_active = 1 ' : '';
 	$sql = 'SELECT style_id, style_name
 		FROM ' . STYLES_TABLE . "
-		$sql_where
+		{$sql_where}
 		ORDER BY style_name";
 	$result = $db->sql_query($sql);
 
@@ -1210,7 +1210,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 			$sql = 'UPDATE ' . TOPICS_TRACK_TABLE . '
 				SET mark_time = ' . ($post_time ?: time()) . "
 				WHERE user_id = {$user->data['user_id']}
-					AND topic_id = $topic_id";
+					AND topic_id = {$topic_id}";
 			$db->sql_query($sql);
 
 			// insert row
@@ -1342,7 +1342,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 			$sql = 'SELECT forum_id, mark_time
 				FROM ' . FORUMS_TRACK_TABLE . "
 				WHERE user_id = {$user->data['user_id']}
-					AND forum_id = $forum_id";
+					AND forum_id = {$forum_id}";
 			$result = $db->sql_query($sql);
 
 			$mark_time = [];
@@ -1402,23 +1402,23 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 			'LEFT_JOIN'		=> [
 				[
 					'FROM'	=> [TOPICS_TRACK_TABLE => 'tt'],
-					'ON'	=> "tt.user_id = $user_id AND t.topic_id = tt.topic_id",
+					'ON'	=> "tt.user_id = {$user_id} AND t.topic_id = tt.topic_id",
 				],
 				[
 					'FROM'	=> [FORUMS_TRACK_TABLE => 'ft'],
-					'ON'	=> "ft.user_id = $user_id AND t.forum_id = ft.forum_id",
+					'ON'	=> "ft.user_id = {$user_id} AND t.forum_id = ft.forum_id",
 				],
 			],
 
 			'WHERE'			=> "
-				 t.topic_last_post_time > $last_mark AND
+				 t.topic_last_post_time > {$last_mark} AND
 				(
 				(tt.mark_time IS NOT NULL AND t.topic_last_post_time > tt.mark_time) OR
 				(tt.mark_time IS NULL AND ft.mark_time IS NOT NULL AND t.topic_last_post_time > ft.mark_time) OR
 				(tt.mark_time IS NULL AND ft.mark_time IS NULL)
 				)
-				$sql_extra
-				$sql_sort",
+				{$sql_extra}
+				{$sql_sort}",
 		];
 
 		$sql = $db->sql_build_query('SELECT', $sql_array);
@@ -2045,12 +2045,12 @@ function generate_link_hash($link_name)
 {
 	global $user;
 
-	if (!isset($user->data["hash_$link_name"]))
+	if (!isset($user->data["hash_{$link_name}"]))
 	{
-		$user->data["hash_$link_name"] = substr(sha1($user->data['user_form_salt'] . $link_name), 0, 8);
+		$user->data["hash_{$link_name}"] = substr(sha1($user->data['user_form_salt'] . $link_name), 0, 8);
 	}
 
-	return $user->data["hash_$link_name"];
+	return $user->data["hash_{$link_name}"];
 }
 
 /**
@@ -2783,7 +2783,7 @@ function format_backtrace($backtrace)
 		$output .= '<b>LINE:</b> ' . ((!empty($trace['line'])) ? $trace['line'] : '') . '<br />';
 
 		$output .= '<b>CALL:</b> ' . htmlspecialchars($trace['class'] . $trace['type'] . $trace['function']);
-		$output .= '(' . (($argument !== '') ? "'$argument'" : '') . ')<br />';
+		$output .= '(' . (($argument !== '') ? "'{$argument}'" : '') . ')<br />';
 	}
 
 	return $output;
@@ -2831,19 +2831,19 @@ function get_preg_expression($mode)
 			$inline = ($mode == 'url') ? ')' : '';
 			$scheme = ($mode == 'url') ? '[a-z\d+\-.]' : '[a-z\d+]'; // avoid automatic parsing of "word" in "last word.http://..."
 			// generated with regex generation file in the develop folder
-			return "[a-z]$scheme*:/{2}(?:(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})+|[0-9.]+|\[[\pLa-z0-9.]+:[\pLa-z0-9.]+:[\pLa-z0-9.:]+\])(?::\d*)?(?:/(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?";
+			return "[a-z]{$scheme}*:/{2}(?:(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})+|[0-9.]+|\[[\pLa-z0-9.]+:[\pLa-z0-9.]+:[\pLa-z0-9.:]+\])(?::\d*)?(?:/(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?";
 		break;
 
 		case 'www_url':
 		case 'www_url_inline':
 			$inline = ($mode == 'www_url') ? ')' : '';
-			return "www\.(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})+(?::\d*)?(?:/(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?";
+			return "www\.(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})+(?::\d*)?(?:/(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?";
 		break;
 
 		case 'relative_url':
 		case 'relative_url_inline':
 			$inline = ($mode == 'relative_url') ? ')' : '';
-			return "(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})*(?:/(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?";
+			return "(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})*(?:/(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?";
 		break;
 
 		case 'table_prefix':

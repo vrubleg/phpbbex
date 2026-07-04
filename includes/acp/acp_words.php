@@ -52,7 +52,7 @@ class acp_words
 
 				$sql = 'SELECT *
 					FROM ' . WORDS_TABLE . "
-					WHERE word_id = $word_id";
+					WHERE word_id = {$word_id}";
 				$result = $db->sql_query($sql);
 				$word_info = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -130,13 +130,13 @@ class acp_words
 				{
 					$sql = 'SELECT word
 						FROM ' . WORDS_TABLE . "
-						WHERE word_id = $word_id";
+						WHERE word_id = {$word_id}";
 					$result = $db->sql_query($sql);
 					$deleted_word = $db->sql_fetchfield('word');
 					$db->sql_freeresult($result);
 
 					$sql = 'DELETE FROM ' . WORDS_TABLE . "
-						WHERE word_id = $word_id";
+						WHERE word_id = {$word_id}";
 					$db->sql_query($sql);
 
 					$cache->destroy('_word_censors');

@@ -351,7 +351,7 @@ function decode_message(&$message, $bbcode_uid = '')
 
 	if ($bbcode_uid)
 	{
-		$match = ['<br />', "[/*:m:$bbcode_uid]", ":u:$bbcode_uid", ":o:$bbcode_uid", ":$bbcode_uid"];
+		$match = ['<br />', "[/*:m:{$bbcode_uid}]", ":u:{$bbcode_uid}", ":o:{$bbcode_uid}", ":{$bbcode_uid}"];
 		$replace = ["\n", '', '', '', ''];
 	}
 	else
@@ -378,7 +378,7 @@ function strip_bbcode(&$text, $uid = '')
 		$uid = '[0-9a-z]{5,}';
 	}
 
-	$text = preg_replace("#\[\/?[a-z0-9\*\+\-]+(?:=(?:&quot;.*&quot;|[^\]]*))?(?::[a-z])?(\:$uid)\]#", ' ', $text);
+	$text = preg_replace("#\[\/?[a-z0-9\*\+\-]+(?:=(?:&quot;.*&quot;|[^\]]*))?(?::[a-z])?(\:{$uid})\]#", ' ', $text);
 
 	$match = get_preg_expression('bbcode_htm');
 	$replace = ['\1', '\1', '\2', '\1', '', ''];
@@ -615,7 +615,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 	$text	= htmlspecialchars($text);
 	$append	= htmlspecialchars($append);
 
-	$html	= "$whitespace<!-- $tag --><a$attrs href=\"$url\">$text</a><!-- $tag -->$append";
+	$html	= "{$whitespace}<!-- {$tag} --><a{$attrs} href=\"{$url}\">{$text}</a><!-- {$tag} -->{$append}";
 
 	return $html;
 }

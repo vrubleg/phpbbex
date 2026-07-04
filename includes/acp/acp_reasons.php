@@ -64,7 +64,7 @@ class acp_reasons
 					{
 						$sql = 'SELECT reason_title
 							FROM ' . REPORTS_REASONS_TABLE . "
-							WHERE reason_id = $reason_id";
+							WHERE reason_id = {$reason_id}";
 						$result = $db->sql_query($sql);
 						$row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
@@ -162,7 +162,7 @@ class acp_reasons
 
 				$template->assign_vars([
 					'L_TITLE'		=> $user->lang['REASON_' . $l_title],
-					'U_ACTION'		=> $this->u_action . "&amp;id=$reason_id&amp;action=$action",
+					'U_ACTION'		=> $this->u_action . "&amp;id={$reason_id}&amp;action={$action}",
 					'U_BACK'		=> $this->u_action,
 					'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 
@@ -214,7 +214,7 @@ class acp_reasons
 					// Change the reports using this reason to 'other'
 					$sql = 'UPDATE ' . REPORTS_TABLE . '
 						SET reason_id = ' . $other_reason_id . ", report_text = CONCAT('" . $db->sql_escape($reason_row['reason_description']) . "\n\n', report_text)
-						WHERE reason_id = $reason_id";
+						WHERE reason_id = {$reason_id}";
 					$db->sql_query($sql);
 
 					$db->sql_query('DELETE FROM ' . REPORTS_REASONS_TABLE . ' WHERE reason_id = ' . $reason_id);
@@ -264,7 +264,7 @@ class acp_reasons
 				if ($row['reason_order'] != $order)
 				{
 					$sql = 'UPDATE ' . REPORTS_REASONS_TABLE . "
-						SET reason_order = $order
+						SET reason_order = {$order}
 						WHERE reason_id = {$row['reason_id']}";
 					$db->sql_query($sql);
 				}

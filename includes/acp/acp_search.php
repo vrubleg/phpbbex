@@ -296,7 +296,7 @@ class acp_search
 					if (method_exists($this->search, 'delete_index'))
 					{
 						// pass a reference to myself so the $search object can make use of save_state() and attributes
-						if ($error = $this->search->delete_index($this, append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&mode=$mode&action=delete", false)))
+						if ($error = $this->search->delete_index($this, append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&mode={$mode}&action=delete", false)))
 						{
 							$this->state = [''];
 							$this->save_state();
@@ -357,7 +357,7 @@ class acp_search
 					if (method_exists($this->search, 'create_index'))
 					{
 						// pass a reference to acp_search so the $search object can make use of save_state() and attributes
-						if ($error = $this->search->create_index($this, append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&mode=$mode&action=create", false)))
+						if ($error = $this->search->create_index($this, append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&mode={$mode}&action=create", false)))
 						{
 							$this->state = [''];
 							$this->save_state();
@@ -509,8 +509,8 @@ class acp_search
 		$template->assign_vars([
 			'S_INDEX'				=> true,
 			'U_ACTION'				=> $this->u_action,
-			'U_PROGRESS_BAR'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;mode=$mode&amp;action=progress_bar"),
-			'UA_PROGRESS_BAR'		=> addslashes(append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;mode=$mode&amp;action=progress_bar")),
+			'U_PROGRESS_BAR'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;mode={$mode}&amp;action=progress_bar"),
+			'UA_PROGRESS_BAR'		=> addslashes(append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;mode={$mode}&amp;action=progress_bar")),
 		]);
 
 		if (isset($this->state[1]))
@@ -608,13 +608,13 @@ class acp_search
 	{
 		global $user;
 
-		if (!preg_match('#^\w+$#', $type) || !file_exists(PHPBB_ROOT_PATH . "includes/search/$type.php"))
+		if (!preg_match('#^\w+$#', $type) || !file_exists(PHPBB_ROOT_PATH . "includes/search/{$type}.php"))
 		{
 			$error = $user->lang['NO_SUCH_SEARCH_MODULE'];
 			return $error;
 		}
 
-		require_once(PHPBB_ROOT_PATH . "includes/search/$type.php");
+		require_once(PHPBB_ROOT_PATH . "includes/search/{$type}.php");
 
 		if (!class_exists($type))
 		{

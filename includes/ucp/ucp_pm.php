@@ -229,7 +229,7 @@ class ucp_pm
 				{
 					$sql = 'SELECT folder_id
 						FROM ' . PRIVMSGS_TO_TABLE . "
-						WHERE msg_id = $msg_id
+						WHERE msg_id = {$msg_id}
 							AND folder_id <> " . PRIVMSGS_NO_BOX . '
 							AND user_id = ' . $user->data['user_id'];
 					$result = $db->sql_query($sql);
@@ -254,12 +254,12 @@ class ucp_pm
 
 						$sql = 'SELECT t.msg_id
 							FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . PRIVMSGS_TABLE . " p2
-							WHERE p2.msg_id = $msg_id
-								AND t.folder_id = $folder_id
+							WHERE p2.msg_id = {$msg_id}
+								AND t.folder_id = {$folder_id}
 								AND t.user_id = " . $user->data['user_id'] . "
 								AND t.msg_id = p.msg_id
-								AND p.message_time $sql_condition p2.message_time
-							ORDER BY p.message_time $sql_ordering";
+								AND p.message_time {$sql_condition} p2.message_time
+							ORDER BY p.message_time {$sql_ordering}";
 						$result = $db->sql_query_limit($sql, 1);
 						$row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
@@ -279,9 +279,9 @@ class ucp_pm
 						FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . ' u
 						WHERE t.user_id = ' . $user->data['user_id'] . "
 							AND p.author_id = u.user_id
-							AND t.folder_id = $folder_id
+							AND t.folder_id = {$folder_id}
 							AND t.msg_id = p.msg_id
-							AND p.msg_id = $msg_id";
+							AND p.msg_id = {$msg_id}";
 					$result = $db->sql_query($sql);
 					$message_row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
@@ -375,7 +375,7 @@ class ucp_pm
 
 		$template->assign_vars([
 			'L_TITLE'			=> $user->lang['UCP_PM_' . strtoupper($mode)],
-			'S_UCP_ACTION'		=> $this->u_action . ((isset($action)) ? "&amp;action=$action" : '')]
+			'S_UCP_ACTION'		=> $this->u_action . ((isset($action)) ? "&amp;action={$action}" : '')]
 		);
 
 		// Set desired template

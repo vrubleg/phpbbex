@@ -125,7 +125,7 @@ $theme_data = preg_replace_callback(
 		}
 		if (defined('DEBUG'))
 		{
-			$content = "/* BEGIN @include $filename */ \n $content \n /* END @include $filename */ \n";
+			$content = "/* BEGIN @include {$filename} */ \n {$content} \n /* END @include {$filename} */ \n";
 		}
 		return $content;
 	},

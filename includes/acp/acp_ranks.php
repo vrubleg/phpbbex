@@ -70,7 +70,7 @@ class acp_ranks
 
 				if ($rank_id)
 				{
-					$sql = 'UPDATE ' . RANKS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE rank_id = $rank_id";
+					$sql = 'UPDATE ' . RANKS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE rank_id = {$rank_id}";
 					$message = $user->lang['RANK_UPDATED'];
 
 					add_log('admin', 'LOG_RANK_UPDATED', $rank_title);
@@ -107,12 +107,12 @@ class acp_ranks
 					$db->sql_freeresult($result);
 
 					$sql = 'DELETE FROM ' . RANKS_TABLE . "
-						WHERE rank_id = $rank_id";
+						WHERE rank_id = {$rank_id}";
 					$db->sql_query($sql);
 
 					$sql = 'UPDATE ' . USERS_TABLE . "
 						SET user_rank = 0
-						WHERE user_rank = $rank_id";
+						WHERE user_rank = {$rank_id}";
 					$db->sql_query($sql);
 
 					$cache->destroy('_ranks');

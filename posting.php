@@ -338,7 +338,7 @@ if ($post_data['poll_start'])
 {
 	$sql = 'SELECT poll_option_text
 		FROM ' . POLL_OPTIONS_TABLE . "
-		WHERE topic_id = $topic_id
+		WHERE topic_id = {$topic_id}
 		ORDER BY poll_option_id";
 	$result = $db->sql_query($sql);
 
@@ -393,7 +393,7 @@ if ($post_data['post_attachment'] && !$submit && !$refresh && !$preview && $mode
 	// Do not change to SELECT *
 	$sql = 'SELECT attach_id, is_orphan, attach_comment, real_filename
 		FROM ' . ATTACHMENTS_TABLE . "
-		WHERE post_msg_id = $post_id
+		WHERE post_msg_id = {$post_id}
 			AND in_message = 0
 			AND is_orphan = 0
 		ORDER BY filetime DESC";
@@ -431,7 +431,7 @@ if ($user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $aut
 		WHERE user_id = ' . $user->data['user_id'] .
 			(($forum_id) ? ' AND forum_id = ' . (int) $forum_id : '') .
 			(($topic_id) ? ' AND topic_id = ' . (int) $topic_id : '') .
-			(($draft_id) ? " AND draft_id <> $draft_id" : '');
+			(($draft_id) ? " AND draft_id <> {$draft_id}" : '');
 	$result = $db->sql_query_limit($sql, 1);
 
 	if ($db->sql_fetchrow($result))
@@ -491,7 +491,7 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 			]);
 			$db->sql_query($sql);
 
-			$meta_info = ($mode == 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) : append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id");
+			$meta_info = ($mode == 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) : append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}");
 
 			meta_refresh(3, $meta_info);
 
@@ -578,7 +578,7 @@ if ($draft_id && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $u
 {
 	$sql = 'SELECT draft_subject, draft_message
 		FROM ' . DRAFTS_TABLE . "
-		WHERE draft_id = $draft_id
+		WHERE draft_id = {$draft_id}
 			AND user_id = " . $user->data['user_id'];
 	$result = $db->sql_query_limit($sql, 1);
 	$row = $db->sql_fetchrow($result);
@@ -659,11 +659,11 @@ if ($submit || $preview || $refresh)
 		if ($submit && check_form_key('posting'))
 		{
 			$sql = 'DELETE FROM ' . POLL_OPTIONS_TABLE . "
-				WHERE topic_id = $topic_id";
+				WHERE topic_id = {$topic_id}";
 			$db->sql_query($sql);
 
 			$sql = 'DELETE FROM ' . POLL_VOTES_TABLE . "
-				WHERE topic_id = $topic_id";
+				WHERE topic_id = {$topic_id}";
 			$db->sql_query($sql);
 
 			$topic_sql = [
@@ -678,7 +678,7 @@ if ($submit || $preview || $refresh)
 
 			$sql = 'UPDATE ' . TOPICS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $topic_sql) . "
-				WHERE topic_id = $topic_id";
+				WHERE topic_id = {$topic_id}";
 			$db->sql_query($sql);
 		}
 
@@ -983,8 +983,8 @@ if ($submit || $preview || $refresh)
 		if ($change_topic_status != $post_data['topic_status'])
 		{
 			$sql = 'UPDATE ' . TOPICS_TABLE . "
-				SET topic_status = $change_topic_status
-				WHERE topic_id = $topic_id
+				SET topic_status = {$change_topic_status}
+				WHERE topic_id = {$topic_id}
 					AND topic_moved_id = 0";
 			$db->sql_query($sql);
 
@@ -1069,7 +1069,7 @@ if ($submit || $preview || $refresh)
 			{
 				$sql = 'UPDATE ' . TOPICS_TABLE . '
 					SET topic_first_post_show = ' . (($topic_first_post_show) ? 1 : 0) . "
-					WHERE topic_id = $topic_id";
+					WHERE topic_id = {$topic_id}";
 				$db->sql_query($sql);
 			}
 		}
@@ -1302,10 +1302,10 @@ $notify_set			= ($mode != 'edit' && $config['allow_topic_notify'] && $user->data
 $notify_checked		= $notify ?? (($mode == 'post') ? $user->data['user_notify'] : $notify_set);
 
 // Page title & action URL
-$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=$mode"
-	. (($mode == 'post') ? "&amp;f=$forum_id" : '')
-	. (($topic_id) ? "&amp;t=$topic_id" : '')
-	. (($post_id) ? "&amp;p=$post_id" : ''));
+$s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode={$mode}"
+	. (($mode == 'post') ? "&amp;f={$forum_id}" : '')
+	. (($topic_id) ? "&amp;t={$topic_id}" : '')
+	. (($post_id) ? "&amp;p={$post_id}" : ''));
 
 switch ($mode)
 {
@@ -1392,8 +1392,8 @@ $template->assign_vars([
 	'TOPIC_TIME_LIMIT'		=> (int) $post_data['topic_time_limit'],
 	'TOPIC_PRIORITY'		=> (int) $post_data['topic_priority'],
 	'EDIT_REASON'			=> $post_data['post_edit_reason'],
-	'U_VIEW_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id"),
-	'U_VIEW_TOPIC'			=> ($mode != 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id") : '',
+	'U_VIEW_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}"),
+	'U_VIEW_TOPIC'			=> ($mode != 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}") : '',
 
 	'S_PRIVMSGS'				=> false,
 	'S_EDIT_POST'				=> ($mode == 'edit'),
@@ -1525,14 +1525,14 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 			{
 				add_log('mod', $forum_id, $topic_id, 'LOG_DELETE_TOPIC', $post_data['topic_title'], $post_username, $post_data['post_text']);
 
-				$meta_info = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id");
+				$meta_info = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}");
 				$message = $user->lang['POST_DELETED'];
 			}
 			else
 			{
 				add_log('mod', $forum_id, $topic_id, 'LOG_DELETE_POST', $post_data['post_subject'] ?: $post_data['topic_title'], $post_username, $post_data['post_text']);
 
-				$meta_info = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;p=$next_post_id") . "#p$next_post_id";
+				$meta_info = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;p={$next_post_id}") . "#p{$next_post_id}";
 				$message = $user->lang['POST_DELETED'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
 			}
 

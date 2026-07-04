@@ -225,13 +225,13 @@ class mcp_pm_reports
 
 				$sql = 'SELECT r.report_id
 					FROM ' . PRIVMSGS_TABLE . ' p, ' . REPORTS_TABLE . ' r ' . (($sort_order_sql[0] == 'u') ? ', ' . USERS_TABLE . ' u' : '') . (($sort_order_sql[0] == 'r') ? ', ' . USERS_TABLE . ' ru' : '') . "
-					WHERE $report_state
+					WHERE {$report_state}
 						AND r.pm_id = p.msg_id
 						" . (($sort_order_sql[0] == 'u') ? 'AND u.user_id = p.author_id' : '') . '
 						' . (($sort_order_sql[0] == 'r') ? 'AND ru.user_id = r.user_id' : '') . "
 						AND r.post_id = 0
-						$limit_time_sql
-					ORDER BY $sort_order_sql";
+						{$limit_time_sql}
+					ORDER BY {$sort_order_sql}";
 				$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
 				$i = 0;
@@ -251,7 +251,7 @@ class mcp_pm_reports
 							AND r.pm_id = p.msg_id
 							AND p.author_id = u.user_id
 							AND ru.user_id = r.user_id
-						ORDER BY $sort_order_sql";
+						ORDER BY {$sort_order_sql}";
 					$result = $db->sql_query($sql);
 
 					$pm_list = $pm_by_id = [];
@@ -302,7 +302,7 @@ class mcp_pm_reports
 					'S_MCP_ACTION'			=> $this->u_action,
 					'S_CLOSED'				=> ($mode == 'pm_reports_closed'),
 
-					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir", $total, $config['topics_per_page'], $start),
+					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $total, $config['topics_per_page'], $start),
 					'PAGE_NUMBER'			=> on_page($total, $config['topics_per_page'], $start),
 					'TOTAL'					=> $total,
 					'TOTAL_REPORTS'			=> ($total == 1) ? $user->lang['LIST_REPORT'] : sprintf($user->lang['LIST_REPORTS'], $total),

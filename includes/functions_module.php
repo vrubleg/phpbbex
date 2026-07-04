@@ -442,18 +442,18 @@ class p_master
 			trigger_error('MODULE_NOT_ACCESS', E_USER_ERROR);
 		}
 
-		if (!class_exists("{$this->p_class}_$this->p_name"))
+		if (!class_exists("{$this->p_class}_{$this->p_name}"))
 		{
-			if (!file_exists("$module_path/{$this->p_class}_$this->p_name.php"))
+			if (!file_exists("{$module_path}/{$this->p_class}_{$this->p_name}.php"))
 			{
-				trigger_error($user->lang('MODULE_NOT_FIND', "$module_path/{$this->p_class}_$this->p_name.php"), E_USER_ERROR);
+				trigger_error($user->lang('MODULE_NOT_FIND', "{$module_path}/{$this->p_class}_{$this->p_name}.php"), E_USER_ERROR);
 			}
 
-			require_once("$module_path/{$this->p_class}_{$this->p_name}.php");
+			require_once("{$module_path}/{$this->p_class}_{$this->p_name}.php");
 
-			if (!class_exists("{$this->p_class}_$this->p_name"))
+			if (!class_exists("{$this->p_class}_{$this->p_name}"))
 			{
-				trigger_error($user->lang('MODULE_FILE_INCORRECT_CLASS', "$module_path/{$this->p_class}_$this->p_name.php", "{$this->p_class}_$this->p_name"), E_USER_ERROR);
+				trigger_error($user->lang('MODULE_FILE_INCORRECT_CLASS', "{$module_path}/{$this->p_class}_{$this->p_name}.php", "{$this->p_class}_{$this->p_name}"), E_USER_ERROR);
 			}
 
 			if (!empty($mode))
@@ -463,7 +463,7 @@ class p_master
 
 			// Create a new instance of the desired module ... if it has a
 			// constructor it will of course be executed
-			$instance = "{$this->p_class}_$this->p_name";
+			$instance = "{$this->p_class}_{$this->p_name}";
 
 			$this->module = new $instance($this);
 

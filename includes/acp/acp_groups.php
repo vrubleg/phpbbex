@@ -49,7 +49,7 @@ class acp_groups
 		{
 			$sql = 'SELECT *
 				FROM ' . GROUPS_TABLE . "
-				WHERE group_id = $group_id";
+				WHERE group_id = {$group_id}";
 			$result = $db->sql_query($sql);
 			$group_row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -151,7 +151,7 @@ class acp_groups
 					{
 						$sql = 'SELECT user_id
 							FROM ' . USER_GROUP_TABLE . "
-							WHERE group_id = $group_id
+							WHERE group_id = {$group_id}
 							ORDER BY user_id";
 						$result = $db->sql_query_limit($sql, 200, $start);
 
@@ -532,7 +532,7 @@ class acp_groups
 
 					'U_BACK'			=> $u_back,
 					'U_SWATCH'			=> append_sid(PHPBB_ADMIN_PATH . 'swatch.php', 'form=settings&amp;name=group_colour'),
-					'U_ACTION'			=> "{$this->u_action}&amp;action=$action&amp;g=$group_id",
+					'U_ACTION'			=> "{$this->u_action}&amp;action={$action}&amp;g={$group_id}",
 				]);
 
 				return;
@@ -550,7 +550,7 @@ class acp_groups
 				// Grab the leaders - always, on every page...
 				$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_regdate, u.user_colour, u.user_posts, u.group_id, ug.group_leader, ug.user_pending
 					FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . " ug
-					WHERE ug.group_id = $group_id
+					WHERE ug.group_id = {$group_id}
 						AND u.user_id = ug.user_id
 						AND ug.group_leader = 1
 					ORDER BY ug.group_leader DESC, ug.user_pending ASC, u.username_clean";
@@ -574,7 +574,7 @@ class acp_groups
 				// Total number of group members (non-leaders)
 				$sql = 'SELECT COUNT(user_id) AS total_members
 					FROM ' . USER_GROUP_TABLE . "
-					WHERE group_id = $group_id
+					WHERE group_id = {$group_id}
 						AND group_leader = 0";
 				$result = $db->sql_query($sql);
 				$total_members = (int) $db->sql_fetchfield('total_members');
@@ -594,19 +594,19 @@ class acp_groups
 					'S_ACTION_OPTIONS'	=> $s_action_options,
 
 					'S_ON_PAGE'		=> on_page($total_members, $config['topics_per_page'], $start),
-					'PAGINATION'	=> generate_pagination($this->u_action . "&amp;action=$action&amp;g=$group_id", $total_members, $config['topics_per_page'], $start, true),
+					'PAGINATION'	=> generate_pagination($this->u_action . "&amp;action={$action}&amp;g={$group_id}", $total_members, $config['topics_per_page'], $start, true),
 					'GROUP_NAME'	=> ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'],
 
-					'U_ACTION'			=> $this->u_action . "&amp;g=$group_id",
+					'U_ACTION'			=> $this->u_action . "&amp;g={$group_id}",
 					'U_BACK'			=> $this->u_action,
 					'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=list&amp;field=usernames'),
-					'U_DEFAULT_ALL'		=> "{$this->u_action}&amp;action=set_default_on_all&amp;g=$group_id",
+					'U_DEFAULT_ALL'		=> "{$this->u_action}&amp;action=set_default_on_all&amp;g={$group_id}",
 				]);
 
 				// Grab the members
 				$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_colour, u.user_regdate, u.user_posts, u.group_id, ug.group_leader, ug.user_pending
 					FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . " ug
-					WHERE ug.group_id = $group_id
+					WHERE ug.group_id = {$group_id}
 						AND u.user_id = ug.user_id
 						AND ug.group_leader = 0
 					ORDER BY ug.group_leader DESC, ug.user_pending ASC, u.username_clean";
@@ -698,9 +698,9 @@ class acp_groups
 				$group_name = $user->lang['G_' . $row['group_name']] ?? $row['group_name'];
 
 				$template->assign_block_vars('groups', [
-					'U_LIST'		=> "{$this->u_action}&amp;action=list&amp;g=$group_id",
-					'U_EDIT'		=> "{$this->u_action}&amp;action=edit&amp;g=$group_id",
-					'U_DELETE'		=> ($auth->acl_get('a_groupdel')) ? "{$this->u_action}&amp;action=delete&amp;g=$group_id" : '',
+					'U_LIST'		=> "{$this->u_action}&amp;action=list&amp;g={$group_id}",
+					'U_EDIT'		=> "{$this->u_action}&amp;action=edit&amp;g={$group_id}",
+					'U_DELETE'		=> ($auth->acl_get('a_groupdel')) ? "{$this->u_action}&amp;action=delete&amp;g={$group_id}" : '',
 
 					'S_GROUP_SPECIAL'	=> ($row['group_type'] == GROUP_SPECIAL),
 

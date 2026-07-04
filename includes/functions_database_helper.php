@@ -26,8 +26,8 @@ if (!defined('IN_PHPBB'))
 */
 function phpbb_update_rows_avoiding_duplicates($db, $table, $column, $from_values, $to_value)
 {
-	$sql = "SELECT $column, user_id
-		FROM $table
+	$sql = "SELECT {$column}, user_id
+		FROM {$table}
 		WHERE " . $db->sql_in_set($column, $from_values);
 	$result = $db->sql_query($sql);
 
@@ -38,9 +38,9 @@ function phpbb_update_rows_avoiding_duplicates($db, $table, $column, $from_value
 	}
 	$db->sql_freeresult($result);
 
-	$sql = "SELECT $column, user_id
-		FROM $table
-		WHERE $column = " . (int) $to_value;
+	$sql = "SELECT {$column}, user_id
+		FROM {$table}
+		WHERE {$column} = " . (int) $to_value;
 	$result = $db->sql_query($sql);
 
 	$new_user_ids = [];
@@ -59,9 +59,9 @@ function phpbb_update_rows_avoiding_duplicates($db, $table, $column, $from_value
 		}
 		if (empty($new_user_ids))
 		{
-			$sql = "UPDATE $table
-				SET $column = " . (int) $to_value . "
-				WHERE $column = '" . $db->sql_escape($from_value) . "'";
+			$sql = "UPDATE {$table}
+				SET {$column} = " . (int) $to_value . "
+				WHERE {$column} = '" . $db->sql_escape($from_value) . "'";
 			$queries[] = $sql;
 		}
 		else
@@ -69,9 +69,9 @@ function phpbb_update_rows_avoiding_duplicates($db, $table, $column, $from_value
 			$different_user_ids = array_diff($old_user_ids[$from_value], $new_user_ids[$to_value]);
 			if (!empty($different_user_ids))
 			{
-				$sql = "UPDATE $table
-					SET $column = " . (int) $to_value . "
-					WHERE $column = '" . $db->sql_escape($from_value) . "'
+				$sql = "UPDATE {$table}
+					SET {$column} = " . (int) $to_value . "
+					WHERE {$column} = '" . $db->sql_escape($from_value) . "'
 					AND " . $db->sql_in_set('user_id', $different_user_ids);
 				$queries[] = $sql;
 			}
@@ -87,7 +87,7 @@ function phpbb_update_rows_avoiding_duplicates($db, $table, $column, $from_value
 			$db->sql_query($sql);
 		}
 
-		$sql = "DELETE FROM $table
+		$sql = "DELETE FROM {$table}
 			WHERE " . $db->sql_in_set($column, $from_values);
 		$db->sql_query($sql);
 
@@ -111,8 +111,8 @@ function phpbb_update_rows_avoiding_duplicates($db, $table, $column, $from_value
 */
 function phpbb_update_rows_avoiding_duplicates_notify_status($db, $table, $column, $from_values, $to_value)
 {
-	$sql = "SELECT $column, user_id, notify_status
-		FROM $table
+	$sql = "SELECT {$column}, user_id, notify_status
+		FROM {$table}
 		WHERE " . $db->sql_in_set($column, $from_values);
 	$result = $db->sql_query($sql);
 
@@ -123,9 +123,9 @@ function phpbb_update_rows_avoiding_duplicates_notify_status($db, $table, $colum
 	}
 	$db->sql_freeresult($result);
 
-	$sql = "SELECT $column, user_id
-		FROM $table
-		WHERE $column = " . (int) $to_value;
+	$sql = "SELECT {$column}, user_id
+		FROM {$table}
+		WHERE {$column} = " . (int) $to_value;
 	$result = $db->sql_query($sql);
 
 	$new_user_ids = [];
@@ -150,9 +150,9 @@ function phpbb_update_rows_avoiding_duplicates_notify_status($db, $table, $colum
 			}
 			if (empty($new_user_ids))
 			{
-				$sql = "UPDATE $table
-					SET $column = " . (int) $to_value . "
-					WHERE $column = '" . $db->sql_escape($from_value) . "'";
+				$sql = "UPDATE {$table}
+					SET {$column} = " . (int) $to_value . "
+					WHERE {$column} = '" . $db->sql_escape($from_value) . "'";
 				$queries[] = $sql;
 			}
 			else
@@ -160,9 +160,9 @@ function phpbb_update_rows_avoiding_duplicates_notify_status($db, $table, $colum
 				$different_user_ids = array_diff($old_user_ids[$notify_status][$from_value], $new_user_ids[$to_value]);
 				if (!empty($different_user_ids))
 				{
-					$sql = "UPDATE $table
-						SET $column = " . (int) $to_value . "
-						WHERE $column = '" . $db->sql_escape($from_value) . "'
+					$sql = "UPDATE {$table}
+						SET {$column} = " . (int) $to_value . "
+						WHERE {$column} = '" . $db->sql_escape($from_value) . "'
 						AND " . $db->sql_in_set('user_id', $different_user_ids);
 					$queries[] = $sql;
 				}
@@ -172,9 +172,9 @@ function phpbb_update_rows_avoiding_duplicates_notify_status($db, $table, $colum
 					$same_user_ids = array_diff($old_user_ids[$notify_status][$from_value], $different_user_ids);
 					if (!empty($same_user_ids))
 					{
-						$sql = "UPDATE $table
-							SET $extra_update
-							WHERE $column = '" . (int) $to_value . "'
+						$sql = "UPDATE {$table}
+							SET {$extra_update}
+							WHERE {$column} = '" . (int) $to_value . "'
 							AND " . $db->sql_in_set('user_id', $same_user_ids);
 						$queries[] = $sql;
 					}
@@ -192,7 +192,7 @@ function phpbb_update_rows_avoiding_duplicates_notify_status($db, $table, $colum
 			$db->sql_query($sql);
 		}
 
-		$sql = "DELETE FROM $table
+		$sql = "DELETE FROM {$table}
 			WHERE " . $db->sql_in_set($column, $from_values);
 		$db->sql_query($sql);
 

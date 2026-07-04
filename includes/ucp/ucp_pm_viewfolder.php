@@ -119,8 +119,8 @@ function view_folder($id, $mode, $folder_id, $folder)
 				$folder_alt = ($row['pm_unread']) ? 'NEW_MESSAGES' : 'NO_NEW_MESSAGES';
 
 				// Generate all URIs ...
-				$view_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=view&amp;f=$folder_id&amp;p=$message_id");
-				$remove_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=compose&amp;action=delete&amp;p=$message_id");
+				$view_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=view&amp;f={$folder_id}&amp;p={$message_id}");
+				$remove_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=compose&amp;action=delete&amp;p={$message_id}");
 
 				$row_indicator = '';
 				foreach ($color_rows as $var)
@@ -213,9 +213,9 @@ function view_folder($id, $mode, $folder_id, $folder)
 					FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . ' u
 					WHERE t.user_id = ' . $user->data['user_id'] . "
 						AND p.author_id = u.user_id
-						AND t.folder_id = $folder_id
+						AND t.folder_id = {$folder_id}
 						AND t.msg_id = p.msg_id
-						AND p.msg_id = $message_id";
+						AND p.msg_id = {$message_id}";
 				$result = $db->sql_query_limit($sql, 1);
 				$message_row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -347,7 +347,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 								{
 									foreach ($types as $name)
 									{
-										$string .= "\t\t<recipient type=\"$type\" status=\"$key\">$name</recipient>\n";
+										$string .= "\t\t<recipient type=\"{$type}\" status=\"{$key}\">{$name}</recipient>\n";
 									}
 								}
 							}
@@ -357,7 +357,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 
 						foreach ($value as $tag => $text)
 						{
-							$string .= "\t\t<$tag>$text</$tag>\n";
+							$string .= "\t\t<{$tag}>{$text}</{$tag}>\n";
 						}
 
 						$string .= "\t</privmsg>\n";
@@ -367,8 +367,8 @@ function view_folder($id, $mode, $folder_id, $folder)
 			}
 
 			header('Cache-Control: no-store');
-			header("Content-Type: $mimetype; name=\"data.$filetype\"");
-			header("Content-disposition: attachment; filename=data.$filetype");
+			header("Content-Type: {$mimetype}; name=\"data.{$filetype}\"");
+			header("Content-disposition: attachment; filename=data.{$filetype}");
 			echo $string;
 			exit;
 		}
@@ -422,15 +422,15 @@ function get_pm_from($folder_id, $folder, $user_id)
 
 		$sql = 'SELECT COUNT(t.msg_id) AS pm_count
 			FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . " p
-			WHERE $folder_sql
-				AND t.user_id = $user_id
+			WHERE {$folder_sql}
+				AND t.user_id = {$user_id}
 				AND t.msg_id = p.msg_id
-				AND p.message_time >= $min_post_time";
+				AND p.message_time >= {$min_post_time}";
 		$result = $db->sql_query_limit($sql, 1);
 		$pm_count = (int) $db->sql_fetchfield('pm_count');
 		$db->sql_freeresult($result);
 
-		$sql_limit_time = "AND p.message_time >= $min_post_time";
+		$sql_limit_time = "AND p.message_time >= {$min_post_time}";
 	}
 	else
 	{
@@ -439,7 +439,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 	}
 
 	$template->assign_vars([
-		'PAGINATION'		=> generate_pagination(append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f=$folder_id&amp;$u_sort_param"), $pm_count, $config['topics_per_page'], $start),
+		'PAGINATION'		=> generate_pagination(append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f={$folder_id}&amp;{$u_sort_param}"), $pm_count, $config['topics_per_page'], $start),
 		'PAGE_NUMBER'		=> on_page($pm_count, $config['topics_per_page'], $start),
 		'TOTAL_MESSAGES'	=> (($pm_count == 1) ? $user->lang['VIEW_PM_MESSAGE'] : sprintf($user->lang['VIEW_PM_MESSAGES'], $pm_count)),
 
@@ -453,7 +453,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 		'S_TOPIC_ICONS'			=> (bool) $config['enable_pm_icons'],
 
 		'U_POST_NEW_TOPIC'	=> ($auth->acl_get('u_sendpm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose') : '',
-		'S_PM_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f=$folder_id" . (($start !== 0) ? "&amp;start=$start" : '')),
+		'S_PM_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f={$folder_id}" . (($start !== 0) ? "&amp;start={$start}" : '')),
 	]);
 
 	// Grab all pm data
@@ -494,12 +494,12 @@ function get_pm_from($folder_id, $folder, $user_id)
 
 	$sql = 'SELECT t.*, p.root_level, p.message_time, p.message_subject, p.icon_id, p.to_address, p.message_attachment, p.bcc_address, u.username, u.username_clean, u.user_colour, p.message_reported
 		FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . " u
-		WHERE t.user_id = $user_id
+		WHERE t.user_id = {$user_id}
 			AND p.author_id = u.user_id
-			AND $folder_sql
+			AND {$folder_sql}
 			AND t.msg_id = p.msg_id
-			$sql_limit_time
-		ORDER BY $sql_sort_order";
+			{$sql_limit_time}
+		ORDER BY {$sql_sort_order}";
 	$result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
 	$pm_reported = [];

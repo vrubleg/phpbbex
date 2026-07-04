@@ -63,7 +63,7 @@ class acp_logs
 				{
 					$sql = 'DELETE FROM ' . LOG_TABLE . "
 						WHERE log_type = {$this->log_type}
-						$where_sql";
+						{$where_sql}";
 					$db->sql_query($sql);
 
 					add_log('admin', 'LOG_CLEAR_' . strtoupper($mode));
@@ -126,10 +126,10 @@ class acp_logs
 		$template->assign_vars([
 			'L_TITLE'		=> $l_title,
 			'L_EXPLAIN'		=> $l_title_explain,
-			'U_ACTION'		=> $this->u_action . "&amp;$u_sort_param$keywords_param&amp;start=$start",
+			'U_ACTION'		=> $this->u_action . "&amp;{$u_sort_param}{$keywords_param}&amp;start={$start}",
 
 			'S_ON_PAGE'		=> on_page($log_count, $config['topics_per_page'], $start),
-			'PAGINATION'	=> generate_pagination($this->u_action . "&amp;$u_sort_param$keywords_param", $log_count, $config['topics_per_page'], $start, true),
+			'PAGINATION'	=> generate_pagination($this->u_action . "&amp;{$u_sort_param}{$keywords_param}", $log_count, $config['topics_per_page'], $start, true),
 
 			'S_LIMIT_DAYS'	=> $s_limit_days,
 			'S_SORT_KEY'	=> $s_sort_key,

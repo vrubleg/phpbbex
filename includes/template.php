@@ -124,7 +124,7 @@ class phpbb_template
 		{
 			if (empty($filename))
 			{
-				trigger_error("template->set_filenames: Empty filename specified for $handle", E_USER_ERROR);
+				trigger_error("template->set_filenames: Empty filename specified for {$handle}", E_USER_ERROR);
 			}
 
 			$this->filename[$handle] = $filename;
@@ -237,7 +237,7 @@ class phpbb_template
 
 		if (!isset($this->filename[$handle]))
 		{
-			trigger_error("template->_tpl_load(): No file specified for handle $handle", E_USER_ERROR);
+			trigger_error("template->_tpl_load(): No file specified for handle {$handle}", E_USER_ERROR);
 		}
 
 		// reload this setting to have the value it had when this object was initialised
@@ -287,7 +287,7 @@ class phpbb_template
 		// If we don't have a file assigned to this handle, die.
 		if (!isset($this->files[$handle]))
 		{
-			trigger_error("template->_tpl_load(): No file specified for handle $handle", E_USER_ERROR);
+			trigger_error("template->_tpl_load(): No file specified for handle {$handle}", E_USER_ERROR);
 		}
 
 		$compile->_tpl_load_file($handle);

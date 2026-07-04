@@ -222,13 +222,13 @@ class acp_manage_attachments
 		gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
 
 		$min_filetime = ($sort_days) ? (time() - ($sort_days * 86400)) : '';
-		$limit_filetime = ($min_filetime) ? " AND a.filetime >= $min_filetime " : '';
+		$limit_filetime = ($min_filetime) ? " AND a.filetime >= {$min_filetime} " : '';
 		$start = ($sort_days && isset($_POST['sort'])) ? 0 : $start;
 
 		$sql = 'SELECT COUNT(a.attach_id) AS num_files, SUM(a.filesize) AS total_size
 			FROM ' . ATTACHMENTS_TABLE . " a
 				WHERE a.is_orphan = 0
-					$limit_filetime";
+					{$limit_filetime}";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$num_files = (int) $row['num_files'];
@@ -276,8 +276,8 @@ class acp_manage_attachments
 			LEFT JOIN ' . USERS_TABLE . ' u ON (u.user_id = a.poster_id)
 			LEFT JOIN ' . TOPICS_TABLE . " t ON (a.topic_id = t.topic_id AND a.in_message = 0)
 				WHERE a.is_orphan = 0
-					$limit_filetime
-						ORDER BY $sql_sort_order";
+					{$limit_filetime}
+						ORDER BY {$sql_sort_order}";
 		$result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
 		$i = ($store_reverse) ? $sql_limit - 1 : 0;
@@ -291,7 +291,7 @@ class acp_manage_attachments
 		$template->assign_vars([
 			'TOTAL_FILES'		=> $num_files,
 			'TOTAL_SIZE'		=> $total_size,
-			'PAGINATION'		=> generate_pagination($this->u_action . "&amp;$u_sort_param", $num_files, $config['posts_per_page'], $start, true),
+			'PAGINATION'		=> generate_pagination($this->u_action . "&amp;{$u_sort_param}", $num_files, $config['posts_per_page'], $start, true),
 
 			'S_ATTACHMENTS'		=> true,
 			'S_ON_PAGE'			=> on_page($num_files, $config['posts_per_page'], $start),

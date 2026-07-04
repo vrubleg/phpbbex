@@ -50,11 +50,11 @@ class acp_bots
 			case 'activate':
 				if ($bot_id || sizeof($mark))
 				{
-					$sql_id = ($bot_id) ? " = $bot_id" : ' IN (' . implode(', ', $mark) . ')';
+					$sql_id = ($bot_id) ? " = {$bot_id}" : ' IN (' . implode(', ', $mark) . ')';
 
 					$sql = 'UPDATE ' . BOTS_TABLE . "
 						SET bot_active = 1
-						WHERE bot_id $sql_id";
+						WHERE bot_id {$sql_id}";
 					$db->sql_query($sql);
 				}
 
@@ -64,11 +64,11 @@ class acp_bots
 			case 'deactivate':
 				if ($bot_id || sizeof($mark))
 				{
-					$sql_id = ($bot_id) ? " = $bot_id" : ' IN (' . implode(', ', $mark) . ')';
+					$sql_id = ($bot_id) ? " = {$bot_id}" : ' IN (' . implode(', ', $mark) . ')';
 
 					$sql = 'UPDATE ' . BOTS_TABLE . "
 						SET bot_active = 0
-						WHERE bot_id $sql_id";
+						WHERE bot_id {$sql_id}";
 					$db->sql_query($sql);
 				}
 
@@ -80,11 +80,11 @@ class acp_bots
 				{
 					if (confirm_box(true))
 					{
-						$sql_id = ($bot_id) ? " = $bot_id" : ' IN (' . implode(', ', $mark) . ')';
+						$sql_id = ($bot_id) ? " = {$bot_id}" : ' IN (' . implode(', ', $mark) . ')';
 
 						$sql = 'SELECT bot_name
 							FROM ' . BOTS_TABLE . "
-							WHERE bot_id $sql_id";
+							WHERE bot_id {$sql_id}";
 						$result = $db->sql_query($sql);
 
 						$bot_name_ary = [];
@@ -97,12 +97,12 @@ class acp_bots
 						$db->sql_transaction('begin');
 
 						$sql = 'DELETE FROM ' . BOTS_TABLE . "
-							WHERE bot_id $sql_id";
+							WHERE bot_id {$sql_id}";
 						$db->sql_query($sql);
 
 						$sql = 'UPDATE ' . SESSIONS_TABLE . "
 							SET session_bot_id = 0
-							WHERE session_bot_id $sql_id";
+							WHERE session_bot_id {$sql_id}";
 						$db->sql_query($sql);
 
 						$db->sql_transaction('commit');
@@ -164,7 +164,7 @@ class acp_bots
 					{
 						$sql = 'SELECT bot_name
 							FROM ' . BOTS_TABLE . "
-							WHERE bot_id = $bot_id";
+							WHERE bot_id = {$bot_id}";
 						$result = $db->sql_query($sql);
 						$row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
@@ -201,14 +201,14 @@ class acp_bots
 						{
 							$sql = 'SELECT bot_name
 								FROM ' . BOTS_TABLE . "
-								WHERE bot_id = $bot_id";
+								WHERE bot_id = {$bot_id}";
 							$result = $db->sql_query($sql);
 							$row = $db->sql_fetchrow($result);
 							$db->sql_freeresult($result);
 
 							if (!$row)
 							{
-								trigger_error($user->lang['NO_BOT'] . adm_back_link($this->u_action . "&amp;id=$bot_id&amp;action=$action"), E_USER_WARNING);
+								trigger_error($user->lang['NO_BOT'] . adm_back_link($this->u_action . "&amp;id={$bot_id}&amp;action={$action}"), E_USER_WARNING);
 							}
 
 							$sql = 'UPDATE ' . BOTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', [
@@ -216,7 +216,7 @@ class acp_bots
 								'bot_active'	=> (int) $bot_row['bot_active'],
 								'bot_agent'		=> (string) $bot_row['bot_agent'],
 								'bot_ip'		=> (string) $bot_row['bot_ip'],
-							]) . " WHERE bot_id = $bot_id";
+							]) . " WHERE bot_id = {$bot_id}";
 							$db->sql_query($sql);
 
 							$log = 'UPDATED';
@@ -233,14 +233,14 @@ class acp_bots
 				{
 					$sql = 'SELECT *
 						FROM ' . BOTS_TABLE . "
-						WHERE bot_id = $bot_id";
+						WHERE bot_id = {$bot_id}";
 					$result = $db->sql_query($sql);
 					$bot_row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
 
 					if (!$bot_row)
 					{
-						trigger_error($user->lang['NO_BOT'] . adm_back_link($this->u_action . "&amp;id=$bot_id&amp;action=$action"), E_USER_WARNING);
+						trigger_error($user->lang['NO_BOT'] . adm_back_link($this->u_action . "&amp;id={$bot_id}&amp;action={$action}"), E_USER_WARNING);
 					}
 				}
 
@@ -256,7 +256,7 @@ class acp_bots
 
 				$template->assign_vars([
 					'L_TITLE'		=> $user->lang['BOT_' . $l_title],
-					'U_ACTION'		=> $this->u_action . "&amp;id=$bot_id&amp;action=$action",
+					'U_ACTION'		=> $this->u_action . "&amp;id={$bot_id}&amp;action={$action}",
 					'U_BACK'		=> $this->u_action,
 					'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
 
@@ -301,7 +301,7 @@ class acp_bots
 				'BOT_ID'		=> $row['bot_id'],
 				'LAST_VISIT'	=> ($row['bot_lastvisit']) ? $user->format_date($row['bot_lastvisit']) : $user->lang['BOT_NEVER'],
 
-				'U_ACTIVATE_DEACTIVATE'	=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=$active_value",
+				'U_ACTIVATE_DEACTIVATE'	=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action={$active_value}",
 				'L_ACTIVATE_DEACTIVATE'	=> $user->lang[$active_lang],
 				'U_EDIT'				=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=edit",
 				'U_DELETE'				=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=delete",

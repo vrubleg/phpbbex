@@ -155,17 +155,17 @@ function update_post_information($type, $ids, $return_update_sql = false)
 	if (sizeof($ids) == 1)
 	{
 		$sql = 'SELECT MAX(p.post_id) as last_post_id
-			FROM ' . POSTS_TABLE . " p $topic_join
+			FROM ' . POSTS_TABLE . " p {$topic_join}
 			WHERE " . $db->sql_in_set('p.' . $type . '_id', $ids) . "
-				$topic_condition
+				{$topic_condition}
 				AND p.post_approved = 1";
 	}
 	else
 	{
 		$sql = 'SELECT p.' . $type . '_id, MAX(p.post_id) as last_post_id
-			FROM ' . POSTS_TABLE . " p $topic_join
+			FROM ' . POSTS_TABLE . " p {$topic_join}
 			WHERE " . $db->sql_in_set('p.' . $type . '_id', $ids) . "
-				$topic_condition
+				{$topic_condition}
 				AND p.post_approved = 1
 			GROUP BY p.{$type}_id";
 	}
@@ -238,9 +238,9 @@ function update_post_information($type, $ids, $return_update_sql = false)
 
 	foreach ($update_sql as $update_id => $update_sql_ary)
 	{
-		$sql = "UPDATE $table
+		$sql = "UPDATE {$table}
 			SET " . implode(', ', $update_sql_ary) . "
-			WHERE {$type}_id = $update_id";
+			WHERE {$type}_id = {$update_id}";
 		$db->sql_query($sql);
 	}
 
@@ -894,7 +894,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 		FROM ' . DRAFTS_TABLE . ' d
 		LEFT JOIN ' . FORUMS_TABLE . ' f ON (f.forum_id = d.forum_id)
 			WHERE d.user_id = ' . $user->data['user_id'] . "
-			$sql_and
+			{$sql_and}
 		ORDER BY d.save_time DESC";
 	$result = $db->sql_query($sql);
 
@@ -961,7 +961,7 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0, $pm_action = '', $ms
 		{
 			// Either display as PM draft if forum_id and topic_id are empty or if access to the forums has been denied afterwards...
 			$link_pm = true;
-			$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=$id&amp;mode=compose&amp;d={$draft['draft_id']}" . (($pm_action) ? "&amp;action=$pm_action" : '') . (($msg_id) ? "&amp;p=$msg_id" : ''));
+			$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=compose&amp;d={$draft['draft_id']}" . (($pm_action) ? "&amp;action={$pm_action}" : '') . (($msg_id) ? "&amp;p={$msg_id}" : ''));
 		}
 
 		$template->assign_block_vars('draftrow', [
@@ -991,10 +991,10 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 	// Go ahead and pull all data for this topic
 	$sql = 'SELECT p.post_id
 		FROM ' . POSTS_TABLE . ' p' . "
-		WHERE p.topic_id = $topic_id
+		WHERE p.topic_id = {$topic_id}
 			" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p.post_approved = 1' : '') . '
-			' . (($mode == 'post_review') ? " AND p.post_id > $cur_post_id" : '') . '
-			' . (($mode == 'post_review_edit') ? " AND p.post_id = $cur_post_id" : '') . '
+			' . (($mode == 'post_review') ? " AND p.post_id > {$cur_post_id}" : '') . '
+			' . (($mode == 'post_review_edit') ? " AND p.post_id = {$cur_post_id}" : '') . '
 		ORDER BY p.post_time ';
 	$sql .= ($mode == 'post_review') ? 'ASC' : 'DESC';
 	$result = $db->sql_query_limit($sql, $config['posts_per_page']);
@@ -1124,7 +1124,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 		$post_subject = censor_text($post_subject);
 
 		$post_anchor = ($mode == 'post_review') ? 'ppr' . $row['post_id'] : 'pr' . $row['post_id'];
-		$u_show_post = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}");
+		$u_show_post = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}");
 
 		$template->assign_block_vars($mode . '_row', [
 			'POST_AUTHOR_FULL'		=> get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -1239,7 +1239,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	{
 		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
 			FROM ' . FORUMS_WATCH_TABLE . ' fw, ' . USERS_TABLE . " u
-			WHERE fw.forum_id = $forum_id
+			WHERE fw.forum_id = {$forum_id}
 				AND " . $db->sql_in_set('fw.user_id', $sql_ignore_users, true) . '
 				AND fw.notify_status = ' . NOTIFY_YES . '
 				AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')
@@ -1346,11 +1346,11 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 					'FORUM_NAME'	=> htmlspecialchars_decode($forum_name),
 					'AUTHOR_NAME'	=> htmlspecialchars_decode($author_name),
 
-					'U_FORUM'				=> generate_board_url() . "/viewforum.php?f=$forum_id",
-					'U_TOPIC'				=> generate_board_url() . "/viewtopic.php?t=$topic_id",
-					'U_NEWEST_POST'			=> generate_board_url() . "/viewtopic.php?t=$topic_id&p=$post_id&e=$post_id",
-					'U_STOP_WATCHING_TOPIC'	=> generate_board_url() . "/viewtopic.php?uid={$addr['user_id']}&t=$topic_id&unwatch=topic",
-					'U_STOP_WATCHING_FORUM'	=> generate_board_url() . "/viewforum.php?uid={$addr['user_id']}&f=$forum_id&unwatch=forum",
+					'U_FORUM'				=> generate_board_url() . "/viewforum.php?f={$forum_id}",
+					'U_TOPIC'				=> generate_board_url() . "/viewtopic.php?t={$topic_id}",
+					'U_NEWEST_POST'			=> generate_board_url() . "/viewtopic.php?t={$topic_id}&p={$post_id}&e={$post_id}",
+					'U_STOP_WATCHING_TOPIC'	=> generate_board_url() . "/viewtopic.php?uid={$addr['user_id']}&t={$topic_id}&unwatch=topic",
+					'U_STOP_WATCHING_FORUM'	=> generate_board_url() . "/viewforum.php?uid={$addr['user_id']}&f={$forum_id}&unwatch=forum",
 				]);
 
 				$messenger->send($addr['method']);
@@ -1368,7 +1368,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	{
 		$sql = 'UPDATE ' . TOPICS_WATCH_TABLE . '
 			SET notify_status = ' . NOTIFY_NO . "
-			WHERE topic_id = $topic_id
+			WHERE topic_id = {$topic_id}
 				AND " . $db->sql_in_set('user_id', $update_notification['topic']);
 		$db->sql_query($sql);
 	}
@@ -1377,7 +1377,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	{
 		$sql = 'UPDATE ' . FORUMS_WATCH_TABLE . '
 			SET notify_status = ' . NOTIFY_NO . "
-			WHERE forum_id = $forum_id
+			WHERE forum_id = {$forum_id}
 				AND " . $db->sql_in_set('user_id', $update_notification['forum']);
 		$db->sql_query($sql);
 	}
@@ -1386,7 +1386,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	if (!empty($delete_ids['topic']))
 	{
 		$sql = 'DELETE FROM ' . TOPICS_WATCH_TABLE . "
-			WHERE topic_id = $topic_id
+			WHERE topic_id = {$topic_id}
 				AND " . $db->sql_in_set('user_id', $delete_ids['topic']);
 		$db->sql_query($sql);
 	}
@@ -1394,7 +1394,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	if (!empty($delete_ids['forum']))
 	{
 		$sql = 'DELETE FROM ' . FORUMS_WATCH_TABLE . "
-			WHERE forum_id = $forum_id
+			WHERE forum_id = {$forum_id}
 				AND " . $db->sql_in_set('user_id', $delete_ids['forum']);
 		$db->sql_query($sql);
 	}
@@ -1510,7 +1510,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 		case 'delete_first_post':
 			$sql = 'SELECT p.post_id, p.poster_id, p.post_time, p.post_username, u.username, u.user_colour
 				FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . " u
-				WHERE p.topic_id = $topic_id
+				WHERE p.topic_id = {$topic_id}
 					AND p.poster_id = u.user_id
 				ORDER BY p.post_time ASC";
 			$result = $db->sql_query_limit($sql, 1);
@@ -1555,7 +1555,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 			{
 				$sql = 'SELECT MAX(post_id) as last_post_id
 					FROM ' . POSTS_TABLE . "
-					WHERE topic_id = $topic_id " .
+					WHERE topic_id = {$topic_id} " .
 						((!$auth->acl_get('m_approve', $forum_id)) ? 'AND post_approved = 1' : '');
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -1572,7 +1572,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 
 			$sql = 'SELECT post_id
 				FROM ' . POSTS_TABLE . "
-				WHERE topic_id = $topic_id " .
+				WHERE topic_id = {$topic_id} " .
 					((!$auth->acl_get('m_approve', $forum_id)) ? 'AND post_approved = 1' : '') . '
 					AND post_time > ' . $data['post_time'] . '
 				ORDER BY post_time ASC';
@@ -1590,7 +1590,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 
 				$sql = 'SELECT MAX(post_id) as last_post_id
 					FROM ' . POSTS_TABLE . "
-					WHERE topic_id = $topic_id " .
+					WHERE topic_id = {$topic_id} " .
 						((!$auth->acl_get('m_approve', $forum_id)) ? 'AND post_approved = 1' : '');
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -1621,8 +1621,8 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 	$db->sql_transaction('begin');
 
 	$where_sql = [
-		FORUMS_TABLE	=> "forum_id = $forum_id",
-		TOPICS_TABLE	=> "topic_id = $topic_id",
+		FORUMS_TABLE	=> "forum_id = {$forum_id}",
+		TOPICS_TABLE	=> "topic_id = {$topic_id}",
 		USERS_TABLE		=> 'user_id = ' . $data['poster_id']
 	];
 
@@ -1630,7 +1630,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 	{
 		if ($update_sql)
 		{
-			$db->sql_query("UPDATE $table SET $update_sql WHERE " . $where_sql[$table]);
+			$db->sql_query("UPDATE {$table} SET {$update_sql} WHERE " . $where_sql[$table]);
 		}
 	}
 
@@ -1891,7 +1891,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				);
 			}
 
-			$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = $current_time" . (($auth->acl_get('f_postcount', $data['forum_id']) && $post_approval) ? ', user_posts = user_posts + 1, user_topics = user_topics + 1' : '');
+			$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = {$current_time}" . (($auth->acl_get('f_postcount', $data['forum_id']) && $post_approval) ? ', user_posts = user_posts + 1, user_topics = user_topics + 1' : '');
 
 			if ($post_approval)
 			{
@@ -1908,7 +1908,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				(($post_approval) ? ', topic_replies = topic_replies + 1' : '') .
 				((!empty($data['attachment_data']) || (isset($data['topic_attachment']) && $data['topic_attachment'])) ? ', topic_attachment = 1' : '');
 
-			$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = $current_time" . (($auth->acl_get('f_postcount', $data['forum_id']) && $post_approval) ? ', user_posts = user_posts + 1' : '');
+			$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = {$current_time}" . (($auth->acl_get('f_postcount', $data['forum_id']) && $post_approval) ? ', user_posts = user_posts + 1' : '');
 
 			if ($post_approval)
 			{
@@ -2390,7 +2390,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	{
 		if (isset($update_ary['stat']) && implode('', $update_ary['stat']))
 		{
-			$sql = "UPDATE $table SET " . implode(', ', $update_ary['stat']) . ' WHERE ' . $where_sql[$table];
+			$sql = "UPDATE {$table} SET " . implode(', ', $update_ary['stat']) . ' WHERE ' . $where_sql[$table];
 			$db->sql_query($sql);
 		}
 	}
@@ -2403,7 +2403,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	if ($draft_id)
 	{
 		$sql = 'DELETE FROM ' . DRAFTS_TABLE . "
-			WHERE draft_id = $draft_id
+			WHERE draft_id = {$draft_id}
 				AND user_id = {$user->data['user_id']}";
 		$db->sql_query($sql);
 	}
@@ -2421,7 +2421,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 		if (!class_exists($search_type))
 		{
-			require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
+			require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
 		}
 
 		$error = false;
@@ -2550,17 +2550,17 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 
 	// Update the topic's last post post_time
 	$sql = 'UPDATE ' . POSTS_TABLE . "
-		SET post_time = $bump_time
+		SET post_time = {$bump_time}
 		WHERE post_id = {$post_data['topic_last_post_id']}
-			AND topic_id = $topic_id";
+			AND topic_id = {$topic_id}";
 	$db->sql_query($sql);
 
 	// Sync the topic's last post time, the rest of the topic's last post data isn't changed
 	$sql = 'UPDATE ' . TOPICS_TABLE . "
-		SET topic_last_post_time = $bump_time,
+		SET topic_last_post_time = {$bump_time},
 			topic_bumped = 1,
 			topic_bumper = " . $user->data['user_id'] . "
-		WHERE topic_id = $topic_id";
+		WHERE topic_id = {$topic_id}";
 	$db->sql_query($sql);
 
 	// Update the forum's last post info
@@ -2568,15 +2568,15 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 		SET forum_last_post_id = " . $post_data['topic_last_post_id'] . ",
 			forum_last_poster_id = " . $post_data['topic_last_poster_id'] . ",
 			forum_last_post_subject = '" . $db->sql_escape($post_data['topic_last_post_subject']) . "',
-			forum_last_post_time = $bump_time,
+			forum_last_post_time = {$bump_time},
 			forum_last_poster_name = '" . $db->sql_escape($post_data['topic_last_poster_name']) . "',
 			forum_last_poster_colour = '" . $db->sql_escape($post_data['topic_last_poster_colour']) . "'
-		WHERE forum_id = $forum_id";
+		WHERE forum_id = {$forum_id}";
 	$db->sql_query($sql);
 
 	// Update bumper's time of the last posting to prevent flood
 	$sql = 'UPDATE ' . USERS_TABLE . "
-		SET user_lastpost_time = $bump_time
+		SET user_lastpost_time = {$bump_time}
 		WHERE user_id = " . $user->data['user_id'];
 	$db->sql_query($sql);
 
@@ -2612,7 +2612,7 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 
 	add_log('mod', $forum_id, $topic_id, 'LOG_BUMP_TOPIC', $post_data['topic_title']);
 
-	$url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;p={$post_data['topic_last_post_id']}") . "#p{$post_data['topic_last_post_id']}";
+	$url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;p={$post_data['topic_last_post_id']}") . "#p{$post_data['topic_last_post_id']}";
 
 	return $url;
 }

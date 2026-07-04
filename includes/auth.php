@@ -525,7 +525,7 @@ class phpbb_auth
 		$sql = 'UPDATE ' . USERS_TABLE . "
 			SET user_permissions = '',
 				user_perm_from = 0
-			$where_sql";
+			{$where_sql}";
 		$db->sql_query($sql);
 
 		return;
@@ -542,16 +542,16 @@ class phpbb_auth
 
 		$sql_id = ($user_type == 'user') ? 'user_id' : 'group_id';
 
-		$sql_ug = ($ug_id !== false) ? ((!is_array($ug_id)) ? "AND a.$sql_id = $ug_id" : 'AND ' . $db->sql_in_set("a.$sql_id", $ug_id)) : '';
-		$sql_forum = ($forum_id !== false) ? ((!is_array($forum_id)) ? "AND a.forum_id = $forum_id" : 'AND ' . $db->sql_in_set('a.forum_id', $forum_id)) : '';
+		$sql_ug = ($ug_id !== false) ? ((!is_array($ug_id)) ? "AND a.{$sql_id} = {$ug_id}" : 'AND ' . $db->sql_in_set("a.{$sql_id}", $ug_id)) : '';
+		$sql_forum = ($forum_id !== false) ? ((!is_array($forum_id)) ? "AND a.forum_id = {$forum_id}" : 'AND ' . $db->sql_in_set('a.forum_id', $forum_id)) : '';
 
 		// Grab assigned roles...
 		$sql = 'SELECT a.auth_role_id, a.' . $sql_id . ', a.forum_id
 			FROM ' . (($user_type == 'user') ? ACL_USERS_TABLE : ACL_GROUPS_TABLE) . ' a, ' . ACL_ROLES_TABLE . " r
 			WHERE a.auth_role_id = r.role_id
 				AND r.role_type = '" . $db->sql_escape($role_type) . "'
-				$sql_ug
-				$sql_forum
+				{$sql_ug}
+				{$sql_forum}
 			ORDER BY r.role_order ASC";
 		$result = $db->sql_query($sql);
 
@@ -592,8 +592,8 @@ class phpbb_auth
 			WHERE a.auth_role_id = 0 ' .
 				(($sql_opts_from) ? 'AND a.auth_option_id = ao.auth_option_id ' : '') .
 				(($sql_user) ? 'AND a.' . $sql_user : '') . "
-				$sql_forum
-				$sql_opts";
+				{$sql_forum}
+				{$sql_opts}";
 
 		// Now the role settings - user-specific
 		$sql_ary[] = 'SELECT a.user_id, a.forum_id, r.auth_option_id, r.auth_setting, r.auth_option_id' . $sql_opts_select . '
@@ -601,8 +601,8 @@ class phpbb_auth
 			WHERE a.auth_role_id = r.role_id ' .
 				(($sql_opts_from) ? 'AND r.auth_option_id = ao.auth_option_id ' : '') .
 				(($sql_user) ? 'AND a.' . $sql_user : '') . "
-				$sql_forum
-				$sql_opts";
+				{$sql_forum}
+				{$sql_opts}";
 
 		foreach ($sql_ary as $sql)
 		{
@@ -628,8 +628,8 @@ class phpbb_auth
 				AND ug.user_pending = 0
 				AND NOT (ug.group_leader = 1 AND g.group_skip_auth = 1)
 				' . (($sql_user) ? 'AND ug.' . $sql_user : '') . "
-				$sql_forum
-				$sql_opts";
+				{$sql_forum}
+				{$sql_opts}";
 
 		// Now grab group settings - role specific...
 		$sql_ary[] = 'SELECT ug.user_id, a.forum_id, r.auth_setting, r.auth_option_id' . $sql_opts_select . '
@@ -641,8 +641,8 @@ class phpbb_auth
 				AND ug.user_pending = 0
 				AND NOT (ug.group_leader = 1 AND g.group_skip_auth = 1)
 				' . (($sql_user) ? 'AND ug.' . $sql_user : '') . "
-				$sql_forum
-				$sql_opts";
+				{$sql_forum}
+				{$sql_opts}";
 
 		foreach ($sql_ary as $sql)
 		{
@@ -704,8 +704,8 @@ class phpbb_auth
 			WHERE a.auth_role_id = 0
 				AND a.auth_option_id = ao.auth_option_id ' .
 				(($sql_user) ? 'AND a.' . $sql_user : '') . "
-				$sql_forum
-				$sql_opts
+				{$sql_forum}
+				{$sql_opts}
 			ORDER BY a.forum_id, ao.auth_option";
 
 		// Now the role settings - user-specific
@@ -714,8 +714,8 @@ class phpbb_auth
 			WHERE a.auth_role_id = r.role_id
 				AND r.auth_option_id = ao.auth_option_id ' .
 				(($sql_user) ? 'AND a.' . $sql_user : '') . "
-				$sql_forum
-				$sql_opts
+				{$sql_forum}
+				{$sql_opts}
 			ORDER BY a.forum_id, ao.auth_option";
 
 		foreach ($sql_ary as $sql)
@@ -756,8 +756,8 @@ class phpbb_auth
 			WHERE a.auth_role_id = 0
 				AND a.auth_option_id = ao.auth_option_id ' .
 				(($sql_group) ? 'AND a.' . $sql_group : '') . "
-				$sql_forum
-				$sql_opts
+				{$sql_forum}
+				{$sql_opts}
 			ORDER BY a.forum_id, ao.auth_option";
 
 		// Now grab group settings - role specific...
@@ -766,8 +766,8 @@ class phpbb_auth
 			WHERE a.auth_role_id = r.role_id
 				AND r.auth_option_id = ao.auth_option_id ' .
 				(($sql_group) ? 'AND a.' . $sql_group : '') . "
-				$sql_forum
-				$sql_opts
+				{$sql_forum}
+				{$sql_opts}
 			ORDER BY a.forum_id, ao.auth_option";
 
 		foreach ($sql_ary as $sql)
@@ -1143,11 +1143,11 @@ class phpbb_auth
 		{
 			if (strpos($auth_options, '%') !== false)
 			{
-				$sql_opts = "AND $key " . $db->sql_like_expression(str_replace('%', $db->any_char, $auth_options));
+				$sql_opts = "AND {$key} " . $db->sql_like_expression(str_replace('%', $db->any_char, $auth_options));
 			}
 			else
 			{
-				$sql_opts = "AND $key = '" . $db->sql_escape($auth_options) . "'";
+				$sql_opts = "AND {$key} = '" . $db->sql_escape($auth_options) . "'";
 			}
 		}
 		else

@@ -93,7 +93,7 @@ class acp_bbcodes
 				$template->assign_vars([
 					'S_EDIT_BBCODE'		=> true,
 					'U_BACK'			=> $this->u_action,
-					'U_ACTION'			=> $this->u_action . '&amp;action=' . (($action == 'add') ? 'create' : 'modify') . (($bbcode_id) ? "&amp;bbcode=$bbcode_id" : ''),
+					'U_ACTION'			=> $this->u_action . '&amp;action=' . (($action == 'add') ? 'create' : 'modify') . (($bbcode_id) ? "&amp;bbcode={$bbcode_id}" : ''),
 
 					'L_BBCODE_USAGE_EXPLAIN'=> sprintf($user->lang['BBCODE_USAGE_EXPLAIN'], '<a href="#down">', '</a>'),
 					'BBCODE_MATCH'			=> $bbcode_match,
@@ -262,7 +262,7 @@ class acp_bbcodes
 
 				$sql = 'SELECT bbcode_tag
 					FROM ' . BBCODES_TABLE . "
-					WHERE bbcode_id = $bbcode_id";
+					WHERE bbcode_id = {$bbcode_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -271,7 +271,7 @@ class acp_bbcodes
 				{
 					if (confirm_box(true))
 					{
-						$db->sql_query('DELETE FROM ' . BBCODES_TABLE . " WHERE bbcode_id = $bbcode_id");
+						$db->sql_query('DELETE FROM ' . BBCODES_TABLE . " WHERE bbcode_id = {$bbcode_id}");
 						$cache->destroy('sql', BBCODES_TABLE);
 						add_log('admin', 'LOG_BBCODE_DELETE', $row['bbcode_tag']);
 					}
@@ -318,7 +318,7 @@ class acp_bbcodes
 				if ($row['bbcode_order'] != $order)
 				{
 					$sql = 'UPDATE ' . BBCODES_TABLE . "
-						SET bbcode_order = $order
+						SET bbcode_order = {$order}
 						WHERE bbcode_id = {$row['bbcode_id']}";
 					$db->sql_query($sql);
 				}
@@ -455,7 +455,7 @@ class acp_bbcodes
 
 					if ($regex_modifiers[$i] == 'e')
 					{
-						$replace = "'.$replace.'";
+						$replace = "'.{$replace}.'";
 					}
 				}
 

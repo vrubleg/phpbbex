@@ -202,7 +202,7 @@ while ($row = $db->sql_fetchrow($result))
 		'USER_BROWSER'		=> ($auth->acl_get('a_user')) ? $row['session_browser'] : '',
 
 		'U_USER_PROFILE'	=> ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
-		'U_USER_IP'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg=$show_guests&amp;sb=$show_bots&amp;start=$start&amp;sk=$sort_key&amp;sd=$sort_dir"),
+		'U_USER_IP'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg={$show_guests}&amp;sb={$show_bots}&amp;start={$start}&amp;sk={$sort_key}&amp;sd={$sort_dir}"),
 		'U_WHOIS'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=whois&amp;s=' . $row['session_id']),
 
 		'S_USER_HIDDEN'		=> $s_user_hidden,
@@ -213,7 +213,7 @@ while ($row = $db->sql_fetchrow($result))
 $db->sql_freeresult($result);
 unset($prev_id, $prev_ip, $prev_bot);
 
-$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewonline.php', "sg=$show_guests&amp;sb=$show_bots&amp;sk=$sort_key&amp;sd=$sort_dir"), $counter, $config['topics_per_page'], $start);
+$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewonline.php', "sg={$show_guests}&amp;sb={$show_bots}&amp;sk={$sort_key}&amp;sd={$sort_dir}"), $counter, $config['topics_per_page'], $start);
 
 // Grab group details for legend display
 if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))

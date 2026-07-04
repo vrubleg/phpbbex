@@ -49,7 +49,7 @@ if ($view && !$post_id)
 	{
 		$sql = 'SELECT forum_id
 			FROM ' . TOPICS_TABLE . "
-			WHERE topic_id = $topic_id";
+			WHERE topic_id = {$topic_id}";
 		$result = $db->sql_query($sql);
 		$forum_id = (int) $db->sql_fetchfield('forum_id');
 		$db->sql_freeresult($result);
@@ -69,10 +69,10 @@ if ($view && !$post_id)
 
 		$sql = 'SELECT post_id, topic_id, forum_id
 			FROM ' . POSTS_TABLE . "
-			WHERE topic_id = $topic_id
+			WHERE topic_id = {$topic_id}
 				" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND post_approved = 1') . "
-				AND (post_time > $topic_last_read OR post_merged > $topic_last_read)
-				AND forum_id = $forum_id
+				AND (post_time > {$topic_last_read} OR post_merged > {$topic_last_read})
+				AND forum_id = {$forum_id}
 			ORDER BY post_time ASC";
 		$result = $db->sql_query_limit($sql, 1);
 		$row = $db->sql_fetchrow($result);
@@ -158,11 +158,11 @@ if ($user->data['is_registered'])
 
 if (!$post_id)
 {
-	$sql_array['WHERE'] = "t.topic_id = $topic_id";
+	$sql_array['WHERE'] = "t.topic_id = {$topic_id}";
 }
 else
 {
-	$sql_array['WHERE'] = "p.post_id = $post_id AND t.topic_id = p.topic_id";
+	$sql_array['WHERE'] = "p.post_id = {$post_id} AND t.topic_id = p.topic_id";
 }
 
 $sql_array['WHERE'] .= ' AND f.forum_id = t.forum_id';
@@ -178,7 +178,7 @@ if (!$topic_data)
 	// If post_id was submitted, we try at least to display the topic as a last resort...
 	if ($post_id && $topic_id)
 	{
-		redirect(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id"));
+		redirect(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}"));
 	}
 
 	trigger_error('NO_TOPIC');
@@ -194,7 +194,7 @@ if ($post_id)
 		// If post_id was submitted, we try at least to display the topic as a last resort...
 		if ($topic_id)
 		{
-			redirect(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id"));
+			redirect(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}"));
 		}
 
 		trigger_error('NO_TOPIC');
@@ -283,17 +283,17 @@ if (isset($_GET['e']))
 {
 	$jump_to = request_var('e', 0);
 
-	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id");
+	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}");
 
 	if ($user->data['user_id'] == ANONYMOUS)
 	{
-		login_box($redirect_url . "&amp;p=$post_id&amp;e=$jump_to", $user->lang['LOGIN_NOTIFY_TOPIC']);
+		login_box($redirect_url . "&amp;p={$post_id}&amp;e={$jump_to}", $user->lang['LOGIN_NOTIFY_TOPIC']);
 	}
 
 	if ($jump_to > 0)
 	{
 		// We direct the already logged in user to the correct post...
-		redirect($redirect_url . ((!$post_id) ? "&amp;p=$jump_to" : "&amp;p=$post_id") . "#p$jump_to");
+		redirect($redirect_url . ((!$post_id) ? "&amp;p={$jump_to}" : "&amp;p={$post_id}") . "#p{$jump_to}");
 	}
 }
 
@@ -342,14 +342,14 @@ if ($sort_days)
 
 	$sql = 'SELECT COUNT(post_id) AS num_posts
 		FROM ' . POSTS_TABLE . "
-		WHERE topic_id = $topic_id
-			AND post_time >= $min_post_time
+		WHERE topic_id = {$topic_id}
+			AND post_time >= {$min_post_time}
 		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND post_approved = 1');
 	$result = $db->sql_query($sql);
 	$total_posts = (int) $db->sql_fetchfield('num_posts');
 	$db->sql_freeresult($result);
 
-	$limit_posts_time = "AND p.post_time >= $min_post_time ";
+	$limit_posts_time = "AND p.post_time >= {$min_post_time} ";
 
 	if (isset($_POST['sort']))
 	{
@@ -380,7 +380,7 @@ if ($start < 0 || $start >= $total_posts)
 }
 
 // General Viewtopic URL for return links
-$viewtopic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start") . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($highlight_match) ? "&amp;hilit=$highlight" : ''));
+$viewtopic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($highlight_match) ? "&amp;hilit={$highlight}" : ''));
 
 // Are we watching this topic?
 $s_watching_topic = [
@@ -405,7 +405,7 @@ if (($config['email_enable'] || $config['jab_enable']) && $config['allow_topic_n
 // Bookmarks
 if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('bookmark', 0))
 {
-	if (check_link_hash(request_var('hash', ''), "topic_$topic_id"))
+	if (check_link_hash(request_var('hash', ''), "topic_{$topic_id}"))
 	{
 		if (!$topic_data['bookmarked'])
 		{
@@ -419,7 +419,7 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 		{
 			$sql = 'DELETE FROM ' . BOOKMARKS_TABLE . "
 				WHERE user_id = {$user->data['user_id']}
-					AND topic_id = $topic_id";
+					AND topic_id = {$topic_id}";
 			$db->sql_query($sql);
 		}
 		if (!empty($config['skip_typical_notices']))
@@ -454,7 +454,7 @@ gen_forum_auth_level('topic', $forum_id, $topic_data['forum_status']);
 // Quick mod tools
 $allow_change_type = ($auth->acl_get('m_', $forum_id) || ($user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster']));
 
-$mod_action = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f=$forum_id&amp;t=$topic_id&amp;quickmod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id);
+$mod_action = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&amp;t={$topic_id}&amp;quickmod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id);
 $mod_lock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster'] && $topic_data['topic_status'] == ITEM_UNLOCKED)) ? (($topic_data['topic_status'] == ITEM_UNLOCKED) ? 'lock' : 'unlock') : false;
 
 $topic_mod = '';
@@ -472,7 +472,7 @@ $topic_mod .= ($auth->acl_get('m_delete', $forum_id)) ? '<option value="delete_t
 $topic_mod .= ($auth->acl_get('m_', $forum_id)) ? '<option value="topic_logs">' . $user->lang['VIEW_TOPIC_LOGS'] . '</option>' : '';
 
 // If we've got a hightlight set pass it on to pagination.
-$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : '') . (($highlight_match) ? "&amp;hilit=$highlight" : '')), $total_posts, $config['posts_per_page'], $start);
+$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($highlight_match) ? "&amp;hilit={$highlight}" : '')), $total_posts, $config['posts_per_page'], $start);
 
 // Navigation links
 generate_forum_nav($topic_data);
@@ -520,8 +520,8 @@ $template->assign_vars([
 	'PAGINATION' 	=> $pagination,
 	'PAGE_NUMBER' 	=> on_page($total_posts, $config['posts_per_page'], $start),
 	'TOTAL_POSTS'	=> ($total_posts == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total_posts),
-	'U_MCP_FORUM'	=> ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f=$forum_id", true, $user->session_id) : '',
-	'U_MCP_TOPIC'	=> ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;f=$forum_id&amp;t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start") . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : ''), true, $user->session_id) : '',
+	'U_MCP_FORUM'	=> ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}", true, $user->session_id) : '',
+	'U_MCP_TOPIC'	=> ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;f={$forum_id}&amp;t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : ''), true, $user->session_id) : '',
 	'MODERATORS'	=> (isset($forum_moderators[$forum_id]) && sizeof($forum_moderators[$forum_id])) ? implode(', ', $forum_moderators[$forum_id]) : '',
 
 	'POST_IMG' 			=> ($topic_data['forum_status'] == ITEM_LOCKED) ? $user->img('button_topic_locked', 'FORUM_LOCKED') : $user->img('button_topic_new', 'POST_NEW_TOPIC'),
@@ -547,7 +547,7 @@ $template->assign_vars([
 	'S_SELECT_SORT_KEY' 	=> $s_sort_key,
 	'S_SELECT_SORT_DAYS' 	=> $s_limit_days,
 	'S_SINGLE_MODERATOR'	=> count($forum_moderators[$forum_id] ?? []) == 1,
-	'S_TOPIC_ACTION' 		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start")),
+	'S_TOPIC_ACTION' 		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}")),
 	'S_TOPIC_MOD' 			=> ($topic_mod != '') ? '<select name="action" id="quick-mod-select">' . $topic_mod . '</select>' : '',
 	'S_MOD_ACTION' 			=> $mod_action,
 	'U_LOCK_TOPIC'			=> ($mod_lock ? ($mod_action . "&action=" . $mod_lock) : false),
@@ -562,8 +562,8 @@ $template->assign_vars([
 	'S_ENABLE_FEEDS_TOPIC'	=> ($config['feed_topic'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $topic_data['forum_options'])),
 	'S_RATE_ENABLED'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']),
 
-	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.php?t=$topic_id" . (($start) ? "&amp;start=$start" : ''),
-	'U_TOPIC'				=> "{$server_path}viewtopic.php?t=$topic_id",
+	'U_CANONICAL'			=> generate_board_url() . "/viewtopic.php?t={$topic_id}" . (($start) ? "&amp;start={$start}" : ''),
+	'U_TOPIC'				=> "{$server_path}viewtopic.php?t={$topic_id}",
 	'U_FORUM'				=> $server_path,
 	'U_VIEW_TOPIC' 			=> $viewtopic_url,
 	'U_VIEW_FORUM' 			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id),
@@ -572,13 +572,13 @@ $template->assign_vars([
 	'L_WATCH_TOPIC' 		=> $s_watching_topic['title'],
 	'S_WATCHING_TOPIC'		=> $s_watching_topic['is_watching'],
 
-	'U_BOOKMARK_TOPIC'		=> ($user->data['is_registered'] && $config['allow_bookmarks']) ? $viewtopic_url . '&amp;bookmark=1&amp;hash=' . generate_link_hash("topic_$topic_id") : '',
+	'U_BOOKMARK_TOPIC'		=> ($user->data['is_registered'] && $config['allow_bookmarks']) ? $viewtopic_url . '&amp;bookmark=1&amp;hash=' . generate_link_hash("topic_{$topic_id}") : '',
 	'L_BOOKMARK_TOPIC'		=> ($user->data['is_registered'] && $config['allow_bookmarks'] && $topic_data['bookmarked']) ? $user->lang['BOOKMARK_TOPIC_REMOVE'] : $user->lang['BOOKMARK_TOPIC'],
 	'S_BOOKMARKED_TOPIC'	=> ($user->data['is_registered'] && $config['allow_bookmarks'] && $topic_data['bookmarked']),
 
-	'U_POST_NEW_TOPIC' 		=> ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=post&amp;f=$forum_id") : '',
-	'U_POST_REPLY_TOPIC' 	=> ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=reply&amp;t=$topic_id") : '',
-	'U_BUMP_TOPIC'			=> (bump_topic_allowed($forum_id, $topic_data['topic_bumped'], $topic_data['topic_last_post_time'], $topic_data['topic_poster'], $topic_data['topic_last_poster_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=bump&amp;t=$topic_id&amp;hash=" . generate_link_hash("topic_$topic_id")) : '']
+	'U_POST_NEW_TOPIC' 		=> ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=post&amp;f={$forum_id}") : '',
+	'U_POST_REPLY_TOPIC' 	=> ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=reply&amp;t={$topic_id}") : '',
+	'U_BUMP_TOPIC'			=> (bump_topic_allowed($forum_id, $topic_data['topic_bumped'], $topic_data['topic_last_post_time'], $topic_data['topic_poster'], $topic_data['topic_last_poster_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=bump&amp;t={$topic_id}&amp;hash=" . generate_link_hash("topic_{$topic_id}")) : '']
 );
 
 // Does this topic contain a poll?
@@ -587,7 +587,7 @@ if (!empty($topic_data['poll_start']))
 {
 	$sql = 'SELECT o.*, p.bbcode_bitfield, p.bbcode_uid
 		FROM ' . POLL_OPTIONS_TABLE . ' o, ' . POSTS_TABLE . " p
-		WHERE o.topic_id = $topic_id
+		WHERE o.topic_id = {$topic_id}
 			AND p.post_id = {$topic_data['topic_first_post_id']}
 			AND p.topic_id = o.topic_id
 		ORDER BY o.poll_option_id";
@@ -634,7 +634,7 @@ if (!empty($topic_data['poll_start']))
 
 		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options']) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
 		{
-			$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
+			$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}"));
 
 			meta_refresh(5, $redirect_url);
 			if (!$unvote && !sizeof($voted_id))
@@ -708,10 +708,10 @@ if (!empty($topic_data['poll_start']))
 
 		$sql = 'UPDATE ' . TOPICS_TABLE . '
 			SET poll_last_vote = ' . time() . "
-			WHERE topic_id = $topic_id";
+			WHERE topic_id = {$topic_id}";
 		$db->sql_query($sql);
 
-		$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id" . (($start == 0) ? '' : "&amp;start=$start"));
+		$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}"));
 		if (!empty($config['skip_typical_notices']))
 		{
 			redirect($redirect_url);
@@ -887,11 +887,11 @@ $bbcode_bitfield = '';
 // Go ahead and pull all data for this topic
 $sql = 'SELECT p.post_id
 	FROM ' . POSTS_TABLE . ' p' . (($join_user_sql[$sort_key]) ? ', ' . USERS_TABLE . ' u' : '') . "
-	WHERE p.topic_id = $topic_id
+	WHERE p.topic_id = {$topic_id}
 		" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p.post_approved = 1' : '') . "
 		" . (($join_user_sql[$sort_key]) ? 'AND u.user_id = p.poster_id' : '') . "
-		$limit_posts_time
-	ORDER BY $sql_sort_order";
+		{$limit_posts_time}
+	ORDER BY {$sql_sort_order}";
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
 while ($row = $db->sql_fetchrow($result))
@@ -1122,11 +1122,11 @@ while ($row = $db->sql_fetchrow($result))
 				'user_colour'		=> $row['user_colour'],
 
 				'online'		=> false,
-				'profile'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=viewprofile&amp;u=$poster_id"),
+				'profile'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=viewprofile&amp;u={$poster_id}"),
 				'www'			=> $row['user_website'],
 				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
 				'telegram'		=> ($row['user_telegram']) ? ('tg://resolve?domain=' . $row['user_telegram']) : '',
-				'search'		=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id=$poster_id&amp;sr=posts") : '',
+				'search'		=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$poster_id}&amp;sr=posts") : '',
 
 				'author_full'		=> get_username_string('full', $poster_id, $row['username'], $row['user_colour']),
 				'author_colour'		=> get_username_string('colour', $poster_id, $row['username'], $row['user_colour']),
@@ -1247,7 +1247,7 @@ if (sizeof($attach_list))
 				// Not all posts are displayed so we query the db to find if there's any attachment for this topic
 				$sql = 'SELECT a.post_msg_id as post_id
 					FROM ' . ATTACHMENTS_TABLE . ' a, ' . POSTS_TABLE . " p
-					WHERE p.topic_id = $topic_id
+					WHERE p.topic_id = {$topic_id}
 						AND p.post_approved = 1
 						AND p.topic_id = a.topic_id";
 				$result = $db->sql_query_limit($sql, 1);
@@ -1258,7 +1258,7 @@ if (sizeof($attach_list))
 				{
 					$sql = 'UPDATE ' . TOPICS_TABLE . "
 						SET topic_attachment = 0
-						WHERE topic_id = $topic_id";
+						WHERE topic_id = {$topic_id}";
 					$db->sql_query($sql);
 				}
 			}
@@ -1266,7 +1266,7 @@ if (sizeof($attach_list))
 			{
 				$sql = 'UPDATE ' . TOPICS_TABLE . "
 					SET topic_attachment = 0
-					WHERE topic_id = $topic_id";
+					WHERE topic_id = {$topic_id}";
 				$db->sql_query($sql);
 			}
 		}
@@ -1275,7 +1275,7 @@ if (sizeof($attach_list))
 			// Topic has approved attachments but its flag is wrong
 			$sql = 'UPDATE ' . TOPICS_TABLE . "
 				SET topic_attachment = 1
-				WHERE topic_id = $topic_id";
+				WHERE topic_id = {$topic_id}";
 			$db->sql_query($sql);
 
 			$topic_data['topic_attachment'] = 1;
@@ -1585,7 +1585,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 
 		'U_EDIT'			=> ($edit_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;p={$row['post_id']}") : '',
 		'U_QUOTE'			=> ($quote_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=quote&amp;p={$row['post_id']}") : '',
-		'U_INFO'			=> ($auth->acl_get('m_info', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;f=$forum_id&amp;p=" . $row['post_id'], true, $user->session_id) : '',
+		'U_INFO'			=> ($auth->acl_get('m_info', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;f={$forum_id}&amp;p=" . $row['post_id'], true, $user->session_id) : '',
 		'U_DELETE'			=> ($delete_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=delete&amp;p={$row['post_id']}") : '',
 
 		'U_PROFILE'		=> $user_cache[$poster_id]['profile'],
@@ -1761,7 +1761,7 @@ if (!$user->data['is_bot'] && $user->data['tracking_hits'])
 {
 	$sql = 'UPDATE ' . TOPICS_TABLE . '
 		SET topic_views = topic_views + 1, topic_last_view_time = ' . time() . "
-		WHERE topic_id = $topic_id";
+		WHERE topic_id = {$topic_id}";
 	$db->sql_query($sql);
 }
 
@@ -1796,7 +1796,7 @@ if ($all_marked_read)
 	else if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id])
 	{
 		$template->assign_vars([
-			'U_VIEW_UNREAD_POST'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;view=unread") . '#unread',
+			'U_VIEW_UNREAD_POST'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;view=unread") . '#unread',
 		]);
 	}
 }
@@ -1812,7 +1812,7 @@ else if (!$all_marked_read)
 	else if (!$last_page)
 	{
 		$template->assign_vars([
-			'U_VIEW_UNREAD_POST'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id&amp;view=unread") . '#unread',
+			'U_VIEW_UNREAD_POST'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;view=unread") . '#unread',
 		]);
 	}
 }

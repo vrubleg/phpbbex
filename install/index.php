@@ -388,7 +388,7 @@ class module
 				$cat = $cat_ary['name'];
 				$l_cat = $lang['CAT_' . $cat] ?? str_replace('_', ' ', $cat);
 				$cat = strtolower($cat);
-				$url = $this->module_url . "?mode=$cat&amp;language=$language";
+				$url = $this->module_url . "?mode={$cat}&amp;language={$language}";
 
 				if ($this->mode == $cat)
 				{
@@ -405,7 +405,7 @@ class module
 						{
 							$l_option = $lang['SUB_' . $option] ?? str_replace('_', ' ', $option);
 							$option = strtolower($option);
-							$url = $this->module_url . '?mode=' . $this->mode . "&amp;sub=$option&amp;language=$language";
+							$url = $this->module_url . '?mode=' . $this->mode . "&amp;sub={$option}&amp;language={$language}";
 
 							$template->assign_block_vars('l_block1', [
 								'L_TITLE'		=> $l_option,

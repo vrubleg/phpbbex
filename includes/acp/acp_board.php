@@ -898,8 +898,8 @@ class acp_board
 		$user->timezone = $old_tz;
 		$user->dst = $old_dst;
 
-		return "<select name=\"dateoptions\" id=\"dateoptions\" onchange=\"if (this.value == 'custom') { document.getElementById('" . addslashes($key) . "').value = '" . addslashes($value) . "'; } else { document.getElementById('" . addslashes($key) . "').value = this.value; }\">$dateformat_options</select>
-		<input type=\"text\" name=\"config[$key]\" id=\"$key\" value=\"$value\" maxlength=\"30\" />";
+		return "<select name=\"dateoptions\" id=\"dateoptions\" onchange=\"if (this.value == 'custom') { document.getElementById('" . addslashes($key) . "').value = '" . addslashes($value) . "'; } else { document.getElementById('" . addslashes($key) . "').value = this.value; }\">{$dateformat_options}</select>
+		<input type=\"text\" name=\"config[{$key}]\" id=\"{$key}\" value=\"{$value}\" maxlength=\"30\" />";
 	}
 
 	/**

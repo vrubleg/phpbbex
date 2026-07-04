@@ -385,7 +385,7 @@ class dbal
 			$values = [];
 			foreach ($assoc_ary as $key => $var)
 			{
-				$values[] = "$key = " . $this->_sql_validate_value($var);
+				$values[] = "{$key} = " . $this->_sql_validate_value($var);
 			}
 			$query = implode(($query == 'UPDATE') ? ', ' : ' AND ', $values);
 		}
@@ -490,7 +490,7 @@ class dbal
 	*/
 	function sql_lower_text($column_name)
 	{
-		return "LOWER($column_name)";
+		return "LOWER({$column_name})";
 	}
 
 	/**

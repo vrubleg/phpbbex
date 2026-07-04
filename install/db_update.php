@@ -140,13 +140,13 @@ function remove_module($module_class, $module_basename, $module_mode = null)
 	$diff = 2;
 
 	$sql = 'UPDATE ' . MODULES_TABLE . "
-		SET right_id = right_id - $diff
+		SET right_id = right_id - {$diff}
 		WHERE module_class = '" . $db->sql_escape($module_class) . "'
 			AND left_id < {$row['right_id']} AND right_id > {$row['right_id']}";
 	$db->sql_query($sql);
 
 	$sql = 'UPDATE ' . MODULES_TABLE . "
-		SET left_id = left_id - $diff, right_id = right_id - $diff
+		SET left_id = left_id - {$diff}, right_id = right_id - {$diff}
 		WHERE module_class = '" . $db->sql_escape($module_class) . "'
 			AND left_id > {$row['right_id']}";
 	$db->sql_query($sql);
@@ -171,7 +171,7 @@ function remove_permissions($permissions)
 	{
 		foreach ([ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE] as $table)
 		{
-			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
+			$db->sql_query("DELETE FROM {$table} WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
 		}
 
 		// Reset permissions cache...
@@ -1233,7 +1233,7 @@ if ($debug_from_version === false)
 {
 	// update the version
 	$sql = "UPDATE " . CONFIG_TABLE . "
-		SET config_value = '$updates_to_version'
+		SET config_value = '{$updates_to_version}'
 		WHERE config_name = 'version'";
 	_sql($sql, $errored, $error_ary);
 }
@@ -2199,7 +2199,7 @@ function change_database_data(&$no_updates, $version)
 
 				$next_order_id++;
 
-				$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . " (role_name, role_description, role_type, role_order) VALUES ('ROLE_USER_NEW_MEMBER', 'ROLE_DESCRIPTION_USER_NEW_MEMBER', 'u_', $next_order_id)";
+				$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . " (role_name, role_description, role_type, role_order) VALUES ('ROLE_USER_NEW_MEMBER', 'ROLE_DESCRIPTION_USER_NEW_MEMBER', 'u_', {$next_order_id})";
 				_sql($sql, $errored, $error_ary);
 				$u_role = $db->sql_nextid();
 
@@ -2207,11 +2207,11 @@ function change_database_data(&$no_updates, $version)
 				{
 					// Now add the correct data to the roles...
 					// The standard role says that new users are not able to send a PM, Mass PM, are not able to PM groups
-					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT $u_role, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_sendpm', 'u_masspm', 'u_masspm_group')";
+					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT {$u_role}, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_sendpm', 'u_masspm', 'u_masspm_group')";
 					_sql($sql, $errored, $error_ary);
 
 					// Add user role to group
-					$sql = 'INSERT INTO ' . ACL_GROUPS_TABLE . " (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES ($group_id, 0, 0, $u_role, 0)";
+					$sql = 'INSERT INTO ' . ACL_GROUPS_TABLE . " (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES ({$group_id}, 0, 0, {$u_role}, 0)";
 					_sql($sql, $errored, $error_ary);
 				}
 			}
@@ -2236,13 +2236,13 @@ function change_database_data(&$no_updates, $version)
 
 				$next_order_id++;
 
-				$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . " (role_name, role_description, role_type, role_order) VALUES  ('ROLE_FORUM_NEW_MEMBER', 'ROLE_DESCRIPTION_FORUM_NEW_MEMBER', 'f_', $next_order_id)";
+				$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . " (role_name, role_description, role_type, role_order) VALUES  ('ROLE_FORUM_NEW_MEMBER', 'ROLE_DESCRIPTION_FORUM_NEW_MEMBER', 'f_', {$next_order_id})";
 				_sql($sql, $errored, $error_ary);
 				$f_role = $db->sql_nextid();
 
 				if (!$errored)
 				{
-					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT $f_role, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'f_%' AND auth_option IN ('f_noapprove')";
+					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT {$f_role}, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'f_%' AND auth_option IN ('f_noapprove')";
 					_sql($sql, $errored, $error_ary);
 				}
 			}
@@ -2431,9 +2431,9 @@ function change_database_data(&$no_updates, $version)
 				// On an already updated board, they can also already be in language/.../acp/attachments.php
 				// in the board root.
 				$lang_files = [
-					PHPBB_ROOT_PATH . "install/update/new/language/$lang_dir/acp/attachments.php",
-					PHPBB_ROOT_PATH . "language/$lang_dir/install.php",
-					PHPBB_ROOT_PATH . "language/$lang_dir/acp/attachments.php",
+					PHPBB_ROOT_PATH . "install/update/new/language/{$lang_dir}/acp/attachments.php",
+					PHPBB_ROOT_PATH . "language/{$lang_dir}/install.php",
+					PHPBB_ROOT_PATH . "language/{$lang_dir}/acp/attachments.php",
 				];
 
 				foreach ($lang_files as $lang_file)

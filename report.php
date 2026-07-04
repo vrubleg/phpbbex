@@ -31,13 +31,13 @@ if (!$post_id && (!$pm_id || !$config['allow_pm_report']))
 
 if ($post_id)
 {
-	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p=$post_id") . "#p$post_id";
-	$return_forum_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id");
+	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p={$post_id}") . "#p{$post_id}";
+	$return_forum_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}");
 	$pm_id = 0;
 }
 else
 {
-	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&mode=view&p=$pm_id");
+	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&mode=view&p={$pm_id}");
 	$return_forum_url = '';
 	$post_id = 0;
 	$forum_id = 0;
@@ -54,7 +54,7 @@ if ($post_id)
 	// Grab all relevant data
 	$sql = 'SELECT t.*, p.*
 		FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
-		WHERE p.post_id = $post_id
+		WHERE p.post_id = {$post_id}
 			AND p.topic_id = t.topic_id";
 	$result = $db->sql_query($sql);
 	$report_data = $db->sql_fetchrow($result);
@@ -105,7 +105,7 @@ else
 	// Grab all relevant data
 	$sql = 'SELECT p.*, pt.*
 		FROM ' . PRIVMSGS_TABLE . ' p, ' . PRIVMSGS_TO_TABLE . " pt
-		WHERE p.msg_id = $pm_id
+		WHERE p.msg_id = {$pm_id}
 			AND p.msg_id = pt.msg_id
 			AND (p.author_id = " . $user->data['user_id'] . " OR pt.user_id = " . $user->data['user_id'] . ")";
 	$result = $db->sql_query($sql);
@@ -150,7 +150,7 @@ if ($submit && $reason_id)
 
 	$sql = 'SELECT *
 		FROM ' . REPORTS_REASONS_TABLE . "
-		WHERE reason_id = $reason_id";
+		WHERE reason_id = {$reason_id}";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
