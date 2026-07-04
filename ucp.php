@@ -12,8 +12,8 @@ require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 require_once(PHPBB_ROOT_PATH . 'includes/functions_module.php');
 
 // Basic parameter data
-$id 	= request_var('i', '');
-$mode	= request_var('mode', '');
+$id     = request_var('i', '');
+$mode   = request_var('mode', '');
 
 if (in_array($mode, ['login', 'logout', 'confirm', 'sendpassword', 'activate']))
 {
@@ -112,18 +112,18 @@ switch ($mode)
 		}
 
 		$template->set_filenames([
-			'body'		=> 'ucp_agreement.html'
+			'body'      => 'ucp_agreement.html'
 		]);
 
 		// Disable online list
 		page_header($user->lang[$title], false);
 
 		$template->assign_vars([
-			'S_AGREEMENT'			=> true,
-			'AGREEMENT_TITLE'		=> $user->lang[$title],
-			'AGREEMENT_TEXT'		=> sprintf($user->lang[$message], $config['sitename'], generate_board_url()),
-			'U_BACK'				=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login'),
-			'L_BACK'				=> $user->lang['BACK_TO_LOGIN'],
+			'S_AGREEMENT'           => true,
+			'AGREEMENT_TITLE'       => $user->lang[$title],
+			'AGREEMENT_TEXT'        => sprintf($user->lang[$message], $config['sitename'], generate_board_url()),
+			'U_BACK'                => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login'),
+			'L_BACK'                => $user->lang['BACK_TO_LOGIN'],
 		]);
 
 		page_footer();
@@ -225,27 +225,27 @@ if ($module->is_active('zebra', 'friends'))
 	$update_time = $config['load_online_time'] * 60;
 
 	$sql = $db->sql_build_query('SELECT_DISTINCT', [
-		'SELECT'	=> 'u.user_id, u.username, u.username_clean, u.user_colour, MAX(s.session_time) as online_time, MIN(s.session_viewonline) AS viewonline',
+		'SELECT'    => 'u.user_id, u.username, u.username_clean, u.user_colour, MAX(s.session_time) as online_time, MIN(s.session_viewonline) AS viewonline',
 
-		'FROM'		=> [
-			USERS_TABLE		=> 'u',
-			ZEBRA_TABLE		=> 'z'
+		'FROM'      => [
+			USERS_TABLE     => 'u',
+			ZEBRA_TABLE     => 'z'
 		],
 
-		'LEFT_JOIN'	=> [
+		'LEFT_JOIN' => [
 			[
-				'FROM'	=> [SESSIONS_TABLE => 's'],
-				'ON'	=> 's.session_user_id = z.zebra_id'
+				'FROM'  => [SESSIONS_TABLE => 's'],
+				'ON'    => 's.session_user_id = z.zebra_id'
 			]
 		],
 
-		'WHERE'		=> 'z.user_id = ' . $user->data['user_id'] . '
+		'WHERE'     => 'z.user_id = ' . $user->data['user_id'] . '
 			AND z.friend = 1
 			AND u.user_id = z.zebra_id',
 
-		'GROUP_BY'	=> 'z.zebra_id, u.user_id, u.username_clean, u.user_colour, u.username',
+		'GROUP_BY'  => 'z.zebra_id, u.user_id, u.username_clean, u.user_colour, u.username',
 
-		'ORDER_BY'	=> 'u.username_clean ASC',
+		'ORDER_BY'  => 'u.username_clean ASC',
 	]);
 
 	$result = $db->sql_query($sql);
@@ -255,12 +255,12 @@ if ($module->is_active('zebra', 'friends'))
 		$which = (time() - $update_time < $row['online_time'] && ($row['viewonline'] || $auth->acl_get('u_viewonline'))) ? 'online' : 'offline';
 
 		$template->assign_block_vars("friends_{$which}", [
-			'USER_ID'		=> $row['user_id'],
+			'USER_ID'       => $row['user_id'],
 
-			'U_PROFILE'		=> get_username_string('profile', $row['user_id'], $row['username'], $row['user_colour']),
-			'USER_COLOUR'	=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
-			'USERNAME'		=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
-			'USERNAME_FULL'	=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+			'U_PROFILE'     => get_username_string('profile', $row['user_id'], $row['username'], $row['user_colour']),
+			'USER_COLOUR'   => get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
+			'USERNAME'      => get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
+			'USERNAME_FULL' => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 		]);
 	}
 	$db->sql_freeresult($result);

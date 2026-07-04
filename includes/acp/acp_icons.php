@@ -169,12 +169,12 @@ class acp_icons
 							$smiley_options .= '<option value="' . $row['smiley_url'] . '"' . (($selected) ? ' selected="selected"' : '') . '>' . $row['smiley_url'] . '</option>';
 
 							$template->assign_block_vars('smile', [
-								'SMILEY_URL'	=> addslashes($row['smiley_url']),
-								'CODE'			=> addslashes($row['code']),
-								'EMOTION'		=> addslashes($row['emotion']),
-								'WIDTH'			=> $row['smiley_width'],
-								'HEIGHT'		=> $row['smiley_height'],
-								'ORDER'			=> $row['smiley_order'] + 1,
+								'SMILEY_URL'    => addslashes($row['smiley_url']),
+								'CODE'          => addslashes($row['code']),
+								'EMOTION'       => addslashes($row['emotion']),
+								'WIDTH'         => $row['smiley_width'],
+								'HEIGHT'        => $row['smiley_height'],
+								'ORDER'         => $row['smiley_order'] + 1,
 							]);
 						}
 					}
@@ -247,46 +247,46 @@ class acp_icons
 				$colspan += ($action == 'add') ? 2 : 0;
 
 				$template->assign_vars([
-					'S_EDIT'		=> true,
-					'S_SMILIES'		=> ($mode == 'smilies'),
-					'S_ADD'			=> ($action == 'add'),
+					'S_EDIT'        => true,
+					'S_SMILIES'     => ($mode == 'smilies'),
+					'S_ADD'         => ($action == 'add'),
 
-					'S_ORDER_LIST_DISPLAY'		=> $order_list . $order_lists[1],
-					'S_ORDER_LIST_UNDISPLAY'	=> $order_list . $order_lists[0],
-					'S_ORDER_LIST_DISPLAY_COUNT'	=> $display_count + 1,
+					'S_ORDER_LIST_DISPLAY'      => $order_list . $order_lists[1],
+					'S_ORDER_LIST_UNDISPLAY'    => $order_list . $order_lists[0],
+					'S_ORDER_LIST_DISPLAY_COUNT'    => $display_count + 1,
 
-					'L_TITLE'		=> $user->lang['ACP_' . $lang],
-					'L_EXPLAIN'		=> $user->lang['ACP_' . $lang . '_EXPLAIN'],
-					'L_CONFIG'		=> $user->lang[$lang . '_CONFIG'],
-					'L_URL'			=> $user->lang[$lang . '_URL'],
-					'L_LOCATION'	=> $user->lang[$lang . '_LOCATION'],
-					'L_WIDTH'		=> $user->lang[$lang . '_WIDTH'],
-					'L_HEIGHT'		=> $user->lang[$lang . '_HEIGHT'],
-					'L_ORDER'		=> $user->lang[$lang . '_ORDER'],
-					'L_NO_ICONS'	=> $user->lang['NO_' . $lang . '_' . strtoupper($action)],
+					'L_TITLE'       => $user->lang['ACP_' . $lang],
+					'L_EXPLAIN'     => $user->lang['ACP_' . $lang . '_EXPLAIN'],
+					'L_CONFIG'      => $user->lang[$lang . '_CONFIG'],
+					'L_URL'         => $user->lang[$lang . '_URL'],
+					'L_LOCATION'    => $user->lang[$lang . '_LOCATION'],
+					'L_WIDTH'       => $user->lang[$lang . '_WIDTH'],
+					'L_HEIGHT'      => $user->lang[$lang . '_HEIGHT'],
+					'L_ORDER'       => $user->lang[$lang . '_ORDER'],
+					'L_NO_ICONS'    => $user->lang['NO_' . $lang . '_' . strtoupper($action)],
 
-					'COLSPAN'		=> $colspan,
-					'ID'			=> $icon_id,
+					'COLSPAN'       => $colspan,
+					'ID'            => $icon_id,
 
-					'U_BACK'		=> $this->u_action,
-					'U_ACTION'		=> $this->u_action . '&amp;action=' . (($action == 'add') ? 'create' : 'modify'),
+					'U_BACK'        => $this->u_action,
+					'U_ACTION'      => $this->u_action . '&amp;action=' . (($action == 'add') ? 'create' : 'modify'),
 				]);
 
 				foreach ($data as $img => $img_row)
 				{
 					$template->assign_block_vars('items', [
-						'IMG'		=> $img,
-						'A_IMG'		=> addslashes($img),
-						'IMG_SRC'	=> PHPBB_ROOT_PATH . $img_path . '/' . $img,
+						'IMG'       => $img,
+						'A_IMG'     => addslashes($img),
+						'IMG_SRC'   => PHPBB_ROOT_PATH . $img_path . '/' . $img,
 
-						'CODE'		=> ($mode == 'smilies' && isset($img_row['code'])) ? $img_row['code'] : '',
-						'EMOTION'	=> ($mode == 'smilies' && isset($img_row['emotion'])) ? $img_row['emotion'] : '',
+						'CODE'      => ($mode == 'smilies' && isset($img_row['code'])) ? $img_row['code'] : '',
+						'EMOTION'   => ($mode == 'smilies' && isset($img_row['emotion'])) ? $img_row['emotion'] : '',
 
-						'S_ID'				=> (isset($img_row[$fields . '_id'])),
-						'ID'				=> $img_row[$fields . '_id'] ?? 0,
-						'WIDTH'				=> (!empty($img_row[$fields .'_width'])) ? $img_row[$fields .'_width'] : $img_row['width'],
-						'HEIGHT'			=> (!empty($img_row[$fields .'_height'])) ? $img_row[$fields .'_height'] : $img_row['height'],
-						'POSTING_CHECKED'	=> (!empty($img_row['display_on_posting']) || $action == 'add') ? ' checked="checked"' : '',
+						'S_ID'              => (isset($img_row[$fields . '_id'])),
+						'ID'                => $img_row[$fields . '_id'] ?? 0,
+						'WIDTH'             => (!empty($img_row[$fields .'_width'])) ? $img_row[$fields .'_width'] : $img_row['width'],
+						'HEIGHT'            => (!empty($img_row[$fields .'_height'])) ? $img_row[$fields .'_height'] : $img_row['height'],
+						'POSTING_CHECKED'   => (!empty($img_row['display_on_posting']) || $action == 'add') ? ' checked="checked"' : '',
 					]);
 				}
 
@@ -294,21 +294,21 @@ class acp_icons
 				if ($action == 'add' && $mode == 'smilies' && sizeof($smilies))
 				{
 					$template->assign_vars([
-						'S_ADD_CODE'		=> true,
+						'S_ADD_CODE'        => true,
 
-						'S_IMG_OPTIONS'		=> $smiley_options,
+						'S_IMG_OPTIONS'     => $smiley_options,
 
-						'S_ADD_ORDER_LIST_DISPLAY'		=> $add_order_list . $add_order_lists[1],
-						'S_ADD_ORDER_LIST_UNDISPLAY'	=> $add_order_list . $add_order_lists[0],
+						'S_ADD_ORDER_LIST_DISPLAY'      => $add_order_list . $add_order_lists[1],
+						'S_ADD_ORDER_LIST_UNDISPLAY'    => $add_order_list . $add_order_lists[0],
 
-						'IMG_SRC'			=> PHPBB_ROOT_PATH . $img_path . '/' . $default_row['smiley_url'],
-						'IMG_PATH'			=> $img_path,
+						'IMG_SRC'           => PHPBB_ROOT_PATH . $img_path . '/' . $default_row['smiley_url'],
+						'IMG_PATH'          => $img_path,
 
-						'CODE'				=> $default_row['code'],
-						'EMOTION'			=> $default_row['emotion'],
+						'CODE'              => $default_row['code'],
+						'EMOTION'           => $default_row['emotion'],
 
-						'WIDTH'				=> $default_row['smiley_width'],
-						'HEIGHT'			=> $default_row['smiley_height'],
+						'WIDTH'             => $default_row['smiley_width'],
+						'HEIGHT'            => $default_row['smiley_height'],
 					]);
 				}
 
@@ -323,21 +323,21 @@ class acp_icons
 				$images = (isset($_POST['image'])) ? array_keys(request_var('image', ['' => 0])) : [];
 
 				// Now really get the items
-				$image_id		= (isset($_POST['id'])) ? request_var('id', ['' => 0]) : [];
-				$image_order	= (isset($_POST['order'])) ? request_var('order', ['' => 0]) : [];
-				$image_width	= (isset($_POST['width'])) ? request_var('width', ['' => 0]) : [];
-				$image_height	= (isset($_POST['height'])) ? request_var('height', ['' => 0]) : [];
-				$image_add		= (isset($_POST['add_img'])) ? request_var('add_img', ['' => 0]) : [];
-				$image_emotion	= utf8_normalize_nfc(request_var('emotion', ['' => ''], true));
-				$image_code		= utf8_normalize_nfc(request_var('code', ['' => ''], true));
+				$image_id       = (isset($_POST['id'])) ? request_var('id', ['' => 0]) : [];
+				$image_order    = (isset($_POST['order'])) ? request_var('order', ['' => 0]) : [];
+				$image_width    = (isset($_POST['width'])) ? request_var('width', ['' => 0]) : [];
+				$image_height   = (isset($_POST['height'])) ? request_var('height', ['' => 0]) : [];
+				$image_add      = (isset($_POST['add_img'])) ? request_var('add_img', ['' => 0]) : [];
+				$image_emotion  = utf8_normalize_nfc(request_var('emotion', ['' => ''], true));
+				$image_code     = utf8_normalize_nfc(request_var('code', ['' => ''], true));
 				$image_display_on_posting = (isset($_POST['display_on_posting'])) ? request_var('display_on_posting', ['' => 0]) : [];
 
 				// Ok, add the relevant bits if we are adding new codes to existing emoticons...
 				if (!empty($_POST['add_additional_code']))
 				{
-					$add_image			= request_var('add_image', '');
-					$add_code			= utf8_normalize_nfc(request_var('add_code', '', true));
-					$add_emotion		= utf8_normalize_nfc(request_var('add_emotion', '', true));
+					$add_image          = request_var('add_image', '');
+					$add_code           = utf8_normalize_nfc(request_var('add_code', '', true));
+					$add_emotion        = utf8_normalize_nfc(request_var('add_emotion', '', true));
 
 					if ($add_image && $add_emotion && $add_code)
 					{
@@ -418,17 +418,17 @@ class acp_icons
 						}
 
 						$img_sql = [
-							$fields . '_url'		=> $image,
-							$fields . '_width'		=> $image_width[$image],
-							$fields . '_height'		=> $image_height[$image],
-							'display_on_posting'	=> (isset($image_display_on_posting[$image])) ? 1 : 0,
+							$fields . '_url'        => $image,
+							$fields . '_width'      => $image_width[$image],
+							$fields . '_height'     => $image_height[$image],
+							'display_on_posting'    => (isset($image_display_on_posting[$image])) ? 1 : 0,
 						];
 
 						if ($mode == 'smilies')
 						{
 							$img_sql = array_merge($img_sql, [
-								'emotion'	=> $image_emotion[$image],
-								'code'		=> $image_code[$image]]
+								'emotion'   => $image_emotion[$image],
+								'code'      => $image_code[$image]]
 							);
 						}
 
@@ -436,7 +436,7 @@ class acp_icons
 						if (!empty($image_order[$image]))
 						{
 							$img_sql = array_merge($img_sql, [
-								$fields . '_order'	=>	$image_order[$image]]
+								$fields . '_order'  =>  $image_order[$image]]
 							);
 
 							// Since we always add 'after' an item, we just need to increase all following + the current by one
@@ -475,7 +475,7 @@ class acp_icons
 							$icons_updated++;
 						}
 
- 					}
+                    }
 				}
 
 				$cache->destroy('_icons');
@@ -616,16 +616,16 @@ class acp_icons
 							{
 								$replace_sql = ($mode == 'smilies') ? $code : $img;
 								$sql = [
-									$fields . '_url'		=> $img,
-									$fields . '_height'		=> (int) $height,
-									$fields . '_width'		=> (int) $width,
-									'display_on_posting'	=> (int) $display_on_posting,
+									$fields . '_url'        => $img,
+									$fields . '_height'     => (int) $height,
+									$fields . '_width'      => (int) $width,
+									'display_on_posting'    => (int) $display_on_posting,
 								];
 
 								if ($mode == 'smilies')
 								{
 									$sql = array_merge($sql, [
-										'emotion'				=> $emotion,
+										'emotion'               => $emotion,
 									]);
 								}
 
@@ -638,18 +638,18 @@ class acp_icons
 								++$order;
 
 								$sql = [
-									$fields . '_url'	=> $img,
-									$fields . '_height'	=> (int) $height,
-									$fields . '_width'	=> (int) $width,
-									$fields . '_order'	=> (int) $order,
+									$fields . '_url'    => $img,
+									$fields . '_height' => (int) $height,
+									$fields . '_width'  => (int) $width,
+									$fields . '_order'  => (int) $order,
 									'display_on_posting'=> (int) $display_on_posting,
 								];
 
 								if ($mode == 'smilies')
 								{
 									$sql = array_merge($sql, [
-										'code'				=> $code,
-										'emotion'			=> $emotion,
+										'code'              => $code,
+										'emotion'           => $emotion,
 									]);
 								}
 								$db->sql_query("INSERT INTO {$table} " . $db->sql_build_array('INSERT', $sql));
@@ -672,18 +672,18 @@ class acp_icons
 					}
 
 					$template->assign_vars([
-						'S_CHOOSE_PAK'		=> true,
-						'S_PAK_OPTIONS'		=> $pak_options,
+						'S_CHOOSE_PAK'      => true,
+						'S_PAK_OPTIONS'     => $pak_options,
 
-						'L_TITLE'			=> $user->lang['ACP_' . $lang],
-						'L_EXPLAIN'			=> $user->lang['ACP_' . $lang . '_EXPLAIN'],
-						'L_NO_PAK_OPTIONS'	=> $user->lang['NO_' . $lang . '_PAK'],
-						'L_CURRENT'			=> $user->lang['CURRENT_' . $lang],
-						'L_CURRENT_EXPLAIN'	=> $user->lang['CURRENT_' . $lang . '_EXPLAIN'],
-						'L_IMPORT_SUBMIT'	=> $user->lang['IMPORT_' . $lang],
+						'L_TITLE'           => $user->lang['ACP_' . $lang],
+						'L_EXPLAIN'         => $user->lang['ACP_' . $lang . '_EXPLAIN'],
+						'L_NO_PAK_OPTIONS'  => $user->lang['NO_' . $lang . '_PAK'],
+						'L_CURRENT'         => $user->lang['CURRENT_' . $lang],
+						'L_CURRENT_EXPLAIN' => $user->lang['CURRENT_' . $lang . '_EXPLAIN'],
+						'L_IMPORT_SUBMIT'   => $user->lang['IMPORT_' . $lang],
 
-						'U_BACK'		=> $this->u_action,
-						'U_ACTION'		=> $this->u_action . '&amp;action=import',
+						'U_BACK'        => $this->u_action,
+						'U_ACTION'      => $this->u_action . '&amp;action=import',
 						]
 					);
 				}
@@ -695,10 +695,10 @@ class acp_icons
 				$this->tpl_name = 'message_body';
 
 				$template->assign_vars([
-					'MESSAGE_TITLE'		=> $user->lang['EXPORT_' . $lang],
-					'MESSAGE_TEXT'		=> sprintf($user->lang['EXPORT_' . $lang . '_EXPLAIN'], '<a href="' . $this->u_action . '&amp;action=send">', '</a>'),
+					'MESSAGE_TITLE'     => $user->lang['EXPORT_' . $lang],
+					'MESSAGE_TEXT'      => sprintf($user->lang['EXPORT_' . $lang . '_EXPLAIN'], '<a href="' . $this->u_action . '&amp;action=send">', '</a>'),
 
-					'S_USER_NOTICE'		=> true,
+					'S_USER_NOTICE'     => true,
 					]
 				);
 
@@ -784,10 +784,10 @@ class acp_icons
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'id'		=> $icon_id,
-						'action'	=> 'delete',
+						'i'         => $id,
+						'mode'      => $mode,
+						'id'        => $icon_id,
+						'action'    => 'delete',
 					]));
 				}
 
@@ -860,22 +860,22 @@ class acp_icons
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'L_TITLE'			=> $user->lang['ACP_' . $lang],
-			'L_EXPLAIN'			=> $user->lang['ACP_' . $lang . '_EXPLAIN'],
-			'L_IMPORT'			=> $user->lang['IMPORT_' . $lang],
-			'L_EXPORT'			=> $user->lang['EXPORT_' . $lang],
-			'L_NOT_DISPLAYED'	=> $user->lang[$lang . '_NOT_DISPLAYED'],
-			'L_ICON_ADD'		=> $user->lang['ADD_' . $lang],
-			'L_ICON_EDIT'		=> $user->lang['EDIT_' . $lang],
+			'L_TITLE'           => $user->lang['ACP_' . $lang],
+			'L_EXPLAIN'         => $user->lang['ACP_' . $lang . '_EXPLAIN'],
+			'L_IMPORT'          => $user->lang['IMPORT_' . $lang],
+			'L_EXPORT'          => $user->lang['EXPORT_' . $lang],
+			'L_NOT_DISPLAYED'   => $user->lang[$lang . '_NOT_DISPLAYED'],
+			'L_ICON_ADD'        => $user->lang['ADD_' . $lang],
+			'L_ICON_EDIT'       => $user->lang['EDIT_' . $lang],
 
-			'NOTICE'			=> $notice,
-			'COLSPAN'			=> ($mode == 'smilies') ? 5 : 3,
+			'NOTICE'            => $notice,
+			'COLSPAN'           => ($mode == 'smilies') ? 5 : 3,
 
-			'S_SMILIES'			=> ($mode == 'smilies'),
+			'S_SMILIES'         => ($mode == 'smilies'),
 
-			'U_ACTION'			=> $this->u_action,
-			'U_IMPORT'			=> $this->u_action . '&amp;action=import',
-			'U_EXPORT'			=> $this->u_action . '&amp;action=export',
+			'U_ACTION'          => $this->u_action,
+			'U_IMPORT'          => $this->u_action . '&amp;action=import',
+			'U_EXPORT'          => $this->u_action . '&amp;action=export',
 			]
 		);
 
@@ -894,17 +894,17 @@ class acp_icons
 			$alt_text = ($mode == 'smilies') ? $row['code'] : '';
 
 			$template->assign_block_vars('items', [
-				'S_SPACER'		=> (!$spacer && !$row['display_on_posting']),
-				'ALT_TEXT'		=> $alt_text,
-				'IMG_SRC'		=> PHPBB_ROOT_PATH . $img_path . '/' . $row[$fields . '_url'],
-				'WIDTH'			=> $row[$fields . '_width'],
-				'HEIGHT'		=> $row[$fields . '_height'],
-				'CODE'			=> $row['code'] ?? '',
-				'EMOTION'		=> (isset($row['emotion'])) ? $user->lang($row['emotion']) : '',
-				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;id=' . $row[$fields . '_id'],
-				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;id=' . $row[$fields . '_id'],
-				'U_MOVE_UP'		=> $this->u_action . '&amp;action=move_up&amp;id=' . $row[$fields . '_id'] . '&amp;start=' . $pagination_start,
-				'U_MOVE_DOWN'	=> $this->u_action . '&amp;action=move_down&amp;id=' . $row[$fields . '_id'] . '&amp;start=' . $pagination_start,
+				'S_SPACER'      => (!$spacer && !$row['display_on_posting']),
+				'ALT_TEXT'      => $alt_text,
+				'IMG_SRC'       => PHPBB_ROOT_PATH . $img_path . '/' . $row[$fields . '_url'],
+				'WIDTH'         => $row[$fields . '_width'],
+				'HEIGHT'        => $row[$fields . '_height'],
+				'CODE'          => $row['code'] ?? '',
+				'EMOTION'       => (isset($row['emotion'])) ? $user->lang($row['emotion']) : '',
+				'U_EDIT'        => $this->u_action . '&amp;action=edit&amp;id=' . $row[$fields . '_id'],
+				'U_DELETE'      => $this->u_action . '&amp;action=delete&amp;id=' . $row[$fields . '_id'],
+				'U_MOVE_UP'     => $this->u_action . '&amp;action=move_up&amp;id=' . $row[$fields . '_id'] . '&amp;start=' . $pagination_start,
+				'U_MOVE_DOWN'   => $this->u_action . '&amp;action=move_down&amp;id=' . $row[$fields . '_id'] . '&amp;start=' . $pagination_start,
 			]);
 
 			if (!$spacer && !$row['display_on_posting'])

@@ -37,6 +37,6 @@ if (empty($lang) || !is_array($lang))
 // ’ » “ ” …
 
 $lang = array_merge($lang, [
-	'TUTORIAL'			=> 'This is a tutorial',
-	'TUTORIAL_EXPLAIN'	=> 'This is an explanation for the tutorial',
+	'TUTORIAL'          => 'This is a tutorial',
+	'TUTORIAL_EXPLAIN'  => 'This is an explanation for the tutorial',
 ]);

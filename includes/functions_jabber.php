@@ -45,8 +45,8 @@ class jabber
 	*/
 	function __construct($server, $port, $username, $password, $use_ssl = false)
 	{
-		$this->connect_server		= $server ?: 'localhost';
-		$this->port					= $port ?: 5222;
+		$this->connect_server       = $server ?: 'localhost';
+		$this->port                 = $port ?: 5222;
 
 		// Get the server and the username
 		if (strpos($username, '@') === false)
@@ -62,8 +62,8 @@ class jabber
 			$this->server = $jid[1];
 		}
 
-		$this->password				= $password;
-		$this->use_ssl				= ($use_ssl && self::can_use_ssl());
+		$this->password             = $password;
+		$this->use_ssl              = ($use_ssl && self::can_use_ssl());
 
 		// Change port if we use SSL
 		if ($this->port == 5222 && $this->use_ssl)
@@ -71,8 +71,8 @@ class jabber
 			$this->port = 5223;
 		}
 
-		$this->enable_logging		= true;
-		$this->log_array			= [];
+		$this->enable_logging       = true;
+		$this->log_array            = [];
 	}
 
 	/**
@@ -98,7 +98,7 @@ class jabber
 	*/
 	function connect()
 	{
-/*		if (!$this->check_jid($this->username . '@' . $this->server))
+/*      if (!$this->check_jid($this->username . '@' . $this->server))
 		{
 			$this->add_to_log('Error: Jabber ID is not valid: ' . $this->username . '@' . $this->server);
 			return false;
@@ -500,11 +500,11 @@ class jabber
 					}
 
 					$response = [
-						'username'	=> $this->username,
-						'response'	=> $this->encrypt_password(array_merge($decoded, ['nc' => '00000001'])),
-						'charset'	=> 'utf-8',
-						'nc'		=> '00000001',
-						'qop'		=> 'auth',			// only auth being supported
+						'username'  => $this->username,
+						'response'  => $this->encrypt_password(array_merge($decoded, ['nc' => '00000001'])),
+						'charset'   => 'utf-8',
+						'nc'        => '00000001',
+						'qop'       => 'auth',          // only auth being supported
 					];
 
 					foreach (['nonce', 'digest-uri', 'realm', 'cnonce'] as $key)

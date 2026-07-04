@@ -35,7 +35,7 @@ class plugin
 	 * @access private
 	 */
 	var $plugin_list = [
-		'support'	=> ['erk'],
+		'support'   => ['erk'],
 	];
 
 	/**
@@ -187,8 +187,8 @@ class plugin
 	 */
 	function url_arg($string = false)
 	{
-		$args	= [];
-		$str	= '?';
+		$args   = [];
+		$str    = '?';
 
 		// Run through the parts
 		foreach ($this->_parts as $key => $value)
@@ -252,9 +252,9 @@ class plugin
 
 			// Assign to the template
 			$template->assign_block_vars('top_nav', [
-				'L_TITLE'		=> $user->lang['CAT_' . strtoupper($cat)],
-				'S_SELECTED'	=> $_s_active,
-				'U_TITLE'		=> append_sid(STK_INDEX, ['c' => $cat]),
+				'L_TITLE'       => $user->lang['CAT_' . strtoupper($cat)],
+				'S_SELECTED'    => $_s_active,
+				'U_TITLE'       => append_sid(STK_INDEX, ['c' => $cat]),
 			]);
 		}
 	}
@@ -294,7 +294,7 @@ class plugin
 			{
 				// For us lazy people
 				$info = [
-					'NAME'			=> $user->lang[strtoupper($tool)] ?? strtoupper($tool),
+					'NAME'          => $user->lang[strtoupper($tool)] ?? strtoupper($tool),
 				];
 			}
 
@@ -311,9 +311,9 @@ class plugin
 
 			// Assign to the template
 			$template->assign_block_vars('left_nav', [
-				'L_TITLE'		=> $name,
-				'S_SELECTED'	=> $_s_active,
-				'U_TITLE'		=> append_sid(STK_INDEX, ['c' => $this->_parts['c'], 't' => $tool]),
+				'L_TITLE'       => $name,
+				'S_SELECTED'    => $_s_active,
+				'U_TITLE'       => append_sid(STK_INDEX, ['c' => $this->_parts['c'], 't' => $tool]),
 			]);
 		}
 	}

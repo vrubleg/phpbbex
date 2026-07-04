@@ -57,7 +57,7 @@ class filespec
 		$this->mimetype = $upload_ary['type'];
 
 		// Opera adds the name to the mime type
-		$this->mimetype	= (strpos($this->mimetype, '; name') !== false) ? str_replace(strstr($this->mimetype, '; name'), '', $this->mimetype) : $this->mimetype;
+		$this->mimetype = (strpos($this->mimetype, '; name') !== false) ? str_replace(strstr($this->mimetype, '; name'), '', $this->mimetype) : $this->mimetype;
 
 		if (!$this->mimetype)
 		{
@@ -760,15 +760,15 @@ class fileupload
 		$filesize_exceeded = false;
 
 		curl_setopt_array($curl, [
-			CURLOPT_PROTOCOLS		=> CURLPROTO_HTTP | CURLPROTO_HTTPS,
-			CURLOPT_REDIR_PROTOCOLS	=> CURLPROTO_HTTP | CURLPROTO_HTTPS,
-			CURLOPT_FOLLOWLOCATION	=> true,
-			CURLOPT_MAXREDIRS		=> 3,
-			CURLOPT_SSL_VERIFYHOST	=> false,
-			CURLOPT_SSL_VERIFYPEER	=> false,
-			CURLOPT_CONNECTTIMEOUT	=> max(1, intval($this->upload_timeout / 2)),
-			CURLOPT_TIMEOUT			=> $this->upload_timeout,
-			CURLOPT_HEADERFUNCTION	=> function ($curl, $header) use (&$upload_ary, &$filesize_exceeded, $remote_max_filesize)
+			CURLOPT_PROTOCOLS       => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+			CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+			CURLOPT_FOLLOWLOCATION  => true,
+			CURLOPT_MAXREDIRS       => 3,
+			CURLOPT_SSL_VERIFYHOST  => false,
+			CURLOPT_SSL_VERIFYPEER  => false,
+			CURLOPT_CONNECTTIMEOUT  => max(1, intval($this->upload_timeout / 2)),
+			CURLOPT_TIMEOUT         => $this->upload_timeout,
+			CURLOPT_HEADERFUNCTION  => function ($curl, $header) use (&$upload_ary, &$filesize_exceeded, $remote_max_filesize)
 			{
 				$length = strlen($header);
 				$header = trim($header);
@@ -789,7 +789,7 @@ class fileupload
 
 				return $length;
 			},
-			CURLOPT_WRITEFUNCTION	=> function ($curl, $data) use ($fp, &$filesize, &$filesize_exceeded, $remote_max_filesize)
+			CURLOPT_WRITEFUNCTION   => function ($curl, $data) use ($fp, &$filesize, &$filesize_exceeded, $remote_max_filesize)
 			{
 				$filesize += strlen($data);
 

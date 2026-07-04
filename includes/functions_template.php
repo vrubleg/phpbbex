@@ -380,10 +380,10 @@ class template_compile
 		/**
 		* The following uses foreach for iteration instead of a for loop, foreach is faster but requires PHP to make a copy of the contents of the array which uses more memory
 		* <code>
-		*	if (!$offset)
-		*	{
-		*		$tag_template_php .= 'foreach (' . $varref . ' as $_' . $tag_args . '_i => $_' . $tag_args . '_val){';
-		*	}
+		*   if (!$offset)
+		*   {
+		*       $tag_template_php .= 'foreach (' . $varref . ' as $_' . $tag_args . '_i => $_' . $tag_args . '_val){';
+		*   }
 		* </code>
 		*/
 
@@ -495,9 +495,9 @@ class template_compile
 
 				case 'is':
 					$is_arg_start = ($tokens[$i-1] == ')') ? array_pop($is_arg_stack) : $i-1;
-					$is_arg	= implode('	', array_slice($tokens,	$is_arg_start, $i -	$is_arg_start));
+					$is_arg = implode(' ', array_slice($tokens, $is_arg_start, $i - $is_arg_start));
 
-					$new_tokens	= $this->_parse_is_expr($is_arg, array_slice($tokens, $i+1));
+					$new_tokens = $this->_parse_is_expr($is_arg, array_slice($tokens, $i+1));
 
 					array_splice($tokens, $is_arg_start, sizeof($tokens), $new_tokens);
 

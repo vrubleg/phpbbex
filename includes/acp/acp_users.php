@@ -31,12 +31,12 @@ class acp_users
 		$this->tpl_name = 'acp_users';
 		$this->page_title = 'ACP_USER_' . strtoupper($mode);
 
-		$error		= [];
-		$username	= utf8_normalize_nfc(request_var('username', '', true));
-		$user_id	= request_var('u', 0);
-		$action		= request_var('action', '');
+		$error      = [];
+		$username   = utf8_normalize_nfc(request_var('username', '', true));
+		$user_id    = request_var('u', 0);
+		$action     = request_var('action', '');
 
-		$submit		= (isset($_POST['update']) && !isset($_POST['cancel']));
+		$submit     = (isset($_POST['update']) && !isset($_POST['cancel']));
 
 		$form_name = 'acp_users';
 		add_form_key($form_name);
@@ -54,8 +54,8 @@ class acp_users
 			$ipwhois = user_ipwhois($user_ip);
 
 			$template->assign_vars([
-				'MESSAGE_TITLE'		=> sprintf($user->lang['IP_WHOIS_FOR'], $domain),
-				'MESSAGE_TEXT'		=> nl2br($ipwhois),
+				'MESSAGE_TITLE'     => sprintf($user->lang['IP_WHOIS_FOR'], $domain),
+				'MESSAGE_TEXT'      => nl2br($ipwhois),
 			]);
 
 			return;
@@ -67,11 +67,11 @@ class acp_users
 			$this->page_title = 'SELECT_USER';
 
 			$template->assign_vars([
-				'U_ACTION'			=> $this->u_action,
-				'ANONYMOUS_USER_ID'	=> ANONYMOUS,
+				'U_ACTION'          => $this->u_action,
+				'ANONYMOUS_USER_ID' => ANONYMOUS,
 
-				'S_SELECT_USER'		=> true,
-				'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=select_user&amp;field=username&amp;select_single=true'),
+				'S_SELECT_USER'     => true,
+				'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=select_user&amp;field=username&amp;select_single=true'),
 			]);
 
 			return;
@@ -138,11 +138,11 @@ class acp_users
 		}
 
 		$template->assign_vars([
-			'U_BACK'			=> $this->u_action,
-			'U_MODE_SELECT'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;u={$user_id}"),
-			'U_ACTION'			=> $this->u_action . '&amp;u=' . $user_id,
-			'S_FORM_OPTIONS'	=> $s_form_options,
-			'MANAGED_USERNAME'	=> $user_row['username']]
+			'U_BACK'            => $this->u_action,
+			'U_MODE_SELECT'     => append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;u={$user_id}"),
+			'U_ACTION'          => $this->u_action . '&amp;u=' . $user_id,
+			'S_FORM_OPTIONS'    => $s_form_options,
+			'MANAGED_USERNAME'  => $user_row['username']]
 		);
 
 		// Prevent normal users/admins change/view founders if they are not a founder by themselves
@@ -159,9 +159,9 @@ class acp_users
 
 				$user->add_lang('acp/ban');
 
-				$delete			= request_var('delete', 0);
-				$delete_type	= request_var('delete_type', '');
-				$ip				= request_var('ip', 'ip');
+				$delete         = request_var('delete', 0);
+				$delete_type    = request_var('delete_type', '');
+				$ip             = request_var('ip', 'ip');
 
 				if ($submit)
 				{
@@ -201,13 +201,13 @@ class acp_users
 							else
 							{
 								confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-									'u'				=> $user_id,
-									'i'				=> $id,
-									'mode'			=> $mode,
-									'action'		=> $action,
-									'update'		=> true,
-									'delete'		=> 1,
-									'delete_type'	=> $delete_type,
+									'u'             => $user_id,
+									'i'             => $id,
+									'mode'          => $mode,
+									'action'        => $action,
+									'update'        => true,
+									'delete'        => 1,
+									'delete_type'   => $delete_type,
 								]));
 							}
 						}
@@ -349,9 +349,9 @@ class acp_users
 								$messenger->anti_abuse_headers($config, $user);
 
 								$messenger->assign_vars([
-									'WELCOME_MSG'	=> htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
-									'USERNAME'		=> htmlspecialchars_decode($user_row['username']),
-									'U_ACTIVATE'	=> "{$server_url}/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_actkey}"]
+									'WELCOME_MSG'   => htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
+									'USERNAME'      => htmlspecialchars_decode($user_row['username']),
+									'U_ACTIVATE'    => "{$server_url}/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_actkey}"]
 								);
 
 								$messenger->send(NOTIFY_EMAIL);
@@ -404,7 +404,7 @@ class acp_users
 									$messenger->anti_abuse_headers($config, $user);
 
 									$messenger->assign_vars([
-										'USERNAME'	=> htmlspecialchars_decode($user_row['username'])]
+										'USERNAME'  => htmlspecialchars_decode($user_row['username'])]
 									);
 
 									$messenger->send(NOTIFY_EMAIL);
@@ -429,9 +429,9 @@ class acp_users
 							}
 
 							$sql_ary = [
-								'user_sig'					=> '',
-								'user_sig_bbcode_uid'		=> '',
-								'user_sig_bbcode_bitfield'	=> ''
+								'user_sig'                  => '',
+								'user_sig_bbcode_uid'       => '',
+								'user_sig_bbcode_bitfield'  => ''
 							];
 
 							$sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
@@ -453,10 +453,10 @@ class acp_users
 							}
 
 							$sql_ary = [
-								'user_avatar'			=> '',
-								'user_avatar_type'		=> 0,
-								'user_avatar_width'		=> 0,
-								'user_avatar_height'	=> 0,
+								'user_avatar'           => '',
+								'user_avatar_type'      => 0,
+								'user_avatar_width'     => 0,
+								'user_avatar_height'    => 0,
 							];
 
 							$sql = 'UPDATE ' . USERS_TABLE . '
@@ -489,11 +489,11 @@ class acp_users
 							else
 							{
 								confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-									'u'				=> $user_id,
-									'i'				=> $id,
-									'mode'			=> $mode,
-									'action'		=> $action,
-									'update'		=> true,
+									'u'             => $user_id,
+									'i'             => $id,
+									'mode'          => $mode,
+									'action'        => $action,
+									'update'        => true,
 								]));
 							}
 
@@ -511,11 +511,11 @@ class acp_users
 							else
 							{
 								confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-									'u'				=> $user_id,
-									'i'				=> $id,
-									'mode'			=> $mode,
-									'action'		=> $action,
-									'update'		=> true,
+									'u'             => $user_id,
+									'i'             => $id,
+									'mode'          => $mode,
+									'action'        => $action,
+									'update'        => true,
 								]));
 							}
 
@@ -562,11 +562,11 @@ class acp_users
 							else
 							{
 								confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-									'u'				=> $user_id,
-									'i'				=> $id,
-									'mode'			=> $mode,
-									'action'		=> $action,
-									'update'		=> true])
+									'u'             => $user_id,
+									'i'             => $id,
+									'mode'          => $mode,
+									'action'        => $action,
+									'update'        => true])
 								);
 							}
 						break;
@@ -638,14 +638,14 @@ class acp_users
 							else
 							{
 								confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-									'u'				=> $user_id,
-									'i'				=> $id,
-									'mode'			=> $mode,
-									'action'		=> $action,
-									'update'		=> true,
-									'delrates_type'	=> $delrates_type,
-									'delrates_from'	=> $delrates_from,
-									'delrates_to'	=> $delrates_to,
+									'u'             => $user_id,
+									'i'             => $id,
+									'mode'          => $mode,
+									'action'        => $action,
+									'update'        => true,
+									'delrates_type' => $delrates_type,
+									'delrates_from' => $delrates_from,
+									'delrates_to'   => $delrates_to,
 								]));
 							}
 
@@ -667,10 +667,10 @@ class acp_users
 								$this->page_title = 'USER_ADMIN_MOVE_POSTS';
 
 								$template->assign_vars([
-									'S_SELECT_FORUM'		=> true,
-									'U_ACTION'				=> $this->u_action . "&amp;action={$action}&amp;u={$user_id}",
-									'U_BACK'				=> $this->u_action . "&amp;u={$user_id}",
-									'S_FORUM_OPTIONS'		=> make_forum_select(false, false, true, true),
+									'S_SELECT_FORUM'        => true,
+									'U_ACTION'              => $this->u_action . "&amp;action={$action}&amp;u={$user_id}",
+									'U_BACK'                => $this->u_action . "&amp;u={$user_id}",
+									'S_FORUM_OPTIONS'       => make_forum_select(false, false, true, true),
 								]);
 
 								return;
@@ -750,16 +750,16 @@ class acp_users
 								{
 									// Create new topic
 									$sql = 'INSERT INTO ' . TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', [
-										'topic_poster'				=> $user_id,
-										'topic_time'				=> time(),
-										'forum_id' 					=> $new_forum_id,
-										'icon_id'					=> 0,
-										'topic_approved'			=> 1,
-										'topic_title' 				=> $post_ary['title'],
-										'topic_first_poster_name'	=> $user_row['username'],
-										'topic_type'				=> POST_NORMAL,
-										'topic_time_limit'			=> 0,
-										'topic_attachment'			=> $post_ary['attach']]
+										'topic_poster'              => $user_id,
+										'topic_time'                => time(),
+										'forum_id'                  => $new_forum_id,
+										'icon_id'                   => 0,
+										'topic_approved'            => 1,
+										'topic_title'               => $post_ary['title'],
+										'topic_first_poster_name'   => $user_row['username'],
+										'topic_type'                => POST_NORMAL,
+										'topic_time_limit'          => 0,
+										'topic_attachment'          => $post_ary['attach']]
 									);
 									$db->sql_query($sql);
 
@@ -819,11 +819,11 @@ class acp_users
 							else
 							{
 								confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-									'u'				=> $user_id,
-									'i'				=> $id,
-									'mode'			=> $mode,
-									'action'		=> $action,
-									'update'		=> true])
+									'u'             => $user_id,
+									'i'             => $id,
+									'mode'          => $mode,
+									'action'        => $action,
+									'update'        => true])
 								);
 							}
 
@@ -832,26 +832,26 @@ class acp_users
 
 					// Handle registration info updates
 					$data = [
-						'username'			=> utf8_normalize_nfc(request_var('user', $user_row['username'], true)),
-						'user_founder'		=> request_var('user_founder', ($user_row['user_type'] == USER_FOUNDER) ? 1 : 0),
-						'email'				=> strtolower(request_var('user_email', $user_row['user_email'])),
-						'new_password'		=> request_var('new_password', '', true),
-						'password_confirm'	=> request_var('password_confirm', '', true),
+						'username'          => utf8_normalize_nfc(request_var('user', $user_row['username'], true)),
+						'user_founder'      => request_var('user_founder', ($user_row['user_type'] == USER_FOUNDER) ? 1 : 0),
+						'email'             => strtolower(request_var('user_email', $user_row['user_email'])),
+						'new_password'      => request_var('new_password', '', true),
+						'password_confirm'  => request_var('password_confirm', '', true),
 					];
 
 					// Validation data - we do not check the password complexity setting here
 					$check_ary = [
-						'new_password'		=> [
+						'new_password'      => [
 							['string', true, $config['min_pass_chars'], $config['max_pass_chars']],
 							['password']],
-						'password_confirm'	=> ['string', true, $config['min_pass_chars'], $config['max_pass_chars']],
+						'password_confirm'  => ['string', true, $config['min_pass_chars'], $config['max_pass_chars']],
 					];
 
 					// Check username if altered
 					if ($data['username'] != $user_row['username'])
 					{
 						$check_ary += [
-							'username'			=> [
+							'username'          => [
 								['string', false, $config['min_name_chars'], $config['max_name_chars']],
 								['username', $user_row['username']]
 							],
@@ -862,7 +862,7 @@ class acp_users
 					if ($data['email'] != $user_row['user_email'])
 					{
 						$check_ary += [
-							'email'				=> [
+							'email'             => [
 								['string', false, 6, 60],
 								['email', $user_row['user_email']]
 							],
@@ -945,7 +945,7 @@ class acp_users
 						if ($update_email !== false)
 						{
 							$sql_ary += [
-								'user_email'		=> $update_email,
+								'user_email'        => $update_email,
 							];
 
 							add_log('user', $user_id, 'LOG_USER_UPDATE_EMAIL', $user_row['username'], $user_row['user_email'], $update_email);
@@ -954,9 +954,9 @@ class acp_users
 						if ($update_password)
 						{
 							$sql_ary += [
-								'user_password'		=> phpbb_hash($data['new_password']),
-								'user_passchg'		=> time(),
-								'user_pass_convert'	=> 0,
+								'user_password'     => phpbb_hash($data['new_password']),
+								'user_passchg'      => time(),
+								'user_pass_convert' => 0,
 							];
 
 							$user->reset_login_keys($user_id);
@@ -1089,35 +1089,35 @@ class acp_users
 				$db->sql_freeresult($result);
 
 				$template->assign_vars([
-					'L_NAME_CHARS_EXPLAIN'		=> sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
-					'L_CHANGE_PASSWORD_EXPLAIN'	=> sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
-					'L_POSTS_IN_QUEUE'			=> $user->lang('NUM_POSTS_IN_QUEUE', $user_row['posts_in_queue']),
-					'S_FOUNDER'					=> ($user->data['user_type'] == USER_FOUNDER),
+					'L_NAME_CHARS_EXPLAIN'      => sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
+					'L_CHANGE_PASSWORD_EXPLAIN' => sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
+					'L_POSTS_IN_QUEUE'          => $user->lang('NUM_POSTS_IN_QUEUE', $user_row['posts_in_queue']),
+					'S_FOUNDER'                 => ($user->data['user_type'] == USER_FOUNDER),
 
-					'S_OVERVIEW'		=> true,
-					'S_USER_IP'			=> (bool) $user_row['user_ip'],
-					'S_USER_FOUNDER'	=> ($user_row['user_type'] == USER_FOUNDER),
-					'S_ACTION_OPTIONS'	=> $s_action_options,
-					'S_OWN_ACCOUNT'		=> ($user_id == $user->data['user_id']),
-					'S_USER_INACTIVE'	=> ($user_row['user_type'] == USER_INACTIVE),
+					'S_OVERVIEW'        => true,
+					'S_USER_IP'         => (bool) $user_row['user_ip'],
+					'S_USER_FOUNDER'    => ($user_row['user_type'] == USER_FOUNDER),
+					'S_ACTION_OPTIONS'  => $s_action_options,
+					'S_OWN_ACCOUNT'     => ($user_id == $user->data['user_id']),
+					'S_USER_INACTIVE'   => ($user_row['user_type'] == USER_INACTIVE),
 
-					'U_SHOW_IP'		=> $this->u_action . "&amp;u={$user_id}&amp;ip=" . (($ip == 'ip') ? 'hostname' : 'ip'),
-					'U_WHOIS'		=> $this->u_action . "&amp;action=whois&amp;user_ip={$user_row['user_ip']}",
-					'U_MCP_QUEUE'	=> ($auth->acl_getf_global('m_approve')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue', true, $user->session_id) : '',
-					'U_SEARCH_USER'	=> ($config['load_search'] && $auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_row['user_id']}&amp;sr=posts") : '',
+					'U_SHOW_IP'     => $this->u_action . "&amp;u={$user_id}&amp;ip=" . (($ip == 'ip') ? 'hostname' : 'ip'),
+					'U_WHOIS'       => $this->u_action . "&amp;action=whois&amp;user_ip={$user_row['user_ip']}",
+					'U_MCP_QUEUE'   => ($auth->acl_getf_global('m_approve')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue', true, $user->session_id) : '',
+					'U_SEARCH_USER' => ($config['load_search'] && $auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_row['user_id']}&amp;sr=posts") : '',
 
-					'U_SWITCH_PERMISSIONS'	=> ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_row['user_id']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', "mode=switch_perm&amp;u={$user_row['user_id']}&amp;hash=" . generate_link_hash('switchperm')) : '',
+					'U_SWITCH_PERMISSIONS'  => ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_row['user_id']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', "mode=switch_perm&amp;u={$user_row['user_id']}&amp;hash=" . generate_link_hash('switchperm')) : '',
 
-					'POSTS_IN_QUEUE'	=> $user_row['posts_in_queue'],
-					'USER'				=> $user_row['username'],
-					'USER_REGISTERED'	=> $user->format_date($user_row['user_regdate']),
-					'REGISTERED_IP'		=> ($ip == 'hostname') ? gethostbyaddr($user_row['user_ip']) : $user_row['user_ip'],
-					'USER_LASTACTIVE'	=> ($last_visit) ? $user->format_date($last_visit) : ' - ',
-					'USER_EMAIL'		=> $user_row['user_email'],
-					'USER_WARNINGS'		=> $user_row['user_warnings'],
-					'USER_POSTS'		=> $user_row['user_posts'],
-					'USER_HAS_POSTS'	=> $user_row['user_has_posts'],
-					'USER_INACTIVE_REASON'	=> $inactive_reason,
+					'POSTS_IN_QUEUE'    => $user_row['posts_in_queue'],
+					'USER'              => $user_row['username'],
+					'USER_REGISTERED'   => $user->format_date($user_row['user_regdate']),
+					'REGISTERED_IP'     => ($ip == 'hostname') ? gethostbyaddr($user_row['user_ip']) : $user_row['user_ip'],
+					'USER_LASTACTIVE'   => ($last_visit) ? $user->format_date($last_visit) : ' - ',
+					'USER_EMAIL'        => $user_row['user_email'],
+					'USER_WARNINGS'     => $user_row['user_warnings'],
+					'USER_POSTS'        => $user_row['user_posts'],
+					'USER_HAS_POSTS'    => $user_row['user_has_posts'],
+					'USER_INACTIVE_REASON'  => $inactive_reason,
 				]);
 
 			break;
@@ -1127,16 +1127,16 @@ class acp_users
 				$user->add_lang('mcp');
 
 				// Set up general vars
-				$start		= request_var('start', 0);
+				$start      = request_var('start', 0);
 				$deletemark = isset($_POST['delmarked']);
-				$deleteall	= isset($_POST['delall']);
-				$marked		= request_var('mark', [0]);
-				$message	= utf8_normalize_nfc(request_var('message', '', true));
+				$deleteall  = isset($_POST['delall']);
+				$marked     = request_var('mark', [0]);
+				$message    = utf8_normalize_nfc(request_var('message', '', true));
 
 				// Sort keys
-				$sort_days	= request_var('st', 0);
-				$sort_key	= request_var('sk', 't');
-				$sort_dir	= request_var('sd', 'd');
+				$sort_days  = request_var('st', 0);
+				$sort_key   = request_var('sk', 't');
+				$sort_dir   = request_var('sd', 'd');
 
 				// Delete entries if requested and able
 				if (($deletemark || $deleteall) && $auth->acl_get('a_clearlogs'))
@@ -1202,24 +1202,24 @@ class acp_users
 				$start = view_log('user', $log_data, $log_count, $config['topics_per_page'], $start, 0, 0, $user_id, $sql_where, $sql_sort);
 
 				$template->assign_vars([
-					'S_FEEDBACK'	=> true,
-					'S_ON_PAGE'		=> on_page($log_count, $config['topics_per_page'], $start),
-					'PAGINATION'	=> generate_pagination($this->u_action . "&amp;u={$user_id}&amp;{$u_sort_param}", $log_count, $config['topics_per_page'], $start, true),
+					'S_FEEDBACK'    => true,
+					'S_ON_PAGE'     => on_page($log_count, $config['topics_per_page'], $start),
+					'PAGINATION'    => generate_pagination($this->u_action . "&amp;u={$user_id}&amp;{$u_sort_param}", $log_count, $config['topics_per_page'], $start, true),
 
-					'S_LIMIT_DAYS'	=> $s_limit_days,
-					'S_SORT_KEY'	=> $s_sort_key,
-					'S_SORT_DIR'	=> $s_sort_dir,
-					'S_CLEARLOGS'	=> $auth->acl_get('a_clearlogs'),
+					'S_LIMIT_DAYS'  => $s_limit_days,
+					'S_SORT_KEY'    => $s_sort_key,
+					'S_SORT_DIR'    => $s_sort_dir,
+					'S_CLEARLOGS'   => $auth->acl_get('a_clearlogs'),
 				]);
 
 				foreach ($log_data as $row)
 				{
 					$template->assign_block_vars('log', [
-						'USERNAME'		=> $row['username_full'],
-						'IP'			=> $row['ip'],
-						'DATE'			=> $user->format_date($row['time']),
-						'ACTION'		=> nl2br($row['action']),
-						'ID'			=> $row['id'],
+						'USERNAME'      => $row['username_full'],
+						'IP'            => $row['ip'],
+						'DATE'          => $user->format_date($row['time']),
+						'ACTION'        => nl2br($row['action']),
+						'ID'            => $row['id'],
 					]);
 				}
 
@@ -1229,17 +1229,17 @@ class acp_users
 				$user->add_lang('mcp');
 
 				// Set up general vars
-				$start		= request_var('start', 0);
-				$deletemark	= isset($_POST['delmarked']);
-				$deleteall	= isset($_POST['delall']);
-				$confirm	= isset($_POST['confirm']);
-				$marked		= request_var('mark', [0]);
-				$message	= utf8_normalize_nfc(request_var('message', '', true));
+				$start      = request_var('start', 0);
+				$deletemark = isset($_POST['delmarked']);
+				$deleteall  = isset($_POST['delall']);
+				$confirm    = isset($_POST['confirm']);
+				$marked     = request_var('mark', [0]);
+				$message    = utf8_normalize_nfc(request_var('message', '', true));
 
 				// Sort keys
-				$sort_days	= request_var('st', 0);
-				$sort_key	= request_var('sk', 't');
-				$sort_dir	= request_var('sd', 'd');
+				$sort_days  = request_var('st', 0);
+				$sort_key   = request_var('sk', 't');
+				$sort_dir   = request_var('sd', 'd');
 
 				// Delete entries if requested and able
 				if ($deletemark || $deleteall || $confirm)
@@ -1294,10 +1294,10 @@ class acp_users
 					else
 					{
 						$s_hidden_fields = [
-							'i'				=> $id,
-							'mode'			=> $mode,
-							'u'				=> $user_id,
-							'mark'			=> $marked,
+							'i'             => $id,
+							'mode'          => $mode,
+							'u'             => $user_id,
+							'mark'          => $marked,
 						];
 						if (isset($_POST['delmarked']))
 						{
@@ -1325,17 +1325,17 @@ class acp_users
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$template->assign_block_vars('warn', [
-						'ID'		=> $row['warning_id'],
-						'USERNAME'	=> get_username_string('full', $row['issuer_id'], $row['issuer_username'], $row['issuer_user_colour']),
-						'ACTION'	=> make_clickable(bbcode_nl2br($row['warning_text'])),
-						'DATE'		=> $user->format_date($row['warning_time']),
-						'DAYS'		=> $row['warning_days'],
+						'ID'        => $row['warning_id'],
+						'USERNAME'  => get_username_string('full', $row['issuer_id'], $row['issuer_username'], $row['issuer_user_colour']),
+						'ACTION'    => make_clickable(bbcode_nl2br($row['warning_text'])),
+						'DATE'      => $user->format_date($row['warning_time']),
+						'DAYS'      => $row['warning_days'],
 					]);
 				}
 				$db->sql_freeresult($result);
 
 				$template->assign_vars([
-					'S_WARNINGS'	=> true,
+					'S_WARNINGS'    => true,
 				]);
 
 			break;
@@ -1359,19 +1359,19 @@ class acp_users
 				$user_row['iso_lang_id'] = $row['lang_id'];
 
 				$data = [
-					'viewemail'		=> request_var('viewemail', $user_row['user_allow_viewemail']),
-					'icq'			=> request_var('icq', $user_row['user_icq']),
-					'jabber'		=> utf8_normalize_nfc(request_var('jabber', $user_row['user_jabber'], true)),
-					'skype'			=> utf8_normalize_nfc(request_var('skype', $user_row['user_skype'], true)),
-					'telegram'		=> utf8_normalize_nfc(request_var('telegram', $user_row['user_telegram'], true)),
-					'website'		=> utf8_normalize_nfc(request_var('website', $user_row['user_website'], true)),
-					'location'		=> utf8_normalize_nfc(request_var('location', $user_row['user_from'], true)),
-					'occupation'	=> utf8_normalize_nfc(request_var('occupation', $user_row['user_occ'], true)),
-					'interests'		=> utf8_normalize_nfc(request_var('interests', $user_row['user_interests'], true)),
-					'bday_day'		=> 0,
-					'bday_month'	=> 0,
-					'bday_year'		=> 0,
-					'gender'		=> request_var('gender', $user_row['user_gender']),
+					'viewemail'     => request_var('viewemail', $user_row['user_allow_viewemail']),
+					'icq'           => request_var('icq', $user_row['user_icq']),
+					'jabber'        => utf8_normalize_nfc(request_var('jabber', $user_row['user_jabber'], true)),
+					'skype'         => utf8_normalize_nfc(request_var('skype', $user_row['user_skype'], true)),
+					'telegram'      => utf8_normalize_nfc(request_var('telegram', $user_row['user_telegram'], true)),
+					'website'       => utf8_normalize_nfc(request_var('website', $user_row['user_website'], true)),
+					'location'      => utf8_normalize_nfc(request_var('location', $user_row['user_from'], true)),
+					'occupation'    => utf8_normalize_nfc(request_var('occupation', $user_row['user_occ'], true)),
+					'interests'     => utf8_normalize_nfc(request_var('interests', $user_row['user_interests'], true)),
+					'bday_day'      => 0,
+					'bday_month'    => 0,
+					'bday_year'     => 0,
+					'gender'        => request_var('gender', $user_row['user_gender']),
 				];
 
 				if (!empty($data['website']) && !preg_match('#^[a-z0-9]+:#iu', $data['website']))
@@ -1389,37 +1389,37 @@ class acp_users
 					[$data['bday_day'], $data['bday_month'], $data['bday_year']] = explode('-', $user_row['user_birthday']);
 				}
 
-				$data['bday_day']		= request_var('bday_day', $data['bday_day']);
-				$data['bday_month']		= request_var('bday_month', $data['bday_month']);
-				$data['bday_year']		= request_var('bday_year', $data['bday_year']);
-				$data['user_birthday']	= sprintf('%2d-%2d-%4d', $data['bday_day'], $data['bday_month'], $data['bday_year']);
+				$data['bday_day']       = request_var('bday_day', $data['bday_day']);
+				$data['bday_month']     = request_var('bday_month', $data['bday_month']);
+				$data['bday_year']      = request_var('bday_year', $data['bday_year']);
+				$data['user_birthday']  = sprintf('%2d-%2d-%4d', $data['bday_day'], $data['bday_month'], $data['bday_year']);
 
 				if ($submit)
 				{
 					$error = validate_data($data, [
-						'icq'			=> [
+						'icq'           => [
 							['string', true, 3, 15],
 							['match', true, '#^[0-9]+$#i']],
-						'jabber'		=> [
+						'jabber'        => [
 							['string', true, 5, 255],
 							['jabber']],
-						'skype'			=> [
+						'skype'         => [
 							['string', true, 5, 32],
 							['match', true, '#^[a-z][-_.a-z0-9]{4,31}$#i']],
-						'telegram'		=> [
+						'telegram'      => [
 							['string', true, 5, 32],
 							['match', true, '#^[a-z][_a-z0-9]{4,31}$#i']],
-						'website'		=> [
+						'website'       => [
 							['string', true, 11, 255],
 							['match', true, '#^http[s]?://([\pLa-z0-9\-]+\.)+[\pLa-z]{2,10}#iu']],
-						'location'		=> ['string', true, 2, 100],
-						'occupation'	=> ['string', true, 2, 500],
-						'interests'		=> ['string', true, 2, 500],
-						'bday_day'		=> ['num', true, 1, 31],
-						'bday_month'	=> ['num', true, 1, 12],
-						'bday_year'		=> ['num', true, 1901, gmdate('Y', time())],
-						'user_birthday'	=> ['date', true],
-						'gender'		=> ['num', true, 0, 2],
+						'location'      => ['string', true, 2, 100],
+						'occupation'    => ['string', true, 2, 500],
+						'interests'     => ['string', true, 2, 500],
+						'bday_day'      => ['num', true, 1, 31],
+						'bday_month'    => ['num', true, 1, 12],
+						'bday_year'     => ['num', true, 1901, gmdate('Y', time())],
+						'user_birthday' => ['date', true],
+						'gender'        => ['num', true, 0, 2],
 					]);
 
 					// validate custom profile fields
@@ -1437,17 +1437,17 @@ class acp_users
 					if (!sizeof($error))
 					{
 						$sql_ary = [
-							'user_allow_viewemail'	=> $data['viewemail'],
-							'user_icq'		=> $data['icq'],
-							'user_jabber'	=> $data['jabber'],
-							'user_skype'	=> $data['skype'],
-							'user_telegram'	=> $data['telegram'],
-							'user_website'	=> $data['website'],
-							'user_from'		=> $data['location'],
-							'user_occ'		=> $data['occupation'],
+							'user_allow_viewemail'  => $data['viewemail'],
+							'user_icq'      => $data['icq'],
+							'user_jabber'   => $data['jabber'],
+							'user_skype'    => $data['skype'],
+							'user_telegram' => $data['telegram'],
+							'user_website'  => $data['website'],
+							'user_from'     => $data['location'],
+							'user_occ'      => $data['occupation'],
 							'user_interests'=> $data['interests'],
-							'user_birthday'	=> $data['user_birthday'],
-							'user_gender'	=> $data['gender'],
+							'user_birthday' => $data['user_birthday'],
+							'user_gender'   => $data['gender'],
 						];
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -1490,26 +1490,26 @@ class acp_users
 				unset($now);
 
 				$template->assign_vars([
-					'VIEW_EMAIL'	=> $data['viewemail'],
+					'VIEW_EMAIL'    => $data['viewemail'],
 
-					'ICQ'			=> $data['icq'],
-					'JABBER'		=> $data['jabber'],
-					'SKYPE'			=> $data['skype'],
-					'TELEGRAM'		=> $data['telegram'],
-					'WEBSITE'		=> $data['website'],
-					'LOCATION'		=> $data['location'],
-					'OCCUPATION'	=> $data['occupation'],
-					'INTERESTS'		=> $data['interests'],
+					'ICQ'           => $data['icq'],
+					'JABBER'        => $data['jabber'],
+					'SKYPE'         => $data['skype'],
+					'TELEGRAM'      => $data['telegram'],
+					'WEBSITE'       => $data['website'],
+					'LOCATION'      => $data['location'],
+					'OCCUPATION'    => $data['occupation'],
+					'INTERESTS'     => $data['interests'],
 
-					'S_GENDER_X'	=> $data['gender'] == GENDER_X,
-					'S_GENDER_M'	=> $data['gender'] == GENDER_M,
-					'S_GENDER_F'	=> $data['gender'] == GENDER_F,
+					'S_GENDER_X'    => $data['gender'] == GENDER_X,
+					'S_GENDER_M'    => $data['gender'] == GENDER_M,
+					'S_GENDER_F'    => $data['gender'] == GENDER_F,
 
-					'S_BIRTHDAY_DAY_OPTIONS'	=> $s_birthday_day_options,
-					'S_BIRTHDAY_MONTH_OPTIONS'	=> $s_birthday_month_options,
-					'S_BIRTHDAY_YEAR_OPTIONS'	=> $s_birthday_year_options,
+					'S_BIRTHDAY_DAY_OPTIONS'    => $s_birthday_day_options,
+					'S_BIRTHDAY_MONTH_OPTIONS'  => $s_birthday_month_options,
+					'S_BIRTHDAY_YEAR_OPTIONS'   => $s_birthday_year_options,
 
-					'S_PROFILE'		=> true,
+					'S_PROFILE'     => true,
 				]);
 
 				// Get additional profile fields and assign them to the template block var 'profile_fields'
@@ -1524,43 +1524,43 @@ class acp_users
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				$data = [
-					'dateformat'		=> utf8_normalize_nfc(request_var('dateformat', $user_row['user_dateformat'], true)),
-					'lang'				=> basename(request_var('lang', $user_row['user_lang'])),
-					'tz'				=> request_var('tz', (float) $user_row['user_timezone']),
-					'style'				=> request_var('style', $user_row['user_style']),
-					'dst'				=> request_var('dst', $user_row['user_dst']),
-					'massemail'			=> request_var('massemail', $user_row['user_allow_massemail']),
-					'hideonline'		=> request_var('hideonline', !$user_row['user_allow_viewonline']),
-					'notifymethod'		=> request_var('notifymethod', $user_row['user_notify_type']),
-					'notifypm'			=> request_var('notifypm', $user_row['user_notify_pm']),
-					'popuppm'			=> request_var('popuppm', $this->optionget($user_row, 'popuppm')),
-					'allowpm'			=> request_var('allowpm', $user_row['user_allow_pm']),
+					'dateformat'        => utf8_normalize_nfc(request_var('dateformat', $user_row['user_dateformat'], true)),
+					'lang'              => basename(request_var('lang', $user_row['user_lang'])),
+					'tz'                => request_var('tz', (float) $user_row['user_timezone']),
+					'style'             => request_var('style', $user_row['user_style']),
+					'dst'               => request_var('dst', $user_row['user_dst']),
+					'massemail'         => request_var('massemail', $user_row['user_allow_massemail']),
+					'hideonline'        => request_var('hideonline', !$user_row['user_allow_viewonline']),
+					'notifymethod'      => request_var('notifymethod', $user_row['user_notify_type']),
+					'notifypm'          => request_var('notifypm', $user_row['user_notify_pm']),
+					'popuppm'           => request_var('popuppm', $this->optionget($user_row, 'popuppm')),
+					'allowpm'           => request_var('allowpm', $user_row['user_allow_pm']),
 
-					'view_images'		=> request_var('view_images', $this->optionget($user_row, 'viewimg')),
-					'view_flash'		=> request_var('view_flash', $this->optionget($user_row, 'viewflash')),
-					'view_smilies'		=> request_var('view_smilies', $this->optionget($user_row, 'viewsmilies')),
-					'view_sigs'			=> request_var('view_sigs', $this->optionget($user_row, 'viewsigs')),
-					'view_avatars'		=> request_var('view_avatars', $this->optionget($user_row, 'viewavatars')),
-					'view_wordcensor'	=> request_var('view_wordcensor', $this->optionget($user_row, 'viewcensors')),
+					'view_images'       => request_var('view_images', $this->optionget($user_row, 'viewimg')),
+					'view_flash'        => request_var('view_flash', $this->optionget($user_row, 'viewflash')),
+					'view_smilies'      => request_var('view_smilies', $this->optionget($user_row, 'viewsmilies')),
+					'view_sigs'         => request_var('view_sigs', $this->optionget($user_row, 'viewsigs')),
+					'view_avatars'      => request_var('view_avatars', $this->optionget($user_row, 'viewavatars')),
+					'view_wordcensor'   => request_var('view_wordcensor', $this->optionget($user_row, 'viewcensors')),
 
-					'bbcode'	=> request_var('bbcode', $this->optionget($user_row, 'bbcode')),
-					'smilies'	=> request_var('smilies', $this->optionget($user_row, 'smilies')),
-					'sig'		=> request_var('sig', $this->optionget($user_row, 'attachsig')),
-					'notify'	=> request_var('notify', $user_row['user_notify']),
+					'bbcode'    => request_var('bbcode', $this->optionget($user_row, 'bbcode')),
+					'smilies'   => request_var('smilies', $this->optionget($user_row, 'smilies')),
+					'sig'       => request_var('sig', $this->optionget($user_row, 'attachsig')),
+					'notify'    => request_var('notify', $user_row['user_notify']),
 				];
 
 				if ($submit)
 				{
-					$data['style']		= ($config['override_user_style']) ? $config['default_style'] : $data['style'];
-					$data['lang']		= ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
-					$data['dateformat']	= ($config['override_user_dateformat']) ? $config['default_dateformat'] : $data['dateformat'];
-					$data['tz']			= ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
-					$data['dst']		= ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
+					$data['style']      = ($config['override_user_style']) ? $config['default_style'] : $data['style'];
+					$data['lang']       = ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+					$data['dateformat'] = ($config['override_user_dateformat']) ? $config['default_dateformat'] : $data['dateformat'];
+					$data['tz']         = ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
+					$data['dst']        = ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
 					$error = validate_data($data, [
-						'dateformat'	=> ['string', false, 1, 30],
-						'lang'			=> ['match', false, '#^[a-z_\-]{2,}$#i'],
-						'tz'			=> ['num', false, -14, 14],
+						'dateformat'    => ['string', false, 1, 30],
+						'lang'          => ['match', false, '#^[a-z_\-]{2,}$#i'],
+						'tz'            => ['num', false, -14, 14],
 					]);
 
 					if (!check_form_key($form_name))
@@ -1582,21 +1582,21 @@ class acp_users
 						$this->optionset($user_row, 'attachsig', $data['sig']);
 
 						$sql_ary = [
-							'user_options'			=> $user_row['user_options'],
+							'user_options'          => $user_row['user_options'],
 
-							'user_allow_pm'			=> $data['allowpm'],
-							'user_allow_massemail'	=> $data['massemail'],
-							'user_allow_viewonline'	=> !$data['hideonline'],
-							'user_notify_type'		=> $data['notifymethod'],
-							'user_notify_pm'		=> $data['notifypm'],
+							'user_allow_pm'         => $data['allowpm'],
+							'user_allow_massemail'  => $data['massemail'],
+							'user_allow_viewonline' => !$data['hideonline'],
+							'user_notify_type'      => $data['notifymethod'],
+							'user_notify_pm'        => $data['notifypm'],
 
-							'user_dst'				=> $data['dst'],
-							'user_dateformat'		=> $data['dateformat'],
-							'user_lang'				=> $data['lang'],
-							'user_timezone'			=> $data['tz'],
-							'user_style'			=> $data['style'],
+							'user_dst'              => $data['dst'],
+							'user_dateformat'       => $data['dateformat'],
+							'user_lang'             => $data['lang'],
+							'user_timezone'         => $data['tz'],
+							'user_style'            => $data['style'],
 
-							'user_notify'	=> $data['notify'],
+							'user_notify'   => $data['notify'],
 						];
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -1617,7 +1617,7 @@ class acp_users
 								$user_auth->acl($user_row);
 
 								$session_sql_ary = [
-									'session_viewonline'	=> ($user_auth->acl_get('u_hideonline')) ? $sql_ary['user_allow_viewonline'] : true,
+									'session_viewonline'    => ($user_auth->acl_get('u_hideonline')) ? $sql_ary['user_allow_viewonline'] : true,
 								];
 
 								$sql = 'UPDATE ' . SESSIONS_TABLE . '
@@ -1655,38 +1655,38 @@ class acp_users
 				$dateformat_options .= '>' . $user->lang['CUSTOM_DATEFORMAT'] . '</option>';
 
 				$template->assign_vars([
-					'S_PREFS'			=> true,
-					'S_JABBER_DISABLED'	=> !($config['jab_enable'] && $user_row['user_jabber'] && @extension_loaded('xml')),
+					'S_PREFS'           => true,
+					'S_JABBER_DISABLED' => !($config['jab_enable'] && $user_row['user_jabber'] && @extension_loaded('xml')),
 
-					'MASS_EMAIL'		=> $data['massemail'],
-					'ALLOW_PM'			=> $data['allowpm'],
-					'HIDE_ONLINE'		=> $data['hideonline'],
-					'NOTIFY_EMAIL'		=> ($data['notifymethod'] == NOTIFY_EMAIL),
-					'NOTIFY_IM'			=> ($data['notifymethod'] == NOTIFY_IM),
-					'NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH),
-					'NOTIFY_PM'			=> $data['notifypm'],
-					'POPUP_PM'			=> $data['popuppm'],
-					'DST'				=> $data['dst'],
-					'BBCODE'			=> $data['bbcode'],
-					'SMILIES'			=> $data['smilies'],
-					'ATTACH_SIG'		=> $data['sig'],
-					'NOTIFY'			=> $data['notify'],
-					'VIEW_IMAGES'		=> $data['view_images'],
-					'VIEW_FLASH'		=> $data['view_flash'],
-					'VIEW_SMILIES'		=> $data['view_smilies'],
-					'VIEW_SIGS'			=> $data['view_sigs'],
-					'VIEW_AVATARS'		=> $data['view_avatars'],
-					'VIEW_WORDCENSOR'	=> $data['view_wordcensor'],
+					'MASS_EMAIL'        => $data['massemail'],
+					'ALLOW_PM'          => $data['allowpm'],
+					'HIDE_ONLINE'       => $data['hideonline'],
+					'NOTIFY_EMAIL'      => ($data['notifymethod'] == NOTIFY_EMAIL),
+					'NOTIFY_IM'         => ($data['notifymethod'] == NOTIFY_IM),
+					'NOTIFY_BOTH'       => ($data['notifymethod'] == NOTIFY_BOTH),
+					'NOTIFY_PM'         => $data['notifypm'],
+					'POPUP_PM'          => $data['popuppm'],
+					'DST'               => $data['dst'],
+					'BBCODE'            => $data['bbcode'],
+					'SMILIES'           => $data['smilies'],
+					'ATTACH_SIG'        => $data['sig'],
+					'NOTIFY'            => $data['notify'],
+					'VIEW_IMAGES'       => $data['view_images'],
+					'VIEW_FLASH'        => $data['view_flash'],
+					'VIEW_SMILIES'      => $data['view_smilies'],
+					'VIEW_SIGS'         => $data['view_sigs'],
+					'VIEW_AVATARS'      => $data['view_avatars'],
+					'VIEW_WORDCENSOR'   => $data['view_wordcensor'],
 
-					'DATE_FORMAT'			=> $data['dateformat'],
-					'S_DATEFORMAT_OPTIONS'	=> ($config['override_user_dateformat']) ? '' : $dateformat_options,
-					'S_CUSTOM_DATEFORMAT'	=> $s_custom,
-					'DEFAULT_DATEFORMAT'	=> $config['default_dateformat'],
-					'A_DEFAULT_DATEFORMAT'	=> addslashes($config['default_dateformat']),
+					'DATE_FORMAT'           => $data['dateformat'],
+					'S_DATEFORMAT_OPTIONS'  => ($config['override_user_dateformat']) ? '' : $dateformat_options,
+					'S_CUSTOM_DATEFORMAT'   => $s_custom,
+					'DEFAULT_DATEFORMAT'    => $config['default_dateformat'],
+					'A_DEFAULT_DATEFORMAT'  => addslashes($config['default_dateformat']),
 
-					'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
-					'S_STYLE_OPTIONS'	=> ($config['override_user_style']) ? '' : style_select($data['style']),
-					'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz']),
+					'S_LANG_OPTIONS'    => ($config['override_user_lang']) ? '' : language_select($data['lang']),
+					'S_STYLE_OPTIONS'   => ($config['override_user_style']) ? '' : style_select($data['style']),
+					'S_TZ_OPTIONS'      => ($config['override_user_timezone']) ? '' : tz_select($data['tz']),
 				]);
 
 			break;
@@ -1739,20 +1739,20 @@ class acp_users
 				}
 
 				$template->assign_vars([
-					'S_AVATAR'			=> true,
-					'S_CAN_UPLOAD'		=> $can_upload,
-					'S_UPLOAD_FILE'		=> ($config['allow_avatar'] && $can_upload && $config['allow_avatar_upload']),
-					'S_REMOTE_UPLOAD'	=> ($config['allow_avatar'] && $can_upload && $config['allow_avatar_remote_upload']),
-					'S_DISPLAY_GALLERY'	=> ($config['allow_avatar'] && $config['allow_avatar_local'] && !$display_gallery),
-					'S_IN_GALLERY'		=> ($config['allow_avatar'] && $config['allow_avatar_local'] && $display_gallery),
+					'S_AVATAR'          => true,
+					'S_CAN_UPLOAD'      => $can_upload,
+					'S_UPLOAD_FILE'     => ($config['allow_avatar'] && $can_upload && $config['allow_avatar_upload']),
+					'S_REMOTE_UPLOAD'   => ($config['allow_avatar'] && $can_upload && $config['allow_avatar_remote_upload']),
+					'S_DISPLAY_GALLERY' => ($config['allow_avatar'] && $config['allow_avatar_local'] && !$display_gallery),
+					'S_IN_GALLERY'      => ($config['allow_avatar'] && $config['allow_avatar_local'] && $display_gallery),
 
-					'AVATAR_IMAGE'			=> $avatar_img,
-					'AVATAR_MAX_FILESIZE'	=> $config['avatar_filesize'],
-					'USER_AVATAR_WIDTH'		=> $user_row['user_avatar_width'],
-					'USER_AVATAR_HEIGHT'	=> $user_row['user_avatar_height'],
-					'UPLOAD_AVATAR_URL'		=> request_var('uploadurl', '') ?: ($user_row['user_avatar_type'] == AVATAR_REMOTE ? $user_row['user_avatar'] : ''),
+					'AVATAR_IMAGE'          => $avatar_img,
+					'AVATAR_MAX_FILESIZE'   => $config['avatar_filesize'],
+					'USER_AVATAR_WIDTH'     => $user_row['user_avatar_width'],
+					'USER_AVATAR_HEIGHT'    => $user_row['user_avatar_height'],
+					'UPLOAD_AVATAR_URL'     => request_var('uploadurl', '') ?: ($user_row['user_avatar_type'] == AVATAR_REMOTE ? $user_row['user_avatar'] : ''),
 
-					'L_AVATAR_EXPLAIN'	=> sprintf($user->lang['AVATAR_EXPLAIN'], $config['avatar_max_width'], $config['avatar_max_height'], round($config['avatar_filesize'] / 1024))]
+					'L_AVATAR_EXPLAIN'  => sprintf($user->lang['AVATAR_EXPLAIN'], $config['avatar_max_width'], $config['avatar_max_height'], round($config['avatar_filesize'] / 1024))]
 				);
 
 			break;
@@ -1792,8 +1792,8 @@ class acp_users
 				$db->sql_freeresult($result);
 
 				$template->assign_vars([
-					'S_RANK'			=> true,
-					'S_RANK_OPTIONS'	=> $s_rank_options]
+					'S_RANK'            => true,
+					'S_RANK_OPTIONS'    => $s_rank_options]
 				);
 
 			break;
@@ -1803,20 +1803,20 @@ class acp_users
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
-				$enable_bbcode	= ($config['allow_sig_bbcode']) ? (bool) $this->optionget($user_row, 'sig_bbcode') : false;
-				$enable_smilies	= ($config['allow_sig_smilies']) ? (bool) $this->optionget($user_row, 'sig_smilies') : false;
-				$enable_urls	= ($config['allow_sig_links']) ? (bool) $this->optionget($user_row, 'sig_links') : false;
-				$signature		= utf8_normalize_nfc(request_var('signature', (string) $user_row['user_sig'], true));
+				$enable_bbcode  = ($config['allow_sig_bbcode']) ? (bool) $this->optionget($user_row, 'sig_bbcode') : false;
+				$enable_smilies = ($config['allow_sig_smilies']) ? (bool) $this->optionget($user_row, 'sig_smilies') : false;
+				$enable_urls    = ($config['allow_sig_links']) ? (bool) $this->optionget($user_row, 'sig_links') : false;
+				$signature      = utf8_normalize_nfc(request_var('signature', (string) $user_row['user_sig'], true));
 
-				$preview		= isset($_POST['preview']);
+				$preview        = isset($_POST['preview']);
 
 				if ($submit || $preview)
 				{
 					require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
-					$enable_bbcode	= ($config['allow_sig_bbcode']) ? !request_var('disable_bbcode', false) : false;
-					$enable_smilies	= ($config['allow_sig_smilies']) ? !request_var('disable_smilies', false) : false;
-					$enable_urls	= ($config['allow_sig_links']) ? !request_var('disable_magic_url', false) : false;
+					$enable_bbcode  = ($config['allow_sig_bbcode']) ? !request_var('disable_bbcode', false) : false;
+					$enable_smilies = ($config['allow_sig_smilies']) ? !request_var('disable_smilies', false) : false;
+					$enable_urls    = ($config['allow_sig_links']) ? !request_var('disable_magic_url', false) : false;
 
 					// Signature Lines Limit
 					if($config['max_sig_lines'])
@@ -1856,10 +1856,10 @@ class acp_users
 						$this->optionset($user_row, 'sig_links', $enable_urls);
 
 						$sql_ary = [
-							'user_sig'					=> (string) $message_parser->message,
-							'user_options'				=> $user_row['user_options'],
-							'user_sig_bbcode_uid'		=> (string) $message_parser->bbcode_uid,
-							'user_sig_bbcode_bitfield'	=> (string) $message_parser->bbcode_bitfield
+							'user_sig'                  => (string) $message_parser->message,
+							'user_options'              => $user_row['user_options'],
+							'user_sig_bbcode_uid'       => (string) $message_parser->bbcode_uid,
+							'user_sig_bbcode_bitfield'  => (string) $message_parser->bbcode_bitfield
 						];
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
@@ -1886,28 +1886,28 @@ class acp_users
 				decode_message($signature, $user_row['user_sig_bbcode_uid']);
 
 				$template->assign_vars([
-					'S_SIGNATURE'		=> true,
+					'S_SIGNATURE'       => true,
 
-					'SIGNATURE'			=> $signature,
-					'SIGNATURE_PREVIEW'	=> $signature_preview,
+					'SIGNATURE'         => $signature,
+					'SIGNATURE_PREVIEW' => $signature_preview,
 
-					'S_BBCODE_CHECKED'		=> (!$enable_bbcode) ? ' checked="checked"' : '',
-					'S_SMILIES_CHECKED'		=> (!$enable_smilies) ? ' checked="checked"' : '',
-					'S_MAGIC_URL_CHECKED'	=> (!$enable_urls) ? ' checked="checked"' : '',
+					'S_BBCODE_CHECKED'      => (!$enable_bbcode) ? ' checked="checked"' : '',
+					'S_SMILIES_CHECKED'     => (!$enable_smilies) ? ' checked="checked"' : '',
+					'S_MAGIC_URL_CHECKED'   => (!$enable_urls) ? ' checked="checked"' : '',
 
-					'BBCODE_STATUS'			=> ($config['allow_sig_bbcode']) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
-					'SMILIES_STATUS'		=> ($config['allow_sig_smilies']) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-					'IMG_STATUS'			=> ($config['allow_sig_img']) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
-					'FLASH_STATUS'			=> ($config['allow_sig_flash']) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
-					'URL_STATUS'			=> ($config['allow_sig_links']) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
+					'BBCODE_STATUS'         => ($config['allow_sig_bbcode']) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
+					'SMILIES_STATUS'        => ($config['allow_sig_smilies']) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
+					'IMG_STATUS'            => ($config['allow_sig_img']) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
+					'FLASH_STATUS'          => ($config['allow_sig_flash']) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
+					'URL_STATUS'            => ($config['allow_sig_links']) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 
-					'L_SIGNATURE_EXPLAIN'	=> sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ?: $user->lang['NO']),
+					'L_SIGNATURE_EXPLAIN'   => sprintf($user->lang['SIGNATURE_EXPLAIN'], $config['max_sig_chars'], $config['max_sig_lines'] ?: $user->lang['NO']),
 
-					'S_BBCODE_ALLOWED'		=> $config['allow_sig_bbcode'],
-					'S_SMILIES_ALLOWED'		=> $config['allow_sig_smilies'],
-					'S_BBCODE_IMG'			=> (bool) $config['allow_sig_img'],
-					'S_BBCODE_FLASH'		=> (bool) $config['allow_sig_flash'],
-					'S_LINKS_ALLOWED'		=> (bool) $config['allow_sig_links'],
+					'S_BBCODE_ALLOWED'      => $config['allow_sig_bbcode'],
+					'S_SMILIES_ALLOWED'     => $config['allow_sig_smilies'],
+					'S_BBCODE_IMG'          => (bool) $config['allow_sig_img'],
+					'S_BBCODE_FLASH'        => (bool) $config['allow_sig_flash'],
+					'S_LINKS_ALLOWED'       => (bool) $config['allow_sig_links'],
 				]);
 
 				// Assigning custom bbcodes
@@ -1917,13 +1917,13 @@ class acp_users
 
 			case 'attach':
 
-				$start		= request_var('start', 0);
+				$start      = request_var('start', 0);
 				$deletemark = isset($_POST['delmarked']);
-				$marked		= request_var('mark', [0]);
+				$marked     = request_var('mark', [0]);
 
 				// Sort keys
-				$sort_key	= request_var('sk', 'a');
-				$sort_dir	= request_var('sd', 'd');
+				$sort_key   = request_var('sk', 'a');
+				$sort_dir   = request_var('sd', 'd');
 
 				if ($deletemark && sizeof($marked))
 				{
@@ -1968,12 +1968,12 @@ class acp_users
 					else
 					{
 						confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-							'u'				=> $user_id,
-							'i'				=> $id,
-							'mode'			=> $mode,
-							'action'		=> $action,
-							'delmarked'		=> true,
-							'mark'			=> $marked])
+							'u'             => $user_id,
+							'i'             => $id,
+							'mode'          => $mode,
+							'action'        => $action,
+							'delmarked'     => true,
+							'mark'          => $marked])
 						);
 					}
 				}
@@ -2035,33 +2035,33 @@ class acp_users
 					}
 
 					$template->assign_block_vars('attach', [
-						'REAL_FILENAME'		=> $row['real_filename'],
-						'COMMENT'			=> nl2br($row['attach_comment']),
-						'EXTENSION'			=> $row['extension'],
-						'SIZE'				=> get_formatted_filesize($row['filesize']),
-						'DOWNLOAD_COUNT'	=> $row['download_count'],
-						'POST_TIME'			=> $user->format_date($row['filetime']),
-						'TOPIC_TITLE'		=> ($row['in_message']) ? $row['message_title'] : $row['topic_title'],
+						'REAL_FILENAME'     => $row['real_filename'],
+						'COMMENT'           => nl2br($row['attach_comment']),
+						'EXTENSION'         => $row['extension'],
+						'SIZE'              => get_formatted_filesize($row['filesize']),
+						'DOWNLOAD_COUNT'    => $row['download_count'],
+						'POST_TIME'         => $user->format_date($row['filetime']),
+						'TOPIC_TITLE'       => ($row['in_message']) ? $row['message_title'] : $row['topic_title'],
 
-						'ATTACH_ID'			=> $row['attach_id'],
-						'POST_ID'			=> $row['post_msg_id'],
-						'TOPIC_ID'			=> $row['topic_id'],
+						'ATTACH_ID'         => $row['attach_id'],
+						'POST_ID'           => $row['post_msg_id'],
+						'TOPIC_ID'          => $row['topic_id'],
 
-						'S_IN_MESSAGE'		=> $row['in_message'],
+						'S_IN_MESSAGE'      => $row['in_message'],
 
-						'U_DOWNLOAD'		=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id']),
-						'U_VIEW_TOPIC'		=> $view_topic,
+						'U_DOWNLOAD'        => append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id']),
+						'U_VIEW_TOPIC'      => $view_topic,
 					]);
 				}
 				$db->sql_freeresult($result);
 
 				$template->assign_vars([
-					'S_ATTACHMENTS'		=> true,
-					'S_ON_PAGE'			=> on_page($num_attachments, $config['topics_per_page'], $start),
-					'S_SORT_KEY'		=> $s_sort_key,
-					'S_SORT_DIR'		=> $s_sort_dir,
+					'S_ATTACHMENTS'     => true,
+					'S_ON_PAGE'         => on_page($num_attachments, $config['topics_per_page'], $start),
+					'S_SORT_KEY'        => $s_sort_key,
+					'S_SORT_DIR'        => $s_sort_dir,
 
-					'PAGINATION'		=> generate_pagination($this->u_action . "&amp;u={$user_id}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $num_attachments, $config['topics_per_page'], $start, true)]
+					'PAGINATION'        => generate_pagination($this->u_action . "&amp;u={$user_id}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $num_attachments, $config['topics_per_page'], $start, true)]
 				);
 
 			break;
@@ -2139,11 +2139,11 @@ class acp_users
 						else
 						{
 							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-								'u'				=> $user_id,
-								'i'				=> $id,
-								'mode'			=> $mode,
-								'action'		=> $action,
-								'g'				=> $group_id,
+								'u'             => $user_id,
+								'i'             => $id,
+								'mode'          => $mode,
+								'action'        => $action,
+								'g'             => $group_id,
 							]));
 						}
 
@@ -2162,11 +2162,11 @@ class acp_users
 						else
 						{
 							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-								'u'				=> $user_id,
-								'i'				=> $id,
-								'mode'			=> $mode,
-								'action'		=> $action,
-								'g'				=> $group_id,
+								'u'             => $user_id,
+								'i'             => $id,
+								'mode'          => $mode,
+								'action'        => $action,
+								'g'             => $group_id,
 							]));
 						}
 
@@ -2210,9 +2210,9 @@ class acp_users
 				{
 					$type = ($row['group_type'] == GROUP_SPECIAL) ? 'special' : (($row['user_pending']) ? 'pending' : 'normal');
 
-					$group_data[$type][$i]['group_id']		= $row['group_id'];
-					$group_data[$type][$i]['group_name']	= $row['group_name'];
-					$group_data[$type][$i]['group_leader']	= ($row['group_leader']) ? 1 : 0;
+					$group_data[$type][$i]['group_id']      = $row['group_id'];
+					$group_data[$type][$i]['group_name']    = $row['group_name'];
+					$group_data[$type][$i]['group_leader']  = ($row['group_leader']) ? 1 : 0;
 
 					$id_ary[] = $row['group_id'];
 
@@ -2246,33 +2246,33 @@ class acp_users
 					if ($current_type != $group_type)
 					{
 						$template->assign_block_vars('group', [
-							'S_NEW_GROUP_TYPE'		=> true,
-							'GROUP_TYPE'			=> $user->lang['USER_GROUP_' . strtoupper($group_type)]]
+							'S_NEW_GROUP_TYPE'      => true,
+							'GROUP_TYPE'            => $user->lang['USER_GROUP_' . strtoupper($group_type)]]
 						);
 					}
 
 					foreach ($data_ary as $data)
 					{
 						$template->assign_block_vars('group', [
-							'U_EDIT_GROUP'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=groups&amp;mode=manage&amp;action=edit&amp;u={$user_id}&amp;g={$data['group_id']}&amp;back_link=acp_users_groups"),
-							'U_DEFAULT'			=> $this->u_action . "&amp;action=default&amp;u={$user_id}&amp;g=" . $data['group_id'],
-							'U_DEMOTE_PROMOTE'	=> $this->u_action . '&amp;action=' . (($data['group_leader']) ? 'demote' : 'promote') . "&amp;u={$user_id}&amp;g=" . $data['group_id'],
-							'U_DELETE'			=> $this->u_action . "&amp;action=delete&amp;u={$user_id}&amp;g=" . $data['group_id'],
-							'U_APPROVE'			=> ($group_type == 'pending') ? $this->u_action . "&amp;action=approve&amp;u={$user_id}&amp;g=" . $data['group_id'] : '',
+							'U_EDIT_GROUP'      => append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=groups&amp;mode=manage&amp;action=edit&amp;u={$user_id}&amp;g={$data['group_id']}&amp;back_link=acp_users_groups"),
+							'U_DEFAULT'         => $this->u_action . "&amp;action=default&amp;u={$user_id}&amp;g=" . $data['group_id'],
+							'U_DEMOTE_PROMOTE'  => $this->u_action . '&amp;action=' . (($data['group_leader']) ? 'demote' : 'promote') . "&amp;u={$user_id}&amp;g=" . $data['group_id'],
+							'U_DELETE'          => $this->u_action . "&amp;action=delete&amp;u={$user_id}&amp;g=" . $data['group_id'],
+							'U_APPROVE'         => ($group_type == 'pending') ? $this->u_action . "&amp;action=approve&amp;u={$user_id}&amp;g=" . $data['group_id'] : '',
 
-							'GROUP_NAME'		=> ($group_type == 'special') ? $user->lang['G_' . $data['group_name']] : $data['group_name'],
-							'L_DEMOTE_PROMOTE'	=> ($data['group_leader']) ? $user->lang['GROUP_DEMOTE'] : $user->lang['GROUP_PROMOTE'],
+							'GROUP_NAME'        => ($group_type == 'special') ? $user->lang['G_' . $data['group_name']] : $data['group_name'],
+							'L_DEMOTE_PROMOTE'  => ($data['group_leader']) ? $user->lang['GROUP_DEMOTE'] : $user->lang['GROUP_PROMOTE'],
 
-							'S_IS_MEMBER'		=> ($group_type != 'pending'),
-							'S_NO_DEFAULT'		=> ($user_row['group_id'] != $data['group_id']),
-							'S_SPECIAL_GROUP'	=> ($group_type == 'special'),
+							'S_IS_MEMBER'       => ($group_type != 'pending'),
+							'S_NO_DEFAULT'      => ($user_row['group_id'] != $data['group_id']),
+							'S_SPECIAL_GROUP'   => ($group_type == 'special'),
 						]);
 					}
 				}
 
 				$template->assign_vars([
-					'S_GROUPS'			=> true,
-					'S_GROUP_OPTIONS'	=> $s_group_options]
+					'S_GROUPS'          => true,
+					'S_GROUP_OPTIONS'   => $s_group_options]
 				);
 
 			break;
@@ -2331,14 +2331,14 @@ class acp_users
 				$s_forum_options .= make_forum_select($forum_id, false, true, false, false, false);
 
 				$template->assign_vars([
-					'S_PERMISSIONS'				=> true,
+					'S_PERMISSIONS'             => true,
 
-					'S_GLOBAL'					=> (!$forum_id),
-					'S_FORUM_OPTIONS'			=> $s_forum_options,
+					'S_GLOBAL'                  => (!$forum_id),
+					'S_FORUM_OPTIONS'           => $s_forum_options,
 
-					'U_ACTION'					=> $this->u_action . '&amp;u=' . $user_id,
-					'U_USER_PERMISSIONS'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php' ,'i=permissions&amp;mode=setting_user_global&amp;user_id[]=' . $user_id),
-					'U_USER_FORUM_PERMISSIONS'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions&amp;mode=setting_user_local&amp;user_id[]=' . $user_id),
+					'U_ACTION'                  => $this->u_action . '&amp;u=' . $user_id,
+					'U_USER_PERMISSIONS'        => append_sid(PHPBB_ADMIN_PATH . 'index.php' ,'i=permissions&amp;mode=setting_user_global&amp;user_id[]=' . $user_id),
+					'U_USER_FORUM_PERMISSIONS'  => append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions&amp;mode=setting_user_local&amp;user_id[]=' . $user_id),
 				]);
 
 			break;
@@ -2347,8 +2347,8 @@ class acp_users
 
 		// Assign general variables
 		$template->assign_vars([
-			'S_ERROR'			=> (sizeof($error) > 0),
-			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '']
+			'S_ERROR'           => (sizeof($error) > 0),
+			'ERROR_MSG'         => (sizeof($error)) ? implode('<br />', $error) : '']
 		);
 	}
 

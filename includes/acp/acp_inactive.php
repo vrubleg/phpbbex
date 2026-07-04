@@ -32,14 +32,14 @@ class acp_inactive
 		$user->add_lang('memberlist');
 
 		$action = request_var('action', '');
-		$mark	= (isset($_REQUEST['mark'])) ? request_var('mark', [0]) : [];
-		$start	= request_var('start', 0);
+		$mark   = (isset($_REQUEST['mark'])) ? request_var('mark', [0]) : [];
+		$start  = request_var('start', 0);
 		$submit = isset($_POST['submit']);
 
 		// Sort keys
-		$sort_days	= request_var('st', 0);
-		$sort_key	= request_var('sk', 'i');
-		$sort_dir	= request_var('sd', 'd');
+		$sort_days  = request_var('st', 0);
+		$sort_key   = request_var('sk', 'i');
+		$sort_dir   = request_var('sd', 'd');
 
 		$form_key = 'acp_inactive';
 		add_form_key($form_key);
@@ -114,7 +114,7 @@ class acp_inactive
 								$messenger->anti_abuse_headers($config, $user);
 
 								$messenger->assign_vars([
-									'USERNAME'	=> htmlspecialchars_decode($row['username'])]
+									'USERNAME'  => htmlspecialchars_decode($row['username'])]
 								);
 
 								$messenger->send(NOTIFY_EMAIL);
@@ -157,11 +157,11 @@ class acp_inactive
 						else
 						{
 							$s_hidden_fields = [
-								'mode'			=> $mode,
-								'action'		=> $action,
-								'mark'			=> $mark,
-								'submit'		=> 1,
-								'start'			=> $start,
+								'mode'          => $mode,
+								'action'        => $action,
+								'mark'          => $mark,
+								'submit'        => 1,
+								'start'         => $start,
 							];
 							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields($s_hidden_fields));
 						}
@@ -202,9 +202,9 @@ class acp_inactive
 							$messenger->anti_abuse_headers($config, $user);
 
 							$messenger->assign_vars([
-								'USERNAME'		=> htmlspecialchars_decode($row['username']),
-								'REGISTER_DATE'	=> $user->format_date($row['user_regdate'], false, true),
-								'U_ACTIVATE'	=> generate_board_url() . "/ucp.php?mode=activate&u=" . $row['user_id'] . '&k=' . $row['user_actkey']]
+								'USERNAME'      => htmlspecialchars_decode($row['username']),
+								'REGISTER_DATE' => $user->format_date($row['user_regdate'], false, true),
+								'U_ACTIVATE'    => generate_board_url() . "/ucp.php?mode=activate&u=" . $row['user_id'] . '&k=' . $row['user_actkey']]
 							);
 
 							$messenger->send($row['user_notify_type']);
@@ -250,24 +250,24 @@ class acp_inactive
 		foreach ($inactive as $row)
 		{
 			$template->assign_block_vars('inactive', [
-				'INACTIVE_DATE'	=> $user->format_date($row['user_inactive_time']),
-				'REMINDED_DATE'	=> $user->format_date($row['user_reminded_time']),
-				'JOINED'		=> $user->format_date($row['user_regdate']),
-				'LAST_VISIT'	=> (!$row['user_lastvisit']) ? ' - ' : $user->format_date($row['user_lastvisit']),
+				'INACTIVE_DATE' => $user->format_date($row['user_inactive_time']),
+				'REMINDED_DATE' => $user->format_date($row['user_reminded_time']),
+				'JOINED'        => $user->format_date($row['user_regdate']),
+				'LAST_VISIT'    => (!$row['user_lastvisit']) ? ' - ' : $user->format_date($row['user_lastvisit']),
 
-				'REASON'		=> $row['inactive_reason'],
-				'USER_ID'		=> $row['user_id'],
-				'POSTS'			=> $row['user_posts'] ?: 0,
-				'REMINDED'		=> $row['user_reminded'],
+				'REASON'        => $row['inactive_reason'],
+				'USER_ID'       => $row['user_id'],
+				'POSTS'         => $row['user_posts'] ?: 0,
+				'REMINDED'      => $row['user_reminded'],
 
-				'REMINDED_EXPLAIN'	=> $user->lang('USER_LAST_REMINDED', (int) $row['user_reminded'], $user->format_date($row['user_reminded_time'])),
+				'REMINDED_EXPLAIN'  => $user->lang('USER_LAST_REMINDED', (int) $row['user_reminded'], $user->format_date($row['user_reminded_time'])),
 
-				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview')),
-				'USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
-				'USER_COLOR'		=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
+				'USERNAME_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview')),
+				'USERNAME'          => get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
+				'USER_COLOR'        => get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
 
-				'U_USER_ADMIN'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
-				'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$row['user_id']}&amp;sr=posts") : '',
+				'U_USER_ADMIN'  => append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
+				'U_SEARCH_USER' => ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$row['user_id']}&amp;sr=posts") : '',
 			]);
 		}
 
@@ -278,17 +278,17 @@ class acp_inactive
 		}
 
 		$template->assign_vars([
-			'S_INACTIVE_USERS'		=> true,
-			'S_INACTIVE_OPTIONS'	=> build_select($option_ary),
+			'S_INACTIVE_USERS'      => true,
+			'S_INACTIVE_OPTIONS'    => build_select($option_ary),
 
-			'S_LIMIT_DAYS'	=> $s_limit_days,
-			'S_SORT_KEY'	=> $s_sort_key,
-			'S_SORT_DIR'	=> $s_sort_dir,
-			'S_ON_PAGE'		=> on_page($inactive_count, $per_page, $start),
-			'PAGINATION'	=> generate_pagination($this->u_action . "&amp;{$u_sort_param}&amp;users_per_page={$per_page}", $inactive_count, $per_page, $start, true),
-			'USERS_PER_PAGE'	=> $per_page,
+			'S_LIMIT_DAYS'  => $s_limit_days,
+			'S_SORT_KEY'    => $s_sort_key,
+			'S_SORT_DIR'    => $s_sort_dir,
+			'S_ON_PAGE'     => on_page($inactive_count, $per_page, $start),
+			'PAGINATION'    => generate_pagination($this->u_action . "&amp;{$u_sort_param}&amp;users_per_page={$per_page}", $inactive_count, $per_page, $start, true),
+			'USERS_PER_PAGE'    => $per_page,
 
-			'U_ACTION'		=> $this->u_action . "&amp;{$u_sort_param}&amp;users_per_page={$per_page}&amp;start={$start}",
+			'U_ACTION'      => $this->u_action . "&amp;{$u_sort_param}&amp;users_per_page={$per_page}&amp;start={$start}",
 		]);
 
 		$this->tpl_name = 'acp_inactive';

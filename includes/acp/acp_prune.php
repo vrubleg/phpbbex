@@ -84,7 +84,7 @@ class acp_prune
 				$prunedate_viewed = time() - ($prune_viewed * 86400);
 
 				$template->assign_vars([
-					'S_PRUNED'		=> true]
+					'S_PRUNED'      => true]
 				);
 
 				$sql_forum = (sizeof($forum_id)) ? ' AND ' . $db->sql_in_set('forum_id', $forum_id) : '';
@@ -135,9 +135,9 @@ class acp_prune
 						$prune_ids[] = $row['forum_id'];
 
 						$template->assign_block_vars('pruned', [
-							'FORUM_NAME'	=> $row['forum_name'],
-							'NUM_TOPICS'	=> $p_result['topics'],
-							'NUM_POSTS'		=> $p_result['posts']]
+							'FORUM_NAME'    => $row['forum_name'],
+							'NUM_TOPICS'    => $p_result['topics'],
+							'NUM_POSTS'     => $p_result['posts']]
 						);
 
 						$log_data .= (($log_data != '') ? ', ' : '') . $row['forum_name'];
@@ -155,17 +155,17 @@ class acp_prune
 			else
 			{
 				confirm_box(false, $user->lang['PRUNE_FORUM_CONFIRM'], build_hidden_fields([
-					'i'				=> $id,
-					'mode'			=> $mode,
-					'submit'		=> 1,
-					'all_forums'	=> $all_forums,
-					'f'				=> $forum_id,
+					'i'             => $id,
+					'mode'          => $mode,
+					'submit'        => 1,
+					'all_forums'    => $all_forums,
+					'f'             => $forum_id,
 
-					'prune_days'		=> request_var('prune_days', 0),
-					'prune_vieweddays'	=> request_var('prune_vieweddays', 0),
-					'prune_old_polls'	=> request_var('prune_old_polls', 0),
-					'prune_announce'	=> request_var('prune_announce', 0),
-					'prune_sticky'		=> request_var('prune_sticky', 0),
+					'prune_days'        => request_var('prune_days', 0),
+					'prune_vieweddays'  => request_var('prune_vieweddays', 0),
+					'prune_old_polls'   => request_var('prune_old_polls', 0),
+					'prune_announce'    => request_var('prune_announce', 0),
+					'prune_sticky'      => request_var('prune_sticky', 0),
 				]));
 			}
 		}
@@ -175,9 +175,9 @@ class acp_prune
 		if (!sizeof($forum_id))
 		{
 			$template->assign_vars([
-				'U_ACTION'			=> $this->u_action,
-				'S_SELECT_FORUM'	=> true,
-				'S_FORUM_OPTIONS'	=> make_forum_select(false, false, true)]
+				'U_ACTION'          => $this->u_action,
+				'S_SELECT_FORUM'    => true,
+				'S_FORUM_OPTIONS'   => make_forum_select(false, false, true)]
 			);
 		}
 		else
@@ -207,11 +207,11 @@ class acp_prune
 			$l_selected_forums = (sizeof($forum_id) == 1) ? 'SELECTED_FORUM' : 'SELECTED_FORUMS';
 
 			$template->assign_vars([
-				'L_SELECTED_FORUMS'		=> $user->lang[$l_selected_forums],
-				'U_ACTION'				=> $this->u_action,
-				'U_BACK'				=> $this->u_action,
-				'FORUM_LIST'			=> $forum_list,
-				'S_HIDDEN_FIELDS'		=> $s_hidden_fields]
+				'L_SELECTED_FORUMS'     => $user->lang[$l_selected_forums],
+				'U_ACTION'              => $this->u_action,
+				'U_BACK'                => $this->u_action,
+				'FORUM_LIST'            => $forum_list,
+				'S_HIDDEN_FIELDS'       => $s_hidden_fields]
 			);
 		}
 	}
@@ -291,34 +291,34 @@ class acp_prune
 				foreach ($user_ids as $user_id)
 				{
 					$template->assign_block_vars('users', [
-						'USERNAME'			=> $usernames[$user_id],
-						'U_PROFILE'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id),
-						'U_USER_ADMIN'		=> ($auth->acl_get('a_user')) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
+						'USERNAME'          => $usernames[$user_id],
+						'U_PROFILE'         => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id),
+						'U_USER_ADMIN'      => ($auth->acl_get('a_user')) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
 					]);
 				}
 
 				$template->assign_vars([
-					'S_DEACTIVATE'		=> ($action == 'deactivate'),
-					'S_DELETE'			=> ($action == 'delete'),
+					'S_DEACTIVATE'      => ($action == 'deactivate'),
+					'S_DELETE'          => ($action == 'delete'),
 				]);
 
 				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-					'i'				=> $id,
-					'mode'			=> $mode,
-					'prune'			=> 1,
+					'i'             => $id,
+					'mode'          => $mode,
+					'prune'         => 1,
 
-					'users'			=> utf8_normalize_nfc(request_var('users', '', true)),
-					'username'		=> utf8_normalize_nfc(request_var('username', '', true)),
-					'email'			=> request_var('email', ''),
-					'joined_select'	=> request_var('joined_select', ''),
-					'joined'		=> request_var('joined', ''),
-					'active_select'	=> request_var('active_select', ''),
-					'active'		=> request_var('active', ''),
-					'count_select'	=> request_var('count_select', ''),
-					'count'			=> request_var('count', ''),
-					'deleteposts'	=> request_var('deleteposts', 0),
+					'users'         => utf8_normalize_nfc(request_var('users', '', true)),
+					'username'      => utf8_normalize_nfc(request_var('username', '', true)),
+					'email'         => request_var('email', ''),
+					'joined_select' => request_var('joined_select', ''),
+					'joined'        => request_var('joined', ''),
+					'active_select' => request_var('active_select', ''),
+					'active'        => request_var('active', ''),
+					'count_select'  => request_var('count_select', ''),
+					'count'         => request_var('count', ''),
+					'deleteposts'   => request_var('deleteposts', 0),
 
-					'action'		=> request_var('action', ''),
+					'action'        => request_var('action', ''),
 				]), 'confirm_body_prune.html');
 			}
 		}
@@ -346,11 +346,11 @@ class acp_prune
 		}
 
 		$template->assign_vars([
-			'U_ACTION'			=> $this->u_action,
-			'S_JOINED_OPTIONS'	=> $s_find_join_time,
-			'S_ACTIVE_OPTIONS'	=> $s_find_active_time,
-			'S_COUNT_OPTIONS'	=> $s_find_count,
-			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_prune&amp;field=users'),
+			'U_ACTION'          => $this->u_action,
+			'S_JOINED_OPTIONS'  => $s_find_join_time,
+			'S_ACTIVE_OPTIONS'  => $s_find_active_time,
+			'S_COUNT_OPTIONS'   => $s_find_count,
+			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_prune&amp;field=users'),
 		]);
 	}
 

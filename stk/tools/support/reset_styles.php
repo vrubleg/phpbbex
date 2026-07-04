@@ -26,10 +26,10 @@ class reset_styles
 		$user->add_lang('acp/board');
 
 		return [
-			'title'	=> 'RESET_STYLES',
-			'vars'	=> [
-				'legend1'				=> 'RESET_STYLES',
-				'style_id'				=> ['lang' => 'STYLE', 'type' => 'custom', 'function' => 'style_select2', 'explain' => true, 'default' => $config['default_style']],
+			'title' => 'RESET_STYLES',
+			'vars'  => [
+				'legend1'               => 'RESET_STYLES',
+				'style_id'              => ['lang' => 'STYLE', 'type' => 'custom', 'function' => 'style_select2', 'explain' => true, 'default' => $config['default_style']],
 			]
 		];
 	}

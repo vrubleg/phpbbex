@@ -89,8 +89,8 @@ class erk_style_repair
 								$name = (isset($items['name'])) ? trim($items['name']) : false;
 
 								$sql_ary = [
-									$mode . '_name'			=> $name,
-									$mode . '_path'			=> $file,
+									$mode . '_name'         => $name,
+									$mode . '_path'         => $file,
 								];
 
 								$db->sql_query('INSERT INTO ' . $table_prefix . 'styles_' . $mode . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -114,11 +114,11 @@ class erk_style_repair
 			{
 				// We've got one of each, so we can add a new style and repair this.
 				$sql_ary = [
-					'style_name'		=> $style_name,
-					'style_active'		=> 1,
-					'template_id'		=> $template_id,
-					'theme_id'			=> $theme_id,
-					'imageset_id'		=> $imageset_id,
+					'style_name'        => $style_name,
+					'style_active'      => 1,
+					'template_id'       => $template_id,
+					'theme_id'          => $theme_id,
+					'imageset_id'       => $imageset_id,
 				];
 				$db->sql_query('INSERT INTO ' . STYLES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				$style_id = $db->sql_nextid();

@@ -23,7 +23,7 @@ body {
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 	color: #536482;
 	background-color: #EEEEE7;
-	/*font-size: 62.5%;			 This sets the default font size to be equivalent to 10px */
+	/*font-size: 62.5%; This sets the default font size to be equivalent to 10px */
 	font-size: 10px;
 	height: 100%;
 }
@@ -262,9 +262,9 @@ body.style-rounded-corners .post {
 	color: #000000;
 }
 
-.bg1	{ background-color: #f7f7f7;}
-.bg2	{ background-color: #f2f2f2; }
-.bg3	{ background-color: #ebebeb; }
+.bg1    { background-color: #f7f7f7;}
+.bg2    { background-color: #f2f2f2; }
+.bg3    { background-color: #ebebeb; }
 
 .rowbg {
 	margin: 5px 5px 2px 5px;
@@ -362,15 +362,15 @@ table.table1 tbody th {
 }
 
 /* Specific column styles */
-table.table1 .number	{ text-align: center !important; width: 1%;}
-table.table1 .name		{ text-align: left; }
-table.table1 .posts		{ text-align: center !important; width: 7%; }
-table.table1 .joined	{ text-align: left; width: 13%; }
-table.table1 .active	{ text-align: left; width: 13%; }
-table.table1 .mark		{ text-align: center; width: 7%; }
-table.table1 .info		{ text-align: left; width: 20%; }
-table.table1 .info div	{ width: 100%; white-space: normal; overflow: hidden; }
-table.table1 .autocol	{ line-height: 2em; white-space: nowrap; }
+table.table1 .number    { text-align: center !important; width: 1%;}
+table.table1 .name      { text-align: left; }
+table.table1 .posts     { text-align: center !important; width: 7%; }
+table.table1 .joined    { text-align: left; width: 13%; }
+table.table1 .active    { text-align: left; width: 13%; }
+table.table1 .mark      { text-align: center; width: 7%; }
+table.table1 .info      { text-align: left; width: 20%; }
+table.table1 .info div  { width: 100%; white-space: normal; overflow: hidden; }
+table.table1 .autocol   { line-height: 2em; white-space: nowrap; }
 table.table1 thead .autocol { padding-left: 1em; }
 
 table.table1 span.rank-img {

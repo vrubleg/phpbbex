@@ -24,20 +24,20 @@ class add_user
 		$user->add_lang('ucp');
 
 		return [
-			'title'	=> 'ADD_USER',
-			'vars'	=> [
-				'legend1'			=> 'ADD_USER',
-				'username'			=> ['lang' => 'USERNAME', 'explain' => false, 'type' => 'text:40:255'],
-				'new_password'		=> ['lang' => 'PASSWORD', 'explain' => false, 'type' => 'password:40:255'],
-				'password_confirm'	=> ['lang' => 'PASSWORD_CONFIRM', 'explain' => false, 'type' => 'password:40:255'],
-				'email'				=> ['lang' => 'EMAIL_ADDRESS', 'explain' => false, 'type' => 'text:40:255'],
-				'lang'				=> ['lang' => 'LANGUAGE', 'explain' => false, 'type' => 'select', 'function' => 'language_select'],
-				'tz'				=> ['lang' => 'TIMEZONE', 'explain' => false, 'type' => 'select', 'function' => 'tz_select'],
+			'title' => 'ADD_USER',
+			'vars'  => [
+				'legend1'           => 'ADD_USER',
+				'username'          => ['lang' => 'USERNAME', 'explain' => false, 'type' => 'text:40:255'],
+				'new_password'      => ['lang' => 'PASSWORD', 'explain' => false, 'type' => 'password:40:255'],
+				'password_confirm'  => ['lang' => 'PASSWORD_CONFIRM', 'explain' => false, 'type' => 'password:40:255'],
+				'email'             => ['lang' => 'EMAIL_ADDRESS', 'explain' => false, 'type' => 'text:40:255'],
+				'lang'              => ['lang' => 'LANGUAGE', 'explain' => false, 'type' => 'select', 'function' => 'language_select'],
+				'tz'                => ['lang' => 'TIMEZONE', 'explain' => false, 'type' => 'select', 'function' => 'tz_select'],
 
-				'legend2'			=> 'ADD_USER_GROUP',
-				'usergroups'		=> ['lang' => 'USER_GROUPS', 'explain' => true, 'type' => 'select_multiple', 'function' => 'get_groups'],
-				'defaultgroup'		=> ['lang' => 'DEFAULT_GROUP', 'explain' => true, 'type' => 'select', 'function' => 'get_groups'],
-				'groupleader'		=> ['lang' => 'GROUP_LEADER', 'explain' => true, 'type' => 'select_multiple', 'function' => 'get_groups'],
+				'legend2'           => 'ADD_USER_GROUP',
+				'usergroups'        => ['lang' => 'USER_GROUPS', 'explain' => true, 'type' => 'select_multiple', 'function' => 'get_groups'],
+				'defaultgroup'      => ['lang' => 'DEFAULT_GROUP', 'explain' => true, 'type' => 'select', 'function' => 'get_groups'],
+				'groupleader'       => ['lang' => 'GROUP_LEADER', 'explain' => true, 'type' => 'select_multiple', 'function' => 'get_groups'],
 			],
 		];
 	}
@@ -80,12 +80,12 @@ class add_user
 
 		// Collect the user data
 		$data = [
-			'username'			=> utf8_normalize_nfc(request_var('username', '', true)),
-			'new_password'		=> request_var('new_password', '', true),
-			'password_confirm'	=> request_var('password_confirm', '', true),
-			'email'				=> strtolower(request_var('email', '')),
-			'lang'				=> basename(request_var('lang', $user->lang_name)),
-			'tz'				=> request_var('tz', (float) $timezone),
+			'username'          => utf8_normalize_nfc(request_var('username', '', true)),
+			'new_password'      => request_var('new_password', '', true),
+			'password_confirm'  => request_var('password_confirm', '', true),
+			'email'             => strtolower(request_var('email', '')),
+			'lang'              => basename(request_var('lang', $user->lang_name)),
+			'tz'                => request_var('tz', (float) $timezone),
 		];
 
 		// A bit of cache hacking to get around disallowed usernames,
@@ -107,26 +107,26 @@ class add_user
 
 		// Collect the groups data
 		$groups = [
-			'default'	=> request_var('defaultgroup', 0),
-			'groups'	=> request_var('usergroups', [0]),
-			'leaders'	=> request_var('groupleader', [0]),
+			'default'   => request_var('defaultgroup', 0),
+			'groups'    => request_var('usergroups', [0]),
+			'leaders'   => request_var('groupleader', [0]),
 		];
 
 		// Register the user
 		$user_row = [
-			'username'				=> $data['username'],
-			'user_password'			=> phpbb_hash($data['new_password']),
-			'user_email'			=> $data['email'],
-			'group_id'				=> (int) $groups['default'],
-			'user_timezone'			=> (float) $data['tz'],
-			'user_dst'				=> $is_dst,
-			'user_lang'				=> $data['lang'],
-			'user_type'				=> USER_NORMAL,
-			'user_actkey'			=> '',
-			'user_ip'				=> $user->ip,
-			'user_regdate'			=> time(),
-			'user_inactive_reason'	=> 0,
-			'user_inactive_time'	=> 0,
+			'username'              => $data['username'],
+			'user_password'         => phpbb_hash($data['new_password']),
+			'user_email'            => $data['email'],
+			'group_id'              => (int) $groups['default'],
+			'user_timezone'         => (float) $data['tz'],
+			'user_dst'              => $is_dst,
+			'user_lang'             => $data['lang'],
+			'user_type'             => USER_NORMAL,
+			'user_actkey'           => '',
+			'user_ip'               => $user->ip,
+			'user_regdate'          => time(),
+			'user_inactive_reason'  => 0,
+			'user_inactive_time'    => 0,
 		];
 
 		// Determine if the user is going to be added to the Newly Registered Users group
@@ -198,8 +198,8 @@ class add_user
 	* Validate data
 	* Validate the inputted data
 	*
-	* @param	mixed array		$data
-	* @param	mixed array		$error	An array holding all the error messages
+	* @param    mixed array     $data
+	* @param    mixed array     $error  An array holding all the error messages
 	*/
 	function validate_data($data, &$error)
 	{
@@ -211,18 +211,18 @@ class add_user
 		}
 
 		$error = validate_data($data, [
-			'username'			=> [
+			'username'          => [
 				['string', false, $config['min_name_chars'], $config['max_name_chars']],
 				['username', '']],
-			'new_password'		=> [
+			'new_password'      => [
 				['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
 				['password']],
-			'password_confirm'	=> ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
-			'email'				=> [
+			'password_confirm'  => ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+			'email'             => [
 				['string', false, 6, 60],
 				['email']],
-			'tz'				=> ['num', false, -14, 14],
-			'lang'				=> ['match', false, '#^[a-z_\-]{2,}$#i'],
+			'tz'                => ['num', false, -14, 14],
+			'lang'              => ['match', false, '#^[a-z_\-]{2,}$#i'],
 		]);
 		if ($data['new_password'] != $data['password_confirm'])
 		{
@@ -234,9 +234,9 @@ class add_user
 	* Add groups
 	* Add the user to the selected gourps
 	*
-	* @param	int		$user_id	The user id
-	* @param	array	$group_data	The group data
-	* @param	array	&$error		The error array
+	* @param    int     $user_id    The user id
+	* @param    array   $group_data The group data
+	* @param    array   &$error     The error array
 	*/
 	function add_groups($user_id, $group_data, &$error)
 	{
@@ -290,7 +290,7 @@ function get_groups()
 		$option_list = '';
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$selected	= ($row['group_name'] == 'REGISTERED') ? 'selected=selected' : '';
+			$selected   = ($row['group_name'] == 'REGISTERED') ? 'selected=selected' : '';
 			$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
 			$option_list .= "<option value='{$row['group_id']}'{$selected}>{$group_name}</option>";
 		}

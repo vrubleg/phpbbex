@@ -10,11 +10,11 @@ class acp_profile_info
 	function module()
 	{
 		return [
-			'filename'	=> 'acp_profile',
-			'title'		=> 'ACP_CUSTOM_PROFILE_FIELDS',
-			'version'	=> '1.0.0',
-			'modes'		=> [
-				'profile'	=> ['title' => 'ACP_CUSTOM_PROFILE_FIELDS', 'auth' => 'acl_a_profile', 'cat' => ['ACP_CAT_USERS']],
+			'filename'  => 'acp_profile',
+			'title'     => 'ACP_CUSTOM_PROFILE_FIELDS',
+			'version'   => '1.0.0',
+			'modes'     => [
+				'profile'   => ['title' => 'ACP_CUSTOM_PROFILE_FIELDS', 'auth' => 'acl_a_profile', 'cat' => ['ACP_CAT_USERS']],
 			],
 		];
 	}

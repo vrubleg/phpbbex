@@ -185,9 +185,9 @@ function set_config($config_name, $config_value, $is_dynamic = false)
 	global $db, $cache, $config;
 
 	$sql = 'REPLACE INTO ' . CONFIG_TABLE . ' ' . $db->sql_build_array('INSERT', [
-		'config_name'	=> $config_name,
-		'config_value'	=> $config_value,
-		'is_dynamic'	=> ($is_dynamic) ? 1 : 0]);
+		'config_name'   => $config_name,
+		'config_value'  => $config_value,
+		'is_dynamic'    => ($is_dynamic) ? 1 : 0]);
 	$db->sql_query($sql);
 
 	$config[$config_name] = $config_value;
@@ -257,10 +257,10 @@ function unique_id()
 /**
 * Wrapper for getdate() which returns the equivalent array for UTC timestamps.
 *
-* @param int $time		Unix timestamp (optional)
+* @param int $time      Unix timestamp (optional)
 *
-* @return array			Returns an associative array of information related to the timestamp.
-*						See http://www.php.net/manual/en/function.getdate.php
+* @return array         Returns an associative array of information related to the timestamp.
+*                       See http://www.php.net/manual/en/function.getdate.php
 */
 function phpbb_gmgetdate($time = false)
 {
@@ -278,12 +278,12 @@ function phpbb_gmgetdate($time = false)
 /**
 * Return formatted string for filesizes
 *
-* @param mixed	$value			filesize in bytes
-*								(non-negative number; int, float or string)
-* @param bool	$string_only	true if language string should be returned
-* @param array	$allowed_units	only allow these units (data array indexes)
+* @param mixed  $value          filesize in bytes
+*                               (non-negative number; int, float or string)
+* @param bool   $string_only    true if language string should be returned
+* @param array  $allowed_units  only allow these units (data array indexes)
 *
-* @return mixed					data array if $string_only is false
+* @return mixed                 data array if $string_only is false
 * @author bantu
 */
 function get_formatted_filesize($value, $string_only = true, $allowed_units = false)
@@ -292,34 +292,34 @@ function get_formatted_filesize($value, $string_only = true, $allowed_units = fa
 
 	$available_units = [
 		'tb' => [
-			'min' 		=> 1099511627776, // pow(2, 40)
-			'index'		=> 4,
-			'si_unit'	=> 'TB',
-			'iec_unit'	=> 'TIB',
+			'min'       => 1099511627776, // pow(2, 40)
+			'index'     => 4,
+			'si_unit'   => 'TB',
+			'iec_unit'  => 'TIB',
 		],
 		'gb' => [
-			'min' 		=> 1073741824, // pow(2, 30)
-			'index'		=> 3,
-			'si_unit'	=> 'GB',
-			'iec_unit'	=> 'GIB',
+			'min'       => 1073741824, // pow(2, 30)
+			'index'     => 3,
+			'si_unit'   => 'GB',
+			'iec_unit'  => 'GIB',
 		],
 		'mb' => [
-			'min'		=> 1048576, // pow(2, 20)
-			'index'		=> 2,
-			'si_unit'	=> 'MB',
-			'iec_unit'	=> 'MIB',
+			'min'       => 1048576, // pow(2, 20)
+			'index'     => 2,
+			'si_unit'   => 'MB',
+			'iec_unit'  => 'MIB',
 		],
 		'kb' => [
-			'min'		=> 1024, // pow(2, 10)
-			'index'		=> 1,
-			'si_unit'	=> 'KB',
-			'iec_unit'	=> 'KIB',
+			'min'       => 1024, // pow(2, 10)
+			'index'     => 1,
+			'si_unit'   => 'KB',
+			'iec_unit'  => 'KIB',
 		],
 		'b' => [
-			'min'		=> 0,
-			'index'		=> 0,
-			'si_unit'	=> 'BYTES', // Language index
-			'iec_unit'	=> 'BYTES',  // Language index
+			'min'       => 0,
+			'index'     => 0,
+			'si_unit'   => 'BYTES', // Language index
+			'iec_unit'  => 'BYTES',  // Language index
 		],
 	];
 
@@ -365,8 +365,8 @@ function get_formatted_filesize($value, $string_only = true, $allowed_units = fa
 /**
 * Determine whether we are approaching the maximum execution time. Should be called once
 * at the beginning of the script in which it's used.
-* @return	bool	Either true if the maximum execution time is nearly reached, or false
-*					if some time is still left.
+* @return   bool    Either true if the maximum execution time is nearly reached, or false
+*                   if some time is still left.
 */
 function still_on_time($extra_time = 15)
 {
@@ -409,7 +409,7 @@ function still_on_time($extra_time = 15)
 *
 * The homepage URL for this framework is:
 *
-*	http://www.openwall.com/phpass/
+*   http://www.openwall.com/phpass/
 *
 * Please be sure to update the Version line if you edit this file in any way.
 * It is suggested that you leave the main version number intact, but indicate
@@ -592,10 +592,10 @@ function _hash_crypt_private($password, $setting, &$itoa64)
 *
 * NOTE: The function uses POSIX extension and fileowner()/filegroup() functions. If any of them is disabled, this function tries to build proper permissions, by calling is_readable() and is_writable() functions.
 *
-* @param string	$filename	The file/directory to be chmodded
-* @param int	$perms		Permissions to set
+* @param string $filename   The file/directory to be chmodded
+* @param int    $perms      Permissions to set
 *
-* @return bool	true on success, otherwise false
+* @return bool  true on success, otherwise false
 * @author faw, phpBB Group
 */
 function phpbb_chmod($filename, $perms = CHMOD_READ)
@@ -634,11 +634,11 @@ function phpbb_chmod($filename, $perms = CHMOD_READ)
 			else
 			{
 				$_chmod_info = [
-					'process'		=> true,
-					'common_owner'	=> $common_php_owner,
-					'common_group'	=> $common_php_group,
-					'php_uid'		=> $php_uid,
-					'php_gids'		=> $php_gids,
+					'process'       => true,
+					'common_owner'  => $common_php_owner,
+					'common_group'  => $common_php_group,
+					'php_uid'       => $php_uid,
+					'php_gids'      => $php_gids,
 				];
 			}
 		}
@@ -1186,9 +1186,9 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				foreach ($sql_insert as $f_id)
 				{
 					$sql_ary[] = [
-						'user_id'	=> (int) $user->data['user_id'],
-						'forum_id'	=> (int) $f_id,
-						'mark_time'	=> time()
+						'user_id'   => (int) $user->data['user_id'],
+						'forum_id'  => (int) $f_id,
+						'mark_time' => time()
 					];
 				}
 
@@ -1219,10 +1219,10 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				$db->sql_return_on_error(true);
 
 				$sql_ary = [
-					'user_id'		=> (int) $user->data['user_id'],
-					'topic_id'		=> (int) $topic_id,
-					'forum_id'		=> (int) $forum_id,
-					'mark_time'		=> ($post_time) ? (int) $post_time : time(),
+					'user_id'       => (int) $user->data['user_id'],
+					'topic_id'      => (int) $topic_id,
+					'forum_id'      => (int) $forum_id,
+					'mark_time'     => ($post_time) ? (int) $post_time : time(),
 				];
 
 				$db->sql_query('INSERT INTO ' . TOPICS_TRACK_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -1247,9 +1247,9 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 			$db->sql_return_on_error(true);
 
 			$sql_ary = [
-				'user_id'		=> (int) $use_user_id,
-				'topic_id'		=> (int) $topic_id,
-				'topic_posted'	=> 1
+				'user_id'       => (int) $use_user_id,
+				'topic_id'      => (int) $topic_id,
+				'topic_posted'  => 1
 			];
 
 			$db->sql_query('INSERT INTO ' . TOPICS_POSTED_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -1367,13 +1367,13 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 /**
 * Get list of unread topics
 *
-* @param int $user_id			User ID (or false for current user)
-* @param string $sql_extra		Extra WHERE SQL statement
-* @param string $sql_sort		ORDER BY SQL sorting statement
-* @param string $sql_limit		Limits the size of unread topics list, 0 for unlimited query
+* @param int $user_id           User ID (or false for current user)
+* @param string $sql_extra      Extra WHERE SQL statement
+* @param string $sql_sort       ORDER BY SQL sorting statement
+* @param string $sql_limit      Limits the size of unread topics list, 0 for unlimited query
 * @param string $sql_limit_offset  Sets the offset of the first row to search, 0 to search from the start
 *
-* @return array[int][int]		Topic ids as keys, mark_time of topic as value
+* @return array[int][int]       Topic ids as keys, mark_time of topic as value
 */
 function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $sql_limit = 1001, $sql_limit_offset = 0)
 {
@@ -1395,22 +1395,22 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 		$last_mark = (int) $user->data['user_lastmark'];
 
 		$sql_array = [
-			'SELECT'		=> 't.topic_id, t.topic_last_post_time, tt.mark_time as topic_mark_time, ft.mark_time as forum_mark_time',
+			'SELECT'        => 't.topic_id, t.topic_last_post_time, tt.mark_time as topic_mark_time, ft.mark_time as forum_mark_time',
 
-			'FROM'			=> [TOPICS_TABLE => 't'],
+			'FROM'          => [TOPICS_TABLE => 't'],
 
-			'LEFT_JOIN'		=> [
+			'LEFT_JOIN'     => [
 				[
-					'FROM'	=> [TOPICS_TRACK_TABLE => 'tt'],
-					'ON'	=> "tt.user_id = {$user_id} AND t.topic_id = tt.topic_id",
+					'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
+					'ON'    => "tt.user_id = {$user_id} AND t.topic_id = tt.topic_id",
 				],
 				[
-					'FROM'	=> [FORUMS_TRACK_TABLE => 'ft'],
-					'ON'	=> "ft.user_id = {$user_id} AND t.forum_id = ft.forum_id",
+					'FROM'  => [FORUMS_TRACK_TABLE => 'ft'],
+					'ON'    => "ft.user_id = {$user_id} AND t.forum_id = ft.forum_id",
 				],
 			],
 
-			'WHERE'			=> "
+			'WHERE'         => "
 				 t.topic_last_post_time > {$last_mark} AND
 				(
 				(tt.mark_time IS NOT NULL AND t.topic_last_post_time > tt.mark_time) OR
@@ -1578,13 +1578,13 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $add
 	}
 
 	$template->assign_vars([
-		$tpl_prefix . 'BASE_URL'		=> $base_url,
-		'A_' . $tpl_prefix . 'BASE_URL'	=> addslashes($base_url),
-		$tpl_prefix . 'PER_PAGE'		=> $per_page,
+		$tpl_prefix . 'BASE_URL'        => $base_url,
+		'A_' . $tpl_prefix . 'BASE_URL' => addslashes($base_url),
+		$tpl_prefix . 'PER_PAGE'        => $per_page,
 
-		$tpl_prefix . 'PREVIOUS_PAGE'	=> ($on_page == 1) ? '' : $base_url . "{$url_delim}start=" . (($on_page - 2) * $per_page),
-		$tpl_prefix . 'NEXT_PAGE'		=> ($on_page == $total_pages) ? '' : $base_url . "{$url_delim}start=" . ($on_page * $per_page),
-		$tpl_prefix . 'TOTAL_PAGES'		=> $total_pages,
+		$tpl_prefix . 'PREVIOUS_PAGE'   => ($on_page == 1) ? '' : $base_url . "{$url_delim}start=" . (($on_page - 2) * $per_page),
+		$tpl_prefix . 'NEXT_PAGE'       => ($on_page == $total_pages) ? '' : $base_url . "{$url_delim}start=" . ($on_page * $per_page),
+		$tpl_prefix . 'TOTAL_PAGES'     => $total_pages,
 	]);
 
 	return $page_string;
@@ -1603,7 +1603,7 @@ function on_page($num_items, $per_page, $start)
 	$on_page = floor($start / $per_page) + 1;
 
 	$template->assign_vars([
-		'ON_PAGE'		=> $on_page]
+		'ON_PAGE'       => $on_page]
 	);
 
 	return sprintf($user->lang['PAGE_OF'], $on_page, max(ceil($num_items / $per_page), 1));
@@ -2078,13 +2078,13 @@ function add_form_key($form_name)
 
 	$s_fields = build_hidden_fields([
 		'creation_time' => $now,
-		'form_token'	=> $token,
+		'form_token'    => $token,
 	]);
 
 	$template->assign_vars([
-		'S_FORM_TOKEN'		=> $s_fields,
+		'S_FORM_TOKEN'      => $s_fields,
 		'RAW_CREATION_TIME' => $now,
-		'RAW_FORM_TOKEN' 	=> $token,
+		'RAW_FORM_TOKEN'    => $token,
 	]);
 }
 
@@ -2107,7 +2107,7 @@ function check_form_key($form_name, $timespan = false, $return_page = '', $trigg
 
 	if (isset($_POST['creation_time']) && isset($_POST['form_token']))
 	{
-		$creation_time	= abs(request_var('creation_time', 0));
+		$creation_time  = abs(request_var('creation_time', 0));
 		$token = request_var('form_token', '');
 
 		$diff = time() - $creation_time;
@@ -2139,9 +2139,9 @@ function check_form_key($form_name, $timespan = false, $return_page = '', $trigg
 * Build Confirm box
 * @param boolean $check True for checking if confirmed (without any additional parameters) and false for displaying the confirm box
 * @param string $title Title/Message used for confirm box.
-*		message text is _CONFIRM appended to title.
-*		If title cannot be found in user->lang a default one is displayed
-*		If title_CONFIRM cannot be found in user->lang the text given is used.
+*       message text is _CONFIRM appended to title.
+*       If title cannot be found in user->lang a default one is displayed
+*       If title_CONFIRM cannot be found in user->lang the text given is used.
 * @param string $hidden Hidden variables
 * @param string $html_body Template used for confirm box
 * @param string $u_action Custom form action
@@ -2213,9 +2213,9 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 	}
 
 	$s_hidden_fields = build_hidden_fields([
-		'confirm_uid'	=> $user->data['user_id'],
-		'sess'			=> $user->session_id,
-		'sid'			=> $user->session_id,
+		'confirm_uid'   => $user->data['user_id'],
+		'sess'          => $user->session_id,
+		'sid'           => $user->session_id,
 	]);
 
 	// generate activation key
@@ -2247,19 +2247,19 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 	$u_action .= ((strpos($u_action, '?') === false) ? '?' : '&amp;') . 'confirm_key=' . $confirm_key;
 
 	$template->assign_vars([
-		'MESSAGE_TITLE'		=> (!isset($user->lang[$title])) ? $user->lang['CONFIRM'] : $user->lang[$title],
-		'MESSAGE_TEXT'		=> (!isset($user->lang[$title . '_CONFIRM'])) ? $title : $user->lang[$title . '_CONFIRM'],
+		'MESSAGE_TITLE'     => (!isset($user->lang[$title])) ? $user->lang['CONFIRM'] : $user->lang[$title],
+		'MESSAGE_TEXT'      => (!isset($user->lang[$title . '_CONFIRM'])) ? $title : $user->lang[$title . '_CONFIRM'],
 
-		'YES_VALUE'			=> $user->lang['YES'],
-		'S_CONFIRM_ACTION'	=> $u_action,
-		'S_HIDDEN_FIELDS'	=> $hidden . $s_hidden_fields]
+		'YES_VALUE'         => $user->lang['YES'],
+		'S_CONFIRM_ACTION'  => $u_action,
+		'S_HIDDEN_FIELDS'   => $hidden . $s_hidden_fields]
 	);
 
 	// Save new confirm key
 	$data = [
-		'confirm_key'	=> $confirm_key,
-		'user_id'		=> (int) $user->data['user_id'],
-		'confirm_time'	=> (int) time(),
+		'confirm_key'   => $confirm_key,
+		'user_id'       => (int) $user->data['user_id'],
+		'confirm_time'  => (int) time(),
 	];
 	$sql = 'INSERT INTO ' . USER_CONFIRM_KEYS_TABLE . ' ' . $db->sql_build_array('INSERT', $data);
 	$db->sql_query($sql);
@@ -2324,17 +2324,17 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				trigger_error('NO_AUTH_ADMIN');
 			}
 
-			$password	= request_var('password_' . $credential, '', true);
+			$password   = request_var('password_' . $credential, '', true);
 		}
 		else
 		{
-			$password	= request_var('password', '', true);
+			$password   = request_var('password', '', true);
 		}
 
-		$username	= request_var('username', '', true);
-		$autologin	= (!empty($_POST['autologin']));
+		$username   = request_var('username', '', true);
+		$autologin  = (!empty($_POST['autologin']));
 		$viewonline = (!empty($_POST['viewonline'])) ? 0 : 1;
-		$admin 		= ($admin) ? 1 : 0;
+		$admin      = ($admin) ? 1 : 0;
 		$viewonline = ($admin) ? $user->data['session_viewonline'] : $viewonline;
 
 		// Check if the supplied username is equal to the one stored within the database if re-authenticating
@@ -2411,7 +2411,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				// $captcha->reset();
 
 				$template->assign_vars([
-					'CAPTCHA_TEMPLATE'			=> $captcha->get_template(),
+					'CAPTCHA_TEMPLATE'          => $captcha->get_template(),
 				]);
 
 				$err = $user->lang[$result['error_msg']];
@@ -2445,7 +2445,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 	$credential = ($admin) ? bin2hex(random_bytes(16)) : false;
 
 	$s_hidden_fields = [
-		'sid'		=> $user->session_id,
+		'sid'       => $user->session_id,
 	];
 
 	if ($redirect)
@@ -2461,22 +2461,22 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 	$s_hidden_fields = build_hidden_fields($s_hidden_fields);
 
 	$template->assign_vars([
-		'LOGIN_ERROR'		=> $err,
-		'LOGIN_EXPLAIN'		=> $l_explain,
+		'LOGIN_ERROR'       => $err,
+		'LOGIN_EXPLAIN'     => $l_explain,
 
-		'U_SEND_PASSWORD' 		=> ($config['email_enable']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=sendpassword') : '',
-		'U_RESEND_ACTIVATION'	=> ($config['require_activation'] == USER_ACTIVATION_SELF && $config['email_enable']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=resend_act') : '',
-		'U_TERMS_OF_USE'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
-		'U_PRIVACY_POLICY'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
+		'U_SEND_PASSWORD'       => ($config['email_enable']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=sendpassword') : '',
+		'U_RESEND_ACTIVATION'   => ($config['require_activation'] == USER_ACTIVATION_SELF && $config['email_enable']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=resend_act') : '',
+		'U_TERMS_OF_USE'        => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
+		'U_PRIVACY_POLICY'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
 
-		'S_DISPLAY_FULL_LOGIN'	=> $s_display,
-		'S_HIDDEN_FIELDS' 		=> $s_hidden_fields,
+		'S_DISPLAY_FULL_LOGIN'  => $s_display,
+		'S_HIDDEN_FIELDS'       => $s_hidden_fields,
 
-		'S_ADMIN_AUTH'			=> $admin,
-		'USERNAME'				=> ($admin) ? (($config['allow_login_via_email'] ?? 0) == ALLOW_LOGIN_VIA_EMAIL_ONLY ? $user->data['user_email'] : $user->data['username']) : '',
+		'S_ADMIN_AUTH'          => $admin,
+		'USERNAME'              => ($admin) ? (($config['allow_login_via_email'] ?? 0) == ALLOW_LOGIN_VIA_EMAIL_ONLY ? $user->data['user_email'] : $user->data['username']) : '',
 
-		'USERNAME_CREDENTIAL'	=> 'username',
-		'PASSWORD_CREDENTIAL'	=> ($admin) ? 'password_' . $credential : 'password',
+		'USERNAME_CREDENTIAL'   => 'username',
+		'PASSWORD_CREDENTIAL'   => ($admin) ? 'password_' . $credential : 'password',
 	]);
 
 	page_header($user->lang['LOGIN'], false);
@@ -2537,9 +2537,9 @@ function login_forum_box($forum_data)
 		if (phpbb_check_hash($password, $forum_data['forum_password']))
 		{
 			$sql_ary = [
-				'forum_id'		=> (int) $forum_data['forum_id'],
-				'user_id'		=> (int) $user->data['user_id'],
-				'session_id'	=> (string) $user->session_id,
+				'forum_id'      => (int) $forum_data['forum_id'],
+				'user_id'       => (int) $user->data['user_id'],
+				'session_id'    => (string) $user->session_id,
 			];
 
 			$db->sql_query('INSERT INTO ' . FORUMS_ACCESS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -2553,9 +2553,9 @@ function login_forum_box($forum_data)
 	page_header($user->lang['LOGIN'], false);
 
 	$template->assign_vars([
-		'FORUM_NAME'			=> $forum_data['forum_name'] ?? '',
-		'S_LOGIN_ACTION'		=> build_url(['f']),
-		'S_HIDDEN_FIELDS'		=> build_hidden_fields(['f' => $forum_data['forum_id']]),
+		'FORUM_NAME'            => $forum_data['forum_name'] ?? '',
+		'S_LOGIN_ACTION'        => build_url(['f']),
+		'S_HIDDEN_FIELDS'       => build_hidden_fields(['f' => $forum_data['forum_id']]),
 	]);
 
 	$template->set_filenames(['body' => 'login_forum.html']);
@@ -2691,19 +2691,19 @@ function add_log()
 
 	$args = func_get_args();
 
-	$mode			= array_shift($args);
-	$reportee_id	= ($mode == 'user') ? intval(array_shift($args)) : '';
-	$forum_id		= ($mode == 'mod') ? intval(array_shift($args)) : '';
-	$topic_id		= ($mode == 'mod') ? intval(array_shift($args)) : '';
-	$action			= array_shift($args);
-	$data			= (!sizeof($args)) ? '' : serialize($args);
+	$mode           = array_shift($args);
+	$reportee_id    = ($mode == 'user') ? intval(array_shift($args)) : '';
+	$forum_id       = ($mode == 'mod') ? intval(array_shift($args)) : '';
+	$topic_id       = ($mode == 'mod') ? intval(array_shift($args)) : '';
+	$action         = array_shift($args);
+	$data           = (!sizeof($args)) ? '' : serialize($args);
 
 	$sql_ary = [
-		'user_id'		=> (empty($user->data)) ? ANONYMOUS : $user->data['user_id'],
-		'log_ip'		=> $user->ip,
-		'log_time'		=> time(),
-		'log_operation'	=> $action,
-		'log_data'		=> $data,
+		'user_id'       => (empty($user->data)) ? ANONYMOUS : $user->data['user_id'],
+		'log_ip'        => $user->ip,
+		'log_time'      => time(),
+		'log_operation' => $action,
+		'log_data'      => $data,
 	];
 
 	switch ($mode)
@@ -2714,16 +2714,16 @@ function add_log()
 
 		case 'mod':
 			$sql_ary += [
-				'log_type'	=> LOG_MOD,
-				'forum_id'	=> $forum_id,
-				'topic_id'	=> $topic_id
+				'log_type'  => LOG_MOD,
+				'forum_id'  => $forum_id,
+				'topic_id'  => $topic_id
 			];
 		break;
 
 		case 'user':
 			$sql_ary += [
-				'log_type'		=> LOG_USERS,
-				'reportee_id'	=> $reportee_id
+				'log_type'      => LOG_USERS,
+				'reportee_id'   => $reportee_id
 			];
 		break;
 
@@ -2755,7 +2755,7 @@ function add_log()
 * Turns the array returned by debug_backtrace() into HTML markup.
 * Also filters out absolute paths to phpBB root.
 *
-* @return string	HTML markup
+* @return string    HTML markup
 */
 function format_backtrace($backtrace)
 {
@@ -2858,10 +2858,10 @@ function get_preg_expression($mode)
 * Generate regexp for naughty words censoring
 * Depends on whether installed PHP version supports unicode properties
 *
-* @param string	$word			word template to be replaced
-* @param bool	$use_unicode	whether or not to take advantage of PCRE supporting unicode
+* @param string $word           word template to be replaced
+* @param bool   $use_unicode    whether or not to take advantage of PCRE supporting unicode
 *
-* @return string $preg_expr		regex to use with word censor
+* @return string $preg_expr     regex to use with word censor
 */
 function get_censor_preg_expression($word, $use_unicode = true)
 {
@@ -3061,13 +3061,13 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 			echo '</head>';
 			echo '<body id="errorpage">';
 			echo '<div id="wrap">';
-			echo '	<div class="panel">';
-			echo '		<div id="content">';
-			echo '			<h1>' . $msg_title . '</h1>';
-			echo '			<div>' . $msg_text . (($backtrace && defined('DEBUG_EXTRA')) ? '<br><br><b>BACKTRACE</b><br><br>' . $backtrace : '') . '</div>';
-			echo '		</div>';
-			echo '	</div>';
-			echo '	<div id="page-footer">' . $l_notify . 'Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
+			echo '  <div class="panel">';
+			echo '      <div id="content">';
+			echo '          <h1>' . $msg_title . '</h1>';
+			echo '          <div>' . $msg_text . (($backtrace && defined('DEBUG_EXTRA')) ? '<br><br><b>BACKTRACE</b><br><br>' . $backtrace : '') . '</div>';
+			echo '      </div>';
+			echo '  </div>';
+			echo '  <div id="page-footer">' . $l_notify . 'Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
 			echo '</div>';
 			echo '</body>';
 			echo '</html>';
@@ -3124,10 +3124,10 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 			);
 
 			$template->assign_vars([
-				'MESSAGE_TITLE'		=> $msg_title,
-				'MESSAGE_TEXT'		=> $msg_text,
-				'S_USER_WARNING'	=> ($errno == E_USER_WARNING),
-				'S_USER_NOTICE'		=> ($errno == E_USER_NOTICE),
+				'MESSAGE_TITLE'     => $msg_title,
+				'MESSAGE_TEXT'      => $msg_text,
+				'S_USER_WARNING'    => ($errno == E_USER_WARNING),
+				'S_USER_NOTICE'     => ($errno == E_USER_NOTICE),
 			]);
 
 			// We do not want the cron script to be called on error messages
@@ -3155,12 +3155,12 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 * Removes absolute path to phpBB root directory from error messages
 * and converts backslashes to forward slashes.
 *
-* @param string $errfile	Absolute file path
-*							(e.g. /var/www/phpbb3/phpBB/includes/functions.php)
-*							Please note that if $errfile is outside of the phpBB root,
-*							the root path will not be found and can not be filtered.
-* @return string			Relative file path
-*							(e.g. /includes/functions.php)
+* @param string $errfile    Absolute file path
+*                           (e.g. /var/www/phpbb3/phpBB/includes/functions.php)
+*                           Please note that if $errfile is outside of the phpBB root,
+*                           the root path will not be found and can not be filtered.
+* @return string            Relative file path
+*                           (e.g. /includes/functions.php)
 */
 function phpbb_filter_root_path($errfile)
 {
@@ -3208,14 +3208,14 @@ function obtain_users_online()
 	global $db, $config, $user;
 
 	$online_users = [
-		'online_users'			=> [],
-		'online_bots'			=> [],
-		'total_online'			=> 0,
-		'visible_online'		=> 0,
-		'hidden_online'			=> 0,
-		'users_online'			=> 0,
-		'guests_online'			=> 0,
-		'bots_online'			=> 0,
+		'online_users'          => [],
+		'online_bots'           => [],
+		'total_online'          => 0,
+		'visible_online'        => 0,
+		'hidden_online'         => 0,
+		'users_online'          => 0,
+		'guests_online'         => 0,
+		'bots_online'           => 0,
 	];
 
 	if ($config['load_online_guests'])
@@ -3262,9 +3262,9 @@ function obtain_users_online()
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$online_users['online_bots'][$row['bot_id']] = [
-				'user_id'		=> ANONYMOUS,
-				'username'		=> $row['bot_name'],
-				'user_colour'	=> '',
+				'user_id'       => ANONYMOUS,
+				'username'      => $row['bot_name'],
+				'user_colour'   => '',
 			];
 			$online_users['bots_online']++;
 		}
@@ -3335,18 +3335,18 @@ function obtain_users_online_string($online_users)
 	}
 
 	return [
-		'online_userlist'	=> $online_userlist,
-		'online_botlist'	=> $online_botlist,
-		'l_online_users'	=> $l_online_users,
+		'online_userlist'   => $online_userlist,
+		'online_botlist'    => $online_botlist,
+		'l_online_users'    => $l_online_users,
 	];
 }
 
 /**
 * Get option bitfield from custom data
 *
-* @param int	$bit		The bit/value to get
-* @param int	$data		Current bitfield to check
-* @return bool	Returns true if value of constant is set in bitfield, else false
+* @param int    $bit        The bit/value to get
+* @param int    $data       Current bitfield to check
+* @return bool  Returns true if value of constant is set in bitfield, else false
 */
 function phpbb_optionget($bit, $data)
 {
@@ -3356,11 +3356,11 @@ function phpbb_optionget($bit, $data)
 /**
 * Set option bitfield
 *
-* @param int	$bit		The bit/value to set/unset
-* @param bool	$set		True if option should be set, false if option should be unset.
-* @param int	$data		Current bitfield to change
+* @param int    $bit        The bit/value to set/unset
+* @param bool   $set        True if option should be set, false if option should be unset.
+* @param int    $data       Current bitfield to change
 *
-* @return int	The new bitfield
+* @return int   The new bitfield
 */
 function phpbb_optionset($bit, $set, $data)
 {
@@ -3379,7 +3379,7 @@ function phpbb_optionset($bit, $set, $data)
 /**
 * Login using http authenticate.
 *
-* @param array	$param		Parameter array, see $param_defaults array.
+* @param array  $param      Parameter array, see $param_defaults array.
 *
 * @return null
 */
@@ -3389,11 +3389,11 @@ function phpbb_http_login($param)
 	global $config;
 
 	$param_defaults = [
-		'auth_message'	=> '',
+		'auth_message'  => '',
 
-		'autologin'		=> false,
-		'viewonline'	=> true,
-		'admin'			=> false,
+		'autologin'     => false,
+		'viewonline'    => true,
+		'admin'         => false,
 	];
 
 	// Overwrite default values with passed values
@@ -3648,142 +3648,142 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	{
 		$row = explode("\t", $row);
 		$template->assign_block_vars('outlinks', [
-			'TITLE'		=> !empty($row[0]) ? $row[0] : '',
-			'URL'		=> !empty($row[1]) ? $row[1] : '',
-			'NOFOLLOW'	=> !empty($row[2]) && (intval($row[2]) & 0x1),
-			'NEWWINDOW'	=> !empty($row[2]) && (intval($row[2]) & 0x2),
+			'TITLE'     => !empty($row[0]) ? $row[0] : '',
+			'URL'       => !empty($row[1]) ? $row[1] : '',
+			'NOFOLLOW'  => !empty($row[2]) && (intval($row[2]) & 0x1),
+			'NEWWINDOW' => !empty($row[2]) && (intval($row[2]) & 0x2),
 		]);
 	}
 
 	// The following assigns all _common_ variables that may be used at any point in a template.
 	$template->assign_vars([
-		'SITENAME'						=> $config['sitename'],
-		'SITE_DESCRIPTION'				=> $config['site_desc'],
-		'SITE_KEYWORDS'					=> $config['site_keywords'],
-		'PAGE_TITLE'					=> $page_title,
-		'SCRIPT_NAME'					=> str_replace('.php', '', $user->page['page_name']),
-		'LAST_VISIT_DATE'				=> sprintf($user->lang['YOU_LAST_VISIT'], $s_last_visit),
-		'LAST_VISIT_YOU'				=> $s_last_visit,
-		'CURRENT_TIME'					=> sprintf($user->lang['CURRENT_TIME'], $user->format_date(time(), false, true)),
-		'TOTAL_USERS_ONLINE'			=> $l_online_users,
-		'LOGGED_IN_USER_LIST'			=> $online_userlist,
-		'LOGGED_IN_BOT_LIST'			=> $online_botlist,
-		'RECORD_USERS'					=> $l_online_record,
-		'PRIVATE_MESSAGE_INFO'			=> $l_privmsgs_text,
-		'PRIVATE_MESSAGE_INFO_UNREAD'	=> $l_privmsgs_text_unread,
+		'SITENAME'                      => $config['sitename'],
+		'SITE_DESCRIPTION'              => $config['site_desc'],
+		'SITE_KEYWORDS'                 => $config['site_keywords'],
+		'PAGE_TITLE'                    => $page_title,
+		'SCRIPT_NAME'                   => str_replace('.php', '', $user->page['page_name']),
+		'LAST_VISIT_DATE'               => sprintf($user->lang['YOU_LAST_VISIT'], $s_last_visit),
+		'LAST_VISIT_YOU'                => $s_last_visit,
+		'CURRENT_TIME'                  => sprintf($user->lang['CURRENT_TIME'], $user->format_date(time(), false, true)),
+		'TOTAL_USERS_ONLINE'            => $l_online_users,
+		'LOGGED_IN_USER_LIST'           => $online_userlist,
+		'LOGGED_IN_BOT_LIST'            => $online_botlist,
+		'RECORD_USERS'                  => $l_online_record,
+		'PRIVATE_MESSAGE_INFO'          => $l_privmsgs_text,
+		'PRIVATE_MESSAGE_INFO_UNREAD'   => $l_privmsgs_text_unread,
 
-		'S_USER_NEW_PRIVMSG'			=> $user->data['user_new_privmsg'],
-		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
-		'S_USER_NEW'					=> $user->data['user_new'],
+		'S_USER_NEW_PRIVMSG'            => $user->data['user_new_privmsg'],
+		'S_USER_UNREAD_PRIVMSG'         => $user->data['user_unread_privmsg'],
+		'S_USER_NEW'                    => $user->data['user_new'],
 
-		'SESSION_ID'		=> $user->session_id,
-		'ROOT_PATH'			=> $web_path,
-		'BOARD_URL'			=> $board_url,
-		'AJAX_TOKEN'		=> generate_link_hash('ajax'),
+		'SESSION_ID'        => $user->session_id,
+		'ROOT_PATH'         => $web_path,
+		'BOARD_URL'         => $board_url,
+		'AJAX_TOKEN'        => generate_link_hash('ajax'),
 
-		'CURRENT_DAY'		=> date('d'),
-		'CURRENT_MONTH'		=> date('m'),
-		'CURRENT_YEAR'		=> date('Y'),
+		'CURRENT_DAY'       => date('d'),
+		'CURRENT_MONTH'     => date('m'),
+		'CURRENT_YEAR'      => date('Y'),
 
-		'L_LOGIN_LOGOUT'	=> $l_login_logout,
-		'L_INDEX'			=> $user->lang['FORUM_INDEX'],
-		'L_ONLINE_EXPLAIN'	=> $l_online_time,
+		'L_LOGIN_LOGOUT'    => $l_login_logout,
+		'L_INDEX'           => $user->lang['FORUM_INDEX'],
+		'L_ONLINE_EXPLAIN'  => $l_online_time,
 
-		'U_PRIVATEMSGS'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=inbox'),
-		'U_PM_COMPOSE'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose'),
-		'U_PM_OUTBOX'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=outbox'),
-		'U_PM_SENTBOX'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=sentbox'),
-		'U_PM_DRAFTS'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=drafts'),
+		'U_PRIVATEMSGS'         => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=inbox'),
+		'U_PM_COMPOSE'          => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose'),
+		'U_PM_OUTBOX'           => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=outbox'),
+		'U_PM_SENTBOX'          => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=sentbox'),
+		'U_PM_DRAFTS'           => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=drafts'),
 
-		'U_MEMBERLIST'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php'),
-		'U_MEMBERLIST_ACTIVE'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=active'),
-		'U_MEMBERLIST_INACTIVE'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=inactive'),
-		'U_MEMBERLIST_SEARCH'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser'),
-		'U_VIEWONLINE'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php'),
-		'U_LOGIN_LOGOUT'		=> $u_login_logout,
-		'U_INDEX'				=> append_sid(PHPBB_ROOT_PATH . 'index.php'),
-		'U_SEARCH'				=> append_sid(PHPBB_ROOT_PATH . 'search.php'),
-		'U_REGISTER'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register'),
+		'U_MEMBERLIST'          => append_sid(PHPBB_ROOT_PATH . 'memberlist.php'),
+		'U_MEMBERLIST_ACTIVE'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=active'),
+		'U_MEMBERLIST_INACTIVE' => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=inactive'),
+		'U_MEMBERLIST_SEARCH'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser'),
+		'U_VIEWONLINE'          => append_sid(PHPBB_ROOT_PATH . 'viewonline.php'),
+		'U_LOGIN_LOGOUT'        => $u_login_logout,
+		'U_INDEX'               => append_sid(PHPBB_ROOT_PATH . 'index.php'),
+		'U_SEARCH'              => append_sid(PHPBB_ROOT_PATH . 'search.php'),
+		'U_REGISTER'            => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register'),
 
-		'U_PROFILE'				=> append_sid(PHPBB_ROOT_PATH . 'ucp.php'),
-		'U_UCP_BOOKMARKS'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=bookmarks'),
-		'U_UCP_SUBSCRIBED'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=subscribed'),
-		'U_UCP_DRAFTS'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=drafts'),
-		'U_UCP_ATTACHMENTS'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=attachments&amp;mode=attachments'),
-		'U_UCP_USERGROUPS'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=groups&amp;mode=membership'),
-		'U_UCP_FRIENDS'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;mode=friends'),
-		'U_UCP_PROFILE_INFO'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=profile_info'),
-		'U_UCP_SETTINGS'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=prefs&amp;mode=personal'),
+		'U_PROFILE'             => append_sid(PHPBB_ROOT_PATH . 'ucp.php'),
+		'U_UCP_BOOKMARKS'       => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=bookmarks'),
+		'U_UCP_SUBSCRIBED'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=subscribed'),
+		'U_UCP_DRAFTS'          => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=drafts'),
+		'U_UCP_ATTACHMENTS'     => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=attachments&amp;mode=attachments'),
+		'U_UCP_USERGROUPS'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=groups&amp;mode=membership'),
+		'U_UCP_FRIENDS'         => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;mode=friends'),
+		'U_UCP_PROFILE_INFO'    => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=profile_info'),
+		'U_UCP_SETTINGS'        => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=prefs&amp;mode=personal'),
 
-		'U_MCP'					=> ($auth->acl_get('m_') || $auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', false, true, $user->session_id) : '',
-		'U_FAQ'					=> append_sid(PHPBB_ROOT_PATH . 'faq.php'),
-		'U_BBCODE_GUIDE'		=> append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode'),
-		'U_RULES'				=> append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=rules'),
-		'U_SEARCH_SELF'			=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch'),
-		'U_SEARCH_SELF_TOPICS'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost'),
-		'U_SEARCH_NEW'			=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts'),
-		'U_SEARCH_UNANSWERED'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unanswered'),
-		'U_SEARCH_UNREAD'		=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts'),
+		'U_MCP'                 => ($auth->acl_get('m_') || $auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', false, true, $user->session_id) : '',
+		'U_FAQ'                 => append_sid(PHPBB_ROOT_PATH . 'faq.php'),
+		'U_BBCODE_GUIDE'        => append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode'),
+		'U_RULES'               => append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=rules'),
+		'U_SEARCH_SELF'         => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch'),
+		'U_SEARCH_SELF_TOPICS'  => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost'),
+		'U_SEARCH_NEW'          => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts'),
+		'U_SEARCH_UNANSWERED'   => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unanswered'),
+		'U_SEARCH_UNREAD'       => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts'),
 		'U_SEARCH_ACTIVE_TOPICS'=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics'),
-		'U_TEAM'				=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=leaders'),
-		'U_TERMS_OF_USE'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
-		'U_PRIVACY_POLICY'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
-		'U_RESTORE_PERMISSIONS'	=> ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm') : '',
-		'U_FEED'				=> generate_board_url() . "/feed.php",
+		'U_TEAM'                => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=leaders'),
+		'U_TERMS_OF_USE'        => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
+		'U_PRIVACY_POLICY'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
+		'U_RESTORE_PERMISSIONS' => ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm') : '',
+		'U_FEED'                => generate_board_url() . "/feed.php",
 
-		'S_USER_LOGGED_IN'		=> ($user->data['user_id'] != ANONYMOUS),
-		'S_AUTOLOGIN_ENABLED'	=> !empty($config['max_autologin_time']),
-		'S_BOARD_DISABLED'		=> (bool) $config['board_disable'],
-		'S_REGISTERED_USER'		=> !empty($user->data['is_registered']),
-		'S_IS_BOT'				=> !empty($user->data['is_bot']),
-		'S_USER_PM_POPUP'		=> $user->optionget('popuppm'),
-		'S_USER_LANG'			=> $user_lang,
-		'S_USER_BROWSER'		=> $user->data['session_browser'] ?? $user->lang['UNKNOWN_BROWSER'],
-		'S_USERNAME'			=> $user->data['username'],
-		'S_TIMEZONE'			=> sprintf($user->lang['CURRENT_TIMEZONE'], $user->lang['tz'][$tz], ($user->dst) ? $user->lang['DST'] : ''),
-		'S_DISPLAY_ONLINE_LIST'	=> ($l_online_time) ? 1 : 0,
-		'S_DISPLAY_SEARCH'		=> ($config['load_search'] && $auth->acl_get('u_search') && $auth->acl_getf_global('f_search')),
-		'S_DISPLAY_PM'			=> ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))),
-		'S_DISPLAY_MEMBERLIST'	=> $auth->acl_get('u_viewprofile'),
-		'S_NEW_PM'				=> ($s_privmsg_new) ? 1 : 0,
-		'S_REGISTER_ENABLED'	=> ($config['require_activation'] != USER_ACTIVATION_DISABLE),
-		'S_FORUM_ID'			=> $forum_id,
-		'S_TOPIC_ID'			=> $topic_id,
+		'S_USER_LOGGED_IN'      => ($user->data['user_id'] != ANONYMOUS),
+		'S_AUTOLOGIN_ENABLED'   => !empty($config['max_autologin_time']),
+		'S_BOARD_DISABLED'      => (bool) $config['board_disable'],
+		'S_REGISTERED_USER'     => !empty($user->data['is_registered']),
+		'S_IS_BOT'              => !empty($user->data['is_bot']),
+		'S_USER_PM_POPUP'       => $user->optionget('popuppm'),
+		'S_USER_LANG'           => $user_lang,
+		'S_USER_BROWSER'        => $user->data['session_browser'] ?? $user->lang['UNKNOWN_BROWSER'],
+		'S_USERNAME'            => $user->data['username'],
+		'S_TIMEZONE'            => sprintf($user->lang['CURRENT_TIMEZONE'], $user->lang['tz'][$tz], ($user->dst) ? $user->lang['DST'] : ''),
+		'S_DISPLAY_ONLINE_LIST' => ($l_online_time) ? 1 : 0,
+		'S_DISPLAY_SEARCH'      => ($config['load_search'] && $auth->acl_get('u_search') && $auth->acl_getf_global('f_search')),
+		'S_DISPLAY_PM'          => ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))),
+		'S_DISPLAY_MEMBERLIST'  => $auth->acl_get('u_viewprofile'),
+		'S_NEW_PM'              => ($s_privmsg_new) ? 1 : 0,
+		'S_REGISTER_ENABLED'    => ($config['require_activation'] != USER_ACTIVATION_DISABLE),
+		'S_FORUM_ID'            => $forum_id,
+		'S_TOPIC_ID'            => $topic_id,
 
-		'S_LOGIN_ACTION'		=> ((!defined('ADMIN_START')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login') : append_sid("index.php", false, true, $user->session_id)),
-		'S_LOGIN_REDIRECT'		=> build_hidden_fields(['redirect' => build_url()]),
+		'S_LOGIN_ACTION'        => ((!defined('ADMIN_START')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login') : append_sid("index.php", false, true, $user->session_id)),
+		'S_LOGIN_REDIRECT'      => build_hidden_fields(['redirect' => build_url()]),
 
-		'S_ENABLE_FEEDS'			=> (bool) $config['feed_enable'],
-		'S_ENABLE_FEEDS_OVERALL'	=> (bool) $config['feed_overall'],
-		'S_ENABLE_FEEDS_FORUMS'		=> (bool) $config['feed_overall_forums'],
-		'S_ENABLE_FEEDS_TOPICS'		=> (bool) $config['feed_topics_new'],
-		'S_ENABLE_FEEDS_TOPICS_ACTIVE'	=> (bool) $config['feed_topics_active'],
-		'S_ENABLE_FEEDS_NEWS'		=> (bool) $s_feed_news,
+		'S_ENABLE_FEEDS'            => (bool) $config['feed_enable'],
+		'S_ENABLE_FEEDS_OVERALL'    => (bool) $config['feed_overall'],
+		'S_ENABLE_FEEDS_FORUMS'     => (bool) $config['feed_overall_forums'],
+		'S_ENABLE_FEEDS_TOPICS'     => (bool) $config['feed_topics_new'],
+		'S_ENABLE_FEEDS_TOPICS_ACTIVE'  => (bool) $config['feed_topics_active'],
+		'S_ENABLE_FEEDS_NEWS'       => (bool) $s_feed_news,
 
-		'S_LOAD_UNREADS'			=> ($config['load_db_lastread'] && $user->data['is_registered']),
+		'S_LOAD_UNREADS'            => ($config['load_db_lastread'] && $user->data['is_registered']),
 
-		'S_SEARCH_HIDDEN_FIELDS'	=> build_hidden_fields($s_search_hidden_fields),
+		'S_SEARCH_HIDDEN_FIELDS'    => build_hidden_fields($s_search_hidden_fields),
 
-		'T_STYLE_PATH'			=> "{$web_path}styles/" . rawurlencode($user->theme['template_path']),
-		'T_SUPER_STYLE_PATH'	=> (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) : "{$web_path}styles/" . rawurlencode($user->theme['template_path']),
-		'T_TEMPLATE_PATH'		=> "{$web_path}styles/" . rawurlencode($user->theme['template_path']) . '/template',
-		'T_SUPER_TEMPLATE_PATH'	=> (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) . '/template' : "{$web_path}styles/" . rawurlencode($user->theme['template_path']) . '/template',
-		'T_THEME_PATH'			=> "{$web_path}styles/" . rawurlencode($user->theme['theme_path']) . '/theme',
-		'T_IMAGESET_PATH'		=> "{$web_path}styles/" . rawurlencode($user->theme['imageset_path']) . '/imageset',
-		'T_IMAGESET_LANG_PATH'	=> "{$web_path}styles/" . rawurlencode($user->theme['imageset_path']) . '/imageset/' . $user->lang_name,
-		'T_IMAGES_PATH'			=> "{$web_path}images/",
-		'T_SMILIES_PATH'		=> $web_path . SMILIES_PATH . '/',
-		'T_TOPIC_ICONS_PATH'	=> $web_path . TOPIC_ICONS_PATH . '/',
-		'T_STYLESHEET_LINK'		=> (!$user->theme['parse_css_file']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_path']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_name . '&amp;mtime=' . $user->theme['theme_mtime']),
-		'T_STYLESHEET_NAME'		=> $user->theme['theme_name'],
+		'T_STYLE_PATH'          => "{$web_path}styles/" . rawurlencode($user->theme['template_path']),
+		'T_SUPER_STYLE_PATH'    => (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) : "{$web_path}styles/" . rawurlencode($user->theme['template_path']),
+		'T_TEMPLATE_PATH'       => "{$web_path}styles/" . rawurlencode($user->theme['template_path']) . '/template',
+		'T_SUPER_TEMPLATE_PATH' => (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) . '/template' : "{$web_path}styles/" . rawurlencode($user->theme['template_path']) . '/template',
+		'T_THEME_PATH'          => "{$web_path}styles/" . rawurlencode($user->theme['theme_path']) . '/theme',
+		'T_IMAGESET_PATH'       => "{$web_path}styles/" . rawurlencode($user->theme['imageset_path']) . '/imageset',
+		'T_IMAGESET_LANG_PATH'  => "{$web_path}styles/" . rawurlencode($user->theme['imageset_path']) . '/imageset/' . $user->lang_name,
+		'T_IMAGES_PATH'         => "{$web_path}images/",
+		'T_SMILIES_PATH'        => $web_path . SMILIES_PATH . '/',
+		'T_TOPIC_ICONS_PATH'    => $web_path . TOPIC_ICONS_PATH . '/',
+		'T_STYLESHEET_LINK'     => (!$user->theme['parse_css_file']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_path']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_name . '&amp;mtime=' . $user->theme['theme_mtime']),
+		'T_STYLESHEET_NAME'     => $user->theme['theme_name'],
 
-		'T_THEME_NAME'			=> rawurlencode($user->theme['theme_path']),
-		'T_TEMPLATE_NAME'		=> rawurlencode($user->theme['template_path']),
-		'T_SUPER_TEMPLATE_NAME'	=> rawurlencode((isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? $user->theme['template_inherit_path'] : $user->theme['template_path']),
-		'T_IMAGESET_NAME'		=> rawurlencode($user->theme['imageset_path']),
-		'T_IMAGESET_LANG_NAME'	=> $user->lang_name,
+		'T_THEME_NAME'          => rawurlencode($user->theme['theme_path']),
+		'T_TEMPLATE_NAME'       => rawurlencode($user->theme['template_path']),
+		'T_SUPER_TEMPLATE_NAME' => rawurlencode((isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? $user->theme['template_inherit_path'] : $user->theme['template_path']),
+		'T_IMAGESET_NAME'       => rawurlencode($user->theme['imageset_path']),
+		'T_IMAGESET_LANG_NAME'  => $user->lang_name,
 
-		'SITE_LOGO_IMG'			=> $user->img('site_logo'),
+		'SITE_LOGO_IMG'         => $user->img('site_logo'),
 	]);
 
 	// Login via E-Mail
@@ -3898,8 +3898,8 @@ function page_footer($run_cron = true)
 	}
 
 	$template->assign_vars([
-		'DEBUG_OUTPUT'			=> $debug_output ?? '',
-		'COPYRIGHT_NOTICE'		=> nl2br(preg_replace_callback('#{L_([_A-Z0-9]+)}#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[0]; }, trim($config['copyright_notice']))),
+		'DEBUG_OUTPUT'          => $debug_output ?? '',
+		'COPYRIGHT_NOTICE'      => nl2br(preg_replace_callback('#{L_([_A-Z0-9]+)}#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[0]; }, trim($config['copyright_notice']))),
 		'U_ACP' => ($auth->acl_get('a_') && !empty($user->data['is_registered'])) ? append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, $user->session_id) : '']
 	);
 

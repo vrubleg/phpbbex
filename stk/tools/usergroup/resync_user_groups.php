@@ -35,8 +35,8 @@ class resync_user_groups
 	 * for redirect
 	 * @var Boolean
 	 */
-	var $run_rr		= false;
-	var $run_rnr	= false;
+	var $run_rr     = false;
+	var $run_rnr    = false;
 
 	/**
 	 * Display Options
@@ -46,8 +46,8 @@ class resync_user_groups
 	function display_options()
 	{
 		$this->_load_classes();
-		$this->rr	= new resync_registered($this);
-		$this->rnr	= new resync_newly_registered($this);
+		$this->rr   = new resync_registered($this);
+		$this->rnr  = new resync_newly_registered($this);
 
 		// Set the options
 		$vars = [];
@@ -68,10 +68,10 @@ class resync_user_groups
 		}
 
 		// Finish the options array and return it
-		$options 			= [];
-		$options['title']	= 'RESYNC_USER_GROUPS';
-		$options['vars']	= array_merge([
-			'legend1'	=> 'RESYNC_USER_GROUPS_SETTINGS',
+		$options            = [];
+		$options['title']   = 'RESYNC_USER_GROUPS';
+		$options['vars']    = array_merge([
+			'legend1'   => 'RESYNC_USER_GROUPS_SETTINGS',
 		], $vars);
 
 		return $options;
@@ -83,8 +83,8 @@ class resync_user_groups
 	function run_tool(&$error)
 	{
 		$this->_load_classes();
-		$this->run_rr	= request_var('rr', false);
-		$this->run_rnr	= request_var('rnr', false);
+		$this->run_rr   = request_var('rr', false);
+		$this->run_rnr  = request_var('rnr', false);
 
 		// Done nothing
 		if (!$this->run_rr && !$this->run_rnr)

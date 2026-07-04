@@ -30,8 +30,8 @@ class erk_style_dir_repair
 				AND t.template_id = s.template_id
 				AND c.theme_id = s.theme_id
 				AND i.imageset_id = s.imageset_id';
-		$result	= $db->sql_query($sql);
-		$t_path	= $db->sql_fetchfield('template_path', false, $result);
+		$result = $db->sql_query($sql);
+		$t_path = $db->sql_fetchfield('template_path', false, $result);
 		$db->sql_freeresult($result);
 
 		if (empty($t_path) || !is_dir(PHPBB_ROOT_PATH . 'styles/' . $t_path))
@@ -42,7 +42,7 @@ class erk_style_dir_repair
 				require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_styles.php');
 			}
 			$this->ac = new acp_styles();
-			$this->ac->main('', 'default');	// Bit hacky
+			$this->ac->main('', 'default'); // Bit hacky
 
 			// The style directory of the active style doesn't exist anymore
 			$this->repair();
@@ -89,15 +89,15 @@ class erk_style_dir_repair
 			$sql = 'SELECT style_id
 				FROM ' . STYLES_TABLE . "
 				WHERE style_name = '" . $db->sql_escape($items['name']) . "'";
-			$result		= $db->sql_query($sql);
-			$this->sid	= $db->sql_fetchfield('style_id', false, $result);
+			$result     = $db->sql_query($sql);
+			$this->sid  = $db->sql_fetchfield('style_id', false, $result);
 			$db->sql_freeresult($result);
 
 			if (empty($this->sid))
 			{
 				// Nasty, but the style installer fetches these in the method o_0
-				$GLOBALS['_REQUEST']['path']	= $stylename;
-				$GLOBALS['_POST']['update']		= true;
+				$GLOBALS['_REQUEST']['path']    = $stylename;
+				$GLOBALS['_POST']['update']     = true;
 
 				// Call the style installer
 				$this->ac->install('style');
@@ -106,14 +106,14 @@ class erk_style_dir_repair
 				$sql = 'SELECT style_id
 					FROM ' . STYLES_TABLE . "
 					WHERE style_name = '" . $db->sql_escape($items['name']) . "'";
-				$result		= $db->sql_query($sql);
-				$this->sid	= $db->sql_fetchfield('style_id', false, $result);
+				$result     = $db->sql_query($sql);
+				$this->sid  = $db->sql_fetchfield('style_id', false, $result);
 				$db->sql_freeresult($result);
 			}
 
 			// Set this style as the active style
 			set_config('default_style', $this->sid);
-			set_config('override_user_style', 1);	// Overriding the style should enable the board for everyone
+			set_config('override_user_style', 1);   // Overriding the style should enable the board for everyone
 
 			return;
 		}
@@ -159,8 +159,8 @@ class erk_style_dir_repair
 			if (!in_array($row['template_path'], $style_dirs))
 			{
 				// More uglyness from phpBB :/
-				$GLOBALS['_REQUEST']['new_id']	= (int) $this->sid;
-				$GLOBALS['_POST']['update']		= true;
+				$GLOBALS['_REQUEST']['new_id']  = (int) $this->sid;
+				$GLOBALS['_POST']['update']     = true;
 
 				// Uninstall the style
 				$this->ac->remove('style', $row['style_id']);

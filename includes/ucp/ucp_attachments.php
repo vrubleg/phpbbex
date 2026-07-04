@@ -24,13 +24,13 @@ class ucp_attachments
 	{
 		global $template, $user, $db, $config;
 
-		$start		= request_var('start', 0);
-		$sort_key	= request_var('sk', 'a');
-		$sort_dir	= request_var('sd', 'a');
+		$start      = request_var('start', 0);
+		$sort_key   = request_var('sk', 'a');
+		$sort_dir   = request_var('sd', 'a');
 
-		$delete		= isset($_POST['delete']);
-		$confirm	= isset($_POST['confirm']);
-		$delete_ids	= array_keys(request_var('attachment', [0]));
+		$delete     = isset($_POST['delete']);
+		$confirm    = isset($_POST['confirm']);
+		$delete_ids = array_keys(request_var('attachment', [0]));
 
 		if ($delete && sizeof($delete_ids))
 		{
@@ -53,7 +53,7 @@ class ucp_attachments
 		if ($delete && sizeof($delete_ids))
 		{
 			$s_hidden_fields = [
-				'delete'	=> 1
+				'delete'    => 1
 			];
 
 			foreach ($delete_ids as $attachment_id)
@@ -141,23 +141,23 @@ class ucp_attachments
 				}
 
 				$template->assign_block_vars('attachrow', [
-					'ROW_NUMBER'		=> $row_count + ($start + 1),
-					'FILENAME'			=> $row['real_filename'],
-					'COMMENT'			=> bbcode_nl2br($row['attach_comment']),
-					'EXTENSION'			=> $row['extension'],
-					'SIZE'				=> get_formatted_filesize($row['filesize']),
-					'DOWNLOAD_COUNT'	=> $row['download_count'],
-					'POST_TIME'			=> $user->format_date($row['filetime']),
-					'TOPIC_TITLE'		=> ($row['in_message']) ? $row['message_title'] : $row['topic_title'],
+					'ROW_NUMBER'        => $row_count + ($start + 1),
+					'FILENAME'          => $row['real_filename'],
+					'COMMENT'           => bbcode_nl2br($row['attach_comment']),
+					'EXTENSION'         => $row['extension'],
+					'SIZE'              => get_formatted_filesize($row['filesize']),
+					'DOWNLOAD_COUNT'    => $row['download_count'],
+					'POST_TIME'         => $user->format_date($row['filetime']),
+					'TOPIC_TITLE'       => ($row['in_message']) ? $row['message_title'] : $row['topic_title'],
 
-					'ATTACH_ID'			=> $row['attach_id'],
-					'POST_ID'			=> $row['post_msg_id'],
-					'TOPIC_ID'			=> $row['topic_id'],
+					'ATTACH_ID'         => $row['attach_id'],
+					'POST_ID'           => $row['post_msg_id'],
+					'TOPIC_ID'          => $row['topic_id'],
 
-					'S_IN_MESSAGE'		=> $row['in_message'],
+					'S_IN_MESSAGE'      => $row['in_message'],
 
-					'U_VIEW_ATTACHMENT'	=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'id=' . $row['attach_id']),
-					'U_VIEW_TOPIC'		=> $view_topic]
+					'U_VIEW_ATTACHMENT' => append_sid(PHPBB_ROOT_PATH . 'file.php', 'id=' . $row['attach_id']),
+					'U_VIEW_TOPIC'      => $view_topic]
 				);
 
 				$row_count++;
@@ -167,25 +167,25 @@ class ucp_attachments
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'PAGE_NUMBER'			=> on_page($num_attachments, $config['topics_per_page'], $start),
-			'PAGINATION'			=> generate_pagination($this->u_action . "&amp;sk={$sort_key}&amp;sd={$sort_dir}", $num_attachments, $config['topics_per_page'], $start),
-			'TOTAL_ATTACHMENTS'		=> $num_attachments,
+			'PAGE_NUMBER'           => on_page($num_attachments, $config['topics_per_page'], $start),
+			'PAGINATION'            => generate_pagination($this->u_action . "&amp;sk={$sort_key}&amp;sd={$sort_dir}", $num_attachments, $config['topics_per_page'], $start),
+			'TOTAL_ATTACHMENTS'     => $num_attachments,
 
-			'L_TITLE'				=> $user->lang['UCP_ATTACHMENTS'],
+			'L_TITLE'               => $user->lang['UCP_ATTACHMENTS'],
 
-			'U_SORT_FILENAME'		=> $this->u_action . "&amp;sk=a&amp;sd=" . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_FILE_COMMENT'	=> $this->u_action . "&amp;sk=b&amp;sd=" . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_EXTENSION'		=> $this->u_action . "&amp;sk=c&amp;sd=" . (($sort_key == 'c' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_FILESIZE'		=> $this->u_action . "&amp;sk=d&amp;sd=" . (($sort_key == 'd' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_DOWNLOADS'		=> $this->u_action . "&amp;sk=e&amp;sd=" . (($sort_key == 'e' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_POST_TIME'		=> $this->u_action . "&amp;sk=f&amp;sd=" . (($sort_key == 'f' && $sort_dir == 'a') ? 'd' : 'a'),
-			'U_SORT_TOPIC_TITLE'	=> $this->u_action . "&amp;sk=g&amp;sd=" . (($sort_key == 'g' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_FILENAME'       => $this->u_action . "&amp;sk=a&amp;sd=" . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_FILE_COMMENT'   => $this->u_action . "&amp;sk=b&amp;sd=" . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_EXTENSION'      => $this->u_action . "&amp;sk=c&amp;sd=" . (($sort_key == 'c' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_FILESIZE'       => $this->u_action . "&amp;sk=d&amp;sd=" . (($sort_key == 'd' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_DOWNLOADS'      => $this->u_action . "&amp;sk=e&amp;sd=" . (($sort_key == 'e' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_POST_TIME'      => $this->u_action . "&amp;sk=f&amp;sd=" . (($sort_key == 'f' && $sort_dir == 'a') ? 'd' : 'a'),
+			'U_SORT_TOPIC_TITLE'    => $this->u_action . "&amp;sk=g&amp;sd=" . (($sort_key == 'g' && $sort_dir == 'a') ? 'd' : 'a'),
 
-			'S_DISPLAY_MARK_ALL'	=> (bool) $num_attachments,
-			'S_DISPLAY_PAGINATION'	=> (bool) $num_attachments,
-			'S_UCP_ACTION'			=> $this->u_action,
-			'S_SORT_OPTIONS' 		=> $s_sort_key,
-			'S_ORDER_SELECT'		=> $s_sort_dir]
+			'S_DISPLAY_MARK_ALL'    => (bool) $num_attachments,
+			'S_DISPLAY_PAGINATION'  => (bool) $num_attachments,
+			'S_UCP_ACTION'          => $this->u_action,
+			'S_SORT_OPTIONS'        => $s_sort_key,
+			'S_ORDER_SELECT'        => $s_sort_dir]
 		);
 
 		$this->tpl_name = 'ucp_attachments';

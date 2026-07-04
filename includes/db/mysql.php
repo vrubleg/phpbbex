@@ -168,11 +168,11 @@ class dbal_mysql extends dbal
 	/**
 	* Base query method
 	*
-	* @param	string	$query		Contains the SQL query which shall be executed
-	* @param	int		$cache_ttl	Either 0 to avoid caching or the time in seconds which the result shall be kept in cache
-	* @return	mixed				When casted to bool the returned value returns true on success and false on failure
+	* @param    string  $query      Contains the SQL query which shall be executed
+	* @param    int     $cache_ttl  Either 0 to avoid caching or the time in seconds which the result shall be kept in cache
+	* @return   mixed               When casted to bool the returned value returns true on success and false on failure
 	*
-	* @access	public
+	* @access   public
 	*/
 	function sql_query($query = '', $cache_ttl = 0)
 	{
@@ -332,10 +332,10 @@ class dbal_mysql extends dbal
 	/**
 	* Gets the estimated number of rows in a specified table.
 	*
-	* @param string $table_name		Table name
+	* @param string $table_name     Table name
 	*
-	* @return string				Number of rows in $table_name.
-	*								Prefixed with ~ if estimated (otherwise exact).
+	* @return string                Number of rows in $table_name.
+	*                               Prefixed with ~ if estimated (otherwise exact).
 	*
 	* @access public
 	*/
@@ -361,9 +361,9 @@ class dbal_mysql extends dbal
 	/**
 	* Gets the exact number of rows in a specified table.
 	*
-	* @param string $table_name		Table name
+	* @param string $table_name     Table name
 	*
-	* @return string				Exact number of rows in $table_name.
+	* @return string                Exact number of rows in $table_name.
 	*
 	* @access public
 	*/
@@ -382,7 +382,7 @@ class dbal_mysql extends dbal
 	/**
 	* Gets some information about the specified table.
 	*
-	* @param string $table_name		Table name
+	* @param string $table_name     Table name
 	*
 	* @return array
 	*
@@ -433,29 +433,29 @@ class dbal_mysql extends dbal
 		if ($this->connect_error)
 		{
 			$error = [
-				'message'	=> $this->connect_error,
-				'code'		=> '',
+				'message'   => $this->connect_error,
+				'code'      => '',
 			];
 		}
 		else if ($this->db_connect_id)
 		{
 			$error = [
-				'message'	=> @mysqli_error($this->db_connect_id),
-				'code'		=> @mysqli_errno($this->db_connect_id)
+				'message'   => @mysqli_error($this->db_connect_id),
+				'code'      => @mysqli_errno($this->db_connect_id)
 			];
 		}
 		else if (function_exists('mysqli_connect_error'))
 		{
 			$error = [
-				'message'	=> @mysqli_connect_error(),
-				'code'		=> @mysqli_connect_errno(),
+				'message'   => @mysqli_connect_error(),
+				'code'      => @mysqli_connect_errno(),
 			];
 		}
 		else
 		{
 			$error = [
-				'message'	=> '',
-				'code'		=> '',
+				'message'   => '',
+				'code'      => '',
 			];
 		}
 

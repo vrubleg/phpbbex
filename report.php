@@ -15,12 +15,12 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup('mcp');
 
-$forum_id		= request_var('f', 0);
-$post_id		= request_var('p', 0);
-$pm_id			= request_var('pm', 0);
-$reason_id		= request_var('reason_id', 0);
-$report_text	= utf8_normalize_nfc(request_var('report_text', '', true));
-$user_notify	= ($user->data['is_registered']) ? request_var('notify', 0) : false;
+$forum_id       = request_var('f', 0);
+$post_id        = request_var('p', 0);
+$pm_id          = request_var('pm', 0);
+$reason_id      = request_var('reason_id', 0);
+$report_text    = utf8_normalize_nfc(request_var('report_text', '', true));
+$user_notify    = ($user->data['is_registered']) ? request_var('notify', 0) : false;
 
 $submit = isset($_POST['submit']);
 
@@ -133,7 +133,7 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 	$captcha->init(CONFIRM_REPORT);
 }
 
-$error	= [];
+$error  = [];
 $s_hidden_fields = '';
 
 // Submit report?
@@ -168,14 +168,14 @@ if ($submit && $reason_id)
 		}
 
 		$sql_ary = [
-			'reason_id'		=> (int) $reason_id,
-			'post_id'		=> $post_id,
-			'pm_id'			=> $pm_id,
-			'user_id'		=> (int) $user->data['user_id'],
-			'user_notify'	=> (int) $user_notify,
-			'report_closed'	=> 0,
-			'report_time'	=> (int) time(),
-			'report_text'	=> (string) $report_text
+			'reason_id'     => (int) $reason_id,
+			'post_id'       => $post_id,
+			'pm_id'         => $pm_id,
+			'user_id'       => (int) $user->data['user_id'],
+			'user_notify'   => (int) $user_notify,
+			'report_closed' => 0,
+			'report_time'   => (int) time(),
+			'report_text'   => (string) $report_text
 		];
 
 		$sql = 'INSERT INTO ' . REPORTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
@@ -209,16 +209,16 @@ if ($submit && $reason_id)
 			$db->sql_query($sql);
 
 			$sql_ary = [
-				'msg_id'		=> $pm_id,
-				'user_id'		=> ANONYMOUS,
-				'author_id'		=> (int) $report_data['author_id'],
-				'pm_deleted'	=> 0,
-				'pm_new'		=> 0,
-				'pm_unread'		=> 0,
-				'pm_replied'	=> 0,
-				'pm_marked'		=> 0,
-				'pm_forwarded'	=> 0,
-				'folder_id'		=> PRIVMSGS_INBOX,
+				'msg_id'        => $pm_id,
+				'user_id'       => ANONYMOUS,
+				'author_id'     => (int) $report_data['author_id'],
+				'pm_deleted'    => 0,
+				'pm_new'        => 0,
+				'pm_unread'     => 0,
+				'pm_replied'    => 0,
+				'pm_marked'     => 0,
+				'pm_forwarded'  => 0,
+				'folder_id'     => PRIVMSGS_INBOX,
 			];
 
 			$sql = 'INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
@@ -251,20 +251,20 @@ $page_title = ($pm_id) ? $user->lang['REPORT_MESSAGE'] : $user->lang['REPORT_POS
 if (isset($captcha) && $captcha->is_solved() === false)
 {
 	$template->assign_vars([
-		'S_CONFIRM_CODE'	=> true,
-		'CAPTCHA_TEMPLATE'	=> $captcha->get_template(),
+		'S_CONFIRM_CODE'    => true,
+		'CAPTCHA_TEMPLATE'  => $captcha->get_template(),
 	]);
 }
 
 $template->assign_vars([
-	'ERROR'				=> (count($error)) ? implode('<br />', $error) : '',
-	'S_REPORT_POST'		=> !$pm_id,
-	'REPORT_TEXT'		=> $report_text,
-	'S_REPORT_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'report.php', 'f=' . $forum_id . '&amp;p=' . $post_id . '&amp;pm=' . $pm_id),
-	'S_HIDDEN_FIELDS'	=> $s_hidden_fields ?? '',
+	'ERROR'             => (count($error)) ? implode('<br />', $error) : '',
+	'S_REPORT_POST'     => !$pm_id,
+	'REPORT_TEXT'       => $report_text,
+	'S_REPORT_ACTION'   => append_sid(PHPBB_ROOT_PATH . 'report.php', 'f=' . $forum_id . '&amp;p=' . $post_id . '&amp;pm=' . $pm_id),
+	'S_HIDDEN_FIELDS'   => $s_hidden_fields ?? '',
 
-	'S_NOTIFY'			=> $user_notify,
-	'S_CAN_NOTIFY'		=> (bool) $user->data['is_registered'],
+	'S_NOTIFY'          => $user_notify,
+	'S_CAN_NOTIFY'      => (bool) $user->data['is_registered'],
 ]);
 
 generate_forum_nav($forum_data);

@@ -39,8 +39,8 @@ function build_cfg_template($tpl_type, $name, $vars)
 			// If requested set some vars so that we later can display the link correct
 			if (isset($vars['select_user']) && $vars['select_user'] === true)
 			{
-				$tpl['find_user']		= true;
-				$tpl['find_user_field']	= $name;
+				$tpl['find_user']       = true;
+				$tpl['find_user_field'] = $name;
 			}
 		case 'password':
 			$size = (int) $tpl_type[1];
@@ -57,8 +57,8 @@ function build_cfg_template($tpl_type, $name, $vars)
 		break;
 
 		case 'radio':
-			$name_yes	= ($default) ? ' checked="checked"' : '';
-			$name_no	= (!$default) ? ' checked="checked"' : '';
+			$name_yes   = ($default) ? ' checked="checked"' : '';
+			$name_no    = (!$default) ? ' checked="checked"' : '';
 
 			$tpl_type_cond = explode('_', $tpl_type[1]);
 			$type_no = ($tpl_type_cond[0] != 'disabled' && $tpl_type_cond[0] != 'enabled');
@@ -70,7 +70,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 		break;
 
 		case 'checkbox':
-			$checked	= ($default) ? ' checked="checked"' : '';
+			$checked    = ($default) ? ' checked="checked"' : '';
 
 			if (empty($tpl_type[1]))
 			{
@@ -251,25 +251,25 @@ function user_lang()
 * The function shall first try to include the file in the users language, if that fails it will
 * take the boards default language, if that also fails it will fall back to English
 *
-* @param	String	$lang_file	the name of the language file
-* @param	mixed	$force_lang	If this parameter contains an ISO code this language
-*								is used for the file. If set to "false" the users default
-*								langauge will be used
+* @param    String  $lang_file  the name of the language file
+* @param    mixed   $force_lang If this parameter contains an ISO code this language
+*                               is used for the file. If set to "false" the users default
+*                               langauge will be used
 */
 function stk_add_lang($lang_file, $fore_lang = false)
 {
 	global $config, $user;
 
 	// Internally cache some data
-	static $lang_data	= [];
-	static $lang_dirs	= [];
+	static $lang_data   = [];
+	static $lang_dirs   = [];
 
 	// Store current phpBB data
 	if (empty($lang_data))
 	{
 		$lang_data = [
-			'lang_path'	=> $user->lang_path,
-			'lang_name'	=> $user->lang_name,
+			'lang_path' => $user->lang_path,
+			'lang_name' => $user->lang_name,
 		];
 	}
 
@@ -280,9 +280,9 @@ function stk_add_lang($lang_file, $fore_lang = false)
 	if (empty($lang_dirs))
 	{
 		$lang_dirs = [
-			$user->data['user_lang'],			// User default
-			basename($config['default_lang']),	// Board default
-			'en',								// System default
+			$user->data['user_lang'],           // User default
+			basename($config['default_lang']),  // Board default
+			'en',                               // System default
 		];
 
 		// Only unique dirs
@@ -325,7 +325,7 @@ function stk_add_lang($lang_file, $fore_lang = false)
 /**
  * Perform all quick tasks that has to be ran before we authenticate
  *
- * @param	String	$action	The action to perform
+ * @param   String  $action The action to perform
  * @param   bool    $submit The form has been submitted
  */
 function perform_unauthed_quick_tasks($action, $submit = false)
@@ -354,22 +354,22 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 			page_header($user->lang['GEN_PASS_FILE'], false);
 
 			$template->assign_vars([
-				'PASS_GENERATED'			=> sprintf($user->lang['PASS_GENERATED'], $_pass_string, $user->format_date($_pass_exprire, false, true)),
-				'PASS_GENERATED_REDIRECT'	=> sprintf($user->lang['PASS_GENERATED_REDIRECT'], append_sid(STK_ROOT_PATH . 'index.php')),
-				'S_HIDDEN_FIELDS'			=> build_hidden_fields(['pass_string' => $_pass_string, 'pass_exp' => $_pass_exprire]),
-				'U_ACTION'					=> append_sid(STK_INDEX, ['action' => 'downpasswdfile']),
+				'PASS_GENERATED'            => sprintf($user->lang['PASS_GENERATED'], $_pass_string, $user->format_date($_pass_exprire, false, true)),
+				'PASS_GENERATED_REDIRECT'   => sprintf($user->lang['PASS_GENERATED_REDIRECT'], append_sid(STK_ROOT_PATH . 'index.php')),
+				'S_HIDDEN_FIELDS'           => build_hidden_fields(['pass_string' => $_pass_string, 'pass_exp' => $_pass_exprire]),
+				'U_ACTION'                  => append_sid(STK_INDEX, ['action' => 'downpasswdfile']),
 			]);
 
 			$template->set_filenames([
-				'body'	=> 'gen_password.html',
+				'body'  => 'gen_password.html',
 			]);
 			page_footer(false);
 		break;
 
 		// Download the passwd file
 		case 'downpasswdfile' :
-			$_pass_string	= request_var('pass_string', '', true);
-			$_pass_exprire	= request_var('pass_exp', 0);
+			$_pass_string   = request_var('pass_string', '', true);
+			$_pass_exprire  = request_var('pass_exp', 0);
 
 			// Something went wrong, stop execution
 			if (!isset($_POST['download_passwd']) || empty($_pass_string) || $_pass_exprire <= 0)
@@ -404,7 +404,7 @@ if (!defined('IN_PHPBB') || !defined('STK_VERSION'))
 /**
  * Perform all quick tasks that require the user to be authenticated
  *
- * @param	String	$action	The action we'll be performing
+ * @param   String  $action The action we'll be performing
  */
 function perform_authed_quick_tasks($action)
 {

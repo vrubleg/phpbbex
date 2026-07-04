@@ -57,13 +57,13 @@ foreach ($uninit as $var_name => $default_value)
 }
 unset($uninit);
 
-$bbcode_status	= ($config['allow_bbcode'] && $auth->acl_get('f_bbcode', $forum_id));
-$smilies_status	= ($bbcode_status && $config['allow_smilies'] && $auth->acl_get('f_smilies', $forum_id));
-$img_status		= ($bbcode_status && $auth->acl_get('f_img', $forum_id));
-$url_status		= (bool) $config['allow_post_links'];
-$flash_status	= ($bbcode_status && $auth->acl_get('f_flash', $forum_id) && $config['allow_post_flash']);
-$quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
-$spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
+$bbcode_status  = ($config['allow_bbcode'] && $auth->acl_get('f_bbcode', $forum_id));
+$smilies_status = ($bbcode_status && $config['allow_smilies'] && $auth->acl_get('f_smilies', $forum_id));
+$img_status     = ($bbcode_status && $auth->acl_get('f_img', $forum_id));
+$url_status     = (bool) $config['allow_post_links'];
+$flash_status   = ($bbcode_status && $auth->acl_get('f_flash', $forum_id) && $config['allow_post_flash']);
+$quote_status   = ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
+$spoiler_status = ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 
 if ($config['allow_quick_' . $mode . '_smilies'])
 {
@@ -76,11 +76,11 @@ if ($config['enable_topic_icons'] && $mode == 'post' && $config['allow_quick_pos
 	$s_topic_icons = posting_gen_topic_icons($mode, 0);
 }
 
-$bbcode_checked		= ($config['allow_bbcode']) ? !$user->optionget('bbcode') : 1;
-$smilies_checked	= ($config['allow_smilies']) ? !$user->optionget('smilies') : 1;
-$urls_checked		= false;
-$sig_checked		= ($config['allow_sig'] && $user->optionget('attachsig'));
-$lock_topic_checked	= (isset($main_data['topic_status']) && $main_data['topic_status'] == ITEM_LOCKED) ? 1 : 0;
+$bbcode_checked     = ($config['allow_bbcode']) ? !$user->optionget('bbcode') : 1;
+$smilies_checked    = ($config['allow_smilies']) ? !$user->optionget('smilies') : 1;
+$urls_checked       = false;
+$sig_checked        = ($config['allow_sig'] && $user->optionget('attachsig'));
+$lock_topic_checked = (isset($main_data['topic_status']) && $main_data['topic_status'] == ITEM_LOCKED) ? 1 : 0;
 
 // Check if user is watching this topic
 if ($mode != 'post' && $config['allow_topic_notify'] && $user->data['is_registered'])
@@ -95,8 +95,8 @@ if ($mode != 'post' && $config['allow_topic_notify'] && $user->data['is_register
 }
 
 // If the user is replying or posting and not already watching this topic but set to always being notified we need to overwrite this setting
-$notify_set			= ($config['allow_topic_notify'] && $user->data['is_registered'] && !$main_data['notify_set']) ? $user->data['user_notify'] : $main_data['notify_set'];
-$notify_checked		= ($mode == 'post') ? $user->data['user_notify'] : $notify_set;
+$notify_set         = ($config['allow_topic_notify'] && $user->data['is_registered'] && !$main_data['notify_set']) ? $user->data['user_notify'] : $main_data['notify_set'];
+$notify_checked     = ($mode == 'post') ? $user->data['user_notify'] : $notify_set;
 
 $s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode={$mode}" . (($mode == 'post') ? "&amp;f={$forum_id}" : ''));
 $s_action .= (isset($topic_id) && $topic_id) ? "&amp;t={$topic_id}" : '';
@@ -113,14 +113,14 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($captcha) && $captcha->is_solved() === false) && ($mode == 'post' || $mode == 'reply'))
 {
 	$template->assign_vars([
-		'S_CONFIRM_CODE'			=> true,
-		'CAPTCHA_TEMPLATE'			=> $captcha->get_template(),
+		'S_CONFIRM_CODE'            => true,
+		'CAPTCHA_TEMPLATE'          => $captcha->get_template(),
 	]);
 }
 
 $qr_hidden_fields = [
-	'topic_cur_post_id'		=> (isset($main_data['topic_last_post_id'])) ? (int) $main_data['topic_last_post_id'] : 0,
-	'lastclick'				=> (int) time()
+	'topic_cur_post_id'     => (isset($main_data['topic_last_post_id'])) ? (int) $main_data['topic_last_post_id'] : 0,
+	'lastclick'             => (int) time()
 ];
 
 // Attachment entry
@@ -135,56 +135,56 @@ $allowed_extension_sizes = get_allowed_extension_sizes($forum_id);
 
 // Send vars to template
 $template->assign_vars([
-	'S_QUICK_REPLY'			=> $s_quick_reply,
-	'QR_HIDDEN_FIELDS'		=> build_hidden_fields($qr_hidden_fields),
-	'U_QR_ACTION'			=> $s_action,
-	'S_FORM_ENCTYPE'		=> ($show_attach_box) ? ' enctype="multipart/form-data"' : '',
-	'SUBJECT'				=> '',
-	'EXTRA_OPTIONS_DISPLAY'	=> ($config['allow_quick_' . $mode . '_checkboxes']),
+	'S_QUICK_REPLY'         => $s_quick_reply,
+	'QR_HIDDEN_FIELDS'      => build_hidden_fields($qr_hidden_fields),
+	'U_QR_ACTION'           => $s_action,
+	'S_FORM_ENCTYPE'        => ($show_attach_box) ? ' enctype="multipart/form-data"' : '',
+	'SUBJECT'               => '',
+	'EXTRA_OPTIONS_DISPLAY' => ($config['allow_quick_' . $mode . '_checkboxes']),
 
-	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
-	'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
-	'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
-	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-	'URL_STATUS'			=> ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
+	'SMILIES_STATUS'        => ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
+	'BBCODE_STATUS'         => ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
+	'IMG_STATUS'            => ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
+	'FLASH_STATUS'          => ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
+	'SMILIES_STATUS'        => ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
+	'URL_STATUS'            => ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 
-	'MAX_FONT_SIZE'			=> (int) $config['max_post_font_size'],
-	'MIN_FONT_SIZE'			=> (int) $config['min_post_font_size'],
+	'MAX_FONT_SIZE'         => (int) $config['max_post_font_size'],
+	'MIN_FONT_SIZE'         => (int) $config['min_post_font_size'],
 
-	'L_QUICK_REPLY'				=> $user->lang['QUICK_' . strtoupper($mode)],
-	'L_ICON'					=> ($mode == 'reply') ? $user->lang['POST_ICON'] : $user->lang['TOPIC_ICON'],
-	'L_MESSAGE_BODY_EXPLAIN'	=> (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
+	'L_QUICK_REPLY'             => $user->lang['QUICK_' . strtoupper($mode)],
+	'L_ICON'                    => ($mode == 'reply') ? $user->lang['POST_ICON'] : $user->lang['TOPIC_ICON'],
+	'L_MESSAGE_BODY_EXPLAIN'    => (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
 
-	'S_DISPLAY_USERNAME'		=> (!$user->data['is_registered']),
-	'S_SHOW_TOPIC_ICONS'		=> $s_topic_icons,
-	'S_SUBJECT_ALLOWED'			=> ($mode == 'post') || $config['allow_quick_reply_subject'],
-	'S_BBCODE_ALLOWED'			=> $bbcode_status,
-	'S_BBCODE_CHECKED'			=> ($bbcode_checked) ? ' checked="checked"' : '',
-	'S_SMILIES_ALLOWED'			=> ($smilies_status && $config['allow_quick_' . $mode . '_smilies']),
-	'S_SMILIES_CHECKED'			=> ($smilies_checked) ? ' checked="checked"' : '',
-	'S_SIG_ALLOWED'				=> ($auth->acl_get('f_sigs', $forum_id) && $config['allow_sig'] && $user->data['is_registered']),
-	'S_SIGNATURE_CHECKED'		=> ($sig_checked) ? ' checked="checked"' : '',
-	'S_NOTIFY_ALLOWED'			=> ($user->data['is_registered'] && $config['allow_topic_notify'] && $config['email_enable']),
-	'S_NOTIFY_CHECKED'			=> ($notify_checked) ? ' checked="checked"' : '',
-	'S_LOCK_TOPIC_ALLOWED'		=> (($mode == 'reply') && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($main_data['topic_poster']) && $user->data['user_id'] == $main_data['topic_poster'] && $main_data['topic_status'] == ITEM_UNLOCKED))),
-	'S_LOCK_TOPIC_CHECKED'		=> ($lock_topic_checked) ? ' checked="checked"' : '',
-	'S_LINKS_ALLOWED'			=> $url_status,
-	'S_MAGIC_URL_CHECKED'		=> ($urls_checked) ? ' checked="checked"' : '',
-	'S_FIRST_POST_SHOW_ALLOWED'	=> ($mode == 'post'),
-	'S_NEW_MESSAGE'				=> ($mode == 'post'),
-	'S_DO_MERGE_ALLOWED'		=> $s_do_merge_allowed,
-	'S_DO_MERGE_CHECKED'		=> $s_do_merge_checked ? ' checked="checked"' : '',
+	'S_DISPLAY_USERNAME'        => (!$user->data['is_registered']),
+	'S_SHOW_TOPIC_ICONS'        => $s_topic_icons,
+	'S_SUBJECT_ALLOWED'         => ($mode == 'post') || $config['allow_quick_reply_subject'],
+	'S_BBCODE_ALLOWED'          => $bbcode_status,
+	'S_BBCODE_CHECKED'          => ($bbcode_checked) ? ' checked="checked"' : '',
+	'S_SMILIES_ALLOWED'         => ($smilies_status && $config['allow_quick_' . $mode . '_smilies']),
+	'S_SMILIES_CHECKED'         => ($smilies_checked) ? ' checked="checked"' : '',
+	'S_SIG_ALLOWED'             => ($auth->acl_get('f_sigs', $forum_id) && $config['allow_sig'] && $user->data['is_registered']),
+	'S_SIGNATURE_CHECKED'       => ($sig_checked) ? ' checked="checked"' : '',
+	'S_NOTIFY_ALLOWED'          => ($user->data['is_registered'] && $config['allow_topic_notify'] && $config['email_enable']),
+	'S_NOTIFY_CHECKED'          => ($notify_checked) ? ' checked="checked"' : '',
+	'S_LOCK_TOPIC_ALLOWED'      => (($mode == 'reply') && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($main_data['topic_poster']) && $user->data['user_id'] == $main_data['topic_poster'] && $main_data['topic_status'] == ITEM_UNLOCKED))),
+	'S_LOCK_TOPIC_CHECKED'      => ($lock_topic_checked) ? ' checked="checked"' : '',
+	'S_LINKS_ALLOWED'           => $url_status,
+	'S_MAGIC_URL_CHECKED'       => ($urls_checked) ? ' checked="checked"' : '',
+	'S_FIRST_POST_SHOW_ALLOWED' => ($mode == 'post'),
+	'S_NEW_MESSAGE'             => ($mode == 'post'),
+	'S_DO_MERGE_ALLOWED'        => $s_do_merge_allowed,
+	'S_DO_MERGE_CHECKED'        => $s_do_merge_checked ? ' checked="checked"' : '',
 
-	'ALLOWED_EXTENSIONS'		=> implode(',', array_map(function ($ext) { return '.' . $ext; }, array_keys($allowed_extension_sizes))),
-	'ALLOWED_EXTENSIONS_JSON'	=> json::encode($allowed_extension_sizes),
+	'ALLOWED_EXTENSIONS'        => implode(',', array_map(function ($ext) { return '.' . $ext; }, array_keys($allowed_extension_sizes))),
+	'ALLOWED_EXTENSIONS_JSON'   => json::encode($allowed_extension_sizes),
 
-	'S_BBCODE_IMG'			=> $img_status,
-	'S_BBCODE_URL'			=> $url_status,
-	'S_BBCODE_FLASH'		=> $flash_status,
-	'S_BBCODE_QUOTE'		=> $quote_status,
-	'S_BBCODE_SPOILER'		=> $spoiler_status,
-	'S_SHOW_ATTACH_BOX'		=> $show_attach_box,
+	'S_BBCODE_IMG'          => $img_status,
+	'S_BBCODE_URL'          => $url_status,
+	'S_BBCODE_FLASH'        => $flash_status,
+	'S_BBCODE_QUOTE'        => $quote_status,
+	'S_BBCODE_SPOILER'      => $spoiler_status,
+	'S_SHOW_ATTACH_BOX'     => $show_attach_box,
 ]);
 
 // Build custom bbcodes array

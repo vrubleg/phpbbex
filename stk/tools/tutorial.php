@@ -54,15 +54,15 @@ class tutorial
 	* This function sets up the display page which will show the options we want to show for this tool
 	*
 	* There are a few things that can be done with this function.
-	* 	1. Return a string.
-	*		Returning a string makes the system show a confirm page using confirm_box
-	*		Send the string like 'TUTORIAL', like the normal confirm box it will use $user->lang['TUTORIAL'] and $user->lang['TUTORIAL_CONFIRM']
-	*	2. Return an array
-	*		Returning an array makes the system show a page similar to the acp_board. (More on this later)
-	*	3. Return false
-	*		Returning false makes the system do nothing with the initial display.
-	*		This may be used to display your own page.  You can do anything you'd like.
-	*		Just be sure that your page sets 'submit' in $_POST or you will have to check that yourself and run the $this->run_tool function if required
+	*   1. Return a string.
+	*       Returning a string makes the system show a confirm page using confirm_box
+	*       Send the string like 'TUTORIAL', like the normal confirm box it will use $user->lang['TUTORIAL'] and $user->lang['TUTORIAL_CONFIRM']
+	*   2. Return an array
+	*       Returning an array makes the system show a page similar to the acp_board. (More on this later)
+	*   3. Return false
+	*       Returning false makes the system do nothing with the initial display.
+	*       This may be used to display your own page.  You can do anything you'd like.
+	*       Just be sure that your page sets 'submit' in $_POST or you will have to check that yourself and run the $this->run_tool function if required
 	*/
 	function display_options()
 	{
@@ -75,10 +75,10 @@ class tutorial
 		* Method 2
 		*/
 		return [
-			'title'	=> 'TUTORIAL',
-			'vars'	=> [
-				'legend1'			=> 'TUTORIAL',
-				'tutorial'			=> ['lang' => 'TUTORIAL', 'type' => 'text:40:255', 'explain' => true],
+			'title' => 'TUTORIAL',
+			'vars'  => [
+				'legend1'           => 'TUTORIAL',
+				'tutorial'          => ['lang' => 'TUTORIAL', 'type' => 'text:40:255', 'explain' => true],
 			]
 		];
 
@@ -96,8 +96,8 @@ class tutorial
 	* This function should do what this tool was designed to do.
 	*
 	* If you did NOT return a string in display_options() you will recieve an array to put in any errors.
-	*	Using &$error allows you to put any error in the array and then return.  If this is done the system will call display_options again and output any error
-	*	If you used Method 2 for display_options the errors will be outputted automatically
+	*   Using &$error allows you to put any error in the array and then return.  If this is done the system will call display_options again and output any error
+	*   If you used Method 2 for display_options the errors will be outputted automatically
 	*/
 	function run_tool(&$error)
 	{

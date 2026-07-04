@@ -25,7 +25,7 @@ class acp_language
 
 		// Check and set some common vars
 
-		$action		= (isset($_POST['update_details'])) ? 'update_details' : '';
+		$action     = (isset($_POST['update_details'])) ? 'update_details' : '';
 
 		$submit = !empty($action);
 		$action = (empty($action)) ? request_var('action', '') : $action;
@@ -60,10 +60,10 @@ class acp_language
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
 
-				$sql_ary	= [
-					'lang_english_name'		=> request_var('lang_english_name', $row['lang_english_name']),
-					'lang_local_name'		=> utf8_normalize_nfc(request_var('lang_local_name', $row['lang_local_name'], true)),
-					'lang_author'			=> utf8_normalize_nfc(request_var('lang_author', $row['lang_author'], true)),
+				$sql_ary    = [
+					'lang_english_name'     => request_var('lang_english_name', $row['lang_english_name']),
+					'lang_local_name'       => utf8_normalize_nfc(request_var('lang_local_name', $row['lang_local_name'], true)),
+					'lang_author'           => utf8_normalize_nfc(request_var('lang_author', $row['lang_author'], true)),
 				];
 
 				$db->sql_query('UPDATE ' . LANG_TABLE . '
@@ -92,13 +92,13 @@ class acp_language
 				$db->sql_freeresult($result);
 
 				$template->assign_vars([
-					'S_DETAILS'			=> true,
-					'U_ACTION'			=> $this->u_action . "&amp;action=details&amp;id={$lang_id}",
-					'U_BACK'			=> $this->u_action,
-					'LANG_LOCAL_NAME'	=> $lang_entries['lang_local_name'],
-					'LANG_ENGLISH_NAME'	=> $lang_entries['lang_english_name'],
-					'LANG_ISO'			=> $lang_entries['lang_iso'],
-					'LANG_AUTHOR'		=> $lang_entries['lang_author'],
+					'S_DETAILS'         => true,
+					'U_ACTION'          => $this->u_action . "&amp;action=details&amp;id={$lang_id}",
+					'U_BACK'            => $this->u_action,
+					'LANG_LOCAL_NAME'   => $lang_entries['lang_local_name'],
+					'LANG_ENGLISH_NAME' => $lang_entries['lang_english_name'],
+					'LANG_ISO'          => $lang_entries['lang_iso'],
+					'LANG_AUTHOR'       => $lang_entries['lang_author'],
 					]
 				);
 
@@ -153,10 +153,10 @@ class acp_language
 				else
 				{
 					$s_hidden_fields = [
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'action'	=> $action,
-						'id'		=> $lang_id,
+						'i'         => $id,
+						'mode'      => $mode,
+						'action'    => $action,
+						'id'        => $lang_id,
 					];
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields($s_hidden_fields));
 				}
@@ -174,10 +174,10 @@ class acp_language
 				$file = file(PHPBB_ROOT_PATH . "language/{$lang_iso}/iso.txt");
 
 				$lang_pack = [
-					'iso'		=> $lang_iso,
-					'name'		=> trim(htmlspecialchars($file[0])),
+					'iso'       => $lang_iso,
+					'name'      => trim(htmlspecialchars($file[0])),
 					'local_name'=> trim(htmlspecialchars($file[1], ENT_COMPAT, 'UTF-8')),
-					'author'	=> trim(htmlspecialchars($file[2], ENT_COMPAT, 'UTF-8'))
+					'author'    => trim(htmlspecialchars($file[2], ENT_COMPAT, 'UTF-8'))
 				];
 				unset($file);
 
@@ -200,11 +200,11 @@ class acp_language
 
 				// Add language pack
 				$sql_ary = [
-					'lang_iso'			=> $lang_pack['iso'],
-					'lang_dir'			=> $lang_pack['iso'],
-					'lang_english_name'	=> $lang_pack['name'],
-					'lang_local_name'	=> $lang_pack['local_name'],
-					'lang_author'		=> $lang_pack['author']
+					'lang_iso'          => $lang_pack['iso'],
+					'lang_dir'          => $lang_pack['iso'],
+					'lang_english_name' => $lang_pack['name'],
+					'lang_local_name'   => $lang_pack['local_name'],
+					'lang_author'       => $lang_pack['author']
 				];
 
 				$db->sql_query('INSERT INTO ' . LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -250,12 +250,12 @@ class acp_language
 								if (in_array($image_name, $valid_localized))
 								{
 									$sql_ary[] = [
-										'image_name'		=> (string) $image_name,
-										'image_filename'	=> (string) $image_filename,
-										'image_height'		=> (int) $image_height,
-										'image_width'		=> (int) $image_width,
-										'imageset_id'		=> (int) $imageset_row['imageset_id'],
-										'image_lang'		=> (string) $lang_pack['iso'],
+										'image_name'        => (string) $image_name,
+										'image_filename'    => (string) $image_filename,
+										'image_height'      => (int) $image_height,
+										'image_width'       => (int) $image_width,
+										'imageset_id'       => (int) $imageset_row['imageset_id'],
+										'image_lang'        => (string) $lang_pack['iso'],
 									];
 								}
 							}
@@ -346,14 +346,14 @@ class acp_language
 			$tagstyle = ($row['lang_iso'] == $config['default_lang']) ? '*' : '';
 
 			$template->assign_block_vars('lang', [
-				'U_DETAILS'			=> $this->u_action . "&amp;action=details&amp;id={$row['lang_id']}",
-				'U_DELETE'			=> $this->u_action . "&amp;action=delete&amp;id={$row['lang_id']}",
+				'U_DETAILS'         => $this->u_action . "&amp;action=details&amp;id={$row['lang_id']}",
+				'U_DELETE'          => $this->u_action . "&amp;action=delete&amp;id={$row['lang_id']}",
 
-				'ENGLISH_NAME'		=> $row['lang_english_name'],
-				'TAG'				=> $tagstyle,
-				'LOCAL_NAME'		=> $row['lang_local_name'],
-				'ISO'				=> $row['lang_iso'],
-				'USED_BY'			=> $lang_count[$row['lang_iso']] ?? 0,
+				'ENGLISH_NAME'      => $row['lang_english_name'],
+				'TAG'               => $tagstyle,
+				'LOCAL_NAME'        => $row['lang_local_name'],
+				'ISO'               => $row['lang_iso'],
+				'USED_BY'           => $lang_count[$row['lang_iso']] ?? 0,
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -379,10 +379,10 @@ class acp_language
 							if (sizeof($iso) == 3)
 							{
 								$new_ary[$file] = [
-									'iso'		=> $file,
-									'name'		=> trim($iso[0]),
+									'iso'       => $file,
+									'name'      => trim($iso[0]),
 									'local_name'=> trim($iso[1]),
-									'author'	=> trim($iso[2])
+									'author'    => trim($iso[2])
 								];
 							}
 						}
@@ -399,10 +399,10 @@ class acp_language
 			foreach ($new_ary as $iso => $lang_ary)
 			{
 				$template->assign_block_vars('notinst', [
-					'ISO'			=> htmlspecialchars($lang_ary['iso']),
-					'LOCAL_NAME'	=> htmlspecialchars($lang_ary['local_name'], ENT_COMPAT, 'UTF-8'),
-					'NAME'			=> htmlspecialchars($lang_ary['name'], ENT_COMPAT, 'UTF-8'),
-					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;iso=' . urlencode($lang_ary['iso'])]
+					'ISO'           => htmlspecialchars($lang_ary['iso']),
+					'LOCAL_NAME'    => htmlspecialchars($lang_ary['local_name'], ENT_COMPAT, 'UTF-8'),
+					'NAME'          => htmlspecialchars($lang_ary['name'], ENT_COMPAT, 'UTF-8'),
+					'U_INSTALL'     => $this->u_action . '&amp;action=install&amp;iso=' . urlencode($lang_ary['iso'])]
 				);
 			}
 		}

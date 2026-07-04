@@ -12,11 +12,11 @@ class acp_manage_attachments_info
 		global $user;
 
 		return [
-			'filename'	=> 'acp_manage_attachments',
-			'title'		=> 'ACP_ATTACHMENTS',
-			'version'	=> '1.0.0',
-			'modes'		=> [
-				'attachments'	=> ['title' => 'ACP_MANAGE_ATTACHMENTS', 'auth' => 'acl_a_attach', 'cat' => ['ACP_ATTACHMENTS']]
+			'filename'  => 'acp_manage_attachments',
+			'title'     => 'ACP_ATTACHMENTS',
+			'version'   => '1.0.0',
+			'modes'     => [
+				'attachments'   => ['title' => 'ACP_MANAGE_ATTACHMENTS', 'auth' => 'acl_a_attach', 'cat' => ['ACP_ATTACHMENTS']]
 			],
 		];
 	}

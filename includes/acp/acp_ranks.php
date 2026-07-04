@@ -61,11 +61,11 @@ class acp_ranks
 				}
 
 				$sql_ary = [
-					'rank_title'		=> $rank_title,
-					'rank_hide_title'	=> $hide_title,
-					'rank_special'		=> $special_rank,
-					'rank_min'			=> $min_posts,
-					'rank_image'		=> htmlspecialchars_decode($rank_image)
+					'rank_title'        => $rank_title,
+					'rank_hide_title'   => $hide_title,
+					'rank_special'      => $special_rank,
+					'rank_min'          => $min_posts,
+					'rank_image'        => htmlspecialchars_decode($rank_image)
 				];
 
 				if ($rank_id)
@@ -122,10 +122,10 @@ class acp_ranks
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'rank_id'	=> $rank_id,
-						'action'	=> 'delete',
+						'i'         => $id,
+						'mode'      => $mode,
+						'rank_id'   => $rank_id,
+						'action'    => 'delete',
 					]));
 				}
 
@@ -186,17 +186,17 @@ class acp_ranks
 				unset($existing_imgs, $imglist);
 
 				$template->assign_vars([
-					'S_EDIT'			=> true,
-					'U_BACK'			=> $this->u_action,
-					'RANK_IMAGES_PATH'	=> PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/',
-					'U_ACTION'			=> $this->u_action . '&amp;id=' . $rank_id,
+					'S_EDIT'            => true,
+					'U_BACK'            => $this->u_action,
+					'RANK_IMAGES_PATH'  => PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/',
+					'U_ACTION'          => $this->u_action . '&amp;id=' . $rank_id,
 
-					'RANK_TITLE'		=> $ranks['rank_title'] ?? '',
-					'S_FILENAME_LIST'	=> $filename_list,
-					'RANK_IMAGE'		=> ($edit_img) ? PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $edit_img : PHPBB_ADMIN_PATH . 'images/spacer.gif',
-					'S_SPECIAL_RANK'	=> (isset($ranks['rank_special']) && $ranks['rank_special']),
-					'S_HIDE_TITLE'		=> (isset($ranks['rank_hide_title']) && $ranks['rank_hide_title']),
-					'MIN_POSTS'			=> (isset($ranks['rank_min']) && !$ranks['rank_special']) ? $ranks['rank_min'] : 0,
+					'RANK_TITLE'        => $ranks['rank_title'] ?? '',
+					'S_FILENAME_LIST'   => $filename_list,
+					'RANK_IMAGE'        => ($edit_img) ? PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $edit_img : PHPBB_ADMIN_PATH . 'images/spacer.gif',
+					'S_SPECIAL_RANK'    => (isset($ranks['rank_special']) && $ranks['rank_special']),
+					'S_HIDE_TITLE'      => (isset($ranks['rank_hide_title']) && $ranks['rank_hide_title']),
+					'MIN_POSTS'         => (isset($ranks['rank_min']) && !$ranks['rank_special']) ? $ranks['rank_min'] : 0,
 				]);
 
 				return;
@@ -205,7 +205,7 @@ class acp_ranks
 		}
 
 		$template->assign_vars([
-			'U_ACTION'		=> $this->u_action]
+			'U_ACTION'      => $this->u_action]
 		);
 
 		$sql = 'SELECT *
@@ -216,16 +216,16 @@ class acp_ranks
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('ranks', [
-				'S_RANK_IMAGE'		=> (bool) $row['rank_image'],
-				'S_SPECIAL_RANK'	=> (bool) $row['rank_special'],
-				'S_HIDE_TITLE'		=> (bool) $row['rank_hide_title'],
+				'S_RANK_IMAGE'      => (bool) $row['rank_image'],
+				'S_SPECIAL_RANK'    => (bool) $row['rank_special'],
+				'S_HIDE_TITLE'      => (bool) $row['rank_hide_title'],
 
-				'RANK_IMAGE'		=> PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $row['rank_image'],
-				'RANK_TITLE'		=> $row['rank_title'],
-				'MIN_POSTS'			=> $row['rank_min'],
+				'RANK_IMAGE'        => PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $row['rank_image'],
+				'RANK_TITLE'        => $row['rank_title'],
+				'MIN_POSTS'         => $row['rank_min'],
 
-				'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;id=' . $row['rank_id'],
-				'U_DELETE'			=> $this->u_action . '&amp;action=delete&amp;id=' . $row['rank_id']]
+				'U_EDIT'            => $this->u_action . '&amp;action=edit&amp;id=' . $row['rank_id'],
+				'U_DELETE'          => $this->u_action . '&amp;action=delete&amp;id=' . $row['rank_id']]
 			);
 		}
 		$db->sql_freeresult($result);

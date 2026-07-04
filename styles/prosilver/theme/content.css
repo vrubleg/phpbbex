@@ -116,14 +116,14 @@ li.header dl.icon dt {
 /* Forum list column styles */
 dl.icon {
 	min-height: 35px;
-	background-position: 10px 50%;		/* Position of folder icon */
+	background-position: 10px 50%;      /* Position of folder icon */
 	background-repeat: no-repeat;
 }
 
 dl.icon dt {
-	padding-left: 45px;					/* Space for folder icon */
+	padding-left: 45px;                 /* Space for folder icon */
 	background-repeat: no-repeat;
-	background-position: 5px 95%;		/* Position of topic icon */
+	background-position: 5px 95%;       /* Position of topic icon */
 }
 
 dd.posts, dd.topics, dd.views {
@@ -521,12 +521,12 @@ dl.codebox code {
 	margin: 0;
 }
 
-.syntaxbg		{ color: #FFFFFF; }
-.syntaxcomment	{ color: #FF8000; }
-.syntaxdefault	{ color: #0000BB; }
-.syntaxhtml		{ color: #000000; }
-.syntaxkeyword	{ color: #007700; }
-.syntaxstring	{ color: #DD0000; }
+.syntaxbg       { color: #FFFFFF; }
+.syntaxcomment  { color: #FF8000; }
+.syntaxdefault  { color: #0000BB; }
+.syntaxhtml     { color: #000000; }
+.syntaxkeyword  { color: #007700; }
+.syntaxstring   { color: #DD0000; }
 
 /* Spoiler block */
 dl.spoilerbox
@@ -634,7 +634,7 @@ dl.spoilerbox.spoilerbox-on > dd
 
 .attach-image img {
 	border: 1px solid #999999;
-/*	cursor: move; */
+/*  cursor: move; */
 	cursor: default;
 }
 

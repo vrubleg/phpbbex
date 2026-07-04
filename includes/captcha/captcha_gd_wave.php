@@ -37,7 +37,7 @@ class captcha
 		$img_y = $this->height;
 
 		// Generate image
-		$img	= imagecreatetruecolor($img_x, $img_y);
+		$img    = imagecreatetruecolor($img_x, $img_y);
 		$x_grid = mt_rand(6, 10);
 		$y_grid = mt_rand(6, 10);
 
@@ -52,22 +52,22 @@ class captcha
 		// 2) 3-space. (planar-space with z/height aspect)
 		// 3) image space (pixels on the screen)
 		// resolution of the planar-space we're embedding the text code in
-		$plane_x	= max(100, $code_len * 10);
-		$plane_y	= 30;
+		$plane_x    = max(100, $code_len * 10);
+		$plane_y    = 30;
 
 		$subdivision_factor = 3;
 
 		// $box is the 4 points in img_space that correspond to the corners of the plane in 3-space
 		$box = [
-			'upper_left'	=> [
+			'upper_left'    => [
 				'x' => mt_rand(5, 15),
 				'y' => mt_rand(10, 15)
 			],
-			'upper_right'	=> [
+			'upper_right'   => [
 				'x' => mt_rand($img_x - 35, $img_x - 19),
 				'y' => mt_rand(10, 17)
 			],
-			'lower_left'	=> [
+			'lower_left'    => [
 				'x' => mt_rand($img_x - 45, $img_x - 5),
 				'y' => mt_rand($img_y - 15, $img_y - 0),
 			],
@@ -93,7 +93,7 @@ class captcha
 
 		$fontcolors[0] = imagecolorallocate($img, mt_rand(0, 120), mt_rand(0, 120), mt_rand(0, 120));
 
- 		$colors = [];
+        $colors = [];
 
 		$minr = mt_rand(20, 30);
 		$ming = mt_rand(20, 30);
@@ -163,49 +163,49 @@ class captcha
 		// current cell based on the difference from the previous cell
 		// rather than recalculating from absolute coordinates
 		// What we cache into the $img_buffer contains the raised text coordinates.
-		$img_pos_prev	= $img_buffer[0][0] = [$box['upper_left']['x'], $box['upper_left']['y']];
-		$cur_height		= $prev_height = $this->wave_height(0, 0, $subdivision_factor);
-		$full_x			= $plane_x * $subdivision_factor;
-		$full_y			= $plane_y * $subdivision_factor;
+		$img_pos_prev   = $img_buffer[0][0] = [$box['upper_left']['x'], $box['upper_left']['y']];
+		$cur_height     = $prev_height = $this->wave_height(0, 0, $subdivision_factor);
+		$full_x         = $plane_x * $subdivision_factor;
+		$full_y         = $plane_y * $subdivision_factor;
 
 		for ($x = 1; $x <= $full_x; ++$x)
 		{
-			$cur_height		= $this->wave_height($x, 0, $subdivision_factor);
-			$offset			= $cur_height - $prev_height;
-			$img_pos_cur	= [$img_pos_prev[0] + $dxx, $img_pos_prev[1] + $dxy + $offset];
+			$cur_height     = $this->wave_height($x, 0, $subdivision_factor);
+			$offset         = $cur_height - $prev_height;
+			$img_pos_cur    = [$img_pos_prev[0] + $dxx, $img_pos_prev[1] + $dxy + $offset];
 
-			$img_buffer[0][$x]	= $img_pos_cur;
-			$img_pos_prev		= $img_pos_cur;
-			$prev_height		= $cur_height;
+			$img_buffer[0][$x]  = $img_pos_cur;
+			$img_pos_prev       = $img_pos_cur;
+			$prev_height        = $cur_height;
 		}
 
 		for ($y = 1; $y <= $full_y; ++$y)
 		{
 			// swap buffers
-			$buffer_cur		= $y & 1;
-			$buffer_prev	= 1 - $buffer_cur;
+			$buffer_cur     = $y & 1;
+			$buffer_prev    = 1 - $buffer_cur;
 
-			$prev_height	= $this->wave_height(0, $y, $subdivision_factor);
-			$offset			= $prev_height - $this->wave_height(0, $y - 1, $subdivision_factor);
-			$img_pos_cur	= [$img_buffer[$buffer_prev][0][0] + $dyx, min($img_buffer[$buffer_prev][0][1] + $dyy + $offset, $img_y - 1)];
+			$prev_height    = $this->wave_height(0, $y, $subdivision_factor);
+			$offset         = $prev_height - $this->wave_height(0, $y - 1, $subdivision_factor);
+			$img_pos_cur    = [$img_buffer[$buffer_prev][0][0] + $dyx, min($img_buffer[$buffer_prev][0][1] + $dyy + $offset, $img_y - 1)];
 
 			// make sure we don't try to write off the page
-			$img_pos_prev	= $img_pos_cur;
+			$img_pos_prev   = $img_pos_cur;
 
-			$img_buffer[$buffer_cur][0]	= $img_pos_cur;
+			$img_buffer[$buffer_cur][0] = $img_pos_cur;
 
 			for ($x = 1; $x <= $full_x; ++$x)
 			{
-				$cur_height		= $this->wave_height($x, $y, $subdivision_factor) + $this->grid_height($x, $y, 1, $x_grid, $y_grid);
+				$cur_height     = $this->wave_height($x, $y, $subdivision_factor) + $this->grid_height($x, $y, 1, $x_grid, $y_grid);
 
 				// height is a z-factor, not a y-factor
-				$offset			= $cur_height - $prev_height;
-				$img_pos_cur	= [$img_pos_prev[0] + $dxx, $img_pos_prev[1] + $dxy + $offset];
+				$offset         = $cur_height - $prev_height;
+				$img_pos_cur    = [$img_pos_prev[0] + $dxx, $img_pos_prev[1] + $dxy + $offset];
 
 				// height is float, index it to an int, get closest color
-				$color			= $colors[intval($cur_height)];
-				$img_pos_prev	= $img_pos_cur;
-				$prev_height	= $cur_height;
+				$color          = $colors[intval($cur_height)];
+				$img_pos_prev   = $img_pos_cur;
+				$prev_height    = $cur_height;
 
 				$y_index_old = intval(($y - 1) / $subdivision_factor);
 				$y_index_new = intval($y / $subdivision_factor);
@@ -214,16 +214,16 @@ class captcha
 
 				if (!empty($plane[$y_index_new][$x_index_new]))
 				{
-					$img_pos_cur[1]	+= $this->wave_height($x, $y, $subdivision_factor, 1) - 30 - $cur_height;
-					$color			= $colors[20];
+					$img_pos_cur[1] += $this->wave_height($x, $y, $subdivision_factor, 1) - 30 - $cur_height;
+					$color          = $colors[20];
 				}
 				$img_pos_cur[1] = min($img_pos_cur[1], $img_y - 1);
 				$img_buffer[$buffer_cur][$x] = $img_pos_cur;
 
 				// Smooth the edges as much as possible by having not more than one low<->high traingle per square
 				// Otherwise, just
-				$diag_down	= (empty($plane[$y_index_old][$x_index_old]) == empty($plane[$y_index_new][$x_index_new]));
-				$diag_up	= (empty($plane[$y_index_old][$x_index_new]) == empty($plane[$y_index_new][$x_index_old]));
+				$diag_down  = (empty($plane[$y_index_old][$x_index_old]) == empty($plane[$y_index_new][$x_index_new]));
+				$diag_up    = (empty($plane[$y_index_old][$x_index_new]) == empty($plane[$y_index_new][$x_index_old]));
 
 				// natural switching
 				$mode = ($x + $y) & 1;
@@ -236,17 +236,17 @@ class captcha
 
 				if ($mode)
 				{
-					//		+-/			  /
-					// 1	|/		2	 /|
-					//		/			/-+
+					//      +-/           /
+					// 1    |/      2    /|
+					//      /           /-+
 					$poly1 = array_merge($img_buffer[$buffer_cur][$x - 1], $img_buffer[$buffer_prev][$x - 1], $img_buffer[$buffer_prev][$x]);
 					$poly2 = array_merge($img_buffer[$buffer_cur][$x - 1], $img_buffer[$buffer_cur][$x], $img_buffer[$buffer_prev][$x]);
 				}
 				else
 				{
-					//		\			\-+
-					// 1	|\		2	 \|
-					//		+-\			  \
+					//      \           \-+
+					// 1    |\      2    \|
+					//      +-\           \
 					$poly1 = array_merge($img_buffer[$buffer_cur][$x - 1], $img_buffer[$buffer_prev][$x - 1], $img_buffer[$buffer_cur][$x]);
 					$poly2 = array_merge($img_buffer[$buffer_prev][$x - 1], $img_buffer[$buffer_prev][$x], $img_buffer[$buffer_cur][$x]);
 				}
@@ -287,9 +287,9 @@ class captcha
 	function captcha_bitmaps()
 	{
 		return [
-			'width'		=> 9,
-			'height'	=> 13,
-			'data'		=> [
+			'width'     => 9,
+			'height'    => 13,
+			'data'      => [
 				'A' => [
 					[0,0,1,1,1,1,0,0,0],
 					[0,1,0,0,0,0,1,0,0],

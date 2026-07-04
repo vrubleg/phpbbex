@@ -714,86 +714,86 @@ if (request_var('bots', $bots_default))
 {
 	$bots_updates = [
 		// Bot deletions.
-		'Aport [Bot]'				=> false,
-		'Alta Vista [Bot]'			=> false,
-		'FAST Enterprise [Crawler]'	=> false,
-		'Francis [Bot]'				=> false,
-		'Google Desktop'			=> false,
-		'Heise IT-Markt [Crawler]'	=> false,
-		'Heritrix [Crawler]'		=> false,
-		'IBM Research [Bot]'		=> false,
-		'ICCrawler - ICjobs'		=> false,
-		'Metager [Bot]'				=> false,
-		'MSN NewsBlogs'				=> false,
-		'NG-Search [Bot]'			=> false,
-		'Nutch [Bot]'				=> false,
-		'Nutch/CVS [Bot]'			=> false,
-		'OmniExplorer [Bot]'		=> false,
-		'Online link [Validator]'	=> false,
-		'Seekport [Bot]'			=> false,
-		'Sensis [Crawler]'			=> false,
-		'SEO Crawler'				=> false,
-		'Seoma [Crawler]'			=> false,
-		'SEOSearch [Crawler]'		=> false,
-		'Snappy [Bot]'				=> false,
-		'Synoo [Bot]'				=> false,
-		'Telekom [Bot]'				=> false,
-		'W3 [Sitesearch]'			=> false,
-		'WiseNut [Bot]'				=> false,
-		'Yahoo MMCrawler [Bot]'		=> false,
-		'Yahoo Slurp [Bot]'			=> false,
-		'YahooSeeker [Bot]'			=> false,
-		'Yandex [Addurl]'			=> false,
-		'Yandex [Catalog]'			=> false,
-		'Rambler [Bot]'				=> false,
-		'WebAlta [Bot]'				=> false,
-		'Google Feedfetcher'		=> false,
-		'Yandex [Images]'			=> false,
-		'Yandex [Video]'			=> false,
-		'Yandex [Media]'			=> false,
-		'Yandex [Blogs]'			=> false,
-		'Yandex [Direct]'			=> false,
-		'Yandex [Metrika]'			=> false,
-		'Yandex [News]'				=> false,
-		'AdsBot [Google]'			=> false,
-		'MSN [Bot]'					=> false,
-		'MSNbot Media'				=> false,
-		'psbot [Picsearch]'			=> false,
-		'ichiro [Crawler]'			=> false,
-		'Alexa [Bot]'				=> false,
-		'Ask Jeeves [Bot]'			=> false,
-		'Exabot [Bot]'				=> false,
-		'FAST WebCrawler [Crawler]'	=> false,
-		'Gigabot [Bot]'				=> false,
-		'Majestic-12 [Bot]'			=> false,
-		'Steeler [Crawler]'			=> false,
-		'TurnitinBot [Bot]'			=> false,
-		'Voyager [Bot]'				=> false,
-		'W3C [Linkcheck]'			=> false,
-		'W3C [Validator]'			=> false,
-		'Seostar [Bot]'				=> false,
+		'Aport [Bot]'               => false,
+		'Alta Vista [Bot]'          => false,
+		'FAST Enterprise [Crawler]' => false,
+		'Francis [Bot]'             => false,
+		'Google Desktop'            => false,
+		'Heise IT-Markt [Crawler]'  => false,
+		'Heritrix [Crawler]'        => false,
+		'IBM Research [Bot]'        => false,
+		'ICCrawler - ICjobs'        => false,
+		'Metager [Bot]'             => false,
+		'MSN NewsBlogs'             => false,
+		'NG-Search [Bot]'           => false,
+		'Nutch [Bot]'               => false,
+		'Nutch/CVS [Bot]'           => false,
+		'OmniExplorer [Bot]'        => false,
+		'Online link [Validator]'   => false,
+		'Seekport [Bot]'            => false,
+		'Sensis [Crawler]'          => false,
+		'SEO Crawler'               => false,
+		'Seoma [Crawler]'           => false,
+		'SEOSearch [Crawler]'       => false,
+		'Snappy [Bot]'              => false,
+		'Synoo [Bot]'               => false,
+		'Telekom [Bot]'             => false,
+		'W3 [Sitesearch]'           => false,
+		'WiseNut [Bot]'             => false,
+		'Yahoo MMCrawler [Bot]'     => false,
+		'Yahoo Slurp [Bot]'         => false,
+		'YahooSeeker [Bot]'         => false,
+		'Yandex [Addurl]'           => false,
+		'Yandex [Catalog]'          => false,
+		'Rambler [Bot]'             => false,
+		'WebAlta [Bot]'             => false,
+		'Google Feedfetcher'        => false,
+		'Yandex [Images]'           => false,
+		'Yandex [Video]'            => false,
+		'Yandex [Media]'            => false,
+		'Yandex [Blogs]'            => false,
+		'Yandex [Direct]'           => false,
+		'Yandex [Metrika]'          => false,
+		'Yandex [News]'             => false,
+		'AdsBot [Google]'           => false,
+		'MSN [Bot]'                 => false,
+		'MSNbot Media'              => false,
+		'psbot [Picsearch]'         => false,
+		'ichiro [Crawler]'          => false,
+		'Alexa [Bot]'               => false,
+		'Ask Jeeves [Bot]'          => false,
+		'Exabot [Bot]'              => false,
+		'FAST WebCrawler [Crawler]' => false,
+		'Gigabot [Bot]'             => false,
+		'Majestic-12 [Bot]'         => false,
+		'Steeler [Crawler]'         => false,
+		'TurnitinBot [Bot]'         => false,
+		'Voyager [Bot]'             => false,
+		'W3C [Linkcheck]'           => false,
+		'W3C [Validator]'           => false,
+		'Seostar [Bot]'             => false,
 		// Bot updates and additions.
-		'Baidu [Spider]'			=> 'Baiduspider',
-		'Bing [Bot]'				=> 'bingbot/',
-		'Google [Bot]'				=> 'Googlebot',
-		'Google Ads [Bot]'			=> 'AdsBot-Google',
-		'Google Adsense [Bot]'		=> 'Mediapartners-Google',
-		'YaCy [Bot]'				=> 'yacybot',
-		'Yahoo [Bot]'				=> 'Yahoo! Slurp',
-		'Ahrefs [Bot]'				=> 'AhrefsBot/',
-		'Senti [Bot]'				=> 'SentiBot/',
-		'Petal [Bot]'				=> 'PetalBot',
-		'Barkrowler [Bot]'			=> 'Barkrowler/',
-		'Ubermetrics [Bot]'			=> 'techinfo@ubermetrics-technologies.com',
-		'Trendiction [Bot]'			=> 'trendiction.de/bot',
-		'BLEX [Bot]'				=> 'BLEXBot/',
-		'DuckDuck [Bot]'			=> 'duckduckgo.com',
-		'Yandex [Bot]'				=> 'YandexBot/',
-		'Yandex Images [Bot]'		=> 'YandexImages/',
-		'Yandex Metrika [Bot]'		=> 'YandexMetrika/',
-		'MailRu [Bot]'				=> 'Mail.Ru/',
-		'Feedly [Bot]'				=> 'Feedly/',
-		'Feedspot [Bot]'			=> 'Feedspot/',
+		'Baidu [Spider]'            => 'Baiduspider',
+		'Bing [Bot]'                => 'bingbot/',
+		'Google [Bot]'              => 'Googlebot',
+		'Google Ads [Bot]'          => 'AdsBot-Google',
+		'Google Adsense [Bot]'      => 'Mediapartners-Google',
+		'YaCy [Bot]'                => 'yacybot',
+		'Yahoo [Bot]'               => 'Yahoo! Slurp',
+		'Ahrefs [Bot]'              => 'AhrefsBot/',
+		'Senti [Bot]'               => 'SentiBot/',
+		'Petal [Bot]'               => 'PetalBot',
+		'Barkrowler [Bot]'          => 'Barkrowler/',
+		'Ubermetrics [Bot]'         => 'techinfo@ubermetrics-technologies.com',
+		'Trendiction [Bot]'         => 'trendiction.de/bot',
+		'BLEX [Bot]'                => 'BLEXBot/',
+		'DuckDuck [Bot]'            => 'duckduckgo.com',
+		'Yandex [Bot]'              => 'YandexBot/',
+		'Yandex Images [Bot]'       => 'YandexImages/',
+		'Yandex Metrika [Bot]'      => 'YandexMetrika/',
+		'MailRu [Bot]'              => 'Mail.Ru/',
+		'Feedly [Bot]'              => 'Feedly/',
+		'Feedspot [Bot]'            => 'Feedspot/',
 	];
 
 	// Update loop.
@@ -811,10 +811,10 @@ if (request_var('bots', $bots_default))
 			if ($bot_agent === false) { continue; }
 
 			$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
-				'bot_active'	=> 1,
-				'bot_name'		=> (string) $bot_name,
-				'bot_agent'		=> (string) $bot_agent,
-				'bot_ip'		=> '',
+				'bot_active'    => 1,
+				'bot_name'      => (string) $bot_name,
+				'bot_agent'     => (string) $bot_agent,
+				'bot_ip'        => '',
 			]);
 			$db->sql_query($sql);
 		}
@@ -1417,14 +1417,14 @@ function _add_modules($modules_to_install)
 
 			// Build the module sql row
 			$module_row = [
-				'module_basename'	=> $module_data['base'],
-				'module_enabled'	=> (isset($module_data['enabled'])) ? (int) $module_data['enabled'] : 1,
-				'module_display'	=> (isset($module_data['display'])) ? (int) $module_data['display'] : 1,
-				'parent_id'			=> $parent_id,
-				'module_class'		=> $module_data['class'],
-				'module_langname'	=> $module_data['title'],
-				'module_mode'		=> $module_mode,
-				'module_auth'		=> $module_data['auth'],
+				'module_basename'   => $module_data['base'],
+				'module_enabled'    => (isset($module_data['enabled'])) ? (int) $module_data['enabled'] : 1,
+				'module_display'    => (isset($module_data['display'])) ? (int) $module_data['display'] : 1,
+				'parent_id'         => $parent_id,
+				'module_class'      => $module_data['class'],
+				'module_langname'   => $module_data['title'],
+				'module_mode'       => $module_mode,
+				'module_auth'       => $module_data['auth'],
 			];
 
 			$_module->update_module_data($module_row, true);
@@ -1482,295 +1482,295 @@ function _add_modules($modules_to_install)
 }
 
 /****************************************************************************
-* ADD YOUR DATABASE SCHEMA CHANGES HERE										*
+* ADD YOUR DATABASE SCHEMA CHANGES HERE                                     *
 *****************************************************************************/
 function database_update_info()
 {
 	return [
 		// Changes from 3.0.0 to the next version
-		'3.0.0'			=> [
+		'3.0.0'         => [
 			// Add the following columns
-			'add_columns'		=> [
-				FORUMS_TABLE			=> [
-					'display_subforum_list'		=> ['BOOL', 1],
+			'add_columns'       => [
+				FORUMS_TABLE            => [
+					'display_subforum_list'     => ['BOOL', 1],
 				],
-				SESSIONS_TABLE			=> [
-					'session_forum_id'		=> ['UINT', 0],
+				SESSIONS_TABLE          => [
+					'session_forum_id'      => ['UINT', 0],
 				],
 			],
-			'drop_keys'		=> [
-				GROUPS_TABLE			=> ['group_legend'],
+			'drop_keys'     => [
+				GROUPS_TABLE            => ['group_legend'],
 			],
-			'add_index'		=> [
-				SESSIONS_TABLE			=> [
-					'session_forum_id'		=> ['session_forum_id'],
+			'add_index'     => [
+				SESSIONS_TABLE          => [
+					'session_forum_id'      => ['session_forum_id'],
 				],
-				GROUPS_TABLE			=> [
-					'group_legend_name'		=> ['group_legend', 'group_name'],
+				GROUPS_TABLE            => [
+					'group_legend_name'     => ['group_legend', 'group_name'],
 				],
 			],
 		],
 		// No changes from 3.0.1-RC1 to 3.0.1
-		'3.0.1-RC1'		=> [],
+		'3.0.1-RC1'     => [],
 		// No changes from 3.0.1 to 3.0.2-RC1
-		'3.0.1'			=> [],
+		'3.0.1'         => [],
 		// Changes from 3.0.2-RC1 to 3.0.2-RC2
-		'3.0.2-RC1'		=> [
-			'change_columns'	=> [
-				DRAFTS_TABLE			=> [
-					'draft_subject'		=> ['STEXT_UNI', ''],
+		'3.0.2-RC1'     => [
+			'change_columns'    => [
+				DRAFTS_TABLE            => [
+					'draft_subject'     => ['STEXT_UNI', ''],
 				],
-				FORUMS_TABLE	=> [
+				FORUMS_TABLE    => [
 					'forum_last_post_subject' => ['STEXT_UNI', ''],
 				],
-				POSTS_TABLE		=> [
-					'post_subject'			=> ['STEXT_UNI', '', 'true_sort'],
+				POSTS_TABLE     => [
+					'post_subject'          => ['STEXT_UNI', '', 'true_sort'],
 				],
-				PRIVMSGS_TABLE	=> [
-					'message_subject'		=> ['STEXT_UNI', ''],
+				PRIVMSGS_TABLE  => [
+					'message_subject'       => ['STEXT_UNI', ''],
 				],
-				TOPICS_TABLE	=> [
-					'topic_title'				=> ['STEXT_UNI', '', 'true_sort'],
-					'topic_last_post_subject'	=> ['STEXT_UNI', ''],
+				TOPICS_TABLE    => [
+					'topic_title'               => ['STEXT_UNI', '', 'true_sort'],
+					'topic_last_post_subject'   => ['STEXT_UNI', ''],
 				],
 			],
-			'drop_keys'		=> [
-				SESSIONS_TABLE			=> ['session_forum_id'],
+			'drop_keys'     => [
+				SESSIONS_TABLE          => ['session_forum_id'],
 			],
-			'add_index'		=> [
-				SESSIONS_TABLE			=> [
-					'session_fid'		=> ['session_forum_id'],
+			'add_index'     => [
+				SESSIONS_TABLE          => [
+					'session_fid'       => ['session_forum_id'],
 				],
 			],
 		],
 		// No changes from 3.0.2-RC2 to 3.0.2
-		'3.0.2-RC2'		=> [],
+		'3.0.2-RC2'     => [],
 
 		// Changes from 3.0.2 to 3.0.3-RC1
-		'3.0.2'			=> [
+		'3.0.2'         => [
 			// Add the following columns
-			'add_columns'		=> [
-				STYLES_TEMPLATE_TABLE			=> [
-					'template_inherits_id'		=> ['UINT:4', 0],
-					'template_inherit_path'		=> ['VCHAR', ''],
+			'add_columns'       => [
+				STYLES_TEMPLATE_TABLE           => [
+					'template_inherits_id'      => ['UINT:4', 0],
+					'template_inherit_path'     => ['VCHAR', ''],
 				],
-				GROUPS_TABLE					=> [
-					'group_max_recipients'		=> ['UINT', 0],
+				GROUPS_TABLE                    => [
+					'group_max_recipients'      => ['UINT', 0],
 				],
 			],
 		],
 
 		// No changes from 3.0.3-RC1 to 3.0.3
-		'3.0.3-RC1'		=> [],
+		'3.0.3-RC1'     => [],
 
 		// Changes from 3.0.3 to 3.0.4-RC1
-		'3.0.3'			=> [
-			'add_columns'		=> [
-				PROFILE_FIELDS_TABLE			=> [
-					'field_show_profile'		=> ['BOOL', 0],
+		'3.0.3'         => [
+			'add_columns'       => [
+				PROFILE_FIELDS_TABLE            => [
+					'field_show_profile'        => ['BOOL', 0],
 				],
 			],
-			'change_columns'	=> [
-				STYLES_TABLE				=> [
-					'style_id'				=> ['UINT', null, 'auto_increment'],
-					'template_id'			=> ['UINT', 0],
-					'theme_id'				=> ['UINT', 0],
-					'imageset_id'			=> ['UINT', 0],
+			'change_columns'    => [
+				STYLES_TABLE                => [
+					'style_id'              => ['UINT', null, 'auto_increment'],
+					'template_id'           => ['UINT', 0],
+					'theme_id'              => ['UINT', 0],
+					'imageset_id'           => ['UINT', 0],
 				],
-				STYLES_IMAGESET_TABLE		=> [
-					'imageset_id'				=> ['UINT', null, 'auto_increment'],
+				STYLES_IMAGESET_TABLE       => [
+					'imageset_id'               => ['UINT', null, 'auto_increment'],
 				],
-				STYLES_IMAGESET_DATA_TABLE	=> [
-					'image_id'				=> ['UINT', null, 'auto_increment'],
-					'imageset_id'			=> ['UINT', 0],
+				STYLES_IMAGESET_DATA_TABLE  => [
+					'image_id'              => ['UINT', null, 'auto_increment'],
+					'imageset_id'           => ['UINT', 0],
 				],
-				STYLES_THEME_TABLE			=> [
-					'theme_id'				=> ['UINT', null, 'auto_increment'],
+				STYLES_THEME_TABLE          => [
+					'theme_id'              => ['UINT', null, 'auto_increment'],
 				],
-				STYLES_TEMPLATE_TABLE		=> [
-					'template_id'			=> ['UINT', null, 'auto_increment'],
+				STYLES_TEMPLATE_TABLE       => [
+					'template_id'           => ['UINT', null, 'auto_increment'],
 				],
-				FORUMS_TABLE				=> [
-					'forum_style'			=> ['UINT', 0],
+				FORUMS_TABLE                => [
+					'forum_style'           => ['UINT', 0],
 				],
-				USERS_TABLE					=> [
-					'user_style'			=> ['UINT', 0],
+				USERS_TABLE                 => [
+					'user_style'            => ['UINT', 0],
 				],
 			],
 		],
 
 		// Changes from 3.0.4-RC1 to 3.0.4
-		'3.0.4-RC1'		=> [],
+		'3.0.4-RC1'     => [],
 
 		// Changes from 3.0.4 to 3.0.5-RC1
-		'3.0.4'			=> [],
+		'3.0.4'         => [],
 
 		// No changes from 3.0.5-RC1 to 3.0.5
-		'3.0.5-RC1'		=> [],
+		'3.0.5-RC1'     => [],
 
 		// Changes from 3.0.5 to 3.0.6-RC1
-		'3.0.5'		=> [
-			'add_columns'		=> [
-				CONFIRM_TABLE			=> [
-					'attempts'		=> ['UINT', 0],
+		'3.0.5'     => [
+			'add_columns'       => [
+				CONFIRM_TABLE           => [
+					'attempts'      => ['UINT', 0],
 				],
-				USERS_TABLE			=> [
-					'user_new'			=> ['BOOL', 1],
-					'user_reminded'		=> ['TINT:4', 0],
+				USERS_TABLE         => [
+					'user_new'          => ['BOOL', 1],
+					'user_reminded'     => ['TINT:4', 0],
 					'user_reminded_time'=> ['TIMESTAMP', 0],
 				],
-				GROUPS_TABLE			=> [
-					'group_skip_auth'		=> ['BOOL', 0, 'after' => 'group_founder_manage'],
+				GROUPS_TABLE            => [
+					'group_skip_auth'       => ['BOOL', 0, 'after' => 'group_founder_manage'],
 				],
-				PRIVMSGS_TABLE		=> [
-					'message_reported'	=> ['BOOL', 0],
+				PRIVMSGS_TABLE      => [
+					'message_reported'  => ['BOOL', 0],
 				],
-				REPORTS_TABLE		=> [
-					'pm_id'				=> ['UINT', 0],
+				REPORTS_TABLE       => [
+					'pm_id'             => ['UINT', 0],
 				],
-				PROFILE_FIELDS_TABLE			=> [
-					'field_show_on_vt'		=> ['BOOL', 0],
+				PROFILE_FIELDS_TABLE            => [
+					'field_show_on_vt'      => ['BOOL', 0],
 				],
-				FORUMS_TABLE		=> [
-					'forum_options'			=> ['UINT:20', 0],
-				],
-			],
-			'change_columns'		=> [
-				USERS_TABLE				=> [
-					'user_options'		=> ['UINT:11', 230271],
+				FORUMS_TABLE        => [
+					'forum_options'         => ['UINT:20', 0],
 				],
 			],
-			'add_index'		=> [
-				REPORTS_TABLE		=> [
-					'post_id'		=> ['post_id'],
-					'pm_id'			=> ['pm_id'],
+			'change_columns'        => [
+				USERS_TABLE             => [
+					'user_options'      => ['UINT:11', 230271],
 				],
-				POSTS_TABLE			=> [
-					'post_username'		=> ['post_username:255'],
+			],
+			'add_index'     => [
+				REPORTS_TABLE       => [
+					'post_id'       => ['post_id'],
+					'pm_id'         => ['pm_id'],
+				],
+				POSTS_TABLE         => [
+					'post_username'     => ['post_username:255'],
 				],
 			],
 		],
 
 		// No changes from 3.0.6-RC1 to 3.0.6-RC2
-		'3.0.6-RC1'		=> [],
+		'3.0.6-RC1'     => [],
 		// No changes from 3.0.6-RC2 to 3.0.6-RC3
-		'3.0.6-RC2'		=> [],
+		'3.0.6-RC2'     => [],
 		// No changes from 3.0.6-RC3 to 3.0.6-RC4
-		'3.0.6-RC3'		=> [],
+		'3.0.6-RC3'     => [],
 		// No changes from 3.0.6-RC4 to 3.0.6
-		'3.0.6-RC4'		=> [],
+		'3.0.6-RC4'     => [],
 
 		// Changes from 3.0.6 to 3.0.7-RC1
-		'3.0.6'		=> [
-			'drop_keys'		=> [
-				LOG_TABLE			=> ['log_time'],
+		'3.0.6'     => [
+			'drop_keys'     => [
+				LOG_TABLE           => ['log_time'],
 			],
-			'add_index'		=> [
-				TOPICS_TRACK_TABLE	=> [
-					'topic_id'		=> ['topic_id'],
+			'add_index'     => [
+				TOPICS_TRACK_TABLE  => [
+					'topic_id'      => ['topic_id'],
 				],
 			],
 		],
 
 		// No changes from 3.0.7-RC1 to 3.0.7-RC2
-		'3.0.7-RC1'		=> [],
+		'3.0.7-RC1'     => [],
 		// No changes from 3.0.7-RC2 to 3.0.7
-		'3.0.7-RC2'		=> [],
+		'3.0.7-RC2'     => [],
 		// No changes from 3.0.7 to 3.0.7-PL1
-		'3.0.7'		=> [],
+		'3.0.7'     => [],
 		// No changes from 3.0.7-PL1 to 3.0.8-RC1
-		'3.0.7-PL1'		=> [],
+		'3.0.7-PL1'     => [],
 		// No changes from 3.0.8-RC1 to 3.0.8
-		'3.0.8-RC1'		=> [],
+		'3.0.8-RC1'     => [],
 		// Changes from 3.0.8 to 3.0.9-RC1
-		'3.0.8'			=> [
-			'add_tables'		=> [
-				LOGIN_ATTEMPT_TABLE	=> [
-					'COLUMNS'			=> [
+		'3.0.8'         => [
+			'add_tables'        => [
+				LOGIN_ATTEMPT_TABLE => [
+					'COLUMNS'           => [
 						// this column was removed from the database updater
 						// after 3.0.9-RC3 was released. It might still exist
 						// in 3.0.9-RCX installations and has to be dropped in
 						// 3.0.15 after the db_tools class is capable of properly
 						// removing a primary key.
-						// 'attempt_id'			=> array('UINT', NULL, 'auto_increment'),
-						'attempt_ip'			=> ['VCHAR:40', ''],
-						'attempt_browser'		=> ['VCHAR:150', ''],
-						'attempt_forwarded_for'	=> ['VCHAR:255', ''],
-						'attempt_time'			=> ['TIMESTAMP', 0],
-						'user_id'				=> ['UINT', 0],
-						'username'				=> ['VCHAR_UNI:255', 0],
-						'username_clean'		=> ['VCHAR_CI', 0],
+						// 'attempt_id'         => array('UINT', NULL, 'auto_increment'),
+						'attempt_ip'            => ['VCHAR:40', ''],
+						'attempt_browser'       => ['VCHAR:150', ''],
+						'attempt_forwarded_for' => ['VCHAR:255', ''],
+						'attempt_time'          => ['TIMESTAMP', 0],
+						'user_id'               => ['UINT', 0],
+						'username'              => ['VCHAR_UNI:255', 0],
+						'username_clean'        => ['VCHAR_CI', 0],
 					],
-					//'PRIMARY_KEY'		=> 'attempt_id',
-					'KEYS'				=> [
-						'att_ip'			=> ['INDEX', ['attempt_ip', 'attempt_time']],
-						'att_for'	=> ['INDEX', ['attempt_forwarded_for', 'attempt_time']],
-						'att_time'			=> ['INDEX', ['attempt_time']],
-						'user_id'				=> ['INDEX', 'user_id'],
+					//'PRIMARY_KEY'     => 'attempt_id',
+					'KEYS'              => [
+						'att_ip'            => ['INDEX', ['attempt_ip', 'attempt_time']],
+						'att_for'   => ['INDEX', ['attempt_forwarded_for', 'attempt_time']],
+						'att_time'          => ['INDEX', ['attempt_time']],
+						'user_id'               => ['INDEX', 'user_id'],
 					],
 				],
 			],
-			'change_columns'	=> [
-				BBCODES_TABLE	=> [
-					'bbcode_id'	=> ['USINT', 0],
+			'change_columns'    => [
+				BBCODES_TABLE   => [
+					'bbcode_id' => ['USINT', 0],
 				],
 			],
 		],
 		// No changes from 3.0.9-RC1 to 3.0.9-RC2
-		'3.0.9-RC1'		=> [],
+		'3.0.9-RC1'     => [],
 		// No changes from 3.0.9-RC2 to 3.0.9-RC3
-		'3.0.9-RC2'		=> [],
+		'3.0.9-RC2'     => [],
 		// No changes from 3.0.9-RC3 to 3.0.9-RC4
 		'3.0.9-RC3'     => [],
 		// No changes from 3.0.9-RC4 to 3.0.9
 		'3.0.9-RC4'     => [],
 		// No changes from 3.0.9 to 3.0.10-RC1
-		'3.0.9'			=> [],
+		'3.0.9'         => [],
 		// No changes from 3.0.10-RC1 to 3.0.10-RC2
-		'3.0.10-RC1'	=> [],
+		'3.0.10-RC1'    => [],
 		// No changes from 3.0.10-RC2 to 3.0.10-RC3
-		'3.0.10-RC2'	=> [],
+		'3.0.10-RC2'    => [],
 		// No changes from 3.0.10-RC3 to 3.0.10
-		'3.0.10-RC3'	=> [],
+		'3.0.10-RC3'    => [],
 		// No changes from 3.0.10 to 3.0.11-RC1
-		'3.0.10'		=> [],
+		'3.0.10'        => [],
 		// Changes from 3.0.11-RC1 to 3.0.11-RC2
-		'3.0.11-RC1'	=> [
-			'add_columns'		=> [
-				PROFILE_FIELDS_TABLE			=> [
-					'field_show_novalue'		=> ['BOOL', 0],
+		'3.0.11-RC1'    => [
+			'add_columns'       => [
+				PROFILE_FIELDS_TABLE            => [
+					'field_show_novalue'        => ['BOOL', 0],
 				],
 			],
 		],
 		// No changes from 3.0.11-RC2 to 3.0.11
-		'3.0.11-RC2'	=> [],
+		'3.0.11-RC2'    => [],
 		// No changes from 3.0.11 to 3.0.12-RC1
-		'3.0.11'		=> [],
+		'3.0.11'        => [],
 		// No changes from 3.0.12-RC1 to 3.0.12-RC2
-		'3.0.12-RC1'	=> [],
+		'3.0.12-RC1'    => [],
 		// No changes from 3.0.12-RC2 to 3.0.12-RC3
-		'3.0.12-RC2'	=> [],
+		'3.0.12-RC2'    => [],
 		// No changes from 3.0.12-RC3 to 3.0.12
-		'3.0.12-RC3'	=> [],
+		'3.0.12-RC3'    => [],
 		// No changes from 3.0.12 to 3.0.13-RC1
-		'3.0.12'		=> [],
+		'3.0.12'        => [],
 		// No changes from 3.0.13-RC1 to 3.0.13
-		'3.0.13-RC1'	=> [],
+		'3.0.13-RC1'    => [],
 		// No changes from 3.0.13 to 3.0.13-PL1
-		'3.0.13'		=> [],
+		'3.0.13'        => [],
 		// No changes from 3.0.13-PL1 to 3.0.14-RC1
-		'3.0.13-PL1'	=> [],
+		'3.0.13-PL1'    => [],
 		// No changes from 3.0.14-RC1 to 3.0.14
-		'3.0.14-RC1'	=> [],
+		'3.0.14-RC1'    => [],
 
 		/** @todo DROP LOGIN_ATTEMPT_TABLE.attempt_id in 3.0.15-RC1 */
 	];
 }
 
 /****************************************************************************
-* ADD YOUR DATABASE DATA CHANGES HERE										*
-* REMEMBER: You NEED to enter a schema array above and a data array here,	*
-* even if both or one of them are empty.									*
+* ADD YOUR DATABASE DATA CHANGES HERE                                       *
+* REMEMBER: You NEED to enter a schema array above and a data array here,   *
+* even if both or one of them are empty.                                    *
 *****************************************************************************/
 function change_database_data(&$no_updates, $version)
 {
@@ -1945,9 +1945,9 @@ function change_database_data(&$no_updates, $version)
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$sql_ary = [
-					'field_required'	=> 0,
-					'field_show_on_reg'	=> 0,
-					'field_hide'		=> 0,
+					'field_required'    => 0,
+					'field_show_on_reg' => 0,
+					'field_hide'        => 0,
 					'field_show_profile'=> 0,
 				];
 
@@ -2044,8 +2044,8 @@ function change_database_data(&$no_updates, $version)
 
 			// Now make auth_option UNIQUE, by dropping the old index and adding a UNIQUE one.
 			$changes = [
-				'drop_keys'			=> [
-					ACL_OPTIONS_TABLE		=> ['auth_option'],
+				'drop_keys'         => [
+					ACL_OPTIONS_TABLE       => ['auth_option'],
 				],
 			];
 
@@ -2057,9 +2057,9 @@ function change_database_data(&$no_updates, $version)
 			}
 
 			$changes = [
-				'add_unique_index'	=> [
-					ACL_OPTIONS_TABLE		=> [
-						'auth_option'		=> ['auth_option'],
+				'add_unique_index'  => [
+					ACL_OPTIONS_TABLE       => [
+						'auth_option'       => ['auth_option'],
 					],
 				],
 			];
@@ -2113,51 +2113,51 @@ function change_database_data(&$no_updates, $version)
 
 			// Install modules
 			$modules_to_install = [
-				'feed'					=> [
-					'base'		=> 'board',
-					'class'		=> 'acp',
-					'title'		=> 'ACP_FEED_SETTINGS',
-					'auth'		=> 'acl_a_board',
-					'cat'		=> 'ACP_BOARD_CONFIGURATION',
-					'after'		=> ['signature', 'ACP_SIGNATURE_SETTINGS']
+				'feed'                  => [
+					'base'      => 'board',
+					'class'     => 'acp',
+					'title'     => 'ACP_FEED_SETTINGS',
+					'auth'      => 'acl_a_board',
+					'cat'       => 'ACP_BOARD_CONFIGURATION',
+					'after'     => ['signature', 'ACP_SIGNATURE_SETTINGS']
 				],
-				'warnings'				=> [
-					'base'		=> 'users',
-					'class'		=> 'acp',
-					'title'		=> 'ACP_USER_WARNINGS',
-					'auth'		=> 'acl_a_user',
-					'display'	=> 0,
-					'cat'		=> 'ACP_CAT_USERS',
-					'after'		=> ['feedback', 'ACP_USER_FEEDBACK']
+				'warnings'              => [
+					'base'      => 'users',
+					'class'     => 'acp',
+					'title'     => 'ACP_USER_WARNINGS',
+					'auth'      => 'acl_a_user',
+					'display'   => 0,
+					'cat'       => 'ACP_CAT_USERS',
+					'after'     => ['feedback', 'ACP_USER_FEEDBACK']
 				],
-				'setting_forum_copy'	=> [
-					'base'		=> 'permissions',
-					'class'		=> 'acp',
-					'title'		=> 'ACP_FORUM_PERMISSIONS_COPY',
-					'auth'		=> 'acl_a_fauth && acl_a_authusers && acl_a_authgroups && acl_a_mauth',
-					'cat'		=> 'ACP_FORUM_BASED_PERMISSIONS',
-					'after'		=> ['setting_forum_local', 'ACP_FORUM_PERMISSIONS']
+				'setting_forum_copy'    => [
+					'base'      => 'permissions',
+					'class'     => 'acp',
+					'title'     => 'ACP_FORUM_PERMISSIONS_COPY',
+					'auth'      => 'acl_a_fauth && acl_a_authusers && acl_a_authgroups && acl_a_mauth',
+					'cat'       => 'ACP_FORUM_BASED_PERMISSIONS',
+					'after'     => ['setting_forum_local', 'ACP_FORUM_PERMISSIONS']
 				],
-				'pm_reports'			=> [
-					'base'		=> 'pm_reports',
-					'class'		=> 'mcp',
-					'title'		=> 'MCP_PM_REPORTS_OPEN',
-					'auth'		=> 'aclf_m_report',
-					'cat'		=> 'MCP_REPORTS'
+				'pm_reports'            => [
+					'base'      => 'pm_reports',
+					'class'     => 'mcp',
+					'title'     => 'MCP_PM_REPORTS_OPEN',
+					'auth'      => 'aclf_m_report',
+					'cat'       => 'MCP_REPORTS'
 				],
-				'pm_reports_closed'		=> [
-					'base'		=> 'pm_reports',
-					'class'		=> 'mcp',
-					'title'		=> 'MCP_PM_REPORTS_CLOSED',
-					'auth'		=> 'aclf_m_report',
-					'cat'		=> 'MCP_REPORTS'
+				'pm_reports_closed'     => [
+					'base'      => 'pm_reports',
+					'class'     => 'mcp',
+					'title'     => 'MCP_PM_REPORTS_CLOSED',
+					'auth'      => 'aclf_m_report',
+					'cat'       => 'MCP_REPORTS'
 				],
-				'pm_report_details'		=> [
-					'base'		=> 'pm_reports',
-					'class'		=> 'mcp',
-					'title'		=> 'MCP_PM_REPORT_DETAILS',
-					'auth'		=> 'aclf_m_report',
-					'cat'		=> 'MCP_REPORTS'
+				'pm_report_details'     => [
+					'base'      => 'pm_reports',
+					'class'     => 'mcp',
+					'title'     => 'MCP_PM_REPORT_DETAILS',
+					'auth'      => 'aclf_m_report',
+					'cat'       => 'MCP_REPORTS'
 				],
 			];
 
@@ -2454,7 +2454,7 @@ function change_database_data(&$no_updates, $version)
 						}
 
 						$sql_ary = [
-							'group_name'	=> substr($lang_key, 10), // Strip off 'EXT_GROUP_'
+							'group_name'    => substr($lang_key, 10), // Strip off 'EXT_GROUP_'
 						];
 
 						$sql = 'UPDATE ' . EXTENSION_GROUPS_TABLE . '
@@ -2470,13 +2470,13 @@ function change_database_data(&$no_updates, $version)
 
 			// Install modules
 			$modules_to_install = [
-				'post'					=> [
-					'base'		=> 'board',
-					'class'		=> 'acp',
-					'title'		=> 'ACP_POST_SETTINGS',
-					'auth'		=> 'acl_a_board',
-					'cat'		=> 'ACP_MESSAGES',
-					'after'		=> ['message', 'ACP_MESSAGE_SETTINGS']
+				'post'                  => [
+					'base'      => 'board',
+					'class'     => 'acp',
+					'title'     => 'ACP_POST_SETTINGS',
+					'auth'      => 'acl_a_board',
+					'cat'       => 'ACP_MESSAGES',
+					'after'     => ['message', 'ACP_MESSAGE_SETTINGS']
 				],
 			];
 
@@ -2491,17 +2491,17 @@ function change_database_data(&$no_updates, $version)
 			do
 			{
 				$sql_array = [
-					'SELECT'	=> 't1.topic_id, t1.forum_id',
-					'FROM'		=> [
-						TOPICS_TABLE	=> 't1',
+					'SELECT'    => 't1.topic_id, t1.forum_id',
+					'FROM'      => [
+						TOPICS_TABLE    => 't1',
 					],
-					'LEFT_JOIN'	=> [
+					'LEFT_JOIN' => [
 						[
-							'FROM'	=> [TOPICS_TABLE	=> 't2'],
-							'ON'	=> 't1.topic_moved_id = t2.topic_id',
+							'FROM'  => [TOPICS_TABLE    => 't2'],
+							'ON'    => 't1.topic_moved_id = t2.topic_id',
 						],
 					],
-					'WHERE'		=> 't1.topic_moved_id <> 0
+					'WHERE'     => 't1.topic_moved_id <> 0
 								AND t2.topic_id IS NULL',
 				];
 				$sql = $db->sql_build_query('SELECT', $sql_array);
@@ -2564,7 +2564,7 @@ function change_database_data(&$no_updates, $version)
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$sql_ary = [
-					'group_name'	=> substr($row['group_name'], 10), // Strip off 'EXT_GROUP_'
+					'group_name'    => substr($row['group_name'], 10), // Strip off 'EXT_GROUP_'
 				];
 
 				$sql = 'UPDATE ' . EXTENSION_GROUPS_TABLE . '
@@ -2642,17 +2642,17 @@ function change_database_data(&$no_updates, $version)
 			$batch_size = 500;
 
 			$sql_array = [
-				'SELECT'	=> 'p.msg_id',
-				'FROM'		=> [
-					PRIVMSGS_TABLE	=> 'p',
+				'SELECT'    => 'p.msg_id',
+				'FROM'      => [
+					PRIVMSGS_TABLE  => 'p',
 				],
-				'LEFT_JOIN'	=> [
+				'LEFT_JOIN' => [
 					[
-						'FROM'	=> [PRIVMSGS_TO_TABLE => 't'],
-						'ON'	=> 'p.msg_id = t.msg_id',
+						'FROM'  => [PRIVMSGS_TO_TABLE => 't'],
+						'ON'    => 'p.msg_id = t.msg_id',
 					],
 				],
-				'WHERE'		=> 't.user_id IS NULL',
+				'WHERE'     => 't.user_id IS NULL',
 			];
 			$sql = $db->sql_build_query('SELECT', $sql_array);
 

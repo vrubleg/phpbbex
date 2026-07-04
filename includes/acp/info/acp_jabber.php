@@ -10,11 +10,11 @@ class acp_jabber_info
 	function module()
 	{
 		return [
-			'filename'	=> 'acp_jabber',
-			'title'		=> 'ACP_JABBER_SETTINGS',
-			'version'	=> '1.0.0',
-			'modes'		=> [
-				'settings'		=> ['title' => 'ACP_JABBER_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_CLIENT_COMMUNICATION']],
+			'filename'  => 'acp_jabber',
+			'title'     => 'ACP_JABBER_SETTINGS',
+			'version'   => '1.0.0',
+			'modes'     => [
+				'settings'      => ['title' => 'ACP_JABBER_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_CLIENT_COMMUNICATION']],
 			],
 		];
 	}

@@ -147,56 +147,56 @@ class mcp_pm_reports
 						foreach ($attachments as $attachment)
 						{
 							$template->assign_block_vars('attachment', [
-								'DISPLAY_ATTACHMENT'	=> $attachment]
+								'DISPLAY_ATTACHMENT'    => $attachment]
 							);
 						}
 					}
 				}
 
 				$template->assign_vars([
-					'S_MCP_REPORT'			=> true,
-					'S_PM'					=> true,
-					'S_CLOSE_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
-					'S_CAN_VIEWIP'			=> $auth->acl_getf_global('m_info'),
-					'S_POST_REPORTED'		=> $pm_info['message_reported'],
-					'S_REPORT_CLOSED'		=> $report['report_closed'],
-					'S_USER_NOTES'			=> true,
+					'S_MCP_REPORT'          => true,
+					'S_PM'                  => true,
+					'S_CLOSE_ACTION'        => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
+					'S_CAN_VIEWIP'          => $auth->acl_getf_global('m_info'),
+					'S_POST_REPORTED'       => $pm_info['message_reported'],
+					'S_REPORT_CLOSED'       => $report['report_closed'],
+					'S_USER_NOTES'          => true,
 
-					'U_MCP_REPORT'				=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
-					'U_MCP_REPORTER_NOTES'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $report['user_id']),
-					'U_MCP_USER_NOTES'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $pm_info['author_id']),
-					'U_MCP_WARN_REPORTER'		=> ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
-					'U_MCP_WARN_USER'			=> ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $pm_info['author_id']) : '',
+					'U_MCP_REPORT'              => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
+					'U_MCP_REPORTER_NOTES'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $report['user_id']),
+					'U_MCP_USER_NOTES'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $pm_info['author_id']),
+					'U_MCP_WARN_REPORTER'       => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
+					'U_MCP_WARN_USER'           => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $pm_info['author_id']) : '',
 
-					'EDIT_IMG'				=> $user->img('icon_post_edit', $user->lang['EDIT_POST']),
-					'MINI_POST_IMG'			=> $user->img('icon_post_target', 'POST'),
+					'EDIT_IMG'              => $user->img('icon_post_edit', $user->lang['EDIT_POST']),
+					'MINI_POST_IMG'         => $user->img('icon_post_target', 'POST'),
 
-					'RETURN_REPORTS'			=> sprintf($user->lang['RETURN_REPORTS'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports' . (($pm_info['message_reported']) ? '&amp;mode=pm_reports' : '&amp;mode=pm_reports_closed') . '&amp;start=' . $start) . '">', '</a>'),
-					'REPORTED_IMG'				=> $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
-					'REPORT_DATE'				=> $user->format_date($report['report_time']),
-					'REPORT_ID'					=> $report_id,
-					'REPORT_REASON_TITLE'		=> $reason['title'],
-					'REPORT_REASON_DESCRIPTION'	=> $reason['description'],
-					'REPORT_TEXT'				=> $report['report_text'],
+					'RETURN_REPORTS'            => sprintf($user->lang['RETURN_REPORTS'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports' . (($pm_info['message_reported']) ? '&amp;mode=pm_reports' : '&amp;mode=pm_reports_closed') . '&amp;start=' . $start) . '">', '</a>'),
+					'REPORTED_IMG'              => $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
+					'REPORT_DATE'               => $user->format_date($report['report_time']),
+					'REPORT_ID'                 => $report_id,
+					'REPORT_REASON_TITLE'       => $reason['title'],
+					'REPORT_REASON_DESCRIPTION' => $reason['description'],
+					'REPORT_TEXT'               => $report['report_text'],
 
-					'POST_AUTHOR_FULL'		=> get_username_string('full', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),
-					'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),
-					'POST_AUTHOR'			=> get_username_string('username', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),
-					'U_POST_AUTHOR'			=> get_username_string('profile', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),
+					'POST_AUTHOR_FULL'      => get_username_string('full', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),
+					'POST_AUTHOR_COLOUR'    => get_username_string('colour', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),
+					'POST_AUTHOR'           => get_username_string('username', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),
+					'U_POST_AUTHOR'         => get_username_string('profile', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),
 
-					'REPORTER_FULL'				=> get_username_string('full', $report['user_id'], $report['username'], $report['user_colour']),
-					'REPORTER_COLOUR'			=> get_username_string('colour', $report['user_id'], $report['username'], $report['user_colour']),
-					'REPORTER_NAME'				=> get_username_string('username', $report['user_id'], $report['username'], $report['user_colour']),
-					'U_VIEW_REPORTER_PROFILE'	=> get_username_string('profile', $report['user_id'], $report['username'], $report['user_colour']),
+					'REPORTER_FULL'             => get_username_string('full', $report['user_id'], $report['username'], $report['user_colour']),
+					'REPORTER_COLOUR'           => get_username_string('colour', $report['user_id'], $report['username'], $report['user_colour']),
+					'REPORTER_NAME'             => get_username_string('username', $report['user_id'], $report['username'], $report['user_colour']),
+					'U_VIEW_REPORTER_PROFILE'   => get_username_string('profile', $report['user_id'], $report['username'], $report['user_colour']),
 
-					'POST_PREVIEW'			=> $message,
-					'POST_SUBJECT'			=> $pm_info['message_subject'] ?: $user->lang['NO_SUBJECT'],
-					'POST_DATE'				=> $user->format_date($pm_info['message_time']),
-					'POST_IP'				=> $pm_info['author_ip'],
-					'POST_IPADDR'			=> ($auth->acl_getf_global('m_info') && request_var('lookup', '')) ? @gethostbyaddr($pm_info['author_ip']) : '',
-					'POST_ID'				=> $pm_info['msg_id'],
+					'POST_PREVIEW'          => $message,
+					'POST_SUBJECT'          => $pm_info['message_subject'] ?: $user->lang['NO_SUBJECT'],
+					'POST_DATE'             => $user->format_date($pm_info['message_time']),
+					'POST_IP'               => $pm_info['author_ip'],
+					'POST_IPADDR'           => ($auth->acl_getf_global('m_info') && request_var('lookup', '')) ? @gethostbyaddr($pm_info['author_ip']) : '',
+					'POST_ID'               => $pm_info['msg_id'],
 
-					'U_LOOKUP_IP'			=> ($auth->acl_getf_global('m_info')) ? $this->u_action . '&amp;r=' . $report_id . '&amp;pm=' . $pm_id . '&amp;lookup=' . $pm_info['author_ip'] . '#ip' : '',
+					'U_LOOKUP_IP'           => ($auth->acl_getf_global('m_info')) ? $this->u_action . '&amp;r=' . $report_id . '&amp;pm=' . $pm_id . '&amp;lookup=' . $pm_info['author_ip'] . '#ip' : '',
 				]);
 
 				$this->tpl_name = 'mcp_post';
@@ -270,24 +270,24 @@ class mcp_pm_reports
 						{
 							$row = $pm_by_id[$message_id];
 							$template->assign_block_vars('postrow', [
-								'U_VIEW_DETAILS'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=pm_reports&amp;mode=pm_report_details&amp;r={$row['report_id']}"),
+								'U_VIEW_DETAILS'            => append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=pm_reports&amp;mode=pm_report_details&amp;r={$row['report_id']}"),
 
-								'PM_AUTHOR_FULL'		=> get_username_string('full', $row['author_id'], $row['username'], $row['user_colour']),
-								'PM_AUTHOR_COLOUR'		=> get_username_string('colour', $row['author_id'], $row['username'], $row['user_colour']),
-								'PM_AUTHOR'				=> get_username_string('username', $row['author_id'], $row['username'], $row['user_colour']),
-								'U_PM_AUTHOR'			=> get_username_string('profile', $row['author_id'], $row['username'], $row['user_colour']),
+								'PM_AUTHOR_FULL'        => get_username_string('full', $row['author_id'], $row['username'], $row['user_colour']),
+								'PM_AUTHOR_COLOUR'      => get_username_string('colour', $row['author_id'], $row['username'], $row['user_colour']),
+								'PM_AUTHOR'             => get_username_string('username', $row['author_id'], $row['username'], $row['user_colour']),
+								'U_PM_AUTHOR'           => get_username_string('profile', $row['author_id'], $row['username'], $row['user_colour']),
 
-								'REPORTER_FULL'			=> get_username_string('full', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
-								'REPORTER_COLOUR'		=> get_username_string('colour', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
-								'REPORTER'				=> get_username_string('username', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
-								'U_REPORTER'			=> get_username_string('profile', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
+								'REPORTER_FULL'         => get_username_string('full', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
+								'REPORTER_COLOUR'       => get_username_string('colour', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
+								'REPORTER'              => get_username_string('username', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
+								'U_REPORTER'            => get_username_string('profile', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
 
-								'PM_SUBJECT'			=> $row['message_subject'] ?: $user->lang['NO_SUBJECT'],
-								'PM_TIME'				=> $user->format_date($row['message_time']),
-								'REPORT_ID'				=> $row['report_id'],
-								'REPORT_TIME'			=> $user->format_date($row['report_time']),
+								'PM_SUBJECT'            => $row['message_subject'] ?: $user->lang['NO_SUBJECT'],
+								'PM_TIME'               => $user->format_date($row['message_time']),
+								'REPORT_ID'             => $row['report_id'],
+								'REPORT_TIME'           => $user->format_date($row['report_time']),
 
-								'RECIPIENTS'			=> implode(', ', $address_list[$row['msg_id']]),
+								'RECIPIENTS'            => implode(', ', $address_list[$row['msg_id']]),
 							]);
 						}
 					}
@@ -295,17 +295,17 @@ class mcp_pm_reports
 
 				// Now display the page
 				$template->assign_vars([
-					'L_EXPLAIN'				=> ($mode == 'pm_reports') ? $user->lang['MCP_PM_REPORTS_OPEN_EXPLAIN'] : $user->lang['MCP_PM_REPORTS_CLOSED_EXPLAIN'],
-					'L_TITLE'				=> ($mode == 'pm_reports') ? $user->lang['MCP_PM_REPORTS_OPEN'] : $user->lang['MCP_PM_REPORTS_CLOSED'],
+					'L_EXPLAIN'             => ($mode == 'pm_reports') ? $user->lang['MCP_PM_REPORTS_OPEN_EXPLAIN'] : $user->lang['MCP_PM_REPORTS_CLOSED_EXPLAIN'],
+					'L_TITLE'               => ($mode == 'pm_reports') ? $user->lang['MCP_PM_REPORTS_OPEN'] : $user->lang['MCP_PM_REPORTS_CLOSED'],
 
-					'S_PM'					=> true,
-					'S_MCP_ACTION'			=> $this->u_action,
-					'S_CLOSED'				=> ($mode == 'pm_reports_closed'),
+					'S_PM'                  => true,
+					'S_MCP_ACTION'          => $this->u_action,
+					'S_CLOSED'              => ($mode == 'pm_reports_closed'),
 
-					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $total, $config['topics_per_page'], $start),
-					'PAGE_NUMBER'			=> on_page($total, $config['topics_per_page'], $start),
-					'TOTAL'					=> $total,
-					'TOTAL_REPORTS'			=> ($total == 1) ? $user->lang['LIST_REPORT'] : sprintf($user->lang['LIST_REPORTS'], $total),
+					'PAGINATION'            => generate_pagination($this->u_action . "&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $total, $config['topics_per_page'], $start),
+					'PAGE_NUMBER'           => on_page($total, $config['topics_per_page'], $start),
+					'TOTAL'                 => $total,
+					'TOTAL_REPORTS'         => ($total == 1) ? $user->lang['LIST_REPORT'] : sprintf($user->lang['LIST_REPORTS'], $total),
 					]
 				);
 

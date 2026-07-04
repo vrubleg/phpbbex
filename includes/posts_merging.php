@@ -82,31 +82,31 @@ $poster_id = (int) $merge_post_data['poster_id'];
 
 // Prepare post data for update
 $sql_data[POSTS_TABLE]['sql'] = [
-	'bbcode_uid'		=> $merge_post_data['bbcode_uid'],
-	'bbcode_bitfield'	=> $merge_post_data['bbcode_bitfield'],
-	'post_text'			=> $merge_post_data['post_text'],
-	'post_checksum'		=> md5($merge_post_data['post_text']),
-	'post_merged'		=> $current_time,
-	'post_attachment'	=> (!empty($data['attachment_data'])) ? 1 : ($merge_post_data['post_attachment'] ? 1 : 0),
+	'bbcode_uid'        => $merge_post_data['bbcode_uid'],
+	'bbcode_bitfield'   => $merge_post_data['bbcode_bitfield'],
+	'post_text'         => $merge_post_data['post_text'],
+	'post_checksum'     => md5($merge_post_data['post_text']),
+	'post_merged'       => $current_time,
+	'post_attachment'   => (!empty($data['attachment_data'])) ? 1 : ($merge_post_data['post_attachment'] ? 1 : 0),
 ];
 
 $sql_data[TOPICS_TABLE]['sql'] = [
-	'topic_last_post_id'		=> $merge_post_id,
-	'topic_last_poster_id'		=> $poster_id,
-	'topic_last_poster_name'	=> (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
-	'topic_last_poster_colour'	=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
-	'topic_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
-	'topic_last_post_time'		=> $current_time,
-	'topic_attachment'			=> (!empty($data['attachment_data']) || (isset($merge_post_data['topic_attachment']) && $merge_post_data['topic_attachment'])) ? 1 : 0,
+	'topic_last_post_id'        => $merge_post_id,
+	'topic_last_poster_id'      => $poster_id,
+	'topic_last_poster_name'    => (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
+	'topic_last_poster_colour'  => ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
+	'topic_last_post_subject'   => utf8_normalize_nfc($merge_post_data['post_subject']),
+	'topic_last_post_time'      => $current_time,
+	'topic_attachment'          => (!empty($data['attachment_data']) || (isset($merge_post_data['topic_attachment']) && $merge_post_data['topic_attachment'])) ? 1 : 0,
 ];
 
 $sql_data[FORUMS_TABLE]['sql'] = [
-	'forum_last_post_id'		=> $merge_post_id,
-	'forum_last_post_subject'	=> utf8_normalize_nfc($merge_post_data['post_subject']),
-	'forum_last_post_time'		=> $current_time,
-	'forum_last_poster_id'		=> $poster_id,
-	'forum_last_poster_name'	=> (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
-	'forum_last_poster_colour'	=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
+	'forum_last_post_id'        => $merge_post_id,
+	'forum_last_post_subject'   => utf8_normalize_nfc($merge_post_data['post_subject']),
+	'forum_last_post_time'      => $current_time,
+	'forum_last_poster_id'      => $poster_id,
+	'forum_last_poster_name'    => (!$user->data['is_registered'] && $post_data['username']) ? $post_data['username'] : (($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : ''),
+	'forum_last_poster_colour'  => ($user->data['user_id'] != ANONYMOUS) ? $user->data['user_colour'] : '',
 ];
 
 // Update post information - submit merged post
@@ -175,11 +175,11 @@ if (!empty($data['attachment_data']))
 			$files_added++;
 
 			$attach_sql = [
-				'post_msg_id'		=> $merge_post_id,
-				'topic_id'			=> $topic_id,
-				'is_orphan'			=> 0,
-				'poster_id'			=> $poster_id,
-				'attach_comment'	=> $attach_row['attach_comment'],
+				'post_msg_id'       => $merge_post_id,
+				'topic_id'          => $topic_id,
+				'is_orphan'         => 0,
+				'poster_id'         => $poster_id,
+				'attach_comment'    => $attach_row['attach_comment'],
 			];
 
 			$sql = 'UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $attach_sql) . '

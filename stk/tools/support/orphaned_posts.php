@@ -49,13 +49,13 @@ class orphaned_posts
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$template->assign_block_vars('topics', [
-					'FORUM_ID'		=> $row['forum_id'],
-					'FORUM_NAME'	=> $row['forum_name'],
-					'U_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
-					'TOPIC_ID'		=> $row['topic_id'],
-					'TOPIC_TITLE'	=> $row['topic_title'],
-					'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-					'USER_ID'		=> $row['user_id'],
+					'FORUM_ID'      => $row['forum_id'],
+					'FORUM_NAME'    => $row['forum_name'],
+					'U_FORUM'       => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
+					'TOPIC_ID'      => $row['topic_id'],
+					'TOPIC_TITLE'   => $row['topic_title'],
+					'USER_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+					'USER_ID'       => $row['user_id'],
 				]);
 			}
 			$db->sql_freeresult($result);
@@ -77,15 +77,15 @@ class orphaned_posts
 			$search_keywords = urlencode((strpos($row['post_subject'], 'Re: ') === 0) ? utf8_substr($row['post_subject'], 4) : $row['post_subject']);
 
 			$template->assign_block_vars('posts', [
-				'FORUM_ID'		=> $row['forum_id'],
-				'FORUM_NAME'	=> $row['forum_name'],
-				'U_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
-				'POST_ID'		=> $row['post_id'],
-				'POST_SUBJECT'	=> $row['post_subject'],
-				'POST_TEXT'		=> $message,
-				'SEARCH_URL'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'keywords=' . $search_keywords . '&amp;terms=all&amp;sf=titleonly&amp;sr=topics&amp;submit=Search', true),
-				'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'USER_ID'		=> $row['user_id'],
+				'FORUM_ID'      => $row['forum_id'],
+				'FORUM_NAME'    => $row['forum_name'],
+				'U_FORUM'       => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
+				'POST_ID'       => $row['post_id'],
+				'POST_SUBJECT'  => $row['post_subject'],
+				'POST_TEXT'     => $message,
+				'SEARCH_URL'    => append_sid(PHPBB_ROOT_PATH . 'search.php', 'keywords=' . $search_keywords . '&amp;terms=all&amp;sf=titleonly&amp;sr=topics&amp;submit=Search', true),
+				'USER_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				'USER_ID'       => $row['user_id'],
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -104,20 +104,20 @@ class orphaned_posts
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('shadows', [
-				'FORUM_ID'		=> $row['forum_id'],
-				'FORUM_NAME'	=> $row['forum_name'],
-				'U_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
-				'TOPIC_ID'		=> $row['topic_id'],
-				'TOPIC_TITLE'	=> $row['topic_title'],
-				'USER_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'USER_ID'		=> $row['user_id'],
+				'FORUM_ID'      => $row['forum_id'],
+				'FORUM_NAME'    => $row['forum_name'],
+				'U_FORUM'       => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
+				'TOPIC_ID'      => $row['topic_id'],
+				'TOPIC_TITLE'   => $row['topic_title'],
+				'USER_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				'USER_ID'       => $row['user_id'],
 			]);
 		}
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'U_EMPTY_TOPICS'	=> append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'empty_topics']),
-			'U_ORPHANED_POSTS'	=> append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_posts', 'submit' => 1]),
+			'U_EMPTY_TOPICS'    => append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'empty_topics']),
+			'U_ORPHANED_POSTS'  => append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_posts', 'submit' => 1]),
 			'U_ORPHANED_SHADOWS'=> append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_shadows']),
 		]);
 

@@ -108,10 +108,10 @@ class acp_styles
 						else if ($action == 'deactivate')
 						{
 							$s_hidden_fields = [
-								'i'			=> $id,
-								'mode'		=> $mode,
-								'action'	=> $action,
-								'style_id'	=> $style_id,
+								'i'         => $id,
+								'mode'      => $mode,
+								'action'    => $action,
+								'style_id'  => $style_id,
 							];
 							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields($s_hidden_fields));
 						}
@@ -149,10 +149,10 @@ class acp_styles
 						else
 						{
 							confirm_box(false, $user->lang['CONFIRM_TEMPLATE_CLEAR_CACHE'], build_hidden_fields([
-								'i'			=> $id,
-								'mode'		=> $mode,
-								'action'	=> $action,
-								'id'		=> $style_id
+								'i'         => $id,
+								'mode'      => $mode,
+								'action'    => $action,
+								'id'        => $style_id
 							]));
 						}
 
@@ -194,10 +194,10 @@ class acp_styles
 						else
 						{
 							confirm_box(false, $user->lang['CONFIRM_THEME_REFRESH'], build_hidden_fields([
-								'i'			=> $id,
-								'mode'		=> $mode,
-								'action'	=> $action,
-								'id'		=> $style_id
+								'i'         => $id,
+								'mode'      => $mode,
+								'action'    => $action,
+								'id'        => $style_id
 							]));
 						}
 					break;
@@ -260,12 +260,12 @@ class acp_styles
 								{
 									$image_name = substr($image_name, 4);
 									$sql_ary[] = [
-										'image_name'		=> (string) $image_name,
-										'image_filename'	=> (string) $image_filename,
-										'image_height'		=> (int) $image_height,
-										'image_width'		=> (int) $image_width,
-										'imageset_id'		=> (int) $style_id,
-										'image_lang'		=> '',
+										'image_name'        => (string) $image_name,
+										'image_filename'    => (string) $image_filename,
+										'image_height'      => (int) $image_height,
+										'image_width'       => (int) $image_width,
+										'imageset_id'       => (int) $style_id,
+										'image_lang'        => '',
 									];
 								}
 							}
@@ -303,12 +303,12 @@ class acp_styles
 										{
 											$image_name = substr($image_name, 4);
 											$sql_ary[] = [
-												'image_name'		=> (string) $image_name,
-												'image_filename'	=> (string) $image_filename,
-												'image_height'		=> (int) $image_height,
-												'image_width'		=> (int) $image_width,
-												'imageset_id'		=> (int) $style_id,
-												'image_lang'		=> (string) $row['lang_dir'],
+												'image_name'        => (string) $image_name,
+												'image_filename'    => (string) $image_filename,
+												'image_height'      => (int) $image_height,
+												'image_width'       => (int) $image_width,
+												'imageset_id'       => (int) $style_id,
+												'image_lang'        => (string) $row['lang_dir'],
 											];
 										}
 									}
@@ -328,10 +328,10 @@ class acp_styles
 						else
 						{
 							confirm_box(false, $user->lang['CONFIRM_IMAGESET_REFRESH'], build_hidden_fields([
-								'i'			=> $id,
-								'mode'		=> $mode,
-								'action'	=> $action,
-								'id'		=> $style_id
+								'i'         => $id,
+								'mode'      => $mode,
+								'action'    => $action,
+								'id'        => $style_id
 							]));
 						}
 					break;
@@ -393,18 +393,18 @@ class acp_styles
 		$this->page_title = 'ACP_' . $l_prefix . 'S';
 
 		$template->assign_vars([
-			'S_FRONTEND'		=> true,
-			'S_STYLE'			=> ($mode == 'style'),
+			'S_FRONTEND'        => true,
+			'S_STYLE'           => ($mode == 'style'),
 
-			'L_TITLE'			=> $user->lang[$this->page_title],
-			'L_EXPLAIN'			=> $user->lang[$this->page_title . '_EXPLAIN'],
-			'L_NAME'			=> $user->lang[$l_prefix . '_NAME'],
-			'L_INSTALLED'		=> $user->lang['INSTALLED_' . $l_prefix],
-			'L_UNINSTALLED'		=> $user->lang['UNINSTALLED_' . $l_prefix],
-			'L_NO_UNINSTALLED'	=> $user->lang['NO_UNINSTALLED_' . $l_prefix],
-			'L_CREATE'			=> $user->lang['CREATE_' . $l_prefix],
+			'L_TITLE'           => $user->lang[$this->page_title],
+			'L_EXPLAIN'         => $user->lang[$this->page_title . '_EXPLAIN'],
+			'L_NAME'            => $user->lang[$l_prefix . '_NAME'],
+			'L_INSTALLED'       => $user->lang['INSTALLED_' . $l_prefix],
+			'L_UNINSTALLED'     => $user->lang['UNINSTALLED_' . $l_prefix],
+			'L_NO_UNINSTALLED'  => $user->lang['NO_UNINSTALLED_' . $l_prefix],
+			'L_CREATE'          => $user->lang['CREATE_' . $l_prefix],
 
-			'U_ACTION'			=> $this->u_action,
+			'U_ACTION'          => $this->u_action,
 		]);
 
 		$sql = "SELECT *
@@ -442,13 +442,13 @@ class acp_styles
 			}
 
 			$template->assign_block_vars('installed', [
-				'S_DEFAULT_STYLE'		=> ($mode == 'style' && $row['style_id'] == $config['default_style']),
-				'S_ACTIONS'				=> implode(' | ', $s_actions),
+				'S_DEFAULT_STYLE'       => ($mode == 'style' && $row['style_id'] == $config['default_style']),
+				'S_ACTIONS'             => implode(' | ', $s_actions),
 
-				'NAME'					=> $row[$mode . '_name'],
-				'STYLE_COUNT'			=> ($mode == 'style' && isset($style_count[$row['style_id']])) ? $style_count[$row['style_id']] : 0,
+				'NAME'                  => $row[$mode . '_name'],
+				'STYLE_COUNT'           => ($mode == 'style' && isset($style_count[$row['style_id']])) ? $style_count[$row['style_id']] : 0,
 
-				'S_INACTIVE'			=> ($mode == 'style' && !$row['style_active']),
+				'S_INACTIVE'            => ($mode == 'style' && !$row['style_active']),
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -480,9 +480,9 @@ class acp_styles
 							// The array key is used for sorting later on.
 							// $file is appended because $name doesn't have to be unique.
 							$new_ary[$name . $file] = [
-								'path'		=> $file,
-								'name'		=> $name,
-								'copyright'	=> $items['copyright'] ?? '',
+								'path'      => $file,
+								'name'      => $name,
+								'copyright' => $items['copyright'] ?? '',
 							];
 						}
 					}
@@ -500,16 +500,16 @@ class acp_styles
 			foreach ($new_ary as $cfg)
 			{
 				$template->assign_block_vars('uninstalled', [
-					'NAME'			=> $cfg['name'],
-					'COPYRIGHT'		=> $cfg['copyright'] ?? '',
-					'U_INSTALL'		=> $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path']),
+					'NAME'          => $cfg['name'],
+					'COPYRIGHT'     => $cfg['copyright'] ?? '',
+					'U_INSTALL'     => $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path']),
 				]);
 			}
 		}
 		unset($new_ary);
 
 		$template->assign_vars([
-			'S_BASIS_OPTIONS'		=> $basis_options,
+			'S_BASIS_OPTIONS'       => $basis_options,
 		]);
 
 	}
@@ -624,24 +624,24 @@ class acp_styles
 		$this->page_title = 'DELETE_' . $l_prefix;
 
 		$template->assign_vars([
-			'S_DELETE'			=> true,
+			'S_DELETE'          => true,
 
-			'L_TITLE'			=> $user->lang[$this->page_title],
-			'L_EXPLAIN'			=> $user->lang[$this->page_title . '_EXPLAIN'],
-			'L_NAME'			=> $user->lang[$l_prefix . '_NAME'],
-			'L_REPLACE'			=> $user->lang['REPLACE_' . $l_prefix],
-			'L_REPLACE_EXPLAIN'	=> $user->lang['REPLACE_' . $l_prefix . '_EXPLAIN'],
+			'L_TITLE'           => $user->lang[$this->page_title],
+			'L_EXPLAIN'         => $user->lang[$this->page_title . '_EXPLAIN'],
+			'L_NAME'            => $user->lang[$l_prefix . '_NAME'],
+			'L_REPLACE'         => $user->lang['REPLACE_' . $l_prefix],
+			'L_REPLACE_EXPLAIN' => $user->lang['REPLACE_' . $l_prefix . '_EXPLAIN'],
 
-			'U_ACTION'		=> $this->u_action . "&amp;action=delete&amp;id={$style_id}",
-			'U_BACK'		=> $this->u_action,
+			'U_ACTION'      => $this->u_action . "&amp;action=delete&amp;id={$style_id}",
+			'U_BACK'        => $this->u_action,
 
-			'NAME'			=> $style_row[$mode . '_name'],
+			'NAME'          => $style_row[$mode . '_name'],
 		]);
 
 		if ($mode == 'style')
 		{
 			$template->assign_vars([
-				'S_DELETE_STYLE'		=> true,
+				'S_DELETE_STYLE'        => true,
 			]);
 		}
 	}
@@ -942,11 +942,11 @@ class acp_styles
 		if ($update && sizeof($error))
 		{
 			$style_row = array_merge($style_row, [
-				'template_id'			=> $template_id,
-				'theme_id'				=> $theme_id,
-				'imageset_id'			=> $imageset_id,
-				'style_active'			=> $style_active,
-				$mode . '_name'			=> $name,
+				'template_id'           => $template_id,
+				'theme_id'              => $theme_id,
+				'imageset_id'           => $imageset_id,
+				'style_active'          => $style_active,
+				$mode . '_name'         => $name,
 			]);
 		}
 
@@ -954,7 +954,7 @@ class acp_styles
 		if ($update && !sizeof($error))
 		{
 			$sql_ary = [
-				$mode . '_name'			=> $name,
+				$mode . '_name'         => $name,
 			];
 
 			switch ($mode)
@@ -962,10 +962,10 @@ class acp_styles
 				case 'style':
 
 					$sql_ary += [
-						'template_id'		=> (int) $template_id,
-						'theme_id'			=> (int) $theme_id,
-						'imageset_id'		=> (int) $imageset_id,
-						'style_active'		=> (int) $style_active,
+						'template_id'       => (int) $template_id,
+						'theme_id'          => (int) $theme_id,
+						'imageset_id'       => (int) $imageset_id,
+						'style_active'      => (int) $style_active,
 					];
 				break;
 
@@ -1040,30 +1040,30 @@ class acp_styles
 		$this->page_title = 'EDIT_DETAILS_' . $l_type;
 
 		$template->assign_vars([
-			'S_DETAILS'				=> true,
-			'S_ERROR_MSG'			=> (sizeof($error) > 0),
-			'S_STYLE'				=> ($mode == 'style'),
-			'S_TEMPLATE'			=> ($mode == 'template'),
-			'S_THEME'				=> ($mode == 'theme'),
-			'S_IMAGESET'			=> ($mode == 'imageset'),
-			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
-			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
-			'S_SUPERTEMPLATE'		=> (isset($style_row[$mode . '_inherits_id']) && $style_row[$mode . '_inherits_id']) ? $super['template_name'] : 0,
+			'S_DETAILS'             => true,
+			'S_ERROR_MSG'           => (sizeof($error) > 0),
+			'S_STYLE'               => ($mode == 'style'),
+			'S_TEMPLATE'            => ($mode == 'template'),
+			'S_THEME'               => ($mode == 'theme'),
+			'S_IMAGESET'            => ($mode == 'imageset'),
+			'S_STYLE_ACTIVE'        => $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'       => $style_row['style_default'] ?? 0,
+			'S_SUPERTEMPLATE'       => (isset($style_row[$mode . '_inherits_id']) && $style_row[$mode . '_inherits_id']) ? $super['template_name'] : 0,
 
-			'S_TEMPLATE_OPTIONS'	=> ($mode == 'style') ? $template_options : '',
-			'S_THEME_OPTIONS'		=> ($mode == 'style') ? $theme_options : '',
-			'S_IMAGESET_OPTIONS'	=> ($mode == 'style') ? $imageset_options : '',
+			'S_TEMPLATE_OPTIONS'    => ($mode == 'style') ? $template_options : '',
+			'S_THEME_OPTIONS'       => ($mode == 'style') ? $theme_options : '',
+			'S_IMAGESET_OPTIONS'    => ($mode == 'style') ? $imageset_options : '',
 
-			'U_ACTION'		=> $this->u_action . '&amp;action=details&amp;id=' . $style_id,
-			'U_BACK'		=> $this->u_action,
+			'U_ACTION'      => $this->u_action . '&amp;action=details&amp;id=' . $style_id,
+			'U_BACK'        => $this->u_action,
 
-			'L_TITLE'				=> $user->lang[$this->page_title],
-			'L_EXPLAIN'				=> $user->lang[$this->page_title . '_EXPLAIN'],
-			'L_NAME'				=> $user->lang[$l_type . '_NAME'],
+			'L_TITLE'               => $user->lang[$this->page_title],
+			'L_EXPLAIN'             => $user->lang[$this->page_title . '_EXPLAIN'],
+			'L_NAME'                => $user->lang[$l_type . '_NAME'],
 
-			'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
-			'NAME'			=> $style_row[$mode . '_name'],
-			'COPYRIGHT'		=> $copyright,
+			'ERROR_MSG'     => (sizeof($error)) ? implode('<br />', $error) : '',
+			'NAME'          => $style_row[$mode . '_name'],
+			'COPYRIGHT'     => $copyright,
 		]);
 	}
 
@@ -1108,7 +1108,7 @@ class acp_styles
 	*
 	* @param array $template_row contains the template's row in the STYLES_TEMPLATE_TABLE database table
 	* @param mixed $file_ary is optional and may contain an array of template file names which should be refreshed in the cache.
-	*	The file names should be the original template file names and not the cache file names.
+	*   The file names should be the original template file names and not the cache file names.
 	*/
 	function clear_template_cache($template_row, $file_ary = false)
 	{
@@ -1176,9 +1176,9 @@ class acp_styles
 		// Installing
 		if (sizeof($installcfg))
 		{
-			$name		= $installcfg['name'] ?? '';
-			$copyright	= $installcfg['copyright'] ?? '';
-			$version	= $installcfg['version'] ?? '';
+			$name       = $installcfg['name'] ?? '';
+			$copyright  = $installcfg['copyright'] ?? '';
+			$version    = $installcfg['version'] ?? '';
 
 			if (!version_compare($version, PHPBBEX_VERSION, '=='))
 			{
@@ -1186,8 +1186,8 @@ class acp_styles
 			}
 
 			$style_row = [
-				$mode . '_id'			=> 0,
-				$mode . '_name'			=> '',
+				$mode . '_id'           => 0,
+				$mode . '_name'         => '',
 			];
 
 			switch ($mode)
@@ -1195,8 +1195,8 @@ class acp_styles
 				case 'style':
 
 					$style_row = [
-						'style_id'			=> 0,
-						'style_name'		=> $installcfg['name'] ?? '',
+						'style_id'          => 0,
+						'style_name'        => $installcfg['name'] ?? '',
 					];
 
 					$reqd_template = $installcfg['required_template'] ?? false;
@@ -1207,8 +1207,8 @@ class acp_styles
 					foreach ($element_ary as $element => $table)
 					{
 						$style_row = array_merge($style_row, [
-							$element . '_id'			=> 0,
-							$element . '_name'			=> '',
+							$element . '_id'            => 0,
+							$element . '_name'          => '',
 						]);
 
 						$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name']);
@@ -1287,31 +1287,31 @@ class acp_styles
 		$this->page_title = 'INSTALL_' . $l_type;
 
 		$template->assign_vars([
-			'S_DETAILS'			=> true,
-			'S_INSTALL'			=> true,
-			'S_ERROR_MSG'		=> (sizeof($error) > 0),
-			'S_LOCATION'		=> empty($installcfg['inherit_from']),
-			'S_STYLE'			=> ($mode == 'style'),
-			'S_TEMPLATE'		=> ($mode == 'template'),
-			'S_SUPERTEMPLATE'	=> $installcfg['inherit_from'] ?? '',
-			'S_THEME'			=> ($mode == 'theme'),
+			'S_DETAILS'         => true,
+			'S_INSTALL'         => true,
+			'S_ERROR_MSG'       => (sizeof($error) > 0),
+			'S_LOCATION'        => empty($installcfg['inherit_from']),
+			'S_STYLE'           => ($mode == 'style'),
+			'S_TEMPLATE'        => ($mode == 'template'),
+			'S_SUPERTEMPLATE'   => $installcfg['inherit_from'] ?? '',
+			'S_THEME'           => ($mode == 'theme'),
 
-			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
-			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
+			'S_STYLE_ACTIVE'        => $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'       => $style_row['style_default'] ?? 0,
 
-			'U_ACTION'			=> $this->u_action . "&amp;action=install&amp;path=" . urlencode($install_path),
-			'U_BACK'			=> $this->u_action,
+			'U_ACTION'          => $this->u_action . "&amp;action=install&amp;path=" . urlencode($install_path),
+			'U_BACK'            => $this->u_action,
 
-			'L_TITLE'				=> $user->lang[$this->page_title],
-			'L_EXPLAIN'				=> $user->lang[$this->page_title . '_EXPLAIN'],
-			'L_NAME'				=> $user->lang[$l_type . '_NAME'],
+			'L_TITLE'               => $user->lang[$this->page_title],
+			'L_EXPLAIN'             => $user->lang[$this->page_title . '_EXPLAIN'],
+			'L_NAME'                => $user->lang[$l_type . '_NAME'],
 
-			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
-			'NAME'				=> $style_row[$mode . '_name'],
-			'COPYRIGHT'			=> $copyright,
-			'TEMPLATE_NAME'		=> ($mode == 'style') ? $style_row['template_name'] : '',
-			'THEME_NAME'		=> ($mode == 'style') ? $style_row['theme_name'] : '',
-			'IMAGESET_NAME'		=> ($mode == 'style') ? $style_row['imageset_name'] : '',
+			'ERROR_MSG'         => (sizeof($error)) ? implode('<br />', $error) : '',
+			'NAME'              => $style_row[$mode . '_name'],
+			'COPYRIGHT'         => $copyright,
+			'TEMPLATE_NAME'     => ($mode == 'style') ? $style_row['template_name'] : '',
+			'THEME_NAME'        => ($mode == 'style') ? $style_row['theme_name'] : '',
+			'IMAGESET_NAME'     => ($mode == 'style') ? $style_row['imageset_name'] : '',
 		]);
 	}
 
@@ -1327,12 +1327,12 @@ class acp_styles
 		$error = [];
 
 		$style_row = [
-			$mode . '_name'			=> utf8_normalize_nfc(request_var('name', '', true)),
-			'template_id'			=> 0,
-			'theme_id'				=> 0,
-			'imageset_id'			=> 0,
-			'style_active'			=> request_var('style_active', 1),
-			'style_default'			=> request_var('style_default', 0),
+			$mode . '_name'         => utf8_normalize_nfc(request_var('name', '', true)),
+			'template_id'           => 0,
+			'theme_id'              => 0,
+			'imageset_id'           => 0,
+			'style_active'          => request_var('style_active', 1),
+			'style_default'         => request_var('style_default', 0),
 		];
 
 		$basis = request_var('basis', 0);
@@ -1377,9 +1377,9 @@ class acp_styles
 
 			if (!sizeof($error))
 			{
-				$style_row['template_id']	= $row['template_id'] ?? $style_row['template_id'];
-				$style_row['theme_id']		= $row['theme_id'] ?? $style_row['theme_id'];
-				$style_row['imageset_id']	= $row['imageset_id'] ?? $style_row['imageset_id'];
+				$style_row['template_id']   = $row['template_id'] ?? $style_row['template_id'];
+				$style_row['theme_id']      = $row['theme_id'] ?? $style_row['theme_id'];
+				$style_row['imageset_id']   = $row['imageset_id'] ?? $style_row['imageset_id'];
 			}
 		}
 
@@ -1435,29 +1435,29 @@ class acp_styles
 		$this->page_title = 'ADD_' . $l_type;
 
 		$template->assign_vars([
-			'S_DETAILS'			=> true,
-			'S_ADD'				=> true,
-			'S_ERROR_MSG'		=> (sizeof($error) > 0),
-			'S_STYLE'			=> ($mode == 'style'),
-			'S_TEMPLATE'		=> ($mode == 'template'),
-			'S_THEME'			=> ($mode == 'theme'),
-			'S_BASIS'			=> (bool) $basis,
+			'S_DETAILS'         => true,
+			'S_ADD'             => true,
+			'S_ERROR_MSG'       => (sizeof($error) > 0),
+			'S_STYLE'           => ($mode == 'style'),
+			'S_TEMPLATE'        => ($mode == 'template'),
+			'S_THEME'           => ($mode == 'theme'),
+			'S_BASIS'           => (bool) $basis,
 
-			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
-			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
-			'S_TEMPLATE_OPTIONS'	=> ($mode == 'style') ? $template_options : '',
-			'S_THEME_OPTIONS'		=> ($mode == 'style') ? $theme_options : '',
-			'S_IMAGESET_OPTIONS'	=> ($mode == 'style') ? $imageset_options : '',
+			'S_STYLE_ACTIVE'        => $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'       => $style_row['style_default'] ?? 0,
+			'S_TEMPLATE_OPTIONS'    => ($mode == 'style') ? $template_options : '',
+			'S_THEME_OPTIONS'       => ($mode == 'style') ? $theme_options : '',
+			'S_IMAGESET_OPTIONS'    => ($mode == 'style') ? $imageset_options : '',
 
-			'U_ACTION'			=> $this->u_action . '&amp;action=add&amp;basis=' . $basis,
-			'U_BACK'			=> $this->u_action,
+			'U_ACTION'          => $this->u_action . '&amp;action=add&amp;basis=' . $basis,
+			'U_BACK'            => $this->u_action,
 
-			'L_TITLE'				=> $user->lang[$this->page_title],
-			'L_EXPLAIN'				=> $user->lang[$this->page_title . '_EXPLAIN'],
-			'L_NAME'				=> $user->lang[$l_type . '_NAME'],
+			'L_TITLE'               => $user->lang[$this->page_title],
+			'L_EXPLAIN'             => $user->lang[$this->page_title . '_EXPLAIN'],
+			'L_NAME'                => $user->lang[$l_type . '_NAME'],
 
-			'ERROR_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
-			'NAME'				=> $style_row[$mode . '_name'],
+			'ERROR_MSG'         => (sizeof($error)) ? implode('<br />', $error) : '',
+			'NAME'              => $style_row[$mode . '_name'],
 		]);
 
 	}
@@ -1577,11 +1577,11 @@ class acp_styles
 		$db->sql_transaction('begin');
 
 		$sql_ary = [
-			'style_name'		=> $name,
-			'style_active'		=> (int) $active,
-			'template_id'		=> (int) $style_row['template_id'],
-			'theme_id'			=> (int) $style_row['theme_id'],
-			'imageset_id'		=> (int) $style_row['imageset_id'],
+			'style_name'        => $name,
+			'style_active'      => (int) $active,
+			'template_id'       => (int) $style_row['template_id'],
+			'theme_id'          => (int) $style_row['theme_id'],
+			'imageset_id'       => (int) $style_row['imageset_id'],
 		];
 
 		$sql = 'INSERT INTO ' . STYLES_TABLE . '
@@ -1710,8 +1710,8 @@ class acp_styles
 		}
 
 		$sql_ary = [
-			$mode . '_name'			=> $name,
-			$mode . '_path'			=> $path,
+			$mode . '_name'         => $name,
+			$mode . '_path'         => $path,
 		];
 
 		switch ($mode)
@@ -1734,7 +1734,7 @@ class acp_styles
 				if (isset($cfg_data['inherit_from']) && $cfg_data['inherit_from'])
 				{
 					$sql_ary += [
-						'template_inherits_id'	=> $inherit_id,
+						'template_inherits_id'  => $inherit_id,
 						'template_inherit_path' => $inherit_path,
 					];
 				}
@@ -1785,12 +1785,12 @@ class acp_styles
 				{
 					$key = substr($key, 4);
 					$sql_ary = [
-						'image_name'		=> $key,
-						'image_filename'	=> str_replace('{PATH}', "styles/{$path}/imageset/", trim($image_filename)),
-						'image_height'		=> (int) $image_height,
-						'image_width'		=> (int) $image_width,
-						'imageset_id'		=> (int) $id,
-						'image_lang'		=> '',
+						'image_name'        => $key,
+						'image_filename'    => str_replace('{PATH}', "styles/{$path}/imageset/", trim($image_filename)),
+						'image_height'      => (int) $image_height,
+						'image_width'       => (int) $image_width,
+						'imageset_id'       => (int) $id,
+						'image_lang'        => '',
 					];
 					$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				}
@@ -1830,12 +1830,12 @@ class acp_styles
 						{
 							$image_name = substr($image_name, 4);
 							$sql_ary = [
-								'image_name'		=> $image_name,
-								'image_filename'	=> $image_filename,
-								'image_height'		=> (int) $image_height,
-								'image_width'		=> (int) $image_width,
-								'imageset_id'		=> (int) $id,
-								'image_lang'		=> $row['lang_dir'],
+								'image_name'        => $image_name,
+								'image_filename'    => $image_filename,
+								'image_height'      => (int) $image_height,
+								'image_width'       => (int) $image_width,
+								'imageset_id'       => (int) $id,
+								'image_lang'        => $row['lang_dir'],
 							];
 							$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 						}

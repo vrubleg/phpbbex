@@ -82,9 +82,9 @@ class resync_report_flags
 		if (!empty($reported))
 		{
 			// Set some SQL stuff based upon the type
-			$sql_id		= ($type == 'posts') ? 'post_id' : 'msg_id';
-			$sql_from	= ($type == 'posts') ? POSTS_TABLE : PRIVMSGS_TABLE;
-			$sql_where	= ($type == 'posts') ? 'post_reported' : 'message_reported';
+			$sql_id     = ($type == 'posts') ? 'post_id' : 'msg_id';
+			$sql_from   = ($type == 'posts') ? POSTS_TABLE : PRIVMSGS_TABLE;
+			$sql_where  = ($type == 'posts') ? 'post_reported' : 'message_reported';
 
 			$corrupted = [];
 
@@ -93,7 +93,7 @@ class resync_report_flags
 				FROM {$sql_from}
 				WHERE {$sql_where} = 0
 					AND " . $db->sql_in_set($sql_id, $reported);
-			$result	= $db->sql_query($sql);
+			$result = $db->sql_query($sql);
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$corrupted[] = $row[$sql_id];
@@ -116,7 +116,7 @@ class resync_report_flags
 				FROM {$sql_from}
 				WHERE {$sql_where} = 1
 					AND " . $db->sql_in_set($sql_id, $reported, true);
-			$result	= $db->sql_query($sql);
+			$result = $db->sql_query($sql);
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$corrupted[] = $row[$sql_id];
@@ -148,13 +148,13 @@ class resync_report_flags
 	{
 		global $db;
 
-		$sql_id	= ($type == 'posts') ? 'post_id' : 'pm_id';
+		$sql_id = ($type == 'posts') ? 'post_id' : 'pm_id';
 
 		$sql = "SELECT {$sql_id}
 			FROM " . REPORTS_TABLE . "
 			WHERE {$sql_id} > 0";
-		$result	= $db->sql_query($sql);
-		$set	= [];
+		$result = $db->sql_query($sql);
+		$set    = [];
 		while ($report = $db->sql_fetchrow($result))
 		{
 			$set[] = $report[$sql_id];
@@ -180,7 +180,7 @@ class resync_report_flags
 		$sql = 'SELECT post_id, pm_id
 			FROM ' . REPORTS_TABLE . '
 			WHERE report_closed = 1';
-		$result	= $db->sql_query($sql);
+		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
 		{
 			if (!empty($row['post_id']))
@@ -234,12 +234,12 @@ class resync_report_flags
 		// Grep all the topics that should be flagged
 		$expected = [];
 		$sql_ary = [
-			'SELECT'	=> 't.topic_id',
-			'FROM'		=> [
-				POSTS_TABLE		=> 'p',
-				TOPICS_TABLE	=> 't',
+			'SELECT'    => 't.topic_id',
+			'FROM'      => [
+				POSTS_TABLE     => 'p',
+				TOPICS_TABLE    => 't',
 			],
-			'WHERE'		=> 'p.post_reported = 1
+			'WHERE'     => 'p.post_reported = 1
 								AND t.topic_id = p.topic_id',
 		];
 		$sql = $db->sql_build_query('SELECT_DISTINCT', $sql_ary);
@@ -287,10 +287,10 @@ class resync_report_flags
 		// they are flipped off if needed by the status of the report and
 		// finally the topic flags are reset based upon whats left
 		$modes = [
-			'pf'	=> 'pmf',
-			'pmf'	=> 'rf',
-			'rf'	=> 'tf',
-			'tf'	=> 'finished',
+			'pf'    => 'pmf',
+			'pmf'   => 'rf',
+			'rf'    => 'tf',
+			'tf'    => 'finished',
 		];
 		$next = $modes[$this->mode];
 

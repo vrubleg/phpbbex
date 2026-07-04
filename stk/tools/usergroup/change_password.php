@@ -20,13 +20,13 @@ class change_password
 	function display_options()
 	{
 		return [
-			'title'	=> 'CHANGE_PASSWORD',
-			'vars'	=> [
-				'legend1'				=> 'CHANGE_PASSWORD',
-				'req_username'			=> ['lang' => 'USERNAME_NAME', 'type' => 'text:40:255', 'explain' => true, 'select_user' => true],
-				'req_user_id'			=> ['lang' => 'USERNAMEID', 'type' => 'text:10:50', 'explain' => true, 'select_user' => false],
-				'new_password'			=> ['lang' => 'PASSWORD', 'type' => 'password:40:255', 'explain' => false],
-				'password_confirm'		=> ['lang' => 'PASSWORD_CONFIRM', 'type' => 'password:40:255', 'explain' => false],
+			'title' => 'CHANGE_PASSWORD',
+			'vars'  => [
+				'legend1'               => 'CHANGE_PASSWORD',
+				'req_username'          => ['lang' => 'USERNAME_NAME', 'type' => 'text:40:255', 'explain' => true, 'select_user' => true],
+				'req_user_id'           => ['lang' => 'USERNAMEID', 'type' => 'text:10:50', 'explain' => true, 'select_user' => false],
+				'new_password'          => ['lang' => 'PASSWORD', 'type' => 'password:40:255', 'explain' => false],
+				'password_confirm'      => ['lang' => 'PASSWORD_CONFIRM', 'type' => 'password:40:255', 'explain' => false],
 			]
 		];
 	}
@@ -106,8 +106,8 @@ class change_password
 		}
 
 		$data = [
-			'new_password'		=> request_var('new_password', '', true),
-			'password_confirm'	=> request_var('password_confirm', '', true),
+			'new_password'      => request_var('new_password', '', true),
+			'password_confirm'  => request_var('password_confirm', '', true),
 		];
 
 		if ($data['new_password'] != $data['password_confirm'])
@@ -117,8 +117,8 @@ class change_password
 		}
 
 		$error = validate_data($data, [
-			'new_password'		=> ['password'],
-			'password_confirm'	=> ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+			'new_password'      => ['password'],
+			'password_confirm'  => ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
 		]);
 		if (!empty($error))
 		{

@@ -30,8 +30,8 @@ class sanitise_anonymous_user
 		$sql = 'SELECT *
 			FROM ' . USERS_TABLE . '
 			WHERE user_id = ' . ANONYMOUS;
-		$result	= $db->sql_query($sql);
-		$anon	= $db->sql_fetchrow($result);
+		$result = $db->sql_query($sql);
+		$anon   = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
 		// No anonymous user
@@ -50,7 +50,7 @@ class sanitise_anonymous_user
 
 		// Check the groups
 		$_in_guests = false;
-		$_other		= [];
+		$_other     = [];
 		$this->_anon_groups($_in_guests, $_other);
 
 		if ($_in_guests === false || !empty($_other))
@@ -75,43 +75,43 @@ class sanitise_anonymous_user
 		$sql = 'SELECT group_id, group_rank, group_colour
 			FROM ' . GROUPS_TABLE . "
 			WHERE group_name = 'GUESTS'";
-		$result	= $db->sql_query_limit($sql, 1, 0);
-		$group_id		= $db->sql_fetchfield('group_id', false, $result);
-		$group_rank		= $db->sql_fetchfield('group_rank', 0, $result);
-		$group_colour	= $db->sql_fetchfield('group_colour', 0, $result);
+		$result = $db->sql_query_limit($sql, 1, 0);
+		$group_id       = $db->sql_fetchfield('group_id', false, $result);
+		$group_rank     = $db->sql_fetchfield('group_rank', 0, $result);
+		$group_colour   = $db->sql_fetchfield('group_colour', 0, $result);
 		$db->sql_freeresult($result);
 
 		$clean_data = [
-			'user_id'					=> ANONYMOUS,
-			'user_type'					=> USER_IGNORE,
-			'group_id'					=> $group_id,
-			'username'					=> 'Anonymous',
-			'username_clean'			=> 'anonymous',
-			'user_regdate'				=> 0,
-			'user_password'				=> '',
-			'user_email'				=> '',
-			'user_lang'					=> $config['default_lang'],
-			'user_style'				=> $config['default_style'],
-			'user_rank'					=> $group_rank,
-			'user_colour'				=> $group_colour,
-			'user_posts'				=> 0,
-			'user_permissions'			=> '',
-			'user_ip'					=> '',
-			'user_birthday'				=> '',
-			'user_avatar'				=> '',
-			'user_sig'					=> '',
-			'user_sig_bbcode_uid'		=> '',
-			'user_from'					=> '',
-			'user_icq'					=> '',
-			'user_jabber'				=> '',
-			'user_skype'				=> '',
-			'user_telegram'				=> '',
-			'user_website'				=> '',
-			'user_occ'					=> '',
-			'user_interests'			=> '',
-			'user_actkey'				=> '',
-			'user_newpasswd'			=> '',
-			'user_allow_massemail'		=> 0,
+			'user_id'                   => ANONYMOUS,
+			'user_type'                 => USER_IGNORE,
+			'group_id'                  => $group_id,
+			'username'                  => 'Anonymous',
+			'username_clean'            => 'anonymous',
+			'user_regdate'              => 0,
+			'user_password'             => '',
+			'user_email'                => '',
+			'user_lang'                 => $config['default_lang'],
+			'user_style'                => $config['default_style'],
+			'user_rank'                 => $group_rank,
+			'user_colour'               => $group_colour,
+			'user_posts'                => 0,
+			'user_permissions'          => '',
+			'user_ip'                   => '',
+			'user_birthday'             => '',
+			'user_avatar'               => '',
+			'user_sig'                  => '',
+			'user_sig_bbcode_uid'       => '',
+			'user_from'                 => '',
+			'user_icq'                  => '',
+			'user_jabber'               => '',
+			'user_skype'                => '',
+			'user_telegram'             => '',
+			'user_website'              => '',
+			'user_occ'                  => '',
+			'user_interests'            => '',
+			'user_actkey'               => '',
+			'user_newpasswd'            => '',
+			'user_allow_massemail'      => 0,
 		];
 
 		// Return message
@@ -133,8 +133,8 @@ class sanitise_anonymous_user
 			case 'groups' :
 				// Re-get all the group data
 				$_in_guests = false;
-				$_other		= [];
-				$guests_gr	= $this->_anon_groups($_in_guests, $_other);
+				$_other     = [];
+				$guests_gr  = $this->_anon_groups($_in_guests, $_other);
 
 				if (!function_exists('group_user_del'))
 				{
@@ -203,8 +203,8 @@ class sanitise_anonymous_user
 		$sql = 'SELECT group_id
 			FROM ' . GROUPS_TABLE . "
 			WHERE group_name = 'GUESTS'";
-		$result	= $db->sql_query_limit($sql, 1, 0);
-		$gid	= $db->sql_fetchfield('group_id', false, $result);
+		$result = $db->sql_query_limit($sql, 1, 0);
+		$gid    = $db->sql_fetchfield('group_id', false, $result);
 		$db->sql_freeresult($result);
 
 		// Build the information

@@ -101,8 +101,8 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 				}
 
 				$sql = 'INSERT INTO ' . PRIVMSGS_FOLDER_TABLE . ' ' . $db->sql_build_array('INSERT', [
-					'user_id'		=> (int) $user->data['user_id'],
-					'folder_name'	=> $folder_name]
+					'user_id'       => (int) $user->data['user_id'],
+					'folder_name'   => $folder_name]
 				);
 				$db->sql_query($sql);
 				$msg = $user->lang['FOLDER_ADDED'];
@@ -196,10 +196,10 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 		}
 
 		$s_hidden_fields = [
-			'remove_folder_id'	=> $remove_folder_id,
-			'remove_action'		=> $remove_action,
-			'move_to'			=> $move_to,
-			'remove_folder'		=> 1
+			'remove_folder_id'  => $remove_folder_id,
+			'remove_action'     => $remove_action,
+			'move_to'           => $move_to,
+			'remove_folder'     => 1
 		];
 
 		// Do we need to confirm?
@@ -282,13 +282,13 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 	{
 		if (check_form_key('ucp_pm_options'))
 		{
-			$check_option	= request_var('check_option', 0);
-			$rule_option	= request_var('rule_option', 0);
-			$cond_option	= request_var('cond_option', '');
-			$action_option	= explode('|', request_var('action_option', ''));
-			$rule_string	= ($cond_option != 'none') ? utf8_normalize_nfc(request_var('rule_string', '', true)) : '';
-			$rule_user_id	= ($cond_option != 'none') ? request_var('rule_user_id', 0) : 0;
-			$rule_group_id	= ($cond_option != 'none') ? request_var('rule_group_id', 0) : 0;
+			$check_option   = request_var('check_option', 0);
+			$rule_option    = request_var('rule_option', 0);
+			$cond_option    = request_var('cond_option', '');
+			$action_option  = explode('|', request_var('action_option', ''));
+			$rule_string    = ($cond_option != 'none') ? utf8_normalize_nfc(request_var('rule_string', '', true)) : '';
+			$rule_user_id   = ($cond_option != 'none') ? request_var('rule_user_id', 0) : 0;
+			$rule_group_id  = ($cond_option != 'none') ? request_var('rule_group_id', 0) : 0;
 
 			$action = (int) $action_option[0];
 			$folder_id = (int) $action_option[1];
@@ -304,14 +304,14 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 			}
 
 			$rule_ary = [
-				'user_id'			=> $user->data['user_id'],
-				'rule_check'		=> $check_option,
-				'rule_connection'	=> $rule_option,
-				'rule_string'		=> $rule_string,
-				'rule_user_id'		=> $rule_user_id,
-				'rule_group_id'		=> $rule_group_id,
-				'rule_action'		=> $action,
-				'rule_folder_id'	=> $folder_id
+				'user_id'           => $user->data['user_id'],
+				'rule_check'        => $check_option,
+				'rule_connection'   => $rule_option,
+				'rule_string'       => $rule_string,
+				'rule_user_id'      => $rule_user_id,
+				'rule_group_id'     => $rule_group_id,
+				'rule_action'       => $action,
+				'rule_folder_id'    => $folder_id
 			];
 
 			$sql = 'SELECT rule_id
@@ -419,8 +419,8 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 	$db->sql_freeresult($result);
 
 	$folder[PRIVMSGS_INBOX] = [
-		'folder_name'		=> $user->lang['PM_INBOX'],
-		'message_status'	=> sprintf($user->lang['FOLDER_MESSAGE_STATUS'], $num_messages, $user->data['message_limit'])
+		'folder_name'       => $user->lang['PM_INBOX'],
+		'message_status'    => sprintf($user->lang['FOLDER_MESSAGE_STATUS'], $num_messages, $user->data['message_limit'])
 	];
 
 	$sql = 'SELECT folder_id, folder_name, pm_count
@@ -433,8 +433,8 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 	{
 		$num_user_folder++;
 		$folder[$row['folder_id']] = [
-			'folder_name'		=> $row['folder_name'],
-			'message_status'	=> sprintf($user->lang['FOLDER_MESSAGE_STATUS'], $row['pm_count'], $user->data['message_limit'])
+			'folder_name'       => $row['folder_name'],
+			'message_status'    => sprintf($user->lang['FOLDER_MESSAGE_STATUS'], $row['pm_count'], $user->data['message_limit'])
 		];
 	}
 	$db->sql_freeresult($result);
@@ -481,18 +481,18 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 	}
 
 	$template->assign_vars([
-		'S_FULL_FOLDER_OPTIONS'	=> $s_full_folder_options,
-		'S_TO_FOLDER_OPTIONS'	=> $s_to_folder_options,
-		'S_FOLDER_OPTIONS'		=> $s_folder_options,
-		'S_DELETE_CHECKED'		=> $s_delete_checked,
-		'S_HOLD_CHECKED'		=> $s_hold_checked,
-		'S_MOVE_CHECKED'		=> $s_move_checked,
-		'S_MAX_FOLDER_REACHED'	=> ($num_user_folder >= $config['pm_max_boxes']),
-		'S_MAX_FOLDER_ZERO'		=> ($config['pm_max_boxes'] == 0),
+		'S_FULL_FOLDER_OPTIONS' => $s_full_folder_options,
+		'S_TO_FOLDER_OPTIONS'   => $s_to_folder_options,
+		'S_FOLDER_OPTIONS'      => $s_folder_options,
+		'S_DELETE_CHECKED'      => $s_delete_checked,
+		'S_HOLD_CHECKED'        => $s_hold_checked,
+		'S_MOVE_CHECKED'        => $s_move_checked,
+		'S_MAX_FOLDER_REACHED'  => ($num_user_folder >= $config['pm_max_boxes']),
+		'S_MAX_FOLDER_ZERO'     => ($config['pm_max_boxes'] == 0),
 
-		'DEFAULT_ACTION'		=> ($config['full_folder_action'] == 1) ? $user->lang['DELETE_OLDEST_MESSAGES'] : $user->lang['HOLD_NEW_MESSAGES'],
+		'DEFAULT_ACTION'        => ($config['full_folder_action'] == 1) ? $user->lang['DELETE_OLDEST_MESSAGES'] : $user->lang['HOLD_NEW_MESSAGES'],
 
-		'U_FIND_USERNAME'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=ucp&amp;field=rule_string&amp;select_single=true'),
+		'U_FIND_USERNAME'       => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=ucp&amp;field=rule_string&amp;select_single=true'),
 	]);
 
 	$rule_lang = $action_lang = $check_lang = [];
@@ -507,10 +507,10 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 			-> CHECK_* -> RULE_* [IN $global_privmsgs_rules:CHECK_*] -> [IF $rule_conditions[RULE_*] [|text|bool|user|group|own_group]] -> ACTION_*
 	*/
 
-	$check_option	= request_var('check_option', 0);
-	$rule_option	= request_var('rule_option', 0);
-	$cond_option	= request_var('cond_option', '');
-	$action_option	= request_var('action_option', '');
+	$check_option   = request_var('check_option', 0);
+	$rule_option    = request_var('rule_option', 0);
+	$cond_option    = request_var('cond_option', '');
+	$action_option  = request_var('action_option', '');
 	$back = (isset($_REQUEST['back'])) ? request_var('back', ['' => 0]) : [];
 
 	if (sizeof($back))
@@ -589,11 +589,11 @@ function define_check_option($hardcoded, $check_option, $check_lang)
 	}
 
 	$template->assign_vars([
-		'S_CHECK_DEFINED'	=> true,
-		'S_CHECK_SELECT'	=> !$hardcoded,
-		'CHECK_CURRENT'		=> $check_lang[$check_option] ?? '',
-		'S_CHECK_OPTIONS'	=> $s_check_options,
-		'CHECK_OPTION'		=> $check_option]
+		'S_CHECK_DEFINED'   => true,
+		'S_CHECK_SELECT'    => !$hardcoded,
+		'CHECK_CURRENT'     => $check_lang[$check_option] ?? '',
+		'S_CHECK_OPTIONS'   => $s_check_options,
+		'CHECK_OPTION'      => $check_option]
 	);
 }
 
@@ -636,11 +636,11 @@ function define_action_option($hardcoded, $action_option, $action_lang, $folder)
 	}
 
 	$template->assign_vars([
-		'S_ACTION_DEFINED'	=> true,
-		'S_ACTION_SELECT'	=> !$hardcoded,
-		'ACTION_CURRENT'	=> $l_action,
-		'S_ACTION_OPTIONS'	=> $s_action_options,
-		'ACTION_OPTION'		=> $action_option]
+		'S_ACTION_DEFINED'  => true,
+		'S_ACTION_SELECT'   => !$hardcoded,
+		'ACTION_CURRENT'    => $l_action,
+		'S_ACTION_OPTIONS'  => $s_action_options,
+		'ACTION_OPTION'     => $action_option]
 	);
 }
 
@@ -678,11 +678,11 @@ function define_rule_option($hardcoded, $rule_option, $rule_lang, $check_ary)
 	}
 
 	$template->assign_vars([
-		'S_RULE_DEFINED'	=> true,
-		'S_RULE_SELECT'		=> !$hardcoded,
-		'RULE_CURRENT'		=> $rule_lang[$rule_option] ?? '',
-		'S_RULE_OPTIONS'	=> $s_rule_options,
-		'RULE_OPTION'		=> $rule_option]
+		'S_RULE_DEFINED'    => true,
+		'S_RULE_SELECT'     => !$hardcoded,
+		'RULE_CURRENT'      => $rule_lang[$rule_option] ?? '',
+		'S_RULE_OPTIONS'    => $s_rule_options,
+		'RULE_OPTION'       => $rule_option]
 	);
 }
 
@@ -694,16 +694,16 @@ function define_cond_option($hardcoded, $cond_option, $rule_option, $global_rule
 	global $db, $template, $auth, $user;
 
 	$template->assign_vars([
-		'S_COND_DEFINED'	=> true,
-		'S_COND_SELECT'		=> (!$hardcoded && isset($global_rule_conditions[$rule_option])),
+		'S_COND_DEFINED'    => true,
+		'S_COND_SELECT'     => (!$hardcoded && isset($global_rule_conditions[$rule_option])),
 	]);
 
 	// Define COND_OPTION
 	if (!isset($global_rule_conditions[$rule_option]))
 	{
 		$template->assign_vars([
-			'COND_OPTION'	=> 'none',
-			'COND_CURRENT'	=> false]
+			'COND_OPTION'   => 'none',
+			'COND_CURRENT'  => false]
 		);
 		return;
 	}
@@ -718,10 +718,10 @@ function define_cond_option($hardcoded, $cond_option, $rule_option, $global_rule
 			$rule_string = utf8_normalize_nfc(request_var('rule_string', '', true));
 
 			$template->assign_vars([
-				'S_TEXT_CONDITION'	=> true,
-				'CURRENT_STRING'	=> $rule_string,
-				'CURRENT_USER_ID'	=> 0,
-				'CURRENT_GROUP_ID'	=> 0]
+				'S_TEXT_CONDITION'  => true,
+				'CURRENT_STRING'    => $rule_string,
+				'CURRENT_USER_ID'   => 0,
+				'CURRENT_GROUP_ID'  => 0]
 			);
 
 			$current_value = $rule_string;
@@ -761,10 +761,10 @@ function define_cond_option($hardcoded, $cond_option, $rule_option, $global_rule
 			}
 
 			$template->assign_vars([
-				'S_USER_CONDITION'	=> true,
-				'CURRENT_STRING'	=> $rule_string,
-				'CURRENT_USER_ID'	=> $rule_user_id,
-				'CURRENT_GROUP_ID'	=> 0]
+				'S_USER_CONDITION'  => true,
+				'CURRENT_STRING'    => $rule_string,
+				'CURRENT_USER_ID'   => $rule_user_id,
+				'CURRENT_GROUP_ID'  => 0]
 			);
 
 			$current_value = $rule_string;
@@ -806,19 +806,19 @@ function define_cond_option($hardcoded, $cond_option, $rule_option, $global_rule
 					$rule_string = (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']);
 				}
 
-				$s_class	= ($row['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '';
-				$s_selected	= ($row['group_id'] == $rule_group_id) ? ' selected="selected"' : '';
+				$s_class    = ($row['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '';
+				$s_selected = ($row['group_id'] == $rule_group_id) ? ' selected="selected"' : '';
 
 				$s_group_options .= '<option value="' . $row['group_id'] . '"' . $s_class . $s_selected . '>' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
 			}
 			$db->sql_freeresult($result);
 
 			$template->assign_vars([
-				'S_GROUP_CONDITION'	=> true,
-				'S_GROUP_OPTIONS'	=> $s_group_options,
-				'CURRENT_STRING'	=> $rule_string,
-				'CURRENT_USER_ID'	=> 0,
-				'CURRENT_GROUP_ID'	=> $rule_group_id]
+				'S_GROUP_CONDITION' => true,
+				'S_GROUP_OPTIONS'   => $s_group_options,
+				'CURRENT_STRING'    => $rule_string,
+				'CURRENT_USER_ID'   => 0,
+				'CURRENT_GROUP_ID'  => $rule_group_id]
 			);
 
 			$current_value = $rule_string;
@@ -829,8 +829,8 @@ function define_cond_option($hardcoded, $cond_option, $rule_option, $global_rule
 	}
 
 	$template->assign_vars([
-		'COND_OPTION'	=> $condition,
-		'COND_CURRENT'	=> $current_value]
+		'COND_OPTION'   => $condition,
+		'COND_CURRENT'  => $current_value]
 	);
 }
 
@@ -851,13 +851,13 @@ function show_defined_rules($user_id, $check_lang, $rule_lang, $action_lang, $fo
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$template->assign_block_vars('rule', [
-			'COUNT'		=> ++$count,
-			'RULE_ID'	=> $row['rule_id'],
-			'CHECK'		=> $check_lang[$row['rule_check']],
-			'RULE'		=> $rule_lang[$row['rule_connection']],
-			'STRING'	=> $row['rule_string'],
-			'ACTION'	=> $action_lang[$row['rule_action']],
-			'FOLDER'	=> ($row['rule_action'] == ACTION_PLACE_INTO_FOLDER) ? $folder[$row['rule_folder_id']]['folder_name'] : '']
+			'COUNT'     => ++$count,
+			'RULE_ID'   => $row['rule_id'],
+			'CHECK'     => $check_lang[$row['rule_check']],
+			'RULE'      => $rule_lang[$row['rule_connection']],
+			'STRING'    => $row['rule_string'],
+			'ACTION'    => $action_lang[$row['rule_action']],
+			'FOLDER'    => ($row['rule_action'] == ACTION_PLACE_INTO_FOLDER) ? $folder[$row['rule_folder_id']]['folder_name'] : '']
 		);
 	}
 	$db->sql_freeresult($result);

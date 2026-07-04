@@ -30,11 +30,11 @@ $form = (!preg_match('/^[a-z0-9_-]+$/i', $form)) ? '' : $form;
 $name = (!preg_match('/^[a-z0-9_-]+$/i', $name)) ? '' : $name;
 
 $template->assign_vars([
-	'OPENER'		=> $form,
-	'NAME'			=> $name,
-	'T_IMAGES_PATH'	=> PHPBB_ROOT_PATH . 'images/',
+	'OPENER'        => $form,
+	'NAME'          => $name,
+	'T_IMAGES_PATH' => PHPBB_ROOT_PATH . 'images/',
 
-	'S_USER_LANG'			=> $user->lang['USER_LANG'],
+	'S_USER_LANG'           => $user->lang['USER_LANG'],
 ]);
 
 $template->display('body');

@@ -10,13 +10,13 @@ class mcp_logs_info
 	function module()
 	{
 		return [
-			'filename'	=> 'mcp_logs',
-			'title'		=> 'MCP_LOGS',
-			'version'	=> '1.0.0',
-			'modes'		=> [
-				'front'			=> ['title' => 'MCP_LOGS_FRONT', 'auth' => 'acl_m_ || aclf_m_', 'cat' => ['MCP_LOGS']],
-				'forum_logs'	=> ['title' => 'MCP_LOGS_FORUM_VIEW', 'auth' => 'acl_m_,$id', 'cat' => ['MCP_LOGS']],
-				'topic_logs'	=> ['title' => 'MCP_LOGS_TOPIC_VIEW', 'auth' => 'acl_m_,$id', 'cat' => ['MCP_LOGS']],
+			'filename'  => 'mcp_logs',
+			'title'     => 'MCP_LOGS',
+			'version'   => '1.0.0',
+			'modes'     => [
+				'front'         => ['title' => 'MCP_LOGS_FRONT', 'auth' => 'acl_m_ || aclf_m_', 'cat' => ['MCP_LOGS']],
+				'forum_logs'    => ['title' => 'MCP_LOGS_FORUM_VIEW', 'auth' => 'acl_m_,$id', 'cat' => ['MCP_LOGS']],
+				'topic_logs'    => ['title' => 'MCP_LOGS_TOPIC_VIEW', 'auth' => 'acl_m_,$id', 'cat' => ['MCP_LOGS']],
 			],
 		];
 	}

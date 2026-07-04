@@ -113,14 +113,14 @@ class phpbb_session
 		$root_script_path .= (substr($root_script_path, -1, 1) == '/') ? '' : '/';
 
 		$page_array += [
-			'page_name'			=> $page_name,
-			'page_dir'			=> $page_dir,
+			'page_name'         => $page_name,
+			'page_dir'          => $page_dir,
 
-			'query_string'		=> $query_string,
-			'script_path'		=> str_replace(' ', '%20', htmlspecialchars($script_path)),
-			'root_script_path'	=> str_replace(' ', '%20', htmlspecialchars($root_script_path)),
+			'query_string'      => $query_string,
+			'script_path'       => str_replace(' ', '%20', htmlspecialchars($script_path)),
+			'root_script_path'  => str_replace(' ', '%20', htmlspecialchars($root_script_path)),
 
-			'page'				=> preg_replace_callback('/[^\x00-\x7F]+/', function ($m) { return urlencode($m[0]); }, $page),
+			'page'              => preg_replace_callback('/[^\x00-\x7F]+/', function ($m) { return urlencode($m[0]); }, $page),
 		];
 
 		return $page_array;
@@ -141,14 +141,14 @@ class phpbb_session
 		global $_SID, $_EXTRA_URL, $db, $config;
 
 		// Give us some basic information
-		$this->time_now				= time();
-		$this->cookie_data			= ['u' => 0, 'k' => ''];
-		$this->browser_ua			= trim(substr(htmlspecialchars($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 250));
-		$this->referer				= htmlspecialchars($_SERVER['HTTP_REFERER'] ?? '');
-		$this->forwarded_for		= htmlspecialchars($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
+		$this->time_now             = time();
+		$this->cookie_data          = ['u' => 0, 'k' => ''];
+		$this->browser_ua           = trim(substr(htmlspecialchars($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 250));
+		$this->referer              = htmlspecialchars($_SERVER['HTTP_REFERER'] ?? '');
+		$this->forwarded_for        = htmlspecialchars($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
 
-		$this->host					= HTTP_HOST;
-		$this->page					= $this->extract_current_page();
+		$this->host                 = HTTP_HOST;
+		$this->page                 = $this->extract_current_page();
 
 		// if the forwarded for header shall be checked we have to validate its contents
 		if ($config['forwarded_for_check'])
@@ -609,17 +609,17 @@ class phpbb_session
 
 		// Create or update the session
 		$sql_ary = [
-			'session_user_id'		=> (int) $this->data['user_id'],
-			'session_bot_id'		=> (int) $bot,
-			'session_start'			=> (int) $this->time_now,
-			'session_last_visit'	=> (int) $this->data['session_last_visit'],
-			'session_time'			=> (int) $this->time_now,
-			'session_browser'		=> (string) $this->browser_ua,
-			'session_forwarded_for'	=> (string) $this->forwarded_for,
-			'session_ip'			=> (string) $this->ip,
-			'session_autologin'		=> ($session_autologin) ? 1 : 0,
-			'session_admin'			=> ($set_admin) ? 1 : 0,
-			'session_viewonline'	=> ($viewonline) ? 1 : 0,
+			'session_user_id'       => (int) $this->data['user_id'],
+			'session_bot_id'        => (int) $bot,
+			'session_start'         => (int) $this->time_now,
+			'session_last_visit'    => (int) $this->data['session_last_visit'],
+			'session_time'          => (int) $this->time_now,
+			'session_browser'       => (string) $this->browser_ua,
+			'session_forwarded_for' => (string) $this->forwarded_for,
+			'session_ip'            => (string) $this->ip,
+			'session_autologin'     => ($session_autologin) ? 1 : 0,
+			'session_admin'         => ($set_admin) ? 1 : 0,
+			'session_viewonline'    => ($viewonline) ? 1 : 0,
 		];
 
 		$db->sql_return_on_error(true);
@@ -942,7 +942,7 @@ class phpbb_session
 	* this routine does not return on finding a banned user, it outputs a relevant
 	* message and stops execution.
 	*
-	* @param string|array	$user_ips	Can contain a string with one IP or an array of multiple IPs
+	* @param string|array   $user_ips   Can contain a string with one IP or an array of multiple IPs
 	*/
 	function check_ban($user_id = false, $user_ips = false, $user_email = false, $return = false)
 	{
@@ -1068,7 +1068,7 @@ class phpbb_session
 			if (empty($this->session_id))
 			{
 				// This seems to be no longer needed? - #14971
-//				$this->session_create(ANONYMOUS);
+//              $this->session_create(ANONYMOUS);
 			}
 
 			// Initiate environment ... since it won't be set at this stage
@@ -1169,15 +1169,15 @@ class phpbb_session
 		$key_id = unique_id();
 
 		$sql_ary = [
-			'key_id'		=> (string) md5($key_id),
-			'last_ip'		=> (string) $this->ip,
-			'last_login'	=> (int) time()
+			'key_id'        => (string) md5($key_id),
+			'last_ip'       => (string) $this->ip,
+			'last_login'    => (int) time()
 		];
 
 		if (!$key)
 		{
 			$sql_ary += [
-				'user_id'	=> (int) $user_id
+				'user_id'   => (int) $user_id
 			];
 		}
 
@@ -1478,8 +1478,8 @@ class phpbb_user extends phpbb_session
 		$parsed_items = $parsed_items['theme'];
 
 		$check_for = [
-			'parse_css_file'	=> (int) 0,
-			'pagination_sep'	=> (string) ', '
+			'parse_css_file'    => (int) 0,
+			'pagination_sep'    => (string) ', '
 		];
 
 		foreach ($check_for as $key => $default_value)
@@ -1559,12 +1559,12 @@ class phpbb_user extends phpbb_session
 					{
 						$image_name = substr($image_name, 4);
 						$sql_ary[] = [
-							'image_name'		=> (string) $image_name,
-							'image_filename'	=> (string) $image_filename,
-							'image_height'		=> (int) $image_height,
-							'image_width'		=> (int) $image_width,
-							'imageset_id'		=> (int) $this->theme['imageset_id'],
-							'image_lang'		=> (string) $this->img_lang,
+							'image_name'        => (string) $image_name,
+							'image_filename'    => (string) $image_filename,
+							'image_height'      => (int) $image_height,
+							'image_width'       => (int) $image_width,
+							'imageset_id'       => (int) $this->theme['imageset_id'],
+							'image_lang'        => (string) $this->img_lang,
 						];
 					}
 				}
@@ -1884,8 +1884,8 @@ class phpbb_user extends phpbb_session
 		if (!isset($format_cache[$format]))
 		{
 			$format_cache[$format] = [
-				'full'		=> str_replace(['{', '}'], '', $format),
-				'notime'	=> str_replace(['{', '}'], '', preg_replace('#{.*?}#i', '', $format)),
+				'full'      => str_replace(['{', '}'], '', $format),
+				'notime'    => str_replace(['{', '}'], '', preg_replace('#{.*?}#i', '', $format)),
 			];
 		}
 		$format = $format_cache[$format][$notime ? 'notime' : 'full'];
@@ -1894,11 +1894,11 @@ class phpbb_user extends phpbb_session
 		{
 			// Is the user requesting a friendly date format (i.e. 'Today 12:42')?
 			$date_cache[$format] = [
-				'is_short'		=> strpos($format, '|'),
-				'format_short'	=> substr($format, 0, strpos($format, '|')) . '||' . substr(strrchr($format, '|'), 1),
-				'format_long'	=> str_replace('|', '', $format),
+				'is_short'      => strpos($format, '|'),
+				'format_short'  => substr($format, 0, strpos($format, '|')) . '||' . substr(strrchr($format, '|'), 1),
+				'format_long'   => str_replace('|', '', $format),
 				// Filter out values that are not strings (e.g. arrays) for strtr().
-				'lang'			=> array_filter($this->lang['datetime'], 'is_string'),
+				'lang'          => array_filter($this->lang['datetime'], 'is_string'),
 			];
 
 			// Short representation of month in format? Some languages use different terms for the long and short format of May
@@ -2130,7 +2130,7 @@ class phpbb_user extends phpbb_session
 	/**
 	* Returns all password protected forum ids the user is currently NOT authenticated for.
 	*
-	* @return array		Array of forum ids
+	* @return array     Array of forum ids
 	* @access public
 	*/
 	function get_passworded_forums()

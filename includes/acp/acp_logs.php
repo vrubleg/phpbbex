@@ -25,18 +25,18 @@ class acp_logs
 		$user->add_lang('mcp');
 
 		// Set up general vars
-		$action		= request_var('action', '');
-		$forum_id	= request_var('f', 0);
-		$topic_id	= request_var('t', 0);
-		$start		= request_var('start', 0);
+		$action     = request_var('action', '');
+		$forum_id   = request_var('f', 0);
+		$topic_id   = request_var('t', 0);
+		$start      = request_var('start', 0);
 		$deletemark = !empty($_POST['delmarked']);
-		$deleteall	= !empty($_POST['delall']);
-		$marked		= request_var('mark', [0]);
+		$deleteall  = !empty($_POST['delall']);
+		$marked     = request_var('mark', [0]);
 
 		// Sort keys
-		$sort_days	= request_var('st', 0);
-		$sort_key	= request_var('sk', 't');
-		$sort_dir	= request_var('sd', 'd');
+		$sort_days  = request_var('st', 0);
+		$sort_key   = request_var('sk', 't');
+		$sort_dir   = request_var('sd', 'd');
 
 		$this->tpl_name = 'acp_logs';
 		$this->log_type = constant('LOG_' . strtoupper($mode));
@@ -72,17 +72,17 @@ class acp_logs
 			else
 			{
 				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-					'f'			=> $forum_id,
-					'start'		=> $start,
-					'delmarked'	=> $deletemark,
-					'delall'	=> $deleteall,
-					'mark'		=> $marked,
-					'st'		=> $sort_days,
-					'sk'		=> $sort_key,
-					'sd'		=> $sort_dir,
-					'i'			=> $id,
-					'mode'		=> $mode,
-					'action'	=> $action])
+					'f'         => $forum_id,
+					'start'     => $start,
+					'delmarked' => $deletemark,
+					'delall'    => $deleteall,
+					'mark'      => $marked,
+					'st'        => $sort_days,
+					'sk'        => $sort_key,
+					'sd'        => $sort_dir,
+					'i'         => $id,
+					'mode'      => $mode,
+					'action'    => $action])
 				);
 			}
 		}
@@ -113,8 +113,8 @@ class acp_logs
 			$forum_box = '<option value="0">' . $user->lang['ALL_FORUMS'] . '</option>' . make_forum_select($forum_id, false, true);
 
 			$template->assign_vars([
-				'S_SHOW_FORUMS'			=> true,
-				'S_FORUM_BOX'			=> $forum_box]
+				'S_SHOW_FORUMS'         => true,
+				'S_FORUM_BOX'           => $forum_box]
 			);
 		}
 
@@ -124,18 +124,18 @@ class acp_logs
 		$start = view_log($mode, $log_data, $log_count, $config['topics_per_page'], $start, $forum_id, 0, 0, $sql_where, $sql_sort, $keywords);
 
 		$template->assign_vars([
-			'L_TITLE'		=> $l_title,
-			'L_EXPLAIN'		=> $l_title_explain,
-			'U_ACTION'		=> $this->u_action . "&amp;{$u_sort_param}{$keywords_param}&amp;start={$start}",
+			'L_TITLE'       => $l_title,
+			'L_EXPLAIN'     => $l_title_explain,
+			'U_ACTION'      => $this->u_action . "&amp;{$u_sort_param}{$keywords_param}&amp;start={$start}",
 
-			'S_ON_PAGE'		=> on_page($log_count, $config['topics_per_page'], $start),
-			'PAGINATION'	=> generate_pagination($this->u_action . "&amp;{$u_sort_param}{$keywords_param}", $log_count, $config['topics_per_page'], $start, true),
+			'S_ON_PAGE'     => on_page($log_count, $config['topics_per_page'], $start),
+			'PAGINATION'    => generate_pagination($this->u_action . "&amp;{$u_sort_param}{$keywords_param}", $log_count, $config['topics_per_page'], $start, true),
 
-			'S_LIMIT_DAYS'	=> $s_limit_days,
-			'S_SORT_KEY'	=> $s_sort_key,
-			'S_SORT_DIR'	=> $s_sort_dir,
-			'S_CLEARLOGS'	=> $auth->acl_get('a_clearlogs'),
-			'S_KEYWORDS'	=> $keywords,
+			'S_LIMIT_DAYS'  => $s_limit_days,
+			'S_SORT_KEY'    => $s_sort_key,
+			'S_SORT_DIR'    => $s_sort_dir,
+			'S_CLEARLOGS'   => $auth->acl_get('a_clearlogs'),
+			'S_KEYWORDS'    => $keywords,
 			]
 		);
 
@@ -153,14 +153,14 @@ class acp_logs
 			}
 
 			$template->assign_block_vars('log', [
-				'USERNAME'			=> $row['username_full'],
-				'REPORTEE_USERNAME'	=> ($row['reportee_username'] && $row['user_id'] != $row['reportee_id']) ? $row['reportee_username_full'] : '',
+				'USERNAME'          => $row['username_full'],
+				'REPORTEE_USERNAME' => ($row['reportee_username'] && $row['user_id'] != $row['reportee_id']) ? $row['reportee_username_full'] : '',
 
-				'IP'				=> $row['ip'],
-				'DATE'				=> $user->format_date($row['time']),
-				'ACTION'			=> $row['action'],
-				'DATA'				=> (sizeof($data)) ? implode(' | ', $data) : '',
-				'ID'				=> $row['id'],
+				'IP'                => $row['ip'],
+				'DATE'              => $user->format_date($row['time']),
+				'ACTION'            => $row['action'],
+				'DATA'              => (sizeof($data)) ? implode(' | ', $data) : '',
+				'ID'                => $row['id'],
 				]
 			);
 		}

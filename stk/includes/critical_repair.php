@@ -69,8 +69,8 @@ class critical_repair
 
 	/**
 	* Run a manual critical repair tol
-	* @param	String	$tool The name (file/class) of the tool
-	* @return	mixed	The result of the tool
+	* @param    String  $tool The name (file/class) of the tool
+	* @return   mixed   The result of the tool
 	*/
 	function run_tool($tool)
 	{
@@ -108,9 +108,9 @@ class critical_repair
 	/**
 	 * Trigger an error message, this method *must* be called when an ERK tool
 	 * encounters an error. You can not rely on msg_handler!
-	 * @param	String|Array	$msg				The error message or an string array containing multiple lines
-	 * @param	Boolean			$redirect_stk		Show a backlink to the STK, otherwise to the ERK
-	 * @return	void
+	 * @param   String|Array    $msg                The error message or an string array containing multiple lines
+	 * @param   Boolean         $redirect_stk       Show a backlink to the STK, otherwise to the ERK
+	 * @return  void
 	 */
 	function trigger_error($msg, $redirect_stk = false)
 	{

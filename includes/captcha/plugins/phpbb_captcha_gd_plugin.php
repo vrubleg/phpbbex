@@ -25,12 +25,12 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 {
 
 	var $captcha_vars = [
-		'captcha_gd_x_grid'				=> 'CAPTCHA_GD_X_GRID',
-		'captcha_gd_y_grid'				=> 'CAPTCHA_GD_Y_GRID',
-		'captcha_gd_foreground_noise'	=> 'CAPTCHA_GD_FOREGROUND_NOISE',
-		'captcha_gd_wave'				=> 'CAPTCHA_GD_WAVE',
-		'captcha_gd_3d_noise'			=> 'CAPTCHA_GD_3D_NOISE',
-		'captcha_gd_fonts'				=> 'CAPTCHA_GD_FONTS',
+		'captcha_gd_x_grid'             => 'CAPTCHA_GD_X_GRID',
+		'captcha_gd_y_grid'             => 'CAPTCHA_GD_Y_GRID',
+		'captcha_gd_foreground_noise'   => 'CAPTCHA_GD_FOREGROUND_NOISE',
+		'captcha_gd_wave'               => 'CAPTCHA_GD_WAVE',
+		'captcha_gd_3d_noise'           => 'CAPTCHA_GD_3D_NOISE',
+		'captcha_gd_fonts'              => 'CAPTCHA_GD_FONTS',
 	];
 
 	function __construct()
@@ -112,9 +112,9 @@ class phpbb_captcha_gd extends phpbb_default_captcha
 			}
 
 			$template->assign_vars([
-				'CAPTCHA_PREVIEW'	=> $this->get_demo_template($id),
-				'CAPTCHA_NAME'		=> $this->get_class_name(),
-				'U_ACTION'			=> $module->u_action,
+				'CAPTCHA_PREVIEW'   => $this->get_demo_template($id),
+				'CAPTCHA_NAME'      => $this->get_class_name(),
+				'U_ACTION'          => $module->u_action,
 			]);
 		}
 	}

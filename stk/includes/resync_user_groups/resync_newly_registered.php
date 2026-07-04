@@ -20,9 +20,9 @@ class resync_newly_registered
 	 * Array used to link steps to groups
 	 * @var Array
 	 */
-	var $groups	= [
-		0	=> 'REGISTERED',
-		1	=> 'NEWLY_REGISTERED',
+	var $groups = [
+		0   => 'REGISTERED',
+		1   => 'NEWLY_REGISTERED',
 	];
 
 	/**
@@ -59,12 +59,12 @@ class resync_newly_registered
 
 		// Get global variables
 		$last = request_var('last', 0); // The user_id of the last user in this batch
-		$step = request_var('step', 0);	// Step 0 is syncing the REGISTERED and 1 is NEWLY_REGISTERED
+		$step = request_var('step', 0); // Step 0 is syncing the REGISTERED and 1 is NEWLY_REGISTERED
 
 		// Get the user ids
-		$nr_gid		= 0;
-		$group_name	= $this->groups[$step];
-		$users		= $this->_get_user_batch($group_name, $last, $nr_gid);
+		$nr_gid     = 0;
+		$group_name = $this->groups[$step];
+		$users      = $this->_get_user_batch($group_name, $last, $nr_gid);
 
 		// Finished this step go to the next
 		if (empty($users))
@@ -83,14 +83,14 @@ class resync_newly_registered
 		}
 
 		// Prepare the correct function call
-		$function	= '';
-		$args		= [];
+		$function   = '';
+		$args       = [];
 		switch ($group_name)
 		{
 			// Users with not enough posts
 			case 'REGISTERED':
-				$function	= 'group_user_add';
-				$args		= [
+				$function   = 'group_user_add';
+				$args       = [
 					$nr_gid,
 					$users,
 					false,
@@ -100,8 +100,8 @@ class resync_newly_registered
 			break;
 
 			case 'NEWLY_REGISTERED':
-				$function	= 'group_user_del';
-				$args		= [
+				$function   = 'group_user_del';
+				$args       = [
 					$nr_gid,
 					$users,
 				];
@@ -135,9 +135,9 @@ class resync_newly_registered
 	/**
 	 * Get the next batch of users.
 	 *
-	 * @param	$group_name	The name of the group of which the users are fetched
-	 * @param	$last		The id of the last user in the previous batch
-	 * @param	$group_id	Variable that will be filled with the group_id of the NEWLY_REGISTERED users group
+	 * @param   $group_name The name of the group of which the users are fetched
+	 * @param   $last       The id of the last user in the previous batch
+	 * @param   $group_id   Variable that will be filled with the group_id of the NEWLY_REGISTERED users group
 	 */
 	function _get_user_batch($group_name, $last, &$nr_gid)
 	{
@@ -149,8 +149,8 @@ class resync_newly_registered
 		$sql = 'SELECT group_id
 			FROM ' . GROUPS_TABLE . "
 			WHERE group_name = 'NEWLY_REGISTERED'";
-		$result	= $db->sql_query_limit($sql, 1, 0, 3600);
-		$nr_gid	= $db->sql_fetchfield('group_id', false, $result);
+		$result = $db->sql_query_limit($sql, 1, 0, 3600);
+		$nr_gid = $db->sql_fetchfield('group_id', false, $result);
 		$db->sql_freeresult($result);
 
 		// Set some group dependant sql stuff
@@ -169,23 +169,23 @@ class resync_newly_registered
 		$sql_where = "u.user_posts {$sql_token} " . (int) $config['new_member_post_limit'];
 
 		$sql_ary = [
-			'SELECT'	=> 'u.user_id',
-			'FROM'		=> [
-				USERS_TABLE			=> 'u',
-				USER_GROUP_TABLE	=> 'ug',
+			'SELECT'    => 'u.user_id',
+			'FROM'      => [
+				USERS_TABLE         => 'u',
+				USER_GROUP_TABLE    => 'ug',
 			],
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [
+					'FROM'  => [
 						GROUPS_TABLE => 'g',
 					],
-					'ON'	=> "g.group_name = '" . $group_name . "'",
+					'ON'    => "g.group_name = '" . $group_name . "'",
 				],
 			],
-			'WHERE'			=> "ug.group_id = g.group_id AND ug.user_id > {$last} AND (u.user_id = ug.user_id AND {$sql_where})",
+			'WHERE'         => "ug.group_id = g.group_id AND ug.user_id > {$last} AND (u.user_id = ug.user_id AND {$sql_where})",
 		];
-		$sql	= $db->sql_build_query('SELECT', $sql_ary);
-		$result	= $db->sql_query_limit($sql, $this->parent->batch_size, 0);
+		$sql    = $db->sql_build_query('SELECT', $sql_ary);
+		$result = $db->sql_query_limit($sql, $this->parent->batch_size, 0);
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$users[] = $row['user_id'];

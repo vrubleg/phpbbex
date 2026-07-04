@@ -31,13 +31,13 @@ class erk_config_repair
 
 		$error = [];
 		$data = [
-			'dbms'			=> $_POST['dbms'] ?? '',
-			'dbhost'		=> $_POST['dbhost'] ?? '',
-			'dbport'		=> $_POST['dbport'] ?? '',
-			'dbname'		=> $_POST['dbname'] ?? '',
-			'dbuser'		=> $_POST['dbuser'] ?? '',
-			'dbpasswd'		=> $_POST['dbpasswd'] ?? '',
-			'table_prefix'	=> $_POST['table_prefix'] ?? 'phpbb_',
+			'dbms'          => $_POST['dbms'] ?? '',
+			'dbhost'        => $_POST['dbhost'] ?? '',
+			'dbport'        => $_POST['dbport'] ?? '',
+			'dbname'        => $_POST['dbname'] ?? '',
+			'dbuser'        => $_POST['dbuser'] ?? '',
+			'dbpasswd'      => $_POST['dbpasswd'] ?? '',
+			'table_prefix'  => $_POST['table_prefix'] ?? 'phpbb_',
 		];
 
 		if (isset($_POST['submit']))
@@ -62,13 +62,13 @@ class erk_config_repair
 			$config_data = "<?php\n\n";
 
 			$config_data_array = [
-				'dbhost'		=> $data['dbhost'],
-				'dbport'		=> $data['dbport'],
-				'dbname'		=> $data['dbname'],
-				'dbuser'		=> $data['dbuser'],
-				'dbpasswd'		=> htmlspecialchars_decode($data['dbpasswd']),
-				'table_prefix'	=> $data['table_prefix'],
-				'acm_type'		=> 'file',
+				'dbhost'        => $data['dbhost'],
+				'dbport'        => $data['dbport'],
+				'dbname'        => $data['dbname'],
+				'dbuser'        => $data['dbuser'],
+				'dbpasswd'      => htmlspecialchars_decode($data['dbpasswd']),
+				'table_prefix'  => $data['table_prefix'],
+				'acm_type'      => 'file',
 			];
 
 			foreach ($config_data_array as $key => $value)
@@ -194,8 +194,8 @@ class erk_config_repair
 	/**
 	* Used to test whether we are able to connect to the database the user has specified
 	* and identify any problems (eg there are already tables with the names we want to use
-	* @param	array	$dbms should be of the format of an element of the array returned by {@link get_available_dbms get_available_dbms()}
-	*					necessary extensions should be loaded already
+	* @param    array   $dbms should be of the format of an element of the array returned by {@link get_available_dbms get_available_dbms()}
+	*                   necessary extensions should be loaded already
 	*/
 	function critical_connect_check_db($error_connect, &$error, $dbms_details, $table_prefix, $dbhost, $dbuser, $dbpasswd, $dbname, $dbport, $prefix_may_exist = false, $load_dbal = true, $unicode_check = true)
 	{

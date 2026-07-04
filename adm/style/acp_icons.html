@@ -116,7 +116,7 @@
 		<!-- IF ID or S_ADD -->
 			<td><select id="order_{items.S_ROW_COUNT}" name="order[{items.IMG}]">
 				<optgroup id="order_disp_{items.S_ROW_COUNT}" label="{L_DISPLAY_POSTING}" <!-- IF not items.POSTING_CHECKED -->disabled="disabled" class="disabled-options" <!-- ENDIF -->>{S_ORDER_LIST_DISPLAY}</optgroup>
-				<optgroup id="order_no_disp_{items.S_ROW_COUNT}" label="{L_DISPLAY_POSTING_NO}" <!-- IF  items.POSTING_CHECKED -->disabled="disabled" class="disabled-options" <!-- ENDIF -->>{S_ORDER_LIST_UNDISPLAY}</optgroup>
+				<optgroup id="order_no_disp_{items.S_ROW_COUNT}" label="{L_DISPLAY_POSTING_NO}" <!-- IF items.POSTING_CHECKED -->disabled="disabled" class="disabled-options" <!-- ENDIF -->>{S_ORDER_LIST_UNDISPLAY}</optgroup>
 			</select></td>
 		<!-- ENDIF -->
 		<!-- IF S_ADD -->
@@ -136,7 +136,7 @@
 		<td><input class="text post" type="text" size="3" name="add_width" id="add_width" value="{WIDTH}" /></td>
 		<td><input class="text post" type="text" size="3" name="add_height" id="add_height" value="{HEIGHT}" /></td>
 		<td><input type="checkbox" class="radio" name="add_display_on_posting" checked="checked" onclick="toggle_select('add', this.checked, 'add_order');"/></td>
- 		<td><select id="order_add_order" name="add_order">
+		<td><select id="order_add_order" name="add_order">
 				<optgroup id="order_disp_add_order" label="{L_DISPLAY_POSTING}">{S_ADD_ORDER_LIST_DISPLAY}</optgroup>
 				<optgroup id="order_no_disp_add_order" label="{L_DISPLAY_POSTING_NO}" disabled="disabled" class="disabled-options" >{S_ADD_ORDER_LIST_UNDISPLAY}</optgroup>
 		</select></td>

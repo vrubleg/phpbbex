@@ -119,11 +119,11 @@ if (!$auth->acl_getf_global('m_'))
 {
 	// Except he is using one of the quickmod tools for users
 	$user_quickmod_actions = [
-		'lock'			=> 'f_user_lock',
-		'make_sticky'	=> 'f_sticky',
-		'make_announce'	=> 'f_announce',
-		'make_global'	=> 'f_announce',
-		'make_normal'	=> ['f_announce', 'f_sticky']
+		'lock'          => 'f_user_lock',
+		'make_sticky'   => 'f_sticky',
+		'make_announce' => 'f_announce',
+		'make_global'   => 'f_announce',
+		'make_normal'   => ['f_announce', 'f_sticky']
 	];
 
 	$allow_user = false;
@@ -261,10 +261,10 @@ $module->assign_tpl_vars(append_sid(PHPBB_ROOT_PATH . 'mcp.php'));
 
 // Generate urls for letting the moderation control panel being accessed in different modes
 $template->assign_vars([
-	'U_MCP'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main'),
-	'U_MCP_FORUM'	=> ($forum_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}") : '',
-	'U_MCP_TOPIC'	=> ($forum_id && $topic_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;t={$topic_id}") : '',
-	'U_MCP_POST'	=> ($forum_id && $topic_id && $post_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;t={$topic_id}&amp;p={$post_id}") : '',
+	'U_MCP'         => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main'),
+	'U_MCP_FORUM'   => ($forum_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}") : '',
+	'U_MCP_TOPIC'   => ($forum_id && $topic_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;t={$topic_id}") : '',
+	'U_MCP_POST'    => ($forum_id && $topic_id && $post_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;t={$topic_id}&amp;p={$post_id}") : '',
 ]);
 
 // Generate the page, do not display/query online list
@@ -390,20 +390,20 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 	if (sizeof($topic_ids))
 	{
 		$sql_array = [
-			'SELECT'	=> 't.*, f.*',
+			'SELECT'    => 't.*, f.*',
 
-			'FROM'		=> [
-				TOPICS_TABLE	=> 't',
+			'FROM'      => [
+				TOPICS_TABLE    => 't',
 			],
 
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [FORUMS_TABLE => 'f'],
-					'ON'	=> 'f.forum_id = t.forum_id'
+					'FROM'  => [FORUMS_TABLE => 'f'],
+					'ON'    => 'f.forum_id = t.forum_id'
 				]
 			],
 
-			'WHERE'		=> $db->sql_in_set('t.topic_id', $topic_ids)
+			'WHERE'     => $db->sql_in_set('t.topic_id', $topic_ids)
 		];
 
 		if ($read_tracking && $config['load_db_lastread'])
@@ -411,13 +411,13 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 			$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
 
 			$sql_array['LEFT_JOIN'][] = [
-				'FROM'	=> [TOPICS_TRACK_TABLE => 'tt'],
-				'ON'	=> 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
+				'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
+				'ON'    => 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
 			];
 
 			$sql_array['LEFT_JOIN'][] = [
-				'FROM'	=> [FORUMS_TRACK_TABLE => 'ft'],
-				'ON'	=> 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
+				'FROM'  => [FORUMS_TRACK_TABLE => 'ft'],
+				'ON'    => 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
 			];
 		}
 
@@ -470,22 +470,22 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 	}
 
 	$sql_array = [
-		'SELECT'	=> 'p.*, u.*, t.*, f.*',
+		'SELECT'    => 'p.*, u.*, t.*, f.*',
 
-		'FROM'		=> [
-			USERS_TABLE		=> 'u',
-			POSTS_TABLE		=> 'p',
-			TOPICS_TABLE	=> 't',
+		'FROM'      => [
+			USERS_TABLE     => 'u',
+			POSTS_TABLE     => 'p',
+			TOPICS_TABLE    => 't',
 		],
 
-		'LEFT_JOIN'	=> [
+		'LEFT_JOIN' => [
 			[
-				'FROM'	=> [FORUMS_TABLE => 'f'],
-				'ON'	=> 'f.forum_id = t.forum_id'
+				'FROM'  => [FORUMS_TABLE => 'f'],
+				'ON'    => 'f.forum_id = t.forum_id'
 			]
 		],
 
-		'WHERE'		=> $db->sql_in_set('p.post_id', $post_ids) . '
+		'WHERE'     => $db->sql_in_set('p.post_id', $post_ids) . '
 			AND u.user_id = p.poster_id
 			AND t.topic_id = p.topic_id',
 	];
@@ -495,13 +495,13 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 		$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
 
 		$sql_array['LEFT_JOIN'][] = [
-			'FROM'	=> [TOPICS_TRACK_TABLE => 'tt'],
-			'ON'	=> 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
+			'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
+			'ON'    => 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
 		];
 
 		$sql_array['LEFT_JOIN'][] = [
-			'FROM'	=> [FORUMS_TRACK_TABLE => 'ft'],
-			'ON'	=> 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
+			'FROM'  => [FORUMS_TRACK_TABLE => 'ft'],
+			'ON'    => 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
 		];
 	}
 
@@ -604,14 +604,14 @@ function get_pm_data($pm_ids)
 	}
 
 	$sql_array = [
-		'SELECT'	=> 'p.*, u.*',
+		'SELECT'    => 'p.*, u.*',
 
-		'FROM'		=> [
-			USERS_TABLE			=> 'u',
-			PRIVMSGS_TABLE		=> 'p',
+		'FROM'      => [
+			USERS_TABLE         => 'u',
+			PRIVMSGS_TABLE      => 'p',
 		],
 
-		'WHERE'		=> $db->sql_in_set('p.msg_id', $pm_ids) . '
+		'WHERE'     => $db->sql_in_set('p.msg_id', $pm_ids) . '
 			AND u.user_id = p.author_id',
 	];
 
@@ -830,9 +830,9 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 	gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $sort_url);
 
 	$template->assign_vars([
-		'S_SELECT_SORT_DIR'		=> $s_sort_dir,
-		'S_SELECT_SORT_KEY'		=> $s_sort_key,
-		'S_SELECT_SORT_DAYS'	=> $s_limit_days]
+		'S_SELECT_SORT_DIR'     => $s_sort_dir,
+		'S_SELECT_SORT_KEY'     => $s_sort_key,
+		'S_SELECT_SORT_DAYS'    => $s_limit_days]
 	);
 
 	if (($sort_days && $mode != 'viewlogs') || in_array($mode, ['reports', 'unapproved_topics', 'unapproved_posts']) || $where_sql != 'WHERE')
@@ -850,15 +850,15 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 /**
 * Validate ids
 *
-* @param	array	&$ids			The relevant ids to check
-* @param	string	$table			The table to find the ids in
-* @param	string	$sql_id			The ids relevant column name
-* @param	array	$acl_list		A list of permissions the user need to have
-* @param	mixed	$singe_forum	Limit to one forum id (int) or the first forum found (true)
+* @param    array   &$ids           The relevant ids to check
+* @param    string  $table          The table to find the ids in
+* @param    string  $sql_id         The ids relevant column name
+* @param    array   $acl_list       A list of permissions the user need to have
+* @param    mixed   $singe_forum    Limit to one forum id (int) or the first forum found (true)
 *
-* @return	mixed	False if no ids were able to be retrieved, true if at least one id left.
-*					Additionally, this value can be the forum_id assigned if $single_forum was set.
-*					Therefore checking the result for with !== false is the best method.
+* @return   mixed   False if no ids were able to be retrieved, true if at least one id left.
+*                   Additionally, this value can be the forum_id assigned if $single_forum was set.
+*                   Therefore checking the result for with !== false is the best method.
 */
 function check_ids(&$ids, $table, $sql_id, $acl_list = false, $single_forum = false)
 {

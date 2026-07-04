@@ -34,14 +34,14 @@ class resync_attachments
 	{
 		global $config, $db, $template;
 
-		$step	= request_var('step', 0);
-		$begin	= $this->_batch_size * $step;
+		$step   = request_var('step', 0);
+		$begin  = $this->_batch_size * $step;
 
 		// Get the batch
 		$sql = 'SELECT attach_id, physical_filename
 			FROM ' . ATTACHMENTS_TABLE;
-		$result	= $db->sql_query_limit($sql, $this->_batch_size, $begin);
-		$batch	= $db->sql_fetchrowset($result);
+		$result = $db->sql_query_limit($sql, $this->_batch_size, $begin);
+		$batch  = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
 
 		if (empty($batch))

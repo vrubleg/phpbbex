@@ -43,10 +43,10 @@ class mcp_notes
 		{
 			case 'front':
 				$template->assign_vars([
-					'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
-					'U_POST_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes'),
+					'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
+					'U_POST_ACTION'     => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes'),
 
-					'L_TITLE'			=> $user->lang['MCP_NOTES'],
+					'L_TITLE'           => $user->lang['MCP_NOTES'],
 				]);
 
 				$this->tpl_name = 'mcp_notes_front';
@@ -71,9 +71,9 @@ class mcp_notes
 		$user_id = request_var('u', 0);
 		$username = request_var('username', '', true);
 		$start = request_var('start', 0);
-		$st	= request_var('st', 0);
-		$sk	= request_var('sk', 'b');
-		$sd	= request_var('sd', 'd');
+		$st = request_var('st', 0);
+		$sk = request_var('sk', 'b');
+		$sd = request_var('sd', 'd');
 
 		add_form_key('mcp_notes');
 
@@ -103,9 +103,9 @@ class mcp_notes
 		}
 
 		$deletemark = ($action == 'del_marked');
-		$deleteall	= ($action == 'del_all');
-		$marked		= request_var('marknote', [0]);
-		$usernote	= utf8_normalize_nfc(request_var('usernote', '', true));
+		$deleteall  = ($action == 'del_all');
+		$marked     = request_var('marknote', [0]);
+		$usernote   = utf8_normalize_nfc(request_var('usernote', '', true));
 
 		// Handle any actions
 		if (($deletemark || $deleteall) && $auth->acl_get('a_clearlogs'))
@@ -200,41 +200,41 @@ class mcp_notes
 			foreach ($log_data as $row)
 			{
 				$template->assign_block_vars('usernotes', [
-					'REPORT_BY'		=> $row['username_full'],
-					'REPORT_AT'		=> $user->format_date($row['time']),
-					'ACTION'		=> $row['action'],
-					'IP'			=> $row['ip'],
-					'ID'			=> $row['id']]
+					'REPORT_BY'     => $row['username_full'],
+					'REPORT_AT'     => $user->format_date($row['time']),
+					'ACTION'        => $row['action'],
+					'IP'            => $row['ip'],
+					'ID'            => $row['id']]
 				);
 			}
 		}
 
 		$template->assign_vars([
-			'U_POST_ACTION'			=> $this->u_action,
-			'S_CLEAR_ALLOWED'		=> (bool) $auth->acl_get('a_clearlogs'),
-			'S_SELECT_SORT_DIR'		=> $s_sort_dir,
-			'S_SELECT_SORT_KEY'		=> $s_sort_key,
-			'S_SELECT_SORT_DAYS'	=> $s_limit_days,
-			'S_KEYWORDS'			=> $keywords,
+			'U_POST_ACTION'         => $this->u_action,
+			'S_CLEAR_ALLOWED'       => (bool) $auth->acl_get('a_clearlogs'),
+			'S_SELECT_SORT_DIR'     => $s_sort_dir,
+			'S_SELECT_SORT_KEY'     => $s_sort_key,
+			'S_SELECT_SORT_DAYS'    => $s_limit_days,
+			'S_KEYWORDS'            => $keywords,
 
-			'L_TITLE'			=> $user->lang['MCP_NOTES_USER'],
+			'L_TITLE'           => $user->lang['MCP_NOTES_USER'],
 
-			'PAGE_NUMBER'		=> on_page($log_count, $config['topics_per_page'], $start),
-			'PAGINATION'		=> generate_pagination($this->u_action . "&amp;{$u_sort_param}{$keywords_param}", $log_count, $config['topics_per_page'], $start),
-			'TOTAL_REPORTS'		=> ($log_count == 1) ? $user->lang['LIST_REPORT'] : sprintf($user->lang['LIST_REPORTS'], $log_count),
+			'PAGE_NUMBER'       => on_page($log_count, $config['topics_per_page'], $start),
+			'PAGINATION'        => generate_pagination($this->u_action . "&amp;{$u_sort_param}{$keywords_param}", $log_count, $config['topics_per_page'], $start),
+			'TOTAL_REPORTS'     => ($log_count == 1) ? $user->lang['LIST_REPORT'] : sprintf($user->lang['LIST_REPORTS'], $log_count),
 
-			'RANK_TITLE'		=> $rank_title,
-			'JOINED'			=> $user->format_date($userrow['user_regdate']),
-			'POSTS'				=> $userrow['user_posts'] ?: 0,
-			'WARNINGS'			=> $userrow['user_warnings'] ?: 0,
+			'RANK_TITLE'        => $rank_title,
+			'JOINED'            => $user->format_date($userrow['user_regdate']),
+			'POSTS'             => $userrow['user_posts'] ?: 0,
+			'WARNINGS'          => $userrow['user_warnings'] ?: 0,
 
-			'USERNAME_FULL'		=> get_username_string('full', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
-			'USERNAME_COLOUR'	=> get_username_string('colour', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
-			'USERNAME'			=> get_username_string('username', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
-			'U_PROFILE'			=> get_username_string('profile', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
+			'USERNAME_FULL'     => get_username_string('full', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
+			'USERNAME_COLOUR'   => get_username_string('colour', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
+			'USERNAME'          => get_username_string('username', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
+			'U_PROFILE'         => get_username_string('profile', $userrow['user_id'], $userrow['username'], $userrow['user_colour']),
 
-			'AVATAR_IMG'		=> $avatar_img,
-			'RANK_IMG'			=> $rank_img,
+			'AVATAR_IMG'        => $avatar_img,
+			'RANK_IMG'          => $rank_img,
 			]
 		);
 	}

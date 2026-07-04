@@ -38,8 +38,8 @@ class captcha
 
 		// Generate colours
 		$colour = new colour_manager($img, [
-			'random'	=> true,
-			'min_value'	=> 60,
+			'random'    => true,
+			'min_value' => 60,
 		], 'hsv');
 
 		$scheme = $colour->colour_scheme('background', false);
@@ -260,9 +260,9 @@ class captcha
 	function captcha_noise_bg_bitmaps()
 	{
 		return [
-			'width'		=> 15,
-			'height'	=> 5,
-			'data'		=> [
+			'width'     => 15,
+			'height'    => 5,
+			'data'      => [
 
 			1 => [
 				[1,0,0,0,1,0,0,0,0,0,0,0,0,0,0],
@@ -324,7 +324,7 @@ class captcha
 		global $config;
 
 		$chars = [
-			'A'	=>	[
+			'A' =>  [
 						[
 							[0,0,0,0,1,0,0,0,0],
 							[0,0,0,1,0,1,0,0,0],
@@ -377,7 +377,7 @@ class captcha
 							[0,1,1,1,1,1,1,0,1],
 						],
 					],
-		'B'	=>		[
+		'B' =>      [
 						[
 							[1,1,1,1,1,1,1,0,0],
 							[1,0,0,0,0,0,0,1,0],
@@ -430,7 +430,7 @@ class captcha
 							[0,1,1,1,1,1,1,0,0],
 						],
 					],
-		'C'	=>		[
+		'C' =>      [
 						[
 							[0,0,1,1,1,1,1,0,0],
 							[0,1,0,0,0,0,0,1,0],
@@ -466,7 +466,7 @@ class captcha
 							[0,0,1,1,1,1,1,0,1],
 						],
 					],
-		'D'	=>		[
+		'D' =>      [
 						[
 							[1,1,1,1,1,1,1,0,0],
 							[1,0,0,0,0,0,0,1,0],
@@ -519,7 +519,7 @@ class captcha
 							[0,0,1,1,1,1,1,0,1],
 						],
 					],
-		'E'	=>		[
+		'E' =>      [
 						[
 							[1,1,1,1,1,1,1,1,1],
 							[1,0,0,0,0,0,0,0,0],
@@ -572,7 +572,7 @@ class captcha
 							[0,1,1,1,1,1,1,1,0],
 						],
 					],
-		'F'	=>		[
+		'F' =>      [
 						[
 							[1,1,1,1,1,1,1,1,1],
 							[1,0,0,0,0,0,0,0,0],
@@ -625,7 +625,7 @@ class captcha
 							[0,1,0,0,0,0,0,0,0],
 						],
 					],
-		'G'	=>		[
+		'G' =>      [
 						[
 							[0,0,1,1,1,1,1,0,0],
 							[0,1,0,0,0,0,0,1,0],
@@ -678,7 +678,7 @@ class captcha
 							[0,0,0,0,0,0,0,0,0],
 						],
 					],
-		'H'	=>		[
+		'H' =>      [
 						[
 							[1,0,0,0,0,0,0,0,1],
 							[1,0,0,0,0,0,0,0,1],
@@ -731,7 +731,7 @@ class captcha
 							[1,0,0,0,0,0,1,0,0],
 						],
 					],
-		'I'	=>		[
+		'I' =>      [
 						[
 							[1,1,1,1,1,1,1,1,1],
 							[0,0,0,0,1,0,0,0,0],
@@ -784,7 +784,7 @@ class captcha
 							[0,0,0,1,1,1,0,0,0],
 						],
 					],
-		'J'	=>		[
+		'J' =>      [
 						[
 							[1,1,1,1,1,1,1,1,1],
 							[0,0,0,0,0,1,0,0,0],
@@ -837,7 +837,7 @@ class captcha
 							[0,0,1,1,0,0,0,0,0],
 						],
 					],
-		'K'	=>		[
+		'K' =>      [
 						[    // New 'K', supplied by NeoThermic
 							[1,0,0,0,0,0,0,0,1],
 							[1,0,0,0,0,0,0,1,0],
@@ -890,7 +890,7 @@ class captcha
 							[0,1,0,0,0,0,0,1,0],
 						],
 					],
-		'L'	=>		[
+		'L' =>      [
 						[
 							[0,0,0,0,0,0,0,0,0],
 							[1,0,0,0,0,0,0,0,0],
@@ -943,7 +943,7 @@ class captcha
 							[0,0,1,1,1,0,0,0,0],
 						],
 					],
-		'M'	=>		[
+		'M' =>      [
 						[
 							[1,1,0,0,0,0,0,1,1],
 							[1,1,0,0,0,0,0,1,1],
@@ -996,7 +996,7 @@ class captcha
 							[1,0,0,0,1,0,0,0,1],
 						],
 					],
-		'N'	=>		[
+		'N' =>      [
 						[
 							[1,1,0,0,0,0,0,0,1],
 							[1,1,0,0,0,0,0,0,1],
@@ -1049,7 +1049,7 @@ class captcha
 							[1,0,0,0,0,0,1,0,0],
 						],
 					],
-		'O'	=>		[
+		'O' =>      [
 						[
 							[0,0,1,1,1,1,1,0,0],
 							[0,1,0,0,0,0,0,1,0],
@@ -1102,7 +1102,7 @@ class captcha
 							[0,1,1,1,1,1,0,0,0],
 						],
 					],
-		'P'	=>		[
+		'P' =>      [
 						[
 							[1,1,1,1,1,1,1,0,0],
 							[1,0,0,0,0,0,0,1,0],
@@ -1155,7 +1155,7 @@ class captcha
 							[1,0,0,0,0,0,0,0,0],
 						],
 					],
-		'Q'	=>		[
+		'Q' =>      [
 						[
 							[0,0,1,1,1,1,1,0,0],
 							[0,1,0,0,0,0,0,1,0],
@@ -1208,7 +1208,7 @@ class captcha
 							[0,0,0,0,0,0,0,0,1],
 						],
 					],
-		'R'	=>		[
+		'R' =>      [
 						[
 							[1,1,1,1,1,1,1,0,0],
 							[1,0,0,0,0,0,0,1,0],
@@ -1261,7 +1261,7 @@ class captcha
 							[1,0,0,0,0,0,0,0,0],
 						],
 					],
-		'S'	=>		[
+		'S' =>      [
 						[
 							[0,0,1,1,1,1,1,0,0],
 							[0,1,0,0,0,0,0,1,0],
@@ -1314,7 +1314,7 @@ class captcha
 							[0,1,1,1,1,0,0,0,0],
 						],
 					],
-		'T'	=>		[
+		'T' =>      [
 						[
 							[1,1,1,1,1,1,1,1,1],
 							[0,0,0,0,1,0,0,0,0],
@@ -1367,7 +1367,7 @@ class captcha
 							[0,0,0,0,0,1,1,1,0],
 						],
 					],
-		'U'	=>		[
+		'U' =>      [
 						[
 							[1,0,0,0,0,0,0,0,1],
 							[1,0,0,0,0,0,0,0,1],
@@ -1420,7 +1420,7 @@ class captcha
 							[0,0,0,1,1,1,1,0,1],
 						],
 					],
-		'V'	=>		[
+		'V' =>      [
 						[
 							[1,0,0,0,0,0,0,0,1],
 							[1,0,0,0,0,0,0,0,1],
@@ -1473,7 +1473,7 @@ class captcha
 							[0,0,0,0,1,0,0,0,0],
 						],
 					],
-		'W'	=>		[
+		'W' =>      [
 						[
 							[1,0,0,0,0,0,0,0,1],
 							[1,0,0,0,0,0,0,0,1],
@@ -1526,7 +1526,7 @@ class captcha
 							[0,0,0,0,0,0,0,0,0],
 						],
 					],
-		'X'	=>		[
+		'X' =>      [
 						[
 							[1,0,0,0,0,0,0,0,1],
 							[1,0,0,0,0,0,0,0,1],
@@ -1579,7 +1579,7 @@ class captcha
 							[0,0,0,0,0,0,0,0,0],
 						],
 					],
-		'Y'	=>		[
+		'Y' =>      [
 						[
 							[1,0,0,0,0,0,0,0,1],
 							[1,0,0,0,0,0,0,0,1],
@@ -1632,7 +1632,7 @@ class captcha
 							[0,0,0,0,0,0,0,0,0],
 						],
 					],
-		'Z'	=>		[
+		'Z' =>      [
 						[
 							[1,1,1,1,1,1,1,1,1],
 							[1,0,0,0,0,0,0,0,1],
@@ -1687,36 +1687,36 @@ class captcha
 					],
 				];
 		return [
-			'width'		=> 9,
-			'height'	=> 15,
-			'data'		=> [
+			'width'     => 9,
+			'height'    => 15,
+			'data'      => [
 
-			'A' =>	$chars['A'][mt_rand(0, min(sizeof($chars['A']), $config['captcha_gd_fonts']) -1)],
-			'B' =>	$chars['B'][mt_rand(0, min(sizeof($chars['B']), $config['captcha_gd_fonts']) -1)],
-			'C' =>	$chars['C'][mt_rand(0, min(sizeof($chars['C']), $config['captcha_gd_fonts']) -1)],
-			'D' =>	$chars['D'][mt_rand(0, min(sizeof($chars['D']), $config['captcha_gd_fonts']) -1)],
-			'E' =>	$chars['E'][mt_rand(0, min(sizeof($chars['E']), $config['captcha_gd_fonts']) -1)],
-			'F' =>	$chars['F'][mt_rand(0, min(sizeof($chars['F']), $config['captcha_gd_fonts']) -1)],
-			'G' =>	$chars['G'][mt_rand(0, min(sizeof($chars['G']), $config['captcha_gd_fonts']) -1)],
-			'H' =>	$chars['H'][mt_rand(0, min(sizeof($chars['H']), $config['captcha_gd_fonts']) -1)],
-			'I' =>	$chars['I'][mt_rand(0, min(sizeof($chars['I']), $config['captcha_gd_fonts']) -1)],
-			'J' =>	$chars['J'][mt_rand(0, min(sizeof($chars['J']), $config['captcha_gd_fonts']) -1)],
-			'K' =>	$chars['K'][mt_rand(0, min(sizeof($chars['K']), $config['captcha_gd_fonts']) -1)],
-			'L' =>	$chars['L'][mt_rand(0, min(sizeof($chars['L']), $config['captcha_gd_fonts']) -1)],
-			'M' =>	$chars['M'][mt_rand(0, min(sizeof($chars['M']), $config['captcha_gd_fonts']) -1)],
-			'N' =>	$chars['N'][mt_rand(0, min(sizeof($chars['N']), $config['captcha_gd_fonts']) -1)],
-			'O' =>	$chars['O'][mt_rand(0, min(sizeof($chars['O']), $config['captcha_gd_fonts']) -1)],
-			'P' =>	$chars['P'][mt_rand(0, min(sizeof($chars['P']), $config['captcha_gd_fonts']) -1)],
-			'Q' =>	$chars['Q'][mt_rand(0, min(sizeof($chars['Q']), $config['captcha_gd_fonts']) -1)],
-			'R' =>	$chars['R'][mt_rand(0, min(sizeof($chars['R']), $config['captcha_gd_fonts']) -1)],
-			'S' =>	$chars['S'][mt_rand(0, min(sizeof($chars['S']), $config['captcha_gd_fonts']) -1)],
-			'T' =>	$chars['T'][mt_rand(0, min(sizeof($chars['T']), $config['captcha_gd_fonts']) -1)],
-			'U' =>	$chars['U'][mt_rand(0, min(sizeof($chars['U']), $config['captcha_gd_fonts']) -1)],
-			'V' =>	$chars['V'][mt_rand(0, min(sizeof($chars['V']), $config['captcha_gd_fonts']) -1)],
-			'W' =>	$chars['W'][mt_rand(0, min(sizeof($chars['W']), $config['captcha_gd_fonts']) -1)],
-			'X' =>	$chars['X'][mt_rand(0, min(sizeof($chars['X']), $config['captcha_gd_fonts']) -1)],
-			'Y' =>	$chars['Y'][mt_rand(0, min(sizeof($chars['Y']), $config['captcha_gd_fonts']) -1)],
-			'Z' =>	$chars['Z'][mt_rand(0, min(sizeof($chars['Z']), $config['captcha_gd_fonts']) -1)],
+			'A' =>  $chars['A'][mt_rand(0, min(sizeof($chars['A']), $config['captcha_gd_fonts']) -1)],
+			'B' =>  $chars['B'][mt_rand(0, min(sizeof($chars['B']), $config['captcha_gd_fonts']) -1)],
+			'C' =>  $chars['C'][mt_rand(0, min(sizeof($chars['C']), $config['captcha_gd_fonts']) -1)],
+			'D' =>  $chars['D'][mt_rand(0, min(sizeof($chars['D']), $config['captcha_gd_fonts']) -1)],
+			'E' =>  $chars['E'][mt_rand(0, min(sizeof($chars['E']), $config['captcha_gd_fonts']) -1)],
+			'F' =>  $chars['F'][mt_rand(0, min(sizeof($chars['F']), $config['captcha_gd_fonts']) -1)],
+			'G' =>  $chars['G'][mt_rand(0, min(sizeof($chars['G']), $config['captcha_gd_fonts']) -1)],
+			'H' =>  $chars['H'][mt_rand(0, min(sizeof($chars['H']), $config['captcha_gd_fonts']) -1)],
+			'I' =>  $chars['I'][mt_rand(0, min(sizeof($chars['I']), $config['captcha_gd_fonts']) -1)],
+			'J' =>  $chars['J'][mt_rand(0, min(sizeof($chars['J']), $config['captcha_gd_fonts']) -1)],
+			'K' =>  $chars['K'][mt_rand(0, min(sizeof($chars['K']), $config['captcha_gd_fonts']) -1)],
+			'L' =>  $chars['L'][mt_rand(0, min(sizeof($chars['L']), $config['captcha_gd_fonts']) -1)],
+			'M' =>  $chars['M'][mt_rand(0, min(sizeof($chars['M']), $config['captcha_gd_fonts']) -1)],
+			'N' =>  $chars['N'][mt_rand(0, min(sizeof($chars['N']), $config['captcha_gd_fonts']) -1)],
+			'O' =>  $chars['O'][mt_rand(0, min(sizeof($chars['O']), $config['captcha_gd_fonts']) -1)],
+			'P' =>  $chars['P'][mt_rand(0, min(sizeof($chars['P']), $config['captcha_gd_fonts']) -1)],
+			'Q' =>  $chars['Q'][mt_rand(0, min(sizeof($chars['Q']), $config['captcha_gd_fonts']) -1)],
+			'R' =>  $chars['R'][mt_rand(0, min(sizeof($chars['R']), $config['captcha_gd_fonts']) -1)],
+			'S' =>  $chars['S'][mt_rand(0, min(sizeof($chars['S']), $config['captcha_gd_fonts']) -1)],
+			'T' =>  $chars['T'][mt_rand(0, min(sizeof($chars['T']), $config['captcha_gd_fonts']) -1)],
+			'U' =>  $chars['U'][mt_rand(0, min(sizeof($chars['U']), $config['captcha_gd_fonts']) -1)],
+			'V' =>  $chars['V'][mt_rand(0, min(sizeof($chars['V']), $config['captcha_gd_fonts']) -1)],
+			'W' =>  $chars['W'][mt_rand(0, min(sizeof($chars['W']), $config['captcha_gd_fonts']) -1)],
+			'X' =>  $chars['X'][mt_rand(0, min(sizeof($chars['X']), $config['captcha_gd_fonts']) -1)],
+			'Y' =>  $chars['Y'][mt_rand(0, min(sizeof($chars['Y']), $config['captcha_gd_fonts']) -1)],
+			'Z' =>  $chars['Z'][mt_rand(0, min(sizeof($chars['Z']), $config['captcha_gd_fonts']) -1)],
 
 			'0' => [
 				[0,0,1,1,1,1,1,0,0],
@@ -1914,9 +1914,9 @@ class char_cube3d
 	*/
 	function __construct(&$bitmaps, $letter)
 	{
-		$this->bitmap			= $bitmaps['data'][$letter];
-		$this->bitmap_width		= $bitmaps['width'];
-		$this->bitmap_height	= $bitmaps['height'];
+		$this->bitmap           = $bitmaps['data'][$letter];
+		$this->bitmap_width     = $bitmaps['width'];
+		$this->bitmap_height    = $bitmaps['height'];
 
 		$this->basis_matrix[0][0] = mt_rand(-600, 600);
 		$this->basis_matrix[0][1] = mt_rand(-600, 600);
@@ -2000,9 +2000,9 @@ class char_cube3d
 	*/
 	function drawchar($scale, $xoff, $yoff, $img, $background, $colours)
 	{
-		$width	= $this->bitmap_width;
-		$height	= $this->bitmap_height;
-		$bitmap	= $this->bitmap;
+		$width  = $this->bitmap_width;
+		$height = $this->bitmap_height;
+		$bitmap = $this->bitmap;
 
 		$colour1 = $colours[array_rand($colours)];
 		$colour2 = $colours[array_rand($colours)];
@@ -2276,9 +2276,9 @@ class colour_manager
 			return $this->random_colour($colour, $mode);
 		}
 
-		$rgb		= colour_manager::model_convert($colour, $mode, 'rgb');
-		$store		= ($this->mode == 'rgb') ? $rgb : colour_manager::model_convert($colour, $mode, $this->mode);
-		$resource	= imagecolorallocate($this->img, (int) $rgb[0], (int) $rgb[1], (int) $rgb[2]);
+		$rgb        = colour_manager::model_convert($colour, $mode, 'rgb');
+		$store      = ($this->mode == 'rgb') ? $rgb : colour_manager::model_convert($colour, $mode, $this->mode);
+		$resource   = imagecolorallocate($this->img, (int) $rgb[0], (int) $rgb[1], (int) $rgb[2]);
 		$this->colours[$resource] = $store;
 
 		return $resource;
@@ -2305,23 +2305,23 @@ class colour_manager
 			default:
 
 				$default_params = [
-					'hue_bias'			=> false,	// degree / 'r'/'g'/'b'/'c'/'m'/'y'   /'o'
-					'hue_range'			=> false,	// if hue bias, then difference range +/- from bias
-					'min_saturation'	=> 30,		// 0 - 100
-					'max_saturation'	=> 80,		// 0 - 100
-					'min_value'			=> 30,		// 0 - 100
-					'max_value'			=> 80,		// 0 - 100
+					'hue_bias'          => false,   // degree / 'r'/'g'/'b'/'c'/'m'/'y'   /'o'
+					'hue_range'         => false,   // if hue bias, then difference range +/- from bias
+					'min_saturation'    => 30,      // 0 - 100
+					'max_saturation'    => 80,      // 0 - 100
+					'min_value'         => 30,      // 0 - 100
+					'max_value'         => 80,      // 0 - 100
 				];
 
 				$alt = ($mode == 'ahsv');
 				$params = array_merge($default_params, $params);
 
-				$min_hue		= 0;
-				$max_hue		= 359;
-				$min_saturation	= max(0, $params['min_saturation']);
-				$max_saturation	= min(100, $params['max_saturation']);
-				$min_value		= max(0, $params['min_value']);
-				$max_value		= min(100, $params['max_value']);
+				$min_hue        = 0;
+				$max_hue        = 359;
+				$min_saturation = max(0, $params['min_saturation']);
+				$max_saturation = min(100, $params['max_saturation']);
+				$min_value      = max(0, $params['min_value']);
+				$max_value      = min(100, $params['max_value']);
 
 				if ($params['hue_bias'] !== false)
 				{

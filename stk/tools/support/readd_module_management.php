@@ -20,40 +20,40 @@ class readd_module_management
 	 */
 	var $check_modules = [
 		[
-			'class' 	=> 'acp',
-			'parent'	=> 0,
-			'lang_name'	=> 'ACP_CAT_SYSTEM'
+			'class'     => 'acp',
+			'parent'    => 0,
+			'lang_name' => 'ACP_CAT_SYSTEM'
 		],
 		[
-			'class'		=> 'acp',
-			'parent'	=> 'ACP_CAT_SYSTEM',
-			'lang_name'	=> 'ACP_MODULE_MANAGEMENT'
+			'class'     => 'acp',
+			'parent'    => 'ACP_CAT_SYSTEM',
+			'lang_name' => 'ACP_MODULE_MANAGEMENT'
 		],
 		[
-			'class'		=> 'acp',
-			'parent'	=> 'ACP_MODULE_MANAGEMENT',
-			'lang_name'	=> 'ACP',
-			'data'		=> [
-				'module_basename'	=> 'modules',
-				'modes'				=> ['acp'],
+			'class'     => 'acp',
+			'parent'    => 'ACP_MODULE_MANAGEMENT',
+			'lang_name' => 'ACP',
+			'data'      => [
+				'module_basename'   => 'modules',
+				'modes'             => ['acp'],
 			],
 		],
 		[
-			'class'		=> 'acp',
-			'parent'	=> 'ACP_MODULE_MANAGEMENT',
-			'lang_name'	=> 'MCP',
-			'data'		=> [
-				'module_basename'	=> 'modules',
-				'modes'				=> ['mcp'],
+			'class'     => 'acp',
+			'parent'    => 'ACP_MODULE_MANAGEMENT',
+			'lang_name' => 'MCP',
+			'data'      => [
+				'module_basename'   => 'modules',
+				'modes'             => ['mcp'],
 			],
 		],
 		[
-			'class'		=> 'acp',
-			'parent'	=> 'ACP_MODULE_MANAGEMENT',
-			'lang_name'	=> 'UCP',
-			'data'		=> [
-				'module_basename'	=> 'modules',
-				'modes'				=> ['ucp'],
+			'class'     => 'acp',
+			'parent'    => 'ACP_MODULE_MANAGEMENT',
+			'lang_name' => 'UCP',
+			'data'      => [
+				'module_basename'   => 'modules',
+				'modes'             => ['ucp'],
 			],
 		],
 	];
@@ -91,8 +91,8 @@ class readd_module_management
 				WHERE module_class = '" . $db->sql_escape($module_data['class']) . "'
 					AND module_langname = '" . $db->sql_escape($module_data['lang_name']) . "'
 					AND module_enabled = 1";
-			$result		= $db->sql_query_limit($sql, 1, 0);
-			$enabled	= $db->sql_fetchfield('module_id', false, $result);
+			$result     = $db->sql_query_limit($sql, 1, 0);
+			$enabled    = $db->sql_fetchfield('module_id', false, $result);
 			$db->sql_freeresult($result);
 			
 			if (!$enabled)

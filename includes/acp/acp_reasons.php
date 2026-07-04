@@ -42,8 +42,8 @@ class acp_reasons
 			case 'edit':
 
 				$reason_row = [
-					'reason_title'			=> utf8_normalize_nfc(request_var('reason_title', '', true)),
-					'reason_description'	=> utf8_normalize_nfc(request_var('reason_description', '', true)),
+					'reason_title'          => utf8_normalize_nfc(request_var('reason_title', '', true)),
+					'reason_description'    => utf8_normalize_nfc(request_var('reason_description', '', true)),
 				];
 
 				if ($submit)
@@ -109,9 +109,9 @@ class acp_reasons
 							$db->sql_freeresult($result);
 
 							$sql_ary = [
-								'reason_title'			=> (string) $reason_row['reason_title'],
-								'reason_description'	=> (string) $reason_row['reason_description'],
-								'reason_order'			=> $max_order + 1
+								'reason_title'          => (string) $reason_row['reason_title'],
+								'reason_description'    => (string) $reason_row['reason_description'],
+								'reason_order'          => $max_order + 1
 							];
 
 							$db->sql_query('INSERT INTO ' . REPORTS_REASONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -121,8 +121,8 @@ class acp_reasons
 						else if ($reason_id)
 						{
 							$sql_ary = [
-								'reason_title'			=> (string) $reason_row['reason_title'],
-								'reason_description'	=> (string) $reason_row['reason_description'],
+								'reason_title'          => (string) $reason_row['reason_title'],
+								'reason_description'    => (string) $reason_row['reason_description'],
 							];
 
 							$db->sql_query('UPDATE ' . REPORTS_REASONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
@@ -161,21 +161,21 @@ class acp_reasons
 				}
 
 				$template->assign_vars([
-					'L_TITLE'		=> $user->lang['REASON_' . $l_title],
-					'U_ACTION'		=> $this->u_action . "&amp;id={$reason_id}&amp;action={$action}",
-					'U_BACK'		=> $this->u_action,
-					'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
+					'L_TITLE'       => $user->lang['REASON_' . $l_title],
+					'U_ACTION'      => $this->u_action . "&amp;id={$reason_id}&amp;action={$action}",
+					'U_BACK'        => $this->u_action,
+					'ERROR_MSG'     => (sizeof($error)) ? implode('<br />', $error) : '',
 
-					'REASON_TITLE'			=> $reason_row['reason_title'],
-					'REASON_DESCRIPTION'	=> $reason_row['reason_description'],
+					'REASON_TITLE'          => $reason_row['reason_title'],
+					'REASON_DESCRIPTION'    => $reason_row['reason_description'],
 
-					'TRANSLATED_TITLE'		=> ($translated) ? $user->lang['report_reasons']['TITLE'][strtoupper($reason_row['reason_title'])] : '',
+					'TRANSLATED_TITLE'      => ($translated) ? $user->lang['report_reasons']['TITLE'][strtoupper($reason_row['reason_title'])] : '',
 					'TRANSLATED_DESCRIPTION'=> ($translated) ? $user->lang['report_reasons']['DESCRIPTION'][strtoupper($reason_row['reason_title'])] : '',
 
-					'S_AVAILABLE_TITLES'	=> implode(', ', array_map('htmlspecialchars', array_keys($user->lang['report_reasons']['TITLE']))),
-					'S_EDIT_REASON'			=> true,
-					'S_TRANSLATED'			=> $translated,
-					'S_ERROR'				=> (sizeof($error) > 0),
+					'S_AVAILABLE_TITLES'    => implode(', ', array_map('htmlspecialchars', array_keys($user->lang['report_reasons']['TITLE']))),
+					'S_EDIT_REASON'         => true,
+					'S_TRANSLATED'          => $translated,
+					'S_ERROR'               => (sizeof($error) > 0),
 					]
 				);
 
@@ -225,10 +225,10 @@ class acp_reasons
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'action'	=> $action,
-						'id'		=> $reason_id])
+						'i'         => $id,
+						'mode'      => $mode,
+						'action'    => $action,
+						'id'        => $reason_id])
 					);
 				}
 
@@ -274,7 +274,7 @@ class acp_reasons
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'U_ACTION'			=> $this->u_action,
+			'U_ACTION'          => $this->u_action,
 			]
 		);
 
@@ -311,17 +311,17 @@ class acp_reasons
 			}
 
 			$template->assign_block_vars('reasons', [
-				'REASON_TITLE'			=> $row['reason_title'],
-				'REASON_DESCRIPTION'	=> $row['reason_description'],
-				'REASON_COUNT'			=> $reason_count[$row['reason_id']] ?? 0,
+				'REASON_TITLE'          => $row['reason_title'],
+				'REASON_DESCRIPTION'    => $row['reason_description'],
+				'REASON_COUNT'          => $reason_count[$row['reason_id']] ?? 0,
 
-				'S_TRANSLATED'		=> $translated,
-				'S_OTHER_REASON'	=> $other_reason,
+				'S_TRANSLATED'      => $translated,
+				'S_OTHER_REASON'    => $other_reason,
 
-				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;id=' . $row['reason_id'],
-				'U_DELETE'		=> (!$other_reason) ? $this->u_action . '&amp;action=delete&amp;id=' . $row['reason_id'] : '',
-				'U_MOVE_UP'		=> $this->u_action . '&amp;action=move_up&amp;order=' . $row['reason_order'],
-				'U_MOVE_DOWN'	=> $this->u_action . '&amp;action=move_down&amp;order=' . $row['reason_order'],
+				'U_EDIT'        => $this->u_action . '&amp;action=edit&amp;id=' . $row['reason_id'],
+				'U_DELETE'      => (!$other_reason) ? $this->u_action . '&amp;action=delete&amp;id=' . $row['reason_id'] : '',
+				'U_MOVE_UP'     => $this->u_action . '&amp;action=move_up&amp;order=' . $row['reason_order'],
+				'U_MOVE_DOWN'   => $this->u_action . '&amp;action=move_down&amp;order=' . $row['reason_order'],
 			]);
 		}
 		$db->sql_freeresult($result);

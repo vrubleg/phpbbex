@@ -29,38 +29,38 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	add_form_key('ucp_pm_compose');
 
 	// Grab only parameters needed here
-	$to_user_id		= request_var('u', 0);
-	$to_group_id	= request_var('g', 0);
-	$msg_id			= request_var('p', 0);
-	$draft_id		= request_var('d', 0);
-	$lastclick		= request_var('lastclick', 0);
+	$to_user_id     = request_var('u', 0);
+	$to_group_id    = request_var('g', 0);
+	$msg_id         = request_var('p', 0);
+	$draft_id       = request_var('d', 0);
+	$lastclick      = request_var('lastclick', 0);
 
 	// Reply to all triggered (quote/reply)
-	$reply_to_all	= request_var('reply_to_all', 0);
+	$reply_to_all   = request_var('reply_to_all', 0);
 
 	// Do NOT use request_var or specialchars here
-	$address_list	= $_REQUEST['address_list'] ?? [];
+	$address_list   = $_REQUEST['address_list'] ?? [];
 
 	if (!is_array($address_list))
 	{
 		$address_list = [];
 	}
 
-	$preview	= isset($_POST['preview']);
-	$save		= isset($_POST['save']);
-	$load		= isset($_POST['load']);
-	$cancel		= (isset($_POST['cancel']) && !isset($_POST['save']));
-	$delete		= isset($_POST['delete']);
+	$preview    = isset($_POST['preview']);
+	$save       = isset($_POST['save']);
+	$load       = isset($_POST['load']);
+	$cancel     = (isset($_POST['cancel']) && !isset($_POST['save']));
+	$delete     = isset($_POST['delete']);
 
-	$remove_u	= isset($_REQUEST['remove_u']);
-	$remove_g	= isset($_REQUEST['remove_g']);
-	$add_to		= isset($_REQUEST['add_to']);
-	$add_bcc	= isset($_REQUEST['add_bcc']);
-	$refresh	= isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || $save || $load
+	$remove_u   = isset($_REQUEST['remove_u']);
+	$remove_g   = isset($_REQUEST['remove_g']);
+	$add_to     = isset($_REQUEST['add_to']);
+	$add_bcc    = isset($_REQUEST['add_bcc']);
+	$refresh    = isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || $save || $load
 		|| $remove_u || $remove_g || $add_to || $add_bcc;
-	$submit		= isset($_POST['post']) && !$refresh && !$preview;
+	$submit     = isset($_POST['post']) && !$refresh && !$preview;
 
-	$action		= ($delete && !$preview && !$refresh && $submit) ? 'delete' : $action;
+	$action     = ($delete && !$preview && !$refresh && $submit) ? 'delete' : $action;
 	$select_single = (!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm'));
 
 	$error = [];
@@ -115,10 +115,10 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		}
 
 		$template->assign_vars([
-			'S_SHOW_PM_BOX'		=> true,
-			'S_ALLOW_MASS_PM'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')),
-			'S_GROUP_OPTIONS'	=> ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group')) ? $group_options : '',
-			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single={$select_single}"),
+			'S_SHOW_PM_BOX'     => true,
+			'S_ALLOW_MASS_PM'   => ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')),
+			'S_GROUP_OPTIONS'   => ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group')) ? $group_options : '',
+			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single={$select_single}"),
 		]);
 	}
 
@@ -264,9 +264,9 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			}
 		}
 
-		$msg_id			= (int) $post['msg_id'];
-		$folder_id		= $post['folder_id'] ?? 0;
-		$message_text	= $post['message_text'] ?? '';
+		$msg_id         = (int) $post['msg_id'];
+		$folder_id      = $post['folder_id'] ?? 0;
+		$message_text   = $post['message_text'] ?? '';
 
 		if ((!$post['author_id'] || ($post['author_id'] == ANONYMOUS && $action != 'delete')) && $msg_id)
 		{
@@ -399,9 +399,9 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		else
 		{
 			$s_hidden_fields = [
-				'p'			=> $msg_id,
-				'f'			=> $folder_id,
-				'action'	=> 'delete'
+				'p'         => $msg_id,
+				'f'         => $folder_id,
+				'action'    => 'delete'
 			];
 
 			// PHPBB_ROOT_PATH . 'ucp.php?i=pm&amp;mode=compose'
@@ -487,10 +487,10 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 
 	if (!in_array($action, ['quote', 'edit', 'delete', 'forward']))
 	{
-		$enable_sig		= ($config['allow_sig'] && $config['allow_sig_pm'] && $auth->acl_get('u_sig') && $user->optionget('attachsig'));
-		$enable_smilies	= ($config['allow_smilies'] && $auth->acl_get('u_pm_smilies') && $user->optionget('smilies'));
-		$enable_bbcode	= ($config['allow_bbcode'] && $auth->acl_get('u_pm_bbcode') && $user->optionget('bbcode'));
-		$enable_urls	= true;
+		$enable_sig     = ($config['allow_sig'] && $config['allow_sig_pm'] && $auth->acl_get('u_sig') && $user->optionget('attachsig'));
+		$enable_smilies = ($config['allow_smilies'] && $auth->acl_get('u_pm_smilies') && $user->optionget('smilies'));
+		$enable_bbcode  = ($config['allow_bbcode'] && $auth->acl_get('u_pm_bbcode') && $user->optionget('bbcode'));
+		$enable_urls    = true;
 	}
 
 	$enable_magic_url = $drafts = false;
@@ -519,13 +519,13 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$message_parser->bbcode_uid = $bbcode_uid;
 	}
 
-	$bbcode_status	= ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode'));
-	$smilies_status	= ($config['allow_smilies'] && $config['auth_smilies_pm'] && $auth->acl_get('u_pm_smilies'));
-	$img_status		= ($config['auth_img_pm'] && $auth->acl_get('u_pm_img'));
-	$flash_status	= ($config['auth_flash_pm'] && $auth->acl_get('u_pm_flash'));
-	$quote_status	= ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
-	$spoiler_status	= ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
-	$url_status		= (bool) $config['allow_post_links'];
+	$bbcode_status  = ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode'));
+	$smilies_status = ($config['allow_smilies'] && $config['auth_smilies_pm'] && $auth->acl_get('u_pm_smilies'));
+	$img_status     = ($config['auth_img_pm'] && $auth->acl_get('u_pm_img'));
+	$flash_status   = ($config['auth_flash_pm'] && $auth->acl_get('u_pm_flash'));
+	$quote_status   = ($bbcode_status && isset($config['max_quote_depth']) && $config['max_quote_depth'] >= 0);
+	$spoiler_status = ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
+	$url_status     = (bool) $config['allow_post_links'];
 
 	// Save Draft
 	if ($save && $auth->acl_get('u_sendpm'))
@@ -539,12 +539,12 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			if (confirm_box(true))
 			{
 				$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
-					'user_id'		=> $user->data['user_id'],
-					'topic_id'		=> 0,
-					'forum_id'		=> 0,
-					'save_time'		=> $current_time,
-					'draft_subject'	=> $subject,
-					'draft_message'	=> $message
+					'user_id'       => $user->data['user_id'],
+					'topic_id'      => 0,
+					'forum_id'      => 0,
+					'save_time'     => $current_time,
+					'draft_subject' => $subject,
+					'draft_message' => $message
 					]
 				);
 				$db->sql_query($sql);
@@ -559,14 +559,14 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			else
 			{
 				$s_hidden_fields = build_hidden_fields([
-					'mode'		=> $mode,
-					'action'	=> $action,
-					'save'		=> true,
-					'subject'	=> $subject,
-					'message'	=> $message,
-					'u'			=> $to_user_id,
-					'g'			=> $to_group_id,
-					'p'			=> $msg_id]
+					'mode'      => $mode,
+					'action'    => $action,
+					'save'      => true,
+					'subject'   => $subject,
+					'message'   => $message,
+					'u'         => $to_user_id,
+					'g'         => $to_group_id,
+					'p'         => $msg_id]
 				);
 				$s_hidden_fields .= build_address_field($address_list);
 
@@ -630,12 +630,12 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$subject = utf8_normalize_nfc(request_var('subject', '', true));
 		$message_parser->message = utf8_normalize_nfc(request_var('message', '', true));
 
-		$icon_id			= request_var('icon', 0);
+		$icon_id            = request_var('icon', 0);
 
-		$enable_bbcode 		= ($bbcode_status && !isset($_POST['disable_bbcode']));
-		$enable_smilies		= ($smilies_status && !isset($_POST['disable_smilies']));
-		$enable_urls		= !isset($_POST['disable_magic_url']);
-		$enable_sig			= (!$config['allow_sig'] ||!$config['allow_sig_pm']) ? false : (isset($_POST['attach_sig']));
+		$enable_bbcode      = ($bbcode_status && !isset($_POST['disable_bbcode']));
+		$enable_smilies     = ($smilies_status && !isset($_POST['disable_smilies']));
+		$enable_urls        = !isset($_POST['disable_magic_url']);
+		$enable_sig         = (!$config['allow_sig'] ||!$config['allow_sig_pm']) ? false : (isset($_POST['attach_sig']));
 
 		if ($submit)
 		{
@@ -697,23 +697,23 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		if (!sizeof($error) && $submit)
 		{
 			$pm_data = [
-				'msg_id'				=> (int) $msg_id,
-				'from_user_id'			=> $user->data['user_id'],
-				'from_user_ip'			=> $user->ip,
-				'from_username'			=> $user->data['username'],
-				'reply_from_root_level'	=> (isset($post['root_level'])) ? (int) $post['root_level'] : 0,
-				'reply_from_msg_id'		=> (int) $msg_id,
-				'icon_id'				=> (int) $icon_id,
-				'enable_sig'			=> (bool) $enable_sig,
-				'enable_bbcode'			=> (bool) $enable_bbcode,
-				'enable_smilies'		=> (bool) $enable_smilies,
-				'enable_urls'			=> (bool) $enable_urls,
-				'bbcode_bitfield'		=> $message_parser->bbcode_bitfield,
-				'bbcode_uid'			=> $message_parser->bbcode_uid,
-				'message'				=> $message_parser->message,
-				'attachment_data'		=> $message_parser->attachment_data,
-				'filename_data'			=> $message_parser->filename_data,
-				'address_list'			=> $address_list
+				'msg_id'                => (int) $msg_id,
+				'from_user_id'          => $user->data['user_id'],
+				'from_user_ip'          => $user->ip,
+				'from_username'         => $user->data['username'],
+				'reply_from_root_level' => (isset($post['root_level'])) ? (int) $post['root_level'] : 0,
+				'reply_from_msg_id'     => (int) $msg_id,
+				'icon_id'               => (int) $icon_id,
+				'enable_sig'            => (bool) $enable_sig,
+				'enable_bbcode'         => (bool) $enable_bbcode,
+				'enable_smilies'        => (bool) $enable_smilies,
+				'enable_urls'           => (bool) $enable_urls,
+				'bbcode_bitfield'       => $message_parser->bbcode_bitfield,
+				'bbcode_uid'            => $message_parser->bbcode_uid,
+				'message'               => $message_parser->message,
+				'attachment_data'       => $message_parser->attachment_data,
+				'filename_data'         => $message_parser->filename_data,
+				'address_list'          => $address_list
 			];
 
 			// ((!$message_subject) ? $subject : $message_subject)
@@ -788,7 +788,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			foreach ($attachment_data as $i => $attachment)
 			{
 				$template->assign_block_vars('attachment', [
-					'DISPLAY_ATTACHMENT'	=> $attachment]
+					'DISPLAY_ATTACHMENT'    => $attachment]
 				);
 			}
 			unset($attachment_data);
@@ -799,11 +799,11 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		if (!sizeof($error))
 		{
 			$template->assign_vars([
-				'PREVIEW_SUBJECT'		=> $preview_subject,
-				'PREVIEW_MESSAGE'		=> $preview_message,
-				'PREVIEW_SIGNATURE'		=> $preview_signature,
+				'PREVIEW_SUBJECT'       => $preview_subject,
+				'PREVIEW_MESSAGE'       => $preview_message,
+				'PREVIEW_SIGNATURE'     => $preview_signature,
 
-				'S_DISPLAY_PREVIEW'		=> true]
+				'S_DISPLAY_PREVIEW'     => true]
 			);
 		}
 		unset($message_text);
@@ -959,25 +959,25 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 				$id = (int) $id;
 
 				$tpl_ary = [
-					'IS_GROUP'	=> ($type == 'g'),
-					'IS_USER'	=> ($type == 'u'),
-					'UG_ID'		=> $id,
-					'NAME'		=> ${$type}[$id]['name'],
-					'COLOUR'	=> (${$type}[$id]['colour']) ? '#' . ${$type}[$id]['colour'] : '',
-					'TYPE'		=> $type,
+					'IS_GROUP'  => ($type == 'g'),
+					'IS_USER'   => ($type == 'u'),
+					'UG_ID'     => $id,
+					'NAME'      => ${$type}[$id]['name'],
+					'COLOUR'    => (${$type}[$id]['colour']) ? '#' . ${$type}[$id]['colour'] : '',
+					'TYPE'      => $type,
 				];
 
 				if ($type == 'u')
 				{
 					$tpl_ary = array_merge($tpl_ary, [
-						'U_VIEW'		=> get_username_string('profile', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
-						'NAME_FULL'		=> get_username_string('full', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
+						'U_VIEW'        => get_username_string('profile', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
+						'NAME_FULL'     => get_username_string('full', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
 					]);
 				}
 				else
 				{
 					$tpl_ary = array_merge($tpl_ary, [
-						'U_VIEW'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $id),
+						'U_VIEW'        => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $id),
 					]);
 				}
 
@@ -990,10 +990,10 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	$s_hidden_address_field = build_address_field($address_list);
 
 
-	$bbcode_checked		= (isset($enable_bbcode)) ? !$enable_bbcode : (($config['allow_bbcode'] && $auth->acl_get('u_pm_bbcode')) ? !$user->optionget('bbcode') : 1);
-	$smilies_checked	= (isset($enable_smilies)) ? !$enable_smilies : (($config['allow_smilies'] && $auth->acl_get('u_pm_smilies')) ? !$user->optionget('smilies') : 1);
-	$urls_checked		= (isset($enable_urls)) ? !$enable_urls : 0;
-	$sig_checked		= $enable_sig;
+	$bbcode_checked     = (isset($enable_bbcode)) ? !$enable_bbcode : (($config['allow_bbcode'] && $auth->acl_get('u_pm_bbcode')) ? !$user->optionget('bbcode') : 1);
+	$smilies_checked    = (isset($enable_smilies)) ? !$enable_smilies : (($config['allow_smilies'] && $auth->acl_get('u_pm_smilies')) ? !$user->optionget('smilies') : 1);
+	$urls_checked       = (isset($enable_urls)) ? !$enable_urls : 0;
+	$sig_checked        = $enable_sig;
 
 	switch ($action)
 	{
@@ -1036,50 +1036,50 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 
 	// Start assigning vars for main posting page ...
 	$template->assign_vars([
-		'L_POST_A'					=> $page_title,
-		'L_ICON'					=> $user->lang['PM_ICON'],
-		'L_MESSAGE_BODY_EXPLAIN'	=> (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
+		'L_POST_A'                  => $page_title,
+		'L_ICON'                    => $user->lang['PM_ICON'],
+		'L_MESSAGE_BODY_EXPLAIN'    => (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
 
-		'SUBJECT'				=> $message_subject ?? '',
-		'MESSAGE'				=> $message_text,
-		'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
-		'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
-		'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
-		'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-		'URL_STATUS'			=> ($url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
-		'MIN_FONT_SIZE'			=> (int) $config['min_post_font_size'],
-		'MAX_FONT_SIZE'			=> (int) $config['max_post_font_size'],
-		'MINI_POST_IMG'			=> $user->img('icon_post_target', $user->lang['PM']),
-		'ERROR'					=> (sizeof($error)) ? implode('<br />', $error) : '',
-		'MAX_RECIPIENTS'		=> ($config['allow_mass_pm'] && ($auth->acl_get('u_masspm') || $auth->acl_get('u_masspm_group'))) ? $max_recipients : 0,
+		'SUBJECT'               => $message_subject ?? '',
+		'MESSAGE'               => $message_text,
+		'BBCODE_STATUS'         => ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode') . '">', '</a>'),
+		'IMG_STATUS'            => ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
+		'FLASH_STATUS'          => ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
+		'SMILIES_STATUS'        => ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
+		'URL_STATUS'            => ($url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
+		'MIN_FONT_SIZE'         => (int) $config['min_post_font_size'],
+		'MAX_FONT_SIZE'         => (int) $config['max_post_font_size'],
+		'MINI_POST_IMG'         => $user->img('icon_post_target', $user->lang['PM']),
+		'ERROR'                 => (sizeof($error)) ? implode('<br />', $error) : '',
+		'MAX_RECIPIENTS'        => ($config['allow_mass_pm'] && ($auth->acl_get('u_masspm') || $auth->acl_get('u_masspm_group'))) ? $max_recipients : 0,
 
-		'S_COMPOSE_PM'			=> true,
-		'S_EDIT_POST'			=> ($action == 'edit'),
-		'S_SHOW_PM_ICONS'		=> $s_pm_icons,
-		'S_BBCODE_ALLOWED'		=> ($bbcode_status) ? 1 : 0,
-		'S_BBCODE_CHECKED'		=> ($bbcode_checked) ? ' checked="checked"' : '',
-		'S_SMILIES_ALLOWED'		=> $smilies_status,
-		'S_SMILIES_CHECKED'		=> ($smilies_checked) ? ' checked="checked"' : '',
-		'S_SIG_ALLOWED'			=> ($config['allow_sig'] && $config['allow_sig_pm'] && $auth->acl_get('u_sig')),
-		'S_SIGNATURE_CHECKED'	=> ($sig_checked) ? ' checked="checked"' : '',
-		'S_LINKS_ALLOWED'		=> $url_status,
-		'S_MAGIC_URL_CHECKED'	=> ($urls_checked) ? ' checked="checked"' : '',
-		'S_SAVE_ALLOWED'		=> ($auth->acl_get('u_sendpm') && $action != 'edit'),
-		'S_HAS_DRAFTS'			=> ($auth->acl_get('u_sendpm') && $drafts),
-		'S_FORM_ENCTYPE'		=> $form_enctype,
+		'S_COMPOSE_PM'          => true,
+		'S_EDIT_POST'           => ($action == 'edit'),
+		'S_SHOW_PM_ICONS'       => $s_pm_icons,
+		'S_BBCODE_ALLOWED'      => ($bbcode_status) ? 1 : 0,
+		'S_BBCODE_CHECKED'      => ($bbcode_checked) ? ' checked="checked"' : '',
+		'S_SMILIES_ALLOWED'     => $smilies_status,
+		'S_SMILIES_CHECKED'     => ($smilies_checked) ? ' checked="checked"' : '',
+		'S_SIG_ALLOWED'         => ($config['allow_sig'] && $config['allow_sig_pm'] && $auth->acl_get('u_sig')),
+		'S_SIGNATURE_CHECKED'   => ($sig_checked) ? ' checked="checked"' : '',
+		'S_LINKS_ALLOWED'       => $url_status,
+		'S_MAGIC_URL_CHECKED'   => ($urls_checked) ? ' checked="checked"' : '',
+		'S_SAVE_ALLOWED'        => ($auth->acl_get('u_sendpm') && $action != 'edit'),
+		'S_HAS_DRAFTS'          => ($auth->acl_get('u_sendpm') && $drafts),
+		'S_FORM_ENCTYPE'        => $form_enctype,
 
-		'S_BBCODE_IMG'			=> $img_status,
-		'S_BBCODE_FLASH'		=> $flash_status,
-		'S_BBCODE_QUOTE'		=> $quote_status,
-		'S_BBCODE_SPOILER'		=> $spoiler_status,
-		'S_BBCODE_URL'			=> $url_status,
+		'S_BBCODE_IMG'          => $img_status,
+		'S_BBCODE_FLASH'        => $flash_status,
+		'S_BBCODE_QUOTE'        => $quote_status,
+		'S_BBCODE_SPOILER'      => $spoiler_status,
+		'S_BBCODE_URL'          => $url_status,
 
-		'ALLOWED_EXTENSIONS'		=> implode(',', array_map(function ($ext) { return '.' . $ext; }, array_keys($allowed_extension_sizes))),
-		'ALLOWED_EXTENSIONS_JSON'	=> json::encode($allowed_extension_sizes),
+		'ALLOWED_EXTENSIONS'        => implode(',', array_map(function ($ext) { return '.' . $ext; }, array_keys($allowed_extension_sizes))),
+		'ALLOWED_EXTENSIONS_JSON'   => json::encode($allowed_extension_sizes),
 
-		'S_POST_ACTION'				=> $s_action,
-		'S_HIDDEN_ADDRESS_FIELD'	=> $s_hidden_address_field,
-		'S_HIDDEN_FIELDS'			=> $s_hidden_fields,
+		'S_POST_ACTION'             => $s_action,
+		'S_HIDDEN_ADDRESS_FIELD'    => $s_hidden_address_field,
+		'S_HIDDEN_FIELDS'           => $s_hidden_fields,
 	]);
 
 	// Build custom bbcodes array

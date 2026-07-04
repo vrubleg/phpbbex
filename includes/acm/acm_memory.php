@@ -31,8 +31,8 @@ class acm_memory
 	{
 		global $dbname, $table_prefix;
 
-		$this->cache_dir	= PHPBB_ROOT_PATH . 'cache/';
-		$this->key_prefix	= substr(md5($dbname . $table_prefix), 0, 8) . '_';
+		$this->cache_dir    = PHPBB_ROOT_PATH . 'cache/';
+		$this->key_prefix   = substr(md5($dbname . $table_prefix), 0, 8) . '_';
 
 		if (!isset($this->extension) || !extension_loaded($this->extension))
 		{

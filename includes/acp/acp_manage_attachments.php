@@ -29,9 +29,9 @@ class acp_manage_attachments
 		$start = request_var('start', 0);
 
 		// Sort keys
-		$sort_days	= request_var('st', 0);
-		$sort_key	= request_var('sk', 't');
-		$sort_dir	= request_var('sd', 'd');
+		$sort_days  = request_var('st', 0);
+		$sort_key   = request_var('sk', 't');
+		$sort_dir   = request_var('sd', 'd');
 
 		$form_key = 'acp_attach';
 		add_form_key($form_key);
@@ -45,7 +45,7 @@ class acp_manage_attachments
 		$this->page_title = 'ACP_MANAGE_ATTACHMENTS';
 
 		$template->assign_vars([
-			'U_ACTION'			=> $this->u_action]
+			'U_ACTION'          => $this->u_action]
 		);
 
 		if ($submit)
@@ -157,9 +157,9 @@ class acp_manage_attachments
 					$post_row = $post_info[$upload_list[$row['attach_id']]];
 
 					$template->assign_block_vars('upload', [
-						'FILE_INFO'		=> sprintf($user->lang['LOG_ATTACH_REASSIGNED'], $post_row['post_id'], $row['real_filename']),
-						'S_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])),
-						'L_DENIED'		=> (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '',
+						'FILE_INFO'     => sprintf($user->lang['LOG_ATTACH_REASSIGNED'], $post_row['post_id'], $row['real_filename']),
+						'S_DENIED'      => (!$auth->acl_get('f_attach', $post_row['forum_id'])),
+						'L_DENIED'      => (!$auth->acl_get('f_attach', $post_row['forum_id'])) ? sprintf($user->lang['UPLOAD_DENIED_FORUM'], $forum_names[$row['forum_id']]) : '',
 					]);
 
 					if (!$auth->acl_get('f_attach', $post_row['forum_id']))
@@ -169,11 +169,11 @@ class acp_manage_attachments
 
 					// Adjust attachment entry
 					$sql_ary = [
-						'in_message'	=> 0,
-						'is_orphan'		=> 0,
-						'poster_id'		=> $post_row['poster_id'],
-						'post_msg_id'	=> $post_row['post_id'],
-						'topic_id'		=> $post_row['topic_id'],
+						'in_message'    => 0,
+						'is_orphan'     => 0,
+						'poster_id'     => $post_row['poster_id'],
+						'post_msg_id'   => $post_row['post_id'],
+						'topic_id'      => $post_row['topic_id'],
 					];
 
 					$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
@@ -289,15 +289,15 @@ class acp_manage_attachments
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'TOTAL_FILES'		=> $num_files,
-			'TOTAL_SIZE'		=> $total_size,
-			'PAGINATION'		=> generate_pagination($this->u_action . "&amp;{$u_sort_param}", $num_files, $config['posts_per_page'], $start, true),
+			'TOTAL_FILES'       => $num_files,
+			'TOTAL_SIZE'        => $total_size,
+			'PAGINATION'        => generate_pagination($this->u_action . "&amp;{$u_sort_param}", $num_files, $config['posts_per_page'], $start, true),
 
-			'S_ATTACHMENTS'		=> true,
-			'S_ON_PAGE'			=> on_page($num_files, $config['posts_per_page'], $start),
-			'S_LIMIT_DAYS'		=> $s_limit_days,
-			'S_SORT_KEY'		=> $s_sort_key,
-			'S_SORT_DIR'		=> $s_sort_dir]
+			'S_ATTACHMENTS'     => true,
+			'S_ON_PAGE'         => on_page($num_files, $config['posts_per_page'], $start),
+			'S_LIMIT_DAYS'      => $s_limit_days,
+			'S_SORT_KEY'        => $s_sort_key,
+			'S_SORT_DIR'        => $s_sort_dir]
 		);
 
 		// Grab extensions
@@ -317,40 +317,40 @@ class acp_manage_attachments
 			$l_download_count = (!isset($row['download_count']) || $row['download_count'] == 0) ? $user->lang[$l_downloaded_viewed . '_NONE'] : (($row['download_count'] == 1) ? sprintf($user->lang[$l_downloaded_viewed], $row['download_count']) : sprintf($user->lang[$l_downloaded_viewed . 'S'], $row['download_count']));
 
 			$template->assign_block_vars('attachments', [
-				'ATTACHMENT_POSTER'	=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['username']),
-				'FILESIZE'			=> $row['filesize'] . ' ' . $size_lang,
-				'FILETIME'			=> $user->format_date($row['filetime']),
-				'REAL_FILENAME'		=> basename($row['real_filename']),
-				'PHYSICAL_FILENAME'	=> basename($row['physical_filename']),
-				'TOPIC_TITLE'		=> (!$row['in_message']) ? $row['topic_title'] : '',
-				'DISABLED'			=> ($row['in_message']) ? 'disabled="disabled"' : '',
-				'ATTACH_ID'			=> $row['attach_id'],
-				'POST_ID'			=> $row['post_msg_id'],
-				'TOPIC_ID'			=> $row['topic_id'],
-				'POST_IDS'			=> (!empty($post_ids[$row['attach_id']])) ? $post_ids[$row['attach_id']] : '',
+				'ATTACHMENT_POSTER' => get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['username']),
+				'FILESIZE'          => $row['filesize'] . ' ' . $size_lang,
+				'FILETIME'          => $user->format_date($row['filetime']),
+				'REAL_FILENAME'     => basename($row['real_filename']),
+				'PHYSICAL_FILENAME' => basename($row['physical_filename']),
+				'TOPIC_TITLE'       => (!$row['in_message']) ? $row['topic_title'] : '',
+				'DISABLED'          => ($row['in_message']) ? 'disabled="disabled"' : '',
+				'ATTACH_ID'         => $row['attach_id'],
+				'POST_ID'           => $row['post_msg_id'],
+				'TOPIC_ID'          => $row['topic_id'],
+				'POST_IDS'          => (!empty($post_ids[$row['attach_id']])) ? $post_ids[$row['attach_id']] : '',
 
-				'L_DOWNLOAD_COUNT'	=> $l_download_count,
+				'L_DOWNLOAD_COUNT'  => $l_download_count,
 
-				'S_IN_MESSAGE'		=> $row['in_message'],
+				'S_IN_MESSAGE'      => $row['in_message'],
 
-				'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . "#p{$row['post_msg_id']}",
-				'U_FILE'			=> append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id'])]
+				'U_VIEW_TOPIC'      => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_id']}&amp;p={$row['post_msg_id']}") . "#p{$row['post_msg_id']}",
+				'U_FILE'            => append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . $row['attach_id'])]
 			);
 		}
 
 		if (sizeof($error))
 		{
 			$template->assign_vars([
-				'S_WARNING'		=> true,
-				'WARNING_MSG'	=> implode('<br />', $error)]
+				'S_WARNING'     => true,
+				'WARNING_MSG'   => implode('<br />', $error)]
 			);
 		}
 
 		if (sizeof($notify))
 		{
 			$template->assign_vars([
-				'S_NOTIFY'		=> true,
-				'NOTIFY_MSG'	=> implode('<br />', $notify)]
+				'S_NOTIFY'      => true,
+				'NOTIFY_MSG'    => implode('<br />', $notify)]
 			);
 		}
 	}

@@ -30,12 +30,12 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		unset($_POST['sk'], $_POST['sd'], $_REQUEST['sk'], $_REQUEST['sd']);
 	}
 
-	$forum_id			= $forum_info['forum_id'];
-	$start				= request_var('start', 0);
-	$topic_id_list		= request_var('topic_id_list', [0]);
-	$post_id_list		= request_var('post_id_list', [0]);
-	$source_topic_ids	= [request_var('t', 0)];
-	$to_topic_id		= request_var('to_topic_id', 0);
+	$forum_id           = $forum_info['forum_id'];
+	$start              = request_var('start', 0);
+	$topic_id_list      = request_var('topic_id_list', [0]);
+	$post_id_list       = request_var('post_id_list', [0]);
+	$source_topic_ids   = [request_var('t', 0)];
+	$to_topic_id        = request_var('to_topic_id', 0);
 
 	$url_extra = '';
 	$url_extra .= ($forum_id) ? "&amp;f={$forum_id}" : '';
@@ -92,36 +92,36 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	$limit_time_sql = ($sort_days) ? 'AND t.topic_last_post_time >= ' . (time() - ($sort_days * 86400)) : '';
 
 	$template->assign_vars([
-		'ACTION'				=> $action,
-		'FORUM_NAME'			=> $forum_info['forum_name'],
-		'FORUM_DESCRIPTION'		=> generate_text_for_display($forum_info['forum_desc'], $forum_info['forum_desc_uid'], $forum_info['forum_desc_bitfield'], $forum_info['forum_desc_options']),
+		'ACTION'                => $action,
+		'FORUM_NAME'            => $forum_info['forum_name'],
+		'FORUM_DESCRIPTION'     => generate_text_for_display($forum_info['forum_desc'], $forum_info['forum_desc_uid'], $forum_info['forum_desc_bitfield'], $forum_info['forum_desc_options']),
 
-		'REPORTED_IMG'			=> $user->img('icon_topic_reported', 'TOPIC_REPORTED'),
-		'UNAPPROVED_IMG'		=> $user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-		'LAST_POST_IMG'			=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
-		'NEWEST_POST_IMG'		=> $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
+		'REPORTED_IMG'          => $user->img('icon_topic_reported', 'TOPIC_REPORTED'),
+		'UNAPPROVED_IMG'        => $user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
+		'LAST_POST_IMG'         => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+		'NEWEST_POST_IMG'       => $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
 
-		'S_CAN_REPORT'			=> $auth->acl_get('m_report', $forum_id),
-		'S_CAN_DELETE'			=> $auth->acl_get('m_delete', $forum_id),
-		'S_CAN_MERGE'			=> $auth->acl_get('m_merge', $forum_id),
-		'S_CAN_MOVE'			=> $auth->acl_get('m_move', $forum_id),
-		'S_CAN_FORK'			=> $auth->acl_get('m_', $forum_id),
-		'S_CAN_LOCK'			=> $auth->acl_get('m_lock', $forum_id),
-		'S_CAN_SYNC'			=> $auth->acl_get('m_', $forum_id),
-		'S_CAN_APPROVE'			=> $auth->acl_get('m_approve', $forum_id),
-		'S_MERGE_SELECT'		=> $merge_select,
-		'S_CAN_MAKE_NORMAL'		=> $auth->acl_gets('f_sticky', 'f_announce', $forum_id),
-		'S_CAN_MAKE_STICKY'		=> $auth->acl_get('f_sticky', $forum_id),
-		'S_CAN_MAKE_ANNOUNCE'	=> $auth->acl_get('f_announce', $forum_id),
+		'S_CAN_REPORT'          => $auth->acl_get('m_report', $forum_id),
+		'S_CAN_DELETE'          => $auth->acl_get('m_delete', $forum_id),
+		'S_CAN_MERGE'           => $auth->acl_get('m_merge', $forum_id),
+		'S_CAN_MOVE'            => $auth->acl_get('m_move', $forum_id),
+		'S_CAN_FORK'            => $auth->acl_get('m_', $forum_id),
+		'S_CAN_LOCK'            => $auth->acl_get('m_lock', $forum_id),
+		'S_CAN_SYNC'            => $auth->acl_get('m_', $forum_id),
+		'S_CAN_APPROVE'         => $auth->acl_get('m_approve', $forum_id),
+		'S_MERGE_SELECT'        => $merge_select,
+		'S_CAN_MAKE_NORMAL'     => $auth->acl_gets('f_sticky', 'f_announce', $forum_id),
+		'S_CAN_MAKE_STICKY'     => $auth->acl_get('f_sticky', $forum_id),
+		'S_CAN_MAKE_ANNOUNCE'   => $auth->acl_get('f_announce', $forum_id),
 
-		'U_VIEW_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id),
-		'U_VIEW_FORUM_LOGS'		=> ($auth->acl_gets('a_', 'm_', $forum_id) && $module->loaded('logs')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=logs&amp;mode=forum_logs&amp;f=' . $forum_id) : '',
+		'U_VIEW_FORUM'          => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id),
+		'U_VIEW_FORUM_LOGS'     => ($auth->acl_gets('a_', 'm_', $forum_id) && $module->loaded('logs')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=logs&amp;mode=forum_logs&amp;f=' . $forum_id) : '',
 
-		'S_MCP_ACTION'			=> $url . "&amp;i={$id}&amp;forum_action={$action}&amp;mode={$mode}&amp;start={$start}" . (($merge_select) ? $selected_ids : ''),
+		'S_MCP_ACTION'          => $url . "&amp;i={$id}&amp;forum_action={$action}&amp;mode={$mode}&amp;start={$start}" . (($merge_select) ? $selected_ids : ''),
 
-		'PAGINATION'			=> generate_pagination($url . "&amp;i={$id}&amp;action={$action}&amp;mode={$mode}&amp;sd={$sort_dir}&amp;sk={$sort_key}&amp;st={$sort_days}" . (($merge_select) ? $selected_ids : ''), $forum_topics, $topics_per_page, $start),
-		'PAGE_NUMBER'			=> on_page($forum_topics, $topics_per_page, $start),
-		'TOTAL_TOPICS'			=> ($forum_topics == 1) ? $user->lang['VIEW_FORUM_TOPIC'] : sprintf($user->lang['VIEW_FORUM_TOPICS'], $forum_topics),
+		'PAGINATION'            => generate_pagination($url . "&amp;i={$id}&amp;action={$action}&amp;mode={$mode}&amp;sd={$sort_dir}&amp;sk={$sort_key}&amp;st={$sort_days}" . (($merge_select) ? $selected_ids : ''), $forum_topics, $topics_per_page, $start),
+		'PAGE_NUMBER'           => on_page($forum_topics, $topics_per_page, $start),
+		'TOTAL_TOPICS'          => ($forum_topics == 1) ? $user->lang['VIEW_FORUM_TOPIC'] : sprintf($user->lang['VIEW_FORUM_TOPICS'], $forum_topics),
 	]);
 
 	// Grab icons
@@ -213,45 +213,45 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? $url . '&amp;i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . '&amp;t=' . $row['topic_id'] : '';
 
 		$topic_row = [
-			'ATTACH_ICON_IMG'		=> ($auth->acl_get('u_download') && $auth->acl_get('f_download', $row['forum_id']) && $row['topic_attachment']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
-			'TOPIC_FOLDER_IMG'		=> $user->img($folder_img, $folder_alt),
-			'TOPIC_FOLDER_IMG_SRC'	=> $user->img($folder_img, $folder_alt, false, '', 'src'),
-			'TOPIC_ICON_IMG'		=> ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
-			'TOPIC_ICON_IMG_WIDTH'	=> ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
-			'TOPIC_ICON_IMG_HEIGHT'	=> ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
-			'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
+			'ATTACH_ICON_IMG'       => ($auth->acl_get('u_download') && $auth->acl_get('f_download', $row['forum_id']) && $row['topic_attachment']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
+			'TOPIC_FOLDER_IMG'      => $user->img($folder_img, $folder_alt),
+			'TOPIC_FOLDER_IMG_SRC'  => $user->img($folder_img, $folder_alt, false, '', 'src'),
+			'TOPIC_ICON_IMG'        => ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
+			'TOPIC_ICON_IMG_WIDTH'  => ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
+			'TOPIC_ICON_IMG_HEIGHT' => ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
+			'UNAPPROVED_IMG'        => ($topic_unapproved || $posts_unapproved) ? $user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
 
-			'TOPIC_AUTHOR'				=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-			'TOPIC_AUTHOR_COLOUR'		=> get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-			'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-			'U_TOPIC_AUTHOR'			=> get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+			'TOPIC_AUTHOR'              => get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+			'TOPIC_AUTHOR_COLOUR'       => get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+			'TOPIC_AUTHOR_FULL'         => get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+			'U_TOPIC_AUTHOR'            => get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 
-			'LAST_POST_AUTHOR'			=> get_username_string('username', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-			'LAST_POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-			'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-			'U_LAST_POST_AUTHOR'		=> get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+			'LAST_POST_AUTHOR'          => get_username_string('username', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+			'LAST_POST_AUTHOR_COLOUR'   => get_username_string('colour', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+			'LAST_POST_AUTHOR_FULL'     => get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+			'U_LAST_POST_AUTHOR'        => get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 
-			'TOPIC_TYPE'		=> $topic_type,
-			'TOPIC_TITLE'		=> $topic_title,
-			'REPLIES'			=> ($auth->acl_get('m_approve', $row['forum_id'])) ? $row['topic_replies_real'] : $row['topic_replies'],
-			'LAST_POST_TIME'	=> $user->format_date($row['topic_last_post_time']),
-			'FIRST_POST_TIME'	=> $user->format_date($row['topic_time']),
-			'LAST_POST_SUBJECT'	=> $row['topic_last_post_subject'],
-			'LAST_VIEW_TIME'	=> $user->format_date($row['topic_last_view_time']),
+			'TOPIC_TYPE'        => $topic_type,
+			'TOPIC_TITLE'       => $topic_title,
+			'REPLIES'           => ($auth->acl_get('m_approve', $row['forum_id'])) ? $row['topic_replies_real'] : $row['topic_replies'],
+			'LAST_POST_TIME'    => $user->format_date($row['topic_last_post_time']),
+			'FIRST_POST_TIME'   => $user->format_date($row['topic_time']),
+			'LAST_POST_SUBJECT' => $row['topic_last_post_subject'],
+			'LAST_VIEW_TIME'    => $user->format_date($row['topic_last_view_time']),
 
-			'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && empty($row['topic_moved_id']) && $auth->acl_get('m_report', $row['forum_id'])),
-			'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
-			'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
-			'S_UNREAD_TOPIC'		=> $unread_topic,
+			'S_TOPIC_REPORTED'      => (!empty($row['topic_reported']) && empty($row['topic_moved_id']) && $auth->acl_get('m_report', $row['forum_id'])),
+			'S_TOPIC_UNAPPROVED'    => $topic_unapproved,
+			'S_POSTS_UNAPPROVED'    => $posts_unapproved,
+			'S_UNREAD_TOPIC'        => $unread_topic,
 		];
 
 		if ($row['topic_status'] == ITEM_MOVED)
 		{
 			$topic_row = array_merge($topic_row, [
-				'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_moved_id']}"),
-				'U_DELETE_TOPIC'	=> ($auth->acl_get('m_delete', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;topic_id_list[]={$row['topic_id']}&amp;mode=forum_view&amp;action=delete_topic") : '',
-				'S_MOVED_TOPIC'		=> true,
-				'TOPIC_ID'			=> $row['topic_moved_id'],
+				'U_VIEW_TOPIC'      => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_moved_id']}"),
+				'U_DELETE_TOPIC'    => ($auth->acl_get('m_delete', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;topic_id_list[]={$row['topic_id']}&amp;mode=forum_view&amp;action=delete_topic") : '',
+				'S_MOVED_TOPIC'     => true,
+				'TOPIC_ID'          => $row['topic_moved_id'],
 			]);
 		}
 		else
@@ -265,14 +265,14 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 				$u_select_topic = $url . "&amp;i={$id}&amp;mode=topic_view&amp;action=merge&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
 			}
 			$topic_row = array_merge($topic_row, [
-				'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;t={$row['topic_id']}&amp;mode=topic_view"),
+				'U_VIEW_TOPIC'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;t={$row['topic_id']}&amp;mode=topic_view"),
 
-				'S_SELECT_TOPIC'	=> ($merge_select && !in_array($row['topic_id'], $source_topic_ids)),
-				'U_SELECT_TOPIC'	=> $u_select_topic,
-				'U_MCP_QUEUE'		=> $u_mcp_queue,
-				'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=topic_view&amp;t=' . $row['topic_id'] . '&amp;action=reports') : '',
-				'TOPIC_ID'			=> $row['topic_id'],
-				'S_TOPIC_CHECKED'	=> ($topic_id_list && in_array($row['topic_id'], $topic_id_list)),
+				'S_SELECT_TOPIC'    => ($merge_select && !in_array($row['topic_id'], $source_topic_ids)),
+				'U_SELECT_TOPIC'    => $u_select_topic,
+				'U_MCP_QUEUE'       => $u_mcp_queue,
+				'U_MCP_REPORT'      => ($auth->acl_get('m_report', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=topic_view&amp;t=' . $row['topic_id'] . '&amp;action=reports') : '',
+				'TOPIC_ID'          => $row['topic_id'],
+				'S_TOPIC_CHECKED'   => ($topic_id_list && in_array($row['topic_id'], $topic_id_list)),
 			]);
 		}
 
@@ -353,8 +353,8 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 
 	$topic_data = $topic_data[$to_topic_id];
 
-	$post_id_list	= request_var('post_id_list', [0]);
-	$start			= request_var('start', 0);
+	$post_id_list   = request_var('post_id_list', [0]);
+	$start          = request_var('start', 0);
 
 	if (!sizeof($post_id_list) && sizeof($topic_ids))
 	{
@@ -385,15 +385,15 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 	$redirect = request_var('redirect', build_url(['quickmod']));
 
 	$s_hidden_fields = build_hidden_fields([
-		'i'				=> 'main',
-		'f'				=> $forum_id,
-		'post_id_list'	=> $post_id_list,
-		'to_topic_id'	=> $to_topic_id,
-		'mode'			=> 'forum_view',
-		'action'		=> 'merge_topics',
-		'start'			=> $start,
-		'redirect'		=> $redirect,
-		'topic_id_list'	=> $topic_ids]
+		'i'             => 'main',
+		'f'             => $forum_id,
+		'post_id_list'  => $post_id_list,
+		'to_topic_id'   => $to_topic_id,
+		'mode'          => 'forum_view',
+		'action'        => 'merge_topics',
+		'start'         => $start,
+		'redirect'      => $redirect,
+		'topic_id_list' => $topic_ids]
 	);
 	$success_msg = $return_link = '';
 

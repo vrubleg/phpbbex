@@ -23,15 +23,15 @@ class merge_users
 		global $user;
 
 		return [
-			'title'		=> 'MERGE_USERS',
-			'explain'	=> true,
-			'vars'		=> [
-				'legend1'		=> 'MERGE_USERS',
-				'source_name'	=> ['lang' => 'MERGE_USERS_USER_SOURCE_NAME', 'type' => 'text:40:255', 'explain' => true, 'select_user' => true],
-				'source_id'		=> ['lang' => 'MERGE_USERS_USER_SOURCE_ID', 'type' => 'text:10:50', 'explain' => false, 'select_user' => false],
-				'target_name'	=> ['lang' => 'MERGE_USERS_USER_TARGET_NAME', 'type' => 'text:40:255', 'explain' => false, 'select_user' => true],
-				'target_id'		=> ['lang' => 'MERGE_USERS_USER_TARGET_ID', 'type' => 'text:10:50', 'explain' => false, 'select_user' => false],
-				'delete'		=> ['lang' => 'MERGE_USERS_REMOVE_SOURCE', 'type' => 'checkbox', 'explain' => true, 'default' => true],
+			'title'     => 'MERGE_USERS',
+			'explain'   => true,
+			'vars'      => [
+				'legend1'       => 'MERGE_USERS',
+				'source_name'   => ['lang' => 'MERGE_USERS_USER_SOURCE_NAME', 'type' => 'text:40:255', 'explain' => true, 'select_user' => true],
+				'source_id'     => ['lang' => 'MERGE_USERS_USER_SOURCE_ID', 'type' => 'text:10:50', 'explain' => false, 'select_user' => false],
+				'target_name'   => ['lang' => 'MERGE_USERS_USER_TARGET_NAME', 'type' => 'text:40:255', 'explain' => false, 'select_user' => true],
+				'target_id'     => ['lang' => 'MERGE_USERS_USER_TARGET_ID', 'type' => 'text:10:50', 'explain' => false, 'select_user' => false],
+				'delete'        => ['lang' => 'MERGE_USERS_REMOVE_SOURCE', 'type' => 'checkbox', 'explain' => true, 'default' => true],
 			],
 		];
 	}
@@ -197,9 +197,9 @@ class merge_users
 		$groups = $this->get_group_memberships($target['user_id']);
 
 		$types = [
-			'id'		=> 'user_id',
-			'name'		=> 'username',
-			'colour'	=> 'user_colour',
+			'id'        => 'user_id',
+			'name'      => 'username',
+			'colour'    => 'user_colour',
 		];
 
 		$sql = [
@@ -213,8 +213,8 @@ class merge_users
 				{
 					$sql[] = 'UPDATE ' . USER_GROUP_TABLE . '
 						SET ' . $db->sql_build_array('UPDATE', [
-							'group_leader'	=> ($group['leader']) ? 1 : $groups[$group['id']]['leader'],
-							'user_pending'	=> (!$group['pending']) ? 0 : $groups[$group['id']]['pending'],
+							'group_leader'  => ($group['leader']) ? 1 : $groups[$group['id']]['leader'],
+							'user_pending'  => (!$group['pending']) ? 0 : $groups[$group['id']]['pending'],
 						]) . "
 						WHERE user_id = {$target['user_id']}
 							AND group_id = {$group['id']}";
@@ -223,10 +223,10 @@ class merge_users
 			else
 			{
 				$sql[] = 'INSERT INTO ' . USER_GROUP_TABLE . ' ' . $db->sql_build_array('INSERT', [
-					'group_id'		=> $group['id'],
-					'user_id'		=> $target['user_id'],
-					'group_leader'	=> $group['leader'],
-					'user_pending'	=> $group['pending'],
+					'group_id'      => $group['id'],
+					'user_id'       => $target['user_id'],
+					'group_leader'  => $group['leader'],
+					'user_pending'  => $group['pending'],
 				]);
 			}
 		}
@@ -238,20 +238,20 @@ class merge_users
 		 * sessions_keys
 		 */
 		foreach ([
-			'acl_users'		=> null,
-			'attachments'	=> 'poster_id',
+			'acl_users'     => null,
+			'attachments'   => 'poster_id',
 
-			'banlist'	=> 'ban_userid',
-			'bookmarks'	=> null,
-			'bots'		=> 'user_id',
+			'banlist'   => 'ban_userid',
+			'bookmarks' => null,
+			'bots'      => 'user_id',
 
-			'drafts'	=> 'user_id',
+			'drafts'    => 'user_id',
 
-			'forums'		=> [
+			'forums'        => [
 				[
-					'forum_last_poster_id'		=> 'id',
-					'forum_last_poster_name'	=> 'name',
-					'forum_last_poster_colour'	=> 'colour',
+					'forum_last_poster_id'      => 'id',
+					'forum_last_poster_name'    => 'name',
+					'forum_last_poster_colour'  => 'colour',
 				],
 				[
 					'forum_last_poster_id',
@@ -259,13 +259,13 @@ class merge_users
 				],
 			],
 
-			'forums_track'	=> null,
-			'forums_watch'	=> null,
+			'forums_track'  => null,
+			'forums_watch'  => null,
 
-			'log'	=> [
+			'log'   => [
 				[
-					'user_id'		=> 'id',
-					'reportee_id'	=> 'id',
+					'user_id'       => 'id',
+					'reportee_id'   => 'id',
 				],
 				[
 					'user_id',
@@ -279,8 +279,8 @@ class merge_users
 
 			'moderator_cache' => [
 				[
-					'user_id'		=> 'id',
-					'username'		=> 'name',
+					'user_id'       => 'id',
+					'username'      => 'name',
 				],
 				[
 					'user_id',
@@ -288,12 +288,12 @@ class merge_users
 				],
 			],
 
-			'poll_votes'			=> 'vote_user_id',
-			'posts'					=> [
+			'poll_votes'            => 'vote_user_id',
+			'posts'                 => [
 				[
-					'poster_id'		=> 'id',
-					'post_username'	=> 'name',
-					'post_edit_user'	=> 'id',
+					'poster_id'     => 'id',
+					'post_username' => 'name',
+					'post_edit_user'    => 'id',
 				],
 				[
 					'poster_id',
@@ -304,11 +304,11 @@ class merge_users
 					'post_edit_user',
 				],
 			],
-			'post_rates'			=> null,
-			'privmsgs'				=> [
+			'post_rates'            => null,
+			'privmsgs'              => [
 				[
-					'author_id'			=> 'id',
-					'message_edit_user'	=> 'id',
+					'author_id'         => 'id',
+					'message_edit_user' => 'id',
 				],
 				[
 					'author_id',
@@ -321,20 +321,20 @@ class merge_users
 				null,
 			],
 			// Only custom folders making this easy as 3.14159
-			'privmsgs_folder'		=> [
+			'privmsgs_folder'       => [
 				[
-					'user_id'		=> 'id',
+					'user_id'       => 'id',
 				],
 				[
 					'user_id',
 					'user_id',
 				],
 			],
-			'privmsgs_rules'		=> [
+			'privmsgs_rules'        => [
 				[
-					'user_id'		=> 'id',
-					'rule_user_id'	=> 'id',
-					'rule_string'	=> 'name', // Not all the time
+					'user_id'       => 'id',
+					'rule_user_id'  => 'id',
+					'rule_string'   => 'name', // Not all the time
 				],
 				// Rules referencing our source user
 				[
@@ -347,10 +347,10 @@ class merge_users
 					'user_id',
 				],
 			],
-			'privmsgs_to'			=> [
+			'privmsgs_to'           => [
 				[
-					'user_id'	=> 'id', // Destination user
-					'author_id'	=> 'id', // Author
+					'user_id'   => 'id', // Destination user
+					'author_id' => 'id', // Author
 				],
 				[
 					'user_id',
@@ -361,19 +361,19 @@ class merge_users
 					'author_id',
 				],
 			],
-			'profile_fields_data'	=> null,
+			'profile_fields_data'   => null,
 
-			'reports'	=> 'user_id',
+			'reports'   => 'user_id',
 
-			'topics'		=> [
+			'topics'        => [
 				[
-					'topic_poster'				=> 'id',
-					'topic_first_poster_name'	=> 'name',
-					'topic_first_poster_colour'	=> 'colour',
-					'topic_last_poster_id'		=> 'id',
-					'topic_last_poster_name'	=> 'name',
-					'topic_last_poster_colour'	=> 'colour',
-					'topic_bumper'				=> 'id',
+					'topic_poster'              => 'id',
+					'topic_first_poster_name'   => 'name',
+					'topic_first_poster_colour' => 'colour',
+					'topic_last_poster_id'      => 'id',
+					'topic_last_poster_name'    => 'name',
+					'topic_last_poster_colour'  => 'colour',
+					'topic_bumper'              => 'id',
 				],
 				[
 					'topic_poster',
@@ -392,14 +392,14 @@ class merge_users
 					'topic_bumper',
 				],
 			],
-			'topics_posted'	=> null,
-			'topics_track'	=> null,
-			'topics_watch'	=> null,
+			'topics_posted' => null,
+			'topics_track'  => null,
+			'topics_watch'  => null,
 
-			'warnings'		=> [
+			'warnings'      => [
 				[
-					'user_id'	=> 'id',
-					'issuer_id'	=> 'id',
+					'user_id'   => 'id',
+					'issuer_id' => 'id',
 				],
 				[
 					'user_id',
@@ -411,7 +411,7 @@ class merge_users
 				],
 			],
 
-			'zebra'			=> null,
+			'zebra'         => null,
 		] as $key => $data)
 		{
 			if (is_string($data))
@@ -505,13 +505,13 @@ class merge_users
 			switch ($source['user_type'])
 			{
 				case USER_INACTIVE:
-					$update['target']['user_type']				= USER_INACTIVE;
-					$update['target']['user_inactive_reason']	= $source['user_inactive_reason'];
-					$update['target']['user_inactive_time']		= (int) $source['user_inactive_time'];
-					$update['target']['user_reminded']			= (int) $source['user_reminded'];
-					$update['target']['user_reminded_time']		= (int) $source['user_reminded_time'];
-					$update['target']['user_actkey']			= $source['user_actkey'];
-					$update['target']['user_newpasswd']			= $source['user_newpasswd'];
+					$update['target']['user_type']              = USER_INACTIVE;
+					$update['target']['user_inactive_reason']   = $source['user_inactive_reason'];
+					$update['target']['user_inactive_time']     = (int) $source['user_inactive_time'];
+					$update['target']['user_reminded']          = (int) $source['user_reminded'];
+					$update['target']['user_reminded_time']     = (int) $source['user_reminded_time'];
+					$update['target']['user_actkey']            = $source['user_actkey'];
+					$update['target']['user_newpasswd']         = $source['user_newpasswd'];
 				break;
 
 				case USER_NORMAL:
@@ -526,8 +526,8 @@ class merge_users
 		if ($source['user_regdate'] < $target['user_regdate'])
 		{
 			// Source user registered first, update registration data
-			$update['target']['user_regdate']	= (int) $source['user_regdate'];
-			$update['target']['user_ip']		= $source['user_ip'];
+			$update['target']['user_regdate']   = (int) $source['user_regdate'];
+			$update['target']['user_ip']        = $source['user_ip'];
 		}
 
 		foreach (['lastvisit', 'lastmark', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime', 'full_folder'] as $var)
@@ -575,14 +575,14 @@ class merge_users
 				switch ($var)
 				{
 					case 'avatar':
-						$update['target']['user_avatar_type']	= $source['user_avatar_type'];
-						$update['target']['user_avatar_width']	= $source['user_avatar_width'];
-						$update['target']['user_avatar_height']	= $source['user_avatar_height'];
+						$update['target']['user_avatar_type']   = $source['user_avatar_type'];
+						$update['target']['user_avatar_width']  = $source['user_avatar_width'];
+						$update['target']['user_avatar_height'] = $source['user_avatar_height'];
 					break;
 
 					case 'sig':
-						$update['target']['user_sig_bbcode_uid']		= $source['user_sig_bbcode_uid'];
-						$update['target']['user_sig_bbcode_bitfield']	= $source['user_sig_bbcode_bitfield'];
+						$update['target']['user_sig_bbcode_uid']        = $source['user_sig_bbcode_uid'];
+						$update['target']['user_sig_bbcode_bitfield']   = $source['user_sig_bbcode_bitfield'];
 					break;
 				}
 			}
@@ -626,20 +626,20 @@ class merge_users
 		$acls['source'] = $acls['target'] = $acls = [];
 
 		$sql_ary = [
-			'SELECT'	=> 'au.*, ard.auth_setting AS role_setting',
-			'FROM'		=> [
+			'SELECT'    => 'au.*, ard.auth_setting AS role_setting',
+			'FROM'      => [
 				ACL_USERS_TABLE => 'au',
 			],
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [
+					'FROM'  => [
 						ACL_ROLES_DATA_TABLE => 'ard',
 					],
-					'ON'	=> 'au.auth_role_id = ard.role_id
+					'ON'    => 'au.auth_role_id = ard.role_id
 								AND au.auth_option_id = ard.auth_option_id',
 				],
 			],
-			'WHERE'		=> $db->sql_in_set('user_id', [$source['user_id'], $target['user_id']]),
+			'WHERE'     => $db->sql_in_set('user_id', [$source['user_id'], $target['user_id']]),
 		];
 		$sql = $db->sql_build_query('SELECT', $sql_ary);
 
@@ -656,8 +656,8 @@ class merge_users
 			}
 
 			$acls[$key][(int) $row['auth_option_id']][(int) $row['forum_id']] = [
-				'role'		=> (int) $row['auth_role_id'],
-				'setting'	=> $setting,
+				'role'      => (int) $row['auth_role_id'],
+				'setting'   => $setting,
 			];
 		}
 		$db->sql_freeresult($result);
@@ -684,8 +684,8 @@ class merge_users
 						{
 							// Source has a role, target doesn't, favour roles
 							$update = [
-								'auth_role_id'	=> $data['role'],
-								'auth_setting'	=> 0,
+								'auth_role_id'  => $data['role'],
+								'auth_setting'  => 0,
 							];
 						}
 						else
@@ -710,10 +710,10 @@ class merge_users
 						// Source is not NO and target is not NEVER
 
 						/**
-						 * Source	| Target
-						 * 	Y		|	Y
-						 * 	N		|
-						 * 			|	∅
+						 * Source   | Target
+						 *  Y       |   Y
+						 *  N       |
+						 *          |   ∅
 						 *
 						 * Y => ∅
 						 * N => Y
@@ -727,7 +727,7 @@ class merge_users
 							{
 								// Overwrite an ACL_NO
 								$update = [
-									'auth_setting'	=> $data['setting'],
+									'auth_setting'  => $data['setting'],
 								];
 							}
 							else
@@ -739,8 +739,8 @@ class merge_users
 						{
 							// Source has a role overwrite
 							$update = [
-								'auth_role_id'	=> $data['role'],
-								'auth_setting'	=> 0,
+								'auth_role_id'  => $data['role'],
+								'auth_setting'  => 0,
 							];
 						}
 						else
@@ -754,9 +754,9 @@ class merge_users
 				{
 					// Target has nothing set here, insert
 					$insert = [
-						'user_id'			=> $target['user_id'],
-						'forum_id'			=> $fid,
-						'auth_option_id'	=> $id,
+						'user_id'           => $target['user_id'],
+						'forum_id'          => $fid,
+						'auth_option_id'    => $id,
 					];
 
 					if ($data['role'])
@@ -817,7 +817,7 @@ class merge_users
 
 		// Update remaining bookmarks
 		$sql[] = 'UPDATE ' . BOOKMARKS_TABLE . "
-			SET user_id	= {$target['user_id']}
+			SET user_id = {$target['user_id']}
 			WHERE user_id = {$source['user_id']}";
 
 		return $sql;
@@ -846,7 +846,7 @@ class merge_users
 		$sql = [];
 
 		while ($row = $db->sql_fetchrow($result))
- 		{
+        {
 			$to_id = explode(':',$row['to_address']);
 			foreach ($to_id as $key => $v1)
 			{
@@ -870,13 +870,13 @@ class merge_users
 			$bcc_address = implode(':', $bcc_id);
 
 
- 			$sql[] = 'UPDATE ' . PRIVMSGS_TABLE . '
- 				SET ' . $db->sql_build_array('UPDATE', [
-					'to_address'	=> $to_address,
-					'bcc_address'	=> $bcc_address,
- 			]) . '
- 			WHERE msg_id = ' . (int) $row['msg_id'];
- 		}
+            $sql[] = 'UPDATE ' . PRIVMSGS_TABLE . '
+                SET ' . $db->sql_build_array('UPDATE', [
+					'to_address'    => $to_address,
+					'bcc_address'   => $bcc_address,
+            ]) . '
+            WHERE msg_id = ' . (int) $row['msg_id'];
+        }
 
 		return $sql;
 	}
@@ -991,7 +991,7 @@ class merge_users
 
 		// Update remaining
 		$sql[] = 'UPDATE ' . TOPICS_POSTED_TABLE . "
-			SET user_id	= {$target['user_id']}
+			SET user_id = {$target['user_id']}
 			WHERE user_id = {$source['user_id']}";
 
 		return $sql;
@@ -1020,7 +1020,7 @@ class merge_users
 
 			// Move remaining relationships to the new user.
 			'UPDATE ' . ZEBRA_TABLE . "
-				SET user_id	= {$target['user_id']}
+				SET user_id = {$target['user_id']}
 				WHERE user_id = {$source['user_id']}",
 
 			// Keep existing relationships with the target when another user has both
@@ -1079,9 +1079,9 @@ class merge_users
 			if (!isset($watches[$id]))
 			{
 				$sql[] = "INSERT INTO {$table} " . $db->sql_build_array('INSERT', [
-					'user_id'		=> $target['user_id'],
-					"{$mode}_id"	=> $id,
-					'notify_status'	=> 0,	// So emails are sent
+					'user_id'       => $target['user_id'],
+					"{$mode}_id"    => $id,
+					'notify_status' => 0,   // So emails are sent
 				]);
 			}
 		}
@@ -1138,9 +1138,9 @@ class merge_users
 			{
 				// Shouldn't mess up topics tracking without a forum_id
 				$sql[] = "INSERT INTO {$table} " . $db->sql_build_array('INSERT', [
-					'user_id'	=> $target['user_id'],
+					'user_id'   => $target['user_id'],
 					"{$mode}_id"=> $id,
-					'mark_time'	=> $time,
+					'mark_time' => $time,
 				]);
 			}
 		}
@@ -1178,21 +1178,21 @@ class merge_users
 
 		// Cast some values
 		return array_merge($data, [
-			'user_id'	=> (int) $data['user_id'],
+			'user_id'   => (int) $data['user_id'],
 		]);
 	}
 
 	function get_group_memberships($user)
 	{
-		$groups		= [];
-		$group_set	= group_memberships(false, (int) $user);
+		$groups     = [];
+		$group_set  = group_memberships(false, (int) $user);
 
 		foreach ($group_set as $group)
 		{
 			$groups[(int) $group['group_id']] = [
-				'id'		=> (int) $group['group_id'],
-				'leader'	=> (bool) $group['group_leader'],
-				'pending'	=> (bool) $group['user_pending'],
+				'id'        => (int) $group['group_id'],
+				'leader'    => (bool) $group['group_leader'],
+				'pending'   => (bool) $group['user_pending'],
 			];
 		}
 		return $groups;

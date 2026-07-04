@@ -62,12 +62,12 @@ class acp_words
 			case 'add':
 
 				$template->assign_vars([
-					'S_EDIT_WORD'		=> true,
-					'U_ACTION'			=> $this->u_action,
-					'U_BACK'			=> $this->u_action,
-					'WORD'				=> $word_info['word'] ?? '',
-					'REPLACEMENT'		=> $word_info['replacement'] ?? '',
-					'S_HIDDEN_FIELDS'	=> $s_hidden_fields]
+					'S_EDIT_WORD'       => true,
+					'U_ACTION'          => $this->u_action,
+					'U_BACK'            => $this->u_action,
+					'WORD'              => $word_info['word'] ?? '',
+					'REPLACEMENT'       => $word_info['replacement'] ?? '',
+					'S_HIDDEN_FIELDS'   => $s_hidden_fields]
 				);
 
 				return;
@@ -81,9 +81,9 @@ class acp_words
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
-				$word_id		= request_var('id', 0);
-				$word			= utf8_normalize_nfc(request_var('word', '', true));
-				$replacement	= utf8_normalize_nfc(request_var('replacement', '', true));
+				$word_id        = request_var('id', 0);
+				$word           = utf8_normalize_nfc(request_var('word', '', true));
+				$replacement    = utf8_normalize_nfc(request_var('replacement', '', true));
 
 				if ($word === '' || $replacement === '')
 				{
@@ -94,8 +94,8 @@ class acp_words
 				$word = preg_replace('#\*{2,}#', '*', $word);
 
 				$sql_ary = [
-					'word'			=> $word,
-					'replacement'	=> $replacement
+					'word'          => $word,
+					'replacement'   => $replacement
 				];
 
 				if ($word_id)
@@ -148,10 +148,10 @@ class acp_words
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'id'		=> $word_id,
-						'action'	=> 'delete',
+						'i'         => $id,
+						'mode'      => $mode,
+						'id'        => $word_id,
+						'action'    => 'delete',
 					]));
 				}
 
@@ -160,8 +160,8 @@ class acp_words
 
 
 		$template->assign_vars([
-			'U_ACTION'			=> $this->u_action,
-			'S_HIDDEN_FIELDS'	=> $s_hidden_fields]
+			'U_ACTION'          => $this->u_action,
+			'S_HIDDEN_FIELDS'   => $s_hidden_fields]
 		);
 
 		$sql = 'SELECT *
@@ -172,10 +172,10 @@ class acp_words
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('words', [
-				'WORD'			=> $row['word'],
-				'REPLACEMENT'	=> $row['replacement'],
-				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;id=' . $row['word_id'],
-				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;id=' . $row['word_id']]
+				'WORD'          => $row['word'],
+				'REPLACEMENT'   => $row['replacement'],
+				'U_EDIT'        => $this->u_action . '&amp;action=edit&amp;id=' . $row['word_id'],
+				'U_DELETE'      => $this->u_action . '&amp;action=delete&amp;id=' . $row['word_id']]
 			);
 		}
 		$db->sql_freeresult($result);

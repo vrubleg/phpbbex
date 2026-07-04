@@ -16,5 +16,5 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, [
-	'PURGE_CACHE_COMPLETE'	=> 'The cache has been purged successfully.',
+	'PURGE_CACHE_COMPLETE'  => 'The cache has been purged successfully.',
 ]);

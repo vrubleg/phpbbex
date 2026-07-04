@@ -16,12 +16,12 @@ FileETag None
 # Default expiration.
 <IfModule mod_expires.c>
 ExpiresActive On
-ExpiresByType image/*			"access plus 1 month"
-ExpiresByType audio/*			"access plus 1 month"
-ExpiresByType video/*			"access plus 1 month"
-ExpiresByType font/*			"access plus 1 month"
-ExpiresByType text/css			"access plus 7 days"
-ExpiresByType text/javascript	"access plus 7 days"
+ExpiresByType image/*           "access plus 1 month"
+ExpiresByType audio/*           "access plus 1 month"
+ExpiresByType video/*           "access plus 1 month"
+ExpiresByType font/*            "access plus 1 month"
+ExpiresByType text/css          "access plus 7 days"
+ExpiresByType text/javascript   "access plus 7 days"
 </IfModule>
 
 # Gzip compression.

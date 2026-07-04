@@ -152,7 +152,7 @@ $template = new phpbb_template();
 
 // Set some standard variables we want to force
 $config = [
-	'load_tplcompile'	=> '1'
+	'load_tplcompile'   => '1'
 ];
 
 $template->set_custom_template('../adm/style', 'admin');
@@ -299,15 +299,15 @@ class module
 		global $template, $lang, $stage;
 
 		$template->assign_vars([
-			'L_POWERED_BY'			=> $lang['POWERED_BY'],
-			'L_CHANGE'				=> $lang['CHANGE'],
-			'L_INSTALL_PANEL'		=> $lang['INSTALL_PANEL'],
-			'L_SELECT_LANG'			=> $lang['SELECT_LANG'],
-			'L_SKIP'				=> $lang['SKIP'],
-			'PAGE_TITLE'			=> $this->get_page_title(),
-			'T_IMAGE_PATH'			=> PHPBB_ROOT_PATH . 'adm/images/',
+			'L_POWERED_BY'          => $lang['POWERED_BY'],
+			'L_CHANGE'              => $lang['CHANGE'],
+			'L_INSTALL_PANEL'       => $lang['INSTALL_PANEL'],
+			'L_SELECT_LANG'         => $lang['SELECT_LANG'],
+			'L_SKIP'                => $lang['SKIP'],
+			'PAGE_TITLE'            => $this->get_page_title(),
+			'T_IMAGE_PATH'          => PHPBB_ROOT_PATH . 'adm/images/',
 
-			'S_USER_LANG'			=> $lang['USER_LANG'],
+			'S_USER_LANG'           => $lang['USER_LANG'],
 		]);
 
 		if (!headers_sent())
@@ -393,9 +393,9 @@ class module
 				if ($this->mode == $cat)
 				{
 					$template->assign_block_vars('t_block1', [
-						'L_TITLE'		=> $l_cat,
-						'S_SELECTED'	=> true,
-						'U_TITLE'		=> $url,
+						'L_TITLE'       => $l_cat,
+						'S_SELECTED'    => true,
+						'U_TITLE'       => $url,
 					]);
 
 					if (is_array($this->module_ary[$this->id]['subs']))
@@ -408,9 +408,9 @@ class module
 							$url = $this->module_url . '?mode=' . $this->mode . "&amp;sub={$option}&amp;language={$language}";
 
 							$template->assign_block_vars('l_block1', [
-								'L_TITLE'		=> $l_option,
-								'S_SELECTED'	=> ($this->sub == $option),
-								'U_TITLE'		=> $url,
+								'L_TITLE'       => $l_option,
+								'S_SELECTED'    => ($this->sub == $option),
+								'U_TITLE'       => $url,
 							]);
 						}
 					}
@@ -426,9 +426,9 @@ class module
 							$matched = ($this->sub == $option) ? true : $matched;
 
 							$template->assign_block_vars('l_block2', [
-								'L_TITLE'		=> $l_option,
-								'S_SELECTED'	=> ($this->sub == $option),
-								'S_COMPLETE'	=> !$matched,
+								'L_TITLE'       => $l_option,
+								'S_SELECTED'    => ($this->sub == $option),
+								'S_COMPLETE'    => !$matched,
 							]);
 						}
 					}
@@ -436,9 +436,9 @@ class module
 				else
 				{
 					$template->assign_block_vars('t_block1', [
-						'L_TITLE'		=> $l_cat,
-						'S_SELECTED'	=> false,
-						'U_TITLE'		=> $url,
+						'L_TITLE'       => $l_cat,
+						'S_SELECTED'    => false,
+						'U_TITLE'       => $url,
 					]);
 				}
 			}
@@ -456,13 +456,13 @@ class module
 		if ($skip)
 		{
 			$template->assign_block_vars('checks', [
-				'S_LEGEND'	=> true,
-				'LEGEND'	=> $lang['INST_ERR'],
+				'S_LEGEND'  => true,
+				'LEGEND'    => $lang['INST_ERR'],
 			]);
 
 			$template->assign_block_vars('checks', [
-				'TITLE'		=> basename($file) . ' [ ' . $line . ' ]',
-				'RESULT'	=> '<b style="color:red">' . $error . '</b>',
+				'TITLE'     => basename($file) . ' [ ' . $line . ' ]',
+				'RESULT'    => '<b style="color:red">' . $error . '</b>',
 			]);
 
 			return;
@@ -477,21 +477,21 @@ class module
 		echo '</head>';
 		echo '<body id="errorpage">';
 		echo '<div id="wrap">';
-		echo '	<div id="page-header">';
-		echo '	</div>';
-		echo '	<div id="page-body">';
-		echo '		<div id="acp">';
-		echo '		<div class="panel">';
-		echo '			<div id="content">';
-		echo '				<h1>' . $lang['INST_ERR_FATAL'] . '</h1>';
-		echo '		<p>' . $lang['INST_ERR_FATAL'] . "</p>\n";
-		echo '		<p>' . basename($file) . ' [ ' . $line . " ]</p>\n";
-		echo '		<p><b>' . $error . "</b></p>\n";
-		echo '			</div>';
-		echo '		</div>';
-		echo '		</div>';
-		echo '	</div>';
-		echo '	<div id="page-footer">Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
+		echo '  <div id="page-header">';
+		echo '  </div>';
+		echo '  <div id="page-body">';
+		echo '      <div id="acp">';
+		echo '      <div class="panel">';
+		echo '          <div id="content">';
+		echo '              <h1>' . $lang['INST_ERR_FATAL'] . '</h1>';
+		echo '      <p>' . $lang['INST_ERR_FATAL'] . "</p>\n";
+		echo '      <p>' . basename($file) . ' [ ' . $line . " ]</p>\n";
+		echo '      <p><b>' . $error . "</b></p>\n";
+		echo '          </div>';
+		echo '      </div>';
+		echo '      </div>';
+		echo '  </div>';
+		echo '  <div id="page-footer">Powered by <a href="//phpbbex.com/">phpBBex</a></div>';
 		echo '</div>';
 		echo '</body>';
 		echo '</html>';
@@ -515,13 +515,13 @@ class module
 		if ($skip)
 		{
 			$template->assign_block_vars('checks', [
-				'S_LEGEND'	=> true,
-				'LEGEND'	=> $lang['INST_ERR_FATAL'],
+				'S_LEGEND'  => true,
+				'LEGEND'    => $lang['INST_ERR_FATAL'],
 			]);
 
 			$template->assign_block_vars('checks', [
-				'TITLE'		=> basename($file) . ' [ ' . $line . ' ]',
-				'RESULT'	=> '<b style="color:red">' . $error . '</b><br />&#187; SQL:' . $sql,
+				'TITLE'     => basename($file) . ' [ ' . $line . ' ]',
+				'RESULT'    => '<b style="color:red">' . $error . '</b><br />&#187; SQL:' . $sql,
 			]);
 
 			return;
@@ -534,8 +534,8 @@ class module
 		$this->generate_navigation();
 
 		$template->assign_vars([
-			'MESSAGE_TITLE'		=> $lang['INST_ERR_FATAL_DB'],
-			'MESSAGE_TEXT'		=> '<p>' . basename($file) . ' [ ' . $line . ' ]</p><p>SQL : ' . $sql . '</p><p><b>' . $error . '</b></p>',
+			'MESSAGE_TITLE'     => $lang['INST_ERR_FATAL_DB'],
+			'MESSAGE_TEXT'      => '<p>' . basename($file) . ' [ ' . $line . ' ]</p><p>SQL : ' . $sql . '</p><p><b>' . $error . '</b></p>',
 		]);
 
 		// Rollback if in transaction
@@ -575,8 +575,8 @@ class module
 			break;
 
 			case 'radio':
-				$key_yes	= ($value) ? ' checked="checked" id="' . $name . '"' : '';
-				$key_no		= (!$value) ? ' checked="checked" id="' . $name . '"' : '';
+				$key_yes    = ($value) ? ' checked="checked" id="' . $name . '"' : '';
+				$key_no     = (!$value) ? ' checked="checked" id="' . $name . '"' : '';
 
 				$tpl_type_cond = explode('_', $tpl_type[1]);
 				$type_no = ($tpl_type_cond[0] != 'disabled' && $tpl_type_cond[0] != 'enabled');

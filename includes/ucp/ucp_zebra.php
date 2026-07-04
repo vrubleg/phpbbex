@@ -21,7 +21,7 @@ class ucp_zebra
 	{
 		global $config, $db, $user, $auth, $template;
 
-		$submit	= (isset($_POST['submit']) || isset($_GET['add']) || isset($_GET['remove']));
+		$submit = (isset($_POST['submit']) || isset($_GET['add']) || isset($_GET['remove']));
 		$s_hidden_fields = '';
 
 		$l_mode = strtoupper($mode);
@@ -32,8 +32,8 @@ class ucp_zebra
 			$updated = false;
 
 			$var_ary = [
-				'usernames'	=> [0],
-				'add'		=> '',
+				'usernames' => [0],
+				'add'       => '',
 			];
 
 			foreach ($var_ary as $var => $default)
@@ -174,9 +174,9 @@ class ucp_zebra
 									foreach ($user_id_ary as $zebra_id)
 									{
 										$sql_ary[] = [
-											'user_id'		=> (int) $user->data['user_id'],
-											'zebra_id'		=> (int) $zebra_id,
-											$sql_mode		=> 1
+											'user_id'       => (int) $user->data['user_id'],
+											'zebra_id'      => (int) $zebra_id,
+											$sql_mode       => 1
 										];
 									}
 
@@ -207,10 +207,10 @@ class ucp_zebra
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'mode'		=> $mode,
-						'submit'	=> true,
-						'usernames'	=> $data['usernames'],
-						'add'		=> $data['add']])
+						'mode'      => $mode,
+						'submit'    => true,
+						'usernames' => $data['usernames'],
+						'add'       => $data['add']])
 					);
 				}
 			}
@@ -233,13 +233,13 @@ class ucp_zebra
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'L_TITLE'			=> $user->lang['UCP_ZEBRA_' . $l_mode],
+			'L_TITLE'           => $user->lang['UCP_ZEBRA_' . $l_mode],
 
-			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=ucp&amp;field=add'),
+			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=ucp&amp;field=add'),
 
-			'S_USERNAME_OPTIONS'	=> $s_username_options,
-			'S_HIDDEN_FIELDS'		=> $s_hidden_fields,
-			'S_UCP_ACTION'			=> $this->u_action]
+			'S_USERNAME_OPTIONS'    => $s_username_options,
+			'S_HIDDEN_FIELDS'       => $s_hidden_fields,
+			'S_UCP_ACTION'          => $this->u_action]
 		);
 
 		$this->tpl_name = 'ucp_zebra_' . $mode;

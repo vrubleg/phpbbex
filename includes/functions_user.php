@@ -110,10 +110,10 @@ function user_update_name($old_name, $new_name)
 	global $config, $db, $cache;
 
 	$update_ary = [
-		FORUMS_TABLE			=> ['forum_last_poster_name'],
-		MODERATOR_CACHE_TABLE	=> ['username'],
-		POSTS_TABLE				=> ['post_username'],
-		TOPICS_TABLE			=> ['topic_first_poster_name', 'topic_last_poster_name'],
+		FORUMS_TABLE            => ['forum_last_poster_name'],
+		MODERATOR_CACHE_TABLE   => ['username'],
+		POSTS_TABLE             => ['post_username'],
+		TOPICS_TABLE            => ['topic_first_poster_name', 'topic_last_poster_name'],
 	];
 
 	foreach ($update_ary as $table => $field_ary)
@@ -160,64 +160,64 @@ function user_add($user_row, $cp_data = false)
 	}
 
 	$sql_ary = [
-		'username'			=> $user_row['username'],
-		'username_clean'	=> $username_clean,
-		'user_password'		=> $user_row['user_password'] ?? '',
-		'user_pass_convert'	=> 0,
-		'user_email'		=> strtolower($user_row['user_email']),
-		'group_id'			=> $user_row['group_id'],
-		'user_type'			=> $user_row['user_type'],
+		'username'          => $user_row['username'],
+		'username_clean'    => $username_clean,
+		'user_password'     => $user_row['user_password'] ?? '',
+		'user_pass_convert' => 0,
+		'user_email'        => strtolower($user_row['user_email']),
+		'group_id'          => $user_row['group_id'],
+		'user_type'         => $user_row['user_type'],
 	];
 
 	// These are the additional vars able to be specified
 	$additional_vars = [
-		'user_permissions'	=> '',
-		'user_timezone'		=> $config['board_timezone'],
-		'user_dateformat'	=> $config['default_dateformat'],
-		'user_lang'			=> $config['default_lang'],
-		'user_style'		=> (int) $config['default_style'],
-		'user_actkey'		=> '',
-		'user_ip'			=> '',
-		'user_browser'		=> '',
-		'user_regdate'		=> time(),
-		'user_passchg'		=> time(),
-		'user_options'		=> 233343,
+		'user_permissions'  => '',
+		'user_timezone'     => $config['board_timezone'],
+		'user_dateformat'   => $config['default_dateformat'],
+		'user_lang'         => $config['default_lang'],
+		'user_style'        => (int) $config['default_style'],
+		'user_actkey'       => '',
+		'user_ip'           => '',
+		'user_browser'      => '',
+		'user_regdate'      => time(),
+		'user_passchg'      => time(),
+		'user_options'      => 233343,
 		// We do not set the new flag here - registration scripts need to specify it
-		'user_new'			=> 0,
+		'user_new'          => 0,
 
-		'user_inactive_reason'	=> 0,
-		'user_inactive_time'	=> 0,
-		'user_lastmark'			=> time(),
-		'user_lastvisit'		=> 0,
-		'user_lastpost_time'	=> 0,
-		'user_posts'			=> 0,
-		'user_dst'				=> (int) $config['board_dst'],
-		'user_colour'			=> '',
-		'user_occ'				=> '',
-		'user_interests'		=> '',
-		'user_avatar'			=> '',
-		'user_avatar_type'		=> 0,
-		'user_avatar_width'		=> 0,
-		'user_avatar_height'	=> 0,
-		'user_new_privmsg'		=> 0,
-		'user_unread_privmsg'	=> 0,
-		'user_last_privmsg'		=> 0,
-		'user_message_rules'	=> 0,
-		'user_full_folder'		=> PRIVMSGS_NO_BOX,
+		'user_inactive_reason'  => 0,
+		'user_inactive_time'    => 0,
+		'user_lastmark'         => time(),
+		'user_lastvisit'        => 0,
+		'user_lastpost_time'    => 0,
+		'user_posts'            => 0,
+		'user_dst'              => (int) $config['board_dst'],
+		'user_colour'           => '',
+		'user_occ'              => '',
+		'user_interests'        => '',
+		'user_avatar'           => '',
+		'user_avatar_type'      => 0,
+		'user_avatar_width'     => 0,
+		'user_avatar_height'    => 0,
+		'user_new_privmsg'      => 0,
+		'user_unread_privmsg'   => 0,
+		'user_last_privmsg'     => 0,
+		'user_message_rules'    => 0,
+		'user_full_folder'      => PRIVMSGS_NO_BOX,
 
-		'user_notify'			=> 0,
-		'user_notify_pm'		=> 1,
-		'user_notify_type'		=> NOTIFY_EMAIL,
-		'user_allow_pm'			=> 1,
-		'user_allow_viewonline'	=> 1,
-		'user_allow_viewemail'	=> 0,
-		'user_allow_massemail'	=> 1,
+		'user_notify'           => 0,
+		'user_notify_pm'        => 1,
+		'user_notify_type'      => NOTIFY_EMAIL,
+		'user_allow_pm'         => 1,
+		'user_allow_viewonline' => 1,
+		'user_allow_viewemail'  => 0,
+		'user_allow_massemail'  => 1,
 
-		'user_sig'					=> '',
-		'user_sig_bbcode_uid'		=> '',
-		'user_sig_bbcode_bitfield'	=> '',
+		'user_sig'                  => '',
+		'user_sig_bbcode_uid'       => '',
+		'user_sig_bbcode_bitfield'  => '',
 
-		'user_form_salt'			=> unique_id(),
+		'user_form_salt'            => unique_id(),
 	];
 
 	// Now fill the sql array with not required variables
@@ -260,9 +260,9 @@ function user_add($user_row, $cp_data = false)
 
 	// Place into appropriate group...
 	$sql = 'INSERT INTO ' . USER_GROUP_TABLE . ' ' . $db->sql_build_array('INSERT', [
-		'user_id'		=> (int) $user_id,
-		'group_id'		=> (int) $user_row['group_id'],
-		'user_pending'	=> 0]
+		'user_id'       => (int) $user_id,
+		'group_id'      => (int) $user_row['group_id'],
+		'user_pending'  => 0]
 	);
 	$db->sql_query($sql);
 
@@ -323,9 +323,9 @@ function user_add($user_row, $cp_data = false)
 /**
  * Remove User
  *
- * @param string	$mode		'retain' or 'remove'
- * @param int		$user_id
- * @param mixed		$post_username
+ * @param string    $mode       'retain' or 'remove'
+ * @param int       $user_id
+ * @param mixed     $post_username
  * @return bool
  */
 function user_delete($mode, $user_id, $post_username = false)
@@ -613,9 +613,9 @@ function user_active_flip($mode, $user_id_ary, $reason = INACTIVE_MANUAL)
 		}
 
 		$sql_ary += [
-			'user_type'				=> ($row['user_type'] == USER_NORMAL) ? USER_INACTIVE : USER_NORMAL,
-			'user_inactive_time'	=> ($row['user_type'] == USER_NORMAL) ? time() : 0,
-			'user_inactive_reason'	=> ($row['user_type'] == USER_NORMAL) ? $reason : 0,
+			'user_type'             => ($row['user_type'] == USER_NORMAL) ? USER_INACTIVE : USER_NORMAL,
+			'user_inactive_time'    => ($row['user_type'] == USER_NORMAL) ? time() : 0,
+			'user_inactive_reason'  => ($row['user_type'] == USER_NORMAL) ? $reason : 0,
 		];
 
 		$sql_statements[$row['user_id']] = $sql_ary;
@@ -980,12 +980,12 @@ function user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reas
 		foreach ($banlist_ary as $ban_entry)
 		{
 			$sql_ary[] = [
-				$type				=> $ban_entry,
-				'ban_start'			=> (int) $current_time,
-				'ban_end'			=> (int) $ban_end,
-				'ban_exclude'		=> (int) $ban_exclude,
-				'ban_reason'		=> (string) $ban_reason,
-				'ban_give_reason'	=> (string) $ban_give_reason,
+				$type               => $ban_entry,
+				'ban_start'         => (int) $current_time,
+				'ban_end'           => (int) $ban_end,
+				'ban_exclude'       => (int) $ban_exclude,
+				'ban_reason'        => (string) $ban_reason,
+				'ban_give_reason'   => (string) $ban_give_reason,
 			];
 		}
 
@@ -1155,10 +1155,10 @@ function user_unban($mode, $ban)
 * Internet Protocol Address Whois
 * RFC3912: WHOIS Protocol Specification
 *
-* @param string $ip		Ip address, either IPv4 or IPv6.
+* @param string $ip     Ip address, either IPv4 or IPv6.
 *
-* @return string		Empty string if not a valid ip address.
-*						Otherwise make_clickable()'ed whois result.
+* @return string        Empty string if not a valid ip address.
+*                       Otherwise make_clickable()'ed whois result.
 */
 function user_ipwhois($ip)
 {
@@ -1202,15 +1202,15 @@ function user_ipwhois($ip)
 	{
 		if (strpos($match[1], ':') !== false)
 		{
-			$pos	= strrpos($match[1], ':');
-			$server	= substr($match[1], 0, $pos);
-			$port	= (int) substr($match[1], $pos + 1);
+			$pos    = strrpos($match[1], ':');
+			$server = substr($match[1], 0, $pos);
+			$port   = (int) substr($match[1], $pos + 1);
 			unset($pos);
 		}
 		else
 		{
-			$server	= $match[1];
-			$port	= 43;
+			$server = $match[1];
+			$port   = 43;
 		}
 
 		$buffer = '';
@@ -1273,7 +1273,7 @@ function validate_data($data, $val_ary)
 /**
 * Validate String
 *
-* @return	boolean|string	Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
+* @return   boolean|string  Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
 */
 function validate_string($string, $optional = false, $min = 0, $max = 0)
 {
@@ -1297,7 +1297,7 @@ function validate_string($string, $optional = false, $min = 0, $max = 0)
 /**
 * Validate Number
 *
-* @return	boolean|string	Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
+* @return   boolean|string  Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
 */
 function validate_num($num, $optional = false, $min = 0, $max = 1E99)
 {
@@ -1321,7 +1321,7 @@ function validate_num($num, $optional = false, $min = 0, $max = 1E99)
 /**
 * Validate Date
 * @param String $string a date in the dd-mm-yyyy format
-* @return	boolean
+* @return   boolean
 */
 function validate_date($date_string, $optional = false)
 {
@@ -1360,7 +1360,7 @@ function validate_date($date_string, $optional = false)
 /**
 * Validate Match
 *
-* @return	boolean|string	Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
+* @return   boolean|string  Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
 */
 function validate_match($string, $optional = false, $match = '')
 {
@@ -1387,11 +1387,11 @@ function validate_match($string, $optional = false, $match = '')
 *
 * Tests whether a language name is valid and installed
 *
-* @param string $lang_iso	The language string to test
+* @param string $lang_iso   The language string to test
 *
-* @return bool|string		Either false if validation succeeded or
-*							a string which will be used as the error message
-*							(with the variable name appended)
+* @return bool|string       Either false if validation succeeded or
+*                           a string which will be used as the error message
+*                           (with the variable name appended)
 */
 function validate_language_iso_name($lang_iso)
 {
@@ -1415,7 +1415,7 @@ function validate_language_iso_name($lang_iso)
 * @param string $username The username to check
 * @param string $allowed_username An allowed username, default being $user->data['username']
 *
-* @return	mixed	Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
+* @return   mixed   Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
 */
 function validate_username($username, $allowed_username = false)
 {
@@ -1506,7 +1506,7 @@ function validate_username($username, $allowed_username = false)
 /**
 * Check to see if the password meets the complexity settings
 *
-* @return	boolean|string	Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
+* @return   boolean|string  Either false if validation succeeded or a string which will be used as the error message (with the variable name appended)
 */
 function validate_password($password)
 {
@@ -1661,106 +1661,106 @@ function validate_jabber($jid)
 	// Prohibited Characters RFC3454 + RFC3920
 	$prohibited = [
 		// Table C.1.1
-		[0x0020, 0x0020],		// SPACE
+		[0x0020, 0x0020],       // SPACE
 		// Table C.1.2
-		[0x00A0, 0x00A0],		// NO-BREAK SPACE
-		[0x1680, 0x1680],		// OGHAM SPACE MARK
-		[0x2000, 0x2001],		// EN QUAD
-		[0x2001, 0x2001],		// EM QUAD
-		[0x2002, 0x2002],		// EN SPACE
-		[0x2003, 0x2003],		// EM SPACE
-		[0x2004, 0x2004],		// THREE-PER-EM SPACE
-		[0x2005, 0x2005],		// FOUR-PER-EM SPACE
-		[0x2006, 0x2006],		// SIX-PER-EM SPACE
-		[0x2007, 0x2007],		// FIGURE SPACE
-		[0x2008, 0x2008],		// PUNCTUATION SPACE
-		[0x2009, 0x2009],		// THIN SPACE
-		[0x200A, 0x200A],		// HAIR SPACE
-		[0x200B, 0x200B],		// ZERO WIDTH SPACE
-		[0x202F, 0x202F],		// NARROW NO-BREAK SPACE
-		[0x205F, 0x205F],		// MEDIUM MATHEMATICAL SPACE
-		[0x3000, 0x3000],		// IDEOGRAPHIC SPACE
+		[0x00A0, 0x00A0],       // NO-BREAK SPACE
+		[0x1680, 0x1680],       // OGHAM SPACE MARK
+		[0x2000, 0x2001],       // EN QUAD
+		[0x2001, 0x2001],       // EM QUAD
+		[0x2002, 0x2002],       // EN SPACE
+		[0x2003, 0x2003],       // EM SPACE
+		[0x2004, 0x2004],       // THREE-PER-EM SPACE
+		[0x2005, 0x2005],       // FOUR-PER-EM SPACE
+		[0x2006, 0x2006],       // SIX-PER-EM SPACE
+		[0x2007, 0x2007],       // FIGURE SPACE
+		[0x2008, 0x2008],       // PUNCTUATION SPACE
+		[0x2009, 0x2009],       // THIN SPACE
+		[0x200A, 0x200A],       // HAIR SPACE
+		[0x200B, 0x200B],       // ZERO WIDTH SPACE
+		[0x202F, 0x202F],       // NARROW NO-BREAK SPACE
+		[0x205F, 0x205F],       // MEDIUM MATHEMATICAL SPACE
+		[0x3000, 0x3000],       // IDEOGRAPHIC SPACE
 		// Table C.2.1
-		[0x0000, 0x001F],		// [CONTROL CHARACTERS]
-		[0x007F, 0x007F],		// DELETE
+		[0x0000, 0x001F],       // [CONTROL CHARACTERS]
+		[0x007F, 0x007F],       // DELETE
 		// Table C.2.2
-		[0x0080, 0x009F],		// [CONTROL CHARACTERS]
-		[0x06DD, 0x06DD],		// ARABIC END OF AYAH
-		[0x070F, 0x070F],		// SYRIAC ABBREVIATION MARK
-		[0x180E, 0x180E],		// MONGOLIAN VOWEL SEPARATOR
-		[0x200C, 0x200C], 		// ZERO WIDTH NON-JOINER
-		[0x200D, 0x200D],		// ZERO WIDTH JOINER
-		[0x2028, 0x2028],		// LINE SEPARATOR
-		[0x2029, 0x2029],		// PARAGRAPH SEPARATOR
-		[0x2060, 0x2060],		// WORD JOINER
-		[0x2061, 0x2061],		// FUNCTION APPLICATION
-		[0x2062, 0x2062],		// INVISIBLE TIMES
-		[0x2063, 0x2063],		// INVISIBLE SEPARATOR
-		[0x206A, 0x206F],		// [CONTROL CHARACTERS]
-		[0xFEFF, 0xFEFF],		// ZERO WIDTH NO-BREAK SPACE
-		[0xFFF9, 0xFFFC],		// [CONTROL CHARACTERS]
-		[0x1D173, 0x1D17A],	// [MUSICAL CONTROL CHARACTERS]
+		[0x0080, 0x009F],       // [CONTROL CHARACTERS]
+		[0x06DD, 0x06DD],       // ARABIC END OF AYAH
+		[0x070F, 0x070F],       // SYRIAC ABBREVIATION MARK
+		[0x180E, 0x180E],       // MONGOLIAN VOWEL SEPARATOR
+		[0x200C, 0x200C],       // ZERO WIDTH NON-JOINER
+		[0x200D, 0x200D],       // ZERO WIDTH JOINER
+		[0x2028, 0x2028],       // LINE SEPARATOR
+		[0x2029, 0x2029],       // PARAGRAPH SEPARATOR
+		[0x2060, 0x2060],       // WORD JOINER
+		[0x2061, 0x2061],       // FUNCTION APPLICATION
+		[0x2062, 0x2062],       // INVISIBLE TIMES
+		[0x2063, 0x2063],       // INVISIBLE SEPARATOR
+		[0x206A, 0x206F],       // [CONTROL CHARACTERS]
+		[0xFEFF, 0xFEFF],       // ZERO WIDTH NO-BREAK SPACE
+		[0xFFF9, 0xFFFC],       // [CONTROL CHARACTERS]
+		[0x1D173, 0x1D17A], // [MUSICAL CONTROL CHARACTERS]
 		// Table C.3
-		[0xE000, 0xF8FF],		// [PRIVATE USE, PLANE 0]
-		[0xF0000, 0xFFFFD],	// [PRIVATE USE, PLANE 15]
-		[0x100000, 0x10FFFD],	// [PRIVATE USE, PLANE 16]
+		[0xE000, 0xF8FF],       // [PRIVATE USE, PLANE 0]
+		[0xF0000, 0xFFFFD], // [PRIVATE USE, PLANE 15]
+		[0x100000, 0x10FFFD],   // [PRIVATE USE, PLANE 16]
 		// Table C.4
-		[0xFDD0, 0xFDEF],		// [NONCHARACTER CODE POINTS]
-		[0xFFFE, 0xFFFF],		// [NONCHARACTER CODE POINTS]
-		[0x1FFFE, 0x1FFFF],	// [NONCHARACTER CODE POINTS]
-		[0x2FFFE, 0x2FFFF],	// [NONCHARACTER CODE POINTS]
-		[0x3FFFE, 0x3FFFF],	// [NONCHARACTER CODE POINTS]
-		[0x4FFFE, 0x4FFFF],	// [NONCHARACTER CODE POINTS]
-		[0x5FFFE, 0x5FFFF],	// [NONCHARACTER CODE POINTS]
-		[0x6FFFE, 0x6FFFF],	// [NONCHARACTER CODE POINTS]
-		[0x7FFFE, 0x7FFFF],	// [NONCHARACTER CODE POINTS]
-		[0x8FFFE, 0x8FFFF],	// [NONCHARACTER CODE POINTS]
-		[0x9FFFE, 0x9FFFF],	// [NONCHARACTER CODE POINTS]
-		[0xAFFFE, 0xAFFFF],	// [NONCHARACTER CODE POINTS]
-		[0xBFFFE, 0xBFFFF],	// [NONCHARACTER CODE POINTS]
-		[0xCFFFE, 0xCFFFF],	// [NONCHARACTER CODE POINTS]
-		[0xDFFFE, 0xDFFFF],	// [NONCHARACTER CODE POINTS]
-		[0xEFFFE, 0xEFFFF],	// [NONCHARACTER CODE POINTS]
-		[0xFFFFE, 0xFFFFF],	// [NONCHARACTER CODE POINTS]
-		[0x10FFFE, 0x10FFFF],	// [NONCHARACTER CODE POINTS]
+		[0xFDD0, 0xFDEF],       // [NONCHARACTER CODE POINTS]
+		[0xFFFE, 0xFFFF],       // [NONCHARACTER CODE POINTS]
+		[0x1FFFE, 0x1FFFF], // [NONCHARACTER CODE POINTS]
+		[0x2FFFE, 0x2FFFF], // [NONCHARACTER CODE POINTS]
+		[0x3FFFE, 0x3FFFF], // [NONCHARACTER CODE POINTS]
+		[0x4FFFE, 0x4FFFF], // [NONCHARACTER CODE POINTS]
+		[0x5FFFE, 0x5FFFF], // [NONCHARACTER CODE POINTS]
+		[0x6FFFE, 0x6FFFF], // [NONCHARACTER CODE POINTS]
+		[0x7FFFE, 0x7FFFF], // [NONCHARACTER CODE POINTS]
+		[0x8FFFE, 0x8FFFF], // [NONCHARACTER CODE POINTS]
+		[0x9FFFE, 0x9FFFF], // [NONCHARACTER CODE POINTS]
+		[0xAFFFE, 0xAFFFF], // [NONCHARACTER CODE POINTS]
+		[0xBFFFE, 0xBFFFF], // [NONCHARACTER CODE POINTS]
+		[0xCFFFE, 0xCFFFF], // [NONCHARACTER CODE POINTS]
+		[0xDFFFE, 0xDFFFF], // [NONCHARACTER CODE POINTS]
+		[0xEFFFE, 0xEFFFF], // [NONCHARACTER CODE POINTS]
+		[0xFFFFE, 0xFFFFF], // [NONCHARACTER CODE POINTS]
+		[0x10FFFE, 0x10FFFF],   // [NONCHARACTER CODE POINTS]
 		// Table C.5
-		[0xD800, 0xDFFF],		// [SURROGATE CODES]
+		[0xD800, 0xDFFF],       // [SURROGATE CODES]
 		// Table C.6
-		[0xFFF9, 0xFFF9],		// INTERLINEAR ANNOTATION ANCHOR
-		[0xFFFA, 0xFFFA],		// INTERLINEAR ANNOTATION SEPARATOR
-		[0xFFFB, 0xFFFB],		// INTERLINEAR ANNOTATION TERMINATOR
-		[0xFFFC, 0xFFFC],		// OBJECT REPLACEMENT CHARACTER
-		[0xFFFD, 0xFFFD],		// REPLACEMENT CHARACTER
+		[0xFFF9, 0xFFF9],       // INTERLINEAR ANNOTATION ANCHOR
+		[0xFFFA, 0xFFFA],       // INTERLINEAR ANNOTATION SEPARATOR
+		[0xFFFB, 0xFFFB],       // INTERLINEAR ANNOTATION TERMINATOR
+		[0xFFFC, 0xFFFC],       // OBJECT REPLACEMENT CHARACTER
+		[0xFFFD, 0xFFFD],       // REPLACEMENT CHARACTER
 		// Table C.7
-		[0x2FF0, 0x2FFB],		// [IDEOGRAPHIC DESCRIPTION CHARACTERS]
+		[0x2FF0, 0x2FFB],       // [IDEOGRAPHIC DESCRIPTION CHARACTERS]
 		// Table C.8
-		[0x0340, 0x0340],		// COMBINING GRAVE TONE MARK
-		[0x0341, 0x0341],		// COMBINING ACUTE TONE MARK
-		[0x200E, 0x200E],		// LEFT-TO-RIGHT MARK
-		[0x200F, 0x200F],		// RIGHT-TO-LEFT MARK
-		[0x202A, 0x202A],		// LEFT-TO-RIGHT EMBEDDING
-		[0x202B, 0x202B],		// RIGHT-TO-LEFT EMBEDDING
-		[0x202C, 0x202C],		// POP DIRECTIONAL FORMATTING
-		[0x202D, 0x202D],		// LEFT-TO-RIGHT OVERRIDE
-		[0x202E, 0x202E],		// RIGHT-TO-LEFT OVERRIDE
-		[0x206A, 0x206A],		// INHIBIT SYMMETRIC SWAPPING
-		[0x206B, 0x206B],		// ACTIVATE SYMMETRIC SWAPPING
-		[0x206C, 0x206C],		// INHIBIT ARABIC FORM SHAPING
-		[0x206D, 0x206D],		// ACTIVATE ARABIC FORM SHAPING
-		[0x206E, 0x206E],		// NATIONAL DIGIT SHAPES
-		[0x206F, 0x206F],		// NOMINAL DIGIT SHAPES
+		[0x0340, 0x0340],       // COMBINING GRAVE TONE MARK
+		[0x0341, 0x0341],       // COMBINING ACUTE TONE MARK
+		[0x200E, 0x200E],       // LEFT-TO-RIGHT MARK
+		[0x200F, 0x200F],       // RIGHT-TO-LEFT MARK
+		[0x202A, 0x202A],       // LEFT-TO-RIGHT EMBEDDING
+		[0x202B, 0x202B],       // RIGHT-TO-LEFT EMBEDDING
+		[0x202C, 0x202C],       // POP DIRECTIONAL FORMATTING
+		[0x202D, 0x202D],       // LEFT-TO-RIGHT OVERRIDE
+		[0x202E, 0x202E],       // RIGHT-TO-LEFT OVERRIDE
+		[0x206A, 0x206A],       // INHIBIT SYMMETRIC SWAPPING
+		[0x206B, 0x206B],       // ACTIVATE SYMMETRIC SWAPPING
+		[0x206C, 0x206C],       // INHIBIT ARABIC FORM SHAPING
+		[0x206D, 0x206D],       // ACTIVATE ARABIC FORM SHAPING
+		[0x206E, 0x206E],       // NATIONAL DIGIT SHAPES
+		[0x206F, 0x206F],       // NOMINAL DIGIT SHAPES
 		// Table C.9
-		[0xE0001, 0xE0001],	// LANGUAGE TAG
-		[0xE0020, 0xE007F],	// [TAGGING CHARACTERS]
+		[0xE0001, 0xE0001], // LANGUAGE TAG
+		[0xE0020, 0xE007F], // [TAGGING CHARACTERS]
 		// RFC3920
-		[0x22, 0x22],			// "
-		[0x26, 0x26],			// &
-		[0x27, 0x27],			// '
-		[0x2F, 0x2F],			// /
-		[0x3A, 0x3A],			// :
-		[0x3C, 0x3C],			// <
-		[0x3E, 0x3E],			// >
-		[0x40, 0x40]			// @
+		[0x22, 0x22],           // "
+		[0x26, 0x26],           // &
+		[0x27, 0x27],           // '
+		[0x2F, 0x2F],           // /
+		[0x3A, 0x3A],           // :
+		[0x3C, 0x3C],           // <
+		[0x3E, 0x3E],           // >
+		[0x40, 0x40]            // @
 	];
 
 	$pos = 0;
@@ -1815,9 +1815,9 @@ function validate_jabber($jid)
 *
 * @param string $colour The hex colour value
 * @param bool $optional Whether the colour value is optional. True if an empty
-*			string will be accepted as correct input, false if not.
+*           string will be accepted as correct input, false if not.
 * @return bool|string Error message if colour value is incorrect, false if it
-*			fits the hex colour code
+*           fits the hex colour code
 */
 function phpbb_validate_hex_colour($colour, $optional = false)
 {
@@ -1956,9 +1956,9 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 						if (preg_match('#^[^&\'"<>]+\.(?:gif|png|jpe?g)$#i', $sub_file))
 						{
 							$avatar_list[$file][$avatar_row_count][$avatar_col_count] = [
-								'file'		=> rawurlencode($file) . '/' . rawurlencode($sub_file),
-								'filename'	=> rawurlencode($sub_file),
-								'name'		=> ucfirst(str_replace('_', ' ', preg_replace('#^(.*)\..*$#', '\1', $sub_file))),
+								'file'      => rawurlencode($file) . '/' . rawurlencode($sub_file),
+								'filename'  => rawurlencode($sub_file),
+								'name'      => ucfirst(str_replace('_', ' ', preg_replace('#^(.*)\..*$#', '\1', $sub_file))),
 							];
 							$avatar_col_count++;
 							if ($avatar_col_count == $items_per_column)
@@ -1992,9 +1992,9 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 	}
 
 	$template->assign_vars([
-		'S_AVATARS_ENABLED'		=> true,
-		'S_IN_AVATAR_GALLERY'	=> true,
-		'S_CAT_OPTIONS'			=> $s_category_options]
+		'S_AVATARS_ENABLED'     => true,
+		'S_IN_AVATAR_GALLERY'   => true,
+		'S_CAT_OPTIONS'         => $s_category_options]
 	);
 
 	$avatar_list = $avatar_list[$category] ?? [];
@@ -2006,14 +2006,14 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 		foreach ($avatar_row_ary as $avatar_col_ary)
 		{
 			$template->assign_block_vars($block_var . '.avatar_column', [
-				'AVATAR_IMAGE'	=> PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $avatar_col_ary['file'],
-				'AVATAR_NAME'	=> $avatar_col_ary['name'],
-				'AVATAR_FILE'	=> $avatar_col_ary['filename']]
+				'AVATAR_IMAGE'  => PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $avatar_col_ary['file'],
+				'AVATAR_NAME'   => $avatar_col_ary['name'],
+				'AVATAR_FILE'   => $avatar_col_ary['filename']]
 			);
 
 			$template->assign_block_vars($block_var . '.avatar_option_column', [
-				'AVATAR_IMAGE'	=> PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $avatar_col_ary['file'],
-				'S_OPTIONS_AVATAR'	=> $avatar_col_ary['filename']]
+				'AVATAR_IMAGE'  => PHPBB_ROOT_PATH . AVATAR_GALLERY_PATH . '/' . $avatar_col_ary['file'],
+				'S_OPTIONS_AVATAR'  => $avatar_col_ary['filename']]
 			);
 		}
 	}
@@ -2080,11 +2080,11 @@ function avatar_process_user(&$error, $custom_userdata = false, $can_upload = nu
 	global $config, $auth, $user, $db;
 
 	$data = [
-		'uploadurl'		=> request_var('uploadurl', ''),
+		'uploadurl'     => request_var('uploadurl', ''),
 	];
 
 	$error = validate_data($data, [
-		'uploadurl'		=> ['string', true, 5, 255],
+		'uploadurl'     => ['string', true, 5, 255],
 	]);
 
 	if (sizeof($error))
@@ -2226,11 +2226,11 @@ function group_create(&$group_id, $type, $name, $desc, $group_attributes, $allow
 	{
 		$user_ary = [];
 		$sql_ary = [
-			'group_name'			=> (string) $name,
-			'group_desc'			=> (string) $desc,
-			'group_desc_uid'		=> '',
-			'group_desc_bitfield'	=> '',
-			'group_type'			=> (int) $type,
+			'group_name'            => (string) $name,
+			'group_desc'            => (string) $desc,
+			'group_desc_uid'        => '',
+			'group_desc_bitfield'   => '',
+			'group_type'            => (int) $type,
 		];
 
 		// Parse description
@@ -2472,10 +2472,10 @@ function group_user_add($group_id, $user_id_ary = false, $username_ary = false, 
 		foreach ($add_id_ary as $user_id)
 		{
 			$sql_ary[] = [
-				'user_id'		=> (int) $user_id,
-				'group_id'		=> (int) $group_id,
-				'group_leader'	=> (int) $leader,
-				'user_pending'	=> (int) $pending,
+				'user_id'       => (int) $user_id,
+				'group_id'      => (int) $group_id,
+				'group_leader'  => (int) $leader,
+				'user_pending'  => (int) $pending,
 			];
 		}
 
@@ -2548,8 +2548,8 @@ function group_user_del($group_id, $user_id_ary = false, $username_ary = false, 
 		$group_order_id[$row['group_name']] = $row['group_id'];
 
 		$special_group_data[$row['group_id']] = [
-			'group_colour'			=> $row['group_colour'],
-			'group_rank'				=> $row['group_rank'],
+			'group_colour'          => $row['group_colour'],
+			'group_rank'                => $row['group_rank'],
 		];
 	}
 	$db->sql_freeresult($result);
@@ -2757,9 +2757,9 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 				$messenger->im($row['user_jabber'], $row['username']);
 
 				$messenger->assign_vars([
-					'USERNAME'		=> htmlspecialchars_decode($row['username']),
-					'GROUP_NAME'	=> htmlspecialchars_decode($group_name),
-					'U_GROUP'		=> generate_board_url() . "/ucp.php?i=groups&mode=membership"]
+					'USERNAME'      => htmlspecialchars_decode($row['username']),
+					'GROUP_NAME'    => htmlspecialchars_decode($group_name),
+					'U_GROUP'       => generate_board_url() . "/ucp.php?i=groups&mode=membership"]
 				);
 
 				$messenger->send($row['user_notify_type']);
@@ -2887,12 +2887,12 @@ function group_set_user_default($group_id, $user_id_ary, $group_attributes = fal
 	}
 
 	$attribute_ary = [
-		'group_colour'			=> 'string',
-		'group_rank'			=> 'int',
+		'group_colour'          => 'string',
+		'group_rank'            => 'int',
 	];
 
 	$sql_ary = [
-		'group_id'		=> $group_id
+		'group_id'      => $group_id
 	];
 
 	// Were group attributes passed to the function? If not we need to obtain them
@@ -3189,8 +3189,8 @@ function remove_newly_registered($user_id, $user_data = false)
 * Gets user ids of currently banned registered users.
 *
 * @param array $user_ids Array of users' ids to check for banning,
-*						leave empty to get complete list of banned ids
-* @return array	Array of banned users' ids if any, empty array otherwise
+*                       leave empty to get complete list of banned ids
+* @return array Array of banned users' ids if any, empty array otherwise
 */
 function phpbb_get_banned_user_ids($user_ids = [])
 {

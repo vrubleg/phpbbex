@@ -10,11 +10,11 @@ class acp_php_info_info
 	function module()
 	{
 		return [
-			'filename'	=> 'acp_php_info',
-			'title'		=> 'ACP_PHP_INFO',
-			'version'	=> '1.0.0',
-			'modes'		=> [
-				'info'		=> ['title' => 'ACP_PHP_INFO', 'auth' => 'acl_a_phpinfo', 'cat' => ['ACP_GENERAL_TASKS']],
+			'filename'  => 'acp_php_info',
+			'title'     => 'ACP_PHP_INFO',
+			'version'   => '1.0.0',
+			'modes'     => [
+				'info'      => ['title' => 'ACP_PHP_INFO', 'auth' => 'acl_a_phpinfo', 'cat' => ['ACP_GENERAL_TASKS']],
 			],
 		];
 	}
