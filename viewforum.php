@@ -55,7 +55,7 @@ if (!$forum_data)
 	trigger_error('NO_FORUM');
 }
 
-$default_sort_days	= $forum_data['forum_topic_show_days'] ?: 0;
+$default_sort_days	= 0;
 $default_sort_key	= $forum_data['forum_topic_sortby_type'] ?: 't';
 $default_sort_dir	= $forum_data['forum_topic_sortby_dir'] ?: 'd';
 
@@ -180,12 +180,6 @@ if ($mark_read == 'topics')
 	}
 	meta_refresh(3, $redirect_url);
 	trigger_error($user->lang['TOPICS_MARKED'] . '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . $redirect_url . '">', '</a>'));
-}
-
-// Is a forum specific topic count required?
-if ($forum_data['forum_topics_per_page'])
-{
-	$config['topics_per_page'] = $forum_data['forum_topics_per_page'];
 }
 
 // Do the forum Prune thang - cron type job ...

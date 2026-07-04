@@ -125,10 +125,8 @@ class acp_forums
 						'forum_image'			=> request_var('forum_image', ''),
 						'display_subforum_list'	=> request_var('display_subforum_list', false),
 						'display_on_index'		=> request_var('display_on_index', false),
-						'forum_topic_show_days'		=> request_var('topic_show_days', 0),
 						'forum_topic_sortby_type'	=> request_var('topic_sortby_type', ''),
 						'forum_topic_sortby_dir'	=> request_var('topic_sortby_dir', ''),
-						'forum_topics_per_page'	=> request_var('topics_per_page', 0),
 						'enable_indexing'		=> request_var('enable_indexing', true),
 						'enable_prune'			=> request_var('enable_prune', false),
 						'prune_days'			=> request_var('prune_days', 7),
@@ -421,10 +419,8 @@ class acp_forums
 							'forum_image'			=> '',
 							'display_subforum_list'	=> true,
 							'display_on_index'		=> false,
-							'forum_topic_show_days'		=> 0,
 							'forum_topic_sortby_type'	=> '',
 							'forum_topic_sortby_dir'	=> '',
-							'forum_topics_per_page'	=> 0,
 							'enable_indexing'		=> true,
 							'enable_prune'			=> false,
 							'prune_days'			=> 7,
@@ -497,14 +493,6 @@ class acp_forums
 				foreach ($forum_type_ary as $value => $lang)
 				{
 					$forum_type_options .= '<option value="' . $value . '"' . (($value == $forum_data['forum_type']) ? ' selected="selected"' : '') . '>' . $user->lang['TYPE_' . $lang] . '</option>';
-				}
-
-				$topic_show_days_options = '';
-				$topic_show_days_ary = [0 => $user->lang['ALL_DAYS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-				foreach ($topic_show_days_ary as $value => $title)
-				{
-					$selected = ($forum_data['forum_topic_show_days'] == $value) ? ' selected="selected"' : '';
-					$topic_show_days_options .= '<option value="' . $value . '"' . $selected . '>' . $title . '</option>';
 				}
 
 				$topic_sortby_type_options = '';
@@ -613,7 +601,6 @@ class acp_forums
 					'PRUNE_FREQ'				=> $forum_data['prune_freq'],
 					'PRUNE_DAYS'				=> $forum_data['prune_days'],
 					'PRUNE_VIEWED'				=> $forum_data['prune_viewed'],
-					'TOPICS_PER_PAGE'			=> $forum_data['forum_topics_per_page'],
 					'FORUM_RULES_LINK'			=> $forum_data['forum_rules_link'],
 					'FORUM_RULES'				=> $forum_data['forum_rules'],
 					'FORUM_RULES_PREVIEW'		=> $forum_rules_preview,
@@ -631,7 +618,6 @@ class acp_forums
 					'S_FORUM_TYPE_OPTIONS'		=> $forum_type_options,
 					'S_STATUS_OPTIONS'			=> $statuslist,
 					'S_PARENT_OPTIONS'			=> $parents_list,
-					'S_TOPIC_SHOW_DAYS_OPTIONS'		=> $topic_show_days_options,
 					'S_TOPIC_SORTBY_TYPE_OPTIONS'	=> $topic_sortby_type_options,
 					'S_TOPIC_SORTBY_DIR_OPTIONS'	=> $topic_sortby_dir_options,
 					'S_FORUM_OPTIONS'			=> make_forum_select(($action == 'add') ? $forum_data['parent_id'] : false, ($action == 'edit') ? $forum_data['forum_id'] : false, true, false, false),
@@ -912,16 +898,10 @@ class acp_forums
 			$errors[] = $user->lang['FORUM_DATA_NEGATIVE'];
 		}
 
-		$range_test_ary = [
-			['lang' => 'FORUM_TOPICS_PAGE', 'value' => $forum_data['forum_topics_per_page'], 'column_type' => 'TINT:0'],
-		];
-
 		if (!empty($forum_data['forum_image']) && !file_exists(PHPBB_ROOT_PATH . $forum_data['forum_image']))
 		{
 			$errors[] = $user->lang['FORUM_IMAGE_NO_EXIST'];
 		}
-
-		validate_range($range_test_ary, $errors);
 
 		// Set forum flags
 		// 1 = link tracking
