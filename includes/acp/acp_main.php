@@ -392,7 +392,6 @@ class acp_main
 						// let's restore the admin session
 						$reinsert_ary = [
 								'session_id'			=> (string) $user->session_id,
-								'session_page'			=> (string) substr($user->page['page'], 0, 199),
 								'session_user_id'		=> (int) $user->data['user_id'],
 								'session_start'			=> (int) $user->data['session_start'],
 								'session_last_visit'	=> (int) $user->data['session_last_visit'],

@@ -46,7 +46,6 @@ class purge_sessions
 			'session_time'			=> (int) $user->time_now,
 			'session_browser'		=> (string) trim(substr($user->browser, 0, 249)),
 			'session_forwarded_for'	=> (string) $user->forwarded_for,
-			'session_page'			=> (string) substr($user->page['page'], 0, 199),
 			'session_ip'			=> (string) $user->ip,
 			'session_autologin'		=> (int) $user->data['session_autologin'],
 			'session_admin'			=> 1,

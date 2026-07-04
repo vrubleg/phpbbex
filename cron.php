@@ -10,8 +10,7 @@ define('IN_CRON', true);
 if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './'); }
 require_once(PHPBB_ROOT_PATH . 'common.php');
 
-// Do not update users last page entry
-$user->session_begin(false);
+$user->session_begin();
 $auth->acl($user->data);
 
 $cron_type = request_var('cron_type', '');

@@ -616,7 +616,6 @@ CREATE TABLE phpbb_sessions (
 	session_ip varchar(40) DEFAULT '' NOT NULL,
 	session_browser varchar(250) DEFAULT '' NOT NULL,
 	session_forwarded_for varchar(255) DEFAULT '' NOT NULL,
-	session_page varchar(255) DEFAULT '' NOT NULL,
 	session_viewonline tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	session_autologin tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	session_admin tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,

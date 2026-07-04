@@ -26,7 +26,6 @@ class phpbb_session
 	var $ip = '';
 	var $load = 0;
 	var $time_now = 0;
-	var $update_session_page = true;
 
 	/**
 	* Extract current session page.
@@ -136,18 +135,14 @@ class phpbb_session
 	* new one ... pretty logical heh? We also examine the system load (if we're
 	* running on a system which makes such information readily available) and
 	* halt if it's above an admin definable limit.
-	*
-	* @param bool $update_session_page if true the session page gets updated.
-	*			This can be set to circumvent certain scripts to update the users last visited page.
 	*/
-	function session_begin($update_session_page = true)
+	function session_begin()
 	{
 		global $_SID, $_EXTRA_URL, $db, $config;
 
 		// Give us some basic information
 		$this->time_now				= time();
 		$this->cookie_data			= ['u' => 0, 'k' => ''];
-		$this->update_session_page	= $update_session_page;
 		$this->browser				= (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
 		$this->referer				= (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
 		$this->forwarded_for		= (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) ? htmlspecialchars((string) $_SERVER['HTTP_X_FORWARDED_FOR']) : '';
@@ -325,11 +320,6 @@ class phpbb_session
 						{
 							$this->data['session_time'] = $this->time_now;
 							$sql_ary = ['session_time' => $this->time_now];
-
-							if ($this->update_session_page)
-							{
-								$sql_ary['session_page'] = substr($this->page['page'], 0, 199);
-							}
 
 							// Update the last visit time once an hour
 							if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
@@ -589,11 +579,6 @@ class phpbb_session
 
 					$sql_ary = ['session_time' => $this->time_now, 'session_last_visit' => $this->time_now, 'session_admin' => 0];
 
-					if ($this->update_session_page)
-					{
-						$sql_ary['session_page'] = substr($this->page['page'], 0, 199);
-					}
-
 					$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 						WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
 					$db->sql_query($sql);
@@ -633,11 +618,6 @@ class phpbb_session
 			'session_viewonline'	=> ($viewonline) ? 1 : 0,
 		];
 
-		if ($this->update_session_page)
-		{
-			$sql_ary['session_page'] = (string) substr($this->page['page'], 0, 199);
-		}
-
 		$db->sql_return_on_error(true);
 
 		$sql = 'DELETE
@@ -668,7 +648,6 @@ class phpbb_session
 		$this->session_id = $this->data['session_id'] = bin2hex(random_bytes(16));
 
 		$sql_ary['session_id'] = (string) $this->session_id;
-		$sql_ary['session_page'] = (string) substr($this->page['page'], 0, 199);
 
 		$sql = 'INSERT INTO ' . SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
