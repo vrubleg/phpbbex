@@ -49,7 +49,7 @@ class phpbb_error_collector
 			// Prevent leakage of local path to phpBB install
 			$errfile = phpbb_filter_root_path($errfile);
 
-			$text .= "Errno $errno: $msg_text at $errfile line $errline";
+			$text .= "Errno {$errno}: {$msg_text} at {$errfile} line {$errline}";
 		}
 
 		return $text;

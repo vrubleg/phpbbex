@@ -93,7 +93,7 @@ class acp_prune
 				$sql = 'SELECT forum_id, forum_name
 					FROM ' . FORUMS_TABLE . '
 					WHERE forum_type = ' . FORUM_POST . "
-						$sql_forum
+						{$sql_forum}
 					ORDER BY left_id ASC";
 				$result = $db->sql_query($sql);
 
@@ -419,24 +419,12 @@ class acp_prune
 			return;
 		}
 
-		// Get bot ids
-		$sql = 'SELECT user_id
-			FROM ' . BOTS_TABLE;
-		$result = $db->sql_query($sql);
-
-		$bot_ids = [];
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$bot_ids[] = $row['user_id'];
-		}
-		$db->sql_freeresult($result);
-
 		// Do not prune founder members
 		$sql = 'SELECT user_id, username
 			FROM ' . USERS_TABLE . '
 			WHERE user_id <> ' . ANONYMOUS . '
 				AND user_type <> ' . USER_FOUNDER . "
-			$where_sql";
+			{$where_sql}";
 		$result = $db->sql_query($sql);
 
 		$where_sql = '';
@@ -444,8 +432,8 @@ class acp_prune
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			// Do not prune bots and the user currently pruning.
-			if ($row['user_id'] != $user->data['user_id'] && !in_array($row['user_id'], $bot_ids))
+			// Do not prune the user currently pruning.
+			if ($row['user_id'] != $user->data['user_id'])
 			{
 				$user_ids[] = $row['user_id'];
 				$usernames[$row['user_id']] = $row['username'];

@@ -140,7 +140,7 @@ class ucp_profile
 
 							$messenger->assign_vars([
 								'USERNAME'		=> htmlspecialchars_decode($data['username']),
-								'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u={$user->data['user_id']}&k=$user_actkey"]
+								'U_ACTIVATE'	=> "{$server_url}/ucp.php?mode=activate&u={$user->data['user_id']}&k={$user_actkey}"]
 							);
 
 							$messenger->send(NOTIFY_EMAIL);
@@ -172,8 +172,8 @@ class ucp_profile
 
 									$messenger->assign_vars([
 										'USERNAME'			=> htmlspecialchars_decode($data['username']),
-										'U_USER_DETAILS'	=> "$server_url/memberlist.php?mode=viewprofile&u={$user->data['user_id']}",
-										'U_ACTIVATE'		=> "$server_url/ucp.php?mode=activate&u={$user->data['user_id']}&k=$user_actkey"]
+										'U_USER_DETAILS'	=> "{$server_url}/memberlist.php?mode=viewprofile&u={$user->data['user_id']}",
+										'U_ACTIVATE'		=> "{$server_url}/ucp.php?mode=activate&u={$user->data['user_id']}&k={$user_actkey}"]
 									);
 
 									$messenger->send($row['user_notify_type']);
@@ -393,14 +393,14 @@ class ucp_profile
 					for ($i = 1; $i < 32; $i++)
 					{
 						$selected = ($i == $data['bday_day']) ? ' selected="selected"' : '';
-						$s_birthday_day_options .= "<option value=\"$i\"$selected>$i</option>";
+						$s_birthday_day_options .= "<option value=\"{$i}\"{$selected}>{$i}</option>";
 					}
 
 					$s_birthday_month_options = '<option value="0"' . ((!$data['bday_month']) ? ' selected="selected"' : '') . '>--</option>';
 					for ($i = 1; $i < 13; $i++)
 					{
 						$selected = ($i == $data['bday_month']) ? ' selected="selected"' : '';
-						$s_birthday_month_options .= "<option value=\"$i\"$selected>$i</option>";
+						$s_birthday_month_options .= "<option value=\"{$i}\"{$selected}>{$i}</option>";
 					}
 					$s_birthday_year_options = '';
 
@@ -409,7 +409,7 @@ class ucp_profile
 					for ($i = $now['year'] - 100; $i <= $now['year']; $i++)
 					{
 						$selected = ($i == $data['bday_year']) ? ' selected="selected"' : '';
-						$s_birthday_year_options .= "<option value=\"$i\"$selected>$i</option>";
+						$s_birthday_year_options .= "<option value=\"{$i}\"{$selected}>{$i}</option>";
 					}
 					unset($now);
 

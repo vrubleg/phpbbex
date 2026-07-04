@@ -29,7 +29,7 @@ class ucp_activate
 
 		$sql = 'SELECT user_id, username, user_type, user_email, user_newpasswd, user_lang, user_notify_type, user_actkey, user_inactive_reason
 			FROM ' . USERS_TABLE . "
-			WHERE user_id = $user_id";
+			WHERE user_id = {$user_id}";
 		$result = $db->sql_query($sql);
 		$user_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);

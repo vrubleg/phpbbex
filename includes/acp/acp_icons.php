@@ -181,7 +181,7 @@ class acp_icons
 				}
 
 				$sql = "SELECT *
-					FROM $table
+					FROM {$table}
 					ORDER BY {$fields}_order " . (($icon_id || $action == 'add') ? 'DESC' : 'ASC');
 				$result = $db->sql_query($sql);
 
@@ -440,7 +440,7 @@ class acp_icons
 							);
 
 							// Since we always add 'after' an item, we just need to increase all following + the current by one
-							$sql = "UPDATE $table
+							$sql = "UPDATE {$table}
 								SET {$fields}_order = {$fields}_order + 1
 								WHERE {$fields}_order >= {$image_order[$image]}";
 							$db->sql_query($sql);
@@ -462,7 +462,7 @@ class acp_icons
 
 						if ($action == 'modify'  && !empty($image_id[$image]))
 						{
-							$sql = "UPDATE $table
+							$sql = "UPDATE {$table}
 								SET " . $db->sql_build_array('UPDATE', $img_sql) . "
 								WHERE {$fields}_id = " . $image_id[$image];
 							$db->sql_query($sql);
@@ -470,7 +470,7 @@ class acp_icons
 						}
 						else if ($action !== 'modify')
 						{
-							$sql = "INSERT INTO $table " . $db->sql_build_array('INSERT', $img_sql);
+							$sql = "INSERT INTO {$table} " . $db->sql_build_array('INSERT', $img_sql);
 							$db->sql_query($sql);
 							$icons_updated++;
 						}
@@ -566,8 +566,8 @@ class acp_icons
 
 						$field_sql = ($mode == 'smilies') ? 'code' : 'icons_url';
 
-						$sql = "SELECT $field_sql
-							FROM $table";
+						$sql = "SELECT {$field_sql}
+							FROM {$table}";
 						$result = $db->sql_query($sql);
 
 						while ($row = $db->sql_fetchrow($result))
@@ -629,8 +629,8 @@ class acp_icons
 									]);
 								}
 
-								$sql = "UPDATE $table SET " . $db->sql_build_array('UPDATE', $sql) . "
-									WHERE $field_sql = '" . $db->sql_escape($replace_sql) . "'";
+								$sql = "UPDATE {$table} SET " . $db->sql_build_array('UPDATE', $sql) . "
+									WHERE {$field_sql} = '" . $db->sql_escape($replace_sql) . "'";
 								$db->sql_query($sql);
 							}
 							else
@@ -652,7 +652,7 @@ class acp_icons
 										'emotion'			=> $emotion,
 									]);
 								}
-								$db->sql_query("INSERT INTO $table " . $db->sql_build_array('INSERT', $sql));
+								$db->sql_query("INSERT INTO {$table} " . $db->sql_build_array('INSERT', $sql));
 							}
 						}
 					}
@@ -709,7 +709,7 @@ class acp_icons
 			case 'send':
 
 				$sql = "SELECT *
-					FROM $table
+					FROM {$table}
 					ORDER BY {$fields}_order";
 				$result = $db->sql_query($sql);
 
@@ -755,8 +755,8 @@ class acp_icons
 
 				if (confirm_box(true))
 				{
-					$sql = "DELETE FROM $table
-						WHERE {$fields}_id = $icon_id";
+					$sql = "DELETE FROM {$table}
+						WHERE {$fields}_id = {$icon_id}";
 					$db->sql_query($sql);
 
 					switch ($mode)
@@ -768,11 +768,11 @@ class acp_icons
 							// Reset appropriate icon_ids
 							$db->sql_query('UPDATE ' . TOPICS_TABLE . "
 								SET icon_id = 0
-								WHERE icon_id = $icon_id");
+								WHERE icon_id = {$icon_id}");
 
 							$db->sql_query('UPDATE ' . POSTS_TABLE . "
 								SET icon_id = 0
-								WHERE icon_id = $icon_id");
+								WHERE icon_id = {$icon_id}");
 						break;
 					}
 
@@ -798,8 +798,8 @@ class acp_icons
 
 				// Get current order id...
 				$sql = "SELECT {$fields}_order as current_order
-					FROM $table
-					WHERE {$fields}_id = $icon_id";
+					FROM {$table}
+					WHERE {$fields}_id = {$icon_id}";
 				$result = $db->sql_query($sql);
 				$current_order = (int) $db->sql_fetchfield('current_order');
 				$db->sql_freeresult($result);
@@ -814,19 +814,19 @@ class acp_icons
 				$switch_order_id = ($action == 'move_down') ? $current_order + 1 : $current_order - 1;
 
 				//
-				$sql = "UPDATE $table
-					SET {$fields}_order = $current_order
-					WHERE {$fields}_order = $switch_order_id
-						AND {$fields}_id <> $icon_id";
+				$sql = "UPDATE {$table}
+					SET {$fields}_order = {$current_order}
+					WHERE {$fields}_order = {$switch_order_id}
+						AND {$fields}_id <> {$icon_id}";
 				$db->sql_query($sql);
 
 				// Only update the other entry too if the previous entry got updated
 				if ($db->sql_affectedrows())
 				{
-					$sql = "UPDATE $table
-						SET {$fields}_order = $switch_order_id
-						WHERE {$fields}_order = $current_order
-							AND {$fields}_id = $icon_id";
+					$sql = "UPDATE {$table}
+						SET {$fields}_order = {$switch_order_id}
+						WHERE {$fields}_order = {$current_order}
+							AND {$fields}_id = {$icon_id}";
 					$db->sql_query($sql);
 				}
 
@@ -838,7 +838,7 @@ class acp_icons
 
 		// By default, check that image_order is valid and fix it if necessary
 		$sql = "SELECT {$fields}_id AS order_id, {$fields}_order AS fields_order
-			FROM $table
+			FROM {$table}
 			ORDER BY display_on_posting DESC, {$fields}_order";
 		$result = $db->sql_query($sql);
 
@@ -850,8 +850,8 @@ class acp_icons
 				++$order;
 				if ($row['fields_order'] != $order)
 				{
-					$db->sql_query("UPDATE $table
-						SET {$fields}_order = $order
+					$db->sql_query("UPDATE {$table}
+						SET {$fields}_order = {$order}
 						WHERE {$fields}_id = " . $row['order_id']);
 				}
 			}
@@ -885,7 +885,7 @@ class acp_icons
 		$item_count = $this->item_count($table);
 
 		$sql = "SELECT *
-			FROM $table
+			FROM {$table}
 			ORDER BY {$fields}_order ASC";
 		$result = $db->sql_query_limit($sql, $config['smilies_per_page'], $pagination_start);
 
@@ -930,7 +930,7 @@ class acp_icons
 		global $db;
 
 		$sql = "SELECT COUNT(*) AS item_count
-			FROM $table";
+			FROM {$table}";
 		$result = $db->sql_query($sql);
 		$item_count = (int) $db->sql_fetchfield('item_count');
 		$db->sql_freeresult($result);

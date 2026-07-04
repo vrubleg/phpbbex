@@ -201,7 +201,7 @@ class jabber
 	{
 		if (@function_exists('dns_get_record'))
 		{
-			$record = @dns_get_record("_xmpp-client._tcp.$server", DNS_SRV);
+			$record = @dns_get_record("_xmpp-client._tcp.{$server}", DNS_SRV);
 			if (!empty($record) && !empty($record[0]['target']))
 			{
 				$server = $record[0]['target'];
@@ -324,7 +324,7 @@ class jabber
 
 		$this->session['sent_presence'] = !$unavailable;
 
-		return $this->send("<presence$unavailable>" . $type . $message . '</presence>');
+		return $this->send("<presence{$unavailable}>" . $type . $message . '</presence>');
 	}
 
 	/**
@@ -654,7 +654,7 @@ class jabber
 			$type = 'normal';
 		}
 
-		return $this->send("<message from='" . utf8_htmlspecialchars($this->session['jid']) . "' to='" . utf8_htmlspecialchars($to) . "' type='$type' id='" . uniqid('msg') . "'>
+		return $this->send("<message from='" . utf8_htmlspecialchars($this->session['jid']) . "' to='" . utf8_htmlspecialchars($to) . "' type='{$type}' id='" . uniqid('msg') . "'>
 			<body>" . utf8_htmlspecialchars($text) . "</body>
 			</message>"
 		);

@@ -623,8 +623,8 @@ class acp_permissions
 
 		if (sizeof($ids))
 		{
-			$sql = "SELECT $sql_id
-				FROM $table
+			$sql = "SELECT {$sql_id}
+				FROM {$table}
 				WHERE " . $db->sql_in_set($sql_id, $ids);
 			$result = $db->sql_query($sql);
 
@@ -965,7 +965,7 @@ class acp_permissions
 		{
 			$sql = 'SELECT forum_name
 				FROM ' . FORUMS_TABLE . "
-				WHERE forum_id = $forum_id";
+				WHERE forum_id = {$forum_id}";
 			$result = $db->sql_query($sql, 3600);
 			$forum_name = $db->sql_fetchfield('forum_name');
 			$db->sql_freeresult($result);
@@ -980,7 +980,7 @@ class acp_permissions
 
 			'S_GLOBAL_TRACE'		=> !$forum_id,
 
-			'U_BACK'				=> ($back) ? build_url(['f', 'back']) . "&amp;f=$back" : '']
+			'U_BACK'				=> ($back) ? build_url(['f', 'back']) . "&amp;f={$back}" : '']
 		);
 
 		$template->assign_block_vars('trace', [
@@ -1119,7 +1119,7 @@ class acp_permissions
 			{
 				$template->assign_block_vars('trace', [
 					'WHO'			=> sprintf($user->lang['TRACE_GLOBAL_SETTING'], $userdata['username']),
-					'INFORMATION'	=> sprintf($information, '<a href="' . $this->u_action . "&amp;u=$user_id&amp;f=0&amp;auth=$permission&amp;back=$forum_id\">", '</a>'),
+					'INFORMATION'	=> sprintf($information, '<a href="' . $this->u_action . "&amp;u={$user_id}&amp;f=0&amp;auth={$permission}&amp;back={$forum_id}\">", '</a>'),
 
 					'S_SETTING_NO'		=> false,
 					'S_SETTING_YES'		=> $auth_setting,
@@ -1262,8 +1262,8 @@ class acp_permissions
 		$sql = 'SELECT DISTINCT u.user_id, u.username, u.username_clean, u.user_regdate
 			FROM ' . USERS_TABLE . ' u, ' . ACL_USERS_TABLE . " a
 			WHERE u.user_id = a.user_id
-				$sql_forum_id
-				$sql_where
+				{$sql_forum_id}
+				{$sql_where}
 			ORDER BY u.username_clean, u.user_regdate ASC";
 		$result = $db->sql_query($sql);
 
@@ -1279,8 +1279,8 @@ class acp_permissions
 		$sql = 'SELECT DISTINCT g.group_type, g.group_name, g.group_id
 			FROM ' . GROUPS_TABLE . ' g, ' . ACL_GROUPS_TABLE . " a
 			WHERE g.group_id = a.group_id
-				$sql_forum_id
-				$sql_where
+				{$sql_forum_id}
+				{$sql_where}
 			ORDER BY g.group_type DESC, g.group_name ASC";
 		$result = $db->sql_query($sql);
 

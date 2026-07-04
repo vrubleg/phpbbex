@@ -32,7 +32,7 @@ if (!$config['allow_attachments'] && !$config['allow_pm_attach'])
 
 $sql = 'SELECT attach_id, in_message, post_msg_id, extension, is_orphan, poster_id, filetime
 	FROM ' . ATTACHMENTS_TABLE . "
-	WHERE attach_id = $download_id";
+	WHERE attach_id = {$download_id}";
 $result = $db->sql_query_limit($sql, 1);
 $attachment = $db->sql_fetchrow($result);
 $db->sql_freeresult($result);
@@ -148,7 +148,7 @@ $download_mode = (int) $extensions[$attachment['extension']]['download_mode'];
 // Fetching filename here to prevent sniffing of filename
 $sql = 'SELECT attach_id, is_orphan, in_message, post_msg_id, extension, physical_filename, real_filename, mimetype, filetime
 	FROM ' . ATTACHMENTS_TABLE . "
-	WHERE attach_id = $download_id";
+	WHERE attach_id = {$download_id}";
 $result = $db->sql_query_limit($sql, 1);
 $attachment = $db->sql_fetchrow($result);
 $db->sql_freeresult($result);
@@ -294,7 +294,7 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 		// status 304 - Not Modified
 		if ($size)
 		{
-			header("Content-Length: $size");
+			header("Content-Length: {$size}");
 		}
 
 		// Try to deliver in chunks

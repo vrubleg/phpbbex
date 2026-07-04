@@ -440,13 +440,12 @@ class acp_board
 					'title'	=> 'ACP_SECURITY_SETTINGS',
 					'vars'	=> [
 						'legend1'				=> 'ACP_SECURITY_SETTINGS',
-						'allow_autologin'		=> ['lang' => 'ALLOW_AUTOLOGIN',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'max_autologin_time'	=> ['lang' => 'AUTOLOGIN_LENGTH',		'validate' => 'int:0',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
+						'max_autologin_time'	=> ['lang' => 'AUTOLOGIN_LENGTH',		'validate' => 'int:0:730',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
 						'session_length'		=> ['lang' => 'SESSION_LENGTH',	'validate' => 'int:60',	'type' => 'text:5:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'ip_check'				=> ['lang' => 'IP_VALID',				'validate' => 'int',	'type' => 'custom', 'method' => 'select_ip_check', 'explain' => true],
 						'browser_check'			=> ['lang' => 'BROWSER_VALID',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'forwarded_for_check'	=> ['lang' => 'FORWARDED_FOR_VALID',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'referer_validation'	=> ['lang' => 'REFERER_VALID',		'validate' => 'int:0:3','type' => 'custom', 'method' => 'select_ref_check', 'explain' => true],
+						'referer_validation'	=> ['lang' => 'REFERER_VALID',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'email_check_mx'		=> ['lang' => 'EMAIL_CHECK_MX',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'max_pass_chars'		=> ['lang' => 'PASSWORD_LENGTH', 'validate' => 'int:8:255', 'type' => false, 'method' => false, 'explain' => false,],
 						'min_pass_chars'		=> ['lang' => 'PASSWORD_LENGTH',	'validate' => 'int:1',	'type' => 'custom', 'method' => 'password_length', 'explain' => true],
@@ -457,9 +456,6 @@ class acp_board
 						'ip_login_limit_time'	=> ['lang' => 'IP_LOGIN_LIMIT_TIME',	'validate' => 'int:0',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'ip_login_limit_use_forwarded'	=> ['lang' => 'IP_LOGIN_LIMIT_USE_FORWARDED',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'tpl_allow_php'			=> ['lang' => 'TPL_ALLOW_PHP',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-						'form_token_lifetime'	=> ['lang' => 'FORM_TIME_MAX',			'validate' => 'int:-1',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
-						'form_token_sid_guests'	=> ['lang' => 'FORM_SID_GUESTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-
 						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];
@@ -701,16 +697,6 @@ class acp_board
 	}
 
 	/**
-	* Select referer validation
-	*/
-	function select_ref_check($value, $key = '')
-	{
-		$radio_ary = [REFERER_VALIDATE_PATH => 'REF_PATH', REFERER_VALIDATE_HOST => 'REF_HOST', REFERER_VALIDATE_NONE => 'NO_REF_VALIDATION'];
-
-		return h_radio('config[referer_validation]', $radio_ary, $value, $key);
-	}
-
-	/**
 	* Select account activation method
 	*/
 	function select_acc_activation($selected_value, $value)
@@ -912,8 +898,8 @@ class acp_board
 		$user->timezone = $old_tz;
 		$user->dst = $old_dst;
 
-		return "<select name=\"dateoptions\" id=\"dateoptions\" onchange=\"if (this.value == 'custom') { document.getElementById('" . addslashes($key) . "').value = '" . addslashes($value) . "'; } else { document.getElementById('" . addslashes($key) . "').value = this.value; }\">$dateformat_options</select>
-		<input type=\"text\" name=\"config[$key]\" id=\"$key\" value=\"$value\" maxlength=\"30\" />";
+		return "<select name=\"dateoptions\" id=\"dateoptions\" onchange=\"if (this.value == 'custom') { document.getElementById('" . addslashes($key) . "').value = '" . addslashes($value) . "'; } else { document.getElementById('" . addslashes($key) . "').value = this.value; }\">{$dateformat_options}</select>
+		<input type=\"text\" name=\"config[{$key}]\" id=\"{$key}\" value=\"{$value}\" maxlength=\"30\" />";
 	}
 
 	/**

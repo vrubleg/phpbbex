@@ -181,7 +181,7 @@ class mcp_warn
 			'S_SELECT_SORT_DAYS'	=> $s_limit_days,
 
 			'PAGE_NUMBER'		=> on_page($user_count, $config['topics_per_page'], $start),
-			'PAGINATION'		=> generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=warn&amp;mode=list&amp;st=$st&amp;sk=$sk&amp;sd=$sd"), $user_count, $config['topics_per_page'], $start),
+			'PAGINATION'		=> generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=warn&amp;mode=list&amp;st={$st}&amp;sk={$sk}&amp;sd={$sd}"), $user_count, $config['topics_per_page'], $start),
 			'TOTAL_USERS'		=> ($user_count == 1) ? $user->lang['LIST_USER'] : sprintf($user->lang['LIST_USERS'], $user_count),
 		]);
 	}
@@ -202,7 +202,7 @@ class mcp_warn
 
 		$sql = 'SELECT u.*, p.*
 			FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . " u
-			WHERE p.post_id = $post_id
+			WHERE p.post_id = {$post_id}
 				AND u.user_id = p.poster_id";
 		$result = $db->sql_query($sql);
 		$user_row = $db->sql_fetchrow($result);
@@ -223,7 +223,7 @@ class mcp_warn
 		// warnings for the same offence
 		$sql = 'SELECT post_id
 			FROM ' . WARNINGS_TABLE . "
-			WHERE post_id = $post_id";
+			WHERE post_id = {$post_id}";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -235,10 +235,10 @@ class mcp_warn
 
 		$user_id = $user_row['user_id'];
 
-		if (strpos($this->u_action, "&amp;f=$forum_id&amp;p=$post_id") === false)
+		if (strpos($this->u_action, "&amp;f={$forum_id}&amp;p={$post_id}") === false)
 		{
-			$this->p_master->adjust_url("&amp;f=$forum_id&amp;p=$post_id");
-			$this->u_action .= "&amp;f=$forum_id&amp;p=$post_id";
+			$this->p_master->adjust_url("&amp;f={$forum_id}&amp;p={$post_id}");
+			$this->u_action .= "&amp;f={$forum_id}&amp;p={$post_id}";
 		}
 
 		// Check if can send a notification
@@ -344,7 +344,7 @@ class mcp_warn
 		$warning_type = request_var('warning_type', 'warning');
 		$warning_days = request_var('warning_days', 0);
 
-		$sql_where = ($user_id) ? "user_id = $user_id" : "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
+		$sql_where = ($user_id) ? "user_id = {$user_id}" : "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 
 		$sql = 'SELECT *
 			FROM ' . USERS_TABLE . '
@@ -360,10 +360,10 @@ class mcp_warn
 
 		$user_id = $user_row['user_id'];
 
-		if (strpos($this->u_action, "&amp;u=$user_id") === false)
+		if (strpos($this->u_action, "&amp;u={$user_id}") === false)
 		{
 			$this->p_master->adjust_url('&amp;u=' . $user_id);
-			$this->u_action .= "&amp;u=$user_id";
+			$this->u_action .= "&amp;u={$user_id}";
 		}
 
 		// Check if can send a notification
@@ -396,7 +396,7 @@ class mcp_warn
 			{
 				$msg = $user->lang['FORM_INVALID'];
 			}
-			$redirect = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=notes&amp;mode=user_notes&amp;u=$user_id");
+			$redirect = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=notes&amp;mode=user_notes&amp;u={$user_id}");
 			meta_refresh(2, $redirect);
 			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
@@ -454,7 +454,7 @@ class mcp_warn
 
 		$sql = 'SELECT *
 			FROM ' . WARNINGS_TABLE . "
-			WHERE warning_id = '$warning_id'";
+			WHERE warning_id = '{$warning_id}'";
 		$result = $db->sql_query($sql);
 		$warning_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -504,7 +504,7 @@ class mcp_warn
 			}
 			$redirect = ($post_id && $post_row)
 				? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p={$post_id}#p{$post_id}")
-				: append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=notes&amp;mode=user_notes&amp;u=$user_id");
+				: append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=notes&amp;mode=user_notes&amp;u={$user_id}");
 			meta_refresh(2, $redirect);
 			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}

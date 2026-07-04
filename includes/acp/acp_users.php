@@ -139,7 +139,7 @@ class acp_users
 
 		$template->assign_vars([
 			'U_BACK'			=> $this->u_action,
-			'U_MODE_SELECT'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;u=$user_id"),
+			'U_MODE_SELECT'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;u={$user_id}"),
 			'U_ACTION'			=> $this->u_action . '&amp;u=' . $user_id,
 			'S_FORM_OPTIONS'	=> $s_form_options,
 			'MANAGED_USERNAME'	=> $user_row['username']]
@@ -265,7 +265,7 @@ class acp_users
 
 									$sql = 'SELECT DISTINCT poster_ip
 										FROM ' . POSTS_TABLE . "
-										WHERE poster_id = $user_id";
+										WHERE poster_id = {$user_id}";
 									$result = $db->sql_query($sql);
 
 									while ($row = $db->sql_fetchrow($result))
@@ -326,7 +326,7 @@ class acp_users
 
 									$sql = 'UPDATE ' . USERS_TABLE . "
 										SET user_actkey = '" . $db->sql_escape($user_actkey) . "'
-										WHERE user_id = $user_id";
+										WHERE user_id = {$user_id}";
 									$db->sql_query($sql);
 								}
 								else
@@ -351,7 +351,7 @@ class acp_users
 								$messenger->assign_vars([
 									'WELCOME_MSG'	=> htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
 									'USERNAME'		=> htmlspecialchars_decode($user_row['username']),
-									'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u={$user_row['user_id']}&k=$user_actkey"]
+									'U_ACTIVATE'	=> "{$server_url}/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_actkey}"]
 								);
 
 								$messenger->send(NOTIFY_EMAIL);
@@ -435,7 +435,7 @@ class acp_users
 							];
 
 							$sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-								WHERE user_id = $user_id";
+								WHERE user_id = {$user_id}";
 							$db->sql_query($sql);
 
 							add_log('admin', 'LOG_USER_DEL_SIG', $user_row['username']);
@@ -461,7 +461,7 @@ class acp_users
 
 							$sql = 'UPDATE ' . USERS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-								WHERE user_id = $user_id";
+								WHERE user_id = {$user_id}";
 							$db->sql_query($sql);
 
 							// Delete old avatar if present
@@ -530,7 +530,7 @@ class acp_users
 
 								$sql = 'SELECT msg_id
 									FROM ' . PRIVMSGS_TO_TABLE . "
-									WHERE author_id = $user_id
+									WHERE author_id = {$user_id}
 										AND folder_id = " . PRIVMSGS_OUTBOX;
 								$result = $db->sql_query($sql);
 
@@ -668,8 +668,8 @@ class acp_users
 
 								$template->assign_vars([
 									'S_SELECT_FORUM'		=> true,
-									'U_ACTION'				=> $this->u_action . "&amp;action=$action&amp;u=$user_id",
-									'U_BACK'				=> $this->u_action . "&amp;u=$user_id",
+									'U_ACTION'				=> $this->u_action . "&amp;action={$action}&amp;u={$user_id}",
+									'U_BACK'				=> $this->u_action . "&amp;u={$user_id}",
 									'S_FORUM_OPTIONS'		=> make_forum_select(false, false, true, true),
 								]);
 
@@ -679,7 +679,7 @@ class acp_users
 							// Is the new forum postable to?
 							$sql = 'SELECT forum_name, forum_type
 								FROM ' . FORUMS_TABLE . "
-								WHERE forum_id = $new_forum_id";
+								WHERE forum_id = {$new_forum_id}";
 							$result = $db->sql_query($sql);
 							$forum_info = $db->sql_fetchrow($result);
 							$db->sql_freeresult($result);
@@ -701,8 +701,8 @@ class acp_users
 
 							$sql = 'SELECT topic_id, COUNT(post_id) AS total_posts
 								FROM ' . POSTS_TABLE . "
-								WHERE poster_id = $user_id
-									AND forum_id <> $new_forum_id
+								WHERE poster_id = {$user_id}
+									AND forum_id <> {$new_forum_id}
 								GROUP BY topic_id";
 							$result = $db->sql_query($sql);
 
@@ -767,17 +767,17 @@ class acp_users
 
 									// Move posts
 									$sql = 'UPDATE ' . POSTS_TABLE . "
-										SET forum_id = $new_forum_id, topic_id = $new_topic_id
-										WHERE topic_id = $topic_id
-											AND poster_id = $user_id";
+										SET forum_id = {$new_forum_id}, topic_id = {$new_topic_id}
+										WHERE topic_id = {$topic_id}
+											AND poster_id = {$user_id}";
 									$db->sql_query($sql);
 
 									if ($post_ary['attach'])
 									{
 										$sql = 'UPDATE ' . ATTACHMENTS_TABLE . "
-											SET topic_id = $new_topic_id
-											WHERE topic_id = $topic_id
-												AND poster_id = $user_id";
+											SET topic_id = {$new_topic_id}
+											WHERE topic_id = {$topic_id}
+												AND poster_id = {$user_id}";
 										$db->sql_query($sql);
 									}
 
@@ -1035,7 +1035,7 @@ class acp_users
 				{
 					$sql = 'SELECT MAX(session_time) AS session_time, MIN(session_viewonline) AS session_viewonline
 						FROM ' . SESSIONS_TABLE . "
-						WHERE session_user_id = $user_id";
+						WHERE session_user_id = {$user_id}";
 					$result = $db->sql_query($sql);
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
@@ -1101,7 +1101,7 @@ class acp_users
 					'S_OWN_ACCOUNT'		=> ($user_id == $user->data['user_id']),
 					'S_USER_INACTIVE'	=> ($user_row['user_type'] == USER_INACTIVE),
 
-					'U_SHOW_IP'		=> $this->u_action . "&amp;u=$user_id&amp;ip=" . (($ip == 'ip') ? 'hostname' : 'ip'),
+					'U_SHOW_IP'		=> $this->u_action . "&amp;u={$user_id}&amp;ip=" . (($ip == 'ip') ? 'hostname' : 'ip'),
 					'U_WHOIS'		=> $this->u_action . "&amp;action=whois&amp;user_ip={$user_row['user_ip']}",
 					'U_MCP_QUEUE'	=> ($auth->acl_getf_global('m_approve')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue', true, $user->session_id) : '',
 					'U_SEARCH_USER'	=> ($config['load_search'] && $auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_row['user_id']}&amp;sr=posts") : '',
@@ -1162,8 +1162,8 @@ class acp_users
 					{
 						$sql = 'DELETE FROM ' . LOG_TABLE . '
 							WHERE log_type = ' . LOG_USERS . "
-							AND reportee_id = $user_id
-							$where_sql";
+							AND reportee_id = {$user_id}
+							{$where_sql}";
 						$db->sql_query($sql);
 
 						add_log('admin', 'LOG_CLEAR_USER', $user_row['username']);
@@ -1204,7 +1204,7 @@ class acp_users
 				$template->assign_vars([
 					'S_FEEDBACK'	=> true,
 					'S_ON_PAGE'		=> on_page($log_count, $config['topics_per_page'], $start),
-					'PAGINATION'	=> generate_pagination($this->u_action . "&amp;u=$user_id&amp;$u_sort_param", $log_count, $config['topics_per_page'], $start, true),
+					'PAGINATION'	=> generate_pagination($this->u_action . "&amp;u={$user_id}&amp;{$u_sort_param}", $log_count, $config['topics_per_page'], $start, true),
 
 					'S_LIMIT_DAYS'	=> $s_limit_days,
 					'S_SORT_KEY'	=> $s_sort_key,
@@ -1257,8 +1257,8 @@ class acp_users
 						if ($where_sql || $deleteall)
 						{
 							$sql = 'DELETE FROM ' . WARNINGS_TABLE . "
-								WHERE user_id = $user_id
-									$where_sql";
+								WHERE user_id = {$user_id}
+									{$where_sql}";
 							$db->sql_query($sql);
 
 							if ($deleteall)
@@ -1273,8 +1273,8 @@ class acp_users
 							}
 
 							$sql = 'UPDATE ' . USERS_TABLE . "
-								SET user_warnings = $deleted_warnings
-								WHERE user_id = $user_id";
+								SET user_warnings = {$deleted_warnings}
+								WHERE user_id = {$user_id}";
 							$db->sql_query($sql);
 
 							switch ($log_warnings)
@@ -1452,7 +1452,7 @@ class acp_users
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-							WHERE user_id = $user_id";
+							WHERE user_id = {$user_id}";
 						$db->sql_query($sql);
 
 						// Update Custom Fields
@@ -1469,14 +1469,14 @@ class acp_users
 				for ($i = 1; $i < 32; $i++)
 				{
 					$selected = ($i == $data['bday_day']) ? ' selected="selected"' : '';
-					$s_birthday_day_options .= "<option value=\"$i\"$selected>$i</option>";
+					$s_birthday_day_options .= "<option value=\"{$i}\"{$selected}>{$i}</option>";
 				}
 
 				$s_birthday_month_options = '<option value="0"' . ((!$data['bday_month']) ? ' selected="selected"' : '') . '>--</option>';
 				for ($i = 1; $i < 13; $i++)
 				{
 					$selected = ($i == $data['bday_month']) ? ' selected="selected"' : '';
-					$s_birthday_month_options .= "<option value=\"$i\"$selected>$i</option>";
+					$s_birthday_month_options .= "<option value=\"{$i}\"{$selected}>{$i}</option>";
 				}
 				$s_birthday_year_options = '';
 
@@ -1485,7 +1485,7 @@ class acp_users
 				for ($i = $now['year'] - 100; $i <= $now['year']; $i++)
 				{
 					$selected = ($i == $data['bday_year']) ? ' selected="selected"' : '';
-					$s_birthday_year_options .= "<option value=\"$i\"$selected>$i</option>";
+					$s_birthday_year_options .= "<option value=\"{$i}\"{$selected}>{$i}</option>";
 				}
 				unset($now);
 
@@ -1601,7 +1601,7 @@ class acp_users
 
 						$sql = 'UPDATE ' . USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-							WHERE user_id = $user_id";
+							WHERE user_id = {$user_id}";
 						$db->sql_query($sql);
 
 						// Check if user has an active session
@@ -1622,7 +1622,7 @@ class acp_users
 
 								$sql = 'UPDATE ' . SESSIONS_TABLE . '
 									SET ' . $db->sql_build_array('UPDATE', $session_sql_ary) . "
-									WHERE session_user_id = $user_id";
+									WHERE session_user_id = {$user_id}";
 								$db->sql_query($sql);
 
 								unset($user_auth);
@@ -1769,8 +1769,8 @@ class acp_users
 					$rank_id = request_var('user_rank', 0);
 
 					$sql = 'UPDATE ' . USERS_TABLE . "
-						SET user_rank = $rank_id
-						WHERE user_id = $user_id";
+						SET user_rank = {$rank_id}
+						WHERE user_id = {$user_id}";
 					$db->sql_query($sql);
 
 					trigger_error($user->lang['USER_RANK_UPDATED'] . adm_back_link($this->u_action . '&amp;u=' . $user_id));
@@ -2006,7 +2006,7 @@ class acp_users
 
 				$sql = 'SELECT COUNT(attach_id) as num_attachments
 					FROM ' . ATTACHMENTS_TABLE . "
-					WHERE poster_id = $user_id
+					WHERE poster_id = {$user_id}
 						AND is_orphan = 0";
 				$result = $db->sql_query_limit($sql, 1);
 				$num_attachments = (int) $db->sql_fetchfield('num_attachments');
@@ -2020,7 +2020,7 @@ class acp_users
 							AND a.in_message = 1)
 					WHERE a.poster_id = ' . $user_id . "
 						AND a.is_orphan = 0
-					ORDER BY $order_by";
+					ORDER BY {$order_by}";
 				$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
 				while ($row = $db->sql_fetchrow($result))
@@ -2061,7 +2061,7 @@ class acp_users
 					'S_SORT_KEY'		=> $s_sort_key,
 					'S_SORT_DIR'		=> $s_sort_dir,
 
-					'PAGINATION'		=> generate_pagination($this->u_action . "&amp;u=$user_id&amp;sk=$sort_key&amp;sd=$sort_dir", $num_attachments, $config['topics_per_page'], $start, true)]
+					'PAGINATION'		=> generate_pagination($this->u_action . "&amp;u={$user_id}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $num_attachments, $config['topics_per_page'], $start, true)]
 				);
 
 			break;
@@ -2199,7 +2199,7 @@ class acp_users
 
 				$sql = 'SELECT ug.*, g.*
 					FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . " ug
-					WHERE ug.user_id = $user_id
+					WHERE ug.user_id = {$user_id}
 						AND g.group_id = ug.group_id
 					ORDER BY g.group_type DESC, ug.user_pending ASC, g.group_name";
 				$result = $db->sql_query($sql);
@@ -2254,11 +2254,11 @@ class acp_users
 					foreach ($data_ary as $data)
 					{
 						$template->assign_block_vars('group', [
-							'U_EDIT_GROUP'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=groups&amp;mode=manage&amp;action=edit&amp;u=$user_id&amp;g={$data['group_id']}&amp;back_link=acp_users_groups"),
-							'U_DEFAULT'			=> $this->u_action . "&amp;action=default&amp;u=$user_id&amp;g=" . $data['group_id'],
-							'U_DEMOTE_PROMOTE'	=> $this->u_action . '&amp;action=' . (($data['group_leader']) ? 'demote' : 'promote') . "&amp;u=$user_id&amp;g=" . $data['group_id'],
-							'U_DELETE'			=> $this->u_action . "&amp;action=delete&amp;u=$user_id&amp;g=" . $data['group_id'],
-							'U_APPROVE'			=> ($group_type == 'pending') ? $this->u_action . "&amp;action=approve&amp;u=$user_id&amp;g=" . $data['group_id'] : '',
+							'U_EDIT_GROUP'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=groups&amp;mode=manage&amp;action=edit&amp;u={$user_id}&amp;g={$data['group_id']}&amp;back_link=acp_users_groups"),
+							'U_DEFAULT'			=> $this->u_action . "&amp;action=default&amp;u={$user_id}&amp;g=" . $data['group_id'],
+							'U_DEMOTE_PROMOTE'	=> $this->u_action . '&amp;action=' . (($data['group_leader']) ? 'demote' : 'promote') . "&amp;u={$user_id}&amp;g=" . $data['group_id'],
+							'U_DELETE'			=> $this->u_action . "&amp;action=delete&amp;u={$user_id}&amp;g=" . $data['group_id'],
+							'U_APPROVE'			=> ($group_type == 'pending') ? $this->u_action . "&amp;action=approve&amp;u={$user_id}&amp;g=" . $data['group_id'] : '',
 
 							'GROUP_NAME'		=> ($group_type == 'special') ? $user->lang['G_' . $data['group_name']] : $data['group_name'],
 							'L_DEMOTE_PROMOTE'	=> ($data['group_leader']) ? $user->lang['GROUP_DEMOTE'] : $user->lang['GROUP_PROMOTE'],

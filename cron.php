@@ -98,7 +98,7 @@ switch ($cron_type)
 			break;
 		}
 
-		require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
+		require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
 
 		// We do some additional checks in the module to ensure it can actually be utilised
 		$error = false;
@@ -156,7 +156,7 @@ switch ($cron_type)
 
 		$sql = 'SELECT forum_id, prune_next, enable_prune, prune_days, prune_viewed, forum_flags, prune_freq
 			FROM ' . FORUMS_TABLE . "
-			WHERE forum_id = $forum_id";
+			WHERE forum_id = {$forum_id}";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);

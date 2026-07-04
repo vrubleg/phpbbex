@@ -62,7 +62,7 @@ class phpbb_captcha_factory
 					$name = preg_replace('#^(.*?)_plugin\.php' . '$#', '\1', $file);
 					if (!class_exists($name))
 					{
-						require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/$file");
+						require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$file}");
 					}
 
 					if (call_user_func([$name, 'is_available']))

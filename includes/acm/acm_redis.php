@@ -49,7 +49,7 @@ class acm extends acm_memory
 			{
 				global $acm_type;
 
-				trigger_error("Incorrect password for the ACM module $acm_type.", E_USER_ERROR);
+				trigger_error("Incorrect password for the ACM module {$acm_type}.", E_USER_ERROR);
 			}
 		}
 
@@ -62,7 +62,7 @@ class acm extends acm_memory
 			{
 				global $acm_type;
 
-				trigger_error("Incorrect database for the ACM module $acm_type.", E_USER_ERROR);
+				trigger_error("Incorrect database for the ACM module {$acm_type}.", E_USER_ERROR);
 			}
 		}
 	}

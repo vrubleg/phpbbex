@@ -169,7 +169,7 @@ class phpbb_db_tools
 
 			if (isset($prepared_column['auto_increment']) && $prepared_column['auto_increment'] && strlen($column_name) > 26) // "{$column_name}_gen"
 			{
-				trigger_error("Index name '{$column_name}_gen' on table '$table_name' is too long. The maximum auto increment column length is 26 characters.", E_USER_ERROR);
+				trigger_error("Index name '{$column_name}_gen' on table '{$table_name}' is too long. The maximum auto increment column length is 26 characters.", E_USER_ERROR);
 			}
 
 			// here we add the definition of the new column to the list of columns
@@ -471,7 +471,7 @@ class phpbb_db_tools
 	{
 		$columns = [];
 
-		$sql = "SHOW COLUMNS FROM $table";
+		$sql = "SHOW COLUMNS FROM {$table}";
 
 		$result = $this->db->sql_query($sql);
 
@@ -601,7 +601,7 @@ class phpbb_db_tools
 	{
 		if (strlen($column_name) > 30)
 		{
-			trigger_error("Column name '$column_name' on table '$table_name' is too long. The maximum is 30 characters.", E_USER_ERROR);
+			trigger_error("Column name '{$column_name}' on table '{$table_name}' is too long. The maximum is 30 characters.", E_USER_ERROR);
 		}
 
 		// Get type
@@ -760,7 +760,7 @@ class phpbb_db_tools
 		if (strlen($table_name . $index_name) - strlen($table_prefix) > 24)
 		{
 			$max_length = strlen($table_prefix) + 24;
-			trigger_error("Index name '{$table_name}_$index_name' on table '$table_name' is too long. The maximum is $max_length characters.", E_USER_ERROR);
+			trigger_error("Index name '{$table_name}_{$index_name}' on table '{$table_name}' is too long. The maximum is {$max_length} characters.", E_USER_ERROR);
 		}
 
 		$statements[] = 'ALTER TABLE ' . $table_name . ' ADD UNIQUE INDEX ' . $index_name . '(' . implode(', ', $column) . ')';
@@ -779,7 +779,7 @@ class phpbb_db_tools
 		if (strlen($table_name . $index_name) - strlen($table_prefix) > 24)
 		{
 			$max_length = strlen($table_prefix) + 24;
-			trigger_error("Index name '{$table_name}_$index_name' on table '$table_name' is too long. The maximum is $max_length characters.", E_USER_ERROR);
+			trigger_error("Index name '{$table_name}_{$index_name}' on table '{$table_name}' is too long. The maximum is {$max_length} characters.", E_USER_ERROR);
 		}
 
 		// remove index length

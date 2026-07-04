@@ -333,8 +333,8 @@ $lang = array_merge($lang, [
 	'PURGE_CACHE_EXPLAIN'	=> 'Purge all cache related items, this includes any cached template files or queries.',
 
 	'PURGE_SESSIONS'			=> 'Purge all sessions',
-	'PURGE_SESSIONS_CONFIRM'	=> 'Are you sure you wish to purge all sessions? This will log out all users.',
-	'PURGE_SESSIONS_EXPLAIN'	=> 'Purge all sessions. This will log out all users by truncating the session table.',
+	'PURGE_SESSIONS_CONFIRM'	=> 'Are you sure you wish to purge all sessions? This will log out all users and remove persistent login keys.',
+	'PURGE_SESSIONS_EXPLAIN'	=> 'This will log out all users and remove persistent login keys.',
 
 	'RESET_DATE'					=> 'Reset board’s start date',
 	'RESET_DATE_CONFIRM'			=> 'Are you sure you wish to reset the board’s start date?',

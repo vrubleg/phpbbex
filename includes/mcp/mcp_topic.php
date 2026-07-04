@@ -97,7 +97,7 @@ function mcp_topic_view($id, $mode, $action)
 	}
 
 	// Jumpbox, sort selects and that kind of things
-	make_jumpbox($url . "&amp;i=$id&amp;mode=forum_view", $topic_info['forum_id'], false, 'm_');
+	make_jumpbox($url . "&amp;i={$id}&amp;mode=forum_view", $topic_info['forum_id'], false, 'm_');
 	$where_sql = ($action == 'reports') ? 'WHERE post_reported = 1 AND ' : 'WHERE';
 
 	$sort_days = $total = 0;
@@ -246,7 +246,7 @@ function mcp_topic_view($id, $mode, $action)
 			'S_CHECKED'			=> (($submitted_id_list && !in_array(intval($row['post_id']), $submitted_id_list)) || in_array(intval($row['post_id']), $checked_ids)),
 			'S_HAS_ATTACHMENTS'	=> !empty($attachments[$row['post_id']]),
 
-			'U_POST_DETAILS'	=> "$url&amp;i=$id&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f=$forum_id" : ''),
+			'U_POST_DETAILS'	=> "{$url}&amp;i={$id}&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f={$forum_id}" : ''),
 			'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
 			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
 		]);
@@ -312,7 +312,7 @@ function mcp_topic_view($id, $mode, $action)
 		'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
 		'INFO_IMG'			=> $user->img('icon_post_info', 'VIEW_INFO'),
 
-		'S_MCP_ACTION'		=> "$url&amp;i=$id&amp;mode=$mode&amp;action=$action&amp;start=$start",
+		'S_MCP_ACTION'		=> "{$url}&amp;i={$id}&amp;mode={$mode}&amp;action={$action}&amp;start={$start}",
 		'S_FORUM_SELECT'	=> ($to_forum_id) ? make_forum_select($to_forum_id, false, false, true, true, true) : make_forum_select($topic_info['forum_id'], false, false, true, true, true),
 		'S_CAN_SPLIT'		=> (bool) $auth->acl_get('m_split', $topic_info['forum_id']),
 		'S_CAN_MERGE'		=> (bool) $auth->acl_get('m_merge', $topic_info['forum_id']),
@@ -330,13 +330,13 @@ function mcp_topic_view($id, $mode, $action)
 		'S_SHOW_TOPIC_ICONS'	=> $s_topic_icons,
 		'S_TOPIC_ICON'			=> $icon_id,
 
-		'U_SELECT_TOPIC'	=> "$url&amp;i=$id&amp;mode=forum_view&amp;action=merge_select" . (($forum_id) ? "&amp;f=$forum_id" : ''),
+		'U_SELECT_TOPIC'	=> "{$url}&amp;i={$id}&amp;mode=forum_view&amp;action=merge_select" . (($forum_id) ? "&amp;f={$forum_id}" : ''),
 
-		'RETURN_TOPIC'		=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_info['topic_id']}&amp;start=$start") . '">', '</a>'),
-		'RETURN_FORUM'		=> sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$topic_info['forum_id']}&amp;start=$start") . '">', '</a>'),
+		'RETURN_TOPIC'		=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_info['topic_id']}&amp;start={$start}") . '">', '</a>'),
+		'RETURN_FORUM'		=> sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$topic_info['forum_id']}&amp;start={$start}") . '">', '</a>'),
 
 		'PAGE_NUMBER'		=> on_page($total, $posts_per_page, $start),
-		'PAGINATION'		=> (!$posts_per_page) ? '' : generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;t={$topic_info['topic_id']}&amp;mode=$mode&amp;action=$action&amp;to_topic_id=$to_topic_id&amp;posts_per_page=$posts_per_page&amp;st=$sort_days&amp;sk=$sort_key&amp;sd=$sort_dir"), $total, $posts_per_page, $start),
+		'PAGINATION'		=> (!$posts_per_page) ? '' : generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;t={$topic_info['topic_id']}&amp;mode={$mode}&amp;action={$action}&amp;to_topic_id={$to_topic_id}&amp;posts_per_page={$posts_per_page}&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}"), $total, $posts_per_page, $start),
 		'TOTAL_POSTS'		=> ($total == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total),
 	]);
 }
@@ -436,18 +436,18 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 			{
 				$sql = 'SELECT p.post_id, p.forum_id, p.post_approved
 					FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . " u
-					WHERE p.topic_id = $topic_id
+					WHERE p.topic_id = {$topic_id}
 						AND p.poster_id = u.user_id
-						$limit_time_sql
-					ORDER BY $sort_order_sql";
+						{$limit_time_sql}
+					ORDER BY {$sort_order_sql}";
 			}
 			else
 			{
 				$sql = 'SELECT p.post_id, p.forum_id, p.post_approved
 					FROM ' . POSTS_TABLE . " p
-					WHERE p.topic_id = $topic_id
-						$limit_time_sql
-					ORDER BY $sort_order_sql";
+					WHERE p.topic_id = {$topic_id}
+						{$limit_time_sql}
+					ORDER BY {$sort_order_sql}";
 			}
 			$result = $db->sql_query_limit($sql, 0, $start);
 
@@ -572,7 +572,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 	}
 	else
 	{
-		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$to_topic_id"));
+		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$to_topic_id}"));
 		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
 	}
 }
@@ -681,7 +681,7 @@ function merge_posts($topic_id, $to_topic_id)
 	}
 	else
 	{
-		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$to_topic_id"));
+		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$to_topic_id}"));
 		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
 	}
 }

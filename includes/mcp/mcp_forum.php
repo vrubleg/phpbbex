@@ -38,12 +38,12 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	$to_topic_id		= request_var('to_topic_id', 0);
 
 	$url_extra = '';
-	$url_extra .= ($forum_id) ? "&amp;f=$forum_id" : '';
+	$url_extra .= ($forum_id) ? "&amp;f={$forum_id}" : '';
 	$url_extra .= ($GLOBALS['topic_id']) ? '&amp;t=' . $GLOBALS['topic_id'] : '';
 	$url_extra .= ($GLOBALS['post_id']) ? '&amp;p=' . $GLOBALS['post_id'] : '';
 	$url_extra .= ($GLOBALS['user_id']) ? '&amp;u=' . $GLOBALS['user_id'] : '';
 
-	$url = append_sid(PHPBB_ROOT_PATH . "mcp.php?$url_extra");
+	$url = append_sid(PHPBB_ROOT_PATH . "mcp.php?{$url_extra}");
 
 	// Resync Topics
 	switch ($action)
@@ -79,7 +79,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		}
 	}
 
-	make_jumpbox($url . "&amp;i=$id&amp;action=$action&amp;mode=$mode" . (($merge_select) ? $selected_ids : ''), $forum_id, false, 'm_');
+	make_jumpbox($url . "&amp;i={$id}&amp;action={$action}&amp;mode={$mode}" . (($merge_select) ? $selected_ids : ''), $forum_id, false, 'm_');
 
 	$topics_per_page = $config['topics_per_page'];
 
@@ -117,9 +117,9 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		'U_VIEW_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id),
 		'U_VIEW_FORUM_LOGS'		=> ($auth->acl_gets('a_', 'm_', $forum_id) && $module->loaded('logs')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=logs&amp;mode=forum_logs&amp;f=' . $forum_id) : '',
 
-		'S_MCP_ACTION'			=> $url . "&amp;i=$id&amp;forum_action=$action&amp;mode=$mode&amp;start=$start" . (($merge_select) ? $selected_ids : ''),
+		'S_MCP_ACTION'			=> $url . "&amp;i={$id}&amp;forum_action={$action}&amp;mode={$mode}&amp;start={$start}" . (($merge_select) ? $selected_ids : ''),
 
-		'PAGINATION'			=> generate_pagination($url . "&amp;i=$id&amp;action=$action&amp;mode=$mode&amp;sd=$sort_dir&amp;sk=$sort_key&amp;st=$sort_days" . (($merge_select) ? $selected_ids : ''), $forum_topics, $topics_per_page, $start),
+		'PAGINATION'			=> generate_pagination($url . "&amp;i={$id}&amp;action={$action}&amp;mode={$mode}&amp;sd={$sort_dir}&amp;sk={$sort_key}&amp;st={$sort_days}" . (($merge_select) ? $selected_ids : ''), $forum_topics, $topics_per_page, $start),
 		'PAGE_NUMBER'			=> on_page($forum_topics, $topics_per_page, $start),
 		'TOTAL_TOPICS'			=> ($forum_topics == 1) ? $user->lang['VIEW_FORUM_TOPIC'] : sprintf($user->lang['VIEW_FORUM_TOPICS'], $forum_topics),
 	]);
@@ -141,10 +141,10 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 	$sql = "SELECT t.topic_id
 		FROM " . TOPICS_TABLE . " t
-		WHERE t.forum_id IN($forum_id, 0)
+		WHERE t.forum_id IN({$forum_id}, 0)
 			" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_approved = 1') . "
-			$limit_time_sql
-		ORDER BY t.topic_type DESC, t.topic_priority DESC, $sort_order_sql";
+			{$limit_time_sql}
+		ORDER BY t.topic_type DESC, t.topic_priority DESC, {$sort_order_sql}";
 	$result = $db->sql_query_limit($sql, $topics_per_page, $start);
 
 	$topic_list = $topic_tracking_info = [];
@@ -155,8 +155,8 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	}
 	$db->sql_freeresult($result);
 
-	$sql = "SELECT t.*$read_tracking_select
-		FROM " . TOPICS_TABLE . " t $read_tracking_join
+	$sql = "SELECT t.*{$read_tracking_select}
+		FROM " . TOPICS_TABLE . " t {$read_tracking_join}
 		WHERE " . $db->sql_in_set('t.topic_id', $topic_list, false, true);
 
 	$result = $db->sql_query($sql);
@@ -169,7 +169,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	// If there is more than one page, but we have no topic list, then the start parameter is... erm... out of sync
 	if (!sizeof($topic_list) && $forum_topics && $start > 0)
 	{
-		redirect($url . "&amp;i=$id&amp;action=$action&amp;mode=$mode");
+		redirect($url . "&amp;i={$id}&amp;action={$action}&amp;mode={$mode}");
 	}
 
 	// Get topic tracking info
@@ -249,7 +249,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		{
 			$topic_row = array_merge($topic_row, [
 				'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_moved_id']}"),
-				'U_DELETE_TOPIC'	=> ($auth->acl_get('m_delete', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;f=$forum_id&amp;topic_id_list[]={$row['topic_id']}&amp;mode=forum_view&amp;action=delete_topic") : '',
+				'U_DELETE_TOPIC'	=> ($auth->acl_get('m_delete', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;topic_id_list[]={$row['topic_id']}&amp;mode=forum_view&amp;action=delete_topic") : '',
 				'S_MOVED_TOPIC'		=> true,
 				'TOPIC_ID'			=> $row['topic_moved_id'],
 			]);
@@ -258,14 +258,14 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		{
 			if ($action == 'merge_topic' || $action == 'merge_topics')
 			{
-				$u_select_topic = $url . "&amp;i=$id&amp;mode=forum_view&amp;action=$action&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
+				$u_select_topic = $url . "&amp;i={$id}&amp;mode=forum_view&amp;action={$action}&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
 			}
 			else
 			{
-				$u_select_topic = $url . "&amp;i=$id&amp;mode=topic_view&amp;action=merge&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
+				$u_select_topic = $url . "&amp;i={$id}&amp;mode=topic_view&amp;action=merge&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
 			}
 			$topic_row = array_merge($topic_row, [
-				'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=$id&amp;f=$forum_id&amp;t={$row['topic_id']}&amp;mode=topic_view"),
+				'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;t={$row['topic_id']}&amp;mode=topic_view"),
 
 				'S_SELECT_TOPIC'	=> ($merge_select && !in_array($row['topic_id'], $source_topic_ids)),
 				'U_SELECT_TOPIC'	=> $u_select_topic,
@@ -435,7 +435,7 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 	}
 	else
 	{
-		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$to_topic_id"));
+		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$to_topic_id}"));
 		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
 	}
 }

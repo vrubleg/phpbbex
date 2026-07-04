@@ -271,7 +271,7 @@ switch ($mode)
 				$lang = 'JABBER';
 				$sql_field = 'user_jabber';
 				$s_select = (@extension_loaded('xml') && $config['jab_enable']) ? 'S_SEND_JABBER' : 'S_NO_SEND_JABBER';
-				$s_action = append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=contact&amp;action=$action&amp;u=$user_id");
+				$s_action = append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=contact&amp;action={$action}&amp;u={$user_id}");
 			break;
 
 			default:
@@ -280,9 +280,9 @@ switch ($mode)
 		}
 
 		// Grab relevant data
-		$sql = "SELECT user_id, username, user_email, user_lang, $sql_field
+		$sql = "SELECT user_id, username, user_email, user_lang, {$sql_field}
 			FROM " . USERS_TABLE . "
-			WHERE user_id = $user_id
+			WHERE user_id = {$user_id}
 				AND user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -374,7 +374,7 @@ switch ($mode)
 		// Get user...
 		$sql = 'SELECT *
 			FROM ' . USERS_TABLE . '
-			WHERE ' . (($username) ? "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'" : "user_id = $user_id");
+			WHERE ' . (($username) ? "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'" : "user_id = {$user_id}");
 		$result = $db->sql_query($sql);
 		$member = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -469,7 +469,7 @@ switch ($mode)
 		// What colour is the zebra
 		$sql = 'SELECT friend, foe
 			FROM ' . ZEBRA_TABLE . "
-			WHERE zebra_id = $user_id
+			WHERE zebra_id = {$user_id}
 				AND user_id = {$user->data['user_id']}";
 
 		$result = $db->sql_query($sql);
@@ -482,7 +482,7 @@ switch ($mode)
 		{
 			$sql = 'SELECT MAX(session_time) AS session_time, MIN(session_viewonline) AS session_viewonline
 				FROM ' . SESSIONS_TABLE . "
-				WHERE session_user_id = $user_id";
+				WHERE session_user_id = {$user_id}";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -825,7 +825,7 @@ switch ($mode)
 				}
 			}
 
-			$sql_where .= ($search_group_id) ? " AND u.user_id = ug.user_id AND ug.group_id = $search_group_id AND ug.user_pending = 0 " : '';
+			$sql_where .= ($search_group_id) ? " AND u.user_id = ug.user_id AND ug.group_id = {$search_group_id} AND ug.user_pending = 0 " : '';
 
 			if ($search_group_id)
 			{
@@ -863,7 +863,7 @@ switch ($mode)
 
 					$sql = 'SELECT DISTINCT poster_id
 						FROM ' . POSTS_TABLE . '
-						WHERE poster_ip ' . ((strpos($ips, '%') !== false) ? 'LIKE' : 'IN') . " ($ips)
+						WHERE poster_ip ' . ((strpos($ips, '%') !== false) ? 'LIKE' : 'IN') . " ({$ips})
 							AND forum_id IN (0, " . implode(', ', $ip_forums) . ')';
 					$result = $db->sql_query($sql);
 
@@ -914,8 +914,8 @@ switch ($mode)
 			// We JOIN here to save a query for determining membership for hidden groups. ;)
 			$sql = 'SELECT g.*, ug.user_id
 				FROM ' . GROUPS_TABLE . ' g
-				LEFT JOIN ' . USER_GROUP_TABLE . ' ug ON (ug.user_pending = 0 AND ug.user_id = ' . $user->data['user_id'] . " AND ug.group_id = $group_id)
-				WHERE g.group_id = $group_id";
+				LEFT JOIN ' . USER_GROUP_TABLE . ' ug ON (ug.user_pending = 0 AND ug.user_id = ' . $user->data['user_id'] . " AND ug.group_id = {$group_id})
+				WHERE g.group_id = {$group_id}";
 			$result = $db->sql_query($sql);
 			$group_row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -978,8 +978,8 @@ switch ($mode)
 			$sql_from = ', ' . USER_GROUP_TABLE . ' ug ';
 			$order_by = 'ug.group_leader DESC, ';
 
-			$sql_where .= " AND ug.user_pending = 0 AND u.user_id = ug.user_id AND ug.group_id = $group_id";
-			$sql_where_data = " AND u.user_id = ug.user_id AND ug.group_id = $group_id";
+			$sql_where .= " AND ug.user_pending = 0 AND u.user_id = ug.user_id AND ug.group_id = {$group_id}";
+			$sql_where_data = " AND u.user_id = ug.user_id AND ug.group_id = {$group_id}";
 		}
 
 		// Sorting and order
@@ -1000,9 +1000,9 @@ switch ($mode)
 		if ($sql_where)
 		{
 			$sql = 'SELECT COUNT(u.user_id) AS total_users
-				FROM ' . USERS_TABLE . " u$sql_from
+				FROM ' . USERS_TABLE . " u{$sql_from}
 				WHERE u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ")
-				$sql_where";
+				{$sql_where}";
 			$result = $db->sql_query($sql);
 			$total_users = (int) $db->sql_fetchfield('total_users');
 			$db->sql_freeresult($result);
@@ -1054,13 +1054,13 @@ switch ($mode)
 			}
 		}
 
-		$u_hide_find_member = append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "start=$start" . (!empty($params) ? '&amp;' . implode('&amp;', $params) : ''));
+		$u_hide_find_member = append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "start={$start}" . (!empty($params) ? '&amp;' . implode('&amp;', $params) : ''));
 
 		if ($mode)
 		{
-			$params[] = "mode=$mode";
+			$params[] = "mode={$mode}";
 		}
-		$sort_params[] = "mode=$mode";
+		$sort_params[] = "mode={$mode}";
 
 		$pagination_url = append_sid(PHPBB_ROOT_PATH . 'memberlist.php', implode('&amp;', $params));
 		$sort_url = append_sid(PHPBB_ROOT_PATH . 'memberlist.php', implode('&amp;', $sort_params));
@@ -1133,17 +1133,17 @@ switch ($mode)
 				'S_JOINED_TIME_OPTIONS'	=> $s_find_join_time,
 				'S_ACTIVE_TIME_OPTIONS'	=> $s_find_active_time,
 				'S_GROUP_SELECT'		=> $s_group_select,
-				'S_USER_SEARCH_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=$form&amp;field=$field")]
+				'S_USER_SEARCH_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form={$form}&amp;field={$field}")]
 			);
 		}
 
 		// Get us some users :D
 		$sql = "SELECT u.user_id
 			FROM " . USERS_TABLE . " u
-				$sql_from
+				{$sql_from}
 			WHERE u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ")
-				$sql_where
-			ORDER BY $order_by";
+				{$sql_where}
+			ORDER BY {$order_by}";
 		$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
 		$user_list = [];
@@ -1175,11 +1175,11 @@ switch ($mode)
 			if ($mode == 'group')
 			{
 				$sql = "SELECT u.*
-						$sql_select
+						{$sql_select}
 					FROM " . USERS_TABLE . " u
-						$sql_from
+						{$sql_from}
 					WHERE " . $db->sql_in_set('u.user_id', $user_list) . "
-						$sql_where_data";
+						{$sql_where_data}";
 			}
 			else
 			{
@@ -1424,8 +1424,8 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 		'S_WARNINGS'	=> ($auth->acl_getf_global('m_') || $auth->acl_get('m_warn')),
 
-		'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id=$user_id&amp;sr=posts") : '',
-		'U_SEARCH_USER_TOPICS'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id=$user_id&amp;sr=topics&amp;sf=firstpost") : '',
+		'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_id}&amp;sr=posts") : '',
+		'U_SEARCH_USER_TOPICS'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_id}&amp;sr=topics&amp;sf=firstpost") : '',
 		'U_NOTES'		=> ($user_notes_enabled && $auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $user_id, true, $user->session_id) : '',
 		'U_WARN'		=> ($warn_user_enabled && $auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $user_id, true, $user->session_id) : '',
 		'U_PM'			=> ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($data['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',

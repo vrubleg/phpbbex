@@ -93,7 +93,7 @@ class phpbb_session
 		}
 
 		// Current page from phpBB root (for example: adm/index.php?i=10&b=2)
-		$page = (($page_dir) ? $page_dir . '/' : '') . $page_name . (($query_string) ? "?$query_string" : '');
+		$page = (($page_dir) ? $page_dir . '/' : '') . $page_name . (($query_string) ? "?{$query_string}" : '');
 
 		// The script path from the webroot to the current directory (for example: /phpBB3/adm/) : always prefixed with / and ends in /
 		$script_path = trim(str_replace('\\', '/', dirname($script_name)));
@@ -280,14 +280,12 @@ class phpbb_session
 				$s_forwarded_for = ($config['forwarded_for_check']) ? substr($this->data['session_forwarded_for'], 0, 254) : '';
 				$u_forwarded_for = ($config['forwarded_for_check']) ? substr($this->forwarded_for, 0, 254) : '';
 
-				// referer checks
-				$check_referer_path = (isset($config['referer_validation']) && $config['referer_validation'] == REFERER_VALIDATE_PATH);
 				$referer_valid = true;
 
 				// we assume HEAD and TRACE to be foul play and thus only whitelist GET
 				if (!empty($config['referer_validation']) && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) !== 'get')
 				{
-					$referer_valid = $this->validate_referer($check_referer_path);
+					$referer_valid = $this->validate_referer();
 				}
 
 				if ($u_ip === $s_ip && $s_browser === $u_browser && $s_forwarded_for === $u_forwarded_for && $referer_valid)
@@ -296,7 +294,7 @@ class phpbb_session
 
 					// Check whether the session is still valid if we have one
 					// Check the session length timeframe if autologin is not enabled.
-					// Else check the autologin length... and also removing those having autologin enabled but no longer allowed board-wide.
+					// Else check the autologin length.
 					if (!$this->data['session_autologin'])
 					{
 						if ($this->data['session_time'] < $this->time_now - ($config['session_length'] + 60))
@@ -304,7 +302,7 @@ class phpbb_session
 							$session_expired = true;
 						}
 					}
-					else if (!$config['allow_autologin'] || ($config['max_autologin_time'] && $this->data['session_time'] < $this->time_now - (86400 * (int) $config['max_autologin_time']) + 60))
+					else if (!$config['max_autologin_time'] || $this->data['session_time'] < $this->time_now - (86400 * $config['max_autologin_time']) + 60)
 					{
 						$session_expired = true;
 					}
@@ -318,7 +316,16 @@ class phpbb_session
 							$sql_ary = ['session_time' => $this->time_now];
 
 							// Update the last visit time once an hour
-							if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
+							if (!empty($this->data['session_bot_id']) && $this->time_now - $this->data['session_last_visit'] > 3600)
+							{
+								$sql_ary['session_last_visit'] = $this->data['session_last_visit'] ?: $this->time_now;
+								$this->data['session_last_visit'] = $this->time_now;
+								$sql = 'UPDATE ' . BOTS_TABLE . '
+									SET bot_lastvisit = ' . (int) $this->time_now . '
+									WHERE bot_id = ' . (int) $this->data['session_bot_id'];
+								$db->sql_query($sql);
+							}
+							else if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
 							{
 								$sql_ary['session_last_visit'] = $this->data['user_lastvisit'] ?: $this->time_now;
 								$this->data['user_lastvisit'] = $this->time_now;
@@ -339,7 +346,7 @@ class phpbb_session
 						}
 
 						$this->data['is_registered'] = ($this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER));
-						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS);
+						$this->data['is_bot'] = !empty($this->data['session_bot_id']);
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
 						$this->handle_browser_tracking(false);
@@ -390,9 +397,8 @@ class phpbb_session
 			$this->session_gc();
 		}*/
 
-		// Do we allow autologin on this board? No? Then override anything
-		// that may be requested here
-		if (!$config['allow_autologin'])
+		// Do we allow autologin on this board? No? Then override anything that may be requested here.
+		if (!$config['max_autologin_time'])
 		{
 			$this->cookie_data['k'] = $persist_login = false;
 		}
@@ -410,7 +416,7 @@ class phpbb_session
 		{
 			if ($row['bot_agent'] && preg_match('#' . str_replace('\*', '.*?', preg_quote($row['bot_agent'], '#')) . '#i', $this->browser_ua))
 			{
-				$bot = $row['user_id'];
+				$bot = (int) $row['bot_id'];
 			}
 
 			// If ip is supplied, we will make sure the ip is matching too...
@@ -430,7 +436,7 @@ class phpbb_session
 
 					if (strpos($this->ip, $bot_ip) === 0)
 					{
-						$bot = (int) $row['user_id'];
+						$bot = (int) $row['bot_id'];
 						break;
 					}
 				}
@@ -498,10 +504,11 @@ class phpbb_session
 			else
 			{
 				// We give bots always the same session if it is not yet expired.
-				$sql = 'SELECT u.*, s.*
-					FROM ' . USERS_TABLE . ' u
-					LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
-					WHERE u.user_id = ' . (int) $bot;
+				$sql = 'SELECT u.*, s.*, b.bot_id, b.bot_name
+					FROM ' . USERS_TABLE . ' u, ' . BOTS_TABLE . ' b
+					LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_bot_id = b.bot_id)
+					WHERE u.user_id = ' . ANONYMOUS . '
+						AND b.bot_id = ' . (int) $bot;
 			}
 
 			$result = $db->sql_query($sql);
@@ -544,7 +551,7 @@ class phpbb_session
 		$this->data['is_bot'] = (bool) $bot;
 
 		// If our friend is a bot, we re-assign a previously assigned session
-		if ($this->data['is_bot'] && $bot == $this->data['user_id'] && $this->data['session_id'])
+		if ($this->data['is_bot'] && $bot == $this->data['session_bot_id'] && $this->data['session_id'])
 		{
 			// Only assign the current session if the ip, browser and forwarded_for match...
 			if (strpos($this->ip, ':') !== false && strpos($this->data['session_ip'], ':') !== false)
@@ -580,9 +587,9 @@ class phpbb_session
 					$db->sql_query($sql);
 
 					// Update the last visit time
-					$sql = 'UPDATE ' . USERS_TABLE . '
-						SET user_lastvisit = ' . (int) $this->data['session_time'] . '
-						WHERE user_id = ' . (int) $this->data['user_id'];
+					$sql = 'UPDATE ' . BOTS_TABLE . '
+						SET bot_lastvisit = ' . (int) $this->data['session_time'] . '
+						WHERE bot_id = ' . (int) $bot;
 					$db->sql_query($sql);
 				}
 
@@ -593,7 +600,7 @@ class phpbb_session
 			else
 			{
 				// If the ip and browser does not match make sure we only have one bot assigned to one session
-				$db->sql_query('DELETE FROM ' . SESSIONS_TABLE . ' WHERE session_user_id = ' . $this->data['user_id']);
+				$db->sql_query('DELETE FROM ' . SESSIONS_TABLE . ' WHERE session_bot_id = ' . (int) $bot);
 			}
 		}
 
@@ -603,6 +610,7 @@ class phpbb_session
 		// Create or update the session
 		$sql_ary = [
 			'session_user_id'		=> (int) $this->data['user_id'],
+			'session_bot_id'		=> (int) $bot,
 			'session_start'			=> (int) $this->time_now,
 			'session_last_visit'	=> (int) $this->data['session_last_visit'],
 			'session_time'			=> (int) $this->time_now,
@@ -672,7 +680,7 @@ class phpbb_session
 
 		if (!$bot)
 		{
-			$cookie_expire = (intval($config['max_autologin_time']) ? 86400 * intval($config['max_autologin_time']) : true);
+			$cookie_expire = ($config['max_autologin_time']) ? 86400 * (int) $config['max_autologin_time'] : null;
 
 			set_cookie('u', $this->cookie_data['u'], $cookie_expire);
 			set_cookie('k', $this->cookie_data['k'], $cookie_expire);
@@ -683,7 +691,7 @@ class phpbb_session
 			$sql = 'SELECT COUNT(session_id) AS sessions
 					FROM ' . SESSIONS_TABLE . '
 					WHERE session_user_id = ' . (int) $this->data['user_id'] . '
-					AND session_time >= ' . (int) ($this->time_now - (max($config['session_length'], $config['form_token_lifetime'])));
+					AND session_time >= ' . (int) ($this->time_now - $config['session_length']);
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -703,9 +711,9 @@ class phpbb_session
 			$this->data['session_time'] = $this->data['session_last_visit'] = $this->time_now;
 
 			// Update the last visit time
-			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $this->data['session_time'] . '
-				WHERE user_id = ' . (int) $this->data['user_id'];
+			$sql = 'UPDATE ' . BOTS_TABLE . '
+				SET bot_lastvisit = ' . (int) $this->data['session_time'] . '
+				WHERE bot_id = ' . (int) $bot;
 			$db->sql_query($sql);
 
 			$_SID = '';
@@ -859,16 +867,17 @@ class phpbb_session
 			$this->time_now = time();
 		}
 
-		// Firstly, delete guest sessions
+		// Delete expired guest sessions.
 		$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
 			WHERE session_user_id = ' . ANONYMOUS . '
-				AND session_time < ' . (int) ($this->time_now - $config['session_length']);
+				AND session_time < ' . ($this->time_now - $config['session_length']);
 		$db->sql_query($sql);
 
 		// Get expired sessions, only most recent for each user
 		$sql = 'SELECT session_user_id, MAX(session_time) AS recent_time
 			FROM ' . SESSIONS_TABLE . '
-			WHERE session_time < ' . ($this->time_now - $config['session_length']) . '
+			WHERE session_user_id <> ' . ANONYMOUS . '
+				AND session_time < ' . ($this->time_now - $config['session_length']) . '
 			GROUP BY session_user_id';
 		$result = $db->sql_query_limit($sql, $batch_size);
 
@@ -905,9 +914,13 @@ class phpbb_session
 			if ($config['max_autologin_time'])
 			{
 				$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
-					WHERE last_login < ' . (time() - (86400 * (int) $config['max_autologin_time']));
-				$db->sql_query($sql);
+					WHERE last_login < ' . (time() - (86400 * $config['max_autologin_time']));
 			}
+			else
+			{
+				$sql = 'TRUNCATE TABLE ' . SESSIONS_KEYS_TABLE;
+			}
+			$db->sql_query($sql);
 
 			// only called from CRON; should be a safe workaround until the infrastructure gets going
 			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
@@ -1225,7 +1238,7 @@ class phpbb_session
 		$sql_where .= ($user_id === (int) $this->data['user_id']) ? " AND session_id <> '" . $db->sql_escape($this->session_id) . "'" : '';
 
 		$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
-			WHERE $sql_where";
+			WHERE {$sql_where}";
 		$db->sql_query($sql);
 
 		// We're changing the password of the current user and they have a key
@@ -1239,12 +1252,9 @@ class phpbb_session
 
 	/**
 	* Check if the request originated from the same page.
-	* @param bool $check_script_path If true, the path will be checked as well
 	*/
-	function validate_referer($check_script_path = false)
+	function validate_referer()
 	{
-		global $config;
-
 		// no referer - nothing to validate, user's fault for turning it off (we only check on POST; so meta can't be the reason)
 		if (empty($this->referer))
 		{
@@ -1257,16 +1267,6 @@ class phpbb_session
 		if (!(stripos($ref, HTTP_HOST) === 0))
 		{
 			return false;
-		}
-		else if ($check_script_path && rtrim($this->page['root_script_path'], '/') !== '')
-		{
-			$ref = substr($ref, strlen(HTTP_HOST));
-			if (HTTP_PORT) { $ref = preg_replace('#^:' . HTTP_PORT . '#', '', $ref); }
-
-			if (!(stripos(rtrim($ref, '/'), rtrim($this->page['root_script_path'], '/')) === 0))
-			{
-				return false;
-			}
 		}
 
 		return true;
@@ -1437,7 +1437,7 @@ class phpbb_user extends phpbb_session
 
 		$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
-			WHERE s.style_id = $style
+			WHERE s.style_id = {$style}
 				AND t.template_id = s.template_id
 				AND c.theme_id = s.theme_id
 				AND i.imageset_id = s.imageset_id";
@@ -1451,13 +1451,13 @@ class phpbb_user extends phpbb_session
 			$style = $this->data['user_style'] = $config['default_style'];
 
 			$sql = 'UPDATE ' . USERS_TABLE . "
-				SET user_style = $style
+				SET user_style = {$style}
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
 			$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
 				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
-				WHERE s.style_id = $style
+				WHERE s.style_id = {$style}
 					AND t.template_id = s.template_id
 					AND c.theme_id = s.theme_id
 					AND i.imageset_id = s.imageset_id";
@@ -1991,7 +1991,7 @@ class phpbb_user extends phpbb_session
 
 		$sql = 'SELECT *
 			FROM ' . PROFILE_FIELDS_DATA_TABLE . "
-			WHERE user_id = $user_id";
+			WHERE user_id = {$user_id}";
 		$result = $db->sql_query_limit($sql, 1);
 		$this->profile_fields = (!($row = $db->sql_fetchrow($result))) ? [] : $row;
 		$db->sql_freeresult($result);

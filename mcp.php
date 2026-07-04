@@ -79,7 +79,7 @@ if ($post_id)
 	// We determine the topic and forum id here, to make sure the moderator really has moderative rights on this post
 	$sql = 'SELECT topic_id, forum_id
 		FROM ' . POSTS_TABLE . "
-		WHERE post_id = $post_id";
+		WHERE post_id = {$post_id}";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
@@ -99,7 +99,7 @@ if (!$post_id && $topic_id)
 {
 	$sql = 'SELECT forum_id
 		FROM ' . TOPICS_TABLE . "
-		WHERE topic_id = $topic_id";
+		WHERE topic_id = {$topic_id}";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
@@ -198,7 +198,7 @@ if ($quickmod)
 		break;
 
 		default:
-			trigger_error("$action not allowed as quickmod", E_USER_ERROR);
+			trigger_error("{$action} not allowed as quickmod", E_USER_ERROR);
 		break;
 	}
 }
@@ -262,9 +262,9 @@ $module->assign_tpl_vars(append_sid(PHPBB_ROOT_PATH . 'mcp.php'));
 // Generate urls for letting the moderation control panel being accessed in different modes
 $template->assign_vars([
 	'U_MCP'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main'),
-	'U_MCP_FORUM'	=> ($forum_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f=$forum_id") : '',
-	'U_MCP_TOPIC'	=> ($forum_id && $topic_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;t=$topic_id") : '',
-	'U_MCP_POST'	=> ($forum_id && $topic_id && $post_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;t=$topic_id&amp;p=$post_id") : '',
+	'U_MCP_FORUM'	=> ($forum_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}") : '',
+	'U_MCP_TOPIC'	=> ($forum_id && $topic_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;t={$topic_id}") : '',
+	'U_MCP_POST'	=> ($forum_id && $topic_id && $post_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;t={$topic_id}&amp;p={$post_id}") : '',
 ]);
 
 // Generate the page, do not display/query online list
@@ -286,7 +286,7 @@ function _module_notes_url($mode, &$module_row)
 	}
 
 	global $user_id;
-	return ($user_id) ? "&amp;u=$user_id" : '';
+	return ($user_id) ? "&amp;u={$user_id}" : '';
 }
 
 function _module_warn_url($mode, &$module_row)
@@ -295,15 +295,15 @@ function _module_warn_url($mode, &$module_row)
 	{
 		global $forum_id;
 
-		return ($forum_id) ? "&amp;f=$forum_id" : '';
+		return ($forum_id) ? "&amp;f={$forum_id}" : '';
 	}
 
 	if ($mode == 'warn_post')
 	{
 		global $forum_id, $post_id;
 
-		$url_extra = ($forum_id) ? "&amp;f=$forum_id" : '';
-		$url_extra .= ($post_id) ? "&amp;p=$post_id" : '';
+		$url_extra = ($forum_id) ? "&amp;f={$forum_id}" : '';
+		$url_extra .= ($post_id) ? "&amp;p={$post_id}" : '';
 
 		return $url_extra;
 	}
@@ -311,13 +311,13 @@ function _module_warn_url($mode, &$module_row)
 	{
 		global $warning_id;
 
-		return ($warning_id) ? "&amp;warning_id=$warning_id" : '';
+		return ($warning_id) ? "&amp;warning_id={$warning_id}" : '';
 	}
 	else
 	{
 		global $user_id;
 
-		return ($user_id) ? "&amp;u=$user_id" : '';
+		return ($user_id) ? "&amp;u={$user_id}" : '';
 	}
 }
 
@@ -351,11 +351,11 @@ function extra_url()
 	global $forum_id, $topic_id, $post_id, $report_id, $user_id;
 
 	$url_extra = '';
-	$url_extra .= ($forum_id) ? "&amp;f=$forum_id" : '';
-	$url_extra .= ($topic_id) ? "&amp;t=$topic_id" : '';
-	$url_extra .= ($post_id) ? "&amp;p=$post_id" : '';
-	$url_extra .= ($user_id) ? "&amp;u=$user_id" : '';
-	$url_extra .= ($report_id) ? "&amp;r=$report_id" : '';
+	$url_extra .= ($forum_id) ? "&amp;f={$forum_id}" : '';
+	$url_extra .= ($topic_id) ? "&amp;t={$topic_id}" : '';
+	$url_extra .= ($post_id) ? "&amp;p={$post_id}" : '';
+	$url_extra .= ($user_id) ? "&amp;u={$user_id}" : '';
+	$url_extra .= ($report_id) ? "&amp;r={$report_id}" : '';
 
 	return $url_extra;
 }
@@ -565,8 +565,8 @@ function get_forum_data($forum_id, $acl_list = 'f_list', $read_tracking = false)
 		$read_tracking_join = $read_tracking_select = '';
 	}
 
-	$sql = "SELECT f.* $read_tracking_select
-		FROM " . FORUMS_TABLE . " f$read_tracking_join
+	$sql = "SELECT f.* {$read_tracking_select}
+		FROM " . FORUMS_TABLE . " f{$read_tracking_join}
 		WHERE " . $db->sql_in_set('f.forum_id', $forum_id);
 	$result = $db->sql_query($sql);
 
@@ -652,9 +652,9 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 
 			$sql = 'SELECT COUNT(topic_id) AS total
 				FROM ' . TOPICS_TABLE . "
-				$where_sql forum_id = $forum_id
+				{$where_sql} forum_id = {$forum_id}
 					AND topic_type NOT IN (" . POST_ANNOUNCE . ', ' . POST_GLOBAL . ")
-					AND topic_last_post_time >= $min_time";
+					AND topic_last_post_time >= {$min_time}";
 
 			if (!$auth->acl_get('m_approve', $forum_id))
 			{
@@ -669,8 +669,8 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 
 			$sql = 'SELECT COUNT(post_id) AS total
 				FROM ' . POSTS_TABLE . "
-				$where_sql topic_id = $topic_id
-					AND post_time >= $min_time";
+				{$where_sql} topic_id = {$topic_id}
+					AND post_time >= {$min_time}";
 
 			if (!$auth->acl_get('m_approve', $forum_id))
 			{
@@ -686,7 +686,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 
 			$sql = 'SELECT COUNT(p.post_id) AS total
 				FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
-				$where_sql " . $db->sql_in_set('p.forum_id', ($forum_id) ? [$forum_id] : array_intersect(get_forum_list('f_read'), get_forum_list('m_approve'))) . '
+				{$where_sql} " . $db->sql_in_set('p.forum_id', ($forum_id) ? [$forum_id] : array_intersect(get_forum_list('f_read'), get_forum_list('m_approve'))) . '
 					AND p.post_approved = 0
 					AND t.topic_id = p.topic_id
 					AND t.topic_first_post_id <> p.post_id';
@@ -704,7 +704,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 
 			$sql = 'SELECT COUNT(topic_id) AS total
 				FROM ' . TOPICS_TABLE . "
-				$where_sql " . $db->sql_in_set('forum_id', ($forum_id) ? [$forum_id] : array_intersect(get_forum_list('f_read'), get_forum_list('m_approve'))) . '
+				{$where_sql} " . $db->sql_in_set('forum_id', ($forum_id) ? [$forum_id] : array_intersect(get_forum_list('f_read'), get_forum_list('m_approve'))) . '
 					AND topic_approved = 0';
 
 			if ($min_time)
@@ -722,7 +722,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$type = ($pm) ? 'pm_reports' : 'reports';
 			$default_key = 't';
 			$default_dir = 'd';
-			$limit_time_sql = ($min_time) ? "AND r.report_time >= $min_time" : '';
+			$limit_time_sql = ($min_time) ? "AND r.report_time >= {$min_time}" : '';
 
 			if ($topic_id)
 			{
@@ -750,17 +750,17 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			{
 				$sql = 'SELECT COUNT(r.report_id) AS total
 					FROM ' . REPORTS_TABLE . ' r, ' . PRIVMSGS_TABLE . " p
-					$where_sql r.post_id = 0
+					{$where_sql} r.post_id = 0
 						AND p.msg_id = r.pm_id
-						$limit_time_sql";
+						{$limit_time_sql}";
 			}
 			else
 			{
 				$sql = 'SELECT COUNT(r.report_id) AS total
 					FROM ' . REPORTS_TABLE . ' r, ' . POSTS_TABLE . " p
-					$where_sql r.pm_id = 0
+					{$where_sql} r.pm_id = 0
 						AND p.post_id = r.post_id
-						$limit_time_sql";
+						{$limit_time_sql}";
 			}
 		break;
 
@@ -771,7 +771,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 
 			$sql = 'SELECT COUNT(log_id) AS total
 				FROM ' . LOG_TABLE . "
-				$where_sql " . $db->sql_in_set('forum_id', ($forum_id) ? [$forum_id] : array_intersect(get_forum_list('f_read'), get_forum_list('m_'))) . '
+				{$where_sql} " . $db->sql_in_set('forum_id', ($forum_id) ? [$forum_id] : array_intersect(get_forum_list('f_read'), get_forum_list('m_'))) . '
 					AND log_time >= ' . $min_time . '
 					AND log_type = ' . LOG_MOD;
 		break;
@@ -788,14 +788,14 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$sort_by_text = ['a' => $user->lang['AUTHOR'], 't' => $user->lang['POST_TIME'], 'tt' => $user->lang['TOPIC_TIME'], 'r' => $user->lang['REPLIES'], 's' => $user->lang['SUBJECT'], 'v' => $user->lang['VIEWS']];
 
 			$sort_by_sql = ['a' => 't.topic_first_poster_name', 't' => 't.topic_last_post_time', 'tt' => 't.topic_time', 'r' => (($auth->acl_get('m_approve', $forum_id)) ? 't.topic_replies_real' : 't.topic_replies'), 's' => 't.topic_title', 'v' => 't.topic_views'];
-			$limit_time_sql = ($min_time) ? "AND t.topic_last_post_time >= $min_time" : '';
+			$limit_time_sql = ($min_time) ? "AND t.topic_last_post_time >= {$min_time}" : '';
 		break;
 
 		case 'posts':
 			$limit_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 			$sort_by_text = ['a' => $user->lang['AUTHOR'], 't' => $user->lang['POST_TIME'], 's' => $user->lang['SUBJECT']];
 			$sort_by_sql = ['a' => 'u.username_clean', 't' => 'p.post_time', 's' => 'p.post_subject'];
-			$limit_time_sql = ($min_time) ? "AND p.post_time >= $min_time" : '';
+			$limit_time_sql = ($min_time) ? "AND p.post_time >= {$min_time}" : '';
 		break;
 
 		case 'reports':
@@ -815,7 +815,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$sort_by_text = ['u' => $user->lang['SORT_USERNAME'], 't' => $user->lang['SORT_DATE'], 'i' => $user->lang['SORT_IP'], 'o' => $user->lang['SORT_ACTION']];
 
 			$sort_by_sql = ['u' => 'u.username_clean', 't' => 'l.log_time', 'i' => 'l.log_ip', 'o' => 'l.log_operation'];
-			$limit_time_sql = ($min_time) ? "AND l.log_time >= $min_time" : '';
+			$limit_time_sql = ($min_time) ? "AND l.log_time >= {$min_time}" : '';
 		break;
 	}
 
@@ -869,7 +869,7 @@ function check_ids(&$ids, $table, $sql_id, $acl_list = false, $single_forum = fa
 		return false;
 	}
 
-	$sql = "SELECT $sql_id, forum_id FROM $table
+	$sql = "SELECT {$sql_id}, forum_id FROM {$table}
 		WHERE " . $db->sql_in_set($sql_id, $ids);
 	$result = $db->sql_query($sql);
 

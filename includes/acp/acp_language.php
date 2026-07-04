@@ -55,7 +55,7 @@ class acp_language
 
 				$sql = 'SELECT *
 					FROM ' . LANG_TABLE . "
-					WHERE lang_id = $lang_id";
+					WHERE lang_id = {$lang_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -93,7 +93,7 @@ class acp_language
 
 				$template->assign_vars([
 					'S_DETAILS'			=> true,
-					'U_ACTION'			=> $this->u_action . "&amp;action=details&amp;id=$lang_id",
+					'U_ACTION'			=> $this->u_action . "&amp;action=details&amp;id={$lang_id}",
 					'U_BACK'			=> $this->u_action,
 					'LANG_LOCAL_NAME'	=> $lang_entries['lang_local_name'],
 					'LANG_ENGLISH_NAME'	=> $lang_entries['lang_english_name'],
@@ -166,12 +166,12 @@ class acp_language
 				$lang_iso = request_var('iso', '');
 				$lang_iso = basename($lang_iso);
 
-				if (!$lang_iso || !file_exists(PHPBB_ROOT_PATH . "language/$lang_iso/iso.txt"))
+				if (!$lang_iso || !file_exists(PHPBB_ROOT_PATH . "language/{$lang_iso}/iso.txt"))
 				{
 					trigger_error($user->lang['LANGUAGE_PACK_NOT_EXIST'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
-				$file = file(PHPBB_ROOT_PATH . "language/$lang_iso/iso.txt");
+				$file = file(PHPBB_ROOT_PATH . "language/{$lang_iso}/iso.txt");
 
 				$lang_pack = [
 					'iso'		=> $lang_iso,
@@ -370,11 +370,11 @@ class acp_language
 					continue;
 				}
 
-				if (file_exists(PHPBB_ROOT_PATH . "language/$file/iso.txt"))
+				if (file_exists(PHPBB_ROOT_PATH . "language/{$file}/iso.txt"))
 				{
 					if (!in_array($file, $installed))
 					{
-						if ($iso = file(PHPBB_ROOT_PATH . "language/$file/iso.txt"))
+						if ($iso = file(PHPBB_ROOT_PATH . "language/{$file}/iso.txt"))
 						{
 							if (sizeof($iso) == 3)
 							{

@@ -36,7 +36,7 @@ if (!$auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel'))
 
 
 // Sorting and order
-$sort_key_sql = ['a' => 'u.username_clean', 'b' => 's.session_time'];
+$sort_key_sql = ['a' => 'COALESCE(u.username_clean, b.bot_name, \'\')', 'b' => 's.session_time'];
 if (!isset($sort_key_sql[$sort_key])) { $sort_key = 'b'; }
 $order_by = $sort_key_sql[$sort_key] . ' ' . (($sort_dir == 'a') ? 'ASC' : 'DESC');
 
@@ -45,10 +45,9 @@ if ($mode == 'whois' && $auth->acl_get('a_') && $session_id)
 {
 	require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
-	$sql = 'SELECT u.user_id, u.username, u.user_type, s.session_ip
-		FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . " s
-		WHERE s.session_id = '" . $db->sql_escape($session_id) . "'
-			AND	u.user_id = s.session_user_id";
+	$sql = 'SELECT session_ip
+		FROM ' . SESSIONS_TABLE . "
+		WHERE session_id = '" . $db->sql_escape($session_id) . "'";
 	$result = $db->sql_query($sql);
 
 	if ($row = $db->sql_fetchrow($result))
@@ -73,6 +72,7 @@ if (!$show_guests)
 	$sql = 'SELECT COUNT(DISTINCT session_ip) as num_guests
 		FROM ' . SESSIONS_TABLE . '
 		WHERE session_user_id = ' . ANONYMOUS . '
+			AND session_bot_id = 0
 			AND session_time <> session_start
 			AND session_time >= ' . (time() - ($config['load_online_time'] * 60));
 	$result = $db->sql_query($sql);
@@ -83,11 +83,9 @@ if (!$show_guests)
 // Get number of online bots (if we do not display them)
 if (!$show_bots)
 {
-	$sql = 'SELECT COUNT(DISTINCT session_user_id) as num_bots
-		FROM ' . SESSIONS_TABLE . ' s
-		LEFT JOIN ' . USERS_TABLE . ' u ON s.session_user_id = u.user_id
-		WHERE session_user_id <> ' . ANONYMOUS . '
-			AND u.user_type = ' . USER_IGNORE . '
+	$sql = 'SELECT COUNT(DISTINCT session_bot_id) as num_bots
+		FROM ' . SESSIONS_TABLE . '
+		WHERE session_bot_id <> 0
 			AND session_time >= ' . (time() - ($config['load_online_time'] * 60));
 	$result = $db->sql_query($sql);
 	$logged_bots_online = (int) $db->sql_fetchfield('num_bots');
@@ -95,26 +93,49 @@ if (!$show_bots)
 }
 
 // Get user list
-$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colour, s.*
-	FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . ' s
-	WHERE u.user_id = s.session_user_id
-		AND s.session_time >= ' . (time() - ($config['load_online_time'] * 60)) .
-		((!$show_bots) ? ' AND (u.user_type <> ' . USER_IGNORE . ' OR s.session_user_id = ' . ANONYMOUS . ')' : '') .
-		((!$show_guests) ? ' AND s.session_user_id <> ' . ANONYMOUS : '') . '
+$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colour, b.bot_name, s.*
+	FROM ' . SESSIONS_TABLE . ' s
+	LEFT JOIN ' . USERS_TABLE . ' u ON u.user_id = s.session_user_id
+	LEFT JOIN ' . BOTS_TABLE . ' b ON b.bot_id = s.session_bot_id
+	WHERE s.session_time >= ' . (time() - ($config['load_online_time'] * 60)) .
+		((!$show_bots) ? ' AND s.session_bot_id = 0' : '') .
+		((!$show_guests) ? ' AND (s.session_user_id <> ' . ANONYMOUS . ' OR s.session_bot_id <> 0)' : '') . '
 	ORDER BY ' . $order_by;
 $result = $db->sql_query($sql);
 
-$prev_id = $prev_ip = $user_list = [];
+$prev_id = $prev_ip = $prev_bot = $user_list = [];
 $logged_visible_online = $logged_hidden_online = $counter = 0;
 
 while ($row = $db->sql_fetchrow($result))
 {
-	if ($row['user_id'] != ANONYMOUS && !isset($prev_id[$row['user_id']]))
+	if ($row['session_bot_id'])
+	{
+		if (!$show_bots || isset($prev_bot[$row['session_bot_id']]))
+		{
+			continue;
+		}
+
+		$logged_bots_online++;
+		$counter++;
+		$prev_bot[$row['session_bot_id']] = 1;
+
+		if ($counter > $start + $config['topics_per_page'] || $counter <= $start)
+		{
+			continue;
+		}
+
+		$s_user_hidden = false;
+		$row['username'] = $row['bot_name'];
+		$row['user_colour'] = '';
+		$row['user_type'] = USER_IGNORE;
+		$username_full = '<span class="botname">' . $row['username'] . '</span>';
+	}
+	else if ($row['user_id'] != ANONYMOUS && !isset($prev_id[$row['user_id']]))
 	{
 		$view_online = $s_user_hidden = false;
 		$user_colour = ($row['user_colour']) ? ' style="color:#' . $row['user_colour'] . '" class="username-coloured"' : '';
 
-		$username_full = ($row['user_type'] != USER_IGNORE) ? get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']) : '<span' . $user_colour . '>' . $row['username'] . '</span>';
+		$username_full = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']);
 
 		if (!$row['session_viewonline'])
 		{
@@ -126,20 +147,8 @@ while ($row = $db->sql_fetchrow($result))
 		}
 		else
 		{
-			if ($row['user_type'] != USER_IGNORE)
-			{
-				$view_online = true;
-				$logged_visible_online++;
-			}
-			else if ($show_bots)
-			{
-				$view_online = true;
-				$logged_bots_online++;
-			}
-			else
-			{
-				$view_online = false;
-			}
+			$view_online = true;
+			$logged_visible_online++;
 		}
 
 		$prev_id[$row['user_id']] = 1;
@@ -154,7 +163,7 @@ while ($row = $db->sql_fetchrow($result))
 			continue;
 		}
 	}
-	else if ($show_guests && $row['user_id'] == ANONYMOUS)
+	else if ($show_guests && $row['user_id'] == ANONYMOUS && !$row['session_bot_id'])
 	{
 		if ($row['session_time'] == $row['session_start'])
 		{
@@ -193,18 +202,18 @@ while ($row = $db->sql_fetchrow($result))
 		'USER_BROWSER'		=> ($auth->acl_get('a_user')) ? $row['session_browser'] : '',
 
 		'U_USER_PROFILE'	=> ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
-		'U_USER_IP'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg=$show_guests&amp;sb=$show_bots&amp;start=$start&amp;sk=$sort_key&amp;sd=$sort_dir"),
+		'U_USER_IP'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg={$show_guests}&amp;sb={$show_bots}&amp;start={$start}&amp;sk={$sort_key}&amp;sd={$sort_dir}"),
 		'U_WHOIS'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=whois&amp;s=' . $row['session_id']),
 
 		'S_USER_HIDDEN'		=> $s_user_hidden,
-		'S_GUEST'			=> ($row['user_id'] == ANONYMOUS),
+		'S_GUEST'			=> ($row['user_id'] == ANONYMOUS && !$row['session_bot_id']),
 		'S_USER_TYPE'		=> $row['user_type'],
 	]);
 }
 $db->sql_freeresult($result);
-unset($prev_id, $prev_ip);
+unset($prev_id, $prev_ip, $prev_bot);
 
-$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewonline.php', "sg=$show_guests&amp;sb=$show_bots&amp;sk=$sort_key&amp;sd=$sort_dir"), $counter, $config['topics_per_page'], $start);
+$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewonline.php', "sg={$show_guests}&amp;sb={$show_bots}&amp;sk={$sort_key}&amp;sd={$sort_dir}"), $counter, $config['topics_per_page'], $start);
 
 // Grab group details for legend display
 if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
@@ -233,14 +242,7 @@ $result = $db->sql_query($sql);
 $legend = '';
 while ($row = $db->sql_fetchrow($result))
 {
-	if ($row['group_name'] == 'BOTS')
-	{
-		$legend .= (($legend != '') ? ', ' : '') . '<span style="color:#' . $row['group_colour'] . '">' . $user->lang['G_BOTS'] . '</span>';
-	}
-	else
-	{
-		$legend .= (($legend != '') ? ', ' : '') . '<a style="color:#' . $row['group_colour'] . '" href="' . append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $row['group_id']) . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</a>';
-	}
+	$legend .= (($legend != '') ? ', ' : '') . '<a style="color:#' . $row['group_colour'] . '" href="' . append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $row['group_id']) . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</a>';
 }
 $db->sql_freeresult($result);
 

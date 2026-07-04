@@ -18,7 +18,7 @@ $sql = 'SELECT f.*, t.*, p.* FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t,
 	WHERE p.post_id = t.topic_last_post_id
 		AND t.topic_id = ' . (int) $topic_id . "
 		AND (f.forum_id = t.forum_id
-				OR f.forum_id = $forum_id)";
+				OR f.forum_id = {$forum_id})";
 
 $result = $db->sql_query($sql);
 $merge_post_data = $db->sql_fetchrow($result);
@@ -110,13 +110,13 @@ $sql_data[FORUMS_TABLE]['sql'] = [
 ];
 
 // Update post information - submit merged post
-$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . " WHERE post_id = $merge_post_id";
+$sql = 'UPDATE ' . POSTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . " WHERE post_id = {$merge_post_id}";
 $db->sql_query($sql);
 
-$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . " WHERE topic_id = $topic_id";
+$sql = 'UPDATE ' . TOPICS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[TOPICS_TABLE]['sql']) . " WHERE topic_id = {$topic_id}";
 $db->sql_query($sql);
 
-$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . "  WHERE forum_id = $forum_id";
+$sql = 'UPDATE ' . FORUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_data[FORUMS_TABLE]['sql']) . "  WHERE forum_id = {$forum_id}";
 $db->sql_query($sql);
 
 // Submit Attachments
@@ -208,7 +208,7 @@ if ($merge_post_data['enable_indexing'])
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
+	require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
 
 	$error = false;
 	$search = new $search_type($error);

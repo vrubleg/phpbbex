@@ -240,8 +240,8 @@ function lock_unlock($action, $ids)
 
 	if (confirm_box(true))
 	{
-		$sql = "UPDATE $table
-			SET $set_id = " . (($action == 'lock' || $action == 'lock_post') ? ITEM_LOCKED : ITEM_UNLOCKED) . '
+		$sql = "UPDATE {$table}
+			SET {$set_id} = " . (($action == 'lock' || $action == 'lock_post') ? ITEM_LOCKED : ITEM_UNLOCKED) . '
 			WHERE ' . $db->sql_in_set($sql_id, $ids);
 		$db->sql_query($sql);
 
@@ -327,7 +327,7 @@ function change_topic_type($action, $topic_ids)
 	if (confirm_box(true))
 	{
 		$sql = 'UPDATE ' . TOPICS_TABLE . "
-			SET topic_type = $new_topic_type
+			SET topic_type = {$new_topic_type}
 			WHERE " . $db->sql_in_set('topic_id', $topic_ids);
 		$db->sql_query($sql);
 
@@ -599,8 +599,8 @@ function mcp_move_topic($topic_ids)
 
 		$message = $user->lang[$success_msg];
 		$message .= '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>');
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$forum_id") . '">', '</a>');
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_NEW_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f=$to_forum_id") . '">', '</a>');
+		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}") . '">', '</a>');
+		$message .= '<br /><br />' . sprintf($user->lang['RETURN_NEW_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$to_forum_id}") . '">', '</a>');
 
 		trigger_error($message);
 	}
@@ -757,7 +757,7 @@ function mcp_delete_post($post_ids)
 		$return_link = [];
 		if ($affected_topics == 1 && !$deleted_topics && $topic_id)
 		{
-			$return_link[] = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=$topic_id") . '">', '</a>');
+			$return_link[] = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}") . '">', '</a>');
 		}
 		$return_link[] = sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
 
@@ -803,7 +803,7 @@ function mcp_delete_post($post_ids)
 	{
 		if ($affected_topics != 1 || $deleted_topics || !$topic_id)
 		{
-			$redirect = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f=$forum_id&i=main&mode=forum_view", false);
+			$redirect = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&i=main&mode=forum_view", false);
 		}
 
 		meta_refresh(3, $redirect);
@@ -894,7 +894,7 @@ function mcp_fork_topic($topic_ids)
 
 				if (!class_exists($search_type))
 				{
-					require_once(PHPBB_ROOT_PATH . "includes/search/$search_type.php");
+					require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
 				}
 
 				$error = false;
@@ -948,7 +948,7 @@ function mcp_fork_topic($topic_ids)
 
 				$sql = 'SELECT *
 					FROM ' . POLL_OPTIONS_TABLE . "
-					WHERE topic_id = $topic_id";
+					WHERE topic_id = {$topic_id}";
 				$result = $db->sql_query($sql);
 
 				while ($row = $db->sql_fetchrow($result))
@@ -966,7 +966,7 @@ function mcp_fork_topic($topic_ids)
 
 			$sql = 'SELECT *
 				FROM ' . POSTS_TABLE . "
-				WHERE topic_id = $topic_id
+				WHERE topic_id = {$topic_id}
 				ORDER BY post_time ASC";
 			$result = $db->sql_query($sql);
 
@@ -1030,7 +1030,7 @@ function mcp_fork_topic($topic_ids)
 				{
 					$sql = 'SELECT * FROM ' . ATTACHMENTS_TABLE . "
 						WHERE post_msg_id = {$row['post_id']}
-							AND topic_id = $topic_id
+							AND topic_id = {$topic_id}
 							AND in_message = 0";
 					$result = $db->sql_query($sql);
 

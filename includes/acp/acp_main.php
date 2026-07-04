@@ -382,11 +382,11 @@ class acp_main
 							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
 
-						$tables = [CONFIRM_TABLE, SESSIONS_TABLE];
+						$tables = [CONFIRM_TABLE, SESSIONS_TABLE, SESSIONS_KEYS_TABLE];
 
 						foreach ($tables as $table)
 						{
-							$db->sql_query("TRUNCATE TABLE $table");
+							$db->sql_query("TRUNCATE TABLE {$table}");
 						}
 
 						// let's restore the admin session

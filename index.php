@@ -63,7 +63,7 @@ while ($row = $db->sql_fetchrow($result))
 	$colour_text = ($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . '"' : '';
 	$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
 
-	if ($row['group_name'] == 'BOTS' || ($user->data['user_id'] != ANONYMOUS && !$auth->acl_get('u_viewprofile')))
+	if (!$auth->acl_get('u_viewprofile'))
 	{
 		$legend[] = '<span' . $colour_text . '>' . $group_name . '</span>';
 	}
@@ -94,7 +94,7 @@ if ($config['load_birthdays'] && $config['allow_birthdays'] && $auth->acl_gets('
 		LEFT JOIN ' . BANLIST_TABLE . " b ON (u.user_id = b.ban_userid)
 		WHERE (b.ban_id IS NULL
 			OR b.ban_exclude = 1)
-			AND (u.user_birthday LIKE '" . $db->sql_escape(sprintf('%2d-%2d-', $now['mday'], $now['mon'])) . "%' $leap_year_birthdays)
+			AND (u.user_birthday LIKE '" . $db->sql_escape(sprintf('%2d-%2d-', $now['mday'], $now['mon'])) . "%' {$leap_year_birthdays})
 			AND u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
 	$result = $db->sql_query($sql);
 

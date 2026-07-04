@@ -347,7 +347,7 @@ class messenger
 			break;
 
 			default:
-				$message = "<strong>$type</strong>";
+				$message = "<strong>{$type}</strong>";
 			break;
 		}
 
@@ -1001,7 +1001,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 			$errstr = utf8_convert_message($errstr);
 		}
 
-		$err_msg = (isset($user->lang['NO_CONNECT_TO_SMTP_HOST'])) ? sprintf($user->lang['NO_CONNECT_TO_SMTP_HOST'], $errno, $errstr) : "Could not connect to smtp host : $errno : $errstr";
+		$err_msg = (isset($user->lang['NO_CONNECT_TO_SMTP_HOST'])) ? sprintf($user->lang['NO_CONNECT_TO_SMTP_HOST'], $errno, $errstr) : "Could not connect to smtp host : {$errno} : {$errstr}";
 		$err_msg .= ($error_contents) ? '<br /><br />' . htmlspecialchars($error_contents) : '';
 		return false;
 	}
@@ -1042,7 +1042,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 			// Add an additional bit of error checking to the To field.
 			if (preg_match('#[^ ]+\@[^ ]+#', $mail_to_address))
 			{
-				$smtp->server_send("RCPT TO:$mail_to_address");
+				$smtp->server_send("RCPT TO:{$mail_to_address}");
 				if ($err_msg = $smtp->server_parse('250', __LINE__))
 				{
 					// We continue... if users are not resolved we do not care
@@ -1081,22 +1081,22 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	}
 
 	// Send the Subject Line...
-	$smtp->server_send("Subject: $subject");
+	$smtp->server_send("Subject: {$subject}");
 
 	// Now the To Header.
 	$to_header = ($to_header == '') ? 'undisclosed-recipients:;' : $to_header;
-	$smtp->server_send("To: $to_header");
+	$smtp->server_send("To: {$to_header}");
 
 	// Now the CC Header.
 	if ($cc_header != '')
 	{
-		$smtp->server_send("CC: $cc_header");
+		$smtp->server_send("CC: {$cc_header}");
 	}
 
 	// Now any custom headers....
 	if ($headers !== false)
 	{
-		$smtp->server_send("$headers\r\n");
+		$smtp->server_send("{$headers}\r\n");
 	}
 
 	// Ok now we are ready for the message...
@@ -1158,7 +1158,7 @@ class smtp_class
 	{
 		fputs($this->socket, $command . "\r\n");
 
-		(!$private_info) ? $this->add_backtrace("# $command") : $this->add_backtrace('# Omitting sensitive information');
+		(!$private_info) ? $this->add_backtrace("# {$command}") : $this->add_backtrace('# Omitting sensitive information');
 
 		// We could put additional code here
 	}
@@ -1183,13 +1183,13 @@ class smtp_class
 			$this->responses[] = substr(rtrim($this->server_response), 4);
 			$this->numeric_response_code = (int) substr($this->server_response, 0, 3);
 
-			$this->add_backtrace("LINE: $line <- {$this->server_response}");
+			$this->add_backtrace("LINE: {$line} <- {$this->server_response}");
 		}
 
 		if (!(substr($this->server_response, 0, 3) == $response))
 		{
 			$this->numeric_response_code = (int) substr($this->server_response, 0, 3);
-			return (isset($user->lang['EMAIL_SMTP_ERROR_RESPONSE'])) ? sprintf($user->lang['EMAIL_SMTP_ERROR_RESPONSE'], $line, $this->server_response) : "Ran into problems sending Mail at <strong>Line $line</strong>. Response: $this->server_response";
+			return (isset($user->lang['EMAIL_SMTP_ERROR_RESPONSE'])) ? sprintf($user->lang['EMAIL_SMTP_ERROR_RESPONSE'], $line, $this->server_response) : "Ran into problems sending Mail at <strong>Line {$line}</strong>. Response: {$this->server_response}";
 		}
 
 		return 0;
@@ -1590,7 +1590,7 @@ function mail_encode($str, $eol = "\r\n")
 				function ($matches)
 				{
 					$hex = dechex(ord($matches[0]));
-					$hex = strlen($hex) == 1 ? "0$hex" : $hex;
+					$hex = strlen($hex) == 1 ? "0{$hex}" : $hex;
 					return '=' . strtoupper($hex);
 				},
 				$char

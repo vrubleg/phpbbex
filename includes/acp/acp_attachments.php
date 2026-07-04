@@ -436,7 +436,7 @@ class acp_attachments
 					{
 						$sql = 'SELECT *
 							FROM ' . EXTENSION_GROUPS_TABLE . "
-							WHERE group_id = $group_id";
+							WHERE group_id = {$group_id}";
 						$result = $db->sql_query($sql);
 						$ext_row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
@@ -517,7 +517,7 @@ class acp_attachments
 
 						$sql = ($action == 'add') ? 'INSERT INTO ' . EXTENSION_GROUPS_TABLE . ' ' : 'UPDATE ' . EXTENSION_GROUPS_TABLE . ' SET ';
 						$sql .= $db->sql_build_array((($action == 'add') ? 'INSERT' : 'UPDATE'), $group_ary);
-						$sql .= ($action == 'edit') ? " WHERE group_id = $group_id" : '';
+						$sql .= ($action == 'edit') ? " WHERE group_id = {$group_id}" : '';
 
 						$db->sql_query($sql);
 
@@ -536,14 +536,14 @@ class acp_attachments
 					{
 						$sql = 'UPDATE ' . EXTENSIONS_TABLE . "
 							SET group_id = 0
-							WHERE group_id = $group_id";
+							WHERE group_id = {$group_id}";
 						$db->sql_query($sql);
 					}
 
 					if (sizeof($extension_list))
 					{
 						$sql = 'UPDATE ' . EXTENSIONS_TABLE . "
-							SET group_id = $group_id
+							SET group_id = {$group_id}
 							WHERE " . $db->sql_in_set('extension_id', $extension_list);
 						$db->sql_query($sql);
 					}
@@ -574,20 +574,20 @@ class acp_attachments
 						{
 							$sql = 'SELECT group_name
 								FROM ' . EXTENSION_GROUPS_TABLE . "
-								WHERE group_id = $group_id";
+								WHERE group_id = {$group_id}";
 							$result = $db->sql_query($sql);
 							$group_name = (string) $db->sql_fetchfield('group_name');
 							$db->sql_freeresult($result);
 
 							$sql = 'DELETE
 								FROM ' . EXTENSION_GROUPS_TABLE . "
-								WHERE group_id = $group_id";
+								WHERE group_id = {$group_id}";
 							$db->sql_query($sql);
 
 							// Set corresponding Extensions to a pending Group
 							$sql = 'UPDATE ' . EXTENSIONS_TABLE . "
 								SET group_id = 0
-								WHERE group_id = $group_id";
+								WHERE group_id = {$group_id}";
 							$db->sql_query($sql);
 
 							add_log('admin', 'LOG_ATTACH_EXTGROUP_DEL', $group_name);
@@ -617,7 +617,7 @@ class acp_attachments
 
 						$sql = 'SELECT *
 							FROM ' . EXTENSION_GROUPS_TABLE . "
-							WHERE group_id = $group_id";
+							WHERE group_id = {$group_id}";
 						$result = $db->sql_query($sql);
 						$ext_group_row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
@@ -646,7 +646,7 @@ class acp_attachments
 
 						$sql = 'SELECT *
 							FROM ' . EXTENSIONS_TABLE . "
-							WHERE group_id = $group_id
+							WHERE group_id = {$group_id}
 								OR group_id = 0
 							ORDER BY extension";
 						$result = $db->sql_query($sql);
@@ -729,7 +729,7 @@ class acp_attachments
 							'S_NO_IMAGE'				=> $no_image_select,
 							'S_FORUM_IDS'				=> (sizeof($forum_ids) > 0),
 
-							'U_EXTENSIONS'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=$id&amp;mode=extensions"),
+							'U_EXTENSIONS'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;mode=extensions"),
 							'U_BACK'			=> $this->u_action,
 
 							'L_LEGEND'			=> $user->lang[strtoupper($action) . '_EXTENSION_GROUP'],
@@ -1182,7 +1182,7 @@ class acp_attachments
 							$ip_2_counter = 256;
 							$ip_2_fragment = 256;
 
-							$iplist[] = "'$ip_1_counter.*'";
+							$iplist[] = "'{$ip_1_counter}.*'";
 						}
 
 						while ($ip_2_counter <= $ip_2_end)
@@ -1195,7 +1195,7 @@ class acp_attachments
 								$ip_3_counter = 256;
 								$ip_3_fragment = 256;
 
-								$iplist[] = "'$ip_1_counter.$ip_2_counter.*'";
+								$iplist[] = "'{$ip_1_counter}.{$ip_2_counter}.*'";
 							}
 
 							while ($ip_3_counter <= $ip_3_end)
@@ -1208,12 +1208,12 @@ class acp_attachments
 									$ip_4_counter = 256;
 									$ip_4_fragment = 256;
 
-									$iplist[] = "'$ip_1_counter.$ip_2_counter.$ip_3_counter.*'";
+									$iplist[] = "'{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.*'";
 								}
 
 								while ($ip_4_counter <= $ip_4_end)
 								{
-									$iplist[] = "'$ip_1_counter.$ip_2_counter.$ip_3_counter.$ip_4_counter'";
+									$iplist[] = "'{$ip_1_counter}.{$ip_2_counter}.{$ip_3_counter}.{$ip_4_counter}'";
 									$ip_4_counter++;
 								}
 								$ip_3_counter++;
@@ -1239,7 +1239,7 @@ class acp_attachments
 
 			$sql = 'SELECT site_ip, site_hostname
 				FROM ' . SITELIST_TABLE . "
-				WHERE ip_exclude = $ip_exclude";
+				WHERE ip_exclude = {$ip_exclude}";
 			$result = $db->sql_query($sql);
 
 			if ($row = $db->sql_fetchrow($result))
@@ -1282,7 +1282,7 @@ class acp_attachments
 				foreach ($iplist as $ip_entry)
 				{
 					$sql = 'INSERT INTO ' . SITELIST_TABLE . " (site_ip, ip_exclude)
-						VALUES ($ip_entry, $ip_exclude)";
+						VALUES ({$ip_entry}, {$ip_exclude})";
 					$db->sql_query($sql);
 				}
 			}
@@ -1292,7 +1292,7 @@ class acp_attachments
 				foreach ($hostlist as $host_entry)
 				{
 					$sql = 'INSERT INTO ' . SITELIST_TABLE . " (site_hostname, ip_exclude)
-						VALUES ($host_entry, $ip_exclude)";
+						VALUES ({$host_entry}, {$ip_exclude})";
 					$db->sql_query($sql);
 				}
 			}

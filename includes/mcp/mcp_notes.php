@@ -77,11 +77,11 @@ class mcp_notes
 
 		add_form_key('mcp_notes');
 
-		$sql_where = ($user_id) ? "user_id = $user_id" : "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
+		$sql_where = ($user_id) ? "user_id = {$user_id}" : "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 
 		$sql = 'SELECT *
 			FROM ' . USERS_TABLE . "
-			WHERE $sql_where";
+			WHERE {$sql_where}";
 		$result = $db->sql_query($sql);
 		$userrow = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -96,10 +96,10 @@ class mcp_notes
 		// Populate user id to the currently active module (this module)
 		// The following method is another way of adjusting module urls. It is the easy variant if we want
 		// to directly adjust the current module url based on data retrieved within the same module.
-		if (strpos($this->u_action, "&amp;u=$user_id") === false)
+		if (strpos($this->u_action, "&amp;u={$user_id}") === false)
 		{
 			$this->p_master->adjust_url('&amp;u=' . $user_id);
-			$this->u_action .= "&amp;u=$user_id";
+			$this->u_action .= "&amp;u={$user_id}";
 		}
 
 		$deletemark = ($action == 'del_marked');
@@ -128,8 +128,8 @@ class mcp_notes
 				{
 					$sql = 'DELETE FROM ' . LOG_TABLE . '
 						WHERE log_type = ' . LOG_USERS . "
-							AND reportee_id = $user_id
-							$where_sql";
+							AND reportee_id = {$user_id}
+							{$where_sql}";
 					$db->sql_query($sql);
 
 					add_log('admin', 'LOG_CLEAR_USER', $userrow['username']);
@@ -220,7 +220,7 @@ class mcp_notes
 			'L_TITLE'			=> $user->lang['MCP_NOTES_USER'],
 
 			'PAGE_NUMBER'		=> on_page($log_count, $config['topics_per_page'], $start),
-			'PAGINATION'		=> generate_pagination($this->u_action . "&amp;$u_sort_param$keywords_param", $log_count, $config['topics_per_page'], $start),
+			'PAGINATION'		=> generate_pagination($this->u_action . "&amp;{$u_sort_param}{$keywords_param}", $log_count, $config['topics_per_page'], $start),
 			'TOTAL_REPORTS'		=> ($log_count == 1) ? $user->lang['LIST_REPORT'] : sprintf($user->lang['LIST_REPORTS'], $log_count),
 
 			'RANK_TITLE'		=> $rank_title,

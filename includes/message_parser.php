@@ -552,7 +552,7 @@ class bbcode_firstpass extends bbcode
 					$code = substr($code, 0, -1);
 				}
 
-				return "[code=$stx:" . $this->bbcode_uid . ']' . $code . '[/code:' . $this->bbcode_uid . ']';
+				return "[code={$stx}:" . $this->bbcode_uid . ']' . $code . '[/code:' . $this->bbcode_uid . ']';
 			break;
 
 			default:
@@ -1009,7 +1009,7 @@ class bbcode_firstpass extends bbcode
 
 		if (!$validated)
 		{
-			return '[email' . (($var1) ? "=$var1" : '') . ']' . $var2 . '[/email]';
+			return '[email' . (($var1) ? "={$var1}" : '') . ']' . $var2 . '[/email]';
 		}
 
 		$this->parsed_items['email']++;
@@ -1703,8 +1703,8 @@ class parse_message extends bbcode_firstpass
 						// Refresh attachment data
 						$this->attachment_data[$index]['real_filename'] = $filedata['real_filename'];
 						$this->attachment_data[$index]['attach_comment'] = $this->filename_data['filecomment'] ?: $this->attachment_data[$index]['attach_comment'];
-						$this->message = preg_replace_callback("#\[attachment=$index\](.*?)\[/attachment\]#", function ($m) use ($index, $filename) {
-							return "[attachment=$index]{$filename}[/attachment]";
+						$this->message = preg_replace_callback("#\[attachment={$index}\](.*?)\[/attachment\]#", function ($m) use ($index, $filename) {
+							return "[attachment={$index}]{$filename}[/attachment]";
 						}, $this->message);
 						$this->filename_data['filecomment'] = '';
 					}

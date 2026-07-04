@@ -74,6 +74,7 @@ $db = new dbal_mysql();
 
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false);
 unset($dbpasswd); // For safety purposes.
+$db_tools = new phpbb_db_tools($db, true);
 
 $user->ip = (!empty($_SERVER['REMOTE_ADDR'])) ? htmlspecialchars($_SERVER['REMOTE_ADDR']) : '';
 $user->ip = (stripos($user->ip, '::ffff:') === 0) ? substr($user->ip, 7) : $user->ip;
@@ -139,13 +140,13 @@ function remove_module($module_class, $module_basename, $module_mode = null)
 	$diff = 2;
 
 	$sql = 'UPDATE ' . MODULES_TABLE . "
-		SET right_id = right_id - $diff
+		SET right_id = right_id - {$diff}
 		WHERE module_class = '" . $db->sql_escape($module_class) . "'
 			AND left_id < {$row['right_id']} AND right_id > {$row['right_id']}";
 	$db->sql_query($sql);
 
 	$sql = 'UPDATE ' . MODULES_TABLE . "
-		SET left_id = left_id - $diff, right_id = right_id - $diff
+		SET left_id = left_id - {$diff}, right_id = right_id - {$diff}
 		WHERE module_class = '" . $db->sql_escape($module_class) . "'
 			AND left_id > {$row['right_id']}";
 	$db->sql_query($sql);
@@ -170,7 +171,7 @@ function remove_permissions($permissions)
 	{
 		foreach ([ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE, ACL_OPTIONS_TABLE] as $table)
 		{
-			$db->sql_query("DELETE FROM $table WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
+			$db->sql_query("DELETE FROM {$table} WHERE " . $db->sql_in_set('auth_option_id', $option_ids));
 		}
 
 		// Reset permissions cache...
@@ -191,6 +192,7 @@ function remove_config_values($names)
 // Update!
 
 $purge_default = 'cache';
+$bots_default = false;
 
 if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_version'], '1.7.0', '<'))
 {
@@ -237,7 +239,6 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	@unlink(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/.htaccess');
 
 	set_config('phpbbex_version', '1.7.0');
-	$purge_default = 'all';
 }
 
 if (version_compare($config['phpbbex_version'], '1.8.0', '<'))
@@ -258,14 +259,13 @@ if (version_compare($config['phpbbex_version'], '1.9.5', '<'))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
 	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
 	set_config('phpbbex_version', '1.9.5');
-	$purge_default = 'all';
 }
 
 if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 {
 	// The COPPA group is not special anymore.
 
-	$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = 2 WHERE group_name = 'REGISTERED_COPPA'");
+	$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = " . GROUP_HIDDEN . " WHERE group_name = 'REGISTERED_COPPA'");
 	$db->sql_query("DELETE FROM " . CONFIG_TABLE . " WHERE config_name IN ('coppa_enable', 'coppa_mail', 'coppa_fax')");
 
 	// Delete obsolete AIM, YIM, and MSN columns that always were unused in phpBBex.
@@ -526,6 +526,8 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 // Not ready yet. Replace '<=' by '<' before the release.
 if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 {
+	// Migrate settings.
+
 	if ($config['board_hide_emails'] ?? 0)
 	{
 		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_allow_viewemail = 0');
@@ -553,11 +555,17 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'board_email_form',
 		'board_hide_emails',
 		'allow_emailreuse',
+		'allow_autologin',
+		'form_token_sid_guests',
+		'form_token_lifetime',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
+	set_config('max_autologin_time', '400');
+	set_config('session_length', '43200');
+	set_config('referer_validation', '1');
 
 	// Remove obsolete modules.
 
@@ -630,11 +638,79 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_browser = '', user_ip = '' WHERE user_id = " . ANONYMOUS);
 
+	// Demote bots from users to guests.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query('ALTER TABLE ' . BOTS_TABLE . ' ADD COLUMN bot_lastvisit int(11) UNSIGNED DEFAULT 0 NOT NULL AFTER bot_name');
+	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' ADD COLUMN session_bot_id mediumint(8) UNSIGNED DEFAULT 0 NOT NULL AFTER session_user_id');
+	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' ADD INDEX session_bot_id(session_bot_id)');
+	$db->sql_return_on_error(false);
+
+	if ($db_tools->sql_column_exists(BOTS_TABLE, 'user_id'))
+	{
+		$sql = 'SELECT b.bot_id, b.user_id, u.user_lastvisit
+			FROM ' . BOTS_TABLE . ' b
+			LEFT JOIN ' . USERS_TABLE . ' u ON b.user_id = u.user_id
+			WHERE b.user_id <> 0';
+		$result = $db->sql_query($sql);
+
+		$bot_user_ids = [];
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$bot_id = (int) $row['bot_id'];
+			$bot_user_id = (int) $row['user_id'];
+			$bot_user_ids[] = $bot_user_id;
+
+			$db->sql_query('UPDATE ' . BOTS_TABLE . '
+				SET bot_lastvisit = ' . (int) $row['user_lastvisit'] . "
+				WHERE bot_id = {$bot_id}");
+		}
+		$db->sql_freeresult($result);
+
+		foreach ($bot_user_ids as $bot_user_id)
+		{
+			user_delete('remove', $bot_user_id);
+		}
+
+		$db->sql_query('ALTER TABLE ' . BOTS_TABLE . ' DROP COLUMN user_id');
+	}
+
+	// No more BOTS group.
+
+	$sql = 'SELECT group_id FROM ' . GROUPS_TABLE . " WHERE group_name = 'BOTS' AND group_type = " . GROUP_SPECIAL;
+	$result = $db->sql_query($sql);
+	$bot_group_id = (int) $db->sql_fetchfield('group_id');
+	$db->sql_freeresult($result);
+
+	if ($bot_group_id)
+	{
+		$sql = 'SELECT user_id
+			FROM ' . USER_GROUP_TABLE . "
+			WHERE group_id = {$bot_group_id}";
+		$result = $db->sql_query($sql);
+		$bot_group_has_users = (bool) $db->sql_fetchfield('user_id');
+		$db->sql_freeresult($result);
+
+		if (!$bot_group_has_users)
+		{
+			$db->sql_query('DELETE FROM ' . ACL_GROUPS_TABLE . " WHERE group_id = {$bot_group_id}");
+			$db->sql_query('DELETE FROM ' . GROUPS_TABLE . " WHERE group_id = {$bot_group_id}");
+		}
+		else
+		{
+			// If there are some users in the group, make it not special at least.
+			$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = " . GROUP_HIDDEN . " WHERE group_id = {$bot_group_id}");
+		}
+	}
+
+	$bots_default = true;
+	$purge_default = 'all';
+
 	set_config('phpbbex_version', '1.10.0');
 }
 
 // Update bots if bots=1 is passed.
-if (request_var('bots', 0))
+if (request_var('bots', $bots_default))
 {
 	$bots_updates = [
 		// Bot deletions.
@@ -720,102 +796,44 @@ if (request_var('bots', 0))
 		'Feedspot [Bot]'			=> 'Feedspot/',
 	];
 
-	// Get BOTS group.
-	$sql = 'SELECT group_id, group_colour
-		FROM ' . GROUPS_TABLE . "
-		WHERE group_name = 'BOTS'";
-	$result = $db->sql_query($sql);
-	$group_row = $db->sql_fetchrow($result);
-	$db->sql_freeresult($result);
-	if (!$group_row) { die('Cannot find BOTS group.'); }
-
 	// Update loop.
 	foreach ($bots_updates as $bot_name => $bot_agent)
 	{
-		$bot_name_clean = utf8_clean_string($bot_name);
-
-		$sql = 'SELECT user_id, user_type
-			FROM ' . USERS_TABLE . "
-			WHERE username_clean = '" . $db->sql_escape($bot_name_clean) . "'";
+		$sql = 'SELECT bot_id
+			FROM ' . BOTS_TABLE . "
+			WHERE bot_name = '" . $db->sql_escape($bot_name) . "'";
 		$result = $db->sql_query($sql);
-		$user_row = $db->sql_fetchrow($result);
+		$bot_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		if (!$user_row)
+		if (!$bot_row)
 		{
 			if ($bot_agent === false) { continue; }
-
-			$bot_ip = '';
-
-			$user_row = [
-				'user_type'				=> USER_IGNORE,
-				'group_id'				=> $group_row['group_id'],
-				'username'				=> $bot_name,
-				'user_regdate'			=> time(),
-				'user_password'			=> '',
-				'user_colour'			=> $group_row['group_colour'],
-				'user_email'			=> '',
-				'user_lang'				=> $config['default_lang'],
-				'user_style'			=> $config['default_style'],
-				'user_timezone'			=> 0,
-				'user_dateformat'		=> $config['default_dateformat'],
-				'user_allow_massemail'	=> 0,
-			];
-
-			$bot_user_id = user_add($user_row);
 
 			$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
 				'bot_active'	=> 1,
 				'bot_name'		=> (string) $bot_name,
-				'user_id'		=> (int) $bot_user_id,
 				'bot_agent'		=> (string) $bot_agent,
-				'bot_ip'		=> (string) $bot_ip,
+				'bot_ip'		=> '',
 			]);
-
 			$db->sql_query($sql);
 		}
 		else
 		{
-			if ($user_row['user_type'] != USER_IGNORE) { continue; }
-
-			$bot_user_id = (int) $user_row['user_id'];
-
 			if ($bot_agent === false)
 			{
 				$sql = 'DELETE FROM ' . BOTS_TABLE . "
-					WHERE user_id = $bot_user_id";
+					WHERE bot_id = " . (int) $bot_row['bot_id'];
 				$db->sql_query($sql);
-
-				user_delete('remove', $bot_user_id);
 			}
 			else
 			{
 				$sql = 'UPDATE ' . BOTS_TABLE . "
 					SET bot_agent = '" .  $db->sql_escape($bot_agent) . "'
-					WHERE user_id = $bot_user_id";
+					WHERE bot_id = " . (int) $bot_row['bot_id'];
 				$db->sql_query($sql);
 			}
 		}
-	}
-
-	// Disable receiving PMs for bots.
-	$sql = 'SELECT user_id
-		FROM ' . BOTS_TABLE;
-	$result = $db->sql_query($sql);
-
-	$bot_user_ids = [];
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$bot_user_ids[] = (int) $row['user_id'];
-	}
-	$db->sql_freeresult($result);
-
-	if (!empty($bot_user_ids))
-	{
-		$sql = 'UPDATE ' . USERS_TABLE . '
-			SET user_allow_pm = 0
-			WHERE ' . $db->sql_in_set('user_id', $bot_user_ids);
-		$db->sql_query($sql);
 	}
 }
 
@@ -1060,7 +1078,6 @@ $updates_to_version = UPDATES_TO_VERSION;
 $debug_from_version = DEBUG_FROM_VERSION;
 $oldest_from_version = OLDEST_FROM_VERSION;
 
-$db_tools = new phpbb_db_tools($db, true);
 $database_update_info = database_update_info();
 
 $error_ary = [];
@@ -1216,7 +1233,7 @@ if ($debug_from_version === false)
 {
 	// update the version
 	$sql = "UPDATE " . CONFIG_TABLE . "
-		SET config_value = '$updates_to_version'
+		SET config_value = '{$updates_to_version}'
 		WHERE config_name = 'version'";
 	_sql($sql, $errored, $error_ary);
 }
@@ -2182,7 +2199,7 @@ function change_database_data(&$no_updates, $version)
 
 				$next_order_id++;
 
-				$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . " (role_name, role_description, role_type, role_order) VALUES ('ROLE_USER_NEW_MEMBER', 'ROLE_DESCRIPTION_USER_NEW_MEMBER', 'u_', $next_order_id)";
+				$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . " (role_name, role_description, role_type, role_order) VALUES ('ROLE_USER_NEW_MEMBER', 'ROLE_DESCRIPTION_USER_NEW_MEMBER', 'u_', {$next_order_id})";
 				_sql($sql, $errored, $error_ary);
 				$u_role = $db->sql_nextid();
 
@@ -2190,11 +2207,11 @@ function change_database_data(&$no_updates, $version)
 				{
 					// Now add the correct data to the roles...
 					// The standard role says that new users are not able to send a PM, Mass PM, are not able to PM groups
-					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT $u_role, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_sendpm', 'u_masspm', 'u_masspm_group')";
+					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT {$u_role}, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_sendpm', 'u_masspm', 'u_masspm_group')";
 					_sql($sql, $errored, $error_ary);
 
 					// Add user role to group
-					$sql = 'INSERT INTO ' . ACL_GROUPS_TABLE . " (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES ($group_id, 0, 0, $u_role, 0)";
+					$sql = 'INSERT INTO ' . ACL_GROUPS_TABLE . " (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES ({$group_id}, 0, 0, {$u_role}, 0)";
 					_sql($sql, $errored, $error_ary);
 				}
 			}
@@ -2219,13 +2236,13 @@ function change_database_data(&$no_updates, $version)
 
 				$next_order_id++;
 
-				$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . " (role_name, role_description, role_type, role_order) VALUES  ('ROLE_FORUM_NEW_MEMBER', 'ROLE_DESCRIPTION_FORUM_NEW_MEMBER', 'f_', $next_order_id)";
+				$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . " (role_name, role_description, role_type, role_order) VALUES  ('ROLE_FORUM_NEW_MEMBER', 'ROLE_DESCRIPTION_FORUM_NEW_MEMBER', 'f_', {$next_order_id})";
 				_sql($sql, $errored, $error_ary);
 				$f_role = $db->sql_nextid();
 
 				if (!$errored)
 				{
-					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT $f_role, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'f_%' AND auth_option IN ('f_noapprove')";
+					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT {$f_role}, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'f_%' AND auth_option IN ('f_noapprove')";
 					_sql($sql, $errored, $error_ary);
 				}
 			}
@@ -2414,9 +2431,9 @@ function change_database_data(&$no_updates, $version)
 				// On an already updated board, they can also already be in language/.../acp/attachments.php
 				// in the board root.
 				$lang_files = [
-					PHPBB_ROOT_PATH . "install/update/new/language/$lang_dir/acp/attachments.php",
-					PHPBB_ROOT_PATH . "language/$lang_dir/install.php",
-					PHPBB_ROOT_PATH . "language/$lang_dir/acp/attachments.php",
+					PHPBB_ROOT_PATH . "install/update/new/language/{$lang_dir}/acp/attachments.php",
+					PHPBB_ROOT_PATH . "language/{$lang_dir}/install.php",
+					PHPBB_ROOT_PATH . "language/{$lang_dir}/acp/attachments.php",
 				];
 
 				foreach ($lang_files as $lang_file)

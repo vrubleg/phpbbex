@@ -121,7 +121,7 @@ class ucp_attachments
 				LEFT JOIN ' . PRIVMSGS_TABLE . ' p ON (a.post_msg_id = p.msg_id AND a.in_message = 1)
 			WHERE a.poster_id = ' . $user->data['user_id'] . "
 				AND a.is_orphan = 0
-			ORDER BY $order_by";
+			ORDER BY {$order_by}";
 		$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
 		$row_count = 0;
@@ -168,7 +168,7 @@ class ucp_attachments
 
 		$template->assign_vars([
 			'PAGE_NUMBER'			=> on_page($num_attachments, $config['topics_per_page'], $start),
-			'PAGINATION'			=> generate_pagination($this->u_action . "&amp;sk=$sort_key&amp;sd=$sort_dir", $num_attachments, $config['topics_per_page'], $start),
+			'PAGINATION'			=> generate_pagination($this->u_action . "&amp;sk={$sort_key}&amp;sd={$sort_dir}", $num_attachments, $config['topics_per_page'], $start),
 			'TOTAL_ATTACHMENTS'		=> $num_attachments,
 
 			'L_TITLE'				=> $user->lang['UCP_ATTACHMENTS'],

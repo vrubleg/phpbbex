@@ -186,8 +186,8 @@ function mcp_front_view($id, $mode, $action)
 				{
 					$template->assign_block_vars('report', [
 						'U_POST_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . '&amp;p=' . $row['post_id'] . "&amp;i=reports&amp;mode=report_details"),
-						'U_MCP_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . "&amp;i=$id&amp;mode=forum_view"),
-						'U_MCP_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id'] . "&amp;i=$id&amp;mode=topic_view"),
+						'U_MCP_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . "&amp;i={$id}&amp;mode=forum_view"),
+						'U_MCP_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'f=' . $row['forum_id'] . '&amp;t=' . $row['topic_id'] . "&amp;i={$id}&amp;mode=topic_view"),
 						'U_FORUM'			=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
 						'U_TOPIC'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']),
 

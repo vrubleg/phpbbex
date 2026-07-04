@@ -97,7 +97,7 @@ class ucp_remind
 			$messenger->assign_vars([
 				'USERNAME'		=> htmlspecialchars_decode($user_row['username']),
 				'PASSWORD'		=> htmlspecialchars_decode($user_password),
-				'U_ACTIVATE'	=> "$server_url/ucp.php?mode=activate&u={$user_row['user_id']}&k=$user_actkey"]
+				'U_ACTIVATE'	=> "{$server_url}/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_actkey}"]
 			);
 
 			$messenger->send($user_row['user_notify_type']);

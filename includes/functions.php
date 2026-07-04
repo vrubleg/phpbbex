@@ -937,10 +937,10 @@ function phpbb_own_realpath($path)
 
 	foreach ($bits as $i => $bit)
 	{
-		if (@is_dir("$resolved/$bit") || ($i == $max && @is_file("$resolved/$bit")))
+		if (@is_dir("{$resolved}/{$bit}") || ($i == $max && @is_file("{$resolved}/{$bit}")))
 		{
 			// Path Exists
-			if ($symlink_resolve && is_link("$resolved/$bit") && ($link = readlink("$resolved/$bit")))
+			if ($symlink_resolve && is_link("{$resolved}/{$bit}") && ($link = readlink("{$resolved}/{$bit}")))
 			{
 				// Resolved a symlink.
 				$resolved = $link . (($i == $max) ? '' : '/');
@@ -1078,7 +1078,7 @@ function style_select($default = '', $all = false)
 	$sql_where = (!$all) ? 'WHERE style_active = 1 ' : '';
 	$sql = 'SELECT style_id, style_name
 		FROM ' . STYLES_TABLE . "
-		$sql_where
+		{$sql_where}
 		ORDER BY style_name";
 	$result = $db->sql_query($sql);
 
@@ -1210,7 +1210,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 			$sql = 'UPDATE ' . TOPICS_TRACK_TABLE . '
 				SET mark_time = ' . ($post_time ?: time()) . "
 				WHERE user_id = {$user->data['user_id']}
-					AND topic_id = $topic_id";
+					AND topic_id = {$topic_id}";
 			$db->sql_query($sql);
 
 			// insert row
@@ -1342,7 +1342,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 			$sql = 'SELECT forum_id, mark_time
 				FROM ' . FORUMS_TRACK_TABLE . "
 				WHERE user_id = {$user->data['user_id']}
-					AND forum_id = $forum_id";
+					AND forum_id = {$forum_id}";
 			$result = $db->sql_query($sql);
 
 			$mark_time = [];
@@ -1402,23 +1402,23 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 			'LEFT_JOIN'		=> [
 				[
 					'FROM'	=> [TOPICS_TRACK_TABLE => 'tt'],
-					'ON'	=> "tt.user_id = $user_id AND t.topic_id = tt.topic_id",
+					'ON'	=> "tt.user_id = {$user_id} AND t.topic_id = tt.topic_id",
 				],
 				[
 					'FROM'	=> [FORUMS_TRACK_TABLE => 'ft'],
-					'ON'	=> "ft.user_id = $user_id AND t.forum_id = ft.forum_id",
+					'ON'	=> "ft.user_id = {$user_id} AND t.forum_id = ft.forum_id",
 				],
 			],
 
 			'WHERE'			=> "
-				 t.topic_last_post_time > $last_mark AND
+				 t.topic_last_post_time > {$last_mark} AND
 				(
 				(tt.mark_time IS NOT NULL AND t.topic_last_post_time > tt.mark_time) OR
 				(tt.mark_time IS NULL AND ft.mark_time IS NOT NULL AND t.topic_last_post_time > ft.mark_time) OR
 				(tt.mark_time IS NULL AND ft.mark_time IS NULL)
 				)
-				$sql_extra
-				$sql_sort",
+				{$sql_extra}
+				{$sql_sort}",
 		];
 
 		$sql = $db->sql_build_query('SELECT', $sql_array);
@@ -2045,12 +2045,12 @@ function generate_link_hash($link_name)
 {
 	global $user;
 
-	if (!isset($user->data["hash_$link_name"]))
+	if (!isset($user->data["hash_{$link_name}"]))
 	{
-		$user->data["hash_$link_name"] = substr(sha1($user->data['user_form_salt'] . $link_name), 0, 8);
+		$user->data["hash_{$link_name}"] = substr(sha1($user->data['user_form_salt'] . $link_name), 0, 8);
 	}
 
-	return $user->data["hash_$link_name"];
+	return $user->data["hash_{$link_name}"];
 }
 
 /**
@@ -2073,7 +2073,7 @@ function add_form_key($form_name)
 	global $config, $template, $user;
 
 	$now = time();
-	$token_sid = ($user->data['user_id'] == ANONYMOUS && !empty($config['form_token_sid_guests'])) ? $user->session_id : '';
+	$token_sid = ($user->data['user_id'] == ANONYMOUS) ? $user->session_id : '';
 	$token = sha1($now . $user->data['user_form_salt'] . $form_name . $token_sid);
 
 	$s_fields = build_hidden_fields([
@@ -2102,7 +2102,7 @@ function check_form_key($form_name, $timespan = false, $return_page = '', $trigg
 	if ($timespan === false)
 	{
 		// we enforce a minimum value of half a minute here.
-		$timespan = ($config['form_token_lifetime'] == -1) ? -1 : max(30, $config['form_token_lifetime']);
+		$timespan = max(30, $config['session_length']);
 	}
 
 	if (isset($_POST['creation_time']) && isset($_POST['form_token']))
@@ -2113,9 +2113,9 @@ function check_form_key($form_name, $timespan = false, $return_page = '', $trigg
 		$diff = time() - $creation_time;
 
 		// If creation_time and the time() now is zero we can assume it was not a human doing this (the check for if ($diff)...
-		if (defined('DEBUG_TEST') || $diff && ($diff <= $timespan || $timespan === -1))
+		if ($diff && ($diff <= $timespan || $timespan === -1))
 		{
-			$token_sid = ($user->data['user_id'] == ANONYMOUS && !empty($config['form_token_sid_guests'])) ? $user->session_id : '';
+			$token_sid = ($user->data['user_id'] == ANONYMOUS) ? $user->session_id : '';
 			$key = sha1($creation_time . $user->data['user_form_salt'] . $form_name . $token_sid);
 
 			if ($key === $token)
@@ -2793,7 +2793,7 @@ function format_backtrace($backtrace)
 		$output .= '<b>LINE:</b> ' . ((!empty($trace['line'])) ? $trace['line'] : '') . '<br />';
 
 		$output .= '<b>CALL:</b> ' . htmlspecialchars($trace['class'] . $trace['type'] . $trace['function']);
-		$output .= '(' . (($argument !== '') ? "'$argument'" : '') . ')<br />';
+		$output .= '(' . (($argument !== '') ? "'{$argument}'" : '') . ')<br />';
 	}
 
 	return $output;
@@ -2841,19 +2841,19 @@ function get_preg_expression($mode)
 			$inline = ($mode == 'url') ? ')' : '';
 			$scheme = ($mode == 'url') ? '[a-z\d+\-.]' : '[a-z\d+]'; // avoid automatic parsing of "word" in "last word.http://..."
 			// generated with regex generation file in the develop folder
-			return "[a-z]$scheme*:/{2}(?:(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})+|[0-9.]+|\[[\pLa-z0-9.]+:[\pLa-z0-9.]+:[\pLa-z0-9.:]+\])(?::\d*)?(?:/(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?";
+			return "[a-z]{$scheme}*:/{2}(?:(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})+|[0-9.]+|\[[\pLa-z0-9.]+:[\pLa-z0-9.]+:[\pLa-z0-9.:]+\])(?::\d*)?(?:/(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?";
 		break;
 
 		case 'www_url':
 		case 'www_url_inline':
 			$inline = ($mode == 'www_url') ? ')' : '';
-			return "www\.(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})+(?::\d*)?(?:/(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?";
+			return "www\.(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})+(?::\d*)?(?:/(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?";
 		break;
 
 		case 'relative_url':
 		case 'relative_url_inline':
 			$inline = ($mode == 'relative_url') ? ')' : '';
-			return "(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})*(?:/(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}($inline*+,;=:@/?|]+|%[\dA-F]{2})*)?";
+			return "(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})*(?:/(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@|]+|%[\dA-F]{2})*)*(?:\?(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?(?:\#(?:[\pLa-z0-9\-._~!$&'\{\}({$inline}*+,;=:@/?|]+|%[\dA-F]{2})*)?";
 		break;
 
 		case 'table_prefix':
@@ -3199,6 +3199,7 @@ function obtain_guest_count()
 	$sql = 'SELECT COUNT(DISTINCT s.session_ip) as num_guests
 		FROM ' . SESSIONS_TABLE . ' s
 		WHERE s.session_user_id = ' . ANONYMOUS . '
+			AND s.session_bot_id = 0
 			AND s.session_time <> s.session_start
 			AND s.session_time >= ' . ($time - ((int) ($time % 60)));
 	$result = $db->sql_query($sql);
@@ -3216,8 +3217,6 @@ function obtain_users_online()
 {
 	global $db, $config, $user;
 
-	$reading_sql = '';
-
 	$online_users = [
 		'online_users'			=> [],
 		'online_bots'			=> [],
@@ -3233,45 +3232,57 @@ function obtain_users_online()
 	{
 		$online_users['guests_online'] = obtain_guest_count();
 	}
-	if (!$config['load_online_bots'])
-	{
-		$reading_sql .= ' AND u.user_type <> ' . USER_IGNORE;
-	}
-
 	// a little discrete magic to cache this for 30 seconds
 	$time = (time() - (intval($config['load_online_time']) * 60));
 
 	$sql = 'SELECT s.session_user_id AS user_id, s.session_viewonline, u.username, u.user_type, u.user_colour
 		FROM ' . SESSIONS_TABLE . ' s
 		LEFT JOIN ' . USERS_TABLE . ' u ON s.session_user_id = u.user_id
-		WHERE s.session_time >= ' . ($time - ((int) ($time % 30))) . $reading_sql . ' AND s.session_user_id <> ' . ANONYMOUS . '
+		WHERE s.session_time >= ' . ($time - ((int) ($time % 30))) . '
+			AND s.session_user_id <> ' . ANONYMOUS . '
 		GROUP BY s.session_user_id
 		ORDER BY u.username_clean';
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		if ($row['user_type'] != USER_IGNORE)
+		$online_users['online_users'][$row['user_id']] = $row;
+		if ($row['session_viewonline'])
 		{
-			$online_users['online_users'][$row['user_id']] = $row;
-			if ($row['session_viewonline'])
-			{
-				$online_users['visible_online']++;
-			}
-			else
-			{
-				$online_users['hidden_online']++;
-			}
+			$online_users['visible_online']++;
 		}
 		else
 		{
-			$online_users['online_bots'][$row['user_id']] = $row;
-			$online_users['bots_online']++;
+			$online_users['hidden_online']++;
 		}
 	}
+	$db->sql_freeresult($result);
+
+	if ($config['load_online_bots'])
+	{
+		$sql = 'SELECT s.session_bot_id AS bot_id, b.bot_name
+			FROM ' . SESSIONS_TABLE . ' s
+			LEFT JOIN ' . BOTS_TABLE . ' b ON s.session_bot_id = b.bot_id
+			WHERE s.session_time >= ' . ($time - ((int) ($time % 30))) . '
+				AND s.session_bot_id <> 0
+			GROUP BY s.session_bot_id
+			ORDER BY b.bot_name';
+		$result = $db->sql_query($sql);
+
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$online_users['online_bots'][$row['bot_id']] = [
+				'user_id'		=> ANONYMOUS,
+				'username'		=> $row['bot_name'],
+				'user_colour'	=> '',
+			];
+			$online_users['bots_online']++;
+		}
+		$db->sql_freeresult($result);
+	}
+
 	$online_users['users_online'] = $online_users['visible_online'] + $online_users['hidden_online'];
 	$online_users['total_online'] = $online_users['bots_online'] + $online_users['guests_online'] + $online_users['visible_online'] + $online_users['hidden_online'];
-	$db->sql_freeresult($result);
 
 	return $online_users;
 }
@@ -3309,7 +3320,7 @@ function obtain_users_online_string($online_users)
 
 	foreach ($online_users['online_bots'] as $row)
 	{
-		$user_online_link = get_username_string('no_profile', $row['user_id'], $row['username'], $row['user_colour']);
+		$user_online_link = '<span class="botname">' . $row['username'] . '</span>';
 		$online_botlist .= ($online_botlist != '' ? ', ' : '') . $user_online_link;
 	}
 
@@ -3736,7 +3747,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'U_FEED'				=> generate_board_url() . "/feed.php",
 
 		'S_USER_LOGGED_IN'		=> ($user->data['user_id'] != ANONYMOUS),
-		'S_AUTOLOGIN_ENABLED'	=> (bool) $config['allow_autologin'],
+		'S_AUTOLOGIN_ENABLED'	=> !empty($config['max_autologin_time']),
 		'S_BOARD_DISABLED'		=> (bool) $config['board_disable'],
 		'S_REGISTERED_USER'		=> !empty($user->data['is_registered']),
 		'S_IS_BOT'				=> !empty($user->data['is_bot']),

@@ -363,7 +363,7 @@ class acp_permission_roles
 				$sql = 'UPDATE ' . ACL_ROLES_TABLE . '
 					SET role_order = ' . $order_total . " - role_order
 					WHERE role_type = '" . $db->sql_escape($permission_type) . "'
-						AND role_order IN ($order, " . (($action == 'move_up') ? $order - 1 : $order + 1) . ')';
+						AND role_order IN ({$order}, " . (($action == 'move_up') ? $order - 1 : $order + 1) . ')';
 				$db->sql_query($sql);
 
 			break;
@@ -384,7 +384,7 @@ class acp_permission_roles
 				$order++;
 				if ($row['role_order'] != $order)
 				{
-					$db->sql_query('UPDATE ' . ACL_ROLES_TABLE . " SET role_order = $order WHERE role_id = {$row['role_id']}");
+					$db->sql_query('UPDATE ' . ACL_ROLES_TABLE . " SET role_order = {$order} WHERE role_id = {$row['role_id']}");
 				}
 			}
 			while ($row = $db->sql_fetchrow($result));

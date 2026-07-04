@@ -101,7 +101,7 @@ class acp_styles
 							{
 								$sql = 'UPDATE ' . USERS_TABLE . '
 									SET user_style = ' . $config['default_style'] . "
-									WHERE user_style = $style_id";
+									WHERE user_style = {$style_id}";
 								$db->sql_query($sql);
 							}
 						}
@@ -130,7 +130,7 @@ class acp_styles
 
 						$sql = 'SELECT *
 							FROM ' . STYLES_TEMPLATE_TABLE . "
-							WHERE template_id = $style_id";
+							WHERE template_id = {$style_id}";
 						$result = $db->sql_query($sql);
 						$template_row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
@@ -169,7 +169,7 @@ class acp_styles
 
 						$sql = 'SELECT *
 							FROM ' . STYLES_THEME_TABLE . "
-							WHERE theme_id = $style_id";
+							WHERE theme_id = {$style_id}";
 						$result = $db->sql_query($sql);
 						$theme_row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
@@ -183,7 +183,7 @@ class acp_styles
 						{
 							$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
 								SET theme_mtime = ' . time() . "
-								WHERE theme_id = $style_id";
+								WHERE theme_id = {$style_id}";
 							$db->sql_query($sql);
 
 							$cache->destroy('sql', STYLES_THEME_TABLE);
@@ -214,7 +214,7 @@ class acp_styles
 
 						$sql = 'SELECT *
 							FROM ' . STYLES_IMAGESET_TABLE . "
-							WHERE imageset_id = $style_id";
+							WHERE imageset_id = {$style_id}";
 						$result = $db->sql_query($sql);
 						$imageset_row = $db->sql_fetchrow($result);
 						$db->sql_freeresult($result);
@@ -408,8 +408,8 @@ class acp_styles
 		]);
 
 		$sql = "SELECT *
-			FROM $sql_from
-			ORDER BY $sql_sort ASC";
+			FROM {$sql_from}
+			ORDER BY {$sql_sort} ASC";
 		$result = $db->sql_query($sql);
 
 		$installed = [];
@@ -432,11 +432,11 @@ class acp_styles
 					break;
 
 					case 'preview':
-						$s_actions[] = '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php', "$mode=" . $row[$mode . '_id']) . '">' . $user->lang['PREVIEW'] . '</a>';
+						$s_actions[] = '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php', "{$mode}=" . $row[$mode . '_id']) . '">' . $user->lang['PREVIEW'] . '</a>';
 					break;
 
 					default:
-						$s_actions[] = '<a href="' . $this->u_action . "&amp;action=$option&amp;id=" . $row[$mode . '_id'] . '">' . $user->lang[strtoupper($option)] . '</a>';
+						$s_actions[] = '<a href="' . $this->u_action . "&amp;action={$option}&amp;id=" . $row[$mode . '_id'] . '">' . $user->lang[strtoupper($option)] . '</a>';
 					break;
 				}
 			}
@@ -467,10 +467,10 @@ class acp_styles
 					continue;
 				}
 
-				$subpath = ($mode != 'style') ? "$mode/" : '';
-				if (file_exists(PHPBB_ROOT_PATH . "styles/$file/$subpath$mode.cfg"))
+				$subpath = ($mode != 'style') ? "{$mode}/" : '';
+				if (file_exists(PHPBB_ROOT_PATH . "styles/{$file}/{$subpath}{$mode}.cfg"))
 				{
-					if ($cfg = file(PHPBB_ROOT_PATH . "styles/$file/$subpath$mode.cfg"))
+					if ($cfg = file(PHPBB_ROOT_PATH . "styles/{$file}/{$subpath}{$mode}.cfg"))
 					{
 						$items = parse_cfg_file('', $cfg);
 						$name = (isset($items['name'])) ? trim($items['name']) : false;
@@ -563,9 +563,9 @@ class acp_styles
 
 		$l_prefix = strtoupper($mode);
 
-		$sql = "SELECT $sql_select
-			FROM $sql_from
-			WHERE {$mode}_id = $style_id";
+		$sql = "SELECT {$sql_select}
+			FROM {$sql_from}
+			WHERE {$mode}_id = {$style_id}";
 		$result = $db->sql_query($sql);
 		$style_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -586,13 +586,13 @@ class acp_styles
 		{
 			if ($mode == 'style')
 			{
-				$sql = "DELETE FROM $sql_from
-					WHERE {$mode}_id = $style_id";
+				$sql = "DELETE FROM {$sql_from}
+					WHERE {$mode}_id = {$style_id}";
 				$db->sql_query($sql);
 
 				$sql = 'UPDATE ' . USERS_TABLE . "
-					SET user_style = $new_id
-					WHERE user_style = $style_id";
+					SET user_style = {$new_id}
+					WHERE user_style = {$style_id}";
 				$db->sql_query($sql);
 
 				if ($style_id == $config['default_style'])
@@ -632,7 +632,7 @@ class acp_styles
 			'L_REPLACE'			=> $user->lang['REPLACE_' . $l_prefix],
 			'L_REPLACE_EXPLAIN'	=> $user->lang['REPLACE_' . $l_prefix . '_EXPLAIN'],
 
-			'U_ACTION'		=> $this->u_action . "&amp;action=delete&amp;id=$style_id",
+			'U_ACTION'		=> $this->u_action . "&amp;action=delete&amp;id={$style_id}",
 			'U_BACK'		=> $this->u_action,
 
 			'NAME'			=> $style_row[$mode . '_name'],
@@ -674,7 +674,7 @@ class acp_styles
 		if ($component == 'imageset')
 		{
 			$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . "
-				WHERE imageset_id = $component_id";
+				WHERE imageset_id = {$component_id}";
 			$db->sql_query($sql);
 		}
 
@@ -693,13 +693,13 @@ class acp_styles
 			break;
 		}
 
-		$sql = "DELETE FROM $sql_from
-			WHERE {$component}_id = $component_id";
+		$sql = "DELETE FROM {$sql_from}
+			WHERE {$component}_id = {$component_id}";
 		$db->sql_query($sql);
 
 		$sql = 'UPDATE ' . STYLES_TABLE . "
-			SET {$component}_id = $new_id
-			WHERE {$component}_id = $component_id";
+			SET {$component}_id = {$new_id}
+			WHERE {$component}_id = {$component_id}";
 		$db->sql_query($sql);
 	}
 
@@ -748,7 +748,7 @@ class acp_styles
 			$is_only_component = false;
 
 			$sql = "SELECT {$component}_id, {$component}_name
-				FROM $sql_from
+				FROM {$sql_from}
 				WHERE {$component}_id = {$component_id}";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -760,8 +760,8 @@ class acp_styles
 		else
 		{
 			$sql = "SELECT {$component}_id, {$component}_name
-				FROM $sql_from
-				$sql_where
+				FROM {$sql_from}
+				{$sql_where}
 				ORDER BY {$component}_name ASC";
 			$result = $db->sql_query($sql);
 
@@ -877,8 +877,8 @@ class acp_styles
 		}
 
 		$sql = "SELECT *
-			FROM $sql_from
-			WHERE {$mode}_id = $style_id";
+			FROM {$sql_from}
+			WHERE {$mode}_id = {$style_id}";
 		$result = $db->sql_query($sql);
 		$style_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -907,8 +907,8 @@ class acp_styles
 			}
 
 			$sql = "SELECT {$mode}_id, {$mode}_name
-				FROM $sql_from
-				WHERE {$mode}_id <> $style_id
+				FROM {$sql_from}
+				WHERE {$mode}_id <> {$style_id}
 				AND LOWER({$mode}_name) = '" . $db->sql_escape(strtolower($name)) . "'";
 			$result = $db->sql_query($sql);
 			$conflict = $db->sql_fetchrow($result);
@@ -978,9 +978,9 @@ class acp_styles
 
 			if (sizeof($sql_ary))
 			{
-				$sql = "UPDATE $sql_from
+				$sql = "UPDATE {$sql_from}
 					SET " . $db->sql_build_array('UPDATE', $sql_ary) . "
-					WHERE {$mode}_id = $style_id";
+					WHERE {$mode}_id = {$style_id}";
 				$db->sql_query($sql);
 
 				// Making this the default style?
@@ -1008,7 +1008,7 @@ class acp_styles
 			foreach ($element_ary as $element => $table)
 			{
 				$sql = "SELECT {$element}_id, {$element}_name
-					FROM $table
+					FROM {$table}
 					ORDER BY {$element}_id ASC";
 				$result = $db->sql_query($sql);
 
@@ -1034,7 +1034,7 @@ class acp_styles
 		// Get optional copyright information from the related cfg file.
 		$cfg_file = ($mode == 'style')
 			? PHPBB_ROOT_PATH . "styles/{$style_row['style_name']}/style.cfg"
-			: PHPBB_ROOT_PATH . "styles/{$style_row[$mode . '_path']}/$mode/$mode.cfg";
+			: PHPBB_ROOT_PATH . "styles/{$style_row[$mode . '_path']}/{$mode}/{$mode}.cfg";
 		$copyright = (file_exists($cfg_file) ? (parse_cfg_file($cfg_file)['copyright'] ?? '') : '');
 
 		$this->page_title = 'EDIT_DETAILS_' . $l_type;
@@ -1130,7 +1130,7 @@ class acp_styles
 		{
 			$file = str_replace('/', '.', $file);
 
-			$file = PHPBB_ROOT_PATH . "cache/{$cache_prefix}_$file.html.php";
+			$file = PHPBB_ROOT_PATH . "cache/{$cache_prefix}_{$file}.html.php";
 			if (file_exists($file) && is_file($file))
 			{
 				@unlink($file);
@@ -1161,7 +1161,7 @@ class acp_styles
 		if ($install_path)
 		{
 			$root_path = PHPBB_ROOT_PATH . 'styles/' . $install_path . '/';
-			$cfg_file = ($mode == 'style') ? "$root_path$mode.cfg" : "$root_path$mode/$mode.cfg";
+			$cfg_file = ($mode == 'style') ? "{$root_path}{$mode}.cfg" : "{$root_path}{$mode}/{$mode}.cfg";
 
 			if (!file_exists($cfg_file))
 			{
@@ -1363,9 +1363,9 @@ class acp_styles
 				break;
 			}
 
-			$sql = "SELECT $sql_select
-				FROM $sql_from
-				WHERE {$mode}_id = $basis";
+			$sql = "SELECT {$sql_select}
+				FROM {$sql_from}
+				WHERE {$mode}_id = {$basis}";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -1418,7 +1418,7 @@ class acp_styles
 			foreach ($element_ary as $element => $table)
 			{
 				$sql = "SELECT {$element}_id, {$element}_name
-					FROM $table
+					FROM {$table}
 					ORDER BY {$element}_id ASC";
 				$result = $db->sql_query($sql);
 
@@ -1489,7 +1489,7 @@ class acp_styles
 		$chk_name = ($reqd_name !== false) ? $reqd_name : $name;
 
 		$sql = "SELECT {$element}_id, {$element}_name
-			FROM $sql_from
+			FROM {$sql_from}
 			WHERE {$element}_name = '" . $db->sql_escape($chk_name) . "'";
 		$result = $db->sql_query($sql);
 
@@ -1500,13 +1500,13 @@ class acp_styles
 		}
 		else
 		{
-			if (!($cfg = @file("$root_path$element/$element.cfg")))
+			if (!($cfg = @file("{$root_path}{$element}/{$element}.cfg")))
 			{
 				$error[] = sprintf($user->lang['REQUIRES_' . $l_element], $reqd_name);
 				return false;
 			}
 
-			$cfg = parse_cfg_file("$root_path$element/$element.cfg", $cfg);
+			$cfg = parse_cfg_file("{$root_path}{$element}/{$element}.cfg", $cfg);
 
 			$name = $cfg['name'];
 			$id = 0;
@@ -1593,7 +1593,7 @@ class acp_styles
 		if ($default)
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . "
-				SET user_style = $id
+				SET user_style = {$id}
 				WHERE user_style = " . $config['default_style'];
 			$db->sql_query($sql);
 
@@ -1613,7 +1613,7 @@ class acp_styles
 		global $db, $user;
 
 		// we parse the cfg here (again)
-		$cfg_data = parse_cfg_file("$root_path$mode/$mode.cfg");
+		$cfg_data = parse_cfg_file("{$root_path}{$mode}/{$mode}.cfg");
 
 		switch ($mode)
 		{
@@ -1650,7 +1650,7 @@ class acp_styles
 
 		// Check if the name already exist
 		$sql = "SELECT {$mode}_id
-			FROM $sql_from
+			FROM {$sql_from}
 			WHERE {$mode}_name = '" . $db->sql_escape($name) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -1679,8 +1679,8 @@ class acp_styles
 				$select_bf = '';
 			}
 
-			$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path$select_bf
-				FROM $sql_from
+			$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path{$select_bf}
+				FROM {$sql_from}
 				WHERE {$mode}_name = '" . $db->sql_escape($cfg_data['inherit_from']) . "'
 					AND {$mode}_inherits_id = 0";
 			$result = $db->sql_query($sql);
@@ -1742,7 +1742,7 @@ class acp_styles
 
 			// all the heavy lifting is done later
 			case 'theme':
-				$sql_ary['theme_mtime'] = (int) filemtime(PHPBB_ROOT_PATH . "styles/$path/theme/stylesheet.css");
+				$sql_ary['theme_mtime'] = (int) filemtime(PHPBB_ROOT_PATH . "styles/{$path}/theme/stylesheet.css");
 			break;
 
 			case 'imageset':
@@ -1751,7 +1751,7 @@ class acp_styles
 
 		$db->sql_transaction('begin');
 
-		$sql = "INSERT INTO $sql_from
+		$sql = "INSERT INTO {$sql_from}
 			" . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
 
@@ -1759,7 +1759,7 @@ class acp_styles
 
 		if ($mode == 'imageset')
 		{
-			$cfg_data = parse_cfg_file("$root_path$mode/imageset.cfg");
+			$cfg_data = parse_cfg_file("{$root_path}{$mode}/imageset.cfg");
 
 			foreach ($cfg_data as $key => $value)
 			{
@@ -1786,7 +1786,7 @@ class acp_styles
 					$key = substr($key, 4);
 					$sql_ary = [
 						'image_name'		=> $key,
-						'image_filename'	=> str_replace('{PATH}', "styles/$path/imageset/", trim($image_filename)),
+						'image_filename'	=> str_replace('{PATH}', "styles/{$path}/imageset/", trim($image_filename)),
 						'image_height'		=> (int) $image_height,
 						'image_width'		=> (int) $image_width,
 						'imageset_id'		=> (int) $id,
@@ -1803,9 +1803,9 @@ class acp_styles
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				if (@file_exists("$root_path$mode/{$row['lang_dir']}/imageset.cfg"))
+				if (@file_exists("{$root_path}{$mode}/{$row['lang_dir']}/imageset.cfg"))
 				{
-					$cfg_data_imageset_data = parse_cfg_file("$root_path$mode/{$row['lang_dir']}/imageset.cfg");
+					$cfg_data_imageset_data = parse_cfg_file("{$root_path}{$mode}/{$row['lang_dir']}/imageset.cfg");
 					foreach ($cfg_data_imageset_data as $image_name => $value)
 					{
 						if (strpos($value, '*') !== false)
@@ -1881,7 +1881,7 @@ class acp_styles
 		}
 
 		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path
-			FROM $sql_from
+			FROM {$sql_from}
 			WHERE {$mode}_inherits_id = " . (int) $id;
 		$result = $db->sql_query($sql);
 
@@ -1937,7 +1937,7 @@ class acp_styles
 		}
 
 		$sql = "SELECT {$mode}_inherits_id
-			FROM $sql_from
+			FROM {$sql_from}
 			WHERE {$mode}_id = " . (int) $id;
 		$result = $db->sql_query_limit($sql, 1);
 
@@ -1953,7 +1953,7 @@ class acp_styles
 		$super_id = $row["{$mode}_inherits_id"];
 
 		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path
-			FROM $sql_from
+			FROM {$sql_from}
 			WHERE {$mode}_id = " . (int) $super_id;
 
 		$result = $db->sql_query_limit($sql, 1);

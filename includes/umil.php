@@ -507,7 +507,7 @@ class phpbb_umil
 				{
 					$sql = 'SELECT *
 						FROM ' . STYLES_IMAGESET_TABLE . "
-						WHERE imageset_id = $style_id";
+						WHERE imageset_id = {$style_id}";
 					$result = $this->db->sql_query($sql);
 					$imageset_row = $this->db->sql_fetchrow($result);
 					$this->db->sql_freeresult($result);
@@ -638,7 +638,7 @@ class phpbb_umil
 				{
 					$sql = 'SELECT *
 						FROM ' . STYLES_TEMPLATE_TABLE . "
-						WHERE template_id = $style_id";
+						WHERE template_id = {$style_id}";
 					$result = $this->db->sql_query($sql);
 					$template_row = $this->db->sql_fetchrow($result);
 					$this->db->sql_freeresult($result);
@@ -678,7 +678,7 @@ class phpbb_umil
 				{
 					$sql = 'SELECT *
 						FROM ' . STYLES_THEME_TABLE . "
-						WHERE theme_id = $style_id";
+						WHERE theme_id = {$style_id}";
 					$result = $this->db->sql_query($sql);
 					$theme_row = $this->db->sql_fetchrow($result);
 					$this->db->sql_freeresult($result);
@@ -693,7 +693,7 @@ class phpbb_umil
 
 					$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
 						SET theme_mtime = ' . time() . "
-						WHERE theme_id = $style_id";
+						WHERE theme_id = {$style_id}";
 					$this->db->sql_query($sql);
 
 					$cache->destroy('sql', STYLES_THEME_TABLE);
@@ -885,7 +885,7 @@ class phpbb_umil
 			{
 				$sql = 'SELECT module_id FROM ' . MODULES_TABLE . "
 					WHERE module_langname = '" . $this->db->sql_escape($parent) . "'
-					AND module_class = '$class'";
+					AND module_class = '{$class}'";
 				$result = $this->db->sql_query($sql);
 				$row = $this->db->sql_fetchrow($result);
 				$this->db->sql_freeresult($result);
@@ -904,9 +904,9 @@ class phpbb_umil
 		}
 
 		$sql = 'SELECT module_id FROM ' . MODULES_TABLE . "
-			WHERE module_class = '$class'
-			$parent_sql
-			AND " . ((is_numeric($module)) ? 'module_id = ' . (int) $module : "module_langname = '$module'");
+			WHERE module_class = '{$class}'
+			{$parent_sql}
+			AND " . ((is_numeric($module)) ? 'module_id = ' . (int) $module : "module_langname = '{$module}'");
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
@@ -980,7 +980,7 @@ class phpbb_umil
 			$basename = $data['module_basename'] ?? '';
 			$basename = str_replace(['/', '\\'], '', $basename);
 			$class = str_replace(['/', '\\'], '', $class);
-			$info_file = "$class/info/{$class}_$basename.php";
+			$info_file = "{$class}/info/{$class}_{$basename}.php";
 
 			// The manual and automatic ways both failed...
 			if (!file_exists((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file))
@@ -1033,7 +1033,7 @@ class phpbb_umil
 		{
 			$sql = 'SELECT module_id FROM ' . MODULES_TABLE . "
 				WHERE module_langname = '" . $this->db->sql_escape($parent) . "'
-				AND module_class = '$class'";
+				AND module_class = '{$class}'";
 			$result = $this->db->sql_query($sql);
 			$row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
@@ -1095,13 +1095,13 @@ class phpbb_umil
 				$to_left = $this->db->sql_fetchfield('left_id');
 
 				$sql = 'UPDATE ' . MODULES_TABLE . " SET left_id = left_id + 2, right_id = right_id + 2
-					WHERE module_class = '$class'
-					AND left_id >= $to_left
+					WHERE module_class = '{$class}'
+					AND left_id >= {$to_left}
 					AND left_id < {$module_data['left_id']}";
 				$this->db->sql_query($sql);
 
-				$sql = 'UPDATE ' . MODULES_TABLE . " SET left_id = $to_left, right_id = " . ($to_left + 1) . "
-					WHERE module_class = '$class'
+				$sql = 'UPDATE ' . MODULES_TABLE . " SET left_id = {$to_left}, right_id = " . ($to_left + 1) . "
+					WHERE module_class = '{$class}'
 					AND module_id = {$module_data['module_id']}";
 				$this->db->sql_query($sql);
 			}
@@ -1115,20 +1115,20 @@ class phpbb_umil
 				$to_right = $this->db->sql_fetchfield('right_id');
 
 				$sql = 'UPDATE ' . MODULES_TABLE . " SET left_id = left_id + 2, right_id = right_id + 2
-					WHERE module_class = '$class'
-					AND left_id >= $to_right
+					WHERE module_class = '{$class}'
+					AND left_id >= {$to_right}
 					AND left_id < {$module_data['left_id']}";
 				$this->db->sql_query($sql);
 
 				$sql = 'UPDATE ' . MODULES_TABLE . ' SET left_id = ' . ($to_right + 1) . ', right_id = ' . ($to_right + 2) . "
-					WHERE module_class = '$class'
+					WHERE module_class = '{$class}'
 					AND module_id = {$module_data['module_id']}";
 				$this->db->sql_query($sql);
 			}
 		}
 
 		// Clear the Modules Cache
-		$cache->destroy("_modules_$class");
+		$cache->destroy("_modules_{$class}");
 
 		return $this->umil_end();
 	}
@@ -1172,7 +1172,7 @@ class phpbb_umil
 			// Automatic method
 			$basename = str_replace(['/', '\\'], '', $module['module_basename']);
 			$class = str_replace(['/', '\\'], '', $class);
-			$info_file = "$class/info/{$class}_$basename.php";
+			$info_file = "{$class}/info/{$class}_{$basename}.php";
 
 			if (!file_exists((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file))
 			{
@@ -1221,7 +1221,7 @@ class phpbb_umil
 				{
 					$sql = 'SELECT module_id FROM ' . MODULES_TABLE . "
 						WHERE module_langname = '" . $this->db->sql_escape($parent) . "'
-						AND module_class = '$class'";
+						AND module_class = '{$class}'";
 					$result = $this->db->sql_query($sql);
 					$row = $this->db->sql_fetchrow($result);
 					$this->db->sql_freeresult($result);
@@ -1240,9 +1240,9 @@ class phpbb_umil
 			{
 				$module = $this->db->sql_escape($module);
 				$sql = 'SELECT module_id FROM ' . MODULES_TABLE . "
-					WHERE module_langname = '$module'
-					AND module_class = '$class'
-					$parent_sql";
+					WHERE module_langname = '{$module}'
+					AND module_class = '{$class}'
+					{$parent_sql}";
 				$result = $this->db->sql_query($sql);
 				while ($row = $this->db->sql_fetchrow($result))
 				{
@@ -1256,9 +1256,9 @@ class phpbb_umil
 			{
 				$module = (int) $module;
 				$sql = 'SELECT module_langname FROM ' . MODULES_TABLE . "
-					WHERE module_id = $module
-					AND module_class = '$class'
-					$parent_sql";
+					WHERE module_id = {$module}
+					AND module_class = '{$class}'
+					{$parent_sql}";
 				$result = $this->db->sql_query($sql);
 				$row = $this->db->sql_fetchrow($result);
 				$this->db->sql_freeresult($result);
@@ -1294,7 +1294,7 @@ class phpbb_umil
 				}
 			}
 
-			$cache->destroy("_modules_$class");
+			$cache->destroy("_modules_{$class}");
 
 			return $this->umil_end();
 		}

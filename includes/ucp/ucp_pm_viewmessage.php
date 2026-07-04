@@ -27,7 +27,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	// Not able to view message, it was deleted by the sender
 	if ($message_row['pm_deleted'])
 	{
-		$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;folder=$folder_id");
+		$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;folder={$folder_id}");
 		$message = $user->lang['NO_AUTH_READ_REMOVED_MESSAGE'];
 
 		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FOLDER'], '<a href="' . $meta_info . '">', '</a>');
@@ -94,7 +94,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		{
 			$sql = 'SELECT *
 				FROM ' . ATTACHMENTS_TABLE . "
-				WHERE post_msg_id = $msg_id
+				WHERE post_msg_id = {$msg_id}
 					AND in_message = 1
 				ORDER BY filetime DESC, post_msg_id ASC";
 			$result = $db->sql_query($sql);
@@ -110,7 +110,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 			{
 				$sql = 'UPDATE ' . PRIVMSGS_TABLE . "
 					SET message_attachment = 0
-					WHERE msg_id = $msg_id";
+					WHERE msg_id = {$msg_id}";
 				$db->sql_query($sql);
 			}
 		}
@@ -225,15 +225,15 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'U_JABBER'		=> ($user_info['user_jabber']) ? ('xmpp:' . $user_info['user_jabber']) : '',
 		'U_TELEGRAM'	=> ($user_info['user_telegram']) ? ('tg://resolve?domain=' . $user_info['user_telegram']) : '',
 
-		'U_DELETE'			=> "$url&amp;mode=compose&amp;action=delete&amp;f=$folder_id&amp;p=" . $message_row['msg_id'],
+		'U_DELETE'			=> "{$url}&amp;mode=compose&amp;action=delete&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'],
 		'U_EMAIL'			=> $user_info['email'],
 		'U_REPORT'			=> ($config['allow_pm_report']) ? append_sid(PHPBB_ROOT_PATH . 'report.php', "pm=" . $message_row['msg_id']) : '',
-		'U_QUOTE'			=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "$url&amp;mode=compose&amp;action=quote&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
-		'U_EDIT'			=> (($message_row['message_time'] > time() - ($config['pm_edit_time'] * 60) || !$config['pm_edit_time']) && $folder_id == PRIVMSGS_OUTBOX && $auth->acl_get('u_pm_edit')) ? "$url&amp;mode=compose&amp;action=edit&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
-		'U_POST_REPLY_PM'	=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "$url&amp;mode=compose&amp;action=reply&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
-		'U_POST_REPLY_ALL'	=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "$url&amp;mode=compose&amp;action=reply&amp;f=$folder_id&amp;reply_to_all=1&amp;p=" . $message_row['msg_id'] : '',
-		'U_PREVIOUS_PM'		=> "$url&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] . "&amp;view=previous",
-		'U_NEXT_PM'			=> "$url&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] . "&amp;view=next",
+		'U_QUOTE'			=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
+		'U_EDIT'			=> (($message_row['message_time'] > time() - ($config['pm_edit_time'] * 60) || !$config['pm_edit_time']) && $folder_id == PRIVMSGS_OUTBOX && $auth->acl_get('u_pm_edit')) ? "{$url}&amp;mode=compose&amp;action=edit&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
+		'U_POST_REPLY_PM'	=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
+		'U_POST_REPLY_ALL'	=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;reply_to_all=1&amp;p=" . $message_row['msg_id'] : '',
+		'U_PREVIOUS_PM'		=> "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=previous",
+		'U_NEXT_PM'			=> "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=next",
 
 		'U_PM_ACTION'		=> $url . '&amp;mode=compose&amp;f=' . $folder_id . '&amp;p=' . $message_row['msg_id'],
 
@@ -244,8 +244,8 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'S_PM_RECIPIENTS'	=> $num_recipients,
 		'S_BBCODE_ALLOWED'	=> ($bbcode_status) ? 1 : 0,
 
-		'U_PRINT_PM'		=> "$url&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] . "&amp;view=print",
-		'U_FORWARD_PM'		=> ($auth->acl_get('u_sendpm')) ? "$url&amp;mode=compose&amp;action=forward&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '']
+		'U_PRINT_PM'		=> "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=print",
+		'U_FORWARD_PM'		=> ($auth->acl_get('u_sendpm')) ? "{$url}&amp;mode=compose&amp;action=forward&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '']
 	);
 
 	if (class_exists('phpbb_gallery_integration'))
@@ -305,7 +305,7 @@ function get_user_information($user_id, $user_row)
 	{
 		$sql = 'SELECT session_user_id, MAX(session_time) as online_time, MIN(session_viewonline) AS viewonline
 			FROM ' . SESSIONS_TABLE . "
-			WHERE session_user_id = $user_id
+			WHERE session_user_id = {$user_id}
 			GROUP BY session_user_id";
 		$result = $db->sql_query_limit($sql, 1);
 		$row = $db->sql_fetchrow($result);

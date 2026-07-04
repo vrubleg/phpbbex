@@ -850,7 +850,7 @@ class phpbb_captcha_qa
 		global $db, $cache;
 
 		// easier to delete all answers than to figure out which to update
-		$sql = 'DELETE FROM ' . CAPTCHA_ANSWERS_TABLE . " WHERE question_id = $question_id";
+		$sql = 'DELETE FROM ' . CAPTCHA_ANSWERS_TABLE . " WHERE question_id = {$question_id}";
 		$db->sql_query($sql);
 
 		$langs = $this->get_languages();
@@ -860,7 +860,7 @@ class phpbb_captcha_qa
 
 		$sql = 'UPDATE ' . CAPTCHA_QUESTIONS_TABLE . '
 			SET ' . $db->sql_build_array('UPDATE', $question_ary) . "
-			WHERE question_id = $question_id";
+			WHERE question_id = {$question_id}";
 		$db->sql_query($sql);
 
 		$this->acp_insert_answers($data, $question_id);
@@ -925,8 +925,8 @@ class phpbb_captcha_qa
 
 		foreach ($tables as $table)
 		{
-			$sql = "DELETE FROM $table
-				WHERE question_id = $question_id";
+			$sql = "DELETE FROM {$table}
+				WHERE question_id = {$question_id}";
 			$db->sql_query($sql);
 		}
 

@@ -507,9 +507,9 @@ class fulltext_native extends search_backend
 					{
 						$sql_array['LEFT_JOIN'][] = [
 							'FROM'	=> [SEARCH_WORDLIST_TABLE => 'w' . $w_num],
-							'ON'	=> "w$w_num.word_text LIKE $id"
+							'ON'	=> "w{$w_num}.word_text LIKE {$id}"
 						];
-						$word_ids[] = "w$w_num.word_id";
+						$word_ids[] = "w{$w_num}.word_id";
 
 						$w_num++;
 					}
@@ -519,7 +519,7 @@ class fulltext_native extends search_backend
 					}
 				}
 
-				$sql_where[] = $db->sql_in_set("m$m_num.word_id", $word_ids);
+				$sql_where[] = $db->sql_in_set("m{$m_num}.word_id", $word_ids);
 
 				unset($word_id_sql);
 				unset($word_ids);
@@ -528,27 +528,27 @@ class fulltext_native extends search_backend
 			{
 				$sql_array['FROM'][SEARCH_WORDLIST_TABLE][] = 'w' . $w_num;
 
-				$sql_where[] = "w$w_num.word_text LIKE $subquery";
-				$sql_where[] = "m$m_num.word_id = w$w_num.word_id";
+				$sql_where[] = "w{$w_num}.word_text LIKE {$subquery}";
+				$sql_where[] = "m{$m_num}.word_id = w{$w_num}.word_id";
 
 				$group_by = true;
 				$w_num++;
 			}
 			else
 			{
-				$sql_where[] = "m$m_num.word_id = $subquery";
+				$sql_where[] = "m{$m_num}.word_id = {$subquery}";
 			}
 
 			$sql_array['FROM'][SEARCH_WORDMATCH_TABLE][] = 'm' . $m_num;
 
 			if ($title_match)
 			{
-				$sql_where[] = "m$m_num.$title_match";
+				$sql_where[] = "m{$m_num}.{$title_match}";
 			}
 
 			if ($m_num != 0)
 			{
-				$sql_where[] = "m$m_num.post_id = m0.post_id";
+				$sql_where[] = "m{$m_num}.post_id = m0.post_id";
 			}
 			$m_num++;
 		}
@@ -559,10 +559,10 @@ class fulltext_native extends search_backend
 			{
 				$sql_array['LEFT_JOIN'][] = [
 					'FROM'	=> [SEARCH_WORDLIST_TABLE => 'w' . $w_num],
-					'ON'	=> "w$w_num.word_text LIKE $subquery"
+					'ON'	=> "w{$w_num}.word_text LIKE {$subquery}"
 				];
 
-				$this->must_not_contain_ids[$key] = "w$w_num.word_id";
+				$this->must_not_contain_ids[$key] = "w{$w_num}.word_id";
 
 				$group_by = true;
 				$w_num++;
@@ -573,10 +573,10 @@ class fulltext_native extends search_backend
 		{
 			$sql_array['LEFT_JOIN'][] = [
 				'FROM'	=> [SEARCH_WORDMATCH_TABLE => 'm' . $m_num],
-				'ON'	=> $db->sql_in_set("m$m_num.word_id", $this->must_not_contain_ids) . (($title_match) ? " AND m$m_num.$title_match" : '') . " AND m$m_num.post_id = m0.post_id"
+				'ON'	=> $db->sql_in_set("m{$m_num}.word_id", $this->must_not_contain_ids) . (($title_match) ? " AND m{$m_num}.{$title_match}" : '') . " AND m{$m_num}.post_id = m0.post_id"
 			];
 
-			$sql_where[] = "m$m_num.word_id IS NULL";
+			$sql_where[] = "m{$m_num}.word_id IS NULL";
 			$m_num++;
 		}
 
@@ -589,9 +589,9 @@ class fulltext_native extends search_backend
 				{
 					$sql_array['LEFT_JOIN'][] = [
 						'FROM'	=> [SEARCH_WORDLIST_TABLE => 'w' . $w_num],
-						'ON'	=> "w$w_num.word_text LIKE $id"
+						'ON'	=> "w{$w_num}.word_text LIKE {$id}"
 					];
-					$id = "w$w_num.word_id";
+					$id = "w{$w_num}.word_id";
 
 					$group_by = true;
 					$w_num++;
@@ -599,9 +599,9 @@ class fulltext_native extends search_backend
 
 				$sql_array['LEFT_JOIN'][] = [
 					'FROM'	=> [SEARCH_WORDMATCH_TABLE => 'm' . $m_num],
-					'ON'	=> "m$m_num.word_id = $id AND m$m_num.post_id = m0.post_id" . (($title_match) ? " AND m$m_num.$title_match" : '')
+					'ON'	=> "m{$m_num}.word_id = {$id} AND m{$m_num}.post_id = m0.post_id" . (($title_match) ? " AND m{$m_num}.{$title_match}" : '')
 				];
-				$is_null_joins[] = "m$m_num.word_id IS NULL";
+				$is_null_joins[] = "m{$m_num}.word_id IS NULL";
 
 				$m_num++;
 			}
@@ -836,30 +836,30 @@ class fulltext_native extends search_backend
 		// Build the query for really selecting the post_ids
 		if ($type == 'posts')
 		{
-			$sql = "SELECT $select
+			$sql = "SELECT {$select}
 				FROM " . $sql_sort_table . POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . TOPICS_TABLE . ' t' : '') . "
-				WHERE $sql_author
-					$sql_topic_id
-					$sql_firstpost
-					$m_approve_fid_sql
-					$sql_fora
-					$sql_sort_join
-					$sql_time
-				ORDER BY $sql_sort";
+				WHERE {$sql_author}
+					{$sql_topic_id}
+					{$sql_firstpost}
+					{$m_approve_fid_sql}
+					{$sql_fora}
+					{$sql_sort_join}
+					{$sql_time}
+				ORDER BY {$sql_sort}";
 			$field = 'post_id';
 		}
 		else
 		{
-			$sql = "SELECT $select
+			$sql = "SELECT {$select}
 				FROM " . $sql_sort_table . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-				WHERE $sql_author
-					$sql_topic_id
-					$sql_firstpost
-					$m_approve_fid_sql
-					$sql_fora
+				WHERE {$sql_author}
+					{$sql_topic_id}
+					{$sql_firstpost}
+					{$m_approve_fid_sql}
+					{$sql_fora}
 					AND t.topic_id = p.topic_id
-					$sql_sort_join
-					$sql_time
+					{$sql_sort_join}
+					{$sql_time}
 				GROUP BY t.topic_id, " . $sort_by_sql[$sort_key] . '
 				ORDER BY ' . $sql_sort;
 			$field = 'topic_id';
@@ -1023,7 +1023,7 @@ class fulltext_native extends search_backend
 
 			$sql = 'SELECT w.word_id, w.word_text, m.title_match
 				FROM ' . SEARCH_WORDLIST_TABLE . ' w, ' . SEARCH_WORDMATCH_TABLE . " m
-				WHERE m.post_id = $post_id
+				WHERE m.post_id = {$post_id}
 					AND w.word_id = m.word_id";
 			$result = $db->sql_query($sql);
 
@@ -1107,7 +1107,7 @@ class fulltext_native extends search_backend
 				$sql = 'DELETE FROM ' . SEARCH_WORDMATCH_TABLE . '
 					WHERE ' . $db->sql_in_set('word_id', $sql_in) . '
 						AND post_id = ' . intval($post_id) . "
-						AND title_match = $title_match";
+						AND title_match = {$title_match}";
 				$db->sql_query($sql);
 
 				$sql = 'UPDATE ' . SEARCH_WORDLIST_TABLE . '
