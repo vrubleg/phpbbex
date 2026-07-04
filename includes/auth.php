@@ -967,7 +967,7 @@ class phpbb_auth
 
 			$attempt_data = [
 				'attempt_ip'			=> $user->ip,
-				'attempt_browser'		=> trim(substr($user->browser, 0, 249)),
+				'attempt_browser'		=> $user->browser_ua,
 				'attempt_forwarded_for'	=> $forwarded_for,
 				'attempt_time'			=> time(),
 				'user_id'				=> ($row) ? (int) $row['user_id'] : 0,
