@@ -1756,8 +1756,8 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 }
 unset($rowset, $user_cache);
 
-// Update topic view for humans if their session was not just creeated with this request
-if (!$user->data['is_bot'] && !isset($user->data['session_created']))
+// Update topic view for humans if their session was not just creeated with this request.
+if (!$user->data['is_bot'] && $user->data['tracking_hits'])
 {
 	$sql = 'UPDATE ' . TOPICS_TABLE . '
 		SET topic_views = topic_views + 1, topic_last_view_time = ' . time() . "

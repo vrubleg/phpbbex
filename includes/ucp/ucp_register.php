@@ -155,31 +155,6 @@ class ucp_register
 				}
 			}
 
-			// Get browser tracking data.
-			$tracking = [];
-			$browser_id = get_cookie('bid', '');
-
-			if ($browser_id)
-			{
-				$sql = "SELECT * FROM " . BROWSER_TRACKING_TABLE . " WHERE browser_id='" . $db->sql_escape($browser_id) . "'";
-				$result = $db->sql_query($sql);
-				$tracking = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-			}
-
-			if (!$tracking)
-			{
-				$tracking = [
-					'browser_id' => 'none',
-					'tracking_first_time' => time(),
-					'tracking_last_time' => time(),
-					'tracking_hits' => 0,
-					'browser_ua' => trim(substr(!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '', 0, 249)),
-					'tracking_first_ip' => (!empty($_SERVER['REMOTE_ADDR'])) ? (string) $_SERVER['REMOTE_ADDR'] : '',
-					'tracking_last_ip' => (!empty($_SERVER['REMOTE_ADDR'])) ? (string) $_SERVER['REMOTE_ADDR'] : '',
-				];
-			}
-
 			if (!sizeof($error))
 			{
 				$server_url = generate_board_url();
@@ -250,7 +225,7 @@ class ucp_register
 				// Log registration
 				$user_id_orig = $user->data['user_id'];
 				$user->data['user_id'] = $user_id;
-				add_log('register', 'LOG_REGISTER_OK', $data['username'], $data['email'], '', $tracking['browser_id'], $tracking['browser_ua'], time() - $tracking['tracking_first_time'], $tracking['tracking_hits']);
+				add_log('register', 'LOG_REGISTER_OK', $data['username'], $data['email'], '', $user->data['browser_id'], $user->data['browser_ua'], time() - $user->data['tracking_first_time'], $user->data['tracking_hits']);
 				$user->data['user_id'] = $user_id_orig;
 
 				// Okay, captcha, your job is done.
@@ -339,7 +314,7 @@ class ucp_register
 			else
 			{
 				// Log registration
-				add_log('register', 'LOG_REGISTER_REJECTED_' . ($error_type['token'] ? 'BOT' : 'USER'), $data['username'], $data['email'], implode("\n", $error), $tracking['browser_id'], $tracking['browser_ua'], time() - $tracking['tracking_first_time'], $tracking['tracking_hits']);
+				add_log('register', 'LOG_REGISTER_REJECTED_' . ($error_type['token'] ? 'BOT' : 'USER'), $data['username'], $data['email'], implode("\n", $error), $user->data['browser_id'], $user->data['browser_ua'], time() - $user->data['tracking_first_time'], $user->data['tracking_hits']);
 
 				// Display one error if user provided invalid token
 				if ($error_type['token'])
