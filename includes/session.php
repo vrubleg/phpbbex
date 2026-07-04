@@ -320,8 +320,8 @@ class phpbb_session
 
 					if (!$session_expired)
 					{
-						// Only update session DB a minute or so after last update or if page changes
-						if ($this->time_now - $this->data['session_time'] > 60 || ($this->update_session_page && $this->data['session_page'] != $this->page['page']))
+						// Only update session DB a minute or so after last update.
+						if ($this->time_now - $this->data['session_time'] > 60)
 						{
 							$this->data['session_time'] = $this->time_now;
 							$sql_ary = ['session_time' => $this->time_now];
@@ -582,8 +582,8 @@ class phpbb_session
 			{
 				$this->session_id = $this->data['session_id'];
 
-				// Only update session DB a minute or so after last update or if page changes
-				if ($this->time_now - $this->data['session_time'] > 60 || ($this->update_session_page && $this->data['session_page'] != $this->page['page']))
+				// Only update session DB a minute or so after last update.
+				if ($this->time_now - $this->data['session_time'] > 60)
 				{
 					$this->data['session_time'] = $this->data['session_last_visit'] = $this->time_now;
 
@@ -663,15 +663,6 @@ class phpbb_session
 					trigger_error('BOARD_UNAVAILABLE');
 				}
 			}
-		}
-
-		// Something quite important: session_page always holds the *last* page visited, except for the *first* visit.
-		// We are not able to simply have an empty session_page btw, therefore we need to tell phpBB how to detect this special case.
-		// If the session id is empty, we have a completely new one and will set an "identifier" here. This identifier is able to be checked later.
-		if (empty($this->data['session_id']))
-		{
-			// This is a temporary variable, only set for the very first visit
-			$this->data['session_created'] = true;
 		}
 
 		$this->session_id = $this->data['session_id'] = bin2hex(random_bytes(16));
