@@ -888,7 +888,7 @@ class acp_gallery_permissions
 				$role_id = 0;
 				$sql = 'SELECT role_id
 					FROM ' . GALLERY_ROLES_TABLE . "
-					WHERE $sql_where";
+					WHERE {$sql_where}";
 				$result = $db->sql_query_limit($sql, 1);
 				$role_id = (int) $db->sql_fetchfield('role_id');
 				$db->sql_freeresult($result);

@@ -45,9 +45,9 @@ $album_data = phpbb_gallery_album::get_info($album_id);
 
 phpbb_gallery_album::generate_nav($album_data);
 
-$image_backlink = phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id");
-$album_backlink = phpbb_gallery_url::append_sid('album', "album_id=$album_id");
-$image_loginlink = phpbb_gallery_url::append_sid('relative', 'image_page', "album_id=$album_id&amp;image_id=$image_id");
+$image_backlink = phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}");
+$album_backlink = phpbb_gallery_url::append_sid('album', "album_id={$album_id}");
+$image_loginlink = phpbb_gallery_url::append_sid('relative', 'image_page', "album_id={$album_id}&amp;image_id={$image_id}");
 
 // Send some cheaters back
 if ($user->data['is_bot'])
@@ -411,12 +411,12 @@ $template->assign_vars([
 
 	'IMAGE_RSZ_WIDTH'		=> phpbb_gallery_config::get('medium_width'),
 	'IMAGE_RSZ_HEIGHT'		=> phpbb_gallery_config::get('medium_height'),
-	'U_IMAGE'				=> phpbb_gallery_url::append_sid('image', "album_id=$album_id&amp;image_id=$image_id"),
-	'U_VIEW_IMAGE'			=> phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id"),
+	'U_IMAGE'				=> phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id={$image_id}"),
+	'U_VIEW_IMAGE'			=> phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
 	'IMAGE_NAME'			=> $image_data['image_name'],
 
 	'S_SIGNATURE_CHECKED'	=> (isset($sig_checked) && $sig_checked) ? ' checked="checked"' : '',
-	'S_ALBUM_ACTION'		=> phpbb_gallery_url::append_sid('comment', "mode=$mode&amp;album_id=$album_id&amp;image_id=$image_id" . (($comment_id) ? "&amp;comment_id=$comment_id" : '')),
+	'S_ALBUM_ACTION'		=> phpbb_gallery_url::append_sid('comment', "mode={$mode}&amp;album_id={$album_id}&amp;image_id={$image_id}" . (($comment_id) ? "&amp;comment_id={$comment_id}" : '')),
 ]);
 
 if ($submit && !$error)

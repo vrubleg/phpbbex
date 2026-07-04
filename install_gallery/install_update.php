@@ -67,7 +67,7 @@ class install_update extends module
 					'TITLE'			=> $user->lang['UPDATE_INSTALLATION'],
 					'BODY'			=> $user->lang['UPDATE_INSTALLATION_EXPLAIN'],
 					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
-					'U_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=requirements"),
+					'U_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements"),
 				]);
 
 			break;
@@ -337,7 +337,7 @@ class install_update extends module
 		// Delete the class cache to get the new config directory from 1.1.2
 		$cache->destroy('class_loader');
 
-		$url = (!in_array(false, $passed)) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db") : append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=requirements");
+		$url = (!in_array(false, $passed)) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=update_db") : append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements");
 		$submit = (!in_array(false, $passed)) ? $user->lang['INSTALL_START'] : $user->lang['INSTALL_TEST'];
 
 		$template->assign_vars([
@@ -453,7 +453,7 @@ class install_update extends module
 			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
 			'L_SUBMIT'	=> $user->lang['NEXT_STEP'],
 			'S_HIDDEN'	=> '',
-			'U_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db&amp;step=2"),
+			'U_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=update_db&amp;step=2"),
 		]);
 	}
 
@@ -560,11 +560,11 @@ class install_update extends module
 			case '1.1.4':
 			// no break;
 
-				$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db&amp;step=4");
+				$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=update_db&amp;step=4");
 			break;
 		}
 
-		$next_update_url = (!$next_update_url) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=update_db&amp;step=4") : $next_update_url;
+		$next_update_url = (!$next_update_url) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=update_db&amp;step=4") : $next_update_url;
 
 		$template->assign_vars([
 			'BODY'		=> $user->lang['UPDATING_DATA'],
@@ -656,11 +656,11 @@ class install_update extends module
 
 		if ($reparse_modules_bbcode)
 		{
-			$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=advanced");
+			$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=advanced");
 		}
 		else
 		{
-			$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=final");
+			$next_update_url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=final");
 		}
 
 		$template->assign_vars([
@@ -718,7 +718,7 @@ class install_update extends module
 			}
 
 			$s_hidden_fields = '';
-			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=final");
+			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=final");
 		}
 		else
 		{
@@ -789,7 +789,7 @@ class install_update extends module
 				);
 			}
 			$s_hidden_fields = '<input type="hidden" name="create" value="true" />';
-			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=advanced");
+			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=advanced");
 		}
 
 		$submit = $user->lang['NEXT_STEP'];

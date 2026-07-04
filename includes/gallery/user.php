@@ -491,22 +491,22 @@ class phpbb_gallery_user
 				'user_colour'		=> $row['user_colour'],
 
 				'online'		=> false,
-				'profile'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=viewprofile&amp;u=$user_id"),
+				'profile'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=viewprofile&amp;u={$user_id}"),
 				'www'			=> $row['user_website'],
 				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
 				'telegram'		=> ($row['user_telegram']) ? ('tg://resolve?domain=' . $row['user_telegram']) : '',
-				'search'		=> ($auth->acl_get('u_search')) ? phpbb_gallery_url::append_sid('phpbb', 'search', "author_id=$user_id&amp;sr=posts") : '',
+				'search'		=> ($auth->acl_get('u_search')) ? phpbb_gallery_url::append_sid('phpbb', 'search', "author_id={$user_id}&amp;sr=posts") : '',
 
 				'gallery_album'		=> ($row['personal_album_id'] && phpbb_gallery_config::get('viewtopic_icon')) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
 				'gallery_images'	=> (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
-				'gallery_search'	=> (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', "user_id=$user_id") : '',
+				'gallery_search'	=> (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', "user_id={$user_id}") : '',
 			];
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $user_cache[$user_id]['rank_title'], $user_cache[$user_id]['rank_image'], $user_cache[$user_id]['rank_image_src']);
 
 			if (!empty($row['user_allow_viewemail']) || $auth->acl_get('a_email'))
 			{
-				$user_cache[$user_id]['email'] = ($config['board_email_form'] && $config['email_enable']) ? phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=email&amp;u=$user_id") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
+				$user_cache[$user_id]['email'] = ($config['board_email_form'] && $config['email_enable']) ? phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=email&amp;u={$user_id}") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
 			}
 			else
 			{

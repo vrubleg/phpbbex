@@ -89,7 +89,7 @@ class phpbb_gallery_auth
 		$sql_select = '';
 		foreach (self::$_permissions as $permission)
 		{
-			$sql_select .= " MAX($permission) as $permission,";
+			$sql_select .= " MAX({$permission}) as {$permission},";
 		}
 
 		$this->_auth_data[self::OWN_ALBUM]				= new phpbb_gallery_auth_set();
@@ -107,7 +107,7 @@ class phpbb_gallery_auth
 		}
 
 		$sql_array = [
-			'SELECT'		=> "p.perm_album_id, $sql_select p.perm_system",
+			'SELECT'		=> "p.perm_album_id, {$sql_select} p.perm_system",
 			'FROM'			=> [GALLERY_PERMISSIONS_TABLE => 'p'],
 
 			'LEFT_JOIN'		=> [

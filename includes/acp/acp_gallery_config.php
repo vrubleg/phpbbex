@@ -221,8 +221,8 @@ class acp_gallery_config
 
 		$tpl = '';
 
-		$tpl .= "<label><input type=\"radio\" name=\"config[$key]\" value=\"1\" disabled=\"disabled\" class=\"radio\" /> " . $user->lang['YES'] . '</label>';
-		$tpl .= "<label><input type=\"radio\" id=\"$key\" name=\"config[$key]\" value=\"0\" checked=\"checked\" disabled=\"disabled\"  class=\"radio\" /> " . $user->lang['NO'] . '</label>';
+		$tpl .= "<label><input type=\"radio\" name=\"config[{$key}]\" value=\"1\" disabled=\"disabled\" class=\"radio\" /> " . $user->lang['YES'] . '</label>';
+		$tpl .= "<label><input type=\"radio\" id=\"{$key}\" name=\"config[{$key}]\" value=\"0\" checked=\"checked\" disabled=\"disabled\"  class=\"radio\" /> " . $user->lang['NO'] . '</label>';
 
 		return $tpl;
 	}
@@ -245,7 +245,7 @@ class acp_gallery_config
 		$sort_method_options .= '<option' . (($value == 'c') ? ' selected="selected"' : '') . " value='c'>" . $user->lang['COMMENTS'] . '</option>';
 		$sort_method_options .= '<option' . (($value == 'lc') ? ' selected="selected"' : '') . " value='lc'>" . $user->lang['NEW_COMMENT'] . '</option>';
 
-		return "<select name=\"config[$key]\" id=\"$key\">$sort_method_options</select>";
+		return "<select name=\"config[{$key}]\" id=\"{$key}\">{$sort_method_options}</select>";
 	}
 
 	/**
@@ -260,7 +260,7 @@ class acp_gallery_config
 		$sort_order_options .= '<option' . (($value == 'd') ? ' selected="selected"' : '') . " value='d'>" . $user->lang['SORT_DESCENDING'] . '</option>';
 		$sort_order_options .= '<option' . (($value == 'a') ? ' selected="selected"' : '') . " value='a'>" . $user->lang['SORT_ASCENDING'] . '</option>';
 
-		return "<select name=\"config[$key]\" id=\"$key\">$sort_order_options</select>";
+		return "<select name=\"config[{$key}]\" id=\"{$key}\">{$sort_order_options}</select>";
 	}
 
 	/**
@@ -273,8 +273,8 @@ class acp_gallery_config
 
 		$tpl = '';
 
-		$tpl .= "<label><input type=\"radio\" name=\"config[$key]\" value=\"" . phpbb_gallery_constants::GDLIB1 . "\" $key_gd1 class=\"radio\" /> GD1</label>";
-		$tpl .= "<label><input type=\"radio\" id=\"$key\" name=\"config[$key]\" value=\"" . phpbb_gallery_constants::GDLIB2 . "\" $key_gd2  class=\"radio\" /> GD2</label>";
+		$tpl .= "<label><input type=\"radio\" name=\"config[{$key}]\" value=\"" . phpbb_gallery_constants::GDLIB1 . "\" {$key_gd1} class=\"radio\" /> GD1</label>";
+		$tpl .= "<label><input type=\"radio\" id=\"{$key}\" name=\"config[{$key}]\" value=\"" . phpbb_gallery_constants::GDLIB2 . "\" {$key_gd2}  class=\"radio\" /> GD2</label>";
 
 		return $tpl;
 	}
@@ -286,7 +286,7 @@ class acp_gallery_config
 	{
 		global $user;
 
-		return generate_board_url() . "<br /><input type=\"text\" name=\"config[$key]\" id=\"$key\" value=\"$value\" size =\"40\" maxlength=\"125\" /><br /><img src=\"" . generate_board_url() . "/$value\" alt=\"" . $user->lang['WATERMARK'] . "\" />";
+		return generate_board_url() . "<br /><input type=\"text\" name=\"config[{$key}]\" id=\"{$key}\" value=\"{$value}\" size =\"40\" maxlength=\"125\" /><br /><img src=\"" . generate_board_url() . "/{$value}\" alt=\"" . $user->lang['WATERMARK'] . "\" />";
 	}
 
 	/**
@@ -307,7 +307,7 @@ class acp_gallery_config
 		$y_position_options .= '<option' . (($value & phpbb_gallery_constants::WATERMARK_RIGHT) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_constants::WATERMARK_RIGHT . "'>" . $user->lang['WATERMARK_POSITION_RIGHT'] . '</option>';
 
 		// Cheating is an evil-thing, but most times it's successful, that's why it is used.
-		return "<input type='hidden' name='config[$key]' value='$value' /><select name='" . $key . "_x' id='" . $key . "_x'>$x_position_options</select><select name='" . $key . "_y' id='" . $key . "_y'>$y_position_options</select>";
+		return "<input type='hidden' name='config[{$key}]' value='{$value}' /><select name='" . $key . "_x' id='" . $key . "_x'>{$x_position_options}</select><select name='" . $key . "_y' id='" . $key . "_y'>{$y_position_options}</select>";
 	}
 
 	/**
@@ -331,7 +331,7 @@ class acp_gallery_config
 		$sort_order_options .= '<option' . (($value == 'image') ? ' selected="selected"' : '') . " value='image'>" . $user->lang['UC_LINK_IMAGE'] . '</option>';
 		$sort_order_options .= '<option' . (($value == 'none') ? ' selected="selected"' : '') . " value='none'>" . $user->lang['UC_LINK_NONE'] . '</option>';
 
-		return "<select name='config[$key]' id='$key'>$sort_order_options</select>"
+		return "<select name='config[{$key}]' id='{$key}'>{$sort_order_options}</select>"
 			. (($key == 'link_thumbnail') ? '<br /><input class="checkbox" type="checkbox" name="update_bbcode" id="update_bbcode" value="update_bbcode" /><label for="update_bbcode">' .  $user->lang['UPDATE_BBCODE'] . '</label>' : '');
 	}
 
@@ -353,7 +353,7 @@ class acp_gallery_config
 		}
 
 		// Cheating is an evil-thing, but most times it's successful, that's why it is used.
-		return "<input type='hidden' name='config[$key]' value='$value' /><select name='" . $key . "[]' multiple='multiple' id='$key'>$rrc_mode_options</select>";
+		return "<input type='hidden' name='config[{$key}]' value='{$value}' /><select name='" . $key . "[]' multiple='multiple' id='{$key}'>{$rrc_mode_options}</select>";
 	}
 
 	/**
@@ -376,7 +376,7 @@ class acp_gallery_config
 		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_IP) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_IP . "'>" . $user->lang['RRC_DISPLAY_IP'] . '</option>';
 
 		// Cheating is an evil-thing, but most times it's successful, that's why it is used.
-		return "<input type='hidden' name='config[$key]' value='$value' /><select name='" . $key . "[]' multiple='multiple' id='$key'>$rrc_display_options</select>";
+		return "<input type='hidden' name='config[{$key}]' value='{$value}' /><select name='" . $key . "[]' multiple='multiple' id='{$key}'>{$rrc_display_options}</select>";
 	}
 
 	/**

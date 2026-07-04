@@ -592,7 +592,7 @@ class acp_gallery
 				$this->create_import_schema($import_schema, $album_id, $user_data, $start_time, $num_offset, $done_images, $todo_images, $image_name, $filename, $images);
 
 				// Redirect
-				$forward_url = $this->u_action . "&amp;import_schema=$import_schema";
+				$forward_url = $this->u_action . "&amp;import_schema={$import_schema}";
 				meta_refresh(1, $forward_url);
 				trigger_error(sprintf($user->lang['IMPORT_DEBUG_MES'], $done_images, $todo_images));
 			}
@@ -683,7 +683,7 @@ class acp_gallery
 
 			$this->create_import_schema($import_schema, $album_row['album_id'], $user_row, $start_time, $num_offset, 0, sizeof($images), $image_name, $filename, $images);
 
-			$forward_url = $this->u_action . "&amp;import_schema=$import_schema";
+			$forward_url = $this->u_action . "&amp;import_schema={$import_schema}";
 			meta_refresh(2, $forward_url);
 			trigger_error('IMPORT_SCHEMA_CREATED');
 		}

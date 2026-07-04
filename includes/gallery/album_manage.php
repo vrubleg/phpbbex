@@ -447,7 +447,7 @@ class phpbb_gallery_album_manage
 
 		// Resync parents
 		$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-			SET right_id = right_id - $diff, album_parents = ''
+			SET right_id = right_id - {$diff}, album_parents = ''
 			WHERE album_user_id = " . $this->user_id . '
 				AND left_id < ' . $from_data['right_id'] . "
 				AND right_id > " . $from_data['right_id'];
@@ -455,7 +455,7 @@ class phpbb_gallery_album_manage
 
 		// Resync righthand side of tree
 		$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-			SET left_id = left_id - $diff, right_id = right_id - $diff, album_parents = ''
+			SET left_id = left_id - {$diff}, right_id = right_id - {$diff}, album_parents = ''
 			WHERE album_user_id = " . $this->user_id . '
 				AND left_id > ' . $from_data['right_id'];
 		$db->sql_query($sql);
@@ -467,7 +467,7 @@ class phpbb_gallery_album_manage
 
 			// Resync new parents
 			$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-				SET right_id = right_id + $diff, album_parents = ''
+				SET right_id = right_id + {$diff}, album_parents = ''
 				WHERE album_user_id = " . $this->user_id . '
 					AND ' . $to_data['right_id'] . ' BETWEEN left_id AND right_id
 					AND ' . $db->sql_in_set('album_id', $moved_ids, true);
@@ -475,7 +475,7 @@ class phpbb_gallery_album_manage
 
 			// Resync the righthand side of the tree
 			$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-				SET left_id = left_id + $diff, right_id = right_id + $diff, album_parents = ''
+				SET left_id = left_id + {$diff}, right_id = right_id + {$diff}, album_parents = ''
 				WHERE album_user_id = " . $this->user_id . '
 					AND left_id > ' . $to_data['right_id'] . '
 					AND ' . $db->sql_in_set('album_id', $moved_ids, true);
@@ -507,7 +507,7 @@ class phpbb_gallery_album_manage
 		}
 
 		$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-			SET left_id = left_id $diff, right_id = right_id $diff, album_parents = ''
+			SET left_id = left_id {$diff}, right_id = right_id {$diff}, album_parents = ''
 			WHERE album_user_id = " . $this->user_id . '
 				AND ' . $db->sql_in_set('album_id', $moved_ids);
 		$db->sql_query($sql);
@@ -620,7 +620,7 @@ class phpbb_gallery_album_manage
 
 					$sql = 'SELECT album_id
 						FROM ' . GALLERY_ALBUMS_TABLE . "
-						WHERE parent_id = $album_id";
+						WHERE parent_id = {$album_id}";
 					$result = $db->sql_query($sql);
 
 					while ($row = $db->sql_fetchrow($result))
@@ -633,14 +633,14 @@ class phpbb_gallery_album_manage
 					$album_data = phpbb_gallery_album::get_info($album_id);
 
 					$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-						SET parent_id = $subalbums_to_id
-						WHERE parent_id = $album_id
+						SET parent_id = {$subalbums_to_id}
+						WHERE parent_id = {$album_id}
 							AND album_user_id = " . $this->user_id;
 					$db->sql_query($sql);
 
 					$diff = 2;
 					$sql = 'DELETE FROM ' . GALLERY_ALBUMS_TABLE . "
-						WHERE album_id = $album_id";
+						WHERE album_id = {$album_id}";
 					$db->sql_query($sql);
 				}
 			}
@@ -654,19 +654,19 @@ class phpbb_gallery_album_manage
 		{
 			$diff = 2;
 			$sql = 'DELETE FROM ' . GALLERY_ALBUMS_TABLE . "
-				WHERE album_id = $album_id";
+				WHERE album_id = {$album_id}";
 			$db->sql_query($sql);
 		}
 
 		// Resync tree
 		$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-			SET right_id = right_id - $diff
+			SET right_id = right_id - {$diff}
 			WHERE left_id < {$album_data['right_id']} AND right_id > {$album_data['right_id']}
 				AND album_user_id = " . $this->user_id;
 		$db->sql_query($sql);
 
 		$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-			SET left_id = left_id - $diff, right_id = right_id - $diff
+			SET left_id = left_id - {$diff}, right_id = right_id - {$diff}
 			WHERE left_id > {$album_data['right_id']}
 				AND album_user_id = " . $this->user_id;
 		$db->sql_query($sql);
@@ -731,8 +731,8 @@ class phpbb_gallery_album_manage
 		global $cache, $db;
 
 		$sql = 'UPDATE ' . LOG_TABLE . "
-			SET album_id = $to_id
-			WHERE album_id = $from_id
+			SET album_id = {$to_id}
+			WHERE album_id = {$from_id}
 				AND log_type = " . LOG_GALLERY;
 		$db->sql_query($sql);
 
@@ -824,7 +824,7 @@ class phpbb_gallery_album_manage
 		}
 
 		$sql = 'DELETE FROM ' . LOG_TABLE . "
-			WHERE album_id = $album_id
+			WHERE album_id = {$album_id}
 				AND log_type = " . LOG_GALLERY;
 		$db->sql_query($sql);
 

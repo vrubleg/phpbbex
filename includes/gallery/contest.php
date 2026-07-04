@@ -106,9 +106,9 @@ class phpbb_gallery_contest
 
 		$sql = 'UPDATE ' . GALLERY_CONTESTS_TABLE . '
 			SET contest_marked = ' . phpbb_gallery_image::NO_CONTEST . ",
-				contest_first = $first,
-				contest_second = $second,
-				contest_third = $third
+				contest_first = {$first},
+				contest_second = {$second},
+				contest_third = {$third}
 			WHERE contest_id = " . (int) $contest_id;
 		$db->sql_query($sql);
 
@@ -169,9 +169,9 @@ class phpbb_gallery_contest
 		$db->sql_freeresult($result);
 
 		$sql = 'UPDATE ' . GALLERY_CONTESTS_TABLE . "
-			SET contest_first = $first,
-				contest_second = $second,
-				contest_third = $third
+			SET contest_first = {$first},
+				contest_second = {$second},
+				contest_third = {$third}
 			WHERE contest_album_id = " . (int) $album_id;
 		$db->sql_query($sql);
 

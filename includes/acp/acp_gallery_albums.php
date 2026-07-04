@@ -228,7 +228,7 @@ class acp_gallery_albums
 
 				$sql = 'SELECT *
 					FROM ' . GALLERY_ALBUMS_TABLE . "
-					WHERE album_id = $album_id";
+					WHERE album_id = {$album_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -258,7 +258,7 @@ class acp_gallery_albums
 
 				$sql = 'SELECT album_name, album_type
 					FROM ' . GALLERY_ALBUMS_TABLE . "
-					WHERE album_id = $album_id";
+					WHERE album_id = {$album_id}";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -415,7 +415,7 @@ class acp_gallery_albums
 					FROM ' . GALLERY_ALBUMS_TABLE . '
 					WHERE album_type = ' . phpbb_gallery_album::TYPE_UPLOAD . '
 						AND album_user_id = ' . phpbb_gallery_album::PUBLIC_ALBUM . "
-						AND album_id <> $album_id";
+						AND album_id <> {$album_id}";
 				$result = $db->sql_query_limit($sql, 1);
 
 				$uploadable_album_exists = false;
@@ -472,7 +472,7 @@ class acp_gallery_albums
 					'S_ADD_ACTION'		=> ($action == 'add'),
 
 					'U_BACK'			=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
-					'U_EDIT_ACTION'		=> $this->u_action . "&amp;parent_id={$this->parent_id}&amp;action=$action&amp;a=$album_id",
+					'U_EDIT_ACTION'		=> $this->u_action . "&amp;parent_id={$this->parent_id}&amp;action={$action}&amp;a={$album_id}",
 
 					'L_COPY_PERMISSIONS_EXPLAIN'	=> $user->lang['COPY_PERMISSIONS_' . strtoupper($action) . '_EXPLAIN'],
 					'L_TITLE'						=> $user->lang[$this->page_title],
@@ -545,7 +545,7 @@ class acp_gallery_albums
 				$sql = 'SELECT album_id
 					FROM ' . GALLERY_ALBUMS_TABLE . '
 					WHERE album_type = ' . phpbb_gallery_album::TYPE_UPLOAD . "
-						AND album_id <> $album_id
+						AND album_id <> {$album_id}
 						AND album_user_id = " . phpbb_gallery_album::PUBLIC_ALBUM;
 				$result = $db->sql_query_limit($sql, 1);
 
@@ -629,7 +629,7 @@ class acp_gallery_albums
 					$folder_image = ($row['left_id'] + 1 != $row['right_id']) ? '<img src="images/icon_subfolder.gif" alt="' . $user->lang['SUBALBUM'] . '" />' : '<img src="images/icon_folder.gif" alt="' . $user->lang['FOLDER'] . '" />';
 				}
 
-				$url = $this->u_action . "&amp;parent_id=$this->parent_id&amp;a={$row['album_id']}";
+				$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;a={$row['album_id']}";
 
 				$template->assign_block_vars('albums', [
 					'FOLDER_IMAGE'		=> $folder_image,

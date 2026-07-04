@@ -68,7 +68,7 @@ function module_select($module_class, $default_id, $default_langname)
 
 	$sql = 'SELECT module_id, module_langname, module_class
 		FROM ' . MODULES_TABLE . "
-		WHERE module_class = '$module_class'";
+		WHERE module_class = '{$module_class}'";
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
@@ -190,10 +190,10 @@ function recalc_btree($sql_id, $sql_table, $where_options = [])
 		$sql_where = 'WHERE ' . implode(' AND ', $options);
 	}
 
-	$sql = "SELECT $sql_id, parent_id, left_id, right_id
-		FROM $sql_table
-		$sql_where
-		ORDER BY left_id ASC, parent_id ASC, $sql_id ASC";
+	$sql = "SELECT {$sql_id}, parent_id, left_id, right_id
+		FROM {$sql_table}
+		{$sql_where}
+		ORDER BY left_id ASC, parent_id ASC, {$sql_id} ASC";
 	$f_result = $db->sql_query($sql);
 
 	while ($item_data = $db->sql_fetchrow($f_result))
@@ -201,30 +201,30 @@ function recalc_btree($sql_id, $sql_table, $where_options = [])
 		if ($item_data['parent_id'])
 		{
 			$sql = "SELECT left_id, right_id
-				FROM $sql_table
-				$sql_where " . (($sql_where) ? 'AND' : 'WHERE') . "
-					$sql_id = {$item_data['parent_id']}";
+				FROM {$sql_table}
+				{$sql_where} " . (($sql_where) ? 'AND' : 'WHERE') . "
+					{$sql_id} = {$item_data['parent_id']}";
 			$result = $db->sql_query($sql);
 
 			if (!$row = $db->sql_fetchrow($result))
 			{
-				$sql = "UPDATE $sql_table
+				$sql = "UPDATE {$sql_table}
 					SET parent_id = 0
-					$sql_where " . (($sql_where) ? 'AND' : 'WHERE') . "
-						$sql_id = " . $item_data[$sql_id];
+					{$sql_where} " . (($sql_where) ? 'AND' : 'WHERE') . "
+						{$sql_id} = " . $item_data[$sql_id];
 				$db->sql_query($sql);
 			}
 			$db->sql_freeresult($result);
 
-			$sql = "UPDATE $sql_table
+			$sql = "UPDATE {$sql_table}
 				SET left_id = left_id + 2, right_id = right_id + 2
-				$sql_where " . (($sql_where) ? 'AND' : 'WHERE') . "
+				{$sql_where} " . (($sql_where) ? 'AND' : 'WHERE') . "
 					left_id > {$row['right_id']}";
 			$db->sql_query($sql);
 
-			$sql = "UPDATE $sql_table
+			$sql = "UPDATE {$sql_table}
 				SET right_id = right_id + 2
-				$sql_where " . (($sql_where) ? 'AND' : 'WHERE') . "
+				{$sql_where} " . (($sql_where) ? 'AND' : 'WHERE') . "
 					{$row['left_id']} BETWEEN left_id AND right_id";
 			$db->sql_query($sql);
 
@@ -234,8 +234,8 @@ function recalc_btree($sql_id, $sql_table, $where_options = [])
 		else
 		{
 			$sql = "SELECT MAX(right_id) AS right_id
-				FROM $sql_table
-				$sql_where";
+				FROM {$sql_table}
+				{$sql_where}";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -244,18 +244,18 @@ function recalc_btree($sql_id, $sql_table, $where_options = [])
 			$item_data['right_id'] = $row['right_id'] + 2;
 		}
 
-		$sql = "UPDATE $sql_table
+		$sql = "UPDATE {$sql_table}
 			SET left_id = {$item_data['left_id']}, right_id = {$item_data['right_id']}
-			$sql_where " . (($sql_where) ? 'AND' : 'WHERE') . "
-				$sql_id = " . $item_data[$sql_id];
+			{$sql_where} " . (($sql_where) ? 'AND' : 'WHERE') . "
+				{$sql_id} = " . $item_data[$sql_id];
 		$db->sql_query($sql);
 	}
 	$db->sql_freeresult($f_result);
 
 	// Reset to minimum possible left and right id
 	$sql = "SELECT MIN(left_id) min_left_id, MIN(right_id) min_right_id
-		FROM $sql_table
-		$sql_where";
+		FROM {$sql_table}
+		{$sql_where}";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
@@ -264,9 +264,9 @@ function recalc_btree($sql_id, $sql_table, $where_options = [])
 
 	if ($substract > 0)
 	{
-		$sql = "UPDATE $sql_table
-			SET left_id = left_id - $substract, right_id = right_id - $substract
-			$sql_where";
+		$sql = "UPDATE {$sql_table}
+			SET left_id = left_id - {$substract}, right_id = right_id - {$substract}
+			{$sql_where}";
 		$db->sql_query($sql);
 	}
 }

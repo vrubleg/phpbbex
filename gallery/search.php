@@ -119,7 +119,7 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 		// Missing images and comments of guests/deleted users
 		$sql = 'SELECT user_id
 			FROM ' . USERS_TABLE . "
-			WHERE $sql_where
+			WHERE {$sql_where}
 				AND user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
 		$result = $db->sql_query_limit($sql, 100);
 
@@ -577,13 +577,13 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 				$album_id = $commentrow['image_album_id'];
 
 				$template->assign_block_vars('commentrow', [
-					'U_COMMENT'		=> phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id") . '#' . $commentrow['comment_id'],
+					'U_COMMENT'		=> phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}") . '#' . $commentrow['comment_id'],
 					'COMMENT_ID'	=> $commentrow['comment_id'],
 					'TIME'			=> $user->format_date($commentrow['comment_time']),
 					'TEXT'			=> generate_text_for_display($commentrow['comment'], $commentrow['comment_uid'], $commentrow['comment_bitfield'], 7),
-					'U_DELETE'		=> (phpbb_gallery::$auth->acl_check('m_comments', $album_id) || (phpbb_gallery::$auth->acl_check('c_delete', $album_id) && ($commentrow['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id=$album_id&amp;image_id=$image_id&amp;mode=delete&amp;comment_id=" . $commentrow['comment_id']) : '',
-					'U_QUOTE'		=> (phpbb_gallery::$auth->acl_check('c_post', $album_id)) ? phpbb_gallery_url::append_sid('comment', "album_id=$album_id&amp;image_id=$image_id&amp;mode=add&amp;comment_id=" . $commentrow['comment_id']) : '',
-					'U_EDIT'		=> (phpbb_gallery::$auth->acl_check('m_comments', $album_id) || (phpbb_gallery::$auth->acl_check('c_edit', $album_id) && ($commentrow['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id=$album_id&amp;image_id=$image_id&amp;mode=edit&amp;comment_id=" . $commentrow['comment_id']) : '',
+					'U_DELETE'		=> (phpbb_gallery::$auth->acl_check('m_comments', $album_id) || (phpbb_gallery::$auth->acl_check('c_delete', $album_id) && ($commentrow['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=delete&amp;comment_id=" . $commentrow['comment_id']) : '',
+					'U_QUOTE'		=> (phpbb_gallery::$auth->acl_check('c_post', $album_id)) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add&amp;comment_id=" . $commentrow['comment_id']) : '',
+					'U_EDIT'		=> (phpbb_gallery::$auth->acl_check('m_comments', $album_id) || (phpbb_gallery::$auth->acl_check('c_edit', $album_id) && ($commentrow['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=edit&amp;comment_id=" . $commentrow['comment_id']) : '',
 					'U_INFO'		=> ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $commentrow['comment_user_ip']) : '',
 
 					'UC_THUMBNAIL'			=> phpbb_gallery_image::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $commentrow['image_id'], $commentrow['image_name'], $commentrow['image_album_id']),

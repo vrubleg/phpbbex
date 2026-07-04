@@ -61,7 +61,7 @@ class install_install extends module
 					'TITLE'			=> $user->lang['INSTALL_INTRO'],
 					'BODY'			=> $user->lang['INSTALL_INTRO_BODY'],
 					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
-					'U_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=requirements"),
+					'U_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements"),
 				]);
 			break;
 
@@ -250,7 +250,7 @@ class install_install extends module
 			]);
 		}
 
-		$url = (!in_array(false, $passed)) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=create_table") : append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=requirements");
+		$url = (!in_array(false, $passed)) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=create_table") : append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements");
 		$submit = (!in_array(false, $passed)) ? $user->lang['INSTALL_START'] : $user->lang['INSTALL_TEST'];
 
 		$template->assign_vars([
@@ -310,7 +310,7 @@ class install_install extends module
 
 		$submit = $user->lang['NEXT_STEP'];
 
-		$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=advanced");
+		$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=advanced");
 
 		$template->assign_vars([
 			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
@@ -425,7 +425,7 @@ class install_install extends module
 			// Add album-BBCode
 			add_bbcode('album');
 			$s_hidden_fields = '';
-			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=final");
+			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=final");
 		}
 		else
 		{
@@ -464,7 +464,7 @@ class install_install extends module
 				);
 			}
 			$s_hidden_fields = '<input type="hidden" name="create" value="true" />';
-			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$mode&amp;sub=advanced");
+			$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=advanced");
 		}
 
 		$submit = $user->lang['NEXT_STEP'];

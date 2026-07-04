@@ -59,12 +59,12 @@ phpbb_gallery_album::generate_nav($album_data);
 
 if ($image_id)
 {
-	$image_backlink = phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id");
-	$image_loginlink = phpbb_gallery_url::append_sid('relative', 'image_page', "album_id=$album_id&amp;image_id=$image_id");
+	$image_backlink = phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}");
+	$image_loginlink = phpbb_gallery_url::append_sid('relative', 'image_page', "album_id={$album_id}&amp;image_id={$image_id}");
 }
 
-$album_backlink = phpbb_gallery_url::append_sid('album', "album_id=$album_id");
-$album_loginlink = phpbb_gallery_url::append_sid('relative', 'album', "album_id=$album_id");
+$album_backlink = phpbb_gallery_url::append_sid('album', "album_id={$album_id}");
+$album_loginlink = phpbb_gallery_url::append_sid('relative', 'album', "album_id={$album_id}");
 
 
 // Send some cheaters back
@@ -173,13 +173,13 @@ if ($mode == 'report')
 
 	$template->assign_vars([
 		'ERROR'				=> $error,
-		'U_IMAGE'			=> ($image_id) ? phpbb_gallery_url::append_sid('image', "album_id=$album_id&amp;image_id=$image_id") : '',
-		'U_VIEW_IMAGE'		=> ($image_id) ? phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id") : '',
+		'U_IMAGE'			=> ($image_id) ? phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id={$image_id}") : '',
+		'U_VIEW_IMAGE'		=> ($image_id) ? phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}") : '',
 		'IMAGE_RSZ_WIDTH'	=> phpbb_gallery_config::get('medium_width'),
 		'IMAGE_RSZ_HEIGHT'	=> phpbb_gallery_config::get('medium_height'),
 
 		'S_REPORT'			=> true,
-		'S_ALBUM_ACTION'	=> phpbb_gallery_url::append_sid('posting', "mode=report&amp;album_id=$album_id&amp;image_id=$image_id"),
+		'S_ALBUM_ACTION'	=> phpbb_gallery_url::append_sid('posting', "mode=report&amp;album_id={$album_id}&amp;image_id={$image_id}"),
 	]);
 }
 else if ($mode == 'delete')
@@ -345,7 +345,7 @@ else
 				'S_MAX_WIDTH'			=> phpbb_gallery_config::get('max_width'),
 				'S_MAX_HEIGHT'			=> phpbb_gallery_config::get('max_height'),
 				'S_ALLOWED_FILETYPES'	=> implode(', ', phpbb_gallery_upload::get_allowed_types(true)),
-				'S_ALBUM_ACTION'		=> phpbb_gallery_url::append_sid('posting', "mode=upload&amp;album_id=$album_id"),
+				'S_ALBUM_ACTION'		=> phpbb_gallery_url::append_sid('posting', "mode=upload&amp;album_id={$album_id}"),
 				'S_UPLOAD'				=> true,
 				'S_ALLOW_ROTATE'		=> (phpbb_gallery_config::get('allow_rotate') && function_exists('imagerotate')),
 				'S_UPLOAD_LIMIT'		=> $upload_files_limit,
@@ -498,7 +498,7 @@ else
 		$s_can_rotate = (phpbb_gallery_config::get('allow_rotate') && function_exists('imagerotate'));
 		$template->assign_vars([
 			'ERROR'				=> $error,
-			'S_ALBUM_ACTION'	=> phpbb_gallery_url::append_sid('posting', "mode=upload_edit&amp;album_id=$album_id"),
+			'S_ALBUM_ACTION'	=> phpbb_gallery_url::append_sid('posting', "mode=upload_edit&amp;album_id={$album_id}"),
 			'S_UPLOAD_EDIT'		=> true,
 			'S_ALLOW_ROTATE'	=> $s_can_rotate,
 
@@ -684,10 +684,10 @@ else
 		$template->assign_vars([
 			'L_DESCRIPTION_LENGTH'	=> $user->lang('DESCRIPTION_LENGTH', phpbb_gallery_config::get('description_length')),
 			'S_EDIT'			=> true,
-			'S_ALBUM_ACTION'	=> phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id=$album_id&amp;image_id=$image_id"),
+			'S_ALBUM_ACTION'	=> phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id={$album_id}&amp;image_id={$image_id}"),
 			'ERROR'				=> $error ?? '',
 
-			'U_VIEW_IMAGE'		=> phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id"),
+			'U_VIEW_IMAGE'		=> phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
 			'IMAGE_NAME'		=> $image_data['image_name'],
 
 			'S_CHANGE_AUTHOR'	=> phpbb_gallery::$auth->acl_check('m_edit', $album_id, $album_data['album_user_id']),

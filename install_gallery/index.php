@@ -274,7 +274,7 @@ class module
 				$cat = $cat_ary['name'];
 				$l_cat = $user->lang['CAT_' . $cat] ?? str_replace('_', ' ', $cat);
 				$cat = strtolower($cat);
-				$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode=$cat");
+				$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$cat}");
 
 				if ($this->mode == $cat)
 				{
@@ -291,7 +291,7 @@ class module
 						{
 							$l_option = $user->lang['SUB_' . $option] ?? str_replace('_', ' ', $option);
 							$option = strtolower($option);
-							$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', 'mode=' . $this->mode . "&amp;sub=$option");
+							$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', 'mode=' . $this->mode . "&amp;sub={$option}");
 
 							$template->assign_block_vars('l_block1', [
 								'L_TITLE'		=> $l_option,

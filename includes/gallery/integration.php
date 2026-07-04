@@ -166,9 +166,9 @@ class phpbb_gallery_integration
 		{
 			foreach ($field_ary as $field)
 			{
-				$sql = "UPDATE $table
-					SET $field = '" . $db->sql_escape($new_name) . "'
-					WHERE $field = '" . $db->sql_escape($old_name) . "'";
+				$sql = "UPDATE {$table}
+					SET {$field} = '" . $db->sql_escape($new_name) . "'
+					WHERE {$field} = '" . $db->sql_escape($old_name) . "'";
 				$db->sql_query($sql);
 			}
 		}
@@ -181,9 +181,9 @@ class phpbb_gallery_integration
 		{
 			foreach ($field_ary as $field)
 			{
-				$sql = "UPDATE $table
-					SET $field = '" . $db->sql_escape(utf8_clean_string($new_name)) . "'
-					WHERE $field = '" . $db->sql_escape(utf8_clean_string($old_name)) . "'";
+				$sql = "UPDATE {$table}
+					SET {$field} = '" . $db->sql_escape(utf8_clean_string($new_name)) . "'
+					WHERE {$field} = '" . $db->sql_escape(utf8_clean_string($old_name)) . "'";
 				$db->sql_query($sql);
 			}
 		}

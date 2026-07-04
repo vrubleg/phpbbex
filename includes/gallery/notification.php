@@ -167,7 +167,7 @@ class phpbb_gallery_notification
 		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
 			FROM ' . GALLERY_WATCH_TABLE . ' w, ' . USERS_TABLE . ' u
 			WHERE w.' . $help_mode . ' = ' . $handle_id . "
-				AND w.user_id NOT IN ($sql_ignore_users)
+				AND w.user_id NOT IN ({$sql_ignore_users})
 				AND u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')
 				AND u.user_id = w.user_id';
 		$result = $db->sql_query($sql);
@@ -332,11 +332,11 @@ class phpbb_gallery_notification
 						'IMAGE_NAME'	=> htmlspecialchars_decode($image_name),
 						'ALBUM_NAME'	=> htmlspecialchars_decode($album_data['album_name']),
 
-						'U_ALBUM'				=> phpbb_gallery_url::create_link('full', 'album', "album_id=$album_id"),
-						'U_IMAGE'				=> phpbb_gallery_url::create_link('full', 'image_page', "album_id=$album_id&amp;image_id=$image_id"),
-						'U_NEWEST_POST'			=> phpbb_gallery_url::create_link('full', 'viewtopic', "album_id=$album_id&amp;image_id=$image_id"),
-						'U_STOP_WATCHING_IMAGE'	=> phpbb_gallery_url::create_link('full', 'image_page', "mode=unwatch&amp;album_id=$album_id&amp;image_id=$image_id"),
-						'U_STOP_WATCHING_ALBUM'	=> phpbb_gallery_url::create_link('full', 'album', "mode=unwatch&amp;album_id=$album_id"),
+						'U_ALBUM'				=> phpbb_gallery_url::create_link('full', 'album', "album_id={$album_id}"),
+						'U_IMAGE'				=> phpbb_gallery_url::create_link('full', 'image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
+						'U_NEWEST_POST'			=> phpbb_gallery_url::create_link('full', 'viewtopic', "album_id={$album_id}&amp;image_id={$image_id}"),
+						'U_STOP_WATCHING_IMAGE'	=> phpbb_gallery_url::create_link('full', 'image_page', "mode=unwatch&amp;album_id={$album_id}&amp;image_id={$image_id}"),
+						'U_STOP_WATCHING_ALBUM'	=> phpbb_gallery_url::create_link('full', 'album', "mode=unwatch&amp;album_id={$album_id}"),
 					]);
 
 					$messenger->send($addr['method']);

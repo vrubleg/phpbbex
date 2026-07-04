@@ -50,7 +50,7 @@ if (!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_use
 	}
 	if (!$user->data['is_registered'])
 	{
-		login_box(phpbb_gallery_url::append_sid('relative', 'album', "album_id=$album_id"), $user->lang['LOGIN_EXPLAIN_GALLERY_VIEW']);
+		login_box(phpbb_gallery_url::append_sid('relative', 'album', "album_id={$album_id}"), $user->lang['LOGIN_EXPLAIN_GALLERY_VIEW']);
 	}
 	else
 	{
@@ -62,9 +62,9 @@ if (!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_use
 * Are we (un)watching the album?
 */
 $token = request_var('hash', '');
-if ((($mode == 'watch') || ($mode == 'unwatch')) && check_link_hash($token, "{$mode}_$album_id"))
+if ((($mode == 'watch') || ($mode == 'unwatch')) && check_link_hash($token, "{$mode}_{$album_id}"))
 {
-	$backlink = phpbb_gallery_url::append_sid('album', "album_id=$album_id");
+	$backlink = phpbb_gallery_url::append_sid('album', "album_id={$album_id}");
 
 	if ($mode == 'watch')
 	{
@@ -101,7 +101,7 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 {
 	if (phpbb_gallery::$auth->acl_check('m_', $album_id, $album_data['album_user_id']))
 	{
-		$template->assign_var('U_MCP', phpbb_gallery_url::append_sid('mcp', "album_id=$album_id"));
+		$template->assign_var('U_MCP', phpbb_gallery_url::append_sid('mcp', "album_id={$album_id}"));
 	}
 
 	// When we do the slideshow, we don't need the moderators
@@ -172,9 +172,9 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 		$sql = 'SELECT *
 			FROM ' . GALLERY_IMAGES_TABLE . '
 			WHERE image_album_id = ' . (int) $album_id . "
-				$image_status_check
+				{$image_status_check}
 				AND image_status <> " . phpbb_gallery_image::STATUS_ORPHAN . "
-			ORDER BY $sql_sort_order" . $sql_help_sort;
+			ORDER BY {$sql_sort_order}" . $sql_help_sort;
 
 		if ($mode == 'slide_show')
 		{
@@ -285,19 +285,19 @@ $template->assign_vars([
 	'MODERATORS'				=> $moderators_list,
 
 	'U_UPLOAD_IMAGE'			=> ((!$album_data['album_user_id'] || ($album_data['album_user_id'] == $user->data['user_id'])) && (($user->data['user_id'] == ANONYMOUS) || phpbb_gallery::$auth->acl_check('i_upload', $album_id, $album_data['album_user_id']))) ?
-										phpbb_gallery_url::append_sid('posting', "mode=upload&amp;album_id=$album_id") : '',
+										phpbb_gallery_url::append_sid('posting', "mode=upload&amp;album_id={$album_id}") : '',
 	'U_CREATE_ALBUM'			=> (($album_data['album_user_id'] == $user->data['user_id']) && $allowed_create) ?
-										phpbb_gallery_url::append_sid('phpbb', 'ucp', "i=gallery&amp;mode=manage_albums&amp;action=create&amp;parent_id=$album_id&amp;redirect=album") : '',
+										phpbb_gallery_url::append_sid('phpbb', 'ucp', "i=gallery&amp;mode=manage_albums&amp;action=create&amp;parent_id={$album_id}&amp;redirect=album") : '',
 	'U_EDIT_ALBUM'				=> ($album_data['album_user_id'] == $user->data['user_id']) ?
-										phpbb_gallery_url::append_sid('phpbb', 'ucp', "i=gallery&amp;mode=manage_albums&amp;action=edit&amp;album_id=$album_id&amp;redirect=album") : '',
-	'U_SLIDE_SHOW'				=> (sizeof(phpbb_gallery_plugins::$plugins) && phpbb_gallery_plugins::$slideshow) ? phpbb_gallery_url::append_sid('album', "album_id=$album_id&amp;mode=slide_show" . (($sort_key != phpbb_gallery_config::get('default_sort_key')) ? "&amp;sk=$sort_key" : '') . (($sort_dir != phpbb_gallery_config::get('default_sort_dir')) ? "&amp;sd=$sort_dir" : '')) : '',
+										phpbb_gallery_url::append_sid('phpbb', 'ucp', "i=gallery&amp;mode=manage_albums&amp;action=edit&amp;album_id={$album_id}&amp;redirect=album") : '',
+	'U_SLIDE_SHOW'				=> (sizeof(phpbb_gallery_plugins::$plugins) && phpbb_gallery_plugins::$slideshow) ? phpbb_gallery_url::append_sid('album', "album_id={$album_id}&amp;mode=slide_show" . (($sort_key != phpbb_gallery_config::get('default_sort_key')) ? "&amp;sk={$sort_key}" : '') . (($sort_dir != phpbb_gallery_config::get('default_sort_dir')) ? "&amp;sd={$sort_dir}" : '')) : '',
 	'S_DISPLAY_SEARCHBOX'		=> ($auth->acl_get('u_search') && $config['load_search']),
 	'S_SEARCHBOX_ACTION'		=> phpbb_gallery_url::append_sid('search', 'aid[]=' . $album_id),
 	'S_ENABLE_FEEDS_ALBUM'		=> $album_data['album_feed'] && (phpbb_gallery_config::get('feed_enable_pegas') || !$album_data['album_user_id']),
 
 	'S_THUMBNAIL_SIZE'			=> phpbb_gallery_config::get('thumbnail_height') + 20 + ((phpbb_gallery_config::get('thumbnail_infoline')) ? phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT : 0),
 	'S_JUMPBOX_ACTION'			=> phpbb_gallery_url::append_sid('album'),
-	'S_ALBUM_ACTION'			=> phpbb_gallery_url::append_sid('album', "album_id=$album_id"),
+	'S_ALBUM_ACTION'			=> phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
 
 	'S_SELECT_SORT_DIR'			=> $s_sort_dir,
 	'S_SELECT_SORT_KEY'			=> $s_sort_key,
@@ -306,12 +306,12 @@ $template->assign_vars([
 	'U_RETURN_LINK'				=> phpbb_gallery_url::append_sid('index'),
 	'S_RETURN_LINK'				=> $user->lang['GALLERY'],
 
-	'PAGINATION'				=> generate_pagination(phpbb_gallery_url::append_sid('album', "album_id=$album_id&amp;sk=$sort_key&amp;sd=$sort_dir&amp;st=$sort_days"), $image_counter, $images_per_page, $start),
+	'PAGINATION'				=> generate_pagination(phpbb_gallery_url::append_sid('album', "album_id={$album_id}&amp;sk={$sort_key}&amp;sd={$sort_dir}&amp;st={$sort_days}"), $image_counter, $images_per_page, $start),
 	'TOTAL_IMAGES'				=> $user->lang('VIEW_ALBUM_IMAGES', $image_counter),
 	'PAGE_NUMBER'				=> on_page($image_counter, $images_per_page, $start),
 
 	'L_WATCH_TOPIC'				=> ($album_data['watch_id']) ? $user->lang['UNWATCH_ALBUM'] : $user->lang['WATCH_ALBUM'],
-	'U_WATCH_TOPIC'				=> (($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT) && ($user->data['user_id'] != ANONYMOUS)) ? phpbb_gallery_url::append_sid('album', "mode=" . $watch_mode . "&amp;album_id=$album_id&amp;hash=" . generate_link_hash("{$watch_mode}_$album_id")) : '',
+	'U_WATCH_TOPIC'				=> (($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT) && ($user->data['user_id'] != ANONYMOUS)) ? phpbb_gallery_url::append_sid('album', "mode=" . $watch_mode . "&amp;album_id={$album_id}&amp;hash=" . generate_link_hash("{$watch_mode}_{$album_id}")) : '',
 	'S_WATCHING_TOPIC'			=> (bool) $album_data['watch_id'],
 ]);
 

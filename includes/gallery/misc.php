@@ -143,7 +143,7 @@ class phpbb_gallery_misc
 			$sql = 'UPDATE ' . GALLERY_ATRACK_TABLE . '
 				SET mark_time = ' . time() . "
 				WHERE user_id = {$user->data['user_id']}
-					AND album_id = $album_id";
+					AND album_id = {$album_id}";
 			$db->sql_query($sql);
 
 			if (!$db->sql_affectedrows())

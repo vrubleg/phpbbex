@@ -252,7 +252,7 @@ class phpbb_gallery_album
 
 		if ($select_name)
 		{
-			$gallery_albumbox = "<select name='$select_name' id='$select_name'>";
+			$gallery_albumbox = "<select name='{$select_name}' id='{$select_name}'>";
 			$gallery_albumbox .= $album_list;
 			$gallery_albumbox .= '</select>';
 		}
@@ -382,9 +382,9 @@ class phpbb_gallery_album
 
 		$sql = 'SELECT a2.*
 			FROM ' . GALLERY_ALBUMS_TABLE . ' a1
-			LEFT JOIN ' . GALLERY_ALBUMS_TABLE . " a2 ON ($condition) AND a2.album_user_id = $branch_user_id
-			WHERE a1.album_id = $album_id
-				AND a1.album_user_id = $branch_user_id
+			LEFT JOIN ' . GALLERY_ALBUMS_TABLE . " a2 ON ({$condition}) AND a2.album_user_id = {$branch_user_id}
+			WHERE a1.album_id = {$album_id}
+				AND a1.album_user_id = {$branch_user_id}
 			ORDER BY a2.left_id " . (($order == 'descending') ? 'ASC' : 'DESC');
 		$result = $db->sql_query($sql);
 

@@ -72,7 +72,7 @@ class phpbb_gallery_comment
 
 		$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . "
 			SET image_comments = image_comments + 1,
-				image_last_comment = $newest_comment_id
+				image_last_comment = {$newest_comment_id}
 			WHERE image_id = " . (int) $data['comment_image_id'];
 		$db->sql_query($sql);
 
@@ -122,7 +122,7 @@ class phpbb_gallery_comment
 
 		$sql = 'SELECT comment_image_id, COUNT(comment_id) AS num_comments, MAX(comment_id) AS last_comment
 			FROM ' . GALLERY_COMMENTS_TABLE . "
-			$sql_where
+			{$sql_where}
 			GROUP BY comment_image_id
 			ORDER BY comment_id DESC";
 		$result = $db->sql_query($sql);

@@ -321,10 +321,10 @@ class phpbb_gallery_image
 	{
 		global $user;
 
-		$image_page_url = phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$image_id{$additional_parameters}");
-		$image_url = phpbb_gallery_url::append_sid('image', "album_id=$album_id&amp;image_id=$image_id{$additional_parameters}" . ((!$count) ? '&amp;view=no_count' : ''));
-		$thumb_url = phpbb_gallery_url::append_sid('image', "mode=thumbnail&amp;album_id=$album_id&amp;image_id=$image_id{$additional_parameters}");
-		$medium_url = phpbb_gallery_url::append_sid('image', "mode=medium&amp;album_id=$album_id&amp;image_id=$image_id{$additional_parameters}");
+		$image_page_url = phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}{$additional_parameters}");
+		$image_url = phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id={$image_id}{$additional_parameters}" . ((!$count) ? '&amp;view=no_count' : ''));
+		$thumb_url = phpbb_gallery_url::append_sid('image', "mode=thumbnail&amp;album_id={$album_id}&amp;image_id={$image_id}{$additional_parameters}");
+		$medium_url = phpbb_gallery_url::append_sid('image', "mode=medium&amp;album_id={$album_id}&amp;image_id={$image_id}{$additional_parameters}");
 		switch ($content)
 		{
 			case 'image_name':
@@ -381,7 +381,7 @@ class phpbb_gallery_image
 			case 'next':
 				if ($next_image)
 				{
-					$url = phpbb_gallery_url::append_sid('image_page', "album_id=$album_id&amp;image_id=$next_image{$additional_parameters}");
+					$url = phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$next_image}{$additional_parameters}");
 					$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}">{CONTENT}</a>';
 				}
 				else
