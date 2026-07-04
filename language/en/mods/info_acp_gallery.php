@@ -20,31 +20,31 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, [
-	'ACP_GALLERY_ALBUM_MANAGEMENT'		=> 'Album management',
-	'ACP_GALLERY_ALBUM_PERMISSIONS'		=> 'Permissions',
+	'ACP_GALLERY_ALBUM_MANAGEMENT'      => 'Album management',
+	'ACP_GALLERY_ALBUM_PERMISSIONS'     => 'Permissions',
 	'ACP_GALLERY_ALBUM_PERMISSIONS_COPY'=> 'Copy permissions',
-	'ACP_GALLERY_CLEANUP'				=> 'Cleanup gallery',
-	'ACP_GALLERY_CONFIGURE_GALLERY'		=> 'Configure gallery',
-	'ACP_GALLERY_LOGS'					=> 'Gallery log',
-	'ACP_GALLERY_LOGS_EXPLAIN'			=> 'This lists all moderator actions of the gallery, like approving, disapproving, locking, unlocking, closing reports and deleting images.',
-	'ACP_GALLERY_MANAGE_ALBUMS'			=> 'Manage albums',
-	'ACP_GALLERY_OVERVIEW'				=> 'Overview',
-	'ACP_IMPORT_ALBUMS'					=> 'Import Images',
+	'ACP_GALLERY_CLEANUP'               => 'Cleanup gallery',
+	'ACP_GALLERY_CONFIGURE_GALLERY'     => 'Configure gallery',
+	'ACP_GALLERY_LOGS'                  => 'Gallery log',
+	'ACP_GALLERY_LOGS_EXPLAIN'          => 'This lists all moderator actions of the gallery, like approving, disapproving, locking, unlocking, closing reports and deleting images.',
+	'ACP_GALLERY_MANAGE_ALBUMS'         => 'Manage albums',
+	'ACP_GALLERY_OVERVIEW'              => 'Overview',
+	'ACP_IMPORT_ALBUMS'                 => 'Import Images',
 
-	'GALLERY'							=> 'Gallery',
-	'GALLERY_EXPLAIN'					=> 'Image Gallery',
-	'GALLERY_HELPLINE_ALBUM'			=> 'Gallery image: [album]image_id[/album], with this BBCode you can add an image from the gallery into your post.',
-	'GALLERY_POPUP'						=> 'Gallery',
-	'GALLERY_POPUP_HELPLINE'			=> 'Open a popup where you can select your recent images and upload new images.',
+	'GALLERY'                           => 'Gallery',
+	'GALLERY_EXPLAIN'                   => 'Image Gallery',
+	'GALLERY_HELPLINE_ALBUM'            => 'Gallery image: [album]image_id[/album], with this BBCode you can add an image from the gallery into your post.',
+	'GALLERY_POPUP'                     => 'Gallery',
+	'GALLERY_POPUP_HELPLINE'            => 'Open a popup where you can select your recent images and upload new images.',
 
-	'IMAGES'							=> 'Images',
-	'IMG_BUTTON_UPLOAD_IMAGE'			=> 'Upload image',
+	'IMAGES'                            => 'Images',
+	'IMG_BUTTON_UPLOAD_IMAGE'           => 'Upload image',
 
-	'PERSONAL_ALBUM'					=> 'Personal album',
-	'PHPBB_GALLERY'						=> 'phpBB Gallery',
+	'PERSONAL_ALBUM'                    => 'Personal album',
+	'PHPBB_GALLERY'                     => 'phpBB Gallery',
 
-	'TOTAL_IMAGES_SPRINTF'				=> [
-		0		=> 'Total images <strong>0</strong>',
-		1		=> 'Total images <strong>%d</strong>',
+	'TOTAL_IMAGES_SPRINTF'              => [
+		0       => 'Total images <strong>0</strong>',
+		1       => 'Total images <strong>%d</strong>',
 	],
 ]);

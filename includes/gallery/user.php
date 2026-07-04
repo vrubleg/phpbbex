@@ -37,13 +37,13 @@ class phpbb_gallery_user
 	/**
 	* Constructor
 	*
-	* @param	int		$user_id
-	* @param	bool	$load		Shall we automatically load the users data from the database?
+	* @param    int     $user_id
+	* @param    bool    $load       Shall we automatically load the users data from the database?
 	*/
 	public function __construct($db, $user_id, $load = true)
 	{
-		$this->db			= $db;
-		$this->id			= (int) $user_id;
+		$this->db           = $db;
+		$this->id           = (int) $user_id;
 		if ($load)
 		{
 			$this->load_data();
@@ -55,15 +55,15 @@ class phpbb_gallery_user
 	*/
 	public function load_data()
 	{
-		$this->entry_exists	= false;
+		$this->entry_exists = false;
 		$sql = 'SELECT *
 			FROM ' . GALLERY_USERS_TABLE . '
 			WHERE user_id = ' . $this->id;
 		$result = $this->db->sql_query($sql);
 		if ($row = $this->db->sql_fetchrow($result))
 		{
-			$this->data			= $this->validate_data($row);
-			$this->entry_exists	= true;
+			$this->data         = $this->validate_data($row);
+			$this->entry_exists = true;
 		}
 		$this->db->sql_freeresult($result);
 
@@ -95,9 +95,9 @@ class phpbb_gallery_user
 	/**
 	* Get user-setting, if the user does not have his own settings we fall back to default.
 	*
-	* @param	string	$key		Column name from the users-table
-	* @param	bool	$default	Load default value, if user has no entry
-	* @return	mixed			Returns the value of the column, it it does not exist it returns false.
+	* @param    string  $key        Column name from the users-table
+	* @param    bool    $default    Load default value, if user has no entry
+	* @return   mixed           Returns the value of the column, it it does not exist it returns false.
 	*/
 	public function get_data($key, $default = true)
 	{
@@ -115,7 +115,7 @@ class phpbb_gallery_user
 
 	/**
 	* Updates/Inserts the data, depending on whether the user already exists or not.
-	*	Example: 'SET key = x'
+	*   Example: 'SET key = x'
 	*/
 	public function update_data($data)
 	{
@@ -137,7 +137,7 @@ class phpbb_gallery_user
 
 	/**
 	* Increase/Inserts the data, depending on whether the user already exists or not.
-	*	Example: 'SET key = key + x'
+	*   Example: 'SET key = key + x'
 	*/
 	public function update_images($num)
 	{
@@ -162,13 +162,13 @@ class phpbb_gallery_user
 	/**
 	* Updates the users table with the new data.
 	*
-	* @param	array	$data	Array of data we want to add/update.
-	* @return	bool			Returns true if the columns were updated successfully
+	* @param    array   $data   Array of data we want to add/update.
+	* @return   bool            Returns true if the columns were updated successfully
 	*/
 	private function update($data)
 	{
 		$sql_ary = array_merge($this->validate_data($data), [
-			'user_last_update'	=> time(),
+			'user_last_update'  => time(),
 		]);
 		unset($sql_ary['user_id']);
 
@@ -185,8 +185,8 @@ class phpbb_gallery_user
 	/**
 	* Updates the users table by increasing the values.
 	*
-	* @param	array	$data	Array of data we want to increment
-	* @return	mixed			Returns true if the columns were updated successfully, else false
+	* @param    array   $data   Array of data we want to increment
+	* @return   mixed           Returns true if the columns were updated successfully, else false
 	*/
 	private function update_image_count($num)
 	{
@@ -212,14 +212,14 @@ class phpbb_gallery_user
 	/**
 	* Updates the users table with the new data.
 	*
-	* @param	array	$data	Array of data we want to insert
-	* @return	bool			Returns true if the data was inserted successfully
+	* @param    array   $data   Array of data we want to insert
+	* @return   bool            Returns true if the data was inserted successfully
 	*/
 	private function insert($data)
 	{
 		$sql_ary = array_merge(self::$default_values, $this->validate_data($data), [
-			'user_id'			=> $this->id,
-			'user_last_update'	=> time(),
+			'user_id'           => $this->id,
+			'user_last_update'  => time(),
 		]);
 
 		$this->db->sql_return_on_error(true);
@@ -250,7 +250,7 @@ class phpbb_gallery_user
 	/**
 	* Delete the user from the table.
 	*
-	* @param	mixed	$user_ids	Can either be an array of IDs, one ID or the string 'all' to delete all users.
+	* @param    mixed   $user_ids   Can either be an array of IDs, one ID or the string 'all' to delete all users.
 	*/
 	static public function delete_users($user_ids)
 	{
@@ -266,16 +266,16 @@ class phpbb_gallery_user
 	/**
 	* Updates the users table with new data.
 	*
-	* @param	mixed	$user_ids	Can either be an array of IDs, one ID or the string 'all' to update all users.
-	* @param	array	$data		Array of data we want to add/update.
-	* @return	bool				Returns true if the columns were updated successfully
+	* @param    mixed   $user_ids   Can either be an array of IDs, one ID or the string 'all' to update all users.
+	* @param    array   $data       Array of data we want to add/update.
+	* @return   bool                Returns true if the columns were updated successfully
 	*/
 	static public function update_users($user_ids, $data)
 	{
 		global $db;
 
 		$sql_ary = array_merge(self::validate_data($data), [
-			'user_last_update'	=> time(),
+			'user_last_update'  => time(),
 		]);
 		unset($sql_ary['user_id']);
 
@@ -292,8 +292,8 @@ class phpbb_gallery_user
 	/**
 	* Builds a valid WHERE-sql-statement, with casted integers, or empty to allow handling all users.
 	*
-	* @param	mixed	$user_ids	Can either be an array of IDs, one ID or the string 'all' to update all users.
-	* @return	string				The WHERE statement with "WHERE " if needed.
+	* @param    mixed   $user_ids   Can either be an array of IDs, one ID or the string 'all' to update all users.
+	* @return   string              The WHERE statement with "WHERE " if needed.
 	*/
 	static public function sql_build_where($user_ids)
 	{
@@ -319,8 +319,8 @@ class phpbb_gallery_user
 	/**
 	* Validate user data.
 	*
-	* @param	array	$data	Array of data we need to validate
-	* @return	array			Array with all allowed keys and their casted and selected values
+	* @param    array   $data   Array of data we need to validate
+	* @return   array           Array with all allowed keys and their casted and selected values
 	*/
 	static public function validate_data($data, $inc = false)
 	{
@@ -365,26 +365,26 @@ class phpbb_gallery_user
 	* Default values for new users.
 	*/
 	static protected $default_values = [
-		'user_images'		=> 0,
-		'personal_album_id'	=> 0,
-		'user_lastmark'		=> 0,
-		'user_last_update'	=> 0,
-		'user_permissions_changed'	=> 0,
+		'user_images'       => 0,
+		'personal_album_id' => 0,
+		'user_lastmark'     => 0,
+		'user_last_update'  => 0,
+		'user_permissions_changed'  => 0,
 
-		'user_permissions'	=> '',
+		'user_permissions'  => '',
 
 		// Shall other users be allowed to comment on this users images by default?
-		'user_allow_comments'	=> true,
+		'user_allow_comments'   => true,
 		// Shall the EXIF data be viewed or collapsed by default?
-		'user_viewexif'		=> true,
+		'user_viewexif'     => true,
 		// Shall the user be subscribed to his own images?
-		'watch_own'			=> true,
+		'watch_own'         => true,
 		// Shall the user be subscribed if he adds the images to his favorites?
-		'watch_favo'		=> false,
+		'watch_favo'        => false,
 		// Shall the user be subscribed if he comments on an images?
-		'watch_com'			=> false,
+		'watch_com'         => false,
 		// Automatically subscribe user to new personal galleries?
-		'subscribe_pegas'	=> false,
+		'subscribe_pegas'   => false,
 	];
 
 	/**
@@ -399,49 +399,49 @@ class phpbb_gallery_user
 		if ($user_id == ANONYMOUS)
 		{
 			$user_cache[$user_id] = [
-				'joined'		=> '',
-				'with_us'		=> '',
-				'posts'			=> '',
-				'topics'		=> '',
-				'from'			=> '',
+				'joined'        => '',
+				'with_us'       => '',
+				'posts'         => '',
+				'topics'        => '',
+				'from'          => '',
 
-				'rating'			=> 0,
-				'rating_positive'	=> 0,
-				'rating_negative'	=> 0,
-				'rated'				=> 0,
-				'rated_positive'	=> 0,
-				'rated_negative'	=> 0,
+				'rating'            => 0,
+				'rating_positive'   => 0,
+				'rating_negative'   => 0,
+				'rated'             => 0,
+				'rated_positive'    => 0,
+				'rated_negative'    => 0,
 
-				'sig'					=> '',
-				'sig_bbcode_uid'		=> '',
-				'sig_bbcode_bitfield'	=> '',
+				'sig'                   => '',
+				'sig_bbcode_uid'        => '',
+				'sig_bbcode_bitfield'   => '',
 
-				'online'			=> false,
-				'avatar'			=> ($user->optionget('viewavatars')) ? get_user_avatar($row['user_avatar'], $row['user_avatar_type'], $row['user_avatar_width'], $row['user_avatar_height']) : '',
-				'rank_title'		=> '',
-				'rank_image'		=> '',
-				'rank_image_src'	=> '',
-				'sig'				=> '',
-				'profile'			=> '',
-				'pm'				=> '',
-				'email'				=> '',
-				'www'				=> '',
-				'jabber'			=> '',
-				'telegram'			=> '',
-				'search'			=> '',
-				'age'				=> '',
-				'gender'			=> 0,
+				'online'            => false,
+				'avatar'            => ($user->optionget('viewavatars')) ? get_user_avatar($row['user_avatar'], $row['user_avatar_type'], $row['user_avatar_width'], $row['user_avatar_height']) : '',
+				'rank_title'        => '',
+				'rank_image'        => '',
+				'rank_image_src'    => '',
+				'sig'               => '',
+				'profile'           => '',
+				'pm'                => '',
+				'email'             => '',
+				'www'               => '',
+				'jabber'            => '',
+				'telegram'          => '',
+				'search'            => '',
+				'age'               => '',
+				'gender'            => 0,
 
-				'gallery_album'		=> '',
-				'gallery_images'	=> '',
-				'gallery_search'	=> '',
+				'gallery_album'     => '',
+				'gallery_images'    => '',
+				'gallery_search'    => '',
 
-				'user_id'			=> $row['user_id'],
-				'username'			=> $row['username'],
-				'user_colour'		=> $row['user_colour'],
+				'user_id'           => $row['user_id'],
+				'username'          => $row['username'],
+				'user_colour'       => $row['user_colour'],
 
-				'warnings'			=> 0,
-				'allow_pm'			=> 0,
+				'warnings'          => 0,
+				'allow_pm'          => 0,
 			];
 
 			get_user_rank($row['user_rank'], false, $user_cache[$user_id]['rank_title'], $user_cache[$user_id]['rank_image'], $user_cache[$user_id]['rank_image_src']);
@@ -457,49 +457,49 @@ class phpbb_gallery_user
 			$id_cache[] = $user_id;
 
 			$user_cache[$user_id] = [
-				'joined'		=> $user->format_date($row['user_regdate'], false, false, true),
-				'with_us'		=> !empty($config['style_mp_show_with_us']) ? get_verbal_time_delta($row['user_regdate'], time(), false, 2) : '',
-				'posts'			=> $row['user_posts'],
-				'topics'		=> $row['user_topics'],
-				'warnings'		=> $row['user_warnings'] ?? 0,
-				'from'			=> $row['user_from'] ?? '',
+				'joined'        => $user->format_date($row['user_regdate'], false, false, true),
+				'with_us'       => !empty($config['style_mp_show_with_us']) ? get_verbal_time_delta($row['user_regdate'], time(), false, 2) : '',
+				'posts'         => $row['user_posts'],
+				'topics'        => $row['user_topics'],
+				'warnings'      => $row['user_warnings'] ?? 0,
+				'from'          => $row['user_from'] ?? '',
 
-				'rating'			=> ($config['rate_no_positive'] ? 0 : $row['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rating_negative']),
-				'rating_positive'	=> $row['user_rating_positive'],
-				'rating_negative'	=> $row['user_rating_negative'],
-				'rated'				=> ($config['rate_no_positive'] ? 0 : $row['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rated_negative']),
-				'rated_positive'	=> $row['user_rated_positive'],
-				'rated_negative'	=> $row['user_rated_negative'],
+				'rating'            => ($config['rate_no_positive'] ? 0 : $row['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rating_negative']),
+				'rating_positive'   => $row['user_rating_positive'],
+				'rating_negative'   => $row['user_rating_negative'],
+				'rated'             => ($config['rate_no_positive'] ? 0 : $row['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $row['user_rated_negative']),
+				'rated_positive'    => $row['user_rated_positive'],
+				'rated_negative'    => $row['user_rated_negative'],
 
-				'sig'					=> $user_sig,
-				'sig_bbcode_uid'		=> $row['user_sig_bbcode_uid'] ?? '',
-				'sig_bbcode_bitfield'	=> $row['user_sig_bbcode_bitfield'] ?? '',
+				'sig'                   => $user_sig,
+				'sig_bbcode_uid'        => $row['user_sig_bbcode_uid'] ?? '',
+				'sig_bbcode_bitfield'   => $row['user_sig_bbcode_bitfield'] ?? '',
 
-				'viewonline'	=> $row['user_allow_viewonline'],
-				'allow_pm'		=> $row['user_allow_pm'],
+				'viewonline'    => $row['user_allow_viewonline'],
+				'allow_pm'      => $row['user_allow_pm'],
 
-				'avatar'		=> ($user->optionget('viewavatars')) ? get_user_avatar($row['user_avatar'], $row['user_avatar_type'], $row['user_avatar_width'], $row['user_avatar_height']) : '',
-				'age'			=> '',
-				'gender'		=> (int)$row['user_gender'],
+				'avatar'        => ($user->optionget('viewavatars')) ? get_user_avatar($row['user_avatar'], $row['user_avatar_type'], $row['user_avatar_width'], $row['user_avatar_height']) : '',
+				'age'           => '',
+				'gender'        => (int)$row['user_gender'],
 
-				'rank_title'		=> '',
-				'rank_image'		=> '',
-				'rank_image_src'	=> '',
+				'rank_title'        => '',
+				'rank_image'        => '',
+				'rank_image_src'    => '',
 
-				'user_id'			=> $row['user_id'],
-				'username'			=> $row['username'],
-				'user_colour'		=> $row['user_colour'],
+				'user_id'           => $row['user_id'],
+				'username'          => $row['username'],
+				'user_colour'       => $row['user_colour'],
 
-				'online'		=> false,
-				'profile'		=> phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=viewprofile&amp;u={$user_id}"),
-				'www'			=> $row['user_website'],
-				'jabber'		=> ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
-				'telegram'		=> ($row['user_telegram']) ? ('tg://resolve?domain=' . $row['user_telegram']) : '',
-				'search'		=> ($auth->acl_get('u_search')) ? phpbb_gallery_url::append_sid('phpbb', 'search', "author_id={$user_id}&amp;sr=posts") : '',
+				'online'        => false,
+				'profile'       => phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=viewprofile&amp;u={$user_id}"),
+				'www'           => $row['user_website'],
+				'jabber'        => ($row['user_jabber']) ? ('xmpp:' . $row['user_jabber']) : '',
+				'telegram'      => ($row['user_telegram']) ? ('tg://resolve?domain=' . $row['user_telegram']) : '',
+				'search'        => ($auth->acl_get('u_search')) ? phpbb_gallery_url::append_sid('phpbb', 'search', "author_id={$user_id}&amp;sr=posts") : '',
 
-				'gallery_album'		=> ($row['personal_album_id'] && phpbb_gallery_config::get('viewtopic_icon')) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
-				'gallery_images'	=> (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
-				'gallery_search'	=> (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', "user_id={$user_id}") : '',
+				'gallery_album'     => ($row['personal_album_id'] && phpbb_gallery_config::get('viewtopic_icon')) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
+				'gallery_images'    => (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
+				'gallery_search'    => (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', "user_id={$user_id}") : '',
 			];
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $user_cache[$user_id]['rank_title'], $user_cache[$user_id]['rank_image'], $user_cache[$user_id]['rank_image_src']);

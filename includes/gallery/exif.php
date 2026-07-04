@@ -17,10 +17,10 @@ class phpbb_gallery_exif
 	/**
 	* Constants for the status of the exif-data.
 	*/
-	const UNAVAILABLE	= 0;
-	const AVAILABLE		= 1;
-	const UNKNOWN		= 2;
-	const DBSAVED		= 3;
+	const UNAVAILABLE   = 0;
+	const AVAILABLE     = 1;
+	const UNKNOWN       = 2;
+	const DBSAVED       = 3;
 
 	/**
 	* phpBB will treat the time from the exifdata like UTC.
@@ -29,7 +29,7 @@ class phpbb_gallery_exif
 	*
 	* Offset must be set in seconds.
 	*/
-	const TIME_OFFSET	= 0;
+	const TIME_OFFSET   = 0;
 
 	/**
 	* Is the function available?
@@ -39,39 +39,39 @@ class phpbb_gallery_exif
 	/**
 	* Exif data array with all allowed groups and keys.
 	*/
-	public $data		= [];
+	public $data        = [];
 
 	/**
 	* Filtered data array. We don't have empty or invalid values here.
 	*/
-	public $prepared_data	= [];
+	public $prepared_data   = [];
 
 	/**
 	* Does the image have exif data?
 	* Values see constant declaration at the beginning of the class.
 	*/
-	public $status		= 2;
+	public $status      = 2;
 
 	/**
 	* Full data array, but serialized to a string
 	*/
-	public $serialized	= '';
+	public $serialized  = '';
 
 	/**
 	* Full link to the image-file
 	*/
-	public $file		= '';
+	public $file        = '';
 
 	/**
 	* Image-ID, just needed to update the exif-status
 	*/
-	public $image_id	= false;
+	public $image_id    = false;
 
 	/**
 	* Constructor
 	*
-	* @param	string	$file		Full link to the image-file
-	* @param	mixed	$image_id	False or integer
+	* @param    string  $file       Full link to the image-file
+	* @param    mixed   $image_id   False or integer
 	*/
 	public function __construct($file, $image_id = false)
 	{
@@ -90,8 +90,8 @@ class phpbb_gallery_exif
 	/**
 	* Intepret the values from the database, and read the data if we don't have it.
 	*
-	* @param	int		$status		Value of a status constant (see beginning of the class)
-	* @param	mixed	$data		Either an empty string or the serialized array of the exif from the database
+	* @param    int     $status     Value of a status constant (see beginning of the class)
+	* @param    mixed   $data       Either an empty string or the serialized array of the exif from the database
 	*/
 	public function interpret($status, $data)
 	{
@@ -263,8 +263,8 @@ class phpbb_gallery_exif
 	/**
 	* Sends the exif into the template
 	*
-	* @param	bool	$expand_view	Shall we expand the exif data on page view or collapse?
-	* @param	string	$block			Name of the template loop the exifs are displayed in.
+	* @param    bool    $expand_view    Shall we expand the exif data on page view or collapse?
+	* @param    string  $block          Name of the template loop the exifs are displayed in.
 	*/
 	public function send_to_template($expand_view = true, $block = 'exif_value')
 	{
@@ -277,13 +277,13 @@ class phpbb_gallery_exif
 			foreach ($this->prepared_data as $exif => $value)
 			{
 				$template->assign_block_vars($block, [
-					'EXIF_NAME'			=> $user->lang[strtoupper($exif)],
-					'EXIF_VALUE'		=> htmlspecialchars($value),
+					'EXIF_NAME'         => $user->lang[strtoupper($exif)],
+					'EXIF_VALUE'        => htmlspecialchars($value),
 				]);
 			}
 			$template->assign_vars([
-				'S_EXIF_DATA'	=> true,
-				'S_VIEWEXIF'	=> $expand_view,
+				'S_EXIF_DATA'   => true,
+				'S_VIEWEXIF'    => $expand_view,
 			]);
 		}
 	}
@@ -311,12 +311,12 @@ class phpbb_gallery_exif
 	* There are lots of possible Exif Groups and Values.
 	* But you will never heard of the missing ones. so we just allow the most common ones.
 	*/
-	static private $allowed_groups		= [
+	static private $allowed_groups      = [
 		'EXIF',
 		'IFD0',
 	];
 
-	static private $allowed_keys		= [
+	static private $allowed_keys        = [
 		'DateTimeOriginal',
 		'FocalLength',
 		'ExposureTime',

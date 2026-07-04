@@ -104,11 +104,11 @@ class phpbb_gallery_feed
 		global $db;
 
 		$sql_array = [
-			'SELECT'		=> 'i.*',
-			'FROM'			=> [GALLERY_IMAGES_TABLE => 'i'],
+			'SELECT'        => 'i.*',
+			'FROM'          => [GALLERY_IMAGES_TABLE => 'i'],
 
-			'WHERE'			=> $this->sql_where . ' AND i.image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN,
-			'ORDER_BY'		=> 'i.image_time DESC',
+			'WHERE'         => $this->sql_where . ' AND i.image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN,
+			'ORDER_BY'      => 'i.image_time DESC',
 		];
 
 		if ($album_data == false)
@@ -116,8 +116,8 @@ class phpbb_gallery_feed
 			$sql_array['SELECT'] .= ', a.album_name, a.album_status, a.album_id, a.album_user_id';
 			$sql_array['LEFT_JOIN'] = [
 				[
-					'FROM'		=> [GALLERY_ALBUMS_TABLE => 'a'],
-					'ON'		=> 'i.image_album_id = a.album_id',
+					'FROM'      => [GALLERY_ALBUMS_TABLE => 'a'],
+					'ON'        => 'i.image_album_id = a.album_id',
 				],
 			];
 		}
@@ -186,11 +186,11 @@ class phpbb_gallery_feed
 			echo ']]></description>';
 
 			echo '<media:content url="' . $url_fullsize . '" type="' . phpbb_gallery_image_file::mimetype_by_filename($row['image_filename']) . '" medium="image" isDefault="true" expression="full">';
-			echo '	<media:title>' . $title . '</media:title>';
-			echo '	<media:description type="html"><![CDATA[' . $description . '';
-			echo '	<p>' . $user->lang['STATISTICS'] . ': ' . $image_username . ' ' . $this->separator_stats . ' ' . $user->format_date($row['image_time']) . '</p>';
-			echo '	]]></media:description>';
-			echo '	<media:thumbnail url="' . $u_thumbnail . '" />';
+			echo '  <media:title>' . $title . '</media:title>';
+			echo '  <media:description type="html"><![CDATA[' . $description . '';
+			echo '  <p>' . $user->lang['STATISTICS'] . ': ' . $image_username . ' ' . $this->separator_stats . ' ' . $user->format_date($row['image_time']) . '</p>';
+			echo '  ]]></media:description>';
+			echo '  <media:thumbnail url="' . $u_thumbnail . '" />';
 			echo '</media:content>';
 			echo '</item>' . "\n";
 		}
@@ -237,11 +237,11 @@ class phpbb_gallery_feed
 			$sign = ($zone_offset < 0) ? '-' : '+';
 			$time_offset = abs($zone_offset);
 
-			$offset_seconds	= $time_offset % 3600;
-			$offset_minutes	= $offset_seconds / 60;
-			$offset_hours	= ($time_offset - $offset_seconds) / 3600;
+			$offset_seconds = $time_offset % 3600;
+			$offset_minutes = $offset_seconds / 60;
+			$offset_hours   = ($time_offset - $offset_seconds) / 3600;
 
-			$offset_string	= sprintf(" %s%02d%02d", $sign, $offset_hours, $offset_minutes);
+			$offset_string  = sprintf(" %s%02d%02d", $sign, $offset_hours, $offset_minutes);
 		}
 
 		return gmdate("D, d M Y H:i:s", $time + $zone_offset) . $offset_string;

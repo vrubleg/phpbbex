@@ -129,10 +129,10 @@ class phpbb_gallery_url
 		}
 
 		$params = $args + [
-			0	=> '',
-			1	=> phpbb_gallery::$display_popup,
-			2	=> true,
-			3	=> false,
+			0   => '',
+			1   => phpbb_gallery::$display_popup,
+			2   => true,
+			3   => false,
 		];
 
 		return append_sid($params[0], $params[1], $params[2], $params[3]);
@@ -212,12 +212,12 @@ class phpbb_gallery_url
 	* Creates beautiful relative path from ugly relative path
 	* Resolves .. (up directory)
 	*
-	* @author	bantu		based on phpbb_own_realpath() by Chris Smith
-	* @license	GNU Public License
+	* @author   bantu       based on phpbb_own_realpath() by Chris Smith
+	* @license  GNU Public License
 	*
-	* @param	string		ugly path e.g. "../community/../gallery/"
-	* @param	bool		is it a full url, so we need to fix teh http:// at the beginning?
-	* @return	string		beautiful path e.g. "../gallery/"
+	* @param    string      ugly path e.g. "../community/../gallery/"
+	* @param    bool        is it a full url, so we need to fix teh http:// at the beginning?
+	* @return   string      beautiful path e.g. "../gallery/"
 	*/
 	static public function beautiful_path($path, $is_full_url = false)
 	{

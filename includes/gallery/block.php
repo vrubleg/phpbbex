@@ -52,15 +52,15 @@ class phpbb_gallery_block
 	/**
 	* Modes that you want to display on the block.
 	*/
-	private $mode	= self::MODE_NONE;
+	private $mode   = self::MODE_NONE;
 
-	const MODE_NONE		= 0;
-	const MODE_RECENT	= 1;
-	const MODE_RANDOM	= 2;
-	const MODE_COMMENT	= 4;
+	const MODE_NONE     = 0;
+	const MODE_RECENT   = 1;
+	const MODE_RANDOM   = 2;
+	const MODE_COMMENT  = 4;
 
 	/**
-	* @param	array	$modes	Array of strings: 'none', 'recent', 'random', 'comment'
+	* @param    array   $modes  Array of strings: 'none', 'recent', 'random', 'comment'
 	*/
 	public function set_modes($modes = [])
 	{
@@ -78,7 +78,7 @@ class phpbb_gallery_block
 	}
 
 	/**
-	* @param	int		$new_mode	Integer between 0 and 7 (including bounds)
+	* @param    int     $new_mode   Integer between 0 and 7 (including bounds)
 	*/
 	public function set_mode($new_mode = self::MODE_NONE)
 	{
@@ -96,21 +96,21 @@ class phpbb_gallery_block
 	/**
 	* Options which details of the images you want to view on the block.
 	*/
-	private $display		= self::DISPLAY_NONE;
+	private $display        = self::DISPLAY_NONE;
 
-	const DISPLAY_NONE			= 0;
-	const DISPLAY_ALBUMNAME		= 1;
-	const DISPLAY_COMMENTS		= 2;
-	const DISPLAY_IMAGENAME		= 4;
-	const DISPLAY_IMAGETIME		= 8;
-	const DISPLAY_IMAGEVIEWS	= 16;
-	const DISPLAY_USERNAME		= 32;
-	const DISPLAY_RATINGS		= 64;
-	const DISPLAY_IP			= 128;
+	const DISPLAY_NONE          = 0;
+	const DISPLAY_ALBUMNAME     = 1;
+	const DISPLAY_COMMENTS      = 2;
+	const DISPLAY_IMAGENAME     = 4;
+	const DISPLAY_IMAGETIME     = 8;
+	const DISPLAY_IMAGEVIEWS    = 16;
+	const DISPLAY_USERNAME      = 32;
+	const DISPLAY_RATINGS       = 64;
+	const DISPLAY_IP            = 128;
 
 	/**
-	* @param	array	$modes	Array of strings:
-	*							'none', 'albumname', 'comments', 'imagename', 'imagetime', 'imageviews', 'username', 'ratings', 'ip'
+	* @param    array   $modes  Array of strings:
+	*                           'none', 'albumname', 'comments', 'imagename', 'imagetime', 'imageviews', 'username', 'ratings', 'ip'
 	*/
 	public function set_display_options($options = [])
 	{
@@ -128,7 +128,7 @@ class phpbb_gallery_block
 	}
 
 	/**
-	* @param	int		$new_mode	Integer between 0 and 255 (including bounds)
+	* @param    int     $new_mode   Integer between 0 and 255 (including bounds)
 	*/
 	public function set_display($new_display = self::DISPLAY_NONE)
 	{
@@ -146,11 +146,11 @@ class phpbb_gallery_block
 	/**
 	* Some integer numbers
 	*/
-	private $num_rows		= 0;
-	private $num_columns	= 0;
-	private $num_comments	= 0;
-	private $num_contests	= 0;
-	private $num_sql_limit	= 0;
+	private $num_rows       = 0;
+	private $num_columns    = 0;
+	private $num_comments   = 0;
+	private $num_contests   = 0;
+	private $num_sql_limit  = 0;
 
 	public function set_nums($nums = [])
 	{
@@ -164,22 +164,22 @@ class phpbb_gallery_block
 			}
 		}
 
-		$this->num_sql_limit	= $this->num_rows * $this->num_columns;
+		$this->num_sql_limit    = $this->num_rows * $this->num_columns;
 	}
 
 	/**
-	* @param	array	$nums	Array of ints for:
-	*							# of rows, # of columns, # of comments, # of contests
+	* @param    array   $nums   Array of ints for:
+	*                           # of rows, # of columns, # of comments, # of contests
 	*/
 	public function set_num($nums)
 	{
 		if (sizeof($nums) == 4)
 		{
-			$this->num_rows			= (int) $nums[0];
-			$this->num_columns		= (int) $nums[1];
-			$this->num_comments		= (int) $nums[2];
-			$this->num_contests		= (int) $nums[3];
-			$this->num_sql_limit	= $this->num_rows * $this->num_columns;
+			$this->num_rows         = (int) $nums[0];
+			$this->num_columns      = (int) $nums[1];
+			$this->num_comments     = (int) $nums[2];
+			$this->num_contests     = (int) $nums[3];
+			$this->num_sql_limit    = $this->num_rows * $this->num_columns;
 		}
 	}
 
@@ -371,18 +371,18 @@ class phpbb_gallery_block
 		if ($this->num_contests)
 		{
 			$sql_array = [
-				'SELECT'		=> 'c.*, a.album_name',
-				'FROM'			=> [GALLERY_CONTESTS_TABLE => 'c'],
+				'SELECT'        => 'c.*, a.album_name',
+				'FROM'          => [GALLERY_CONTESTS_TABLE => 'c'],
 
-				'LEFT_JOIN'		=> [
+				'LEFT_JOIN'     => [
 					[
-						'FROM'		=> [GALLERY_ALBUMS_TABLE => 'a'],
-						'ON'		=> 'a.album_id = c.contest_album_id',
+						'FROM'      => [GALLERY_ALBUMS_TABLE => 'a'],
+						'ON'        => 'a.album_id = c.contest_album_id',
 					],
 				],
 
-				'WHERE'			=> $db->sql_in_set('c.contest_album_id', array_unique(array_merge($this->auth_view, $this->auth_moderate)), false, true) . ' AND c.contest_marked = ' . phpbb_gallery_image::NO_CONTEST,
-				'ORDER_BY'		=> 'c.contest_start + c.contest_end DESC',
+				'WHERE'         => $db->sql_in_set('c.contest_album_id', array_unique(array_merge($this->auth_view, $this->auth_moderate)), false, true) . ' AND c.contest_marked = ' . phpbb_gallery_image::NO_CONTEST,
+				'ORDER_BY'      => 'c.contest_start + c.contest_end DESC',
 			];
 			$sql = $db->sql_build_query('SELECT', $sql_array);
 			$result = $db->sql_query_limit($sql, $this->num_contests);
@@ -393,9 +393,9 @@ class phpbb_gallery_block
 				$this->images[] = $row['contest_second'];
 				$this->images[] = $row['contest_third'];
 				$this->contest_images[$row['contest_id']] = [
-					'album_id'		=> $row['contest_album_id'],
-					'album_name'	=> $row['album_name'],
-					'images'		=> [$row['contest_first'], $row['contest_second'], $row['contest_third']]
+					'album_id'      => $row['contest_album_id'],
+					'album_name'    => $row['album_name'],
+					'images'        => [$row['contest_first'], $row['contest_second'], $row['contest_third']]
 				];
 			}
 			$db->sql_freeresult($result);
@@ -414,18 +414,18 @@ class phpbb_gallery_block
 			global $db;
 
 			$sql_array = [
-				'SELECT'		=> 'i.*, a.album_name, a.album_status, a.album_id, a.album_user_id',
-				'FROM'			=> [GALLERY_IMAGES_TABLE => 'i'],
+				'SELECT'        => 'i.*, a.album_name, a.album_status, a.album_id, a.album_user_id',
+				'FROM'          => [GALLERY_IMAGES_TABLE => 'i'],
 
-				'LEFT_JOIN'		=> [
+				'LEFT_JOIN'     => [
 					[
-						'FROM'		=> [GALLERY_ALBUMS_TABLE => 'a'],
-						'ON'		=> 'i.image_album_id = a.album_id',
+						'FROM'      => [GALLERY_ALBUMS_TABLE => 'a'],
+						'ON'        => 'i.image_album_id = a.album_id',
 					],
 				],
 
-				'WHERE'			=> $db->sql_in_set('i.image_id', $this->images, false, true),
-				'ORDER_BY'		=> 'i.image_time DESC',
+				'WHERE'         => $db->sql_in_set('i.image_id', $this->images, false, true),
+				'ORDER_BY'      => 'i.image_time DESC',
 			];
 			$sql = $db->sql_build_query('SELECT', $sql_array);
 			$result = $db->sql_query($sql);
@@ -449,10 +449,10 @@ class phpbb_gallery_block
 		{
 			$num = 0;
 			$template->assign_block_vars($this->template_block_images, [
-				'U_BLOCK'			=> phpbb_gallery_url::append_sid('search', 'search_id=recent'),
-				'BLOCK_NAME'		=> $user->lang['RECENT_IMAGES'],
-				'S_COL_WIDTH'		=> (100 / $this->num_columns) . '%',
-				'S_COLS'			=> $this->num_columns,
+				'U_BLOCK'           => phpbb_gallery_url::append_sid('search', 'search_id=recent'),
+				'BLOCK_NAME'        => $user->lang['RECENT_IMAGES'],
+				'S_COL_WIDTH'       => (100 / $this->num_columns) . '%',
+				'S_COLS'            => $this->num_columns,
 			]);
 			foreach ($this->recent_images as $image)
 			{
@@ -474,10 +474,10 @@ class phpbb_gallery_block
 		{
 			$num = 0;
 			$template->assign_block_vars($this->template_block_images, [
-				'U_BLOCK'			=> phpbb_gallery_url::append_sid('search', 'search_id=random'),
-				'BLOCK_NAME'		=> $user->lang['RANDOM_IMAGES'],
-				'S_COL_WIDTH'		=> (100 / $this->num_columns) . '%',
-				'S_COLS'			=> $this->num_columns,
+				'U_BLOCK'           => phpbb_gallery_url::append_sid('search', 'search_id=random'),
+				'BLOCK_NAME'        => $user->lang['RANDOM_IMAGES'],
+				'S_COL_WIDTH'       => (100 / $this->num_columns) . '%',
+				'S_COLS'            => $this->num_columns,
 			]);
 			foreach ($this->random_images as $image)
 			{
@@ -501,11 +501,11 @@ class phpbb_gallery_block
 			{
 				$num = 0;
 				$template->assign_block_vars($this->template_block_images, [
-					'U_BLOCK'			=> phpbb_gallery_url::append_sid('album', 'album_id=' . $contest_data['album_id'] . '&amp;sk=ra&amp;sd=d'),
-					'BLOCK_NAME'		=> sprintf($user->lang['CONTEST_WINNERS_OF'], $contest_data['album_name']),
-					'S_CONTEST_BLOCK'	=> true,
-					'S_COL_WIDTH'		=> '33%',
-					'S_COLS'			=> 3,
+					'U_BLOCK'           => phpbb_gallery_url::append_sid('album', 'album_id=' . $contest_data['album_id'] . '&amp;sk=ra&amp;sd=d'),
+					'BLOCK_NAME'        => sprintf($user->lang['CONTEST_WINNERS_OF'], $contest_data['album_name']),
+					'S_CONTEST_BLOCK'   => true,
+					'S_COL_WIDTH'       => '33%',
+					'S_COLS'            => 3,
 				]);
 				foreach ($contest_data['images'] as $image)
 				{
@@ -528,7 +528,7 @@ class phpbb_gallery_block
 		}
 
 		$template->assign_vars([
-			'S_THUMBNAIL_SIZE'	=> phpbb_gallery_config::get('thumbnail_height') + 20 + ((phpbb_gallery_config::get('thumbnail_infoline')) ? phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT : 0),
+			'S_THUMBNAIL_SIZE'  => phpbb_gallery_config::get('thumbnail_height') + 20 + ((phpbb_gallery_config::get('thumbnail_infoline')) ? phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT : 0),
 		]);
 	}
 
@@ -546,18 +546,18 @@ class phpbb_gallery_block
 		$user->add_lang('viewtopic');
 
 		$sql_array = [
-			'SELECT'		=> 'c.*, i.*',
-			'FROM'			=> [GALLERY_COMMENTS_TABLE => 'c'],
+			'SELECT'        => 'c.*, i.*',
+			'FROM'          => [GALLERY_COMMENTS_TABLE => 'c'],
 
-			'LEFT_JOIN'		=> [
+			'LEFT_JOIN'     => [
 				[
-					'FROM'		=> [GALLERY_IMAGES_TABLE => 'i'],
-					'ON'		=> 'c.comment_image_id = i.image_id',
+					'FROM'      => [GALLERY_IMAGES_TABLE => 'i'],
+					'ON'        => 'c.comment_image_id = i.image_id',
 				],
 			],
 
-			'WHERE'			=> $this->sql_where_auth . ' AND ' . $db->sql_in_set('i.image_album_id', $this->auth_comments, false, true),
-			'ORDER_BY'		=> 'c.comment_id DESC',
+			'WHERE'         => $this->sql_where_auth . ' AND ' . $db->sql_in_set('i.image_album_id', $this->auth_comments, false, true),
+			'ORDER_BY'      => 'c.comment_id DESC',
 		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query_limit($sql, $this->num_comments);
@@ -568,38 +568,38 @@ class phpbb_gallery_block
 			$album_id = (int) $row['image_album_id'];
 
 			$template->assign_block_vars($this->template_block_comments, [
-				'U_COMMENT'		=> phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}") . '#comment_' . $row['comment_id'],
-				'COMMENT_ID'	=> $row['comment_id'],
-				'TIME'			=> $user->format_date($row['comment_time']),
-				'TEXT'			=> generate_text_for_display($row['comment'], $row['comment_uid'], $row['comment_bitfield'], 7),
-				'U_DELETE'		=> (phpbb_gallery::$auth->acl_check('m_comments', $album_id) || (phpbb_gallery::$auth->acl_check('c_delete', $album_id) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=delete&amp;comment_id=" . $row['comment_id']) : '',
-				'U_QUOTE'		=> (phpbb_gallery::$auth->acl_check('c_post', $album_id)) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add&amp;comment_id=" . $row['comment_id']) : '',
-				'U_EDIT'		=> (phpbb_gallery::$auth->acl_check('m_comments', $album_id) || (phpbb_gallery::$auth->acl_check('c_edit', $album_id) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=edit&amp;comment_id=" . $row['comment_id']) : '',
-				'U_INFO'		=> ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $row['comment_user_ip']) : '',
+				'U_COMMENT'     => phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}") . '#comment_' . $row['comment_id'],
+				'COMMENT_ID'    => $row['comment_id'],
+				'TIME'          => $user->format_date($row['comment_time']),
+				'TEXT'          => generate_text_for_display($row['comment'], $row['comment_uid'], $row['comment_bitfield'], 7),
+				'U_DELETE'      => (phpbb_gallery::$auth->acl_check('m_comments', $album_id) || (phpbb_gallery::$auth->acl_check('c_delete', $album_id) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=delete&amp;comment_id=" . $row['comment_id']) : '',
+				'U_QUOTE'       => (phpbb_gallery::$auth->acl_check('c_post', $album_id)) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add&amp;comment_id=" . $row['comment_id']) : '',
+				'U_EDIT'        => (phpbb_gallery::$auth->acl_check('m_comments', $album_id) || (phpbb_gallery::$auth->acl_check('c_edit', $album_id) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=edit&amp;comment_id=" . $row['comment_id']) : '',
+				'U_INFO'        => ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $row['comment_user_ip']) : '',
 
-				'UC_THUMBNAIL'			=> phpbb_gallery_image::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $row['image_album_id']),
-				'UC_IMAGE_NAME'			=> phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $row['image_id'], $row['image_name'], $row['image_album_id']),
-				'IMAGE_AUTHOR'			=> get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
-				'IMAGE_TIME'			=> $user->format_date($row['image_time']),
+				'UC_THUMBNAIL'          => phpbb_gallery_image::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $row['image_album_id']),
+				'UC_IMAGE_NAME'         => phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $row['image_id'], $row['image_name'], $row['image_album_id']),
+				'IMAGE_AUTHOR'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
+				'IMAGE_TIME'            => $user->format_date($row['image_time']),
 
-				'POST_AUTHOR_FULL'		=> get_username_string('full', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
-				'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
-				'POST_AUTHOR'			=> get_username_string('username', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
-				'U_POST_AUTHOR'			=> get_username_string('profile', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
+				'POST_AUTHOR_FULL'      => get_username_string('full', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
+				'POST_AUTHOR_COLOUR'    => get_username_string('colour', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
+				'POST_AUTHOR'           => get_username_string('username', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
+				'U_POST_AUTHOR'         => get_username_string('profile', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
 			]);
 		}
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'S_COMMENTS'	=> true,
+			'S_COMMENTS'    => true,
 
-			'DELETE_IMG'		=> $user->img('icon_post_delete', 'DELETE_COMMENT'),
-			'EDIT_IMG'			=> $user->img('icon_post_edit', 'EDIT_COMMENT'),
-			'QUOTE_IMG'			=> $user->img('icon_post_quote', 'QUOTE_COMMENT'),
-			'INFO_IMG'			=> $user->img('icon_post_info', 'IP'),
-			'MINI_POST_IMG'		=> $user->img('icon_post_target_unread', 'COMMENT'),
-			'PROFILE_IMG'		=> $user->img('icon_user_profile', 'READ_PROFILE'),
-			'COLLAPSE_COMMENTS'	=> $this->toggle_comments,
+			'DELETE_IMG'        => $user->img('icon_post_delete', 'DELETE_COMMENT'),
+			'EDIT_IMG'          => $user->img('icon_post_edit', 'EDIT_COMMENT'),
+			'QUOTE_IMG'         => $user->img('icon_post_quote', 'QUOTE_COMMENT'),
+			'INFO_IMG'          => $user->img('icon_post_info', 'IP'),
+			'MINI_POST_IMG'     => $user->img('icon_post_target_unread', 'COMMENT'),
+			'PROFILE_IMG'       => $user->img('icon_user_profile', 'READ_PROFILE'),
+			'COLLAPSE_COMMENTS' => $this->toggle_comments,
 		]);
 	}
 }

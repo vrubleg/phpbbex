@@ -68,19 +68,19 @@ class phpbb_gallery_integration
 		}
 
 		$template->assign_vars([
-			'TOTAL_IMAGES'		=> phpbb_gallery_config::get('profile_user_images'),
-			'IMAGES'			=> $member['user_images'],
-			'IMAGES_DAY'		=> sprintf($user->lang['IMAGE_DAY'], $images_per_day),
-			'IMAGES_PCT'		=> sprintf($user->lang['IMAGE_PCT'], $percentage_images),
-			'U_SEARCH_GALLERY'	=> phpbb_gallery_url::append_sid('search', 'user_id=' . $user_id),
+			'TOTAL_IMAGES'      => phpbb_gallery_config::get('profile_user_images'),
+			'IMAGES'            => $member['user_images'],
+			'IMAGES_DAY'        => sprintf($user->lang['IMAGE_DAY'], $images_per_day),
+			'IMAGES_PCT'        => sprintf($user->lang['IMAGE_PCT'], $percentage_images),
+			'U_SEARCH_GALLERY'  => phpbb_gallery_url::append_sid('search', 'user_id=' . $user_id),
 		]);
 
 		// View information about the personal album, only when the user is allowed to see it.
 		if (phpbb_gallery::$auth->acl_check('i_view', phpbb_gallery_auth::PERSONAL_ALBUM) || (($user_id == $user->data['user_id']) && phpbb_gallery::$auth->acl_check('i_view', phpbb_gallery_auth::OWN_ALBUM)))
 		{
 			$template->assign_vars([
-				'SHOW_PERSONAL_ALBUM_OF'	=> sprintf($user->lang['SHOW_PERSONAL_ALBUM_OF'], $member['username']),
-				'U_GALLERY'			=> ($member['personal_album_id'] && phpbb_gallery_config::get('profile_pega')) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $member['personal_album_id']) : '',
+				'SHOW_PERSONAL_ALBUM_OF'    => sprintf($user->lang['SHOW_PERSONAL_ALBUM_OF'], $member['username']),
+				'U_GALLERY'         => ($member['personal_album_id'] && phpbb_gallery_config::get('profile_pega')) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $member['personal_album_id']) : '',
 			]);
 		}
 	}
@@ -96,8 +96,8 @@ class phpbb_gallery_integration
 			$user->add_lang(['mods/info_acp_gallery', 'mods/gallery']);
 
 			$template->assign_vars([
-				'S_GALLERY_POPUP'	=> true,
-				'U_GALLERY_POPUP'	=> phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id'] . '&amp;display=popup'),
+				'S_GALLERY_POPUP'   => true,
+				'U_GALLERY_POPUP'   => phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id'] . '&amp;display=popup'),
 			]);
 		}
 	}
@@ -117,15 +117,15 @@ class phpbb_gallery_integration
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$albums[$row['album_id']] = [
-				'album_id'			=> $row['album_id'],
-				'parent_id'			=> $row['parent_id'],
-				'album_name'		=> $row['album_name'],
-				'album_type'		=> $row['album_type'],
-				'left_id'			=> $row['left_id'],
-				'right_id'			=> $row['right_id'],
-				'album_user_id'		=> $row['album_user_id'],
-				'display_in_rrc'	=> $row['display_in_rrc'],
-				'album_auth_access'	=> $row['album_auth_access'],
+				'album_id'          => $row['album_id'],
+				'parent_id'         => $row['parent_id'],
+				'album_name'        => $row['album_name'],
+				'album_type'        => $row['album_type'],
+				'left_id'           => $row['left_id'],
+				'right_id'          => $row['right_id'],
+				'album_user_id'     => $row['album_user_id'],
+				'display_in_rrc'    => $row['display_in_rrc'],
+				'album_auth_access' => $row['album_auth_access'],
 			];
 		}
 		$db->sql_freeresult($result);
@@ -157,9 +157,9 @@ class phpbb_gallery_integration
 		global $db, $cache;
 
 		$update_ary = [
-			GALLERY_ALBUMS_TABLE	=> ['album_last_username'],
-			GALLERY_COMMENTS_TABLE	=> ['comment_username'],
-			GALLERY_IMAGES_TABLE	=> ['image_username'],
+			GALLERY_ALBUMS_TABLE    => ['album_last_username'],
+			GALLERY_COMMENTS_TABLE  => ['comment_username'],
+			GALLERY_IMAGES_TABLE    => ['image_username'],
 		];
 
 		foreach ($update_ary as $table => $field_ary)
@@ -174,7 +174,7 @@ class phpbb_gallery_integration
 		}
 
 		$update_clean_ary = [
-			GALLERY_IMAGES_TABLE	=> ['image_username_clean'],
+			GALLERY_IMAGES_TABLE    => ['image_username_clean'],
 		];
 
 		foreach ($update_clean_ary as $table => $field_ary)
@@ -284,7 +284,7 @@ class phpbb_gallery_integration
 	* Integration into UCP before the active module is set.
 	* We use this to hide some modules, when the user has no permissions.
 	*
-	* @param object $module		The module handler
+	* @param object $module     The module handler
 	*/
 	static public function ucp(&$module)
 	{
@@ -300,9 +300,9 @@ class phpbb_gallery_integration
 	/**
 	* Add/Remove a user from the friends/foes list
 	*
-	* @param string $mode		Mode of action: either 'add' or 'remove'
-	* @param string $zebra_ids	Array of affected users.
-	* @param string $user_id	User performing the action.
+	* @param string $mode       Mode of action: either 'add' or 'remove'
+	* @param string $zebra_ids  Array of affected users.
+	* @param string $user_id    User performing the action.
 	*/
 	static public function ucp_zebra($mode, $zebar_ids, $user_id)
 	{
@@ -328,10 +328,10 @@ class phpbb_gallery_integration
 			if ($row)
 			{
 				$template->assign_vars([
-					'GALLERY_IMG'		=> $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
-					'U_GALLERY'			=> (phpbb_gallery_config::get('viewtopic_icon') && $row['personal_album_id']) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
-					'GALLERY_IMAGES'	=> (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
-					'U_GALLERY_SEARCH'	=> (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $message_row['author_id']) : '',
+					'GALLERY_IMG'       => $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
+					'U_GALLERY'         => (phpbb_gallery_config::get('viewtopic_icon') && $row['personal_album_id']) ? phpbb_gallery_url::append_sid('album', "album_id=" . $row['personal_album_id']) : '',
+					'GALLERY_IMAGES'    => (phpbb_gallery_config::get('viewtopic_images')) ? $row['user_images'] : 0,
+					'U_GALLERY_SEARCH'  => (phpbb_gallery_config::get('viewtopic_images') && phpbb_gallery_config::get('viewtopic_link') && $row['user_images']) ? phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $message_row['author_id']) : '',
 				]);
 			}
 		}

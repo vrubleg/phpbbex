@@ -19,13 +19,13 @@ if (!defined('IN_INSTALL'))
 if (!empty($setmodules))
 {
 	$module[] = [
-		'module_type'		=> 'install',
-		'module_title'		=> 'INSTALL',
-		'module_filename'	=> substr(basename(__FILE__), 0, -4),
-		'module_order'		=> 10,
-		'module_subs'		=> '',
-		'module_stages'		=> ['INTRO', 'REQUIREMENTS', 'CREATE_TABLE', 'ADVANCED', 'FINAL'],
-		'module_reqs'		=> ''
+		'module_type'       => 'install',
+		'module_title'      => 'INSTALL',
+		'module_filename'   => substr(basename(__FILE__), 0, -4),
+		'module_order'      => 10,
+		'module_subs'       => '',
+		'module_stages'     => ['INTRO', 'REQUIREMENTS', 'CREATE_TABLE', 'ADVANCED', 'FINAL'],
+		'module_reqs'       => ''
 	];
 }
 
@@ -58,10 +58,10 @@ class install_install extends module
 				$this->page_title = $user->lang['SUB_INTRO'];
 
 				$template->assign_vars([
-					'TITLE'			=> $user->lang['INSTALL_INTRO'],
-					'BODY'			=> $user->lang['INSTALL_INTRO_BODY'],
-					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
-					'U_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements"),
+					'TITLE'         => $user->lang['INSTALL_INTRO'],
+					'BODY'          => $user->lang['INSTALL_INTRO_BODY'],
+					'L_SUBMIT'      => $user->lang['NEXT_STEP'],
+					'U_ACTION'      => append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements"),
 				]);
 			break;
 
@@ -82,10 +82,10 @@ class install_install extends module
 				$cache->purge();
 
 				$template->assign_vars([
-					'TITLE'		=> $user->lang['INSTALL_CONGRATS'],
-					'BODY'		=> sprintf($user->lang['INSTALL_CONGRATS_EXPLAIN'], NEWEST_PG_VERSION),
-					'L_SUBMIT'	=> $user->lang['GOTO_GALLERY'],
-					'U_ACTION'	=> phpbb_gallery_url::append_sid('index'),
+					'TITLE'     => $user->lang['INSTALL_CONGRATS'],
+					'BODY'      => sprintf($user->lang['INSTALL_CONGRATS_EXPLAIN'], NEWEST_PG_VERSION),
+					'L_SUBMIT'  => $user->lang['GOTO_GALLERY'],
+					'U_ACTION'  => phpbb_gallery_url::append_sid('index'),
 				]);
 			break;
 		}
@@ -103,17 +103,17 @@ class install_install extends module
 		$this->page_title = $user->lang['STAGE_REQUIREMENTS'];
 
 		$template->assign_vars([
-			'TITLE'		=> $user->lang['REQUIREMENTS_TITLE'],
-			'BODY'		=> $user->lang['REQUIREMENTS_EXPLAIN'],
+			'TITLE'     => $user->lang['REQUIREMENTS_TITLE'],
+			'BODY'      => $user->lang['REQUIREMENTS_EXPLAIN'],
 		]);
 
 		$passed = ['php' => false, 'dirs' => false,];
 
 		// Test for basic PHP settings
 		$template->assign_block_vars('checks', [
-			'S_LEGEND'			=> true,
-			'LEGEND'			=> $user->lang['PHP_SETTINGS'],
-			'LEGEND_EXPLAIN'	=> $user->lang['PHP_SETTINGS_EXP'],
+			'S_LEGEND'          => true,
+			'LEGEND'            => $user->lang['PHP_SETTINGS'],
+			'LEGEND_EXPLAIN'    => $user->lang['PHP_SETTINGS_EXP'],
 		]);
 
 		// Check for GD-Library
@@ -128,18 +128,18 @@ class install_install extends module
 		}
 
 		$template->assign_block_vars('checks', [
-			'TITLE'			=> $user->lang['REQ_GD_LIBRARY'],
-			'RESULT'		=> $result,
+			'TITLE'         => $user->lang['REQ_GD_LIBRARY'],
+			'RESULT'        => $result,
 
-			'S_EXPLAIN'		=> false,
-			'S_LEGEND'		=> false,
+			'S_EXPLAIN'     => false,
+			'S_LEGEND'      => false,
 		]);
 
 		// Test for optional PHP settings
 		$template->assign_block_vars('checks', [
-			'S_LEGEND'			=> true,
-			'LEGEND'			=> $user->lang['PHP_SETTINGS_OPTIONAL'],
-			'LEGEND_EXPLAIN'	=> $user->lang['PHP_SETTINGS_OPTIONAL_EXP'],
+			'S_LEGEND'          => true,
+			'LEGEND'            => $user->lang['PHP_SETTINGS_OPTIONAL'],
+			'LEGEND_EXPLAIN'    => $user->lang['PHP_SETTINGS_OPTIONAL_EXP'],
 		]);
 
 		// Image rotate
@@ -153,12 +153,12 @@ class install_install extends module
 			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong><br />' . sprintf($user->lang['OPTIONAL_IMAGEROTATE_EXP'], $gd_info['GD Version']);
 		}
 		$template->assign_block_vars('checks', [
-			'TITLE'			=> $user->lang['OPTIONAL_IMAGEROTATE'],
-			'TITLE_EXPLAIN'	=> $user->lang['OPTIONAL_IMAGEROTATE_EXPLAIN'],
-			'RESULT'		=> $result,
+			'TITLE'         => $user->lang['OPTIONAL_IMAGEROTATE'],
+			'TITLE_EXPLAIN' => $user->lang['OPTIONAL_IMAGEROTATE_EXPLAIN'],
+			'RESULT'        => $result,
 
-			'S_EXPLAIN'		=> true,
-			'S_LEGEND'		=> false,
+			'S_EXPLAIN'     => true,
+			'S_LEGEND'      => false,
 		]);
 
 		// Exif data
@@ -171,19 +171,19 @@ class install_install extends module
 			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong><br />' . $user->lang['OPTIONAL_EXIFDATA_EXP'];
 		}
 		$template->assign_block_vars('checks', [
-			'TITLE'			=> $user->lang['OPTIONAL_EXIFDATA'],
-			'TITLE_EXPLAIN'	=> $user->lang['OPTIONAL_EXIFDATA_EXPLAIN'],
-			'RESULT'		=> $result,
+			'TITLE'         => $user->lang['OPTIONAL_EXIFDATA'],
+			'TITLE_EXPLAIN' => $user->lang['OPTIONAL_EXIFDATA_EXPLAIN'],
+			'RESULT'        => $result,
 
-			'S_EXPLAIN'		=> true,
-			'S_LEGEND'		=> false,
+			'S_EXPLAIN'     => true,
+			'S_LEGEND'      => false,
 		]);
 
 		// Check permissions on files/directories we need access to
 		$template->assign_block_vars('checks', [
-			'S_LEGEND'			=> true,
-			'LEGEND'			=> $user->lang['FILES_REQUIRED'],
-			'LEGEND_EXPLAIN'	=> $user->lang['FILES_REQUIRED_EXPLAIN'],
+			'S_LEGEND'          => true,
+			'LEGEND'            => $user->lang['FILES_REQUIRED'],
+			'LEGEND_EXPLAIN'    => $user->lang['FILES_REQUIRED_EXPLAIN'],
 		]);
 
 		$directories = [
@@ -224,11 +224,11 @@ class install_install extends module
 			$write = ($write) ? '<strong style="color:green">' . $user->lang['WRITABLE'] . '</strong>' : '<strong style="color:red">' . $user->lang['UNWRITABLE'] . '</strong>';
 
 			$template->assign_block_vars('checks', [
-				'TITLE'		=> phpbb_gallery_url::_return_file('', $dir . '_noroot', ''),
-				'RESULT'	=> $write,
+				'TITLE'     => phpbb_gallery_url::_return_file('', $dir . '_noroot', ''),
+				'RESULT'    => $write,
 
-				'S_EXPLAIN'	=> false,
-				'S_LEGEND'	=> false,
+				'S_EXPLAIN' => false,
+				'S_LEGEND'  => false,
 			]);
 		}
 
@@ -237,16 +237,16 @@ class install_install extends module
 		if (version_compare($gallery_version, '0.0.0', '>'))
 		{
 			$template->assign_block_vars('checks', [
-				'S_LEGEND'			=> true,
-				'LEGEND'			=> $user->lang['FOUND_INSTALL'],
-				'LEGEND_EXPLAIN'	=> sprintf($user->lang['FOUND_INSTALL_EXPLAIN'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'install/index.php', 'mode=update') . '">', '</a>'),
+				'S_LEGEND'          => true,
+				'LEGEND'            => $user->lang['FOUND_INSTALL'],
+				'LEGEND_EXPLAIN'    => sprintf($user->lang['FOUND_INSTALL_EXPLAIN'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'install/index.php', 'mode=update') . '">', '</a>'),
 			]);
 			$template->assign_block_vars('checks', [
-				'TITLE'		=> $user->lang['FOUND_VERSION'],
-				'RESULT'	=> '<strong style="color:red">' . $gallery_version . '</strong>',
+				'TITLE'     => $user->lang['FOUND_VERSION'],
+				'RESULT'    => '<strong style="color:red">' . $gallery_version . '</strong>',
 
-				'S_EXPLAIN'	=> false,
-				'S_LEGEND'	=> false,
+				'S_EXPLAIN' => false,
+				'S_LEGEND'  => false,
 			]);
 		}
 
@@ -254,9 +254,9 @@ class install_install extends module
 		$submit = (!in_array(false, $passed)) ? $user->lang['INSTALL_START'] : $user->lang['INSTALL_TEST'];
 
 		$template->assign_vars([
-			'L_SUBMIT'	=> $submit,
-			'S_HIDDEN'	=> '',
-			'U_ACTION'	=> $url,
+			'L_SUBMIT'  => $submit,
+			'S_HIDDEN'  => '',
+			'U_ACTION'  => $url,
 		]);
 	}
 
@@ -274,26 +274,26 @@ class install_install extends module
 
 		// Create the tables
 		$umil->table_add([
-			[GALLERY_ALBUMS_TABLE,			phpbb_gallery_dbal_schema::get_table_data('albums')],
-			[GALLERY_ATRACK_TABLE,			phpbb_gallery_dbal_schema::get_table_data('albums_track')],
-			[GALLERY_COMMENTS_TABLE,		phpbb_gallery_dbal_schema::get_table_data('comments')],
-			[GALLERY_CONFIG_TABLE,			phpbb_gallery_dbal_schema::get_table_data('config')],
-			[GALLERY_CONTESTS_TABLE,		phpbb_gallery_dbal_schema::get_table_data('contests')],
-			[GALLERY_FAVORITES_TABLE,		phpbb_gallery_dbal_schema::get_table_data('favorites')],
-			[GALLERY_IMAGES_TABLE,			phpbb_gallery_dbal_schema::get_table_data('images')],
-			[GALLERY_MODSCACHE_TABLE,		phpbb_gallery_dbal_schema::get_table_data('modscache')],
-			[GALLERY_PERMISSIONS_TABLE,	phpbb_gallery_dbal_schema::get_table_data('permissions')],
-			[GALLERY_RATES_TABLE,			phpbb_gallery_dbal_schema::get_table_data('rates')],
-			[GALLERY_REPORTS_TABLE,		phpbb_gallery_dbal_schema::get_table_data('reports')],
-			[GALLERY_ROLES_TABLE,			phpbb_gallery_dbal_schema::get_table_data('roles')],
-			[GALLERY_USERS_TABLE,			phpbb_gallery_dbal_schema::get_table_data('users')],
-			[GALLERY_WATCH_TABLE,			phpbb_gallery_dbal_schema::get_table_data('watch')],
+			[GALLERY_ALBUMS_TABLE,          phpbb_gallery_dbal_schema::get_table_data('albums')],
+			[GALLERY_ATRACK_TABLE,          phpbb_gallery_dbal_schema::get_table_data('albums_track')],
+			[GALLERY_COMMENTS_TABLE,        phpbb_gallery_dbal_schema::get_table_data('comments')],
+			[GALLERY_CONFIG_TABLE,          phpbb_gallery_dbal_schema::get_table_data('config')],
+			[GALLERY_CONTESTS_TABLE,        phpbb_gallery_dbal_schema::get_table_data('contests')],
+			[GALLERY_FAVORITES_TABLE,       phpbb_gallery_dbal_schema::get_table_data('favorites')],
+			[GALLERY_IMAGES_TABLE,          phpbb_gallery_dbal_schema::get_table_data('images')],
+			[GALLERY_MODSCACHE_TABLE,       phpbb_gallery_dbal_schema::get_table_data('modscache')],
+			[GALLERY_PERMISSIONS_TABLE, phpbb_gallery_dbal_schema::get_table_data('permissions')],
+			[GALLERY_RATES_TABLE,           phpbb_gallery_dbal_schema::get_table_data('rates')],
+			[GALLERY_REPORTS_TABLE,     phpbb_gallery_dbal_schema::get_table_data('reports')],
+			[GALLERY_ROLES_TABLE,           phpbb_gallery_dbal_schema::get_table_data('roles')],
+			[GALLERY_USERS_TABLE,           phpbb_gallery_dbal_schema::get_table_data('users')],
+			[GALLERY_WATCH_TABLE,           phpbb_gallery_dbal_schema::get_table_data('watch')],
 		]);
 
 		// Create columns
 		$umil->table_column_add([
-			[LOG_TABLE,		'album_id',			['UINT', 0]],
-			[LOG_TABLE,		'image_id',			['UINT', 0]],
+			[LOG_TABLE,     'album_id',         ['UINT', 0]],
+			[LOG_TABLE,     'image_id',         ['UINT', 0]],
 		]);
 
 		// Set default config
@@ -313,10 +313,10 @@ class install_install extends module
 		$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=advanced");
 
 		$template->assign_vars([
-			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
-			'L_SUBMIT'	=> $submit,
-			'S_HIDDEN'	=> '',
-			'U_ACTION'	=> $url,
+			'BODY'      => $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
+			'L_SUBMIT'  => $submit,
+			'S_HIDDEN'  => '',
+			'U_ACTION'  => $url,
 		]);
 	}
 
@@ -345,81 +345,81 @@ class install_install extends module
 			// ACP
 			$umil->module_add('acp', $choosen_acp_module, 'PHPBB_GALLERY');
 			$umil->module_add('acp', 'PHPBB_GALLERY', [
-				'module_basename'	=> 'gallery',
-				'module_langname'	=> 'ACP_GALLERY_OVERVIEW',
-				'module_mode'		=> 'overview',
-				'module_auth'		=> 'acl_a_gallery_manage',
+				'module_basename'   => 'gallery',
+				'module_langname'   => 'ACP_GALLERY_OVERVIEW',
+				'module_mode'       => 'overview',
+				'module_auth'       => 'acl_a_gallery_manage',
 			]);
 			$umil->module_add('acp', 'PHPBB_GALLERY', [
-				'module_basename'	=> 'gallery_config',
-				'module_langname'	=> 'ACP_GALLERY_CONFIGURE_GALLERY',
-				'module_mode'		=> 'main',
-				'module_auth'		=> 'acl_a_gallery_manage',
+				'module_basename'   => 'gallery_config',
+				'module_langname'   => 'ACP_GALLERY_CONFIGURE_GALLERY',
+				'module_mode'       => 'main',
+				'module_auth'       => 'acl_a_gallery_manage',
 			]);
 			$umil->module_add('acp', 'PHPBB_GALLERY', [
-				'module_basename'	=> 'gallery_albums',
-				'module_langname'	=> 'ACP_GALLERY_MANAGE_ALBUMS',
-				'module_mode'		=> 'manage',
-				'module_auth'		=> 'acl_a_gallery_albums',
+				'module_basename'   => 'gallery_albums',
+				'module_langname'   => 'ACP_GALLERY_MANAGE_ALBUMS',
+				'module_mode'       => 'manage',
+				'module_auth'       => 'acl_a_gallery_albums',
 			]);
 			$umil->module_add('acp', 'PHPBB_GALLERY', [
-				'module_basename'	=> 'gallery_permissions',
-				'module_langname'	=> 'ACP_GALLERY_ALBUM_PERMISSIONS',
-				'module_mode'		=> 'manage',
-				'module_auth'		=> 'acl_a_gallery_albums',
+				'module_basename'   => 'gallery_permissions',
+				'module_langname'   => 'ACP_GALLERY_ALBUM_PERMISSIONS',
+				'module_mode'       => 'manage',
+				'module_auth'       => 'acl_a_gallery_albums',
 			]);
 			$umil->module_add('acp', 'PHPBB_GALLERY', [
-				'module_basename'	=> 'gallery_permissions',
-				'module_langname'	=> 'ACP_GALLERY_ALBUM_PERMISSIONS_COPY',
-				'module_mode'		=> 'copy',
-				'module_auth'		=> 'acl_a_gallery_albums',
+				'module_basename'   => 'gallery_permissions',
+				'module_langname'   => 'ACP_GALLERY_ALBUM_PERMISSIONS_COPY',
+				'module_mode'       => 'copy',
+				'module_auth'       => 'acl_a_gallery_albums',
 			]);
 			$umil->module_add('acp', 'PHPBB_GALLERY', [
-				'module_basename'	=> 'gallery',
-				'module_langname'	=> 'ACP_IMPORT_ALBUMS',
-				'module_mode'		=> 'import_images',
-				'module_auth'		=> 'acl_a_gallery_import',
+				'module_basename'   => 'gallery',
+				'module_langname'   => 'ACP_IMPORT_ALBUMS',
+				'module_mode'       => 'import_images',
+				'module_auth'       => 'acl_a_gallery_import',
 			]);
 			$umil->module_add('acp', 'PHPBB_GALLERY', [
-				'module_basename'	=> 'gallery',
-				'module_langname'	=> 'ACP_GALLERY_CLEANUP',
-				'module_mode'		=> 'cleanup',
-				'module_auth'		=> 'acl_a_gallery_cleanup',
+				'module_basename'   => 'gallery',
+				'module_langname'   => 'ACP_GALLERY_CLEANUP',
+				'module_mode'       => 'cleanup',
+				'module_auth'       => 'acl_a_gallery_cleanup',
 			]);
 
 			// UCP
 			$umil->module_add('ucp', $choosen_ucp_module, 'UCP_GALLERY');
 			$umil->module_add('ucp', 'UCP_GALLERY', [
-				'module_basename'	=> 'gallery',
-				'module_langname'	=> 'UCP_GALLERY_SETTINGS',
-				'module_mode'		=> 'manage_settings',
-				'module_auth'		=> '',
+				'module_basename'   => 'gallery',
+				'module_langname'   => 'UCP_GALLERY_SETTINGS',
+				'module_mode'       => 'manage_settings',
+				'module_auth'       => '',
 			]);
 			$umil->module_add('ucp', 'UCP_GALLERY', [
-				'module_basename'	=> 'gallery',
-				'module_langname'	=> 'UCP_GALLERY_PERSONAL_ALBUMS',
-				'module_mode'		=> 'manage_albums',
-				'module_auth'		=> '',
+				'module_basename'   => 'gallery',
+				'module_langname'   => 'UCP_GALLERY_PERSONAL_ALBUMS',
+				'module_mode'       => 'manage_albums',
+				'module_auth'       => '',
 			]);
 			$umil->module_add('ucp', 'UCP_GALLERY', [
-				'module_basename'	=> 'gallery',
-				'module_langname'	=> 'UCP_GALLERY_WATCH',
-				'module_mode'		=> 'manage_subscriptions',
-				'module_auth'		=> '',
+				'module_basename'   => 'gallery',
+				'module_langname'   => 'UCP_GALLERY_WATCH',
+				'module_mode'       => 'manage_subscriptions',
+				'module_auth'       => '',
 			]);
 			$umil->module_add('ucp', 'UCP_GALLERY', [
-				'module_basename'	=> 'gallery',
-				'module_langname'	=> 'UCP_GALLERY_FAVORITES',
-				'module_mode'		=> 'manage_favorites',
-				'module_auth'		=> '',
+				'module_basename'   => 'gallery',
+				'module_langname'   => 'UCP_GALLERY_FAVORITES',
+				'module_mode'       => 'manage_favorites',
+				'module_auth'       => '',
 			]);
 
 			// Logs
 			$umil->module_add('acp', $choosen_log_module, [
-				'module_basename'	=> 'logs',
-				'module_langname'	=> 'ACP_GALLERY_LOGS',
-				'module_mode'		=> 'gallery',
-				'module_auth'		=> 'acl_a_viewlogs',
+				'module_basename'   => 'logs',
+				'module_langname'   => 'ACP_GALLERY_LOGS',
+				'module_mode'       => 'gallery',
+				'module_auth'       => 'acl_a_viewlogs',
 			]);
 
 			// Add album-BBCode
@@ -430,9 +430,9 @@ class install_install extends module
 		else
 		{
 			$data = [
-				'acp_module'		=> phpbb_gallery_constants::MODULE_DEFAULT_ACP,
-				'log_module'		=> phpbb_gallery_constants::MODULE_DEFAULT_LOG,
-				'ucp_module'		=> phpbb_gallery_constants::MODULE_DEFAULT_UCP,
+				'acp_module'        => phpbb_gallery_constants::MODULE_DEFAULT_ACP,
+				'log_module'        => phpbb_gallery_constants::MODULE_DEFAULT_LOG,
+				'ucp_module'        => phpbb_gallery_constants::MODULE_DEFAULT_UCP,
 			];
 
 			foreach ($this->gallery_config_options as $config_key => $vars)
@@ -445,8 +445,8 @@ class install_install extends module
 				if (strpos($config_key, 'legend') !== false)
 				{
 					$template->assign_block_vars('options', [
-						'S_LEGEND'		=> true,
-						'LEGEND'		=> $user->lang[$vars]]
+						'S_LEGEND'      => true,
+						'LEGEND'        => $user->lang[$vars]]
 					);
 
 					continue;
@@ -454,12 +454,12 @@ class install_install extends module
 
 				$options = $vars['options'] ?? '';
 				$template->assign_block_vars('options', [
-					'KEY'			=> $config_key,
-					'TITLE'			=> $user->lang[$vars['lang']],
-					'S_EXPLAIN'		=> $vars['explain'],
-					'S_LEGEND'		=> false,
-					'TITLE_EXPLAIN'	=> ($vars['explain']) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '',
-					'CONTENT'		=> $this->p_master->input_field($config_key, $vars['type'], $data[$config_key], $options),
+					'KEY'           => $config_key,
+					'TITLE'         => $user->lang[$vars['lang']],
+					'S_EXPLAIN'     => $vars['explain'],
+					'S_LEGEND'      => false,
+					'TITLE_EXPLAIN' => ($vars['explain']) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '',
+					'CONTENT'       => $this->p_master->input_field($config_key, $vars['type'], $data[$config_key], $options),
 					]
 				);
 			}
@@ -470,11 +470,11 @@ class install_install extends module
 		$submit = $user->lang['NEXT_STEP'];
 
 		$template->assign_vars([
-			'TITLE'		=> $user->lang['STAGE_ADVANCED'],
-			'BODY'		=> $user->lang['STAGE_ADVANCED_EXPLAIN'],
-			'L_SUBMIT'	=> $submit,
-			'S_HIDDEN'	=> $s_hidden_fields,
-			'U_ACTION'	=> $url,
+			'TITLE'     => $user->lang['STAGE_ADVANCED'],
+			'BODY'      => $user->lang['STAGE_ADVANCED_EXPLAIN'],
+			'L_SUBMIT'  => $submit,
+			'S_HIDDEN'  => $s_hidden_fields,
+			'U_ACTION'  => $url,
 		]);
 	}
 
@@ -482,9 +482,9 @@ class install_install extends module
 	* The information below will be used to build the input fields presented to the user
 	*/
 	var $gallery_config_options = [
-		'legend1'				=> 'MODULES_PARENT_SELECT',
-		'acp_module'			=> ['lang' => 'MODULES_SELECT_4ACP', 'type' => 'select', 'options' => 'module_select(\'acp\', 31, \'ACP_CAT_DOT_MODS\')', 'explain' => false],
-		'log_module'			=> ['lang' => 'MODULES_SELECT_4LOG', 'type' => 'select', 'options' => 'module_select(\'acp\', 25, \'ACP_FORUM_LOGS\')', 'explain' => false],
-		'ucp_module'			=> ['lang' => 'MODULES_SELECT_4UCP', 'type' => 'select', 'options' => 'module_select(\'ucp\', 0, \'\')', 'explain' => false],
+		'legend1'               => 'MODULES_PARENT_SELECT',
+		'acp_module'            => ['lang' => 'MODULES_SELECT_4ACP', 'type' => 'select', 'options' => 'module_select(\'acp\', 31, \'ACP_CAT_DOT_MODS\')', 'explain' => false],
+		'log_module'            => ['lang' => 'MODULES_SELECT_4LOG', 'type' => 'select', 'options' => 'module_select(\'acp\', 25, \'ACP_FORUM_LOGS\')', 'explain' => false],
+		'ucp_module'            => ['lang' => 'MODULES_SELECT_4UCP', 'type' => 'select', 'options' => 'module_select(\'ucp\', 0, \'\')', 'explain' => false],
 	];
 }

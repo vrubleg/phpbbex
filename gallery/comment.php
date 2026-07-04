@@ -120,27 +120,27 @@ switch ($mode)
 }
 
 
-$bbcode_status	= (bool) $config['allow_bbcode'];
-$smilies_status	= (bool) $config['allow_smilies'];
-$img_status		= $bbcode_status;
-$url_status		= (bool) $config['allow_post_links'];
-$flash_status	= false;
-$quote_status	= true;
+$bbcode_status  = (bool) $config['allow_bbcode'];
+$smilies_status = (bool) $config['allow_smilies'];
+$img_status     = $bbcode_status;
+$url_status     = (bool) $config['allow_post_links'];
+$flash_status   = false;
+$quote_status   = true;
 
 $template->assign_vars([
-	'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
-	'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
-	'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
-	'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-	'URL_STATUS'			=> ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
+	'BBCODE_STATUS'         => ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
+	'IMG_STATUS'            => ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
+	'FLASH_STATUS'          => ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
+	'SMILIES_STATUS'        => ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
+	'URL_STATUS'            => ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 
-	'S_BBCODE_ALLOWED'			=> $bbcode_status,
-	'S_SMILIES_ALLOWED'			=> $smilies_status,
-	'S_LINKS_ALLOWED'			=> $url_status,
-	'S_BBCODE_IMG'			=> $img_status,
-	'S_BBCODE_URL'			=> $url_status,
-	'S_BBCODE_FLASH'		=> $flash_status,
-	'S_BBCODE_QUOTE'		=> $quote_status,
+	'S_BBCODE_ALLOWED'          => $bbcode_status,
+	'S_SMILIES_ALLOWED'         => $smilies_status,
+	'S_LINKS_ALLOWED'           => $url_status,
+	'S_BBCODE_IMG'          => $img_status,
+	'S_BBCODE_URL'          => $url_status,
+	'S_BBCODE_FLASH'        => $flash_status,
+	'S_BBCODE_QUOTE'        => $quote_status,
 ]);
 
 // Build custom bbcodes array
@@ -172,7 +172,7 @@ if (phpbb_gallery_config::get('allow_rates') && ($mode != 'edit'))
 			$message .= $user->lang['RATING_SUCCESSFUL'] . '<br />';
 		}
 		$template->assign_vars([
-			'S_ALLOWED_TO_RATE'			=> $rating->is_allowed(),
+			'S_ALLOWED_TO_RATE'         => $rating->is_allowed(),
 		]);
 	}
 	if ($mode == 'rate')
@@ -233,18 +233,18 @@ if ($mode == 'add')
 			$error .= (($error) ? '<br />' : '') . $user->lang['COMMENT_TOO_LONG'];
 		}
 
-		$message_parser				= new parse_message();
-		$message_parser->message	= utf8_normalize_nfc($comment_plain);
+		$message_parser             = new parse_message();
+		$message_parser->message    = utf8_normalize_nfc($comment_plain);
 		if ($message_parser->message)
 		{
 			$message_parser->parse(true, true, true, true, false, true, true, true);
 		}
 		$sql_ary = [
-			'comment_image_id'		=> $image_id,
-			'comment'				=> $message_parser->message,
-			'comment_uid'			=> $message_parser->bbcode_uid,
-			'comment_bitfield'		=> $message_parser->bbcode_bitfield,
-			'comment_signature'		=> ($auth->acl_get('u_sig') && isset($_POST['attach_sig'])),
+			'comment_image_id'      => $image_id,
+			'comment'               => $message_parser->message,
+			'comment_uid'           => $message_parser->bbcode_uid,
+			'comment_bitfield'      => $message_parser->bbcode_bitfield,
+			'comment_signature'     => ($auth->acl_get('u_sig') && isset($_POST['attach_sig'])),
 		];
 		if ((!$error) && ($sql_ary['comment'] != ''))
 		{
@@ -283,12 +283,12 @@ if ($mode == 'add')
 		if (!$submit || !$captcha->is_solved())
 		{
 			$template->assign_vars([
-				'S_CONFIRM_CODE'			=> true,
-				'CAPTCHA_TEMPLATE'			=> $captcha->get_template(),
+				'S_CONFIRM_CODE'            => true,
+				'CAPTCHA_TEMPLATE'          => $captcha->get_template(),
 			]);
 		}
 		$template->assign_vars([
-			'S_CAPTCHA_HIDDEN_FIELDS'	=> $s_captcha_hidden_fields,
+			'S_CAPTCHA_HIDDEN_FIELDS'   => $s_captcha_hidden_fields,
 		]);
 	}
 }
@@ -321,7 +321,7 @@ else if ($mode == 'edit')
 			}
 
 			$sql_ary = [
-				'comment_username'	=> $comment_username,
+				'comment_username'  => $comment_username,
 			];
 		}
 
@@ -334,19 +334,19 @@ else if ($mode == 'edit')
 			$error .= (($error) ? '<br />' : '') . $user->lang['COMMENT_TOO_LONG'];
 		}
 
-		$message_parser				= new parse_message();
-		$message_parser->message	= utf8_normalize_nfc($comment_plain);
+		$message_parser             = new parse_message();
+		$message_parser->message    = utf8_normalize_nfc($comment_plain);
 		if ($message_parser->message)
 		{
 			$message_parser->parse(true, true, true, true, false, true, true, true);
 		}
 
 		$sql_ary = array_merge($sql_ary, [
-			'comment'				=> $message_parser->message,
-			'comment_uid'			=> $message_parser->bbcode_uid,
-			'comment_bitfield'		=> $message_parser->bbcode_bitfield,
-			'comment_edit_count'	=> $comment_data['comment_edit_count'] + 1,
-			'comment_signature'		=> ($auth->acl_get('u_sig') && isset($_POST['attach_sig'])),
+			'comment'               => $message_parser->message,
+			'comment_uid'           => $message_parser->bbcode_uid,
+			'comment_bitfield'      => $message_parser->bbcode_bitfield,
+			'comment_edit_count'    => $comment_data['comment_edit_count'] + 1,
+			'comment_signature'     => ($auth->acl_get('u_sig') && isset($_POST['attach_sig'])),
 		]);
 
 		if (!$error)
@@ -371,10 +371,10 @@ else if ($mode == 'edit')
 else if ($mode == 'delete')
 {
 	$s_hidden_fields = build_hidden_fields([
-		'album_id'		=> $album_id,
-		'image_id'		=> $image_id,
-		'comment_id'	=> $comment_id,
-		'mode'			=> 'delete',
+		'album_id'      => $album_id,
+		'image_id'      => $image_id,
+		'comment_id'    => $comment_id,
+		'mode'          => 'delete',
 	]);
 
 	if (confirm_box(true))
@@ -403,20 +403,20 @@ else if ($mode == 'delete')
 }
 
 $template->assign_vars([
-	'ERROR'					=> $error,
-	'MESSAGE'				=> $comment_plain ?? '',
-	'USERNAME'				=> $comment_username ?? '',
-	'REQ_USERNAME'			=> !empty($comment_username_req),
-	'L_COMMENT_LENGTH'		=> sprintf($user->lang['COMMENT_LENGTH'], phpbb_gallery_config::get('comment_length')),
+	'ERROR'                 => $error,
+	'MESSAGE'               => $comment_plain ?? '',
+	'USERNAME'              => $comment_username ?? '',
+	'REQ_USERNAME'          => !empty($comment_username_req),
+	'L_COMMENT_LENGTH'      => sprintf($user->lang['COMMENT_LENGTH'], phpbb_gallery_config::get('comment_length')),
 
-	'IMAGE_RSZ_WIDTH'		=> phpbb_gallery_config::get('medium_width'),
-	'IMAGE_RSZ_HEIGHT'		=> phpbb_gallery_config::get('medium_height'),
-	'U_IMAGE'				=> phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id={$image_id}"),
-	'U_VIEW_IMAGE'			=> phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
-	'IMAGE_NAME'			=> $image_data['image_name'],
+	'IMAGE_RSZ_WIDTH'       => phpbb_gallery_config::get('medium_width'),
+	'IMAGE_RSZ_HEIGHT'      => phpbb_gallery_config::get('medium_height'),
+	'U_IMAGE'               => phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id={$image_id}"),
+	'U_VIEW_IMAGE'          => phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
+	'IMAGE_NAME'            => $image_data['image_name'],
 
-	'S_SIGNATURE_CHECKED'	=> (isset($sig_checked) && $sig_checked) ? ' checked="checked"' : '',
-	'S_ALBUM_ACTION'		=> phpbb_gallery_url::append_sid('comment', "mode={$mode}&amp;album_id={$album_id}&amp;image_id={$image_id}" . (($comment_id) ? "&amp;comment_id={$comment_id}" : '')),
+	'S_SIGNATURE_CHECKED'   => (isset($sig_checked) && $sig_checked) ? ' checked="checked"' : '',
+	'S_ALBUM_ACTION'        => phpbb_gallery_url::append_sid('comment', "mode={$mode}&amp;album_id={$album_id}&amp;image_id={$image_id}" . (($comment_id) ? "&amp;comment_id={$comment_id}" : '')),
 ]);
 
 if ($submit && !$error)

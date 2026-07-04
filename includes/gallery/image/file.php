@@ -220,11 +220,11 @@ class phpbb_gallery_image_file
 	/**
 	* Collect the last timestamp where something changed.
 	* This must contain:
-	*	- Last change of the file
-	*	- Last change of user's permissions
-	*	- Last change of user's groups
-	*	- Last change of watermark config
-	*	- Last change of watermark file
+	*   - Last change of the file
+	*   - Last change of user's permissions
+	*   - Last change of user's groups
+	*   - Last change of watermark config
+	*   - Last change of watermark file
 	*/
 	public function set_last_modified($timestamp)
 	{
@@ -378,13 +378,13 @@ class phpbb_gallery_image_file
 
 		if (($this->image_size['height'] / $max_height) > ($this->image_size['width'] / $max_width))
 		{
-			$this->thumb_height	= $max_height;
-			$this->thumb_width	= round($max_width * (($this->image_size['width'] / $max_width) / ($this->image_size['height'] / $max_height)));
+			$this->thumb_height = $max_height;
+			$this->thumb_width  = round($max_width * (($this->image_size['width'] / $max_width) / ($this->image_size['height'] / $max_height)));
 		}
 		else
 		{
-			$this->thumb_height	= round($max_height * (($this->image_size['height'] / $max_height) / ($this->image_size['width'] / $max_width)));
-			$this->thumb_width	= $max_width;
+			$this->thumb_height = round($max_height * (($this->image_size['height'] / $max_height) / ($this->image_size['width'] / $max_width)));
+			$this->thumb_width  = $max_width;
 		}
 
 		$image_copy = (($this->gd_version == phpbb_gallery_constants::GDLIB1) ? @imagecreate($this->thumb_width, $this->thumb_height + $additional_height) : @imagecreatetruecolor($this->thumb_width, $this->thumb_height + $additional_height));
@@ -413,7 +413,7 @@ class phpbb_gallery_image_file
 
 	/**
 	* Rotate the image
-	* Usage optimized for 0°, 90°, 180° and 270° because of the height and width
+	* Usage optimized for 0Â°, 90Â°, 180Â° and 270Â° because of the height and width
 	*/
 	public function rotate_image($angle, $ignore_dimensions)
 	{
@@ -535,9 +535,9 @@ class phpbb_gallery_image_file
 	/**
 	* Delete file from disc.
 	*
-	* @param	mixed		$files		String with filename or an array of filenames
-	*									Array-Format: $image_id => $filename
-	* @param	array		$locations	Array of valid url::path()s where the image should be deleted from
+	* @param    mixed       $files      String with filename or an array of filenames
+	*                                   Array-Format: $image_id => $filename
+	* @param    array       $locations  Array of valid url::path()s where the image should be deleted from
 	*/
 	static public function delete($files, $locations = ['thumbnail', 'medium', 'upload'])
 	{

@@ -17,8 +17,8 @@ class phpbb_gallery_image_favorite
 	/**
 	* Add to favorites
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id where we delete from the favorites.
-	* @param	int		$user_id		If not set, it uses the currents user_id
+	* @param    mixed   $image_ids      Array or integer with image_id where we delete from the favorites.
+	* @param    int     $user_id        If not set, it uses the currents user_id
 	*/
 	static public function add($image_ids, $user_id = false)
 	{
@@ -30,8 +30,8 @@ class phpbb_gallery_image_favorite
 		foreach ($image_ids as $image_id)
 		{
 			$sql_ary = [
-				'image_id'		=> $image_id,
-				'user_id'		=> $user_id,
+				'image_id'      => $image_id,
+				'user_id'       => $user_id,
 			];
 			$sql = 'INSERT INTO ' . GALLERY_FAVORITES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
@@ -46,8 +46,8 @@ class phpbb_gallery_image_favorite
 	/**
 	* Remove from favorites
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id where we delete from the favorites.
-	* @param	int		$user_id		If not set, it uses the currents user_id
+	* @param    mixed   $image_ids      Array or integer with image_id where we delete from the favorites.
+	* @param    int     $user_id        If not set, it uses the currents user_id
 	*/
 	static public function remove($image_ids, $user_id = false)
 	{
@@ -69,8 +69,8 @@ class phpbb_gallery_image_favorite
 	/**
 	* Delete given image_ids from the favorites
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id where we delete from the favorites.
-	* @param	bool	$reset_votes	Shall we also reset the average? We can save that query, when the images are deleted anyway.
+	* @param    mixed   $image_ids      Array or integer with image_id where we delete from the favorites.
+	* @param    bool    $reset_votes    Shall we also reset the average? We can save that query, when the images are deleted anyway.
 	*/
 	static public function delete_favorites($image_ids, $reset_votes = false)
 	{

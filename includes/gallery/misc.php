@@ -80,7 +80,7 @@ class phpbb_gallery_misc
 				$db->sql_query($sql);
 
 				phpbb_gallery::$user->update_data([
-						'user_lastmark'		=> time(),
+						'user_lastmark'     => time(),
 				]);
 			}
 
@@ -122,9 +122,9 @@ class phpbb_gallery_misc
 				foreach ($sql_insert as $a_id)
 				{
 					$sql_ary[] = [
-						'user_id'	=> (int) $user->data['user_id'],
-						'album_id'	=> (int) $a_id,
-						'mark_time'	=> time()
+						'user_id'   => (int) $user->data['user_id'],
+						'album_id'  => (int) $a_id,
+						'mark_time' => time()
 					];
 				}
 
@@ -151,9 +151,9 @@ class phpbb_gallery_misc
 				$db->sql_return_on_error(true);
 
 				$sql_ary = [
-					'user_id'		=> (int) $user->data['user_id'],
-					'album_id'		=> (int) $album_id,
-					'mark_time'		=> time(),
+					'user_id'       => (int) $user->data['user_id'],
+					'album_id'      => (int) $album_id,
+					'mark_time'     => time(),
 				];
 
 				$db->sql_query('INSERT INTO ' . GALLERY_ATRACK_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));

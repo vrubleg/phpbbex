@@ -129,9 +129,9 @@ if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_us
 	$image_approval_sql = '';
 }
 
-//$sort_days	= request_var('st', 0);
-$sort_key	= request_var('sk', $album_data['album_sort_key'] ?: phpbb_gallery_config::get('default_sort_key'));
-$sort_dir	= request_var('sd', $album_data['album_sort_dir'] ?: phpbb_gallery_config::get('default_sort_dir'));
+//$sort_days    = request_var('st', 0);
+$sort_key   = request_var('sk', $album_data['album_sort_key'] ?: phpbb_gallery_config::get('default_sort_key'));
+$sort_dir   = request_var('sd', $album_data['album_sort_dir'] ?: phpbb_gallery_config::get('default_sort_dir'));
 
 $sort_by_sql = ['t' => 'image_time', 'n' => 'image_name_clean', 'u' => 'image_username_clean', 'vc' => 'image_view_count', 'ra' => 'image_rate_avg', 'r' => 'image_rates', 'c' => 'image_comments', 'lc' => 'image_last_comment'];
 $sql_sort_by = $sort_by_sql[$sort_key] ?? $sort_by_sql['t'];
@@ -182,19 +182,19 @@ if ((phpbb_gallery::$auth->acl_check('m_', $album_id, $album_data['album_user_id
 
 	$user->add_lang('mods/gallery_mcp');
 	$template->assign_vars([
-		'S_MOD_ACTION'		=> phpbb_gallery_url::append_sid('mcp', "album_id={$album_id}&amp;image_id={$image_id}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
-		'S_QUICK_MOD'		=> $s_quick_mod,
-		'S_QM_MOVE'			=> phpbb_gallery::$auth->acl_check('m_move', $album_id, $album_data['album_user_id']),
-		'S_QM_EDIT'			=> $s_allowed_edit,
-		'S_QM_DELETE'		=> $s_allowed_delete,
-		'S_QM_REPORT'		=> phpbb_gallery::$auth->acl_check('m_report', $album_id, $album_data['album_user_id']),
-		'S_QM_STATUS'		=> phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']),
+		'S_MOD_ACTION'      => phpbb_gallery_url::append_sid('mcp', "album_id={$album_id}&amp;image_id={$image_id}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
+		'S_QUICK_MOD'       => $s_quick_mod,
+		'S_QM_MOVE'         => phpbb_gallery::$auth->acl_check('m_move', $album_id, $album_data['album_user_id']),
+		'S_QM_EDIT'         => $s_allowed_edit,
+		'S_QM_DELETE'       => $s_allowed_delete,
+		'S_QM_REPORT'       => phpbb_gallery::$auth->acl_check('m_report', $album_id, $album_data['album_user_id']),
+		'S_QM_STATUS'       => phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']),
 
-		'S_IMAGE_REPORTED'		=> $image_data['image_reported'],
-		'U_IMAGE_REPORTED'		=> ($image_data['image_reported']) ? phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$album_id}&amp;option_id=" . $image_data['image_reported']) : '',
-		'S_STATUS_APPROVED'		=> ($image_data['image_status'] == phpbb_gallery_image::STATUS_APPROVED),
-		'S_STATUS_UNAPPROVED'	=> ($image_data['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED),
-		'S_STATUS_LOCKED'		=> ($image_data['image_status'] == phpbb_gallery_image::STATUS_LOCKED),
+		'S_IMAGE_REPORTED'      => $image_data['image_reported'],
+		'U_IMAGE_REPORTED'      => ($image_data['image_reported']) ? phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$album_id}&amp;option_id=" . $image_data['image_reported']) : '',
+		'S_STATUS_APPROVED'     => ($image_data['image_status'] == phpbb_gallery_image::STATUS_APPROVED),
+		'S_STATUS_UNAPPROVED'   => ($image_data['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED),
+		'S_STATUS_LOCKED'       => ($image_data['image_status'] == phpbb_gallery_image::STATUS_LOCKED),
 	]);
 }
 
@@ -212,46 +212,46 @@ $favorite_mode = (($image_data['favorite_id']) ? 'un' : '') . 'favorite';
 $watch_mode = (($image_data['watch_id']) ? 'un' : '') . 'watch';
 
 $template->assign_vars([
-	'U_VIEW_ALBUM'		=> phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
+	'U_VIEW_ALBUM'      => phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
 
-	'UC_PREVIOUS_IMAGE'	=> (!empty($previous_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
-	'UC_PREVIOUS'		=> (!empty($previous_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_prev', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
-	'UC_IMAGE'			=> phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, (substr($image_data['image_filename'], 0 -3) == 'gif'), false, '', !empty($next_data) ? $next_data['image_id'] : 0),
-	'UC_NEXT_IMAGE'		=> (!empty($next_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
-	'UC_NEXT'			=> (!empty($next_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_next', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
+	'UC_PREVIOUS_IMAGE' => (!empty($previous_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
+	'UC_PREVIOUS'       => (!empty($previous_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_prev', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
+	'UC_IMAGE'          => phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, (substr($image_data['image_filename'], 0 -3) == 'gif'), false, '', !empty($next_data) ? $next_data['image_id'] : 0),
+	'UC_NEXT_IMAGE'     => (!empty($next_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
+	'UC_NEXT'           => (!empty($next_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_next', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
 
-	'EDIT_IMG'			=> $user->img('icon_post_edit', 'EDIT_IMAGE'),
-	'DELETE_IMG'		=> $user->img('icon_post_delete', 'DELETE_IMAGE'),
-	'REPORT_IMG'		=> $user->img('icon_post_report', 'REPORT_IMAGE'),
-	'STATUS_IMG'		=> $user->img('icon_post_info', 'STATUS_IMAGE'),
-	'U_DELETE'			=> ($s_allowed_delete) ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
-	'U_EDIT'			=> ($s_allowed_edit) ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
-	'U_REPORT'			=> (phpbb_gallery::$auth->acl_check('i_report', $album_id, $album_data['album_user_id']) && ($image_data['image_user_id'] != $user->data['user_id'])) ? phpbb_gallery_url::append_sid('posting', "mode=report&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
-	'U_STATUS'			=> ($s_allowed_status) ? phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id={$image_id}") : '',
+	'EDIT_IMG'          => $user->img('icon_post_edit', 'EDIT_IMAGE'),
+	'DELETE_IMG'        => $user->img('icon_post_delete', 'DELETE_IMAGE'),
+	'REPORT_IMG'        => $user->img('icon_post_report', 'REPORT_IMAGE'),
+	'STATUS_IMG'        => $user->img('icon_post_info', 'STATUS_IMAGE'),
+	'U_DELETE'          => ($s_allowed_delete) ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
+	'U_EDIT'            => ($s_allowed_edit) ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
+	'U_REPORT'          => (phpbb_gallery::$auth->acl_check('i_report', $album_id, $album_data['album_user_id']) && ($image_data['image_user_id'] != $user->data['user_id'])) ? phpbb_gallery_url::append_sid('posting', "mode=report&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
+	'U_STATUS'          => ($s_allowed_status) ? phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id={$image_id}") : '',
 
-	'CONTEST_RANK'		=> ($image_data['image_contest_rank']) ? $user->lang['CONTEST_RESULT_' . $image_data['image_contest_rank']] : '',
-	'IMAGE_NAME'		=> $image_data['image_name'],
-	'IMAGE_DESC'		=> $image_desc,
-	'IMAGE_BBCODE'		=> ($config['allow_bbcode']) ? '[album]' . $image_id . '[/album]' : '',
-	'IMAGE_IMGURL_BBCODE'	=> (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}", true, '') . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=thumbnail", true, '') . '[/img][/url]' : '',
-	'IMAGE_URL'			=> (phpbb_gallery_config::get('disp_image_url')) ? phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}", true, '') : '',
-	'IMAGE_TIME'		=> $user->format_date($image_data['image_time']),
-	'IMAGE_VIEW'		=> $image_data['image_view_count'],
-	'POSTER_IP'			=> ($auth->acl_get('a_')) ? $image_data['image_user_ip'] : '',
-	'U_POSTER_WHOIS'	=> ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $image_data['image_user_ip']) : '',
+	'CONTEST_RANK'      => ($image_data['image_contest_rank']) ? $user->lang['CONTEST_RESULT_' . $image_data['image_contest_rank']] : '',
+	'IMAGE_NAME'        => $image_data['image_name'],
+	'IMAGE_DESC'        => $image_desc,
+	'IMAGE_BBCODE'      => ($config['allow_bbcode']) ? '[album]' . $image_id . '[/album]' : '',
+	'IMAGE_IMGURL_BBCODE'   => (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}", true, '') . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=thumbnail", true, '') . '[/img][/url]' : '',
+	'IMAGE_URL'         => (phpbb_gallery_config::get('disp_image_url')) ? phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}", true, '') : '',
+	'IMAGE_TIME'        => $user->format_date($image_data['image_time']),
+	'IMAGE_VIEW'        => $image_data['image_view_count'],
+	'POSTER_IP'         => ($auth->acl_get('a_')) ? $image_data['image_user_ip'] : '',
+	'U_POSTER_WHOIS'    => ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $image_data['image_user_ip']) : '',
 
-	'L_BOOKMARK_TOPIC'	=> ($image_data['favorite_id']) ? $user->lang['UNFAVORITE_IMAGE'] : $user->lang['FAVORITE_IMAGE'],
-	'U_BOOKMARK_TOPIC'	=> ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$favorite_mode}&amp;album_id={$album_id}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$favorite_mode}_{$image_id}")) : '',
-	'L_WATCH_TOPIC'		=> ($image_data['watch_id']) ? $user->lang['UNWATCH_IMAGE'] : $user->lang['WATCH_IMAGE'],
-	'U_WATCH_TOPIC'		=> ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$watch_mode}&amp;album_id={$album_id}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$watch_mode}_{$image_id}")) : '',
-	'S_WATCHING_TOPIC'	=> (bool) $image_data['watch_id'],
-	'S_ALBUM_ACTION'	=> phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
-	'S_ENABLE_FEEDS_ALBUM'	=> $album_data['album_feed'] && (phpbb_gallery_config::get('feed_enable_pegas') || !$album_data['album_user_id']),
+	'L_BOOKMARK_TOPIC'  => ($image_data['favorite_id']) ? $user->lang['UNFAVORITE_IMAGE'] : $user->lang['FAVORITE_IMAGE'],
+	'U_BOOKMARK_TOPIC'  => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$favorite_mode}&amp;album_id={$album_id}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$favorite_mode}_{$image_id}")) : '',
+	'L_WATCH_TOPIC'     => ($image_data['watch_id']) ? $user->lang['UNWATCH_IMAGE'] : $user->lang['WATCH_IMAGE'],
+	'U_WATCH_TOPIC'     => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$watch_mode}&amp;album_id={$album_id}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$watch_mode}_{$image_id}")) : '',
+	'S_WATCHING_TOPIC'  => (bool) $image_data['watch_id'],
+	'S_ALBUM_ACTION'    => phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
+	'S_ENABLE_FEEDS_ALBUM'  => $album_data['album_feed'] && (phpbb_gallery_config::get('feed_enable_pegas') || !$album_data['album_user_id']),
 
-	'U_RETURN_LINK'		=> phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
-	'S_RETURN_LINK'		=> $album_data['album_name'],
-	'S_JUMPBOX_ACTION'	=> phpbb_gallery_url::append_sid('album'),
-	'ALBUM_JUMPBOX'		=> phpbb_gallery_album::get_albumbox(false, '', $album_id),
+	'U_RETURN_LINK'     => phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
+	'S_RETURN_LINK'     => $album_data['album_name'],
+	'S_JUMPBOX_ACTION'  => phpbb_gallery_url::append_sid('album'),
+	'ALBUM_JUMPBOX'     => phpbb_gallery_album::get_albumbox(false, '', $album_id),
 ]);
 
 /**
@@ -284,10 +284,10 @@ if (phpbb_gallery_config::get('allow_rates'))
 		$rating->display_box();
 	}
 	$template->assign_vars([
-		'IMAGE_RATING'			=> $rating->get_image_rating($user_rating),
-		'S_ALLOWED_TO_RATE'		=> (!$user_rating && $rating->is_allowed()),
-		'S_VIEW_RATE'			=> (bool) phpbb_gallery::$auth->acl_check('i_rate', $album_id, $album_data['album_user_id']),
-		'S_COMMENT_ACTION'		=> phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=rate"),
+		'IMAGE_RATING'          => $rating->get_image_rating($user_rating),
+		'S_ALLOWED_TO_RATE'     => (!$user_rating && $rating->is_allowed()),
+		'S_VIEW_RATE'           => (bool) phpbb_gallery::$auth->acl_check('i_rate', $album_id, $album_data['album_user_id']),
+		'S_COMMENT_ACTION'      => phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=rate"),
 	]);
 	unset($rating);
 }
@@ -301,12 +301,12 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	$user->add_lang('posting');
 	phpbb_gallery_url::_include('functions_posting', 'phpbb');
 
-	$bbcode_status	= (bool) $config['allow_bbcode'];
-	$smilies_status	= (bool) $config['allow_smilies'];
-	$img_status		= $bbcode_status;
-	$url_status		= (bool) $config['allow_post_links'];
-	$flash_status	= false;
-	$quote_status	= true;
+	$bbcode_status  = (bool) $config['allow_bbcode'];
+	$smilies_status = (bool) $config['allow_smilies'];
+	$img_status     = $bbcode_status;
+	$url_status     = (bool) $config['allow_post_links'];
+	$flash_status   = false;
+	$quote_status   = true;
 
 	// Build custom bbcodes array
 	display_custom_bbcodes();
@@ -317,25 +317,25 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	$s_hide_comment_input = (time() < ($album_data['contest_start'] + $album_data['contest_end']));
 
 	$template->assign_vars([
-		'S_ALLOWED_TO_COMMENT'	=> true,
-		'S_HIDE_COMMENT_INPUT'	=> $s_hide_comment_input,
-		'CONTEST_COMMENTS'		=> sprintf($user->lang['CONTEST_COMMENTS_STARTS'], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)),
+		'S_ALLOWED_TO_COMMENT'  => true,
+		'S_HIDE_COMMENT_INPUT'  => $s_hide_comment_input,
+		'CONTEST_COMMENTS'      => sprintf($user->lang['CONTEST_COMMENTS_STARTS'], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)),
 
-		'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
-		'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
-		'FLASH_STATUS'			=> ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
-		'SMILIES_STATUS'		=> ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-		'URL_STATUS'			=> ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
-		'S_SIGNATURE_CHECKED'	=> ($user->optionget('attachsig')) ? ' checked="checked"' : '',
+		'BBCODE_STATUS'         => ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
+		'IMG_STATUS'            => ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
+		'FLASH_STATUS'          => ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
+		'SMILIES_STATUS'        => ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
+		'URL_STATUS'            => ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
+		'S_SIGNATURE_CHECKED'   => ($user->optionget('attachsig')) ? ' checked="checked"' : '',
 
-		'S_BBCODE_ALLOWED'		=> $bbcode_status,
-		'S_SMILIES_ALLOWED'		=> $smilies_status,
-		'S_LINKS_ALLOWED'		=> $url_status,
-		'S_BBCODE_IMG'			=> $img_status,
-		'S_BBCODE_URL'			=> $url_status,
-		'S_BBCODE_FLASH'		=> $flash_status,
-		'S_BBCODE_QUOTE'		=> $quote_status,
-		'L_COMMENT_LENGTH'		=> sprintf($user->lang['COMMENT_LENGTH'], phpbb_gallery_config::get('comment_length')),
+		'S_BBCODE_ALLOWED'      => $bbcode_status,
+		'S_SMILIES_ALLOWED'     => $smilies_status,
+		'S_LINKS_ALLOWED'       => $url_status,
+		'S_BBCODE_IMG'          => $img_status,
+		'S_BBCODE_URL'          => $url_status,
+		'S_BBCODE_FLASH'        => $flash_status,
+		'S_BBCODE_QUOTE'        => $quote_status,
+		'L_COMMENT_LENGTH'      => sprintf($user->lang['COMMENT_LENGTH'], phpbb_gallery_config::get('comment_length')),
 	]);
 
 	if (phpbb_gallery_misc::display_captcha('comment'))
@@ -346,8 +346,8 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 		$captcha->init(CONFIRM_POST);
 
 		$template->assign_vars([
-			'S_CONFIRM_CODE'		=> true,
-			'CAPTCHA_TEMPLATE'		=> $captcha->get_template(),
+			'S_CONFIRM_CODE'        => true,
+			'CAPTCHA_TEMPLATE'      => $captcha->get_template(),
 		]);
 	}
 
@@ -370,9 +370,9 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 	$start = request_var('start', 0);
 	$sort_order = (request_var('sort_order', 'ASC') == 'ASC') ? 'ASC' : 'DESC';
 	$template->assign_vars([
-		'S_ALLOWED_READ_COMMENTS'	=> true,
-		'IMAGE_COMMENTS'			=> $image_data['image_comments'],
-		'SORT_ASC'					=> ($sort_order == 'ASC'),
+		'S_ALLOWED_READ_COMMENTS'   => true,
+		'IMAGE_COMMENTS'            => $image_data['image_comments'],
+		'SORT_ASC'                  => ($sort_order == 'ASC'),
 	]);
 
 	if ($image_data['image_comments'] > 0)
@@ -405,17 +405,17 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 
 		$users = array_unique($users);
 		$sql = $db->sql_build_query('SELECT', [
-			'SELECT'	=> 'u.*, gu.personal_album_id, gu.user_images',
-			'FROM'		=> [USERS_TABLE => 'u'],
+			'SELECT'    => 'u.*, gu.personal_album_id, gu.user_images',
+			'FROM'      => [USERS_TABLE => 'u'],
 
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [GALLERY_USERS_TABLE => 'gu'],
-					'ON'	=> 'gu.user_id = u.user_id'
+					'FROM'  => [GALLERY_USERS_TABLE => 'gu'],
+					'ON'    => 'gu.user_id = u.user_id'
 				],
 			],
 
-			'WHERE'		=> $db->sql_in_set('u.user_id', $users),
+			'WHERE'     => $db->sql_in_set('u.user_id', $users),
 		]);
 		$result = $db->sql_query($sql);
 
@@ -469,72 +469,72 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 			}
 
 			$template->assign_block_vars('commentrow', [
-				'U_COMMENT'		=> phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}&amp;start={$start}&amp;sort_order={$sort_order}") . '#comment_' . $row['comment_id'],
-				'COMMENT_ID'	=> $row['comment_id'],
-				'TIME'			=> $user->format_date($row['comment_time']),
-				'TEXT'			=> generate_text_for_display($row['comment'], $row['comment_uid'], $row['comment_bitfield'], 7),
-				'EDIT_INFO'		=> $edit_info,
-				'U_DELETE'		=> (phpbb_gallery::$auth->acl_check('m_comments', $album_id, $album_data['album_user_id']) || (phpbb_gallery::$auth->acl_check('c_delete', $album_id, $album_data['album_user_id']) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=delete&amp;comment_id=" . $row['comment_id']) : '',
-				'U_QUOTE'		=> (phpbb_gallery::$auth->acl_check('c_post', $album_id, $album_data['album_user_id'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add&amp;comment_id=" . $row['comment_id']) : '',
-				'U_EDIT'		=> (phpbb_gallery::$auth->acl_check('m_comments', $album_id, $album_data['album_user_id']) || (phpbb_gallery::$auth->acl_check('c_edit', $album_id, $album_data['album_user_id']) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=edit&amp;comment_id=" . $row['comment_id']) : '',
-				'U_INFO'		=> ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $row['comment_user_ip']) : '',
+				'U_COMMENT'     => phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}&amp;start={$start}&amp;sort_order={$sort_order}") . '#comment_' . $row['comment_id'],
+				'COMMENT_ID'    => $row['comment_id'],
+				'TIME'          => $user->format_date($row['comment_time']),
+				'TEXT'          => generate_text_for_display($row['comment'], $row['comment_uid'], $row['comment_bitfield'], 7),
+				'EDIT_INFO'     => $edit_info,
+				'U_DELETE'      => (phpbb_gallery::$auth->acl_check('m_comments', $album_id, $album_data['album_user_id']) || (phpbb_gallery::$auth->acl_check('c_delete', $album_id, $album_data['album_user_id']) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=delete&amp;comment_id=" . $row['comment_id']) : '',
+				'U_QUOTE'       => (phpbb_gallery::$auth->acl_check('c_post', $album_id, $album_data['album_user_id'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add&amp;comment_id=" . $row['comment_id']) : '',
+				'U_EDIT'        => (phpbb_gallery::$auth->acl_check('m_comments', $album_id, $album_data['album_user_id']) || (phpbb_gallery::$auth->acl_check('c_edit', $album_id, $album_data['album_user_id']) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=edit&amp;comment_id=" . $row['comment_id']) : '',
+				'U_INFO'        => ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $row['comment_user_ip']) : '',
 
-				'POST_AUTHOR_FULL'		=> get_username_string('full', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
-				'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
-				'POST_AUTHOR'			=> get_username_string('username', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
-				'U_POST_AUTHOR'			=> get_username_string('profile', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
+				'POST_AUTHOR_FULL'      => get_username_string('full', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
+				'POST_AUTHOR_COLOUR'    => get_username_string('colour', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
+				'POST_AUTHOR'           => get_username_string('username', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
+				'U_POST_AUTHOR'         => get_username_string('profile', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
 
-				'SIGNATURE'			=> ($row['comment_signature']) ? $user_cache[$user_id]['sig'] : '',
-				'RANK_TITLE'		=> $user_cache[$user_id]['rank_title'],
-				'RANK_IMG'			=> $user_cache[$user_id]['rank_image'],
-				'RANK_IMG_SRC'		=> $user_cache[$user_id]['rank_image_src'],
-				'POSTER_JOINED'		=> $user_cache[$user_id]['joined'],
-				'POSTER_WITH_US'	=> $user_cache[$user_id]['with_us'],
-				'POSTER_POSTS'		=> $user_cache[$user_id]['posts'],
-				'POSTER_TOPICS'		=> $user_cache[$user_id]['topics'],
-				'POSTER_FROM'		=> $user_cache[$user_id]['from'],
-				'POSTER_AVATAR'		=> $user_cache[$user_id]['avatar'],
-				'POSTER_WARNINGS'	=> $user_cache[$user_id]['warnings'],
-				'POSTER_AGE'		=> $user_cache[$user_id]['age'],
+				'SIGNATURE'         => ($row['comment_signature']) ? $user_cache[$user_id]['sig'] : '',
+				'RANK_TITLE'        => $user_cache[$user_id]['rank_title'],
+				'RANK_IMG'          => $user_cache[$user_id]['rank_image'],
+				'RANK_IMG_SRC'      => $user_cache[$user_id]['rank_image_src'],
+				'POSTER_JOINED'     => $user_cache[$user_id]['joined'],
+				'POSTER_WITH_US'    => $user_cache[$user_id]['with_us'],
+				'POSTER_POSTS'      => $user_cache[$user_id]['posts'],
+				'POSTER_TOPICS'     => $user_cache[$user_id]['topics'],
+				'POSTER_FROM'       => $user_cache[$user_id]['from'],
+				'POSTER_AVATAR'     => $user_cache[$user_id]['avatar'],
+				'POSTER_WARNINGS'   => $user_cache[$user_id]['warnings'],
+				'POSTER_AGE'        => $user_cache[$user_id]['age'],
 
-				'S_POSTER_GENDER_X'	=> $user_cache[$user_id]['gender'] == GENDER_X,
-				'S_POSTER_GENDER_M'	=> $user_cache[$user_id]['gender'] == GENDER_M,
-				'S_POSTER_GENDER_F'	=> $user_cache[$user_id]['gender'] == GENDER_F,
+				'S_POSTER_GENDER_X' => $user_cache[$user_id]['gender'] == GENDER_X,
+				'S_POSTER_GENDER_M' => $user_cache[$user_id]['gender'] == GENDER_M,
+				'S_POSTER_GENDER_F' => $user_cache[$user_id]['gender'] == GENDER_F,
 
-				'S_POSTER_RATING'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($user_id != ANONYMOUS),
-				'POSTER_RATING'				=> $user_cache[$user_id]['rating'],
-				'POSTER_RATING_POSITIVE'	=> $user_cache[$user_id]['rating_positive'],
-				'POSTER_RATING_NEGATIVE'	=> $user_cache[$user_id]['rating_negative'],
-				'POSTER_RATED'				=> $user_cache[$user_id]['rated'],
-				'POSTER_RATED_POSITIVE'		=> $user_cache[$user_id]['rated_positive'],
-				'POSTER_RATED_NEGATIVE'		=> $user_cache[$user_id]['rated_negative'],
+				'S_POSTER_RATING'           => $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($user_id != ANONYMOUS),
+				'POSTER_RATING'             => $user_cache[$user_id]['rating'],
+				'POSTER_RATING_POSITIVE'    => $user_cache[$user_id]['rating_positive'],
+				'POSTER_RATING_NEGATIVE'    => $user_cache[$user_id]['rating_negative'],
+				'POSTER_RATED'              => $user_cache[$user_id]['rated'],
+				'POSTER_RATED_POSITIVE'     => $user_cache[$user_id]['rated_positive'],
+				'POSTER_RATED_NEGATIVE'     => $user_cache[$user_id]['rated_negative'],
 
-				'ONLINE_IMG'		=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$user_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
-				'S_ONLINE'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (bool) $user_cache[$user_id]['online'],
+				'ONLINE_IMG'        => ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$user_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
+				'S_ONLINE'          => ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (bool) $user_cache[$user_id]['online'],
 
-				'U_PROFILE'		=> $user_cache[$user_id]['profile'],
-				'U_SEARCH'		=> $user_cache[$user_id]['search'],
-				'U_PM'			=> ($user_id != ANONYMOUS && $config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($user_cache[$user_id]['allow_pm'] || $auth->acl_gets('a_', 'm_'))) ? phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',
-				'U_EMAIL'		=> $user_cache[$user_id]['email'],
-				'U_WWW'			=> $user_cache[$user_id]['www'],
-				'U_JABBER'		=> $user_cache[$user_id]['jabber'],
-				'U_TELEGRAM'	=> $user_cache[$user_id]['telegram'],
+				'U_PROFILE'     => $user_cache[$user_id]['profile'],
+				'U_SEARCH'      => $user_cache[$user_id]['search'],
+				'U_PM'          => ($user_id != ANONYMOUS && $config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($user_cache[$user_id]['allow_pm'] || $auth->acl_gets('a_', 'm_'))) ? phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',
+				'U_EMAIL'       => $user_cache[$user_id]['email'],
+				'U_WWW'         => $user_cache[$user_id]['www'],
+				'U_JABBER'      => $user_cache[$user_id]['jabber'],
+				'U_TELEGRAM'    => $user_cache[$user_id]['telegram'],
 
-				'U_GALLERY'			=> $user_cache[$user_id]['gallery_album'],
-				'GALLERY_IMAGES'	=> $user_cache[$user_id]['gallery_images'],
-				'U_GALLERY_SEARCH'	=> $user_cache[$user_id]['gallery_search'],
+				'U_GALLERY'         => $user_cache[$user_id]['gallery_album'],
+				'GALLERY_IMAGES'    => $user_cache[$user_id]['gallery_images'],
+				'U_GALLERY_SEARCH'  => $user_cache[$user_id]['gallery_search'],
 			]);
 		}
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'DELETE_IMG'		=> $user->img('icon_post_delete', 'DELETE_COMMENT'),
-			'EDIT_IMG'			=> $user->img('icon_post_edit', 'EDIT_COMMENT'),
-			'QUOTE_IMG'			=> $user->img('icon_post_quote', 'QUOTE_COMMENT'),
-			'INFO_IMG'			=> $user->img('icon_post_info', 'IP'),
-			'MINI_POST_IMG'		=> $user->img('icon_post_target_unread', 'COMMENT'),
-			'PAGE_NUMBER'		=> sprintf($user->lang['PAGE_OF'], (floor($start / $config['posts_per_page']) + 1), ceil($image_data['image_comments'] / $config['posts_per_page'])),
-			'PAGINATION'		=> generate_pagination(phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}&amp;sort_order={$sort_order}"), $image_data['image_comments'], $config['posts_per_page'], $start),
+			'DELETE_IMG'        => $user->img('icon_post_delete', 'DELETE_COMMENT'),
+			'EDIT_IMG'          => $user->img('icon_post_edit', 'EDIT_COMMENT'),
+			'QUOTE_IMG'         => $user->img('icon_post_quote', 'QUOTE_COMMENT'),
+			'INFO_IMG'          => $user->img('icon_post_info', 'IP'),
+			'MINI_POST_IMG'     => $user->img('icon_post_target_unread', 'COMMENT'),
+			'PAGE_NUMBER'       => sprintf($user->lang['PAGE_OF'], (floor($start / $config['posts_per_page']) + 1), ceil($image_data['image_comments'] / $config['posts_per_page'])),
+			'PAGINATION'        => generate_pagination(phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}&amp;sort_order={$sort_order}"), $image_data['image_comments'], $config['posts_per_page'], $start),
 		]);
 	}
 }
@@ -543,17 +543,17 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 if (!isset($user_cache[$image_data['image_user_id']]))
 {
 	$sql = $db->sql_build_query('SELECT', [
-		'SELECT'	=> 'u.*, gu.personal_album_id, gu.user_images',
-		'FROM'		=> [USERS_TABLE => 'u'],
+		'SELECT'    => 'u.*, gu.personal_album_id, gu.user_images',
+		'FROM'      => [USERS_TABLE => 'u'],
 
-		'LEFT_JOIN'	=> [
+		'LEFT_JOIN' => [
 			[
-				'FROM'	=> [GALLERY_USERS_TABLE => 'gu'],
-				'ON'	=> 'gu.user_id = u.user_id'
+				'FROM'  => [GALLERY_USERS_TABLE => 'gu'],
+				'ON'    => 'gu.user_id = u.user_id'
 			],
 		],
 
-		'WHERE'		=> $db->sql_in_set('u.user_id', [ANONYMOUS, $image_data['image_user_id']]),
+		'WHERE'     => $db->sql_in_set('u.user_id', [ANONYMOUS, $image_data['image_user_id']]),
 	]);
 	$result = $db->sql_query($sql);
 
@@ -571,68 +571,68 @@ if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_us
 	if (!isset($user_cache[$user_id])) { $user_id = ANONYMOUS; }
 
 	$template->assign_vars([
-		'POSTER_FULL'		=> get_username_string('full', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
-		'POSTER_COLOUR'		=> get_username_string('colour', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
-		'POSTER_USERNAME'	=> get_username_string('username', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
-		'U_POSTER'			=> get_username_string('profile', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
+		'POSTER_FULL'       => get_username_string('full', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
+		'POSTER_COLOUR'     => get_username_string('colour', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
+		'POSTER_USERNAME'   => get_username_string('username', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
+		'U_POSTER'          => get_username_string('profile', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
 
-		'POSTER_SIGNATURE'		=> $user_cache[$user_id]['sig'],
-		'POSTER_RANK_TITLE'		=> $user_cache[$user_id]['rank_title'],
-		'POSTER_RANK_IMG'		=> $user_cache[$user_id]['rank_image'],
-		'POSTER_RANK_IMG_SRC'	=> $user_cache[$user_id]['rank_image_src'],
-		'POSTER_JOINED'		=> $user_cache[$user_id]['joined'],
-		'POSTER_WITH_US'	=> $user_cache[$user_id]['with_us'],
-		'POSTER_POSTS'		=> $user_cache[$user_id]['posts'],
-		'POSTER_TOPICS'		=> $user_cache[$user_id]['topics'],
-		'POSTER_FROM'		=> $user_cache[$user_id]['from'],
-		'POSTER_AVATAR'		=> $user_cache[$user_id]['avatar'],
-		'POSTER_WARNINGS'	=> $user_cache[$user_id]['warnings'],
-		'POSTER_AGE'		=> $user_cache[$user_id]['age'],
+		'POSTER_SIGNATURE'      => $user_cache[$user_id]['sig'],
+		'POSTER_RANK_TITLE'     => $user_cache[$user_id]['rank_title'],
+		'POSTER_RANK_IMG'       => $user_cache[$user_id]['rank_image'],
+		'POSTER_RANK_IMG_SRC'   => $user_cache[$user_id]['rank_image_src'],
+		'POSTER_JOINED'     => $user_cache[$user_id]['joined'],
+		'POSTER_WITH_US'    => $user_cache[$user_id]['with_us'],
+		'POSTER_POSTS'      => $user_cache[$user_id]['posts'],
+		'POSTER_TOPICS'     => $user_cache[$user_id]['topics'],
+		'POSTER_FROM'       => $user_cache[$user_id]['from'],
+		'POSTER_AVATAR'     => $user_cache[$user_id]['avatar'],
+		'POSTER_WARNINGS'   => $user_cache[$user_id]['warnings'],
+		'POSTER_AGE'        => $user_cache[$user_id]['age'],
 
-		'S_POSTER_GENDER_X'	=> $user_cache[$user_id]['gender'] == GENDER_X,
-		'S_POSTER_GENDER_M'	=> $user_cache[$user_id]['gender'] == GENDER_M,
-		'S_POSTER_GENDER_F'	=> $user_cache[$user_id]['gender'] == GENDER_F,
+		'S_POSTER_GENDER_X' => $user_cache[$user_id]['gender'] == GENDER_X,
+		'S_POSTER_GENDER_M' => $user_cache[$user_id]['gender'] == GENDER_M,
+		'S_POSTER_GENDER_F' => $user_cache[$user_id]['gender'] == GENDER_F,
 
-		'S_POSTER_RATING'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($user_id != ANONYMOUS),
-		'POSTER_RATING'				=> $user_cache[$user_id]['rating'],
-		'POSTER_RATING_POSITIVE'	=> $user_cache[$user_id]['rating_positive'],
-		'POSTER_RATING_NEGATIVE'	=> $user_cache[$user_id]['rating_negative'],
-		'POSTER_RATED'				=> $user_cache[$user_id]['rated'],
-		'POSTER_RATED_POSITIVE'		=> $user_cache[$user_id]['rated_positive'],
-		'POSTER_RATED_NEGATIVE'		=> $user_cache[$user_id]['rated_negative'],
+		'S_POSTER_RATING'           => $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($user_id != ANONYMOUS),
+		'POSTER_RATING'             => $user_cache[$user_id]['rating'],
+		'POSTER_RATING_POSITIVE'    => $user_cache[$user_id]['rating_positive'],
+		'POSTER_RATING_NEGATIVE'    => $user_cache[$user_id]['rating_negative'],
+		'POSTER_RATED'              => $user_cache[$user_id]['rated'],
+		'POSTER_RATED_POSITIVE'     => $user_cache[$user_id]['rated_positive'],
+		'POSTER_RATED_NEGATIVE'     => $user_cache[$user_id]['rated_negative'],
 
-		'POSTER_ONLINE_IMG'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$user_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
-		'S_POSTER_ONLINE'			=> ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (bool) $user_cache[$user_id]['online'],
+		'POSTER_ONLINE_IMG'         => ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($user_cache[$user_id]['online']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
+		'S_POSTER_ONLINE'           => ($user_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (bool) $user_cache[$user_id]['online'],
 
-		'U_POSTER_PROFILE'		=> $user_cache[$user_id]['profile'],
-		'U_POSTER_SEARCH'		=> $user_cache[$user_id]['search'],
-		'U_POSTER_PM'			=> ($user_id != ANONYMOUS && $config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($user_cache[$user_id]['allow_pm'] || $auth->acl_gets('a_', 'm_'))) ? phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',
-		'U_POSTER_EMAIL'		=> $user_cache[$user_id]['email'],
-		'U_POSTER_WWW'			=> $user_cache[$user_id]['www'],
-		'U_POSTER_JABBER'		=> $user_cache[$user_id]['jabber'],
-		'U_POSTER_TELEGRAM'		=> $user_cache[$user_id]['telegram'],
+		'U_POSTER_PROFILE'      => $user_cache[$user_id]['profile'],
+		'U_POSTER_SEARCH'       => $user_cache[$user_id]['search'],
+		'U_POSTER_PM'           => ($user_id != ANONYMOUS && $config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($user_cache[$user_id]['allow_pm'] || $auth->acl_gets('a_', 'm_'))) ? phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',
+		'U_POSTER_EMAIL'        => $user_cache[$user_id]['email'],
+		'U_POSTER_WWW'          => $user_cache[$user_id]['www'],
+		'U_POSTER_JABBER'       => $user_cache[$user_id]['jabber'],
+		'U_POSTER_TELEGRAM'     => $user_cache[$user_id]['telegram'],
 
-		'U_POSTER_GALLERY'			=> $user_cache[$user_id]['gallery_album'],
-		'POSTER_GALLERY_IMAGES'		=> $user_cache[$user_id]['gallery_images'],
-		'U_POSTER_GALLERY_SEARCH'	=> $user_cache[$user_id]['gallery_search'],
+		'U_POSTER_GALLERY'          => $user_cache[$user_id]['gallery_album'],
+		'POSTER_GALLERY_IMAGES'     => $user_cache[$user_id]['gallery_images'],
+		'U_POSTER_GALLERY_SEARCH'   => $user_cache[$user_id]['gallery_search'],
 	]);
 }
 else
 {
 	$template->assign_vars([
-		'POSTER_FULL'	=> sprintf($user->lang['CONTEST_USERNAME_LONG'], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)),
+		'POSTER_FULL'   => sprintf($user->lang['CONTEST_USERNAME_LONG'], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)),
 	]);
 }
 
 $template->assign_vars([
-	'PROFILE_IMG'		=> $user->img('icon_user_profile', 'READ_PROFILE'),
-	'SEARCH_IMG' 		=> $user->img('icon_user_search', 'SEARCH_USER_POSTS'),
-	'PM_IMG' 			=> $user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
-	'EMAIL_IMG' 		=> $user->img('icon_contact_email', 'SEND_EMAIL'),
-	'WWW_IMG' 			=> $user->img('icon_contact_www', 'VISIT_WEBSITE'),
-	'JABBER_IMG'		=> $user->img('icon_contact_jabber', 'JABBER'),
-	'TELEGRAM_IMG'		=> $user->img('icon_contact_telegram', 'TELEGRAM'),
-	'GALLERY_IMG'		=> $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
+	'PROFILE_IMG'       => $user->img('icon_user_profile', 'READ_PROFILE'),
+	'SEARCH_IMG'        => $user->img('icon_user_search', 'SEARCH_USER_POSTS'),
+	'PM_IMG'            => $user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
+	'EMAIL_IMG'         => $user->img('icon_contact_email', 'SEND_EMAIL'),
+	'WWW_IMG'           => $user->img('icon_contact_www', 'VISIT_WEBSITE'),
+	'JABBER_IMG'        => $user->img('icon_contact_jabber', 'JABBER'),
+	'TELEGRAM_IMG'      => $user->img('icon_contact_telegram', 'TELEGRAM'),
+	'GALLERY_IMG'       => $user->img('icon_contact_gallery', 'PERSONAL_ALBUM'),
 ]);
 
 page_header($user->lang['VIEW_IMAGE'] . ' - ' . $image_data['image_name'], false);

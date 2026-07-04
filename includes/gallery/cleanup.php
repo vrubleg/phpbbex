@@ -17,8 +17,8 @@ class phpbb_gallery_cleanup
 	/**
 	* Delete source files without a database entry.
 	*
-	* @param	array	$filenames		An array of filenames
-	* @return	string	Language key for the success message.
+	* @param    array   $filenames      An array of filenames
+	* @return   string  Language key for the success message.
 	*/
 	static public function delete_files($filenames)
 	{
@@ -33,8 +33,8 @@ class phpbb_gallery_cleanup
 	/**
 	* Delete images, where the source file is missing.
 	*
-	* @param	mixed	$image_ids		Either an array of integers or an integer.
-	* @return	string	Language key for the success message.
+	* @param    mixed   $image_ids      Either an array of integers or an integer.
+	* @return   string  Language key for the success message.
 	*/
 	static public function delete_images($image_ids)
 	{
@@ -46,8 +46,8 @@ class phpbb_gallery_cleanup
 	/**
 	* Delete images, where the author is missing.
 	*
-	* @param	mixed	$image_ids		Either an array of integers or an integer.
-	* @return	string	Language key for the success message.
+	* @param    mixed   $image_ids      Either an array of integers or an integer.
+	* @return   string  Language key for the success message.
 	*/
 	static public function delete_author_images($image_ids)
 	{
@@ -59,8 +59,8 @@ class phpbb_gallery_cleanup
 	/**
 	* Delete comments, where the author is missing.
 	*
-	* @param	mixed	$comment_ids	Either an array of integers or an integer.
-	* @return	string	Language key for the success message.
+	* @param    mixed   $comment_ids    Either an array of integers or an integer.
+	* @return   string  Language key for the success message.
 	*/
 	static public function delete_author_comments($comment_ids)
 	{
@@ -72,9 +72,9 @@ class phpbb_gallery_cleanup
 	/**
 	* Delete unwanted and obsolent personal galleries.
 	*
-	* @param	array	$unwanted_pegas		User IDs we want to delete the pegas.
-	* @param	array	$obsolent_pegas		User IDs we want to delete the pegas.
-	* @return	array	Language keys for the success messages.
+	* @param    array   $unwanted_pegas     User IDs we want to delete the pegas.
+	* @param    array   $obsolent_pegas     User IDs we want to delete the pegas.
+	* @return   array   Language keys for the success messages.
 	*/
 	static public function delete_pegas($unwanted_pegas, $obsolent_pegas)
 	{
@@ -143,18 +143,18 @@ class phpbb_gallery_cleanup
 			if (phpbb_gallery_config::get('num_pegas') > 0)
 			{
 				$sql_array = [
-					'SELECT'		=> 'a.album_id, u.user_id, u.username, u.user_colour',
-					'FROM'			=> [GALLERY_ALBUMS_TABLE => 'a'],
+					'SELECT'        => 'a.album_id, u.user_id, u.username, u.user_colour',
+					'FROM'          => [GALLERY_ALBUMS_TABLE => 'a'],
 
-					'LEFT_JOIN'		=> [
+					'LEFT_JOIN'     => [
 						[
-							'FROM'		=> [USERS_TABLE => 'u'],
-							'ON'		=> 'u.user_id = a.album_user_id',
+							'FROM'      => [USERS_TABLE => 'u'],
+							'ON'        => 'u.user_id = a.album_user_id',
 						],
 					],
 
-					'WHERE'			=> 'a.album_user_id <> ' . phpbb_gallery_album::PUBLIC_ALBUM . ' AND a.parent_id = 0',
-					'ORDER_BY'		=> 'a.album_id DESC',
+					'WHERE'         => 'a.album_user_id <> ' . phpbb_gallery_album::PUBLIC_ALBUM . ' AND a.parent_id = 0',
+					'ORDER_BY'      => 'a.album_id DESC',
 				];
 				$sql = $db->sql_build_query('SELECT', $sql_array);
 

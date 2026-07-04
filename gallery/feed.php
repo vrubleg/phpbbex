@@ -21,8 +21,8 @@ if (!phpbb_gallery_config::get('feed_enable'))
 }
 
 // Initial var setup
-$mode		= request_var('mode', '');
-$album_id	= request_var('album_id', 0);
+$mode       = request_var('mode', '');
+$album_id   = request_var('album_id', 0);
 
 $feed = new phpbb_gallery_feed($album_id);
 

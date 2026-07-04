@@ -54,9 +54,9 @@ class phpbb_gallery_image_rating
 	/**
 	* Constructor
 	*
-	* @param	int		$image_id
-	* @param	array	$image_data		Array with values from the image-table of the image
-	* @param	array	$album_data		Array with values from the album-table of the image's album
+	* @param    int     $image_id
+	* @param    array   $image_data     Array with values from the image-table of the image
+	* @param    array   $album_data     Array with values from the album-table of the image's album
 	*/
 	public function __construct($image_id, $image_data = false, $album_data = false)
 	{
@@ -101,7 +101,7 @@ class phpbb_gallery_image_rating
 	* Returns the value of album_data key.
 	* If the value is missing, it is queried from the database.
 	*
-	* @param	$key	string	The value of the album data, if true it returns the hole array.
+	* @param    $key    string  The value of the album data, if true it returns the hole array.
 	*/
 	private function album_data($key)
 	{
@@ -156,7 +156,7 @@ class phpbb_gallery_image_rating
 				for ($i = 1; $i <= phpbb_gallery_config::get('max_rating'); $i++)
 				{
 					$template->assign_block_vars('rate_scale', [
-						'RATE_POINT'	=> $i,
+						'RATE_POINT'    => $i,
 					]);
 				}
 			break;
@@ -168,9 +168,9 @@ class phpbb_gallery_image_rating
 	/**
 	* Get rating for a image
 	*
-	* @param	$user_rating			Personal rating of the user is displayed in most cases.
-	* @param	$display_contest_end	Shall we display the end-time of the contest? This requires the album-data to be filled.
-	* @return	string					Returns a string containing the information how the image was rated in average and how often.
+	* @param    $user_rating            Personal rating of the user is displayed in most cases.
+	* @param    $display_contest_end    Shall we display the end-time of the contest? This requires the album-data to be filled.
+	* @return   string                  Returns a string containing the information how the image was rated in average and how often.
 	*/
 	public function get_image_rating($user_rating = false, $display_contest_end = true)
 	{
@@ -222,11 +222,11 @@ class phpbb_gallery_image_rating
 	/**
 	* Is the user allowed to rate?
 	* Following statements must be true:
-	*	- User must have permissions.
-	*	- User is neither owner of the image nor guest.
-	*	- Album and image are not locked.
+	*   - User must have permissions.
+	*   - User is neither owner of the image nor guest.
+	*   - Album and image are not locked.
 	*
-	* @return	bool
+	* @return   bool
 	*/
 	public function is_allowed()
 	{
@@ -239,10 +239,10 @@ class phpbb_gallery_image_rating
 	/**
 	* Is the user able to rate?
 	* Following statements must be true:
-	*	- User must be allowed to rate
-	*	- If the image is in a contest, it must be in the rating timespan
+	*   - User must be allowed to rate
+	*   - If the image is in a contest, it must be in the rating timespan
 	*
-	* @return	bool
+	* @return   bool
 	*/
 	public function is_able()
 	{
@@ -253,9 +253,9 @@ class phpbb_gallery_image_rating
 	/**
 	* Get rating from a user for a given image
 	*
-	* @param	int		$user_id
+	* @param    int     $user_id
 	*
-	* @return	mixed	False if the user did not rate or is guest, otherwise int the points.
+	* @return   mixed   False if the user did not rate or is guest, otherwise int the points.
 	*/
 	public function get_user_rating($user_id)
 	{
@@ -286,9 +286,9 @@ class phpbb_gallery_image_rating
 	/**
 	* Submit rating for an image.
 	*
-	* @param	int		$user_id
-	* @param	int		$points
-	* @param	string	$user_ip	Can be empty, function falls back to $user->ip
+	* @param    int     $user_id
+	* @param    int     $points
+	* @param    string  $user_ip    Can be empty, function falls back to $user->ip
 	*/
 	public function submit_rating($user_id = false, $points = false, $user_ip = false)
 	{
@@ -320,19 +320,19 @@ class phpbb_gallery_image_rating
 	/**
 	* Insert the rating into the database.
 	*
-	* @param	int		$user_id
-	* @param	int		$points
-	* @param	string	$user_ip	Can be empty, function falls back to $user->ip
+	* @param    int     $user_id
+	* @param    int     $points
+	* @param    string  $user_ip    Can be empty, function falls back to $user->ip
 	*/
 	private function insert_rating($user_id, $points, $user_ip = false)
 	{
 		global $db, $user;
 
 		$sql_ary = [
-			'rate_image_id'	=> $this->image_id,
-			'rate_user_id'	=> $user_id,
-			'rate_user_ip'	=> ($user_ip) ? $user_ip : $user->ip,
-			'rate_point'	=> $points,
+			'rate_image_id' => $this->image_id,
+			'rate_user_id'  => $user_id,
+			'rate_user_ip'  => ($user_ip) ? $user_ip : $user->ip,
+			'rate_point'    => $points,
 		];
 		$db->sql_query('INSERT INTO ' . GALLERY_RATES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 	}
@@ -340,7 +340,7 @@ class phpbb_gallery_image_rating
 	/**
 	* Recalculate the average image-rating and such stuff.
 	*
-	* @param	mixed	$image_ids	Array or integer with image_id where we recalculate the rating.
+	* @param    mixed   $image_ids  Array or integer with image_id where we recalculate the rating.
 	*/
 	static public function recalc_image_rating($image_ids)
 	{
@@ -376,8 +376,8 @@ class phpbb_gallery_image_rating
 	/**
 	* Delete all ratings for given image_ids
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id where we delete the rating.
-	* @param	bool	$reset_average	Shall we also reset the average? We can save that query, when the images are deleted anyway.
+	* @param    mixed   $image_ids      Array or integer with image_id where we delete the rating.
+	* @param    bool    $reset_average  Shall we also reset the average? We can save that query, when the images are deleted anyway.
 	*/
 	static public function delete_ratings($image_ids, $reset_average = false)
 	{

@@ -17,11 +17,11 @@ class phpbb_gallery_comment
 	/**
 	* Is the user allowed to comment?
 	* Following statements must be true:
-	*	- User must have permissions.
-	*	- User is neither owner of the image nor guest.
-	*	- Album and image are not locked.
+	*   - User must have permissions.
+	*   - User is neither owner of the image nor guest.
+	*   - Album and image are not locked.
 	*
-	* @return	bool
+	* @return   bool
 	*/
 	static public function is_allowed($album_data, $image_data)
 	{
@@ -35,10 +35,10 @@ class phpbb_gallery_comment
 	/**
 	* Is the user able to comment?
 	* Following statements must be true:
-	*	- User must be allowed to rate
-	*	- If the image is in a contest, it must be finished
+	*   - User must be allowed to rate
+	*   - If the image is in a contest, it must be finished
 	*
-	* @return	bool
+	* @return   bool
 	*/
 	static public function is_able($album_data, $image_data)
 	{
@@ -59,11 +59,11 @@ class phpbb_gallery_comment
 		}
 
 		$data = $data + [
-			'comment_user_id'		=> $user->data['user_id'],
-			'comment_username'		=> ($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : $comment_username,
-			'comment_user_colour'	=> $user->data['user_colour'],
-			'comment_user_ip'		=> $user->ip,
-			'comment_time'			=> time(),
+			'comment_user_id'       => $user->data['user_id'],
+			'comment_username'      => ($user->data['user_id'] != ANONYMOUS) ? $user->data['username'] : $comment_username,
+			'comment_user_colour'   => $user->data['user_colour'],
+			'comment_user_ip'       => $user->ip,
+			'comment_time'          => time(),
 		];
 
 		$db->sql_query('INSERT INTO ' . GALLERY_COMMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $data));
@@ -92,8 +92,8 @@ class phpbb_gallery_comment
 		}
 
 		$data = $data + [
-			'comment_edit_time'		=> time(),
-			'comment_edit_user_id'	=> $user->data['user_id'],
+			'comment_edit_time'     => time(),
+			'comment_edit_user_id'  => $user->data['user_id'],
 		];
 
 		$sql = 'UPDATE ' . GALLERY_COMMENTS_TABLE . '
@@ -129,8 +129,8 @@ class phpbb_gallery_comment
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$resync[$row['comment_image_id']] = [
-				'last_comment'	=> $row['last_comment'],
-				'num_comments'	=> $row['num_comments'],
+				'last_comment'  => $row['last_comment'],
+				'num_comments'  => $row['num_comments'],
 			];
 		}
 		$db->sql_freeresult($result);
@@ -157,7 +157,7 @@ class phpbb_gallery_comment
 	/**
 	* Delete comments
 	*
-	* @param	mixed	$comment_ids	Array or integer with comment_id we delete.
+	* @param    mixed   $comment_ids    Array or integer with comment_id we delete.
 	*/
 	static public function delete_comments($comment_ids)
 	{
@@ -192,8 +192,8 @@ class phpbb_gallery_comment
 	/**
 	* Delete comments for given image_ids
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id where we delete the comments.
-	* @param	bool	$reset_stats	Shall we also reset the statistics? We can save that query, when the images are deleted anyway.
+	* @param    mixed   $image_ids      Array or integer with image_id where we delete the comments.
+	* @param    bool    $reset_stats    Shall we also reset the statistics? We can save that query, when the images are deleted anyway.
 	*/
 	static public function delete_images($image_ids, $reset_stats = false)
 	{

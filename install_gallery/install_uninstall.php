@@ -19,13 +19,13 @@ if (!defined('IN_INSTALL'))
 if (!empty($setmodules))
 {
 	$module[] = [
-		'module_type'		=> 'uninstall',
-		'module_title'		=> 'UNINSTALL',
-		'module_filename'	=> substr(basename(__FILE__), 0, -4),
-		'module_order'		=> 30,
-		'module_subs'		=> '',
-		'module_stages'		=> ['INTRO', 'REQUIREMENTS', 'DELETE_TABLES', 'FINAL'],
-		'module_reqs'		=> ''
+		'module_type'       => 'uninstall',
+		'module_title'      => 'UNINSTALL',
+		'module_filename'   => substr(basename(__FILE__), 0, -4),
+		'module_order'      => 30,
+		'module_subs'       => '',
+		'module_stages'     => ['INTRO', 'REQUIREMENTS', 'DELETE_TABLES', 'FINAL'],
+		'module_reqs'       => ''
 	];
 }
 
@@ -58,10 +58,10 @@ class install_uninstall extends module
 				$this->page_title = $user->lang['SUB_INTRO'];
 
 				$template->assign_vars([
-					'TITLE'			=> $user->lang['UNINSTALL_INTRO'],
-					'BODY'			=> $user->lang['UNINSTALL_INTRO_BODY'],
-					'L_SUBMIT'		=> $user->lang['NEXT_STEP'],
-					'U_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements"),
+					'TITLE'         => $user->lang['UNINSTALL_INTRO'],
+					'BODY'          => $user->lang['UNINSTALL_INTRO_BODY'],
+					'L_SUBMIT'      => $user->lang['NEXT_STEP'],
+					'U_ACTION'      => append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements"),
 				]);
 			break;
 
@@ -75,10 +75,10 @@ class install_uninstall extends module
 
 			case 'final':
 				$template->assign_vars([
-					'TITLE'		=> $user->lang['UNINSTALL_FINISHED'],
-					'BODY'		=> $user->lang['UNINSTALL_FINISHED_EXPLAIN'],
-					'L_SUBMIT'	=> $user->lang['GOTO_INDEX'],
-					'U_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'index.php'),
+					'TITLE'     => $user->lang['UNINSTALL_FINISHED'],
+					'BODY'      => $user->lang['UNINSTALL_FINISHED_EXPLAIN'],
+					'L_SUBMIT'  => $user->lang['GOTO_INDEX'],
+					'U_ACTION'  => append_sid(PHPBB_ROOT_PATH . 'index.php'),
 				]);
 			break;
 		}
@@ -96,16 +96,16 @@ class install_uninstall extends module
 		$this->page_title = $user->lang['STAGE_REQUIREMENTS'];
 
 		$template->assign_vars([
-			'TITLE'		=> $user->lang['UNINSTALL_REQUIREMENTS'],
-			'BODY'		=> $user->lang['UNINSTALL_REQUIREMENTS_EXPLAIN'],
+			'TITLE'     => $user->lang['UNINSTALL_REQUIREMENTS'],
+			'BODY'      => $user->lang['UNINSTALL_REQUIREMENTS_EXPLAIN'],
 		]);
 
 		$passed = ['installed' => false];
 
 		// Test for basic PHP settings
 		$template->assign_block_vars('checks', [
-			'S_LEGEND'			=> true,
-			'LEGEND'			=> $user->lang['UNINSTALL_REQUIREMENTS'],
+			'S_LEGEND'          => true,
+			'LEGEND'            => $user->lang['UNINSTALL_REQUIREMENTS'],
 		]);
 
 		$gallery_version = get_gallery_version();
@@ -119,20 +119,20 @@ class install_uninstall extends module
 			$result = '<strong style="color:red">' . $user->lang['NO_INSTALL_FOUND'] . '</strong>';
 		}
 		$template->assign_block_vars('checks', [
-			'TITLE'		=> $user->lang['FOUND_VERSION'],
-			'RESULT'	=> $result,
+			'TITLE'     => $user->lang['FOUND_VERSION'],
+			'RESULT'    => $result,
 
-			'S_EXPLAIN'	=> false,
-			'S_LEGEND'	=> false,
+			'S_EXPLAIN' => false,
+			'S_LEGEND'  => false,
 		]);
 
 		$url = (!in_array(false, $passed)) ? append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=delete_tables") : append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=requirements");
 		$submit = (!in_array(false, $passed)) ? $user->lang['UNINSTALL_START'] : $user->lang['INSTALL_TEST'];
 
 		$template->assign_vars([
-			'L_SUBMIT'	=> $submit,
-			'S_HIDDEN'	=> '',
-			'U_ACTION'	=> $url,
+			'L_SUBMIT'  => $submit,
+			'S_HIDDEN'  => '',
+			'U_ACTION'  => $url,
 		]);
 	}
 
@@ -174,9 +174,9 @@ class install_uninstall extends module
 
 		// Delete columns
 		$umil->table_column_remove([
-			[LOG_TABLE,		'album_id'],
-			[LOG_TABLE,		'image_id'],
-			[USERS_TABLE,		'album_id'],
+			[LOG_TABLE,     'album_id'],
+			[LOG_TABLE,     'image_id'],
+			[USERS_TABLE,       'album_id'],
 		]);
 
 		$db->sql_return_on_error(false);
@@ -239,10 +239,10 @@ class install_uninstall extends module
 		$cache->destroy('sql', BBCODES_TABLE);
 
 		$template->assign_vars([
-			'BODY'		=> $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
-			'L_SUBMIT'	=> $user->lang['NEXT_STEP'],
-			'S_HIDDEN'	=> '',
-			'U_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=final"),
+			'BODY'      => $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
+			'L_SUBMIT'  => $user->lang['NEXT_STEP'],
+			'S_HIDDEN'  => '',
+			'U_ACTION'  => append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$mode}&amp;sub=final"),
 		]);
 	}
 }

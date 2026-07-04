@@ -17,8 +17,8 @@ class phpbb_gallery_notification
 	/**
 	* Add images to watch-list
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id where we delete from the watch-list.
-	* @param	int		$user_id		If not set, it uses the currents user_id
+	* @param    mixed   $image_ids      Array or integer with image_id where we delete from the watch-list.
+	* @param    int     $user_id        If not set, it uses the currents user_id
 	*/
 	static public function add($image_ids, $user_id = false)
 	{
@@ -30,8 +30,8 @@ class phpbb_gallery_notification
 		foreach ($image_ids as $image_id)
 		{
 			$sql_ary = [
-				'image_id'		=> $image_id,
-				'user_id'		=> $user_id,
+				'image_id'      => $image_id,
+				'user_id'       => $user_id,
 			];
 			$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
@@ -40,8 +40,8 @@ class phpbb_gallery_notification
 	/**
 	* Add albums to watch-list
 	*
-	* @param	mixed	$album_ids		Array or integer with album_id where we delete from the watch-list.
-	* @param	int		$user_id		If not set, it uses the currents user_id
+	* @param    mixed   $album_ids      Array or integer with album_id where we delete from the watch-list.
+	* @param    int     $user_id        If not set, it uses the currents user_id
 	*/
 	static public function add_albums($album_ids, $user_id = false)
 	{
@@ -53,8 +53,8 @@ class phpbb_gallery_notification
 		foreach ($album_ids as $album_id)
 		{
 			$sql_ary = [
-				'album_id'		=> $album_id,
-				'user_id'		=> $user_id,
+				'album_id'      => $album_id,
+				'user_id'       => $user_id,
 			];
 			$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
@@ -64,8 +64,8 @@ class phpbb_gallery_notification
 	/**
 	* Remove images from watch-list
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id where we delete from the watch-list.
-	* @param	mixed	$user_ids		If not set, it uses the currents user_id
+	* @param    mixed   $image_ids      Array or integer with image_id where we delete from the watch-list.
+	* @param    mixed   $user_ids       If not set, it uses the currents user_id
 	*/
 	static public function remove($image_ids, $user_ids = false)
 	{
@@ -83,8 +83,8 @@ class phpbb_gallery_notification
 	/**
 	* Remove albums from watch-list
 	*
-	* @param	mixed	$album_ids		Array or integer with album_id where we delete from the watch-list.
-	* @param	mixed	$user_ids		If not set, it uses the currents user_id
+	* @param    mixed   $album_ids      Array or integer with album_id where we delete from the watch-list.
+	* @param    mixed   $user_ids       If not set, it uses the currents user_id
 	*/
 	static public function remove_albums($album_ids, $user_ids = false)
 	{
@@ -102,7 +102,7 @@ class phpbb_gallery_notification
 	/**
 	* Delete given image_ids from watch-list
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id where we delete from watch-list.
+	* @param    mixed   $image_ids      Array or integer with image_id where we delete from watch-list.
 	*/
 	static public function delete_images($image_ids)
 	{
@@ -119,7 +119,7 @@ class phpbb_gallery_notification
 	/**
 	* Delete given album_ids from watch-list
 	*
-	* @param	mixed	$album_ids		Array or integer with album_id where we delete from watch-list.
+	* @param    mixed   $album_ids      Array or integer with album_id where we delete from watch-list.
 	*/
 	static public function delete_albums($album_ids)
 	{
@@ -163,7 +163,7 @@ class phpbb_gallery_notification
 
 		$notify_rows = [];
 
-		// -- get album_userids	|| image_userids
+		// -- get album_userids || image_userids
 		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
 			FROM ' . GALLERY_WATCH_TABLE . ' w, ' . USERS_TABLE . ' u
 			WHERE w.' . $help_mode . ' = ' . $handle_id . "
@@ -175,15 +175,15 @@ class phpbb_gallery_notification
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$notify_rows[$row['user_id']] = [
-				'user_id'		=> $row['user_id'],
-				'username'		=> $row['username'],
-				'user_email'	=> $row['user_email'],
-				'user_jabber'	=> $row['user_jabber'],
-				'user_lang'		=> $row['user_lang'],
-				'notify_type'	=> ($mode != 'album') ? 'image' : 'album',
-				'template'		=> "new{$mode_notification}_notify",
-				'method'		=> $row['user_notify_type'],
-				'allowed'		=> false
+				'user_id'       => $row['user_id'],
+				'username'      => $row['username'],
+				'user_email'    => $row['user_email'],
+				'user_jabber'   => $row['user_jabber'],
+				'user_lang'     => $row['user_lang'],
+				'notify_type'   => ($mode != 'album') ? 'image' : 'album',
+				'template'      => "new{$mode_notification}_notify",
+				'method'        => $row['user_notify_type'],
+				'allowed'       => false
 			];
 		}
 		$db->sql_freeresult($result);
@@ -208,18 +208,18 @@ class phpbb_gallery_notification
 		// Make sure users are allowed to view the album
 		$i_view_ary = $groups_ary = $groups_row = [];
 		$sql_array = [
-			'SELECT'		=> 'pr.i_view, p.perm_system, p.perm_group_id, p.perm_user_id',
-			'FROM'			=> [GALLERY_PERMISSIONS_TABLE => 'p'],
+			'SELECT'        => 'pr.i_view, p.perm_system, p.perm_group_id, p.perm_user_id',
+			'FROM'          => [GALLERY_PERMISSIONS_TABLE => 'p'],
 
-			'LEFT_JOIN'		=> [
+			'LEFT_JOIN'     => [
 				[
-					'FROM'		=> [GALLERY_ROLES_TABLE => 'pr'],
-					'ON'		=> 'p.perm_role_id = pr.role_id',
+					'FROM'      => [GALLERY_ROLES_TABLE => 'pr'],
+					'ON'        => 'p.perm_role_id = pr.role_id',
 				],
 			],
 
-			'WHERE'			=> (($album['album_user_id'] == phpbb_gallery_album::PUBLIC_ALBUM) ? 'p.perm_album_id = ' . $album_id : 'p.perm_system <> ' . phpbb_gallery_album::PUBLIC_ALBUM),
-			'ORDER_BY'		=> 'pr.i_view ASC',
+			'WHERE'         => (($album['album_user_id'] == phpbb_gallery_album::PUBLIC_ALBUM) ? 'p.perm_album_id = ' . $album_id : 'p.perm_system <> ' . phpbb_gallery_album::PUBLIC_ALBUM),
+			'ORDER_BY'      => 'pr.i_view ASC',
 		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query($sql);
@@ -310,11 +310,11 @@ class phpbb_gallery_notification
 			{
 				$pos = (!isset($msg_list_ary[$row['template']])) ? 0 : sizeof($msg_list_ary[$row['template']]);
 
-				$msg_list_ary[$row['template']][$pos]['method']	= $row['method'];
-				$msg_list_ary[$row['template']][$pos]['email']	= $row['user_email'];
-				$msg_list_ary[$row['template']][$pos]['jabber']	= $row['user_jabber'];
-				$msg_list_ary[$row['template']][$pos]['name']	= $row['username'];
-				$msg_list_ary[$row['template']][$pos]['lang']	= $row['user_lang'];
+				$msg_list_ary[$row['template']][$pos]['method'] = $row['method'];
+				$msg_list_ary[$row['template']][$pos]['email']  = $row['user_email'];
+				$msg_list_ary[$row['template']][$pos]['jabber'] = $row['user_jabber'];
+				$msg_list_ary[$row['template']][$pos]['name']   = $row['username'];
+				$msg_list_ary[$row['template']][$pos]['lang']   = $row['user_lang'];
 			}
 			unset($msg_users);
 
@@ -328,15 +328,15 @@ class phpbb_gallery_notification
 					$messenger->im($addr['jabber'], $addr['name']);
 
 					$messenger->assign_vars([
-						'USERNAME'		=> htmlspecialchars_decode($addr['name']),
-						'IMAGE_NAME'	=> htmlspecialchars_decode($image_name),
-						'ALBUM_NAME'	=> htmlspecialchars_decode($album_data['album_name']),
+						'USERNAME'      => htmlspecialchars_decode($addr['name']),
+						'IMAGE_NAME'    => htmlspecialchars_decode($image_name),
+						'ALBUM_NAME'    => htmlspecialchars_decode($album_data['album_name']),
 
-						'U_ALBUM'				=> phpbb_gallery_url::create_link('full', 'album', "album_id={$album_id}"),
-						'U_IMAGE'				=> phpbb_gallery_url::create_link('full', 'image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
-						'U_NEWEST_POST'			=> phpbb_gallery_url::create_link('full', 'viewtopic', "album_id={$album_id}&amp;image_id={$image_id}"),
-						'U_STOP_WATCHING_IMAGE'	=> phpbb_gallery_url::create_link('full', 'image_page', "mode=unwatch&amp;album_id={$album_id}&amp;image_id={$image_id}"),
-						'U_STOP_WATCHING_ALBUM'	=> phpbb_gallery_url::create_link('full', 'album', "mode=unwatch&amp;album_id={$album_id}"),
+						'U_ALBUM'               => phpbb_gallery_url::create_link('full', 'album', "album_id={$album_id}"),
+						'U_IMAGE'               => phpbb_gallery_url::create_link('full', 'image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
+						'U_NEWEST_POST'         => phpbb_gallery_url::create_link('full', 'viewtopic', "album_id={$album_id}&amp;image_id={$image_id}"),
+						'U_STOP_WATCHING_IMAGE' => phpbb_gallery_url::create_link('full', 'image_page', "mode=unwatch&amp;album_id={$album_id}&amp;image_id={$image_id}"),
+						'U_STOP_WATCHING_ALBUM' => phpbb_gallery_url::create_link('full', 'album', "mode=unwatch&amp;album_id={$album_id}"),
 					]);
 
 					$messenger->send($addr['method']);

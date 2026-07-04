@@ -205,27 +205,27 @@ class phpbb_gallery_upload
 		}
 		$this->file_count = (int) $this->array_id2row[$image_id];
 
-		$message_parser				= new parse_message();
-		$message_parser->message	= utf8_normalize_nfc($this->get_description());
+		$message_parser             = new parse_message();
+		$message_parser->message    = utf8_normalize_nfc($this->get_description());
 		if ($message_parser->message)
 		{
 			$message_parser->parse(true, true, true, true, false, true, true, true);
 		}
 
 		$sql_ary = [
-			'image_status'				=> ($needs_approval) ? phpbb_gallery_image::STATUS_UNAPPROVED : phpbb_gallery_image::STATUS_APPROVED,
-			'image_contest'				=> ($is_in_contest) ? phpbb_gallery_image::IN_CONTEST : phpbb_gallery_image::NO_CONTEST,
-			'image_desc'				=> $message_parser->message,
-			'image_desc_uid'			=> $message_parser->bbcode_uid,
-			'image_desc_bitfield'		=> $message_parser->bbcode_bitfield,
-			'image_time'				=> time() + $this->file_count,
+			'image_status'              => ($needs_approval) ? phpbb_gallery_image::STATUS_UNAPPROVED : phpbb_gallery_image::STATUS_APPROVED,
+			'image_contest'             => ($is_in_contest) ? phpbb_gallery_image::IN_CONTEST : phpbb_gallery_image::NO_CONTEST,
+			'image_desc'                => $message_parser->message,
+			'image_desc_uid'            => $message_parser->bbcode_uid,
+			'image_desc_bitfield'       => $message_parser->bbcode_bitfield,
+			'image_time'                => time() + $this->file_count,
 		];
 		$new_image_name = $this->get_name();
 		if (($new_image_name != '') && ($new_image_name != $this->image_data[$image_id]['image_name']))
 		{
 			$sql_ary = array_merge($sql_ary, [
-				'image_name'		=> $new_image_name,
-				'image_name_clean'	=> utf8_clean_string($new_image_name),
+				'image_name'        => $new_image_name,
+				'image_name_clean'  => utf8_clean_string($new_image_name),
 			]);
 		}
 
@@ -233,8 +233,8 @@ class phpbb_gallery_upload
 		if ($this->prepare_file_update($image_id))
 		{
 			$sql_ary = array_merge($sql_ary, [
-				'image_exif_data'		=> $this->exif_data,
-				'image_has_exif'		=> $this->exif_status,
+				'image_exif_data'       => $this->exif_data,
+				'image_has_exif'        => $this->exif_status,
 			]);
 		}
 
@@ -375,27 +375,27 @@ class phpbb_gallery_upload
 		$image_name = str_replace("_", " ", utf8_substr($this->file->uploadname, 0, utf8_strrpos($this->file->uploadname, '.')));
 
 		$sql_ary = [
-			'image_name'			=> $image_name,
-			'image_name_clean'		=> utf8_clean_string($image_name),
-			'image_filename' 		=> $this->file->realname,
-			'filesize_upload'		=> $this->file->filesize,
-			'image_time'			=> time() + $this->file_count,
-			'image_exif_data'		=> $this->exif_data,
-			'image_has_exif'		=> $this->exif_status,
+			'image_name'            => $image_name,
+			'image_name_clean'      => utf8_clean_string($image_name),
+			'image_filename'        => $this->file->realname,
+			'filesize_upload'       => $this->file->filesize,
+			'image_time'            => time() + $this->file_count,
+			'image_exif_data'       => $this->exif_data,
+			'image_has_exif'        => $this->exif_status,
 
-			'image_user_id'			=> $user->data['user_id'],
-			'image_user_colour'		=> $user->data['user_colour'],
-			'image_username'		=> $this->username,
-			'image_username_clean'	=> utf8_clean_string($this->username),
-			'image_user_ip'			=> $user->ip,
+			'image_user_id'         => $user->data['user_id'],
+			'image_user_colour'     => $user->data['user_colour'],
+			'image_username'        => $this->username,
+			'image_username_clean'  => utf8_clean_string($this->username),
+			'image_user_ip'         => $user->ip,
 
-			'image_album_id'		=> $this->album_id,
-			'image_status'			=> phpbb_gallery_image::STATUS_ORPHAN,
-			'image_contest'			=> phpbb_gallery_image::NO_CONTEST,
-			'image_allow_comments'	=> $this->allow_comments,
-			'image_desc'			=> '',
-			'image_desc_uid'		=> '',
-			'image_desc_bitfield'	=> '',
+			'image_album_id'        => $this->album_id,
+			'image_status'          => phpbb_gallery_image::STATUS_ORPHAN,
+			'image_contest'         => phpbb_gallery_image::NO_CONTEST,
+			'image_allow_comments'  => $this->allow_comments,
+			'image_desc'            => '',
+			'image_desc_uid'        => '',
+			'image_desc_bitfield'   => '',
 		];
 
 		$sql = 'INSERT INTO ' . GALLERY_IMAGES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);

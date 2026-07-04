@@ -17,22 +17,22 @@ class phpbb_gallery_image
 	/**
 	* Only visible for moderators.
 	*/
-	const STATUS_UNAPPROVED	= 0;
+	const STATUS_UNAPPROVED = 0;
 
 	/**
 	* Visible for everyone with the i_view-permissions
 	*/
-	const STATUS_APPROVED	= 1;
+	const STATUS_APPROVED   = 1;
 
 	/**
 	* Visible for everyone with the i_view-permissions, but only moderators can comment.
 	*/
-	const STATUS_LOCKED		= 2;
+	const STATUS_LOCKED     = 2;
 
 	/**
 	* Orphan files are only visible for their author, because they're not yet ready uploaded.
 	*/
-	const STATUS_ORPHAN		= 3;
+	const STATUS_ORPHAN     = 3;
 
 	/**
 	* Constants regarding the image contest relation
@@ -52,21 +52,21 @@ class phpbb_gallery_image
 		global $db, $user;
 
 		$sql_array = [
-			'SELECT'		=> '*',
-			'FROM'			=> [GALLERY_IMAGES_TABLE => 'i'],
-			'WHERE'			=> 'i.image_id = ' . (int) $image_id,
+			'SELECT'        => '*',
+			'FROM'          => [GALLERY_IMAGES_TABLE => 'i'],
+			'WHERE'         => 'i.image_id = ' . (int) $image_id,
 		];
 
 		if ($extended_info)
 		{
 			$sql_array['LEFT_JOIN'] = [
 				[
-					'FROM'		=> [GALLERY_WATCH_TABLE => 'w'],
-					'ON'		=> 'i.image_id = w.image_id AND w.user_id = ' . $user->data['user_id'],
+					'FROM'      => [GALLERY_WATCH_TABLE => 'w'],
+					'ON'        => 'i.image_id = w.image_id AND w.user_id = ' . $user->data['user_id'],
 				],
 				[
-					'FROM'		=> [GALLERY_FAVORITES_TABLE => 'f'],
-					'ON'		=> 'i.image_id = f.image_id AND f.user_id = ' . $user->data['user_id'],
+					'FROM'      => [GALLERY_FAVORITES_TABLE => 'f'],
+					'ON'        => 'i.image_id = f.image_id AND f.user_id = ' . $user->data['user_id'],
 				],
 			];
 		}
@@ -122,10 +122,10 @@ class phpbb_gallery_image
 	/**
 	* Delete an image completly.
 	*
-	* @param	array		$images		Array with the image_id(s)
-	* @param	array		$filenames	Array with filenames for the image_ids. If a filename is missing it's queried from the database.
-	*									Format: $image_id => $filename
-	* @param	bool		$skip_files	If set to true, we won't try to delete the source files.
+	* @param    array       $images     Array with the image_id(s)
+	* @param    array       $filenames  Array with filenames for the image_ids. If a filename is missing it's queried from the database.
+	*                                   Format: $image_id => $filename
+	* @param    bool        $skip_files If set to true, we won't try to delete the source files.
 	*/
 	static public function delete_images($images, $filenames = [], $resync_albums = true, $skip_files = false)
 	{
@@ -197,8 +197,8 @@ class phpbb_gallery_image
 	/**
 	* Get the real filenames, so we can load/delete/edit the image-file.
 	*
-	* @param	mixed		$images		Array or integer with the image_id(s)
-	* @return	array		Format: $image_id => $filename
+	* @param    mixed       $images     Array or integer with the image_id(s)
+	* @return   array       Format: $image_id => $filename
 	*/
 	static public function get_filenames($images)
 	{
@@ -226,8 +226,8 @@ class phpbb_gallery_image
 	/**
 	* Assigns an image with all data to the defined template-block
 	*
-	* @param string	$template_block	Name of the template-block
-	* @param array	$image_data		Array with the image-data, all columns of GALLERY_IMAGES_TABLE are needed. album_name may be additionally assigned
+	* @param string $template_block Name of the template-block
+	* @param array  $image_data     Array with the image-data, all columns of GALLERY_IMAGES_TABLE are needed. album_name may be additionally assigned
 	*/
 	static public function assign_block($template_block, &$image_data, $album_status, $display = 126, $album_user_id = -1)
 	{
@@ -240,9 +240,9 @@ class phpbb_gallery_image
 			$lang_loaded = true;
 		}
 
-		$st	= request_var('st', 0);
-		$sk	= request_var('sk', phpbb_gallery_config::get('default_sort_key'));
-		$sd	= request_var('sd', phpbb_gallery_config::get('default_sort_dir'));
+		$st = request_var('st', 0);
+		$sk = request_var('sk', phpbb_gallery_config::get('default_sort_key'));
+		$sd = request_var('sd', phpbb_gallery_config::get('default_sort_dir'));
 
 		$rating = new phpbb_gallery_image_rating($image_data['image_id'], $image_data, $image_data);
 		$image_data['rating'] = $rating->get_image_rating(false, false);
@@ -257,65 +257,65 @@ class phpbb_gallery_image
 		$s_username_hidden = $image_data['image_contest'] && !phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) && ($user->data['user_id'] != $image_data['image_user_id'] || $image_data['image_user_id'] == ANONYMOUS);
 
 		$template->assign_block_vars($template_block, [
-			'IMAGE_ID'		=> $image_data['image_id'],
-			'UC_IMAGE_NAME'	=> ($display & phpbb_gallery_block::DISPLAY_IMAGENAME) ? self::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id'], false, true, "&amp;sk={$sk}&amp;sd={$sd}&amp;st={$st}") : '',
-			'UC_THUMBNAIL'	=> self::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id']),
-			'U_ALBUM'		=> ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $image_data['image_album_id']) : '',
-			'S_UNAPPROVED'	=> (phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) && ($image_data['image_status'] == self::STATUS_UNAPPROVED)),
-			'S_LOCKED'		=> ($image_data['image_status'] == self::STATUS_LOCKED),
-			'S_REPORTED'	=> (phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id) && $image_data['image_reported']),
+			'IMAGE_ID'      => $image_data['image_id'],
+			'UC_IMAGE_NAME' => ($display & phpbb_gallery_block::DISPLAY_IMAGENAME) ? self::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id'], false, true, "&amp;sk={$sk}&amp;sd={$sd}&amp;st={$st}") : '',
+			'UC_THUMBNAIL'  => self::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id']),
+			'U_ALBUM'       => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $image_data['image_album_id']) : '',
+			'S_UNAPPROVED'  => (phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) && ($image_data['image_status'] == self::STATUS_UNAPPROVED)),
+			'S_LOCKED'      => ($image_data['image_status'] == self::STATUS_LOCKED),
+			'S_REPORTED'    => (phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id) && $image_data['image_reported']),
 
-			'ALBUM_NAME'		=> ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ((isset($image_data['album_name'])) ? ((utf8_strlen(htmlspecialchars_decode($image_data['album_name'])) > phpbb_gallery_config::get('shortnames') + 3) ? htmlspecialchars(utf8_substr(htmlspecialchars_decode($image_data['album_name']), 0, phpbb_gallery_config::get('shortnames')) . '...') : ($image_data['album_name'])) : '') : '',
-			'ALBUM_NAME_FULL'	=> ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ($image_data['album_name'] ?? '') : '',
-			'POSTER'		=> ($display & phpbb_gallery_block::DISPLAY_USERNAME) ? (($s_username_hidden) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $image_data['image_user_id'], $image_data['image_username'], $image_data['image_user_colour'])) : '',
-			'TIME'			=> ($display & phpbb_gallery_block::DISPLAY_IMAGETIME) ? $user->format_date($image_data['image_time']) : '',
-			'VIEW'			=> ($display & phpbb_gallery_block::DISPLAY_IMAGEVIEWS) ? $image_data['image_view_count'] : -1,
-			'CONTEST_RANK'		=> ($image_data['image_contest_rank']) ? $user->lang['CONTEST_RESULT_' . $image_data['image_contest_rank']] : '',
-			'CONTEST_RANK_ID'	=> $image_data['image_contest_rank'],
+			'ALBUM_NAME'        => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ((isset($image_data['album_name'])) ? ((utf8_strlen(htmlspecialchars_decode($image_data['album_name'])) > phpbb_gallery_config::get('shortnames') + 3) ? htmlspecialchars(utf8_substr(htmlspecialchars_decode($image_data['album_name']), 0, phpbb_gallery_config::get('shortnames')) . '...') : ($image_data['album_name'])) : '') : '',
+			'ALBUM_NAME_FULL'   => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ($image_data['album_name'] ?? '') : '',
+			'POSTER'        => ($display & phpbb_gallery_block::DISPLAY_USERNAME) ? (($s_username_hidden) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $image_data['image_user_id'], $image_data['image_username'], $image_data['image_user_colour'])) : '',
+			'TIME'          => ($display & phpbb_gallery_block::DISPLAY_IMAGETIME) ? $user->format_date($image_data['image_time']) : '',
+			'VIEW'          => ($display & phpbb_gallery_block::DISPLAY_IMAGEVIEWS) ? $image_data['image_view_count'] : -1,
+			'CONTEST_RANK'      => ($image_data['image_contest_rank']) ? $user->lang['CONTEST_RESULT_' . $image_data['image_contest_rank']] : '',
+			'CONTEST_RANK_ID'   => $image_data['image_contest_rank'],
 
-			'S_RATINGS'		=> (($display & phpbb_gallery_block::DISPLAY_RATINGS) ? ((phpbb_gallery_config::get('allow_rates') && phpbb_gallery::$auth->acl_check('i_rate', $image_data['image_album_id'], $album_user_id)) ? $image_data['rating'] : '') : ''),
-			'U_RATINGS'		=> phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#rating',
-			'L_COMMENTS'	=> ($image_data['image_comments'] == 1) ? $user->lang['COMMENT'] : $user->lang['COMMENTS'],
-			'S_COMMENTS'	=> (($display & phpbb_gallery_block::DISPLAY_COMMENTS) ? ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_check('c_read', $image_data['image_album_id'], $album_user_id)) ? ($image_data['image_comments'] ?: $user->lang['NO_COMMENTS']) : '') : ''),
-			'U_COMMENTS'	=> phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#comments',
+			'S_RATINGS'     => (($display & phpbb_gallery_block::DISPLAY_RATINGS) ? ((phpbb_gallery_config::get('allow_rates') && phpbb_gallery::$auth->acl_check('i_rate', $image_data['image_album_id'], $album_user_id)) ? $image_data['rating'] : '') : ''),
+			'U_RATINGS'     => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#rating',
+			'L_COMMENTS'    => ($image_data['image_comments'] == 1) ? $user->lang['COMMENT'] : $user->lang['COMMENTS'],
+			'S_COMMENTS'    => (($display & phpbb_gallery_block::DISPLAY_COMMENTS) ? ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_check('c_read', $image_data['image_album_id'], $album_user_id)) ? ($image_data['image_comments'] ?: $user->lang['NO_COMMENTS']) : '') : ''),
+			'U_COMMENTS'    => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#comments',
 
-			'S_MOD_ACTION'		=> phpbb_gallery_url::append_sid('mcp', "album_id={$image_data['image_album_id']}&amp;image_id={$image_data['image_id']}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
-			'S_QUICK_MOD'		=> $s_quick_mod,
-			'S_QM_MOVE'			=> phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id),
-			'S_QM_EDIT'			=> $s_allowed_edit,
-			'S_QM_DELETE'		=> $s_allowed_delete,
-			'S_QM_REPORT'		=> phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id),
-			'S_QM_STATUS'		=> phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id),
+			'S_MOD_ACTION'      => phpbb_gallery_url::append_sid('mcp', "album_id={$image_data['image_album_id']}&amp;image_id={$image_data['image_id']}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
+			'S_QUICK_MOD'       => $s_quick_mod,
+			'S_QM_MOVE'         => phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id),
+			'S_QM_EDIT'         => $s_allowed_edit,
+			'S_QM_DELETE'       => $s_allowed_delete,
+			'S_QM_REPORT'       => phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id),
+			'S_QM_STATUS'       => phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id),
 
-			'S_IMAGE_REPORTED'		=> $image_data['image_reported'],
-			'U_IMAGE_REPORTED'		=> ($image_data['image_reported']) ? phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$image_data['image_album_id']}&amp;option_id=" . $image_data['image_reported']) : '',
-			'S_STATUS_APPROVED'		=> ($image_data['image_status'] == self::STATUS_APPROVED),
-			'S_STATUS_UNAPPROVED'	=> ($image_data['image_status'] == self::STATUS_UNAPPROVED),
-			'S_STATUS_LOCKED'		=> ($image_data['image_status'] == self::STATUS_LOCKED),
+			'S_IMAGE_REPORTED'      => $image_data['image_reported'],
+			'U_IMAGE_REPORTED'      => ($image_data['image_reported']) ? phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$image_data['image_album_id']}&amp;option_id=" . $image_data['image_reported']) : '',
+			'S_STATUS_APPROVED'     => ($image_data['image_status'] == self::STATUS_APPROVED),
+			'S_STATUS_UNAPPROVED'   => ($image_data['image_status'] == self::STATUS_UNAPPROVED),
+			'S_STATUS_LOCKED'       => ($image_data['image_status'] == self::STATUS_LOCKED),
 
 			// Still needed for the classic design, if we don't drop it.
-			'S_IP'		=> (($display & phpbb_gallery_block::DISPLAY_IP) && $auth->acl_get('a_')) ? $image_data['image_user_ip'] : '',
-			'U_WHOIS'	=> phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $image_data['image_user_ip']),
-			'U_REPORT'	=> (phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id) && $image_data['image_reported']) ? phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$image_data['image_album_id']}&amp;option_id=" . $image_data['image_reported']) : '',
-			'U_STATUS'	=> (phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id)) ? phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$image_data['image_album_id']}&amp;option_id=" . $image_data['image_id']) : '',
-			'L_STATUS'	=> ($image_data['image_status'] == self::STATUS_UNAPPROVED) ? $user->lang['APPROVE_IMAGE'] : (($image_data['image_status'] == self::STATUS_APPROVED) ? $user->lang['CHANGE_IMAGE_STATUS'] : $user->lang['UNLOCK_IMAGE']),
-			'U_MOVE'	=> (phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id)) ? phpbb_gallery_url::append_sid('mcp', "action=images_move&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id'] . "&amp;redirect=redirect") : '',
-			'U_EDIT'	=> $s_allowed_edit ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id']) : '',
-			'U_DELETE'	=> $s_allowed_delete ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id']) : '',
+			'S_IP'      => (($display & phpbb_gallery_block::DISPLAY_IP) && $auth->acl_get('a_')) ? $image_data['image_user_ip'] : '',
+			'U_WHOIS'   => phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $image_data['image_user_ip']),
+			'U_REPORT'  => (phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id) && $image_data['image_reported']) ? phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$image_data['image_album_id']}&amp;option_id=" . $image_data['image_reported']) : '',
+			'U_STATUS'  => (phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id)) ? phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$image_data['image_album_id']}&amp;option_id=" . $image_data['image_id']) : '',
+			'L_STATUS'  => ($image_data['image_status'] == self::STATUS_UNAPPROVED) ? $user->lang['APPROVE_IMAGE'] : (($image_data['image_status'] == self::STATUS_APPROVED) ? $user->lang['CHANGE_IMAGE_STATUS'] : $user->lang['UNLOCK_IMAGE']),
+			'U_MOVE'    => (phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id)) ? phpbb_gallery_url::append_sid('mcp', "action=images_move&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id'] . "&amp;redirect=redirect") : '',
+			'U_EDIT'    => $s_allowed_edit ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id']) : '',
+			'U_DELETE'  => $s_allowed_delete ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id']) : '',
 		]);
 	}
 
 	/**
 	* Generate link to image
 	*
-	* @param	string	$content	what's in the link: image_name, thumbnail, fake_thumbnail, medium or lastimage_icon
-	* @param	string	$mode		where does the link leed to: highslide, lytebox, lytebox_slide_show, image_page, image, none
-	* @param	int		$image_id
-	* @param	string	$image_name
-	* @param	int		$album_id
-	* @param	bool	$is_gif		we need to know whether we display a gif, so we can use a better medium-image
-	* @param	bool	$count		shall the image-link be counted as view? (Set to false from image_page.php to deny double increment)
-	* @param	string	$additional_parameters		additional parameters for the url, (starting with &amp;)
+	* @param    string  $content    what's in the link: image_name, thumbnail, fake_thumbnail, medium or lastimage_icon
+	* @param    string  $mode       where does the link leed to: highslide, lytebox, lytebox_slide_show, image_page, image, none
+	* @param    int     $image_id
+	* @param    string  $image_name
+	* @param    int     $album_id
+	* @param    bool    $is_gif     we need to know whether we display a gif, so we can use a better medium-image
+	* @param    bool    $count      shall the image-link be counted as view? (Set to false from image_page.php to deny double increment)
+	* @param    string  $additional_parameters      additional parameters for the url, (starting with &amp;)
 	*/
 	static public function generate_link($content, $mode, $image_id, $image_name, $album_id, $is_gif = false, $count = true, $additional_parameters = '', $next_image = 0)
 	{
@@ -401,9 +401,9 @@ class phpbb_gallery_image
 	/**
 	* Handle user- & total image_counter
 	*
-	* @param	array	$image_id_ary	array with the image_ids which changed their status
-	* @param	bool	$add			are we adding or removing the images
-	* @param	bool	$readd			is it possible that there are images which aren't really changed
+	* @param    array   $image_id_ary   array with the image_ids which changed their status
+	* @param    bool    $add            are we adding or removing the images
+	* @param    bool    $readd          is it possible that there are images which aren't really changed
 	*/
 	static public function handle_counter($image_id_ary, $add, $readd = false)
 	{
@@ -434,8 +434,8 @@ class phpbb_gallery_image
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$sql_ary = [
-				'user_id'				=> $row['image_user_id'],
-				'user_images'			=> $row['images'],
+				'user_id'               => $row['image_user_id'],
+				'user_images'           => $row['images'],
 			];
 
 			$num_images = $num_images + $row['images'];

@@ -44,8 +44,8 @@ class phpbb_gallery
 		if (!empty($config['feed_http_auth']) && request_var('auth', '') == 'http')
 		{
 			phpbb_http_login(array(
-				'auth_message'	=> 'Feed',
-				'viewonline'	=> request_var('viewonline', true),
+				'auth_message'  => 'Feed',
+				'viewonline'    => request_var('viewonline', true),
 			));
 		}
 		*/
@@ -76,19 +76,19 @@ class phpbb_gallery
 		}
 
 		$template->assign_vars([
-			'S_IN_GALLERY'					=> true,
-			'U_GALLERY_SEARCH'				=> phpbb_gallery_url::append_sid('search'),
-			'S_GALLERY_FEEDS'				=> phpbb_gallery_config::get('feed_enable'),
-			'U_GALLERY_FEED'				=> phpbb_gallery_url::append_sid('feed'),
+			'S_IN_GALLERY'                  => true,
+			'U_GALLERY_SEARCH'              => phpbb_gallery_url::append_sid('search'),
+			'S_GALLERY_FEEDS'               => phpbb_gallery_config::get('feed_enable'),
+			'U_GALLERY_FEED'                => phpbb_gallery_url::append_sid('feed'),
 		]);
 
 		// Okay, this is not the best way, but we disable the phpbb feeds and display the ones of the gallery.
 		$config['feed_overall'] = $config['feed_overall_forums'] = $config['feed_topics_new'] = $config['feed_topics_active'] = false;
 
 		$template->assign_block_vars('navlinks', [
-			'FORUM_NAME'	=> $user->lang['GALLERY'],
-			'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('index'),
-			'FIRST'			=> true,
+			'FORUM_NAME'    => $user->lang['GALLERY'],
+			'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('index'),
+			'FIRST'         => true,
 		]);
 
 		self::$loaded = true;
@@ -132,11 +132,11 @@ class phpbb_gallery
 		$can_upload = phpbb_gallery::$auth->acl_album_ids('i_upload', 'bool');
 
 		$template->assign_vars([
-			'S_IN_GALLERY_POPUP'			=> (request_var('display', '') == 'popup'),
+			'S_IN_GALLERY_POPUP'            => (request_var('display', '') == 'popup'),
 
-			'U_POPUP_OWN'		=> phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id']),
-			'U_POPUP_RECENT'	=> phpbb_gallery_url::append_sid('search', 'search_id=recent'),
-			'U_POPUP_UPLOAD'	=> ($can_upload) ? phpbb_gallery_url::append_sid('posting', 'mode=upload') : '',
+			'U_POPUP_OWN'       => phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id']),
+			'U_POPUP_RECENT'    => phpbb_gallery_url::append_sid('search', 'search_id=recent'),
+			'U_POPUP_UPLOAD'    => ($can_upload) ? phpbb_gallery_url::append_sid('posting', 'mode=upload') : '',
 		]);
 	}
 }

@@ -14,14 +14,14 @@ if (!defined('IN_PHPBB'))
 
 class phpbb_gallery_album
 {
-	const PUBLIC_ALBUM		= 0;
+	const PUBLIC_ALBUM      = 0;
 
-	const TYPE_CAT			= 0;
-	const TYPE_UPLOAD		= 1;
-	const TYPE_CONTEST		= 2;
+	const TYPE_CAT          = 0;
+	const TYPE_UPLOAD       = 1;
+	const TYPE_CONTEST      = 2;
 
-	const STATUS_OPEN		= 0;
-	const STATUS_LOCKED		= 1;
+	const STATUS_OPEN       = 0;
+	const STATUS_LOCKED     = 1;
 
 	/**
 	* Get album information
@@ -31,10 +31,10 @@ class phpbb_gallery_album
 		global $db, $user;
 
 		$sql_array = [
-			'SELECT'		=> 'a.*',
-			'FROM'			=> [GALLERY_ALBUMS_TABLE => 'a'],
+			'SELECT'        => 'a.*',
+			'FROM'          => [GALLERY_ALBUMS_TABLE => 'a'],
 
-			'WHERE'			=> 'a.album_id = ' . (int) $album_id,
+			'WHERE'         => 'a.album_id = ' . (int) $album_id,
 		];
 
 		if ($extended_info)
@@ -42,12 +42,12 @@ class phpbb_gallery_album
 			$sql_array['SELECT'] .= ', c.*, w.watch_id';
 			$sql_array['LEFT_JOIN'] = [
 				[
-					'FROM'		=> [GALLERY_WATCH_TABLE => 'w'],
-					'ON'		=> 'a.album_id = w.album_id AND w.user_id = ' . (int) $user->data['user_id'],
+					'FROM'      => [GALLERY_WATCH_TABLE => 'w'],
+					'ON'        => 'a.album_id = w.album_id AND w.user_id = ' . (int) $user->data['user_id'],
 				],
 				[
-					'FROM'		=> [GALLERY_CONTESTS_TABLE => 'c'],
-					'ON'		=> 'a.album_id = c.contest_album_id',
+					'FROM'      => [GALLERY_CONTESTS_TABLE => 'c'],
+					'ON'        => 'a.album_id = c.contest_album_id',
 				],
 			];
 		}
@@ -113,15 +113,15 @@ class phpbb_gallery_album
 
 	/**
 	* Generate gallery-albumbox
-	* @param	bool				$ignore_personals		list personal albums
-	* @param	string				$select_name			request_var() for the select-box
-	* @param	int					$select_id				selected album
-	* @param	string				$requested_permission	Exp: for moving a image you need i_upload permissions or a_moderate
-	* @param	(string || array)	$ignore_id				disabled albums, Exp: on moving: the album where the image is now
-	* @param	int					$album_user_id			for the select-boxes of the ucp so you only can attach to your own albums
-	* @param	int					$requested_album_type	only albums of the album_type are allowed
+	* @param    bool                $ignore_personals       list personal albums
+	* @param    string              $select_name            request_var() for the select-box
+	* @param    int                 $select_id              selected album
+	* @param    string              $requested_permission   Exp: for moving a image you need i_upload permissions or a_moderate
+	* @param    (string || array)   $ignore_id              disabled albums, Exp: on moving: the album where the image is now
+	* @param    int                 $album_user_id          for the select-boxes of the ucp so you only can attach to your own albums
+	* @param    int                 $requested_album_type   only albums of the album_type are allowed
 	*
-	* @return	string				$gallery_albumbox		if ($select_name) {full select-box} else {list with options}
+	* @return   string              $gallery_albumbox       if ($select_name) {full select-box} else {list with options}
 	*
 	* comparable to make_forum_select (includes/functions_admin.php)
 	*/
@@ -315,28 +315,28 @@ class phpbb_gallery_album
 		if ($row = $db->sql_fetchrow($result))
 		{
 			$sql_ary = [
-				'album_images_real'			=> $images_real,
-				'album_images'				=> $images,
-				'album_last_image_id'		=> $row['image_id'],
-				'album_last_image_time'		=> $row['image_time'],
-				'album_last_image_name'		=> $row['image_name'],
-				'album_last_username'		=> $row['image_username'],
-				'album_last_user_colour'	=> $row['image_user_colour'],
-				'album_last_user_id'		=> $row['image_user_id'],
+				'album_images_real'         => $images_real,
+				'album_images'              => $images,
+				'album_last_image_id'       => $row['image_id'],
+				'album_last_image_time'     => $row['image_time'],
+				'album_last_image_name'     => $row['image_name'],
+				'album_last_username'       => $row['image_username'],
+				'album_last_user_colour'    => $row['image_user_colour'],
+				'album_last_user_id'        => $row['image_user_id'],
 			];
 		}
 		else
 		{
 			// No approved image, so we clear the columns
 			$sql_ary = [
-				'album_images_real'			=> $images_real,
-				'album_images'				=> $images,
-				'album_last_image_id'		=> 0,
-				'album_last_image_time'		=> 0,
-				'album_last_image_name'		=> '',
-				'album_last_username'		=> '',
-				'album_last_user_colour'	=> '',
-				'album_last_user_id'		=> 0,
+				'album_images_real'         => $images_real,
+				'album_images'              => $images,
+				'album_last_image_id'       => 0,
+				'album_last_image_time'     => 0,
+				'album_last_image_name'     => '',
+				'album_last_username'       => '',
+				'album_last_user_colour'    => '',
+				'album_last_user_id'        => 0,
 			];
 			if ($album_user_id)
 			{
@@ -428,8 +428,8 @@ class phpbb_gallery_album
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$template->assign_block_vars('navlinks', [
-					'FORUM_NAME'	=> $user->lang['PERSONAL_ALBUMS'],
-					'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('index', 'mode=personal'),
+					'FORUM_NAME'    => $user->lang['PERSONAL_ALBUMS'],
+					'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('index', 'mode=personal'),
 				]);
 			}
 			$db->sql_freeresult($result);
@@ -443,27 +443,27 @@ class phpbb_gallery_album
 				[$parent_name, $parent_type] = array_values($parent_data);
 
 				$template->assign_block_vars('navlinks', [
-					'FORUM_NAME'	=> $parent_name,
-					'FORUM_ID'		=> $parent_album_id,
-					'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('album', 'album_id=' . $parent_album_id),
+					'FORUM_NAME'    => $parent_name,
+					'FORUM_ID'      => $parent_album_id,
+					'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('album', 'album_id=' . $parent_album_id),
 				]);
 			}
 		}
 
 		$template->assign_block_vars('navlinks', [
-			'FORUM_NAME'	=> $album_data['album_name'],
-			'FORUM_ID'		=> $album_data['album_id'],
-			'U_VIEW_FORUM'	=> phpbb_gallery_url::append_sid('album', 'album_id=' . $album_data['album_id']),
+			'FORUM_NAME'    => $album_data['album_name'],
+			'FORUM_ID'      => $album_data['album_id'],
+			'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('album', 'album_id=' . $album_data['album_id']),
 		]);
 
 		$template->assign_vars([
-			'ALBUM_ID' 		=> $album_data['album_id'],
-			'ALBUM_NAME'	=> $album_data['album_name'],
-			'ALBUM_DESC'	=> generate_text_for_display($album_data['album_desc'], $album_data['album_desc_uid'], $album_data['album_desc_bitfield'], $album_data['album_desc_options']),
-			'ALBUM_CONTEST_START'	=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_START' . ((($album_data['contest_start']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start']), false, true)) : '',
-			'ALBUM_CONTEST_RATING'	=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_RATING_START' . ((($album_data['contest_start'] + $album_data['contest_rating']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_rating']), false, true)) : '',
-			'ALBUM_CONTEST_END'		=> ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_END' . ((($album_data['contest_start'] + $album_data['contest_end']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)) : '',
-			'U_VIEW_ALBUM'	=> phpbb_gallery_url::append_sid('album', 'album_id=' . $album_data['album_id']),
+			'ALBUM_ID'      => $album_data['album_id'],
+			'ALBUM_NAME'    => $album_data['album_name'],
+			'ALBUM_DESC'    => generate_text_for_display($album_data['album_desc'], $album_data['album_desc_uid'], $album_data['album_desc_bitfield'], $album_data['album_desc_options']),
+			'ALBUM_CONTEST_START'   => ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_START' . ((($album_data['contest_start']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start']), false, true)) : '',
+			'ALBUM_CONTEST_RATING'  => ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_RATING_START' . ((($album_data['contest_start'] + $album_data['contest_rating']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_rating']), false, true)) : '',
+			'ALBUM_CONTEST_END'     => ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_END' . ((($album_data['contest_start'] + $album_data['contest_end']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)) : '',
+			'U_VIEW_ALBUM'  => phpbb_gallery_url::append_sid('album', 'album_id=' . $album_data['album_id']),
 		]);
 
 		return;
@@ -540,22 +540,22 @@ class phpbb_gallery_album
 		}
 
 		$sql_array = [
-			'SELECT'	=> 'm.*, u.user_colour, g.group_colour, g.group_type',
-			'FROM'		=> [GALLERY_MODSCACHE_TABLE => 'm'],
+			'SELECT'    => 'm.*, u.user_colour, g.group_colour, g.group_type',
+			'FROM'      => [GALLERY_MODSCACHE_TABLE => 'm'],
 
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [USERS_TABLE => 'u'],
-					'ON'	=> 'm.user_id = u.user_id',
+					'FROM'  => [USERS_TABLE => 'u'],
+					'ON'    => 'm.user_id = u.user_id',
 				],
 				[
-					'FROM'	=> [GROUPS_TABLE => 'g'],
-					'ON'	=> 'm.group_id = g.group_id',
+					'FROM'  => [GROUPS_TABLE => 'g'],
+					'ON'    => 'm.group_id = g.group_id',
 				],
 			],
 
-			'WHERE'		=> 'm.display_on_index = 1',
-			'ORDER_BY'	=> 'm.group_id ASC, m.user_id ASC',
+			'WHERE'     => 'm.display_on_index = 1',
+			'ORDER_BY'  => 'm.group_id ASC, m.user_id ASC',
 		];
 
 		// We query every album here because for caching we should not have any parameter.
@@ -641,9 +641,9 @@ class phpbb_gallery_album
 			$start = request_var('start', 0);
 			$limit = phpbb_gallery_config::get('pegas_per_page');
 			$template->assign_vars([
-				'PAGINATION'				=> generate_pagination(phpbb_gallery_url::append_sid('index', 'mode=' . $mode), $num_pegas, $limit, $start),
-				'TOTAL_PGALLERIES_SHORT'	=> $user->lang('TOTAL_PEGAS_SHORT_SPRINTF', $num_pegas),
-				'PAGE_NUMBER'				=> on_page($num_pegas, $limit, $start),
+				'PAGINATION'                => generate_pagination(phpbb_gallery_url::append_sid('index', 'mode=' . $mode), $num_pegas, $limit, $start),
+				'TOTAL_PGALLERIES_SHORT'    => $user->lang('TOTAL_PEGAS_SHORT_SPRINTF', $num_pegas),
+				'PAGE_NUMBER'               => on_page($num_pegas, $limit, $start),
 			]);
 		}
 		else
@@ -652,40 +652,40 @@ class phpbb_gallery_album
 		}
 
 		$sql_array = [
-			'SELECT'	=> 'a.*, at.mark_time',
-			'FROM'		=> [GALLERY_ALBUMS_TABLE => 'a'],
+			'SELECT'    => 'a.*, at.mark_time',
+			'FROM'      => [GALLERY_ALBUMS_TABLE => 'a'],
 
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [GALLERY_ATRACK_TABLE => 'at'],
-					'ON'	=> 'at.user_id = ' . $user->data['user_id'] . ' AND a.album_id = at.album_id'
+					'FROM'  => [GALLERY_ATRACK_TABLE => 'at'],
+					'ON'    => 'at.user_id = ' . $user->data['user_id'] . ' AND a.album_id = at.album_id'
 				]
 			],
 
-			'ORDER_BY'	=> 'a.album_user_id, a.left_id',
+			'ORDER_BY'  => 'a.album_user_id, a.left_id',
 		];
 
 		if (isset($mode_personal))
 		{
 			$sql_array['LEFT_JOIN'][] = [
-				'FROM'	=> [USERS_TABLE => 'u'],
-				'ON'	=> 'u.user_id = a.album_user_id'
+				'FROM'  => [USERS_TABLE => 'u'],
+				'ON'    => 'u.user_id = a.album_user_id'
 			];
 			$sql_array['ORDER_BY'] = 'u.username_clean, a.left_id';
 		}
 		$sql_array['LEFT_JOIN'][] = [
-			'FROM'	=> [GALLERY_CONTESTS_TABLE => 'c'],
-			'ON'	=> 'c.contest_album_id = a.album_id'
+			'FROM'  => [GALLERY_CONTESTS_TABLE => 'c'],
+			'ON'    => 'c.contest_album_id = a.album_id'
 		];
 		$sql_array['SELECT'] = $sql_array['SELECT'] . ', c.contest_marked';
 
 
 		$sql = $db->sql_build_query('SELECT', [
-			'SELECT'	=> $sql_array['SELECT'],
-			'FROM'		=> $sql_array['FROM'],
-			'LEFT_JOIN'	=> $sql_array['LEFT_JOIN'],
-			'WHERE'		=> $sql_where,
-			'ORDER_BY'	=> $sql_array['ORDER_BY'],
+			'SELECT'    => $sql_array['SELECT'],
+			'FROM'      => $sql_array['FROM'],
+			'LEFT_JOIN' => $sql_array['LEFT_JOIN'],
+			'WHERE'     => $sql_where,
+			'ORDER_BY'  => $sql_array['ORDER_BY'],
 		]);
 
 		$result = $db->sql_query($sql);
@@ -832,14 +832,14 @@ class phpbb_gallery_album
 			if (($row['parent_id'] == $root_data['album_id']) && ($row['album_type'] == self::TYPE_CAT))
 			{
 				$template->assign_block_vars('albumrow', [
-					'S_IS_CAT'				=> true,
-					'ALBUM_ID'				=> $row['album_id'],
-					'ALBUM_NAME'			=> $row['album_name'],
-					'ALBUM_DESC'			=> generate_text_for_display($row['album_desc'], $row['album_desc_uid'], $row['album_desc_bitfield'], $row['album_desc_options']),
-					'ALBUM_FOLDER_IMG'		=> '',
-					'ALBUM_FOLDER_IMG_SRC'	=> '',
-					'ALBUM_IMAGE'			=> ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
-					'U_VIEWALBUM'			=> phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id'])]
+					'S_IS_CAT'              => true,
+					'ALBUM_ID'              => $row['album_id'],
+					'ALBUM_NAME'            => $row['album_name'],
+					'ALBUM_DESC'            => generate_text_for_display($row['album_desc'], $row['album_desc_uid'], $row['album_desc_bitfield'], $row['album_desc_options']),
+					'ALBUM_FOLDER_IMG'      => '',
+					'ALBUM_FOLDER_IMG_SRC'  => '',
+					'ALBUM_IMAGE'           => ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
+					'U_VIEWALBUM'           => phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id'])]
 				);
 
 				continue;
@@ -880,9 +880,9 @@ class phpbb_gallery_album
 					if ($subalbum_row['display'] && $subalbum_row['name'])
 					{
 						$subalbums_list[] = [
-							'link'		=> phpbb_gallery_url::append_sid('album', 'album_id=' . $subalbum_id),
-							'name'		=> $subalbum_row['name'],
-							'unread'	=> $subalbum_unread,
+							'link'      => phpbb_gallery_url::append_sid('album', 'album_id=' . $subalbum_id),
+							'name'      => $subalbum_row['name'],
+							'unread'    => $subalbum_unread,
 						];
 					}
 					else
@@ -949,46 +949,46 @@ class phpbb_gallery_album
 			$s_username_hidden = ($lastimage_album_type == self::TYPE_CONTEST) && $lastimage_contest_marked && !phpbb_gallery::$auth->acl_check('m_status', $album_id, $row['album_user_id']) && ($user->data['user_id'] != $row['album_last_user_id'] || $row['album_last_user_id'] == ANONYMOUS);
 
 			$template->assign_block_vars('albumrow', [
-				'S_IS_CAT'			=> false,
-				'S_NO_CAT'			=> $catless && !$last_catless,
-				'S_LOCKED_ALBUM'	=> ($row['album_status'] == self::STATUS_LOCKED),
-				'S_UNREAD_ALBUM'	=> $album_unread,
-				'S_LIST_SUBALBUMS'	=> (bool) $row['display_subalbum_list'],
-				'S_SUBALBUMS'		=> (sizeof($subalbums_list) > 0),
+				'S_IS_CAT'          => false,
+				'S_NO_CAT'          => $catless && !$last_catless,
+				'S_LOCKED_ALBUM'    => ($row['album_status'] == self::STATUS_LOCKED),
+				'S_UNREAD_ALBUM'    => $album_unread,
+				'S_LIST_SUBALBUMS'  => (bool) $row['display_subalbum_list'],
+				'S_SUBALBUMS'       => (sizeof($subalbums_list) > 0),
 
-				'ALBUM_ID'				=> $row['album_id'],
-				'ALBUM_NAME'			=> $row['album_name'],
-				'ALBUM_DESC'			=> generate_text_for_display($row['album_desc'], $row['album_desc_uid'], $row['album_desc_bitfield'], $row['album_desc_options']),
-				'IMAGES'				=> $row['album_images'],
-				'UNAPPROVED_IMAGES'		=> (phpbb_gallery::$auth->acl_check('m_status', $album_id, $row['album_user_id'])) ? ($row['album_images_real'] - $row['album_images']) : 0,
-				'ALBUM_FOLDER_IMG'		=> $user->img($folder_image, $folder_alt),
-				'ALBUM_FOLDER_IMG_SRC'	=> $user->img($folder_image, $folder_alt, false, '', 'src'),
-				'ALBUM_FOLDER_IMG_ALT'	=> $user->lang[$folder_alt] ?? '',
-				'ALBUM_IMAGE'			=> ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
-				'LAST_IMAGE_TIME'		=> $lastimage_time,
-				'LAST_USER_FULL'		=> ($s_username_hidden) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
-				'UC_THUMBNAIL'			=> (phpbb_gallery_config::get('mini_thumbnail_disp')) ? $lastimage_uc_thumbnail : '',
-				'UC_FAKE_THUMBNAIL'		=> (phpbb_gallery_config::get('mini_thumbnail_disp')) ? $lastimage_uc_fake_thumbnail : '',
-				'UC_IMAGE_NAME'			=> $lastimage_uc_name,
-				'UC_LASTIMAGE_ICON'		=> $lastimage_uc_icon,
-				'ALBUM_COLOUR'			=> get_username_string('colour', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
-				'MODERATORS'			=> $moderators_list,
-				'SUBALBUMS'				=> $s_subalbums_list,
+				'ALBUM_ID'              => $row['album_id'],
+				'ALBUM_NAME'            => $row['album_name'],
+				'ALBUM_DESC'            => generate_text_for_display($row['album_desc'], $row['album_desc_uid'], $row['album_desc_bitfield'], $row['album_desc_options']),
+				'IMAGES'                => $row['album_images'],
+				'UNAPPROVED_IMAGES'     => (phpbb_gallery::$auth->acl_check('m_status', $album_id, $row['album_user_id'])) ? ($row['album_images_real'] - $row['album_images']) : 0,
+				'ALBUM_FOLDER_IMG'      => $user->img($folder_image, $folder_alt),
+				'ALBUM_FOLDER_IMG_SRC'  => $user->img($folder_image, $folder_alt, false, '', 'src'),
+				'ALBUM_FOLDER_IMG_ALT'  => $user->lang[$folder_alt] ?? '',
+				'ALBUM_IMAGE'           => ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
+				'LAST_IMAGE_TIME'       => $lastimage_time,
+				'LAST_USER_FULL'        => ($s_username_hidden) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
+				'UC_THUMBNAIL'          => (phpbb_gallery_config::get('mini_thumbnail_disp')) ? $lastimage_uc_thumbnail : '',
+				'UC_FAKE_THUMBNAIL'     => (phpbb_gallery_config::get('mini_thumbnail_disp')) ? $lastimage_uc_fake_thumbnail : '',
+				'UC_IMAGE_NAME'         => $lastimage_uc_name,
+				'UC_LASTIMAGE_ICON'     => $lastimage_uc_icon,
+				'ALBUM_COLOUR'          => get_username_string('colour', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
+				'MODERATORS'            => $moderators_list,
+				'SUBALBUMS'             => $s_subalbums_list,
 
-				'L_SUBALBUM_STR'		=> $l_subalbums,
-				'L_ALBUM_FOLDER_ALT'	=> $folder_alt,
-				'L_MODERATOR_STR'		=> $l_moderator,
+				'L_SUBALBUM_STR'        => $l_subalbums,
+				'L_ALBUM_FOLDER_ALT'    => $folder_alt,
+				'L_MODERATOR_STR'       => $l_moderator,
 
-				'U_VIEWALBUM'			=> phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id']),
+				'U_VIEWALBUM'           => phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id']),
 			]);
 
 			// Assign subforums loop for style authors
 			foreach ($subalbums_list as $subalbum)
 			{
 				$template->assign_block_vars('albumrow.subalbum', [
-					'U_SUBALBUM'	=> $subalbum['link'],
-					'SUBALBUM_NAME'	=> $subalbum['name'],
-					'S_UNREAD'		=> $subalbum['unread'],
+					'U_SUBALBUM'    => $subalbum['link'],
+					'SUBALBUM_NAME' => $subalbum['name'],
+					'S_UNREAD'      => $subalbum['unread'],
 				]);
 			}
 
@@ -996,11 +996,11 @@ class phpbb_gallery_album
 		}
 
 		$template->assign_vars([
-			'U_MARK_ALBUMS'		=> ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('album', 'hash=' . generate_link_hash('global') . '&amp;album_id=' . $root_data['album_id'] . '&amp;mark=albums') : '',
-			'S_HAS_SUBALBUM'	=> (bool) $visible_albums,
-			'L_SUBFORUM'		=> ($visible_albums == 1) ? $user->lang['SUBALBUM'] : $user->lang['SUBALBUMS'],
-			'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
-			'FAKE_THUMB_SIZE'	=> phpbb_gallery_config::get('mini_thumbnail_size'),
+			'U_MARK_ALBUMS'     => ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('album', 'hash=' . generate_link_hash('global') . '&amp;album_id=' . $root_data['album_id'] . '&amp;mark=albums') : '',
+			'S_HAS_SUBALBUM'    => (bool) $visible_albums,
+			'L_SUBFORUM'        => ($visible_albums == 1) ? $user->lang['SUBALBUM'] : $user->lang['SUBALBUMS'],
+			'LAST_POST_IMG'     => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+			'FAKE_THUMB_SIZE'   => phpbb_gallery_config::get('mini_thumbnail_size'),
 		]);
 
 		if ($return_moderators)
@@ -1019,23 +1019,23 @@ class phpbb_gallery_album
 		global $cache, $db;
 
 		$album_data = [
-			'album_name'					=> $album_name,
-			'parent_id'						=> 0,
+			'album_name'                    => $album_name,
+			'parent_id'                     => 0,
 			//left_id and right_id default by db
-			'album_desc_options'			=> 7,
-			'album_desc'					=> '',
-			'album_parents'					=> '',
-			'album_type'					=> self::TYPE_UPLOAD,
-			'album_status'					=> self::STATUS_OPEN,
-			'album_user_id'					=> $user_id,
-			'album_last_username'			=> '',
-			'album_last_user_colour'		=> $user_colour,
+			'album_desc_options'            => 7,
+			'album_desc'                    => '',
+			'album_parents'                 => '',
+			'album_type'                    => self::TYPE_UPLOAD,
+			'album_status'                  => self::STATUS_OPEN,
+			'album_user_id'                 => $user_id,
+			'album_last_username'           => '',
+			'album_last_user_colour'        => $user_colour,
 		];
 		$db->sql_query('INSERT INTO ' . GALLERY_ALBUMS_TABLE . ' ' . $db->sql_build_array('INSERT', $album_data));
 		$personal_album_id = $db->sql_nextid();
 
 		$gallery_user->update_data([
-				'personal_album_id'	=> $personal_album_id,
+				'personal_album_id' => $personal_album_id,
 		]);
 
 		phpbb_gallery_config::inc('num_pegas', 1);

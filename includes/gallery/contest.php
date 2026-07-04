@@ -34,11 +34,11 @@ class phpbb_gallery_contest
 	/**
 	* Get the contest row from the table
 	*
-	* @param	int		$id				ID of the contest or album, depending on second parameter
-	* @param	string	$mode			contest or album ID to get the contest.
-	* @param	bool	$throw_error	Shall we throw an error if the contest was not found?
+	* @param    int     $id             ID of the contest or album, depending on second parameter
+	* @param    string  $mode           contest or album ID to get the contest.
+	* @param    bool    $throw_error    Shall we throw an error if the contest was not found?
 	*
-	* @return	mixed	Either the array or boolean false if contest does not exist
+	* @return   mixed   Either the array or boolean false if contest does not exist
 	*/
 	function get_contest($id, $mode = 'contest', $throw_error = true)
 	{

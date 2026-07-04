@@ -30,9 +30,9 @@ class phpbb_gallery_report
 			return;
 		}
 		$data = $data + [
-			'reporter_id'				=> $user->data['user_id'],
-			'report_time'				=> time(),
-			'report_status'				=> self::OPEN,
+			'reporter_id'               => $user->data['user_id'],
+			'report_time'               => time(),
+			'report_status'             => self::OPEN,
 		];
 		$sql = 'INSERT INTO ' . GALLERY_REPORTS_TABLE . ' ' . $db->sql_build_array('INSERT', $data);
 		$db->sql_query($sql);
@@ -48,16 +48,16 @@ class phpbb_gallery_report
 	/**
 	* Change status of a report
 	*
-	* @param	mixed	$report_ids		Array or integer with report_id.
-	* @param	int		$user_id		If not set, it uses the currents user_id
+	* @param    mixed   $report_ids     Array or integer with report_id.
+	* @param    int     $user_id        If not set, it uses the currents user_id
 	*/
 	static public function change_status($new_status, $report_ids, $user_id = false)
 	{
 		global $db, $user;
 
 		$sql_ary = [
-			'report_manager'		=> (int) ($user_id ?: $user->data['user_id']),
-			'report_status'			=> $new_status,
+			'report_manager'        => (int) ($user_id ?: $user->data['user_id']),
+			'report_status'         => $new_status,
 		];
 		$report_ids = self::cast_mixed_int2array($report_ids);
 
@@ -93,7 +93,7 @@ class phpbb_gallery_report
 	/**
 	* Move an image from one album to another
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id.
+	* @param    mixed   $image_ids      Array or integer with image_id.
 	*/
 	static public function move_images($image_ids, $move_to)
 	{
@@ -110,7 +110,7 @@ class phpbb_gallery_report
 	/**
 	* Move the content from one album to another
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id.
+	* @param    mixed   $image_ids      Array or integer with image_id.
 	*/
 	static public function move_album_content($move_from, $move_to)
 	{
@@ -125,7 +125,7 @@ class phpbb_gallery_report
 	/**
 	* Delete reports for given report_ids
 	*
-	* @param	mixed	$report_ids		Array or integer with report_id.
+	* @param    mixed   $report_ids     Array or integer with report_id.
 	*/
 	static public function delete($report_ids)
 	{
@@ -147,7 +147,7 @@ class phpbb_gallery_report
 	/**
 	* Delete reports for given image_ids
 	*
-	* @param	mixed	$image_ids		Array or integer with image_id.
+	* @param    mixed   $image_ids      Array or integer with image_id.
 	*/
 	static public function delete_images($image_ids)
 	{
@@ -164,7 +164,7 @@ class phpbb_gallery_report
 	/**
 	* Delete reports for given album_ids
 	*
-	* @param	mixed	$album_ids		Array or integer with album_id.
+	* @param    mixed   $album_ids      Array or integer with album_id.
 	*/
 	static public function delete_albums($album_ids)
 	{

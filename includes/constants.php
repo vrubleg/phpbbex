@@ -268,20 +268,20 @@ define('WORDS_TABLE',               $table_prefix . 'words');
 define('ZEBRA_TABLE',               $table_prefix . 'zebra');
 
 // Gallery tables
-define('GALLERY_ALBUMS_TABLE',			$table_prefix . 'gallery_albums');
-define('GALLERY_ATRACK_TABLE',			$table_prefix . 'gallery_albums_track');
-define('GALLERY_COMMENTS_TABLE',		$table_prefix . 'gallery_comments');
-define('GALLERY_CONFIG_TABLE',			$table_prefix . 'gallery_config');
-define('GALLERY_CONTESTS_TABLE',		$table_prefix . 'gallery_contests');
-define('GALLERY_FAVORITES_TABLE',		$table_prefix . 'gallery_favorites');
-define('GALLERY_IMAGES_TABLE',			$table_prefix . 'gallery_images');
-define('GALLERY_MODSCACHE_TABLE',		$table_prefix . 'gallery_modscache');
-define('GALLERY_PERMISSIONS_TABLE',		$table_prefix . 'gallery_permissions');
-define('GALLERY_RATES_TABLE',			$table_prefix . 'gallery_rates');
-define('GALLERY_REPORTS_TABLE',			$table_prefix . 'gallery_reports');
-define('GALLERY_ROLES_TABLE',			$table_prefix . 'gallery_roles');
-define('GALLERY_USERS_TABLE',			$table_prefix . 'gallery_users');
-define('GALLERY_WATCH_TABLE',			$table_prefix . 'gallery_watch');
+define('GALLERY_ALBUMS_TABLE',          $table_prefix . 'gallery_albums');
+define('GALLERY_ATRACK_TABLE',          $table_prefix . 'gallery_albums_track');
+define('GALLERY_COMMENTS_TABLE',        $table_prefix . 'gallery_comments');
+define('GALLERY_CONFIG_TABLE',          $table_prefix . 'gallery_config');
+define('GALLERY_CONTESTS_TABLE',        $table_prefix . 'gallery_contests');
+define('GALLERY_FAVORITES_TABLE',       $table_prefix . 'gallery_favorites');
+define('GALLERY_IMAGES_TABLE',          $table_prefix . 'gallery_images');
+define('GALLERY_MODSCACHE_TABLE',       $table_prefix . 'gallery_modscache');
+define('GALLERY_PERMISSIONS_TABLE',     $table_prefix . 'gallery_permissions');
+define('GALLERY_RATES_TABLE',           $table_prefix . 'gallery_rates');
+define('GALLERY_REPORTS_TABLE',         $table_prefix . 'gallery_reports');
+define('GALLERY_ROLES_TABLE',           $table_prefix . 'gallery_roles');
+define('GALLERY_USERS_TABLE',           $table_prefix . 'gallery_users');
+define('GALLERY_WATCH_TABLE',           $table_prefix . 'gallery_watch');
 
 // phpBBex tables
 define('USER_CONFIRM_KEYS_TABLE',   $table_prefix . 'user_confirm_keys');

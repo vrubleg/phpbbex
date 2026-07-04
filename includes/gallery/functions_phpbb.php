@@ -16,7 +16,7 @@ if (!function_exists('phpbb_parse_http_date'))
 {
 	/**
 	* Converts an HTTP 'full date' to UNIX timestamp
-	* See:	http://tools.ietf.org/html/rfc2616#section-3.3.1
+	* See:  http://tools.ietf.org/html/rfc2616#section-3.3.1
 	*
 	* Formats allowed by rfc 2616 are:
 	*
@@ -30,10 +30,10 @@ if (!function_exists('phpbb_parse_http_date'))
 	* what timezone a time in asctime format is in, we do not support the
 	* asctime format and return false if a time in asctime format is passed in.
 	*
-	* @param string	$date		Parameter array, see $param_defaults array.
+	* @param string $date       Parameter array, see $param_defaults array.
 	*
-	* @return int|bool			False on failure,
-	*							GMT Unix timestamp otherwise.
+	* @return int|bool          False on failure,
+	*                           GMT Unix timestamp otherwise.
 	*/
 	function phpbb_parse_http_date($date)
 	{
@@ -63,10 +63,10 @@ if (!function_exists('phpbb_parse_if_modified_since'))
 	* phpbb_parse_http_date is used for date parsing, which does not accept
 	* ANSI C asctime-formatted dates.
 	*
-	* @param string	$date		HTTP 'full date' to parse, or false to use $_SERVER['HTTP_IF_MODIFIED_SINCE'].
+	* @param string $date       HTTP 'full date' to parse, or false to use $_SERVER['HTTP_IF_MODIFIED_SINCE'].
 	*
-	* @return int|bool			False on failure,
-	*							GMT Unix timestamp otherwise.
+	* @return int|bool          False on failure,
+	*                           GMT Unix timestamp otherwise.
 	*/
 	function phpbb_parse_if_modified_since($date = false)
 	{

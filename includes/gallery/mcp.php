@@ -23,20 +23,20 @@ class phpbb_gallery_mcp
 
 		$mode_s = $mode;
 		$nav_tabs = [
-			'album'			=> ['name' => 'GALLERY_MCP_MAIN',		'mode' => 'album',				'mode_s' => 'album'],
-			'report'		=> ['name' => 'GALLERY_MCP_REPORTED',	'mode' => 'report_open',		'mode_s' => 'report'],
-			'queue'			=> ['name' => 'GALLERY_MCP_QUEUE',		'mode' => 'queue_unapproved',	'mode_s' => 'queue'],
+			'album'         => ['name' => 'GALLERY_MCP_MAIN',       'mode' => 'album',              'mode_s' => 'album'],
+			'report'        => ['name' => 'GALLERY_MCP_REPORTED',   'mode' => 'report_open',        'mode_s' => 'report'],
+			'queue'         => ['name' => 'GALLERY_MCP_QUEUE',      'mode' => 'queue_unapproved',   'mode_s' => 'queue'],
 		];
 		$nav_subsections = [
-			'album'		=> [
+			'album'     => [
 				//array('name' => 'GALLERY_MCP_OVERVIEW', 'mode' => 'overview'),
 				['name' => 'GALLERY_MCP_VIEWALBUM', 'mode' => 'album'],
 			],
-			'report'		=> [
+			'report'        => [
 				['name' => 'GALLERY_MCP_REPO_OPEN', 'mode' => 'report_open'],
 				['name' => 'GALLERY_MCP_REPO_DONE', 'mode' => 'report_closed'],
 			],
-			'queue'		=> [
+			'queue'     => [
 				['name' => 'GALLERY_MCP_UNAPPROVED', 'mode' => 'queue_unapproved'],
 				['name' => 'GALLERY_MCP_APPROVED', 'mode' => 'queue_approved'],
 				['name' => 'GALLERY_MCP_LOCKED', 'mode' => 'queue_locked'],
@@ -62,9 +62,9 @@ class phpbb_gallery_mcp
 		foreach ($nav_tabs as $navtab)
 		{
 			$template->assign_block_vars('tabs', [
-				'TAB_ACTIVE'	=> (strrpos(substr($mode, 0, 5), substr($navtab['mode_s'], 0, 5)) !== false),
-				'TAB_NAME'		=> $user->lang[$navtab['name']],
-				'U_TAB'			=> phpbb_gallery_url::append_sid('mcp', 'mode=' .  $navtab['mode'] . '&amp;album_id=' . $album_id),
+				'TAB_ACTIVE'    => (strrpos(substr($mode, 0, 5), substr($navtab['mode_s'], 0, 5)) !== false),
+				'TAB_NAME'      => $user->lang[$navtab['name']],
+				'U_TAB'         => phpbb_gallery_url::append_sid('mcp', 'mode=' .  $navtab['mode'] . '&amp;album_id=' . $album_id),
 			]);
 
 			if (strrpos(substr($mode, 0, 5), substr($navtab['mode_s'], 0, 5)) !== false)
@@ -73,17 +73,17 @@ class phpbb_gallery_mcp
 				foreach ($nav_subsections[$mode_s] as $navsubsection)
 				{
 					$template->assign_block_vars('tabs.modes', [
-						'MODE_ACTIVE'		=> ($navsubsection['mode'] == $mode),
-						'MODE_NAME'			=> $user->lang[$navsubsection['name']],
-						'U_MODE'			=> phpbb_gallery_url::append_sid('mcp', 'mode=' .  $navsubsection['mode'] . '&amp;album_id=' . $album_id . (($option_id && (($navsubsection['mode'] == 'report_details') || ($navsubsection['mode'] == 'queue_details'))) ? '&amp;option_id=' . $option_id : '')),
+						'MODE_ACTIVE'       => ($navsubsection['mode'] == $mode),
+						'MODE_NAME'         => $user->lang[$navsubsection['name']],
+						'U_MODE'            => phpbb_gallery_url::append_sid('mcp', 'mode=' .  $navsubsection['mode'] . '&amp;album_id=' . $album_id . (($option_id && (($navsubsection['mode'] == 'report_details') || ($navsubsection['mode'] == 'queue_details'))) ? '&amp;option_id=' . $option_id : '')),
 					]);
 
 					if ($navsubsection['mode'] == $mode)
 					{
 						$page_title = $user->lang[$navsubsection['name']];
 						$template->assign_vars([
-							'S_' . $navsubsection['name']	=> true,
-							'SUBSECTION'					=> $page_title,
+							'S_' . $navsubsection['name']   => true,
+							'SUBSECTION'                    => $page_title,
 						]);
 					}
 				}
@@ -97,11 +97,11 @@ class phpbb_gallery_mcp
 	{
 		global $config, $db, $template, $user;
 
-		$start				= request_var('start', 0);
-		$sort_key			= request_var('sk', 'image_time');
-		$sort_dir			= (request_var('sd', 'DESC') == 'DESC') ? 'DESC' : 'ASC';
-		$images_per_page	= $config['topics_per_page'];
-		$count_images		= $album_data['album_images_real'];
+		$start              = request_var('start', 0);
+		$sort_key           = request_var('sk', 'image_time');
+		$sort_dir           = (request_var('sd', 'DESC') == 'DESC') ? 'DESC' : 'ASC';
+		$images_per_page    = $config['topics_per_page'];
+		$count_images       = $album_data['album_images_real'];
 
 		$use_sort_key = $sort_key;
 		if (!in_array($use_sort_key, self::$allowed_sort_params))
@@ -123,19 +123,19 @@ class phpbb_gallery_mcp
 		}
 
 		$sql_array = [
-			'SELECT'		=> 'i.*, r.report_status, r.report_id',
-			'FROM'			=> [GALLERY_IMAGES_TABLE => 'i'],
+			'SELECT'        => 'i.*, r.report_status, r.report_id',
+			'FROM'          => [GALLERY_IMAGES_TABLE => 'i'],
 
-			'LEFT_JOIN'		=> [
+			'LEFT_JOIN'     => [
 				[
-					'FROM'		=> [GALLERY_REPORTS_TABLE => 'r'],
-					'ON'		=> 'r.report_image_id = i.image_id',
+					'FROM'      => [GALLERY_REPORTS_TABLE => 'r'],
+					'ON'        => 'r.report_image_id = i.image_id',
 				],
 			],
 
-			'WHERE'			=> 'i.image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN . '
+			'WHERE'         => 'i.image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN . '
 									AND i.image_album_id = ' . $album_id . ' ' . $m_status,
-			'ORDER_BY'		=> "i.{$use_sort_key} {$sort_dir}",
+			'ORDER_BY'      => "i.{$use_sort_key} {$sort_dir}",
 		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 
@@ -143,47 +143,47 @@ class phpbb_gallery_mcp
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('image_row', [
-				'THUMBNAIL'			=> phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
-				'UPLOADER'			=> get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
-				'IMAGE_TIME'		=> $user->format_date($row['image_time']),
-				'IMAGE_NAME'		=> $row['image_name'],
-				'COMMENTS'			=> $row['image_comments'],
-				'RATING'			=> ($row['image_rate_avg'] / 100),
-				'STATUS'			=> $user->lang['QUEUE_STATUS_' . $row['image_status']],
-				'IMAGE_ID'			=> $row['image_id'],
-				'S_REPORTED'		=> (isset($row['report_status']) && ($row['report_status'] == phpbb_gallery_report::OPEN)),
-				'S_UNAPPROVED'		=> ($row['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED),
-				'U_IMAGE'			=> phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
-				'U_IMAGE_PAGE'		=> phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
-				'U_REPORT'			=> phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$album_id}&amp;option_id=" . $row['report_id']),
-				'U_QUEUE'			=> phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id=" . $row['image_id']),
+				'THUMBNAIL'         => phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
+				'UPLOADER'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
+				'IMAGE_TIME'        => $user->format_date($row['image_time']),
+				'IMAGE_NAME'        => $row['image_name'],
+				'COMMENTS'          => $row['image_comments'],
+				'RATING'            => ($row['image_rate_avg'] / 100),
+				'STATUS'            => $user->lang['QUEUE_STATUS_' . $row['image_status']],
+				'IMAGE_ID'          => $row['image_id'],
+				'S_REPORTED'        => (isset($row['report_status']) && ($row['report_status'] == phpbb_gallery_report::OPEN)),
+				'S_UNAPPROVED'      => ($row['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED),
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
+				'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
+				'U_REPORT'          => phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$album_id}&amp;option_id=" . $row['report_id']),
+				'U_QUEUE'           => phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id=" . $row['image_id']),
 			]);
 		}
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'S_SORT_DESC'			=> ($sort_dir == 'DESC'),
-			'S_SORT_KEY'			=> $sort_key,
+			'S_SORT_DESC'           => ($sort_dir == 'DESC'),
+			'S_SORT_KEY'            => $sort_key,
 
-			'TITLE'					=> $user->lang['IMAGES'],
-			'DESCRIPTION'			=> '',//$desc_string,
-			'NO_IMAGES_NOTE'		=> $user->lang['NO_IMAGES'],
-			'PAGINATION'			=> generate_pagination(phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}&amp;sd={$sort_dir}&amp;sk={$sort_key}"), $count_images, $images_per_page, $start),
-			'PAGE_NUMBER'			=> on_page($count_images, $images_per_page, $start),
-			'TOTAL_IMAGES'			=> $user->lang('VIEW_ALBUM_IMAGES', $count_images),
+			'TITLE'                 => $user->lang['IMAGES'],
+			'DESCRIPTION'           => '',//$desc_string,
+			'NO_IMAGES_NOTE'        => $user->lang['NO_IMAGES'],
+			'PAGINATION'            => generate_pagination(phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}&amp;sd={$sort_dir}&amp;sk={$sort_key}"), $count_images, $images_per_page, $start),
+			'PAGE_NUMBER'           => on_page($count_images, $images_per_page, $start),
+			'TOTAL_IMAGES'          => $user->lang('VIEW_ALBUM_IMAGES', $count_images),
 
-			'S_COMMENTS'			=> phpbb_gallery_config::get('allow_comments'),
-			'S_RATINGS'				=> phpbb_gallery_config::get('allow_rates'),
-			'S_STATUS'				=> true,
-			'S_MARK'				=> true,
+			'S_COMMENTS'            => phpbb_gallery_config::get('allow_comments'),
+			'S_RATINGS'             => phpbb_gallery_config::get('allow_rates'),
+			'S_STATUS'              => true,
+			'S_MARK'                => true,
 		]);
 
 		$template->assign_vars([
-			'REPORTED_IMG'				=> $user->img('icon_topic_reported', 'IMAGE_REPORTED'),
-			'UNAPPROVED_IMG'			=> $user->img('icon_topic_unapproved', 'IMAGE_UNAPPROVED'),
-			'S_MCP_ACTION'				=> phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}"),
-			'DISP_FAKE_THUMB'			=> phpbb_gallery_config::get('mini_thumbnail_disp'),
-			'FAKE_THUMB_SIZE'			=> phpbb_gallery_config::get('mini_thumbnail_size'),
+			'REPORTED_IMG'              => $user->img('icon_topic_reported', 'IMAGE_REPORTED'),
+			'UNAPPROVED_IMG'            => $user->img('icon_topic_unapproved', 'IMAGE_UNAPPROVED'),
+			'S_MCP_ACTION'              => phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}"),
+			'DISP_FAKE_THUMB'           => phpbb_gallery_config::get('mini_thumbnail_disp'),
+			'FAKE_THUMB_SIZE'           => phpbb_gallery_config::get('mini_thumbnail_size'),
 		]);
 	}
 
@@ -199,9 +199,9 @@ class phpbb_gallery_mcp
 			$result = $db->sql_query_limit($sql, 1);
 			$row = $db->sql_fetchrow($result);
 			$template->assign_vars([
-				'IMAGE_STATUS'		=> $row['image_status'],
-				'STATUS'			=> $user->lang['QUEUE_STATUS_' . $row['image_status']],
-				'REPORT_ID'			=> $row['image_id'],
+				'IMAGE_STATUS'      => $row['image_status'],
+				'STATUS'            => $user->lang['QUEUE_STATUS_' . $row['image_status']],
+				'REPORT_ID'         => $row['image_id'],
 			]);
 			$db->sql_freeresult($result);
 		}
@@ -214,21 +214,21 @@ class phpbb_gallery_mcp
 			}
 
 			$sql_array = [
-				'SELECT'		=> 'r.*, u.username reporter_name, u.user_colour reporter_colour, i.*',
-				'FROM'			=> [GALLERY_REPORTS_TABLE => 'r'],
+				'SELECT'        => 'r.*, u.username reporter_name, u.user_colour reporter_colour, i.*',
+				'FROM'          => [GALLERY_REPORTS_TABLE => 'r'],
 
-				'LEFT_JOIN'		=> [
+				'LEFT_JOIN'     => [
 					[
-						'FROM'		=> [USERS_TABLE => 'u'],
-						'ON'		=> 'r.reporter_id = u.user_id',
+						'FROM'      => [USERS_TABLE => 'u'],
+						'ON'        => 'r.reporter_id = u.user_id',
 					],
 					[
-						'FROM'		=> [GALLERY_IMAGES_TABLE => 'i'],
-						'ON'		=> 'r.report_image_id = i.image_id',
+						'FROM'      => [GALLERY_IMAGES_TABLE => 'i'],
+						'ON'        => 'r.report_image_id = i.image_id',
 					],
 				],
 
-				'WHERE'			=> 'r.report_id = ' . $option_id . ' ' . $m_status,
+				'WHERE'         => 'r.report_id = ' . $option_id . ' ' . $m_status,
 			];
 			$sql = $db->sql_build_query('SELECT', $sql_array);
 			$result = $db->sql_query_limit($sql, 1);
@@ -241,24 +241,24 @@ class phpbb_gallery_mcp
 			}
 
 			$template->assign_vars([
-				'REPORTER'			=> get_username_string('full', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
-				'REPORT_TIME'		=> $user->format_date($row['report_time']),
-				'REPORT_ID'			=> $row['report_id'],
-				'REPORT_NOTE'		=> $row['report_note'],
-				'REPORT_STATUS'		=> ($row['report_status'] == phpbb_gallery_report::OPEN),
-				'STATUS'			=> $user->lang['REPORT_STATUS_' . $row['report_status']] . ' ' . $user->lang['QUEUE_STATUS_' . $row['image_status']],
+				'REPORTER'          => get_username_string('full', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
+				'REPORT_TIME'       => $user->format_date($row['report_time']),
+				'REPORT_ID'         => $row['report_id'],
+				'REPORT_NOTE'       => $row['report_note'],
+				'REPORT_STATUS'     => ($row['report_status'] == phpbb_gallery_report::OPEN),
+				'STATUS'            => $user->lang['REPORT_STATUS_' . $row['report_status']] . ' ' . $user->lang['QUEUE_STATUS_' . $row['image_status']],
 			]);
 		}
 
 		$template->assign_vars([
-			'IMAGE_NAME'		=> $row['image_name'],
-			'IMAGE_DESC'		=> generate_text_for_display($row['image_desc'], $row['image_desc_uid'], $row['image_desc_bitfield'], 7),
-			'UPLOADER'			=> get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
-			'IMAGE_TIME'		=> $user->format_date($row['image_time']),
-			'UC_IMAGE'			=> phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
-			'U_EDIT_IMAGE'		=> phpbb_gallery_url::append_sid('posting', 'mode=edit&amp;album_id=' . $album_id . '&amp;image_id=' . $row['image_id']),
-			'U_DELETE_IMAGE'	=> phpbb_gallery_url::append_sid('posting', 'mode=delete&amp;album_id=' . $album_id . '&amp;image_id=' . $row['image_id']),
-			'S_MCP_ACTION'		=> phpbb_gallery_url::append_sid('mcp', "mode=" . (($mode == 'report_details') ? 'report_open' : 'queue_unapproved') . "&amp;album_id={$album_id}"),
+			'IMAGE_NAME'        => $row['image_name'],
+			'IMAGE_DESC'        => generate_text_for_display($row['image_desc'], $row['image_desc_uid'], $row['image_desc_bitfield'], 7),
+			'UPLOADER'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
+			'IMAGE_TIME'        => $user->format_date($row['image_time']),
+			'UC_IMAGE'          => phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
+			'U_EDIT_IMAGE'      => phpbb_gallery_url::append_sid('posting', 'mode=edit&amp;album_id=' . $album_id . '&amp;image_id=' . $row['image_id']),
+			'U_DELETE_IMAGE'    => phpbb_gallery_url::append_sid('posting', 'mode=delete&amp;album_id=' . $album_id . '&amp;image_id=' . $row['image_id']),
+			'S_MCP_ACTION'      => phpbb_gallery_url::append_sid('mcp', "mode=" . (($mode == 'report_details') ? 'report_open' : 'queue_unapproved') . "&amp;album_id={$album_id}"),
 		]);
 	}
 
@@ -266,11 +266,11 @@ class phpbb_gallery_mcp
 	{
 		global $config, $db, $template, $user;
 
-		$start				= request_var('start', 0);
-		$sort_key			= request_var('sk', 'image_time');
-		$sort_dir			= (request_var('sd', 'DESC') == 'DESC') ? 'DESC' : 'ASC';
-		$images_per_page	= $config['topics_per_page'];
-		$count_images		= 0;
+		$start              = request_var('start', 0);
+		$sort_key           = request_var('sk', 'image_time');
+		$sort_dir           = (request_var('sd', 'DESC') == 'DESC') ? 'DESC' : 'ASC';
+		$images_per_page    = $config['topics_per_page'];
+		$count_images       = 0;
 
 		$use_sort_key = $sort_key;
 		if (!in_array($use_sort_key, self::$allowed_sort_params))
@@ -315,13 +315,13 @@ class phpbb_gallery_mcp
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('image_row', [
-				'THUMBNAIL'			=> phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
-				'UPLOADER'			=> get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
-				'IMAGE_TIME'		=> $user->format_date($row['image_time']),
-				'IMAGE_NAME'		=> $row['image_name'],
-				'IMAGE_ID'			=> $row['image_id'],
-				'U_IMAGE'			=> phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
-				'U_IMAGE_PAGE'		=> phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id=" . $row['image_id']),
+				'THUMBNAIL'         => phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
+				'UPLOADER'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
+				'IMAGE_TIME'        => $user->format_date($row['image_time']),
+				'IMAGE_NAME'        => $row['image_name'],
+				'IMAGE_ID'          => $row['image_id'],
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
+				'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id=" . $row['image_id']),
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -341,25 +341,25 @@ class phpbb_gallery_mcp
 		$desc_string = $user->lang('WAITING_' . $case . '_IMAGE', $count_images);
 
 		$template->assign_vars([
-			'S_SORT_DESC'			=> ($sort_dir == 'DESC'),
-			'S_SORT_KEY'			=> $sort_key,
+			'S_SORT_DESC'           => ($sort_dir == 'DESC'),
+			'S_SORT_KEY'            => $sort_key,
 
-			'TITLE'					=> $user->lang['IMAGES'],
-			'DESCRIPTION'			=> $desc_string,
-			'PAGINATION'			=> generate_pagination(phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}&amp;sd={$sort_dir}&amp;sk={$sort_key}"), $count_images, $images_per_page, $start),
-			'PAGE_NUMBER'			=> on_page($count_images, $images_per_page, $start),
-			'TOTAL_IMAGES'			=> $user->lang('VIEW_ALBUM_IMAGES', $count_images),
+			'TITLE'                 => $user->lang['IMAGES'],
+			'DESCRIPTION'           => $desc_string,
+			'PAGINATION'            => generate_pagination(phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}&amp;sd={$sort_dir}&amp;sk={$sort_key}"), $count_images, $images_per_page, $start),
+			'PAGE_NUMBER'           => on_page($count_images, $images_per_page, $start),
+			'TOTAL_IMAGES'          => $user->lang('VIEW_ALBUM_IMAGES', $count_images),
 
-			'S_QUEUE_LIST'			=> true,
-			'S_MARK'				=> true,
+			'S_QUEUE_LIST'          => true,
+			'S_MARK'                => true,
 		]);
 
 		$template->assign_vars([
-			'REPORTED_IMG'				=> $user->img('icon_topic_reported', 'IMAGE_REPORTED'),
-			'UNAPPROVED_IMG'			=> $user->img('icon_topic_unapproved', 'IMAGE_UNAPPROVED'),
-			'S_MCP_ACTION'				=> phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}"),
-			'DISP_FAKE_THUMB'			=> phpbb_gallery_config::get('mini_thumbnail_disp'),
-			'FAKE_THUMB_SIZE'			=> phpbb_gallery_config::get('mini_thumbnail_size'),
+			'REPORTED_IMG'              => $user->img('icon_topic_reported', 'IMAGE_REPORTED'),
+			'UNAPPROVED_IMG'            => $user->img('icon_topic_unapproved', 'IMAGE_UNAPPROVED'),
+			'S_MCP_ACTION'              => phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}"),
+			'DISP_FAKE_THUMB'           => phpbb_gallery_config::get('mini_thumbnail_disp'),
+			'FAKE_THUMB_SIZE'           => phpbb_gallery_config::get('mini_thumbnail_size'),
 		]);
 	}
 
@@ -367,11 +367,11 @@ class phpbb_gallery_mcp
 	{
 		global $config, $db, $template, $user;
 
-		$start				= request_var('start', 0);
-		$sort_key			= request_var('sk', 'image_time');
-		$sort_dir			= (request_var('sd', 'DESC') == 'DESC') ? 'DESC' : 'ASC';
-		$images_per_page	= $config['topics_per_page'];
-		$count_images		= 0;
+		$start              = request_var('start', 0);
+		$sort_key           = request_var('sk', 'image_time');
+		$sort_dir           = (request_var('sd', 'DESC') == 'DESC') ? 'DESC' : 'ASC';
+		$images_per_page    = $config['topics_per_page'];
+		$count_images       = 0;
 		$use_sort_key = $sort_key;
 		if (!in_array($use_sort_key, array_merge(self::$allowed_sort_params, self::$allowed_sort_params_report)))
 		{
@@ -401,17 +401,17 @@ class phpbb_gallery_mcp
 		}
 
 		$sql_array = [
-			'SELECT'		=> 'COUNT(i.image_id) images',
-			'FROM'			=> [GALLERY_REPORTS_TABLE => 'r'],
+			'SELECT'        => 'COUNT(i.image_id) images',
+			'FROM'          => [GALLERY_REPORTS_TABLE => 'r'],
 
-			'LEFT_JOIN'		=> [
+			'LEFT_JOIN'     => [
 				[
-					'FROM'		=> [GALLERY_IMAGES_TABLE => 'i'],
-					'ON'		=> 'r.report_image_id = i.image_id',
+					'FROM'      => [GALLERY_IMAGES_TABLE => 'i'],
+					'ON'        => 'r.report_image_id = i.image_id',
 				],
 			],
 
-			'WHERE'			=> "r.report_album_id = {$album_id}
+			'WHERE'         => "r.report_album_id = {$album_id}
 								AND i.image_status <> " . phpbb_gallery_image::STATUS_ORPHAN . "
 								AND r.report_status = {$report_status} {$m_status}",
 		];
@@ -421,26 +421,26 @@ class phpbb_gallery_mcp
 		$db->sql_freeresult($result);
 
 		$sql_array = [
-			'SELECT'		=> 'r.*, u.username reporter_name, u.user_colour reporter_colour, m.username mod_username, m.user_colour mod_user_colour, i.*',
-			'FROM'			=> [GALLERY_REPORTS_TABLE => 'r'],
+			'SELECT'        => 'r.*, u.username reporter_name, u.user_colour reporter_colour, m.username mod_username, m.user_colour mod_user_colour, i.*',
+			'FROM'          => [GALLERY_REPORTS_TABLE => 'r'],
 
-			'LEFT_JOIN'		=> [
+			'LEFT_JOIN'     => [
 				[
-					'FROM'		=> [USERS_TABLE => 'u'],
-					'ON'		=> 'r.reporter_id = u.user_id',
+					'FROM'      => [USERS_TABLE => 'u'],
+					'ON'        => 'r.reporter_id = u.user_id',
 				],
 				[
-					'FROM'		=> [USERS_TABLE => 'm'],
-					'ON'		=> 'r.report_manager = m.user_id',
+					'FROM'      => [USERS_TABLE => 'm'],
+					'ON'        => 'r.report_manager = m.user_id',
 				],
 				[
-					'FROM'		=> [GALLERY_IMAGES_TABLE => 'i'],
-					'ON'		=> 'r.report_image_id = i.image_id',
+					'FROM'      => [GALLERY_IMAGES_TABLE => 'i'],
+					'ON'        => 'r.report_image_id = i.image_id',
 				],
 			],
 
-			'WHERE'			=> "r.report_album_id = {$album_id} AND r.report_status = {$report_status} {$m_status}",
-			'ORDER_BY'		=> $use_sort_key . ' ' . $sort_dir,
+			'WHERE'         => "r.report_album_id = {$album_id} AND r.report_status = {$report_status} {$m_status}",
+			'ORDER_BY'      => $use_sort_key . ' ' . $sort_dir,
 		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query_limit($sql, $images_per_page, $start);
@@ -448,16 +448,16 @@ class phpbb_gallery_mcp
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('image_row', [
-				'THUMBNAIL'			=> phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
-				'REPORTER'			=> get_username_string('full', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
-				'UPLOADER'			=> get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
-				'REPORT_ID'			=> $row['report_id'],
-				'REPORT_MOD'		=> ($row['report_manager']) ? get_username_string('full', $row['report_manager'], $row['mod_username'], $row['mod_user_colour']) : '',
-				'REPORT_TIME'		=> $user->format_date($row['report_time']),
-				'IMAGE_TIME'		=> $user->format_date($row['image_time']),
-				'IMAGE_NAME'		=> $row['image_name'],
-				'U_IMAGE'			=> phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
-				'U_IMAGE_PAGE'		=> phpbb_gallery_url::append_sid('mcp', 'mode=report_details&amp;album_id=' . $album_id . '&amp;option_id=' . $row['report_id']),
+				'THUMBNAIL'         => phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
+				'REPORTER'          => get_username_string('full', $row['reporter_id'], $row['reporter_name'], $row['reporter_colour']),
+				'UPLOADER'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
+				'REPORT_ID'         => $row['report_id'],
+				'REPORT_MOD'        => ($row['report_manager']) ? get_username_string('full', $row['report_manager'], $row['mod_username'], $row['mod_user_colour']) : '',
+				'REPORT_TIME'       => $user->format_date($row['report_time']),
+				'IMAGE_TIME'        => $user->format_date($row['image_time']),
+				'IMAGE_NAME'        => $row['image_name'],
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
+				'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('mcp', 'mode=report_details&amp;album_id=' . $album_id . '&amp;option_id=' . $row['report_id']),
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -473,26 +473,26 @@ class phpbb_gallery_mcp
 
 
 		$template->assign_vars([
-			'S_SORT_DESC'			=> ($sort_dir == 'DESC'),
-			'S_SORT_KEY'			=> $sort_key,
+			'S_SORT_DESC'           => ($sort_dir == 'DESC'),
+			'S_SORT_KEY'            => $sort_key,
 
-			'TITLE'					=> $user->lang['REPORTED_IMAGES'],
-			'DESCRIPTION'			=> $desc_string,
-			'PAGINATION'			=> generate_pagination(phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}&amp;sd={$sort_dir}&amp;sk={$sort_key}"), $count_images, $images_per_page, $start),
-			'PAGE_NUMBER'			=> on_page($count_images, $images_per_page, $start),
-			'TOTAL_IMAGES'			=> $user->lang('VIEW_ALBUM_IMAGES', $count_images),
+			'TITLE'                 => $user->lang['REPORTED_IMAGES'],
+			'DESCRIPTION'           => $desc_string,
+			'PAGINATION'            => generate_pagination(phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}&amp;sd={$sort_dir}&amp;sk={$sort_key}"), $count_images, $images_per_page, $start),
+			'PAGE_NUMBER'           => on_page($count_images, $images_per_page, $start),
+			'TOTAL_IMAGES'          => $user->lang('VIEW_ALBUM_IMAGES', $count_images),
 
-			'S_REPORT_LIST'			=> true,
-			'S_REPORTER'			=> true,
-			'S_MARK'				=> true,
+			'S_REPORT_LIST'         => true,
+			'S_REPORTER'            => true,
+			'S_MARK'                => true,
 		]);
 
 		$template->assign_vars([
-			'REPORTED_IMG'				=> $user->img('icon_topic_reported', 'IMAGE_REPORTED'),
-			'UNAPPROVED_IMG'			=> $user->img('icon_topic_unapproved', 'IMAGE_UNAPPROVED'),
-			'S_MCP_ACTION'				=> phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}"),
-			'DISP_FAKE_THUMB'			=> phpbb_gallery_config::get('mini_thumbnail_disp'),
-			'FAKE_THUMB_SIZE'			=> phpbb_gallery_config::get('mini_thumbnail_size'),
+			'REPORTED_IMG'              => $user->img('icon_topic_reported', 'IMAGE_REPORTED'),
+			'UNAPPROVED_IMG'            => $user->img('icon_topic_unapproved', 'IMAGE_UNAPPROVED'),
+			'S_MCP_ACTION'              => phpbb_gallery_url::append_sid('mcp', "mode={$mode}&amp;album_id={$album_id}"),
+			'DISP_FAKE_THUMB'           => phpbb_gallery_config::get('mini_thumbnail_disp'),
+			'FAKE_THUMB_SIZE'           => phpbb_gallery_config::get('mini_thumbnail_size'),
 		]);
 	}
 }

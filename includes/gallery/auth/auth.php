@@ -14,20 +14,20 @@ if (!defined('IN_PHPBB'))
 
 class phpbb_gallery_auth
 {
-	const SETTING_PERMISSIONS	= -39839;
-	const PERSONAL_ALBUM		= -3;
-	const OWN_ALBUM				= -2;
-	const PUBLIC_ALBUM			= 0;
+	const SETTING_PERMISSIONS   = -39839;
+	const PERSONAL_ALBUM        = -3;
+	const OWN_ALBUM             = -2;
+	const PUBLIC_ALBUM          = 0;
 
-	const ACCESS_ALL			= 0;
-	const ACCESS_REGISTERED	= 1;
-	const ACCESS_NOT_FOES		= 2;
-	const ACCESS_FRIENDS		= 3;
+	const ACCESS_ALL            = 0;
+	const ACCESS_REGISTERED = 1;
+	const ACCESS_NOT_FOES       = 2;
+	const ACCESS_FRIENDS        = 3;
 
 	// ACL - slightly different
-	const ACL_NO		= 0;
-	const ACL_YES		= 1;
-	const ACL_NEVER		= 2;
+	const ACL_NO        = 0;
+	const ACL_YES       = 1;
+	const ACL_NEVER     = 2;
 
 	static private $_permission_i = ['i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'];
 	static private $_permission_c = ['c_read', 'c_post', 'c_edit', 'c_delete'];
@@ -44,8 +44,8 @@ class phpbb_gallery_auth
 	/**
 	* Create a auth-object for a given user
 	*
-	* @param	int		$user_id	User you want the permissions from.
-	* @param	int		$album_id	Only get the permissions for a given album_id. Should save some memory. // Not yet implemented.
+	* @param    int     $user_id    User you want the permissions from.
+	* @param    int     $album_id   Only get the permissions for a given album_id. Should save some memory. // Not yet implemented.
 	*/
 	public function __construct($user_id, $album_id = false)
 	{
@@ -92,34 +92,34 @@ class phpbb_gallery_auth
 			$sql_select .= " MAX({$permission}) as {$permission},";
 		}
 
-		$this->_auth_data[self::OWN_ALBUM]				= new phpbb_gallery_auth_set();
-		$this->_auth_data_never[self::OWN_ALBUM]		= new phpbb_gallery_auth_set();
-		$this->_auth_data[self::PERSONAL_ALBUM]			= new phpbb_gallery_auth_set();
-		$this->_auth_data_never[self::PERSONAL_ALBUM]	= new phpbb_gallery_auth_set();
+		$this->_auth_data[self::OWN_ALBUM]              = new phpbb_gallery_auth_set();
+		$this->_auth_data_never[self::OWN_ALBUM]        = new phpbb_gallery_auth_set();
+		$this->_auth_data[self::PERSONAL_ALBUM]         = new phpbb_gallery_auth_set();
+		$this->_auth_data_never[self::PERSONAL_ALBUM]   = new phpbb_gallery_auth_set();
 
 		foreach ($albums as $album)
 		{
 			if ($album['album_user_id'] == self::PUBLIC_ALBUM)
 			{
-				$this->_auth_data[$album['album_id']]		= new phpbb_gallery_auth_set();
-				$this->_auth_data_never[$album['album_id']]	= new phpbb_gallery_auth_set();
+				$this->_auth_data[$album['album_id']]       = new phpbb_gallery_auth_set();
+				$this->_auth_data_never[$album['album_id']] = new phpbb_gallery_auth_set();
 			}
 		}
 
 		$sql_array = [
-			'SELECT'		=> "p.perm_album_id, {$sql_select} p.perm_system",
-			'FROM'			=> [GALLERY_PERMISSIONS_TABLE => 'p'],
+			'SELECT'        => "p.perm_album_id, {$sql_select} p.perm_system",
+			'FROM'          => [GALLERY_PERMISSIONS_TABLE => 'p'],
 
-			'LEFT_JOIN'		=> [
+			'LEFT_JOIN'     => [
 				[
-					'FROM'		=> [GALLERY_ROLES_TABLE => 'pr'],
-					'ON'		=> 'p.perm_role_id = pr.role_id',
+					'FROM'      => [GALLERY_ROLES_TABLE => 'pr'],
+					'ON'        => 'p.perm_role_id = pr.role_id',
 				],
 			],
 
-			'WHERE'			=> 'p.perm_user_id = ' . $user_id . ' OR ' . $db->sql_in_set('p.perm_group_id', $user_groups_ary, false, true),
-			'GROUP_BY'		=> 'p.perm_system, p.perm_album_id',
-			'ORDER_BY'		=> 'p.perm_system DESC, p.perm_album_id ASC',
+			'WHERE'         => 'p.perm_user_id = ' . $user_id . ' OR ' . $db->sql_in_set('p.perm_group_id', $user_groups_ary, false, true),
+			'GROUP_BY'      => 'p.perm_system, p.perm_album_id',
+			'ORDER_BY'      => 'p.perm_system DESC, p.perm_album_id ASC',
 		];
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 
@@ -161,9 +161,9 @@ class phpbb_gallery_auth
 	/**
 	* Serialize the auth-data sop we can store it.
 	*
-	* Line-Format:	bitfields:i_count:a_count::album_id(s)
-	* Samples:		8912837:0:10::-3
-	*				9961469:20:0::1:23:42
+	* Line-Format:  bitfields:i_count:a_count::album_id(s)
+	* Samples:      8912837:0:10::-3
+	*               9961469:20:0::1:23:42
 	*/
 	private static function serialize_auth_data($auth_data)
 	{
@@ -410,11 +410,11 @@ class phpbb_gallery_auth
 	/**
 	* Get permission
 	*
-	* @param	string	$acl	One of the permissions, Exp: i_view
-	* @param	int		$a_id	The album_id, from which we want to have the permissions
-	* @param	int		$u_id	The user_id from the album-owner. If not specified we need to get it from the cache.
+	* @param    string  $acl    One of the permissions, Exp: i_view
+	* @param    int     $a_id   The album_id, from which we want to have the permissions
+	* @param    int     $u_id   The user_id from the album-owner. If not specified we need to get it from the cache.
 	*
-	* @return	bool			Is the user allowed to do the $acl?
+	* @return   bool            Is the user allowed to do the $acl?
 	*/
 	public function acl_check($acl, $a_id, $u_id = -1)
 	{
@@ -482,9 +482,9 @@ class phpbb_gallery_auth
 	/**
 	* Does the user have the permission for any album?
 	*
-	* @param	string	$acl			One of the permissions, Exp: i_view; *_count permissions are not allowed!
+	* @param    string  $acl            One of the permissions, Exp: i_view; *_count permissions are not allowed!
 	*
-	* @return	bool			Is the user allowed to do the $acl?
+	* @return   bool            Is the user allowed to do the $acl?
 	*/
 	public function acl_check_global($acl)
 	{
@@ -521,13 +521,13 @@ class phpbb_gallery_auth
 	/**
 	* Get albums by permission
 	*
-	* @param	string	$acl			One of the permissions, Exp: i_view; *_count permissions are not allowed!
-	* @param	string	$return			Type of the return value. array returns an array, else it's a string.
-	*									bool means it only checks whether the user has the permission anywhere.
-	* @param	bool	$display_in_rrc	Only return albums, that have the display_in_rrc-flag set.
-	* @param	bool	$display_pegas	Include personal galleries in the list.
+	* @param    string  $acl            One of the permissions, Exp: i_view; *_count permissions are not allowed!
+	* @param    string  $return         Type of the return value. array returns an array, else it's a string.
+	*                                   bool means it only checks whether the user has the permission anywhere.
+	* @param    bool    $display_in_rrc Only return albums, that have the display_in_rrc-flag set.
+	* @param    bool    $display_pegas  Include personal galleries in the list.
 	*
-	* @return	mixed					$album_ids, either as list or array.
+	* @return   mixed                   $album_ids, either as list or array.
 	*/
 	public function acl_album_ids($acl, $return = 'array', $display_in_rrc = false, $display_pegas = true)
 	{
@@ -579,10 +579,10 @@ class phpbb_gallery_auth
 	/**
 	* User authorisation levels output
 	*
-	* @param	string	$mode			Can only be 'album' so far.
-	* @param	int		$album_id		The current album the user is in.
-	* @param	int		$album_status	The albums status bit.
-	* @param	int		$album_user_id	The user-id of the album owner. Saves us a call to the cache if it is set.
+	* @param    string  $mode           Can only be 'album' so far.
+	* @param    int     $album_id       The current album the user is in.
+	* @param    int     $album_status   The albums status bit.
+	* @param    int     $album_user_id  The user-id of the album owner. Saves us a call to the cache if it is set.
 	*
 	* borrowed from phpBB3
 	* @author: phpBB Group

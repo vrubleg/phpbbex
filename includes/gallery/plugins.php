@@ -14,8 +14,8 @@ if (!defined('IN_PHPBB'))
 
 class phpbb_gallery_plugins
 {
-	static public $plugins		= [];
-	static public $slideshow	= false;
+	static public $plugins      = [];
+	static public $slideshow    = false;
 
 	static public function init($path)
 	{
