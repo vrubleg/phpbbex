@@ -457,8 +457,6 @@ class acp_board
 						'ip_login_limit_use_forwarded'	=> ['lang' => 'IP_LOGIN_LIMIT_USE_FORWARDED',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'tpl_allow_php'			=> ['lang' => 'TPL_ALLOW_PHP',			'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
 						'form_token_lifetime'	=> ['lang' => 'FORM_TIME_MAX',			'validate' => 'int:-1',	'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
-						'form_token_sid_guests'	=> ['lang' => 'FORM_SID_GUESTS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true],
-
 						'legend2'				=> 'ACP_SUBMIT_CHANGES',
 					]
 				];

@@ -2073,7 +2073,7 @@ function add_form_key($form_name)
 	global $config, $template, $user;
 
 	$now = time();
-	$token_sid = ($user->data['user_id'] == ANONYMOUS && !empty($config['form_token_sid_guests'])) ? $user->session_id : '';
+	$token_sid = ($user->data['user_id'] == ANONYMOUS) ? $user->session_id : '';
 	$token = sha1($now . $user->data['user_form_salt'] . $form_name . $token_sid);
 
 	$s_fields = build_hidden_fields([
@@ -2115,7 +2115,7 @@ function check_form_key($form_name, $timespan = false, $return_page = '', $trigg
 		// If creation_time and the time() now is zero we can assume it was not a human doing this (the check for if ($diff)...
 		if (defined('DEBUG_TEST') || $diff && ($diff <= $timespan || $timespan === -1))
 		{
-			$token_sid = ($user->data['user_id'] == ANONYMOUS && !empty($config['form_token_sid_guests'])) ? $user->session_id : '';
+			$token_sid = ($user->data['user_id'] == ANONYMOUS) ? $user->session_id : '';
 			$key = sha1($creation_time . $user->data['user_form_salt'] . $form_name . $token_sid);
 
 			if ($key === $token)

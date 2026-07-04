@@ -556,6 +556,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'board_hide_emails',
 		'allow_emailreuse',
 		'allow_autologin',
+		'form_token_sid_guests',
 	]);
 
 	// New defaults.
