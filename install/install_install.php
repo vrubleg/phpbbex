@@ -1315,62 +1315,15 @@ class install_install extends module
 	*/
 	function add_bots($mode, $sub)
 	{
-		global $db, $lang, $config;
-
-		// Obtain any submitted data
-		$data = $this->get_submitted_data();
-
-		$sql = 'SELECT group_id
-			FROM ' . GROUPS_TABLE . "
-			WHERE group_name = 'BOTS'";
-		$result = $db->sql_query($sql);
-		$group_id = (int) $db->sql_fetchfield('group_id');
-		$db->sql_freeresult($result);
-
-		if (!$group_id)
-		{
-			// If we reach this point then something has gone very wrong
-			$this->p_master->error($lang['NO_GROUP'], __LINE__, __FILE__);
-		}
-
-		if (!function_exists('user_add'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-		}
+		global $db;
 
 		foreach ($this->bot_list as $bot_name => $bot_agent)
 		{
 			if (empty($bot_agent)) { continue; }
 
-			$user_row = [
-				'user_type'				=> USER_IGNORE,
-				'group_id'				=> $group_id,
-				'username'				=> $bot_name,
-				'user_regdate'			=> time(),
-				'user_password'			=> '',
-				'user_colour'			=> '9E8DA7',
-				'user_email'			=> '',
-				'user_lang'				=> $data['default_lang'],
-				'user_style'			=> 1,
-				'user_timezone'			=> 0,
-				'user_dateformat'		=> $lang['default_dateformat'],
-				'user_allow_massemail'	=> 0,
-				'user_allow_pm'			=> 0,
-			];
-
-			$user_id = user_add($user_row);
-
-			if (!$user_id)
-			{
-				// If we can't insert this user then continue to the next one to avoid inconsistent data
-				$this->p_master->db_error('Unable to insert bot into users table', $db->sql_error_sql, __LINE__, __FILE__, true);
-				continue;
-			}
-
 			$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
 				'bot_active'	=> 1,
 				'bot_name'		=> (string) $bot_name,
-				'user_id'		=> (int) $user_id,
 				'bot_agent'		=> (string) $bot_agent,
 				'bot_ip'		=> '',
 			]);

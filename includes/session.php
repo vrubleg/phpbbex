@@ -316,7 +316,16 @@ class phpbb_session
 							$sql_ary = ['session_time' => $this->time_now];
 
 							// Update the last visit time once an hour
-							if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
+							if (!empty($this->data['session_bot_id']) && $this->time_now - $this->data['session_last_visit'] > 3600)
+							{
+								$sql_ary['session_last_visit'] = $this->data['session_last_visit'] ?: $this->time_now;
+								$this->data['session_last_visit'] = $this->time_now;
+								$sql = 'UPDATE ' . BOTS_TABLE . '
+									SET bot_lastvisit = ' . (int) $this->time_now . '
+									WHERE bot_id = ' . (int) $this->data['session_bot_id'];
+								$db->sql_query($sql);
+							}
+							else if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
 							{
 								$sql_ary['session_last_visit'] = $this->data['user_lastvisit'] ?: $this->time_now;
 								$this->data['user_lastvisit'] = $this->time_now;
@@ -337,7 +346,7 @@ class phpbb_session
 						}
 
 						$this->data['is_registered'] = ($this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER));
-						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS);
+						$this->data['is_bot'] = !empty($this->data['session_bot_id']);
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
 						$this->handle_browser_tracking(false);
@@ -407,7 +416,7 @@ class phpbb_session
 		{
 			if ($row['bot_agent'] && preg_match('#' . str_replace('\*', '.*?', preg_quote($row['bot_agent'], '#')) . '#i', $this->browser_ua))
 			{
-				$bot = $row['user_id'];
+				$bot = (int) $row['bot_id'];
 			}
 
 			// If ip is supplied, we will make sure the ip is matching too...
@@ -427,7 +436,7 @@ class phpbb_session
 
 					if (strpos($this->ip, $bot_ip) === 0)
 					{
-						$bot = (int) $row['user_id'];
+						$bot = (int) $row['bot_id'];
 						break;
 					}
 				}
@@ -495,10 +504,11 @@ class phpbb_session
 			else
 			{
 				// We give bots always the same session if it is not yet expired.
-				$sql = 'SELECT u.*, s.*
-					FROM ' . USERS_TABLE . ' u
-					LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
-					WHERE u.user_id = ' . (int) $bot;
+				$sql = 'SELECT u.*, s.*, b.bot_id, b.bot_name
+					FROM ' . USERS_TABLE . ' u, ' . BOTS_TABLE . ' b
+					LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_bot_id = b.bot_id)
+					WHERE u.user_id = ' . ANONYMOUS . '
+						AND b.bot_id = ' . (int) $bot;
 			}
 
 			$result = $db->sql_query($sql);
@@ -541,7 +551,7 @@ class phpbb_session
 		$this->data['is_bot'] = (bool) $bot;
 
 		// If our friend is a bot, we re-assign a previously assigned session
-		if ($this->data['is_bot'] && $bot == $this->data['user_id'] && $this->data['session_id'])
+		if ($this->data['is_bot'] && $bot == $this->data['session_bot_id'] && $this->data['session_id'])
 		{
 			// Only assign the current session if the ip, browser and forwarded_for match...
 			if (strpos($this->ip, ':') !== false && strpos($this->data['session_ip'], ':') !== false)
@@ -577,9 +587,9 @@ class phpbb_session
 					$db->sql_query($sql);
 
 					// Update the last visit time
-					$sql = 'UPDATE ' . USERS_TABLE . '
-						SET user_lastvisit = ' . (int) $this->data['session_time'] . '
-						WHERE user_id = ' . (int) $this->data['user_id'];
+					$sql = 'UPDATE ' . BOTS_TABLE . '
+						SET bot_lastvisit = ' . (int) $this->data['session_time'] . '
+						WHERE bot_id = ' . (int) $bot;
 					$db->sql_query($sql);
 				}
 
@@ -590,7 +600,7 @@ class phpbb_session
 			else
 			{
 				// If the ip and browser does not match make sure we only have one bot assigned to one session
-				$db->sql_query('DELETE FROM ' . SESSIONS_TABLE . ' WHERE session_user_id = ' . $this->data['user_id']);
+				$db->sql_query('DELETE FROM ' . SESSIONS_TABLE . ' WHERE session_bot_id = ' . (int) $bot);
 			}
 		}
 
@@ -600,6 +610,7 @@ class phpbb_session
 		// Create or update the session
 		$sql_ary = [
 			'session_user_id'		=> (int) $this->data['user_id'],
+			'session_bot_id'		=> (int) $bot,
 			'session_start'			=> (int) $this->time_now,
 			'session_last_visit'	=> (int) $this->data['session_last_visit'],
 			'session_time'			=> (int) $this->time_now,
@@ -700,9 +711,9 @@ class phpbb_session
 			$this->data['session_time'] = $this->data['session_last_visit'] = $this->time_now;
 
 			// Update the last visit time
-			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $this->data['session_time'] . '
-				WHERE user_id = ' . (int) $this->data['user_id'];
+			$sql = 'UPDATE ' . BOTS_TABLE . '
+				SET bot_lastvisit = ' . (int) $this->data['session_time'] . '
+				WHERE bot_id = ' . (int) $bot;
 			$db->sql_query($sql);
 
 			$_SID = '';
@@ -856,16 +867,17 @@ class phpbb_session
 			$this->time_now = time();
 		}
 
-		// Firstly, delete guest sessions
+		// Delete expired guest sessions.
 		$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
 			WHERE session_user_id = ' . ANONYMOUS . '
-				AND session_time < ' . (int) ($this->time_now - $config['session_length']);
+				AND session_time < ' . ($this->time_now - $config['session_length']);
 		$db->sql_query($sql);
 
 		// Get expired sessions, only most recent for each user
 		$sql = 'SELECT session_user_id, MAX(session_time) AS recent_time
 			FROM ' . SESSIONS_TABLE . '
-			WHERE session_time < ' . ($this->time_now - $config['session_length']) . '
+			WHERE session_user_id <> ' . ANONYMOUS . '
+				AND session_time < ' . ($this->time_now - $config['session_length']) . '
 			GROUP BY session_user_id';
 		$result = $db->sql_query_limit($sql, $batch_size);
 

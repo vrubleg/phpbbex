@@ -13,6 +13,10 @@ a:active { color: #368AD2; text-decoration: none; }
 	padding: 0 !important;
 }
 
+.botname {
+	font-weight: bold;
+}
+
 /* Links on gradient backgrounds */
 #search-box a, .navbg a, .forumbg .header a, .forabg .header a, th a {
 	color: #FFFFFF;

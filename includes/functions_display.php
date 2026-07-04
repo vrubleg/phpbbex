@@ -776,7 +776,7 @@ function get_moderators(&$forum_moderators, $forum_id = false)
 		{
 			$group_name = (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']);
 
-			if ($user->data['user_id'] != ANONYMOUS && !$auth->acl_get('u_viewprofile'))
+			if (!$auth->acl_get('u_viewprofile'))
 			{
 				$forum_moderators[$f_id][] = '<span' . (($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . ';"' : '') . '>' . $group_name . '</span>';
 			}

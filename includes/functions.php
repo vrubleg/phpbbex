@@ -3189,6 +3189,7 @@ function obtain_guest_count()
 	$sql = 'SELECT COUNT(DISTINCT s.session_ip) as num_guests
 		FROM ' . SESSIONS_TABLE . ' s
 		WHERE s.session_user_id = ' . ANONYMOUS . '
+			AND s.session_bot_id = 0
 			AND s.session_time <> s.session_start
 			AND s.session_time >= ' . ($time - ((int) ($time % 60)));
 	$result = $db->sql_query($sql);
@@ -3206,8 +3207,6 @@ function obtain_users_online()
 {
 	global $db, $config, $user;
 
-	$reading_sql = '';
-
 	$online_users = [
 		'online_users'			=> [],
 		'online_bots'			=> [],
@@ -3223,45 +3222,57 @@ function obtain_users_online()
 	{
 		$online_users['guests_online'] = obtain_guest_count();
 	}
-	if (!$config['load_online_bots'])
-	{
-		$reading_sql .= ' AND u.user_type <> ' . USER_IGNORE;
-	}
-
 	// a little discrete magic to cache this for 30 seconds
 	$time = (time() - (intval($config['load_online_time']) * 60));
 
 	$sql = 'SELECT s.session_user_id AS user_id, s.session_viewonline, u.username, u.user_type, u.user_colour
 		FROM ' . SESSIONS_TABLE . ' s
 		LEFT JOIN ' . USERS_TABLE . ' u ON s.session_user_id = u.user_id
-		WHERE s.session_time >= ' . ($time - ((int) ($time % 30))) . $reading_sql . ' AND s.session_user_id <> ' . ANONYMOUS . '
+		WHERE s.session_time >= ' . ($time - ((int) ($time % 30))) . '
+			AND s.session_user_id <> ' . ANONYMOUS . '
 		GROUP BY s.session_user_id
 		ORDER BY u.username_clean';
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		if ($row['user_type'] != USER_IGNORE)
+		$online_users['online_users'][$row['user_id']] = $row;
+		if ($row['session_viewonline'])
 		{
-			$online_users['online_users'][$row['user_id']] = $row;
-			if ($row['session_viewonline'])
-			{
-				$online_users['visible_online']++;
-			}
-			else
-			{
-				$online_users['hidden_online']++;
-			}
+			$online_users['visible_online']++;
 		}
 		else
 		{
-			$online_users['online_bots'][$row['user_id']] = $row;
-			$online_users['bots_online']++;
+			$online_users['hidden_online']++;
 		}
 	}
+	$db->sql_freeresult($result);
+
+	if ($config['load_online_bots'])
+	{
+		$sql = 'SELECT s.session_bot_id AS bot_id, b.bot_name
+			FROM ' . SESSIONS_TABLE . ' s
+			LEFT JOIN ' . BOTS_TABLE . ' b ON s.session_bot_id = b.bot_id
+			WHERE s.session_time >= ' . ($time - ((int) ($time % 30))) . '
+				AND s.session_bot_id <> 0
+			GROUP BY s.session_bot_id
+			ORDER BY b.bot_name';
+		$result = $db->sql_query($sql);
+
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$online_users['online_bots'][$row['bot_id']] = [
+				'user_id'		=> ANONYMOUS,
+				'username'		=> $row['bot_name'],
+				'user_colour'	=> '',
+			];
+			$online_users['bots_online']++;
+		}
+		$db->sql_freeresult($result);
+	}
+
 	$online_users['users_online'] = $online_users['visible_online'] + $online_users['hidden_online'];
 	$online_users['total_online'] = $online_users['bots_online'] + $online_users['guests_online'] + $online_users['visible_online'] + $online_users['hidden_online'];
-	$db->sql_freeresult($result);
 
 	return $online_users;
 }
@@ -3299,7 +3310,7 @@ function obtain_users_online_string($online_users)
 
 	foreach ($online_users['online_bots'] as $row)
 	{
-		$user_online_link = get_username_string('no_profile', $row['user_id'], $row['username'], $row['user_colour']);
+		$user_online_link = '<span class="botname">' . $row['username'] . '</span>';
 		$online_botlist .= ($online_botlist != '' ? ', ' : '') . $user_online_link;
 	}
 

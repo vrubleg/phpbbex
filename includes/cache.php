@@ -281,7 +281,7 @@ class phpbb_cache extends acm
 		{
 			global $db;
 
-			$sql = 'SELECT user_id, bot_agent, bot_ip
+			$sql = 'SELECT bot_id, bot_agent, bot_ip
 				FROM ' . BOTS_TABLE . '
 				WHERE bot_active = 1
 			ORDER BY LENGTH(bot_agent) DESC';

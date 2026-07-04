@@ -419,18 +419,6 @@ class acp_prune
 			return;
 		}
 
-		// Get bot ids
-		$sql = 'SELECT user_id
-			FROM ' . BOTS_TABLE;
-		$result = $db->sql_query($sql);
-
-		$bot_ids = [];
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$bot_ids[] = $row['user_id'];
-		}
-		$db->sql_freeresult($result);
-
 		// Do not prune founder members
 		$sql = 'SELECT user_id, username
 			FROM ' . USERS_TABLE . '
@@ -444,8 +432,8 @@ class acp_prune
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			// Do not prune bots and the user currently pruning.
-			if ($row['user_id'] != $user->data['user_id'] && !in_array($row['user_id'], $bot_ids))
+			// Do not prune the user currently pruning.
+			if ($row['user_id'] != $user->data['user_id'])
 			{
 				$user_ids[] = $row['user_id'];
 				$usernames[$row['user_id']] = $row['username'];
