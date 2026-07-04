@@ -557,12 +557,14 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'allow_emailreuse',
 		'allow_autologin',
 		'form_token_sid_guests',
+		'form_token_lifetime',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
 	set_config('max_autologin_time', '400');
+	set_config('session_length', '43200');
 
 	// Remove obsolete modules.
 

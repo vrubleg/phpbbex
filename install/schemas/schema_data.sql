@@ -108,7 +108,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_topics_new', 
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_topics_active', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_item_statistics', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('flood_interval', '15');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_lifetime', '43200');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_mintime', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('forwarded_for_check', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('full_folder_action', '2');
@@ -234,7 +233,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_deny'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_empty_referer', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_downloads', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_gc', '3600');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '3600');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '43200');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_desc', '{L_CONFIG_SITE_DESC}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('sitename', '{L_CONFIG_SITENAME}');

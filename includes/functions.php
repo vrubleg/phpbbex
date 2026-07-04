@@ -2102,7 +2102,7 @@ function check_form_key($form_name, $timespan = false, $return_page = '', $trigg
 	if ($timespan === false)
 	{
 		// we enforce a minimum value of half a minute here.
-		$timespan = ($config['form_token_lifetime'] == -1) ? -1 : max(30, $config['form_token_lifetime']);
+		$timespan = max(30, $config['session_length']);
 	}
 
 	if (isset($_POST['creation_time']) && isset($_POST['form_token']))
