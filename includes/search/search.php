@@ -143,7 +143,7 @@ class search_backend
 	* Caches post/topic ids
 	*
 	* @param array &$id_ary contains a list of post or topic ids that shall be cached, the first element
-	* 	must have the absolute index $start in the result set.
+	*   must have the absolute index $start in the result set.
 	*/
 	function save_ids($search_key, $keywords, $author_ary, $result_count, &$id_ary, $start, $sort_dir)
 	{
@@ -174,10 +174,10 @@ class search_backend
 				if (!$db->sql_fetchrow($result))
 				{
 					$sql_ary = [
-						'search_key'		=> $search_key,
-						'search_time'		=> time(),
-						'search_keywords'	=> $keywords,
-						'search_authors'	=> ' ' . implode(' ', $author_ary) . ' '
+						'search_key'        => $search_key,
+						'search_time'       => time(),
+						'search_keywords'   => $keywords,
+						'search_authors'    => ' ' . implode(' ', $author_ary) . ' '
 					];
 
 					$sql = 'INSERT INTO ' . SEARCH_RESULTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);

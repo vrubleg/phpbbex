@@ -31,14 +31,14 @@ class acp_groups
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 		// Check and set some common vars
-		$action		= (isset($_POST['add'])) ? 'add' : ((isset($_POST['addusers'])) ? 'addusers' : request_var('action', ''));
-		$group_id	= request_var('g', 0);
-		$mark_ary	= request_var('mark', [0]);
-		$name_ary	= request_var('usernames', '', true);
-		$leader		= request_var('leader', 0);
-		$default	= request_var('default', 0);
-		$start		= request_var('start', 0);
-		$update		= isset($_POST['update']);
+		$action     = (isset($_POST['add'])) ? 'add' : ((isset($_POST['addusers'])) ? 'addusers' : request_var('action', ''));
+		$group_id   = request_var('g', 0);
+		$mark_ary   = request_var('mark', [0]);
+		$name_ary   = request_var('usernames', '', true);
+		$leader     = request_var('leader', 0);
+		$default    = request_var('default', 0);
+		$start      = request_var('start', 0);
+		$update     = isset($_POST['update']);
 
 
 		// Clear some vars
@@ -131,11 +131,11 @@ class acp_groups
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'mark'		=> $mark_ary,
-						'g'			=> $group_id,
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'action'	=> $action])
+						'mark'      => $mark_ary,
+						'g'         => $group_id,
+						'i'         => $id,
+						'mode'      => $mode,
+						'action'    => $action])
 					);
 				}
 			break;
@@ -181,11 +181,11 @@ class acp_groups
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'mark'		=> $mark_ary,
-						'g'			=> $group_id,
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'action'	=> $action])
+						'mark'      => $mark_ary,
+						'g'         => $group_id,
+						'i'         => $id,
+						'mode'      => $mode,
+						'action'    => $action])
 					);
 				}
 			break;
@@ -239,11 +239,11 @@ class acp_groups
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'mark'		=> $mark_ary,
-						'g'			=> $group_id,
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'action'	=> $action])
+						'mark'      => $mark_ary,
+						'g'         => $group_id,
+						'i'         => $id,
+						'mode'      => $mode,
+						'action'    => $action])
 					);
 				}
 			break;
@@ -305,23 +305,23 @@ class acp_groups
 						trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
 					}
 
-					$group_name	= utf8_normalize_nfc(request_var('group_name', '', true));
+					$group_name = utf8_normalize_nfc(request_var('group_name', '', true));
 					$group_desc = utf8_normalize_nfc(request_var('group_desc', '', true));
-					$group_type	= request_var('group_type', GROUP_FREE);
+					$group_type = request_var('group_type', GROUP_FREE);
 
-					$allow_desc_bbcode	= request_var('desc_parse_bbcode', false);
-					$allow_desc_urls	= request_var('desc_parse_urls', false);
-					$allow_desc_smilies	= request_var('desc_parse_smilies', false);
+					$allow_desc_bbcode  = request_var('desc_parse_bbcode', false);
+					$allow_desc_urls    = request_var('desc_parse_urls', false);
+					$allow_desc_smilies = request_var('desc_parse_smilies', false);
 
 					$submit_ary = [
-						'colour'			=> request_var('group_colour', ''),
-						'rank'				=> request_var('group_rank', 0),
-						'receive_pm'		=> isset($_REQUEST['group_receive_pm']) ? 1 : 0,
-						'legend'			=> isset($_REQUEST['group_legend']) ? 1 : 0,
-						'message_limit'		=> request_var('group_message_limit', 0),
-						'max_recipients'	=> request_var('group_max_recipients', 0),
-						'founder_manage'	=> 0,
-						'skip_auth'			=> request_var('group_skip_auth', 0),
+						'colour'            => request_var('group_colour', ''),
+						'rank'              => request_var('group_rank', 0),
+						'receive_pm'        => isset($_REQUEST['group_receive_pm']) ? 1 : 0,
+						'legend'            => isset($_REQUEST['group_legend']) ? 1 : 0,
+						'message_limit'     => request_var('group_message_limit', 0),
+						'max_recipients'    => request_var('group_max_recipients', 0),
+						'founder_manage'    => 0,
+						'skip_auth'         => request_var('group_skip_auth', 0),
 					];
 
 					if ($user->data['user_type'] == USER_FOUNDER)
@@ -332,7 +332,7 @@ class acp_groups
 					// Validate "Maximum number of allowed recipients per private message" and colour.
 					$validation_checks = [
 						'max_recipients' => ['num', false, 0, 1000000],
-						'colour'	=> ['hex_colour', true],
+						'colour'    => ['hex_colour', true],
 					];
 
 					if ($validation_error = validate_data($submit_ary, $validation_checks))
@@ -349,14 +349,14 @@ class acp_groups
 
 						$group_attributes = [];
 						$test_variables = [
-							'colour'		=> 'string',
-							'rank'			=> 'int',
-							'receive_pm'	=> 'int',
-							'legend'		=> 'int',
-							'message_limit'	=> 'int',
+							'colour'        => 'string',
+							'rank'          => 'int',
+							'receive_pm'    => 'int',
+							'legend'        => 'int',
+							'message_limit' => 'int',
 							'max_recipients'=> 'int',
 							'founder_manage'=> 'int',
-							'skip_auth'		=> 'int',
+							'skip_auth'     => 'int',
 						];
 
 						foreach ($test_variables as $test => $type)
@@ -402,11 +402,11 @@ class acp_groups
 									while ($row = $db->sql_fetchrow($result))
 									{
 										$groups_sql_ary[] = [
-											'group_id'			=> (int) $group_id,
-											'forum_id'			=> (int) $row['forum_id'],
-											'auth_option_id'	=> (int) $row['auth_option_id'],
-											'auth_role_id'		=> (int) $row['auth_role_id'],
-											'auth_setting'		=> (int) $row['auth_setting']
+											'group_id'          => (int) $group_id,
+											'forum_id'          => (int) $row['forum_id'],
+											'auth_option_id'    => (int) $row['auth_option_id'],
+											'auth_role_id'      => (int) $row['auth_role_id'],
+											'auth_setting'      => (int) $row['auth_setting']
 										];
 									}
 									$db->sql_freeresult($result);
@@ -431,10 +431,10 @@ class acp_groups
 						$group_rank = $submit_ary['rank'];
 
 						$group_desc_data = [
-							'text'			=> $group_desc,
-							'allow_bbcode'	=> $allow_desc_bbcode,
-							'allow_smilies'	=> $allow_desc_smilies,
-							'allow_urls'	=> $allow_desc_urls
+							'text'          => $group_desc,
+							'allow_bbcode'  => $allow_desc_bbcode,
+							'allow_smilies' => $allow_desc_smilies,
+							'allow_urls'    => $allow_desc_urls
 						];
 					}
 				}
@@ -442,10 +442,10 @@ class acp_groups
 				{
 					$group_name = utf8_normalize_nfc(request_var('group_name', '', true));
 					$group_desc_data = [
-						'text'			=> '',
-						'allow_bbcode'	=> true,
-						'allow_smilies'	=> true,
-						'allow_urls'	=> true
+						'text'          => '',
+						'allow_bbcode'  => true,
+						'allow_smilies' => true,
+						'allow_urls'    => true
 					];
 					$group_rank = 0;
 					$group_type = GROUP_OPEN;
@@ -473,10 +473,10 @@ class acp_groups
 				}
 				$db->sql_freeresult($result);
 
-				$type_free		= ($group_type == GROUP_FREE) ? ' checked="checked"' : '';
-				$type_open		= ($group_type == GROUP_OPEN) ? ' checked="checked"' : '';
-				$type_closed	= ($group_type == GROUP_CLOSED) ? ' checked="checked"' : '';
-				$type_hidden	= ($group_type == GROUP_HIDDEN) ? ' checked="checked"' : '';
+				$type_free      = ($group_type == GROUP_FREE) ? ' checked="checked"' : '';
+				$type_open      = ($group_type == GROUP_OPEN) ? ' checked="checked"' : '';
+				$type_closed    = ($group_type == GROUP_CLOSED) ? ' checked="checked"' : '';
+				$type_hidden    = ($group_type == GROUP_HIDDEN) ? ' checked="checked"' : '';
 
 				$back_link = request_var('back_link', '');
 
@@ -492,47 +492,47 @@ class acp_groups
 				}
 
 				$template->assign_vars([
-					'S_EDIT'			=> true,
-					'S_ADD_GROUP'		=> ($action == 'add'),
-					'S_GROUP_PERM'		=> ($action == 'add' && $auth->acl_get('a_authgroups') && $auth->acl_gets('a_aauth', 'a_fauth', 'a_mauth', 'a_uauth')),
-					'S_INCLUDE_SWATCH'	=> true,
-					'S_ERROR'			=> (sizeof($error) > 0),
-					'S_SPECIAL_GROUP'	=> ($group_type == GROUP_SPECIAL),
-					'S_USER_FOUNDER'	=> ($user->data['user_type'] == USER_FOUNDER),
+					'S_EDIT'            => true,
+					'S_ADD_GROUP'       => ($action == 'add'),
+					'S_GROUP_PERM'      => ($action == 'add' && $auth->acl_get('a_authgroups') && $auth->acl_gets('a_aauth', 'a_fauth', 'a_mauth', 'a_uauth')),
+					'S_INCLUDE_SWATCH'  => true,
+					'S_ERROR'           => (sizeof($error) > 0),
+					'S_SPECIAL_GROUP'   => ($group_type == GROUP_SPECIAL),
+					'S_USER_FOUNDER'    => ($user->data['user_type'] == USER_FOUNDER),
 
-					'ERROR_MSG'				=> (sizeof($error)) ? implode('<br />', $error) : '',
-					'GROUP_NAME'			=> ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
-					'GROUP_INTERNAL_NAME'	=> $group_name,
-					'GROUP_DESC'			=> $group_desc_data['text'],
-					'GROUP_RECEIVE_PM'		=> (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
-					'GROUP_FOUNDER_MANAGE'	=> (isset($group_row['group_founder_manage']) && $group_row['group_founder_manage']) ? ' checked="checked"' : '',
-					'GROUP_LEGEND'			=> (isset($group_row['group_legend']) && $group_row['group_legend']) ? ' checked="checked"' : '',
-					'GROUP_MESSAGE_LIMIT'	=> $group_row['group_message_limit'] ?? 0,
-					'GROUP_MAX_RECIPIENTS'	=> $group_row['group_max_recipients'] ?? 0,
-					'GROUP_COLOUR'			=> $group_row['group_colour'] ?? '',
-					'GROUP_SKIP_AUTH'		=> (!empty($group_row['group_skip_auth'])) ? ' checked="checked"' : '',
+					'ERROR_MSG'             => (sizeof($error)) ? implode('<br />', $error) : '',
+					'GROUP_NAME'            => ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
+					'GROUP_INTERNAL_NAME'   => $group_name,
+					'GROUP_DESC'            => $group_desc_data['text'],
+					'GROUP_RECEIVE_PM'      => (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
+					'GROUP_FOUNDER_MANAGE'  => (isset($group_row['group_founder_manage']) && $group_row['group_founder_manage']) ? ' checked="checked"' : '',
+					'GROUP_LEGEND'          => (isset($group_row['group_legend']) && $group_row['group_legend']) ? ' checked="checked"' : '',
+					'GROUP_MESSAGE_LIMIT'   => $group_row['group_message_limit'] ?? 0,
+					'GROUP_MAX_RECIPIENTS'  => $group_row['group_max_recipients'] ?? 0,
+					'GROUP_COLOUR'          => $group_row['group_colour'] ?? '',
+					'GROUP_SKIP_AUTH'       => (!empty($group_row['group_skip_auth'])) ? ' checked="checked"' : '',
 
-					'S_DESC_BBCODE_CHECKED'	=> $group_desc_data['allow_bbcode'],
-					'S_DESC_URLS_CHECKED'	=> $group_desc_data['allow_urls'],
+					'S_DESC_BBCODE_CHECKED' => $group_desc_data['allow_bbcode'],
+					'S_DESC_URLS_CHECKED'   => $group_desc_data['allow_urls'],
 					'S_DESC_SMILIES_CHECKED'=> $group_desc_data['allow_smilies'],
 
-					'S_RANK_OPTIONS'		=> $rank_options,
-					'S_GROUP_OPTIONS'		=> group_select_options(false, false, (($user->data['user_type'] == USER_FOUNDER) ? false : 0)),
+					'S_RANK_OPTIONS'        => $rank_options,
+					'S_GROUP_OPTIONS'       => group_select_options(false, false, (($user->data['user_type'] == USER_FOUNDER) ? false : 0)),
 
-					'GROUP_TYPE_FREE'		=> GROUP_FREE,
-					'GROUP_TYPE_OPEN'		=> GROUP_OPEN,
-					'GROUP_TYPE_CLOSED'		=> GROUP_CLOSED,
-					'GROUP_TYPE_HIDDEN'		=> GROUP_HIDDEN,
-					'GROUP_TYPE_SPECIAL'	=> GROUP_SPECIAL,
+					'GROUP_TYPE_FREE'       => GROUP_FREE,
+					'GROUP_TYPE_OPEN'       => GROUP_OPEN,
+					'GROUP_TYPE_CLOSED'     => GROUP_CLOSED,
+					'GROUP_TYPE_HIDDEN'     => GROUP_HIDDEN,
+					'GROUP_TYPE_SPECIAL'    => GROUP_SPECIAL,
 
-					'GROUP_FREE'		=> $type_free,
-					'GROUP_OPEN'		=> $type_open,
-					'GROUP_CLOSED'		=> $type_closed,
-					'GROUP_HIDDEN'		=> $type_hidden,
+					'GROUP_FREE'        => $type_free,
+					'GROUP_OPEN'        => $type_open,
+					'GROUP_CLOSED'      => $type_closed,
+					'GROUP_HIDDEN'      => $type_hidden,
 
-					'U_BACK'			=> $u_back,
-					'U_SWATCH'			=> append_sid(PHPBB_ADMIN_PATH . 'swatch.php', 'form=settings&amp;name=group_colour'),
-					'U_ACTION'			=> "{$this->u_action}&amp;action={$action}&amp;g={$group_id}",
+					'U_BACK'            => $u_back,
+					'U_SWATCH'          => append_sid(PHPBB_ADMIN_PATH . 'swatch.php', 'form=settings&amp;name=group_colour'),
+					'U_ACTION'          => "{$this->u_action}&amp;action={$action}&amp;g={$group_id}",
 				]);
 
 				return;
@@ -559,14 +559,14 @@ class acp_groups
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$template->assign_block_vars('leader', [
-						'U_USER_EDIT'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;action=edit&amp;u={$row['user_id']}"),
+						'U_USER_EDIT'       => append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;action=edit&amp;u={$row['user_id']}"),
 
-						'USERNAME'			=> $row['username'],
-						'USERNAME_COLOUR'	=> $row['user_colour'],
-						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id),
-						'JOINED'			=> ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
-						'USER_POSTS'		=> $row['user_posts'],
-						'USER_ID'			=> $row['user_id'],
+						'USERNAME'          => $row['username'],
+						'USERNAME_COLOUR'   => $row['user_colour'],
+						'S_GROUP_DEFAULT'   => ($row['group_id'] == $group_id),
+						'JOINED'            => ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
+						'USER_POSTS'        => $row['user_posts'],
+						'USER_ID'           => $row['user_id'],
 					]);
 				}
 				$db->sql_freeresult($result);
@@ -589,18 +589,18 @@ class acp_groups
 				}
 
 				$template->assign_vars([
-					'S_LIST'			=> true,
-					'S_GROUP_SPECIAL'	=> ($group_row['group_type'] == GROUP_SPECIAL),
-					'S_ACTION_OPTIONS'	=> $s_action_options,
+					'S_LIST'            => true,
+					'S_GROUP_SPECIAL'   => ($group_row['group_type'] == GROUP_SPECIAL),
+					'S_ACTION_OPTIONS'  => $s_action_options,
 
-					'S_ON_PAGE'		=> on_page($total_members, $config['topics_per_page'], $start),
-					'PAGINATION'	=> generate_pagination($this->u_action . "&amp;action={$action}&amp;g={$group_id}", $total_members, $config['topics_per_page'], $start, true),
-					'GROUP_NAME'	=> ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'],
+					'S_ON_PAGE'     => on_page($total_members, $config['topics_per_page'], $start),
+					'PAGINATION'    => generate_pagination($this->u_action . "&amp;action={$action}&amp;g={$group_id}", $total_members, $config['topics_per_page'], $start, true),
+					'GROUP_NAME'    => ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'],
 
-					'U_ACTION'			=> $this->u_action . "&amp;g={$group_id}",
-					'U_BACK'			=> $this->u_action,
-					'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=list&amp;field=usernames'),
-					'U_DEFAULT_ALL'		=> "{$this->u_action}&amp;action=set_default_on_all&amp;g={$group_id}",
+					'U_ACTION'          => $this->u_action . "&amp;g={$group_id}",
+					'U_BACK'            => $this->u_action,
+					'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=list&amp;field=usernames'),
+					'U_DEFAULT_ALL'     => "{$this->u_action}&amp;action=set_default_on_all&amp;g={$group_id}",
 				]);
 
 				// Grab the members
@@ -619,21 +619,21 @@ class acp_groups
 					if ($row['user_pending'] && !$pending)
 					{
 						$template->assign_block_vars('member', [
-							'S_PENDING'		=> true]
+							'S_PENDING'     => true]
 						);
 
 						$pending = true;
 					}
 
 					$template->assign_block_vars('member', [
-						'U_USER_EDIT'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;action=edit&amp;u={$row['user_id']}"),
+						'U_USER_EDIT'       => append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;action=edit&amp;u={$row['user_id']}"),
 
-						'USERNAME'			=> $row['username'],
-						'USERNAME_COLOUR'	=> $row['user_colour'],
-						'S_GROUP_DEFAULT'	=> ($row['group_id'] == $group_id),
-						'JOINED'			=> ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
-						'USER_POSTS'		=> $row['user_posts'],
-						'USER_ID'			=> $row['user_id']]
+						'USERNAME'          => $row['username'],
+						'USERNAME_COLOUR'   => $row['user_colour'],
+						'S_GROUP_DEFAULT'   => ($row['group_id'] == $group_id),
+						'JOINED'            => ($row['user_regdate']) ? $user->format_date($row['user_regdate']) : ' - ',
+						'USER_POSTS'        => $row['user_posts'],
+						'USER_ID'           => $row['user_id']]
 					);
 				}
 				$db->sql_freeresult($result);
@@ -643,8 +643,8 @@ class acp_groups
 		}
 
 		$template->assign_vars([
-			'U_ACTION'		=> $this->u_action,
-			'S_GROUP_ADD'	=> (bool) $auth->acl_get('a_groupadd'),
+			'U_ACTION'      => $this->u_action,
+			'S_GROUP_ADD'   => (bool) $auth->acl_get('a_groupadd'),
 		]);
 
 		// Get us all the groups
@@ -689,7 +689,7 @@ class acp_groups
 			if ($type == 'special')
 			{
 				$template->assign_block_vars('groups', [
-					'S_SPECIAL'			=> true
+					'S_SPECIAL'         => true
 				]);
 			}
 
@@ -698,14 +698,14 @@ class acp_groups
 				$group_name = $user->lang['G_' . $row['group_name']] ?? $row['group_name'];
 
 				$template->assign_block_vars('groups', [
-					'U_LIST'		=> "{$this->u_action}&amp;action=list&amp;g={$group_id}",
-					'U_EDIT'		=> "{$this->u_action}&amp;action=edit&amp;g={$group_id}",
-					'U_DELETE'		=> ($auth->acl_get('a_groupdel')) ? "{$this->u_action}&amp;action=delete&amp;g={$group_id}" : '',
+					'U_LIST'        => "{$this->u_action}&amp;action=list&amp;g={$group_id}",
+					'U_EDIT'        => "{$this->u_action}&amp;action=edit&amp;g={$group_id}",
+					'U_DELETE'      => ($auth->acl_get('a_groupdel')) ? "{$this->u_action}&amp;action=delete&amp;g={$group_id}" : '',
 
-					'S_GROUP_SPECIAL'	=> ($row['group_type'] == GROUP_SPECIAL),
+					'S_GROUP_SPECIAL'   => ($row['group_type'] == GROUP_SPECIAL),
 
-					'GROUP_NAME'	=> $group_name,
-					'TOTAL_MEMBERS'	=> $row['total_members'],
+					'GROUP_NAME'    => $group_name,
+					'TOTAL_MEMBERS' => $row['total_members'],
 				]);
 			}
 		}

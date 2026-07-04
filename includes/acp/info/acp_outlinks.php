@@ -10,11 +10,11 @@ class acp_outlinks_info
 	function module()
 	{
 		return [
-			'filename'	=> 'acp_outlinks',
-			'title'		=> 'ACP_OUTLINKS',
-			'version'	=> '1.0.0',
-			'modes'		=> [
-				'outlinks'		=> ['title' => 'ACP_OUTLINKS', 'auth' => 'acl_a_board', 'cat' => ['ACP_BOARD_CONFIGURATION']],
+			'filename'  => 'acp_outlinks',
+			'title'     => 'ACP_OUTLINKS',
+			'version'   => '1.0.0',
+			'modes'     => [
+				'outlinks'      => ['title' => 'ACP_OUTLINKS', 'auth' => 'acl_a_board', 'cat' => ['ACP_BOARD_CONFIGURATION']],
 			],
 		];
 	}

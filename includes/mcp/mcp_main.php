@@ -232,9 +232,9 @@ function lock_unlock($action, $ids)
 	$redirect = request_var('redirect', build_url(['action', 'quickmod']));
 
 	$s_hidden_fields = build_hidden_fields([
-		$sql_id . '_list'	=> $ids,
-		'action'			=> $action,
-		'redirect'			=> $redirect]
+		$sql_id . '_list'   => $ids,
+		'action'            => $action,
+		'redirect'          => $redirect]
 	);
 	$success_msg = '';
 
@@ -317,10 +317,10 @@ function change_topic_type($action, $topic_ids)
 	$redirect = request_var('redirect', build_url(['action', 'quickmod']));
 
 	$s_hidden_fields = [
-		'topic_id_list'	=> $topic_ids,
-		'f'				=> $forum_id,
-		'action'		=> $action,
-		'redirect'		=> $redirect,
+		'topic_id_list' => $topic_ids,
+		'f'             => $forum_id,
+		'action'        => $action,
+		'redirect'      => $redirect,
 	];
 	$success_msg = '';
 
@@ -382,10 +382,10 @@ function mcp_move_topic($topic_ids)
 	$additional_msg = $success_msg = '';
 
 	$s_hidden_fields = build_hidden_fields([
-		'topic_id_list'	=> $topic_ids,
-		'f'				=> $forum_id,
-		'action'		=> 'move',
-		'redirect'		=> $redirect]
+		'topic_id_list' => $topic_ids,
+		'f'             => $forum_id,
+		'action'        => 'move',
+		'redirect'      => $redirect]
 	);
 
 	if ($to_forum_id)
@@ -503,38 +503,38 @@ function mcp_move_topic($topic_ids)
 			if ($leave_shadow && $row['topic_approved'])
 			{
 				$shadow = [
-					'forum_id'				=>	(int) $row['forum_id'],
-					'icon_id'				=>	(int) $row['icon_id'],
-					'topic_attachment'		=>	(int) $row['topic_attachment'],
-					'topic_approved'		=>	1, // a shadow topic is always approved
-					'topic_reported'		=>	0, // a shadow topic is never reported
-					'topic_title'			=>	(string) $row['topic_title'],
-					'topic_poster'			=>	(int) $row['topic_poster'],
-					'topic_time'			=>	(int) $row['topic_time'],
-					'topic_time_limit'		=>	(int) $row['topic_time_limit'],
-					'topic_views'			=>	(int) $row['topic_views'],
-					'topic_replies'			=>	(int) $row['topic_replies'],
-					'topic_replies_real'	=>	(int) $row['topic_replies_real'],
-					'topic_status'			=>	ITEM_MOVED,
-					'topic_type'			=>	POST_NORMAL,
-					'topic_first_post_id'	=>	(int) $row['topic_first_post_id'],
+					'forum_id'              =>  (int) $row['forum_id'],
+					'icon_id'               =>  (int) $row['icon_id'],
+					'topic_attachment'      =>  (int) $row['topic_attachment'],
+					'topic_approved'        =>  1, // a shadow topic is always approved
+					'topic_reported'        =>  0, // a shadow topic is never reported
+					'topic_title'           =>  (string) $row['topic_title'],
+					'topic_poster'          =>  (int) $row['topic_poster'],
+					'topic_time'            =>  (int) $row['topic_time'],
+					'topic_time_limit'      =>  (int) $row['topic_time_limit'],
+					'topic_views'           =>  (int) $row['topic_views'],
+					'topic_replies'         =>  (int) $row['topic_replies'],
+					'topic_replies_real'    =>  (int) $row['topic_replies_real'],
+					'topic_status'          =>  ITEM_MOVED,
+					'topic_type'            =>  POST_NORMAL,
+					'topic_first_post_id'   =>  (int) $row['topic_first_post_id'],
 					'topic_first_poster_colour'=>(string) $row['topic_first_poster_colour'],
-					'topic_first_poster_name'=>	(string) $row['topic_first_poster_name'],
-					'topic_last_post_id'	=>	(int) $row['topic_last_post_id'],
-					'topic_last_poster_id'	=>	(int) $row['topic_last_poster_id'],
+					'topic_first_poster_name'=> (string) $row['topic_first_poster_name'],
+					'topic_last_post_id'    =>  (int) $row['topic_last_post_id'],
+					'topic_last_poster_id'  =>  (int) $row['topic_last_poster_id'],
 					'topic_last_poster_colour'=>(string) $row['topic_last_poster_colour'],
-					'topic_last_poster_name'=>	(string) $row['topic_last_poster_name'],
-					'topic_last_post_subject'=>	(string)  $row['topic_last_post_subject'],
-					'topic_last_post_time'	=>	(int) $row['topic_last_post_time'],
-					'topic_last_view_time'	=>	(int) $row['topic_last_view_time'],
-					'topic_moved_id'		=>	(int) $row['topic_id'],
-					'topic_bumped'			=>	(int) $row['topic_bumped'],
-					'topic_bumper'			=>	(int) $row['topic_bumper'],
-					'poll_title'			=>	(string) $row['poll_title'],
-					'poll_start'			=>	(int) $row['poll_start'],
-					'poll_length'			=>	(int) $row['poll_length'],
-					'poll_max_options'		=>	(int) $row['poll_max_options'],
-					'poll_last_vote'		=>	(int) $row['poll_last_vote']
+					'topic_last_poster_name'=>  (string) $row['topic_last_poster_name'],
+					'topic_last_post_subject'=> (string)  $row['topic_last_post_subject'],
+					'topic_last_post_time'  =>  (int) $row['topic_last_post_time'],
+					'topic_last_view_time'  =>  (int) $row['topic_last_view_time'],
+					'topic_moved_id'        =>  (int) $row['topic_id'],
+					'topic_bumped'          =>  (int) $row['topic_bumped'],
+					'topic_bumper'          =>  (int) $row['topic_bumper'],
+					'poll_title'            =>  (string) $row['poll_title'],
+					'poll_start'            =>  (int) $row['poll_start'],
+					'poll_length'           =>  (int) $row['poll_length'],
+					'poll_max_options'      =>  (int) $row['poll_max_options'],
+					'poll_last_vote'        =>  (int) $row['poll_last_vote']
 				];
 
 				$db->sql_query('INSERT INTO ' . TOPICS_TABLE . $db->sql_build_array('INSERT', $shadow));
@@ -553,12 +553,12 @@ function mcp_move_topic($topic_ids)
 
 		if ($topics_removed)
 		{
-			$sync_sql[$forum_id][]	= 'forum_topics_real = forum_topics_real - ' . (int) $topics_removed;
+			$sync_sql[$forum_id][]  = 'forum_topics_real = forum_topics_real - ' . (int) $topics_removed;
 		}
 
 		if ($topics_authed_removed)
 		{
-			$sync_sql[$forum_id][]	= 'forum_topics = forum_topics - ' . (int) $topics_authed_removed;
+			$sync_sql[$forum_id][]  = 'forum_topics = forum_topics - ' . (int) $topics_authed_removed;
 		}
 
 		$success_msg = (sizeof($topic_ids) == 1) ? 'TOPIC_MOVED_SUCCESS' : 'TOPICS_MOVED_SUCCESS';
@@ -578,9 +578,9 @@ function mcp_move_topic($topic_ids)
 	else
 	{
 		$template->assign_vars([
-			'S_FORUM_SELECT'		=> make_forum_select($to_forum_id, $forum_id, false, true, true, true),
-			'S_CAN_LEAVE_SHADOW'	=> true,
-			'ADDITIONAL_MSG'		=> $additional_msg,
+			'S_FORUM_SELECT'        => make_forum_select($to_forum_id, $forum_id, false, true, true, true),
+			'S_CAN_LEAVE_SHADOW'    => true,
+			'ADDITIONAL_MSG'        => $additional_msg,
 		]);
 
 		confirm_box(false, 'MOVE_TOPIC' . ((sizeof($topic_ids) == 1) ? '' : 'S'), $s_hidden_fields, 'mcp_move.html');
@@ -622,10 +622,10 @@ function mcp_delete_topic($topic_ids)
 	$forum_id = request_var('f', 0);
 
 	$s_hidden_fields = build_hidden_fields([
-		'topic_id_list'	=> $topic_ids,
-		'f'				=> $forum_id,
-		'action'		=> 'delete_topic',
-		'redirect'		=> $redirect]
+		'topic_id_list' => $topic_ids,
+		'f'             => $forum_id,
+		'action'        => 'delete_topic',
+		'redirect'      => $redirect]
 	);
 	$success_msg = '';
 
@@ -700,10 +700,10 @@ function mcp_delete_post($post_ids)
 	$forum_id = request_var('f', 0);
 
 	$s_hidden_fields = build_hidden_fields([
-		'post_id_list'	=> $post_ids,
-		'f'				=> $forum_id,
-		'action'		=> 'delete_post',
-		'redirect'		=> $redirect]
+		'post_id_list'  => $post_ids,
+		'f'             => $forum_id,
+		'action'        => 'delete_post',
+		'redirect'      => $redirect]
 	);
 	$success_msg = '';
 
@@ -829,10 +829,10 @@ function mcp_fork_topic($topic_ids)
 	$additional_msg = $success_msg = '';
 
 	$s_hidden_fields = build_hidden_fields([
-		'topic_id_list'	=> $topic_ids,
-		'f'				=> $forum_id,
-		'action'		=> 'fork',
-		'redirect'		=> $redirect]
+		'topic_id_list' => $topic_ids,
+		'f'             => $forum_id,
+		'action'        => 'fork',
+		'redirect'      => $redirect]
 	);
 
 	if ($to_forum_id)
@@ -912,30 +912,30 @@ function mcp_fork_topic($topic_ids)
 			}
 
 			$sql_ary = [
-				'forum_id'					=> (int) $to_forum_id,
-				'icon_id'					=> (int) $topic_row['icon_id'],
-				'topic_attachment'			=> (int) $topic_row['topic_attachment'],
-				'topic_approved'			=> 1,
-				'topic_reported'			=> 0,
-				'topic_title'				=> (string) $topic_row['topic_title'],
-				'topic_poster'				=> (int) $topic_row['topic_poster'],
-				'topic_time'				=> (int) $topic_row['topic_time'],
-				'topic_replies'				=> (int) $topic_row['topic_replies_real'],
-				'topic_replies_real'		=> (int) $topic_row['topic_replies_real'],
-				'topic_status'				=> (int) $topic_row['topic_status'],
-				'topic_type'				=> (int) $topic_row['topic_type'],
-				'topic_first_poster_name'	=> (string) $topic_row['topic_first_poster_name'],
-				'topic_last_poster_id'		=> (int) $topic_row['topic_last_poster_id'],
-				'topic_last_poster_name'	=> (string) $topic_row['topic_last_poster_name'],
-				'topic_last_post_time'		=> (int) $topic_row['topic_last_post_time'],
-				'topic_last_view_time'		=> (int) $topic_row['topic_last_view_time'],
-				'topic_bumped'				=> (int) $topic_row['topic_bumped'],
-				'topic_bumper'				=> (int) $topic_row['topic_bumper'],
-				'poll_title'				=> (string) $topic_row['poll_title'],
-				'poll_start'				=> (int) $topic_row['poll_start'],
-				'poll_length'				=> (int) $topic_row['poll_length'],
-				'poll_max_options'			=> (int) $topic_row['poll_max_options'],
-				'poll_vote_change'			=> (int) $topic_row['poll_vote_change'],
+				'forum_id'                  => (int) $to_forum_id,
+				'icon_id'                   => (int) $topic_row['icon_id'],
+				'topic_attachment'          => (int) $topic_row['topic_attachment'],
+				'topic_approved'            => 1,
+				'topic_reported'            => 0,
+				'topic_title'               => (string) $topic_row['topic_title'],
+				'topic_poster'              => (int) $topic_row['topic_poster'],
+				'topic_time'                => (int) $topic_row['topic_time'],
+				'topic_replies'             => (int) $topic_row['topic_replies_real'],
+				'topic_replies_real'        => (int) $topic_row['topic_replies_real'],
+				'topic_status'              => (int) $topic_row['topic_status'],
+				'topic_type'                => (int) $topic_row['topic_type'],
+				'topic_first_poster_name'   => (string) $topic_row['topic_first_poster_name'],
+				'topic_last_poster_id'      => (int) $topic_row['topic_last_poster_id'],
+				'topic_last_poster_name'    => (string) $topic_row['topic_last_poster_name'],
+				'topic_last_post_time'      => (int) $topic_row['topic_last_post_time'],
+				'topic_last_view_time'      => (int) $topic_row['topic_last_view_time'],
+				'topic_bumped'              => (int) $topic_row['topic_bumped'],
+				'topic_bumper'              => (int) $topic_row['topic_bumper'],
+				'poll_title'                => (string) $topic_row['poll_title'],
+				'poll_start'                => (int) $topic_row['poll_start'],
+				'poll_length'               => (int) $topic_row['poll_length'],
+				'poll_max_options'          => (int) $topic_row['poll_max_options'],
+				'poll_vote_change'          => (int) $topic_row['poll_vote_change'],
 			];
 
 			$db->sql_query('INSERT INTO ' . TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -954,10 +954,10 @@ function mcp_fork_topic($topic_ids)
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$sql_ary = [
-						'poll_option_id'	=> (int) $row['poll_option_id'],
-						'topic_id'			=> (int) $new_topic_id,
-						'poll_option_text'	=> (string) $row['poll_option_text'],
-						'poll_option_total'	=> 0
+						'poll_option_id'    => (int) $row['poll_option_id'],
+						'topic_id'          => (int) $new_topic_id,
+						'poll_option_text'  => (string) $row['poll_option_text'],
+						'poll_option_total' => 0
 					];
 
 					$db->sql_query('INSERT INTO ' . POLL_OPTIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -986,31 +986,31 @@ function mcp_fork_topic($topic_ids)
 			foreach ($post_rows as $row)
 			{
 				$sql_ary = [
-					'topic_id'			=> (int) $new_topic_id,
-					'forum_id'			=> (int) $to_forum_id,
-					'poster_id'			=> (int) $row['poster_id'],
-					'icon_id'			=> (int) $row['icon_id'],
-					'poster_ip'			=> (string) $row['poster_ip'],
-					'post_time'			=> (int) $row['post_time'],
-					'post_approved'		=> 1,
-					'post_reported'		=> 0,
-					'enable_bbcode'		=> (int) $row['enable_bbcode'],
-					'enable_smilies'	=> (int) $row['enable_smilies'],
-					'enable_magic_url'	=> (int) $row['enable_magic_url'],
-					'enable_sig'		=> (int) $row['enable_sig'],
-					'post_username'		=> (string) $row['post_username'],
-					'post_subject'		=> (string) $row['post_subject'],
-					'post_text'			=> (string) $row['post_text'],
-					'post_edit_reason'	=> (string) $row['post_edit_reason'],
-					'post_edit_user'	=> (int) $row['post_edit_user'],
-					'post_checksum'		=> (string) $row['post_checksum'],
-					'post_attachment'	=> (int) $row['post_attachment'],
-					'bbcode_bitfield'	=> $row['bbcode_bitfield'],
-					'bbcode_uid'		=> (string) $row['bbcode_uid'],
-					'post_edit_time'	=> (int) $row['post_edit_time'],
-					'post_edit_count'	=> (int) $row['post_edit_count'],
-					'post_edit_locked'	=> (int) $row['post_edit_locked'],
-					'post_postcount'	=> 0,
+					'topic_id'          => (int) $new_topic_id,
+					'forum_id'          => (int) $to_forum_id,
+					'poster_id'         => (int) $row['poster_id'],
+					'icon_id'           => (int) $row['icon_id'],
+					'poster_ip'         => (string) $row['poster_ip'],
+					'post_time'         => (int) $row['post_time'],
+					'post_approved'     => 1,
+					'post_reported'     => 0,
+					'enable_bbcode'     => (int) $row['enable_bbcode'],
+					'enable_smilies'    => (int) $row['enable_smilies'],
+					'enable_magic_url'  => (int) $row['enable_magic_url'],
+					'enable_sig'        => (int) $row['enable_sig'],
+					'post_username'     => (string) $row['post_username'],
+					'post_subject'      => (string) $row['post_subject'],
+					'post_text'         => (string) $row['post_text'],
+					'post_edit_reason'  => (string) $row['post_edit_reason'],
+					'post_edit_user'    => (int) $row['post_edit_user'],
+					'post_checksum'     => (string) $row['post_checksum'],
+					'post_attachment'   => (int) $row['post_attachment'],
+					'bbcode_bitfield'   => $row['bbcode_bitfield'],
+					'bbcode_uid'        => (string) $row['bbcode_uid'],
+					'post_edit_time'    => (int) $row['post_edit_time'],
+					'post_edit_count'   => (int) $row['post_edit_count'],
+					'post_edit_locked'  => (int) $row['post_edit_locked'],
+					'post_postcount'    => 0,
 				];
 
 				$db->sql_query('INSERT INTO ' . POSTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -1038,20 +1038,20 @@ function mcp_fork_topic($topic_ids)
 					while ($attach_row = $db->sql_fetchrow($result))
 					{
 						$sql_ary[] = [
-							'post_msg_id'		=> (int) $new_post_id,
-							'topic_id'			=> (int) $new_topic_id,
-							'in_message'		=> 0,
-							'is_orphan'			=> (int) $attach_row['is_orphan'],
-							'poster_id'			=> (int) $attach_row['poster_id'],
-							'physical_filename'	=> (string) utf8_basename($attach_row['physical_filename']),
-							'real_filename'		=> (string) utf8_basename($attach_row['real_filename']),
-							'download_count'	=> (int) $attach_row['download_count'],
-							'attach_comment'	=> (string) $attach_row['attach_comment'],
-							'extension'			=> (string) $attach_row['extension'],
-							'mimetype'			=> (string) $attach_row['mimetype'],
-							'filesize'			=> (int) $attach_row['filesize'],
-							'filetime'			=> (int) $attach_row['filetime'],
-							'thumbnail'			=> (int) $attach_row['thumbnail']
+							'post_msg_id'       => (int) $new_post_id,
+							'topic_id'          => (int) $new_topic_id,
+							'in_message'        => 0,
+							'is_orphan'         => (int) $attach_row['is_orphan'],
+							'poster_id'         => (int) $attach_row['poster_id'],
+							'physical_filename' => (string) utf8_basename($attach_row['physical_filename']),
+							'real_filename'     => (string) utf8_basename($attach_row['real_filename']),
+							'download_count'    => (int) $attach_row['download_count'],
+							'attach_comment'    => (string) $attach_row['attach_comment'],
+							'extension'         => (string) $attach_row['extension'],
+							'mimetype'          => (string) $attach_row['mimetype'],
+							'filesize'          => (int) $attach_row['filesize'],
+							'filetime'          => (int) $attach_row['filetime'],
+							'thumbnail'         => (int) $attach_row['thumbnail']
 						];
 					}
 					$db->sql_freeresult($result);
@@ -1073,9 +1073,9 @@ function mcp_fork_topic($topic_ids)
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$sql_ary[] = [
-					'topic_id'		=> (int) $new_topic_id,
-					'user_id'		=> (int) $row['user_id'],
-					'notify_status'	=> (int) $row['notify_status'],
+					'topic_id'      => (int) $new_topic_id,
+					'user_id'       => (int) $row['user_id'],
+					'notify_status' => (int) $row['notify_status'],
 				];
 			}
 			$db->sql_freeresult($result);
@@ -1095,8 +1095,8 @@ function mcp_fork_topic($topic_ids)
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$sql_ary[] = [
-					'topic_id'		=> (int) $new_topic_id,
-					'user_id'		=> (int) $row['user_id'],
+					'topic_id'      => (int) $new_topic_id,
+					'user_id'       => (int) $row['user_id'],
 				];
 			}
 			$db->sql_freeresult($result);
@@ -1112,9 +1112,9 @@ function mcp_fork_topic($topic_ids)
 
 		$sync_sql = [];
 
-		$sync_sql[$to_forum_id][]	= 'forum_posts = forum_posts + ' . $total_posts;
-		$sync_sql[$to_forum_id][]	= 'forum_topics = forum_topics + ' . sizeof($new_topic_id_list);
-		$sync_sql[$to_forum_id][]	= 'forum_topics_real = forum_topics_real + ' . sizeof($new_topic_id_list);
+		$sync_sql[$to_forum_id][]   = 'forum_posts = forum_posts + ' . $total_posts;
+		$sync_sql[$to_forum_id][]   = 'forum_topics = forum_topics + ' . sizeof($new_topic_id_list);
+		$sync_sql[$to_forum_id][]   = 'forum_topics_real = forum_topics_real + ' . sizeof($new_topic_id_list);
 
 		foreach ($sync_sql as $forum_id_key => $array)
 		{
@@ -1138,9 +1138,9 @@ function mcp_fork_topic($topic_ids)
 	else
 	{
 		$template->assign_vars([
-			'S_FORUM_SELECT'		=> make_forum_select($to_forum_id, false, false, true, true, true),
-			'S_CAN_LEAVE_SHADOW'	=> false,
-			'ADDITIONAL_MSG'		=> $additional_msg,
+			'S_FORUM_SELECT'        => make_forum_select($to_forum_id, false, false, true, true, true),
+			'S_CAN_LEAVE_SHADOW'    => false,
+			'ADDITIONAL_MSG'        => $additional_msg,
 		]);
 
 		confirm_box(false, 'FORK_TOPIC' . ((sizeof($topic_ids) == 1) ? '' : 'S'), $s_hidden_fields, 'mcp_move.html');

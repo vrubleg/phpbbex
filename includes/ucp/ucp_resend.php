@@ -24,9 +24,9 @@ class ucp_resend
 	{
 		global $db, $user, $auth, $template, $config;
 
-		$username	= request_var('username', '', true);
-		$email		= strtolower(request_var('email', ''));
-		$submit		= isset($_POST['submit']);
+		$username   = request_var('username', '', true);
+		$email      = strtolower(request_var('email', ''));
+		$submit     = isset($_POST['submit']);
 
 		add_form_key('ucp_resend');
 
@@ -76,9 +76,9 @@ class ucp_resend
 				$messenger->anti_abuse_headers($config, $user);
 
 				$messenger->assign_vars([
-					'WELCOME_MSG'	=> htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
-					'USERNAME'		=> htmlspecialchars_decode($user_row['username']),
-					'U_ACTIVATE'	=> generate_board_url() . "/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}"]
+					'WELCOME_MSG'   => htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
+					'USERNAME'      => htmlspecialchars_decode($user_row['username']),
+					'U_ACTIVATE'    => generate_board_url() . "/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}"]
 				);
 
 				$messenger->send(NOTIFY_EMAIL);
@@ -103,9 +103,9 @@ class ucp_resend
 					$messenger->anti_abuse_headers($config, $user);
 
 					$messenger->assign_vars([
-						'USERNAME'			=> htmlspecialchars_decode($user_row['username']),
-						'U_USER_DETAILS'	=> generate_board_url() . "/memberlist.php?mode=viewprofile&u={$user_row['user_id']}",
-						'U_ACTIVATE'		=> generate_board_url() . "/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}"]
+						'USERNAME'          => htmlspecialchars_decode($user_row['username']),
+						'U_USER_DETAILS'    => generate_board_url() . "/memberlist.php?mode=viewprofile&u={$user_row['user_id']}",
+						'U_ACTIVATE'        => generate_board_url() . "/ucp.php?mode=activate&u={$user_row['user_id']}&k={$user_row['user_actkey']}"]
 					);
 
 					$messenger->send($row['user_notify_type']);
@@ -121,9 +121,9 @@ class ucp_resend
 		}
 
 		$template->assign_vars([
-			'USERNAME'			=> $username,
-			'EMAIL'				=> $email,
-			'S_PROFILE_ACTION'	=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=resend_act')]
+			'USERNAME'          => $username,
+			'EMAIL'             => $email,
+			'S_PROFILE_ACTION'  => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=resend_act')]
 		);
 
 		$this->tpl_name = 'ucp_resend';

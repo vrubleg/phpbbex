@@ -95,11 +95,11 @@ class acp_modules
 				else
 				{
 					confirm_box(false, 'DELETE_MODULE', build_hidden_fields([
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'parent_id'	=> $this->parent_id,
-						'module_id'	=> $module_id,
-						'action'	=> $action,
+						'i'         => $id,
+						'mode'      => $mode,
+						'parent_id' => $this->parent_id,
+						'module_id' => $module_id,
+						'action'    => $action,
 					]));
 				}
 
@@ -185,14 +185,14 @@ class acp_modules
 					if (isset($fileinfo['modes'][$module_mode]))
 					{
 						$module_data = [
-							'module_basename'	=> $module_basename,
-							'module_enabled'	=> 0,
-							'module_display'	=> $fileinfo['modes'][$module_mode]['display'] ?? 1,
-							'parent_id'			=> $this->parent_id,
-							'module_class'		=> $this->module_class,
-							'module_langname'	=> $fileinfo['modes'][$module_mode]['title'],
-							'module_mode'		=> $module_mode,
-							'module_auth'		=> $fileinfo['modes'][$module_mode]['auth'],
+							'module_basename'   => $module_basename,
+							'module_enabled'    => 0,
+							'module_display'    => $fileinfo['modes'][$module_mode]['display'] ?? 1,
+							'parent_id'         => $this->parent_id,
+							'module_class'      => $this->module_class,
+							'module_langname'   => $fileinfo['modes'][$module_mode]['title'],
+							'module_mode'       => $module_mode,
+							'module_auth'       => $fileinfo['modes'][$module_mode]['auth'],
 						];
 
 						$errors = $this->update_module_data($module_data);
@@ -208,11 +208,11 @@ class acp_modules
 				else
 				{
 					confirm_box(false, 'ADD_MODULE', build_hidden_fields([
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'parent_id'	=> $this->parent_id,
-						'action'	=> 'quickadd',
-						'quick_install'	=> $quick_install,
+						'i'         => $id,
+						'mode'      => $mode,
+						'parent_id' => $this->parent_id,
+						'action'    => 'quickadd',
+						'quick_install' => $quick_install,
 					]));
 				}
 
@@ -234,13 +234,13 @@ class acp_modules
 				if ($action == 'add')
 				{
 					$module_row = [
-						'module_basename'	=> '',
-						'module_enabled'	=> 0,
-						'module_display'	=> 1,
-						'parent_id'			=> 0,
-						'module_langname'	=> utf8_normalize_nfc(request_var('module_langname', '', true)),
-						'module_mode'		=> '',
-						'module_auth'		=> '',
+						'module_basename'   => '',
+						'module_enabled'    => 0,
+						'module_display'    => 1,
+						'parent_id'         => 0,
+						'module_langname'   => utf8_normalize_nfc(request_var('module_langname', '', true)),
+						'module_mode'       => '',
+						'module_auth'       => '',
 					];
 				}
 
@@ -322,10 +322,10 @@ class acp_modules
 						}
 
 						$template->assign_block_vars('m_names.modes', [
-							'OPTION'		=> $m_mode,
-							'VALUE'			=> $this->lang_name($m_values['title']),
-							'A_OPTION'		=> addslashes($m_mode),
-							'A_VALUE'		=> addslashes($this->lang_name($m_values['title']))]
+							'OPTION'        => $m_mode,
+							'VALUE'         => $this->lang_name($m_values['title']),
+							'A_OPTION'      => addslashes($m_mode),
+							'A_VALUE'       => addslashes($this->lang_name($m_values['title']))]
 						);
 					}
 				}
@@ -333,19 +333,19 @@ class acp_modules
 				$s_cat_option = '<option value="0"' . (($module_data['parent_id'] == 0) ? ' selected="selected"' : '') . '>' . $user->lang['NO_PARENT'] . '</option>';
 
 				$template->assign_vars(array_merge([
-					'S_EDIT_MODULE'		=> true,
-					'S_IS_CAT'			=> $is_cat,
-					'S_CAT_OPTIONS'		=> $s_cat_option . $this->make_module_select($module_data['parent_id'], ($action == 'edit') ? $module_row['module_id'] : false, false, false, false, true),
-					'S_MODULE_NAMES'	=> $s_name_options,
-					'S_MODULE_MODES'	=> $s_mode_options,
-					'U_BACK'			=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
-					'U_EDIT_ACTION'		=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
+					'S_EDIT_MODULE'     => true,
+					'S_IS_CAT'          => $is_cat,
+					'S_CAT_OPTIONS'     => $s_cat_option . $this->make_module_select($module_data['parent_id'], ($action == 'edit') ? $module_row['module_id'] : false, false, false, false, true),
+					'S_MODULE_NAMES'    => $s_name_options,
+					'S_MODULE_MODES'    => $s_mode_options,
+					'U_BACK'            => $this->u_action . '&amp;parent_id=' . $this->parent_id,
+					'U_EDIT_ACTION'     => $this->u_action . '&amp;parent_id=' . $this->parent_id,
 
-					'L_TITLE'			=> $user->lang[strtoupper($action) . '_MODULE'],
+					'L_TITLE'           => $user->lang[strtoupper($action) . '_MODULE'],
 
-					'MODULENAME'		=> $this->lang_name($module_data['module_langname']),
-					'ACTION'			=> $action,
-					'MODULE_ID'			=> $module_id,
+					'MODULENAME'        => $this->lang_name($module_data['module_langname']),
+					'ACTION'            => $action,
+					'MODULE_ID'         => $module_id,
 
 				],
 					array_change_key_case($module_data, CASE_UPPER))
@@ -354,8 +354,8 @@ class acp_modules
 				if (sizeof($errors))
 				{
 					$template->assign_vars([
-						'S_ERROR'	=> true,
-						'ERROR_MSG'	=> implode('<br />', $errors)]
+						'S_ERROR'   => true,
+						'ERROR_MSG' => implode('<br />', $errors)]
 					);
 				}
 
@@ -368,8 +368,8 @@ class acp_modules
 		if (sizeof($errors))
 		{
 			$template->assign_vars([
-				'S_ERROR'	=> true,
-				'ERROR_MSG'	=> implode('<br />', $errors)]
+				'S_ERROR'   => true,
+				'ERROR_MSG' => implode('<br />', $errors)]
 			);
 		}
 
@@ -426,21 +426,21 @@ class acp_modules
 				$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;m=' . $row['module_id'];
 
 				$template->assign_block_vars('modules', [
-					'MODULE_IMAGE'		=> $module_image,
-					'MODULE_TITLE'		=> $langname,
-					'MODULE_ENABLED'	=> (bool) $row['module_enabled'],
-					'MODULE_DISPLAYED'	=> (bool) $row['module_display'],
+					'MODULE_IMAGE'      => $module_image,
+					'MODULE_TITLE'      => $langname,
+					'MODULE_ENABLED'    => (bool) $row['module_enabled'],
+					'MODULE_DISPLAYED'  => (bool) $row['module_display'],
 
-					'S_ACP_CAT_SYSTEM'			=> ($this->module_class == 'acp' && $row['module_langname'] == 'ACP_CAT_SYSTEM'),
-					'S_ACP_MODULE_MANAGEMENT'	=> ($this->module_class == 'acp' && ($row['module_basename'] == 'modules' || $row['module_langname'] == 'ACP_MODULE_MANAGEMENT')),
+					'S_ACP_CAT_SYSTEM'          => ($this->module_class == 'acp' && $row['module_langname'] == 'ACP_CAT_SYSTEM'),
+					'S_ACP_MODULE_MANAGEMENT'   => ($this->module_class == 'acp' && ($row['module_basename'] == 'modules' || $row['module_langname'] == 'ACP_MODULE_MANAGEMENT')),
 
-					'U_MODULE'			=> $this->u_action . '&amp;parent_id=' . $row['module_id'],
-					'U_MOVE_UP'			=> $url . '&amp;action=move_up',
-					'U_MOVE_DOWN'		=> $url . '&amp;action=move_down',
-					'U_EDIT'			=> $url . '&amp;action=edit',
-					'U_DELETE'			=> $url . '&amp;action=delete',
-					'U_ENABLE'			=> $url . '&amp;action=enable',
-					'U_DISABLE'			=> $url . '&amp;action=disable']
+					'U_MODULE'          => $this->u_action . '&amp;parent_id=' . $row['module_id'],
+					'U_MOVE_UP'         => $url . '&amp;action=move_up',
+					'U_MOVE_DOWN'       => $url . '&amp;action=move_down',
+					'U_EDIT'            => $url . '&amp;action=edit',
+					'U_DELETE'          => $url . '&amp;action=delete',
+					'U_ENABLE'          => $url . '&amp;action=enable',
+					'U_DISABLE'         => $url . '&amp;action=disable']
 				);
 			}
 			while ($row = $db->sql_fetchrow($result));
@@ -452,15 +452,15 @@ class acp_modules
 			$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;m=' . $row['module_id'];
 
 			$template->assign_vars([
-				'S_NO_MODULES'		=> true,
-				'MODULE_TITLE'		=> $langname,
-				'MODULE_ENABLED'	=> (bool) $row['module_enabled'],
-				'MODULE_DISPLAYED'	=> (bool) $row['module_display'],
+				'S_NO_MODULES'      => true,
+				'MODULE_TITLE'      => $langname,
+				'MODULE_ENABLED'    => (bool) $row['module_enabled'],
+				'MODULE_DISPLAYED'  => (bool) $row['module_display'],
 
-				'U_EDIT'			=> $url . '&amp;action=edit',
-				'U_DELETE'			=> $url . '&amp;action=delete',
-				'U_ENABLE'			=> $url . '&amp;action=enable',
-				'U_DISABLE'			=> $url . '&amp;action=disable']
+				'U_EDIT'            => $url . '&amp;action=edit',
+				'U_DELETE'          => $url . '&amp;action=delete',
+				'U_ENABLE'          => $url . '&amp;action=enable',
+				'U_DISABLE'         => $url . '&amp;action=disable']
 			);
 		}
 		$db->sql_freeresult($result);
@@ -485,12 +485,12 @@ class acp_modules
 		}
 
 		$template->assign_vars([
-			'U_SEL_ACTION'		=> $this->u_action,
-			'U_ACTION'			=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
-			'NAVIGATION'		=> $navigation,
-			'MODULE_BOX'		=> $module_box,
-			'PARENT_ID'			=> $this->parent_id,
-			'S_INSTALL_OPTIONS'	=> $s_install_options,
+			'U_SEL_ACTION'      => $this->u_action,
+			'U_ACTION'          => $this->u_action . '&amp;parent_id=' . $this->parent_id,
+			'NAVIGATION'        => $navigation,
+			'MODULE_BOX'        => $module_box,
+			'PARENT_ID'         => $this->parent_id,
+			'S_INSTALL_OPTIONS' => $s_install_options,
 			]
 		);
 	}

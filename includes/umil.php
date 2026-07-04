@@ -23,10 +23,10 @@ define('UMIL_VERSION', '1.0.5');
 *
 * Example:
 * $umil->config_add(array(
-*	array('config_name', 'config_value'),
-*	array('config_name1', 'config_value1'),
-*	array('config_name2', 'config_value2', true),
-*	array('config_name3', 'config_value3', true),
+*   array('config_name', 'config_value'),
+*   array('config_name1', 'config_value1'),
+*   array('config_name2', 'config_value2', true),
+*   array('config_name3', 'config_value3', true),
 * );
 */
 
@@ -34,46 +34,46 @@ define('UMIL_VERSION', '1.0.5');
 * UMIL - Unified MOD Installation Library class
 *
 * Cache Functions
-*	cache_purge($type = '', $style_id = 0)
+*   cache_purge($type = '', $style_id = 0)
 *
 * Config Functions:
-*	config_exists($config_name, $return_result = false)
-*	config_add($config_name, $config_value = '', $is_dynamic = false)
-*	config_update($config_name, $config_value, $is_dynamic = false)
-*	config_remove($config_name)
+*   config_exists($config_name, $return_result = false)
+*   config_add($config_name, $config_value = '', $is_dynamic = false)
+*   config_update($config_name, $config_value, $is_dynamic = false)
+*   config_remove($config_name)
 *
 * Module Functions
-*	module_exists($class, $parent, $module)
-*	module_add($class, $parent = 0, $data = array())
-*	module_remove($class, $parent = 0, $module = '')
+*   module_exists($class, $parent, $module)
+*   module_add($class, $parent = 0, $data = array())
+*   module_remove($class, $parent = 0, $module = '')
 *
 * Permissions/Auth Functions
-*	permission_exists($auth_option, $global = true)
-*	permission_add($auth_option, $global = true)
-*	permission_remove($auth_option, $global = true)
-*	permission_set($name, $auth_option = array(), $type = 'role', $global = true, $has_permission = true)
-*	permission_unset($name, $auth_option = array(), $type = 'role', $global = true)
+*   permission_exists($auth_option, $global = true)
+*   permission_add($auth_option, $global = true)
+*   permission_remove($auth_option, $global = true)
+*   permission_set($name, $auth_option = array(), $type = 'role', $global = true, $has_permission = true)
+*   permission_unset($name, $auth_option = array(), $type = 'role', $global = true)
 *
 * Table Functions
-*	table_exists($table_name)
-*	table_add($table_name, $table_data = array())
-*	table_remove($table_name)
+*   table_exists($table_name)
+*   table_add($table_name, $table_data = array())
+*   table_remove($table_name)
 *
 * Table Column Functions
-*	table_column_exists($table_name, $column_name)
-*	table_column_add($table_name, $column_name = '', $column_data = array())
-*	table_column_update($table_name, $column_name = '', $column_data = array())
-*	table_column_remove($table_name, $column_name = '')
+*   table_column_exists($table_name, $column_name)
+*   table_column_add($table_name, $column_name = '', $column_data = array())
+*   table_column_update($table_name, $column_name = '', $column_data = array())
+*   table_column_remove($table_name, $column_name = '')
 *
 * Table Key/Index Functions
-*	table_index_exists($table_name, $index_name)
-*	table_index_add($table_name, $index_name = '', $column = array())
-*	table_index_remove($table_name, $index_name = '')
+*   table_index_exists($table_name, $index_name)
+*   table_index_add($table_name, $index_name = '', $column = array())
+*   table_index_remove($table_name, $index_name = '')
 *
 * Table Row Functions (note that these actions are not reversed automatically during uninstallation)
-*	table_row_insert($table_name, $data = array())
-*	table_row_remove($table_name, $data = array())
-*	table_row_update($table_name, $data = array(), $new_data = array())
+*   table_row_insert($table_name, $data = array())
+*   table_row_remove($table_name, $data = array())
+*   table_row_update($table_name, $data = array(), $new_data = array())
 */
 class phpbb_umil
 {
@@ -554,12 +554,12 @@ class phpbb_umil
 							$image_name = substr($image_name, 4);
 
 							$sql_ary[] = [
-								'image_name'		=> (string) $image_name,
-								'image_filename'	=> (string) $image_filename,
-								'image_height'		=> (int) $image_height,
-								'image_width'		=> (int) $image_width,
-								'imageset_id'		=> (int) $style_id,
-								'image_lang'		=> '',
+								'image_name'        => (string) $image_name,
+								'image_filename'    => (string) $image_filename,
+								'image_height'      => (int) $image_height,
+								'image_width'       => (int) $image_width,
+								'imageset_id'       => (int) $style_id,
+								'image_lang'        => '',
 							];
 						}
 					}
@@ -597,12 +597,12 @@ class phpbb_umil
 								{
 									$image_name = substr($image_name, 4);
 									$sql_ary[] = [
-										'image_name'		=> (string) $image_name,
-										'image_filename'	=> (string) $image_filename,
-										'image_height'		=> (int) $image_height,
-										'image_width'		=> (int) $image_width,
-										'imageset_id'		=> (int) $style_id,
-										'image_lang'		=> (string) $row['lang_dir'],
+										'image_name'        => (string) $image_name,
+										'image_filename'    => (string) $image_filename,
+										'image_height'      => (int) $image_height,
+										'image_width'       => (int) $image_width,
+										'imageset_id'       => (int) $style_id,
+										'image_lang'        => (string) $row['lang_dir'],
 									];
 								}
 							}
@@ -927,25 +927,25 @@ class phpbb_umil
 	* @param string $class The module class(acp|mcp|ucp)
 	* @param int|string $parent The parent module_id|module_langname (0 for no parent)
 	* @param array $data an array of the data on the new module.  This can be setup in two different ways.
-	*	1. The "manual" way.  For inserting a category or one at a time.  It will be merged with the base array shown a bit below,
-	*		but at the least requires 'module_langname' to be sent, and, if you want to create a module (instead of just a category) you must send module_basename and module_mode.
+	*   1. The "manual" way.  For inserting a category or one at a time.  It will be merged with the base array shown a bit below,
+	*       but at the least requires 'module_langname' to be sent, and, if you want to create a module (instead of just a category) you must send module_basename and module_mode.
 	* array(
-	*		'module_enabled'	=> 1,
-	*		'module_display'	=> 1,
-	*		'module_basename'	=> '',
-	*		'module_class'		=> $class,
-	*		'parent_id'			=> (int) $parent,
-	*		'module_langname'	=> '',
-	*		'module_mode'		=> '',
-	*		'module_auth'		=> '',
-	*	)
-	*	2. The "automatic" way.  For inserting multiple at a time based on the specs in the info file for the module(s).  For this to work the modules must be correctly setup in the info file.
-	*		An example follows (this would insert the settings, log, and flag modes from the includes/acp/info/acp_asacp.php file):
+	*       'module_enabled'    => 1,
+	*       'module_display'    => 1,
+	*       'module_basename'   => '',
+	*       'module_class'      => $class,
+	*       'parent_id'         => (int) $parent,
+	*       'module_langname'   => '',
+	*       'module_mode'       => '',
+	*       'module_auth'       => '',
+	*   )
+	*   2. The "automatic" way.  For inserting multiple at a time based on the specs in the info file for the module(s).  For this to work the modules must be correctly setup in the info file.
+	*       An example follows (this would insert the settings, log, and flag modes from the includes/acp/info/acp_asacp.php file):
 	* array(
-	* 		'module_basename'	=> 'asacp',
-	* 		'modes'				=> array('settings', 'log', 'flag'),
+	*       'module_basename'   => 'asacp',
+	*       'modes'             => array('settings', 'log', 'flag'),
 	* )
-	* 		Optionally you may not send 'modes' and it will insert all of the modules in that info file.
+	*       Optionally you may not send 'modes' and it will insert all of the modules in that info file.
 	*  @param string|bool $include_path If you would like to use a custom include path, specify that here
 	*/
 	function module_add($class, $parent = 0, $data = [], $include_path = false)
@@ -1006,13 +1006,13 @@ class phpbb_umil
 				if (!isset($data['modes']) || in_array($mode, $data['modes']))
 				{
 					$new_module = [
-						'module_basename'	=> $basename,
-						'module_langname'	=> $module_info['title'],
-						'module_mode'		=> $mode,
-						'module_auth'		=> $module_info['auth'],
-						'module_display'	=> $module_info['display'] ?? true,
-						'before'			=> $module_info['before'] ?? false,
-						'after'				=> $module_info['after'] ?? false,
+						'module_basename'   => $basename,
+						'module_langname'   => $module_info['title'],
+						'module_mode'       => $mode,
+						'module_auth'       => $module_info['auth'],
+						'module_display'    => $module_info['display'] ?? true,
+						'before'            => $module_info['before'] ?? false,
+						'after'             => $module_info['after'] ?? false,
 					];
 
 					// Run the "manual" way with the data we've collected.
@@ -1063,14 +1063,14 @@ class phpbb_umil
 		$acp_modules = new acp_modules();
 
 		$module_data = [
-			'module_enabled'	=> $data['module_enabled'] ?? 1,
-			'module_display'	=> $data['module_display'] ?? 1,
-			'module_basename'	=> $data['module_basename'] ?? '',
-			'module_class'		=> $class,
-			'parent_id'			=> (int) $parent,
-			'module_langname'	=> $data['module_langname'] ?? '',
-			'module_mode'		=> $data['module_mode'] ?? '',
-			'module_auth'		=> $data['module_auth'] ?? '',
+			'module_enabled'    => $data['module_enabled'] ?? 1,
+			'module_display'    => $data['module_display'] ?? 1,
+			'module_basename'   => $data['module_basename'] ?? '',
+			'module_class'      => $class,
+			'parent_id'         => (int) $parent,
+			'module_langname'   => $data['module_langname'] ?? '',
+			'module_mode'       => $data['module_mode'] ?? '',
+			'module_auth'       => $data['module_auth'] ?? '',
 		];
 		$result = $acp_modules->update_module_data($module_data, true);
 
@@ -1388,8 +1388,8 @@ class phpbb_umil
 		if ($this->permission_exists($auth_option, !$global))
 		{
 			$sql_ary = [
-				'is_global'	=> 1,
-				'is_local'	=> 1,
+				'is_global' => 1,
+				'is_local'  => 1,
 			];
 			$sql = 'UPDATE ' . ACL_OPTIONS_TABLE . '
 				SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
@@ -1518,10 +1518,10 @@ class phpbb_umil
 		$role_order = (!$role_order) ? 1 : $role_order + 1;
 
 		$sql_ary = [
-			'role_name'			=> $role_name,
-			'role_description'	=> $role_description,
-			'role_type'			=> $role_type,
-			'role_order'		=> $role_order,
+			'role_name'         => $role_name,
+			'role_description'  => $role_description,
+			'role_type'         => $role_type,
+			'role_order'        => $role_order,
 		];
 
 		$sql = 'INSERT INTO ' . ACL_ROLES_TABLE . ' ' . $this->db->sql_build_array('INSERT', $sql_ary);
@@ -1723,9 +1723,9 @@ class phpbb_umil
 					if (!isset($current_auth[$auth_option_id]))
 					{
 						$sql_ary[] = [
-							'role_id'			=> $role_id,
-							'auth_option_id'	=> $auth_option_id,
-							'auth_setting'		=> $has_permission,
+							'role_id'           => $role_id,
+							'auth_option_id'    => $auth_option_id,
+							'auth_setting'      => $has_permission,
 				        ];
 					}
 				}
@@ -1739,9 +1739,9 @@ class phpbb_umil
 					if (!isset($current_auth[$auth_option_id]))
 					{
 						$sql_ary[] = [
-							'group_id'			=> $group_id,
-							'auth_option_id'	=> $auth_option_id,
-							'auth_setting'		=> $has_permission,
+							'group_id'          => $group_id,
+							'auth_option_id'    => $auth_option_id,
+							'auth_setting'      => $has_permission,
 				        ];
 					}
 				}

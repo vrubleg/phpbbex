@@ -16,16 +16,16 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, [
-	'ADD_USER'				=> 'Add user',
-	'ADD_USER_GROUP'		=> 'Add user to groups',
+	'ADD_USER'              => 'Add user',
+	'ADD_USER_GROUP'        => 'Add user to groups',
 
-	'DEFAULT_GROUP'			=> 'Default group',
-	'DEFAULT_GROUP_EXPLAIN'	=> 'The default group for this user.',
+	'DEFAULT_GROUP'         => 'Default group',
+	'DEFAULT_GROUP_EXPLAIN' => 'The default group for this user.',
 
-	'GROUP_LEADER'			=> 'Group leader',
-	'GROUP_LEADER_EXPLAIN'	=> 'Make this user the group leader of the selected groups.',
+	'GROUP_LEADER'          => 'Group leader',
+	'GROUP_LEADER_EXPLAIN'  => 'Make this user the group leader of the selected groups.',
 
-	'USER_ADDED'			=> 'The user was sucessfully created!',
-	'USER_GROUPS'			=> 'User groups',
-	'USER_GROUPS_EXPLAIN'	=> 'Make this user a member of the selected groups.',
+	'USER_ADDED'            => 'The user was sucessfully created!',
+	'USER_GROUPS'           => 'User groups',
+	'USER_GROUPS_EXPLAIN'   => 'Make this user a member of the selected groups.',
 ]);

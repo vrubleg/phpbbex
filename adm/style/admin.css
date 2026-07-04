@@ -1,6 +1,6 @@
 /*  phpBB 3.0 Admin Style Sheet
 	------------------------------------------------------------------------
-	Original author:	subBlue ( http://www.subblue.com/ )
+	Original author:    subBlue ( http://www.subblue.com/ )
 	Copyright 2007 phpBB Group ( http://www.phpbb.com/ )
 	------------------------------------------------------------------------
 */
@@ -36,7 +36,7 @@ body {
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	color: #536482;
 	background: #DBD7D1;
-	font-size: 62.5%;	/* This sets the default font size to be equivalent to 10px */
+	font-size: 62.5%; /* This sets the default font size to be equivalent to 10px */
 	margin: 10px 15px;
 }
 
@@ -731,7 +731,7 @@ dd label {
 	color: #4A5A73;
 }
 
-html>body dd label input { vertical-align: text-bottom;}	/* Tweak for Moz to align checkboxes/radio buttons nicely */
+html>body dd label input { vertical-align: text-bottom; } /* Tweak for Moz to align checkboxes/radio buttons nicely */
 
 dd input {
 	font-size: 1.00em;

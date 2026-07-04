@@ -20,8 +20,8 @@ $user->session_begin();
 if (!empty($config['feed_http_auth']) && request_var('auth', '') == 'http')
 {
 	phpbb_http_login([
-		'auth_message'	=> 'Feed',
-		'viewonline'	=> request_var('viewonline', true),
+		'auth_message'  => 'Feed',
+		'viewonline'    => request_var('viewonline', true),
 	]);
 }
 
@@ -29,9 +29,9 @@ $auth->acl($user->data);
 $user->setup();
 
 // Initial var setup
-$forum_id	= request_var('f', 0);
-$topic_id	= request_var('t', 0);
-$mode		= request_var('mode', '');
+$forum_id   = request_var('f', 0);
+$topic_id   = request_var('t', 0);
+$mode       = request_var('mode', '');
 
 // We do not use a template, therefore we simply define the global template variables here
 $global_vars = $item_vars = [];
@@ -42,9 +42,9 @@ $params = false;
 if ($forum_id || $topic_id || $mode)
 {
 	$params = [
-		'f'		=> $forum_id ?: null,
-		't'		=> $topic_id ?: null,
-		'mode'	=> $mode ?: null,
+		'f'     => $forum_id ?: null,
+		't'     => $topic_id ?: null,
+		'mode'  => $mode ?: null,
 	];
 }
 
@@ -88,15 +88,15 @@ while ($row = $feed->get_item())
 	$updated = ($feed->get('updated') !== null) ? (int) $row[$feed->get('updated')] : 0;
 
 	$item_row = [
-		'author'		=> ($feed->get('creator') !== null) ? $row[$feed->get('creator')] : '',
-		'published'		=> ($published > 0) ? feed_format_date($published) : '',
-		'updated'		=> ($updated > 0) ? feed_format_date($updated) : '',
-		'link'			=> '',
-		'title'			=> censor_text($title),
-		'category'		=> ($config['feed_item_statistics'] && !empty($row['forum_id'])) ? $board_url . '/viewforum.php' . '?f=' . $row['forum_id'] : '',
-		'category_name'	=> ($config['feed_item_statistics'] && isset($row['forum_name'])) ? $row['forum_name'] : '',
-		'description'	=> censor_text(feed_generate_content($row[$feed->get('text')], $row[$feed->get('bbcode_uid')], $row[$feed->get('bitfield')], $options)),
-		'statistics'	=> '',
+		'author'        => ($feed->get('creator') !== null) ? $row[$feed->get('creator')] : '',
+		'published'     => ($published > 0) ? feed_format_date($published) : '',
+		'updated'       => ($updated > 0) ? feed_format_date($updated) : '',
+		'link'          => '',
+		'title'         => censor_text($title),
+		'category'      => ($config['feed_item_statistics'] && !empty($row['forum_id'])) ? $board_url . '/viewforum.php' . '?f=' . $row['forum_id'] : '',
+		'category_name' => ($config['feed_item_statistics'] && isset($row['forum_name'])) ? $row['forum_name'] : '',
+		'description'   => censor_text(feed_generate_content($row[$feed->get('text')], $row[$feed->get('bbcode_uid')], $row[$feed->get('bitfield')], $options)),
+		'statistics'    => '',
 	];
 
 	// Adjust items, fill link, etc.
@@ -116,14 +116,14 @@ if (!$feed_updated_time)
 // Some default assignments
 // FEED_IMAGE is not used (atom)
 $global_vars = array_merge($global_vars, [
-	'FEED_IMAGE'			=> ($user->img('site_logo', '', false, '', 'src')) ? $board_url . '/' . substr($user->img('site_logo', '', false, '', 'src'), strlen(PHPBB_ROOT_PATH)) : '',
-	'SELF_LINK'				=> feed_append_sid('/feed.php', $params),
-	'FEED_LINK'				=> $board_url . '/index.php',
-	'FEED_TITLE'			=> $config['sitename'],
-	'FEED_SUBTITLE'			=> $config['site_desc'],
-	'FEED_UPDATED'			=> feed_format_date($feed_updated_time),
-	'FEED_LANG'				=> $user->lang['USER_LANG'],
-	'FEED_AUTHOR'			=> $config['sitename'],
+	'FEED_IMAGE'            => ($user->img('site_logo', '', false, '', 'src')) ? $board_url . '/' . substr($user->img('site_logo', '', false, '', 'src'), strlen(PHPBB_ROOT_PATH)) : '',
+	'SELF_LINK'             => feed_append_sid('/feed.php', $params),
+	'FEED_LINK'             => $board_url . '/index.php',
+	'FEED_TITLE'            => $config['sitename'],
+	'FEED_SUBTITLE'         => $config['site_desc'],
+	'FEED_UPDATED'          => feed_format_date($feed_updated_time),
+	'FEED_LANG'             => $user->lang['USER_LANG'],
+	'FEED_AUTHOR'           => $config['sitename'],
 ]);
 
 switch ($mode)
@@ -293,11 +293,11 @@ function feed_format_date($time)
 		$sign = ($zone_offset < 0) ? '-' : '+';
 		$time_offset = abs($zone_offset);
 
-		$offset_seconds	= $time_offset % 3600;
-		$offset_minutes	= $offset_seconds / 60;
-		$offset_hours	= ($time_offset - $offset_seconds) / 3600;
+		$offset_seconds = $time_offset % 3600;
+		$offset_minutes = $offset_seconds / 60;
+		$offset_hours   = ($time_offset - $offset_seconds) / 3600;
 
-		$offset_string	= sprintf("%s%02d:%02d", $sign, $offset_hours, $offset_minutes);
+		$offset_string  = sprintf("%s%02d:%02d", $sign, $offset_hours, $offset_minutes);
 	}
 
 	return gmdate("Y-m-d\TH:i:s", $time + $zone_offset) . $offset_string;
@@ -316,7 +316,7 @@ function feed_generate_content($content, $uid, $bitfield, $options)
 	}
 
 	// Prepare some bbcodes for better parsing
-	$content	= preg_replace("#\[quote(=&quot;.*?&quot;)?:{$uid}\]\s*(.*?)\s*\[/quote:{$uid}\]#si", "[quote$1:{$uid}]<br />$2<br />[/quote:{$uid}]", $content);
+	$content    = preg_replace("#\[quote(=&quot;.*?&quot;)?:{$uid}\]\s*(.*?)\s*\[/quote:{$uid}\]#si", "[quote$1:{$uid}]<br />$2<br />[/quote:{$uid}]", $content);
 
 	$content = generate_text_for_display($content, $uid, $bitfield, $options);
 
@@ -333,37 +333,37 @@ function feed_generate_content($content, $uid, $bitfield, $options)
 	// Firefox does not support CSS for feeds, though
 
 	// Remove font sizes
-//	$content = preg_replace('#<span style="font-size: [0-9]+%; line-height: [0-9]+%;">([^>]+)</span>#iU', '\1', $content);
+//  $content = preg_replace('#<span style="font-size: [0-9]+%; line-height: [0-9]+%;">([^>]+)</span>#iU', '\1', $content);
 
 	// Make text strong :P
-//	$content = preg_replace('#<span style="font-weight: bold?">(.*?)</span>#iU', '<strong>\1</strong>', $content);
+//  $content = preg_replace('#<span style="font-weight: bold?">(.*?)</span>#iU', '<strong>\1</strong>', $content);
 
 	// Italic
-//	$content = preg_replace('#<span style="font-style: italic?">([^<]+)</span>#iU', '<em>\1</em>', $content);
+//  $content = preg_replace('#<span style="font-style: italic?">([^<]+)</span>#iU', '<em>\1</em>', $content);
 
 	// Underline
-//	$content = preg_replace('#<span style="text-decoration: underline?">([^<]+)</span>#iU', '<u>\1</u>', $content);
+//  $content = preg_replace('#<span style="text-decoration: underline?">([^<]+)</span>#iU', '<u>\1</u>', $content);
 
 	// Remove embed Windows Media Streams
-	$content	= preg_replace( '#<\!--\[if \!IE\]>-->([^[]+)<\!--<!\[endif\]-->#si', '', $content);
+	$content    = preg_replace( '#<\!--\[if \!IE\]>-->([^[]+)<\!--<!\[endif\]-->#si', '', $content);
 
 	// Do not use &lt; and &gt;, because we want to retain code contained in [code][/code]
 
 	// Remove embed and objects
-	$content	= preg_replace( '#<(object|embed)(.*?) (value|src)=(.*?) ([^[]+)(object|embed)>#si',' <a href=$4 target="_blank"><strong>$1</strong></a> ',$content);
+	$content    = preg_replace( '#<(object|embed)(.*?) (value|src)=(.*?) ([^[]+)(object|embed)>#si',' <a href=$4 target="_blank"><strong>$1</strong></a> ',$content);
 
 	// Remove some specials html tag, because somewhere there are a mod to allow html tags ;)
-	$content	= preg_replace( '#<(script|iframe)([^[]+)\1>#siU', ' <strong>$1</strong> ', $content);
+	$content    = preg_replace( '#<(script|iframe)([^[]+)\1>#siU', ' <strong>$1</strong> ', $content);
 
 	// Remove Comments from inline attachments [ia]
-	$content	= preg_replace('#<div class="(inline-attachment|attachtitle)">(.*?)<!-- ia(.*?) -->(.*?)<!-- ia(.*?) -->(.*?)</div>#si','$4',$content);
+	$content    = preg_replace('#<div class="(inline-attachment|attachtitle)">(.*?)<!-- ia(.*?) -->(.*?)<!-- ia(.*?) -->(.*?)</div>#si','$4',$content);
 
 	// Replace some entities with their unicode counterpart
 	$entities = [
-		'&nbsp;'	=> "\xC2\xA0",
-		'&bull;'	=> "\xE2\x80\xA2",
-		'&middot;'	=> "\xC2\xB7",
-		'&copy;'	=> "\xC2\xA9",
+		'&nbsp;'    => "\xC2\xA0",
+		'&bull;'    => "\xE2\x80\xA2",
+		'&middot;'  => "\xC2\xB7",
+		'&copy;'    => "\xC2\xA9",
 	];
 
 	$content = str_replace(array_keys($entities), array_values($entities), $content);
@@ -386,11 +386,11 @@ class phpbb_feed_factory
 	/**
 	* Return correct object for specified mode
 	*
-	* @param string	$mode		The feeds mode.
-	* @param int	$forum_id	Forum id specified by the script if forum feed provided.
-	* @param int	$topic_id	Topic id specified by the script if topic feed provided.
+	* @param string $mode       The feeds mode.
+	* @param int    $forum_id   Forum id specified by the script if forum feed provided.
+	* @param int    $topic_id   Topic id specified by the script if topic feed provided.
 	*
-	* @return object	Returns correct feeds object for specified mode.
+	* @return object    Returns correct feeds object for specified mode.
 	*/
 	static function init($mode, $forum_id, $topic_id)
 	{
@@ -609,7 +609,7 @@ class phpbb_feed_base
 		static $forum_ids;
 
 		// Matches acp/acp_board.php
-		$cache_name	= 'feed_excluded_forum_ids';
+		$cache_name = 'feed_excluded_forum_ids';
 
 		if (!isset($forum_ids) && ($forum_ids = $cache->get('_' . $cache_name)) === false)
 		{
@@ -692,21 +692,21 @@ class phpbb_feed_post_base extends phpbb_feed_base
 
 	function set_keys()
 	{
-		$this->set('title',		'post_subject');
-		$this->set('title2',	'topic_title');
+		$this->set('title',     'post_subject');
+		$this->set('title2',    'topic_title');
 
-		$this->set('author_id',	'user_id');
-		$this->set('creator',	'username');
-		$this->set('published',	'post_time');
-		$this->set('updated',	'post_edit_time');
-		$this->set('text',		'post_text');
+		$this->set('author_id', 'user_id');
+		$this->set('creator',   'username');
+		$this->set('published', 'post_time');
+		$this->set('updated',   'post_edit_time');
+		$this->set('text',      'post_text');
 
-		$this->set('bitfield',	'bbcode_bitfield');
+		$this->set('bitfield',  'bbcode_bitfield');
 		$this->set('bbcode_uid','bbcode_uid');
 
-		$this->set('enable_bbcode',		'enable_bbcode');
-		$this->set('enable_smilies',	'enable_smilies');
-		$this->set('enable_magic_url',	'enable_magic_url');
+		$this->set('enable_bbcode',     'enable_bbcode');
+		$this->set('enable_smilies',    'enable_smilies');
+		$this->set('enable_magic_url',  'enable_magic_url');
 	}
 
 	function adjust_item(&$item_row, &$row)
@@ -735,21 +735,21 @@ class phpbb_feed_topic_base extends phpbb_feed_base
 
 	function set_keys()
 	{
-		$this->set('title',		'topic_title');
-		$this->set('title2',	'forum_name');
+		$this->set('title',     'topic_title');
+		$this->set('title2',    'forum_name');
 
-		$this->set('author_id',	'topic_poster');
-		$this->set('creator',	'topic_first_poster_name');
-		$this->set('published',	'post_time');
-		$this->set('updated',	'post_edit_time');
-		$this->set('text',		'post_text');
+		$this->set('author_id', 'topic_poster');
+		$this->set('creator',   'topic_first_poster_name');
+		$this->set('published', 'post_time');
+		$this->set('updated',   'post_edit_time');
+		$this->set('text',      'post_text');
 
-		$this->set('bitfield',	'bbcode_bitfield');
+		$this->set('bitfield',  'bbcode_bitfield');
 		$this->set('bbcode_uid','bbcode_uid');
 
-		$this->set('enable_bbcode',		'enable_bbcode');
-		$this->set('enable_smilies',	'enable_smilies');
-		$this->set('enable_magic_url',	'enable_magic_url');
+		$this->set('enable_bbcode',     'enable_bbcode');
+		$this->set('enable_smilies',    'enable_smilies');
+		$this->set('enable_magic_url',  'enable_magic_url');
 	}
 
 	function adjust_item(&$item_row, &$row)
@@ -823,30 +823,30 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 
 		// Get the actual data
 		$this->sql = [
-			'SELECT'	=>	'f.forum_id, f.forum_name, ' .
+			'SELECT'    =>  'f.forum_id, f.forum_name, ' .
 							'p.post_id, p.topic_id, p.post_time, p.post_edit_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
 							't.topic_title, ' .
 							'u.username, u.user_id',
-			'FROM'		=> [
-				USERS_TABLE		=> 'u',
-				POSTS_TABLE		=> 'p',
+			'FROM'      => [
+				USERS_TABLE     => 'u',
+				POSTS_TABLE     => 'p',
 			],
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [FORUMS_TABLE	=> 'f'],
-					'ON'	=> 'f.forum_id = p.forum_id',
+					'FROM'  => [FORUMS_TABLE    => 'f'],
+					'ON'    => 'f.forum_id = p.forum_id',
 				],
 				[
-					'FROM'	=> [TOPICS_TABLE	=> 't'],
-					'ON'	=> 't.topic_id = p.topic_id',
+					'FROM'  => [TOPICS_TABLE    => 't'],
+					'ON'    => 't.topic_id = p.topic_id',
 				],
 			],
-			'WHERE'		=> $db->sql_in_set('p.topic_id', $topic_ids) . '
+			'WHERE'     => $db->sql_in_set('p.topic_id', $topic_ids) . '
 							AND (p.post_approved = 1
 								' . str_replace('forum_id', 'p.forum_id', $sql_m_approve) . ')
 							AND p.post_time >= ' . $min_post_time . '
 							AND u.user_id = p.poster_id',
-			'ORDER_BY'	=> 'p.post_time DESC',
+			'ORDER_BY'  => 'p.post_time DESC',
 		];
 
 		return true;
@@ -870,8 +870,8 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 */
 class phpbb_feed_forum extends phpbb_feed_post_base
 {
-	var $forum_id		= 0;
-	var $forum_data		= [];
+	var $forum_id       = 0;
+	var $forum_data     = [];
 
 	function __construct($forum_id)
 	{
@@ -961,24 +961,24 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 		}
 
 		$this->sql = [
-			'SELECT'	=>	'p.post_id, p.topic_id, p.post_time, p.post_edit_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
+			'SELECT'    =>  'p.post_id, p.topic_id, p.post_time, p.post_edit_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
 							't.topic_title, ' .
 							'u.username, u.user_id',
-			'FROM'		=> [
-				POSTS_TABLE		=> 'p',
-				USERS_TABLE		=> 'u',
+			'FROM'      => [
+				POSTS_TABLE     => 'p',
+				USERS_TABLE     => 'u',
 			],
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [TOPICS_TABLE	=> 't'],
-					'ON'	=> 't.topic_id = p.topic_id',
+					'FROM'  => [TOPICS_TABLE    => 't'],
+					'ON'    => 't.topic_id = p.topic_id',
 				],
 			],
-			'WHERE'		=> $db->sql_in_set('p.topic_id', $topic_ids) . '
+			'WHERE'     => $db->sql_in_set('p.topic_id', $topic_ids) . '
 							' . ((!$m_approve) ? 'AND p.post_approved = 1' : '') . '
 							AND p.post_time >= ' . $min_post_time . '
 							AND p.poster_id = u.user_id',
-			'ORDER_BY'	=> 'p.post_time DESC',
+			'ORDER_BY'  => 'p.post_time DESC',
 		];
 
 		return true;
@@ -1006,9 +1006,9 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 */
 class phpbb_feed_topic extends phpbb_feed_post_base
 {
-	var $topic_id		= 0;
-	var $forum_id		= 0;
-	var $topic_data		= [];
+	var $topic_id       = 0;
+	var $forum_id       = 0;
+	var $topic_data     = [];
 
 	function __construct($topic_id)
 	{
@@ -1074,16 +1074,16 @@ class phpbb_feed_topic extends phpbb_feed_post_base
 		global $auth, $db;
 
 		$this->sql = [
-			'SELECT'	=>	'p.post_id, p.post_time, p.post_edit_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
+			'SELECT'    =>  'p.post_id, p.post_time, p.post_edit_time, p.post_approved, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url, ' .
 							'u.username, u.user_id',
-			'FROM'		=> [
-				POSTS_TABLE		=> 'p',
-				USERS_TABLE		=> 'u',
+			'FROM'      => [
+				POSTS_TABLE     => 'p',
+				USERS_TABLE     => 'u',
 			],
-			'WHERE'		=> 'p.topic_id = ' . $this->topic_id . '
+			'WHERE'     => 'p.topic_id = ' . $this->topic_id . '
 								' . ($this->forum_id && !$auth->acl_get('m_approve', $this->forum_id) ? 'AND p.post_approved = 1' : '') . '
 								AND p.poster_id = u.user_id',
-			'ORDER_BY'	=> 'p.post_time DESC',
+			'ORDER_BY'  => 'p.post_time DESC',
 		];
 
 		return true;
@@ -1105,16 +1105,16 @@ class phpbb_feed_topic extends phpbb_feed_post_base
 */
 class phpbb_feed_forums extends phpbb_feed_base
 {
-	var $num_items	= 0;
+	var $num_items  = 0;
 
 	function set_keys()
 	{
-		$this->set('title',		'forum_name');
-		$this->set('text',		'forum_desc');
-		$this->set('bitfield',	'forum_desc_bitfield');
+		$this->set('title',     'forum_name');
+		$this->set('text',      'forum_desc');
+		$this->set('bitfield',  'forum_desc_bitfield');
 		$this->set('bbcode_uid','forum_desc_uid');
-		$this->set('updated',	'forum_last_post_time');
-		$this->set('options',	'forum_desc_options');
+		$this->set('updated',   'forum_last_post_time');
+		$this->set('options',   'forum_desc_options');
 	}
 
 	function get_sql()
@@ -1129,13 +1129,13 @@ class phpbb_feed_forums extends phpbb_feed_base
 
 		// Build SQL Query
 		$this->sql = [
-			'SELECT'	=> 'f.forum_id, f.left_id, f.forum_name, f.forum_last_post_time,
+			'SELECT'    => 'f.forum_id, f.left_id, f.forum_name, f.forum_last_post_time,
 							f.forum_desc, f.forum_desc_bitfield, f.forum_desc_uid, f.forum_desc_options,
 							f.forum_topics, f.forum_posts',
-			'FROM'		=> [FORUMS_TABLE => 'f'],
-			'WHERE'		=> 'f.forum_type = ' . FORUM_POST . '
+			'FROM'      => [FORUMS_TABLE => 'f'],
+			'WHERE'     => 'f.forum_type = ' . FORUM_POST . '
 							AND ' . $db->sql_in_set('f.forum_id', $in_fid_ary),
-			'ORDER_BY'	=> 'f.left_id ASC',
+			'ORDER_BY'  => 'f.left_id ASC',
 		];
 
 		return true;
@@ -1173,7 +1173,7 @@ class phpbb_feed_news extends phpbb_feed_topic_base
 		static $forum_ids;
 
 		// Matches acp/acp_board.php
-		$cache_name	= 'feed_news_forum_ids';
+		$cache_name = 'feed_news_forum_ids';
 
 		if (!isset($forum_ids) && ($forum_ids = $cache->get('_' . $cache_name)) === false)
 		{
@@ -1237,22 +1237,22 @@ class phpbb_feed_news extends phpbb_feed_topic_base
 		}
 
 		$this->sql = [
-			'SELECT'	=> 'f.forum_id, f.forum_name,
+			'SELECT'    => 'f.forum_id, f.forum_name,
 							t.topic_id, t.topic_title, t.topic_poster, t.topic_first_poster_name, t.topic_replies, t.topic_replies_real, t.topic_views, t.topic_time, t.topic_last_post_time,
 							p.post_id, p.post_time, p.post_edit_time, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url',
-			'FROM'		=> [
-				TOPICS_TABLE	=> 't',
-				POSTS_TABLE		=> 'p',
+			'FROM'      => [
+				TOPICS_TABLE    => 't',
+				POSTS_TABLE     => 'p',
 			],
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [FORUMS_TABLE => 'f'],
-					'ON'	=> 'p.forum_id = f.forum_id',
+					'FROM'  => [FORUMS_TABLE => 'f'],
+					'ON'    => 'p.forum_id = f.forum_id',
 				],
 			],
-			'WHERE'		=> 'p.topic_id = t.topic_id
+			'WHERE'     => 'p.topic_id = t.topic_id
 							AND ' . $db->sql_in_set('p.post_id', $post_ids),
-			'ORDER_BY'	=> 'p.post_time DESC',
+			'ORDER_BY'  => 'p.post_time DESC',
 		];
 
 		return true;
@@ -1310,22 +1310,22 @@ class phpbb_feed_topics extends phpbb_feed_topic_base
 		}
 
 		$this->sql = [
-			'SELECT'	=> 'f.forum_id, f.forum_name,
+			'SELECT'    => 'f.forum_id, f.forum_name,
 							t.topic_id, t.topic_title, t.topic_poster, t.topic_first_poster_name, t.topic_replies, t.topic_replies_real, t.topic_views, t.topic_time, t.topic_last_post_time,
 							p.post_id, p.post_time, p.post_edit_time, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url',
-			'FROM'		=> [
-				TOPICS_TABLE	=> 't',
-				POSTS_TABLE		=> 'p',
+			'FROM'      => [
+				TOPICS_TABLE    => 't',
+				POSTS_TABLE     => 'p',
 			],
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [FORUMS_TABLE => 'f'],
-					'ON'	=> 'p.forum_id = f.forum_id',
+					'FROM'  => [FORUMS_TABLE => 'f'],
+					'ON'    => 'p.forum_id = f.forum_id',
 				],
 			],
-			'WHERE'		=> 'p.topic_id = t.topic_id
+			'WHERE'     => 'p.topic_id = t.topic_id
 							AND ' . $db->sql_in_set('p.post_id', $post_ids),
-			'ORDER_BY'	=> 'p.post_time DESC',
+			'ORDER_BY'  => 'p.post_time DESC',
 		];
 
 		return true;
@@ -1356,8 +1356,8 @@ class phpbb_feed_topics_active extends phpbb_feed_topic_base
 	{
 		parent::set_keys();
 
-		$this->set('author_id',	'topic_last_poster_id');
-		$this->set('creator',	'topic_last_poster_name');
+		$this->set('author_id', 'topic_last_poster_id');
+		$this->set('creator',   'topic_last_poster_name');
 	}
 
 	function get_sql()
@@ -1406,23 +1406,23 @@ class phpbb_feed_topics_active extends phpbb_feed_topic_base
 		}
 
 		$this->sql = [
-			'SELECT'	=> 'f.forum_id, f.forum_name,
+			'SELECT'    => 'f.forum_id, f.forum_name,
 							t.topic_id, t.topic_title, t.topic_replies, t.topic_replies_real, t.topic_views,
 							t.topic_last_poster_id, t.topic_last_poster_name, t.topic_last_post_time,
 							p.post_id, p.post_time, p.post_edit_time, p.post_text, p.bbcode_bitfield, p.bbcode_uid, p.enable_bbcode, p.enable_smilies, p.enable_magic_url',
-			'FROM'		=> [
-				TOPICS_TABLE	=> 't',
-				POSTS_TABLE		=> 'p',
+			'FROM'      => [
+				TOPICS_TABLE    => 't',
+				POSTS_TABLE     => 'p',
 			],
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [FORUMS_TABLE => 'f'],
-					'ON'	=> 'p.forum_id = f.forum_id',
+					'FROM'  => [FORUMS_TABLE => 'f'],
+					'ON'    => 'p.forum_id = f.forum_id',
 				],
 			],
-			'WHERE'		=> 'p.topic_id = t.topic_id
+			'WHERE'     => 'p.topic_id = t.topic_id
 							AND ' . $db->sql_in_set('p.post_id', $post_ids),
-			'ORDER_BY'	=> 'p.post_time DESC',
+			'ORDER_BY'  => 'p.post_time DESC',
 		];
 
 		return true;
@@ -1433,7 +1433,7 @@ class phpbb_feed_topics_active extends phpbb_feed_topic_base
 		global $db, $cache;
 		static $forum_ids;
 
-		$cache_name	= 'feed_topic_active_forum_ids';
+		$cache_name = 'feed_topic_active_forum_ids';
 
 		if (!isset($forum_ids) && ($forum_ids = $cache->get('_' . $cache_name)) === false)
 		{

@@ -11,8 +11,8 @@ jQuery.extend(
 		var $el = jQuery("#"+id);
 		$el.bind("resize", function(e, width, height)
 		{
-			if(width)	$el.css("width", width);
-			if(height)	$el.css("height", height);
+			if(width)   $el.css("width", width);
+			if(height)  $el.css("height", height);
 		});
 		$el.bind("close", function()
 		{

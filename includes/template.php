@@ -392,9 +392,9 @@ class phpbb_template
 	* An example of how to use this function:
 	* {@example alter_block_array.php}
 	*
-	* @param	string	$blockname	the blockname, for example 'loop'
-	* @param	array	$vararray	the var array to insert/add or merge
-	* @param	mixed	$key		Key to search for
+	* @param    string  $blockname  the blockname, for example 'loop'
+	* @param    array   $vararray   the var array to insert/add or merge
+	* @param    mixed   $key        Key to search for
 	*
 	* array: KEY => VALUE [the key/value pair to search for within the loop to determine the correct position]
 	*
@@ -403,10 +403,10 @@ class phpbb_template
 	* If key is false the position is set to 0
 	* If key is true the position is set to the last entry
 	*
-	* @param	string	$mode		Mode to execute (valid modes are 'insert' and 'change')
+	* @param    string  $mode       Mode to execute (valid modes are 'insert' and 'change')
 	*
-	*	If insert, the vararray is inserted at the given position (position counting from zero).
-	*	If change, the current block gets merged with the vararray (resulting in new key/value pairs be added and existing keys be replaced by the new value).
+	*   If insert, the vararray is inserted at the given position (position counting from zero).
+	*   If change, the current block gets merged with the vararray (resulting in new key/value pairs be added and existing keys be replaced by the new value).
 	*
 	* Since counting begins by zero, inserting at the last position will result in this array: array(vararray, last positioned array)
 	* and inserting at position 1 will result in this array: array(first positioned array, vararray, following vars)

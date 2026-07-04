@@ -109,23 +109,23 @@ class bbcode_firstpass extends bbcode
 		// To parse multiline URL we enable dotall option setting only for URL text
 		// but not for link itself, thus [url][/url] is not affected.
 		$this->bbcodes = [
-			'tt'			=> ['bbcode_id' => 14,	'regexp' => ['#\[tt\](.*?)\[/tt\]#uis' => function ($m) { return $this->bbcode_teletype($m[1]); }]],
-			'code'			=> ['bbcode_id' => 8,	'regexp' => ['#\[code(?:=([a-z]+))?\](.+\[/code\])#uis' => function ($m) { return $this->bbcode_code($m[1], $m[2]); }]],
-			'quote'			=> ['bbcode_id' => 0,	'regexp' => ['#\[quote(?:=&quot;(.*?)&quot;)?\](.*)\[/quote\]#uis' => function ($m) { return $this->bbcode_quote($m[0], 'quote'); }]],
-			'spoiler'		=> ['bbcode_id' => 16,	'regexp' => ['#\[spoiler(?:=&quot;(.*?)&quot;)?\](.*)\[/spoiler\]#uis' => function ($m) { return $this->bbcode_quote($m[0], 'spoiler'); }]],
-			'upd'			=> ['bbcode_id' => 15,	'regexp' => ['#\[upd(?:=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}))?\](?:(.*?)\[/upd\])?#ui' => function ($m) { return $this->bbcode_upd($m[1], $m[2]); }]],
-			'attachment'	=> ['bbcode_id' => 12,	'regexp' => ['#\[attachment=([0-9]+)\](.*?)\[/attachment\]#uis' => function ($m) { return $this->bbcode_attachment($m[1], $m[2]); }]],
-			'b'				=> ['bbcode_id' => 1,	'regexp' => ['#\[b\](.*?)\[/b\]#uis' => function ($m) { return $this->bbcode_strong($m[1]); }]],
-			'i'				=> ['bbcode_id' => 2,	'regexp' => ['#\[i\](.*?)\[/i\]#uis' => function ($m) { return $this->bbcode_italic($m[1]); }]],
-			'url'			=> ['bbcode_id' => 3,	'regexp' => ['#\[url(=(.*))?\](?(1)((?s).*(?-s))|(.*))\[/url\]#uiU' => function ($m) { return $this->validate_url($m[2], !empty($m[3]) ? $m[3] : safe_strval($m[4])); }]],
-			'img'			=> ['bbcode_id' => 4,	'regexp' => ['#\[img\](.*)\[/img\]#uiU' => function ($m) { return $this->bbcode_img($m[1]); }]],
-			'size'			=> ['bbcode_id' => 5,	'regexp' => ['#\[size=([\-\+]?\d+)\](.*?)\[/size\]#uis' => function ($m) { return $this->bbcode_size($m[1], $m[2]); }]],
-			'color'			=> ['bbcode_id' => 6,	'regexp' => ['!\[color=(#[0-9a-f]{3}|#[0-9a-f]{6}|[a-z\-]+)\](.*?)\[/color\]!uis' => function ($m) { return $this->bbcode_color($m[1], $m[2]); }]],
-			'u'				=> ['bbcode_id' => 7,	'regexp' => ['#\[u\](.*?)\[/u\]#uis' => function ($m) { return $this->bbcode_underline($m[1]); }]],
-			's'				=> ['bbcode_id' => 13,	'regexp' => ['#\[s\](.*?)\[/s\]#uis' => function ($m) { return $this->bbcode_strikethrough($m[1]); }]],
-			'list'			=> ['bbcode_id' => 9,	'regexp' => ['#\[list(?:=(?:[a-z0-9]|disc|circle|square))?].*\[/list]#uis' => function ($m) { return $this->bbcode_parse_list($m[0]); }]],
-			'email'			=> ['bbcode_id' => 10,	'regexp' => ['#\[email=?(.*?)?\](.*?)\[/email\]#uis' => function ($m) { return $this->validate_email($m[1], $m[2]); }]],
-			'flash'			=> ['bbcode_id' => 11,	'regexp' => ['#\[flash=([0-9]+),([0-9]+)\](.*?)\[/flash\]#ui' => function ($m) { return $this->bbcode_flash($m[1], $m[2], $m[3]); }]],
+			'tt'            => ['bbcode_id' => 14,  'regexp' => ['#\[tt\](.*?)\[/tt\]#uis' => function ($m) { return $this->bbcode_teletype($m[1]); }]],
+			'code'          => ['bbcode_id' => 8,   'regexp' => ['#\[code(?:=([a-z]+))?\](.+\[/code\])#uis' => function ($m) { return $this->bbcode_code($m[1], $m[2]); }]],
+			'quote'         => ['bbcode_id' => 0,   'regexp' => ['#\[quote(?:=&quot;(.*?)&quot;)?\](.*)\[/quote\]#uis' => function ($m) { return $this->bbcode_quote($m[0], 'quote'); }]],
+			'spoiler'       => ['bbcode_id' => 16,  'regexp' => ['#\[spoiler(?:=&quot;(.*?)&quot;)?\](.*)\[/spoiler\]#uis' => function ($m) { return $this->bbcode_quote($m[0], 'spoiler'); }]],
+			'upd'           => ['bbcode_id' => 15,  'regexp' => ['#\[upd(?:=([\d]{9,10}|[+]\d+(?:[:]\d+){0,3}))?\](?:(.*?)\[/upd\])?#ui' => function ($m) { return $this->bbcode_upd($m[1], $m[2]); }]],
+			'attachment'    => ['bbcode_id' => 12,  'regexp' => ['#\[attachment=([0-9]+)\](.*?)\[/attachment\]#uis' => function ($m) { return $this->bbcode_attachment($m[1], $m[2]); }]],
+			'b'             => ['bbcode_id' => 1,   'regexp' => ['#\[b\](.*?)\[/b\]#uis' => function ($m) { return $this->bbcode_strong($m[1]); }]],
+			'i'             => ['bbcode_id' => 2,   'regexp' => ['#\[i\](.*?)\[/i\]#uis' => function ($m) { return $this->bbcode_italic($m[1]); }]],
+			'url'           => ['bbcode_id' => 3,   'regexp' => ['#\[url(=(.*))?\](?(1)((?s).*(?-s))|(.*))\[/url\]#uiU' => function ($m) { return $this->validate_url($m[2], !empty($m[3]) ? $m[3] : safe_strval($m[4])); }]],
+			'img'           => ['bbcode_id' => 4,   'regexp' => ['#\[img\](.*)\[/img\]#uiU' => function ($m) { return $this->bbcode_img($m[1]); }]],
+			'size'          => ['bbcode_id' => 5,   'regexp' => ['#\[size=([\-\+]?\d+)\](.*?)\[/size\]#uis' => function ($m) { return $this->bbcode_size($m[1], $m[2]); }]],
+			'color'         => ['bbcode_id' => 6,   'regexp' => ['!\[color=(#[0-9a-f]{3}|#[0-9a-f]{6}|[a-z\-]+)\](.*?)\[/color\]!uis' => function ($m) { return $this->bbcode_color($m[1], $m[2]); }]],
+			'u'             => ['bbcode_id' => 7,   'regexp' => ['#\[u\](.*?)\[/u\]#uis' => function ($m) { return $this->bbcode_underline($m[1]); }]],
+			's'             => ['bbcode_id' => 13,  'regexp' => ['#\[s\](.*?)\[/s\]#uis' => function ($m) { return $this->bbcode_strikethrough($m[1]); }]],
+			'list'          => ['bbcode_id' => 9,   'regexp' => ['#\[list(?:=(?:[a-z0-9]|disc|circle|square))?].*\[/list]#uis' => function ($m) { return $this->bbcode_parse_list($m[0]); }]],
+			'email'         => ['bbcode_id' => 10,  'regexp' => ['#\[email=?(.*?)?\](.*?)\[/email\]#uis' => function ($m) { return $this->validate_email($m[1], $m[2]); }]],
+			'flash'         => ['bbcode_id' => 11,  'regexp' => ['#\[flash=([0-9]+),([0-9]+)\](.*?)\[/flash\]#ui' => function ($m) { return $this->bbcode_flash($m[1], $m[2], $m[3]); }]],
 		];
 
 		// Zero the parsed items array
@@ -171,8 +171,8 @@ class bbcode_firstpass extends bbcode
 			}
 
 			$this->bbcodes[$row['bbcode_tag']] = [
-				'bbcode_id'	=> (int) $row['bbcode_id'],
-				'regexp'	=> [$match => $replace]
+				'bbcode_id' => (int) $row['bbcode_id'],
+				'regexp'    => [$match => $replace]
 			];
 		}
 	}
@@ -934,11 +934,11 @@ class bbcode_firstpass extends bbcode
 			else
 			{
 /**
-*				Old quote code working fine, but having errors listed in bug #3572
+*               Old quote code working fine, but having errors listed in bug #3572
 *
-*				$out .= $buffer . $tok;
-*				$tok = ($tok == '[') ? ']' : '[]';
-*				$buffer = '';
+*               $out .= $buffer . $tok;
+*               $tok = ($tok == '[') ? ']' : '[]';
+*               $buffer = '';
 */
 
 				$out .= $buffer . $tok;
@@ -1477,9 +1477,9 @@ class parse_message extends bbcode_firstpass
 		$this->filename_data['filecomment'] = utf8_normalize_nfc(request_var('filecomment', '', true));
 		$upload_file = (isset($_FILES[$form_name]) && $_FILES[$form_name]['name'] != 'none' && trim($_FILES[$form_name]['name']));
 
-		$add_file		= isset($_POST['add_file']);
-		$delete_file	= isset($_POST['delete_file']);
-		$update_file	= isset($_POST['update_file']);
+		$add_file       = isset($_POST['add_file']);
+		$delete_file    = isset($_POST['delete_file']);
+		$update_file    = isset($_POST['update_file']);
 
 		// First of all adjust comments if changed
 		$actual_comment_list = utf8_normalize_nfc(request_var('comment_list', [''], true));
@@ -1511,25 +1511,25 @@ class parse_message extends bbcode_firstpass
 				if ($filedata['post_attach'] && !sizeof($error))
 				{
 					$sql_ary = [
-						'physical_filename'	=> $filedata['physical_filename'],
-						'attach_comment'	=> $this->filename_data['filecomment'],
-						'real_filename'		=> $filedata['real_filename'],
-						'extension'			=> $filedata['extension'],
-						'mimetype'			=> $filedata['mimetype'],
-						'filesize'			=> $filedata['filesize'],
-						'filetime'			=> $filedata['filetime'],
-						'thumbnail'			=> $filedata['thumbnail'],
-						'is_orphan'			=> 1,
-						'in_message'		=> ($is_message) ? 1 : 0,
-						'poster_id'			=> $user->data['user_id'],
+						'physical_filename' => $filedata['physical_filename'],
+						'attach_comment'    => $this->filename_data['filecomment'],
+						'real_filename'     => $filedata['real_filename'],
+						'extension'         => $filedata['extension'],
+						'mimetype'          => $filedata['mimetype'],
+						'filesize'          => $filedata['filesize'],
+						'filetime'          => $filedata['filetime'],
+						'thumbnail'         => $filedata['thumbnail'],
+						'is_orphan'         => 1,
+						'in_message'        => ($is_message) ? 1 : 0,
+						'poster_id'         => $user->data['user_id'],
 					];
 
 					$db->sql_query('INSERT INTO ' . ATTACHMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 
 					$new_entry = [
-						'attach_id'		=> $db->sql_nextid(),
-						'is_orphan'		=> 1,
-						'real_filename'	=> $filedata['real_filename'],
+						'attach_id'     => $db->sql_nextid(),
+						'is_orphan'     => 1,
+						'real_filename' => $filedata['real_filename'],
 						'attach_comment'=> $this->filename_data['filecomment'],
 					];
 
@@ -1616,25 +1616,25 @@ class parse_message extends bbcode_firstpass
 					if (!sizeof($error))
 					{
 						$sql_ary = [
-							'physical_filename'	=> $filedata['physical_filename'],
-							'attach_comment'	=> $this->filename_data['filecomment'],
-							'real_filename'		=> $filedata['real_filename'],
-							'extension'			=> $filedata['extension'],
-							'mimetype'			=> $filedata['mimetype'],
-							'filesize'			=> $filedata['filesize'],
-							'filetime'			=> $filedata['filetime'],
-							'thumbnail'			=> $filedata['thumbnail'],
-							'is_orphan'			=> 1,
-							'in_message'		=> ($is_message) ? 1 : 0,
-							'poster_id'			=> $user->data['user_id'],
+							'physical_filename' => $filedata['physical_filename'],
+							'attach_comment'    => $this->filename_data['filecomment'],
+							'real_filename'     => $filedata['real_filename'],
+							'extension'         => $filedata['extension'],
+							'mimetype'          => $filedata['mimetype'],
+							'filesize'          => $filedata['filesize'],
+							'filetime'          => $filedata['filetime'],
+							'thumbnail'         => $filedata['thumbnail'],
+							'is_orphan'         => 1,
+							'in_message'        => ($is_message) ? 1 : 0,
+							'poster_id'         => $user->data['user_id'],
 						];
 
 						$db->sql_query('INSERT INTO ' . ATTACHMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 
 						$new_entry = [
-							'attach_id'		=> $db->sql_nextid(),
-							'is_orphan'		=> 1,
-							'real_filename'	=> $filedata['real_filename'],
+							'attach_id'     => $db->sql_nextid(),
+							'is_orphan'     => 1,
+							'real_filename' => $filedata['real_filename'],
 							'attach_comment'=> $this->filename_data['filecomment'],
 						];
 
@@ -1673,16 +1673,16 @@ class parse_message extends bbcode_firstpass
 					if (!sizeof($error))
 					{
 						$sql_ary = [
-							'physical_filename'	=> $filedata['physical_filename'],
-							'attach_comment'	=> $this->filename_data['filecomment'],
-							'real_filename'		=> $filedata['real_filename'],
-							'extension'			=> $filedata['extension'],
-							'mimetype'			=> $filedata['mimetype'],
-							'filesize'			=> $filedata['filesize'],
-							'filetime'			=> $filedata['filetime'],
-							'thumbnail'			=> $filedata['thumbnail'],
-							'in_message'		=> ($is_message) ? 1 : 0,
-							// 'poster_id'			=> $user->data['user_id'],
+							'physical_filename' => $filedata['physical_filename'],
+							'attach_comment'    => $this->filename_data['filecomment'],
+							'real_filename'     => $filedata['real_filename'],
+							'extension'         => $filedata['extension'],
+							'mimetype'          => $filedata['mimetype'],
+							'filesize'          => $filedata['filesize'],
+							'filetime'          => $filedata['filetime'],
+							'thumbnail'         => $filedata['thumbnail'],
+							'in_message'        => ($is_message) ? 1 : 0,
+							// 'poster_id'          => $user->data['user_id'],
 						];
 
 						$db->sql_query('UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id'] );

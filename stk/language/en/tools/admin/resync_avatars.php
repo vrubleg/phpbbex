@@ -16,8 +16,8 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, [
-	'RESYNC_AVATARS'			=> 'Resynchronise avatars',
-	'RESYNC_AVATARS_CONFIRM'	=> 'This tool will make sure that all avatars used on the board actually exist on the server. When missing files are found the avatar will be removed from the users profile. Are you sure you want to continue?',
-	'RESYNC_AVATARS_FINISHED'	=> 'Avatars successfully resynchronised!',
-	'RESYNC_AVATARS_PROGRESS'	=> 'Resynchronising avatars in process, please don’t interrupt this process!',
+	'RESYNC_AVATARS'            => 'Resynchronise avatars',
+	'RESYNC_AVATARS_CONFIRM'    => 'This tool will make sure that all avatars used on the board actually exist on the server. When missing files are found the avatar will be removed from the users profile. Are you sure you want to continue?',
+	'RESYNC_AVATARS_FINISHED'   => 'Avatars successfully resynchronised!',
+	'RESYNC_AVATARS_PROGRESS'   => 'Resynchronising avatars in process, please don’t interrupt this process!',
 ]);

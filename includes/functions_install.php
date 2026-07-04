@@ -19,9 +19,9 @@ function get_available_dbms($dbms = false, $return_unavailable = false)
 	global $lang;
 	$available_dbms = [
 		'mysql' => [
-			'LABEL'			=> 'MySQLi',
-			'MODULE'		=> 'mysqli',
-			'AVAILABLE'		=> true,
+			'LABEL'         => 'MySQLi',
+			'MODULE'        => 'mysqli',
+			'AVAILABLE'     => true,
 		],
 	];
 
@@ -101,8 +101,8 @@ function get_tables(&$db)
 /**
 * Used to test whether we are able to connect to the database the user has specified
 * and identify any problems (eg there are already tables with the names we want to use
-* @param	array	$dbms should be of the format of an element of the array returned by {@link get_available_dbms get_available_dbms()}
-*					necessary extensions should be loaded already
+* @param    array   $dbms should be of the format of an element of the array returned by {@link get_available_dbms get_available_dbms()}
+*                   necessary extensions should be loaded already
 */
 function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix, $dbhost, $dbuser, $dbpasswd, $dbname, $dbport, $prefix_may_exist = false, $load_dbal = true, $unicode_check = true)
 {
@@ -229,23 +229,23 @@ function adjust_language_keys_callback($matches)
 /**
 * Creates the output to be stored in a phpBB config.php file
 *
-* @param	array	$data Array containing the database connection information
-* @param	bool	$debug If the debug constants should be enabled by default or not
+* @param    array   $data Array containing the database connection information
+* @param    bool    $debug If the debug constants should be enabled by default or not
 *
-* @return	string	The output to write to the file
+* @return   string  The output to write to the file
 */
 function phpbb_create_config_file_data($data, $debug = false)
 {
 	$config_data = "<?php\n\n";
 
 	$config_data_array = [
-		'dbhost'		=> $data['dbhost'],
-		'dbport'		=> $data['dbport'],
-		'dbname'		=> $data['dbname'],
-		'dbuser'		=> $data['dbuser'],
-		'dbpasswd'		=> htmlspecialchars_decode($data['dbpasswd']),
-		'table_prefix'	=> $data['table_prefix'],
-		'acm_type'		=> 'file',
+		'dbhost'        => $data['dbhost'],
+		'dbport'        => $data['dbport'],
+		'dbname'        => $data['dbname'],
+		'dbuser'        => $data['dbuser'],
+		'dbpasswd'      => htmlspecialchars_decode($data['dbpasswd']),
+		'table_prefix'  => $data['table_prefix'],
+		'acm_type'      => 'file',
 	];
 
 	foreach ($config_data_array as $key => $value)

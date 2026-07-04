@@ -98,9 +98,9 @@ class mcp_queue
 				if ($post_info['topic_first_post_id'] != $post_id && topic_review($post_info['topic_id'], $post_info['forum_id'], 'topic_review', 0, false))
 				{
 					$template->assign_vars([
-						'S_TOPIC_REVIEW'	=> true,
-						'S_BBCODE_ALLOWED'	=> $post_info['enable_bbcode'],
-						'TOPIC_TITLE'		=> $post_info['topic_title']]
+						'S_TOPIC_REVIEW'    => true,
+						'S_BBCODE_ALLOWED'  => $post_info['enable_bbcode'],
+						'TOPIC_TITLE'       => $post_info['topic_title']]
 					);
 				}
 
@@ -163,7 +163,7 @@ class mcp_queue
 						foreach ($attachments as $attachment)
 						{
 							$template->assign_block_vars('attachment', [
-								'DISPLAY_ATTACHMENT'	=> $attachment]
+								'DISPLAY_ATTACHMENT'    => $attachment]
 							);
 						}
 					}
@@ -173,45 +173,45 @@ class mcp_queue
 				$topic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $post_info['topic_id']);
 
 				$template->assign_vars([
-					'S_MCP_QUEUE'			=> true,
-					'U_APPROVE_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;p={$post_id}&amp;f={$forum_id}"),
-					'S_CAN_VIEWIP'			=> $auth->acl_get('m_info', $post_info['forum_id']),
-					'S_POST_REPORTED'		=> $post_info['post_reported'],
-					'S_POST_UNAPPROVED'		=> !$post_info['post_approved'],
-					'S_POST_LOCKED'			=> $post_info['post_edit_locked'],
-					'S_USER_NOTES'			=> true,
+					'S_MCP_QUEUE'           => true,
+					'U_APPROVE_ACTION'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;p={$post_id}&amp;f={$forum_id}"),
+					'S_CAN_VIEWIP'          => $auth->acl_get('m_info', $post_info['forum_id']),
+					'S_POST_REPORTED'       => $post_info['post_reported'],
+					'S_POST_UNAPPROVED'     => !$post_info['post_approved'],
+					'S_POST_LOCKED'         => $post_info['post_edit_locked'],
+					'S_USER_NOTES'          => true,
 
-					'U_EDIT'				=> ($auth->acl_get('m_edit', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;p={$post_info['post_id']}") : '',
-					'U_MCP_APPROVE'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
-					'U_MCP_REPORT'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
-					'U_MCP_USER_NOTES'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $post_info['user_id']),
-					'U_MCP_WARN_USER'		=> ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $post_info['user_id']) : '',
-					'U_VIEW_POST'			=> $post_url,
-					'U_VIEW_TOPIC'			=> $topic_url,
+					'U_EDIT'                => ($auth->acl_get('m_edit', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;p={$post_info['post_id']}") : '',
+					'U_MCP_APPROVE'         => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
+					'U_MCP_REPORT'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
+					'U_MCP_USER_NOTES'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $post_info['user_id']),
+					'U_MCP_WARN_USER'       => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $post_info['user_id']) : '',
+					'U_VIEW_POST'           => $post_url,
+					'U_VIEW_TOPIC'          => $topic_url,
 
-					'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
+					'MINI_POST_IMG'         => ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
 
-					'RETURN_QUEUE'			=> sprintf($user->lang['RETURN_QUEUE'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue' . (($topic_id) ? '&amp;mode=unapproved_topics' : '&amp;mode=unapproved_posts')) . "&amp;start={$start}\">", '</a>'),
-					'RETURN_POST'			=> sprintf($user->lang['RETURN_POST'], '<a href="' . $post_url . '">', '</a>'),
-					'RETURN_TOPIC_SIMPLE'	=> sprintf($user->lang['RETURN_TOPIC_SIMPLE'], '<a href="' . $topic_url . '">', '</a>'),
-					'REPORTED_IMG'			=> $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
-					'UNAPPROVED_IMG'		=> $user->img('icon_topic_unapproved', $user->lang['POST_UNAPPROVED']),
-					'EDIT_IMG'				=> $user->img('icon_post_edit', $user->lang['EDIT_POST']),
+					'RETURN_QUEUE'          => sprintf($user->lang['RETURN_QUEUE'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue' . (($topic_id) ? '&amp;mode=unapproved_topics' : '&amp;mode=unapproved_posts')) . "&amp;start={$start}\">", '</a>'),
+					'RETURN_POST'           => sprintf($user->lang['RETURN_POST'], '<a href="' . $post_url . '">', '</a>'),
+					'RETURN_TOPIC_SIMPLE'   => sprintf($user->lang['RETURN_TOPIC_SIMPLE'], '<a href="' . $topic_url . '">', '</a>'),
+					'REPORTED_IMG'          => $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
+					'UNAPPROVED_IMG'        => $user->img('icon_topic_unapproved', $user->lang['POST_UNAPPROVED']),
+					'EDIT_IMG'              => $user->img('icon_post_edit', $user->lang['EDIT_POST']),
 
-					'POST_AUTHOR_FULL'		=> get_username_string('full', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
-					'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
-					'POST_AUTHOR'			=> get_username_string('username', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
-					'U_POST_AUTHOR'			=> get_username_string('profile', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
+					'POST_AUTHOR_FULL'      => get_username_string('full', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
+					'POST_AUTHOR_COLOUR'    => get_username_string('colour', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
+					'POST_AUTHOR'           => get_username_string('username', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
+					'U_POST_AUTHOR'         => get_username_string('profile', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
 
-					'POST_PREVIEW'			=> $message,
-					'POST_SUBJECT'			=> $post_info['post_subject'],
-					'POST_DATE'				=> $user->format_date($post_info['post_time']),
-					'POST_IP'				=> $post_info['poster_ip'],
-					'POST_IPADDR'			=> ($auth->acl_get('m_info', $post_info['forum_id']) && request_var('lookup', '')) ? @gethostbyaddr($post_info['poster_ip']) : '',
-					'POST_ID'				=> $post_info['post_id'],
-					'S_FIRST_POST'			=> ($post_info['topic_first_post_id'] == $post_id),
+					'POST_PREVIEW'          => $message,
+					'POST_SUBJECT'          => $post_info['post_subject'],
+					'POST_DATE'             => $user->format_date($post_info['post_time']),
+					'POST_IP'               => $post_info['poster_ip'],
+					'POST_IPADDR'           => ($auth->acl_get('m_info', $post_info['forum_id']) && request_var('lookup', '')) ? @gethostbyaddr($post_info['poster_ip']) : '',
+					'POST_ID'               => $post_info['post_id'],
+					'S_FIRST_POST'          => ($post_info['topic_first_post_id'] == $post_id),
 
-					'U_LOOKUP_IP'			=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id . '&amp;lookup=' . $post_info['poster_ip']) . '#ip' : '',
+					'U_LOOKUP_IP'           => ($auth->acl_get('m_info', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id . '&amp;lookup=' . $post_info['poster_ip']) . '#ip' : '',
 				]);
 
 			break;
@@ -401,40 +401,40 @@ class mcp_queue
 					}
 
 					$template->assign_block_vars('postrow', [
-						'U_TOPIC'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']),
-						'U_VIEWFORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
-						'U_VIEWPOST'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . (($mode == 'unapproved_posts') ? '#p' . $row['post_id'] : ''),
-						'U_VIEW_DETAILS'	=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;start={$start}&amp;mode=approve_details&amp;f={$row['forum_id']}&amp;p={$row['post_id']}" . (($mode == 'unapproved_topics') ? "&amp;t={$row['topic_id']}" : '')),
+						'U_TOPIC'           => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']),
+						'U_VIEWFORUM'       => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
+						'U_VIEWPOST'        => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . (($mode == 'unapproved_posts') ? '#p' . $row['post_id'] : ''),
+						'U_VIEW_DETAILS'    => append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=queue&amp;start={$start}&amp;mode=approve_details&amp;f={$row['forum_id']}&amp;p={$row['post_id']}" . (($mode == 'unapproved_topics') ? "&amp;t={$row['topic_id']}" : '')),
 
-						'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-						'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-						'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-						'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+						'POST_AUTHOR_FULL'      => get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+						'POST_AUTHOR_COLOUR'    => get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+						'POST_AUTHOR'           => get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+						'U_POST_AUTHOR'         => get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 
-						'POST_ID'		=> $row['post_id'],
-						'FORUM_NAME'	=> $forum_names[$row['forum_id']],
-						'POST_SUBJECT'	=> ($row['post_subject'] != '') ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
-						'TOPIC_TITLE'	=> $row['topic_title'],
-						'POST_TIME'		=> $user->format_date($row['post_time'])]
+						'POST_ID'       => $row['post_id'],
+						'FORUM_NAME'    => $forum_names[$row['forum_id']],
+						'POST_SUBJECT'  => ($row['post_subject'] != '') ? $row['post_subject'] : ('Re: ' . $row['topic_title']),
+						'TOPIC_TITLE'   => $row['topic_title'],
+						'POST_TIME'     => $user->format_date($row['post_time'])]
 					);
 				}
 				unset($rowset, $forum_names);
 
 				// Now display the page
 				$template->assign_vars([
-					'L_DISPLAY_ITEMS'		=> ($mode == 'unapproved_posts') ? $user->lang['DISPLAY_POSTS'] : $user->lang['DISPLAY_TOPICS'],
-					'L_EXPLAIN'				=> ($mode == 'unapproved_posts') ? $user->lang['MCP_QUEUE_UNAPPROVED_POSTS_EXPLAIN'] : $user->lang['MCP_QUEUE_UNAPPROVED_TOPICS_EXPLAIN'],
-					'L_TITLE'				=> ($mode == 'unapproved_posts') ? $user->lang['MCP_QUEUE_UNAPPROVED_POSTS'] : $user->lang['MCP_QUEUE_UNAPPROVED_TOPICS'],
-					'L_ONLY_TOPIC'			=> ($topic_id) ? sprintf($user->lang['ONLY_TOPIC'], $topic_info['topic_title']) : '',
+					'L_DISPLAY_ITEMS'       => ($mode == 'unapproved_posts') ? $user->lang['DISPLAY_POSTS'] : $user->lang['DISPLAY_TOPICS'],
+					'L_EXPLAIN'             => ($mode == 'unapproved_posts') ? $user->lang['MCP_QUEUE_UNAPPROVED_POSTS_EXPLAIN'] : $user->lang['MCP_QUEUE_UNAPPROVED_TOPICS_EXPLAIN'],
+					'L_TITLE'               => ($mode == 'unapproved_posts') ? $user->lang['MCP_QUEUE_UNAPPROVED_POSTS'] : $user->lang['MCP_QUEUE_UNAPPROVED_TOPICS'],
+					'L_ONLY_TOPIC'          => ($topic_id) ? sprintf($user->lang['ONLY_TOPIC'], $topic_info['topic_title']) : '',
 
-					'S_FORUM_OPTIONS'		=> $forum_options,
-					'S_MCP_ACTION'			=> build_url(['t', 'f', 'sd', 'st', 'sk']),
-					'S_TOPICS'				=> ($mode != 'unapproved_posts'),
+					'S_FORUM_OPTIONS'       => $forum_options,
+					'S_MCP_ACTION'          => build_url(['t', 'f', 'sd', 'st', 'sk']),
+					'S_TOPICS'              => ($mode != 'unapproved_posts'),
 
-					'PAGINATION'			=> generate_pagination($this->u_action . "&amp;f={$forum_id}&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $total, $config['topics_per_page'], $start),
-					'PAGE_NUMBER'			=> on_page($total, $config['topics_per_page'], $start),
-					'TOPIC_ID'				=> $topic_id,
-					'TOTAL'					=> ($total == 1) ? (($mode == 'unapproved_posts') ? $user->lang['VIEW_TOPIC_POST'] : $user->lang['VIEW_FORUM_TOPIC']) : sprintf((($mode == 'unapproved_posts') ? $user->lang['VIEW_TOPIC_POSTS'] : $user->lang['VIEW_FORUM_TOPICS']), $total),
+					'PAGINATION'            => generate_pagination($this->u_action . "&amp;f={$forum_id}&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}", $total, $config['topics_per_page'], $start),
+					'PAGE_NUMBER'           => on_page($total, $config['topics_per_page'], $start),
+					'TOPIC_ID'              => $topic_id,
+					'TOTAL'                 => ($total == 1) ? (($mode == 'unapproved_posts') ? $user->lang['VIEW_TOPIC_POST'] : $user->lang['VIEW_FORUM_TOPIC']) : sprintf((($mode == 'unapproved_posts') ? $user->lang['VIEW_TOPIC_POSTS'] : $user->lang['VIEW_FORUM_TOPICS']), $total),
 				]);
 
 				$this->tpl_name = 'mcp_queue';
@@ -459,11 +459,11 @@ function approve_post($post_id_list, $id, $mode)
 	$success_msg = '';
 
 	$s_hidden_fields = build_hidden_fields([
-		'i'				=> $id,
-		'mode'			=> $mode,
-		'post_id_list'	=> $post_id_list,
-		'action'		=> 'approve',
-		'redirect'		=> $redirect]
+		'i'             => $id,
+		'mode'          => $mode,
+		'post_id_list'  => $post_id_list,
+		'action'        => 'approve',
+		'redirect'      => $redirect]
 	);
 
 	$post_info = get_post_data($post_id_list, 'm_approve');
@@ -516,19 +516,19 @@ function approve_post($post_id_list, $id, $mode)
 				$topic_approve_sql[] = $post_data['topic_id'];
 
 				$approve_log[] = [
-					'type'			=> 'topic',
-					'post_subject'	=> $post_data['post_subject'],
-					'forum_id'		=> $post_data['forum_id'],
-					'topic_id'		=> $post_data['topic_id'],
+					'type'          => 'topic',
+					'post_subject'  => $post_data['post_subject'],
+					'forum_id'      => $post_data['forum_id'],
+					'topic_id'      => $post_data['topic_id'],
 				];
 			}
 			else
 			{
 				$approve_log[] = [
-					'type'			=> 'post',
-					'post_subject'	=> $post_data['post_subject'],
-					'forum_id'		=> $post_data['forum_id'],
-					'topic_id'		=> $post_data['topic_id'],
+					'type'          => 'post',
+					'post_subject'  => $post_data['post_subject'],
+					'forum_id'      => $post_data['forum_id'],
+					'topic_id'      => $post_data['topic_id'],
 				];
 			}
 
@@ -647,12 +647,12 @@ function approve_post($post_id_list, $id, $mode)
 				$messenger->im($post_data['user_jabber'], $post_data['username']);
 
 				$messenger->assign_vars([
-					'USERNAME'		=> htmlspecialchars_decode($post_data['username']),
-					'POST_SUBJECT'	=> htmlspecialchars_decode(censor_text($post_data['post_subject'])),
-					'TOPIC_TITLE'	=> htmlspecialchars_decode(censor_text($post_data['topic_title'])),
+					'USERNAME'      => htmlspecialchars_decode($post_data['username']),
+					'POST_SUBJECT'  => htmlspecialchars_decode(censor_text($post_data['post_subject'])),
+					'TOPIC_TITLE'   => htmlspecialchars_decode(censor_text($post_data['topic_title'])),
 
-					'U_VIEW_TOPIC'	=> generate_board_url() . "/viewtopic.php?t={$post_data['topic_id']}&e=0",
-					'U_VIEW_POST'	=> generate_board_url() . "/viewtopic.php?t={$post_data['topic_id']}&p={$post_id}&e={$post_id}"]
+					'U_VIEW_TOPIC'  => generate_board_url() . "/viewtopic.php?t={$post_data['topic_id']}&e=0",
+					'U_VIEW_POST'   => generate_board_url() . "/viewtopic.php?t={$post_data['topic_id']}&p={$post_id}&e={$post_id}"]
 				);
 
 				$messenger->send($post_data['user_notify_type']);
@@ -717,8 +717,8 @@ function approve_post($post_id_list, $id, $mode)
 		}
 
 		$template->assign_vars([
-			'S_NOTIFY_POSTER'	=> $show_notify,
-			'S_APPROVE'			=> true]
+			'S_NOTIFY_POSTER'   => $show_notify,
+			'S_APPROVE'         => true]
 		);
 
 		confirm_box(false, 'APPROVE_POST' . ((sizeof($post_id_list) == 1) ? '' : 'S'), $s_hidden_fields, 'mcp_approve.html');
@@ -764,11 +764,11 @@ function disapprove_post($post_id_list, $id, $mode)
 	$success_msg = $additional_msg = '';
 
 	$s_hidden_fields = build_hidden_fields([
-		'i'				=> $id,
-		'mode'			=> $mode,
-		'post_id_list'	=> $post_id_list,
-		'action'		=> 'disapprove',
-		'redirect'		=> $redirect]
+		'i'             => $id,
+		'mode'          => $mode,
+		'post_id_list'  => $post_id_list,
+		'action'        => 'disapprove',
+		'redirect'      => $redirect]
 	);
 
 	$notify_poster = isset($_REQUEST['notify_poster']);
@@ -834,10 +834,10 @@ function disapprove_post($post_id_list, $id, $mode)
 				{
 					// Build disapproved topics log
 					$disapprove_log_topics[$topic_id] = [
-						'type'			=> 'topic',
-						'post_subject'	=> $post_info[$post_id]['topic_title'],
-						'forum_id'		=> $post_info[$post_id]['forum_id'],
-						'topic_id'		=> 0, // useless to log a topic id, as it will be deleted
+						'type'          => 'topic',
+						'post_subject'  => $post_info[$post_id]['topic_title'],
+						'forum_id'      => $post_info[$post_id]['forum_id'],
+						'topic_id'      => 0, // useless to log a topic id, as it will be deleted
 					];
 				}
 			}
@@ -845,10 +845,10 @@ function disapprove_post($post_id_list, $id, $mode)
 			{
 				// Build disapproved posts log
 				$disapprove_log_posts[] = [
-					'type'			=> 'post',
-					'post_subject'	=> $post_info[$post_id]['post_subject'],
-					'forum_id'		=> $post_info[$post_id]['forum_id'],
-					'topic_id'		=> $post_info[$post_id]['topic_id'],
+					'type'          => 'post',
+					'post_subject'  => $post_info[$post_id]['post_subject'],
+					'forum_id'      => $post_info[$post_id]['forum_id'],
+					'topic_id'      => $post_info[$post_id]['topic_id'],
 				];
 
 			}
@@ -934,10 +934,10 @@ function disapprove_post($post_id_list, $id, $mode)
 				$messenger->im($post_data['user_jabber'], $post_data['username']);
 
 				$messenger->assign_vars([
-					'USERNAME'		=> htmlspecialchars_decode($post_data['username']),
-					'REASON'		=> htmlspecialchars_decode($email_disapprove_reason),
-					'POST_SUBJECT'	=> htmlspecialchars_decode(censor_text($post_data['post_subject'])),
-					'TOPIC_TITLE'	=> htmlspecialchars_decode(censor_text($post_data['topic_title']))]
+					'USERNAME'      => htmlspecialchars_decode($post_data['username']),
+					'REASON'        => htmlspecialchars_decode($email_disapprove_reason),
+					'POST_SUBJECT'  => htmlspecialchars_decode(censor_text($post_data['post_subject'])),
+					'TOPIC_TITLE'   => htmlspecialchars_decode(censor_text($post_data['topic_title']))]
 				);
 
 				$messenger->send($post_data['user_notify_type']);
@@ -980,10 +980,10 @@ function disapprove_post($post_id_list, $id, $mode)
 		}
 
 		$template->assign_vars([
-			'S_NOTIFY_POSTER'	=> $show_notify,
-			'S_APPROVE'			=> false,
-			'REASON'			=> $reason,
-			'ADDITIONAL_MSG'	=> $additional_msg]
+			'S_NOTIFY_POSTER'   => $show_notify,
+			'S_APPROVE'         => false,
+			'REASON'            => $reason,
+			'ADDITIONAL_MSG'    => $additional_msg]
 		);
 
 		confirm_box(false, 'DISAPPROVE_POST' . ((sizeof($post_id_list) == 1) ? '' : 'S'), $s_hidden_fields, 'mcp_approve.html');

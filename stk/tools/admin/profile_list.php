@@ -70,24 +70,24 @@ class profile_list
 		* Filter stuff
 		*/
 		$options = [
-			'user_icq'			=> 'ICQ',
-			'user_jabber'		=> 'JABBER',
-			'user_skype'		=> 'SKYPE',
-			'user_telegram'		=> 'TELEGRAM',
-			'user_website'		=> 'WEBSITE',
-			'user_occ'			=> 'OCCUPATION',
-			'user_interests'	=> 'INTERESTS',
-			'user_from'			=> 'LOCATION',
-			'user_sig'			=> 'SIGNATURE',
+			'user_icq'          => 'ICQ',
+			'user_jabber'       => 'JABBER',
+			'user_skype'        => 'SKYPE',
+			'user_telegram'     => 'TELEGRAM',
+			'user_website'      => 'WEBSITE',
+			'user_occ'          => 'OCCUPATION',
+			'user_interests'    => 'INTERESTS',
+			'user_from'         => 'LOCATION',
+			'user_sig'          => 'SIGNATURE',
 		];
 
 		$profile_where = '';
 		foreach ($options as $option => $lang_key)
 		{
 			$template->assign_block_vars('options', [
-				'OPTION'	=> $option,
-				'LANG'		=> $user->lang[$lang_key],
-				'SELECTED'	=> ($display == $option),
+				'OPTION'    => $option,
+				'LANG'      => $user->lang[$lang_key],
+				'SELECTED'  => ($display == $option),
 			]);
 
 			if ($empty_only)
@@ -114,21 +114,21 @@ class profile_list
 		* Order stuff
 		*/
 		$order = [
-			'user_regdate'			=> 'JOINED',
-			'username_clean'		=> 'USERNAME',
-			'user_lastvisit'		=> 'LAST_VISIT',
-			'user_lastpost_time'	=> 'LAST_POST',
-			'user_warnings'			=> 'WARNINGS',
-			'user_posts'			=> 'POSTS',
+			'user_regdate'          => 'JOINED',
+			'username_clean'        => 'USERNAME',
+			'user_lastvisit'        => 'LAST_VISIT',
+			'user_lastpost_time'    => 'LAST_POST',
+			'user_warnings'         => 'WARNINGS',
+			'user_posts'            => 'POSTS',
 		];
 		$timestamps = ['user_regdate', 'user_lastvisit', 'user_lastpost_time'];
 
 		foreach ($order as $option => $lang_key)
 		{
 			$template->assign_block_vars('order', [
-				'OPTION'	=> $option,
-				'LANG'		=> $user->lang[$lang_key],
-				'SELECTED'	=> ($order_by == $option),
+				'OPTION'    => $option,
+				'LANG'      => $user->lang[$lang_key],
+				'SELECTED'  => ($order_by == $option),
 			]);
 		}
 
@@ -179,47 +179,47 @@ class profile_list
 			}
 
 			$template->assign_block_vars('users', [
-				'EMAIL'				=> $row['user_email'],
-				'ICQ'				=> $row['user_icq'],
-				'INTERESTS'			=> $row['user_interests'],
-				'JABBER'			=> $row['user_jabber'],
-				'SKYPE'				=> $row['user_skype'],
-				'TELEGRAM'			=> $row['user_telegram'],
-				'JOINED'			=> $user->format_date($row['user_regdate']),
-				'LOCATION'			=> $row['user_from'],
-				'OCCUPATION'		=> $row['user_occ'],
-				'POSTS'				=> $row['user_posts'],
-				'SIGNATURE'			=> ((!isset($options[$display]) || $display == 'user_sig') && $row['user_sig']) ? generate_text_for_display($row['user_sig'], $row['user_sig_bbcode_uid'], $row['user_sig_bbcode_bitfield'], 7) : '',
-				'USERID'			=> ($user->data['user_id'] == $row['user_id']) ? false : $row['user_id'],
-				'USERNAME'			=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'VISITED'			=> ($row['user_lastvisit']) ? $user->format_date($row['user_lastvisit']) : 0,
-				'WARNINGS'			=> $row['user_warnings'],
-				'WEBSITE'			=> $row['user_website'],
+				'EMAIL'             => $row['user_email'],
+				'ICQ'               => $row['user_icq'],
+				'INTERESTS'         => $row['user_interests'],
+				'JABBER'            => $row['user_jabber'],
+				'SKYPE'             => $row['user_skype'],
+				'TELEGRAM'          => $row['user_telegram'],
+				'JOINED'            => $user->format_date($row['user_regdate']),
+				'LOCATION'          => $row['user_from'],
+				'OCCUPATION'        => $row['user_occ'],
+				'POSTS'             => $row['user_posts'],
+				'SIGNATURE'         => ((!isset($options[$display]) || $display == 'user_sig') && $row['user_sig']) ? generate_text_for_display($row['user_sig'], $row['user_sig_bbcode_uid'], $row['user_sig_bbcode_bitfield'], 7) : '',
+				'USERID'            => ($user->data['user_id'] == $row['user_id']) ? false : $row['user_id'],
+				'USERNAME'          => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				'VISITED'           => ($row['user_lastvisit']) ? $user->format_date($row['user_lastvisit']) : 0,
+				'WARNINGS'          => $row['user_warnings'],
+				'WEBSITE'           => $row['user_website'],
 
-				'OPTION_SECTION'		=> (isset($options[$display])) ? $row[$display] : '',
-				'ORDER_SECTION'			=> (in_array($order_by, $timestamps)) ? (($row[$order_by]) ? $user->format_date($row[$order_by]) : $user->lang['NEVER']) : $row[$order_by],
-				'USER_INACTIVE_REASON'	=> $inactive_reason,
+				'OPTION_SECTION'        => (isset($options[$display])) ? $row[$display] : '',
+				'ORDER_SECTION'         => (in_array($order_by, $timestamps)) ? (($row[$order_by]) ? $user->format_date($row[$order_by]) : $user->lang['NEVER']) : $row[$order_by],
+				'USER_INACTIVE_REASON'  => $inactive_reason,
 
-				'U_USER_ADMIN'		=> append_sid(PHPBB_ROOT_PATH . 'adm/index.php', 'i=users&amp;mode=overview&amp;u=' . $row['user_id'], true, $user->session_id),
+				'U_USER_ADMIN'      => append_sid(PHPBB_ROOT_PATH . 'adm/index.php', 'i=users&amp;mode=overview&amp;u=' . $row['user_id'], true, $user->session_id),
 
-				'S_USER_INACTIVE'	=> (bool) $row['user_inactive_reason'],
+				'S_USER_INACTIVE'   => (bool) $row['user_inactive_reason'],
 			]);
 		}
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'U_DISPLAY_ACTION'		=> append_sid(STK_INDEX, 't=profile_list&amp;go=1'),
-			'U_SELECTED_ACTION'		=> append_sid(STK_INDEX, ['c' => 'admin', 't' => 'profile_list', 'sa' => true]),
+			'U_DISPLAY_ACTION'      => append_sid(STK_INDEX, 't=profile_list&amp;go=1'),
+			'U_SELECTED_ACTION'     => append_sid(STK_INDEX, ['c' => 'admin', 't' => 'profile_list', 'sa' => true]),
 
-			'LIMIT'					=> $limit,
-			'OPTION_SECTION'		=> (isset($options[$display]) && $display != 'user_sig') ? $user->lang[$options[$display]] : '',
-			'ORDER_SECTION'			=> ($order_by == 'username_clean') ? '' : ((isset($order[$order_by])) ? $user->lang[$order[$order_by]] : $user->lang['JOINED']),
-			'PAGINATION'			=> generate_pagination($base_url, $count, $limit, $start, true),
+			'LIMIT'                 => $limit,
+			'OPTION_SECTION'        => (isset($options[$display]) && $display != 'user_sig') ? $user->lang[$options[$display]] : '',
+			'ORDER_SECTION'         => ($order_by == 'username_clean') ? '' : ((isset($order[$order_by])) ? $user->lang[$order[$order_by]] : $user->lang['JOINED']),
+			'PAGINATION'            => generate_pagination($base_url, $count, $limit, $start, true),
 
-			'S_DESC'				=> ($order_dir == 'DESC'),
-			'S_DISPLAY_ALL'			=> !isset($options[$display]),
-			'S_DISPLAY_SIG'			=> ($display == 'user_sig'),
-			'S_EMPTY_CHECKED'		=> $empty_only,
+			'S_DESC'                => ($order_dir == 'DESC'),
+			'S_DISPLAY_ALL'         => !isset($options[$display]),
+			'S_DISPLAY_SIG'         => ($display == 'user_sig'),
+			'S_EMPTY_CHECKED'       => $empty_only,
 		]);
 
 		$template->set_filenames([

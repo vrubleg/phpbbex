@@ -69,8 +69,8 @@ class utf_normalizer
 	* The ultimate convenience function! Clean up invalid UTF-8 sequences,
 	* and convert to Normal Form C, canonical composition.
 	*
-	* @param	string	&$str	The dirty string
-	* @return	string			The same string, all shiny and cleaned-up
+	* @param    string  &$str   The dirty string
+	* @return   string          The same string, all shiny and cleaned-up
 	*/
 	static function cleanup(&$str)
 	{
@@ -109,8 +109,8 @@ class utf_normalizer
 	/**
 	* Validate and normalize a UTF string to NFC
 	*
-	* @param	string	&$str	Unchecked UTF string
-	* @return	string			The string, validated and in normal form
+	* @param    string  &$str   Unchecked UTF string
+	* @return   string          The string, validated and in normal form
 	*/
 	static function nfc(&$str)
 	{
@@ -139,8 +139,8 @@ class utf_normalizer
 	/**
 	* Validate and normalize a UTF string to NFKC
 	*
-	* @param	string	&$str	Unchecked UTF string
-	* @return	string			The string, validated and in normal form
+	* @param    string  &$str   Unchecked UTF string
+	* @return   string          The string, validated and in normal form
 	*/
 	static function nfkc(&$str)
 	{
@@ -169,8 +169,8 @@ class utf_normalizer
 	/**
 	* Validate and normalize a UTF string to NFD
 	*
-	* @param	string	&$str	Unchecked UTF string
-	* @return	string			The string, validated and in normal form
+	* @param    string  &$str   Unchecked UTF string
+	* @return   string          The string, validated and in normal form
 	*/
 	static function nfd(&$str)
 	{
@@ -194,8 +194,8 @@ class utf_normalizer
 	/**
 	* Validate and normalize a UTF string to NFKD
 	*
-	* @param	string	&$str	Unchecked UTF string
-	* @return	string			The string, validated and in normal form
+	* @param    string  &$str   Unchecked UTF string
+	* @return   string          The string, validated and in normal form
 	*/
 	static function nfkd(&$str)
 	{
@@ -220,14 +220,14 @@ class utf_normalizer
 	/**
 	* Recompose a UTF string
 	*
-	* @param	string	$str			Unchecked UTF string
-	* @param	integer	$pos			Position of the first UTF char (in bytes)
-	* @param	integer	$len			Length of the string (in bytes)
-	* @param	array	&$qc			Quick-check array, passed by reference but never modified
-	* @param	array	&$decomp_map	Decomposition mapping, passed by reference but never modified
-	* @return	string					The string, validated and recomposed
+	* @param    string  $str            Unchecked UTF string
+	* @param    integer $pos            Position of the first UTF char (in bytes)
+	* @param    integer $len            Length of the string (in bytes)
+	* @param    array   &$qc            Quick-check array, passed by reference but never modified
+	* @param    array   &$decomp_map    Decomposition mapping, passed by reference but never modified
+	* @return   string                  The string, validated and recomposed
 	*
-	* @access	private
+	* @access   private
 	*/
 	static function recompose($str, $pos, $len, &$qc, &$decomp_map)
 	{
@@ -271,15 +271,15 @@ class utf_normalizer
 		];
 
 		$utf_validation_mask = [
-			2	=> "\xE0\xC0",
-			3	=> "\xF0\xC0\xC0",
-			4	=> "\xF8\xC0\xC0\xC0"
+			2   => "\xE0\xC0",
+			3   => "\xF0\xC0\xC0",
+			4   => "\xF8\xC0\xC0\xC0"
 		];
 
 		$utf_validation_check = [
-			2	=> "\xC0\x80",
-			3	=> "\xE0\x80\x80",
-			4	=> "\xF0\x80\x80\x80"
+			2   => "\xC0\x80",
+			3   => "\xE0\x80\x80",
+			4   => "\xF0\x80\x80\x80"
 		];
 
 		// Main loop
@@ -748,11 +748,11 @@ class utf_normalizer
 				{
 					// There is only one char in the UTF sequence, add it then jump to the next iteration of main loop
 						// Note: the two commented lines below can be enabled under PHP5 for a very small performance gain in most cases
-//						if (substr_compare($str, $utf_seq[0], $lpos, $pos - $lpos))
-//						{
+//                      if (substr_compare($str, $utf_seq[0], $lpos, $pos - $lpos))
+//                      {
 						$tmp .= substr($str, $tmp_pos, $lpos - $tmp_pos) . $utf_seq[0];
 						$tmp_pos = $pos;
-//						}
+//                      }
 
 					continue;
 				}
@@ -921,13 +921,13 @@ class utf_normalizer
 	/**
 	* Decompose a UTF string
 	*
-	* @param	string	$str			UTF string
-	* @param	integer	$pos			Position of the first UTF char (in bytes)
-	* @param	integer	$len			Length of the string (in bytes)
-	* @param	array	&$decomp_map	Decomposition mapping, passed by reference but never modified
-	* @return	string					The string, decomposed and sorted canonically
+	* @param    string  $str            UTF string
+	* @param    integer $pos            Position of the first UTF char (in bytes)
+	* @param    integer $len            Length of the string (in bytes)
+	* @param    array   &$decomp_map    Decomposition mapping, passed by reference but never modified
+	* @return   string                  The string, decomposed and sorted canonically
 	*
-	* @access	private
+	* @access   private
 	*/
 	static function decompose($str, $pos, $len, &$decomp_map)
 	{
@@ -960,15 +960,15 @@ class utf_normalizer
 		//   - 4-byte: 1111 0??? 10?? ???? 10?? ???? 10?? ????
 		// Note that 5- and 6- byte sequences are automatically discarded
 		$utf_validation_mask = [
-			2	=> "\xE0\xC0",
-			3	=> "\xF0\xC0\xC0",
-			4	=> "\xF8\xC0\xC0\xC0"
+			2   => "\xE0\xC0",
+			3   => "\xF0\xC0\xC0",
+			4   => "\xF8\xC0\xC0\xC0"
 		];
 
 		$utf_validation_check = [
-			2	=> "\xC0\x80",
-			3	=> "\xE0\x80\x80",
-			4	=> "\xF0\x80\x80\x80"
+			2   => "\xC0\x80",
+			3   => "\xE0\x80\x80",
+			4   => "\xF0\x80\x80\x80"
 		];
 
 		$tmp = '';

@@ -23,8 +23,8 @@ class acp_bots
 
 		$action = request_var('action', '');
 		$submit = isset($_POST['submit']);
-		$mark	= request_var('mark', [0]);
-		$bot_id	= request_var('id', 0);
+		$mark   = request_var('mark', [0]);
+		$bot_id = request_var('id', 0);
 
 		if (isset($_POST['add']))
 		{
@@ -115,10 +115,10 @@ class acp_bots
 					else
 					{
 						confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-							'mark'		=> $mark,
-							'id'		=> $bot_id,
-							'mode'		=> $mode,
-							'action'	=> $action])
+							'mark'      => $mark,
+							'id'        => $bot_id,
+							'mode'      => $mode,
+							'action'    => $action])
 						);
 					}
 				}
@@ -127,10 +127,10 @@ class acp_bots
 			case 'edit':
 			case 'add':
 				$bot_row = [
-					'bot_name'		=> utf8_normalize_nfc(request_var('bot_name', '', true)),
-					'bot_agent'		=> request_var('bot_agent', ''),
-					'bot_ip'		=> request_var('bot_ip', ''),
-					'bot_active'	=> request_var('bot_active', true),
+					'bot_name'      => utf8_normalize_nfc(request_var('bot_name', '', true)),
+					'bot_agent'     => request_var('bot_agent', ''),
+					'bot_ip'        => request_var('bot_ip', ''),
+					'bot_active'    => request_var('bot_active', true),
 				];
 
 				if ($submit)
@@ -188,10 +188,10 @@ class acp_bots
 						if ($action == 'add')
 						{
 							$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
-								'bot_name'		=> (string) $bot_row['bot_name'],
-								'bot_active'	=> (int) $bot_row['bot_active'],
-								'bot_agent'		=> (string) $bot_row['bot_agent'],
-								'bot_ip'		=> (string) $bot_row['bot_ip'],
+								'bot_name'      => (string) $bot_row['bot_name'],
+								'bot_active'    => (int) $bot_row['bot_active'],
+								'bot_agent'     => (string) $bot_row['bot_agent'],
+								'bot_ip'        => (string) $bot_row['bot_ip'],
 							]);
 							$db->sql_query($sql);
 
@@ -212,10 +212,10 @@ class acp_bots
 							}
 
 							$sql = 'UPDATE ' . BOTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', [
-								'bot_name'		=> (string) $bot_row['bot_name'],
-								'bot_active'	=> (int) $bot_row['bot_active'],
-								'bot_agent'		=> (string) $bot_row['bot_agent'],
-								'bot_ip'		=> (string) $bot_row['bot_ip'],
+								'bot_name'      => (string) $bot_row['bot_name'],
+								'bot_active'    => (int) $bot_row['bot_active'],
+								'bot_agent'     => (string) $bot_row['bot_agent'],
+								'bot_ip'        => (string) $bot_row['bot_ip'],
 							]) . " WHERE bot_id = {$bot_id}";
 							$db->sql_query($sql);
 
@@ -255,18 +255,18 @@ class acp_bots
 				$l_title = ($action == 'edit') ? 'EDIT' : 'ADD';
 
 				$template->assign_vars([
-					'L_TITLE'		=> $user->lang['BOT_' . $l_title],
-					'U_ACTION'		=> $this->u_action . "&amp;id={$bot_id}&amp;action={$action}",
-					'U_BACK'		=> $this->u_action,
-					'ERROR_MSG'		=> (sizeof($error)) ? implode('<br />', $error) : '',
+					'L_TITLE'       => $user->lang['BOT_' . $l_title],
+					'U_ACTION'      => $this->u_action . "&amp;id={$bot_id}&amp;action={$action}",
+					'U_BACK'        => $this->u_action,
+					'ERROR_MSG'     => (sizeof($error)) ? implode('<br />', $error) : '',
 
-					'BOT_NAME'		=> $bot_row['bot_name'],
-					'BOT_IP'		=> $bot_row['bot_ip'],
-					'BOT_AGENT'		=> $bot_row['bot_agent'],
+					'BOT_NAME'      => $bot_row['bot_name'],
+					'BOT_IP'        => $bot_row['bot_ip'],
+					'BOT_AGENT'     => $bot_row['bot_agent'],
 
-					'S_EDIT_BOT'		=> true,
-					'S_ACTIVE_OPTIONS'	=> $s_active_options,
-					'S_ERROR'			=> (sizeof($error) > 0),
+					'S_EDIT_BOT'        => true,
+					'S_ACTIVE_OPTIONS'  => $s_active_options,
+					'S_ERROR'           => (sizeof($error) > 0),
 				]);
 
 				return;
@@ -282,8 +282,8 @@ class acp_bots
 		}
 
 		$template->assign_vars([
-			'U_ACTION'		=> $this->u_action,
-			'S_BOT_OPTIONS'	=> $s_options,
+			'U_ACTION'      => $this->u_action,
+			'S_BOT_OPTIONS' => $s_options,
 		]);
 
 		$sql = 'SELECT bot_id, bot_name, bot_active, bot_lastvisit
@@ -297,14 +297,14 @@ class acp_bots
 			$active_value = (!$row['bot_active']) ? 'activate' : 'deactivate';
 
 			$template->assign_block_vars('bots', [
-				'BOT_NAME'		=> $row['bot_name'],
-				'BOT_ID'		=> $row['bot_id'],
-				'LAST_VISIT'	=> ($row['bot_lastvisit']) ? $user->format_date($row['bot_lastvisit']) : $user->lang['BOT_NEVER'],
+				'BOT_NAME'      => $row['bot_name'],
+				'BOT_ID'        => $row['bot_id'],
+				'LAST_VISIT'    => ($row['bot_lastvisit']) ? $user->format_date($row['bot_lastvisit']) : $user->lang['BOT_NEVER'],
 
-				'U_ACTIVATE_DEACTIVATE'	=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action={$active_value}",
-				'L_ACTIVATE_DEACTIVATE'	=> $user->lang[$active_lang],
-				'U_EDIT'				=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=edit",
-				'U_DELETE'				=> $this->u_action . "&amp;id={$row['bot_id']}&amp;action=delete",
+				'U_ACTIVATE_DEACTIVATE' => $this->u_action . "&amp;id={$row['bot_id']}&amp;action={$active_value}",
+				'L_ACTIVATE_DEACTIVATE' => $user->lang[$active_lang],
+				'U_EDIT'                => $this->u_action . "&amp;id={$row['bot_id']}&amp;action=edit",
+				'U_DELETE'              => $this->u_action . "&amp;id={$row['bot_id']}&amp;action=delete",
 			]);
 		}
 		$db->sql_freeresult($result);

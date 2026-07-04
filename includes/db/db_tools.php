@@ -29,33 +29,33 @@ class phpbb_db_tools
 	* @var array
 	*/
 	var $dbms_type_map = [
-		'INT:'		=> 'int(%d)',
-		'BINT'		=> 'bigint(20)',
-		'UINT'		=> 'mediumint(8) UNSIGNED',
-		'UINT:'		=> 'int(%d) UNSIGNED',
-		'TINT:'		=> 'tinyint(%d)',
-		'USINT'		=> 'smallint(4) UNSIGNED',
-		'BOOL'		=> 'tinyint(1) UNSIGNED',
-		'VCHAR'		=> 'varchar(255)',
-		'VCHAR:'	=> 'varchar(%d)',
-		'CHAR:'		=> 'char(%d)',
-		'XSTEXT'	=> 'text',
+		'INT:'      => 'int(%d)',
+		'BINT'      => 'bigint(20)',
+		'UINT'      => 'mediumint(8) UNSIGNED',
+		'UINT:'     => 'int(%d) UNSIGNED',
+		'TINT:'     => 'tinyint(%d)',
+		'USINT'     => 'smallint(4) UNSIGNED',
+		'BOOL'      => 'tinyint(1) UNSIGNED',
+		'VCHAR'     => 'varchar(255)',
+		'VCHAR:'    => 'varchar(%d)',
+		'CHAR:'     => 'char(%d)',
+		'XSTEXT'    => 'text',
 		'XSTEXT_UNI'=> 'varchar(100)',
-		'STEXT'		=> 'text',
-		'STEXT_UNI'	=> 'varchar(255)',
-		'TEXT'		=> 'text',
-		'TEXT_UNI'	=> 'text',
-		'MTEXT'		=> 'mediumtext',
-		'MTEXT_UNI'	=> 'mediumtext',
-		'TIMESTAMP'	=> 'int(11) UNSIGNED',
-		'DECIMAL'	=> 'decimal(5,2)',
-		'DECIMAL:'	=> 'decimal(%d,2)',
-		'PDECIMAL'	=> 'decimal(6,3)',
-		'PDECIMAL:'	=> 'decimal(%d,3)',
-		'VCHAR_UNI'	=> 'varchar(255)',
+		'STEXT'     => 'text',
+		'STEXT_UNI' => 'varchar(255)',
+		'TEXT'      => 'text',
+		'TEXT_UNI'  => 'text',
+		'MTEXT'     => 'mediumtext',
+		'MTEXT_UNI' => 'mediumtext',
+		'TIMESTAMP' => 'int(11) UNSIGNED',
+		'DECIMAL'   => 'decimal(5,2)',
+		'DECIMAL:'  => 'decimal(%d,2)',
+		'PDECIMAL'  => 'decimal(6,3)',
+		'PDECIMAL:' => 'decimal(%d,3)',
+		'VCHAR_UNI' => 'varchar(255)',
 		'VCHAR_UNI:'=> 'varchar(%d)',
-		'VCHAR_CI'	=> 'varchar(255)',
-		'VARBINARY'	=> 'varbinary(255)',
+		'VCHAR_CI'  => 'varchar(255)',
+		'VARBINARY' => 'varbinary(255)',
 	];
 
 	/**
@@ -79,8 +79,8 @@ class phpbb_db_tools
 	/**
 	* Constructor. Set DB Object and set {@link $return_statements return_statements}.
 	*
-	* @param phpbb_dbal	$db					DBAL object
-	* @param bool		$return_statements	True if only statements should be returned and no SQL being executed
+	* @param phpbb_dbal $db                 DBAL object
+	* @param bool       $return_statements  True if only statements should be returned and no SQL being executed
 	*/
 	function __construct(&$db, $return_statements = false)
 	{
@@ -91,7 +91,7 @@ class phpbb_db_tools
 	/**
 	* Gets a list of tables in the database.
 	*
-	* @return array		Array of table names  (all lower case)
+	* @return array     Array of table names  (all lower case)
 	*/
 	function sql_list_tables()
 	{
@@ -114,7 +114,7 @@ class phpbb_db_tools
 	* Check if table exists
 	*
 	*
-	* @param string	$table_name	The table name to check for
+	* @param string $table_name The table name to check for
 	* @return bool true if table exists, else false
 	*/
 	function sql_table_exists($table_name)
@@ -135,9 +135,9 @@ class phpbb_db_tools
 	/**
 	* Create SQL Table
 	*
-	* @param string	$table_name	The table name to create
-	* @param array	$table_data	Array containing table data.
-	* @return array	Statements if $return_statements is true.
+	* @param string $table_name The table name to create
+	* @param array  $table_data Array containing table data.
+	* @return array Statements if $return_statements is true.
 	*/
 	function sql_create_table($table_name, $table_data)
 	{
@@ -246,19 +246,19 @@ class phpbb_db_tools
 	* Handle passed database update array.
 	* Expected structure...
 	* Key being one of the following
-	*	change_columns: Column changes (only type, not name)
-	*	add_columns: Add columns to a table
-	*	drop_keys: Dropping keys
-	*	drop_columns: Removing/Dropping columns
-	*	add_primary_keys: adding primary keys
-	*	add_unique_index: adding an unique index
-	*	add_index: adding an index (can be column:index_size if you need to provide size)
+	*   change_columns: Column changes (only type, not name)
+	*   add_columns: Add columns to a table
+	*   drop_keys: Dropping keys
+	*   drop_columns: Removing/Dropping columns
+	*   add_primary_keys: adding primary keys
+	*   add_unique_index: adding an unique index
+	*   add_index: adding an index (can be column:index_size if you need to provide size)
 	*
 	* The values are in this format:
-	*		{TABLE NAME}		=> array(
-	*			{COLUMN NAME}		=> array({COLUMN TYPE}, {DEFAULT VALUE}, {OPTIONAL VARIABLES}),
-	*			{KEY/INDEX NAME}	=> array({COLUMN NAMES}),
-	*		)
+	*       {TABLE NAME}        => array(
+	*           {COLUMN NAME}       => array({COLUMN TYPE}, {DEFAULT VALUE}, {OPTIONAL VARIABLES}),
+	*           {KEY/INDEX NAME}    => array({COLUMN NAMES}),
+	*       )
 	*
 	* For more information have a look at /develop/create_schema_files.php (only available through SVN)
 	*/
@@ -338,7 +338,7 @@ class phpbb_db_tools
 					{
 						continue;
 						// This is commented out here because it can take tremendous time on updates
-//						$result = $this->sql_column_change($table, $column_name, $column_data, true);
+//                      $result = $this->sql_column_change($table, $column_name, $column_data, true);
 					}
 					else
 					{
@@ -463,9 +463,9 @@ class phpbb_db_tools
 	/**
 	* Gets a list of columns of a table.
 	*
-	* @param string $table		Table name
+	* @param string $table      Table name
 	*
-	* @return array				Array of column names (all lower case)
+	* @return array             Array of column names (all lower case)
 	*/
 	function sql_list_columns($table)
 	{
@@ -488,10 +488,10 @@ class phpbb_db_tools
 	/**
 	* Check whether a specified column exist in a table
 	*
-	* @param string	$table			Table to check
-	* @param string	$column_name	Column to check
+	* @param string $table          Table to check
+	* @param string $column_name    Column to check
 	*
-	* @return bool		True if column exists, false otherwise
+	* @return bool      True if column exists, false otherwise
 	*/
 	function sql_column_exists($table, $column_name)
 	{
@@ -503,8 +503,8 @@ class phpbb_db_tools
 	/**
 	* Check if a specified index exists in table. Does not return PRIMARY KEY and UNIQUE indexes.
 	*
-	* @param string	$table_name		Table to check the index at
-	* @param string	$index_name		The index name to check
+	* @param string $table_name     Table to check the index at
+	* @param string $index_name     The index name to check
 	*
 	* @return bool True if index exists, else false
 	*/
@@ -534,8 +534,8 @@ class phpbb_db_tools
 	/**
 	* Check if a specified index exists in table. Does not return PRIMARY KEY indexes.
 	*
-	* @param string	$table_name		Table to check the index at
-	* @param string	$index_name		The index name to check
+	* @param string $table_name     Table to check the index at
+	* @param string $index_name     The index name to check
 	*
 	* @return bool True if index exists, else false
 	*/

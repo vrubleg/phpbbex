@@ -34,9 +34,9 @@ class ucp_register
 			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 
-		$submit			= isset($_POST['agree']);
-		$change_lang	= request_var('change_lang', '');
-		$user_lang		= request_var('lang', $user->lang_name);
+		$submit         = isset($_POST['agree']);
+		$change_lang    = request_var('change_lang', '');
+		$user_lang      = request_var('lang', $user->lang_name);
 
 		add_form_key('ucp_register');
 
@@ -79,20 +79,20 @@ class ucp_register
 		$timezone = $config['board_timezone'];
 
 		$data = [
-			'username'			=> utf8_normalize_nfc(request_var('username', '', true)),
-			'new_password'		=> request_var('new_password', '', true),
-			'password_confirm'	=> request_var('password_confirm', '', true),
-			'email'				=> strtolower(request_var('email', '')),
-			'lang'				=> basename(request_var('lang', $user->lang_name)),
-			'tz'				=> request_var('tz', (float) $timezone),
+			'username'          => utf8_normalize_nfc(request_var('username', '', true)),
+			'new_password'      => request_var('new_password', '', true),
+			'password_confirm'  => request_var('password_confirm', '', true),
+			'email'             => strtolower(request_var('email', '')),
+			'lang'              => basename(request_var('lang', $user->lang_name)),
+			'tz'                => request_var('tz', (float) $timezone),
 		];
 
 		// Check and initialize some variables if needed
 		if ($submit)
 		{
-			$data['lang']		= ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
-			$data['tz']			= ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
-			$is_dst				= ($config['override_user_timezone']) ? $config['board_dst'] : $is_dst;
+			$data['lang']       = ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+			$data['tz']         = ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
+			$is_dst             = ($config['override_user_timezone']) ? $config['board_dst'] : $is_dst;
 
 			$error_type = [
 				'generic' => false,
@@ -127,18 +127,18 @@ class ucp_register
 			if (!sizeof($error))
 			{
 				$validation_errors = validate_data($data, [
-					'username'			=> [
+					'username'          => [
 						['string', false, $config['min_name_chars'], $config['max_name_chars']],
 						['username', '']],
-					'new_password'		=> [
+					'new_password'      => [
 						['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
 						['password']],
-					'password_confirm'	=> ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
-					'email'				=> [
+					'password_confirm'  => ['string', false, $config['min_pass_chars'], $config['max_pass_chars']],
+					'email'             => [
 						['string', false, 6, 60],
 						['email']],
-					'tz'				=> ['num', false, -14, 14],
-					'lang'				=> ['language_iso_name'],
+					'tz'                => ['num', false, -14, 14],
+					'lang'              => ['language_iso_name'],
 				]);
 
 				// Replace "error" strings with their real, localised form
@@ -193,19 +193,19 @@ class ucp_register
 				}
 
 				$user_row = [
-					'username'				=> $data['username'],
-					'user_password'			=> phpbb_hash($data['new_password']),
-					'user_email'			=> $data['email'],
-					'group_id'				=> (int) $group_id,
-					'user_timezone'			=> (float) $data['tz'],
-					'user_dst'				=> $is_dst,
-					'user_lang'				=> $data['lang'],
-					'user_type'				=> $user_type,
-					'user_actkey'			=> $user_actkey,
-					'user_ip'				=> $user->ip,
-					'user_regdate'			=> time(),
-					'user_inactive_reason'	=> $user_inactive_reason,
-					'user_inactive_time'	=> $user_inactive_time,
+					'username'              => $data['username'],
+					'user_password'         => phpbb_hash($data['new_password']),
+					'user_email'            => $data['email'],
+					'group_id'              => (int) $group_id,
+					'user_timezone'         => (float) $data['tz'],
+					'user_dst'              => $is_dst,
+					'user_lang'             => $data['lang'],
+					'user_type'             => $user_type,
+					'user_actkey'           => $user_actkey,
+					'user_ip'               => $user->ip,
+					'user_regdate'          => time(),
+					'user_inactive_reason'  => $user_inactive_reason,
+					'user_inactive_time'    => $user_inactive_time,
 				];
 
 				if ($config['new_member_post_limit'])
@@ -263,10 +263,10 @@ class ucp_register
 					$messenger->anti_abuse_headers($config, $user);
 
 					$messenger->assign_vars([
-						'WELCOME_MSG'	=> htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
-						'USERNAME'		=> htmlspecialchars_decode($data['username']),
-						'PASSWORD'		=> htmlspecialchars_decode($data['new_password']),
-						'U_ACTIVATE'	=> "{$server_url}/ucp.php?mode=activate&u={$user_id}&k={$user_actkey}"]
+						'WELCOME_MSG'   => htmlspecialchars_decode(sprintf($user->lang['WELCOME_SUBJECT'], $config['sitename'])),
+						'USERNAME'      => htmlspecialchars_decode($data['username']),
+						'PASSWORD'      => htmlspecialchars_decode($data['new_password']),
+						'U_ACTIVATE'    => "{$server_url}/ucp.php?mode=activate&u={$user_id}&k={$user_actkey}"]
 					);
 
 					$messenger->send(NOTIFY_EMAIL);
@@ -297,9 +297,9 @@ class ucp_register
 							$messenger->im($row['user_jabber'], $row['username']);
 
 							$messenger->assign_vars([
-								'USERNAME'			=> htmlspecialchars_decode($data['username']),
-								'U_USER_DETAILS'	=> "{$server_url}/memberlist.php?mode=viewprofile&u={$user_id}",
-								'U_ACTIVATE'		=> "{$server_url}/ucp.php?mode=activate&u={$user_id}&k={$user_actkey}"]
+								'USERNAME'          => htmlspecialchars_decode($data['username']),
+								'U_USER_DETAILS'    => "{$server_url}/memberlist.php?mode=viewprofile&u={$user_id}",
+								'U_ACTIVATE'        => "{$server_url}/ucp.php?mode=activate&u={$user_id}&k={$user_actkey}"]
 							);
 
 							$messenger->send($row['user_notify_type']);
@@ -325,7 +325,7 @@ class ucp_register
 		}
 
 		$s_hidden_fields = [
-			'change_lang'	=> 0,
+			'change_lang'   => 0,
 		];
 
 		if ($config['enable_confirm'])
@@ -339,7 +339,7 @@ class ucp_register
 		if ($config['enable_confirm'])
 		{
 			$template->assign_vars([
-				'CAPTCHA_TEMPLATE'		=> $captcha->get_template(),
+				'CAPTCHA_TEMPLATE'      => $captcha->get_template(),
 			]);
 		}
 
@@ -357,23 +357,23 @@ class ucp_register
 		}
 
 		$template->assign_vars([
-			'ERROR'				=> (sizeof($error)) ? implode('<br />', $error) : '',
-			'USERNAME'			=> $data['username'],
-			'PASSWORD'			=> $data['new_password'],
-			'PASSWORD_CONFIRM'	=> $data['password_confirm'],
-			'EMAIL'				=> $data['email'],
+			'ERROR'             => (sizeof($error)) ? implode('<br />', $error) : '',
+			'USERNAME'          => $data['username'],
+			'PASSWORD'          => $data['new_password'],
+			'PASSWORD_CONFIRM'  => $data['password_confirm'],
+			'EMAIL'             => $data['email'],
 
-			'L_REG_COND'				=> $l_reg_cond,
-			'L_USERNAME_EXPLAIN'		=> sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
-			'L_PASSWORD_EXPLAIN'		=> sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
-			'L_TERMS_OF_USE_CONTENT'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
+			'L_REG_COND'                => $l_reg_cond,
+			'L_USERNAME_EXPLAIN'        => sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
+			'L_PASSWORD_EXPLAIN'        => sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
+			'L_TERMS_OF_USE_CONTENT'    => sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),
 
-			'S_LANG_OPTIONS'	=> ($config['override_user_lang']) ? '' : language_select($data['lang']),
-			'S_TZ_OPTIONS'		=> ($config['override_user_timezone']) ? '' : tz_select($data['tz']),
-			'S_CONFIRM_REFRESH'	=> ($config['enable_confirm'] && $config['confirm_refresh']),
-			'S_REGISTRATION'	=> true,
-			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
-			'S_UCP_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register'),
+			'S_LANG_OPTIONS'    => ($config['override_user_lang']) ? '' : language_select($data['lang']),
+			'S_TZ_OPTIONS'      => ($config['override_user_timezone']) ? '' : tz_select($data['tz']),
+			'S_CONFIRM_REFRESH' => ($config['enable_confirm'] && $config['confirm_refresh']),
+			'S_REGISTRATION'    => true,
+			'S_HIDDEN_FIELDS'   => $s_hidden_fields,
+			'S_UCP_ACTION'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=register'),
 		]);
 
 		//

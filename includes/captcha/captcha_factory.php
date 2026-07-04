@@ -47,8 +47,8 @@ class phpbb_captcha_factory
 	static function get_captcha_types()
 	{
 		$captchas = [
-			'available'		=> [],
-			'unavailable'	=> [],
+			'available'     => [],
+			'unavailable'   => [],
 		];
 
 		$dp = @opendir(PHPBB_ROOT_PATH . 'includes/captcha/plugins');

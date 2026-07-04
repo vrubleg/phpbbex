@@ -44,8 +44,8 @@ class restore_deleted_users
 			$title = 'RESTORE_DELETED_USERS_CONFLICT';
 			$type = 'text:40:255';
 		}
-		$result	= $db->sql_query($sql);
-		$users	= $db->sql_fetchrowset($result);
+		$result = $db->sql_query($sql);
+		$users  = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
 
 		$damaged = [];
@@ -67,7 +67,7 @@ class restore_deleted_users
 			trigger_error('NO_DELETED_USERS');
 		}
 
-		$return = ['title'	=> $title];
+		$return = ['title'  => $title];
 		if (!empty($users))
 		{
 			// Build the output
@@ -85,8 +85,8 @@ class restore_deleted_users
 
 			// Return usable data
 			$return = array_merge($return, [
-				'vars'	=> array_merge([
-					'legend1'	=> 'SELECT_USERS',
+				'vars'  => array_merge([
+					'legend1'   => 'SELECT_USERS',
 				], $user_vars),
 			]);
 		}
@@ -220,9 +220,9 @@ class restore_deleted_users
 
 	/**
 	* Test whether the requested usernames already exist in phpBB
-	* @param	array $users Array containing the "cleaned" usernames
-	* @return	array Array containing the conflicted users
-	* @access	private
+	* @param    array $users Array containing the "cleaned" usernames
+	* @return   array Array containing the conflicted users
+	* @access   private
 	*/
 	function _conflicted($users)
 	{
@@ -244,10 +244,10 @@ class restore_deleted_users
 
 	/**
 	* Add a user with the name $user to phpBB and update all entries in the database to reflect this
-	* @param	string $oldname The name that was used when making the guest posts
-	* @param	string $newname The name that will be used for the new user
-	* @return	void
-	* @access	private
+	* @param    string $oldname The name that was used when making the guest posts
+	* @param    string $newname The name that will be used for the new user
+	* @return   void
+	* @access   private
 	*/
 	function _add_user_and_update_data($oldname, $newname)
 	{
@@ -263,17 +263,17 @@ class restore_deleted_users
 			FROM ' . GROUPS_TABLE . "
 			WHERE group_name = 'REGISTERED'";
 		$result = $db->sql_query_limit($sql, 1);
-		$gid	= $db->sql_fetchfield('group_id', false, $result);
-		$gcl	= $db->sql_fetchfield('group_colour', 0, $result);
+		$gid    = $db->sql_fetchfield('group_id', false, $result);
+		$gcl    = $db->sql_fetchfield('group_colour', 0, $result);
 		$db->sql_freeresult($result);
 
 		// Setup the user
 		$user_ary = [
-			'username'		=> $newname,
-			'group_id'		=> $gid,
-			'user_email'	=> $config['board_email'],	// Use the board email
-			'user_type'		=> USER_NORMAL,
-			'user_password'	=> gen_rand_string(12),
+			'username'      => $newname,
+			'group_id'      => $gid,
+			'user_email'    => $config['board_email'],  // Use the board email
+			'user_type'     => USER_NORMAL,
+			'user_password' => gen_rand_string(12),
 		];
 
 		// Add the user
@@ -307,8 +307,8 @@ class restore_deleted_users
 		$sql = 'SELECT COUNT(post_id) as post_cnt
 			FROM ' . POSTS_TABLE . '
 			WHERE poster_id = ' . (int) $user_id;
-		$result		= $db->sql_query($sql);
-		$post_cnt	= $db->sql_fetchfield('post_cnt', false, $result);
+		$result     = $db->sql_query($sql);
+		$post_cnt   = $db->sql_fetchfield('post_cnt', false, $result);
 		$db->sql_freeresult($result);
 
 		$sql = 'UPDATE ' . USERS_TABLE . ' SET user_posts = ' . $post_cnt . ' WHERE user_id = ' . (int) $user_id;
@@ -317,10 +317,10 @@ class restore_deleted_users
 
 	/**
 	* Redirect to the main page once there are conflicts
-	* @param	Array $selected		The initial data
-	* @param	Array $conflicted	Array containing the conflicting users
-	* @return	void
-	* @access	private
+	* @param    Array $selected     The initial data
+	* @param    Array $conflicted   Array containing the conflicting users
+	* @return   void
+	* @access   private
 	*/
 	function _redirect_conflicted($conflicted)
 	{

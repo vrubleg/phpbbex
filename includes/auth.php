@@ -665,7 +665,7 @@ class phpbb_auth
 						{
 							unset($hold_ary[$row['user_id']][$row['forum_id']][$flag]);
 
-/*							if (in_array(ACL_YES, $hold_ary[$row['user_id']][$row['forum_id']]))
+/*                          if (in_array(ACL_YES, $hold_ary[$row['user_id']][$row['forum_id']]))
 							{
 								$hold_ary[$row['user_id']][$row['forum_id']][$flag] = ACL_YES;
 							}
@@ -887,7 +887,7 @@ class phpbb_auth
 				{
 					unset($hold_ary[$flag]);
 
-/*					This is uncommented, because i suspect this being slightly wrong due to mixed permission classes being possible
+/*                  This is uncommented, because i suspect this being slightly wrong due to mixed permission classes being possible
 					if (in_array(ACL_YES, $hold_ary))
 					{
 						$hold_ary[$flag] = ACL_YES;
@@ -907,18 +907,18 @@ class phpbb_auth
 		if (!$password)
 		{
 			return [
-				'status'	=> LOGIN_ERROR_PASSWORD,
-				'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
-				'user_row'	=> ['user_id' => ANONYMOUS],
+				'status'    => LOGIN_ERROR_PASSWORD,
+				'error_msg' => 'NO_PASSWORD_SUPPLIED',
+				'user_row'  => ['user_id' => ANONYMOUS],
 			];
 		}
 
 		if (!$username)
 		{
 			return [
-				'status'	=> LOGIN_ERROR_USERNAME,
-				'error_msg'	=> 'LOGIN_ERROR_USERNAME',
-				'user_row'	=> ['user_id' => ANONYMOUS],
+				'status'    => LOGIN_ERROR_USERNAME,
+				'error_msg' => 'LOGIN_ERROR_USERNAME',
+				'user_row'  => ['user_id' => ANONYMOUS],
 			];
 		}
 
@@ -966,13 +966,13 @@ class phpbb_auth
 			$db->sql_freeresult($result);
 
 			$attempt_data = [
-				'attempt_ip'			=> $user->ip,
-				'attempt_browser'		=> $user->browser_ua,
-				'attempt_forwarded_for'	=> $forwarded_for,
-				'attempt_time'			=> time(),
-				'user_id'				=> ($row) ? (int) $row['user_id'] : 0,
-				'username'				=> $username,
-				'username_clean'		=> $username_clean,
+				'attempt_ip'            => $user->ip,
+				'attempt_browser'       => $user->browser_ua,
+				'attempt_forwarded_for' => $forwarded_for,
+				'attempt_time'          => time(),
+				'user_id'               => ($row) ? (int) $row['user_id'] : 0,
+				'username'              => $username,
+				'username_clean'        => $username_clean,
 			];
 			$sql = 'INSERT INTO ' . LOGIN_ATTEMPT_TABLE . $db->sql_build_array('INSERT', $attempt_data);
 			$result = $db->sql_query($sql);
@@ -987,9 +987,9 @@ class phpbb_auth
 			if ($config['ip_login_limit_max'] && $attempts >= $config['ip_login_limit_max'])
 			{
 				return [
-					'status'		=> LOGIN_ERROR_ATTEMPTS,
-					'error_msg'		=> 'LOGIN_ERROR_ATTEMPTS',
-					'user_row'		=> ['user_id' => ANONYMOUS],
+					'status'        => LOGIN_ERROR_ATTEMPTS,
+					'error_msg'     => 'LOGIN_ERROR_ATTEMPTS',
+					'user_row'      => ['user_id' => ANONYMOUS],
 				];
 			}
 
@@ -1007,9 +1007,9 @@ class phpbb_auth
 			}
 
 			return [
-				'status'	=> LOGIN_ERROR_USERNAME,
-				'error_msg'	=> $error_msg,
-				'user_row'	=> ['user_id' => ANONYMOUS],
+				'status'    => LOGIN_ERROR_USERNAME,
+				'error_msg' => $error_msg,
+				'user_row'  => ['user_id' => ANONYMOUS],
 			];
 		}
 
@@ -1027,9 +1027,9 @@ class phpbb_auth
 			if ($vc_response)
 			{
 				return [
-					'status'		=> LOGIN_ERROR_ATTEMPTS,
-					'error_msg'		=> 'LOGIN_ERROR_ATTEMPTS',
-					'user_row'		=> $row,
+					'status'        => LOGIN_ERROR_ATTEMPTS,
+					'error_msg'     => 'LOGIN_ERROR_ATTEMPTS',
+					'user_row'      => $row,
 				];
 			}
 			else
@@ -1042,9 +1042,9 @@ class phpbb_auth
 		if ($row['user_pass_convert'])
 		{
 			return [
-				'status'		=> LOGIN_ERROR_PASSWORD_CONVERT,
-				'error_msg'		=> 'LOGIN_ERROR_PASSWORD_CONVERT',
-				'user_row'		=> $row,
+				'status'        => LOGIN_ERROR_PASSWORD_CONVERT,
+				'error_msg'     => 'LOGIN_ERROR_PASSWORD_CONVERT',
+				'user_row'      => $row,
 			];
 		}
 
@@ -1060,9 +1060,9 @@ class phpbb_auth
 
 			// Give status about wrong password...
 			return [
-				'status'		=> ($show_captcha) ? LOGIN_ERROR_ATTEMPTS : LOGIN_ERROR_PASSWORD,
-				'error_msg'		=> ($show_captcha) ? 'LOGIN_ERROR_ATTEMPTS' : 'LOGIN_ERROR_PASSWORD',
-				'user_row'		=> $row,
+				'status'        => ($show_captcha) ? LOGIN_ERROR_ATTEMPTS : LOGIN_ERROR_PASSWORD,
+				'error_msg'     => ($show_captcha) ? 'LOGIN_ERROR_ATTEMPTS' : 'LOGIN_ERROR_PASSWORD',
+				'user_row'      => $row,
 			];
 		}
 
@@ -1083,9 +1083,9 @@ class phpbb_auth
 		if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
 		{
 			return [
-				'status'		=> LOGIN_ERROR_INACTIVE,
-				'error_msg'		=> 'LOGIN_ERROR_INACTIVE',
-				'user_row'		=> $row,
+				'status'        => LOGIN_ERROR_INACTIVE,
+				'error_msg'     => 'LOGIN_ERROR_INACTIVE',
+				'user_row'      => $row,
 			];
 		}
 
@@ -1109,9 +1109,9 @@ class phpbb_auth
 		if ($result !== true)
 		{
 			return [
-				'status'		=> LOGIN_BREAK,
-				'error_msg'		=> $result,
-				'user_row'		=> $row,
+				'status'        => LOGIN_BREAK,
+				'error_msg'     => $result,
+				'user_row'      => $row,
 			];
 		}
 
@@ -1126,9 +1126,9 @@ class phpbb_auth
 		}
 
 		return [
-			'status'		=> LOGIN_SUCCESS,
-			'error_msg'		=> false,
-			'user_row'		=> $row,
+			'status'        => LOGIN_SUCCESS,
+			'error_msg'     => false,
+			'user_row'      => $row,
 		];
 	}
 

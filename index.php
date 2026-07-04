@@ -25,9 +25,9 @@ if (!$user->data['is_registered'] && !$auth->acl_getf_global('f_list'))
 display_forums('', $config['load_moderators']);
 
 // Set some stats, get posts count from forums data if we... hum... retrieve all forums data
-$total_posts	= $config['num_posts'];
-$total_topics	= $config['num_topics'];
-$total_users	= $config['num_users'];
+$total_posts    = $config['num_posts'];
+$total_topics   = $config['num_topics'];
+$total_users    = $config['num_users'];
 
 $l_total_user_s = ($total_users == 0) ? 'TOTAL_USERS_ZERO' : 'TOTAL_USERS_OTHER';
 $l_total_post_s = ($total_posts == 0) ? 'TOTAL_POSTS_ZERO' : 'TOTAL_POSTS_OTHER';
@@ -112,8 +112,8 @@ if ($config['load_birthdays'] && $config['allow_birthdays'] && $auth->acl_gets('
 
 // Images for display topic rows
 $template->assign_vars([
-	'NEWEST_POST_IMG'		=> $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
-	'LAST_POST_IMG'			=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+	'NEWEST_POST_IMG'       => $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
+	'LAST_POST_IMG'         => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 ]);
 
 // Last active topics
@@ -137,26 +137,26 @@ if (class_exists('phpbb_gallery_integration'))
 
 // Assign index specific vars
 $template->assign_vars([
-	'S_ON_INDEX'	=> true,
-	'U_CANONICAL'	=> generate_board_url() . '/',
+	'S_ON_INDEX'    => true,
+	'U_CANONICAL'   => generate_board_url() . '/',
 
-	'TOTAL_POSTS'	=> sprintf($user->lang[$l_total_post_s], $total_posts),
-	'TOTAL_TOPICS'	=> sprintf($user->lang[$l_total_topic_s], $total_topics),
-	'TOTAL_USERS'	=> sprintf($user->lang[$l_total_user_s], $total_users),
-	'NEWEST_USER'	=> sprintf($user->lang['NEWEST_USER'], get_username_string('full', $config['newest_user_id'], $config['newest_username'], $config['newest_user_colour'])),
+	'TOTAL_POSTS'   => sprintf($user->lang[$l_total_post_s], $total_posts),
+	'TOTAL_TOPICS'  => sprintf($user->lang[$l_total_topic_s], $total_topics),
+	'TOTAL_USERS'   => sprintf($user->lang[$l_total_user_s], $total_users),
+	'NEWEST_USER'   => sprintf($user->lang['NEWEST_USER'], get_username_string('full', $config['newest_user_id'], $config['newest_username'], $config['newest_user_colour'])),
 
-	'LEGEND'		=> $legend,
-	'BIRTHDAY_LIST'	=> $birthday_list,
+	'LEGEND'        => $legend,
+	'BIRTHDAY_LIST' => $birthday_list,
 
-	'FORUM_IMG'				=> $user->img('forum_read', 'NO_UNREAD_POSTS'),
-	'FORUM_UNREAD_IMG'			=> $user->img('forum_unread', 'UNREAD_POSTS'),
-	'FORUM_LOCKED_IMG'		=> $user->img('forum_read_locked', 'NO_UNREAD_POSTS_LOCKED'),
-	'FORUM_UNREAD_LOCKED_IMG'	=> $user->img('forum_unread_locked', 'UNREAD_POSTS_LOCKED'),
+	'FORUM_IMG'             => $user->img('forum_read', 'NO_UNREAD_POSTS'),
+	'FORUM_UNREAD_IMG'          => $user->img('forum_unread', 'UNREAD_POSTS'),
+	'FORUM_LOCKED_IMG'      => $user->img('forum_read_locked', 'NO_UNREAD_POSTS_LOCKED'),
+	'FORUM_UNREAD_LOCKED_IMG'   => $user->img('forum_unread_locked', 'UNREAD_POSTS_LOCKED'),
 
-	'S_LOGIN_ACTION'			=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login'),
-	'S_DISPLAY_BIRTHDAY_LIST'	=> (bool) $config['load_birthdays'],
+	'S_LOGIN_ACTION'            => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login'),
+	'S_DISPLAY_BIRTHDAY_LIST'   => (bool) $config['load_birthdays'],
 
-	'U_MARK_FORUMS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
+	'U_MARK_FORUMS'     => ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 ]);
 
 // Output page

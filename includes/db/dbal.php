@@ -65,9 +65,9 @@ class dbal
 	function __construct()
 	{
 		$this->num_queries = [
-			'cached'		=> 0,
-			'normal'		=> 0,
-			'total'			=> 0,
+			'cached'        => 0,
+			'normal'        => 0,
+			'total'         => 0,
 		];
 
 		// Do not change this please! This variable is used to easy the use of it - and is hardcoded.
@@ -398,10 +398,10 @@ class dbal
 	* arrays to improve comparison speed
 	*
 	* @access public
-	* @param	string	$field				name of the sql column that shall be compared
-	* @param	array	$array				array of values that are allowed (IN) or not allowed (NOT IN)
-	* @param	bool	$negate				true for NOT IN (), false for IN () (default)
-	* @param	bool	$allow_empty_set	If true, allow $array to be empty, this function will return 1=1 or 1=0 then. Default to false.
+	* @param    string  $field              name of the sql column that shall be compared
+	* @param    array   $array              array of values that are allowed (IN) or not allowed (NOT IN)
+	* @param    bool    $negate             true for NOT IN (), false for IN () (default)
+	* @param    bool    $allow_empty_set    If true, allow $array to be empty, this function will return 1=1 or 1=0 then. Default to false.
 	*/
 	function sql_in_set($field, $array, $negate = false, $allow_empty_set = false)
 	{
@@ -484,9 +484,9 @@ class dbal
 	/**
 	* Run LOWER() on DB column of type text (i.e. neither varchar nor char).
 	*
-	* @param string $column_name	The column name to use
+	* @param string $column_name    The column name to use
 	*
-	* @return string				A SQL statement like "LOWER($column_name)"
+	* @return string                A SQL statement like "LOWER($column_name)"
 	*/
 	function sql_lower_text($column_name)
 	{
@@ -931,10 +931,10 @@ class dbal
 	/**
 	* Gets the estimated number of rows in a specified table.
 	*
-	* @param string $table_name		Table name
+	* @param string $table_name     Table name
 	*
-	* @return string				Number of rows in $table_name.
-	*								Prefixed with ~ if estimated (otherwise exact).
+	* @return string                Number of rows in $table_name.
+	*                               Prefixed with ~ if estimated (otherwise exact).
 	*
 	* @access public
 	*/
@@ -946,9 +946,9 @@ class dbal
 	/**
 	* Gets the exact number of rows in a specified table.
 	*
-	* @param string $table_name		Table name
+	* @param string $table_name     Table name
 	*
-	* @return string				Exact number of rows in $table_name.
+	* @return string                Exact number of rows in $table_name.
 	*
 	* @access public
 	*/

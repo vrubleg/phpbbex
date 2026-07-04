@@ -78,8 +78,8 @@ class mcp_warn
 		global $template, $db, $user, $auth, $config;
 
 		$template->assign_vars([
-			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
-			'U_POST_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user'),
+			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
+			'U_POST_ACTION'     => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user'),
 		]);
 
 		// Obtain a list of the 5 naughtiest users....
@@ -92,15 +92,15 @@ class mcp_warn
 		foreach ($highest as $row)
 		{
 			$template->assign_block_vars('highest', [
-				'U_NOTES'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
+				'U_NOTES'       => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
 
-				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'USERNAME'			=> $row['username'],
-				'USERNAME_COLOUR'	=> ($row['user_colour']) ? '#' . $row['user_colour'] : '',
-				'U_USER'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $row['user_id']),
+				'USERNAME_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				'USERNAME'          => $row['username'],
+				'USERNAME_COLOUR'   => ($row['user_colour']) ? '#' . $row['user_colour'] : '',
+				'U_USER'            => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $row['user_id']),
 
-				'WARNING_TIME'	=> $user->format_date($row['user_last_warning']),
-				'WARNINGS'		=> $row['user_warnings'],
+				'WARNING_TIME'  => $user->format_date($row['user_last_warning']),
+				'WARNINGS'      => $row['user_warnings'],
 			]);
 		}
 
@@ -114,15 +114,15 @@ class mcp_warn
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('latest', [
-				'U_NOTES'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
+				'U_NOTES'       => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
 
-				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'USERNAME'			=> $row['username'],
-				'USERNAME_COLOUR'	=> ($row['user_colour']) ? '#' . $row['user_colour'] : '',
-				'U_USER'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $row['user_id']),
+				'USERNAME_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				'USERNAME'          => $row['username'],
+				'USERNAME_COLOUR'   => ($row['user_colour']) ? '#' . $row['user_colour'] : '',
+				'U_USER'            => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $row['user_id']),
 
-				'WARNING_TIME'	=> $user->format_date($row['warning_time']),
-				'WARNINGS'		=> $row['user_warnings'],
+				'WARNING_TIME'  => $user->format_date($row['warning_time']),
+				'WARNINGS'      => $row['user_warnings'],
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -137,10 +137,10 @@ class mcp_warn
 
 		$user->add_lang('memberlist');
 
-		$start	= request_var('start', 0);
-		$st		= request_var('st', 0);
-		$sk		= request_var('sk', 'b');
-		$sd		= request_var('sd', 'd');
+		$start  = request_var('start', 0);
+		$st     = request_var('st', 0);
+		$sk     = request_var('sk', 'b');
+		$sd     = request_var('sd', 'd');
 
 		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 		$sort_by_text = ['a' => $user->lang['SORT_USERNAME'], 'b' => $user->lang['SORT_DATE'], 'c' => $user->lang['SORT_WARNINGS']];
@@ -161,28 +161,28 @@ class mcp_warn
 		foreach ($users as $row)
 		{
 			$template->assign_block_vars('user', [
-				'U_NOTES'		=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
+				'U_NOTES'       => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
 
-				'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'USERNAME'			=> $row['username'],
-				'USERNAME_COLOUR'	=> ($row['user_colour']) ? '#' . $row['user_colour'] : '',
-				'U_USER'			=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $row['user_id']),
+				'USERNAME_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
+				'USERNAME'          => $row['username'],
+				'USERNAME_COLOUR'   => ($row['user_colour']) ? '#' . $row['user_colour'] : '',
+				'U_USER'            => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $row['user_id']),
 
-				'WARNING_TIME'	=> $user->format_date($row['user_last_warning']),
-				'WARNINGS'		=> $row['user_warnings'],
+				'WARNING_TIME'  => $user->format_date($row['user_last_warning']),
+				'WARNINGS'      => $row['user_warnings'],
 			]);
 		}
 
 		$template->assign_vars([
-			'U_POST_ACTION'			=> $this->u_action,
-			'S_CLEAR_ALLOWED'		=> (bool) $auth->acl_get('a_clearlogs'),
-			'S_SELECT_SORT_DIR'		=> $s_sort_dir,
-			'S_SELECT_SORT_KEY'		=> $s_sort_key,
-			'S_SELECT_SORT_DAYS'	=> $s_limit_days,
+			'U_POST_ACTION'         => $this->u_action,
+			'S_CLEAR_ALLOWED'       => (bool) $auth->acl_get('a_clearlogs'),
+			'S_SELECT_SORT_DIR'     => $s_sort_dir,
+			'S_SELECT_SORT_KEY'     => $s_sort_key,
+			'S_SELECT_SORT_DAYS'    => $s_limit_days,
 
-			'PAGE_NUMBER'		=> on_page($user_count, $config['topics_per_page'], $start),
-			'PAGINATION'		=> generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=warn&amp;mode=list&amp;st={$st}&amp;sk={$sk}&amp;sd={$sd}"), $user_count, $config['topics_per_page'], $start),
-			'TOTAL_USERS'		=> ($user_count == 1) ? $user->lang['LIST_USER'] : sprintf($user->lang['LIST_USERS'], $user_count),
+			'PAGE_NUMBER'       => on_page($user_count, $config['topics_per_page'], $start),
+			'PAGINATION'        => generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=warn&amp;mode=list&amp;st={$st}&amp;sk={$sk}&amp;sd={$sd}"), $user_count, $config['topics_per_page'], $start),
+			'TOTAL_USERS'       => ($user_count == 1) ? $user->lang['LIST_USER'] : sprintf($user->lang['LIST_USERS'], $user_count),
 		]);
 	}
 
@@ -304,29 +304,29 @@ class mcp_warn
 		$avatar_img = get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']);
 
 		$template->assign_vars([
-			'U_POST_ACTION'		=> $this->u_action,
+			'U_POST_ACTION'     => $this->u_action,
 
-			'POST'				=> $message,
-			'RANK_TITLE'		=> $rank_title,
-			'JOINED'			=> $user->format_date($user_row['user_regdate']),
-			'POSTS'				=> $user_row['user_posts'] ?: 0,
-			'WARNINGS'			=> $user_row['user_warnings'] ?: 0,
+			'POST'              => $message,
+			'RANK_TITLE'        => $rank_title,
+			'JOINED'            => $user->format_date($user_row['user_regdate']),
+			'POSTS'             => $user_row['user_posts'] ?: 0,
+			'WARNINGS'          => $user_row['user_warnings'] ?: 0,
 
-			'USERNAME_FULL'		=> get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'USERNAME_COLOUR'	=> get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'USERNAME'			=> get_username_string('username', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'U_PROFILE'			=> get_username_string('profile', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME_FULL'     => get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME_COLOUR'   => get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME'          => get_username_string('username', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'U_PROFILE'         => get_username_string('profile', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
 
-			'AVATAR_IMG'		=> $avatar_img,
-			'RANK_IMG'			=> $rank_img,
+			'AVATAR_IMG'        => $avatar_img,
+			'RANK_IMG'          => $rank_img,
 
-			'WARNING_DEFAULT'	=> $config['warning_post_default'],
-			'WARNING_DAYS'		=> $warning_row['warning_days'] ?? $config['warnings_expire_days'],
-			'WARNING_TYPE'		=> $warning_row['warning_type'] ?? 'warning',
-			'WARNING_ID'		=> $warning_row['warning_id'] ?? '',
-			'WARNING'			=> $warning_row['warning_text'] ?? '',
+			'WARNING_DEFAULT'   => $config['warning_post_default'],
+			'WARNING_DAYS'      => $warning_row['warning_days'] ?? $config['warnings_expire_days'],
+			'WARNING_TYPE'      => $warning_row['warning_type'] ?? 'warning',
+			'WARNING_ID'        => $warning_row['warning_id'] ?? '',
+			'WARNING'           => $warning_row['warning_text'] ?? '',
 
-			'S_CAN_NOTIFY'		=> $s_can_notify,
+			'S_CAN_NOTIFY'      => $s_can_notify,
 		]);
 	}
 
@@ -412,29 +412,29 @@ class mcp_warn
 
 		// OK, they didn't submit a warning so lets build the page for them to do so
 		$template->assign_vars([
-			'U_POST_ACTION'		=> $this->u_action,
+			'U_POST_ACTION'     => $this->u_action,
 
-			'POST'				=> false,
-			'RANK_TITLE'		=> $rank_title,
-			'JOINED'			=> $user->format_date($user_row['user_regdate']),
-			'POSTS'				=> $user_row['user_posts'] ?: 0,
-			'WARNINGS'			=> $user_row['user_warnings'] ?: 0,
+			'POST'              => false,
+			'RANK_TITLE'        => $rank_title,
+			'JOINED'            => $user->format_date($user_row['user_regdate']),
+			'POSTS'             => $user_row['user_posts'] ?: 0,
+			'WARNINGS'          => $user_row['user_warnings'] ?: 0,
 
-			'USERNAME_FULL'		=> get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'USERNAME_COLOUR'	=> get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'USERNAME'			=> get_username_string('username', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'U_PROFILE'			=> get_username_string('profile', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME_FULL'     => get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME_COLOUR'   => get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME'          => get_username_string('username', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'U_PROFILE'         => get_username_string('profile', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
 
-			'AVATAR_IMG'		=> $avatar_img,
-			'RANK_IMG'			=> $rank_img,
+			'AVATAR_IMG'        => $avatar_img,
+			'RANK_IMG'          => $rank_img,
 
-			'WARNING_DEFAULT'	=> $config['warning_post_default'],
-			'WARNING_DAYS'		=> $warning_row['warning_days'] ?? $config['warnings_expire_days'],
-			'WARNING_TYPE'		=> $warning_row['warning_type'] ?? 'warning',
-			'WARNING_ID'		=> $warning_row['warning_id'] ?? '',
-			'WARNING'			=> $warning_row['warning_text'] ?? '',
+			'WARNING_DEFAULT'   => $config['warning_post_default'],
+			'WARNING_DAYS'      => $warning_row['warning_days'] ?? $config['warnings_expire_days'],
+			'WARNING_TYPE'      => $warning_row['warning_type'] ?? 'warning',
+			'WARNING_ID'        => $warning_row['warning_id'] ?? '',
+			'WARNING'           => $warning_row['warning_text'] ?? '',
 
-			'S_CAN_NOTIFY'		=> $s_can_notify,
+			'S_CAN_NOTIFY'      => $s_can_notify,
 		]);
 
 		return $user_id;
@@ -540,29 +540,29 @@ class mcp_warn
 		$avatar_img = get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']);
 
 		$template->assign_vars([
-			'U_POST_ACTION'		=> $this->u_action,
+			'U_POST_ACTION'     => $this->u_action,
 
-			'POST'				=> $message,
-			'RANK_TITLE'		=> $rank_title,
-			'JOINED'			=> $user->format_date($user_row['user_regdate']),
-			'POSTS'				=> $user_row['user_posts'] ?: 0,
-			'WARNINGS'			=> $user_row['user_warnings'] ?: 0,
+			'POST'              => $message,
+			'RANK_TITLE'        => $rank_title,
+			'JOINED'            => $user->format_date($user_row['user_regdate']),
+			'POSTS'             => $user_row['user_posts'] ?: 0,
+			'WARNINGS'          => $user_row['user_warnings'] ?: 0,
 
-			'USERNAME_FULL'		=> get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'USERNAME_COLOUR'	=> get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'USERNAME'			=> get_username_string('username', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
-			'U_PROFILE'			=> get_username_string('profile', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME_FULL'     => get_username_string('full', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME_COLOUR'   => get_username_string('colour', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'USERNAME'          => get_username_string('username', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
+			'U_PROFILE'         => get_username_string('profile', $user_row['user_id'], $user_row['username'], $user_row['user_colour']),
 
-			'AVATAR_IMG'		=> $avatar_img,
-			'RANK_IMG'			=> $rank_img,
+			'AVATAR_IMG'        => $avatar_img,
+			'RANK_IMG'          => $rank_img,
 
-			'WARNING_DEFAULT'	=> $config['warning_post_default'],
-			'WARNING_DAYS'		=> $warning_row['warning_days'] ?? $config['warnings_expire_days'],
-			'WARNING_TYPE'		=> $warning_row['warning_type'] ?? 'warning',
-			'WARNING_ID'		=> $warning_row['warning_id'] ?? '',
-			'WARNING'			=> $warning_row['warning_text'] ?? '',
+			'WARNING_DEFAULT'   => $config['warning_post_default'],
+			'WARNING_DAYS'      => $warning_row['warning_days'] ?? $config['warnings_expire_days'],
+			'WARNING_TYPE'      => $warning_row['warning_type'] ?? 'warning',
+			'WARNING_ID'        => $warning_row['warning_id'] ?? '',
+			'WARNING'           => $warning_row['warning_text'] ?? '',
 
-			'S_CAN_NOTIFY'		=> false,
+			'S_CAN_NOTIFY'      => false,
 		]);
 	}
 }
@@ -600,18 +600,18 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warnin
 		$message_parser->parse(true, true, true, false, false, true, true);
 
 		$pm_data = [
-			'from_user_id'			=> $user->data['user_id'],
-			'from_user_ip'			=> $user->ip,
-			'from_username'			=> $user->data['username'],
-			'enable_sig'			=> false,
-			'enable_bbcode'			=> true,
-			'enable_smilies'		=> true,
-			'enable_urls'			=> false,
-			'icon_id'				=> 0,
-			'bbcode_bitfield'		=> $message_parser->bbcode_bitfield,
-			'bbcode_uid'			=> $message_parser->bbcode_uid,
-			'message'				=> $message_parser->message,
-			'address_list'			=> ['u' => [$user_row['user_id'] => 'to']],
+			'from_user_id'          => $user->data['user_id'],
+			'from_user_ip'          => $user->ip,
+			'from_username'         => $user->data['username'],
+			'enable_sig'            => false,
+			'enable_bbcode'         => true,
+			'enable_smilies'        => true,
+			'enable_urls'           => false,
+			'icon_id'               => 0,
+			'bbcode_bitfield'       => $message_parser->bbcode_bitfield,
+			'bbcode_uid'            => $message_parser->bbcode_uid,
+			'message'               => $message_parser->message,
+			'address_list'          => ['u' => [$user_row['user_id'] => 'to']],
 		];
 
 		submit_pm('post', $lang[strtoupper($warning_type).'_PM_SUBJECT'], $pm_data, false);
@@ -621,15 +621,15 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warnin
 	$log_id = add_log('user', $user_row['user_id'], 'LOG_USER_WARNING_BODY', $warning);
 
 	$sql_ary = [
-		'issuer_id'		=> $user->data['user_id'],
-		'user_id'		=> $user_row['user_id'],
-		'post_id'		=> $post_id,
-		'log_id'		=> $log_id,
+		'issuer_id'     => $user->data['user_id'],
+		'user_id'       => $user_row['user_id'],
+		'post_id'       => $post_id,
+		'log_id'        => $log_id,
 		'warning_active'=> $warning_active,
-		'warning_time'	=> time(),
-		'warning_days'	=> $warning_days,
-		'warning_type'	=> $warning_type,
-		'warning_text'	=> $warning,
+		'warning_time'  => time(),
+		'warning_days'  => $warning_days,
+		'warning_type'  => $warning_type,
+		'warning_text'  => $warning,
 	];
 
 	$db->sql_query('INSERT INTO ' . WARNINGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -660,7 +660,7 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warnin
 function edit_warning($warning_row, $warning, $warning_days, $warning_type)
 {
 	global $db, $cache, $config;
-	if(empty($warning_row))	return false;
+	if(empty($warning_row)) return false;
 
 	if (!is_numeric($warning_days))
 	{
@@ -676,9 +676,9 @@ function edit_warning($warning_row, $warning, $warning_days, $warning_type)
 	$warning_active = ($warning_type == 'remark' || ($warning_days && $warning_end < time())) ? 0 : 1;
 
 	$sql_warn_ary = [
-		'warning_days'	=> $warning_days,
-		'warning_type'	=> $warning_type,
-		'warning_text'	=> $warning,
+		'warning_days'  => $warning_days,
+		'warning_type'  => $warning_type,
+		'warning_text'  => $warning,
 		'warning_active'=> $warning_active,
 	];
 
@@ -697,7 +697,7 @@ function edit_warning($warning_row, $warning, $warning_days, $warning_type)
 function delete_warning($warning_row)
 {
 	global $db, $cache;
-	if(empty($warning_row))	return false;
+	if(empty($warning_row)) return false;
 
 	$sql = 'DELETE FROM ' . WARNINGS_TABLE . '
 		WHERE warning_id = ' . $warning_row['warning_id'];
@@ -712,7 +712,7 @@ function recalc_user_warnings($user_id)
 {
 	global $db, $cache;
 	$sql = "UPDATE " . USERS_TABLE . " u
-		SET	user_last_warning = " . time() . ",
+		SET user_last_warning = " . time() . ",
 			user_warnings = (
 				SELECT COUNT(*)
 				FROM " . WARNINGS_TABLE . " w

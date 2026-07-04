@@ -41,10 +41,10 @@ class acp_main
 			$perm_from .= '</strong>';
 
 			$template->assign_vars([
-				'S_RESTORE_PERMISSIONS'		=> true,
-				'U_RESTORE_PERMISSIONS'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm'),
-				'PERM_FROM'					=> $perm_from,
-				'L_PERMISSIONS_TRANSFERRED_EXPLAIN'	=> sprintf($user->lang['PERMISSIONS_TRANSFERRED_EXPLAIN'], $perm_from, append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm')),
+				'S_RESTORE_PERMISSIONS'     => true,
+				'U_RESTORE_PERMISSIONS'     => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm'),
+				'PERM_FROM'                 => $perm_from,
+				'L_PERMISSIONS_TRANSFERRED_EXPLAIN' => sprintf($user->lang['PERMISSIONS_TRANSFERRED_EXPLAIN'], $perm_from, append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=restore_perm')),
 			]);
 
 			return;
@@ -111,9 +111,9 @@ class acp_main
 				if ($confirm)
 				{
 					confirm_box(false, $user->lang[$confirm_lang], build_hidden_fields([
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'action'	=> $action,
+						'i'         => $id,
+						'mode'      => $mode,
+						'action'    => $action,
 					]));
 				}
 			}
@@ -343,9 +343,9 @@ class acp_main
 								foreach ($topic_row as $topic_id)
 								{
 									$sql_ary[] = [
-										'user_id'		=> (int) $user_id,
-										'topic_id'		=> (int) $topic_id,
-										'topic_posted'	=> 1,
+										'user_id'       => (int) $user_id,
+										'topic_id'      => (int) $topic_id,
+										'topic_posted'  => 1,
 									];
 								}
 							}
@@ -391,17 +391,17 @@ class acp_main
 
 						// let's restore the admin session
 						$reinsert_ary = [
-								'session_id'			=> (string) $user->session_id,
-								'session_user_id'		=> (int) $user->data['user_id'],
-								'session_start'			=> (int) $user->data['session_start'],
-								'session_last_visit'	=> (int) $user->data['session_last_visit'],
-								'session_time'			=> (int) $user->time_now,
-								'session_browser'		=> (string) $user->browser_ua,
-								'session_forwarded_for'	=> (string) $user->forwarded_for,
-								'session_ip'			=> (string) $user->ip,
-								'session_autologin'		=> (int) $user->data['session_autologin'],
-								'session_admin'			=> 1,
-								'session_viewonline'	=> (int) $user->data['session_viewonline'],
+								'session_id'            => (string) $user->session_id,
+								'session_user_id'       => (int) $user->data['user_id'],
+								'session_start'         => (int) $user->data['session_start'],
+								'session_last_visit'    => (int) $user->data['session_last_visit'],
+								'session_time'          => (int) $user->time_now,
+								'session_browser'       => (string) $user->browser_ua,
+								'session_forwarded_for' => (string) $user->forwarded_for,
+								'session_ip'            => (string) $user->ip,
+								'session_autologin'     => (int) $user->data['session_autologin'],
+								'session_admin'         => 1,
+								'session_viewonline'    => (int) $user->data['session_viewonline'],
 						];
 
 						$sql = 'INSERT INTO ' . SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $reinsert_ary);
@@ -417,7 +417,7 @@ class acp_main
 		if ($auth->acl_get('a_server') && PHP_VERSION_ID < 70400)
 		{
 			$template->assign_vars([
-				'S_PHP_VERSION_OLD'	=> true,
+				'S_PHP_VERSION_OLD' => true,
 			]);
 		}
 
@@ -434,9 +434,9 @@ class acp_main
 			$announcement_url = (strpos($announcement_url, '&amp;') === false) ? str_replace('&', '&amp;', $announcement_url) : $announcement_url;
 
 			$template->assign_vars([
-				'S_VERSION_UP_TO_DATE'	=> version_compare($latest_version, $config['phpbbex_version'], '<='),
-				'L_UPDATE_AVAILABLE'	=> $user->lang('UPDATE_AVAILABLE', $latest_version, $announcement_url),
-				'U_UPDATE_ANNOUNCEMENT'	=> $announcement_url,
+				'S_VERSION_UP_TO_DATE'  => version_compare($latest_version, $config['phpbbex_version'], '<='),
+				'L_UPDATE_AVAILABLE'    => $user->lang('UPDATE_AVAILABLE', $latest_version, $announcement_url),
+				'U_UPDATE_ANNOUNCEMENT' => $announcement_url,
 			]);
 		}
 
@@ -516,32 +516,32 @@ class acp_main
 		$dbsize = get_database_size();
 
 		$template->assign_vars([
-			'TOTAL_POSTS'		=> $total_posts,
-			'POSTS_PER_DAY'		=> $posts_per_day,
-			'TOTAL_TOPICS'		=> $total_topics,
-			'TOPICS_PER_DAY'	=> $topics_per_day,
-			'TOTAL_USERS'		=> $total_users,
-			'USERS_PER_DAY'		=> $users_per_day,
-			'TOTAL_FILES'		=> $total_files,
-			'FILES_PER_DAY'		=> $files_per_day,
-			'START_DATE'		=> $start_date,
-			'AVATAR_DIR_SIZE'	=> $avatar_dir_size,
-			'DBSIZE'			=> $dbsize,
-			'UPLOAD_DIR_SIZE'	=> $upload_dir_size,
-			'TOTAL_ORPHAN'		=> $total_orphan,
-			'S_TOTAL_ORPHAN'	=> ($total_orphan !== false),
-			'GZIP_COMPRESSION'	=> ($config['gzip_compress'] && @extension_loaded('zlib')) ? $user->lang['ON'] : $user->lang['OFF'],
-			'DATABASE_INFO'		=> $db->sql_server_info(),
-			'PHPBBEX_VERSION'	=> $config['phpbbex_version'],
+			'TOTAL_POSTS'       => $total_posts,
+			'POSTS_PER_DAY'     => $posts_per_day,
+			'TOTAL_TOPICS'      => $total_topics,
+			'TOPICS_PER_DAY'    => $topics_per_day,
+			'TOTAL_USERS'       => $total_users,
+			'USERS_PER_DAY'     => $users_per_day,
+			'TOTAL_FILES'       => $total_files,
+			'FILES_PER_DAY'     => $files_per_day,
+			'START_DATE'        => $start_date,
+			'AVATAR_DIR_SIZE'   => $avatar_dir_size,
+			'DBSIZE'            => $dbsize,
+			'UPLOAD_DIR_SIZE'   => $upload_dir_size,
+			'TOTAL_ORPHAN'      => $total_orphan,
+			'S_TOTAL_ORPHAN'    => ($total_orphan !== false),
+			'GZIP_COMPRESSION'  => ($config['gzip_compress'] && @extension_loaded('zlib')) ? $user->lang['ON'] : $user->lang['OFF'],
+			'DATABASE_INFO'     => $db->sql_server_info(),
+			'PHPBBEX_VERSION'   => $config['phpbbex_version'],
 
-			'U_ACTION'			=> $this->u_action,
-			'U_ADMIN_LOG'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=logs&amp;mode=admin'),
-			'U_INACTIVE_USERS'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=inactive&amp;mode=list'),
-			'U_VERSIONCHECK'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', ''),
-			'U_VERSIONCHECK_FORCE'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'versioncheck_force=1'),
+			'U_ACTION'          => $this->u_action,
+			'U_ADMIN_LOG'       => append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=logs&amp;mode=admin'),
+			'U_INACTIVE_USERS'  => append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=inactive&amp;mode=list'),
+			'U_VERSIONCHECK'    => append_sid(PHPBB_ADMIN_PATH . 'index.php', ''),
+			'U_VERSIONCHECK_FORCE'  => append_sid(PHPBB_ADMIN_PATH . 'index.php', 'versioncheck_force=1'),
 
-			'S_ACTION_OPTIONS'	=> (bool) $auth->acl_get('a_board'),
-			'S_FOUNDER'			=> ($user->data['user_type'] == USER_FOUNDER),
+			'S_ACTION_OPTIONS'  => (bool) $auth->acl_get('a_board'),
+			'S_FOUNDER'         => ($user->data['user_type'] == USER_FOUNDER),
 			]
 		);
 
@@ -555,10 +555,10 @@ class acp_main
 			foreach ($log_data as $row)
 			{
 				$template->assign_block_vars('log', [
-					'USERNAME'	=> $row['username_full'],
-					'IP'		=> $row['ip'],
-					'DATE'		=> $user->format_date($row['time']),
-					'ACTION'	=> $row['action']]
+					'USERNAME'  => $row['username_full'],
+					'IP'        => $row['ip'],
+					'DATE'      => $user->format_date($row['time']),
+					'ACTION'    => $row['action']]
 				);
 			}
 		}
@@ -575,24 +575,24 @@ class acp_main
 			foreach ($inactive as $row)
 			{
 				$template->assign_block_vars('inactive', [
-					'INACTIVE_DATE'	=> $user->format_date($row['user_inactive_time']),
-					'REMINDED_DATE'	=> $user->format_date($row['user_reminded_time']),
-					'JOINED'		=> $user->format_date($row['user_regdate']),
-					'LAST_VISIT'	=> (!$row['user_lastvisit']) ? ' - ' : $user->format_date($row['user_lastvisit']),
+					'INACTIVE_DATE' => $user->format_date($row['user_inactive_time']),
+					'REMINDED_DATE' => $user->format_date($row['user_reminded_time']),
+					'JOINED'        => $user->format_date($row['user_regdate']),
+					'LAST_VISIT'    => (!$row['user_lastvisit']) ? ' - ' : $user->format_date($row['user_lastvisit']),
 
-					'REASON'		=> $row['inactive_reason'],
-					'USER_ID'		=> $row['user_id'],
-					'POSTS'			=> $row['user_posts'] ?: 0,
-					'REMINDED'		=> $row['user_reminded'],
+					'REASON'        => $row['inactive_reason'],
+					'USER_ID'       => $row['user_id'],
+					'POSTS'         => $row['user_posts'] ?: 0,
+					'REMINDED'      => $row['user_reminded'],
 
-					'REMINDED_EXPLAIN'	=> $user->lang('USER_LAST_REMINDED', (int) $row['user_reminded'], $user->format_date($row['user_reminded_time'])),
+					'REMINDED_EXPLAIN'  => $user->lang('USER_LAST_REMINDED', (int) $row['user_reminded'], $user->format_date($row['user_reminded_time'])),
 
-					'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview')),
-					'USERNAME'			=> get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
-					'USER_COLOR'		=> get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
+					'USERNAME_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview')),
+					'USERNAME'          => get_username_string('username', $row['user_id'], $row['username'], $row['user_colour']),
+					'USER_COLOR'        => get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour']),
 
-					'U_USER_ADMIN'	=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
-					'U_SEARCH_USER'	=> ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$row['user_id']}&amp;sr=posts") : '',
+					'U_USER_ADMIN'  => append_sid(PHPBB_ADMIN_PATH . 'index.php', "i=users&amp;mode=overview&amp;u={$row['user_id']}"),
+					'U_SEARCH_USER' => ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$row['user_id']}&amp;sr=posts") : '',
 				]);
 			}
 
@@ -603,8 +603,8 @@ class acp_main
 			}
 
 			$template->assign_vars([
-				'S_INACTIVE_USERS'		=> true,
-				'S_INACTIVE_OPTIONS'	=> build_select($option_ary)]
+				'S_INACTIVE_USERS'      => true,
+				'S_INACTIVE_OPTIONS'    => build_select($option_ary)]
 			);
 		}
 
@@ -617,11 +617,11 @@ class acp_main
 		if (extension_loaded('mbstring'))
 		{
 			$template->assign_vars([
-				'S_MBSTRING_LOADED'						=> true,
-				'S_MBSTRING_FUNC_OVERLOAD_FAIL'			=> defined('MB_OVERLOAD_MAIL') && defined('MB_OVERLOAD_STRING') && (intval(@ini_get('mbstring.func_overload')) & (MB_OVERLOAD_MAIL | MB_OVERLOAD_STRING)),
-				'S_MBSTRING_ENCODING_TRANSLATION_FAIL'	=> (@ini_get('mbstring.encoding_translation') != 0),
-				'S_MBSTRING_HTTP_INPUT_FAIL'			=> !in_array(@ini_get('mbstring.http_input'), ['pass', '']),
-				'S_MBSTRING_HTTP_OUTPUT_FAIL'			=> !in_array(@ini_get('mbstring.http_output'), ['pass', '']),
+				'S_MBSTRING_LOADED'                     => true,
+				'S_MBSTRING_FUNC_OVERLOAD_FAIL'         => defined('MB_OVERLOAD_MAIL') && defined('MB_OVERLOAD_STRING') && (intval(@ini_get('mbstring.func_overload')) & (MB_OVERLOAD_MAIL | MB_OVERLOAD_STRING)),
+				'S_MBSTRING_ENCODING_TRANSLATION_FAIL'  => (@ini_get('mbstring.encoding_translation') != 0),
+				'S_MBSTRING_HTTP_INPUT_FAIL'            => !in_array(@ini_get('mbstring.http_input'), ['pass', '']),
+				'S_MBSTRING_HTTP_OUTPUT_FAIL'           => !in_array(@ini_get('mbstring.http_output'), ['pass', '']),
 			]);
 		}
 

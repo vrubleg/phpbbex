@@ -50,9 +50,9 @@ function view_folder($id, $mode, $folder_id, $folder)
 		foreach ($color_rows as $var)
 		{
 			$template->assign_block_vars('pm_colour_info', [
-				'IMG'	=> $user->img("pm_{$var}", ''),
-				'CLASS'	=> "pm_{$var}_colour",
-				'LANG'	=> $user->lang[strtoupper($var) . '_MESSAGE']]
+				'IMG'   => $user->img("pm_{$var}", ''),
+				'CLASS' => "pm_{$var}_colour",
+				'LANG'  => $user->lang[strtoupper($var) . '_MESSAGE']]
 			);
 		}
 
@@ -96,8 +96,8 @@ function view_folder($id, $mode, $folder_id, $folder)
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'S_MARK_OPTIONS'		=> $s_mark_options,
-			'S_MOVE_MARKED_OPTIONS'	=> $s_folder_move_options]
+			'S_MARK_OPTIONS'        => $s_mark_options,
+			'S_MOVE_MARKED_OPTIONS' => $s_folder_move_options]
 		);
 
 		// Okay, lets dump out the page ...
@@ -136,45 +136,45 @@ function view_folder($id, $mode, $folder_id, $folder)
 
 				// Send vars to template
 				$template->assign_block_vars('messagerow', [
-					'PM_CLASS'			=> ($row_indicator) ? 'pm_' . $row_indicator . '_colour' : '',
+					'PM_CLASS'          => ($row_indicator) ? 'pm_' . $row_indicator . '_colour' : '',
 
-					'MESSAGE_AUTHOR_FULL'		=> get_username_string('full', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
-					'MESSAGE_AUTHOR_COLOUR'		=> get_username_string('colour', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
-					'MESSAGE_AUTHOR'			=> get_username_string('username', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
-					'U_MESSAGE_AUTHOR'			=> get_username_string('profile', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
+					'MESSAGE_AUTHOR_FULL'       => get_username_string('full', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
+					'MESSAGE_AUTHOR_COLOUR'     => get_username_string('colour', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
+					'MESSAGE_AUTHOR'            => get_username_string('username', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
+					'U_MESSAGE_AUTHOR'          => get_username_string('profile', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
 
-					'FOLDER_ID'			=> $folder_id,
-					'MESSAGE_ID'		=> $message_id,
-					'SENT_TIME'			=> $user->format_date($row['message_time']),
-					'SUBJECT'			=> censor_text($row['message_subject']),
-					'FOLDER'			=> (isset($folder[$row['folder_id']])) ? $folder[$row['folder_id']]['folder_name'] : '',
-					'U_FOLDER'			=> (isset($folder[$row['folder_id']])) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'folder=' . $row['folder_id']) : '',
-					'PM_ICON_IMG'		=> (!empty($icons[$row['icon_id']])) ? '<img src="' . TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] . '" width="' . $icons[$row['icon_id']]['width'] . '" height="' . $icons[$row['icon_id']]['height'] . '" alt="" title="" />' : '',
-					'PM_ICON_URL'		=> (!empty($icons[$row['icon_id']])) ? TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] : '',
-					'FOLDER_IMG'		=> $user->img($folder_img, $folder_alt),
-					'FOLDER_IMG_SRC'	=> $user->img($folder_img, $folder_alt, false, '', 'src'),
-					'PM_IMG'			=> ($row_indicator) ? $user->img('pm_' . $row_indicator, '') : '',
-					'ATTACH_ICON_IMG'	=> ($auth->acl_get('u_pm_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
+					'FOLDER_ID'         => $folder_id,
+					'MESSAGE_ID'        => $message_id,
+					'SENT_TIME'         => $user->format_date($row['message_time']),
+					'SUBJECT'           => censor_text($row['message_subject']),
+					'FOLDER'            => (isset($folder[$row['folder_id']])) ? $folder[$row['folder_id']]['folder_name'] : '',
+					'U_FOLDER'          => (isset($folder[$row['folder_id']])) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'folder=' . $row['folder_id']) : '',
+					'PM_ICON_IMG'       => (!empty($icons[$row['icon_id']])) ? '<img src="' . TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] . '" width="' . $icons[$row['icon_id']]['width'] . '" height="' . $icons[$row['icon_id']]['height'] . '" alt="" title="" />' : '',
+					'PM_ICON_URL'       => (!empty($icons[$row['icon_id']])) ? TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] : '',
+					'FOLDER_IMG'        => $user->img($folder_img, $folder_alt),
+					'FOLDER_IMG_SRC'    => $user->img($folder_img, $folder_alt, false, '', 'src'),
+					'PM_IMG'            => ($row_indicator) ? $user->img('pm_' . $row_indicator, '') : '',
+					'ATTACH_ICON_IMG'   => ($auth->acl_get('u_pm_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
 
-					'S_PM_UNREAD'		=> (bool) $row['pm_unread'],
-					'S_PM_DELETED'		=> (bool) $row['pm_deleted'],
-					'S_PM_REPORTED'		=> isset($row['report_id']),
-					'S_AUTHOR_DELETED'	=> ($row['author_id'] == ANONYMOUS),
+					'S_PM_UNREAD'       => (bool) $row['pm_unread'],
+					'S_PM_DELETED'      => (bool) $row['pm_deleted'],
+					'S_PM_REPORTED'     => isset($row['report_id']),
+					'S_AUTHOR_DELETED'  => ($row['author_id'] == ANONYMOUS),
 
-					'U_VIEW_PM'			=> ($row['pm_deleted']) ? '' : $view_message_url,
-					'U_REMOVE_PM'		=> ($row['pm_deleted']) ? $remove_message_url : '',
-					'U_MCP_REPORT'		=> (isset($row['report_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $row['report_id']) : '',
-					'RECIPIENTS'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? implode(', ', $address_list[$message_id]) : '',
+					'U_VIEW_PM'         => ($row['pm_deleted']) ? '' : $view_message_url,
+					'U_REMOVE_PM'       => ($row['pm_deleted']) ? $remove_message_url : '',
+					'U_MCP_REPORT'      => (isset($row['report_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $row['report_id']) : '',
+					'RECIPIENTS'        => ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? implode(', ', $address_list[$message_id]) : '',
 				]);
 			}
 			unset($folder_info['rowset']);
 
 			$template->assign_vars([
-				'S_SHOW_RECIPIENTS'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX),
-				'S_SHOW_COLOUR_LEGEND'	=> true,
+				'S_SHOW_RECIPIENTS'     => ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX),
+				'S_SHOW_COLOUR_LEGEND'  => true,
 
-				'REPORTED_IMG'			=> $user->img('icon_topic_reported', 'PM_REPORTED'),
-				'S_PM_ICONS'			=> (bool) $config['enable_pm_icons'],
+				'REPORTED_IMG'          => $user->img('icon_topic_reported', 'PM_REPORTED'),
+				'S_PM_ICONS'            => (bool) $config['enable_pm_icons'],
 			]);
 		}
 	}
@@ -267,11 +267,11 @@ function view_folder($id, $mode, $folder_id, $folder)
 				decode_message($message_row['message_text'], $message_row['bbcode_uid']);
 
 				$data[] = [
-					'subject'	=> censor_text($row['message_subject']),
-					'sender'	=> $row['username'],
-					'date'		=> $user->format_date($row['message_time'], 'c', true), // ISO 8601 date.
-					'to'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? $address[$message_id] : '',
-					'message'	=> $message_row['message_text']
+					'subject'   => censor_text($row['message_subject']),
+					'sender'    => $row['username'],
+					'date'      => $user->format_date($row['message_time'], 'c', true), // ISO 8601 date.
+					'to'        => ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? $address[$message_id] : '',
+					'message'   => $message_row['message_text']
 				];
 			}
 
@@ -385,9 +385,9 @@ function get_pm_from($folder_id, $folder, $user_id)
 	$start = request_var('start', 0);
 
 	// Additional vars later, pm ordering is mostly different from post ordering. :/
-	$sort_days	= request_var('st', 0);
-	$sort_key	= request_var('sk', 't');
-	$sort_dir	= request_var('sd', 'd');
+	$sort_days  = request_var('st', 0);
+	$sort_key   = request_var('sk', 't');
+	$sort_dir   = request_var('sd', 'd');
 
 	// PM ordering options
 	$limit_days = [0 => $user->lang['ALL_MESSAGES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
@@ -439,21 +439,21 @@ function get_pm_from($folder_id, $folder, $user_id)
 	}
 
 	$template->assign_vars([
-		'PAGINATION'		=> generate_pagination(append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f={$folder_id}&amp;{$u_sort_param}"), $pm_count, $config['topics_per_page'], $start),
-		'PAGE_NUMBER'		=> on_page($pm_count, $config['topics_per_page'], $start),
-		'TOTAL_MESSAGES'	=> (($pm_count == 1) ? $user->lang['VIEW_PM_MESSAGE'] : sprintf($user->lang['VIEW_PM_MESSAGES'], $pm_count)),
+		'PAGINATION'        => generate_pagination(append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f={$folder_id}&amp;{$u_sort_param}"), $pm_count, $config['topics_per_page'], $start),
+		'PAGE_NUMBER'       => on_page($pm_count, $config['topics_per_page'], $start),
+		'TOTAL_MESSAGES'    => (($pm_count == 1) ? $user->lang['VIEW_PM_MESSAGE'] : sprintf($user->lang['VIEW_PM_MESSAGES'], $pm_count)),
 
-		'POST_IMG'		=> (!$auth->acl_get('u_sendpm')) ? $user->img('button_topic_locked', 'POST_PM_LOCKED') : $user->img('button_pm_new', 'POST_NEW_PM'),
+		'POST_IMG'      => (!$auth->acl_get('u_sendpm')) ? $user->img('button_topic_locked', 'POST_PM_LOCKED') : $user->img('button_pm_new', 'POST_NEW_PM'),
 
-		'S_NO_AUTH_SEND_MESSAGE'	=> !$auth->acl_get('u_sendpm'),
+		'S_NO_AUTH_SEND_MESSAGE'    => !$auth->acl_get('u_sendpm'),
 
-		'S_SELECT_SORT_DIR'		=> $s_sort_dir,
-		'S_SELECT_SORT_KEY'		=> $s_sort_key,
-		'S_SELECT_SORT_DAYS'	=> $s_limit_days,
-		'S_TOPIC_ICONS'			=> (bool) $config['enable_pm_icons'],
+		'S_SELECT_SORT_DIR'     => $s_sort_dir,
+		'S_SELECT_SORT_KEY'     => $s_sort_key,
+		'S_SELECT_SORT_DAYS'    => $s_limit_days,
+		'S_TOPIC_ICONS'         => (bool) $config['enable_pm_icons'],
 
-		'U_POST_NEW_TOPIC'	=> ($auth->acl_get('u_sendpm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose') : '',
-		'S_PM_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f={$folder_id}" . (($start !== 0) ? "&amp;start={$start}" : '')),
+		'U_POST_NEW_TOPIC'  => ($auth->acl_get('u_sendpm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose') : '',
+		'S_PM_ACTION'       => append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f={$folder_id}" . (($start !== 0) ? "&amp;start={$start}" : '')),
 	]);
 
 	// Grab all pm data
@@ -533,8 +533,8 @@ function get_pm_from($folder_id, $folder, $user_id)
 	$pm_list = ($store_reverse) ? array_reverse($pm_list) : $pm_list;
 
 	return [
-		'pm_count'	=> $pm_count,
-		'pm_list'	=> $pm_list,
-		'rowset'	=> $rowset
+		'pm_count'  => $pm_count,
+		'pm_list'   => $pm_list,
+		'rowset'    => $rowset
 	];
 }

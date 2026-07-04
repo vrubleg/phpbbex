@@ -15,30 +15,30 @@ $auth->acl($user->data);
 $user->setup('search');
 
 // Define initial vars
-$mode			= request_var('mode', '');
-$search_id		= request_var('search_id', '');
-$start			= max(request_var('start', 0), 0);
-$post_id		= request_var('p', 0);
-$topic_id		= request_var('t', 0);
-$view			= request_var('view', '');
+$mode           = request_var('mode', '');
+$search_id      = request_var('search_id', '');
+$start          = max(request_var('start', 0), 0);
+$post_id        = request_var('p', 0);
+$topic_id       = request_var('t', 0);
+$view           = request_var('view', '');
 
-$submit			= request_var('submit', false);
-$keywords		= utf8_normalize_nfc(request_var('keywords', '', true));
-$add_keywords	= utf8_normalize_nfc(request_var('add_keywords', '', true));
-$author			= request_var('author', '', true);
-$author_id		= request_var('author_id', 0);
-$show_results	= ($topic_id) ? 'posts' : request_var('sr', 'posts');
-$show_results	= ($show_results == 'posts') ? 'posts' : 'topics';
-$search_terms	= request_var('terms', 'all');
-$search_fields	= request_var('sf', 'all');
-$search_child	= request_var('sc', true);
+$submit         = request_var('submit', false);
+$keywords       = utf8_normalize_nfc(request_var('keywords', '', true));
+$add_keywords   = utf8_normalize_nfc(request_var('add_keywords', '', true));
+$author         = request_var('author', '', true);
+$author_id      = request_var('author_id', 0);
+$show_results   = ($topic_id) ? 'posts' : request_var('sr', 'posts');
+$show_results   = ($show_results == 'posts') ? 'posts' : 'topics';
+$search_terms   = request_var('terms', 'all');
+$search_fields  = request_var('sf', 'all');
+$search_child   = request_var('sc', true);
 
-$sort_days		= request_var('st', 0);
-$sort_key		= request_var('sk', 't');
-$sort_dir		= request_var('sd', 'd');
+$sort_days      = request_var('st', 0);
+$sort_key       = request_var('sk', 't');
+$sort_dir       = request_var('sd', 'd');
 
-$return_chars	= request_var('ch', ($topic_id) ? -1 : 300);
-$search_forum	= request_var('fid', [0]);
+$return_chars   = request_var('ch', ($topic_id) ? -1 : 300);
+$search_forum   = request_var('fid', [0]);
 
 // We put login boxes for the case if search_id is newposts, egosearch or unreadposts
 // because a guest should be able to log in even if guests search is not permitted
@@ -121,8 +121,8 @@ if ($interval && !in_array($search_id, ['unreadposts', 'unanswered', 'active_top
 }
 
 // Define some vars
-$limit_days		= [0 => $user->lang['ALL_RESULTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-$sort_by_text	= ['t' => $user->lang['SORT_TIME'], 'c' => $user->lang['CREATION_TIME'], 'f' => $user->lang['SORT_FORUM'], 'a' => $user->lang['SORT_AUTHOR'], 'i' => $user->lang['SORT_TOPIC_TITLE'], 's' => $user->lang['SORT_POST_SUBJECT']];
+$limit_days     = [0 => $user->lang['ALL_RESULTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+$sort_by_text   = ['t' => $user->lang['SORT_TIME'], 'c' => $user->lang['CREATION_TIME'], 'f' => $user->lang['SORT_FORUM'], 'a' => $user->lang['SORT_AUTHOR'], 'i' => $user->lang['SORT_TOPIC_TITLE'], 's' => $user->lang['SORT_POST_SUBJECT']];
 
 $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
@@ -627,39 +627,39 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	$u_search .= ($return_chars != 300) ? '&amp;ch=' . $return_chars : '';
 
 	$template->assign_vars([
-		'SEARCH_TITLE'		=> $l_search_title,
-		'SEARCH_MATCHES'	=> $l_search_matches,
-		'SEARCH_WORDS'		=> $keywords,
-		'SEARCHED_QUERY'	=> $search->search_query,
-		'IGNORED_WORDS'		=> (sizeof($search->common_words)) ? implode(' ', $search->common_words) : '',
-		'PAGINATION'		=> generate_pagination($u_search, $total_match_count, $per_page, $start),
-		'PAGE_NUMBER'		=> on_page($total_match_count, $per_page, $start),
-		'TOTAL_MATCHES'		=> $total_match_count,
-		'SEARCH_IN_RESULTS'	=> !$search_id,
+		'SEARCH_TITLE'      => $l_search_title,
+		'SEARCH_MATCHES'    => $l_search_matches,
+		'SEARCH_WORDS'      => $keywords,
+		'SEARCHED_QUERY'    => $search->search_query,
+		'IGNORED_WORDS'     => (sizeof($search->common_words)) ? implode(' ', $search->common_words) : '',
+		'PAGINATION'        => generate_pagination($u_search, $total_match_count, $per_page, $start),
+		'PAGE_NUMBER'       => on_page($total_match_count, $per_page, $start),
+		'TOTAL_MATCHES'     => $total_match_count,
+		'SEARCH_IN_RESULTS' => !$search_id,
 
-		'S_SELECT_SORT_DIR'		=> $s_sort_dir,
-		'S_SELECT_SORT_KEY'		=> $s_sort_key,
-		'S_SELECT_SORT_DAYS'	=> $s_limit_days,
-		'S_SEARCH_ACTION'		=> $u_search,
-		'S_SHOW_TOPICS'			=> ($show_results != 'posts'),
+		'S_SELECT_SORT_DIR'     => $s_sort_dir,
+		'S_SELECT_SORT_KEY'     => $s_sort_key,
+		'S_SELECT_SORT_DAYS'    => $s_limit_days,
+		'S_SEARCH_ACTION'       => $u_search,
+		'S_SHOW_TOPICS'         => ($show_results != 'posts'),
 
-		'GOTO_PAGE_IMG'		=> $user->img('icon_post_target', 'GOTO_PAGE'),
-		'NEWEST_POST_IMG'	=> $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
-		'REPORTED_IMG'		=> $user->img('icon_topic_reported', 'TOPIC_REPORTED'),
-		'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-		'LAST_POST_IMG'		=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+		'GOTO_PAGE_IMG'     => $user->img('icon_post_target', 'GOTO_PAGE'),
+		'NEWEST_POST_IMG'   => $user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
+		'REPORTED_IMG'      => $user->img('icon_topic_reported', 'TOPIC_REPORTED'),
+		'UNAPPROVED_IMG'    => $user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
+		'LAST_POST_IMG'     => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
-		'U_SEARCH_WORDS'	=> $u_search,
-		'U_MARK_FORUMS'		=> ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
+		'U_SEARCH_WORDS'    => $u_search,
+		'U_MARK_FORUMS'     => ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 
 		// Search in current forums
-		'U_SEARCH_IN'				=> append_sid(PHPBB_ROOT_PATH . 'search.php', $u_qst_search_forum),
-		'U_SEARCH_SELF_IN'			=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch' . $u_amp_search_forum),
-		'U_SEARCH_SELF_TOPICS_IN'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost' . $u_amp_search_forum),
-		'U_SEARCH_NEW_IN'			=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts' . $u_amp_search_forum),
-		'U_SEARCH_UNANSWERED_IN'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unanswered' . $u_amp_search_forum),
-		'U_SEARCH_UNREAD_IN'		=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts' . $u_amp_search_forum),
-		'U_SEARCH_ACTIVE_TOPICS_IN'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics' . $u_amp_search_forum),
+		'U_SEARCH_IN'               => append_sid(PHPBB_ROOT_PATH . 'search.php', $u_qst_search_forum),
+		'U_SEARCH_SELF_IN'          => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch' . $u_amp_search_forum),
+		'U_SEARCH_SELF_TOPICS_IN'   => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost' . $u_amp_search_forum),
+		'U_SEARCH_NEW_IN'           => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts' . $u_amp_search_forum),
+		'U_SEARCH_UNANSWERED_IN'    => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unanswered' . $u_amp_search_forum),
+		'U_SEARCH_UNREAD_IN'        => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts' . $u_amp_search_forum),
+		'U_SEARCH_ACTIVE_TOPICS_IN' => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics' . $u_amp_search_forum),
 	]);
 
 	// Search in topic: get topic title
@@ -673,8 +673,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		if ($row)
 		{
 			$template->assign_vars([
-				'SEARCH_TOPIC'		=> censor_text($row['topic_title']),
-				'U_SEARCH_TOPIC'	=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit={$u_hilit}" : '')),
+				'SEARCH_TOPIC'      => censor_text($row['topic_title']),
+				'U_SEARCH_TOPIC'    => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? "&amp;hilit={$u_hilit}" : '')),
 			]);
 		}
 	}
@@ -777,9 +777,9 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 					// We want to retain some values
 					$row = array_merge($row, [
-						'topic_moved_id'	=> $rowset[$orig_topic_id]['topic_moved_id'],
-						'topic_status'		=> $rowset[$orig_topic_id]['topic_status'],
-						'forum_name'		=> $rowset[$orig_topic_id]['forum_name']]
+						'topic_moved_id'    => $rowset[$orig_topic_id]['topic_moved_id'],
+						'topic_status'      => $rowset[$orig_topic_id]['topic_status'],
+						'forum_name'        => $rowset[$orig_topic_id]['forum_name']]
 					);
 
 					$rowset[$orig_topic_id] = $row;
@@ -942,47 +942,47 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$row['topic_title'] = preg_replace('#(?!<.*)(?<!\w)(' . $hilit . ')(?!\w|[^<>]*(?:</s(?:cript|tyle))?>)#is', '<span class="posthilit">$1</span>', $row['topic_title']);
 
 				$tpl_ary = [
-					'TOPIC_AUTHOR'				=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-					'TOPIC_AUTHOR_COLOUR'		=> get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-					'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-					'FIRST_POST_TIME'			=> $user->format_date($row['topic_time']),
-					'LAST_POST_SUBJECT'			=> $row['topic_last_post_subject'],
-					'LAST_POST_TIME'			=> $user->format_date($row['topic_last_post_time']),
-					'LAST_VIEW_TIME'			=> $user->format_date($row['topic_last_view_time']),
-					'LAST_POST_AUTHOR'			=> get_username_string('username', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-					'LAST_POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-					'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+					'TOPIC_AUTHOR'              => get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+					'TOPIC_AUTHOR_COLOUR'       => get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+					'TOPIC_AUTHOR_FULL'         => get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+					'FIRST_POST_TIME'           => $user->format_date($row['topic_time']),
+					'LAST_POST_SUBJECT'         => $row['topic_last_post_subject'],
+					'LAST_POST_TIME'            => $user->format_date($row['topic_last_post_time']),
+					'LAST_VIEW_TIME'            => $user->format_date($row['topic_last_view_time']),
+					'LAST_POST_AUTHOR'          => get_username_string('username', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+					'LAST_POST_AUTHOR_COLOUR'   => get_username_string('colour', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+					'LAST_POST_AUTHOR_FULL'     => get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 
-					'PAGINATION'		=> topic_generate_pagination($replies, $view_topic_url),
-					'TOPIC_TYPE'		=> $topic_type,
+					'PAGINATION'        => topic_generate_pagination($replies, $view_topic_url),
+					'TOPIC_TYPE'        => $topic_type,
 
-					'TOPIC_FOLDER_IMG'		=> $user->img($folder_img, $folder_alt),
-					'TOPIC_FOLDER_IMG_SRC'	=> $user->img($folder_img, $folder_alt, false, '', 'src'),
-					'TOPIC_FOLDER_IMG_ALT'	=> $user->lang[$folder_alt],
+					'TOPIC_FOLDER_IMG'      => $user->img($folder_img, $folder_alt),
+					'TOPIC_FOLDER_IMG_SRC'  => $user->img($folder_img, $folder_alt, false, '', 'src'),
+					'TOPIC_FOLDER_IMG_ALT'  => $user->lang[$folder_alt],
 					'TOPIC_FOLDER_IMG_WIDTH'=> $user->img($folder_img, '', false, '', 'width'),
-					'TOPIC_FOLDER_IMG_HEIGHT'	=> $user->img($folder_img, '', false, '', 'height'),
+					'TOPIC_FOLDER_IMG_HEIGHT'   => $user->img($folder_img, '', false, '', 'height'),
 
-					'TOPIC_ICON_IMG'		=> ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
-					'TOPIC_ICON_IMG_WIDTH'	=> ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
-					'TOPIC_ICON_IMG_HEIGHT'	=> ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
-					'ATTACH_ICON_IMG'		=> ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
-					'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
+					'TOPIC_ICON_IMG'        => ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
+					'TOPIC_ICON_IMG_WIDTH'  => ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
+					'TOPIC_ICON_IMG_HEIGHT' => ($config['enable_topic_icons'] && !empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
+					'ATTACH_ICON_IMG'       => ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
+					'UNAPPROVED_IMG'        => ($topic_unapproved || $posts_unapproved) ? $user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
 
-					'S_TOPIC_GLOBAL'		=> !$forum_id,
-					'S_TOPIC_TYPE'			=> $row['topic_type'],
-					'S_USER_POSTED'			=> !empty($row['topic_posted']),
-					'S_UNREAD_TOPIC'		=> $unread_topic,
+					'S_TOPIC_GLOBAL'        => !$forum_id,
+					'S_TOPIC_TYPE'          => $row['topic_type'],
+					'S_USER_POSTED'         => !empty($row['topic_posted']),
+					'S_UNREAD_TOPIC'        => $unread_topic,
 
-					'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && $auth->acl_get('m_report', $forum_id)),
-					'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
-					'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
+					'S_TOPIC_REPORTED'      => (!empty($row['topic_reported']) && $auth->acl_get('m_report', $forum_id)),
+					'S_TOPIC_UNAPPROVED'    => $topic_unapproved,
+					'S_POSTS_UNAPPROVED'    => $posts_unapproved,
 
-					'U_LAST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
-					'U_LAST_POST_AUTHOR'	=> get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-					'U_TOPIC_AUTHOR'		=> get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-					'U_NEWEST_POST'			=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;view=unread') . '#unread',
-					'U_MCP_REPORT'			=> append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=reports&amp;t=' . $result_topic_id, true, $user->session_id),
-					'U_MCP_QUEUE'			=> $u_mcp_queue,
+					'U_LAST_POST'           => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
+					'U_LAST_POST_AUTHOR'    => get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+					'U_TOPIC_AUTHOR'        => get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+					'U_NEWEST_POST'         => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;view=unread') . '#unread',
+					'U_MCP_REPORT'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=reports&amp;t=' . $result_topic_id, true, $user->session_id),
+					'U_MCP_QUEUE'           => $u_mcp_queue,
 				];
 			}
 			else
@@ -1035,35 +1035,35 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				}
 
 				$tpl_ary = [
-					'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-					'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-					'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-					'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+					'POST_AUTHOR_FULL'      => get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+					'POST_AUTHOR_COLOUR'    => get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+					'POST_AUTHOR'           => get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+					'U_POST_AUTHOR'         => get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 
-					'POST_RATING_SHOW'		=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0),
-					'POST_RATING'			=> ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
-					'POST_RATING_NEGATIVE'	=> $row['post_rating_negative'],
-					'POST_RATING_POSITIVE'	=> $row['post_rating_positive'],
+					'POST_RATING_SHOW'      => $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($row['post_rating_negative'] != 0 || $row['post_rating_positive'] != 0),
+					'POST_RATING'           => ($config['rate_no_positive'] ? 0 : $row['post_rating_positive']) - ($config['rate_no_negative'] ? 0 : $row['post_rating_negative']),
+					'POST_RATING_NEGATIVE'  => $row['post_rating_negative'],
+					'POST_RATING_POSITIVE'  => $row['post_rating_positive'],
 
-					'POST_SUBJECT'		=> $row['post_subject'],
-					'POST_DATE'			=> (!empty($row['post_time'])) ? $user->format_date($row['post_time']) : '',
-					'MESSAGE'			=> $row['post_text']
+					'POST_SUBJECT'      => $row['post_subject'],
+					'POST_DATE'         => (!empty($row['post_time'])) ? $user->format_date($row['post_time']) : '',
+					'MESSAGE'           => $row['post_text']
 				];
 			}
 
 			$template->assign_block_vars('searchresults', array_merge($tpl_ary, [
-				'FORUM_ID'			=> $forum_id,
-				'TOPIC_ID'			=> $result_topic_id,
-				'POST_ID'			=> ($show_results == 'posts') ? $row['post_id'] : false,
+				'FORUM_ID'          => $forum_id,
+				'TOPIC_ID'          => $result_topic_id,
+				'POST_ID'           => ($show_results == 'posts') ? $row['post_id'] : false,
 
-				'FORUM_TITLE'		=> $row['forum_name'],
-				'TOPIC_TITLE'		=> $topic_title,
-				'TOPIC_REPLIES'		=> $replies,
-				'TOPIC_VIEWS'		=> $row['topic_views'],
+				'FORUM_TITLE'       => $row['forum_name'],
+				'TOPIC_TITLE'       => $topic_title,
+				'TOPIC_REPLIES'     => $replies,
+				'TOPIC_VIEWS'       => $row['topic_views'],
 
-				'U_VIEW_TOPIC'		=> $view_topic_url,
-				'U_VIEW_FORUM'		=> append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id),
-				'U_VIEW_POST'		=> (!empty($row['post_id'])) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? '&amp;hilit=' . $u_hilit : '')) . '#p' . $row['post_id'] : '']
+				'U_VIEW_TOPIC'      => $view_topic_url,
+				'U_VIEW_FORUM'      => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id),
+				'U_VIEW_POST'       => (!empty($row['post_id'])) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] . ((!empty($config['search_highlight_keywords']) && $u_hilit) ? '&amp;hilit=' . $u_hilit : '')) . '#p' . $row['post_id'] : '']
 			));
 
 			// Display raters if needed
@@ -1073,17 +1073,17 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				foreach ($post_raters[$row['post_id']] as $rater)
 				{
 					$template->assign_block_vars('searchresults.postrater', [
-						'S_FIRST_ROW'	=> $is_first_row,
-						'RATER_ID'		=> $rater['user_id'],
-						'POST_ID'		=> $rater['post_id'],
-						'RATE'			=> $rater['rate'],
-						'RATE_TEXT'		=> ($rater['rate'] > 0 ? '+'.$rater['rate'] : '−'.abs($rater['rate'])),
-						'DATETIME'		=> $user->format_date($rater['rate_time']),
-						'DATE'			=> $user->format_date($rater['rate_time'], false, false, true),
-						'U_RATER'		=> get_username_string('profile', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
-						'RATER_NAME'	=> get_username_string('username', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
-						'RATER_COLOUR'	=> get_username_string('colour', 	$rater['user_id'], $rater['username'], $rater['user_colour']),
-						'RATER_FULL'	=> get_username_string('full', 		$rater['user_id'], $rater['username'], $rater['user_colour']),
+						'S_FIRST_ROW'   => $is_first_row,
+						'RATER_ID'      => $rater['user_id'],
+						'POST_ID'       => $rater['post_id'],
+						'RATE'          => $rater['rate'],
+						'RATE_TEXT'     => ($rater['rate'] > 0 ? '+'.$rater['rate'] : '−'.abs($rater['rate'])),
+						'DATETIME'      => $user->format_date($rater['rate_time']),
+						'DATE'          => $user->format_date($rater['rate_time'], false, false, true),
+						'U_RATER'       => get_username_string('profile',   $rater['user_id'], $rater['username'], $rater['user_colour']),
+						'RATER_NAME'    => get_username_string('username',  $rater['user_id'], $rater['username'], $rater['user_colour']),
+						'RATER_COLOUR'  => get_username_string('colour',    $rater['user_id'], $rater['username'], $rater['user_colour']),
+						'RATER_FULL'    => get_username_string('full',      $rater['user_id'], $rater['username'], $rater['user_colour']),
 					]);
 					$is_first_row = false;
 				}
@@ -1216,14 +1216,14 @@ if (!empty($_EXTRA_URL))
 }
 
 $template->assign_vars([
-	'S_SEARCH_ACTION'		=> append_sid(PHPBB_ROOT_PATH . 'search.php'),
-	'S_HIDDEN_FIELDS'		=> build_hidden_fields($s_hidden_fields),
-	'S_CHARACTER_OPTIONS'	=> $s_characters,
-	'S_FORUM_OPTIONS'		=> $s_forums,
-	'S_SELECT_SORT_DIR'		=> $s_sort_dir,
-	'S_SELECT_SORT_KEY'		=> $s_sort_key,
-	'S_SELECT_SORT_DAYS'	=> $s_limit_days,
-	'S_IN_SEARCH'			=> true,
+	'S_SEARCH_ACTION'       => append_sid(PHPBB_ROOT_PATH . 'search.php'),
+	'S_HIDDEN_FIELDS'       => build_hidden_fields($s_hidden_fields),
+	'S_CHARACTER_OPTIONS'   => $s_characters,
+	'S_FORUM_OPTIONS'       => $s_forums,
+	'S_SELECT_SORT_DIR'     => $s_sort_dir,
+	'S_SELECT_SORT_KEY'     => $s_sort_key,
+	'S_SELECT_SORT_DAYS'    => $s_limit_days,
+	'S_IN_SEARCH'           => true,
 ]);
 
 // only show recent searches to search administrators
@@ -1241,10 +1241,10 @@ if ($auth->acl_get('a_search'))
 		$keywords = $row['search_keywords'];
 
 		$template->assign_block_vars('recentsearch', [
-			'KEYWORDS'	=> $keywords,
-			'TIME'		=> $user->format_date($row['search_time']),
+			'KEYWORDS'  => $keywords,
+			'TIME'      => $user->format_date($row['search_time']),
 
-			'U_KEYWORDS'	=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'keywords=' . urlencode(htmlspecialchars_decode($keywords)))
+			'U_KEYWORDS'    => append_sid(PHPBB_ROOT_PATH . 'search.php', 'keywords=' . urlencode(htmlspecialchars_decode($keywords)))
 		]);
 	}
 	$db->sql_freeresult($result);

@@ -10,11 +10,11 @@ class acp_ranks_info
 	function module()
 	{
 		return [
-			'filename'	=> 'acp_ranks',
-			'title'		=> 'ACP_RANKS',
-			'version'	=> '1.0.0',
-			'modes'		=> [
-				'ranks'		=> ['title' => 'ACP_MANAGE_RANKS', 'auth' => 'acl_a_ranks', 'cat' => ['ACP_CAT_USERS']],
+			'filename'  => 'acp_ranks',
+			'title'     => 'ACP_RANKS',
+			'version'   => '1.0.0',
+			'modes'     => [
+				'ranks'     => ['title' => 'ACP_MANAGE_RANKS', 'auth' => 'acl_a_ranks', 'cat' => ['ACP_CAT_USERS']],
 			],
 		];
 	}

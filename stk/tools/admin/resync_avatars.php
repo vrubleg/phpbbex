@@ -34,15 +34,15 @@ class resync_avatars
 	{
 		global $config, $db, $template;
 
-		$step	= request_var('step', 0);
-		$begin	= $this->_batch_size * $step;
+		$step   = request_var('step', 0);
+		$begin  = $this->_batch_size * $step;
 
 		// Get the batch
 		$sql = 'SELECT user_id as id, user_avatar as avatar, user_avatar_type as avatar_type
 			FROM ' . USERS_TABLE . '
 			WHERE ' . $db->sql_in_set('user_avatar_type', [AVATAR_UPLOAD, AVATAR_GALLERY]);
-		$result	= $db->sql_query_limit($sql, $this->_batch_size, $begin);
-		$batch	= $db->sql_fetchrowset($result);
+		$result = $db->sql_query_limit($sql, $this->_batch_size, $begin);
+		$batch  = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
 
 		if (empty($batch))
@@ -55,7 +55,7 @@ class resync_avatars
 		foreach ($batch as $row)
 		{
 			// Does teh file still exists?
-			$path	= '';
+			$path   = '';
 			if ($row['avatar_type'] == AVATAR_UPLOAD)
 			{
 				$path = PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $row['avatar'];

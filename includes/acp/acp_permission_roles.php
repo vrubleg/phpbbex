@@ -67,8 +67,8 @@ class acp_permission_roles
 		}
 
 		$template->assign_vars([
-			'L_TITLE'		=> $user->lang[$this->page_title],
-			'L_EXPLAIN'		=> $user->lang[$this->page_title . '_EXPLAIN'],
+			'L_TITLE'       => $user->lang[$this->page_title],
+			'L_EXPLAIN'     => $user->lang[$this->page_title . '_EXPLAIN'],
 		]);
 
 		// Take action... admin submitted something
@@ -106,10 +106,10 @@ class acp_permission_roles
 					else
 					{
 						confirm_box(false, 'DELETE_ROLE', build_hidden_fields([
-							'i'			=> $id,
-							'mode'		=> $mode,
-							'role_id'	=> $role_id,
-							'action'	=> $action,
+							'i'         => $id,
+							'mode'      => $mode,
+							'role_id'   => $role_id,
+							'action'    => $action,
 						]));
 					}
 
@@ -173,9 +173,9 @@ class acp_permission_roles
 					}
 
 					$sql_ary = [
-						'role_name'			=> (string) $role_name,
-						'role_description'	=> (string) $role_description,
-						'role_type'			=> (string) $permission_type,
+						'role_name'         => (string) $role_name,
+						'role_description'  => (string) $role_description,
+						'role_type'         => (string) $permission_type,
 					];
 
 					if ($action == 'edit')
@@ -223,9 +223,9 @@ class acp_permission_roles
 				$options_from = request_var('options_from', 0);
 
 				$role_row = [
-					'role_name'			=> utf8_normalize_nfc(request_var('role_name', '', true)),
-					'role_description'	=> utf8_normalize_nfc(request_var('role_description', '', true)),
-					'role_type'			=> $permission_type,
+					'role_name'         => utf8_normalize_nfc(request_var('role_name', '', true)),
+					'role_description'  => utf8_normalize_nfc(request_var('role_description', '', true)),
+					'role_type'         => $permission_type,
 				];
 
 				if ($options_from)
@@ -300,14 +300,14 @@ class acp_permission_roles
 				}
 
 				$template->assign_vars([
-					'S_EDIT'			=> true,
+					'S_EDIT'            => true,
 
-					'U_ACTION'			=> $this->u_action . "&amp;action={$action}&amp;role_id={$role_id}",
-					'U_BACK'			=> $this->u_action,
+					'U_ACTION'          => $this->u_action . "&amp;action={$action}&amp;role_id={$role_id}",
+					'U_BACK'            => $this->u_action,
 
-					'ROLE_NAME'			=> $role_row['role_name'],
-					'ROLE_DESCRIPTION'	=> $role_row['role_description'],
-					'L_ACL_TYPE'		=> $user->lang['ACL_TYPE_' . strtoupper($permission_type)],
+					'ROLE_NAME'         => $role_row['role_name'],
+					'ROLE_DESCRIPTION'  => $role_row['role_description'],
+					'L_ACL_TYPE'        => $user->lang['ACL_TYPE_' . strtoupper($permission_type)],
 				]);
 
 				// We need to fill the auth options array with ACL_NO options ;)
@@ -343,8 +343,8 @@ class acp_permission_roles
 						$role_name = $user->lang[$role_row['role_name']] ?? $role_row['role_name'];
 
 						$template->assign_vars([
-							'S_DISPLAY_ROLE_MASK'	=> true,
-							'L_ROLE_ASSIGNED_TO'	=> sprintf($user->lang['ROLE_ASSIGNED_TO'], $role_name),
+							'S_DISPLAY_ROLE_MASK'   => true,
+							'L_ROLE_ASSIGNED_TO'    => sprintf($user->lang['ROLE_ASSIGNED_TO'], $role_name),
 						]);
 
 						$auth_admin->display_role_mask($hold_ary);
@@ -407,14 +407,14 @@ class acp_permission_roles
 			$role_name = $user->lang[$row['role_name']] ?? $row['role_name'];
 
 			$template->assign_block_vars('roles', [
-				'ROLE_NAME'				=> $role_name,
-				'ROLE_DESCRIPTION'		=> $user->lang[$row['role_description']] ?? nl2br($row['role_description']),
+				'ROLE_NAME'             => $role_name,
+				'ROLE_DESCRIPTION'      => $user->lang[$row['role_description']] ?? nl2br($row['role_description']),
 
-				'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;role_id=' . $row['role_id'],
-				'U_REMOVE'			=> $this->u_action . '&amp;action=remove&amp;role_id=' . $row['role_id'],
-				'U_MOVE_UP'			=> $this->u_action . '&amp;action=move_up&amp;order=' . $row['role_order'],
-				'U_MOVE_DOWN'		=> $this->u_action . '&amp;action=move_down&amp;order=' . $row['role_order'],
-				'U_DISPLAY_ITEMS'	=> ($row['role_id'] == $display_item) ? '' : $this->u_action . '&amp;display_item=' . $row['role_id'] . '#assigned_to',
+				'U_EDIT'            => $this->u_action . '&amp;action=edit&amp;role_id=' . $row['role_id'],
+				'U_REMOVE'          => $this->u_action . '&amp;action=remove&amp;role_id=' . $row['role_id'],
+				'U_MOVE_UP'         => $this->u_action . '&amp;action=move_up&amp;order=' . $row['role_order'],
+				'U_MOVE_DOWN'       => $this->u_action . '&amp;action=move_down&amp;order=' . $row['role_order'],
+				'U_DISPLAY_ITEMS'   => ($row['role_id'] == $display_item) ? '' : $this->u_action . '&amp;display_item=' . $row['role_id'] . '#assigned_to',
 			]);
 
 			$s_role_options .= '<option value="' . $row['role_id'] . '">' . $role_name . '</option>';
@@ -422,20 +422,20 @@ class acp_permission_roles
 			if ($display_item == $row['role_id'])
 			{
 				$template->assign_vars([
-					'L_ROLE_ASSIGNED_TO'	=> sprintf($user->lang['ROLE_ASSIGNED_TO'], $role_name)]
+					'L_ROLE_ASSIGNED_TO'    => sprintf($user->lang['ROLE_ASSIGNED_TO'], $role_name)]
 				);
 			}
 		}
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'S_ROLE_OPTIONS'		=> $s_role_options]
+			'S_ROLE_OPTIONS'        => $s_role_options]
 		);
 
 		if ($display_item)
 		{
 			$template->assign_vars([
-				'S_DISPLAY_ROLE_MASK'	=> true]
+				'S_DISPLAY_ROLE_MASK'   => true]
 			);
 
 			$hold_ary = $auth_admin->get_role_mask($display_item);
@@ -465,22 +465,22 @@ class acp_permission_roles
 		foreach ($content_array as $cat => $cat_array)
 		{
 			$template->assign_block_vars('auth', [
-				'CAT_NAME'	=> $user->lang['permission_cat'][$cat],
+				'CAT_NAME'  => $user->lang['permission_cat'][$cat],
 
-				'S_YES'		=> ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']),
-				'S_NEVER'	=> ($cat_array['S_NEVER'] && !$cat_array['S_YES'] && !$cat_array['S_NO']),
-				'S_NO'		=> ($cat_array['S_NO'] && !$cat_array['S_NEVER'] && !$cat_array['S_YES']),
+				'S_YES'     => ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']),
+				'S_NEVER'   => ($cat_array['S_NEVER'] && !$cat_array['S_YES'] && !$cat_array['S_NO']),
+				'S_NO'      => ($cat_array['S_NO'] && !$cat_array['S_NEVER'] && !$cat_array['S_YES']),
 			]);
 
 			foreach ($cat_array['permissions'] as $permission => $allowed)
 			{
 				$template->assign_block_vars('auth.mask', [
-					'S_YES'		=> ($allowed == ACL_YES),
-					'S_NEVER'	=> ($allowed == ACL_NEVER),
-					'S_NO'		=> ($allowed == ACL_NO),
+					'S_YES'     => ($allowed == ACL_YES),
+					'S_NEVER'   => ($allowed == ACL_NEVER),
+					'S_NO'      => ($allowed == ACL_NO),
 
-					'FIELD_NAME'	=> $permission,
-					'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'],
+					'FIELD_NAME'    => $permission,
+					'PERMISSION'    => $user->lang['acl_' . $permission]['lang'],
 				]);
 			}
 		}

@@ -13,11 +13,11 @@ if (!defined('IN_PHPBB'))
 /**
 * Recalculate Nested Sets
 *
-* @param int	$new_id	first left_id (should start with 1)
-* @param string	$pkey	primary key-column (containing the id for the parent_id of the children)
-* @param string	$table	constant or fullname of the table
-* @param int	$parent_id parent_id of the current set (default = 0)
-* @param array	$where	contains strings to compare closer on the where statement (additional)
+* @param int    $new_id first left_id (should start with 1)
+* @param string $pkey   primary key-column (containing the id for the parent_id of the children)
+* @param string $table  constant or fullname of the table
+* @param int    $parent_id parent_id of the current set (default = 0)
+* @param array  $where  contains strings to compare closer on the where statement (additional)
 *
 * @author EXreaction
 */
@@ -298,12 +298,12 @@ function get_forum_branch($forum_id, $type = 'all', $order = 'descending', $incl
 /**
 * Copies permissions from one forum to others
 *
-* @param int	$src_forum_id		The source forum we want to copy permissions from
-* @param array	$dest_forum_ids		The destination forum(s) we want to copy to
-* @param bool	$clear_dest_perms	True if destination permissions should be deleted
-* @param bool	$add_log			True if log entry should be added
+* @param int    $src_forum_id       The source forum we want to copy permissions from
+* @param array  $dest_forum_ids     The destination forum(s) we want to copy to
+* @param bool   $clear_dest_perms   True if destination permissions should be deleted
+* @param bool   $add_log            True if log entry should be added
 *
-* @return bool						False on error
+* @return bool                      False on error
 *
 * @author bantu
 */
@@ -350,8 +350,8 @@ function copy_forum_permissions($src_forum_id, $dest_forum_ids, $clear_dest_perm
 	$dest_forum_ids = $dest_forum_names = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$dest_forum_ids[]	= (int) $row['forum_id'];
-		$dest_forum_names[]	= $row['forum_name'];
+		$dest_forum_ids[]   = (int) $row['forum_id'];
+		$dest_forum_names[] = $row['forum_name'];
 	}
 	$db->sql_freeresult($result);
 
@@ -378,10 +378,10 @@ function copy_forum_permissions($src_forum_id, $dest_forum_ids, $clear_dest_perm
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$row = [
-			'user_id'			=> (int) $row['user_id'],
-			'auth_option_id'	=> (int) $row['auth_option_id'],
-			'auth_role_id'		=> (int) $row['auth_role_id'],
-			'auth_setting'		=> (int) $row['auth_setting'],
+			'user_id'           => (int) $row['user_id'],
+			'auth_option_id'    => (int) $row['auth_option_id'],
+			'auth_role_id'      => (int) $row['auth_role_id'],
+			'auth_setting'      => (int) $row['auth_setting'],
 		];
 
 		foreach ($dest_forum_ids as $dest_forum_id)
@@ -400,10 +400,10 @@ function copy_forum_permissions($src_forum_id, $dest_forum_ids, $clear_dest_perm
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$row = [
-			'group_id'			=> (int) $row['group_id'],
-			'auth_option_id'	=> (int) $row['auth_option_id'],
-			'auth_role_id'		=> (int) $row['auth_role_id'],
-			'auth_setting'		=> (int) $row['auth_setting'],
+			'group_id'          => (int) $row['group_id'],
+			'auth_option_id'    => (int) $row['auth_option_id'],
+			'auth_role_id'      => (int) $row['auth_role_id'],
+			'auth_setting'      => (int) $row['auth_setting'],
 		];
 
 		foreach ($dest_forum_ids as $dest_forum_id)
@@ -768,7 +768,7 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 
 		$where_ids = array_map('intval', $where_ids);
 
-/*		Possible code for splitting post deletion
+/*      Possible code for splitting post deletion
 		if (sizeof($where_ids) >= 1001)
 		{
 			// Split into chunks of 1000
@@ -1147,11 +1147,11 @@ function delete_attachments($mode, $ids, $resync = true)
 /**
 * Deletes shadow topics pointing to a specified forum.
 *
-* @param int		$forum_id		The forum id
-* @param string		$sql_more		Additional WHERE statement, e.g. t.topic_time < (time() - 1234)
-* @param bool		$auto_sync		Will call sync() if this is true
+* @param int        $forum_id       The forum id
+* @param string     $sql_more       Additional WHERE statement, e.g. t.topic_time < (time() - 1234)
+* @param bool       $auto_sync      Will call sync() if this is true
 *
-* @return array		Array with affected forums
+* @return array     Array with affected forums
 *
 * @author bantu
 */
@@ -1246,9 +1246,9 @@ function update_posted_info(&$topic_ids)
 		foreach ($topic_row as $topic_id)
 		{
 			$sql_ary[] = [
-				'user_id'		=> (int) $user_id,
-				'topic_id'		=> (int) $topic_id,
-				'topic_posted'	=> 1,
+				'user_id'       => (int) $user_id,
+				'topic_id'      => (int) $topic_id,
+				'topic_posted'  => 1,
 			];
 		}
 	}
@@ -1287,21 +1287,21 @@ function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
 *
 * Exaples:
 * <code>
-* sync('topic', 'topic_id', 123);			// resync topic #123
-* sync('topic', 'forum_id', array(2, 3));	// resync topics from forum #2 and #3
-* sync('topic');							// resync all topics
-* sync('topic', 'range', 'topic_id BETWEEN 1 AND 60');	// resync a range of topics/forums (only available for 'topic' and 'forum' modes)
+* sync('topic', 'topic_id', 123);           // resync topic #123
+* sync('topic', 'forum_id', array(2, 3));   // resync topics from forum #2 and #3
+* sync('topic');                            // resync all topics
+* sync('topic', 'range', 'topic_id BETWEEN 1 AND 60');  // resync a range of topics/forums (only available for 'topic' and 'forum' modes)
 * </code>
 *
 * Modes:
-* - forum				Resync complete forum
-* - topic				Resync topics
-* - topic_moved			Removes topic shadows that would be in the same forum as the topic they link to
-* - topic_approved		Resyncs the topic_approved flag according to the status of the first post
-* - post_reported		Resyncs the post_reported flag, relying on actual reports
-* - topic_reported		Resyncs the topic_reported flag, relying on post_reported flags
-* - post_attachement	Same as post_reported, but with attachment flags
-* - topic_attachement	Same as topic_reported, but with attachment flags
+* - forum               Resync complete forum
+* - topic               Resync topics
+* - topic_moved         Removes topic shadows that would be in the same forum as the topic they link to
+* - topic_approved      Resyncs the topic_approved flag according to the status of the first post
+* - post_reported       Resyncs the post_reported flag, relying on actual reports
+* - topic_reported      Resyncs the topic_reported flag, relying on post_reported flags
+* - post_attachement    Same as post_reported, but with attachment flags
+* - topic_attachement   Same as topic_reported, but with attachment flags
 */
 function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false, $sync_extra = false)
 {
@@ -2273,23 +2273,23 @@ function cache_moderators()
 
 		// Remove users who have group memberships with DENY moderator permissions
 		$sql = $db->sql_build_query('SELECT', [
-			'SELECT'	=> 'a.forum_id, ug.user_id, g.group_id',
+			'SELECT'    => 'a.forum_id, ug.user_id, g.group_id',
 
-			'FROM'		=> [
-				ACL_OPTIONS_TABLE	=> 'o',
-				USER_GROUP_TABLE	=> 'ug',
-				GROUPS_TABLE		=> 'g',
-				ACL_GROUPS_TABLE	=> 'a',
+			'FROM'      => [
+				ACL_OPTIONS_TABLE   => 'o',
+				USER_GROUP_TABLE    => 'ug',
+				GROUPS_TABLE        => 'g',
+				ACL_GROUPS_TABLE    => 'a',
 			],
 
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [ACL_ROLES_DATA_TABLE => 'r'],
-					'ON'	=> 'a.auth_role_id = r.role_id'
+					'FROM'  => [ACL_ROLES_DATA_TABLE => 'r'],
+					'ON'    => 'a.auth_role_id = r.role_id'
 				]
 			],
 
-			'WHERE'		=> '(o.auth_option_id = a.auth_option_id OR o.auth_option_id = r.auth_option_id)
+			'WHERE'     => '(o.auth_option_id = a.auth_option_id OR o.auth_option_id = r.auth_option_id)
 				AND ((a.auth_setting = ' . ACL_NEVER . ' AND r.auth_setting IS NULL)
 					OR r.auth_setting = ' . ACL_NEVER . ')
 				AND a.group_id = ug.group_id
@@ -2335,11 +2335,11 @@ function cache_moderators()
 				foreach ($forum_id_ary as $forum_id => $auth_ary)
 				{
 					$sql_ary[] = [
-						'forum_id'		=> (int) $forum_id,
-						'user_id'		=> (int) $user_id,
-						'username'		=> (string) $usernames_ary[$user_id],
-						'group_id'		=> 0,
-						'group_name'	=> ''
+						'forum_id'      => (int) $forum_id,
+						'user_id'       => (int) $user_id,
+						'username'      => (string) $usernames_ary[$user_id],
+						'group_id'      => 0,
+						'group_name'    => ''
 					];
 				}
 			}
@@ -2398,11 +2398,11 @@ function cache_moderators()
 				}
 
 				$sql_ary[] = [
-					'forum_id'		=> (int) $forum_id,
-					'user_id'		=> 0,
-					'username'		=> '',
-					'group_id'		=> (int) $group_id,
-					'group_name'	=> (string) $groupnames_ary[$group_id]
+					'forum_id'      => (int) $forum_id,
+					'user_id'       => 0,
+					'username'      => '',
+					'group_id'      => (int) $group_id,
+					'group_name'    => (string) $groupnames_ary[$group_id]
 				];
 			}
 		}
@@ -2567,25 +2567,25 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 		}
 
 		$log[$i] = [
-			'id'				=> $row['log_id'],
+			'id'                => $row['log_id'],
 
-			'reportee_id'			=> $row['reportee_id'],
-			'reportee_username'		=> '',
+			'reportee_id'           => $row['reportee_id'],
+			'reportee_username'     => '',
 			'reportee_username_full'=> '',
 
-			'user_id'			=> $row['user_id'],
-			'username'			=> $row['username'],
-			'username_full'		=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, $profile_url),
+			'user_id'           => $row['user_id'],
+			'username'          => $row['username'],
+			'username_full'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], false, $profile_url),
 
-			'ip'				=> $row['log_ip'],
-			'time'				=> $row['log_time'],
-			'forum_id'			=> $row['forum_id'],
-			'topic_id'			=> $row['topic_id'],
+			'ip'                => $row['log_ip'],
+			'time'              => $row['log_time'],
+			'forum_id'          => $row['forum_id'],
+			'topic_id'          => $row['topic_id'],
 
-			'viewforum'			=> ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : false,
-			'viewalbum'			=> ((isset($row['album_id']) && $row['album_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id']) : false),
-			'viewimage'			=> ((isset($row['image_id']) && $row['image_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['image_id']) : false),
-			'action'			=> $user->lang[$row['log_operation']] ?? '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
+			'viewforum'         => ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']) : false,
+			'viewalbum'         => ((isset($row['album_id']) && $row['album_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id']) : false),
+			'viewimage'         => ((isset($row['image_id']) && $row['image_id'] && ($log_type == LOG_GALLERY)) ? phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['image_id']) : false),
+			'action'            => $user->lang[$row['log_operation']] ?? '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
 		];
 
 		if (!empty($row['log_data']))
@@ -2736,25 +2736,25 @@ function update_foes($group_id = false, $user_id = false)
 	{
 		// Grab group settings...
 		$sql = $db->sql_build_query('SELECT', [
-			'SELECT'	=> 'a.group_id',
+			'SELECT'    => 'a.group_id',
 
-			'FROM'		=> [
-				ACL_OPTIONS_TABLE	=> 'ao',
-				ACL_GROUPS_TABLE	=> 'a'
+			'FROM'      => [
+				ACL_OPTIONS_TABLE   => 'ao',
+				ACL_GROUPS_TABLE    => 'a'
 			],
 
-			'LEFT_JOIN'	=> [
+			'LEFT_JOIN' => [
 				[
-					'FROM'	=> [ACL_ROLES_DATA_TABLE => 'r'],
-					'ON'	=> 'a.auth_role_id = r.role_id'
+					'FROM'  => [ACL_ROLES_DATA_TABLE => 'r'],
+					'ON'    => 'a.auth_role_id = r.role_id'
 				],
 			],
 
-			'WHERE'		=> '(ao.auth_option_id = a.auth_option_id OR ao.auth_option_id = r.auth_option_id)
+			'WHERE'     => '(ao.auth_option_id = a.auth_option_id OR ao.auth_option_id = r.auth_option_id)
 				AND ' . $db->sql_in_set('a.group_id', $group_id) . "
 				AND ao.auth_option IN ('a_', 'm_')",
 
-			'GROUP_BY'	=> 'a.group_id'
+			'GROUP_BY'  => 'a.group_id'
 		]);
 		$result = $db->sql_query($sql);
 
@@ -3154,11 +3154,11 @@ function obtain_latest_version_info($force_update = false, $warn_fail = false, $
 /**
  * Updates a bitfield column with OR and AND bitmasks.
  *
- * @param string	$table_name		The table to update.
- * @param string	$column_name	The column containing a bitfield to update.
- * @param int		$or_bits		Bitmask which is OR-ed with the current column value.
- * @param int		$and_bits		Bitmask which is AND-ed with the current column value.
- * @param string	$sql_more		This string is attached to the sql query generated to update the table.
+ * @param string    $table_name     The table to update.
+ * @param string    $column_name    The column containing a bitfield to update.
+ * @param int       $or_bits        Bitmask which is OR-ed with the current column value.
+ * @param int       $and_bits       Bitmask which is AND-ed with the current column value.
+ * @param string    $sql_more       This string is attached to the sql query generated to update the table.
  *
  * @return null
  */

@@ -154,8 +154,8 @@ class messenger
 	/**
 	* Adds X-AntiAbuse headers
 	*
-	* @param array $config		Configuration array
-	* @param user $user			A user object
+	* @param array $config      Configuration array
+	* @param user $user         A user object
 	*
 	* @return null
 	*/
@@ -211,7 +211,7 @@ class messenger
 			$tpl->set_custom_template($template_path, $template_lang . '_email', $fallback_template_path);
 
 			$tpl->set_filenames([
-				'body'		=> $template_file . '.txt',
+				'body'      => $template_file . '.txt',
 			]);
 		}
 
@@ -256,21 +256,21 @@ class messenger
 		if (!isset($this->vars['U_BOARD']))
 		{
 			$this->assign_vars([
-				'U_BOARD'	=> generate_board_url(),
+				'U_BOARD'   => generate_board_url(),
 			]);
 		}
 
 		if (!isset($this->vars['EMAIL_SIG']))
 		{
 			$this->assign_vars([
-				'EMAIL_SIG'	=> str_replace('<br />', "\n", "-- \n" . htmlspecialchars_decode($config['board_email_sig'])),
+				'EMAIL_SIG' => str_replace('<br />', "\n", "-- \n" . htmlspecialchars_decode($config['board_email_sig'])),
 			]);
 		}
 
 		if (!isset($this->vars['SITENAME']))
 		{
 			$this->assign_vars([
-				'SITENAME'	=> htmlspecialchars_decode($config['sitename']),
+				'SITENAME'  => htmlspecialchars_decode($config['sitename']),
 			]);
 		}
 
@@ -503,11 +503,11 @@ class messenger
 		else
 		{
 			$this->queue->put('email', [
-				'to'			=> $to,
-				'addresses'		=> $this->addresses,
-				'subject'		=> $this->subject,
-				'msg'			=> $this->msg,
-				'headers'		=> $headers]
+				'to'            => $to,
+				'addresses'     => $this->addresses,
+				'subject'       => $this->subject,
+				'msg'           => $this->msg,
+				'headers'       => $headers]
 			);
 		}
 
@@ -577,9 +577,9 @@ class messenger
 		else
 		{
 			$this->queue->put('jabber', [
-				'addresses'		=> $addresses,
-				'subject'		=> $this->subject,
-				'msg'			=> $this->msg]
+				'addresses'     => $addresses,
+				'subject'       => $this->subject,
+				'msg'           => $this->msg]
 			);
 		}
 		unset($addresses);

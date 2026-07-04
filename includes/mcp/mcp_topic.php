@@ -32,15 +32,15 @@ function mcp_topic_view($id, $mode, $action)
 	$topic_info = $topic_info[$topic_id];
 
 	// Set up some vars
-	$icon_id		= request_var('icon', 0);
-	$subject		= utf8_normalize_nfc(request_var('subject', '', true));
-	$start			= request_var('start', 0);
-	$sort_days_old	= request_var('st_old', 0);
-	$forum_id		= request_var('f', 0);
-	$to_topic_id	= request_var('to_topic_id', 0);
-	$to_forum_id	= request_var('to_forum_id', 0);
-	$sort			= isset($_POST['sort']);
-	$submitted_id_list	= request_var('post_ids', [0]);
+	$icon_id        = request_var('icon', 0);
+	$subject        = utf8_normalize_nfc(request_var('subject', '', true));
+	$start          = request_var('start', 0);
+	$sort_days_old  = request_var('st_old', 0);
+	$forum_id       = request_var('f', 0);
+	$to_topic_id    = request_var('to_topic_id', 0);
+	$to_forum_id    = request_var('to_forum_id', 0);
+	$sort           = isset($_POST['sort']);
+	$submitted_id_list  = request_var('post_ids', [0]);
 	$checked_ids = $post_id_list = request_var('post_id_list', [0]);
 
 	// Resync Topic?
@@ -228,27 +228,27 @@ function mcp_topic_view($id, $mode, $action)
 		$post_unread = (isset($topic_tracking_info[$topic_id]) && $row['post_time'] > $topic_tracking_info[$topic_id]);
 
 		$template->assign_block_vars('postrow', [
-			'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-			'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-			'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-			'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+			'POST_AUTHOR_FULL'      => get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+			'POST_AUTHOR_COLOUR'    => get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+			'POST_AUTHOR'           => get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+			'U_POST_AUTHOR'         => get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 
-			'POST_DATE'		=> $user->format_date($row['post_time']),
-			'POST_SUBJECT'	=> $post_subject,
-			'MESSAGE'		=> $message,
-			'POST_ID'		=> $row['post_id'],
-			'RETURN_TOPIC'	=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_id) . '">', '</a>'),
+			'POST_DATE'     => $user->format_date($row['post_time']),
+			'POST_SUBJECT'  => $post_subject,
+			'MESSAGE'       => $message,
+			'POST_ID'       => $row['post_id'],
+			'RETURN_TOPIC'  => sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_id) . '">', '</a>'),
 
-			'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
+			'MINI_POST_IMG'         => ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
 
-			'S_POST_REPORTED'	=> ($row['post_reported'] && $auth->acl_get('m_report', $topic_info['forum_id'])),
-			'S_POST_UNAPPROVED'	=> (!$row['post_approved'] && $auth->acl_get('m_approve', $topic_info['forum_id'])),
-			'S_CHECKED'			=> (($submitted_id_list && !in_array(intval($row['post_id']), $submitted_id_list)) || in_array(intval($row['post_id']), $checked_ids)),
-			'S_HAS_ATTACHMENTS'	=> !empty($attachments[$row['post_id']]),
+			'S_POST_REPORTED'   => ($row['post_reported'] && $auth->acl_get('m_report', $topic_info['forum_id'])),
+			'S_POST_UNAPPROVED' => (!$row['post_approved'] && $auth->acl_get('m_approve', $topic_info['forum_id'])),
+			'S_CHECKED'         => (($submitted_id_list && !in_array(intval($row['post_id']), $submitted_id_list)) || in_array(intval($row['post_id']), $checked_ids)),
+			'S_HAS_ATTACHMENTS' => !empty($attachments[$row['post_id']]),
 
-			'U_POST_DETAILS'	=> "{$url}&amp;i={$id}&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f={$forum_id}" : ''),
-			'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
-			'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
+			'U_POST_DETAILS'    => "{$url}&amp;i={$id}&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f={$forum_id}" : ''),
+			'U_MCP_APPROVE'     => ($auth->acl_get('m_approve', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
+			'U_MCP_REPORT'      => ($auth->acl_get('m_report', $topic_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $topic_info['forum_id'] . '&amp;p=' . $row['post_id']) : '',
 		]);
 
 		// Display not already displayed Attachments for this post, we already parsed them. ;)
@@ -257,7 +257,7 @@ function mcp_topic_view($id, $mode, $action)
 			foreach ($attachments[$row['post_id']] as $attachment)
 			{
 				$template->assign_block_vars('postrow.attachment', [
-					'DISPLAY_ATTACHMENT'	=> $attachment]
+					'DISPLAY_ATTACHMENT'    => $attachment]
 				);
 			}
 		}
@@ -293,51 +293,51 @@ function mcp_topic_view($id, $mode, $action)
 	}
 
 	$s_hidden_fields = build_hidden_fields([
-		'st_old'	=> $sort_days,
-		'post_ids'	=> $post_id_list,
+		'st_old'    => $sort_days,
+		'post_ids'  => $post_id_list,
 	]);
 
 	$template->assign_vars([
-		'TOPIC_TITLE'		=> $topic_info['topic_title'],
-		'U_VIEW_TOPIC'		=> append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_info['topic_id']),
+		'TOPIC_TITLE'       => $topic_info['topic_title'],
+		'U_VIEW_TOPIC'      => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_info['topic_id']),
 
-		'TO_TOPIC_ID'		=> $to_topic_id,
-		'TO_TOPIC_INFO'		=> ($to_topic_id) ? sprintf($user->lang['YOU_SELECTED_TOPIC'], $to_topic_id, '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $to_topic_id) . '">' . $to_topic_info['topic_title'] . '</a>') : '',
+		'TO_TOPIC_ID'       => $to_topic_id,
+		'TO_TOPIC_INFO'     => ($to_topic_id) ? sprintf($user->lang['YOU_SELECTED_TOPIC'], $to_topic_id, '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $to_topic_id) . '">' . $to_topic_info['topic_title'] . '</a>') : '',
 
-		'SPLIT_SUBJECT'		=> $subject,
-		'POSTS_PER_PAGE'	=> $posts_per_page,
-		'ACTION'			=> $action,
+		'SPLIT_SUBJECT'     => $subject,
+		'POSTS_PER_PAGE'    => $posts_per_page,
+		'ACTION'            => $action,
 
-		'REPORTED_IMG'		=> $user->img('icon_topic_reported', 'POST_REPORTED'),
-		'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
-		'INFO_IMG'			=> $user->img('icon_post_info', 'VIEW_INFO'),
+		'REPORTED_IMG'      => $user->img('icon_topic_reported', 'POST_REPORTED'),
+		'UNAPPROVED_IMG'    => $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
+		'INFO_IMG'          => $user->img('icon_post_info', 'VIEW_INFO'),
 
-		'S_MCP_ACTION'		=> "{$url}&amp;i={$id}&amp;mode={$mode}&amp;action={$action}&amp;start={$start}",
-		'S_FORUM_SELECT'	=> ($to_forum_id) ? make_forum_select($to_forum_id, false, false, true, true, true) : make_forum_select($topic_info['forum_id'], false, false, true, true, true),
-		'S_CAN_SPLIT'		=> (bool) $auth->acl_get('m_split', $topic_info['forum_id']),
-		'S_CAN_MERGE'		=> (bool) $auth->acl_get('m_merge', $topic_info['forum_id']),
-		'S_CAN_DELETE'		=> (bool) $auth->acl_get('m_delete', $topic_info['forum_id']),
-		'S_CAN_APPROVE'		=> ($has_unapproved_posts && $auth->acl_get('m_approve', $topic_info['forum_id'])),
-		'S_CAN_LOCK'		=> (bool) $auth->acl_get('m_lock', $topic_info['forum_id']),
-		'S_CAN_REPORT'		=> (bool) $auth->acl_get('m_report', $topic_info['forum_id']),
-		'S_CAN_SYNC'		=> $auth->acl_get('m_', $topic_info['forum_id']),
-		'S_REPORT_VIEW'		=> ($action == 'reports'),
-		'S_MERGE_VIEW'		=> ($action == 'merge'),
-		'S_SPLIT_VIEW'		=> ($action == 'split'),
+		'S_MCP_ACTION'      => "{$url}&amp;i={$id}&amp;mode={$mode}&amp;action={$action}&amp;start={$start}",
+		'S_FORUM_SELECT'    => ($to_forum_id) ? make_forum_select($to_forum_id, false, false, true, true, true) : make_forum_select($topic_info['forum_id'], false, false, true, true, true),
+		'S_CAN_SPLIT'       => (bool) $auth->acl_get('m_split', $topic_info['forum_id']),
+		'S_CAN_MERGE'       => (bool) $auth->acl_get('m_merge', $topic_info['forum_id']),
+		'S_CAN_DELETE'      => (bool) $auth->acl_get('m_delete', $topic_info['forum_id']),
+		'S_CAN_APPROVE'     => ($has_unapproved_posts && $auth->acl_get('m_approve', $topic_info['forum_id'])),
+		'S_CAN_LOCK'        => (bool) $auth->acl_get('m_lock', $topic_info['forum_id']),
+		'S_CAN_REPORT'      => (bool) $auth->acl_get('m_report', $topic_info['forum_id']),
+		'S_CAN_SYNC'        => $auth->acl_get('m_', $topic_info['forum_id']),
+		'S_REPORT_VIEW'     => ($action == 'reports'),
+		'S_MERGE_VIEW'      => ($action == 'merge'),
+		'S_SPLIT_VIEW'      => ($action == 'split'),
 
-		'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
+		'S_HIDDEN_FIELDS'   => $s_hidden_fields,
 
-		'S_SHOW_TOPIC_ICONS'	=> $s_topic_icons,
-		'S_TOPIC_ICON'			=> $icon_id,
+		'S_SHOW_TOPIC_ICONS'    => $s_topic_icons,
+		'S_TOPIC_ICON'          => $icon_id,
 
-		'U_SELECT_TOPIC'	=> "{$url}&amp;i={$id}&amp;mode=forum_view&amp;action=merge_select" . (($forum_id) ? "&amp;f={$forum_id}" : ''),
+		'U_SELECT_TOPIC'    => "{$url}&amp;i={$id}&amp;mode=forum_view&amp;action=merge_select" . (($forum_id) ? "&amp;f={$forum_id}" : ''),
 
-		'RETURN_TOPIC'		=> sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_info['topic_id']}&amp;start={$start}") . '">', '</a>'),
-		'RETURN_FORUM'		=> sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$topic_info['forum_id']}&amp;start={$start}") . '">', '</a>'),
+		'RETURN_TOPIC'      => sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_info['topic_id']}&amp;start={$start}") . '">', '</a>'),
+		'RETURN_FORUM'      => sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$topic_info['forum_id']}&amp;start={$start}") . '">', '</a>'),
 
-		'PAGE_NUMBER'		=> on_page($total, $posts_per_page, $start),
-		'PAGINATION'		=> (!$posts_per_page) ? '' : generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;t={$topic_info['topic_id']}&amp;mode={$mode}&amp;action={$action}&amp;to_topic_id={$to_topic_id}&amp;posts_per_page={$posts_per_page}&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}"), $total, $posts_per_page, $start),
-		'TOTAL_POSTS'		=> ($total == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total),
+		'PAGE_NUMBER'       => on_page($total, $posts_per_page, $start),
+		'PAGINATION'        => (!$posts_per_page) ? '' : generate_pagination(append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;t={$topic_info['topic_id']}&amp;mode={$mode}&amp;action={$action}&amp;to_topic_id={$to_topic_id}&amp;posts_per_page={$posts_per_page}&amp;st={$sort_days}&amp;sk={$sort_key}&amp;sd={$sort_dir}"), $total, $posts_per_page, $start),
+		'TOTAL_POSTS'       => ($total == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total),
 	]);
 }
 
@@ -348,9 +348,9 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 {
 	global $db, $template, $user, $auth, $config;
 
-	$post_id_list	= request_var('post_id_list', [0]);
-	$forum_id		= request_var('forum_id', 0);
-	$start			= request_var('start', 0);
+	$post_id_list   = request_var('post_id_list', [0]);
+	$forum_id       = request_var('forum_id', 0);
+	$start          = request_var('start', 0);
 
 	if (!sizeof($post_id_list))
 	{
@@ -407,17 +407,17 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 	$redirect = request_var('redirect', build_url(['quickmod']));
 
 	$s_hidden_fields = build_hidden_fields([
-		'i'				=> 'main',
-		'post_id_list'	=> $post_id_list,
-		'f'				=> $forum_id,
-		'mode'			=> 'topic_view',
-		'start'			=> $start,
-		'action'		=> $action,
-		't'				=> $topic_id,
-		'redirect'		=> $redirect,
-		'subject'		=> $subject,
-		'to_forum_id'	=> $to_forum_id,
-		'icon'			=> request_var('icon', 0)]
+		'i'             => 'main',
+		'post_id_list'  => $post_id_list,
+		'f'             => $forum_id,
+		'mode'          => 'topic_view',
+		'start'         => $start,
+		'action'        => $action,
+		't'             => $topic_id,
+		'redirect'      => $redirect,
+		'subject'       => $subject,
+		'to_forum_id'   => $to_forum_id,
+		'icon'          => request_var('icon', 0)]
 	);
 	$success_msg = $return_link = '';
 
@@ -458,7 +458,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 				// If split from selected post (split_beyond), we split the unapproved items too.
 				if (!$row['post_approved'] && !$auth->acl_get('m_approve', $row['forum_id']))
 				{
-//					continue;
+//                  continue;
 				}
 
 				// Start to store post_ids as soon as we see the first post that was selected
@@ -483,9 +483,9 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		$icon_id = request_var('icon', 0);
 
 		$sql_ary = [
-			'forum_id'		=> $to_forum_id,
-			'topic_title'	=> $subject,
-			'icon_id'		=> $icon_id,
+			'forum_id'      => $to_forum_id,
+			'topic_title'   => $subject,
+			'icon_id'       => $icon_id,
 			'topic_approved'=> 1
 		];
 
@@ -517,9 +517,9 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$sql_ary[] = [
-				'topic_id'		=> (int) $to_topic_id,
-				'user_id'		=> (int) $row['user_id'],
-				'notify_status'	=> (int) $row['notify_status'],
+				'topic_id'      => (int) $to_topic_id,
+				'user_id'       => (int) $row['user_id'],
+				'notify_status' => (int) $row['notify_status'],
 			];
 		}
 		$db->sql_freeresult($result);
@@ -539,8 +539,8 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$sql_ary[] = [
-				'topic_id'		=> (int) $to_topic_id,
-				'user_id'		=> (int) $row['user_id'],
+				'topic_id'      => (int) $to_topic_id,
+				'user_id'       => (int) $row['user_id'],
 			];
 		}
 		$db->sql_freeresult($result);
@@ -600,8 +600,8 @@ function merge_posts($topic_id, $to_topic_id)
 
 	$topic_data = $topic_data[$to_topic_id];
 
-	$post_id_list	= request_var('post_id_list', [0]);
-	$start			= request_var('start', 0);
+	$post_id_list   = request_var('post_id_list', [0]);
+	$start          = request_var('start', 0);
 
 	if (!sizeof($post_id_list))
 	{
@@ -617,14 +617,14 @@ function merge_posts($topic_id, $to_topic_id)
 	$redirect = request_var('redirect', build_url(['quickmod']));
 
 	$s_hidden_fields = build_hidden_fields([
-		'i'				=> 'main',
-		'post_id_list'	=> $post_id_list,
-		'to_topic_id'	=> $to_topic_id,
-		'mode'			=> 'topic_view',
-		'action'		=> 'merge_posts',
-		'start'			=> $start,
-		'redirect'		=> $redirect,
-		't'				=> $topic_id]
+		'i'             => 'main',
+		'post_id_list'  => $post_id_list,
+		'to_topic_id'   => $to_topic_id,
+		'mode'          => 'topic_view',
+		'action'        => 'merge_posts',
+		'start'         => $start,
+		'redirect'      => $redirect,
+		't'             => $topic_id]
 	);
 	$success_msg = $return_link = '';
 

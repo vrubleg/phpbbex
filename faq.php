@@ -50,8 +50,8 @@ foreach ($user->help as $help_ary)
 		}
 
 		$template->assign_block_vars('faq_block', [
-			'BLOCK_TITLE'		=> $help_ary[1],
-			'SWITCH_COLUMN'		=> $switch_column,
+			'BLOCK_TITLE'       => $help_ary[1],
+			'SWITCH_COLUMN'     => $switch_column,
 		]);
 
 		if ($switch_column)
@@ -62,17 +62,17 @@ foreach ($user->help as $help_ary)
 	}
 
 	$template->assign_block_vars('faq_block.faq_row', [
-		'FAQ_QUESTION'		=> $help_ary[0],
-		'FAQ_ANSWER'		=> $help_ary[1],
+		'FAQ_QUESTION'      => $help_ary[0],
+		'FAQ_ANSWER'        => $help_ary[1],
 	]);
 }
 
 // Lets build a page ...
 $template->assign_vars([
-	'L_FAQ_TITLE'				=> $l_title,
-	'L_BACK_TO_TOP'				=> $user->lang['BACK_TO_TOP'],
+	'L_FAQ_TITLE'               => $l_title,
+	'L_BACK_TO_TOP'             => $user->lang['BACK_TO_TOP'],
 
-	'SWITCH_COLUMN_MANUALLY'	=> !$found_switch,
+	'SWITCH_COLUMN_MANUALLY'    => !$found_switch,
 ]);
 
 page_header($l_title, false);

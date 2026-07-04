@@ -23,7 +23,7 @@ class acp_ban
 
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
-		$bansubmit	= isset($_POST['bansubmit']);
+		$bansubmit  = isset($_POST['bansubmit']);
 		$unbansubmit = isset($_POST['unbansubmit']);
 		$current_time = time();
 
@@ -41,12 +41,12 @@ class acp_ban
 		if ($bansubmit)
 		{
 			// Grab the list of entries
-			$ban				= utf8_normalize_nfc(request_var('ban', '', true));
-			$ban_len			= request_var('banlength', 0);
-			$ban_len_other		= request_var('banlengthother', '');
-			$ban_exclude		= request_var('banexclude', 0);
-			$ban_reason			= utf8_normalize_nfc(request_var('banreason', '', true));
-			$ban_give_reason	= utf8_normalize_nfc(request_var('bangivereason', '', true));
+			$ban                = utf8_normalize_nfc(request_var('ban', '', true));
+			$ban_len            = request_var('banlength', 0);
+			$ban_len_other      = request_var('banlengthother', '');
+			$ban_exclude        = request_var('banexclude', 0);
+			$ban_reason         = utf8_normalize_nfc(request_var('banreason', '', true));
+			$ban_give_reason    = utf8_normalize_nfc(request_var('bangivereason', '', true));
 
 			if ($ban)
 			{
@@ -94,18 +94,18 @@ class acp_ban
 		self::display_ban_options($mode);
 
 		$template->assign_vars([
-			'L_TITLE'				=> $this->page_title,
-			'L_EXPLAIN'				=> $l_ban_explain,
-			'L_UNBAN_TITLE'			=> $l_unban_title,
-			'L_UNBAN_EXPLAIN'		=> $l_unban_explain,
-			'L_BAN_CELL'			=> $l_ban_cell,
-			'L_BAN_EXCLUDE_EXPLAIN'	=> $l_ban_exclude_explain,
-			'L_NO_BAN_CELL'			=> $l_no_ban_cell,
+			'L_TITLE'               => $this->page_title,
+			'L_EXPLAIN'             => $l_ban_explain,
+			'L_UNBAN_TITLE'         => $l_unban_title,
+			'L_UNBAN_EXPLAIN'       => $l_unban_explain,
+			'L_BAN_CELL'            => $l_ban_cell,
+			'L_BAN_EXCLUDE_EXPLAIN' => $l_ban_exclude_explain,
+			'L_NO_BAN_CELL'         => $l_no_ban_cell,
 
-			'S_USERNAME_BAN'	=> ($mode == 'user'),
+			'S_USERNAME_BAN'    => ($mode == 'user'),
 
-			'U_ACTION'			=> $this->u_action,
-			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_ban&amp;field=ban'),
+			'U_ACTION'          => $this->u_action,
+			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_ban&amp;field=ban'),
 		]);
 	}
 
@@ -212,9 +212,9 @@ class acp_ban
 			foreach ($ban_length as $ban_id => $length)
 			{
 				$template->assign_block_vars('ban_length', [
-					'BAN_ID'	=> (int) $ban_id,
-					'LENGTH'	=> $length,
-					'A_LENGTH'	=> addslashes($length),
+					'BAN_ID'    => (int) $ban_id,
+					'LENGTH'    => $length,
+					'A_LENGTH'  => addslashes($length),
 				]);
 			}
 		}
@@ -224,9 +224,9 @@ class acp_ban
 			foreach ($ban_reasons as $ban_id => $reason)
 			{
 				$template->assign_block_vars('ban_reason', [
-					'BAN_ID'	=> $ban_id,
-					'REASON'	=> $reason,
-					'A_REASON'	=> addslashes($reason),
+					'BAN_ID'    => $ban_id,
+					'REASON'    => $reason,
+					'A_REASON'  => addslashes($reason),
 				]);
 			}
 		}
@@ -236,9 +236,9 @@ class acp_ban
 			foreach ($ban_give_reasons as $ban_id => $reason)
 			{
 				$template->assign_block_vars('ban_give_reason', [
-					'BAN_ID'	=> $ban_id,
-					'REASON'	=> $reason,
-					'A_REASON'	=> addslashes($reason),
+					'BAN_ID'    => $ban_id,
+					'REASON'    => $reason,
+					'A_REASON'  => addslashes($reason),
 				]);
 			}
 		}
@@ -259,9 +259,9 @@ class acp_ban
 		}
 
 		$template->assign_vars([
-			'S_BAN_END_OPTIONS'	=> $ban_end_options,
-			'S_BANNED_OPTIONS'	=> ($banned_options || $excluded_options),
-			'BANNED_OPTIONS'	=> $options,
+			'S_BAN_END_OPTIONS' => $ban_end_options,
+			'S_BANNED_OPTIONS'  => ($banned_options || $excluded_options),
+			'BANNED_OPTIONS'    => $options,
 		]);
 	}
 }

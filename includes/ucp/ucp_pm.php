@@ -16,19 +16,19 @@ if (!defined('IN_PHPBB'))
 * $_REQUEST['folder'] display folder with the id used
 * $_REQUEST['folder'] inbox|outbox|sentbox display folder with the associated name
 *
-*	Display Messages (default to inbox) - mode=view
-*	Display single message - mode=view&p=[msg_id] or &p=[msg_id] (short linkage)
+*   Display Messages (default to inbox) - mode=view
+*   Display single message - mode=view&p=[msg_id] or &p=[msg_id] (short linkage)
 *
-*	if the folder id with (&f=[folder_id]) is used when displaying messages, one query will be saved. If it is not used, phpBB needs to grab
-*	the folder id first in order to display the input boxes and folder names and such things. ;) phpBB always checks this against the database to make
-*	sure the user is able to view the message.
+*   if the folder id with (&f=[folder_id]) is used when displaying messages, one query will be saved. If it is not used, phpBB needs to grab
+*   the folder id first in order to display the input boxes and folder names and such things. ;) phpBB always checks this against the database to make
+*   sure the user is able to view the message.
 *
-*	Composing Messages (mode=compose):
-*		To specific user (u=[user_id])
-*		To specific group (g=[group_id])
-*		Quoting a post (action=quotepost&p=[post_id])
-*		Quoting a PM (action=quote&p=[msg_id])
-*		Forwarding a PM (action=forward&p=[msg_id])
+*   Composing Messages (mode=compose):
+*       To specific user (u=[user_id])
+*       To specific group (g=[group_id])
+*       Quoting a post (action=quotepost&p=[post_id])
+*       Quoting a PM (action=quote&p=[msg_id])
+*       Forwarding a PM (action=forward&p=[msg_id])
 */
 class ucp_pm
 {
@@ -92,8 +92,8 @@ class ucp_pm
 				{
 					// trigger_error('NO_AUTH_SEND_MESSAGE');
 					$template->assign_vars([
-						'S_NO_AUTH_SEND_MESSAGE'	=> true,
-						'S_COMPOSE_PM_VIEW'			=> true,
+						'S_NO_AUTH_SEND_MESSAGE'    => true,
+						'S_COMPOSE_PM_VIEW'         => true,
 					]);
 
 					$tpl_file = 'ucp_pm_viewfolder';
@@ -152,7 +152,7 @@ class ucp_pm
 				}
 
 				$msg_id = request_var('p', 0);
-				$view	= request_var('view', '');
+				$view   = request_var('view', '');
 
 				// View message if specified
 				if ($msg_id)
@@ -173,10 +173,10 @@ class ucp_pm
 
 
 				// First Handle Mark actions and moving messages
-				$submit_mark	= isset($_POST['submit_mark']);
-				$move_pm		= isset($_POST['move_pm']);
-				$mark_option	= request_var('mark_option', '');
-				$dest_folder	= request_var('dest_folder', PRIVMSGS_NO_BOX);
+				$submit_mark    = isset($_POST['submit_mark']);
+				$move_pm        = isset($_POST['move_pm']);
+				$mark_option    = request_var('mark_option', '');
+				$dest_folder    = request_var('dest_folder', PRIVMSGS_NO_BOX);
 
 				// Is moving PM triggered through mark options?
 				if (!in_array($mark_option, ['mark_important', 'delete_marked']) && $submit_mark)
@@ -189,17 +189,17 @@ class ucp_pm
 				// Move PM
 				if ($move_pm)
 				{
-					$move_msg_ids	= (isset($_POST['marked_msg_id'])) ? request_var('marked_msg_id', [0]) : [];
-					$cur_folder_id	= request_var('cur_folder_id', PRIVMSGS_NO_BOX);
+					$move_msg_ids   = (isset($_POST['marked_msg_id'])) ? request_var('marked_msg_id', [0]) : [];
+					$cur_folder_id  = request_var('cur_folder_id', PRIVMSGS_NO_BOX);
 
 					if (move_pm($user->data['user_id'], $user->data['message_limit'], $move_msg_ids, $dest_folder, $cur_folder_id))
 					{
 						// Return to folder view if single message moved
 						if ($action == 'view_message')
 						{
-							$msg_id		= 0;
-							$folder_id	= request_var('cur_folder_id', PRIVMSGS_NO_BOX);
-							$action		= 'view_folder';
+							$msg_id     = 0;
+							$folder_id  = request_var('cur_folder_id', PRIVMSGS_NO_BOX);
+							$action     = 'view_folder';
 						}
 					}
 				}
@@ -311,34 +311,34 @@ class ucp_pm
 				$folder_status = get_folder_status($folder_id, $folder);
 
 				$template->assign_vars([
-					'CUR_FOLDER_ID'			=> $folder_id,
-					'CUR_FOLDER_NAME'		=> $folder_status['folder_name'],
-					'NUM_NOT_MOVED'			=> $num_not_moved,
-					'NUM_REMOVED'			=> $num_removed,
-					'RELEASE_MESSAGE_INFO'	=> sprintf($user->lang['RELEASE_MESSAGES'], '<a href="' . $this->u_action . '&amp;folder=' . $folder_id . '&amp;release=1">', '</a>'),
-					'NOT_MOVED_MESSAGES'	=> ($num_not_moved == 1) ? $user->lang['NOT_MOVED_MESSAGE'] : sprintf($user->lang['NOT_MOVED_MESSAGES'], $num_not_moved),
-					'RULE_REMOVED_MESSAGES'	=> ($num_removed == 1) ? $user->lang['RULE_REMOVED_MESSAGE'] : sprintf($user->lang['RULE_REMOVED_MESSAGES'], $num_removed),
+					'CUR_FOLDER_ID'         => $folder_id,
+					'CUR_FOLDER_NAME'       => $folder_status['folder_name'],
+					'NUM_NOT_MOVED'         => $num_not_moved,
+					'NUM_REMOVED'           => $num_removed,
+					'RELEASE_MESSAGE_INFO'  => sprintf($user->lang['RELEASE_MESSAGES'], '<a href="' . $this->u_action . '&amp;folder=' . $folder_id . '&amp;release=1">', '</a>'),
+					'NOT_MOVED_MESSAGES'    => ($num_not_moved == 1) ? $user->lang['NOT_MOVED_MESSAGE'] : sprintf($user->lang['NOT_MOVED_MESSAGES'], $num_not_moved),
+					'RULE_REMOVED_MESSAGES' => ($num_removed == 1) ? $user->lang['RULE_REMOVED_MESSAGE'] : sprintf($user->lang['RULE_REMOVED_MESSAGES'], $num_removed),
 
-					'S_FOLDER_OPTIONS'		=> $s_folder_options,
-					'S_TO_FOLDER_OPTIONS'	=> $s_to_folder_options,
-					'S_FOLDER_ACTION'		=> $this->u_action . '&amp;action=view_folder',
-					'S_PM_ACTION'			=> $this->u_action . '&amp;action=' . $action,
+					'S_FOLDER_OPTIONS'      => $s_folder_options,
+					'S_TO_FOLDER_OPTIONS'   => $s_to_folder_options,
+					'S_FOLDER_ACTION'       => $this->u_action . '&amp;action=view_folder',
+					'S_PM_ACTION'           => $this->u_action . '&amp;action=' . $action,
 
-					'U_INBOX'				=> $this->u_action . '&amp;folder=inbox',
-					'U_OUTBOX'				=> $this->u_action . '&amp;folder=outbox',
-					'U_SENTBOX'				=> $this->u_action . '&amp;folder=sentbox',
-					'U_CREATE_FOLDER'		=> $this->u_action . '&amp;mode=options',
-					'U_CURRENT_FOLDER'		=> $this->u_action . '&amp;folder=' . $folder_id,
+					'U_INBOX'               => $this->u_action . '&amp;folder=inbox',
+					'U_OUTBOX'              => $this->u_action . '&amp;folder=outbox',
+					'U_SENTBOX'             => $this->u_action . '&amp;folder=sentbox',
+					'U_CREATE_FOLDER'       => $this->u_action . '&amp;mode=options',
+					'U_CURRENT_FOLDER'      => $this->u_action . '&amp;folder=' . $folder_id,
 
-					'S_IN_INBOX'			=> ($folder_id == PRIVMSGS_INBOX),
-					'S_IN_OUTBOX'			=> ($folder_id == PRIVMSGS_OUTBOX),
-					'S_IN_SENTBOX'			=> ($folder_id == PRIVMSGS_SENTBOX),
+					'S_IN_INBOX'            => ($folder_id == PRIVMSGS_INBOX),
+					'S_IN_OUTBOX'           => ($folder_id == PRIVMSGS_OUTBOX),
+					'S_IN_SENTBOX'          => ($folder_id == PRIVMSGS_SENTBOX),
 
-					'FOLDER_STATUS'				=> $folder_status['message'],
-					'FOLDER_MAX_MESSAGES'		=> $folder_status['max'],
-					'FOLDER_CUR_MESSAGES'		=> $folder_status['cur'],
-					'FOLDER_REMAINING_MESSAGES'	=> $folder_status['remaining'],
-					'FOLDER_PERCENT'			=> $folder_status['percent'],
+					'FOLDER_STATUS'             => $folder_status['message'],
+					'FOLDER_MAX_MESSAGES'       => $folder_status['max'],
+					'FOLDER_CUR_MESSAGES'       => $folder_status['cur'],
+					'FOLDER_REMAINING_MESSAGES' => $folder_status['remaining'],
+					'FOLDER_PERCENT'            => $folder_status['percent'],
 				]);
 
 				if ($action == 'view_folder')
@@ -351,8 +351,8 @@ class ucp_pm
 				else if ($action == 'view_message')
 				{
 					$template->assign_vars([
-						'S_VIEW_MESSAGE'	=> true,
-						'MSG_ID'			=> $msg_id]
+						'S_VIEW_MESSAGE'    => true,
+						'MSG_ID'            => $msg_id]
 					);
 
 					if (!$msg_id)
@@ -374,8 +374,8 @@ class ucp_pm
 		}
 
 		$template->assign_vars([
-			'L_TITLE'			=> $user->lang['UCP_PM_' . strtoupper($mode)],
-			'S_UCP_ACTION'		=> $this->u_action . ((isset($action)) ? "&amp;action={$action}" : '')]
+			'L_TITLE'           => $user->lang['UCP_PM_' . strtoupper($mode)],
+			'S_UCP_ACTION'      => $this->u_action . ((isset($action)) ? "&amp;action={$action}" : '')]
 		);
 
 		// Set desired template

@@ -52,15 +52,15 @@ class acp_search
 		$search_types = $this->get_search_types();
 
 		$settings = [
-			'search_interval'			=> 'float',
-			'search_anonymous_interval'	=> 'float',
-			'load_search'				=> 'bool',
-			'limit_search_load'			=> 'float',
-			'min_search_author_chars'	=> 'integer',
-			'max_num_search_keywords'	=> 'integer',
-			'search_store_results'		=> 'integer',
-			'default_search_titleonly'	=> 'bool',
-			'search_highlight_keywords'	=> 'bool',
+			'search_interval'           => 'float',
+			'search_anonymous_interval' => 'float',
+			'load_search'               => 'bool',
+			'limit_search_load'         => 'float',
+			'min_search_author_chars'   => 'integer',
+			'max_num_search_keywords'   => 'integer',
+			'search_store_results'      => 'integer',
+			'default_search_titleonly'  => 'bool',
+			'search_highlight_keywords' => 'bool',
 		];
 
 		$search = null;
@@ -84,8 +84,8 @@ class acp_search
 				if (!$submit)
 				{
 					$template->assign_block_vars('backend', [
-						'NAME'		=> $name,
-						'SETTINGS'	=> $vars['tpl']]
+						'NAME'      => $name,
+						'SETTINGS'  => $vars['tpl']]
 					);
 				}
 				else if (is_array($vars['config']))
@@ -166,11 +166,11 @@ class acp_search
 					else
 					{
 						confirm_box(false, $user->lang['CONFIRM_SEARCH_BACKEND'], build_hidden_fields([
-							'i'			=> $id,
-							'mode'		=> $mode,
-							'submit'	=> true,
-							'updated'	=> $updated,
-							'config'	=> ['search_type' => $cfg_array['search_type']],
+							'i'         => $id,
+							'mode'      => $mode,
+							'submit'    => true,
+							'updated'   => $updated,
+							'config'    => ['search_type' => $cfg_array['search_type']],
 						]));
 					}
 				}
@@ -208,20 +208,20 @@ class acp_search
 		$this->page_title = 'ACP_SEARCH_SETTINGS';
 
 		$template->assign_vars([
-			'LIMIT_SEARCH_LOAD'		=> (float) $config['limit_search_load'],
-			'MIN_SEARCH_AUTHOR_CHARS'	=> (int) $config['min_search_author_chars'],
-			'SEARCH_INTERVAL'		=> (float) $config['search_interval'],
-			'SEARCH_GUEST_INTERVAL'	=> (float) $config['search_anonymous_interval'],
-			'SEARCH_STORE_RESULTS'	=> (int) $config['search_store_results'],
-			'MAX_NUM_SEARCH_KEYWORDS'	=> (int) $config['max_num_search_keywords'],
+			'LIMIT_SEARCH_LOAD'     => (float) $config['limit_search_load'],
+			'MIN_SEARCH_AUTHOR_CHARS'   => (int) $config['min_search_author_chars'],
+			'SEARCH_INTERVAL'       => (float) $config['search_interval'],
+			'SEARCH_GUEST_INTERVAL' => (float) $config['search_anonymous_interval'],
+			'SEARCH_STORE_RESULTS'  => (int) $config['search_store_results'],
+			'MAX_NUM_SEARCH_KEYWORDS'   => (int) $config['max_num_search_keywords'],
 
-			'S_SEARCH_TYPES'		=> $search_options,
-			'S_YES_SEARCH'			=> (bool) $config['load_search'],
-			'S_DEFAULT_TITLEONLY'	=> !empty($config['default_search_titleonly']),
-			'S_HIGHLIGHT_KEYWORDS'	=> !empty($config['search_highlight_keywords']),
-			'S_SETTINGS'			=> true,
+			'S_SEARCH_TYPES'        => $search_options,
+			'S_YES_SEARCH'          => (bool) $config['load_search'],
+			'S_DEFAULT_TITLEONLY'   => !empty($config['default_search_titleonly']),
+			'S_HIGHLIGHT_KEYWORDS'  => !empty($config['search_highlight_keywords']),
+			'S_SETTINGS'            => true,
 
-			'U_ACTION'				=> $this->u_action]
+			'U_ACTION'              => $this->u_action]
 		);
 	}
 
@@ -479,22 +479,22 @@ class acp_search
 			}
 
 			$template->assign_block_vars('backend', [
-				'L_NAME'			=> $name,
-				'NAME'				=> $type,
+				'L_NAME'            => $name,
+				'NAME'              => $type,
 
-				'S_ACTIVE'			=> ($type == $config['search_type']),
-				'S_HIDDEN_FIELDS'	=> build_hidden_fields(['search_type' => $type]),
-				'S_INDEXED'			=> (bool) $search->index_created(),
-				'S_STATS'			=> (bool) sizeof($statistics)]
+				'S_ACTIVE'          => ($type == $config['search_type']),
+				'S_HIDDEN_FIELDS'   => build_hidden_fields(['search_type' => $type]),
+				'S_INDEXED'         => (bool) $search->index_created(),
+				'S_STATS'           => (bool) sizeof($statistics)]
 			);
 
 			foreach ($statistics as $statistic)
 			{
 				$template->assign_block_vars('backend.data', [
-					'STATISTIC_1'	=> $statistic['statistic_1'],
-					'VALUE_1'		=> $statistic['value_1'],
-					'STATISTIC_2'	=> $statistic['statistic_2'] ?? '',
-					'VALUE_2'		=> $statistic['value_2'] ?? '',
+					'STATISTIC_1'   => $statistic['statistic_1'],
+					'VALUE_1'       => $statistic['value_1'],
+					'STATISTIC_2'   => $statistic['statistic_2'] ?? '',
+					'VALUE_2'       => $statistic['value_2'] ?? '',
 				]);
 			}
 		}
@@ -507,19 +507,19 @@ class acp_search
 		$this->page_title = 'ACP_SEARCH_INDEX';
 
 		$template->assign_vars([
-			'S_INDEX'				=> true,
-			'U_ACTION'				=> $this->u_action,
-			'U_PROGRESS_BAR'		=> append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;mode={$mode}&amp;action=progress_bar"),
-			'UA_PROGRESS_BAR'		=> addslashes(append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;mode={$mode}&amp;action=progress_bar")),
+			'S_INDEX'               => true,
+			'U_ACTION'              => $this->u_action,
+			'U_PROGRESS_BAR'        => append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;mode={$mode}&amp;action=progress_bar"),
+			'UA_PROGRESS_BAR'       => addslashes(append_sid(PHPBB_ADMIN_PATH . 'index.php', "i={$id}&amp;mode={$mode}&amp;action=progress_bar")),
 		]);
 
 		if (isset($this->state[1]))
 		{
 			$template->assign_vars([
-				'S_CONTINUE_INDEXING'	=> $this->state[1],
-				'U_CONTINUE_INDEXING'	=> $this->u_action . '&amp;action=' . $this->state[1],
-				'L_CONTINUE'			=> ($this->state[1] == 'create') ? $user->lang['CONTINUE_INDEXING'] : $user->lang['CONTINUE_DELETING_INDEX'],
-				'L_CONTINUE_EXPLAIN'	=> ($this->state[1] == 'create') ? $user->lang['CONTINUE_INDEXING_EXPLAIN'] : $user->lang['CONTINUE_DELETING_INDEX_EXPLAIN']]
+				'S_CONTINUE_INDEXING'   => $this->state[1],
+				'U_CONTINUE_INDEXING'   => $this->u_action . '&amp;action=' . $this->state[1],
+				'L_CONTINUE'            => ($this->state[1] == 'create') ? $user->lang['CONTINUE_INDEXING'] : $user->lang['CONTINUE_DELETING_INDEX'],
+				'L_CONTINUE_EXPLAIN'    => ($this->state[1] == 'create') ? $user->lang['CONTINUE_INDEXING_EXPLAIN'] : $user->lang['CONTINUE_DELETING_INDEX_EXPLAIN']]
 			);
 		}
 	}
@@ -533,12 +533,12 @@ class acp_search
 		adm_page_header($user->lang[$l_type]);
 
 		$template->set_filenames([
-			'body'	=> 'progress_bar.html']
+			'body'  => 'progress_bar.html']
 		);
 
 		$template->assign_vars([
-			'L_PROGRESS'			=> $user->lang[$l_type],
-			'L_PROGRESS_EXPLAIN'	=> $user->lang[$l_type . '_EXPLAIN']]
+			'L_PROGRESS'            => $user->lang[$l_type],
+			'L_PROGRESS_EXPLAIN'    => $user->lang[$l_type . '_EXPLAIN']]
 		);
 
 		adm_page_footer();
@@ -547,7 +547,7 @@ class acp_search
 	function close_popup_js()
 	{
 		return "<script>\n" .
-			"	close_waitscreen = 1;\n" .
+			"   close_waitscreen = 1;\n" .
 			"</script>\n";
 	}
 

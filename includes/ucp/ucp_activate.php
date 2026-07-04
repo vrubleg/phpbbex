@@ -67,11 +67,11 @@ class ucp_activate
 		if ($update_password)
 		{
 			$sql_ary = [
-				'user_actkey'		=> '',
-				'user_password'		=> $user_row['user_newpasswd'],
-				'user_newpasswd'	=> '',
-				'user_pass_convert'	=> 0,
-				'user_login_attempts'	=> 0,
+				'user_actkey'       => '',
+				'user_password'     => $user_row['user_newpasswd'],
+				'user_newpasswd'    => '',
+				'user_pass_convert' => 0,
+				'user_login_attempts'   => 0,
 			];
 
 			$sql = 'UPDATE ' . USERS_TABLE . '
@@ -117,7 +117,7 @@ class ucp_activate
 			$messenger->anti_abuse_headers($config, $user);
 
 			$messenger->assign_vars([
-				'USERNAME'	=> htmlspecialchars_decode($user_row['username'])]
+				'USERNAME'  => htmlspecialchars_decode($user_row['username'])]
 			);
 
 			$messenger->send($user_row['user_notify_type']);

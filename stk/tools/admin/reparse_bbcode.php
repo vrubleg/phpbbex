@@ -20,7 +20,7 @@ define('BBCODE_REPARSE_SIGS', 2);
 
 /**
 * @note: the backup feature currently only crates a backup of the posts that are
-* 		 being reparsed. There is not yet an interface to restore it!
+*        being reparsed. There is not yet an interface to restore it!
 */
 class reparse_bbcode
 {
@@ -54,12 +54,12 @@ class reparse_bbcode
 	* BBCode options
 	*/
 	var $flags = [
-		'enable_bbcode'		=> false,
-		'enable_magic_url'	=> false,
-		'enable_smilies'	=> false,
-		'img_status'		=> false,
-		'flash_status'		=> false,
-		'enable_urls'		=> false,
+		'enable_bbcode'     => false,
+		'enable_magic_url'  => false,
+		'enable_smilies'    => false,
+		'img_status'        => false,
+		'flash_status'      => false,
+		'enable_urls'       => false,
 	];
 
 	/**
@@ -77,19 +77,19 @@ class reparse_bbcode
 	* The schema of the backup table
 	*/
 	var $_backup_table_schema = [
-		'COLUMNS'		=> [
-			'post_id'			=> ['UINT', 0],
-			'forum_id'			=> ['UINT', 0],
-			'post_subject'		=> ['VCHAR', ''],
-			'post_subject'		=> ['STEXT_UNI', '', 'true_sort'],
-			'post_text'			=> ['MTEXT_UNI', ''],
-			'post_checksum'		=> ['VCHAR:32', ''],
-			'bbcode_bitfield'	=> ['VCHAR:255', ''],
-			'bbcode_uid'		=> ['VCHAR:8', ''],
+		'COLUMNS'       => [
+			'post_id'           => ['UINT', 0],
+			'forum_id'          => ['UINT', 0],
+			'post_subject'      => ['VCHAR', ''],
+			'post_subject'      => ['STEXT_UNI', '', 'true_sort'],
+			'post_text'         => ['MTEXT_UNI', ''],
+			'post_checksum'     => ['VCHAR:32', ''],
+			'bbcode_bitfield'   => ['VCHAR:255', ''],
+			'bbcode_uid'        => ['VCHAR:8', ''],
 		],
-		'KEYS'			=> [
-			'post_id'			=> ['INDEX', 'post_id'],
-			'forum_id'			=> ['INDEX', 'forum_id'],
+		'KEYS'          => [
+			'post_id'           => ['INDEX', 'post_id'],
+			'forum_id'          => ['INDEX', 'forum_id'],
 		],
 	];
 
@@ -99,12 +99,12 @@ class reparse_bbcode
 	function display_options()
 	{
 		return [
-			'title'	=> 'REPARSE_BBCODE',
-			'vars'	=> [
-				'legend1'			=> 'REPARSE_BBCODE',
-				'reparseids'		=> ['lang'	=> 'REPARSE_POST_IDS', 'type' => 'textarea:3:255', 'explain' => 'true'],
-				'reparsepms'		=> ['lang' => 'REPARSE_PM_IDS', 'type' => 'textarea:3:255', 'explain' => 'true'],
-				'reparseall'		=> ['lang' => 'REPARSE_ALL', 'type' => 'checkbox', 'explain' => true],
+			'title' => 'REPARSE_BBCODE',
+			'vars'  => [
+				'legend1'           => 'REPARSE_BBCODE',
+				'reparseids'        => ['lang'  => 'REPARSE_POST_IDS', 'type' => 'textarea:3:255', 'explain' => 'true'],
+				'reparsepms'        => ['lang' => 'REPARSE_PM_IDS', 'type' => 'textarea:3:255', 'explain' => 'true'],
+				'reparseall'        => ['lang' => 'REPARSE_ALL', 'type' => 'checkbox', 'explain' => true],
 			],
 		];
 	}
@@ -119,13 +119,13 @@ class reparse_bbcode
 		$user->add_lang('posting');
 
 		// Define some vars that we'll need
-		$last_batch			= false;
-		$reparse_id 		= request_var('reparseids', '');
-		$reparse_pm_id		= request_var('reparsepms', '');
-		$mode				= request_var('mode', BBCODE_REPARSE_POSTS);
-		$step				= request_var('step', 0);
-		$start				= $step * $this->step_size;
-		$cnt				= 0;
+		$last_batch         = false;
+		$reparse_id         = request_var('reparseids', '');
+		$reparse_pm_id      = request_var('reparsepms', '');
+		$mode               = request_var('mode', BBCODE_REPARSE_POSTS);
+		$step               = request_var('step', 0);
+		$start              = $step * $this->step_size;
+		$cnt                = 0;
 
 		// If post IDs or PM IDs were specified, we need to make sure the list is valid.
 		$reparse_posts = [];
@@ -195,11 +195,11 @@ class reparse_bbcode
 
 		// First step? Prepare the backup
 		// For now disabled. Have to see how to implement this with regards to sigs and pms
-//		if ($step == 0)
-//		{
-//			$this->_prepare_backup();
-//			$this->_next_step($step);
-//		}
+//      if ($step == 0)
+//      {
+//          $this->_prepare_backup();
+//          $this->_next_step($step);
+//      }
 
 		// Greb our batch
 		$bitfield = empty($_REQUEST['reparseall']);
@@ -251,8 +251,8 @@ class reparse_bbcode
 				$sql = "SELECT COUNT({$ccol}) AS cnt
 					FROM {$ctab}
 					{$sql_where}";
-				$result		= $db->sql_query($sql);
-				$this->max	= $db->sql_fetchfield('cnt', false, $result);
+				$result     = $db->sql_query($sql);
+				$this->max  = $db->sql_fetchfield('cnt', false, $result);
 				$db->sql_freeresult($result);
 			}
 
@@ -270,49 +270,49 @@ class reparse_bbcode
 		{
 			case BBCODE_REPARSE_POSTS :
 				$sql_ary = [
-					'SELECT'	=> 'f.forum_id, f.enable_indexing,
+					'SELECT'    => 'f.forum_id, f.enable_indexing,
 									p.post_id, p.poster_id, p.icon_id, p.post_text, p.post_subject, p.post_username, p.post_time, p.bbcode_uid, p.enable_sig, p.post_edit_locked, p.enable_bbcode, p.enable_magic_url, p.enable_smilies, p.post_attachment,
 									t.topic_id, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_last_post_id, t.topic_type, t.topic_priority, t.topic_status, t.topic_title, t.poll_title, t.topic_time_limit, t.poll_start, t.poll_length, t.poll_max_options, t.poll_last_vote, t.poll_vote_change, t.poll_show_voters,
 									u.username',
-					'FROM'		=> [
-						FORUMS_TABLE	=> 'f',
-						POSTS_TABLE		=> 'p',
-						TOPICS_TABLE	=> 't',
-						USERS_TABLE		=> 'u',
+					'FROM'      => [
+						FORUMS_TABLE    => 'f',
+						POSTS_TABLE     => 'p',
+						TOPICS_TABLE    => 't',
+						USERS_TABLE     => 'u',
 					],
-					'WHERE'		=> (($bitfield) ? "p.bbcode_bitfield <> '' AND " : '') . 't.topic_id = p.topic_id AND u.user_id = p.poster_id AND f.forum_id = t.forum_id' . (sizeof($reparse_posts) ? ' AND ' . $db->sql_in_set('p.post_id', $reparse_posts) : ''),
+					'WHERE'     => (($bitfield) ? "p.bbcode_bitfield <> '' AND " : '') . 't.topic_id = p.topic_id AND u.user_id = p.poster_id AND f.forum_id = t.forum_id' . (sizeof($reparse_posts) ? ' AND ' . $db->sql_in_set('p.post_id', $reparse_posts) : ''),
 				];
 			break;
 
 			case BBCODE_REPARSE_PMS :
 				$sql_ary = [
-					'SELECT'	=> 'pm.*, u.username AS author_name',
-					'FROM'		=> [
-						PRIVMSGS_TABLE	=> 'pm',
-						USERS_TABLE		=> 'u',
+					'SELECT'    => 'pm.*, u.username AS author_name',
+					'FROM'      => [
+						PRIVMSGS_TABLE  => 'pm',
+						USERS_TABLE     => 'u',
 					],
-					'WHERE'		=> (($bitfield) ? "pm.bbcode_bitfield <> '' AND " : '') . 'u.user_id = pm.author_id' . (sizeof($reparse_pms) ? ' AND ' . $db->sql_in_set('pm.msg_id', $reparse_pms) : ''),
+					'WHERE'     => (($bitfield) ? "pm.bbcode_bitfield <> '' AND " : '') . 'u.user_id = pm.author_id' . (sizeof($reparse_pms) ? ' AND ' . $db->sql_in_set('pm.msg_id', $reparse_pms) : ''),
 				];
 			break;
 
 			case BBCODE_REPARSE_SIGS :
 				$sql_ary = [
-					'SELECT'	=> 'u.*',
-					'FROM'		=> [
-						USERS_TABLE	=> 'u',
+					'SELECT'    => 'u.*',
+					'FROM'      => [
+						USERS_TABLE => 'u',
 					],
-					'WHERE'		=> ($bitfield) ? "u.user_sig_bbcode_bitfield <> ''" : '',
+					'WHERE'     => ($bitfield) ? "u.user_sig_bbcode_bitfield <> ''" : '',
 				];
 			break;
 		}
-		$sql	= $db->sql_build_query('SELECT', $sql_ary);
-		$result	= $db->sql_query_limit($sql, $this->step_size, $start);
-		$batch	= $db->sql_fetchrowset($result);
+		$sql    = $db->sql_build_query('SELECT', $sql_ary);
+		$result = $db->sql_query_limit($sql, $this->step_size, $start);
+		$batch  = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
 
 		// Backup
 		// For now disabled. Have to see how to implement this with regards to sigs and pms
-//		$this->_backup($batch);
+//      $this->_backup($batch);
 
 		// User object used to store a second user object used when parsing signatures. (#62451)
 		$_user2 = new phpbb_user();
@@ -324,18 +324,18 @@ class reparse_bbcode
 			if ($mode == BBCODE_REPARSE_SIGS)
 			{
 				// Set the options
-				$this->data['enable_bbcode']	= $_user2->optionget('sig_bbcode', $this->data['user_options']);
-				$this->data['enable_magic_url']	= $_user2->optionget('sig_links', $this->data['user_options']);
-				$this->data['enable_smilies']	= $_user2->optionget('sig_smilies', $this->data['user_options']);
+				$this->data['enable_bbcode']    = $_user2->optionget('sig_bbcode', $this->data['user_options']);
+				$this->data['enable_magic_url'] = $_user2->optionget('sig_links', $this->data['user_options']);
+				$this->data['enable_smilies']   = $_user2->optionget('sig_smilies', $this->data['user_options']);
 			}
 
 			// Update the post flags
-			$this->flags['enable_bbcode']		= ($config['allow_bbcode']) ? $this->data['enable_bbcode'] : false;
-			$this->flags['enable_magic_url']	= ($config['allow_post_links']) ? $this->data['enable_magic_url'] : false;
-			$this->flags['enable_smilies']		= (bool) $this->data['enable_smilies'];
-			$this->flags['img_status']			= (bool) $config['allow_bbcode'];
-			$this->flags['flash_status']		= ($config['allow_bbcode'] && $config['allow_post_flash']);
-			$this->flags['enable_urls']			= (bool) $config['allow_post_links'];
+			$this->flags['enable_bbcode']       = ($config['allow_bbcode']) ? $this->data['enable_bbcode'] : false;
+			$this->flags['enable_magic_url']    = ($config['allow_post_links']) ? $this->data['enable_magic_url'] : false;
+			$this->flags['enable_smilies']      = (bool) $this->data['enable_smilies'];
+			$this->flags['img_status']          = (bool) $config['allow_bbcode'];
+			$this->flags['flash_status']        = ($config['allow_bbcode'] && $config['allow_post_flash']);
+			$this->flags['enable_urls']         = (bool) $config['allow_post_links'];
 
 			// Reparse them!
 			$pm_data = $post_data = $sig_data = [];
@@ -395,8 +395,8 @@ class reparse_bbcode
 			}
 
 			// Unset some vars so the next round starts clean
-			$this->message_parser	= null;
-			$this->poll_parser		= null;
+			$this->message_parser   = null;
+			$this->poll_parser      = null;
 			unset($this->poll, $post_data, $pm_data);
 			$this->flags = array_fill_keys(array_keys($this->flags), false);
 		}
@@ -429,19 +429,19 @@ class reparse_bbcode
 	{
 		global $template, $user;
 
-		$_next_mode	= ($next_mode === false) ? $mode : ++$mode;
-		$_next_step	= ($next_mode === false) ? ++$step : 0;
-		$_rowsmax	= ($next_mode === false) ? $this->max : 0;
+		$_next_mode = ($next_mode === false) ? $mode : ++$mode;
+		$_next_step = ($next_mode === false) ? ++$step : 0;
+		$_rowsmax   = ($next_mode === false) ? $this->max : 0;
 
 		// Create the redirect params
 		$params = [
-			'c'			=> 'admin',
-			't'			=> 'reparse_bbcode',
-			'rowsmax'	=> $_rowsmax,
-			'submit'	=> true,
-			'mode'		=> $_next_mode,
-			'step'		=> $_next_step,
-			'reparseall'	=> !empty($_REQUEST['reparseall']),
+			'c'         => 'admin',
+			't'         => 'reparse_bbcode',
+			'rowsmax'   => $_rowsmax,
+			'submit'    => true,
+			'mode'      => $_next_mode,
+			'step'      => $_next_step,
+			'reparseall'    => !empty($_REQUEST['reparseall']),
 		];
 
 		meta_refresh(1, append_sid(STK_ROOT_PATH . 'index.php', $params));
@@ -478,7 +478,7 @@ class reparse_bbcode
 
 		// Fetch the options
 		$poll_options = [];
-		$sql	= 'SELECT poll_option_id, poll_option_text
+		$sql    = 'SELECT poll_option_id, poll_option_text
 			FROM ' . POLL_OPTIONS_TABLE . '
 			WHERE topic_id = ' . (int) $this->data['topic_id'] . '
 				ORDER BY poll_option_id';
@@ -493,18 +493,18 @@ class reparse_bbcode
 
 		// Fill the poll array
 		$this->poll = [
-			'poll_title'		=> $poll_title,
-			'poll_length'		=> $this->data['poll_length'] / 86400,
-			'poll_max_options'	=> $this->data['poll_max_options'],
-			'poll_option_text'	=> implode("\n", $poll_options),
-			'poll_start'		=> $this->data['poll_start'],
-			'poll_last_vote'	=> $this->data['poll_last_vote'],
-			'poll_vote_change'	=> $this->data['poll_vote_change'],
-			'poll_show_voters'	=> $this->data['poll_show_voters'],
-			'enable_bbcode'		=> $this->flags['enable_bbcode'],
-			'enable_urls'		=> $this->flags['enable_urls'],
-			'enable_smilies'	=> $this->flags['enable_smilies'],
-			'img_status'		=> $this->flags['img_status'],
+			'poll_title'        => $poll_title,
+			'poll_length'       => $this->data['poll_length'] / 86400,
+			'poll_max_options'  => $this->data['poll_max_options'],
+			'poll_option_text'  => implode("\n", $poll_options),
+			'poll_start'        => $this->data['poll_start'],
+			'poll_last_vote'    => $this->data['poll_last_vote'],
+			'poll_vote_change'  => $this->data['poll_vote_change'],
+			'poll_show_voters'  => $this->data['poll_show_voters'],
+			'enable_bbcode'     => $this->flags['enable_bbcode'],
+			'enable_urls'       => $this->flags['enable_urls'],
+			'enable_smilies'    => $this->flags['enable_smilies'],
+			'img_status'        => $this->flags['img_status'],
 		];
 
 		// Parse the poll
@@ -527,29 +527,29 @@ class reparse_bbcode
 		$this->data['address_list'] = rebuild_header(['to' => $this->data['to_address'], 'bcc' => $this->data['bcc_address']]);
 
 		$pm_data = [
-			'msg_id'			=> $this->data['msg_id'],
-			'from_user_id'		=> $this->data['author_id'],
-			'from_user_ip'		=> $this->data['author_ip'],
-			'from_username'		=> $this->data['author_name'],
-			'icon_id'			=> $this->data['icon_id'],
-			'enable_sig'		=> $this->data['enable_sig'],
-			'enable_bbcode'		=> $this->flags['enable_bbcode'],
-			'enable_urls'		=> $this->flags['enable_urls'],
-			'enable_smilies'	=> $this->flags['enable_smilies'],
-			'img_status'		=> $this->flags['img_status'],
-			'bbcode_bitfield'	=> $this->message_parser->bbcode_bitfield,
-			'bbcode_uid'		=> $this->message_parser->bbcode_uid,
-			'message'			=> $this->message_parser->message,
-			'attachment_data'	=> $this->message_parser->attachment_data,
-			'filename_data'		=> $this->message_parser->filename_data,
-			'address_list'		=> $this->data['address_list'],
+			'msg_id'            => $this->data['msg_id'],
+			'from_user_id'      => $this->data['author_id'],
+			'from_user_ip'      => $this->data['author_ip'],
+			'from_username'     => $this->data['author_name'],
+			'icon_id'           => $this->data['icon_id'],
+			'enable_sig'        => $this->data['enable_sig'],
+			'enable_bbcode'     => $this->flags['enable_bbcode'],
+			'enable_urls'       => $this->flags['enable_urls'],
+			'enable_smilies'    => $this->flags['enable_smilies'],
+			'img_status'        => $this->flags['img_status'],
+			'bbcode_bitfield'   => $this->message_parser->bbcode_bitfield,
+			'bbcode_uid'        => $this->message_parser->bbcode_uid,
+			'message'           => $this->message_parser->message,
+			'attachment_data'   => $this->message_parser->attachment_data,
+			'filename_data'     => $this->message_parser->filename_data,
+			'address_list'      => $this->data['address_list'],
 		];
 	}
 
 	/**
 	* Reparse the current post
 	* @param Array $post_data All data related to this post. Will be updated by this
-	* 						  method.
+	*                         method.
 	*/
 	function _reparse_post(&$post_data)
 	{
@@ -560,16 +560,16 @@ class reparse_bbcode
 		if (empty($uninit))
 		{
 			$uninit = [
-				'post_attachment'	=> 0,
-				'poster_id'			=> $user->data['user_id'],
-				'enable_magic_url'	=> 0,
-				'topic_status'		=> 0,
-				'topic_type'		=> POST_NORMAL,
-				'post_subject'		=> '',
-				'topic_title'		=> '',
-				'post_time'			=> 0,
-				'notify'			=> 0,
-				'notify_set'		=> 0,
+				'post_attachment'   => 0,
+				'poster_id'         => $user->data['user_id'],
+				'enable_magic_url'  => 0,
+				'topic_status'      => 0,
+				'topic_type'        => POST_NORMAL,
+				'post_subject'      => '',
+				'topic_title'       => '',
+				'post_time'         => 0,
+				'notify'            => 0,
+				'notify_set'        => 0,
 			];
 		}
 
@@ -608,12 +608,12 @@ class reparse_bbcode
 
 		// Update the post data
 		$post_data = array_merge($this->data, $this->flags, [
-			'bbcode_bitfield'	=> $this->message_parser->bbcode_bitfield,
-			'bbcode_uid'		=> $this->message_parser->bbcode_uid,
-			'message'			=> $this->message_parser->message,
-			'message_md5'		=> md5($this->message_parser->message),
-			'attachment_data'	=> $this->message_parser->attachment_data,
-			'filename_data'		=> $this->message_parser->filename_data,
+			'bbcode_bitfield'   => $this->message_parser->bbcode_bitfield,
+			'bbcode_uid'        => $this->message_parser->bbcode_uid,
+			'message'           => $this->message_parser->message,
+			'message_md5'       => md5($this->message_parser->message),
+			'attachment_data'   => $this->message_parser->attachment_data,
+			'filename_data'     => $this->message_parser->filename_data,
 		]);
 
 		// Need to adjust topic_time_limit here. Per bug #61155
@@ -647,9 +647,9 @@ class reparse_bbcode
 
 		// Build sig_data
 		$sig_data = [
-			'user_sig'					=> $this->message_parser->message,
-			'user_sig_bbcode_uid'		=> $this->message_parser->bbcode_uid,
-			'user_sig_bbcode_bitfield'	=> $this->message_parser->bbcode_bitfield,
+			'user_sig'                  => $this->message_parser->message,
+			'user_sig_bbcode_uid'       => $this->message_parser->bbcode_uid,
+			'user_sig_bbcode_bitfield'  => $this->message_parser->bbcode_bitfield,
 		];
 	}
 
@@ -706,13 +706,13 @@ class reparse_bbcode
 		foreach ($batch as $post)
 		{
 			$data[] = [
-				'post_id'			=> $post['post_id'],
-				'forum_id'			=> $post['forum_id'],
-				'post_subject'		=> $post['post_subject'],
-				'post_text'			=> $post['post_text'],
-				'post_checksum'		=> $post['post_checksum'],
-				'bbcode_bitfield'	=> $post['bbcode_bitfield'],
-				'bbcode_uid'		=> $post['bbcode_uid'],
+				'post_id'           => $post['post_id'],
+				'forum_id'          => $post['forum_id'],
+				'post_subject'      => $post['post_subject'],
+				'post_text'         => $post['post_text'],
+				'post_checksum'     => $post['post_checksum'],
+				'bbcode_bitfield'   => $post['bbcode_bitfield'],
+				'bbcode_uid'        => $post['bbcode_uid'],
 			];
 		}
 

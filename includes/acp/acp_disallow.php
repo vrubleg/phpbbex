@@ -104,8 +104,8 @@ class acp_disallow
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'U_ACTION'				=> $this->u_action,
-			'S_DISALLOWED_NAMES'	=> $disallow_select]
+			'U_ACTION'              => $this->u_action,
+			'S_DISALLOWED_NAMES'    => $disallow_select]
 		);
 	}
 }

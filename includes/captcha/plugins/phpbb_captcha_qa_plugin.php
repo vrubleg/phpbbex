@@ -12,9 +12,9 @@ if (!defined('IN_PHPBB'))
 
 global $table_prefix;
 
-define('CAPTCHA_QUESTIONS_TABLE',	$table_prefix . 'captcha_questions');
-define('CAPTCHA_ANSWERS_TABLE',		$table_prefix . 'captcha_answers');
-define('CAPTCHA_QA_CONFIRM_TABLE',	$table_prefix . 'qa_confirm');
+define('CAPTCHA_QUESTIONS_TABLE',   $table_prefix . 'captcha_questions');
+define('CAPTCHA_ANSWERS_TABLE',     $table_prefix . 'captcha_answers');
+define('CAPTCHA_QA_CONFIRM_TABLE',  $table_prefix . 'qa_confirm');
 
 /**
 * And now to something completely different. Let's make a captcha without extending the abstract class.
@@ -189,10 +189,10 @@ class phpbb_captcha_qa
 		else
 		{
 			$template->assign_vars([
-				'QA_CONFIRM_QUESTION'		=> $this->question_text,
-				'QA_CONFIRM_ID'				=> $this->confirm_id,
-				'S_CONFIRM_CODE'			=> true,
-				'S_TYPE'					=> $this->type,
+				'QA_CONFIRM_QUESTION'       => $this->question_text,
+				'QA_CONFIRM_ID'             => $this->confirm_id,
+				'S_CONFIRM_CODE'            => true,
+				'S_TYPE'                    => $this->type,
 			]);
 
 			return 'captcha_qa.html';
@@ -218,8 +218,8 @@ class phpbb_captcha_qa
 			if ($row = $db->sql_fetchrow($result))
 			{
 				$template->assign_vars([
-					'QA_CONFIRM_QUESTION'		=> $row['question_text'],
-					'QA_CONFIRM_ANSWER'			=> $row['answer_text'],
+					'QA_CONFIRM_QUESTION'       => $row['question_text'],
+					'QA_CONFIRM_ANSWER'         => $row['answer_text'],
 				]);
 			}
 			$db->sql_freeresult($result);
@@ -303,42 +303,42 @@ class phpbb_captcha_qa
 		$tables = [CAPTCHA_QUESTIONS_TABLE, CAPTCHA_ANSWERS_TABLE, CAPTCHA_QA_CONFIRM_TABLE];
 
 		$schemas = [
-				CAPTCHA_QUESTIONS_TABLE		=>  [
+				CAPTCHA_QUESTIONS_TABLE     =>  [
 					'COLUMNS' => [
-						'question_id'	=> ['UINT', null, 'auto_increment'],
-						'strict'		=> ['BOOL', 0],
-						'lang_id'		=> ['UINT', 0],
-						'lang_iso'		=> ['VCHAR:30', ''],
-						'question_text'	=> ['TEXT_UNI', ''],
+						'question_id'   => ['UINT', null, 'auto_increment'],
+						'strict'        => ['BOOL', 0],
+						'lang_id'       => ['UINT', 0],
+						'lang_iso'      => ['VCHAR:30', ''],
+						'question_text' => ['TEXT_UNI', ''],
 					],
-					'PRIMARY_KEY'		=> 'question_id',
-					'KEYS'				=> [
-						'lang'			=> ['INDEX', 'lang_iso'],
+					'PRIMARY_KEY'       => 'question_id',
+					'KEYS'              => [
+						'lang'          => ['INDEX', 'lang_iso'],
 					],
 				],
-				CAPTCHA_ANSWERS_TABLE		=>  [
+				CAPTCHA_ANSWERS_TABLE       =>  [
 					'COLUMNS' => [
-						'question_id'	=> ['UINT', 0],
-						'answer_text'	=> ['STEXT_UNI', ''],
+						'question_id'   => ['UINT', 0],
+						'answer_text'   => ['STEXT_UNI', ''],
 					],
-					'KEYS'				=> [
-						'qid'			=> ['INDEX', 'question_id'],
+					'KEYS'              => [
+						'qid'           => ['INDEX', 'question_id'],
 					],
 				],
-				CAPTCHA_QA_CONFIRM_TABLE		=>  [
+				CAPTCHA_QA_CONFIRM_TABLE        =>  [
 					'COLUMNS' => [
-						'session_id'	=> ['CHAR:32', ''],
-						'confirm_id'	=> ['CHAR:32', ''],
-						'lang_iso'		=> ['VCHAR:30', ''],
-						'question_id'	=> ['UINT', 0],
-						'attempts'		=> ['UINT', 0],
-						'confirm_type'	=> ['USINT', 0],
+						'session_id'    => ['CHAR:32', ''],
+						'confirm_id'    => ['CHAR:32', ''],
+						'lang_iso'      => ['VCHAR:30', ''],
+						'question_id'   => ['UINT', 0],
+						'attempts'      => ['UINT', 0],
+						'confirm_type'  => ['USINT', 0],
 					],
-					'KEYS'				=> [
-						'session_id'			=> ['INDEX', 'session_id'],
-						'lookup'				=> ['INDEX', ['confirm_id', 'session_id', 'lang_iso']],
+					'KEYS'              => [
+						'session_id'            => ['INDEX', 'session_id'],
+						'lookup'                => ['INDEX', ['confirm_id', 'session_id', 'lang_iso']],
 					],
-					'PRIMARY_KEY'		=> 'confirm_id',
+					'PRIMARY_KEY'       => 'confirm_id',
 				],
 		];
 
@@ -411,11 +411,11 @@ class phpbb_captcha_qa
 		$this->question = (int) array_rand($this->question_ids);
 
 		$sql = 'INSERT INTO ' . CAPTCHA_QA_CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', [
-			'confirm_id'	=> (string) $this->confirm_id,
-			'session_id'	=> (string) $user->session_id,
-			'lang_iso'		=> (string) $this->question_lang,
-			'confirm_type'	=> (int) $this->type,
-			'question_id'	=> (int) $this->question,
+			'confirm_id'    => (string) $this->confirm_id,
+			'session_id'    => (string) $user->session_id,
+			'lang_iso'      => (string) $this->question_lang,
+			'confirm_type'  => (int) $this->type,
+			'question_id'   => (int) $this->question,
 		]);
 		$db->sql_query($sql);
 
@@ -639,9 +639,9 @@ class phpbb_captcha_qa
 		$list_url = $module->u_action . "&amp;configure=1&amp;select_captcha=" . $this->get_class_name();
 
 		$template->assign_vars([
-			'U_ACTION'		=> $module->u_action,
-			'QUESTION_ID'	=> $question_id ,
-			'CLASS'			=> $this->get_class_name(),
+			'U_ACTION'      => $module->u_action,
+			'QUESTION_ID'   => $question_id ,
+			'CLASS'         => $this->get_class_name(),
 		]);
 
 		// show the list?
@@ -662,10 +662,10 @@ class phpbb_captcha_qa
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'question_id'		=> $question_id,
-						'action'			=> $action,
-						'configure'			=> 1,
-						'select_captcha'	=> $this->get_class_name(),
+						'question_id'       => $question_id,
+						'action'            => $action,
+						'configure'         => 1,
+						'select_captcha'    => $this->get_class_name(),
 						])
 					);
 				}
@@ -704,10 +704,10 @@ class phpbb_captcha_qa
 					$answers = $input_answers[$lang] ?? implode("\n", $question['answers']);
 
 					$template->assign_vars([
-						'QUESTION_TEXT'		=> $input_question ?: $question['question_text'],
-						'LANG_ISO'			=> $input_lang ?: $question['lang_iso'],
-						'STRICT'			=> (isset($_REQUEST['strict'])) ? $input_strict : $question['strict'],
-						'ANSWERS'			=> $answers,
+						'QUESTION_TEXT'     => $input_question ?: $question['question_text'],
+						'LANG_ISO'          => $input_lang ?: $question['lang_iso'],
+						'STRICT'            => (isset($_REQUEST['strict'])) ? $input_strict : $question['strict'],
+						'ANSWERS'           => $answers,
 					]);
 				}
 				else
@@ -718,10 +718,10 @@ class phpbb_captcha_qa
 			else
 			{
 				$template->assign_vars([
-					'QUESTION_TEXT'		=> $input_question,
-					'LANG_ISO'			=> $input_lang,
-					'STRICT'			=> $input_strict,
-					'ANSWERS'			=> $input_answers,
+					'QUESTION_TEXT'     => $input_question,
+					'LANG_ISO'          => $input_lang,
+					'STRICT'            => $input_strict,
+					'ANSWERS'           => $input_answers,
 				]);
 			}
 
@@ -732,7 +732,7 @@ class phpbb_captcha_qa
 				if (!$this->validate_input($data))
 				{
 					$template->assign_vars([
-						'S_ERROR'			=> true,
+						'S_ERROR'           => true,
 					]);
 				}
 				else
@@ -769,7 +769,7 @@ class phpbb_captcha_qa
 		$result = $db->sql_query($sql);
 
 		$template->assign_vars([
-			'S_LIST'			=> true,
+			'S_LIST'            => true,
 		]);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -777,11 +777,11 @@ class phpbb_captcha_qa
 			$url = $module->u_action . "&amp;question_id={$row['question_id']}&amp;configure=1&amp;select_captcha=" . $this->get_class_name() . '&amp;';
 
 			$template->assign_block_vars('questions', [
-				'QUESTION_TEXT'		=> $row['question_text'],
-				'QUESTION_ID'		=> $row['question_id'],
-				'QUESTION_LANG'		=> $row['lang_iso'],
-				'U_DELETE'			=> "{$url}action=delete",
-				'U_EDIT'			=> "{$url}action=edit",
+				'QUESTION_TEXT'     => $row['question_text'],
+				'QUESTION_ID'       => $row['question_id'],
+				'QUESTION_LANG'     => $row['lang_iso'],
+				'U_DELETE'          => "{$url}action=delete",
+				'U_EDIT'            => "{$url}action=edit",
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -832,10 +832,10 @@ class phpbb_captcha_qa
 	{
 		$answers = utf8_normalize_nfc(request_var('answers', '', true));
 		$question = [
-			'question_text'	=> request_var('question_text', '', true),
-			'strict'		=> request_var('strict', false),
-			'lang_iso'		=> request_var('lang_iso', ''),
-			'answers'		=> (strlen($answers)) ? explode("\n", $answers) : [],
+			'question_text' => request_var('question_text', '', true),
+			'strict'        => request_var('strict', false),
+			'lang_iso'      => request_var('lang_iso', ''),
+			'answers'       => (strlen($answers)) ? explode("\n", $answers) : [],
 		];
 
 		return $question;
@@ -903,8 +903,8 @@ class phpbb_captcha_qa
 		foreach ($data['answers'] as $answer)
 		{
 			$answer_ary = [
-				'question_id'	=> $question_id,
-				'answer_text'	=> $answer,
+				'question_id'   => $question_id,
+				'answer_text'   => $answer,
 			];
 
 			$sql = 'INSERT INTO ' . CAPTCHA_ANSWERS_TABLE . ' ' . $db->sql_build_array('INSERT', $answer_ary);
@@ -974,8 +974,8 @@ class phpbb_captcha_qa
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$langs[$row['lang_iso']] = [
-				'name'	=> $row['lang_local_name'],
-				'id'	=> (int) $row['lang_id'],
+				'name'  => $row['lang_local_name'],
+				'id'    => (int) $row['lang_id'],
 			];
 		}
 		$db->sql_freeresult($result);

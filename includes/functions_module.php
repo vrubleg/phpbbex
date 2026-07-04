@@ -229,25 +229,25 @@ class p_master
 			$names[$row['module_basename'] . '_' . $row['module_mode']][] = true;
 
 			$module_row = [
-				'depth'		=> $depth,
+				'depth'     => $depth,
 
-				'id'		=> (int) $row['module_id'],
-				'parent'	=> (int) $row['parent_id'],
-				'cat'		=> ($row['right_id'] > $row['left_id'] + 1),
+				'id'        => (int) $row['module_id'],
+				'parent'    => (int) $row['parent_id'],
+				'cat'       => ($row['right_id'] > $row['left_id'] + 1),
 
-				'is_duplicate'	=> ($row['module_basename'] && sizeof($names[$row['module_basename'] . '_' . $row['module_mode']]) > 1),
+				'is_duplicate'  => ($row['module_basename'] && sizeof($names[$row['module_basename'] . '_' . $row['module_mode']]) > 1),
 
-				'name'		=> (string) $row['module_basename'],
-				'mode'		=> (string) $row['module_mode'],
-				'display'	=> (int) $row['module_display'],
+				'name'      => (string) $row['module_basename'],
+				'mode'      => (string) $row['module_mode'],
+				'display'   => (int) $row['module_display'],
 
-				'url_extra'	=> (function_exists($url_func)) ? $url_func($row['module_mode'], $row) : '',
+				'url_extra' => (function_exists($url_func)) ? $url_func($row['module_mode'], $row) : '',
 
-				'lang'		=> ($row['module_basename'] && function_exists($lang_func)) ? $lang_func($row['module_mode'], $row['module_langname']) : ($user->lang[$row['module_langname']] ?? $row['module_langname']),
-				'langname'	=> $row['module_langname'],
+				'lang'      => ($row['module_basename'] && function_exists($lang_func)) ? $lang_func($row['module_mode'], $row['module_langname']) : ($user->lang[$row['module_langname']] ?? $row['module_langname']),
+				'langname'  => $row['module_langname'],
 
-				'left'		=> $row['left_id'],
-				'right'		=> $row['right_id'],
+				'left'      => $row['left_id'],
+				'right'     => $row['right_id'],
 			];
 
 			if (function_exists($custom_func))
@@ -405,12 +405,12 @@ class p_master
 					continue;
 				}
 
-				$this->p_id		= $item_ary['id'];
-				$this->p_parent	= $item_ary['parent'];
-				$this->p_name	= $item_ary['name'];
-				$this->p_mode 	= $item_ary['mode'];
-				$this->p_left	= $item_ary['left'];
-				$this->p_right	= $item_ary['right'];
+				$this->p_id     = $item_ary['id'];
+				$this->p_parent = $item_ary['parent'];
+				$this->p_name   = $item_ary['name'];
+				$this->p_mode   = $item_ary['mode'];
+				$this->p_left   = $item_ary['left'];
+				$this->p_right  = $item_ary['right'];
 
 				$this->module_cache['parents'] = $this->module_cache['parents'][$this->p_id];
 				$this->active_module = $item_ary['id'];
@@ -660,7 +660,7 @@ class p_master
 		$delim = (strpos($module_url, '?') === false) ? '?' : '&amp;';
 
 		$current_padding = $current_depth = 0;
-		$linear_offset 	= 'l_block1';
+		$linear_offset  = 'l_block1';
 		$tabular_offset = 't_block2';
 
 		// Generate the list of modules, we'll do this in two ways ...
@@ -748,18 +748,18 @@ class p_master
 				$use_tabular_offset = (!$depth) ? 't_block1' : $tabular_offset;
 
 				$tpl_ary = [
-					'L_TITLE'		=> $item_ary['lang'],
-					'S_SELECTED'	=> (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id),
-					'U_TITLE'		=> $u_title
+					'L_TITLE'       => $item_ary['lang'],
+					'S_SELECTED'    => (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id),
+					'U_TITLE'       => $u_title
 				];
 
 				$template->assign_block_vars($use_tabular_offset, array_merge($tpl_ary, array_change_key_case($item_ary, CASE_UPPER)));
 			}
 
 			$tpl_ary = [
-				'L_TITLE'		=> $item_ary['lang'],
-				'S_SELECTED'	=> (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id),
-				'U_TITLE'		=> $u_title
+				'L_TITLE'       => $item_ary['lang'],
+				'S_SELECTED'    => (isset($this->module_cache['parents'][$item_ary['id']]) || $item_ary['id'] == $this->p_id),
+				'U_TITLE'       => $u_title
 			];
 
 			$template->assign_block_vars($linear_offset, array_merge($tpl_ary, array_change_key_case($item_ary, CASE_UPPER)));

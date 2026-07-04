@@ -48,9 +48,9 @@ class remove_duplicate_permissions
 		foreach ($acl_duplicates as $dup_id => $orig_id)
 		{
 			$tables = [
-				ACL_GROUPS_TABLE		=> 'group_id',
-				ACL_ROLES_DATA_TABLE	=> 'role_id',
-				ACL_USERS_TABLE			=> 'user_id',
+				ACL_GROUPS_TABLE        => 'group_id',
+				ACL_ROLES_DATA_TABLE    => 'role_id',
+				ACL_USERS_TABLE         => 'user_id',
 			];
 
 			foreach ($tables as $table => $column)
@@ -83,9 +83,9 @@ class remove_duplicate_permissions
 					else
 					{
 						$sql_ary = [
-							$column				=> $row[$column],
-							'auth_option_id'	=> $orig_id,
-							'auth_setting'		=> $row['auth_setting'],
+							$column             => $row[$column],
+							'auth_option_id'    => $orig_id,
+							'auth_setting'      => $row['auth_setting'],
 						];
 
 						if (isset($row['forum_id']))
@@ -104,7 +104,7 @@ class remove_duplicate_permissions
 
 		foreach ($tables as $table)
 		{
-			$db->sql_query('DELETE FROM ' . $table . ' WHERE ' . $db->sql_in_set('auth_option_id', 	array_keys($acl_duplicates)));
+			$db->sql_query('DELETE FROM ' . $table . ' WHERE ' . $db->sql_in_set('auth_option_id',  array_keys($acl_duplicates)));
 		}
 
 		// Purge the auth cache in the users table

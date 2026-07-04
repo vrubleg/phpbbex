@@ -37,8 +37,8 @@ define('IN_ADMIN', true);
 if (!defined('PHPBB_ADMIN_PATH')) { define('PHPBB_ADMIN_PATH', './'); }
 
 // Some oft used variables
-$module_id		= request_var('i', '');
-$mode			= request_var('mode', '');
+$module_id      = request_var('i', '');
+$mode           = request_var('mode', '');
 
 // Set custom template for admin area
 $template->set_custom_template(PHPBB_ADMIN_PATH . 'style', 'admin');
@@ -93,32 +93,32 @@ function adm_page_header($page_title)
 	}
 
 	$template->assign_vars([
-		'PAGE_TITLE'			=> $page_title,
-		'USERNAME'				=> $user->data['username'],
+		'PAGE_TITLE'            => $page_title,
+		'USERNAME'              => $user->data['username'],
 
-		'SESSION_ID'			=> $user->session_id,
-		'ROOT_PATH'				=> PHPBB_ADMIN_PATH,
-		'PHPBB_ROOT_PATH'		=> PHPBB_ROOT_PATH,
+		'SESSION_ID'            => $user->session_id,
+		'ROOT_PATH'             => PHPBB_ADMIN_PATH,
+		'PHPBB_ROOT_PATH'       => PHPBB_ROOT_PATH,
 
-		'U_LOGOUT'				=> append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout'),
-		'U_ADM_LOGOUT'			=> append_sid(PHPBB_ADMIN_PATH . 'index.php', 'action=admlogout'),
-		'U_ADM_INDEX'			=> append_sid(PHPBB_ADMIN_PATH . 'index.php'),
-		'U_INDEX'				=> append_sid(PHPBB_ROOT_PATH . 'index.php', false, true, false),
+		'U_LOGOUT'              => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout'),
+		'U_ADM_LOGOUT'          => append_sid(PHPBB_ADMIN_PATH . 'index.php', 'action=admlogout'),
+		'U_ADM_INDEX'           => append_sid(PHPBB_ADMIN_PATH . 'index.php'),
+		'U_INDEX'               => append_sid(PHPBB_ROOT_PATH . 'index.php', false, true, false),
 
-		'T_IMAGES_PATH'			=> PHPBB_ROOT_PATH . 'images/',
+		'T_IMAGES_PATH'         => PHPBB_ROOT_PATH . 'images/',
 
-		'ICON_MOVE_UP'				=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
-		'ICON_MOVE_UP_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up_disabled.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
-		'ICON_MOVE_DOWN'			=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
-		'ICON_MOVE_DOWN_DISABLED'	=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down_disabled.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
-		'ICON_EDIT'					=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
-		'ICON_EDIT_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit_disabled.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
-		'ICON_DELETE'				=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
-		'ICON_DELETE_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete_disabled.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
-		'ICON_SYNC'					=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
-		'ICON_SYNC_DISABLED'		=> '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync_disabled.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
+		'ICON_MOVE_UP'              => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
+		'ICON_MOVE_UP_DISABLED'     => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up_disabled.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
+		'ICON_MOVE_DOWN'            => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
+		'ICON_MOVE_DOWN_DISABLED'   => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down_disabled.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
+		'ICON_EDIT'                 => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
+		'ICON_EDIT_DISABLED'        => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit_disabled.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
+		'ICON_DELETE'               => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
+		'ICON_DELETE_DISABLED'      => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete_disabled.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
+		'ICON_SYNC'                 => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
+		'ICON_SYNC_DISABLED'        => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync_disabled.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
 
-		'S_USER_LANG'			=> $user->lang['USER_LANG'],
+		'S_USER_LANG'           => $user->lang['USER_LANG'],
 	]);
 
 	if (!headers_sent())
@@ -155,7 +155,7 @@ function adm_page_footer($copyright_html = true)
 	}
 
 	$template->assign_vars([
-		'DEBUG_OUTPUT'		=> (defined('DEBUG')) ? $debug_output : '',
+		'DEBUG_OUTPUT'      => (defined('DEBUG')) ? $debug_output : '',
 	]);
 
 	$template->display('body');
@@ -254,8 +254,8 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 		break;
 
 		case 'radio':
-			$key_yes	= ($new[$config_key]) ? ' checked="checked"' : '';
-			$key_no		= (!$new[$config_key]) ? ' checked="checked"' : '';
+			$key_yes    = ($new[$config_key]) ? ' checked="checked"' : '';
+			$key_no     = (!$new[$config_key]) ? ' checked="checked"' : '';
 
 			$tpl_type_cond = explode('_', $tpl_type[1]);
 			$type_no = ($tpl_type_cond[0] != 'disabled' && $tpl_type_cond[0] != 'enabled');
@@ -341,9 +341,9 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 {
 	global $user;
 
-	$type	= 0;
-	$min	= 1;
-	$max	= 2;
+	$type   = 0;
+	$min    = 1;
+	$max    = 2;
 
 	foreach ($config_vars as $config_name => $config_definition)
 	{
@@ -543,17 +543,17 @@ function validate_range($value_ary, &$error)
 	global $user;
 
 	$column_types = [
-		'BOOL'	=> ['php_type' => 'int', 		'min' => 0, 				'max' => 1],
-		'USINT'	=> ['php_type' => 'int',		'min' => 0, 				'max' => 65535],
-		'UINT'	=> ['php_type' => 'int', 		'min' => 0, 				'max' => (int) 0x7fffffff],
+		'BOOL'  => ['php_type' => 'int',        'min' => 0,                 'max' => 1],
+		'USINT' => ['php_type' => 'int',        'min' => 0,                 'max' => 65535],
+		'UINT'  => ['php_type' => 'int',        'min' => 0,                 'max' => (int) 0x7fffffff],
 		// Do not use (int) 0x80000000 - it evaluates to different
 		// values on 32-bit and 64-bit systems.
 		// Apparently -2147483648 is a float on 32-bit systems,
 		// despite fitting in an int, thus explicit cast is needed.
-		'INT'	=> ['php_type' => 'int', 		'min' => (int) -2147483648,	'max' => (int) 0x7fffffff],
-		'TINT'	=> ['php_type' => 'int',		'min' => -128,				'max' => 127],
+		'INT'   => ['php_type' => 'int',        'min' => (int) -2147483648, 'max' => (int) 0x7fffffff],
+		'TINT'  => ['php_type' => 'int',        'min' => -128,              'max' => 127],
 
-		'VCHAR'	=> ['php_type' => 'string', 	'min' => 0, 				'max' => 255],
+		'VCHAR' => ['php_type' => 'string',     'min' => 0,                 'max' => 255],
 	];
 	foreach ($value_ary as $value)
 	{

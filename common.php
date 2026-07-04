@@ -47,11 +47,11 @@ set_exception_handler(function ($e)
 });
 
 // Instantiate some basic classes
-$user		= new phpbb_user();
-$auth		= new phpbb_auth();
-$template	= new phpbb_template();
-$cache		= new phpbb_cache();
-$db			= new dbal_mysql();
+$user       = new phpbb_user();
+$auth       = new phpbb_auth();
+$template   = new phpbb_template();
+$cache      = new phpbb_cache();
+$db         = new dbal_mysql();
 
 // Connect to DB
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false);

@@ -19,10 +19,10 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 
 	$user->add_lang(['viewtopic', 'memberlist']);
 
-	$msg_id		= (int) $msg_id;
-	$folder_id	= (int) $folder_id;
-	$author_id	= (int) $message_row['author_id'];
-	$view		= request_var('view', '');
+	$msg_id     = (int) $msg_id;
+	$folder_id  = (int) $folder_id;
+	$author_id  = (int) $message_row['author_id'];
+	$view       = request_var('view', '');
 
 	// Not able to view message, it was deleted by the sender
 	if ($message_row['pm_deleted'])
@@ -170,82 +170,82 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	// Number of "to" recipients
 	$num_recipients = (int) preg_match_all('/:?(u|g)_([0-9]+):?/', $message_row['to_address'], $match);
 
-	$bbcode_status	= ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode'));
+	$bbcode_status  = ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode'));
 
 	$template->assign_vars([
-		'MESSAGE_AUTHOR_FULL'		=> get_username_string('full', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
-		'MESSAGE_AUTHOR_COLOUR'		=> get_username_string('colour', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
-		'MESSAGE_AUTHOR'			=> get_username_string('username', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
-		'U_MESSAGE_AUTHOR'			=> get_username_string('profile', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
+		'MESSAGE_AUTHOR_FULL'       => get_username_string('full', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
+		'MESSAGE_AUTHOR_COLOUR'     => get_username_string('colour', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
+		'MESSAGE_AUTHOR'            => get_username_string('username', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
+		'U_MESSAGE_AUTHOR'          => get_username_string('profile', $author_id, $user_info['username'], $user_info['user_colour'], $user_info['username']),
 
-		'RANK_TITLE'		=> $user_info['rank_title'],
-		'RANK_IMG'			=> $user_info['rank_image'],
-		'AUTHOR_AVATAR'		=> $user_info['avatar'] ?? '',
-		'AUTHOR_JOINED'		=> $user->format_date($user_info['user_regdate']),
-		'AUTHOR_WITH_US'	=> !empty($config['style_mp_show_with_us']) ? get_verbal_time_delta($user_info['user_regdate'], time(), false, 2) : '',
-		'AUTHOR_POSTS'		=> (int) $user_info['user_posts'],
-		'AUTHOR_TOPICS'		=> (int) $user_info['user_topics'],
-		'AUTHOR_WARNINGS'	=> (int) $user_info['user_warnings'],
-		'AUTHOR_FROM'		=> $user_info['user_from'] ?? '',
-		'AUTHOR_AGE'		=> $user_age,
+		'RANK_TITLE'        => $user_info['rank_title'],
+		'RANK_IMG'          => $user_info['rank_image'],
+		'AUTHOR_AVATAR'     => $user_info['avatar'] ?? '',
+		'AUTHOR_JOINED'     => $user->format_date($user_info['user_regdate']),
+		'AUTHOR_WITH_US'    => !empty($config['style_mp_show_with_us']) ? get_verbal_time_delta($user_info['user_regdate'], time(), false, 2) : '',
+		'AUTHOR_POSTS'      => (int) $user_info['user_posts'],
+		'AUTHOR_TOPICS'     => (int) $user_info['user_topics'],
+		'AUTHOR_WARNINGS'   => (int) $user_info['user_warnings'],
+		'AUTHOR_FROM'       => $user_info['user_from'] ?? '',
+		'AUTHOR_AGE'        => $user_age,
 
-		'S_RATE_ENABLED'			=> $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($author_id != ANONYMOUS),
-		'AUTHOR_RATING'				=> (int) ($config['rate_no_positive'] ? 0 : $user_info['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $user_info['user_rating_negative']),
-		'AUTHOR_RATING_POSITIVE'	=> (int) $user_info['user_rating_positive'],
-		'AUTHOR_RATING_NEGATIVE'	=> (int) $user_info['user_rating_negative'],
-		'AUTHOR_RATED'				=> (int) ($config['rate_no_positive'] ? 0 : $user_info['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $user_info['user_rated_negative']),
-		'AUTHOR_RATED_POSITIVE'		=> (int) $user_info['user_rated_positive'],
-		'AUTHOR_RATED_NEGATIVE'		=> (int) $user_info['user_rated_negative'],
+		'S_RATE_ENABLED'            => $config['rate_enabled'] && (!$config['rate_no_negative'] || !$config['rate_no_positive']) && ($author_id != ANONYMOUS),
+		'AUTHOR_RATING'             => (int) ($config['rate_no_positive'] ? 0 : $user_info['user_rating_positive']) - ($config['rate_no_negative'] ? 0 : $user_info['user_rating_negative']),
+		'AUTHOR_RATING_POSITIVE'    => (int) $user_info['user_rating_positive'],
+		'AUTHOR_RATING_NEGATIVE'    => (int) $user_info['user_rating_negative'],
+		'AUTHOR_RATED'              => (int) ($config['rate_no_positive'] ? 0 : $user_info['user_rated_positive']) - ($config['rate_no_negative'] ? 0 : $user_info['user_rated_negative']),
+		'AUTHOR_RATED_POSITIVE'     => (int) $user_info['user_rated_positive'],
+		'AUTHOR_RATED_NEGATIVE'     => (int) $user_info['user_rated_negative'],
 
-		'S_AUTHOR_GENDER_X'	=> $user_info['user_gender'] == GENDER_X,
-		'S_AUTHOR_GENDER_M'	=> $user_info['user_gender'] == GENDER_M,
-		'S_AUTHOR_GENDER_F'	=> $user_info['user_gender'] == GENDER_F,
+		'S_AUTHOR_GENDER_X' => $user_info['user_gender'] == GENDER_X,
+		'S_AUTHOR_GENDER_M' => $user_info['user_gender'] == GENDER_M,
+		'S_AUTHOR_GENDER_F' => $user_info['user_gender'] == GENDER_F,
 
-		'ONLINE_IMG'		=> (!$config['load_onlinetrack']) ? '' : ((isset($user_info['online']) && $user_info['online']) ? $user->img('icon_user_online', $user->lang['ONLINE']) : $user->img('icon_user_offline', $user->lang['OFFLINE'])),
-		'S_ONLINE'			=> (!$config['load_onlinetrack']) ? false : (isset($user_info['online']) && $user_info['online']),
-		'DELETE_IMG'		=> $user->img('icon_post_delete', $user->lang['DELETE_MESSAGE']),
-		'INFO_IMG'			=> $user->img('icon_post_info', $user->lang['VIEW_PM_INFO']),
-		'PROFILE_IMG'		=> $user->img('icon_user_profile', $user->lang['READ_PROFILE']),
-		'EMAIL_IMG'			=> $user->img('icon_contact_email', $user->lang['SEND_EMAIL']),
-		'QUOTE_IMG'			=> $user->img('icon_post_quote', $user->lang['POST_QUOTE_PM']),
-		'REPLY_IMG'			=> $user->img('button_pm_reply', $user->lang['POST_REPLY_PM']),
-		'REPORT_IMG'		=> $user->img('icon_post_report', 'REPORT_PM'),
-		'EDIT_IMG'			=> $user->img('icon_post_edit', $user->lang['POST_EDIT_PM']),
-		'MINI_POST_IMG'		=> $user->img('icon_post_target', $user->lang['PM']),
+		'ONLINE_IMG'        => (!$config['load_onlinetrack']) ? '' : ((isset($user_info['online']) && $user_info['online']) ? $user->img('icon_user_online', $user->lang['ONLINE']) : $user->img('icon_user_offline', $user->lang['OFFLINE'])),
+		'S_ONLINE'          => (!$config['load_onlinetrack']) ? false : (isset($user_info['online']) && $user_info['online']),
+		'DELETE_IMG'        => $user->img('icon_post_delete', $user->lang['DELETE_MESSAGE']),
+		'INFO_IMG'          => $user->img('icon_post_info', $user->lang['VIEW_PM_INFO']),
+		'PROFILE_IMG'       => $user->img('icon_user_profile', $user->lang['READ_PROFILE']),
+		'EMAIL_IMG'         => $user->img('icon_contact_email', $user->lang['SEND_EMAIL']),
+		'QUOTE_IMG'         => $user->img('icon_post_quote', $user->lang['POST_QUOTE_PM']),
+		'REPLY_IMG'         => $user->img('button_pm_reply', $user->lang['POST_REPLY_PM']),
+		'REPORT_IMG'        => $user->img('icon_post_report', 'REPORT_PM'),
+		'EDIT_IMG'          => $user->img('icon_post_edit', $user->lang['POST_EDIT_PM']),
+		'MINI_POST_IMG'     => $user->img('icon_post_target', $user->lang['PM']),
 
-		'SENT_DATE'			=> ($view == 'print') ? $user->format_date($message_row['message_time'], false, true) : $user->format_date($message_row['message_time']),
-		'SUBJECT'			=> $message_row['message_subject'],
-		'MESSAGE'			=> $message,
-		'SIGNATURE'			=> ($message_row['enable_sig']) ? $signature : '',
-		'EDITED_MESSAGE'	=> $l_edited_by,
-		'MESSAGE_ID'		=> $message_row['msg_id'],
+		'SENT_DATE'         => ($view == 'print') ? $user->format_date($message_row['message_time'], false, true) : $user->format_date($message_row['message_time']),
+		'SUBJECT'           => $message_row['message_subject'],
+		'MESSAGE'           => $message,
+		'SIGNATURE'         => ($message_row['enable_sig']) ? $signature : '',
+		'EDITED_MESSAGE'    => $l_edited_by,
+		'MESSAGE_ID'        => $message_row['msg_id'],
 
-		'U_PM'			=> ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($user_info['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;u=' . $author_id) : '',
-		'U_WWW'			=> $user_info['user_website'] ?? '',
-		'U_JABBER'		=> ($user_info['user_jabber']) ? ('xmpp:' . $user_info['user_jabber']) : '',
-		'U_TELEGRAM'	=> ($user_info['user_telegram']) ? ('tg://resolve?domain=' . $user_info['user_telegram']) : '',
+		'U_PM'          => ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($user_info['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;u=' . $author_id) : '',
+		'U_WWW'         => $user_info['user_website'] ?? '',
+		'U_JABBER'      => ($user_info['user_jabber']) ? ('xmpp:' . $user_info['user_jabber']) : '',
+		'U_TELEGRAM'    => ($user_info['user_telegram']) ? ('tg://resolve?domain=' . $user_info['user_telegram']) : '',
 
-		'U_DELETE'			=> "{$url}&amp;mode=compose&amp;action=delete&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'],
-		'U_EMAIL'			=> $user_info['email'],
-		'U_REPORT'			=> ($config['allow_pm_report']) ? append_sid(PHPBB_ROOT_PATH . 'report.php', "pm=" . $message_row['msg_id']) : '',
-		'U_QUOTE'			=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
-		'U_EDIT'			=> (($message_row['message_time'] > time() - ($config['pm_edit_time'] * 60) || !$config['pm_edit_time']) && $folder_id == PRIVMSGS_OUTBOX && $auth->acl_get('u_pm_edit')) ? "{$url}&amp;mode=compose&amp;action=edit&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
-		'U_POST_REPLY_PM'	=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
-		'U_POST_REPLY_ALL'	=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;reply_to_all=1&amp;p=" . $message_row['msg_id'] : '',
-		'U_PREVIOUS_PM'		=> "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=previous",
-		'U_NEXT_PM'			=> "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=next",
+		'U_DELETE'          => "{$url}&amp;mode=compose&amp;action=delete&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'],
+		'U_EMAIL'           => $user_info['email'],
+		'U_REPORT'          => ($config['allow_pm_report']) ? append_sid(PHPBB_ROOT_PATH . 'report.php', "pm=" . $message_row['msg_id']) : '',
+		'U_QUOTE'           => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
+		'U_EDIT'            => (($message_row['message_time'] > time() - ($config['pm_edit_time'] * 60) || !$config['pm_edit_time']) && $folder_id == PRIVMSGS_OUTBOX && $auth->acl_get('u_pm_edit')) ? "{$url}&amp;mode=compose&amp;action=edit&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
+		'U_POST_REPLY_PM'   => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
+		'U_POST_REPLY_ALL'  => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;reply_to_all=1&amp;p=" . $message_row['msg_id'] : '',
+		'U_PREVIOUS_PM'     => "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=previous",
+		'U_NEXT_PM'         => "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=next",
 
-		'U_PM_ACTION'		=> $url . '&amp;mode=compose&amp;f=' . $folder_id . '&amp;p=' . $message_row['msg_id'],
+		'U_PM_ACTION'       => $url . '&amp;mode=compose&amp;f=' . $folder_id . '&amp;p=' . $message_row['msg_id'],
 
-		'S_HAS_ATTACHMENTS'	=> (sizeof($attachments) > 0),
-		'S_DISPLAY_NOTICE'	=> $display_notice && $message_row['message_attachment'],
-		'S_AUTHOR_DELETED'	=> ($author_id == ANONYMOUS),
-		'S_SPECIAL_FOLDER'	=> in_array($folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]),
-		'S_PM_RECIPIENTS'	=> $num_recipients,
-		'S_BBCODE_ALLOWED'	=> ($bbcode_status) ? 1 : 0,
+		'S_HAS_ATTACHMENTS' => (sizeof($attachments) > 0),
+		'S_DISPLAY_NOTICE'  => $display_notice && $message_row['message_attachment'],
+		'S_AUTHOR_DELETED'  => ($author_id == ANONYMOUS),
+		'S_SPECIAL_FOLDER'  => in_array($folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]),
+		'S_PM_RECIPIENTS'   => $num_recipients,
+		'S_BBCODE_ALLOWED'  => ($bbcode_status) ? 1 : 0,
 
-		'U_PRINT_PM'		=> "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=print",
-		'U_FORWARD_PM'		=> ($auth->acl_get('u_sendpm')) ? "{$url}&amp;mode=compose&amp;action=forward&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '']
+		'U_PRINT_PM'        => "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=print",
+		'U_FORWARD_PM'      => ($auth->acl_get('u_sendpm')) ? "{$url}&amp;mode=compose&amp;action=forward&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '']
 	);
 
 	if (class_exists('phpbb_gallery_integration'))
@@ -259,7 +259,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		foreach ($attachments as $attachment)
 		{
 			$template->assign_block_vars('attachment', [
-				'DISPLAY_ATTACHMENT'	=> $attachment]
+				'DISPLAY_ATTACHMENT'    => $attachment]
 			);
 		}
 	}

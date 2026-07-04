@@ -140,18 +140,18 @@ class phpbb_cache extends acm
 				if ($row['rank_special'])
 				{
 					$ranks['special'][$row['rank_id']] = [
-						'rank_title'		=> $row['rank_title'],
-						'rank_hide_title'	=> $row['rank_hide_title'],
-						'rank_image'		=> $row['rank_image']
+						'rank_title'        => $row['rank_title'],
+						'rank_hide_title'   => $row['rank_hide_title'],
+						'rank_image'        => $row['rank_image']
 					];
 				}
 				else
 				{
 					$ranks['normal'][] = [
-						'rank_title'		=> $row['rank_title'],
-						'rank_hide_title'	=> $row['rank_hide_title'],
-						'rank_image'		=> $row['rank_image'],
-						'rank_min'			=> $row['rank_min'],
+						'rank_title'        => $row['rank_title'],
+						'rank_hide_title'   => $row['rank_hide_title'],
+						'rank_image'        => $row['rank_image'],
+						'rank_min'          => $row['rank_min'],
 					];
 				}
 			}
@@ -177,8 +177,8 @@ class phpbb_cache extends acm
 			global $db;
 
 			$extensions = [
-				'_allowed_post'	=> [],
-				'_allowed_pm'	=> [],
+				'_allowed_post' => [],
+				'_allowed_pm'   => [],
 			];
 
 			// The rule is to only allow those extensions defined. ;)
@@ -193,12 +193,12 @@ class phpbb_cache extends acm
 				$extension = strtolower(trim($row['extension']));
 
 				$extensions[$extension] = [
-					'display_cat'	=> ($row['cat_id'] < ATTACHMENT_CATEGORY_COUNT) ? intval($row['cat_id']) : ATTACHMENT_CATEGORY_NONE,
-					'download_mode'	=> (int) $row['download_mode'],
-					'upload_icon'	=> trim($row['upload_icon']),
-					'max_filesize'	=> (int) $row['max_filesize'],
-					'allow_group'	=> $row['allow_group'],
-					'allow_in_pm'	=> $row['allow_in_pm'],
+					'display_cat'   => ($row['cat_id'] < ATTACHMENT_CATEGORY_COUNT) ? intval($row['cat_id']) : ATTACHMENT_CATEGORY_NONE,
+					'download_mode' => (int) $row['download_mode'],
+					'upload_icon'   => trim($row['upload_icon']),
+					'max_filesize'  => (int) $row['max_filesize'],
+					'allow_group'   => $row['allow_group'],
+					'allow_in_pm'   => $row['allow_in_pm'],
 				];
 
 				$allowed_forums = ($row['allowed_forums']) ? unserialize(trim($row['allowed_forums'])) : [];
@@ -308,9 +308,9 @@ class phpbb_cache extends acm
 		global $config;
 
 		$parsed_items = [
-			'theme'		=> [],
-			'template'	=> [],
-			'imageset'	=> []
+			'theme'     => [],
+			'template'  => [],
+			'imageset'  => []
 		];
 
 		foreach ($parsed_items as $key => $parsed_array)

@@ -32,17 +32,17 @@ class acp_email
 		$submit = isset($_POST['submit']);
 		$error = [];
 
-		$usernames	= request_var('usernames', '', true);
-		$group_id	= request_var('g', 0);
-		$subject	= utf8_normalize_nfc(request_var('subject', '', true));
-		$message	= utf8_normalize_nfc(request_var('message', '', true));
+		$usernames  = request_var('usernames', '', true);
+		$group_id   = request_var('g', 0);
+		$subject    = utf8_normalize_nfc(request_var('subject', '', true));
+		$message    = utf8_normalize_nfc(request_var('message', '', true));
 
 		// Do the job ...
 		if ($submit)
 		{
 			// Error checking needs to go here ... if no subject and/or no message then skip
 			// over the send and return to the form
-			$use_queue		= !isset($_POST['send_immediately']);
+			$use_queue      = !isset($_POST['send_immediately']);
 
 			if (!check_form_key($form_key))
 			{
@@ -75,29 +75,29 @@ class acp_email
 					if ($group_id)
 					{
 						$sql_ary = [
-							'SELECT'	=> 'u.user_email, u.username, u.username_clean, u.user_lang, u.user_jabber, u.user_notify_type',
-							'FROM'		=> [
-								USERS_TABLE			=> 'u',
-								USER_GROUP_TABLE	=> 'ug',
+							'SELECT'    => 'u.user_email, u.username, u.username_clean, u.user_lang, u.user_jabber, u.user_notify_type',
+							'FROM'      => [
+								USERS_TABLE         => 'u',
+								USER_GROUP_TABLE    => 'ug',
 							],
-							'WHERE'		=> 'ug.group_id = ' . $group_id . '
+							'WHERE'     => 'ug.group_id = ' . $group_id . '
 								AND ug.user_pending = 0
 								AND u.user_id = ug.user_id
 								AND u.user_allow_massemail = 1
 								AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')',
-							'ORDER_BY'	=> 'u.user_lang, u.user_notify_type',
+							'ORDER_BY'  => 'u.user_lang, u.user_notify_type',
 						];
 					}
 					else
 					{
 						$sql_ary = [
-							'SELECT'	=> 'u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang, u.user_notify_type',
-							'FROM'		=> [
-								USERS_TABLE	=> 'u',
+							'SELECT'    => 'u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang, u.user_notify_type',
+							'FROM'      => [
+								USERS_TABLE => 'u',
 							],
-							'WHERE'		=> 'u.user_allow_massemail = 1
+							'WHERE'     => 'u.user_allow_massemail = 1
 								AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')',
-							'ORDER_BY'	=> 'u.user_lang, u.user_notify_type',
+							'ORDER_BY'  => 'u.user_lang, u.user_notify_type',
 						];
 					}
 
@@ -108,10 +108,10 @@ class acp_email
 						        OR b.ban_exclude = 1)';
 						$sql_ary['LEFT_JOIN'] = [
 							[
-								'FROM'	=> [
-									BANLIST_TABLE	=> 'b',
+								'FROM'  => [
+									BANLIST_TABLE   => 'b',
 								],
-								'ON'	=> 'u.user_id = b.ban_userid',
+								'ON'    => 'u.user_id = b.ban_userid',
 							],
 						];
 					}
@@ -154,11 +154,11 @@ class acp_email
 							$old_notify_type = $row['user_notify_type'];
 						}
 
-						$email_list[$j][$i]['lang']		= $row['user_lang'];
-						$email_list[$j][$i]['method']	= $row['user_notify_type'];
-						$email_list[$j][$i]['email']	= $row['user_email'];
-						$email_list[$j][$i]['name']		= $row['username'];
-						$email_list[$j][$i]['jabber']	= $row['user_jabber'];
+						$email_list[$j][$i]['lang']     = $row['user_lang'];
+						$email_list[$j][$i]['method']   = $row['user_notify_type'];
+						$email_list[$j][$i]['email']    = $row['user_email'];
+						$email_list[$j][$i]['name']     = $row['username'];
+						$email_list[$j][$i]['jabber']   = $row['user_jabber'];
 						$i++;
 					}
 				}
@@ -193,7 +193,7 @@ class acp_email
 
 					$messenger->assign_vars([
 						'CONTACT_EMAIL' => $config['board_contact'],
-						'MESSAGE'		=> htmlspecialchars_decode($message)]
+						'MESSAGE'       => htmlspecialchars_decode($message)]
 					);
 
 					if (!($messenger->send($used_method)))
@@ -255,14 +255,14 @@ class acp_email
 		$select_list .= group_select_options($group_id, $exclude);
 
 		$template->assign_vars([
-			'S_WARNING'				=> (sizeof($error) > 0),
-			'WARNING_MSG'			=> (sizeof($error)) ? implode('<br />', $error) : '',
-			'U_ACTION'				=> $this->u_action,
-			'S_GROUP_OPTIONS'		=> $select_list,
-			'USERNAMES'				=> $usernames,
-			'U_FIND_USERNAME'		=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_email&amp;field=usernames'),
-			'SUBJECT'				=> $subject,
-			'MESSAGE'				=> $message]
+			'S_WARNING'             => (sizeof($error) > 0),
+			'WARNING_MSG'           => (sizeof($error)) ? implode('<br />', $error) : '',
+			'U_ACTION'              => $this->u_action,
+			'S_GROUP_OPTIONS'       => $select_list,
+			'USERNAMES'             => $usernames,
+			'U_FIND_USERNAME'       => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=acp_email&amp;field=usernames'),
+			'SUBJECT'               => $subject,
+			'MESSAGE'               => $message]
 		);
 
 	}

@@ -26,9 +26,9 @@ class mcp_ban
 		// Include the admin banning interface...
 		require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_ban.php');
 
-		$bansubmit		= isset($_POST['bansubmit']);
-		$unbansubmit	= isset($_POST['unbansubmit']);
-		$current_time	= time();
+		$bansubmit      = isset($_POST['bansubmit']);
+		$unbansubmit    = isset($_POST['unbansubmit']);
+		$current_time   = time();
 
 		$user->add_lang(['acp/ban', 'acp/users']);
 		$this->tpl_name = 'mcp_ban';
@@ -37,18 +37,18 @@ class mcp_ban
 		if ($bansubmit)
 		{
 			// Grab the list of entries
-			$ban				= request_var('ban', '', ($mode === 'user'));
+			$ban                = request_var('ban', '', ($mode === 'user'));
 
 			if ($mode === 'user')
 			{
 				$ban = utf8_normalize_nfc($ban);
 			}
 
-			$ban_len			= request_var('banlength', 0);
-			$ban_len_other		= request_var('banlengthother', '');
-			$ban_exclude		= request_var('banexclude', 0);
-			$ban_reason			= utf8_normalize_nfc(request_var('banreason', '', true));
-			$ban_give_reason	= utf8_normalize_nfc(request_var('bangivereason', '', true));
+			$ban_len            = request_var('banlength', 0);
+			$ban_len_other      = request_var('banlengthother', '');
+			$ban_exclude        = request_var('banexclude', 0);
+			$ban_reason         = utf8_normalize_nfc(request_var('banreason', '', true));
+			$ban_give_reason    = utf8_normalize_nfc(request_var('bangivereason', '', true));
 
 			if ($ban)
 			{
@@ -61,14 +61,14 @@ class mcp_ban
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'mode'				=> $mode,
-						'ban'				=> $ban,
-						'bansubmit'			=> true,
-						'banlength'			=> $ban_len,
-						'banlengthother'	=> $ban_len_other,
-						'banexclude'		=> $ban_exclude,
-						'banreason'			=> $ban_reason,
-						'bangivereason'		=> $ban_give_reason]));
+						'mode'              => $mode,
+						'ban'               => $ban,
+						'bansubmit'         => true,
+						'banlength'         => $ban_len,
+						'banlengthother'    => $ban_len_other,
+						'banexclude'        => $ban_exclude,
+						'banreason'         => $ban_reason,
+						'bangivereason'     => $ban_give_reason]));
 				}
 			}
 		}
@@ -87,9 +87,9 @@ class mcp_ban
 				else
 				{
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields([
-						'mode'			=> $mode,
-						'unbansubmit'	=> true,
-						'unban'			=> $ban]));
+						'mode'          => $mode,
+						'unbansubmit'   => true,
+						'unban'         => $ban]));
 				}
 			}
 		}
@@ -130,18 +130,18 @@ class mcp_ban
 		acp_ban::display_ban_options($mode);
 
 		$template->assign_vars([
-			'L_TITLE'				=> $this->page_title,
-			'L_EXPLAIN'				=> $l_ban_explain,
-			'L_UNBAN_TITLE'			=> $l_unban_title,
-			'L_UNBAN_EXPLAIN'		=> $l_unban_explain,
-			'L_BAN_CELL'			=> $l_ban_cell,
-			'L_BAN_EXCLUDE_EXPLAIN'	=> $l_ban_exclude_explain,
-			'L_NO_BAN_CELL'			=> $l_no_ban_cell,
+			'L_TITLE'               => $this->page_title,
+			'L_EXPLAIN'             => $l_ban_explain,
+			'L_UNBAN_TITLE'         => $l_unban_title,
+			'L_UNBAN_EXPLAIN'       => $l_unban_explain,
+			'L_BAN_CELL'            => $l_ban_cell,
+			'L_BAN_EXCLUDE_EXPLAIN' => $l_ban_exclude_explain,
+			'L_NO_BAN_CELL'         => $l_no_ban_cell,
 
-			'S_USERNAME_BAN'	=> ($mode == 'user'),
+			'S_USERNAME_BAN'    => ($mode == 'user'),
 
-			'U_ACTION'			=> $this->u_action,
-			'U_FIND_USERNAME'	=> append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp_ban&amp;field=ban'),
+			'U_ACTION'          => $this->u_action,
+			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp_ban&amp;field=ban'),
 		]);
 
 		if ($mode === 'email' && !$auth->acl_get('a_user'))

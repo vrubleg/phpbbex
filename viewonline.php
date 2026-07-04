@@ -15,13 +15,13 @@ $auth->acl($user->data);
 $user->setup('memberlist');
 
 // Get and set some variables
-$mode		= request_var('mode', '');
-$session_id	= request_var('s', '');
-$start		= request_var('start', 0);
-$sort_key	= request_var('sk', 'b');
-$sort_dir	= request_var('sd', 'd');
+$mode       = request_var('mode', '');
+$session_id = request_var('s', '');
+$start      = request_var('start', 0);
+$sort_key   = request_var('sk', 'b');
+$sort_dir   = request_var('sd', 'd');
 $show_guests= ($config['load_online_guests'] || $auth->acl_get('u_viewonline')) ? request_var('sg', 0) : 0;
-$show_bots	= ($config['load_online_bots'] || $auth->acl_get('u_viewonline')) ? request_var('sb', 1) : 0;
+$show_bots  = ($config['load_online_bots'] || $auth->acl_get('u_viewonline')) ? request_var('sb', 1) : 0;
 
 // Can this user view profiles/memberlist?
 if (!$auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel'))
@@ -194,20 +194,20 @@ while ($row = $db->sql_fetchrow($result))
 	}
 
 	$template->assign_block_vars('user_row', [
-		'USERNAME' 			=> $row['username'],
-		'USERNAME_COLOUR'	=> $row['user_colour'],
-		'USERNAME_FULL'		=> $username_full,
-		'LASTUPDATE'		=> $user->format_date($row['session_time']),
-		'USER_IP'			=> ($auth->acl_get('a_')) ? (($mode == 'lookup' && $session_id == $row['session_id']) ? gethostbyaddr($row['session_ip']) : $row['session_ip']) : '',
-		'USER_BROWSER'		=> ($auth->acl_get('a_user')) ? $row['session_browser'] : '',
+		'USERNAME'          => $row['username'],
+		'USERNAME_COLOUR'   => $row['user_colour'],
+		'USERNAME_FULL'     => $username_full,
+		'LASTUPDATE'        => $user->format_date($row['session_time']),
+		'USER_IP'           => ($auth->acl_get('a_')) ? (($mode == 'lookup' && $session_id == $row['session_id']) ? gethostbyaddr($row['session_ip']) : $row['session_ip']) : '',
+		'USER_BROWSER'      => ($auth->acl_get('a_user')) ? $row['session_browser'] : '',
 
-		'U_USER_PROFILE'	=> ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
-		'U_USER_IP'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg={$show_guests}&amp;sb={$show_bots}&amp;start={$start}&amp;sk={$sort_key}&amp;sd={$sort_dir}"),
-		'U_WHOIS'			=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=whois&amp;s=' . $row['session_id']),
+		'U_USER_PROFILE'    => ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
+		'U_USER_IP'         => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg={$show_guests}&amp;sb={$show_bots}&amp;start={$start}&amp;sk={$sort_key}&amp;sd={$sort_dir}"),
+		'U_WHOIS'           => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=whois&amp;s=' . $row['session_id']),
 
-		'S_USER_HIDDEN'		=> $s_user_hidden,
-		'S_GUEST'			=> ($row['user_id'] == ANONYMOUS && !$row['session_bot_id']),
-		'S_USER_TYPE'		=> $row['user_type'],
+		'S_USER_HIDDEN'     => $s_user_hidden,
+		'S_GUEST'           => ($row['user_id'] == ANONYMOUS && !$row['session_bot_id']),
+		'S_USER_TYPE'       => $row['user_type'],
 	]);
 }
 $db->sql_freeresult($result);
@@ -251,23 +251,23 @@ meta_refresh(60);
 
 // Send data to template
 $template->assign_vars([
-	'TOTAL_REGISTERED_USERS_ONLINE'	=> $user->lang('ONLINE_REG_USERS', $logged_visible_online + $logged_hidden_online) . ($logged_hidden_online ? (' (' . $user->lang('ONLINE_HIDDEN_USERS', $logged_hidden_online) . ')') : ''),
-	'TOTAL_GUEST_USERS_ONLINE'		=> $user->lang('ONLINE_GUEST_USERS', $guest_counter),
-	'TOTAL_BOT_USERS_ONLINE'		=> $user->lang('ONLINE_BOT_USERS', $logged_bots_online),
-	'LEGEND'						=> $legend,
-	'PAGINATION'					=> $pagination,
-	'PAGE_NUMBER'					=> on_page($counter, $config['topics_per_page'], $start),
+	'TOTAL_REGISTERED_USERS_ONLINE' => $user->lang('ONLINE_REG_USERS', $logged_visible_online + $logged_hidden_online) . ($logged_hidden_online ? (' (' . $user->lang('ONLINE_HIDDEN_USERS', $logged_hidden_online) . ')') : ''),
+	'TOTAL_GUEST_USERS_ONLINE'      => $user->lang('ONLINE_GUEST_USERS', $guest_counter),
+	'TOTAL_BOT_USERS_ONLINE'        => $user->lang('ONLINE_BOT_USERS', $logged_bots_online),
+	'LEGEND'                        => $legend,
+	'PAGINATION'                    => $pagination,
+	'PAGE_NUMBER'                   => on_page($counter, $config['topics_per_page'], $start),
 
-	'U_SORT_USERNAME'		=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
-	'U_SORT_UPDATED'		=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'U_SORT_USERNAME'       => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sk=a&amp;sd=' . (($sort_key == 'a' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'U_SORT_UPDATED'        => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sk=b&amp;sd=' . (($sort_key == 'b' && $sort_dir == 'a') ? 'd' : 'a') . '&amp;sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) $show_bots)),
 
-	'U_SWITCH_GUEST_DISPLAY'	=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) !$show_guests) . '&amp;sb=' . ((int) $show_bots)),
-	'L_SWITCH_GUEST_DISPLAY'	=> $show_guests ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
-	'S_SWITCH_GUEST_DISPLAY'	=> $config['load_online_guests'] || $auth->acl_get('u_viewonline'),
+	'U_SWITCH_GUEST_DISPLAY'    => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) !$show_guests) . '&amp;sb=' . ((int) $show_bots)),
+	'L_SWITCH_GUEST_DISPLAY'    => $show_guests ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
+	'S_SWITCH_GUEST_DISPLAY'    => $config['load_online_guests'] || $auth->acl_get('u_viewonline'),
 
-	'U_SWITCH_BOTS_DISPLAY'		=> append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) !$show_bots)),
-	'L_SWITCH_BOTS_DISPLAY'		=> $show_bots ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
-	'S_SWITCH_BOTS_DISPLAY'		=> $config['load_online_bots'] || $auth->acl_get('u_viewonline'),
+	'U_SWITCH_BOTS_DISPLAY'     => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) !$show_bots)),
+	'L_SWITCH_BOTS_DISPLAY'     => $show_bots ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
+	'S_SWITCH_BOTS_DISPLAY'     => $config['load_online_bots'] || $auth->acl_get('u_viewonline'),
 ]);
 
 // We do not need to load the who is online box here. ;)

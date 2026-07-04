@@ -92,8 +92,8 @@ class fulltext_mysql extends search_backend
 
 		if ($terms == 'all')
 		{
-			$match		= ['#\sand\s#iu', '#\sor\s#iu', '#\snot\s#iu', '#(^|\s)\+#', '#(^|\s)-#', '#(^|\s)\|#'];
-			$replace	= [' +', ' |', ' -', ' +', ' -', ' |'];
+			$match      = ['#\sand\s#iu', '#\sor\s#iu', '#\snot\s#iu', '#(^|\s)\+#', '#(^|\s)-#', '#(^|\s)\|#'];
+			$replace    = [' +', ' |', ' -', ' +', ' -', ' |'];
 
 			$keywords = preg_replace($match, $replace, $keywords);
 		}
@@ -234,24 +234,24 @@ class fulltext_mysql extends search_backend
 	/**
 	* Performs a search on keywords depending on display specific params. You have to run split_keywords() first.
 	*
-	* @param	string		$type				contains either posts or topics depending on what should be searched for
-	* @param	string		$fields				contains either titleonly (topic titles should be searched), msgonly (only message bodies should be searched), firstpost (only subject and body of the first post should be searched) or all (all post bodies and subjects should be searched)
-	* @param	string		$terms				is either 'all' (use query as entered, words without prefix should default to "have to be in field") or 'any' (ignore search query parts and just return all posts that contain any of the specified words)
-	* @param	array		$sort_by_sql		contains SQL code for the ORDER BY part of a query
-	* @param	string		$sort_key			is the key of $sort_by_sql for the selected sorting
-	* @param	string		$sort_dir			is either a or d representing ASC and DESC
-	* @param	string		$sort_days			specifies the maximum amount of days a post may be old
-	* @param	array		$ex_fid_ary			specifies an array of forum ids which should not be searched
-	* @param	array		$m_approve_fid_ary	specifies an array of forum ids in which the searcher is allowed to view unapproved posts
-	* @param	int			$topic_id			is set to 0 or a topic id, if it is not 0 then only posts in this topic should be searched
-	* @param	array		$author_ary			an array of author ids if the author should be ignored during the search the array is empty
-	* @param	string		$author_name		specifies the author match, when ANONYMOUS is also a search-match
-	* @param	array		&$id_ary			passed by reference, to be filled with ids for the page specified by $start and $per_page, should be ordered
-	* @param	int			$start				indicates the first index of the page
-	* @param	int			$per_page			number of ids each page is supposed to contain
-	* @return	boolean|int						total number of results
+	* @param    string      $type               contains either posts or topics depending on what should be searched for
+	* @param    string      $fields             contains either titleonly (topic titles should be searched), msgonly (only message bodies should be searched), firstpost (only subject and body of the first post should be searched) or all (all post bodies and subjects should be searched)
+	* @param    string      $terms              is either 'all' (use query as entered, words without prefix should default to "have to be in field") or 'any' (ignore search query parts and just return all posts that contain any of the specified words)
+	* @param    array       $sort_by_sql        contains SQL code for the ORDER BY part of a query
+	* @param    string      $sort_key           is the key of $sort_by_sql for the selected sorting
+	* @param    string      $sort_dir           is either a or d representing ASC and DESC
+	* @param    string      $sort_days          specifies the maximum amount of days a post may be old
+	* @param    array       $ex_fid_ary         specifies an array of forum ids which should not be searched
+	* @param    array       $m_approve_fid_ary  specifies an array of forum ids in which the searcher is allowed to view unapproved posts
+	* @param    int         $topic_id           is set to 0 or a topic id, if it is not 0 then only posts in this topic should be searched
+	* @param    array       $author_ary         an array of author ids if the author should be ignored during the search the array is empty
+	* @param    string      $author_name        specifies the author match, when ANONYMOUS is also a search-match
+	* @param    array       &$id_ary            passed by reference, to be filled with ids for the page specified by $start and $per_page, should be ordered
+	* @param    int         $start              indicates the first index of the page
+	* @param    int         $per_page           number of ids each page is supposed to contain
+	* @return   boolean|int                     total number of results
 	*
-	* @access	public
+	* @access   public
 	*/
 	function keyword_search($type, $fields, $terms, $sort_by_sql, $sort_key, $sort_dir, $sort_days, $ex_fid_ary, $m_approve_fid_ary, $topic_id, $author_ary, $author_name, &$id_ary, $start, $per_page)
 	{
@@ -295,8 +295,8 @@ class fulltext_mysql extends search_backend
 		switch ($sql_sort[0])
 		{
 			case 'u':
-				$sql_sort_table	= USERS_TABLE . ' u, ';
-				$sql_sort_join	= ($type == 'posts') ? ' AND u.user_id = p.poster_id ' : ' AND u.user_id = t.topic_poster ';
+				$sql_sort_table = USERS_TABLE . ' u, ';
+				$sql_sort_join  = ($type == 'posts') ? ' AND u.user_id = p.poster_id ' : ' AND u.user_id = t.topic_poster ';
 			break;
 
 			case 't':
@@ -304,8 +304,8 @@ class fulltext_mysql extends search_backend
 			break;
 
 			case 'f':
-				$sql_sort_table	= FORUMS_TABLE . ' f, ';
-				$sql_sort_join	= ' AND f.forum_id = p.forum_id ';
+				$sql_sort_table = FORUMS_TABLE . ' f, ';
+				$sql_sort_join  = ' AND f.forum_id = p.forum_id ';
 			break;
 		}
 
@@ -348,10 +348,10 @@ class fulltext_mysql extends search_backend
 			$m_approve_fid_sql = ' AND (p.post_approved = 1 OR ' . $db->sql_in_set('p.forum_id', $m_approve_fid_ary, true) . ')';
 		}
 
-		$sql_select			= (!$result_count) ? 'SQL_CALC_FOUND_ROWS ' : '';
-		$sql_select			= ($type == 'posts') ? $sql_select . 'p.post_id' : 'DISTINCT ' . $sql_select . 't.topic_id';
-		$sql_from			= ($join_topic) ? TOPICS_TABLE . ' t, ' : '';
-		$field				= ($type == 'posts') ? 'post_id' : 'topic_id';
+		$sql_select         = (!$result_count) ? 'SQL_CALC_FOUND_ROWS ' : '';
+		$sql_select         = ($type == 'posts') ? $sql_select . 'p.post_id' : 'DISTINCT ' . $sql_select . 't.topic_id';
+		$sql_from           = ($join_topic) ? TOPICS_TABLE . ' t, ' : '';
+		$field              = ($type == 'posts') ? 'post_id' : 'topic_id';
 		if (sizeof($author_ary) && $author_name)
 		{
 			// first one matches post of registered users, second one guests and deleted users
@@ -419,23 +419,23 @@ class fulltext_mysql extends search_backend
 	/**
 	* Performs a search on an author's posts without caring about message contents. Depends on display specific params
 	*
-	* @param	string		$type				contains either posts or topics depending on what should be searched for
-	* @param	boolean		$firstpost_only		if true, only topic starting posts will be considered
-	* @param	array		$sort_by_sql		contains SQL code for the ORDER BY part of a query
-	* @param	string		$sort_key			is the key of $sort_by_sql for the selected sorting
-	* @param	string		$sort_dir			is either a or d representing ASC and DESC
-	* @param	string		$sort_days			specifies the maximum amount of days a post may be old
-	* @param	array		$ex_fid_ary			specifies an array of forum ids which should not be searched
-	* @param	array		$m_approve_fid_ary	specifies an array of forum ids in which the searcher is allowed to view unapproved posts
-	* @param	int			$topic_id			is set to 0 or a topic id, if it is not 0 then only posts in this topic should be searched
-	* @param	array		$author_ary			an array of author ids
-	* @param	string		$author_name		specifies the author match, when ANONYMOUS is also a search-match
-	* @param	array		&$id_ary			passed by reference, to be filled with ids for the page specified by $start and $per_page, should be ordered
-	* @param	int			$start				indicates the first index of the page
-	* @param	int			$per_page			number of ids each page is supposed to contain
-	* @return	boolean|int						total number of results
+	* @param    string      $type               contains either posts or topics depending on what should be searched for
+	* @param    boolean     $firstpost_only     if true, only topic starting posts will be considered
+	* @param    array       $sort_by_sql        contains SQL code for the ORDER BY part of a query
+	* @param    string      $sort_key           is the key of $sort_by_sql for the selected sorting
+	* @param    string      $sort_dir           is either a or d representing ASC and DESC
+	* @param    string      $sort_days          specifies the maximum amount of days a post may be old
+	* @param    array       $ex_fid_ary         specifies an array of forum ids which should not be searched
+	* @param    array       $m_approve_fid_ary  specifies an array of forum ids in which the searcher is allowed to view unapproved posts
+	* @param    int         $topic_id           is set to 0 or a topic id, if it is not 0 then only posts in this topic should be searched
+	* @param    array       $author_ary         an array of author ids
+	* @param    string      $author_name        specifies the author match, when ANONYMOUS is also a search-match
+	* @param    array       &$id_ary            passed by reference, to be filled with ids for the page specified by $start and $per_page, should be ordered
+	* @param    int         $start              indicates the first index of the page
+	* @param    int         $per_page           number of ids each page is supposed to contain
+	* @return   boolean|int                     total number of results
 	*
-	* @access	public
+	* @access   public
 	*/
 	function author_search($type, $firstpost_only, $sort_by_sql, $sort_key, $sort_dir, $sort_days, $ex_fid_ary, $m_approve_fid_ary, $topic_id, $author_ary, $author_name, &$id_ary, $start, $per_page)
 	{
@@ -482,9 +482,9 @@ class fulltext_mysql extends search_backend
 		{
 			$sql_author = $db->sql_in_set('p.poster_id', $author_ary);
 		}
-		$sql_fora		= (sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '';
-		$sql_topic_id	= ($topic_id) ? ' AND p.topic_id = ' . (int) $topic_id : '';
-		$sql_time		= ($sort_days) ? ' AND p.post_time >= ' . (time() - ($sort_days * 86400)) : '';
+		$sql_fora       = (sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '';
+		$sql_topic_id   = ($topic_id) ? ' AND p.topic_id = ' . (int) $topic_id : '';
+		$sql_time       = ($sort_days) ? ' AND p.post_time >= ' . (time() - ($sort_days * 86400)) : '';
 		$sql_firstpost = ($firstpost_only) ? ' AND p.post_id = t.topic_first_post_id' : '';
 
 		// Build sql strings for sorting
@@ -493,18 +493,18 @@ class fulltext_mysql extends search_backend
 		switch ($sql_sort[0])
 		{
 			case 'u':
-				$sql_sort_table	= USERS_TABLE . ' u, ';
-				$sql_sort_join	= ($type == 'posts') ? ' AND u.user_id = p.poster_id ' : ' AND u.user_id = t.topic_poster ';
+				$sql_sort_table = USERS_TABLE . ' u, ';
+				$sql_sort_join  = ($type == 'posts') ? ' AND u.user_id = p.poster_id ' : ' AND u.user_id = t.topic_poster ';
 			break;
 
 			case 't':
-				$sql_sort_table	= ($type == 'posts' && !$firstpost_only) ? TOPICS_TABLE . ' t, ' : '';
-				$sql_sort_join	= ($type == 'posts' && !$firstpost_only) ? ' AND t.topic_id = p.topic_id ' : '';
+				$sql_sort_table = ($type == 'posts' && !$firstpost_only) ? TOPICS_TABLE . ' t, ' : '';
+				$sql_sort_join  = ($type == 'posts' && !$firstpost_only) ? ' AND t.topic_id = p.topic_id ' : '';
 			break;
 
 			case 'f':
-				$sql_sort_table	= FORUMS_TABLE . ' f, ';
-				$sql_sort_join	= ' AND f.forum_id = p.forum_id ';
+				$sql_sort_table = FORUMS_TABLE . ' f, ';
+				$sql_sort_join  = ' AND f.forum_id = p.forum_id ';
 			break;
 		}
 
@@ -752,7 +752,7 @@ class fulltext_mysql extends search_backend
 		}
 
 		return [
-			$user->lang['FULLTEXT_MYSQL_TOTAL_POSTS']			=> ($this->index_created()) ? $this->stats['total_posts'] : 0,
+			$user->lang['FULLTEXT_MYSQL_TOTAL_POSTS']           => ($this->index_created()) ? $this->stats['total_posts'] : 0,
 		];
 	}
 
@@ -809,8 +809,8 @@ class fulltext_mysql extends search_backend
 
 		// These are fields required in the config table
 		return [
-			'tpl'		=> $tpl,
-			'config'	=> []
+			'tpl'       => $tpl,
+			'config'    => []
 		];
 	}
 }

@@ -20,25 +20,25 @@ function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key,
 	$sort_dir_text = ['a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']];
 
 	$sorts = [
-		'st'	=> [
-			'key'		=> 'sort_days',
-			'default'	=> $def_st,
-			'options'	=> $limit_days,
-			'output'	=> &$s_limit_days,
+		'st'    => [
+			'key'       => 'sort_days',
+			'default'   => $def_st,
+			'options'   => $limit_days,
+			'output'    => &$s_limit_days,
 		],
 
-		'sk'	=> [
-			'key'		=> 'sort_key',
-			'default'	=> $def_sk,
-			'options'	=> $sort_by_text,
-			'output'	=> &$s_sort_key,
+		'sk'    => [
+			'key'       => 'sort_key',
+			'default'   => $def_sk,
+			'options'   => $sort_by_text,
+			'output'    => &$s_sort_key,
 		],
 
-		'sd'	=> [
-			'key'		=> 'sort_dir',
-			'default'	=> $def_sd,
-			'options'	=> $sort_dir_text,
-			'output'	=> &$s_sort_dir,
+		'sd'    => [
+			'key'       => 'sort_dir',
+			'default'   => $def_sd,
+			'options'   => $sort_dir_text,
+			'output'    => &$s_sort_dir,
 		],
 	];
 	$u_sort_param  = '';
@@ -134,9 +134,9 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 		if (!$display_jumpbox)
 		{
 			$template->assign_block_vars('jumpbox_forums', [
-				'FORUM_ID'		=> ($select_all) ? 0 : -1,
-				'FORUM_NAME'	=> ($select_all) ? $user->lang['ALL_FORUMS'] : $user->lang['SELECT_FORUM'],
-				'S_FORUM_COUNT'	=> $iteration,
+				'FORUM_ID'      => ($select_all) ? 0 : -1,
+				'FORUM_NAME'    => ($select_all) ? $user->lang['ALL_FORUMS'] : $user->lang['SELECT_FORUM'],
+				'S_FORUM_COUNT' => $iteration,
 			]);
 
 			$iteration++;
@@ -144,13 +144,13 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 		}
 
 		$template->assign_block_vars('jumpbox_forums', [
-			'FORUM_ID'		=> $row['forum_id'],
-			'FORUM_NAME'	=> $row['forum_name'],
-			'SELECTED'		=> ($row['forum_id'] == $forum_id) ? ' selected="selected"' : '',
-			'S_FORUM_COUNT'	=> $iteration,
-			'S_IS_CAT'		=> ($row['forum_type'] == FORUM_CAT),
-			'S_IS_LINK'		=> ($row['forum_type'] == FORUM_LINK),
-			'S_IS_POST'		=> ($row['forum_type'] == FORUM_POST),
+			'FORUM_ID'      => $row['forum_id'],
+			'FORUM_NAME'    => $row['forum_name'],
+			'SELECTED'      => ($row['forum_id'] == $forum_id) ? ' selected="selected"' : '',
+			'S_FORUM_COUNT' => $iteration,
+			'S_IS_CAT'      => ($row['forum_type'] == FORUM_CAT),
+			'S_IS_LINK'     => ($row['forum_type'] == FORUM_LINK),
+			'S_IS_POST'     => ($row['forum_type'] == FORUM_POST),
 		]);
 
 		for ($i = 0; $i < $padding; $i++)
@@ -163,8 +163,8 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 	unset($padding_store);
 
 	$template->assign_vars([
-		'S_DISPLAY_JUMPBOX'	=> $display_jumpbox,
-		'S_JUMPBOX_ACTION'	=> $action,
+		'S_DISPLAY_JUMPBOX' => $display_jumpbox,
+		'S_JUMPBOX_ACTION'  => $action,
 	]);
 }
 
@@ -203,11 +203,11 @@ function bump_topic_allowed($forum_id, $topic_bumped, $last_post_time, $topic_po
 /**
 * Generates a text with approx. the specified length which contains the specified words and their context
 *
-* @param	string	$text	The full text from which context shall be extracted
-* @param	string	$words	An array of words which should be contained in the result, has to be a valid part of a PCRE pattern (escape with preg_quote!)
-* @param	int		$length	The desired length of the resulting text, however the result might be shorter or longer than this value
+* @param    string  $text   The full text from which context shall be extracted
+* @param    string  $words  An array of words which should be contained in the result, has to be a valid part of a PCRE pattern (escape with preg_quote!)
+* @param    int     $length The desired length of the resulting text, however the result might be shorter or longer than this value
 *
-* @return	string			Context of the specified words separated by "..."
+* @return   string          Context of the specified words separated by "..."
 */
 function get_context($text, $words, $length = 400)
 {
@@ -470,10 +470,10 @@ function generate_text_for_edit($text, $uid, $flags)
 	decode_message($text, $uid);
 
 	return [
-		'allow_bbcode'	=> ($flags & OPTION_FLAG_BBCODE) ? 1 : 0,
-		'allow_smilies'	=> ($flags & OPTION_FLAG_SMILIES) ? 1 : 0,
-		'allow_urls'	=> ($flags & OPTION_FLAG_LINKS) ? 1 : 0,
-		'text'			=> $text
+		'allow_bbcode'  => ($flags & OPTION_FLAG_BBCODE) ? 1 : 0,
+		'allow_smilies' => ($flags & OPTION_FLAG_SMILIES) ? 1 : 0,
+		'allow_urls'    => ($flags & OPTION_FLAG_LINKS) ? 1 : 0,
+		'text'          => $text
 	];
 }
 
@@ -540,9 +540,9 @@ function get_attrs_for_external_link($url)
 */
 function make_clickable_callback($type, $whitespace, $url, $server_url)
 {
-	$attrs			= '';
-	$append			= '';
-	$url			= htmlspecialchars_decode($url);
+	$attrs          = '';
+	$append         = '';
+	$url            = htmlspecialchars_decode($url);
 
 	// make sure no HTML entities were matched
 	$split = strcspn($url, '<>"');
@@ -550,8 +550,8 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 	if ($split !== strlen($url))
 	{
 		// an HTML entity was found, so the URL has to end before it
-		$append			= substr($url, $split);
-		$url			= substr($url, 0, $split);
+		$append         = substr($url, $split);
+		$url            = substr($url, 0, $split);
 	}
 
 	// if the last character of the url is a punctuation mark, exclude it from the url
@@ -580,7 +580,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 	switch ($type)
 	{
 		case MAGIC_URL_WWW:
-			$url	= 'http://' . $url;
+			$url    = 'http://' . $url;
 
 		case MAGIC_URL_FULL:
 			if (in_array(strtolower($url), ['http://', 'https://']))
@@ -590,32 +590,32 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			$external = stripos(preg_replace('#^https?://#i', '', $url), preg_replace('#^https?://#i', '', $server_url)) !== 0;
 			if ($external)
 			{
-				$tag		= ($type == MAGIC_URL_WWW) ? 'w' : 'm';
-				$attrs		= ' class="postlink"' . get_attrs_for_external_link($url);
+				$tag        = ($type == MAGIC_URL_WWW) ? 'w' : 'm';
+				$attrs      = ' class="postlink"' . get_attrs_for_external_link($url);
 			}
 			else
 			{
-				$tag		= ($type == MAGIC_URL_WWW) ? 'w' : 'l';
-				$attrs		= ' class="postlink local"';
-				$url		= preg_replace('/[&?]sid=[0-9a-f]{32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{32}&/', '$1', $url));
-				$text		= urldecode($url);
+				$tag        = ($type == MAGIC_URL_WWW) ? 'w' : 'l';
+				$attrs      = ' class="postlink local"';
+				$url        = preg_replace('/[&?]sid=[0-9a-f]{32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{32}&/', '$1', $url));
+				$text       = urldecode($url);
 			}
 		break;
 
 		case MAGIC_URL_EMAIL:
-			$tag	= 'e';
-			$url	= 'mailto:' . $url;
-			$attrs	= ' class="postlink"';
+			$tag    = 'e';
+			$url    = 'mailto:' . $url;
+			$attrs  = ' class="postlink"';
 		break;
 	}
 
 	if (utf8_strlen($text) > 85) $text = utf8_substr($text, 0, 49) . ' ... ' . utf8_substr($text, -30);
 
-	$url	= htmlspecialchars($url);
-	$text	= htmlspecialchars($text);
-	$append	= htmlspecialchars($append);
+	$url    = htmlspecialchars($url);
+	$text   = htmlspecialchars($text);
+	$append = htmlspecialchars($append);
 
-	$html	= "{$whitespace}<!-- {$tag} --><a{$attrs} href=\"{$url}\">{$text}</a><!-- {$tag} -->{$append}";
+	$html   = "{$whitespace}<!-- {$tag} --><a{$attrs} href=\"{$url}\">{$text}</a><!-- {$tag} -->{$append}";
 
 	return $html;
 }
@@ -783,7 +783,7 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 	if (!isset($template->filename['attachment_tpl']))
 	{
 		$template->set_filenames([
-			'attachment_tpl'	=> 'attachment.html']
+			'attachment_tpl'    => 'attachment.html']
 		);
 	}
 
@@ -876,11 +876,11 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 		$comment = bbcode_nl2br(censor_text($attachment['attach_comment']));
 
 		$block_array += [
-			'UPLOAD_ICON'		=> $upload_icon,
-			'FILESIZE'			=> $filesize['value'],
-			'SIZE_LANG'			=> $filesize['unit'],
-			'DOWNLOAD_NAME'		=> utf8_basename($attachment['real_filename']),
-			'COMMENT'			=> $comment,
+			'UPLOAD_ICON'       => $upload_icon,
+			'FILESIZE'          => $filesize['value'],
+			'SIZE_LANG'         => $filesize['unit'],
+			'DOWNLOAD_NAME'     => utf8_basename($attachment['real_filename']),
+			'COMMENT'           => $comment,
 		];
 
 		$denied = false;
@@ -890,8 +890,8 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 			$denied = true;
 
 			$block_array += [
-				'S_DENIED'			=> true,
-				'DENIED_MESSAGE'	=> sprintf($user->lang['EXTENSION_DISABLED_AFTER_POSTING'], $attachment['extension'])
+				'S_DENIED'          => true,
+				'DENIED_MESSAGE'    => sprintf($user->lang['EXTENSION_DISABLED_AFTER_POSTING'], $attachment['extension'])
 			];
 		}
 
@@ -950,8 +950,8 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 					$download_link .= '&amp;mode=view';
 
 					$block_array += [
-						'S_IMAGE'		=> true,
-						'U_INLINE_LINK'		=> $inline_link,
+						'S_IMAGE'       => true,
+						'U_INLINE_LINK'     => $inline_link,
 					];
 				break;
 
@@ -962,8 +962,8 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 					$download_link .= '&amp;mode=view';
 
 					$block_array += [
-						'S_THUMBNAIL'		=> true,
-						'THUMB_IMAGE'		=> $thumbnail_link,
+						'S_THUMBNAIL'       => true,
+						'THUMB_IMAGE'       => $thumbnail_link,
 					];
 				break;
 
@@ -973,11 +973,11 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 
 					$block_array += [
-						'S_VIDEO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_VIDEO),
-						'S_AUDIO_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_AUDIO),
-						'U_FORUM'		=> generate_board_url(),
-						'ATTACH_ID'		=> $attachment['attach_id'],
-						'MIME'			=> get_attachment_mime($display_cat, $attachment['extension']),
+						'S_VIDEO_FILE'  => ($display_cat == ATTACHMENT_CATEGORY_VIDEO),
+						'S_AUDIO_FILE'  => ($display_cat == ATTACHMENT_CATEGORY_AUDIO),
+						'U_FORUM'       => generate_board_url(),
+						'ATTACH_ID'     => $attachment['attach_id'],
+						'MIME'          => get_attachment_mime($display_cat, $attachment['extension']),
 					];
 				break;
 
@@ -985,7 +985,7 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 					$l_downloaded_viewed = 'DOWNLOAD_COUNT';
 
 					$block_array += [
-						'S_FILE'		=> true,
+						'S_FILE'        => true,
 					];
 				break;
 			}
@@ -993,8 +993,8 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 			$l_download_count = (!isset($attachment['download_count']) || $attachment['download_count'] == 0) ? $user->lang[$l_downloaded_viewed . '_NONE'] : (($attachment['download_count'] == 1) ? sprintf($user->lang[$l_downloaded_viewed], $attachment['download_count']) : sprintf($user->lang[$l_downloaded_viewed . 'S'], $attachment['download_count']));
 
 			$block_array += [
-				'U_DOWNLOAD_LINK'		=> $download_link,
-				'L_DOWNLOAD_COUNT'		=> $l_download_count
+				'U_DOWNLOAD_LINK'       => $download_link,
+				'L_DOWNLOAD_COUNT'      => $l_download_count
 			];
 		}
 
@@ -1069,7 +1069,7 @@ function extension_allowed($forum_id, $extension, &$extensions)
 * @param int $max_length Maximum length of string (multibyte character count as 1 char / Html entity count as 1 char)
 * @param int $max_store_length Maximum character length of string (multibyte character count as 1 char / Html entity count as entity chars).
 * @param bool $allow_reply Allow Re: in front of string
-* 	NOTE: This parameter can cause undesired behavior (returning strings longer than $max_store_length) and is deprecated.
+*   NOTE: This parameter can cause undesired behavior (returning strings longer than $max_store_length) and is deprecated.
 * @param string $append String to be appended
 */
 function truncate_string($string, $max_length = 60, $max_store_length = 255, $allow_reply = false, $append = '')
