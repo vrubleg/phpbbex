@@ -18,7 +18,7 @@ class phpbb_session
 	var $cookie_data = [];
 	var $page = [];
 	var $data = [];
-	var $browser = '';
+	var $browser_ua = '';
 	var $referer = '';
 	var $forwarded_for = '';
 	var $host = '';
@@ -143,9 +143,9 @@ class phpbb_session
 		// Give us some basic information
 		$this->time_now				= time();
 		$this->cookie_data			= ['u' => 0, 'k' => ''];
-		$this->browser				= (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
-		$this->referer				= (!empty($_SERVER['HTTP_REFERER'])) ? htmlspecialchars((string) $_SERVER['HTTP_REFERER']) : '';
-		$this->forwarded_for		= (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) ? htmlspecialchars((string) $_SERVER['HTTP_X_FORWARDED_FOR']) : '';
+		$this->browser_ua			= trim(substr(htmlspecialchars($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 250));
+		$this->referer				= htmlspecialchars($_SERVER['HTTP_REFERER'] ?? '');
+		$this->forwarded_for		= htmlspecialchars($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
 
 		$this->host					= HTTP_HOST;
 		$this->page					= $this->extract_current_page();
@@ -263,10 +263,6 @@ class phpbb_session
 			// Did the session exist in the DB?
 			if (isset($this->data['user_id']))
 			{
-				// Validate IP length according to admin ... enforces an IP
-				// check on bots if admin requires this
-//				$quadcheck = ($config['ip_check_bot'] && $this->data['user_type'] & USER_BOT) ? 4 : $config['ip_check'];
-
 				if (strpos($this->ip, ':') !== false && strpos($this->data['session_ip'], ':') !== false)
 				{
 					$s_ip = short_ipv6($this->data['session_ip'], $config['ip_check']);
@@ -278,8 +274,8 @@ class phpbb_session
 					$u_ip = implode('.', array_slice(explode('.', $this->ip), 0, $config['ip_check']));
 				}
 
-				$s_browser = ($config['browser_check']) ? trim(strtolower(substr($this->data['session_browser'], 0, 249))) : '';
-				$u_browser = ($config['browser_check']) ? trim(strtolower(substr($this->browser, 0, 249))) : '';
+				$s_browser = ($config['browser_check']) ? strtolower($this->data['session_browser']) : '';
+				$u_browser = ($config['browser_check']) ? strtolower($this->browser_ua) : '';
 
 				$s_forwarded_for = ($config['forwarded_for_check']) ? substr($this->data['session_forwarded_for'], 0, 254) : '';
 				$u_forwarded_for = ($config['forwarded_for_check']) ? substr($this->forwarded_for, 0, 254) : '';
@@ -412,7 +408,7 @@ class phpbb_session
 
 		foreach ($active_bots as $row)
 		{
-			if ($row['bot_agent'] && preg_match('#' . str_replace('\*', '.*?', preg_quote($row['bot_agent'], '#')) . '#i', $this->browser))
+			if ($row['bot_agent'] && preg_match('#' . str_replace('\*', '.*?', preg_quote($row['bot_agent'], '#')) . '#i', $this->browser_ua))
 			{
 				$bot = $row['user_id'];
 			}
@@ -562,8 +558,8 @@ class phpbb_session
 				$u_ip = implode('.', array_slice(explode('.', $this->ip), 0, $config['ip_check']));
 			}
 
-			$s_browser = ($config['browser_check']) ? trim(strtolower(substr($this->data['session_browser'], 0, 249))) : '';
-			$u_browser = ($config['browser_check']) ? trim(strtolower(substr($this->browser, 0, 249))) : '';
+			$s_browser = ($config['browser_check']) ? strtolower($this->data['session_browser']) : '';
+			$u_browser = ($config['browser_check']) ? strtolower($this->browser_ua) : '';
 
 			$s_forwarded_for = ($config['forwarded_for_check']) ? substr($this->data['session_forwarded_for'], 0, 254) : '';
 			$u_forwarded_for = ($config['forwarded_for_check']) ? substr($this->forwarded_for, 0, 254) : '';
@@ -610,7 +606,7 @@ class phpbb_session
 			'session_start'			=> (int) $this->time_now,
 			'session_last_visit'	=> (int) $this->data['session_last_visit'],
 			'session_time'			=> (int) $this->time_now,
-			'session_browser'		=> (string) trim(substr($this->browser, 0, 249)),
+			'session_browser'		=> (string) $this->browser_ua,
 			'session_forwarded_for'	=> (string) $this->forwarded_for,
 			'session_ip'			=> (string) $this->ip,
 			'session_autologin'		=> ($session_autologin) ? 1 : 0,
@@ -724,7 +720,6 @@ class phpbb_session
 		global $db, $config;
 
 		$this->data['browser_id'] = '';
-		$this->data['browser_ua'] = trim(substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 249));
 		$this->data['tracking_hits'] = 0;
 		$this->data['tracking_first_time'] = $this->data['tracking_last_time'] = $this->time_now;
 		$this->data['tracking_first_ip'] = $this->data['tracking_last_ip'] = $this->ip;
@@ -752,9 +747,9 @@ class phpbb_session
 		$sql = "INSERT INTO " . BROWSER_TRACKING_TABLE . "
 			SET browser_id='" . $db->sql_escape($this->data['browser_id']) . "', user_id='" . $db->sql_escape($this->data['user_id']) . "',
 				tracking_first_time=" . $this->time_now . ", tracking_last_time=" . $this->time_now . ", tracking_hits=1,
-				browser_ua = '" . $db->sql_escape($this->data['browser_ua']) . "', tracking_first_ip = '" . $db->sql_escape($this->ip) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'
+				browser_ua = '" . $db->sql_escape($this->browser_ua) . "', tracking_first_ip = '" . $db->sql_escape($this->ip) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'
 			ON DUPLICATE KEY UPDATE tracking_last_time=" . $this->time_now . ", tracking_hits=tracking_hits+1,
-				browser_ua = '" . $db->sql_escape($this->data['browser_ua']) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'";
+				browser_ua = '" . $db->sql_escape($this->browser_ua) . "', tracking_last_ip = '" . $db->sql_escape($this->ip) . "'";
 		$db->sql_query($sql);
 
 		// Read current stats.

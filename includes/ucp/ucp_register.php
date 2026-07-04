@@ -225,7 +225,7 @@ class ucp_register
 				// Log registration
 				$user_id_orig = $user->data['user_id'];
 				$user->data['user_id'] = $user_id;
-				add_log('register', 'LOG_REGISTER_OK', $data['username'], $data['email'], '', $user->data['browser_id'], $user->data['browser_ua'], time() - $user->data['tracking_first_time'], $user->data['tracking_hits']);
+				add_log('register', 'LOG_REGISTER_OK', $data['username'], $data['email'], '', $user->data['browser_id'], $user->browser_ua, time() - $user->data['tracking_first_time'], $user->data['tracking_hits']);
 				$user->data['user_id'] = $user_id_orig;
 
 				// Okay, captcha, your job is done.
@@ -314,7 +314,7 @@ class ucp_register
 			else
 			{
 				// Log registration
-				add_log('register', 'LOG_REGISTER_REJECTED_' . ($error_type['token'] ? 'BOT' : 'USER'), $data['username'], $data['email'], implode("\n", $error), $user->data['browser_id'], $user->data['browser_ua'], time() - $user->data['tracking_first_time'], $user->data['tracking_hits']);
+				add_log('register', 'LOG_REGISTER_REJECTED_' . ($error_type['token'] ? 'BOT' : 'USER'), $data['username'], $data['email'], implode("\n", $error), $user->data['browser_id'], $user->browser_ua, time() - $user->data['tracking_first_time'], $user->data['tracking_hits']);
 
 				// Display one error if user provided invalid token
 				if ($error_type['token'])
