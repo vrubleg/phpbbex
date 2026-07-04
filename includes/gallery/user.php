@@ -506,7 +506,7 @@ class phpbb_gallery_user
 
 			if (!empty($row['user_allow_viewemail']) || $auth->acl_get('a_email'))
 			{
-				$user_cache[$user_id]['email'] = ($config['board_email_form'] && $config['email_enable']) ? phpbb_gallery_url::append_sid('phpbb', 'memberlist', "mode=email&amp;u={$user_id}") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
+				$user_cache[$user_id]['email'] = 'mailto:' . $row['user_email'];
 			}
 			else
 			{

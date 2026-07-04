@@ -271,30 +271,9 @@ class phpbb_gallery_image_file
 		}
 
 		header('Pragma: public');
-		$is_ie8 = (strpos(strtolower($user->browser), 'msie 8.0') !== false);
 		header('Content-Type: ' . $this->image_content_type);
-
-		if ($is_ie8)
-		{
-			header('X-Content-Type-Options: nosniff');
-		}
-
-		if (empty($user->browser) || (!$is_ie8 && (strpos(strtolower($user->browser), 'msie') !== false)))
-		{
-			header('Content-Disposition: attachment; ' . $this->header_filename(htmlspecialchars_decode($this->image_name)));
-			if (empty($user->browser) || (strpos(strtolower($user->browser), 'msie 6.0') !== false))
-			{
-				header('expires: -1');
-			}
-		}
-		else
-		{
-			header('Content-Disposition: inline; ' . $this->header_filename(htmlspecialchars_decode($this->image_name)));
-			if ($is_ie8)
-			{
-				header('X-Download-Options: noopen');
-			}
-		}
+		header('X-Content-Type-Options: nosniff');
+		header('Content-Disposition: inline; ' . $this->header_filename(htmlspecialchars_decode($this->image_name)));
 
 		if ($content_length)
 		{
