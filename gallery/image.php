@@ -36,7 +36,7 @@ if (!file_exists(phpbb_gallery_url::path('upload') . $image_data['image_filename
 		WHERE image_id = ' . $image_id;
 	$db->sql_query($sql);
 	//trigger_error('IMAGE_NOT_EXIST');
-	$image_error = 'image_not_exist.png';
+	$image_error = 'error_not_found.png';
 	http_response_code(404);
 }
 
@@ -46,14 +46,14 @@ if (!file_exists(phpbb_gallery_url::path('upload') . $image_data['image_filename
 if (($image_data['image_user_id'] != $user->data['user_id']) && ($image_data['image_status'] == phpbb_gallery_image::STATUS_ORPHAN))
 {
 	//trigger_error('NOT_AUTHORISED');
-	$image_error = 'not_authorised.png';
+	$image_error = 'error_not_authorised.png';
 	http_response_code(403);
 }
 
 if ((!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_user_id'])) || (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']) && ($image_data['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED)))
 {
 	//trigger_error('NOT_AUTHORISED');
-	$image_error = 'not_authorised.png';
+	$image_error = 'error_not_authorised.png';
 	http_response_code(403);
 }
 
@@ -81,7 +81,7 @@ if (!phpbb_gallery_config::get('allow_hotlinking') && isset($_SERVER['HTTP_REFER
 	if (!in_array($referer, $good_referers) && !in_array($referer_host, $good_referers))
 	{
 		//trigger_error('NOT_AUTHORISED');
-		$image_error = 'no_hotlinking.png';
+		$image_error = 'error_hotlinking.png';
 		http_response_code(403);
 	}
 }
