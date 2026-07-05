@@ -140,6 +140,7 @@ if ($image_error)
 	{
 		$image_data['image_filename'] = $image_error;
 	}
+	$image_data['image_name'] = $image_data['image_filename'];
 	$image_source = $image_source_path . $image_data['image_filename'];
 }
 
