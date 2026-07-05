@@ -1,13 +1,13 @@
 **~**
 /cache/**
 !/cache/.htaccess
-!/cache/index.htm
+!/cache/index.html
 /files/**
 !/files/.htaccess
-!/files/index.htm
+!/files/index.html
 /images/avatars/upload/**
 !/images/avatars/upload/.htaccess
-!/images/avatars/upload/index.htm
+!/images/avatars/upload/index.html
 /images/avatars/gallery/**
 !/images/avatars/gallery/.htaccess
-!/images/avatars/gallery/index.htm
+!/images/avatars/gallery/index.html
