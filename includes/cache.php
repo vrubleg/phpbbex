@@ -301,52 +301,52 @@ class phpbb_cache extends acm
 	}
 
 	/**
-	* Obtain cfg file data
+	* Obtain style cfg file data
 	*/
-	function obtain_cfg_items($theme)
+	function obtain_style_cfg($style_dir, $type, $lang = '')
 	{
 		global $config;
 
-		$parsed_items = [
-			'theme'     => [],
-			'template'  => [],
-			'imageset'  => []
-		];
+		$cache_key = '_style_' . $style_dir . (($type != 'style') ? '_' . $type : '') . ($lang ? '_' . $lang : '') . '_cfg';
+		$cfg_data = $this->get($cache_key) ?: [];
 
-		foreach ($parsed_items as $key => $parsed_array)
+		$base_path = PHPBB_ROOT_PATH . 'styles/' . $style_dir . (($type != 'style') ? '/' . $type : '');
+		$cfg_files = [$base_path . '/' . $type . '.cfg'];
+		if ($lang)
 		{
-			$parsed_array = $this->get('_cfg_' . $key . '_' . $theme[$key . '_dir']);
-
-			if ($parsed_array === false)
-			{
-				$parsed_array = [];
-			}
-
-			$reparse = false;
-			$filename = PHPBB_ROOT_PATH . 'styles/' . $theme[$key . '_dir'] . '/' . $key . '/' . $key . '.cfg';
-
-			if (!file_exists($filename))
-			{
-				continue;
-			}
-
-			if (!isset($parsed_array['filetime']) || (($config['load_tplcompile'] && @filemtime($filename) > $parsed_array['filetime'])))
-			{
-				$reparse = true;
-			}
-
-			// Re-parse cfg file
-			if ($reparse)
-			{
-				$parsed_array = parse_cfg_file($filename);
-				$parsed_array['filetime'] = @filemtime($filename);
-
-				$this->put('_cfg_' . $key . '_' . $theme[$key . '_dir'], $parsed_array);
-			}
-			$parsed_items[$key] = $parsed_array;
+			$cfg_files[] = $base_path . '/' . $lang . '/' . $type . '.cfg';
 		}
 
-		return $parsed_items;
+		$cfg_mtime = 0;
+		if ($config['load_tplcompile'])
+		{
+			foreach ($cfg_files as $cfg_file)
+			{
+				if (!file_exists($cfg_file)) { continue; }
+				$cfg_mtime = max($cfg_mtime, (int) filemtime($cfg_file));
+			}
+		}
+		else
+		{
+			$cfg_mtime = time();
+		}
+
+		if (empty($cfg_data['cfg_mtime']) || ($config['load_tplcompile'] && $cfg_mtime > $cfg_data['cfg_mtime']))
+		{
+			$cfg_data = [];
+
+			foreach ($cfg_files as $cfg_file)
+			{
+				if (!file_exists($cfg_file)) { continue; }
+				$cfg_data = array_merge($cfg_data, parse_cfg_file($cfg_file));
+			}
+
+			$cfg_data['cfg_mtime'] = $cfg_mtime;
+
+			$this->put($cache_key, $cfg_data);
+		}
+
+		return $cfg_data;
 	}
 
 	/**

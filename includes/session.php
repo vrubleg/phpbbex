@@ -1471,11 +1471,8 @@ class phpbb_user extends phpbb_session
 			trigger_error('NO_STYLE_DATA', E_USER_ERROR);
 		}
 
-		// Now parse the cfg file and cache it
-		$parsed_items = $cache->obtain_cfg_items($this->theme);
-
-		// We are only interested in the theme configuration for now
-		$parsed_items = $parsed_items['theme'];
+		// Now parse the theme cfg file and cache it
+		$parsed_items = $cache->obtain_style_cfg($this->theme['theme_dir'], 'theme');
 
 		$check_for = [
 			'parse_css_file'    => (int) 0,
