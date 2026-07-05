@@ -191,24 +191,6 @@ class phpbb_gallery_image_file
 	}
 
 	/**
-	* Get a browser friendly UTF-8 encoded filename
-	*/
-	public function header_filename($file)
-	{
-		$user_agent = (!empty($_SERVER['HTTP_USER_AGENT'])) ? htmlspecialchars((string) $_SERVER['HTTP_USER_AGENT']) : '';
-
-		// There be dragons here.
-		// Not many follows the RFC...
-		if (strpos($user_agent, 'MSIE') !== false || strpos($user_agent, 'Safari') !== false || strpos($user_agent, 'Konqueror') !== false)
-		{
-			return "filename=" . rawurlencode($file);
-		}
-
-		// follow the RFC for extended filename for the rest
-		return "filename*=UTF-8''" . rawurlencode($file);
-	}
-
-	/**
 	* We need to disable the "last-modified" caching for guests and in cases of image-errors,
 	* so that they can view them, if they logged in or the error was fixed.
 	*/
@@ -273,7 +255,7 @@ class phpbb_gallery_image_file
 		header('Pragma: public');
 		header('Content-Type: ' . $this->image_content_type);
 		header('X-Content-Type-Options: nosniff');
-		header('Content-Disposition: inline; ' . $this->header_filename(htmlspecialchars_decode($this->image_name)));
+		header('Content-Disposition: inline; ' . "filename*=UTF-8''" . rawurlencode(htmlspecialchars_decode($this->image_name)));
 
 		if ($content_length)
 		{
