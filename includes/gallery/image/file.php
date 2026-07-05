@@ -255,7 +255,7 @@ class phpbb_gallery_image_file
 		header('Pragma: public');
 		header('Content-Type: ' . $this->image_content_type);
 		header('X-Content-Type-Options: nosniff');
-		header('Content-Disposition: inline; ' . "filename*=UTF-8''" . rawurlencode(htmlspecialchars_decode($this->image_name)));
+		header('Content-Disposition: inline');
 
 		if ($content_length)
 		{
