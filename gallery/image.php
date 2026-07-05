@@ -36,7 +36,7 @@ if (!file_exists(phpbb_gallery_url::path('upload') . $image_data['image_filename
 		WHERE image_id = ' . $image_id;
 	$db->sql_query($sql);
 	//trigger_error('IMAGE_NOT_EXIST');
-	$image_error = 'image_not_exist.jpg';
+	$image_error = 'image_not_exist.png';
 	http_response_code(404);
 }
 
@@ -46,14 +46,14 @@ if (!file_exists(phpbb_gallery_url::path('upload') . $image_data['image_filename
 if (($image_data['image_user_id'] != $user->data['user_id']) && ($image_data['image_status'] == phpbb_gallery_image::STATUS_ORPHAN))
 {
 	//trigger_error('NOT_AUTHORISED');
-	$image_error = 'not_authorised.jpg';
+	$image_error = 'not_authorised.png';
 	http_response_code(403);
 }
 
 if ((!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_user_id'])) || (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']) && ($image_data['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED)))
 {
 	//trigger_error('NOT_AUTHORISED');
-	$image_error = 'not_authorised.jpg';
+	$image_error = 'not_authorised.png';
 	http_response_code(403);
 }
 
@@ -81,31 +81,40 @@ if (!phpbb_gallery_config::get('allow_hotlinking') && isset($_SERVER['HTTP_REFER
 	if (!in_array($referer, $good_referers) && !in_array($referer_host, $good_referers))
 	{
 		//trigger_error('NOT_AUTHORISED');
-		$image_error = 'no_hotlinking.jpg';
+		$image_error = 'no_hotlinking.png';
 		http_response_code(403);
 	}
 }
 
-
-
 /**
 * Main work here...
 */
+
 $mode = request_var('mode', '');
+if ($image_error)
+{
+	$mode = 'error';
+}
+else if (!in_array($mode, ['medium', 'thumbnail']))
+{
+	$mode = 'default';
+}
+
 switch ($mode)
 {
+	case 'error':
+		$image_source_path = phpbb_gallery_url::path('images');
+		$possible_watermark = false;
+	break;
 	case 'medium':
-		$filesize_var = 'filesize_medium';
 		$image_source_path = phpbb_gallery_url::path('medium');
 		$possible_watermark = true;
 	break;
 	case 'thumbnail':
-		$filesize_var = 'filesize_cache';
 		$image_source_path = phpbb_gallery_url::path('thumbnail');
 		$possible_watermark = false;
 	break;
 	default:
-		$filesize_var = 'filesize_upload';
 		$image_source_path = phpbb_gallery_url::path('upload');
 		$possible_watermark = true;
 
@@ -120,6 +129,7 @@ switch ($mode)
 		}
 	break;
 }
+
 $image_source = $image_source_path  . $image_data['image_filename'];
 
 // There was a reason to not display the image, so we send an error-image
@@ -131,7 +141,6 @@ if ($image_error)
 		$image_data['image_filename'] = $image_error;
 	}
 	$image_source = $image_source_path . $image_data['image_filename'];
-	$possible_watermark = false;
 }
 
 $image_tools = new phpbb_gallery_image_file(phpbb_gallery_config::get('gdlib_version'));
@@ -146,7 +155,6 @@ if ($image_error || !$user->data['is_registered'])
 // Generate the sourcefile, if it's missing
 if (($mode == 'medium') || ($mode == 'thumbnail'))
 {
-	$filesize_var = '';
 	if ($mode == 'thumbnail')
 	{
 		$resize_width = phpbb_gallery_config::get('thumbnail_width');
@@ -202,7 +210,6 @@ $image_tools->set_last_modified(phpbb_gallery_config::get('watermark_changed'));
 // Watermark
 if (phpbb_gallery_config::get('watermark_enabled') && $album_data['album_watermark'] && !phpbb_gallery::$auth->acl_check('i_watermark', $album_id, $album_data['album_user_id']) && $possible_watermark)
 {
-	$filesize_var = '';
 	$image_tools->set_last_modified(@filemtime(phpbb_gallery_url::path('phpbb') . phpbb_gallery_config::get('watermark_source')));
 	$image_tools->watermark_image(phpbb_gallery_url::path('phpbb') . phpbb_gallery_config::get('watermark_source'), phpbb_gallery_config::get('watermark_position'), phpbb_gallery_config::get('watermark_height'), phpbb_gallery_config::get('watermark_width'));
 }

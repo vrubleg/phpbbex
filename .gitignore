@@ -24,7 +24,3 @@
 /gallery/images/upload/**
 !/gallery/images/upload/.htaccess
 !/gallery/images/upload/index.html
-!/gallery/images/upload/image_not_exist.jpg
-!/gallery/images/upload/no_hotlinking.jpg
-!/gallery/images/upload/not_authorised.jpg
-
