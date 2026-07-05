@@ -610,14 +610,17 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topic_show_days');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
-	$db->sql_query("DROP TABLE {$table_prefix}styles_template_data");
-	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN style_copyright');
+	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_copyright');
+	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_path template_dir varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query("DROP TABLE {$table_prefix}styles_template_data");
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_data');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_copyright');
+	$db->sql_query("ALTER TABLE " . STYLES_THEME_TABLE . " CHANGE theme_path theme_dir varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP COLUMN imageset_copyright');
+	$db->sql_query("ALTER TABLE " . STYLES_IMAGESET_TABLE . " CHANGE imageset_path imageset_dir varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 	$db->sql_return_on_error(false);
 

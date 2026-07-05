@@ -1252,9 +1252,9 @@ class install_install extends module
 
 				while ($imageset_row = $db->sql_fetchrow($result))
 				{
-					if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['lang_iso']}/imageset.cfg"))
+					if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_dir']}/imageset/{$lang_pack['lang_iso']}/imageset.cfg"))
 					{
-						$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['lang_iso']}/imageset.cfg");
+						$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_dir']}/imageset/{$lang_pack['lang_iso']}/imageset.cfg");
 						foreach ($cfg_data_imageset_data as $image_name => $value)
 						{
 							if (strpos($value, '*') !== false)

@@ -523,7 +523,7 @@ class phpbb_umil
 					// The following is from includes/acp/acp_styles.php (edited)
 					$sql_ary = [];
 
-					$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
+					$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_dir']}/imageset/imageset.cfg");
 
 					$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . '
 						WHERE imageset_id = ' . $style_id;
@@ -570,9 +570,9 @@ class phpbb_umil
 
 					while ($row = $this->db->sql_fetchrow($result))
 					{
-						if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg"))
+						if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_dir']}/imageset/{$row['lang_dir']}/imageset.cfg"))
 						{
-							$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg");
+							$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_dir']}/imageset/{$row['lang_dir']}/imageset.cfg");
 							foreach ($cfg_data_imageset_data as $image_name => $value)
 							{
 								if (strpos($value, '*') !== false)

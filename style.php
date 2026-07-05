@@ -52,7 +52,7 @@ unset($dbpasswd);
 
 $config = $cache->obtain_config();
 
-$sql = 'SELECT s.style_id, c.theme_id, c.theme_path, c.theme_name, c.theme_mtime, i.*, t.template_path
+$sql = 'SELECT s.style_id, c.theme_id, c.theme_dir, c.theme_name, c.theme_mtime, i.*, t.template_dir
 	FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
 	WHERE s.style_id = ' . $style_id . '
 		AND t.template_id = s.template_id
@@ -81,7 +81,7 @@ if (!$lang)
 	die();
 }
 
-$user_image_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $theme['imageset_path'] . '/imageset/' . $lang) ? $lang : $config['default_lang']);
+$user_image_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $theme['imageset_dir'] . '/imageset/' . $lang) ? $lang : $config['default_lang']);
 
 // Same query in session.php
 $sql = 'SELECT *
@@ -98,7 +98,7 @@ while ($row = $db->sql_fetchrow($result))
 }
 $db->sql_freeresult($result);
 
-$theme_dir_path = PHPBB_ROOT_PATH . 'styles/' . $theme['theme_path'] . '/theme/';
+$theme_dir_path = PHPBB_ROOT_PATH . 'styles/' . $theme['theme_dir'] . '/theme/';
 $theme_css_path = $theme_dir_path . 'stylesheet.css';
 
 if (!file_exists($theme_css_path))
@@ -131,7 +131,7 @@ $theme_data = preg_replace_callback(
 	},
 	$theme_data);
 
-$theme_data = str_replace('./', "styles/{$theme['theme_path']}/theme/", $theme_data);
+$theme_data = str_replace('./', "styles/{$theme['theme_dir']}/theme/", $theme_data);
 
 $recache = ($theme_mtime > (int) $theme['theme_mtime']);
 
@@ -164,10 +164,10 @@ else
 }
 
 $replace = [
-	'{T_THEME_PATH}'            => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['theme_path']) . '/theme',
-	'{T_TEMPLATE_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_path']) . '/template',
-	'{T_IMAGESET_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_path']) . '/imageset',
-	'{T_IMAGESET_LANG_PATH}'    => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_path']) . '/imageset/' . $user_image_lang,
+	'{T_THEME_PATH}'            => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['theme_dir']) . '/theme',
+	'{T_TEMPLATE_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_dir']) . '/template',
+	'{T_IMAGESET_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset',
+	'{T_IMAGESET_LANG_PATH}'    => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $user_image_lang,
 	'{T_STYLESHEET_NAME}'       => $theme['theme_name'],
 	'{S_USER_LANG}'             => $lang,
 ];
@@ -196,7 +196,7 @@ if (isset($matches[0]) && sizeof($matches[0]))
 			$img_data = &$img_array[$img];
 			$imgsrc = ($img_data['image_lang'] ? $img_data['image_lang'] . '/' : '') . $img_data['image_filename'];
 			$imgs[$img] = [
-				'src'       => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_path']) . '/imageset/' . $imgsrc,
+				'src'       => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $imgsrc,
 				'width'     => $img_data['image_width'],
 				'height'    => $img_data['image_height'],
 			];

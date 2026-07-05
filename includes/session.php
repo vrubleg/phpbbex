@@ -1435,7 +1435,7 @@ class phpbb_user extends phpbb_session
 			$style = $style ?: ((!$config['override_user_style']) ? $this->data['user_style'] : $config['default_style']);
 		}
 
-		$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
+		$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_dir, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id, i.imageset_name
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 			WHERE s.style_id = {$style}
 				AND t.template_id = s.template_id
@@ -1455,7 +1455,7 @@ class phpbb_user extends phpbb_session
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
-			$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
+			$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, c.theme_dir, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id, i.imageset_name
 				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 				WHERE s.style_id = {$style}
 					AND t.template_id = s.template_id
@@ -1495,7 +1495,7 @@ class phpbb_user extends phpbb_session
 
 		$template->set_template();
 
-		$this->img_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $this->theme['imageset_path'] . '/imageset/' . $this->lang_name)) ? $this->lang_name : $config['default_lang'];
+		$this->img_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $this->theme['imageset_dir'] . '/imageset/' . $this->lang_name)) ? $this->lang_name : $config['default_lang'];
 
 		// Same query in style.php
 		$sql = 'SELECT *
@@ -1532,9 +1532,9 @@ class phpbb_user extends phpbb_session
 					AND image_lang = \'' . $db->sql_escape($this->img_lang) . '\'';
 			$result = $db->sql_query($sql);
 
-			if (@file_exists(PHPBB_ROOT_PATH . "styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg"))
+			if (@file_exists(PHPBB_ROOT_PATH . "styles/{$this->theme['imageset_dir']}/imageset/{$this->img_lang}/imageset.cfg"))
 			{
-				$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg");
+				$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$this->theme['imageset_dir']}/imageset/{$this->img_lang}/imageset.cfg");
 				foreach ($cfg_data_imageset_data as $image_name => $value)
 				{
 					if (strpos($value, '*') !== false)
@@ -2019,7 +2019,7 @@ class phpbb_user extends phpbb_session
 			// Use URL if told so
 			$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : PHPBB_ROOT_PATH;
 
-			$path = 'styles/' . rawurlencode($this->theme['imageset_path']) . '/imageset/' . ($this->img_array[$img]['image_lang'] ? $this->img_array[$img]['image_lang'] .'/' : '') . $this->img_array[$img]['image_filename'];
+			$path = 'styles/' . rawurlencode($this->theme['imageset_dir']) . '/imageset/' . ($this->img_array[$img]['image_lang'] ? $this->img_array[$img]['image_lang'] .'/' : '') . $this->img_array[$img]['image_filename'];
 
 			$img_data['src'] = $root_path . $path;
 			$img_data['width'] = $this->img_array[$img]['image_width'];

@@ -315,7 +315,7 @@ class phpbb_cache extends acm
 
 		foreach ($parsed_items as $key => $parsed_array)
 		{
-			$parsed_array = $this->get('_cfg_' . $key . '_' . $theme[$key . '_path']);
+			$parsed_array = $this->get('_cfg_' . $key . '_' . $theme[$key . '_dir']);
 
 			if ($parsed_array === false)
 			{
@@ -323,7 +323,7 @@ class phpbb_cache extends acm
 			}
 
 			$reparse = false;
-			$filename = PHPBB_ROOT_PATH . 'styles/' . $theme[$key . '_path'] . '/' . $key . '/' . $key . '.cfg';
+			$filename = PHPBB_ROOT_PATH . 'styles/' . $theme[$key . '_dir'] . '/' . $key . '/' . $key . '.cfg';
 
 			if (!file_exists($filename))
 			{
@@ -341,7 +341,7 @@ class phpbb_cache extends acm
 				$parsed_array = parse_cfg_file($filename);
 				$parsed_array['filetime'] = @filemtime($filename);
 
-				$this->put('_cfg_' . $key . '_' . $theme[$key . '_path'], $parsed_array);
+				$this->put('_cfg_' . $key . '_' . $theme[$key . '_dir'], $parsed_array);
 			}
 			$parsed_items[$key] = $parsed_array;
 		}

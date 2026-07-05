@@ -228,7 +228,7 @@ class acp_styles
 						{
 							$sql_ary = [];
 
-							$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
+							$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_dir']}/imageset/imageset.cfg");
 
 							$db->sql_transaction('begin');
 
@@ -276,9 +276,9 @@ class acp_styles
 
 							while ($row = $db->sql_fetchrow($result))
 							{
-								if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg"))
+								if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_dir']}/imageset/{$row['lang_dir']}/imageset.cfg"))
 								{
-									$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg");
+									$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_dir']}/imageset/{$row['lang_dir']}/imageset.cfg");
 									foreach ($cfg_data_imageset_data as $image_name => $value)
 									{
 										if (strpos($value, '*') !== false)
@@ -535,17 +535,17 @@ class acp_styles
 
 			case 'template':
 				$sql_from = STYLES_TEMPLATE_TABLE;
-				$sql_select = 'template_id, template_name, template_path';
+				$sql_select = 'template_id, template_name, template_dir';
 			break;
 
 			case 'theme':
 				$sql_from = STYLES_THEME_TABLE;
-				$sql_select = 'theme_id, theme_name, theme_path';
+				$sql_select = 'theme_id, theme_name, theme_dir';
 			break;
 
 			case 'imageset':
 				$sql_from = STYLES_IMAGESET_TABLE;
-				$sql_select = 'imageset_id, imageset_name, imageset_path';
+				$sql_select = 'imageset_id, imageset_name, imageset_dir';
 			break;
 		}
 
@@ -1034,7 +1034,7 @@ class acp_styles
 		// Get optional copyright information from the related cfg file.
 		$cfg_file = ($mode == 'style')
 			? PHPBB_ROOT_PATH . "styles/{$style_row['style_name']}/style.cfg"
-			: PHPBB_ROOT_PATH . "styles/{$style_row[$mode . '_path']}/{$mode}/{$mode}.cfg";
+			: PHPBB_ROOT_PATH . "styles/{$style_row[$mode . '_dir']}/{$mode}/{$mode}.cfg";
 		$copyright = (file_exists($cfg_file) ? (parse_cfg_file($cfg_file)['copyright'] ?? '') : '');
 
 		$this->page_title = 'EDIT_DETAILS_' . $l_type;
@@ -1070,15 +1070,15 @@ class acp_styles
 	/**
 	* Returns an array containing all template filenames for one template that are currently cached.
 	*
-	* @param string $template_path contains the name of the template's folder in /styles/
+	* @param string $template_dir contains the name of the template's folder in /styles/
 	*
-	* @return array of filenames that exist in /styles/$template_path/template/ (without extension!)
+	* @return array of filenames that exist in /styles/$template_dir/template/ (without extension!)
 	*/
-	function template_cache_filelist($template_path)
+	function template_cache_filelist($template_dir)
 	{
 		global $user;
 
-		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_path);
+		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_dir);
 
 		if (!($dp = @opendir(PHPBB_ROOT_PATH . 'cache')))
 		{
@@ -1114,11 +1114,11 @@ class acp_styles
 	{
 		global $user;
 
-		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_row['template_path']);
+		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_row['template_dir']);
 
 		if (!$file_ary || !is_array($file_ary))
 		{
-			$file_ary = $this->template_cache_filelist($template_row['template_path']);
+			$file_ary = $this->template_cache_filelist($template_row['template_dir']);
 			$log_file_list = $user->lang['ALL_FILES'];
 		}
 		else
@@ -1267,9 +1267,9 @@ class acp_styles
 				foreach ($element_ary as $element => $table)
 				{
 					${$element . '_root_path'} = (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . ${'reqd_' . $element} . '/' : false;
-					${$element . '_path'} = (${'reqd_' . $element}) ?: false;
+					${$element . '_dir'} = (${'reqd_' . $element}) ?: false;
 				}
-				$this->install_style($error, 'install', $root_path, $style_row['style_id'], $style_row['style_name'], $install_path, $style_row['style_active'], $style_row['style_default'], $style_row, $template_root_path, $template_path, $theme_root_path, $theme_path, $imageset_root_path, $imageset_path);
+				$this->install_style($error, 'install', $root_path, $style_row['style_id'], $style_row['style_name'], $install_path, $style_row['style_active'], $style_row['style_default'], $style_row, $template_root_path, $template_dir, $theme_root_path, $theme_dir, $imageset_root_path, $imageset_dir);
 			}
 			else
 			{
@@ -1519,7 +1519,7 @@ class acp_styles
 	/**
 	* Install/Add style
 	*/
-	function install_style(&$error, $action, $root_path, &$id, $name, $path, $active, $default, &$style_row, $template_root_path = false, $template_path = false, $theme_root_path = false, $theme_path = false, $imageset_root_path = false, $imageset_path = false)
+	function install_style(&$error, $action, $root_path, &$id, $name, $path, $active, $default, &$style_row, $template_root_path = false, $template_dir = false, $theme_root_path = false, $theme_dir = false, $imageset_root_path = false, $imageset_dir = false)
 	{
 		global $config, $db, $user;
 
@@ -1560,7 +1560,7 @@ class acp_styles
 			// and do the install if necessary
 			if (!$style_row[$element . '_id'])
 			{
-				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_path'}) ?: $path);
+				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_dir'}) ?: $path);
 			}
 		}
 
@@ -1679,7 +1679,7 @@ class acp_styles
 				$select_bf = '';
 			}
 
-			$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path{$select_bf}
+			$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_dir{$select_bf}
 				FROM {$sql_from}
 				WHERE {$mode}_name = '" . $db->sql_escape($cfg_data['inherit_from']) . "'
 					AND {$mode}_inherits_id = 0";
@@ -1693,7 +1693,7 @@ class acp_styles
 			else
 			{
 				$inherit_id = $row["{$mode}_id"];
-				$inherit_path = $row["{$mode}_path"];
+				$inherit_path = $row["{$mode}_dir"];
 				$inherit_bf = ($mode === 'template') ? $row["bbcode_bitfield"] : false;
 			}
 		}
@@ -1711,7 +1711,7 @@ class acp_styles
 
 		$sql_ary = [
 			$mode . '_name'         => $name,
-			$mode . '_path'         => $path,
+			$mode . '_dir'          => $path,
 		];
 
 		switch ($mode)
@@ -1880,7 +1880,7 @@ class acp_styles
 			break;
 		}
 
-		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path
+		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_dir
 			FROM {$sql_from}
 			WHERE {$mode}_inherits_id = " . (int) $id;
 		$result = $db->sql_query($sql);
@@ -1892,7 +1892,7 @@ class acp_styles
 			$names[$row["{$mode}_id"]] = [
 				"{$mode}_id" => $row["{$mode}_id"],
 				"{$mode}_name" => $row["{$mode}_name"],
-				"{$mode}_path" => $row["{$mode}_path"],
+				"{$mode}_dir" => $row["{$mode}_dir"],
 			];
 		}
 		$db->sql_freeresult($result);
@@ -1952,7 +1952,7 @@ class acp_styles
 
 		$super_id = $row["{$mode}_inherits_id"];
 
-		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path
+		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_dir
 			FROM {$sql_from}
 			WHERE {$mode}_id = " . (int) $super_id;
 
