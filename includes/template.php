@@ -45,10 +45,10 @@ class phpbb_template
 	{
 		global $user;
 
-		if (file_exists(PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_path'] . '/template'))
+		if (file_exists(PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_dir'] . '/template'))
 		{
-			$this->root = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_path'] . '/template';
-			$this->cachepath = PHPBB_ROOT_PATH . 'cache/tpl_' . str_replace('_', '-', $user->theme['template_path']) . '_';
+			$this->root = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_dir'] . '/template';
+			$this->cachepath = PHPBB_ROOT_PATH . 'cache/tpl_' . str_replace('_', '-', $user->theme['template_dir']) . '_';
 
 			if ($this->orig_tpl_inherits_id === null)
 			{
@@ -64,7 +64,7 @@ class phpbb_template
 		}
 		else
 		{
-			trigger_error('Template path could not be found: styles/' . $user->theme['template_path'] . '/template', E_USER_ERROR);
+			trigger_error('Template path could not be found: styles/' . $user->theme['template_dir'] . '/template', E_USER_ERROR);
 		}
 
 		$this->_rootref = &$this->_tpldata['.'][0];

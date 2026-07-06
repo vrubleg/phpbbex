@@ -17,7 +17,7 @@ class erk_style_repair
 		global $config, $db;
 
 		$config['default_style'] = (!isset($config['default_style']) || !$config['default_style']) ? 1 : $config['default_style'];
-		$sql = 'SELECT s.style_id, t.template_path
+		$sql = 'SELECT s.style_id, t.template_dir
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
 			WHERE s.style_id = ' . (int) $config['default_style'] . '
 				AND t.template_id = s.template_id
@@ -63,7 +63,7 @@ class erk_style_repair
 				$result = $db->sql_query('SELECT * FROM ' . $table_prefix . 'styles_' . $mode);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
-				if ($row && file_exists(PHPBB_ROOT_PATH . "styles/{$mode}_path/{$subpath}{$mode}.cfg"))
+				if ($row && file_exists(PHPBB_ROOT_PATH . "styles/{$row[$mode . '_dir']}/{$subpath}{$mode}.cfg"))
 				{
 					// There already is one of this item in the database, so no need to add it.
 					${$var} = $row[$var];
@@ -90,7 +90,7 @@ class erk_style_repair
 
 								$sql_ary = [
 									$mode . '_name'         => $name,
-									$mode . '_path'         => $file,
+									$mode . '_dir'          => $file,
 								];
 
 								$db->sql_query('INSERT INTO ' . $table_prefix . 'styles_' . $mode . ' ' . $db->sql_build_array('INSERT', $sql_ary));

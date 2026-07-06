@@ -671,7 +671,7 @@ CREATE TABLE phpbb_styles (
 CREATE TABLE phpbb_styles_template (
 	template_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	template_name varchar(100) DEFAULT '' NOT NULL,
-	template_path varchar(100) DEFAULT '' NOT NULL,
+	template_dir varchar(100) DEFAULT '' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT 'kNg=' NOT NULL,
 	template_inherits_id int(4) UNSIGNED DEFAULT '0' NOT NULL,
 	template_inherit_path varchar(255) DEFAULT '' NOT NULL,
@@ -682,7 +682,7 @@ CREATE TABLE phpbb_styles_template (
 CREATE TABLE phpbb_styles_theme (
 	theme_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	theme_name varchar(100) DEFAULT '' NOT NULL,
-	theme_path varchar(100) DEFAULT '' NOT NULL,
+	theme_dir varchar(100) DEFAULT '' NOT NULL,
 	theme_mtime int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (theme_id),
 	UNIQUE theme_name (theme_name)
@@ -691,21 +691,9 @@ CREATE TABLE phpbb_styles_theme (
 CREATE TABLE phpbb_styles_imageset (
 	imageset_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	imageset_name varchar(100) DEFAULT '' NOT NULL,
-	imageset_path varchar(100) DEFAULT '' NOT NULL,
+	imageset_dir varchar(100) DEFAULT '' NOT NULL,
 	PRIMARY KEY (imageset_id),
 	UNIQUE imgset_nm (imageset_name)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_styles_imageset_data (
-	image_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	image_name varchar(200) DEFAULT '' NOT NULL,
-	image_filename varchar(200) DEFAULT '' NOT NULL,
-	image_lang varchar(30) DEFAULT '' NOT NULL,
-	image_height smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
-	image_width smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
-	imageset_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (image_id),
-	KEY i_d (imageset_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_topics (

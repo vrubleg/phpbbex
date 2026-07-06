@@ -520,49 +520,7 @@ class phpbb_umil
 
 					$this->umil_start('IMAGESET_CACHE_PURGE', $imageset_row['imageset_name']);
 
-					// The following is from includes/acp/acp_styles.php (edited)
-					$sql_ary = [];
-
-					$cfg_data_imageset = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/imageset.cfg");
-
-					$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . '
-						WHERE imageset_id = ' . $style_id;
-					$result = $this->db->sql_query($sql);
-
-					foreach ($cfg_data_imageset as $image_name => $value)
-					{
-						if (strpos($value, '*') !== false)
-						{
-							if (substr($value, -1, 1) === '*')
-							{
-								[$image_filename, $image_height] = explode('*', $value);
-								$image_width = 0;
-							}
-							else
-							{
-								[$image_filename, $image_height, $image_width] = explode('*', $value);
-							}
-						}
-						else
-						{
-							$image_filename = $value;
-							$image_height = $image_width = 0;
-						}
-
-						if (strpos($image_name, 'img_') === 0 && $image_filename)
-						{
-							$image_name = substr($image_name, 4);
-
-							$sql_ary[] = [
-								'image_name'        => (string) $image_name,
-								'image_filename'    => (string) $image_filename,
-								'image_height'      => (int) $image_height,
-								'image_width'       => (int) $image_width,
-								'imageset_id'       => (int) $style_id,
-								'image_lang'        => '',
-							];
-						}
-					}
+					$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_cfg");
 
 					$sql = 'SELECT lang_dir
 						FROM ' . LANG_TABLE;
@@ -570,49 +528,10 @@ class phpbb_umil
 
 					while ($row = $this->db->sql_fetchrow($result))
 					{
-						if (@file_exists(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg"))
-						{
-							$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$imageset_row['imageset_path']}/imageset/{$row['lang_dir']}/imageset.cfg");
-							foreach ($cfg_data_imageset_data as $image_name => $value)
-							{
-								if (strpos($value, '*') !== false)
-								{
-									if (substr($value, -1, 1) === '*')
-									{
-										[$image_filename, $image_height] = explode('*', $value);
-										$image_width = 0;
-									}
-									else
-									{
-										[$image_filename, $image_height, $image_width] = explode('*', $value);
-									}
-								}
-								else
-								{
-									$image_filename = $value;
-									$image_height = $image_width = 0;
-								}
-
-								if (strpos($image_name, 'img_') === 0 && $image_filename)
-								{
-									$image_name = substr($image_name, 4);
-									$sql_ary[] = [
-										'image_name'        => (string) $image_name,
-										'image_filename'    => (string) $image_filename,
-										'image_height'      => (int) $image_height,
-										'image_width'       => (int) $image_width,
-										'imageset_id'       => (int) $style_id,
-										'image_lang'        => (string) $row['lang_dir'],
-									];
-								}
-							}
-						}
+						$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_dir']}");
+						$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_dir']}_cfg");
 					}
 					$this->db->sql_freeresult($result);
-
-					$this->db->sql_multi_insert(STYLES_IMAGESET_DATA_TABLE, $sql_ary);
-
-					$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
 
 					return $this->umil_end();
 				}

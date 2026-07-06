@@ -24,14 +24,14 @@ class erk_style_dir_repair
 		global $config, $db;
 
 		$config['default_style'] = (!isset($config['default_style']) || !$config['default_style']) ? 1 : $config['default_style'];
-		$sql = 'SELECT t.template_path
+		$sql = 'SELECT t.template_dir
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
 			WHERE s.style_id = ' . (int) $config['default_style'] . '
 				AND t.template_id = s.template_id
 				AND c.theme_id = s.theme_id
 				AND i.imageset_id = s.imageset_id';
 		$result = $db->sql_query($sql);
-		$t_path = $db->sql_fetchfield('template_path', false, $result);
+		$t_path = $db->sql_fetchfield('template_dir', false, $result);
 		$db->sql_freeresult($result);
 
 		if (empty($t_path) || !is_dir(PHPBB_ROOT_PATH . 'styles/' . $t_path))
@@ -149,14 +149,14 @@ class erk_style_dir_repair
 		$stk_no_error = true;
 
 		// Get all the styles from the database
-		$sql = 'SELECT s.style_id, t.template_path
+		$sql = 'SELECT s.style_id, t.template_dir
 			FROM (' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t)
 			WHERE s.template_id = t.template_id';
 		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
 		{
 			// Not in teh files?
-			if (!in_array($row['template_path'], $style_dirs))
+			if (!in_array($row['template_dir'], $style_dirs))
 			{
 				// More uglyness from phpBB :/
 				$GLOBALS['_REQUEST']['new_id']  = (int) $this->sid;

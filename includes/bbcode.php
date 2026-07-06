@@ -151,7 +151,7 @@ class bbcode
 		if (empty($this->template_filename))
 		{
 			$this->template_bitfield = new bitfield($user->theme['bbcode_bitfield']);
-			$this->template_filename = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_path'] . '/template/bbcode.html';
+			$this->template_filename = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_dir'] . '/template/bbcode.html';
 
 			if (empty($user->theme['template_inherits_id']) && !empty($template->orig_tpl_inherits_id))
 			{

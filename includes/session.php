@@ -1435,7 +1435,7 @@ class phpbb_user extends phpbb_session
 			$style = $style ?: ((!$config['override_user_style']) ? $this->data['user_style'] : $config['default_style']);
 		}
 
-		$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
+		$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_dir, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id, i.imageset_name
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 			WHERE s.style_id = {$style}
 				AND t.template_id = s.template_id
@@ -1455,7 +1455,7 @@ class phpbb_user extends phpbb_session
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
-			$sql = 'SELECT s.style_id, t.template_path, t.template_id, t.bbcode_bitfield, c.theme_path, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_path, i.imageset_id, i.imageset_name
+			$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, c.theme_dir, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id, i.imageset_name
 				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 				WHERE s.style_id = {$style}
 					AND t.template_id = s.template_id
@@ -1471,11 +1471,8 @@ class phpbb_user extends phpbb_session
 			trigger_error('NO_STYLE_DATA', E_USER_ERROR);
 		}
 
-		// Now parse the cfg file and cache it
-		$parsed_items = $cache->obtain_cfg_items($this->theme);
-
-		// We are only interested in the theme configuration for now
-		$parsed_items = $parsed_items['theme'];
+		// Now parse the theme cfg file and cache it
+		$parsed_items = $cache->obtain_style_cfg($this->theme['theme_dir'], 'theme');
 
 		$check_for = [
 			'parse_css_file'    => (int) 0,
@@ -1495,95 +1492,14 @@ class phpbb_user extends phpbb_session
 
 		$template->set_template();
 
-		$this->img_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $this->theme['imageset_path'] . '/imageset/' . $this->lang_name)) ? $this->lang_name : $config['default_lang'];
+		$this->img_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $this->theme['imageset_dir'] . '/imageset/' . $this->lang_name)) ? $this->lang_name : $config['default_lang'];
 
-		// Same query in style.php
-		$sql = 'SELECT *
-			FROM ' . STYLES_IMAGESET_DATA_TABLE . '
-			WHERE imageset_id = ' . $this->theme['imageset_id'] . "
-			AND image_filename <> ''
-			AND image_lang IN ('" . $db->sql_escape($this->img_lang) . "', '')";
-		$result = $db->sql_query($sql, 3600);
-
-		$localised_images = false;
-		while ($row = $db->sql_fetchrow($result))
+		$this->img_array = $cache->obtain_style_imageset($this->theme['imageset_dir'], $this->img_lang);
+		foreach ($this->img_array as &$row)
 		{
-			if ($row['image_lang'])
-			{
-				$localised_images = true;
-			}
-
 			$row['image_filename'] = rawurlencode($row['image_filename']);
-			$this->img_array[$row['image_name']] = $row;
 		}
-		$db->sql_freeresult($result);
-
-		// there were no localised images, try to refresh the localised imageset for the user's language
-		if (!$localised_images)
-		{
-			// Attention: this code ignores the image definition list from acp_styles and just takes everything
-			// that the config file contains
-			$sql_ary = [];
-
-			$db->sql_transaction('begin');
-
-			$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . '
-				WHERE imageset_id = ' . $this->theme['imageset_id'] . '
-					AND image_lang = \'' . $db->sql_escape($this->img_lang) . '\'';
-			$result = $db->sql_query($sql);
-
-			if (@file_exists(PHPBB_ROOT_PATH . "styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg"))
-			{
-				$cfg_data_imageset_data = parse_cfg_file(PHPBB_ROOT_PATH . "styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg");
-				foreach ($cfg_data_imageset_data as $image_name => $value)
-				{
-					if (strpos($value, '*') !== false)
-					{
-						if (substr($value, -1, 1) === '*')
-						{
-							[$image_filename, $image_height] = explode('*', $value);
-							$image_width = 0;
-						}
-						else
-						{
-							[$image_filename, $image_height, $image_width] = explode('*', $value);
-						}
-					}
-					else
-					{
-						$image_filename = $value;
-						$image_height = $image_width = 0;
-					}
-
-					if (strpos($image_name, 'img_') === 0 && $image_filename)
-					{
-						$image_name = substr($image_name, 4);
-						$sql_ary[] = [
-							'image_name'        => (string) $image_name,
-							'image_filename'    => (string) $image_filename,
-							'image_height'      => (int) $image_height,
-							'image_width'       => (int) $image_width,
-							'imageset_id'       => (int) $this->theme['imageset_id'],
-							'image_lang'        => (string) $this->img_lang,
-						];
-					}
-				}
-			}
-
-			if (sizeof($sql_ary))
-			{
-				$db->sql_multi_insert(STYLES_IMAGESET_DATA_TABLE, $sql_ary);
-				$db->sql_transaction('commit');
-				$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
-
-				add_log('admin', 'LOG_IMAGESET_LANG_REFRESHED', $this->theme['imageset_name'], $this->img_lang);
-			}
-			else
-			{
-				$db->sql_transaction('commit');
-				add_log('admin', 'LOG_IMAGESET_LANG_MISSING', $this->theme['imageset_name'], $this->img_lang);
-			}
-		}
+		unset($row);
 
 		// If this function got called from the error handler we are finished here.
 		if (defined('IN_ERROR_HANDLER'))
@@ -2019,7 +1935,7 @@ class phpbb_user extends phpbb_session
 			// Use URL if told so
 			$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : PHPBB_ROOT_PATH;
 
-			$path = 'styles/' . rawurlencode($this->theme['imageset_path']) . '/imageset/' . ($this->img_array[$img]['image_lang'] ? $this->img_array[$img]['image_lang'] .'/' : '') . $this->img_array[$img]['image_filename'];
+			$path = 'styles/' . rawurlencode($this->theme['imageset_dir']) . '/imageset/' . ($this->img_array[$img]['image_lang'] ? $this->img_array[$img]['image_lang'] .'/' : '') . $this->img_array[$img]['image_filename'];
 
 			$img_data['src'] = $root_path . $path;
 			$img_data['width'] = $this->img_array[$img]['image_width'];
