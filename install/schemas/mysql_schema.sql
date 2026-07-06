@@ -696,18 +696,6 @@ CREATE TABLE phpbb_styles_imageset (
 	UNIQUE imgset_nm (imageset_name)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-CREATE TABLE phpbb_styles_imageset_data (
-	image_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	image_name varchar(200) DEFAULT '' NOT NULL,
-	image_filename varchar(200) DEFAULT '' NOT NULL,
-	image_lang varchar(30) DEFAULT '' NOT NULL,
-	image_height smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
-	image_width smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
-	imageset_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (image_id),
-	KEY i_d (imageset_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 CREATE TABLE phpbb_topics (
 	topic_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,

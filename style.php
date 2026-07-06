@@ -83,20 +83,7 @@ if (!$lang)
 
 $user_image_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $theme['imageset_dir'] . '/imageset/' . $lang) ? $lang : $config['default_lang']);
 
-// Same query in session.php
-$sql = 'SELECT *
-	FROM ' . STYLES_IMAGESET_DATA_TABLE . '
-	WHERE imageset_id = ' . $theme['imageset_id'] . "
-	AND image_filename <> ''
-	AND image_lang IN ('" . $db->sql_escape($user_image_lang) . "', '')";
-$result = $db->sql_query($sql, 3600);
-
-$img_array = [];
-while ($row = $db->sql_fetchrow($result))
-{
-	$img_array[$row['image_name']] = $row;
-}
-$db->sql_freeresult($result);
+$img_array = $cache->obtain_style_imageset($theme['imageset_dir'], $user_image_lang);
 
 $theme_dir_path = PHPBB_ROOT_PATH . 'styles/' . $theme['theme_dir'] . '/theme/';
 $theme_css_path = $theme_dir_path . 'stylesheet.css';

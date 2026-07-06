@@ -30,7 +30,7 @@ $lang = array_merge($lang, [
 	'ADD_THEME_EXPLAIN'     => 'Here you can add a new theme. Depending on your server configuration and file permissions you may have additional options here. For example you may be able to base this theme on an existing one. You may also be able to upload or import (from the store directory) a theme archive. If you upload or import an archive the theme name can be optionally taken from the archive name (to do this leave the theme name blank).',
 
 
-	'CONFIRM_IMAGESET_REFRESH'      => 'Are you sure you wish to refresh all imageset data? The settings from the imageset configuration file will overwrite the current imageset data in the database.',
+	'CONFIRM_IMAGESET_REFRESH'      => 'Are you sure you wish to refresh cached imageset data?',
 	'CONFIRM_TEMPLATE_CLEAR_CACHE'  => 'Are you sure you wish to clear all cached versions of your template files?',
 	'CONFIRM_THEME_REFRESH'         => 'Are you sure you wish to refresh the theme stylesheet version? This will force browsers to reload the parsed stylesheet.',
 	'COPYRIGHT'                     => 'Copyright',

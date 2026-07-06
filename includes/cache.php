@@ -307,46 +307,121 @@ class phpbb_cache extends acm
 	{
 		global $config;
 
-		$cache_key = '_style_' . $style_dir . (($type != 'style') ? '_' . $type : '') . ($lang ? '_' . $lang : '') . '_cfg';
+		$cache_key = '_style_' . $style_dir
+			. (($type != 'style') ? '_' . $type : '')
+			. ($lang ? '_' . $lang : '')
+			. '_cfg';
+
 		$cfg_data = $this->get($cache_key) ?: [];
 
-		$base_path = PHPBB_ROOT_PATH . 'styles/' . $style_dir . (($type != 'style') ? '/' . $type : '');
-		$cfg_files = [$base_path . '/' . $type . '.cfg'];
-		if ($lang)
+		if (empty($cfg_data['mtime']) || $config['load_tplcompile'])
 		{
-			$cfg_files[] = $base_path . '/' . $lang . '/' . $type . '.cfg';
-		}
+			$cfg_file = PHPBB_ROOT_PATH . 'styles/' . $style_dir
+				. (($type != 'style') ? '/' . $type : '')
+				. ($lang ? '/' . $lang : '')
+				. '/' . $type . '.cfg';
 
-		$cfg_mtime = 0;
-		if ($config['load_tplcompile'])
-		{
-			foreach ($cfg_files as $cfg_file)
+			$cfg_mtime = @filemtime($cfg_file);
+
+			if ($cfg_mtime === false)
 			{
-				if (!file_exists($cfg_file)) { continue; }
-				$cfg_mtime = max($cfg_mtime, (int) filemtime($cfg_file));
-			}
-		}
-		else
-		{
-			$cfg_mtime = time();
-		}
-
-		if (empty($cfg_data['cfg_mtime']) || ($config['load_tplcompile'] && $cfg_mtime > $cfg_data['cfg_mtime']))
-		{
-			$cfg_data = [];
-
-			foreach ($cfg_files as $cfg_file)
-			{
-				if (!file_exists($cfg_file)) { continue; }
-				$cfg_data = array_merge($cfg_data, parse_cfg_file($cfg_file));
+				if ($cfg_data)
+				{
+					$this->destroy($cache_key);
+				}
+				return [];
 			}
 
-			$cfg_data['cfg_mtime'] = $cfg_mtime;
-
-			$this->put($cache_key, $cfg_data);
+			if (empty($cfg_data['mtime']) || ($config['load_tplcompile'] && $cfg_mtime > $cfg_data['mtime']))
+			{
+				$cfg_data = parse_cfg_file($cfg_file);
+				$cfg_data['mtime'] = $cfg_mtime;
+				$this->put($cache_key, $cfg_data);
+			}
 		}
 
 		return $cfg_data;
+	}
+
+	/**
+	* Obtain imageset data from cfg files
+	*/
+	function obtain_style_imageset($style_dir, $lang = null)
+	{
+		global $config;
+
+		$lang = $lang ?: $config['default_lang'];
+		$cache_key = "_style_{$style_dir}_imageset_{$lang}";
+		$data = $this->get($cache_key) ?: [];
+
+		if (empty($data['mtime']) || $config['load_tplcompile'])
+		{
+			$base_cfg = $this->obtain_style_cfg($style_dir, 'imageset');
+
+			if (!$base_cfg)
+			{
+				$this->destroy($cache_key);
+				return [];
+			}
+
+			$mtime = $base_cfg['mtime'];
+			unset($base_cfg['mtime']);
+
+			$lang_cfg = $this->obtain_style_cfg($style_dir, 'imageset', $lang);
+
+			if ($lang_cfg)
+			{
+				$mtime = max($mtime, $lang_cfg['mtime']);
+				unset($lang_cfg['mtime']);
+			}
+
+			if (empty($data['mtime']) || ($config['load_tplcompile'] && $mtime > $data['mtime']))
+			{
+				$data = [];
+
+				foreach (['' => $base_cfg, $lang => $lang_cfg] as $image_lang => $imageset_cfg)
+				{
+					foreach ($imageset_cfg as $image_name => $image_filename)
+					{
+						if (strpos($image_name, 'img_') !== 0)
+						{
+							continue;
+						}
+						$image_name = substr($image_name, 4);
+
+						$image_height = $image_width = 0;
+						if (strpos($image_filename, '*') !== false)
+						{
+							if (substr($image_filename, -1, 1) === '*')
+							{
+								[$image_filename, $image_height] = explode('*', $image_filename);
+							}
+							else
+							{
+								[$image_filename, $image_height, $image_width] = explode('*', $image_filename);
+							}
+						}
+
+						if ($image_filename)
+						{
+							$data[$image_name] = [
+								'image_name'        => (string) $image_name,
+								'image_filename'    => (string) $image_filename,
+								'image_height'      => (int) $image_height,
+								'image_width'       => (int) $image_width,
+								'image_lang'        => (string) $image_lang,
+							];
+						}
+					}
+				}
+
+				$data['mtime'] = $mtime;
+				$this->put($cache_key, $data);
+			}
+		}
+
+		unset($data['mtime']);
+		return $data;
 	}
 
 	/**

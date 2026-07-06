@@ -257,7 +257,6 @@ if (version_compare($config['phpbbex_version'], '1.8.0', '<'))
 if (version_compare($config['phpbbex_version'], '1.9.5', '<'))
 {
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
-	$db->sql_query("INSERT INTO " . STYLES_IMAGESET_DATA_TABLE . " (image_name, image_filename, image_lang, image_height, image_width, imageset_id) VALUES ('icon_contact_telegram', 'icon_contact_telegram.gif', '', 20, 20, 1)");
 	set_config('phpbbex_version', '1.9.5');
 }
 
@@ -621,6 +620,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . STYLES_THEME_TABLE . " CHANGE theme_path theme_dir varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP COLUMN imageset_copyright');
 	$db->sql_query("ALTER TABLE " . STYLES_IMAGESET_TABLE . " CHANGE imageset_path imageset_dir varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query("DROP TABLE {$table_prefix}styles_imageset_data");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 	$db->sql_return_on_error(false);
 
@@ -935,7 +935,6 @@ if (request_var('utf8mb4', 0))
 			case SESSIONS_KEYS_TABLE:
 			case SITELIST_TABLE:
 			case SMILIES_TABLE:
-			case STYLES_IMAGESET_DATA_TABLE:
 			case TOPICS_POSTED_TABLE:
 			case TOPICS_TRACK_TABLE:
 			case TOPICS_WATCH_TABLE:
@@ -1582,10 +1581,6 @@ function database_update_info()
 				],
 				STYLES_IMAGESET_TABLE       => [
 					'imageset_id'               => ['UINT', null, 'auto_increment'],
-				],
-				STYLES_IMAGESET_DATA_TABLE  => [
-					'image_id'              => ['UINT', null, 'auto_increment'],
-					'imageset_id'           => ['UINT', 0],
 				],
 				STYLES_THEME_TABLE          => [
 					'theme_id'              => ['UINT', null, 'auto_increment'],
