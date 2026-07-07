@@ -591,8 +591,8 @@ switch ($mode)
 			'TOPICS_DAY'        => sprintf($user->lang['TOPIC_DAY'], $topics_per_day),
 			'TOPICS_PCT'        => sprintf($user->lang['TOPIC_PCT'], $percentage_topics),
 
-			'OCCUPATION'    => (!empty($member['user_occ'])) ? censor_text($member['user_occ']) : '',
-			'INTERESTS'     => (!empty($member['user_interests'])) ? censor_text($member['user_interests']) : '',
+			'OCCUPATION'    => (!empty($member['user_occupation'])) ? censor_text($member['user_occupation']) : '',
+			'ABOUT'         => (!empty($member['user_about'])) ? censor_text($member['user_about']) : '',
 			'SIGNATURE'     => $member['user_sig'],
 			'POSTS_IN_QUEUE'=> $member['posts_in_queue'],
 			'TOPICS_IN_QUEUE'=> $member['topics_in_queue'],
@@ -1431,7 +1431,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 		'U_TELEGRAM'    => ($data['user_telegram']) ? ('tg://resolve?domain=' . $data['user_telegram']) : '',
 		'LOCATION'      => $data['user_from'] ?: '',
 
-		'USER_AGENT'        => $data['user_browser'] ?: '',
+		'USER_AGENT'        => $data['user_browser_ua'] ?: '',
 		'USER_LAST_IP'      => $data['user_ip'] ?: '',
 		'USER_ICQ'          => $data['user_icq'],
 		'USER_JABBER'       => $data['user_jabber'],

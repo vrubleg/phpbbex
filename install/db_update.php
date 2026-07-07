@@ -256,7 +256,7 @@ if (version_compare($config['phpbbex_version'], '1.8.0', '<'))
 
 if (version_compare($config['phpbbex_version'], '1.9.5', '<'))
 {
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(255) DEFAULT '' NOT NULL AFTER user_skype");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD COLUMN user_telegram varchar(32) DEFAULT '' NOT NULL AFTER user_skype");
 	set_config('phpbbex_version', '1.9.5');
 }
 
@@ -281,12 +281,6 @@ if (version_compare($config['phpbbex_version'], '1.9.6', '<'))
 	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " DROP COLUMN session_forum_id");
 	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " DROP COLUMN session_album_id"); // For Gallery MOD.
 	$db->sql_return_on_error(false);
-
-	// Upgrade max UA length from 150 to 250.
-
-	$db->sql_query("ALTER TABLE " . LOGIN_ATTEMPT_TABLE . " MODIFY attempt_browser varchar(250) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " MODIFY session_browser varchar(250) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_browser varchar(250) DEFAULT '' NOT NULL");
 
 	set_config('phpbbex_version', '1.9.6');
 }
@@ -604,6 +598,33 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_lastpage');
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '500' WHERE config_name = 'max_sig_chars' AND config_value > 500");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_sig = LEFT(user_sig, 500) WHERE CHAR_LENGTH(user_sig) > 500");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_sig varchar(500) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_occ user_occupation varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_interests user_about varchar(1000) DEFAULT '' NOT NULL");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_jabber = LEFT(user_jabber, 100) WHERE CHAR_LENGTH(user_jabber) > 100");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_skype = LEFT(user_skype, 32) WHERE CHAR_LENGTH(user_skype) > 32");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_telegram = LEFT(user_telegram, 32) WHERE CHAR_LENGTH(user_telegram) > 32");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_website = LEFT(user_website, 100) WHERE CHAR_LENGTH(user_website) > 100");
+	$db->sql_query("UPDATE " . LANG_TABLE . " SET lang_iso = LEFT(lang_iso, 5) WHERE CHAR_LENGTH(lang_iso) > 5");
+	$db->sql_query("UPDATE " . LANG_TABLE . " SET lang_dir = LEFT(lang_dir, 5) WHERE CHAR_LENGTH(lang_dir) > 5");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_lang = LEFT(user_lang, 5) WHERE CHAR_LENGTH(user_lang) > 5");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_jabber varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_skype varchar(32) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_telegram varchar(32) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_website varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_iso varchar(5) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_dir varchar(5) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_lang varchar(5) DEFAULT '' NOT NULL");
+	foreach (["{$table_prefix}captcha_questions", "{$table_prefix}qa_confirm"] as $table)
+	{
+		if ($db_tools->sql_table_exists($table))
+		{
+			$db->sql_query("UPDATE {$table} SET lang_iso = LEFT(lang_iso, 5) WHERE CHAR_LENGTH(lang_iso) > 5");
+			$db->sql_query("ALTER TABLE {$table} MODIFY lang_iso varchar(5) DEFAULT '' NOT NULL");
+		}
+	}
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
@@ -637,9 +658,17 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_return_on_error(false);
 	$db->sql_query("UPDATE " . BROWSER_TRACKING_TABLE . " SET tracking_first_ip = tracking_last_ip WHERE tracking_first_ip = ''");
 
+	// Rename legacy UA column names to make it clear that they store user-agent strings.
+
+	$db->sql_return_on_error(true);
+	$db->sql_query("ALTER TABLE " . LOGIN_ATTEMPT_TABLE . " CHANGE attempt_browser attempt_browser_ua varchar(250) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " CHANGE session_browser session_browser_ua varchar(250) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_browser user_browser_ua varchar(250) DEFAULT '' NOT NULL");
+	$db->sql_return_on_error(false);
+
 	// Update anonymous user.
 
-	$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_browser = '', user_ip = '' WHERE user_id = " . ANONYMOUS);
+	$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_browser_ua = '', user_ip = '' WHERE user_id = " . ANONYMOUS);
 
 	// Demote bots from users to guests.
 
@@ -1692,7 +1721,7 @@ function database_update_info()
 						// removing a primary key.
 						// 'attempt_id'         => array('UINT', NULL, 'auto_increment'),
 						'attempt_ip'            => ['VCHAR:40', ''],
-						'attempt_browser'       => ['VCHAR:150', ''],
+						'attempt_browser_ua'    => ['VCHAR:250', ''],
 						'attempt_forwarded_for' => ['VCHAR:255', ''],
 						'attempt_time'          => ['TIMESTAMP', 0],
 						'user_id'               => ['UINT', 0],

@@ -3738,7 +3738,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'S_IS_BOT'              => !empty($user->data['is_bot']),
 		'S_USER_PM_POPUP'       => $user->optionget('popuppm'),
 		'S_USER_LANG'           => $user_lang,
-		'S_USER_BROWSER'        => $user->data['session_browser'] ?? $user->lang['UNKNOWN_BROWSER'],
+		'S_USER_BROWSER'        => $user->data['session_browser_ua'] ?? $user->lang['UNKNOWN_BROWSER'],
 		'S_USERNAME'            => $user->data['username'],
 		'S_TIMEZONE'            => sprintf($user->lang['CURRENT_TIMEZONE'], $user->lang['tz'][$tz], ($user->dst) ? $user->lang['DST'] : ''),
 		'S_DISPLAY_ONLINE_LIST' => ($l_online_time) ? 1 : 0,

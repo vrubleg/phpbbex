@@ -566,7 +566,7 @@ class merge_users
 			$update['target']['user_notify_type'] = NOTIFY_BOTH;
 		}
 
-		foreach (['birthday', 'avatar', 'sig', 'from', 'icq', 'jabber', 'skype', 'telegram', 'website', 'occ', 'interests'] as $var)
+		foreach (['birthday', 'avatar', 'sig', 'from', 'icq', 'jabber', 'skype', 'telegram', 'website', 'occupation', 'about'] as $var)
 		{
 			if (!$target['user_' . $var] && $source['user_' . $var])
 			{

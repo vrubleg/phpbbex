@@ -41,8 +41,8 @@ ALTER TABLE phpbb_poll_votes ADD COLUMN vote_time int(11) UNSIGNED DEFAULT '0' N
 
 ALTER TABLE phpbb_users ADD COLUMN user_gender tinyint(1) UNSIGNED DEFAULT '0' NOT NULL AFTER user_birthday;
 ALTER TABLE phpbb_users ADD COLUMN user_topics mediumint(8) UNSIGNED DEFAULT '0' NOT NULL AFTER user_inactive_time;
-ALTER TABLE phpbb_users ADD COLUMN user_skype varchar(255) DEFAULT '' NOT NULL AFTER user_jabber;
-ALTER TABLE phpbb_users ADD COLUMN user_browser varchar(150) DEFAULT '' NOT NULL AFTER user_ip;
+ALTER TABLE phpbb_users ADD COLUMN user_skype varchar(32) DEFAULT '' NOT NULL AFTER user_jabber;
+ALTER TABLE phpbb_users ADD COLUMN user_browser_ua varchar(250) DEFAULT '' NOT NULL AFTER user_ip;
 
 ALTER TABLE phpbb_warnings
 	ADD COLUMN warning_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL AFTER warning_id,

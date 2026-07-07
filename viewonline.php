@@ -199,7 +199,7 @@ while ($row = $db->sql_fetchrow($result))
 		'USERNAME_FULL'     => $username_full,
 		'LASTUPDATE'        => $user->format_date($row['session_time']),
 		'USER_IP'           => ($auth->acl_get('a_')) ? (($mode == 'lookup' && $session_id == $row['session_id']) ? gethostbyaddr($row['session_ip']) : $row['session_ip']) : '',
-		'USER_BROWSER'      => ($auth->acl_get('a_user')) ? $row['session_browser'] : '',
+		'USER_BROWSER'      => ($auth->acl_get('a_user')) ? $row['session_browser_ua'] : '',
 
 		'U_USER_PROFILE'    => ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
 		'U_USER_IP'         => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg={$show_guests}&amp;sb={$show_bots}&amp;start={$start}&amp;sk={$sort_key}&amp;sd={$sort_dir}"),

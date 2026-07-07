@@ -308,7 +308,7 @@ class phpbb_captcha_qa
 						'question_id'   => ['UINT', null, 'auto_increment'],
 						'strict'        => ['BOOL', 0],
 						'lang_id'       => ['UINT', 0],
-						'lang_iso'      => ['VCHAR:30', ''],
+						'lang_iso'      => ['VCHAR:5', ''],
 						'question_text' => ['TEXT_UNI', ''],
 					],
 					'PRIMARY_KEY'       => 'question_id',
@@ -329,7 +329,7 @@ class phpbb_captcha_qa
 					'COLUMNS' => [
 						'session_id'    => ['CHAR:32', ''],
 						'confirm_id'    => ['CHAR:32', ''],
-						'lang_iso'      => ['VCHAR:30', ''],
+						'lang_iso'      => ['VCHAR:5', ''],
 						'question_id'   => ['UINT', 0],
 						'attempts'      => ['UINT', 0],
 						'confirm_type'  => ['USINT', 0],
