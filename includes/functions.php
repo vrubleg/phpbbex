@@ -3482,7 +3482,7 @@ function phpbb_http_login($param)
 /**
 * Generate page header
 */
-function page_header($page_title = '', $display_online_list = true, $item_id = 0, $item = 'forum')
+function page_header($page_title = '', $display_online_list = true)
 {
 	global $db, $config, $template, $_EXTRA_URL, $user, $auth;
 

@@ -138,7 +138,7 @@ else
 }
 
 // Dump out the page header and load viewforum template
-page_header($forum_data['forum_name'], true, $forum_id);
+page_header($forum_data['forum_name']);
 
 $template->set_filenames(['body' => 'viewforum_body.html']);
 
