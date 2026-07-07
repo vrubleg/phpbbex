@@ -479,7 +479,19 @@ class phpbb_umil
 			case 'auth':
 				$this->umil_start('AUTH_CACHE_PURGE');
 				$cache->destroy('_acl_options');
-				$auth->acl_clear_prefetch();
+				if (is_object($auth) && method_exists($auth, 'acl_clear_prefetch'))
+				{
+					$auth->acl_clear_prefetch();
+				}
+				else
+				{
+					if (!class_exists('phpbb_auth'))
+					{
+						require_once(PHPBB_ROOT_PATH . 'includes/auth.php');
+					}
+					$auth = new phpbb_auth();
+					$auth->acl_clear_prefetch();
+				}
 				return $this->umil_end();
 			break;
 
