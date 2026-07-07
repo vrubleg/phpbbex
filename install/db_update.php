@@ -617,14 +617,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_iso varchar(5) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_dir varchar(5) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_lang varchar(5) DEFAULT '' NOT NULL");
-	foreach (["{$table_prefix}captcha_questions", "{$table_prefix}qa_confirm"] as $table)
-	{
-		if ($db_tools->sql_table_exists($table))
-		{
-			$db->sql_query("UPDATE {$table} SET lang_iso = LEFT(lang_iso, 5) WHERE CHAR_LENGTH(lang_iso) > 5");
-			$db->sql_query("ALTER TABLE {$table} MODIFY lang_iso varchar(5) DEFAULT '' NOT NULL");
-		}
-	}
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
@@ -643,6 +635,23 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . STYLES_IMAGESET_TABLE . " CHANGE imageset_path imageset_dir varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query("DROP TABLE {$table_prefix}styles_imageset_data");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
+	$db->sql_return_on_error(false);
+
+	// Adjust QA CAPTCHA tables.
+
+	$db->sql_return_on_error(true);
+	if ($db_tools->sql_table_exists("{$table_prefix}captcha_questions"))
+	{
+		$db->sql_query("UPDATE {$table_prefix}captcha_questions SET lang_iso = LEFT(lang_iso, 5) WHERE CHAR_LENGTH(lang_iso) > 5");
+		$db->sql_query("ALTER TABLE {$table_prefix}captcha_questions MODIFY lang_iso varchar(5) DEFAULT '' NOT NULL");
+		$db->sql_query("ALTER TABLE {$table_prefix}captcha_questions DROP COLUMN lang_id");
+	}
+	if ($db_tools->sql_table_exists("{$table_prefix}qa_confirm"))
+	{
+		$db->sql_query("ALTER TABLE {$table_prefix}qa_confirm DROP INDEX lookup");
+		$db->sql_query("ALTER TABLE {$table_prefix}qa_confirm DROP COLUMN lang_iso");
+		$db->sql_query("ALTER TABLE {$table_prefix}qa_confirm ADD INDEX lookup(session_id, confirm_type)");
+	}
 	$db->sql_return_on_error(false);
 
 	// Migrate phpbb_user_browser_ids to the new phpbb_browser_tracking.
