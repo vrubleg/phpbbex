@@ -80,10 +80,11 @@ class dbal
 	*/
 	function sql_return_on_error($fail = false)
 	{
+		$prev_return_on_error = $this->return_on_error;
 		$this->sql_error_triggered = false;
 		$this->sql_error_sql = '';
-
 		$this->return_on_error = $fail;
+		return $prev_return_on_error;
 	}
 
 	/**

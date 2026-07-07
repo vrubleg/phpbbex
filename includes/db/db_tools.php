@@ -119,9 +119,9 @@ class phpbb_db_tools
 	*/
 	function sql_table_exists($table_name)
 	{
-		$this->db->sql_return_on_error(true);
+		$prev_return_on_error = $this->db->sql_return_on_error(true);
 		$result = $this->db->sql_query_limit('SELECT * FROM ' . $table_name, 1);
-		$this->db->sql_return_on_error(false);
+		$this->db->sql_return_on_error($prev_return_on_error);
 
 		if ($result)
 		{
