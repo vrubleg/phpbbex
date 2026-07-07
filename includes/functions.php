@@ -3532,7 +3532,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	$s_last_visit = ($user->data['user_id'] != ANONYMOUS) ? $user->format_date($user->data['session_last_visit']) : '';
 
 	// Get users online list ... if required
-	$l_online_users = $online_userlist = $online_botlist = $l_online_record = $l_online_time = '';
+	$l_online_users = $online_userlist = $online_botlist = $l_online_time = '';
 
 	if ($config['load_online'] && $config['load_online_time'] && $display_online_list)
 	{
@@ -3545,15 +3545,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		$l_online_users = $user_online_strings['l_online_users'];
 		$online_userlist = $user_online_strings['online_userlist'];
 		$online_botlist = $user_online_strings['online_botlist'];
-		$total_online_users = $online_users['total_online'];
-
-		if ($total_online_users > $config['record_online_users'])
-		{
-			set_config('record_online_users', $total_online_users, true);
-			set_config('record_online_date', time(), true);
-		}
-
-		$l_online_record = sprintf($user->lang['RECORD_ONLINE_USERS'], $config['record_online_users'], $user->format_date($config['record_online_date'], false, true));
 
 		$l_online_time = ($config['load_online_time'] == 1) ? 'VIEW_ONLINE_TIME' : 'VIEW_ONLINE_TIMES';
 		$l_online_time = sprintf($user->lang[$l_online_time], $config['load_online_time']);
@@ -3668,7 +3659,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'TOTAL_USERS_ONLINE'            => $l_online_users,
 		'LOGGED_IN_USER_LIST'           => $online_userlist,
 		'LOGGED_IN_BOT_LIST'            => $online_botlist,
-		'RECORD_USERS'                  => $l_online_record,
 		'PRIVATE_MESSAGE_INFO'          => $l_privmsgs_text,
 		'PRIVATE_MESSAGE_INFO_UNREAD'   => $l_privmsgs_text_unread,
 

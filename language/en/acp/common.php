@@ -338,8 +338,6 @@ $lang = array_merge($lang, [
 
 	'RESET_DATE'                    => 'Reset board’s start date',
 	'RESET_DATE_CONFIRM'            => 'Are you sure you wish to reset the board’s start date?',
-	'RESET_ONLINE'                  => 'Reset most users ever online',
-	'RESET_ONLINE_CONFIRM'          => 'Are you sure you wish to reset the most users ever online counter?',
 	'RESYNC_POSTCOUNTS'             => 'Resynchronise post counts',
 	'RESYNC_POSTCOUNTS_EXPLAIN'     => 'Only existing posts will be taken into consideration. Pruned posts will not be counted.',
 	'RESYNC_POSTCOUNTS_CONFIRM'     => 'Are you sure you wish to resynchronise post counts?',
@@ -625,7 +623,6 @@ $lang = array_merge($lang, [
 
 	'LOG_REFERER_INVALID'       => '<strong>Referer validation failed</strong><br />»Referer was “<em>%1$s</em>”. The request was rejected and the session killed.',
 	'LOG_RESET_DATE'            => '<strong>Board start date reset</strong>',
-	'LOG_RESET_ONLINE'          => '<strong>Most users online reset</strong>',
 	'LOG_RESYNC_POSTCOUNTS'     => '<strong>User post counts resynchronised</strong>',
 	'LOG_RESYNC_POST_MARKING'   => '<strong>Dotted topics resynchronised</strong>',
 	'LOG_RESYNC_STATS'          => '<strong>Post, topic and user statistics resynchronised</strong>',

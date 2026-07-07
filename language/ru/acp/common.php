@@ -338,8 +338,6 @@ $lang = array_merge($lang, [
 
 	'RESET_DATE'                    => 'Сброс даты запуска форума',
 	'RESET_DATE_CONFIRM'            => 'Вы действительно хотите сбросить дату запуска форума?',
-	'RESET_ONLINE'                  => 'Обнуление рекорда посещаемости',
-	'RESET_ONLINE_CONFIRM'          => 'Вы действительно хотите обнулить рекорд посещаемости форума?',
 	'RESYNC_POSTCOUNTS'             => 'Синхронизировать счётчики сообщений',
 	'RESYNC_POSTCOUNTS_EXPLAIN'     => 'Будут учтены только существующие сообщения. Удалённые сообщения не будут подсчитаны.',
 	'RESYNC_POSTCOUNTS_CONFIRM'     => 'Вы действительно хотите синхронизировать счётчики сообщений?',
@@ -624,7 +622,6 @@ $lang = array_merge($lang, [
 
 	'LOG_REFERER_INVALID'       => '<strong>Проверка реферера не удалась </strong><br />»Реферер: “<em>%1$s</em>”. Запрос был отклонён, сессия удалена.',
 	'LOG_RESET_DATE'            => '<strong>Сброшена дата запуска форума</strong>',
-	'LOG_RESET_ONLINE'          => '<strong>Сброшен рекорд посещаемости</strong>',
 	'LOG_RESYNC_POSTCOUNTS'     => '<strong>Синхронизированы счётчики сообщений пользователей</strong>',
 	'LOG_RESYNC_POST_MARKING'   => '<strong>Синхронизированы свои темы</strong>',
 	'LOG_RESYNC_STATS'          => '<strong>Синхронизирована статистика сообщений, тем и пользователей</strong>',

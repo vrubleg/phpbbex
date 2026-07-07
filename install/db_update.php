@@ -552,6 +552,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'form_token_sid_guests',
 		'form_token_lifetime',
 		'load_tplcompile',
+		'record_online_date',
+		'record_online_users',
 	]);
 
 	// New defaults.

@@ -66,10 +66,6 @@ class acp_main
 			{
 				switch ($action)
 				{
-					case 'online':
-						$confirm = true;
-						$confirm_lang = 'RESET_ONLINE_CONFIRM';
-					break;
 					case 'stats':
 						$confirm = true;
 						$confirm_lang = 'RESYNC_STATS_CONFIRM';
@@ -121,18 +117,6 @@ class acp_main
 			{
 				switch ($action)
 				{
-
-					case 'online':
-						if (!$auth->acl_get('a_board'))
-						{
-							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
-						set_config('record_online_users', 1, true);
-						set_config('record_online_date', time(), true);
-						add_log('admin', 'LOG_RESET_ONLINE');
-					break;
-
 					case 'stats':
 						if (!$auth->acl_get('a_board'))
 						{

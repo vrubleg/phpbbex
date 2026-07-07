@@ -421,7 +421,6 @@ $lang = array_merge($lang, [
 	'RANK'                      => 'Rank',
 	'READ_PROFILE'              => 'Profile',
 	'REASON'                    => 'Reason',
-	'RECORD_ONLINE_USERS'       => 'Most users ever online was <strong>%1$s</strong> on %2$s',
 	'REDIRECT'                  => 'Redirect',
 	'REDIRECTS'                 => 'Total redirects',
 	'REGISTER'                  => 'Register',

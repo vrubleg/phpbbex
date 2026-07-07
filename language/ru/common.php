@@ -421,7 +421,6 @@ $lang = array_merge($lang, [
 	'RANK'                      => 'Звание',
 	'READ_PROFILE'              => 'Профиль',
 	'REASON'                    => 'Причина',
-	'RECORD_ONLINE_USERS'       => 'Больше всего посетителей (<strong>%1$s</strong>) здесь было %2$s',
 	'REDIRECT'                  => 'Перенаправление',
 	'REDIRECTS'                 => 'Переходов по ссылке',
 	'REGISTER'                  => 'Регистрация',
