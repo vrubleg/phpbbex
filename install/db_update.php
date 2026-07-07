@@ -1088,14 +1088,8 @@ switch (request_var('purge', $purge_default))
 
 	case 'all':
 		require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
-
 		$umil = new phpbb_umil();
-		$umil->cache_purge([
-			'data',
-			'template',
-			'theme',
-			'imageset',
-		]);
+		$umil->cache_purge('data');
 		break;
 }
 
