@@ -314,7 +314,7 @@ class phpbb_cache extends acm
 
 		$cfg_data = $this->get($cache_key) ?: [];
 
-		if (empty($cfg_data['mtime']) || $config['load_tplcompile'])
+		if (empty($cfg_data['mtime']) || !empty($config['cache_mtime_check']))
 		{
 			$cfg_file = PHPBB_ROOT_PATH . 'styles/' . $style_dir
 				. (($type != 'style') ? '/' . $type : '')
@@ -332,7 +332,7 @@ class phpbb_cache extends acm
 				return [];
 			}
 
-			if (empty($cfg_data['mtime']) || ($config['load_tplcompile'] && $cfg_mtime > $cfg_data['mtime']))
+			if (empty($cfg_data['mtime']) || (!empty($config['cache_mtime_check']) && $cfg_mtime > $cfg_data['mtime']))
 			{
 				$cfg_data = parse_cfg_file($cfg_file);
 				$cfg_data['mtime'] = $cfg_mtime;
@@ -354,7 +354,7 @@ class phpbb_cache extends acm
 		$cache_key = "_style_{$style_dir}_imageset_{$lang}";
 		$data = $this->get($cache_key) ?: [];
 
-		if (empty($data['mtime']) || $config['load_tplcompile'])
+		if (empty($data['mtime']) || !empty($config['cache_mtime_check']))
 		{
 			$base_cfg = $this->obtain_style_cfg($style_dir, 'imageset');
 
@@ -375,7 +375,7 @@ class phpbb_cache extends acm
 				unset($lang_cfg['mtime']);
 			}
 
-			if (empty($data['mtime']) || ($config['load_tplcompile'] && $mtime > $data['mtime']))
+			if (empty($data['mtime']) || (!empty($config['cache_mtime_check']) && $mtime > $data['mtime']))
 			{
 				$data = [];
 

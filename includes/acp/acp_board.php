@@ -416,7 +416,7 @@ class acp_board
 						'load_db_track'         => ['lang' => 'YES_POST_MARKING',       'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'load_db_lastread'      => ['lang' => 'YES_READ_MARKING',       'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'load_user_activity'    => ['lang' => 'LOAD_USER_ACTIVITY', 'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
-						'load_tplcompile'       => ['lang' => 'RECOMPILE_STYLES',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
+						'cache_mtime_check'     => ['lang' => 'CACHE_MTIME_CHECK',  'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 
 						'legend3'                   => 'ACP_SUBMIT_CHANGES',
 					]

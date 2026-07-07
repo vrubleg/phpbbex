@@ -551,6 +551,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'allow_autologin',
 		'form_token_sid_guests',
 		'form_token_lifetime',
+		'load_tplcompile',
 	]);
 
 	// New defaults.
@@ -559,6 +560,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('max_autologin_time', '400');
 	set_config('session_length', '43200');
 	set_config('referer_validation', '1');
+	set_config('cache_mtime_check', '1');
 
 	// Remove obsolete modules.
 
@@ -630,13 +632,22 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_copyright');
 	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_path template_dir varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP INDEX tmplte_nm');
+	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_name');
+	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' ADD UNIQUE template_dir (template_dir)');
 	$db->sql_query("DROP TABLE {$table_prefix}styles_template_data");
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_data');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_copyright');
 	$db->sql_query("ALTER TABLE " . STYLES_THEME_TABLE . " CHANGE theme_path theme_dir varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP INDEX theme_name');
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_name');
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' ADD UNIQUE theme_dir (theme_dir)');
 	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP COLUMN imageset_copyright');
 	$db->sql_query("ALTER TABLE " . STYLES_IMAGESET_TABLE . " CHANGE imageset_path imageset_dir varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP INDEX imgset_nm');
+	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP COLUMN imageset_name');
+	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' ADD UNIQUE imageset_dir (imageset_dir)');
 	$db->sql_query("DROP TABLE {$table_prefix}styles_imageset_data");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 	$db->sql_return_on_error(false);
@@ -1020,15 +1031,6 @@ if (request_var('utf8mb4', 0))
 			case STYLES_TABLE:
 				$sql .= ", MODIFY style_name varchar(100) DEFAULT '' NOT NULL";
 				break;
-			case STYLES_IMAGESET_TABLE:
-				$sql .= ", MODIFY imageset_name varchar(100) DEFAULT '' NOT NULL";
-				break;
-			case STYLES_TEMPLATE_TABLE:
-				$sql .= ", MODIFY template_name varchar(100) DEFAULT '' NOT NULL";
-				break;
-			case STYLES_THEME_TABLE:
-				$sql .= ", MODIFY theme_name varchar(100) DEFAULT '' NOT NULL";
-				break;
 			case USERS_TABLE:
 				$sql .= ",
 					MODIFY username varchar(191) DEFAULT '' NOT NULL,
@@ -1086,14 +1088,8 @@ switch (request_var('purge', $purge_default))
 
 	case 'all':
 		require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
-
 		$umil = new phpbb_umil();
-		$umil->cache_purge([
-			'data',
-			'template',
-			'theme',
-			'imageset',
-		]);
+		$umil->cache_purge(['auth', 'data']);
 		break;
 }
 

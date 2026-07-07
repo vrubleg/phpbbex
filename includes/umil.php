@@ -34,7 +34,7 @@ define('UMIL_VERSION', '1.0.5');
 * UMIL - Unified MOD Installation Library class
 *
 * Cache Functions
-*   cache_purge($type = '', $style_id = 0)
+*   cache_purge($type = '')
 *
 * Config Functions:
 *   config_exists($config_name, $return_result = false)
@@ -460,14 +460,13 @@ class phpbb_umil
 	/**
 	* Cache Purge
 	*
-	* This function is for purging either phpBB3’s data cache, authorization cache, or the styles cache.
+	* This function is for purging either data cache or authorization cache.
 	*
-	* @param string $type The type of cache you want purged.  Available types: auth, imageset, template, theme.  Anything else sent will purge the forum's cache.
-	* @param int $style_id The id of the item you want purged (if the type selected is imageset/template/theme, 0 for all items in that section)
+	* @param string $type The type of cache you want purged. Available types: auth, data.
 	*/
-	function cache_purge($type = '', $style_id = 0)
+	function cache_purge($type = '')
 	{
-		global $auth, $cache, $user;
+		global $auth, $cache;
 
 		// Multicall
 		if ($this->multicall(__FUNCTION__, $type))
@@ -475,157 +474,31 @@ class phpbb_umil
 			return;
 		}
 
-		$style_id = (int) $style_id;
-		$type = (is_array($type)) ? '' : strval($type); // only pass strings to switch()
-
-		switch ($type)
+		switch (strval($type))
 		{
-			case 'auth' :
+			case 'auth':
 				$this->umil_start('AUTH_CACHE_PURGE');
 				$cache->destroy('_acl_options');
-				$auth->acl_clear_prefetch();
-
+				if (is_object($auth) && method_exists($auth, 'acl_clear_prefetch'))
+				{
+					$auth->acl_clear_prefetch();
+				}
+				else
+				{
+					if (!class_exists('phpbb_auth'))
+					{
+						require_once(PHPBB_ROOT_PATH . 'includes/auth.php');
+					}
+					$auth = new phpbb_auth();
+					$auth->acl_clear_prefetch();
+				}
 				return $this->umil_end();
 			break;
 
-			case 'imageset' :
-				if ($style_id == 0)
-				{
-					$return = [];
-					$sql = 'SELECT imageset_id
-						FROM ' . STYLES_IMAGESET_TABLE;
-					$result = $this->db->sql_query($sql);
-					while ($row = $this->db->sql_fetchrow($result))
-					{
-						$return[] = $this->cache_purge('imageset', $row['imageset_id']);
-					}
-					$this->db->sql_freeresult($result);
-
-					return implode('<br /><br />', $return);
-				}
-				else
-				{
-					$sql = 'SELECT *
-						FROM ' . STYLES_IMAGESET_TABLE . "
-						WHERE imageset_id = {$style_id}";
-					$result = $this->db->sql_query($sql);
-					$imageset_row = $this->db->sql_fetchrow($result);
-					$this->db->sql_freeresult($result);
-
-					if (!$imageset_row)
-					{
-						$this->umil_start('IMAGESET_CACHE_PURGE', 'UNKNOWN');
-						return $this->umil_end('FAIL');
-					}
-
-					$this->umil_start('IMAGESET_CACHE_PURGE', $imageset_row['imageset_name']);
-
-					$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_cfg");
-
-					$sql = 'SELECT lang_dir
-						FROM ' . LANG_TABLE;
-					$result = $this->db->sql_query($sql);
-
-					while ($row = $this->db->sql_fetchrow($result))
-					{
-						$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_dir']}");
-						$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_dir']}_cfg");
-					}
-					$this->db->sql_freeresult($result);
-
-					return $this->umil_end();
-				}
-			break;
-			//case 'imageset' :
-
-			case 'template' :
-				if ($style_id == 0)
-				{
-					$return = [];
-					$sql = 'SELECT template_id
-						FROM ' . STYLES_TEMPLATE_TABLE;
-					$result = $this->db->sql_query($sql);
-					while ($row = $this->db->sql_fetchrow($result))
-					{
-						$return[] = $this->cache_purge('template', $row['template_id']);
-					}
-					$this->db->sql_freeresult($result);
-
-					return implode('<br /><br />', $return);
-				}
-				else
-				{
-					$sql = 'SELECT *
-						FROM ' . STYLES_TEMPLATE_TABLE . "
-						WHERE template_id = {$style_id}";
-					$result = $this->db->sql_query($sql);
-					$template_row = $this->db->sql_fetchrow($result);
-					$this->db->sql_freeresult($result);
-
-					if (!$template_row)
-					{
-						$this->umil_start('TEMPLATE_CACHE_PURGE', 'UNKNOWN');
-						return $this->umil_end('FAIL');
-					}
-
-					$this->umil_start('TEMPLATE_CACHE_PURGE', $template_row['template_name']);
-
-					// Purge the forum's cache as well.
-					$cache->purge();
-
-					return $this->umil_end();
-				}
-			break;
-			//case 'template' :
-
-			case 'theme' :
-				if ($style_id == 0)
-				{
-					$return = [];
-					$sql = 'SELECT theme_id
-						FROM ' . STYLES_THEME_TABLE;
-					$result = $this->db->sql_query($sql);
-					while ($row = $this->db->sql_fetchrow($result))
-					{
-						$return[] = $this->cache_purge('theme', $row['theme_id']);
-					}
-					$this->db->sql_freeresult($result);
-
-					return implode('<br /><br />', $return);
-				}
-				else
-				{
-					$sql = 'SELECT *
-						FROM ' . STYLES_THEME_TABLE . "
-						WHERE theme_id = {$style_id}";
-					$result = $this->db->sql_query($sql);
-					$theme_row = $this->db->sql_fetchrow($result);
-					$this->db->sql_freeresult($result);
-
-					if (!$theme_row)
-					{
-						$this->umil_start('THEME_CACHE_PURGE', 'UNKNOWN');
-						return $this->umil_end('FAIL');
-					}
-
-					$this->umil_start('THEME_CACHE_PURGE', $theme_row['theme_name']);
-
-					$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
-						SET theme_mtime = ' . time() . "
-						WHERE theme_id = {$style_id}";
-					$this->db->sql_query($sql);
-
-					$cache->destroy('sql', STYLES_THEME_TABLE);
-
-					return $this->umil_end();
-				}
-			break;
-			//case 'theme' :
-
+			case 'data':
 			default:
 				$this->umil_start('CACHE_PURGE');
 				$cache->purge();
-
 				return $this->umil_end();
 			break;
 		}

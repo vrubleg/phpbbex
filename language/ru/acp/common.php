@@ -555,7 +555,6 @@ $lang = array_merge($lang, [
 
 	'LOG_IMAGESET_ADD_FS'           => '<strong>Добавлен набор рисунков на сервер</strong><br />» %s',
 	'LOG_IMAGESET_DELETE'           => '<strong>Удалён набор рисунков</strong><br />» %s',
-	'LOG_IMAGESET_EDIT_DETAILS'     => '<strong>Изменена информация о наборе рисунков</strong><br />» %s',
 	'LOG_IMAGESET_REFRESHED'        => '<strong>Обновлён набор рисунков</strong><br />» %s',
 
 	'LOG_INACTIVE_ACTIVATE' => '<strong>Активированы пользователи</strong><br />» %s',
@@ -641,11 +640,9 @@ $lang = array_merge($lang, [
 	'LOG_TEMPLATE_ADD_FS'           => '<strong>Добавлен шаблон на сервер</strong><br />» %s',
 	'LOG_TEMPLATE_CACHE_CLEARED'    => '<strong>Удалена кэшированная версия файлов шаблона <em>%1$s</em></strong><br />» %2$s',
 	'LOG_TEMPLATE_DELETE'           => '<strong>Удалён шаблон</strong><br />» %s',
-	'LOG_TEMPLATE_EDIT_DETAILS'     => '<strong>Изменена информация о шаблоне</strong><br />» %s',
 
 	'LOG_THEME_ADD_FS'          => '<strong>Добавлена тема на сервер</strong><br />» %s',
 	'LOG_THEME_DELETE'          => '<strong>Удалена тема</strong><br />» %s',
-	'LOG_THEME_EDIT_DETAILS'    => '<strong>Изменена информация о теме</strong><br />» %s',
 	'LOG_THEME_REFRESHED'       => '<strong>Обновлена версия таблицы стилей темы</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'   => '<strong>Обновлена база данных с версии %1$s до версии %2$s</strong>',

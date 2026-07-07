@@ -64,12 +64,7 @@ $user->setup('acp/common', $config['default_style']);
 
 // Purge teh caches
 $umil = new phpbb_umil();
-$umil->cache_purge([
-	'data',
-	'template',
-	'theme',
-	'imageset',
-]);
+$umil->cache_purge('data');
 
 // Remove old ERK allow key files.
 if ($dir = opendir(PHPBB_CACHE_PATH))

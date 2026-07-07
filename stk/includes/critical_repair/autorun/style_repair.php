@@ -68,10 +68,7 @@ class erk_style_repair
 					// There already is one of this item in the database, so no need to add it.
 					${$var} = $row[$var];
 
-					if ($mode == 'template')
-					{
-						$style_name = $row['template_name'];
-					}
+					$style_name = $style_name ?: $row[$mode . '_dir'];
 
 					continue;
 				}
@@ -85,11 +82,7 @@ class erk_style_repair
 						{
 							if ($cfg = file(PHPBB_ROOT_PATH . "styles/{$file}/{$subpath}{$mode}.cfg"))
 							{
-								$items = parse_cfg_file('', $cfg);
-								$name = (isset($items['name'])) ? trim($items['name']) : false;
-
 								$sql_ary = [
-									$mode . '_name'         => $name,
 									$mode . '_dir'          => $file,
 								];
 
@@ -97,10 +90,7 @@ class erk_style_repair
 
 								${$var} = $db->sql_nextid();
 
-								if ($mode == 'template')
-								{
-									$style_name = $name;
-								}
+								$style_name = $style_name ?: $file;
 
 								break;
 							}

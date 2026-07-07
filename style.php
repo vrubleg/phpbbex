@@ -52,7 +52,7 @@ unset($dbpasswd);
 
 $config = $cache->obtain_config();
 
-$sql = 'SELECT s.style_id, c.theme_id, c.theme_dir, c.theme_name, c.theme_mtime, i.*, t.template_dir
+$sql = 'SELECT s.style_id, c.theme_id, c.theme_dir, c.theme_mtime, i.*, t.template_dir
 	FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
 	WHERE s.style_id = ' . $style_id . '
 		AND t.template_id = s.template_id
@@ -155,7 +155,6 @@ $replace = [
 	'{T_TEMPLATE_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_dir']) . '/template',
 	'{T_IMAGESET_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset',
 	'{T_IMAGESET_LANG_PATH}'    => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $user_image_lang,
-	'{T_STYLESHEET_NAME}'       => $theme['theme_name'],
 	'{S_USER_LANG}'             => $lang,
 ];
 

@@ -253,7 +253,7 @@ class phpbb_template
 		{
 			$recompile = true;
 		}
-		else if ($config['load_tplcompile'])
+		else if (!empty($config['cache_mtime_check']))
 		{
 			// No way around it: we need to check inheritance here
 			if ($user->theme['template_inherits_id'] && !file_exists($this->files[$handle]))

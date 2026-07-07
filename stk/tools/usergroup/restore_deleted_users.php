@@ -210,10 +210,7 @@ class restore_deleted_users
 		}
 
 		// Clear the cache
-		$umil->cache_purge([
-			['auth'],
-			['data'],
-		]);
+		$umil->cache_purge(['auth', 'data']);
 
 		trigger_error(((sizeof($non_conflicted) > 1) ? 'USERS_RESTORED_SUCCESSFULLY' : 'USER_RESTORED_SUCCESSFULLY'));
 	}

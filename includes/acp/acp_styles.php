@@ -159,7 +159,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('template', ['details', 'refresh', 'delete']);
+				$this->frontend('template', ['refresh', 'delete']);
 			break;
 
 			case 'theme':
@@ -188,7 +188,7 @@ class acp_styles
 
 							$cache->destroy('sql', STYLES_THEME_TABLE);
 
-							add_log('admin', 'LOG_THEME_REFRESHED', $theme_row['theme_name']);
+							add_log('admin', 'LOG_THEME_REFRESHED', $theme_row['theme_dir']);
 							trigger_error($user->lang['THEME_REFRESHED'] . adm_back_link($this->u_action));
 						}
 						else
@@ -203,7 +203,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('theme', ['details', 'refresh', 'delete']);
+				$this->frontend('theme', ['refresh', 'delete']);
 			break;
 
 			case 'imageset':
@@ -239,7 +239,7 @@ class acp_styles
 							}
 							$db->sql_freeresult($result);
 
-							add_log('admin', 'LOG_IMAGESET_REFRESHED', $imageset_row['imageset_name']);
+							add_log('admin', 'LOG_IMAGESET_REFRESHED', $imageset_row['imageset_dir']);
 							trigger_error($user->lang['IMAGESET_REFRESHED'] . adm_back_link($this->u_action));
 						}
 						else
@@ -254,7 +254,7 @@ class acp_styles
 					break;
 				}
 
-				$this->frontend('imageset', ['details', 'refresh', 'delete']);
+				$this->frontend('imageset', ['refresh', 'delete']);
 			break;
 		}
 	}
@@ -267,7 +267,8 @@ class acp_styles
 		global $user, $template, $db, $config;
 
 		$sql_from = '';
-		$sql_sort = 'LOWER(' . $mode . '_name)';
+		$name_field = ($mode == 'style') ? 'style_name' : $mode . '_dir';
+		$sql_sort = 'LOWER(' . $name_field . ')';
 		$style_count = [];
 
 		switch ($mode)
@@ -319,7 +320,7 @@ class acp_styles
 			'L_INSTALLED'       => $user->lang['INSTALLED_' . $l_prefix],
 			'L_UNINSTALLED'     => $user->lang['UNINSTALLED_' . $l_prefix],
 			'L_NO_UNINSTALLED'  => $user->lang['NO_UNINSTALLED_' . $l_prefix],
-			'L_CREATE'          => $user->lang['CREATE_' . $l_prefix],
+			'L_CREATE'          => ($mode == 'style') ? $user->lang['CREATE_STYLE'] : '',
 
 			'U_ACTION'          => $this->u_action,
 		]);
@@ -334,8 +335,8 @@ class acp_styles
 		$basis_options = '<option class="sep" value="">' . $user->lang['OPTIONAL_BASIS'] . '</option>';
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$installed[] = $row[$mode . '_name'];
-			$basis_options .= '<option value="' . $row[$mode . '_id'] . '">' . $row[$mode . '_name'] . '</option>';
+			$installed[] = $row[$name_field];
+			$basis_options .= '<option value="' . $row[$mode . '_id'] . '">' . $row[$name_field] . '</option>';
 
 			$stylevis = ($mode == 'style' && !$row['style_active']) ? 'activate' : 'deactivate';
 
@@ -362,7 +363,7 @@ class acp_styles
 				'S_DEFAULT_STYLE'       => ($mode == 'style' && $row['style_id'] == $config['default_style']),
 				'S_ACTIONS'             => implode(' | ', $s_actions),
 
-				'NAME'                  => $row[$mode . '_name'],
+				'NAME'                  => $row[$name_field],
 				'STYLE_COUNT'           => ($mode == 'style' && isset($style_count[$row['style_id']])) ? $style_count[$row['style_id']] : 0,
 
 				'S_INACTIVE'            => ($mode == 'style' && !$row['style_active']),
@@ -391,14 +392,15 @@ class acp_styles
 					{
 						$items = parse_cfg_file('', $cfg);
 						$name = (isset($items['name'])) ? trim($items['name']) : false;
+						$display_name = ($mode == 'style') ? $name : $file;
 
-						if ($name && !in_array($name, $installed))
+						if (($mode != 'style' || $name) && !in_array($display_name, $installed))
 						{
 							// The array key is used for sorting later on.
 							// $file is appended because $name doesn't have to be unique.
-							$new_ary[$name . $file] = [
+							$new_ary[$display_name . $file] = [
 								'path'      => $file,
-								'name'      => $name,
+								'name'      => $display_name,
 								'copyright' => $items['copyright'] ?? '',
 							];
 						}
@@ -452,17 +454,17 @@ class acp_styles
 
 			case 'template':
 				$sql_from = STYLES_TEMPLATE_TABLE;
-				$sql_select = 'template_id, template_name, template_dir';
+				$sql_select = 'template_id, template_dir';
 			break;
 
 			case 'theme':
 				$sql_from = STYLES_THEME_TABLE;
-				$sql_select = 'theme_id, theme_name, theme_dir';
+				$sql_select = 'theme_id, theme_dir';
 			break;
 
 			case 'imageset':
 				$sql_from = STYLES_IMAGESET_TABLE;
-				$sql_select = 'imageset_id, imageset_name, imageset_dir';
+				$sql_select = 'imageset_id, imageset_dir';
 			break;
 		}
 
@@ -472,7 +474,7 @@ class acp_styles
 			$msg = $user->lang[$l_type . '_DELETE_DEPENDENT'];
 			foreach ($conflicts as $id => $values)
 			{
-				$msg .= '<br />' . $values['template_name'];
+				$msg .= '<br />' . $values['template_dir'];
 			}
 
 			trigger_error($msg . adm_back_link($this->u_action), E_USER_WARNING);
@@ -533,7 +535,7 @@ class acp_styles
 
 			$cache->destroy('sql', STYLES_TABLE);
 
-			add_log('admin', 'LOG_' . $l_prefix . '_DELETE', $style_row[$mode . '_name']);
+			add_log('admin', 'LOG_' . $l_prefix . '_DELETE', $style_row[($mode == 'style') ? 'style_name' : $mode . '_dir']);
 			$message = ($mode != 'style') ? $l_prefix . '_DELETED_FS' : $l_prefix . '_DELETED';
 			trigger_error($user->lang[$message] . adm_back_link($this->u_action));
 		}
@@ -552,7 +554,7 @@ class acp_styles
 			'U_ACTION'      => $this->u_action . "&amp;action=delete&amp;id={$style_id}",
 			'U_BACK'        => $this->u_action,
 
-			'NAME'          => $style_row[$mode . '_name'],
+			'NAME'          => $style_row[($mode == 'style') ? 'style_name' : $mode . '_dir'],
 		]);
 
 		if ($mode == 'style')
@@ -657,7 +659,9 @@ class acp_styles
 			// If it is not in use, there must be another component
 			$is_only_component = false;
 
-			$sql = "SELECT {$component}_id, {$component}_name
+			$name_field = ($component == 'style') ? 'style_name' : $component . '_dir';
+
+			$sql = "SELECT {$component}_id, {$name_field}
 				FROM {$sql_from}
 				WHERE {$component}_id = {$component_id}";
 			$result = $db->sql_query($sql);
@@ -665,14 +669,16 @@ class acp_styles
 			$db->sql_freeresult($result);
 
 			$s_options .= '<option value="-1" selected="selected">' . $user->lang['DELETE_' . strtoupper($component)] . '</option>';
-			$s_options .= '<option value="0">' . sprintf($user->lang['KEEP_' . strtoupper($component)], $row[$component . '_name']) . '</option>';
+			$s_options .= '<option value="0">' . sprintf($user->lang['KEEP_' . strtoupper($component)], $row[$name_field]) . '</option>';
 		}
 		else
 		{
-			$sql = "SELECT {$component}_id, {$component}_name
+			$name_field = ($component == 'style') ? 'style_name' : $component . '_dir';
+
+			$sql = "SELECT {$component}_id, {$name_field}
 				FROM {$sql_from}
 				{$sql_where}
-				ORDER BY {$component}_name ASC";
+				ORDER BY {$name_field} ASC";
 			$result = $db->sql_query($sql);
 
 			$s_keep_option = $s_options = '';
@@ -681,11 +687,11 @@ class acp_styles
 				if ($row[$component . '_id'] != $component_id)
 				{
 					$is_only_component = false;
-					$s_options .= '<option value="' . $row[$component . '_id'] . '">' . sprintf($user->lang['REPLACE_WITH_OPTION'], $row[$component . '_name']) . '</option>';
+					$s_options .= '<option value="' . $row[$component . '_id'] . '">' . sprintf($user->lang['REPLACE_WITH_OPTION'], $row[$name_field]) . '</option>';
 				}
 				else if ($component != 'style')
 				{
-					$s_keep_option = '<option value="0" selected="selected">' . sprintf($user->lang['KEEP_' . strtoupper($component)], $row[$component . '_name']) . '</option>';
+					$s_keep_option = '<option value="0" selected="selected">' . sprintf($user->lang['KEEP_' . strtoupper($component)], $row[$name_field]) . '</option>';
 				}
 			}
 			$db->sql_freeresult($result);
@@ -747,7 +753,7 @@ class acp_styles
 		{
 			foreach ($conflicts as $temp_id => $conflict_data)
 			{
-				$component_in_use[] = $conflict_data['template_name'];
+				$component_in_use[] = $conflict_data['template_dir'];
 			}
 		}
 
@@ -762,43 +768,28 @@ class acp_styles
 		global $template, $db, $config, $user, $cache;
 
 		$update = isset($_POST['update']);
-		$l_type = strtoupper($mode);
+
+		if ($mode != 'style')
+		{
+			trigger_error($user->lang['NO_MODE'] . adm_back_link($this->u_action), E_USER_WARNING);
+		}
 
 		$error = [];
 		$element_ary = ['template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE];
 
-		switch ($mode)
-		{
-			case 'style':
-				$sql_from = STYLES_TABLE;
-			break;
-
-			case 'template':
-				$sql_from = STYLES_TEMPLATE_TABLE;
-			break;
-
-			case 'theme':
-				$sql_from = STYLES_THEME_TABLE;
-			break;
-
-			case 'imageset':
-				$sql_from = STYLES_IMAGESET_TABLE;
-			break;
-		}
-
-		$sql = "SELECT *
-			FROM {$sql_from}
-			WHERE {$mode}_id = {$style_id}";
+		$sql = 'SELECT *
+			FROM ' . STYLES_TABLE . "
+			WHERE style_id = {$style_id}";
 		$result = $db->sql_query($sql);
 		$style_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
 		if (!$style_row)
 		{
-			trigger_error($user->lang['NO_' . $l_type] . adm_back_link($this->u_action), E_USER_WARNING);
+			trigger_error($user->lang['NO_STYLE'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
 
-		$style_row['style_default'] = ($mode == 'style' && $config['default_style'] == $style_id) ? 1 : 0;
+		$style_row['style_default'] = ($config['default_style'] == $style_id) ? 1 : 0;
 
 		if ($update)
 		{
@@ -816,27 +807,27 @@ class acp_styles
 				$style_active = 1;
 			}
 
-			$sql = "SELECT {$mode}_id, {$mode}_name
-				FROM {$sql_from}
-				WHERE {$mode}_id <> {$style_id}
-				AND LOWER({$mode}_name) = '" . $db->sql_escape(strtolower($name)) . "'";
+			$sql = 'SELECT style_id, style_name
+				FROM ' . STYLES_TABLE . "
+				WHERE style_id <> {$style_id}
+					AND LOWER(style_name) = '" . $db->sql_escape(strtolower($name)) . "'";
 			$result = $db->sql_query($sql);
 			$conflict = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 
-			if ($mode == 'style' && (!$template_id || !$theme_id || !$imageset_id))
+			if (!$template_id || !$theme_id || !$imageset_id)
 			{
 				$error[] = $user->lang['STYLE_ERR_NO_IDS'];
 			}
 
-			if ($mode == 'style' && $style_row['style_active'] && !$style_active && $config['default_style'] == $style_id)
+			if ($style_row['style_active'] && !$style_active && $config['default_style'] == $style_id)
 			{
 				$error[] = $user->lang['DEACTIVATE_DEFAULT'];
 			}
 
 			if (!$name || $conflict)
 			{
-				$error[] = $user->lang[$l_type . '_ERR_STYLE_NAME'];
+				$error[] = $user->lang['STYLE_ERR_STYLE_NAME'];
 			}
 
 			if (!sizeof($error))
@@ -844,7 +835,7 @@ class acp_styles
 				// Check length settings
 				if (utf8_strlen($name) > 30)
 				{
-					$error[] = $user->lang[$l_type . '_ERR_NAME_LONG'];
+					$error[] = $user->lang['STYLE_ERR_NAME_LONG'];
 				}
 			}
 		}
@@ -856,7 +847,7 @@ class acp_styles
 				'theme_id'              => $theme_id,
 				'imageset_id'           => $imageset_id,
 				'style_active'          => $style_active,
-				$mode . '_name'         => $name,
+				'style_name'            => $name,
 			]);
 		}
 
@@ -864,115 +855,83 @@ class acp_styles
 		if ($update && !sizeof($error))
 		{
 			$sql_ary = [
-				$mode . '_name'         => $name,
+				'style_name'        => $name,
+				'template_id'       => (int) $template_id,
+				'theme_id'          => (int) $theme_id,
+				'imageset_id'       => (int) $imageset_id,
+				'style_active'      => (int) $style_active,
 			];
 
-			switch ($mode)
+			$sql = 'UPDATE ' . STYLES_TABLE . '
+				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+				WHERE style_id = {$style_id}";
+			$db->sql_query($sql);
+
+			// Making this the default style?
+			if ($style_default)
 			{
-				case 'style':
-
-					$sql_ary += [
-						'template_id'       => (int) $template_id,
-						'theme_id'          => (int) $theme_id,
-						'imageset_id'       => (int) $imageset_id,
-						'style_active'      => (int) $style_active,
-					];
-				break;
-
-				case 'imageset':
-				break;
-
-				case 'theme':
-				break;
-			}
-
-			if (sizeof($sql_ary))
-			{
-				$sql = "UPDATE {$sql_from}
-					SET " . $db->sql_build_array('UPDATE', $sql_ary) . "
-					WHERE {$mode}_id = {$style_id}";
-				$db->sql_query($sql);
-
-				// Making this the default style?
-				if ($mode == 'style' && $style_default)
-				{
-					set_config('default_style', $style_id);
-				}
+				set_config('default_style', $style_id);
 			}
 
 			$cache->destroy('sql', STYLES_TABLE);
 
-			add_log('admin', 'LOG_' . $l_type . '_EDIT_DETAILS', $name);
+			add_log('admin', 'LOG_STYLE_EDIT_DETAILS', $name);
 			if (sizeof($error))
 			{
 				trigger_error(implode('<br />', $error) . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 			else
 			{
-				trigger_error($user->lang[$l_type . '_DETAILS_UPDATED'] . adm_back_link($this->u_action));
+				trigger_error($user->lang['STYLE_DETAILS_UPDATED'] . adm_back_link($this->u_action));
 			}
 		}
 
-		if ($mode == 'style')
+		foreach ($element_ary as $element => $table)
 		{
-			foreach ($element_ary as $element => $table)
-			{
-				$sql = "SELECT {$element}_id, {$element}_name
-					FROM {$table}
-					ORDER BY {$element}_id ASC";
-				$result = $db->sql_query($sql);
+			$sql = "SELECT {$element}_id, {$element}_dir
+				FROM {$table}
+				ORDER BY {$element}_id ASC";
+			$result = $db->sql_query($sql);
 
-				${$element . '_options'} = '';
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$selected = ($row[$element . '_id'] == $style_row[$element . '_id']) ? ' selected="selected"' : '';
-					${$element . '_options'} .= '<option value="' . $row[$element . '_id'] . '"' . $selected . '>' . $row[$element . '_name'] . '</option>';
-				}
-				$db->sql_freeresult($result);
-			}
-		}
-
-		if ($mode == 'template')
-		{
-			$super = [];
-			if (isset($style_row[$mode . '_inherits_id']) && $style_row['template_inherits_id'])
+			${$element . '_options'} = '';
+			while ($row = $db->sql_fetchrow($result))
 			{
-				$super = $this->get_super($mode, $style_row['template_id']);
+				$selected = ($row[$element . '_id'] == $style_row[$element . '_id']) ? ' selected="selected"' : '';
+				${$element . '_options'} .= '<option value="' . $row[$element . '_id'] . '"' . $selected . '>' . $row[$element . '_dir'] . '</option>';
 			}
+			$db->sql_freeresult($result);
 		}
 
 		// Get optional copyright information from the related cfg file.
-		$cfg_file = ($mode == 'style')
-			? PHPBB_ROOT_PATH . "styles/{$style_row['style_name']}/style.cfg"
-			: PHPBB_ROOT_PATH . "styles/{$style_row[$mode . '_dir']}/{$mode}/{$mode}.cfg";
+		$cfg_file = PHPBB_ROOT_PATH . "styles/{$style_row['style_name']}/style.cfg";
 		$copyright = (file_exists($cfg_file) ? (parse_cfg_file($cfg_file)['copyright'] ?? '') : '');
 
-		$this->page_title = 'EDIT_DETAILS_' . $l_type;
+		$this->page_title = 'EDIT_DETAILS_STYLE';
 
 		$template->assign_vars([
 			'S_DETAILS'             => true,
 			'S_ERROR_MSG'           => (sizeof($error) > 0),
-			'S_STYLE'               => ($mode == 'style'),
-			'S_TEMPLATE'            => ($mode == 'template'),
-			'S_THEME'               => ($mode == 'theme'),
-			'S_IMAGESET'            => ($mode == 'imageset'),
+			'S_STYLE'               => true,
+			'S_TEMPLATE'            => false,
+			'S_THEME'               => false,
+			'S_IMAGESET'            => false,
 			'S_STYLE_ACTIVE'        => $style_row['style_active'] ?? 0,
 			'S_STYLE_DEFAULT'       => $style_row['style_default'] ?? 0,
-			'S_SUPERTEMPLATE'       => (isset($style_row[$mode . '_inherits_id']) && $style_row[$mode . '_inherits_id']) ? $super['template_name'] : 0,
+			'S_SUPERTEMPLATE'       => 0,
 
-			'S_TEMPLATE_OPTIONS'    => ($mode == 'style') ? $template_options : '',
-			'S_THEME_OPTIONS'       => ($mode == 'style') ? $theme_options : '',
-			'S_IMAGESET_OPTIONS'    => ($mode == 'style') ? $imageset_options : '',
+			'S_TEMPLATE_OPTIONS'    => $template_options,
+			'S_THEME_OPTIONS'       => $theme_options,
+			'S_IMAGESET_OPTIONS'    => $imageset_options,
 
 			'U_ACTION'      => $this->u_action . '&amp;action=details&amp;id=' . $style_id,
 			'U_BACK'        => $this->u_action,
 
 			'L_TITLE'               => $user->lang[$this->page_title],
 			'L_EXPLAIN'             => $user->lang[$this->page_title . '_EXPLAIN'],
-			'L_NAME'                => $user->lang[$l_type . '_NAME'],
+			'L_NAME'                => $user->lang['STYLE_NAME'],
 
 			'ERROR_MSG'     => (sizeof($error)) ? implode('<br />', $error) : '',
-			'NAME'          => $style_row[$mode . '_name'],
+			'NAME'          => $style_row['style_name'],
 			'COPYRIGHT'     => $copyright,
 		]);
 	}
@@ -1048,7 +1007,7 @@ class acp_styles
 		}
 		unset($file_ary);
 
-		add_log('admin', 'LOG_TEMPLATE_CACHE_CLEARED', $template_row['template_name'], $log_file_list);
+		add_log('admin', 'LOG_TEMPLATE_CACHE_CLEARED', $template_row['template_dir'], $log_file_list);
 	}
 
 	/**
@@ -1097,7 +1056,7 @@ class acp_styles
 
 			$style_row = [
 				$mode . '_id'           => 0,
-				$mode . '_name'         => '',
+				$mode . '_dir'          => $install_path,
 			];
 
 			switch ($mode)
@@ -1118,15 +1077,10 @@ class acp_styles
 					{
 						$style_row = array_merge($style_row, [
 							$element . '_id'            => 0,
-							$element . '_name'          => '',
+							$element . '_dir'           => ${'reqd_' . $element} ?: $install_path,
 						]);
 
-						$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . $reqd_template . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_name']);
-
-						if (!$style_row[$element . '_name'])
-						{
-							$style_row[$element . '_name'] = $reqd_template;
-						}
+						$this->test_installed($element, $error, (${'reqd_' . $element}) ? PHPBB_ROOT_PATH . 'styles/' . ${'reqd_' . $element} . '/' : $root_path, ${'reqd_' . $element}, $style_row[$element . '_id'], $style_row[$element . '_dir']);
 
 						// Merge other information to installcfg... if present
 						$cfg_file = PHPBB_ROOT_PATH . 'styles/' . $install_path . '/' . $element . '/' . $element . '.cfg';
@@ -1149,15 +1103,15 @@ class acp_styles
 				break;
 
 				case 'template':
-					$this->test_installed('template', $error, $root_path, false, $style_row['template_id'], $style_row['template_name']);
+					$this->test_installed('template', $error, $root_path, false, $style_row['template_id'], $style_row['template_dir']);
 				break;
 
 				case 'theme':
-					$this->test_installed('theme', $error, $root_path, false, $style_row['theme_id'], $style_row['theme_name']);
+					$this->test_installed('theme', $error, $root_path, false, $style_row['theme_id'], $style_row['theme_dir']);
 				break;
 
 				case 'imageset':
-					$this->test_installed('imageset', $error, $root_path, false, $style_row['imageset_id'], $style_row['imageset_name']);
+					$this->test_installed('imageset', $error, $root_path, false, $style_row['imageset_id'], $style_row['imageset_dir']);
 				break;
 			}
 		}
@@ -1183,7 +1137,7 @@ class acp_styles
 			}
 			else
 			{
-				$this->install_element($mode, $error, 'install', $root_path, $style_row[$mode . '_id'], $style_row[$mode . '_name'], $install_path);
+				$this->install_element($mode, $error, 'install', $root_path, $style_row[$mode . '_id'], $style_row[$mode . '_dir'], $install_path);
 			}
 
 			if (!sizeof($error))
@@ -1217,11 +1171,11 @@ class acp_styles
 			'L_NAME'                => $user->lang[$l_type . '_NAME'],
 
 			'ERROR_MSG'         => (sizeof($error)) ? implode('<br />', $error) : '',
-			'NAME'              => $style_row[$mode . '_name'],
+			'NAME'              => ($mode == 'style') ? $style_row['style_name'] : $style_row[$mode . '_dir'],
 			'COPYRIGHT'         => $copyright,
-			'TEMPLATE_NAME'     => ($mode == 'style') ? $style_row['template_name'] : '',
-			'THEME_NAME'        => ($mode == 'style') ? $style_row['theme_name'] : '',
-			'IMAGESET_NAME'     => ($mode == 'style') ? $style_row['imageset_name'] : '',
+			'TEMPLATE_NAME'     => ($mode == 'style') ? $style_row['template_dir'] : '',
+			'THEME_NAME'        => ($mode == 'style') ? $style_row['theme_dir'] : '',
+			'IMAGESET_NAME'     => ($mode == 'style') ? $style_row['imageset_dir'] : '',
 		]);
 	}
 
@@ -1235,6 +1189,11 @@ class acp_styles
 		$l_type = strtoupper($mode);
 		$element_ary = ['template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE];
 		$error = [];
+
+		if ($mode != 'style')
+		{
+			trigger_error($user->lang['NO_MODE'] . adm_back_link($this->u_action), E_USER_WARNING);
+		}
 
 		$style_row = [
 			$mode . '_name'         => utf8_normalize_nfc(request_var('name', '', true)),
@@ -1327,7 +1286,7 @@ class acp_styles
 		{
 			foreach ($element_ary as $element => $table)
 			{
-				$sql = "SELECT {$element}_id, {$element}_name
+				$sql = "SELECT {$element}_id, {$element}_dir
 					FROM {$table}
 					ORDER BY {$element}_id ASC";
 				$result = $db->sql_query($sql);
@@ -1336,7 +1295,7 @@ class acp_styles
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$selected = ($row[$element . '_id'] == $style_row[$element . '_id']) ? ' selected="selected"' : '';
-					${$element . '_options'} .= '<option value="' . $row[$element . '_id'] . '"' . $selected . '>' . $row[$element . '_name'] . '</option>';
+					${$element . '_options'} .= '<option value="' . $row[$element . '_id'] . '"' . $selected . '>' . $row[$element . '_dir'] . '</option>';
 				}
 				$db->sql_freeresult($result);
 			}
@@ -1375,7 +1334,7 @@ class acp_styles
 	/**
 	* Is this element installed? If not, grab its cfg details
 	*/
-	function test_installed($element, &$error, $root_path, $reqd_name, &$id, &$name)
+	function test_installed($element, &$error, $root_path, $reqd_name, &$id, &$dir)
 	{
 		global $db, $user;
 
@@ -1396,16 +1355,16 @@ class acp_styles
 
 		$l_element = strtoupper($element);
 
-		$chk_name = ($reqd_name !== false) ? $reqd_name : $name;
+		$chk_dir = ($reqd_name !== false) ? $reqd_name : $dir;
 
-		$sql = "SELECT {$element}_id, {$element}_name
+		$sql = "SELECT {$element}_id, {$element}_dir
 			FROM {$sql_from}
-			WHERE {$element}_name = '" . $db->sql_escape($chk_name) . "'";
+			WHERE {$element}_dir = '" . $db->sql_escape($chk_dir) . "'";
 		$result = $db->sql_query($sql);
 
 		if ($row = $db->sql_fetchrow($result))
 		{
-			$name = $row[$element . '_name'];
+			$dir = $row[$element . '_dir'];
 			$id = $row[$element . '_id'];
 		}
 		else
@@ -1418,7 +1377,7 @@ class acp_styles
 
 			$cfg = parse_cfg_file("{$root_path}{$element}/{$element}.cfg", $cfg);
 
-			$name = $cfg['name'];
+			$dir = $chk_dir;
 			$id = 0;
 
 			unset($cfg);
@@ -1470,7 +1429,7 @@ class acp_styles
 			// and do the install if necessary
 			if (!$style_row[$element . '_id'])
 			{
-				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_name'], (${$element . '_dir'}) ?: $path);
+				$this->install_element($element, $error, $action, (${$element . '_root_path'}) ?: $root_path, $style_row[$element . '_id'], $style_row[$element . '_dir'], (${$element . '_dir'}) ?: $path);
 			}
 		}
 
@@ -1518,7 +1477,7 @@ class acp_styles
 	/**
 	* Install/add an element, doing various checks as we go
 	*/
-	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path)
+	function install_element($mode, &$error, $action, $root_path, &$id, $dir, $path)
 	{
 		global $db, $user;
 
@@ -1547,21 +1506,21 @@ class acp_styles
 			$error[] = sprintf($user->lang[$l_type . '_ERR_VERSION'], PHPBBEX_VERSION, $cfg_data['version'] ?? '');
 		}
 
-		if (!$name)
+		if (!$dir)
 		{
 			$error[] = $user->lang[$l_type . '_ERR_STYLE_NAME'];
 		}
 
 		// Check length settings
-		if (utf8_strlen($name) > 30)
+		if (utf8_strlen($dir) > 100)
 		{
 			$error[] = $user->lang[$l_type . '_ERR_NAME_LONG'];
 		}
 
-		// Check if the name already exist
+		// Check if the directory already exists
 		$sql = "SELECT {$mode}_id
 			FROM {$sql_from}
-			WHERE {$mode}_name = '" . $db->sql_escape($name) . "'";
+			WHERE {$mode}_dir = '" . $db->sql_escape($dir) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -1589,9 +1548,9 @@ class acp_styles
 				$select_bf = '';
 			}
 
-			$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_dir{$select_bf}
+			$sql = "SELECT {$mode}_id, {$mode}_dir{$select_bf}
 				FROM {$sql_from}
-				WHERE {$mode}_name = '" . $db->sql_escape($cfg_data['inherit_from']) . "'
+				WHERE {$mode}_dir = '" . $db->sql_escape($cfg_data['inherit_from']) . "'
 					AND {$mode}_inherits_id = 0";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -1620,7 +1579,6 @@ class acp_styles
 		}
 
 		$sql_ary = [
-			$mode . '_name'         => $name,
 			$mode . '_dir'          => $path,
 		];
 
@@ -1669,7 +1627,7 @@ class acp_styles
 
 		$db->sql_transaction('commit');
 
-		add_log('admin', 'LOG_' . $l_type . '_ADD_FS', $name);
+		add_log('admin', 'LOG_' . $l_type . '_ADD_FS', $dir);
 	}
 
 	/**
@@ -1678,7 +1636,7 @@ class acp_styles
 	* @access public
 	* @param string $mode The element type to check - only template is supported
 	* @param int $id The template id
-	* @returns false if no component inherits, array with name, path and id for each subtemplate otherwise
+	* @returns false if no component inherits, array with dir and id for each subtemplate otherwise
 	*/
 	function check_inheritance($mode, $id)
 	{
@@ -1701,7 +1659,7 @@ class acp_styles
 			break;
 		}
 
-		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_dir
+		$sql = "SELECT {$mode}_id, {$mode}_dir
 			FROM {$sql_from}
 			WHERE {$mode}_inherits_id = " . (int) $id;
 		$result = $db->sql_query($sql);
@@ -1712,7 +1670,6 @@ class acp_styles
 
 			$names[$row["{$mode}_id"]] = [
 				"{$mode}_id" => $row["{$mode}_id"],
-				"{$mode}_name" => $row["{$mode}_name"],
 				"{$mode}_dir" => $row["{$mode}_dir"],
 			];
 		}
@@ -1734,7 +1691,7 @@ class acp_styles
 	* @access public
 	* @param string $mode The element type to check - only template is supported
 	* @param int $id The template id
-	* @returns false if the component does not inherit, array with name, path and id otherwise
+	* @returns false if the component does not inherit, array with dir and id otherwise
 	*/
 	function get_super($mode, $id)
 	{
@@ -1773,7 +1730,7 @@ class acp_styles
 
 		$super_id = $row["{$mode}_inherits_id"];
 
-		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_dir
+		$sql = "SELECT {$mode}_id, {$mode}_dir
 			FROM {$sql_from}
 			WHERE {$mode}_id = " . (int) $super_id;
 

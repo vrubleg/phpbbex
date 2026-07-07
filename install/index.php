@@ -152,7 +152,7 @@ $template = new phpbb_template();
 
 // Set some standard variables we want to force
 $config = [
-	'load_tplcompile'   => '1'
+	'cache_mtime_check' => '1'
 ];
 
 $template->set_custom_template('../adm/style', 'admin');

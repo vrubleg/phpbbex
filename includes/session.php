@@ -1435,7 +1435,7 @@ class phpbb_user extends phpbb_session
 			$style = $style ?: ((!$config['override_user_style']) ? $this->data['user_style'] : $config['default_style']);
 		}
 
-		$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_dir, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id, i.imageset_name
+		$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_dir, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 			WHERE s.style_id = {$style}
 				AND t.template_id = s.template_id
@@ -1455,7 +1455,7 @@ class phpbb_user extends phpbb_session
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
-			$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, c.theme_dir, c.theme_name, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id, i.imageset_name
+			$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, c.theme_dir, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id
 				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 				WHERE s.style_id = {$style}
 					AND t.template_id = s.template_id
