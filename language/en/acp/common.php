@@ -555,7 +555,6 @@ $lang = array_merge($lang, [
 
 	'LOG_IMAGESET_ADD_FS'           => '<strong>Add new imageset on filesystem</strong><br />» %s',
 	'LOG_IMAGESET_DELETE'           => '<strong>Deleted imageset</strong><br />» %s',
-	'LOG_IMAGESET_EDIT_DETAILS'     => '<strong>Edited imageset details</strong><br />» %s',
 	'LOG_IMAGESET_REFRESHED'        => '<strong>Refreshed imageset</strong><br />» %s',
 
 	'LOG_INACTIVE_ACTIVATE' => '<strong>Activated inactive users</strong><br />» %s',
@@ -642,11 +641,9 @@ $lang = array_merge($lang, [
 	'LOG_TEMPLATE_ADD_FS'           => '<strong>Add new template set on filesystem</strong><br />» %s',
 	'LOG_TEMPLATE_CACHE_CLEARED'    => '<strong>Deleted cached versions of template files in template set <em>%1$s</em></strong><br />» %2$s',
 	'LOG_TEMPLATE_DELETE'           => '<strong>Deleted template set</strong><br />» %s',
-	'LOG_TEMPLATE_EDIT_DETAILS'     => '<strong>Edited template details</strong><br />» %s',
 
 	'LOG_THEME_ADD_FS'          => '<strong>Add new theme on filesystem</strong><br />» %s',
 	'LOG_THEME_DELETE'          => '<strong>Theme deleted</strong><br />» %s',
-	'LOG_THEME_EDIT_DETAILS'    => '<strong>Edited theme details</strong><br />» %s',
 	'LOG_THEME_REFRESHED'       => '<strong>Refreshed theme stylesheet version</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'   => '<strong>Updated Database from version %1$s to version %2$s</strong>',

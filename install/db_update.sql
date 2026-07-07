@@ -119,7 +119,7 @@ SELECT (@new_bbcode_id:=GREATEST(MAX(bbcode_id)+1, 17)) FROM phpbb_bbcodes;
 UPDATE phpbb_bbcodes SET bbcode_id=@new_bbcode_id WHERE bbcode_id = 16;
 
 -- Update template bitfield
-UPDATE phpbb_styles_template SET bbcode_bitfield = 'lNmA' WHERE template_name = 'prosilver';
+UPDATE phpbb_styles_template SET bbcode_bitfield = 'lNmA' WHERE template_dir = 'prosilver';
 
 -- Post rates
 CREATE TABLE phpbb_post_rates (

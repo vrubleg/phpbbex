@@ -670,30 +670,27 @@ CREATE TABLE phpbb_styles (
 
 CREATE TABLE phpbb_styles_template (
 	template_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	template_name varchar(100) DEFAULT '' NOT NULL,
 	template_dir varchar(100) DEFAULT '' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT 'kNg=' NOT NULL,
 	template_inherits_id int(4) UNSIGNED DEFAULT '0' NOT NULL,
 	template_inherit_path varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (template_id),
-	UNIQUE tmplte_nm (template_name)
+	UNIQUE template_dir (template_dir)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_styles_theme (
 	theme_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	theme_name varchar(100) DEFAULT '' NOT NULL,
 	theme_dir varchar(100) DEFAULT '' NOT NULL,
 	theme_mtime int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (theme_id),
-	UNIQUE theme_name (theme_name)
+	UNIQUE theme_dir (theme_dir)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_styles_imageset (
 	imageset_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	imageset_name varchar(100) DEFAULT '' NOT NULL,
 	imageset_dir varchar(100) DEFAULT '' NOT NULL,
 	PRIMARY KEY (imageset_id),
-	UNIQUE imgset_nm (imageset_name)
+	UNIQUE imageset_dir (imageset_dir)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_topics (

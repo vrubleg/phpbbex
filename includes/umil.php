@@ -518,7 +518,7 @@ class phpbb_umil
 						return $this->umil_end('FAIL');
 					}
 
-					$this->umil_start('IMAGESET_CACHE_PURGE', $imageset_row['imageset_name']);
+					$this->umil_start('IMAGESET_CACHE_PURGE', $imageset_row['imageset_dir']);
 
 					$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_cfg");
 
@@ -568,7 +568,7 @@ class phpbb_umil
 						return $this->umil_end('FAIL');
 					}
 
-					$this->umil_start('TEMPLATE_CACHE_PURGE', $template_row['template_name']);
+					$this->umil_start('TEMPLATE_CACHE_PURGE', $template_row['template_dir']);
 
 					// Purge the forum's cache as well.
 					$cache->purge();
@@ -608,7 +608,7 @@ class phpbb_umil
 						return $this->umil_end('FAIL');
 					}
 
-					$this->umil_start('THEME_CACHE_PURGE', $theme_row['theme_name']);
+					$this->umil_start('THEME_CACHE_PURGE', $theme_row['theme_dir']);
 
 					$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
 						SET theme_mtime = ' . time() . "
