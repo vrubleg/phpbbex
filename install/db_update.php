@@ -551,6 +551,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'allow_autologin',
 		'form_token_sid_guests',
 		'form_token_lifetime',
+		'load_tplcompile',
 	]);
 
 	// New defaults.
@@ -559,6 +560,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('max_autologin_time', '400');
 	set_config('session_length', '43200');
 	set_config('referer_validation', '1');
+	set_config('cache_mtime_check', '1');
 
 	// Remove obsolete modules.
 
