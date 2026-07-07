@@ -601,8 +601,12 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '500' WHERE config_name = 'max_sig_chars' AND config_value > 500");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_sig = LEFT(user_sig, 500) WHERE CHAR_LENGTH(user_sig) > 500");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_sig varchar(500) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_occ user_occupation varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_interests = LEFT(user_interests, 1000) WHERE CHAR_LENGTH(user_interests) > 1000");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_interests user_about varchar(1000) DEFAULT '' NOT NULL");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_about = LEFT(CONCAT(user_occ, IF(user_about = '', '', '\n'), user_about), 1000), user_occ = '' WHERE CHAR_LENGTH(user_occ) > 50");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_occ user_occupation varchar(50) DEFAULT '' NOT NULL");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_about = LEFT(CONCAT(user_from, IF(user_about = '', '', '\n'), user_about), 1000), user_from = '' WHERE CHAR_LENGTH(user_from) > 50");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_from varchar(50) DEFAULT '' NOT NULL");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_jabber = LEFT(user_jabber, 100) WHERE CHAR_LENGTH(user_jabber) > 100");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_skype = LEFT(user_skype, 32) WHERE CHAR_LENGTH(user_skype) > 32");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_telegram = LEFT(user_telegram, 32) WHERE CHAR_LENGTH(user_telegram) > 32");

@@ -597,7 +597,7 @@ switch ($mode)
 			'TOPICS_PCT'        => sprintf($user->lang['TOPIC_PCT'], $percentage_topics),
 
 			'OCCUPATION'    => (!empty($member['user_occupation'])) ? censor_text($member['user_occupation']) : '',
-			'ABOUT'         => (!empty($member['user_about'])) ? censor_text($member['user_about']) : '',
+			'ABOUT'         => (!empty($member['user_about'])) ? bbcode_nl2br(censor_text($member['user_about'])) : '',
 			'SIGNATURE'     => $member['user_sig'],
 			'POSTS_IN_QUEUE'=> $member['posts_in_queue'],
 			'TOPICS_IN_QUEUE'=> $member['topics_in_queue'],

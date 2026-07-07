@@ -1412,8 +1412,8 @@ class acp_users
 						'website'       => [
 							['string', true, 11, 100],
 							['match', true, '#^http[s]?://([\pLa-z0-9\-]+\.)+[\pLa-z]{2,10}#iu']],
-						'location'      => ['string', true, 2, 100],
-						'occupation'    => ['string', true, 2, 100],
+						'location'      => ['string', true, 2, 50],
+						'occupation'    => ['string', true, 2, 50],
 						'about'         => ['string', true, 2, 1000],
 						'bday_day'      => ['num', true, 1, 31],
 						'bday_month'    => ['num', true, 1, 12],
