@@ -148,8 +148,8 @@ class ucp_main
 					'TOPICS_PCT'            => sprintf($user->lang['TOPIC_PCT'], $percentage_topics),
 					'U_SEARCH_USER_TOPICS'  => ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', 'author_id=' . $user->data['user_id'] . '&amp;sr=topics&amp;sf=firstpost') : '',
 
-					'OCCUPATION'    => $row['user_occ'] ?? '',
-					'INTERESTS'     => $row['user_interests'] ?? '',
+					'OCCUPATION'    => $row['user_occupation'] ?? '',
+					'ABOUT'         => $row['user_about'] ?? '',
 
 //                  'S_GROUP_OPTIONS'   => $group_options,
 

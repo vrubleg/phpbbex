@@ -307,8 +307,7 @@ class phpbb_captcha_qa
 					'COLUMNS' => [
 						'question_id'   => ['UINT', null, 'auto_increment'],
 						'strict'        => ['BOOL', 0],
-						'lang_id'       => ['UINT', 0],
-						'lang_iso'      => ['VCHAR:30', ''],
+						'lang_iso'      => ['VCHAR:5', ''],
 						'question_text' => ['TEXT_UNI', ''],
 					],
 					'PRIMARY_KEY'       => 'question_id',
@@ -329,14 +328,13 @@ class phpbb_captcha_qa
 					'COLUMNS' => [
 						'session_id'    => ['CHAR:32', ''],
 						'confirm_id'    => ['CHAR:32', ''],
-						'lang_iso'      => ['VCHAR:30', ''],
 						'question_id'   => ['UINT', 0],
 						'attempts'      => ['UINT', 0],
 						'confirm_type'  => ['USINT', 0],
 					],
 					'KEYS'              => [
 						'session_id'            => ['INDEX', 'session_id'],
-						'lookup'                => ['INDEX', ['confirm_id', 'session_id', 'lang_iso']],
+						'lookup'                => ['INDEX', ['session_id', 'confirm_type']],
 					],
 					'PRIMARY_KEY'       => 'confirm_id',
 				],
@@ -413,7 +411,6 @@ class phpbb_captcha_qa
 		$sql = 'INSERT INTO ' . CAPTCHA_QA_CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', [
 			'confirm_id'    => (string) $this->confirm_id,
 			'session_id'    => (string) $user->session_id,
-			'lang_iso'      => (string) $this->question_lang,
 			'confirm_type'  => (int) $this->type,
 			'question_id'   => (int) $this->question,
 		]);
@@ -475,12 +472,12 @@ class phpbb_captcha_qa
 	{
 		global $db, $user;
 
-		$sql = 'SELECT confirm_id
-			FROM ' . CAPTCHA_QA_CONFIRM_TABLE . "
-			WHERE
-				session_id = '" . $db->sql_escape($user->session_id) . "'
-				AND lang_iso = '" . $db->sql_escape($this->question_lang) . "'
-				AND confirm_type = " . $this->type;
+		$sql = 'SELECT c.confirm_id
+			FROM ' . CAPTCHA_QA_CONFIRM_TABLE . ' c, ' . CAPTCHA_QUESTIONS_TABLE . " q
+			WHERE c.question_id = q.question_id
+				AND c.session_id = '" . $db->sql_escape($user->session_id) . "'
+				AND q.lang_iso = '" . $db->sql_escape($this->question_lang) . "'
+				AND c.confirm_type = " . $this->type;
 		$result = $db->sql_query_limit($sql, 1);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -505,12 +502,12 @@ class phpbb_captcha_qa
 			return false;
 		}
 
-		$sql = 'SELECT con.question_id, attempts, question_text, strict
-			FROM ' . CAPTCHA_QA_CONFIRM_TABLE . ' con, ' . CAPTCHA_QUESTIONS_TABLE . " qes
-			WHERE con.question_id = qes.question_id
+		$sql = 'SELECT c.question_id, attempts, question_text, strict
+			FROM ' . CAPTCHA_QA_CONFIRM_TABLE . ' c, ' . CAPTCHA_QUESTIONS_TABLE . " q
+			WHERE c.question_id = q.question_id
 				AND confirm_id = '" . $db->sql_escape($this->confirm_id) . "'
 				AND session_id = '" . $db->sql_escape($user->session_id) . "'
-				AND qes.lang_iso = '" . $db->sql_escape($this->question_lang) . "'
+				AND q.lang_iso = '" . $db->sql_escape($this->question_lang) . "'
 				AND confirm_type = " . $this->type;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -853,9 +850,7 @@ class phpbb_captcha_qa
 		$sql = 'DELETE FROM ' . CAPTCHA_ANSWERS_TABLE . " WHERE question_id = {$question_id}";
 		$db->sql_query($sql);
 
-		$langs = $this->get_languages();
 		$question_ary = $data;
-		$question_ary['lang_id'] = $langs[$question_ary['lang_iso']]['id'];
 		unset($question_ary['answers']);
 
 		$sql = 'UPDATE ' . CAPTCHA_QUESTIONS_TABLE . '
@@ -876,10 +871,7 @@ class phpbb_captcha_qa
 	{
 		global $db, $cache;
 
-		$langs = $this->get_languages();
 		$question_ary = $data;
-
-		$question_ary['lang_id'] = $langs[$data['lang_iso']]['id'];
 		unset($question_ary['answers']);
 
 		$sql = 'INSERT INTO ' . CAPTCHA_QUESTIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $question_ary);

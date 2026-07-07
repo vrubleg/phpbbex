@@ -274,7 +274,7 @@ class phpbb_session
 					$u_ip = implode('.', array_slice(explode('.', $this->ip), 0, $config['ip_check']));
 				}
 
-				$s_browser = ($config['browser_check']) ? strtolower($this->data['session_browser']) : '';
+				$s_browser = ($config['browser_check']) ? strtolower($this->data['session_browser_ua']) : '';
 				$u_browser = ($config['browser_check']) ? strtolower($this->browser_ua) : '';
 
 				$s_forwarded_for = ($config['forwarded_for_check']) ? substr($this->data['session_forwarded_for'], 0, 254) : '';
@@ -565,7 +565,7 @@ class phpbb_session
 				$u_ip = implode('.', array_slice(explode('.', $this->ip), 0, $config['ip_check']));
 			}
 
-			$s_browser = ($config['browser_check']) ? strtolower($this->data['session_browser']) : '';
+			$s_browser = ($config['browser_check']) ? strtolower($this->data['session_browser_ua']) : '';
 			$u_browser = ($config['browser_check']) ? strtolower($this->browser_ua) : '';
 
 			$s_forwarded_for = ($config['forwarded_for_check']) ? substr($this->data['session_forwarded_for'], 0, 254) : '';
@@ -614,7 +614,7 @@ class phpbb_session
 			'session_start'         => (int) $this->time_now,
 			'session_last_visit'    => (int) $this->data['session_last_visit'],
 			'session_time'          => (int) $this->time_now,
-			'session_browser'       => (string) $this->browser_ua,
+			'session_browser_ua'    => (string) $this->browser_ua,
 			'session_forwarded_for' => (string) $this->forwarded_for,
 			'session_ip'            => (string) $this->ip,
 			'session_autologin'     => ($session_autologin) ? 1 : 0,
@@ -662,7 +662,7 @@ class phpbb_session
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . "
-				SET user_browser = '" . $db->sql_escape($sql_ary['session_browser']) . "',
+				SET user_browser_ua = '" . $db->sql_escape($sql_ary['session_browser_ua']) . "',
 					user_ip = '" . $db->sql_escape($sql_ary['session_ip']) . "'
 				WHERE user_id = " . (int) $this->data['user_id'];
 			$db->sql_query($sql);

@@ -335,7 +335,7 @@ class acp_board
 						'allow_sig_links'       => ['lang' => 'ALLOW_SIG_LINKS',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 
 						'legend2'               => 'GENERAL_SETTINGS',
-						'max_sig_chars'         => ['lang' => 'MAX_SIG_LENGTH',     'validate' => 'int:0',  'type' => 'text:5:4', 'explain' => true],
+						'max_sig_chars'         => ['lang' => 'MAX_SIG_LENGTH',     'validate' => 'int:0:500',  'type' => 'text:5:4', 'explain' => true],
 						'max_sig_lines'         => ['lang' => 'MAX_SIG_LINES',          'validate' => 'int:0',  'type' => 'text:5:4', 'explain' => true],
 						'max_sig_urls'          => ['lang' => 'MAX_SIG_URLS',           'validate' => 'int:0',  'type' => 'text:5:4', 'explain' => true],
 						'min_sig_font_size'     => ['lang' => 'MIN_SIG_FONT_SIZE',      'validate' => 'int:0',  'type' => 'text:5:4', 'explain' => true, 'append' => ' %'],

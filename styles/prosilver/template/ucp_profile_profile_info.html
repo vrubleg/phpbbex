@@ -18,17 +18,17 @@
 	</dl>
 	<dl>
 		<dt><label for="jabber">{L_JABBER}:</label></dt>
-		<dd><input type="text" name="jabber" id="jabber" maxlength="255" value="{JABBER}" class="inputbox" /></dd>
+		<dd><input type="text" name="jabber" id="jabber" maxlength="100" value="{JABBER}" class="inputbox" /></dd>
 	</dl>
 	<!-- IF SKYPE -->
 	<dl>
 		<dt><label for="skype">{L_SKYPE}:</label></dt>
-		<dd><input type="text" name="skype" id="skype" maxlength="255" value="{SKYPE}" class="inputbox" /></dd>
+		<dd><input type="text" name="skype" id="skype" maxlength="32" value="{SKYPE}" class="inputbox" /></dd>
 	</dl>
 	<!-- ENDIF -->
 	<dl>
 		<dt><label for="telegram">{L_TELEGRAM}:</label></dt>
-		<dd><input type="text" name="telegram" id="telegram" maxlength="255" value="{TELEGRAM}" class="inputbox" /></dd>
+		<dd><input type="text" name="telegram" id="telegram" maxlength="32" value="{TELEGRAM}" class="inputbox" /></dd>
 	</dl>
 	<!-- IF ICQ -->
 	<dl>
@@ -38,7 +38,7 @@
 	<!-- ENDIF -->
 	<dl>
 		<dt><label for="website">{L_WEBSITE}:</label></dt>
-		<dd><input type="text" name="website" id="website" maxlength="255" value="{WEBSITE}" class="inputbox" /></dd>
+		<dd><input type="text" name="website" id="website" maxlength="100" value="{WEBSITE}" class="inputbox" /></dd>
 	</dl>
 	<dl>
 		<dt><label for="location">{L_LOCATION}:</label></dt>
@@ -46,11 +46,11 @@
 	</dl>
 	<dl>
 		<dt><label for="occupation">{L_OCCUPATION}:</label></dt>
-		<dd><textarea name="occupation" id="occupation" class="inputbox" rows="3" cols="30">{OCCUPATION}</textarea></dd>
+		<dd><input type="text" name="occupation" id="occupation" maxlength="100" value="{OCCUPATION}" class="inputbox" /></dd>
 	</dl>
 	<dl>
-		<dt><label for="interests">{L_INTERESTS}:</label></dt>
-		<dd><textarea name="interests" id="interests" class="inputbox" rows="3" cols="30">{INTERESTS}</textarea></dd>
+		<dt><label for="about">{L_ABOUT}:</label></dt>
+		<dd><textarea name="about" id="about" class="inputbox" rows="3" cols="30" maxlength="1000">{ABOUT}</textarea></dd>
 	</dl>
 	<!-- IF S_BIRTHDAYS_ENABLED -->
 		<dl>

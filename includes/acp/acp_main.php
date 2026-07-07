@@ -396,7 +396,7 @@ class acp_main
 								'session_start'         => (int) $user->data['session_start'],
 								'session_last_visit'    => (int) $user->data['session_last_visit'],
 								'session_time'          => (int) $user->time_now,
-								'session_browser'       => (string) $user->browser_ua,
+								'session_browser_ua'    => (string) $user->browser_ua,
 								'session_forwarded_for' => (string) $user->forwarded_for,
 								'session_ip'            => (string) $user->ip,
 								'session_autologin'     => (int) $user->data['session_autologin'],
@@ -463,7 +463,7 @@ class acp_main
 		{
 			while (($file = readdir($avatar_dir)) !== false)
 			{
-				if ($file[0] != '.' && $file != 'CVS' && strpos($file, 'index.') === false)
+				if ($file[0] != '.' && strpos($file, 'index.') === false)
 				{
 					$avatar_dir_size += filesize(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/' . $file);
 				}

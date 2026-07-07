@@ -1215,7 +1215,7 @@ class install_install extends module
 		{
 			$path = PHPBB_ROOT_PATH . 'language/' . $file;
 
-			if ($file == '.' || $file == '..' || is_link($path) || is_file($path) || $file == 'CVS')
+			if ($file == '.' || $file == '..' || strlen($file) > 5 || is_link($path) || is_file($path))
 			{
 				continue;
 			}

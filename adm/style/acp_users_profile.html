@@ -9,17 +9,17 @@
 	</dl>
 	<dl>
 		<dt><label for="jabber">{L_JABBER}:</label></dt>
-		<dd><input type="text" id="jabber" name="jabber" value="{JABBER}" /></dd>
+		<dd><input type="text" id="jabber" name="jabber" maxlength="100" value="{JABBER}" /></dd>
 	</dl>
 	<!-- IF SKYPE -->
 	<dl>
 		<dt><label for="skype">{L_SKYPE}:</label></dt>
-		<dd><input type="text" name="skype" id="skype" value="{SKYPE}" /></dd>
+		<dd><input type="text" name="skype" id="skype" maxlength="32" value="{SKYPE}" /></dd>
 	</dl>
 	<!-- ENDIF -->
 	<dl>
 		<dt><label for="telegram">{L_TELEGRAM}:</label></dt>
-		<dd><input type="text" name="telegram" id="telegram" value="{TELEGRAM}" /></dd>
+		<dd><input type="text" name="telegram" id="telegram" maxlength="32" value="{TELEGRAM}" /></dd>
 	</dl>
 	<!-- IF ICQ -->
 	<dl>
@@ -29,7 +29,7 @@
 	<!-- ENDIF -->
 	<dl>
 		<dt><label for="website">{L_WEBSITE}:</label></dt>
-		<dd><input type="text" id="website" name="website" value="{WEBSITE}" /></dd>
+		<dd><input type="text" id="website" name="website" maxlength="100" value="{WEBSITE}" /></dd>
 	</dl>
 	<dl>
 		<dt><label for="location">{L_LOCATION}:</label></dt>
@@ -37,11 +37,11 @@
 	</dl>
 	<dl>
 		<dt><label for="occupation">{L_OCCUPATION}:</label></dt>
-		<dd><textarea id="occupation" name="occupation" rows="3" cols="30">{OCCUPATION}</textarea></dd>
+		<dd><input type="text" id="occupation" name="occupation" maxlength="100" value="{OCCUPATION}" /></dd>
 	</dl>
 	<dl>
-		<dt><label for="interests">{L_INTERESTS}:</label></dt>
-		<dd><textarea id="interests" name="interests" rows="3" cols="30">{INTERESTS}</textarea></dd>
+		<dt><label for="about">{L_ABOUT}:</label></dt>
+		<dd><textarea id="about" name="about" rows="3" cols="30" maxlength="1000">{ABOUT}</textarea></dd>
 	</dl>
 	<dl>
 		<dt><label for="birthday">{L_BIRTHDAY}:</label><br /><span>{L_BIRTHDAY_EXPLAIN}</span></dt>

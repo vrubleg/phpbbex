@@ -83,7 +83,7 @@ class ucp_register
 			'new_password'      => request_var('new_password', '', true),
 			'password_confirm'  => request_var('password_confirm', '', true),
 			'email'             => strtolower(request_var('email', '')),
-			'lang'              => basename(request_var('lang', $user->lang_name)),
+			'lang'              => request_var('lang', $user->lang_name),
 			'tz'                => request_var('tz', (float) $timezone),
 		];
 

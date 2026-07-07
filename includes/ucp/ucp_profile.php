@@ -259,8 +259,8 @@ class ucp_profile
 					'telegram'      => utf8_normalize_nfc(request_var('telegram', $user->data['user_telegram'], true)),
 					'website'       => utf8_normalize_nfc(request_var('website', $user->data['user_website'], true)),
 					'location'      => utf8_normalize_nfc(request_var('location', $user->data['user_from'], true)),
-					'occupation'    => utf8_normalize_nfc(request_var('occupation', $user->data['user_occ'], true)),
-					'interests'     => utf8_normalize_nfc(request_var('interests', $user->data['user_interests'], true)),
+					'occupation'    => utf8_normalize_nfc(request_var('occupation', $user->data['user_occupation'], true)),
+					'about'         => utf8_normalize_nfc(request_var('about', $user->data['user_about'], true)),
 					'gender'        => request_var('gender', $user->data['user_gender']),
 				];
 
@@ -298,20 +298,20 @@ class ucp_profile
 							['string', true, 3, 15],
 							['match', true, '#^[0-9]+$#i']],
 						'jabber'        => [
-							['string', true, 5, 255],
+							['string', true, 5, 100],
 							['jabber']],
 						'skype'         => [
 							['string', true, 5, 32],
 							['match', true, '#^[a-z][-_.a-z0-9]{4,31}$#i']],
 						'telegram'      => [
-							['string', true, 5, 32],
+							['string', true, 4, 32],
 							['match', true, '#^[a-z][_a-z0-9]{4,31}$#i']],
 						'website'       => [
-							['string', true, 11, 255],
+							['string', true, 11, 100],
 							['match', true, '#^http[s]?://([\pLa-z0-9\-]+\.)+[\pLa-z]{2,10}#iu']],
 						'location'      => ['string', true, 2, 100],
-						'occupation'    => ['string', true, 2, 500],
-						'interests'     => ['string', true, 2, 500],
+						'occupation'    => ['string', true, 2, 100],
+						'about'         => ['string', true, 2, 1000],
 						'gender'        => ['num', true, 0, 2],
 					];
 
@@ -359,8 +359,8 @@ class ucp_profile
 							'user_telegram' => $data['telegram'],
 							'user_website'  => $data['website'],
 							'user_from'     => $data['location'],
-							'user_occ'      => $data['occupation'],
-							'user_interests'=> $data['interests'],
+							'user_occupation'   => $data['occupation'],
+							'user_about' => $data['about'],
 							'user_notify_type'  => $data['notify'],
 							'user_gender'   => $data['gender'],
 						];
@@ -433,7 +433,7 @@ class ucp_profile
 					'WEBSITE'   => $data['website'],
 					'LOCATION'  => $data['location'],
 					'OCCUPATION'=> $data['occupation'],
-					'INTERESTS' => $data['interests'],
+					'ABOUT'     => $data['about'],
 
 					'S_GENDER_X'    => $data['gender'] == GENDER_X,
 					'S_GENDER_M'    => $data['gender'] == GENDER_M,

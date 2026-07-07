@@ -163,7 +163,7 @@ class acp_language
 				$lang_iso = request_var('iso', '');
 				$lang_iso = basename($lang_iso);
 
-				if (!$lang_iso || !file_exists(PHPBB_ROOT_PATH . "language/{$lang_iso}/iso.txt"))
+				if (!$lang_iso || strlen($lang_iso) > 5 || !file_exists(PHPBB_ROOT_PATH . "language/{$lang_iso}/iso.txt"))
 				{
 					trigger_error($user->lang['LANGUAGE_PACK_NOT_EXIST'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
@@ -304,7 +304,7 @@ class acp_language
 		{
 			while (($file = readdir($dp)) !== false)
 			{
-				if ($file[0] == '.' || !is_dir(PHPBB_ROOT_PATH . 'language/' . $file))
+				if ($file[0] == '.' || strlen($file) > 5 || !is_dir(PHPBB_ROOT_PATH . 'language/' . $file))
 				{
 					continue;
 				}
