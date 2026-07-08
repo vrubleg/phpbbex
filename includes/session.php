@@ -1776,15 +1776,18 @@ class phpbb_user extends phpbb_session
 	}
 
 	/**
-	* Format user date
+	* Format a date in user's time zone. Date format is in php's date() notation with a few extensions.
+	* |...| is used to indicate optional relative date part. For example, "|Y-m-d|, H:i" is formatted to "Today, H:i".
+	* {...} is used to indicate optional time part.
 	*
-	* @param int $gmepoch unix timestamp
-	* @param string $format date format in date() notation. | used to indicate relative dates, for example |d m Y|, h:i is translated to Today, h:i.
-	* @param bool $forcedate force non-relative date format.
+	* @param  int     $gmepoch      Unix timestamp.
+	* @param  string  $format       Date format.
+	* @param  bool    $no_relative  Force non-relative date format.
+	* @param  bool    $no_time      Don't display precise time.
 	*
-	* @return mixed translated date
+	* @return string                Formatted date.
 	*/
-	function format_date($gmepoch, $format = false, $forcedate = false, $notime = false)
+	function format_date($gmepoch, $format = false, $no_relative = false, $no_time = false)
 	{
 		global $config;
 
@@ -1794,7 +1797,7 @@ class phpbb_user extends phpbb_session
 
 		if ($this->data['is_bot'])
 		{
-			$forcedate = true;
+			$no_relative = true;
 		}
 
 		$format = (!$format) ? $config['default_dateformat'] : $format;
@@ -1808,7 +1811,7 @@ class phpbb_user extends phpbb_session
 				'notime'    => str_replace(['{', '}'], '', preg_replace('#{.*?}#i', '', $format)),
 			];
 		}
-		$format = $format_cache[$format][$notime ? 'notime' : 'full'];
+		$format = $format_cache[$format][$no_time ? 'notime' : 'full'];
 
 		if (!isset($date_cache[$format]))
 		{
@@ -1833,7 +1836,7 @@ class phpbb_user extends phpbb_session
 
 		// Show date <= 1 hour ago as 'xx min ago' but not greater than 60 seconds in the future
 		// A small tolerence is given for times in the future but in the same minute are displayed as '< than a minute ago'
-		if ($delta <= 3600 && $delta > -60 && ($delta >= -5 || floor($now / 60) == floor($gmepoch / 60)) && $date_cache[$format]['is_short'] !== false && !$forcedate && isset($this->lang['datetime']['AGO']))
+		if ($delta <= 3600 && $delta > -60 && ($delta >= -5 || floor($now / 60) == floor($gmepoch / 60)) && $date_cache[$format]['is_short'] !== false && !$no_relative)
 		{
 			return $this->lang(['datetime', 'AGO'], max(0, (int) floor($delta / 60)));
 		}
@@ -1844,7 +1847,7 @@ class phpbb_user extends phpbb_session
 			$midnight = gmmktime(0, 0, 0, $m, $d, $y) - $zone_offset;
 		}
 
-		if ($date_cache[$format]['is_short'] !== false && !$forcedate && !($gmepoch < $midnight - 86400 || $gmepoch > $midnight + 172800))
+		if ($date_cache[$format]['is_short'] !== false && !$no_relative && !($gmepoch < $midnight - 86400 || $gmepoch > $midnight + 172800))
 		{
 			$day = false;
 
