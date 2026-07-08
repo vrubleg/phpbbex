@@ -81,17 +81,6 @@
 		</dd>
 	</dl>
 	<!-- ENDIF -->
-	<!-- IF S_DATEFORMAT_OPTIONS -->
-	<dl>
-		<dt><label for="dateformat">{L_BOARD_DATE_FORMAT}:</label><br /><span>{L_BOARD_DATE_FORMAT_EXPLAIN}</span></dt>
-		<dd>
-			<select name="dateoptions" id="dateoptions" onchange="if(this.value=='custom'){dE('custom_date',1);}else{dE('custom_date',-1);} if (this.value == 'custom') { document.getElementById('dateformat').value = default_dateformat; } else { document.getElementById('dateformat').value = this.value; }">
-				{S_DATEFORMAT_OPTIONS}
-			</select>
-		</dd>
-		<dd id="custom_date" style="display:none;"><input type="text" name="dateformat" id="dateformat" value="{DATE_FORMAT}" maxlength="30" class="inputbox narrow" style="margin-top: 3px;" /></dd>
-	</dl>
-	<!-- ENDIF -->
 	</fieldset>
 
 	</div>
@@ -103,41 +92,5 @@
 	{S_FORM_TOKEN}
 </fieldset>
 </form>
-
-<!-- IF S_DATEFORMAT_OPTIONS -->
-<script>
-	var date_format = '{A_DATE_FORMAT}';
-	var default_dateformat = '{A_DEFAULT_DATEFORMAT}';
-
-	function customDates()
-	{
-		var e = document.getElementById('dateoptions');
-
-		e.selectedIndex = e.length - 1;
-
-		// Loop and match date_format in menu
-		for (var i = 0; i < e.length; i++)
-		{
-			if (e.options[i].value == date_format)
-			{
-				e.selectedIndex = i;
-				break;
-			}
-		}
-
-		// Show/hide custom field
-		if (e.selectedIndex == e.length - 1)
-		{
-			dE('custom_date',1);
-		}
-		else
-		{
-			dE('custom_date',-1);
-		}
-	}
-
-	customDates();
-</script>
-<!-- ENDIF -->
 
 <!-- INCLUDE ucp_footer.html -->

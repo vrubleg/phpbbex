@@ -63,7 +63,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_day
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '90');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_online_bots', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4');
@@ -73,7 +72,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums',
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('warning_post_default', '');
@@ -92,11 +90,8 @@ REPLACE INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT
 REPLACE INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 8, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option IN ('u_canplus', 'u_canminus');
 REPLACE INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 9, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option IN ('u_canplus', 'u_canminus');
 
--- Reset options for all users (new dateformat, enable quick reply, etc)
-UPDATE phpbb_users SET user_options = 233343, user_dateformat = '|d.m.Y|{, H:i}';
-
--- Other options for robots
-UPDATE phpbb_users SET user_dateformat = 'd.m.Y{, H:i}' WHERE group_id = 6;
+-- Reset options for all users (enable quick reply, etc)
+UPDATE phpbb_users SET user_options = 233343;
 
 -- Show all forums in active topics
 UPDATE phpbb_forums SET forum_flags = forum_flags|16;

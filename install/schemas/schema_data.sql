@@ -152,8 +152,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_db_lastread',
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_db_track', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_online', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_online_bots', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_online_guests', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_online_time', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_onlinetrack', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_search', '1');
@@ -202,7 +200,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('new_member_group_d
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_style', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PASS_TYPE_ANY');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.9');
@@ -305,8 +302,6 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('num_fi
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('num_posts', '1', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('num_topics', '1', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('num_users', '1', 1);
-INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('record_online_date', '0', 1);
-INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('record_online_users', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('search_indexing_state', '', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('search_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('session_last_gc', '0', 1);

@@ -3219,19 +3219,15 @@ function obtain_users_online()
 
 	$online_users = [
 		'online_users'          => [],
-		'online_bots'           => [],
 		'total_online'          => 0,
 		'visible_online'        => 0,
 		'hidden_online'         => 0,
 		'users_online'          => 0,
 		'guests_online'         => 0,
-		'bots_online'           => 0,
 	];
 
-	if ($config['load_online_guests'])
-	{
-		$online_users['guests_online'] = obtain_guest_count();
-	}
+	$online_users['guests_online'] = obtain_guest_count();
+
 	// a little discrete magic to cache this for 30 seconds
 	$time = (time() - (intval($config['load_online_time']) * 60));
 
@@ -3258,31 +3254,8 @@ function obtain_users_online()
 	}
 	$db->sql_freeresult($result);
 
-	if ($config['load_online_bots'])
-	{
-		$sql = 'SELECT s.session_bot_id AS bot_id, b.bot_name
-			FROM ' . SESSIONS_TABLE . ' s
-			LEFT JOIN ' . BOTS_TABLE . ' b ON s.session_bot_id = b.bot_id
-			WHERE s.session_time >= ' . ($time - ((int) ($time % 30))) . '
-				AND s.session_bot_id <> 0
-			GROUP BY s.session_bot_id
-			ORDER BY b.bot_name';
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$online_users['online_bots'][$row['bot_id']] = [
-				'user_id'       => ANONYMOUS,
-				'username'      => $row['bot_name'],
-				'user_colour'   => '',
-			];
-			$online_users['bots_online']++;
-		}
-		$db->sql_freeresult($result);
-	}
-
 	$online_users['users_online'] = $online_users['visible_online'] + $online_users['hidden_online'];
-	$online_users['total_online'] = $online_users['bots_online'] + $online_users['guests_online'] + $online_users['visible_online'] + $online_users['hidden_online'];
+	$online_users['total_online'] = $online_users['guests_online'] + $online_users['visible_online'] + $online_users['hidden_online'];
 
 	return $online_users;
 }
@@ -3294,9 +3267,9 @@ function obtain_users_online()
 */
 function obtain_users_online_string($online_users)
 {
-	global $config, $db, $user, $auth;
+	global $config, $user, $auth;
 
-	$online_userlist = $online_botlist = '';
+	$online_userlist = '';
 
 	foreach ($online_users['online_users'] as $row)
 	{
@@ -3318,35 +3291,14 @@ function obtain_users_online_string($online_users)
 		$online_userlist = $user->lang['G_REGISTERED'] . ': ' . $online_userlist;
 	}
 
-	foreach ($online_users['online_bots'] as $row)
-	{
-		$user_online_link = '<span class="botname">' . $row['username'] . '</span>';
-		$online_botlist .= ($online_botlist != '' ? ', ' : '') . $user_online_link;
-	}
-
-	if ($online_botlist)
-	{
-		$online_botlist = $user->lang['G_BOTS'] . ': ' . $online_botlist;
-	}
-
 	$l_online_users = $user->lang('ONLINE_TOTAL_STR', $online_users['total_online']);
 	$l_online_users .= $user->lang('ONLINE_REG_USERS', $online_users['visible_online'] + $online_users['hidden_online']);
 
-	if ($config['load_online_guests'])
-	{
-		$l_online_users .= ($config['load_online_bots'] ? ', ' : ' ' . $user->lang['AND'] . ' ');
-		$l_online_users .= $user->lang('ONLINE_GUEST_USERS', $online_users['guests_online']);
-	}
-
-	if ($config['load_online_bots'])
-	{
-		$l_online_users .= ' ' . $user->lang['AND'] . ' ';
-		$l_online_users .= $user->lang('ONLINE_BOT_USERS', $online_users['bots_online']);
-	}
+	$l_online_users .= ' ' . $user->lang['AND'] . ' ';
+	$l_online_users .= $user->lang('ONLINE_GUEST_USERS', $online_users['guests_online']);
 
 	return [
 		'online_userlist'   => $online_userlist,
-		'online_botlist'    => $online_botlist,
 		'l_online_users'    => $l_online_users,
 	];
 }
@@ -3492,7 +3444,7 @@ function phpbb_http_login($param)
 /**
 * Generate page header
 */
-function page_header($page_title = '', $display_online_list = true, $item_id = 0, $item = 'forum')
+function page_header($page_title = '', $display_online_list = true)
 {
 	global $db, $config, $template, $_EXTRA_URL, $user, $auth;
 
@@ -3542,7 +3494,7 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 	$s_last_visit = ($user->data['user_id'] != ANONYMOUS) ? $user->format_date($user->data['session_last_visit']) : '';
 
 	// Get users online list ... if required
-	$l_online_users = $online_userlist = $online_botlist = $l_online_record = $l_online_time = '';
+	$l_online_users = $online_userlist = $l_online_time = '';
 
 	if ($config['load_online'] && $config['load_online_time'] && $display_online_list)
 	{
@@ -3554,16 +3506,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 
 		$l_online_users = $user_online_strings['l_online_users'];
 		$online_userlist = $user_online_strings['online_userlist'];
-		$online_botlist = $user_online_strings['online_botlist'];
-		$total_online_users = $online_users['total_online'];
-
-		if ($total_online_users > $config['record_online_users'])
-		{
-			set_config('record_online_users', $total_online_users, true);
-			set_config('record_online_date', time(), true);
-		}
-
-		$l_online_record = sprintf($user->lang['RECORD_ONLINE_USERS'], $config['record_online_users'], $user->format_date($config['record_online_date'], false, true));
 
 		$l_online_time = ($config['load_online_time'] == 1) ? 'VIEW_ONLINE_TIME' : 'VIEW_ONLINE_TIMES';
 		$l_online_time = sprintf($user->lang[$l_online_time], $config['load_online_time']);
@@ -3682,8 +3624,6 @@ function page_header($page_title = '', $display_online_list = true, $item_id = 0
 		'CURRENT_TIME'                  => sprintf($user->lang['CURRENT_TIME'], $user->format_date(time(), false, true)),
 		'TOTAL_USERS_ONLINE'            => $l_online_users,
 		'LOGGED_IN_USER_LIST'           => $online_userlist,
-		'LOGGED_IN_BOT_LIST'            => $online_botlist,
-		'RECORD_USERS'                  => $l_online_record,
 		'PRIVATE_MESSAGE_INFO'          => $l_privmsgs_text,
 		'PRIVATE_MESSAGE_INFO_UNREAD'   => $l_privmsgs_text_unread,
 

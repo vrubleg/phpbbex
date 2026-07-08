@@ -1861,7 +1861,7 @@ if (empty($_REQUEST['t']) && !empty($topic_id))
 }
 
 // Output the page
-page_header($topic_data['topic_title'] . ' - ' . $topic_data['forum_name'], true, $forum_id);
+page_header($topic_data['topic_title'] . ' - ' . $topic_data['forum_name']);
 
 $template->set_filenames(['body' => ($view == 'print') ? 'viewtopic_print.html' : 'viewtopic_body.html']);
 

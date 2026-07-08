@@ -1524,7 +1524,6 @@ class acp_users
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				$data = [
-					'dateformat'        => utf8_normalize_nfc(request_var('dateformat', $user_row['user_dateformat'], true)),
 					'lang'              => basename(request_var('lang', $user_row['user_lang'])),
 					'tz'                => request_var('tz', (float) $user_row['user_timezone']),
 					'style'             => request_var('style', $user_row['user_style']),
@@ -1553,12 +1552,10 @@ class acp_users
 				{
 					$data['style']      = ($config['override_user_style']) ? $config['default_style'] : $data['style'];
 					$data['lang']       = ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
-					$data['dateformat'] = ($config['override_user_dateformat']) ? $config['default_dateformat'] : $data['dateformat'];
 					$data['tz']         = ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
 					$data['dst']        = ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
 					$error = validate_data($data, [
-						'dateformat'    => ['string', false, 1, 30],
 						'lang'          => ['match', false, '#^[a-z_\-]{2,}$#i'],
 						'tz'            => ['num', false, -14, 14],
 					]);
@@ -1591,7 +1588,6 @@ class acp_users
 							'user_notify_pm'        => $data['notifypm'],
 
 							'user_dst'              => $data['dst'],
-							'user_dateformat'       => $data['dateformat'],
 							'user_lang'             => $data['lang'],
 							'user_timezone'         => $data['tz'],
 							'user_style'            => $data['style'],
@@ -1636,24 +1632,6 @@ class acp_users
 					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
 
-				$dateformat_options = '';
-				foreach ($user->lang['dateformats'] as $format => $null)
-				{
-					$dateformat_options .= '<option value="' . $format . '"' . (($format == $data['dateformat']) ? ' selected="selected"' : '') . '>';
-					$dateformat_options .= $user->format_date(time(), $format, false) . ((strpos($format, '|') !== false) ? $user->lang['VARIANT_DATE_SEPARATOR'] . $user->format_date(time(), $format, true) : '');
-					$dateformat_options .= '</option>';
-				}
-
-				$s_custom = false;
-
-				$dateformat_options .= '<option value="custom"';
-				if (!isset($user->lang['dateformats'][$data['dateformat']]))
-				{
-					$dateformat_options .= ' selected="selected"';
-					$s_custom = true;
-				}
-				$dateformat_options .= '>' . $user->lang['CUSTOM_DATEFORMAT'] . '</option>';
-
 				$template->assign_vars([
 					'S_PREFS'           => true,
 					'S_JABBER_DISABLED' => !($config['jab_enable'] && $user_row['user_jabber'] && @extension_loaded('xml')),
@@ -1677,12 +1655,6 @@ class acp_users
 					'VIEW_SIGS'         => $data['view_sigs'],
 					'VIEW_AVATARS'      => $data['view_avatars'],
 					'VIEW_WORDCENSOR'   => $data['view_wordcensor'],
-
-					'DATE_FORMAT'           => $data['dateformat'],
-					'S_DATEFORMAT_OPTIONS'  => ($config['override_user_dateformat']) ? '' : $dateformat_options,
-					'S_CUSTOM_DATEFORMAT'   => $s_custom,
-					'DEFAULT_DATEFORMAT'    => $config['default_dateformat'],
-					'A_DEFAULT_DATEFORMAT'  => addslashes($config['default_dateformat']),
 
 					'S_LANG_OPTIONS'    => ($config['override_user_lang']) ? '' : language_select($data['lang']),
 					'S_STYLE_OPTIONS'   => ($config['override_user_style']) ? '' : style_select($data['style']),

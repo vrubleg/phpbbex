@@ -20,8 +20,8 @@ $session_id = request_var('s', '');
 $start      = request_var('start', 0);
 $sort_key   = request_var('sk', 'b');
 $sort_dir   = request_var('sd', 'd');
-$show_guests= ($config['load_online_guests'] || $auth->acl_get('u_viewonline')) ? request_var('sg', 0) : 0;
-$show_bots  = ($config['load_online_bots'] || $auth->acl_get('u_viewonline')) ? request_var('sb', 1) : 0;
+$show_guests= $auth->acl_get('u_viewonline') ? request_var('sg', 0) : 0;
+$show_bots  = $auth->acl_get('u_viewonline') ? request_var('sb', 0) : 0;
 
 // Can this user view profiles/memberlist?
 if (!$auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel'))
@@ -163,7 +163,7 @@ while ($row = $db->sql_fetchrow($result))
 			continue;
 		}
 	}
-	else if ($show_guests && $row['user_id'] == ANONYMOUS && !$row['session_bot_id'])
+	else if ($show_guests && $row['user_id'] == ANONYMOUS)
 	{
 		if ($row['session_time'] == $row['session_start'])
 		{
@@ -198,7 +198,7 @@ while ($row = $db->sql_fetchrow($result))
 		'USERNAME_COLOUR'   => $row['user_colour'],
 		'USERNAME_FULL'     => $username_full,
 		'LASTUPDATE'        => $user->format_date($row['session_time']),
-		'USER_IP'           => ($auth->acl_get('a_')) ? (($mode == 'lookup' && $session_id == $row['session_id']) ? gethostbyaddr($row['session_ip']) : $row['session_ip']) : '',
+		'USER_IP'           => ($auth->acl_get('a_user')) ? (($mode == 'lookup' && $session_id == $row['session_id']) ? gethostbyaddr($row['session_ip']) : $row['session_ip']) : '',
 		'USER_BROWSER'      => ($auth->acl_get('a_user')) ? $row['session_browser_ua'] : '',
 
 		'U_USER_PROFILE'    => ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
@@ -263,11 +263,11 @@ $template->assign_vars([
 
 	'U_SWITCH_GUEST_DISPLAY'    => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) !$show_guests) . '&amp;sb=' . ((int) $show_bots)),
 	'L_SWITCH_GUEST_DISPLAY'    => $show_guests ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
-	'S_SWITCH_GUEST_DISPLAY'    => $config['load_online_guests'] || $auth->acl_get('u_viewonline'),
+	'S_SWITCH_GUEST_DISPLAY'    => $auth->acl_get('u_viewonline'),
 
 	'U_SWITCH_BOTS_DISPLAY'     => append_sid(PHPBB_ROOT_PATH . 'viewonline.php', 'sg=' . ((int) $show_guests) . '&amp;sb=' . ((int) !$show_bots)),
 	'L_SWITCH_BOTS_DISPLAY'     => $show_bots ? $user->lang['HIDE'] : $user->lang['DISPLAY'],
-	'S_SWITCH_BOTS_DISPLAY'     => $config['load_online_bots'] || $auth->acl_get('u_viewonline'),
+	'S_SWITCH_BOTS_DISPLAY'     => $auth->acl_get('u_viewonline'),
 ]);
 
 // We do not need to load the who is online box here. ;)

@@ -65,8 +65,6 @@ $lang = array_merge($lang, [
 	'BACK_TO_LOGIN'             => 'Back to login screen',
 	'BIRTHDAY'                  => 'Birthday',
 	'BIRTHDAY_EXPLAIN'          => 'Setting a year will display age in your profile.',
-	'BOARD_DATE_FORMAT'         => 'My date format',
-	'BOARD_DATE_FORMAT_EXPLAIN' => 'The syntax used is identical to the PHP <a href="http://www.php.net/date">date()</a> function.',
 	'BOARD_DST'                 => 'Summer Time/<abbr title="Daylight Saving Time">DST</abbr> is in effect',
 	'BOARD_LANGUAGE'            => 'My language',
 	'BOARD_STYLE'               => 'My board style',

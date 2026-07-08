@@ -82,9 +82,6 @@ $lang = array_merge($lang, [
 	'BOARD_DISABLED'        => 'This board is currently disabled.',
 	'BOARD_RULES'           => 'Board rules',
 	'BOARD_UNAVAILABLE'     => 'Sorry but the board is temporarily unavailable, please try again in a few minutes.',
-	'BROWSING_FORUM'        => 'Users browsing this forum: %1$s',
-	'BROWSING_FORUM_GUEST'  => 'Users browsing this forum: %1$s and %2$d guest',
-	'BROWSING_FORUM_GUESTS' => 'Users browsing this forum: %1$s and %2$d guests',
 	'BYTES'                 => 'Bytes',
 
 	'CANCEL'                => 'Cancel',
@@ -421,7 +418,6 @@ $lang = array_merge($lang, [
 	'RANK'                      => 'Rank',
 	'READ_PROFILE'              => 'Profile',
 	'REASON'                    => 'Reason',
-	'RECORD_ONLINE_USERS'       => 'Most users ever online was <strong>%1$s</strong> on %2$s',
 	'REDIRECT'                  => 'Redirect',
 	'REDIRECTS'                 => 'Total redirects',
 	'REGISTER'                  => 'Register',
@@ -525,7 +521,6 @@ $lang = array_merge($lang, [
 	'TOO_LONG'                      => 'The value you entered is too long.',
 
 	'TOO_LONG_CONFIRM_CODE'         => 'The confirm code you entered is too long.',
-	'TOO_LONG_DATEFORMAT'           => 'The date format you entered is too long.',
 	'TOO_LONG_ICQ'                  => 'The ICQ number you entered is too long.',
 	'TOO_LONG_ABOUT'                => 'The about text you entered is too long.',
 	'TOO_LONG_JABBER'               => 'The Jabber account name you entered is too long.',
@@ -543,7 +538,6 @@ $lang = array_merge($lang, [
 	'TOO_SHORT'                     => 'The value you entered is too short.',
 
 	'TOO_SHORT_CONFIRM_CODE'        => 'The confirm code you entered is too short.',
-	'TOO_SHORT_DATEFORMAT'          => 'The date format you entered is too short.',
 	'TOO_SHORT_ICQ'                 => 'The ICQ number you entered is too short.',
 	'TOO_SHORT_ABOUT'               => 'The about text you entered is too short.',
 	'TOO_SHORT_JABBER'              => 'The Jabber account name you entered is too short.',

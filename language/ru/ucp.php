@@ -65,8 +65,6 @@ $lang = array_merge($lang, [
 	'BACK_TO_LOGIN'             => 'Вернуться на страницу входа',
 	'BIRTHDAY'                  => 'День рождения',
 	'BIRTHDAY_EXPLAIN'          => 'Если указан год, в вашем профиле будет отображаться возраст.',
-	'BOARD_DATE_FORMAT'         => 'Формат даты',
-	'BOARD_DATE_FORMAT_EXPLAIN' => 'Синтаксис идентичен функции <a href="http://www.php.net/date">date()</a> языка PHP.',
 	'BOARD_DST'                 => 'Сейчас действует летнее время',
 	'BOARD_LANGUAGE'            => 'Язык',
 	'BOARD_STYLE'               => 'Стиль форума',

@@ -552,6 +552,11 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'form_token_sid_guests',
 		'form_token_lifetime',
 		'load_tplcompile',
+		'record_online_date',
+		'record_online_users',
+		'load_online_guests',
+		'load_online_bots',
+		'override_user_dateformat',
 	]);
 
 	// New defaults.
@@ -596,6 +601,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_dir');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_type');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_dir');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_dateformat');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topics_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
