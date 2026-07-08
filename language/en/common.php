@@ -521,7 +521,6 @@ $lang = array_merge($lang, [
 	'TOO_LONG'                      => 'The value you entered is too long.',
 
 	'TOO_LONG_CONFIRM_CODE'         => 'The confirm code you entered is too long.',
-	'TOO_LONG_DATEFORMAT'           => 'The date format you entered is too long.',
 	'TOO_LONG_ICQ'                  => 'The ICQ number you entered is too long.',
 	'TOO_LONG_ABOUT'                => 'The about text you entered is too long.',
 	'TOO_LONG_JABBER'               => 'The Jabber account name you entered is too long.',
@@ -539,7 +538,6 @@ $lang = array_merge($lang, [
 	'TOO_SHORT'                     => 'The value you entered is too short.',
 
 	'TOO_SHORT_CONFIRM_CODE'        => 'The confirm code you entered is too short.',
-	'TOO_SHORT_DATEFORMAT'          => 'The date format you entered is too short.',
 	'TOO_SHORT_ICQ'                 => 'The ICQ number you entered is too short.',
 	'TOO_SHORT_ABOUT'               => 'The about text you entered is too short.',
 	'TOO_SHORT_JABBER'              => 'The Jabber account name you entered is too short.',

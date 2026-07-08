@@ -692,12 +692,6 @@ select option.disabled {
 	color: #fff;
 }
 
-/* Special case inputs */
-select#board_timezone,
-select#full_folder_action {
-	width: 95%;
-}
-
 /* Definition list layout for forms
 	Other general def. list properties defined in prosilver_main.css
 ---------------------------------------- */

@@ -173,7 +173,6 @@ function user_add($user_row, $cp_data = false)
 	$additional_vars = [
 		'user_permissions'  => '',
 		'user_timezone'     => $config['board_timezone'],
-		'user_dateformat'   => $config['default_dateformat'],
 		'user_lang'         => $config['default_lang'],
 		'user_style'        => (int) $config['default_style'],
 		'user_actkey'       => '',

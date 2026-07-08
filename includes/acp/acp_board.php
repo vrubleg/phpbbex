@@ -56,7 +56,6 @@ class acp_board
 						'override_user_lang'    => ['lang' => 'OVERRIDE_LANGUAGE',  'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'auto_guest_lang'       => ['lang' => 'AUTO_GUEST_LANG',    'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'default_dateformat'    => ['lang' => 'DEFAULT_DATE_FORMAT',    'validate' => 'string', 'type' => 'custom', 'method' => 'dateformat_select', 'explain' => true],
-						'override_user_dateformat'  => ['lang' => 'OVERRIDE_DATEFORMAT',    'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'board_timezone'        => ['lang' => 'SYSTEM_TIMEZONE',        'validate' => 'string', 'type' => 'select', 'function' => 'tz_select', 'params' => ['{CONFIG_VALUE}', 1], 'explain' => true],
 						'board_dst'             => ['lang' => 'SYSTEM_DST',         'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'override_user_timezone'    => ['lang' => 'OVERRIDE_TIMEZONE',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],

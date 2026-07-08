@@ -34,7 +34,6 @@ class ucp_prefs
 				add_form_key('ucp_prefs_personal');
 				$data = [
 					'notifymethod'  => request_var('notifymethod', $user->data['user_notify_type']),
-					'dateformat'    => request_var('dateformat', $user->data['user_dateformat'], true),
 					'lang'          => basename(request_var('lang', $user->data['user_lang'])),
 					'style'         => request_var('style', (int) $user->data['user_style']),
 					'tz'            => request_var('tz', (float) $user->data['user_timezone']),
@@ -64,12 +63,10 @@ class ucp_prefs
 					}
 
 					$data['lang']       = ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
-					$data['dateformat'] = ($config['override_user_dateformat']) ? $config['default_dateformat'] : $data['dateformat'];
 					$data['tz']         = ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
 					$data['dst']        = ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
 					$error = validate_data($data, [
-						'dateformat'    => ['string', false, 1, 30],
 						'lang'          => ['language_iso_name'],
 						'tz'            => ['num', false, -14, 14],
 					]);
@@ -92,7 +89,6 @@ class ucp_prefs
 							'user_options'          => $user->data['user_options'],
 
 							'user_dst'              => $data['dst'],
-							'user_dateformat'       => $data['dateformat'],
 							'user_lang'             => $data['lang'],
 							'user_timezone'         => $data['tz'],
 							'user_style'            => $data['style'],
@@ -111,25 +107,6 @@ class ucp_prefs
 					// Replace "error" strings with their real, localised form
 					$error = preg_replace_callback('#^([A-Z_]+)$#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[1]; }, $error);
 				}
-
-				$dateformat_options = '';
-
-				foreach ($user->lang['dateformats'] as $format => $null)
-				{
-					$dateformat_options .= '<option value="' . $format . '"' . (($format == $data['dateformat']) ? ' selected="selected"' : '') . '>';
-					$dateformat_options .= $user->format_date(time(), $format, false) . ((strpos($format, '|') !== false) ? $user->lang['VARIANT_DATE_SEPARATOR'] . $user->format_date(time(), $format, true) : '');
-					$dateformat_options .= '</option>';
-				}
-
-				$s_custom = false;
-
-				$dateformat_options .= '<option value="custom"';
-				if (!isset($user->lang['dateformats'][$data['dateformat']]))
-				{
-					$dateformat_options .= ' selected="selected"';
-					$s_custom = true;
-				}
-				$dateformat_options .= '>' . $user->lang['CUSTOM_DATEFORMAT'] . '</option>';
 
 				// check if there are any user-selectable languages
 				$sql = 'SELECT COUNT(lang_id) as languages_count
@@ -172,13 +149,6 @@ class ucp_prefs
 					'S_NOTIFY_PM'       => $data['notifypm'],
 					'S_POPUP_PM'        => $data['popuppm'],
 					'S_DST'             => $data['dst'],
-
-					'DATE_FORMAT'           => $data['dateformat'],
-					'A_DATE_FORMAT'         => addslashes($data['dateformat']),
-					'S_DATEFORMAT_OPTIONS'  => ($config['override_user_dateformat']) ? '' : $dateformat_options,
-					'S_CUSTOM_DATEFORMAT'   => $s_custom,
-					'DEFAULT_DATEFORMAT'    => $config['default_dateformat'],
-					'A_DEFAULT_DATEFORMAT'  => addslashes($config['default_dateformat']),
 
 					'S_MORE_LANGUAGES'  => $s_more_languages,
 					'S_MORE_STYLES'         => $s_more_styles,

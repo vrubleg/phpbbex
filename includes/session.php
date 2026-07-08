@@ -1297,7 +1297,6 @@ class phpbb_user extends phpbb_session
 	var $lang = [];
 	var $help = [];
 	var $theme = [];
-	var $date_format;
 	var $timezone;
 	var $dst;
 	var $lang_name = false;
@@ -1344,14 +1343,12 @@ class phpbb_user extends phpbb_session
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
 			$this->lang_name = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang'] . "/common.php")) ? $this->data['user_lang'] : basename($config['default_lang']);
-			$this->date_format = ($config['override_user_dateformat']) ? $config['default_dateformat'] : $this->data['user_dateformat'];
 			$this->timezone = ($config['override_user_timezone'] ? $config['board_timezone'] : $this->data['user_timezone']) * 3600;
 			$this->dst = ($config['override_user_timezone'] ? $config['board_dst'] : $this->data['user_dst']) * 3600;
 		}
 		else
 		{
 			$this->lang_name = basename($config['default_lang']);
-			$this->date_format = $config['default_dateformat'];
 			$this->timezone = $config['board_timezone'] * 3600;
 			$this->dst = $config['board_dst'] * 3600;
 
@@ -1789,11 +1786,13 @@ class phpbb_user extends phpbb_session
 	*/
 	function format_date($gmepoch, $format = false, $forcedate = false, $notime = false)
 	{
+		global $config;
+
 		static $midnight;
 		static $format_cache = [];
 		static $date_cache = [];
 
-		$format = (!$format) ? $this->date_format : $format;
+		$format = (!$format) ? $config['default_dateformat'] : $format;
 		$now = time();
 		$delta = $now - $gmepoch;
 

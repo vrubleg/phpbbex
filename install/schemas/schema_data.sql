@@ -200,7 +200,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('new_member_group_d
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_style', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_dateformat', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PASS_TYPE_ANY');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.9');

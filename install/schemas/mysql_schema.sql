@@ -813,7 +813,6 @@ CREATE TABLE phpbb_users (
 	user_lang varchar(5) DEFAULT '' NOT NULL,
 	user_timezone decimal(5,2) DEFAULT '0' NOT NULL,
 	user_dst tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	user_dateformat varchar(30) DEFAULT 'd M Y H:i' NOT NULL,
 	user_style mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_rank mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_colour varchar(6) DEFAULT '' NOT NULL,
