@@ -480,7 +480,7 @@ INSERT INTO phpbb_styles (style_name, style_active, template_id, theme_id, image
 INSERT INTO phpbb_styles_imageset (imageset_dir) VALUES ('prosilver');
 
 # -- phpbb_styles_template
-INSERT INTO phpbb_styles_template (template_dir, bbcode_bitfield) VALUES ('prosilver', 'lNmA');
+INSERT INTO phpbb_styles_template (template_dir) VALUES ('prosilver');
 
 # -- phpbb_styles_theme
 INSERT INTO phpbb_styles_theme (theme_dir) VALUES ('prosilver');

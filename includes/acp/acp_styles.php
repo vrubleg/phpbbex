@@ -21,20 +21,6 @@ class acp_styles
 	{
 		global $db, $user, $auth, $template, $cache, $config;
 
-		// Hardcoded template bitfield to add for new templates
-		$bitfield = new bitfield();
-		$bitfield->set(0);
-		$bitfield->set(1);
-		$bitfield->set(2);
-		$bitfield->set(3);
-		$bitfield->set(4);
-		$bitfield->set(8);
-		$bitfield->set(9);
-		$bitfield->set(11);
-		$bitfield->set(12);
-		define('TEMPLATE_BITFIELD', $bitfield->get_base64());
-		unset($bitfield);
-
 		$user->add_lang('acp/styles');
 
 		$this->tpl_name = 'acp_styles';
@@ -1539,16 +1525,7 @@ class acp_styles
 
 		if (isset($cfg_data['inherit_from']) && $cfg_data['inherit_from'])
 		{
-			if ($mode === 'template')
-			{
-				$select_bf = ', bbcode_bitfield';
-			}
-			else
-			{
-				$select_bf = '';
-			}
-
-			$sql = "SELECT {$mode}_id, {$mode}_dir{$select_bf}
+			$sql = "SELECT {$mode}_id, {$mode}_dir
 				FROM {$sql_from}
 				WHERE {$mode}_dir = '" . $db->sql_escape($cfg_data['inherit_from']) . "'
 					AND {$mode}_inherit_id = 0";
@@ -1563,14 +1540,12 @@ class acp_styles
 			{
 				$inherit_id = $row["{$mode}_id"];
 				$inherit_dir = $row["{$mode}_dir"];
-				$inherit_bf = ($mode === 'template') ? $row["bbcode_bitfield"] : false;
 			}
 		}
 		else
 		{
 			$inherit_id = 0;
 			$inherit_dir = '';
-			$inherit_bf = false;
 		}
 
 		if (sizeof($error))
@@ -1585,20 +1560,6 @@ class acp_styles
 		switch ($mode)
 		{
 			case 'template':
-				// We check if the template author defined a different bitfield
-				if (!empty($cfg_data['template_bitfield']))
-				{
-					$sql_ary['bbcode_bitfield'] = $cfg_data['template_bitfield'];
-				}
-				else if ($inherit_bf)
-				{
-					$sql_ary['bbcode_bitfield'] = $inherit_bf;
-				}
-				else
-				{
-					$sql_ary['bbcode_bitfield'] = TEMPLATE_BITFIELD;
-				}
-
 				if (isset($cfg_data['inherit_from']) && $cfg_data['inherit_from'])
 				{
 					$sql_ary += [
