@@ -1792,6 +1792,11 @@ class phpbb_user extends phpbb_session
 		static $format_cache = [];
 		static $date_cache = [];
 
+		if ($this->data['is_bot'])
+		{
+			$forcedate = true;
+		}
+
 		$format = (!$format) ? $config['default_dateformat'] : $format;
 		$now = time();
 		$delta = $now - $gmepoch;
