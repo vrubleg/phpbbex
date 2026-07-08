@@ -671,8 +671,8 @@ CREATE TABLE phpbb_styles_template (
 	template_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	template_dir varchar(100) DEFAULT '' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT 'kNg=' NOT NULL,
-	template_inherits_id int(4) UNSIGNED DEFAULT '0' NOT NULL,
-	template_inherit_path varchar(255) DEFAULT '' NOT NULL,
+	template_inherit_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	template_inherit_dir varchar(100) DEFAULT '' NOT NULL,
 	PRIMARY KEY (template_id),
 	UNIQUE template_dir (template_dir)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;

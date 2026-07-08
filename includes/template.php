@@ -32,7 +32,7 @@ class phpbb_template
 	var $files_inherit = [];
 	var $files_template = [];
 	var $inherit_root = '';
-	var $orig_tpl_inherits_id;
+	var $orig_tpl_inherit_id;
 
 	// this will hash handle names to the compiled/uncompiled code for that handle.
 	var $compiled_code = [];
@@ -50,16 +50,16 @@ class phpbb_template
 			$this->root = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_dir'] . '/template';
 			$this->cachepath = PHPBB_ROOT_PATH . 'cache/tpl_' . str_replace('_', '-', $user->theme['template_dir']) . '_';
 
-			if ($this->orig_tpl_inherits_id === null)
+			if ($this->orig_tpl_inherit_id === null)
 			{
-				$this->orig_tpl_inherits_id = $user->theme['template_inherits_id'];
+				$this->orig_tpl_inherit_id = $user->theme['template_inherit_id'];
 			}
 
-			$user->theme['template_inherits_id'] = $this->orig_tpl_inherits_id;
+			$user->theme['template_inherit_id'] = $this->orig_tpl_inherit_id;
 
-			if ($user->theme['template_inherits_id'])
+			if ($user->theme['template_inherit_id'])
 			{
-				$this->inherit_root = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_inherit_path'] . '/template';
+				$this->inherit_root = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_inherit_dir'] . '/template';
 			}
 		}
 		else
@@ -97,11 +97,11 @@ class phpbb_template
 			}
 
 			$this->inherit_root = $fallback_template_path;
-			$this->orig_tpl_inherits_id = true;
+			$this->orig_tpl_inherit_id = true;
 		}
 		else
 		{
-			$this->orig_tpl_inherits_id = false;
+			$this->orig_tpl_inherit_id = false;
 		}
 
 		$this->_rootref = &$this->_tpldata['.'][0];
@@ -243,7 +243,7 @@ class phpbb_template
 		// reload this setting to have the value it had when this object was initialised
 		// using set_template or set_custom_template, they might otherwise have been overwritten
 		// by other template class instances in between.
-		$user->theme['template_inherits_id'] = $this->orig_tpl_inherits_id;
+		$user->theme['template_inherit_id'] = $this->orig_tpl_inherit_id;
 
 		$filename = $this->cachepath . str_replace('/', '.', $this->filename[$handle]) . '.php';
 		$this->files_template[$handle] = $user->theme['template_id'] ?? 0;
@@ -256,10 +256,10 @@ class phpbb_template
 		else if (!empty($config['cache_mtime_check']))
 		{
 			// No way around it: we need to check inheritance here
-			if ($user->theme['template_inherits_id'] && !file_exists($this->files[$handle]))
+			if ($user->theme['template_inherit_id'] && !file_exists($this->files[$handle]))
 			{
 				$this->files[$handle] = $this->files_inherit[$handle];
-				$this->files_template[$handle] = $user->theme['template_inherits_id'];
+				$this->files_template[$handle] = $user->theme['template_inherit_id'];
 			}
 			$recompile = (@filemtime($filename) < filemtime($this->files[$handle]));
 		}
@@ -276,10 +276,10 @@ class phpbb_template
 		}
 
 		// Inheritance - we point to another template file for this one.
-		if (isset($user->theme['template_inherits_id']) && $user->theme['template_inherits_id'] && !file_exists($this->files[$handle]))
+		if (isset($user->theme['template_inherit_id']) && $user->theme['template_inherit_id'] && !file_exists($this->files[$handle]))
 		{
 			$this->files[$handle] = $this->files_inherit[$handle];
-			$this->files_template[$handle] = $user->theme['template_inherits_id'];
+			$this->files_template[$handle] = $user->theme['template_inherit_id'];
 		}
 
 		$compile = new template_compile($this);

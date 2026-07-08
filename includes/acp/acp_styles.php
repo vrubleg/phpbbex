@@ -641,7 +641,7 @@ class acp_styles
 
 			case 'template':
 				$sql_from = STYLES_TEMPLATE_TABLE;
-				$sql_where = 'WHERE template_inherits_id <> ' . $component_id;
+				$sql_where = 'WHERE template_inherit_id <> ' . $component_id;
 			break;
 
 			case 'theme':
@@ -1551,7 +1551,7 @@ class acp_styles
 			$sql = "SELECT {$mode}_id, {$mode}_dir{$select_bf}
 				FROM {$sql_from}
 				WHERE {$mode}_dir = '" . $db->sql_escape($cfg_data['inherit_from']) . "'
-					AND {$mode}_inherits_id = 0";
+					AND {$mode}_inherit_id = 0";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -1562,14 +1562,14 @@ class acp_styles
 			else
 			{
 				$inherit_id = $row["{$mode}_id"];
-				$inherit_path = $row["{$mode}_dir"];
+				$inherit_dir = $row["{$mode}_dir"];
 				$inherit_bf = ($mode === 'template') ? $row["bbcode_bitfield"] : false;
 			}
 		}
 		else
 		{
 			$inherit_id = 0;
-			$inherit_path = '';
+			$inherit_dir = '';
 			$inherit_bf = false;
 		}
 
@@ -1602,8 +1602,8 @@ class acp_styles
 				if (isset($cfg_data['inherit_from']) && $cfg_data['inherit_from'])
 				{
 					$sql_ary += [
-						'template_inherits_id'  => $inherit_id,
-						'template_inherit_path' => $inherit_path,
+						'template_inherit_id'   => $inherit_id,
+						'template_inherit_dir'  => $inherit_dir,
 					];
 				}
 			break;
@@ -1661,7 +1661,7 @@ class acp_styles
 
 		$sql = "SELECT {$mode}_id, {$mode}_dir
 			FROM {$sql_from}
-			WHERE {$mode}_inherits_id = " . (int) $id;
+			WHERE {$mode}_inherit_id = " . (int) $id;
 		$result = $db->sql_query($sql);
 
 		$names = [];
@@ -1714,7 +1714,7 @@ class acp_styles
 			break;
 		}
 
-		$sql = "SELECT {$mode}_inherits_id
+		$sql = "SELECT {$mode}_inherit_id
 			FROM {$sql_from}
 			WHERE {$mode}_id = " . (int) $id;
 		$result = $db->sql_query_limit($sql, 1);
@@ -1728,7 +1728,7 @@ class acp_styles
 			return false;
 		}
 
-		$super_id = $row["{$mode}_inherits_id"];
+		$super_id = $row["{$mode}_inherit_id"];
 
 		$sql = "SELECT {$mode}_id, {$mode}_dir
 			FROM {$sql_from}

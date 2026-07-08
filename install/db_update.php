@@ -639,6 +639,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_copyright');
 	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_path template_dir varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_inherits_id template_inherit_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_inherit_path template_inherit_dir varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP INDEX tmplte_nm');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_name');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' ADD UNIQUE template_dir (template_dir)');
@@ -1598,8 +1600,8 @@ function database_update_info()
 			// Add the following columns
 			'add_columns'       => [
 				STYLES_TEMPLATE_TABLE           => [
-					'template_inherits_id'      => ['UINT:4', 0],
-					'template_inherit_path'     => ['VCHAR', ''],
+					'template_inherit_id'       => ['UINT:4', 0],
+					'template_inherit_dir'      => ['VCHAR:100', ''],
 				],
 				GROUPS_TABLE                    => [
 					'group_max_recipients'      => ['UINT', 0],

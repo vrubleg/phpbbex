@@ -3705,9 +3705,9 @@ function page_header($page_title = '', $display_online_list = true)
 		'S_SEARCH_HIDDEN_FIELDS'    => build_hidden_fields($s_search_hidden_fields),
 
 		'T_STYLE_PATH'          => "{$web_path}styles/" . rawurlencode($user->theme['template_dir']),
-		'T_SUPER_STYLE_PATH'    => (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) : "{$web_path}styles/" . rawurlencode($user->theme['template_dir']),
+		'T_SUPER_STYLE_PATH'    => (isset($user->theme['template_inherit_dir']) && $user->theme['template_inherit_dir']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_dir']) : "{$web_path}styles/" . rawurlencode($user->theme['template_dir']),
 		'T_TEMPLATE_PATH'       => "{$web_path}styles/" . rawurlencode($user->theme['template_dir']) . '/template',
-		'T_SUPER_TEMPLATE_PATH' => (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) . '/template' : "{$web_path}styles/" . rawurlencode($user->theme['template_dir']) . '/template',
+		'T_SUPER_TEMPLATE_PATH' => (isset($user->theme['template_inherit_dir']) && $user->theme['template_inherit_dir']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_dir']) . '/template' : "{$web_path}styles/" . rawurlencode($user->theme['template_dir']) . '/template',
 		'T_THEME_PATH'          => "{$web_path}styles/" . rawurlencode($user->theme['theme_dir']) . '/theme',
 		'T_IMAGESET_PATH'       => "{$web_path}styles/" . rawurlencode($user->theme['imageset_dir']) . '/imageset',
 		'T_IMAGESET_LANG_PATH'  => "{$web_path}styles/" . rawurlencode($user->theme['imageset_dir']) . '/imageset/' . $user->lang_name,
@@ -3717,7 +3717,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'T_STYLESHEET_LINK'     => (!$user->theme['parse_css_file']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_dir']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_name . '&amp;mtime=' . $user->theme['theme_mtime']),
 		'T_THEME_NAME'          => rawurlencode($user->theme['theme_dir']),
 		'T_TEMPLATE_NAME'       => rawurlencode($user->theme['template_dir']),
-		'T_SUPER_TEMPLATE_NAME' => rawurlencode((isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? $user->theme['template_inherit_path'] : $user->theme['template_dir']),
+		'T_SUPER_TEMPLATE_NAME' => rawurlencode((isset($user->theme['template_inherit_dir']) && $user->theme['template_inherit_dir']) ? $user->theme['template_inherit_dir'] : $user->theme['template_dir']),
 		'T_IMAGESET_NAME'       => rawurlencode($user->theme['imageset_dir']),
 		'T_IMAGESET_LANG_NAME'  => $user->lang_name,
 
