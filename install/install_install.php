@@ -1229,7 +1229,6 @@ class install_install extends module
 					'lang_dir'          => basename($path),
 					'lang_english_name' => trim(htmlspecialchars($lang_file[0])),
 					'lang_local_name'   => trim(htmlspecialchars($lang_file[1], ENT_COMPAT, 'UTF-8')),
-					'lang_author'       => trim(htmlspecialchars($lang_file[2], ENT_COMPAT, 'UTF-8')),
 				];
 
 				$db->sql_query('INSERT INTO ' . LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $lang_pack));

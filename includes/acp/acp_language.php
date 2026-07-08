@@ -63,7 +63,6 @@ class acp_language
 				$sql_ary    = [
 					'lang_english_name'     => request_var('lang_english_name', $row['lang_english_name']),
 					'lang_local_name'       => utf8_normalize_nfc(request_var('lang_local_name', $row['lang_local_name'], true)),
-					'lang_author'           => utf8_normalize_nfc(request_var('lang_author', $row['lang_author'], true)),
 				];
 
 				$db->sql_query('UPDATE ' . LANG_TABLE . '
@@ -98,7 +97,6 @@ class acp_language
 					'LANG_LOCAL_NAME'   => $lang_entries['lang_local_name'],
 					'LANG_ENGLISH_NAME' => $lang_entries['lang_english_name'],
 					'LANG_ISO'          => $lang_entries['lang_iso'],
-					'LANG_AUTHOR'       => $lang_entries['lang_author'],
 					]
 				);
 
@@ -174,7 +172,6 @@ class acp_language
 					'iso'       => $lang_iso,
 					'name'      => trim(htmlspecialchars($file[0])),
 					'local_name'=> trim(htmlspecialchars($file[1], ENT_COMPAT, 'UTF-8')),
-					'author'    => trim(htmlspecialchars($file[2], ENT_COMPAT, 'UTF-8'))
 				];
 				unset($file);
 
@@ -201,7 +198,6 @@ class acp_language
 					'lang_dir'          => $lang_pack['iso'],
 					'lang_english_name' => $lang_pack['name'],
 					'lang_local_name'   => $lang_pack['local_name'],
-					'lang_author'       => $lang_pack['author']
 				];
 
 				$db->sql_query('INSERT INTO ' . LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));

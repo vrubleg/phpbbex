@@ -290,7 +290,6 @@ CREATE TABLE phpbb_lang (
 	lang_dir varchar(5) DEFAULT '' NOT NULL,
 	lang_english_name varchar(100) DEFAULT '' NOT NULL,
 	lang_local_name varchar(255) DEFAULT '' NOT NULL,
-	lang_author varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (lang_id),
 	KEY lang_iso (lang_iso)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;

@@ -32,7 +32,6 @@ $lang = array_merge($lang, [
 	'LANGUAGE_PACK_NAME'                => 'Name',
 	'LANGUAGE_PACK_NOT_EXIST'           => 'The selected language pack does not exist.',
 	'LANGUAGE_PACK_USED_BY'             => 'Used by (including robots)',
-	'LANG_AUTHOR'                       => 'Language pack author',
 	'LANG_ENGLISH_NAME'                 => 'English name',
 	'LANG_ISO_CODE'                     => 'ISO code',
 	'LANG_LOCAL_NAME'                   => 'Local name',

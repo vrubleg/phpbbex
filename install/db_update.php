@@ -628,6 +628,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_website varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_iso varchar(5) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_dir varchar(5) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_author");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_lang varchar(5) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
