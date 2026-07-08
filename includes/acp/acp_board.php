@@ -105,8 +105,6 @@ class acp_board
 
 						'legend4'               => 'WHO_IS_ONLINE',
 						'load_online'           => ['lang' => 'YES_ONLINE',         'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
-						'load_online_guests'    => ['lang' => 'YES_ONLINE_GUESTS',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'load_online_bots'      => ['lang' => 'YES_ONLINE_BOTS',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'load_onlinetrack'      => ['lang' => 'YES_ONLINE_TRACK',       'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'load_online_time'      => ['lang' => 'ONLINE_LENGTH',          'validate' => 'int:0',  'type' => 'text:4:3', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']],
 

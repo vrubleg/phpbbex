@@ -82,9 +82,6 @@ $lang = array_merge($lang, [
 	'BOARD_DISABLED'        => 'This board is currently disabled.',
 	'BOARD_RULES'           => 'Board rules',
 	'BOARD_UNAVAILABLE'     => 'Sorry but the board is temporarily unavailable, please try again in a few minutes.',
-	'BROWSING_FORUM'        => 'Users browsing this forum: %1$s',
-	'BROWSING_FORUM_GUEST'  => 'Users browsing this forum: %1$s and %2$d guest',
-	'BROWSING_FORUM_GUESTS' => 'Users browsing this forum: %1$s and %2$d guests',
 	'BYTES'                 => 'Bytes',
 
 	'CANCEL'                => 'Cancel',

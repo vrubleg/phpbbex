@@ -63,7 +63,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_topics_day
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '90');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('announce_index', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_online_bots', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4');

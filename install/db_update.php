@@ -554,6 +554,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'load_tplcompile',
 		'record_online_date',
 		'record_online_users',
+		'load_online_guests',
+		'load_online_bots',
 	]);
 
 	// New defaults.
