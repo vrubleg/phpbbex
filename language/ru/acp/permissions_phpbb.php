@@ -99,7 +99,6 @@ $lang = array_merge($lang, [
 	'acl_u_readpm'      => ['lang' => 'Может читать ЛС', 'cat' => 'pm'],
 	'acl_u_pm_edit'     => ['lang' => 'Может редактировать собственные ЛС', 'cat' => 'pm'],
 	'acl_u_pm_attach'   => ['lang' => 'Может прикреплять вложения в ЛС', 'cat' => 'pm'],
-	'acl_u_pm_download' => ['lang' => 'Может скачивать файлы из ЛС', 'cat' => 'pm'],
 	'acl_u_pm_bbcode'   => ['lang' => 'Может использовать BBCode в ЛС', 'cat' => 'pm'],
 	'acl_u_pm_smilies'  => ['lang' => 'Может использовать смайлики в ЛС', 'cat' => 'pm'],
 	'acl_u_pm_img'      => ['lang' => 'Может использовать тег [img] в ЛС', 'cat' => 'pm'],

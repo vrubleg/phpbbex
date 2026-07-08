@@ -583,6 +583,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_permissions([
 		'a_backup',
 		'u_sendemail',
+		'u_pm_download',
 	]);
 
 	// Update cached module rights.

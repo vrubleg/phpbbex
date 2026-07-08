@@ -56,7 +56,7 @@ if ($attachment['is_orphan'])
 	// We allow admins having attachment permissions to see orphan attachments...
 	$own_attachment = ($auth->acl_get('a_attach') || $attachment['poster_id'] == $user->data['user_id']);
 
-	if (!$own_attachment || ($attachment['in_message'] && !$auth->acl_get('u_pm_download')) || (!$attachment['in_message'] && !$auth->acl_get('u_download')))
+	if (!$own_attachment || !$auth->acl_get('u_download'))
 	{
 		http_response_code(404);
 		trigger_error('ERROR_NO_ATTACHMENT');
@@ -98,7 +98,7 @@ else
 	else
 	{
 		$row['forum_id'] = false;
-		if (!$auth->acl_get('u_pm_download'))
+		if (!$auth->acl_get('u_download'))
 		{
 			http_response_code(403);
 			trigger_error('SORRY_AUTH_VIEW_ATTACH');
