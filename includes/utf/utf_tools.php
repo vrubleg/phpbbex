@@ -10,6 +10,12 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+// Can't be loaded without mbstring.
+if (!extension_loaded('mbstring'))
+{
+	die('mbstring is required.');
+}
+
 // Enforce ASCII only string handling
 setlocale(LC_CTYPE, 'C');
 mb_internal_encoding('UTF-8');

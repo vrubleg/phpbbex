@@ -598,16 +598,10 @@ class acp_main
 			$template->assign_var('S_WRITABLE_CONFIG', (bool) (@fileperms(PHPBB_ROOT_PATH . 'config.php') & 0x0002));
 		}
 
-		if (extension_loaded('mbstring'))
-		{
-			$template->assign_vars([
-				'S_MBSTRING_LOADED'                     => true,
-				'S_MBSTRING_FUNC_OVERLOAD_FAIL'         => defined('MB_OVERLOAD_MAIL') && defined('MB_OVERLOAD_STRING') && (intval(@ini_get('mbstring.func_overload')) & (MB_OVERLOAD_MAIL | MB_OVERLOAD_STRING)),
-				'S_MBSTRING_ENCODING_TRANSLATION_FAIL'  => (@ini_get('mbstring.encoding_translation') != 0),
-				'S_MBSTRING_HTTP_INPUT_FAIL'            => !in_array(@ini_get('mbstring.http_input'), ['pass', '']),
-				'S_MBSTRING_HTTP_OUTPUT_FAIL'           => !in_array(@ini_get('mbstring.http_output'), ['pass', '']),
-			]);
-		}
+		$template->assign_vars([
+			'S_MBSTRING_FUNC_OVERLOAD_FAIL'         => !!@ini_get('mbstring.func_overload'),
+			'S_MBSTRING_ENCODING_TRANSLATION_FAIL'  => !!@ini_get('mbstring.encoding_translation'),
+		]);
 
 		$this->tpl_name = 'acp_main';
 		$this->page_title = 'ACP_MAIN';

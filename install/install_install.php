@@ -168,62 +168,47 @@ class install_install extends module
 			'S_LEGEND'      => false,
 		]);
 
-		$passed['mbstring'] = true;
-		if (@extension_loaded('mbstring'))
+		// Check mbstring settings.
+		$template->assign_block_vars('checks', [
+			'S_LEGEND'          => true,
+			'LEGEND'            => $lang['MBSTRING_CHECK'],
+			'LEGEND_EXPLAIN'    => $lang['MBSTRING_CHECK_EXPLAIN'],
+		]);
+
+		// The mbstring is guaranteed to be loaded since utf_tools.php would stop execution earlier without it.
+		$passed['mbstring'] = @extension_loaded('mbstring');
+
+		$checks = [
+			['func_overload', '!=', 0],
+			['encoding_translation', '!=', 0],
+		];
+
+		foreach ($checks as $mb_checks)
 		{
-			// Test for available database modules
-			$template->assign_block_vars('checks', [
-				'S_LEGEND'          => true,
-				'LEGEND'            => $lang['MBSTRING_CHECK'],
-				'LEGEND_EXPLAIN'    => $lang['MBSTRING_CHECK_EXPLAIN'],
-			]);
-
-			$checks = [
-				['func_overload', '&', (defined('MB_OVERLOAD_MAIL') && defined('MB_OVERLOAD_STRING') ? MB_OVERLOAD_MAIL|MB_OVERLOAD_STRING : 0)],
-				['encoding_translation', '!=', 0],
-				['http_input', '!=', ['pass', '']],
-				['http_output', '!=', ['pass', '']]
-			];
-
-			foreach ($checks as $mb_checks)
+			$ini_val = @ini_get('mbstring.' . $mb_checks[0]);
+			switch ($mb_checks[1])
 			{
-				$ini_val = @ini_get('mbstring.' . $mb_checks[0]);
-				switch ($mb_checks[1])
-				{
-					case '&':
-						if (intval($ini_val) & $mb_checks[2])
-						{
-							$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
-							$passed['mbstring'] = false;
-						}
-						else
-						{
-							$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
-						}
-					break;
-
-					case '!=':
-						if (!is_array($mb_checks[2]) && $ini_val != $mb_checks[2] ||
-							is_array($mb_checks[2]) && !in_array($ini_val, $mb_checks[2]))
-						{
-							$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
-							$passed['mbstring'] = false;
-						}
-						else
-						{
-							$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
-						}
-					break;
-				}
-				$template->assign_block_vars('checks', [
-					'TITLE'         => $lang['MBSTRING_' . strtoupper($mb_checks[0])],
-					'TITLE_EXPLAIN' => $lang['MBSTRING_' . strtoupper($mb_checks[0]) . '_EXPLAIN'],
-					'RESULT'        => $result,
-
-					'S_EXPLAIN'     => true,
-					'S_LEGEND'      => false,
-				]);
+				case '!=':
+					if (!is_array($mb_checks[2]) && $ini_val != $mb_checks[2] ||
+						is_array($mb_checks[2]) && !in_array($ini_val, $mb_checks[2]))
+					{
+						$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
+						$passed['mbstring'] = false;
+					}
+					else
+					{
+						$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
+					}
+				break;
 			}
+			$template->assign_block_vars('checks', [
+				'TITLE'         => $lang['MBSTRING_' . strtoupper($mb_checks[0])],
+				'TITLE_EXPLAIN' => $lang['MBSTRING_' . strtoupper($mb_checks[0]) . '_EXPLAIN'],
+				'RESULT'        => $result,
+
+				'S_EXPLAIN'     => true,
+				'S_LEGEND'      => false,
+			]);
 		}
 
 		// Test for available database modules
