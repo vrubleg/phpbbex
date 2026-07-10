@@ -1341,20 +1341,18 @@ class phpbb_user extends phpbb_session
 
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
-			$this->lang_code = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang_code'] . "/common.php")) ? $this->data['user_lang_code'] : basename($config['default_lang_code']);
+			$this->lang_code = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang_code'] . '/common.php')) ? $this->data['user_lang_code'] : $config['default_lang_code'];
 			$this->timezone = ($config['override_user_timezone'] ? $config['board_timezone'] : $this->data['user_timezone']) * 3600;
 			$this->dst = ($config['override_user_timezone'] ? $config['board_dst'] : $this->data['user_dst']) * 3600;
 		}
 		else
 		{
-			$this->lang_code = basename($config['default_lang_code']);
+			$this->lang_code = $config['default_lang_code'];
 			$this->timezone = $config['board_timezone'] * 3600;
 			$this->dst = $config['board_dst'] * 3600;
 
-			/**
-			* If a guest user is surfing, we try to guess his/her language first by obtaining the browser language
-			**/
-			if (!empty($config['auto_guest_lang']) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+			// Detect guest language from the Accept-Language HTTP header.
+			if (!empty($config['auto_guest_lang']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']))
 			{
 				$sql = 'SELECT * FROM ' . LANG_TABLE;
 				$result = $db->sql_query($sql, 3600);
@@ -1362,48 +1360,48 @@ class phpbb_user extends phpbb_session
 				$lang_allowed = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
-					if (file_exists(PHPBB_ROOT_PATH . 'language/' . $row['lang_code'] . "/common.php"))
+					if (file_exists($this->lang_path . $row['lang_code'] . '/common.php'))
 					{
 						$lang_allowed[$row['lang_code']] = substr($row['lang_code'], 0, 2);
 					}
 				}
 
-				$accept_lang_ary = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-				foreach ($accept_lang_ary as $accept_lang)
+				$accept_langs = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+				foreach ($accept_langs as $accept_lang)
 				{
-					$accept_lang = explode(';', $accept_lang);
-					$accept_lang = strtolower(trim($accept_lang[0]));
-					if (strlen($accept_lang) < 2) continue;
+					$accept_lang = strtolower(trim(explode(';', $accept_lang)[0]));
+					if (strlen($accept_lang) < 2) { continue; }
 
-					// Guess full xx_yy form
+					// Maybe xx_yy is available?
 					if (strlen($accept_lang) >= 5)
 					{
 						$accept_lang = substr($accept_lang, 0, 2) . '_' . substr($accept_lang, 3, 2);
 						if (isset($lang_allowed[$accept_lang]))
 						{
-							$this->lang_code = $config['default_lang_code'] = $accept_lang;
+							$this->lang_code = $accept_lang;
 							break;
 						}
 					}
 
-					// No match on xx_yy so try xx
+					// Maybe just xx is available?
 					$accept_lang = substr($accept_lang, 0, 2);
 					if (isset($lang_allowed[$accept_lang]))
 					{
-						$this->lang_code = $config['default_lang_code'] = $accept_lang;
+						$this->lang_code = $accept_lang;
 						break;
 					}
 
-					// No match on xx so try xx_yy with another yy
+					// Maybe xx with a different yy is available?
 					$accept_lang = array_search($accept_lang, $lang_allowed);
 					if ($accept_lang !== false)
 					{
-						$this->lang_code = $config['default_lang_code'] = $accept_lang;
+						$this->lang_code = $accept_lang;
 						break;
 					}
 				}
-				$this->data['user_lang_code'] = $this->lang_code;
 			}
+
+			$this->data['user_lang_code'] = $this->lang_code;
 		}
 
 		// We include common language file here to not load it every time a custom language file is included
