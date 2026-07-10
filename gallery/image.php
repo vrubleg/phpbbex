@@ -135,7 +135,7 @@ $image_source = $image_source_path  . $image_data['image_filename'];
 // There was a reason to not display the image, so we send an error-image
 if ($image_error)
 {
-	$image_data['image_filename'] = $user->data['user_lang'] . '_' . $image_error;
+	$image_data['image_filename'] = $user->data['user_lang_code'] . '_' . $image_error;
 	if (!file_exists($image_source_path . $image_data['image_filename']))
 	{
 		$image_data['image_filename'] = $image_error;

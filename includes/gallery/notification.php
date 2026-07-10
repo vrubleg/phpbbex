@@ -164,7 +164,7 @@ class phpbb_gallery_notification
 		$notify_rows = [];
 
 		// -- get album_userids || image_userids
-		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
+		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang_code, u.user_notify_type, u.user_jabber
 			FROM ' . GALLERY_WATCH_TABLE . ' w, ' . USERS_TABLE . ' u
 			WHERE w.' . $help_mode . ' = ' . $handle_id . "
 				AND w.user_id NOT IN ({$sql_ignore_users})
@@ -179,7 +179,7 @@ class phpbb_gallery_notification
 				'username'      => $row['username'],
 				'user_email'    => $row['user_email'],
 				'user_jabber'   => $row['user_jabber'],
-				'user_lang'     => $row['user_lang'],
+				'user_lang_code'=> $row['user_lang_code'],
 				'notify_type'   => ($mode != 'album') ? 'image' : 'album',
 				'template'      => "new{$mode_notification}_notify",
 				'method'        => $row['user_notify_type'],
@@ -314,7 +314,7 @@ class phpbb_gallery_notification
 				$msg_list_ary[$row['template']][$pos]['email']  = $row['user_email'];
 				$msg_list_ary[$row['template']][$pos]['jabber'] = $row['user_jabber'];
 				$msg_list_ary[$row['template']][$pos]['name']   = $row['username'];
-				$msg_list_ary[$row['template']][$pos]['lang']   = $row['user_lang'];
+				$msg_list_ary[$row['template']][$pos]['lang']   = $row['user_lang_code'];
 			}
 			unset($msg_users);
 
