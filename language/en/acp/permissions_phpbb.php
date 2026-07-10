@@ -106,7 +106,6 @@ $lang = array_merge($lang, [
 
 	'acl_u_canplus'     => ['lang' => 'Can make positive ratings', 'cat' => 'misc'],
 	'acl_u_canminus'    => ['lang' => 'Can make negative ratings', 'cat' => 'misc'],
-	'acl_u_sendim'      => ['lang' => 'Can send instant messages', 'cat' => 'misc'],
 	'acl_u_ignoreflood' => ['lang' => 'Can ignore flood limit', 'cat' => 'misc'],
 	'acl_u_hideonline'  => ['lang' => 'Can hide online status', 'cat' => 'misc'],
 	'acl_u_viewonline'  => ['lang' => 'Can view hidden online users', 'cat' => 'misc'],

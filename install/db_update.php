@@ -576,6 +576,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'a_backup',
 		'u_sendemail',
 		'u_pm_download',
+		'u_sendim',
 	]);
 
 	// Update cached module rights.
