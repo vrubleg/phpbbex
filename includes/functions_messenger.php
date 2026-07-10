@@ -183,7 +183,7 @@ class messenger
 			// fall back to board default language if the user's language is
 			// missing $template_file.  If this does not exist either,
 			// $tpl->set_custom_template will do a trigger_error
-			$template_lang = basename($config['default_lang']);
+			$template_lang = basename($config['default_lang_code']);
 		}
 
 		// tpl_msg now holds a template object we can use to parse the template file
@@ -201,10 +201,10 @@ class messenger
 
 				// we can only specify default language fallback when the path is not a custom one for which we
 				// do not know the default language alternative
-				if ($template_lang !== basename($config['default_lang']))
+				if ($template_lang !== basename($config['default_lang_code']))
 				{
 					$fallback_template_path = (!empty($user->lang_path)) ? $user->lang_path : PHPBB_ROOT_PATH . 'language/';
-					$fallback_template_path .= basename($config['default_lang']) . '/email';
+					$fallback_template_path .= basename($config['default_lang_code']) . '/email';
 				}
 			}
 

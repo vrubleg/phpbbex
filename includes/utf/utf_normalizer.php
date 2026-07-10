@@ -747,13 +747,8 @@ class utf_normalizer
 				if (!$k && $k_max == 1)
 				{
 					// There is only one char in the UTF sequence, add it then jump to the next iteration of main loop
-						// Note: the two commented lines below can be enabled under PHP5 for a very small performance gain in most cases
-//                      if (substr_compare($str, $utf_seq[0], $lpos, $pos - $lpos))
-//                      {
-						$tmp .= substr($str, $tmp_pos, $lpos - $tmp_pos) . $utf_seq[0];
-						$tmp_pos = $pos;
-//                      }
-
+					$tmp .= substr($str, $tmp_pos, $lpos - $tmp_pos) . $utf_seq[0];
+					$tmp_pos = $pos;
 					continue;
 				}
 

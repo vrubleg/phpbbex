@@ -42,10 +42,10 @@ class search_backend
 
 			$words = [];
 
-			if (file_exists("{$user->lang_path}{$user->lang_name}/search_ignore_words.php"))
+			if (file_exists("{$user->lang_path}{$user->lang_code}/search_ignore_words.php"))
 			{
 				// include the file containing ignore words
-				require("{$user->lang_path}{$user->lang_name}/search_ignore_words.php");
+				require("{$user->lang_path}{$user->lang_code}/search_ignore_words.php");
 			}
 
 			$this->ignore_words = $words;
@@ -64,10 +64,10 @@ class search_backend
 
 			$synonyms = [];
 
-			if (file_exists("{$user->lang_path}{$user->lang_name}/search_synonyms.php"))
+			if (file_exists("{$user->lang_path}{$user->lang_code}/search_synonyms.php"))
 			{
 				// include the file containing synonyms
-				require("{$user->lang_path}{$user->lang_name}/search_synonyms.php");
+				require("{$user->lang_path}{$user->lang_code}/search_synonyms.php");
 			}
 
 			$this->match_synonym = array_keys($synonyms);

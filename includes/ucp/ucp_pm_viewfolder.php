@@ -154,7 +154,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 					'FOLDER_IMG'        => $user->img($folder_img, $folder_alt),
 					'FOLDER_IMG_SRC'    => $user->img($folder_img, $folder_alt, false, '', 'src'),
 					'PM_IMG'            => ($row_indicator) ? $user->img('pm_' . $row_indicator, '') : '',
-					'ATTACH_ICON_IMG'   => ($auth->acl_get('u_pm_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
+					'ATTACH_ICON_IMG'   => ($auth->acl_get('u_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
 
 					'S_PM_UNREAD'       => (bool) $row['pm_unread'],
 					'S_PM_DELETED'      => (bool) $row['pm_deleted'],

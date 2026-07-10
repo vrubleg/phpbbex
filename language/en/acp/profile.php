@@ -37,7 +37,7 @@ $lang = array_merge($lang, [
 	'CREATE_NEW_FIELD'          => 'Create new field',
 	'CUSTOM_FIELDS_NOT_TRANSLATED'  => 'At least one custom profile field has not yet been translated. Please enter the required information by clicking on the “Translate” link.',
 
-	'DEFAULT_ISO_LANGUAGE'          => 'Default language [%s]',
+	'DEFAULT_LANGUAGE_CODE'         => 'Default language [%s]',
 	'DEFAULT_LANGUAGE_NOT_FILLED'   => 'The language entries for the default language are not filled for this profile field.',
 	'DEFAULT_VALUE'                 => 'Default value',
 	'DELETE_PROFILE_FIELD'          => 'Remove profile field',
@@ -81,7 +81,7 @@ $lang = array_merge($lang, [
 
 	'INVALID_CHARS_FIELD_IDENT' => 'Field identification can only contain lowercase a-z and _',
 	'INVALID_FIELD_IDENT_LEN'   => 'Field identification can only be 17 characters long',
-	'ISO_LANGUAGE'              => 'Language [%s]',
+	'LANGUAGE_CODE'             => 'Language [%s]',
 
 	'LANG_SPECIFIC_OPTIONS'     => 'Language specific options [<strong>%s</strong>]',
 

@@ -1052,7 +1052,7 @@ function language_select($default = '')
 {
 	global $db;
 
-	$sql = 'SELECT lang_iso, lang_local_name
+	$sql = 'SELECT lang_code, lang_local_name
 		FROM ' . LANG_TABLE . '
 		ORDER BY lang_english_name';
 	$result = $db->sql_query($sql);
@@ -1060,8 +1060,8 @@ function language_select($default = '')
 	$lang_options = '';
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$selected = ($row['lang_iso'] == $default) ? ' selected="selected"' : '';
-		$lang_options .= '<option value="' . $row['lang_iso'] . '"' . $selected . '>' . $row['lang_local_name'] . '</option>';
+		$selected = ($row['lang_code'] == $default) ? ' selected="selected"' : '';
+		$lang_options .= '<option value="' . $row['lang_code'] . '"' . $selected . '>' . $row['lang_local_name'] . '</option>';
 	}
 	$db->sql_freeresult($result);
 
@@ -3575,13 +3575,6 @@ function page_header($page_title = '', $display_online_list = true)
 	// Which timezone?
 	$tz = strval($user->timezone/3600.0);
 
-	// Send a proper content-language to the output
-	$user_lang = $user->lang['USER_LANG'];
-	if (strpos($user_lang, '-x-') !== false)
-	{
-		$user_lang = substr($user_lang, 0, strpos($user_lang, '-x-'));
-	}
-
 	$s_search_hidden_fields = empty($config['default_search_titleonly']) ? [] : ['sf' => 'titleonly', 'sr' => 'topics'];
 
 	if (!empty($_EXTRA_URL))
@@ -3692,7 +3685,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'S_REGISTERED_USER'     => !empty($user->data['is_registered']),
 		'S_IS_BOT'              => !empty($user->data['is_bot']),
 		'S_USER_PM_POPUP'       => $user->optionget('popuppm'),
-		'S_USER_LANG'           => $user_lang,
+		'S_USER_LANG'           => $user->lang['HTML_LANG_CODE'],
 		'S_USER_BROWSER'        => $user->data['session_browser_ua'] ?? $user->lang['UNKNOWN_BROWSER'],
 		'S_USERNAME'            => $user->data['username'],
 		'S_TIMEZONE'            => sprintf($user->lang['CURRENT_TIMEZONE'], $user->lang['tz'][$tz], ($user->dst) ? $user->lang['DST'] : ''),
@@ -3720,21 +3713,21 @@ function page_header($page_title = '', $display_online_list = true)
 		'S_SEARCH_HIDDEN_FIELDS'    => build_hidden_fields($s_search_hidden_fields),
 
 		'T_STYLE_PATH'          => "{$web_path}styles/" . rawurlencode($user->theme['template_dir']),
-		'T_SUPER_STYLE_PATH'    => (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) : "{$web_path}styles/" . rawurlencode($user->theme['template_dir']),
+		'T_SUPER_STYLE_PATH'    => (isset($user->theme['template_inherit_dir']) && $user->theme['template_inherit_dir']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_dir']) : "{$web_path}styles/" . rawurlencode($user->theme['template_dir']),
 		'T_TEMPLATE_PATH'       => "{$web_path}styles/" . rawurlencode($user->theme['template_dir']) . '/template',
-		'T_SUPER_TEMPLATE_PATH' => (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_path']) . '/template' : "{$web_path}styles/" . rawurlencode($user->theme['template_dir']) . '/template',
+		'T_SUPER_TEMPLATE_PATH' => (isset($user->theme['template_inherit_dir']) && $user->theme['template_inherit_dir']) ? "{$web_path}styles/" . rawurlencode($user->theme['template_inherit_dir']) . '/template' : "{$web_path}styles/" . rawurlencode($user->theme['template_dir']) . '/template',
 		'T_THEME_PATH'          => "{$web_path}styles/" . rawurlencode($user->theme['theme_dir']) . '/theme',
 		'T_IMAGESET_PATH'       => "{$web_path}styles/" . rawurlencode($user->theme['imageset_dir']) . '/imageset',
-		'T_IMAGESET_LANG_PATH'  => "{$web_path}styles/" . rawurlencode($user->theme['imageset_dir']) . '/imageset/' . $user->lang_name,
+		'T_IMAGESET_LANG_PATH'  => "{$web_path}styles/" . rawurlencode($user->theme['imageset_dir']) . '/imageset/' . $user->lang_code,
 		'T_IMAGES_PATH'         => "{$web_path}images/",
 		'T_SMILIES_PATH'        => $web_path . SMILIES_PATH . '/',
 		'T_TOPIC_ICONS_PATH'    => $web_path . TOPIC_ICONS_PATH . '/',
-		'T_STYLESHEET_LINK'     => (!$user->theme['parse_css_file']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_dir']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_name . '&amp;mtime=' . $user->theme['theme_mtime']),
+		'T_STYLESHEET_LINK'     => (!$user->theme['parse_css_file']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_dir']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_code . '&amp;mtime=' . $user->theme['theme_mtime']),
 		'T_THEME_NAME'          => rawurlencode($user->theme['theme_dir']),
 		'T_TEMPLATE_NAME'       => rawurlencode($user->theme['template_dir']),
-		'T_SUPER_TEMPLATE_NAME' => rawurlencode((isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? $user->theme['template_inherit_path'] : $user->theme['template_dir']),
+		'T_SUPER_TEMPLATE_NAME' => rawurlencode((isset($user->theme['template_inherit_dir']) && $user->theme['template_inherit_dir']) ? $user->theme['template_inherit_dir'] : $user->theme['template_dir']),
 		'T_IMAGESET_NAME'       => rawurlencode($user->theme['imageset_dir']),
-		'T_IMAGESET_LANG_NAME'  => $user->lang_name,
+		'T_IMAGESET_LANG_NAME'  => $user->lang_code,
 
 		'SITE_LOGO_IMG'         => $user->img('site_logo'),
 	]);

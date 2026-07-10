@@ -84,7 +84,7 @@ class add_user
 			'new_password'      => request_var('new_password', '', true),
 			'password_confirm'  => request_var('password_confirm', '', true),
 			'email'             => strtolower(request_var('email', '')),
-			'lang'              => basename(request_var('lang', $user->lang_name)),
+			'lang'              => basename(request_var('lang', $user->lang_code)),
 			'tz'                => request_var('tz', (float) $timezone),
 		];
 
@@ -120,7 +120,7 @@ class add_user
 			'group_id'              => (int) $groups['default'],
 			'user_timezone'         => (float) $data['tz'],
 			'user_dst'              => $is_dst,
-			'user_lang'             => $data['lang'],
+			'user_lang_code'        => $data['lang'],
 			'user_type'             => USER_NORMAL,
 			'user_actkey'           => '',
 			'user_ip'               => $user->ip,

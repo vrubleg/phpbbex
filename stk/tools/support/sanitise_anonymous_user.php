@@ -90,7 +90,7 @@ class sanitise_anonymous_user
 			'user_regdate'              => 0,
 			'user_password'             => '',
 			'user_email'                => '',
-			'user_lang'                 => $config['default_lang'],
+			'user_lang_code'            => $config['default_lang_code'],
 			'user_style'                => $config['default_style'],
 			'user_rank'                 => $group_rank,
 			'user_colour'               => $group_colour,

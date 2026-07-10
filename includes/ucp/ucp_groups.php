@@ -193,7 +193,7 @@ class ucp_groups
 									require_once(PHPBB_ROOT_PATH . 'includes/functions_messenger.php');
 									$messenger = new messenger();
 
-									$sql = 'SELECT u.username, u.username_clean, u.user_email, u.user_notify_type, u.user_jabber, u.user_lang
+									$sql = 'SELECT u.username, u.username_clean, u.user_email, u.user_notify_type, u.user_jabber, u.user_lang_code
 										FROM ' . USER_GROUP_TABLE . ' ug, ' . USERS_TABLE . " u
 										WHERE ug.user_id = u.user_id
 											AND ug.group_leader = 1
@@ -202,7 +202,7 @@ class ucp_groups
 
 									while ($row = $db->sql_fetchrow($result))
 									{
-										$messenger->template('group_request', $row['user_lang']);
+										$messenger->template('group_request', $row['user_lang_code']);
 
 										$messenger->to($row['user_email'], $row['username']);
 										$messenger->im($row['user_jabber'], $row['username']);

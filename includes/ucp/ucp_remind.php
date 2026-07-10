@@ -30,7 +30,7 @@ class ucp_remind
 
 		if ($submit)
 		{
-			$sql = 'SELECT user_id, username, user_permissions, user_email, user_jabber, user_notify_type, user_type, user_lang, user_inactive_reason
+			$sql = 'SELECT user_id, username, user_permissions, user_email, user_jabber, user_notify_type, user_type, user_lang_code, user_inactive_reason
 				FROM ' . USERS_TABLE . "
 				WHERE user_email = '" . $db->sql_escape($email) . "'
 					AND username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
@@ -87,7 +87,7 @@ class ucp_remind
 
 			$messenger = new messenger(false);
 
-			$messenger->template('user_activate_passwd', $user_row['user_lang']);
+			$messenger->template('user_activate_passwd', $user_row['user_lang_code']);
 
 			$messenger->to($user_row['user_email'], $user_row['username']);
 			$messenger->im($user_row['user_jabber'], $user_row['username']);

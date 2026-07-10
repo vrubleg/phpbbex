@@ -52,7 +52,7 @@ class acp_board
 						'copyright_notice'      => ['lang' => 'COPYRIGHT_NOTICE',       'validate' => 'string', 'type' => 'htmlarea:3:1000', 'explain' => true],
 						'board_disable'         => ['lang' => 'DISABLE_BOARD',          'validate' => 'bool',   'type' => 'custom', 'method' => 'board_disable', 'explain' => true],
 						'board_disable_msg'     => false,
-						'default_lang'          => ['lang' => 'DEFAULT_LANGUAGE',       'validate' => 'lang',   'type' => 'select', 'function' => 'language_select', 'params' => ['{CONFIG_VALUE}'], 'explain' => false],
+						'default_lang_code'     => ['lang' => 'DEFAULT_LANGUAGE',       'validate' => 'lang',   'type' => 'select', 'function' => 'language_select', 'params' => ['{CONFIG_VALUE}'], 'explain' => false],
 						'override_user_lang'    => ['lang' => 'OVERRIDE_LANGUAGE',  'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'auto_guest_lang'       => ['lang' => 'AUTO_GUEST_LANG',    'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'default_dateformat'    => ['lang' => 'DEFAULT_DATE_FORMAT',    'validate' => 'string', 'type' => 'custom', 'method' => 'dateformat_select', 'explain' => true],

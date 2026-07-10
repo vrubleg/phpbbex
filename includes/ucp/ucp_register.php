@@ -36,30 +36,30 @@ class ucp_register
 
 		$submit         = isset($_POST['agree']);
 		$change_lang    = request_var('change_lang', '');
-		$user_lang      = request_var('lang', $user->lang_name);
+		$user_lang_code = request_var('lang', $user->lang_code);
 
 		add_form_key('ucp_register');
 
-		if ($change_lang || $user_lang != $config['default_lang'])
+		if ($change_lang || $user_lang_code != $config['default_lang_code'])
 		{
-			$use_lang = ($change_lang) ? basename($change_lang) : basename($user_lang);
+			$use_lang = ($change_lang) ? basename($change_lang) : basename($user_lang_code);
 
-			if (!validate_language_iso_name($use_lang))
+			if (!validate_lang_code($use_lang))
 			{
 				if ($change_lang)
 				{
 					$submit = false;
 				}
 
-				$user->lang_name = $user_lang = $use_lang;
+				$user->lang_code = $user_lang_code = $use_lang;
 				$user->lang = [];
-				$user->data['user_lang'] = $user->lang_name;
+				$user->data['user_lang_code'] = $user->lang_code;
 				$user->add_lang(['common', 'ucp']);
 			}
 			else
 			{
 				$change_lang = '';
-				$user_lang = $user->lang_name;
+				$user_lang_code = $user->lang_code;
 			}
 		}
 
@@ -83,14 +83,14 @@ class ucp_register
 			'new_password'      => request_var('new_password', '', true),
 			'password_confirm'  => request_var('password_confirm', '', true),
 			'email'             => strtolower(request_var('email', '')),
-			'lang'              => request_var('lang', $user->lang_name),
+			'lang'              => request_var('lang', $user->lang_code),
 			'tz'                => request_var('tz', (float) $timezone),
 		];
 
 		// Check and initialize some variables if needed
 		if ($submit)
 		{
-			$data['lang']       = ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+			$data['lang']       = ($config['override_user_lang']) ? $config['default_lang_code'] : $data['lang'];
 			$data['tz']         = ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
 			$is_dst             = ($config['override_user_timezone']) ? $config['board_dst'] : $is_dst;
 
@@ -138,7 +138,7 @@ class ucp_register
 						['string', false, 6, 60],
 						['email']],
 					'tz'                => ['num', false, -14, 14],
-					'lang'              => ['language_iso_name'],
+					'lang'              => ['lang_code'],
 				]);
 
 				// Replace "error" strings with their real, localised form
@@ -147,7 +147,7 @@ class ucp_register
 				$error_type['generic'] = !!sizeof($validation_errors);
 
 				// validate custom profile fields
-				$cp->submit_cp_field('register', $user->get_iso_lang_id(), $cp_data, $error);
+				$cp->submit_cp_field('register', $user->lang_code, $cp_data, $error);
 
 				if ($data['new_password'] != $data['password_confirm'])
 				{
@@ -199,7 +199,7 @@ class ucp_register
 					'group_id'              => (int) $group_id,
 					'user_timezone'         => (float) $data['tz'],
 					'user_dst'              => $is_dst,
-					'user_lang'             => $data['lang'],
+					'user_lang_code'        => $data['lang'],
 					'user_type'             => $user_type,
 					'user_actkey'           => $user_actkey,
 					'user_ip'               => $user->ip,
@@ -285,14 +285,14 @@ class ucp_register
 							$where_sql .= ' OR ' . $db->sql_in_set('user_id', $admin_ary);
 						}
 
-						$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
+						$sql = 'SELECT user_id, username, user_email, user_lang_code, user_jabber, user_notify_type
 							FROM ' . USERS_TABLE . ' ' .
 							$where_sql;
 						$result = $db->sql_query($sql);
 
 						while ($row = $db->sql_fetchrow($result))
 						{
-							$messenger->template('admin_activate', $row['user_lang']);
+							$messenger->template('admin_activate', $row['user_lang_code']);
 							$messenger->to($row['user_email'], $row['username']);
 							$messenger->im($row['user_jabber'], $row['username']);
 
@@ -380,7 +380,7 @@ class ucp_register
 		$user->profile_fields = [];
 
 		// Generate profile fields -> Template Block Variable profile_fields
-		$cp->generate_profile_fields('register', $user->get_iso_lang_id());
+		$cp->generate_profile_fields('register', $user->lang_code);
 
 		//
 		$this->tpl_name = 'ucp_register';

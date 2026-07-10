@@ -16,8 +16,8 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, [
+	'HTML_LANG_CODE'    => 'ru',
 	'DATE_FORMAT'       => '|d.m.Y|',   // 01 Jan 2007 (with Relative days enabled)
-	'USER_LANG'         => 'ru',
 
 	'1_DAY'         => '1 день',
 	'1_MONTH'       => '1 месяц',

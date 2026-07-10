@@ -89,15 +89,6 @@ while ($row = $db->sql_fetchrow($result))
 }
 $db->sql_freeresult($result);
 
-// Load language files.
-if (!isset($config['default_lang']) || !file_exists(PHPBB_ROOT_PATH . 'language/' . $config['default_lang']))
-{
-	die('Error! Default language is not found!');
-}
-require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/common.php');
-require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/acp/common.php');
-require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/install.php');
-
 // Check phpBBex version.
 
 if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_version'], '1.10.0', '>'))
@@ -566,6 +557,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('session_length', '43200');
 	set_config('referer_validation', '1');
 	set_config('cache_mtime_check', '1');
+	set_config('max_sig_chars', min((int) $config['max_sig_chars'], 500));
 
 	// Remove obsolete modules.
 
@@ -583,6 +575,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_permissions([
 		'a_backup',
 		'u_sendemail',
+		'u_pm_download',
+		'u_sendim',
 	]);
 
 	// Update cached module rights.
@@ -594,6 +588,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	// Update schema.
 
 	$db->sql_return_on_error(true);
+
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_last_confirm_key');
@@ -606,7 +601,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_lastpage');
-	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_value = '500' WHERE config_name = 'max_sig_chars' AND config_value > 500");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_sig = LEFT(user_sig, 500) WHERE CHAR_LENGTH(user_sig) > 500");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_sig varchar(500) DEFAULT '' NOT NULL");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_interests = LEFT(user_interests, 1000) WHERE CHAR_LENGTH(user_interests) > 1000");
@@ -619,16 +613,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_skype = LEFT(user_skype, 32) WHERE CHAR_LENGTH(user_skype) > 32");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_telegram = LEFT(user_telegram, 32) WHERE CHAR_LENGTH(user_telegram) > 32");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_website = LEFT(user_website, 100) WHERE CHAR_LENGTH(user_website) > 100");
-	$db->sql_query("UPDATE " . LANG_TABLE . " SET lang_iso = LEFT(lang_iso, 5) WHERE CHAR_LENGTH(lang_iso) > 5");
-	$db->sql_query("UPDATE " . LANG_TABLE . " SET lang_dir = LEFT(lang_dir, 5) WHERE CHAR_LENGTH(lang_dir) > 5");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_lang = LEFT(user_lang, 5) WHERE CHAR_LENGTH(user_lang) > 5");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_jabber varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_skype varchar(32) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_telegram varchar(32) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_website varchar(100) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_iso varchar(5) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_dir varchar(5) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_lang varchar(5) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
@@ -637,7 +625,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN style_copyright');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_copyright');
+	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN bbcode_bitfield');
 	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_path template_dir varchar(100) DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_inherits_id template_inherit_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_inherit_path template_inherit_dir varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP INDEX tmplte_nm');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_name');
 	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' ADD UNIQUE template_dir (template_dir)');
@@ -656,15 +647,38 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' ADD UNIQUE imageset_dir (imageset_dir)');
 	$db->sql_query("DROP TABLE {$table_prefix}styles_imageset_data");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
-	$db->sql_return_on_error(false);
+
+	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
+
+	$db->sql_query("UPDATE " . LANG_TABLE . " SET lang_dir = LEFT(lang_dir, 5) WHERE CHAR_LENGTH(lang_dir) > 5");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " CHANGE lang_dir lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL");
+	$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " ADD COLUMN lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER field_id");
+	$db->sql_query("UPDATE " . PROFILE_LANG_TABLE . " pl, " . LANG_TABLE . " l SET pl.lang_code = l.lang_code WHERE pl.lang_id = l.lang_id");
+	$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " DROP PRIMARY KEY");
+	$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " DROP COLUMN lang_id");
+	$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " ADD PRIMARY KEY (field_id, lang_code)");
+	$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " ADD COLUMN lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER field_id");
+	$db->sql_query("UPDATE " . PROFILE_FIELDS_LANG_TABLE . " pfl, " . LANG_TABLE . " l SET pfl.lang_code = l.lang_code WHERE pfl.lang_id = l.lang_id");
+	$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " DROP PRIMARY KEY");
+	$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " DROP COLUMN lang_id");
+	$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " ADD PRIMARY KEY (field_id, lang_code, option_id)");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_id tinyint(4) NOT NULL");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP PRIMARY KEY");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP INDEX lang_iso");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_id");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_iso");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " ADD PRIMARY KEY (lang_code)");
+	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_author");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_lang = LEFT(user_lang, 5) WHERE CHAR_LENGTH(user_lang) > 5");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_lang user_lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL");
+	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_name = 'default_lang_code' WHERE config_name = 'default_lang'");
 
 	// Adjust QA CAPTCHA tables.
 
-	$db->sql_return_on_error(true);
 	if ($db_tools->sql_table_exists("{$table_prefix}captcha_questions"))
 	{
 		$db->sql_query("UPDATE {$table_prefix}captcha_questions SET lang_iso = LEFT(lang_iso, 5) WHERE CHAR_LENGTH(lang_iso) > 5");
-		$db->sql_query("ALTER TABLE {$table_prefix}captcha_questions MODIFY lang_iso varchar(5) DEFAULT '' NOT NULL");
+		$db->sql_query("ALTER TABLE {$table_prefix}captcha_questions CHANGE lang_iso lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL");
 		$db->sql_query("ALTER TABLE {$table_prefix}captcha_questions DROP COLUMN lang_id");
 	}
 	if ($db_tools->sql_table_exists("{$table_prefix}qa_confirm"))
@@ -673,11 +687,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		$db->sql_query("ALTER TABLE {$table_prefix}qa_confirm DROP COLUMN lang_iso");
 		$db->sql_query("ALTER TABLE {$table_prefix}qa_confirm ADD INDEX lookup(session_id, confirm_type)");
 	}
-	$db->sql_return_on_error(false);
 
 	// Migrate phpbb_user_browser_ids to the new phpbb_browser_tracking.
 
-	$db->sql_return_on_error(true);
 	$db->sql_query("ALTER TABLE {$table_prefix}user_browser_ids RENAME TO " . BROWSER_TRACKING_TABLE);
 	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE created tracking_first_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE last_visit tracking_last_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
@@ -685,16 +697,13 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE agent browser_ua varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " ADD COLUMN tracking_first_ip varchar(40) DEFAULT '' NOT NULL AFTER browser_ua");
 	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE last_ip tracking_last_ip varchar(40) DEFAULT '' NOT NULL");
-	$db->sql_return_on_error(false);
 	$db->sql_query("UPDATE " . BROWSER_TRACKING_TABLE . " SET tracking_first_ip = tracking_last_ip WHERE tracking_first_ip = ''");
 
 	// Rename legacy UA column names to make it clear that they store user-agent strings.
 
-	$db->sql_return_on_error(true);
 	$db->sql_query("ALTER TABLE " . LOGIN_ATTEMPT_TABLE . " CHANGE attempt_browser attempt_browser_ua varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " CHANGE session_browser session_browser_ua varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_browser user_browser_ua varchar(250) DEFAULT '' NOT NULL");
-	$db->sql_return_on_error(false);
 
 	// Update anonymous user.
 
@@ -702,10 +711,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	// Demote bots from users to guests.
 
-	$db->sql_return_on_error(true);
 	$db->sql_query('ALTER TABLE ' . BOTS_TABLE . ' ADD COLUMN bot_lastvisit int(11) UNSIGNED DEFAULT 0 NOT NULL AFTER bot_name');
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' ADD COLUMN session_bot_id mediumint(8) UNSIGNED DEFAULT 0 NOT NULL AFTER session_user_id');
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' ADD INDEX session_bot_id(session_bot_id)');
+
 	$db->sql_return_on_error(false);
 
 	if ($db_tools->sql_column_exists(BOTS_TABLE, 'user_id'))
@@ -1129,9 +1138,18 @@ $database_update_info = database_update_info();
 $error_ary = [];
 $errored = false;
 
+// Load language files.
+if (!isset($config['default_lang']) || !file_exists(PHPBB_ROOT_PATH . 'language/' . $config['default_lang']))
+{
+	die('Error! Default language is not found!');
+}
+require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/common.php');
+require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/acp/common.php');
+require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/install.php');
+
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $lang['USER_LANG']; ?>">
+<html lang="<?php echo $lang['HTML_LANG_CODE']; ?>">
 <head>
 <meta charset="utf-8" />
 <title><?php echo $lang['UPDATING_TO_LATEST_STABLE']; ?></title>
@@ -1597,8 +1615,8 @@ function database_update_info()
 			// Add the following columns
 			'add_columns'       => [
 				STYLES_TEMPLATE_TABLE           => [
-					'template_inherits_id'      => ['UINT:4', 0],
-					'template_inherit_path'     => ['VCHAR', ''],
+					'template_inherit_id'       => ['UINT:4', 0],
+					'template_inherit_dir'      => ['VCHAR:100', ''],
 				],
 				GROUPS_TABLE                    => [
 					'group_max_recipients'      => ['UINT', 0],
@@ -2457,59 +2475,6 @@ function change_database_data(&$no_updates, $version)
 
 		// Changes from 3.0.7-PL1 to 3.0.8-RC1
 		case '3.0.7-PL1':
-			// Update file extension group names to use language strings.
-			$sql = 'SELECT lang_dir
-				FROM ' . LANG_TABLE;
-			$result = $db->sql_query($sql);
-
-			$extension_groups_updated = [];
-			while ($lang_dir = $db->sql_fetchfield('lang_dir'))
-			{
-				$lang_dir = basename($lang_dir);
-
-				// The language strings we need are either in language/.../acp/attachments.php
-				// in the update package if we're updating to 3.0.8-RC1 or later,
-				// or they are in language/.../install.php when we're updating from 3.0.7-PL1 or earlier.
-				// On an already updated board, they can also already be in language/.../acp/attachments.php
-				// in the board root.
-				$lang_files = [
-					PHPBB_ROOT_PATH . "install/update/new/language/{$lang_dir}/acp/attachments.php",
-					PHPBB_ROOT_PATH . "language/{$lang_dir}/install.php",
-					PHPBB_ROOT_PATH . "language/{$lang_dir}/acp/attachments.php",
-				];
-
-				foreach ($lang_files as $lang_file)
-				{
-					if (!file_exists($lang_file))
-					{
-						continue;
-					}
-
-					$lang = [];
-					require($lang_file);
-
-					foreach ($lang as $lang_key => $lang_val)
-					{
-						if (isset($extension_groups_updated[$lang_key]) || strpos($lang_key, 'EXT_GROUP_') !== 0)
-						{
-							continue;
-						}
-
-						$sql_ary = [
-							'group_name'    => substr($lang_key, 10), // Strip off 'EXT_GROUP_'
-						];
-
-						$sql = 'UPDATE ' . EXTENSION_GROUPS_TABLE . '
-							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-							WHERE group_name = '" . $db->sql_escape($lang_val) . "'";
-						_sql($sql, $errored, $error_ary);
-
-						$extension_groups_updated[$lang_key] = true;
-					}
-				}
-			}
-			$db->sql_freeresult($result);
-
 			// Install modules
 			$modules_to_install = [
 				'post'                  => [

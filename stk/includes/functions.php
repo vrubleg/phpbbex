@@ -252,7 +252,7 @@ function user_lang()
 * take the boards default language, if that also fails it will fall back to English
 *
 * @param    String  $lang_file  the name of the language file
-* @param    mixed   $force_lang If this parameter contains an ISO code this language
+* @param    mixed   $force_lang If this parameter contains a language code this language
 *                               is used for the file. If set to "false" the users default
 *                               langauge will be used
 */
@@ -262,38 +262,38 @@ function stk_add_lang($lang_file, $fore_lang = false)
 
 	// Internally cache some data
 	static $lang_data   = [];
-	static $lang_dirs   = [];
+	static $lang_codes  = [];
 
 	// Store current phpBB data
 	if (empty($lang_data))
 	{
 		$lang_data = [
 			'lang_path' => $user->lang_path,
-			'lang_name' => $user->lang_name,
+			'lang_code' => $user->lang_code,
 		];
 	}
 
-	// Empty the lang_name
-	$user->lang_name = '';
+	// Empty the language code.
+	$user->lang_code = '';
 
 	// Find out what languages we could use
-	if (empty($lang_dirs))
+	if (empty($lang_codes))
 	{
-		$lang_dirs = [
-			$user->data['user_lang'],           // User default
-			basename($config['default_lang']),  // Board default
+		$lang_codes = [
+			$user->data['user_lang_code'],           // User default
+			basename($config['default_lang_code']),  // Board default
 			'en',                               // System default
 		];
 
-		// Only unique dirs
-		$lang_dirs = array_unique($lang_dirs);
+		// Only unique codes
+		$lang_codes = array_unique($lang_codes);
 	}
 
 	// Switch to the STK language dir
 	$user->lang_path = STK_ROOT_PATH . 'language/';
 
 	// Test all languages
-	foreach ($lang_dirs as $dir)
+	foreach ($lang_codes as $dir)
 	{
 		// When forced skip all others
 		if ($fore_lang !== false && $dir != $fore_lang)
@@ -303,13 +303,13 @@ function stk_add_lang($lang_file, $fore_lang = false)
 
 		if (file_exists($user->lang_path . $dir . "/{$lang_file}.php"))
 		{
-			$user->lang_name = $dir;
+			$user->lang_code = $dir;
 			break;
 		}
 	}
 
 	// No language file :/
-	if (empty($user->lang_name))
+	if (empty($user->lang_code))
 	{
 		trigger_error("Language file: {$lang_file}.php" . ' missing!', E_USER_ERROR);
 	}
@@ -319,7 +319,7 @@ function stk_add_lang($lang_file, $fore_lang = false)
 
 	// Now reset the paths so phpBB can continue to operate as usual
 	$user->lang_path = $lang_data['lang_path'];
-	$user->lang_name = $lang_data['lang_name'];
+	$user->lang_code = $lang_data['lang_code'];
 }
 
 /**

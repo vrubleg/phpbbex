@@ -146,23 +146,24 @@ class bbcode
 	*/
 	function bbcode_cache_init()
 	{
-		global $template, $user;
+		global $cache, $template, $user;
 
 		if (empty($this->template_filename))
 		{
-			$this->template_bitfield = new bitfield($user->theme['bbcode_bitfield']);
-			$this->template_filename = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_dir'] . '/template/bbcode.html';
+			$template_dir = $user->theme['template_dir'];
+			$this->template_filename = PHPBB_ROOT_PATH . "styles/{$template_dir}/template/bbcode.html";
 
-			if (empty($user->theme['template_inherits_id']) && !empty($template->orig_tpl_inherits_id))
+			if (empty($user->theme['template_inherit_id']) && !empty($template->orig_tpl_inherit_id))
 			{
-				$user->theme['template_inherits_id'] = $template->orig_tpl_inherits_id;
+				$user->theme['template_inherit_id'] = $template->orig_tpl_inherit_id;
 			}
 
 			if (!@file_exists($this->template_filename))
 			{
-				if (isset($user->theme['template_inherits_id']) && $user->theme['template_inherits_id'])
+				if (isset($user->theme['template_inherit_id']) && $user->theme['template_inherit_id'])
 				{
-					$this->template_filename = PHPBB_ROOT_PATH . 'styles/' . $user->theme['template_inherit_path'] . '/template/bbcode.html';
+					$template_dir = $user->theme['template_inherit_dir'];
+					$this->template_filename = PHPBB_ROOT_PATH . "styles/{$template_dir}/template/bbcode.html";
 					if (!@file_exists($this->template_filename))
 					{
 						trigger_error('The file ' . $this->template_filename . ' is missing.', E_USER_ERROR);
@@ -173,6 +174,15 @@ class bbcode
 					trigger_error('The file ' . $this->template_filename . ' is missing.', E_USER_ERROR);
 				}
 			}
+
+			$cfg_data = $cache->obtain_style_cfg($template_dir, 'template');
+
+			if (empty($cfg_data['bbcode_bitfield']))
+			{
+				$cfg_data['bbcode_bitfield'] = 'lNmA';
+			}
+
+			$this->template_bitfield = new bitfield($cfg_data['bbcode_bitfield']);
 		}
 
 		$bbcode_ids = $rowset = $sql = [];

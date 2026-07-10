@@ -347,7 +347,7 @@ class phpbb_session
 
 						$this->data['is_registered'] = ($this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER));
 						$this->data['is_bot'] = !empty($this->data['session_bot_id']);
-						$this->data['user_lang'] = basename($this->data['user_lang']);
+						$this->data['user_lang_code'] = basename($this->data['user_lang_code']);
 
 						$this->handle_browser_tracking(false);
 						return true;
@@ -1299,8 +1299,7 @@ class phpbb_user extends phpbb_session
 	var $theme = [];
 	var $timezone;
 	var $dst;
-	var $lang_name = false;
-	var $lang_id = false;
+	var $lang_code = false;
 	var $lang_path;
 	var $img_lang;
 	var $img_array = [];
@@ -1342,20 +1341,18 @@ class phpbb_user extends phpbb_session
 
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
-			$this->lang_name = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang'] . "/common.php")) ? $this->data['user_lang'] : basename($config['default_lang']);
+			$this->lang_code = (!$config['override_user_lang'] && file_exists($this->lang_path . $this->data['user_lang_code'] . '/common.php')) ? $this->data['user_lang_code'] : $config['default_lang_code'];
 			$this->timezone = ($config['override_user_timezone'] ? $config['board_timezone'] : $this->data['user_timezone']) * 3600;
 			$this->dst = ($config['override_user_timezone'] ? $config['board_dst'] : $this->data['user_dst']) * 3600;
 		}
 		else
 		{
-			$this->lang_name = basename($config['default_lang']);
+			$this->lang_code = $config['default_lang_code'];
 			$this->timezone = $config['board_timezone'] * 3600;
 			$this->dst = $config['board_dst'] * 3600;
 
-			/**
-			* If a guest user is surfing, we try to guess his/her language first by obtaining the browser language
-			**/
-			if (!empty($config['auto_guest_lang']) && isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+			// Detect guest language from the Accept-Language HTTP header.
+			if (!empty($config['auto_guest_lang']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE']))
 			{
 				$sql = 'SELECT * FROM ' . LANG_TABLE;
 				$result = $db->sql_query($sql, 3600);
@@ -1363,54 +1360,54 @@ class phpbb_user extends phpbb_session
 				$lang_allowed = [];
 				while ($row = $db->sql_fetchrow($result))
 				{
-					if (file_exists(PHPBB_ROOT_PATH . 'language/' . $row['lang_dir'] . "/common.php"))
+					if (file_exists($this->lang_path . $row['lang_code'] . '/common.php'))
 					{
-						$lang_allowed[$row['lang_iso']] = substr($row['lang_iso'], 0, 2);
+						$lang_allowed[$row['lang_code']] = substr($row['lang_code'], 0, 2);
 					}
 				}
 
-				$accept_lang_ary = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-				foreach ($accept_lang_ary as $accept_lang)
+				$accept_langs = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+				foreach ($accept_langs as $accept_lang)
 				{
-					$accept_lang = explode(';', $accept_lang);
-					$accept_lang = strtolower(trim($accept_lang[0]));
-					if (strlen($accept_lang) < 2) continue;
+					$accept_lang = strtolower(trim(explode(';', $accept_lang)[0]));
+					if (strlen($accept_lang) < 2) { continue; }
 
-					// Guess full xx_yy form
+					// Maybe xx_yy is available?
 					if (strlen($accept_lang) >= 5)
 					{
 						$accept_lang = substr($accept_lang, 0, 2) . '_' . substr($accept_lang, 3, 2);
 						if (isset($lang_allowed[$accept_lang]))
 						{
-							$this->lang_name = $config['default_lang'] = $accept_lang;
+							$this->lang_code = $accept_lang;
 							break;
 						}
 					}
 
-					// No match on xx_yy so try xx
+					// Maybe just xx is available?
 					$accept_lang = substr($accept_lang, 0, 2);
 					if (isset($lang_allowed[$accept_lang]))
 					{
-						$this->lang_name = $config['default_lang'] = $accept_lang;
+						$this->lang_code = $accept_lang;
 						break;
 					}
 
-					// No match on xx so try xx_yy with another yy
+					// Maybe xx with a different yy is available?
 					$accept_lang = array_search($accept_lang, $lang_allowed);
 					if ($accept_lang !== false)
 					{
-						$this->lang_name = $config['default_lang'] = $accept_lang;
+						$this->lang_code = $accept_lang;
 						break;
 					}
 				}
-				$this->data['user_lang'] = $this->lang_name;
 			}
+
+			$this->data['user_lang_code'] = $this->lang_code;
 		}
 
 		// We include common language file here to not load it every time a custom language file is included
 		$lang = &$this->lang;
 
-		require($this->lang_path . $this->lang_name . "/common.php");
+		require($this->lang_path . $this->lang_code . "/common.php");
 
 		// Adjust link in the "Powered by phpBBex" language string.
 		if (!empty($config['external_links_newwindow'])) { $lang['POWERED_BY'] = str_replace('<a ', '<a target="_blank" ', $lang['POWERED_BY']); }
@@ -1432,7 +1429,7 @@ class phpbb_user extends phpbb_session
 			$style = $style ?: ((!$config['override_user_style']) ? $this->data['user_style'] : $config['default_style']);
 		}
 
-		$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_dir, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id
+		$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.template_inherit_id, t.template_inherit_dir, c.theme_dir, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id
 			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 			WHERE s.style_id = {$style}
 				AND t.template_id = s.template_id
@@ -1452,7 +1449,7 @@ class phpbb_user extends phpbb_session
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
-			$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.bbcode_bitfield, c.theme_dir, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id
+			$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.template_inherit_id, t.template_inherit_dir, c.theme_dir, c.theme_id, c.theme_mtime, i.imageset_dir, i.imageset_id
 				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
 				WHERE s.style_id = {$style}
 					AND t.template_id = s.template_id
@@ -1489,7 +1486,7 @@ class phpbb_user extends phpbb_session
 
 		$template->set_template();
 
-		$this->img_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $this->theme['imageset_dir'] . '/imageset/' . $this->lang_name)) ? $this->lang_name : $config['default_lang'];
+		$this->img_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $this->theme['imageset_dir'] . '/imageset/' . $this->lang_code)) ? $this->lang_code : $config['default_lang_code'];
 
 		$this->img_array = $cache->obtain_style_imageset($this->theme['imageset_dir'], $this->img_lang);
 		foreach ($this->img_array as &$row)
@@ -1660,10 +1657,9 @@ class phpbb_user extends phpbb_session
 	}
 
 	/**
-	* Add Language Items - use_db and use_help are assigned where needed (only use them to force inclusion)
+	* Add Language Items - use_help is assigned where needed (only use it to force inclusion)
 	*
 	* @param mixed $lang_set specifies the language entries to include
-	* @param bool $use_db internal variable for recursion, do not use
 	* @param bool $use_help internal variable for recursion, do not use
 	*
 	* Examples:
@@ -1672,10 +1668,10 @@ class phpbb_user extends phpbb_session
 	* $lang_set = array('posting', 'viewtopic', 'help' => array('bbcode', 'faq'))
 	* $lang_set = array(array('posting', 'viewtopic'), 'help' => array('bbcode', 'faq'))
 	* $lang_set = 'posting'
-	* $lang_set = array('help' => 'faq', 'db' => array('help:faq', 'posting'))
+	* $lang_set = array('help' => 'faq')
 	* </code>
 	*/
-	function add_lang($lang_set, $use_db = false, $use_help = false)
+	function add_lang($lang_set, $use_help = false)
 	{
 		if (is_array($lang_set))
 		{
@@ -1685,28 +1681,24 @@ class phpbb_user extends phpbb_session
 				// We have to force the type here, else [array] language inclusion will not work
 				$key = (string) $key;
 
-				if ($key == 'db')
+				if ($key == 'help')
 				{
-					$this->add_lang($lang_file, true, $use_help);
-				}
-				else if ($key == 'help')
-				{
-					$this->add_lang($lang_file, $use_db, true);
+					$this->add_lang($lang_file, true);
 				}
 				else if (!is_array($lang_file))
 				{
-					$this->set_lang($this->lang, $this->help, $lang_file, $use_db, $use_help);
+					$this->set_lang($this->lang, $this->help, $lang_file, $use_help);
 				}
 				else
 				{
-					$this->add_lang($lang_file, $use_db, $use_help);
+					$this->add_lang($lang_file, $use_help);
 				}
 			}
 			unset($lang_set);
 		}
 		else if ($lang_set)
 		{
-			$this->set_lang($this->lang, $this->help, $lang_set, $use_db, $use_help);
+			$this->set_lang($this->lang, $this->help, $lang_set, $use_help);
 		}
 	}
 
@@ -1714,77 +1706,71 @@ class phpbb_user extends phpbb_session
 	* Set language entry (called by add_lang)
 	* @access private
 	*/
-	function set_lang(&$lang, &$help, $lang_file, $use_db = false, $use_help = false)
+	function set_lang(&$lang, &$help, $lang_file, $use_help = false)
 	{
-		// Make sure the language name is set (if the user setup did not happen it is not set)
-		if (!$this->lang_name)
+		// Make sure the language code is set (if the user setup did not happen it is not set).
+		if (!$this->lang_code)
 		{
 			global $config;
-			$this->lang_name = basename($config['default_lang']);
+			$this->lang_code = basename($config['default_lang_code']);
 		}
 
 		// $lang == $this->lang
 		// $help == $this->help
 		// - add appropriate variables here, name them as they are used within the language file...
-		if (!$use_db)
+		if ($use_help && strpos($lang_file, '/') !== false)
 		{
-			if ($use_help && strpos($lang_file, '/') !== false)
-			{
-				$language_filename = $this->lang_path . $this->lang_name . '/' . substr($lang_file, 0, stripos($lang_file, '/') + 1) . 'help_' . substr($lang_file, stripos($lang_file, '/') + 1) . '.php';
-			}
-			else
-			{
-				$language_filename = $this->lang_path . $this->lang_name . '/' . (($use_help) ? 'help_' : '') . $lang_file . '.php';
-			}
-
-			if (!file_exists($language_filename))
-			{
-				global $config;
-
-				if ($this->lang_name == 'en')
-				{
-					// The user's selected language is missing the file, the board default's language is missing the file, and the file doesn't exist in /en.
-					$language_filename = str_replace($this->lang_path . 'en', $this->lang_path . $this->data['user_lang'], $language_filename);
-					trigger_error('Language file ' . $language_filename . ' couldn\'t be opened.', E_USER_ERROR);
-				}
-				else if ($this->lang_name == basename($config['default_lang']))
-				{
-					// Fall back to the English Language
-					$this->lang_name = 'en';
-					$this->set_lang($lang, $help, $lang_file, $use_db, $use_help);
-				}
-				else if ($this->lang_name == $this->data['user_lang'])
-				{
-					// Fall back to the board default language
-					$this->lang_name = basename($config['default_lang']);
-					$this->set_lang($lang, $help, $lang_file, $use_db, $use_help);
-				}
-
-				// Reset the lang name
-				$this->lang_name = (file_exists($this->lang_path . $this->data['user_lang'] . "/common.php")) ? $this->data['user_lang'] : basename($config['default_lang']);
-				return;
-			}
-
-			require($language_filename);
+			$language_filename = $this->lang_path . $this->lang_code . '/' . substr($lang_file, 0, stripos($lang_file, '/') + 1) . 'help_' . substr($lang_file, stripos($lang_file, '/') + 1) . '.php';
 		}
-		else if ($use_db)
+		else
 		{
-			// Get Database Language Strings
-			// Put them into $lang if nothing is prefixed, put them into $help if help: is prefixed
-			// For example: help:faq, posting
+			$language_filename = $this->lang_path . $this->lang_code . '/' . (($use_help) ? 'help_' : '') . $lang_file . '.php';
 		}
+
+		if (!file_exists($language_filename))
+		{
+			global $config;
+
+			if ($this->lang_code == 'en')
+			{
+				// The user's selected language is missing the file, the board default's language is missing the file, and the file doesn't exist in /en.
+				$language_filename = str_replace($this->lang_path . 'en', $this->lang_path . $this->data['user_lang_code'], $language_filename);
+				trigger_error('Language file ' . $language_filename . ' couldn\'t be opened.', E_USER_ERROR);
+			}
+			else if ($this->lang_code == basename($config['default_lang_code']))
+			{
+				// Fall back to the English Language
+				$this->lang_code = 'en';
+				$this->set_lang($lang, $help, $lang_file, $use_help);
+			}
+			else if ($this->lang_code == $this->data['user_lang_code'])
+			{
+				// Fall back to the board default language
+				$this->lang_code = basename($config['default_lang_code']);
+				$this->set_lang($lang, $help, $lang_file, $use_help);
+			}
+
+			// Reset the lang name
+			$this->lang_code = (file_exists($this->lang_path . $this->data['user_lang_code'] . "/common.php")) ? $this->data['user_lang_code'] : basename($config['default_lang_code']);
+			return;
+		}
+
+		require($language_filename);
 	}
 
 	/**
-	* Format user date
+	* Format a date in user's time zone. Date format is in php's date() notation with a few extensions.
+	* |...| is used to indicate optional relative date part. For example, "|Y-m-d|, H:i" is formatted to "Today, H:i".
+	* {...} is used to indicate optional time part.
 	*
-	* @param int $gmepoch unix timestamp
-	* @param string $format date format in date() notation. | used to indicate relative dates, for example |d m Y|, h:i is translated to Today, h:i.
-	* @param bool $forcedate force non-relative date format.
+	* @param  int     $gmepoch      Unix timestamp.
+	* @param  string  $format       Date format.
+	* @param  bool    $no_relative  Force non-relative date format.
+	* @param  bool    $no_time      Don't display precise time.
 	*
-	* @return mixed translated date
+	* @return string                Formatted date.
 	*/
-	function format_date($gmepoch, $format = false, $forcedate = false, $notime = false)
+	function format_date($gmepoch, $format = false, $no_relative = false, $no_time = false)
 	{
 		global $config;
 
@@ -1794,7 +1780,7 @@ class phpbb_user extends phpbb_session
 
 		if ($this->data['is_bot'])
 		{
-			$forcedate = true;
+			$no_relative = true;
 		}
 
 		$format = (!$format) ? $config['default_dateformat'] : $format;
@@ -1808,7 +1794,7 @@ class phpbb_user extends phpbb_session
 				'notime'    => str_replace(['{', '}'], '', preg_replace('#{.*?}#i', '', $format)),
 			];
 		}
-		$format = $format_cache[$format][$notime ? 'notime' : 'full'];
+		$format = $format_cache[$format][$no_time ? 'notime' : 'full'];
 
 		if (!isset($date_cache[$format]))
 		{
@@ -1833,7 +1819,7 @@ class phpbb_user extends phpbb_session
 
 		// Show date <= 1 hour ago as 'xx min ago' but not greater than 60 seconds in the future
 		// A small tolerence is given for times in the future but in the same minute are displayed as '< than a minute ago'
-		if ($delta <= 3600 && $delta > -60 && ($delta >= -5 || floor($now / 60) == floor($gmepoch / 60)) && $date_cache[$format]['is_short'] !== false && !$forcedate && isset($this->lang['datetime']['AGO']))
+		if ($delta <= 3600 && $delta > -60 && ($delta >= -5 || floor($now / 60) == floor($gmepoch / 60)) && $date_cache[$format]['is_short'] !== false && !$no_relative)
 		{
 			return $this->lang(['datetime', 'AGO'], max(0, (int) floor($delta / 60)));
 		}
@@ -1844,7 +1830,7 @@ class phpbb_user extends phpbb_session
 			$midnight = gmmktime(0, 0, 0, $m, $d, $y) - $zone_offset;
 		}
 
-		if ($date_cache[$format]['is_short'] !== false && !$forcedate && !($gmepoch < $midnight - 86400 || $gmepoch > $midnight + 172800))
+		if ($date_cache[$format]['is_short'] !== false && !$no_relative && !($gmepoch < $midnight - 86400 || $gmepoch > $midnight + 172800))
 		{
 			$day = false;
 
@@ -1868,33 +1854,6 @@ class phpbb_user extends phpbb_session
 		}
 
 		return strtr(@gmdate($date_cache[$format]['format_long'], $gmepoch + $zone_offset), $date_cache[$format]['lang']);
-	}
-
-	/**
-	* Get language id currently used by the user
-	*/
-	function get_iso_lang_id()
-	{
-		global $config, $db;
-
-		if (!empty($this->lang_id))
-		{
-			return $this->lang_id;
-		}
-
-		if (!$this->lang_name)
-		{
-			$this->lang_name = $config['default_lang'];
-		}
-
-		$sql = 'SELECT lang_id
-			FROM ' . LANG_TABLE . "
-			WHERE lang_iso = '" . $db->sql_escape($this->lang_name) . "'";
-		$result = $db->sql_query($sql);
-		$this->lang_id = (int) $db->sql_fetchfield('lang_id');
-		$db->sql_freeresult($result);
-
-		return $this->lang_id;
 	}
 
 	/**

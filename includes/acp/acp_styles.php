@@ -21,20 +21,6 @@ class acp_styles
 	{
 		global $db, $user, $auth, $template, $cache, $config;
 
-		// Hardcoded template bitfield to add for new templates
-		$bitfield = new bitfield();
-		$bitfield->set(0);
-		$bitfield->set(1);
-		$bitfield->set(2);
-		$bitfield->set(3);
-		$bitfield->set(4);
-		$bitfield->set(8);
-		$bitfield->set(9);
-		$bitfield->set(11);
-		$bitfield->set(12);
-		define('TEMPLATE_BITFIELD', $bitfield->get_base64());
-		unset($bitfield);
-
 		$user->add_lang('acp/styles');
 
 		$this->tpl_name = 'acp_styles';
@@ -228,14 +214,14 @@ class acp_styles
 						{
 							$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_cfg");
 
-							$sql = 'SELECT lang_dir
+							$sql = 'SELECT lang_code
 								FROM ' . LANG_TABLE;
 							$result = $db->sql_query($sql);
 
 							while ($row = $db->sql_fetchrow($result))
 							{
-								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_dir']}");
-								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_dir']}_cfg");
+								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_code']}");
+								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_code']}_cfg");
 							}
 							$db->sql_freeresult($result);
 
@@ -641,7 +627,7 @@ class acp_styles
 
 			case 'template':
 				$sql_from = STYLES_TEMPLATE_TABLE;
-				$sql_where = 'WHERE template_inherits_id <> ' . $component_id;
+				$sql_where = 'WHERE template_inherit_id <> ' . $component_id;
 			break;
 
 			case 'theme':
@@ -1539,19 +1525,10 @@ class acp_styles
 
 		if (isset($cfg_data['inherit_from']) && $cfg_data['inherit_from'])
 		{
-			if ($mode === 'template')
-			{
-				$select_bf = ', bbcode_bitfield';
-			}
-			else
-			{
-				$select_bf = '';
-			}
-
-			$sql = "SELECT {$mode}_id, {$mode}_dir{$select_bf}
+			$sql = "SELECT {$mode}_id, {$mode}_dir
 				FROM {$sql_from}
 				WHERE {$mode}_dir = '" . $db->sql_escape($cfg_data['inherit_from']) . "'
-					AND {$mode}_inherits_id = 0";
+					AND {$mode}_inherit_id = 0";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -1562,15 +1539,13 @@ class acp_styles
 			else
 			{
 				$inherit_id = $row["{$mode}_id"];
-				$inherit_path = $row["{$mode}_dir"];
-				$inherit_bf = ($mode === 'template') ? $row["bbcode_bitfield"] : false;
+				$inherit_dir = $row["{$mode}_dir"];
 			}
 		}
 		else
 		{
 			$inherit_id = 0;
-			$inherit_path = '';
-			$inherit_bf = false;
+			$inherit_dir = '';
 		}
 
 		if (sizeof($error))
@@ -1585,25 +1560,11 @@ class acp_styles
 		switch ($mode)
 		{
 			case 'template':
-				// We check if the template author defined a different bitfield
-				if (!empty($cfg_data['template_bitfield']))
-				{
-					$sql_ary['bbcode_bitfield'] = $cfg_data['template_bitfield'];
-				}
-				else if ($inherit_bf)
-				{
-					$sql_ary['bbcode_bitfield'] = $inherit_bf;
-				}
-				else
-				{
-					$sql_ary['bbcode_bitfield'] = TEMPLATE_BITFIELD;
-				}
-
 				if (isset($cfg_data['inherit_from']) && $cfg_data['inherit_from'])
 				{
 					$sql_ary += [
-						'template_inherits_id'  => $inherit_id,
-						'template_inherit_path' => $inherit_path,
+						'template_inherit_id'   => $inherit_id,
+						'template_inherit_dir'  => $inherit_dir,
 					];
 				}
 			break;
@@ -1661,7 +1622,7 @@ class acp_styles
 
 		$sql = "SELECT {$mode}_id, {$mode}_dir
 			FROM {$sql_from}
-			WHERE {$mode}_inherits_id = " . (int) $id;
+			WHERE {$mode}_inherit_id = " . (int) $id;
 		$result = $db->sql_query($sql);
 
 		$names = [];
@@ -1714,7 +1675,7 @@ class acp_styles
 			break;
 		}
 
-		$sql = "SELECT {$mode}_inherits_id
+		$sql = "SELECT {$mode}_inherit_id
 			FROM {$sql_from}
 			WHERE {$mode}_id = " . (int) $id;
 		$result = $db->sql_query_limit($sql, 1);
@@ -1728,7 +1689,7 @@ class acp_styles
 			return false;
 		}
 
-		$super_id = $row["{$mode}_inherits_id"];
+		$super_id = $row["{$mode}_inherit_id"];
 
 		$sql = "SELECT {$mode}_id, {$mode}_dir
 			FROM {$sql_from}

@@ -34,7 +34,7 @@ class ucp_prefs
 				add_form_key('ucp_prefs_personal');
 				$data = [
 					'notifymethod'  => request_var('notifymethod', $user->data['user_notify_type']),
-					'lang'          => basename(request_var('lang', $user->data['user_lang'])),
+					'lang'          => basename(request_var('lang', $user->data['user_lang_code'])),
 					'style'         => request_var('style', (int) $user->data['user_style']),
 					'tz'            => request_var('tz', (float) $user->data['user_timezone']),
 					'dst'           => request_var('dst', (bool) $user->data['user_dst']),
@@ -62,12 +62,12 @@ class ucp_prefs
 						$data['style'] = (int) $user->data['user_style'];
 					}
 
-					$data['lang']       = ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+					$data['lang']       = ($config['override_user_lang']) ? $config['default_lang_code'] : $data['lang'];
 					$data['tz']         = ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
 					$data['dst']        = ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
 					$error = validate_data($data, [
-						'lang'          => ['language_iso_name'],
+						'lang'          => ['lang_code'],
 						'tz'            => ['num', false, -14, 14],
 					]);
 
@@ -89,7 +89,7 @@ class ucp_prefs
 							'user_options'          => $user->data['user_options'],
 
 							'user_dst'              => $data['dst'],
-							'user_lang'             => $data['lang'],
+							'user_lang_code'        => $data['lang'],
 							'user_timezone'         => $data['tz'],
 							'user_style'            => $data['style'],
 						];
@@ -109,7 +109,7 @@ class ucp_prefs
 				}
 
 				// check if there are any user-selectable languages
-				$sql = 'SELECT COUNT(lang_id) as languages_count
+				$sql = 'SELECT COUNT(lang_code) as languages_count
 								FROM ' . LANG_TABLE;
 				$result = $db->sql_query($sql);
 				if ($db->sql_fetchfield('languages_count') > 1)

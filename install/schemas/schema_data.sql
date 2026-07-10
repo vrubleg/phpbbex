@@ -414,14 +414,12 @@ INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_masspm', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_masspm_group', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_attach', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_bbcode', 1);
-INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_download', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_edit', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_flash', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_img', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_pm_smilies', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_readpm', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_search', 1);
-INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_sendim', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_sendpm', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_sig', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('u_viewonline', 1);
@@ -480,7 +478,7 @@ INSERT INTO phpbb_styles (style_name, style_active, template_id, theme_id, image
 INSERT INTO phpbb_styles_imageset (imageset_dir) VALUES ('prosilver');
 
 # -- phpbb_styles_template
-INSERT INTO phpbb_styles_template (template_dir, bbcode_bitfield) VALUES ('prosilver', 'lNmA');
+INSERT INTO phpbb_styles_template (template_dir) VALUES ('prosilver');
 
 # -- phpbb_styles_theme
 INSERT INTO phpbb_styles_theme (theme_dir) VALUES ('prosilver');
@@ -491,10 +489,10 @@ INSERT INTO phpbb_forums (forum_name, forum_desc, left_id, right_id, parent_id, 
 INSERT INTO phpbb_forums (forum_name, forum_desc, left_id, right_id, parent_id, forum_type, forum_posts, forum_topics, forum_topics_real, forum_last_post_id, forum_last_poster_id, forum_last_poster_name, forum_last_poster_colour, forum_last_post_subject, forum_last_post_time, forum_link, forum_password, forum_image, forum_rules, forum_rules_link, forum_rules_uid, forum_desc_uid, prune_days, prune_viewed, forum_parents, forum_flags) VALUES ('{L_FORUMS_TEST_FORUM_TITLE}', '{L_FORUMS_TEST_FORUM_DESC}', 2, 3, 1, 1, 1, 1, 1, 1, 2, 'Admin', 'AA0000', '{L_TOPICS_TOPIC_TITLE}', 972086460, '', '', '', '', '', '', '', 0, 0, '', 16);
 
 # -- Users / Anonymous user
-INSERT INTO phpbb_users (user_type, group_id, username, username_clean, user_regdate, user_password, user_email, user_lang, user_style, user_rank, user_colour, user_topics, user_posts, user_permissions, user_ip, user_birthday, user_avatar, user_sig, user_sig_bbcode_uid, user_from, user_icq, user_jabber, user_website, user_occupation, user_about, user_actkey, user_newpasswd, user_allow_massemail) VALUES (2, 1, 'Anonymous', 'anonymous', 0, '', '', 'en', 1, 0, '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
+INSERT INTO phpbb_users (user_type, group_id, username, username_clean, user_regdate, user_password, user_email, user_lang_code, user_style, user_rank, user_colour, user_topics, user_posts, user_permissions, user_ip, user_birthday, user_avatar, user_sig, user_sig_bbcode_uid, user_from, user_icq, user_jabber, user_website, user_occupation, user_about, user_actkey, user_newpasswd, user_allow_massemail) VALUES (2, 1, 'Anonymous', 'anonymous', 0, '', '', 'en', 1, 0, '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
 
 # -- username: Admin    password: admin (change this or remove it once everything is working!)
-INSERT INTO phpbb_users (user_type, group_id, username, username_clean, user_regdate, user_password, user_email, user_lang, user_style, user_rank, user_colour, user_topics, user_posts, user_permissions, user_ip, user_birthday, user_avatar, user_sig, user_sig_bbcode_uid, user_from, user_icq, user_jabber, user_website, user_occupation, user_about, user_actkey, user_newpasswd) VALUES (3, 5, 'Admin', 'admin', 0, '21232f297a57a5a743894a0e4a801fc3', 'admin@yourdomain.com', 'en', 1, 1, 'AA0000', 1, 1, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO phpbb_users (user_type, group_id, username, username_clean, user_regdate, user_password, user_email, user_lang_code, user_style, user_rank, user_colour, user_topics, user_posts, user_permissions, user_ip, user_birthday, user_avatar, user_sig, user_sig_bbcode_uid, user_from, user_icq, user_jabber, user_website, user_occupation, user_about, user_actkey, user_newpasswd) VALUES (3, 5, 'Admin', 'admin', 0, '21232f297a57a5a743894a0e4a801fc3', 'admin@yourdomain.com', 'en', 1, 1, 'AA0000', 1, 1, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
 # -- Groups
 INSERT INTO phpbb_groups (group_name, group_type, group_founder_manage, group_colour, group_legend, group_desc, group_desc_uid, group_max_recipients) VALUES ('GUESTS', 3, 0, '', 0, '', '', 5);
@@ -533,14 +531,14 @@ INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 
 INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 6, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option NOT IN ('u_viewonline', 'u_chggrp', 'u_chgname', 'u_ignoreflood', 'u_ignorefpedittime', 'u_ignoreedittime', 'u_pm_flash');
 
 # Limited Features (u_)
-INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 7, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option NOT IN ('u_attach', 'u_viewonline', 'u_chggrp', 'u_chgname', 'u_ignoreflood', 'u_ignorefpedittime', 'u_ignoreedittime', 'u_pm_attach', 'u_pm_flash', 'u_search', 'u_sendim', 'u_masspm', 'u_masspm_group');
+INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 7, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option NOT IN ('u_attach', 'u_viewonline', 'u_chggrp', 'u_chgname', 'u_ignoreflood', 'u_ignorefpedittime', 'u_ignoreedittime', 'u_pm_attach', 'u_pm_flash', 'u_search', 'u_masspm', 'u_masspm_group');
 
 # No Private Messages (u_)
 INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 8, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_', 'u_chgavatar', 'u_chgcensors', 'u_chgemail', 'u_chgpasswd', 'u_download', 'u_hideonline', 'u_sig', 'u_viewprofile', 'u_canplus', 'u_canminus');
 INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 8, auth_option_id, 0 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_readpm', 'u_sendpm', 'u_masspm', 'u_masspm_group');
 
 # No Avatar (u_)
-INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 9, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option NOT IN ('u_attach', 'u_chgavatar', 'u_viewonline', 'u_chggrp', 'u_chgname', 'u_ignoreflood', 'u_ignorefpedittime', 'u_ignoreedittime', 'u_pm_attach', 'u_pm_flash', 'u_search', 'u_sendim', 'u_masspm', 'u_masspm_group');
+INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 9, auth_option_id, 1 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option NOT IN ('u_attach', 'u_chgavatar', 'u_viewonline', 'u_chggrp', 'u_chgname', 'u_ignoreflood', 'u_ignorefpedittime', 'u_ignoreedittime', 'u_pm_attach', 'u_pm_flash', 'u_search', 'u_masspm', 'u_masspm_group');
 INSERT INTO phpbb_acl_roles_data (role_id, auth_option_id, auth_setting) SELECT 9, auth_option_id, 0 FROM phpbb_acl_options WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_chgavatar');
 
 # Full Moderator (m_)

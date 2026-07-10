@@ -857,7 +857,7 @@ class p_master
 	{
 		global $user;
 
-		$full_path = $user->lang_path . $user->lang_name . '/mods';
+		$full_path = $user->lang_path . $user->lang_code . '/mods';
 
 		if (is_dir($full_path))
 		{

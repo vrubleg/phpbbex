@@ -21,17 +21,17 @@ switch ($mode)
 {
 	case 'bbcode':
 		$l_title = $user->lang['BBCODE_GUIDE'];
-		$user->add_lang('bbcode', false, true);
+		$user->add_lang('bbcode', true);
 	break;
 
 	case 'rules':
 		$l_title = $user->lang['BOARD_RULES'];
-		$user->add_lang('rules', false, true);
+		$user->add_lang('rules', true);
 	break;
 
 	default:
 		$l_title = $user->lang['FAQ_EXPLAIN'];
-		$user->add_lang('faq', false, true);
+		$user->add_lang('faq', true);
 	break;
 }
 

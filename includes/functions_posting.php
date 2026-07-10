@@ -1205,7 +1205,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	$notify_rows = [];
 
 	// -- get forum_userids || topic_userids
-	$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
+	$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang_code, u.user_notify_type, u.user_jabber
 		FROM ' . (($topic_notification) ? TOPICS_WATCH_TABLE : FORUMS_WATCH_TABLE) . ' w, ' . USERS_TABLE . ' u
 		WHERE w.' . (($topic_notification) ? 'topic_id' : 'forum_id') . ' = ' . (($topic_notification) ? $topic_id : $forum_id) . '
 			AND ' . $db->sql_in_set('w.user_id', $sql_ignore_users, true) . '
@@ -1222,7 +1222,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 			'username'      => $row['username'],
 			'user_email'    => $row['user_email'],
 			'user_jabber'   => $row['user_jabber'],
-			'user_lang'     => $row['user_lang'],
+			'user_lang_code'=> $row['user_lang_code'],
 			'notify_type'   => ($topic_notification) ? 'topic' : 'forum',
 			'template'      => ($topic_notification) ? 'topic_notify' : 'newtopic_notify',
 			'method'        => $row['user_notify_type'],
@@ -1237,7 +1237,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	// forum notification is sent to those not already receiving topic notifications
 	if ($topic_notification)
 	{
-		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
+		$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang_code, u.user_notify_type, u.user_jabber
 			FROM ' . FORUMS_WATCH_TABLE . ' fw, ' . USERS_TABLE . " u
 			WHERE fw.forum_id = {$forum_id}
 				AND " . $db->sql_in_set('fw.user_id', $sql_ignore_users, true) . '
@@ -1254,7 +1254,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 				'username'      => $row['username'],
 				'user_email'    => $row['user_email'],
 				'user_jabber'   => $row['user_jabber'],
-				'user_lang'     => $row['user_lang'],
+				'user_lang_code'=> $row['user_lang_code'],
 				'notify_type'   => 'forum',
 				'template'      => 'forum_notify',
 				'method'        => $row['user_notify_type'],
@@ -1326,7 +1326,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 			$msg_list_ary[$row['template']][$pos]['email']  = $row['user_email'];
 			$msg_list_ary[$row['template']][$pos]['jabber'] = $row['user_jabber'];
 			$msg_list_ary[$row['template']][$pos]['name']   = $row['username'];
-			$msg_list_ary[$row['template']][$pos]['lang']   = $row['user_lang'];
+			$msg_list_ary[$row['template']][$pos]['lang']   = $row['user_lang_code'];
 			$msg_list_ary[$row['template']][$pos]['user_id']= $row['user_id'];
 		}
 		unset($msg_users);

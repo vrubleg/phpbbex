@@ -92,11 +92,6 @@ class phpbb_umil
 	var $result = '';
 
 	/**
-	* Auto run $this->display_results after running a command
-	*/
-	var $auto_display_results = false;
-
-	/**
 	* Were any new permissions added (used in umil_frontend)?
 	*/
 	var $permissions_added = false;
@@ -115,6 +110,8 @@ class phpbb_umil
 	* Do we want a custom prefix besides the phpBB table prefix?  You *probably* should not change this...
 	*/
 	var $table_prefix = false;
+
+	var $prev_return_on_error = false;
 
 	/**
 	* Constructor
@@ -141,7 +138,7 @@ class phpbb_umil
 		$this->command = call_user_func_array([$this, 'get_output_text'], $args);
 
 		$this->result = $user->lang['SUCCESS'] ?? 'SUCCESS';
-		$this->db->sql_return_on_error(true);
+		$this->prev_return_on_error = $this->db->sql_return_on_error(true);
 
 		//$this->db->sql_transaction('begin');
 	}
@@ -178,13 +175,7 @@ class phpbb_umil
 			//$this->db->sql_transaction('commit');
 		}
 
-		$this->db->sql_return_on_error(false);
-
-		// Auto output if requested.
-		if ($this->auto_display_results && method_exists($this, 'display_results'))
-		{
-			$this->display_results();
-		}
+		$this->db->sql_return_on_error($this->prev_return_on_error);
 
 		return '<strong>' . $this->command . '</strong><br />' . $this->result;
 	}

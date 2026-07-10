@@ -168,62 +168,47 @@ class install_install extends module
 			'S_LEGEND'      => false,
 		]);
 
-		$passed['mbstring'] = true;
-		if (@extension_loaded('mbstring'))
+		// Check mbstring settings.
+		$template->assign_block_vars('checks', [
+			'S_LEGEND'          => true,
+			'LEGEND'            => $lang['MBSTRING_CHECK'],
+			'LEGEND_EXPLAIN'    => $lang['MBSTRING_CHECK_EXPLAIN'],
+		]);
+
+		// The mbstring is guaranteed to be loaded since utf_tools.php would stop execution earlier without it.
+		$passed['mbstring'] = @extension_loaded('mbstring');
+
+		$checks = [
+			['func_overload', '!=', 0],
+			['encoding_translation', '!=', 0],
+		];
+
+		foreach ($checks as $mb_checks)
 		{
-			// Test for available database modules
-			$template->assign_block_vars('checks', [
-				'S_LEGEND'          => true,
-				'LEGEND'            => $lang['MBSTRING_CHECK'],
-				'LEGEND_EXPLAIN'    => $lang['MBSTRING_CHECK_EXPLAIN'],
-			]);
-
-			$checks = [
-				['func_overload', '&', (defined('MB_OVERLOAD_MAIL') && defined('MB_OVERLOAD_STRING') ? MB_OVERLOAD_MAIL|MB_OVERLOAD_STRING : 0)],
-				['encoding_translation', '!=', 0],
-				['http_input', '!=', ['pass', '']],
-				['http_output', '!=', ['pass', '']]
-			];
-
-			foreach ($checks as $mb_checks)
+			$ini_val = @ini_get('mbstring.' . $mb_checks[0]);
+			switch ($mb_checks[1])
 			{
-				$ini_val = @ini_get('mbstring.' . $mb_checks[0]);
-				switch ($mb_checks[1])
-				{
-					case '&':
-						if (intval($ini_val) & $mb_checks[2])
-						{
-							$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
-							$passed['mbstring'] = false;
-						}
-						else
-						{
-							$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
-						}
-					break;
-
-					case '!=':
-						if (!is_array($mb_checks[2]) && $ini_val != $mb_checks[2] ||
-							is_array($mb_checks[2]) && !in_array($ini_val, $mb_checks[2]))
-						{
-							$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
-							$passed['mbstring'] = false;
-						}
-						else
-						{
-							$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
-						}
-					break;
-				}
-				$template->assign_block_vars('checks', [
-					'TITLE'         => $lang['MBSTRING_' . strtoupper($mb_checks[0])],
-					'TITLE_EXPLAIN' => $lang['MBSTRING_' . strtoupper($mb_checks[0]) . '_EXPLAIN'],
-					'RESULT'        => $result,
-
-					'S_EXPLAIN'     => true,
-					'S_LEGEND'      => false,
-				]);
+				case '!=':
+					if (!is_array($mb_checks[2]) && $ini_val != $mb_checks[2] ||
+						is_array($mb_checks[2]) && !in_array($ini_val, $mb_checks[2]))
+					{
+						$result = '<strong style="color:red">' . $lang['NO'] . '</strong>';
+						$passed['mbstring'] = false;
+					}
+					else
+					{
+						$result = '<strong style="color:green">' . $lang['YES'] . '</strong>';
+					}
+				break;
 			}
+			$template->assign_block_vars('checks', [
+				'TITLE'         => $lang['MBSTRING_' . strtoupper($mb_checks[0])],
+				'TITLE_EXPLAIN' => $lang['MBSTRING_' . strtoupper($mb_checks[0]) . '_EXPLAIN'],
+				'RESULT'        => $result,
+
+				'S_EXPLAIN'     => true,
+				'S_LEGEND'      => false,
+			]);
 		}
 
 		// Test for available database modules
@@ -558,7 +543,7 @@ class install_install extends module
 		$s_hidden_fields = '';
 		$passed = false;
 
-		$data['default_lang'] = ($data['default_lang'] !== '') ? $data['default_lang'] : $data['language'];
+		$data['default_lang_code'] = ($data['default_lang_code'] !== '') ? $data['default_lang_code'] : $data['language'];
 
 		if (isset($_POST['check']))
 		{
@@ -816,7 +801,7 @@ class install_install extends module
 				VALUES ('board_startdate', '{$current_time}')",
 
 			'INSERT INTO ' . $data['table_prefix'] . "config (config_name, config_value)
-				VALUES ('default_lang', '" . $db->sql_escape($data['default_lang']) . "')",
+				VALUES ('default_lang_code', '" . $db->sql_escape($data['default_lang_code']) . "')",
 
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['board_email']) . "'
@@ -835,7 +820,7 @@ class install_install extends module
 				WHERE config_name = 'newest_username'",
 
 			'UPDATE ' . $data['table_prefix'] . "users
-				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_ip = '" . $db->sql_escape($user_ip) . "', user_lang = '" . $db->sql_escape($data['default_lang']) . "', user_email='" . $db->sql_escape($data['board_email']) . "', username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
+				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_ip = '" . $db->sql_escape($user_ip) . "', user_lang_code = '" . $db->sql_escape($data['default_lang_code']) . "', user_email='" . $db->sql_escape($data['board_email']) . "', username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
 				WHERE username = 'Admin'",
 
 			'UPDATE ' . $data['table_prefix'] . "moderator_cache
@@ -1225,11 +1210,9 @@ class install_install extends module
 				$lang_file = file("{$path}/iso.txt");
 
 				$lang_pack = [
-					'lang_iso'          => basename($path),
-					'lang_dir'          => basename($path),
+					'lang_code'         => basename($path),
 					'lang_english_name' => trim(htmlspecialchars($lang_file[0])),
 					'lang_local_name'   => trim(htmlspecialchars($lang_file[1], ENT_COMPAT, 'UTF-8')),
-					'lang_author'       => trim(htmlspecialchars($lang_file[2], ENT_COMPAT, 'UTF-8')),
 				];
 
 				$db->sql_query('INSERT INTO ' . LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $lang_pack));
@@ -1390,7 +1373,7 @@ class install_install extends module
 			'dbpasswd'      => request_var('dbpasswd', '', true),
 			'dbname'        => request_var('dbname', ''),
 			'table_prefix'  => request_var('table_prefix', ''),
-			'default_lang'  => basename(request_var('default_lang', '')),
+			'default_lang_code' => basename(request_var('default_lang_code', '')),
 			'admin_name'    => utf8_normalize_nfc(request_var('admin_name', '', true)),
 			'admin_pass1'   => request_var('admin_pass1', '', true),
 			'admin_pass2'   => request_var('admin_pass2', '', true),
@@ -1413,7 +1396,7 @@ class install_install extends module
 	];
 	var $admin_config_options = [
 		'legend1'               => 'ADMIN_CONFIG',
-		'default_lang'          => ['lang' => 'DEFAULT_LANG',               'type' => 'select', 'options' => '$this->module->inst_language_select(\'{VALUE}\')', 'explain' => false],
+		'default_lang_code'     => ['lang' => 'DEFAULT_LANG',               'type' => 'select', 'options' => '$this->module->inst_language_select(\'{VALUE}\')', 'explain' => false],
 		'admin_name'            => ['lang' => 'ADMIN_USERNAME',         'type' => 'text:25:100', 'explain' => true],
 		'admin_pass1'           => ['lang' => 'ADMIN_PASSWORD',         'type' => 'password:25:100', 'explain' => true],
 		'admin_pass2'           => ['lang' => 'ADMIN_PASSWORD_CONFIRM', 'type' => 'password:25:100', 'explain' => false],
@@ -1423,7 +1406,7 @@ class install_install extends module
 	/**
 	* Specific PHP modules we may require for certain optional or extended features
 	*/
-	var $php_dlls_other = ['curl', 'gd', 'zlib', 'xml'];
+	var $php_dlls_other = ['curl', 'gd', 'intl', 'zlib', 'xml'];
 
 	/**
 	* A list of the web-crawlers/bots we recognise by default.

@@ -497,7 +497,7 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 	{
 		$post_info = ($pm) ? get_pm_data($post_id_list) : get_post_data($post_id_list, 'm_report');
 
-		$sql = "SELECT r.report_id, r.{$id_column}, r.report_closed, r.user_id, r.user_notify, u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang, u.user_notify_type
+		$sql = "SELECT r.report_id, r.{$id_column}, r.report_closed, r.user_id, r.user_notify, u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang_code, u.user_notify_type
 			FROM " . REPORTS_TABLE . ' r, ' . USERS_TABLE . ' u
 			WHERE ' . $db->sql_in_set('r.report_id', $report_id_list) . '
 				' . (($action == 'close') ? 'AND r.report_closed = 0' : '') . '
@@ -631,7 +631,7 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 
 				$post_id = $reporter[$id_column];
 
-				$messenger->template((($pm) ? 'pm_report_' : 'report_') . $action . 'd', $reporter['user_lang']);
+				$messenger->template((($pm) ? 'pm_report_' : 'report_') . $action . 'd', $reporter['user_lang_code']);
 
 				$messenger->to($reporter['user_email'], $reporter['username']);
 				$messenger->im($reporter['user_jabber'], $reporter['username']);

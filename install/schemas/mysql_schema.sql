@@ -285,14 +285,10 @@ CREATE TABLE phpbb_icons (
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_lang (
-	lang_id tinyint(4) NOT NULL auto_increment,
-	lang_iso varchar(5) DEFAULT '' NOT NULL,
-	lang_dir varchar(5) DEFAULT '' NOT NULL,
+	lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 	lang_english_name varchar(100) DEFAULT '' NOT NULL,
 	lang_local_name varchar(255) DEFAULT '' NOT NULL,
-	lang_author varchar(255) DEFAULT '' NOT NULL,
-	PRIMARY KEY (lang_id),
-	KEY lang_iso (lang_iso)
+	PRIMARY KEY (lang_code)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_log (
@@ -529,20 +525,20 @@ CREATE TABLE phpbb_profile_fields_data (
 
 CREATE TABLE phpbb_profile_fields_lang (
 	field_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	lang_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 	option_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	field_type tinyint(4) DEFAULT '0' NOT NULL,
 	lang_value varchar(255) DEFAULT '' NOT NULL,
-	PRIMARY KEY (field_id, lang_id, option_id)
+	PRIMARY KEY (field_id, lang_code, option_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_profile_lang (
 	field_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	lang_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 	lang_name varchar(255) DEFAULT '' NOT NULL,
 	lang_explain text NOT NULL,
 	lang_default_value varchar(255) DEFAULT '' NOT NULL,
-	PRIMARY KEY (field_id, lang_id)
+	PRIMARY KEY (field_id, lang_code)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_ranks (
@@ -671,9 +667,8 @@ CREATE TABLE phpbb_styles (
 CREATE TABLE phpbb_styles_template (
 	template_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	template_dir varchar(100) DEFAULT '' NOT NULL,
-	bbcode_bitfield varchar(255) DEFAULT 'kNg=' NOT NULL,
-	template_inherits_id int(4) UNSIGNED DEFAULT '0' NOT NULL,
-	template_inherit_path varchar(255) DEFAULT '' NOT NULL,
+	template_inherit_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	template_inherit_dir varchar(100) DEFAULT '' NOT NULL,
 	PRIMARY KEY (template_id),
 	UNIQUE template_dir (template_dir)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
@@ -810,7 +805,7 @@ CREATE TABLE phpbb_users (
 	user_inactive_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_topics mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_posts mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	user_lang varchar(5) DEFAULT '' NOT NULL,
+	user_lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 	user_timezone decimal(5,2) DEFAULT '0' NOT NULL,
 	user_dst tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_style mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,

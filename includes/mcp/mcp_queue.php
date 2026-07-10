@@ -641,7 +641,7 @@ function approve_post($post_id_list, $id, $mode)
 
 				$email_template = ($post_data['post_id'] == $post_data['topic_first_post_id'] && $post_data['post_id'] == $post_data['topic_last_post_id']) ? 'topic_approved' : 'post_approved';
 
-				$messenger->template($email_template, $post_data['user_lang']);
+				$messenger->template($email_template, $post_data['user_lang_code']);
 
 				$messenger->to($post_data['user_email'], $post_data['username']);
 				$messenger->im($post_data['user_jabber'], $post_data['username']);
@@ -900,35 +900,35 @@ function disapprove_post($post_id_list, $id, $mode)
 				if (isset($disapprove_reason_lang))
 				{
 					// Okay we need to get the reason from the posters language
-					if (!isset($lang_reasons[$post_data['user_lang']]))
+					if (!isset($lang_reasons[$post_data['user_lang_code']]))
 					{
 						// Assign the current users translation as the default, this is not ideal but getting the board default adds another layer of complexity.
-						$lang_reasons[$post_data['user_lang']] = $user->lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang];
+						$lang_reasons[$post_data['user_lang_code']] = $user->lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang];
 
 						// Only load up the language pack if the language is different to the current one
-						if ($post_data['user_lang'] != $user->lang_name && file_exists(PHPBB_ROOT_PATH . '/language/' . $post_data['user_lang'] . '/mcp.php'))
+						if ($post_data['user_lang_code'] != $user->lang_code && file_exists(PHPBB_ROOT_PATH . '/language/' . $post_data['user_lang_code'] . '/mcp.php'))
 						{
 							// Load up the language pack
 							$lang = [];
-							@include(PHPBB_ROOT_PATH . '/language/' . basename($post_data['user_lang']) . '/mcp.php');
+							@include(PHPBB_ROOT_PATH . '/language/' . basename($post_data['user_lang_code']) . '/mcp.php');
 
 							// If we find the reason in this language pack use it
 							if (isset($lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang]))
 							{
-								$lang_reasons[$post_data['user_lang']] = $lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang];
+								$lang_reasons[$post_data['user_lang_code']] = $lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang];
 							}
 
 							unset($lang); // Free memory
 						}
 					}
 
-					$email_disapprove_reason = $lang_reasons[$post_data['user_lang']];
+					$email_disapprove_reason = $lang_reasons[$post_data['user_lang_code']];
 					$email_disapprove_reason .= ($reason) ? "\n\n" . $reason : '';
 				}
 
 				$email_template = ($post_data['post_id'] == $post_data['topic_first_post_id'] && $post_data['post_id'] == $post_data['topic_last_post_id']) ? 'topic_disapproved' : 'post_disapproved';
 
-				$messenger->template($email_template, $post_data['user_lang']);
+				$messenger->template($email_template, $post_data['user_lang_code']);
 
 				$messenger->to($post_data['user_email'], $post_data['username']);
 				$messenger->im($post_data['user_jabber'], $post_data['username']);

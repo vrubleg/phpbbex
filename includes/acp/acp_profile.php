@@ -17,7 +17,7 @@ class acp_profile
 	var $tpl_name;
 	var $page_title;
 
-	var $edit_lang_id;
+	var $edit_lang_code;
 	var $lang_defs;
 
 	function main($id, $mode)
@@ -53,7 +53,7 @@ class acp_profile
 		// Based on this, we decide which elements need to be edited later and which language items are missing
 		$this->lang_defs = [];
 
-		$sql = 'SELECT lang_id, lang_iso
+		$sql = 'SELECT lang_code
 			FROM ' . LANG_TABLE . '
 			ORDER BY lang_english_name';
 		$result = $db->sql_query($sql);
@@ -61,20 +61,19 @@ class acp_profile
 		while ($row = $db->sql_fetchrow($result))
 		{
 			// Make some arrays with all available languages
-			$this->lang_defs['id'][$row['lang_id']] = $row['lang_iso'];
-			$this->lang_defs['iso'][$row['lang_iso']] = $row['lang_id'];
+			$this->lang_defs['code'][$row['lang_code']] = $row['lang_code'];
 		}
 		$db->sql_freeresult($result);
 
-		$sql = 'SELECT field_id, lang_id
+		$sql = 'SELECT field_id, lang_code
 			FROM ' . PROFILE_LANG_TABLE . '
-			ORDER BY lang_id';
+			ORDER BY lang_code';
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
 		{
 			// Which languages are available for each item
-			$this->lang_defs['entry'][$row['field_id']][] = $row['lang_id'];
+			$this->lang_defs['entry'][$row['field_id']][] = $row['lang_code'];
 		}
 		$db->sql_freeresult($result);
 
@@ -84,7 +83,7 @@ class acp_profile
 			foreach ($this->lang_defs['entry'] as $field_id => $field_ary)
 			{
 				// Fill an array with the languages that are missing for each field
-				$this->lang_defs['diff'][$field_id] = array_diff(array_values($this->lang_defs['iso']), $field_ary);
+				$this->lang_defs['diff'][$field_id] = array_diff(array_values($this->lang_defs['code']), $field_ary);
 			}
 		}
 
@@ -159,14 +158,7 @@ class acp_profile
 					trigger_error($user->lang['NO_FIELD_ID'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
-				$sql = 'SELECT lang_id
-					FROM ' . LANG_TABLE . "
-					WHERE lang_iso = '" . $db->sql_escape($config['default_lang']) . "'";
-				$result = $db->sql_query($sql);
-				$default_lang_id = (int) $db->sql_fetchfield('lang_id');
-				$db->sql_freeresult($result);
-
-				if (!in_array($default_lang_id, $this->lang_defs['entry'][$field_id]))
+				if (!in_array($config['default_lang_code'], $this->lang_defs['entry'][$field_id]))
 				{
 					trigger_error($user->lang['DEFAULT_LANGUAGE_NOT_FILLED'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
@@ -235,7 +227,7 @@ class acp_profile
 				$save = isset($_REQUEST['save']);
 
 				// The language id of default language
-				$this->edit_lang_id = $this->lang_defs['iso'][$config['default_lang']];
+				$this->edit_lang_code = $this->lang_defs['code'][$config['default_lang_code']];
 
 				// We are editing... we need to grab basic things
 				if ($action == 'edit')
@@ -246,8 +238,8 @@ class acp_profile
 					}
 
 					$sql = 'SELECT l.*, f.*
-						FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . ' f
-						WHERE l.lang_id = ' . $this->edit_lang_id . "
+						FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
+						WHERE l.lang_code = '" . $db->sql_escape($this->edit_lang_code) . "'
 							AND f.field_id = {$field_id}
 							AND l.field_id = f.field_id";
 					$result = $db->sql_query($sql);
@@ -258,8 +250,8 @@ class acp_profile
 					{
 						// Some admin changed the default language?
 						$sql = 'SELECT l.*, f.*
-							FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . ' f
-							WHERE l.lang_id <> ' . $this->edit_lang_id . "
+							FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
+							WHERE l.lang_code <> '" . $db->sql_escape($this->edit_lang_code) . "'
 							AND f.field_id = {$field_id}
 							AND l.field_id = f.field_id";
 						$result = $db->sql_query($sql);
@@ -271,14 +263,14 @@ class acp_profile
 							trigger_error($user->lang['FIELD_NOT_FOUND'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
 
-						$this->edit_lang_id = $field_row['lang_id'];
+						$this->edit_lang_code = $field_row['lang_code'];
 					}
 					$field_type = $field_row['field_type'];
 
 					// Get language entries
 					$sql = 'SELECT *
-						FROM ' . PROFILE_FIELDS_LANG_TABLE . '
-						WHERE lang_id = ' . $this->edit_lang_id . "
+						FROM ' . PROFILE_FIELDS_LANG_TABLE . "
+						WHERE lang_code = '" . $db->sql_escape($this->edit_lang_code) . "'
 							AND field_id = {$field_id}
 						ORDER BY option_id ASC";
 					$result = $db->sql_query($sql);
@@ -493,8 +485,8 @@ class acp_profile
 				{
 					// Get language entries
 					$sql = 'SELECT *
-						FROM ' . PROFILE_FIELDS_LANG_TABLE . '
-						WHERE lang_id <> ' . $this->edit_lang_id . "
+						FROM ' . PROFILE_FIELDS_LANG_TABLE . "
+						WHERE lang_code <> '" . $db->sql_escape($this->edit_lang_code) . "'
 							AND field_id = {$field_id}
 						ORDER BY option_id ASC";
 					$result = $db->sql_query($sql);
@@ -502,31 +494,31 @@ class acp_profile
 					$l_lang_options = [];
 					while ($row = $db->sql_fetchrow($result))
 					{
-						$l_lang_options[$row['lang_id']][$row['option_id']] = $row['lang_value'];
+						$l_lang_options[$row['lang_code']][$row['option_id']] = $row['lang_value'];
 					}
 					$db->sql_freeresult($result);
 
 
-					$sql = 'SELECT lang_id, lang_name, lang_explain, lang_default_value
-						FROM ' . PROFILE_LANG_TABLE . '
-						WHERE lang_id <> ' . $this->edit_lang_id . "
+					$sql = 'SELECT lang_code, lang_name, lang_explain, lang_default_value
+						FROM ' . PROFILE_LANG_TABLE . "
+						WHERE lang_code <> '" . $db->sql_escape($this->edit_lang_code) . "'
 							AND field_id = {$field_id}
-						ORDER BY lang_id ASC";
+						ORDER BY lang_code ASC";
 					$result = $db->sql_query($sql);
 
 					$l_lang_name = $l_lang_explain = $l_lang_default_value = [];
 					while ($row = $db->sql_fetchrow($result))
 					{
-						$l_lang_name[$row['lang_id']] = $row['lang_name'];
-						$l_lang_explain[$row['lang_id']] = $row['lang_explain'];
-						$l_lang_default_value[$row['lang_id']] = $row['lang_default_value'];
+						$l_lang_name[$row['lang_code']] = $row['lang_name'];
+						$l_lang_explain[$row['lang_code']] = $row['lang_explain'];
+						$l_lang_default_value[$row['lang_code']] = $row['lang_default_value'];
 					}
 					$db->sql_freeresult($result);
 				}
 
 				foreach ($exclude[3] as $key)
 				{
-					$cp->vars[$key] = utf8_normalize_nfc(request_var($key, [0 => ''], true));
+					$cp->vars[$key] = utf8_normalize_nfc(request_var($key, ['' => ''], true));
 
 					if (!$cp->vars[$key] && $action == 'edit')
 					{
@@ -534,13 +526,13 @@ class acp_profile
 					}
 					else if ($key == 'l_lang_options' && $field_type == FIELD_BOOL)
 					{
-						$cp->vars[$key] = utf8_normalize_nfc(request_var($key, [0 => ['']], true));
+						$cp->vars[$key] = utf8_normalize_nfc(request_var($key, ['' => ['']], true));
 					}
 					else if ($key == 'l_lang_options' && is_array($cp->vars[$key]))
 					{
-						foreach ($cp->vars[$key] as $lang_id => $options)
+						foreach ($cp->vars[$key] as $lang_code => $options)
 						{
-							$cp->vars[$key][$lang_id] = explode("\n", $options);
+							$cp->vars[$key][$lang_code] = explode("\n", $options);
 						}
 
 					}
@@ -669,7 +661,7 @@ class acp_profile
 
 				if (!sizeof($error))
 				{
-					if ($step == 3 && (sizeof($this->lang_defs['iso']) == 1 || $save))
+					if ($step == 3 && (sizeof($this->lang_defs['code']) == 1 || $save))
 					{
 						$this->save_profile_field($cp, $field_type, $action);
 					}
@@ -708,7 +700,7 @@ class acp_profile
 							'S_SHOW_PROFILE'    => (bool) $cp->vars['field_show_profile'],
 							'S_FIELD_NO_VIEW'   => (bool) $cp->vars['field_no_view'],
 
-							'L_LANG_SPECIFIC'   => sprintf($user->lang['LANG_SPECIFIC_OPTIONS'], $config['default_lang']),
+							'L_LANG_SPECIFIC'   => sprintf($user->lang['LANG_SPECIFIC_OPTIONS'], $config['default_lang_code']),
 							'FIELD_TYPE'        => $user->lang['FIELD_' . strtoupper($cp->profile_types[$field_type])],
 							'FIELD_IDENT'       => $cp->vars['field_ident'],
 							'LANG_NAME'         => $cp->vars['lang_name'],
@@ -762,7 +754,7 @@ class acp_profile
 
 						$template->assign_vars([
 							'S_STEP_TWO'        => true,
-							'L_NEXT_STEP'           => (sizeof($this->lang_defs['iso']) == 1) ? $user->lang['SAVE'] : $user->lang['PROFILE_LANG_OPTIONS']]
+							'L_NEXT_STEP'           => (sizeof($this->lang_defs['code']) == 1) ? $user->lang['SAVE'] : $user->lang['PROFILE_LANG_OPTIONS']]
 						);
 
 						// Build options based on profile type
@@ -782,10 +774,10 @@ class acp_profile
 						$template->assign_var('S_STEP_THREE', true);
 						$options = $this->build_language_options($cp, $field_type, $action);
 
-						foreach ($options as $lang_id => $lang_ary)
+						foreach ($options as $lang_code => $lang_ary)
 						{
 							$template->assign_block_vars('options', [
-								'LANGUAGE'      => sprintf($user->lang[(($lang_id == $this->edit_lang_id) ? 'DEFAULT_' : '') . 'ISO_LANGUAGE'], $lang_ary['lang_iso'])]
+								'LANGUAGE'      => sprintf($user->lang[(($lang_code == $this->edit_lang_code) ? 'DEFAULT_' : '') . 'LANGUAGE_CODE'], $lang_ary['lang_code'])]
 							);
 
 							foreach ($lang_ary['fields'] as $field_ident => $field_ary)
@@ -871,18 +863,18 @@ class acp_profile
 	{
 		global $user, $config, $db;
 
-		$default_lang_id = (!empty($this->edit_lang_id)) ? $this->edit_lang_id : $this->lang_defs['iso'][$config['default_lang']];
+		$default_lang_code = (!empty($this->edit_lang_code)) ? $this->edit_lang_code : $this->lang_defs['code'][$config['default_lang_code']];
 
-		$sql = 'SELECT lang_id, lang_iso
-			FROM ' . LANG_TABLE . '
-			WHERE lang_id <> ' . (int) $default_lang_id . '
-			ORDER BY lang_english_name';
+		$sql = 'SELECT lang_code
+			FROM ' . LANG_TABLE . "
+			WHERE lang_code <> '" . $db->sql_escape($default_lang_code) . "'
+			ORDER BY lang_english_name";
 		$result = $db->sql_query($sql);
 
 		$languages = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$languages[$row['lang_id']] = $row['lang_iso'];
+			$languages[$row['lang_code']] = $row['lang_code'];
 		}
 		$db->sql_freeresult($result);
 
@@ -916,7 +908,7 @@ class acp_profile
 
 		foreach ($options as $field => $field_type)
 		{
-			$lang_options[1]['lang_iso'] = $this->lang_defs['id'][$default_lang_id];
+			$lang_options[1]['lang_code'] = $this->lang_defs['code'][$default_lang_code];
 			$lang_options[1]['fields'][$field] = [
 				'TITLE'     => $user->lang['CP_' . strtoupper($field)],
 				'FIELD'     => '<dd>' . ((is_array($cp->vars[$field])) ? implode('<br />', $cp->vars[$field]) : bbcode_nl2br($cp->vars[$field])) . '</dd>'
@@ -928,54 +920,54 @@ class acp_profile
 			}
 		}
 
-		foreach ($languages as $lang_id => $lang_iso)
+		foreach ($languages as $lang_code)
 		{
-			$lang_options[$lang_id]['lang_iso'] = $lang_iso;
+			$lang_options[$lang_code]['lang_code'] = $lang_code;
 			foreach ($options as $field => $field_type)
 			{
 				$value = ($action == 'create') ? utf8_normalize_nfc(request_var('l_' . $field, [0 => ''], true)) : $cp->vars['l_' . $field];
 				if ($field == 'lang_options')
 				{
-					$var = (!isset($cp->vars['l_lang_options'][$lang_id]) || !is_array($cp->vars['l_lang_options'][$lang_id])) ? $cp->vars['lang_options'] : $cp->vars['l_lang_options'][$lang_id];
+					$var = (!isset($cp->vars['l_lang_options'][$lang_code]) || !is_array($cp->vars['l_lang_options'][$lang_code])) ? $cp->vars['lang_options'] : $cp->vars['l_lang_options'][$lang_code];
 
 					switch ($field_type)
 					{
 						case 'two_options':
 
-							$lang_options[$lang_id]['fields'][$field] = [
+							$lang_options[$lang_code]['fields'][$field] = [
 								'TITLE'     => $user->lang['CP_' . strtoupper($field)],
 								'FIELD'     => '
-											<dd><input class="medium" name="l_' . $field . '[' . $lang_id . '][]" value="' . ($value[$lang_id][0] ?? $var[0]) . '" /> ' . $user->lang['FIRST_OPTION'] . '</dd>
-											<dd><input class="medium" name="l_' . $field . '[' . $lang_id . '][]" value="' . ($value[$lang_id][1] ?? $var[1]) . '" /> ' . $user->lang['SECOND_OPTION'] . '</dd>'
+											<dd><input class="medium" name="l_' . $field . '[' . $lang_code . '][]" value="' . ($value[$lang_code][0] ?? $var[0]) . '" /> ' . $user->lang['FIRST_OPTION'] . '</dd>
+											<dd><input class="medium" name="l_' . $field . '[' . $lang_code . '][]" value="' . ($value[$lang_code][1] ?? $var[1]) . '" /> ' . $user->lang['SECOND_OPTION'] . '</dd>'
 							];
 						break;
 
 						case 'optionfield':
-							$value = ((isset($value[$lang_id])) ? ((is_array($value[$lang_id])) ? implode("\n", $value[$lang_id]) : $value[$lang_id]) : implode("\n", $var));
-							$lang_options[$lang_id]['fields'][$field] = [
+							$value = ((isset($value[$lang_code])) ? ((is_array($value[$lang_code])) ? implode("\n", $value[$lang_code]) : $value[$lang_code]) : implode("\n", $var));
+							$lang_options[$lang_code]['fields'][$field] = [
 								'TITLE'     => $user->lang['CP_' . strtoupper($field)],
-								'FIELD'     => '<dd><textarea name="l_' . $field . '[' . $lang_id . ']" rows="7" cols="80">' . $value . '</textarea></dd>'
+								'FIELD'     => '<dd><textarea name="l_' . $field . '[' . $lang_code . ']" rows="7" cols="80">' . $value . '</textarea></dd>'
 							];
 						break;
 					}
 
 					if (isset($user->lang['CP_' . strtoupper($field) . '_EXPLAIN']))
 					{
-						$lang_options[$lang_id]['fields'][$field]['EXPLAIN'] = $user->lang['CP_' . strtoupper($field) . '_EXPLAIN'];
+						$lang_options[$lang_code]['fields'][$field]['EXPLAIN'] = $user->lang['CP_' . strtoupper($field) . '_EXPLAIN'];
 					}
 				}
 				else
 				{
-					$var = ($action == 'create' || !is_array($cp->vars[$field])) ? $cp->vars[$field] : $cp->vars[$field][$lang_id];
+					$var = ($action == 'create' || !is_array($cp->vars[$field])) ? $cp->vars[$field] : $cp->vars[$field][$lang_code];
 
-					$lang_options[$lang_id]['fields'][$field] = [
+					$lang_options[$lang_code]['fields'][$field] = [
 						'TITLE'     => $user->lang['CP_' . strtoupper($field)],
-						'FIELD'     => ($field_type == 'string') ? '<dd><input class="medium" type="text" name="l_' . $field . '[' . $lang_id . ']" value="' . ($value[$lang_id] ?? $var) . '" /></dd>' : '<dd><textarea name="l_' . $field . '[' . $lang_id . ']" rows="3" cols="80">' . ($value[$lang_id] ?? $var) . '</textarea></dd>'
+						'FIELD'     => ($field_type == 'string') ? '<dd><input class="medium" type="text" name="l_' . $field . '[' . $lang_code . ']" value="' . ($value[$lang_code] ?? $var) . '" /></dd>' : '<dd><textarea name="l_' . $field . '[' . $lang_code . ']" rows="3" cols="80">' . ($value[$lang_code] ?? $var) . '</textarea></dd>'
 					];
 
 					if (isset($user->lang['CP_' . strtoupper($field) . '_EXPLAIN']))
 					{
-						$lang_options[$lang_id]['fields'][$field]['EXPLAIN'] = $user->lang['CP_' . strtoupper($field) . '_EXPLAIN'];
+						$lang_options[$lang_code]['fields'][$field]['EXPLAIN'] = $user->lang['CP_' . strtoupper($field) . '_EXPLAIN'];
 					}
 				}
 			}
@@ -996,7 +988,7 @@ class acp_profile
 		// Collect all information, if something is going wrong, abort the operation
 		$profile_sql = $profile_lang = $empty_lang = $profile_lang_fields = [];
 
-		$default_lang_id = (!empty($this->edit_lang_id)) ? $this->edit_lang_id : $this->lang_defs['iso'][$config['default_lang']];
+		$default_lang_code = (!empty($this->edit_lang_code)) ? $this->edit_lang_code : $this->lang_defs['code'][$config['default_lang_code']];
 
 		if ($action == 'create')
 		{
@@ -1064,64 +1056,65 @@ class acp_profile
 		if ($action == 'create')
 		{
 			$sql_ary['field_id'] = $field_id;
-			$sql_ary['lang_id'] = $default_lang_id;
+			$sql_ary['lang_code'] = $default_lang_code;
 
 			$profile_sql[] = 'INSERT INTO ' . PROFILE_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		}
 		else
 		{
-			$this->update_insert(PROFILE_LANG_TABLE, $sql_ary, ['field_id' => $field_id, 'lang_id' => $default_lang_id]);
+			$this->update_insert(PROFILE_LANG_TABLE, $sql_ary, ['field_id' => $field_id, 'lang_code' => $default_lang_code]);
 		}
 
 		if (is_array($cp->vars['l_lang_name']) && sizeof($cp->vars['l_lang_name']))
 		{
-			foreach ($cp->vars['l_lang_name'] as $lang_id => $data)
+			foreach ($cp->vars['l_lang_name'] as $lang_code => $data)
 			{
-				if (($cp->vars['lang_name'] != '' && $cp->vars['l_lang_name'][$lang_id] == '')
-					|| ($cp->vars['lang_explain'] != '' && $cp->vars['l_lang_explain'][$lang_id] == '')
-					|| ($cp->vars['lang_default_value'] != '' && $cp->vars['l_lang_default_value'][$lang_id] == ''))
+				if (!isset($this->lang_defs['code'][$lang_code]) || $lang_code == $default_lang_code)
 				{
-					$empty_lang[$lang_id] = true;
+					continue;
+				}
+
+				if (($cp->vars['lang_name'] != '' && $cp->vars['l_lang_name'][$lang_code] == '')
+					|| ($cp->vars['lang_explain'] != '' && $cp->vars['l_lang_explain'][$lang_code] == '')
+					|| ($cp->vars['lang_default_value'] != '' && $cp->vars['l_lang_default_value'][$lang_code] == ''))
+				{
+					$empty_lang[$lang_code] = true;
 					break;
 				}
 
-				if (!isset($empty_lang[$lang_id]))
+				if (!isset($empty_lang[$lang_code]))
 				{
 					$profile_lang[] = [
 						'field_id'      => $field_id,
-						'lang_id'       => $lang_id,
-						'lang_name'     => $cp->vars['l_lang_name'][$lang_id],
-						'lang_explain'  => $cp->vars['l_lang_explain'][$lang_id] ?? '',
-						'lang_default_value'    => $cp->vars['l_lang_default_value'][$lang_id] ?? '',
+						'lang_code'       => $lang_code,
+						'lang_name'     => $cp->vars['l_lang_name'][$lang_code],
+						'lang_explain'  => $cp->vars['l_lang_explain'][$lang_code] ?? '',
+						'lang_default_value'    => $cp->vars['l_lang_default_value'][$lang_code] ?? '',
 					];
 				}
 			}
 
-			foreach ($empty_lang as $lang_id => $NULL)
+			foreach ($empty_lang as $lang_code => $NULL)
 			{
 				$sql = 'DELETE FROM ' . PROFILE_LANG_TABLE . "
 					WHERE field_id = {$field_id}
-					AND lang_id = " . (int) $lang_id;
+					AND lang_code = '" . $db->sql_escape($lang_code) . "'";
 				$db->sql_query($sql);
 			}
 		}
 
-		// These are always arrays because the key is the language id...
-		$cp->vars['l_lang_name']            = utf8_normalize_nfc(request_var('l_lang_name', [0 => ''], true));
-		$cp->vars['l_lang_explain']         = utf8_normalize_nfc(request_var('l_lang_explain', [0 => ''], true));
-		$cp->vars['l_lang_default_value']   = utf8_normalize_nfc(request_var('l_lang_default_value', [0 => ''], true));
+		// These are always arrays because the key is the language code...
+		$cp->vars['l_lang_name']            = utf8_normalize_nfc(request_var('l_lang_name', ['' => ''], true));
+		$cp->vars['l_lang_explain']         = utf8_normalize_nfc(request_var('l_lang_explain', ['' => ''], true));
+		$cp->vars['l_lang_default_value']   = utf8_normalize_nfc(request_var('l_lang_default_value', ['' => ''], true));
 
 		if ($field_type != FIELD_BOOL)
 		{
-			$cp->vars['l_lang_options']         = utf8_normalize_nfc(request_var('l_lang_options', [0 => ''], true));
+			$cp->vars['l_lang_options']         = utf8_normalize_nfc(request_var('l_lang_options', ['' => ''], true));
 		}
 		else
 		{
-			/**
-			* @todo check if this line is correct...
-			$cp->vars['l_lang_default_value']   = request_var('l_lang_default_value', array(0 => array('')), true);
-			*/
-			$cp->vars['l_lang_options'] = utf8_normalize_nfc(request_var('l_lang_options', [0 => ['']], true));
+			$cp->vars['l_lang_options'] = utf8_normalize_nfc(request_var('l_lang_options', ['' => ['']], true));
 		}
 
 		if ($cp->vars['lang_options'])
@@ -1135,7 +1128,7 @@ class acp_profile
 			{
 				$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . "
 					WHERE field_id = {$field_id}
-						AND lang_id = " . (int) $default_lang_id;
+						AND lang_code = '" . $db->sql_escape($default_lang_code) . "'";
 				$db->sql_query($sql);
 			}
 
@@ -1149,7 +1142,7 @@ class acp_profile
 				if ($action == 'create')
 				{
 					$sql_ary['field_id'] = $field_id;
-					$sql_ary['lang_id'] = $default_lang_id;
+					$sql_ary['lang_code'] = $default_lang_code;
 					$sql_ary['option_id'] = (int) $option_id;
 
 					$profile_sql[] = 'INSERT INTO ' . PROFILE_FIELDS_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
@@ -1158,7 +1151,7 @@ class acp_profile
 				{
 					$this->update_insert(PROFILE_FIELDS_LANG_TABLE, $sql_ary, [
 						'field_id'  => $field_id,
-						'lang_id'   => (int) $default_lang_id,
+						'lang_code' => $default_lang_code,
 						'option_id' => (int) $option_id]
 					);
 				}
@@ -1169,8 +1162,13 @@ class acp_profile
 		{
 			$empty_lang = [];
 
-			foreach ($cp->vars['l_lang_options'] as $lang_id => $lang_ary)
+			foreach ($cp->vars['l_lang_options'] as $lang_code => $lang_ary)
 			{
+				if (!isset($this->lang_defs['code'][$lang_code]) || $lang_code == $default_lang_code)
+				{
+					continue;
+				}
+
 				if (!is_array($lang_ary))
 				{
 					$lang_ary = explode("\n", $lang_ary);
@@ -1178,16 +1176,16 @@ class acp_profile
 
 				if (sizeof($lang_ary) != sizeof($cp->vars['lang_options']))
 				{
-					$empty_lang[$lang_id] = true;
+					$empty_lang[$lang_code] = true;
 				}
 
-				if (!isset($empty_lang[$lang_id]))
+				if (!isset($empty_lang[$lang_code]))
 				{
 					if ($action != 'create')
 					{
 						$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . "
 							WHERE field_id = {$field_id}
-							AND lang_id = " . (int) $lang_id;
+							AND lang_code = '" . $db->sql_escape($lang_code) . "'";
 						$db->sql_query($sql);
 					}
 
@@ -1195,7 +1193,7 @@ class acp_profile
 					{
 						$profile_lang_fields[] = [
 							'field_id'      => (int) $field_id,
-							'lang_id'       => (int) $lang_id,
+							'lang_code'     => $lang_code,
 							'option_id'     => (int) $option_id,
 							'field_type'    => (int) $field_type,
 							'lang_value'    => $value
@@ -1204,11 +1202,11 @@ class acp_profile
 				}
 			}
 
-			foreach ($empty_lang as $lang_id => $NULL)
+			foreach ($empty_lang as $lang_code => $NULL)
 			{
 				$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . "
 					WHERE field_id = {$field_id}
-					AND lang_id = " . (int) $lang_id;
+					AND lang_code = '" . $db->sql_escape($lang_code) . "'";
 				$db->sql_query($sql);
 			}
 		}
@@ -1221,10 +1219,10 @@ class acp_profile
 			}
 			else
 			{
-				$lang_id = $sql['lang_id'];
-				unset($sql['lang_id'], $sql['field_id']);
+				$lang_code = $sql['lang_code'];
+				unset($sql['lang_code'], $sql['field_id']);
 
-				$this->update_insert(PROFILE_LANG_TABLE, $sql, ['lang_id' => (int) $lang_id, 'field_id' => $field_id]);
+				$this->update_insert(PROFILE_LANG_TABLE, $sql, ['lang_code' => $lang_code, 'field_id' => $field_id]);
 			}
 		}
 
@@ -1238,12 +1236,12 @@ class acp_profile
 				}
 				else
 				{
-					$lang_id = $sql['lang_id'];
+					$lang_code = $sql['lang_code'];
 					$option_id = $sql['option_id'];
-					unset($sql['lang_id'], $sql['field_id'], $sql['option_id']);
+					unset($sql['lang_code'], $sql['field_id'], $sql['option_id']);
 
 					$this->update_insert(PROFILE_FIELDS_LANG_TABLE, $sql, [
-						'lang_id'   => $lang_id,
+						'lang_code'   => $lang_code,
 						'field_id'  => $field_id,
 						'option_id' => $option_id]
 					);

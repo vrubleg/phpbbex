@@ -132,7 +132,7 @@ class ucp_profile
 							$messenger = new messenger(false);
 
 							$template_file = ($config['require_activation'] == USER_ACTIVATION_ADMIN) ? 'user_activate_inactive' : 'user_activate';
-							$messenger->template($template_file, $user->data['user_lang']);
+							$messenger->template($template_file, $user->data['user_lang_code']);
 
 							$messenger->to($data['email'], $data['username']);
 
@@ -159,14 +159,14 @@ class ucp_profile
 									$where_sql .= ' OR ' . $db->sql_in_set('user_id', $admin_ary);
 								}
 
-								$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
+								$sql = 'SELECT user_id, username, user_email, user_lang_code, user_jabber, user_notify_type
 									FROM ' . USERS_TABLE . ' ' .
 									$where_sql;
 								$result = $db->sql_query($sql);
 
 								while ($row = $db->sql_fetchrow($result))
 								{
-									$messenger->template('admin_activate', $row['user_lang']);
+									$messenger->template('admin_activate', $row['user_lang_code']);
 									$messenger->to($row['user_email'], $row['username']);
 									$messenger->im($row['user_jabber'], $row['username']);
 
@@ -328,7 +328,7 @@ class ucp_profile
 					$error = validate_data($data, $validate_array);
 
 					// validate custom profile fields
-					$cp->submit_cp_field('profile', $user->get_iso_lang_id(), $cp_data, $cp_error);
+					$cp->submit_cp_field('profile', $user->lang_code, $cp_data, $cp_error);
 
 					if (sizeof($cp_error))
 					{
@@ -443,7 +443,7 @@ class ucp_profile
 				// Get additional profile fields and assign them to the template block var 'profile_fields'
 				$user->get_profile_fields($user->data['user_id']);
 
-				$cp->generate_profile_fields('profile', $user->get_iso_lang_id());
+				$cp->generate_profile_fields('profile', $user->lang_code);
 
 			break;
 

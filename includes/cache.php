@@ -350,7 +350,7 @@ class phpbb_cache extends acm
 	{
 		global $config;
 
-		$lang = $lang ?: $config['default_lang'];
+		$lang = $lang ?: $config['default_lang_code'];
 		$cache_key = "_style_{$style_dir}_imageset_{$lang}";
 		$data = $this->get($cache_key) ?: [];
 

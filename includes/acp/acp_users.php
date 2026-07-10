@@ -342,7 +342,7 @@ class acp_users
 
 								$messenger = new messenger(false);
 
-								$messenger->template($email_template, $user_row['user_lang']);
+								$messenger->template($email_template, $user_row['user_lang_code']);
 
 								$messenger->to($user_row['user_email'], $user_row['username']);
 
@@ -397,7 +397,7 @@ class acp_users
 
 									$messenger = new messenger(false);
 
-									$messenger->template('admin_welcome_activated', $user_row['user_lang']);
+									$messenger->template('admin_welcome_activated', $user_row['user_lang_code']);
 
 									$messenger->to($user_row['user_email'], $user_row['username']);
 
@@ -1349,14 +1349,7 @@ class acp_users
 
 				$cp_data = $cp_error = [];
 
-				$sql = 'SELECT lang_id
-					FROM ' . LANG_TABLE . "
-					WHERE lang_iso = '" . $db->sql_escape($user->data['user_lang']) . "'";
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				$user_row['iso_lang_id'] = $row['lang_id'];
+				$user_row['lang_code'] = $user->data['user_lang_code'];
 
 				$data = [
 					'viewemail'     => request_var('viewemail', $user_row['user_allow_viewemail']),
@@ -1423,7 +1416,7 @@ class acp_users
 					]);
 
 					// validate custom profile fields
-					$cp->submit_cp_field('profile', $user_row['iso_lang_id'], $cp_data, $cp_error);
+					$cp->submit_cp_field('profile', $user_row['lang_code'], $cp_data, $cp_error);
 
 					if (sizeof($cp_error))
 					{
@@ -1515,7 +1508,7 @@ class acp_users
 				// Get additional profile fields and assign them to the template block var 'profile_fields'
 				$user->get_profile_fields($user_id);
 
-				$cp->generate_profile_fields('profile', $user_row['iso_lang_id']);
+				$cp->generate_profile_fields('profile', $user_row['lang_code']);
 
 			break;
 
@@ -1524,7 +1517,7 @@ class acp_users
 				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				$data = [
-					'lang'              => basename(request_var('lang', $user_row['user_lang'])),
+					'lang'              => basename(request_var('lang', $user_row['user_lang_code'])),
 					'tz'                => request_var('tz', (float) $user_row['user_timezone']),
 					'style'             => request_var('style', $user_row['user_style']),
 					'dst'               => request_var('dst', $user_row['user_dst']),
@@ -1551,7 +1544,7 @@ class acp_users
 				if ($submit)
 				{
 					$data['style']      = ($config['override_user_style']) ? $config['default_style'] : $data['style'];
-					$data['lang']       = ($config['override_user_lang']) ? $config['default_lang'] : $data['lang'];
+					$data['lang']       = ($config['override_user_lang']) ? $config['default_lang_code'] : $data['lang'];
 					$data['tz']         = ($config['override_user_timezone']) ? $config['board_timezone'] : $data['tz'];
 					$data['dst']        = ($config['override_user_timezone']) ? $config['board_dst'] : $data['dst'];
 
@@ -1588,7 +1581,7 @@ class acp_users
 							'user_notify_pm'        => $data['notifypm'],
 
 							'user_dst'              => $data['dst'],
-							'user_lang'             => $data['lang'],
+							'user_lang_code'        => $data['lang'],
 							'user_timezone'         => $data['tz'],
 							'user_style'            => $data['style'],
 
