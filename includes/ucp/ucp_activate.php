@@ -27,7 +27,7 @@ class ucp_activate
 		$user_id = request_var('u', 0);
 		$key = request_var('k', '');
 
-		$sql = 'SELECT user_id, username, user_type, user_email, user_newpasswd, user_lang, user_notify_type, user_actkey, user_inactive_reason
+		$sql = 'SELECT user_id, username, user_type, user_email, user_newpasswd, user_lang_code, user_notify_type, user_actkey, user_inactive_reason
 			FROM ' . USERS_TABLE . "
 			WHERE user_id = {$user_id}";
 		$result = $db->sql_query($sql);
@@ -110,7 +110,7 @@ class ucp_activate
 
 			$messenger = new messenger(false);
 
-			$messenger->template('admin_welcome_activated', $user_row['user_lang']);
+			$messenger->template('admin_welcome_activated', $user_row['user_lang_code']);
 
 			$messenger->to($user_row['user_email'], $user_row['username']);
 

@@ -64,18 +64,18 @@ class acp_email
 				if ($usernames)
 				{
 					// If giving usernames the admin is able to email inactive users too...
-					$sql = 'SELECT username, user_email, user_jabber, user_notify_type, user_lang
+					$sql = 'SELECT username, user_email, user_jabber, user_notify_type, user_lang_code
 						FROM ' . USERS_TABLE . '
 						WHERE ' . $db->sql_in_set('username_clean', array_map('utf8_clean_string', explode("\n", $usernames))) . '
 							AND user_allow_massemail = 1
-						ORDER BY user_lang, user_notify_type'; // , SUBSTRING(user_email FROM INSTR(user_email, '@'))
+						ORDER BY user_lang_code, user_notify_type'; // , SUBSTRING(user_email FROM INSTR(user_email, '@'))
 				}
 				else
 				{
 					if ($group_id)
 					{
 						$sql_ary = [
-							'SELECT'    => 'u.user_email, u.username, u.username_clean, u.user_lang, u.user_jabber, u.user_notify_type',
+							'SELECT'    => 'u.user_email, u.username, u.username_clean, u.user_lang_code, u.user_jabber, u.user_notify_type',
 							'FROM'      => [
 								USERS_TABLE         => 'u',
 								USER_GROUP_TABLE    => 'ug',
@@ -85,19 +85,19 @@ class acp_email
 								AND u.user_id = ug.user_id
 								AND u.user_allow_massemail = 1
 								AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')',
-							'ORDER_BY'  => 'u.user_lang, u.user_notify_type',
+							'ORDER_BY'  => 'u.user_lang_code, u.user_notify_type',
 						];
 					}
 					else
 					{
 						$sql_ary = [
-							'SELECT'    => 'u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang, u.user_notify_type',
+							'SELECT'    => 'u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang_code, u.user_notify_type',
 							'FROM'      => [
 								USERS_TABLE => 'u',
 							],
 							'WHERE'     => 'u.user_allow_massemail = 1
 								AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')',
-							'ORDER_BY'  => 'u.user_lang, u.user_notify_type',
+							'ORDER_BY'  => 'u.user_lang_code, u.user_notify_type',
 						];
 					}
 
@@ -132,7 +132,7 @@ class acp_email
 				// Maximum number of bcc recipients
 				$max_chunk_size = (int) $config['email_max_chunk_size'];
 				$email_list = [];
-				$old_lang = $row['user_lang'];
+				$old_lang_code = $row['user_lang_code'];
 				$old_notify_type = $row['user_notify_type'];
 
 				do
@@ -141,7 +141,7 @@ class acp_email
 						($row['user_notify_type'] == NOTIFY_IM && $row['user_jabber']) ||
 						($row['user_notify_type'] == NOTIFY_BOTH && ($row['user_email'] || $row['user_jabber'])))
 					{
-						if ($i == $max_chunk_size || $row['user_lang'] != $old_lang || $row['user_notify_type'] != $old_notify_type)
+						if ($i == $max_chunk_size || $row['user_lang_code'] != $old_lang_code || $row['user_notify_type'] != $old_notify_type)
 						{
 							$i = 0;
 
@@ -150,11 +150,11 @@ class acp_email
 								$j++;
 							}
 
-							$old_lang = $row['user_lang'];
+							$old_lang_code = $row['user_lang_code'];
 							$old_notify_type = $row['user_notify_type'];
 						}
 
-						$email_list[$j][$i]['lang']     = $row['user_lang'];
+						$email_list[$j][$i]['lang']     = $row['user_lang_code'];
 						$email_list[$j][$i]['method']   = $row['user_notify_type'];
 						$email_list[$j][$i]['email']    = $row['user_email'];
 						$email_list[$j][$i]['name']     = $row['username'];

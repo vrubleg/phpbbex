@@ -49,13 +49,13 @@ class phpbb_captcha_qa
 		$this->answer = utf8_normalize_nfc(request_var('qa_answer', '', true));
 
 		$this->type = (int) $type;
-		$this->question_lang = $user->lang_name;
+		$this->question_lang = $user->lang_code;
 
 		// we need all defined questions - shouldn't be too many, so we can just grab them
 		// try the user's lang first
 		$sql = 'SELECT question_id
 			FROM ' . CAPTCHA_QUESTIONS_TABLE . "
-			WHERE lang_iso = '" . $db->sql_escape($user->lang_name) . "'";
+			WHERE lang_code = '" . $db->sql_escape($user->lang_code) . "'";
 		$result = $db->sql_query($sql, 3600);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -67,11 +67,11 @@ class phpbb_captcha_qa
 		// fallback to the board default lang
 		if (!sizeof($this->question_ids))
 		{
-			$this->question_lang = $config['default_lang'];
+			$this->question_lang = $config['default_lang_code'];
 
 			$sql = 'SELECT question_id
 				FROM ' . CAPTCHA_QUESTIONS_TABLE . "
-				WHERE lang_iso = '" . $db->sql_escape($config['default_lang']) . "'";
+				WHERE lang_code = '" . $db->sql_escape($config['default_lang_code']) . "'";
 			$result = $db->sql_query($sql, 7200);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -129,7 +129,7 @@ class phpbb_captcha_qa
 
 		$sql = 'SELECT COUNT(question_id) AS question_count
 			FROM ' . CAPTCHA_QUESTIONS_TABLE . "
-			WHERE lang_iso = '" . $db->sql_escape($config['default_lang']) . "'";
+			WHERE lang_code = '" . $db->sql_escape($config['default_lang_code']) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -212,7 +212,7 @@ class phpbb_captcha_qa
 				FROM ' . CAPTCHA_QUESTIONS_TABLE . ' q
 				JOIN ' . CAPTCHA_ANSWERS_TABLE . " a
 					ON q.question_id = a.question_id
-				WHERE q.lang_iso = '" . $db->sql_escape($config['default_lang']) . "'
+				WHERE q.lang_code = '" . $db->sql_escape($config['default_lang_code']) . "'
 				ORDER BY RAND()";
 			$result = $db->sql_query_limit($sql, 1);
 			if ($row = $db->sql_fetchrow($result))
@@ -307,12 +307,12 @@ class phpbb_captcha_qa
 					'COLUMNS' => [
 						'question_id'   => ['UINT', null, 'auto_increment'],
 						'strict'        => ['BOOL', 0],
-						'lang_iso'      => ['VCHAR:5', ''],
+						'lang_code'      => ['VCHAR:5', ''],
 						'question_text' => ['TEXT_UNI', ''],
 					],
 					'PRIMARY_KEY'       => 'question_id',
 					'KEYS'              => [
-						'lang'          => ['INDEX', 'lang_iso'],
+						'lang'          => ['INDEX', 'lang_code'],
 					],
 				],
 				CAPTCHA_ANSWERS_TABLE       =>  [
@@ -347,6 +347,8 @@ class phpbb_captcha_qa
 				$db_tool->sql_create_table($table, $schema);
 			}
 		}
+
+		$db->sql_query('ALTER TABLE ' . CAPTCHA_QUESTIONS_TABLE . " MODIFY lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL");
 	}
 
 	/**
@@ -476,7 +478,7 @@ class phpbb_captcha_qa
 			FROM ' . CAPTCHA_QA_CONFIRM_TABLE . ' c, ' . CAPTCHA_QUESTIONS_TABLE . " q
 			WHERE c.question_id = q.question_id
 				AND c.session_id = '" . $db->sql_escape($user->session_id) . "'
-				AND q.lang_iso = '" . $db->sql_escape($this->question_lang) . "'
+				AND q.lang_code = '" . $db->sql_escape($this->question_lang) . "'
 				AND c.confirm_type = " . $this->type;
 		$result = $db->sql_query_limit($sql, 1);
 		$row = $db->sql_fetchrow($result);
@@ -507,7 +509,7 @@ class phpbb_captcha_qa
 			WHERE c.question_id = q.question_id
 				AND confirm_id = '" . $db->sql_escape($this->confirm_id) . "'
 				AND session_id = '" . $db->sql_escape($user->session_id) . "'
-				AND q.lang_iso = '" . $db->sql_escape($this->question_lang) . "'
+				AND q.lang_code = '" . $db->sql_escape($this->question_lang) . "'
 				AND confirm_type = " . $this->type;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -678,14 +680,14 @@ class phpbb_captcha_qa
 			$error = false;
 			$input_question = request_var('question_text', '', true);
 			$input_answers = request_var('answers', '', true);
-			$input_lang = request_var('lang_iso', '', true);
+			$input_lang = request_var('lang_code', '', true);
 			$input_strict = request_var('strict', false);
 			$langs = $this->get_languages();
 
 			foreach ($langs as $lang => $entry)
 			{
 				$template->assign_block_vars('langs', [
-					'ISO' => $lang,
+					'CODE' => $lang,
 					'NAME' => $entry['name'],
 				]);
 			}
@@ -702,7 +704,7 @@ class phpbb_captcha_qa
 
 					$template->assign_vars([
 						'QUESTION_TEXT'     => $input_question ?: $question['question_text'],
-						'LANG_ISO'          => $input_lang ?: $question['lang_iso'],
+						'LANG_CODE'         => $input_lang ?: $question['lang_code'],
 						'STRICT'            => (isset($_REQUEST['strict'])) ? $input_strict : $question['strict'],
 						'ANSWERS'           => $answers,
 					]);
@@ -716,7 +718,7 @@ class phpbb_captcha_qa
 			{
 				$template->assign_vars([
 					'QUESTION_TEXT'     => $input_question,
-					'LANG_ISO'          => $input_lang,
+					'LANG_CODE'         => $input_lang,
 					'STRICT'            => $input_strict,
 					'ANSWERS'           => $input_answers,
 				]);
@@ -776,7 +778,7 @@ class phpbb_captcha_qa
 			$template->assign_block_vars('questions', [
 				'QUESTION_TEXT'     => $row['question_text'],
 				'QUESTION_ID'       => $row['question_id'],
-				'QUESTION_LANG'     => $row['lang_iso'],
+				'QUESTION_LANG'     => $row['lang_code'],
 				'U_DELETE'          => "{$url}action=delete",
 				'U_EDIT'            => "{$url}action=edit",
 			]);
@@ -831,7 +833,7 @@ class phpbb_captcha_qa
 		$question = [
 			'question_text' => request_var('question_text', '', true),
 			'strict'        => request_var('strict', false),
-			'lang_iso'      => request_var('lang_iso', ''),
+			'lang_code'      => request_var('lang_code', ''),
 			'answers'       => (strlen($answers)) ? explode("\n", $answers) : [],
 		];
 
@@ -933,7 +935,7 @@ class phpbb_captcha_qa
 	{
 		$langs = $this->get_languages();
 
-		if (!isset($question_data['lang_iso']) ||
+		if (!isset($question_data['lang_code']) ||
 			!isset($question_data['question_text']) ||
 			!isset($question_data['strict']) ||
 			!isset($question_data['answers']))
@@ -941,7 +943,7 @@ class phpbb_captcha_qa
 			return false;
 		}
 
-		if (!isset($langs[$question_data['lang_iso']]) ||
+		if (!isset($langs[$question_data['lang_code']]) ||
 			!strlen($question_data['question_text']) ||
 			!sizeof($question_data['answers']))
 		{
@@ -965,9 +967,9 @@ class phpbb_captcha_qa
 		$langs = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$langs[$row['lang_iso']] = [
+			$langs[$row['lang_code']] = [
 				'name'  => $row['lang_local_name'],
-				'id'    => (int) $row['lang_id'],
+				'code'  => $row['lang_code'],
 			];
 		}
 		$db->sql_freeresult($result);
@@ -988,7 +990,7 @@ class phpbb_captcha_qa
 		{
 			$sql = 'SELECT question_id
 				FROM ' . CAPTCHA_QUESTIONS_TABLE . "
-				WHERE lang_iso = '" . $db->sql_escape($config['default_lang']) . "'
+				WHERE lang_code = '" . $db->sql_escape($config['default_lang_code']) . "'
 					AND  question_id <> " .  (int) $question_id;
 			$result = $db->sql_query_limit($sql, 1);
 			$question = $db->sql_fetchrow($result);

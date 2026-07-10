@@ -173,7 +173,7 @@ function user_add($user_row, $cp_data = false)
 	$additional_vars = [
 		'user_permissions'  => '',
 		'user_timezone'     => $config['board_timezone'],
-		'user_lang'         => $config['default_lang'],
+		'user_lang_code'    => $config['default_lang_code'],
 		'user_style'        => (int) $config['default_style'],
 		'user_actkey'       => '',
 		'user_ip'           => '',
@@ -1382,28 +1382,28 @@ function validate_match($string, $optional = false, $match = '')
 }
 
 /**
-* Validate Language Pack ISO Name
+* Validate language code
 *
-* Tests whether a language name is valid and installed
+* Tests whether a language code is valid and installed
 *
-* @param string $lang_iso   The language string to test
+* @param string $lang_code   The language code to test
 *
 * @return bool|string       Either false if validation succeeded or
 *                           a string which will be used as the error message
 *                           (with the variable name appended)
 */
-function validate_language_iso_name($lang_iso)
+function validate_lang_code($lang_code)
 {
 	global $db;
 
-	$sql = 'SELECT lang_id
+	$sql = 'SELECT lang_code
 		FROM ' . LANG_TABLE . "
-		WHERE lang_iso = '" . $db->sql_escape($lang_iso) . "'";
+		WHERE lang_code = '" . $db->sql_escape($lang_code) . "'";
 	$result = $db->sql_query($sql);
-	$lang_id = (int) $db->sql_fetchfield('lang_id');
+	$lang_code = $db->sql_fetchfield('lang_code');
 	$db->sql_freeresult($result);
 
-	return ($lang_id) ? false : 'WRONG_DATA';
+	return ($lang_code) ? false : 'WRONG_DATA';
 }
 
 /**
@@ -2717,7 +2717,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 
 		case 'approve':
 			// Make sure we only approve those which are pending ;)
-			$sql = 'SELECT u.user_id, u.user_email, u.username, u.username_clean, u.user_notify_type, u.user_jabber, u.user_lang
+			$sql = 'SELECT u.user_id, u.user_email, u.username, u.username_clean, u.user_notify_type, u.user_jabber, u.user_lang_code
 				FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . ' ug
 				WHERE ug.group_id = ' . $group_id . '
 					AND ug.user_pending = 1
@@ -2750,7 +2750,7 @@ function group_user_attributes($action, $group_id, $user_id_ary = false, $userna
 
 			foreach ($email_users as $row)
 			{
-				$messenger->template('group_approved', $row['user_lang']);
+				$messenger->template('group_approved', $row['user_lang_code']);
 
 				$messenger->to($row['user_email'], $row['username']);
 				$messenger->im($row['user_jabber'], $row['username']);

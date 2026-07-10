@@ -33,7 +33,7 @@ class acp_language
 		$form_name = 'acp_lang';
 		add_form_key('acp_lang');
 
-		$lang_id = request_var('id', 0);
+		$lang_code = basename(request_var('id', ''));
 
 		$user->add_lang('acp/language');
 		$this->tpl_name = 'acp_language';
@@ -48,14 +48,14 @@ class acp_language
 					trigger_error($user->lang['FORM_INVALID']. adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
-				if (!$lang_id)
+				if (!$lang_code)
 				{
-					trigger_error($user->lang['NO_LANG_ID'] . adm_back_link($this->u_action), E_USER_WARNING);
+					trigger_error($user->lang['NO_LANG_CODE'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
 				$sql = 'SELECT *
 					FROM ' . LANG_TABLE . "
-					WHERE lang_id = {$lang_id}";
+					WHERE lang_code = '" . $db->sql_escape($lang_code) . "'";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -66,8 +66,8 @@ class acp_language
 				];
 
 				$db->sql_query('UPDATE ' . LANG_TABLE . '
-					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-					WHERE lang_id = ' . $lang_id);
+					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+					WHERE lang_code = '" . $db->sql_escape($lang_code) . "'");
 
 				add_log('admin', 'LOG_LANGUAGE_PACK_UPDATED', $sql_ary['lang_english_name']);
 
@@ -76,29 +76,28 @@ class acp_language
 
 			case 'details':
 
-				if (!$lang_id)
+				if (!$lang_code)
 				{
-					trigger_error($user->lang['NO_LANG_ID'] . adm_back_link($this->u_action), E_USER_WARNING);
+					trigger_error($user->lang['NO_LANG_CODE'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
 				$this->page_title = 'LANGUAGE_PACK_DETAILS';
 
 				$sql = 'SELECT *
-					FROM ' . LANG_TABLE . '
-					WHERE lang_id = ' . $lang_id;
+					FROM ' . LANG_TABLE . "
+					WHERE lang_code = '" . $db->sql_escape($lang_code) . "'";
 				$result = $db->sql_query($sql);
 				$lang_entries = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
 
 				$template->assign_vars([
 					'S_DETAILS'         => true,
-					'U_ACTION'          => $this->u_action . "&amp;action=details&amp;id={$lang_id}",
+					'U_ACTION'          => $this->u_action . "&amp;action=details&amp;id={$lang_code}",
 					'U_BACK'            => $this->u_action,
 					'LANG_LOCAL_NAME'   => $lang_entries['lang_local_name'],
 					'LANG_ENGLISH_NAME' => $lang_entries['lang_english_name'],
-					'LANG_ISO'          => $lang_entries['lang_iso'],
-					]
-				);
+					'LANG_CODE'         => $lang_entries['lang_code'],
+				]);
 
 				return;
 
@@ -106,37 +105,42 @@ class acp_language
 
 			case 'delete':
 
-				if (!$lang_id)
+				if (!$lang_code)
 				{
-					trigger_error($user->lang['NO_LANG_ID'] . adm_back_link($this->u_action), E_USER_WARNING);
+					trigger_error($user->lang['NO_LANG_CODE'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
 				$sql = 'SELECT *
-					FROM ' . LANG_TABLE . '
-					WHERE lang_id = ' . $lang_id;
+					FROM ' . LANG_TABLE . "
+					WHERE lang_code = '" . $db->sql_escape($lang_code) . "'";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
 
-				if ($row['lang_iso'] == $config['default_lang'])
+				if (!$row)
+				{
+					trigger_error($user->lang['LANGUAGE_PACK_NOT_EXIST'] . adm_back_link($this->u_action), E_USER_WARNING);
+				}
+
+				if ($row['lang_code'] == $config['default_lang_code'])
 				{
 					trigger_error($user->lang['NO_REMOVE_DEFAULT_LANG'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
 				if (confirm_box(true))
 				{
-					$db->sql_query('DELETE FROM ' . LANG_TABLE . ' WHERE lang_id = ' . $lang_id);
+					$db->sql_query('DELETE FROM ' . LANG_TABLE . " WHERE lang_code = '" . $db->sql_escape($lang_code) . "'");
 
 					$sql = 'UPDATE ' . USERS_TABLE . "
-						SET user_lang = '" . $db->sql_escape($config['default_lang']) . "'
-						WHERE user_lang = '" . $db->sql_escape($row['lang_iso']) . "'";
+						SET user_lang_code = '" . $db->sql_escape($config['default_lang_code']) . "'
+						WHERE user_lang_code = '" . $db->sql_escape($row['lang_code']) . "'";
 					$db->sql_query($sql);
 
 					// We also need to remove the translated entries for custom profile fields - we want clean tables, don't we?
-					$sql = 'DELETE FROM ' . PROFILE_LANG_TABLE . ' WHERE lang_id = ' . $lang_id;
+					$sql = 'DELETE FROM ' . PROFILE_LANG_TABLE . " WHERE lang_code = '" . $db->sql_escape($lang_code) . "'";
 					$db->sql_query($sql);
 
-					$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . ' WHERE lang_id = ' . $lang_id;
+					$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . " WHERE lang_code = '" . $db->sql_escape($lang_code) . "'";
 					$db->sql_query($sql);
 
 					$cache->purge();
@@ -151,33 +155,32 @@ class acp_language
 						'i'         => $id,
 						'mode'      => $mode,
 						'action'    => $action,
-						'id'        => $lang_id,
+						'id'        => $lang_code,
 					];
 					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields($s_hidden_fields));
 				}
 			break;
 
 			case 'install':
-				$lang_iso = request_var('iso', '');
-				$lang_iso = basename($lang_iso);
+				$lang_code = basename(request_var('code', ''));
 
-				if (!$lang_iso || strlen($lang_iso) > 5 || !file_exists(PHPBB_ROOT_PATH . "language/{$lang_iso}/iso.txt"))
+				if (!$lang_code || strlen($lang_code) > 5 || !file_exists(PHPBB_ROOT_PATH . "language/{$lang_code}/iso.txt"))
 				{
 					trigger_error($user->lang['LANGUAGE_PACK_NOT_EXIST'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
-				$file = file(PHPBB_ROOT_PATH . "language/{$lang_iso}/iso.txt");
+				$file = file(PHPBB_ROOT_PATH . "language/{$lang_code}/iso.txt");
 
 				$lang_pack = [
-					'iso'       => $lang_iso,
+					'code'      => $lang_code,
 					'name'      => trim(htmlspecialchars($file[0])),
 					'local_name'=> trim(htmlspecialchars($file[1], ENT_COMPAT, 'UTF-8')),
 				];
 				unset($file);
 
-				$sql = 'SELECT lang_iso
+				$sql = 'SELECT lang_code
 					FROM ' . LANG_TABLE . "
-					WHERE lang_iso = '" . $db->sql_escape($lang_iso) . "'";
+					WHERE lang_code = '" . $db->sql_escape($lang_code) . "'";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -194,22 +197,14 @@ class acp_language
 
 				// Add language pack
 				$sql_ary = [
-					'lang_iso'          => $lang_pack['iso'],
-					'lang_dir'          => $lang_pack['iso'],
+					'lang_code'         => $lang_pack['code'],
 					'lang_english_name' => $lang_pack['name'],
 					'lang_local_name'   => $lang_pack['local_name'],
 				];
 
 				$db->sql_query('INSERT INTO ' . LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-				$lang_id = $db->sql_nextid();
-
-				// Now let's copy the default language entries for custom profile fields for this new language - makes admin's life easier.
-				$sql = 'SELECT lang_id
-					FROM ' . LANG_TABLE . "
-					WHERE lang_iso = '" . $db->sql_escape($config['default_lang']) . "'";
-				$result = $db->sql_query($sql);
-				$default_lang_id = (int) $db->sql_fetchfield('lang_id');
-				$db->sql_freeresult($result);
+				$lang_code = $lang_pack['code'];
+				$default_lang_code = $config['default_lang_code'];
 
 				// We want to notify the admin that custom profile fields need to be updated for the new language.
 				$notify_cpf_update = false;
@@ -219,26 +214,26 @@ class acp_language
 				// Due to this we stay on the safe side if we do the insertion "the manual way"
 
 				$sql = 'SELECT field_id, lang_name, lang_explain, lang_default_value
-					FROM ' . PROFILE_LANG_TABLE . '
-					WHERE lang_id = ' . $default_lang_id;
+					FROM ' . PROFILE_LANG_TABLE . "
+					WHERE lang_code = '" . $db->sql_escape($default_lang_code) . "'";
 				$result = $db->sql_query($sql);
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$row['lang_id'] = $lang_id;
+					$row['lang_code'] = $lang_code;
 					$db->sql_query('INSERT INTO ' . PROFILE_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $row));
 					$notify_cpf_update = true;
 				}
 				$db->sql_freeresult($result);
 
 				$sql = 'SELECT field_id, option_id, field_type, lang_value
-					FROM ' . PROFILE_FIELDS_LANG_TABLE . '
-					WHERE lang_id = ' . $default_lang_id;
+					FROM ' . PROFILE_FIELDS_LANG_TABLE . "
+					WHERE lang_code = '" . $db->sql_escape($default_lang_code) . "'";
 				$result = $db->sql_query($sql);
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$row['lang_id'] = $lang_id;
+					$row['lang_code'] = $lang_code;
 					$db->sql_query('INSERT INTO ' . PROFILE_FIELDS_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $row));
 					$notify_cpf_update = true;
 				}
@@ -256,15 +251,15 @@ class acp_language
 
 		}
 
-		$sql = 'SELECT user_lang, COUNT(user_lang) AS lang_count
+		$sql = 'SELECT user_lang_code, COUNT(user_lang_code) AS lang_count
 			FROM ' . USERS_TABLE . '
-			GROUP BY user_lang';
+			GROUP BY user_lang_code';
 		$result = $db->sql_query($sql);
 
 		$lang_count = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$lang_count[$row['user_lang']] = $row['lang_count'];
+			$lang_count[$row['user_lang_code']] = $row['lang_count'];
 		}
 		$db->sql_freeresult($result);
 
@@ -277,18 +272,18 @@ class acp_language
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$installed[] = $row['lang_iso'];
-			$tagstyle = ($row['lang_iso'] == $config['default_lang']) ? '*' : '';
+			$installed[] = $row['lang_code'];
+			$tagstyle = ($row['lang_code'] == $config['default_lang_code']) ? '*' : '';
 
 			$template->assign_block_vars('lang', [
-				'U_DETAILS'         => $this->u_action . "&amp;action=details&amp;id={$row['lang_id']}",
-				'U_DELETE'          => $this->u_action . "&amp;action=delete&amp;id={$row['lang_id']}",
+				'U_DETAILS'         => $this->u_action . "&amp;action=details&amp;id={$row['lang_code']}",
+				'U_DELETE'          => $this->u_action . "&amp;action=delete&amp;id={$row['lang_code']}",
 
 				'ENGLISH_NAME'      => $row['lang_english_name'],
 				'TAG'               => $tagstyle,
 				'LOCAL_NAME'        => $row['lang_local_name'],
-				'ISO'               => $row['lang_iso'],
-				'USED_BY'           => $lang_count[$row['lang_iso']] ?? 0,
+				'CODE'              => $row['lang_code'],
+				'USED_BY'           => $lang_count[$row['lang_code']] ?? 0,
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -311,13 +306,12 @@ class acp_language
 					{
 						if ($iso = file(PHPBB_ROOT_PATH . "language/{$file}/iso.txt"))
 						{
-							if (sizeof($iso) == 3)
+							if (sizeof($iso) >= 2)
 							{
 								$new_ary[$file] = [
-									'iso'       => $file,
+									'code'      => $file,
 									'name'      => trim($iso[0]),
 									'local_name'=> trim($iso[1]),
-									'author'    => trim($iso[2])
 								];
 							}
 						}
@@ -331,14 +325,14 @@ class acp_language
 
 		if (sizeof($new_ary))
 		{
-			foreach ($new_ary as $iso => $lang_ary)
+			foreach ($new_ary as $code => $lang_ary)
 			{
 				$template->assign_block_vars('notinst', [
-					'ISO'           => htmlspecialchars($lang_ary['iso']),
+					'CODE'          => htmlspecialchars($lang_ary['code']),
 					'LOCAL_NAME'    => htmlspecialchars($lang_ary['local_name'], ENT_COMPAT, 'UTF-8'),
 					'NAME'          => htmlspecialchars($lang_ary['name'], ENT_COMPAT, 'UTF-8'),
-					'U_INSTALL'     => $this->u_action . '&amp;action=install&amp;iso=' . urlencode($lang_ary['iso'])]
-				);
+					'U_INSTALL'     => $this->u_action . '&amp;action=install&amp;code=' . urlencode($lang_ary['code']),
+				]);
 			}
 		}
 

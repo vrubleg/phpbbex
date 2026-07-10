@@ -84,7 +84,7 @@ class acp_inactive
 					if ($action == 'activate')
 					{
 						// Get those 'being activated'...
-						$sql = 'SELECT user_id, username' . (($config['require_activation'] == USER_ACTIVATION_ADMIN) ? ', user_email, user_lang' : '') . '
+						$sql = 'SELECT user_id, username' . (($config['require_activation'] == USER_ACTIVATION_ADMIN) ? ', user_email, user_lang_code' : '') . '
 							FROM ' . USERS_TABLE . '
 							WHERE ' . $db->sql_in_set('user_id', $mark) . '
 								AND user_type = ' . USER_INACTIVE;
@@ -107,7 +107,7 @@ class acp_inactive
 
 							foreach ($inactive_users as $row)
 							{
-								$messenger->template('admin_welcome_activated', $row['user_lang']);
+								$messenger->template('admin_welcome_activated', $row['user_lang_code']);
 
 								$messenger->to($row['user_email'], $row['username']);
 
@@ -175,7 +175,7 @@ class acp_inactive
 						trigger_error($user->lang['EMAIL_DISABLED'] . adm_back_link($this->u_action), E_USER_WARNING);
 					}
 
-					$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type, user_regdate, user_actkey
+					$sql = 'SELECT user_id, username, user_email, user_lang_code, user_jabber, user_notify_type, user_regdate, user_actkey
 						FROM ' . USERS_TABLE . '
 						WHERE ' . $db->sql_in_set('user_id', $mark) . '
 							AND user_inactive_reason';
@@ -194,7 +194,7 @@ class acp_inactive
 
 						do
 						{
-							$messenger->template('user_remind_inactive', $row['user_lang']);
+							$messenger->template('user_remind_inactive', $row['user_lang_code']);
 
 							$messenger->to($row['user_email'], $row['username']);
 							$messenger->im($row['user_jabber'], $row['username']);

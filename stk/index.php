@@ -22,7 +22,7 @@ $user->setup('acp/common', $config['default_style']);
 // Set a constant so we know when the STK got to a point where it savely loaded all absolutely required stuff
 define('IN_STK', true);
 
-// Language path.  We are using a custom language path to keep all the files within the stk/ folder.  First check if the $user->data['user_lang'] path exists, if not, check if the default lang path exists, and if still not use english.
+// Language path.  We are using a custom language path to keep all the files within the stk/ folder.  First check if the $user->data['user_lang_code'] path exists, if not, check if the default lang path exists, and if still not use english.
 stk_add_lang('common');
 
 // Do not use the normal template path (to prevent issues with boards using alternate styles)

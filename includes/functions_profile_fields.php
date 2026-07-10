@@ -24,7 +24,7 @@ class custom_profile
 	* Called by ucp_profile and ucp_register
 	* @access public
 	*/
-	function generate_profile_fields($mode, $lang_id)
+	function generate_profile_fields($mode, $lang_code)
 	{
 		global $db, $template, $auth;
 
@@ -53,7 +53,7 @@ class custom_profile
 			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
 			WHERE f.field_active = 1
 				{$sql_where}
-				AND l.lang_id = {$lang_id}
+				AND l.lang_code = '" . $db->sql_escape($lang_code) . "'
 				AND l.field_id = f.field_id
 			ORDER BY f.field_order";
 		$result = $db->sql_query($sql);
@@ -144,12 +144,12 @@ class custom_profile
 				$field_value = (int) $field_value;
 
 				// retrieve option lang data if necessary
-				if (!isset($this->options_lang[$field_data['field_id']]) || !isset($this->options_lang[$field_data['field_id']][$field_data['lang_id']]) || !sizeof($this->options_lang[$file_data['field_id']][$field_data['lang_id']]))
+				if (!isset($this->options_lang[$field_data['field_id']]) || !isset($this->options_lang[$field_data['field_id']][$field_data['lang_code']]) || !sizeof($this->options_lang[$field_data['field_id']][$field_data['lang_code']]))
 				{
-					$this->get_option_lang($field_data['field_id'], $field_data['lang_id'], FIELD_DROPDOWN, false);
+					$this->get_option_lang($field_data['field_id'], $field_data['lang_code'], FIELD_DROPDOWN, false);
 				}
 
-				if (!isset($this->options_lang[$field_data['field_id']][$field_data['lang_id']][$field_value]))
+				if (!isset($this->options_lang[$field_data['field_id']][$field_data['lang_code']][$field_value]))
 				{
 					return 'FIELD_INVALID_VALUE';
 				}
@@ -205,14 +205,16 @@ class custom_profile
 		$this->profile_cache = [];
 
 		// Display hidden/no_view fields for admin/moderator
+		$sql_hide = (!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_')) ? ' AND f.field_hide = 0' : '';
+
 		$sql = 'SELECT l.*, f.*
-			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . ' f
-			WHERE l.lang_id = ' . $user->get_iso_lang_id() . '
-				AND f.field_active = 1 ' .
-				((!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_')) ? '    AND f.field_hide = 0 ' : '') . '
+			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
+			WHERE l.lang_code = '" . $db->sql_escape($user->lang_code) . "'
+				AND f.field_active = 1
+				{$sql_hide}
 				AND f.field_no_view = 0
 				AND l.field_id = f.field_id
-			ORDER BY f.field_order';
+			ORDER BY f.field_order";
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -225,7 +227,7 @@ class custom_profile
 	/**
 	* Get language entries for options and store them here for later use
 	*/
-	function get_option_lang($field_id, $lang_id, $field_type, $preview)
+	function get_option_lang($field_id, $lang_code, $field_type, $preview)
 	{
 		global $db;
 
@@ -235,7 +237,7 @@ class custom_profile
 
 			foreach ($lang_options as $num => $var)
 			{
-				$this->options_lang[$field_id][$lang_id][($num + 1)] = $var;
+				$this->options_lang[$field_id][$lang_code][($num + 1)] = $var;
 			}
 		}
 		else
@@ -243,14 +245,14 @@ class custom_profile
 			$sql = 'SELECT option_id, lang_value
 				FROM ' . PROFILE_FIELDS_LANG_TABLE . "
 					WHERE field_id = {$field_id}
-					AND lang_id = {$lang_id}
+					AND lang_code = '" . $db->sql_escape($lang_code) . "'
 					AND field_type = {$field_type}
 				ORDER BY option_id";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$this->options_lang[$field_id][$lang_id][($row['option_id'] + 1)] = $row['lang_value'];
+				$this->options_lang[$field_id][$lang_code][($row['option_id'] + 1)] = $row['lang_value'];
 			}
 			$db->sql_freeresult($result);
 		}
@@ -260,7 +262,7 @@ class custom_profile
 	* Submit profile field for validation
 	* @access public
 	*/
-	function submit_cp_field($mode, $lang_id, &$cp_data, &$cp_error)
+	function submit_cp_field($mode, $lang_code, &$cp_data, &$cp_error)
 	{
 		global $auth, $db, $user;
 
@@ -287,7 +289,7 @@ class custom_profile
 
 		$sql = 'SELECT l.*, f.*
 			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
-			WHERE l.lang_id = {$lang_id}
+			WHERE l.lang_code = '" . $db->sql_escape($lang_code) . "'
 				AND f.field_active = 1
 				{$sql_where}
 				AND l.field_id = f.field_id
@@ -546,10 +548,10 @@ class custom_profile
 
 			case 'dropdown':
 				$field_id = $ident_ary['data']['field_id'];
-				$lang_id = $ident_ary['data']['lang_id'];
-				if (!isset($this->options_lang[$field_id][$lang_id]))
+				$lang_code = $ident_ary['data']['lang_code'];
+				if (!isset($this->options_lang[$field_id][$lang_code]))
 				{
-					$this->get_option_lang($field_id, $lang_id, FIELD_DROPDOWN, false);
+					$this->get_option_lang($field_id, $lang_code, FIELD_DROPDOWN, false);
 				}
 
 				if ($value == $ident_ary['data']['field_novalue'] && !$ident_ary['data']['field_show_novalue'])
@@ -560,7 +562,7 @@ class custom_profile
 				$value = (int) $value;
 
 				// User not having a value assigned
-				if (!isset($this->options_lang[$field_id][$lang_id][$value]))
+				if (!isset($this->options_lang[$field_id][$lang_code][$value]))
 				{
 					if ($ident_ary['data']['field_show_novalue'])
 					{
@@ -572,15 +574,15 @@ class custom_profile
 					}
 				}
 
-				return $this->options_lang[$field_id][$lang_id][$value];
+				return $this->options_lang[$field_id][$lang_code][$value];
 			break;
 
 			case 'bool':
 				$field_id = $ident_ary['data']['field_id'];
-				$lang_id = $ident_ary['data']['lang_id'];
-				if (!isset($this->options_lang[$field_id][$lang_id]))
+				$lang_code = $ident_ary['data']['lang_code'];
+				if (!isset($this->options_lang[$field_id][$lang_code]))
 				{
-					$this->get_option_lang($field_id, $lang_id, FIELD_BOOL, false);
+					$this->get_option_lang($field_id, $lang_code, FIELD_BOOL, false);
 				}
 
 				if (!$value && $ident_ary['data']['field_show_novalue'])
@@ -590,7 +592,7 @@ class custom_profile
 
 				if ($ident_ary['data']['field_length'] == 1)
 				{
-					return $this->options_lang[$field_id][$lang_id][(int) $value] ?? null;
+					return $this->options_lang[$field_id][$lang_code][(int) $value] ?? null;
 				}
 				else if (!$value)
 				{
@@ -598,7 +600,7 @@ class custom_profile
 				}
 				else
 				{
-					return $this->options_lang[$field_id][$lang_id][(int) ($value) + 1];
+					return $this->options_lang[$field_id][$lang_code][(int) ($value) + 1];
 				}
 			break;
 
@@ -753,12 +755,12 @@ class custom_profile
 
 		if ($profile_row['field_length'] == 1)
 		{
-			if (!isset($this->options_lang[$profile_row['field_id']][$profile_row['lang_id']]) || !sizeof($this->options_lang[$profile_row['field_id']][$profile_row['lang_id']]))
+			if (!isset($this->options_lang[$profile_row['field_id']][$profile_row['lang_code']]) || !sizeof($this->options_lang[$profile_row['field_id']][$profile_row['lang_code']]))
 			{
-				$this->get_option_lang($profile_row['field_id'], $profile_row['lang_id'], FIELD_BOOL, $preview);
+				$this->get_option_lang($profile_row['field_id'], $profile_row['lang_code'], FIELD_BOOL, $preview);
 			}
 
-			foreach ($this->options_lang[$profile_row['field_id']][$profile_row['lang_id']] as $option_id => $option_value)
+			foreach ($this->options_lang[$profile_row['field_id']][$profile_row['lang_code']] as $option_id => $option_value)
 			{
 				$template->assign_block_vars('bool.options', [
 					'OPTION_ID' => $option_id,
@@ -807,15 +809,15 @@ class custom_profile
 
 		$value = $this->get_var('int', $profile_row, $profile_row['field_default_value'], $preview);
 
-		if (!isset($this->options_lang[$profile_row['field_id']]) || !isset($this->options_lang[$profile_row['field_id']][$profile_row['lang_id']]) || !sizeof($this->options_lang[$profile_row['field_id']][$profile_row['lang_id']]))
+		if (!isset($this->options_lang[$profile_row['field_id']]) || !isset($this->options_lang[$profile_row['field_id']][$profile_row['lang_code']]) || !sizeof($this->options_lang[$profile_row['field_id']][$profile_row['lang_code']]))
 		{
-			$this->get_option_lang($profile_row['field_id'], $profile_row['lang_id'], FIELD_DROPDOWN, $preview);
+			$this->get_option_lang($profile_row['field_id'], $profile_row['lang_code'], FIELD_DROPDOWN, $preview);
 		}
 
 		$profile_row['field_value'] = $value;
 		$template->assign_block_vars($this->profile_types[$profile_row['field_type']], array_change_key_case($profile_row, CASE_UPPER));
 
-		foreach ($this->options_lang[$profile_row['field_id']][$profile_row['lang_id']] as $option_id => $option_value)
+		foreach ($this->options_lang[$profile_row['field_id']][$profile_row['lang_code']] as $option_id => $option_value)
 		{
 			$template->assign_block_vars('dropdown.options', [
 				'OPTION_ID' => $option_id,
@@ -869,10 +871,10 @@ class custom_profile
 		}
 
 		$sql = 'SELECT f.field_type, f.field_ident, f.field_default_value, l.lang_default_value
-			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . ' f
-			WHERE l.lang_id = ' . $user->get_iso_lang_id() . '
-				' . ((sizeof($sql_not_in)) ? ' AND ' . $db->sql_in_set('f.field_ident', $sql_not_in, true) : '') . '
-				AND l.field_id = f.field_id';
+			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
+			WHERE l.lang_code = '" . $db->sql_escape($user->lang_code) . "'
+				" . ((sizeof($sql_not_in)) ? ' AND ' . $db->sql_in_set('f.field_ident', $sql_not_in, true) : '') . "
+				AND l.field_id = f.field_id";
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -1052,16 +1054,14 @@ class custom_profile_admin extends custom_profile
 	*/
 	function get_bool_options()
 	{
-		global $user, $config, $lang_defs;
-
-		$default_lang_id = $lang_defs['iso'][$config['default_lang']];
+		global $user, $config;
 
 		$profile_row = [
 			'var_name'              => 'field_default_value',
 			'field_id'              => 1,
 			'lang_name'             => $this->vars['lang_name'],
 			'lang_explain'          => $this->vars['lang_explain'],
-			'lang_id'               => $default_lang_id,
+			'lang_code'             => $config['default_lang_code'],
 			'field_default_value'   => $this->vars['field_default_value'],
 			'field_ident'           => 'field_default_value',
 			'field_type'            => FIELD_BOOL,
@@ -1082,16 +1082,14 @@ class custom_profile_admin extends custom_profile
 	*/
 	function get_dropdown_options()
 	{
-		global $user, $config, $lang_defs;
-
-		$default_lang_id = $lang_defs['iso'][$config['default_lang']];
+		global $user, $config;
 
 		$profile_row[0] = [
 			'var_name'              => 'field_default_value',
 			'field_id'              => 1,
 			'lang_name'             => $this->vars['lang_name'],
 			'lang_explain'          => $this->vars['lang_explain'],
-			'lang_id'               => $default_lang_id,
+			'lang_code'             => $config['default_lang_code'],
 			'field_default_value'   => $this->vars['field_default_value'],
 			'field_ident'           => 'field_default_value',
 			'field_type'            => FIELD_DROPDOWN,
@@ -1116,15 +1114,13 @@ class custom_profile_admin extends custom_profile
 	*/
 	function get_date_options()
 	{
-		global $user, $config, $lang_defs;
-
-		$default_lang_id = $lang_defs['iso'][$config['default_lang']];
+		global $user, $config;
 
 		$profile_row = [
 			'var_name'              => 'field_default_value',
 			'lang_name'             => $this->vars['lang_name'],
 			'lang_explain'          => $this->vars['lang_explain'],
-			'lang_id'               => $default_lang_id,
+			'lang_code'             => $config['default_lang_code'],
 			'field_default_value'   => $this->vars['field_default_value'],
 			'field_ident'           => 'field_default_value',
 			'field_type'            => FIELD_DATE,

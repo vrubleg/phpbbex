@@ -37,7 +37,7 @@ class ucp_resend
 				trigger_error('FORM_INVALID');
 			}
 
-			$sql = 'SELECT user_id, group_id, username, user_email, user_type, user_lang, user_actkey, user_inactive_reason
+			$sql = 'SELECT user_id, group_id, username, user_email, user_type, user_lang_code, user_actkey, user_inactive_reason
 				FROM ' . USERS_TABLE . "
 				WHERE user_email = '" . $db->sql_escape($email) . "'
 					AND username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
@@ -70,7 +70,7 @@ class ucp_resend
 
 			if ($config['require_activation'] == USER_ACTIVATION_SELF)
 			{
-				$messenger->template('user_resend_inactive', $user_row['user_lang']);
+				$messenger->template('user_resend_inactive', $user_row['user_lang_code']);
 				$messenger->to($user_row['user_email'], $user_row['username']);
 
 				$messenger->anti_abuse_headers($config, $user);
@@ -89,14 +89,14 @@ class ucp_resend
 				// Grab an array of user_id's with a_user permissions ... these users can activate a user
 				$admin_ary = $auth->acl_get_list(false, 'a_user', false);
 
-				$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
+				$sql = 'SELECT user_id, username, user_email, user_lang_code, user_jabber, user_notify_type
 					FROM ' . USERS_TABLE . '
 					WHERE ' . $db->sql_in_set('user_id', $admin_ary[0]['a_user']);
 				$result = $db->sql_query($sql);
 
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$messenger->template('admin_activate', $row['user_lang']);
+					$messenger->template('admin_activate', $row['user_lang_code']);
 					$messenger->to($row['user_email'], $row['username']);
 					$messenger->im($row['user_jabber'], $row['username']);
 

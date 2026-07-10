@@ -591,8 +591,8 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warnin
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
 		require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
-		$user_row['user_lang'] = (file_exists(PHPBB_ROOT_PATH . 'language/' . $user_row['user_lang'] . "/mcp.php")) ? $user_row['user_lang'] : $config['default_lang'];
-		require_once(PHPBB_ROOT_PATH . 'language/' . basename($user_row['user_lang']) . "/mcp.php");
+		$user_row['user_lang_code'] = (file_exists(PHPBB_ROOT_PATH . 'language/' . $user_row['user_lang_code'] . "/mcp.php")) ? $user_row['user_lang_code'] : $config['default_lang_code'];
+		require(PHPBB_ROOT_PATH . 'language/' . basename($user_row['user_lang_code']) . "/mcp.php");
 
 		$message_parser = new parse_message();
 

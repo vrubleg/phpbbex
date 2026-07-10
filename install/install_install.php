@@ -543,7 +543,7 @@ class install_install extends module
 		$s_hidden_fields = '';
 		$passed = false;
 
-		$data['default_lang'] = ($data['default_lang'] !== '') ? $data['default_lang'] : $data['language'];
+		$data['default_lang_code'] = ($data['default_lang_code'] !== '') ? $data['default_lang_code'] : $data['language'];
 
 		if (isset($_POST['check']))
 		{
@@ -801,7 +801,7 @@ class install_install extends module
 				VALUES ('board_startdate', '{$current_time}')",
 
 			'INSERT INTO ' . $data['table_prefix'] . "config (config_name, config_value)
-				VALUES ('default_lang', '" . $db->sql_escape($data['default_lang']) . "')",
+				VALUES ('default_lang_code', '" . $db->sql_escape($data['default_lang_code']) . "')",
 
 			'UPDATE ' . $data['table_prefix'] . "config
 				SET config_value = '" . $db->sql_escape($data['board_email']) . "'
@@ -820,7 +820,7 @@ class install_install extends module
 				WHERE config_name = 'newest_username'",
 
 			'UPDATE ' . $data['table_prefix'] . "users
-				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_ip = '" . $db->sql_escape($user_ip) . "', user_lang = '" . $db->sql_escape($data['default_lang']) . "', user_email='" . $db->sql_escape($data['board_email']) . "', username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
+				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_ip = '" . $db->sql_escape($user_ip) . "', user_lang_code = '" . $db->sql_escape($data['default_lang_code']) . "', user_email='" . $db->sql_escape($data['board_email']) . "', username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
 				WHERE username = 'Admin'",
 
 			'UPDATE ' . $data['table_prefix'] . "moderator_cache
@@ -1210,8 +1210,7 @@ class install_install extends module
 				$lang_file = file("{$path}/iso.txt");
 
 				$lang_pack = [
-					'lang_iso'          => basename($path),
-					'lang_dir'          => basename($path),
+					'lang_code'         => basename($path),
 					'lang_english_name' => trim(htmlspecialchars($lang_file[0])),
 					'lang_local_name'   => trim(htmlspecialchars($lang_file[1], ENT_COMPAT, 'UTF-8')),
 				];
@@ -1374,7 +1373,7 @@ class install_install extends module
 			'dbpasswd'      => request_var('dbpasswd', '', true),
 			'dbname'        => request_var('dbname', ''),
 			'table_prefix'  => request_var('table_prefix', ''),
-			'default_lang'  => basename(request_var('default_lang', '')),
+			'default_lang_code' => basename(request_var('default_lang_code', '')),
 			'admin_name'    => utf8_normalize_nfc(request_var('admin_name', '', true)),
 			'admin_pass1'   => request_var('admin_pass1', '', true),
 			'admin_pass2'   => request_var('admin_pass2', '', true),
@@ -1397,7 +1396,7 @@ class install_install extends module
 	];
 	var $admin_config_options = [
 		'legend1'               => 'ADMIN_CONFIG',
-		'default_lang'          => ['lang' => 'DEFAULT_LANG',               'type' => 'select', 'options' => '$this->module->inst_language_select(\'{VALUE}\')', 'explain' => false],
+		'default_lang_code'     => ['lang' => 'DEFAULT_LANG',               'type' => 'select', 'options' => '$this->module->inst_language_select(\'{VALUE}\')', 'explain' => false],
 		'admin_name'            => ['lang' => 'ADMIN_USERNAME',         'type' => 'text:25:100', 'explain' => true],
 		'admin_pass1'           => ['lang' => 'ADMIN_PASSWORD',         'type' => 'password:25:100', 'explain' => true],
 		'admin_pass2'           => ['lang' => 'ADMIN_PASSWORD_CONFIRM', 'type' => 'password:25:100', 'explain' => false],

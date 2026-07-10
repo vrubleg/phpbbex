@@ -280,7 +280,7 @@ switch ($mode)
 		}
 
 		// Grab relevant data
-		$sql = "SELECT user_id, username, user_email, user_lang, {$sql_field}
+		$sql = "SELECT user_id, username, user_email, user_lang_code, {$sql_field}
 			FROM " . USERS_TABLE . "
 			WHERE user_id = {$user_id}
 				AND user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
@@ -320,7 +320,7 @@ switch ($mode)
 
 						$messenger = new messenger(false);
 
-						$messenger->template('profile_send_im', $row['user_lang']);
+						$messenger->template('profile_send_im', $row['user_lang_code']);
 						$messenger->subject(htmlspecialchars_decode($subject));
 
 						$messenger->replyto($user->data['user_email']);

@@ -214,14 +214,14 @@ class acp_styles
 						{
 							$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_cfg");
 
-							$sql = 'SELECT lang_dir
+							$sql = 'SELECT lang_code
 								FROM ' . LANG_TABLE;
 							$result = $db->sql_query($sql);
 
 							while ($row = $db->sql_fetchrow($result))
 							{
-								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_dir']}");
-								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_dir']}_cfg");
+								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_code']}");
+								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_code']}_cfg");
 							}
 							$db->sql_freeresult($result);
 

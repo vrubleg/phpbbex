@@ -68,11 +68,11 @@ if (!$theme)
 	die();
 }
 
-$sql = 'SELECT lang_dir
+$sql = 'SELECT lang_code
 	FROM ' . LANG_TABLE . "
-	WHERE lang_iso = '" . $db->sql_escape($lang) . "'";
+	WHERE lang_code = '" . $db->sql_escape($lang) . "'";
 $result = $db->sql_query($sql);
-$lang = $db->sql_fetchfield('lang_dir');
+$lang = $db->sql_fetchfield('lang_code');
 $db->sql_freeresult($result);
 
 if (!$lang)
@@ -81,7 +81,7 @@ if (!$lang)
 	die();
 }
 
-$user_image_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $theme['imageset_dir'] . '/imageset/' . $lang) ? $lang : $config['default_lang']);
+$user_image_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $theme['imageset_dir'] . '/imageset/' . $lang) ? $lang : $config['default_lang_code']);
 
 $img_array = $cache->obtain_style_imageset($theme['imageset_dir'], $user_image_lang);
 

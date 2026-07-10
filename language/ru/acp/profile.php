@@ -37,7 +37,7 @@ $lang = array_merge($lang, [
 	'CREATE_NEW_FIELD'          => 'Добавить новое поле',
 	'CUSTOM_FIELDS_NOT_TRANSLATED'  => 'По крайней мере одно дополнительное поле профиля пока не переведено. Введите необходимые данные, перейдя по ссылке «Перевести».',
 
-	'DEFAULT_ISO_LANGUAGE'          => 'Язык по умолчанию [%s]',
+	'DEFAULT_LANGUAGE_CODE'         => 'Язык по умолчанию [%s]',
 	'DEFAULT_LANGUAGE_NOT_FILLED'   => 'Для поля профиля не заполнены переменные языка по умолчанию.',
 	'DEFAULT_VALUE'                 => 'Значение по умолчанию',
 	'DELETE_PROFILE_FIELD'          => 'Удаление поля профиля',
@@ -81,7 +81,7 @@ $lang = array_merge($lang, [
 
 	'INVALID_CHARS_FIELD_IDENT' => 'Идентификатор поля может содержать только латинские строчные буквы и _ (символ нижнего подчёркивания)',
 	'INVALID_FIELD_IDENT_LEN'   => 'Идентификатор поля может быть длиной не более 17 символов',
-	'ISO_LANGUAGE'              => 'Язык [%s]',
+	'LANGUAGE_CODE'             => 'Язык [%s]',
 
 	'LANG_SPECIFIC_OPTIONS'     => 'Настройки для языка [<strong>%s</strong>]',
 

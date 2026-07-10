@@ -21,8 +21,8 @@
 		<dd><input type="text" id="lang_local_name" name="lang_local_name" value="{LANG_LOCAL_NAME}" maxlength="255" /></dd>
 	</dl>
 	<dl>
-		<dt><label>{L_LANG_ISO_CODE}:</label></dt>
-		<dd><strong>{LANG_ISO}</strong></dd>
+		<dt><label>{L_LANG_CODE}:</label></dt>
+		<dd><strong>{LANG_CODE}</strong></dd>
 	</dl>
 	<p class="quick" style="margin-top: -15px;">
 		<input type="submit" name="update_details" class="button2" value="{L_SUBMIT}" />
@@ -42,7 +42,7 @@
 	<tr>
 		<th>{L_LANGUAGE_PACK_NAME}</th>
 		<th>{L_LANGUAGE_PACK_LOCALNAME}</th>
-		<th>{L_LANGUAGE_PACK_ISO}</th>
+		<th>{L_LANGUAGE_PACK_CODE}</th>
 		<th>{L_LANGUAGE_PACK_USED_BY}</th>
 		<th>{L_OPTIONS}</th>
 	</tr>
@@ -55,7 +55,7 @@
 		<!-- IF lang.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
 		<td><a href="{lang.U_DETAILS}">{lang.ENGLISH_NAME}</a> {lang.TAG}</td>
 		<td>{lang.LOCAL_NAME}</td>
-		<td style="text-align: center;"><strong>{lang.ISO}</strong></td>
+		<td style="text-align: center;"><strong>{lang.CODE}</strong></td>
 		<td style="text-align: center;">{lang.USED_BY}</td>
 		<td style="text-align: center;"><a href="{lang.U_DELETE}">{L_DELETE}</a></td>
 	</tr>
@@ -69,7 +69,7 @@
 		<!-- IF notinst.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
 		<td>{notinst.NAME}</td>
 		<td>{notinst.LOCAL_NAME}</td>
-		<td style="text-align: center;"><strong>{notinst.ISO}</strong></td>
+		<td style="text-align: center;"><strong>{notinst.CODE}</strong></td>
 		<td colspan="2" style="text-align: center;"><a href="{notinst.U_INSTALL}">{L_INSTALL}</a></td>
 	</tr>
 	<!-- END notinst -->
