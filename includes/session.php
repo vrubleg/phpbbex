@@ -1659,10 +1659,9 @@ class phpbb_user extends phpbb_session
 	}
 
 	/**
-	* Add Language Items - use_db and use_help are assigned where needed (only use them to force inclusion)
+	* Add Language Items - use_help is assigned where needed (only use it to force inclusion)
 	*
 	* @param mixed $lang_set specifies the language entries to include
-	* @param bool $use_db internal variable for recursion, do not use
 	* @param bool $use_help internal variable for recursion, do not use
 	*
 	* Examples:
@@ -1671,10 +1670,10 @@ class phpbb_user extends phpbb_session
 	* $lang_set = array('posting', 'viewtopic', 'help' => array('bbcode', 'faq'))
 	* $lang_set = array(array('posting', 'viewtopic'), 'help' => array('bbcode', 'faq'))
 	* $lang_set = 'posting'
-	* $lang_set = array('help' => 'faq', 'db' => array('help:faq', 'posting'))
+	* $lang_set = array('help' => 'faq')
 	* </code>
 	*/
-	function add_lang($lang_set, $use_db = false, $use_help = false)
+	function add_lang($lang_set, $use_help = false)
 	{
 		if (is_array($lang_set))
 		{
@@ -1684,28 +1683,24 @@ class phpbb_user extends phpbb_session
 				// We have to force the type here, else [array] language inclusion will not work
 				$key = (string) $key;
 
-				if ($key == 'db')
+				if ($key == 'help')
 				{
-					$this->add_lang($lang_file, true, $use_help);
-				}
-				else if ($key == 'help')
-				{
-					$this->add_lang($lang_file, $use_db, true);
+					$this->add_lang($lang_file, true);
 				}
 				else if (!is_array($lang_file))
 				{
-					$this->set_lang($this->lang, $this->help, $lang_file, $use_db, $use_help);
+					$this->set_lang($this->lang, $this->help, $lang_file, $use_help);
 				}
 				else
 				{
-					$this->add_lang($lang_file, $use_db, $use_help);
+					$this->add_lang($lang_file, $use_help);
 				}
 			}
 			unset($lang_set);
 		}
 		else if ($lang_set)
 		{
-			$this->set_lang($this->lang, $this->help, $lang_set, $use_db, $use_help);
+			$this->set_lang($this->lang, $this->help, $lang_set, $use_help);
 		}
 	}
 
@@ -1713,7 +1708,7 @@ class phpbb_user extends phpbb_session
 	* Set language entry (called by add_lang)
 	* @access private
 	*/
-	function set_lang(&$lang, &$help, $lang_file, $use_db = false, $use_help = false)
+	function set_lang(&$lang, &$help, $lang_file, $use_help = false)
 	{
 		// Make sure the language code is set (if the user setup did not happen it is not set).
 		if (!$this->lang_code)
@@ -1725,53 +1720,44 @@ class phpbb_user extends phpbb_session
 		// $lang == $this->lang
 		// $help == $this->help
 		// - add appropriate variables here, name them as they are used within the language file...
-		if (!$use_db)
+		if ($use_help && strpos($lang_file, '/') !== false)
 		{
-			if ($use_help && strpos($lang_file, '/') !== false)
-			{
-				$language_filename = $this->lang_path . $this->lang_code . '/' . substr($lang_file, 0, stripos($lang_file, '/') + 1) . 'help_' . substr($lang_file, stripos($lang_file, '/') + 1) . '.php';
-			}
-			else
-			{
-				$language_filename = $this->lang_path . $this->lang_code . '/' . (($use_help) ? 'help_' : '') . $lang_file . '.php';
-			}
-
-			if (!file_exists($language_filename))
-			{
-				global $config;
-
-				if ($this->lang_code == 'en')
-				{
-					// The user's selected language is missing the file, the board default's language is missing the file, and the file doesn't exist in /en.
-					$language_filename = str_replace($this->lang_path . 'en', $this->lang_path . $this->data['user_lang_code'], $language_filename);
-					trigger_error('Language file ' . $language_filename . ' couldn\'t be opened.', E_USER_ERROR);
-				}
-				else if ($this->lang_code == basename($config['default_lang_code']))
-				{
-					// Fall back to the English Language
-					$this->lang_code = 'en';
-					$this->set_lang($lang, $help, $lang_file, $use_db, $use_help);
-				}
-				else if ($this->lang_code == $this->data['user_lang_code'])
-				{
-					// Fall back to the board default language
-					$this->lang_code = basename($config['default_lang_code']);
-					$this->set_lang($lang, $help, $lang_file, $use_db, $use_help);
-				}
-
-				// Reset the lang name
-				$this->lang_code = (file_exists($this->lang_path . $this->data['user_lang_code'] . "/common.php")) ? $this->data['user_lang_code'] : basename($config['default_lang_code']);
-				return;
-			}
-
-			require($language_filename);
+			$language_filename = $this->lang_path . $this->lang_code . '/' . substr($lang_file, 0, stripos($lang_file, '/') + 1) . 'help_' . substr($lang_file, stripos($lang_file, '/') + 1) . '.php';
 		}
-		else if ($use_db)
+		else
 		{
-			// Get Database Language Strings
-			// Put them into $lang if nothing is prefixed, put them into $help if help: is prefixed
-			// For example: help:faq, posting
+			$language_filename = $this->lang_path . $this->lang_code . '/' . (($use_help) ? 'help_' : '') . $lang_file . '.php';
 		}
+
+		if (!file_exists($language_filename))
+		{
+			global $config;
+
+			if ($this->lang_code == 'en')
+			{
+				// The user's selected language is missing the file, the board default's language is missing the file, and the file doesn't exist in /en.
+				$language_filename = str_replace($this->lang_path . 'en', $this->lang_path . $this->data['user_lang_code'], $language_filename);
+				trigger_error('Language file ' . $language_filename . ' couldn\'t be opened.', E_USER_ERROR);
+			}
+			else if ($this->lang_code == basename($config['default_lang_code']))
+			{
+				// Fall back to the English Language
+				$this->lang_code = 'en';
+				$this->set_lang($lang, $help, $lang_file, $use_help);
+			}
+			else if ($this->lang_code == $this->data['user_lang_code'])
+			{
+				// Fall back to the board default language
+				$this->lang_code = basename($config['default_lang_code']);
+				$this->set_lang($lang, $help, $lang_file, $use_help);
+			}
+
+			// Reset the lang name
+			$this->lang_code = (file_exists($this->lang_path . $this->data['user_lang_code'] . "/common.php")) ? $this->data['user_lang_code'] : basename($config['default_lang_code']);
+			return;
+		}
+
+		require($language_filename);
 	}
 
 	/**
