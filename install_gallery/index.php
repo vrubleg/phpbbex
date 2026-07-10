@@ -44,9 +44,6 @@ $template->assign_var('T_TEMPLATE_PATH', '../adm/style');
 $mode = request_var('mode', 'install');
 $sub = request_var('sub', '');
 
-// the acp template is never stored in the database
-$user->theme['template_storedb'] = false;
-
 $install = new module();
 
 $install->create('install', 'index.php', $mode, $sub);
@@ -202,17 +199,13 @@ class module
 			'L_SKIP'                => $user->lang['SKIP'],
 			'PAGE_TITLE'            => $this->get_page_title(),
 			'T_IMAGE_PATH'          => PHPBB_ROOT_PATH . 'adm/images/',
-
-			'S_USER_LANG'           => $user->lang['USER_LANG'],
-			]
-		);
+			'S_USER_LANG'           => $user->lang['HTML_LANG_CODE'],
+		]);
 
 		header('Content-type: text/html; charset=UTF-8');
 		header('Cache-Control: private, no-cache="set-cookie"');
 		header('Expires: 0');
 		header('Pragma: no-cache');
-
-		return;
 	}
 
 	/**
@@ -264,7 +257,7 @@ class module
 	*/
 	function generate_navigation()
 	{
-		global $user, $template, $language;
+		global $user, $template;
 
 		if (is_array($this->module_ary))
 		{
