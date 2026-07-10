@@ -3565,13 +3565,6 @@ function page_header($page_title = '', $display_online_list = true)
 	// Which timezone?
 	$tz = strval($user->timezone/3600.0);
 
-	// Send a proper content-language to the output
-	$user_lang_code = $user->lang['USER_LANG'];
-	if (strpos($user_lang_code, '-x-') !== false)
-	{
-		$user_lang_code = substr($user_lang_code, 0, strpos($user_lang_code, '-x-'));
-	}
-
 	$s_search_hidden_fields = empty($config['default_search_titleonly']) ? [] : ['sf' => 'titleonly', 'sr' => 'topics'];
 
 	if (!empty($_EXTRA_URL))
@@ -3677,7 +3670,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'S_REGISTERED_USER'     => !empty($user->data['is_registered']),
 		'S_IS_BOT'              => !empty($user->data['is_bot']),
 		'S_USER_PM_POPUP'       => $user->optionget('popuppm'),
-		'S_USER_LANG'           => $user_lang_code,
+		'S_USER_LANG'           => $user->lang['HTML_LANG_CODE'],
 		'S_USER_BROWSER'        => $user->data['session_browser_ua'] ?? $user->lang['UNKNOWN_BROWSER'],
 		'S_USERNAME'            => $user->data['username'],
 		'S_TIMEZONE'            => sprintf($user->lang['CURRENT_TIMEZONE'], $user->lang['tz'][$tz], ($user->dst) ? $user->lang['DST'] : ''),

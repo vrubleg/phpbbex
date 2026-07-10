@@ -1149,7 +1149,7 @@ require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/install.php'
 
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $lang['USER_LANG']; ?>">
+<html lang="<?php echo $lang['HTML_LANG_CODE']; ?>">
 <head>
 <meta charset="utf-8" />
 <title><?php echo $lang['UPDATING_TO_LATEST_STABLE']; ?></title>

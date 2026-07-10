@@ -122,7 +122,7 @@ $global_vars = array_merge($global_vars, [
 	'FEED_TITLE'            => $config['sitename'],
 	'FEED_SUBTITLE'         => $config['site_desc'],
 	'FEED_UPDATED'          => feed_format_date($feed_updated_time),
-	'FEED_LANG'             => $user->lang['USER_LANG'],
+	'FEED_LANG'             => $user->lang['HTML_LANG_CODE'],
 	'FEED_AUTHOR'           => $config['sitename'],
 ]);
 

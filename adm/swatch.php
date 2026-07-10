@@ -33,8 +33,7 @@ $template->assign_vars([
 	'OPENER'        => $form,
 	'NAME'          => $name,
 	'T_IMAGES_PATH' => PHPBB_ROOT_PATH . 'images/',
-
-	'S_USER_LANG'           => $user->lang['USER_LANG'],
+	'S_USER_LANG'           => $user->lang['HTML_LANG_CODE'],
 ]);
 
 $template->display('body');

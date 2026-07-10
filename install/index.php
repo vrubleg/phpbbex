@@ -306,8 +306,7 @@ class module
 			'L_SKIP'                => $lang['SKIP'],
 			'PAGE_TITLE'            => $this->get_page_title(),
 			'T_IMAGE_PATH'          => PHPBB_ROOT_PATH . 'adm/images/',
-
-			'S_USER_LANG'           => $lang['USER_LANG'],
+			'S_USER_LANG'           => $lang['HTML_LANG_CODE'],
 		]);
 
 		if (!headers_sent())
