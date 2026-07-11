@@ -424,22 +424,7 @@ class acp_main
 			]);
 		}
 
-		// Get forum statistics
-		$total_posts = $config['num_posts'];
-		$total_topics = $config['num_topics'];
-		$total_users = $config['num_users'];
-		$total_files = $config['num_files'];
-
-		$start_date = $user->format_date($config['board_startdate']);
-
-		$boarddays = (time() - $config['board_startdate']) / 86400;
-
-		$posts_per_day = sprintf('%.2f', $total_posts / $boarddays);
-		$topics_per_day = sprintf('%.2f', $total_topics / $boarddays);
-		$users_per_day = sprintf('%.2f', $total_users / $boarddays);
-		$files_per_day = sprintf('%.2f', $total_files / $boarddays);
-
-		$upload_dir_size = get_formatted_filesize($config['upload_dir_size']);
+		// Get forum statistics.
 
 		$avatar_dir_size = 0;
 
@@ -458,65 +443,35 @@ class acp_main
 		}
 		else
 		{
-			// Couldn't open Avatar dir.
 			$avatar_dir_size = $user->lang['NOT_AVAILABLE'];
 		}
 
-		if ($posts_per_day > $total_posts)
-		{
-			$posts_per_day = $total_posts;
-		}
+		$sql = 'SELECT COUNT(attach_id) AS total_orphan
+			FROM ' . ATTACHMENTS_TABLE . '
+			WHERE is_orphan = 1
+				AND filetime < ' . (time() - 3*60*60);
+		$result = $db->sql_query($sql);
+		$total_orphan = (int) $db->sql_fetchfield('total_orphan');
+		$db->sql_freeresult($result);
 
-		if ($topics_per_day > $total_topics)
-		{
-			$topics_per_day = $total_topics;
-		}
-
-		if ($users_per_day > $total_users)
-		{
-			$users_per_day = $total_users;
-		}
-
-		if ($files_per_day > $total_files)
-		{
-			$files_per_day = $total_files;
-		}
-
-		if ($config['allow_attachments'] || $config['allow_pm_attach'])
-		{
-			$sql = 'SELECT COUNT(attach_id) AS total_orphan
-				FROM ' . ATTACHMENTS_TABLE . '
-				WHERE is_orphan = 1
-					AND filetime < ' . (time() - 3*60*60);
-			$result = $db->sql_query($sql);
-			$total_orphan = (int) $db->sql_fetchfield('total_orphan');
-			$db->sql_freeresult($result);
-		}
-		else
-		{
-			$total_orphan = false;
-		}
-
-		$dbsize = get_database_size();
+		$board_days = max(1.0, (time() - $config['board_startdate']) / 86400);
 
 		$template->assign_vars([
-			'TOTAL_POSTS'       => $total_posts,
-			'POSTS_PER_DAY'     => $posts_per_day,
-			'TOTAL_TOPICS'      => $total_topics,
-			'TOPICS_PER_DAY'    => $topics_per_day,
-			'TOTAL_USERS'       => $total_users,
-			'USERS_PER_DAY'     => $users_per_day,
-			'TOTAL_FILES'       => $total_files,
-			'FILES_PER_DAY'     => $files_per_day,
-			'START_DATE'        => $start_date,
-			'AVATAR_DIR_SIZE'   => $avatar_dir_size,
-			'DBSIZE'            => $dbsize,
-			'UPLOAD_DIR_SIZE'   => $upload_dir_size,
-			'TOTAL_ORPHAN'      => $total_orphan,
-			'S_TOTAL_ORPHAN'    => ($total_orphan !== false),
-			'GZIP_COMPRESSION'  => ($config['gzip_compress'] && @extension_loaded('zlib')) ? $user->lang['ON'] : $user->lang['OFF'],
-			'DATABASE_INFO'     => $db->sql_server_info(),
+			'START_DATE'        => $user->format_date($config['board_startdate']),
 			'PHPBBEX_VERSION'   => $config['phpbbex_version'],
+			'TOTAL_POSTS'       => $config['num_posts'],
+			'TOTAL_TOPICS'      => $config['num_topics'],
+			'TOTAL_USERS'       => $config['num_users'],
+			'TOTAL_FILES'       => $config['num_files'],
+			'POSTS_PER_DAY'     => sprintf('%.2f', $config['num_posts'] / $board_days),
+			'TOPICS_PER_DAY'    => sprintf('%.2f', $config['num_topics'] / $board_days),
+			'USERS_PER_DAY'     => sprintf('%.2f', $config['num_users'] / $board_days),
+			'FILES_PER_DAY'     => sprintf('%.2f', $config['num_files'] / $board_days),
+			'TOTAL_ORPHAN'      => $total_orphan,
+			'UPLOAD_DIR_SIZE'   => get_formatted_filesize($config['upload_dir_size']),
+			'AVATAR_DIR_SIZE'   => $avatar_dir_size,
+			'DBSIZE'            => get_database_size(),
+			'DATABASE_INFO'     => $db->sql_server_info(),
 
 			'U_ACTION'          => $this->u_action,
 			'U_ADMIN_LOG'       => append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=logs&amp;mode=admin'),
