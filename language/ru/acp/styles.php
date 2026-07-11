@@ -123,7 +123,7 @@ $lang = array_merge($lang, [
 	'STYLE_NAME'                => 'Имя стиля',
 	'STYLE_TEMPLATE'            => 'Шаблон',
 	'STYLE_THEME'               => 'Тема',
-	'STYLE_USED_BY'             => 'Используют (с ботами)',
+	'STYLE_USED_BY'             => 'Используют',
 
 	'TEMPLATE_ADDED'            => 'Шаблон добавлен и сохранён на сервере.',
 	'TEMPLATE_CACHE_CLEARED'    => 'Кэш шаблона успешно очищен.',

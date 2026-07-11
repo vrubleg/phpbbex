@@ -161,11 +161,9 @@ CREATE TABLE phpbb_drafts (
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_extensions (
-	extension_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+	extension varchar(10) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 	group_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	extension varchar(100) DEFAULT '' NOT NULL,
-	PRIMARY KEY (extension_id),
-	UNIQUE INDEX extension (extension)
+	PRIMARY KEY (extension)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_extension_groups (

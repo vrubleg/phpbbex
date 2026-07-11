@@ -139,8 +139,8 @@ function size_select_options($size_compare)
 {
 	global $user;
 
-	$size_types_text = [$user->lang['BYTES'], $user->lang['KIB'], $user->lang['MIB']];
-	$size_types = ['b', 'kb', 'mb'];
+	$size_types_text = [$user->lang['BYTES'], $user->lang['KIB'], $user->lang['MIB'], $user->lang['GIB']];
+	$size_types = ['b', 'kb', 'mb', 'gb'];
 
 	$s_size_options = '';
 

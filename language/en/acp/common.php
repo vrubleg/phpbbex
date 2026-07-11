@@ -306,11 +306,11 @@ $lang = array_merge($lang, [
 	'ERROR_MBSTRING_ENCODING_TRANSLATION'           => 'Transparent character encoding is improperly configured',
 	'ERROR_MBSTRING_ENCODING_TRANSLATION_EXPLAIN'   => '<var>mbstring.encoding_translation</var> must be set to 0.',
 
-	'FILES_PER_DAY'     => 'Attachments per day',
 	'FORUM_STATS'       => 'Board statistics',
 
-	'GZIP_COMPRESSION'  => 'GZip compression',
-
+	'N_AGO'             => '%s ago',
+	'N_PER_DAY'         => '%.2f per day',
+	'N_QUOTA'           => 'quota: %s',
 	'NOT_AVAILABLE'     => 'Not available',
 	'NUMBER_FILES'      => 'Number of attachments',
 	'NUMBER_POSTS'      => 'Number of posts',
@@ -321,8 +321,6 @@ $lang = array_merge($lang, [
 	'PHP_VERSION_OLD'   => 'The version of PHP on this server is obsolete. Upgrading PHP to 7.4 or newer is recommended.',
 	'PHPBBEX_VERSION'   => 'phpBBex version',
 	'UPDATE_AVAILABLE'  => 'A new release <strong>%1$s</strong> is available. Please read more information to learn about what it has to offer, and how to upgrade.',
-
-	'POSTS_PER_DAY'     => 'Posts per day',
 
 	'PURGE_CACHE'           => 'Purge the cache',
 	'PURGE_CACHE_CONFIRM'   => 'Are you sure you wish to purge the cache?',
@@ -354,10 +352,7 @@ $lang = array_merge($lang, [
 	'STATISTIC'                 => 'Statistic',
 	'STATISTIC_RESYNC_OPTIONS'  => 'Resynchronise or reset statistics',
 
-	'TOPICS_PER_DAY'    => 'Topics per day',
-
 	'UPLOAD_DIR_SIZE'   => 'Size of posted attachments',
-	'USERS_PER_DAY'     => 'Users per day',
 
 	'VALUE'                     => 'Value',
 	'VERSIONCHECK_FAIL'         => 'Failed to obtain latest version information.',

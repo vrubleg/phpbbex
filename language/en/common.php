@@ -794,9 +794,9 @@ $lang = array_merge($lang, [
 	'D_SECONDS'                 => ['second', 'seconds', 'seconds'],
 	'D_MINUTES'                 => ['minute', 'minutes', 'minutes'],
 	'D_HOURS'                   => ['hour', 'hours', 'hours'],
-	'D_MDAY'                    => ['day', 'days', 'days'],
-	'D_MON'                     => ['month', 'months', 'months'],
-	'D_YEAR'                    => ['year', 'yaers', 'years'],
+	'D_DAYS'                    => ['day', 'days', 'days'],
+	'D_MONTHS'                  => ['month', 'months', 'months'],
+	'D_YEARS'                   => ['year', 'years', 'years'],
 
 	// Genders
 	'GENDER'                    => 'Gender',

@@ -211,12 +211,13 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 
 	// Reset CAPTCHA settings.
 	set_config('captcha_plugin', extension_loaded('gd') ? 'phpbb_captcha_gd' : 'phpbb_captcha_nogd');
-	set_config('captcha_gd_foreground_noise', '0');
-	set_config('captcha_gd_x_grid', '25');
-	set_config('captcha_gd_y_grid', '25');
-	set_config('captcha_gd_wave', '0');
-	set_config('captcha_gd_3d_noise', '1');
-	set_config('captcha_gd_fonts', '1');
+	set_config('captcha_gd_foreground_noise', 0);
+	set_config('captcha_gd_x_grid', 25);
+	set_config('captcha_gd_y_grid', 25);
+	set_config('captcha_gd_wave', 0);
+	set_config('captcha_gd_3d_noise', 1);
+	set_config('captcha_gd_fonts', 1);
+	set_config('confirm_refresh', 1);
 
 	// Remove obsolete config values.
 	remove_config_values([
@@ -464,10 +465,6 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		}
 	}
 
-	// Update file types.
-
-	$db->sql_query("INSERT INTO " . EXTENSIONS_TABLE . " (group_id, extension) VALUES (1, 'webp') ON DUPLICATE KEY UPDATE group_id = 1");
-
 	// New settings.
 
 	if (!isset($config['email_force_sender']))
@@ -548,16 +545,29 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'load_online_guests',
 		'load_online_bots',
 		'override_user_dateformat',
+		'merge_no_forums',
+		'merge_no_topics',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
 	set_config('max_autologin_time', '400');
-	set_config('session_length', '43200');
+	set_config('session_length', '14400');
 	set_config('referer_validation', '1');
 	set_config('cache_mtime_check', '1');
 	set_config('max_sig_chars', min((int) $config['max_sig_chars'], 500));
+	set_config('attachment_quota', '2147483648');
+	set_config('max_filesize', '1048576');
+	set_config('max_filesize_pm', '524288');
+	set_config('allow_pm_attach', '1');
+	set_config('max_attachments', '30');
+	set_config('max_attachments_pm', '1');
+	set_config('img_create_thumbnail', '1');
+	set_config('allow_avatar', '1');
+	set_config('allow_avatar_upload', '1');
+	set_config('allow_avatar_remote_upload', '0');
+	set_config('avatar_filesize', '20480');
 
 	// Remove obsolete modules.
 
@@ -704,6 +714,26 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . LOGIN_ATTEMPT_TABLE . " CHANGE attempt_browser attempt_browser_ua varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " CHANGE session_browser session_browser_ua varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_browser user_browser_ua varchar(250) DEFAULT '' NOT NULL");
+
+	// Update supported file extensions.
+
+	// Reduce list of supported file extensions.
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('docm', 'xlsm', 'xlsb', 'pptm', 'avi', 'wma', 'wmv', 'mpeg', 'mpg', 'mov', 'swf', 'xml', 'diff', 'sql', 'odg')");
+	// Cleanup extensions forgotten since v1.9.4 update.
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('3g2', '3gp', 'ace', 'ai', 'c', 'cpp', 'diz', 'dot', 'dotm', 'dotx', 'gtar', 'h', 'hpp', 'ini', 'js', 'oga', 'ogv', 'ps', 'qt', 'ram', 'rm', 'tar', 'tga', 'tif', 'tiff')");
+	// Remove invalid extensions that are not supported by the new schema.
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE BINARY extension NOT REGEXP '^[a-z0-9_-]{1,10}$'");
+	// Remove duplicate extensions before using the extension as a primary key.
+	$db->sql_query("DELETE e1 FROM " . EXTENSIONS_TABLE . " e1, " . EXTENSIONS_TABLE . " e2 WHERE e1.extension = e2.extension AND e1.extension_id > e2.extension_id");
+	// Upgrade schema.
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " MODIFY extension_id mediumint(8) UNSIGNED NOT NULL");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " DROP PRIMARY KEY");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " DROP INDEX extension");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " CHANGE extension extension varchar(10) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL FIRST");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " ADD PRIMARY KEY (extension)");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " DROP COLUMN extension_id");
+	// Reinsert webp into the correct group if needed.
+	$db->sql_query("INSERT INTO " . EXTENSIONS_TABLE . " (extension, group_id) VALUES ('webp', 1) ON DUPLICATE KEY UPDATE group_id = 1");
 
 	// Update anonymous user.
 
@@ -2043,12 +2073,6 @@ function change_database_data(&$no_updates, $version)
 		// Changes from 3.0.4 to 3.0.5-RC1
 		case '3.0.4':
 
-			// Captcha config variables
-			set_config('captcha_gd_wave', 0);
-			set_config('captcha_gd_3d_noise', 1);
-			set_config('captcha_gd_fonts', 1);
-			set_config('confirm_refresh', 1);
-
 			// Maximum number of keywords
 			set_config('max_num_search_keywords', 10);
 
@@ -2363,39 +2387,10 @@ function change_database_data(&$no_updates, $version)
 			$auth_admin = new auth_admin();
 			$auth_admin->acl_clear_prefetch();
 
-			if (!isset($config['allow_avatar']))
-			{
-				if ($config['allow_avatar_upload'] || $config['allow_avatar_local'] || $config['allow_avatar_remote'])
-				{
-					set_config('allow_avatar', '1');
-				}
-				else
-				{
-					set_config('allow_avatar', '0');
-				}
-			}
-
-			if (!isset($config['allow_avatar_remote_upload']))
-			{
-				if ($config['allow_avatar_remote'] && $config['allow_avatar_upload'])
-				{
-					set_config('allow_avatar_remote_upload', '1');
-				}
-				else
-				{
-					set_config('allow_avatar_remote_upload', '0');
-				}
-			}
-
 			// Minimum number of characters
 			if (!isset($config['min_post_chars']))
 			{
 				set_config('min_post_chars', '1');
-			}
-
-			if (!isset($config['allow_quick_reply']))
-			{
-				set_config('allow_quick_reply', '1');
 			}
 
 			// Set every members user_options column to enable

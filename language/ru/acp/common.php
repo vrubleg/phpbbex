@@ -306,11 +306,11 @@ $lang = array_merge($lang, [
 	'ERROR_MBSTRING_ENCODING_TRANSLATION'           => 'Преобразование кодировок настроено неверно',
 	'ERROR_MBSTRING_ENCODING_TRANSLATION_EXPLAIN'   => 'Параметр <var>mbstring.encoding_translation</var> должен быть равен 0.',
 
-	'FILES_PER_DAY'     => 'Вложений в день',
 	'FORUM_STATS'       => 'Статистика форума',
 
-	'GZIP_COMPRESSION'  => 'Сжатие GZip',
-
+	'N_AGO'             => '%s назад',
+	'N_PER_DAY'         => '%.2f в день',
+	'N_QUOTA'           => 'квота: %s',
 	'NOT_AVAILABLE'     => 'Недоступно',
 	'NUMBER_FILES'      => 'Вложений',
 	'NUMBER_POSTS'      => 'Сообщений',
@@ -321,8 +321,6 @@ $lang = array_merge($lang, [
 	'PHP_VERSION_OLD'   => 'Версия PHP на данном сервере устарела. Рекомендуется обновиться до PHP 7.4 или новее.',
 	'PHPBBEX_VERSION'   => 'Версия phpBBex',
 	'UPDATE_AVAILABLE'  => 'Доступна новая версия: <strong>%1$s</strong>. Прочтите дополнительные сведения, чтобы получить информацию о нововведениях и способах обновления.',
-
-	'POSTS_PER_DAY'     => 'Сообщений в день',
 
 	'PURGE_CACHE'           => 'Очистить кэш',
 	'PURGE_CACHE_CONFIRM'   => 'Вы действительно хотите очистить кэш?',
@@ -354,10 +352,7 @@ $lang = array_merge($lang, [
 	'STATISTIC'                 => 'Статистика',
 	'STATISTIC_RESYNC_OPTIONS'  => 'Синхронизация или сброс статистики',
 
-	'TOPICS_PER_DAY'    => 'Тем в день',
-
 	'UPLOAD_DIR_SIZE'   => 'Размер всех вложений',
-	'USERS_PER_DAY'     => 'Пользователей в день',
 
 	'VALUE'                     => 'Значение',
 	'VERSIONCHECK_FAIL'         => 'Не удалось получить сведения о последней версии.',
