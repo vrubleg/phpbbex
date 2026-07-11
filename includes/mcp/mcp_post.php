@@ -423,29 +423,6 @@ function change_poster(&$post_info, $userdata)
 		$db->sql_query($sql);
 	}
 
-	// Add posted to information for this topic for the new user
-	markread('post', $post_info['forum_id'], $post_info['topic_id'], time(), $userdata['user_id']);
-
-	// Remove the dotted topic option if the old user has no more posts within this topic
-	if ($config['load_db_track'] && $post_info['user_id'] != ANONYMOUS)
-	{
-		$sql = 'SELECT topic_id
-			FROM ' . POSTS_TABLE . '
-			WHERE topic_id = ' . $post_info['topic_id'] . '
-				AND poster_id = ' . $post_info['user_id'];
-		$result = $db->sql_query_limit($sql, 1);
-		$topic_id = (int) $db->sql_fetchfield('topic_id');
-		$db->sql_freeresult($result);
-
-		if (!$topic_id)
-		{
-			$sql = 'DELETE FROM ' . TOPICS_POSTED_TABLE . '
-				WHERE user_id = ' . $post_info['user_id'] . '
-					AND topic_id = ' . $post_info['topic_id'];
-			$db->sql_query($sql);
-		}
-	}
-
 	// change the poster_id within the attachments table, else the data becomes out of sync and errors displayed because of wrong ownership
 	if ($post_info['post_attachment'])
 	{

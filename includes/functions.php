@@ -1233,32 +1233,53 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 
 		return;
 	}
-	else if ($mode == 'post')
+}
+
+/**
+* Mark topics from the given rowset where the given user has posted.
+*/
+function mark_user_posted_topics(&$rowset, $user_id = false)
+{
+	global $db, $user;
+
+	$user_id = ($user_id === false) ? (int) $user->data['user_id'] : (int) $user_id;
+
+	$topic_row_keys = [];
+	foreach ($rowset as $row_key => $row)
 	{
-		if ($topic_id === false)
+		if (!empty($row['topic_id']))
 		{
-			return;
+			$rowset[$row_key]['topic_posted'] = 0;
+			$topic_row_keys[(int) $row['topic_id']][] = $row_key;
 		}
+	}
 
-		$use_user_id = (!$user_id) ? $user->data['user_id'] : $user_id;
-
-		if ($config['load_db_track'] && $use_user_id != ANONYMOUS)
-		{
-			$db->sql_return_on_error(true);
-
-			$sql_ary = [
-				'user_id'       => (int) $use_user_id,
-				'topic_id'      => (int) $topic_id,
-				'topic_posted'  => 1
-			];
-
-			$db->sql_query('INSERT INTO ' . TOPICS_POSTED_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-
-			$db->sql_return_on_error(false);
-		}
-
+	if ($user_id == ANONYMOUS || empty($topic_row_keys))
+	{
 		return;
 	}
+
+	$topic_ids = array_keys($topic_row_keys);
+
+	$sql = 'SELECT DISTINCT topic_id
+		FROM ' . POSTS_TABLE . "
+		WHERE poster_id = {$user_id}
+			AND " . $db->sql_in_set('topic_id', $topic_ids);
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$topic_id = (int) $row['topic_id'];
+		if (isset($topic_row_keys[$topic_id]))
+		{
+			foreach ($topic_row_keys[$topic_id] as $row_key)
+			{
+				$rowset[$row_key]['topic_posted'] = 1;
+			}
+		}
+	}
+
+	$db->sql_freeresult($result);
 }
 
 /**

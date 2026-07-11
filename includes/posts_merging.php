@@ -221,8 +221,7 @@ if ($merge_post_data['enable_indexing'])
 	$search->index('edit', $merge_post_id, $merge_post_data['post_text'], $subject, $poster_id, $forum_id);
 }
 
-// Mark the post and the topic read
-markread('post', $forum_id, $topic_id, $current_time);
+// Mark the topic read
 markread('topic', $forum_id, $topic_id, $current_time);
 
 // Update forum tracking info

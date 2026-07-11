@@ -1650,7 +1650,6 @@ class acp_forums
 			WARNINGS_TABLE          => 'post_id',
 			BOOKMARKS_TABLE         => 'topic_id',
 			TOPICS_WATCH_TABLE      => 'topic_id',
-			TOPICS_POSTED_TABLE     => 'topic_id',
 			POLL_OPTIONS_TABLE      => 'topic_id',
 			POLL_VOTES_TABLE        => 'topic_id',
 		];

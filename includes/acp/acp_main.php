@@ -86,10 +86,6 @@ class acp_main
 						$confirm = true;
 						$confirm_lang = 'RESET_DATE_CONFIRM';
 					break;
-					case 'db_track':
-						$confirm = true;
-						$confirm_lang = 'RESYNC_POST_MARKING_CONFIRM';
-					break;
 					case 'purge_cache':
 						$confirm = true;
 						$confirm_lang = 'PURGE_CACHE_CONFIRM';
@@ -277,71 +273,6 @@ class acp_main
 
 						set_config('board_startdate', time() - 1);
 						add_log('admin', 'LOG_RESET_DATE');
-					break;
-
-					case 'db_track':
-						$db->sql_query('TRUNCATE TABLE ' . TOPICS_POSTED_TABLE);
-
-						// This can get really nasty... therefore we only do the last six months
-						$get_from_time = time() - (6 * 4 * 7 * 24 * 60 * 60);
-
-						// Select forum ids, do not include categories
-						$sql = 'SELECT forum_id
-							FROM ' . FORUMS_TABLE . '
-							WHERE forum_type <> ' . FORUM_CAT;
-						$result = $db->sql_query($sql);
-
-						$forum_ids = [];
-						while ($row = $db->sql_fetchrow($result))
-						{
-							$forum_ids[] = $row['forum_id'];
-						}
-						$db->sql_freeresult($result);
-
-						// Any global announcements? ;)
-						$forum_ids[] = 0;
-
-						// Now go through the forums and get us some topics...
-						foreach ($forum_ids as $forum_id)
-						{
-							$sql = 'SELECT p.poster_id, p.topic_id
-								FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t
-								WHERE t.forum_id = ' . $forum_id . '
-									AND t.topic_moved_id = 0
-									AND t.topic_last_post_time > ' . $get_from_time . '
-									AND t.topic_id = p.topic_id
-									AND p.poster_id <> ' . ANONYMOUS . '
-								GROUP BY p.poster_id, p.topic_id';
-							$result = $db->sql_query($sql);
-
-							$posted = [];
-							while ($row = $db->sql_fetchrow($result))
-							{
-								$posted[$row['poster_id']][] = $row['topic_id'];
-							}
-							$db->sql_freeresult($result);
-
-							$sql_ary = [];
-							foreach ($posted as $user_id => $topic_row)
-							{
-								foreach ($topic_row as $topic_id)
-								{
-									$sql_ary[] = [
-										'user_id'       => (int) $user_id,
-										'topic_id'      => (int) $topic_id,
-										'topic_posted'  => 1,
-									];
-								}
-							}
-							unset($posted);
-
-							if (sizeof($sql_ary))
-							{
-								$db->sql_multi_insert(TOPICS_POSTED_TABLE, $sql_ary);
-							}
-						}
-
-						add_log('admin', 'LOG_RESYNC_POST_MARKING');
 					break;
 
 					case 'purge_cache':

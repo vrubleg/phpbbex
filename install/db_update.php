@@ -544,6 +544,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'record_online_users',
 		'load_online_guests',
 		'load_online_bots',
+		'load_db_track',
 		'override_user_dateformat',
 		'merge_no_forums',
 		'merge_no_topics',
@@ -629,6 +630,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_website varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
+	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " ADD INDEX poster_topic(poster_id, topic_id)"); // For checking if a user posted in listed topics.
+	$db->sql_query("DROP TABLE {$table_prefix}topics_posted");
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topic_show_days');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
@@ -1033,7 +1036,6 @@ if (request_var('utf8mb4', 0))
 			case SESSIONS_KEYS_TABLE:
 			case SITELIST_TABLE:
 			case SMILIES_TABLE:
-			case TOPICS_POSTED_TABLE:
 			case TOPICS_TRACK_TABLE:
 			case TOPICS_WATCH_TABLE:
 			case USER_GROUP_TABLE:

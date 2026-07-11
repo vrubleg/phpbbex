@@ -909,11 +909,8 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 	$icons = $cache->obtain_icons();
 
 	// Now only pull the data of the requested topics
-	$sql = 'SELECT t.*, i.icons_url, i.icons_width, i.icons_height, tp.topic_posted, f.forum_name
+	$sql = 'SELECT t.*, i.icons_url, i.icons_width, i.icons_height, f.forum_name
 		FROM ' . TOPICS_TABLE . ' t
-		LEFT JOIN ' . TOPICS_POSTED_TABLE . ' tp
-			ON (t.topic_id = tp.topic_id
-				AND tp.user_id = ' . $user->data['user_id'] . ')
 		LEFT JOIN ' . FORUMS_TABLE . ' f
 			ON f.forum_id = t.forum_id
 		LEFT JOIN ' . ICONS_TABLE . ' i
@@ -931,6 +928,8 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 		$forums[$forum_id][] = $topic_id;
 	}
 	$db->sql_freeresult($result);
+
+	mark_user_posted_topics($topic_rows);
 
 	foreach ($forums as $forum_id => $forum_topic_ids)
 	{

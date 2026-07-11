@@ -1016,9 +1016,6 @@ function mcp_fork_topic($topic_ids)
 				$db->sql_query('INSERT INTO ' . POSTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				$new_post_id = $db->sql_nextid();
 
-				// Copy whether the topic is dotted
-				markread('post', $to_forum_id, $new_topic_id, 0, $row['poster_id']);
-
 				if (!empty($search_type))
 				{
 					$search->index($search_mode, $new_post_id, $sql_ary['post_text'], $sql_ary['post_subject'], $sql_ary['poster_id'], $to_forum_id);

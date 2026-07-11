@@ -1468,7 +1468,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 		}
 	}
 
-	if (!delete_posts('post_id', [$post_id], false, false))
+	if (!delete_posts('post_id', [$post_id], false))
 	{
 		// Try to delete topic, we may had an previous error causing inconsistency
 		if ($post_mode == 'delete_topic')
@@ -1631,27 +1631,6 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 		if ($update_sql)
 		{
 			$db->sql_query("UPDATE {$table} SET {$update_sql} WHERE " . $where_sql[$table]);
-		}
-	}
-
-	// Adjust posted info for this user by looking for a post by him/her within this topic...
-	if ($post_mode != 'delete_topic' && $config['load_db_track'] && $data['poster_id'] != ANONYMOUS)
-	{
-		$sql = 'SELECT poster_id
-			FROM ' . POSTS_TABLE . '
-			WHERE topic_id = ' . $topic_id . '
-				AND poster_id = ' . $data['poster_id'];
-		$result = $db->sql_query_limit($sql, 1);
-		$poster_id = (int) $db->sql_fetchfield('poster_id');
-		$db->sql_freeresult($result);
-
-		// The user is not having any more posts within this topic
-		if (!$poster_id)
-		{
-			$sql = 'DELETE FROM ' . TOPICS_POSTED_TABLE . '
-				WHERE topic_id = ' . $topic_id . '
-					AND user_id = ' . $data['poster_id'];
-			$db->sql_query($sql);
 		}
 	}
 
@@ -2453,12 +2432,6 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 		}
 	}
 
-	if ($mode == 'post' || $mode == 'reply' || $mode == 'quote')
-	{
-		// Mark this topic as posted to
-		markread('post', $data['forum_id'], $data['topic_id']);
-	}
-
 	// Mark this topic as read
 	// We do not use post_time here, this is intended (post_time can have a date in the past if editing a message)
 	markread('topic', $data['forum_id'], $data['topic_id'], time());
@@ -2581,9 +2554,6 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 	$db->sql_query($sql);
 
 	$db->sql_transaction('commit');
-
-	// Mark this topic as posted to
-	markread('post', $forum_id, $topic_id, $bump_time);
 
 	// Mark this topic as read
 	markread('topic', $forum_id, $topic_id, $bump_time);

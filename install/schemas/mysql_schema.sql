@@ -417,6 +417,7 @@ CREATE TABLE phpbb_posts (
 	KEY topic_id (topic_id),
 	KEY poster_ip (poster_ip),
 	KEY poster_id (poster_id),
+	KEY poster_topic (poster_id, topic_id),
 	KEY post_approved (post_approved),
 	KEY post_username (post_username),
 	KEY tid_post_time (topic_id, post_time)
@@ -743,13 +744,6 @@ CREATE TABLE phpbb_topics_track (
 	PRIMARY KEY (user_id, topic_id),
 	KEY topic_id (topic_id),
 	KEY forum_id (forum_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_topics_posted (
-	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	topic_posted tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (user_id, topic_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_topics_watch (
