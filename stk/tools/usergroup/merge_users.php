@@ -392,7 +392,6 @@ class merge_users
 					'topic_bumper',
 				],
 			],
-			'topics_posted' => null,
 			'topics_track'  => null,
 			'topics_watch'  => null,
 
@@ -954,47 +953,6 @@ class merge_users
 					AND post.poster_id = {$target['user_id']}",
 
 		];
-	}
-
-	function merge_topics_posted($source, $target)
-	{
-		global $db;
-
-		$posted = [];
-
-		$sql = 'SELECT topic_id, topic_posted
-			FROM ' . TOPICS_POSTED_TABLE . "
-			WHERE user_id = {$target['user_id']}";
-
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			// Should never be zero but you never know
-			if ($row['topic_posted'])
-			{
-				$posted[] = (int) $row['topic_id'];
-			}
-		}
-		$db->sql_freeresult($result);
-
-		$sql = [];
-
-		if (!empty($posted))
-		{
-			// Delete duplicates
-			$sql[] = 'DELETE
-				FROM ' . TOPICS_POSTED_TABLE . "
-				WHERE user_id = {$source['user_id']}
-					AND " . $db->sql_in_set('topic_id', $posted);
-		}
-
-		// Update remaining
-		$sql[] = 'UPDATE ' . TOPICS_POSTED_TABLE . "
-			SET user_id = {$target['user_id']}
-			WHERE user_id = {$source['user_id']}";
-
-		return $sql;
 	}
 
 	function merge_topics_track($source, $target)

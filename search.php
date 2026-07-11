@@ -712,13 +712,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 			if ($user->data['is_registered'])
 			{
-				if ($config['load_db_track'] && $author_id !== $user->data['user_id'])
-				{
-					$sql_from .= ' LEFT JOIN ' . TOPICS_POSTED_TABLE . ' tp ON (tp.user_id = ' . $user->data['user_id'] . '
-						AND t.topic_id = tp.topic_id)';
-					$sql_select .= ', tp.topic_posted';
-				}
-
 				if ($config['load_db_lastread'])
 				{
 					$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.user_id = ' . $user->data['user_id'] . '
@@ -787,6 +780,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$db->sql_freeresult($result);
 			}
 			unset($shadow_topic_list);
+
+			mark_user_posted_topics($rowset);
 
 			foreach ($forums as $forum_id => $forum)
 			{
@@ -925,11 +920,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 			if ($show_results == 'topics')
 			{
-				if ($config['load_db_track'] && $author_id === $user->data['user_id'])
-				{
-					$row['topic_posted'] = 1;
-				}
-
 				$folder_img = $folder_alt = $topic_type = '';
 				topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]), $folder_img, $folder_alt, $topic_type);
 

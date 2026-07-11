@@ -617,9 +617,6 @@ function move_posts($post_ids, $topic_id, $auto_sync = true)
 		sync('forum', 'forum_id', $forum_ids, true, true);
 	}
 
-	// Update posted information
-	update_posted_info($topic_ids);
-
 	$sql = 'SELECT p.poster_id
 		FROM ' . POSTS_TABLE . ' p
 		LEFT JOIN ' . TOPICS_TABLE . ' t
@@ -662,7 +659,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 
 	// Making sure that delete_posts does not call delete_topics again...
 	$return = [
-		'posts' => ($call_delete_posts) ? delete_posts($where_type, $where_ids, false, true, $post_count_sync, false) : 0,
+		'posts' => ($call_delete_posts) ? delete_posts($where_type, $where_ids, false, $post_count_sync, false) : 0,
 	];
 
 	$sql = 'SELECT topic_id, forum_id, topic_approved, topic_moved_id
@@ -691,7 +688,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 
 	$db->sql_transaction('begin');
 
-	$table_ary = [BOOKMARKS_TABLE, TOPICS_TRACK_TABLE, TOPICS_POSTED_TABLE, POLL_VOTES_TABLE, POLL_OPTIONS_TABLE, TOPICS_WATCH_TABLE, TOPICS_TABLE];
+	$table_ary = [BOOKMARKS_TABLE, TOPICS_TRACK_TABLE, POLL_VOTES_TABLE, POLL_OPTIONS_TABLE, TOPICS_WATCH_TABLE, TOPICS_TABLE];
 
 	foreach ($table_ary as $table)
 	{
@@ -742,7 +739,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 /**
 * Remove post(s)
 */
-function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync = true, $post_count_sync = true, $call_delete_topics = true)
+function delete_posts($where_type, $where_ids, $auto_sync = true, $post_count_sync = true, $call_delete_topics = true)
 {
 	global $db, $config;
 
@@ -776,7 +773,7 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 
 			foreach ($chunks as $_where_ids)
 			{
-				delete_posts($where_type, $_where_ids, $auto_sync, $posted_sync, $post_count_sync, $call_delete_topics);
+				delete_posts($where_type, $_where_ids, $auto_sync, $post_count_sync, $call_delete_topics);
 			}
 
 			return;
@@ -890,12 +887,6 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 	delete_attachments('post', $post_ids, false);
 
 	$db->sql_transaction('commit');
-
-	// Resync topics_posted table
-	if ($posted_sync)
-	{
-		update_posted_info($topic_ids);
-	}
 
 	if ($auto_sync)
 	{
@@ -1204,57 +1195,6 @@ function delete_topic_shadows($forum_id, $sql_more = '', $auto_sync = true)
 	}
 
 	return $sync_forum_ids;
-}
-
-/**
-* Update/Sync posted information for topics
-*/
-function update_posted_info(&$topic_ids)
-{
-	global $db, $config;
-
-	if (empty($topic_ids) || !$config['load_db_track'])
-	{
-		return;
-	}
-
-	// First of all, let us remove any posted information for these topics
-	$sql = 'DELETE FROM ' . TOPICS_POSTED_TABLE . '
-		WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
-	$db->sql_query($sql);
-
-	// Now, let us collect the user/topic combos for rebuilding the information
-	$sql = 'SELECT poster_id, topic_id
-		FROM ' . POSTS_TABLE . '
-		WHERE ' . $db->sql_in_set('topic_id', $topic_ids) . '
-			AND poster_id <> ' . ANONYMOUS . '
-		GROUP BY poster_id, topic_id';
-	$result = $db->sql_query($sql);
-
-	$posted = [];
-	while ($row = $db->sql_fetchrow($result))
-	{
-		// Add as key to make them unique (grouping by) and circumvent empty keys on array_unique
-		$posted[$row['poster_id']][] = $row['topic_id'];
-	}
-	$db->sql_freeresult($result);
-
-	// Now add the information...
-	$sql_ary = [];
-	foreach ($posted as $user_id => $topic_row)
-	{
-		foreach ($topic_row as $topic_id)
-		{
-			$sql_ary[] = [
-				'user_id'       => (int) $user_id,
-				'topic_id'      => (int) $topic_id,
-				'topic_posted'  => 1,
-			];
-		}
-	}
-	unset($posted);
-
-	$db->sql_multi_insert(TOPICS_POSTED_TABLE, $sql_ary);
 }
 
 /**

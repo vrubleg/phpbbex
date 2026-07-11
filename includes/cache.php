@@ -401,6 +401,17 @@ class phpbb_cache extends acm
 								[$image_filename, $image_height, $image_width] = explode('*', $image_filename);
 							}
 						}
+						else if ($image_filename)
+						{
+							$image_path = PHPBB_ROOT_PATH . 'styles/' . $style_dir . '/imageset/' . ($image_lang ? $image_lang . '/' : '') . $image_filename;
+							$image_size = @getimagesize($image_path);
+
+							if ($image_size)
+							{
+								$image_width = (int) $image_size[0];
+								$image_height = (int) $image_size[1];
+							}
+						}
 
 						if ($image_filename)
 						{

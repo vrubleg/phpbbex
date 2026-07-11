@@ -41,13 +41,6 @@ class ucp_main
 				$sql_from = TOPICS_TABLE . ' t ';
 				$sql_select = '';
 
-				if ($config['load_db_track'])
-				{
-					$sql_from .= ' LEFT JOIN ' . TOPICS_POSTED_TABLE . ' tp ON (tp.topic_id = t.topic_id
-						AND tp.user_id = ' . $user->data['user_id'] . ')';
-					$sql_select .= ', tp.topic_posted';
-				}
-
 				// Get forums having the f_read permission
 				$forum_ary = $auth->acl_getf('f_read', true);
 				$forum_ary = array_unique(array_keys($forum_ary));
@@ -72,6 +65,8 @@ class ucp_main
 					}
 					$db->sql_freeresult($result);
 				}
+
+				mark_user_posted_topics($rowset);
 
 				$topic_tracking_info = [];
 				foreach ($topic_lists as $forum_id => $topic_list)
@@ -676,12 +671,6 @@ class ucp_main
 			$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time AS forum_mark_time';
 		}
 
-		if ($config['load_db_track'])
-		{
-			$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_POSTED_TABLE => 'tp'], 'ON' => 'tp.topic_id = t.topic_id AND tp.user_id = ' . $user->data['user_id']];
-			$sql_array['SELECT'] .= ', tp.topic_posted';
-		}
-
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
@@ -702,6 +691,8 @@ class ucp_main
 			}
 		}
 		$db->sql_freeresult($result);
+
+		mark_user_posted_topics($rowset);
 
 		$topic_tracking_info = [];
 		if ($config['load_db_lastread'])

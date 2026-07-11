@@ -193,6 +193,8 @@ class module
 		global $db, $config;
 
 		$module = [];
+		$this->module_url = (string) $module_url;
+		$this->mode = (string) $selected_mod;
 
 		// Grab module information using Bart's "neat-o-module" system (tm)
 		$dir = @opendir('.');
@@ -240,8 +242,6 @@ class module
 			{
 				$this->id = (int) $row['module_order'];
 				$this->filename = (string) $row['module_filename'];
-				$this->module_url = (string) $module_url;
-				$this->mode = (string) $selected_mod;
 				// Check that the sub-mode specified is valid or set a default if not
 				if (is_array($row['module_subs']))
 				{
@@ -271,7 +271,11 @@ class module
 				$this->mode = $mode;
 			}
 
-			$module = $this->filename;
+			$module = (string) $this->filename;
+			if (!$module)
+			{
+				$this->error('Module "' . htmlspecialchars($this->mode) . '" not accessible.', __LINE__, __FILE__);
+			}
 			if (!class_exists($module))
 			{
 				$this->error('Module "' . htmlspecialchars($module) . '" not accessible.', __LINE__, __FILE__);

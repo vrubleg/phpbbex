@@ -338,12 +338,6 @@ $sql_approved = ($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_app
 
 if ($user->data['is_registered'])
 {
-	if ($config['load_db_track'])
-	{
-		$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_POSTED_TABLE => 'tp'], 'ON' => 'tp.topic_id = t.topic_id AND tp.user_id = ' . $user->data['user_id']];
-		$sql_array['SELECT'] .= ', tp.topic_posted';
-	}
-
 	if ($config['load_db_lastread'])
 	{
 		$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
@@ -553,6 +547,7 @@ $template->assign_vars([
 
 $topic_list = ($store_reverse) ? array_merge($announcement_list, array_reverse($topic_list)) : array_merge($announcement_list, $topic_list);
 $topic_tracking_info = [];
+mark_user_posted_topics($rowset);
 
 // Okay, lets dump out the page ...
 if (sizeof($topic_list))
