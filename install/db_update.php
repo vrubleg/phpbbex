@@ -211,12 +211,13 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 
 	// Reset CAPTCHA settings.
 	set_config('captcha_plugin', extension_loaded('gd') ? 'phpbb_captcha_gd' : 'phpbb_captcha_nogd');
-	set_config('captcha_gd_foreground_noise', '0');
-	set_config('captcha_gd_x_grid', '25');
-	set_config('captcha_gd_y_grid', '25');
-	set_config('captcha_gd_wave', '0');
-	set_config('captcha_gd_3d_noise', '1');
-	set_config('captcha_gd_fonts', '1');
+	set_config('captcha_gd_foreground_noise', 0);
+	set_config('captcha_gd_x_grid', 25);
+	set_config('captcha_gd_y_grid', 25);
+	set_config('captcha_gd_wave', 0);
+	set_config('captcha_gd_3d_noise', 1);
+	set_config('captcha_gd_fonts', 1);
+	set_config('confirm_refresh', 1);
 
 	// Remove obsolete config values.
 	remove_config_values([
@@ -544,16 +545,29 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'load_online_guests',
 		'load_online_bots',
 		'override_user_dateformat',
+		'merge_no_forums',
+		'merge_no_topics',
 	]);
 
 	// New defaults.
 
 	set_config('allow_login_via_email', '1');
 	set_config('max_autologin_time', '400');
-	set_config('session_length', '43200');
+	set_config('session_length', '14400');
 	set_config('referer_validation', '1');
 	set_config('cache_mtime_check', '1');
 	set_config('max_sig_chars', min((int) $config['max_sig_chars'], 500));
+	set_config('attachment_quota', '2147483648');
+	set_config('max_filesize', '1048576');
+	set_config('max_filesize_pm', '524288');
+	set_config('allow_pm_attach', '1');
+	set_config('max_attachments', '30');
+	set_config('max_attachments_pm', '1');
+	set_config('img_create_thumbnail', '1');
+	set_config('allow_avatar', '1');
+	set_config('allow_avatar_upload', '1');
+	set_config('allow_avatar_remote_upload', '0');
+	set_config('avatar_filesize', '20480');
 
 	// Remove obsolete modules.
 
@@ -2059,12 +2073,6 @@ function change_database_data(&$no_updates, $version)
 		// Changes from 3.0.4 to 3.0.5-RC1
 		case '3.0.4':
 
-			// Captcha config variables
-			set_config('captcha_gd_wave', 0);
-			set_config('captcha_gd_3d_noise', 1);
-			set_config('captcha_gd_fonts', 1);
-			set_config('confirm_refresh', 1);
-
 			// Maximum number of keywords
 			set_config('max_num_search_keywords', 10);
 
@@ -2379,39 +2387,10 @@ function change_database_data(&$no_updates, $version)
 			$auth_admin = new auth_admin();
 			$auth_admin->acl_clear_prefetch();
 
-			if (!isset($config['allow_avatar']))
-			{
-				if ($config['allow_avatar_upload'] || $config['allow_avatar_local'] || $config['allow_avatar_remote'])
-				{
-					set_config('allow_avatar', '1');
-				}
-				else
-				{
-					set_config('allow_avatar', '0');
-				}
-			}
-
-			if (!isset($config['allow_avatar_remote_upload']))
-			{
-				if ($config['allow_avatar_remote'] && $config['allow_avatar_upload'])
-				{
-					set_config('allow_avatar_remote_upload', '1');
-				}
-				else
-				{
-					set_config('allow_avatar_remote_upload', '0');
-				}
-			}
-
 			// Minimum number of characters
 			if (!isset($config['min_post_chars']))
 			{
 				set_config('min_post_chars', '1');
-			}
-
-			if (!isset($config['allow_quick_reply']))
-			{
-				set_config('allow_quick_reply', '1');
 			}
 
 			// Set every members user_options column to enable

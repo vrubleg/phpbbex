@@ -68,8 +68,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_imgs', '0
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_spoiler_depth', '2');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('outlinks', '');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_lang', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('override_user_timezone', '0');
@@ -186,10 +184,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_joi
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('style_ml_show_last_active', '1');
 
 -- Reset avatar options to phpBBex defaults
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_upload', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_avatar_remote_upload', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '10240');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_height', '100');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_width', '100');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_height', '64');
@@ -201,13 +195,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_img', '
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_links', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_smilies', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_sig_chars', '200');
-
--- Reset attachments options to phpBBex defaults
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('allow_pm_attach', '1');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_attachments', '30');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_filesize', '524288');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_filesize_pm', '262144');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbnail', '1');
 
 -- Reset some other options to phpBBex defaults
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('require_activation', '1');

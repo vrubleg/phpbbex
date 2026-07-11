@@ -44,13 +44,13 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_pm', '1'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_sig_smilies', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_smilies', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('allow_topic_notify', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('attachment_quota', '52428800');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('attachment_quota', '2147483648');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_bbcode_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_flash_pm', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_img_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auth_smilies_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_guest_lang', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '10240');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_filesize', '20480');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_height', '100');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_max_width', '100');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('avatar_min_height', '64');
@@ -160,8 +160,8 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_user_activity
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments', '30');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_attachments_pm', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_autologin_time', '400');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_filesize', '524288');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_filesize_pm', '262144');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_filesize', '1048576');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_filesize_pm', '524288');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_login_attempts', '3');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_name_chars', '20');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_num_search_keywords', '10');
@@ -188,8 +188,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_lines', '4
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_smilies', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('max_sig_urls', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_interval', '18');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_forums', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('merge_no_topics', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('min_name_chars', '3');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('min_pass_chars', '6');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('min_post_chars', '1');
