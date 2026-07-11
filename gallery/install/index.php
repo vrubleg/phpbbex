@@ -15,14 +15,15 @@ define('IN_INSTALL', true);
 
 define('NEWEST_PG_VERSION', '1.1.6');
 
-if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../'); }
+if (!defined('PHPBB_ROOT_PATH')) { define('PHPBB_ROOT_PATH', './../../'); }
+define('GALLERY_INSTALL_PATH', PHPBB_ROOT_PATH . 'gallery/install/');
 require_once(PHPBB_ROOT_PATH . 'common.php');
 require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_modules.php');
 require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
 require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
-require_once(PHPBB_ROOT_PATH . 'install/dbal_schema.php');
+require_once(GALLERY_INSTALL_PATH . 'dbal_schema.php');
 require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
 
 // Start session management
@@ -38,8 +39,8 @@ if (!defined('GALLERY_FAVORITES_TABLE'))
 //need some module-names
 $user->add_lang(['acp/common', 'ucp', 'mods/info_acp_gallery', 'mods/info_ucp_gallery']);
 
-$template->set_custom_template('../adm/style', 'admin');
-$template->assign_var('T_TEMPLATE_PATH', '../adm/style');
+$template->set_custom_template(PHPBB_ROOT_PATH . 'adm/style', 'admin');
+$template->assign_var('T_TEMPLATE_PATH', PHPBB_ROOT_PATH . 'adm/style');
 
 $mode = request_var('mode', 'install');
 $sub = request_var('sub', '');
@@ -84,7 +85,7 @@ class module
 		$module = [];
 
 		// Grab module information using Bart's "neat-o-module" system (tm)
-		$dir = @opendir('.');
+		$dir = @opendir(GALLERY_INSTALL_PATH);
 
 		if (!$dir)
 		{
@@ -96,7 +97,7 @@ class module
 		{
 			if (preg_match('#^install_(.*?)\.php' . '$#', $file))
 			{
-				require_once($file);
+				require_once(GALLERY_INSTALL_PATH . $file);
 			}
 		}
 		closedir($dir);
@@ -267,7 +268,7 @@ class module
 				$cat = $cat_ary['name'];
 				$l_cat = $user->lang['CAT_' . $cat] ?? str_replace('_', ' ', $cat);
 				$cat = strtolower($cat);
-				$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', "mode={$cat}");
+				$url = append_sid($this->module_url, "mode={$cat}");
 
 				if ($this->mode == $cat)
 				{
@@ -284,7 +285,7 @@ class module
 						{
 							$l_option = $user->lang['SUB_' . $option] ?? str_replace('_', ' ', $option);
 							$option = strtolower($option);
-							$url = append_sid(PHPBB_ROOT_PATH . 'install/index.php', 'mode=' . $this->mode . "&amp;sub={$option}");
+							$url = append_sid($this->module_url, 'mode=' . $this->mode . "&amp;sub={$option}");
 
 							$template->assign_block_vars('l_block1', [
 								'L_TITLE'       => $l_option,
@@ -352,7 +353,7 @@ class module
 		echo '<head>';
 		echo '<meta charset="utf-8" />';
 		echo '<title>' . $lang['INST_ERR_FATAL'] . '</title>';
-		echo '<link href="../adm/style/admin.css" rel="stylesheet" media="screen" />';
+		echo '<link href="' . PHPBB_ROOT_PATH . 'adm/style/admin.css" rel="stylesheet" media="screen" />';
 		echo '</head>';
 		echo '<body id="errorpage">';
 		echo '<div id="wrap">';
