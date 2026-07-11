@@ -559,6 +559,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('cache_mtime_check', '1');
 	set_config('max_sig_chars', min((int) $config['max_sig_chars'], 500));
 
+	// Update file types.
+
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('docm', 'xlsm', 'xlsb', 'pptm', 'avi', 'wma', 'wmv', 'mpeg', 'mpg', 'mov', 'swf')");
+
 	// Remove obsolete modules.
 
 	remove_module('acp', 'board', 'auth');
