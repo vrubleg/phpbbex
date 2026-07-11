@@ -1320,6 +1320,11 @@ function get_verbal_time_delta($from_time, $to_time, $min_unit = false, $max_uni
 {
 	global $user;
 
+	if ($min_unit && !in_array($min_unit, ['seconds', 'minutes', 'hours', 'days', 'months', 'years'], true))
+	{
+		return false;
+	}
+
 	if ($from_time - $to_time === 0)
 	{
 		return get_verbal_time_delta_declension(0, $user->lang['D_' . strtoupper($min_unit ?: 'seconds')]);

@@ -149,7 +149,7 @@ class acp_attachments
 					if (in_array($config_name, ['attachment_quota', 'max_filesize', 'max_filesize_pm']))
 					{
 						$size_var = request_var($config_name, '');
-						$this->new_config[$config_name] = $config_value = ($size_var == 'kb') ? round($config_value * 1024) : (($size_var == 'mb') ? round($config_value * 1048576) : $config_value);
+						$this->new_config[$config_name] = $config_value = ($size_var == 'kb') ? round($config_value * 1024) : (($size_var == 'mb') ? round($config_value * 1048576) : (($size_var == 'gb') ? round($config_value * 1073741824) : $config_value));
 					}
 
 					if ($submit)
@@ -491,7 +491,7 @@ class acp_attachments
 						$allowed_forums = request_var('allowed_forums', [0]);
 						$allow_in_pm    = isset($_POST['allow_in_pm']);
 						$max_filesize   = request_var('max_filesize', 0);
-						$max_filesize   = ($size_select == 'kb') ? round($max_filesize * 1024) : (($size_select == 'mb') ? round($max_filesize * 1048576) : $max_filesize);
+						$max_filesize   = ($size_select == 'kb') ? round($max_filesize * 1024) : (($size_select == 'mb') ? round($max_filesize * 1048576) : (($size_select == 'gb') ? round($max_filesize * 1073741824) : $max_filesize));
 						$allow_group    = isset($_POST['allow_group']);
 
 						if ($max_filesize == $config['max_filesize'])
@@ -662,7 +662,7 @@ class acp_attachments
 							$ext_group_row['max_filesize'] = (int) $config['max_filesize'];
 						}
 
-						$max_filesize = get_formatted_filesize($ext_group_row['max_filesize'], false, ['mb', 'kb', 'b']);
+						$max_filesize = get_formatted_filesize($ext_group_row['max_filesize'], false, ['gb', 'mb', 'kb', 'b']);
 						$size_format = $max_filesize['si_identifier'];
 						$ext_group_row['max_filesize'] = $max_filesize['value'];
 
@@ -1357,7 +1357,7 @@ class acp_attachments
 	function max_filesize($value, $key = '')
 	{
 		// Determine size var and adjust the value accordingly
-		$filesize = get_formatted_filesize($value, false, ['mb', 'kb', 'b']);
+		$filesize = get_formatted_filesize($value, false, ['gb', 'mb', 'kb', 'b']);
 		$size_var = $filesize['si_identifier'];
 		$value = $filesize['value'];
 
