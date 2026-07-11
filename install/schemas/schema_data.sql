@@ -761,9 +761,6 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (2, 'torrent');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'txt');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'csv');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'log');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'xml');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'diff');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (3, 'sql');
 
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'pdf');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'xls');
@@ -772,7 +769,6 @@ INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'doc');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'docx');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'ppt');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'pptx');
-INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'odg');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'odp');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'ods');
 INSERT INTO phpbb_extensions (group_id, extension) VALUES (4, 'odt');

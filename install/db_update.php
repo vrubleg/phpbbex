@@ -559,9 +559,13 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('cache_mtime_check', '1');
 	set_config('max_sig_chars', min((int) $config['max_sig_chars'], 500));
 
-	// Update file types.
+	// Update supported file extensions.
 
-	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('docm', 'xlsm', 'xlsb', 'pptm', 'avi', 'wma', 'wmv', 'mpeg', 'mpg', 'mov', 'swf')");
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('docm', 'xlsm', 'xlsb', 'pptm', 'avi', 'wma', 'wmv', 'mpeg', 'mpg', 'mov', 'swf', 'xml', 'diff', 'sql', 'odg')");
+
+	// Cleanup supported file extensions forgotten since v1.9.4 update.
+
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('3g2', '3gp', 'ace', 'ai', 'c', 'cpp', 'diz', 'dot', 'dotm', 'dotx', 'gtar', 'h', 'hpp', 'ini', 'js', 'oga', 'ogv', 'ps', 'qt', 'ram', 'rm', 'tar', 'tga', 'tif', 'tiff')");
 
 	// Remove obsolete modules.
 
