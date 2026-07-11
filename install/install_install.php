@@ -211,49 +211,35 @@ class install_install extends module
 			]);
 		}
 
-		// Test for available database modules
+		// Test for required modules
 		$template->assign_block_vars('checks', [
 			'S_LEGEND'          => true,
-			'LEGEND'            => $lang['PHP_SUPPORTED_DB'],
-			'LEGEND_EXPLAIN'    => $lang['PHP_SUPPORTED_DB_EXPLAIN'],
+			'LEGEND'            => $lang['PHP_REQUIRED_MODULE'],
+			'LEGEND_EXPLAIN'    => $lang['PHP_REQUIRED_MODULE_EXPLAIN'],
 		]);
 
-		$available_dbms = get_available_dbms(false, true);
-		$passed['db'] = $available_dbms['ANY_DB_SUPPORT'];
-		unset($available_dbms['ANY_DB_SUPPORT']);
-
-		foreach ($available_dbms as $db_name => $db_ary)
+		foreach ($this->php_dlls_required as $dll)
 		{
-			if (!$db_ary['AVAILABLE'])
-			{
-				$template->assign_block_vars('checks', [
-					'TITLE'     => $lang['DLL_' . strtoupper($db_name)],
-					'RESULT'    => '<span style="color:red">' . $lang['UNAVAILABLE'] . '</span>',
+			$available = @extension_loaded($dll);
+			$passed["php_{$dll}"] = $available;
 
-					'S_EXPLAIN' => false,
-					'S_LEGEND'  => false,
-				]);
-			}
-			else
-			{
-				$template->assign_block_vars('checks', [
-					'TITLE'     => $lang['DLL_' . strtoupper($db_name)],
-					'RESULT'    => '<strong style="color:green">' . $lang['AVAILABLE'] . '</strong>',
+			$template->assign_block_vars('checks', [
+				'TITLE'     => $lang['DLL_' . strtoupper($dll)],
+				'RESULT'    => '<strong style="color:' . ($available ? 'green">' . $lang['AVAILABLE'] : 'red">' . $lang['UNAVAILABLE']) . '</strong>',
 
-					'S_EXPLAIN' => false,
-					'S_LEGEND'  => false,
-				]);
-			}
+				'S_EXPLAIN' => false,
+				'S_LEGEND'  => false,
+			]);
 		}
 
-		// Test for other modules
+		// Test for optional modules
 		$template->assign_block_vars('checks', [
 			'S_LEGEND'          => true,
 			'LEGEND'            => $lang['PHP_OPTIONAL_MODULE'],
 			'LEGEND_EXPLAIN'    => $lang['PHP_OPTIONAL_MODULE_EXPLAIN'],
 		]);
 
-		foreach ($this->php_dlls_other as $dll)
+		foreach ($this->php_dlls_optional as $dll)
 		{
 			if (!@extension_loaded($dll))
 			{
@@ -1404,9 +1390,14 @@ class install_install extends module
 	];
 
 	/**
-	* Specific PHP modules we may require for certain optional or extended features
+	* PHP modules required for installing and running phpBBex.
 	*/
-	var $php_dlls_other = ['curl', 'gd', 'intl', 'zlib', 'xml'];
+	var $php_dlls_required = ['mysqli', 'gd'];
+
+	/**
+	* PHP modules used for optional or extended features.
+	*/
+	var $php_dlls_optional = ['curl', 'intl', 'zlib', 'xml'];
 
 	/**
 	* A list of the web-crawlers/bots we recognise by default.

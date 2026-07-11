@@ -64,8 +64,7 @@ $lang = array_merge($lang, [
 	'DLL_GD'                    => 'gd (for graphical CAPTCHA)',
 	'DLL_INTL'                  => 'intl (for fast UTF-8)',
 	'DLL_MBSTRING'              => 'mbstring (for fast UTF-8)',
-	'DLL_MYSQL'                 => 'MySQL',
-	'DLL_MYSQLI'                => 'MySQLi',
+	'DLL_MYSQLI'                => 'mysqli (for MySQL support)',
 	'DLL_XML'                   => 'xml (for Jabber)',
 	'DLL_ZLIB'                  => 'zlib (for gzip output compression)',
 	'DL_CONFIG'                 => 'Download config',
@@ -138,8 +137,8 @@ $lang = array_merge($lang, [
 	'LONG_SCRIPT_EXECUTION'     => 'Please note that this can take a while... Please do not stop the script.',
 
 	// mbstring
-	'MBSTRING_CHECK'                        => '<samp>mbstring</samp> extension check',
-	'MBSTRING_CHECK_EXPLAIN'                => '<strong>Required</strong> - <samp>mbstring</samp> is a PHP extension that provides multibyte string functions. Certain features of mbstring are not compatible with phpBBex and must be disabled.',
+	'MBSTRING_CHECK'                        => '<samp>mbstring</samp> module check',
+	'MBSTRING_CHECK_EXPLAIN'                => '<strong>Required</strong> - <samp>mbstring</samp> is a PHP module that provides multibyte string functions. Certain features of mbstring are not compatible with phpBBex and must be disabled.',
 	'MBSTRING_FUNC_OVERLOAD'                => 'Function overloading',
 	'MBSTRING_FUNC_OVERLOAD_EXPLAIN'        => '<var>mbstring.func_overload</var> must be set to 0.',
 	'MBSTRING_ENCODING_TRANSLATION'         => 'Transparent character encoding',
@@ -155,8 +154,8 @@ $lang = array_merge($lang, [
 
 	'PHP_OPTIONAL_MODULE'           => 'Optional modules',
 	'PHP_OPTIONAL_MODULE_EXPLAIN'   => '<strong>Optional</strong> - These PHP modules are optional. However, if they are available they will enable extra features.',
-	'PHP_SUPPORTED_DB'              => 'Supported databases',
-	'PHP_SUPPORTED_DB_EXPLAIN'      => '<strong>Required</strong> - You must have support for at least one compatible database within PHP.',
+	'PHP_REQUIRED_MODULE'           => 'Required modules',
+	'PHP_REQUIRED_MODULE_EXPLAIN'   => '<strong>Required</strong> - These PHP modules are required. Installation cannot continue unless they are available.',
 	'PHP_SETTINGS'                  => 'PHP version and settings',
 	'PHP_SETTINGS_EXPLAIN'          => '<strong>Required</strong> - You must be running at least version 7.4 of PHP in order to install phpBBex.',
 	'PHP_URL_FOPEN_SUPPORT'         => 'PHP setting <var>allow_url_fopen</var> is enabled',
