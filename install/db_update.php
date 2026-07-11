@@ -464,10 +464,6 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 		}
 	}
 
-	// Update file types.
-
-	$db->sql_query("INSERT INTO " . EXTENSIONS_TABLE . " (group_id, extension) VALUES (1, 'webp') ON DUPLICATE KEY UPDATE group_id = 1");
-
 	// New settings.
 
 	if (!isset($config['email_force_sender']))
@@ -558,14 +554,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('referer_validation', '1');
 	set_config('cache_mtime_check', '1');
 	set_config('max_sig_chars', min((int) $config['max_sig_chars'], 500));
-
-	// Update supported file extensions.
-
-	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('docm', 'xlsm', 'xlsb', 'pptm', 'avi', 'wma', 'wmv', 'mpeg', 'mpg', 'mov', 'swf', 'xml', 'diff', 'sql', 'odg')");
-
-	// Cleanup supported file extensions forgotten since v1.9.4 update.
-
-	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('3g2', '3gp', 'ace', 'ai', 'c', 'cpp', 'diz', 'dot', 'dotm', 'dotx', 'gtar', 'h', 'hpp', 'ini', 'js', 'oga', 'ogv', 'ps', 'qt', 'ram', 'rm', 'tar', 'tga', 'tif', 'tiff')");
 
 	// Remove obsolete modules.
 
@@ -712,6 +700,26 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . LOGIN_ATTEMPT_TABLE . " CHANGE attempt_browser attempt_browser_ua varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . SESSIONS_TABLE . " CHANGE session_browser session_browser_ua varchar(250) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_browser user_browser_ua varchar(250) DEFAULT '' NOT NULL");
+
+	// Update supported file extensions.
+
+	// Reduce list of supported file extensions.
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('docm', 'xlsm', 'xlsb', 'pptm', 'avi', 'wma', 'wmv', 'mpeg', 'mpg', 'mov', 'swf', 'xml', 'diff', 'sql', 'odg')");
+	// Cleanup extensions forgotten since v1.9.4 update.
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE extension IN ('3g2', '3gp', 'ace', 'ai', 'c', 'cpp', 'diz', 'dot', 'dotm', 'dotx', 'gtar', 'h', 'hpp', 'ini', 'js', 'oga', 'ogv', 'ps', 'qt', 'ram', 'rm', 'tar', 'tga', 'tif', 'tiff')");
+	// Remove invalid extensions that are not supported by the new schema.
+	$db->sql_query("DELETE FROM " . EXTENSIONS_TABLE . " WHERE BINARY extension NOT REGEXP '^[a-z0-9_-]{1,10}$'");
+	// Remove duplicate extensions before using the extension as a primary key.
+	$db->sql_query("DELETE e1 FROM " . EXTENSIONS_TABLE . " e1, " . EXTENSIONS_TABLE . " e2 WHERE e1.extension = e2.extension AND e1.extension_id > e2.extension_id");
+	// Upgrade schema.
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " MODIFY extension_id mediumint(8) UNSIGNED NOT NULL");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " DROP PRIMARY KEY");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " DROP INDEX extension");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " CHANGE extension extension varchar(10) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL FIRST");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " ADD PRIMARY KEY (extension)");
+	$db->sql_query("ALTER TABLE " . EXTENSIONS_TABLE . " DROP COLUMN extension_id");
+	// Reinsert webp into the correct group if needed.
+	$db->sql_query("INSERT INTO " . EXTENSIONS_TABLE . " (extension, group_id) VALUES ('webp', 1) ON DUPLICATE KEY UPDATE group_id = 1");
 
 	// Update anonymous user.
 

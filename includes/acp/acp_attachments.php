@@ -278,7 +278,7 @@ class acp_attachments
 					if ($submit)
 					{
 						// Change Extensions ?
-						$extension_change_list  = request_var('extension_change_list', [0]);
+						$extension_change_list  = request_var('extension_change_list', ['']);
 						$group_select_list      = request_var('group_select', [0]);
 
 						// Generate correct Change List
@@ -291,16 +291,16 @@ class acp_attachments
 
 						$sql = 'SELECT *
 							FROM ' . EXTENSIONS_TABLE . '
-							ORDER BY extension_id';
+							ORDER BY extension';
 						$result = $db->sql_query($sql);
 
 						while ($row = $db->sql_fetchrow($result))
 						{
-							if ($row['group_id'] != $extensions[$row['extension_id']]['group_id'])
+							if (isset($extensions[$row['extension']]) && $row['group_id'] != $extensions[$row['extension']]['group_id'])
 							{
 								$sql = 'UPDATE ' . EXTENSIONS_TABLE . '
-									SET group_id = ' . (int) $extensions[$row['extension_id']]['group_id'] . '
-									WHERE extension_id = ' . $row['extension_id'];
+									SET group_id = ' . (int) $extensions[$row['extension']]['group_id'] . "
+									WHERE extension = '" . $db->sql_escape($row['extension']) . "'";
 								$db->sql_query($sql);
 
 								add_log('admin', 'LOG_ATTACH_EXT_UPDATE', $row['extension']);
@@ -309,41 +309,46 @@ class acp_attachments
 						$db->sql_freeresult($result);
 
 						// Delete Extension?
-						$extension_id_list = request_var('extension_id_list', [0]);
+						$extension_list = request_var('extension_list', ['']);
 
-						if (sizeof($extension_id_list))
+						if (sizeof($extension_list))
 						{
 							$sql = 'SELECT extension
 								FROM ' . EXTENSIONS_TABLE . '
-								WHERE ' . $db->sql_in_set('extension_id', $extension_id_list);
+								WHERE ' . $db->sql_in_set('extension', $extension_list);
 							$result = $db->sql_query($sql);
 
-							$extension_list = '';
+							$deleted_extension_list = '';
 							while ($row = $db->sql_fetchrow($result))
 							{
-								$extension_list .= ($extension_list == '') ? $row['extension'] : ', ' . $row['extension'];
+								$deleted_extension_list .= ($deleted_extension_list == '') ? $row['extension'] : ', ' . $row['extension'];
 							}
 							$db->sql_freeresult($result);
 
 							$sql = 'DELETE
 								FROM ' . EXTENSIONS_TABLE . '
-								WHERE ' . $db->sql_in_set('extension_id', $extension_id_list);
+								WHERE ' . $db->sql_in_set('extension', $extension_list);
 							$db->sql_query($sql);
 
-							add_log('admin', 'LOG_ATTACH_EXT_DEL', $extension_list);
+							add_log('admin', 'LOG_ATTACH_EXT_DEL', $deleted_extension_list);
 						}
 					}
 
 					// Add Extension?
-					$add_extension          = strtolower(request_var('add_extension', ''));
+					$add_extension          = utf8_strtolower(utf8_normalize_nfc(request_var('add_extension', '', true)));
 					$add_extension_group    = request_var('add_group_select', 0);
 					$add                    = isset($_POST['add_extension_check']);
 
 					if ($add_extension && $add)
 					{
+						if (!preg_match('#^[a-z0-9_-]{1,10}$#', $add_extension))
+						{
+							$error[] = sprintf($user->lang['EXTENSION_INVALID'], $add_extension);
+						}
+
 						if (!sizeof($error))
 						{
-							$sql = 'SELECT extension_id
+							$sql = 'SELECT extension
 								FROM ' . EXTENSIONS_TABLE . "
 								WHERE extension = '" . $db->sql_escape($add_extension) . "'";
 							$result = $db->sql_query($sql);
@@ -358,7 +363,7 @@ class acp_attachments
 							{
 								$sql_ary = [
 									'group_id'  =>  $add_extension_group,
-									'extension' =>  $add_extension
+									'extension' =>  $add_extension,
 								];
 
 								$db->sql_query('INSERT INTO ' . EXTENSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
@@ -402,7 +407,6 @@ class acp_attachments
 
 						$template->assign_block_vars('extensions', [
 							'S_SPACER'      => $s_spacer,
-							'EXTENSION_ID'  => $row['extension_id'],
 							'EXTENSION'     => $row['extension'],
 							'GROUP_OPTIONS' => $this->group_select('group_select[]', $row['group_id']),
 						]);
@@ -530,7 +534,7 @@ class acp_attachments
 						add_log('admin', 'LOG_ATTACH_EXTGROUP_' . strtoupper($action), $group_name);
 					}
 
-					$extension_list = request_var('extensions', [0]);
+					$extension_list = request_var('extensions', ['']);
 
 					if ($action == 'edit' && sizeof($extension_list))
 					{
@@ -544,7 +548,7 @@ class acp_attachments
 					{
 						$sql = 'UPDATE ' . EXTENSIONS_TABLE . "
 							SET group_id = {$group_id}
-							WHERE " . $db->sql_in_set('extension_id', $extension_list);
+							WHERE " . $db->sql_in_set('extension', $extension_list);
 						$db->sql_query($sql);
 					}
 
@@ -707,7 +711,7 @@ class acp_attachments
 						$s_extension_options = '';
 						foreach ($extensions as $row)
 						{
-							$s_extension_options .= '<option' . ((!$row['group_id']) ? ' class="disabled"' : '') . ' value="' . $row['extension_id'] . '"' . (($row['group_id'] == $group_id && $group_id) ? ' selected="selected"' : '') . '>' . $row['extension'] . '</option>';
+							$s_extension_options .= '<option' . ((!$row['group_id']) ? ' class="disabled"' : '') . ' value="' . $row['extension'] . '"' . (($row['group_id'] == $group_id && $group_id) ? ' selected="selected"' : '') . '>' . $row['extension'] . '</option>';
 						}
 
 						$template->assign_vars([
