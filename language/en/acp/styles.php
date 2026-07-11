@@ -124,7 +124,7 @@ $lang = array_merge($lang, [
 	'STYLE_NAME'                => 'Style name',
 	'STYLE_TEMPLATE'            => 'Template',
 	'STYLE_THEME'               => 'Theme',
-	'STYLE_USED_BY'             => 'Used by (including robots)',
+	'STYLE_USED_BY'             => 'Used by',
 
 	'TEMPLATE_ADDED'            => 'Template set added and stored on filesystem.',
 	'TEMPLATE_CACHE_CLEARED'    => 'Template cache cleared successfully.',
