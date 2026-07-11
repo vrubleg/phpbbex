@@ -36,6 +36,11 @@ if (!defined('GALLERY_FAVORITES_TABLE'))
 	trigger_error('MISSING_CONSTANTS');
 }
 
+if ($user->data['user_type'] != USER_FOUNDER)
+{
+	trigger_error('FOUNDER_NEEDED', E_USER_ERROR);
+}
+
 //need some module-names
 $user->add_lang(['acp/common', 'ucp', 'mods/info_acp_gallery', 'mods/info_ucp_gallery']);
 
