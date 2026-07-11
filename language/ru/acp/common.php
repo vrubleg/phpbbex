@@ -308,13 +308,15 @@ $lang = array_merge($lang, [
 
 	'FORUM_STATS'       => 'Статистика форума',
 
+	'N_AGO'             => '%s назад',
+	'N_PER_DAY'         => '%.2f в день',
+	'N_QUOTA'           => 'квота: %s',
 	'NOT_AVAILABLE'     => 'Недоступно',
 	'NUMBER_FILES'      => 'Вложений',
 	'NUMBER_POSTS'      => 'Сообщений',
 	'NUMBER_TOPICS'     => 'Тем',
 	'NUMBER_USERS'      => 'Пользователей',
 	'NUMBER_ORPHAN'     => 'Потерянных вложений',
-	'NUMBER_PER_DAY'    => 'в день',
 
 	'PHP_VERSION_OLD'   => 'Версия PHP на данном сервере устарела. Рекомендуется обновиться до PHP 7.4 или новее.',
 	'PHPBBEX_VERSION'   => 'Версия phpBBex',

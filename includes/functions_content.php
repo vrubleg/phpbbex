@@ -1230,47 +1230,48 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 /**
 * Get associative array with time delta.
 */
-function get_verbal_time_delta_values($first_time, $last_time)
+function get_verbal_time_delta_values($from_time, $to_time)
 {
-	if ($last_time < $first_time) { return false; }
+	$time_diff = $to_time - $from_time;
+	if ($time_diff < 0) { return false; }
+	$delta = [];
 
 	// Solve H:M:S part.
-	$hms = ($last_time - $first_time) % (3600 * 24);
+	$hms = $time_diff % (3600 * 24);
 	$delta['seconds'] = $hms % 60;
 	$delta['minutes'] = floor($hms/60) % 60;
 	$delta['hours']   = floor($hms/3600) % 60;
 
-	// Now work only with date, delta time = 0.
-	$last_time -= $hms;
-	$f = getdate($first_time);
-	$l = getdate($last_time); // the same daytime as $first_time!
+	// Now work only with date.
+	$from_date = getdate($from_time);
+	$to_date = getdate($to_time - $hms); // the same daytime as $from_time!
 
-	$d_year = $d_mon = $d_day = 0;
+	$d_years = $d_months = $d_days = 0;
 
 	// Delta day. Is negative, month overlapping.
-	$d_day += $l['mday'] - $f['mday'];
-	if ($d_day < 0)
+	$d_days += $to_date['mday'] - $from_date['mday'];
+	if ($d_days < 0)
 	{
-		$mon_length = (int) date('t', $first_time);
-		$d_day += $mon_length;
-		$d_mon--;
+		$mon_length = (int) date('t', $from_time);
+		$d_days += $mon_length;
+		$d_months--;
 	}
-	$delta['mday'] = $d_day;
+	$delta['days'] = $d_days;
 
 	// Delta month. If negative, year overlapping.
-	$d_mon += $l['mon'] - $f['mon'];
-	if ($d_mon < 0)
+	$d_months += $to_date['mon'] - $from_date['mon'];
+	if ($d_months < 0)
 	{
-		$d_mon += 12;
-		$d_year--;
+		$d_months += 12;
+		$d_years--;
 	}
-	$delta['mon'] = $d_mon;
+	$delta['months'] = $d_months;
 
 	// Delta year.
-	$d_year += $l['year'] - $f['year'];
-	$delta['year'] = $d_year;
+	$d_years += $to_date['year'] - $from_date['year'];
+	$delta['years'] = $d_years;
 
-	return $delta;
+	return array_reverse($delta);
 }
 
 /**
@@ -1304,47 +1305,60 @@ function get_verbal_time_delta_declension($int, $expressions)
 
 /**
 * Make a spellable phrase with time delta.
+*
+* Supported measure names for $min_unit are: years, months, days, hours, minutes, seconds.
+*
+* @param int         $from_time   Start timestamp.
+* @param int         $to_time     End timestamp. If it is earlier than $from_time, false is returned.
+* @param string|bool $min_unit    Smallest measure to include. Use false to include all measures.
+* @param int|bool    $max_units   Maximum number of units to include. Use false for no limit.
+* @param bool        $keep_zeros  Whether zero-value measures after the first included measure should be kept.
+*
+* @return string|bool Human-readable delta string, or false if $to_time is earlier than $from_time.
 */
-function get_verbal_time_delta($first_time, $last_time, $accuracy = false, $max_parts = false, $keep_zeros = false)
+function get_verbal_time_delta($from_time, $to_time, $min_unit = false, $max_units = false, $keep_zeros = false)
 {
 	global $user;
 
-	if ($first_time - $last_time === 0)
+	if ($from_time - $to_time === 0)
 	{
-		return get_verbal_time_delta_declension(0, $user->lang['D_SECONDS']);
+		return get_verbal_time_delta_declension(0, $user->lang['D_' . strtoupper($min_unit ?: 'seconds')]);
 	}
 
-	$delta = get_verbal_time_delta_values($first_time, $last_time);
+	$delta = get_verbal_time_delta_values($from_time, $to_time);
 	if (!$delta) { return false; }
 
-	$parts = [];
-	$parts_count = 0;
-	foreach (array_reverse($delta) as $measure => $value)
+	$units = [];
+	$units_count = 0;
+	foreach ($delta as $unit => $value)
 	{
-		if ($max_parts && $max_parts <= $parts_count)
+		if ($max_units && $max_units <= $units_count)
 		{
 			break;
 		}
-		if (!$value && (!$keep_zeros || !$parts_count))
+		if (!$value && (!$keep_zeros || !$units_count))
 		{
-			if ($measure !== $accuracy)
+			if ($unit !== $min_unit)
 			{
-				if ($parts_count) $parts_count++;
+				if ($units_count)
+				{
+					$units_count++;
+				}
 				continue;
 			}
-			else if (count($parts))
+			else if (count($units))
 			{
 				break;
 			}
 		}
-		$parts_count++;
-		$parts[] = get_verbal_time_delta_declension($value, $user->lang['D_' . strtoupper($measure)]);
-		if ($measure === $accuracy)
+		$units_count++;
+		$units[] = get_verbal_time_delta_declension($value, $user->lang['D_' . strtoupper($unit)]);
+		if ($unit === $min_unit)
 		{
 			break;
 		}
 	}
-	return join(' ', $parts);
+	return join(' ', $units);
 }
 
 /**

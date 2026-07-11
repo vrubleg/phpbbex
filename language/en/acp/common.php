@@ -308,13 +308,15 @@ $lang = array_merge($lang, [
 
 	'FORUM_STATS'       => 'Board statistics',
 
+	'N_AGO'             => '%s ago',
+	'N_PER_DAY'         => '%.2f per day',
+	'N_QUOTA'           => 'quota: %s',
 	'NOT_AVAILABLE'     => 'Not available',
 	'NUMBER_FILES'      => 'Number of attachments',
 	'NUMBER_POSTS'      => 'Number of posts',
 	'NUMBER_TOPICS'     => 'Number of topics',
 	'NUMBER_USERS'      => 'Number of users',
 	'NUMBER_ORPHAN'     => 'Orphan attachments',
-	'NUMBER_PER_DAY'    => 'per day',
 
 	'PHP_VERSION_OLD'   => 'The version of PHP on this server is obsolete. Upgrading PHP to 7.4 or newer is recommended.',
 	'PHPBBEX_VERSION'   => 'phpBBex version',
