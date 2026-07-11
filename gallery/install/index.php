@@ -88,6 +88,8 @@ class module
 		global $db, $config;
 
 		$module = [];
+		$this->module_url = (string) $module_url;
+		$this->mode = (string) $selected_mod;
 
 		// Grab module information using Bart's "neat-o-module" system (tm)
 		$dir = @opendir(GALLERY_INSTALL_PATH);
@@ -140,8 +142,6 @@ class module
 			{
 				$this->id = (int) $row['module_order'];
 				$this->filename = (string) $row['module_filename'];
-				$this->module_url = (string) $module_url;
-				$this->mode = (string) $selected_mod;
 				// Check that the sub-mode specified is valid or set a default if not
 				if (is_array($row['module_subs']))
 				{
@@ -171,7 +171,11 @@ class module
 				$this->mode = $mode;
 			}
 
-			$module = $this->filename;
+			$module = (string) $this->filename;
+			if (!$module)
+			{
+				$this->error('Module "' . htmlspecialchars($this->mode) . '" not accessible.', __LINE__, __FILE__);
+			}
 			if (!class_exists($module))
 			{
 				$this->error('Module "' . htmlspecialchars($module) . '" not accessible.', __LINE__, __FILE__);
@@ -199,6 +203,7 @@ class module
 		global $template, $user, $stage;
 
 		$template->assign_vars([
+			'L_POWERED_BY'          => $user->lang['POWERED_BY'],
 			'L_CHANGE'              => $user->lang['CHANGE'],
 			'L_INSTALL_PANEL'       => $user->lang['INSTALL_PANEL'],
 			'L_SELECT_LANG'         => $user->lang['SELECT_LANG'],
@@ -336,13 +341,15 @@ class module
 	*/
 	function error($error, $line, $file, $skip = false)
 	{
-		global $lang, $db, $template;
+		global $user, $db, $template;
+
+		$error_title = $user->lang['INST_ERR_FATAL'] ?? 'Fatal installation error';
 
 		if ($skip)
 		{
 			$template->assign_block_vars('checks', [
 				'S_LEGEND'  => true,
-				'LEGEND'    => $lang['INST_ERR'],
+				'LEGEND'    => $user->lang['INST_ERR'] ?? 'Installation error',
 			]);
 
 			$template->assign_block_vars('checks', [
@@ -357,7 +364,7 @@ class module
 		echo '<html dir="ltr">';
 		echo '<head>';
 		echo '<meta charset="utf-8" />';
-		echo '<title>' . $lang['INST_ERR_FATAL'] . '</title>';
+		echo '<title>' . $error_title . '</title>';
 		echo '<link href="' . PHPBB_ROOT_PATH . 'adm/style/admin.css" rel="stylesheet" media="screen" />';
 		echo '</head>';
 		echo '<body id="errorpage">';
@@ -368,8 +375,8 @@ class module
 		echo '      <div id="acp">';
 		echo '      <div class="panel">';
 		echo '          <div id="content">';
-		echo '              <h1>' . $lang['INST_ERR_FATAL'] . '</h1>';
-		echo '      <p>' . $lang['INST_ERR_FATAL'] . "</p>\n";
+		echo '              <h1>' . $error_title . '</h1>';
+		echo '      <p>' . $error_title . "</p>\n";
 		echo '      <p>' . basename($file) . ' [ ' . $line . " ]</p>\n";
 		echo '      <p><b>' . $error . "</b></p>\n";
 		echo '          </div>';
@@ -377,7 +384,7 @@ class module
 		echo '      </div>';
 		echo '  </div>';
 		echo '  <div id="page-footer">';
-		echo '      Powered by ' . POWERED_BY;
+		echo '      ' . ($user->lang['POWERED_BY'] ?? 'Powered by <a href="//phpbbex.com/">phpBBex</a>');
 		echo '  </div>';
 		echo '</div>';
 		echo '</body>';
@@ -388,7 +395,11 @@ class module
 			$db->sql_close();
 		}
 
-		exit_handler();
+		if (function_exists('exit_handler'))
+		{
+			exit_handler();
+		}
+		exit;
 	}
 
 	/**
