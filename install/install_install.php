@@ -1414,14 +1414,11 @@ class install_install extends module
 		'Senti [Bot]'               => 'SentiBot/',
 		'Petal [Bot]'               => 'PetalBot',
 		'Barkrowler [Bot]'          => 'Barkrowler/',
-		'Ubermetrics [Bot]'         => 'techinfo@ubermetrics-technologies.com',
 		'Trendiction [Bot]'         => 'trendiction.de/bot',
-		'BLEX [Bot]'                => 'BLEXBot/',
 		'DuckDuck [Bot]'            => 'duckduckgo.com',
 		'Yandex [Bot]'              => 'YandexBot/',
 		'Yandex Images [Bot]'       => 'YandexImages/',
 		'Yandex Metrika [Bot]'      => 'YandexMetrika/',
-		'MailRu [Bot]'              => 'Mail.Ru/',
 		'Feedly [Bot]'              => 'Feedly/',
 		'Feedspot [Bot]'            => 'Feedspot/',
 	];
@@ -1456,10 +1453,6 @@ class install_install extends module
 				'ACP_FORUM_BASED_PERMISSIONS',
 				'ACP_PERMISSION_ROLES',
 				'ACP_PERMISSION_MASKS',
-			],
-			'ACP_CAT_STYLES'        => [
-				'ACP_STYLE_MANAGEMENT',
-				'ACP_STYLE_COMPONENTS',
 			],
 			'ACP_CAT_MAINTENANCE'   => [
 				'ACP_FORUM_LOGS',

@@ -22,22 +22,6 @@
 		<dt><label for="new_id">{L_REPLACE}:</label><br /><span>{L_REPLACE_EXPLAIN}</span></dt>
 		<dd><select id="new_id" name="new_id">{S_REPLACE_OPTIONS}</select></dd>
 	</dl>
-	<!-- IF S_DELETE_STYLE -->
-		<hr />
-		<dl>
-			<dt><label for="new_template_id">{L_DELETE_TEMPLATE}:</label><br /><span>{L_REPLACE_TEMPLATE_EXPLAIN}</span></dt>
-			<dd><select id="new_template_id" name="new_template_id">{S_REPLACE_TEMPLATE_OPTIONS}</select></dd>
-		</dl>
-		<dl>
-			<dt><label for="new_theme_id">{L_DELETE_THEME}:</label><br /><span>{L_REPLACE_THEME_EXPLAIN}</span></dt>
-			<dd><select id="new_theme_id" name="new_theme_id">{S_REPLACE_THEME_OPTIONS}</select></dd>
-		</dl>
-		<dl>
-			<dt><label for="new_imageset_id">{L_DELETE_IMAGESET}:</label><br /><span>{L_REPLACE_IMAGESET_EXPLAIN}</span></dt>
-			<dd><select id="new_imageset_id" name="new_imageset_id">{S_REPLACE_IMAGESET_OPTIONS}</select></dd>
-		</dl>
-	<!-- ENDIF -->
-
 	<p class="quick">
 		<input class="button1" type="submit" name="update" value="{L_DELETE}" />
 		{S_FORM_TOKEN}
@@ -105,7 +89,7 @@
 
 		<fieldset class="quick">
 			<legend>{L_CREATE}</legend>
-			{L_CREATE}: <input type="text" name="name" value="" /> {L_FROM} <select name="basis">{S_BASIS_OPTIONS}</select> <input class="button2" type="submit" name="add" value="{L_SUBMIT}" />
+			{L_CREATE}: <input type="text" name="name" value="" /> <input class="button2" type="submit" name="add" value="{L_SUBMIT}" />
 		</fieldset>
 
 		</form>
@@ -146,18 +130,18 @@
 		<dd><strong id="inheriting">{S_SUPERTEMPLATE}</strong></dd>
 	</dl>
 	<!-- ENDIF -->
-	<!-- IF S_STYLE and not S_BASIS -->
+	<!-- IF S_STYLE -->
 		<dl>
-			<dt><label for="template_id">{L_STYLE_TEMPLATE}:</label></dt>
-			<dd><!-- IF S_INSTALL --><strong id="template_id">{TEMPLATE_NAME}</strong><!-- ELSE --><select id="template_id" name="template_id">{S_TEMPLATE_OPTIONS}</select><!-- ENDIF --></dd>
+			<dt><label for="template_dir">{L_STYLE_TEMPLATE}:</label></dt>
+			<dd><!-- IF S_INSTALL --><strong id="template_dir">{TEMPLATE_NAME}</strong><!-- ELSE --><select id="template_dir" name="template_dir">{S_TEMPLATE_OPTIONS}</select><!-- ENDIF --></dd>
 		</dl>
 		<dl>
-			<dt><label for="theme_id">{L_STYLE_THEME}:</label></dt>
-			<dd><!-- IF S_INSTALL --><strong id="theme_id">{THEME_NAME}</strong><!-- ELSE --><select id="theme_id" name="theme_id">{S_THEME_OPTIONS}</select><!-- ENDIF --></dd>
+			<dt><label for="theme_dir">{L_STYLE_THEME}:</label></dt>
+			<dd><!-- IF S_INSTALL --><strong id="theme_dir">{THEME_NAME}</strong><!-- ELSE --><select id="theme_dir" name="theme_dir">{S_THEME_OPTIONS}</select><!-- ENDIF --></dd>
 		</dl>
 		<dl>
-			<dt><label for="imageset_id">{L_STYLE_IMAGESET}:</label></dt>
-			<dd><!-- IF S_INSTALL --><strong id="imageset_id">{IMAGESET_NAME}</strong><!-- ELSE --><select id="imageset_id" name="imageset_id">{S_IMAGESET_OPTIONS}</select><!-- ENDIF --></dd>
+			<dt><label for="imageset_dir">{L_STYLE_IMAGESET}:</label></dt>
+			<dd><!-- IF S_INSTALL --><strong id="imageset_dir">{IMAGESET_NAME}</strong><!-- ELSE --><select id="imageset_dir" name="imageset_dir">{S_IMAGESET_OPTIONS}</select><!-- ENDIF --></dd>
 		</dl>
 	<!-- ENDIF -->
 	<!-- IF S_STYLE -->

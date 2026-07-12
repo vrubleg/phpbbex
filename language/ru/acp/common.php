@@ -45,7 +45,6 @@ $lang = array_merge($lang, [
 	'ACP_CAT_MAINTENANCE'       => 'Обслуживание',
 	'ACP_CAT_PERMISSIONS'       => 'Права доступа',
 	'ACP_CAT_POSTING'           => 'Сообщения',
-	'ACP_CAT_STYLES'            => 'Стили',
 	'ACP_CAT_SYSTEM'            => 'Система',
 	'ACP_CAT_USERGROUP'         => 'Пользователи и группы',
 	'ACP_CAT_USERS'             => 'Пользователи',
@@ -80,7 +79,6 @@ $lang = array_merge($lang, [
 
 	'ACP_ICONS'                 => 'Иконки тем',
 	'ACP_ICONS_SMILIES'         => 'Иконки тем и смайлики',
-	'ACP_IMAGESETS'             => 'Наборы рисунков',
 	'ACP_INACTIVE_USERS'        => 'Неактивированные пользователи',
 	'ACP_INDEX'                 => 'Главная страница',
 
@@ -139,15 +137,10 @@ $lang = array_merge($lang, [
 	'ACP_SERVER_SETTINGS'       => 'Настройки сервера',
 	'ACP_SIGNATURE_SETTINGS'    => 'Подписи',
 	'ACP_SMILIES'               => 'Смайлики',
-	'ACP_STYLE_COMPONENTS'      => 'Компоненты стилей',
-	'ACP_STYLE_MANAGEMENT'      => 'Управление стилями',
 	'ACP_STYLE_SETTINGS'        => 'Настройки отображения',
 	'ACP_STYLES'                => 'Стили',
 
 	'ACP_SUBMIT_CHANGES'        => 'Сохранить изменения',
-
-	'ACP_TEMPLATES'             => 'Шаблоны',
-	'ACP_THEMES'                => 'Темы',
 
 	'ACP_UPDATE'                    => 'Обновление',
 	'ACP_USERS_FORUM_PERMISSIONS'   => 'Локальные права пользователей',
@@ -539,10 +532,6 @@ $lang = array_merge($lang, [
 	'LOG_USERS_APPROVED'    => '<strong>Одобрены кандидаты в группу</strong> %1$s<br />» %2$s',
 	'LOG_USERS_PENDING'     => '<strong>Пользователи запросили вступления в группу «%1$s» и ожидают одобрения</strong><br />» %2$s',
 
-	'LOG_IMAGESET_ADD_FS'           => '<strong>Добавлен набор рисунков на сервер</strong><br />» %s',
-	'LOG_IMAGESET_DELETE'           => '<strong>Удалён набор рисунков</strong><br />» %s',
-	'LOG_IMAGESET_REFRESHED'        => '<strong>Обновлён набор рисунков</strong><br />» %s',
-
 	'LOG_INACTIVE_ACTIVATE' => '<strong>Активированы пользователи</strong><br />» %s',
 	'LOG_INACTIVE_DELETE'   => '<strong>Удалены неактивированные пользователи</strong><br />» %s',
 	'LOG_INACTIVE_REMIND'   => '<strong>Отправлены email-напоминания неактивированным пользователям</strong><br />» %s',
@@ -620,13 +609,6 @@ $lang = array_merge($lang, [
 	'LOG_STYLE_ADD'             => '<strong>Добавлен стиль</strong><br />» %s',
 	'LOG_STYLE_DELETE'          => '<strong>Удалён стиль</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'    => '<strong>Изменён стиль</strong><br />» %s',
-
-	'LOG_TEMPLATE_ADD_FS'           => '<strong>Добавлен шаблон на сервер</strong><br />» %s',
-	'LOG_TEMPLATE_CACHE_CLEARED'    => '<strong>Удалена кэшированная версия файлов шаблона <em>%1$s</em></strong><br />» %2$s',
-	'LOG_TEMPLATE_DELETE'           => '<strong>Удалён шаблон</strong><br />» %s',
-
-	'LOG_THEME_ADD_FS'          => '<strong>Добавлена тема на сервер</strong><br />» %s',
-	'LOG_THEME_DELETE'          => '<strong>Удалена тема</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'   => '<strong>Обновлена база данных с версии %1$s до версии %2$s</strong>',
 	'LOG_UPDATE_PHPBB'      => '<strong>Обновлён phpBB с версии %1$s до версии %2$s</strong>',

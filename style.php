@@ -14,12 +14,13 @@ if (!defined('PHPBB_INSTALLED'))
 	exit;
 }
 
-if (isset($_GET['mtime']))
+// Always respond that cached data with this particular mtime of stylesheet.css is not stale.
+if (($mtime = (int) ($_GET['mtime'] ?? 0)) && $mtime > 999999999 && $mtime == $_GET['mtime'])
 {
-	$mtime = intval($_GET['mtime']);
-	if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH'], '"') == $mtime)
+	// Reverse proxy appends "-gzip" to our etag, so we should match etag using strpos instead of strict equality.
+	if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && strpos(trim($_SERVER['HTTP_IF_NONE_MATCH'], '"'), (string) $mtime) === 0)
 	{
-		http_response_code(304);
+		http_response_code(304); // Not Modified
 		die();
 	}
 	header('Etag: "' . $mtime . '"');
@@ -52,12 +53,9 @@ unset($dbpasswd);
 
 $config = $cache->obtain_config();
 
-$sql = 'SELECT s.style_id, c.theme_id, c.theme_dir, i.*, t.template_dir
-	FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
-	WHERE s.style_id = ' . $style_id . '
-		AND t.template_id = s.template_id
-		AND c.theme_id = s.theme_id
-		AND i.imageset_id = s.imageset_id';
+$sql = 'SELECT theme_dir, imageset_dir
+	FROM ' . STYLES_TABLE . '
+	WHERE style_id = ' . $style_id;
 $result = $db->sql_query($sql, 300);
 $theme = $db->sql_fetchrow($result);
 $db->sql_freeresult($result);
@@ -96,7 +94,7 @@ if (!$theme_mtime)
 	die();
 }
 
-$cache_key = "_style_{$theme['theme_dir']}_theme_{$lang_code}";
+$cache_key = "_style_{$theme['theme_dir']}_{$theme['imageset_dir']}_theme_{$lang_code}";
 $cache_data = $cache->get($cache_key) ?: [];
 
 if (($cache_data['mtime'] ?? 0) == $theme_mtime)
@@ -109,7 +107,6 @@ else
 
 	$replace = [
 		'{T_THEME_PATH}'            => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['theme_dir']) . '/theme',
-		'{T_TEMPLATE_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_dir']) . '/template',
 		'{T_IMAGESET_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset',
 		'{T_IMAGESET_LANG_PATH}'    => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $lang_code,
 		'{S_USER_LANG}'             => $lang_code,

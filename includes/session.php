@@ -1429,12 +1429,9 @@ class phpbb_user extends phpbb_session
 			$style = $style ?: ((!$config['override_user_style']) ? $this->data['user_style'] : $config['default_style']);
 		}
 
-		$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.template_inherit_id, t.template_inherit_dir, c.theme_dir, c.theme_id, i.imageset_dir, i.imageset_id
-			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
-			WHERE s.style_id = {$style}
-				AND t.template_id = s.template_id
-				AND c.theme_id = s.theme_id
-				AND i.imageset_id = s.imageset_id";
+		$sql = 'SELECT style_id, template_dir, theme_dir, imageset_dir
+			FROM ' . STYLES_TABLE . "
+			WHERE style_id = {$style}";
 		$result = $db->sql_query($sql, 3600);
 		$this->theme = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -1449,12 +1446,9 @@ class phpbb_user extends phpbb_session
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
-			$sql = 'SELECT s.style_id, t.template_dir, t.template_id, t.template_inherit_id, t.template_inherit_dir, c.theme_dir, c.theme_id, i.imageset_dir, i.imageset_id
-				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
-				WHERE s.style_id = {$style}
-					AND t.template_id = s.template_id
-					AND c.theme_id = s.theme_id
-					AND i.imageset_id = s.imageset_id";
+			$sql = 'SELECT style_id, template_dir, theme_dir, imageset_dir
+				FROM ' . STYLES_TABLE . "
+				WHERE style_id = {$style}";
 			$result = $db->sql_query($sql, 3600);
 			$this->theme = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -1464,6 +1458,9 @@ class phpbb_user extends phpbb_session
 		{
 			trigger_error('NO_STYLE_DATA', E_USER_ERROR);
 		}
+
+		$template_cfg = $cache->obtain_style_cfg($this->theme['template_dir'], 'template');
+		$this->theme['template_inherit_dir'] = $template_cfg['inherit_from'] ?? '';
 
 		// Now parse the theme cfg file and cache it
 		$parsed_items = $cache->obtain_style_cfg($this->theme['theme_dir'], 'theme');

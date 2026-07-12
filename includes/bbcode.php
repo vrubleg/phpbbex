@@ -153,14 +153,9 @@ class bbcode
 			$template_dir = $user->theme['template_dir'];
 			$this->template_filename = PHPBB_ROOT_PATH . "styles/{$template_dir}/template/bbcode.html";
 
-			if (empty($user->theme['template_inherit_id']) && !empty($template->orig_tpl_inherit_id))
-			{
-				$user->theme['template_inherit_id'] = $template->orig_tpl_inherit_id;
-			}
-
 			if (!@file_exists($this->template_filename))
 			{
-				if (isset($user->theme['template_inherit_id']) && $user->theme['template_inherit_id'])
+				if ($user->theme['template_inherit_dir'] ?? '')
 				{
 					$template_dir = $user->theme['template_inherit_dir'];
 					$this->template_filename = PHPBB_ROOT_PATH . "styles/{$template_dir}/template/bbcode.html";
