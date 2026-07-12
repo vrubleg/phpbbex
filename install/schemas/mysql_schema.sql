@@ -675,7 +675,6 @@ CREATE TABLE phpbb_styles_template (
 CREATE TABLE phpbb_styles_theme (
 	theme_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	theme_dir varchar(100) DEFAULT '' NOT NULL,
-	theme_mtime int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (theme_id),
 	UNIQUE theme_dir (theme_dir)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;

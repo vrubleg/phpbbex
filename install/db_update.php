@@ -649,6 +649,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_storedb');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_data');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_copyright');
+	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_mtime');
 	$db->sql_query("ALTER TABLE " . STYLES_THEME_TABLE . " CHANGE theme_path theme_dir varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP INDEX theme_name');
 	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_name');
