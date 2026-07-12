@@ -45,7 +45,6 @@ $lang = array_merge($lang, [
 	'ACP_CAT_MAINTENANCE'       => 'Maintenance',
 	'ACP_CAT_PERMISSIONS'       => 'Permissions',
 	'ACP_CAT_POSTING'           => 'Posting',
-	'ACP_CAT_STYLES'            => 'Styles',
 	'ACP_CAT_SYSTEM'            => 'System',
 	'ACP_CAT_USERGROUP'         => 'Users and Groups',
 	'ACP_CAT_USERS'             => 'Users',
@@ -80,7 +79,6 @@ $lang = array_merge($lang, [
 
 	'ACP_ICONS'                 => 'Topic icons',
 	'ACP_ICONS_SMILIES'         => 'Topic icons/smilies',
-	'ACP_IMAGESETS'             => 'Imagesets',
 	'ACP_INACTIVE_USERS'        => 'Inactive users',
 	'ACP_INDEX'                 => 'ACP index',
 
@@ -139,15 +137,10 @@ $lang = array_merge($lang, [
 	'ACP_SERVER_SETTINGS'       => 'Server settings',
 	'ACP_SIGNATURE_SETTINGS'    => 'Signature settings',
 	'ACP_SMILIES'               => 'Smilies',
-	'ACP_STYLE_COMPONENTS'      => 'Style components',
-	'ACP_STYLE_MANAGEMENT'      => 'Style management',
 	'ACP_STYLE_SETTINGS'        => 'Display settings',
 	'ACP_STYLES'                => 'Styles',
 
 	'ACP_SUBMIT_CHANGES'        => 'Submit changes',
-
-	'ACP_TEMPLATES'             => 'Templates',
-	'ACP_THEMES'                => 'Themes',
 
 	'ACP_UPDATE'                    => 'Updating',
 	'ACP_USERS_FORUM_PERMISSIONS'   => 'User forum permissions',
@@ -539,9 +532,6 @@ $lang = array_merge($lang, [
 	'LOG_USERS_APPROVED'    => '<strong>Users approved in usergroup</strong> %1$s<br />» %2$s',
 	'LOG_USERS_PENDING'     => '<strong>Users requested to join group “%1$s” and need to be approved</strong><br />» %2$s',
 
-	'LOG_IMAGESET_ADD_FS'           => '<strong>Add new imageset on filesystem</strong><br />» %s',
-	'LOG_IMAGESET_DELETE'           => '<strong>Deleted imageset</strong><br />» %s',
-
 	'LOG_INACTIVE_ACTIVATE' => '<strong>Activated inactive users</strong><br />» %s',
 	'LOG_INACTIVE_DELETE'   => '<strong>Deleted inactive users</strong><br />» %s',
 	'LOG_INACTIVE_REMIND'   => '<strong>Sent reminder emails to inactive users</strong><br />» %s',
@@ -620,12 +610,6 @@ $lang = array_merge($lang, [
 	'LOG_STYLE_ADD'             => '<strong>Added new style</strong><br />» %s',
 	'LOG_STYLE_DELETE'          => '<strong>Deleted style</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'    => '<strong>Edited style</strong><br />» %s',
-
-	'LOG_TEMPLATE_ADD_FS'           => '<strong>Add new template set on filesystem</strong><br />» %s',
-	'LOG_TEMPLATE_DELETE'           => '<strong>Deleted template set</strong><br />» %s',
-
-	'LOG_THEME_ADD_FS'          => '<strong>Add new theme on filesystem</strong><br />» %s',
-	'LOG_THEME_DELETE'          => '<strong>Theme deleted</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'   => '<strong>Updated Database from version %1$s to version %2$s</strong>',
 	'LOG_UPDATE_PHPBB'      => '<strong>Updated phpBB from version %1$s to version %2$s</strong>',

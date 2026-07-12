@@ -63,6 +63,11 @@ require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_tools.php');
 require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 
+// Legacy style component tables that are removed during this update.
+define('STYLES_TEMPLATE_TABLE',     $table_prefix . 'styles_template');
+define('STYLES_THEME_TABLE',        $table_prefix . 'styles_theme');
+define('STYLES_IMAGESET_TABLE',     $table_prefix . 'styles_imageset');
+
 // The cache, files, and images/avatars/upload directories have to be writeable!
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'cache')) { die('Make "cache" directory writeable!'); }
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . UPLOADS_PATH)) { die('Make "' . UPLOADS_PATH . '" directory writeable!'); }
@@ -119,6 +124,53 @@ function remove_module($module_class, $module_basename, $module_mode = null)
 	if ($row['left_id'] + 1 != $row['right_id'])
 	{
 		// Can't remove, it has some children. Should not happen.
+		return false;
+	}
+
+	$sql = 'DELETE FROM ' . MODULES_TABLE . "
+		WHERE module_class = '" . $db->sql_escape($module_class) . "'
+			AND module_id = {$row['module_id']}";
+	$db->sql_query($sql);
+
+	// Resync tree
+	$diff = 2;
+
+	$sql = 'UPDATE ' . MODULES_TABLE . "
+		SET right_id = right_id - {$diff}
+		WHERE module_class = '" . $db->sql_escape($module_class) . "'
+			AND left_id < {$row['right_id']} AND right_id > {$row['right_id']}";
+	$db->sql_query($sql);
+
+	$sql = 'UPDATE ' . MODULES_TABLE . "
+		SET left_id = left_id - {$diff}, right_id = right_id - {$diff}
+		WHERE module_class = '" . $db->sql_escape($module_class) . "'
+			AND left_id > {$row['right_id']}";
+	$db->sql_query($sql);
+
+	return true;
+}
+
+function remove_module_category($module_class, $module_langname)
+{
+	global $db;
+
+	$sql = 'SELECT * FROM ' . MODULES_TABLE . "
+		WHERE module_class = '" . $db->sql_escape($module_class) . "'
+			AND module_basename = ''
+			AND module_langname = '" . $db->sql_escape($module_langname) . "'";
+	$result = $db->sql_query($sql);
+	$row = $db->sql_fetchrow($result);
+	$db->sql_freeresult($result);
+
+	if (!$row) { return true; }
+
+	$row['module_id'] = (int) $row['module_id'];
+	$row['left_id'] = (int) $row['left_id'];
+	$row['right_id'] = (int) $row['right_id'];
+
+	if ($row['left_id'] + 1 != $row['right_id'])
+	{
+		// Can't remove, it has some children.
 		return false;
 	}
 
@@ -808,6 +860,54 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		}
 	}
 
+	// Final migration of imageset/template/theme tables into styles table.
+
+	remove_module('acp', 'styles', 'template');
+	remove_module('acp', 'styles', 'theme');
+	remove_module('acp', 'styles', 'imageset');
+	remove_module('acp', 'styles', 'style');
+	_add_modules([
+		'style' => [
+			'class' => 'acp',
+			'cat'   => 'ACP_GENERAL_TASKS',
+			'base'  => 'styles',
+			'title' => 'ACP_STYLES',
+			'auth'  => 'acl_a_styles',
+		],
+	]);
+	remove_module_category('acp', 'ACP_STYLE_COMPONENTS');
+	remove_module_category('acp', 'ACP_STYLE_MANAGEMENT');
+	remove_module_category('acp', 'ACP_CAT_STYLES');
+
+	$db->sql_return_on_error(true);
+
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . " MODIFY style_name varchar(30) DEFAULT '' NOT NULL");
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . " ADD template_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER style_active");
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . " ADD theme_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER template_dir");
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . " ADD imageset_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER theme_dir");
+
+	$sql = 'UPDATE ' . STYLES_TABLE . ' s
+		LEFT JOIN ' . STYLES_TEMPLATE_TABLE . ' t ON t.template_id = s.template_id
+		LEFT JOIN ' . STYLES_THEME_TABLE . ' c ON c.theme_id = s.theme_id
+		LEFT JOIN ' . STYLES_IMAGESET_TABLE . " i ON i.imageset_id = s.imageset_id
+		SET s.template_dir = COALESCE(t.template_dir, ''),
+			s.theme_dir = COALESCE(c.theme_dir, ''),
+			s.imageset_dir = COALESCE(i.imageset_dir, '')";
+	$db->sql_query($sql);
+
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP INDEX template_id');
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP INDEX theme_id');
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP INDEX imageset_id');
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN template_id');
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN theme_id');
+	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN imageset_id');
+
+	$db->sql_query('DROP TABLE IF EXISTS ' . STYLES_TEMPLATE_TABLE);
+	$db->sql_query('DROP TABLE IF EXISTS ' . STYLES_THEME_TABLE);
+	$db->sql_query('DROP TABLE IF EXISTS ' . STYLES_IMAGESET_TABLE);
+
+	$db->sql_return_on_error(false);
+
 	$bots_default = true;
 	$purge_default = 'all';
 
@@ -1077,7 +1177,7 @@ if (request_var('utf8mb4', 0))
 				$sql .= ", MODIFY word_text varchar(191) DEFAULT '' NOT NULL";
 				break;
 			case STYLES_TABLE:
-				$sql .= ", MODIFY style_name varchar(100) DEFAULT '' NOT NULL";
+				$sql .= ", MODIFY style_name varchar(30) DEFAULT '' NOT NULL";
 				break;
 			case USERS_TABLE:
 				$sql .= ",

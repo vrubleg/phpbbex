@@ -651,39 +651,13 @@ CREATE TABLE phpbb_smilies (
 
 CREATE TABLE phpbb_styles (
 	style_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	style_name varchar(100) DEFAULT '' NOT NULL,
+	style_name varchar(30) DEFAULT '' NOT NULL,
 	style_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
-	template_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	theme_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	imageset_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
+	template_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
+	theme_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
+	imageset_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 	PRIMARY KEY (style_id),
-	UNIQUE style_name (style_name),
-	KEY template_id (template_id),
-	KEY theme_id (theme_id),
-	KEY imageset_id (imageset_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_styles_template (
-	template_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	template_dir varchar(100) DEFAULT '' NOT NULL,
-	template_inherit_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	template_inherit_dir varchar(100) DEFAULT '' NOT NULL,
-	PRIMARY KEY (template_id),
-	UNIQUE template_dir (template_dir)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_styles_theme (
-	theme_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	theme_dir varchar(100) DEFAULT '' NOT NULL,
-	PRIMARY KEY (theme_id),
-	UNIQUE theme_dir (theme_dir)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_styles_imageset (
-	imageset_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	imageset_dir varchar(100) DEFAULT '' NOT NULL,
-	PRIMARY KEY (imageset_id),
-	UNIQUE imageset_dir (imageset_dir)
+	UNIQUE style_name (style_name)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_topics (
