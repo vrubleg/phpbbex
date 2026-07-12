@@ -8,13 +8,13 @@ ul.topiclist {
 }
 
 ul.forums {
-	background: #f9f9f9 none repeat-x 0 0;
+	background: #eef5f9 none repeat-x 0 0;
 }
 
 ul.topiclist li {
 	display: block;
 	list-style-type: none;
-	color: #777777;
+	color: #4C5D77;
 	margin: 0;
 }
 
@@ -58,6 +58,14 @@ ul.topiclist li.row dt a.subforum {
 	padding: 0 0 0 12px;
 }
 
+ul.topiclist li.row dt a.subforum.read {
+	background-image: url("{IMG_SUBFORUM_READ_SRC}");
+}
+
+ul.topiclist li.row dt a.subforum.unread {
+	background-image: url("{IMG_SUBFORUM_UNREAD_SRC}");
+}
+
 .forum-image {
 	float: left;
 	padding-top: 5px;
@@ -66,7 +74,7 @@ ul.topiclist li.row dt a.subforum {
 
 li.row {
 	border-top: 1px solid #FFFFFF;
-	border-bottom: 1px solid #8f8f8f;
+	border-bottom: 1px solid #00608F;
 }
 
 li.row strong {
@@ -315,7 +323,7 @@ div[class].topic-actions {
 
 .content h2, .panel h2 {
 	font-weight: normal;
-	color: #989898;
+	color: #115098;
 	border-bottom: 1px solid #CCCCCC;
 	font-size: 1.6em;
 	margin-top: 0.5em;
@@ -367,8 +375,8 @@ dl.faq dt {
 }
 
 .posthilit {
-	background-color: #f3f3f3;
-	color: #BCBCBC;
+	background-color: #F3BFCC;
+	color: #BC2A4D;
 	padding: 0 2px 1px 2px;
 }
 
@@ -394,9 +402,10 @@ p.author {
 	font-size: 1em;
 	border-top: 1px solid #CCCCCC;
 	clear: left;
-	line-height: 140%;
+	line-height: 100%;
 	overflow: hidden;
 	width: 100%;
+	color: gray;
 }
 
 dd .signature {
@@ -438,8 +447,8 @@ ul.searchresults {
 ----------------------------------------*/
 /* Quote block */
 blockquote {
-	background: #ebebeb none 6px 8px no-repeat;
-	border: 1px solid #dbdbdb;
+	background: #EBEADD url("data:image/gif;base64,R0lGODlhDwAMALMPAHBwbj8/P62sqaGgnYiIht7d2FhXVnx8ektLS8XFwWRkYrm4tdLRzJWUkTMzM+rp5CH5BAEAAA8ALAAAAAAPAAwAAARG8MlJK12GUaYSFY6jTEngIIWUhIj2MGawTEjoPko4SwNLhg4KACiQNICNSQ6oOQAdu2Vo8CA8k48jcAZCToYOwkQLsJgpEQA7") 6px 8px no-repeat;
+	border: 1px solid #DBDBCE;
 	font-size: 0.95em;
 	margin: 0.5em 1px 0 25px;
 	overflow: hidden;
@@ -448,14 +457,14 @@ blockquote {
 
 blockquote blockquote {
 	/* Nested quotes */
-	background-color: #bababa;
+	background-color: #EFEED9;
 	font-size: 1em;
 	margin: 0.5em 1px 0 15px;
 }
 
 blockquote blockquote blockquote {
 	/* Nested quotes */
-	background-color: #e4e4e4;
+	background-color: #EBEADD;
 }
 
 blockquote cite {
@@ -583,12 +592,12 @@ dl.spoilerbox.spoilerbox-on > dd
 	margin: 5px 5px 5px 0;
 	padding: 6px;
 	background-color: #FFFFFF;
-	border: 1px dashed #d8d8d8;
+	border: 1px dashed #C9D2D8;
 	clear: left;
 }
 
 .pm-message .attachbox {
-	background-color: #f3f3f3;
+	background-color: #F2F3F3;
 }
 
 .attachbox dt {
@@ -600,7 +609,7 @@ dl.spoilerbox.spoilerbox-on > dd
 	margin-top: 4px;
 	padding-top: 4px;
 	clear: left;
-	border-top: 1px solid #d8d8d8;
+	border-top: 1px solid #C9D2D8;
 }
 
 .attachbox dd dd {
@@ -608,14 +617,6 @@ dl.spoilerbox.spoilerbox-on > dd
 }
 
 .attachbox p {
-	line-height: 110%;
-	color: #666666;
-	font-weight: normal;
-	clear: left;
-}
-
-.attachbox p.stats
-{
 	line-height: 110%;
 	color: #666666;
 	font-weight: normal;
@@ -690,7 +691,7 @@ dl.file dd {
 dl.thumbnail img {
 	padding: 3px;
 	border: 1px solid #666666;
-	background-color: #FFF;
+	background-color: #FFFFFF;
 }
 
 dl.thumbnail dd {
@@ -708,7 +709,7 @@ dl.thumbnail dt a:hover {
 }
 
 dl.thumbnail dt a:hover img {
-	border: 1px solid #d2d2d2;
+	border: 1px solid #368AD2;
 }
 
 /* Post poll styles
@@ -719,7 +720,7 @@ fieldset.polls {
 
 fieldset.polls dl {
 	margin-top: 5px;
-	border-top: 1px solid #e2e2e2;
+	border-top: 1px solid #DCDEE2;
 	padding: 5px 0 0 0;
 	line-height: 120%;
 	color: #666666;
@@ -769,33 +770,33 @@ fieldset.polls dd div {
 }
 
 .pollbar1 {
-	background-color: #aaaaaa;
-	border-bottom: 1px solid #747474;
-	border-right: 1px solid #747474;
+	background-color: #AA2346;
+	border-bottom: 1px solid #74162C;
+	border-right: 1px solid #74162C;
 }
 
 .pollbar2 {
-	background-color: #bebebe;
-	border-bottom: 1px solid #8c8c8c;
-	border-right: 1px solid #8c8c8c;
+	background-color: #BE1E4A;
+	border-bottom: 1px solid #8C1C38;
+	border-right: 1px solid #8C1C38;
 }
 
 .pollbar3 {
-	background-color: #D1D1D1;
-	border-bottom: 1px solid #aaaaaa;
-	border-right: 1px solid #aaaaaa;
+	background-color: #D11A4E;
+	border-bottom: 1px solid #AA2346;
+	border-right: 1px solid #AA2346;
 }
 
 .pollbar4 {
-	background-color: #e4e4e4;
-	border-bottom: 1px solid #bebebe;
-	border-right: 1px solid #bebebe;
+	background-color: #E41653;
+	border-bottom: 1px solid #BE1E4A;
+	border-right: 1px solid #BE1E4A;
 }
 
 .pollbar5 {
-	background-color: #f8f8f8;
-	border-bottom: 1px solid #D1D1D1;
-	border-right: 1px solid #D1D1D1;
+	background-color: #F81157;
+	border-bottom: 1px solid #D11A4E;
+	border-right: 1px solid #D11A4E;
 }
 
 /* Poster profile block
@@ -850,7 +851,7 @@ fieldset.polls dd div {
 }
 
 .online {
-	background-image: none;
+	background-image: url("{IMG_ICON_USER_ONLINE_SRC}");
 	background-position: 100% 0;
 	background-repeat: no-repeat;
 }
