@@ -19,28 +19,17 @@ define('ADMIN_START', true);
 // Reason for having it is that it allows us in the STK if we can not login and the board is disabled.
 define('IN_LOGIN', true);
 
-// Prepare some vars
-$stk_no_error = false;
-define('PHPBB_MSG_HANDLER', 'stk_msg_handler');
-
 // Include all common stuff
 require_once(STK_ROOT_PATH . 'includes/functions.php');
 require_once(PHPBB_ROOT_PATH . 'common.php');
 require_once(STK_ROOT_PATH . 'includes/plugin.php');
 require_once(PHPBB_ROOT_PATH . 'includes/umil.php');
 
-// When not in the ERK we setup the user at this point and load UML.
-if (!defined('IN_ERK'))
-{
-	require_once(STK_ROOT_PATH . 'includes/critical_repair.php');
-	$critical_repair = new critical_repair();
+$user->session_begin();
+$auth->acl($user->data);
+$user->setup('acp/common', $config['default_style']);
 
-	$user->session_begin();
-	$auth->acl($user->data);
-	$user->setup('acp/common', $config['default_style']);
-
-	$umil = new phpbb_umil();
-}
+$umil = new phpbb_umil();
 
 // Setup some common variables
 $action = request_var('action', '');

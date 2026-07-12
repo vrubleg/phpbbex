@@ -438,58 +438,6 @@ function perform_authed_quick_tasks($action)
 }
 
 /**
- * Support Toolkit Error handler
- *
- * A wrapper for the phpBB `msg_handler` function, which is mainly used
- * to update variables before calling the actual msg_handler and is able
- * to handle various special cases.
- */
-function stk_msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
-{
-	// First and foremost handle the case where phpBB calls trigger error
-	// but the STK really needs to continue.
-	global $critical_repair, $stk_no_error;
-	if ($stk_no_error === true)
-	{
-		return true;
-	}
-
-	// Do not display notices if we suppress them via @
-	if (error_reporting() == 0 && $errno != E_USER_ERROR && $errno != E_USER_WARNING && $errno != E_USER_NOTICE)
-	{
-		return;
-	}
-
-	// We encounter an error while in the ERK, this need some special treatment
-	if (defined('IN_ERK'))
-	{
-		$critical_repair->trigger_error($msg_text, ($errno != E_USER_ERROR));
-	}
-	else if (!defined('IN_STK'))
-	{
-		// We're encountering an error before the STK is fully loaded
-		// Set out own message if needed
-		if ($errno == E_USER_ERROR)
-		{
-			$msg_text = 'The Support Toolkit encountered a fatal error.<br /><br />
-						 The Support Toolkit includes an Emergency Repair Kit (ERK), a tool designed to resolve certain errors that prevent phpBB from functioning.
-						 It is advised that you run the ERK now so it can attempt to repair the error it has detected.<br />
-						 To run the ERK, click <a href="' . STK_ROOT_PATH . 'erk.php">here</a>.';
-		}
-
-		if (!isset($critical_repair))
-		{
-			$critical_repair = new critical_repair();
-		}
-
-		$critical_repair->trigger_error($msg_text, ($errno != E_USER_ERROR));
-	}
-
-	// Normal phpBB msg_handler.
-	return msg_handler($errno, $msg_text, $errfile, $errline, $backtrace);
-}
-
-/**
  * A function that behaves like `array_walk` but instead
  * of walking over the values this function walks
  * over the keys

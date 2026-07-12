@@ -23,8 +23,6 @@ $lang = array_merge($lang, [
 	'CAT_ADMIN_EXPLAIN'                 => 'Administrative Tools may be used by an administrator to manage particular aspects of their forum and solve common problems.',
 	'CAT_DEV'                           => 'Developer Tools',
 	'CAT_DEV_EXPLAIN'                   => 'Developer Tools may be used by phpBB Developers and MODders to perform common tasks.',
-	'CAT_ERK'                           => 'Emergency Repair Kit',
-	'CAT_ERK_CONFIRM'                   => 'The emergency repair kit is a seperate package of the STK that is build to run some checks that can detect issues within your phpBB install that might prevent your board from working. Do you want to run it?',
 	'CAT_MAIN'                          => 'Main',
 	'CAT_MAIN_EXPLAIN'                  => 'The Support Toolkit (STK) may be used to fix common issues within a working installation of phpBB 3.0.x. It serves as a second Administration Control Panel, providing an administrator with a set of tools to resolve common problems that may prevent a phpBB3 installation from functioning properly.',
 	'CAT_SUPPORT'                       => 'Support Tools',
@@ -36,7 +34,6 @@ $lang = array_merge($lang, [
 	'DOWNLOAD_PASS'                     => 'Download the password file.',
 
 	'EMERGENCY_LOGIN_NAME'              => 'STK Emergency Login',
-	'ERK'                               => 'Emergency Repair Kit',
 
 	'FAIL_REMOVE_PASSWD'                    => 'Couldn’t remove the expired password file. Please remove this file manually!',
 
