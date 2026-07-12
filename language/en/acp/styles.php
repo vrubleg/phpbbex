@@ -26,7 +26,6 @@ $lang = array_merge($lang, [
 
 	'CONFIRM_IMAGESET_REFRESH'      => 'Are you sure you wish to refresh cached imageset data?',
 	'CONFIRM_TEMPLATE_CLEAR_CACHE'  => 'Are you sure you wish to clear all cached versions of your template files?',
-	'CONFIRM_THEME_REFRESH'         => 'Are you sure you wish to refresh the theme stylesheet version? This will force browsers to reload the parsed stylesheet.',
 	'COPYRIGHT'                     => 'Copyright',
 	'CREATE_STYLE'                  => 'Create new style',
 
@@ -150,7 +149,6 @@ $lang = array_merge($lang, [
 	'THEME_ERR_STYLE_NAME'      => 'You must supply a directory for this theme.',
 	'THEME_ERR_VERSION'         => 'The theme version must match phpBBex %1$s. Found version: %2$s.',
 	'THEME_NAME'                => 'Theme directory',
-	'THEME_REFRESHED'           => 'Theme stylesheet version refreshed successfully.',
 
 	'UNINSTALLED_IMAGESET'  => 'Uninstalled imagesets',
 	'UNINSTALLED_STYLE'     => 'Uninstalled styles',

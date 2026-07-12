@@ -149,47 +149,7 @@ class acp_styles
 			break;
 
 			case 'theme':
-				switch ($action)
-				{
-					case 'refresh':
-
-						$sql = 'SELECT *
-							FROM ' . STYLES_THEME_TABLE . "
-							WHERE theme_id = {$style_id}";
-						$result = $db->sql_query($sql);
-						$theme_row = $db->sql_fetchrow($result);
-						$db->sql_freeresult($result);
-
-						if (!$theme_row)
-						{
-							trigger_error($user->lang['NO_THEME'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
-						if (confirm_box(true))
-						{
-							$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
-								SET theme_mtime = ' . time() . "
-								WHERE theme_id = {$style_id}";
-							$db->sql_query($sql);
-
-							$cache->destroy('sql', STYLES_THEME_TABLE);
-
-							add_log('admin', 'LOG_THEME_REFRESHED', $theme_row['theme_dir']);
-							trigger_error($user->lang['THEME_REFRESHED'] . adm_back_link($this->u_action));
-						}
-						else
-						{
-							confirm_box(false, $user->lang['CONFIRM_THEME_REFRESH'], build_hidden_fields([
-								'i'         => $id,
-								'mode'      => $mode,
-								'action'    => $action,
-								'id'        => $style_id
-							]));
-						}
-					break;
-				}
-
-				$this->frontend('theme', ['refresh', 'delete']);
+				$this->frontend('theme', ['delete']);
 			break;
 
 			case 'imageset':
@@ -1567,11 +1527,6 @@ class acp_styles
 						'template_inherit_dir'  => $inherit_dir,
 					];
 				}
-			break;
-
-			// all the heavy lifting is done later
-			case 'theme':
-				$sql_ary['theme_mtime'] = (int) filemtime(PHPBB_ROOT_PATH . "styles/{$path}/theme/stylesheet.css");
 			break;
 
 			case 'imageset':

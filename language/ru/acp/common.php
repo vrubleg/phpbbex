@@ -627,7 +627,6 @@ $lang = array_merge($lang, [
 
 	'LOG_THEME_ADD_FS'          => '<strong>Добавлена тема на сервер</strong><br />» %s',
 	'LOG_THEME_DELETE'          => '<strong>Удалена тема</strong><br />» %s',
-	'LOG_THEME_REFRESHED'       => '<strong>Обновлена версия таблицы стилей темы</strong><br />» %s',
 
 	'LOG_UPDATE_DATABASE'   => '<strong>Обновлена база данных с версии %1$s до версии %2$s</strong>',
 	'LOG_UPDATE_PHPBB'      => '<strong>Обновлён phpBB с версии %1$s до версии %2$s</strong>',

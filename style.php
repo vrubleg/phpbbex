@@ -32,9 +32,9 @@ require_once(PHPBB_ROOT_PATH . 'includes/constants.php');
 require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 
 $style_id = request_var('id', 0);
-$lang = request_var('lang', '');
+$lang_code = request_var('lang', '');
 
-if (!$style_id || !$lang)
+if (!$style_id || !$lang_code)
 {
 	http_response_code(404);
 	die();
@@ -52,7 +52,7 @@ unset($dbpasswd);
 
 $config = $cache->obtain_config();
 
-$sql = 'SELECT s.style_id, c.theme_id, c.theme_dir, c.theme_mtime, i.*, t.template_dir
+$sql = 'SELECT s.style_id, c.theme_id, c.theme_dir, i.*, t.template_dir
 	FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
 	WHERE s.style_id = ' . $style_id . '
 		AND t.template_id = s.template_id
@@ -70,54 +70,36 @@ if (!$theme)
 
 $sql = 'SELECT lang_code
 	FROM ' . LANG_TABLE . "
-	WHERE lang_code = '" . $db->sql_escape($lang) . "'";
+	WHERE lang_code = '" . $db->sql_escape($lang_code) . "'";
 $result = $db->sql_query($sql);
-$lang = $db->sql_fetchfield('lang_code');
+$lang_code = $db->sql_fetchfield('lang_code');
 $db->sql_freeresult($result);
 
-if (!$lang)
+if (!$lang_code)
 {
 	http_response_code(404);
 	die();
 }
 
-$user_image_lang = (file_exists(PHPBB_ROOT_PATH . 'styles/' . $theme['imageset_dir'] . '/imageset/' . $lang) ? $lang : $config['default_lang_code']);
-
-$img_array = $cache->obtain_style_imageset($theme['imageset_dir'], $user_image_lang);
+if (!file_exists(PHPBB_ROOT_PATH . 'styles/' . $theme['imageset_dir'] . '/imageset/' . $lang_code))
+{
+	$lang_code = $config['default_lang_code'];
+}
 
 $theme_dir_path = PHPBB_ROOT_PATH . 'styles/' . $theme['theme_dir'] . '/theme/';
 $theme_css_path = $theme_dir_path . 'stylesheet.css';
+$theme_mtime = @filemtime($theme_css_path);
 
-if (!file_exists($theme_css_path))
+if (!$theme_mtime)
 {
 	http_response_code(503);
 	die();
 }
 
-$theme_mtime = filemtime($theme_css_path);
-$theme_data = file_get_contents($theme_css_path);
-
-$recache = ($theme_mtime > (int) $theme['theme_mtime']);
-
-if ($recache)
-{
-	$theme['theme_mtime'] = $theme_mtime;
-
-	$sql_ary = [
-		'theme_mtime'   => $theme['theme_mtime'],
-	];
-
-	$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-		WHERE theme_id = {$theme['theme_id']}";
-	$db->sql_query($sql);
-
-	$cache->destroy('sql', STYLES_THEME_TABLE);
-}
-
 header('Content-Type: text/css; charset=UTF-8');
 
 // Only set the expire time if the theme changed data is older than 5 minutes.
-if ($recache || $theme['theme_mtime'] > (time() - 300))
+if ($theme_mtime > (time() - 300))
 {
 	header('Cache-Control: no-cache');
 }
@@ -127,20 +109,23 @@ else
 	header('Cache-Control: public, max-age=' . $expire_time);
 }
 
+$theme_data = file_get_contents($theme_css_path);
+
 $replace = [
 	'{T_THEME_PATH}'            => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['theme_dir']) . '/theme',
 	'{T_TEMPLATE_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_dir']) . '/template',
 	'{T_IMAGESET_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset',
-	'{T_IMAGESET_LANG_PATH}'    => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $user_image_lang,
-	'{S_USER_LANG}'             => $lang,
+	'{T_IMAGESET_LANG_PATH}'    => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $lang_code,
+	'{S_USER_LANG}'             => $lang_code,
 ];
 
 $theme_data = str_replace(array_keys($replace), array_values($replace), $theme_data);
 
 $matches = [];
 preg_match_all('#\{IMG_([A-Za-z0-9_]*?)_(WIDTH|HEIGHT|SRC)\}#', $theme_data, $matches);
-
+$img_array = $cache->obtain_style_imageset($theme['imageset_dir'], $lang_code);
 $imgs = $find = $replace = [];
+
 if (isset($matches[0]) && sizeof($matches[0]))
 {
 	foreach ($matches[1] as $i => $img)

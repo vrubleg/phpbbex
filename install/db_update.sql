@@ -205,7 +205,6 @@ REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_enable', '1'
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_item_statistics', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('feed_overall', '0');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
-REPLACE INTO phpbb_config (config_name, config_value) VALUES ('cache_mtime_check', '1');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_poll_options', '25');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_smilies', '20');
 REPLACE INTO phpbb_config (config_name, config_value) VALUES ('max_post_urls', '20');

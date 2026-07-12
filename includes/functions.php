@@ -3728,7 +3728,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'T_IMAGES_PATH'         => "{$web_path}images/",
 		'T_SMILIES_PATH'        => $web_path . SMILIES_PATH . '/',
 		'T_TOPIC_ICONS_PATH'    => $web_path . TOPIC_ICONS_PATH . '/',
-		'T_STYLESHEET_LINK'     => (!$user->theme['parse_css_file']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_dir']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_code . '&amp;mtime=' . $user->theme['theme_mtime']),
+		'T_STYLESHEET_LINK'     => (!$user->theme['parse_css_file']) ? "{$web_path}styles/" . rawurlencode($user->theme['theme_dir']) . '/theme/stylesheet.css' : append_sid(PHPBB_ROOT_PATH . 'style.php', 'id=' . $user->theme['style_id'] . '&amp;lang=' . $user->lang_code . '&amp;mtime=' . (int) @filemtime(PHPBB_ROOT_PATH . 'styles/' . $user->theme['theme_dir'] . '/theme/stylesheet.css')),
 		'T_THEME_NAME'          => rawurlencode($user->theme['theme_dir']),
 		'T_TEMPLATE_NAME'       => rawurlencode($user->theme['template_dir']),
 		'T_SUPER_TEMPLATE_NAME' => rawurlencode((isset($user->theme['template_inherit_dir']) && $user->theme['template_inherit_dir']) ? $user->theme['template_inherit_dir'] : $user->theme['template_dir']),
