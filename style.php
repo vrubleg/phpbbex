@@ -14,12 +14,13 @@ if (!defined('PHPBB_INSTALLED'))
 	exit;
 }
 
-if (isset($_GET['mtime']))
+// Always respond that cached data with this particular mtime of stylesheet.css is not stale.
+if (($mtime = (int) ($_GET['mtime'] ?? 0)) && $mtime > 999999999 && $mtime == $_GET['mtime'])
 {
-	$mtime = intval($_GET['mtime']);
-	if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH'], '"') == $mtime)
+	// Reverse proxy appends "-gzip" to our etag, so we should match etag using strpos instead of strict equality.
+	if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && strpos(trim($_SERVER['HTTP_IF_NONE_MATCH'], '"'), (string) $mtime) === 0)
 	{
-		http_response_code(304);
+		http_response_code(304); // Not Modified
 		die();
 	}
 	header('Etag: "' . $mtime . '"');
