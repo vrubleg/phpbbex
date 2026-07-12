@@ -97,29 +97,6 @@ if (!file_exists($theme_css_path))
 $theme_mtime = filemtime($theme_css_path);
 $theme_data = file_get_contents($theme_css_path);
 
-// Match CSS imports (skipping commented out ones).
-$theme_data = preg_replace_callback(
-	'#/\*.*?\*/(*SKIP)(*FAIL)|@import\s+url\(\s*(["\'])([-_.a-z0-9]+)\1\s*\)\s*;#is',
-	function ($m) use ($theme_dir_path, &$theme_mtime)
-	{
-		$filename = $m[2];
-		$import_path = $theme_dir_path . $filename;
-		$content = '';
-		if (file_exists($import_path))
-		{
-			$theme_mtime = max($theme_mtime, filemtime($import_path));
-			$content = trim(file_get_contents($import_path));
-		}
-		if (defined('DEBUG'))
-		{
-			$content = "/* BEGIN @include {$filename} */ \n {$content} \n /* END @include {$filename} */ \n";
-		}
-		return $content;
-	},
-	$theme_data);
-
-$theme_data = str_replace('./', "styles/{$theme['theme_dir']}/theme/", $theme_data);
-
 $recache = ($theme_mtime > (int) $theme['theme_mtime']);
 
 if ($recache)
