@@ -96,92 +96,93 @@ if (!$theme_mtime)
 	die();
 }
 
-header('Content-Type: text/css; charset=UTF-8');
+$cache_key = "_style_{$theme['theme_dir']}_theme_{$lang_code}";
+$cache_data = $cache->get($cache_key) ?: [];
 
-// Only set the expire time if the theme changed data is older than 5 minutes.
-if ($theme_mtime > (time() - 300))
+if (($cache_data['mtime'] ?? 0) == $theme_mtime)
 {
-	header('Cache-Control: no-cache');
+	$theme_data = $cache_data['data'];
 }
 else
 {
-	$expire_time = 7*86400;
-	header('Cache-Control: public, max-age=' . $expire_time);
-}
+	$theme_data = file_get_contents($theme_css_path);
 
-$theme_data = file_get_contents($theme_css_path);
+	$replace = [
+		'{T_THEME_PATH}'            => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['theme_dir']) . '/theme',
+		'{T_TEMPLATE_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_dir']) . '/template',
+		'{T_IMAGESET_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset',
+		'{T_IMAGESET_LANG_PATH}'    => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $lang_code,
+		'{S_USER_LANG}'             => $lang_code,
+	];
 
-$replace = [
-	'{T_THEME_PATH}'            => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['theme_dir']) . '/theme',
-	'{T_TEMPLATE_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['template_dir']) . '/template',
-	'{T_IMAGESET_PATH}'         => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset',
-	'{T_IMAGESET_LANG_PATH}'    => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $lang_code,
-	'{S_USER_LANG}'             => $lang_code,
-];
+	$theme_data = str_replace(array_keys($replace), array_values($replace), $theme_data);
 
-$theme_data = str_replace(array_keys($replace), array_values($replace), $theme_data);
+	$matches = [];
+	preg_match_all('#\{IMG_([A-Za-z0-9_]*?)_(WIDTH|HEIGHT|SRC)\}#', $theme_data, $matches);
+	$img_array = $cache->obtain_style_imageset($theme['imageset_dir'], $lang_code);
+	$imgs = $find = $replace = [];
 
-$matches = [];
-preg_match_all('#\{IMG_([A-Za-z0-9_]*?)_(WIDTH|HEIGHT|SRC)\}#', $theme_data, $matches);
-$img_array = $cache->obtain_style_imageset($theme['imageset_dir'], $lang_code);
-$imgs = $find = $replace = [];
-
-if (isset($matches[0]) && sizeof($matches[0]))
-{
-	foreach ($matches[1] as $i => $img)
+	if (isset($matches[0]) && sizeof($matches[0]))
 	{
-		$img = strtolower($img);
-		$find[] = $matches[0][$i];
-
-		if (!isset($img_array[$img]))
+		foreach ($matches[1] as $i => $img)
 		{
-			$replace[] = '';
-			continue;
+			$img = strtolower($img);
+			$find[] = $matches[0][$i];
+
+			if (!isset($img_array[$img]))
+			{
+				$replace[] = '';
+				continue;
+			}
+
+			if (!isset($imgs[$img]))
+			{
+				$img_data = &$img_array[$img];
+				$imgsrc = ($img_data['image_lang'] ? $img_data['image_lang'] . '/' : '') . $img_data['image_filename'];
+				$imgs[$img] = [
+					'src'       => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $imgsrc,
+					'width'     => $img_data['image_width'],
+					'height'    => $img_data['image_height'],
+				];
+			}
+
+			switch ($matches[2][$i])
+			{
+				case 'SRC':
+					$replace[] = $imgs[$img]['src'];
+				break;
+
+				case 'WIDTH':
+					$replace[] = $imgs[$img]['width'];
+				break;
+
+				case 'HEIGHT':
+					$replace[] = $imgs[$img]['height'];
+				break;
+			}
 		}
 
-		if (!isset($imgs[$img]))
+		if (sizeof($find))
 		{
-			$img_data = &$img_array[$img];
-			$imgsrc = ($img_data['image_lang'] ? $img_data['image_lang'] . '/' : '') . $img_data['image_filename'];
-			$imgs[$img] = [
-				'src'       => PHPBB_ROOT_PATH . 'styles/' . rawurlencode($theme['imageset_dir']) . '/imageset/' . $imgsrc,
-				'width'     => $img_data['image_width'],
-				'height'    => $img_data['image_height'],
-			];
-		}
-
-		switch ($matches[2][$i])
-		{
-			case 'SRC':
-				$replace[] = $imgs[$img]['src'];
-			break;
-
-			case 'WIDTH':
-				$replace[] = $imgs[$img]['width'];
-			break;
-
-			case 'HEIGHT':
-				$replace[] = $imgs[$img]['height'];
-			break;
+			$theme_data = str_replace($find, $replace, $theme_data);
 		}
 	}
 
-	if (sizeof($find))
-	{
-		$theme_data = str_replace($find, $replace, $theme_data);
-	}
+	$cache->put($cache_key, [
+		'mtime' => $theme_mtime,
+		'data'  => $theme_data,
+	]);
 }
 
-// gzip_compression
+$cache->unload();
+$db->sql_close();
+
+header('Content-Type: text/css; charset=UTF-8');
+header('Cache-Control: public, max-age=' . (7*86400));
+
 if ($config['gzip_compress'] && @extension_loaded('zlib') && !headers_sent())
 {
 	ob_start('ob_gzhandler');
 }
 
 echo $theme_data;
-
-if (!empty($cache))
-{
-	$cache->unload();
-}
-$db->sql_close();
