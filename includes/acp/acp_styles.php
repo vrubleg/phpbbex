@@ -19,7 +19,7 @@ class acp_styles
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache, $config;
+		global $db, $user, $config;
 
 		$user->add_lang('acp/styles');
 
@@ -108,44 +108,7 @@ class acp_styles
 			break;
 
 			case 'template':
-
-				switch ($action)
-				{
-					// Clear compiled template cache.
-					case 'refresh':
-
-						$sql = 'SELECT *
-							FROM ' . STYLES_TEMPLATE_TABLE . "
-							WHERE template_id = {$style_id}";
-						$result = $db->sql_query($sql);
-						$template_row = $db->sql_fetchrow($result);
-						$db->sql_freeresult($result);
-
-						if (!$template_row)
-						{
-							trigger_error($user->lang['NO_TEMPLATE'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
-						if (confirm_box(true))
-						{
-							$this->clear_template_cache($template_row);
-
-							trigger_error($user->lang['TEMPLATE_CACHE_CLEARED'] . adm_back_link($this->u_action));
-						}
-						else
-						{
-							confirm_box(false, $user->lang['CONFIRM_TEMPLATE_CLEAR_CACHE'], build_hidden_fields([
-								'i'         => $id,
-								'mode'      => $mode,
-								'action'    => $action,
-								'id'        => $style_id
-							]));
-						}
-
-					break;
-				}
-
-				$this->frontend('template', ['refresh', 'delete']);
+				$this->frontend('template', ['delete']);
 			break;
 
 			case 'theme':
@@ -153,54 +116,7 @@ class acp_styles
 			break;
 
 			case 'imageset':
-
-				switch ($action)
-				{
-					case 'refresh':
-
-						$sql = 'SELECT *
-							FROM ' . STYLES_IMAGESET_TABLE . "
-							WHERE imageset_id = {$style_id}";
-						$result = $db->sql_query($sql);
-						$imageset_row = $db->sql_fetchrow($result);
-						$db->sql_freeresult($result);
-
-						if (!$imageset_row)
-						{
-							trigger_error($user->lang['NO_IMAGESET'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
-						if (confirm_box(true))
-						{
-							$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_cfg");
-
-							$sql = 'SELECT lang_code
-								FROM ' . LANG_TABLE;
-							$result = $db->sql_query($sql);
-
-							while ($row = $db->sql_fetchrow($result))
-							{
-								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_code']}");
-								$cache->destroy("_style_{$imageset_row['imageset_dir']}_imageset_{$row['lang_code']}_cfg");
-							}
-							$db->sql_freeresult($result);
-
-							add_log('admin', 'LOG_IMAGESET_REFRESHED', $imageset_row['imageset_dir']);
-							trigger_error($user->lang['IMAGESET_REFRESHED'] . adm_back_link($this->u_action));
-						}
-						else
-						{
-							confirm_box(false, $user->lang['CONFIRM_IMAGESET_REFRESH'], build_hidden_fields([
-								'i'         => $id,
-								'mode'      => $mode,
-								'action'    => $action,
-								'id'        => $style_id
-							]));
-						}
-					break;
-				}
-
-				$this->frontend('imageset', ['refresh', 'delete']);
+				$this->frontend('imageset', ['delete']);
 			break;
 		}
 	}
@@ -880,80 +796,6 @@ class acp_styles
 			'NAME'          => $style_row['style_name'],
 			'COPYRIGHT'     => $copyright,
 		]);
-	}
-
-	/**
-	* Returns an array containing all template filenames for one template that are currently cached.
-	*
-	* @param string $template_dir contains the name of the template's folder in /styles/
-	*
-	* @return array of filenames that exist in /styles/$template_dir/template/ (without extension!)
-	*/
-	function template_cache_filelist($template_dir)
-	{
-		global $user;
-
-		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_dir);
-
-		if (!($dp = @opendir(PHPBB_ROOT_PATH . 'cache')))
-		{
-			trigger_error($user->lang['TEMPLATE_ERR_CACHE_READ'] . adm_back_link($this->u_action), E_USER_WARNING);
-		}
-
-		$file_ary = [];
-		while ($file = readdir($dp))
-		{
-			if ($file[0] == '.')
-			{
-				continue;
-			}
-
-			if (is_file(PHPBB_ROOT_PATH . 'cache/' . $file) && (strpos($file, $cache_prefix) === 0))
-			{
-				$file_ary[] = str_replace('.', '/', preg_replace('#^' . preg_quote($cache_prefix, '#') . '_(.*?)\.html\.php' . '$#i', '\1', $file));
-			}
-		}
-		closedir($dp);
-
-		return $file_ary;
-	}
-
-	/**
-	* Destroys cached versions of template files
-	*
-	* @param array $template_row contains the template's row in the STYLES_TEMPLATE_TABLE database table
-	* @param mixed $file_ary is optional and may contain an array of template file names which should be refreshed in the cache.
-	*   The file names should be the original template file names and not the cache file names.
-	*/
-	function clear_template_cache($template_row, $file_ary = false)
-	{
-		global $user;
-
-		$cache_prefix = 'tpl_' . str_replace('_', '-', $template_row['template_dir']);
-
-		if (!$file_ary || !is_array($file_ary))
-		{
-			$file_ary = $this->template_cache_filelist($template_row['template_dir']);
-			$log_file_list = $user->lang['ALL_FILES'];
-		}
-		else
-		{
-			$log_file_list = implode(', ', $file_ary);
-		}
-
-		foreach ($file_ary as $file)
-		{
-			$file = str_replace('/', '.', $file);
-
-			$file = PHPBB_ROOT_PATH . "cache/{$cache_prefix}_{$file}.html.php";
-			if (file_exists($file) && is_file($file))
-			{
-				@unlink($file);
-			}
-		}
-		unset($file_ary);
-
-		add_log('admin', 'LOG_TEMPLATE_CACHE_CLEARED', $template_row['template_dir'], $log_file_list);
 	}
 
 	/**

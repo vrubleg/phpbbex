@@ -24,8 +24,6 @@ $lang = array_merge($lang, [
 	'ADD_STYLE_EXPLAIN'     => 'Here you can create a new style. Depending on your server configuration and file permissions you may have additional options. For example you may be able to base this style on an existing one. You may also be able to upload or import (from the store directory) a style archive. If you upload or import an archive the style name will be determined automatically.',
 
 
-	'CONFIRM_IMAGESET_REFRESH'      => 'Are you sure you wish to refresh cached imageset data?',
-	'CONFIRM_TEMPLATE_CLEAR_CACHE'  => 'Are you sure you wish to clear all cached versions of your template files?',
 	'COPYRIGHT'                     => 'Copyright',
 	'CREATE_STYLE'                  => 'Create new style',
 
@@ -54,7 +52,6 @@ $lang = array_merge($lang, [
 	'IMAGESET_ERR_STYLE_NAME'   => 'You must supply a directory for this imageset.',
 	'IMAGESET_ERR_VERSION'      => 'The imageset version must match phpBBex %1$s. Found version: %2$s.',
 	'IMAGESET_NAME'             => 'Imageset directory',
-	'IMAGESET_REFRESHED'        => 'Imageset refreshed successfully.',
 
 
 	'INACTIVE_STYLES'           => 'Inactive styles',
@@ -92,7 +89,6 @@ $lang = array_merge($lang, [
 	'ONLY_THEME'            => 'This is the only remaining theme, you cannot delete it.',
 	'OPTIONAL_BASIS'        => 'Optional basis',
 
-	'REFRESH'                   => 'Refresh',
 	'REPLACE_IMAGESET'          => 'Replace imageset with',
 	'REPLACE_IMAGESET_EXPLAIN'  => 'This imageset will replace the one you are deleting in any styles that use it.',
 	'REPLACE_STYLE'             => 'Replace style with',
@@ -126,11 +122,9 @@ $lang = array_merge($lang, [
 	'STYLE_USED_BY'             => 'Used by',
 
 	'TEMPLATE_ADDED'            => 'Template set added and stored on filesystem.',
-	'TEMPLATE_CACHE_CLEARED'    => 'Template cache cleared successfully.',
 	'TEMPLATE_DELETED'          => 'Template set deleted successfully.',
 	'TEMPLATE_DELETE_DEPENDENT' => 'The template set cannot be deleted as there are one or more other template sets inheriting from it:',
 	'TEMPLATE_DELETED_FS'       => 'Template set removed from database but some files may remain on the filesystem.',
-	'TEMPLATE_ERR_CACHE_READ'   => 'The cache directory used to store cached versions of template files could not be opened.',
 	'TEMPLATE_ERR_NAME_EXIST'   => 'A template set with that directory already exists.',
 	'TEMPLATE_ERR_NAME_LONG'    => 'The template directory can be no longer than 100 characters.',
 	'TEMPLATE_ERR_NOT_TEMPLATE' => 'The archive you specified does not contain a valid template set.',
