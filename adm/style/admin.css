@@ -20,7 +20,7 @@ body, div, p, th, td, li, dd {
 
 html {
 	color: #536482;
-	background: #DBD7D1;
+	background: #dbd7d1;
 	/* Always show a scrollbar for short pages - stops the jump when the scrollbar appears. non-ie browsers */
 	height: 100%;
 	overflow-y: scroll;
@@ -35,7 +35,7 @@ body {
 	/* Text-Sizing with ems: http://www.clagnut.com/blog/348/ */
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	color: #536482;
-	background: #DBD7D1;
+	background: #dbd7d1;
 	font-size: 62.5%; /* This sets the default font size to be equivalent to 10px */
 	margin: 10px 15px;
 }
@@ -102,12 +102,12 @@ a, a:visited {
 }
 
 a:hover {
-	color: #BC2A4D;
+	color: #bc2a4d;
 	text-decoration: underline;
 }
 
 a:active {
-	color: #368AD2;
+	color: #368ad2;
 	text-decoration: none;
 }
 
@@ -236,18 +236,18 @@ li {
 }
 
 #tabs a:hover span {
-	color: #BC2A4D;
+	color: #bc2a4d;
 }
 
 #tabs #activetab a {
 	background-position: 0 0;
-	border-bottom: 1px solid #DCDEE2;
+	border-bottom: 1px solid #dcdee2;
 }
 
 #tabs #activetab a span {
 	background-position: 100% 0;
 	padding-bottom: 5px;
-	color: #23649F;
+	color: #23649f;
 }
 
 #tabs a:hover {
@@ -269,12 +269,12 @@ li {
 	margin: 4px 0;
 	padding: 3px 1px;
 	min-width: 550px;
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 	border: 1px #999999 solid;
 }
 
 .panel {
-	background: #F3F3F3 url("../images/innerbox_bg.gif") repeat-x top;
+	background: #f3f3f3 url("../images/innerbox_bg.gif") repeat-x top;
 	padding: 0;
 }
 
@@ -319,7 +319,7 @@ span.corners-bottom span {
 	width: 20%;
 	font-size: 1.00em;
 	padding: 0;
-	border-right: 1px solid #CCCFD3;
+	border-right: 1px solid #cccfd3;
 }
 
 #menu p {
@@ -348,35 +348,35 @@ span.corners-bottom span {
 	margin: 1px 0;
 	text-decoration: none;
 	font-weight: normal;
-	color: #138ECB;
+	color: #138ecb;
 }
 
 #menu li a:hover, #menu li a:hover span {
 	text-decoration: none;
-	background-color: #FFFFFF;
-	color: #BC2A4D;
+	background-color: #ffffff;
+	color: #bc2a4d;
 }
 
 #menu li a:active, #menu li a:active span {
-	color: #F632A0;
+	color: #f632a0;
 }
 
 #menu li#activemenu a span {
 	text-decoration: none;
 	font-weight: bold;
-	color: #1180B7;
+	color: #1180b7;
 	background: transparent url("../images/arrow_right.gif") 0% 50% no-repeat;
 }
 
 #menu li#activemenu a:hover span, #menu li#activemenu span {
 	text-decoration: none;
 	font-weight: bold;
-	color: #BC2A4D;
-	background: #FFFFFF url("../images/arrow_right.gif") 1% 50% no-repeat;
+	color: #bc2a4d;
+	background: #ffffff url("../images/arrow_right.gif") 1% 50% no-repeat;
 }
 
 #menu li a:active, #menu li a:active span, #menu li#activemenu a:active span {
-	color: #F632A0;
+	color: #f632a0;
 }
 
 #menu li span.completed {
@@ -390,7 +390,7 @@ span.corners-bottom span {
 	display: block;
 	font-weight: bold;
 	color: #115098;
-	border-bottom: 1px solid #327AA5;
+	border-bottom: 1px solid #327aa5;
 	padding: 4px 0 2px;
 	margin-top: 15px;
 	text-transform: uppercase;
@@ -402,17 +402,17 @@ span.corners-bottom span {
 
 table {
 	width: 100%;
-	border: 1px solid #CCCFD3;
-	background-color: #FFFFFF;
+	border: 1px solid #cccfd3;
+	background-color: #ffffff;
 	padding: 1px;
 }
 
 th {
 	padding: 3px 4px;
-	color: #FFFFFF;
-	background: #70AED3 url("../images/gradient2b.gif") bottom left repeat-x;
-	border-top: 1px solid #6DACD2;
-	border-bottom: 1px solid #327AA5;
+	color: #ffffff;
+	background: #70aed3 url("../images/gradient2b.gif") bottom left repeat-x;
+	border-top: 1px solid #6dacd2;
+	border-bottom: 1px solid #327aa5;
 	text-align: left;
 	font-size: 0.75em;
 	text-transform: uppercase;
@@ -499,15 +499,15 @@ td.name {
 	font-weight: normal;
 }
 
-.row1 { background-color: #F9F9F9; }
-.row2 { background-color: #DCEBFE; }
-.row3 { background-color: #DBDFE2; }
-.row4 { background-color: #E4E8EB; }
-.col1 { background-color: #DCEBFE; }
-.col2 { background-color: #F9F9F9; }
+.row1 { background-color: #f9f9f9; }
+.row2 { background-color: #dcebfe; }
+.row3 { background-color: #dbdfe2; }
+.row4 { background-color: #e4e8eb; }
+.col1 { background-color: #dcebfe; }
+.col2 { background-color: #f9f9f9; }
 
 .spacer {
-	background-color: #DBDFE2;
+	background-color: #dbdfe2;
 	height: 1px;
 	line-height: 1px;
 }
@@ -521,11 +521,11 @@ button, input, textarea, select {
 fieldset {
 	margin: 15px 0;
 	padding: 10px;
-	border-top: 1px solid #D7D7D7;
-	border-right: 1px solid #CCCCCC;
-	border-bottom: 1px solid #CCCCCC;
-	border-left: 1px solid #D7D7D7;
-	background-color: #FFFFFF;
+	border-top: 1px solid #d7d7d7;
+	border-right: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
+	border-left: 1px solid #d7d7d7;
+	background-color: #ffffff;
 	position: relative;
 }
 
@@ -555,11 +555,11 @@ input, textarea {
 	vertical-align: middle;
 	padding: 2px;
 	color: #111111;
-	border-left: 1px solid #AFAEAA;
-	border-top: 1px solid #AFAEAA;
-	border-right: 1px solid #D5D5C8;
-	border-bottom: 1px solid #D5D5C8;
-	background-color: #E3DFD8;
+	border-left: 1px solid #afaeaa;
+	border-top: 1px solid #afaeaa;
+	border-right: 1px solid #d5d5c8;
+	border-bottom: 1px solid #d5d5c8;
+	background-color: #e3dfd8;
 }
 
 input[type=button], input[type=submit], input[type=reset], input[type=radio], input[type=checkbox] {
@@ -567,11 +567,11 @@ input[type=button], input[type=submit], input[type=reset], input[type=radio], in
 }
 
 input:hover, textarea:hover {
-	border-left: 1px solid #AFAEAA;
-	border-top: 1px solid #AFAEAA;
-	border-right: 1px solid #AFAEAA;
-	border-bottom: 1px solid #AFAEAA;
-	background-color: #E9E9E2;
+	border-left: 1px solid #afaeaa;
+	border-top: 1px solid #afaeaa;
+	border-right: 1px solid #afaeaa;
+	border-bottom: 1px solid #afaeaa;
+	background-color: #e9e9e2;
 }
 
 input.langvalue, textarea.langvalue {
@@ -715,14 +715,14 @@ dt label {
 	font-size: 1.00em;
 	text-align: left;
 	font-weight: bold;
-	color: #4A5A73;
+	color: #4a5a73;
 }
 
 dd label {
 	font-size: 1.00em;
 	white-space: nowrap;
 	margin: 0 10px 0 0;
-	color: #4A5A73;
+	color: #4a5a73;
 }
 
 html>body dd label input { vertical-align: text-bottom; } /* Tweak for Moz to align checkboxes/radio buttons nicely */
@@ -755,7 +755,7 @@ fieldset dt {
 	width: 45%;
 	text-align: left;
 	border: none;
-	border-right: 1px solid #CCCCCC;
+	border-right: 1px solid #cccccc;
 	padding-top: 3px;
 }
 
@@ -763,7 +763,7 @@ fieldset dd {
 	margin: 0 0 0 45%;
 	padding: 0 0 0 5px;
 	border: none;
-	border-left: 1px solid #CCCCCC;
+	border-left: 1px solid #cccccc;
 	vertical-align: top;
 	font-size: 1.00em;
 }
@@ -787,13 +787,13 @@ fieldset dl:hover dt label {
 }
 
 fieldset dl dd label:hover {
-	color: #BC2A4D;
+	color: #bc2a4d;
 }
 
 input:focus, textarea:focus {
-	border: 1px solid #BC2A4D;
-	background-color: #E9E9E2;
-	color: #BC2A4D;
+	border: 1px solid #bc2a4d;
+	background-color: #e9e9e2;
+	color: #bc2a4d;
 	outline-style: none;
 }
 
@@ -841,7 +841,7 @@ input.medium { width: 50%;}
 input.narrow { width: 25%;}
 input.tiny { width: 10%;}
 input.autowidth { width: auto !important;}
-.box2 .inputbox { background-color: #E9E9E9;}
+.box2 .inputbox { background-color: #e9e9e9;}
 
 /* Form button styles
 ---------------------------------------- */
@@ -852,7 +852,7 @@ a.button2, input.button2 {
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	color: #000;
 	font-size: 0.85em;
-	background: #EFEFEF url("../images/bg_button.gif");
+	background: #efefef url("../images/bg_button.gif");
 	cursor: pointer;
 }
 
@@ -885,8 +885,8 @@ a.button2, a.button2:visited, a.button2:active {
 /* Hover states */
 a.button1:hover, input.button1:hover,
 a.button2:hover, input.button2:hover {
-	border: 1px solid #BC2A4D;
-	color: #BC2A4D;
+	border: 1px solid #bc2a4d;
+	color: #bc2a4d;
 }
 
 input.disabled {
@@ -930,26 +930,26 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 	margin: 0 2px;
 	font-weight: normal;
 	font-size: 0.85em;
-	color: #FFFFFF;
-	background: #4692BF;
-	border: 1px solid #4692BF;
+	color: #ffffff;
+	background: #4692bf;
+	border: 1px solid #4692bf;
 }
 
 .pagination span a, .pagination span a, .pagination span a:visited, .pagination span a:active {
 	font-weight: normal;
 	font-size: 0.85em;
 	text-decoration: none;
-	color: #5C758C;
+	color: #5c758c;
 	margin: 0 2px;
 	padding: 0 2px;
-	background: #ECEDEE;
-	border: 1px solid #B4BAC0;
+	background: #ecedee;
+	border: 1px solid #b4bac0;
 }
 
 .pagination span a:hover {
-	border-color: #368AD2;
-	background: #368AD2;
-	color: #FFFFFF;
+	border-color: #368ad2;
+	background: #368ad2;
+	color: #ffffff;
 	text-decoration: none;
 }
 
@@ -963,7 +963,7 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 .successbox, .errorbox {
 	padding: 8px;
 	margin: 10px 0;
-	color: #FFFFFF;
+	color: #ffffff;
 	text-align: center;
 }
 
@@ -972,7 +972,7 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 }
 
 .error {
-	color: #BC2A4D;
+	color: #bc2a4d;
 }
 
 .successbox {
@@ -980,37 +980,37 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 }
 
 .errorbox {
-	background-color: #BC2A4D;
+	background-color: #bc2a4d;
 }
 
 .successbox h3, .errorbox h3 {
-	color: #FFFFFF;
+	color: #ffffff;
 	margin: 0 0 0.5em;
 	font-size: 1.10em;
 	font-family: "Lucida Grande",Verdana,Helvetica,Arial,sans-serif;
 }
 
 .successbox p, .errorbox p {
-	color: #FFFFFF;
+	color: #ffffff;
 	font-size: 0.85em;
 	margin-bottom: 0;
 }
 
 .errorbox a, .errorbox a:active, .errorbox a:visited,
 .successbox a, .successbox a:active, .successbox a:visited {
-	color: #DBD7D1;
+	color: #dbd7d1;
 	text-decoration: underline;
 	font-weight: bold;
 }
 
 .errorbox a:hover, .successbox a:hover {
-	color: #FFFFFF;
+	color: #ffffff;
 	text-decoration: none;
 	font-weight: bold;
 }
 
 .notice {
-	background-color: #62A5CC;
+	background-color: #62a5cc;
 }
 
 /* Special cases for the error page */
@@ -1019,13 +1019,13 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 }
 
 #errorpage #content h1 {
-	color: #DF075C;
+	color: #df075c;
 }
 
 #errorpage #content h2 {
 	margin-top: 20px;
 	margin-bottom: 5px;
-	border-bottom: 1px solid #CCCCCC;
+	border-bottom: 1px solid #cccccc;
 	padding-bottom: 5px;
 	color: #333333;
 }
@@ -1035,11 +1035,11 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 	width: 200px;
 	color: #000;
 	text-align: center;
-	border: 1px solid #AAA;
+	border: 1px solid #aaa;
 }
 
 .tooltip span.top {
-	background: #EFEFEF;
+	background: #efefef;
 	font-weight: bold;
 	padding: 2px;
 }
@@ -1047,7 +1047,7 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 .tooltip span.bottom {
 	padding: 5px;
 	color: #000000;
-	background: #FFFFFF;
+	background: #ffffff;
 }
 
 /*
@@ -1096,15 +1096,15 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 }
 
 .syntaxbg {
-	color: #FFFFFF;
+	color: #ffffff;
 }
 
 .syntaxcomment {
-	color: #FF8000;
+	color: #ff8000;
 }
 
 .syntaxdefault {
-	color: #0000BB;
+	color: #0000bb;
 }
 
 .syntaxhtml {
@@ -1116,7 +1116,7 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 }
 
 .syntaxstring {
-	color: #DD0000;
+	color: #dd0000;
 }
 
 /* Permission interface
@@ -1206,7 +1206,7 @@ fieldset.permissions .padding {
 }
 
 .permissions-category a:hover span.tabbg {
-	color: #DD6900;
+	color: #dd6900;
 }
 
 .permissions-category .activetab a {
@@ -1250,7 +1250,7 @@ fieldset.permissions .padding {
 }
 
 .permissions-category a:hover span.colour {
-	border-color: #DD6900;
+	border-color: #dd6900;
 }
 
 .permissions-category .activetab a:hover span.colour {
@@ -1260,27 +1260,27 @@ fieldset.permissions .padding {
 /* Permission preset colours */
 .permissions-preset-yes span.colour,
 .yes {
-	background-color: #86F786;
+	background-color: #86f786;
 }
 
 .permissions-preset-custom span.colour {
-	background-color: #B2BBDD;
+	background-color: #b2bbdd;
 }
 
 .permissions-preset-never span.colour {
-	background-color: #DD0000;
+	background-color: #dd0000;
 }
 
 .permissions-preset-no span.colour,
 .never {
-	background-color: #EFB0B2;
+	background-color: #efb0b2;
 }
 
 /* Permission panel
 ---------------------------------------- */
 .permissions-panel {
 	float: left;
-	background-color: #CADCEB;
+	background-color: #cadceb;
 	width: 100%;
 }
 
@@ -1368,34 +1368,34 @@ fieldset.permissions .padding {
 
 .permissions-panel th.row3 {
 	background-image: none;
-	background-color: #D1D7DC;
+	background-color: #d1d7dc;
 	color: #536482;
 	border: none;
 }
 
 .permissions-panel th.row4 {
 	background-image: none;
-	background-color: #E4E8EB;
+	background-color: #e4e8eb;
 	color: #536482;
 	border: none;
 }
 
 .permissions-panel th a, .permissions-panel th a:hover, .permissions-panel th a:visited {
 	display: block;
-	color: #FFFFFF;
+	color: #ffffff;
 	text-decoration: underline;
 }
 
 .permissions-panel td.permissions-yes label:hover {
-	background-color: #86F786;
+	background-color: #86f786;
 }
 
 .permissions-panel td.permissions-no label:hover {
-	background-color: #EFB0B2;
+	background-color: #efb0b2;
 }
 
 .permissions-panel td.permissions-never label:hover {
-	background-color: #DD0000;
+	background-color: #dd0000;
 }
 
 .permissions-panel td {

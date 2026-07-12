@@ -20,26 +20,26 @@
 ----------------------------------------*/
 /* Quote block */
 blockquote {
-	border: 1px solid #DBDBCE;
+	border: 1px solid #dbdbce;
 	font-size: 0.95em;
 	margin: 0.5em 1px 0 25px;
 	overflow: hidden;
 	padding: 5px;
-	background-color: #EBEADD;
+	background-color: #ebeadd;
 	background-image: url("{T_THEME_PATH}/images/quote.gif");
-	border-color:#DBDBCE;
+	border-color:#dbdbce;
 }
 
 blockquote blockquote {
 	/* Nested quotes */
-	background-color: #EFEED9;
+	background-color: #efeed9;
 	font-size: 1em;
 	margin: 0.5em 1px 0 15px;
 }
 
 blockquote blockquote blockquote {
 	/* Nested quotes */
-	background-color: #EBEADD;
+	background-color: #ebeadd;
 }
 
 blockquote cite {
@@ -62,14 +62,14 @@ blockquote.uncited {
 /* Code block */
 dl.codebox {
 	padding: 3px;
-	background-color: #FFFFFF;
-	border: 1px solid #C9D2D8;
+	background-color: #ffffff;
+	border: 1px solid #c9d2d8;
 	font-size: 1em;
 }
 
 dl.codebox dt {
 	text-transform: uppercase;
-	border-bottom: 1px solid #CCCCCC;
+	border-bottom: 1px solid #cccccc;
 	margin-bottom: 3px;
 	font-size: 0.8em;
 	font-weight: bold;
@@ -91,7 +91,7 @@ dl.codebox code {
 	padding-top: 5px;
 	font: 0.9em Monaco, "Andale Mono","Courier New", Courier, mono;
 	line-height: 1.3em;
-	color: #2E8B57;
+	color: #2e8b57;
 	margin: 2px 0;
 }
 
@@ -103,7 +103,7 @@ dl.codebox code {
 	padding: 10px;
 	min-width: 300px;
 	list-style: none;
-	background-color: #ECF3F7;
+	background-color: #ecf3f7;
 }
 
 #url-list ul ul {
@@ -113,17 +113,17 @@ dl.codebox code {
 	list-style: square;
 }
 
-.syntaxbg       { color: #FFFFFF; }
-.syntaxcomment  { color: #FF8000; }
-.syntaxdefault  { color: #0000BB; }
+.syntaxbg       { color: #ffffff; }
+.syntaxcomment  { color: #ff8000; }
+.syntaxdefault  { color: #0000bb; }
 .syntaxhtml     { color: #000000; }
 .syntaxkeyword  { color: #007700; }
-.syntaxstring   { color: #DD0000; }
+.syntaxstring   { color: #dd0000; }
 
 /* Database cleaner
 ----------------------------------------*/
-.missing { color: #FFFFFF; background-color: #BC2A4D; }
-.extra { color: #000000; background-color: #F0F0F0; }
+.missing { color: #ffffff; background-color: #bc2a4d; }
+.extra { color: #000000; background-color: #f0f0f0; }
 
 /* SQL Query tool
 ----------------------------------------*/

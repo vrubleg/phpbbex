@@ -31,7 +31,7 @@ select {
 	vertical-align: middle;
 	border: 1px solid #666666;
 	padding: 1px;
-	background-color: #FAFAFA;
+	background-color: #fafafa;
 	font-size: 1em;
 	color: #000;
 }
@@ -49,7 +49,7 @@ option.disabled-option {
 }
 
 option.sep {
-	color: #1198D9;
+	color: #1198d9;
 }
 
 textarea {
@@ -172,7 +172,7 @@ fieldset.quick-login input.inputbox {
 	width: 15%;
 	vertical-align: middle;
 	margin-right: 5px;
-	background-color: #F2F3F3;
+	background-color: #f2f3f3;
 }
 
 fieldset.quick-login label {
@@ -295,20 +295,20 @@ fieldset.submit-buttons input {
 /* Input field styles
 ---------------------------------------- */
 .inputbox {
-	background-color: #FFFFFF;
-	border: 1px solid #B4BAC0;
+	background-color: #ffffff;
+	border: 1px solid #b4bac0;
 	color: #333333;
 	padding: 2px;
 	cursor: text;
 }
 
 .inputbox:hover {
-	border: 1px solid #11A3EA;
+	border: 1px solid #11a3ea;
 }
 
 .inputbox:focus {
-	border: 1px solid #11A3EA;
-	color: #0F4987;
+	border: 1px solid #11a3ea;
+	color: #0f4987;
 	outline-style: none;
 }
 
@@ -365,8 +365,8 @@ a.button1, a.button1:visited, a.button1:active, a.button2, a.button2:visited, a.
 
 /* Hover states */
 a.button1:hover, input.button1:hover, a.button2:hover, input.button2:hover, button:hover {
-	border: 1px solid #BC2A4D;
-	color: #BC2A4D;
+	border: 1px solid #bc2a4d;
+	color: #bc2a4d;
 }
 
 /* Sending animation */

@@ -33,7 +33,7 @@
 /* Search box
 --------------------------------------------- */
 #search-box {
-	color: #FFFFFF;
+	color: #ffffff;
 	position: relative;
 	margin: 2px 10px 2px 0px;
 	display: block;
@@ -106,7 +106,7 @@ a.icon-unlock { background-position: 0 -208px; }
 p.header-path
 {
 	font-weight: bold;
-	border-top: 1px solid #CCCCCC;
+	border-top: 1px solid #cccccc;
 	padding-top: 5px;
 	margin-top: 0;
 	margin-bottom: 1.3em;

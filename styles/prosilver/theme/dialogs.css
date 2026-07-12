@@ -4,8 +4,8 @@
 
 .dialog > .inner {
 	padding: 5px 10px;
-	background-color: #ECF1F3;
-	color: #28313F;
+	background-color: #ecf1f3;
+	color: #28313f;
 	margin: 10px;
 }
 
@@ -26,7 +26,7 @@ body.style-rounded-corners .dialog > .inner {
 .dialog h2 {
 	font-weight: normal;
 	color: #989898;
-	border-bottom: 1px solid #CCCCCC;
+	border-bottom: 1px solid #cccccc;
 	font-size: 1.6em;
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
@@ -35,7 +35,7 @@ body.style-rounded-corners .dialog > .inner {
 
 .dialog h2 {
 	color: #115098;
-	border-bottom-color:  #CCCCCC;
+	border-bottom-color:  #cccccc;
 }
 
 .dialog fieldset dt {

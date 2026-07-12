@@ -3,8 +3,8 @@
 
 a { cursor: pointer; color: #105289; text-decoration: none; }
 a:visited { color: #105289; text-decoration: none; }
-a:hover { color: #D31141; text-decoration: underline; }
-a:active { color: #368AD2; text-decoration: none; }
+a:hover { color: #d31141; text-decoration: underline; }
+a:active { color: #368ad2; text-decoration: none; }
 
 /* Coloured usernames */
 .username-coloured {
@@ -19,22 +19,22 @@ a:active { color: #368AD2; text-decoration: none; }
 
 /* Links on gradient backgrounds */
 #search-box a, .navbg a, .forumbg .header a, .forabg .header a, th a {
-	color: #FFFFFF;
+	color: #ffffff;
 	text-decoration: none;
 }
 
 #search-box a:visited, .navbg a:visited, .forumbg .header a:visited, .forabg .header a:visited, th a:visited {
-	color: #FFFFFF;
+	color: #ffffff;
 	text-decoration: none;
 }
 
 #search-box a:hover, .navbg a:hover, .forumbg .header a:hover, .forabg .header a:hover, th a:hover {
-	color: #A8D8FF;
+	color: #a8d8ff;
 	text-decoration: underline;
 }
 
 #search-box a:active, .navbg a:active, .forumbg .header a:active, .forabg .header a:active, th a:active {
-	color: #C8E6FF;
+	color: #c8e6ff;
 	text-decoration: none;
 }
 
@@ -50,7 +50,7 @@ a.forumtitle {
 /* a.forumtitle:visited { color: #105289; } */
 
 a.forumtitle:hover {
-	color: #BC2A4D;
+	color: #bc2a4d;
 	text-decoration: underline;
 }
 
@@ -66,10 +66,10 @@ a.topictitle {
 	text-decoration: none;
 }
 
-/* a.topictitle:visited { color: #368AD2; } */
+/* a.topictitle:visited { color: #368ad2; } */
 
 a.topictitle:hover {
-	color: #BC2A4D;
+	color: #bc2a4d;
 	text-decoration: underline;
 }
 
@@ -80,21 +80,21 @@ a.topictitle:active {
 /* Post body links */
 .postlink {
 	text-decoration: underline !important;
-	color: #368AD2;
+	color: #368ad2;
 }
 
 .postlink:visited {
-	color: #5D8FBD;
+	color: #5d8fbd;
 }
 
 .postlink:active {
-	color: #368AD2;
+	color: #368ad2;
 }
 
 .postlink:hover {
-	background-color: #D0E4F6;
+	background-color: #d0e4f6;
 	text-decoration: underline !important;
-	color: #0D4473;
+	color: #0d4473;
 }
 
 .signature a, .signature a:visited, .signature a:hover, .signature a:active {
@@ -112,7 +112,7 @@ a.topictitle:active {
 
 .postprofile a:hover, .postprofile dt.author a:hover {
 	text-decoration: underline;
-	color: #D31141;
+	color: #d31141;
 }
 
 /* CSS spec requires a:link, a:visited, a:hover and a:active rules to be specified in this order. */
@@ -132,7 +132,7 @@ a.topictitle:active {
 }
 
 .search .postprofile a:hover {
-	color: #D31141;
+	color: #d31141;
 	text-decoration: underline;
 }
 

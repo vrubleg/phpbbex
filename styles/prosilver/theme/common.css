@@ -22,21 +22,21 @@ body {
 	/* Text-Sizing with ems: http://www.clagnut.com/blog/348/ */
 	font-family: Verdana, Helvetica, Arial, sans-serif;
 	color: #536482;
-	background-color: #EEEEE7;
+	background-color: #eeeee7;
 	/*font-size: 62.5%; This sets the default font size to be equivalent to 10px */
 	font-size: 10px;
 	height: 100%;
 }
 
 body.simple-body {
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 }
 
 h1 {
 	/* Forum name */
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	margin-right: 200px;
-	color: #FFFFFF;
+	color: #ffffff;
 	margin-top: 15px;
 	font-weight: bold;
 	font-size: 2em;
@@ -46,7 +46,7 @@ h2 {
 	/* Forum header titles */
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-weight: normal;
-	color: #28313F;
+	color: #28313f;
 	font-size: 2em;
 	line-height: 1.3em;
 	margin: 0.5em 0 0.2em 0;
@@ -57,7 +57,7 @@ h3 {
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	text-transform: uppercase;
-	border-bottom: 1px solid #CCCCCC;
+	border-bottom: 1px solid #cccccc;
 	margin-bottom: 3px;
 	padding-bottom: 2px;
 	font-size: 1.05em;
@@ -95,8 +95,8 @@ img {
 
 hr {
 	/* Also see tweaks.css */
-	border: 0 none #FFFFFF;
-	border-top: 1px solid #CCCCCC;
+	border: 0 none #ffffff;
+	border-top: 1px solid #cccccc;
 	height: 1px;
 	margin: 5px 0;
 	display: block;
@@ -104,7 +104,7 @@ hr {
 }
 
 hr.dashed {
-	border-top: 1px dashed #CCCCCC;
+	border-top: 1px dashed #cccccc;
 	margin: 10px 0;
 }
 
@@ -141,8 +141,8 @@ hr.divider {
 	padding: 0 20px;
 	min-height: 100%;
 	margin: 0 auto;
-	background-color: #FFFFFF;
-	box-shadow: 0 0 15px #CCCCCC;
+	background-color: #ffffff;
+	box-shadow: 0 0 15px #cccccc;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
@@ -193,7 +193,7 @@ a#logo:hover {
 ---------------------------------------- */
 .headerbar {
 	background: #0a2c60 url("{T_THEME_PATH}/images/bg_header.png") repeat-x 0 0;
-	color: #FFFFFF;
+	color: #ffffff;
 	padding: 5px 5px 0 5px;
 }
 
@@ -232,8 +232,8 @@ body.style-new-year .forabg, body.style-new-year .forumbg {
 .panel {
 	margin-bottom: 4px;
 	padding: 5px 10px;
-	background-color: #ECF1F3;
-	color: #28313F;
+	background-color: #ecf1f3;
+	color: #28313f;
 }
 
 body.style-rounded-corners .panel {
@@ -259,7 +259,7 @@ body.style-rounded-corners .post {
 	color: #000000;
 }
 
-.bg1    { background-color: #ECF3F7; }
+.bg1    { background-color: #ecf3f7; }
 .bg2    { background-color: #e1ebf2; }
 .bg3    { background-color: #cadceb; }
 
@@ -268,12 +268,12 @@ body.style-rounded-corners .post {
 }
 
 .ucprowbg {
-	background-color: #DCDEE2;
+	background-color: #dcdee2;
 }
 
 .fieldsbg {
-	/*border: 1px #DBDEE2 solid;*/
-	background-color: #E7E8EA;
+	/*border: 1px #dbdee2 solid;*/
+	background-color: #e7e8ea;
 }
 
 /* Horizontal lists
@@ -320,7 +320,7 @@ table.table1 {
 table.table1 thead th {
 	font-weight: normal;
 	text-transform: uppercase;
-	color: #FFFFFF;
+	color: #ffffff;
 	line-height: 1.3em;
 	font-size: 1em;
 	padding: 0 0 4px 3px;
@@ -332,11 +332,11 @@ table.table1 thead th span {
 }
 
 table.table1 tbody tr {
-	border: 1px solid #BFC1CF;
+	border: 1px solid #bfc1cf;
 }
 
 table.table1 tbody tr:hover, table.table1 tbody tr.hover {
-	background-color: #CFE1F6;
+	background-color: #cfe1f6;
 	color: #000;
 }
 
@@ -347,7 +347,7 @@ table.table1 td {
 
 table.table1 tbody td {
 	padding: 5px;
-	border-top: 1px solid #FAFAFA;
+	border-top: 1px solid #fafafa;
 	border-bottom: 1px solid #b5c1cb;
 }
 
@@ -356,7 +356,7 @@ table.table1 tbody th {
 	border-bottom: 1px solid #000000;
 	text-align: left;
 	color: #333333;
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 }
 
 /* Specific column styles */
@@ -474,35 +474,35 @@ li.pagination {
 	padding: 0 2px;
 	margin: 0 2px;
 	font-weight: normal;
-	color: #FFFFFF;
-	background-color: #4692BF;
-	border: 1px solid #4692BF;
+	color: #ffffff;
+	background-color: #4692bf;
+	border: 1px solid #4692bf;
 	font-size: 0.9em;
 }
 
 .pagination span a, .pagination span a:visited {
 	font-weight: normal;
 	text-decoration: none;
-	color: #5C758C;
+	color: #5c758c;
 	margin: 0 2px;
 	padding: 0 2px;
-	background-color: #ECEDEE;
-	border: 1px solid #B4BAC0;
+	background-color: #ecedee;
+	border: 1px solid #b4bac0;
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
 
 .pagination span a:hover {
-	color: #FFF;
-	background-color: #368AD2;
-	border-color: #368AD2;
+	color: #fff;
+	background-color: #368ad2;
+	border-color: #368ad2;
 	text-decoration: none;
 }
 
 .pagination span a:active {
-	color: #5C758C;
-	background-color: #ECEDEE;
-	border-color: #B4BAC0;
+	color: #5c758c;
+	background-color: #ecedee;
+	border-color: #b4bac0;
 }
 
 .pagination img {
@@ -521,11 +521,11 @@ li.pagination {
 }
 
 .row .pagination span a, li.pagination span a {
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 }
 
 .row .pagination span a:hover, li.pagination span a:hover {
-	background-color: #368AD2;
+	background-color: #368ad2;
 }
 
 /* Miscellaneous styles
@@ -563,22 +563,22 @@ li.pagination {
 }
 
 .error {
-	color: #BC2A4D;
+	color: #bc2a4d;
 	font-weight: bold;
 	font-size: 1em;
 }
 
 .reported {
-	background-color: #F7ECEF;
+	background-color: #f7ecef;
 }
 
 li.reported:hover {
-	background-color: #ECD5D8;
+	background-color: #ecd5d8;
 }
 
 div.rules {
-	background-color: #ECD5D8;
-	color: #BC2A4D;
+	background-color: #ecd5d8;
+	color: #bc2a4d;
 	padding: 10px;
 	margin: 10px 0;
 	font-size: 1.1em;
@@ -593,7 +593,7 @@ div.rules ul, div.rules ol {
 }
 
 p.rules {
-	background-color: #ECD5D8;
+	background-color: #ecd5d8;
 	padding: 5px;
 }
 
@@ -633,7 +633,7 @@ p.rules a {
 
 #popup-image
 {
-	border: 10px solid #FFF;
+	border: 10px solid #fff;
 }
 
 #popup-image.preloader {

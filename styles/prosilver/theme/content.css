@@ -14,7 +14,7 @@ ul.forums {
 ul.topiclist li {
 	display: block;
 	list-style-type: none;
-	color: #4C5D77;
+	color: #4c5d77;
 	margin: 0;
 }
 
@@ -38,7 +38,7 @@ ul.topiclist dt {
 ul.topiclist dd {
 	display: block;
 	float: left;
-	border-left: 1px solid #FFFFFF;
+	border-left: 1px solid #ffffff;
 	padding: 4px 0;
 }
 
@@ -73,8 +73,8 @@ ul.topiclist li.row dt a.subforum.unread {
 }
 
 li.row {
-	border-top: 1px solid #FFFFFF;
-	border-bottom: 1px solid #00608F;
+	border-top: 1px solid #ffffff;
+	border-bottom: 1px solid #00608f;
 }
 
 li.row strong {
@@ -87,14 +87,14 @@ li.row:hover {
 }
 
 li.row:hover dd {
-	/*border-left-color: #CCCCCC;*/
+	/*border-left-color: #cccccc;*/
 }
 
 li.header dt, li.header dd {
 	line-height: 1em;
 	border-left-width: 0;
 	margin: 2px 0 4px 0;
-	color: #FFFFFF;
+	color: #ffffff;
 	padding-top: 2px;
 	padding-bottom: 2px;
 	font-size: 1em;
@@ -324,7 +324,7 @@ div[class].topic-actions {
 .content h2, .panel h2 {
 	font-weight: normal;
 	color: #115098;
-	border-bottom: 1px solid #CCCCCC;
+	border-bottom: 1px solid #cccccc;
 	font-size: 1.6em;
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
@@ -375,15 +375,15 @@ dl.faq dt {
 }
 
 .posthilit {
-	background-color: #F3BFCC;
-	color: #BC2A4D;
+	background-color: #f3bfcc;
+	color: #bc2a4d;
 	padding: 0 2px 1px 2px;
 }
 
 .announce, .unreadpost {
 	/* Highlight the announcements & unread posts box */
-	border-left-color: #BCBCBC;
-	border-right-color: #BCBCBC;
+	border-left-color: #bcbcbc;
+	border-right-color: #bcbcbc;
 }
 
 /* Post author */
@@ -400,7 +400,7 @@ p.author {
 	margin-top: 0.4em;
 	padding: 0.4em 0;
 	font-size: 1em;
-	border-top: 1px solid #CCCCCC;
+	border-top: 1px solid #cccccc;
 	clear: left;
 	line-height: 100%;
 	overflow: hidden;
@@ -431,7 +431,7 @@ dd .signature {
 	margin-top: 1.5em;
 	padding-top: 0.2em;
 	font-size: 1em;
-	border-top: 1px dashed #CCCCCC;
+	border-top: 1px dashed #cccccc;
 	clear: left;
 	line-height: 130%;
 }
@@ -447,8 +447,8 @@ ul.searchresults {
 ----------------------------------------*/
 /* Quote block */
 blockquote {
-	background: #EBEADD url("data:image/gif;base64,R0lGODlhDwAMALMPAHBwbj8/P62sqaGgnYiIht7d2FhXVnx8ektLS8XFwWRkYrm4tdLRzJWUkTMzM+rp5CH5BAEAAA8ALAAAAAAPAAwAAARG8MlJK12GUaYSFY6jTEngIIWUhIj2MGawTEjoPko4SwNLhg4KACiQNICNSQ6oOQAdu2Vo8CA8k48jcAZCToYOwkQLsJgpEQA7") 6px 8px no-repeat;
-	border: 1px solid #DBDBCE;
+	background: #ebeadd url("data:image/gif;base64,R0lGODlhDwAMALMPAHBwbj8/P62sqaGgnYiIht7d2FhXVnx8ektLS8XFwWRkYrm4tdLRzJWUkTMzM+rp5CH5BAEAAA8ALAAAAAAPAAwAAARG8MlJK12GUaYSFY6jTEngIIWUhIj2MGawTEjoPko4SwNLhg4KACiQNICNSQ6oOQAdu2Vo8CA8k48jcAZCToYOwkQLsJgpEQA7") 6px 8px no-repeat;
+	border: 1px solid #dbdbce;
 	font-size: 0.95em;
 	margin: 0.5em 1px 0 25px;
 	overflow: hidden;
@@ -457,14 +457,14 @@ blockquote {
 
 blockquote blockquote {
 	/* Nested quotes */
-	background-color: #EFEED9;
+	background-color: #efeed9;
 	font-size: 1em;
 	margin: 0.5em 1px 0 15px;
 }
 
 blockquote blockquote blockquote {
 	/* Nested quotes */
-	background-color: #EBEADD;
+	background-color: #ebeadd;
 }
 
 blockquote cite {
@@ -488,10 +488,10 @@ blockquote.uncited {
 code
 {
 	font: 0.9em "Courier New", monospace;
-	color: #2E8B57;
-	background-color: #FAFAFA;
+	color: #2e8b57;
+	background-color: #fafafa;
 	padding: 0px 2px;
-	border: 1px solid #C9D2D8;
+	border: 1px solid #c9d2d8;
 	margin: 0;
 }
 
@@ -499,14 +499,14 @@ code
 dl.codebox {
 	margin: 0.25em 0;
 	padding: 3px;
-	background-color: #FFFFFF;
-	border: 1px solid #C9D2D8;
+	background-color: #ffffff;
+	border: 1px solid #c9d2d8;
 	font-size: 1em;
 }
 
 dl.codebox dt {
 	text-transform: uppercase;
-	border-bottom: 1px solid #C9D2D8;
+	border-bottom: 1px solid #c9d2d8;
 	margin-bottom: 3px;
 	font-size: 0.8em;
 	font-weight: bold;
@@ -523,26 +523,26 @@ dl.codebox code {
 	height: auto;
 	max-height: 200px;
 	white-space: pre;
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 	line-height: 1.3em;
 	padding: 0;
 	border: 0;
 	margin: 0;
 }
 
-.syntaxbg       { color: #FFFFFF; }
-.syntaxcomment  { color: #FF8000; }
-.syntaxdefault  { color: #0000BB; }
+.syntaxbg       { color: #ffffff; }
+.syntaxcomment  { color: #ff8000; }
+.syntaxdefault  { color: #0000bb; }
 .syntaxhtml     { color: #000000; }
 .syntaxkeyword  { color: #007700; }
-.syntaxstring   { color: #DD0000; }
+.syntaxstring   { color: #dd0000; }
 
 /* Spoiler block */
 dl.spoilerbox
 {
 	margin: 0.25em 0;
 	padding: 3px;
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 	border: 1px solid #d8d8d8;
 	font-size: 1em;
 }
@@ -561,14 +561,14 @@ dl.spoilerbox > dt
 
 dl.spoilerbox > dt:hover
 {
-	color: #D31141;
+	color: #d31141;
 	text-decoration: underline;
 }
 
 dl.spoilerbox > dd
 {
 	margin-top: 3px;
-	border-top: 1px solid #CCCCCC;
+	border-top: 1px solid #cccccc;
 	padding: 3px 3px 0 3px;
 	display: none;
 }
@@ -591,13 +591,13 @@ dl.spoilerbox.spoilerbox-on > dd
 	max-width: 100%;
 	margin: 5px 5px 5px 0;
 	padding: 6px;
-	background-color: #FFFFFF;
-	border: 1px dashed #C9D2D8;
+	background-color: #ffffff;
+	border: 1px dashed #c9d2d8;
 	clear: left;
 }
 
 .pm-message .attachbox {
-	background-color: #F2F3F3;
+	background-color: #f2f3f3;
 }
 
 .attachbox dt {
@@ -609,7 +609,7 @@ dl.spoilerbox.spoilerbox-on > dd
 	margin-top: 4px;
 	padding-top: 4px;
 	clear: left;
-	border-top: 1px solid #C9D2D8;
+	border-top: 1px solid #c9d2d8;
 }
 
 .attachbox dd dd {
@@ -691,7 +691,7 @@ dl.file dd {
 dl.thumbnail img {
 	padding: 3px;
 	border: 1px solid #666666;
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 }
 
 dl.thumbnail dd {
@@ -705,11 +705,11 @@ dl.thumbnail dd {
 }
 
 dl.thumbnail dt a:hover {
-	background-color: #EEEEEE;
+	background-color: #eeeeee;
 }
 
 dl.thumbnail dt a:hover img {
-	border: 1px solid #368AD2;
+	border: 1px solid #368ad2;
 }
 
 /* Post poll styles
@@ -720,7 +720,7 @@ fieldset.polls {
 
 fieldset.polls dl {
 	margin-top: 5px;
-	border-top: 1px solid #DCDEE2;
+	border-top: 1px solid #dcdee2;
 	padding: 5px 0 0 0;
 	line-height: 120%;
 	color: #666666;
@@ -762,7 +762,7 @@ fieldset.polls dd input {
 fieldset.polls dd div {
 	text-align: right;
 	font-family: Arial, Helvetica, sans-serif;
-	color: #FFFFFF;
+	color: #ffffff;
 	font-weight: bold;
 	padding: 0 2px;
 	overflow: visible;
@@ -770,33 +770,33 @@ fieldset.polls dd div {
 }
 
 .pollbar1 {
-	background-color: #AA2346;
-	border-bottom: 1px solid #74162C;
-	border-right: 1px solid #74162C;
+	background-color: #aa2346;
+	border-bottom: 1px solid #74162c;
+	border-right: 1px solid #74162c;
 }
 
 .pollbar2 {
-	background-color: #BE1E4A;
-	border-bottom: 1px solid #8C1C38;
-	border-right: 1px solid #8C1C38;
+	background-color: #be1e4a;
+	border-bottom: 1px solid #8c1c38;
+	border-right: 1px solid #8c1c38;
 }
 
 .pollbar3 {
-	background-color: #D11A4E;
-	border-bottom: 1px solid #AA2346;
-	border-right: 1px solid #AA2346;
+	background-color: #d11a4e;
+	border-bottom: 1px solid #aa2346;
+	border-right: 1px solid #aa2346;
 }
 
 .pollbar4 {
-	background-color: #E41653;
-	border-bottom: 1px solid #BE1E4A;
-	border-right: 1px solid #BE1E4A;
+	background-color: #e41653;
+	border-bottom: 1px solid #be1e4a;
+	border-right: 1px solid #be1e4a;
 }
 
 .pollbar5 {
-	background-color: #F81157;
-	border-bottom: 1px solid #D11A4E;
-	border-right: 1px solid #D11A4E;
+	background-color: #f81157;
+	border-bottom: 1px solid #d11a4e;
+	border-right: 1px solid #d11a4e;
 }
 
 /* Poster profile block
@@ -807,7 +807,7 @@ fieldset.polls dd div {
 	padding: 5px 0;
 	min-height: 40px;
 	color: #666666;
-	border-left: 1px solid #FFFFFF;
+	border-left: 1px solid #ffffff;
 	width: 20%;
 	width: calc(200px);
 	float: right;
@@ -815,7 +815,7 @@ fieldset.polls dd div {
 	position: relative;
 }
 .pm .postprofile {
-	border-left: 1px solid #DDDDDD;
+	border-left: 1px solid #dddddd;
 }
 
 .postprofile dd, .postprofile dt {
@@ -881,14 +881,14 @@ body.style-mp-on-left .postbody {
 }
 
 body.style-mp-on-left .postprofile {
-	border-right: 1px solid #FFFFFF;
+	border-right: 1px solid #ffffff;
 	border-left: 0;
 	float: left;
 }
 
 body.style-mp-on-left .pm .postprofile
 {
-	border-right: 1px solid #DDDDDD;
+	border-right: 1px solid #dddddd;
 	border-left: 0;
 }
 
@@ -936,8 +936,8 @@ body.style-mp-on-left .postprofile span.online {
 }
 
 .postbody div.warning, div.postbody div.ban {
-	background-color: #ECD5D8;
-	color: #BC2A4D;
+	background-color: #ecd5d8;
+	color: #bc2a4d;
 	border: 1px solid #db8180;
 }
 
