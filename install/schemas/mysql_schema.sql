@@ -211,7 +211,7 @@ CREATE TABLE phpbb_forums (
 	forum_last_post_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_last_poster_name varchar(255) DEFAULT '' NOT NULL,
 	forum_last_poster_colour varchar(6) DEFAULT '' NOT NULL,
-	forum_flags tinyint(4) DEFAULT '32' NOT NULL,
+	forum_flags tinyint(4) DEFAULT '16' NOT NULL,
 	forum_options int(20) UNSIGNED DEFAULT '0' NOT NULL,
 	display_subforum_list tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	display_on_index tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
