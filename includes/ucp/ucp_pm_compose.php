@@ -507,7 +507,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	if ($save && $auth->acl_get('u_sendpm'))
 	{
 		$subject = utf8_normalize_nfc(request_var('subject', '', true));
-		$subject = (!$subject && $action != 'post') ? $user->lang['NEW_MESSAGE'] : $subject;
 		$message = utf8_normalize_nfc(request_var('message', '', true));
 
 		if ($subject && $message)

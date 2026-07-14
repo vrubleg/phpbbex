@@ -127,14 +127,10 @@ $lang = array_merge($lang, [
 	'DOWNLOADS'                 => 'Downloads',
 	'DRAFTS_DELETED'            => 'All selected drafts were successfully deleted.',
 	'DRAFTS_EXPLAIN'            => 'Here you can view, edit and delete your saved drafts.',
-	'DRAFT_UPDATED'             => 'Draft successfully updated.',
 
-	'EDIT_DRAFT_EXPLAIN'        => 'Here you are able to edit your draft. Drafts do not contain attachment and poll information.',
 	'EMAIL_BANNED_EMAIL'        => 'The email address you entered is not allowed to be used.',
 	'EMAIL_REMIND'              => 'This must be the email address associated with your account. If you have not changed this via your user control panel then it is the email address you registered your account with.',
 	'EMAIL_TAKEN_EMAIL'         => 'The entered email address is already in use.',
-	'EMPTY_DRAFT'               => 'You must enter a message to submit your changes.',
-	'EMPTY_DRAFT_TITLE'         => 'You must enter a draft title.',
 
 	'FIELD_REQUIRED'                    => 'The field “%s” must be completed.',
 	'FIELD_TOO_SHORT'                   => 'The field “%1$s” is too short, a minimum of %2$d characters is required.',
@@ -412,7 +408,6 @@ $lang = array_merge($lang, [
 	'USER_NOT_FOUND_OR_INACTIVE'    => 'The usernames you specified could either not be found or are not activated users.',
 
 	'VIEW_AVATARS'              => 'Display avatars',
-	'VIEW_EDIT'                 => 'View/Edit',
 	'VIEW_FLASH'                => 'Display Flash animations',
 	'VIEW_IMAGES'               => 'Display images within posts',
 	'VIEW_NEXT_HISTORY'         => 'Next PM in history',

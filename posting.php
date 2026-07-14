@@ -32,7 +32,7 @@ $topic_id        = request_var('t', 0);
 $forum_id        = request_var('f', 0);
 $load_draft_id   = request_var('d', 0);
 $loaded_draft_id = request_var('loaded_draft_id', 0);
-$lastclick        = request_var('lastclick', 0);
+$lastclick       = request_var('lastclick', 0);
 
 $preview    = isset($_POST['preview']);
 $save       = isset($_POST['save']);
@@ -203,6 +203,7 @@ switch ($mode)
 	case 'quote':
 
 		$post_data['post_edit_locked'] = 0;
+		$post_data['post_subject'] = '';
 
 	// no break;
 
@@ -316,7 +317,6 @@ else
 
 $post_data['post_edit_locked']  = (isset($post_data['post_edit_locked'])) ? (int) $post_data['post_edit_locked'] : 0;
 $post_data['post_subject_md5']  = (isset($post_data['post_subject']) && $mode == 'edit') ? md5($post_data['post_subject']) : '';
-$post_data['post_subject']      = (in_array($mode, ['quote', 'edit'])) ? $post_data['post_subject'] : ($post_data['topic_title'] ?? '');
 $post_data['topic_time_limit']  = (isset($post_data['topic_time_limit'])) ? (($post_data['topic_time_limit']) ? (int) $post_data['topic_time_limit'] / 86400 : (int) $post_data['topic_time_limit']) : 0;
 $post_data['poll_length']       = (!empty($post_data['poll_length'])) ? (int) $post_data['poll_length'] / 86400 : 0;
 $post_data['poll_start']        = (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
@@ -464,10 +464,9 @@ $spoiler_status = ($bbcode_status && isset($config['max_spoiler_depth']) && $con
 if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
 {
 	$subject = utf8_normalize_nfc(request_var('subject', '', true));
-	$subject = (!$subject && $mode != 'post') ? $post_data['topic_title'] : $subject;
 	$message = utf8_normalize_nfc(request_var('message', '', true));
 
-	if ($subject && $message)
+	if ($message && ($mode != 'post' || utf8_clean_string($subject) !== ''))
 	{
 		if (confirm_box(true))
 		{
@@ -577,7 +576,7 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 	}
 	else
 	{
-		if (utf8_clean_string($subject) === '')
+		if ($mode == 'post' && utf8_clean_string($subject) === '')
 		{
 			$error[] = $user->lang['EMPTY_SUBJECT'];
 		}
@@ -1252,11 +1251,6 @@ if ($mode == 'quote' && !$submit && !$preview && !$refresh)
 		$message = str_replace("\n", "\n" . $quote_string, $message);
 		$message_parser->message =  $post_data['quote_username'] . " " . $user->lang['WROTE'] . ":\n" . $message . "\n";
 	}
-}
-
-if (($mode == 'reply' || $mode == 'quote') && !$submit && !$preview && !$refresh)
-{
-	$post_data['post_subject'] = ''; // ((strpos($post_data['post_subject'], 'Re: ') !== 0) ? 'Re: ' : '') . censor_text($post_data['post_subject']);
 }
 
 $attachment_data = $message_parser->attachment_data;
