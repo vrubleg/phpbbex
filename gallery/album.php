@@ -77,7 +77,6 @@ phpbb_gallery_album::generate_nav($album_data);
 phpbb_gallery_album::display_albums($album_data, $config['load_moderators']);
 
 // Set some variables to their defaults
-$allowed_create = false;
 $image_counter = 0;
 $l_moderator = $moderators_list = $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 $grouprows = $album_moderators = [];
@@ -230,28 +229,6 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 			}
 		}
 	}
-	// Is it a personal album, and does the user have permissions to create more?
-	if ($album_data['album_user_id'] == $user->data['user_id'])
-	{
-		if (phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM) && !phpbb_gallery::$auth->acl_check('a_unlimited', phpbb_gallery_auth::OWN_ALBUM))
-		{
-			$sql = 'SELECT COUNT(album_id) albums
-				FROM ' . GALLERY_ALBUMS_TABLE . '
-				WHERE album_user_id = ' . $user->data['user_id'];
-			$result = $db->sql_query($sql);
-			$albums = (int) $db->sql_fetchfield('albums');
-			$db->sql_freeresult($result);
-
-			if ($albums < phpbb_gallery::$auth->acl_check('a_count', phpbb_gallery_auth::OWN_ALBUM))
-			{
-				$allowed_create = true;
-			}
-		}
-		elseif (phpbb_gallery::$auth->acl_check('a_unlimited', phpbb_gallery_auth::OWN_ALBUM))
-		{
-			$allowed_create = true;
-		}
-	}
 }
 // End of "We have album_type so that there may be images ..."
 
@@ -271,10 +248,8 @@ $template->assign_vars([
 
 	'U_UPLOAD_IMAGE'            => ((!$album_data['album_user_id'] || ($album_data['album_user_id'] == $user->data['user_id'])) && (($user->data['user_id'] == ANONYMOUS) || phpbb_gallery::$auth->acl_check('i_upload', $album_id, $album_data['album_user_id']))) ?
 										phpbb_gallery_url::append_sid('posting', "mode=upload&amp;album_id={$album_id}") : '',
-	'U_CREATE_ALBUM'            => (($album_data['album_user_id'] == $user->data['user_id']) && $allowed_create) ?
-										phpbb_gallery_url::append_sid('phpbb', 'ucp', "i=gallery&amp;mode=manage_albums&amp;action=create&amp;parent_id={$album_id}&amp;redirect=album") : '',
-	'U_EDIT_ALBUM'              => ($album_data['album_user_id'] == $user->data['user_id']) ?
-										phpbb_gallery_url::append_sid('phpbb', 'ucp', "i=gallery&amp;mode=manage_albums&amp;action=edit&amp;album_id={$album_id}&amp;redirect=album") : '',
+	'U_EDIT_ALBUM'              => ($album_id == phpbb_gallery::$user->get_data('personal_album_id')) ?
+										phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=edit&amp;redirect=album') : '',
 	'U_SLIDE_SHOW'              => (sizeof(phpbb_gallery_plugins::$plugins) && phpbb_gallery_plugins::$slideshow) ? phpbb_gallery_url::append_sid('album', "album_id={$album_id}&amp;mode=slide_show" . (($sort_key != phpbb_gallery_config::get('default_sort_key')) ? "&amp;sk={$sort_key}" : '') . (($sort_dir != phpbb_gallery_config::get('default_sort_dir')) ? "&amp;sd={$sort_dir}" : '')) : '',
 	'S_DISPLAY_SEARCHBOX'       => ($auth->acl_get('u_search') && $config['load_search']),
 	'S_SEARCHBOX_ACTION'        => phpbb_gallery_url::append_sid('search', 'aid[]=' . $album_id),

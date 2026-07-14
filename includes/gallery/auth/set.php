@@ -18,16 +18,14 @@ class phpbb_gallery_auth_set
 
 	private $_counts = [
 		'i_count'   => 0,
-		'a_count'   => 0,
 	];
 
-	public function __construct($bits = 0, $i_count = 0, $a_count = 0)
+	public function __construct($bits = 0, $i_count = 0)
 	{
 		$this->_bits = $bits;
 
 		$this->_counts = [
 			'i_count'   => $i_count,
-			'a_count'   => $a_count,
 		];
 	}
 

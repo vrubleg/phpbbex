@@ -327,8 +327,6 @@ class phpbb_gallery_dbal_schema
 					'm_move'            => ['UINT:3', 0],
 					'm_report'          => ['UINT:3', 0],
 					'm_status'          => ['UINT:3', 0],
-					'a_count'           => ['UINT', 0],
-					'a_unlimited'       => ['UINT:3', 0],
 				],
 				'PRIMARY_KEY'       => 'role_id',
 			],

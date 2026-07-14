@@ -44,20 +44,8 @@ class ucp_gallery
 			case 'manage_albums':
 				switch ($action)
 				{
-					case 'manage':
-						$title = 'MANAGE_SUBALBUMS';
-						$this->page_title = $user->lang[$title];
-						$this->manage_albums();
-					break;
-
-					case 'create':
-						$title = 'CREATE_SUBALBUM';
-						$this->page_title = $user->lang[$title];
-						$this->create_album();
-					break;
-
 					case 'edit':
-						$title = 'EDIT_SUBALBUM';
+						$title = 'EDIT_PERSONAL_ALBUM';
 						$this->page_title = $user->lang[$title];
 						$this->edit_album();
 					break;
@@ -66,10 +54,6 @@ class ucp_gallery
 						$title = 'DELETE_ALBUM';
 						$this->page_title = $user->lang[$title];
 						$this->delete_album();
-					break;
-
-					case 'move':
-						$this->move_album();
 					break;
 
 					case 'initialise':
@@ -85,7 +69,7 @@ class ucp_gallery
 						}
 						else
 						{
-							$this->manage_albums();
+							$this->edit_album();
 						}
 					break;
 				}
@@ -190,7 +174,7 @@ class ucp_gallery
 
 			$album_data = [
 				'album_name'                    => $user->data['username'],
-				'parent_id'                     => request_var('parent_id', 0),
+				'parent_id'                     => 0,
 				//left_id and right_id default by db
 				'album_desc_options'            => 7,
 				'album_desc'                    => utf8_normalize_nfc(request_var('album_desc', '', true)),
@@ -224,224 +208,18 @@ class ucp_gallery
 		redirect($this->u_action);
 	}
 
-	function manage_albums()
-	{
-		global $cache, $db, $template, $user;
-
-		$parent_id = request_var('parent_id', phpbb_gallery::$user->get_data('personal_album_id'));
-		phpbb_gallery_album::check_user($parent_id);
-
-		$sql = 'SELECT COUNT(album_id) albums
-			FROM ' . GALLERY_ALBUMS_TABLE . '
-			WHERE album_user_id = ' . $user->data['user_id'];
-		$result = $db->sql_query($sql);
-		$albums = (int) $db->sql_fetchfield('albums');
-		$db->sql_freeresult($result);
-
-		$s_allowed_create = (phpbb_gallery::$auth->acl_check('a_unlimited', phpbb_gallery_auth::OWN_ALBUM) || (phpbb_gallery::$auth->acl_check('a_count', phpbb_gallery_auth::OWN_ALBUM) > $albums));
-		$template->assign_vars([
-			'S_MANAGE_SUBALBUMS'            => true,
-			'U_CREATE_SUBALBUM'             => ($s_allowed_create) ? ($this->u_action . '&amp;action=create' . (($parent_id) ? '&amp;parent_id=' . $parent_id : '')) : '',
-
-			'L_TITLE'           => $user->lang['MANAGE_SUBALBUMS'],
-			//'ACP_GALLERY_TITLE_EXPLAIN'   => $user->lang['ALBUM'],
-		]);
-
-		if (!$parent_id)
-		{
-			$navigation = $user->lang['PERSONAL_ALBUM'];
-		}
-		else
-		{
-			$navigation = $user->lang['PERSONAL_ALBUM'];
-
-			$albums_nav = phpbb_gallery_album::get_branch($user->data['user_id'], $parent_id, 'parents', 'descending');
-			foreach ($albums_nav as $row)
-			{
-				if ($row['album_id'] == $parent_id)
-				{
-					$navigation .= ' &raquo; ' . $row['album_name'];
-				}
-				else
-				{
-					$navigation .= ' &raquo; <a href="' . $this->u_action . '&amp;action=manage&amp;parent_id=' . $row['album_id'] . '">' . $row['album_name'] . '</a>';
-				}
-			}
-		}
-
-		$album = [];
-		$sql = 'SELECT *
-			FROM ' . GALLERY_ALBUMS_TABLE . '
-			WHERE parent_id = ' . $parent_id . '
-				AND album_user_id = ' . $user->data['user_id'] . '
-			ORDER BY left_id ASC';
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$album[] = $row;
-		}
-		$db->sql_freeresult($result);
-
-		for ($i = 0, $end = count($album); $i < $end; $i++)
-		{
-			$folder_img = ($album[$i]['left_id'] + 1 != $album[$i]['right_id']) ? 'forum_read_subforum' : 'forum_read';
-			$template->assign_block_vars('album_row', [
-				'FOLDER_IMAGE'          => $user->img($folder_img, $album[$i]['album_name'], false, '', 'src'),
-				'U_ALBUM'               => $this->u_action . '&amp;action=manage&amp;parent_id=' . $album[$i]['album_id'],
-				'ALBUM_NAME'            => $album[$i]['album_name'],
-				'ALBUM_DESCRIPTION'     => generate_text_for_display($album[$i]['album_desc'], $album[$i]['album_desc_uid'], $album[$i]['album_desc_bitfield'], $album[$i]['album_desc_options']),
-				'U_MOVE_UP'             => $this->u_action . '&amp;action=move&amp;move=move_up&amp;album_id=' . $album[$i]['album_id'],
-				'U_MOVE_DOWN'           => $this->u_action . '&amp;action=move&amp;move=move_down&amp;album_id=' . $album[$i]['album_id'],
-				'U_EDIT'                => $this->u_action . '&amp;action=edit&amp;album_id=' . $album[$i]['album_id'],
-				'U_DELETE'              => $this->u_action . '&amp;action=delete&amp;album_id=' . $album[$i]['album_id'],
-			]);
-		}
-
-		$template->assign_vars([
-			'NAVIGATION'        => $navigation,
-			'S_ALBUM'           => $parent_id,
-			'U_GOTO'            => phpbb_gallery_url::append_sid('album', 'album_id=' . $parent_id),
-			'U_EDIT'            => $this->u_action . '&amp;action=edit&amp;album_id=' . $parent_id,
-			'U_DELETE'          => $this->u_action . '&amp;action=delete&amp;album_id=' . $parent_id,
-			'U_UPLOAD'          => phpbb_gallery_url::append_sid('posting', 'mode=upload&amp;album_id=' . $parent_id),
-			'ICON_MOVE_DOWN'            => '<img src="' . phpbb_gallery_url::path('images') . 'icon_down.gif" alt="" />',
-			'ICON_MOVE_DOWN_DISABLED'   => '<img src="' . phpbb_gallery_url::path('images') . 'icon_down_disabled.gif" alt="" />',
-			'ICON_MOVE_UP'              => '<img src="' . phpbb_gallery_url::path('images') . 'icon_up.gif" alt="" />',
-			'ICON_MOVE_UP_DISABLED'     => '<img src="' . phpbb_gallery_url::path('images') . 'icon_up_disabled.gif" alt="" />',
-			'ICON_EDIT'                 => '<img src="' . phpbb_gallery_url::path('images') . 'icon_edit.gif" alt="" />',
-			'ICON_DELETE'               => '<img src="' . phpbb_gallery_url::path('images') . 'icon_delete.gif" alt="" />',
-		]);
-	}
-
-	function create_album()
+	function edit_album()
 	{
 		global $cache, $db, $template, $user;
 
 		phpbb_gallery_url::_include(['bbcode', 'message_parser'], 'phpbb');
 
-		// Check if the user has already reached his limit
-		if (!phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM))
+		$album_id = (int) phpbb_gallery::$user->get_data('personal_album_id');
+		if (!$album_id)
 		{
-			trigger_error('NO_PERSALBUM_ALLOWED');
+			$this->info();
+			return;
 		}
-
-		$sql = 'SELECT COUNT(album_id) albums
-			FROM ' . GALLERY_ALBUMS_TABLE . '
-			WHERE album_user_id = ' . $user->data['user_id'];
-		$result = $db->sql_query($sql);
-		$albums = $db->sql_fetchfield('albums');
-		$db->sql_freeresult($result);
-
-		if (!phpbb_gallery::$auth->acl_check('a_unlimited', phpbb_gallery_auth::OWN_ALBUM) && (phpbb_gallery::$auth->acl_check('a_count', phpbb_gallery_auth::OWN_ALBUM) <= $albums))
-		{
-			trigger_error('NO_MORE_SUBALBUMS_ALLOWED');
-		}
-
-		$submit = isset($_POST['submit']);
-		$redirect = request_var('redirect', '');
-
-		if (!$submit)
-		{
-			$parent_id = request_var('parent_id', 0);
-			phpbb_gallery_album::check_user($parent_id);
-			$parents_list = phpbb_gallery_album::get_albumbox(false, '', $parent_id, false, false, $user->data['user_id']);
-
-			$template->assign_vars([
-				'S_CREATE_SUBALBUM'     => true,
-				'S_UCP_ACTION'          => $this->u_action . '&amp;action=create' . (($redirect != '') ? '&amp;redirect=album' : ''),
-				'L_TITLE'               => $user->lang['CREATE_SUBALBUM'],
-				'L_TITLE_EXPLAIN'       => $user->lang['CREATE_SUBALBUM_EXP'],
-
-				'S_DESC_BBCODE_CHECKED'     => true,
-				'S_DESC_SMILIES_CHECKED'    => true,
-				'S_DESC_URLS_CHECKED'       => true,
-				'S_PARENT_OPTIONS'          => '<option value="' . phpbb_gallery::$user->get_data('personal_album_id') . '">' . $user->lang['NO_PARENT_ALBUM'] . '</option>' . $parents_list,
-			]);
-		}
-		else
-		{
-			if (!check_form_key('ucp_gallery'))
-			{
-				trigger_error('FORM_INVALID');
-			}
-
-			// Create the subalbum
-			$album_data = [
-				'album_name'                    => request_var('album_name', '', true),
-				'parent_id'                     => request_var('parent_id', 0),
-				'album_parents'                 => '',
-				'album_type'                    => phpbb_gallery_album::TYPE_UPLOAD,
-				'album_status'                  => phpbb_gallery_album::STATUS_OPEN,
-				'album_desc_options'            => 7,
-				'album_desc'                    => utf8_normalize_nfc(request_var('album_desc', '', true)),
-				'album_user_id'                 => $user->data['user_id'],
-				'album_last_username'           => '',
-			];
-
-			if (!$album_data['album_name'])
-			{
-				trigger_error('MISSING_ALBUM_NAME');
-			}
-			$album_data['parent_id'] = $album_data['parent_id'] ?: phpbb_gallery::$user->get_data('personal_album_id');
-			generate_text_for_storage($album_data['album_desc'], $album_data['album_desc_uid'], $album_data['album_desc_bitfield'], $album_data['album_desc_options'], request_var('desc_parse_bbcode', false), request_var('desc_parse_urls', false), request_var('desc_parse_smilies', false));
-
-			/**
-			* borrowed from phpBB3
-			* @author: phpBB Group
-			* @location: acp_forums->manage_forums
-			*/
-			// Parent should always be filled otherwise we use initialise_album()
-			if ($album_data['parent_id'])
-			{
-				$sql = 'SELECT left_id, right_id, album_type
-					FROM ' . GALLERY_ALBUMS_TABLE . '
-					WHERE album_id = ' . $album_data['parent_id'];
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if (!$row)
-				{
-					trigger_error('PARENT_NOT_EXIST', E_USER_WARNING);
-				}
-
-				$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-					SET left_id = left_id + 2, right_id = right_id + 2
-					WHERE left_id > ' . $row['right_id'] . '
-						AND album_user_id = ' . $album_data['album_user_id'];
-				$db->sql_query($sql);
-
-				$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-					SET right_id = right_id + 2
-					WHERE ' . $row['left_id'] . ' BETWEEN left_id AND right_id
-						AND album_user_id = ' . $album_data['album_user_id'];
-				$db->sql_query($sql);
-
-				$album_data['left_id'] = $row['right_id'];
-				$album_data['right_id'] = $row['right_id'] + 1;
-			}
-			$db->sql_query('INSERT INTO ' . GALLERY_ALBUMS_TABLE . ' ' . $db->sql_build_array('INSERT', $album_data));
-			$redirect_album_id = $db->sql_nextid();
-
-			$this->subscribe_pegas($redirect_album_id);
-
-			$cache->destroy('_albums');
-			$cache->destroy('sql', GALLERY_ALBUMS_TABLE);
-			phpbb_gallery_auth::set_user_permissions('all', '');
-
-			trigger_error($user->lang['CREATED_SUBALBUM'] . '<br /><br />
-				<a href="' . (($redirect) ? phpbb_gallery_url::append_sid('album', "album_id={$redirect_album_id}") : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=manage&amp;parent_id=' . ($album_data['parent_id'] ?: phpbb_gallery::$user->get_data('personal_album_id')))) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
-		}
-	}
-
-	function edit_album()
-	{
-		global $cache, $db, $template, $user;
-
-		phpbb_gallery_url::_include(['bbcode','message_parser'], 'phpbb');
-
-		$album_id = request_var('album_id', 0);
 		phpbb_gallery_album::check_user($album_id);
 
 		$submit = isset($_POST['submit']);
@@ -451,194 +229,59 @@ class ucp_gallery
 			$album_data = phpbb_gallery_album::get_info($album_id);
 			$album_desc_data = generate_text_for_edit($album_data['album_desc'], $album_data['album_desc_uid'], $album_data['album_desc_options']);
 
-			// Make sure no direct child forums are able to be selected as parents.
-			$exclude_albums = [$album_id];
-			foreach (phpbb_gallery_album::get_branch($album_data['album_user_id'], $album_id, 'children') as $row)
-			{
-				$exclude_albums[] = (int) $row['album_id'];
-			}
-
-			$parents_list = phpbb_gallery_album::get_albumbox(false, '', $album_data['parent_id'], false, $exclude_albums, $user->data['user_id']);
-
 			$template->assign_vars([
-				'S_EDIT_SUBALBUM'           => true,
-				'S_PERSONAL_ALBUM'          => ($album_id == phpbb_gallery::$user->get_data('personal_album_id')),
+				'S_EDIT_PERSONAL_ALBUM'     => true,
+				'L_TITLE'                   => $user->lang['EDIT_PERSONAL_ALBUM'],
+				'L_TITLE_EXPLAIN'           => $user->lang['EDIT_PERSONAL_ALBUM_EXP'],
+				'S_ALBUM_ACTION'            => $this->u_action . '&amp;action=edit' . (($redirect != '') ? '&amp;redirect=album' : ''),
 
-				'L_TITLE'                   => $user->lang['EDIT_SUBALBUM'],
-				'L_TITLE_EXPLAIN'           => $user->lang['EDIT_SUBALBUM_EXP'],
-
-				'S_ALBUM_ACTION'            => $this->u_action . '&amp;action=edit&amp;album_id=' . $album_id . (($redirect != '') ? '&amp;redirect=album' : ''),
-				'S_PARENT_OPTIONS'          => '<option value="' . phpbb_gallery::$user->get_data('personal_album_id') . '">' . $user->lang['NO_PARENT_ALBUM'] . '</option>' . $parents_list,
-
-				'ALBUM_NAME'                => $album_data['album_name'],
 				'ALBUM_DESC'                => $album_desc_data['text'],
-				'ALBUM_TYPE'                => $album_data['album_type'],
 				'S_DESC_BBCODE_CHECKED'     => (bool) $album_desc_data['allow_bbcode'],
 				'S_DESC_SMILIES_CHECKED'    => (bool) $album_desc_data['allow_smilies'],
 				'S_DESC_URLS_CHECKED'       => (bool) $album_desc_data['allow_urls'],
-
-				'S_MODE'                    => 'edit',
 			]);
 		}
 		else
 		{
-			// Is it salty ?
 			if (!check_form_key('ucp_gallery'))
 			{
 				trigger_error('FORM_INVALID');
 			}
 
 			$album_data = [
-				'album_name'                    => ($album_id == phpbb_gallery::$user->get_data('personal_album_id')) ? $user->data['username'] : request_var('album_name', '', true),
-				'parent_id'                     => request_var('parent_id', (($album_id == phpbb_gallery::$user->get_data('personal_album_id')) ? 0 : phpbb_gallery::$user->get_data('personal_album_id'))),
-				//left_id and right_id are created some lines later
-				'album_parents'                 => '',
-				'album_type'                    => phpbb_gallery_album::TYPE_UPLOAD,
+				'album_name'                    => $user->data['username'],
 				'album_desc_options'            => 7,
 				'album_desc'                    => utf8_normalize_nfc(request_var('album_desc', '', true)),
 			];
-
 			generate_text_for_storage($album_data['album_desc'], $album_data['album_desc_uid'], $album_data['album_desc_bitfield'], $album_data['album_desc_options'], request_var('desc_parse_bbcode', false), request_var('desc_parse_urls', false), request_var('desc_parse_smilies', false));
-			$row = phpbb_gallery_album::get_info($album_id);
-			// Ensure that no child is selected as parent
-			$exclude_albums = [$album_id];
-			foreach (phpbb_gallery_album::get_branch($row['album_user_id'], $album_id, 'children') as $loop)
-			{
-				$exclude_albums[] = (int) $loop['album_id'];
-			}
-			if (in_array($album_data['parent_id'], $exclude_albums))
-			{
-				$album_data['parent_id'] = (int) $row['parent_id'];
-			}
-
-			// If the parent is different, the left_id and right_id have changed.
-			if ($row['parent_id'] != $album_data['parent_id'])
-			{
-				if ($album_data['parent_id'])
-				{
-					// Get the parent album now, so it throws an error when it does not exist, before we change the database.
-					$parent = phpbb_gallery_album::get_info($album_data['parent_id']);
-				}
-
-				// How many do we have to move and how far.
-				$moving_ids = ($row['right_id'] - $row['left_id']) + 1;
-				$sql = 'SELECT MAX(right_id) right_id
-					FROM ' . GALLERY_ALBUMS_TABLE . '
-					WHERE album_user_id = ' . $row['album_user_id'];
-				$result = $db->sql_query($sql);
-				$moving_distance = ($db->sql_fetchfield('right_id') - $row['left_id']) + 1;
-				$db->sql_freeresult($result);
-
-				$stop_updating = $moving_distance + $row['left_id'];
-
-				// Update the moving albums... move them to the end.
-				$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-					SET right_id = right_id + ' . $moving_distance . ',
-						left_id = left_id + ' . $moving_distance . '
-					WHERE album_user_id = ' . $row['album_user_id'] . '
-						AND left_id >= ' . $row['left_id'] . '
-						AND right_id <= ' . $row['right_id'];
-				$db->sql_query($sql);
-
-				$new['left_id'] = $row['left_id'] + $moving_distance;
-				$new['right_id'] = $row['right_id'] + $moving_distance;
-
-				// Close the gap, we produced through moving.
-				if ($album_data['parent_id'] == 0)
-				{
-					$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-						SET left_id = left_id - ' . $moving_ids . '
-						WHERE album_user_id = ' . $row['album_user_id'] . '
-							AND left_id >= ' . $row['left_id'];
-					$db->sql_query($sql);
-
-					$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-						SET right_id = right_id - ' . $moving_ids . '
-						WHERE album_user_id = ' . $row['album_user_id'] . '
-							AND right_id >= ' . $row['left_id'];
-					$db->sql_query($sql);
-				}
-				else
-				{
-					$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-						SET left_id = left_id - ' . $moving_ids . '
-						WHERE album_user_id = ' . $row['album_user_id'] . '
-							AND left_id >= ' . $row['left_id'] . '
-							AND right_id <= ' . $stop_updating;
-					$db->sql_query($sql);
-
-					$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-						SET right_id = right_id - ' . $moving_ids . '
-						WHERE album_user_id = ' . $row['album_user_id'] . '
-							AND right_id >= ' . $row['left_id'] . '
-							AND right_id <= ' . $stop_updating;
-					$db->sql_query($sql);
-
-					$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-						SET left_id = left_id + ' . $moving_ids . '
-						WHERE album_user_id = ' . $row['album_user_id'] . '
-							AND left_id >= ' . $parent['right_id'] . '
-							AND right_id <= ' . $stop_updating;
-					$db->sql_query($sql);
-
-					$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-						SET right_id = right_id + ' . $moving_ids . '
-						WHERE album_user_id = ' . $row['album_user_id'] . '
-							AND right_id >= ' . $parent['right_id'] . '
-							AND right_id <= ' . $stop_updating;
-					$db->sql_query($sql);
-
-					// Move the albums to the suggested gap.
-					$parent['right_id'] = $parent['right_id'] + $moving_ids;
-					$move_back = ($new['right_id'] - $parent['right_id']) + 1;
-					$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-						SET left_id = left_id - ' . $move_back . ',
-							right_id = right_id - ' . $move_back . '
-						WHERE album_user_id = ' . $row['album_user_id'] . '
-							AND left_id >= ' . $stop_updating;
-					$db->sql_query($sql);
-				}
-			}
-
-			// The album name has changed, clear the parents list of all albums.
-			if ($album_data['album_name'] == '')
-			{
-				$album_data['album_name'] = $row['album_name'];
-			}
-			else if ($row['album_name'] != $album_data['album_name'])
-			{
-				$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-					SET album_parents = ''";
-				$db->sql_query($sql);
-			}
 
 			$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-					SET ' . $db->sql_build_array('UPDATE', $album_data) . '
-					WHERE album_id  = ' . (int) $album_id;
+				SET ' . $db->sql_build_array('UPDATE', $album_data) . '
+				WHERE album_id = ' . $album_id;
 			$db->sql_query($sql);
 
 			$cache->destroy('sql', GALLERY_ALBUMS_TABLE);
 			$cache->destroy('_albums');
 
-			trigger_error($user->lang['EDITED_SUBALBUM'] . '<br /><br />
-				<a href="' . (($redirect) ? phpbb_gallery_url::append_sid('album', "album_id={$album_id}") : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=manage&amp;parent_id=' . ($album_data['parent_id'] ?: phpbb_gallery::$user->get_data('personal_album_id')))) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
+			trigger_error($user->lang['EDITED_PERSONAL_ALBUM'] . '<br /><br />
+				<a href="' . (($redirect) ? phpbb_gallery_url::append_sid('album', "album_id={$album_id}") : $this->u_action) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
 		}
 	}
-
 	function delete_album()
 	{
 		global $cache, $db, $template, $user;
+		$album_id = (int) phpbb_gallery::$user->get_data('personal_album_id');
+		phpbb_gallery_album::check_user($album_id);
 
 		$s_hidden_fields = build_hidden_fields([
-			'album_id'      => request_var('album_id', 0),
+			'album_id'      => $album_id,
 		]);
 
 		if (confirm_box(true))
 		{
-			$album_id = request_var('album_id', 0);
 			$left_id = $right_id = 0;
 			$deleted_images_na = '';
-			$deleted_albums = [];
+			$album = $deleted_albums = [];
 
 			// Check for owner
 			$sql = 'SELECT album_id, left_id, right_id, parent_id
@@ -721,7 +364,7 @@ class ucp_gallery
 
 				phpbb_gallery_config::dec('num_pegas', 1);
 
-				if (phpbb_gallery_config::get('newest_pega_album_id') == phpbb_gallery::$user->get_data('personal_album_id'))
+				if (phpbb_gallery_config::get('newest_pega_album_id') == $album_id)
 				{
 					// Update the config for the statistic on the index
 					if (phpbb_gallery_config::get('num_pegas') > 0)
@@ -792,80 +435,8 @@ class ucp_gallery
 		}
 		else
 		{
-			$album_id = request_var('album_id', 0);
-			phpbb_gallery_album::check_user($album_id);
 			confirm_box(false, 'DELETE_ALBUM', $s_hidden_fields);
 		}
-	}
-
-	function move_album()
-	{
-		global $cache, $db, $user;
-
-		$album_id = request_var('album_id', 0);
-		phpbb_gallery_album::check_user($album_id);
-
-		$move = request_var('move', '', true);
-		$moving = phpbb_gallery_album::get_info($album_id);
-
-		$sql = 'SELECT album_id, left_id, right_id
-			FROM ' . GALLERY_ALBUMS_TABLE . "
-			WHERE parent_id = {$moving['parent_id']}
-				AND album_user_id = {$user->data['user_id']}
-				AND " . (($move == 'move_up') ? "right_id < {$moving['right_id']} ORDER BY right_id DESC" : "left_id > {$moving['left_id']} ORDER BY left_id ASC");
-		$result = $db->sql_query_limit($sql, 1);
-		$target = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		if (!sizeof($target))
-		{
-			// The album is already on top or bottom
-			return false;
-		}
-
-		if ($move == 'move_up')
-		{
-			$left_id = $target['left_id'];
-			$right_id = $moving['right_id'];
-
-			$diff_up = $moving['left_id'] - $target['left_id'];
-			$diff_down = $moving['right_id'] + 1 - $moving['left_id'];
-
-			$move_up_left = $moving['left_id'];
-			$move_up_right = $moving['right_id'];
-		}
-		else
-		{
-			$left_id = $moving['left_id'];
-			$right_id = $target['right_id'];
-
-			$diff_up = $moving['right_id'] + 1 - $moving['left_id'];
-			$diff_down = $target['right_id'] - $moving['right_id'];
-
-			$move_up_left = $moving['right_id'] + 1;
-			$move_up_right = $target['right_id'];
-		}
-
-		// Now do the dirty job
-		$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
-			SET left_id = left_id + CASE
-				WHEN left_id BETWEEN {$move_up_left} AND {$move_up_right} THEN -{$diff_up}
-				ELSE {$diff_down}
-			END,
-			right_id = right_id + CASE
-				WHEN right_id BETWEEN {$move_up_left} AND {$move_up_right} THEN -{$diff_up}
-				ELSE {$diff_down}
-			END,
-			album_parents = ''
-			WHERE
-				left_id BETWEEN {$left_id} AND {$right_id}
-				AND right_id BETWEEN {$left_id} AND {$right_id}
-				AND album_user_id = {$user->data['user_id']}";
-		$db->sql_query($sql);
-
-		$cache->destroy('sql', GALLERY_ALBUMS_TABLE);
-		$cache->destroy('_albums');
-		phpbb_gallery_url::redirect('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=manage&amp;parent_id=' . $moving['parent_id']);
 	}
 
 	function manage_subscriptions()

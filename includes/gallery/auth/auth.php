@@ -27,7 +27,7 @@ class phpbb_gallery_auth
 	static private $_permission_i = ['i_view', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'];
 	static private $_permission_c = ['c_read', 'c_post', 'c_edit', 'c_delete'];
 	static private $_permission_m = ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'];
-	static private $_permission_misc = ['a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited'];
+	static private $_permission_misc = ['a_list', 'i_count', 'i_unlimited'];
 	static private $_permissions = [];
 	static private $_permissions_flipped = [];
 
@@ -47,7 +47,6 @@ class phpbb_gallery_auth
 		self::$_permissions = array_merge(self::$_permission_i, self::$_permission_c, self::$_permission_m, self::$_permission_misc);
 		self::$_permissions_flipped = array_flip(array_merge(self::$_permissions, ['m_']));
 		self::$_permissions_flipped['i_count'] = 'i_count';
-		self::$_permissions_flipped['a_count'] = 'a_count';
 
 		global $user;
 
@@ -154,9 +153,9 @@ class phpbb_gallery_auth
 	/**
 	* Serialize the auth-data sop we can store it.
 	*
-	* Line-Format:  bitfields:i_count:a_count::album_id(s)
-	* Samples:      8912837:0:10::-3
-	*               9961469:20:0::1:23:42
+	* Line-Format:  bitfields:i_count::album_id(s)
+	* Samples:      8912837:0::-3
+	*               9961469:20::1:23:42
 	*/
 	private static function serialize_auth_data($auth_data)
 	{
@@ -164,7 +163,7 @@ class phpbb_gallery_auth
 
 		foreach ($auth_data as $a_id => $obj)
 		{
-			$key = $obj->get_bits() . ':' . $obj->get_count('i_count') . ':' . $obj->get_count('a_count');
+			$key = $obj->get_bits() . ':' . $obj->get_count('i_count');
 			if (!isset($acl_array[$key]))
 			{
 				$acl_array[$key] = $key . '::' . $a_id;
@@ -188,11 +187,11 @@ class phpbb_gallery_auth
 		foreach ($acl_array as $acl_row)
 		{
 			 [$acls, $a_ids] = explode('::', $acl_row);
-			 [$bits, $i_count, $a_count] = explode(':', $acls);
+			[$bits, $i_count] = explode(':', $acls);
 
 			foreach (explode(':', $a_ids) as $a_id)
 			{
-				$this->_auth_data[$a_id] = new phpbb_gallery_auth_set($bits, $i_count, $a_count);
+				$this->_auth_data[$a_id] = new phpbb_gallery_auth_set($bits, $i_count);
 			}
 		}
 	}

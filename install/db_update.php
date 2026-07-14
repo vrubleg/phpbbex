@@ -659,6 +659,129 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 				$db->sql_query($sql);
 			}
 		}
+
+		// Merge every personal album tree into its owner's main personal album.
+		if ($db_tools->sql_table_exists(GALLERY_USERS_TABLE) && $db_tools->sql_table_exists(GALLERY_IMAGES_TABLE))
+		{
+			$sql = 'SELECT a.album_id, a.parent_id, a.left_id, a.album_user_id, gu.personal_album_id
+				FROM ' . GALLERY_ALBUMS_TABLE . ' a
+				LEFT JOIN ' . GALLERY_USERS_TABLE . ' gu
+					ON gu.user_id = a.album_user_id
+				WHERE a.album_user_id <> 0
+				ORDER BY a.album_user_id, a.left_id, a.album_id';
+			$result = $db->sql_query($sql);
+			$personal_album_trees = [];
+			while ($row = $db->sql_fetchrow($result))
+			{
+				$personal_album_trees[(int) $row['album_user_id']][] = $row;
+			}
+			$db->sql_freeresult($result);
+
+			foreach ($personal_album_trees as $album_user_id => $albums)
+			{
+				$main_album_id = (int) $albums[0]['personal_album_id'];
+				$album_ids = array_map(function ($album)
+				{
+					return (int) $album['album_id'];
+				}, $albums);
+
+				if (!in_array($main_album_id, $album_ids))
+				{
+					$main_album_id = 0;
+					foreach ($albums as $album)
+					{
+						if (!$album['parent_id'])
+						{
+							$main_album_id = (int) $album['album_id'];
+							break;
+						}
+					}
+					$main_album_id = $main_album_id ?: (int) $albums[0]['album_id'];
+				}
+
+				$subalbum_ids = array_values(array_diff($album_ids, [$main_album_id]));
+				if ($subalbum_ids)
+				{
+					$db->sql_query('UPDATE ' . GALLERY_IMAGES_TABLE . '
+						SET image_album_id = ' . $main_album_id . '
+						WHERE ' . $db->sql_in_set('image_album_id', $subalbum_ids));
+
+					if ($db_tools->sql_table_exists(GALLERY_REPORTS_TABLE))
+					{
+						$db->sql_query('UPDATE ' . GALLERY_REPORTS_TABLE . '
+							SET report_album_id = ' . $main_album_id . '
+							WHERE ' . $db->sql_in_set('report_album_id', $subalbum_ids));
+					}
+
+					$db->sql_query('DELETE FROM ' . LOG_TABLE . '
+						WHERE log_type = ' . LOG_GALLERY . '
+							AND ' . $db->sql_in_set('album_id', $subalbum_ids));
+
+					foreach ([GALLERY_ATRACK_TABLE, GALLERY_WATCH_TABLE, GALLERY_PERMISSIONS_TABLE, GALLERY_MODSCACHE_TABLE] as $table)
+					{
+						if ($db_tools->sql_table_exists($table))
+						{
+							$column = ($table == GALLERY_PERMISSIONS_TABLE) ? 'perm_album_id' : 'album_id';
+							$db->sql_query('DELETE FROM ' . $table . '
+								WHERE ' . $db->sql_in_set($column, $subalbum_ids));
+						}
+					}
+
+					$db->sql_query('DELETE FROM ' . GALLERY_ALBUMS_TABLE . '
+						WHERE ' . $db->sql_in_set('album_id', $subalbum_ids));
+				}
+
+				$db->sql_query('UPDATE ' . GALLERY_USERS_TABLE . '
+					SET personal_album_id = ' . $main_album_id . '
+					WHERE user_id = ' . $album_user_id);
+
+				$sql = 'SELECT COUNT(image_id) AS images_real
+					FROM ' . GALLERY_IMAGES_TABLE . '
+					WHERE image_status <> 3
+						AND image_album_id = ' . $main_album_id;
+				$result = $db->sql_query($sql);
+				$images_real = (int) $db->sql_fetchfield('images_real');
+				$db->sql_freeresult($result);
+
+				$sql = 'SELECT COUNT(image_id) AS images
+					FROM ' . GALLERY_IMAGES_TABLE . '
+					WHERE image_status <> 0
+						AND image_status <> 3
+						AND image_album_id = ' . $main_album_id;
+				$result = $db->sql_query($sql);
+				$images = (int) $db->sql_fetchfield('images');
+				$db->sql_freeresult($result);
+
+				$sql = 'SELECT image_id, image_time, image_name, image_username, image_user_colour, image_user_id
+					FROM ' . GALLERY_IMAGES_TABLE . '
+					WHERE image_status <> 0
+						AND image_status <> 3
+						AND image_album_id = ' . $main_album_id . '
+					ORDER BY image_time DESC';
+				$result = $db->sql_query_limit($sql, 1);
+				$last_image = $db->sql_fetchrow($result);
+				$db->sql_freeresult($result);
+
+				$album_data = [
+					'parent_id'                 => 0,
+					'left_id'                   => 1,
+					'right_id'                  => 2,
+					'album_parents'             => '',
+					'album_images'              => $images,
+					'album_images_real'         => $images_real,
+					'album_last_image_id'       => $last_image ? (int) $last_image['image_id'] : 0,
+					'album_last_image_time'     => $last_image ? (int) $last_image['image_time'] : 0,
+					'album_last_image_name'     => $last_image ? $last_image['image_name'] : '',
+					'album_last_username'       => $last_image ? $last_image['image_username'] : '',
+					'album_last_user_colour'    => $last_image ? $last_image['image_user_colour'] : '',
+					'album_last_user_id'        => $last_image ? (int) $last_image['image_user_id'] : 0,
+				];
+				$db->sql_query('UPDATE ' . GALLERY_ALBUMS_TABLE . '
+					SET ' . $db->sql_build_array('UPDATE', $album_data) . '
+					WHERE album_id = ' . $main_album_id);
+			}
+		}
+
 		if ($db_tools->sql_column_exists(GALLERY_ALBUMS_TABLE, 'album_auth_access'))
 		{
 			foreach ($db_tools->sql_column_remove(GALLERY_ALBUMS_TABLE, 'album_auth_access') as $sql)
@@ -696,6 +819,19 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		foreach ($db_tools->sql_column_remove(GALLERY_ROLES_TABLE, 'a_restrict') as $sql)
 		{
 			$db->sql_query($sql);
+		}
+	}
+	if ($db_tools->sql_table_exists(GALLERY_ROLES_TABLE))
+	{
+		foreach (['a_count', 'a_unlimited'] as $column)
+		{
+			if ($db_tools->sql_column_exists(GALLERY_ROLES_TABLE, $column))
+			{
+				foreach ($db_tools->sql_column_remove(GALLERY_ROLES_TABLE, $column) as $sql)
+				{
+					$db->sql_query($sql);
+				}
+			}
 		}
 	}
 	if ($db_tools->sql_table_exists(GALLERY_USERS_TABLE))
