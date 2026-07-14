@@ -59,14 +59,7 @@ class ucp_gallery
 					default:
 						$title = 'UCP_GALLERY_PERSONAL_ALBUMS';
 						$this->page_title = $user->lang[$title];
-						if (!phpbb_gallery::$user->get_data('personal_album_id'))
-						{
-							phpbb_gallery_url::redirect('album', 'mode=personal');
-						}
-						else
-						{
-							$this->edit_album();
-						}
+						$this->edit_album();
 					break;
 				}
 			break;
@@ -144,7 +137,12 @@ class ucp_gallery
 		$album_id = (int) phpbb_gallery::$user->get_data('personal_album_id');
 		if (!$album_id)
 		{
-			phpbb_gallery_url::redirect('album', 'mode=personal');
+			if (!phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM))
+			{
+				trigger_error('NO_PERSALBUM_ALLOWED');
+			}
+
+			$album_id = phpbb_gallery_album::generate_personal_album($user->data['username'], $user->data['user_id'], $user->data['user_colour'], phpbb_gallery::$user);
 		}
 		phpbb_gallery_album::check_user($album_id);
 
