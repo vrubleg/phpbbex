@@ -349,7 +349,6 @@ class phpbb_gallery_dbal_schema
 					'user_permissions'  => ['MTEXT_UNI', ''],
 					'user_permissions_changed'  => ['TIMESTAMP', 0],
 					'user_allow_comments'       => ['TINT:1', 1],
-					'subscribe_pegas'           => ['TINT:1', 0],
 				],
 				'PRIMARY_KEY'       => 'user_id',
 				'KEYS'      => [

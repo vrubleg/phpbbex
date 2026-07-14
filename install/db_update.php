@@ -836,6 +836,14 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	}
 	if ($db_tools->sql_table_exists(GALLERY_USERS_TABLE))
 	{
+		if ($db_tools->sql_column_exists(GALLERY_USERS_TABLE, 'subscribe_pegas'))
+		{
+			foreach ($db_tools->sql_column_remove(GALLERY_USERS_TABLE, 'subscribe_pegas') as $sql)
+			{
+				$db->sql_query($sql);
+			}
+		}
+
 		$db->sql_query('UPDATE ' . GALLERY_USERS_TABLE . "
 			SET user_permissions = '',
 				user_permissions_changed = " . time());

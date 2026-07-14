@@ -37,38 +37,8 @@ if ($mode == 'personal')
 		'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('index', 'mode=personal')]
 	);
 
-	$subscribe_pegas = phpbb_gallery::$user->get_data('subscribe_pegas', false);
-
-	$watch_mode = (!$subscribe_pegas) ? 'watch' : 'unwatch';
-	$token = request_var('hash', '');
-	$watch_pegas = request_var('pegas', '');
-	if ((($watch_pegas == 'watch') || ($watch_pegas == 'unwatch')) && check_link_hash($token, "{$watch_pegas}_pegas"))
-	{
-		$backlink = phpbb_gallery_url::append_sid('index', "mode=personal");
-
-		if ($watch_pegas == 'watch')
-		{
-			phpbb_gallery::$user->update_data(['subscribe_pegas' => true]);
-			$message = $user->lang['WATCHING_PEGAS'] . '<br />';
-		}
-		if ($watch_pegas == 'unwatch')
-		{
-			phpbb_gallery::$user->update_data(['subscribe_pegas' => false]);
-			$message = $user->lang['UNWATCHED_PEGAS'] . '<br />';
-		}
-
-		$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_INDEX'], '<a href="' . $backlink . '">', '</a>');
-
-		meta_refresh(3, $backlink);
-		trigger_error($message);
-	}
-
 	$template->assign_vars([
 		'S_PERSONAL_GALLERY'    => true,
-
-		'L_WATCH_TOPIC'             => ($subscribe_pegas) ? $user->lang['UNWATCH_PEGAS'] : $user->lang['WATCH_PEGAS'],
-		'U_WATCH_TOPIC'             => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('index', "mode=personal&amp;pegas={$watch_mode}&amp;hash=" . generate_link_hash("{$watch_mode}_pegas")) : '',
-		'S_WATCHING_TOPIC'          => (bool) $subscribe_pegas,
 	]);
 }
 /**

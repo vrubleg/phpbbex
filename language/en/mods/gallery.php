@@ -256,12 +256,10 @@ $lang = array_merge($lang, [
 	'UNLOCK_IMAGE'                  => 'Unlock image',
 	'UNWATCH_ALBUM'                 => 'Unsubscribe album',
 	'UNWATCH_IMAGE'                 => 'Unsubscribe image',
-	'UNWATCH_PEGAS'                 => 'Do not subscribe to new personal galleries',
 	'UNWATCHED_ALBUM'               => 'You are no longer informed about new images in this album.',
 	'UNWATCHED_ALBUMS'              => 'You are no longer informed about new images in these albums.',
 	'UNWATCHED_IMAGE'               => 'You are no longer informed about new comments on this image.',
 	'UNWATCHED_IMAGES'              => 'You are no longer informed about new comments on these images.',
-	'UNWATCHED_PEGAS'               => 'You are no longer automatically subscribed to new personal galleries.',
 	'UPLOAD_ERROR'                  => 'While uploading “%1$s“ the following error occurred:<br />&raquo; %2$s',
 	'UPLOAD_IMAGE'                  => 'Upload Image',
 	'UPLOAD_IMAGE_SIZE_TOO_BIG'     => 'Your image dimension size is too large',
@@ -298,10 +296,8 @@ $lang = array_merge($lang, [
 
 	'WATCH_ALBUM'                   => 'Subscribe album',
 	'WATCH_IMAGE'                   => 'Subscribe image',
-	'WATCH_PEGAS'                   => 'Subscribe to new personal galleries',
 	'WATCHING_ALBUM'                => 'You are now informed about new images in this album.',
 	'WATCHING_IMAGE'                => 'You are now informed about new comments on this image.',
-	'WATCHING_PEGAS'                => 'You are now automatically subscribed to new personal galleries.',
 
 	'YOUR_COMMENT'                  => 'Your comment',
 	'YOUR_PERSONAL_ALBUM'           => 'Your Personal Album',

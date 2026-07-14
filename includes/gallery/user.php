@@ -349,7 +349,6 @@ class phpbb_gallery_user
 				case 'watch_own':
 				case 'watch_favo':
 				case 'watch_com':
-				case 'subscribe_pegas':
 					$validated_data[$name] = (bool) $value;
 				break;
 
@@ -383,8 +382,6 @@ class phpbb_gallery_user
 		'watch_favo'        => false,
 		// Shall the user be subscribed if he comments on an images?
 		'watch_com'         => false,
-		// Automatically subscribe user to new personal galleries?
-		'subscribe_pegas'   => false,
 	];
 
 	/**
