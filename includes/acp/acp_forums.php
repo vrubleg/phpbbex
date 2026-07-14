@@ -1629,21 +1629,12 @@ class acp_forums
 
 		$db->sql_query($sql . $sql_using . $sql_where);
 
-		$table_ary = [FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE, POSTS_TABLE, TOPICS_TABLE, TOPICS_TRACK_TABLE];
+		$table_ary = [DRAFTS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE, POSTS_TABLE, TOPICS_TABLE, TOPICS_TRACK_TABLE];
 
 		foreach ($table_ary as $table)
 		{
 			$db->sql_query("DELETE FROM {$table} WHERE forum_id = {$forum_id}");
 		}
-
-		// Set forum ids to 0
-		$table_ary = [DRAFTS_TABLE];
-
-		foreach ($table_ary as $table)
-		{
-			$db->sql_query("UPDATE {$table} SET forum_id = 0 WHERE forum_id = {$forum_id}");
-		}
-
 		// Adjust users post counts
 		if (sizeof($post_counts))
 		{

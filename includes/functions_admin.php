@@ -698,6 +698,11 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 	}
 	unset($table_ary);
 
+	$sql = 'UPDATE ' . DRAFTS_TABLE . '
+		SET topic_id = 0
+		WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
+	$db->sql_query($sql);
+
 	$moved_topic_ids = [];
 
 	// update the other forums
