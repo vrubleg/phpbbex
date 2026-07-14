@@ -104,19 +104,15 @@ switch ($mode)
 {
 	case 'error':
 		$image_source_path = phpbb_gallery_url::path('images');
-		$possible_watermark = false;
 	break;
 	case 'medium':
 		$image_source_path = phpbb_gallery_url::path('medium');
-		$possible_watermark = true;
 	break;
 	case 'thumbnail':
 		$image_source_path = phpbb_gallery_url::path('thumbnail');
-		$possible_watermark = false;
 	break;
 	default:
 		$image_source_path = phpbb_gallery_url::path('upload');
-		$possible_watermark = true;
 
 		// Increase the view count only for full images, if not already counted
 		$view = request_var('view', '');
@@ -143,7 +139,7 @@ if ($image_error)
 	$image_source = $image_source_path . $image_data['image_filename'];
 }
 
-$image_tools = new phpbb_gallery_image_file(phpbb_gallery_config::get('gdlib_version'));
+$image_tools = new phpbb_gallery_image_file();
 $image_tools->set_image_options(phpbb_gallery_config::get('max_filesize'), phpbb_gallery_config::get('max_height'), phpbb_gallery_config::get('max_width'));
 $image_tools->set_image_data($image_source, $image_data['image_name']);
 
@@ -205,13 +201,5 @@ if (($mode == 'medium') || ($mode == 'thumbnail'))
 }
 
 $image_tools->set_last_modified(phpbb_gallery::$user->get_data('user_permissions_changed'));
-$image_tools->set_last_modified(phpbb_gallery_config::get('watermark_changed'));
-
-// Watermark
-if (phpbb_gallery_config::get('watermark_enabled') && $album_data['album_watermark'] && !phpbb_gallery::$auth->acl_check('i_watermark', $album_id, $album_data['album_user_id']) && $possible_watermark)
-{
-	$image_tools->set_last_modified(@filemtime(phpbb_gallery_url::path('phpbb') . phpbb_gallery_config::get('watermark_source')));
-	$image_tools->watermark_image(phpbb_gallery_url::path('phpbb') . phpbb_gallery_config::get('watermark_source'), phpbb_gallery_config::get('watermark_position'), phpbb_gallery_config::get('watermark_height'), phpbb_gallery_config::get('watermark_width'));
-}
 
 $image_tools->send_image_to_browser();

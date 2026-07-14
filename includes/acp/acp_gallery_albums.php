@@ -101,7 +101,6 @@ class acp_gallery_albums
 						'album_desc_options'    => 7,
 						'album_desc_bitfield'   => '',
 						'album_image'           => request_var('album_image', ''),
-						'album_watermark'       => request_var('album_watermark', false),
 						'album_sort_key'        => request_var('album_sort_key', ''),
 						'album_sort_dir'        => request_var('album_sort_dir', ''),
 						'display_subalbum_list' => request_var('display_subalbum_list', false),
@@ -339,7 +338,6 @@ class acp_gallery_albums
 							'album_name'            => utf8_normalize_nfc(request_var('album_name', '', true)),
 							'album_desc'            => '',
 							'album_image'           => '',
-							'album_watermark'       => true,
 							'album_sort_key'        => '',
 							'album_sort_dir'        => '',
 							'display_subalbum_list' => true,
@@ -506,7 +504,6 @@ class acp_gallery_albums
 					'ALBUM_CONTEST'             => phpbb_gallery_album::TYPE_CONTEST,
 					'S_CAN_COPY_PERMISSIONS'    => true,
 
-					'S_ALBUM_WATERMARK'         => (bool) $album_data['album_watermark'],
 					'ALBUM_SORT_KEY_OPTIONS'    => $album_sort_key_options,
 					'ALBUM_SORT_DIR_OPTIONS'    => $album_sort_dir_options,
 					'S_DISPLAY_SUBALBUM_LIST'   => (bool) $album_data['display_subalbum_list'],

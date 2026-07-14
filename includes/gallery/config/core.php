@@ -59,8 +59,6 @@ class phpbb_gallery_config_core
 		'feed_enable_pegas'     => true,
 		'feed_limit'            => 10,
 
-		'gdlib_version'     => 2,
-
 		'hotlinking_domains'    => '',
 
 		'jpg_quality'           => 100,
@@ -90,7 +88,7 @@ class phpbb_gallery_config_core
 		'num_uploads'           => 10,
 
 		'pegas_index_album'     => false,
-		'pegas_per_page'        => 15,
+		'pegas_per_page'        => 20,
 		'profile_user_images'   => true,
 		'profile_pega'          => true,
 		'prune_orphan_time'     => 0,
@@ -115,19 +113,12 @@ class phpbb_gallery_config_core
 		'thumbnail_cache'       => true,
 		'thumbnail_height'      => 160,
 		'thumbnail_infoline'    => false,
-		'thumbnail_quality'     => 50,
+		'thumbnail_quality'     => 90,
 		'thumbnail_width'       => 240,
 
 		'version'               => '',
 		'viewtopic_icon'        => true,
 		'viewtopic_images'      => true,
 		'viewtopic_link'        => false,
-
-		'watermark_changed'     => 0,
-		'watermark_enabled'     => true,
-		'watermark_height'      => 50,
-		'watermark_position'    => 20,
-		'watermark_source'      => 'gallery/images/watermark.png',
-		'watermark_width'       => 200,
 	];
 }

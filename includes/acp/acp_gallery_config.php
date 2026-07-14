@@ -99,12 +99,6 @@ class acp_gallery_config
 					// Changing the value, casted by int to not mess up anything
 					$config_value = (int) array_sum(request_var($config_name, [0]));
 				}
-				// Recalculate the Watermark-position
-				if (isset($null['method']) && ($null['method'] == 'watermark_position'))
-				{
-					// Changing the value, casted by int to not mess up anything
-					$config_value = request_var('watermark_position_x', 0) + request_var('watermark_position_y', 0);
-				}
 				if ($config_name == 'link_thumbnail')
 				{
 					$update_bbcode = request_var('update_bbcode', '');
@@ -133,10 +127,6 @@ class acp_gallery_config
 						$db->sql_query($sql);
 						$cache->destroy('sql', BBCODES_TABLE);
 					}
-				}
-				if ((strpos($config_name, 'watermark') !== false) && (phpbb_gallery_config::get($config_name) != $config_value))
-				{
-					phpbb_gallery_config::set('watermark_changed', time());
 				}
 				phpbb_gallery_config::set($config_name, $config_value);
 			}
@@ -261,53 +251,6 @@ class acp_gallery_config
 		$sort_order_options .= '<option' . (($value == 'a') ? ' selected="selected"' : '') . " value='a'>" . $user->lang['SORT_ASCENDING'] . '</option>';
 
 		return "<select name=\"config[{$key}]\" id=\"{$key}\">{$sort_order_options}</select>";
-	}
-
-	/**
-	* Radio Buttons for GD library
-	*/
-	function gd_radio($value, $key)
-	{
-		$key_gd1    = ($value == phpbb_gallery_constants::GDLIB1) ? ' checked="checked"' : '';
-		$key_gd2    = ($value == phpbb_gallery_constants::GDLIB2) ? ' checked="checked"' : '';
-
-		$tpl = '';
-
-		$tpl .= "<label><input type=\"radio\" name=\"config[{$key}]\" value=\"" . phpbb_gallery_constants::GDLIB1 . "\" {$key_gd1} class=\"radio\" /> GD1</label>";
-		$tpl .= "<label><input type=\"radio\" id=\"{$key}\" name=\"config[{$key}]\" value=\"" . phpbb_gallery_constants::GDLIB2 . "\" {$key_gd2}  class=\"radio\" /> GD2</label>";
-
-		return $tpl;
-	}
-
-	/**
-	* Display watermark
-	*/
-	function watermark_source($value, $key)
-	{
-		global $user;
-
-		return generate_board_url() . "<br /><input type=\"text\" name=\"config[{$key}]\" id=\"{$key}\" value=\"{$value}\" size =\"40\" maxlength=\"125\" /><br /><img src=\"" . generate_board_url() . "/{$value}\" alt=\"" . $user->lang['WATERMARK'] . "\" />";
-	}
-
-	/**
-	* Display watermark
-	*/
-	function watermark_position($value, $key)
-	{
-		global $user;
-
-		$x_position_options = $y_position_options = '';
-
-		$x_position_options .= '<option' . (($value & phpbb_gallery_constants::WATERMARK_TOP) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_constants::WATERMARK_TOP . "'>" . $user->lang['WATERMARK_POSITION_TOP'] . '</option>';
-		$x_position_options .= '<option' . (($value & phpbb_gallery_constants::WATERMARK_MIDDLE) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_constants::WATERMARK_MIDDLE . "'>" . $user->lang['WATERMARK_POSITION_MIDDLE'] . '</option>';
-		$x_position_options .= '<option' . (($value & phpbb_gallery_constants::WATERMARK_BOTTOM) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_constants::WATERMARK_BOTTOM . "'>" . $user->lang['WATERMARK_POSITION_BOTTOM'] . '</option>';
-
-		$y_position_options .= '<option' . (($value & phpbb_gallery_constants::WATERMARK_LEFT) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_constants::WATERMARK_LEFT . "'>" . $user->lang['WATERMARK_POSITION_LEFT'] . '</option>';
-		$y_position_options .= '<option' . (($value & phpbb_gallery_constants::WATERMARK_CENTER) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_constants::WATERMARK_CENTER . "'>" . $user->lang['WATERMARK_POSITION_CENTER'] . '</option>';
-		$y_position_options .= '<option' . (($value & phpbb_gallery_constants::WATERMARK_RIGHT) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_constants::WATERMARK_RIGHT . "'>" . $user->lang['WATERMARK_POSITION_RIGHT'] . '</option>';
-
-		// Cheating is an evil-thing, but most times it's successful, that's why it is used.
-		return "<input type='hidden' name='config[{$key}]' value='{$value}' /><select name='" . $key . "_x' id='" . $key . "_x'>{$x_position_options}</select><select name='" . $key . "_y' id='" . $key . "_y'>{$y_position_options}</select>";
 	}
 
 	/**
@@ -454,18 +397,10 @@ class acp_gallery_config
 
 			'legend5'               => 'THUMBNAIL_SETTINGS',
 			'thumbnail_cache'       => ['lang' => 'THUMBNAIL_CACHE',        'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
-			'gdlib_version'         => ['lang' => 'GD_VERSION',         'validate' => 'int',    'type' => 'custom',         'gallery' => true,  'explain' => false, 'method' => 'gd_radio'],
 			'thumbnail_width'       => ['lang' => 'THUMBNAIL_WIDTH',        'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => false, 'append' => 'PIXELS'],
 			'thumbnail_height'      => ['lang' => 'THUMBNAIL_HEIGHT',       'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => false, 'append' => 'PIXELS'],
 			'thumbnail_quality'     => ['lang' => 'THUMBNAIL_QUALITY',      'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => true,  'append' => 'PERCENT'],
 			'thumbnail_infoline'    => ['lang' => 'INFO_LINE',              'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
-
-			'legend6'               => 'WATERMARK_OPTIONS',
-			'watermark_enabled'     => ['lang' => 'WATERMARK_IMAGES',       'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
-			'watermark_source'      => ['lang' => 'WATERMARK_SOURCE',       'validate' => 'string', 'type' => 'custom',         'gallery' => true,  'explain' => true,  'method' => 'watermark_source'],
-			'watermark_height'      => ['lang' => 'WATERMARK_HEIGHT',       'validate' => 'int',    'type' => 'text:7:4',       'gallery' => true,  'explain' => true,  'append' => 'PIXELS'],
-			'watermark_width'       => ['lang' => 'WATERMARK_WIDTH',        'validate' => 'int',    'type' => 'text:7:4',       'gallery' => true,  'explain' => true,  'append' => 'PIXELS'],
-			'watermark_position'    => ['lang' => 'WATERMARK_POSITION', 'validate' => '',       'type' => 'custom',         'gallery' => true,  'explain' => false, 'method' => 'watermark_position'],
 
 			'legend7'               => 'UC_LINK_CONFIG',
 			'link_thumbnail'        => ['lang' => 'UC_THUMBNAIL',           'validate' => 'string', 'type' => 'custom',         'gallery' => true,  'explain' => true,  'method' => 'uc_select'],

@@ -293,12 +293,6 @@ function config_mapping()
 		'num_images'                => 'num_images',
 		'personal_counter'          => 'num_pegas',
 
-		'watermark_images'          => 'watermark_enabled',
-		'watermark_source'          => 'watermark_source',
-		'watermark_height'          => 'watermark_height',
-		'watermark_width'           => 'watermark_width',
-		'watermark_position'        => 'watermark_position',
-
 		'jpg_allowed'               => 'allow_jpg',
 		'png_allowed'               => 'allow_png',
 		'gif_allowed'               => 'allow_gif',
@@ -346,7 +340,6 @@ function config_mapping()
 
 		'hotlink_prevent'       => 'allow_hotlinking',
 		'hotlink_allowed'       => 'hotlinking_domains',
-		'gd_version'            => 'gdlib_version',
 
 		'max_file_size'         => 'max_filesize',
 		'max_width'             => 'max_width',

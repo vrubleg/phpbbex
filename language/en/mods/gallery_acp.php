@@ -60,8 +60,6 @@ $lang = array_merge($lang, [
 	'ALBUM_TYPE_CONTEST'            => 'Contest',
 	'ALBUM_TYPE_UPLOAD'             => 'Album',
 	'ALBUM_UPDATED'                 => 'Album has been updated successfully.',
-	'ALBUM_WATERMARK'               => 'Display watermark',
-	'ALBUM_WATERMARK_EXPLAIN'       => 'If this option is set to <samp>No</samp>, the watermark is never displayed, independent from the permissions!',
 	'ALBUM_WITH_CONTEST_NO_TYPE_CHANGE' => 'Contest-Albums can not be turned into a Non-Contest-Album.',
 	'ALBUMS'                        => 'Albums',
 
@@ -174,7 +172,6 @@ $lang = array_merge($lang, [
 	'GALLERY_PURGE_CACHE_EXPLAIN'   => 'If you use the Thumbnail Cache feature you must clear your thumbnail cache after changing your thumbnail settings in “Gallery configuration“ to make them regenerated.',
 	'GALLERY_STATS'                 => 'Gallery statistics',
 	'GALLERY_VERSION'               => 'Gallery version',
-	'GD_VERSION'                    => 'Optimize for GD version',
 	'GENERAL_ALBUM_SETTINGS'        => 'General album settings',
 	'GIF_ALLOWED'                   => 'Allowed to upload GIF files',
 	'GUPLOAD_DIR_SIZE'              => 'upload/-directory size',
@@ -281,7 +278,6 @@ $lang = array_merge($lang, [
 	'PERMISSION_I_UPLOAD'           => 'Can upload images',
 	'PERMISSION_I_UPLOAD_EXPLAIN'   => 'This permission is also used, to determinate whether the user can move images to the album, when having moderator permissions in other forums.',
 	'PERMISSION_I_VIEW'             => 'Can view images',
-	'PERMISSION_I_WATERMARK'        => 'Can view images without watermark',
 	'PERMISSION_M'                  => 'Moderation',
 	'PERMISSION_MISC'               => 'Misc', //Miscellaneous
 	'PERMISSION_M_COMMENTS'         => 'Can moderate comments',
@@ -420,23 +416,6 @@ $lang = array_merge($lang, [
 	'UPLOAD_IMAGES'                 => 'Upload multiple images',
 
 	'VIEW_IMAGE_URL'                => 'View Image-URL on imagepage',
-
-	'WATERMARK'                     => 'Watermark',
-	'WATERMARK_HEIGHT'              => 'Minimum-height for watermark',
-	'WATERMARK_HEIGHT_EXP'          => 'To avoid small images from being covered by the watermark, you may enter a minimum height of the image here. If the image is smaller, the watermark will not be viewed.',
-	'WATERMARK_IMAGES'              => 'Watermark images',
-	'WATERMARK_OPTIONS'             => 'Watermark options',
-	'WATERMARK_POSITION'            => 'Watermark position',
-	'WATERMARK_POSITION_BOTTOM'     => 'bottom',
-	'WATERMARK_POSITION_CENTER'     => 'center',
-	'WATERMARK_POSITION_LEFT'       => 'left',
-	'WATERMARK_POSITION_MIDDLE'     => 'middle',
-	'WATERMARK_POSITION_RIGHT'      => 'right',
-	'WATERMARK_POSITION_TOP'        => 'top',
-	'WATERMARK_SOURCE'              => 'Watermark source file',
-	'WATERMARK_SOURCE_EXP'          => 'Relative to your phpBB rootpath',
-	'WATERMARK_WIDTH'               => 'Minimum-width for watermark',
-	'WATERMARK_WIDTH_EXP'           => 'To avoid small images from being covered by the watermark, you may enter a minimum width of the image here. If the image is smaller, the watermark will not be viewed.',
 
 	'ZIP_ALLOWED'                   => 'Allowed to upload ZIP archives',
 ]);

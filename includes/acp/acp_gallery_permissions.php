@@ -40,7 +40,7 @@ class acp_gallery_permissions
 		*/
 		$permissions = new stdclass();
 		$permissions->cats['full'] = [
-			'i'     => ['i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
+			'i'     => ['i_view', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
 			'c'     => ['c_read', 'c_post', 'c_edit', 'c_delete'],
 			'm'     => ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'],
 			'misc'  => ['a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'],
@@ -49,7 +49,7 @@ class acp_gallery_permissions
 
 		// Permissions for the normal albums
 		$permissions->cats[phpbb_gallery_auth::PUBLIC_ALBUM] = [
-			'i'     => ['i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
+			'i'     => ['i_view', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
 			'c'     => ['c_read', 'c_post', 'c_edit', 'c_delete'],
 			'm'     => ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'],
 			'misc'  => ['a_list', 'i_count', 'i_unlimited'/*, 'a_count', 'a_unlimited', 'a_restrict'*/],
@@ -60,7 +60,7 @@ class acp_gallery_permissions
 		// Permissions for own personal albums
 		// Note: we set i_view to 1 as default on storing the permissions
 		$permissions->cats[phpbb_gallery_auth::OWN_ALBUM] = [
-			'i'     => [/*'i_view', */'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
+			'i'     => [/*'i_view', */'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'],
 			'c'     => ['c_read', 'c_post', 'c_edit', 'c_delete'],
 			'm'     => ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'],
 			'misc'  => ['a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'],
@@ -71,7 +71,7 @@ class acp_gallery_permissions
 		// Permissions for personal albums of other users
 		// Note: Do !NOT! hide the i_upload. It's used for the moving-permissions
 		$permissions->cats[phpbb_gallery_auth::PERSONAL_ALBUM] = [
-			'i'     => ['i_view', 'i_watermark', 'i_upload', /*'i_approve', 'i_edit', 'i_delete', */'i_report', 'i_rate'],
+			'i'     => ['i_view', 'i_upload', /*'i_approve', 'i_edit', 'i_delete', */'i_report', 'i_rate'],
 			'c'     => ['c_read', 'c_post', 'c_edit', 'c_delete'],
 			'm'     => ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'],
 			'misc'  => ['a_list'/*, 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'*/],

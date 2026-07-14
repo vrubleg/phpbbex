@@ -621,6 +621,39 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 // Not ready yet. Replace '<=' by '<' before the release.
 if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 {
+	// Remove obsolete Gallery stuff.
+
+	remove_config_values([
+		'phpbb_gallery_gdlib_version',
+		'phpbb_gallery_watermark_changed',
+		'phpbb_gallery_watermark_enabled',
+		'phpbb_gallery_watermark_height',
+		'phpbb_gallery_watermark_position',
+		'phpbb_gallery_watermark_source',
+		'phpbb_gallery_watermark_width',
+	]);
+
+	if ($db_tools->sql_table_exists(GALLERY_ALBUMS_TABLE) && $db_tools->sql_column_exists(GALLERY_ALBUMS_TABLE, 'album_watermark'))
+	{
+		foreach ($db_tools->sql_column_remove(GALLERY_ALBUMS_TABLE, 'album_watermark') as $sql)
+		{
+			$db->sql_query($sql);
+		}
+	}
+	if ($db_tools->sql_table_exists(GALLERY_ROLES_TABLE) && $db_tools->sql_column_exists(GALLERY_ROLES_TABLE, 'i_watermark'))
+	{
+		foreach ($db_tools->sql_column_remove(GALLERY_ROLES_TABLE, 'i_watermark') as $sql)
+		{
+			$db->sql_query($sql);
+		}
+	}
+	if ($db_tools->sql_table_exists(GALLERY_USERS_TABLE))
+	{
+		$db->sql_query('UPDATE ' . GALLERY_USERS_TABLE . "
+			SET user_permissions = '',
+				user_permissions_changed = " . time());
+	}
+
 	// Migrate settings.
 
 	if ($config['board_hide_emails'] ?? 0)

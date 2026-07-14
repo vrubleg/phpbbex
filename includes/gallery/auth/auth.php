@@ -29,7 +29,7 @@ class phpbb_gallery_auth
 	const ACL_YES       = 1;
 	const ACL_NEVER     = 2;
 
-	static private $_permission_i = ['i_view', 'i_watermark', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'];
+	static private $_permission_i = ['i_view', 'i_upload', 'i_approve', 'i_edit', 'i_delete', 'i_report', 'i_rate'];
 	static private $_permission_c = ['c_read', 'c_post', 'c_edit', 'c_delete'];
 	static private $_permission_m = ['m_comments', 'm_delete', 'm_edit', 'm_move', 'm_report', 'm_status'];
 	static private $_permission_misc = ['a_list', 'i_count', 'i_unlimited', 'a_count', 'a_unlimited', 'a_restrict'];

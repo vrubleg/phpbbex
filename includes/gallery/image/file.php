@@ -15,7 +15,7 @@ if (!defined('IN_PHPBB'))
 /**
 * A little class for all the actions that the gallery does on images.
 *
-* resize, rotate, watermark, read exif, create thumbnail, write to hdd, send to browser
+* resize, rotate, read exif, create thumbnail, write to hdd, send to browser
 */
 class phpbb_gallery_image_file
 {
@@ -26,8 +26,6 @@ class phpbb_gallery_image_file
 	private $last_modified = 0;
 
 	public $exif_data_force_db = false;
-
-	public $gd_version = 0;
 
 	public $image;
 	public $image_content_type;
@@ -46,22 +44,6 @@ class phpbb_gallery_image_file
 
 	public $thumb_height = 0;
 	public $thumb_width = 0;
-
-	public $watermark;
-	public $watermark_size = [];
-	public $watermark_source = '';
-	public $watermarked = false;
-
-	/**
-	* Constructor - init some basic stuff
-	*/
-	public function __constructor($gd_version = 0)
-	{
-		if ($gd_version)
-		{
-			$this->gd_version = $gd_version;
-		}
-	}
 
 	public function set_image_options($max_file_size, $max_height, $max_width)
 	{
@@ -87,7 +69,6 @@ class phpbb_gallery_image_file
 		if ($force_empty_image)
 		{
 			$this->image = null;
-			$this->watermarked = false;
 			$this->rotated = false;
 			$this->resized = false;
 			$this->exif_data_force_db = false;
@@ -205,8 +186,6 @@ class phpbb_gallery_image_file
 	*   - Last change of the file
 	*   - Last change of user's permissions
 	*   - Last change of user's groups
-	*   - Last change of watermark config
-	*   - Last change of watermark file
 	*/
 	public function set_last_modified($timestamp)
 	{
@@ -348,7 +327,7 @@ class phpbb_gallery_image_file
 			$this->thumb_width  = $max_width;
 		}
 
-		$image_copy = (($this->gd_version == phpbb_gallery_constants::GDLIB1) ? @imagecreate($this->thumb_width, $this->thumb_height + $additional_height) : @imagecreatetruecolor($this->thumb_width, $this->thumb_height + $additional_height));
+		$image_copy = @imagecreatetruecolor($this->thumb_width, $this->thumb_height + $additional_height);
 		if ($this->image_type != 'jpeg')
 		{
 			imagealphablending($image_copy, false);
@@ -357,8 +336,7 @@ class phpbb_gallery_image_file
 			imagefilledrectangle($image_copy, 0, 0, $this->thumb_width, $this->thumb_height + $additional_height, $transparent);
 		}
 
-		$resize_function = ($this->gd_version == phpbb_gallery_constants::GDLIB1) ? 'imagecopyresized' : 'imagecopyresampled';
-		$resize_function($image_copy, $this->image, 0, 0, 0, 0, $this->thumb_width, $this->thumb_height, $this->image_size['width'], $this->image_size['height']);
+		imagecopyresampled($image_copy, $this->image, 0, 0, 0, 0, $this->thumb_width, $this->thumb_height, $this->image_size['width'], $this->image_size['height']);
 
 		imagealphablending($image_copy, true);
 		imagesavealpha($image_copy, true);
@@ -421,76 +399,6 @@ class phpbb_gallery_image_file
 		$this->rotated = true;
 		// We loose the exif data, so force to store them in the database
 		$this->exif_data_force_db = true;
-	}
-
-	/**
-	* Watermark the image:
-	*
-	* @param int $watermark_position summary of the parameters for vertical and horizontal adjustment
-	*/
-	public function watermark_image($watermark_source, $watermark_position = 20, $min_height = 0, $min_width = 0)
-	{
-		$this->watermark_source = $watermark_source;
-		if (!$this->watermark_source || !file_exists($this->watermark_source))
-		{
-			$this->errors[] = ['WATERMARK_IMAGE_SOURCE'];
-			return;
-		}
-
-		if (!$this->image)
-		{
-			$this->read_image();
-		}
-
-		if (($min_height && ($this->image_size['height'] < $min_height)) || ($min_width && ($this->image_size['width'] < $min_width)))
-		{
-			return;
-			//$this->errors[] = array('WATERMARK_IMAGE_DIMENSION');
-		}
-
-		$this->watermark_size = getimagesize($this->watermark_source);
-		switch ($this->watermark_size['mime'])
-		{
-			case 'image/png':
-				$imagecreate = 'imagecreatefrompng';
-			break;
-			case 'image/gif':
-				$imagecreate = 'imagecreatefromgif';
-			break;
-			default:
-				$imagecreate = 'imagecreatefromjpeg';
-			break;
-		}
-
-		// Get the watermark as resource.
-		if (($this->watermark = $imagecreate($this->watermark_source)) === false)
-		{
-			$this->errors[] = ['WATERMARK_IMAGE_IMAGECREATE'];
-		}
-
-		// Where do we display the watermark? up-left, down-right, ...?
-		$dst_x = (($this->image_size['width'] * 0.5) - ($this->watermark_size[0] * 0.5));
-		$dst_y = ($this->image_size['height'] - $this->watermark_size[1] - 5);
-		if ($watermark_position & phpbb_gallery_constants::WATERMARK_LEFT)
-		{
-			$dst_x = 5;
-		}
-		elseif ($watermark_position & phpbb_gallery_constants::WATERMARK_RIGHT)
-		{
-			$dst_x = ($this->image_size['width'] - $this->watermark_size[0] - 5);
-		}
-		if ($watermark_position & phpbb_gallery_constants::WATERMARK_TOP)
-		{
-			$dst_y = 5;
-		}
-		elseif ($watermark_position & phpbb_gallery_constants::WATERMARK_MIDDLE)
-		{
-			$dst_y = (($this->image_size['height'] * 0.5) - ($this->watermark_size[1] * 0.5));
-		}
-		imagecopy($this->image, $this->watermark, $dst_x, $dst_y, 0, 0, $this->watermark_size[0], $this->watermark_size[1]);
-		if (PHP_VERSION_ID < 80000) { imagedestroy($this->watermark); }
-
-		$this->watermarked = true;
 	}
 
 	/**

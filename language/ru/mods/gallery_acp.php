@@ -60,8 +60,6 @@ $lang = array_merge($lang, [
 	'ALBUM_TYPE_CONTEST'            => 'Конкурс',
 	'ALBUM_TYPE_UPLOAD'             => 'Альбом',
 	'ALBUM_UPDATED'                 => 'Альбом обновлён.',
-	'ALBUM_WATERMARK'               => 'Показывать водяной знак',
-	'ALBUM_WATERMARK_EXPLAIN'       => 'Если установлено «Нет» — водяной знак никогда не показывается, вне зависимости от установленных прав доступа.',
 	'ALBUM_WITH_CONTEST_NO_TYPE_CHANGE' => 'Конкурсный альбом не может быть переделан в обычный.',
 	'ALBUMS'                        => 'Альбомы',
 
@@ -174,7 +172,6 @@ $lang = array_merge($lang, [
 	'GALLERY_PURGE_CACHE_EXPLAIN'   => 'Если включены миниатюры, вы должны очищать кэш после любого изменения их параметров.',
 	'GALLERY_STATS'                 => 'Статистика галереи',
 	'GALLERY_VERSION'               => 'Версия галереи',
-	'GD_VERSION'                    => 'Версия GD',
 	'GENERAL_ALBUM_SETTINGS'        => 'Общие свойства альбома',
 	'GIF_ALLOWED'                   => 'GIF разрешён',
 	'GUPLOAD_DIR_SIZE'              => 'Размер папки <em>upload</em>',
@@ -281,7 +278,6 @@ $lang = array_merge($lang, [
 	'PERMISSION_I_UPLOAD'           => 'Может загружать фото',
 	'PERMISSION_I_UPLOAD_EXPLAIN'   => 'Это право также используется для определения, может ли пользователь перемещать фотографии в альбом, если у него имеются модераторские права в других форумах.',
 	'PERMISSION_I_VIEW'             => 'Может просматривать фото',
-	'PERMISSION_I_WATERMARK'        => 'Может просматривать фото без водяных знаков',
 	'PERMISSION_M'                  => 'Модерация',
 	'PERMISSION_MISC'               => 'Прочее', //Miscellaneous
 	'PERMISSION_M_COMMENTS'         => 'Может модерировать комментарии',
@@ -420,23 +416,6 @@ $lang = array_merge($lang, [
 	'UPLOAD_IMAGES'                 => 'Количество одновременно загружаемых фотографий',
 
 	'VIEW_IMAGE_URL'                => 'Выводить ссылку на фото (для копирования)',
-
-	'WATERMARK'                     => 'Водяной знак',
-	'WATERMARK_HEIGHT'              => 'Минимальная высота фотографий',
-	'WATERMARK_HEIGHT_EXP'          => '',
-	'WATERMARK_IMAGES'              => 'Использовать водяной знак',
-	'WATERMARK_OPTIONS'             => 'Свойства водяного знака',
-	'WATERMARK_POSITION'            => 'Позиция водяного знака',
-	'WATERMARK_POSITION_BOTTOM'     => 'внизу',
-	'WATERMARK_POSITION_CENTER'     => 'в центре',
-	'WATERMARK_POSITION_LEFT'       => 'слева',
-	'WATERMARK_POSITION_MIDDLE'     => 'посередине',
-	'WATERMARK_POSITION_RIGHT'      => 'справа',
-	'WATERMARK_POSITION_TOP'        => 'вверху',
-	'WATERMARK_SOURCE'              => 'Изображение водяного знака',
-	'WATERMARK_SOURCE_EXP'          => 'Путь к файлу относительно корневой папки phpBB.',
-	'WATERMARK_WIDTH'               => 'Минимальная ширина фотографий',
-	'WATERMARK_WIDTH_EXP'           => 'Чтобы избежать перекрытия водяным знаком маленьких фотографий, можно ввести их минимальную высоту и ширину, при которых будет отображаться водяной знак.',
 
 	'ZIP_ALLOWED'                   => 'ZIP-архивы разрешены',
 ]);

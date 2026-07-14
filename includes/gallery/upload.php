@@ -57,7 +57,7 @@ class phpbb_gallery_upload
 		}
 		$this->upload = new fileupload('', self::get_allowed_types(), (4 * phpbb_gallery_config::get('max_filesize')));
 
-		$this->tools = new phpbb_gallery_image_file(phpbb_gallery_config::get('gdlib_version'));
+		$this->tools = new phpbb_gallery_image_file();
 
 		$this->album_id = (int) $album_id;
 		$this->file_limit = (int) $num_files;
