@@ -318,7 +318,6 @@ class acp_groups
 						'rank'              => request_var('group_rank', 0),
 						'receive_pm'        => isset($_REQUEST['group_receive_pm']) ? 1 : 0,
 						'legend'            => isset($_REQUEST['group_legend']) ? 1 : 0,
-						'max_recipients'    => request_var('group_max_recipients', 0),
 						'founder_manage'    => 0,
 						'skip_auth'         => request_var('group_skip_auth', 0),
 					];
@@ -328,9 +327,8 @@ class acp_groups
 						$submit_ary['founder_manage'] = isset($_REQUEST['group_founder_manage']) ? 1 : 0;
 					}
 
-					// Validate "Maximum number of allowed recipients per private message" and colour.
+					// Validate colour.
 					$validation_checks = [
-						'max_recipients' => ['num', false, 0, 1000000],
 						'colour'    => ['hex_colour', true],
 					];
 
@@ -352,7 +350,6 @@ class acp_groups
 							'rank'          => 'int',
 							'receive_pm'    => 'int',
 							'legend'        => 'int',
-							'max_recipients'=> 'int',
 							'founder_manage'=> 'int',
 							'skip_auth'     => 'int',
 						];
@@ -505,7 +502,6 @@ class acp_groups
 					'GROUP_RECEIVE_PM'      => (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
 					'GROUP_FOUNDER_MANAGE'  => (isset($group_row['group_founder_manage']) && $group_row['group_founder_manage']) ? ' checked="checked"' : '',
 					'GROUP_LEGEND'          => (isset($group_row['group_legend']) && $group_row['group_legend']) ? ' checked="checked"' : '',
-					'GROUP_MAX_RECIPIENTS'  => $group_row['group_max_recipients'] ?? 0,
 					'GROUP_COLOUR'          => $group_row['group_colour'] ?? '',
 					'GROUP_SKIP_AUTH'       => (!empty($group_row['group_skip_auth'])) ? ' checked="checked"' : '',
 

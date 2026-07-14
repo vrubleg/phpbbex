@@ -195,7 +195,7 @@ $lang = array_merge($lang, [
 	'PM_EDIT_TIME'              => 'Limit editing time',
 	'PM_EDIT_TIME_EXPLAIN'      => 'Limits the time available to edit a private message not already delivered. Setting the value to 0 disables this behaviour.',
 	'PM_MAX_RECIPIENTS'         => 'Maximum number of allowed recipients',
-	'PM_MAX_RECIPIENTS_EXPLAIN' => 'The maximum number of allowed recipients in a private message. If 0 is entered, an unlimited number is allowed. This setting can be adjusted for every group within the group settings page.',
+	'PM_MAX_RECIPIENTS_EXPLAIN' => 'The maximum number of allowed recipients in a private message. If 0 is entered, an unlimited number is allowed.',
 ]);
 
 // Post Settings

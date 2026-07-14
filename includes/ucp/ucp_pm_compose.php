@@ -396,17 +396,8 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=view&amp;action=view_message&amp;p=' . $msg_id));
 	}
 
-	// Get maximum number of allowed recipients
-	$sql = 'SELECT MAX(g.group_max_recipients) as max_recipients
-		FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . ' ug
-		WHERE ug.user_id = ' . $user->data['user_id'] . '
-			AND ug.user_pending = 0
-			AND ug.group_id = g.group_id';
-	$result = $db->sql_query($sql);
-	$max_recipients = (int) $db->sql_fetchfield('max_recipients');
-	$db->sql_freeresult($result);
-
-	$max_recipients = (!$max_recipients) ? $config['pm_max_recipients'] : $max_recipients;
+	// Get maximum number of allowed recipients. Zero means unlimited.
+	$max_recipients = $auth->acl_get('u_masspm_nomax') ? 0 : (int) $config['pm_max_recipients'];
 
 	// If this is a quote/reply "to all"... we may increase the max_recpients to the number of original recipients
 	if (($action == 'reply' || $action == 'quote') && $max_recipients && $reply_to_all)

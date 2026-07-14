@@ -683,6 +683,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('allow_avatar_upload', '1');
 	set_config('allow_avatar_remote_upload', '0');
 	set_config('avatar_filesize', '20480');
+	set_config('allow_mass_pm', '0');
+	set_config('pm_max_recipients', '5');
 
 	// Remove obsolete modules.
 
@@ -703,6 +705,14 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'u_pm_download',
 		'u_sendim',
 	]);
+
+	// Add the PM recipient-limit bypass permission without granting it to any role.
+	require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
+	$auth_admin = new auth_admin();
+	if (empty($auth_admin->acl_options['id']['u_masspm_nomax']))
+	{
+		$auth_admin->acl_add_option(['global' => ['u_masspm_nomax']]);
+	}
 
 	// Update cached module rights.
 
@@ -751,6 +761,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topic_show_days');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
 	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_message_limit');
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_max_recipients');
 	$db->sql_query("DROP TABLE {$table_prefix}forums_access");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 
@@ -1764,14 +1775,7 @@ function database_update_info()
 			],
 		],
 		'3.0.2-RC2'     => [],
-		'3.0.2'         => [
-			// Add the following columns
-			'add_columns'       => [
-				GROUPS_TABLE                    => [
-					'group_max_recipients'      => ['UINT', 0],
-				],
-			],
-		],
+		'3.0.2'         => [],
 		'3.0.3-RC1'     => [],
 		'3.0.3'         => [
 			'add_columns'       => [
@@ -1944,13 +1948,6 @@ function change_database_data(&$no_updates, $version)
 		case '3.0.2':
 			set_config('enable_queue_trigger', '0');
 			set_config('queue_trigger_posts', '3');
-
-			set_config('pm_max_recipients', '0');
-
-			// Set maximum number of recipients for the registered users, bots, guests group
-			$sql = 'UPDATE ' . GROUPS_TABLE . ' SET group_max_recipients = 5
-				WHERE ' . $db->sql_in_set('group_name', ['GUESTS', 'REGISTERED', 'REGISTERED_COPPA', 'BOTS']);
-			_sql($sql, $errored, $error_ary);
 
 			// Add new permission u_masspm_group and duplicate settings from u_masspm
 			require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
@@ -2231,7 +2228,7 @@ function change_database_data(&$no_updates, $version)
 
 			if (!$group_id)
 			{
-				$sql = 'INSERT INTO ' .  GROUPS_TABLE . " (group_name, group_type, group_founder_manage, group_colour, group_legend, group_avatar, group_desc, group_desc_uid, group_max_recipients) VALUES ('NEWLY_REGISTERED', 3, 0, '', 0, '', '', '', 5)";
+				$sql = 'INSERT INTO ' .  GROUPS_TABLE . " (group_name, group_type, group_founder_manage, group_colour, group_legend, group_avatar, group_desc, group_desc_uid) VALUES ('NEWLY_REGISTERED', 3, 0, '', 0, '', '', '')";
 				_sql($sql, $errored, $error_ary);
 
 				$group_id = $db->sql_nextid();

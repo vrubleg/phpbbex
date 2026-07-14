@@ -96,6 +96,7 @@ $lang = array_merge($lang, [
 	'acl_u_sendpm'      => ['lang' => 'Can send private messages', 'cat' => 'pm'],
 	'acl_u_masspm'      => ['lang' => 'Can send messages to multiple users', 'cat' => 'pm'],
 	'acl_u_masspm_group'=> ['lang' => 'Can send messages to groups', 'cat' => 'pm'],
+	'acl_u_masspm_nomax'=> ['lang' => 'Can ignore the maximum number of PM recipients', 'cat' => 'pm'],
 	'acl_u_readpm'      => ['lang' => 'Can read private messages', 'cat' => 'pm'],
 	'acl_u_pm_edit'     => ['lang' => 'Can edit own private messages', 'cat' => 'pm'],
 	'acl_u_pm_attach'   => ['lang' => 'Can attach files in private messages', 'cat' => 'pm'],
