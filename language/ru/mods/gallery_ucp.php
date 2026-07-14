@@ -22,6 +22,8 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	'ALBUMS'                        => 'Альбомы',
 	'ALBUM_DESC'                    => 'Описание альбома',
+	'CREATE_PERSONAL_ALBUM'         => 'Создать личный альбом',
+	'CREATE_PERSONAL_ALBUM_CONFIRM' => 'Вы хотите создать личный альбом?',
 
 	'DELETE_ALBUM'                  => 'Удалить альбом',
 	'DELETE_ALBUM_CONFIRM'          => 'Удалить личный альбом и все фотографии в нём?',
@@ -35,6 +37,7 @@ $lang = array_merge($lang, [
 	'NO_ALBUM_STEALING'             => 'Вы не можете управлять альбомами других пользователей.',
 	'NO_FAVORITES'                  => 'У вас нет избранного.',
 	'NO_PERSALBUM_ALLOWED'          => 'У вас нет права на создание личного альбома',
+	'NO_PERSONAL_ALBUM'             => 'У вас пока нет личного фотоальбома. Здесь можно его создать.',
 	'NO_SUBSCRIPTIONS'              => 'Вы не подписаны ни на одно фото.',
 
 	'PARSE_BBCODE'                  => 'Разрешить BBCode',

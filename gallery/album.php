@@ -37,7 +37,21 @@ if ($mode == 'personal')
 			trigger_error('NO_PERSALBUM_ALLOWED');
 		}
 
-		$album_id = phpbb_gallery_album::generate_personal_album($user->data['username'], $user->data['user_id'], $user->data['user_colour'], phpbb_gallery::$user);
+		if (isset($_POST['cancel']))
+		{
+			phpbb_gallery_url::redirect('index');
+		}
+
+		if (confirm_box(true))
+		{
+			$album_id = phpbb_gallery_album::generate_personal_album($user->data['username'], $user->data['user_id'], $user->data['user_colour'], phpbb_gallery::$user);
+		}
+		else
+		{
+			confirm_box(false, 'CREATE_PERSONAL_ALBUM', build_hidden_fields([
+				'mode' => 'personal',
+			]));
+		}
 	}
 
 	phpbb_gallery_url::redirect('album', 'album_id=' . $album_id);
