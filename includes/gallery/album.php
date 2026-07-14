@@ -635,16 +635,10 @@ class phpbb_gallery_album
 			}
 			$root_data = ['album_id' => 0];//@todo: I think this is incorrect!?
 			$sql_where = 'a.album_user_id > ' . self::PUBLIC_ALBUM;
-			$num_pegas = phpbb_gallery_config::get('num_pegas');
 
 			$mode_personal = true;
 			$start = request_var('start', 0);
 			$limit = phpbb_gallery_config::get('pegas_per_page');
-			$template->assign_vars([
-				'PAGINATION'                => generate_pagination(phpbb_gallery_url::append_sid('index', 'mode=' . $mode), $num_pegas, $limit, $start),
-				'TOTAL_PGALLERIES_SHORT'    => $user->lang('TOTAL_PEGAS_SHORT_SPRINTF', $num_pegas),
-				'PAGE_NUMBER'               => on_page($num_pegas, $limit, $start),
-			]);
 		}
 		else
 		{
@@ -811,6 +805,26 @@ class phpbb_gallery_album
 				meta_refresh(3, $redirect);
 				trigger_error($message);
 			}
+		}
+
+		if (isset($mode_personal))
+		{
+			// Hide empty personal album trees, except for the current user's own album.
+			// Subalbum image totals have already been added to their root album above.
+			foreach ($album_rows as $album_id => $row)
+			{
+				if (!$row['album_images_real'] && ($row['album_user_id'] != $user->data['user_id']))
+				{
+					unset($album_rows[$album_id], $subalbums[$album_id]);
+				}
+			}
+
+			$num_pegas = sizeof($album_rows);
+			$template->assign_vars([
+				'PAGINATION'                => generate_pagination(phpbb_gallery_url::append_sid('index', 'mode=' . $mode), $num_pegas, $limit, $start),
+				'TOTAL_PGALLERIES_SHORT'    => $user->lang('TOTAL_PEGAS_SHORT_SPRINTF', $num_pegas),
+				'PAGE_NUMBER'               => on_page($num_pegas, $limit, $start),
+			]);
 		}
 
 
