@@ -484,9 +484,10 @@ class ucp_main
 
 						$insert_url = append_sid(PHPBB_ROOT_PATH . 'posting.php', 'f=' . $draft['forum_id'] . '&amp;mode=post&amp;d=' . $draft['draft_id']);
 					}
-					else if ($pm_drafts)
+					else
 					{
-						$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=compose&amp;d=" . $draft['draft_id']);
+						// Preserve access to the draft by loading it as a PM when its forum is unavailable
+						$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;d=' . $draft['draft_id']);
 					}
 
 					$template_row = [

@@ -25,7 +25,7 @@
 			<li class="row<!-- IF draftrow.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 				<dl>
 					<dt>
-						<!-- IF draftrow.U_INSERT --><a class="topictitle" href="{draftrow.U_INSERT}">{draftrow.DRAFT_SUBJECT}</a><!-- ELSE --><strong>{draftrow.DRAFT_SUBJECT}</strong><!-- ENDIF --><br />
+						<a class="topictitle" href="{draftrow.U_INSERT}"><!-- IF draftrow.DRAFT_SUBJECT -->{draftrow.DRAFT_SUBJECT}<!-- ELSE -->{L_NO_SUBJECT}<!-- ENDIF --></a><br />
 						<!-- IF draftrow.S_LINK_TOPIC -->{L_TOPIC}: <a href="{draftrow.U_VIEW}">{draftrow.TITLE}</a>
 						<!-- ELSEIF draftrow.S_LINK_FORUM -->{L_FORUM}: <a href="{draftrow.U_VIEW}">{draftrow.TITLE}</a>
 						<!-- ELSEIF S_PRIVMSGS -->

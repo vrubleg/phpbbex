@@ -528,9 +528,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 					$sql = 'SELECT draft_id
 						FROM ' . DRAFTS_TABLE . "
 						WHERE draft_id = {$loaded_draft_id}
-							AND user_id = " . $user->data['user_id'] . '
-							AND topic_id = 0
-							AND forum_id = 0';
+							AND user_id = " . $user->data['user_id'];
 					$result = $db->sql_query_limit($sql, 1);
 					$loaded_draft_exists = (bool) $db->sql_fetchfield('draft_id');
 					$db->sql_freeresult($result);
@@ -597,8 +595,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$sql = 'SELECT draft_subject, draft_message
 			FROM ' . DRAFTS_TABLE . "
 			WHERE draft_id = {$load_draft_id}
-				AND topic_id = 0
-				AND forum_id = 0
 				AND user_id = " . $user->data['user_id'];
 		$result = $db->sql_query_limit($sql, 1);
 
