@@ -247,21 +247,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 				trigger_error('NOT_AUTHORISED');
 			}
 
-			// Passworded forum?
-			if ($post['forum_id'])
-			{
-				$sql = 'SELECT forum_id, forum_name, forum_password
-					FROM ' . FORUMS_TABLE . '
-					WHERE forum_id = ' . (int) $post['forum_id'];
-				$result = $db->sql_query($sql);
-				$forum_data = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if (!empty($forum_data['forum_password']))
-				{
-					login_forum_box($forum_data);
-				}
-			}
 		}
 
 		$msg_id         = (int) $post['msg_id'];

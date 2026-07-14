@@ -70,7 +70,7 @@ else
 	if (!$attachment['in_message'])
 	{
 		//
-		$sql = 'SELECT p.forum_id, f.forum_name, f.forum_password, f.parent_id
+		$sql = 'SELECT p.forum_id, f.parent_id
 			FROM ' . POSTS_TABLE . ' p, ' . FORUMS_TABLE . ' f
 			WHERE p.post_id = ' . $attachment['post_msg_id'] . '
 				AND p.forum_id = f.forum_id';
@@ -81,15 +81,7 @@ else
 		// Global announcement?
 		$f_download = (!$row) ? $auth->acl_getf_global('f_download') : $auth->acl_get('f_download', $row['forum_id']);
 
-		if ($auth->acl_get('u_download') && $f_download)
-		{
-			if ($row && $row['forum_password'])
-			{
-				// Do something else ... ?
-				login_forum_box($row);
-			}
-		}
-		else
+		if (!$auth->acl_get('u_download') || !$f_download)
 		{
 			http_response_code(403);
 			trigger_error('SORRY_AUTH_VIEW_ATTACH');

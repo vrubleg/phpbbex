@@ -135,9 +135,6 @@ class acp_forums
 						'prune_old_polls'       => request_var('prune_old_polls', false),
 						'prune_announce'        => request_var('prune_announce', false),
 						'prune_sticky'          => request_var('prune_sticky', false),
-						'forum_password'        => request_var('forum_password', '', true),
-						'forum_password_confirm'=> request_var('forum_password_confirm', '', true),
-						'forum_password_unset'  => request_var('forum_password_unset', false),
 					];
 
 					// On add, add empty forum_options... else do not consider it (not updating it)
@@ -394,7 +391,6 @@ class acp_forums
 
 					$parents_list = make_forum_select($forum_data['parent_id'], $exclude_forums, true, false, false);
 
-					$forum_data['forum_password_confirm'] = $forum_data['forum_password'];
 				}
 				else
 				{
@@ -428,8 +424,6 @@ class acp_forums
 							'prune_freq'            => 1,
 							'forum_flags'           => FORUM_FLAG_ACTIVE_TOPICS,
 							'forum_options'         => 0,
-							'forum_password'        => '',
-							'forum_password_confirm'=> '',
 						];
 					}
 				}
@@ -572,11 +566,6 @@ class acp_forums
 					}
 				}
 
-				if (strlen($forum_data['forum_password']) == 32)
-				{
-					$errors[] = $user->lang['FORUM_PASSWORD_OLD'];
-				}
-
 				$template->assign_vars([
 					'S_EDIT_FORUM'      => true,
 					'S_ERROR'           => (sizeof($errors) > 0),
@@ -608,8 +597,6 @@ class acp_forums
 					'S_BBCODE_CHECKED'          => (bool) $forum_rules_data['allow_bbcode'],
 					'S_SMILIES_CHECKED'         => (bool) $forum_rules_data['allow_smilies'],
 					'S_URLS_CHECKED'            => (bool) $forum_rules_data['allow_urls'],
-					'S_FORUM_PASSWORD_SET'      => empty($forum_data['forum_password']),
-
 					'FORUM_DESC'                => $forum_desc_data['text'],
 					'S_DESC_BBCODE_CHECKED'     => (bool) $forum_desc_data['allow_bbcode'],
 					'S_DESC_SMILIES_CHECKED'    => (bool) $forum_desc_data['allow_smilies'],
@@ -883,15 +870,6 @@ class acp_forums
 			$errors[] = $user->lang['FORUM_RULES_TOO_LONG'];
 		}
 
-		if ($forum_data['forum_password'] || $forum_data['forum_password_confirm'])
-		{
-			if ($forum_data['forum_password'] != $forum_data['forum_password_confirm'])
-			{
-				$forum_data['forum_password'] = $forum_data['forum_password_confirm'] = '';
-				$errors[] = $user->lang['FORUM_PASSWORD_MISMATCH'];
-			}
-		}
-
 		if ($forum_data['prune_days'] < 0 || $forum_data['prune_viewed'] < 0 || $forum_data['prune_freq'] < 0)
 		{
 			$forum_data['prune_days'] = $forum_data['prune_viewed'] = $forum_data['prune_freq'] = 0;
@@ -925,7 +903,6 @@ class acp_forums
 		unset($forum_data_sql['prune_announce']);
 		unset($forum_data_sql['prune_sticky']);
 		unset($forum_data_sql['show_active']);
-		unset($forum_data_sql['forum_password_confirm']);
 
 		// What are we going to do tonight Brain? The same thing we do everynight,
 		// try to take over the world ... or decide whether to continue update
@@ -934,21 +911,6 @@ class acp_forums
 		{
 			return $errors;
 		}
-
-		// As we don't know the old password, it's kinda tricky to detect changes
-		if ($forum_data_sql['forum_password_unset'])
-		{
-			$forum_data_sql['forum_password'] = '';
-		}
-		else if (empty($forum_data_sql['forum_password']))
-		{
-			unset($forum_data_sql['forum_password']);
-		}
-		else
-		{
-			$forum_data_sql['forum_password'] = phpbb_hash($forum_data_sql['forum_password']);
-		}
-		unset($forum_data_sql['forum_password_unset']);
 
 		if (!isset($forum_data_sql['forum_id']))
 		{
@@ -1337,7 +1299,7 @@ class acp_forums
 		}
 		unset($table_ary);
 
-		$table_ary = [FORUMS_ACCESS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, MODERATOR_CACHE_TABLE];
+		$table_ary = [FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, MODERATOR_CACHE_TABLE];
 
 		foreach ($table_ary as $table)
 		{
@@ -1667,7 +1629,7 @@ class acp_forums
 
 		$db->sql_query($sql . $sql_using . $sql_where);
 
-		$table_ary = [FORUMS_ACCESS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE, POSTS_TABLE, TOPICS_TABLE, TOPICS_TRACK_TABLE];
+		$table_ary = [FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE, POSTS_TABLE, TOPICS_TABLE, TOPICS_TRACK_TABLE];
 
 		foreach ($table_ary as $table)
 		{

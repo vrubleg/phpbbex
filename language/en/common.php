@@ -261,7 +261,6 @@ $lang = array_merge($lang, [
 	'LOGIN_ERROR_PASSWORD'              => 'You have specified an incorrect password. Please check your password and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
 	'LOGIN_ERROR_PASSWORD_CONVERT'      => 'It was not possible to convert your password when updating this bulletin board’s software. Please %srequest a new password%s. If you continue to have problems, please contact the %sBoard Administrator%s.',
 	'LOGIN_ERROR_USERNAME'              => 'You have specified an incorrect username. Please check your username and try again. If you continue to have problems, please contact the %sBoard Administrator%s.',
-	'LOGIN_FORUM'                       => 'To view or post in this forum you must enter its password.',
 	'LOGIN_INFO'                        => 'In order to login you must be registered. Registering takes only a few moments but gives you increased capabilities. Before you register please ensure you are familiar with our terms of use. Please ensure you read any forum rules as you navigate around the board.',
 	'LOGIN_EXPLAIN_VIEWINDEX'           => 'Log in to view forum index',
 	'LOGIN_EXPLAIN_VIEWFORUM'           => 'Log in to view this forum',
@@ -637,7 +636,6 @@ $lang = array_merge($lang, [
 	'WEBSITE'           => 'Website',
 	'WHOIS'             => 'Whois',
 	'WHO_IS_ONLINE'     => 'Who is online',
-	'WRONG_PASSWORD'    => 'You entered an incorrect password.',
 
 	'WRONG_DATA_COLOUR'         => 'The colour value you entered is invalid.',
 	'WRONG_DATA_ICQ'            => 'The number you entered is not a valid ICQ number.',

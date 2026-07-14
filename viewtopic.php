@@ -271,13 +271,6 @@ if (!$auth->acl_get('f_read', $forum_id))
 	login_box('', $user->lang['LOGIN_EXPLAIN_VIEWFORUM']);
 }
 
-// Forum is passworded ... check whether access has been granted to this
-// user this session, if not show login box
-if ($topic_data['forum_password'])
-{
-	login_forum_box($topic_data);
-}
-
 // Redirect to login or to the correct post upon emailed notification links
 if (isset($_GET['e']))
 {

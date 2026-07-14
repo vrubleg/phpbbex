@@ -747,8 +747,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " ADD INDEX poster_topic(poster_id, topic_id)"); // For checking if a user posted in listed topics.
 	$db->sql_query("DROP TABLE {$table_prefix}topics_posted");
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
+	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_password');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topic_show_days');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
+	$db->sql_query("DROP TABLE {$table_prefix}forums_access");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
@@ -1141,7 +1143,6 @@ if (request_var('utf8mb4', 0))
 			case EXTENSIONS_TABLE:
 			case EXTENSION_GROUPS_TABLE:
 			case FORUMS_TABLE:
-			case FORUMS_ACCESS_TABLE:
 			case FORUMS_TRACK_TABLE:
 			case FORUMS_WATCH_TABLE:
 			case ICONS_TABLE:

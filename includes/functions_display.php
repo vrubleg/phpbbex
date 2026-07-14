@@ -88,16 +88,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		$sql_array['SELECT'] .= ', ft.mark_time';
 	}
 
-	if ($show_active)
-	{
-		$sql_array['LEFT_JOIN'][] = [
-			'FROM'  => [FORUMS_ACCESS_TABLE => 'fa'],
-			'ON'    => "fa.forum_id = f.forum_id AND fa.session_id = '" . $db->sql_escape($user->session_id) . "'"
-		];
-
-		$sql_array['SELECT'] .= ', fa.user_id';
-	}
-
 	$sql = $db->sql_build_query('SELECT', [
 		'SELECT'    => $sql_array['SELECT'],
 		'FROM'      => $sql_array['FROM'],
@@ -189,11 +179,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			$active_forum_ary['forum_topics']   += $row['forum_topics'];
 			$active_forum_ary['forum_posts']    += $row['forum_posts'];
 
-			// If this is a passworded forum we do not show active topics from it if the user is not authorised to view it...
-			if ($row['forum_password'] && $row['user_id'] != $user->data['user_id'])
-			{
-				$active_forum_ary['exclude_forum_id'][] = $forum_id;
-			}
 		}
 
 		//
@@ -439,8 +424,8 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		else
 		{
 			// If the forum is a link and we count redirects we need to visit it
-			// If the forum is having a password or no read access we do not expose the link, but instead handle it in viewforum
-			if (($row['forum_flags'] & FORUM_FLAG_LINK_TRACK) || $row['forum_password'] || !$auth->acl_get('f_read', $forum_id))
+			// If click tracking is enabled or the user cannot read the forum, handle the link in viewforum.
+			if (($row['forum_flags'] & FORUM_FLAG_LINK_TRACK) || !$auth->acl_get('f_read', $forum_id))
 			{
 				$u_viewforum = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']);
 			}
@@ -1257,9 +1242,7 @@ function display_user_activity(&$userdata)
 	}
 
 	// Obtain active topic
-	// We need to exclude passworded forums here so we do not leak the topic title
-	$forum_ary_topic = array_unique(array_merge($forum_ary, $user->get_passworded_forums()));
-	$forum_sql_topic = (!empty($forum_ary_topic)) ? 'AND ' . $db->sql_in_set('forum_id', $forum_ary_topic, true) : '';
+	$forum_sql_topic = (!empty($forum_ary)) ? 'AND ' . $db->sql_in_set('forum_id', $forum_ary, true) : '';
 
 	$sql = 'SELECT topic_id, COUNT(post_id) AS num_posts
 		FROM ' . POSTS_TABLE . '

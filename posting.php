@@ -163,16 +163,6 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 	$captcha->init(CONFIRM_POST);
 }
 
-// Need to login to passworded forum first?
-if ($post_data['forum_password'])
-{
-	login_forum_box([
-		'forum_id'          => $forum_id,
-		'forum_name'        => $post_data['forum_name'],
-		'forum_password'    => $post_data['forum_password']]
-	);
-}
-
 // Check permissions
 if ($user->data['is_bot'])
 {

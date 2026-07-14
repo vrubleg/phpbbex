@@ -638,13 +638,6 @@ class phpbb_feed_base
 		return isset($forum_ids[$forum_id]);
 	}
 
-	function get_passworded_forums()
-	{
-		global $user;
-
-		return $user->get_passworded_forums();
-	}
-
 	function get_item()
 	{
 		global $db;
@@ -783,7 +776,7 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 	{
 		global $auth, $db;
 
-		$forum_ids = array_diff($this->get_readable_forums(), $this->get_excluded_forums(), $this->get_passworded_forums());
+		$forum_ids = array_diff($this->get_readable_forums(), $this->get_excluded_forums());
 		if (empty($forum_ids))
 		{
 			return false;
@@ -885,7 +878,7 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 		global $db, $auth;
 
 		// Check if forum exists
-		$sql = 'SELECT forum_id, forum_name, forum_password, forum_type, forum_options
+		$sql = 'SELECT forum_id, forum_name, forum_type, forum_options
 			FROM ' . FORUMS_TABLE . '
 			WHERE forum_id = ' . $this->forum_id;
 		$result = $db->sql_query($sql);
@@ -915,18 +908,6 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 			trigger_error('SORRY_AUTH_READ');
 		}
 
-		// Make sure forum is not passworded or user is authed
-		if ($this->forum_data['forum_password'])
-		{
-			$forum_ids_passworded = $this->get_passworded_forums();
-
-			if (isset($forum_ids_passworded[$this->forum_id]))
-			{
-				trigger_error('SORRY_AUTH_READ');
-			}
-
-			unset($forum_ids_passworded);
-		}
 	}
 
 	function get_sql()
@@ -1019,9 +1000,9 @@ class phpbb_feed_topic extends phpbb_feed_post_base
 
 	function open()
 	{
-		global $auth, $db, $user;
+		global $auth, $db;
 
-		$sql = 'SELECT f.forum_options, f.forum_password, t.topic_id, t.forum_id, t.topic_approved, t.topic_title, t.topic_time, t.topic_views, t.topic_replies, t.topic_type
+		$sql = 'SELECT f.forum_options, t.topic_id, t.forum_id, t.topic_approved, t.topic_title, t.topic_time, t.topic_views, t.topic_replies, t.topic_type
 			FROM ' . TOPICS_TABLE . ' t
 			LEFT JOIN ' . FORUMS_TABLE . ' f
 				ON (f.forum_id = t.forum_id)
@@ -1055,18 +1036,6 @@ class phpbb_feed_topic extends phpbb_feed_post_base
 			trigger_error('SORRY_AUTH_READ');
 		}
 
-		// Make sure forum is not passworded or user is authed
-		if ($this->topic_data['forum_password'])
-		{
-			$forum_ids_passworded = $this->get_passworded_forums();
-
-			if (isset($forum_ids_passworded[$this->forum_id]))
-			{
-				trigger_error('SORRY_AUTH_READ');
-			}
-
-			unset($forum_ids_passworded);
-		}
 	}
 
 	function get_sql()
@@ -1206,12 +1175,6 @@ class phpbb_feed_news extends phpbb_feed_topic_base
 			return false;
 		}
 
-		$in_fid_ary = array_diff($in_fid_ary, $this->get_passworded_forums());
-		if (empty($in_fid_ary))
-		{
-			return false;
-		}
-
 		// Add global forum
 		$in_fid_ary[] = 0;
 
@@ -1279,7 +1242,7 @@ class phpbb_feed_topics extends phpbb_feed_topic_base
 			return false;
 		}
 
-		$in_fid_ary = array_diff($forum_ids_read, $this->get_excluded_forums(), $this->get_passworded_forums());
+		$in_fid_ary = array_diff($forum_ids_read, $this->get_excluded_forums());
 		if (empty($in_fid_ary))
 		{
 			return false;
@@ -1371,7 +1334,6 @@ class phpbb_feed_topics_active extends phpbb_feed_topic_base
 		}
 
 		$in_fid_ary = array_intersect($forum_ids_read, $this->get_forum_ids());
-		$in_fid_ary = array_diff($in_fid_ary, $this->get_passworded_forums());
 		if (empty($in_fid_ary))
 		{
 			return false;
