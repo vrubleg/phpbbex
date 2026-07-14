@@ -218,11 +218,20 @@ if (!$user->data['is_registered'])
 // Instantiate module system and generate list of available modules
 $module->list_modules('ucp');
 
-// Check if the zebra module is set
-if ($module->is_active('zebra', 'friends'))
+// Do not display subscribed topics/forums if not allowed
+if (!$config['allow_topic_notify'] && !$config['allow_forum_notify'])
+{
+	$module->set_display('main', 'subscribed', false);
+}
+
+// Select the active module
+$module->set_active($id, $mode);
+
+// Show the friends list only in the private message section.
+if ($module->p_name == 'pm' && $module->is_active('zebra', 'friends'))
 {
 	// Output listing of friends online
-	$update_time = $config['load_online_time'] * 60;
+	$online_cutoff = time() - $config['load_online_time'] * 60;
 
 	$sql = $db->sql_build_query('SELECT_DISTINCT', [
 		'SELECT'    => 'u.user_id, u.username, u.username_clean, u.user_colour, MAX(s.session_time) as online_time, MIN(s.session_viewonline) AS viewonline',
@@ -235,7 +244,8 @@ if ($module->is_active('zebra', 'friends'))
 		'LEFT_JOIN' => [
 			[
 				'FROM'  => [SESSIONS_TABLE => 's'],
-				'ON'    => 's.session_user_id = z.zebra_id'
+				'ON'    => 's.session_user_id = z.zebra_id
+					AND s.session_time > ' . $online_cutoff
 			]
 		],
 
@@ -252,7 +262,7 @@ if ($module->is_active('zebra', 'friends'))
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$which = (time() - $update_time < $row['online_time'] && ($row['viewonline'] || $auth->acl_get('u_viewonline'))) ? 'online' : 'offline';
+		$which = ($row['online_time'] && ($row['viewonline'] || $auth->acl_get('u_viewonline'))) ? 'online' : 'offline';
 
 		$template->assign_block_vars("friends_{$which}", [
 			'USER_ID'       => $row['user_id'],
@@ -265,15 +275,6 @@ if ($module->is_active('zebra', 'friends'))
 	}
 	$db->sql_freeresult($result);
 }
-
-// Do not display subscribed topics/forums if not allowed
-if (!$config['allow_topic_notify'] && !$config['allow_forum_notify'])
-{
-	$module->set_display('main', 'subscribed', false);
-}
-
-// Select the active module
-$module->set_active($id, $mode);
 
 // Load and execute the relevant module
 $module->load_active();
