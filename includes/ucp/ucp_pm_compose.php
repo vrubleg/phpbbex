@@ -1206,6 +1206,17 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 	// Check for disallowed recipients
 	if (!empty($address_list['u']))
 	{
+		$blocked_recipients = get_pm_recipients_blocking_sender($user->data['user_id'], array_keys($address_list['u']));
+		if (!empty($blocked_recipients))
+		{
+			foreach ($blocked_recipients as $blocked_user_id)
+			{
+				unset($address_list['u'][$blocked_user_id]);
+			}
+
+			$error[] = $user->lang['PM_YOU_ARE_BLOCKED'];
+		}
+
 		// We need to check their PM status (do they want to receive PM's?)
 		// Only check if not a moderator or admin, since they are allowed to override this user setting
 		if (!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_'))

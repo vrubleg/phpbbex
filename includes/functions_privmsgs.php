@@ -1475,6 +1475,42 @@ function get_folder_status($folder_id, $folder)
 	return $return;
 }
 
+/**
+* Return recipients who have added the sender to their foes list.
+*
+* @param int   $sender_id     User attempting to send the private message
+* @param array $recipient_ids User IDs that may receive the private message
+* @return array Blocked recipient IDs
+*/
+function get_pm_recipients_blocking_sender($sender_id, $recipient_ids)
+{
+	global $db;
+
+	$sender_id = (int) $sender_id;
+	$recipient_ids = array_values(array_unique(array_filter(array_map('intval', $recipient_ids))));
+
+	if (!$sender_id || empty($recipient_ids))
+	{
+		return [];
+	}
+
+	$blocked = [];
+	$sql = 'SELECT user_id
+		FROM ' . ZEBRA_TABLE . '
+		WHERE zebra_id = ' . $sender_id . '
+			AND foe = 1
+			AND ' . $db->sql_in_set('user_id', $recipient_ids);
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$blocked[] = (int) $row['user_id'];
+	}
+	$db->sql_freeresult($result);
+
+	return $blocked;
+}
+
 //
 // COMPOSE MESSAGES
 //
@@ -1551,6 +1587,16 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				$recipients[$row['user_id']] = $field;
 			}
 			$db->sql_freeresult($result);
+		}
+
+		// Silently omit recipients who have added the sender to their foes list.
+		$blocked_recipients = get_pm_recipients_blocking_sender($data['from_user_id'], array_keys($recipients));
+		if (!empty($blocked_recipients))
+		{
+			foreach ($blocked_recipients as $blocked_user_id)
+			{
+				unset($recipients[$blocked_user_id]);
+			}
 		}
 
 		if (!sizeof($recipients))
