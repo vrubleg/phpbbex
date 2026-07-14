@@ -1026,8 +1026,19 @@ class phpbb_gallery_album
 		phpbb_gallery_config::set('newest_pega_user_colour', $user_colour);
 		phpbb_gallery_config::set('newest_pega_album_id', $personal_album_id);
 
+		$sql = 'SELECT user_id
+			FROM ' . GALLERY_USERS_TABLE . '
+			WHERE subscribe_pegas = 1';
+		$result = $db->sql_query($sql);
+		while ($row = $db->sql_fetchrow($result))
+		{
+			phpbb_gallery_notification::add_albums($personal_album_id, (int) $row['user_id']);
+		}
+		$db->sql_freeresult($result);
+
 		$cache->destroy('_albums');
 		$cache->destroy('sql', GALLERY_ALBUMS_TABLE);
+		phpbb_gallery_auth::set_user_permissions('all', '');
 
 		return $personal_album_id;
 	}

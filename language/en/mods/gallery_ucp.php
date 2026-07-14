@@ -23,8 +23,6 @@ $lang = array_merge($lang, [
 	'ALBUMS'                        => 'Albums',
 	'ALBUM_DESC'                    => 'Album Description',
 
-	'CREATE_PERSONAL_ALBUM'         => 'Create personal album',
-
 	'DELETE_ALBUM'                  => 'Delete Album',
 	'DELETE_ALBUM_CONFIRM'          => 'Delete your personal album and all its images?',
 	'DELETED_ALBUMS'                => 'Album successfully deleted',
@@ -34,13 +32,9 @@ $lang = array_merge($lang, [
 	'EDIT_PERSONAL_ALBUM_EXP'       => 'You can edit your personal album description here.',
 	'EDITED_PERSONAL_ALBUM'         => 'Personal album successfully edited',
 
-
-
-	'NEED_INITIALISE'               => 'You don’t have a personal album yet.',
 	'NO_ALBUM_STEALING'             => 'You are not allowed to manage the Album of other users.',
 	'NO_FAVORITES'                  => 'You don’t have any favorites.',
 	'NO_PERSALBUM_ALLOWED'          => 'You don’t have the permissions create your personal album',
-	'NO_PERSONAL_ALBUM'             => 'You don’t have a personal album yet. You can create one here.<br />Only the owner can upload images to a personal album.',
 	'NO_SUBSCRIPTIONS'              => 'You didn’t subscribe to any image.',
 
 	'PARSE_BBCODE'                  => 'Parse BBCode',

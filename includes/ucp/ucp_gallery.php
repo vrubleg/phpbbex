@@ -56,16 +56,12 @@ class ucp_gallery
 						$this->delete_album();
 					break;
 
-					case 'initialise':
-						$this->initialise_album();
-					break;
-
 					default:
 						$title = 'UCP_GALLERY_PERSONAL_ALBUMS';
 						$this->page_title = $user->lang[$title];
 						if (!phpbb_gallery::$user->get_data('personal_album_id'))
 						{
-							$this->info();
+							phpbb_gallery_url::redirect('album', 'mode=personal');
 						}
 						else
 						{
@@ -139,75 +135,6 @@ class ucp_gallery
 		]);
 	}
 
-	function info()
-	{
-		global $template, $user;
-
-		if (!phpbb_gallery::$user->get_data('personal_album_id'))
-		{
-			// User will probally go to initialise_album()
-			$template->assign_vars([
-				'S_INFO_CREATE'             => true,
-				'S_UCP_ACTION'      => $this->u_action . '&amp;action=initialise',
-
-				'L_TITLE'           => $user->lang['UCP_GALLERY_PERSONAL_ALBUMS'],
-				'L_TITLE_EXPLAIN'   => $user->lang['NO_PERSONAL_ALBUM'],
-			]);
-		}
-		else
-		{
-			phpbb_gallery::redirect('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums');
-		}
-	}
-
-	function initialise_album()
-	{
-		global $cache, $db, $template, $user;
-
-		if (!phpbb_gallery::$user->get_data('personal_album_id'))
-		{
-			// Check if the user is allowed to have one
-			if (!phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM))
-			{
-				trigger_error('NO_PERSALBUM_ALLOWED');
-			}
-
-			$album_data = [
-				'album_name'                    => $user->data['username'],
-				'parent_id'                     => 0,
-				//left_id and right_id default by db
-				'album_desc_options'            => 7,
-				'album_desc'                    => utf8_normalize_nfc(request_var('album_desc', '', true)),
-				'album_parents'                 => '',
-				'album_type'                    => phpbb_gallery_album::TYPE_UPLOAD,
-				'album_status'                  => phpbb_gallery_album::STATUS_OPEN,
-				'album_user_id'                 => $user->data['user_id'],
-				'album_last_username'           => '',
-				'album_last_user_colour'        => $user->data['user_colour'],
-			];
-			$db->sql_query('INSERT INTO ' . GALLERY_ALBUMS_TABLE . ' ' . $db->sql_build_array('INSERT', $album_data));
-			$album_id = $db->sql_nextid();
-
-			phpbb_gallery::$user->update_data([
-				'personal_album_id' => $album_id,
-			]);
-
-			$this->subscribe_pegas($album_id);
-			phpbb_gallery_config::inc('num_pegas', 1);
-
-			// Update the config for the statistic on the index
-			phpbb_gallery_config::set('newest_pega_user_id', $user->data['user_id']);
-			phpbb_gallery_config::set('newest_pega_username', $user->data['username']);
-			phpbb_gallery_config::set('newest_pega_user_colour', $user->data['user_colour']);
-			phpbb_gallery_config::set('newest_pega_album_id', $album_id);
-
-			$cache->destroy('_albums');
-			$cache->destroy('sql', GALLERY_ALBUMS_TABLE);
-			phpbb_gallery_auth::set_user_permissions('all', '');
-		}
-		redirect($this->u_action);
-	}
-
 	function edit_album()
 	{
 		global $cache, $db, $template, $user;
@@ -217,8 +144,7 @@ class ucp_gallery
 		$album_id = (int) phpbb_gallery::$user->get_data('personal_album_id');
 		if (!$album_id)
 		{
-			$this->info();
-			return;
+			phpbb_gallery_url::redirect('album', 'mode=personal');
 		}
 		phpbb_gallery_album::check_user($album_id);
 
@@ -284,7 +210,7 @@ class ucp_gallery
 			$album = $deleted_albums = [];
 
 			// Check for owner
-			$sql = 'SELECT album_id, left_id, right_id, parent_id
+			$sql = 'SELECT album_id, left_id, right_id
 				FROM ' . GALLERY_ALBUMS_TABLE . '
 				WHERE album_user_id = ' . $user->data['user_id'] . '
 				ORDER BY left_id ASC';
@@ -297,7 +223,6 @@ class ucp_gallery
 				{
 					$left_id = $row['left_id'];
 					$right_id = $row['right_id'];
-					$parent_id = $row['parent_id'];
 				}
 			}
 			$db->sql_freeresult($result);
@@ -431,7 +356,7 @@ class ucp_gallery
 			phpbb_gallery_auth::set_user_permissions('all', '');
 
 			trigger_error($user->lang['DELETED_ALBUMS'] . '<br /><br />
-				<a href="' . (($parent_id) ? phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=manage&amp;parent_id=' . $parent_id) : phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums')) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
+				<a href="' . phpbb_gallery_url::append_sid('index') . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
 		}
 		else
 		{
@@ -650,19 +575,4 @@ class ucp_gallery
 		]);
 	}
 
-	function subscribe_pegas($album_id)
-	{
-		global $db;
-
-		$sql = 'SELECT user_id
-			FROM ' . GALLERY_USERS_TABLE . '
-			WHERE subscribe_pegas = 1';
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			phpbb_gallery_notification::add_albums($album_id, (int) $row['user_id']);
-		}
-		$db->sql_freeresult($result);
-	}
 }

@@ -21,6 +21,28 @@ $user_id    = request_var('user_id', 0);
 $album_id   = request_var('album_id', 0);
 $start      = request_var('start', 0);
 $mode       = request_var('mode', '');
+
+if ($mode == 'personal')
+{
+	if (!$user->data['is_registered'])
+	{
+		trigger_error('NOT_AUTHORISED');
+	}
+
+	$album_id = (int) phpbb_gallery::$user->get_data('personal_album_id');
+	if (!$album_id)
+	{
+		if (!phpbb_gallery::$auth->acl_check('i_upload', phpbb_gallery_auth::OWN_ALBUM))
+		{
+			trigger_error('NO_PERSALBUM_ALLOWED');
+		}
+
+		$album_id = phpbb_gallery_album::generate_personal_album($user->data['username'], $user->data['user_id'], $user->data['user_colour'], phpbb_gallery::$user);
+	}
+
+	phpbb_gallery_url::redirect('album', 'album_id=' . $album_id);
+}
+
 $album_data = phpbb_gallery_album::get_info($album_id);
 $sort_days  = request_var('st', 0);
 $sort_key   = request_var('sk', $album_data['album_sort_key'] ?: phpbb_gallery_config::get('default_sort_key'));
