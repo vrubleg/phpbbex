@@ -296,7 +296,7 @@ function get_user_information($user_id, $user_row)
 	$user_row['rank_title'] = $user_row['rank_image'] = $user_row['rank_image_src'] = $user_row['email'] = '';
 
 	// Generate online information for user
-	if ($config['load_onlinetrack'])
+	if ($config['load_onlinetrack'] && $user_id != ANONYMOUS)
 	{
 		$sql = 'SELECT session_user_id, MAX(session_time) as online_time, MIN(session_viewonline) AS viewonline
 			FROM ' . SESSIONS_TABLE . "
