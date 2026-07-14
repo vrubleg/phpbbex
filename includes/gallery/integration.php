@@ -106,7 +106,7 @@ class phpbb_gallery_integration
 	{
 		global $db;
 
-		$sql = 'SELECT a.album_id, a.parent_id, a.album_name, a.album_type, a.left_id, a.right_id, a.album_user_id, a.display_in_rrc, a.album_auth_access
+		$sql = 'SELECT a.album_id, a.parent_id, a.album_name, a.album_type, a.left_id, a.right_id, a.album_user_id, a.display_in_rrc
 			FROM ' . GALLERY_ALBUMS_TABLE . ' a
 			LEFT JOIN ' . USERS_TABLE . ' u
 				ON (u.user_id = a.album_user_id)
@@ -125,7 +125,6 @@ class phpbb_gallery_integration
 				'right_id'          => $row['right_id'],
 				'album_user_id'     => $row['album_user_id'],
 				'display_in_rrc'    => $row['display_in_rrc'],
-				'album_auth_access' => $row['album_auth_access'],
 			];
 		}
 		$db->sql_freeresult($result);

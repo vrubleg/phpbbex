@@ -226,7 +226,6 @@ $lang = array_merge($lang, [
 
 	'PERMISSION_A_COUNT'            => 'Сколько вложенных личных альбомов может быть создано',
 	'PERMISSION_A_LIST'             => 'Может видеть альбом',
-	'PERMISSION_A_RESTRICT'         => 'Может задавать права доступа к своему альбому',
 	'PERMISSION_A_UNLIMITED'        => 'Неограниченное количество вложенных личных альбомов',
 	'PERMISSION_C'                  => 'Комментарии',
 	'PERMISSION_C_DELETE'           => 'Может удалять свои комментарии',

@@ -659,6 +659,13 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 				$db->sql_query($sql);
 			}
 		}
+		if ($db_tools->sql_column_exists(GALLERY_ALBUMS_TABLE, 'album_auth_access'))
+		{
+			foreach ($db_tools->sql_column_remove(GALLERY_ALBUMS_TABLE, 'album_auth_access') as $sql)
+			{
+				$db->sql_query($sql);
+			}
+		}
 	}
 	if ($db_tools->sql_table_exists(GALLERY_IMAGES_TABLE))
 	{
@@ -680,6 +687,13 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	if ($db_tools->sql_table_exists(GALLERY_ROLES_TABLE) && $db_tools->sql_column_exists(GALLERY_ROLES_TABLE, 'i_watermark'))
 	{
 		foreach ($db_tools->sql_column_remove(GALLERY_ROLES_TABLE, 'i_watermark') as $sql)
+		{
+			$db->sql_query($sql);
+		}
+	}
+	if ($db_tools->sql_table_exists(GALLERY_ROLES_TABLE) && $db_tools->sql_column_exists(GALLERY_ROLES_TABLE, 'a_restrict'))
+	{
+		foreach ($db_tools->sql_column_remove(GALLERY_ROLES_TABLE, 'a_restrict') as $sql)
 		{
 			$db->sql_query($sql);
 		}
