@@ -316,15 +316,4 @@
 <!-- ENDIF -->
 <!-- ENDIF -->
 
-<p></p><p><a href="{U_RETURN_LINK}" class="left-box nav-to-left" accesskey="r">{L_RETURN_TO} {S_RETURN_LINK}</a></p>
-<form method="post" id="jumpbox" action="{S_JUMPBOX_ACTION}" onsubmit="if(document.jumpbox.album_id.value == -1){return false;}">
-	<fieldset class="jumpbox">
-		<label for="album_id" accesskey="album_id">{L_JUMP_TO}:</label>
-		<select name="album_id" id="album_id" onchange="if(this.options[this.selectedIndex].value != -1){ document.forms['jumpbox'].submit() }">
-			{ALBUM_JUMPBOX}
-		</select>
-		<input type="submit" value="{L_GO}" class="button2" />
-	</fieldset>
-</form>
-
 <!-- INCLUDE gallery/gallery_footer.html -->

@@ -292,13 +292,11 @@ $template->assign_vars([
 	'S_ENABLE_FEEDS_ALBUM'      => $album_data['album_feed'] && (phpbb_gallery_config::get('feed_enable_pegas') || !$album_data['album_user_id']),
 
 	'S_THUMBNAIL_SIZE'          => phpbb_gallery_config::get('thumbnail_height') + 20 + ((phpbb_gallery_config::get('thumbnail_infoline')) ? phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT : 0),
-	'S_JUMPBOX_ACTION'          => phpbb_gallery_url::append_sid('album'),
 	'S_ALBUM_ACTION'            => phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
 
 	'S_SELECT_SORT_DIR'         => $s_sort_dir,
 	'S_SELECT_SORT_KEY'         => $s_sort_key,
 
-	'ALBUM_JUMPBOX'             => phpbb_gallery_album::get_albumbox(false, '', $album_id),
 	'U_RETURN_LINK'             => phpbb_gallery_url::append_sid('index'),
 	'S_RETURN_LINK'             => $user->lang['GALLERY'],
 

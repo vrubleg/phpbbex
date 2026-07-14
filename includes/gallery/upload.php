@@ -33,6 +33,7 @@ class phpbb_gallery_upload
 	public $array_id2row = [];
 	private $album_id = 0;
 	private $file_count = 0;
+	private $file_limit = 0;
 	private $image_num = 0;
 	private $allow_comments = false;
 	private $exif_status = false;
