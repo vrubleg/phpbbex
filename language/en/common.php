@@ -389,7 +389,6 @@ $lang = array_merge($lang, [
 	'POSTS'                 => 'Posts',
 	'POSTS_UNAPPROVED'      => 'At least one post in this topic has not been approved.',
 	'POST_BY_AUTHOR'        => 'by',
-	'POST_BY_FOE'           => 'This post was made by <strong>%1$s</strong> who is currently on your ignore list. %2$sDisplay this post%3$s.',
 	'POST_DAY'              => '%.2f posts per day',
 	'POST_DETAILS'          => 'Post details',
 	'POST_NEW_TOPIC'        => 'Post new topic',

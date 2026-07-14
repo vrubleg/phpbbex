@@ -18,9 +18,7 @@ $user->setup('search');
 $mode           = request_var('mode', '');
 $search_id      = request_var('search_id', '');
 $start          = max(request_var('start', 0), 0);
-$post_id        = request_var('p', 0);
 $topic_id       = request_var('t', 0);
-$view           = request_var('view', '');
 
 $submit         = request_var('submit', false);
 $keywords       = utf8_normalize_nfc(request_var('keywords', '', true));
@@ -675,19 +673,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	{
 		if ($show_results == 'posts')
 		{
-			// @todo Joining this query to the one below?
-			$sql = 'SELECT zebra_id, friend, foe
-				FROM ' . ZEBRA_TABLE . '
-				WHERE user_id = ' . $user->data['user_id'];
-			$result = $db->sql_query($sql);
-
-			$zebra = [];
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$zebra[($row['friend']) ? 'friend' : 'foe'][] = $row['zebra_id'];
-			}
-			$db->sql_freeresult($result);
-
 			$sql = 'SELECT p.*, f.forum_id, f.forum_name, t.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_colour
 				FROM ' . POSTS_TABLE . ' p
 					LEFT JOIN ' . TOPICS_TABLE . ' t ON (p.topic_id = t.topic_id)
@@ -969,17 +954,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			}
 			else
 			{
-				if ((isset($zebra['foe']) && in_array($row['poster_id'], $zebra['foe'])) && (!$view || $view != 'show' || $post_id != $row['post_id']))
-				{
-					$template->assign_block_vars('searchresults', [
-						'S_IGNORE_POST' => true,
-
-						'L_IGNORE_POST' => sprintf($user->lang['POST_BY_FOE'], $row['username'], "<a href=\"{$u_search}&amp;start={$start}&amp;p=" . $row['post_id'] . '&amp;view=show#p' . $row['post_id'] . '">', '</a>')]
-					);
-
-					continue;
-				}
-
 				// Replace naughty words such as farty pants
 				$row['post_subject'] = censor_text($row['post_subject']);
 

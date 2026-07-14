@@ -1123,9 +1123,6 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 
 		$post_subject = censor_text($post_subject);
 
-		$post_anchor = ($mode == 'post_review') ? 'ppr' . $row['post_id'] : 'pr' . $row['post_id'];
-		$u_show_post = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}");
-
 		$template->assign_block_vars($mode . '_row', [
 			'POST_AUTHOR_FULL'      => get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 			'POST_AUTHOR_COLOUR'    => get_username_string('colour', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -1134,8 +1131,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 
 			'S_HAS_ATTACHMENTS' => !empty($attachments[$row['post_id']]),
 			'S_FRIEND'          => (bool) $row['friend'],
-			'S_IGNORE_POST'     => (bool) $row['foe'],
-			'L_IGNORE_POST'     => ($row['foe']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), "<a href=\"{$u_show_post}\" onclick=\"dE('{$post_anchor}', 1); return false;\">", '</a>') : '',
+			'S_FOE'             => (bool) $row['foe'],
 
 			'POST_SUBJECT'      => $post_subject,
 			'MINI_POST_IMG'     => $user->img('icon_post_target', $user->lang['POST']),

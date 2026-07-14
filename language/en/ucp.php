@@ -144,7 +144,7 @@ $lang = array_merge($lang, [
 	'FIELD_INVALID_VALUE'               => 'The field “%s” has an invalid value.',
 
 	'FOE_MESSAGE'               => 'Message from foe',
-	'FOES_EXPLAIN'              => 'Foes are users which will be ignored by default. Posts by these users will not be fully visible, and they cannot send you private messages. Please note that you cannot ignore moderators or administrators.',
+	'FOES_EXPLAIN'              => 'Foes are users who cannot send you private messages. Please note that you cannot block moderators or administrators.',
 	'FOES_UPDATED'              => 'Your foes list has been updated successfully.',
 	'FOLDER_ADDED'              => 'Folder successfully added.',
 	'FOLDER_MESSAGE_STATUS'     => '%1$d from %2$d messages stored',

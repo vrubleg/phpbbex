@@ -973,8 +973,6 @@ while ($row = $db->sql_fetchrow($result))
 	}
 
 	$rowset[$row['post_id']] = [
-		'hide_post'         => ($row['foe'] && ($view != 'show' || $post_id != $row['post_id'])),
-
 		'post_id'           => $row['post_id'],
 		'post_time'         => $row['post_time'],
 		'post_merged'       => $row['post_merged'],
@@ -1615,14 +1613,13 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'S_POST_REPORTED'   => ($row['post_reported'] && $auth->acl_get('m_report', $forum_id)),
 		'S_DISPLAY_NOTICE'  => $display_notice && $row['post_attachment'],
 		'S_FRIEND'          => (bool) $row['friend'],
+		'S_FOE'             => (bool) $row['foe'],
 		'S_UNREAD_POST'     => $post_unread,
 		'S_FIRST_UNREAD'    => $s_first_unread,
 		'S_CUSTOM_FIELDS'   => (isset($cp_row['row']) && sizeof($cp_row['row'])),
 		'S_ANONYMOUS'       => ($poster_id == ANONYMOUS),
 		'S_TOPIC_POSTER'    => ($poster_id != ANONYMOUS ? ($topic_data['topic_poster'] == $poster_id) : (!empty($topic_data['topic_first_poster_name']) && $topic_data['topic_first_poster_name'] == $row['post_username'])),
 
-		'S_IGNORE_POST'     => (bool) $row['hide_post'],
-		'L_IGNORE_POST'     => ($row['hide_post']) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), '<a href="' . $viewtopic_url . "&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}" . '">', '</a>') : '',
 	];
 
 	if (isset($cp_row['row']) && sizeof($cp_row['row']))
