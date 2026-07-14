@@ -36,13 +36,8 @@
 
 <!-- IF S_DISPLAY_PREVIEW --><!-- INCLUDE posting_preview.html --><!-- ENDIF -->
 
-<div class="panel" id="postingbox">
-	<div class="inner">
-
-	<h3>{L_POST_A}</h3>
-
-	<!-- DEFINE $EXTRA_POSTING_OPTIONS = 1 -->
-	<!-- INCLUDE posting_editor.html -->
+<!-- DEFINE $EXTRA_POSTING_OPTIONS = 1 -->
+<!-- INCLUDE posting_editor.html -->
 <!-- IF S_USER_LOGGED_IN -->
 	{S_FORM_TOKEN}
 <!-- ELSE -->
@@ -59,8 +54,6 @@
 	});
 	</script>
 <!-- ENDIF -->
-	</div>
-</div>
 
 <!-- IF S_DISPLAY_REVIEW --><!-- INCLUDE posting_topic_review.html --><!-- ENDIF -->
 

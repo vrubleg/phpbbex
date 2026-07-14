@@ -1,3 +1,10 @@
+<!-- IF $EXTRA_POSTING_OPTIONS eq 1 -->
+<div class="panel" id="postingbox">
+	<div class="inner">
+
+	<!-- IF not S_PRIVMSGS --><h3>{L_POST_A}</h3><!-- ENDIF -->
+<!-- ENDIF -->
+
 <fieldset class="fields1">
 	<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
 
@@ -90,7 +97,7 @@
 	jQuery(function($)
 	{
 		if (!('localStorage' in window && window['localStorage'] !== null) || $('#username').val()) return;
-		$('#username').val(localStorage.getItem('anonymous_username')).on('keyup', function()
+		$('#username').val(localStorage.getItem('anonymous_username')).on('change', function()
 		{
 			localStorage.setItem('anonymous_username', $(this).val());
 		});
@@ -163,10 +170,8 @@
 
 <!-- IF $EXTRA_POSTING_OPTIONS eq 1 -->
 
-	<!-- IF not S_SHOW_DRAFTS -->
 		</div>
 	</div>
-	<!-- ENDIF -->
 
 	<!-- IF S_SHOW_ATTACH_BOX or S_HAS_ATTACHMENTS --><!-- INCLUDE posting_attach_body.html --><!-- ENDIF -->
 	<!-- IF S_SHOW_POLL_BOX or S_POLL_DELETE --><!-- INCLUDE posting_poll_body.html --><!-- ENDIF -->
@@ -237,8 +242,5 @@
 		</div>
 	</div>
 	<!-- ENDIF -->
-
-	<div class="panel bg3" style="display: none;">
-		<div class="inner">
 
 <!-- ENDIF -->
