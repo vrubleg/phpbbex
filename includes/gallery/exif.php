@@ -50,7 +50,12 @@ class phpbb_gallery_exif
 	* Does the image have exif data?
 	* Values see constant declaration at the beginning of the class.
 	*/
-	public $status      = 2;
+	public $status      = self::UNKNOWN;
+
+	/**
+	* Status before the exif data was interpreted.
+	*/
+	public $orig_status = self::UNKNOWN;
 
 	/**
 	* Full data array, but serialized to a string

@@ -525,8 +525,6 @@ if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_ch
 				'U_GALLERY_SEARCH'  => $user_cache[$user_id]['gallery_search'],
 			]);
 		}
-		$db->sql_freeresult($result);
-
 		$template->assign_vars([
 			'DELETE_IMG'        => $user->img('icon_post_delete', 'DELETE_COMMENT'),
 			'EDIT_IMG'          => $user->img('icon_post_edit', 'EDIT_COMMENT'),
