@@ -29,7 +29,6 @@ $lang = array_merge($lang, [
 	'ACP_GALLERY_LOGS_EXPLAIN'          => 'Список действий, выполненных в галерее, таких как одобрение, отклонение, блокировка и разблокировка, закрытие жалоб и удаление фотографий.',
 	'ACP_GALLERY_MANAGE_ALBUMS'         => 'Управление альбомами',
 	'ACP_GALLERY_OVERVIEW'              => 'Обзор',
-	'ACP_IMPORT_ALBUMS'                 => 'Импорт фотографий',
 
 	'GALLERY'                           => 'Галерея',
 	'GALLERY_EXPLAIN'                   => 'Фотогалерея',

@@ -15,11 +15,10 @@ if (!defined('IN_PHPBB'))
 class phpbb_gallery_upload
 {
 	/**
-	* Objects: phpBB Upload, 2 Files, ExifData and Image-Functions
+	* Objects: phpBB Upload, File, ExifData and Image-Functions
 	*/
 	private $upload = null;
 	private $file = null;
-	private $zip_file = null;
 	private $exif = null;
 	private $tools = null;
 
@@ -65,7 +64,7 @@ class phpbb_gallery_upload
 	}
 
 	/**
-	* Upload a file and then call the function for reading the zip or preparing the image
+	* Upload and prepare an image file.
 	*/
 	public function upload_file($file_count)
 	{
@@ -83,113 +82,13 @@ class phpbb_gallery_upload
 		$this->exif_status = false;
 		$this->exif_data = false;
 
-		if ($this->file->extension == 'zip')
+		$image_id = $this->prepare_file();
+
+		if ($image_id)
 		{
-			$this->zip_file = $this->file;
-			$this->upload_zip();
+			$this->uploaded_files++;
+			$this->images[] = (int) $image_id;
 		}
-		else
-		{
-			$image_id = $this->prepare_file();
-
-			if ($image_id)
-			{
-				$this->uploaded_files++;
-				$this->images[] = (int) $image_id;
-			}
-		}
-	}
-
-	/**
-	* Upload a zip file and save the images into the import/ directory.
-	*/
-	public function upload_zip()
-	{
-		if (!class_exists('compress_zip'))
-		{
-			phpbb_gallery_url::_include('functions_compress', 'phpbb');
-		}
-
-		global $user;
-		$tmp_dir = phpbb_gallery_url::path('import') . 'tmp_' . bin2hex(random_bytes(16)) . '/';
-
-		$this->zip_file->clean_filename('unique_ext'/*, $user->data['user_id'] . '_'*/);
-		$this->zip_file->move_file(substr(phpbb_gallery_url::path('import_noroot'), 0, -1), false, false, CHMOD_ALL);
-		if (!empty($this->zip_file->error))
-		{
-			global $user;
-
-			$this->zip_file->remove();
-			$this->new_error($user->lang('UPLOAD_ERROR', $this->zip_file->uploadname, implode('<br />&raquo; ', $this->zip_file->error)));
-			return false;
-		}
-
-		$compress = new compress_zip('r', $this->zip_file->destination_file);
-		$compress->extract($tmp_dir);
-		$compress->close();
-
-		$this->zip_file->remove();
-
-		// Remove zip from allowed extensions
-		$this->upload->set_allowed_extensions(self::get_allowed_types(false, true));
-
-		$this->read_zip_folder($tmp_dir);
-
-		// Read zip from allowed extensions
-		$this->upload->set_allowed_extensions(self::get_allowed_types());
-	}
-
-	/**
-	* Read a folder from the zip, "upload" the images and remove the rest.
-	*/
-	public function read_zip_folder($current_dir)
-	{
-		$handle = opendir($current_dir);
-		while ($file = readdir($handle))
-		{
-			if ($file == '.' || $file == '..') continue;
-			if (is_dir($current_dir . $file))
-			{
-				$this->read_zip_folder($current_dir . $file . '/');
-			}
-			else if (in_array(utf8_substr(strtolower($file), utf8_strrpos($file, '.') + 1), self::get_allowed_types(false, true)))
-			{
-				if (!$this->file_limit || ($this->uploaded_files < $this->file_limit))
-				{
-					$this->file = $this->upload->local_upload($current_dir . $file);
-					if ($this->file->error)
-					{
-						$this->new_error($user->lang('UPLOAD_ERROR', $this->file->uploadname, implode('<br />&raquo; ', $this->file->error)));
-					}
-					$image_id = $this->prepare_file();
-
-					if ($image_id)
-					{
-						$this->uploaded_files++;
-						$this->images[] = (int) $image_id;
-					}
-					else
-					{
-						if ($this->file->error)
-						{
-							$this->new_error($user->lang('UPLOAD_ERROR', $this->file->uploadname, implode('<br />&raquo; ', $this->file->error)));
-						}
-					}
-				}
-				else
-				{
-					$this->quota_error();
-					@unlink($current_dir . $file);
-				}
-
-			}
-			else
-			{
-				@unlink($current_dir . $file);
-			}
-		}
-		closedir($handle);
-		@rmdir($current_dir);
 	}
 
 	/**
@@ -570,7 +469,7 @@ class phpbb_gallery_upload
 	/**
 	* Get an array of allowed file types or file extensions
 	*/
-	static public function get_allowed_types($get_types = false, $ignore_zip = false)
+	static public function get_allowed_types($get_types = false)
 	{
 		global $user;
 
@@ -591,12 +490,6 @@ class phpbb_gallery_upload
 			$types[] = $user->lang['FILETYPES_PNG'];
 			$extensions[] = 'png';
 		}
-		if (!$ignore_zip && phpbb_gallery_config::get('allow_zip'))
-		{
-			$types[] = $user->lang['FILETYPES_ZIP'];
-			$extensions[] = 'zip';
-		}
-
 		return ($get_types) ? $types : $extensions;
 	}
 

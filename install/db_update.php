@@ -622,8 +622,11 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 {
 	// Remove obsolete Gallery stuff.
+	remove_module('acp', 'gallery', 'import_images');
+	remove_permissions(['a_gallery_import']);
 
 	remove_config_values([
+		'phpbb_gallery_allow_zip',
 		'phpbb_gallery_gdlib_version',
 		'phpbb_gallery_watermark_changed',
 		'phpbb_gallery_watermark_enabled',

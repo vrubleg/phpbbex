@@ -33,7 +33,6 @@ class phpbb_gallery_url
 	const UPLOAD_PATH = 'upload/';
 	const THUMBNAIL_PATH = 'cache/';
 	const MEDIUM_PATH = 'medium/';
-	const IMPORT_PATH = 'import/';
 
 	static private $phpbb_gallery_relative = '';
 	static private $phpbb_gallery_full_path = '';
@@ -96,10 +95,6 @@ class phpbb_gallery_url
 				return self::$phpbb_gallery_relative . self::IMAGE_PATH . self::MEDIUM_PATH;
 			case 'medium_noroot':
 				return self::$phpbb_gallery_path . self::IMAGE_PATH . self::MEDIUM_PATH;
-			case 'import':
-				return self::$phpbb_gallery_relative . self::IMAGE_PATH . self::IMPORT_PATH;
-			case 'import_noroot':
-				return self::$phpbb_gallery_path . self::IMAGE_PATH . self::IMPORT_PATH;
 		}
 
 		return false;

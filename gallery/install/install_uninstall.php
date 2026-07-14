@@ -194,7 +194,6 @@ class install_uninstall extends module
 		$umil->permission_remove([
 			['a_gallery_manage'],
 			['a_gallery_albums'],
-			['a_gallery_import'],
 			['a_gallery_cleanup'],
 		]);
 

@@ -303,7 +303,6 @@ class install_install extends module
 		$umil->permission_add([
 			['a_gallery_manage'],
 			['a_gallery_albums'],
-			['a_gallery_import'],
 			['a_gallery_cleanup'],
 		]);
 		$cache->destroy('acl_options');
@@ -373,12 +372,6 @@ class install_install extends module
 				'module_langname'   => 'ACP_GALLERY_ALBUM_PERMISSIONS_COPY',
 				'module_mode'       => 'copy',
 				'module_auth'       => 'acl_a_gallery_albums',
-			]);
-			$umil->module_add('acp', 'PHPBB_GALLERY', [
-				'module_basename'   => 'gallery',
-				'module_langname'   => 'ACP_IMPORT_ALBUMS',
-				'module_mode'       => 'import_images',
-				'module_auth'       => 'acl_a_gallery_import',
 			]);
 			$umil->module_add('acp', 'PHPBB_GALLERY', [
 				'module_basename'   => 'gallery',

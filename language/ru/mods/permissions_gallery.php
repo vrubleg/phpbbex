@@ -25,6 +25,5 @@ $lang['permission_cat']['gallery'] = 'Галерея';
 $lang = array_merge($lang, [
 	'acl_a_gallery_manage'      => ['lang' => 'Может настраивать галерею',              'cat' => 'gallery'],
 	'acl_a_gallery_albums'      => ['lang' => 'Может добавлять/редактировать альбомы и права доступа',  'cat' => 'gallery'],
-	'acl_a_gallery_import'      => ['lang' => 'Может импортировать фотографии',                 'cat' => 'gallery'],
 	'acl_a_gallery_cleanup'     => ['lang' => 'Может очищать галерею',                  'cat' => 'gallery'],
 ]);
