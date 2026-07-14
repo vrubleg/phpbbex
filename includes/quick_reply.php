@@ -101,6 +101,19 @@ $notify_checked     = ($mode == 'post') ? $user->data['user_notify'] : $notify_s
 $s_action = append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode={$mode}" . (($mode == 'post') ? "&amp;f={$forum_id}" : ''));
 $s_action .= (isset($topic_id) && $topic_id) ? "&amp;t={$topic_id}" : '';
 
+$has_drafts = false;
+if ($user->data['is_registered'])
+{
+	$sql = 'SELECT draft_id
+		FROM ' . DRAFTS_TABLE . '
+		WHERE user_id = ' . $user->data['user_id'] . '
+			AND forum_id = ' . (int) $forum_id .
+			(($mode == 'reply') ? ' AND topic_id = ' . (int) $topic_id : '');
+	$result = $db->sql_query_limit($sql, 1);
+	$has_drafts = (bool) $db->sql_fetchfield('draft_id');
+	$db->sql_freeresult($result);
+}
+
 // Visual Confirmation
 if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 {
@@ -171,6 +184,8 @@ $template->assign_vars([
 	'S_LOCK_TOPIC_CHECKED'      => ($lock_topic_checked) ? ' checked="checked"' : '',
 	'S_LINKS_ALLOWED'           => $url_status,
 	'S_MAGIC_URL_CHECKED'       => ($urls_checked) ? ' checked="checked"' : '',
+	'S_SAVE_ALLOWED'            => $user->data['is_registered'],
+	'S_HAS_DRAFTS'              => $has_drafts,
 	'S_FIRST_POST_SHOW_ALLOWED' => ($mode == 'post'),
 	'S_NEW_MESSAGE'             => ($mode == 'post'),
 	'S_DO_MERGE_ALLOWED'        => $s_do_merge_allowed,
