@@ -64,7 +64,7 @@ $sort_by_sql = ['t' => 'image_time', 'n' => 'image_name_clean', 'u' => 'image_us
 if (phpbb_gallery_config::get('allow_rates'))
 {
 	$sort_by_text['ra'] = $user->lang['RATING'];
-	$sort_by_sql['ra'] = (phpbb_gallery_contest::$mode == phpbb_gallery_contest::MODE_SUM) ? 'image_rate_points' : 'image_rate_avg';
+	$sort_by_sql['ra'] = 'image_rate_avg';
 	$sort_by_text['r'] = $user->lang['RATES_COUNT'];
 	$sort_by_sql['r'] = 'image_rates';
 }
@@ -251,60 +251,13 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 
 				$sql_order = 'image_rate_avg DESC';
 				$sql_limit = phpbb_gallery_constants::SEARCH_PAGES_NUMBER * $images_per_page;
-				// We need to hide contest-images on this search_id, if the contest is still running!
 				$sql = 'SELECT image_id
 					FROM ' . GALLERY_IMAGES_TABLE . '
 					WHERE image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN . '
 						AND image_rate_points <> 0
-						AND ((' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('i_view'), false, true) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ' AND image_contest = ' . phpbb_gallery_image::NO_CONTEST . ')
+						AND ((' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('i_view'), false, true) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ')
 							OR ' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('m_status'), false, true) . ')
 					ORDER BY ' . $sql_order;
-			}
-			break;
-
-			case 'contests':
-			if (phpbb_gallery_config::get('allow_rates'))
-			{
-				$template->assign_block_vars('navlinks', [
-					'FORUM_NAME'    => $user->lang['SEARCH_CONTEST'],
-					'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('search', 'search_id=' . $search_id),
-				]);
-
-				$l_search_title = $user->lang['SEARCH_CONTEST'];
-				$search_results = 'image';
-
-				$sql_array = [
-					'SELECT'        => 'c.*, a.album_name',
-					'FROM'          => [GALLERY_CONTESTS_TABLE => 'c'],
-
-					'LEFT_JOIN'     => [
-						[
-							'FROM'      => [GALLERY_ALBUMS_TABLE => 'a'],
-							'ON'        => 'a.album_id = c.contest_album_id',
-						],
-					],
-
-					'WHERE'         => $db->sql_in_set('c.contest_album_id', array_unique(array_merge(phpbb_gallery::$auth->acl_album_ids('i_view'), phpbb_gallery::$auth->acl_album_ids('m_status'))), false, true) . ' AND c.contest_marked = ' . phpbb_gallery_image::NO_CONTEST,
-					'ORDER_BY'      => 'c.contest_start + c.contest_end DESC',
-				];
-				$sql = $db->sql_build_query('SELECT', $sql_array);
-				$result = $db->sql_query_limit($sql, phpbb_gallery_config::get('album_rows') * phpbb_gallery_constants::SEARCH_PAGES_NUMBER);
-
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$id_ary[] = $row['contest_first'];
-					$id_ary[] = $row['contest_second'];
-					$id_ary[] = $row['contest_third'];
-					$contest_images[$row['contest_id']] = [
-						'album_id'      => $row['contest_album_id'],
-						'album_name'    => $row['album_name'],
-						'images'        => [$row['contest_first'], $row['contest_second'], $row['contest_third']]
-					];
-				}
-				$db->sql_freeresult($result);
-
-				// Clear $sql, so we do not execute it again.
-				$sql = '';
 			}
 			break;
 
@@ -326,12 +279,11 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 				$search_results = 'image';
 
 				$sql_order = $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC');
-				// We need to hide contest-images on this search_id, if the contest is still running!
 				$sql = 'SELECT image_id
 					FROM ' . GALLERY_IMAGES_TABLE . '
 					WHERE image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN . '
 						AND image_user_id = ' . $user_id . '
-						AND ((' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('i_view'), false, true) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ' AND image_contest = ' . phpbb_gallery_image::NO_CONTEST . ')
+						AND ((' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('i_view'), false, true) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ')
 							OR ' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('m_status'), false, true) . ')
 					ORDER BY ' . $sql_order;
 			break;
@@ -477,77 +429,36 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				if ($search_id == 'contests')
-				{
-					$rowset[$row['image_id']] = $row;
-				}
-				else
-				{
-					$rowset[] = $row;
-				}
+				$rowset[] = $row;
 			}
 			$db->sql_freeresult($result);
 
-			$columns_per_page = ($search_id == 'contests') ? phpbb_gallery_contest::NUM_IMAGES : phpbb_gallery_config::get('album_columns');
+			$columns_per_page = phpbb_gallery_config::get('album_columns');
 			$init_block = true;
-			if ($search_id == 'contests')
+			for ($i = 0, $end = count($rowset); $i < $end; $i += $columns_per_page)
 			{
-				foreach ($contest_images as $contest => $contest_data)
+				if ($init_block)
 				{
-					$num = 0;
 					$template->assign_block_vars('imageblock', [
-						'U_BLOCK'           => phpbb_gallery_url::append_sid('album', 'album_id=' . $contest_data['album_id'] . '&amp;sk=ra&amp;sd=d'),
-						'BLOCK_NAME'        => sprintf($user->lang['CONTEST_WINNERS_OF'], $contest_data['album_name']),
-						'S_CONTEST_BLOCK'   => true,
-						'S_COL_WIDTH'       => '33%',
-						'S_COLS'            => 3,
+						'U_BLOCK'       => $u_search,
+						'BLOCK_NAME'    => ($l_search_title) ? $l_search_title : $l_search_matches,
+						'S_COL_WIDTH'   => (100 / phpbb_gallery_config::get('album_columns')) . '%',
+						'S_COLS'        => phpbb_gallery_config::get('album_columns'),
 					]);
-					foreach ($contest_data['images'] as $contest_image)
-					{
-						if (($num % phpbb_gallery_contest::NUM_IMAGES) == 0)
-						{
-							$template->assign_block_vars('imageblock.imagerow', []);
-						}
-						if (!empty($rowset[$contest_image]))
-						{
-							phpbb_gallery_image::assign_block('imageblock.imagerow.image', $rowset[$contest_image], $rowset[$contest_image]['album_status'], phpbb_gallery_config::get('search_display'), $rowset[$contest_image]['album_user_id']);
-							$num++;
-						}
-					}
-					while (($num % phpbb_gallery_contest::NUM_IMAGES) > 0)
-					{
-						$template->assign_block_vars('imageblock.imagerow.no_image', []);
-						$num++;
-					}
+					$init_block = false;
 				}
-			}
-			else
-			{
-				for ($i = 0, $end = count($rowset); $i < $end; $i += $columns_per_page)
+				$template->assign_block_vars('imageblock.imagerow', []);
+
+				for ($j = $i, $end_columns = ($i + $columns_per_page); $j < $end_columns; $j++)
 				{
-					if ($init_block)
+					if ($j >= $end)
 					{
-						$template->assign_block_vars('imageblock', [
-							'U_BLOCK'       => $u_search,
-							'BLOCK_NAME'    => ($l_search_title) ? $l_search_title : $l_search_matches,
-							'S_COL_WIDTH'   => (100 / phpbb_gallery_config::get('album_columns')) . '%',
-							'S_COLS'        => phpbb_gallery_config::get('album_columns'),
-						]);
-						$init_block = false;
+						$template->assign_block_vars('imageblock.imagerow.noimage', []);
+						continue;
 					}
-					$template->assign_block_vars('imageblock.imagerow', []);
 
-					for ($j = $i, $end_columns = ($i + $columns_per_page); $j < $end_columns; $j++)
-					{
-						if ($j >= $end)
-						{
-							$template->assign_block_vars('imageblock.imagerow.noimage', []);
-							continue;
-						}
-
-						// Assign the image to the template-block
-						phpbb_gallery_image::assign_block('imageblock.imagerow.image', $rowset[$j], $rowset[$j]['album_status'], phpbb_gallery_config::get('search_display'), $rowset[$j]['album_user_id']);
-					}
+					// Assign the image to the template-block
+					phpbb_gallery_image::assign_block('imageblock.imagerow.image', $rowset[$j], $rowset[$j]['album_status'], phpbb_gallery_config::get('search_display'), $rowset[$j]['album_user_id']);
 				}
 			}
 		}

@@ -27,17 +27,6 @@ $sort_key   = request_var('sk', $album_data['album_sort_key'] ?: phpbb_gallery_c
 $sort_dir   = request_var('sd', $album_data['album_sort_dir'] ?: phpbb_gallery_config::get('default_sort_dir'));
 
 /**
-* Did the contest end?
-*/
-if ($album_data['contest_id'] && $album_data['contest_marked'] && (($album_data['contest_start'] + $album_data['contest_end']) < time()))
-{
-	$contest_end_time = $album_data['contest_start'] + $album_data['contest_end'];
-	phpbb_gallery_contest::end($album_id, $album_data['contest_id'], $contest_end_time);
-
-	$album_data['contest_marked'] = phpbb_gallery_image::NO_CONTEST;
-}
-
-/**
 * Build auth-list
 */
 phpbb_gallery::$auth->gen_auth_level('album', $album_id, $album_data['album_status'], $album_data['album_user_id']);
@@ -125,19 +114,15 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 	$sort_by_text = ['t' => $user->lang['TIME'], 'n' => $user->lang['IMAGE_NAME'], 'vc' => $user->lang['GALLERY_VIEWS']];
 	$sort_by_sql = ['t' => 'image_time', 'n' => 'image_name_clean', 'vc' => 'image_view_count'];
 
-	// Do not sort images after upload-username on running contests, and of course ratings aswell!
-	if ($album_data['contest_marked'] != phpbb_gallery_image::IN_CONTEST)
-	{
-		$sort_by_text['u'] = $user->lang['SORT_USERNAME'];
-		$sort_by_sql['u'] = 'image_username_clean';
+	$sort_by_text['u'] = $user->lang['SORT_USERNAME'];
+	$sort_by_sql['u'] = 'image_username_clean';
 
-		if (phpbb_gallery_config::get('allow_rates'))
-		{
-			$sort_by_text['ra'] = $user->lang['RATING'];
-			$sort_by_sql['ra'] = (phpbb_gallery_contest::$mode == phpbb_gallery_contest::MODE_SUM) ? 'image_rate_points' : 'image_rate_avg';
-			$sort_by_text['r'] = $user->lang['RATES_COUNT'];
-			$sort_by_sql['r'] = 'image_rates';
-		}
+	if (phpbb_gallery_config::get('allow_rates'))
+	{
+		$sort_by_text['ra'] = $user->lang['RATING'];
+		$sort_by_sql['ra'] = 'image_rate_avg';
+		$sort_by_text['r'] = $user->lang['RATES_COUNT'];
+		$sort_by_sql['r'] = 'image_rates';
 	}
 	if (phpbb_gallery_config::get('allow_comments'))
 	{

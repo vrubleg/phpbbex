@@ -40,7 +40,6 @@ class phpbb_gallery_config_core
 		'captcha_upload'        => true,
 		'comment_length'        => 2000,
 		'comment_user_control'  => true,
-		'contests_ended'        => 0,
 
 		'default_sort_dir'  => 'd',
 		'default_sort_key'  => 't',
@@ -94,7 +93,6 @@ class phpbb_gallery_config_core
 
 		'rrc_gindex_columns'    => 4,
 		'rrc_gindex_comments'   => false,
-		'rrc_gindex_contests'   => 1,
 		'rrc_gindex_crows'      => 5,
 		'rrc_gindex_display'    => 173,
 		'rrc_gindex_mode'       => 7,

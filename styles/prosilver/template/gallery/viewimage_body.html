@@ -33,12 +33,6 @@
 			<hr />
 
 			<fieldset class="fields1 anti-postbody">
-				<!-- IF CONTEST_RANK -->
-				<dl class="column1">
-					<dt><label>{L_CONTEST_RESULT}:</label></dt>
-					<dd>{CONTEST_RANK}</dd>
-				</dl>
-				<!-- ENDIF -->
 				<dl class="column2">
 					<dt><label>{L_UPLOADED_ON_DATE}:</label></dt>
 					<dd>{IMAGE_TIME}</dd>
@@ -62,7 +56,7 @@
 				<!-- IF S_VIEW_RATE -->
 				<dl class="column2">
 					<dt><label>{L_RATING}:</label></dt>
-					<dd><!-- IF CONTEST_RESULT_HIDDEN -->{CONTEST_RESULT_HIDDEN}<!-- ELSE -->{IMAGE_RATING}<!-- ENDIF --><!-- IF S_YOUR_RATING --> ({L_YOUR_RATING}: {S_YOUR_RATING})<!-- ENDIF --></dd>
+					<dd>{IMAGE_RATING}<!-- IF S_YOUR_RATING --> ({L_YOUR_RATING}: {S_YOUR_RATING})<!-- ENDIF --></dd>
 				</dl>
 				<!-- ENDIF -->
 			</fieldset>
@@ -173,16 +167,14 @@
 								<option value="{rate_scale.RATE_POINT}">{rate_scale.RATE_POINT}</option>
 							<!-- END rate_scale -->
 							</select>
-							<!-- IF (not S_ALLOWED_TO_COMMENT or S_HIDE_COMMENT_INPUT) and .rate_scale -->
+							<!-- IF not S_ALLOWED_TO_COMMENT and .rate_scale -->
 								<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
 							<!-- ENDIF -->
-						<!-- ELSE -->
-							{CONTEST_RATING}
 						<!-- ENDIF -->
 					</dd>
 				</dl>
 			<!-- ENDIF -->
-			<!-- IF S_ALLOWED_TO_COMMENT and not S_HIDE_COMMENT_INPUT -->
+			<!-- IF S_ALLOWED_TO_COMMENT -->
 				<!-- IF not S_USER_LOGGED_IN -->
 					<dl>
 						<dt><label>{L_USERNAME}:</label></dt>
@@ -222,9 +214,6 @@
 				<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED} /> {L_ATTACH_SIG}</label></div>
 				<div style="text-align: center;"><input style=" padding-bottom: 3px; padding-top: 3px; vertical-align: middle;"type="submit" name="submit" value="{L_SUBMIT}" class="button1" /></div>
 			</fieldset>
-		<!-- ELSE IF S_HIDE_COMMENT_INPUT -->
-			<!-- IF S_ALLOWED_TO_RATE --><hr class="dashed" /><!-- ENDIF -->
-			{CONTEST_COMMENTS}
 		<!-- ENDIF -->
 		{S_FORM_TOKEN}
 	</div>

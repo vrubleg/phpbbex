@@ -275,24 +275,10 @@ if ($action && $image_id_ary)
 		case 'images_move':
 			if ($moving_target)
 			{
-				$target_data = phpbb_gallery_album::get_info($moving_target);
-
-				if ($target_data['contest_id'] && (time() < ($target_data['contest_start'] + $target_data['contest_end'])))
-				{
-					$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
-						SET image_album_id = ' . $moving_target . ',
-							image_contest = ' . phpbb_gallery_image::IN_CONTEST . '
-						WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
-					$db->sql_query($sql);
-				}
-				else
-				{
-					$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
-						SET image_album_id = ' . $moving_target . ',
-							image_contest = ' . phpbb_gallery_image::NO_CONTEST . '
-						WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
-					$db->sql_query($sql);
-				}
+				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
+					SET image_album_id = ' . $moving_target . '
+					WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
+				$db->sql_query($sql);
 				phpbb_gallery_report::move_images($image_id_ary, $moving_target);
 
 				foreach ($image_id_ary as $image)

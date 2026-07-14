@@ -18,7 +18,7 @@ class phpbb_gallery_block
 	{
 		$this->set_mode($mode ?: (self::MODE_RECENT + self::MODE_RANDOM + self::MODE_COMMENT));
 		$this->set_display($display_options ?: (self::DISPLAY_ALBUMNAME + self::DISPLAY_IMAGENAME + self::DISPLAY_IMAGETIME + self::DISPLAY_IMAGEVIEWS + self::DISPLAY_USERNAME + self::DISPLAY_IP));
-		$this->set_num($nums ?: [1, 4, 5, 0]);
+		$this->set_num($nums ?: [1, 4, 5]);
 		$this->set_toggle((is_bool($toggle_comments)) ? $toggle_comments : false);
 		$this->set_pegas((is_bool($display_pegas)) ? $display_pegas : true);
 
@@ -149,12 +149,11 @@ class phpbb_gallery_block
 	private $num_rows       = 0;
 	private $num_columns    = 0;
 	private $num_comments   = 0;
-	private $num_contests   = 0;
 	private $num_sql_limit  = 0;
 
 	public function set_nums($nums = [])
 	{
-		$allowed_nums = ['rows', 'columns', 'comments', 'contests'];
+		$allowed_nums = ['rows', 'columns', 'comments'];
 		foreach ($allowed_nums as $num)
 		{
 			if (isset($nums[$num]) && is_int($nums[$num]))
@@ -169,16 +168,15 @@ class phpbb_gallery_block
 
 	/**
 	* @param    array   $nums   Array of ints for:
-	*                           # of rows, # of columns, # of comments, # of contests
+	*                           # of rows, # of columns, # of comments
 	*/
 	public function set_num($nums)
 	{
-		if (sizeof($nums) == 4)
+		if (sizeof($nums) == 3)
 		{
 			$this->num_rows         = (int) $nums[0];
 			$this->num_columns      = (int) $nums[1];
 			$this->num_comments     = (int) $nums[2];
-			$this->num_contests     = (int) $nums[3];
 			$this->num_sql_limit    = $this->num_rows * $this->num_columns;
 		}
 	}
@@ -310,7 +308,7 @@ class phpbb_gallery_block
 		}
 
 		$this->sql_where_auth = '(';
-		$this->sql_where_auth .= ((!empty($this->auth_view)) ? '(' . $db->sql_in_set('image_album_id', $this->auth_view) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ((!empty($this->users)) ? ' AND image_contest = ' . phpbb_gallery_image::NO_CONTEST : '') . ')' : '');
+		$this->sql_where_auth .= ((!empty($this->auth_view)) ? '(' . $db->sql_in_set('image_album_id', $this->auth_view) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ')' : '');
 		$this->sql_where_auth .= ((!empty($this->auth_moderate)) ? ((!empty($this->auth_view)) ? ' OR ' : '') . '(' . $db->sql_in_set('image_album_id', $this->auth_moderate, false, true) . ')' : '');
 
 		if ($this->sql_where_auth == '(')
@@ -328,13 +326,12 @@ class phpbb_gallery_block
 	private $images = [];
 	private $recent_images = [];
 	private $random_images = [];
-	private $contest_images = [];
 
 	private function get_image_ids()
 	{
 		global $db;
 
-		$this->images = $this->recent_images = $this->random_images = $this->contest_images = [];
+		$this->images = $this->recent_images = $this->random_images = [];
 		// First step: grab all the IDs we are going to display ...
 		if ($this->mode & self::MODE_RECENT)
 		{
@@ -365,38 +362,6 @@ class phpbb_gallery_block
 			{
 				$this->images[] = $row['image_id'];
 				$this->random_images[] = $row['image_id'];
-			}
-			$db->sql_freeresult($result);
-		}
-		if ($this->num_contests)
-		{
-			$sql_array = [
-				'SELECT'        => 'c.*, a.album_name',
-				'FROM'          => [GALLERY_CONTESTS_TABLE => 'c'],
-
-				'LEFT_JOIN'     => [
-					[
-						'FROM'      => [GALLERY_ALBUMS_TABLE => 'a'],
-						'ON'        => 'a.album_id = c.contest_album_id',
-					],
-				],
-
-				'WHERE'         => $db->sql_in_set('c.contest_album_id', array_unique(array_merge($this->auth_view, $this->auth_moderate)), false, true) . ' AND c.contest_marked = ' . phpbb_gallery_image::NO_CONTEST,
-				'ORDER_BY'      => 'c.contest_start + c.contest_end DESC',
-			];
-			$sql = $db->sql_build_query('SELECT', $sql_array);
-			$result = $db->sql_query_limit($sql, $this->num_contests);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$this->images[] = $row['contest_first'];
-				$this->images[] = $row['contest_second'];
-				$this->images[] = $row['contest_third'];
-				$this->contest_images[$row['contest_id']] = [
-					'album_id'      => $row['contest_album_id'],
-					'album_name'    => $row['album_name'],
-					'images'        => [$row['contest_first'], $row['contest_second'], $row['contest_third']]
-				];
 			}
 			$db->sql_freeresult($result);
 		}
@@ -492,38 +457,6 @@ class phpbb_gallery_block
 			{
 				$template->assign_block_vars($this->template_block_images . '.imagerow.no_image', []);
 				$num++;
-			}
-		}
-
-		if (!empty($this->contest_images))
-		{
-			foreach ($this->contest_images as $contest => $contest_data)
-			{
-				$num = 0;
-				$template->assign_block_vars($this->template_block_images, [
-					'U_BLOCK'           => phpbb_gallery_url::append_sid('album', 'album_id=' . $contest_data['album_id'] . '&amp;sk=ra&amp;sd=d'),
-					'BLOCK_NAME'        => sprintf($user->lang['CONTEST_WINNERS_OF'], $contest_data['album_name']),
-					'S_CONTEST_BLOCK'   => true,
-					'S_COL_WIDTH'       => '33%',
-					'S_COLS'            => 3,
-				]);
-				foreach ($contest_data['images'] as $image)
-				{
-					if (($num % phpbb_gallery_contest::NUM_IMAGES) == 0)
-					{
-						$template->assign_block_vars($this->template_block_images . '.imagerow', []);
-					}
-					if (!empty($this->images_data[$image]))
-					{
-						phpbb_gallery_image::assign_block($this->template_block_images . '.imagerow.image', $this->images_data[$image], $this->images_data[$image]['album_status'], $this->get_display(), $this->images_data[$image]['album_user_id']);
-						$num++;
-					}
-				}
-				while (($num % phpbb_gallery_contest::NUM_IMAGES) > 0)
-				{
-					$template->assign_block_vars($this->template_block_images . '.imagerow.no_image', []);
-					$num++;
-				}
 			}
 		}
 

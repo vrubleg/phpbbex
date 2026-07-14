@@ -198,15 +198,7 @@ if ((phpbb_gallery::$auth->acl_check('m_', $album_id, $album_data['album_user_id
 	]);
 }
 
-$image_desc = '';
-if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']) || ($image_data['image_contest'] != phpbb_gallery_image::IN_CONTEST))
-{
-	$image_desc = generate_text_for_display($image_data['image_desc'], $image_data['image_desc_uid'], $image_data['image_desc_bitfield'], 7);
-}
-elseif ($image_data['image_desc'])
-{
-	$image_desc = sprintf($user->lang['CONTEST_IMAGE_DESC'], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true));
-}
+$image_desc = generate_text_for_display($image_data['image_desc'], $image_data['image_desc_uid'], $image_data['image_desc_bitfield'], 7);
 
 $favorite_mode = (($image_data['favorite_id']) ? 'un' : '') . 'favorite';
 $watch_mode = (($image_data['watch_id']) ? 'un' : '') . 'watch';
@@ -229,7 +221,6 @@ $template->assign_vars([
 	'U_REPORT'          => (phpbb_gallery::$auth->acl_check('i_report', $album_id, $album_data['album_user_id']) && ($image_data['image_user_id'] != $user->data['user_id'])) ? phpbb_gallery_url::append_sid('posting', "mode=report&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
 	'U_STATUS'          => ($s_allowed_status) ? phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id={$image_id}") : '',
 
-	'CONTEST_RANK'      => ($image_data['image_contest_rank']) ? $user->lang['CONTEST_RESULT_' . $image_data['image_contest_rank']] : '',
 	'IMAGE_NAME'        => $image_data['image_name'],
 	'IMAGE_DESC'        => $image_desc,
 	'IMAGE_BBCODE'      => ($config['allow_bbcode']) ? '[album]' . $image_id . '[/album]' : '',
@@ -257,7 +248,7 @@ $template->assign_vars([
 /**
 * Exif-Data
 */
-if (phpbb_gallery_config::get('disp_exifdata') && ($image_data['image_has_exif'] != phpbb_gallery_exif::UNAVAILABLE) && (substr($image_data['image_filename'], -4) == '.jpg') && function_exists('exif_read_data') && (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']) || ($image_data['image_contest'] != phpbb_gallery_image::IN_CONTEST)))
+if (phpbb_gallery_config::get('disp_exifdata') && ($image_data['image_has_exif'] != phpbb_gallery_exif::UNAVAILABLE) && (substr($image_data['image_filename'], -4) == '.jpg') && function_exists('exif_read_data'))
 {
 	$exif = new phpbb_gallery_exif(phpbb_gallery_url::path('upload') . $image_data['image_filename'], $image_id);
 	$exif->interpret($image_data['image_has_exif'], $image_data['image_exif_data']);
@@ -314,12 +305,8 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	// Build smilies array
 	generate_smilies('inline');
 
-	$s_hide_comment_input = (time() < ($album_data['contest_start'] + $album_data['contest_end']));
-
 	$template->assign_vars([
 		'S_ALLOWED_TO_COMMENT'  => true,
-		'S_HIDE_COMMENT_INPUT'  => $s_hide_comment_input,
-		'CONTEST_COMMENTS'      => sprintf($user->lang['CONTEST_COMMENTS_STARTS'], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)),
 
 		'BBCODE_STATUS'         => ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
 		'IMG_STATUS'            => ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
@@ -352,10 +339,7 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	}
 
 	// Different link, when we rate and dont comment
-	if (!$s_hide_comment_input)
-	{
-		$template->assign_var('S_COMMENT_ACTION', phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add"));
-	}
+	$template->assign_var('S_COMMENT_ACTION', phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add"));
 }
 elseif (phpbb_gallery_config::get('comment_user_control') && !$image_data['image_allow_comments'])
 {
@@ -365,7 +349,7 @@ elseif (phpbb_gallery_config::get('comment_user_control') && !$image_data['image
 /**
 * Listing comment
 */
-if ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_check('c_read', $album_id, $album_data['album_user_id'])) && (time() > ($album_data['contest_start'] + $album_data['contest_end'])))
+if (phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_check('c_read', $album_id, $album_data['album_user_id']))
 {
 	$start = request_var('start', 0);
 	$sort_order = (request_var('sort_order', 'ASC') == 'ASC') ? 'ASC' : 'DESC';
@@ -563,12 +547,10 @@ if (!isset($user_cache[$image_data['image_user_id']]))
 	$db->sql_freeresult($result);
 }
 
-if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']) || ($image_data['image_contest'] != phpbb_gallery_image::IN_CONTEST))
-{
-	$user_id = $image_data['image_user_id'];
-	if (!isset($user_cache[$user_id])) { $user_id = ANONYMOUS; }
+$user_id = $image_data['image_user_id'];
+if (!isset($user_cache[$user_id])) { $user_id = ANONYMOUS; }
 
-	$template->assign_vars([
+$template->assign_vars([
 		'POSTER_FULL'       => get_username_string('full', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
 		'POSTER_COLOUR'     => get_username_string('colour', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
 		'POSTER_USERNAME'   => get_username_string('username', $user_id, $image_data['image_username'], $user_cache[$user_id]['user_colour']),
@@ -613,14 +595,7 @@ if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_us
 		'U_POSTER_GALLERY'          => $user_cache[$user_id]['gallery_album'],
 		'POSTER_GALLERY_IMAGES'     => $user_cache[$user_id]['gallery_images'],
 		'U_POSTER_GALLERY_SEARCH'   => $user_cache[$user_id]['gallery_search'],
-	]);
-}
-else
-{
-	$template->assign_vars([
-		'POSTER_FULL'   => sprintf($user->lang['CONTEST_USERNAME_LONG'], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)),
-	]);
-}
+]);
 
 $template->assign_vars([
 	'PROFILE_IMG'       => $user->img('icon_user_profile', 'READ_PROFILE'),

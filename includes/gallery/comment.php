@@ -36,14 +36,12 @@ class phpbb_gallery_comment
 	* Is the user able to comment?
 	* Following statements must be true:
 	*   - User must be allowed to rate
-	*   - If the image is in a contest, it must be finished
-	*
 	* @return   bool
 	*/
 	static public function is_able($album_data, $image_data)
 	{
 		global $user;
-		return self::is_allowed($album_data, $image_data) && phpbb_gallery_contest::is_step('comment', $album_data);
+		return self::is_allowed($album_data, $image_data);
 	}
 
 	/**

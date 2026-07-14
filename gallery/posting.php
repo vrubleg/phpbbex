@@ -97,10 +97,6 @@ switch ($mode)
 		{
 			phpbb_gallery_misc::not_authorised($album_backlink, $album_loginlink, 'LOGIN_EXPLAIN_GALLERY_UPLOAD');
 		}
-		if (!phpbb_gallery_contest::is_step('upload', $album_data))
-		{
-			phpbb_gallery_misc::not_authorised($album_backlink, $album_loginlink);
-		}
 	break;
 
 	case 'edit':
@@ -450,7 +446,7 @@ else
 			$success = true;
 			foreach ($process->images as $image_id)
 			{
-				$success = $success && $process->update_image($image_id, !phpbb_gallery::$auth->acl_check('i_approve', $album_id, $album_data['album_user_id']), $album_data['album_contest']);
+				$success = $success && $process->update_image($image_id, !phpbb_gallery::$auth->acl_check('i_approve', $album_id, $album_data['album_user_id']));
 				if (phpbb_gallery::$user->get_data('watch_own'))
 				{
 					phpbb_gallery_notification::add($image_id);

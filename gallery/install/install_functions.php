@@ -312,14 +312,12 @@ function config_mapping()
 
 		'disp_fake_thumb'           => 'mini_thumbnail_disp',
 		'fake_thumb_size'           => 'mini_thumbnail_size',
-		'contests_ended'            => 'contests_ended',
 
 		'rrc_gindex_mode'           => 'rrc_gindex_mode',
 		'rrc_gindex_rows'           => 'rrc_gindex_rows',
 		'rrc_gindex_columns'        => 'rrc_gindex_columns',
 		'rrc_gindex_comments'       => 'rrc_gindex_comments',
 		'rrc_gindex_crows'          => 'rrc_gindex_crows',
-		'rrc_gindex_contests'       => 'rrc_gindex_contests',
 		'rrc_gindex_display'        => 'rrc_gindex_display',
 		'rrc_gindex_pgalleries'     => 'rrc_gindex_pegas',
 

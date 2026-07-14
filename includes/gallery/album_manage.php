@@ -59,7 +59,7 @@ class phpbb_gallery_album_manage
 	* @author: phpBB Group
 	* @function: update_forum_data
 	*/
-	public function update_album_data(&$album_data, &$contest_data)
+	public function update_album_data(&$album_data)
 	{
 		global $db, $user, $cache;
 
@@ -83,54 +83,6 @@ class phpbb_gallery_album_manage
 				$errors[] = $user->lang['ALBUM_PASSWORD_MISMATCH'];
 			}
 		}*/
-		// Validate the contest timestamps:
-		if ($album_data['album_type'] == phpbb_gallery_album::TYPE_CONTEST)
-		{
-			$start_date_error = $date_error = false;
-			if (!preg_match('#(\\d{4})-(\\d{1,2})-(\\d{1,2}) (\\d{1,2}):(\\d{2})#', $contest_data['contest_start'], $m))
-			{
-				$errors[] = sprintf($user->lang['CONTEST_START_INVALID'], $contest_data['contest_start']);
-				$start_date_error = true;
-			}
-			else
-			{
-				$contest_data['contest_start'] = gmmktime($m[4], $m[5], 0, $m[2], $m[3], $m[1]) - ($user->timezone + $user->dst);
-			}
-			if (!preg_match('#(\\d{4})-(\\d{1,2})-(\\d{1,2}) (\\d{1,2}):(\\d{2})#', $contest_data['contest_rating'], $m))
-			{
-				$errors[] = sprintf($user->lang['CONTEST_RATING_INVALID'], $contest_data['contest_rating']);
-				$date_error = true;
-			}
-			elseif (!$start_date_error)
-			{
-				$contest_data['contest_rating'] = gmmktime($m[4], $m[5], 0, $m[2], $m[3], $m[1]) - ($user->timezone + $user->dst) - $contest_data['contest_start'];
-			}
-			if (!preg_match('#(\\d{4})-(\\d{1,2})-(\\d{1,2}) (\\d{1,2}):(\\d{2})#', $contest_data['contest_end'], $m))
-			{
-				$errors[] = sprintf($user->lang['CONTEST_END_INVALID'], $contest_data['contest_end']);
-				$date_error = true;
-			}
-			elseif (!$start_date_error)
-			{
-				$contest_data['contest_end'] = gmmktime($m[4], $m[5], 0, $m[2], $m[3], $m[1]) - ($user->timezone + $user->dst) - $contest_data['contest_start'];
-			}
-			if (!$start_date_error && !$date_error)
-			{
-				if ($contest_data['contest_end'] < $contest_data['contest_rating'])
-				{
-					$errors[] = $user->lang['CONTEST_END_BEFORE_RATING'];
-				}
-				if ($contest_data['contest_rating'] < 0)
-				{
-					$errors[] = $user->lang['CONTEST_RATING_BEFORE_START'];
-				}
-				if ($contest_data['contest_end'] < 0)
-				{
-					$errors[] = $user->lang['CONTEST_END_BEFORE_START'];
-				}
-			}
-		}
-
 		// Unset data that are not database fields
 		$album_data_sql = $album_data;
 		/*
@@ -139,7 +91,7 @@ class phpbb_gallery_album_manage
 
 		// What are we going to do tonight Brain? The same thing we do everynight,
 		// try to take over the world ... or decide whether to continue update
-		// and if so, whether it's a new album/cat/contest or an existing one
+		// and if so, whether it's a new album/category or an existing one
 		if (sizeof($errors))
 		{
 			return $errors;
@@ -247,49 +199,17 @@ class phpbb_gallery_album_manage
 			$db->sql_query($sql);
 			$album_data['album_id'] = (int) $db->sql_nextid();
 
-			// Type is contest, so create it...
-			if ($album_data['album_type'] == phpbb_gallery_album::TYPE_CONTEST)
-			{
-				$contest_data_sql = $contest_data;
-				$contest_data_sql['contest_album_id'] = $album_data['album_id'];
-				$contest_data_sql['contest_marked'] = phpbb_gallery_image::IN_CONTEST;
-
-				$sql = 'INSERT INTO ' . GALLERY_CONTESTS_TABLE . ' ' . $db->sql_build_array('INSERT', $contest_data_sql);
-				$db->sql_query($sql);
-				$album_data['album_contest'] = (int) $db->sql_nextid();
-
-				$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . '
-					SET album_contest = ' . $album_data['album_contest'] . '
-					WHERE album_id = ' . $album_data['album_id'];
-				$db->sql_query($sql);
-			}
-
 			add_log('admin', 'LOG_ALBUM_ADD', $album_data['album_name']);
 		}
 		else
 		{
 			$row = phpbb_gallery_album::get_info($album_data_sql['album_id']);
-			$reset_marked_images = false;
 
-			if ($row['album_type'] == phpbb_gallery_album::TYPE_CONTEST && $album_data_sql['album_type'] != phpbb_gallery_album::TYPE_CONTEST)
-			{
-				// Changing a contest to album? No!
-				// Changing a contest to category? No!
-				$errors[] = $user->lang['ALBUM_WITH_CONTEST_NO_TYPE_CHANGE'];
-				return $errors;
-			}
-			else if ($row['album_type'] != phpbb_gallery_album::TYPE_CONTEST && $album_data_sql['album_type'] == phpbb_gallery_album::TYPE_CONTEST)
-			{
-				// Changing a album to contest? No!
-				// Changing a category to contest? No!
-				$errors[] = $user->lang['ALBUM_NO_TYPE_CHANGE_TO_CONTEST'];
-				return $errors;
-			}
-			else if ($row['album_type'] == phpbb_gallery_album::TYPE_CAT && $album_data_sql['album_type'] == phpbb_gallery_album::TYPE_UPLOAD)
+			if ($row['album_type'] == phpbb_gallery_album::TYPE_CAT && $album_data_sql['album_type'] == phpbb_gallery_album::TYPE_UPLOAD)
 			{
 				// Changing a category to a album? Yes!
 				// Reset the data (you couldn't upload directly in a cat, you must use a album)
-				$album_data_sql['album_images'] = $album_data_sql['album_images_real'] = $album_data_sql['album_last_image_id'] = $album_data_sql['album_last_user_id'] = $album_data_sql['album_last_image_time'] = $album_data_sql['album_contest'] = 0;
+				$album_data_sql['album_images'] = $album_data_sql['album_images_real'] = $album_data_sql['album_last_image_id'] = $album_data_sql['album_last_user_id'] = $album_data_sql['album_last_image_time'] = 0;
 				$album_data_sql['album_last_username'] = $album_data_sql['album_last_user_colour'] = $album_data_sql['album_last_image_name'] = '';
 			}
 			else if ($row['album_type'] == phpbb_gallery_album::TYPE_UPLOAD && $album_data_sql['album_type'] == phpbb_gallery_album::TYPE_CAT)
@@ -318,24 +238,6 @@ class phpbb_gallery_album_manage
 					return [$user->lang['NO_ALBUM_ACTION']];
 				}
 			}
-			else if ($row['album_type'] == phpbb_gallery_album::TYPE_CONTEST && $album_data_sql['album_type'] == phpbb_gallery_album::TYPE_CONTEST)
-			{
-				// Changing a contest to contest? Yes!
-				// We need to check for the contest_data
-				$row_contest = phpbb_gallery_contest::get_contest($album_data['album_id'], 'album');
-				$contest_data['contest_id'] = $row_contest['contest_id'];
-				if ($row_contest['contest_marked'] == phpbb_gallery_image::NO_CONTEST)
-				{
-					// If the old contest is finished, but the new one isn't, we need to remark the images!
-					// If we change it the other way round, the album.php will do the end on the first visit!
-					if (($row_contest['contest_start'] + $row_contest['contest_end']) > time())
-					{
-						$contest_data['contest_marked'] = phpbb_gallery_image::IN_CONTEST;
-						$reset_marked_images = true;
-					}
-				}
-			}
-
 			if (sizeof($errors))
 			{
 				return $errors;
@@ -376,31 +278,6 @@ class phpbb_gallery_album_manage
 				SET ' . $db->sql_build_array('UPDATE', $album_data_sql) . '
 				WHERE album_id = ' . $album_id;
 			$db->sql_query($sql);
-
-			if ($album_data_sql['album_type'] == phpbb_gallery_album::TYPE_CONTEST)
-			{
-				// Setting the contest id to the contest id is not really received well by some dbs. ;)
-				$contest_id = $contest_data['contest_id'];
-				unset($contest_data['contest_id']);
-
-				$sql = 'UPDATE ' . GALLERY_CONTESTS_TABLE . '
-					SET ' . $db->sql_build_array('UPDATE', $contest_data) . '
-					WHERE contest_id = ' . $contest_id;
-				$db->sql_query($sql);
-				if ($reset_marked_images)
-				{
-					// If the old contest is finished, but the new one isn't, we need to remark the images!
-					$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
-						SET image_contest_rank = 0,
-							image_contest_end = 0,
-							image_contest = ' . phpbb_gallery_image::IN_CONTEST . '
-						WHERE image_album_id = ' . $album_id;
-					$db->sql_query($sql);
-				}
-
-				// Add it back
-				$contest_data['contest_id'] = $contest_id;
-			}
 
 			// Add it back
 			$album_data['album_id'] = $album_id;
@@ -736,20 +613,12 @@ class phpbb_gallery_album_manage
 				AND log_type = " . LOG_GALLERY;
 		$db->sql_query($sql);
 
-		// Reset contest-information for safety.
 		$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
-			SET image_album_id = ' . $to_id . ',
-				image_contest_rank = 0,
-				image_contest_end = 0,
-				image_contest = ' . phpbb_gallery_image::NO_CONTEST . '
+			SET image_album_id = ' . $to_id . '
 			WHERE image_album_id = ' . $from_id;
 		$db->sql_query($sql);
 
 		phpbb_gallery_report::move_album_content($from_id, $to_id);
-
-		$sql = 'DELETE FROM ' . GALLERY_CONTESTS_TABLE . '
-			WHERE contest_album_id = ' . $from_id;
-		$db->sql_query($sql);
 
 		$sql = 'DELETE FROM ' . GALLERY_PERMISSIONS_TABLE . '
 			WHERE perm_album_id = ' . $from_id;
@@ -832,10 +701,6 @@ class phpbb_gallery_album_manage
 		$sql = 'DELETE FROM ' . GALLERY_PERMISSIONS_TABLE . '
 			WHERE perm_album_id = ' . $album_id;
 		$db->sql_query($sql);
-		$sql = 'DELETE FROM ' . GALLERY_CONTESTS_TABLE . '
-			WHERE contest_album_id = ' . $album_id;
-		$db->sql_query($sql);
-
 		$sql = 'DELETE FROM ' . GALLERY_MODSCACHE_TABLE . '
 			WHERE album_id = ' . $album_id;
 		$db->sql_query($sql);

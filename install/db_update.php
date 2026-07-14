@@ -627,7 +627,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	remove_config_values([
 		'phpbb_gallery_allow_zip',
+		'phpbb_gallery_contests_ended',
 		'phpbb_gallery_gdlib_version',
+		'phpbb_gallery_rrc_gindex_contests',
 		'phpbb_gallery_watermark_changed',
 		'phpbb_gallery_watermark_enabled',
 		'phpbb_gallery_watermark_height',
@@ -642,6 +644,38 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		{
 			$db->sql_query($sql);
 		}
+	}
+	if ($db_tools->sql_table_exists(GALLERY_ALBUMS_TABLE))
+	{
+		// Convert contest albums to regular upload albums before removing contest metadata.
+		$db->sql_query('UPDATE ' . GALLERY_ALBUMS_TABLE . '
+			SET album_type = 1
+			WHERE album_type = 2');
+
+		if ($db_tools->sql_column_exists(GALLERY_ALBUMS_TABLE, 'album_contest'))
+		{
+			foreach ($db_tools->sql_column_remove(GALLERY_ALBUMS_TABLE, 'album_contest') as $sql)
+			{
+				$db->sql_query($sql);
+			}
+		}
+	}
+	if ($db_tools->sql_table_exists(GALLERY_IMAGES_TABLE))
+	{
+		foreach (['image_contest', 'image_contest_end', 'image_contest_rank'] as $column)
+		{
+			if ($db_tools->sql_column_exists(GALLERY_IMAGES_TABLE, $column))
+			{
+				foreach ($db_tools->sql_column_remove(GALLERY_IMAGES_TABLE, $column) as $sql)
+				{
+					$db->sql_query($sql);
+				}
+			}
+		}
+	}
+	foreach ($db_tools->sql_table_drop($table_prefix . 'gallery_contests') as $sql)
+	{
+		$db->sql_query($sql);
 	}
 	if ($db_tools->sql_table_exists(GALLERY_ROLES_TABLE) && $db_tools->sql_column_exists(GALLERY_ROLES_TABLE, 'i_watermark'))
 	{

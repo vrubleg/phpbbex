@@ -413,7 +413,6 @@ class acp_gallery_config
 			'rrc_gindex_columns'    => ['lang' => 'RRC_GINDEX_COLUMNS', 'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => false],
 			'rrc_gindex_comments'   => ['lang' => 'RRC_GINDEX_COMMENTS',    'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'rrc_gindex_crows'      => ['lang' => 'RRC_GINDEX_CROWS',       'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => false],
-			'rrc_gindex_contests'   => ['lang' => 'RRC_GINDEX_CONTESTS',    'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => false],
 			'rrc_gindex_display'    => ['lang' => 'RRC_DISPLAY_OPTIONS',    'validate' => '',       'type' => 'custom',         'gallery' => true,  'explain' => false, 'method' => 'rrc_display'],
 			'rrc_gindex_pegas'      => ['lang' => 'RRC_GINDEX_PGALLERIES',  'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 

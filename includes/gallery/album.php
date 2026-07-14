@@ -18,7 +18,6 @@ class phpbb_gallery_album
 
 	const TYPE_CAT          = 0;
 	const TYPE_UPLOAD       = 1;
-	const TYPE_CONTEST      = 2;
 
 	const STATUS_OPEN       = 0;
 	const STATUS_LOCKED     = 1;
@@ -39,15 +38,11 @@ class phpbb_gallery_album
 
 		if ($extended_info)
 		{
-			$sql_array['SELECT'] .= ', c.*, w.watch_id';
+			$sql_array['SELECT'] .= ', w.watch_id';
 			$sql_array['LEFT_JOIN'] = [
 				[
 					'FROM'      => [GALLERY_WATCH_TABLE => 'w'],
 					'ON'        => 'a.album_id = w.album_id AND w.user_id = ' . (int) $user->data['user_id'],
-				],
-				[
-					'FROM'      => [GALLERY_CONTESTS_TABLE => 'c'],
-					'ON'        => 'a.album_id = c.contest_album_id',
 				],
 			];
 		}
@@ -61,17 +56,6 @@ class phpbb_gallery_album
 		{
 			meta_refresh(3, phpbb_gallery_url::append_sid('index'));
 			trigger_error('ALBUM_NOT_EXIST');
-		}
-
-		if ($extended_info  && !isset($row['contest_id']))
-		{
-			$row['contest_id'] = 0;
-			$row['contest_rates_start'] = 0;
-			$row['contest_end'] = 0;
-			$row['contest_marked'] = 0;
-			$row['contest_first'] = 0;
-			$row['contest_second'] = 0;
-			$row['contest_third'] = 0;
 		}
 
 		return $row;
@@ -460,9 +444,6 @@ class phpbb_gallery_album
 			'ALBUM_ID'      => $album_data['album_id'],
 			'ALBUM_NAME'    => $album_data['album_name'],
 			'ALBUM_DESC'    => generate_text_for_display($album_data['album_desc'], $album_data['album_desc_uid'], $album_data['album_desc_bitfield'], $album_data['album_desc_options']),
-			'ALBUM_CONTEST_START'   => ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_START' . ((($album_data['contest_start']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start']), false, true)) : '',
-			'ALBUM_CONTEST_RATING'  => ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_RATING_START' . ((($album_data['contest_start'] + $album_data['contest_rating']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_rating']), false, true)) : '',
-			'ALBUM_CONTEST_END'     => ($album_data['contest_id']) ? sprintf($user->lang['CONTEST_END' . ((($album_data['contest_start'] + $album_data['contest_end']) < time()) ? 'ED' : 'S')], $user->format_date(($album_data['contest_start'] + $album_data['contest_end']), false, true)) : '',
 			'U_VIEW_ALBUM'  => phpbb_gallery_url::append_sid('album', 'album_id=' . $album_data['album_id']),
 		]);
 
@@ -667,13 +648,6 @@ class phpbb_gallery_album
 			];
 			$sql_array['ORDER_BY'] = 'u.username_clean, a.left_id';
 		}
-		$sql_array['LEFT_JOIN'][] = [
-			'FROM'  => [GALLERY_CONTESTS_TABLE => 'c'],
-			'ON'    => 'c.contest_album_id = a.album_id'
-		];
-		$sql_array['SELECT'] = $sql_array['SELECT'] . ', c.contest_marked';
-
-
 		$sql = $db->sql_build_query('SELECT', [
 			'SELECT'    => $sql_array['SELECT'],
 			'FROM'      => $sql_array['FROM'],
@@ -744,8 +718,6 @@ class phpbb_gallery_album
 					$branch_root_id = $album_id;
 				}
 				$album_rows[$parent_id]['album_id_last_image'] = $row['album_id'];
-				$album_rows[$parent_id]['album_type_last_image'] = $row['album_type'];
-				$album_rows[$parent_id]['album_contest_marked'] = $row['contest_marked'];
 				$album_rows[$parent_id]['orig_album_last_image_time'] = $row['album_last_image_time'];
 			}
 			else if ($row['album_type'])
@@ -771,8 +743,6 @@ class phpbb_gallery_album
 					$album_rows[$parent_id]['album_last_user_id'] = $row['album_last_user_id'];
 					$album_rows[$parent_id]['album_last_username'] = $row['album_last_username'];
 					$album_rows[$parent_id]['album_last_user_colour'] = $row['album_last_user_colour'];
-					$album_rows[$parent_id]['album_type_last_image'] = $row['album_type'];
-					$album_rows[$parent_id]['album_contest_marked'] = $row['contest_marked'];
 					$album_rows[$parent_id]['album_id_last_image'] = $album_id;
 				}
 			}
@@ -931,8 +901,6 @@ class phpbb_gallery_album
 				$lastimage_time = $user->format_date($row['album_last_image_time']);
 				$lastimage_image_id = $row['album_last_image_id'];
 				$lastimage_album_id = $row['album_id_last_image'];
-				$lastimage_album_type = $row['album_type_last_image'];
-				$lastimage_contest_marked = $row['album_contest_marked'];
 				$lastimage_uc_fake_thumbnail = phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $lastimage_image_id, $lastimage_name, $lastimage_album_id);
 				$lastimage_uc_thumbnail = phpbb_gallery_image::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $lastimage_image_id, $lastimage_name, $lastimage_album_id);
 				$lastimage_uc_name = phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $lastimage_image_id, $lastimage_name, $lastimage_album_id);
@@ -940,7 +908,7 @@ class phpbb_gallery_album
 			}
 			else
 			{
-				$lastimage_time = $lastimage_image_id = $lastimage_album_id = $lastimage_album_type = $lastimage_contest_marked = 0;
+				$lastimage_time = $lastimage_image_id = $lastimage_album_id = 0;
 				$lastimage_name = $lastimage_uc_fake_thumbnail = $lastimage_uc_thumbnail = $lastimage_uc_name = $lastimage_uc_icon = '';
 			}
 
@@ -960,8 +928,6 @@ class phpbb_gallery_album
 			$s_subalbums_list = (string) implode(', ', $s_subalbums_list);
 			$catless = ($row['parent_id'] == $root_data['album_id']);
 
-			$s_username_hidden = ($lastimage_album_type == self::TYPE_CONTEST) && $lastimage_contest_marked && !phpbb_gallery::$auth->acl_check('m_status', $album_id, $row['album_user_id']) && ($user->data['user_id'] != $row['album_last_user_id'] || $row['album_last_user_id'] == ANONYMOUS);
-
 			$template->assign_block_vars('albumrow', [
 				'S_IS_CAT'          => false,
 				'S_NO_CAT'          => $catless && !$last_catless,
@@ -980,7 +946,7 @@ class phpbb_gallery_album
 				'ALBUM_FOLDER_IMG_ALT'  => $user->lang[$folder_alt] ?? '',
 				'ALBUM_IMAGE'           => ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
 				'LAST_IMAGE_TIME'       => $lastimage_time,
-				'LAST_USER_FULL'        => ($s_username_hidden) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
+				'LAST_USER_FULL'        => get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
 				'UC_THUMBNAIL'          => (phpbb_gallery_config::get('mini_thumbnail_disp')) ? $lastimage_uc_thumbnail : '',
 				'UC_FAKE_THUMBNAIL'     => (phpbb_gallery_config::get('mini_thumbnail_disp')) ? $lastimage_uc_fake_thumbnail : '',
 				'UC_IMAGE_NAME'         => $lastimage_uc_name,

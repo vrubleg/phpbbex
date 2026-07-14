@@ -5,37 +5,8 @@
 <!-- IF S_EDIT_ALBUM -->
 
 	<script>
-		/**
-		* Handle displaying/hiding several options based on the album type
-		*
-		* borrowed from phpBB3
-		* @author: phpBB Group
-		* @location: acp_forums.html
-		*/
 		function display_options(value)
 		{
-			<!-- IF not S_ADD_ACTION and S_ALBUM_ORIG_CAT -->
-				if (value == {ALBUM_CONTEST})
-				{
-					dE('cat_to_contest_actions', 1);
-				}
-				else
-				{
-					dE('cat_to_contest_actions', -1);
-				}
-			<!-- ENDIF -->
-
-			<!-- IF not S_ADD_ACTION and S_ALBUM_ORIG_CONTEST -->
-				if (value != {ALBUM_CONTEST})
-				{
-					dE('contest_change_type_actions', 1);
-				}
-				else
-				{
-					dE('contest_change_type_actions', -1);
-				}
-			<!-- ENDIF -->
-
 			<!-- IF not S_ADD_ACTION and S_ALBUM_ORIG_UPLOAD -->
 				if (value == {ALBUM_CAT})
 				{
@@ -45,30 +16,15 @@
 				{
 					dE('type_actions', -1);
 				}
-				if (value == {ALBUM_CONTEST})
-				{
-					dE('album_to_contest_actions', 1);
-				}
-				else
-				{
-					dE('album_to_contest_actions', -1);
-				}
 			<!-- ENDIF -->
 
-			if (value == {ALBUM_CONTEST})
-			{
-				dE('album_contest_options', 1);
-				dE('album_upload_options', 1);
-			}
-			else if (value == {ALBUM_UPLOAD})
+			if (value == {ALBUM_UPLOAD})
 			{
 				dE('album_upload_options', 1);
-				dE('album_contest_options', -1);
 			}
 			else if (value == {ALBUM_CAT})
 			{
 				dE('album_upload_options', -1);
-				dE('album_contest_options', -1);
 			}
 		}
 
@@ -78,26 +34,10 @@
 		*/
 		onload = function()
 		{
-			<!-- IF not S_ADD_ACTION and S_ALBUM_ORIG_CAT -->
-				<!-- IF S_ALBUM_CAT -->
-					dE('cat_to_contest_actions', -1);
-				<!-- ENDIF -->
-			<!-- ENDIF -->
 			<!-- IF not S_ADD_ACTION and S_ALBUM_ORIG_UPLOAD -->
 				<!-- IF S_ALBUM_UPLOAD -->
 					dE('type_actions', -1);
-					dE('album_to_contest_actions', -1);
 				<!-- ENDIF -->
-			<!-- ENDIF -->
-			<!-- IF not S_ADD_ACTION and S_ALBUM_ORIG_CONTEST -->
-				<!-- IF S_ALBUM_CONTEST -->
-					dE('contest_change_type_actions', -1);
-				<!-- ENDIF -->
-			<!-- ENDIF -->
-
-
-			<!-- IF not S_ALBUM_ORIG_CONTEST -->
-				dE('album_contest_options', -1);
 			<!-- ENDIF -->
 			<!-- IF S_ALBUM_CAT -->
 				dE('album_upload_options', -1);
@@ -116,27 +56,6 @@
 			<h3>{L_WARNING}</h3>
 			<p>{ERROR_MSG}</p>
 		</div>
-	<!-- ENDIF -->
-
-	<!-- IF not S_ADD_ACTION -->
-		<!-- IF S_ALBUM_ORIG_CAT -->
-		<div class="errorbox" id="cat_to_contest_actions">
-			<h3>{L_WARNING}</h3>
-			<p>{L_ALBUM_NO_TYPE_CHANGE_TO_CONTEST}</p>
-		</div>
-		<!-- ENDIF -->
-		<!-- IF S_ALBUM_ORIG_UPLOAD -->
-		<div class="errorbox" id="album_to_contest_actions">
-			<h3>{L_WARNING}</h3>
-			<p>{L_ALBUM_NO_TYPE_CHANGE_TO_CONTEST}</p>
-		</div>
-		<!-- ENDIF -->
-		<!-- IF S_ALBUM_ORIG_CONTEST -->
-		<div class="errorbox" id="contest_change_type_actions">
-			<h3>{L_WARNING}</h3>
-			<p>{L_ALBUM_WITH_CONTEST_NO_TYPE_CHANGE}</p>
-		</div>
-		<!-- ENDIF -->
 	<!-- ENDIF -->
 
 	<form id="acp_gallery" method="post" action="{U_EDIT_ACTION}">
@@ -240,23 +159,6 @@
 			<dt><label for="display_on_index">{L_LIST_INDEX}:</label><br /><span>{L_LIST_INDEX_EXPLAIN}</span></dt>
 			<dd><label><input type="radio" class="radio" name="display_on_index" value="1"<!-- IF S_DISPLAY_ON_INDEX --> id="display_on_index" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
 				<label><input type="radio" class="radio" name="display_on_index" value="0"<!-- IF not S_DISPLAY_ON_INDEX --> id="display_on_index" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
-		</dl>
-		</fieldset>
-	</div>
-	<div id="album_contest_options">
-		<fieldset>
-			<legend>{L_CONTEST_SETTINGS}</legend>
-		<dl>
-			<dt><label for="contest_start">{L_CONTEST_START}:</label><br/><span>{L_CONTEST_START_EXPLAIN}</span><br/><span>{L_CONTEST_DATE_EXPLAIN}</span></dt>
-			<dd><input class="text" type="text" id="contest_start" name="contest_start" value="{S_CONTEST_START}" /></dd>
-		</dl>
-		<dl>
-			<dt><label for="contest_rating">{L_CONTEST_RATING}:</label><br/><span>{L_CONTEST_RATING_EXPLAIN}</span><br/><span>{L_CONTEST_DATE_EXPLAIN}</span></dt>
-			<dd><input class="text" type="text" id="contest_rating" name="contest_rating" value="{CONTEST_RATING}" /></dd>
-		</dl>
-		<dl>
-			<dt><label for="contest_end">{L_CONTEST_END}:</label><br /><span>{L_CONTEST_END_EXPLAIN}</span><br/><span>{L_CONTEST_DATE_EXPLAIN}</span></dt>
-			<dd><input class="text" type="text" id="contest_end" name="contest_end" value="{CONTEST_END}" /></dd>
 		</dl>
 		</fieldset>
 	</div>

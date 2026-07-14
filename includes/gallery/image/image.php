@@ -35,16 +35,6 @@ class phpbb_gallery_image
 	const STATUS_ORPHAN     = 3;
 
 	/**
-	* Constants regarding the image contest relation
-	*/
-	const NO_CONTEST = 0;
-
-	/**
-	* The image is element of an open contest. Only moderators can see the user_name of the user.
-	*/
-	const IN_CONTEST = 1;
-
-	/**
 	* Get image information
 	*/
 	static public function get_info($image_id, $extended_info = true)
@@ -159,30 +149,23 @@ class phpbb_gallery_image
 		phpbb_gallery_notification::delete_images($images);
 		phpbb_gallery_report::delete_images($images);
 
-		$sql = 'SELECT image_album_id, image_contest_rank
+		$sql = 'SELECT image_album_id
 			FROM ' . GALLERY_IMAGES_TABLE . '
 			WHERE ' . $db->sql_in_set('image_id', $images) . '
-			GROUP BY image_album_id, image_contest_rank';
+			GROUP BY image_album_id';
 		$result = $db->sql_query($sql);
-		$resync_album_ids = $resync_contests = [];
+		$resync_album_ids = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			if ($row['image_contest_rank'])
-			{
-				$resync_contests[] = (int) $row['image_album_id'];
-			}
 			$resync_album_ids[] = (int) $row['image_album_id'];
 		}
 		$db->sql_freeresult($result);
-		$resync_contests = array_unique($resync_contests);
 		$resync_album_ids = array_unique($resync_album_ids);
 
 		$sql = 'DELETE FROM ' . GALLERY_IMAGES_TABLE . '
 			WHERE ' . $db->sql_in_set('image_id', $images);
 		$db->sql_query($sql);
 
-		// The images need to be deleted, before we grab the new winners.
-		phpbb_gallery_contest::resync_albums($resync_contests);
 		if ($resync_albums)
 		{
 			foreach ($resync_album_ids as $album_id)
@@ -245,7 +228,7 @@ class phpbb_gallery_image
 		$sd = request_var('sd', phpbb_gallery_config::get('default_sort_dir'));
 
 		$rating = new phpbb_gallery_image_rating($image_data['image_id'], $image_data, $image_data);
-		$image_data['rating'] = $rating->get_image_rating(false, false);
+		$image_data['rating'] = $rating->get_image_rating();
 		unset($rating);
 
 		$s_user_allowed = (($image_data['image_user_id'] == $user->data['user_id']) && ($album_status != phpbb_gallery_album::STATUS_LOCKED));
@@ -253,8 +236,6 @@ class phpbb_gallery_image
 		$s_allowed_delete = ((phpbb_gallery::$auth->acl_check('i_delete', $image_data['image_album_id'], $album_user_id) && $s_user_allowed) || phpbb_gallery::$auth->acl_check('m_delete', $image_data['image_album_id'], $album_user_id));
 		$s_allowed_edit = ((phpbb_gallery::$auth->acl_check('i_edit', $image_data['image_album_id'], $album_user_id) && $s_user_allowed) || phpbb_gallery::$auth->acl_check('m_edit', $image_data['image_album_id'], $album_user_id));
 		$s_quick_mod = ($s_allowed_delete || $s_allowed_edit || phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) || phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id));
-
-		$s_username_hidden = $image_data['image_contest'] && !phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) && ($user->data['user_id'] != $image_data['image_user_id'] || $image_data['image_user_id'] == ANONYMOUS);
 
 		$template->assign_block_vars($template_block, [
 			'IMAGE_ID'      => $image_data['image_id'],
@@ -267,12 +248,9 @@ class phpbb_gallery_image
 
 			'ALBUM_NAME'        => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ((isset($image_data['album_name'])) ? ((utf8_strlen(htmlspecialchars_decode($image_data['album_name'])) > phpbb_gallery_config::get('shortnames') + 3) ? htmlspecialchars(utf8_substr(htmlspecialchars_decode($image_data['album_name']), 0, phpbb_gallery_config::get('shortnames')) . '...') : ($image_data['album_name'])) : '') : '',
 			'ALBUM_NAME_FULL'   => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ($image_data['album_name'] ?? '') : '',
-			'POSTER'        => ($display & phpbb_gallery_block::DISPLAY_USERNAME) ? (($s_username_hidden) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $image_data['image_user_id'], $image_data['image_username'], $image_data['image_user_colour'])) : '',
+			'POSTER'        => ($display & phpbb_gallery_block::DISPLAY_USERNAME) ? get_username_string('full', $image_data['image_user_id'], $image_data['image_username'], $image_data['image_user_colour']) : '',
 			'TIME'          => ($display & phpbb_gallery_block::DISPLAY_IMAGETIME) ? $user->format_date($image_data['image_time']) : '',
 			'VIEW'          => ($display & phpbb_gallery_block::DISPLAY_IMAGEVIEWS) ? $image_data['image_view_count'] : -1,
-			'CONTEST_RANK'      => ($image_data['image_contest_rank']) ? $user->lang['CONTEST_RESULT_' . $image_data['image_contest_rank']] : '',
-			'CONTEST_RANK_ID'   => $image_data['image_contest_rank'],
-
 			'S_RATINGS'     => (($display & phpbb_gallery_block::DISPLAY_RATINGS) ? ((phpbb_gallery_config::get('allow_rates') && phpbb_gallery::$auth->acl_check('i_rate', $image_data['image_album_id'], $album_user_id)) ? $image_data['rating'] : '') : ''),
 			'U_RATINGS'     => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#rating',
 			'L_COMMENTS'    => ($image_data['image_comments'] == 1) ? $user->lang['COMMENT'] : $user->lang['COMMENTS'],

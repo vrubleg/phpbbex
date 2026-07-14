@@ -156,7 +156,6 @@ if (phpbb_gallery_config::get('rrc_gindex_mode'))
 		phpbb_gallery_config::get('rrc_gindex_rows'),
 		phpbb_gallery_config::get('rrc_gindex_columns'),
 		phpbb_gallery_config::get('rrc_gindex_crows'),
-		phpbb_gallery_config::get('rrc_gindex_contests'),
 	];
 	$gallery_block = new phpbb_gallery_block(phpbb_gallery_config::get('rrc_gindex_mode'), phpbb_gallery_config::get('rrc_gindex_display'), $ints, phpbb_gallery_config::get('rrc_gindex_comments'), phpbb_gallery_config::get('rrc_gindex_pegas'));
 	$gallery_block->display();
@@ -260,7 +259,6 @@ $template->assign_vars([
 	'U_MARK_ALBUMS'                 => ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('index', 'hash=' . generate_link_hash('global') . '&amp;mark=albums') : '',
 
 	'U_G_SEARCH_COMMENTED'          => (phpbb_gallery_config::get('allow_comments')) ? phpbb_gallery_url::append_sid('search', 'search_id=commented') : '',
-	'U_G_SEARCH_CONTESTS'           => (phpbb_gallery_config::get('allow_rates') && phpbb_gallery_config::get('contests_ended')) ? phpbb_gallery_url::append_sid('search', 'search_id=contests') : '',
 	'U_G_SEARCH_RANDOM'             => phpbb_gallery_url::append_sid('search', 'search_id=random'),
 	'U_G_SEARCH_RECENT'             => phpbb_gallery_url::append_sid('search', 'search_id=recent'),
 	'U_G_SEARCH_SELF'               => phpbb_gallery_url::append_sid('search', 'search_id=egosearch'),

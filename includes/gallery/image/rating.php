@@ -32,7 +32,6 @@ class phpbb_gallery_image_rating
 
 	/**
 	* Is rating currently possible?
-	* Might be blocked because of contest-settings.
 	*/
 	public $rating_enabled = false;
 
@@ -130,7 +129,7 @@ class phpbb_gallery_image_rating
 	*/
 	public function display_box()
 	{
-		global $template, $user;
+		global $template;
 
 		$template->assign_var('GALLERY_RATING', self::MODE_SELECT);//@todo: phpbb_gallery_config::get('rating_mode'));
 
@@ -140,19 +139,6 @@ class phpbb_gallery_image_rating
 			//@todo: self::MODE_STARS:
 			case self::MODE_SELECT:
 			default:
-				if ($this->album_data('contest_id'))
-				{
-					if (time() < ($this->album_data('contest_start') + $this->album_data('contest_rating')))
-					{
-						$template->assign_var('GALLERY_NO_RATING_MESSAGE', $user->lang('CONTEST_RATING_STARTS', $user->format_date(($this->album_data('contest_start') + $this->album_data('contest_rating')), false, true)));
-						return;
-					}
-					if (($this->album_data('contest_start') + $this->album_data('contest_end')) < time())
-					{
-						$template->assign_var('GALLERY_NO_RATING_MESSAGE', $user->lang('CONTEST_RATING_ENDED', $user->format_date(($this->album_data('contest_start') + $this->album_data('contest_end')), false, true)));
-						return;
-					}
-				}
 				for ($i = 1; $i <= phpbb_gallery_config::get('max_rating'); $i++)
 				{
 					$template->assign_block_vars('rate_scale', [
@@ -169,10 +155,9 @@ class phpbb_gallery_image_rating
 	* Get rating for a image
 	*
 	* @param    $user_rating            Personal rating of the user is displayed in most cases.
-	* @param    $display_contest_end    Shall we display the end-time of the contest? This requires the album-data to be filled.
 	* @return   string                  Returns a string containing the information how the image was rated in average and how often.
 	*/
-	public function get_image_rating($user_rating = false, $display_contest_end = true)
+	public function get_image_rating($user_rating = false)
 	{
 		global $template;
 		$template->assign_var('GALLERY_RATING', self::MODE_SELECT);//@todo: phpbb_gallery_config::get('rating_mode'));
@@ -184,22 +169,11 @@ class phpbb_gallery_image_rating
 			case self::MODE_SELECT:
 			default:
 				global $user;
-				if ($this->image_data('image_contest'))
+				if ($user_rating)
 				{
-					if (!$display_contest_end)
-					{
-						return $user->lang['CONTEST_RATING_HIDDEN'];
-					}
-					return $user->lang('CONTEST_RESULT_HIDDEN', $user->format_date(($this->album_data('contest_start') + $this->album_data('contest_end')), false, true));
+					return $user->lang('RATING_STRINGS_USER', (int) $this->image_data('image_rates'), $this->get_image_rating_value(), $user_rating);
 				}
-				else
-				{
-					if ($user_rating)
-					{
-						return $user->lang('RATING_STRINGS_USER', (int) $this->image_data('image_rates'), $this->get_image_rating_value(), $user_rating);
-					}
-					return $user->lang('RATING_STRINGS', (int) $this->image_data('image_rates'), $this->get_image_rating_value());
-				}
+				return $user->lang('RATING_STRINGS', (int) $this->image_data('image_rates'), $this->get_image_rating_value());
 			break;
 		}
 	}
@@ -209,14 +183,7 @@ class phpbb_gallery_image_rating
 	*/
 	private function get_image_rating_value()
 	{
-		if (phpbb_gallery_contest::$mode == phpbb_gallery_contest::MODE_SUM)
-		{
-			return $this->image_data('image_rate_points');
-		}
-		else
-		{
-			return ($this->image_data('image_rate_avg') / 100);
-		}
+		return ($this->image_data('image_rate_avg') / 100);
 	}
 
 	/**
@@ -240,14 +207,11 @@ class phpbb_gallery_image_rating
 	* Is the user able to rate?
 	* Following statements must be true:
 	*   - User must be allowed to rate
-	*   - If the image is in a contest, it must be in the rating timespan
-	*
 	* @return   bool
 	*/
 	public function is_able()
 	{
-		global $user;
-		return $this->is_allowed() && phpbb_gallery_contest::is_step('rate', $this->album_data(true));
+		return $this->is_allowed();
 	}
 
 	/**

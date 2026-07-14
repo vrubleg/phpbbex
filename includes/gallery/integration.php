@@ -59,7 +59,7 @@ class phpbb_gallery_integration
 			$ints = [
 				phpbb_gallery_config::get('rrc_profile_rows'),
 				phpbb_gallery_config::get('rrc_profile_columns'),
-				0, 0,
+				0,
 			];
 
 			$gallery_block = new phpbb_gallery_block(phpbb_gallery_config::get('rrc_profile_mode'), phpbb_gallery_config::get('rrc_profile_display'), $ints, false, phpbb_gallery_config::get('rrc_profile_pegas'));

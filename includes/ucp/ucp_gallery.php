@@ -962,10 +962,6 @@ class ucp_gallery
 					'FROM'      => [GALLERY_ALBUMS_TABLE => 'a'],
 					'ON'        => 'w.album_id = a.album_id',
 				],
-				[
-					'FROM'      => [GALLERY_CONTESTS_TABLE => 'c'],
-					'ON'        => 'a.album_id = c.contest_album_id',
-				],
 			],
 
 			'WHERE'         => 'w.album_id <> 0 AND w.user_id = ' . $user->data['user_id'],
@@ -982,7 +978,7 @@ class ucp_gallery
 
 				'UC_IMAGE_NAME'     => phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $row['album_last_image_id'], $row['album_last_image_name'], $row['album_id']),
 				'UC_FAKE_THUMBNAIL' => phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['album_last_image_id'], $row['album_last_image_name'], $row['album_id']),
-				'UPLOADER'          => (($row['album_type'] == phpbb_gallery_album::TYPE_CONTEST) && ($row['contest_marked'] && !phpbb_gallery::$auth->acl_check('m_status', $row['album_id'], $row['album_user_id']))) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
+				'UPLOADER'          => get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
 				'LAST_IMAGE_TIME'   => $user->format_date($row['album_last_image_time']),
 				'LAST_IMAGE'        => $row['album_last_image_id'],
 				'U_IMAGE'           => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['album_last_image_id']),
@@ -1029,7 +1025,7 @@ class ucp_gallery
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('image_row', [
-				'UPLOADER'          => ($row['image_contest'] && !phpbb_gallery::$auth->acl_check('m_status', $row['image_album_id'])) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
+				'UPLOADER'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
 				'LAST_COMMENT_BY'   => get_username_string('full', $row['comment_user_id'], $row['comment_username'], $row['comment_user_colour']),
 				'COMMENT'           => $row['image_comments'],
 				'LAST_COMMENT_TIME' => $user->format_date($row['comment_time']),
@@ -1109,7 +1105,7 @@ class ucp_gallery
 			$template->assign_block_vars('image_row', [
 				'UC_IMAGE_NAME'     => phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $row['image_id'], $row['image_name'], $row['image_album_id']),
 				'UC_FAKE_THUMBNAIL' => phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $row['image_album_id']),
-				'UPLOADER'          => ($row['image_contest'] && !phpbb_gallery::$auth->acl_check('m_status', $row['image_album_id'])) ? $user->lang['CONTEST_USERNAME'] : get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
+				'UPLOADER'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
 				'IMAGE_TIME'        => $user->format_date($row['image_time']),
 				'ALBUM_NAME'        => $row['album_name'],
 				'IMAGE_ID'          => $row['image_id'],
