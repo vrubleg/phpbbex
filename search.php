@@ -18,9 +18,7 @@ $user->setup('search');
 $mode           = request_var('mode', '');
 $search_id      = request_var('search_id', '');
 $start          = max(request_var('start', 0), 0);
-$post_id        = request_var('p', 0);
 $topic_id       = request_var('t', 0);
-$view           = request_var('view', '');
 
 $submit         = request_var('submit', false);
 $keywords       = utf8_normalize_nfc(request_var('keywords', '', true));
@@ -207,12 +205,10 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		$ex_fid_ary = array_unique(array_merge(array_keys($auth->acl_getf('!f_read', true)), array_keys($auth->acl_getf('!f_search', true))));
 	}
 
-	$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $user->data['user_id'] . ')' : "";
+	$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $db->sql_in_set('f.forum_id', $ex_fid_ary, true) : '';
 
-	$sql = 'SELECT f.forum_id, f.forum_name, f.parent_id, f.forum_type, f.right_id, f.forum_password, f.forum_flags, fa.user_id
-		FROM ' . FORUMS_TABLE . ' f
-		LEFT JOIN ' . FORUMS_ACCESS_TABLE . " fa ON (fa.forum_id = f.forum_id
-			AND fa.session_id = '" . $db->sql_escape($user->session_id) . "')
+	$sql = 'SELECT f.forum_id, f.forum_name, f.parent_id, f.forum_type, f.right_id, f.forum_flags
+		FROM ' . FORUMS_TABLE . " f
 		{$not_in_fid}
 		ORDER BY f.left_id";
 	$result = $db->sql_query($sql);
@@ -221,12 +217,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	$reset_search_forum = true;
 	while ($row = $db->sql_fetchrow($result))
 	{
-		if ($row['forum_password'] && $row['user_id'] != $user->data['user_id'])
-		{
-			$ex_fid_ary[] = (int) $row['forum_id'];
-			continue;
-		}
-
 		// Exclude forums from active topics
 		if (!($row['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS) && ($search_id == 'active_topics') && !in_array($row['forum_id'], $search_forum))
 		{
@@ -683,19 +673,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	{
 		if ($show_results == 'posts')
 		{
-			// @todo Joining this query to the one below?
-			$sql = 'SELECT zebra_id, friend, foe
-				FROM ' . ZEBRA_TABLE . '
-				WHERE user_id = ' . $user->data['user_id'];
-			$result = $db->sql_query($sql);
-
-			$zebra = [];
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$zebra[($row['friend']) ? 'friend' : 'foe'][] = $row['zebra_id'];
-			}
-			$db->sql_freeresult($result);
-
 			$sql = 'SELECT p.*, f.forum_id, f.forum_name, t.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_colour
 				FROM ' . POSTS_TABLE . ' p
 					LEFT JOIN ' . TOPICS_TABLE . ' t ON (p.topic_id = t.topic_id)
@@ -977,17 +954,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			}
 			else
 			{
-				if ((isset($zebra['foe']) && in_array($row['poster_id'], $zebra['foe'])) && (!$view || $view != 'show' || $post_id != $row['post_id']))
-				{
-					$template->assign_block_vars('searchresults', [
-						'S_IGNORE_POST' => true,
-
-						'L_IGNORE_POST' => sprintf($user->lang['POST_BY_FOE'], $row['username'], "<a href=\"{$u_search}&amp;start={$start}&amp;p=" . $row['post_id'] . '&amp;view=show#p' . $row['post_id'] . '">', '</a>')]
-					);
-
-					continue;
-				}
-
 				// Replace naughty words such as farty pants
 				$row['post_subject'] = censor_text($row['post_subject']);
 
@@ -1091,11 +1057,9 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 // Search forum
 $s_forums = '';
-$sql = 'SELECT f.forum_id, f.forum_name, f.parent_id, f.forum_type, f.left_id, f.right_id, f.forum_password, f.enable_indexing, fa.user_id
+$sql = 'SELECT f.forum_id, f.forum_name, f.parent_id, f.forum_type, f.left_id, f.right_id, f.enable_indexing
 	FROM ' . FORUMS_TABLE . ' f
-	LEFT JOIN ' . FORUMS_ACCESS_TABLE . " fa ON (fa.forum_id = f.forum_id
-		AND fa.session_id = '" . $db->sql_escape($user->session_id) . "')
-	ORDER BY f.left_id ASC";
+	ORDER BY f.left_id ASC';
 $result = $db->sql_query($sql);
 
 $right = $cat_right = $padding_inc = 0;
@@ -1116,9 +1080,9 @@ while ($row = $db->sql_fetchrow($result))
 		continue;
 	}
 
-	if ($row['forum_type'] == FORUM_LINK || ($row['forum_password'] && !$row['user_id']))
+	if ($row['forum_type'] == FORUM_LINK)
 	{
-		// if this forum is a link or password protected (user has not entered the password yet) then skip to the next branch
+		// Linked forums cannot be searched.
 		continue;
 	}
 

@@ -60,7 +60,6 @@ define('LOGIN_ERROR_EXTERNAL_AUTH', 14);
 define('LOGIN_ERROR_PASSWORD_CONVERT', 15);
 
 // Maximum login attempts
-// The value is arbitrary, but it has to fit into the user_login_attempts field.
 define('LOGIN_ATTEMPTS_MAX', 100);
 
 // Group settings
@@ -85,7 +84,7 @@ define('FORUM_FLAG_PRUNE_ANNOUNCE', 4);
 define('FORUM_FLAG_PRUNE_STICKY', 8);
 define('FORUM_FLAG_ACTIVE_TOPICS', 16);
 
-// Forum Options... sequential order. Modifications should begin at number 10 (number 29 is maximum)
+// Forum Options (up to 29)
 define('FORUM_OPTION_FEED_NEWS', 1);
 define('FORUM_OPTION_FEED_EXCLUDE', 2);
 
@@ -121,7 +120,7 @@ define('LOG_USERS', 3);
 define('LOG_REGISTER', 4);
 define('LOG_GALLERY', 10);
 
-// Private messaging - Do NOT change these values
+// Private messaging
 define('PRIVMSGS_HOLD_BOX', -4);
 define('PRIVMSGS_NO_BOX', -3);
 define('PRIVMSGS_OUTBOX', -2);
@@ -184,13 +183,13 @@ define('FIELD_DATE', 6);
 @define('CHMOD_WRITE', 2);
 @define('CHMOD_EXECUTE', 1);
 
-// Captcha code length
+// Captcha settings
 define('CAPTCHA_MIN_CHARS', 6);
 define('CAPTCHA_MAX_CHARS', 8);
 define('CAPTCHA_WIDTH', 360);
 define('CAPTCHA_HEIGHT', 96);
 
-// Additional constants
+// Legacy votes
 define('VOTE_CONVERTED', 127);
 
 // Genders
@@ -214,6 +213,7 @@ define('BANLIST_TABLE',             $table_prefix . 'banlist');
 define('BBCODES_TABLE',             $table_prefix . 'bbcodes');
 define('BOOKMARKS_TABLE',           $table_prefix . 'bookmarks');
 define('BOTS_TABLE',                $table_prefix . 'bots');
+define('BROWSER_TRACKING_TABLE',    $table_prefix . 'browser_tracking');
 define('CONFIG_TABLE',              $table_prefix . 'config');
 define('CONFIRM_TABLE',             $table_prefix . 'confirm');
 define('DISALLOW_TABLE',            $table_prefix . 'disallow');
@@ -221,7 +221,6 @@ define('DRAFTS_TABLE',              $table_prefix . 'drafts');
 define('EXTENSIONS_TABLE',          $table_prefix . 'extensions');
 define('EXTENSION_GROUPS_TABLE',    $table_prefix . 'extension_groups');
 define('FORUMS_TABLE',              $table_prefix . 'forums');
-define('FORUMS_ACCESS_TABLE',       $table_prefix . 'forums_access');
 define('FORUMS_TRACK_TABLE',        $table_prefix . 'forums_track');
 define('FORUMS_WATCH_TABLE',        $table_prefix . 'forums_watch');
 define('GROUPS_TABLE',              $table_prefix . 'groups');
@@ -233,6 +232,7 @@ define('MODERATOR_CACHE_TABLE',     $table_prefix . 'moderator_cache');
 define('MODULES_TABLE',             $table_prefix . 'modules');
 define('POLL_OPTIONS_TABLE',        $table_prefix . 'poll_options');
 define('POLL_VOTES_TABLE',          $table_prefix . 'poll_votes');
+define('POST_RATES_TABLE',          $table_prefix . 'post_rates');
 define('POSTS_TABLE',               $table_prefix . 'posts');
 define('PRIVMSGS_TABLE',            $table_prefix . 'privmsgs');
 define('PRIVMSGS_FOLDER_TABLE',     $table_prefix . 'privmsgs_folder');
@@ -257,6 +257,7 @@ define('TOPICS_TABLE',              $table_prefix . 'topics');
 define('TOPICS_TRACK_TABLE',        $table_prefix . 'topics_track');
 define('TOPICS_WATCH_TABLE',        $table_prefix . 'topics_watch');
 define('USER_GROUP_TABLE',          $table_prefix . 'user_group');
+define('USER_CONFIRM_KEYS_TABLE',   $table_prefix . 'user_confirm_keys');
 define('USERS_TABLE',               $table_prefix . 'users');
 define('WARNINGS_TABLE',            $table_prefix . 'warnings');
 define('WORDS_TABLE',               $table_prefix . 'words');
@@ -277,10 +278,5 @@ define('GALLERY_REPORTS_TABLE',         $table_prefix . 'gallery_reports');
 define('GALLERY_ROLES_TABLE',           $table_prefix . 'gallery_roles');
 define('GALLERY_USERS_TABLE',           $table_prefix . 'gallery_users');
 define('GALLERY_WATCH_TABLE',           $table_prefix . 'gallery_watch');
-
-// phpBBex tables
-define('USER_CONFIRM_KEYS_TABLE',   $table_prefix . 'user_confirm_keys');
-define('BROWSER_TRACKING_TABLE',    $table_prefix . 'browser_tracking');
-define('POST_RATES_TABLE',          $table_prefix . 'post_rates');
 
 // Additional tables

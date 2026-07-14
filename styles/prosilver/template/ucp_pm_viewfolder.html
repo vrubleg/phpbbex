@@ -1,35 +1,6 @@
 <!-- INCLUDE ucp_header.html -->
 
-<!-- IF not PROMPT -->
 	<!-- INCLUDE ucp_pm_message_header.html -->
-<!-- ENDIF -->
-
-<!-- IF PROMPT -->
-	<h2>{L_EXPORT_AS_CSV}</h2>
-	<form id="viewfolder" method="post" action="{S_PM_ACTION}">
-	<div class="panel">
-		<div class="inner">
-		<h3>{L_OPTIONS}</h3>
-		<fieldset>
-			<dl>
-				<dt><label for="delimiter">{L_DELIMITER}:</label></dt>
-				<dd><input class="inputbox" type="text" id="delimiter" name="delimiter" value="," /></dd>
-			</dl>
-			<dl>
-				<dt><label for="enclosure">{L_ENCLOSURE}:</label></dt>
-				<dd><input class="inputbox" type="text" id="enclosure" name="enclosure" value="&#034;" /></dd>
-			</dl>
-		</fieldset>
-		</div>
-	</div>
-	<fieldset class="submit-buttons">
-		<input type="hidden" name="export_option" value="CSV" />
-		<input class="button1" type="submit" name="submit_export" value="{L_EXPORT_FOLDER}" />&nbsp;
-		{S_FORM_TOKEN}
-	</fieldset>
-	</form>
-
-<!-- ELSE -->
 
 	<!-- IF NUM_REMOVED -->
 		<div class="notice">
@@ -92,7 +63,6 @@
 
 	<!-- IF FOLDER_CUR_MESSAGES neq 0 -->
 	<fieldset class="display-actions">
-		<div class="left-box"><label for="export_option">{L_EXPORT_FOLDER}: <select name="export_option" id="export_option"><option value="CSV">{L_EXPORT_AS_CSV}</option><option value="CSV_EXCEL">{L_EXPORT_AS_CSV_EXCEL}</option><option value="XML">{L_EXPORT_AS_XML}</option></select></label> <input class="button2" type="submit" name="submit_export" value="{L_GO}" /><br /></div>
 		<select name="mark_option">{S_MARK_OPTIONS}{S_MOVE_MARKED_OPTIONS}</select> <input class="button2" type="submit" name="submit_mark" value="{L_GO}" />
 		<div><a onclick="marklist('viewfolder', 'marked_msg', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('viewfolder', 'marked_msg', false);">{L_UNMARK_ALL}</a></div>
 	</fieldset>
@@ -100,6 +70,7 @@
 	<hr />
 
 	<ul class="linklist">
+		<!-- IF FOLDER_STATUS and FOLDER_MAX_MESSAGES neq 0 --><li class="leftside">{FOLDER_STATUS}</li><!-- ENDIF -->
 		<!-- IF TOTAL_MESSAGES or S_VIEW_MESSAGE -->
 		<li class="rightside pagination">
 			<!-- IF TOTAL_MESSAGES -->{TOTAL_MESSAGES}<!-- ENDIF -->
@@ -124,5 +95,4 @@
 	<!-- ENDIF -->
 
 	<!-- INCLUDE ucp_pm_message_footer.html -->
-<!-- ENDIF -->
 <!-- INCLUDE ucp_footer.html -->

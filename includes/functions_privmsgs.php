@@ -1475,6 +1475,42 @@ function get_folder_status($folder_id, $folder)
 	return $return;
 }
 
+/**
+* Return recipients who have added the sender to their foes list.
+*
+* @param int   $sender_id     User attempting to send the private message
+* @param array $recipient_ids User IDs that may receive the private message
+* @return array Blocked recipient IDs
+*/
+function get_pm_recipients_blocking_sender($sender_id, $recipient_ids)
+{
+	global $db;
+
+	$sender_id = (int) $sender_id;
+	$recipient_ids = array_values(array_unique(array_filter(array_map('intval', $recipient_ids))));
+
+	if (!$sender_id || empty($recipient_ids))
+	{
+		return [];
+	}
+
+	$blocked = [];
+	$sql = 'SELECT user_id
+		FROM ' . ZEBRA_TABLE . '
+		WHERE zebra_id = ' . $sender_id . '
+			AND foe = 1
+			AND ' . $db->sql_in_set('user_id', $recipient_ids);
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$blocked[] = (int) $row['user_id'];
+	}
+	$db->sql_freeresult($result);
+
+	return $blocked;
+}
+
 //
 // COMPOSE MESSAGES
 //
@@ -1551,6 +1587,16 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				$recipients[$row['user_id']] = $field;
 			}
 			$db->sql_freeresult($result);
+		}
+
+		// Silently omit recipients who have added the sender to their foes list.
+		$blocked_recipients = get_pm_recipients_blocking_sender($data['from_user_id'], array_keys($recipients));
+		if (!empty($blocked_recipients))
+		{
+			foreach ($blocked_recipients as $blocked_user_id)
+			{
+				unset($recipients[$blocked_user_id]);
+			}
 		}
 
 		if (!sizeof($recipients))
@@ -1783,11 +1829,11 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	}
 
 	// Delete draft if post was loaded...
-	$draft_id = request_var('draft_loaded', 0);
-	if ($draft_id)
+	$loaded_draft_id = request_var('loaded_draft_id', 0);
+	if ($loaded_draft_id)
 	{
 		$sql = 'DELETE FROM ' . DRAFTS_TABLE . "
-			WHERE draft_id = {$draft_id}
+			WHERE draft_id = {$loaded_draft_id}
 				AND user_id = " . $data['from_user_id'];
 		$db->sql_query($sql);
 	}
@@ -2065,24 +2111,13 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 }
 
 /**
-* Set correct users max messages in PM folder.
-* If several group memberships define different amount of messages, the highest will be chosen.
+* Set the user's maximum messages per PM folder.
 */
 function set_user_message_limit()
 {
-	global $user, $db, $config;
+	global $user, $config;
 
-	// Get maximum about from user memberships - if it is 0, there is no limit set and we use the maximum value within the config.
-	$sql = 'SELECT MAX(g.group_message_limit) as max_message_limit
-		FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . ' ug
-		WHERE ug.user_id = ' . $user->data['user_id'] . '
-			AND ug.user_pending = 0
-			AND ug.group_id = g.group_id';
-	$result = $db->sql_query($sql);
-	$message_limit = (int) $db->sql_fetchfield('max_message_limit');
-	$db->sql_freeresult($result);
-
-	$user->data['message_limit'] = (!$message_limit) ? $config['pm_max_msgs'] : $message_limit;
+	$user->data['message_limit'] = $config['pm_max_msgs'];
 }
 
 /**

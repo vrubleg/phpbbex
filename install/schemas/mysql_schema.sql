@@ -191,7 +191,6 @@ CREATE TABLE phpbb_forums (
 	forum_desc_options int(11) UNSIGNED DEFAULT '7' NOT NULL,
 	forum_desc_uid varchar(8) DEFAULT '' NOT NULL,
 	forum_link varchar(255) DEFAULT '' NOT NULL,
-	forum_password varchar(40) DEFAULT '' NOT NULL,
 	forum_image varchar(255) DEFAULT '' NOT NULL,
 	forum_rules text NOT NULL,
 	forum_rules_link varchar(255) DEFAULT '' NOT NULL,
@@ -211,7 +210,7 @@ CREATE TABLE phpbb_forums (
 	forum_last_post_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	forum_last_poster_name varchar(255) DEFAULT '' NOT NULL,
 	forum_last_poster_colour varchar(6) DEFAULT '' NOT NULL,
-	forum_flags tinyint(4) DEFAULT '32' NOT NULL,
+	forum_flags tinyint(4) DEFAULT '16' NOT NULL,
 	forum_options int(20) UNSIGNED DEFAULT '0' NOT NULL,
 	display_subforum_list tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	display_on_index tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
@@ -224,13 +223,6 @@ CREATE TABLE phpbb_forums (
 	PRIMARY KEY (forum_id),
 	KEY left_right_id (left_id, right_id),
 	KEY forum_lastpost_id (forum_last_post_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_forums_access (
-	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	session_id char(32) DEFAULT '' NOT NULL,
-	PRIMARY KEY (forum_id, user_id, session_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_forums_track (
@@ -264,8 +256,6 @@ CREATE TABLE phpbb_groups (
 	group_colour varchar(6) DEFAULT '' NOT NULL,
 	group_sig_chars mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	group_receive_pm tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	group_message_limit mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	group_max_recipients mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	group_legend tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	PRIMARY KEY (group_id),
 	KEY group_legend_name (group_legend, group_name)

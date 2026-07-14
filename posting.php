@@ -27,11 +27,12 @@ if ($mode == 'smilies')
 $user->setup(['posting', 'mcp', 'viewtopic']);
 
 // Grab only parameters needed here
-$post_id    = request_var('p', 0);
-$topic_id   = request_var('t', 0);
-$forum_id   = request_var('f', 0);
-$draft_id   = request_var('d', 0);
-$lastclick  = request_var('lastclick', 0);
+$post_id         = request_var('p', 0);
+$topic_id        = request_var('t', 0);
+$forum_id        = request_var('f', 0);
+$load_draft_id   = request_var('d', 0);
+$loaded_draft_id = request_var('loaded_draft_id', 0);
+$lastclick       = request_var('lastclick', 0);
 
 $preview    = isset($_POST['preview']);
 $save       = isset($_POST['save']);
@@ -163,16 +164,6 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 	$captcha->init(CONFIRM_POST);
 }
 
-// Need to login to passworded forum first?
-if ($post_data['forum_password'])
-{
-	login_forum_box([
-		'forum_id'          => $forum_id,
-		'forum_name'        => $post_data['forum_name'],
-		'forum_password'    => $post_data['forum_password']]
-	);
-}
-
 // Check permissions
 if ($user->data['is_bot'])
 {
@@ -212,6 +203,7 @@ switch ($mode)
 	case 'quote':
 
 		$post_data['post_edit_locked'] = 0;
+		$post_data['post_subject'] = '';
 
 	// no break;
 
@@ -325,7 +317,6 @@ else
 
 $post_data['post_edit_locked']  = (isset($post_data['post_edit_locked'])) ? (int) $post_data['post_edit_locked'] : 0;
 $post_data['post_subject_md5']  = (isset($post_data['post_subject']) && $mode == 'edit') ? md5($post_data['post_subject']) : '';
-$post_data['post_subject']      = (in_array($mode, ['quote', 'edit'])) ? $post_data['post_subject'] : ($post_data['topic_title'] ?? '');
 $post_data['topic_time_limit']  = (isset($post_data['topic_time_limit'])) ? (($post_data['topic_time_limit']) ? (int) $post_data['topic_time_limit'] / 86400 : (int) $post_data['topic_time_limit']) : 0;
 $post_data['poll_length']       = (!empty($post_data['poll_length'])) ? (int) $post_data['poll_length'] / 86400 : 0;
 $post_data['poll_start']        = (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
@@ -421,22 +412,21 @@ if ($mode != 'edit')
 	$post_data['enable_urls']       = true;
 }
 
-$post_data['enable_magic_url'] = $post_data['drafts'] = false;
+$post_data['enable_magic_url'] = $post_data['has_drafts'] = false;
 
 // User own some drafts?
-if ($user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
+if (!$load_draft_id && !$loaded_draft_id && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
 {
 	$sql = 'SELECT draft_id
 		FROM ' . DRAFTS_TABLE . '
 		WHERE user_id = ' . $user->data['user_id'] .
 			(($forum_id) ? ' AND forum_id = ' . (int) $forum_id : '') .
-			(($topic_id) ? ' AND topic_id = ' . (int) $topic_id : '') .
-			(($draft_id) ? " AND draft_id <> {$draft_id}" : '');
+			(($topic_id) ? ' AND topic_id = ' . (int) $topic_id : '');
 	$result = $db->sql_query_limit($sql, 1);
 
 	if ($db->sql_fetchrow($result))
 	{
-		$post_data['drafts'] = true;
+		$post_data['has_drafts'] = true;
 	}
 	$db->sql_freeresult($result);
 }
@@ -474,21 +464,46 @@ $spoiler_status = ($bbcode_status && isset($config['max_spoiler_depth']) && $con
 if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
 {
 	$subject = utf8_normalize_nfc(request_var('subject', '', true));
-	$subject = (!$subject && $mode != 'post') ? $post_data['topic_title'] : $subject;
 	$message = utf8_normalize_nfc(request_var('message', '', true));
 
-	if ($subject && $message)
+	if ($message && ($mode != 'post' || utf8_clean_string($subject) !== ''))
 	{
 		if (confirm_box(true))
 		{
-			$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
+			$draft_row = [
 				'user_id'       => (int) $user->data['user_id'],
 				'topic_id'      => (int) $topic_id,
 				'forum_id'      => (int) $forum_id,
 				'save_time'     => (int) $current_time,
 				'draft_subject' => (string) $subject,
 				'draft_message' => (string) $message,
-			]);
+			];
+			$loaded_draft_exists = false;
+
+			if ($loaded_draft_id)
+			{
+				$sql = 'SELECT draft_id
+					FROM ' . DRAFTS_TABLE . "
+					WHERE draft_id = {$loaded_draft_id}
+						AND user_id = " . $user->data['user_id'] . "
+						AND topic_id = {$topic_id}
+						AND forum_id = {$forum_id}";
+				$result = $db->sql_query_limit($sql, 1);
+				$loaded_draft_exists = (bool) $db->sql_fetchfield('draft_id');
+				$db->sql_freeresult($result);
+			}
+
+			if ($loaded_draft_exists)
+			{
+				$sql = 'UPDATE ' . DRAFTS_TABLE . '
+					SET ' . $db->sql_build_array('UPDATE', $draft_row) . "
+					WHERE draft_id = {$loaded_draft_id}
+						AND user_id = " . $user->data['user_id'];
+			}
+			else
+			{
+				$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', $draft_row);
+			}
 			$db->sql_query($sql);
 
 			$meta_info = ($mode == 'post') ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) : append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}");
@@ -504,12 +519,13 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 		else
 		{
 			$s_hidden_fields = build_hidden_fields([
-				'mode'      => $mode,
-				'save'      => true,
-				'f'         => $forum_id,
-				't'         => $topic_id,
-				'subject'   => $subject,
-				'message'   => $message,
+				'mode'            => $mode,
+				'save'            => true,
+				'f'               => $forum_id,
+				't'               => $topic_id,
+				'subject'         => $subject,
+				'message'         => $message,
+				'loaded_draft_id' => $loaded_draft_id,
 				'attachment_data' => $message_parser->attachment_data,
 			]);
 
@@ -560,7 +576,7 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 	}
 	else
 	{
-		if (utf8_clean_string($subject) === '')
+		if ($mode == 'post' && utf8_clean_string($subject) === '')
 		{
 			$error[] = $user->lang['EMPTY_SUBJECT'];
 		}
@@ -574,11 +590,11 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 }
 
 // Load requested Draft
-if ($draft_id && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)))
+if ($load_draft_id && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)))
 {
 	$sql = 'SELECT draft_subject, draft_message
 		FROM ' . DRAFTS_TABLE . "
-		WHERE draft_id = {$draft_id}
+		WHERE draft_id = {$load_draft_id}
 			AND user_id = " . $user->data['user_id'];
 	$result = $db->sql_query_limit($sql, 1);
 	$row = $db->sql_fetchrow($result);
@@ -593,12 +609,12 @@ if ($draft_id && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $u
 	}
 	else
 	{
-		$draft_id = 0;
+		$load_draft_id = 0;
 	}
 }
 
 // Load draft overview
-if ($load && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $post_data['drafts'])
+if ($load && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $post_data['has_drafts'])
 {
 	load_drafts($topic_id, $forum_id);
 }
@@ -1237,11 +1253,6 @@ if ($mode == 'quote' && !$submit && !$preview && !$refresh)
 	}
 }
 
-if (($mode == 'reply' || $mode == 'quote') && !$submit && !$preview && !$refresh)
-{
-	$post_data['post_subject'] = ''; // ((strpos($post_data['post_subject'], 'Re: ') !== 0) ? 'Re: ' : '') . censor_text($post_data['post_subject']);
-}
-
 $attachment_data = $message_parser->attachment_data;
 $filename_data = $message_parser->filename_data;
 $post_data['post_text'] = $message_parser->message;
@@ -1342,7 +1353,7 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($c
 
 $s_hidden_fields = ($mode == 'reply' || $mode == 'quote') ? '<input type="hidden" name="topic_cur_post_id" value="' . $post_data['topic_last_post_id'] . '" />' : '';
 $s_hidden_fields .= '<input type="hidden" name="lastclick" value="' . $current_time . '" />';
-$s_hidden_fields .= ($draft_id || isset($_REQUEST['draft_loaded'])) ? '<input type="hidden" name="draft_loaded" value="' . request_var('draft_loaded', $draft_id) . '" />' : '';
+$s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden" name="loaded_draft_id" value="' . (($loaded_draft_id) ? $loaded_draft_id : $load_draft_id) . '" />' : '';
 
 if ($mode == 'edit')
 {
@@ -1417,7 +1428,7 @@ $template->assign_vars([
 	'S_MAGIC_URL_CHECKED'       => ($urls_checked) ? ' checked="checked"' : '',
 	'S_TYPE_TOGGLE'             => $topic_type_toggle,
 	'S_SAVE_ALLOWED'            => (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $mode != 'edit'),
-	'S_HAS_DRAFTS'              => (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $post_data['drafts']),
+	'S_HAS_DRAFTS'              => (($auth->acl_get('f_post', $forum_id) || $auth->acl_get('f_reply', $forum_id)) && $user->data['is_registered'] && $post_data['has_drafts']),
 	'S_FORM_ENCTYPE'            => $form_enctype,
 
 	'S_FIRST_POST_SHOW_ALLOWED' => $user->data['is_registered'] && ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])),

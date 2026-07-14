@@ -63,11 +63,6 @@ require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_tools.php');
 require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 
-// Legacy style component tables that are removed during this update.
-define('STYLES_TEMPLATE_TABLE',     $table_prefix . 'styles_template');
-define('STYLES_THEME_TABLE',        $table_prefix . 'styles_theme');
-define('STYLES_IMAGESET_TABLE',     $table_prefix . 'styles_imageset');
-
 // The cache, files, and images/avatars/upload directories have to be writeable!
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . 'cache')) { die('Make "cache" directory writeable!'); }
 if (!phpbb_is_writable(PHPBB_ROOT_PATH . UPLOADS_PATH)) { die('Make "' . UPLOADS_PATH . '" directory writeable!'); }
@@ -103,20 +98,24 @@ if (!empty($config['phpbbex_version']) && version_compare($config['phpbbex_versi
 
 // Helper functions.
 
-function remove_module($module_class, $module_basename, $module_mode = null)
+function remove_module($module_class, $module_basename, $module_mode)
 {
 	global $db;
 
 	$sql = 'SELECT * FROM ' . MODULES_TABLE . "
 		WHERE module_class = '" . $db->sql_escape($module_class) . "'
 			AND module_basename = '" . $db->sql_escape($module_basename) . "'
-			AND module_mode = '" . $db->sql_escape($module_mode) . "'";
+			AND " . ($module_basename ? 'module_mode' : 'module_langname') . " = '" . $db->sql_escape($module_mode) . "'";
 	$result = $db->sql_query($sql);
-	$row = $db->sql_fetchrow($result);
+	$rowset = $db->sql_fetchrowset($result);
 	$db->sql_freeresult($result);
 
-	if (!$row) { return true; }
+	if (!$rowset || count($rowset) != 1)
+	{
+		return false;
+	}
 
+	$row = $rowset[0];
 	$row['module_id'] = (int) $row['module_id'];
 	$row['left_id'] = (int) $row['left_id'];
 	$row['right_id'] = (int) $row['right_id'];
@@ -152,49 +151,7 @@ function remove_module($module_class, $module_basename, $module_mode = null)
 
 function remove_module_category($module_class, $module_langname)
 {
-	global $db;
-
-	$sql = 'SELECT * FROM ' . MODULES_TABLE . "
-		WHERE module_class = '" . $db->sql_escape($module_class) . "'
-			AND module_basename = ''
-			AND module_langname = '" . $db->sql_escape($module_langname) . "'";
-	$result = $db->sql_query($sql);
-	$row = $db->sql_fetchrow($result);
-	$db->sql_freeresult($result);
-
-	if (!$row) { return true; }
-
-	$row['module_id'] = (int) $row['module_id'];
-	$row['left_id'] = (int) $row['left_id'];
-	$row['right_id'] = (int) $row['right_id'];
-
-	if ($row['left_id'] + 1 != $row['right_id'])
-	{
-		// Can't remove, it has some children.
-		return false;
-	}
-
-	$sql = 'DELETE FROM ' . MODULES_TABLE . "
-		WHERE module_class = '" . $db->sql_escape($module_class) . "'
-			AND module_id = {$row['module_id']}";
-	$db->sql_query($sql);
-
-	// Resync tree
-	$diff = 2;
-
-	$sql = 'UPDATE ' . MODULES_TABLE . "
-		SET right_id = right_id - {$diff}
-		WHERE module_class = '" . $db->sql_escape($module_class) . "'
-			AND left_id < {$row['right_id']} AND right_id > {$row['right_id']}";
-	$db->sql_query($sql);
-
-	$sql = 'UPDATE ' . MODULES_TABLE . "
-		SET left_id = left_id - {$diff}, right_id = right_id - {$diff}
-		WHERE module_class = '" . $db->sql_escape($module_class) . "'
-			AND left_id > {$row['right_id']}";
-	$db->sql_query($sql);
-
-	return true;
+	return remove_module($module_class, '', $module_langname);
 }
 
 function remove_permissions($permissions)
@@ -261,6 +218,14 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	}
 	$db->sql_return_on_error(false);
 
+	// Reset options for all users (enable quick reply, etc)
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_options int(11) UNSIGNED DEFAULT '233343' NOT NULL");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_options = 233343");
+
+	// Show all forums in active topics
+	$db->sql_query("ALTER TABLE " . FORUMS_TABLE . " MODIFY forum_flags tinyint(4) DEFAULT '16' NOT NULL");
+	$db->sql_query("UPDATE " . FORUMS_TABLE . " SET forum_flags = forum_flags|16");
+
 	// Reset CAPTCHA settings.
 	set_config('captcha_plugin', extension_loaded('gd') ? 'phpbb_captcha_gd' : 'phpbb_captcha_nogd');
 	set_config('captcha_gd_foreground_noise', 0);
@@ -282,6 +247,103 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	// Remove obsolete .htaccess file that would prevent direct access to uploaded avatars.
 	@unlink(PHPBB_ROOT_PATH . AVATAR_UPLOADS_PATH . '/.htaccess');
 
+	// New defaults.
+	set_config('active_topics_on_index', '5');
+	set_config('active_topics_days', '30');
+	set_config('active_users_days', '90');
+	set_config('announce_index', '1');
+	set_config('copyright_notice', '');
+	set_config('max_post_imgs', '0');
+	set_config('max_sig_imgs', '0');
+	set_config('max_sig_lines', '4');
+	set_config('max_spoiler_depth', '2');
+	set_config('merge_interval', '18');
+	set_config('outlinks', '');
+	set_config('override_user_lang', '0');
+	set_config('override_user_timezone', '0');
+	set_config('site_keywords', '');
+	set_config('warning_post_default', '');
+	set_config('auto_guest_lang', '0');
+	set_config('default_search_titleonly', '0');
+	set_config('search_highlight_keywords', '0');
+	set_config('rate_enabled', '1');
+	set_config('rate_only_topics', '0');
+	set_config('rate_time', 0);
+	set_config('rate_topic_time', -1);
+	set_config('rate_change_time', 60*5);
+	set_config('rate_no_negative', '0');
+	set_config('rate_no_positive', '0');
+	set_config('style_min_width', '875');
+	set_config('style_max_width', '1280');
+	set_config('style_back_to_top', '1');
+	set_config('style_rounded_corners', '1');
+	set_config('style_new_year', '-1');
+	set_config('style_show_sitename_in_headerbar', '1');
+	set_config('style_show_feeds_in_forumlist', '0');
+	set_config('style_vt_show_post_numbers', '0');
+	set_config('display_raters', '0');
+	set_config('style_mp_on_left', '0');
+	set_config('style_mp_show_topic_poster', '0');
+	set_config('style_mp_show_gender', '1');
+	set_config('style_mp_show_age', '1');
+	set_config('style_mp_show_from', '1');
+	set_config('style_mp_show_warnings', '1');
+	set_config('style_mp_show_rating', '1');
+	set_config('style_mp_show_rating_detailed', '0');
+	set_config('style_mp_show_rated', '0');
+	set_config('style_mp_show_rated_detailed', '0');
+	set_config('style_mp_show_posts', '0');
+	set_config('style_mp_show_topics', '0');
+	set_config('style_mp_show_joined', '0');
+	set_config('style_mp_show_with_us', '1');
+	set_config('style_mp_show_buttons', '1');
+	set_config('style_p_show_rating', '1');
+	set_config('style_p_show_rating_detailed', '1');
+	set_config('style_p_show_rated', '0');
+	set_config('style_p_show_rated_detailed', '0');
+	set_config('style_ml_show_row_numbers', '1');
+	set_config('style_ml_show_gender', '1');
+	set_config('style_ml_show_rank', '1');
+	set_config('style_ml_show_rating', '1');
+	set_config('style_ml_show_rating_detailed', '0');
+	set_config('style_ml_show_rated', '0');
+	set_config('style_ml_show_rated_detailed', '0');
+	set_config('style_ml_show_posts', '1');
+	set_config('style_ml_show_topics', '1');
+	set_config('style_ml_show_from', '1');
+	set_config('style_ml_show_website', '0');
+	set_config('style_ml_show_joined', '1');
+	set_config('style_ml_show_last_active', '1');
+	set_config('avatar_max_height', '100');
+	set_config('avatar_max_width', '100');
+	set_config('avatar_min_height', '64');
+	set_config('avatar_min_width', '64');
+	set_config('allow_sig_bbcode', '0');
+	set_config('allow_sig_img', '0');
+	set_config('allow_sig_links', '0');
+	set_config('allow_sig_smilies', '0');
+	set_config('max_sig_chars', '200');
+	set_config('require_activation', '1');
+	set_config('default_dateformat', '|d.m.Y|{, H:i}');
+	set_config('edit_time', '60');
+	set_config('delete_time', '15');
+	set_config('feed_enable', '1');
+	set_config('feed_item_statistics', '0');
+	set_config('feed_overall', '0');
+	set_config('load_moderators', '0');
+	set_config('max_poll_options', '25');
+	set_config('max_post_smilies', '20');
+	set_config('max_post_urls', '20');
+	set_config('max_quote_depth', '2');
+	set_config('pm_max_msgs', '1000');
+	set_config('posts_per_page', '20');
+	set_config('topics_per_page', '50');
+	set_config('external_links_newwindow', '0');
+	set_config('external_links_newwindow_exclude', '');
+	set_config('min_post_font_size', '85');
+	set_config('max_post_font_size', '200');
+	set_config('min_sig_font_size', '100');
+	set_config('max_sig_font_size', '100');
 	set_config('phpbbex_version', '1.7.0');
 }
 
@@ -621,6 +683,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('allow_avatar_upload', '1');
 	set_config('allow_avatar_remote_upload', '0');
 	set_config('avatar_filesize', '20480');
+	set_config('allow_mass_pm', '0');
+	set_config('pm_max_recipients', '5');
 
 	// Remove obsolete modules.
 
@@ -641,6 +705,14 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'u_pm_download',
 		'u_sendim',
 	]);
+
+	// Add the PM recipient-limit bypass permission without granting it to any role.
+	require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
+	$auth_admin = new auth_admin();
+	if (empty($auth_admin->acl_options['id']['u_masspm_nomax']))
+	{
+		$auth_admin->acl_add_option(['global' => ['u_masspm_nomax']]);
+	}
 
 	// Update cached module rights.
 
@@ -685,33 +757,12 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " ADD INDEX poster_topic(poster_id, topic_id)"); // For checking if a user posted in listed topics.
 	$db->sql_query("DROP TABLE {$table_prefix}topics_posted");
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
+	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_password');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topic_show_days');
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN style_copyright');
-	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_storedb');
-	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_copyright');
-	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN bbcode_bitfield');
-	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_path template_dir varchar(100) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_inherits_id template_inherit_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL");
-	$db->sql_query("ALTER TABLE " . STYLES_TEMPLATE_TABLE . " CHANGE template_inherit_path template_inherit_dir varchar(100) DEFAULT '' NOT NULL");
-	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP INDEX tmplte_nm');
-	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' DROP COLUMN template_name');
-	$db->sql_query('ALTER TABLE ' . STYLES_TEMPLATE_TABLE . ' ADD UNIQUE template_dir (template_dir)');
-	$db->sql_query("DROP TABLE {$table_prefix}styles_template_data");
-	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_storedb');
-	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_data');
-	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_copyright');
-	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_mtime');
-	$db->sql_query("ALTER TABLE " . STYLES_THEME_TABLE . " CHANGE theme_path theme_dir varchar(100) DEFAULT '' NOT NULL");
-	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP INDEX theme_name');
-	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' DROP COLUMN theme_name');
-	$db->sql_query('ALTER TABLE ' . STYLES_THEME_TABLE . ' ADD UNIQUE theme_dir (theme_dir)');
-	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP COLUMN imageset_copyright');
-	$db->sql_query("ALTER TABLE " . STYLES_IMAGESET_TABLE . " CHANGE imageset_path imageset_dir varchar(100) DEFAULT '' NOT NULL");
-	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP INDEX imgset_nm');
-	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' DROP COLUMN imageset_name');
-	$db->sql_query('ALTER TABLE ' . STYLES_IMAGESET_TABLE . ' ADD UNIQUE imageset_dir (imageset_dir)');
-	$db->sql_query("DROP TABLE {$table_prefix}styles_imageset_data");
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_message_limit');
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_max_recipients');
+	$db->sql_query("DROP TABLE {$table_prefix}forums_access");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
@@ -860,7 +911,28 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		}
 	}
 
-	// Final migration of imageset/template/theme tables into styles table.
+	// Style components are merged into a single style table.
+	// Currently, prosilver is the only v1.10 compatible theme in the world, so we can remove the rest from DB.
+
+	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_template");
+	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_template_data");
+	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_theme");
+	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_imageset");
+	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_imageset_data");
+	$db->sql_query("DROP TABLE IF EXISTS " . STYLES_TABLE);
+	$db->sql_query("CREATE TABLE " . STYLES_TABLE . " (
+		style_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+		style_name varchar(30) DEFAULT '' NOT NULL,
+		style_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
+		template_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
+		theme_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
+		imageset_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
+		PRIMARY KEY (style_id),
+		UNIQUE style_name (style_name)
+	) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
+	$db->sql_query("INSERT INTO " . STYLES_TABLE . " (style_name, style_active, template_dir, theme_dir, imageset_dir) VALUES ('prosilver', 1, 'prosilver', 'prosilver', 'prosilver')");
+	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_style = 1");
+	set_config('default_style', '1');
 
 	remove_module('acp', 'styles', 'template');
 	remove_module('acp', 'styles', 'theme');
@@ -879,34 +951,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module_category('acp', 'ACP_STYLE_MANAGEMENT');
 	remove_module_category('acp', 'ACP_CAT_STYLES');
 
-	$db->sql_return_on_error(true);
-
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . " MODIFY style_name varchar(30) DEFAULT '' NOT NULL");
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . " ADD template_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER style_active");
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . " ADD theme_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER template_dir");
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . " ADD imageset_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER theme_dir");
-
-	$sql = 'UPDATE ' . STYLES_TABLE . ' s
-		LEFT JOIN ' . STYLES_TEMPLATE_TABLE . ' t ON t.template_id = s.template_id
-		LEFT JOIN ' . STYLES_THEME_TABLE . ' c ON c.theme_id = s.theme_id
-		LEFT JOIN ' . STYLES_IMAGESET_TABLE . " i ON i.imageset_id = s.imageset_id
-		SET s.template_dir = COALESCE(t.template_dir, ''),
-			s.theme_dir = COALESCE(c.theme_dir, ''),
-			s.imageset_dir = COALESCE(i.imageset_dir, '')";
-	$db->sql_query($sql);
-
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP INDEX template_id');
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP INDEX theme_id');
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP INDEX imageset_id');
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN template_id');
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN theme_id');
-	$db->sql_query('ALTER TABLE ' . STYLES_TABLE . ' DROP COLUMN imageset_id');
-
-	$db->sql_query('DROP TABLE IF EXISTS ' . STYLES_TEMPLATE_TABLE);
-	$db->sql_query('DROP TABLE IF EXISTS ' . STYLES_THEME_TABLE);
-	$db->sql_query('DROP TABLE IF EXISTS ' . STYLES_IMAGESET_TABLE);
-
-	$db->sql_return_on_error(false);
+	// Clear cache and reset bots.
 
 	$bots_default = true;
 	$purge_default = 'all';
@@ -1110,7 +1155,6 @@ if (request_var('utf8mb4', 0))
 			case EXTENSIONS_TABLE:
 			case EXTENSION_GROUPS_TABLE:
 			case FORUMS_TABLE:
-			case FORUMS_ACCESS_TABLE:
 			case FORUMS_TRACK_TABLE:
 			case FORUMS_WATCH_TABLE:
 			case ICONS_TABLE:
@@ -1175,9 +1219,6 @@ if (request_var('utf8mb4', 0))
 				break;
 			case SEARCH_WORDLIST_TABLE:
 				$sql .= ", MODIFY word_text varchar(191) DEFAULT '' NOT NULL";
-				break;
-			case STYLES_TABLE:
-				$sql .= ", MODIFY style_name varchar(30) DEFAULT '' NOT NULL";
 				break;
 			case USERS_TABLE:
 				$sql .= ",
@@ -1678,15 +1719,11 @@ function _add_modules($modules_to_install)
 	$_module->remove_cache_file();
 }
 
-/****************************************************************************
-* ADD YOUR DATABASE SCHEMA CHANGES HERE                                     *
-*****************************************************************************/
 function database_update_info()
 {
 	return [
 		// Changes from 3.0.0 to the next version
 		'3.0.0'         => [
-			// Add the following columns
 			'add_columns'       => [
 				FORUMS_TABLE            => [
 					'display_subforum_list'     => ['BOOL', 1],
@@ -1707,11 +1744,8 @@ function database_update_info()
 				],
 			],
 		],
-		// No changes from 3.0.1-RC1 to 3.0.1
 		'3.0.1-RC1'     => [],
-		// No changes from 3.0.1 to 3.0.2-RC1
 		'3.0.1'         => [],
-		// Changes from 3.0.2-RC1 to 3.0.2-RC2
 		'3.0.2-RC1'     => [
 			'change_columns'    => [
 				DRAFTS_TABLE            => [
@@ -1740,27 +1774,9 @@ function database_update_info()
 				],
 			],
 		],
-		// No changes from 3.0.2-RC2 to 3.0.2
 		'3.0.2-RC2'     => [],
-
-		// Changes from 3.0.2 to 3.0.3-RC1
-		'3.0.2'         => [
-			// Add the following columns
-			'add_columns'       => [
-				STYLES_TEMPLATE_TABLE           => [
-					'template_inherit_id'       => ['UINT:4', 0],
-					'template_inherit_dir'      => ['VCHAR:100', ''],
-				],
-				GROUPS_TABLE                    => [
-					'group_max_recipients'      => ['UINT', 0],
-				],
-			],
-		],
-
-		// No changes from 3.0.3-RC1 to 3.0.3
+		'3.0.2'         => [],
 		'3.0.3-RC1'     => [],
-
-		// Changes from 3.0.3 to 3.0.4-RC1
 		'3.0.3'         => [
 			'add_columns'       => [
 				PROFILE_FIELDS_TABLE            => [
@@ -1768,40 +1784,14 @@ function database_update_info()
 				],
 			],
 			'change_columns'    => [
-				STYLES_TABLE                => [
-					'style_id'              => ['UINT', null, 'auto_increment'],
-					'template_id'           => ['UINT', 0],
-					'theme_id'              => ['UINT', 0],
-					'imageset_id'           => ['UINT', 0],
-				],
-				STYLES_IMAGESET_TABLE       => [
-					'imageset_id'               => ['UINT', null, 'auto_increment'],
-				],
-				STYLES_THEME_TABLE          => [
-					'theme_id'              => ['UINT', null, 'auto_increment'],
-				],
-				STYLES_TEMPLATE_TABLE       => [
-					'template_id'           => ['UINT', null, 'auto_increment'],
-				],
-				FORUMS_TABLE                => [
-					'forum_style'           => ['UINT', 0],
-				],
 				USERS_TABLE                 => [
 					'user_style'            => ['UINT', 0],
 				],
 			],
 		],
-
-		// Changes from 3.0.4-RC1 to 3.0.4
 		'3.0.4-RC1'     => [],
-
-		// Changes from 3.0.4 to 3.0.5-RC1
 		'3.0.4'         => [],
-
-		// No changes from 3.0.5-RC1 to 3.0.5
 		'3.0.5-RC1'     => [],
-
-		// Changes from 3.0.5 to 3.0.6-RC1
 		'3.0.5'     => [
 			'add_columns'       => [
 				CONFIRM_TABLE           => [
@@ -1828,11 +1818,6 @@ function database_update_info()
 					'forum_options'         => ['UINT:20', 0],
 				],
 			],
-			'change_columns'        => [
-				USERS_TABLE             => [
-					'user_options'      => ['UINT:11', 230271],
-				],
-			],
 			'add_index'     => [
 				REPORTS_TABLE       => [
 					'post_id'       => ['post_id'],
@@ -1843,17 +1828,10 @@ function database_update_info()
 				],
 			],
 		],
-
-		// No changes from 3.0.6-RC1 to 3.0.6-RC2
 		'3.0.6-RC1'     => [],
-		// No changes from 3.0.6-RC2 to 3.0.6-RC3
 		'3.0.6-RC2'     => [],
-		// No changes from 3.0.6-RC3 to 3.0.6-RC4
 		'3.0.6-RC3'     => [],
-		// No changes from 3.0.6-RC4 to 3.0.6
 		'3.0.6-RC4'     => [],
-
-		// Changes from 3.0.6 to 3.0.7-RC1
 		'3.0.6'     => [
 			'drop_keys'     => [
 				LOG_TABLE           => ['log_time'],
@@ -1864,18 +1842,11 @@ function database_update_info()
 				],
 			],
 		],
-
-		// No changes from 3.0.7-RC1 to 3.0.7-RC2
 		'3.0.7-RC1'     => [],
-		// No changes from 3.0.7-RC2 to 3.0.7
 		'3.0.7-RC2'     => [],
-		// No changes from 3.0.7 to 3.0.7-PL1
 		'3.0.7'     => [],
-		// No changes from 3.0.7-PL1 to 3.0.8-RC1
 		'3.0.7-PL1'     => [],
-		// No changes from 3.0.8-RC1 to 3.0.8
 		'3.0.8-RC1'     => [],
-		// Changes from 3.0.8 to 3.0.9-RC1
 		'3.0.8'         => [
 			'add_tables'        => [
 				LOGIN_ATTEMPT_TABLE => [
@@ -1909,25 +1880,15 @@ function database_update_info()
 				],
 			],
 		],
-		// No changes from 3.0.9-RC1 to 3.0.9-RC2
 		'3.0.9-RC1'     => [],
-		// No changes from 3.0.9-RC2 to 3.0.9-RC3
 		'3.0.9-RC2'     => [],
-		// No changes from 3.0.9-RC3 to 3.0.9-RC4
 		'3.0.9-RC3'     => [],
-		// No changes from 3.0.9-RC4 to 3.0.9
 		'3.0.9-RC4'     => [],
-		// No changes from 3.0.9 to 3.0.10-RC1
 		'3.0.9'         => [],
-		// No changes from 3.0.10-RC1 to 3.0.10-RC2
 		'3.0.10-RC1'    => [],
-		// No changes from 3.0.10-RC2 to 3.0.10-RC3
 		'3.0.10-RC2'    => [],
-		// No changes from 3.0.10-RC3 to 3.0.10
 		'3.0.10-RC3'    => [],
-		// No changes from 3.0.10 to 3.0.11-RC1
 		'3.0.10'        => [],
-		// Changes from 3.0.11-RC1 to 3.0.11-RC2
 		'3.0.11-RC1'    => [
 			'add_columns'       => [
 				PROFILE_FIELDS_TABLE            => [
@@ -1935,36 +1896,13 @@ function database_update_info()
 				],
 			],
 		],
-		// No changes from 3.0.11-RC2 to 3.0.11
 		'3.0.11-RC2'    => [],
-		// No changes from 3.0.11 to 3.0.12-RC1
 		'3.0.11'        => [],
-		// No changes from 3.0.12-RC1 to 3.0.12-RC2
-		'3.0.12-RC1'    => [],
-		// No changes from 3.0.12-RC2 to 3.0.12-RC3
-		'3.0.12-RC2'    => [],
-		// No changes from 3.0.12-RC3 to 3.0.12
-		'3.0.12-RC3'    => [],
-		// No changes from 3.0.12 to 3.0.13-RC1
-		'3.0.12'        => [],
-		// No changes from 3.0.13-RC1 to 3.0.13
-		'3.0.13-RC1'    => [],
-		// No changes from 3.0.13 to 3.0.13-PL1
-		'3.0.13'        => [],
-		// No changes from 3.0.13-PL1 to 3.0.14-RC1
-		'3.0.13-PL1'    => [],
-		// No changes from 3.0.14-RC1 to 3.0.14
-		'3.0.14-RC1'    => [],
 
 		/** @todo DROP LOGIN_ATTEMPT_TABLE.attempt_id in 3.0.15-RC1 */
 	];
 }
 
-/****************************************************************************
-* ADD YOUR DATABASE DATA CHANGES HERE                                       *
-* REMEMBER: You NEED to enter a schema array above and a data array here,   *
-* even if both or one of them are empty.                                    *
-*****************************************************************************/
 function change_database_data(&$no_updates, $version)
 {
 	global $db, $db_tools, $errored, $error_ary, $config, $table_prefix;
@@ -1998,11 +1936,6 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// No changes from 3.0.1-RC1 to 3.0.1
-		case '3.0.1-RC1':
-		break;
-
-		// changes from 3.0.1 to 3.0.2-RC1
 		case '3.0.1':
 
 			set_config('referer_validation', '1');
@@ -2012,25 +1945,9 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// No changes from 3.0.2-RC1 to 3.0.2-RC2
-		case '3.0.2-RC1':
-		break;
-
-		// No changes from 3.0.2-RC2 to 3.0.2
-		case '3.0.2-RC2':
-		break;
-
-		// Changes from 3.0.2 to 3.0.3-RC1
 		case '3.0.2':
 			set_config('enable_queue_trigger', '0');
 			set_config('queue_trigger_posts', '3');
-
-			set_config('pm_max_recipients', '0');
-
-			// Set maximum number of recipients for the registered users, bots, guests group
-			$sql = 'UPDATE ' . GROUPS_TABLE . ' SET group_max_recipients = 5
-				WHERE ' . $db->sql_in_set('group_name', ['GUESTS', 'REGISTERED', 'REGISTERED_COPPA', 'BOTS']);
-			_sql($sql, $errored, $error_ary);
 
 			// Add new permission u_masspm_group and duplicate settings from u_masspm
 			require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
@@ -2072,43 +1989,6 @@ function change_database_data(&$no_updates, $version)
 				$auth_admin->acl_clear_prefetch();
 			}
 
-			/**
-			* Do not resync post counts here. An admin may do this later from the ACP
-			$start = 0;
-			$step = ($config['num_posts']) ? (max((int) ($config['num_posts'] / 5), 20000)) : 20000;
-
-			$sql = 'UPDATE ' . USERS_TABLE . ' SET user_posts = 0';
-			_sql($sql, $errored, $error_ary);
-
-			do
-			{
-				$sql = 'SELECT COUNT(post_id) AS num_posts, poster_id
-					FROM ' . POSTS_TABLE . '
-					WHERE post_id BETWEEN ' . ($start + 1) . ' AND ' . ($start + $step) . '
-						AND post_postcount = 1 AND post_approved = 1
-					GROUP BY poster_id';
-				$result = _sql($sql, $errored, $error_ary);
-
-				if ($row = $db->sql_fetchrow($result))
-				{
-					do
-					{
-						$sql = 'UPDATE ' . USERS_TABLE . " SET user_posts = user_posts + {$row['num_posts']} WHERE user_id = {$row['poster_id']}";
-						_sql($sql, $errored, $error_ary);
-					}
-					while ($row = $db->sql_fetchrow($result));
-
-					$start += $step;
-				}
-				else
-				{
-					$start = 0;
-				}
-				$db->sql_freeresult($result);
-			}
-			while ($start);
-			*/
-
 			$sql = 'UPDATE ' . MODULES_TABLE . '
 				SET module_auth = \'acl_a_email && cfg_email_enable\'
 				WHERE module_class = \'acp\'
@@ -2118,7 +1998,6 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// Changes from 3.0.3-RC1 to 3.0.3
 		case '3.0.3-RC1':
 			$sql = 'UPDATE ' . LOG_TABLE . "
 				SET log_operation = 'LOG_DELETE_TOPIC'
@@ -2128,7 +2007,6 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// Changes from 3.0.3 to 3.0.4-RC1
 		case '3.0.3':
 			// Update the Custom Profile Fields based on previous settings to the new format
 			$sql = 'SELECT field_id, field_required, field_show_on_reg, field_hide
@@ -2169,11 +2047,6 @@ function change_database_data(&$no_updates, $version)
 
 		break;
 
-		// Changes from 3.0.4-RC1 to 3.0.4
-		case '3.0.4-RC1':
-		break;
-
-		// Changes from 3.0.4 to 3.0.5-RC1
 		case '3.0.4':
 
 			// Maximum number of keywords
@@ -2262,11 +2135,6 @@ function change_database_data(&$no_updates, $version)
 
 		break;
 
-		// No changes from 3.0.5-RC1 to 3.0.5
-		case '3.0.5-RC1':
-		break;
-
-		// Changes from 3.0.5 to 3.0.6-RC1
 		case '3.0.5':
 			// Let's see if the GD Captcha can be enabled... we simply look for what *is* enabled...
 			if (!empty($config['captcha_gd']) && !isset($config['captcha_plugin']))
@@ -2360,7 +2228,7 @@ function change_database_data(&$no_updates, $version)
 
 			if (!$group_id)
 			{
-				$sql = 'INSERT INTO ' .  GROUPS_TABLE . " (group_name, group_type, group_founder_manage, group_colour, group_legend, group_avatar, group_desc, group_desc_uid, group_max_recipients) VALUES ('NEWLY_REGISTERED', 3, 0, '', 0, '', '', '', 5)";
+				$sql = 'INSERT INTO ' .  GROUPS_TABLE . " (group_name, group_type, group_founder_manage, group_colour, group_legend, group_avatar, group_desc, group_desc_uid) VALUES ('NEWLY_REGISTERED', 3, 0, '', 0, '', '', '')";
 				_sql($sql, $errored, $error_ary);
 
 				$group_id = $db->sql_nextid();
@@ -2496,23 +2364,6 @@ function change_database_data(&$no_updates, $version)
 				set_config('min_post_chars', '1');
 			}
 
-			// Set every members user_options column to enable
-			// bbcode, smilies and URLs for signatures by default
-			$sql = 'SELECT user_options
-				FROM ' . USERS_TABLE . '
-				WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')';
-			$result = $db->sql_query_limit($sql, 1);
-			$user_option = (int) $db->sql_fetchfield('user_options');
-			$db->sql_freeresult($result);
-
-			// Check if we already updated the database by checking bit 15 which we used to store the sig_bbcode option
-			if (!($user_option & 1 << 15))
-			{
-				// 229376 is the added value to enable all three signature options
-				$sql = 'UPDATE ' . USERS_TABLE . ' SET user_options = user_options + 229376';
-				_sql($sql, $errored, $error_ary);
-			}
-
 			if (!isset($config['delete_time']))
 			{
 				set_config('delete_time', $config['edit_time']);
@@ -2521,11 +2372,6 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// No changes from 3.0.6-RC1 to 3.0.6-RC2
-		case '3.0.6-RC1':
-		break;
-
-		// Changes from 3.0.6-RC2 to 3.0.6-RC3
 		case '3.0.6-RC2':
 
 			// Update the Custom Profile Fields based on previous settings to the new format
@@ -2538,15 +2384,6 @@ function change_database_data(&$no_updates, $version)
 
 		break;
 
-		// No changes from 3.0.6-RC3 to 3.0.6-RC4
-		case '3.0.6-RC3':
-		break;
-
-		// No changes from 3.0.6-RC4 to 3.0.6
-		case '3.0.6-RC4':
-		break;
-
-		// Changes from 3.0.6 to 3.0.7-RC1
 		case '3.0.6':
 
 			// ATOM Feeds
@@ -2559,19 +2396,6 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// Changes from 3.0.7-RC1 to 3.0.7-RC2
-		case '3.0.7-RC1':
-		break;
-
-		// No changes from 3.0.7-RC2 to 3.0.7
-		case '3.0.7-RC2':
-		break;
-
-		// No changes from 3.0.7 to 3.0.7-PL1
-		case '3.0.7':
-		break;
-
-		// Changes from 3.0.7-PL1 to 3.0.8-RC1
 		case '3.0.7-PL1':
 			// Install modules
 			$modules_to_install = [
@@ -2650,10 +2474,6 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// No changes from 3.0.8-RC1 to 3.0.8
-		case '3.0.8-RC1':
-		break;
-
 		// Changes from 3.0.8 to 3.0.9-RC1
 		case '3.0.8':
 			set_config('ip_login_limit_max', '50');
@@ -2682,23 +2502,6 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// No changes from 3.0.9-RC1 to 3.0.9-RC2
-		case '3.0.9-RC1':
-		break;
-
-		// No changes from 3.0.9-RC2 to 3.0.9-RC3
-		case '3.0.9-RC2':
-		break;
-
-		// No changes from 3.0.9-RC3 to 3.0.9-RC4
-		case '3.0.9-RC3':
-		break;
-
-		// No changes from 3.0.9-RC4 to 3.0.9
-		case '3.0.9-RC4':
-		break;
-
-		// Changes from 3.0.9 to 3.0.10-RC1
 		case '3.0.9':
 			if (!isset($config['email_max_chunk_size']))
 			{
@@ -2708,41 +2511,7 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// No changes from 3.0.10-RC1 to 3.0.10-RC2
-		case '3.0.10-RC1':
-		break;
-
-		// No changes from 3.0.10-RC2 to 3.0.10-RC3
-		case '3.0.10-RC2':
-		break;
-
-		// No changes from 3.0.10-RC3 to 3.0.10
-		case '3.0.10-RC3':
-		break;
-
-		// Changes from 3.0.10 to 3.0.11-RC1
 		case '3.0.10':
-			// Updates users having current style a deactivated one
-			$sql = 'SELECT style_id
-				FROM ' . STYLES_TABLE . '
-				WHERE style_active = 0';
-			$result = $db->sql_query($sql);
-
-			$deactivated_style_ids = [];
-			while ($style_id = $db->sql_fetchfield('style_id', false, $result))
-			{
-				$deactivated_style_ids[] = (int) $style_id;
-			}
-			$db->sql_freeresult($result);
-
-			if (!empty($deactivated_style_ids))
-			{
-				$sql = 'UPDATE ' . USERS_TABLE . '
-					SET user_style = ' . (int) $config['default_style'] .'
-					WHERE ' . $db->sql_in_set('user_style', $deactivated_style_ids);
-				_sql($sql, $errored, $error_ary);
-			}
-
 			// Delete orphan private messages
 			$batch_size = 500;
 
@@ -2784,15 +2553,6 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// No changes from 3.0.11-RC1 to 3.0.11-RC2
-		case '3.0.11-RC1':
-		break;
-
-		// No changes from 3.0.11-RC2 to 3.0.11
-		case '3.0.11-RC2':
-		break;
-
-		// Changes from 3.0.11 to 3.0.12-RC1
 		case '3.0.11':
 			$sql = 'UPDATE ' . MODULES_TABLE . '
 				SET module_auth = \'acl_u_sig\'
@@ -2834,36 +2594,7 @@ function change_database_data(&$no_updates, $version)
 			$no_updates = false;
 		break;
 
-		// No changes from 3.0.12-RC1 to 3.0.12-RC2
-		case '3.0.12-RC1':
-		break;
-
-		// No changes from 3.0.12-RC2 to 3.0.12-RC3
-		case '3.0.12-RC2':
-		break;
-
-		// No changes from 3.0.12-RC3 to 3.0.12
-		case '3.0.12-RC3':
-		break;
-
-		// No changes from 3.0.12 to 3.0.13-RC1
-		case '3.0.12':
-		break;
-
-		// No changes from 3.0.13-RC1 to 3.0.13
-		case '3.0.13-RC1':
-		break;
-
-		// No changes from 3.0.13 to 3.0.13-PL1
-		case '3.0.13':
-		break;
-
-		// No changes from 3.0.13-PL1 to 3.0.14-RC1
-		case '3.0.13-PL1':
-		break;
-
-		// No changes from 3.0.14-RC1 to 3.0.14
-		case '3.0.14-RC1':
+		default:
 		break;
 	}
 }

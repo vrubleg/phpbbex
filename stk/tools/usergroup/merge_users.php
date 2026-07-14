@@ -233,7 +233,6 @@ class merge_users
 
 		/**
 		 * Ignored tables
-		 * forums_access
 		 * sessions
 		 * sessions_keys
 		 */

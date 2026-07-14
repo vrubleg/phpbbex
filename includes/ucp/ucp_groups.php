@@ -482,8 +482,6 @@ class ucp_groups
 								'colour'        => request_var('group_colour', ''),
 								'rank'          => request_var('group_rank', 0),
 								'receive_pm'    => isset($_REQUEST['group_receive_pm']) ? 1 : 0,
-								'message_limit' => request_var('group_message_limit', 0),
-								'max_recipients'=> request_var('group_max_recipients', 0),
 							];
 
 							if (!check_form_key('ucp_groups'))
@@ -510,8 +508,6 @@ class ucp_groups
 									'rank'          => 'int',
 									'receive_pm'    => 'int',
 									'legend'        => 'int',
-									'message_limit' => 'int',
-									'max_recipients'=> 'int',
 								];
 
 								foreach ($test_variables as $test => $type)
@@ -590,8 +586,6 @@ class ucp_groups
 
 							'ERROR_MSG'             => (sizeof($error)) ? implode('<br />', $error) : '',
 							'GROUP_RECEIVE_PM'      => (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
-							'GROUP_MESSAGE_LIMIT'   => $group_row['group_message_limit'] ?? 0,
-							'GROUP_MAX_RECIPIENTS'  => $group_row['group_max_recipients'] ?? 0,
 
 							'GROUP_DESC'            => $group_desc_data['text'],
 							'S_DESC_BBCODE_CHECKED' => $group_desc_data['allow_bbcode'],

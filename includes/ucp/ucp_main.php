@@ -389,13 +389,8 @@ class ucp_main
 
 				$user->add_lang('posting');
 
-				$edit       = isset($_REQUEST['edit']);
-				$submit     = isset($_POST['submit']);
-				$draft_id   = ($edit) ? intval($_REQUEST['edit']) : 0;
 				$delete     = isset($_POST['delete']);
 
-				$s_hidden_fields = ($edit) ? '<input type="hidden" name="edit" value="' . $draft_id . '" />' : '';
-				$draft_subject = $draft_message = '';
 				add_form_key('ucp_draft');
 
 				if ($delete)
@@ -423,55 +418,18 @@ class ucp_main
 					trigger_error($message);
 				}
 
-				if ($submit && $edit)
-				{
-					$draft_subject = utf8_normalize_nfc(request_var('subject', '', true));
-					$draft_message = utf8_normalize_nfc(request_var('message', '', true));
-					if (check_form_key('ucp_draft'))
-					{
-						if ($draft_message && $draft_subject)
-						{
-							$draft_row = [
-								'draft_subject' => $draft_subject,
-								'draft_message' => $draft_message
-							];
-
-							$sql = 'UPDATE ' . DRAFTS_TABLE . '
-								SET ' . $db->sql_build_array('UPDATE', $draft_row) . "
-								WHERE draft_id = {$draft_id}
-									AND user_id = " . $user->data['user_id'];
-							$db->sql_query($sql);
-
-							$message = $user->lang['DRAFT_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
-
-							meta_refresh(3, $this->u_action);
-							trigger_error($message);
-						}
-						else
-						{
-							$template->assign_var('ERROR', ($draft_message == '') ? $user->lang['EMPTY_DRAFT'] : (($draft_subject == '') ? $user->lang['EMPTY_DRAFT_TITLE'] : ''));
-						}
-					}
-					else
-					{
-						$template->assign_var('ERROR', $user->lang['FORM_INVALID']);
-					}
-				}
-
 				if (!$pm_drafts)
 				{
 					$sql = 'SELECT d.*, f.forum_name
 						FROM ' . DRAFTS_TABLE . ' d, ' . FORUMS_TABLE . ' f
-						WHERE d.user_id = ' . $user->data['user_id'] . ' ' .
-							(($edit) ? "AND d.draft_id = {$draft_id}" : '') . '
+						WHERE d.user_id = ' . $user->data['user_id'] . '
 							AND f.forum_id = d.forum_id
 						ORDER BY d.save_time DESC';
 				}
 				else
 				{
 					$sql = 'SELECT * FROM ' . DRAFTS_TABLE . '
-						WHERE user_id = ' . $user->data['user_id'] . ' ' .
-							(($edit) ? "AND draft_id = {$draft_id}" : '') . '
+						WHERE user_id = ' . $user->data['user_id'] . '
 							AND forum_id = 0
 							AND topic_id = 0
 						ORDER BY save_time DESC';
@@ -505,12 +463,9 @@ class ucp_main
 				}
 				unset($topic_ids);
 
-				$template->assign_var('S_EDIT_DRAFT', $edit);
-
-				$row_count = 0;
 				foreach ($draftrows as $draft)
 				{
-					$link_topic = $link_forum = $link_pm = false;
+					$link_topic = $link_forum = false;
 					$insert_url = $view_url = $title = '';
 
 					if (isset($topic_rows[$draft['topic_id']]) && $auth->acl_get('f_read', $topic_rows[$draft['topic_id']]['forum_id']))
@@ -529,16 +484,15 @@ class ucp_main
 
 						$insert_url = append_sid(PHPBB_ROOT_PATH . 'posting.php', 'f=' . $draft['forum_id'] . '&amp;mode=post&amp;d=' . $draft['draft_id']);
 					}
-					else if ($pm_drafts)
+					else
 					{
-						$link_pm = true;
-						$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=compose&amp;d=" . $draft['draft_id']);
+						// Preserve access to the draft by loading it as a PM when its forum is unavailable
+						$insert_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;d=' . $draft['draft_id']);
 					}
 
 					$template_row = [
 						'DATE'          => $user->format_date($draft['save_time']),
-						'DRAFT_MESSAGE' => ($submit) ? $draft_message : $draft['draft_message'],
-						'DRAFT_SUBJECT' => ($submit) ? $draft_subject : $draft['draft_subject'],
+						'DRAFT_SUBJECT' => $draft['draft_subject'],
 						'TITLE'         => $title,
 
 						'DRAFT_ID'  => $draft['draft_id'],
@@ -546,22 +500,13 @@ class ucp_main
 						'TOPIC_ID'  => $draft['topic_id'],
 
 						'U_VIEW'        => $view_url,
-						'U_VIEW_EDIT'   => $this->u_action . '&amp;edit=' . $draft['draft_id'],
 						'U_INSERT'      => $insert_url,
 
 						'S_LINK_TOPIC'      => $link_topic,
-						'S_LINK_FORUM'      => $link_forum,
-						'S_LINK_PM'         => $link_pm,
-						'S_HIDDEN_FIELDS'   => $s_hidden_fields
+						'S_LINK_FORUM'      => $link_forum
 					];
-					$row_count++;
 
-					($edit) ? $template->assign_vars($template_row) : $template->assign_block_vars('draftrow', $template_row);
-				}
-
-				if (!$edit)
-				{
-					$template->assign_var('S_DRAFT_ROWS', $row_count);
+					$template->assign_block_vars('draftrow', $template_row);
 				}
 
 			break;
@@ -571,7 +516,7 @@ class ucp_main
 		$template->assign_vars([
 			'L_TITLE'           => $user->lang['UCP_MAIN_' . strtoupper($mode)],
 
-			'S_DISPLAY_MARK_ALL'    => ($mode == 'watched' || ($mode == 'drafts' && !isset($_GET['edit']))),
+			'S_DISPLAY_MARK_ALL'    => ($mode == 'watched' || $mode == 'drafts'),
 			'S_HIDDEN_FIELDS'       => $s_hidden_fields ?? '',
 			'S_UCP_ACTION'          => $this->u_action,
 

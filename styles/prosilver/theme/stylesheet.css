@@ -1326,10 +1326,6 @@ div[class].topic-actions {
 	clear: both;
 }
 
-.postbody .ignore {
-	font-size: 1.1em;
-}
-
 .postbody h3.first {
 	/* The first post on the page uses this */
 	/*font-size: 1.7em;*/
@@ -1385,10 +1381,6 @@ div[class].topic-actions {
 
 #topicreview h2 {
 	border-bottom-width: 0;
-}
-
-.post-ignore .postbody {
-	display: none;
 }
 
 /* Content container styles
@@ -2584,14 +2576,6 @@ dl.mini dt {
 
 dl.mini dd {
 	padding-top: 4px;
-}
-
-.friend-online {
-	font-weight: bold;
-}
-
-.friend-offline {
-	font-style: italic;
 }
 
 /* PM Styles

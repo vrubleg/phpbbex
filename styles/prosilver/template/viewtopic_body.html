@@ -159,10 +159,6 @@ jQuery(function($)
 		<div class="inner">
 
 		<div class="postbody">
-			<!-- IF postrow.S_IGNORE_POST -->
-				<div class="ignore">{postrow.L_IGNORE_POST}</div>
-			<!-- ELSE -->
-
 		<!-- IF not S_IS_BOT -->
 			<!-- IF postrow.U_EDIT or postrow.U_DELETE or postrow.U_REPORT or postrow.U_WARN or postrow.U_INFO or postrow.U_QUOTE or postrow.POST_RATING_SHOW -->
 				<ul class="profile-icons">
@@ -217,13 +213,10 @@ jQuery(function($)
 					{postrow.postwarning.TEXT}
 				</div>
 			<!-- END postwarning -->
-		<!-- ENDIF -->
-
 		</div>
 
-		<!-- IF not postrow.S_IGNORE_POST -->
 			<dl class="postprofile" id="profile{postrow.POST_ID}">
-			<dt><span>{postrow.POST_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF postrow.S_POSTER_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF postrow.S_POSTER_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --><!-- IF postrow.S_ONLINE and not postrow.S_IGNORE_POST --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
+			<dt><span>{postrow.POST_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF postrow.S_POSTER_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF postrow.S_POSTER_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --><!-- IF postrow.S_ONLINE --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
 			<!-- IF postrow.RANK_TITLE or STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER --><dd><!-- IF STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->{L_TOPIC_POSTER}<!-- ENDIF --><!-- IF postrow.RANK_TITLE and STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->, <!-- ENDIF --><!-- IF postrow.RANK_TITLE -->{postrow.RANK_TITLE}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF postrow.RANK_IMG --><dd>{postrow.RANK_IMG}</dd><!-- ENDIF -->
 			<!-- IF postrow.POSTER_AVATAR --><dd class="avatar"><!-- IF postrow.U_POST_AUTHOR --><a rel="nofollow" href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --></dd><!-- ENDIF -->
@@ -273,7 +266,6 @@ jQuery(function($)
 			<!-- ENDIF -->
 
 			</dl>
-		<!-- ENDIF -->
 
 		</div>
 	</div>

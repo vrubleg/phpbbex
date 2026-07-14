@@ -236,10 +236,10 @@ class acp_board
 						'pm_max_msgs'           => ['lang' => 'BOXES_LIMIT',            'validate' => 'int:0',  'type' => 'text:4:4', 'explain' => true],
 						'full_folder_action'    => ['lang' => 'FULL_FOLDER_ACTION', 'validate' => 'int',    'type' => 'select', 'method' => 'full_folder_select', 'explain' => true],
 						'pm_edit_time'          => ['lang' => 'PM_EDIT_TIME',           'validate' => 'int:0',  'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']],
+						'allow_mass_pm'         => ['lang' => 'ALLOW_MASS_PM',          'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'pm_max_recipients'     => ['lang' => 'PM_MAX_RECIPIENTS',      'validate' => 'int:0',  'type' => 'text:5:5', 'explain' => true],
 
 						'legend2'               => 'GENERAL_OPTIONS',
-						'allow_mass_pm'         => ['lang' => 'ALLOW_MASS_PM',          'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'auth_bbcode_pm'        => ['lang' => 'ALLOW_BBCODE_PM',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'auth_smilies_pm'       => ['lang' => 'ALLOW_SMILIES_PM',       'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'allow_pm_attach'       => ['lang' => 'ALLOW_PM_ATTACHMENTS',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],

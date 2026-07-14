@@ -9,20 +9,6 @@
 
 	<p>{L_DRAFTS_EXPLAIN}</p>
 
-<!-- IF S_EDIT_DRAFT -->
-
-		<!-- INCLUDE posting_editor.html -->
-		</div>
-	</div>
-
-			<fieldset class="submit-buttons">
-				{S_HIDDEN_FIELDS}
-				<input type="submit" name="submit" value="{L_SAVE}" class="button1" />
-				{S_FORM_TOKEN}
-			</fieldset>
-
-<!-- ELSE -->
-
 	<!-- IF .draftrow -->
 		<ul class="topiclist">
 			<li class="header">
@@ -39,13 +25,13 @@
 			<li class="row<!-- IF draftrow.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 				<dl>
 					<dt>
-						<a class="topictitle" href="{draftrow.U_VIEW_EDIT}">{draftrow.DRAFT_SUBJECT}</a><br />
+						<a class="topictitle" href="{draftrow.U_INSERT}"><!-- IF draftrow.DRAFT_SUBJECT -->{draftrow.DRAFT_SUBJECT}<!-- ELSE -->{L_NO_SUBJECT}<!-- ENDIF --></a><br />
 						<!-- IF draftrow.S_LINK_TOPIC -->{L_TOPIC}: <a href="{draftrow.U_VIEW}">{draftrow.TITLE}</a>
 						<!-- ELSEIF draftrow.S_LINK_FORUM -->{L_FORUM}: <a href="{draftrow.U_VIEW}">{draftrow.TITLE}</a>
 						<!-- ELSEIF S_PRIVMSGS -->
 						<!-- ELSE -->{L_NO_TOPIC_FORUM}<!-- ENDIF -->
 					</dt>
-					<dd class="info"><span>{draftrow.DATE}<br /><!-- IF draftrow.U_INSERT --><a href="{draftrow.U_INSERT}">{L_LOAD_DRAFT}</a> &bull; <!-- ENDIF --><a href="{draftrow.U_VIEW_EDIT}">{L_VIEW_EDIT}</a></span></dd>
+					<dd class="info"><span>{draftrow.DATE}</span></dd>
 					<dd class="mark"><input type="checkbox" name="d[{draftrow.DRAFT_ID}]" id="d{draftrow.DRAFT_ID}" /></dd>
 				</dl>
 			</li>
@@ -65,9 +51,6 @@
 			{S_FORM_TOKEN}
 		</fieldset>
 	<!-- ENDIF -->
-
-<!-- ENDIF -->
-
 </form>
 
 <!-- INCLUDE ucp_footer.html -->
