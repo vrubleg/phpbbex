@@ -477,7 +477,7 @@ class ucp_gallery
 				'UPLOADER'          => get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
 				'LAST_IMAGE_TIME'   => $user->format_date($row['album_last_image_time']),
 				'LAST_IMAGE'        => $row['album_last_image_id'],
-				'U_IMAGE'           => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['album_last_image_id']),
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image_page', 'image_id=' . $row['album_last_image_id']),
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -531,7 +531,7 @@ class ucp_gallery
 				'ALBUM_NAME'        => $row['album_name'],
 				'IMAGE_ID'          => $row['image_id'],
 				'U_VIEW_ALBUM'      => phpbb_gallery_url::append_sid('album', 'album_id=' . $row['image_album_id']),
-				'U_IMAGE'           => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['image_album_id'] . '&amp;image_id=' . $row['image_id']),
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image_page', 'image_id=' . $row['image_id']),
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -606,7 +606,7 @@ class ucp_gallery
 				'ALBUM_NAME'        => $row['album_name'],
 				'IMAGE_ID'          => $row['image_id'],
 				'U_VIEW_ALBUM'      => phpbb_gallery_url::append_sid('album', 'album_id=' . $row['image_album_id']),
-				'U_IMAGE'           => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['image_album_id'] . '&amp;image_id=' . $row['image_id']),
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image_page', 'image_id=' . $row['image_id']),
 			]);
 		}
 		$db->sql_freeresult($result);

@@ -148,9 +148,9 @@ class phpbb_gallery_feed
 
 		foreach ($this->images_data as $image_id => $row)
 		{
-			$u_thumbnail = phpbb_gallery_url::append_sid('full', 'image', 'mode=thumbnail&amp;album_id=' . $row['image_album_id'] . '&amp;image_id=' . $image_id, true, '');
-			$url_imagepage = phpbb_gallery_url::append_sid('full', 'image_page', 'album_id=' . $row['image_album_id'] . '&amp;image_id=' . $image_id, true, '');
-			$url_fullsize = phpbb_gallery_url::append_sid('full', 'image', 'album_id=' . $row['image_album_id'] . '&amp;image_id=' . $image_id, true, '');
+			$u_thumbnail = phpbb_gallery_url::append_sid('full', 'image', 'mode=thumbnail&amp;image_id=' . $image_id, true, '');
+			$url_imagepage = phpbb_gallery_url::append_sid('full', 'image_page', 'image_id=' . $image_id, true, '');
+			$url_fullsize = phpbb_gallery_url::append_sid('full', 'image', 'image_id=' . $image_id, true, '');
 			$title = censor_text($row['album_name'] . ' ' . $this->separator . ' ' . $row['image_name']);
 
 			$description = $row['image_desc'];

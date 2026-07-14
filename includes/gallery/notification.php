@@ -333,9 +333,9 @@ class phpbb_gallery_notification
 						'ALBUM_NAME'    => htmlspecialchars_decode($album_data['album_name']),
 
 						'U_ALBUM'               => phpbb_gallery_url::create_link('full', 'album', "album_id={$album_id}"),
-						'U_IMAGE'               => phpbb_gallery_url::create_link('full', 'image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
+						'U_IMAGE'               => phpbb_gallery_url::create_link('full', 'image_page', "image_id={$image_id}"),
 						'U_NEWEST_POST'         => phpbb_gallery_url::create_link('full', 'viewtopic', "album_id={$album_id}&amp;image_id={$image_id}"),
-						'U_STOP_WATCHING_IMAGE' => phpbb_gallery_url::create_link('full', 'image_page', "mode=unwatch&amp;album_id={$album_id}&amp;image_id={$image_id}"),
+						'U_STOP_WATCHING_IMAGE' => phpbb_gallery_url::create_link('full', 'image_page', "mode=unwatch&amp;image_id={$image_id}"),
 						'U_STOP_WATCHING_ALBUM' => phpbb_gallery_url::create_link('full', 'album', "mode=unwatch&amp;album_id={$album_id}"),
 					]);
 

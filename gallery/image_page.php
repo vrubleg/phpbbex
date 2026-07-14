@@ -54,7 +54,7 @@ if (!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_use
 {
 	if (!$user->data['is_registered'])
 	{
-		login_box(phpbb_gallery_url::append_sid('relative', 'image_page', "album_id={$album_id}&amp;image_id={$image_id}"), $user->lang['LOGIN_EXPLAIN_GALLERY_VIEW']);
+		login_box(phpbb_gallery_url::append_sid('relative', 'image_page', "image_id={$image_id}"), $user->lang['LOGIN_EXPLAIN_GALLERY_VIEW']);
 	}
 	else
 	{
@@ -78,7 +78,7 @@ add_form_key('gallery');
 $token = request_var('hash', '');
 if (in_array($mode, ['watch', 'unwatch', 'favorite', 'unfavorite']) && check_link_hash($token, "{$mode}_{$image_id}"))
 {
-	$backlink = phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}");
+	$backlink = phpbb_gallery_url::append_sid('image_page', "image_id={$image_id}");
 
 	if ($mode == 'watch')
 	{
@@ -182,7 +182,7 @@ if ((phpbb_gallery::$auth->acl_check('m_', $album_id, $album_data['album_user_id
 
 	$user->add_lang('mods/gallery_mcp');
 	$template->assign_vars([
-		'S_MOD_ACTION'      => phpbb_gallery_url::append_sid('mcp', "album_id={$album_id}&amp;image_id={$image_id}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
+		'S_MOD_ACTION'      => phpbb_gallery_url::append_sid('mcp', "image_id={$image_id}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
 		'S_QUICK_MOD'       => $s_quick_mod,
 		'S_QM_MOVE'         => phpbb_gallery::$auth->acl_check('m_move', $album_id, $album_data['album_user_id']),
 		'S_QM_EDIT'         => $s_allowed_edit,
@@ -216,27 +216,27 @@ $template->assign_vars([
 	'DELETE_IMG'        => $user->img('icon_post_delete', 'DELETE_IMAGE'),
 	'REPORT_IMG'        => $user->img('icon_post_report', 'REPORT_IMAGE'),
 	'STATUS_IMG'        => $user->img('icon_post_info', 'STATUS_IMAGE'),
-	'U_DELETE'          => ($s_allowed_delete) ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
-	'U_EDIT'            => ($s_allowed_edit) ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
-	'U_REPORT'          => (phpbb_gallery::$auth->acl_check('i_report', $album_id, $album_data['album_user_id']) && ($image_data['image_user_id'] != $user->data['user_id'])) ? phpbb_gallery_url::append_sid('posting', "mode=report&amp;album_id={$album_id}&amp;image_id={$image_id}") : '',
+	'U_DELETE'          => ($s_allowed_delete) ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;image_id={$image_id}") : '',
+	'U_EDIT'            => ($s_allowed_edit) ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;image_id={$image_id}") : '',
+	'U_REPORT'          => (phpbb_gallery::$auth->acl_check('i_report', $album_id, $album_data['album_user_id']) && ($image_data['image_user_id'] != $user->data['user_id'])) ? phpbb_gallery_url::append_sid('posting', "mode=report&amp;image_id={$image_id}") : '',
 	'U_STATUS'          => ($s_allowed_status) ? phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id={$image_id}") : '',
 
 	'IMAGE_NAME'        => $image_data['image_name'],
 	'IMAGE_DESC'        => $image_desc,
 	'IMAGE_BBCODE'      => ($config['allow_bbcode']) ? '[album]' . $image_id . '[/album]' : '',
-	'IMAGE_IMGURL_BBCODE'   => (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}", true, '') . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=thumbnail", true, '') . '[/img][/url]' : '',
-	'IMAGE_URL'         => (phpbb_gallery_config::get('disp_image_url')) ? phpbb_gallery_url::append_sid('full', 'image', "album_id={$album_id}&amp;image_id={$image_id}", true, '') : '',
+	'IMAGE_IMGURL_BBCODE'   => (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}&amp;mode=thumbnail", true, '') . '[/img][/url]' : '',
+	'IMAGE_URL'         => (phpbb_gallery_config::get('disp_image_url')) ? phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') : '',
 	'IMAGE_TIME'        => $user->format_date($image_data['image_time']),
 	'IMAGE_VIEW'        => $image_data['image_view_count'],
 	'POSTER_IP'         => ($auth->acl_get('a_')) ? $image_data['image_user_ip'] : '',
 	'U_POSTER_WHOIS'    => ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $image_data['image_user_ip']) : '',
 
 	'L_BOOKMARK_TOPIC'  => ($image_data['favorite_id']) ? $user->lang['UNFAVORITE_IMAGE'] : $user->lang['FAVORITE_IMAGE'],
-	'U_BOOKMARK_TOPIC'  => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$favorite_mode}&amp;album_id={$album_id}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$favorite_mode}_{$image_id}")) : '',
+	'U_BOOKMARK_TOPIC'  => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$favorite_mode}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$favorite_mode}_{$image_id}")) : '',
 	'L_WATCH_TOPIC'     => ($image_data['watch_id']) ? $user->lang['UNWATCH_IMAGE'] : $user->lang['WATCH_IMAGE'],
-	'U_WATCH_TOPIC'     => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$watch_mode}&amp;album_id={$album_id}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$watch_mode}_{$image_id}")) : '',
+	'U_WATCH_TOPIC'     => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$watch_mode}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$watch_mode}_{$image_id}")) : '',
 	'S_WATCHING_TOPIC'  => (bool) $image_data['watch_id'],
-	'S_ALBUM_ACTION'    => phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}"),
+	'S_ALBUM_ACTION'    => phpbb_gallery_url::append_sid('image_page', "image_id={$image_id}"),
 	'S_ENABLE_FEEDS_ALBUM'  => $album_data['album_feed'] && (phpbb_gallery_config::get('feed_enable_pegas') || !$album_data['album_user_id']),
 
 	'U_RETURN_LINK'     => phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
@@ -278,7 +278,7 @@ if (phpbb_gallery_config::get('allow_rates'))
 		'IMAGE_RATING'          => $rating->get_image_rating($user_rating),
 		'S_ALLOWED_TO_RATE'     => (!$user_rating && $rating->is_allowed()),
 		'S_VIEW_RATE'           => (bool) phpbb_gallery::$auth->acl_check('i_rate', $album_id, $album_data['album_user_id']),
-		'S_COMMENT_ACTION'      => phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=rate"),
+		'S_COMMENT_ACTION'      => phpbb_gallery_url::append_sid('comment', "image_id={$image_id}&amp;mode=rate"),
 	]);
 	unset($rating);
 }
@@ -339,7 +339,7 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	}
 
 	// Different link, when we rate and dont comment
-	$template->assign_var('S_COMMENT_ACTION', phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add"));
+	$template->assign_var('S_COMMENT_ACTION', phpbb_gallery_url::append_sid('comment', "image_id={$image_id}&amp;mode=add"));
 }
 elseif (phpbb_gallery_config::get('comment_user_control') && !$image_data['image_allow_comments'])
 {
@@ -453,14 +453,14 @@ if (phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_che
 			}
 
 			$template->assign_block_vars('commentrow', [
-				'U_COMMENT'     => phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}&amp;start={$start}&amp;sort_order={$sort_order}") . '#comment_' . $row['comment_id'],
+				'U_COMMENT'     => phpbb_gallery_url::append_sid('image_page', "image_id={$image_id}&amp;start={$start}&amp;sort_order={$sort_order}") . '#comment_' . $row['comment_id'],
 				'COMMENT_ID'    => $row['comment_id'],
 				'TIME'          => $user->format_date($row['comment_time']),
 				'TEXT'          => generate_text_for_display($row['comment'], $row['comment_uid'], $row['comment_bitfield'], 7),
 				'EDIT_INFO'     => $edit_info,
-				'U_DELETE'      => (phpbb_gallery::$auth->acl_check('m_comments', $album_id, $album_data['album_user_id']) || (phpbb_gallery::$auth->acl_check('c_delete', $album_id, $album_data['album_user_id']) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=delete&amp;comment_id=" . $row['comment_id']) : '',
-				'U_QUOTE'       => (phpbb_gallery::$auth->acl_check('c_post', $album_id, $album_data['album_user_id'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=add&amp;comment_id=" . $row['comment_id']) : '',
-				'U_EDIT'        => (phpbb_gallery::$auth->acl_check('m_comments', $album_id, $album_data['album_user_id']) || (phpbb_gallery::$auth->acl_check('c_edit', $album_id, $album_data['album_user_id']) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "album_id={$album_id}&amp;image_id={$image_id}&amp;mode=edit&amp;comment_id=" . $row['comment_id']) : '',
+				'U_DELETE'      => (phpbb_gallery::$auth->acl_check('m_comments', $album_id, $album_data['album_user_id']) || (phpbb_gallery::$auth->acl_check('c_delete', $album_id, $album_data['album_user_id']) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "image_id={$image_id}&amp;mode=delete&amp;comment_id=" . $row['comment_id']) : '',
+				'U_QUOTE'       => (phpbb_gallery::$auth->acl_check('c_post', $album_id, $album_data['album_user_id'])) ? phpbb_gallery_url::append_sid('comment', "image_id={$image_id}&amp;mode=add&amp;comment_id=" . $row['comment_id']) : '',
+				'U_EDIT'        => (phpbb_gallery::$auth->acl_check('m_comments', $album_id, $album_data['album_user_id']) || (phpbb_gallery::$auth->acl_check('c_edit', $album_id, $album_data['album_user_id']) && ($row['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? phpbb_gallery_url::append_sid('comment', "image_id={$image_id}&amp;mode=edit&amp;comment_id=" . $row['comment_id']) : '',
 				'U_INFO'        => ($auth->acl_get('a_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=whois&amp;ip=' . $row['comment_user_ip']) : '',
 
 				'POST_AUTHOR_FULL'      => get_username_string('full', $user_id, $row['comment_username'], $user_cache[$user_id]['user_colour']),
@@ -516,7 +516,7 @@ if (phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_che
 			'INFO_IMG'          => $user->img('icon_post_info', 'IP'),
 			'MINI_POST_IMG'     => $user->img('icon_post_target_unread', 'COMMENT'),
 			'PAGE_NUMBER'       => sprintf($user->lang['PAGE_OF'], (floor($start / $config['posts_per_page']) + 1), ceil($image_data['image_comments'] / $config['posts_per_page'])),
-			'PAGINATION'        => generate_pagination(phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}&amp;sort_order={$sort_order}"), $image_data['image_comments'], $config['posts_per_page'], $start),
+			'PAGINATION'        => generate_pagination(phpbb_gallery_url::append_sid('image_page', "image_id={$image_id}&amp;sort_order={$sort_order}"), $image_data['image_comments'], $config['posts_per_page'], $start),
 		]);
 	}
 }

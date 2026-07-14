@@ -27,7 +27,7 @@ if ((request_var('quickmod', 0) == 1) && ($action == 'report_details'))
 }
 else if ((request_var('quickmod', 0) == 1) && ($action == 'image_edit'))
 {
-	phpbb_gallery_url::redirect('posting', "mode=edit&amp;album_id={$album_id}&amp;image_id={$image_id}");
+	phpbb_gallery_url::redirect('posting', "mode=edit&amp;image_id={$image_id}");
 }
 
 if ($mode == 'whois' && $auth->acl_get('a_') && request_var('ip', ''))
@@ -164,7 +164,7 @@ if ($mode == 'overview')
 			'IMAGE_TIME'        => $user->format_date($row['image_time']),
 			'IMAGE_NAME'        => $row['image_name'],
 			'IMAGE_ID'          => $row['image_id'],
-			'U_IMAGE'           => phpbb_gallery_url::append_sid('image', 'album_id=' . $row['image_album_id'] . '&amp;image_id=' . $row['image_id']),
+			'U_IMAGE'           => phpbb_gallery_url::append_sid('image', 'image_id=' . $row['image_id']),
 			'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('mcp', 'mode=queue_details&amp;album_id=' . $row['image_album_id'] . '&amp;option_id=' . $row['image_id']),
 		]);
 	}
@@ -206,7 +206,7 @@ if ($mode == 'overview')
 			'REPORT_TIME'       => $user->format_date($row['report_time']),
 			'IMAGE_TIME'        => $user->format_date($row['image_time']),
 			'IMAGE_NAME'        => $row['image_name'],
-			'U_IMAGE'           => phpbb_gallery_url::append_sid('image', 'album_id=' . $row['image_album_id'] . '&amp;image_id=' . $row['image_id']),
+			'U_IMAGE'           => phpbb_gallery_url::append_sid('image', 'image_id=' . $row['image_id']),
 			'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('mcp', 'mode=report_details&amp;album_id=' . $row['image_album_id'] . '&amp;option_id=' . $row['report_id']),
 		]);
 	}

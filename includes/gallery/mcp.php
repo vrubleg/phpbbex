@@ -153,8 +153,8 @@ class phpbb_gallery_mcp
 				'IMAGE_ID'          => $row['image_id'],
 				'S_REPORTED'        => (isset($row['report_status']) && ($row['report_status'] == phpbb_gallery_report::OPEN)),
 				'S_UNAPPROVED'      => ($row['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED),
-				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
-				'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "image_id=" . $row['image_id']),
+				'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('image_page', "image_id=" . $row['image_id']),
 				'U_REPORT'          => phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$album_id}&amp;option_id=" . $row['report_id']),
 				'U_QUEUE'           => phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id=" . $row['image_id']),
 			]);
@@ -256,8 +256,8 @@ class phpbb_gallery_mcp
 			'UPLOADER'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
 			'IMAGE_TIME'        => $user->format_date($row['image_time']),
 			'UC_IMAGE'          => phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
-			'U_EDIT_IMAGE'      => phpbb_gallery_url::append_sid('posting', 'mode=edit&amp;album_id=' . $album_id . '&amp;image_id=' . $row['image_id']),
-			'U_DELETE_IMAGE'    => phpbb_gallery_url::append_sid('posting', 'mode=delete&amp;album_id=' . $album_id . '&amp;image_id=' . $row['image_id']),
+			'U_EDIT_IMAGE'      => phpbb_gallery_url::append_sid('posting', 'mode=edit&amp;image_id=' . $row['image_id']),
+			'U_DELETE_IMAGE'    => phpbb_gallery_url::append_sid('posting', 'mode=delete&amp;image_id=' . $row['image_id']),
 			'S_MCP_ACTION'      => phpbb_gallery_url::append_sid('mcp', "mode=" . (($mode == 'report_details') ? 'report_open' : 'queue_unapproved') . "&amp;album_id={$album_id}"),
 		]);
 	}
@@ -320,7 +320,7 @@ class phpbb_gallery_mcp
 				'IMAGE_TIME'        => $user->format_date($row['image_time']),
 				'IMAGE_NAME'        => $row['image_name'],
 				'IMAGE_ID'          => $row['image_id'],
-				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "image_id=" . $row['image_id']),
 				'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id=" . $row['image_id']),
 			]);
 		}
@@ -456,7 +456,7 @@ class phpbb_gallery_mcp
 				'REPORT_TIME'       => $user->format_date($row['report_time']),
 				'IMAGE_TIME'        => $user->format_date($row['image_time']),
 				'IMAGE_NAME'        => $row['image_name'],
-				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id=" . $row['image_id']),
+				'U_IMAGE'           => phpbb_gallery_url::append_sid('image', "image_id=" . $row['image_id']),
 				'U_IMAGE_PAGE'      => phpbb_gallery_url::append_sid('mcp', 'mode=report_details&amp;album_id=' . $album_id . '&amp;option_id=' . $row['report_id']),
 			]);
 		}

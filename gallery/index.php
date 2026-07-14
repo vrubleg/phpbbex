@@ -67,8 +67,8 @@ else if (phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth-
 			$lastimage_user_id = $row['album_last_user_id'];
 			$lastimage_username = $row['album_last_username'];
 			$lastimage_user_colour = $row['album_last_user_colour'];
-			$last_image_page_url = phpbb_gallery_url::append_sid('image_page', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['album_last_image_id']);
-			$last_thumb_url = phpbb_gallery_url::append_sid('thumbnail', 'album_id=' . $row['album_id'] . '&amp;image_id=' . $row['album_last_image_id']);
+			$last_image_page_url = phpbb_gallery_url::append_sid('image_page', 'image_id=' . $row['album_last_image_id']);
+			$last_thumb_url = phpbb_gallery_url::append_sid('thumbnail', 'image_id=' . $row['album_last_image_id']);
 			$lastimage_album_id = $row['album_id'];
 		}
 	}

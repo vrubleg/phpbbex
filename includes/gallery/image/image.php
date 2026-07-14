@@ -252,12 +252,12 @@ class phpbb_gallery_image
 			'TIME'          => ($display & phpbb_gallery_block::DISPLAY_IMAGETIME) ? $user->format_date($image_data['image_time']) : '',
 			'VIEW'          => ($display & phpbb_gallery_block::DISPLAY_IMAGEVIEWS) ? $image_data['image_view_count'] : -1,
 			'S_RATINGS'     => (($display & phpbb_gallery_block::DISPLAY_RATINGS) ? ((phpbb_gallery_config::get('allow_rates') && phpbb_gallery::$auth->acl_check('i_rate', $image_data['image_album_id'], $album_user_id)) ? $image_data['rating'] : '') : ''),
-			'U_RATINGS'     => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#rating',
+			'U_RATINGS'     => phpbb_gallery_url::append_sid('image_page', "image_id=" . $image_data['image_id']) . '#rating',
 			'L_COMMENTS'    => ($image_data['image_comments'] == 1) ? $user->lang['COMMENT'] : $user->lang['COMMENTS'],
 			'S_COMMENTS'    => (($display & phpbb_gallery_block::DISPLAY_COMMENTS) ? ((phpbb_gallery_config::get('allow_comments') && phpbb_gallery::$auth->acl_check('c_read', $image_data['image_album_id'], $album_user_id)) ? ($image_data['image_comments'] ?: $user->lang['NO_COMMENTS']) : '') : ''),
-			'U_COMMENTS'    => phpbb_gallery_url::append_sid('image_page', 'album_id=' . $image_data['image_album_id'] . "&amp;image_id=" . $image_data['image_id']) . '#comments',
+			'U_COMMENTS'    => phpbb_gallery_url::append_sid('image_page', "image_id=" . $image_data['image_id']) . '#comments',
 
-			'S_MOD_ACTION'      => phpbb_gallery_url::append_sid('mcp', "album_id={$image_data['image_album_id']}&amp;image_id={$image_data['image_id']}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
+			'S_MOD_ACTION'      => phpbb_gallery_url::append_sid('mcp', "image_id={$image_data['image_id']}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
 			'S_QUICK_MOD'       => $s_quick_mod,
 			'S_QM_MOVE'         => phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id),
 			'S_QM_EDIT'         => $s_allowed_edit,
@@ -277,9 +277,9 @@ class phpbb_gallery_image
 			'U_REPORT'  => (phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id) && $image_data['image_reported']) ? phpbb_gallery_url::append_sid('mcp', "mode=report_details&amp;album_id={$image_data['image_album_id']}&amp;option_id=" . $image_data['image_reported']) : '',
 			'U_STATUS'  => (phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id)) ? phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$image_data['image_album_id']}&amp;option_id=" . $image_data['image_id']) : '',
 			'L_STATUS'  => ($image_data['image_status'] == self::STATUS_UNAPPROVED) ? $user->lang['APPROVE_IMAGE'] : (($image_data['image_status'] == self::STATUS_APPROVED) ? $user->lang['CHANGE_IMAGE_STATUS'] : $user->lang['UNLOCK_IMAGE']),
-			'U_MOVE'    => (phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id)) ? phpbb_gallery_url::append_sid('mcp', "action=images_move&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id'] . "&amp;redirect=redirect") : '',
-			'U_EDIT'    => $s_allowed_edit ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id']) : '',
-			'U_DELETE'  => $s_allowed_delete ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;album_id={$image_data['image_album_id']}&amp;image_id=" . $image_data['image_id']) : '',
+			'U_MOVE'    => (phpbb_gallery::$auth->acl_check('m_move', $image_data['image_album_id'], $album_user_id)) ? phpbb_gallery_url::append_sid('mcp', "action=images_move&amp;image_id=" . $image_data['image_id'] . "&amp;redirect=redirect") : '',
+			'U_EDIT'    => $s_allowed_edit ? phpbb_gallery_url::append_sid('posting', "mode=edit&amp;image_id=" . $image_data['image_id']) : '',
+			'U_DELETE'  => $s_allowed_delete ? phpbb_gallery_url::append_sid('posting', "mode=delete&amp;image_id=" . $image_data['image_id']) : '',
 		]);
 	}
 
@@ -299,10 +299,10 @@ class phpbb_gallery_image
 	{
 		global $user;
 
-		$image_page_url = phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$image_id}{$additional_parameters}");
-		$image_url = phpbb_gallery_url::append_sid('image', "album_id={$album_id}&amp;image_id={$image_id}{$additional_parameters}" . ((!$count) ? '&amp;view=no_count' : ''));
-		$thumb_url = phpbb_gallery_url::append_sid('image', "mode=thumbnail&amp;album_id={$album_id}&amp;image_id={$image_id}{$additional_parameters}");
-		$medium_url = phpbb_gallery_url::append_sid('image', "mode=medium&amp;album_id={$album_id}&amp;image_id={$image_id}{$additional_parameters}");
+		$image_page_url = phpbb_gallery_url::append_sid('image_page', "image_id={$image_id}{$additional_parameters}");
+		$image_url = phpbb_gallery_url::append_sid('image', "image_id={$image_id}{$additional_parameters}" . ((!$count) ? '&amp;view=no_count' : ''));
+		$thumb_url = phpbb_gallery_url::append_sid('image', "mode=thumbnail&amp;image_id={$image_id}{$additional_parameters}");
+		$medium_url = phpbb_gallery_url::append_sid('image', "mode=medium&amp;image_id={$image_id}{$additional_parameters}");
 		switch ($content)
 		{
 			case 'image_name':
@@ -359,7 +359,7 @@ class phpbb_gallery_image
 			case 'next':
 				if ($next_image)
 				{
-					$url = phpbb_gallery_url::append_sid('image_page', "album_id={$album_id}&amp;image_id={$next_image}{$additional_parameters}");
+					$url = phpbb_gallery_url::append_sid('image_page', "image_id={$next_image}{$additional_parameters}");
 					$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}">{CONTENT}</a>';
 				}
 				else
