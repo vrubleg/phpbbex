@@ -18,360 +18,160 @@ function view_folder($id, $mode, $folder_id, $folder)
 {
 	global $user, $template, $auth, $db, $cache, $config;
 
-	$submit_export = isset($_POST['submit_export']);
-
 	$folder_info = get_pm_from($folder_id, $folder, $user->data['user_id']);
 
-	if (!$submit_export)
+	$user->add_lang('viewforum');
+
+	// Grab icons
+	$icons = $cache->obtain_icons();
+
+	$color_rows = ['marked', 'replied'];
+
+	// only show the friend/foe color rows if the module is enabled
+	$zebra_enabled = false;
+
+	$_module = new p_master();
+	$_module->list_modules('ucp');
+	$_module->set_active('zebra');
+
+	$zebra_enabled = ($_module->active_module !== false);
+
+	unset($_module);
+
+	if ($zebra_enabled)
 	{
-		$user->add_lang('viewforum');
+		$color_rows = array_merge($color_rows, ['friend', 'foe']);
+	}
 
-		// Grab icons
-		$icons = $cache->obtain_icons();
-
-		$color_rows = ['marked', 'replied'];
-
-		// only show the friend/foe color rows if the module is enabled
-		$zebra_enabled = false;
-
-		$_module = new p_master();
-		$_module->list_modules('ucp');
-		$_module->set_active('zebra');
-
-		$zebra_enabled = ($_module->active_module !== false);
-
-		unset($_module);
-
-		if ($zebra_enabled)
-		{
-			$color_rows = array_merge($color_rows, ['friend', 'foe']);
-		}
-
-		foreach ($color_rows as $var)
-		{
-			$template->assign_block_vars('pm_colour_info', [
-				'IMG'   => $user->img("pm_{$var}", ''),
-				'CLASS' => "pm_{$var}_colour",
-				'LANG'  => $user->lang[strtoupper($var) . '_MESSAGE']]
-			);
-		}
-
-		$mark_options = ['mark_important', 'delete_marked'];
-
-		$s_mark_options = '';
-		foreach ($mark_options as $mark_option)
-		{
-			$s_mark_options .= '<option value="' . $mark_option . '">' . $user->lang[strtoupper($mark_option)] . '</option>';
-		}
-
-		// We do the folder moving options here too, for template authors to use...
-		$s_folder_move_options = '';
-		if ($folder_id != PRIVMSGS_NO_BOX && $folder_id != PRIVMSGS_OUTBOX)
-		{
-			foreach ($folder as $f_id => $folder_ary)
-			{
-				if ($f_id == PRIVMSGS_OUTBOX || $f_id == PRIVMSGS_SENTBOX || $f_id == $folder_id)
-				{
-					continue;
-				}
-
-				$s_folder_move_options .= '<option' . (($f_id != PRIVMSGS_INBOX) ? ' class="sep"' : '') . ' value="' . $f_id . '">';
-				$s_folder_move_options .= sprintf($user->lang['MOVE_MARKED_TO_FOLDER'], $folder_ary['folder_name']);
-				$s_folder_move_options .= (($folder_ary['unread_messages']) ? ' [' . $folder_ary['unread_messages'] . '] ' : '') . '</option>';
-			}
-		}
-		$friend = $foe = [];
-
-		// Get friends and foes
-		$sql = 'SELECT *
-			FROM ' . ZEBRA_TABLE . '
-			WHERE user_id = ' . $user->data['user_id'];
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$friend[$row['zebra_id']] = $row['friend'];
-			$foe[$row['zebra_id']] = $row['foe'];
-		}
-		$db->sql_freeresult($result);
-
-		$template->assign_vars([
-			'S_MARK_OPTIONS'        => $s_mark_options,
-			'S_MOVE_MARKED_OPTIONS' => $s_folder_move_options]
+	foreach ($color_rows as $var)
+	{
+		$template->assign_block_vars('pm_colour_info', [
+			'IMG'   => $user->img("pm_{$var}", ''),
+			'CLASS' => "pm_{$var}_colour",
+			'LANG'  => $user->lang[strtoupper($var) . '_MESSAGE']]
 		);
+	}
 
-		// Okay, lets dump out the page ...
-		if (sizeof($folder_info['pm_list']))
+	$mark_options = ['mark_important', 'delete_marked'];
+
+	$s_mark_options = '';
+	foreach ($mark_options as $mark_option)
+	{
+		$s_mark_options .= '<option value="' . $mark_option . '">' . $user->lang[strtoupper($mark_option)] . '</option>';
+	}
+
+	// We do the folder moving options here too, for template authors to use...
+	$s_folder_move_options = '';
+	if ($folder_id != PRIVMSGS_NO_BOX && $folder_id != PRIVMSGS_OUTBOX)
+	{
+		foreach ($folder as $f_id => $folder_ary)
 		{
-			$address_list = [];
-
-			// Build Recipient List if in outbox/sentbox - max two additional queries
-			if ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX)
+			if ($f_id == PRIVMSGS_OUTBOX || $f_id == PRIVMSGS_SENTBOX || $f_id == $folder_id)
 			{
-				$address_list = get_recipient_strings($folder_info['rowset']);
+				continue;
 			}
 
-			foreach ($folder_info['pm_list'] as $message_id)
-			{
-				$row = &$folder_info['rowset'][$message_id];
-
-				$folder_img = ($row['pm_unread']) ? 'pm_unread' : 'pm_read';
-				$folder_alt = ($row['pm_unread']) ? 'NEW_MESSAGES' : 'NO_NEW_MESSAGES';
-
-				// Generate all URIs ...
-				$view_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=view&amp;f={$folder_id}&amp;p={$message_id}");
-				$remove_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=compose&amp;action=delete&amp;p={$message_id}");
-
-				$row_indicator = '';
-				foreach ($color_rows as $var)
-				{
-					if (($var != 'friend' && $var != 'foe' && $row['pm_' . $var])
-						||
-						(($var == 'friend' || $var == 'foe') && isset(${$var}[$row['author_id']]) && ${$var}[$row['author_id']]))
-					{
-						$row_indicator = $var;
-						break;
-					}
-				}
-
-				// Send vars to template
-				$template->assign_block_vars('messagerow', [
-					'PM_CLASS'          => ($row_indicator) ? 'pm_' . $row_indicator . '_colour' : '',
-
-					'MESSAGE_AUTHOR_FULL'       => get_username_string('full', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
-					'MESSAGE_AUTHOR_COLOUR'     => get_username_string('colour', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
-					'MESSAGE_AUTHOR'            => get_username_string('username', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
-					'U_MESSAGE_AUTHOR'          => get_username_string('profile', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
-
-					'FOLDER_ID'         => $folder_id,
-					'MESSAGE_ID'        => $message_id,
-					'SENT_TIME'         => $user->format_date($row['message_time']),
-					'SUBJECT'           => censor_text($row['message_subject']),
-					'FOLDER'            => (isset($folder[$row['folder_id']])) ? $folder[$row['folder_id']]['folder_name'] : '',
-					'U_FOLDER'          => (isset($folder[$row['folder_id']])) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'folder=' . $row['folder_id']) : '',
-					'PM_ICON_IMG'       => (!empty($icons[$row['icon_id']])) ? '<img src="' . TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] . '" width="' . $icons[$row['icon_id']]['width'] . '" height="' . $icons[$row['icon_id']]['height'] . '" alt="" title="" />' : '',
-					'PM_ICON_URL'       => (!empty($icons[$row['icon_id']])) ? TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] : '',
-					'FOLDER_IMG'        => $user->img($folder_img, $folder_alt),
-					'FOLDER_IMG_SRC'    => $user->img($folder_img, $folder_alt, false, '', 'src'),
-					'PM_IMG'            => ($row_indicator) ? $user->img('pm_' . $row_indicator, '') : '',
-					'ATTACH_ICON_IMG'   => ($auth->acl_get('u_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
-
-					'S_PM_UNREAD'       => (bool) $row['pm_unread'],
-					'S_PM_DELETED'      => (bool) $row['pm_deleted'],
-					'S_PM_REPORTED'     => isset($row['report_id']),
-					'S_AUTHOR_DELETED'  => ($row['author_id'] == ANONYMOUS),
-
-					'U_VIEW_PM'         => ($row['pm_deleted']) ? '' : $view_message_url,
-					'U_REMOVE_PM'       => ($row['pm_deleted']) ? $remove_message_url : '',
-					'U_MCP_REPORT'      => (isset($row['report_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $row['report_id']) : '',
-					'RECIPIENTS'        => ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? implode(', ', $address_list[$message_id]) : '',
-				]);
-			}
-			unset($folder_info['rowset']);
-
-			$template->assign_vars([
-				'S_SHOW_RECIPIENTS'     => ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX),
-				'S_SHOW_COLOUR_LEGEND'  => true,
-
-				'REPORTED_IMG'          => $user->img('icon_topic_reported', 'PM_REPORTED'),
-				'S_PM_ICONS'            => (bool) $config['enable_pm_icons'],
-			]);
+			$s_folder_move_options .= '<option' . (($f_id != PRIVMSGS_INBOX) ? ' class="sep"' : '') . ' value="' . $f_id . '">';
+			$s_folder_move_options .= sprintf($user->lang['MOVE_MARKED_TO_FOLDER'], $folder_ary['folder_name']);
+			$s_folder_move_options .= (($folder_ary['unread_messages']) ? ' [' . $folder_ary['unread_messages'] . '] ' : '') . '</option>';
 		}
 	}
-	else
+	$friend = $foe = [];
+
+	// Get friends and foes
+	$sql = 'SELECT *
+		FROM ' . ZEBRA_TABLE . '
+		WHERE user_id = ' . $user->data['user_id'];
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
 	{
-		$export_type = request_var('export_option', '');
-		$enclosure = request_var('enclosure', '');
-		$delimiter = request_var('delimiter', '');
+		$friend[$row['zebra_id']] = $row['friend'];
+		$foe[$row['zebra_id']] = $row['foe'];
+	}
+	$db->sql_freeresult($result);
 
-		if ($export_type == 'CSV' && ($delimiter === '' || $enclosure === ''))
+	$template->assign_vars([
+		'S_MARK_OPTIONS'        => $s_mark_options,
+		'S_MOVE_MARKED_OPTIONS' => $s_folder_move_options]
+	);
+
+	// Okay, lets dump out the page ...
+	if (sizeof($folder_info['pm_list']))
+	{
+		$address_list = [];
+
+		// Build Recipient List if in outbox/sentbox - max two additional queries
+		if ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX)
 		{
-			$template->assign_var('PROMPT', true);
+			$address_list = get_recipient_strings($folder_info['rowset']);
 		}
-		else
+
+		foreach ($folder_info['pm_list'] as $message_id)
 		{
-			// Build Recipient List if in outbox/sentbox
+			$row = &$folder_info['rowset'][$message_id];
 
-			$address_temp = $address = $data = [];
+			$folder_img = ($row['pm_unread']) ? 'pm_unread' : 'pm_read';
+			$folder_alt = ($row['pm_unread']) ? 'NEW_MESSAGES' : 'NO_NEW_MESSAGES';
 
-			if ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX)
+			// Generate all URIs ...
+			$view_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=view&amp;f={$folder_id}&amp;p={$message_id}");
+			$remove_message_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i={$id}&amp;mode=compose&amp;action=delete&amp;p={$message_id}");
+
+			$row_indicator = '';
+			foreach ($color_rows as $var)
 			{
-				foreach ($folder_info['rowset'] as $message_id => $row)
+				if (($var != 'friend' && $var != 'foe' && $row['pm_' . $var])
+					||
+					(($var == 'friend' || $var == 'foe') && isset(${$var}[$row['author_id']]) && ${$var}[$row['author_id']]))
 				{
-					$address_temp[$message_id] = rebuild_header(['to' => $row['to_address'], 'bcc' => $row['bcc_address']]);
-					$address[$message_id] = [];
+					$row_indicator = $var;
+					break;
 				}
 			}
 
-			foreach ($folder_info['pm_list'] as $message_id)
-			{
-				$row = &$folder_info['rowset'][$message_id];
+			// Send vars to template
+			$template->assign_block_vars('messagerow', [
+				'PM_CLASS'          => ($row_indicator) ? 'pm_' . $row_indicator . '_colour' : '',
 
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
+				'MESSAGE_AUTHOR_FULL'       => get_username_string('full', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
+				'MESSAGE_AUTHOR_COLOUR'     => get_username_string('colour', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
+				'MESSAGE_AUTHOR'            => get_username_string('username', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
+				'U_MESSAGE_AUTHOR'          => get_username_string('profile', $row['author_id'], $row['username'], $row['user_colour'], $row['username']),
 
-				$sql = 'SELECT p.message_text, p.bbcode_uid
-					FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . ' u
-					WHERE t.user_id = ' . $user->data['user_id'] . "
-						AND p.author_id = u.user_id
-						AND t.folder_id = {$folder_id}
-						AND t.msg_id = p.msg_id
-						AND p.msg_id = {$message_id}";
-				$result = $db->sql_query_limit($sql, 1);
-				$message_row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
+				'FOLDER_ID'         => $folder_id,
+				'MESSAGE_ID'        => $message_id,
+				'SENT_TIME'         => $user->format_date($row['message_time']),
+				'SUBJECT'           => censor_text($row['message_subject']),
+				'FOLDER'            => (isset($folder[$row['folder_id']])) ? $folder[$row['folder_id']]['folder_name'] : '',
+				'U_FOLDER'          => (isset($folder[$row['folder_id']])) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'folder=' . $row['folder_id']) : '',
+				'PM_ICON_IMG'       => (!empty($icons[$row['icon_id']])) ? '<img src="' . TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] . '" width="' . $icons[$row['icon_id']]['width'] . '" height="' . $icons[$row['icon_id']]['height'] . '" alt="" title="" />' : '',
+				'PM_ICON_URL'       => (!empty($icons[$row['icon_id']])) ? TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] : '',
+				'FOLDER_IMG'        => $user->img($folder_img, $folder_alt),
+				'FOLDER_IMG_SRC'    => $user->img($folder_img, $folder_alt, false, '', 'src'),
+				'PM_IMG'            => ($row_indicator) ? $user->img('pm_' . $row_indicator, '') : '',
+				'ATTACH_ICON_IMG'   => ($auth->acl_get('u_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
 
-				$_types = ['u', 'g'];
-				foreach ($_types as $ug_type)
-				{
-					if (isset($address_temp[$message_id][$ug_type]) && sizeof($address_temp[$message_id][$ug_type]))
-					{
-						if (!isset($address[$message_id][$ug_type]))
-						{
-							$address[$message_id][$ug_type] = [];
-						}
-						if ($ug_type == 'u')
-						{
-							$sql = 'SELECT user_id as id, username as name
-								FROM ' . USERS_TABLE . '
-								WHERE ';
-						}
-						else
-						{
-							$sql = 'SELECT group_id as id, group_name as name
-								FROM ' . GROUPS_TABLE . '
-								WHERE ';
-						}
-						$sql .= $db->sql_in_set(($ug_type == 'u') ? 'user_id' : 'group_id', array_map('intval', array_keys($address_temp[$message_id][$ug_type])));
+				'S_PM_UNREAD'       => (bool) $row['pm_unread'],
+				'S_PM_DELETED'      => (bool) $row['pm_deleted'],
+				'S_PM_REPORTED'     => isset($row['report_id']),
+				'S_AUTHOR_DELETED'  => ($row['author_id'] == ANONYMOUS),
 
-						$result = $db->sql_query($sql);
-
-						while ($info_row = $db->sql_fetchrow($result))
-						{
-							$address[$message_id][$ug_type][$address_temp[$message_id][$ug_type][$info_row['id']]][] = $info_row['name'];
-							unset($address_temp[$message_id][$ug_type][$info_row['id']]);
-						}
-						$db->sql_freeresult($result);
-					}
-				}
-
-				// There is the chance that all recipients of the message got deleted. To avoid creating
-				// exports without recipients, we add a bogus "undisclosed recipient".
-				if (!(isset($address[$message_id]['g']) && sizeof($address[$message_id]['g'])) &&
-				    !(isset($address[$message_id]['u']) && sizeof($address[$message_id]['u'])))
-				{
-					$address[$message_id]['u'] = [];
-					$address[$message_id]['u']['to'] = [];
-					$address[$message_id]['u']['to'][] = $user->lang['UNDISCLOSED_RECIPIENT'];
-				}
-
-				decode_message($message_row['message_text'], $message_row['bbcode_uid']);
-
-				$data[] = [
-					'subject'   => censor_text($row['message_subject']),
-					'sender'    => $row['username'],
-					'date'      => $user->format_date($row['message_time'], 'c', true), // ISO 8601 date.
-					'to'        => ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? $address[$message_id] : '',
-					'message'   => $message_row['message_text']
-				];
-			}
-
-			switch ($export_type)
-			{
-				case 'CSV':
-				case 'CSV_EXCEL':
-					$mimetype = 'text/csv';
-					$filetype = 'csv';
-
-					if ($export_type == 'CSV_EXCEL')
-					{
-						$enclosure = '"';
-						$delimiter = ',';
-						$newline = "\r\n";
-					}
-					else
-					{
-						$newline = "\n";
-					}
-
-					$string = '';
-					foreach ($data as $value)
-					{
-						$recipients = $value['to'];
-						$value['to'] = $value['bcc'] = '';
-
-						if (is_array($recipients))
-						{
-							foreach ($recipients as $values)
-							{
-								$value['bcc'] .= (isset($values['bcc']) && is_array($values['bcc'])) ? ',' . implode(',', $values['bcc']) : '';
-								$value['to'] .= (isset($values['to']) && is_array($values['to'])) ? ',' . implode(',', $values['to']) : '';
-							}
-
-							// Remove the commas which will appear before the first entry.
-							$value['to'] = substr($value['to'], 1);
-							$value['bcc'] = substr($value['bcc'], 1);
-						}
-
-						foreach ($value as $tag => $text)
-						{
-							$cell = str_replace($enclosure, $enclosure . $enclosure, $text);
-
-							if (strpos($cell, $enclosure) !== false || strpos($cell, $delimiter) !== false || strpos($cell, $newline) !== false)
-							{
-								$string .= $enclosure . $text . $enclosure . $delimiter;
-							}
-							else
-							{
-								$string .= $cell . $delimiter;
-							}
-						}
-						$string = substr($string, 0, -1) . $newline;
-					}
-				break;
-
-				case 'XML':
-					$mimetype = 'application/xml';
-					$filetype = 'xml';
-					$string = '<?xml version="1.0"?>' . "\n";
-					$string .= "<phpbb>\n";
-
-					foreach ($data as $value)
-					{
-						$string .= "\t<privmsg>\n";
-
-						if (is_array($value['to']))
-						{
-							foreach ($value['to'] as $key => $values)
-							{
-								foreach ($values as $type => $types)
-								{
-									foreach ($types as $name)
-									{
-										$string .= "\t\t<recipient type=\"{$type}\" status=\"{$key}\">{$name}</recipient>\n";
-									}
-								}
-							}
-						}
-
-						unset($value['to']);
-
-						foreach ($value as $tag => $text)
-						{
-							$string .= "\t\t<{$tag}>{$text}</{$tag}>\n";
-						}
-
-						$string .= "\t</privmsg>\n";
-					}
-					$string .= '</phpbb>';
-				break;
-			}
-
-			header('Cache-Control: no-store');
-			header("Content-Type: {$mimetype}; name=\"data.{$filetype}\"");
-			header("Content-disposition: attachment; filename=data.{$filetype}");
-			echo $string;
-			exit;
+				'U_VIEW_PM'         => ($row['pm_deleted']) ? '' : $view_message_url,
+				'U_REMOVE_PM'       => ($row['pm_deleted']) ? $remove_message_url : '',
+				'U_MCP_REPORT'      => (isset($row['report_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $row['report_id']) : '',
+				'RECIPIENTS'        => ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? implode(', ', $address_list[$message_id]) : '',
+			]);
 		}
+		unset($folder_info['rowset']);
+
+		$template->assign_vars([
+			'S_SHOW_RECIPIENTS'     => ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX),
+			'S_SHOW_COLOUR_LEGEND'  => true,
+
+			'REPORTED_IMG'          => $user->img('icon_topic_reported', 'PM_REPORTED'),
+			'S_PM_ICONS'            => (bool) $config['enable_pm_icons'],
+		]);
 	}
 }
 
