@@ -2378,11 +2378,11 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	$db->sql_transaction('commit');
 
 	// Delete draft if post was loaded...
-	$draft_id = request_var('draft_loaded', 0);
-	if ($draft_id)
+	$loaded_draft_id = request_var('loaded_draft_id', 0);
+	if ($loaded_draft_id)
 	{
 		$sql = 'DELETE FROM ' . DRAFTS_TABLE . "
-			WHERE draft_id = {$draft_id}
+			WHERE draft_id = {$loaded_draft_id}
 				AND user_id = {$user->data['user_id']}";
 		$db->sql_query($sql);
 	}

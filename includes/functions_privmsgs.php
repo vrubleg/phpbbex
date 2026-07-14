@@ -1783,11 +1783,11 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	}
 
 	// Delete draft if post was loaded...
-	$draft_id = request_var('draft_loaded', 0);
-	if ($draft_id)
+	$loaded_draft_id = request_var('loaded_draft_id', 0);
+	if ($loaded_draft_id)
 	{
 		$sql = 'DELETE FROM ' . DRAFTS_TABLE . "
-			WHERE draft_id = {$draft_id}
+			WHERE draft_id = {$loaded_draft_id}
 				AND user_id = " . $data['from_user_id'];
 		$db->sql_query($sql);
 	}

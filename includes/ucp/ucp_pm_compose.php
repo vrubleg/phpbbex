@@ -29,11 +29,12 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	add_form_key('ucp_pm_compose');
 
 	// Grab only parameters needed here
-	$to_user_id     = request_var('u', 0);
-	$to_group_id    = request_var('g', 0);
-	$msg_id         = request_var('p', 0);
-	$draft_id       = request_var('d', 0);
-	$lastclick      = request_var('lastclick', 0);
+	$to_user_id      = request_var('u', 0);
+	$to_group_id     = request_var('g', 0);
+	$msg_id          = request_var('p', 0);
+	$load_draft_id   = request_var('d', 0);
+	$loaded_draft_id = request_var('loaded_draft_id', 0);
+	$lastclick       = request_var('lastclick', 0);
 
 	// Reply to all triggered (quote/reply)
 	$reply_to_all   = request_var('reply_to_all', 0);
@@ -469,24 +470,23 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$enable_urls    = true;
 	}
 
-	$enable_magic_url = $drafts = false;
+	$enable_magic_url = $has_drafts = false;
 
 	// User own some drafts?
-	if ($auth->acl_get('u_sendpm') && $action != 'delete')
+	if (!$load_draft_id && !$loaded_draft_id && $auth->acl_get('u_sendpm') && $action != 'delete')
 	{
 		$sql = 'SELECT draft_id
 			FROM ' . DRAFTS_TABLE . '
 			WHERE forum_id = 0
 				AND topic_id = 0
-				AND user_id = ' . $user->data['user_id'] .
-				(($draft_id) ? " AND draft_id <> {$draft_id}" : '');
+				AND user_id = ' . $user->data['user_id'];
 		$result = $db->sql_query_limit($sql, 1);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
 		if ($row)
 		{
-			$drafts = true;
+			$has_drafts = true;
 		}
 	}
 
@@ -514,15 +514,40 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		{
 			if (confirm_box(true))
 			{
-				$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', [
+				$draft_row = [
 					'user_id'       => $user->data['user_id'],
 					'topic_id'      => 0,
 					'forum_id'      => 0,
 					'save_time'     => $current_time,
 					'draft_subject' => $subject,
 					'draft_message' => $message
-					]
-				);
+				];
+				$loaded_draft_exists = false;
+
+				if ($loaded_draft_id)
+				{
+					$sql = 'SELECT draft_id
+						FROM ' . DRAFTS_TABLE . "
+						WHERE draft_id = {$loaded_draft_id}
+							AND user_id = " . $user->data['user_id'] . '
+							AND topic_id = 0
+							AND forum_id = 0';
+					$result = $db->sql_query_limit($sql, 1);
+					$loaded_draft_exists = (bool) $db->sql_fetchfield('draft_id');
+					$db->sql_freeresult($result);
+				}
+
+				if ($loaded_draft_exists)
+				{
+					$sql = 'UPDATE ' . DRAFTS_TABLE . '
+						SET ' . $db->sql_build_array('UPDATE', $draft_row) . "
+						WHERE draft_id = {$loaded_draft_id}
+							AND user_id = " . $user->data['user_id'];
+				}
+				else
+				{
+					$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', $draft_row);
+				}
 				$db->sql_query($sql);
 
 				$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode={$mode}");
@@ -535,14 +560,15 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			else
 			{
 				$s_hidden_fields = build_hidden_fields([
-					'mode'      => $mode,
-					'action'    => $action,
-					'save'      => true,
-					'subject'   => $subject,
-					'message'   => $message,
-					'u'         => $to_user_id,
-					'g'         => $to_group_id,
-					'p'         => $msg_id]
+					'mode'            => $mode,
+					'action'          => $action,
+					'save'            => true,
+					'subject'         => $subject,
+					'message'         => $message,
+					'loaded_draft_id' => $loaded_draft_id,
+					'u'               => $to_user_id,
+					'g'               => $to_group_id,
+					'p'               => $msg_id]
 				);
 				$s_hidden_fields .= build_address_field($address_list);
 
@@ -567,11 +593,11 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	}
 
 	// Load Draft
-	if ($draft_id && $auth->acl_get('u_sendpm'))
+	if ($load_draft_id && $auth->acl_get('u_sendpm'))
 	{
 		$sql = 'SELECT draft_subject, draft_message
 			FROM ' . DRAFTS_TABLE . "
-			WHERE draft_id = {$draft_id}
+			WHERE draft_id = {$load_draft_id}
 				AND topic_id = 0
 				AND forum_id = 0
 				AND user_id = " . $user->data['user_id'];
@@ -586,13 +612,13 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		}
 		else
 		{
-			$draft_id = 0;
+			$load_draft_id = 0;
 		}
 		$db->sql_freeresult($result);
 	}
 
 	// Load Drafts
-	if ($load && $drafts)
+	if ($load && $has_drafts)
 	{
 		load_drafts(0, 0, $id, $action, $msg_id);
 	}
@@ -1004,7 +1030,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 
 	$s_hidden_fields = '<input type="hidden" name="lastclick" value="' . $current_time . '" />';
 	$s_hidden_fields .= (isset($check_value)) ? '<input type="hidden" name="status_switch" value="' . $check_value . '" />' : '';
-	$s_hidden_fields .= ($draft_id || isset($_REQUEST['draft_loaded'])) ? '<input type="hidden" name="draft_loaded" value="' . ((isset($_REQUEST['draft_loaded'])) ? intval($_REQUEST['draft_loaded']) : $draft_id) . '" />' : '';
+	$s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden" name="loaded_draft_id" value="' . (($loaded_draft_id) ? $loaded_draft_id : $load_draft_id) . '" />' : '';
 
 	$form_enctype = (!PHP_FILE_UPLOADS || !$config['allow_pm_attach'] || !$auth->acl_get('u_pm_attach')) ? '' : ' enctype="multipart/form-data"';
 
@@ -1041,7 +1067,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		'S_LINKS_ALLOWED'       => $url_status,
 		'S_MAGIC_URL_CHECKED'   => ($urls_checked) ? ' checked="checked"' : '',
 		'S_SAVE_ALLOWED'        => ($auth->acl_get('u_sendpm') && $action != 'edit'),
-		'S_HAS_DRAFTS'          => ($auth->acl_get('u_sendpm') && $drafts),
+		'S_HAS_DRAFTS'          => ($auth->acl_get('u_sendpm') && $has_drafts),
 		'S_FORM_ENCTYPE'        => $form_enctype,
 
 		'S_BBCODE_IMG'          => $img_status,
