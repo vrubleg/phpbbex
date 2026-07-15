@@ -341,6 +341,7 @@ else
 				'S_MAX_WIDTH'           => phpbb_gallery_config::get('max_width'),
 				'S_MAX_HEIGHT'          => phpbb_gallery_config::get('max_height'),
 				'S_ALLOWED_FILETYPES'   => implode(', ', phpbb_gallery_upload::get_allowed_types(true)),
+				'ALLOWED_EXTENSIONS'    => implode(',', array_map(function ($ext) { return '.' . $ext; }, phpbb_gallery_upload::get_allowed_types())),
 				'S_ALBUM_ACTION'        => phpbb_gallery_url::append_sid('posting', "mode=upload&amp;album_id={$album_id}"),
 				'S_UPLOAD'              => true,
 				'S_ALLOW_ROTATE'        => (phpbb_gallery_config::get('allow_rotate') && function_exists('imagerotate')),
@@ -376,14 +377,9 @@ else
 		$url_status     = (bool) $config['allow_post_links'];
 		$flash_status   = false;
 		$quote_status   = true;
+		$spoiler_status = ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 
 		$template->assign_vars([
-			'BBCODE_STATUS'         => ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
-			'IMG_STATUS'            => ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
-			'FLASH_STATUS'          => ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
-			'SMILIES_STATUS'        => ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-			'URL_STATUS'            => ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
-
 			'S_BBCODE_ALLOWED'      => $bbcode_status,
 			'S_SMILIES_ALLOWED'     => $smilies_status,
 			'S_LINKS_ALLOWED'       => $url_status,
@@ -391,6 +387,7 @@ else
 			'S_BBCODE_URL'          => $url_status,
 			'S_BBCODE_FLASH'        => $flash_status,
 			'S_BBCODE_QUOTE'        => $quote_status,
+			'S_BBCODE_SPOILER'      => $spoiler_status,
 		]);
 
 		// Build custom bbcodes array
@@ -471,6 +468,11 @@ else
 			phpbb_gallery_image::handle_counter($process->images, true);
 			phpbb_gallery_album::update_info($album_id);
 
+			if ($success && !$error)
+			{
+				redirect($album_backlink);
+			}
+
 			meta_refresh($meta_refresh_time, $album_backlink);
 			trigger_error($message);
 		}
@@ -502,7 +504,6 @@ else
 			'NUM_IMAGES'        => $num_images,
 			'COLOUR_ROWSPAN'    => ($s_can_rotate) ? $num_images * 3 : $num_images * 2,
 
-			'L_DESCRIPTION_LENGTH'  => $user->lang('DESCRIPTION_LENGTH', phpbb_gallery_config::get('description_length')),
 			'S_HIDDEN_FIELDS'   => $s_hidden_fields,
 		]);
 	}
@@ -658,11 +659,7 @@ else
 					add_log('gallery', $image_data['image_album_id'], $image_id, 'LOG_GALLERY_EDITED', $image_name);
 				}
 
-				$message = $user->lang['IMAGES_UPDATED_SUCCESSFULLY'];
-				$message .= '<br /><br />' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $image_backlink . '">', '</a>');
-				$message .= '<br /><br />' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
-				meta_refresh(3, $image_backlink);
-				trigger_error($message);
+				redirect($image_backlink);
 			}
 			$disp_image_data = array_merge($disp_image_data, $sql_ary);
 		}
@@ -678,7 +675,6 @@ else
 		]);
 
 		$template->assign_vars([
-			'L_DESCRIPTION_LENGTH'  => $user->lang('DESCRIPTION_LENGTH', phpbb_gallery_config::get('description_length')),
 			'S_EDIT'            => true,
 			'S_ALBUM_ACTION'    => phpbb_gallery_url::append_sid('posting', "mode=edit&amp;image_id={$image_id}"),
 			'ERROR'             => $error ?? '',

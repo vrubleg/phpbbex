@@ -94,18 +94,13 @@ if ((($mode == 'watch') || ($mode == 'unwatch')) && check_link_hash($token, "{$m
 	if ($mode == 'watch')
 	{
 		phpbb_gallery_notification::add_albums($album_id);
-		$message = $user->lang['WATCHING_ALBUM'] . '<br />';
 	}
 	if ($mode == 'unwatch')
 	{
 		phpbb_gallery_notification::remove_albums($album_id);
-		$message = $user->lang['UNWATCHED_ALBUM'] . '<br />';
 	}
 
-	$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $backlink . '">', '</a>');
-
-	meta_refresh(3, $backlink);
-	trigger_error($message);
+	redirect($backlink);
 }
 
 // Build the navigation & display subalbums

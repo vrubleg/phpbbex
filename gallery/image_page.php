@@ -83,28 +83,21 @@ if (in_array($mode, ['watch', 'unwatch', 'favorite', 'unfavorite']) && check_lin
 	if ($mode == 'watch')
 	{
 		phpbb_gallery_notification::add($image_id);
-		$message = $user->lang['WATCHING_IMAGE'] . '<br />';
 	}
 	if ($mode == 'unwatch')
 	{
 		phpbb_gallery_notification::remove($image_id);
-		$message = $user->lang['UNWATCHED_IMAGE'] . '<br />';
 	}
 	if ($mode == 'favorite')
 	{
 		phpbb_gallery_image_favorite::add($image_id);
-		$message = $user->lang['FAVORITED_IMAGE'] . '<br />';
 	}
 	if ($mode == 'unfavorite')
 	{
 		phpbb_gallery_image_favorite::remove($image_id);
-		$message = $user->lang['UNFAVORITED_IMAGE'] . '<br />';
 	}
 
-	$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $backlink . '">', '</a>');
-
-	meta_refresh(3, $backlink);
-	trigger_error($message);
+	redirect($backlink);
 }
 /**
 * Main work here...
@@ -119,10 +112,10 @@ if (isset($user->data['session_page']) && !$user->data['is_bot'] && (strpos($use
 	$db->sql_query($sql);
 }
 
-$image_approval_sql = ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED;
-if (phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']))
+$image_status_sql = ' AND image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN;
+if (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']))
 {
-	$image_approval_sql = '';
+	$image_status_sql .= ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED;
 }
 
 //$sort_days    = request_var('st', 0);
@@ -149,7 +142,7 @@ else
 // As we do not allow to duplicate images, we can relay on the id as second sort parameter
 $sql = 'SELECT image_id, image_name
 	FROM ' . GALLERY_IMAGES_TABLE . '
-	WHERE image_album_id = ' . (int) $album_id . $image_approval_sql . "
+	WHERE image_album_id = ' . (int) $album_id . $image_status_sql . "
 		AND (({$sql_sort_by} = '" . $db->sql_escape($image_data[$sql_sort_by]) . "' AND image_id {$sql_next_condition} {$image_id})
 		OR {$sql_sort_by} {$sql_next_condition} '" . $db->sql_escape($image_data[$sql_sort_by]) . "')
 	ORDER BY {$sql_sort_by} {$sql_next_ordering}";
@@ -159,7 +152,7 @@ $db->sql_freeresult($result);
 
 $sql = 'SELECT image_id, image_name
 	FROM ' . GALLERY_IMAGES_TABLE . '
-	WHERE image_album_id = ' . (int) $album_id . $image_approval_sql . "
+	WHERE image_album_id = ' . (int) $album_id . $image_status_sql . "
 		AND (({$sql_sort_by} = '" . $db->sql_escape($image_data[$sql_sort_by]) . "' AND image_id {$sql_previous_condition} {$image_id})
 		OR {$sql_sort_by} {$sql_previous_condition} '" . $db->sql_escape($image_data[$sql_sort_by]) . "')
 	ORDER BY {$sql_sort_by} {$sql_previous_ordering}";
@@ -229,6 +222,7 @@ $template->assign_vars([
 
 	'L_BOOKMARK_TOPIC'  => ($image_data['favorite_id']) ? $user->lang['UNFAVORITE_IMAGE'] : $user->lang['FAVORITE_IMAGE'],
 	'U_BOOKMARK_TOPIC'  => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$favorite_mode}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$favorite_mode}_{$image_id}")) : '',
+	'S_BOOKMARKED_TOPIC' => (bool) $image_data['favorite_id'],
 	'L_WATCH_TOPIC'     => ($image_data['watch_id']) ? $user->lang['UNWATCH_IMAGE'] : $user->lang['WATCH_IMAGE'],
 	'U_WATCH_TOPIC'     => ($user->data['user_id'] != ANONYMOUS) ? phpbb_gallery_url::append_sid('image_page', "mode={$watch_mode}&amp;image_id={$image_id}&amp;hash=" . generate_link_hash("{$watch_mode}_{$image_id}")) : '',
 	'S_WATCHING_TOPIC'  => (bool) $image_data['watch_id'],
@@ -292,6 +286,7 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	$url_status     = (bool) $config['allow_post_links'];
 	$flash_status   = false;
 	$quote_status   = true;
+	$spoiler_status = ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 
 	// Build custom bbcodes array
 	display_custom_bbcodes();
@@ -302,11 +297,6 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 	$template->assign_vars([
 		'S_ALLOWED_TO_COMMENT'  => true,
 
-		'BBCODE_STATUS'         => ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
-		'IMG_STATUS'            => ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
-		'FLASH_STATUS'          => ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
-		'SMILIES_STATUS'        => ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-		'URL_STATUS'            => ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 		'S_SIGNATURE_CHECKED'   => ($user->optionget('attachsig')) ? ' checked="checked"' : '',
 
 		'S_BBCODE_ALLOWED'      => $bbcode_status,
@@ -316,7 +306,7 @@ if (!$comments_disabled && phpbb_gallery::$auth->acl_check('c_post', $album_id, 
 		'S_BBCODE_URL'          => $url_status,
 		'S_BBCODE_FLASH'        => $flash_status,
 		'S_BBCODE_QUOTE'        => $quote_status,
-		'L_COMMENT_LENGTH'      => sprintf($user->lang['COMMENT_LENGTH'], phpbb_gallery_config::get('comment_length')),
+		'S_BBCODE_SPOILER'      => $spoiler_status,
 	]);
 
 	if (phpbb_gallery_misc::display_captcha('comment'))

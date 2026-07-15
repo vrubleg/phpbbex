@@ -71,9 +71,7 @@ $lang = array_merge($lang, [
 	'CLICK_RETURN_IMAGE'            => 'Click %shere%s to return to the image',
 	'CLICK_RETURN_INDEX'            => 'Click %shere%s to return to the index',
 	'COMMENT'                       => 'Comment',
-	'COMMENT_LENGTH'                => 'Enter your comment here, it may contain no more than <strong>%d</strong> characters.',
 	'COMMENT_ON'                    => 'Comment on',
-	'COMMENT_STORED'                => 'Your comment has been saved successfully.',
 	'COMMENT_TOO_LONG'              => 'Your comment is too long.',
 	'COMMENTS'                      => 'Comments',
 	'CONTINUE'                      => 'Continue',
@@ -90,7 +88,6 @@ $lang = array_merge($lang, [
 	'DELETED_IMAGE'                 => 'Image deleted',
 	'DELETED_IMAGE_NOT'             => 'Image not deleted',
 	'DESC_TOO_LONG'                 => 'Your description is too long',
-	'DESCRIPTION_LENGTH'            => 'Enter your descriptions here, it may contain no more than <strong>%d</strong> characters.',
 	'DETAILS'                       => 'Details',
 	'DONT_RATE_IMAGE'               => 'Don’t rate image',
 
@@ -100,7 +97,6 @@ $lang = array_merge($lang, [
 	'EDITED_TIMES_TOTAL'            => 'Last edited by %s on %s; edited %d times in total',
 
 	'FAVORITE_IMAGE'                => 'Add to favorites',
-	'FAVORITED_IMAGE'               => 'The image was added to your favorites.',
 	'FILE'                          => 'File',
 	'FILE_SIZE'                     => 'File size',
 	'FILETYPE_MIMETYPE_MISMATCH'    => 'The file-type of “<strong>%1$s</strong>“ does not match the mime-type (%2$s).',
@@ -126,7 +122,6 @@ $lang = array_merge($lang, [
 	'IMAGE_URL'                         => 'Image-URL',
 	'IMAGE_WIDTH'                       => 'Image width',
 	'IMAGES_REPORTED_SUCCESSFULLY'      => 'The image was successful reported',
-	'IMAGES_UPDATED_SUCCESSFULLY'       => 'Your image information has been updated successfully',
 	'INSERT_IMAGE_POST'                 => 'Insert image into post',
 	'INVALID_USERNAME'                  => 'Your Username is invalid',
 
@@ -149,8 +144,8 @@ $lang = array_merge($lang, [
 	'MISSING_USERNAME'              => 'No Username entered',
 	'MOVE_TO_ALBUM'                 => 'Move to album',
 	'MOVE_TO_PERSONAL'              => 'Move to personal album',
-	'MOVE_TO_PERSONAL_MOD'          => 'When you select this option, the image is moved into the personal album of the user. If the user does not have one yet, it is created automatically.',
-	'MOVE_TO_PERSONAL_EXPLAIN'      => 'When you select this option, the image is moved into your personal album. If you do not have one yet, it is created automatically.',
+	'MOVE_TO_PERSONAL_MOD'          => 'When you select this option, the image is moved into the personal album of the user.',
+	'MOVE_TO_PERSONAL_EXPLAIN'      => 'When you select this option, the image is moved into your personal album.',
 
 	'NEW_COMMENT'                   => 'New Comment',
 	'NEW_IMAGES'                    => 'New images',
@@ -251,14 +246,11 @@ $lang = array_merge($lang, [
 	],
 
 	'UNFAVORITE_IMAGE'              => 'Remove from favorites',
-	'UNFAVORITED_IMAGE'             => 'The image was removed from your favorites.',
 	'UNFAVORITED_IMAGES'            => 'The images were removed from your favorites.',
 	'UNLOCK_IMAGE'                  => 'Unlock image',
 	'UNWATCH_ALBUM'                 => 'Unsubscribe album',
 	'UNWATCH_IMAGE'                 => 'Unsubscribe image',
-	'UNWATCHED_ALBUM'               => 'You are no longer informed about new images in this album.',
 	'UNWATCHED_ALBUMS'              => 'You are no longer informed about new images in these albums.',
-	'UNWATCHED_IMAGE'               => 'You are no longer informed about new comments on this image.',
 	'UNWATCHED_IMAGES'              => 'You are no longer informed about new comments on these images.',
 	'UPLOAD_ERROR'                  => 'While uploading “%1$s“ the following error occurred:<br />&raquo; %2$s',
 	'UPLOAD_IMAGE'                  => 'Upload Image',
@@ -296,8 +288,6 @@ $lang = array_merge($lang, [
 
 	'WATCH_ALBUM'                   => 'Subscribe album',
 	'WATCH_IMAGE'                   => 'Subscribe image',
-	'WATCHING_ALBUM'                => 'You are now informed about new images in this album.',
-	'WATCHING_IMAGE'                => 'You are now informed about new comments on this image.',
 
 	'YOUR_COMMENT'                  => 'Your comment',
 	'YOUR_PERSONAL_ALBUM'           => 'Your Personal Album',

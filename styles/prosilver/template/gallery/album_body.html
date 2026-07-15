@@ -1,7 +1,9 @@
 <!-- INCLUDE gallery/gallery_header.html -->
 
 <!-- IF not S_IS_BOT -->
-<ul class="header-icons"></ul>
+<ul class="header-icons">
+	<!-- IF U_WATCH_TOPIC --><li><a rel="nofollow" href="{U_WATCH_TOPIC}" title="{L_WATCH_TOPIC}" <!-- IF S_WATCHING_TOPIC -->class="icon-unsubscribe"<!-- ELSE -->class="icon-subscribe"<!-- ENDIF -->>{L_WATCH_TOPIC}</a></li><!-- ENDIF -->
+</ul>
 <!-- ENDIF -->
 
 <h2><a href="{U_VIEW_ALBUM}">{ALBUM_NAME}</a></h2>

@@ -126,14 +126,9 @@ $img_status     = $bbcode_status;
 $url_status     = (bool) $config['allow_post_links'];
 $flash_status   = false;
 $quote_status   = true;
+$spoiler_status = ($bbcode_status && isset($config['max_spoiler_depth']) && $config['max_spoiler_depth'] >= 0);
 
 $template->assign_vars([
-	'BBCODE_STATUS'         => ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . phpbb_gallery_url::append_sid('phpbb', 'faq', 'mode=bbcode') . '">', '</a>'),
-	'IMG_STATUS'            => ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
-	'FLASH_STATUS'          => ($flash_status) ? $user->lang['FLASH_IS_ON'] : $user->lang['FLASH_IS_OFF'],
-	'SMILIES_STATUS'        => ($smilies_status) ? $user->lang['SMILIES_ARE_ON'] : $user->lang['SMILIES_ARE_OFF'],
-	'URL_STATUS'            => ($bbcode_status && $url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
-
 	'S_BBCODE_ALLOWED'          => $bbcode_status,
 	'S_SMILIES_ALLOWED'         => $smilies_status,
 	'S_LINKS_ALLOWED'           => $url_status,
@@ -141,6 +136,7 @@ $template->assign_vars([
 	'S_BBCODE_URL'          => $url_status,
 	'S_BBCODE_FLASH'        => $flash_status,
 	'S_BBCODE_QUOTE'        => $quote_status,
+	'S_BBCODE_SPOILER'      => $spoiler_status,
 ]);
 
 // Build custom bbcodes array
@@ -260,7 +256,6 @@ if ($mode == 'add')
 			}
 
 			phpbb_gallery_notification::send_notification('image', $image_id, $image_data['image_name']);
-			$message .= $user->lang['COMMENT_STORED'] . '<br />';
 		}
 		else if (phpbb_gallery_misc::display_captcha('comment'))
 		{
@@ -352,7 +347,6 @@ else if ($mode == 'edit')
 		if (!$error)
 		{
 			phpbb_gallery_comment::edit($comment_id, $sql_ary);
-			$message .= $user->lang['COMMENT_STORED'] . '<br />';
 			if ($user->data['user_id'] != $comment_data['comment_user_id'])
 			{
 				add_log('gallery', $image_data['image_album_id'], $image_data['image_id'], 'LOG_GALLERY_COMMENT_EDITED', $image_data['image_name']);
@@ -407,8 +401,6 @@ $template->assign_vars([
 	'MESSAGE'               => $comment_plain ?? '',
 	'USERNAME'              => $comment_username ?? '',
 	'REQ_USERNAME'          => !empty($comment_username_req),
-	'L_COMMENT_LENGTH'      => sprintf($user->lang['COMMENT_LENGTH'], phpbb_gallery_config::get('comment_length')),
-
 	'IMAGE_RSZ_WIDTH'       => phpbb_gallery_config::get('medium_width'),
 	'IMAGE_RSZ_HEIGHT'      => phpbb_gallery_config::get('medium_height'),
 	'U_IMAGE'               => phpbb_gallery_url::append_sid('image', "image_id={$image_id}"),
@@ -421,6 +413,11 @@ $template->assign_vars([
 
 if ($submit && !$error)
 {
+	if (in_array($mode, ['add', 'edit']))
+	{
+		redirect($image_backlink);
+	}
+
 	$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $image_backlink . '">', '</a>');
 	$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
 

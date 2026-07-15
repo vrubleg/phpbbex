@@ -54,33 +54,21 @@
 
 			<div id="smiley-box">
 				<!-- IF S_SMILIES_ALLOWED and .smiley -->
-					<strong>{L_SMILIES}</strong><br />
 					<!-- BEGIN smiley -->
 						<a onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
 					<!-- END smiley -->
 				<!-- ENDIF -->
 				<!-- IF S_SHOW_SMILEY_LINK and S_SMILIES_ALLOWED-->
-					<br /><a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
+					<a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
 				<!-- ENDIF -->
 
-				<!-- IF BBCODE_STATUS -->
-					<!-- IF .smiley --><hr /><!-- ENDIF -->
-					{BBCODE_STATUS}<br />
-					<!-- IF S_BBCODE_ALLOWED -->
-						{IMG_STATUS}<br />
-						{FLASH_STATUS}<br />
-						{URL_STATUS}<br />
-						{SMILIES_STATUS}<hr />
-					<!-- ENDIF -->
-				<!-- ENDIF -->
-				{L_COMMENT_LENGTH}
+				<!-- IF S_SMILIES_ALLOWED and .smiley --><hr /><!-- ENDIF -->
+				<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED} /> {L_ATTACH_SIG}</label></div>
 			</div>
 
 			<div id="message-box">
 				<textarea name="message" id="message" rows="7" cols="76" tabindex="3" class="inputbox">{MESSAGE}</textarea>
 			</div>
-
-			<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED} /> {L_ATTACH_SIG}</label></div>
 
 		</fieldset>
 	</div>
