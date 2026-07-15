@@ -14,7 +14,7 @@
 					<dl class="icon">
 						<dt><!-- IF albumrow.S_IS_CAT --><a href="{albumrow.U_VIEWALBUM}">{albumrow.ALBUM_NAME}</a><!-- ELSE -->{L_ALBUM}<!-- ENDIF --></dt>
 						<dd class="posts">{L_IMAGES}</dd>
-						<dd class="g_lastimage" style="padding-left: 5px;"><span>{L_LAST_IMAGE}</span></dd>
+						<dd class="g-lastimage" style="padding-left: 5px;"><span>{L_LAST_IMAGE}</span></dd>
 					</dl>
 				</li>
 			</ul>
@@ -32,12 +32,15 @@
 					<!-- IF albumrow.SUBALBUMS and albumrow.S_LIST_SUBALBUMS --><br /><strong>{albumrow.L_SUBALBUM_STR}</strong> {albumrow.SUBALBUMS}<!-- ENDIF -->
 				</dt>
 				<dd class="posts">{albumrow.IMAGES} <!-- IF albumrow.UNAPPROVED_IMAGES --> + <span class="reported-images-number">{albumrow.UNAPPROVED_IMAGES}</span><!-- ENDIF --> <dfn>{L_IMAGES}</dfn></dd>
-				<dd class="g_lastimage" style="padding-left: 5px;"><span>
+				<dd class="g-lastimage" style="padding-left: 5px;"><span class="g-lastimage-content">
 					<!-- IF albumrow.LAST_IMAGE_TIME -->
-					<!-- IF albumrow.UC_FAKE_THUMBNAIL --><span style="float: left; text-align: center; width: {FAKE_THUMB_SIZE}px; padding-right: 5px;">{albumrow.UC_FAKE_THUMBNAIL}</span><!-- ENDIF -->
-					<dfn>{L_LAST_IMAGE}</dfn> {albumrow.UC_IMAGE_NAME}<br />
-					{L_POST_BY_AUTHOR} {albumrow.LAST_USER_FULL} {albumrow.UC_LASTIMAGE_ICON}<br />
-					{albumrow.LAST_IMAGE_TIME}<!-- ELSE -->{L_NO_IMAGES}<!-- ENDIF --></span>
+					<!-- IF albumrow.UC_FAKE_THUMBNAIL --><span class="g-lastimage-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{albumrow.UC_FAKE_THUMBNAIL}</span><!-- ENDIF -->
+					<span class="g-lastimage-details">
+						<dfn>{L_LAST_IMAGE}</dfn> {albumrow.UC_IMAGE_NAME}<br />
+						{L_POST_BY_AUTHOR} {albumrow.LAST_USER_FULL} {albumrow.UC_LASTIMAGE_ICON}<br />
+						{albumrow.LAST_IMAGE_TIME}
+					</span>
+					<!-- ELSE -->{L_NO_IMAGES}<!-- ENDIF --></span>
 				</dd>
 			</dl>
 		</li>

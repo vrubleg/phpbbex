@@ -3167,22 +3167,37 @@ fieldset.gallery input.readonly, fieldset.gallery textarea.readonly {
 	background: #DCDCDC;
 }
 
-dd.g_lastimage {
+dd.g-lastimage {
 	padding-left: 5px;
 	width: 30%;
 }
 
-dd.g_moderation {
+.g-lastimage-content {
+	display: flex;
+	align-items: center;
+}
+
+.g-lastimage-thumbnail {
+	flex: 0 0 auto;
+	padding-right: 5px;
+	text-align: center;
+}
+
+.g-lastimage-details {
+	display: block;
+}
+
+dd.g-moderation {
 	width: 35%;
 }
 
-dd.g_rating, dd.g_comments {
+dd.g-rating, dd.g-comments {
 	width: 12%;
 	text-align: center;
 	font-size: 1.1em;
 }
 
-dd.g_status {
+dd.g-status {
 	width: 15%;
 	text-align: center;
 	font-size: 1.1em;
@@ -3192,19 +3207,19 @@ span.reported-images-number {
 	color: red;
 }
 
-.g_unapproved {
+.g-unapproved {
 	background-position: 100% 0;
 	background-repeat: no-repeat;
 	background-image: url("{T_IMAGESET_PATH}/icon_gallery_unapproved.gif");
 }
 
-.g_locked {
+.g-locked {
 	background-position: 100% 0;
 	background-repeat: no-repeat;
 	background-image: url("{T_IMAGESET_PATH}/icon_gallery_locked.gif");
 }
 
-.g_reported {
+.g-reported {
 	background-position: 100% 0;
 	background-repeat: no-repeat;
 	background-image: url("{T_IMAGESET_PATH}/icon_gallery_reported.gif");

@@ -46,10 +46,10 @@
 					<li class="header">
 						<dl>
 							<dt>{L_IMAGES}</dt>
-							<!-- IF S_COMMENTS --><dd class="g_comments">{L_COMMENTS}</dd><!-- ENDIF -->
-							<!-- IF S_RATINGS --><dd class="g_rating">{L_RATING}</dd><!-- ENDIF -->
+							<!-- IF S_COMMENTS --><dd class="g-comments">{L_COMMENTS}</dd><!-- ENDIF -->
+							<!-- IF S_RATINGS --><dd class="g-rating">{L_RATING}</dd><!-- ENDIF -->
 							<!-- IF S_REPORTER --><dd class="moderation"><span>{L_REPORTER_AND_ALBUM}</span></dd><!-- ENDIF -->
-							<!-- IF S_STATUS --><dd class="g_status">{L_STATUS}</dd><!-- ENDIF -->
+							<!-- IF S_STATUS --><dd class="g-status">{L_STATUS}</dd><!-- ENDIF -->
 							<!-- IF S_MARK --><dd class="mark">{L_MARK}</dd><!-- ENDIF -->
 						</dl>
 					</li>
@@ -66,8 +66,8 @@
 								&raquo; {image_row.IMAGE_TIME}
 								<!-- IF image_row.REPORT_MOD --><br />{L_REPORT_MOD} {image_row.REPORT_MOD}<!-- ENDIF --></span>
 							</dt>
-							<!-- IF S_COMMENTS --><dd class="g_comments">{image_row.COMMENTS}</dd><!-- ENDIF -->
-							<!-- IF S_RATINGS --><dd class="g_rating">{image_row.RATING}</dd><!-- ENDIF -->
+							<!-- IF S_COMMENTS --><dd class="g-comments">{image_row.COMMENTS}</dd><!-- ENDIF -->
+							<!-- IF S_RATINGS --><dd class="g-rating">{image_row.RATING}</dd><!-- ENDIF -->
 							<!-- IF S_REPORTER -->
 								<dd class="moderation">
 									<span>{L_REPORT_BY} {image_row.REPORTER}<br />
@@ -75,7 +75,7 @@
 									{L_ALBUM}: <a href="{U_VIEW_ALBUM}" style="font-weight: bold;">{ALBUM_NAME}</a></span>
 								</dd>
 							<!-- ENDIF -->
-							<!-- IF S_STATUS --><dd class="g_status">{image_row.STATUS}<!-- IF image_row.S_REPORTED --><br />{L_IMAGE_REPORTED}<!-- ENDIF --></dd><!-- ENDIF -->
+							<!-- IF S_STATUS --><dd class="g-status">{image_row.STATUS}<!-- IF image_row.S_REPORTED --><br />{L_IMAGE_REPORTED}<!-- ENDIF --></dd><!-- ENDIF -->
 							<!-- IF S_MARK --><dd class="mark"><input type="checkbox" name="image_id_ary[]" value="<!-- IF not S_REPORT_LIST -->{image_row.IMAGE_ID}<!-- ELSE -->{image_row.REPORT_ID}<!-- ENDIF -->" /></dd><!-- ENDIF -->
 						</dl>
 					</li>
