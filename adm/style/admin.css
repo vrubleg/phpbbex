@@ -908,7 +908,6 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 /* Pagination
 ---------------------------------------- */
 .pagination {
-	height: 1%; /* IE tweak (holly hack) */
 	width: auto;
 	text-align: right;
 	margin-top: 5px;
@@ -1059,21 +1058,6 @@ input::-moz-focus-inner, button::-moz-focus-inner {
 
 #format-buttons input, #format-buttons select {
 	vertical-align: middle;
-}
-
-/* Nice method for clearing floated blocks without having to insert any extra markup
-	From http://www.positioniseverything.net/easyclearing.html
-.clearfix::after, #tabs::after, .row::after, #content::after, fieldset dl::after, #page-body::after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
-}*/
-
-.clearfix, #tabs, .row, #content, fieldset dl, #page-body {
-	height: 1%;
-	overflow: hidden;
 }
 
 /* Syntax Highlighting
@@ -1421,4 +1405,11 @@ fieldset.permissions .padding {
 
 .phpinfo td, .phpinfo th, .phpinfo h2, .phpinfo h1 {
 	text-align: left;
+}
+
+/* Clearfix for everybody after all */
+.clearfix::after, #tabs::after, .row::after, #content::after, fieldset dl::after, #page-body::after {
+	content: "";
+	display: block;
+	clear: both;
 }

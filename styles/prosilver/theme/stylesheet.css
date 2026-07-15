@@ -462,7 +462,6 @@ dl.details dd {
 /* Pagination
 ---------------------------------------- */
 .pagination {
-	height: 1%; /* IE tweak (holly hack) */
 	width: auto;
 	text-align: right;
 	margin-top: 5px;
@@ -1067,13 +1066,6 @@ a.nav-to-right:hover {
 	background-position: right center;
 }
 
-/* invisible skip link, used for accessibility  */
-.skiplink {
-	position: absolute;
-	left: -999px;
-	width: 990px;
-}
-
 /* Feed icon in forumlist_body.html */
 a.feed-icon-forum {
 	float: right;
@@ -1124,11 +1116,9 @@ ul.topiclist dd {
 	padding: 4px 0;
 }
 
+/* Labels for post/view counts */
 ul.topiclist dfn {
-	/* Labels for post/view counts */
-	position: absolute;
-	left: -999px;
-	width: 990px;
+	display: none;
 }
 
 ul.topiclist li.row dt a.subforum {
@@ -2023,21 +2013,6 @@ div.postbody div.remark {
 
 .postbody div.warning .date, .postbody div.ban .date, .postbody div.remark .date {
 	float: right;
-}
-
-/* Style Sheet Tweaks
-
-From the phpBB's tweaks.css
--------------------------------------------------*/
-
-.clearfix, #tabs, #minitabs, fieldset dl, ul.topiclist dl, dl.polls {
-	height: 1%;
-	overflow: hidden;
-}
-
-ul.linklist {
-	height: 4%;
-	overflow: hidden;
 }
 
 /* Button Styles
@@ -3084,6 +3059,14 @@ input.search {
 .medium { width: 50%;}
 .narrow { width: 25%;}
 .tiny { width: 10%;}
+
+/* Clearfix for everybody after all */
+
+.clearfix::after, #tabs::after, #minitabs::after, fieldset dl::after, ul.topiclist dl::after, dl.polls::after, ul.linklist::after {
+	content: "";
+	display: block;
+	clear: both;
+}
 
 /* Dialogs
 ---------------------------------------- */
