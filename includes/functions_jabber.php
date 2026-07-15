@@ -269,7 +269,7 @@ class jabber
 			$read = trim(fread($this->connection, 4096));
 			$data .= $read;
 		}
-		while (time() <= $start + $timeout && !feof($this->connection) && ($wait || $data == '' || $read != '' || (substr(rtrim($data), -1) != '>')));
+		while (time() <= $start + $timeout && !feof($this->connection) && ($wait || $data == '' || $read != '' || ((rtrim($data)[-1] ?? '') != '>')));
 
 		if ($data != '')
 		{

@@ -450,12 +450,12 @@ function filelist($rootdir, $dir = '', $type = 'gif|jpg|jpeg|png')
 	// Remove initial / if present
 	$rootdir = (substr($rootdir, 0, 1) == '/') ? substr($rootdir, 1) : $rootdir;
 	// Add closing / if not present
-	$rootdir = ($rootdir && substr($rootdir, -1) != '/') ? $rootdir . '/' : $rootdir;
+	$rootdir = ($rootdir && $rootdir[-1] != '/') ? $rootdir . '/' : $rootdir;
 
 	// Remove initial / if present
 	$dir = (substr($dir, 0, 1) == '/') ? substr($dir, 1) : $dir;
 	// Add closing / if not present
-	$dir = ($dir && substr($dir, -1) != '/') ? $dir . '/' : $dir;
+	$dir = ($dir && $dir[-1] != '/') ? $dir . '/' : $dir;
 
 	if (!is_dir($rootdir . $dir))
 	{

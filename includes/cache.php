@@ -392,7 +392,7 @@ class phpbb_cache extends acm
 						$image_height = $image_width = 0;
 						if (strpos($image_filename, '*') !== false)
 						{
-							if (substr($image_filename, -1, 1) === '*')
+							if ($image_filename[-1] === '*')
 							{
 								[$image_filename, $image_height] = explode('*', $image_filename);
 							}

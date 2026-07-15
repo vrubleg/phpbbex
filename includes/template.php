@@ -71,7 +71,7 @@ class phpbb_template
 	function set_custom_template($template_path, $template_name, $fallback_template_path = false)
 	{
 		// Make sure $template_path has no ending slash
-		if (substr($template_path, -1) == '/')
+		if (($template_path[-1] ?? '') == '/')
 		{
 			$template_path = substr($template_path, 0, -1);
 		}
@@ -81,7 +81,7 @@ class phpbb_template
 
 		if ($fallback_template_path !== false)
 		{
-			if (substr($fallback_template_path, -1) == '/')
+			if (($fallback_template_path[-1] ?? '') == '/')
 			{
 				$fallback_template_path = substr($fallback_template_path, 0, -1);
 			}

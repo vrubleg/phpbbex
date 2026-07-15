@@ -571,7 +571,7 @@ class fileupload
 
 			if (!empty($max_filesize))
 			{
-				$unit = strtolower(substr($max_filesize, -1, 1));
+				$unit = strtolower($max_filesize[-1]);
 				$max_filesize = (int) $max_filesize;
 
 				$unit = ($unit == 'k') ? 'KB' : (($unit == 'g') ? 'GB' : 'MB');
@@ -658,7 +658,7 @@ class fileupload
 
 			if (!empty($max_filesize))
 			{
-				$unit = strtolower(substr($max_filesize, -1, 1));
+				$unit = strtolower($max_filesize[-1]);
 				$max_filesize = (int) $max_filesize;
 
 				$unit = ($unit == 'k') ? 'KB' : (($unit == 'g') ? 'GB' : 'MB');
@@ -721,7 +721,7 @@ class fileupload
 
 			if (!empty($max_filesize))
 			{
-				$unit = strtolower(substr($max_filesize, -1, 1));
+				$unit = strtolower($max_filesize[-1]);
 				$remote_max_filesize = (int) $max_filesize;
 
 				switch ($unit)
@@ -863,7 +863,7 @@ class fileupload
 
 				if (!empty($max_filesize))
 				{
-					$unit = strtolower(substr($max_filesize, -1, 1));
+					$unit = strtolower($max_filesize[-1]);
 					$max_filesize = (int) $max_filesize;
 
 					$unit = ($unit == 'k') ? 'KB' : (($unit == 'g') ? 'GB' : 'MB');

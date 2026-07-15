@@ -75,7 +75,7 @@ class plugin
 				continue;
 			}
 
-			$cat = (substr($cat, -1) == '/') ? substr($cat, 0, -1) : $cat;
+			$cat = ($cat[-1] == '/') ? substr($cat, 0, -1) : $cat;
 
 			if (!isset($this->plugin_list[$cat]))
 			{

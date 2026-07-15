@@ -42,7 +42,7 @@ class p_master
 		$this->include_path = ($include_path !== false) ? $include_path : PHPBB_ROOT_PATH . 'includes/';
 
 		// Make sure the path ends with /
-		if (substr($this->include_path, -1) !== '/')
+		if (($this->include_path[-1] ?? '') !== '/')
 		{
 			$this->include_path .= '/';
 		}
@@ -60,7 +60,7 @@ class p_master
 		$this->include_path = $include_path;
 
 		// Make sure the path ends with /
-		if (substr($this->include_path, -1) !== '/')
+		if (($this->include_path[-1] ?? '') !== '/')
 		{
 			$this->include_path .= '/';
 		}

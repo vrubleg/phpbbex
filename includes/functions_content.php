@@ -555,7 +555,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 	}
 
 	// if the last character of the url is a punctuation mark, exclude it from the url
-	$last_char = $url[strlen($url) - 1];
+	$last_char = $url[-1] ?? '';
 
 	switch ($last_char)
 	{
