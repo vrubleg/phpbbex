@@ -462,7 +462,6 @@ dl.details dd {
 /* Pagination
 ---------------------------------------- */
 .pagination {
-	height: 1%; /* IE tweak (holly hack) */
 	width: auto;
 	text-align: right;
 	margin-top: 5px;
@@ -1067,13 +1066,6 @@ a.nav-to-right:hover {
 	background-position: right center;
 }
 
-/* invisible skip link, used for accessibility  */
-.skiplink {
-	position: absolute;
-	left: -999px;
-	width: 990px;
-}
-
 /* Feed icon in forumlist_body.html */
 a.feed-icon-forum {
 	float: right;
@@ -1090,7 +1082,7 @@ ul.topiclist {
 }
 
 ul.forums {
-	background: #eef5f9 none repeat-x 0 0;
+	background-color: #eef5f9;
 }
 
 ul.topiclist li {
@@ -1102,6 +1094,8 @@ ul.topiclist li {
 
 ul.topiclist dl {
 	position: relative;
+	display: flex;
+	align-items: center;
 }
 
 ul.topiclist li.row dl {
@@ -1109,26 +1103,19 @@ ul.topiclist li.row dl {
 }
 
 ul.topiclist dt {
-	display: block;
-	float: left;
 	width: 52%;
 	font-size: 1.1em;
-	padding-left: 5px;
-	padding-right: 5px;
+	padding: 3px 5px 5px 5px;
 }
 
 ul.topiclist dd {
-	display: block;
-	float: left;
 	border-left: 1px solid #ffffff;
-	padding: 4px 0;
+	padding: 3px 0 5px 0;
 }
 
+/* Labels for post/view counts */
 ul.topiclist dfn {
-	/* Labels for post/view counts */
-	position: absolute;
-	left: -999px;
-	width: 990px;
+	display: none;
 }
 
 ul.topiclist li.row dt a.subforum {
@@ -1193,6 +1180,10 @@ li.header dd {
 	margin-left: 1px;
 }
 
+li.header dd.mark {
+	margin-left: auto;
+}
+
 li.header dl.icon {
 	min-height: 0;
 }
@@ -1249,7 +1240,7 @@ dd.moderation {
 	font-size: 1.1em;
 }
 
-dd.lastpost span, ul.topiclist dd.searchby span, ul.topiclist dd.info span, ul.topiclist dd.time span, dd.redirect span, dd.moderation span {
+dd.lastpost span, ul.topiclist dd.info span, ul.topiclist dd.time span, dd.redirect span, dd.moderation span {
 	display: block;
 	padding-left: 5px;
 }
@@ -1268,7 +1259,7 @@ dd.extra {
 }
 
 dd.mark {
-	float: right !important;
+	margin-left: auto;
 	width: 9%;
 	text-align: center;
 	line-height: 200%;
@@ -1284,23 +1275,6 @@ dd.option {
 	line-height: 200%;
 	text-align: center;
 	font-size: 1.1em;
-}
-
-dd.searchby {
-	width: 47%;
-	font-size: 1.1em;
-	line-height: 1em;
-}
-
-ul.topiclist dd.searchextra {
-	margin-left: 5px;
-	padding: 0.2em 0;
-	font-size: 1.1em;
-	color: #333333;
-	border-left: none;
-	clear: both;
-	width: 98%;
-	overflow: hidden;
 }
 
 /* Container for post/reply buttons and pagination */
@@ -2023,21 +1997,6 @@ div.postbody div.remark {
 
 .postbody div.warning .date, .postbody div.ban .date, .postbody div.remark .date {
 	float: right;
-}
-
-/* Style Sheet Tweaks
-
-From the phpBB's tweaks.css
--------------------------------------------------*/
-
-.clearfix, #tabs, #minitabs, fieldset dl, ul.topiclist dl, dl.polls {
-	height: 1%;
-	overflow: hidden;
-}
-
-ul.linklist {
-	height: 4%;
-	overflow: hidden;
 }
 
 /* Button Styles
@@ -3084,6 +3043,14 @@ input.search {
 .medium { width: 50%;}
 .narrow { width: 25%;}
 .tiny { width: 10%;}
+
+/* Clearfix for everybody after all */
+
+.clearfix::after, #tabs::after, #minitabs::after, fieldset dl::after, dl.polls::after, ul.linklist::after {
+	content: "";
+	display: block;
+	clear: both;
+}
 
 /* Dialogs
 ---------------------------------------- */
