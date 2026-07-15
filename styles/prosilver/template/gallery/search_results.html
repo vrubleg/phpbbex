@@ -29,8 +29,6 @@ function toggleElement(oElement)
 
 <!-- IF IGNORED_WORDS --> <p>{L_IGNORED_TERMS}: <strong>{IGNORED_WORDS}</strong></p><!-- ENDIF -->
 
-<!-- IF U_GALLERY_SEARCH --><p><a class="nav-to-left" href="{U_GALLERY_SEARCH}" title="{L_SEARCH_ADV}">{L_RETURN_TO_SEARCH_ADV}</a></p><!-- ENDIF -->
-
 <!-- IF PAGINATION or SEARCH_MATCHES or PAGE_NUMBER -->
 	<form method="post" action="{S_SEARCH_ACTION}">
 	<div class="topic-actions">
@@ -112,6 +110,9 @@ function toggleElement(oElement)
 
 <!-- IF PAGINATION or .imagerow or PAGE_NUMBER -->
 	<ul class="linklist">
+		<!-- IF U_GALLERY_SEARCH -->
+			<li class="leftside"><a class="left-box nav-to-left" href="{U_GALLERY_SEARCH}" title="{L_SEARCH_ADV}" accesskey="r">{L_RETURN_TO_SEARCH_ADV}</a></li>
+		<!-- ENDIF -->
 		<li class="rightside pagination">
 			{SEARCH_MATCHES}<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 		</li>

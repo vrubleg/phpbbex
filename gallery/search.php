@@ -44,12 +44,6 @@ if (!$auth->acl_get('u_search') || !$config['load_search'])
 	trigger_error('NO_SEARCH');
 }
 
-
-$template->assign_block_vars('navlinks', [
-	'FORUM_NAME'    => $user->lang['SEARCH'],
-	'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('search'),
-]);
-
 // Define some vars
 $images_per_page = phpbb_gallery_config::get('album_rows') * phpbb_gallery_config::get('album_columns');
 $tot_unapproved = $image_counter = 0;
@@ -85,6 +79,11 @@ $sql_order = $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC
 */
 if ($keywords || $username || $user_id || $search_id || $submit)
 {
+	$template->assign_block_vars('navlinks', [
+		'FORUM_NAME'    => $user->lang['SEARCH'],
+		'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('search'),
+	]);
+
 	// clear arrays
 	$id_ary = [];
 
@@ -167,11 +166,6 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 		switch ($search_id)
 		{
 			case 'recent':
-				$template->assign_block_vars('navlinks', [
-					'FORUM_NAME'    => $user->lang['SEARCH_RECENT'],
-					'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('search', 'search_id=' . $search_id),
-				]);
-
 				$l_search_title = $user->lang['SEARCH_RECENT'];
 				$search_results = 'image';
 
@@ -186,11 +180,6 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 			break;
 
 			case 'random':
-				$template->assign_block_vars('navlinks', [
-					'FORUM_NAME'    => $user->lang['SEARCH_RANDOM'],
-					'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('search', 'search_id=' . $search_id),
-				]);
-
 				$l_search_title = $user->lang['SEARCH_RANDOM'];
 				$search_results = 'image';
 
@@ -207,11 +196,6 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 			case 'commented':
 			if (phpbb_gallery_config::get('allow_comments'))
 			{
-				$template->assign_block_vars('navlinks', [
-					'FORUM_NAME'    => $user->lang['SEARCH_RECENT_COMMENTS'],
-					'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('search', 'search_id=' . $search_id),
-				]);
-
 				$l_search_title = $user->lang['SEARCH_RECENT_COMMENTS'];
 				$search_results = 'comment';
 
@@ -241,11 +225,6 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 			case 'toprated':
 			if (phpbb_gallery_config::get('allow_rates'))
 			{
-				$template->assign_block_vars('navlinks', [
-					'FORUM_NAME'    => $user->lang['SEARCH_TOPRATED'],
-					'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('search', 'search_id=' . $search_id),
-				]);
-
 				$l_search_title = $user->lang['SEARCH_TOPRATED'];
 				$search_results = 'image';
 
