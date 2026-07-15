@@ -1433,8 +1433,17 @@ class parse_message extends bbcode_firstpass
 					continue;
 				}
 
-				// (assertion)
-				$match[] = preg_quote($row['code'], '#');
+				// Check if it's a :letters-digits-dashes-underscores: named smiley.
+				if (preg_match('#\A:[\p{L}\p{Nd}_-]+:\z#u', $row['code']))
+				{
+					// Named smilies are unambiguous and do not require surrounding whitespace.
+					$match[] = '#' . preg_quote($row['code'], '#') . '(?![^<>]*>)#u';
+				}
+				else
+				{
+					// Symbolic smilies are only parsed as standalone whitespace-delimited tokens.
+					$match[] = '#(?<!\S)' . preg_quote($row['code'], '#') . '(?!\S)(?![^<>]*>)#u';
+				}
 				$replace[] = '<!-- s' . $row['code'] . ' --><img src="{SMILIES_PATH}/' . $row['smiley_url'] . '" alt="' . $row['code'] . '" title="' . ($user->lang[$row['emotion']] ?? $row['emotion']) . '" /><!-- s' . $row['code'] . ' -->';
 			}
 			$db->sql_freeresult($result);
@@ -1442,25 +1451,15 @@ class parse_message extends bbcode_firstpass
 
 		if (sizeof($match))
 		{
-			if ($max_smilies)
-			{
-				// 'u' modifier has been added to correctly parse smilies within unicode strings
-				// For details: http://tracker.phpbb.com/browse/PHPBB3-10117
-				$num_matches = preg_match_all('#(?<=^|[\n .])(?:' . implode('|', $match) . ')(?![^<>]*>)#u', $this->message, $matches);
-				unset($matches);
+			$message = preg_replace($match, $replace, $this->message, -1, $num_matches);
 
-				if ($num_matches !== false && $num_matches > $max_smilies)
-				{
-					$this->warn_msg[] = sprintf($user->lang['TOO_MANY_SMILIES'], $max_smilies);
-					return;
-				}
+			if ($max_smilies && $num_matches > $max_smilies)
+			{
+				$this->warn_msg[] = sprintf($user->lang['TOO_MANY_SMILIES'], $max_smilies);
+				return;
 			}
 
-			// Make sure the delimiter # is added in front and at the end of every element within $match
-			// 'u' modifier has been added to correctly parse smilies within unicode strings
-			// For details: http://tracker.phpbb.com/browse/PHPBB3-10117
-
-			$this->message = trim(preg_replace(explode(chr(0), '#(?<=^|[\n .])' . implode('(?![^<>]*>)#u' . chr(0) . '#(?<=^|[\n .])', $match) . '(?![^<>]*>)#u'), $replace, $this->message));
+			$this->message = trim($message);
 		}
 	}
 
