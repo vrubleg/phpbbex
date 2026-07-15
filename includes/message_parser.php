@@ -547,7 +547,7 @@ class bbcode_firstpass extends bbcode
 				$code = preg_replace('#^<span class="[a-z]+"><span class="([a-z]+)">(.*)</span></span>#s', '<span class="$1">$2</span>', $code);
 
 				// remove newline at the end
-				if (!empty($code) && substr($code, -1) == "\n")
+				if (!empty($code) && $code[-1] == "\n")
 				{
 					$code = substr($code, 0, -1);
 				}
@@ -848,7 +848,7 @@ class bbcode_firstpass extends bbcode
 
 			if ($tok == ']')
 			{
-				if (strtolower($buffer) == '/'.$type && sizeof($close_tags) && substr($out, -1, 1) == '[')
+				if (strtolower($buffer) == '/'.$type && sizeof($close_tags) && $out[-1] == '[')
 				{
 					// we have found a closing tag
 					$out .= array_pop($close_tags) . ']';
@@ -863,7 +863,7 @@ class bbcode_firstpass extends bbcode
 						$out .= ' ';
 					}*/
 				}
-				else if (preg_match('#^'.$type.'(?:=&quot;(.*?)&quot;)?$#is', $buffer, $m) && substr($out, -1, 1) == '[')
+				else if (preg_match('#^'.$type.'(?:=&quot;(.*?)&quot;)?$#is', $buffer, $m) && $out[-1] == '[')
 				{
 					$this->parsed_items[$type]++;
 

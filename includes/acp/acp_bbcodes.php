@@ -141,7 +141,7 @@ class acp_bbcodes
 						}
 					}
 
-					if (substr($data['bbcode_tag'], -1) === '=')
+					if (($data['bbcode_tag'][-1] ?? '') === '=')
 					{
 						$test = substr($data['bbcode_tag'], 0, -1);
 					}

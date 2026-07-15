@@ -1644,7 +1644,7 @@ function validate_jabber($jid)
 
 	foreach ($arr as $part)
 	{
-		if (substr($part, 0, 1) == '-' || substr($part, -1, 1) == '-')
+		if (($part[0] ?? '') == '-' || ($part[-1] ?? '') == '-')
 		{
 			return 'WRONG_DATA';
 		}

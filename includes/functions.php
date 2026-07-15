@@ -968,7 +968,7 @@ function phpbb_own_realpath($path)
 	$resolved = str_replace('/', DIRECTORY_SEPARATOR, $resolved);
 
 	// Check for DIRECTORY_SEPARATOR at the end (and remove it!)
-	if (substr($resolved, -1) == DIRECTORY_SEPARATOR)
+	if ($resolved[-1] == DIRECTORY_SEPARATOR)
 	{
 		return substr($resolved, 0, -1);
 	}
@@ -1004,7 +1004,7 @@ else
 		}
 
 		// Check for DIRECTORY_SEPARATOR at the end (and remove it!)
-		if (substr($realpath, -1) == DIRECTORY_SEPARATOR)
+		if ($realpath[-1] == DIRECTORY_SEPARATOR)
 		{
 			$realpath = substr($realpath, 0, -1);
 		}
@@ -1871,7 +1871,7 @@ function redirect($url, $return = false, $disable_cd_check = false)
 				$dir = str_repeat('../', sizeof($root_dirs)) . implode('/', $page_dirs);
 
 				// Strip / from the end
-				if ($dir && substr($dir, -1, 1) == '/')
+				if ($dir && $dir[-1] == '/')
 				{
 					$dir = substr($dir, 0, -1);
 				}

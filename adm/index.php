@@ -428,7 +428,7 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 				if ($destination !== '/')
 				{
 					// Adjust destination path (no trailing slash)
-					if (substr($destination, -1, 1) == '/')
+					if (($destination[-1] ?? '') == '/')
 					{
 						$destination = substr($destination, 0, -1);
 					}
@@ -471,7 +471,8 @@ function validate_config_vars($config_vars, &$cfg_array, &$error)
 				$destination = $cfg_array[$config_name];
 
 				// Adjust destination path (no trailing slash)
-				if (substr($destination, -1, 1) == '/' || substr($destination, -1, 1) == '\\')
+				$last_char = $destination[-1] ?? '';
+				if ($last_char == '/' || $last_char == '\\')
 				{
 					$destination = substr($destination, 0, -1);
 				}

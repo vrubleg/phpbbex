@@ -195,7 +195,7 @@ else
 $mem_limit = @ini_get('memory_limit');
 if (!empty($mem_limit))
 {
-	$unit = strtolower(substr($mem_limit, -1, 1));
+	$unit = strtolower($mem_limit[-1]);
 	$mem_limit = (int) $mem_limit;
 
 	if ($unit == 'k')

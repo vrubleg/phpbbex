@@ -74,7 +74,7 @@ class phpbb_session
 		$query_string = trim(implode('&', $use_args));
 
 		// basenamed page name (for example: index.php)
-		$page_name = (substr($script_name, -1, 1) == '/') ? '' : basename($script_name);
+		$page_name = (($script_name[-1] ?? '') == '/') ? '' : basename($script_name);
 		$page_name = urlencode(htmlspecialchars($page_name));
 
 		// current directory within the phpBB root (for example: adm)
@@ -87,7 +87,7 @@ class phpbb_session
 
 		$page_dir = str_repeat('../', sizeof($root_dirs)) . implode('/', $page_dirs);
 
-		if ($page_dir && substr($page_dir, -1, 1) == '/')
+		if ($page_dir && $page_dir[-1] == '/')
 		{
 			$page_dir = substr($page_dir, 0, -1);
 		}
@@ -109,8 +109,8 @@ class phpbb_session
 			$root_script_path = ($page_dir) ? str_replace($page_dir, '', $script_path) : $script_path;
 		}
 
-		$script_path .= (substr($script_path, -1, 1) == '/') ? '' : '/';
-		$root_script_path .= (substr($root_script_path, -1, 1) == '/') ? '' : '/';
+		$script_path .= (($script_path[-1] ?? '') == '/') ? '' : '/';
+		$root_script_path .= (($root_script_path[-1] ?? '') == '/') ? '' : '/';
 
 		$page_array += [
 			'page_name'         => $page_name,
@@ -1326,7 +1326,7 @@ class phpbb_user extends phpbb_session
 	{
 		$this->lang_path = $lang_path;
 
-		if (substr($this->lang_path, -1) != '/')
+		if (($this->lang_path[-1] ?? '') != '/')
 		{
 			$this->lang_path .= '/';
 		}
