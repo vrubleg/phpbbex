@@ -57,7 +57,6 @@ $lang = array_merge($lang, [
 
 	'WATCH_CHANGED'                 => 'Settings stored',
 	'WATCH_COM'                     => 'Subscribe commented images by default',
-	'WATCH_FAVO'                    => 'Subscribe favorite images by default',
 	'WATCH_NOTE'                    => 'This option only affects on new images. All other images need to be added by the “subscribe image“ option.',
 	'WATCH_OWN'                     => 'Subscribe own images by default',
 ]);

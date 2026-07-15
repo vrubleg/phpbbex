@@ -347,7 +347,6 @@ class phpbb_gallery_user
 
 				case 'user_viewexif':
 				case 'watch_own':
-				case 'watch_favo':
 				case 'watch_com':
 					$validated_data[$name] = (bool) $value;
 				break;
@@ -378,8 +377,6 @@ class phpbb_gallery_user
 		'user_viewexif'     => true,
 		// Shall the user be subscribed to his own images?
 		'watch_own'         => true,
-		// Shall the user be subscribed if he adds the images to his favorites?
-		'watch_favo'        => false,
 		// Shall the user be subscribed if he comments on an images?
 		'watch_com'         => false,
 	];

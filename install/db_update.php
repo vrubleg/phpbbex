@@ -849,6 +849,13 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 				$db->sql_query($sql);
 			}
 		}
+		if ($db_tools->sql_column_exists(GALLERY_USERS_TABLE, 'watch_favo'))
+		{
+			foreach ($db_tools->sql_column_remove(GALLERY_USERS_TABLE, 'watch_favo') as $sql)
+			{
+				$db->sql_query($sql);
+			}
+		}
 
 		$db->sql_query('UPDATE ' . GALLERY_USERS_TABLE . "
 			SET user_permissions = '',

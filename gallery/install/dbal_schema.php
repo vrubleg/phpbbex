@@ -339,7 +339,6 @@ class phpbb_gallery_dbal_schema
 				'COLUMNS'       => [
 					'user_id'           => ['UINT', 0],
 					'watch_own'         => ['UINT:3', 0],
-					'watch_favo'        => ['UINT:3', 0],
 					'watch_com'         => ['UINT:3', 0],
 					'user_images'       => ['UINT', 0],
 					'personal_album_id' => ['UINT', 0],

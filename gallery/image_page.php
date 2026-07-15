@@ -94,10 +94,6 @@ if (in_array($mode, ['watch', 'unwatch', 'favorite', 'unfavorite']) && check_lin
 	{
 		phpbb_gallery_image_favorite::add($image_id);
 		$message = $user->lang['FAVORITED_IMAGE'] . '<br />';
-		if (phpbb_gallery::$user->get_data('watch_favo') && !$image_data['watch_id'])
-		{
-			phpbb_gallery_notification::add($image_id);
-		}
 	}
 	if ($mode == 'unfavorite')
 	{
