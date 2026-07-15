@@ -224,11 +224,6 @@ if (!$config['allow_topic_notify'] && !$config['allow_forum_notify'])
 	$module->set_display('main', 'subscribed', false);
 }
 
-if (class_exists('phpbb_gallery_integration'))
-{
-	phpbb_gallery_integration::ucp($module);
-}
-
 // Select the active module
 $module->set_active($id, $mode);
 

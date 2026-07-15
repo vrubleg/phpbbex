@@ -24,7 +24,7 @@ class ucp_gallery_info
 			'title'     => 'PHPBB_GALLERY',
 			'version'   => '1.0.0',
 			'modes'     => [
-					'manage_albums'         => ['title' => 'UCP_GALLERY_PERSONAL_ALBUMS', 'auth' => '', 'cat' => ['PHPBB_GALLERY']],
+					'manage_albums'         => ['title' => 'UCP_GALLERY_PERSONAL_ALBUMS', 'auth' => '', 'display' => false, 'cat' => ['PHPBB_GALLERY']],
 					'manage_settings'       => ['title' => 'UCP_GALLERY_SETTINGS', 'auth' => '', 'cat' => ['PHPBB_GALLERY']],
 					'manage_subscriptions'  => ['title' => 'UCP_GALLERY_WATCH', 'auth' => '', 'cat' => ['PHPBB_GALLERY']],
 					'manage_favorites'      => ['title' => 'UCP_GALLERY_FAVORITES', 'auth' => '', 'cat' => ['PHPBB_GALLERY']],

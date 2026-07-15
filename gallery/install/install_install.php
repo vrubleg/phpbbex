@@ -391,6 +391,7 @@ class install_install extends module
 				'module_basename'   => 'gallery',
 				'module_langname'   => 'UCP_GALLERY_PERSONAL_ALBUMS',
 				'module_mode'       => 'manage_albums',
+				'module_display'    => 0,
 				'module_auth'       => '',
 			]);
 			$umil->module_add('ucp', 'UCP_GALLERY', [

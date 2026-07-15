@@ -284,8 +284,6 @@ $template->assign_vars([
 
 	'U_UPLOAD_IMAGE'            => ((!$album_data['album_user_id'] || ($album_data['album_user_id'] == $user->data['user_id'])) && (($user->data['user_id'] == ANONYMOUS) || phpbb_gallery::$auth->acl_check('i_upload', $album_id, $album_data['album_user_id']))) ?
 										phpbb_gallery_url::append_sid('posting', "mode=upload&amp;album_id={$album_id}") : '',
-	'U_EDIT_ALBUM'              => ($album_id == phpbb_gallery::$user->get_data('personal_album_id')) ?
-										phpbb_gallery_url::append_sid('phpbb', 'ucp', 'i=gallery&amp;mode=manage_albums&amp;action=edit&amp;redirect=album') : '',
 	'U_SLIDE_SHOW'              => (sizeof(phpbb_gallery_plugins::$plugins) && phpbb_gallery_plugins::$slideshow) ? phpbb_gallery_url::append_sid('album', "album_id={$album_id}&amp;mode=slide_show" . (($sort_key != phpbb_gallery_config::get('default_sort_key')) ? "&amp;sk={$sort_key}" : '') . (($sort_dir != phpbb_gallery_config::get('default_sort_dir')) ? "&amp;sd={$sort_dir}" : '')) : '',
 	'S_DISPLAY_SEARCHBOX'       => ($auth->acl_get('u_search') && $config['load_search']),
 	'S_SEARCHBOX_ACTION'        => phpbb_gallery_url::append_sid('search', 'aid[]=' . $album_id),

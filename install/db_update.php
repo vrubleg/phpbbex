@@ -625,6 +625,12 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module('acp', 'gallery', 'import_images');
 	remove_permissions(['a_gallery_import']);
 
+	$db->sql_query("UPDATE " . MODULES_TABLE . "
+		SET module_display = 0
+		WHERE module_class = 'ucp'
+			AND module_basename = 'gallery'
+			AND module_mode = 'manage_albums'");
+
 	remove_config_values([
 		'phpbb_gallery_allow_zip',
 		'phpbb_gallery_contests_ended',

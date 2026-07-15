@@ -7,13 +7,11 @@
 <h2><a href="{U_VIEW_ALBUM}">{ALBUM_NAME}</a></h2>
 <p class="header-path"><!-- BEGIN navlinks --><!-- IF not navlinks.FIRST --> <strong>&#8250;</strong> <!-- ENDIF --><a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --></p>
 
-<!-- IF not S_IN_GALLERY_POPUP and ALBUM_DESC or MODERATORS or U_MCP -->
-<div>
-	<!-- NOTE: remove the style="display: none !important;" when you want to have the album description on the album body -->
-	<!-- IF ALBUM_DESC --><div style="display: none !important;">{ALBUM_DESC}<br /></div><!-- ENDIF -->
+<!-- IF not S_IN_GALLERY_POPUP and ALBUM_DESC or MODERATORS -->
+<p>
+	<!-- IF ALBUM_DESC --><strong>{L_FORUM_DESC}:</strong> {ALBUM_DESC}<br /><!-- ENDIF -->
 	<!-- IF MODERATORS --><strong>{L_MODERATORS}:</strong> {MODERATORS}<br /><!-- ENDIF -->
-	<!-- IF U_EDIT_ALBUM --><br /><strong><a href="{U_EDIT_ALBUM}">{L_EDIT_ALBUM}</a></strong><!-- ENDIF -->
-</div>
+</p>
 <!-- ENDIF -->
 
 <!-- IF .albumrow -->
