@@ -127,6 +127,11 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 
 if ($keywords || $author || $author_id || $search_id || $submit)
 {
+	$template->assign_block_vars('navlinks', [
+		'FORUM_NAME'    => $user->lang['SEARCH'],
+		'U_VIEW_FORUM'  => append_sid(PHPBB_ROOT_PATH . 'search.php'),
+	]);
+
 	// clear arrays
 	$id_ary = [];
 
