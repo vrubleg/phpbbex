@@ -59,8 +59,11 @@ class template_compile
 
 		$this->template->compiled_code[$handle] = $this->compile(trim(@file_get_contents($this->template->files[$handle])));
 
-		// Actually compile the code now.
-		$this->compile_write($handle, $this->template->compiled_code[$handle]);
+		// DEBUG_EXTRA always recompiles templates, so use the compiled code from memory without repeatedly rewriting cached compiled files.
+		if (!defined('DEBUG_EXTRA'))
+		{
+			$this->compile_write($handle, $this->template->compiled_code[$handle]);
+		}
 
 	}
 
