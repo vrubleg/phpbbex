@@ -17,7 +17,7 @@
 				<li class="header">
 					<dl>
 						<dt>{L_VIEW_DETAILS}</dt>
-						<dd class="moderation"><span>{L_TOPIC} &amp; {L_FORUM}</span></dd>
+						<dd class="moderation">{L_TOPIC} &amp; {L_FORUM}</dd>
 					</dl>
 				</li>
 			</ul>
@@ -30,9 +30,9 @@
 						{unapproved.ATTACH_ICON_IMG} <a href="{unapproved.U_POST_DETAILS}" class="topictitle">{unapproved.SUBJECT}</a><br />
 						{L_POSTED} {L_POST_BY_AUTHOR} {unapproved.AUTHOR_FULL} &raquo; {unapproved.POST_TIME}
 					</dt>
-					<dd class="moderation"><span>
+					<dd class="moderation">
 						{L_TOPIC}: <a href="{unapproved.U_TOPIC}">{unapproved.TOPIC_TITLE}</a> [<a href="{unapproved.U_MCP_TOPIC}">{L_MODERATE}</a>]<br />
-						{L_FORUM}: <!-- IF unapproved.U_FORUM --><a href="{unapproved.U_FORUM}">{unapproved.FORUM_NAME}</a><!-- ELSE -->{unapproved.FORUM_NAME}<!-- ENDIF --><!-- IF unapproved.U_MCP_FORUM --> [<a href="{unapproved.U_MCP_FORUM}">{L_MODERATE}</a>]<!-- ENDIF --></span>
+						{L_FORUM}: <!-- IF unapproved.U_FORUM --><a href="{unapproved.U_FORUM}">{unapproved.FORUM_NAME}</a><!-- ELSE -->{unapproved.FORUM_NAME}<!-- ENDIF --><!-- IF unapproved.U_MCP_FORUM --> [<a href="{unapproved.U_MCP_FORUM}">{L_MODERATE}</a>]<!-- ENDIF -->
 					</dd>
 
 					<dd class="mark"><input type="checkbox" name="post_id_list[]" value="{unapproved.POST_ID}" /></dd>
@@ -71,7 +71,7 @@
 				<li class="header">
 					<dl>
 						<dt>{L_VIEW_DETAILS}</dt>
-						<dd class="moderation"><span>{L_REPORTER} &amp; {L_FORUM}</span></dd>
+						<dd class="moderation">{L_REPORTER} &amp; {L_FORUM}</dd>
 					</dl>
 				</li>
 			</ul>
@@ -85,8 +85,8 @@
 						<span>{L_POSTED} {L_POST_BY_AUTHOR} {report.AUTHOR_FULL} &raquo; {report.POST_TIME}</span>
 					</dt>
 					<dd class="moderation">
-						<span>{L_REPORTED} {L_POST_BY_AUTHOR} {report.REPORTER_FULL} {L_REPORTED_ON_DATE} {report.REPORT_TIME}<br />
-						{L_FORUM}: <a href="{report.U_FORUM}">{report.FORUM_NAME}</a></span>
+						{L_REPORTED} {L_POST_BY_AUTHOR} {report.REPORTER_FULL} {L_REPORTED_ON_DATE} {report.REPORT_TIME}<br />
+						{L_FORUM}: <a href="{report.U_FORUM}">{report.FORUM_NAME}</a>
 					</dd>
 				</dl>
 			</li>
@@ -112,7 +112,7 @@
 				<li class="header">
 					<dl>
 						<dt>{L_VIEW_DETAILS}</dt>
-						<dd class="moderation"><span>{L_REPORTER}</span></dd>
+						<dd class="moderation">{L_REPORTER}</dd>
 					</dl>
 				</li>
 			</ul>
@@ -127,7 +127,7 @@
 						<span>{L_MESSAGE_TO} {pm_report.RECIPIENTS}</span>
 					</dt>
 					<dd class="moderation">
-						<span>{L_REPORTED} {L_POST_BY_AUTHOR} {pm_report.REPORTER_FULL} {L_REPORTED_ON_DATE} {pm_report.REPORT_TIME}</span>
+						{L_REPORTED} {L_POST_BY_AUTHOR} {pm_report.REPORTER_FULL} {L_REPORTED_ON_DATE} {pm_report.REPORT_TIME}
 					</dd>
 				</dl>
 			</li>

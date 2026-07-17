@@ -1,16 +1,19 @@
 @import url("../../adm/style/admin.css");
 
-#page-header {
+#page-header
+{
 	background-image: url("../images/stk_logo.png");
 }
 
-.column1 {
+.column1
+{
 	float: left;
 	clear: left;
 	width: 49%;
 }
 
-.column2 {
+.column2
+{
 	float: right;
 	clear: right;
 	width: 49%;
@@ -19,7 +22,8 @@
 /* BB Code styles
 ----------------------------------------*/
 /* Quote block */
-blockquote {
+blockquote
+{
 	border: 1px solid #dbdbce;
 	font-size: 0.95em;
 	margin: 0.5em 1px 0 25px;
@@ -30,19 +34,22 @@ blockquote {
 	border-color:#dbdbce;
 }
 
-blockquote blockquote {
+blockquote blockquote
+{
 	/* Nested quotes */
 	background-color: #efeed9;
 	font-size: 1em;
 	margin: 0.5em 1px 0 15px;
 }
 
-blockquote blockquote blockquote {
+blockquote blockquote blockquote
+{
 	/* Nested quotes */
 	background-color: #ebeadd;
 }
 
-blockquote cite {
+blockquote cite
+{
 	/* Username/source of quoter */
 	font-style: normal;
 	font-weight: bold;
@@ -51,23 +58,27 @@ blockquote cite {
 	font-size: 0.9em;
 }
 
-blockquote cite cite {
+blockquote cite cite
+{
 	font-size: 1em;
 }
 
-blockquote.uncited {
+blockquote.uncited
+{
 	padding-top: 25px;
 }
 
 /* Code block */
-dl.codebox {
+dl.codebox
+{
 	padding: 3px;
 	background-color: #ffffff;
 	border: 1px solid #c9d2d8;
 	font-size: 1em;
 }
 
-dl.codebox dt {
+dl.codebox dt
+{
 	text-transform: uppercase;
 	border-bottom: 1px solid #cccccc;
 	margin-bottom: 3px;
@@ -77,11 +88,13 @@ dl.codebox dt {
 	float: none;
 }
 
-blockquote dl.codebox {
+blockquote dl.codebox
+{
 	margin-left: 0;
 }
 
-dl.codebox code {
+dl.codebox code
+{
 	/* Also see tweaks.css */
 	overflow: auto;
 	display: block;
@@ -95,18 +108,21 @@ dl.codebox code {
 	margin: 2px 0;
 }
 
-#url-list {
+#url-list
+{
 	margin-top: 10px;
 }
 
-#url-list ul {
+#url-list ul
+{
 	padding: 10px;
 	min-width: 300px;
 	list-style: none;
 	background-color: #ecf3f7;
 }
 
-#url-list ul ul {
+#url-list ul ul
+{
 	padding: 0;
 	margin: 5px 10px 0 30px;
 	background-color: transparent;
@@ -127,14 +143,16 @@ dl.codebox code {
 
 /* SQL Query tool
 ----------------------------------------*/
-dl.querybox {
+dl.querybox
+{
 	color: #000000;
 	text-align: left;
 }
 
 /* Mark column
 ----------------------------------------*/
-.mark {
+.mark
+{
 	width: 10%;
 	text-align: center;
 }

@@ -16,7 +16,7 @@
 						<dt><!-- IF forumrow.S_IS_CAT --><a href="{forumrow.U_VIEWFORUM}">{forumrow.FORUM_NAME}</a><!-- ELSE -->{L_FORUM}<!-- ENDIF --></dt>
 						<dd class="topics">{L_TOPICS}</dd>
 						<dd class="posts">{L_POSTS}</dd>
-						<dd class="lastpost"><span>{L_LAST_POST}</span></dd>
+						<dd class="lastpost">{L_LAST_POST}</dd>
 					</dl>
 				</li>
 			</ul>
@@ -38,20 +38,18 @@
 					<!-- IF forumrow.SUBFORUMS and forumrow.S_LIST_SUBFORUMS --><br /><strong>{forumrow.L_SUBFORUM_STR}</strong> {forumrow.SUBFORUMS}<!-- ENDIF -->
 				</dt>
 				<!-- IF forumrow.CLICKS -->
-					<dd class="redirect"><span>{L_REDIRECTS}: {forumrow.CLICKS}</span></dd>
+					<dd class="redirect">{L_REDIRECTS}: {forumrow.CLICKS}</dd>
 				<!-- ELSEIF not forumrow.S_IS_LINK -->
 					<dd class="topics">{forumrow.TOPICS} <dfn>{L_TOPICS}</dfn></dd>
 					<dd class="posts">{forumrow.POSTS} <dfn>{L_POSTS}</dfn></dd>
 					<dd class="lastpost">
-						<span>
 						<!-- IF forumrow.U_UNAPPROVED_TOPICS --><a href="{forumrow.U_UNAPPROVED_TOPICS}">{UNAPPROVED_IMG}</a><!-- ENDIF -->
 						<!-- IF forumrow.LAST_POST_TIME -->
-							<dfn>{L_LAST_POST}</dfn> <a href="{forumrow.U_LAST_TOPIC_URL}" title="{forumrow.LAST_TOPIC_TITLE_FULL}">{forumrow.LAST_TOPIC_TITLE}</a>
+							<dfn>{L_LAST_POST}</dfn> <a href="{forumrow.U_LAST_TOPIC_URL}" title="{forumrow.LAST_TOPIC_TITLE}">{forumrow.LAST_TOPIC_TITLE}</a>
 							<!-- IF not S_IS_BOT --><a rel="nofollow" href="{forumrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{forumrow.LAST_POST_TIME} {L_POST_BY_AUTHOR} {forumrow.LAST_POSTER_FULL}
 						<!-- ELSE -->
 							{L_NO_POSTS}<br />&nbsp;
 						<!-- ENDIF -->
-						</span>
 					</dd>
 				<!-- ELSE -->
 					<dd>&nbsp;</dd>
