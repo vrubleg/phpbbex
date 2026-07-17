@@ -154,7 +154,6 @@ hr.divider {
 	margin: 0 auto;
 	background-color: #ffffff;
 	box-shadow: 0 0 15px #cccccc;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -1081,7 +1080,7 @@ ul.topiclist {
 	margin: 0;
 }
 
-ul.forums {
+ul.topiclist.forums {
 	background-color: #eef5f9;
 }
 
@@ -1103,12 +1102,15 @@ ul.topiclist li.row dl {
 }
 
 ul.topiclist dt {
-	width: 52%;
+	box-sizing: border-box;
+	flex: 1 1 50%;
+	min-width: 30%;
 	font-size: 1.1em;
 	padding: 3px 5px 5px 5px;
 }
 
 ul.topiclist dd {
+	box-sizing: border-box;
 	border-left: 1px solid #ffffff;
 	padding: 3px 0 5px 0;
 }
@@ -1135,31 +1137,27 @@ ul.topiclist li.row dt a.subforum.unread {
 	background-image: url("{IMG_SUBFORUM_UNREAD_SRC}");
 }
 
-.forum-image {
+ul.topiclist .forum-image {
 	float: left;
 	padding-top: 5px;
 	margin-right: 5px;
 }
 
-li.row {
+ul.topiclist li.row {
 	border-top: 1px solid #ffffff;
 	border-bottom: 1px solid #00608f;
 }
 
-li.row strong {
+ul.topiclist li.row strong {
 	font-weight: normal;
 	color: #000000;
 }
 
-li.row:hover {
+ul.topiclist li.row:hover {
 	background-color: #f6f6f6;
 }
 
-li.row:hover dd {
-	/*border-left-color: #cccccc;*/
-}
-
-li.header dt, li.header dd {
+ul.topiclist li.header dt, ul.topiclist li.header dd {
 	line-height: 1em;
 	border-left-width: 0;
 	margin: 2px 0 4px 0;
@@ -1172,42 +1170,44 @@ li.header dt, li.header dd {
 	text-shadow: 2px 2px 2px #000000;
 }
 
-li.header dt {
+ul.topiclist li.header dt {
 	font-weight: bold;
 }
 
-li.header dd {
+ul.topiclist li.header dd {
 	margin-left: 1px;
 }
 
-li.header dd.mark {
+ul.topiclist li.header dd.mark {
 	margin-left: auto;
 }
 
-li.header dl.icon {
+ul.topiclist li.header dl.icon {
 	min-height: 0;
 }
 
-li.header dl.icon dt {
+ul.topiclist li.header dl.icon dt {
 	/* Tweak for headers alignment when folder icon used */
 	padding-left: 0;
 	padding-right: 50px;
 }
 
 /* Forum list column styles */
-dl.icon {
+ul.topiclist dl.icon {
 	min-height: 35px;
 	background-position: 10px 50%;      /* Position of folder icon */
 	background-repeat: no-repeat;
 }
 
-dl.icon dt {
+ul.topiclist dl.icon dt {
 	padding-left: 45px;                 /* Space for folder icon */
 	background-repeat: no-repeat;
 	background-position: 5px 95%;       /* Position of topic icon */
 }
 
-dd.posts, dd.topics, dd.views {
+ul.topiclist dd.posts,
+ul.topiclist dd.topics,
+ul.topiclist dd.views {
 	width: 8%;
 	text-align: center;
 	line-height: 2.2em;
@@ -1215,50 +1215,45 @@ dd.posts, dd.topics, dd.views {
 }
 
 /* List in forum description */
-dl.icon dt ol,
-dl.icon dt ul {
+ul.topiclist dl.icon dt ol,
+ul.topiclist dl.icon dt ul {
 	list-style-position: inside;
 	margin-left: 1em;
 }
 
-dl.icon dt li {
+ul.topiclist dl.icon dt li {
 	display: list-item;
 	list-style-type: inherit;
 }
 
-dd.lastpost {
+ul.topiclist dd.lastpost {
 	width: 25%;
 	font-size: 1.1em;
 }
 
-dd.redirect {
+ul.topiclist dd.redirect {
 	font-size: 1.1em;
 	line-height: 2.5em;
 }
 
-dd.moderation {
+ul.topiclist dd.moderation {
 	font-size: 1.1em;
 }
 
-dd.lastpost span, ul.topiclist dd.info span, ul.topiclist dd.time span, dd.redirect span, dd.moderation span {
-	display: block;
-	padding-left: 5px;
-}
-
-dd.time {
+ul.topiclist dd.time {
 	width: auto;
 	line-height: 200%;
 	font-size: 1.1em;
 }
 
-dd.extra {
+ul.topiclist dd.extra {
 	width: 12%;
 	line-height: 200%;
 	text-align: center;
 	font-size: 1.1em;
 }
 
-dd.mark {
+ul.topiclist dd.mark {
 	margin-left: auto;
 	width: 9%;
 	text-align: center;
@@ -1266,15 +1261,29 @@ dd.mark {
 	font-size: 1.2em;
 }
 
-dd.info {
+ul.topiclist dd.info {
 	width: 30%;
 }
 
-dd.option {
+ul.topiclist dd.option {
 	width: 15%;
 	line-height: 200%;
 	text-align: center;
 	font-size: 1.1em;
+}
+
+ul.topiclist dd.lastpost,
+ul.topiclist dd.info,
+ul.topiclist dd.time,
+ul.topiclist dd.redirect,
+ul.topiclist dd.moderation {
+	padding-left: 5px;
+}
+
+ul.topiclist dd.lastpost {
+	text-wrap: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* Container for post/reply buttons and pagination */

@@ -12,7 +12,7 @@
 					<dt>{L_ANNOUNCEMENTS}</dt>
 					<dd class="posts">{L_REPLIES}</dd>
 					<dd class="views">{L_VIEWS}</dd>
-					<dd class="lastpost"><span>{L_LAST_POST}</span></dd>
+					<dd class="lastpost">{L_LAST_POST}</dd>
 				</dl>
 			</li>
 		</ul>
@@ -30,8 +30,8 @@
 				</dt>
 				<dd class="posts">{announcetopic.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
 				<dd class="views">{announcetopic.VIEWS} <dfn>{L_VIEWS}</dfn></dd>
-				<dd class="lastpost"><span><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {announcetopic.LAST_POST_AUTHOR_FULL}
-					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{announcetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <br /><!-- ENDIF -->{L_POSTED_ON_DATE} {announcetopic.LAST_POST_TIME}</span>
+				<dd class="lastpost"><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {announcetopic.LAST_POST_AUTHOR_FULL}
+					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{announcetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <br /><!-- ENDIF -->{L_POSTED_ON_DATE} {announcetopic.LAST_POST_TIME}
 				</dd>
 			</dl>
 		</li>
@@ -51,7 +51,7 @@
 				<dt><!-- IF S_DISPLAY_SEARCH --><a href="{U_SEARCH_ACTIVE_TOPICS}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- ELSE -->{L_SEARCH_ACTIVE_TOPICS}<!-- ENDIF --></dt>
 				<dd class="posts">{L_REPLIES}</dd>
 				<dd class="views">{L_VIEWS}</dd>
-				<dd class="lastpost"><span>{L_LAST_POST}</span></dd>
+				<dd class="lastpost">{L_LAST_POST}</dd>
 			</dl>
 		</li>
 	</ul>
@@ -71,9 +71,9 @@
 				</dt>
 				<dd class="posts">{activetopic.REPLIES}</dd>
 				<dd class="views">{activetopic.VIEWS}</dd>
-				<dd class="lastpost"><span>
+				<dd class="lastpost">
 					{L_POST_BY_AUTHOR} {activetopic.LAST_POST_AUTHOR_FULL}
-					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{activetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{activetopic.LAST_POST_TIME}<br /> </span>
+					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{activetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{activetopic.LAST_POST_TIME}<br />
 				</dd>
 			</dl>
 		</li>

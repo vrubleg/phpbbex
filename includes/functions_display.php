@@ -510,14 +510,9 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		$last_topic_result = $db->sql_query($sql);
 		while($last_topic_row = $db->sql_fetchrow($last_topic_result))
 		{
-			$last_topic_title_full = htmlspecialchars_decode(censor_text($last_topic_row['topic_title']));
-			$last_topic_title = (utf8_strlen($last_topic_title_full) > 40) ? trim(utf8_substr($last_topic_title_full, 0, 40)) . '…' : $last_topic_title_full;
-			$last_topic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $last_topic_row['topic_id']);
-
 			$template->alter_block_array('forumrow', [
-					'LAST_TOPIC_TITLE'      => htmlspecialchars($last_topic_title),
-					'LAST_TOPIC_TITLE_FULL' => htmlspecialchars($last_topic_title_full),
-					'U_LAST_TOPIC_URL'      => $last_topic_url
+					'LAST_TOPIC_TITLE' => censor_text($last_topic_row['topic_title']),
+					'U_LAST_TOPIC_URL' => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $last_topic_row['topic_id'])
 			], ['LAST_POST_ID'  => $last_topic_row['topic_last_post_id']], 'change');
 		}
 		$db->sql_freeresult($last_topic_result);
