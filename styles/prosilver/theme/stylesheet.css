@@ -3638,14 +3638,20 @@ ul.topiclist dd.g-lastimage
 	width: 30%;
 }
 
-.g-lastimage-thumbnail
+.g-image-info
+{
+	display: flex;
+	align-items: center;
+}
+
+.g-image-thumbnail
 {
 	flex: 0 0 auto;
 	padding-right: 5px;
 	text-align: center;
 }
 
-.g-lastimage-details
+.g-image-details
 {
 	display: block;
 	flex: 1 1 auto;

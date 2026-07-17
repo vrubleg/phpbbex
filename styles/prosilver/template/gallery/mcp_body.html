@@ -59,12 +59,14 @@
 				<!-- BEGIN image_row -->
 					<li class="row<!-- IF image_row.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF --><!-- IF image_row.S_REPORTED --> reported<!-- ENDIF -->">
 						<dl>
-							<dt>
-								<!-- IF DISP_FAKE_THUMB and image_row.THUMBNAIL --><span style="float: left; text-align: center; width: {FAKE_THUMB_SIZE}px; padding-right: 5px;">{image_row.THUMBNAIL}</span><!-- ENDIF -->
-								<a href="<!-- IF not S_REPORT -->{image_row.U_IMAGE_PAGE}<!-- ELSE -->{image_row.U_REPORT}<!-- ENDIF -->" class="topictitle">{image_row.IMAGE_NAME}</a><!-- IF image_row.S_REPORTED --> <a href="{image_row.U_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><!-- IF image_row.S_UNAPPROVED --> <a href="{image_row.U_QUEUE}">{UNAPPROVED_IMG}</a><!-- ENDIF --><br />
-								<span>{L_POST_BY_AUTHOR} {image_row.UPLOADER}<br />
-								&raquo; {image_row.IMAGE_TIME}
-								<!-- IF image_row.REPORT_MOD --><br />{L_REPORT_MOD} {image_row.REPORT_MOD}<!-- ENDIF --></span>
+							<dt class="g-image-info">
+								<!-- IF DISP_FAKE_THUMB and image_row.THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{image_row.THUMBNAIL}</span><!-- ENDIF -->
+								<span class="g-image-details">
+									<a href="<!-- IF not S_REPORT -->{image_row.U_IMAGE_PAGE}<!-- ELSE -->{image_row.U_REPORT}<!-- ENDIF -->" class="topictitle">{image_row.IMAGE_NAME}</a><!-- IF image_row.S_REPORTED --> <a href="{image_row.U_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><!-- IF image_row.S_UNAPPROVED --> <a href="{image_row.U_QUEUE}">{UNAPPROVED_IMG}</a><!-- ENDIF --><br />
+									{L_POST_BY_AUTHOR} {image_row.UPLOADER}<br />
+									&raquo; {image_row.IMAGE_TIME}
+									<!-- IF image_row.REPORT_MOD --><br />{L_REPORT_MOD} {image_row.REPORT_MOD}<!-- ENDIF -->
+								</span>
 							</dt>
 							<!-- IF S_COMMENTS --><dd class="g-comments">{image_row.COMMENTS}</dd><!-- ENDIF -->
 							<!-- IF S_RATINGS --><dd class="g-rating">{image_row.RATING}</dd><!-- ENDIF -->
@@ -258,11 +260,13 @@
 			<!-- BEGIN queue_row -->
 			<li class="row<!-- IF queue_row.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 				<dl>
-					<dt>
-						<!-- IF DISP_FAKE_THUMB and queue_row.THUMBNAIL --><span style="float: left; text-align: center; width: {FAKE_THUMB_SIZE}px; padding-right: 5px;">{queue_row.THUMBNAIL}</span><!-- ENDIF -->
-						<a href="{queue_row.U_IMAGE_PAGE}" class="topictitle">{queue_row.IMAGE_NAME} {UNAPPROVED_IMG}</a><br />
-						<span>{L_POST_BY_AUTHOR} {queue_row.UPLOADER}<br />
-						&raquo; {queue_row.IMAGE_TIME}</span>
+					<dt class="g-image-info">
+						<!-- IF DISP_FAKE_THUMB and queue_row.THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{queue_row.THUMBNAIL}</span><!-- ENDIF -->
+						<span class="g-image-details">
+							<a href="{queue_row.U_IMAGE_PAGE}" class="topictitle">{queue_row.IMAGE_NAME} {UNAPPROVED_IMG}</a><br />
+							{L_POST_BY_AUTHOR} {queue_row.UPLOADER}<br />
+							&raquo; {queue_row.IMAGE_TIME}
+						</span>
 					</dt>
 				</dl>
 			</li>
@@ -285,12 +289,14 @@
 			<!-- BEGIN report_row -->
 			<li class="row<!-- IF report_row.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 			<dl>
-				<dt>
-					<!-- IF DISP_FAKE_THUMB and report_row.THUMBNAIL --><span style="float: left; text-align: center; width: {FAKE_THUMB_SIZE}px; padding-right: 5px;">{report_row.THUMBNAIL}</span><!-- ENDIF -->
-					<a href="<!-- IF not S_REPORT -->{report_row.U_IMAGE_PAGE}<!-- ELSE -->{report_row.U_REPORT}<!-- ENDIF -->" class="topictitle">{report_row.IMAGE_NAME}</a><!-- IF report_row.S_REPORTED --> <a href="{report_row.U_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><!-- IF report_row.S_UNAPPROVED --> <a href="{report_row.U_QUEUE}">{UNAPPROVED_IMG}</a><!-- ENDIF --><br />
-					<span>{L_POST_BY_AUTHOR} {report_row.UPLOADER}<br />
-					&raquo; {report_row.IMAGE_TIME}
-					<!-- IF report_row.REPORT_MOD --><br />{L_REPORT_MOD} {report_row.REPORT_MOD}<!-- ENDIF --></span>
+				<dt class="g-image-info">
+					<!-- IF DISP_FAKE_THUMB and report_row.THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{report_row.THUMBNAIL}</span><!-- ENDIF -->
+					<span class="g-image-details">
+						<a href="<!-- IF not S_REPORT -->{report_row.U_IMAGE_PAGE}<!-- ELSE -->{report_row.U_REPORT}<!-- ENDIF -->" class="topictitle">{report_row.IMAGE_NAME}</a><!-- IF report_row.S_REPORTED --> <a href="{report_row.U_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><!-- IF report_row.S_UNAPPROVED --> <a href="{report_row.U_QUEUE}">{UNAPPROVED_IMG}</a><!-- ENDIF --><br />
+						{L_POST_BY_AUTHOR} {report_row.UPLOADER}<br />
+						&raquo; {report_row.IMAGE_TIME}
+						<!-- IF report_row.REPORT_MOD --><br />{L_REPORT_MOD} {report_row.REPORT_MOD}<!-- ENDIF -->
+					</span>
 				</dt>
 				<dd class="moderation">
 					{L_REPORT_BY} {report_row.REPORTER}<br />

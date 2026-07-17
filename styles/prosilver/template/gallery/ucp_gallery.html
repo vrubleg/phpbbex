@@ -115,8 +115,8 @@
 								</dt>
 								<dd class="g-lastimage">
 									<!-- IF album_row.LAST_IMAGE -->
-										<!-- IF album_row.UC_FAKE_THUMBNAIL --><span class="g-lastimage-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{album_row.UC_FAKE_THUMBNAIL}</span><!-- ENDIF -->
-										<span class="g-lastimage-details">
+										<!-- IF album_row.UC_FAKE_THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{album_row.UC_FAKE_THUMBNAIL}</span><!-- ENDIF -->
+										<span class="g-image-details">
 											<dfn>{L_LAST_IMAGE}</dfn> <a class="g-lastimage-title" href="{album_row.U_LAST_IMAGE}" title="{album_row.LAST_IMAGE_NAME}">{album_row.LAST_IMAGE_NAME}</a>
 											{L_POST_BY_AUTHOR} {album_row.UPLOADER}<br />
 											{album_row.LAST_IMAGE_TIME}
@@ -147,12 +147,14 @@
 				<!-- BEGIN image_row -->
 					<li class="row<!-- IF image_row.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF --><!-- IF image_row.S_REPORTED --> reported<!-- ENDIF -->">
 						<dl>
-							<dt>
-								<!-- IF image_row.UC_FAKE_THUMBNAIL --><span style="float: left; text-align: center; width: {FAKE_THUMB_SIZE}px; padding-right: 5px;">{image_row.UC_FAKE_THUMBNAIL}</span><!-- ENDIF -->
-								<dfn>{L_LAST_IMAGE}</dfn> {image_row.UC_IMAGE_NAME}<br />
-								{L_UPLOADED_BY_USER} {image_row.UPLOADER}<br />
-								{image_row.IMAGE_TIME}<br />
-								{L_ALBUM}: <a href="{image_row.U_VIEW_ALBUM}" style="font-weight: bold;">{image_row.ALBUM_NAME}</a>
+							<dt class="g-image-info">
+								<!-- IF image_row.UC_FAKE_THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{image_row.UC_FAKE_THUMBNAIL}</span><!-- ENDIF -->
+								<span class="g-image-details">
+									<dfn>{L_LAST_IMAGE}</dfn> {image_row.UC_IMAGE_NAME}<br />
+									{L_UPLOADED_BY_USER} {image_row.UPLOADER}<br />
+									{image_row.IMAGE_TIME}<br />
+									{L_ALBUM}: <a href="{image_row.U_VIEW_ALBUM}" style="font-weight: bold;">{image_row.ALBUM_NAME}</a>
+								</span>
 							</dt>
 							<!-- IF not S_MANAGE_FAVORITES and image_row.COMMENT -->
 								<dd class="moderation">
