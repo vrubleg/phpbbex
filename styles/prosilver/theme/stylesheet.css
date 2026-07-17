@@ -3667,6 +3667,31 @@ ul.topiclist dd.g-lastimage
 	text-overflow: ellipsis;
 }
 
+.g-image-navigation
+{
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.g-image-navigation-prev,
+.g-image-navigation-next
+{
+	display: block;
+}
+
+.g-image-navigation-next
+{
+	margin-left: auto;
+	text-align: right;
+}
+
+.g-current-image
+{
+	text-align: center;
+}
+
 dd.g-rating, dd.g-comments
 {
 	width: 12%;

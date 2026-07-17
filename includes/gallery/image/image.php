@@ -309,10 +309,6 @@ class phpbb_gallery_image
 				$shorten_image_name = (utf8_strlen(htmlspecialchars_decode($image_name)) > phpbb_gallery_config::get('shortnames') + 3) ? (utf8_substr(htmlspecialchars_decode($image_name), 0, phpbb_gallery_config::get('shortnames')) . '...') : ($image_name);
 				$content = '<span style="font-weight: bold;">' . $shorten_image_name . '</span>';
 			break;
-			case 'image_name_unbold':
-				$shorten_image_name = (utf8_strlen(htmlspecialchars_decode($image_name)) > phpbb_gallery_config::get('shortnames') + 3) ? (utf8_substr(htmlspecialchars_decode($image_name), 0, phpbb_gallery_config::get('shortnames')) . '...') : ($image_name);
-				$content = $shorten_image_name;
-			break;
 			case 'thumbnail':
 				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" />';
 				$content = str_replace(['{U_THUMBNAIL}', '{IMAGE_NAME}'], [$thumb_url, $image_name], $content);
@@ -342,12 +338,6 @@ class phpbb_gallery_image
 		{
 			case 'image_page':
 				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}">{CONTENT}</a>';
-			break;
-			case 'image_page_next':
-				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}" class="right-box nav-to-right">{CONTENT}</a>';
-			break;
-			case 'image_page_prev':
-				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}" class="left-box nav-to-left">{CONTENT}</a>';
 			break;
 			case 'image':
 				$url = $image_url;

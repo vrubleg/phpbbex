@@ -634,6 +634,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_config_values([
 		'phpbb_gallery_allow_zip',
 		'phpbb_gallery_contests_ended',
+		'phpbb_gallery_disp_nextprev_thumbnail',
 		'phpbb_gallery_gdlib_version',
 		'phpbb_gallery_rrc_gindex_contests',
 		'phpbb_gallery_watermark_changed',

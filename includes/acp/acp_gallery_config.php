@@ -390,7 +390,6 @@ class acp_gallery_config
 			'allow_jpg'             => ['lang' => 'JPG_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'allow_png'             => ['lang' => 'PNG_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'description_length'    => ['lang' => 'IMAGE_DESC_MAX_LENGTH',  'validate' => 'int',    'type' => 'text:7:5',       'gallery' => true,  'explain' => false, 'append' => 'CHARACTERS'],
-			'disp_nextprev_thumbnail'   => ['lang' => 'DISP_NEXTPREV_THUMB','validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'disp_exifdata'         => ['lang' => 'DISP_EXIF_DATA',     'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'disp_image_url'        => ['lang' => 'VIEW_IMAGE_URL',     'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 

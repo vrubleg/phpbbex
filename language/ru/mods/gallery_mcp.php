@@ -35,7 +35,7 @@ $lang = array_merge($lang, [
 	'GALLERY_MCP_LOCKED'            => 'Блокированные фото',
 	'GALLERY_MCP_VIEWALBUM'         => 'Просмотр альбома',
 
-	'IMAGE_REPORTED'                => 'Это фото обжаловано.',
+	'IMAGE_REPORTED'                => 'На это фото имеется жалоба.',
 	'IMAGE_UNAPPROVED'              => 'Это фото ожидает одобрения.',
 
 	'MODERATE_ALBUM'                => 'Модерация альбома',

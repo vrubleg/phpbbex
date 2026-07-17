@@ -48,7 +48,6 @@ class phpbb_gallery_config_core
 		'disp_exifdata'             => true,
 		'disp_image_url'            => true,
 		'disp_login'                => true,
-		'disp_nextprev_thumbnail'   => false,
 		'disp_statistic'            => true,
 		'disp_total_images'         => true,
 		'disp_whoisonline'          => true,

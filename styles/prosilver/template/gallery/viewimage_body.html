@@ -12,11 +12,14 @@
 
 <div class="post bg2<!-- IF S_IMAGE_REPORTED --> reported<!-- ENDIF -->">
 	<div class="inner">
-		<!-- IF UC_PREVIOUS --><p style="float: left; text-align: left;">{UC_PREVIOUS_IMAGE}<br />{UC_PREVIOUS}</p><!-- ENDIF -->
-		<!-- IF UC_NEXT --><p style="float: right; text-align: right;">{UC_NEXT_IMAGE}<br />{UC_NEXT}</p><!-- ENDIF -->
-		<div style="text-align: center; clear: both;">{UC_IMAGE}
-			<!-- IF S_IMAGE_REPORTED --><br /><br /><a href="{U_IMAGE_REPORTED}"><span class="error">{L_IMAGE_REPORTED}</span></a><!-- ENDIF -->
+		<!-- IF U_PREVIOUS_IMAGE or U_NEXT_IMAGE -->
+		<div class="g-image-navigation">
+			<!-- IF U_PREVIOUS_IMAGE --><a class="g-image-navigation-prev nav-to-left" href="{U_PREVIOUS_IMAGE}" title="{PREVIOUS_IMAGE_NAME}">{L_PREVIOUS_IMAGE}</a><!-- ENDIF -->
+			<!-- IF U_NEXT_IMAGE --><a class="g-image-navigation-next nav-to-right" href="{U_NEXT_IMAGE}" title="{NEXT_IMAGE_NAME}">{L_NEXT_IMAGE}</a><!-- ENDIF -->
 		</div>
+		<!-- ENDIF -->
+		<div class="g-current-image">{UC_IMAGE}</div>
+		<!-- IF S_IMAGE_REPORTED --><div class="center"><a href="{U_IMAGE_REPORTED}"><span class="error">{L_IMAGE_REPORTED}</span></a></div><!-- ENDIF -->
 	</div>
 </div>
 

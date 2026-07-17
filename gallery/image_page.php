@@ -193,13 +193,13 @@ $favorite_mode = (($image_data['favorite_id']) ? 'un' : '') . 'favorite';
 $watch_mode = (($image_data['watch_id']) ? 'un' : '') . 'watch';
 
 $template->assign_vars([
-	'U_VIEW_ALBUM'      => phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
+	'U_VIEW_ALBUM'        => phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
 
-	'UC_PREVIOUS_IMAGE' => (!empty($previous_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
-	'UC_PREVIOUS'       => (!empty($previous_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_prev', $previous_data['image_id'], $previous_data['image_name'], $album_id) : '',
-	'UC_IMAGE'          => phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, (substr($image_data['image_filename'], 0 -3) == 'gif'), false, '', !empty($next_data) ? $next_data['image_id'] : 0),
-	'UC_NEXT_IMAGE'     => (!empty($next_data) && phpbb_gallery_config::get('disp_nextprev_thumbnail')) ? phpbb_gallery_image::generate_link('thumbnail', 'image_page', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
-	'UC_NEXT'           => (!empty($next_data)) ? phpbb_gallery_image::generate_link('image_name_unbold', 'image_page_next', $next_data['image_id'], $next_data['image_name'], $album_id) : '',
+	'PREVIOUS_IMAGE_NAME' => $previous_data['image_name'] ?? '',
+	'U_PREVIOUS_IMAGE'    => (!empty($previous_data)) ? phpbb_gallery_url::append_sid('image_page', 'image_id=' . $previous_data['image_id']) : '',
+	'UC_IMAGE'            => phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, (substr($image_data['image_filename'], 0 -3) == 'gif'), false, '', !empty($next_data) ? $next_data['image_id'] : 0),
+	'NEXT_IMAGE_NAME'     => $next_data['image_name'] ?? '',
+	'U_NEXT_IMAGE'        => (!empty($next_data)) ? phpbb_gallery_url::append_sid('image_page', 'image_id=' . $next_data['image_id']) : '',
 
 	'EDIT_IMG'          => $user->img('icon_post_edit', 'EDIT_IMAGE'),
 	'DELETE_IMG'        => $user->img('icon_post_delete', 'DELETE_IMAGE'),

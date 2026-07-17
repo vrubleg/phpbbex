@@ -150,6 +150,7 @@ $lang = array_merge($lang, [
 	'NEW_COMMENT'                   => 'New Comment',
 	'NEW_IMAGES'                    => 'New images',
 	'NEWEST_PGALLERY'               => 'Our newest personal gallery %s',
+	'NEXT_IMAGE'                    => 'Next image',
 	'NO_ALBUMS'                     => 'There are no albums in this gallery.',
 	'NO_COMMENTS'                   => 'No comments yet',
 	'NO_IMAGES'                     => 'No images',
@@ -171,6 +172,7 @@ $lang = array_merge($lang, [
 	'POST_COMMENT'                  => 'Post a comment',
 	'POST_COMMENT_RATE_IMAGE'       => 'Post a comment and rate the image',
 	'POSTER'                        => 'Poster',
+	'PREVIOUS_IMAGE'                => 'Previous image',
 
 	'QUOTA_REACHED'                 => 'The number of images you are allowed to upload has been reached.',
 	'QUOTE_COMMENT'                 => 'Quote comment',
