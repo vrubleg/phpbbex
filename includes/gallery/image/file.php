@@ -419,7 +419,11 @@ class phpbb_gallery_image_file
 		{
 			foreach ($locations as $location)
 			{
-				@unlink(phpbb_gallery_url::path($location) . $file);
+				$path = phpbb_gallery_url::path($location) . $file;
+				if (file_exists($path))
+				{
+					@unlink($path);
+				}
 			}
 		}
 	}
