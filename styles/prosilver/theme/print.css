@@ -3,12 +3,14 @@
 
 
 /* General markup styles */
-* {
+*
+{
 	padding: 0;
 	margin: 0;
 }
 
-body {
+body
+{
 	font: 11pt Verdana, Arial, Helvetica, sans-serif;
 	color:#000000;
 }
@@ -17,12 +19,14 @@ a, a:visited, a:active { color: #000000; text-decoration: none; }
 
 img, .noprint, #sub-header, #sub-footer, .navbar, .box1, .divider, .signature { display: none; }
 /* Display smilies (Bug #47265) */
-.content img {
+.content img
+{
 	display: inline;
 }
 
 /* Container for the main body */
-#wrap {
+#wrap
+{
 	margin: 0 2em;
 }
 
@@ -30,7 +34,8 @@ p { font-size: 85%; }
 .copyright { font-size: 75%; }
 .page-number { float:right; width: auto; text-align: right; font-size: 75%; }
 
-h1, h2, h3, h1 a, h2 a, h3 a {
+h1, h2, h3, h1 a, h2 a, h3 a
+{
 	font-family: "Trebuchet MS",georgia,Verdana,Sans-serif;
 	color: #000000;
 	background: none;
@@ -42,7 +47,8 @@ h1 { font-size: 20pt; }
 h2 { font-size: 16pt; margin-top: 1em; }
 h3 { font-size: 14pt; margin-top: 1em; }
 
-.content {
+.content
+{
 	font-size: 11pt;
 	line-height: 14pt;
 	margin-bottom: 1em;
@@ -51,7 +57,8 @@ h3 { font-size: 14pt; margin-top: 1em; }
 }
 
 /* CSS2 Print tip from: http://www.alistapart.com/articles/goingtoprint/ */
-.postbody a:link, .postbody a:visited, .postbody a:hover, .postbody a:active {
+.postbody a:link, .postbody a:visited, .postbody a:hover, .postbody a:active
+{
 	text-decoration: underline;
 	padding: 0.1em 0.2em;
 	margin: -0.1em -0.2em;
@@ -60,25 +67,29 @@ h3 { font-size: 14pt; margin-top: 1em; }
 	font-size: 100%;
 }
 
-html>body .postbody a:link::after, html>body .postbody a:visited::after {
+html>body .postbody a:link::after, html>body .postbody a:visited::after
+{
 	content: " (" attr(href) ") ";
 	font-size: 90%;
 	text-decoration: none;
 }
 
-hr {
+hr
+{
 	height: 1px;
 	background-color: #999999;
 	border-width: 0;
 }
 
-.author {
+.author
+{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 75%;
 	margin-bottom: 0.6em;
 }
 
-.date {
+.date
+{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	float: right;
 	position: relative;
@@ -93,7 +104,8 @@ html>body .postbody .author a:visited::after,
 .postquote .quote-by a:link, .postquote .quote-by a:visited,
 html>body .postquote .quote-by a:link::after,
 html>body .postquote .quote-by a:visited::after,
-html>body .postbody h1 a:link::after, html>body .postbody h2 a:link::after {
+html>body .postbody h1 a:link::after, html>body .postbody h2 a:link::after
+{
 	text-decoration: none;
 	content: "";
 }
@@ -103,7 +115,8 @@ html>body .postbody h1 a:link::after, html>body .postbody h2 a:link::after {
 .grip-show { display:none; }
 
 /* Quote */
-.postquote, blockquote {
+.postquote, blockquote
+{
 	font-size: 85%;
 	margin: 1em 18% 1em 4%;
 	padding: 0.5em;
@@ -115,14 +128,16 @@ html>body .postbody h1 a:link::after, html>body .postbody h2 a:link::after {
 .postquote img { display: none; }
 .postquote span { display: block; }
 .postquote span .postquote { font-size: 100%; }
-.quote-by, blockquote cite {
+.quote-by, blockquote cite
+{
 	color: black;
 	display : block;
 	font-weight: bold;
 }
 
 /* List */
-ol, ul {
+ol, ul
+{
 	margin-left: 15pt
 }
 
