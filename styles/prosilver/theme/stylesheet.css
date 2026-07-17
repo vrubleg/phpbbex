@@ -3630,16 +3630,12 @@ fieldset.gallery input.readonly, fieldset.gallery textarea.readonly
 	background: #DCDCDC;
 }
 
-dd.g-lastimage
-{
-	padding-left: 5px;
-	width: 30%;
-}
-
-.g-lastimage-content
+ul.topiclist dd.g-lastimage
 {
 	display: flex;
 	align-items: center;
+	padding-left: 5px;
+	width: 30%;
 }
 
 .g-lastimage-thumbnail
@@ -3652,11 +3648,17 @@ dd.g-lastimage
 .g-lastimage-details
 {
 	display: block;
+	flex: 1 1 auto;
+	min-width: 0;
 }
 
-dd.g-moderation
+.g-lastimage-title
 {
-	width: 35%;
+	display: block;
+	font-weight: bold;
+	text-wrap: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 dd.g-rating, dd.g-comments

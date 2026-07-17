@@ -470,12 +470,12 @@ class ucp_gallery
 				'U_VIEW_ALBUM'      => phpbb_gallery_url::append_sid('album', 'album_id=' . $row['album_id']),
 				'ALBUM_DESC'        => generate_text_for_display($row['album_desc'], $row['album_desc_uid'], $row['album_desc_bitfield'], $row['album_desc_options']),
 
-				'UC_IMAGE_NAME'     => phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $row['album_last_image_id'], $row['album_last_image_name'], $row['album_id']),
+				'LAST_IMAGE_NAME'   => $row['album_last_image_name'],
 				'UC_FAKE_THUMBNAIL' => phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $row['album_last_image_id'], $row['album_last_image_name'], $row['album_id']),
 				'UPLOADER'          => get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
 				'LAST_IMAGE_TIME'   => $user->format_date($row['album_last_image_time']),
 				'LAST_IMAGE'        => $row['album_last_image_id'],
-				'U_IMAGE'           => phpbb_gallery_url::append_sid('image_page', 'image_id=' . $row['album_last_image_id']),
+				'U_LAST_IMAGE'      => phpbb_gallery_url::append_sid('image_page', 'image_id=' . $row['album_last_image_id']),
 			]);
 		}
 		$db->sql_freeresult($result);

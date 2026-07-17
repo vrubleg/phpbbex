@@ -903,13 +903,12 @@ class phpbb_gallery_album
 				$lastimage_album_id = $row['album_id_last_image'];
 				$lastimage_uc_fake_thumbnail = phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $lastimage_image_id, $lastimage_name, $lastimage_album_id);
 				$lastimage_uc_thumbnail = phpbb_gallery_image::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $lastimage_image_id, $lastimage_name, $lastimage_album_id);
-				$lastimage_uc_name = phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $lastimage_image_id, $lastimage_name, $lastimage_album_id);
 				$lastimage_uc_icon = phpbb_gallery_image::generate_link('lastimage_icon', phpbb_gallery_config::get('link_image_icon'), $lastimage_image_id, $lastimage_name, $lastimage_album_id);
 			}
 			else
 			{
 				$lastimage_time = $lastimage_image_id = $lastimage_album_id = 0;
-				$lastimage_name = $lastimage_uc_fake_thumbnail = $lastimage_uc_thumbnail = $lastimage_uc_name = $lastimage_uc_icon = '';
+				$lastimage_name = $lastimage_uc_fake_thumbnail = $lastimage_uc_thumbnail = $lastimage_uc_icon = '';
 			}
 
 			// Output moderator listing ... if applicable
@@ -946,11 +945,12 @@ class phpbb_gallery_album
 				'ALBUM_FOLDER_IMG_ALT'  => $user->lang[$folder_alt] ?? '',
 				'ALBUM_IMAGE'           => ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
 				'LAST_IMAGE_TIME'       => $lastimage_time,
+				'LAST_IMAGE_NAME'       => $lastimage_name,
 				'LAST_USER_FULL'        => get_username_string('full', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
 				'UC_THUMBNAIL'          => (phpbb_gallery_config::get('mini_thumbnail_disp')) ? $lastimage_uc_thumbnail : '',
 				'UC_FAKE_THUMBNAIL'     => (phpbb_gallery_config::get('mini_thumbnail_disp')) ? $lastimage_uc_fake_thumbnail : '',
-				'UC_IMAGE_NAME'         => $lastimage_uc_name,
 				'UC_LASTIMAGE_ICON'     => $lastimage_uc_icon,
+				'U_LAST_IMAGE'          => phpbb_gallery_url::append_sid('image_page', 'image_id=' . $lastimage_image_id),
 				'ALBUM_COLOUR'          => get_username_string('colour', $row['album_last_user_id'], $row['album_last_username'], $row['album_last_user_colour']),
 				'MODERATORS'            => $moderators_list,
 				'SUBALBUMS'             => $s_subalbums_list,

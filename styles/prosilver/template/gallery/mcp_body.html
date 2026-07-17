@@ -48,7 +48,7 @@
 							<dt>{L_IMAGES}</dt>
 							<!-- IF S_COMMENTS --><dd class="g-comments">{L_COMMENTS}</dd><!-- ENDIF -->
 							<!-- IF S_RATINGS --><dd class="g-rating">{L_RATING}</dd><!-- ENDIF -->
-							<!-- IF S_REPORTER --><dd class="moderation"><span>{L_REPORTER_AND_ALBUM}</span></dd><!-- ENDIF -->
+							<!-- IF S_REPORTER --><dd class="moderation">{L_REPORTER_AND_ALBUM}</dd><!-- ENDIF -->
 							<!-- IF S_STATUS --><dd class="g-status">{L_STATUS}</dd><!-- ENDIF -->
 							<!-- IF S_MARK --><dd class="mark">{L_MARK}</dd><!-- ENDIF -->
 						</dl>
@@ -70,9 +70,9 @@
 							<!-- IF S_RATINGS --><dd class="g-rating">{image_row.RATING}</dd><!-- ENDIF -->
 							<!-- IF S_REPORTER -->
 								<dd class="moderation">
-									<span>{L_REPORT_BY} {image_row.REPORTER}<br />
+									{L_REPORT_BY} {image_row.REPORTER}<br />
 									{image_row.REPORT_TIME}<br />
-									{L_ALBUM}: <a href="{U_VIEW_ALBUM}" style="font-weight: bold;">{ALBUM_NAME}</a></span>
+									{L_ALBUM}: <a href="{U_VIEW_ALBUM}" style="font-weight: bold;">{ALBUM_NAME}</a>
 								</dd>
 							<!-- ENDIF -->
 							<!-- IF S_STATUS --><dd class="g-status">{image_row.STATUS}<!-- IF image_row.S_REPORTED --><br />{L_IMAGE_REPORTED}<!-- ENDIF --></dd><!-- ENDIF -->
@@ -293,7 +293,7 @@
 					<!-- IF report_row.REPORT_MOD --><br />{L_REPORT_MOD} {report_row.REPORT_MOD}<!-- ENDIF --></span>
 				</dt>
 				<dd class="moderation">
-					<span>{L_REPORT_BY} {report_row.REPORTER}<br />
+					{L_REPORT_BY} {report_row.REPORTER}<br />
 					{report_row.REPORT_TIME}
 				</dd>
 			</dl>

@@ -99,10 +99,11 @@ else if (phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth-
 		'IMAGES'                => $images,
 		'UNAPPROVED_IMAGES'     => (phpbb_gallery::$auth->acl_check('m_status', phpbb_gallery_auth::PERSONAL_ALBUM)) ? $images_real - $images : '',
 		'LAST_IMAGE_TIME'       => $lastimage_time,
+		'LAST_IMAGE_NAME'       => $lastimage_name,
 		'LAST_USER_FULL'        => get_username_string('full', $lastimage_user_id, $lastimage_username, $lastimage_user_colour),
 		'UC_FAKE_THUMBNAIL'     => (phpbb_gallery_config::get('mini_thumbnail_disp')) ? phpbb_gallery_image::generate_link('fake_thumbnail', phpbb_gallery_config::get('link_thumbnail'), $lastimage_image_id, $lastimage_name, $lastimage_album_id) : '',
-		'UC_IMAGE_NAME'         => phpbb_gallery_image::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $lastimage_image_id, $lastimage_name, $lastimage_album_id),
 		'UC_LASTIMAGE_ICON'     => phpbb_gallery_image::generate_link('lastimage_icon', phpbb_gallery_config::get('link_image_icon'), $lastimage_image_id, $lastimage_name, $lastimage_album_id),
+		'U_LAST_IMAGE'          => $last_image_page_url,
 	]);
 
 	// Assign subforums loop for style authors
