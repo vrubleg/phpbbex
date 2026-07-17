@@ -155,7 +155,6 @@ class phpbb_gallery_config
 	{
 		global $cache;
 
-		$cache->destroy('class_loader');
 		$cache->destroy(self::$cache_file);
 	}
 
