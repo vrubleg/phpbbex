@@ -212,7 +212,6 @@ $template->assign_vars([
 
 	'IMAGE_NAME'        => $image_data['image_name'],
 	'IMAGE_DESC'        => $image_desc,
-	'IMAGE_BBCODE'      => ($config['allow_bbcode']) ? '[album]' . $image_id . '[/album]' : '',
 	'IMAGE_IMGURL_BBCODE'   => (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}&amp;mode=thumbnail", true, '') . '[/img][/url]' : '',
 	'IMAGE_URL'         => (phpbb_gallery_config::get('disp_image_url')) ? phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') : '',
 	'IMAGE_TIME'        => $user->format_date($image_data['image_time']),

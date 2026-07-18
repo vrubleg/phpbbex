@@ -99,35 +99,6 @@ class acp_gallery_config
 					// Changing the value, casted by int to not mess up anything
 					$config_value = (int) array_sum(request_var($config_name, [0]));
 				}
-				if ($config_name == 'link_thumbnail')
-				{
-					$update_bbcode = request_var('update_bbcode', '');
-					// Update the BBCode
-					if ($update_bbcode)
-					{
-						if (!class_exists('acp_bbcodes'))
-						{
-							phpbb_gallery_url::_include('acp/acp_bbcodes', 'phpbb');
-						}
-						$acp_bbcodes = new acp_bbcodes();
-						$bbcode_match = '[album]{NUMBER}[/album]';
-						$bbcode_tpl = $this->bbcode_tpl($config_value);
-
-						$sql_ary = $acp_bbcodes->build_regexp($bbcode_match, $bbcode_tpl);
-						$sql_ary = array_merge($sql_ary, [
-							'bbcode_match'          => $bbcode_match,
-							'bbcode_tpl'            => $bbcode_tpl,
-							'display_on_posting'    => true,
-							'bbcode_helpline'       => 'GALLERY_HELPLINE_ALBUM',
-						]);
-
-						$sql = 'UPDATE ' . BBCODES_TABLE . '
-							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-							WHERE bbcode_tag = '" . $sql_ary['bbcode_tag'] . "'";
-						$db->sql_query($sql);
-						$cache->destroy('sql', BBCODES_TABLE);
-					}
-				}
 				phpbb_gallery_config::set($config_name, $config_value);
 			}
 		}
@@ -273,8 +244,7 @@ class acp_gallery_config
 		$sort_order_options .= '<option' . (($value == 'image') ? ' selected="selected"' : '') . " value='image'>" . $user->lang['UC_LINK_IMAGE'] . '</option>';
 		$sort_order_options .= '<option' . (($value == 'none') ? ' selected="selected"' : '') . " value='none'>" . $user->lang['UC_LINK_NONE'] . '</option>';
 
-		return "<select name='config[{$key}]' id='{$key}'>{$sort_order_options}</select>"
-			. (($key == 'link_thumbnail') ? '<br /><input class="checkbox" type="checkbox" name="update_bbcode" id="update_bbcode" value="update_bbcode" /><label for="update_bbcode">' .  $user->lang['UPDATE_BBCODE'] . '</label>' : '');
+		return "<select name='config[{$key}]' id='{$key}'>{$sort_order_options}</select>";
 	}
 
 	/**
@@ -319,25 +289,6 @@ class acp_gallery_config
 
 		// Cheating is an evil-thing, but most times it's successful, that's why it is used.
 		return "<input type='hidden' name='config[{$key}]' value='{$value}' /><select name='" . $key . "[]' multiple='multiple' id='{$key}'>{$rrc_display_options}</select>";
-	}
-
-	/**
-	* BBCode-Template
-	*/
-	function bbcode_tpl($value)
-	{
-		$gallery_url = phpbb_gallery_url::path('full');
-
-		if ($value == 'image_page')
-		{
-			$bbcode_tpl = '<a href="' . $gallery_url . 'image_page.php?image_id={NUMBER}"><img src="' . $gallery_url . 'image.php?mode=thumbnail&amp;image_id={NUMBER}" alt="{NUMBER}" /></a>';
-		}
-		else
-		{
-			$bbcode_tpl = '<a href="' . $gallery_url . 'image.php?image_id={NUMBER}"><img src="' . $gallery_url . 'image.php?mode=thumbnail&amp;image_id={NUMBER}" alt="{NUMBER}" /></a>';
-		}
-
-		return $bbcode_tpl;
 	}
 
 	var $display_vars = [

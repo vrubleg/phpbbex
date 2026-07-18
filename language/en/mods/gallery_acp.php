@@ -368,7 +368,6 @@ $lang = array_merge($lang, [
 	'UC_THUMBNAIL'                  => 'Thumbnail',
 	'UC_THUMBNAIL_EXP'              => 'Also used for the BBCode.',
 	'UNLOCKED'                      => 'Unlocked',
-	'UPDATE_BBCODE'                 => 'Update BBCode',
 	'UPLOAD_IMAGES'                 => 'Upload multiple images',
 
 	'VIEW_IMAGE_URL'                => 'View Image-URL on imagepage',

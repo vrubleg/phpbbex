@@ -415,8 +415,6 @@ class install_install extends module
 				'module_auth'       => 'acl_a_viewlogs',
 			]);
 
-			// Add album-BBCode
-			add_bbcode('album');
 			$s_hidden_fields = '';
 			$url = append_sid($this->p_master->module_url, "mode={$mode}&amp;sub=final");
 		}

@@ -232,10 +232,6 @@ class install_uninstall extends module
 		// Additionally remove sql cache
 		$cache->destroy('sql', MODULES_TABLE);
 
-		$db->sql_query('DELETE FROM ' . BBCODES_TABLE . "
-			WHERE bbcode_tag = 'album'");
-		$cache->destroy('sql', BBCODES_TABLE);
-
 		$template->assign_vars([
 			'BODY'      => $user->lang['STAGE_CREATE_TABLE_EXPLAIN'],
 			'L_SUBMIT'  => $user->lang['NEXT_STEP'],

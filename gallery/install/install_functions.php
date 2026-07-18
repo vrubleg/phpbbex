@@ -100,68 +100,6 @@ function adm_back_link($u_action)
 	return '<br /><br /><a href="' . $u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>';
 }
 
-/*
-* Advanced: Add BBCode
-* @param    string  $album_bbcode   "[$album_bbcode]"
-*/
-function add_bbcode($album_bbcode)
-{
-	global $cache, $config, $db;
-
-	require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
-	$acp_bbcodes = new acp_bbcodes();
-	$gallery_url = phpbb_gallery_url::path('full');
-
-	$bbcode_match = '[' . $album_bbcode . ']{NUMBER}[/' . $album_bbcode . ']';
-	$bbcode_tpl = '<a href="' . $gallery_url . 'image.php?image_id={NUMBER}"><img src="' . $gallery_url . 'image.php?mode=thumbnail&amp;image_id={NUMBER}" alt="{NUMBER}" /></a>';
-
-	$sql_ary = $acp_bbcodes->build_regexp($bbcode_match, $bbcode_tpl);
-	$sql_ary = array_merge($sql_ary, [
-		'bbcode_match'          => $bbcode_match,
-		'bbcode_tpl'            => $bbcode_tpl,
-		'display_on_posting'    => true,
-		'bbcode_helpline'       => 'GALLERY_HELPLINE_ALBUM',
-	]);
-
-	$sql = 'UPDATE ' . BBCODES_TABLE . '
-		SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
-		WHERE bbcode_tag = '" . $db->sql_escape($sql_ary['bbcode_tag']) . "'";
-	$db->sql_query($sql);
-
-	if ($db->sql_affectedrows() <= 1)
-	{
-		$sql = 'SELECT bbcode_id
-			FROM ' . BBCODES_TABLE . "
-			WHERE bbcode_tag = '" . $db->sql_escape($sql_ary['bbcode_tag']) . "'";
-		$result = $db->sql_query($sql);
-		$bbcode_id = (int) $db->sql_fetchfield('bbcode_id');
-		$db->sql_freeresult($result);
-
-		if (!$bbcode_id)
-		{
-			$sql = 'SELECT bbcode_id
-				FROM ' . BBCODES_TABLE . "
-				ORDER BY bbcode_id DESC";
-			$result = $db->sql_query_limit($sql, 1);
-			$max_bbcode_id = (int) $db->sql_fetchfield('bbcode_id') + 1;
-			$db->sql_freeresult($result);
-
-			if ($max_bbcode_id <= NUM_CORE_BBCODES)
-			{
-				$max_bbcode_id = NUM_CORE_BBCODES + 1;
-			}
-
-			// The table does NOT have autoincrement because of the core-bbcodes, so we need to add it here.
-			$sql_ary['bbcode_id'] = $max_bbcode_id;
-			$sql = 'INSERT INTO ' . BBCODES_TABLE . '
-				' . $db->sql_build_array('INSERT', $sql_ary);
-			$db->sql_query($sql);
-		}
-	}
-
-	$cache->destroy('sql', BBCODES_TABLE);
-}
-
 /**
 * Recalculate Binary Tree
 *

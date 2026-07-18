@@ -622,6 +622,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	// Remove obsolete Gallery stuff.
 	remove_module('acp', 'gallery', 'import_images');
 	remove_permissions(['a_gallery_import']);
+	$db->sql_query("DELETE FROM " . BBCODES_TABLE . " WHERE bbcode_tag = 'album'");
 
 	$db->sql_query("UPDATE " . MODULES_TABLE . "
 		SET module_display = 0

@@ -20,8 +20,6 @@ define('GALLERY_INSTALL_PATH', PHPBB_ROOT_PATH . 'gallery/install/');
 require_once(PHPBB_ROOT_PATH . 'common.php');
 require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_modules.php');
-require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
-require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 require_once(GALLERY_INSTALL_PATH . 'dbal_schema.php');
 require_once(PHPBB_ROOT_PATH . 'includes/umil.php');

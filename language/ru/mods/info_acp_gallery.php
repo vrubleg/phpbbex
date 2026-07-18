@@ -32,7 +32,6 @@ $lang = array_merge($lang, [
 
 	'GALLERY'                           => 'Галерея',
 	'GALLERY_EXPLAIN'                   => 'Фотогалерея',
-	'GALLERY_HELPLINE_ALBUM'            => 'Фото из галереи: [album]ID фото[/album]',
 
 	'IMAGES'                            => 'Фото',
 	'IMG_BUTTON_UPLOAD_IMAGE'           => 'Загрузка фото',

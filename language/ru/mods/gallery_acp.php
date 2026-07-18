@@ -368,7 +368,6 @@ $lang = array_merge($lang, [
 	'UC_THUMBNAIL'                  => 'Ссылка — миниатюра',
 	'UC_THUMBNAIL_EXP'              => 'Также используется для BBCode.',
 	'UNLOCKED'                      => 'Открыт',
-	'UPDATE_BBCODE'                 => 'Обновить BBCode',
 	'UPLOAD_IMAGES'                 => 'Количество одновременно загружаемых фотографий',
 
 	'VIEW_IMAGE_URL'                => 'Выводить ссылку на фото (для копирования)',
