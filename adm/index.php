@@ -83,15 +83,6 @@ function adm_page_header($page_title)
 
 	define('HEADER_INC', true);
 
-	// gzip_compression
-	if ($config['gzip_compress'])
-	{
-		if (@extension_loaded('zlib') && !headers_sent())
-		{
-			ob_start('ob_gzhandler');
-		}
-	}
-
 	$template->assign_vars([
 		'PAGE_TITLE'            => $page_title,
 		'USERNAME'              => $user->data['username'],

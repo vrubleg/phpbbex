@@ -414,18 +414,6 @@ class acp_board
 				];
 			break;
 
-			case 'server':
-				$display_vars = [
-					'title' => 'ACP_SERVER_SETTINGS',
-					'vars'  => [
-						'legend1'               => 'ACP_SERVER_SETTINGS',
-						'gzip_compress'         => ['lang' => 'ENABLE_GZIP',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
-
-						'legend2'               => 'ACP_SUBMIT_CHANGES',
-					]
-				];
-			break;
-
 			case 'security':
 				$display_vars = [
 					'title' => 'ACP_SECURITY_SETTINGS',

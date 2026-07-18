@@ -134,7 +134,6 @@ $lang = array_merge($lang, [
 
 	'ACP_SECURITY_SETTINGS'     => 'Security settings',
 	'ACP_SERVER_CONFIGURATION'  => 'Server configuration',
-	'ACP_SERVER_SETTINGS'       => 'Server settings',
 	'ACP_SIGNATURE_SETTINGS'    => 'Signature settings',
 	'ACP_SMILIES'               => 'Smilies',
 	'ACP_STYLE_SETTINGS'        => 'Display settings',

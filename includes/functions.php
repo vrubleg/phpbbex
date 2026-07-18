@@ -3389,29 +3389,6 @@ function page_header($page_title = '', $display_online_list = true)
 
 	define('HEADER_INC', true);
 
-	// gzip_compression
-	if ($config['gzip_compress'])
-	{
-		// to avoid partially compressed output resulting in blank pages in
-		// the browser or error messages, compression is disabled in a few cases:
-		//
-		// 1) if headers have already been sent, this indicates plaintext output
-		//    has been started so further content must not be compressed
-		// 2) the length of the current output buffer is non-zero. This means
-		//    there is already some uncompressed content in this output buffer
-		//    so further output must not be compressed
-		// 3) if more than one level of output buffering is used because we
-		//    cannot test all output buffer level content lengths. One level
-		//    could be caused by php.ini output_buffering. Anything
-		//    beyond that is manual, so the code wrapping phpBB in output buffering
-		//    can easily compress the output itself.
-		//
-		if (@extension_loaded('zlib') && !headers_sent() && ob_get_level() <= 1 && ob_get_length() == 0)
-		{
-			ob_start('ob_gzhandler');
-		}
-	}
-
 	// Generate logged in/logged out status
 	if ($user->data['user_id'] != ANONYMOUS)
 	{

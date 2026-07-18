@@ -177,9 +177,4 @@ $db->sql_close();
 header('Content-Type: text/css; charset=UTF-8');
 header('Cache-Control: public, max-age=' . (7*86400));
 
-if ($config['gzip_compress'] && @extension_loaded('zlib') && !headers_sent())
-{
-	ob_start('ob_gzhandler');
-}
-
 echo $theme_data;

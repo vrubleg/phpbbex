@@ -443,14 +443,6 @@ $lang = array_merge($lang, [
 	'YES_READ_MARKING_EXPLAIN'      => 'Stores read/unread status information in the DB for registered users. If disabled, posts are always marked read.',
 ]);
 
-// Server Settings
-$lang = array_merge($lang, [
-	'ACP_SERVER_SETTINGS_EXPLAIN'   => 'Here you define server settings.',
-
-	'ENABLE_GZIP'               => 'Enable GZip compression',
-	'ENABLE_GZIP_EXPLAIN'       => 'Generated content will be compressed prior to sending it to the user. This reduces network traffic but will also increase CPU usage.',
-]);
-
 // Security Settings
 $lang = array_merge($lang, [
 	'ACP_SECURITY_SETTINGS_EXPLAIN'     => 'Here you are able to define session and login related settings.',

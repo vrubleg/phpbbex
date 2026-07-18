@@ -115,7 +115,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_co
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_load_upd', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_max_chars', '14');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_min_chars', '3');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbnail', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_display_inlined', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_link_height', '0');

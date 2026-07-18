@@ -664,6 +664,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'merge_no_topics',
 		'chg_passforce',
 		'active_sessions',
+		'gzip_compress',
 		'limit_load',
 		'limit_search_load',
 	]);
@@ -693,6 +694,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	// Remove obsolete modules.
 
 	remove_module('acp', 'board', 'auth');
+	remove_module('acp', 'board', 'server');
 	remove_module('acp', 'update', 'version_check');
 	remove_module('acp', 'send_statistics', 'send_statistics');
 	remove_module('acp', 'board', 'cookie');
