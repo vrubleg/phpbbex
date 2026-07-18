@@ -221,10 +221,6 @@ class phpbb_gallery_album
 			{
 				$list = false;
 			}
-			else if (($album_user_id != self::PUBLIC_ALBUM) && ($row['parent_id'] == 0))
-			{
-				$disabled = true;
-			}
 
 			if ($list)
 			{
