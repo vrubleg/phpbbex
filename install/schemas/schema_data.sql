@@ -1,5 +1,4 @@
 # -- Config
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_sessions', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '365');
@@ -75,7 +74,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_3d_nois
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('captcha_gd_fonts', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('confirm_refresh', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('check_attachment_content', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('chg_passforce', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('copyright_notice', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('database_gc', '604800');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('default_dateformat', '|d.m.Y|{, H:i}');
@@ -117,7 +115,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_co
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_load_upd', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_max_chars', '14');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_min_chars', '3');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('gzip_compress', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbnail', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_display_inlined', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_link_height', '0');
@@ -142,8 +139,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '7');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_load', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_search_load', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_birthdays', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_memberlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_viewprofile', '1');
@@ -231,7 +226,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_desc', '{L_CONFIG_SITE_DESC}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('sitename', '{L_CONFIG_SITENAME}');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('skip_typical_notices', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smilies_per_page', '50');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_auth_method', 'PLAIN');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_delivery', '0');
@@ -477,11 +471,11 @@ INSERT INTO phpbb_forums (forum_name, forum_desc, left_id, right_id, parent_id, 
 
 INSERT INTO phpbb_forums (forum_name, forum_desc, left_id, right_id, parent_id, forum_type, forum_posts, forum_topics, forum_topics_real, forum_last_post_id, forum_last_poster_id, forum_last_poster_name, forum_last_poster_colour, forum_last_post_subject, forum_last_post_time, forum_link, forum_image, forum_rules, forum_rules_link, forum_rules_uid, forum_desc_uid, prune_days, prune_viewed, forum_parents, forum_flags) VALUES ('{L_FORUMS_TEST_FORUM_TITLE}', '{L_FORUMS_TEST_FORUM_DESC}', 2, 3, 1, 1, 1, 1, 1, 1, 2, 'Admin', 'AA0000', '{L_TOPICS_TOPIC_TITLE}', 972086460, '', '', '', '', '', '', 0, 0, '', 16);
 
-# -- Users / Anonymous user
-INSERT INTO phpbb_users (user_type, group_id, username, username_clean, user_regdate, user_password, user_email, user_lang_code, user_style, user_rank, user_colour, user_topics, user_posts, user_permissions, user_ip, user_birthday, user_avatar, user_sig, user_sig_bbcode_uid, user_from, user_icq, user_jabber, user_website, user_occupation, user_about, user_actkey, user_newpasswd, user_allow_massemail) VALUES (2, 1, 'Anonymous', 'anonymous', 0, '', '', 'en', 1, 0, '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0);
+# -- Anonymous user
+INSERT INTO phpbb_users SET user_type = 2, group_id = 1, user_permissions = '', username = 'Anonymous', username_clean = 'anonymous', user_lang_code = 'en', user_style = 1, user_allow_massemail = 0;
 
-# -- username: Admin    password: admin (change this or remove it once everything is working!)
-INSERT INTO phpbb_users (user_type, group_id, username, username_clean, user_regdate, user_password, user_email, user_lang_code, user_style, user_rank, user_colour, user_topics, user_posts, user_permissions, user_ip, user_birthday, user_avatar, user_sig, user_sig_bbcode_uid, user_from, user_icq, user_jabber, user_website, user_occupation, user_about, user_actkey, user_newpasswd) VALUES (3, 5, 'Admin', 'admin', 0, '21232f297a57a5a743894a0e4a801fc3', 'admin@yourdomain.com', 'en', 1, 1, 'AA0000', 1, 1, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+# -- Administrator placeholder
+INSERT INTO phpbb_users SET user_type = 3, group_id = 5, user_permissions = '', username = 'Admin', username_clean = 'admin', user_topics = 1, user_posts = 1, user_lang_code = 'en', user_style = 1, user_rank = 1, user_colour = 'AA0000';
 
 # -- Groups
 INSERT INTO phpbb_groups (group_name, group_type, group_founder_manage, group_colour, group_legend, group_desc, group_desc_uid) VALUES ('GUESTS', 3, 0, '', 0, '', '');

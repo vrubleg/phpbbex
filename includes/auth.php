@@ -924,7 +924,7 @@ class phpbb_auth
 
 		$username_clean = utf8_clean_string($username);
 
-		$sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
+		$sql = 'SELECT user_id, username, user_password, user_password_reset, user_email, user_type, user_login_attempts
 			FROM ' . USERS_TABLE . "
 			WHERE ";
 		$where_username = "username_clean = '" . $db->sql_escape($username_clean) . "'";
@@ -1038,12 +1038,12 @@ class phpbb_auth
 			}
 		}
 
-		// If the password convert flag is set ask the user to request a new password
-		if ($row['user_pass_convert'])
+		// Require email-based password recovery before allowing the user to log in.
+		if ($row['user_password_reset'])
 		{
 			return [
-				'status'        => LOGIN_ERROR_PASSWORD_CONVERT,
-				'error_msg'     => 'LOGIN_ERROR_PASSWORD_CONVERT',
+				'status'        => LOGIN_ERROR_PASSWORD_RESET_REQUIRED,
+				'error_msg'     => 'LOGIN_ERROR_PASSWORD_RESET_REQUIRED',
 				'user_row'      => $row,
 			];
 		}

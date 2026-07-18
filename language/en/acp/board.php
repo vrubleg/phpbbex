@@ -69,8 +69,6 @@ $lang = array_merge($lang, [
 	'STYLE_BACK_TO_TOP'                 => '"Back to top" button',
 	'STYLE_ROUNDED_CORNERS'             => 'Rounded corners',
 	'STYLE_NEW_YEAR'                    => 'Winter-style headerbar',
-	'SKIP_TYPICAL_NOTICES'              => 'Skip typical notice pages',
-	'SKIP_TYPICAL_NOTICES_EXPLAIN'      => 'Redirect instantly after posting, voting, marking topics read, login or logout.',
 	'POSTING_TOPIC_REVIEW'              => 'Display topic review panel at posting page',
 
 	'STYLE_SETTINGS_INDEX'              => 'Board Index',
@@ -423,13 +421,9 @@ $lang = array_merge($lang, [
 
 // Load Settings
 $lang = array_merge($lang, [
-	'ACP_LOAD_SETTINGS_EXPLAIN' => 'Here you can enable and disable certain board functions to reduce the amount of processing required. On most servers there is no need to disable any functions. However on certain systems or in shared hosting environments it may be beneficial to disable capabilities you do not really need. You can also specify limits for system load and active sessions beyond which the board will go offline.',
+	'ACP_LOAD_SETTINGS_EXPLAIN' => 'Here you can enable and disable certain board functions to reduce the amount of processing required. On most servers there is no need to disable any functions. However on certain systems or in shared hosting environments it may be beneficial to disable capabilities you do not really need.',
 
 	'CUSTOM_PROFILE_FIELDS'         => 'Custom profile fields',
-	'LIMIT_LOAD'                    => 'Limit system load',
-	'LIMIT_LOAD_EXPLAIN'            => 'If the system’s 1-minute load average exceeds this value the board will automatically go offline. A value of 1.0 equals ~100% utilisation of one processor. This only functions on UNIX based servers and where this information is accessible. The value here resets itself to 0 if phpBBex was unable to get the load limit.',
-	'LIMIT_SESSIONS'                => 'Limit sessions',
-	'LIMIT_SESSIONS_EXPLAIN'        => 'If the number of sessions exceeds this value within a one minute period the board will go offline. Set to 0 for unlimited sessions.',
 	'LOAD_CPF_MEMBERLIST'           => 'Allow styles to display custom profile fields in memberlist',
 	'LOAD_CPF_VIEWPROFILE'          => 'Display custom profile fields in user profiles',
 	'LOAD_CPF_VIEWTOPIC'            => 'Display custom profile fields on topic pages',
@@ -447,14 +441,6 @@ $lang = array_merge($lang, [
 	'YES_READ_MARKING_EXPLAIN'      => 'Stores read/unread status information in the DB for registered users. If disabled, posts are always marked read.',
 ]);
 
-// Server Settings
-$lang = array_merge($lang, [
-	'ACP_SERVER_SETTINGS_EXPLAIN'   => 'Here you define server settings.',
-
-	'ENABLE_GZIP'               => 'Enable GZip compression',
-	'ENABLE_GZIP_EXPLAIN'       => 'Generated content will be compressed prior to sending it to the user. This reduces network traffic but will also increase CPU usage.',
-]);
-
 // Security Settings
 $lang = array_merge($lang, [
 	'ACP_SECURITY_SETTINGS_EXPLAIN'     => 'Here you are able to define session and login related settings.',
@@ -468,8 +454,6 @@ $lang = array_merge($lang, [
 	'CLASS_C'                       => 'A.B.C',
 	'EMAIL_CHECK_MX'                => 'Check email domain for valid MX record',
 	'EMAIL_CHECK_MX_EXPLAIN'        => 'If enabled, the email domain provided on registration and profile changes is checked for a valid MX record.',
-	'FORCE_PASS_CHANGE'             => 'Force password change',
-	'FORCE_PASS_CHANGE_EXPLAIN'     => 'Require user to change their password after a set number of days. Setting this value to 0 disables this behaviour.',
 	'FORWARDED_FOR_VALID'           => 'Validate <var>X_FORWARDED_FOR</var> header',
 	'FORWARDED_FOR_VALID_EXPLAIN'   => 'Sessions will only be continued if the sent <var>X_FORWARDED_FOR</var> header equals the one sent with the previous request. Bans will be checked against IPs in <var>X_FORWARDED_FOR</var> too.',
 	'IP_VALID'                      => 'Session IP validation',

@@ -79,7 +79,7 @@ class ucp_remind
 			$user_actkey = gen_rand_string(mt_rand(6, 10));
 
 			$sql = 'UPDATE ' . USERS_TABLE . "
-				SET user_newpasswd = '" . $db->sql_escape(phpbb_hash($user_password)) . "', user_actkey = '" . $db->sql_escape($user_actkey) . "'
+				SET user_password_pending = '" . $db->sql_escape(phpbb_hash($user_password)) . "', user_actkey = '" . $db->sql_escape($user_actkey) . "'
 				WHERE user_id = " . $user_row['user_id'];
 			$db->sql_query($sql);
 

@@ -38,7 +38,7 @@ foreach ($curr_keys as $key)
 	}
 }
 
-if (!$allowed)
+if (!$allowed && !defined('DEBUG_EXTRA'))
 {
 	http_response_code(403);
 	die('Create an empty file at /cache/allow_upd_' . $curr_keys[0] . '.key to allow running the script.');
@@ -513,7 +513,6 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	set_config('allow_quick_post_attachbox', '1');
 	set_config('allow_quick_post_smilies', '1');
 	set_config('posting_topic_review', '1');
-	set_config('skip_typical_notices', '1');
 
 	// Update DB schema version.
 
@@ -904,6 +903,12 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'override_user_dateformat',
 		'merge_no_forums',
 		'merge_no_topics',
+		'chg_passforce',
+		'active_sessions',
+		'gzip_compress',
+		'limit_load',
+		'limit_search_load',
+		'skip_typical_notices',
 	]);
 
 	// New defaults.
@@ -931,6 +936,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	// Remove obsolete modules.
 
 	remove_module('acp', 'board', 'auth');
+	remove_module('acp', 'board', 'server');
 	remove_module('acp', 'update', 'version_check');
 	remove_module('acp', 'send_statistics', 'send_statistics');
 	remove_module('acp', 'board', 'cookie');
@@ -966,6 +972,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	$db->sql_return_on_error(true);
 
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_passchg user_password_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_pass_convert user_password_reset tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_newpasswd user_password_pending varchar(40) DEFAULT '' NOT NULL AFTER user_password");
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_last_confirm_key');

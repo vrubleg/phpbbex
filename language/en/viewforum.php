@@ -35,7 +35,6 @@ $lang = array_merge($lang, [
 
 	'POST_FORUM_LOCKED'     => 'Forum is locked',
 
-	'TOPICS_MARKED'         => 'The topics for this forum have now been marked read.',
 
 	'UNREAD_POSTS_LOCKED'   => 'Unread posts [ Locked ]',
 

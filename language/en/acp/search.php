@@ -48,9 +48,6 @@ $lang = array_merge($lang, [
 	'INDEXING_IN_PROGRESS'                  => 'Indexing in progress',
 	'INDEXING_IN_PROGRESS_EXPLAIN'          => 'The search backend is currently indexing all posts on the board. This can take from a few minutes to a few hours depending on your board’s size.',
 
-	'LIMIT_SEARCH_LOAD'                     => 'Search page system load limit',
-	'LIMIT_SEARCH_LOAD_EXPLAIN'             => 'If the 1 minute system load exceeds this value the search page will go offline, 1.0 equals ~100% utilisation of one processor. This only functions on UNIX based servers.',
-
 	'MAX_SEARCH_CHARS'                      => 'Max characters indexed by search',
 	'MAX_SEARCH_CHARS_EXPLAIN'              => 'Words with no more than this many characters will be indexed for searching.',
 	'MAX_NUM_SEARCH_KEYWORDS'               => 'Maximum number of allowed keywords',

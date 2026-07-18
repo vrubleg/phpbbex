@@ -177,15 +177,6 @@ $feed->close();
 
 // Output page
 
-// gzip_compression
-if ($config['gzip_compress'])
-{
-	if (@extension_loaded('zlib') && !headers_sent())
-	{
-		ob_start('ob_gzhandler');
-	}
-}
-
 // IF debug extra is enabled and admin want to "explain" the page we need to set other headers...
 if (defined('DEBUG_EXTRA') && request_var('explain', 0) && $auth->acl_get('a_'))
 {

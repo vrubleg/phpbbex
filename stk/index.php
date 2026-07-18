@@ -168,16 +168,14 @@ else
 		$template->assign_var('GEN_PASS_FILE_EXPLAIN', sprintf($user->lang['GEN_PASS_FILE_EXPLAIN'], append_sid(STK_INDEX, ['action' => 'genpasswdfile'])));
 
 		// A user can potentially access this file directly
-		login_box('', $user->lang['STK_NON_LOGIN'], '', false, false);
+		login_box('', $user->lang['STK_NON_LOGIN']);
 	}
 
 	// This requires that the user is logged in as an administrator (like how the ACP requires two logins)
 	if (!isset($user->data['session_admin']) || !$user->data['session_admin'])
 	{
 		// Proceed to ACP is misleading
-		$user->lang['PROCEED_TO_ACP'] = $user->lang['PROCEED_TO_STK'];
-
-		login_box('', $user->lang['STK_FOUNDER_ONLY'], $user->lang['LOGIN_STK_SUCCESS'], true, false);
+		login_box('', $user->lang['STK_FOUNDER_ONLY'], true);
 	}
 
 	// Only Board Founders may use the STK

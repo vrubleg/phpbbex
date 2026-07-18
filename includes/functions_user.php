@@ -165,29 +165,28 @@ function user_add($user_row, $cp_data = false)
 	}
 
 	$sql_ary = [
-		'username'          => $user_row['username'],
-		'username_clean'    => $username_clean,
-		'user_password'     => $user_row['user_password'] ?? '',
-		'user_pass_convert' => 0,
-		'user_email'        => strtolower($user_row['user_email']),
-		'group_id'          => $user_row['group_id'],
-		'user_type'         => $user_row['user_type'],
+		'username'              => $user_row['username'],
+		'username_clean'        => $username_clean,
+		'user_password'         => $user_row['user_password'] ?? '',
+		'user_email'            => strtolower($user_row['user_email']),
+		'group_id'              => $user_row['group_id'],
+		'user_type'             => $user_row['user_type'],
 	];
 
 	// These are the additional vars able to be specified
 	$additional_vars = [
-		'user_permissions'  => '',
-		'user_timezone'     => $config['board_timezone'],
-		'user_lang_code'    => $config['default_lang_code'],
-		'user_style'        => (int) $config['default_style'],
-		'user_actkey'       => '',
-		'user_ip'           => '',
-		'user_browser_ua'   => '',
-		'user_regdate'      => time(),
-		'user_passchg'      => time(),
-		'user_options'      => 233343,
-		// We do not set the new flag here - registration scripts need to specify it
-		'user_new'          => 0,
+		'user_password_time'    => time(),
+		'user_password_reset'   => empty($user_row['user_password']),
+		'user_permissions'      => '',
+		'user_timezone'         => $config['board_timezone'],
+		'user_lang_code'        => $config['default_lang_code'],
+		'user_style'            => (int) $config['default_style'],
+		'user_actkey'           => '',
+		'user_ip'               => '',
+		'user_browser_ua'       => '',
+		'user_regdate'          => time(),
+		'user_options'          => 233343,
+		'user_new'              => 0,
 
 		'user_inactive_reason'  => 0,
 		'user_inactive_time'    => 0,

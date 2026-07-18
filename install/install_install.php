@@ -806,7 +806,7 @@ class install_install extends module
 				WHERE config_name = 'newest_username'",
 
 			'UPDATE ' . $data['table_prefix'] . "users
-				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_ip = '" . $db->sql_escape($user_ip) . "', user_lang_code = '" . $db->sql_escape($data['default_lang_code']) . "', user_email='" . $db->sql_escape($data['board_email']) . "', username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
+				SET username = '" . $db->sql_escape($data['admin_name']) . "', user_password='" . $db->sql_escape(md5($data['admin_pass1'])) . "', user_password_time = {$current_time}, user_ip = '" . $db->sql_escape($user_ip) . "', user_lang_code = '" . $db->sql_escape($data['default_lang_code']) . "', user_email='" . $db->sql_escape($data['board_email']) . "', username_clean = '" . $db->sql_escape(utf8_clean_string($data['admin_name'])) . "'
 				WHERE username = 'Admin'",
 
 			'UPDATE ' . $data['table_prefix'] . "moderator_cache

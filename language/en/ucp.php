@@ -155,7 +155,6 @@ $lang = array_merge($lang, [
 	'FOLDER_REMOVED'            => 'Folder successfully removed.',
 	'FOLDER_STATUS_MSG'         => 'Folder is %1$d%% full (%2$d from %3$d messages stored)',
 	'FORWARD_PM'                => 'Forward PM',
-	'FORCE_PASSWORD_EXPLAIN'    => 'Before you may continue browsing the board you are required to change your password.',
 	'FRIEND_MESSAGE'            => 'Message from friend',
 	'FRIENDS'                   => 'Friends',
 	'FRIENDS_EXPLAIN'           => 'Friends enable you quick access to members you communicate with frequently. If the template has relevant support any posts made by a friend may be highlighted.',
@@ -185,9 +184,7 @@ $lang = array_merge($lang, [
 
 	'LANGUAGE'                  => 'Language',
 	'LOGIN_EXPLAIN_UCP'         => 'Login to access the User Control Panel',
-	'LOGIN_REDIRECT'            => 'You have been successfully logged in.',
 	'LOGOUT_FAILED'             => 'You were not logged out, as the request did not match your session. Please contact the board administrator if you continue to experience problems.',
-	'LOGOUT_REDIRECT'           => 'You have been successfully logged out.',
 
 	'MARK_IMPORTANT'                => 'Mark/Unmark as important',
 	'MARKED_MESSAGE'                => 'Marked message',

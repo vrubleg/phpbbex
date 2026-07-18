@@ -22,7 +22,7 @@ $user->setup('acp/common');
 // Have they authenticated (again) as an admin for this session?
 if (!isset($user->data['session_admin']) || !$user->data['session_admin'])
 {
-	login_box('', $user->lang['LOGIN_ADMIN_CONFIRM'], $user->lang['LOGIN_ADMIN_SUCCESS'], true, false);
+	login_box('', $user->lang['LOGIN_ADMIN_CONFIRM'], true);
 }
 
 // Is user any type of admin? No, then stop here, each script needs to
@@ -83,15 +83,6 @@ function adm_page_header($page_title)
 
 	define('HEADER_INC', true);
 
-	// gzip_compression
-	if ($config['gzip_compress'])
-	{
-		if (@extension_loaded('zlib') && !headers_sent())
-		{
-			ob_start('ob_gzhandler');
-		}
-	}
-
 	$template->assign_vars([
 		'PAGE_TITLE'            => $page_title,
 		'USERNAME'              => $user->data['username'],
@@ -145,7 +136,6 @@ function adm_page_footer($copyright_html = true)
 
 		$debug_output = 'Time: ' . sprintf('%.3fs', microtime(true) - $starttime)
 			. ' | Memory: ' . get_formatted_filesize(memory_get_peak_usage())
-			. (($user->load) ? ' | Load: ' . $user->load : '')
 			. ' | SQL: ' . $db->sql_num_queries() . ' queries';
 
 		if ($auth->acl_get('a_') && defined('DEBUG_EXTRA'))

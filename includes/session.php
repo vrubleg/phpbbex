@@ -225,23 +225,6 @@ class phpbb_session
 			}
 		}
 
-		$this->load = false;
-
-		// Load limit check (if applicable)
-		if ($config['limit_load'] || $config['limit_search_load'])
-		{
-			if ((function_exists('sys_getloadavg') && $load = sys_getloadavg()) || ($load = explode(' ', @file_get_contents('/proc/loadavg'))))
-			{
-				$this->load = array_slice($load, 0, 1);
-				$this->load = floatval($this->load[0]);
-			}
-			else
-			{
-				set_config('limit_load', '0');
-				set_config('limit_search_load', '0');
-			}
-		}
-
 		// if no session id is set, redirect to index.php
 		if (defined('NEED_SID') && NEED_SID && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
 		{
@@ -624,29 +607,13 @@ class phpbb_session
 
 		$db->sql_return_on_error(true);
 
-		$sql = 'DELETE
-			FROM ' . SESSIONS_TABLE . '
-			WHERE session_id = \'' . $db->sql_escape($this->session_id) . '\'
-				AND session_user_id = ' . ANONYMOUS;
-
-		if (!defined('IN_ERROR_HANDLER') && (!$this->session_id || !$db->sql_query($sql) || !$db->sql_affectedrows()))
+		if ($this->session_id)
 		{
-			// Limit new sessions in 1 minute period (if required)
-			if (empty($this->data['session_time']) && $config['active_sessions'])
-			{
-				$sql = 'SELECT COUNT(session_id) AS sessions
-					FROM ' . SESSIONS_TABLE . '
-					WHERE session_time >= ' . ($this->time_now - 60);
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if ((int) $row['sessions'] > (int) $config['active_sessions'])
-				{
-					http_response_code(503);
-					trigger_error('BOARD_UNAVAILABLE');
-				}
-			}
+			$sql = 'DELETE
+				FROM ' . SESSIONS_TABLE . '
+				WHERE session_id = \'' . $db->sql_escape($this->session_id) . '\'
+					AND session_user_id = ' . ANONYMOUS;
+			$db->sql_query($sql);
 		}
 
 		$this->session_id = $this->data['session_id'] = bin2hex(random_bytes(16));
@@ -1510,25 +1477,6 @@ class phpbb_user extends phpbb_session
 			trigger_error($message);
 		}
 
-		// Is load exceeded?
-		if ($config['limit_load'] && $this->load !== false)
-		{
-			if ($this->load > floatval($config['limit_load']) && !defined('IN_LOGIN') && !defined('IN_ADMIN'))
-			{
-				// Set board disabled to true to let the admins/mods get the proper notification
-				$config['board_disable'] = '1';
-
-				if (!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_'))
-				{
-					if ($this->data['is_bot'])
-					{
-						http_response_code(503);
-					}
-					trigger_error('BOARD_UNAVAILABLE');
-				}
-			}
-		}
-
 		if (isset($this->data['session_viewonline']))
 		{
 			// Make sure the user is able to hide his session
@@ -1557,18 +1505,6 @@ class phpbb_user extends phpbb_session
 				}
 			}
 		}
-
-
-		// Does the user need to change their password? If so, redirect to the
-		// ucp profile reg_details page ... of course do not redirect if we're already in the ucp
-		if (!defined('IN_ADMIN') && !defined('ADMIN_START') && $config['chg_passforce'] && !empty($this->data['is_registered']) && $auth->acl_get('u_chgpasswd') && $this->data['user_passchg'] < time() - ($config['chg_passforce'] * 86400))
-		{
-			if (strpos($this->page['query_string'], 'mode=reg_details') === false && $this->page['page_name'] != "ucp.php")
-			{
-				redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=reg_details'));
-			}
-		}
-
 		return;
 	}
 

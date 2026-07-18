@@ -139,7 +139,6 @@ class acp_board
 						'style_rounded_corners'             => ['lang' => 'STYLE_ROUNDED_CORNERS',              'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'style_new_year'                    => ['lang' => 'STYLE_NEW_YEAR',                 'validate' => 'int',    'type' => 'custom', 'function' => 'h_radio', 'params' => ['config[style_new_year]', [-1 => 'AUTO', 1 => 'YES', 0 => 'NO'], '{CONFIG_VALUE}', '{KEY}'], 'explain' => false],
 						'style_show_sitename_in_headerbar'  => ['lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'skip_typical_notices'              => ['lang' => 'SKIP_TYPICAL_NOTICES',               'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'posting_topic_review'              => ['lang' => 'POSTING_TOPIC_REVIEW',               'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
 						'legend2'                           => 'STYLE_SETTINGS_INDEX',
@@ -362,7 +361,6 @@ class acp_board
 						'min_pass_chars'        => ['lang' => 'PASSWORD_LENGTH',    'validate' => 'int:1',  'type' => 'custom', 'method' => 'password_length', 'explain' => true],
 						'allow_name_chars'      => ['lang' => 'USERNAME_CHARS', 'validate' => 'string', 'type' => 'select', 'method' => 'select_username_chars', 'explain' => true],
 						'pass_complex'          => ['lang' => 'PASSWORD_TYPE',      'validate' => 'string', 'type' => 'select', 'method' => 'select_password_chars', 'explain' => true],
-						'chg_passforce'         => ['lang' => 'FORCE_PASS_CHANGE',  'validate' => 'int:0',  'type' => 'text:3:3', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
 						'allow_login_via_email' => ['lang' => 'ALLOW_LOGIN_VIA_EMAIL', 'validate' => 'int', 'type' => 'custom', 'method' => 'allow_login_via_email_options', 'explain' => true],
 						'allow_namechange'      => ['lang' => 'ALLOW_NAME_CHANGE',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
@@ -405,28 +403,12 @@ class acp_board
 				$display_vars = [
 					'title' => 'ACP_LOAD_SETTINGS',
 					'vars'  => [
-						'legend1'           => 'GENERAL_SETTINGS',
-						'limit_load'        => ['lang' => 'LIMIT_LOAD',     'validate' => 'string', 'type' => 'text:4:4', 'explain' => true],
-						'active_sessions'   => ['lang' => 'LIMIT_SESSIONS', 'validate' => 'int:0',  'type' => 'text:4:4', 'explain' => true],
-
-						'legend2'               => 'GENERAL_OPTIONS',
+						'legend1'               => 'GENERAL_OPTIONS',
 						'load_db_lastread'      => ['lang' => 'YES_READ_MARKING',       'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'load_user_activity'    => ['lang' => 'LOAD_USER_ACTIVITY', 'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'cache_mtime_check'     => ['lang' => 'CACHE_MTIME_CHECK',  'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 
-						'legend3'                   => 'ACP_SUBMIT_CHANGES',
-					]
-				];
-			break;
-
-			case 'server':
-				$display_vars = [
-					'title' => 'ACP_SERVER_SETTINGS',
-					'vars'  => [
-						'legend1'               => 'ACP_SERVER_SETTINGS',
-						'gzip_compress'         => ['lang' => 'ENABLE_GZIP',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
-
-						'legend2'               => 'ACP_SUBMIT_CHANGES',
+						'legend2'                   => 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;
@@ -446,7 +428,6 @@ class acp_board
 						'max_pass_chars'        => ['lang' => 'PASSWORD_LENGTH', 'validate' => 'int:8:255', 'type' => false, 'method' => false, 'explain' => false,],
 						'min_pass_chars'        => ['lang' => 'PASSWORD_LENGTH',    'validate' => 'int:1',  'type' => 'custom', 'method' => 'password_length', 'explain' => true],
 						'pass_complex'          => ['lang' => 'PASSWORD_TYPE',          'validate' => 'string', 'type' => 'select', 'method' => 'select_password_chars', 'explain' => true],
-						'chg_passforce'         => ['lang' => 'FORCE_PASS_CHANGE',      'validate' => 'int:0',  'type' => 'text:3:3', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
 						'max_login_attempts'    => ['lang' => 'MAX_LOGIN_ATTEMPTS', 'validate' => 'int:0',  'type' => 'text:3:3', 'explain' => true],
 						'ip_login_limit_max'    => ['lang' => 'IP_LOGIN_LIMIT_MAX', 'validate' => 'int:0',  'type' => 'text:3:3', 'explain' => true],
 						'ip_login_limit_time'   => ['lang' => 'IP_LOGIN_LIMIT_TIME',    'validate' => 'int:0',  'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],

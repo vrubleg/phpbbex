@@ -2298,7 +2298,7 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 /**
 * Generate login box or verify password
 */
-function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = false, $s_display = true)
+function login_box($redirect = '', $l_explain = '', $admin = false)
 {
 	global $db, $user, $template, $auth, $config;
 
@@ -2394,8 +2394,6 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		if ($result['status'] == LOGIN_SUCCESS)
 		{
 			$redirect = request_var('redirect', PHPBB_ROOT_PATH . 'index.php');
-			$message = $l_success ?: $user->lang['LOGIN_REDIRECT'];
-			$l_redirect = ($admin) ? $user->lang['PROCEED_TO_ACP'] : (($redirect === PHPBB_ROOT_PATH . 'index.php' || $redirect === 'index.php') ? $user->lang['RETURN_INDEX'] : $user->lang['RETURN_PAGE']);
 
 			// append/replace SID (may change during the session for AOL users)
 			$redirect = reapply_sid($redirect);
@@ -2406,13 +2404,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				return;
 			}
 
-			if (!empty($config['skip_typical_notices']))
-			{
-				redirect($redirect);
-			}
-
-			$redirect = meta_refresh(3, $redirect);
-			trigger_error($message . '<br /><br />' . sprintf($l_redirect, '<a href="' . $redirect . '">', '</a>'));
+			redirect($redirect);
 		}
 
 		// Something failed, determine what...
@@ -2438,7 +2430,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				$err = $user->lang[$result['error_msg']];
 			break;
 
-			case LOGIN_ERROR_PASSWORD_CONVERT:
+			case LOGIN_ERROR_PASSWORD_RESET_REQUIRED:
 				$err = sprintf(
 					$user->lang[$result['error_msg']],
 					($config['email_enable']) ? '<a href="' . append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=sendpassword') . '">' : '',
@@ -2490,7 +2482,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		'U_TERMS_OF_USE'        => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
 		'U_PRIVACY_POLICY'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
 
-		'S_DISPLAY_FULL_LOGIN'  => $s_display,
+		'S_DISPLAY_FULL_LOGIN'  => !$admin,
 		'S_HIDDEN_FIELDS'       => $s_hidden_fields,
 
 		'S_ADMIN_AUTH'          => $admin,
@@ -3399,29 +3391,6 @@ function page_header($page_title = '', $display_online_list = true)
 
 	define('HEADER_INC', true);
 
-	// gzip_compression
-	if ($config['gzip_compress'])
-	{
-		// to avoid partially compressed output resulting in blank pages in
-		// the browser or error messages, compression is disabled in a few cases:
-		//
-		// 1) if headers have already been sent, this indicates plaintext output
-		//    has been started so further content must not be compressed
-		// 2) the length of the current output buffer is non-zero. This means
-		//    there is already some uncompressed content in this output buffer
-		//    so further output must not be compressed
-		// 3) if more than one level of output buffering is used because we
-		//    cannot test all output buffer level content lengths. One level
-		//    could be caused by php.ini output_buffering. Anything
-		//    beyond that is manual, so the code wrapping phpBB in output buffering
-		//    can easily compress the output itself.
-		//
-		if (@extension_loaded('zlib') && !headers_sent() && ob_get_level() <= 1 && ob_get_length() == 0)
-		{
-			ob_start('ob_gzhandler');
-		}
-	}
-
 	// Generate logged in/logged out status
 	if ($user->data['user_id'] != ANONYMOUS)
 	{
@@ -3778,7 +3747,6 @@ function page_footer($run_cron = true)
 
 		$debug_output = 'Time: ' . sprintf('%.3fs', microtime(true) - $starttime)
 			. ' | Memory: ' . get_formatted_filesize(memory_get_peak_usage())
-			. (($user->load) ? ' | Load: ' . $user->load : '')
 			. ' | SQL: ' . $db->sql_num_queries() . ' queries';
 
 		if ($auth->acl_get('a_') && defined('DEBUG_EXTRA'))
