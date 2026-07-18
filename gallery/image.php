@@ -165,37 +165,39 @@ if (($mode == 'medium') || ($mode == 'thumbnail'))
 	if (!file_exists($image_source))
 	{
 		$image_tools->set_image_data(phpbb_gallery_url::path('upload') . $image_data['image_filename']);
-		$image_tools->read_image(true);
 
-		$image_size['file'] = $image_tools->image_size['file'];
-		$image_size['width'] = $image_tools->image_size['width'];
-		$image_size['height'] = $image_tools->image_size['height'];
-
-		$image_tools->set_image_data($image_source);
-
-		if (($image_size['width'] > $resize_width) || ($image_size['height'] > $resize_height))
+		if ($image_tools->read_image(true))
 		{
-			$put_details = (phpbb_gallery_config::get('thumbnail_infoline') && ($mode == 'thumbnail'));
-			$image_tools->create_thumbnail($resize_width, $resize_height, $put_details, phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT, $image_size);
-		}
+			$image_size['file'] = $image_tools->image_size['file'];
+			$image_size['width'] = $image_tools->image_size['width'];
+			$image_size['height'] = $image_tools->image_size['height'];
 
-		if (phpbb_gallery_config::get($mode . '_cache'))
-		{
-			$image_tools->write_image($image_source, (($mode == 'thumbnail') ? phpbb_gallery_config::get('thumbnail_quality') : phpbb_gallery_config::get('jpg_quality')), false);
+			$image_tools->set_image_data($image_source);
 
-			if ($mode == 'thumbnail')
+			if (($image_size['width'] > $resize_width) || ($image_size['height'] > $resize_height))
 			{
-				$image_data['filesize_cache'] = @filesize($image_source);
-				$sql_ary = ['filesize_cache' => $image_data['filesize_cache']];
+				$put_details = (phpbb_gallery_config::get('thumbnail_infoline') && ($mode == 'thumbnail'));
+				$image_tools->create_thumbnail($resize_width, $resize_height, $put_details, phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT, $image_size);
 			}
-			else
+
+			if (phpbb_gallery_config::get($mode . '_cache'))
 			{
-				$image_data['filesize_medium'] = @filesize($image_source);
-				$sql_ary = ['filesize_medium' => $image_data['filesize_medium']];
+				$image_tools->write_image($image_source, (($mode == 'thumbnail') ? phpbb_gallery_config::get('thumbnail_quality') : phpbb_gallery_config::get('jpg_quality')), false);
+
+				if ($mode == 'thumbnail')
+				{
+					$image_data['filesize_cache'] = @filesize($image_source);
+					$sql_ary = ['filesize_cache' => $image_data['filesize_cache']];
+				}
+				else
+				{
+					$image_data['filesize_medium'] = @filesize($image_source);
+					$sql_ary = ['filesize_medium' => $image_data['filesize_medium']];
+				}
+				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+					WHERE ' . $db->sql_in_set('image_id', $image_id);
+				$db->sql_query($sql);
 			}
-			$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-				WHERE ' . $db->sql_in_set('image_id', $image_id);
-			$db->sql_query($sql);
 		}
 	}
 }

@@ -112,17 +112,29 @@ class phpbb_gallery_image_file
 		switch (utf8_substr(strtolower($this->image_source), -4))
 		{
 			case '.png':
-				$this->image = imagecreatefrompng($this->image_source);
+				$this->image = @imagecreatefrompng($this->image_source);
+				if ($this->image === false)
+				{
+					return false;
+				}
 				imagealphablending($this->image, true); // Set alpha blending on ...
 				imagesavealpha($this->image, true); // ... and save alphablending!
 				$this->image_type = 'png';
 			break;
 			case '.gif':
-				$this->image = imagecreatefromgif($this->image_source);
+				$this->image = @imagecreatefromgif($this->image_source);
+				if ($this->image === false)
+				{
+					return false;
+				}
 				$this->image_type = 'gif';
 			break;
 			default:
-				$this->image = imagecreatefromjpeg($this->image_source);
+				$this->image = @imagecreatefromjpeg($this->image_source);
+				if ($this->image === false)
+				{
+					return false;
+				}
 				$this->image_type = 'jpeg';
 			break;
 		}
@@ -137,13 +149,20 @@ class phpbb_gallery_image_file
 			$file_size = @filesize($this->image_source);
 		}
 
-		$image_size = getimagesize($this->image_source);
+		$image_size = @getimagesize($this->image_source);
+		if ($image_size === false)
+		{
+			$this->image = null;
+			return false;
+		}
 
 		$this->image_size['file'] = $file_size;
 		$this->image_size['width'] = $image_size[0];
 		$this->image_size['height'] = $image_size[1];
 
 		$this->image_content_type = $image_size['mime'];
+
+		return true;
 	}
 
 	/**
@@ -285,7 +304,10 @@ class phpbb_gallery_image_file
 
 	public function create_thumbnail($max_width, $max_height, $print_details = false, $additional_height = 0, $image_size = [])
 	{
-		$this->resize_image($max_width, $max_height, (($print_details) ? $additional_height : 0));
+		if (!$this->resize_image($max_width, $max_height, (($print_details) ? $additional_height : 0)))
+		{
+			return false;
+		}
 
 		// Create image details credits to Dr.Death
 		if ($print_details && sizeof($image_size))
@@ -301,19 +323,24 @@ class phpbb_gallery_image_file
 			imagefilledrectangle($this->image, 0, $this->thumb_height, $this->thumb_width, $this->thumb_height + $additional_height, $black_background);
 			imagestring($this->image, 1, $dimension_x, $dimension_y, $dimension_string, $dimension_colour);
 		}
+
+		return true;
 	}
 
 	public function resize_image($max_width, $max_height, $additional_height = 0)
 	{
 		if (!$this->image)
 		{
-			$this->read_image();
+			if (!$this->read_image())
+			{
+				return false;
+			}
 		}
 
 		if (($this->image_size['height'] <= $max_height) && ($this->image_size['width'] <= $max_width))
 		{
 			// image is small enough, nothing to do here.
-			return;
+			return true;
 		}
 
 		if (($this->image_size['height'] / $max_height) > ($this->image_size['width'] / $max_width))
@@ -348,6 +375,8 @@ class phpbb_gallery_image_file
 		$this->resized = true;
 		// We loose the exif data, so force to store them in the database
 		$this->exif_data_force_db = true;
+
+		return true;
 	}
 
 	/**
@@ -359,18 +388,21 @@ class phpbb_gallery_image_file
 		if (!function_exists('imagerotate'))
 		{
 			$this->errors[] = ['ROTATE_IMAGE_FUNCTION', $angle];
-			return;
+			return false;
 		}
 
 		if (($angle <= 0) || (($angle % 90) != 0))
 		{
 			$this->errors[] = ['ROTATE_IMAGE_ANGLE', $angle];
-			return;
+			return false;
 		}
 
 		if (!$this->image)
 		{
-			$this->read_image();
+			if (!$this->read_image())
+			{
+				return false;
+			}
 		}
 
 		if ((($angle / 90) % 2) == 1)
@@ -387,7 +419,7 @@ class phpbb_gallery_image_file
 				{
 					$this->errors[] = ['ROTATE_IMAGE_HEIGHT'];
 				}
-				return;
+				return false;
 			}
 			$new_width = $this->image_size['height'];
 			$this->image_size['height'] = $this->image_size['width'];
@@ -399,6 +431,8 @@ class phpbb_gallery_image_file
 		$this->rotated = true;
 		// We loose the exif data, so force to store them in the database
 		$this->exif_data_force_db = true;
+
+		return true;
 	}
 
 	/**
