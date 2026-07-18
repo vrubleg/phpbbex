@@ -141,8 +141,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_mod_logs_days
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_critical_logs_days', '7');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_user_logs_days', '365');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('keep_register_logs_days', '7');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_load', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('limit_search_load', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_birthdays', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_memberlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_viewprofile', '1');

@@ -225,23 +225,6 @@ class phpbb_session
 			}
 		}
 
-		$this->load = false;
-
-		// Load limit check (if applicable)
-		if ($config['limit_load'] || $config['limit_search_load'])
-		{
-			if ((function_exists('sys_getloadavg') && $load = sys_getloadavg()) || ($load = explode(' ', @file_get_contents('/proc/loadavg'))))
-			{
-				$this->load = array_slice($load, 0, 1);
-				$this->load = floatval($this->load[0]);
-			}
-			else
-			{
-				set_config('limit_load', '0');
-				set_config('limit_search_load', '0');
-			}
-		}
-
 		// if no session id is set, redirect to index.php
 		if (defined('NEED_SID') && NEED_SID && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
 		{
@@ -1508,25 +1491,6 @@ class phpbb_user extends phpbb_session
 
 			$message = (!empty($config['board_disable_msg'])) ? $config['board_disable_msg'] : 'BOARD_DISABLE';
 			trigger_error($message);
-		}
-
-		// Is load exceeded?
-		if ($config['limit_load'] && $this->load !== false)
-		{
-			if ($this->load > floatval($config['limit_load']) && !defined('IN_LOGIN') && !defined('IN_ADMIN'))
-			{
-				// Set board disabled to true to let the admins/mods get the proper notification
-				$config['board_disable'] = '1';
-
-				if (!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_'))
-				{
-					if ($this->data['is_bot'])
-					{
-						http_response_code(503);
-					}
-					trigger_error('BOARD_UNAVAILABLE');
-				}
-			}
 		}
 
 		if (isset($this->data['session_viewonline']))

@@ -145,7 +145,6 @@ function adm_page_footer($copyright_html = true)
 
 		$debug_output = 'Time: ' . sprintf('%.3fs', microtime(true) - $starttime)
 			. ' | Memory: ' . get_formatted_filesize(memory_get_peak_usage())
-			. (($user->load) ? ' | Load: ' . $user->load : '')
 			. ' | SQL: ' . $db->sql_num_queries() . ' queries';
 
 		if ($auth->acl_get('a_') && defined('DEBUG_EXTRA'))

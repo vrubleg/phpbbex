@@ -423,11 +423,9 @@ $lang = array_merge($lang, [
 
 // Load Settings
 $lang = array_merge($lang, [
-	'ACP_LOAD_SETTINGS_EXPLAIN' => 'Here you can enable and disable certain board functions to reduce the amount of processing required. On most servers there is no need to disable any functions. However on certain systems or in shared hosting environments it may be beneficial to disable capabilities you do not really need. You can also specify limits for system load and active sessions beyond which the board will go offline.',
+	'ACP_LOAD_SETTINGS_EXPLAIN' => 'Here you can enable and disable certain board functions to reduce the amount of processing required. On most servers there is no need to disable any functions. However on certain systems or in shared hosting environments it may be beneficial to disable capabilities you do not really need. You can also limit active sessions, beyond which the board will go offline.',
 
 	'CUSTOM_PROFILE_FIELDS'         => 'Custom profile fields',
-	'LIMIT_LOAD'                    => 'Limit system load',
-	'LIMIT_LOAD_EXPLAIN'            => 'If the system’s 1-minute load average exceeds this value the board will automatically go offline. A value of 1.0 equals ~100% utilisation of one processor. This only functions on UNIX based servers and where this information is accessible. The value here resets itself to 0 if phpBBex was unable to get the load limit.',
 	'LIMIT_SESSIONS'                => 'Limit sessions',
 	'LIMIT_SESSIONS_EXPLAIN'        => 'If the number of sessions exceeds this value within a one minute period the board will go offline. Set to 0 for unlimited sessions.',
 	'LOAD_CPF_MEMBERLIST'           => 'Allow styles to display custom profile fields in memberlist',

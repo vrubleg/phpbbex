@@ -99,13 +99,6 @@ if (!$auth->acl_get('u_search') || !$auth->acl_getf_global('f_search'))
 	}
 }
 
-// Check search load limit
-if ($user->load && $config['limit_search_load'] && ($user->load > doubleval($config['limit_search_load'])))
-{
-	$template->assign_var('S_NO_SEARCH', true);
-	trigger_error('NO_SEARCH_TIME');
-}
-
 // It is applicable if the configuration setting is non-zero, and the user cannot
 // ignore the flood setting, and the search is a keyword search.
 $interval = ($user->data['user_id'] == ANONYMOUS) ? $config['search_anonymous_interval'] : $config['search_interval'];

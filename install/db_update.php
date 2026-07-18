@@ -663,6 +663,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'merge_no_forums',
 		'merge_no_topics',
 		'chg_passforce',
+		'limit_load',
+		'limit_search_load',
 	]);
 
 	// New defaults.

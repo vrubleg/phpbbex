@@ -405,7 +405,6 @@ class acp_board
 					'title' => 'ACP_LOAD_SETTINGS',
 					'vars'  => [
 						'legend1'           => 'GENERAL_SETTINGS',
-						'limit_load'        => ['lang' => 'LIMIT_LOAD',     'validate' => 'string', 'type' => 'text:4:4', 'explain' => true],
 						'active_sessions'   => ['lang' => 'LIMIT_SESSIONS', 'validate' => 'int:0',  'type' => 'text:4:4', 'explain' => true],
 
 						'legend2'               => 'GENERAL_OPTIONS',
