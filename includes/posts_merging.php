@@ -255,14 +255,13 @@ if ($auth->acl_get('f_noapprove', $data['forum_id']) || $auth->acl_get('m_approv
 //Generate redirection URL and redirecting
 $redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_id . '&amp;p=' . $merge_post_id) . '#p' . $merge_post_id;
 
-if (!empty($config['skip_typical_notices']))
+if ($auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $auth->acl_get('m_approve', $merge_post_data['forum_id']))
 {
 	redirect($redirect_url);
 }
 
 meta_refresh(3, $redirect_url);
 
-$message = (!$auth->acl_get('f_noapprove', $merge_post_data['forum_id']) && !$auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? 'POST_STORED_MOD' : 'POST_STORED';
-$message = $user->lang[$message] . (($auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $auth->acl_get('m_approve', $merge_post_data['forum_id'])) ? '<br /><br />' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $redirect_url . '">', '</a>') : '');
+$message = $user->lang['POST_STORED_MOD'];
 $message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
 trigger_error($message);

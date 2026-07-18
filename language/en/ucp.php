@@ -184,9 +184,7 @@ $lang = array_merge($lang, [
 
 	'LANGUAGE'                  => 'Language',
 	'LOGIN_EXPLAIN_UCP'         => 'Login to access the User Control Panel',
-	'LOGIN_REDIRECT'            => 'You have been successfully logged in.',
 	'LOGOUT_FAILED'             => 'You were not logged out, as the request did not match your session. Please contact the board administrator if you continue to experience problems.',
-	'LOGOUT_REDIRECT'           => 'You have been successfully logged out.',
 
 	'MARK_IMPORTANT'                => 'Mark/Unmark as important',
 	'MARKED_MESSAGE'                => 'Marked message',

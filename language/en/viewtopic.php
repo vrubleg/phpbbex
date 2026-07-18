@@ -19,9 +19,7 @@ $lang = array_merge($lang, [
 	'ATTACHMENT'                        => 'Attachment',
 	'ATTACHMENT_FUNCTIONALITY_DISABLED' => 'The attachments feature has been disabled.',
 
-	'BOOKMARK_ADDED'        => 'Bookmarked topic successfully.',
 	'BOOKMARK_ERR'          => 'Bookmarking the topic failed. Please try again.',
-	'BOOKMARK_REMOVED'      => 'Removed bookmarked topic successfully.',
 	'BOOKMARK_TOPIC'        => 'Bookmark topic',
 	'BOOKMARK_TOPIC_REMOVE' => 'Remove from bookmarks',
 	'BUMPED_BY'             => 'Last bumped by %1$s on %2$s.',
@@ -91,8 +89,6 @@ $lang = array_merge($lang, [
 	'VIEW_TOPIC_POSTS'      => '%d posts',
 	'VIEW_UNREAD_POST'      => 'First unread post',
 	'VISIT_WEBSITE'         => 'WWW',
-	'VOTE_SUBMITTED'        => 'Your vote has been cast.',
-	'VOTE_CANCELLED'        => 'Your vote has been cancelled.',
 	'VOTE_CONVERTED'        => 'Changing votes is not supported for converted polls.',
 
 ]);

@@ -415,11 +415,7 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 					AND topic_id = {$topic_id}";
 			$db->sql_query($sql);
 		}
-		if (!empty($config['skip_typical_notices']))
-		{
-			redirect($viewtopic_url);
-		}
-		$message = (($topic_data['bookmarked']) ? $user->lang['BOOKMARK_REMOVED'] : $user->lang['BOOKMARK_ADDED']) . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $viewtopic_url . '">', '</a>');
+		redirect($viewtopic_url);
 	}
 	else
 	{
@@ -705,12 +701,7 @@ if (!empty($topic_data['poll_start']))
 		$db->sql_query($sql);
 
 		$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}"));
-		if (!empty($config['skip_typical_notices']))
-		{
-			redirect($redirect_url);
-		}
-		meta_refresh(3, $redirect_url);
-		trigger_error($user->lang[($unvote ? 'VOTE_CANCELLED' : 'VOTE_SUBMITTED')] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>'));
+		redirect($redirect_url);
 	}
 
 	if ($poll_info[0]['bbcode_bitfield'])

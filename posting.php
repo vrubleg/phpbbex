@@ -1105,14 +1105,7 @@ if ($submit || $preview || $refresh)
 		}
 		else
 		{
-			if (!empty($config['skip_typical_notices']))
-			{
-				redirect($redirect_url);
-			}
-
-			meta_refresh(3, $redirect_url);
-			$message = ($mode == 'edit') ? 'POST_EDITED' : 'POST_STORED';
-			$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $redirect_url . '">', '</a>');
+			redirect($redirect_url);
 		}
 
 		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $data['forum_id']) . '">', '</a>');

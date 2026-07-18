@@ -167,12 +167,7 @@ if ($mark_read == 'topics')
 		markread('topics', [$forum_id, 0]);
 	}
 	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id);
-	if (!empty($config['skip_typical_notices']))
-	{
-		redirect($redirect_url);
-	}
-	meta_refresh(3, $redirect_url);
-	trigger_error($user->lang['TOPICS_MARKED'] . '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . $redirect_url . '">', '</a>'));
+	redirect($redirect_url);
 }
 
 // Do the forum Prune thang - cron type job ...

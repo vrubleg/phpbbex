@@ -209,7 +209,6 @@ $lang = array_merge($lang, [
 	'LOGGED_IN_AS'          => 'You are logged in as:',
 	'LOGIN_ADMIN'           => 'To administer the board you must be an authenticated user.',
 	'LOGIN_ADMIN_CONFIRM'   => 'To administer the board you must re-authenticate yourself.',
-	'LOGIN_ADMIN_SUCCESS'   => 'You have successfully authenticated and will now be redirected to the Administration Control Panel.',
 	'LOOK_UP_FORUM'         => 'Select a forum',
 	'LOOK_UP_FORUMS_EXPLAIN'=> 'You are able to select more than one forum.',
 
@@ -232,7 +231,6 @@ $lang = array_merge($lang, [
 	'PARSE_URLS'                        => 'Parse links',
 	'PERMISSIONS_TRANSFERRED'           => 'Permissions transferred',
 	'PERMISSIONS_TRANSFERRED_EXPLAIN'   => 'You currently have the permissions from %1$s. You are able to browse the board with this user’s permissions, but not access the administration control panel since admin permissions were not transferred. You can <a href="%2$s"><strong>revert to your permission set</strong></a> at any time.',
-	'PROCEED_TO_ACP'                    => '%sProceed to the ACP%s',
 
 	'REMIND'                            => 'Remind',
 	'RESYNC'                            => 'Resynchronise',

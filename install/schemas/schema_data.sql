@@ -226,7 +226,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_desc', '{L_CONFIG_SITE_DESC}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_keywords', '');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('sitename', '{L_CONFIG_SITENAME}');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('skip_typical_notices', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smilies_per_page', '50');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_auth_method', 'PLAIN');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smtp_delivery', '0');

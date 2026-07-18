@@ -139,7 +139,6 @@ class acp_board
 						'style_rounded_corners'             => ['lang' => 'STYLE_ROUNDED_CORNERS',              'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'style_new_year'                    => ['lang' => 'STYLE_NEW_YEAR',                 'validate' => 'int',    'type' => 'custom', 'function' => 'h_radio', 'params' => ['config[style_new_year]', [-1 => 'AUTO', 1 => 'YES', 0 => 'NO'], '{CONFIG_VALUE}', '{KEY}'], 'explain' => false],
 						'style_show_sitename_in_headerbar'  => ['lang' => 'STYLE_SHOW_SITENAME_IN_HEADERBAR',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'skip_typical_notices'              => ['lang' => 'SKIP_TYPICAL_NOTICES',               'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'posting_topic_review'              => ['lang' => 'POSTING_TOPIC_REVIEW',               'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
 						'legend2'                           => 'STYLE_SETTINGS_INDEX',

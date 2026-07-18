@@ -76,16 +76,15 @@ switch ($mode)
 		{
 			$user->session_kill();
 			$user->session_begin();
-			$message = $user->lang['LOGOUT_REDIRECT'];
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
+		}
+		else if ($user->data['user_id'] == ANONYMOUS)
+		{
+			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
 		}
 		else
 		{
-			$message = ($user->data['user_id'] == ANONYMOUS) ? $user->lang['LOGOUT_REDIRECT'] : $user->lang['LOGOUT_FAILED'];
-		}
-
-		if (!empty($config['skip_typical_notices']))
-		{
-			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));
+			$message = $user->lang['LOGOUT_FAILED'];
 		}
 
 		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));

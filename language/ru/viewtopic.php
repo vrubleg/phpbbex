@@ -19,9 +19,7 @@ $lang = array_merge($lang, [
 	'ATTACHMENT'                        => 'Вложение',
 	'ATTACHMENT_FUNCTIONALITY_DISABLED' => 'Функция вложений отключена.',
 
-	'BOOKMARK_ADDED'        => 'Тема успешно добавлена в закладки.',
 	'BOOKMARK_ERR'          => 'Попытка поместить тему в закладки не удалась. Попробуйте ещё раз.',
-	'BOOKMARK_REMOVED'      => 'Тема успешно удалена из закладок.',
 	'BOOKMARK_TOPIC'        => 'В закладки',
 	'BOOKMARK_TOPIC_REMOVE' => 'Удалить из закладок',
 	'BUMPED_BY'             => 'Тема поднималась пользователем %1$s %2$s.',
@@ -91,8 +89,6 @@ $lang = array_merge($lang, [
 	'VIEW_TOPIC_POSTS'      => 'Сообщений: %d',
 	'VIEW_UNREAD_POST'      => 'Первое новое сообщение',
 	'VISIT_WEBSITE'         => 'WWW',
-	'VOTE_SUBMITTED'        => 'Спасибо, ваш голос учтён.',
-	'VOTE_CANCELLED'        => 'Ваш голос отменён.',
 	'VOTE_CONVERTED'        => 'Изменение голосов в сконвертированных опросах не поддерживается.',
 
 ]);

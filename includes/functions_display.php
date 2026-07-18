@@ -49,24 +49,15 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	if ($mark_read == 'all')
 	{
 		$redirect = build_url(['mark', 'hash']);
-		meta_refresh(3, $redirect);
 
 		if (check_link_hash(request_var('hash', ''), 'global'))
 		{
 			markread('all');
-
-			if (!empty($config['skip_typical_notices']))
-			{
-				redirect($redirect);
-			}
-
-			trigger_error(
-				$user->lang['FORUMS_MARKED'] . '<br /><br />' .
-				sprintf($user->lang['RETURN_INDEX'], '<a href="' . $redirect . '">', '</a>')
-			);
+			redirect($redirect);
 		}
 		else
 		{
+			meta_refresh(3, $redirect);
 			trigger_error(sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
 	}
@@ -249,15 +240,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			// Add 0 to forums array to mark global announcements correctly
 			$forum_ids[] = 0;
 			markread('topics', $forum_ids);
-
-			if (!empty($config['skip_typical_notices']))
-			{
-				redirect($redirect);
-			}
-
-			$message = sprintf($user->lang['RETURN_FORUM'], '<a href="' . $redirect . '">', '</a>');
-			meta_refresh(3, $redirect);
-			trigger_error($user->lang['FORUMS_MARKED'] . '<br /><br />' . $message);
+			redirect($redirect);
 		}
 		else
 		{
@@ -1303,7 +1286,7 @@ function display_user_activity(&$userdata)
 */
 function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, $notify_status = 'unset', $start = 0, $item_title = '')
 {
-	global $template, $db, $user, $start, $config;
+	global $template, $db, $user, $start;
 
 	$table_sql = ($mode == 'forum') ? FORUMS_WATCH_TABLE : TOPICS_WATCH_TABLE;
 	$where_sql = ($mode == 'forum') ? 'forum_id' : 'topic_id';
@@ -1357,15 +1340,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					$db->sql_query($sql);
 
 					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
-					if (!empty($config['skip_typical_notices']))
-					{
-						redirect($redirect_url);
-					}
-
-					$message = $user->lang['NOT_WATCHING_' . strtoupper($mode)] . '<br /><br />';
-					$message .= sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
-					meta_refresh(3, $redirect_url);
-					trigger_error($message);
+					redirect($redirect_url);
 				}
 				else
 				{
@@ -1428,14 +1403,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					$db->sql_query($sql);
 
 					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
-					if (!empty($config['skip_typical_notices']))
-					{
-						redirect($redirect_url);
-					}
-
-					$message = $user->lang['ARE_WATCHING_' . strtoupper($mode)] . '<br /><br />' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
-					meta_refresh(3, $redirect_url);
-					trigger_error($message);
+					redirect($redirect_url);
 				}
 				else
 				{

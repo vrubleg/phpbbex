@@ -2298,7 +2298,7 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 /**
 * Generate login box or verify password
 */
-function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = false, $s_display = true)
+function login_box($redirect = '', $l_explain = '', $admin = false)
 {
 	global $db, $user, $template, $auth, $config;
 
@@ -2394,8 +2394,6 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		if ($result['status'] == LOGIN_SUCCESS)
 		{
 			$redirect = request_var('redirect', PHPBB_ROOT_PATH . 'index.php');
-			$message = $l_success ?: $user->lang['LOGIN_REDIRECT'];
-			$l_redirect = ($admin) ? $user->lang['PROCEED_TO_ACP'] : (($redirect === PHPBB_ROOT_PATH . 'index.php' || $redirect === 'index.php') ? $user->lang['RETURN_INDEX'] : $user->lang['RETURN_PAGE']);
 
 			// append/replace SID (may change during the session for AOL users)
 			$redirect = reapply_sid($redirect);
@@ -2406,13 +2404,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				return;
 			}
 
-			if (!empty($config['skip_typical_notices']))
-			{
-				redirect($redirect);
-			}
-
-			$redirect = meta_refresh(3, $redirect);
-			trigger_error($message . '<br /><br />' . sprintf($l_redirect, '<a href="' . $redirect . '">', '</a>'));
+			redirect($redirect);
 		}
 
 		// Something failed, determine what...
@@ -2490,7 +2482,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 		'U_TERMS_OF_USE'        => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
 		'U_PRIVACY_POLICY'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=privacy'),
 
-		'S_DISPLAY_FULL_LOGIN'  => $s_display,
+		'S_DISPLAY_FULL_LOGIN'  => !$admin,
 		'S_HIDDEN_FIELDS'       => $s_hidden_fields,
 
 		'S_ADMIN_AUTH'          => $admin,

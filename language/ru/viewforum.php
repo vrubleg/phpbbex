@@ -35,7 +35,6 @@ $lang = array_merge($lang, [
 
 	'POST_FORUM_LOCKED'     => 'Раздел закрыт',
 
-	'TOPICS_MARKED'         => 'Все темы в этом разделе были отмечены как прочтённые.',
 
 	'UNREAD_POSTS_LOCKED'   => 'Непрочитанные сообщения [ Тема закрыта ]',
 

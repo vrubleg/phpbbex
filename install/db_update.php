@@ -513,7 +513,6 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	set_config('allow_quick_post_attachbox', '1');
 	set_config('allow_quick_post_smilies', '1');
 	set_config('posting_topic_review', '1');
-	set_config('skip_typical_notices', '1');
 
 	// Update DB schema version.
 
@@ -667,6 +666,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'gzip_compress',
 		'limit_load',
 		'limit_search_load',
+		'skip_typical_notices',
 	]);
 
 	// New defaults.

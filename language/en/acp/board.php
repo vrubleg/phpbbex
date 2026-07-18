@@ -69,8 +69,6 @@ $lang = array_merge($lang, [
 	'STYLE_BACK_TO_TOP'                 => '"Back to top" button',
 	'STYLE_ROUNDED_CORNERS'             => 'Rounded corners',
 	'STYLE_NEW_YEAR'                    => 'Winter-style headerbar',
-	'SKIP_TYPICAL_NOTICES'              => 'Skip typical notice pages',
-	'SKIP_TYPICAL_NOTICES_EXPLAIN'      => 'Redirect instantly after posting, voting, marking topics read, login or logout.',
 	'POSTING_TOPIC_REVIEW'              => 'Display topic review panel at posting page',
 
 	'STYLE_SETTINGS_INDEX'              => 'Board Index',
