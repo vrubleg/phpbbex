@@ -39,7 +39,6 @@ $lang = array_merge($lang, [
 	'OVERRIDE_TIMEZONE_EXPLAIN'     => 'Replaces user’s time zone with default',
 	'SITE_DESC'                     => 'Site description',
 	'SITE_NAME'                     => 'Site name',
-	'SITE_KEYWORDS'                 => 'Site keywords',
 	'SYSTEM_DST'                    => 'Enable Summer Time/<abbr title="Daylight Saving Time">DST</abbr>',
 	'SYSTEM_TIMEZONE'               => 'Guest timezone',
 	'SYSTEM_TIMEZONE_EXPLAIN'           => 'Timezone to use for displaying times to users who are not logged in (guests, bots). Logged in users set their timezone during registration and can change it in their user control panel.',
