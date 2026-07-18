@@ -18,10 +18,6 @@ define('BBCODE_REPARSE_PMS', 1);
 define('BBCODE_REPARSE_SIGS', 2);
 /**@#-*/
 
-/**
-* @note: the backup feature currently only crates a backup of the posts that are
-*        being reparsed. There is not yet an interface to restore it!
-*/
 class reparse_bbcode
 {
 	/**
@@ -65,33 +61,7 @@ class reparse_bbcode
 	/**
 	* Number of posts to be parsed per run
 	*/
-	var $step_size = 150;
-
-	/**
-	* The name of the table that we use to backup posts before running
-	* this tool
-	*/
-	var $_backup_table_name = 'stk_reparse_bbcode_backup';
-
-	/**
-	* The schema of the backup table
-	*/
-	var $_backup_table_schema = [
-		'COLUMNS'       => [
-			'post_id'           => ['UINT', 0],
-			'forum_id'          => ['UINT', 0],
-			'post_subject'      => ['VCHAR', ''],
-			'post_subject'      => ['STEXT_UNI', '', 'true_sort'],
-			'post_text'         => ['MTEXT_UNI', ''],
-			'post_checksum'     => ['VCHAR:32', ''],
-			'bbcode_bitfield'   => ['VCHAR:255', ''],
-			'bbcode_uid'        => ['VCHAR:8', ''],
-		],
-		'KEYS'          => [
-			'post_id'           => ['INDEX', 'post_id'],
-			'forum_id'          => ['INDEX', 'forum_id'],
-		],
-	];
+	var $step_size = 500;
 
 	/**
 	* Tool overview page
@@ -192,14 +162,6 @@ class reparse_bbcode
 		{
 			require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
 		}
-
-		// First step? Prepare the backup
-		// For now disabled. Have to see how to implement this with regards to sigs and pms
-//      if ($step == 0)
-//      {
-//          $this->_prepare_backup();
-//          $this->_next_step($step);
-//      }
 
 		// Greb our batch
 		$bitfield = empty($_REQUEST['reparseall']);
@@ -309,10 +271,6 @@ class reparse_bbcode
 		$result = $db->sql_query_limit($sql, $this->step_size, $start);
 		$batch  = $db->sql_fetchrowset($result);
 		$db->sql_freeresult($result);
-
-		// Backup
-		// For now disabled. Have to see how to implement this with regards to sigs and pms
-//      $this->_backup($batch);
 
 		// User object used to store a second user object used when parsing signatures. (#62451)
 		$_user2 = new phpbb_user();
@@ -674,50 +632,6 @@ class reparse_bbcode
 		$parser->message = $message;
 	}
 
-	/**
-	* Make sure that the backup table exists *AND* is empty
-	*/
-	function _prepare_backup()
-	{
-		global $db, $umil;
-
-		// Table doesn't exists?
-		if ($umil->table_exists($this->_backup_table_name) === false)
-		{
-			// Create it
-			$umil->table_add($this->_backup_table_name, $this->_backup_table_schema);
-		}
-
-		// Empty the table
-		$db->sql_query('DELETE FROM ' . $this->_backup_table_name);
-	}
-
-	/**
-	* Backup the given post
-	* @param Array $batch Batch of posts we are re-parsing this round
-	*/
-	function _backup($batch)
-	{
-		global $db;
-
-		// Prepare data
-		$data = [];
-
-		foreach ($batch as $post)
-		{
-			$data[] = [
-				'post_id'           => $post['post_id'],
-				'forum_id'          => $post['forum_id'],
-				'post_subject'      => $post['post_subject'],
-				'post_text'         => $post['post_text'],
-				'post_checksum'     => $post['post_checksum'],
-				'bbcode_bitfield'   => $post['bbcode_bitfield'],
-				'bbcode_uid'        => $post['bbcode_uid'],
-			];
-		}
-
-		$db->sql_multi_insert($this->_backup_table_name, $data);
-	}
 	function _trim_post_ids(&$post_id, $key)
 	{
 		// This is difficult, no?
