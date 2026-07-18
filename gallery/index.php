@@ -230,7 +230,6 @@ $template->assign_vars([
 	'U_USERS_PERSONAL_GALLERIES'    => (phpbb_gallery::$auth->acl_check('a_list', phpbb_gallery_auth::PERSONAL_ALBUM)) ? phpbb_gallery_url::append_sid('index', 'mode=personal') : '',
 	'S_USERS_PERSONAL_GALLERIES'    => (!phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth->acl_check('a_list', phpbb_gallery_auth::PERSONAL_ALBUM)),
 
-	'U_MCP'                         => (phpbb_gallery::$auth->acl_check_global('m_')) ? phpbb_gallery_url::append_sid('mcp', 'mode=overview') : '',
 	'U_MARK_ALBUMS'                 => ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('index', 'hash=' . generate_link_hash('global') . '&amp;mark=albums') : '',
 
 	'U_G_SEARCH_COMMENTED'          => (phpbb_gallery_config::get('allow_comments')) ? phpbb_gallery_url::append_sid('search', 'search_id=commented') : '',
@@ -242,8 +241,11 @@ $template->assign_vars([
 
 page_header($user->lang['GALLERY'] . (($mode == 'personal') ? ' - ' . $user->lang['PERSONAL_ALBUMS'] : ''));
 
-$template->set_filenames([
-	'body' => 'gallery/index_body.html']
-);
+if (phpbb_gallery::$auth->acl_check_global('m_'))
+{
+	$template->assign_var('U_MCP', phpbb_gallery_url::append_sid('mcp', 'mode=overview'));
+}
+
+$template->set_filenames(['body' => 'gallery/index_body.html']);
 
 page_footer();

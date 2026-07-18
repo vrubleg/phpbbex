@@ -118,11 +118,6 @@ $images_per_page = phpbb_gallery_config::get('album_rows') * phpbb_gallery_confi
 */
 if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 {
-	if (phpbb_gallery::$auth->acl_check('m_', $album_id, $album_data['album_user_id']))
-	{
-		$template->assign_var('U_MCP', phpbb_gallery_url::append_sid('mcp', "album_id={$album_id}"));
-	}
-
 	if ($config['load_moderators'])
 	{
 		phpbb_gallery_album::get_moderators($album_moderators, $album_id);
@@ -270,8 +265,11 @@ $template->assign_vars([
 
 page_header($user->lang['VIEW_ALBUM'] . ' - ' . $album_data['album_name'], true, $album_id, 'album');
 
-$template->set_filenames([
-	'body' => 'gallery/album_body.html']
-);
+if (($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT) && phpbb_gallery::$auth->acl_check('m_', $album_id, $album_data['album_user_id']))
+{
+	$template->assign_var('U_MCP', phpbb_gallery_url::append_sid('mcp', "album_id={$album_id}"));
+}
+
+$template->set_filenames(['body' => 'gallery/album_body.html']);
 
 page_footer();
