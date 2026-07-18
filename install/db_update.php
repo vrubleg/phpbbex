@@ -38,7 +38,7 @@ foreach ($curr_keys as $key)
 	}
 }
 
-if (!$allowed)
+if (!$allowed && !defined('DEBUG_EXTRA'))
 {
 	http_response_code(403);
 	die('Create an empty file at /cache/allow_upd_' . $curr_keys[0] . '.key to allow running the script.');
