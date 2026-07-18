@@ -1,5 +1,4 @@
 # -- Config
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_sessions', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_on_index', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_topics_days', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('active_users_days', '365');

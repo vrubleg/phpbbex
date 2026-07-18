@@ -607,29 +607,13 @@ class phpbb_session
 
 		$db->sql_return_on_error(true);
 
-		$sql = 'DELETE
-			FROM ' . SESSIONS_TABLE . '
-			WHERE session_id = \'' . $db->sql_escape($this->session_id) . '\'
-				AND session_user_id = ' . ANONYMOUS;
-
-		if (!defined('IN_ERROR_HANDLER') && (!$this->session_id || !$db->sql_query($sql) || !$db->sql_affectedrows()))
+		if ($this->session_id)
 		{
-			// Limit new sessions in 1 minute period (if required)
-			if (empty($this->data['session_time']) && $config['active_sessions'])
-			{
-				$sql = 'SELECT COUNT(session_id) AS sessions
-					FROM ' . SESSIONS_TABLE . '
-					WHERE session_time >= ' . ($this->time_now - 60);
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if ((int) $row['sessions'] > (int) $config['active_sessions'])
-				{
-					http_response_code(503);
-					trigger_error('BOARD_UNAVAILABLE');
-				}
-			}
+			$sql = 'DELETE
+				FROM ' . SESSIONS_TABLE . '
+				WHERE session_id = \'' . $db->sql_escape($this->session_id) . '\'
+					AND session_user_id = ' . ANONYMOUS;
+			$db->sql_query($sql);
 		}
 
 		$this->session_id = $this->data['session_id'] = bin2hex(random_bytes(16));
