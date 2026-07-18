@@ -168,7 +168,6 @@ $lang = array_merge($lang, [
 	'PERCENT'                       => '%',
 	'PERSONAL_ALBUMS'               => 'Personal albums',
 	'PIXELS'                        => 'pixels',
-	'PLUGIN_CLASS_MISSING'          => 'Gallery Plugin Error: Class “%s“ could not be found!',
 	'POST_COMMENT'                  => 'Post a comment',
 	'POST_COMMENT_RATE_IMAGE'       => 'Post a comment and rate the image',
 	'POSTER'                        => 'Poster',
