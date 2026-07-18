@@ -122,7 +122,6 @@ $lang = array_merge($lang, [
 	'IMAGE_URL'                         => 'Image-URL',
 	'IMAGE_WIDTH'                       => 'Image width',
 	'IMAGES_REPORTED_SUCCESSFULLY'      => 'The image was successful reported',
-	'INSERT_IMAGE_POST'                 => 'Insert image into post',
 	'INVALID_USERNAME'                  => 'Your Username is invalid',
 
 	'LAST_COMMENT'                  => 'Last Comment',
@@ -162,7 +161,6 @@ $lang = array_merge($lang, [
 	'ORDER'                         => 'Order',
 	'ORIG_FILENAME'                 => 'Take filename as imagename (the insert-field has no function)',
 	'OUT_OF_RANGE_VALUE'            => 'Value is out of range',
-	'OWN_IMAGES'                    => 'Your Images',
 
 	'PERCENT'                       => '%',
 	'PERSONAL_ALBUMS'               => 'Personal albums',

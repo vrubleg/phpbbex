@@ -85,23 +85,6 @@ class phpbb_gallery_integration
 		}
 	}
 
-	static public function posting_display_popup()
-	{
-		if (true)//phpbb_gallery_config::get('display_popup'))
-		{
-			global $template, $user;
-
-			// Initial load of some needed stuff, like permissions, album data, ...
-			phpbb_gallery::init();
-			$user->add_lang(['mods/info_acp_gallery', 'mods/gallery']);
-
-			$template->assign_vars([
-				'S_GALLERY_POPUP'   => true,
-				'U_GALLERY_POPUP'   => phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id'] . '&amp;display=popup'),
-			]);
-		}
-	}
-
 	static public function cache()
 	{
 		global $db;

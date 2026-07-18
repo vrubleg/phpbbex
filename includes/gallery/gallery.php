@@ -17,7 +17,6 @@ class phpbb_gallery
 	static public $auth = null;
 	static public $user = null;
 
-	static public $display_popup = false;
 	static public $loaded = false;
 
 	/**
@@ -69,11 +68,6 @@ class phpbb_gallery
 			phpbb_gallery_config::set('prune_orphan_time', time() + 1800);
 		}
 
-		if (request_var('display', '') == 'popup')
-		{
-			self::init_popup();
-		}
-
 		$template->assign_vars([
 			'S_IN_GALLERY'                  => true,
 			'U_GALLERY_SEARCH'              => phpbb_gallery_url::append_sid('search'),
@@ -111,30 +105,5 @@ class phpbb_gallery
 		self::$auth = new phpbb_gallery_auth($user_id);
 
 		self::$loaded = true;
-		if (request_var('display', '') == 'popup')
-		{
-			self::init_popup();
-		}
-
-	}
-
-	/**
-	* Sets up some basic stuff for the gallery.
-	*/
-	static public function init_popup()
-	{
-		global $template, $user;
-
-		self::$display_popup = '&amp;display=popup';
-
-		$can_upload = phpbb_gallery::$auth->acl_album_ids('i_upload', 'bool');
-
-		$template->assign_vars([
-			'S_IN_GALLERY_POPUP'            => (request_var('display', '') == 'popup'),
-
-			'U_POPUP_OWN'       => phpbb_gallery_url::append_sid('search', 'user_id=' . (int) $user->data['user_id']),
-			'U_POPUP_RECENT'    => phpbb_gallery_url::append_sid('search', 'search_id=recent'),
-			'U_POPUP_UPLOAD'    => ($can_upload) ? phpbb_gallery_url::append_sid('posting', 'mode=upload') : '',
-		]);
 	}
 }

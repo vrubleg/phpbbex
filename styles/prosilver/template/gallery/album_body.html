@@ -1,4 +1,4 @@
-<!-- INCLUDE gallery/gallery_header.html -->
+<!-- INCLUDE overall_header.html -->
 
 <!-- IF not S_IS_BOT -->
 <ul class="header-icons">
@@ -9,7 +9,7 @@
 <h2><a href="{U_VIEW_ALBUM}">{ALBUM_NAME}</a></h2>
 <p class="header-path"><!-- BEGIN navlinks --><!-- IF not navlinks.FIRST --> <strong>&#8250;</strong> <!-- ENDIF --><a href="{navlinks.U_VIEW_FORUM}">{navlinks.FORUM_NAME}</a><!-- END navlinks --></p>
 
-<!-- IF not S_IN_GALLERY_POPUP and ALBUM_DESC or MODERATORS -->
+<!-- IF ALBUM_DESC or MODERATORS -->
 <p>
 	<!-- IF ALBUM_DESC --><strong>{L_FORUM_DESC}:</strong> {ALBUM_DESC}<br /><!-- ENDIF -->
 	<!-- IF MODERATORS --><strong>{L_MODERATORS}:</strong> {MODERATORS}<br /><!-- ENDIF -->
@@ -28,13 +28,13 @@
 <!-- IF S_IS_POSTABLE and (U_UPLOAD_IMAGE or PAGINATION or TOTAL_IMAGES) -->
 	<div class="topic-actions" <!-- IF S_HAS_SUBALBUM -->style="margin-top: 2em;"<!-- ENDIF -->>
 
-	<!-- IF not S_IN_GALLERY_POPUP and U_UPLOAD_IMAGE -->
+	<!-- IF U_UPLOAD_IMAGE -->
 		<div class="buttons">
 			<div class="<!-- IF S_IS_LOCKED -->locked-icon<!-- ELSE -->upload-icon<!-- ENDIF -->"><a rel="nofollow" href="{U_UPLOAD_IMAGE}" title="<!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF -->"><span></span><!-- IF S_IS_LOCKED -->{L_ALBUM_LOCKED}<!-- ELSE -->{L_UPLOAD_IMAGE}<!-- ENDIF --></a></div>
 		</div>
 	<!-- ENDIF -->
 
-	<!-- IF not S_IN_GALLERY_POPUP and S_DISPLAY_SEARCHBOX -->
+	<!-- IF S_DISPLAY_SEARCHBOX -->
 		<div class="search-box">
 			<form method="post" id="album-search" action="{S_SEARCHBOX_ACTION}">
 			<fieldset>
@@ -56,11 +56,7 @@
 <!-- ENDIF -->
 
 <!-- IF .imageblock -->
-	<!-- IF S_IN_GALLERY_POPUP -->
-		<!-- INCLUDE gallery/imageblock_popup.html -->
-	<!-- ELSE -->
-		<!-- INCLUDE gallery/imageblock_body.html -->
-	<!-- ENDIF -->
+	<!-- INCLUDE gallery/imageblock_body.html -->
 <!-- ELSE -->
 	<!-- IF S_IS_POSTABLE -->
 	<div class="panel">
@@ -96,9 +92,9 @@
 	<!-- ENDIF -->
 <!-- ENDIF -->
 
-<!-- IF not S_IN_GALLERY_POPUP and S_IS_POSTABLE -->
+<!-- IF S_IS_POSTABLE -->
 	<h3>{L_ALBUM_PERMISSIONS}</h3>
 	<p><!-- BEGIN rules -->{rules.RULE}<br /><!-- END rules --></p>
 <!-- ENDIF -->
 
-<!-- INCLUDE gallery/gallery_footer.html -->
+<!-- INCLUDE overall_footer.html -->

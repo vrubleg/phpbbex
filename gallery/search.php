@@ -517,13 +517,7 @@ if (!$s_albums)
 	trigger_error('NO_SEARCH');
 }
 
-// Prevent undefined variable on build_hidden_fields()
 $s_hidden_fields = ['e' => 0];
-
-if (phpbb_gallery::$display_popup)
-{
-	$s_hidden_fields['display'] = 'popup';
-}
 
 if (!empty($_EXTRA_URL))
 {

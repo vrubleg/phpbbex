@@ -100,37 +100,18 @@ class phpbb_gallery_url
 		return false;
 	}
 
-	static public function append_sid()
+	static public function append_sid($file, ...$args)
 	{
-		$args = func_get_args();
-		if (is_array($args[0]))
+		$mode = 'gallery';
+		if (in_array($file, ['phpbb', 'admin', 'relative', 'full', 'board'], true))
 		{
-			// Little problem from the duplicated call to func_get_args();
-			$args = $args[0];
+			$mode = $file;
+			$file = array_shift($args);
 		}
 
-		if (in_array($args[0], ['phpbb', 'admin', 'relative', 'full', 'board']))
-		{
-			$mode = array_shift($args);
-			$args[0] = self::path($mode) . self::phpext_file($args[0]);
-		}
-		else
-		{
-			$args[0] = self::path() . self::phpext_file($args[0]);
-		}
-		if (isset($args[1]))
-		{
-			$args[1] .= phpbb_gallery::$display_popup;
-		}
+		$url = self::path($mode) . self::phpext_file($file);
 
-		$params = $args + [
-			0   => '',
-			1   => phpbb_gallery::$display_popup,
-			2   => true,
-			3   => false,
-		];
-
-		return append_sid($params[0], $params[1], $params[2], $params[3]);
+		return append_sid($url, $args[0] ?? '', $args[1] ?? true, $args[2] ?? false);
 	}
 
 	/**
@@ -146,9 +127,9 @@ class phpbb_gallery_url
 		return self::append_sid($path, $file, $params, false, '');
 	}
 
-	static public function redirect()
+	static public function redirect($file, ...$args)
 	{
-		redirect(self::append_sid(func_get_args()));
+		redirect(self::append_sid($file, ...$args));
 	}
 
 	static public function phpext_file($file)

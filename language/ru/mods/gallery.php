@@ -122,7 +122,6 @@ $lang = array_merge($lang, [
 	'IMAGE_URL'                     => 'Ссылка на фото',
 	'IMAGE_WIDTH'                   => 'Ширина фото',
 	'IMAGES_REPORTED_SUCCESSFULLY'  => 'Жалоба на фото отправлена',
-	'INSERT_IMAGE_POST'             => 'Вставить фото в сообщение',
 	'INVALID_USERNAME'              => 'Неверное имя пользователя',
 
 	'LAST_COMMENT'                  => 'Последний комментарий',
@@ -162,7 +161,6 @@ $lang = array_merge($lang, [
 	'ORDER'                         => 'Порядок',
 	'ORIG_FILENAME'                 => 'Использовать название файла в качестве названия фотографии',
 	'OUT_OF_RANGE_VALUE'            => 'Значение выходит за допустимые рамки',
-	'OWN_IMAGES'                    => 'Ваши фото',
 
 	'PERCENT'                       => '%',
 	'PERSONAL_ALBUMS'               => 'Личные альбомы',

@@ -33,8 +33,6 @@ $lang = array_merge($lang, [
 	'GALLERY'                           => 'Gallery',
 	'GALLERY_EXPLAIN'                   => 'Image Gallery',
 	'GALLERY_HELPLINE_ALBUM'            => 'Gallery image: [album]image_id[/album], with this BBCode you can add an image from the gallery into your post.',
-	'GALLERY_POPUP'                     => 'Gallery',
-	'GALLERY_POPUP_HELPLINE'            => 'Open a popup where you can select your recent images and upload new images.',
 
 	'IMAGES'                            => 'Images',
 	'IMG_BUTTON_UPLOAD_IMAGE'           => 'Upload image',
