@@ -3507,7 +3507,6 @@ function page_header($page_title = '', $display_online_list = true)
 	$template->assign_vars([
 		'SITENAME'                      => $config['sitename'],
 		'SITE_DESCRIPTION'              => $config['site_desc'],
-		'SITE_KEYWORDS'                 => $config['site_keywords'],
 		'PAGE_TITLE'                    => $page_title,
 		'SCRIPT_NAME'                   => str_replace('.php', '', $user->page['page_name']),
 		'LAST_VISIT_DATE'               => sprintf($user->lang['YOU_LAST_VISIT'], $s_last_visit),

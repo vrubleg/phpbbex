@@ -261,7 +261,6 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	set_config('outlinks', '');
 	set_config('override_user_lang', '0');
 	set_config('override_user_timezone', '0');
-	set_config('site_keywords', '');
 	set_config('warning_post_default', '');
 	set_config('auto_guest_lang', '0');
 	set_config('default_search_titleonly', '0');
@@ -667,6 +666,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'limit_load',
 		'limit_search_load',
 		'skip_typical_notices',
+		'site_keywords',
 	]);
 
 	// New defaults.

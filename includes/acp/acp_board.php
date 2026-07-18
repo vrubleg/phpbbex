@@ -48,7 +48,6 @@ class acp_board
 						'legend1'               => 'ACP_BOARD_SETTINGS',
 						'sitename'              => ['lang' => 'SITE_NAME',              'validate' => 'string', 'type' => 'text:40:255', 'explain' => false],
 						'site_desc'             => ['lang' => 'SITE_DESC',              'validate' => 'string', 'type' => 'text:40:255', 'explain' => false],
-						'site_keywords'         => ['lang' => 'SITE_KEYWORDS',          'validate' => 'string', 'type' => 'text:40:255', 'explain' => false],
 						'copyright_notice'      => ['lang' => 'COPYRIGHT_NOTICE',       'validate' => 'string', 'type' => 'htmlarea:3:1000', 'explain' => true],
 						'board_disable'         => ['lang' => 'DISABLE_BOARD',          'validate' => 'bool',   'type' => 'custom', 'method' => 'board_disable', 'explain' => true],
 						'board_disable_msg'     => false,
