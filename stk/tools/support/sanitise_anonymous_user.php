@@ -110,7 +110,7 @@ class sanitise_anonymous_user
 			'user_occupation'           => '',
 			'user_about'                => '',
 			'user_actkey'               => '',
-			'user_newpasswd'            => '',
+			'user_password_pending'     => '',
 			'user_allow_massemail'      => 0,
 		];
 

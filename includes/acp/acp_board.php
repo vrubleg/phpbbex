@@ -362,7 +362,6 @@ class acp_board
 						'min_pass_chars'        => ['lang' => 'PASSWORD_LENGTH',    'validate' => 'int:1',  'type' => 'custom', 'method' => 'password_length', 'explain' => true],
 						'allow_name_chars'      => ['lang' => 'USERNAME_CHARS', 'validate' => 'string', 'type' => 'select', 'method' => 'select_username_chars', 'explain' => true],
 						'pass_complex'          => ['lang' => 'PASSWORD_TYPE',      'validate' => 'string', 'type' => 'select', 'method' => 'select_password_chars', 'explain' => true],
-						'chg_passforce'         => ['lang' => 'FORCE_PASS_CHANGE',  'validate' => 'int:0',  'type' => 'text:3:3', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
 						'allow_login_via_email' => ['lang' => 'ALLOW_LOGIN_VIA_EMAIL', 'validate' => 'int', 'type' => 'custom', 'method' => 'allow_login_via_email_options', 'explain' => true],
 						'allow_namechange'      => ['lang' => 'ALLOW_NAME_CHANGE',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
@@ -446,7 +445,6 @@ class acp_board
 						'max_pass_chars'        => ['lang' => 'PASSWORD_LENGTH', 'validate' => 'int:8:255', 'type' => false, 'method' => false, 'explain' => false,],
 						'min_pass_chars'        => ['lang' => 'PASSWORD_LENGTH',    'validate' => 'int:1',  'type' => 'custom', 'method' => 'password_length', 'explain' => true],
 						'pass_complex'          => ['lang' => 'PASSWORD_TYPE',          'validate' => 'string', 'type' => 'select', 'method' => 'select_password_chars', 'explain' => true],
-						'chg_passforce'         => ['lang' => 'FORCE_PASS_CHANGE',      'validate' => 'int:0',  'type' => 'text:3:3', 'explain' => true, 'append' => ' ' . $user->lang['DAYS']],
 						'max_login_attempts'    => ['lang' => 'MAX_LOGIN_ATTEMPTS', 'validate' => 'int:0',  'type' => 'text:3:3', 'explain' => true],
 						'ip_login_limit_max'    => ['lang' => 'IP_LOGIN_LIMIT_MAX', 'validate' => 'int:0',  'type' => 'text:3:3', 'explain' => true],
 						'ip_login_limit_time'   => ['lang' => 'IP_LOGIN_LIMIT_TIME',    'validate' => 'int:0',  'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],

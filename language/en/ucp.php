@@ -155,7 +155,6 @@ $lang = array_merge($lang, [
 	'FOLDER_REMOVED'            => 'Folder successfully removed.',
 	'FOLDER_STATUS_MSG'         => 'Folder is %1$d%% full (%2$d from %3$d messages stored)',
 	'FORWARD_PM'                => 'Forward PM',
-	'FORCE_PASSWORD_EXPLAIN'    => 'Before you may continue browsing the board you are required to change your password.',
 	'FRIEND_MESSAGE'            => 'Message from friend',
 	'FRIENDS'                   => 'Friends',
 	'FRIENDS_EXPLAIN'           => 'Friends enable you quick access to members you communicate with frequently. If the template has relevant support any posts made by a friend may be highlighted.',

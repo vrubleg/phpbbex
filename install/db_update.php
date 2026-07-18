@@ -662,6 +662,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'override_user_dateformat',
 		'merge_no_forums',
 		'merge_no_topics',
+		'chg_passforce',
 	]);
 
 	// New defaults.
@@ -724,6 +725,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	$db->sql_return_on_error(true);
 
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_passchg user_password_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_pass_convert user_password_reset tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
+	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_newpasswd user_password_pending varchar(40) DEFAULT '' NOT NULL AFTER user_password");
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_email_hash');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_last_confirm_key');

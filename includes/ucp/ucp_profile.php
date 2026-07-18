@@ -98,8 +98,11 @@ class ucp_profile
 							'username_clean'    => ($auth->acl_get('u_chgname') && $config['allow_namechange']) ? utf8_clean_string($data['username']) : $user->data['username_clean'],
 							'user_email'        => ($auth->acl_get('u_chgemail')) ? $data['email'] : $user->data['user_email'],
 							'user_password'     => ($auth->acl_get('u_chgpasswd') && $data['new_password']) ? phpbb_hash($data['new_password']) : $user->data['user_password'],
-							'user_passchg'      => ($auth->acl_get('u_chgpasswd') && $data['new_password']) ? time() : 0,
 						];
+						if ($auth->acl_get('u_chgpasswd') && $data['new_password'])
+						{
+							$sql_ary['user_password_time'] = time();
+						}
 
 						if ($auth->acl_get('u_chgname') && $config['allow_namechange'] && $data['username'] != $user->data['username'])
 						{
@@ -183,9 +186,9 @@ class ucp_profile
 
 							user_active_flip('deactivate', $user->data['user_id'], INACTIVE_PROFILE);
 
-							// Because we want the profile to be reactivated we set user_newpasswd to empty (else the reactivation will fail)
+							// Because we want the profile to be reactivated we clear the pending password (else the reactivation will fail)
 							$sql_ary['user_actkey'] = $user_actkey;
-							$sql_ary['user_newpasswd'] = '';
+							$sql_ary['user_password_pending'] = '';
 						}
 
 						if (sizeof($sql_ary))
@@ -236,7 +239,6 @@ class ucp_profile
 					'L_USERNAME_EXPLAIN'        => sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
 					'L_CHANGE_PASSWORD_EXPLAIN' => sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
 
-					'S_FORCE_PASSWORD'  => ($auth->acl_get('u_chgpasswd') && $config['chg_passforce'] && $user->data['user_passchg'] < time() - ($config['chg_passforce'] * 86400)),
 					'S_CHANGE_USERNAME' => ($config['allow_namechange'] && $auth->acl_get('u_chgname')),
 					'S_CHANGE_EMAIL'    => (bool) $auth->acl_get('u_chgemail'),
 					'S_CHANGE_PASSWORD' => (bool) $auth->acl_get('u_chgpasswd'),

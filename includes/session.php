@@ -1557,18 +1557,6 @@ class phpbb_user extends phpbb_session
 				}
 			}
 		}
-
-
-		// Does the user need to change their password? If so, redirect to the
-		// ucp profile reg_details page ... of course do not redirect if we're already in the ucp
-		if (!defined('IN_ADMIN') && !defined('ADMIN_START') && $config['chg_passforce'] && !empty($this->data['is_registered']) && $auth->acl_get('u_chgpasswd') && $this->data['user_passchg'] < time() - ($config['chg_passforce'] * 86400))
-		{
-			if (strpos($this->page['query_string'], 'mode=reg_details') === false && $this->page['page_name'] != "ucp.php")
-			{
-				redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=reg_details'));
-			}
-		}
-
 		return;
 	}
 

@@ -2438,7 +2438,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				$err = $user->lang[$result['error_msg']];
 			break;
 
-			case LOGIN_ERROR_PASSWORD_CONVERT:
+			case LOGIN_ERROR_PASSWORD_RESET_REQUIRED:
 				$err = sprintf(
 					$user->lang[$result['error_msg']],
 					($config['email_enable']) ? '<a href="' . append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=sendpassword') . '">' : '',

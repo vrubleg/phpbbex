@@ -954,9 +954,9 @@ class acp_users
 						if ($update_password)
 						{
 							$sql_ary += [
-								'user_password'     => phpbb_hash($data['new_password']),
-								'user_passchg'      => time(),
-								'user_pass_convert' => 0,
+								'user_password'       => phpbb_hash($data['new_password']),
+								'user_password_time'  => time(),
+								'user_password_reset' => 0,
 							];
 
 							$user->reset_login_keys($user_id);

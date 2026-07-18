@@ -509,7 +509,7 @@ class merge_users
 					$update['target']['user_reminded']          = (int) $source['user_reminded'];
 					$update['target']['user_reminded_time']     = (int) $source['user_reminded_time'];
 					$update['target']['user_actkey']            = $source['user_actkey'];
-					$update['target']['user_newpasswd']         = $source['user_newpasswd'];
+					$update['target']['user_password_pending']  = $source['user_password_pending'];
 				break;
 
 				case USER_NORMAL:

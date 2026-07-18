@@ -27,7 +27,7 @@ class ucp_activate
 		$user_id = request_var('u', 0);
 		$key = request_var('k', '');
 
-		$sql = 'SELECT user_id, username, user_type, user_email, user_newpasswd, user_lang_code, user_notify_type, user_actkey, user_inactive_reason
+		$sql = 'SELECT user_id, username, user_type, user_email, user_password_pending, user_lang_code, user_notify_type, user_actkey, user_inactive_reason
 			FROM ' . USERS_TABLE . "
 			WHERE user_id = {$user_id}";
 		$result = $db->sql_query($sql);
@@ -39,7 +39,7 @@ class ucp_activate
 			trigger_error('NO_USER');
 		}
 
-		if ($user_row['user_type'] != USER_INACTIVE && !$user_row['user_newpasswd'])
+		if ($user_row['user_type'] != USER_INACTIVE && !$user_row['user_password_pending'])
 		{
 			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 			trigger_error('ALREADY_ACTIVATED');
@@ -53,7 +53,7 @@ class ucp_activate
 		// Do not allow activating by non administrators when admin activation is on
 		// Only activation type the user should be able to do is INACTIVE_REMIND
 		// or activate a new password which is not an activation state :@
-		if (!$user_row['user_newpasswd'] && $user_row['user_inactive_reason'] != INACTIVE_REMIND && $config['require_activation'] == USER_ACTIVATION_ADMIN && !$auth->acl_get('a_user'))
+		if (!$user_row['user_password_pending'] && $user_row['user_inactive_reason'] != INACTIVE_REMIND && $config['require_activation'] == USER_ACTIVATION_ADMIN && !$auth->acl_get('a_user'))
 		{
 			if (!$user->data['is_registered'])
 			{
@@ -62,15 +62,16 @@ class ucp_activate
 			trigger_error('NO_AUTH_OPERATION');
 		}
 
-		$update_password = (bool) $user_row['user_newpasswd'];
+		$update_password = (bool) $user_row['user_password_pending'];
 
 		if ($update_password)
 		{
 			$sql_ary = [
-				'user_actkey'       => '',
-				'user_password'     => $user_row['user_newpasswd'],
-				'user_newpasswd'    => '',
-				'user_pass_convert' => 0,
+				'user_actkey'           => '',
+				'user_password'         => $user_row['user_password_pending'],
+				'user_password_time'    => time(),
+				'user_password_pending' => '',
+				'user_password_reset'   => 0,
 				'user_login_attempts'   => 0,
 			];
 
