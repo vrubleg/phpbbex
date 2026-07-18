@@ -246,7 +246,7 @@ class phpbb_gallery_image
 			'S_LOCKED'      => ($image_data['image_status'] == self::STATUS_LOCKED),
 			'S_REPORTED'    => (phpbb_gallery::$auth->acl_check('m_report', $image_data['image_album_id'], $album_user_id) && $image_data['image_reported']),
 
-			'ALBUM_NAME'        => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ((isset($image_data['album_name'])) ? ((utf8_strlen(htmlspecialchars_decode($image_data['album_name'])) > phpbb_gallery_config::get('shortnames') + 3) ? htmlspecialchars(utf8_substr(htmlspecialchars_decode($image_data['album_name']), 0, phpbb_gallery_config::get('shortnames')) . '...') : ($image_data['album_name'])) : '') : '',
+			'ALBUM_NAME'        => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ($image_data['album_name'] ?? '') : '',
 			'ALBUM_NAME_FULL'   => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ($image_data['album_name'] ?? '') : '',
 			'POSTER'        => ($display & phpbb_gallery_block::DISPLAY_USERNAME) ? get_username_string('full', $image_data['image_user_id'], $image_data['image_username'], $image_data['image_user_colour']) : '',
 			'TIME'          => ($display & phpbb_gallery_block::DISPLAY_IMAGETIME) ? $user->format_date($image_data['image_time']) : '',
@@ -306,8 +306,7 @@ class phpbb_gallery_image
 		switch ($content)
 		{
 			case 'image_name':
-				$shorten_image_name = (utf8_strlen(htmlspecialchars_decode($image_name)) > phpbb_gallery_config::get('shortnames') + 3) ? (utf8_substr(htmlspecialchars_decode($image_name), 0, phpbb_gallery_config::get('shortnames')) . '...') : ($image_name);
-				$content = '<span style="font-weight: bold;">' . $shorten_image_name . '</span>';
+				$content = '<span style="font-weight: bold;">' . $image_name . '</span>';
 			break;
 			case 'thumbnail':
 				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" />';

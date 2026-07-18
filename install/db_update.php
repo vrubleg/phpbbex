@@ -636,6 +636,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'phpbb_gallery_disp_nextprev_thumbnail',
 		'phpbb_gallery_gdlib_version',
 		'phpbb_gallery_rrc_gindex_contests',
+		'phpbb_gallery_shortnames',
 		'phpbb_gallery_watermark_changed',
 		'phpbb_gallery_watermark_enabled',
 		'phpbb_gallery_watermark_height',

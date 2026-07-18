@@ -330,8 +330,6 @@ function config_mapping()
 		'pgalleries_per_page'       => 'pegas_per_page',
 		'sort_method'               => 'default_sort_key',
 		'sort_order'                => 'default_sort_dir',
-		'shorted_imagenames'        => 'shortnames',
-
 		'thumbnail_info_line'   => 'thumbnail_infoline',
 		'thumbnail_quality'     => 'thumbnail_quality',
 		'thumbnail_cache'       => 'thumbnail_cache',

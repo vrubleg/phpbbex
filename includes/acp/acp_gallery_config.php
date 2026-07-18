@@ -351,8 +351,6 @@ class acp_gallery_config
 			'max_rating'            => ['lang' => 'RATE_SCALE',         'validate' => 'int',    'type' => 'text:7:2',       'gallery' => true,  'explain' => false],
 			'allow_hotlinking'      => ['lang' => 'HOTLINK_PREVENT',        'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'hotlinking_domains'    => ['lang' => 'HOTLINK_ALLOWED',        'validate' => 'string', 'type' => 'text:40:255',    'gallery' => true,  'explain' => true],
-			'shortnames'            => ['lang' => 'SHORTED_IMAGENAMES', 'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => true,  'append' => 'CHARACTERS'],
-
 			'legend2'               => 'ALBUM_SETTINGS',
 			'album_rows'            => ['lang' => 'ROWS_PER_PAGE',          'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => false],
 			'album_columns'         => ['lang' => 'COLS_PER_PAGE',          'validate' => 'int',    'type' => 'text:7:3',       'gallery' => true,  'explain' => false],

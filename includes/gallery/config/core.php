@@ -104,8 +104,6 @@ class phpbb_gallery_config_core
 		'rrc_profile_rows'      => 1,
 
 		'search_display'        => 45,
-		'shortnames'            => 25,
-
 		'thumbnail_cache'       => true,
 		'thumbnail_height'      => 160,
 		'thumbnail_infoline'    => false,
