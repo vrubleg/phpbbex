@@ -260,8 +260,7 @@ class acp_gallery_config
 	{
 		global $user;
 
-		$sort_order_options = phpbb_gallery_plugins::uc_select($value, $key);
-
+		$sort_order_options = '';
 
 		if ($key != 'link_imagepage')
 		{
@@ -329,15 +328,7 @@ class acp_gallery_config
 	{
 		$gallery_url = phpbb_gallery_url::path('full');
 
-		if (($value == 'highslide') && in_array('highslide', phpbb_gallery_plugins::$plugins))
-		{
-			$bbcode_tpl = '<a class="highslide" onclick="return hs.expand(this)" href="' . $gallery_url . 'image.php?image_id={NUMBER}"><img src="' . $gallery_url . 'image.php?mode=thumbnail&amp;image_id={NUMBER}" alt="{NUMBER}" /></a>';
-		}
-		else if (($value == 'lytebox') && in_array('lytebox', phpbb_gallery_plugins::$plugins))
-		{
-			$bbcode_tpl = '<a class="image-resize" rel="lytebox" href="' . $gallery_url . 'image.php?image_id={NUMBER}"><img src="' . $gallery_url . 'image.php?mode=thumbnail&amp;image_id={NUMBER}" alt="{NUMBER}" /></a>';
-		}
-		else if ($value == 'image_page')
+		if ($value == 'image_page')
 		{
 			$bbcode_tpl = '<a href="' . $gallery_url . 'image_page.php?image_id={NUMBER}"><img src="' . $gallery_url . 'image.php?mode=thumbnail&amp;image_id={NUMBER}" alt="{NUMBER}" /></a>';
 		}

@@ -287,7 +287,7 @@ class phpbb_gallery_image
 	* Generate link to image
 	*
 	* @param    string  $content    what's in the link: image_name, thumbnail, fake_thumbnail, medium or lastimage_icon
-	* @param    string  $mode       where does the link leed to: highslide, lytebox, lytebox_slide_show, image_page, image, none
+	* @param    string  $mode       where the link leads to: image_page, image, none or next
 	* @param    int     $image_id
 	* @param    string  $image_name
 	* @param    int     $album_id
@@ -359,7 +359,7 @@ class phpbb_gallery_image
 			break;
 			default:
 				$url = $image_url;
-				$tpl = phpbb_gallery_plugins::generate_image_link($mode);
+				$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}">{CONTENT}</a>';
 			break;
 		}
 

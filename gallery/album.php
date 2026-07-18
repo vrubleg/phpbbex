@@ -123,18 +123,14 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 		$template->assign_var('U_MCP', phpbb_gallery_url::append_sid('mcp', "album_id={$album_id}"));
 	}
 
-	// When we do the slideshow, we don't need the moderators
-	if ($mode != 'slide_show')
+	if ($config['load_moderators'])
 	{
-		if ($config['load_moderators'])
-		{
-			phpbb_gallery_album::get_moderators($album_moderators, $album_id);
-		}
-		if (!empty($album_moderators[$album_id]))
-		{
-			$l_moderator = (sizeof($album_moderators[$album_id]) == 1) ? $user->lang['MODERATOR'] : $user->lang['MODERATORS'];
-			$moderators_list = implode(', ', $album_moderators[$album_id]);
-		}
+		phpbb_gallery_album::get_moderators($album_moderators, $album_id);
+	}
+	if (!empty($album_moderators[$album_id]))
+	{
+		$l_moderator = (sizeof($album_moderators[$album_id]) == 1) ? $user->lang['MODERATOR'] : $user->lang['MODERATORS'];
+		$moderators_list = implode(', ', $album_moderators[$album_id]);
 	}
 
 	/**
@@ -191,37 +187,7 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 				AND image_status <> " . phpbb_gallery_image::STATUS_ORPHAN . "
 			ORDER BY {$sql_sort_order}" . $sql_help_sort;
 
-		if ($mode == 'slide_show')
-		{
-			/**
-			* Slideshow - Using message_body.html
-			*/
-			// No plugins means, no javascript to do a slideshow
-			if (!phpbb_gallery_plugins::$slideshow)
-			{
-				trigger_error('MISSING_SLIDESHOW_PLUGIN');
-			}
-
-			$result = $db->sql_query($sql);
-
-			$trigger_message = phpbb_gallery_plugins::slideshow($result);
-			$db->sql_freeresult($result);
-
-			$template->assign_vars([
-				'MESSAGE_TITLE'     => $user->lang['SLIDE_SHOW'],
-				'MESSAGE_TEXT'      => $trigger_message,
-			]);
-
-			page_header($user->lang['SLIDE_SHOW']);
-			$template->set_filenames([
-				'body' => 'message_body.html']
-			);
-			page_footer();
-		}
-		else
-		{
-			$result = $db->sql_query_limit($sql, $images_per_page, $start);
-		}
+		$result = $db->sql_query_limit($sql, $images_per_page, $start);
 
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -279,7 +245,6 @@ $template->assign_vars([
 
 	'U_UPLOAD_IMAGE'            => ((!$album_data['album_user_id'] || ($album_data['album_user_id'] == $user->data['user_id'])) && (($user->data['user_id'] == ANONYMOUS) || phpbb_gallery::$auth->acl_check('i_upload', $album_id, $album_data['album_user_id']))) ?
 										phpbb_gallery_url::append_sid('posting', "mode=upload&amp;album_id={$album_id}") : '',
-	'U_SLIDE_SHOW'              => (sizeof(phpbb_gallery_plugins::$plugins) && phpbb_gallery_plugins::$slideshow) ? phpbb_gallery_url::append_sid('album', "album_id={$album_id}&amp;mode=slide_show" . (($sort_key != phpbb_gallery_config::get('default_sort_key')) ? "&amp;sk={$sort_key}" : '') . (($sort_dir != phpbb_gallery_config::get('default_sort_dir')) ? "&amp;sd={$sort_dir}" : '')) : '',
 	'S_DISPLAY_SEARCHBOX'       => ($auth->acl_get('u_search') && $config['load_search']),
 	'S_SEARCHBOX_ACTION'        => phpbb_gallery_url::append_sid('search', 'aid[]=' . $album_id),
 	'S_ENABLE_FEEDS_ALBUM'      => $album_data['album_feed'] && (phpbb_gallery_config::get('feed_enable_pegas') || !$album_data['album_user_id']),

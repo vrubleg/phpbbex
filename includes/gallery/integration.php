@@ -137,7 +137,6 @@ class phpbb_gallery_integration
 		global $template, $user;
 
 		$user->add_lang('mods/info_acp_gallery');
-		phpbb_gallery_plugins::init(phpbb_gallery_url::path('gallery'));
 		$template->assign_var('U_GALLERY_MOD', phpbb_gallery_url::append_sid('index'));
 	}
 

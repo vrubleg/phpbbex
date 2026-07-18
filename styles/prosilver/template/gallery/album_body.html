@@ -25,7 +25,7 @@
 	<!-- INCLUDE gallery/albumlist_body.html -->
 <!-- ENDIF -->
 
-<!-- IF S_IS_POSTABLE and (U_UPLOAD_IMAGE or PAGINATION or TOTAL_IMAGES or (U_SLIDE_SHOW and not S_IS_BOT)) -->
+<!-- IF S_IS_POSTABLE and (U_UPLOAD_IMAGE or PAGINATION or TOTAL_IMAGES) -->
 	<div class="topic-actions" <!-- IF S_HAS_SUBALBUM -->style="margin-top: 2em;"<!-- ENDIF -->>
 
 	<!-- IF not S_IN_GALLERY_POPUP and U_UPLOAD_IMAGE -->
@@ -50,10 +50,6 @@
 		<div class="pagination">
 			{TOTAL_IMAGES}<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ENDIF -->
 		</div>
-	<!-- ENDIF -->
-
-	<!-- IF not S_IN_GALLERY_POPUP and S_IS_POSTABLE and U_SLIDE_SHOW and not S_IS_BOT -->
-		<div class="pagination"><a href="{U_SLIDE_SHOW}">{L_SLIDE_SHOW}</a><!-- IF PAGINATION or TOTAL_IMAGES or U_SLIDE_SHOW --> &bull;&nbsp;<!-- ENDIF --></div>
 	<!-- ENDIF -->
 
 	</div>

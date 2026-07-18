@@ -53,7 +53,6 @@ class phpbb_gallery
 		$user->setup($lang_sets);
 
 		phpbb_gallery_url::_include('functions_phpbb', 'phpbb', 'includes/gallery/');
-		phpbb_gallery_plugins::init(phpbb_gallery_url::path());
 
 		// Little precaution.
 		$user->data['user_id'] = (int) $user->data['user_id'];
@@ -102,7 +101,6 @@ class phpbb_gallery
 		global $db, $user;
 
 		phpbb_gallery_url::_include('functions_phpbb', 'phpbb', 'includes/gallery/');
-		phpbb_gallery_plugins::init(phpbb_gallery_url::path());
 
 		// Little precaution.
 		$user->data['user_id'] = (int) $user->data['user_id'];

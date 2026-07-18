@@ -57,7 +57,8 @@
 </script>
 <!-- ENDIF -->
 
-<!-- INCLUDE gallery/plugins_header.html -->
+<!-- IF S_GALLERY_FEEDS --><link rel="alternate" type="application/atom+xml" title="{L_FEED} - {L_GALLERY}" href="{U_GALLERY_FEED}" /><!-- ENDIF -->
+<!-- IF S_GALLERY_FEEDS and S_ENABLE_FEEDS_ALBUM and ALBUM_ID --><link rel="alternate" type="application/atom+xml" title="{L_FEED} - {L_ALBUM} - {ALBUM_NAME}" href="{U_GALLERY_FEED}?album_id={ALBUM_ID}" /><!-- ENDIF -->
 
 </head>
 
