@@ -1291,8 +1291,11 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 	$table_sql = ($mode == 'forum') ? FORUMS_WATCH_TABLE : TOPICS_WATCH_TABLE;
 	$where_sql = ($mode == 'forum') ? 'forum_id' : 'topic_id';
 	$match_id = ($mode == 'forum') ? $forum_id : $topic_id;
-	$u_url = "uid={$user->data['user_id']}";
-	$u_url .= ($mode == 'forum') ? '&amp;f' : '&amp;f=' . $forum_id . '&amp;t';
+	$u_url = (($mode == 'forum') ? 'f' : 't') . "={$match_id}";
+	if ($start > 0)
+	{
+		$u_url .= "&amp;start={$start}";
+	}
 
 	if ($user_id == ANONYMOUS)
 	{
@@ -1327,9 +1330,9 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 
 				if ($token && check_link_hash($token, "{$mode}_{$match_id}") || confirm_box(true))
 				{
-					if ($uid != $user_id || $_GET['unwatch'] != $mode)
+					if (($uid && $uid != $user_id) || $_GET['unwatch'] != $mode)
 					{
-						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
+						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", $u_url);
 						$message = $user->lang['ERR_UNWATCHING'] . '<br /><br />' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
 						trigger_error($message);
 					}
@@ -1339,18 +1342,27 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 							AND user_id = {$user_id}";
 					$db->sql_query($sql);
 
-					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
+					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", $u_url);
 					redirect($redirect_url);
 				}
 				else
 				{
 					$s_hidden_fields = [
-						'uid'       => $user->data['user_id'],
 						'unwatch'   => $mode,
-						'start'     => $start,
-						'f'         => $forum_id,
 					];
-					if ($mode != 'forum')
+					if ($start > 0)
+					{
+						$s_hidden_fields['start'] = $start;
+					}
+					if ($uid)
+					{
+						$s_hidden_fields['uid'] = $uid;
+					}
+					if ($mode == 'forum')
+					{
+						$s_hidden_fields['f'] = $forum_id;
+					}
+					else
 					{
 						$s_hidden_fields['t'] = $topic_id;
 					}
@@ -1389,9 +1401,9 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 
 				if ($token && check_link_hash($token, "{$mode}_{$match_id}") || confirm_box(true))
 				{
-					if ($uid != $user_id || $_GET['watch'] != $mode)
+					if (($uid && $uid != $user_id) || $_GET['watch'] != $mode)
 					{
-						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
+						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", $u_url);
 						$message = $user->lang['ERR_WATCHING'] . '<br /><br />' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
 						trigger_error($message);
 					}
@@ -1402,18 +1414,27 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 						VALUES ({$user_id}, {$match_id}, " . NOTIFY_YES . ')';
 					$db->sql_query($sql);
 
-					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;start={$start}");
+					$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", $u_url);
 					redirect($redirect_url);
 				}
 				else
 				{
 					$s_hidden_fields = [
-						'uid'       => $user->data['user_id'],
 						'watch'     => $mode,
-						'start'     => $start,
-						'f'         => $forum_id,
 					];
-					if ($mode != 'forum')
+					if ($start > 0)
+					{
+						$s_hidden_fields['start'] = $start;
+					}
+					if ($uid)
+					{
+						$s_hidden_fields['uid'] = $uid;
+					}
+					if ($mode == 'forum')
+					{
+						$s_hidden_fields['f'] = $forum_id;
+					}
+					else
 					{
 						$s_hidden_fields['t'] = $topic_id;
 					}
@@ -1424,7 +1445,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 			}
 		}
 
-		$s_watching['link'] = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", "{$u_url}={$match_id}&amp;" . (($is_watching) ? 'unwatch' : 'watch') . "={$mode}&amp;start={$start}&amp;hash=" . generate_link_hash("{$mode}_{$match_id}"));
+		$s_watching['link'] = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", $u_url . '&amp;' . (($is_watching) ? 'unwatch' : 'watch') . "={$mode}&amp;hash=" . generate_link_hash("{$mode}_{$match_id}"));
 		$s_watching['title'] = $user->lang[(($is_watching) ? 'STOP' : 'START') . '_WATCHING_' . strtoupper($mode)];
 		$s_watching['is_watching'] = $is_watching;
 	}
