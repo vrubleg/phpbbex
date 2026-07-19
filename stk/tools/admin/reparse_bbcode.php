@@ -10,13 +10,10 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-/**@#+
-* The bbcode reparse types
-*/
+// The bbcode reparse types
 define('BBCODE_REPARSE_POSTS', 0);
 define('BBCODE_REPARSE_PMS', 1);
 define('BBCODE_REPARSE_SIGS', 2);
-/**@#-*/
 
 class reparse_bbcode
 {
@@ -103,15 +100,14 @@ class reparse_bbcode
 
 		if (!empty($reparse_id))
 		{
-			$reparse_posts = explode(',', $reparse_id);
+			$reparse_posts = preg_split('#[,\s]+#', trim($reparse_id), -1, PREG_SPLIT_NO_EMPTY);
 
 			if (!sizeof($reparse_posts))
 			{
 				trigger_error('REPARSE_IDS_INVALID');
 			}
 
-			// Make sure there's no extra whitespace
-			array_walk($reparse_posts, [$this, '_trim_post_ids']);
+			$reparse_posts = array_map('intval', $reparse_posts);
 
 			$cache->put('_stk_reparse_posts', $reparse_posts);
 		}
@@ -125,15 +121,14 @@ class reparse_bbcode
 
 		if (!empty($reparse_pm_id))
 		{
-			$reparse_pms = explode(',', $reparse_pm_id);
+			$reparse_pms = preg_split('#[,\s]+#', trim($reparse_pm_id), -1, PREG_SPLIT_NO_EMPTY);
 
 			if (!sizeof($reparse_pms))
 			{
 				trigger_error('REPARSE_IDS_INVALID');
 			}
 
-			// Again, make sure the format is okay
-			array_walk($reparse_pms, [$this, '_trim_post_ids']);
+			$reparse_pms = array_map('intval', $reparse_pms);
 
 			$cache->put('_stk_reparse_pms', $reparse_pms);
 		}
@@ -460,7 +455,7 @@ class reparse_bbcode
 			'poll_vote_change'  => $this->data['poll_vote_change'],
 			'poll_show_voters'  => $this->data['poll_show_voters'],
 			'enable_bbcode'     => $this->flags['enable_bbcode'],
-			'enable_urls'       => $this->flags['enable_urls'],
+			'enable_urls'       => $this->flags['enable_magic_url'],
 			'enable_smilies'    => $this->flags['enable_smilies'],
 			'img_status'        => $this->flags['img_status'],
 		];
@@ -492,7 +487,7 @@ class reparse_bbcode
 			'icon_id'           => $this->data['icon_id'],
 			'enable_sig'        => $this->data['enable_sig'],
 			'enable_bbcode'     => $this->flags['enable_bbcode'],
-			'enable_urls'       => $this->flags['enable_urls'],
+			'enable_urls'       => $this->flags['enable_magic_url'],
 			'enable_smilies'    => $this->flags['enable_smilies'],
 			'img_status'        => $this->flags['img_status'],
 			'bbcode_bitfield'   => $this->message_parser->bbcode_bitfield,
@@ -566,6 +561,7 @@ class reparse_bbcode
 
 		// Update the post data
 		$post_data = array_merge($this->data, $this->flags, [
+			'enable_urls'       => $this->flags['enable_magic_url'],
 			'bbcode_bitfield'   => $this->message_parser->bbcode_bitfield,
 			'bbcode_uid'        => $this->message_parser->bbcode_uid,
 			'message'           => $this->message_parser->message,
@@ -630,11 +626,5 @@ class reparse_bbcode
 
 		// Update the parser
 		$parser->message = $message;
-	}
-
-	function _trim_post_ids(&$post_id, $key)
-	{
-		// This is difficult, no?
-		$post_id = (int) trim($post_id);
 	}
 }
