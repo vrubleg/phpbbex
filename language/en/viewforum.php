@@ -29,12 +29,9 @@ $lang = array_merge($lang, [
 
 	'MARK_TOPICS_READ'      => 'Mark topics read',
 
-	'NEW_POSTS_LOCKED'      => 'New posts [ Locked ]',  // Not used anymore
-	'NO_NEW_POSTS_LOCKED'   => 'No new posts [ Locked ]',   // Not used anymore
 	'NO_UNREAD_POSTS_LOCKED'    => 'No unread posts [ Locked ]',
 
 	'POST_FORUM_LOCKED'     => 'Forum is locked',
-
 
 	'UNREAD_POSTS_LOCKED'   => 'Unread posts [ Locked ]',
 
