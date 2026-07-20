@@ -500,8 +500,8 @@ switch ($mode)
 			'S_CUSTOM_FIELDS'   => (isset($profile_fields['row']) && sizeof($profile_fields['row'])),
 
 			'U_USER_ADMIN'          => ($auth->acl_get('a_user')) ? append_sid(PHPBB_ROOT_PATH . 'adm/index.php', 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
-			'U_USER_BAN'            => ($auth->acl_get('m_ban') && $user_id != $user->data['user_id']) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=ban&amp;mode=user&amp;u=' . $user_id, true, $user->session_id) : '',
-			'U_MCP_QUEUE'           => ($auth->acl_getf_global('m_approve')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue', true, $user->session_id) : '',
+			'U_USER_BAN'            => ($auth->acl_get('m_ban') && $user_id != $user->data['user_id']) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=ban&amp;mode=user&amp;u=' . $user_id) : '',
+			'U_MCP_QUEUE'           => ($auth->acl_getf_global('m_approve')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue') : '',
 
 			'U_SWITCH_PERMISSIONS'  => ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_id) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', "mode=switch_perm&amp;u={$user_id}&amp;hash=" . generate_link_hash('switchperm')) : '',
 
@@ -1311,8 +1311,8 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 		'U_SEARCH_USER' => ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_id}&amp;sr=posts") : '',
 		'U_SEARCH_USER_TOPICS'  => ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_id}&amp;sr=topics&amp;sf=firstpost") : '',
-		'U_NOTES'       => ($user_notes_enabled && $auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $user_id, true, $user->session_id) : '',
-		'U_WARN'        => ($warn_user_enabled && $auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $user_id, true, $user->session_id) : '',
+		'U_NOTES'       => ($user_notes_enabled && $auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $user_id) : '',
+		'U_WARN'        => ($warn_user_enabled && $auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $user_id) : '',
 		'U_PM'          => ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($data['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',
 		'U_EMAIL'       => $email,
 		'U_WWW'         => $data['user_website'] ?? '',

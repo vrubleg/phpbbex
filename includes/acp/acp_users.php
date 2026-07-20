@@ -1103,7 +1103,7 @@ class acp_users
 
 					'U_SHOW_IP'     => $this->u_action . "&amp;u={$user_id}&amp;ip=" . (($ip == 'ip') ? 'hostname' : 'ip'),
 					'U_WHOIS'       => $this->u_action . "&amp;action=whois&amp;user_ip={$user_row['user_ip']}",
-					'U_MCP_QUEUE'   => ($auth->acl_getf_global('m_approve')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue', true, $user->session_id) : '',
+					'U_MCP_QUEUE'   => ($auth->acl_getf_global('m_approve')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue') : '',
 					'U_SEARCH_USER' => ($config['load_search'] && $auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_row['user_id']}&amp;sr=posts") : '',
 
 					'U_SWITCH_PERMISSIONS'  => ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_row['user_id']) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', "mode=switch_perm&amp;u={$user_row['user_id']}&amp;hash=" . generate_link_hash('switchperm')) : '',

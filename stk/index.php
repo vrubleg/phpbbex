@@ -131,7 +131,7 @@ if ($stk_passwd !== false)
 				// Other page stuff
 				'LOGIN_ERROR'           => (!empty($err_msg)) ? $user->lang[$err_msg] : false,
 
-				'U_ACTION'              => append_sid(STK_INDEX, false, true, $user->session_id),
+				'U_ACTION'              => append_sid(STK_INDEX),
 				'U_INDEX'               => append_sid(PHPBB_ROOT_PATH . 'index.php'),
 
 				// Identify this method in the template
@@ -225,7 +225,7 @@ perform_authed_quick_tasks($action);
 // If they canceled redirect them to the STK index.
 if (isset($_POST['cancel']))
 {
-	redirect(append_sid(STK_INDEX, false, true, $user->session_id));
+	redirect(append_sid(STK_INDEX));
 }
 
 // Setup the plugin manager
@@ -233,11 +233,11 @@ $plugin = new plugin();
 
 // Output common stuff
 $template->assign_vars([
-	'U_ACTION'      => append_sid(STK_INDEX, $plugin->url_arg(), true, $user->session_id),
+	'U_ACTION'      => append_sid(STK_INDEX, $plugin->url_arg()),
 	'U_ADM_INDEX'   => append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, $user->session_id),
-	'U_STK_INDEX'   => append_sid(STK_INDEX, false, true, $user->session_id),
-	'U_STK_LOGOUT'  => append_sid(STK_INDEX, 'action=stklogout', true, $user->session_id),
-	'U_BACK_TOOL'   => ($plugin->get_part('t')) ? append_sid(STK_INDEX, $plugin->url_arg(), true, $user->session_id) : false,
+	'U_STK_INDEX'   => append_sid(STK_INDEX),
+	'U_STK_LOGOUT'  => append_sid(STK_INDEX, 'action=stklogout'),
+	'U_BACK_TOOL'   => ($plugin->get_part('t')) ? append_sid(STK_INDEX, $plugin->url_arg()) : false,
 	'U_INDEX'       => append_sid(PHPBB_ROOT_PATH . 'index.php'),
 	'U_LOGOUT'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout', true, $user->session_id),
 
@@ -379,7 +379,7 @@ if ($plugin->get_part('t'))
 	}
 
 	// Should never get here...
-	redirect(append_sid(STK_INDEX, false, true, $user->session_id));
+	redirect(append_sid(STK_INDEX));
 }
 else
 {

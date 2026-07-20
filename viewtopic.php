@@ -443,7 +443,7 @@ gen_forum_auth_level('topic', $forum_id, $topic_data['forum_status']);
 // Quick mod tools
 $allow_change_type = ($auth->acl_get('m_', $forum_id) || ($user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster']));
 
-$mod_action = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&amp;t={$topic_id}&amp;quickmod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)), true, $user->session_id);
+$mod_action = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&amp;t={$topic_id}&amp;quickmod=1&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url)));
 $mod_lock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster'] && $topic_data['topic_status'] == ITEM_UNLOCKED)) ? (($topic_data['topic_status'] == ITEM_UNLOCKED) ? 'lock' : 'unlock') : false;
 
 $topic_mod = '';
@@ -509,8 +509,8 @@ $template->assign_vars([
 	'PAGINATION'    => $pagination,
 	'PAGE_NUMBER'   => on_page($total_posts, $config['posts_per_page'], $start),
 	'TOTAL_POSTS'   => ($total_posts == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total_posts),
-	'U_MCP_FORUM'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}", true, $user->session_id) : '',
-	'U_MCP_TOPIC'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;f={$forum_id}&amp;t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : ''), true, $user->session_id) : '',
+	'U_MCP_FORUM'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}") : '',
+	'U_MCP_TOPIC'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;f={$forum_id}&amp;t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '')) : '',
 	'MODERATORS'    => (isset($forum_moderators[$forum_id]) && sizeof($forum_moderators[$forum_id])) ? implode(', ', $forum_moderators[$forum_id]) : '',
 
 	'POST_IMG'          => ($topic_data['forum_status'] == ITEM_LOCKED) ? $user->img('button_topic_locked', 'FORUM_LOCKED') : $user->img('button_topic_new', 'POST_NEW_TOPIC'),
@@ -1567,7 +1567,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 
 		'U_EDIT'            => ($edit_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;p={$row['post_id']}") : '',
 		'U_QUOTE'           => ($quote_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=quote&amp;p={$row['post_id']}") : '',
-		'U_INFO'            => ($auth->acl_get('m_info', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;f={$forum_id}&amp;p=" . $row['post_id'], true, $user->session_id) : '',
+		'U_INFO'            => ($auth->acl_get('m_info', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;f={$forum_id}&amp;p=" . $row['post_id']) : '',
 		'U_DELETE'          => ($delete_allowed) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=delete&amp;p={$row['post_id']}") : '',
 
 		'U_PROFILE'     => $user_cache[$poster_id]['profile'],
@@ -1579,13 +1579,13 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_TELEGRAM'    => $user_cache[$poster_id]['telegram'],
 
 		'U_REPORT'          => ($auth->acl_get('f_report', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'report.php', 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
-		'U_MCP_REPORT'      => ($auth->acl_get('m_report', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
-		'U_MCP_APPROVE'     => ($auth->acl_get('m_approve', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
+		'U_MCP_REPORT'      => ($auth->acl_get('m_report', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
+		'U_MCP_APPROVE'     => ($auth->acl_get('m_approve', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 		'U_MINI_POST'       => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . '#p' . $row['post_id'],
 		'U_NEXT_POST_ID'    => ($i < $i_total && isset($rowset[$post_list[$i + 1]])) ? $rowset[$post_list[$i + 1]]['post_id'] : '',
 		'U_PREV_POST_ID'    => $prev_post_id,
-		'U_NOTES'           => ($auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $user->session_id) : '',
-		'U_WARN'            => ($auth->acl_get('m_warn') && $poster_id != ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', count($row['warnings_data']) ? 'i=warn&amp;mode=warn_edit&amp;warning_id=' . $row['warnings_data'][0]['warning_id'] : 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
+		'U_NOTES'           => ($auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id) : '',
+		'U_WARN'            => ($auth->acl_get('m_warn') && $poster_id != ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', count($row['warnings_data']) ? 'i=warn&amp;mode=warn_edit&amp;warning_id=' . $row['warnings_data'][0]['warning_id'] : 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 
 		'POST_ID'           => $row['post_id'],
 		'POST_NUMBER'       => $post_number,
