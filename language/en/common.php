@@ -296,10 +296,6 @@ $lang = array_merge($lang, [
 	'NEWEST_USER'               => 'Our newest member <strong>%s</strong>',
 	'NEW_MESSAGE'               => 'New message',
 	'NEW_MESSAGES'              => 'New messages',
-	'NEW_PM'                    => '%d new message',
-	'NEW_PMS'                   => '%d new messages',
-	'NEW_POST'                  => 'New post',  // Not used anymore
-	'NEW_POSTS'                 => 'New posts', // Not used anymore
 	'NEXT'                      => 'Next',      // Used in pagination
 	'NEXT_STEP'                 => 'Next',
 	'NEVER'                     => 'Never',
@@ -329,8 +325,6 @@ $lang = array_merge($lang, [
 	'NO_MODE'                   => 'No mode specified.',
 	'NO_MODERATORS'             => 'There are no moderators.',
 	'NO_NEW_MESSAGES'           => 'No new messages',
-	'NO_NEW_PM'                 => '0 new messages',
-	'NO_NEW_POSTS'              => 'No new posts',  // Not used anymore
 	'NO_ONLINE_USERS'           => 'No online users',
 	'NO_POSTS'                  => 'No posts',
 	'NO_POSTS_TIME_FRAME'       => 'No posts exist inside this topic for the selected time frame.',
@@ -799,11 +793,11 @@ $lang = array_merge($lang, [
 	'USER_RATED'                => 'Loyalty',
 
 	// Main menu
-	'USER_CP'                   => 'User CP',
-	'MODER_CP'                  => 'MCP',
-	'MODERATE_FORUM'            => 'Moderate forum',
-	'MODERATE_TOPIC'            => 'Moderate topic',
-	'ADMIN_CP'                  => 'ACP',
+	'MENU_ACP'                  => 'ACP',
+	'MENU_MCP'                  => 'MCP',
+	'MENU_UCP'                  => 'User',
+	'MENU_MCP_FORUM'            => 'Moderate forum',
+	'MENU_MCP_TOPIC'            => 'Moderate topic',
 	'OVERVIEW'                  => 'Overview',
 	'ATTACHMENTS'               => 'Attachments',
 	'BOOKMARKS'                 => 'Bookmarks',
@@ -814,6 +808,9 @@ $lang = array_merge($lang, [
 	'PM_INBOX'                  => 'Inbox',
 	'PM_OUTBOX'                 => 'Outbox',
 	'PM_SENTBOX'                => 'Delivered',
+	'NO_NEW_PM'                 => 'New PMs: 0',
+	'NEW_PM'                    => 'New PMs: %d',
+	'NEW_PMS'                   => 'New PMs: %d',
 
 	// Memberlist filters
 	'MEMBERLIST_ALL_USERS'      => 'All users',

@@ -162,8 +162,6 @@ $template->assign_vars([
 // Output page
 page_header($user->lang['INDEX']);
 
-$template->set_filenames([
-	'body' => 'index_body.html']
-);
+$template->set_filenames(['body' => 'index_body.html']);
 
 page_footer();

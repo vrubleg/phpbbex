@@ -126,7 +126,7 @@
 		</ul>
 		</li>
 		<!-- IF S_USER_LOGGED_IN -->
-		<li><a href="{U_PROFILE}">{L_USER_CP}</a>
+		<li><a href="{U_PROFILE}">{L_MENU_UCP}</a>
 		<ul>
 			<li><a style="background-position: 0 -126px;" href="{U_UCP_BOOKMARKS}">{L_BOOKMARKS}</a></li>
 			<li><a style="background-position: 0 -144px;" href="{U_UCP_SUBSCRIBED}">{L_SUBSCRIBED}</a></li>
@@ -176,11 +176,11 @@
 		<li style="float: right; border-right: 0;"><a rel="nofollow" href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a></li>
 		<!-- IF not S_USER_LOGGED_IN and S_REGISTER_ENABLED --><li style="float: right;"><a rel="nofollow" href="{U_REGISTER}">{L_REGISTER}</a></li><!-- ENDIF -->
 
-		<!-- IF S_IN_MCP or U_MCP and not U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP}">{L_MODER_CP}</a></li><!-- ENDIF -->
-		<!-- IF not S_IN_MCP and U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_FORUM}">{L_MODERATE_FORUM}</a></li><!-- ENDIF -->
-		<!-- IF not S_IN_MCP and U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_TOPIC}">{L_MODERATE_TOPIC}</a></li><!-- ENDIF -->
+		<!-- IF S_IN_MCP or U_MCP and not U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP}">{L_MENU_MCP}</a></li><!-- ENDIF -->
+		<!-- IF not S_IN_MCP and U_MCP_FORUM and not U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_FORUM}">{L_MENU_MCP_FORUM}</a></li><!-- ENDIF -->
+		<!-- IF not S_IN_MCP and U_MCP_TOPIC --><li style="float: right;"><a href="{U_MCP_TOPIC}">{L_MENU_MCP_TOPIC}</a></li><!-- ENDIF -->
 
-		<!-- IF U_ACP and not U_RESTORE_PERMISSIONS --><li style="float: right;"><a href="{U_ACP}">{L_ADMIN_CP}</a></li><!-- ENDIF -->
+		<!-- IF U_ACP and not U_RESTORE_PERMISSIONS --><li style="float: right;"><a href="{U_ACP}">{L_MENU_ACP}</a></li><!-- ENDIF -->
 		<!-- IF U_RESTORE_PERMISSIONS --><li style="float: right;"><a href="{U_RESTORE_PERMISSIONS}">{L_RESTORE_PERMISSIONS}</a></li><!-- ENDIF -->
 		<li style="float: right; border-left: 0; height: 25px;"></li>
 		<!-- ENDIF -->

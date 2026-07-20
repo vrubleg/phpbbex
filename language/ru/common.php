@@ -296,10 +296,6 @@ $lang = array_merge($lang, [
 	'NEWEST_USER'               => 'Новый пользователь: <strong>%s</strong>',
 	'NEW_MESSAGE'               => 'Новое сообщение',
 	'NEW_MESSAGES'              => 'Новые сообщения',
-	'NEW_PM'                    => 'Новых ЛС: %d',
-	'NEW_PMS'                   => 'Новых ЛС: %d',
-	'NEW_POST'                  => 'Новое сообщение', // Больше не используется
-	'NEW_POSTS'                 => 'Новые сообщения', // Больше не используется
 	'NEXT'                      => 'След.',     // Used in pagination
 	'NEXT_STEP'                 => 'Далее',
 	'NEVER'                     => 'Никогда',
@@ -329,8 +325,6 @@ $lang = array_merge($lang, [
 	'NO_MODE'                   => 'Не указан режим.',
 	'NO_MODERATORS'             => 'Модераторы отсутствуют.',
 	'NO_NEW_MESSAGES'           => 'Нет новых сообщений',
-	'NO_NEW_PM'                 => 'Новых ЛС: 0',
-	'NO_NEW_POSTS'              => 'Нет новых сообщений', // Больше не используется
 	'NO_ONLINE_USERS'           => 'Нет пользователей онлайн',
 	'NO_POSTS'                  => 'Нет сообщений',
 	'NO_POSTS_TIME_FRAME'       => 'В теме нет сообщений за выбранный период времени.',
@@ -809,11 +803,11 @@ $lang = array_merge($lang, [
 	'USER_RATED'                => 'Лояльность',
 
 	// Main menu
-	'USER_CP'                   => 'Личное',
-	'MODER_CP'                  => 'Модератору',
-	'MODERATE_FORUM'            => 'Модерировать раздел',
-	'MODERATE_TOPIC'            => 'Модерировать тему',
-	'ADMIN_CP'                  => 'Админка',
+	'MENU_ACP'                  => 'Админка',
+	'MENU_MCP'                  => 'Модерация',
+	'MENU_UCP'                  => 'Личное',
+	'MENU_MCP_FORUM'            => 'Модерация раздела',
+	'MENU_MCP_TOPIC'            => 'Модерация темы',
 	'OVERVIEW'                  => 'Обзор',
 	'ATTACHMENTS'               => 'Вложения',
 	'BOOKMARKS'                 => 'Закладки',
@@ -824,6 +818,9 @@ $lang = array_merge($lang, [
 	'PM_INBOX'                  => 'Входящие',
 	'PM_OUTBOX'                 => 'Исходящие',
 	'PM_SENTBOX'                => 'Доставленные',
+	'NO_NEW_PM'                 => 'Новых ЛС: 0',
+	'NEW_PM'                    => 'Новых ЛС: %d',
+	'NEW_PMS'                   => 'Новых ЛС: %d',
 
 	// Memberlist filters
 	'MEMBERLIST_ALL_USERS'      => 'Все пользователи',
