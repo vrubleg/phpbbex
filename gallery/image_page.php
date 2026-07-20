@@ -593,8 +593,11 @@ $template->assign_vars([
 
 page_header($user->lang['VIEW_IMAGE'] . ' - ' . $image_data['image_name'], false);
 
-$template->set_filenames([
-	'body' => 'gallery/viewimage_body.html']
-);
+if (phpbb_gallery::$auth->acl_check('m_', $album_id, $album_data['album_user_id']))
+{
+	$template->assign_var('U_MCP', phpbb_gallery_url::append_sid('mcp', "mode=queue_details&amp;album_id={$album_id}&amp;option_id={$image_id}"));
+}
+
+$template->set_filenames(['body' => 'gallery/viewimage_body.html']);
 
 page_footer();
