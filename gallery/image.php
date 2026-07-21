@@ -17,50 +17,51 @@ phpbb_gallery::setup(['mods/gallery'], false);
 // Get general album information
 define('S_GALLERY_PLUGINS', false);
 
-/**
-* Check whether the requested image & album exit.
-*/
+// Check whether the requested image & album exit.
 $image_id = request_var('image_id', 0);
-$image_data = phpbb_gallery_image::get_info($image_id);
-
-$album_id = $image_data['image_album_id'];
-$album_data = phpbb_gallery_album::get_info($album_id);
+$image_data = phpbb_gallery_image::get_info($image_id, false, true);
 
 $image_error = '';
 
-$image_filetype = utf8_substr($image_data['image_filename'], strlen($image_data['image_filename']) - 4, 4);
-if (!file_exists(phpbb_gallery_url::path('upload') . $image_data['image_filename']))
+if (!$image_data)
+{
+	$image_error = 'error_not_found.png';
+	http_response_code(404);
+}
+
+if (!$image_error && !file_exists(phpbb_gallery_url::path('upload') . $image_data['image_filename']))
 {
 	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 		SET image_filemissing = 1
 		WHERE image_id = ' . $image_id;
 	$db->sql_query($sql);
-	//trigger_error('IMAGE_NOT_EXIST');
+
 	$image_error = 'error_not_found.png';
 	http_response_code(404);
 }
 
-/**
-* Check permissions and hotlinking
-*/
-if (($image_data['image_user_id'] != $user->data['user_id']) && ($image_data['image_status'] == phpbb_gallery_image::STATUS_ORPHAN))
+// Check permissions
+if (!$image_error)
 {
-	//trigger_error('NOT_AUTHORISED');
-	$image_error = 'error_not_authorised.png';
-	http_response_code(403);
+	$album_id = $image_data['image_album_id'];
+	$album_data = phpbb_gallery_album::get_info($album_id, false, true);
+
+	if (!$album_data)
+	{
+		$image_error = 'error_not_found.png';
+		http_response_code(404);
+	}
+	else if (($image_data['image_user_id'] != $user->data['user_id']) && ($image_data['image_status'] == phpbb_gallery_image::STATUS_ORPHAN)
+		|| (!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_user_id']))
+		|| (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']) && ($image_data['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED)))
+	{
+		$image_error = 'error_not_authorised.png';
+		http_response_code(403);
+	}
 }
 
-if ((!phpbb_gallery::$auth->acl_check('i_view', $album_id, $album_data['album_user_id'])) || (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']) && ($image_data['image_status'] == phpbb_gallery_image::STATUS_UNAPPROVED)))
-{
-	//trigger_error('NOT_AUTHORISED');
-	$image_error = 'error_not_authorised.png';
-	http_response_code(403);
-}
-
-/**
-* Hotlink prevention
-*/
-if (!phpbb_gallery_config::get('allow_hotlinking') && isset($_SERVER['HTTP_REFERER']))
+// Hotlink prevention
+if (!$image_error && !phpbb_gallery_config::get('allow_hotlinking') && isset($_SERVER['HTTP_REFERER']))
 {
 	$good_referers = [preg_replace('#^(www\.)+#i', '', HTTP_HOST)];
 	if (phpbb_gallery_config::get('hotlinking_domains') != '')
@@ -80,31 +81,36 @@ if (!phpbb_gallery_config::get('allow_hotlinking') && isset($_SERVER['HTTP_REFER
 	// Is the host (flying-bits.org) or the full domain (xyz.flying-bits.org) in the white-list?
 	if (!in_array($referer, $good_referers) && !in_array($referer_host, $good_referers))
 	{
-		//trigger_error('NOT_AUTHORISED');
 		$image_error = 'error_hotlinking.png';
 		http_response_code(403);
 	}
 }
 
-/**
-* Main work here...
-*/
-
-$mode = request_var('mode', '');
 if ($image_error)
 {
-	$mode = 'error';
+	$image_source_path = phpbb_gallery_url::path('images');
+
+	$image_filename = $user->data['user_lang_code'] . '_' . $image_error;
+	if (!file_exists($image_source_path . $image_filename))
+	{
+		$image_filename = $image_error;
+	}
+
+	$image_tools = new phpbb_gallery_image_file();
+	$image_tools->set_image_data($image_source_path . $image_filename);
+	$image_tools->disable_browser_cache();
+	$image_tools->send_image_to_browser();
+	exit();
 }
-else if (!in_array($mode, ['medium', 'thumbnail']))
+
+$mode = request_var('mode', '');
+if (!in_array($mode, ['medium', 'thumbnail']))
 {
 	$mode = 'default';
 }
 
 switch ($mode)
 {
-	case 'error':
-		$image_source_path = phpbb_gallery_url::path('images');
-	break;
 	case 'medium':
 		$image_source_path = phpbb_gallery_url::path('medium');
 	break;
@@ -116,7 +122,7 @@ switch ($mode)
 
 		// Increase the view count only for full images, if not already counted
 		$view = request_var('view', '');
-		if (!$user->data['is_bot'] && !$image_error && ($view != 'no_count'))
+		if (!$user->data['is_bot'] && $view != 'no_count')
 		{
 			$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
 				SET image_view_count = image_view_count + 1
@@ -128,22 +134,11 @@ switch ($mode)
 
 $image_source = $image_source_path  . $image_data['image_filename'];
 
-// There was a reason to not display the image, so we send an error-image
-if ($image_error)
-{
-	$image_data['image_filename'] = $user->data['user_lang_code'] . '_' . $image_error;
-	if (!file_exists($image_source_path . $image_data['image_filename']))
-	{
-		$image_data['image_filename'] = $image_error;
-	}
-	$image_source = $image_source_path . $image_data['image_filename'];
-}
-
 $image_tools = new phpbb_gallery_image_file();
 $image_tools->set_image_options(phpbb_gallery_config::get('max_filesize'), phpbb_gallery_config::get('max_height'), phpbb_gallery_config::get('max_width'));
 $image_tools->set_image_data($image_source, $image_data['image_name']);
 
-if ($image_error || !$user->data['is_registered'])
+if (!$user->data['is_registered'])
 {
 	$image_tools->disable_browser_cache();
 }

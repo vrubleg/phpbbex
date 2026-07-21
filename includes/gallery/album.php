@@ -25,7 +25,7 @@ class phpbb_gallery_album
 	/**
 	* Get album information
 	*/
-	static public function get_info($album_id, $extended_info = true)
+	static public function get_info($album_id, $extended_info = true, $return_on_error = false)
 	{
 		global $db, $user;
 
@@ -52,7 +52,7 @@ class phpbb_gallery_album
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		if (!$row)
+		if (!$row && !$return_on_error)
 		{
 			meta_refresh(3, phpbb_gallery_url::append_sid('index'));
 			trigger_error('ALBUM_NOT_EXIST');
