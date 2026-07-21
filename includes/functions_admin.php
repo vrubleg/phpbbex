@@ -2624,7 +2624,7 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 		foreach ($log as $key => $row)
 		{
 			$log[$key]['viewtopic'] = (isset($is_auth[$row['topic_id']])) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $row['topic_id']) : false;
-			$log[$key]['viewlogs'] = (isset($is_mod[$row['topic_id']])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=logs&amp;mode=topic_logs&amp;t=' . $row['topic_id'], true, $user->session_id) : false;
+			$log[$key]['viewlogs'] = (isset($is_mod[$row['topic_id']])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=logs&amp;mode=topic_logs&amp;t=' . $row['topic_id']) : false;
 		}
 	}
 

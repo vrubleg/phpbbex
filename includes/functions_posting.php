@@ -779,7 +779,7 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 				$hidden .= '<input type="hidden" name="attachment_data[' . $count . '][' . $key . ']" value="' . $value . '" />';
 			}
 
-			$download_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . (int) $attach_row['attach_id'], true, ($attach_row['is_orphan']) ? $user->session_id : false);
+			$download_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . (int) $attach_row['attach_id']);
 
 			$template->assign_block_vars('attach_row', [
 				'FILENAME'          => utf8_basename($attach_row['real_filename']),
@@ -1140,7 +1140,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 			'DECODED_MESSAGE'   => $decoded_message,
 			'POST_ID'           => $row['post_id'],
 			'U_MINI_POST'       => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . '#p' . $row['post_id'],
-			'U_MCP_DETAILS'     => ($auth->acl_get('m_info', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=post_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
+			'U_MCP_DETAILS'     => ($auth->acl_get('m_info', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=post_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 			'POSTER_QUOTE'      => ($show_quote_button && $auth->acl_get('f_reply', $forum_id)) ? addslashes(get_username_string('username', $poster_id, $row['username'], $row['user_colour'], $row['post_username'])) : '']
 		);
 

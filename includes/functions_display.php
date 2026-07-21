@@ -916,7 +916,7 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 		$view_forum_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id);
 		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id));
 		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id));
-		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t={$topic_id}", true, $user->session_id) : '';
+		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t={$topic_id}") : '';
 		$s_type_switch = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 
 		$template->assign_block_vars($tpl_loopname, [
@@ -970,7 +970,7 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 			'U_TOPIC_AUTHOR'        => get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 			'U_VIEW_TOPIC'          => $view_topic_url,
 			'U_VIEW_FORUM'          => $view_forum_url,
-			'U_MCP_REPORT'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=reports&amp;f=' . $forum_id . '&amp;t=' . $topic_id, true, $user->session_id),
+			'U_MCP_REPORT'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=reports&amp;f=' . $forum_id . '&amp;t=' . $topic_id),
 			'U_MCP_QUEUE'           => $u_mcp_queue,
 		]);
 	}

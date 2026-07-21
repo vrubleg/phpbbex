@@ -293,7 +293,7 @@ class acp_prune
 					$template->assign_block_vars('users', [
 						'USERNAME'          => $usernames[$user_id],
 						'U_PROFILE'         => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $user_id),
-						'U_USER_ADMIN'      => ($auth->acl_get('a_user')) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
+						'U_USER_ADMIN'      => ($auth->acl_get('a_user')) ? append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=users&amp;mode=overview&amp;u=' . $user_id) : '',
 					]);
 				}
 

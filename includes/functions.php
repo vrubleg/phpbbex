@@ -3575,7 +3575,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'U_UCP_PROFILE_INFO'    => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=profile_info'),
 		'U_UCP_SETTINGS'        => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=prefs&amp;mode=personal'),
 
-		'U_MCP'                 => ($auth->acl_get('m_') || $auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', false, true, $user->session_id) : '',
+		'U_MCP'                 => ($auth->acl_get('m_') || $auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php') : '',
 		'U_FAQ'                 => append_sid(PHPBB_ROOT_PATH . 'faq.php'),
 		'U_BBCODE_GUIDE'        => append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=bbcode'),
 		'U_RULES'               => append_sid(PHPBB_ROOT_PATH . 'faq.php', 'mode=rules'),
@@ -3610,7 +3610,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'S_FORUM_ID'            => $forum_id,
 		'S_TOPIC_ID'            => $topic_id,
 
-		'S_LOGIN_ACTION'        => ((!defined('ADMIN_START')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login') : append_sid("index.php", false, true, $user->session_id)),
+		'S_LOGIN_ACTION'        => ((!defined('ADMIN_START')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=login') : append_sid("index.php")),
 		'S_LOGIN_REDIRECT'      => build_hidden_fields(['redirect' => build_url()]),
 
 		'S_ENABLE_FEEDS'            => (bool) $config['feed_enable'],

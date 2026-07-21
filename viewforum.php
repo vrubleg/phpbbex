@@ -302,7 +302,7 @@ $template->assign_vars([
 	'S_IS_LOCKED'           => ($forum_data['forum_status'] == ITEM_LOCKED),
 	'S_VIEWFORUM'           => true,
 
-	'U_MCP_FORUM'           => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&amp;i=main&amp;mode=forum_view", true, $user->session_id) : '',
+	'U_MCP_FORUM'           => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&amp;i=main&amp;mode=forum_view") : '',
 	'U_POST_NEW_TOPIC'  => ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=post&amp;f=' . $forum_id) : '',
 	'U_VIEW_FORUM'      => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($start == 0) ? '' : "&amp;start={$start}")),
 	'U_MARK_TOPICS'     => ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . "&amp;f={$forum_id}&amp;mark=topics") : '',
@@ -607,7 +607,7 @@ if (sizeof($topic_list))
 
 		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $topic_forum_id));
 		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $topic_forum_id));
-		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t={$topic_id}", true, $user->session_id) : '';
+		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t={$topic_id}") : '';
 
 		// Send vars to template
 		$template->assign_block_vars('topicrow', [
@@ -660,7 +660,7 @@ if (sizeof($topic_list))
 			'U_LAST_POST_AUTHOR'    => get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 			'U_TOPIC_AUTHOR'        => get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 			'U_VIEW_TOPIC'          => $view_topic_url,
-			'U_MCP_REPORT'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=reports&amp;f=' . $topic_forum_id . '&amp;t=' . $topic_id, true, $user->session_id),
+			'U_MCP_REPORT'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=reports&amp;f=' . $topic_forum_id . '&amp;t=' . $topic_id),
 			'U_MCP_QUEUE'           => $u_mcp_queue,
 
 			'S_TOPIC_TYPE_SWITCH'   => ($s_type_switch == $s_type_switch_test) ? -1 : $s_type_switch_test,
