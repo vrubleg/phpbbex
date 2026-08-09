@@ -932,7 +932,9 @@ class phpbb_auth
 		switch ($config['allow_login_via_email'] ?? 0)
 		{
 			case ALLOW_LOGIN_VIA_EMAIL_YES:
-				$sql .= $where_username . ' OR ' . $where_email;
+				$sql .= preg_match('/^' . get_preg_expression('email') . '$/i', $username)
+					? $where_email
+					: ($where_username . ' OR ' . $where_email);
 			break;
 			case ALLOW_LOGIN_VIA_EMAIL_ONLY:
 				$sql .= $where_email;
