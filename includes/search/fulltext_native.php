@@ -17,6 +17,13 @@ require_once(PHPBB_ROOT_PATH . 'includes/search/search.php');
 */
 class fulltext_native extends search_backend
 {
+	const UTF8_HANGUL_FIRST = "\xEA\xB0\x80";
+	const UTF8_HANGUL_LAST = "\xED\x9E\xA3";
+	const UTF8_CJK_FIRST = "\xE4\xB8\x80";
+	const UTF8_CJK_LAST = "\xE9\xBE\xBB";
+	const UTF8_CJK_B_FIRST = "\xF0\xA0\x80\x80";
+	const UTF8_CJK_B_LAST = "\xF0\xAA\x9B\x96";
+
 	var $stats = [];
 	var $word_length = [];
 	var $search_query;
@@ -958,9 +965,9 @@ class fulltext_native extends search_backend
 				* Note: this could be optimized. If the codepoint is lower than Hangul's range
 				* we know that it will also be lower than CJK ranges
 				*/
-				if ((strncmp($word, UTF8_HANGUL_FIRST, 3) < 0 || strncmp($word, UTF8_HANGUL_LAST, 3) > 0)
-				 && (strncmp($word, UTF8_CJK_FIRST, 3) < 0 || strncmp($word, UTF8_CJK_LAST, 3) > 0)
-				 && (strncmp($word, UTF8_CJK_B_FIRST, 4) < 0 || strncmp($word, UTF8_CJK_B_LAST, 4) > 0))
+				if ((strncmp($word, self::UTF8_HANGUL_FIRST, 3) < 0 || strncmp($word, self::UTF8_HANGUL_LAST, 3) > 0)
+				 && (strncmp($word, self::UTF8_CJK_FIRST, 3) < 0 || strncmp($word, self::UTF8_CJK_LAST, 3) > 0)
+				 && (strncmp($word, self::UTF8_CJK_B_FIRST, 4) < 0 || strncmp($word, self::UTF8_CJK_B_LAST, 4) > 0))
 				{
 					$word = strtok(' ');
 					continue;
@@ -1441,9 +1448,9 @@ class fulltext_native extends search_backend
 			$utf_char = substr($text, $pos, $utf_len);
 			$pos += $utf_len;
 
-			if (($utf_char >= UTF8_HANGUL_FIRST && $utf_char <= UTF8_HANGUL_LAST)
-			 || ($utf_char >= UTF8_CJK_FIRST && $utf_char <= UTF8_CJK_LAST)
-			 || ($utf_char >= UTF8_CJK_B_FIRST && $utf_char <= UTF8_CJK_B_LAST))
+			if (($utf_char >= self::UTF8_HANGUL_FIRST && $utf_char <= self::UTF8_HANGUL_LAST)
+			 || ($utf_char >= self::UTF8_CJK_FIRST && $utf_char <= self::UTF8_CJK_LAST)
+			 || ($utf_char >= self::UTF8_CJK_B_FIRST && $utf_char <= self::UTF8_CJK_B_LAST))
 			{
 				/**
 				* All characters within these ranges are valid
