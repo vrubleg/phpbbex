@@ -945,15 +945,7 @@ function utf8_case_fold_nfkc($text, $option = 'full')
 	$text = utf8_case_fold($text, $option);
 
 	// convert to NFKC
-	if (extension_loaded('intl'))
-	{
-		$text = normalizer_normalize($text, Normalizer::NFKC);
-	}
-	else
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_normalizer.php');
-		utf_normalizer::nfkc($text);
-	}
+	$text = normalizer_normalize($text, Normalizer::NFKC);
 
 	// FC_NFKC_Closure, http://www.unicode.org/Public/5.0.0/ucd/DerivedNormalizationProps.txt
 	$text = strtr($text, $fc_nfkc_closure);
@@ -1048,99 +1040,54 @@ function utf8_case_fold_nfc($text, $option = 'full')
 	return $text;
 }
 
-if (extension_loaded('intl'))
+/**
+* A wrapper around PHP's native normalizer from intl: http://php.net/manual/en/normalizer.normalize.php
+*
+* @param	mixed	$strings	a string or an array of strings to normalize
+* @return	mixed				the normalized content, preserving array keys if array given.
+*/
+function utf8_normalize_nfc($strings)
 {
-	/**
-	* A wrapper around PHP's native normalizer from intl: http://php.net/manual/en/normalizer.normalize.php
-	*
-	* @param	mixed	$strings	a string or an array of strings to normalize
-	* @return	mixed				the normalized content, preserving array keys if array given.
-	*/
-	function utf8_normalize_nfc($strings)
+	if (empty($strings))
 	{
-		if (empty($strings))
+		return $strings;
+	}
+
+	if (!is_array($strings))
+	{
+		if (normalizer_is_normalized($strings))
 		{
 			return $strings;
 		}
-
-		if (!is_array($strings))
+		return (string) normalizer_normalize($strings, Normalizer::NFC);
+	}
+	else
+	{
+		foreach ($strings as $key => $string)
 		{
-			if (normalizer_is_normalized($strings))
+			if (is_array($string))
 			{
-				return $strings;
-			}
-			return (string) normalizer_normalize($strings, Normalizer::NFC);
-		}
-		else
-		{
-			foreach ($strings as $key => $string)
-			{
-				if (is_array($string))
+				foreach ($string as $_key => $_string)
 				{
-					foreach ($string as $_key => $_string)
-					{
-						if (normalizer_is_normalized($strings[$key][$_key]))
-						{
-							continue;
-						}
-						$strings[$key][$_key] = (string) normalizer_normalize($strings[$key][$_key], Normalizer::NFC);
-					}
-				}
-				else
-				{
-					if (normalizer_is_normalized($strings[$key]))
+					if (normalizer_is_normalized($strings[$key][$_key]))
 					{
 						continue;
 					}
-					$strings[$key] = (string) normalizer_normalize($strings[$key], Normalizer::NFC);
+					$strings[$key][$_key] = (string) normalizer_normalize($strings[$key][$_key], Normalizer::NFC);
 				}
 			}
-		}
-
-		return $strings;
-	}
-}
-else
-{
-	/**
-	* A wrapper around phpBB's fallback normalizer.
-	*
-	* @param    mixed   $strings    a string or an array of strings to normalize
-	* @return   mixed               the normalized content, preserving array keys if array given.
-	*/
-	function utf8_normalize_nfc($strings)
-	{
-		if (empty($strings))
-		{
-			return $strings;
-		}
-
-		require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_normalizer.php');
-
-		if (!is_array($strings))
-		{
-			utf_normalizer::nfc($strings);
-		}
-		else if (is_array($strings))
-		{
-			foreach ($strings as $key => $string)
+			else
 			{
-				if (is_array($string))
+				if (normalizer_is_normalized($strings[$key]))
 				{
-					foreach ($string as $_key => $_string)
-					{
-						utf_normalizer::nfc($strings[$key][$_key]);
-					}
+					continue;
 				}
-				else
-				{
-					utf_normalizer::nfc($strings[$key]);
-				}
+				$strings[$key] = (string) normalizer_normalize($strings[$key], Normalizer::NFC);
 			}
 		}
-
-		return $strings;
 	}
+
+	return $strings;
 }
 
 /**
