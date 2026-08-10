@@ -165,7 +165,12 @@ function remove_rates_batch($type, $id, $negative = true, $positive = true, $fro
 		break;
 
 		case 'post':
-			$sql .= ' WHERE r.post_id = ' . $id;
+			$post_ids = is_array($id) ? array_unique(array_map('intval', $id)) : [(int) $id];
+			if (!sizeof($post_ids))
+			{
+				return;
+			}
+			$sql .= ' WHERE ' . $db->sql_in_set('r.post_id', $post_ids);
 		break;
 
 		default:
