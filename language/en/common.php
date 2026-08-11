@@ -327,7 +327,6 @@ $lang = array_merge($lang, [
 	'NO_NEW_MESSAGES'           => 'No new messages',
 	'NO_ONLINE_USERS'           => 'No online users',
 	'NO_POSTS'                  => 'No posts',
-	'NO_POSTS_TIME_FRAME'       => 'No posts exist inside this topic for the selected time frame.',
 	'NO_FEED_ENABLED'           => 'Feeds are not available on this board.',
 	'NO_FEED'                   => 'The requested feed is not available.',
 	'NO_STYLE_DATA'             => 'Could not get style data',

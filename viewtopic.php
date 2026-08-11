@@ -23,10 +23,8 @@ $post_id    = request_var('p', 0);
 $start      = request_var('start', 0);
 $view       = request_var('view', '');
 
-$default_sort_days  = 0;
 $default_sort_dir   = 'a';
 
-$sort_days  = request_var('st', $default_sort_days);
 $sort_dir   = request_var('sd', $default_sort_dir);
 
 /**
@@ -315,39 +313,13 @@ if (!isset($topic_tracking_info))
 }
 
 // Post ordering options
-$limit_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
-$sort_by_text = $sort_key = $default_sort_key = null;
+$s_sort_dir = $u_sort_param = '';
+$limit_days = $sort_days = $s_limit_days = $default_sort_days = null; // unused
+$sort_by_text = $sort_key = $s_sort_key = $default_sort_key = null; // unused
 
 gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param, $default_sort_days, $default_sort_key, $default_sort_dir);
 
-// Obtain correct post count and ordering SQL if user has
-// requested anything different
-if ($sort_days)
-{
-	$min_post_time = time() - ($sort_days * 86400);
-
-	$sql = 'SELECT COUNT(post_id) AS num_posts
-		FROM ' . POSTS_TABLE . "
-		WHERE topic_id = {$topic_id}
-			AND post_time >= {$min_post_time}
-		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND post_approved = 1');
-	$result = $db->sql_query($sql);
-	$total_posts = (int) $db->sql_fetchfield('num_posts');
-	$db->sql_freeresult($result);
-
-	$limit_posts_time = "AND p.post_time >= {$min_post_time} ";
-
-	if (isset($_POST['sort']))
-	{
-		$start = 0;
-	}
-}
-else
-{
-	$total_posts = $topic_replies + 1;
-	$limit_posts_time = '';
-}
+$total_posts = $topic_replies + 1;
 
 // Was a highlight request part of the URI?
 $highlight_match = $highlight = '';
@@ -527,7 +499,6 @@ $template->assign_vars([
 
 	'S_IS_LOCKED'           => ($topic_data['topic_status'] != ITEM_UNLOCKED || $topic_data['forum_status'] != ITEM_UNLOCKED),
 	'S_SELECT_SORT_DIR'     => $s_sort_dir,
-	'S_SELECT_SORT_DAYS'    => $s_limit_days,
 	'S_SINGLE_MODERATOR'    => count($forum_moderators[$forum_id] ?? []) == 1,
 	'S_TOPIC_ACTION'        => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}")),
 	'S_TOPIC_MOD'           => ($topic_mod != '') ? '<select name="action" id="quick-mod-select">' . $topic_mod . '</select>' : '',
@@ -859,7 +830,6 @@ $sql = 'SELECT p.post_id
 	FROM ' . POSTS_TABLE . " p
 	WHERE p.topic_id = {$topic_id}
 		" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p.post_approved = 1' : '') . "
-		{$limit_posts_time}
 	ORDER BY {$sql_sort_order}";
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
@@ -888,14 +858,7 @@ if ($topic_data['topic_first_post_show'])
 
 if (!sizeof($post_list))
 {
-	if ($sort_days)
-	{
-		trigger_error('NO_POSTS_TIME_FRAME');
-	}
-	else
-	{
-		trigger_error('NO_TOPIC');
-	}
+	trigger_error('NO_TOPIC');
 }
 
 // Holding maximum post time for marking topic read
