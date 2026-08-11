@@ -1462,7 +1462,18 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 	$user_rate = $user_rates[$row['post_id']] ?? ['rate' => 0, 'rate_time' => 0];
 	$rate_time = ($topic_data['topic_first_post_id'] != $row['post_id'] || !isset($config['rate_topic_time']) || $config['rate_topic_time'] == -1) ? $config['rate_time'] : $config['rate_topic_time'];
 
-	$post_number = ($topic_data['topic_first_post_show'] && $start != 0) ? ($topic_data['topic_first_post_id'] == $row['post_id'] ? 1 : $i + $start) : $i + $start + 1;
+	if ($topic_data['topic_first_post_show'] && $topic_data['topic_first_post_id'] == $row['post_id'])
+	{
+		$post_number = 1;
+	}
+	else if ($sort_dir == 'd')
+	{
+		$post_number = $total_posts - $start - $i + (($topic_data['topic_first_post_show']) ? 1 : 0);
+	}
+	else
+	{
+		$post_number = ($topic_data['topic_first_post_show'] && $start != 0) ? $i + $start : $i + $start + 1;
+	}
 
 	//
 	$postrow = [
