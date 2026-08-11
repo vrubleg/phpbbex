@@ -24,11 +24,9 @@ $start      = request_var('start', 0);
 $view       = request_var('view', '');
 
 $default_sort_days  = 0;
-$default_sort_key   = 't';
 $default_sort_dir   = 'a';
 
 $sort_days  = request_var('st', $default_sort_days);
-$sort_key   = request_var('sk', $default_sort_key);
 $sort_dir   = request_var('sd', $default_sort_dir);
 
 /**
@@ -318,12 +316,8 @@ if (!isset($topic_tracking_info))
 
 // Post ordering options
 $limit_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-
-$sort_by_text = ['t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
-$sort_by_sql = ['t' => 'p.post_time', 'a' => ['u.username_clean', 'p.post_id'], 's' => ['p.post_subject', 'p.post_id']];
-$join_user_sql = ['a' => true, 't' => false, 's' => false];
-
 $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
+$sort_by_text = $sort_key = $default_sort_key = null;
 
 gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param, $default_sort_days, $default_sort_key, $default_sort_dir);
 
@@ -533,7 +527,6 @@ $template->assign_vars([
 
 	'S_IS_LOCKED'           => ($topic_data['topic_status'] != ITEM_UNLOCKED || $topic_data['forum_status'] != ITEM_UNLOCKED),
 	'S_SELECT_SORT_DIR'     => $s_sort_dir,
-	'S_SELECT_SORT_KEY'     => $s_sort_key,
 	'S_SELECT_SORT_DAYS'    => $s_limit_days,
 	'S_SINGLE_MODERATOR'    => count($forum_moderators[$forum_id] ?? []) == 1,
 	'S_TOPIC_ACTION'        => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}")),
@@ -854,14 +847,7 @@ else
 	$sql_start = $start;
 }
 
-if (is_array($sort_by_sql[$sort_key]))
-{
-	$sql_sort_order = implode(' ' . $direction . ', ', $sort_by_sql[$sort_key]) . ' ' . $direction;
-}
-else
-{
-	$sql_sort_order = $sort_by_sql[$sort_key] . ' ' . $direction;
-}
+$sql_sort_order = 'p.post_time ' . $direction;
 
 // Container for user details, only process once
 $post_list = $user_cache = $id_cache = $attachments = $attach_list = $rowset = $post_edit_list = [];
@@ -870,10 +856,9 @@ $bbcode_bitfield = '';
 
 // Go ahead and pull all data for this topic
 $sql = 'SELECT p.post_id
-	FROM ' . POSTS_TABLE . ' p' . (($join_user_sql[$sort_key]) ? ', ' . USERS_TABLE . ' u' : '') . "
+	FROM ' . POSTS_TABLE . " p
 	WHERE p.topic_id = {$topic_id}
 		" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p.post_approved = 1' : '') . "
-		" . (($join_user_sql[$sort_key]) ? 'AND u.user_id = p.poster_id' : '') . "
 		{$limit_posts_time}
 	ORDER BY {$sql_sort_order}";
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
