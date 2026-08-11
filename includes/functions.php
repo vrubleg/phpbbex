@@ -3567,7 +3567,6 @@ function page_header($page_title = '', $display_online_list = true)
 		'U_SEARCH_SELF'         => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch'),
 		'U_SEARCH_SELF_TOPICS'  => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost'),
 		'U_SEARCH_NEW'          => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts'),
-		'U_SEARCH_UNANSWERED'   => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unanswered'),
 		'U_SEARCH_UNREAD'       => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts'),
 		'U_SEARCH_ACTIVE_TOPICS'=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics'),
 		'U_TEAM'                => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=leaders'),
