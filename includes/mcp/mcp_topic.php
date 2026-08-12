@@ -40,7 +40,6 @@ function mcp_topic_view($id, $mode, $action)
 	$to_topic_id    = request_var('to_topic_id', 0);
 	$to_forum_id    = request_var('to_forum_id', 0);
 	$sort           = isset($_POST['sort']);
-	$submitted_id_list  = request_var('post_ids', [0]);
 	$checked_ids = $post_id_list = request_var('post_id_list', [0]);
 
 	// Resync Topic?
@@ -243,7 +242,7 @@ function mcp_topic_view($id, $mode, $action)
 
 			'S_POST_REPORTED'   => ($row['post_reported'] && $auth->acl_get('m_report', $topic_info['forum_id'])),
 			'S_POST_UNAPPROVED' => (!$row['post_approved'] && $auth->acl_get('m_approve', $topic_info['forum_id'])),
-			'S_CHECKED'         => (($submitted_id_list && !in_array(intval($row['post_id']), $submitted_id_list)) || in_array(intval($row['post_id']), $checked_ids)),
+			'S_CHECKED'         => in_array(intval($row['post_id']), $checked_ids),
 			'S_HAS_ATTACHMENTS' => !empty($attachments[$row['post_id']]),
 
 			'U_POST_DETAILS'    => "{$url}&amp;i={$id}&amp;p={$row['post_id']}&amp;mode=post_details" . (($forum_id) ? "&amp;f={$forum_id}" : ''),
@@ -293,8 +292,7 @@ function mcp_topic_view($id, $mode, $action)
 	}
 
 	$s_hidden_fields = build_hidden_fields([
-		'st_old'    => $sort_days,
-		'post_ids'  => $post_id_list,
+		'st_old'  => $sort_days,
 	]);
 
 	$template->assign_vars([

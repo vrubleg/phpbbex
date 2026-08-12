@@ -23,13 +23,7 @@ $post_id    = request_var('p', 0);
 $start      = request_var('start', 0);
 $view       = request_var('view', '');
 
-$default_sort_days  = 0;
-$default_sort_key   = 't';
-$default_sort_dir   = 'a';
-
-$sort_days  = request_var('st', $default_sort_days);
-$sort_key   = request_var('sk', $default_sort_key);
-$sort_dir   = request_var('sd', $default_sort_dir);
+$sort_dir   = 'a'; // use 'd' for reverse order of comments
 
 /**
 * @todo normalize?
@@ -316,44 +310,7 @@ if (!isset($topic_tracking_info))
 	}
 }
 
-// Post ordering options
-$limit_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-
-$sort_by_text = ['t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
-$sort_by_sql = ['t' => 'p.post_time', 'a' => ['u.username_clean', 'p.post_id'], 's' => ['p.post_subject', 'p.post_id']];
-$join_user_sql = ['a' => true, 't' => false, 's' => false];
-
-$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
-
-gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param, $default_sort_days, $default_sort_key, $default_sort_dir);
-
-// Obtain correct post count and ordering SQL if user has
-// requested anything different
-if ($sort_days)
-{
-	$min_post_time = time() - ($sort_days * 86400);
-
-	$sql = 'SELECT COUNT(post_id) AS num_posts
-		FROM ' . POSTS_TABLE . "
-		WHERE topic_id = {$topic_id}
-			AND post_time >= {$min_post_time}
-		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND post_approved = 1');
-	$result = $db->sql_query($sql);
-	$total_posts = (int) $db->sql_fetchfield('num_posts');
-	$db->sql_freeresult($result);
-
-	$limit_posts_time = "AND p.post_time >= {$min_post_time} ";
-
-	if (isset($_POST['sort']))
-	{
-		$start = 0;
-	}
-}
-else
-{
-	$total_posts = $topic_replies + 1;
-	$limit_posts_time = '';
-}
+$total_posts = $topic_replies + 1;
 
 // Was a highlight request part of the URI?
 $highlight_match = $highlight = '';
@@ -373,7 +330,7 @@ if ($start < 0 || $start >= $total_posts)
 }
 
 // General Viewtopic URL for return links
-$viewtopic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($highlight_match) ? "&amp;hilit={$highlight}" : ''));
+$viewtopic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . (($highlight_match) ? "&amp;hilit={$highlight}" : ''));
 
 // Are we watching this topic?
 $s_watching_topic = [
@@ -461,7 +418,7 @@ $topic_mod .= ($auth->acl_get('m_delete', $forum_id)) ? '<option value="delete_t
 $topic_mod .= ($auth->acl_get('m_', $forum_id)) ? '<option value="topic_logs">' . $user->lang['VIEW_TOPIC_LOGS'] . '</option>' : '';
 
 // If we've got a hightlight set pass it on to pagination.
-$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($highlight_match) ? "&amp;hilit={$highlight}" : '')), $total_posts, $config['posts_per_page'], $start);
+$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($highlight_match) ? "&amp;hilit={$highlight}" : '')), $total_posts, $config['posts_per_page'], $start);
 
 // Navigation links
 generate_forum_nav($topic_data);
@@ -510,7 +467,7 @@ $template->assign_vars([
 	'PAGE_NUMBER'   => on_page($total_posts, $config['posts_per_page'], $start),
 	'TOTAL_POSTS'   => ($total_posts == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total_posts),
 	'U_MCP_FORUM'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}") : '',
-	'U_MCP_TOPIC'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;f={$forum_id}&amp;t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '')) : '',
+	'U_MCP_TOPIC'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;f={$forum_id}&amp;t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}")) : '',
 	'MODERATORS'    => (isset($forum_moderators[$forum_id]) && sizeof($forum_moderators[$forum_id])) ? implode(', ', $forum_moderators[$forum_id]) : '',
 
 	'POST_IMG'          => ($topic_data['forum_status'] == ITEM_LOCKED) ? $user->img('button_topic_locked', 'FORUM_LOCKED') : $user->img('button_topic_new', 'POST_NEW_TOPIC'),
@@ -533,11 +490,7 @@ $template->assign_vars([
 	'WARN_IMG'          => $user->img('icon_user_warn', 'WARN_USER'),
 
 	'S_IS_LOCKED'           => ($topic_data['topic_status'] != ITEM_UNLOCKED || $topic_data['forum_status'] != ITEM_UNLOCKED),
-	'S_SELECT_SORT_DIR'     => $s_sort_dir,
-	'S_SELECT_SORT_KEY'     => $s_sort_key,
-	'S_SELECT_SORT_DAYS'    => $s_limit_days,
 	'S_SINGLE_MODERATOR'    => count($forum_moderators[$forum_id] ?? []) == 1,
-	'S_TOPIC_ACTION'        => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}")),
 	'S_TOPIC_MOD'           => ($topic_mod != '') ? '<select name="action" id="quick-mod-select">' . $topic_mod . '</select>' : '',
 	'S_MOD_ACTION'          => $mod_action,
 	'U_LOCK_TOPIC'          => ($mod_lock ? ($mod_action . "&action=" . $mod_lock) : false),
@@ -855,14 +808,7 @@ else
 	$sql_start = $start;
 }
 
-if (is_array($sort_by_sql[$sort_key]))
-{
-	$sql_sort_order = implode(' ' . $direction . ', ', $sort_by_sql[$sort_key]) . ' ' . $direction;
-}
-else
-{
-	$sql_sort_order = $sort_by_sql[$sort_key] . ' ' . $direction;
-}
+$sql_sort_order = 'p.post_time ' . $direction;
 
 // Container for user details, only process once
 $post_list = $user_cache = $id_cache = $attachments = $attach_list = $rowset = $post_edit_list = [];
@@ -871,11 +817,9 @@ $bbcode_bitfield = '';
 
 // Go ahead and pull all data for this topic
 $sql = 'SELECT p.post_id
-	FROM ' . POSTS_TABLE . ' p' . (($join_user_sql[$sort_key]) ? ', ' . USERS_TABLE . ' u' : '') . "
+	FROM ' . POSTS_TABLE . " p
 	WHERE p.topic_id = {$topic_id}
 		" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p.post_approved = 1' : '') . "
-		" . (($join_user_sql[$sort_key]) ? 'AND u.user_id = p.poster_id' : '') . "
-		{$limit_posts_time}
 	ORDER BY {$sql_sort_order}";
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 
@@ -904,14 +848,7 @@ if ($topic_data['topic_first_post_show'])
 
 if (!sizeof($post_list))
 {
-	if ($sort_days)
-	{
-		trigger_error('NO_POSTS_TIME_FRAME');
-	}
-	else
-	{
-		trigger_error('NO_TOPIC');
-	}
+	trigger_error('NO_TOPIC');
 }
 
 // Holding maximum post time for marking topic read
@@ -1527,7 +1464,18 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 	$user_rate = $user_rates[$row['post_id']] ?? ['rate' => 0, 'rate_time' => 0];
 	$rate_time = ($topic_data['topic_first_post_id'] != $row['post_id'] || !isset($config['rate_topic_time']) || $config['rate_topic_time'] == -1) ? $config['rate_time'] : $config['rate_topic_time'];
 
-	$post_number = ($topic_data['topic_first_post_show'] && $start != 0) ? ($topic_data['topic_first_post_id'] == $row['post_id'] ? 1 : $i + $start) : $i + $start + 1;
+	if ($topic_data['topic_first_post_show'] && $topic_data['topic_first_post_id'] == $row['post_id'])
+	{
+		$post_number = 1;
+	}
+	else if ($sort_dir == 'd')
+	{
+		$post_number = $total_posts - $start - $i + (($topic_data['topic_first_post_show']) ? 1 : 0);
+	}
+	else
+	{
+		$post_number = ($topic_data['topic_first_post_show'] && $start != 0) ? $i + $start : $i + $start + 1;
+	}
 
 	//
 	$postrow = [

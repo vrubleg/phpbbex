@@ -124,8 +124,8 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_max_thumb_widt
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_max_width', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_min_thumb_filesize', '12000');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ip_check', '3');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ip_login_limit_max', '50');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('ip_login_limit_time', '21600');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('ip_login_limit_max', '10');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('ip_login_limit_time', '43200');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('ip_login_limit_use_forwarded', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('jab_enable', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('jab_host', '');
@@ -222,7 +222,7 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_deny'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_empty_referer', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_downloads', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_gc', '3600');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '43200');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '7200');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_desc', '{L_CONFIG_SITE_DESC}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('sitename', '{L_CONFIG_SITENAME}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smilies_per_page', '50');

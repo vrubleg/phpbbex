@@ -45,6 +45,13 @@ function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key,
 
 	foreach ($sorts as $name => $sort_ary)
 	{
+		// Empty options disable this select and omit its value from the URL.
+		if (empty($sort_ary['options']))
+		{
+			$sort_ary['output'] = null;
+			continue;
+		}
+
 		$key = $sort_ary['key'];
 		$selected = ${$sort_ary['key']};;
 

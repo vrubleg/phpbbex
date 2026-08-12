@@ -821,6 +821,10 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $post_count_sy
 
 	$db->sql_transaction('begin');
 
+	// Remove ratings while the posts still exist, so the authors' aggregate rating counters can be adjusted as well.
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
+	remove_rates_batch('post', $post_ids);
+
 	$table_ary = [POSTS_TABLE, REPORTS_TABLE];
 
 	foreach ($table_ary as $table)

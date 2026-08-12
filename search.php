@@ -102,7 +102,7 @@ if (!$auth->acl_get('u_search') || !$auth->acl_getf_global('f_search'))
 // It is applicable if the configuration setting is non-zero, and the user cannot
 // ignore the flood setting, and the search is a keyword search.
 $interval = ($user->data['user_id'] == ANONYMOUS) ? $config['search_anonymous_interval'] : $config['search_interval'];
-if ($interval && !in_array($search_id, ['unreadposts', 'unanswered', 'active_topics', 'egosearch']) && !$auth->acl_get('u_ignoreflood'))
+if ($interval && !in_array($search_id, ['unreadposts', 'active_topics', 'egosearch']) && !$auth->acl_get('u_ignoreflood'))
 {
 	if ($user->data['user_last_search'] > time() - $interval)
 	{
@@ -335,59 +335,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 						' . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '') . '
 					ORDER BY t.topic_last_post_time DESC';
 				$field = 'topic_id';
-			break;
-
-			case 'unanswered':
-				$l_search_title = $user->lang['SEARCH_UNANSWERED'];
-				$show_results = request_var('sr', 'topics');
-				$show_results = ($show_results == 'posts') ? 'posts' : 'topics';
-				$sort_by_sql['t'] = ($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time';
-				$sort_by_sql['c'] = ($show_results == 'posts') ? 'p.post_time' : 't.topic_time';
-				$sort_by_sql['s'] = ($show_results == 'posts') ? 'p.post_subject' : 't.topic_title';
-				$sql_sort = 'ORDER BY ' . $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
-
-				$sort_join = ($sort_key == 'f') ? FORUMS_TABLE . ' f, ' : '';
-				$sql_sort = ($sort_key == 'f') ? ' AND f.forum_id = p.forum_id ' . $sql_sort : $sql_sort;
-
-				if ($sort_days)
-				{
-					$last_post_time = 'AND p.post_time > ' . (time() - ($sort_days * 24 * 3600));
-				}
-				else
-				{
-					$last_post_time = '';
-				}
-
-				if ($sort_key == 'a')
-				{
-					$sort_join = USERS_TABLE . ' u, ';
-					$sql_sort = ' AND u.user_id = p.poster_id ' . $sql_sort;
-				}
-				if ($show_results == 'posts')
-				{
-					$sql = "SELECT p.post_id
-						FROM {$sort_join}" . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
-						WHERE t.topic_replies = 0
-							AND p.topic_id = t.topic_id
-							{$last_post_time}
-							{$m_approve_fid_sql}
-							" . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '') . "
-							{$sql_sort}";
-					$field = 'post_id';
-				}
-				else
-				{
-					$sql = 'SELECT DISTINCT ' . $sort_by_sql[$sort_key] . ", p.topic_id
-						FROM {$sort_join}" . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
-						WHERE t.topic_replies = 0
-							AND t.topic_moved_id = 0
-							AND p.topic_id = t.topic_id
-							{$last_post_time}
-							{$m_approve_fid_sql}
-							" . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '') . "
-						{$sql_sort}";
-					$field = 'topic_id';
-				}
 			break;
 
 			case 'unreadposts':
@@ -645,7 +592,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'U_SEARCH_SELF_IN'          => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch' . $u_amp_search_forum),
 		'U_SEARCH_SELF_TOPICS_IN'   => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost' . $u_amp_search_forum),
 		'U_SEARCH_NEW_IN'           => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts' . $u_amp_search_forum),
-		'U_SEARCH_UNANSWERED_IN'    => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unanswered' . $u_amp_search_forum),
 		'U_SEARCH_UNREAD_IN'        => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts' . $u_amp_search_forum),
 		'U_SEARCH_ACTIVE_TOPICS_IN' => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics' . $u_amp_search_forum),
 	]);

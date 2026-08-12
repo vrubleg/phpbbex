@@ -39,8 +39,7 @@ function generate_smilies($mode = 'inline')
 		$template->set_filenames(['body' => 'posting_smilies.html']);
 
 		$template->assign_var('PAGINATION',
-			generate_pagination(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'),
-				$smiley_count, $config['smilies_per_page'], $start, true)
+			generate_pagination(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'), $smiley_count, $config['smilies_per_page'], $start)
 		);
 	}
 
@@ -1782,7 +1781,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 			// If the person editing this post is different to the one having posted then we will add a log entry stating the edit
 			// Could be simplified by only adding to the log if the edit is not tracked - but this may confuse admins/mods
-			if ($user->data['user_id'] != $poster_id)
+			if ($mode != 'reparse' && $user->data['user_id'] != $poster_id)
 			{
 				$log_subject = $subject ?: $data['topic_title'];
 				add_log('mod', $data['forum_id'], $data['topic_id'], 'LOG_POST_EDITED', $log_subject, (!empty($username)) ? $username : $user->lang['GUEST']);

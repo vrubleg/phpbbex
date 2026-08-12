@@ -917,7 +917,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	set_config('allow_login_via_email', '1');
 	set_config('max_autologin_time', '400');
-	set_config('session_length', '14400');
+	set_config('session_length', '7200');
+	set_config('ip_login_limit_max', '10');
+	set_config('ip_login_limit_time', '43200');
 	set_config('referer_validation', '1');
 	set_config('cache_mtime_check', '1');
 	set_config('max_sig_chars', min((int) $config['max_sig_chars'], 500));

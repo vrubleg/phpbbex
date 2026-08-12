@@ -1392,12 +1392,12 @@ class install_install extends module
 	/**
 	* PHP modules required for installing and running phpBBex.
 	*/
-	var $php_dlls_required = ['mysqli', 'gd'];
+	var $php_dlls_required = ['mysqli', 'gd', 'intl'];
 
 	/**
 	* PHP modules used for optional or extended features.
 	*/
-	var $php_dlls_optional = ['curl', 'intl', 'zlib', 'xml'];
+	var $php_dlls_optional = ['curl', 'zlib', 'xml'];
 
 	/**
 	* A list of the web-crawlers/bots we recognise by default.

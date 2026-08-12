@@ -17,6 +17,13 @@ require_once(PHPBB_ROOT_PATH . 'includes/search/search.php');
 */
 class fulltext_native extends search_backend
 {
+	const UTF8_HANGUL_FIRST = "\xEA\xB0\x80";
+	const UTF8_HANGUL_LAST = "\xED\x9E\xA3";
+	const UTF8_CJK_FIRST = "\xE4\xB8\x80";
+	const UTF8_CJK_LAST = "\xE9\xBE\xBB";
+	const UTF8_CJK_B_FIRST = "\xF0\xA0\x80\x80";
+	const UTF8_CJK_B_LAST = "\xF0\xAA\x9B\x96";
+
 	var $stats = [];
 	var $word_length = [];
 	var $search_query;
@@ -27,7 +34,7 @@ class fulltext_native extends search_backend
 	var $must_exclude_one_ids = [];
 
 	/**
-	* Initialises the fulltext_native search backend with min/max word length and makes sure the UTF-8 normalizer is loaded.
+	* Initialises the fulltext_native search backend with min/max word length.
 	*
 	* @param    boolean|string  &$error is passed by reference and should either be set to false on success or an error message on failure.
 	*
@@ -38,15 +45,6 @@ class fulltext_native extends search_backend
 		global $config;
 
 		$this->word_length = ['min' => $config['fulltext_native_min_chars'], 'max' => $config['fulltext_native_max_chars']];
-
-		/**
-		* Load the UTF tools
-		*/
-		if (!class_exists('utf_normalizer'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/utf/utf_normalizer.php');
-		}
-
 
 		$error = false;
 	}
@@ -967,9 +965,9 @@ class fulltext_native extends search_backend
 				* Note: this could be optimized. If the codepoint is lower than Hangul's range
 				* we know that it will also be lower than CJK ranges
 				*/
-				if ((strncmp($word, UTF8_HANGUL_FIRST, 3) < 0 || strncmp($word, UTF8_HANGUL_LAST, 3) > 0)
-				 && (strncmp($word, UTF8_CJK_FIRST, 3) < 0 || strncmp($word, UTF8_CJK_LAST, 3) > 0)
-				 && (strncmp($word, UTF8_CJK_B_FIRST, 4) < 0 || strncmp($word, UTF8_CJK_B_LAST, 4) > 0))
+				if ((strncmp($word, self::UTF8_HANGUL_FIRST, 3) < 0 || strncmp($word, self::UTF8_HANGUL_LAST, 3) > 0)
+				 && (strncmp($word, self::UTF8_CJK_FIRST, 3) < 0 || strncmp($word, self::UTF8_CJK_LAST, 3) > 0)
+				 && (strncmp($word, self::UTF8_CJK_B_FIRST, 4) < 0 || strncmp($word, self::UTF8_CJK_B_LAST, 4) > 0))
 				{
 					$word = strtok(' ');
 					continue;
@@ -1357,13 +1355,7 @@ class fulltext_native extends search_backend
 		*/
 		$text = htmlspecialchars_decode(utf8_decode_ncr($text), ENT_QUOTES);
 
-		/**
-		* Load the UTF-8 normalizer
-		*
-		* If we use it more widely, an instance of that class should be held in a
-		* a global variable instead
-		*/
-		utf_normalizer::nfc($text);
+		$text = utf8_normalize_nfc($text);
 
 		/**
 		* The first thing we do is:
@@ -1456,9 +1448,9 @@ class fulltext_native extends search_backend
 			$utf_char = substr($text, $pos, $utf_len);
 			$pos += $utf_len;
 
-			if (($utf_char >= UTF8_HANGUL_FIRST && $utf_char <= UTF8_HANGUL_LAST)
-			 || ($utf_char >= UTF8_CJK_FIRST && $utf_char <= UTF8_CJK_LAST)
-			 || ($utf_char >= UTF8_CJK_B_FIRST && $utf_char <= UTF8_CJK_B_LAST))
+			if (($utf_char >= self::UTF8_HANGUL_FIRST && $utf_char <= self::UTF8_HANGUL_LAST)
+			 || ($utf_char >= self::UTF8_CJK_FIRST && $utf_char <= self::UTF8_CJK_LAST)
+			 || ($utf_char >= self::UTF8_CJK_B_FIRST && $utf_char <= self::UTF8_CJK_B_LAST))
 			{
 				/**
 				* All characters within these ranges are valid
