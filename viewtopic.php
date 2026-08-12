@@ -23,9 +23,7 @@ $post_id    = request_var('p', 0);
 $start      = request_var('start', 0);
 $view       = request_var('view', '');
 
-$default_sort_dir   = 'a';
-
-$sort_dir   = request_var('sd', $default_sort_dir);
+$sort_dir   = 'a'; // use 'd' for reverse order of comments
 
 /**
 * @todo normalize?
@@ -312,13 +310,6 @@ if (!isset($topic_tracking_info))
 	}
 }
 
-// Post ordering options
-$s_sort_dir = $u_sort_param = '';
-$limit_days = $sort_days = $s_limit_days = $default_sort_days = null; // unused
-$sort_by_text = $sort_key = $s_sort_key = $default_sort_key = null; // unused
-
-gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param, $default_sort_days, $default_sort_key, $default_sort_dir);
-
 $total_posts = $topic_replies + 1;
 
 // Was a highlight request part of the URI?
@@ -339,7 +330,7 @@ if ($start < 0 || $start >= $total_posts)
 }
 
 // General Viewtopic URL for return links
-$viewtopic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($highlight_match) ? "&amp;hilit={$highlight}" : ''));
+$viewtopic_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . (($highlight_match) ? "&amp;hilit={$highlight}" : ''));
 
 // Are we watching this topic?
 $s_watching_topic = [
@@ -427,7 +418,7 @@ $topic_mod .= ($auth->acl_get('m_delete', $forum_id)) ? '<option value="delete_t
 $topic_mod .= ($auth->acl_get('m_', $forum_id)) ? '<option value="topic_logs">' . $user->lang['VIEW_TOPIC_LOGS'] . '</option>' : '';
 
 // If we've got a hightlight set pass it on to pagination.
-$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($highlight_match) ? "&amp;hilit={$highlight}" : '')), $total_posts, $config['posts_per_page'], $start);
+$pagination = generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($highlight_match) ? "&amp;hilit={$highlight}" : '')), $total_posts, $config['posts_per_page'], $start);
 
 // Navigation links
 generate_forum_nav($topic_data);
@@ -476,7 +467,7 @@ $template->assign_vars([
 	'PAGE_NUMBER'   => on_page($total_posts, $config['posts_per_page'], $start),
 	'TOTAL_POSTS'   => ($total_posts == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total_posts),
 	'U_MCP_FORUM'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}") : '',
-	'U_MCP_TOPIC'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;f={$forum_id}&amp;t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}") . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '')) : '',
+	'U_MCP_TOPIC'   => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;f={$forum_id}&amp;t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}")) : '',
 	'MODERATORS'    => (isset($forum_moderators[$forum_id]) && sizeof($forum_moderators[$forum_id])) ? implode(', ', $forum_moderators[$forum_id]) : '',
 
 	'POST_IMG'          => ($topic_data['forum_status'] == ITEM_LOCKED) ? $user->img('button_topic_locked', 'FORUM_LOCKED') : $user->img('button_topic_new', 'POST_NEW_TOPIC'),
@@ -498,9 +489,7 @@ $template->assign_vars([
 	'WARN_IMG'          => $user->img('icon_user_warn', 'WARN_USER'),
 
 	'S_IS_LOCKED'           => ($topic_data['topic_status'] != ITEM_UNLOCKED || $topic_data['forum_status'] != ITEM_UNLOCKED),
-	'S_SELECT_SORT_DIR'     => $s_sort_dir,
 	'S_SINGLE_MODERATOR'    => count($forum_moderators[$forum_id] ?? []) == 1,
-	'S_TOPIC_ACTION'        => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}")),
 	'S_TOPIC_MOD'           => ($topic_mod != '') ? '<select name="action" id="quick-mod-select">' . $topic_mod . '</select>' : '',
 	'S_MOD_ACTION'          => $mod_action,
 	'U_LOCK_TOPIC'          => ($mod_lock ? ($mod_action . "&action=" . $mod_lock) : false),
