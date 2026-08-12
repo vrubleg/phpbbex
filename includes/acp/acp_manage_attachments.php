@@ -291,7 +291,7 @@ class acp_manage_attachments
 		$template->assign_vars([
 			'TOTAL_FILES'       => $num_files,
 			'TOTAL_SIZE'        => $total_size,
-			'PAGINATION'        => generate_pagination($this->u_action . "&amp;{$u_sort_param}", $num_files, $config['posts_per_page'], $start, true),
+			'PAGINATION'        => generate_pagination($this->u_action . "&amp;{$u_sort_param}", $num_files, $config['posts_per_page'], $start),
 
 			'S_ATTACHMENTS'     => true,
 			'S_ON_PAGE'         => on_page($num_files, $config['posts_per_page'], $start),

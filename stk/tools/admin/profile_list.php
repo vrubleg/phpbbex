@@ -214,7 +214,7 @@ class profile_list
 			'LIMIT'                 => $limit,
 			'OPTION_SECTION'        => (isset($options[$display]) && $display != 'user_sig') ? $user->lang[$options[$display]] : '',
 			'ORDER_SECTION'         => ($order_by == 'username_clean') ? '' : ((isset($order[$order_by])) ? $user->lang[$order[$order_by]] : $user->lang['JOINED']),
-			'PAGINATION'            => generate_pagination($base_url, $count, $limit, $start, true),
+			'PAGINATION'            => generate_pagination($base_url, $count, $limit, $start),
 
 			'S_DESC'                => ($order_dir == 'DESC'),
 			'S_DISPLAY_ALL'         => !isset($options[$display]),

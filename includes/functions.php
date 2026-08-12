@@ -1530,7 +1530,7 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 * Pagination routine, generates page number sequence
 * tpl_prefix is for using different pagination blocks at one page
 */
-function generate_pagination($base_url, $num_items, $per_page, $start_item, $add_prevnext_text = false, $tpl_prefix = '')
+function generate_pagination($base_url, $num_items, $per_page, $start_item, $show_prevnext = true, $tpl_prefix = '')
 {
 	global $template, $user;
 
@@ -1585,16 +1585,16 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $add
 	$page_string .= ($end < $total_pages) ? '<span class="page-dots"> … </span>' : $seperator;
 	$page_string .= ($on_page == $total_pages) ? '<strong>' . $total_pages . '</strong>' : '<a href="' . $base_url . "{$url_delim}start=" . (($total_pages - 1) * $per_page) . '">' . $total_pages . '</a>';
 
-	if ($add_prevnext_text)
+	if ($show_prevnext)
 	{
 		if ($on_page != 1)
 		{
-			$page_string = '<a href="' . $base_url . "{$url_delim}start=" . (($on_page - 2) * $per_page) . '">' . $user->lang['PREVIOUS'] . '</a>&nbsp;&nbsp;' . $page_string;
+			$page_string = '<a href="' . $base_url . "{$url_delim}start=" . (($on_page - 2) * $per_page) . '" title="' . $user->lang['PREVIOUS'] . '" aria-label="' . $user->lang['PREVIOUS'] . '">‹‹‹</a>' . $seperator . $page_string;
 		}
 
 		if ($on_page != $total_pages)
 		{
-			$page_string .= '&nbsp;&nbsp;<a href="' . $base_url . "{$url_delim}start=" . ($on_page * $per_page) . '">' . $user->lang['NEXT'] . '</a>';
+			$page_string .= $seperator . '<a href="' . $base_url . "{$url_delim}start=" . ($on_page * $per_page) . '" title="' . $user->lang['NEXT'] . '" aria-label="' . $user->lang['NEXT'] . '">›››</a>';
 		}
 	}
 
@@ -1623,9 +1623,7 @@ function on_page($num_items, $per_page, $start)
 
 	$on_page = floor($start / $per_page) + 1;
 
-	$template->assign_vars([
-		'ON_PAGE'       => $on_page]
-	);
+	$template->assign_vars(['ON_PAGE' => $on_page]);
 
 	return sprintf($user->lang['PAGE_OF'], $on_page, max(ceil($num_items / $per_page), 1));
 }

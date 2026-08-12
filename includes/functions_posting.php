@@ -39,8 +39,7 @@ function generate_smilies($mode = 'inline')
 		$template->set_filenames(['body' => 'posting_smilies.html']);
 
 		$template->assign_var('PAGINATION',
-			generate_pagination(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'),
-				$smiley_count, $config['smilies_per_page'], $start, true)
+			generate_pagination(append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=smilies'), $smiley_count, $config['smilies_per_page'], $start)
 		);
 	}
 

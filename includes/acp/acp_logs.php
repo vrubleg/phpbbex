@@ -129,7 +129,7 @@ class acp_logs
 			'U_ACTION'      => $this->u_action . "&amp;{$u_sort_param}{$keywords_param}&amp;start={$start}",
 
 			'S_ON_PAGE'     => on_page($log_count, $config['topics_per_page'], $start),
-			'PAGINATION'    => generate_pagination($this->u_action . "&amp;{$u_sort_param}{$keywords_param}", $log_count, $config['topics_per_page'], $start, true),
+			'PAGINATION'    => generate_pagination($this->u_action . "&amp;{$u_sort_param}{$keywords_param}", $log_count, $config['topics_per_page'], $start),
 
 			'S_LIMIT_DAYS'  => $s_limit_days,
 			'S_SORT_KEY'    => $s_sort_key,
