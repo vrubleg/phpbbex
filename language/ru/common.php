@@ -127,7 +127,7 @@ $lang = array_merge($lang, [
 
 	'EDIT_POST'                         => 'Редактировать сообщение',
 	'EMAIL'                             => 'Email', // Short form for EMAIL_ADDRESS
-	'EMAIL_ADDRESS'                     => 'Адрес email',
+	'EMAIL_ADDRESS'                     => 'Email',
 	'EMAIL_INVALID_EMAIL'               => 'Введённый адрес email неверен.',
 	'EMAIL_SMTP_ERROR_RESPONSE'         => 'Ошибка при отправке email в <strong>строке %1$s</strong>. Ответ сервера: %2$s.',
 	'EMPTY_SUBJECT'                     => 'При создании новой темы необходимо указать заголовок.',

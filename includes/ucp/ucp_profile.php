@@ -425,6 +425,8 @@ class ucp_profile
 
 				$template->assign_vars([
 					'ERROR'     => (sizeof($error)) ? implode('<br />', $error) : '',
+					'USERNAME'  => $user->data['username'],
+					'EMAIL'     => $user->data['user_email'],
 
 					'S_VIEW_EMAIL'  => $data['viewemail'],
 
