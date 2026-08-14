@@ -395,7 +395,11 @@ switch ($mode)
 		$percentage_topics = ($config['num_topics']) ? min(100, ($member['user_topics'] / $config['num_topics']) * 100) : 0;
 
 
-		if ($member['user_sig'])
+		if (!$config['allow_sig'])
+		{
+			$member['user_sig'] = '';
+		}
+		else if ($member['user_sig'])
 		{
 			$member['user_sig'] = censor_text($member['user_sig']);
 
