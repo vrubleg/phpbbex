@@ -32,7 +32,6 @@ $topic_id        = request_var('t', 0);
 $forum_id        = request_var('f', 0);
 $load_draft_id   = request_var('d', 0);
 $loaded_draft_id = request_var('loaded_draft_id', 0);
-$lastclick       = request_var('lastclick', 0);
 
 $preview    = isset($_POST['preview']);
 $save       = isset($_POST['save']);
@@ -47,7 +46,7 @@ $error = $post_data = [];
 $current_time = time();
 
 // Was cancel pressed? If so then redirect to the appropriate page
-if ($cancel || ($current_time - $lastclick < 2 && $submit))
+if ($cancel)
 {
 	$redirect = ($post_id) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $post_id) . '#p' . $post_id : (($topic_id) ? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $topic_id) : (($forum_id) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) : append_sid(PHPBB_ROOT_PATH . 'index.php')));
 	redirect($redirect);
@@ -1345,7 +1344,6 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($c
 }
 
 $s_hidden_fields = ($mode == 'reply' || $mode == 'quote') ? '<input type="hidden" name="topic_cur_post_id" value="' . $post_data['topic_last_post_id'] . '" />' : '';
-$s_hidden_fields .= '<input type="hidden" name="lastclick" value="' . $current_time . '" />';
 $s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden" name="loaded_draft_id" value="' . (($loaded_draft_id) ? $loaded_draft_id : $load_draft_id) . '" />' : '';
 
 if ($mode == 'edit')
