@@ -34,7 +34,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	$msg_id          = request_var('p', 0);
 	$load_draft_id   = request_var('d', 0);
 	$loaded_draft_id = request_var('loaded_draft_id', 0);
-	$lastclick       = request_var('lastclick', 0);
 
 	// Reply to all triggered (quote/reply)
 	$reply_to_all   = request_var('reply_to_all', 0);
@@ -68,7 +67,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	$current_time = time();
 
 	// Was cancel pressed? If so then redirect to the appropriate page
-	if ($cancel || ($current_time - $lastclick < 2 && $submit))
+	if ($cancel)
 	{
 		if ($msg_id)
 		{
@@ -1023,8 +1022,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		break;
 	}
 
-	$s_hidden_fields = '<input type="hidden" name="lastclick" value="' . $current_time . '" />';
-	$s_hidden_fields .= (isset($check_value)) ? '<input type="hidden" name="status_switch" value="' . $check_value . '" />' : '';
+	$s_hidden_fields = (isset($check_value)) ? '<input type="hidden" name="status_switch" value="' . $check_value . '" />' : '';
 	$s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden" name="loaded_draft_id" value="' . (($loaded_draft_id) ? $loaded_draft_id : $load_draft_id) . '" />' : '';
 
 	$form_enctype = (!PHP_FILE_UPLOADS || !$config['allow_pm_attach'] || !$auth->acl_get('u_pm_attach')) ? '' : ' enctype="multipart/form-data"';
