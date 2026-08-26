@@ -226,14 +226,17 @@ class ucp_prefs
 					'S_IMAGES'          => $data['images'],
 					'S_FLASH'           => $data['flash'],
 					'S_SMILIES'         => $data['smilies'],
+					'S_SMILIES_ALLOWED' => (bool) $config['allow_smilies'],
 					'S_SIGS'            => $data['sigs'],
+					'S_SIGS_ALLOWED'    => (bool) $config['allow_sig'],
 					'S_AVATARS'         => $data['avatars'],
+					'S_AVATARS_ALLOWED' => ($config['allow_avatar'] && ($config['allow_avatar_local'] || $config['allow_avatar_upload'] || $config['allow_avatar_remote_upload'])),
 					'S_DISABLE_CENSORS' => $data['wordcensor'],
 
-					'S_QUICKREPLY'      => $data['quickreply'],
-					'QUICK_REPLY'       => (bool) $config['allow_quick_reply'],
-					'S_QUICKPOST'       => $data['quickpost'],
-					'QUICK_POST'        => (bool) $config['allow_quick_post'],
+					'S_QUICKREPLY'         => $data['quickreply'],
+					'S_QUICKREPLY_ALLOWED' => (bool) $config['allow_quick_reply'],
+					'S_QUICKPOST'          => $data['quickpost'],
+					'S_QUICKPOST_ALLOWED'  => (bool) $config['allow_quick_post'],
 
 					'S_CHANGE_CENSORS'      => ($auth->acl_get('u_chgcensors') && $config['allow_nocensors']),
 				]);

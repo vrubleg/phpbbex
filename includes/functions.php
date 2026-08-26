@@ -1547,7 +1547,6 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $sho
 
 	$on_page = floor($start_item / $per_page) + 1;
 	$url_delim = (strpos($base_url, '?') === false) ? '?' : ((strpos($base_url, '?') === strlen($base_url) - 1) ? '' : '&amp;');
-
 	$start = 1;
 	$end = $total_pages;
 	if ($total_pages > 11)
@@ -1585,16 +1584,19 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $sho
 	$page_string .= ($end < $total_pages) ? '<span class="page-dots"> … </span>' : $seperator;
 	$page_string .= ($on_page == $total_pages) ? '<strong>' . $total_pages . '</strong>' : '<a href="' . $base_url . "{$url_delim}start=" . (($total_pages - 1) * $per_page) . '">' . $total_pages . '</a>';
 
+	$previous_page = ($on_page == 1) ? '' : $base_url . (($on_page == 2) ? '' : "{$url_delim}start=" . (($on_page - 2) * $per_page));
+	$next_page = ($on_page == $total_pages) ? '' : $base_url . "{$url_delim}start=" . ($on_page * $per_page);
+
 	if ($show_prevnext)
 	{
 		if ($on_page != 1)
 		{
-			$page_string = '<a href="' . $base_url . "{$url_delim}start=" . (($on_page - 2) * $per_page) . '" title="' . $user->lang['PREVIOUS'] . '" aria-label="' . $user->lang['PREVIOUS'] . '">‹‹‹</a>' . $seperator . $page_string;
+			$page_string = '<a href="' . $previous_page . '" title="' . $user->lang['PREVIOUS'] . '" aria-label="' . $user->lang['PREVIOUS'] . '">‹‹‹</a>' . $seperator . $page_string;
 		}
 
 		if ($on_page != $total_pages)
 		{
-			$page_string .= $seperator . '<a href="' . $base_url . "{$url_delim}start=" . ($on_page * $per_page) . '" title="' . $user->lang['NEXT'] . '" aria-label="' . $user->lang['NEXT'] . '">›››</a>';
+			$page_string .= $seperator . '<a href="' . $next_page . '" title="' . $user->lang['NEXT'] . '" aria-label="' . $user->lang['NEXT'] . '">›››</a>';
 		}
 	}
 
@@ -1603,8 +1605,8 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $sho
 		'A_' . $tpl_prefix . 'BASE_URL' => addslashes($base_url),
 		$tpl_prefix . 'PER_PAGE'        => $per_page,
 
-		$tpl_prefix . 'PREVIOUS_PAGE'   => ($on_page == 1) ? '' : $base_url . "{$url_delim}start=" . (($on_page - 2) * $per_page),
-		$tpl_prefix . 'NEXT_PAGE'       => ($on_page == $total_pages) ? '' : $base_url . "{$url_delim}start=" . ($on_page * $per_page),
+		$tpl_prefix . 'PREVIOUS_PAGE'   => $previous_page,
+		$tpl_prefix . 'NEXT_PAGE'       => $next_page,
 		$tpl_prefix . 'TOTAL_PAGES'     => $total_pages,
 	]);
 

@@ -23,13 +23,14 @@ $sql = 'SELECT f.*, t.*, p.* FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t,
 $result = $db->sql_query($sql);
 $merge_post_data = $db->sql_fetchrow($result);
 $db->sql_freeresult($result);
-$merge_post_id = $merge_post_data['post_id'];
 
-if (!$merge_post_id)
+// A stale topic_last_post_id must not prevent a regular reply.
+if (!$merge_post_data)
 {
-	$user->setup('posting');
-	trigger_error('NO_POST');
+	return;
 }
+
+$merge_post_id = $merge_post_data['post_id'];
 
 // Should we do merging?
 $do_merge = ($merge_post_data['poster_id'] == $user->data['user_id']) && !$merge_post_data['post_edit_locked'];

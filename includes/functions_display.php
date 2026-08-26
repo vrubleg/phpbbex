@@ -339,20 +339,17 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			}
 
 			$l_subforums = (sizeof($subforums[$forum_id]) == 1) ? $user->lang['SUBFORUM'] . ': ' : $user->lang['SUBFORUMS'] . ': ';
-			$folder_image = ($forum_unread) ? 'forum_unread_subforum' : 'forum_read_subforum';
 		}
-		else
-		{
-			switch ($row['forum_type'])
-			{
-				case FORUM_POST:
-					$folder_image = ($forum_unread) ? 'forum_unread' : 'forum_read';
-				break;
 
-				case FORUM_LINK:
-					$folder_image = 'forum_link';
-				break;
-			}
+		switch ($row['forum_type'])
+		{
+			case FORUM_POST:
+				$folder_image = ($forum_unread) ? 'forum_unread' : 'forum_read';
+			break;
+
+			case FORUM_LINK:
+				$folder_image = 'forum_link';
+			break;
 		}
 
 		// Which folder should we display?

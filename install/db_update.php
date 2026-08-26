@@ -971,6 +971,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('UPDATE ' . MODULES_TABLE . "
 		SET module_auth = 'cfg_allow_avatar && (cfg_allow_avatar_local || cfg_allow_avatar_upload || cfg_allow_avatar_remote_upload)'
 		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'avatar'");
+	$db->sql_query('UPDATE ' . MODULES_TABLE . "
+		SET module_auth = 'acl_u_sig && cfg_allow_sig'
+		WHERE module_class = 'ucp' AND module_basename = 'profile' AND module_mode = 'signature'");
 
 	// Update schema.
 

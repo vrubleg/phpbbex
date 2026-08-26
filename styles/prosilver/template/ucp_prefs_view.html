@@ -23,6 +23,7 @@
 				<label for="flash0"><input type="radio" name="flash" id="flash0" value="0"<!-- IF not S_FLASH --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 			</dd>
 		</dl>
+		<!-- IF S_SMILIES_ALLOWED -->
 		<dl>
 			<dt><label for="smilies1">{L_VIEW_SMILIES}:</label></dt>
 			<dd>
@@ -30,6 +31,8 @@
 				<label for="smilies0"><input type="radio" name="smilies" id="smilies0" value="0"<!-- IF not S_SMILIES --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 			</dd>
 		</dl>
+		<!-- ENDIF -->
+		<!-- IF S_SIGS_ALLOWED -->
 		<dl>
 			<dt><label for="sigs1">{L_VIEW_SIGS}:</label></dt>
 			<dd>
@@ -37,6 +40,8 @@
 				<label for="sigs0"><input type="radio" name="sigs" id="sigs0" value="0"<!-- IF not S_SIGS --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 			</dd>
 		</dl>
+		<!-- ENDIF -->
+		<!-- IF S_AVATARS_ALLOWED -->
 		<dl>
 			<dt><label for="avatars1">{L_VIEW_AVATARS}:</label></dt>
 			<dd>
@@ -44,7 +49,8 @@
 				<label for="avatars0"><input type="radio" name="avatars" id="avatars0" value="0"<!-- IF not S_AVATARS --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
 			</dd>
 		</dl>
-		<!-- IF QUICK_REPLY -->
+		<!-- ENDIF -->
+		<!-- IF S_QUICKREPLY_ALLOWED -->
 		<dl>
 			<dt><label for="quickreply1">{L_QUICK_REPLY_DISPLAY}:</label></dt>
 			<dd>
@@ -53,7 +59,7 @@
 			</dd>
 		</dl>
 		<!-- ENDIF -->
-		<!-- IF QUICK_POST -->
+		<!-- IF S_QUICKPOST_ALLOWED -->
 		<dl>
 			<dt><label for="quickpost1">{L_QUICK_POST_DISPLAY}:</label></dt>
 			<dd>
