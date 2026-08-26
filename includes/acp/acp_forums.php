@@ -414,7 +414,7 @@ class acp_forums
 							'forum_rules_link'      => '',
 							'forum_image'           => '',
 							'display_subforum_list' => true,
-							'display_on_index'      => false,
+							'display_on_index'      => true,
 							'forum_topic_sortby_type'   => '',
 							'forum_topic_sortby_dir'    => '',
 							'enable_indexing'       => true,
