@@ -804,8 +804,8 @@ function topic_status(&$topic_row, $replies, $unread_topic, &$folder_img, &$fold
 		{
 			case POST_GLOBAL:
 				$topic_type = $user->lang['VIEW_TOPIC_GLOBAL'];
-				$folder = 'global_read';
-				$folder_new = 'global_unread';
+				$folder = 'announce_read';
+				$folder_new = 'announce_unread';
 			break;
 
 			case POST_ANNOUNCE:
