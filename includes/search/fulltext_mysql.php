@@ -62,7 +62,7 @@ class fulltext_mysql extends search_backend
 			return $user->lang['FULLTEXT_MYSQL_NOT_SUPPORTED'];
 		}
 
-		$sql = 'SHOW VARIABLES LIKE \'ft\_%\'';
+		$sql = 'SHOW VARIABLES LIKE \'%ft\_%\'';
 		$result = $db->sql_query($sql);
 
 		$mysql_info = [];
@@ -72,8 +72,16 @@ class fulltext_mysql extends search_backend
 		}
 		$db->sql_freeresult($result);
 
-		set_config('fulltext_mysql_max_word_len', $mysql_info['ft_max_word_len']);
-		set_config('fulltext_mysql_min_word_len', $mysql_info['ft_min_word_len']);
+		if ($engine === 'MyISAM')
+		{
+			set_config('fulltext_mysql_max_word_len', $mysql_info['ft_max_word_len']);
+			set_config('fulltext_mysql_min_word_len', $mysql_info['ft_min_word_len']);
+		}
+		else
+		{
+			set_config('fulltext_mysql_max_word_len', $mysql_info['innodb_ft_max_token_size']);
+			set_config('fulltext_mysql_min_word_len', $mysql_info['innodb_ft_min_token_size']);
+		}
 
 		return false;
 	}
@@ -134,7 +142,7 @@ class fulltext_mysql extends search_backend
 			}
 			else
 			{
-				$tmp_split_words[] = $word . ' ';
+				$tmp_split_words[] = $word;
 			}
 		}
 		if ($phrase)

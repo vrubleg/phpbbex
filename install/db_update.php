@@ -1280,6 +1280,35 @@ if (request_var('utf8mb4', 0))
 	}
 }
 
+// Update the fulltext limits for the actual posts table engine.
+
+$result = $db->sql_query('SHOW TABLE STATUS LIKE \'' . POSTS_TABLE . '\'');
+$posts_table_info = $db->sql_fetchrow($result);
+$db->sql_freeresult($result);
+
+$posts_table_engine = $posts_table_info['Engine'] ?? $posts_table_info['Type'] ?? '';
+if ($posts_table_engine === 'MyISAM' || $posts_table_engine === 'InnoDB')
+{
+	$result = $db->sql_query('SHOW VARIABLES LIKE \'%ft\_%\'');
+	$mysql_fulltext_info = [];
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$mysql_fulltext_info[$row['Variable_name']] = $row['Value'];
+	}
+	$db->sql_freeresult($result);
+
+	if ($posts_table_engine === 'MyISAM')
+	{
+		set_config('fulltext_mysql_max_word_len', $mysql_fulltext_info['ft_max_word_len']);
+		set_config('fulltext_mysql_min_word_len', $mysql_fulltext_info['ft_min_word_len']);
+	}
+	else
+	{
+		set_config('fulltext_mysql_max_word_len', $mysql_fulltext_info['innodb_ft_max_token_size']);
+		set_config('fulltext_mysql_min_word_len', $mysql_fulltext_info['innodb_ft_min_token_size']);
+	}
+}
+
 // Purge cached data depending on purge argument.
 switch (request_var('purge', $purge_default))
 {
