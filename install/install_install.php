@@ -879,20 +879,51 @@ class install_install extends module
 	{
 		global $db, $config, $lang;
 
-		require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_native.php');
+		$search_type = basename($config['search_type']);
+		$search_file = PHPBB_ROOT_PATH . "includes/search/{$search_type}.php";
+		if (!file_exists($search_file))
+		{
+			$this->p_master->error($lang['NO_SUCH_SEARCH_MODULE'], __LINE__, __FILE__);
+		}
+
+		require_once($search_file);
+
+		if (!class_exists($search_type))
+		{
+			$this->p_master->error($lang['NO_SUCH_SEARCH_MODULE'], __LINE__, __FILE__);
+		}
 
 		$error = false;
-		$search = new fulltext_native($error);
-
-		$sql = 'SELECT post_id, post_subject, post_text, poster_id, forum_id
-			FROM ' . POSTS_TABLE;
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
+		$search = new $search_type($error);
+		if ($error)
 		{
-			$search->index('post', $row['post_id'], $row['post_text'], $row['post_subject'], $row['poster_id'], $row['forum_id']);
+			$this->p_master->error($error, __LINE__, __FILE__);
 		}
-		$db->sql_freeresult($result);
+
+		if (method_exists($search, 'create_index'))
+		{
+			if ($error = $search->create_index(null, ''))
+			{
+				$this->p_master->error($error, __LINE__, __FILE__);
+			}
+		}
+		else
+		{
+			$sql = 'SELECT post_id, post_subject, post_text, poster_id, forum_id
+				FROM ' . POSTS_TABLE;
+			$result = $db->sql_query($sql);
+
+			while ($row = $db->sql_fetchrow($result))
+			{
+				$search->index('post', $row['post_id'], $row['post_text'], $row['post_subject'], $row['poster_id'], $row['forum_id']);
+			}
+			$db->sql_freeresult($result);
+		}
+
+		if ($db->sql_error_triggered)
+		{
+			$this->p_master->db_error($db->sql_error_returned['message'], $db->sql_error_sql, __LINE__, __FILE__);
+		}
 	}
 
 	/**

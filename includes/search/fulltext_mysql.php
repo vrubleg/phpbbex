@@ -684,7 +684,10 @@ class fulltext_mysql extends search_backend
 			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . implode(', ', $alter));
 		}
 
-		$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		if (!$db->sql_error_triggered)
+		{
+			$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		}
 
 		return false;
 	}
@@ -729,7 +732,10 @@ class fulltext_mysql extends search_backend
 			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . implode(', ', $alter));
 		}
 
-		$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		if (!$db->sql_error_triggered)
+		{
+			$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		}
 
 		return false;
 	}
