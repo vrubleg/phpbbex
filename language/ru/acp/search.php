@@ -23,7 +23,7 @@ $lang = array_merge($lang, [
 	'DELETE_INDEX'                          => 'Удалить индекс',
 
 	'FULLTEXT_MYSQL_INDEX'                  => 'Полнотекстовый индекс MySQL',
-	'FULLTEXT_MYSQL_INDEXED_POSTS'          => '%d сообщений',
+	'FULLTEXT_MYSQL_INDEXED_POSTS'          => '%s сообщений',
 	'FULLTEXT_MYSQL_NOT_SUPPORTED'          => 'Для использования полнотекстового индекса с таблицами InnoDB требуется MySQL 5.6.4 или более поздней версии.',
 	'FULLTEXT_MYSQL_STATUS'                 => 'Статус',
 	'FULLTEXT_MYSQL_STATUS_EXPLAIN'         => 'Если индекс не создан, поиск по ключевым словам будет недоступен.',

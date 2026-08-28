@@ -23,7 +23,7 @@ $lang = array_merge($lang, [
 	'DELETE_INDEX'                          => 'Delete index',
 
 	'FULLTEXT_MYSQL_INDEX'                  => 'MySQL fulltext index',
-	'FULLTEXT_MYSQL_INDEXED_POSTS'          => '%d posts',
+	'FULLTEXT_MYSQL_INDEXED_POSTS'          => '%s posts',
 	'FULLTEXT_MYSQL_NOT_SUPPORTED'          => 'MySQL 5.6.4 or later is required for a fulltext index on InnoDB tables.',
 	'FULLTEXT_MYSQL_STATUS'                 => 'Status',
 	'FULLTEXT_MYSQL_STATUS_EXPLAIN'         => 'Keyword search is unavailable when the index has not been created.',

@@ -739,7 +739,7 @@ class fulltext_mysql extends search_backend
 
 		if ($stats['post_subject'] && $stats['post_content'])
 		{
-			$stats['total_posts'] = (int) $db->get_estimated_row_count(POSTS_TABLE);
+			$stats['total_posts'] = $db->get_estimated_row_count(POSTS_TABLE);
 		}
 
 		return $stats;
