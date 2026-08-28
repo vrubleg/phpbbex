@@ -770,6 +770,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_website varchar(100) DEFAULT '' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
+	$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' DROP INDEX post_text');
 	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " ADD INDEX poster_topic(poster_id, topic_id)"); // For checking if a user posted in listed topics.
 	$db->sql_query("DROP TABLE {$table_prefix}topics_posted");
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');

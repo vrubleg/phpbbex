@@ -235,7 +235,7 @@ class fulltext_mysql extends search_backend
 	* Performs a search on keywords depending on display specific params. You have to run split_keywords() first.
 	*
 	* @param    string      $type               contains either posts or topics depending on what should be searched for
-	* @param    string      $fields             contains either titleonly (topic titles should be searched), msgonly (only message bodies should be searched), firstpost (only subject and body of the first post should be searched) or all (all post bodies and subjects should be searched)
+	* @param    string      $fields             contains either titleonly (topic titles should be searched), firstpost (only subject and body of the first post should be searched) or all (all post bodies and subjects should be searched)
 	* @param    string      $terms              is either 'all' (use query as entered, words without prefix should default to "have to be in field") or 'any' (ignore search query parts and just return all posts that contain any of the specified words)
 	* @param    array       $sort_by_sql        contains SQL code for the ORDER BY part of a query
 	* @param    string      $sort_key           is the key of $sort_by_sql for the selected sorting
@@ -316,11 +316,6 @@ class fulltext_mysql extends search_backend
 				$sql_match = 'p.post_subject';
 				$sql_match_where = ' AND p.post_id = t.topic_first_post_id';
 				$join_topic = true;
-			break;
-
-			case 'msgonly':
-				$sql_match = 'p.post_text';
-				$sql_match_where = '';
 			break;
 
 			case 'firstpost':
@@ -660,14 +655,9 @@ class fulltext_mysql extends search_backend
 			$alter[] = 'ADD FULLTEXT (post_subject)';
 		}
 
-		if (!isset($this->stats['post_text']))
-		{
-			$alter[] = 'MODIFY post_text mediumtext COLLATE utf8mb4_unicode_ci NOT NULL';
-			$alter[] = 'ADD FULLTEXT (post_text)';
-		}
-
 		if (!isset($this->stats['post_content']))
 		{
+			$alter[] = 'MODIFY post_text mediumtext COLLATE utf8mb4_unicode_ci NOT NULL';
 			$alter[] = 'ADD FULLTEXT post_content (post_subject, post_text)';
 		}
 
@@ -709,11 +699,6 @@ class fulltext_mysql extends search_backend
 			$alter[] = 'DROP INDEX post_subject';
 		}
 
-		if (isset($this->stats['post_text']))
-		{
-			$alter[] = 'DROP INDEX post_text';
-		}
-
 		if (isset($this->stats['post_content']))
 		{
 			$alter[] = 'DROP INDEX post_content';
@@ -742,7 +727,7 @@ class fulltext_mysql extends search_backend
 			$this->get_stats();
 		}
 
-		return (isset($this->stats['post_text']) && isset($this->stats['post_subject']) && isset($this->stats['post_content']));
+		return (isset($this->stats['post_subject']) && isset($this->stats['post_content']));
 	}
 
 	/**
@@ -776,11 +761,7 @@ class fulltext_mysql extends search_backend
 
 			if ($index_type == 'FULLTEXT')
 			{
-				if ($row['Key_name'] == 'post_text')
-				{
-					$this->stats['post_text'] = $row;
-				}
-				else if ($row['Key_name'] == 'post_subject')
+				if ($row['Key_name'] == 'post_subject')
 				{
 					$this->stats['post_subject'] = $row;
 				}

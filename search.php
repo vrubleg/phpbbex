@@ -29,6 +29,7 @@ $show_results   = ($topic_id) ? 'posts' : request_var('sr', 'posts');
 $show_results   = ($show_results == 'posts') ? 'posts' : 'topics';
 $search_terms   = request_var('terms', 'all');
 $search_fields  = request_var('sf', 'all');
+$search_fields  = in_array($search_fields, ['all', 'titleonly', 'firstpost']) ? $search_fields : 'all';
 $search_child   = request_var('sc', true);
 
 $sort_days      = request_var('st', 0);

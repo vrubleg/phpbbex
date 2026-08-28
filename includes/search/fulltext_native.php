@@ -375,7 +375,7 @@ class fulltext_native extends search_backend
 	* Performs a search on keywords depending on display specific params. You have to run split_keywords() first.
 	*
 	* @param    string      $type               contains either posts or topics depending on what should be searched for
-	* @param    string      $fields             contains either titleonly (topic titles should be searched), msgonly (only message bodies should be searched), firstpost (only subject and body of the first post should be searched) or all (all post bodies and subjects should be searched)
+	* @param    string      $fields             contains either titleonly (topic titles should be searched), firstpost (only subject and body of the first post should be searched) or all (all post bodies and subjects should be searched)
 	* @param    string      $terms              is either 'all' (use query as entered, words without prefix should default to "have to be in field") or 'any' (ignore search query parts and just return all posts that contain any of the specified words)
 	* @param    array       $sort_by_sql        contains SQL code for the ORDER BY part of a query
 	* @param    string      $sort_key           is the key of $sort_by_sql for the selected sorting
@@ -475,10 +475,6 @@ class fulltext_native extends search_backend
 				$sql_where[] = 'p.post_id = t.topic_first_post_id';
 			break;
 
-			case 'msgonly':
-				$title_match = 'title_match = 0';
-				$group_by = false;
-			break;
 		}
 
 		if ($type == 'topics')

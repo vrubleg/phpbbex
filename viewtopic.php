@@ -436,10 +436,7 @@ $server_path = (!$view) ? PHPBB_ROOT_PATH : generate_board_url() . '/';
 // Replace naughty words in title
 $topic_data['topic_title'] = censor_text($topic_data['topic_title']);
 
-$s_search_hidden_fields = [
-	't' => $topic_id,
-	'sf' => 'msgonly',
-];
+$s_search_hidden_fields = ['t' => $topic_id];
 
 if (!empty($_EXTRA_URL))
 {
