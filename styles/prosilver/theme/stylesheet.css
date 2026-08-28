@@ -1208,13 +1208,6 @@ a.nav-to-right:hover
 	background-position: right center;
 }
 
-/* Feed icon in forumlist_body.html */
-a.feed-icon-forum
-{
-	float: right;
-	margin: 3px;
-}
-
 /* Content Styles
 ---------------------------------------- */
 

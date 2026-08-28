@@ -71,7 +71,6 @@ $lang = array_merge($lang, [
 	'POSTING_TOPIC_REVIEW'              => 'Показывать обзор темы в форме полного ответа',
 
 	'STYLE_SETTINGS_INDEX'              => 'Главная страница',
-	'STYLE_SHOW_FEEDS_IN_FORUMLIST'     => 'Отображать кнопки RSS в списке разделов',
 
 	'STYLE_SETTINGS_VIEWTOPIC'          => 'Просмотр темы',
 	'STYLE_VT_SHOW_POST_NUMBERS'        => 'Отображать номера сообщений',

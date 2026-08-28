@@ -71,7 +71,6 @@ $lang = array_merge($lang, [
 	'POSTING_TOPIC_REVIEW'              => 'Display topic review panel at posting page',
 
 	'STYLE_SETTINGS_INDEX'              => 'Board Index',
-	'STYLE_SHOW_FEEDS_IN_FORUMLIST'     => 'Display RSS feeds in forum list',
 
 	'STYLE_SETTINGS_VIEWTOPIC'          => 'View Topic',
 	'STYLE_VT_SHOW_POST_NUMBERS'        => 'Display post numbers',

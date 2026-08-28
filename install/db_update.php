@@ -278,7 +278,6 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	set_config('style_rounded_corners', '1');
 	set_config('style_new_year', '-1');
 	set_config('style_show_sitename_in_headerbar', '1');
-	set_config('style_show_feeds_in_forumlist', '0');
 	set_config('style_vt_show_post_numbers', '0');
 	set_config('display_raters', '0');
 	set_config('style_mp_on_left', '0');
@@ -660,6 +659,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'override_user_dateformat',
 		'merge_no_forums',
 		'merge_no_topics',
+		'style_show_feeds_in_forumlist',
 		'chg_passforce',
 		'active_sessions',
 		'gzip_compress',

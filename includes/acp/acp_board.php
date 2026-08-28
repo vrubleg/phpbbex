@@ -145,7 +145,6 @@ class acp_board
 						'active_topics_on_index'            => ['lang' => 'ACTIVE_TOPICS_ON_INDEX',         'validate' => 'int',    'type' => 'text:3:4', 'explain' => true],
 						'load_birthdays'                    => ['lang' => 'YES_BIRTHDAYS',                      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'load_moderators'                   => ['lang' => 'YES_MODERATORS',                 'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'style_show_feeds_in_forumlist'     => ['lang' => 'STYLE_SHOW_FEEDS_IN_FORUMLIST',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
 						'legend3'                           => 'STYLE_SETTINGS_VIEWTOPIC',
 						'style_vt_show_post_numbers'        => ['lang' => 'STYLE_VT_SHOW_POST_NUMBERS',     'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
