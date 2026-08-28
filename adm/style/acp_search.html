@@ -51,7 +51,7 @@
 		<legend>{L_FULLTEXT_MYSQL_INDEX}</legend>
 	<dl>
 		<dt><label>{L_FULLTEXT_MYSQL_STATUS}:</label><br /><span>{L_FULLTEXT_MYSQL_STATUS_EXPLAIN}</span></dt>
-		<dd><strong style="color: <!-- IF S_INDEXED -->#228822<!-- ELSE -->#bc2a4d<!-- ENDIF -->"><!-- IF S_INDEXED -->{L_FULLTEXT_MYSQL_STATUS_INDEXED}<!-- ELSE -->{L_FULLTEXT_MYSQL_STATUS_MISSING}<!-- ENDIF --></strong><!-- IF S_INDEXED --> <i>({FULLTEXT_MYSQL_INDEXED_POSTS})</i> <button class="button2" type="submit" name="action" value="delete">{L_DELETE_INDEX}</button><!-- ELSE --> <button class="button2" type="submit" name="action" value="create">{L_CREATE_INDEX}</button><!-- ENDIF --></dd>
+		<dd><b class="<!-- IF S_INDEXED -->status-green<!-- ELSE -->status-red<!-- ENDIF -->"><!-- IF S_INDEXED -->{L_FULLTEXT_MYSQL_STATUS_INDEXED}<!-- ELSE -->{L_FULLTEXT_MYSQL_STATUS_MISSING}<!-- ENDIF --></b><!-- IF S_INDEXED --> <i>({FULLTEXT_MYSQL_INDEXED_POSTS})</i> <button class="button2" type="submit" name="action" value="delete">{L_DELETE_INDEX}</button><!-- ELSE --> <button class="button2" type="submit" name="action" value="create">{L_CREATE_INDEX}</button><!-- ENDIF --></dd>
 	</dl>
 	<dl>
 		<dt><label>{L_MIN_SEARCH_CHARS}:</label><br /><span>{L_FULLTEXT_MYSQL_MIN_SEARCH_CHARS_EXPLAIN}</span></dt>

@@ -1109,14 +1109,19 @@ input::-moz-focus-inner, button::-moz-focus-inner
 	text-align: center;
 }
 
-.success
+.success, .status-green, .status-green a
 {
 	color: #228822;
 }
 
-.error
+.error, .status-red, .status-red a
 {
 	color: #bc2a4d;
+}
+
+.status-yellow, .status-yellow a
+{
+	color: #cc6600;
 }
 
 .successbox
