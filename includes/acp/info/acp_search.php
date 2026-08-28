@@ -15,7 +15,6 @@ class acp_search_info
 			'version'   => '1.0.0',
 			'modes'     => [
 				'settings'  => ['title' => 'ACP_SEARCH_SETTINGS', 'auth' => 'acl_a_search', 'cat' => ['ACP_SERVER_CONFIGURATION']],
-				'index'     => ['title' => 'ACP_SEARCH_INDEX', 'auth' => 'acl_a_search', 'cat' => ['ACP_CAT_DATABASE']],
 			],
 		];
 	}

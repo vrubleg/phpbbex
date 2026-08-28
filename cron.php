@@ -90,25 +90,13 @@ switch ($cron_type)
 
 	case 'tidy_search':
 
-		// Select the search method
-		$search_type = basename($config['search_type']);
-
-		if (time() - $config['search_gc'] <= $config['search_last_gc'] || !file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
+		if (time() - $config['search_gc'] <= $config['search_last_gc'])
 		{
 			break;
 		}
 
-		require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-
-		// We do some additional checks in the module to ensure it can actually be utilised
-		$error = false;
-		$search = new $search_type($error);
-
-		if ($error)
-		{
-			break;
-		}
-
+		require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
+		$search = new fulltext_mysql();
 		$search->tidy();
 
 	break;

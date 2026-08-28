@@ -391,7 +391,7 @@ CREATE TABLE phpbb_posts (
 	enable_sig tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	post_username varchar(191) DEFAULT '' NOT NULL,
 	post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci,
-	post_text mediumtext NOT NULL,
+	post_text mediumtext NOT NULL COLLATE utf8mb4_unicode_ci,
 	post_checksum varchar(32) DEFAULT '' NOT NULL,
 	post_attachment tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT '' NOT NULL,
@@ -569,25 +569,6 @@ CREATE TABLE phpbb_search_results (
 	search_keywords mediumtext NOT NULL,
 	search_authors mediumtext NOT NULL,
 	PRIMARY KEY (search_key)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_search_wordlist (
-	word_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	word_text varchar(191) DEFAULT '' NOT NULL,
-	word_common tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	word_count mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (word_id),
-	UNIQUE wrd_txt (word_text),
-	KEY wrd_cnt (word_count)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_search_wordmatch (
-	post_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	word_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	title_match tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	UNIQUE unq_mtch (word_id, post_id, title_match),
-	KEY word_id (word_id),
-	KEY post_id (post_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_sessions (

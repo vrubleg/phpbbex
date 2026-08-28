@@ -2385,27 +2385,8 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	// Index message contents
 	if ($update_search_index && $data['enable_indexing'])
 	{
-		// Select the search method and do some additional checks to ensure it can actually be utilised
-		$search_type = basename($config['search_type']);
-
-		if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
-		{
-			trigger_error('NO_SUCH_SEARCH_MODULE');
-		}
-
-		if (!class_exists($search_type))
-		{
-			require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-		}
-
-		$error = false;
-		$search = new $search_type($error);
-
-		if ($error)
-		{
-			trigger_error($error);
-		}
-
+		require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
+		$search = new fulltext_mysql();
 		$search->index($mode != 'reparse' ? $mode : 'edit', $data['post_id'], $data['message'], $subject, $poster_id, $data['forum_id']);
 	}
 

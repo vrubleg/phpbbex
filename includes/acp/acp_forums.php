@@ -1607,7 +1607,6 @@ class acp_forums
 
 		// Delete everything else and thank MySQL for offering multi-table deletion
 		$tables_ary = [
-			SEARCH_WORDMATCH_TABLE  => 'post_id',
 			REPORTS_TABLE           => 'post_id',
 			WARNINGS_TABLE          => 'post_id',
 			BOOKMARKS_TABLE         => 'topic_id',

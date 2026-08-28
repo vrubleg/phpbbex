@@ -108,12 +108,9 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('flood_interval', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_mintime', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('forwarded_for_check', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('full_folder_action', '2');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_mysql_indexed', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_mysql_max_word_len', '254');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_mysql_min_word_len', '4');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_common_thres', '5');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_load_upd', '1');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_max_chars', '14');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_native_min_chars', '3');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_create_thumbnail', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_display_inlined', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('img_link_height', '0');
@@ -215,7 +212,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_gc', '7200'
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_interval', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_anonymous_interval', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_highlight_keywords', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_type', 'fulltext_mysql');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_store_results', '1800');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_deny', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_empty_referer', '1');
@@ -290,7 +286,6 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('num_fi
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('num_posts', '1', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('num_topics', '1', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('num_users', '1', 1);
-INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('search_indexing_state', '', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('search_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('session_last_gc', '0', 1);
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('upload_dir_size', '0', 1);

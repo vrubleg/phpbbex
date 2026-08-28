@@ -17,20 +17,9 @@ require_once(PHPBB_ROOT_PATH . 'includes/search/search.php');
 */
 class fulltext_mysql extends search_backend
 {
-	var $stats = [];
-	var $word_length = [];
 	var $split_words = [];
 	var $search_query;
 	var $common_words = [];
-
-	function __construct(&$error)
-	{
-		global $config;
-
-		$this->word_length = ['min' => $config['fulltext_mysql_min_word_len'], 'max' => $config['fulltext_mysql_max_word_len']];
-
-		$error = false;
-	}
 
 	/**
 	* Checks for correct MySQL version and stores min/max word length in the config
@@ -43,15 +32,7 @@ class fulltext_mysql extends search_backend
 		$info = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		$engine = '';
-		if (isset($info['Engine']))
-		{
-			$engine = $info['Engine'];
-		}
-		else if (isset($info['Type']))
-		{
-			$engine = $info['Type'];
-		}
+		$engine = $info['Engine'] ?? $info['Type'] ?? '';
 
 		$fulltext_supported = ($engine === 'MyISAM')
 			// FULLTEXT is supported on InnoDB since MySQL 5.6.4.
@@ -632,7 +613,7 @@ class fulltext_mysql extends search_backend
 	/**
 	* Create fulltext index
 	*/
-	function create_index($acp_module, $u_action)
+	function create_index()
 	{
 		global $db;
 
@@ -642,32 +623,32 @@ class fulltext_mysql extends search_backend
 			return $error;
 		}
 
-		if (empty($this->stats))
-		{
-			$this->get_stats();
-		}
+		$stats = $this->get_stats();
 
 		$alter = [];
 
-		if (!isset($this->stats['post_subject']))
+		if (!$stats['post_subject'])
 		{
-			$alter[] = 'MODIFY post_subject varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT \'\' NOT NULL';
 			$alter[] = 'ADD FULLTEXT (post_subject)';
 		}
 
-		if (!isset($this->stats['post_content']))
+		if (!$stats['post_content'])
 		{
-			$alter[] = 'MODIFY post_text mediumtext COLLATE utf8mb4_unicode_ci NOT NULL';
 			$alter[] = 'ADD FULLTEXT post_content (post_subject, post_text)';
 		}
 
-		if (sizeof($alter))
+		foreach ($alter as $alter_sql)
 		{
-			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . implode(', ', $alter));
+			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . $alter_sql);
+			if ($db->sql_error_triggered)
+			{
+				break;
+			}
 		}
 
 		if (!$db->sql_error_triggered)
 		{
+			set_config('fulltext_mysql_indexed', $this->index_created());
 			$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
 		}
 
@@ -677,7 +658,7 @@ class fulltext_mysql extends search_backend
 	/**
 	* Drop fulltext index
 	*/
-	function delete_index($acp_module, $u_action)
+	function delete_index()
 	{
 		global $db;
 
@@ -687,19 +668,16 @@ class fulltext_mysql extends search_backend
 			return $error;
 		}
 
-		if (empty($this->stats))
-		{
-			$this->get_stats();
-		}
+		$stats = $this->get_stats();
 
 		$alter = [];
 
-		if (isset($this->stats['post_subject']))
+		if ($stats['post_subject'])
 		{
 			$alter[] = 'DROP INDEX post_subject';
 		}
 
-		if (isset($this->stats['post_content']))
+		if ($stats['post_content'])
 		{
 			$alter[] = 'DROP INDEX post_content';
 		}
@@ -711,6 +689,7 @@ class fulltext_mysql extends search_backend
 
 		if (!$db->sql_error_triggered)
 		{
+			set_config('fulltext_mysql_indexed', $this->index_created());
 			$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
 		}
 
@@ -722,29 +701,8 @@ class fulltext_mysql extends search_backend
 	*/
 	function index_created()
 	{
-		if (empty($this->stats))
-		{
-			$this->get_stats();
-		}
-
-		return (isset($this->stats['post_subject']) && isset($this->stats['post_content']));
-	}
-
-	/**
-	* Returns an associative array containing information about the indexes
-	*/
-	function index_stats()
-	{
-		global $user;
-
-		if (empty($this->stats))
-		{
-			$this->get_stats();
-		}
-
-		return [
-			$user->lang['FULLTEXT_MYSQL_TOTAL_POSTS']           => ($this->index_created()) ? $this->stats['total_posts'] : 0,
-		];
+		$stats = $this->get_stats();
+		return ($stats['post_subject'] && $stats['post_content']);
 	}
 
 	function get_stats()
@@ -753,6 +711,12 @@ class fulltext_mysql extends search_backend
 
 		$sql = 'SHOW INDEX FROM ' . POSTS_TABLE;
 		$result = $db->sql_query($sql);
+
+		$stats = [
+			'post_subject' => false,
+			'post_content' => false,
+			'total_posts'  => 0,
+		];
 
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -763,41 +727,21 @@ class fulltext_mysql extends search_backend
 			{
 				if ($row['Key_name'] == 'post_subject')
 				{
-					$this->stats['post_subject'] = $row;
+					$stats['post_subject'] = true;
 				}
 				else if ($row['Key_name'] == 'post_content')
 				{
-					$this->stats['post_content'] = $row;
+					$stats['post_content'] = true;
 				}
 			}
 		}
 		$db->sql_freeresult($result);
 
-		$this->stats['total_posts'] = empty($this->stats) ? 0 : $db->get_estimated_row_count(POSTS_TABLE);
-	}
+		if ($stats['post_subject'] && $stats['post_content'])
+		{
+			$stats['total_posts'] = (int) $db->get_estimated_row_count(POSTS_TABLE);
+		}
 
-	/**
-	* Display a note, that UTF-8 support is not available with certain versions of PHP
-	*/
-	function acp()
-	{
-		global $user, $config;
-
-		$tpl = '
-		<dl>
-			<dt><label>' . $user->lang['MIN_SEARCH_CHARS'] . ':</label><br /><span>' . $user->lang['FULLTEXT_MYSQL_MIN_SEARCH_CHARS_EXPLAIN'] . '</span></dt>
-			<dd>' . $config['fulltext_mysql_min_word_len'] . '</dd>
-		</dl>
-		<dl>
-			<dt><label>' . $user->lang['MAX_SEARCH_CHARS'] . ':</label><br /><span>' . $user->lang['FULLTEXT_MYSQL_MAX_SEARCH_CHARS_EXPLAIN'] . '</span></dt>
-			<dd>' . $config['fulltext_mysql_max_word_len'] . '</dd>
-		</dl>
-		';
-
-		// These are fields required in the config table
-		return [
-			'tpl'       => $tpl,
-			'config'    => []
-		];
+		return $stats;
 	}
 }

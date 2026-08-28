@@ -268,33 +268,23 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		$search_forum = [];
 	}
 
-	// Select which method we'll use to obtain the post_id or topic_id information
-	$search_type = basename($config['search_type']);
+	require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
 
-	if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
-	{
-		trigger_error('NO_SUCH_SEARCH_MODULE');
-	}
-
-	require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-
-	// We do some additional checks in the module to ensure it can actually be utilised
-	$error = false;
-	$search = new $search_type($error);
-
-	if ($error)
-	{
-		trigger_error($error);
-	}
+	$search = new fulltext_mysql();
 
 	// let the search module split up the keywords
 	if ($keywords)
 	{
+		if (empty($config['fulltext_mysql_indexed']))
+		{
+			trigger_error('SEARCH_INDEX_NOT_CREATED');
+		}
+
 		$correct_query = $search->split_keywords($keywords, $search_terms);
 		if (!$correct_query || (empty($search->search_query) && !sizeof($author_id_ary) && !$search_id))
 		{
 			$ignored = (sizeof($search->common_words)) ? sprintf($user->lang['IGNORED_TERMS_EXPLAIN'], implode(' ', $search->common_words)) . '<br />' : '';
-			trigger_error($ignored . sprintf($user->lang['NO_KEYWORDS'], $search->word_length['min'], $search->word_length['max']));
+			trigger_error($ignored . sprintf($user->lang['NO_KEYWORDS'], $config['fulltext_mysql_min_word_len'], $config['fulltext_mysql_max_word_len']));
 		}
 	}
 

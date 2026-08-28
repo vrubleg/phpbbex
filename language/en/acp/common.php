@@ -38,7 +38,6 @@ $lang = array_merge($lang, [
 
 	'ACP_CAPTCHA'               => 'CAPTCHA',
 
-	'ACP_CAT_DATABASE'          => 'Database',
 	'ACP_CAT_DOT_MODS'          => '.MODs',
 	'ACP_CAT_FORUMS'            => 'Forums',
 	'ACP_CAT_GENERAL'           => 'General',
@@ -129,7 +128,6 @@ $lang = array_merge($lang, [
 	'ACP_FEED_SETTINGS'         => 'Feed settings',
 
 	'ACP_SEARCH'                => 'Search configuration',
-	'ACP_SEARCH_INDEX'          => 'Search index',
 	'ACP_SEARCH_SETTINGS'       => 'Search settings',
 
 	'ACP_SECURITY_SETTINGS'     => 'Security settings',
@@ -602,8 +600,8 @@ $lang = array_merge($lang, [
 	'LOG_RESYNC_TOPICCOUNTS'    => '<strong>User topic counts resynchronised</strong>',
 	'LOG_RESYNC_RATES'          => '<strong>Rating resynchronised</strong>',
 
-	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Created search index for</strong><br />» %s',
-	'LOG_SEARCH_INDEX_REMOVED'  => '<strong>Removed search index for</strong><br />» %s',
+	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Created search index</strong>',
+	'LOG_SEARCH_INDEX_REMOVED'  => '<strong>Removed search index</strong>',
 	'LOG_STYLE_ADD'             => '<strong>Added new style</strong><br />» %s',
 	'LOG_STYLE_DELETE'          => '<strong>Deleted style</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'    => '<strong>Edited style</strong><br />» %s',

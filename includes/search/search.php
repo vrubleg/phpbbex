@@ -16,67 +16,10 @@ define('SEARCH_RESULT_INCOMPLETE', 2);
 
 /**
 * search_backend
-* optional base class for search plugins providing simple caching based on ACM
-* and functions to retrieve ignore_words and synonyms
+* Base class providing search result caching.
 */
 class search_backend
 {
-	var $ignore_words = [];
-	var $match_synonym = [];
-	var $replace_synonym = [];
-
-	function __construct(&$error)
-	{
-		// This class cannot be used as a search plugin
-		$error = true;
-	}
-
-	/**
-	* Retrieves a language dependend list of words that should be ignored by the search
-	*/
-	function get_ignore_words()
-	{
-		if (!sizeof($this->ignore_words))
-		{
-			global $user;
-
-			$words = [];
-
-			if (file_exists("{$user->lang_path}{$user->lang_code}/search_ignore_words.php"))
-			{
-				// include the file containing ignore words
-				require("{$user->lang_path}{$user->lang_code}/search_ignore_words.php");
-			}
-
-			$this->ignore_words = $words;
-			unset($words);
-		}
-	}
-
-	/**
-	* Stores a list of synonyms that should be replaced in $this->match_synonym and $this->replace_synonym and caches them
-	*/
-	function get_synonyms()
-	{
-		if (!sizeof($this->match_synonym))
-		{
-			global $user;
-
-			$synonyms = [];
-
-			if (file_exists("{$user->lang_path}{$user->lang_code}/search_synonyms.php"))
-			{
-				// include the file containing synonyms
-				require("{$user->lang_path}{$user->lang_code}/search_synonyms.php");
-			}
-
-			$this->match_synonym = array_keys($synonyms);
-			$this->replace_synonym = array_values($synonyms);
-
-			unset($synonyms);
-		}
-	}
-
 	/**
 	* Retrieves cached search results
 	*

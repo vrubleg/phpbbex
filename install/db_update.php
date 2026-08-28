@@ -669,6 +669,12 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'limit_search_load',
 		'skip_typical_notices',
 		'site_keywords',
+		'search_type',
+		'search_indexing_state',
+		'fulltext_native_common_thres',
+		'fulltext_native_load_upd',
+		'fulltext_native_max_chars',
+		'fulltext_native_min_chars',
 	]);
 
 	// New defaults.
@@ -706,6 +712,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module('ucp', 'pm', 'popup');
 	remove_module('acp', 'database', 'backup');
 	remove_module('acp', 'database', 'restore');
+	remove_module('acp', 'search', 'index');
+	remove_module_category('acp', 'ACP_CAT_DATABASE');
 
 	// Remove obsolete permissions.
 
@@ -736,6 +744,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	// Update schema.
 
 	$db->sql_return_on_error(true);
+
+	$db->sql_query("DROP TABLE {$table_prefix}search_wordmatch");
+	$db->sql_query("DROP TABLE {$table_prefix}search_wordlist");
 
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_passchg user_password_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_pass_convert user_password_reset tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
@@ -771,6 +782,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
 	$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' DROP INDEX post_text');
+	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci");
+	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_text mediumtext NOT NULL COLLATE utf8mb4_unicode_ci");
 	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " ADD INDEX poster_topic(poster_id, topic_id)"); // For checking if a user posted in listed topics.
 	$db->sql_query("DROP TABLE {$table_prefix}topics_posted");
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
@@ -1132,10 +1145,6 @@ if (request_var('utf8mb4', 0))
 		$result = $db->sql_query($sql);
 	}
 
-	// New maximum word size is 191 character. Trim existing words.
-
-	$db->sql_query("UPDATE " . SEARCH_WORDLIST_TABLE . " SET word_text=SUBSTR(word_text, 1, 191) WHERE CHAR_LENGTH(word_text) > 191");
-
 	// Get list of tables that are not in utf8mb4 encoding.
 
 	$convert_tables = [];
@@ -1193,7 +1202,6 @@ if (request_var('utf8mb4', 0))
 			case REPORTS_TABLE:
 			case REPORTS_REASONS_TABLE:
 			case SEARCH_RESULTS_TABLE:
-			case SEARCH_WORDMATCH_TABLE:
 			case SESSIONS_TABLE:
 			case SESSIONS_KEYS_TABLE:
 			case SITELIST_TABLE:
@@ -1229,13 +1237,11 @@ if (request_var('utf8mb4', 0))
 			case POSTS_TABLE:
 				$sql .= ",
 					MODIFY post_username varchar(191) DEFAULT '' NOT NULL,
-					MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci";
+					MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci,
+					MODIFY post_text mediumtext NOT NULL COLLATE utf8mb4_unicode_ci";
 				break;
 			case TOPICS_TABLE:
 				$sql .= ", MODIFY topic_title varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci";
-				break;
-			case SEARCH_WORDLIST_TABLE:
-				$sql .= ", MODIFY word_text varchar(191) DEFAULT '' NOT NULL";
 				break;
 			case USERS_TABLE:
 				$sql .= ",
@@ -1281,7 +1287,7 @@ if (request_var('utf8mb4', 0))
 	}
 }
 
-// Update the fulltext limits for the actual posts table engine.
+// Update the fulltext limits for the actual posts table engine (for phpBBex v1.10).
 
 $result = $db->sql_query('SHOW TABLE STATUS LIKE \'' . POSTS_TABLE . '\'');
 $posts_table_info = $db->sql_fetchrow($result);
@@ -1308,6 +1314,25 @@ if ($posts_table_engine === 'MyISAM' || $posts_table_engine === 'InnoDB')
 		set_config('fulltext_mysql_max_word_len', $mysql_fulltext_info['innodb_ft_max_token_size']);
 		set_config('fulltext_mysql_min_word_len', $mysql_fulltext_info['innodb_ft_min_token_size']);
 	}
+}
+
+// One-time fulltext index migration (for phpBBex v1.10).
+
+if (!isset($config['fulltext_mysql_indexed']))
+{
+	require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
+	$db->sql_return_on_error(true);
+	$search = new fulltext_mysql();
+	if (!$search->index_created())
+	{
+		set_config('fulltext_mysql_indexed', '0');
+		$search->create_index();
+	}
+	else
+	{
+		set_config('fulltext_mysql_indexed', '1');
+	}
+	$db->sql_return_on_error(false);
 }
 
 // Purge cached data depending on purge argument.

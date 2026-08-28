@@ -874,23 +874,8 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $post_count_sy
 	}
 
 	// Remove the message from the search index
-	$search_type = basename($config['search_type']);
-
-	if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
-	{
-		trigger_error('NO_SUCH_SEARCH_MODULE');
-	}
-
-	require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-
-	$error = false;
-	$search = new $search_type($error);
-
-	if ($error)
-	{
-		trigger_error($error);
-	}
-
+	require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
+	$search = new fulltext_mysql();
 	$search->index_remove($post_ids, $poster_ids, $forum_ids);
 
 	delete_attachments('post', $post_ids, false);

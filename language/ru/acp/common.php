@@ -38,7 +38,6 @@ $lang = array_merge($lang, [
 
 	'ACP_CAPTCHA'               => 'Визуальное подтверждение',
 
-	'ACP_CAT_DATABASE'          => 'База данных',
 	'ACP_CAT_DOT_MODS'          => 'Модули',
 	'ACP_CAT_FORUMS'            => 'Разделы',
 	'ACP_CAT_GENERAL'           => 'Общие',
@@ -129,7 +128,6 @@ $lang = array_merge($lang, [
 	'ACP_FEED_SETTINGS'         => 'Каналы новостей',
 
 	'ACP_SEARCH'                => 'Настройки поиска',
-	'ACP_SEARCH_INDEX'          => 'Поисковые индексы',
 	'ACP_SEARCH_SETTINGS'       => 'Поиск',
 
 	'ACP_SECURITY_SETTINGS'     => 'Безопасность',
@@ -601,8 +599,8 @@ $lang = array_merge($lang, [
 	'LOG_RESYNC_TOPICCOUNTS'    => '<strong>Синхронизированы счётчики тем пользователей</strong>',
 	'LOG_RESYNC_RATES'          => '<strong>Синхронизированы счётчики оценок</strong>',
 
-	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Созданы поисковые индексы для</strong><br />» %s',
-	'LOG_SEARCH_INDEX_REMOVED'  => '<strong>Удалены поисковые индексы для</strong><br />» %s',
+	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Создан поисковый индекс</strong>',
+	'LOG_SEARCH_INDEX_REMOVED'  => '<strong>Удалён поисковый индекс</strong>',
 	'LOG_STYLE_ADD'             => '<strong>Добавлен стиль</strong><br />» %s',
 	'LOG_STYLE_DELETE'          => '<strong>Удалён стиль</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'    => '<strong>Изменён стиль</strong><br />» %s',

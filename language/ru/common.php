@@ -331,7 +331,6 @@ $lang = array_merge($lang, [
 	'NO_FEED'                   => 'Запрашиваемый канал новостей недоступен.',
 	'NO_STYLE_DATA'             => 'Невозможно получить данные о стиле',
 	'NO_SUBJECT'                => 'Не указана тема',                               // Used for posts having no subject defined but displayed within management pages.
-	'NO_SUCH_SEARCH_MODULE'     => 'Указанный поисковый механизм отсутствует.',
 	'NO_SUPPORTED_AUTH_METHODS' => 'Метод аутентификации не поддерживается.',
 	'NO_TOPIC'                  => 'Запрошенной темы не существует.',
 	'NO_TOPIC_FORUM'            => 'Данная тема или раздел больше не существует.',

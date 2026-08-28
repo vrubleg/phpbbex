@@ -435,21 +435,9 @@ function change_poster(&$post_info, $userdata)
 	}
 
 	// refresh search cache of this post
-	$search_type = basename($config['search_type']);
-
-	if (file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
-	{
-		require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-
-		// We do some additional checks in the module to ensure it can actually be utilised
-		$error = false;
-		$search = new $search_type($error);
-
-		if (!$error && method_exists($search, 'destroy_cache'))
-		{
-			$search->destroy_cache([], [$post_info['user_id'], $userdata['user_id']]);
-		}
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
+	$search = new fulltext_mysql();
+	$search->destroy_cache([], [$post_info['user_id'], $userdata['user_id']]);
 
 	$from_username = $post_info['username'];
 	$to_username = $userdata['username'];

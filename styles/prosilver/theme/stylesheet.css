@@ -3448,7 +3448,7 @@ input.disabled, input[type=button][disabled], input[type=submit][disabled], butt
 
 
 /* Focus states */
-input.button1:focus, input.button2:focus, input.button3:focus
+input.button1:focus, input.button2:focus
 {
 	outline-style: none;
 }
