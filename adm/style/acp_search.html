@@ -54,12 +54,8 @@
 		<dd><b class="<!-- IF S_INDEXED -->status-green<!-- ELSE -->status-red<!-- ENDIF -->"><!-- IF S_INDEXED -->{L_FULLTEXT_MYSQL_STATUS_INDEXED}<!-- ELSE -->{L_FULLTEXT_MYSQL_STATUS_MISSING}<!-- ENDIF --></b><!-- IF S_INDEXED --> <i>({FULLTEXT_MYSQL_INDEXED_POSTS})</i> <button class="button2" type="submit" name="action" value="delete">{L_DELETE_INDEX}</button><!-- ELSE --> <button class="button2" type="submit" name="action" value="create">{L_CREATE_INDEX}</button><!-- ENDIF --></dd>
 	</dl>
 	<dl>
-		<dt><label>{L_MIN_SEARCH_CHARS}:</label><br /><span>{L_FULLTEXT_MYSQL_MIN_SEARCH_CHARS_EXPLAIN}</span></dt>
-		<dd>{FULLTEXT_MYSQL_MIN_WORD_LEN}</dd>
-	</dl>
-	<dl>
-		<dt><label>{L_MAX_SEARCH_CHARS}:</label><br /><span>{L_FULLTEXT_MYSQL_MAX_SEARCH_CHARS_EXPLAIN}</span></dt>
-		<dd>{FULLTEXT_MYSQL_MAX_WORD_LEN}</dd>
+		<dt><label>{L_FULLTEXT_MYSQL_WORD_LENGTH}:</label><br /><span>{L_FULLTEXT_MYSQL_WORD_LENGTH_EXPLAIN}</span></dt>
+		<dd>{FULLTEXT_MYSQL_WORD_LENGTH_RANGE}</dd>
 	</dl>
 	</fieldset>
 

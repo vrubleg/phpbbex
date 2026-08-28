@@ -31,15 +31,14 @@ $lang = array_merge($lang, [
 	'FULLTEXT_MYSQL_STATUS_EXPLAIN'         => 'Keyword search is unavailable when the index has not been created.',
 	'FULLTEXT_MYSQL_STATUS_INDEXED'         => 'Indexed',
 	'FULLTEXT_MYSQL_STATUS_MISSING'         => 'Missing',
-	'FULLTEXT_MYSQL_MIN_SEARCH_CHARS_EXPLAIN'   => 'Words containing at least this many characters will be indexed. This value can only be changed in the MySQL server configuration.',
-	'FULLTEXT_MYSQL_MAX_SEARCH_CHARS_EXPLAIN'   => 'Words containing no more than this many characters will be indexed. This value can only be changed in the MySQL server configuration.',
+	'FULLTEXT_MYSQL_WORD_LENGTH'             => 'Indexed word length',
+	'FULLTEXT_MYSQL_WORD_LENGTH_EXPLAIN'     => 'These values are determined by the MySQL server configuration and cannot be changed in phpBBex.',
+	'FULLTEXT_MYSQL_WORD_LENGTH_RANGE'       => '%1$d to %2$d characters',
 
 	'GENERAL_SEARCH_SETTINGS'               => 'General search settings',
 
-	'MAX_SEARCH_CHARS'                      => 'Max characters indexed by search',
 	'MAX_NUM_SEARCH_KEYWORDS'               => 'Maximum number of allowed keywords',
 	'MAX_NUM_SEARCH_KEYWORDS_EXPLAIN'       => 'Maximum number of words the user is able to search for. A value of 0 allows an unlimited number of words.',
-	'MIN_SEARCH_CHARS'                      => 'Min characters indexed by search',
 	'MIN_SEARCH_AUTHOR_CHARS'               => 'Min author name characters',
 	'MIN_SEARCH_AUTHOR_CHARS_EXPLAIN'       => 'Users have to enter at least this many characters of the name when performing a wildcard author search. If the author’s username is shorter than this number you can still search for the author’s posts by entering the complete username.',
 

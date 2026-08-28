@@ -157,8 +157,7 @@ class acp_search
 			'SEARCH_GUEST_INTERVAL'         => (float) $config['search_anonymous_interval'],
 			'SEARCH_STORE_RESULTS'          => (int) $config['search_store_results'],
 			'MAX_NUM_SEARCH_KEYWORDS'       => (int) $config['max_num_search_keywords'],
-			'FULLTEXT_MYSQL_MIN_WORD_LEN'   => (int) $config['fulltext_mysql_min_word_len'],
-			'FULLTEXT_MYSQL_MAX_WORD_LEN'   => (int) $config['fulltext_mysql_max_word_len'],
+			'FULLTEXT_MYSQL_WORD_LENGTH_RANGE' => sprintf($user->lang['FULLTEXT_MYSQL_WORD_LENGTH_RANGE'], $config['fulltext_mysql_min_word_len'], $config['fulltext_mysql_max_word_len']),
 			'FULLTEXT_MYSQL_INDEXED_POSTS'   => sprintf($user->lang['FULLTEXT_MYSQL_INDEXED_POSTS'], $stats['total_posts']),
 
 			'S_YES_SEARCH'                  => (bool) $config['load_search'],
