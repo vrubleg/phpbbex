@@ -79,15 +79,11 @@ class acp_search
 			switch ($action)
 			{
 				case 'delete':
-					$error = $search->delete_index();
-					$message = $user->lang['SEARCH_INDEX_REMOVED'];
-					$log_operation = 'LOG_SEARCH_INDEX_REMOVED';
+					$confirm_lang = 'SEARCH_INDEX_DELETE_CONFIRM';
 				break;
 
 				case 'create':
-					$error = $search->create_index();
-					$message = $user->lang['SEARCH_INDEX_CREATED'];
-					$log_operation = 'LOG_SEARCH_INDEX_CREATED';
+					$confirm_lang = 'SEARCH_INDEX_CREATE_CONFIRM';
 				break;
 
 				default:
@@ -95,15 +91,43 @@ class acp_search
 				break;
 			}
 
-			if ($error)
+			if (!confirm_box(true))
 			{
-				trigger_error($error . adm_back_link($this->u_action), E_USER_WARNING);
+				confirm_box(false, $user->lang[$confirm_lang], build_hidden_fields([
+					'i'      => $id,
+					'mode'   => $mode,
+					'action' => $action,
+				]));
 			}
+			else
+			{
+				@set_time_limit(0);
 
-			$search->tidy();
+				switch ($action)
+				{
+					case 'delete':
+						$error = $search->delete_index();
+						$message = $user->lang['SEARCH_INDEX_REMOVED'];
+						$log_operation = 'LOG_SEARCH_INDEX_REMOVED';
+					break;
 
-			add_log('admin', $log_operation);
-			trigger_error($message . adm_back_link($this->u_action));
+					case 'create':
+						$error = $search->create_index();
+						$message = $user->lang['SEARCH_INDEX_CREATED'];
+						$log_operation = 'LOG_SEARCH_INDEX_CREATED';
+					break;
+				}
+
+				if ($error)
+				{
+					trigger_error($error . adm_back_link($this->u_action), E_USER_WARNING);
+				}
+
+				$search->tidy();
+
+				add_log('admin', $log_operation);
+				trigger_error($message . adm_back_link($this->u_action));
+			}
 		}
 
 		$stats = $search->get_stats();

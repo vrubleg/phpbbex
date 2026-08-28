@@ -19,18 +19,20 @@ $lang = array_merge($lang, [
 	'ACP_SEARCH_SETTINGS_EXPLAIN'           => 'Here you can configure search and the limits applied to search requests.',
 
 	'CREATE_INDEX'                          => 'Create index',
+	'SEARCH_INDEX_CREATE_CONFIRM'           => 'Creating the full-text search index may take several minutes, depending on the number of posts. Are you ready?',
 
 	'DELETE_INDEX'                          => 'Delete index',
+	'SEARCH_INDEX_DELETE_CONFIRM'           => 'Are you sure you want to delete the full-text search index? Keyword search will stop working.',
 
-	'FULLTEXT_MYSQL_INDEX'                  => 'MySQL fulltext index',
+	'FULLTEXT_MYSQL_INDEX'                  => 'MySQL full-text index',
 	'FULLTEXT_MYSQL_INDEXED_POSTS'          => '%s posts',
-	'FULLTEXT_MYSQL_NOT_SUPPORTED'          => 'MySQL 5.6.4 or later is required for a fulltext index on InnoDB tables.',
+	'FULLTEXT_MYSQL_NOT_SUPPORTED'          => 'MySQL 5.6.4 or later is required for a full-text index on InnoDB tables.',
 	'FULLTEXT_MYSQL_STATUS'                 => 'Status',
 	'FULLTEXT_MYSQL_STATUS_EXPLAIN'         => 'Keyword search is unavailable when the index has not been created.',
 	'FULLTEXT_MYSQL_STATUS_INDEXED'         => 'Indexed',
 	'FULLTEXT_MYSQL_STATUS_MISSING'         => 'Missing',
-	'FULLTEXT_MYSQL_MIN_SEARCH_CHARS_EXPLAIN'   => 'Words with at least this many characters will be indexed for searching. You or your host can only change this setting by changing the mysql configuration.',
-	'FULLTEXT_MYSQL_MAX_SEARCH_CHARS_EXPLAIN'   => 'Words with no more than this many characters will be indexed for searching. You or your host can only change this setting by changing the mysql configuration.',
+	'FULLTEXT_MYSQL_MIN_SEARCH_CHARS_EXPLAIN'   => 'Words containing at least this many characters will be indexed. This value can only be changed in the MySQL server configuration.',
+	'FULLTEXT_MYSQL_MAX_SEARCH_CHARS_EXPLAIN'   => 'Words containing no more than this many characters will be indexed. This value can only be changed in the MySQL server configuration.',
 
 	'GENERAL_SEARCH_SETTINGS'               => 'General search settings',
 
