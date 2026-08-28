@@ -98,15 +98,7 @@ class fulltext_mysql extends search_backend
 	{
 		global $config, $user;
 
-		if ($terms == 'all')
-		{
-			$match      = ['#\sand\s#iu', '#\sor\s#iu', '#\snot\s#iu', '#(^|\s)\+#', '#(^|\s)-#', '#(^|\s)\|#'];
-			$replace    = [' +', ' |', ' -', ' +', ' -', ' |'];
-
-			$keywords = preg_replace($match, $replace, $keywords);
-		}
-
-		// Filter out as above
+		// Decode HTML entities and replace line breaks and tabs with spaces.
 		$split_keywords = preg_replace("#[\n\r\t]+#", ' ', trim(htmlspecialchars_decode($keywords)));
 
 		// Split words
