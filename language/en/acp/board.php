@@ -334,7 +334,6 @@ $lang = array_merge($lang, [
 	'ACP_FEED_GENERAL'                  => 'General feed settings',
 	'ACP_FEED_POST_BASED'               => 'Post-based feed settings',
 	'ACP_FEED_TOPIC_BASED'              => 'Topic-based feed settings',
-	'ACP_FEED_SETTINGS_OTHER'           => 'Other feeds and settings',
 
 	'ACP_FEED_ENABLE'                   => 'Enable feeds',
 	'ACP_FEED_ENABLE_EXPLAIN'           => 'Turns on or off ATOM feeds for the entire board.<br />Disabling this switches off all feeds, no matter how the options below are set.',
@@ -354,9 +353,6 @@ $lang = array_merge($lang, [
 	'ACP_FEED_TOPICS_ACTIVE_EXPLAIN'    => 'Enables the “Active Topics” feed, which displays the last active topics including the last post.',
 	'ACP_FEED_NEWS'                     => 'News feed',
 	'ACP_FEED_NEWS_EXPLAIN'             => 'Pull the first post from these forums. Select no forums to disable news feed.<br />Select multiple forums by holding <samp>CTRL</samp> and clicking.',
-
-	'ACP_FEED_OVERALL_FORUMS'           => 'Enable forums feed',
-	'ACP_FEED_OVERALL_FORUMS_EXPLAIN'   => 'Enables the “All forums” feed, which displays a list of forums.',
 
 	'ACP_FEED_HTTP_AUTH'                => 'Allow HTTP Authentication',
 	'ACP_FEED_HTTP_AUTH_EXPLAIN'        => 'Enables HTTP authentication, which allows users to receive content that is hidden to guest users by adding the <samp>auth=http</samp> parameter to the feed URL. Please note that some PHP setups require additional changes to the .htaccess file. Instructions can be found in that file.',

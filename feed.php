@@ -128,10 +128,6 @@ $global_vars = array_merge($global_vars, [
 
 switch ($mode)
 {
-	case 'forums':
-		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['ALL_FORUMS'];
-	break;
-
 	case 'topics':
 	case 'topics_new':
 		$global_vars['FEED_TITLE'] = $config['sitename'] . ' - ' . $user->lang['FEED_TOPICS_NEW'];
@@ -389,15 +385,6 @@ class phpbb_feed_factory
 
 		switch ($mode)
 		{
-			case 'forums':
-				if (!$config['feed_overall_forums'])
-				{
-					return false;
-				}
-
-				return new phpbb_feed_forums();
-			break;
-
 			case 'topics':
 			case 'topics_new':
 				if (!$config['feed_topics_new'])
@@ -436,7 +423,7 @@ class phpbb_feed_factory
 				return new phpbb_feed_news();
 			break;
 
-			default:
+			case '':
 				if ($topic_id && $config['feed_topic'])
 				{
 					return new phpbb_feed_topic($topic_id);
@@ -450,6 +437,10 @@ class phpbb_feed_factory
 					return new phpbb_feed_overall();
 				}
 
+				return false;
+			break;
+
+			default:
 				return false;
 			break;
 		}
@@ -1052,68 +1043,6 @@ class phpbb_feed_topic extends phpbb_feed_post_base
 	function get_item()
 	{
 		return ($row = parent::get_item()) ? array_merge($this->topic_data, $row) : $row;
-	}
-}
-
-/**
-* 'All Forums' feed
-*
-* This will give you a list of all postable forums where feeds are enabled
-* including forum description, topic stats and post stats
-*
-* @package phpBB3
-*/
-class phpbb_feed_forums extends phpbb_feed_base
-{
-	var $num_items  = 0;
-
-	function set_keys()
-	{
-		$this->set('title',     'forum_name');
-		$this->set('text',      'forum_desc');
-		$this->set('bitfield',  'forum_desc_bitfield');
-		$this->set('bbcode_uid','forum_desc_uid');
-		$this->set('updated',   'forum_last_post_time');
-		$this->set('options',   'forum_desc_options');
-	}
-
-	function get_sql()
-	{
-		global $auth, $db;
-
-		$in_fid_ary = array_diff($this->get_readable_forums(), $this->get_excluded_forums());
-		if (empty($in_fid_ary))
-		{
-			return false;
-		}
-
-		// Build SQL Query
-		$this->sql = [
-			'SELECT'    => 'f.forum_id, f.left_id, f.forum_name, f.forum_last_post_time,
-							f.forum_desc, f.forum_desc_bitfield, f.forum_desc_uid, f.forum_desc_options,
-							f.forum_topics, f.forum_posts',
-			'FROM'      => [FORUMS_TABLE => 'f'],
-			'WHERE'     => 'f.forum_type = ' . FORUM_POST . '
-							AND ' . $db->sql_in_set('f.forum_id', $in_fid_ary),
-			'ORDER_BY'  => 'f.left_id ASC',
-		];
-
-		return true;
-	}
-
-	function adjust_item(&$item_row, &$row)
-	{
-		global $config;
-
-		$item_row['link'] = feed_append_sid('/viewforum.php', 'f=' . $row['forum_id']);
-
-		if ($config['feed_item_statistics'])
-		{
-			global $user;
-
-			$item_row['statistics'] = sprintf($user->lang['TOTAL_TOPICS_OTHER'], $row['forum_topics'])
-				. ' ' . $this->separator_stats . ' ' . sprintf($user->lang['TOTAL_POSTS_OTHER'], $row['forum_posts']);
-		}
 	}
 }
 

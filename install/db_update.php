@@ -660,6 +660,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'merge_no_forums',
 		'merge_no_topics',
 		'style_show_feeds_in_forumlist',
+		'feed_overall_forums',
+		'feed_overall_forums_limit',
 		'chg_passforce',
 		'active_sessions',
 		'gzip_compress',
@@ -2163,9 +2165,6 @@ function change_database_data(&$no_updates, $version)
 			// Entries for the Feed Feature
 			set_config('feed_enable', '0');
 			set_config('feed_limit', '10');
-
-			set_config('feed_overall_forums', '1');
-			set_config('feed_overall_forums_limit', '15');
 
 			set_config('feed_overall_topics', '0');
 			set_config('feed_overall_topics_limit', '15');
