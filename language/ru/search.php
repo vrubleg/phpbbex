@@ -83,6 +83,7 @@ $lang = array_merge($lang, [
 	'SORT_DESCENDING'           => 'по убыванию',
 	'SORT_FORUM'                => 'Раздел',
 	'SORT_POST_SUBJECT'         => 'Заголовок сообщения',
+	'SORT_RELEVANCE'            => 'Релевантность',
 	'SORT_TIME'                 => 'Время ответа',
 
 	'TOO_FEW_AUTHOR_CHARS'  => 'Вы должны ввести не менее %d символов имени автора.',

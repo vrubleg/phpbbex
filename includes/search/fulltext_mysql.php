@@ -270,7 +270,8 @@ class fulltext_mysql extends search_backend
 		$join_topic = ($type != 'posts');
 
 		// Build sql strings for sorting
-		$sql_sort = $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
+		$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
+		$sql_sort = $sort_by_sql[$sort_key] . $sql_sort_dir . ', ' . (($type == 'posts') ? 'p.post_id' : 't.topic_id') . $sql_sort_dir;
 		$sql_sort_table = $sql_sort_join = '';
 
 		switch ($sql_sort[0])
@@ -310,6 +311,7 @@ class fulltext_mysql extends search_backend
 				$sql_match_where = '';
 			break;
 		}
+		$sql_match_query = "MATCH ({$sql_match}) AGAINST ('" . $db->sql_escape(htmlspecialchars_decode($this->search_query)) . "' IN BOOLEAN MODE)";
 
 		if (!sizeof($m_approve_fid_ary))
 		{
@@ -324,8 +326,26 @@ class fulltext_mysql extends search_backend
 			$m_approve_fid_sql = ' AND (p.post_approved = 1 OR ' . $db->sql_in_set('p.forum_id', $m_approve_fid_ary, true) . ')';
 		}
 
-		$sql_select         = (!$result_count) ? 'SQL_CALC_FOUND_ROWS ' : '';
-		$sql_select         = ($type == 'posts') ? $sql_select . 'p.post_id' : 'DISTINCT ' . $sql_select . 't.topic_id';
+		$sql_select = (!$result_count) ? 'SQL_CALC_FOUND_ROWS ' : '';
+		$sql_group_by = '';
+
+		if ($sort_key == 'r')
+		{
+			if ($type == 'posts')
+			{
+				$sql_select .= "p.post_id, {$sql_match_query} AS relevance";
+			}
+			else
+			{
+				$sql_select .= "t.topic_id, MAX({$sql_match_query}) AS relevance";
+				$sql_group_by = 'GROUP BY t.topic_id';
+			}
+		}
+		else
+		{
+			$sql_select = ($type == 'posts') ? $sql_select . 'p.post_id' : 'DISTINCT ' . $sql_select . 't.topic_id';
+		}
+
 		$sql_from           = ($join_topic) ? TOPICS_TABLE . ' t, ' : '';
 		$field              = ($type == 'posts') ? 'post_id' : 'topic_id';
 		if (sizeof($author_ary) && $author_name)
@@ -342,7 +362,8 @@ class fulltext_mysql extends search_backend
 			$sql_author = '';
 		}
 
-		$sql_where_options = $sql_sort_join;
+		$sql_where_options = $sql_match_query;
+		$sql_where_options .= $sql_sort_join;
 		$sql_where_options .= ($topic_id) ? ' AND p.topic_id = ' . $topic_id : '';
 		$sql_where_options .= ($join_topic) ? ' AND t.topic_id = p.topic_id' : '';
 		$sql_where_options .= (sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '';
@@ -353,8 +374,8 @@ class fulltext_mysql extends search_backend
 
 		$sql = "SELECT {$sql_select}
 			FROM {$sql_from}{$sql_sort_table}" . POSTS_TABLE . " p
-			WHERE MATCH ({$sql_match}) AGAINST ('" . $db->sql_escape(htmlspecialchars_decode($this->search_query)) . "' IN BOOLEAN MODE)
-				{$sql_where_options}
+			WHERE {$sql_where_options}
+				{$sql_group_by}
 			ORDER BY {$sql_sort}";
 		$result = $db->sql_query_limit($sql, $config['search_block_size'], $start);
 
@@ -464,8 +485,10 @@ class fulltext_mysql extends search_backend
 		$sql_firstpost = ($firstpost_only) ? ' AND p.post_id = t.topic_first_post_id' : '';
 
 		// Build sql strings for sorting
-		$sql_sort = $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
+		$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
+		$sql_sort = $sort_by_sql[$sort_key] . $sql_sort_dir . ', ' . (($type == 'posts') ? 'p.post_id' : 't.topic_id') . $sql_sort_dir;
 		$sql_sort_table = $sql_sort_join = '';
+
 		switch ($sql_sort[0])
 		{
 			case 'u':

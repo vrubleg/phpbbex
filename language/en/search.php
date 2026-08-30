@@ -83,6 +83,7 @@ $lang = array_merge($lang, [
 	'SORT_DESCENDING'           => 'Descending',
 	'SORT_FORUM'                => 'Forum',
 	'SORT_POST_SUBJECT'         => 'Post subject',
+	'SORT_RELEVANCE'            => 'Relevance',
 	'SORT_TIME'                 => 'Post time',
 
 	'TOO_FEW_AUTHOR_CHARS'  => 'You must specify at least %d characters of the authors name.',
