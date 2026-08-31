@@ -505,11 +505,6 @@ if (version_compare($config['phpbbex_version'], '1.9.8', '<'))
 	set_config('allow_quick_reply_attachbox', '1');
 	set_config('allow_quick_reply_smilies', '1');
 	set_config('allow_quick_full_quote', '0');
-	set_config('allow_quick_post', '1');
-	set_config('allow_quick_post_icons', '1');
-	set_config('allow_quick_post_checkboxes', '1');
-	set_config('allow_quick_post_attachbox', '1');
-	set_config('allow_quick_post_smilies', '1');
 	set_config('posting_topic_review', '1');
 
 	// Update DB schema version.
@@ -629,6 +624,12 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	remove_config_values([
 		'allow_avatar_remote',
+		'allow_quick_post',
+		'allow_quick_post_icons',
+		'allow_quick_post_checkboxes',
+		'allow_quick_post_attachbox',
+		'allow_quick_post_smilies',
+		'allow_quick_post_options',
 		'login_via_email_enable',
 		'auth_method',
 		'ldap_base_dn',

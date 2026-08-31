@@ -217,8 +217,6 @@ $lang = array_merge($lang, [
 	'ALLOW_QUICK_REPLY_ATTACHBOX'   => 'Attachbox',
 	'ALLOW_QUICK_REPLY_SMILIES'     => 'Smilies',
 	'ALLOW_QUICK_FULL_QUOTE'        => 'Allow full quote',
-	'ALLOW_QUICK_TOPIC'             => 'Allow quick topic',
-	'ALLOW_QUICK_TOPIC_EXPLAIN'     => 'Users can start topic directly at forum view.',
 
 	'MERGE_INTERVAL'                => 'Merging posts interval',
 	'MERGE_INTERVAL_EXPLAIN'        => 'Number of hours a messages from the user will be merged with his topic last message. Leave empty or 0 to disable merging.',

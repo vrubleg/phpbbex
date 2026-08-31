@@ -219,7 +219,6 @@ $lang = array_merge($lang, [
 
 	// Quick reply
 	'QUICK_REPLY'               => 'Quick reply',
-	'QUICK_POST'                => 'Quick post',
 	'QUOTE_TEXT'                => 'Select the text you want to quote',
 
 	// Additional strings

@@ -299,12 +299,6 @@ class acp_board
 						'allow_quick_reply_smilies'         => ['lang' => 'ALLOW_QUICK_REPLY_SMILIES',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'allow_quick_full_quote'            => ['lang' => 'ALLOW_QUICK_FULL_QUOTE',     'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
-						'allow_quick_post'                  => ['lang' => 'ALLOW_QUICK_TOPIC',              'validate' => 'int',    'type' => 'select', 'method' => 'allow_quick_reply_for', 'explain' => true],
-						'allow_quick_post_icons'            => ['lang' => 'ALLOW_QUICK_REPLY_ICONS',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'allow_quick_post_checkboxes'       => ['lang' => 'ALLOW_QUICK_REPLY_CHECKBOXES',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'allow_quick_post_attachbox'        => ['lang' => 'ALLOW_QUICK_REPLY_ATTACHBOX',    'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'allow_quick_post_smilies'          => ['lang' => 'ALLOW_QUICK_REPLY_SMILIES',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-
 						'legend4'                           => 'EXTERNAL_LINKS',
 						'external_links_newwindow'          => ['lang' => 'EXTERNAL_LINKS_NEWWINDOW',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'external_links_newwindow_exclude'  => ['lang' => 'EXTERNAL_LINKS_EXCLUDE', 'validate' => 'string', 'type' => 'textarea:3:1000', 'explain' => true],
