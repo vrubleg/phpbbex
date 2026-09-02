@@ -634,10 +634,10 @@ function move_posts($post_ids, $topic_id, $auto_sync = true)
 */
 function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_sync = true, $call_delete_posts = true)
 {
-	global $db, $config;
+	global $db;
 
 	$approved_topics = 0;
-	$forum_ids = $topic_ids = [];
+	$forum_ids = $topic_ids = $first_post_ids = [];
 
 	if ($where_type === 'range')
 	{
@@ -655,12 +655,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 		$where_clause = $db->sql_in_set($where_type, $where_ids);
 	}
 
-	// Making sure that delete_posts does not call delete_topics again...
-	$return = [
-		'posts' => ($call_delete_posts) ? delete_posts($where_type, $where_ids, false, $post_count_sync, false) : 0,
-	];
-
-	$sql = 'SELECT topic_id, forum_id, topic_approved, topic_moved_id
+	$sql = 'SELECT topic_id, forum_id, topic_approved, topic_moved_id, topic_first_post_id
 		FROM ' . TOPICS_TABLE . '
 		WHERE ' . $where_clause;
 	$result = $db->sql_query($sql);
@@ -670,14 +665,41 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 		$forum_ids[] = $row['forum_id'];
 		$topic_ids[] = $row['topic_id'];
 
-		if ($row['topic_approved'] && !$row['topic_moved_id'])
+		if (!$row['topic_moved_id'])
 		{
-			$approved_topics++;
+			$first_post_ids[] = (int) $row['topic_first_post_id'];
+
+			if ($row['topic_approved'])
+			{
+				$approved_topics++;
+			}
 		}
 	}
 	$db->sql_freeresult($result);
 
-	$return['topics'] = sizeof($topic_ids);
+	$user_topic_counts = [];
+	if (sizeof($first_post_ids))
+	{
+		$sql = 'SELECT poster_id, COUNT(post_id) AS num_topics
+			FROM ' . POSTS_TABLE . '
+			WHERE ' . $db->sql_in_set('post_id', array_unique($first_post_ids)) . '
+				AND post_postcount = 1
+				AND post_approved = 1
+			GROUP BY poster_id';
+		$result = $db->sql_query($sql);
+
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$user_topic_counts[(int) $row['poster_id']] = (int) $row['num_topics'];
+		}
+		$db->sql_freeresult($result);
+	}
+
+	// Making sure that delete_posts does not call delete_topics again...
+	$return = [
+		'topics' => sizeof($topic_ids),
+		'posts' => ($call_delete_posts) ? delete_posts($where_type, $where_ids, false, $post_count_sync, false) : 0,
+	];
 
 	if (!sizeof($topic_ids))
 	{
@@ -721,6 +743,17 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 		$sql = 'DELETE FROM ' . TOPICS_TABLE . '
 			WHERE ' . $db->sql_in_set('topic_id', $moved_topic_ids);
 		$db->sql_query($sql);
+	}
+
+	if (sizeof($user_topic_counts))
+	{
+		foreach ($user_topic_counts as $user_id => $num_topics)
+		{
+			$sql = 'UPDATE ' . USERS_TABLE . '
+				SET user_topics = GREATEST(user_topics, ' . $num_topics . ') - ' . $num_topics . '
+				WHERE user_id = ' . $user_id;
+			$db->sql_query($sql);
+		}
 	}
 
 	$db->sql_transaction('commit');
@@ -838,15 +871,8 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $post_count_sy
 		foreach ($post_counts as $poster_id => $substract)
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_posts = 0
-				WHERE user_id = ' . $poster_id . '
-				AND user_posts < ' . $substract;
-			$db->sql_query($sql);
-
-			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_posts = user_posts - ' . $substract . '
-				WHERE user_id = ' . $poster_id . '
-				AND user_posts >= ' . $substract;
+				SET user_posts = GREATEST(user_posts, ' . $substract . ') - ' . $substract . '
+				WHERE user_id = ' . $poster_id;
 			$db->sql_query($sql);
 		}
 	}
