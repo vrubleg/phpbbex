@@ -19,7 +19,7 @@ class acp_main
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template;
+		global $config, $db, $user, $auth, $template, $cache;
 
 		// Show restore permissions notice
 		if ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm'))
@@ -105,6 +105,9 @@ class acp_main
 
 						set_time_limit(0);
 						ignore_user_abort(true);
+
+						sync('topic', '', '', false, true);
+						sync('forum', '', '', false, true);
 
 						$sql = 'SELECT COUNT(post_id) AS stat
 							FROM ' . POSTS_TABLE . '
@@ -192,7 +195,6 @@ class acp_main
 
 					case 'purge_cache':
 
-						global $cache;
 						$cache->purge();
 
 						// Clear permissions

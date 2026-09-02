@@ -320,7 +320,7 @@ $lang = array_merge($lang, [
 
 	'RESYNC_STATS'                  => 'Синхронизировать статистику форума',
 	'RESYNC_STATS_CONFIRM'          => 'Вы действительно хотите синхронизировать статистику форума?',
-	'RESYNC_STATS_EXPLAIN'          => 'Пересчёт общего количества сообщений, тем, пользователей и файлов.',
+	'RESYNC_STATS_EXPLAIN'          => 'Синхронизация всех тем и разделов, а также пересчёт общего количества сообщений, тем, пользователей и файлов.',
 	'RESYNC_USER_STATS'             => 'Синхронизировать статистику пользователей',
 	'RESYNC_USER_STATS_EXPLAIN'     => 'Пересчёт счётчиков сообщений, тем и оценок пользователей по существующим данным.',
 	'RESYNC_USER_STATS_CONFIRM'     => 'Вы действительно хотите синхронизировать статистику пользователей?',
@@ -505,7 +505,6 @@ $lang = array_merge($lang, [
 	'LOG_FORUM_EDIT'                        => '<strong>Изменена информация о разделе</strong><br />» %s',
 	'LOG_FORUM_MOVE_DOWN'                   => '<strong>Перемещён раздел</strong> %1$s <strong>под</strong> %2$s',
 	'LOG_FORUM_MOVE_UP'                     => '<strong>Перемещён раздел</strong> %1$s <strong>над</strong> %2$s',
-	'LOG_FORUM_SYNC'                        => '<strong>Синхронизирован раздел</strong><br />» %s',
 
 	'LOG_GROUP_CREATED'     => '<strong>Создана группа пользователей</strong><br />» %s',
 	'LOG_GROUP_DEFAULTS'    => '<strong>Группа “%1$s” установлена по умолчанию для пользователей</strong><br />» %2$s',
@@ -585,7 +584,7 @@ $lang = array_merge($lang, [
 	'LOG_REASON_UPDATED'    => '<strong>Обновлена причина жалобы/отклонения</strong><br />» %s',
 
 	'LOG_REFERER_INVALID'       => '<strong>Проверка реферера не удалась </strong><br />»Реферер: “<em>%1$s</em>”. Запрос был отклонён, сессия удалена.',
-	'LOG_RESYNC_STATS'          => '<strong>Синхронизирована статистика сообщений, тем и пользователей</strong>',
+	'LOG_RESYNC_STATS'          => '<strong>Синхронизирована статистика форума</strong>',
 	'LOG_RESYNC_USER_STATS'     => '<strong>Синхронизирована статистика пользователей</strong>',
 
 	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Создан поисковый индекс</strong>',

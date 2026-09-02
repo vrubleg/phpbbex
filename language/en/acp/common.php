@@ -320,7 +320,7 @@ $lang = array_merge($lang, [
 
 	'RESYNC_STATS'                  => 'Resynchronise forum statistics',
 	'RESYNC_STATS_CONFIRM'          => 'Are you sure you wish to resynchronise forum statistics?',
-	'RESYNC_STATS_EXPLAIN'          => 'Recalculates the total number of posts, topics, users and files.',
+	'RESYNC_STATS_EXPLAIN'          => 'Resynchronises all topics and forums and recalculates the total number of posts, topics, users and files.',
 	'RESYNC_USER_STATS'             => 'Resynchronise user statistics',
 	'RESYNC_USER_STATS_EXPLAIN'     => 'Recalculates users’ post and topic counts and all rating totals from existing data.',
 	'RESYNC_USER_STATS_CONFIRM'     => 'Are you sure you wish to resynchronise user statistics?',
@@ -505,7 +505,6 @@ $lang = array_merge($lang, [
 	'LOG_FORUM_EDIT'                        => '<strong>Edited forum details</strong><br />» %s',
 	'LOG_FORUM_MOVE_DOWN'                   => '<strong>Moved forum</strong> %1$s <strong>below</strong> %2$s',
 	'LOG_FORUM_MOVE_UP'                     => '<strong>Moved forum</strong> %1$s <strong>above</strong> %2$s',
-	'LOG_FORUM_SYNC'                        => '<strong>Re-synchronised forum</strong><br />» %s',
 
 	'LOG_GROUP_CREATED'     => '<strong>New usergroup created</strong><br />» %s',
 	'LOG_GROUP_DEFAULTS'    => '<strong>Group “%1$s” made default for members</strong><br />» %2$s',
@@ -586,7 +585,7 @@ $lang = array_merge($lang, [
 	'LOG_REASON_UPDATED'    => '<strong>Updated report/denial reason</strong><br />» %s',
 
 	'LOG_REFERER_INVALID'       => '<strong>Referer validation failed</strong><br />»Referer was “<em>%1$s</em>”. The request was rejected and the session killed.',
-	'LOG_RESYNC_STATS'          => '<strong>Post, topic and user statistics resynchronised</strong>',
+	'LOG_RESYNC_STATS'          => '<strong>Forum statistics resynchronised</strong>',
 	'LOG_RESYNC_USER_STATS'     => '<strong>User statistics resynchronised</strong>',
 
 	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Created search index</strong>',

@@ -298,10 +298,8 @@ function mcp_resync_topics($topic_ids)
 		return;
 	}
 
-	// Sync everything and perform extra checks separately
-	sync('topic_reported', 'topic_id', $topic_ids, false, true);
-	sync('topic_attachment', 'topic_id', $topic_ids, false, true);
-	sync('topic', 'topic_id', $topic_ids, true, false);
+	// Sync everything, including reported and attachment flags
+	sync('topic', 'topic_id', $topic_ids, true, true);
 
 	$sql = 'SELECT topic_id, forum_id, topic_title
 		FROM ' . TOPICS_TABLE . '
