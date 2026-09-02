@@ -240,34 +240,6 @@ class acp_gallery_albums
 
 			break;
 
-			case 'sync':
-			case 'sync_album':
-				if (!$album_id)
-				{
-					trigger_error($user->lang['NO_ALBUM'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id), E_USER_WARNING);
-				}
-
-
-				$sql = 'SELECT album_name, album_type
-					FROM ' . GALLERY_ALBUMS_TABLE . "
-					WHERE album_id = {$album_id}";
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if (!$row)
-				{
-					trigger_error($user->lang['NO_ALBUM'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id), E_USER_WARNING);
-				}
-
-				phpbb_gallery_album::update_info($album_id);
-
-				add_log('admin', 'LOG_ALBUM_SYNC', $row['album_name']);
-
-				$template->assign_var('L_ALBUM_RESYNCED', sprintf($user->lang['ALBUM_RESYNCED'], $row['album_name']));
-
-			break;
-
 			case 'add':
 			case 'edit':
 
@@ -566,11 +538,6 @@ class acp_gallery_albums
 		// Jumpbox
 		$album_box = phpbb_gallery_album::get_albumbox(true, '', $this->parent_id, false, false);
 
-		if ($action == 'sync' || $action == 'sync_album')
-		{
-			$template->assign_var('S_RESYNCED', true);
-		}
-
 		$sql = 'SELECT a.*, COALESCE(s.num_subalbums, 0) AS album_subalbums
 			FROM ' . GALLERY_ALBUMS_TABLE . ' a
 			LEFT JOIN (
@@ -617,8 +584,7 @@ class acp_gallery_albums
 					'U_MOVE_DOWN'       => $url . '&amp;action=move_down',
 					'U_EDIT'            => $url . '&amp;action=edit',
 					'U_DELETE'          => $url . '&amp;action=delete',
-					'U_SYNC'            => $url . '&amp;action=sync']
-				);
+				]);
 			}
 			while ($row = $db->sql_fetchrow($result));
 		}
@@ -633,7 +599,6 @@ class acp_gallery_albums
 
 				'U_EDIT'            => $url . '&amp;action=edit',
 				'U_DELETE'          => $url . '&amp;action=delete',
-				'U_SYNC'            => $url . '&amp;action=sync',
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -644,34 +609,6 @@ class acp_gallery_albums
 			'ALBUM_BOX'     => $album_box,
 			'U_SEL_ACTION'  => $this->u_action,
 			'U_ACTION'      => $this->u_action . '&amp;parent_id=' . $this->parent_id,
-
-			'U_PROGRESS_BAR'    => $this->u_action . '&amp;action=progress_bar',
-			'UA_PROGRESS_BAR'   => addslashes($this->u_action . '&amp;action=progress_bar'),
 		]);
-	}
-
-	/**
-	* Display progress bar for syncinc albums
-	*
-	* borrowed from phpBB3
-	* @author: phpBB Group
-	* @function: display_progress_bar
-	*/
-	function display_progress_bar($start, $total)
-	{
-		global $template, $user;
-
-		adm_page_header($user->lang['SYNC_IN_PROGRESS']);
-
-		$template->set_filenames([
-			'body'  => 'progress_bar.html',
-		]);
-
-		$template->assign_vars([
-			'L_PROGRESS'            => $user->lang['SYNC_IN_PROGRESS'],
-			'L_PROGRESS_EXPLAIN'    => ($start && $total) ? sprintf($user->lang['SYNC_IN_PROGRESS_EXPLAIN'], $start, $total) : $user->lang['SYNC_IN_PROGRESS']]
-		);
-
-		adm_page_footer();
 	}
 }

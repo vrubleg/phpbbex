@@ -230,18 +230,7 @@
 		</div>
 	<!-- ENDIF -->
 
-	<!-- IF S_RESYNCED -->
-		<script>
-			var close_waitscreen = 1;
-		</script>
-
-		<div class="successbox">
-			<h3>{L_NOTIFY}</h3>
-			<p>{L_ALBUM_RESYNCED}</p>
-		</div>
-	<!-- ENDIF -->
-
-	<p><strong>{NAVIGATION}<!-- IF S_NO_ALBUMS --> [<a href="{U_EDIT}">{L_EDIT}</a> | <a href="{U_DELETE}">{L_DELETE}</a> | <a href="{U_SYNC}">{L_RESYNC}</a>]<!-- ENDIF --></strong></p>
+	<p><strong>{NAVIGATION}<!-- IF S_NO_ALBUMS --> [<a href="{U_EDIT}">{L_EDIT}</a> | <a href="{U_DELETE}">{L_DELETE}</a>]<!-- ENDIF --></strong></p>
 
 	<!-- IF .albums -->
 		<table cellspacing="1">
@@ -271,7 +260,6 @@
 						{ICON_MOVE_DOWN_DISABLED}
 					<!-- ENDIF -->
 					<a href="{albums.U_EDIT}">{ICON_EDIT}</a>
-					<a href="{albums.U_SYNC}" onclick="popup_progress_bar();">{ICON_SYNC}</a>
 					<a href="{albums.U_DELETE}">{ICON_DELETE}</a>
 				</td>
 			</tr>

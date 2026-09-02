@@ -49,7 +49,6 @@ $lang = array_merge($lang, [
 	'ALBUM_PASSWORD_EXPLAIN'        => 'Устанавливает пароль для этого альбома. Предпочтительно использование системы прав доступа.',
 	'ALBUM_PASSWORD_CONFIRM'        => 'Подтвердите пароль к альбому',
 	'ALBUM_PASSWORD_CONFIRM_EXPLAIN'    => 'Необходимо только в случае, если задан пароль к альбому.',
-	'ALBUM_RESYNCED'                => 'Альбом «%s» синхронизирован',
 	'ALBUM_SETTINGS'                => 'Свойства альбома',
 	'ALBUM_STATUS'                  => 'Статус альбома',
 	'ALBUM_TYPE'                    => 'Тип альбома',
@@ -346,8 +345,6 @@ $lang = array_merge($lang, [
 	'SELECTED_PERM_SYS'             => 'Выбранная система прав доступа',
 	'SET_PERMISSIONS'               => '<br />Установить <a href="%s">права доступа</a>.',
 	'SORRY_NO_STATISTIC'            => 'Статистические данные ещё не доступны.',
-	'SYNC_IN_PROGRESS'              => 'Синхронизация альбома',
-	'SYNC_IN_PROGRESS_EXPLAIN'      => 'Синхронизируются фотографии в интервале %1$d—%2$d.',
 
 	'THUMBNAIL_CACHE'               => 'Кэшировать миниатюры',
 	'THUMBNAIL_HEIGHT'              => 'Высота миниатюры',

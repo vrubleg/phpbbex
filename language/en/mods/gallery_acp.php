@@ -49,7 +49,6 @@ $lang = array_merge($lang, [
 	'ALBUM_PASSWORD_EXPLAIN'        => 'Defines a password for this album, use the permission system in preference.',
 	'ALBUM_PASSWORD_CONFIRM'        => 'Confirm album password',
 	'ALBUM_PASSWORD_CONFIRM_EXPLAIN'    => 'Only needs to be set if a album password is entered.',
-	'ALBUM_RESYNCED'                => 'Album “%s” successfully resynced',
 	'ALBUM_SETTINGS'                => 'Album settings',
 	'ALBUM_STATUS'                  => 'Album status',
 	'ALBUM_TYPE'                    => 'Album type',
@@ -346,8 +345,6 @@ $lang = array_merge($lang, [
 	'SELECTED_PERM_SYS'             => 'Selected permission-system',
 	'SET_PERMISSIONS'               => '<br />Set <a href="%s">permissions</a> now.',
 	'SORRY_NO_STATISTIC'            => 'Sorry, this statistic-value is not yet available.',
-	'SYNC_IN_PROGRESS'              => 'Synchronizing album',
-	'SYNC_IN_PROGRESS_EXPLAIN'      => 'Currently resyncing image range %1$d/%2$d.',
 
 	'THUMBNAIL_CACHE'               => 'Thumbnail cache',
 	'THUMBNAIL_HEIGHT'              => 'Thumbnail height',
