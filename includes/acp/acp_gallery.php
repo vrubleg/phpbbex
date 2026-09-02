@@ -69,21 +69,9 @@ class acp_gallery
 			$album_id = 0;
 			switch ($action)
 			{
-				case 'images':
+				case 'resync':
 					$confirm = true;
-					$confirm_lang = 'RESYNC_IMAGECOUNTS_CONFIRM';
-				break;
-				case 'personals':
-					$confirm = true;
-					$confirm_lang = 'CONFIRM_OPERATION';
-				break;
-				case 'stats':
-					$confirm = true;
-					$confirm_lang = 'CONFIRM_OPERATION';
-				break;
-				case 'last_images':
-					$confirm = true;
-					$confirm_lang = 'CONFIRM_OPERATION';
+					$confirm_lang = 'RESYNC_GALLERY_STATS_CONFIRM';
 				break;
 				case 'reset_rating':
 					$album_id = request_var('reset_album_id', 0);
@@ -93,7 +81,7 @@ class acp_gallery
 				break;
 				case 'purge_cache':
 					$confirm = true;
-					$confirm_lang = 'GALLERY_PURGE_CACHE_EXPLAIN';
+					$confirm_lang = 'PURGE_THUMBNAIL_CACHE_EXPLAIN';
 				break;
 				case 'create_pega':
 					$confirm = false;
@@ -154,11 +142,14 @@ class acp_gallery
 		{
 			switch ($action)
 			{
-				case 'images':
+				case 'resync':
 					if (!$auth->acl_get('a_board'))
 					{
 						trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
 					}
+
+					set_time_limit(0);
+					ignore_user_abort(true);
 
 					$total_images = $total_comments = 0;
 					phpbb_gallery_user::update_users('all', ['user_images' => 0]);
@@ -184,14 +175,6 @@ class acp_gallery
 
 					phpbb_gallery_config::set('num_images', $total_images);
 					phpbb_gallery_config::set('num_comments', $total_comments);
-					trigger_error($user->lang['RESYNCED_IMAGECOUNTS'] . adm_back_link($this->u_action));
-				break;
-
-				case 'personals':
-					if (!$auth->acl_get('a_board'))
-					{
-						trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-					}
 
 					phpbb_gallery_user::update_users('all', ['personal_album_id' => 0]);
 
@@ -232,22 +215,18 @@ class acp_gallery
 					$sql = $db->sql_build_query('SELECT', $sql_array);
 
 					$result = $db->sql_query_limit($sql, 1);
-					$newest_pgallery = $db->sql_fetchrow($result);
+					$newest_pgallery = $db->sql_fetchrow($result) ?: [
+						'user_id'      => 0,
+						'username'     => '',
+						'user_colour'  => '',
+						'album_id'     => 0,
+					];
 					$db->sql_freeresult($result);
 
 					phpbb_gallery_config::set('newest_pega_user_id', $newest_pgallery['user_id']);
 					phpbb_gallery_config::set('newest_pega_username', $newest_pgallery['username']);
 					phpbb_gallery_config::set('newest_pega_user_colour', $newest_pgallery['user_colour']);
 					phpbb_gallery_config::set('newest_pega_album_id', $newest_pgallery['album_id']);
-
-					trigger_error($user->lang['RESYNCED_PERSONALS'] . adm_back_link($this->u_action));
-				break;
-
-				case 'stats':
-					if (!$auth->acl_get('a_board'))
-					{
-						trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-					}
 
 					// Hopefully this won't take to long! >> I think we must make it batchwise
 					$sql = 'SELECT image_id, image_filename
@@ -268,10 +247,6 @@ class acp_gallery
 					}
 					$db->sql_freeresult($result);
 
-					redirect($this->u_action);
-				break;
-
-				case 'last_images':
 					$sql = 'SELECT album_id
 						FROM ' . GALLERY_ALBUMS_TABLE;
 					$result = $db->sql_query($sql);
@@ -281,7 +256,7 @@ class acp_gallery
 						phpbb_gallery_album::update_info($row['album_id']);
 					}
 					$db->sql_freeresult($result);
-					trigger_error($user->lang['RESYNCED_LAST_IMAGES'] . adm_back_link($this->u_action));
+					trigger_error($user->lang['RESYNCED_GALLERY_STATS'] . adm_back_link($this->u_action));
 				break;
 
 				case 'reset_rating':
@@ -340,7 +315,7 @@ class acp_gallery
 						SET ' . $db->sql_build_array('UPDATE', $sql_ary);
 					$db->sql_query($sql);
 
-					trigger_error($user->lang['PURGED_CACHE'] . adm_back_link($this->u_action));
+					trigger_error($user->lang['PURGED_THUMBNAIL_CACHE'] . adm_back_link($this->u_action));
 				break;
 			}
 		}
