@@ -448,25 +448,24 @@ class acp_modules
 			}
 			while ($row = $db->sql_fetchrow($result));
 		}
-		else if ($this->parent_id)
+		$db->sql_freeresult($result);
+
+		if ($this->parent_id)
 		{
 			$row = $this->get_module_row($this->parent_id);
 
 			$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;m=' . $row['module_id'];
 
 			$template->assign_vars([
-				'S_NO_MODULES'      => true,
-				'MODULE_TITLE'      => $langname,
+				'MODULE_TITLE'      => $this->lang_name($row['module_langname']),
 				'MODULE_ENABLED'    => (bool) $row['module_enabled'],
 				'MODULE_DISPLAYED'  => (bool) $row['module_display'],
-
 				'U_EDIT'            => $url . '&amp;action=edit',
 				'U_DELETE'          => $url . '&amp;action=delete',
 				'U_ENABLE'          => $url . '&amp;action=enable',
 				'U_DISABLE'         => $url . '&amp;action=disable']
 			);
 		}
-		$db->sql_freeresult($result);
 
 		// Quick adding module
 		$module_infos = $this->get_module_infos();
