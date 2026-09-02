@@ -383,7 +383,7 @@
 					<!-- IF forums.FORUM_IMAGE --><div style="float: left; margin-right: 5px;">{forums.FORUM_IMAGE}</div><!-- ENDIF -->
 					<strong><!-- IF forums.S_FORUM_LINK -->{forums.FORUM_NAME}<!-- ELSE --><a href="{forums.U_FORUM}">{forums.FORUM_NAME}</a><!-- ENDIF --></strong>
 					<!-- IF forums.FORUM_DESCRIPTION --><br /><span>{forums.FORUM_DESCRIPTION}</span><!-- ENDIF -->
-					<!-- IF forums.S_FORUM_POST --><br /><span>{L_TOPICS}: <strong>{forums.FORUM_TOPICS}</strong> / {L_POSTS}: <strong>{forums.FORUM_POSTS}</strong></span><!-- ENDIF -->
+					<!-- IF forums.FORUM_SUBFORUMS or forums.S_FORUM_POST --><br /><span><!-- IF forums.FORUM_SUBFORUMS -->{L_SUBFORUMS}: <strong>{forums.FORUM_SUBFORUMS}</strong><!-- IF forums.S_FORUM_POST --> / <!-- ENDIF --><!-- ENDIF --><!-- IF forums.S_FORUM_POST -->{L_TOPICS}: <strong>{forums.FORUM_TOPICS}</strong> / {L_POSTS}: <strong>{forums.FORUM_POSTS}</strong><!-- ENDIF --></span><!-- ENDIF -->
 				</td>
 				<td style="width: 100px; text-align: center; white-space: nowrap;">
 					<!-- IF forums.S_FIRST_ROW && not forums.S_LAST_ROW -->

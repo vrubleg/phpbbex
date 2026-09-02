@@ -623,10 +623,15 @@ class acp_forums
 		// Jumpbox
 		$forum_box = make_forum_select($this->parent_id, false, true, false, false);
 
-		$sql = 'SELECT *
-			FROM ' . FORUMS_TABLE . "
-			WHERE parent_id = {$this->parent_id}
-			ORDER BY left_id";
+		$sql = 'SELECT f.*, COALESCE(s.num_subforums, 0) AS forum_subforums
+			FROM ' . FORUMS_TABLE . ' f
+			LEFT JOIN (
+				SELECT parent_id, COUNT(forum_id) AS num_subforums
+				FROM ' . FORUMS_TABLE . '
+				GROUP BY parent_id
+			) s ON s.parent_id = f.forum_id
+			WHERE f.parent_id = ' . $this->parent_id . '
+			ORDER BY f.left_id';
 		$result = $db->sql_query($sql);
 
 		if ($row = $db->sql_fetchrow($result))
@@ -637,18 +642,18 @@ class acp_forums
 
 				if ($row['forum_status'] == ITEM_LOCKED)
 				{
-					$folder_image = '<img src="images/icon_folder_lock.gif" alt="' . $user->lang['LOCKED'] . '" />';
+					$folder_image = '<img src="images/icon_folder_lock.png" alt="' . $user->lang['LOCKED'] . '" />';
 				}
 				else
 				{
 					switch ($forum_type)
 					{
 						case FORUM_LINK:
-							$folder_image = '<img src="images/icon_folder_link.gif" alt="' . $user->lang['LINK'] . '" />';
+							$folder_image = '<img src="images/icon_folder_link.png" alt="' . $user->lang['LINK'] . '" />';
 						break;
 
 						default:
-							$folder_image = ($row['left_id'] + 1 != $row['right_id']) ? '<img src="images/icon_subfolder.gif" alt="' . $user->lang['SUBFORUM'] . '" />' : '<img src="images/icon_folder.gif" alt="' . $user->lang['FOLDER'] . '" />';
+							$folder_image = '<img src="images/icon_folder.png" alt="' . $user->lang['FOLDER'] . '" />';
 						break;
 					}
 				}
@@ -661,6 +666,7 @@ class acp_forums
 					'FORUM_IMAGE_SRC'   => ($row['forum_image']) ? PHPBB_ROOT_PATH . $row['forum_image'] : '',
 					'FORUM_NAME'        => $row['forum_name'],
 					'FORUM_DESCRIPTION' => generate_text_for_display($row['forum_desc'], $row['forum_desc_uid'], $row['forum_desc_bitfield'], $row['forum_desc_options']),
+					'FORUM_SUBFORUMS'   => (int) $row['forum_subforums'],
 					'FORUM_TOPICS'      => $row['forum_topics'],
 					'FORUM_POSTS'       => $row['forum_posts'],
 
