@@ -64,25 +64,6 @@
 		<!-- ENDIF -->
 	</fieldset>
 
-	<fieldset>
-		<form id="action_reset_rating_form" method="post" action="{U_ACTION}">
-			<dl>
-				<dt><label for="reset_album_id">{L_RESET_RATING}</label>
-					<br /><span>{L_RESET_RATING_EXPLAIN}</span></dt>
-				<dd>{S_SELECT_ALBUM}
-					<input type="hidden" name="action" value="reset_rating" /><input class="button2" type="submit" id="action_reset_rating" name="action_reset_rating" value="{L_RUN}" /></dd>
-			</dl>
-		</form>
-
-		<form id="action_create_pega_form" method="post" action="{U_ACTION}">
-			<dl>
-				<dt><label for="username">{L_CREATE_USERS_PEGA}</label></dt>
-				<dd><input class="inputbox autowidth" type="text" id="username" name="username" size="15" value="" />
-					<input type="hidden" name="action" value="create_pega" /><input class="button2" type="submit" id="action_create_pega" name="action_create_pega" value="{L_CREATE}" /></dd>
-				<dd>[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</dd>
-			</dl>
-		</form>
-	</fieldset>
 <!-- ENDIF -->
 
 <!-- IF S_GALLERY_MANAGE_RESTS -->
