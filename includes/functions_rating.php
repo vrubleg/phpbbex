@@ -14,97 +14,50 @@ function resync_rates()
 {
 	global $db;
 
-	// Remove rates for nonexistent posts
-	$sql = 'DELETE
-		FROM r USING ' . POST_RATES_TABLE . ' r
-		LEFT JOIN ' . POSTS_TABLE . ' p ON r.post_id = p.post_id
-		WHERE p.post_id IS NULL';
+	// Remove rates for nonexistent posts or users.
+	$sql = 'DELETE r
+		FROM ' . POST_RATES_TABLE . ' r
+		LEFT JOIN ' . POSTS_TABLE . ' p ON p.post_id = r.post_id
+		LEFT JOIN ' . USERS_TABLE . ' u ON u.user_id = r.user_id
+		WHERE p.post_id IS NULL
+			OR u.user_id IS NULL';
 	$db->sql_query($sql);
 
-	// Remove rates from nonexistent users
-	$sql = 'DELETE
-		FROM r USING ' . POST_RATES_TABLE . ' r
-		LEFT JOIN ' . USERS_TABLE . ' u ON r.user_id = u.user_id
-		WHERE u.user_id IS NULL';
+	// Rebuild the totals given and received by every user.
+	$sql = 'UPDATE ' . USERS_TABLE . ' u
+		LEFT JOIN (
+			SELECT user_id,
+				SUM(CASE WHEN rate < 0 THEN -rate ELSE 0 END) AS rated_negative,
+				SUM(CASE WHEN rate > 0 THEN rate ELSE 0 END) AS rated_positive
+			FROM ' . POST_RATES_TABLE . '
+			GROUP BY user_id
+		) given_rates ON given_rates.user_id = u.user_id
+		LEFT JOIN (
+			SELECT p.poster_id AS user_id,
+				SUM(CASE WHEN r.rate < 0 THEN -r.rate ELSE 0 END) AS rating_negative,
+				SUM(CASE WHEN r.rate > 0 THEN r.rate ELSE 0 END) AS rating_positive
+			FROM ' . POST_RATES_TABLE . ' r
+			INNER JOIN ' . POSTS_TABLE . ' p ON p.post_id = r.post_id
+			GROUP BY p.poster_id
+		) received_rates ON received_rates.user_id = u.user_id
+		SET u.user_rated_negative = COALESCE(given_rates.rated_negative, 0),
+			u.user_rated_positive = COALESCE(given_rates.rated_positive, 0),
+			u.user_rating_negative = COALESCE(received_rates.rating_negative, 0),
+			u.user_rating_positive = COALESCE(received_rates.rating_positive, 0)';
 	$db->sql_query($sql);
 
-	// Clear rating fields
-	$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_rated_negative = 0, user_rated_positive = 0, user_rating_negative = 0, user_rating_positive = 0');
-	$db->sql_query('UPDATE ' . POSTS_TABLE . ' SET post_rating_negative = 0, post_rating_positive = 0');
-
-	// Update user_rated_negative
-	$sql = 'SELECT user_id, ABS(SUM(rate)) as rates
-		FROM ' . POST_RATES_TABLE . '
-		WHERE rate < 0
-		GROUP BY user_id';
-	$result = $db->sql_query($sql);
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_rated_negative = {$row['rates']} WHERE user_id = {$row['user_id']}");
-	}
-	$db->sql_freeresult($result);
-
-	// Update user_rated_positive
-	$sql = 'SELECT user_id, ABS(SUM(rate)) as rates
-		FROM ' . POST_RATES_TABLE . '
-		WHERE rate > 0
-		GROUP BY user_id';
-	$result = $db->sql_query($sql);
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_rated_positive = {$row['rates']} WHERE user_id = {$row['user_id']}");
-	}
-	$db->sql_freeresult($result);
-
-	// Update user_rating_negative
-	$sql = 'SELECT p.poster_id, ABS(SUM(r.rate)) AS rates
-		FROM ' . POST_RATES_TABLE . ' r
-		INNER JOIN ' . POSTS_TABLE . ' p ON r.post_id = p.post_id
-		WHERE r.rate < 0
-		GROUP BY p.poster_id';
-	$result = $db->sql_query($sql);
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_rating_negative = {$row['rates']} WHERE user_id = {$row['poster_id']}");
-	}
-	$db->sql_freeresult($result);
-
-	// Update user_rating_positive
-	$sql = 'SELECT p.poster_id, ABS(SUM(r.rate)) AS rates
-		FROM ' . POST_RATES_TABLE . ' r
-		INNER JOIN ' . POSTS_TABLE . ' p ON r.post_id = p.post_id
-		WHERE r.rate > 0
-		GROUP BY p.poster_id';
-	$result = $db->sql_query($sql);
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_rating_positive = {$row['rates']} WHERE user_id = {$row['poster_id']}");
-	}
-	$db->sql_freeresult($result);
-
-	// Update post_rating_negative
-	$sql = 'SELECT post_id, ABS(SUM(rate)) AS rates
-		FROM ' . POST_RATES_TABLE . '
-		WHERE rate < 0
-		GROUP BY post_id';
-	$result = $db->sql_query($sql);
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$db->sql_query('UPDATE ' . POSTS_TABLE . " SET post_rating_negative = {$row['rates']} WHERE post_id = {$row['post_id']}");
-	}
-	$db->sql_freeresult($result);
-
-	// Update post_rating_positive
-	$sql = 'SELECT post_id, ABS(SUM(rate)) AS rates
-		FROM ' . POST_RATES_TABLE . '
-		WHERE rate > 0
-		GROUP BY post_id';
-	$result = $db->sql_query($sql);
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$db->sql_query('UPDATE ' . POSTS_TABLE . " SET post_rating_positive = {$row['rates']} WHERE post_id = {$row['post_id']}");
-	}
-	$db->sql_freeresult($result);
+	// Rebuild the totals received by every post.
+	$sql = 'UPDATE ' . POSTS_TABLE . ' p
+		LEFT JOIN (
+			SELECT post_id,
+				SUM(CASE WHEN rate < 0 THEN -rate ELSE 0 END) AS rating_negative,
+				SUM(CASE WHEN rate > 0 THEN rate ELSE 0 END) AS rating_positive
+			FROM ' . POST_RATES_TABLE . '
+			GROUP BY post_id
+		) post_rates ON post_rates.post_id = p.post_id
+		SET p.post_rating_negative = COALESCE(post_rates.rating_negative, 0),
+			p.post_rating_positive = COALESCE(post_rates.rating_positive, 0)';
+	$db->sql_query($sql);
 }
 
 function remove_rate_row($rate_row)
