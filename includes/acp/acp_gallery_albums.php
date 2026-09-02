@@ -588,20 +588,17 @@ class acp_gallery_albums
 			}
 			while ($row = $db->sql_fetchrow($result));
 		}
-		else if ($this->parent_id)
-		{
-			$row = phpbb_gallery_album::get_info($this->parent_id);
+		$db->sql_freeresult($result);
 
-			$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;a=' . $row['album_id'];
+		if ($this->parent_id)
+		{
+			$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;a=' . $this->parent_id;
 
 			$template->assign_vars([
-				'S_NO_ALBUMS'       => true,
-
-				'U_EDIT'            => $url . '&amp;action=edit',
-				'U_DELETE'          => $url . '&amp;action=delete',
+				'U_EDIT'    => $url . '&amp;action=edit',
+				'U_DELETE'  => $url . '&amp;action=delete',
 			]);
 		}
-		$db->sql_freeresult($result);
 
 		$template->assign_vars([
 			'ERROR_MSG'     => (sizeof($errors)) ? implode('<br />', $errors) : '',
