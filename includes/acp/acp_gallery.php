@@ -74,7 +74,7 @@ class acp_gallery
 				break;
 				case 'purge_cache':
 					$confirm = true;
-					$confirm_lang = 'PURGE_THUMBNAIL_CACHE_EXPLAIN';
+					$confirm_lang = 'PURGE_IMAGE_CACHE_EXPLAIN';
 				break;
 			}
 
@@ -242,13 +242,13 @@ class acp_gallery
 						SET ' . $db->sql_build_array('UPDATE', $sql_ary);
 					$db->sql_query($sql);
 
-					trigger_error($user->lang['PURGED_THUMBNAIL_CACHE'] . adm_back_link($this->u_action));
+					trigger_error($user->lang['PURGED_IMAGE_CACHE'] . adm_back_link($this->u_action));
 				break;
 			}
 		}
 
-		$boarddays = (time() - $config['board_startdate']) / 86400;
-		$images_per_day = sprintf('%.2f', phpbb_gallery_config::get('num_images') / $boarddays);
+		$board_days = max(1.0, (time() - $config['board_startdate']) / 86400);
+		$images_per_day = sprintf($user->lang['N_PER_DAY'], phpbb_gallery_config::get('num_images') / $board_days);
 
 		$sql = 'SELECT COUNT(album_user_id) AS num_albums
 			FROM ' . GALLERY_ALBUMS_TABLE . '
@@ -275,7 +275,6 @@ class acp_gallery
 			'GUPLOAD_DIR_SIZE'      => get_formatted_filesize(!empty($dir_sizes['stat']) ? $dir_sizes['stat'] : 0),
 			'MEDIUM_DIR_SIZE'       => get_formatted_filesize(!empty($dir_sizes['stat_medium']) ? $dir_sizes['stat_medium'] : 0),
 			'CACHE_DIR_SIZE'        => get_formatted_filesize(!empty($dir_sizes['stat_cache']) ? $dir_sizes['stat_cache'] : 0),
-			'GALLERY_VERSION'       => phpbb_gallery_config::get('version'),
 
 			'S_FOUNDER'             => ($user->data['user_type'] == USER_FOUNDER),
 			'U_ACTION'              => $this->u_action,
