@@ -682,20 +682,17 @@ class acp_forums
 			}
 			while ($row = $db->sql_fetchrow($result));
 		}
-		else if ($this->parent_id)
-		{
-			$row = $this->get_forum_info($this->parent_id);
+		$db->sql_freeresult($result);
 
-			$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;f=' . $row['forum_id'];
+		if ($this->parent_id)
+		{
+			$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;f=' . $this->parent_id;
 
 			$template->assign_vars([
-				'S_NO_FORUMS'       => true,
-
-				'U_EDIT'            => $url . '&amp;action=edit',
-				'U_DELETE'          => $url . '&amp;action=delete',
+				'U_EDIT'    => $url . '&amp;action=edit',
+				'U_DELETE'  => $url . '&amp;action=delete',
 			]);
 		}
-		$db->sql_freeresult($result);
 
 		$template->assign_vars([
 			'ERROR_MSG'     => (sizeof($errors)) ? implode('<br />', $errors) : '',
@@ -1446,131 +1443,20 @@ class acp_forums
 	*/
 	function delete_forum_content($forum_id)
 	{
-		global $db, $config;
-
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
+		global $db;
 
 		$db->sql_transaction('begin');
 
-		// Select then delete all attachments
-		$sql = 'SELECT a.topic_id
-			FROM ' . POSTS_TABLE . ' p, ' . ATTACHMENTS_TABLE . " a
-			WHERE p.forum_id = {$forum_id}
-				AND a.in_message = 0
-				AND a.topic_id = p.topic_id";
-		$result = $db->sql_query($sql);
+		delete_topics('forum_id', $forum_id, false, true);
 
-		$topic_ids = [];
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$topic_ids[] = $row['topic_id'];
-		}
-		$db->sql_freeresult($result);
-
-		delete_attachments('topic', $topic_ids, false);
-
-		// Delete shadow topics pointing to topics in this forum
-		delete_topic_shadows($forum_id);
-
-		// Before we remove anything we make sure we are able to adjust the post counts later. ;)
-		$sql = 'SELECT poster_id
-			FROM ' . POSTS_TABLE . '
-			WHERE forum_id = ' . $forum_id . '
-				AND post_postcount = 1
-				AND post_approved = 1';
-		$result = $db->sql_query($sql);
-
-		$post_counts = [];
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$post_counts[$row['poster_id']] = (!empty($post_counts[$row['poster_id']])) ? $post_counts[$row['poster_id']] + 1 : 1;
-		}
-		$db->sql_freeresult($result);
-
-		// Delete everything else and thank MySQL for offering multi-table deletion
-		$tables_ary = [
-			REPORTS_TABLE           => 'post_id',
-			WARNINGS_TABLE          => 'post_id',
-			BOOKMARKS_TABLE         => 'topic_id',
-			TOPICS_WATCH_TABLE      => 'topic_id',
-			POLL_OPTIONS_TABLE      => 'topic_id',
-			POLL_VOTES_TABLE        => 'topic_id',
-		];
-
-		$sql = 'DELETE ' . POSTS_TABLE;
-		$sql_using = "\nFROM " . POSTS_TABLE;
-		$sql_where = "\nWHERE " . POSTS_TABLE . ".forum_id = {$forum_id}\n";
-
-		foreach ($tables_ary as $table => $field)
-		{
-			$sql .= ", {$table} ";
-			$sql_using .= ", {$table} ";
-			$sql_where .= "\nAND {$table}.{$field} = " . POSTS_TABLE . ".{$field}";
-		}
-
-		$db->sql_query($sql . $sql_using . $sql_where);
-
-		$table_ary = [DRAFTS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE, POSTS_TABLE, TOPICS_TABLE, TOPICS_TRACK_TABLE];
+		$table_ary = [DRAFTS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE];
 
 		foreach ($table_ary as $table)
 		{
 			$db->sql_query("DELETE FROM {$table} WHERE forum_id = {$forum_id}");
 		}
-		// Adjust users post counts
-		if (sizeof($post_counts))
-		{
-			foreach ($post_counts as $poster_id => $substract)
-			{
-				$sql = 'UPDATE ' . USERS_TABLE . '
-					SET user_posts = 0
-					WHERE user_id = ' . $poster_id . '
-					AND user_posts < ' . $substract;
-				$db->sql_query($sql);
-
-				$sql = 'UPDATE ' . USERS_TABLE . '
-					SET user_posts = user_posts - ' . $substract . '
-					WHERE user_id = ' . $poster_id . '
-					AND user_posts >= ' . $substract;
-				$db->sql_query($sql);
-			}
-		}
 
 		$db->sql_transaction('commit');
-
-		// Make sure the overall post/topic count is correct...
-		$sql = 'SELECT COUNT(post_id) AS stat
-			FROM ' . POSTS_TABLE . '
-			WHERE post_approved = 1';
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		set_config('num_posts', (int) $row['stat'], true);
-
-		$sql = 'SELECT COUNT(topic_id) AS stat
-			FROM ' . TOPICS_TABLE . '
-			WHERE topic_approved = 1';
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		set_config('num_topics', (int) $row['stat'], true);
-
-		$sql = 'SELECT COUNT(attach_id) as stat
-			FROM ' . ATTACHMENTS_TABLE;
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		set_config('num_files', (int) $row['stat'], true);
-
-		$sql = 'SELECT SUM(filesize) as stat
-			FROM ' . ATTACHMENTS_TABLE;
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		set_config('upload_dir_size', (float) $row['stat'], true);
 
 		return [];
 	}

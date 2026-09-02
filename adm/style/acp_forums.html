@@ -370,7 +370,13 @@
 		</div>
 	<!-- ENDIF -->
 
-	<p><strong>{NAVIGATION}<!-- IF S_NO_FORUMS --> [<a href="{U_EDIT}">{L_EDIT}</a> | <a href="{U_DELETE}">{L_DELETE}</a>]<!-- ENDIF --></strong></p>
+	<table cellspacing="1">
+	<tbody>
+	<tr>
+		<td class="row3">{NAVIGATION}<!-- IF U_EDIT --> [<a href="{U_EDIT}">{L_EDIT}</a> | <a href="{U_DELETE}">{L_DELETE}</a>]<!-- ENDIF --></td>
+	</tr>
+	</tbody>
+	</table>
 
 	<!-- IF .forums -->
 		<table cellspacing="1">
