@@ -46,7 +46,8 @@ if (!$allowed && !defined('DEBUG_EXTRA'))
 
 // We are allowed, run the update!
 
-@set_time_limit(0);
+set_time_limit(0);
+ignore_user_abort(true);
 
 require_once(PHPBB_ROOT_PATH . 'includes/acm/acm_' . $acm_type . '.php');
 require_once(PHPBB_ROOT_PATH . 'includes/cache.php');

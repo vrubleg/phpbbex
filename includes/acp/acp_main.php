@@ -70,21 +70,9 @@ class acp_main
 						$confirm = true;
 						$confirm_lang = 'RESYNC_STATS_CONFIRM';
 					break;
-					case 'user':
+					case 'user_stats':
 						$confirm = true;
-						$confirm_lang = 'RESYNC_POSTCOUNTS_CONFIRM';
-					break;
-					case 'topics':
-						$confirm = true;
-						$confirm_lang = 'RESYNC_TOPICCOUNTS_CONFIRM';
-					break;
-					case 'rates':
-						$confirm = true;
-						$confirm_lang = 'RESYNC_RATES_CONFIRM';
-					break;
-					case 'date':
-						$confirm = true;
-						$confirm_lang = 'RESET_DATE_CONFIRM';
+						$confirm_lang = 'RESYNC_USER_STATS_CONFIRM';
 					break;
 					case 'purge_cache':
 						$confirm = true;
@@ -114,6 +102,9 @@ class acp_main
 				switch ($action)
 				{
 					case 'stats':
+
+						set_time_limit(0);
+						ignore_user_abort(true);
 
 						$sql = 'SELECT COUNT(post_id) AS stat
 							FROM ' . POSTS_TABLE . '
@@ -160,7 +151,10 @@ class acp_main
 
 					break;
 
-					case 'user':
+					case 'user_stats':
+
+						set_time_limit(0);
+						ignore_user_abort(true);
 
 						// Resync post counts.
 						$sql = 'UPDATE ' . USERS_TABLE . ' u
@@ -173,12 +167,6 @@ class acp_main
 							) post_counts ON post_counts.poster_id = u.user_id
 							SET u.user_posts = COALESCE(post_counts.num_posts, 0)';
 						$db->sql_query($sql);
-
-						add_log('admin', 'LOG_RESYNC_POSTCOUNTS');
-
-					break;
-
-					case 'topics':
 
 						// Resync topic counts.
 						$sql = 'UPDATE ' . USERS_TABLE . ' u
@@ -194,27 +182,12 @@ class acp_main
 							SET u.user_topics = COALESCE(topic_counts.num_topics, 0)';
 						$db->sql_query($sql);
 
-						add_log('admin', 'LOG_RESYNC_TOPICCOUNTS');
-
-					break;
-
-					case 'rates':
-
+						// Resync ratings.
 						require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
 						resync_rates();
-						add_log('admin', 'LOG_RESYNC_RATES');
 
-					break;
+						add_log('admin', 'LOG_RESYNC_USER_STATS');
 
-					case 'date':
-
-						if ((int) $user->data['user_type'] !== USER_FOUNDER)
-						{
-							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
-						set_config('board_startdate', time() - 1);
-						add_log('admin', 'LOG_RESET_DATE');
 					break;
 
 					case 'purge_cache':
