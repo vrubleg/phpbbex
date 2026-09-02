@@ -145,7 +145,6 @@ class acp_board
 						'active_topics_on_index'            => ['lang' => 'ACTIVE_TOPICS_ON_INDEX',         'validate' => 'int',    'type' => 'text:3:4', 'explain' => true],
 						'load_birthdays'                    => ['lang' => 'YES_BIRTHDAYS',                      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'load_moderators'                   => ['lang' => 'YES_MODERATORS',                 'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'style_show_feeds_in_forumlist'     => ['lang' => 'STYLE_SHOW_FEEDS_IN_FORUMLIST',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
 						'legend3'                           => 'STYLE_SETTINGS_VIEWTOPIC',
 						'style_vt_show_post_numbers'        => ['lang' => 'STYLE_VT_SHOW_POST_NUMBERS',     'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
@@ -300,12 +299,6 @@ class acp_board
 						'allow_quick_reply_smilies'         => ['lang' => 'ALLOW_QUICK_REPLY_SMILIES',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'allow_quick_full_quote'            => ['lang' => 'ALLOW_QUICK_FULL_QUOTE',     'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
-						'allow_quick_post'                  => ['lang' => 'ALLOW_QUICK_TOPIC',              'validate' => 'int',    'type' => 'select', 'method' => 'allow_quick_reply_for', 'explain' => true],
-						'allow_quick_post_icons'            => ['lang' => 'ALLOW_QUICK_REPLY_ICONS',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'allow_quick_post_checkboxes'       => ['lang' => 'ALLOW_QUICK_REPLY_CHECKBOXES',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'allow_quick_post_attachbox'        => ['lang' => 'ALLOW_QUICK_REPLY_ATTACHBOX',    'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-						'allow_quick_post_smilies'          => ['lang' => 'ALLOW_QUICK_REPLY_SMILIES',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
-
 						'legend4'                           => 'EXTERNAL_LINKS',
 						'external_links_newwindow'          => ['lang' => 'EXTERNAL_LINKS_NEWWINDOW',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'external_links_newwindow_exclude'  => ['lang' => 'EXTERNAL_LINKS_EXCLUDE', 'validate' => 'string', 'type' => 'textarea:3:1000', 'explain' => true],
@@ -376,6 +369,7 @@ class acp_board
 						'feed_enable'               => ['lang' => 'ACP_FEED_ENABLE',                'validate' => 'bool',   'type' => 'radio:enabled_disabled', 'explain' => true ],
 						'feed_item_statistics'      => ['lang' => 'ACP_FEED_ITEM_STATISTICS',       'validate' => 'bool',   'type' => 'radio:enabled_disabled', 'explain' => true],
 						'feed_http_auth'            => ['lang' => 'ACP_FEED_HTTP_AUTH',         'validate' => 'bool',   'type' => 'radio:enabled_disabled', 'explain' => true],
+						'feed_exclude_id'           => ['lang' => 'ACP_FEED_EXCLUDE_ID',            'validate' => 'string', 'type' => 'custom', 'method' => 'select_exclude_forums', 'explain' => true],
 
 						'legend2'                   => 'ACP_FEED_POST_BASED',
 						'feed_limit_post'           => ['lang' => 'ACP_FEED_LIMIT',             'validate' => 'int:5',  'type' => 'text:3:4',               'explain' => true],
@@ -389,11 +383,7 @@ class acp_board
 						'feed_topics_active'        => ['lang' => 'ACP_FEED_TOPICS_ACTIVE',     'validate' => 'bool',   'type' => 'radio:enabled_disabled', 'explain' => true ],
 						'feed_news_id'              => ['lang' => 'ACP_FEED_NEWS',                  'validate' => 'string', 'type' => 'custom', 'method' => 'select_news_forums', 'explain' => true],
 
-						'legend4'                   => 'ACP_FEED_SETTINGS_OTHER',
-						'feed_overall_forums'       => ['lang'  => 'ACP_FEED_OVERALL_FORUMS',       'validate' => 'bool',   'type' => 'radio:enabled_disabled', 'explain' => true ],
-						'feed_exclude_id'           => ['lang' => 'ACP_FEED_EXCLUDE_ID',            'validate' => 'string', 'type' => 'custom', 'method' => 'select_exclude_forums', 'explain' => true],
-
-						'legend5'                   => 'ACP_SUBMIT_CHANGES',
+						'legend4'                   => 'ACP_SUBMIT_CHANGES',
 					]
 				];
 			break;

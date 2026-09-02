@@ -790,8 +790,7 @@ class acp_users
 
 							if (sizeof($topic_id_ary))
 							{
-								sync('topic_reported', 'topic_id', $topic_id_ary);
-								sync('topic', 'topic_id', $topic_id_ary);
+								sync('topic', 'topic_id', $topic_id_ary, false, true);
 							}
 
 							if (sizeof($forum_id_ary))

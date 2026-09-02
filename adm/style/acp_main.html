@@ -66,31 +66,31 @@
 	<tbody>
 	<tr>
 		<td>{L_BOARD_STARTED}:</td>
-		<td><strong>{START_DATE}</strong> <i>({START_TIME_AGO})</i></td>
+		<td><b>{START_DATE}</b> <i>({START_TIME_AGO})</i></td>
 		<td>{L_PHPBBEX_VERSION}:</td>
-		<td><strong><a href="<!-- IF S_VERSIONCHECK_FAIL -->//phpbbex.com/<!-- ELSE -->{U_UPDATE_ANNOUNCEMENT}<!-- ENDIF -->" target="_blank" style="color: <!-- IF S_VERSION_UP_TO_DATE -->#228822<!-- ELSE -->#bc2a4d<!-- ENDIF -->" title="{L_MORE_INFORMATION}">{PHPBBEX_VERSION}</a></strong> [&nbsp;<a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a>&nbsp;]</td>
+		<td><strong class="<!-- IF S_VERSION_UP_TO_DATE -->status-green<!-- ELSE -->status-red<!-- ENDIF -->"><a href="<!-- IF S_VERSIONCHECK_FAIL -->//phpbbex.com/<!-- ELSE -->{U_UPDATE_ANNOUNCEMENT}<!-- ENDIF -->" target="_blank" title="{L_MORE_INFORMATION}">{PHPBBEX_VERSION}</a></strong> [&nbsp;<a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a>&nbsp;]</td>
 	</tr>
 	<tr>
 		<td>{L_NUMBER_POSTS}:</td>
-		<td><strong>{TOTAL_POSTS}</strong> <i>({POSTS_PER_DAY})</i></td>
+		<td><b>{TOTAL_POSTS}</b> <i>({POSTS_PER_DAY})</i></td>
 		<td>{L_NUMBER_FILES}:</td>
-		<td><strong>{TOTAL_FILES}</strong> <i>({FILES_PER_DAY})</i></td>
+		<td><b>{TOTAL_FILES}</b> <i>({FILES_PER_DAY})</i></td>
 	</tr>
 	<tr>
 		<td>{L_NUMBER_TOPICS}:</td>
-		<td><strong>{TOTAL_TOPICS}</strong> <i>({TOPICS_PER_DAY})</i></td>
+		<td><b>{TOTAL_TOPICS}</b> <i>({TOPICS_PER_DAY})</i></td>
 		<td>{L_NUMBER_ORPHAN}:</td>
 		<td><strong>{TOTAL_ORPHAN}</strong></td>
 	</tr>
 	<tr>
 		<td>{L_NUMBER_USERS}:</td>
-		<td><strong>{TOTAL_USERS}</strong> <i>({USERS_PER_DAY})</i></td>
+		<td><b>{TOTAL_USERS}</b> <i>({USERS_PER_DAY})</i></td>
 		<td>{L_UPLOAD_DIR_SIZE}:</td>
-		<td><strong<!-- IF S_UPLOAD_DIR_WARN --> style="color: #bc2a4d"<!-- ENDIF -->>{UPLOAD_DIR_SIZE}</strong><!-- IF UPLOAD_DIR_QUOTA --> <i>({UPLOAD_DIR_QUOTA})</i><!-- ENDIF --></td>
+		<td><b<!-- IF S_UPLOAD_DIR_WARN --> class="status-red"<!-- ENDIF -->>{UPLOAD_DIR_SIZE}</b><!-- IF UPLOAD_DIR_QUOTA --> <i>({UPLOAD_DIR_QUOTA})</i><!-- ENDIF --></td>
 	</tr>
 	<tr>
 		<td>{L_DATABASE_SIZE}:</td>
-		<td><strong>{DBSIZE}</strong> <i title="{L_DATABASE_SERVER_INFO}">({DATABASE_INFO})</i></td>
+		<td><b>{DBSIZE}</b> <i title="{L_DATABASE_SERVER_INFO}">({DATABASE_INFO})</i></td>
 		<td>{L_AVATAR_DIR_SIZE}:</td>
 		<td><strong>{AVATAR_DIR_SIZE}</strong></td>
 	</tr>
@@ -101,13 +101,6 @@
 		<fieldset>
 			<legend>{L_STATISTIC_RESYNC_OPTIONS}</legend>
 
-			<form id="action_date_form" method="post" action="{U_ACTION}" style="display: none;">
-				<dl>
-					<dt><label for="action_date">{L_RESET_DATE}</label><br /><span>&nbsp;</span></dt>
-					<dd><input type="hidden" name="action" value="date" /><input class="button2" type="submit" id="action_date" name="action_date" value="{L_RUN}" /></dd>
-				</dl>
-			</form>
-
 			<form id="action_stats_form" method="post" action="{U_ACTION}">
 				<dl>
 					<dt><label for="action_stats">{L_RESYNC_STATS}</label><br /><span>{L_RESYNC_STATS_EXPLAIN}</span></dt>
@@ -115,24 +108,10 @@
 				</dl>
 			</form>
 
-			<form id="action_user_form" method="post" action="{U_ACTION}">
+			<form id="action_user_stats_form" method="post" action="{U_ACTION}">
 				<dl>
-					<dt><label for="action_user">{L_RESYNC_POSTCOUNTS}</label><br /><span>{L_RESYNC_POSTCOUNTS_EXPLAIN}</span></dt>
-					<dd><input type="hidden" name="action" value="user" /><input class="button2" type="submit" id="action_user" name="action_user" value="{L_RUN}" /></dd>
-				</dl>
-			</form>
-
-			<form id="action_topics_form" method="post" action="{U_ACTION}">
-				<dl>
-					<dt><label for="action_topics">{L_RESYNC_TOPICCOUNTS}</label><br /><span>{L_RESYNC_TOPICCOUNTS_EXPLAIN}</span></dt>
-					<dd><input type="hidden" name="action" value="topics" /><input class="button2" type="submit" id="action_topics" name="action_topics" value="{L_RUN}" /></dd>
-				</dl>
-			</form>
-
-			<form id="action_rates_form" method="post" action="{U_ACTION}">
-				<dl>
-					<dt><label for="action_rates">{L_RESYNC_RATES}</label><br /><span>{L_RESYNC_RATES_EXPLAIN}</span></dt>
-					<dd><input type="hidden" name="action" value="rates" /><input class="button2" type="submit" id="action_rates" name="action_rates" value="{L_RUN}" /></dd>
+					<dt><label for="action_user_stats">{L_RESYNC_USER_STATS}</label><br /><span>{L_RESYNC_USER_STATS_EXPLAIN}</span></dt>
+					<dd><input type="hidden" name="action" value="user_stats" /><input class="button2" type="submit" id="action_user_stats" name="action_user_stats" value="{L_RUN}" /></dd>
 				</dl>
 			</form>
 

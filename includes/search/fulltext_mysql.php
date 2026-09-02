@@ -17,20 +17,9 @@ require_once(PHPBB_ROOT_PATH . 'includes/search/search.php');
 */
 class fulltext_mysql extends search_backend
 {
-	var $stats = [];
-	var $word_length = [];
 	var $split_words = [];
 	var $search_query;
 	var $common_words = [];
-
-	function __construct(&$error)
-	{
-		global $config;
-
-		$this->word_length = ['min' => $config['fulltext_mysql_min_word_len'], 'max' => $config['fulltext_mysql_max_word_len']];
-
-		$error = false;
-	}
 
 	/**
 	* Checks for correct MySQL version and stores min/max word length in the config
@@ -43,15 +32,7 @@ class fulltext_mysql extends search_backend
 		$info = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		$engine = '';
-		if (isset($info['Engine']))
-		{
-			$engine = $info['Engine'];
-		}
-		else if (isset($info['Type']))
-		{
-			$engine = $info['Type'];
-		}
+		$engine = $info['Engine'] ?? $info['Type'] ?? '';
 
 		$fulltext_supported = ($engine === 'MyISAM')
 			// FULLTEXT is supported on InnoDB since MySQL 5.6.4.
@@ -62,7 +43,7 @@ class fulltext_mysql extends search_backend
 			return $user->lang['FULLTEXT_MYSQL_NOT_SUPPORTED'];
 		}
 
-		$sql = 'SHOW VARIABLES LIKE \'ft\_%\'';
+		$sql = 'SHOW VARIABLES LIKE \'%ft\_%\'';
 		$result = $db->sql_query($sql);
 
 		$mysql_info = [];
@@ -72,8 +53,16 @@ class fulltext_mysql extends search_backend
 		}
 		$db->sql_freeresult($result);
 
-		set_config('fulltext_mysql_max_word_len', $mysql_info['ft_max_word_len']);
-		set_config('fulltext_mysql_min_word_len', $mysql_info['ft_min_word_len']);
+		if ($engine === 'MyISAM')
+		{
+			set_config('fulltext_mysql_max_word_len', $mysql_info['ft_max_word_len']);
+			set_config('fulltext_mysql_min_word_len', $mysql_info['ft_min_word_len']);
+		}
+		else
+		{
+			set_config('fulltext_mysql_max_word_len', $mysql_info['innodb_ft_max_token_size']);
+			set_config('fulltext_mysql_min_word_len', $mysql_info['innodb_ft_min_token_size']);
+		}
 
 		return false;
 	}
@@ -90,15 +79,7 @@ class fulltext_mysql extends search_backend
 	{
 		global $config, $user;
 
-		if ($terms == 'all')
-		{
-			$match      = ['#\sand\s#iu', '#\sor\s#iu', '#\snot\s#iu', '#(^|\s)\+#', '#(^|\s)-#', '#(^|\s)\|#'];
-			$replace    = [' +', ' |', ' -', ' +', ' -', ' |'];
-
-			$keywords = preg_replace($match, $replace, $keywords);
-		}
-
-		// Filter out as above
+		// Decode HTML entities and replace line breaks and tabs with spaces.
 		$split_keywords = preg_replace("#[\n\r\t]+#", ' ', trim(htmlspecialchars_decode($keywords)));
 
 		// Split words
@@ -134,7 +115,7 @@ class fulltext_mysql extends search_backend
 			}
 			else
 			{
-				$tmp_split_words[] = $word . ' ';
+				$tmp_split_words[] = $word;
 			}
 		}
 		if ($phrase)
@@ -235,7 +216,7 @@ class fulltext_mysql extends search_backend
 	* Performs a search on keywords depending on display specific params. You have to run split_keywords() first.
 	*
 	* @param    string      $type               contains either posts or topics depending on what should be searched for
-	* @param    string      $fields             contains either titleonly (topic titles should be searched), msgonly (only message bodies should be searched), firstpost (only subject and body of the first post should be searched) or all (all post bodies and subjects should be searched)
+	* @param    string      $fields             contains either titleonly (topic titles should be searched), firstpost (only subject and body of the first post should be searched) or all (all post bodies and subjects should be searched)
 	* @param    string      $terms              is either 'all' (use query as entered, words without prefix should default to "have to be in field") or 'any' (ignore search query parts and just return all posts that contain any of the specified words)
 	* @param    array       $sort_by_sql        contains SQL code for the ORDER BY part of a query
 	* @param    string      $sort_key           is the key of $sort_by_sql for the selected sorting
@@ -289,7 +270,8 @@ class fulltext_mysql extends search_backend
 		$join_topic = ($type != 'posts');
 
 		// Build sql strings for sorting
-		$sql_sort = $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
+		$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
+		$sql_sort = $sort_by_sql[$sort_key] . $sql_sort_dir . ', ' . (($type == 'posts') ? 'p.post_id' : 't.topic_id') . $sql_sort_dir;
 		$sql_sort_table = $sql_sort_join = '';
 
 		switch ($sql_sort[0])
@@ -318,11 +300,6 @@ class fulltext_mysql extends search_backend
 				$join_topic = true;
 			break;
 
-			case 'msgonly':
-				$sql_match = 'p.post_text';
-				$sql_match_where = '';
-			break;
-
 			case 'firstpost':
 				$sql_match = 'p.post_subject, p.post_text';
 				$sql_match_where = ' AND p.post_id = t.topic_first_post_id';
@@ -334,6 +311,7 @@ class fulltext_mysql extends search_backend
 				$sql_match_where = '';
 			break;
 		}
+		$sql_match_query = "MATCH ({$sql_match}) AGAINST ('" . $db->sql_escape(htmlspecialchars_decode($this->search_query)) . "' IN BOOLEAN MODE)";
 
 		if (!sizeof($m_approve_fid_ary))
 		{
@@ -348,8 +326,26 @@ class fulltext_mysql extends search_backend
 			$m_approve_fid_sql = ' AND (p.post_approved = 1 OR ' . $db->sql_in_set('p.forum_id', $m_approve_fid_ary, true) . ')';
 		}
 
-		$sql_select         = (!$result_count) ? 'SQL_CALC_FOUND_ROWS ' : '';
-		$sql_select         = ($type == 'posts') ? $sql_select . 'p.post_id' : 'DISTINCT ' . $sql_select . 't.topic_id';
+		$sql_select = (!$result_count) ? 'SQL_CALC_FOUND_ROWS ' : '';
+		$sql_group_by = '';
+
+		if ($sort_key == 'r')
+		{
+			if ($type == 'posts')
+			{
+				$sql_select .= "p.post_id, {$sql_match_query} AS relevance";
+			}
+			else
+			{
+				$sql_select .= "t.topic_id, MAX({$sql_match_query}) AS relevance";
+				$sql_group_by = 'GROUP BY t.topic_id';
+			}
+		}
+		else
+		{
+			$sql_select = ($type == 'posts') ? $sql_select . 'p.post_id' : 'DISTINCT ' . $sql_select . 't.topic_id';
+		}
+
 		$sql_from           = ($join_topic) ? TOPICS_TABLE . ' t, ' : '';
 		$field              = ($type == 'posts') ? 'post_id' : 'topic_id';
 		if (sizeof($author_ary) && $author_name)
@@ -366,7 +362,8 @@ class fulltext_mysql extends search_backend
 			$sql_author = '';
 		}
 
-		$sql_where_options = $sql_sort_join;
+		$sql_where_options = $sql_match_query;
+		$sql_where_options .= $sql_sort_join;
 		$sql_where_options .= ($topic_id) ? ' AND p.topic_id = ' . $topic_id : '';
 		$sql_where_options .= ($join_topic) ? ' AND t.topic_id = p.topic_id' : '';
 		$sql_where_options .= (sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '';
@@ -377,8 +374,8 @@ class fulltext_mysql extends search_backend
 
 		$sql = "SELECT {$sql_select}
 			FROM {$sql_from}{$sql_sort_table}" . POSTS_TABLE . " p
-			WHERE MATCH ({$sql_match}) AGAINST ('" . $db->sql_escape(htmlspecialchars_decode($this->search_query)) . "' IN BOOLEAN MODE)
-				{$sql_where_options}
+			WHERE {$sql_where_options}
+				{$sql_group_by}
 			ORDER BY {$sql_sort}";
 		$result = $db->sql_query_limit($sql, $config['search_block_size'], $start);
 
@@ -488,8 +485,10 @@ class fulltext_mysql extends search_backend
 		$sql_firstpost = ($firstpost_only) ? ' AND p.post_id = t.topic_first_post_id' : '';
 
 		// Build sql strings for sorting
-		$sql_sort = $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
+		$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
+		$sql_sort = $sort_by_sql[$sort_key] . $sql_sort_dir . ', ' . (($type == 'posts') ? 'p.post_id' : 't.topic_id') . $sql_sort_dir;
 		$sql_sort_table = $sql_sort_join = '';
+
 		switch ($sql_sort[0])
 		{
 			case 'u':
@@ -637,7 +636,7 @@ class fulltext_mysql extends search_backend
 	/**
 	* Create fulltext index
 	*/
-	function create_index($acp_module, $u_action)
+	function create_index()
 	{
 		global $db;
 
@@ -647,36 +646,34 @@ class fulltext_mysql extends search_backend
 			return $error;
 		}
 
-		if (empty($this->stats))
-		{
-			$this->get_stats();
-		}
+		$stats = $this->get_stats();
 
 		$alter = [];
 
-		if (!isset($this->stats['post_subject']))
+		if (!$stats['post_subject'])
 		{
-			$alter[] = 'MODIFY post_subject varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT \'\' NOT NULL';
 			$alter[] = 'ADD FULLTEXT (post_subject)';
 		}
 
-		if (!isset($this->stats['post_text']))
-		{
-			$alter[] = 'MODIFY post_text mediumtext COLLATE utf8mb4_unicode_ci NOT NULL';
-			$alter[] = 'ADD FULLTEXT (post_text)';
-		}
-
-		if (!isset($this->stats['post_content']))
+		if (!$stats['post_content'])
 		{
 			$alter[] = 'ADD FULLTEXT post_content (post_subject, post_text)';
 		}
 
-		if (sizeof($alter))
+		foreach ($alter as $alter_sql)
 		{
-			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . implode(', ', $alter));
+			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . $alter_sql);
+			if ($db->sql_error_triggered)
+			{
+				break;
+			}
 		}
 
-		$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		if (!$db->sql_error_triggered)
+		{
+			set_config('fulltext_mysql_indexed', $this->index_created());
+			$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		}
 
 		return false;
 	}
@@ -684,7 +681,7 @@ class fulltext_mysql extends search_backend
 	/**
 	* Drop fulltext index
 	*/
-	function delete_index($acp_module, $u_action)
+	function delete_index()
 	{
 		global $db;
 
@@ -694,24 +691,16 @@ class fulltext_mysql extends search_backend
 			return $error;
 		}
 
-		if (empty($this->stats))
-		{
-			$this->get_stats();
-		}
+		$stats = $this->get_stats();
 
 		$alter = [];
 
-		if (isset($this->stats['post_subject']))
+		if ($stats['post_subject'])
 		{
 			$alter[] = 'DROP INDEX post_subject';
 		}
 
-		if (isset($this->stats['post_text']))
-		{
-			$alter[] = 'DROP INDEX post_text';
-		}
-
-		if (isset($this->stats['post_content']))
+		if ($stats['post_content'])
 		{
 			$alter[] = 'DROP INDEX post_content';
 		}
@@ -721,7 +710,11 @@ class fulltext_mysql extends search_backend
 			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . implode(', ', $alter));
 		}
 
-		$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		if (!$db->sql_error_triggered)
+		{
+			set_config('fulltext_mysql_indexed', $this->index_created());
+			$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		}
 
 		return false;
 	}
@@ -731,29 +724,8 @@ class fulltext_mysql extends search_backend
 	*/
 	function index_created()
 	{
-		if (empty($this->stats))
-		{
-			$this->get_stats();
-		}
-
-		return (isset($this->stats['post_text']) && isset($this->stats['post_subject']) && isset($this->stats['post_content']));
-	}
-
-	/**
-	* Returns an associative array containing information about the indexes
-	*/
-	function index_stats()
-	{
-		global $user;
-
-		if (empty($this->stats))
-		{
-			$this->get_stats();
-		}
-
-		return [
-			$user->lang['FULLTEXT_MYSQL_TOTAL_POSTS']           => ($this->index_created()) ? $this->stats['total_posts'] : 0,
-		];
+		$stats = $this->get_stats();
+		return ($stats['post_subject'] && $stats['post_content']);
 	}
 
 	function get_stats()
@@ -763,6 +735,12 @@ class fulltext_mysql extends search_backend
 		$sql = 'SHOW INDEX FROM ' . POSTS_TABLE;
 		$result = $db->sql_query($sql);
 
+		$stats = [
+			'post_subject' => false,
+			'post_content' => false,
+			'total_posts'  => 0,
+		];
+
 		while ($row = $db->sql_fetchrow($result))
 		{
 			// deal with older MySQL versions which didn't use Index_type
@@ -770,47 +748,23 @@ class fulltext_mysql extends search_backend
 
 			if ($index_type == 'FULLTEXT')
 			{
-				if ($row['Key_name'] == 'post_text')
+				if ($row['Key_name'] == 'post_subject')
 				{
-					$this->stats['post_text'] = $row;
-				}
-				else if ($row['Key_name'] == 'post_subject')
-				{
-					$this->stats['post_subject'] = $row;
+					$stats['post_subject'] = true;
 				}
 				else if ($row['Key_name'] == 'post_content')
 				{
-					$this->stats['post_content'] = $row;
+					$stats['post_content'] = true;
 				}
 			}
 		}
 		$db->sql_freeresult($result);
 
-		$this->stats['total_posts'] = empty($this->stats) ? 0 : $db->get_estimated_row_count(POSTS_TABLE);
-	}
+		if ($stats['post_subject'] && $stats['post_content'])
+		{
+			$stats['total_posts'] = $db->get_estimated_row_count(POSTS_TABLE);
+		}
 
-	/**
-	* Display a note, that UTF-8 support is not available with certain versions of PHP
-	*/
-	function acp()
-	{
-		global $user, $config;
-
-		$tpl = '
-		<dl>
-			<dt><label>' . $user->lang['MIN_SEARCH_CHARS'] . ':</label><br /><span>' . $user->lang['FULLTEXT_MYSQL_MIN_SEARCH_CHARS_EXPLAIN'] . '</span></dt>
-			<dd>' . $config['fulltext_mysql_min_word_len'] . '</dd>
-		</dl>
-		<dl>
-			<dt><label>' . $user->lang['MAX_SEARCH_CHARS'] . ':</label><br /><span>' . $user->lang['FULLTEXT_MYSQL_MAX_SEARCH_CHARS_EXPLAIN'] . '</span></dt>
-			<dd>' . $config['fulltext_mysql_max_word_len'] . '</dd>
-		</dl>
-		';
-
-		// These are fields required in the config table
-		return [
-			'tpl'       => $tpl,
-			'config'    => []
-		];
+		return $stats;
 	}
 }

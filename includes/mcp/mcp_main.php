@@ -876,41 +876,15 @@ function mcp_fork_topic($topic_ids)
 	{
 		$topic_data = get_topic_data($topic_ids, 'f_post');
 
+		require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
+		$search = new fulltext_mysql();
+
 		$total_posts = 0;
 		$new_topic_id_list = [];
-
+		$search_mode = 'post';
 
 		foreach ($topic_data as $topic_id => $topic_row)
 		{
-			if (!isset($search_type) && $topic_row['enable_indexing'])
-			{
-				// Select the search method and do some additional checks to ensure it can actually be utilised
-				$search_type = basename($config['search_type']);
-
-				if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
-				{
-					trigger_error('NO_SUCH_SEARCH_MODULE');
-				}
-
-				if (!class_exists($search_type))
-				{
-					require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-				}
-
-				$error = false;
-				$search = new $search_type($error);
-				$search_mode = 'post';
-
-				if ($error)
-				{
-					trigger_error($error);
-				}
-			}
-			else if (!isset($search_type) && !$topic_row['enable_indexing'])
-			{
-				$search_type = false;
-			}
-
 			$sql_ary = [
 				'forum_id'                  => (int) $to_forum_id,
 				'icon_id'                   => (int) $topic_row['icon_id'],
@@ -1016,7 +990,7 @@ function mcp_fork_topic($topic_ids)
 				$db->sql_query('INSERT INTO ' . POSTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				$new_post_id = $db->sql_nextid();
 
-				if (!empty($search_type))
+				if ($topic_row['enable_indexing'])
 				{
 					$search->index($search_mode, $new_post_id, $sql_ary['post_text'], $sql_ary['post_subject'], $sql_ary['poster_id'], $to_forum_id);
 					$search_mode = 'reply'; // After one we index replies

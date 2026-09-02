@@ -413,15 +413,18 @@ class acp_modules
 			do
 			{
 				$langname = $this->lang_name($row['module_langname']);
+				$is_category = (!$row['module_basename'] || $row['left_id'] + 1 != $row['right_id']);
 
-				if (!$row['module_enabled'])
+				if ($is_category)
 				{
-					$module_image = '<img src="images/icon_folder_lock.gif" alt="' . $user->lang['DEACTIVATED_MODULE'] .'" />';
+					$icon = ($row['module_enabled']) ? 'icon_folder.png' : 'icon_folder_lock.png';
 				}
 				else
 				{
-					$module_image = (!$row['module_basename'] || $row['left_id'] + 1 != $row['right_id']) ? '<img src="images/icon_subfolder.gif" alt="' . $user->lang['CATEGORY'] . '" />' : '<img src="images/icon_folder.gif" alt="' . $user->lang['MODULE'] . '" />';
+					$icon = ($row['module_enabled']) ? 'icon_page.png' : 'icon_page_locked.png';
 				}
+				$icon_alt = (!$row['module_enabled']) ? $user->lang['DEACTIVATED_MODULE'] : $user->lang[($is_category) ? 'CATEGORY' : 'MODULE'];
+				$module_image = '<img src="images/' . $icon . '" alt="' . $icon_alt . '" />';
 
 				$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;m=' . $row['module_id'];
 

@@ -877,22 +877,21 @@ class install_install extends module
 	*/
 	function build_search_index($mode, $sub)
 	{
-		global $db, $config, $lang;
+		global $db;
 
-		require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_native.php');
+		require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
 
-		$error = false;
-		$search = new fulltext_native($error);
+		$search = new fulltext_mysql();
 
-		$sql = 'SELECT post_id, post_subject, post_text, poster_id, forum_id
-			FROM ' . POSTS_TABLE;
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
+		if ($error = $search->create_index())
 		{
-			$search->index('post', $row['post_id'], $row['post_text'], $row['post_subject'], $row['poster_id'], $row['forum_id']);
+			$this->p_master->error($error, __LINE__, __FILE__);
 		}
-		$db->sql_freeresult($result);
+
+		if ($db->sql_error_triggered)
+		{
+			$this->p_master->db_error($db->sql_error_returned['message'], $db->sql_error_sql, __LINE__, __FILE__);
+		}
 	}
 
 	/**
@@ -1456,7 +1455,6 @@ class install_install extends module
 			],
 			'ACP_CAT_MAINTENANCE'   => [
 				'ACP_FORUM_LOGS',
-				'ACP_CAT_DATABASE',
 			],
 			'ACP_CAT_SYSTEM'        => [
 				'ACP_AUTOMATION',

@@ -29,10 +29,11 @@ $show_results   = ($topic_id) ? 'posts' : request_var('sr', 'posts');
 $show_results   = ($show_results == 'posts') ? 'posts' : 'topics';
 $search_terms   = request_var('terms', 'all');
 $search_fields  = request_var('sf', 'all');
+$search_fields  = in_array($search_fields, ['all', 'titleonly', 'firstpost']) ? $search_fields : 'all';
 $search_child   = request_var('sc', true);
 
 $sort_days      = request_var('st', 0);
-$sort_key       = request_var('sk', 't');
+$sort_key       = request_var('sk', 'r');
 $sort_dir       = request_var('sd', 'd');
 
 $return_chars   = request_var('ch', ($topic_id) ? -1 : 300);
@@ -113,7 +114,22 @@ if ($interval && !in_array($search_id, ['unreadposts', 'active_topics', 'egosear
 
 // Define some vars
 $limit_days     = [0 => $user->lang['ALL_RESULTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-$sort_by_text   = ['t' => $user->lang['SORT_TIME'], 'c' => $user->lang['CREATION_TIME'], 'f' => $user->lang['SORT_FORUM'], 'a' => $user->lang['SORT_AUTHOR'], 'i' => $user->lang['SORT_TOPIC_TITLE'], 's' => $user->lang['SORT_POST_SUBJECT']];
+$sort_by_text   = ['r' => $user->lang['SORT_RELEVANCE'], 't' => $user->lang['SORT_TIME'], 'c' => $user->lang['CREATION_TIME'], 'f' => $user->lang['SORT_FORUM'], 'a' => $user->lang['SORT_AUTHOR'], 'i' => $user->lang['SORT_TOPIC_TITLE'], 's' => $user->lang['SORT_POST_SUBJECT']];
+
+// Relevance is only available for keyword searches.
+if (($author || $author_id || $search_id || $submit) && !$keywords && !$add_keywords)
+{
+	if ($sort_key == 'r')
+	{
+		$sort_key = 't';
+	}
+	unset($sort_by_text['r']);
+}
+// Prefer relevance when adding the first keywords to non-keyword search results.
+elseif ($submit && !$keywords && $add_keywords && $sort_key == 't')
+{
+	$sort_key = 'r';
+}
 
 $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
@@ -267,33 +283,23 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		$search_forum = [];
 	}
 
-	// Select which method we'll use to obtain the post_id or topic_id information
-	$search_type = basename($config['search_type']);
+	require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
 
-	if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
-	{
-		trigger_error('NO_SUCH_SEARCH_MODULE');
-	}
-
-	require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-
-	// We do some additional checks in the module to ensure it can actually be utilised
-	$error = false;
-	$search = new $search_type($error);
-
-	if ($error)
-	{
-		trigger_error($error);
-	}
+	$search = new fulltext_mysql();
 
 	// let the search module split up the keywords
 	if ($keywords)
 	{
+		if (empty($config['fulltext_mysql_indexed']))
+		{
+			trigger_error('SEARCH_INDEX_NOT_CREATED');
+		}
+
 		$correct_query = $search->split_keywords($keywords, $search_terms);
 		if (!$correct_query || (empty($search->search_query) && !sizeof($author_id_ary) && !$search_id))
 		{
 			$ignored = (sizeof($search->common_words)) ? sprintf($user->lang['IGNORED_TERMS_EXPLAIN'], implode(' ', $search->common_words)) . '<br />' : '';
-			trigger_error($ignored . sprintf($user->lang['NO_KEYWORDS'], $search->word_length['min'], $search->word_length['max']));
+			trigger_error($ignored . sprintf($user->lang['NO_KEYWORDS'], $config['fulltext_mysql_min_word_len'], $config['fulltext_mysql_max_word_len']));
 		}
 	}
 
@@ -305,7 +311,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	}
 
 	// define some variables needed for retrieving post_id/topic_id information
-	$sort_by_sql = ['t' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'c' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_time'), 'f' => 'f.forum_id', 'a' => 'u.username_clean', 'i' => 't.topic_title', 's' => (($show_results == 'posts') ? 'p.post_subject' : 't.topic_title')];
+	$sort_by_sql = ['r' => 'relevance', 't' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'c' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_time'), 'f' => 'f.forum_id', 'a' => 'u.username_clean', 'i' => 't.topic_title', 's' => (($show_results == 'posts') ? 'p.post_subject' : 't.topic_title')];
 
 	// pre-made searches
 	$sql = $field = $l_search_title = '';
@@ -333,7 +339,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 						{$last_post_time_sql}
 						" . str_replace(['p.', 'post_'], ['t.', 'topic_'], $m_approve_fid_sql) . '
 						' . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '') . '
-					ORDER BY t.topic_last_post_time DESC';
+					ORDER BY t.topic_last_post_time DESC, t.topic_id DESC';
 				$field = 'topic_id';
 			break;
 
@@ -343,7 +349,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$show_results = 'topics';
 				$sort_key = 't';
 				$sort_by_sql['t'] = 't.topic_last_post_time';
-				$sql_sort = 'ORDER BY ' . $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
+				$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
+				$sql_sort = 'ORDER BY ' . $sort_by_sql[$sort_key] . $sql_sort_dir . ', t.topic_id' . $sql_sort_dir;
 
 				$sql_where = 'AND t.topic_moved_id = 0
 					' . str_replace(['p.', 'post_'], ['t.', 'topic_'], $m_approve_fid_sql) . '
@@ -360,7 +367,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$sort_key = 't';
 				$sort_dir = 'd';
 				$sort_by_sql['t'] = ($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time';
-				$sql_sort = 'ORDER BY ' . $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
+				$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
+				$sql_sort = 'ORDER BY ' . $sort_by_sql[$sort_key] . $sql_sort_dir . ', ' . (($show_results == 'posts') ? 'p.post_id' : 't.topic_id') . $sql_sort_dir;
 
 				gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
 				$s_sort_key = $s_sort_dir = $u_sort_param = $s_limit_days = '';
@@ -627,8 +635,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		else
 		{
 			$sql_from = TOPICS_TABLE . ' t
-				LEFT JOIN ' . FORUMS_TABLE . ' f ON (f.forum_id = t.forum_id)
-				' . (($sort_key == 'a') ? ' LEFT JOIN ' . USERS_TABLE . ' u ON (u.user_id = t.topic_poster) ' : '');
+				LEFT JOIN ' . FORUMS_TABLE . ' f ON (f.forum_id = t.forum_id)';
 			$sql_select = 't.*, f.forum_id, f.forum_name';
 
 			if ($user->data['is_registered'])
@@ -647,7 +654,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				FROM {$sql_from}
 				WHERE {$sql_where}";
 		}
-		$sql .= ' ORDER BY ' . $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC');
+		// Preserve the exact order calculated by the first query.
+		$sql .= ' ORDER BY FIELD(' . (($show_results == 'posts') ? 'p.post_id' : 't.topic_id') . ', ' . implode(', ', $id_ary) . ')';
 		$result = $db->sql_query($sql);
 		$result_topic_id = 0;
 

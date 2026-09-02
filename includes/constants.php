@@ -246,8 +246,6 @@ define('RANKS_TABLE',               $table_prefix . 'ranks');
 define('REPORTS_TABLE',             $table_prefix . 'reports');
 define('REPORTS_REASONS_TABLE',     $table_prefix . 'reports_reasons');
 define('SEARCH_RESULTS_TABLE',      $table_prefix . 'search_results');
-define('SEARCH_WORDLIST_TABLE',     $table_prefix . 'search_wordlist');
-define('SEARCH_WORDMATCH_TABLE',    $table_prefix . 'search_wordmatch');
 define('SESSIONS_TABLE',            $table_prefix . 'sessions');
 define('SESSIONS_KEYS_TABLE',       $table_prefix . 'sessions_keys');
 define('SITELIST_TABLE',            $table_prefix . 'sitelist');

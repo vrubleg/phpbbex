@@ -38,7 +38,6 @@ $lang = array_merge($lang, [
 
 	'ACP_CAPTCHA'               => 'Визуальное подтверждение',
 
-	'ACP_CAT_DATABASE'          => 'База данных',
 	'ACP_CAT_DOT_MODS'          => 'Модули',
 	'ACP_CAT_FORUMS'            => 'Разделы',
 	'ACP_CAT_GENERAL'           => 'Общие',
@@ -129,7 +128,6 @@ $lang = array_merge($lang, [
 	'ACP_FEED_SETTINGS'         => 'Каналы новостей',
 
 	'ACP_SEARCH'                => 'Настройки поиска',
-	'ACP_SEARCH_INDEX'          => 'Поисковые индексы',
 	'ACP_SEARCH_SETTINGS'       => 'Поиск',
 
 	'ACP_SECURITY_SETTINGS'     => 'Безопасность',
@@ -320,20 +318,12 @@ $lang = array_merge($lang, [
 	'PURGE_SESSIONS_CONFIRM'    => 'Вы действительно хотите завершить все текущие сессии? Всем пользователям придётся повторно войти, введя имя и пароль.',
 	'PURGE_SESSIONS_EXPLAIN'    => 'Всем пользователям придётся повторно войти, введя имя и пароль.',
 
-	'RESET_DATE'                    => 'Сброс даты запуска форума',
-	'RESET_DATE_CONFIRM'            => 'Вы действительно хотите сбросить дату запуска форума?',
-	'RESYNC_POSTCOUNTS'             => 'Синхронизировать счётчики сообщений',
-	'RESYNC_POSTCOUNTS_EXPLAIN'     => 'Будут учтены только существующие сообщения. Удалённые сообщения не будут подсчитаны.',
-	'RESYNC_POSTCOUNTS_CONFIRM'     => 'Вы действительно хотите синхронизировать счётчики сообщений?',
-	'RESYNC_STATS'                  => 'Синхронизировать статистику',
-	'RESYNC_STATS_CONFIRM'          => 'Вы действительно хотите синхронизировать статистику?',
-	'RESYNC_STATS_EXPLAIN'          => 'Пересчёт общего количества сообщений, тем, пользователей и файлов.',
-	'RESYNC_TOPICCOUNTS'            => 'Синхронизировать счётчики тем',
-	'RESYNC_TOPICCOUNTS_EXPLAIN'    => 'Будут учтены только существующие темы. Удалённые темы не будут подсчитаны.',
-	'RESYNC_TOPICCOUNTS_CONFIRM'    => 'Вы действительно хотите синхронизировать счётчики тем?',
-	'RESYNC_RATES'                  => 'Синхронизировать счётчики оценок',
-	'RESYNC_RATES_EXPLAIN'          => 'Будут учтены только существующие сообщения и пользователи.',
-	'RESYNC_RATES_CONFIRM'          => 'Вы действительно хотите синхронизировать счётчики оценок?',
+	'RESYNC_STATS'                  => 'Синхронизировать статистику форума',
+	'RESYNC_STATS_CONFIRM'          => 'Вы действительно хотите синхронизировать статистику форума?',
+	'RESYNC_STATS_EXPLAIN'          => 'Синхронизация всех тем и разделов, а также пересчёт общего количества сообщений, тем, пользователей и файлов.',
+	'RESYNC_USER_STATS'             => 'Синхронизировать статистику пользователей',
+	'RESYNC_USER_STATS_EXPLAIN'     => 'Пересчёт счётчиков сообщений, тем и оценок пользователей по существующим данным.',
+	'RESYNC_USER_STATS_CONFIRM'     => 'Вы действительно хотите синхронизировать статистику пользователей?',
 	'RUN'                           => 'Выполнить',
 
 	'STATISTIC'                 => 'Статистика',
@@ -515,7 +505,6 @@ $lang = array_merge($lang, [
 	'LOG_FORUM_EDIT'                        => '<strong>Изменена информация о разделе</strong><br />» %s',
 	'LOG_FORUM_MOVE_DOWN'                   => '<strong>Перемещён раздел</strong> %1$s <strong>под</strong> %2$s',
 	'LOG_FORUM_MOVE_UP'                     => '<strong>Перемещён раздел</strong> %1$s <strong>над</strong> %2$s',
-	'LOG_FORUM_SYNC'                        => '<strong>Синхронизирован раздел</strong><br />» %s',
 
 	'LOG_GROUP_CREATED'     => '<strong>Создана группа пользователей</strong><br />» %s',
 	'LOG_GROUP_DEFAULTS'    => '<strong>Группа “%1$s” установлена по умолчанию для пользователей</strong><br />» %2$s',
@@ -595,14 +584,11 @@ $lang = array_merge($lang, [
 	'LOG_REASON_UPDATED'    => '<strong>Обновлена причина жалобы/отклонения</strong><br />» %s',
 
 	'LOG_REFERER_INVALID'       => '<strong>Проверка реферера не удалась </strong><br />»Реферер: “<em>%1$s</em>”. Запрос был отклонён, сессия удалена.',
-	'LOG_RESET_DATE'            => '<strong>Сброшена дата запуска форума</strong>',
-	'LOG_RESYNC_POSTCOUNTS'     => '<strong>Синхронизированы счётчики сообщений пользователей</strong>',
-	'LOG_RESYNC_STATS'          => '<strong>Синхронизирована статистика сообщений, тем и пользователей</strong>',
-	'LOG_RESYNC_TOPICCOUNTS'    => '<strong>Синхронизированы счётчики тем пользователей</strong>',
-	'LOG_RESYNC_RATES'          => '<strong>Синхронизированы счётчики оценок</strong>',
+	'LOG_RESYNC_STATS'          => '<strong>Синхронизирована статистика форума</strong>',
+	'LOG_RESYNC_USER_STATS'     => '<strong>Синхронизирована статистика пользователей</strong>',
 
-	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Созданы поисковые индексы для</strong><br />» %s',
-	'LOG_SEARCH_INDEX_REMOVED'  => '<strong>Удалены поисковые индексы для</strong><br />» %s',
+	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Создан поисковый индекс</strong>',
+	'LOG_SEARCH_INDEX_REMOVED'  => '<strong>Удалён поисковый индекс</strong>',
 	'LOG_STYLE_ADD'             => '<strong>Добавлен стиль</strong><br />» %s',
 	'LOG_STYLE_DELETE'          => '<strong>Удалён стиль</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'    => '<strong>Изменён стиль</strong><br />» %s',

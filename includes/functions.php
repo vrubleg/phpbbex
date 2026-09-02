@@ -3614,7 +3614,6 @@ function page_header($page_title = '', $display_online_list = true)
 
 		'S_ENABLE_FEEDS'            => (bool) $config['feed_enable'],
 		'S_ENABLE_FEEDS_OVERALL'    => (bool) $config['feed_overall'],
-		'S_ENABLE_FEEDS_FORUMS'     => (bool) $config['feed_overall_forums'],
 		'S_ENABLE_FEEDS_TOPICS'     => (bool) $config['feed_topics_new'],
 		'S_ENABLE_FEEDS_TOPICS_ACTIVE'  => (bool) $config['feed_topics_active'],
 		'S_ENABLE_FEEDS_NEWS'       => (bool) $s_feed_news,
@@ -3672,7 +3671,6 @@ function page_header($page_title = '', $display_online_list = true)
 		'style_rounded_corners',
 		'style_new_year',
 		'style_show_sitename_in_headerbar',
-		'style_show_feeds_in_forumlist',
 
 		// viewtopic
 		'style_vt_show_post_numbers',

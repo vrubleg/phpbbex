@@ -357,33 +357,7 @@
 	</fieldset>
 	</form>
 
-<!-- ELSEIF S_CONTINUE_SYNC -->
-
-	<script>
-		var close_waitscreen = 0;
-		// no scrollbars...
-		popup('{UA_PROGRESS_BAR}', 400, 240, '_sync');
-	</script>
-
-	<h1>{L_FORUM_ADMIN}</h1>
-
-	<p>{L_FORUM_ADMIN_EXPLAIN}</p>
-
-	<p>{L_PROGRESS_EXPLAIN}</p>
-
 <!-- ELSE -->
-
-	<script>
-		/**
-		* Popup search progress bar
-		*/
-		function popup_progress_bar()
-		{
-			var close_waitscreen = 0;
-			// no scrollbars...
-			popup('{UA_PROGRESS_BAR}', 400, 240, '_sync');
-		}
-	</script>
 
 	<h1>{L_FORUM_ADMIN}</h1>
 
@@ -396,18 +370,7 @@
 		</div>
 	<!-- ENDIF -->
 
-	<!-- IF S_RESYNCED -->
-		<script>
-			var close_waitscreen = 1;
-		</script>
-
-		<div class="successbox">
-			<h3>{L_NOTIFY}</h3>
-			<p>{L_FORUM_RESYNCED}</p>
-		</div>
-	<!-- ENDIF -->
-
-	<p><strong>{NAVIGATION}<!-- IF S_NO_FORUMS --> [<a href="{U_EDIT}">{L_EDIT}</a> | <a href="{U_DELETE}">{L_DELETE}</a><!-- IF not S_LINK --> | <a href="{U_SYNC}">{L_RESYNC}</a><!-- ENDIF --->]<!-- ENDIF --></strong></p>
+	<p><strong>{NAVIGATION}<!-- IF S_NO_FORUMS --> [<a href="{U_EDIT}">{L_EDIT}</a> | <a href="{U_DELETE}">{L_DELETE}</a>]<!-- ENDIF --></strong></p>
 
 	<!-- IF .forums -->
 		<table cellspacing="1">
@@ -420,9 +383,9 @@
 					<!-- IF forums.FORUM_IMAGE --><div style="float: left; margin-right: 5px;">{forums.FORUM_IMAGE}</div><!-- ENDIF -->
 					<strong><!-- IF forums.S_FORUM_LINK -->{forums.FORUM_NAME}<!-- ELSE --><a href="{forums.U_FORUM}">{forums.FORUM_NAME}</a><!-- ENDIF --></strong>
 					<!-- IF forums.FORUM_DESCRIPTION --><br /><span>{forums.FORUM_DESCRIPTION}</span><!-- ENDIF -->
-					<!-- IF forums.S_FORUM_POST --><br /><span>{L_TOPICS}: <strong>{forums.FORUM_TOPICS}</strong> / {L_POSTS}: <strong>{forums.FORUM_POSTS}</strong></span><!-- ENDIF -->
+					<!-- IF forums.FORUM_SUBFORUMS or forums.S_FORUM_POST --><br /><span><!-- IF forums.FORUM_SUBFORUMS -->{L_SUBFORUMS}: <strong>{forums.FORUM_SUBFORUMS}</strong><!-- IF forums.S_FORUM_POST --> / <!-- ENDIF --><!-- ENDIF --><!-- IF forums.S_FORUM_POST -->{L_TOPICS}: <strong>{forums.FORUM_TOPICS}</strong> / {L_POSTS}: <strong>{forums.FORUM_POSTS}</strong><!-- ENDIF --></span><!-- ENDIF -->
 				</td>
-				<td style="vertical-align: top; width: 100px; text-align: right; white-space: nowrap;">
+				<td style="width: 100px; text-align: center; white-space: nowrap;">
 					<!-- IF forums.S_FIRST_ROW && not forums.S_LAST_ROW -->
 						{ICON_MOVE_UP_DISABLED}
 						<a href="{forums.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a>
@@ -437,11 +400,6 @@
 						{ICON_MOVE_DOWN_DISABLED}
 					<!-- ENDIF -->
 					<a href="{forums.U_EDIT}">{ICON_EDIT}</a>
-					<!-- IF not forums.S_FORUM_LINK -->
-						<a href="{forums.U_SYNC}" onclick="popup_progress_bar();">{ICON_SYNC}</a>
-					<!-- ELSE -->
-						{ICON_SYNC_DISABLED}
-					<!-- ENDIF -->
 					<a href="{forums.U_DELETE}">{ICON_DELETE}</a>
 				</td>
 			</tr>

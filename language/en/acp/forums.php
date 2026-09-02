@@ -69,7 +69,6 @@ $lang = array_merge($lang, [
 	'FORUM_NAME_EMPTY'                  => 'You must enter a name for this forum.',
 	'FORUM_PARENT'                      => 'Parent forum',
 	'FORUM_PRUNE_SETTINGS'              => 'Forum prune settings',
-	'FORUM_RESYNCED'                    => 'Forum “%s” successfully resynced',
 	'FORUM_RULES_EXPLAIN'               => 'Forum rules are displayed at any page within the given forum.',
 	'FORUM_RULES_LINK'                  => 'Link to forum rules',
 	'FORUM_RULES_LINK_EXPLAIN'          => 'You are able to enter the URL of the page/post containing your forum rules here. This setting will override the forum rules text you specified.',
@@ -113,9 +112,6 @@ $lang = array_merge($lang, [
 	'PRUNE_OLD_POLLS_EXPLAIN'   => 'Removes topics with polls not voted in for post age days.',
 
 	'REDIRECT_ACL'  => 'Now you are able to %sset permissions%s for this forum.',
-
-	'SYNC_IN_PROGRESS'          => 'Synchronizing forum',
-	'SYNC_IN_PROGRESS_EXPLAIN'  => 'Currently resyncing topic range %1$d/%2$d.',
 
 	'TYPE_CAT'          => 'Category',
 	'TYPE_FORUM'        => 'Forum',

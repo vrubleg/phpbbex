@@ -201,24 +201,8 @@ if (!empty($data['attachment_data']))
 // Index message contents
 if ($merge_post_data['enable_indexing'])
 {
-	// Select the search method and do some additional checks to ensure it can actually be utilised
-	$search_type = basename($config['search_type']);
-
-	if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
-	{
-		trigger_error('NO_SUCH_SEARCH_MODULE');
-	}
-
-	require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-
-	$error = false;
-	$search = new $search_type($error);
-
-	if ($error)
-	{
-		trigger_error($error);
-	}
-
+	require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
+	$search = new fulltext_mysql();
 	$search->index('edit', $merge_post_id, $merge_post_data['post_text'], $subject, $poster_id, $forum_id);
 }
 

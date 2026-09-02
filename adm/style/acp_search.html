@@ -2,12 +2,11 @@
 
 <a name="maincontent"></a>
 
-<!-- IF S_SETTINGS -->
-	<h1>{L_ACP_SEARCH_SETTINGS}</h1>
+<h1>{L_ACP_SEARCH_SETTINGS}</h1>
 
-	<p>{L_ACP_SEARCH_SETTINGS_EXPLAIN}</p>
+<p>{L_ACP_SEARCH_SETTINGS_EXPLAIN}</p>
 
-	<form id="acp_search" method="post" action="{U_ACTION}">
+<form id="acp_search" method="post" action="{U_ACTION}">
 
 	<fieldset>
 		<legend>{L_GENERAL_SEARCH_SETTINGS}</legend>
@@ -49,112 +48,22 @@
 	</fieldset>
 
 	<fieldset>
-		<legend>{L_SEARCH_TYPE}</legend>
+		<legend>{L_FULLTEXT_MYSQL_INDEX}</legend>
 	<dl>
-		<dt><label for="search_type">{L_SEARCH_TYPE}:</label><br /><span>{L_SEARCH_TYPE_EXPLAIN}</span></dt>
-		<dd><select id="search_type" name="config[search_type]">{S_SEARCH_TYPES}</select></dd>
+		<dt><label>{L_FULLTEXT_MYSQL_STATUS}:</label><br /><span>{L_FULLTEXT_MYSQL_STATUS_EXPLAIN}</span></dt>
+		<dd><b class="<!-- IF S_INDEXED -->status-green<!-- ELSE -->status-red<!-- ENDIF -->"><!-- IF S_INDEXED -->{L_FULLTEXT_MYSQL_STATUS_INDEXED}<!-- ELSE -->{L_FULLTEXT_MYSQL_STATUS_MISSING}<!-- ENDIF --></b><!-- IF S_INDEXED --> <i>({FULLTEXT_MYSQL_INDEXED_POSTS})</i> <button class="button2" type="submit" name="action" value="delete">{L_DELETE_INDEX}</button><!-- ELSE --> <button class="button2" type="submit" name="action" value="create">{L_CREATE_INDEX}</button><!-- ENDIF --></dd>
+	</dl>
+	<dl>
+		<dt><label>{L_FULLTEXT_MYSQL_WORD_LENGTH}:</label><br /><span>{L_FULLTEXT_MYSQL_WORD_LENGTH_EXPLAIN}</span></dt>
+		<dd>{FULLTEXT_MYSQL_WORD_LENGTH_RANGE}</dd>
 	</dl>
 	</fieldset>
-
-	<!-- BEGIN backend -->
-
-		<fieldset>
-			<legend>{backend.NAME}</legend>
-		{backend.SETTINGS}
-		</fieldset>
-
-	<!-- END backend -->
 
 	<fieldset class="submit-buttons">
 		<legend>{L_SUBMIT}</legend>
 		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
 		{S_FORM_TOKEN}
 	</fieldset>
-	</form>
-
-<!-- ELSEIF S_INDEX -->
-
-	<script>
-		/**
-		* Popup search progress bar
-		*/
-		function popup_progress_bar(progress_type)
-		{
-			close_waitscreen = 0;
-			// no scrollbars
-			popup('{UA_PROGRESS_BAR}&amp;type=' + progress_type, 400, 240, '_index');
-		}
-	</script>
-
-	<h1>{L_ACP_SEARCH_INDEX}</h1>
-
-	<!-- IF S_CONTINUE_INDEXING -->
-		<p>{L_CONTINUE_EXPLAIN}</p>
-
-		<form id="acp_search_continue" method="post" action="{U_CONTINUE_INDEXING}">
-			<fieldset class="submit-buttons">
-				<legend>{L_SUBMIT}</legend>
-				<input class="button1" type="submit" id="continue" name="continue" value="{L_CONTINUE}" onclick="popup_progress_bar('{S_CONTINUE_INDEXING}');" />&nbsp;
-				<input class="button2" type="submit" id="cancel" name="cancel" value="{L_CANCEL}" />
-				{S_FORM_TOKEN}
-			</fieldset>
-		</form>
-	<!-- ELSE -->
-
-		<p>{L_ACP_SEARCH_INDEX_EXPLAIN}</p>
-
-		<!-- BEGIN backend -->
-
-			<!-- IF backend.S_STATS -->
-
-			<form id="acp_search_index_{backend.NAME}" method="post" action="{U_ACTION}">
-
-				<fieldset class="tabulated">
-
-				{backend.S_HIDDEN_FIELDS}
-
-				<legend>{L_INDEX_STATS}: {backend.L_NAME} <!-- IF backend.S_ACTIVE -->({L_ACTIVE}) <!-- ENDIF --></legend>
-
-				<table cellspacing="1">
-					<caption>{backend.L_NAME} <!-- IF backend.S_ACTIVE -->({L_ACTIVE}) <!-- ENDIF --></caption>
-					<col class="col1" /><col class="col2" /><col class="col1" /><col class="col2" />
-				<thead>
-				<tr>
-					<th>{L_STATISTIC}</th>
-					<th>{L_VALUE}</th>
-					<th>{L_STATISTIC}</th>
-					<th>{L_VALUE}</th>
-				</tr>
-				</thead>
-				<tbody>
-				<!-- BEGIN data -->
-					<tr>
-						<td>{backend.data.STATISTIC_1}:</td>
-						<td>{backend.data.VALUE_1}</td>
-						<td>{backend.data.STATISTIC_2}<!-- IF backend.data.STATISTIC_2 -->:<!-- ENDIF --></td>
-						<td>{backend.data.VALUE_2}</td>
-					</tr>
-				<!-- END data -->
-				</tbody>
-				</table>
-
-			<!-- ENDIF -->
-
-			<p class="quick">
-			<!-- IF backend.S_INDEXED -->
-				<input class="button2" type="submit" name="action[delete]" value="{L_DELETE_INDEX}" onclick="popup_progress_bar('delete');" />
-			<!-- ELSE -->
-				<input class="button2" type="submit" name="action[create]" value="{L_CREATE_INDEX}" onclick="popup_progress_bar('create');" />
-			<!-- ENDIF -->
-			</p>
-			{S_FORM_TOKEN}
-			</fieldset>
-
-			</form>
-		<!-- END backend -->
-
-	<!-- ENDIF -->
-
-<!-- ENDIF -->
+</form>
 
 <!-- INCLUDE overall_footer.html -->

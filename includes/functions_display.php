@@ -424,7 +424,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			'S_LOCKED_FORUM'    => ($row['forum_status'] == ITEM_LOCKED),
 			'S_LIST_SUBFORUMS'  => (bool) $row['display_subforum_list'],
 			'S_SUBFORUMS'       => (sizeof($subforums_list) > 0),
-			'S_FEED_ENABLED'    => ($config['feed_forum'] && !phpbb_optionget(FORUM_OPTION_FEED_EXCLUDE, $row['forum_options']) && $row['forum_type'] == FORUM_POST),
 
 			'FORUM_ID'              => $row['forum_id'],
 			'FORUM_NAME'            => $row['forum_name'],
@@ -804,8 +803,8 @@ function topic_status(&$topic_row, $replies, $unread_topic, &$folder_img, &$fold
 		{
 			case POST_GLOBAL:
 				$topic_type = $user->lang['VIEW_TOPIC_GLOBAL'];
-				$folder = 'global_read';
-				$folder_new = 'global_unread';
+				$folder = 'announce_read';
+				$folder_new = 'announce_unread';
 			break;
 
 			case POST_ANNOUNCE:

@@ -19,7 +19,7 @@ class acp_main
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template;
+		global $config, $db, $user, $auth, $template, $cache;
 
 		// Show restore permissions notice
 		if ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm'))
@@ -70,21 +70,9 @@ class acp_main
 						$confirm = true;
 						$confirm_lang = 'RESYNC_STATS_CONFIRM';
 					break;
-					case 'user':
+					case 'user_stats':
 						$confirm = true;
-						$confirm_lang = 'RESYNC_POSTCOUNTS_CONFIRM';
-					break;
-					case 'topics':
-						$confirm = true;
-						$confirm_lang = 'RESYNC_TOPICCOUNTS_CONFIRM';
-					break;
-					case 'rates':
-						$confirm = true;
-						$confirm_lang = 'RESYNC_RATES_CONFIRM';
-					break;
-					case 'date':
-						$confirm = true;
-						$confirm_lang = 'RESET_DATE_CONFIRM';
+						$confirm_lang = 'RESYNC_USER_STATS_CONFIRM';
 					break;
 					case 'purge_cache':
 						$confirm = true;
@@ -114,10 +102,12 @@ class acp_main
 				switch ($action)
 				{
 					case 'stats':
-						if (!$auth->acl_get('a_board'))
-						{
-							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
+
+						set_time_limit(0);
+						ignore_user_abort(true);
+
+						sync('topic', '', '', false, true);
+						sync('forum', '', '', false, true);
 
 						$sql = 'SELECT COUNT(post_id) AS stat
 							FROM ' . POSTS_TABLE . '
@@ -161,127 +151,50 @@ class acp_main
 						update_last_username();
 
 						add_log('admin', 'LOG_RESYNC_STATS');
+
 					break;
 
-					case 'user':
-						if (!$auth->acl_get('a_board'))
-						{
-							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
+					case 'user_stats':
 
-						// Resync post counts
-						$start = $max_post_id = 0;
+						set_time_limit(0);
+						ignore_user_abort(true);
 
-						// Find the maximum post ID, we can only stop the cycle when we've reached it
-						$sql = 'SELECT MAX(forum_last_post_id) as max_post_id
-							FROM ' . FORUMS_TABLE;
-						$result = $db->sql_query($sql);
-						$max_post_id = (int) $db->sql_fetchfield('max_post_id');
-						$db->sql_freeresult($result);
-
-						// No maximum post id? :o
-						if (!$max_post_id)
-						{
-							$sql = 'SELECT MAX(post_id) as max_post_id
-								FROM ' . POSTS_TABLE;
-							$result = $db->sql_query($sql);
-							$max_post_id = (int) $db->sql_fetchfield('max_post_id');
-							$db->sql_freeresult($result);
-						}
-
-						// Still no maximum post id? Then we are finished
-						if (!$max_post_id)
-						{
-							add_log('admin', 'LOG_RESYNC_POSTCOUNTS');
-							break;
-						}
-
-						$step = ($config['num_posts']) ? (max((int) ($config['num_posts'] / 5), 20000)) : 20000;
-						$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_posts = 0');
-
-						while ($start < $max_post_id)
-						{
-							$sql = 'SELECT COUNT(post_id) AS num_posts, poster_id
+						// Resync post counts.
+						$sql = 'UPDATE ' . USERS_TABLE . ' u
+							LEFT JOIN (
+								SELECT poster_id, COUNT(post_id) AS num_posts
 								FROM ' . POSTS_TABLE . '
-								WHERE post_id BETWEEN ' . ($start + 1) . ' AND ' . ($start + $step) . '
-									AND post_postcount = 1 AND post_approved = 1
-								GROUP BY poster_id';
-							$result = $db->sql_query($sql);
+								WHERE post_postcount = 1
+									AND post_approved = 1
+								GROUP BY poster_id
+							) post_counts ON post_counts.poster_id = u.user_id
+							SET u.user_posts = COALESCE(post_counts.num_posts, 0)';
+						$db->sql_query($sql);
 
-							if ($row = $db->sql_fetchrow($result))
-							{
-								do
-								{
-									$sql = 'UPDATE ' . USERS_TABLE . " SET user_posts = user_posts + {$row['num_posts']} WHERE user_id = {$row['poster_id']}";
-									$db->sql_query($sql);
-								}
-								while ($row = $db->sql_fetchrow($result));
-							}
-							$db->sql_freeresult($result);
+						// Resync topic counts.
+						$sql = 'UPDATE ' . USERS_TABLE . ' u
+							LEFT JOIN (
+								SELECT p.poster_id AS user_id, COUNT(t.topic_id) AS num_topics
+								FROM ' . TOPICS_TABLE . ' t
+								INNER JOIN ' . POSTS_TABLE . ' p ON p.post_id = t.topic_first_post_id
+								WHERE t.topic_moved_id = 0
+									AND p.post_postcount = 1
+									AND p.post_approved = 1
+								GROUP BY p.poster_id
+							) topic_counts ON topic_counts.user_id = u.user_id
+							SET u.user_topics = COALESCE(topic_counts.num_topics, 0)';
+						$db->sql_query($sql);
 
-							$start += $step;
-						}
-
-						add_log('admin', 'LOG_RESYNC_POSTCOUNTS');
-
-					break;
-
-					case 'topics':
-						if (!$auth->acl_get('a_board'))
-						{
-							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
-						$sql = 'SELECT COUNT(p.post_id) AS num_topics, u.user_id
-							FROM ' . USERS_TABLE . ' u
-							LEFT JOIN  ' . TOPICS_TABLE . ' t ON (u.user_id = t.topic_poster)
-							LEFT JOIN  ' . POSTS_TABLE . ' p ON (p.post_id = t.topic_first_post_id AND p.post_postcount = 1)
-							GROUP BY u.user_id';
-						$result = $db->sql_query($sql);
-
-						while ($row = $db->sql_fetchrow($result))
-						{
-							$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_topics = {$row['num_topics']} WHERE user_id = {$row['user_id']}");
-						}
-						$db->sql_freeresult($result);
-
-						add_log('admin', 'LOG_RESYNC_TOPICCOUNTS');
-
-					break;
-
-					case 'rates':
-						if (!$auth->acl_get('a_board'))
-						{
-							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
-						if (!function_exists('resync_rates'))
-						{
-							require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
-						}
+						// Resync ratings.
+						require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
 						resync_rates();
 
-						add_log('admin', 'LOG_RESYNC_RATES');
+						add_log('admin', 'LOG_RESYNC_USER_STATS');
 
-					break;
-
-					case 'date':
-						if (!$auth->acl_get('a_board'))
-						{
-							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
-
-						set_config('board_startdate', time() - 1);
-						add_log('admin', 'LOG_RESET_DATE');
 					break;
 
 					case 'purge_cache':
-						if ((int) $user->data['user_type'] !== USER_FOUNDER)
-						{
-							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
-						}
 
-						global $cache;
 						$cache->purge();
 
 						// Clear permissions
@@ -289,9 +202,11 @@ class acp_main
 						cache_moderators();
 
 						add_log('admin', 'LOG_PURGE_CACHE');
+
 					break;
 
 					case 'purge_sessions':
+
 						if ((int) $user->data['user_type'] !== USER_FOUNDER)
 						{
 							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
@@ -323,6 +238,7 @@ class acp_main
 						$db->sql_query($sql);
 
 						add_log('admin', 'LOG_PURGE_SESSIONS');
+
 					break;
 				}
 			}

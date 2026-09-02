@@ -38,7 +38,6 @@ $lang = array_merge($lang, [
 
 	'ACP_CAPTCHA'               => 'CAPTCHA',
 
-	'ACP_CAT_DATABASE'          => 'Database',
 	'ACP_CAT_DOT_MODS'          => '.MODs',
 	'ACP_CAT_FORUMS'            => 'Forums',
 	'ACP_CAT_GENERAL'           => 'General',
@@ -129,7 +128,6 @@ $lang = array_merge($lang, [
 	'ACP_FEED_SETTINGS'         => 'Feed settings',
 
 	'ACP_SEARCH'                => 'Search configuration',
-	'ACP_SEARCH_INDEX'          => 'Search index',
 	'ACP_SEARCH_SETTINGS'       => 'Search settings',
 
 	'ACP_SECURITY_SETTINGS'     => 'Security settings',
@@ -320,20 +318,12 @@ $lang = array_merge($lang, [
 	'PURGE_SESSIONS_CONFIRM'    => 'Are you sure you wish to purge all sessions? This will log out all users and remove persistent login keys.',
 	'PURGE_SESSIONS_EXPLAIN'    => 'This will log out all users and remove persistent login keys.',
 
-	'RESET_DATE'                    => 'Reset board’s start date',
-	'RESET_DATE_CONFIRM'            => 'Are you sure you wish to reset the board’s start date?',
-	'RESYNC_POSTCOUNTS'             => 'Resynchronise post counts',
-	'RESYNC_POSTCOUNTS_EXPLAIN'     => 'Only existing posts will be taken into consideration. Pruned posts will not be counted.',
-	'RESYNC_POSTCOUNTS_CONFIRM'     => 'Are you sure you wish to resynchronise post counts?',
-	'RESYNC_STATS'                  => 'Resynchronise statistics',
-	'RESYNC_STATS_CONFIRM'          => 'Are you sure you wish to resynchronise statistics?',
-	'RESYNC_STATS_EXPLAIN'          => 'Recalculates the total number of posts, topics, users and files.',
-	'RESYNC_TOPICCOUNTS'            => 'Resynchronise topic counts',
-	'RESYNC_TOPICCOUNTS_EXPLAIN'    => 'Only existing topics will be taken into consideration. Pruned topics will not be counted.',
-	'RESYNC_TOPICCOUNTS_CONFIRM'    => 'Are you sure you wish to resynchronise topic counts?',
-	'RESYNC_RATES'                  => 'Resynchronise rating',
-	'RESYNC_RATES_EXPLAIN'          => 'Only existing users and posts will be taken into consideration.',
-	'RESYNC_RATES_CONFIRM'          => 'Are you sure you wish to resynchronise rating?',
+	'RESYNC_STATS'                  => 'Resynchronise forum statistics',
+	'RESYNC_STATS_CONFIRM'          => 'Are you sure you wish to resynchronise forum statistics?',
+	'RESYNC_STATS_EXPLAIN'          => 'Resynchronises all topics and forums and recalculates the total number of posts, topics, users and files.',
+	'RESYNC_USER_STATS'             => 'Resynchronise user statistics',
+	'RESYNC_USER_STATS_EXPLAIN'     => 'Recalculates users’ post and topic counts and all rating totals from existing data.',
+	'RESYNC_USER_STATS_CONFIRM'     => 'Are you sure you wish to resynchronise user statistics?',
 	'RUN'                           => 'Run now',
 
 	'STATISTIC'                 => 'Statistic',
@@ -515,7 +505,6 @@ $lang = array_merge($lang, [
 	'LOG_FORUM_EDIT'                        => '<strong>Edited forum details</strong><br />» %s',
 	'LOG_FORUM_MOVE_DOWN'                   => '<strong>Moved forum</strong> %1$s <strong>below</strong> %2$s',
 	'LOG_FORUM_MOVE_UP'                     => '<strong>Moved forum</strong> %1$s <strong>above</strong> %2$s',
-	'LOG_FORUM_SYNC'                        => '<strong>Re-synchronised forum</strong><br />» %s',
 
 	'LOG_GROUP_CREATED'     => '<strong>New usergroup created</strong><br />» %s',
 	'LOG_GROUP_DEFAULTS'    => '<strong>Group “%1$s” made default for members</strong><br />» %2$s',
@@ -596,14 +585,11 @@ $lang = array_merge($lang, [
 	'LOG_REASON_UPDATED'    => '<strong>Updated report/denial reason</strong><br />» %s',
 
 	'LOG_REFERER_INVALID'       => '<strong>Referer validation failed</strong><br />»Referer was “<em>%1$s</em>”. The request was rejected and the session killed.',
-	'LOG_RESET_DATE'            => '<strong>Board start date reset</strong>',
-	'LOG_RESYNC_POSTCOUNTS'     => '<strong>User post counts resynchronised</strong>',
-	'LOG_RESYNC_STATS'          => '<strong>Post, topic and user statistics resynchronised</strong>',
-	'LOG_RESYNC_TOPICCOUNTS'    => '<strong>User topic counts resynchronised</strong>',
-	'LOG_RESYNC_RATES'          => '<strong>Rating resynchronised</strong>',
+	'LOG_RESYNC_STATS'          => '<strong>Forum statistics resynchronised</strong>',
+	'LOG_RESYNC_USER_STATS'     => '<strong>User statistics resynchronised</strong>',
 
-	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Created search index for</strong><br />» %s',
-	'LOG_SEARCH_INDEX_REMOVED'  => '<strong>Removed search index for</strong><br />» %s',
+	'LOG_SEARCH_INDEX_CREATED'  => '<strong>Created search index</strong>',
+	'LOG_SEARCH_INDEX_REMOVED'  => '<strong>Removed search index</strong>',
 	'LOG_STYLE_ADD'             => '<strong>Added new style</strong><br />» %s',
 	'LOG_STYLE_DELETE'          => '<strong>Deleted style</strong><br />» %s',
 	'LOG_STYLE_EDIT_DETAILS'    => '<strong>Edited style</strong><br />» %s',

@@ -44,13 +44,6 @@ class acp_forums
 		// Check additional permissions
 		switch ($action)
 		{
-			case 'progress_bar':
-				$start = request_var('start', 0);
-				$total = request_var('total', 0);
-
-				$this->display_progress_bar($start, $total);
-			break;
-
 			case 'delete':
 
 				if (!$auth->acl_get('a_forumdel'))
@@ -242,113 +235,6 @@ class acp_forums
 					add_log('admin', 'LOG_FORUM_' . strtoupper($action), $row['forum_name'], $move_forum_name);
 					$cache->destroy('sql', FORUMS_TABLE);
 				}
-
-			break;
-
-			case 'sync':
-				if (!$forum_id)
-				{
-					trigger_error($user->lang['NO_FORUM'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id), E_USER_WARNING);
-				}
-
-				@set_time_limit(0);
-
-				$sql = 'SELECT forum_name, forum_topics_real
-					FROM ' . FORUMS_TABLE . "
-					WHERE forum_id = {$forum_id}";
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if (!$row)
-				{
-					trigger_error($user->lang['NO_FORUM'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id), E_USER_WARNING);
-				}
-
-				if ($row['forum_topics_real'])
-				{
-					$sql = 'SELECT MIN(topic_id) as min_topic_id, MAX(topic_id) as max_topic_id
-						FROM ' . TOPICS_TABLE . '
-						WHERE forum_id = ' . $forum_id;
-					$result = $db->sql_query($sql);
-					$row2 = $db->sql_fetchrow($result);
-					$db->sql_freeresult($result);
-
-					// Typecast to int if there is no data available
-					$row2['min_topic_id'] = (int) $row2['min_topic_id'];
-					$row2['max_topic_id'] = (int) $row2['max_topic_id'];
-
-					$start = request_var('start', $row2['min_topic_id']);
-
-					$batch_size = 2000;
-					$end = $start + $batch_size;
-
-					// Sync all topics in batch mode...
-					sync('topic_approved', 'range', 'topic_id BETWEEN ' . $start . ' AND ' . $end, true, false);
-					sync('topic', 'range', 'topic_id BETWEEN ' . $start . ' AND ' . $end, true, true);
-
-					if ($end < $row2['max_topic_id'])
-					{
-						// We really need to find a way of showing statistics... no progress here
-						$sql = 'SELECT COUNT(topic_id) as num_topics
-							FROM ' . TOPICS_TABLE . '
-							WHERE forum_id = ' . $forum_id . '
-								AND topic_id BETWEEN ' . $start . ' AND ' . $end;
-						$result = $db->sql_query($sql);
-						$topics_done = request_var('topics_done', 0) + (int) $db->sql_fetchfield('num_topics');
-						$db->sql_freeresult($result);
-
-						$start += $batch_size;
-
-						$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;f={$forum_id}&amp;action=sync&amp;start={$start}&amp;topics_done={$topics_done}&amp;total={$row['forum_topics_real']}";
-
-						meta_refresh(0, $url);
-
-						$template->assign_vars([
-							'U_PROGRESS_BAR'        => $this->u_action . "&amp;action=progress_bar&amp;start={$topics_done}&amp;total={$row['forum_topics_real']}",
-							'UA_PROGRESS_BAR'       => addslashes($this->u_action . "&amp;action=progress_bar&amp;start={$topics_done}&amp;total={$row['forum_topics_real']}"),
-							'S_CONTINUE_SYNC'       => true,
-							'L_PROGRESS_EXPLAIN'    => sprintf($user->lang['SYNC_IN_PROGRESS_EXPLAIN'], $topics_done, $row['forum_topics_real']),
-						]);
-
-						return;
-					}
-				}
-
-				$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;f={$forum_id}&amp;action=sync_forum";
-				meta_refresh(0, $url);
-
-				$template->assign_vars([
-					'U_PROGRESS_BAR'        => $this->u_action . '&amp;action=progress_bar',
-					'UA_PROGRESS_BAR'       => addslashes($this->u_action . '&amp;action=progress_bar'),
-					'S_CONTINUE_SYNC'       => true,
-					'L_PROGRESS_EXPLAIN'    => sprintf($user->lang['SYNC_IN_PROGRESS_EXPLAIN'], 0, $row['forum_topics_real']),
-				]);
-
-				return;
-
-			break;
-
-			case 'sync_forum':
-
-				$sql = 'SELECT forum_name, forum_type
-					FROM ' . FORUMS_TABLE . "
-					WHERE forum_id = {$forum_id}";
-				$result = $db->sql_query($sql);
-				$row = $db->sql_fetchrow($result);
-				$db->sql_freeresult($result);
-
-				if (!$row)
-				{
-					trigger_error($user->lang['NO_FORUM'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id), E_USER_WARNING);
-				}
-
-				sync('forum', 'forum_id', $forum_id, false, true);
-
-				add_log('admin', 'LOG_FORUM_SYNC', $row['forum_name']);
-				$cache->destroy('sql', FORUMS_TABLE);
-
-				$template->assign_var('L_FORUM_RESYNCED', sprintf($user->lang['FORUM_RESYNCED'], $row['forum_name']));
 
 			break;
 
@@ -737,15 +623,15 @@ class acp_forums
 		// Jumpbox
 		$forum_box = make_forum_select($this->parent_id, false, true, false, false);
 
-		if ($action == 'sync' || $action == 'sync_forum')
-		{
-			$template->assign_var('S_RESYNCED', true);
-		}
-
-		$sql = 'SELECT *
-			FROM ' . FORUMS_TABLE . "
-			WHERE parent_id = {$this->parent_id}
-			ORDER BY left_id";
+		$sql = 'SELECT f.*, COALESCE(s.num_subforums, 0) AS forum_subforums
+			FROM ' . FORUMS_TABLE . ' f
+			LEFT JOIN (
+				SELECT parent_id, COUNT(forum_id) AS num_subforums
+				FROM ' . FORUMS_TABLE . '
+				GROUP BY parent_id
+			) s ON s.parent_id = f.forum_id
+			WHERE f.parent_id = ' . $this->parent_id . '
+			ORDER BY f.left_id';
 		$result = $db->sql_query($sql);
 
 		if ($row = $db->sql_fetchrow($result))
@@ -756,18 +642,18 @@ class acp_forums
 
 				if ($row['forum_status'] == ITEM_LOCKED)
 				{
-					$folder_image = '<img src="images/icon_folder_lock.gif" alt="' . $user->lang['LOCKED'] . '" />';
+					$folder_image = '<img src="images/icon_folder_lock.png" alt="' . $user->lang['LOCKED'] . '" />';
 				}
 				else
 				{
 					switch ($forum_type)
 					{
 						case FORUM_LINK:
-							$folder_image = '<img src="images/icon_folder_link.gif" alt="' . $user->lang['LINK'] . '" />';
+							$folder_image = '<img src="images/icon_folder_link.png" alt="' . $user->lang['LINK'] . '" />';
 						break;
 
 						default:
-							$folder_image = ($row['left_id'] + 1 != $row['right_id']) ? '<img src="images/icon_subfolder.gif" alt="' . $user->lang['SUBFORUM'] . '" />' : '<img src="images/icon_folder.gif" alt="' . $user->lang['FOLDER'] . '" />';
+							$folder_image = '<img src="images/icon_folder.png" alt="' . $user->lang['FOLDER'] . '" />';
 						break;
 					}
 				}
@@ -780,6 +666,7 @@ class acp_forums
 					'FORUM_IMAGE_SRC'   => ($row['forum_image']) ? PHPBB_ROOT_PATH . $row['forum_image'] : '',
 					'FORUM_NAME'        => $row['forum_name'],
 					'FORUM_DESCRIPTION' => generate_text_for_display($row['forum_desc'], $row['forum_desc_uid'], $row['forum_desc_bitfield'], $row['forum_desc_options']),
+					'FORUM_SUBFORUMS'   => (int) $row['forum_subforums'],
 					'FORUM_TOPICS'      => $row['forum_topics'],
 					'FORUM_POSTS'       => $row['forum_posts'],
 
@@ -791,8 +678,7 @@ class acp_forums
 					'U_MOVE_DOWN'       => $url . '&amp;action=move_down',
 					'U_EDIT'            => $url . '&amp;action=edit',
 					'U_DELETE'          => $url . '&amp;action=delete',
-					'U_SYNC'            => $url . '&amp;action=sync']
-				);
+				]);
 			}
 			while ($row = $db->sql_fetchrow($result));
 		}
@@ -807,7 +693,6 @@ class acp_forums
 
 				'U_EDIT'            => $url . '&amp;action=edit',
 				'U_DELETE'          => $url . '&amp;action=delete',
-				'U_SYNC'            => $url . '&amp;action=sync',
 			]);
 		}
 		$db->sql_freeresult($result);
@@ -818,9 +703,6 @@ class acp_forums
 			'FORUM_BOX'     => $forum_box,
 			'U_SEL_ACTION'  => $this->u_action,
 			'U_ACTION'      => $this->u_action . '&amp;parent_id=' . $this->parent_id,
-
-			'U_PROGRESS_BAR'    => $this->u_action . '&amp;action=progress_bar',
-			'UA_PROGRESS_BAR'   => addslashes($this->u_action . '&amp;action=progress_bar'),
 		]);
 	}
 
@@ -1607,7 +1489,6 @@ class acp_forums
 
 		// Delete everything else and thank MySQL for offering multi-table deletion
 		$tables_ary = [
-			SEARCH_WORDMATCH_TABLE  => 'post_id',
 			REPORTS_TABLE           => 'post_id',
 			WARNINGS_TABLE          => 'post_id',
 			BOOKMARKS_TABLE         => 'topic_id',
@@ -1773,27 +1654,6 @@ class acp_forums
 		$db->sql_query($sql);
 
 		return $target['forum_name'];
-	}
-
-	/**
-	* Display progress bar for syncinc forums
-	*/
-	function display_progress_bar($start, $total)
-	{
-		global $template, $user;
-
-		adm_page_header($user->lang['SYNC_IN_PROGRESS']);
-
-		$template->set_filenames([
-			'body'  => 'progress_bar.html']
-		);
-
-		$template->assign_vars([
-			'L_PROGRESS'            => $user->lang['SYNC_IN_PROGRESS'],
-			'L_PROGRESS_EXPLAIN'    => ($start && $total) ? sprintf($user->lang['SYNC_IN_PROGRESS_EXPLAIN'], $start, $total) : $user->lang['SYNC_IN_PROGRESS'],
-		]);
-
-		adm_page_footer();
 	}
 
 	/**

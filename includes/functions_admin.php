@@ -611,10 +611,8 @@ function move_posts($post_ids, $topic_id, $auto_sync = true)
 	{
 		$forum_ids[] = (int) $forum_row['forum_id'];
 
-		sync('topic_reported', 'topic_id', $topic_ids);
-		sync('topic_attachment', 'topic_id', $topic_ids);
-		sync('topic', 'topic_id', $topic_ids, true);
-		sync('forum', 'forum_id', $forum_ids, true, true);
+		sync('topic', 'topic_id', $topic_ids, false, true);
+		sync('forum', 'forum_id', $forum_ids, false, true);
 	}
 
 	$sql = 'SELECT p.poster_id
@@ -729,8 +727,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 
 	if ($auto_sync)
 	{
-		sync('forum', 'forum_id', array_unique($forum_ids), true, true);
-		sync('topic_reported', $where_type, $where_ids);
+		sync('forum', 'forum_id', array_unique($forum_ids), false, true);
 	}
 
 	if ($approved_topics)
@@ -874,23 +871,8 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $post_count_sy
 	}
 
 	// Remove the message from the search index
-	$search_type = basename($config['search_type']);
-
-	if (!file_exists(PHPBB_ROOT_PATH . 'includes/search/' . $search_type . '.php'))
-	{
-		trigger_error('NO_SUCH_SEARCH_MODULE');
-	}
-
-	require_once(PHPBB_ROOT_PATH . "includes/search/{$search_type}.php");
-
-	$error = false;
-	$search = new $search_type($error);
-
-	if ($error)
-	{
-		trigger_error($error);
-	}
-
+	require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
+	$search = new fulltext_mysql();
 	$search->index_remove($post_ids, $poster_ids, $forum_ids);
 
 	delete_attachments('post', $post_ids, false);
@@ -899,9 +881,8 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $post_count_sy
 
 	if ($auto_sync)
 	{
-		sync('topic_reported', 'topic_id', $topic_ids);
-		sync('topic', 'topic_id', $topic_ids, true);
-		sync('forum', 'forum_id', $forum_ids, true, true);
+		sync('topic', 'topic_id', $topic_ids, false, true);
+		sync('forum', 'forum_id', $forum_ids, false, true);
 	}
 
 	if ($approved_posts)
@@ -1251,6 +1232,9 @@ function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
 * - topic_reported      Resyncs the topic_reported flag, relying on post_reported flags
 * - post_attachement    Same as post_reported, but with attachment flags
 * - topic_attachement   Same as topic_reported, but with attachment flags
+*
+* @param bool $resync_parents Resync forums containing changed topics
+* @param bool $sync_extra Perform mode-specific extra checks
 */
 function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false, $sync_extra = false)
 {
@@ -1266,43 +1250,29 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 		$where_ids = ($where_ids) ? [(int) $where_ids] : [];
 	}
 
-	if ($mode == 'forum' || $mode == 'topic' || $mode == 'topic_approved' || $mode == 'topic_reported' || $mode == 'post_reported')
+	if (!$where_type)
 	{
-		if (!$where_type)
-		{
-			$where_sql = '';
-			$where_sql_and = 'WHERE';
-		}
-		else if ($where_type == 'range')
-		{
-			// Only check a range of topics/forums. For instance: 'topic_id BETWEEN 1 AND 60'
-			$where_sql = 'WHERE (' . $mode[0] . ".{$where_ids})";
-			$where_sql_and = $where_sql . "\n\tAND";
-		}
-		else
-		{
-			// Do not sync the "global forum"
-			$where_ids = array_diff($where_ids, [0]);
-
-			if (!sizeof($where_ids))
-			{
-				// Empty array with IDs. This means that we don't have any work to do. Just return.
-				return;
-			}
-
-			// Limit the topics/forums we are syncing, use specific topic/forum IDs.
-			// $where_type contains the field for the where clause (forum_id, topic_id)
-			$where_sql = 'WHERE ' . $db->sql_in_set($mode[0] . '.' . $where_type, $where_ids);
-			$where_sql_and = $where_sql . "\n\tAND";
-		}
+		$where_sql = '';
+		$where_sql_and = 'WHERE';
+	}
+	else if ($where_type == 'range')
+	{
+		// Only check a range of topics/forums. For instance: 'topic_id BETWEEN 1 AND 60'
+		$where_sql = 'WHERE (' . $mode[0] . ".{$where_ids})";
+		$where_sql_and = $where_sql . "\n\tAND";
 	}
 	else
 	{
+		// Do not sync the "global forum"
+		$where_ids = array_diff($where_ids, [0]);
+
 		if (!sizeof($where_ids))
 		{
+			// Empty array with IDs. This means that we don't have any work to do. Just return.
 			return;
 		}
 
+		// Limit the topics/forums we are syncing, use specific topic/forum IDs.
 		// $where_type contains the field for the where clause (forum_id, topic_id)
 		$where_sql = 'WHERE ' . $db->sql_in_set($mode[0] . '.' . $where_type, $where_ids);
 		$where_sql_and = $where_sql . "\n\tAND";
@@ -1746,11 +1716,18 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			break;
 
 		case 'topic':
+			if ($sync_extra)
+			{
+				// Resync the post flags from their source data before rolling them up to the topics.
+				sync('topic_reported', $where_type, $where_ids, false, true);
+				sync('topic_attachment', $where_type, $where_ids, false, true);
+			}
+
 			$topic_data = $post_ids = $approved_unapproved_ids = $resync_forums = $delete_topics = $delete_posts = $moved_topics = [];
 
 			$db->sql_transaction('begin');
 
-			$sql = 'SELECT t.topic_id, t.forum_id, t.topic_moved_id, t.topic_approved, ' . (($sync_extra) ? 't.topic_attachment, t.topic_reported, ' : '') . 't.topic_poster, t.topic_time, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_first_poster_name, t.topic_first_poster_colour, t.topic_last_post_id, t.topic_last_post_subject, t.topic_last_poster_id, t.topic_last_poster_name, t.topic_last_poster_colour, t.topic_last_post_time
+			$sql = 'SELECT t.topic_id, t.forum_id, t.topic_moved_id, t.topic_approved, t.topic_poster, t.topic_time, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_first_poster_name, t.topic_first_poster_colour, t.topic_last_post_id, t.topic_last_post_subject, t.topic_last_poster_id, t.topic_last_poster_name, t.topic_last_poster_colour, t.topic_last_post_time
 				FROM ' . TOPICS_TABLE . " t
 				{$where_sql}";
 			$result = $db->sql_query($sql);
@@ -1774,11 +1751,6 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 				// This array holds all topic_ids
 				$delete_topics[$topic_id] = '';
 
-				if ($sync_extra)
-				{
-					$topic_data[$topic_id]['reported'] = 0;
-					$topic_data[$topic_id]['attachment'] = 0;
-				}
 			}
 			$db->sql_freeresult($result);
 
@@ -2012,41 +1984,6 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			// These are fields that will be synchronised
 			$fieldnames = ['time', 'replies', 'replies_real', 'poster', 'first_post_id', 'first_poster_name', 'first_poster_colour', 'last_post_id', 'last_post_subject', 'last_post_time', 'last_poster_id', 'last_poster_name', 'last_poster_colour'];
-
-			if ($sync_extra)
-			{
-				// This routine assumes that post_reported values are correct
-				// if they are not, use sync('post_reported') first
-				$sql = 'SELECT t.topic_id, p.post_id
-					FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-					{$where_sql_and} p.topic_id = t.topic_id
-						AND p.post_reported = 1
-					GROUP BY t.topic_id, p.post_id";
-				$result = $db->sql_query($sql);
-
-				$fieldnames[] = 'reported';
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$topic_data[intval($row['topic_id'])]['reported'] = 1;
-				}
-				$db->sql_freeresult($result);
-
-				// This routine assumes that post_attachment values are correct
-				// if they are not, use sync('post_attachment') first
-				$sql = 'SELECT t.topic_id, p.post_id
-					FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
-					{$where_sql_and} p.topic_id = t.topic_id
-						AND p.post_attachment = 1
-					GROUP BY t.topic_id, p.post_id";
-				$result = $db->sql_query($sql);
-
-				$fieldnames[] = 'attachment';
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$topic_data[intval($row['topic_id'])]['attachment'] = 1;
-				}
-				$db->sql_freeresult($result);
-			}
 
 			foreach ($topic_data as $topic_id => $row)
 			{

@@ -219,7 +219,6 @@ $lang = array_merge($lang, [
 
 	// Quick reply
 	'QUICK_REPLY'               => 'Быстрый ответ',
-	'QUICK_POST'                => 'Быстрая тема',
 	'QUOTE_TEXT'                => 'Выделите текст в сообщении',
 
 	// Additional strings

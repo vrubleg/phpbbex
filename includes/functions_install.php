@@ -169,7 +169,7 @@ function connect_check_db($error_connect, &$error, $dbms_details, $table_prefix,
 		}
 
 		// Make sure that the user has selected a sensible DBAL for the DBMS actually installed
-		if (version_compare(mysqli_get_server_info($db->db_connect_id), '5.5.0', '<'))
+		if (version_compare(mysqli_get_server_info($db->db_connect_id), '5.6.4', '<'))
 		{
 			$error[] = $lang['INST_ERR_DB_NO_MYSQLI'];
 		}

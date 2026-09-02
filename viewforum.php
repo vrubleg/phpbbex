@@ -247,12 +247,6 @@ $s_display_active = ($forum_data['forum_type'] == FORUM_CAT && ($forum_data['for
 
 $s_search_hidden_fields = empty($config['default_search_titleonly']) ? ['fid' => [$forum_id]] : ['sf' => 'titleonly', 'sr' => 'topics', 'fid' => [$forum_id]];
 
-// Quick post
-if ($config['allow_quick_post'])
-{
-	require(PHPBB_ROOT_PATH . 'includes/quick_reply.php');
-}
-
 if (!empty($_EXTRA_URL))
 {
 	foreach ($_EXTRA_URL as $url_param)
