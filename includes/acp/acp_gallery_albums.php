@@ -571,11 +571,17 @@ class acp_gallery_albums
 			$template->assign_var('S_RESYNCED', true);
 		}
 
-		$sql = 'SELECT *
-			FROM ' . GALLERY_ALBUMS_TABLE . "
-			WHERE parent_id = {$this->parent_id}
-				AND album_user_id = " . phpbb_gallery_album::PUBLIC_ALBUM . '
-			ORDER BY left_id';
+		$sql = 'SELECT a.*, COALESCE(s.num_subalbums, 0) AS album_subalbums
+			FROM ' . GALLERY_ALBUMS_TABLE . ' a
+			LEFT JOIN (
+				SELECT parent_id, COUNT(album_id) AS num_subalbums
+				FROM ' . GALLERY_ALBUMS_TABLE . '
+				WHERE album_user_id = ' . phpbb_gallery_album::PUBLIC_ALBUM . '
+				GROUP BY parent_id
+			) s ON s.parent_id = a.album_id
+			WHERE a.parent_id = ' . $this->parent_id . '
+				AND a.album_user_id = ' . phpbb_gallery_album::PUBLIC_ALBUM . '
+			ORDER BY a.left_id';
 		$result = $db->sql_query($sql);
 
 		if ($row = $db->sql_fetchrow($result))
@@ -586,11 +592,11 @@ class acp_gallery_albums
 
 				if ($row['album_status'] == phpbb_gallery_album::STATUS_LOCKED)
 				{
-					$folder_image = '<img src="images/icon_folder_lock.gif" alt="' . $user->lang['LOCKED'] . '" />';
+					$folder_image = '<img src="images/icon_folder_lock.png" alt="' . $user->lang['LOCKED'] . '" />';
 				}
 				else
 				{
-					$folder_image = ($row['left_id'] + 1 != $row['right_id']) ? '<img src="images/icon_subfolder.gif" alt="' . $user->lang['SUBALBUM'] . '" />' : '<img src="images/icon_folder.gif" alt="' . $user->lang['FOLDER'] . '" />';
+					$folder_image = '<img src="images/icon_folder.png" alt="' . $user->lang['FOLDER'] . '" />';
 				}
 
 				$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;a={$row['album_id']}";
@@ -601,6 +607,7 @@ class acp_gallery_albums
 					'ALBUM_IMAGE_SRC'   => ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
 					'ALBUM_NAME'        => $row['album_name'],
 					'ALBUM_DESCRIPTION' => generate_text_for_display($row['album_desc'], $row['album_desc_uid'], $row['album_desc_bitfield'], $row['album_desc_options']),
+					'ALBUM_SUBALBUMS'   => (int) $row['album_subalbums'],
 					'ALBUM_IMAGES'      => $row['album_images'],
 
 					'S_ALBUM_POST'      => ($album_type != phpbb_gallery_album::TYPE_CAT),
