@@ -97,16 +97,24 @@ class phpbb_gallery_upload
 	*/
 	public function update_image($image_id, $needs_approval = false)
 	{
+		global $config, $user;
+
 		if ($this->file_limit && ($this->uploaded_files >= $this->file_limit))
 		{
-			global $user;
 			$this->new_error($user->lang('UPLOAD_ERROR', $this->image_data[$image_id]['image_name'], $user->lang['QUOTA_REACHED']));
 			return false;
 		}
 		$this->file_count = (int) $this->array_id2row[$image_id];
 
+		$image_desc = utf8_normalize_nfc($this->get_description());
+		if ((int) $config['max_post_chars'] > 0 && utf8_strlen($image_desc) > (int) $config['max_post_chars'])
+		{
+			$this->new_error($user->lang('UPLOAD_ERROR', $this->image_data[$image_id]['image_name'], $user->lang['DESC_TOO_LONG']));
+			return false;
+		}
+
 		$message_parser             = new parse_message();
-		$message_parser->message    = utf8_normalize_nfc($this->get_description());
+		$message_parser->message    = $image_desc;
 		if ($message_parser->message)
 		{
 			$message_parser->parse(true, true, true, true, false, true, true, true);

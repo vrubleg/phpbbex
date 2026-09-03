@@ -38,12 +38,10 @@ class phpbb_gallery_config_core
 
 		'captcha_comment'       => true,
 		'captcha_upload'        => true,
-		'comment_length'        => 2000,
 		'comment_user_control'  => true,
 
 		'default_sort_dir'  => 'd',
 		'default_sort_key'  => 't',
-		'description_length'=> 2000,
 		'disp_birthdays'            => false,
 		'disp_exifdata'             => true,
 		'disp_image_url'            => true,

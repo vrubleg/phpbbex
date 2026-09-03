@@ -297,7 +297,6 @@ class acp_gallery_config
 			'legend1'               => 'GALLERY_CONFIG',
 			'allow_comments'        => ['lang' => 'COMMENT_SYSTEM',     'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'comment_user_control'  => ['lang' => 'COMMENT_USER_CONTROL',   'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => true],
-			'comment_length'        => ['lang' => 'COMMENT_MAX_LENGTH', 'validate' => 'int',    'type' => 'text:7:5',       'gallery' => true,  'explain' => false, 'append' => 'CHARACTERS'],
 			'allow_rates'           => ['lang' => 'RATE_SYSTEM',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'max_rating'            => ['lang' => 'RATE_SCALE',         'validate' => 'int',    'type' => 'text:7:2',       'gallery' => true,  'explain' => false],
 			'allow_hotlinking'      => ['lang' => 'HOTLINK_PREVENT',        'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
@@ -329,7 +328,6 @@ class acp_gallery_config
 			'allow_gif'             => ['lang' => 'GIF_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'allow_jpg'             => ['lang' => 'JPG_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'allow_png'             => ['lang' => 'PNG_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
-			'description_length'    => ['lang' => 'IMAGE_DESC_MAX_LENGTH',  'validate' => 'int',    'type' => 'text:7:5',       'gallery' => true,  'explain' => false, 'append' => 'CHARACTERS'],
 			'disp_exifdata'         => ['lang' => 'DISP_EXIF_DATA',     'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'disp_image_url'        => ['lang' => 'VIEW_IMAGE_URL',     'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 

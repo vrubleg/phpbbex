@@ -543,6 +543,10 @@ else
 			{
 				$errors[] = $user->lang['MISSING_IMAGE_NAME'];
 			}
+			if ((int) $config['max_post_chars'] > 0 && utf8_strlen($image_desc) > (int) $config['max_post_chars'])
+			{
+				$errors[] = $user->lang['DESC_TOO_LONG'];
+			}
 
 			if (!phpbb_gallery_config::get('allow_comments') || !phpbb_gallery_config::get('comment_user_control'))
 			{

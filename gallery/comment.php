@@ -224,7 +224,7 @@ if ($mode == 'add')
 		{
 			$error .= (($error) ? '<br />' : '') . $user->lang['MISSING_COMMENT'];
 		}
-		if (utf8_strlen($comment_plain) > phpbb_gallery_config::get('comment_length'))
+		if ((int) $config['max_post_chars'] > 0 && utf8_strlen($comment_plain) > (int) $config['max_post_chars'])
 		{
 			$error .= (($error) ? '<br />' : '') . $user->lang['COMMENT_TOO_LONG'];
 		}
@@ -324,7 +324,7 @@ else if ($mode == 'edit')
 		{
 			$error .= (($error) ? '<br />' : '') . $user->lang['MISSING_COMMENT'];
 		}
-		if (utf8_strlen($comment_plain) > phpbb_gallery_config::get('comment_length'))
+		if ((int) $config['max_post_chars'] > 0 && utf8_strlen($comment_plain) > (int) $config['max_post_chars'])
 		{
 			$error .= (($error) ? '<br />' : '') . $user->lang['COMMENT_TOO_LONG'];
 		}

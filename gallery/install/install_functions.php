@@ -288,7 +288,6 @@ function config_mapping()
 		'view_image_url'        => 'disp_image_url',
 		'exif_data'             => 'disp_exifdata',
 		'rate_scale'            => 'max_rating',
-		'comment_length'        => 'comment_length',
 		'search_display'        => 'search_display',
 		'link_imagepage'        => 'link_imagepage',
 
@@ -306,6 +305,5 @@ function config_mapping()
 
 		'images_per_album'      => 'album_images',
 		'upload_images'         => 'num_uploads',
-		'description_length'    => 'description_length',
 	];
 }
