@@ -70,7 +70,6 @@ $lang = array_merge($lang, [
 	'BAN_TRIGGERED_BY_IP'   => 'Your IP address is in ban list.',
 	'BAN_TRIGGERED_BY_USER' => 'Your username is in ban list.',
 	'BBCODE_GUIDE'          => 'BBCode guide',
-	'BCC'                   => 'BCC',
 	'BIRTHDAYS'             => 'Birthdays',
 	'BOARD_BAN_PERM'        => 'You have been <strong>permanently</strong> banned from this board.',
 	'BOARD_BAN_TIME'        => 'You have been banned from this board until <strong>%s</strong>.',

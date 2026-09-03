@@ -52,8 +52,8 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		$bbcode = new bbcode($message_row['bbcode_bitfield']);
 	}
 
-	// Assign TO/BCC Addresses to template
-	write_pm_addresses(['to' => $message_row['to_address'], 'bcc' => $message_row['bcc_address']], $author_id);
+	// Assign recipients to template
+	write_pm_addresses($message_row['to_address']);
 
 	$user_info = get_user_information($author_id, $message_row);
 

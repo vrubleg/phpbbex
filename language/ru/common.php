@@ -70,7 +70,6 @@ $lang = array_merge($lang, [
 	'BAN_TRIGGERED_BY_IP'   => 'Ваш IP-адрес в чёрном списке.',
 	'BAN_TRIGGERED_BY_USER' => 'Ваше имя пользователя в чёрном списке.',
 	'BBCODE_GUIDE'          => 'Помощь по BBCode',
-	'BCC'                   => 'Скрытая копия',
 	'BIRTHDAYS'             => 'Дни рождения',
 	'BOARD_BAN_PERM'        => 'Вам закрыт доступ к форуму.',
 	'BOARD_BAN_TIME'        => 'Вам закрыт доступ к форуму до <strong>%1$s</strong>.',

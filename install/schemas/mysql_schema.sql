@@ -433,7 +433,6 @@ CREATE TABLE phpbb_privmsgs (
 	message_edit_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	message_edit_count smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
 	to_address text NOT NULL,
-	bcc_address text NOT NULL,
 	message_reported tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (msg_id),
 	KEY author_ip (author_ip),

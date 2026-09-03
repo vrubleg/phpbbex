@@ -835,16 +835,15 @@ class merge_users
 	{
 		global $db;
 
-		$sql = 'SELECT msg_id, to_address, bcc_address
+		$sql = 'SELECT msg_id, to_address
 			FROM ' . PRIVMSGS_TABLE . "
-			WHERE to_address LIKE '%u_{$source['user_id']}%'
-				OR bcc_address LIKE '%u_{$source['user_id']}%'";
+			WHERE to_address LIKE '%u_{$source['user_id']}%'";
 		$result = $db->sql_query($sql);
 
 		$sql = [];
 
 		while ($row = $db->sql_fetchrow($result))
-        {
+		{
 			$to_id = explode(':',$row['to_address']);
 			foreach ($to_id as $key => $v1)
 			{
@@ -856,25 +855,10 @@ class merge_users
 			}
 			$to_address = implode(':', $to_id);
 
-			$bcc_id = explode(':',$row['bcc_address']);
-			foreach ($bcc_id as $key => $v1)
-			{
-				$trimmed = (int) ltrim($v1, 'u_');
-				if ($trimmed === $source['user_id'])
-				{
-					$bcc_id[$key] = 'u_' . $target['user_id'];
-				}
-			}
-			$bcc_address = implode(':', $bcc_id);
-
-
-            $sql[] = 'UPDATE ' . PRIVMSGS_TABLE . '
-                SET ' . $db->sql_build_array('UPDATE', [
-					'to_address'    => $to_address,
-					'bcc_address'   => $bcc_address,
-            ]) . '
-            WHERE msg_id = ' . (int) $row['msg_id'];
-        }
+			$sql[] = 'UPDATE ' . PRIVMSGS_TABLE . '
+				SET ' . $db->sql_build_array('UPDATE', ['to_address' => $to_address]) . '
+				WHERE msg_id = ' . (int) $row['msg_id'];
+		}
 
 		return $sql;
 	}

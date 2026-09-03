@@ -799,6 +799,19 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("DROP TABLE {$table_prefix}forums_access");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 
+	// BCC in PMs is gone.
+	$db->sql_query('UPDATE ' . PRIVMSGS_TABLE . "
+		SET to_address = CASE
+			WHEN to_address = '' THEN bcc_address
+			WHEN bcc_address = '' THEN to_address
+			ELSE CONCAT(to_address, ':', bcc_address)
+		END
+		WHERE bcc_address <> ''");
+	$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN bcc_address');
+
+	// Rules matching private messages addressed to a group are no longer supported.
+	$db->sql_query('DELETE FROM ' . PRIVMSGS_RULES_TABLE . ' WHERE rule_option = 14');
+
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
 
 	$db->sql_query("UPDATE " . LANG_TABLE . " SET lang_dir = LEFT(lang_dir, 5) WHERE CHAR_LENGTH(lang_dir) > 5");

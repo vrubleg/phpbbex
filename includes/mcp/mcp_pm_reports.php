@@ -96,7 +96,7 @@ class mcp_pm_reports
 
 				$pm_info = $pm_info[$pm_id];
 
-				write_pm_addresses(['to' => $pm_info['to_address'], 'bcc' => $pm_info['bcc_address']], (int) $pm_info['author_id']);
+				write_pm_addresses($pm_info['to_address']);
 
 				$reason = ['title' => $report['reason_title'], 'description' => $report['reason_description']];
 				if (isset($user->lang['report_reasons']['TITLE'][strtoupper($reason['title'])]) && isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($reason['title'])]))

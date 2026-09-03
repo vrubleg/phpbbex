@@ -32,7 +32,6 @@ define('RULE_IS_USER', 9);      // Is User
 define('RULE_IS_GROUP', 10);    // Is In Usergroup
 define('RULE_ANSWERED', 11);    // Answered
 define('RULE_FORWARDED', 12);   // Forwarded
-define('RULE_TO_GROUP', 14);    // Usergroup
 define('RULE_TO_ME', 15);       // Me
 
 define('ACTION_PLACE_INTO_FOLDER', 1);
@@ -86,8 +85,7 @@ $global_privmsgs_rules = [
 	],
 
 	CHECK_TO        => [
-		RULE_TO_GROUP       => ['check0' => 'to', 'check1' => 'bcc', 'check2' => 'user_in_group', 'function' => 'in_array("g_" . {CHECK2}, {CHECK0}) || in_array("g_" . {CHECK2}, {CHECK1})'],
-		RULE_TO_ME          => ['check0' => 'to', 'check1' => 'bcc', 'function' => 'in_array("u_" . $user_id, {CHECK0}) || in_array("u_" . $user_id, {CHECK1})'],
+		RULE_TO_ME          => ['check0' => 'to', 'function' => 'in_array("u_" . $user_id, {CHECK0})'],
 	]
 ];
 
@@ -436,10 +434,8 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		{
 			$check_rows[] = array_merge($row, [
 				'to'                => explode(':', $row['to_address']),
-				'bcc'               => explode(':', $row['bcc_address']),
 				'friend'            => (isset($zebra[$row['author_id']])) ? $zebra[$row['author_id']]['friend'] : 0,
 				'foe'               => (isset($zebra[$row['author_id']])) ? $zebra[$row['author_id']]['foe'] : 0,
-				'user_in_group'     => $user->data['group_id'],
 				'author_in_group'   => []]
 			);
 
@@ -1260,72 +1256,51 @@ function phpbb_delete_user_pms($user_id)
 /**
 * Rebuild message header
 */
-function rebuild_header($check_ary)
+function rebuild_header($address_field)
 {
-	$address = [];
+	preg_match_all('/:?u_([0-9]+):?/', $address_field, $match);
 
-	foreach ($check_ary as $check_type => $address_field)
-	{
-		preg_match_all('/:?u_([0-9]+):?/', $address_field, $match);
-		foreach ($match[1] as $user_id)
-		{
-			$address[(int) $user_id] = $check_type;
-		}
-	}
-
-	return $address;
+	return array_values(array_unique(array_map('intval', $match[1])));
 }
 
 /**
 * Print out/assign recipient information
 */
-function write_pm_addresses($check_ary, $author_id, $plaintext = false)
+function write_pm_addresses($address_field, $plaintext = false)
 {
-	global $db, $user, $template;
+	global $db, $template;
 
+	$recipient_ids = rebuild_header($address_field);
 	$addresses = [];
-
-	foreach ($check_ary as $check_type => $address_field)
+	$has_recipients = false;
+	if (sizeof($recipient_ids))
 	{
-		$recipient_ids = array_keys(rebuild_header([$check_type => $address_field]));
-		$address = [];
-		if (sizeof($recipient_ids))
-		{
-			$sql = 'SELECT user_id, username, user_colour
-				FROM ' . USERS_TABLE . '
-				WHERE ' . $db->sql_in_set('user_id', $recipient_ids);
-			$result = $db->sql_query($sql);
+		$sql = 'SELECT user_id, username, user_colour
+			FROM ' . USERS_TABLE . '
+			WHERE ' . $db->sql_in_set('user_id', $recipient_ids);
+		$result = $db->sql_query($sql);
 
-			while ($row = $db->sql_fetchrow($result))
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$has_recipients = true;
+			if ($plaintext)
 			{
-				if ($check_type == 'to' || $author_id == $user->data['user_id'] || $row['user_id'] == $user->data['user_id'])
-				{
-					if ($plaintext)
-					{
-						$address[] = $row['username'];
-					}
-					else
-					{
-						$address[$row['user_id']] = ['name' => $row['username'], 'colour' => $row['user_colour']];
-					}
-				}
+				$addresses[] = $row['username'];
 			}
-			$db->sql_freeresult($result);
-		}
-
-		if (sizeof($address) && !$plaintext)
-		{
-			$template->assign_var('S_' . strtoupper($check_type) . '_RECIPIENT', true);
-
-			foreach ($address as $id => $row)
+			else
 			{
-				$template->assign_block_vars($check_type . '_recipient', [
-					'NAME_FULL' => get_username_string('full', $id, $row['name'], $row['colour']),
+				$template->assign_block_vars('to_recipient', [
+					'NAME'      => $row['username'],
+					'NAME_FULL' => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				]);
 			}
 		}
+		$db->sql_freeresult($result);
 
-		$addresses[$check_type] = $address;
+		if ($has_recipients && !$plaintext)
+		{
+			$template->assign_var('S_TO_RECIPIENT', true);
+		}
 	}
 
 	return $addresses;
@@ -1420,27 +1395,30 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	$root_level = 0;
 
 	// Recipient Information
-	$recipients = $to = $bcc = [];
+	$recipients = [];
 
 	if ($mode != 'edit' && $mode != 'reparse')
 	{
 		// Build Recipient List
-		// array($user_id => 'to'|'bcc')
+		// array($user_id, ...)
 		if (!empty($data['address_list']) && is_array($data['address_list']))
 		{
-			foreach ($data['address_list'] as $id => $field)
+			foreach ($data['address_list'] as $id)
 			{
-				$id = (int) $id;
-
-				// Do not rely on the address list being valid.
-				if (!$id || $id == ANONYMOUS || is_array($field))
+				if (!is_scalar($id))
 				{
 					continue;
 				}
 
-				$field = ($field == 'to') ? 'to' : 'bcc';
-				$recipients[$id] = $field;
-				${$field}[] = 'u_' . $id;
+				$id = (int) $id;
+
+				// Do not rely on the address list being valid.
+				if (!$id || $id == ANONYMOUS)
+				{
+					continue;
+				}
+
+				$recipients[$id] = true;
 			}
 		}
 
@@ -1457,6 +1435,12 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		if (!sizeof($recipients))
 		{
 			trigger_error('NO_RECIPIENT');
+		}
+
+		$to = [];
+		foreach (array_keys($recipients) as $user_id)
+		{
+			$to[] = 'u_' . $user_id;
 		}
 	}
 
@@ -1500,7 +1484,6 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				'bbcode_bitfield'   => $data['bbcode_bitfield'],
 				'bbcode_uid'        => $data['bbcode_uid'],
 				'to_address'        => implode(':', $to),
-				'bcc_address'       => implode(':', $bcc),
 				'message_reported'  => 0,
 			];
 		break;
@@ -1992,9 +1975,9 @@ function get_recipient_strings($pm_by_id)
 	foreach ($pm_by_id as $message_id => $row)
 	{
 		$address_list[$message_id] = [];
-		$address[$message_id] = rebuild_header(['to' => $row['to_address'], 'bcc' => $row['bcc_address']]);
+		$address[$message_id] = rebuild_header($row['to_address']);
 
-		foreach ($address[$message_id] as $user_id => $in_to)
+		foreach ($address[$message_id] as $user_id)
 		{
 			$recipient_list[$user_id] = ['name' => $user->lang['NA'], 'colour' => ''];
 		}
@@ -2014,9 +1997,9 @@ function get_recipient_strings($pm_by_id)
 		$db->sql_freeresult($result);
 	}
 
-	foreach ($address as $message_id => $id_ary)
+	foreach ($address as $message_id => $user_ids)
 	{
-		foreach ($id_ary as $user_id => $in_to)
+		foreach ($user_ids as $user_id)
 		{
 			$address_list[$message_id][] = get_username_string('full', $user_id, $recipient_list[$user_id]['name'], $recipient_list[$user_id]['colour']);
 		}
