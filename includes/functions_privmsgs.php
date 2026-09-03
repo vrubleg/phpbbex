@@ -143,9 +143,9 @@ function update_pm_counts()
 }
 
 /**
-* Place new messages into the inbox
+* Deliver pending messages to the inbox
 */
-function place_pm_into_folder()
+function deliver_pending_pms()
 {
 	global $db, $user;
 
@@ -740,8 +740,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 
 	if ($mode != 'edit' && $mode != 'reparse')
 	{
-		// Build Recipient List
-		// array($user_id, ...)
+		// Build recipient list.
 		if (!empty($data['address_list']) && is_array($data['address_list']))
 		{
 			foreach ($data['address_list'] as $id)
@@ -759,18 +758,17 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 					continue;
 				}
 
-				$recipients[$id] = true;
+				$recipients[] = $id;
 			}
+
+			$recipients = array_values(array_unique($recipients));
 		}
 
 		// Silently omit recipients who have added the sender to their foes list.
-		$blocked_recipients = get_pm_recipients_blocking_sender($data['from_user_id'], array_keys($recipients));
+		$blocked_recipients = get_pm_recipients_blocking_sender($data['from_user_id'], $recipients);
 		if (!empty($blocked_recipients))
 		{
-			foreach ($blocked_recipients as $blocked_user_id)
-			{
-				unset($recipients[$blocked_user_id]);
-			}
+			$recipients = array_values(array_diff($recipients, $blocked_recipients));
 		}
 
 		if (!sizeof($recipients))
@@ -779,7 +777,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		}
 
 		$to = [];
-		foreach (array_keys($recipients) as $user_id)
+		foreach ($recipients as $user_id)
 		{
 			$to[] = 'u_' . $user_id;
 		}
@@ -884,7 +882,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		unset($sql);
 
 		$sql_ary = [];
-		foreach ($recipients as $user_id => $type)
+		foreach ($recipients as $user_id)
 		{
 			$sql_ary[] = [
 				'msg_id'        => (int) $data['msg_id'],
@@ -901,7 +899,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 
 		$sql = 'UPDATE ' . USERS_TABLE . '
 			SET user_new_privmsg = user_new_privmsg + 1, user_unread_privmsg = user_unread_privmsg + 1, user_last_privmsg = ' . time() . '
-			WHERE ' . $db->sql_in_set('user_id', array_keys($recipients));
+			WHERE ' . $db->sql_in_set('user_id', $recipients);
 		$db->sql_query($sql);
 
 		// Put PM into outbox
@@ -1038,7 +1036,7 @@ function pm_notification($mode, $author, $recipients, $subject, $message, $msg_i
 	$subject = censor_text($subject);
 
 	// Exclude guests, current user and banned users from notifications
-	unset($recipients[ANONYMOUS], $recipients[$user->data['user_id']]);
+	$recipients = array_values(array_diff($recipients, [ANONYMOUS, (int) $user->data['user_id']]));
 
 	if (!sizeof($recipients))
 	{
@@ -1049,8 +1047,8 @@ function pm_notification($mode, $author, $recipients, $subject, $message, $msg_i
 	{
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 	}
-	$banned_users = phpbb_get_banned_user_ids(array_keys($recipients));
-	$recipients = array_diff(array_keys($recipients), $banned_users);
+	$banned_users = phpbb_get_banned_user_ids($recipients);
+	$recipients = array_values(array_diff($recipients, $banned_users));
 
 	if (!sizeof($recipients))
 	{

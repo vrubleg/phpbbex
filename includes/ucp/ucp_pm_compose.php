@@ -385,14 +385,14 @@ function compose_pm($id, $mode, $action)
 	// Check mass pm to users permission
 	if ((!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm')) && sizeof($address_list) > 1)
 	{
-		$address_list = get_recipients($address_list, 1);
+		$address_list = array_slice($address_list, 0, 1);
 		$error[] = $user->lang('TOO_MANY_RECIPIENTS', 1);
 	}
 
 	// Check for too many recipients
 	if ($max_recipients && sizeof($address_list) > $max_recipients)
 	{
-		$address_list = get_recipients($address_list, $max_recipients);
+		$address_list = array_slice($address_list, 0, $max_recipients);
 		$error[] = $user->lang('TOO_MANY_RECIPIENTS', $max_recipients);
 	}
 
@@ -1103,12 +1103,4 @@ function build_address_field($address_list)
 		$s_hidden_address_field .= '<input type="hidden" name="address_list[]" value="' . (int) $id . '" />';
 	}
 	return $s_hidden_address_field;
-}
-
-/**
-* Get number of 'num_recipients' recipients from first position
-*/
-function get_recipients($address_list, $num_recipients = 1)
-{
-	return array_slice($address_list, 0, $num_recipients);
 }

@@ -161,10 +161,10 @@ class ucp_pm
 					handle_mark_actions($user->data['user_id'], $mark_option);
 				}
 
-				// If new messages arrived, place them into the appropriate folder
+				// Deliver newly arrived messages
 				if ($user->data['user_new_privmsg'] && ($action == 'view_folder' || $action == 'view_message'))
 				{
-					place_pm_into_folder();
+					deliver_pending_pms();
 				}
 
 				if (!$msg_id && $folder_id == PRIVMSGS_NO_BOX)
