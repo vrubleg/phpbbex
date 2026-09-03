@@ -83,5 +83,4 @@ $lang = array_merge($lang, [
 		'EXIF_WHITEB_AUTO'          => 'Автоматический',
 		'EXIF_WHITEB_MANU'          => 'Ручной',
 
-	'SHOW_EXIF'                 => 'показать/скрыть',
 ]);

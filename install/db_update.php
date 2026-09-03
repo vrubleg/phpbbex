@@ -841,18 +841,14 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	}
 	if ($db_tools->sql_table_exists(GALLERY_USERS_TABLE))
 	{
-		if ($db_tools->sql_column_exists(GALLERY_USERS_TABLE, 'subscribe_pegas'))
+		foreach (['subscribe_pegas', 'user_allow_comments', 'user_viewexif', 'watch_favo'] as $column)
 		{
-			foreach ($db_tools->sql_column_remove(GALLERY_USERS_TABLE, 'subscribe_pegas') as $sql)
+			if ($db_tools->sql_column_exists(GALLERY_USERS_TABLE, $column))
 			{
-				$db->sql_query($sql);
-			}
-		}
-		if ($db_tools->sql_column_exists(GALLERY_USERS_TABLE, 'watch_favo'))
-		{
-			foreach ($db_tools->sql_column_remove(GALLERY_USERS_TABLE, 'watch_favo') as $sql)
-			{
-				$db->sql_query($sql);
+				foreach ($db_tools->sql_column_remove(GALLERY_USERS_TABLE, $column) as $sql)
+				{
+					$db->sql_query($sql);
+				}
 			}
 		}
 

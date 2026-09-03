@@ -48,12 +48,8 @@ $lang = array_merge($lang, [
 	'REMOVE_FROM_FAVORITES'         => 'Удалить из избранного',
 
 	'UNSUBSCRIBE'                   => 'Отписаться',
-	'USER_ALLOW_COMMENTS'           => 'Пользователи могут комментировать ваши фото',
-
 	'YOUR_FAVORITE_IMAGES'          => 'Список избранных вами фотографий.',
 	'YOUR_SUBSCRIPTIONS'            => 'Фотографии и альбомы, на которые вы подписаны.',
-
-	'VIEWEXIFS_DEFAULT'             => 'Показывать данные EXIF по умолчанию',
 
 	'WATCH_CHANGED'                 => 'Изменения сохранены',
 	'WATCH_COM'                     => 'Подписаться на комментированные вами фотографии',

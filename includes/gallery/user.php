@@ -345,7 +345,6 @@ class phpbb_gallery_user
 					}
 				break;
 
-				case 'user_viewexif':
 				case 'watch_own':
 				case 'watch_com':
 					$validated_data[$name] = (bool) $value;
@@ -371,10 +370,6 @@ class phpbb_gallery_user
 
 		'user_permissions'  => '',
 
-		// Shall other users be allowed to comment on this users images by default?
-		'user_allow_comments'   => true,
-		// Shall the EXIF data be viewed or collapsed by default?
-		'user_viewexif'     => true,
 		// Shall the user be subscribed to his own images?
 		'watch_own'         => true,
 		// Shall the user be subscribed if he comments on an images?

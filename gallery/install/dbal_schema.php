@@ -344,10 +344,8 @@ class phpbb_gallery_dbal_schema
 					'personal_album_id' => ['UINT', 0],
 					'user_lastmark'     => ['TIMESTAMP', 0],
 					'user_last_update'  => ['TIMESTAMP', 0],
-					'user_viewexif'     => ['UINT:1', 0],
 					'user_permissions'  => ['MTEXT_UNI', ''],
 					'user_permissions_changed'  => ['TIMESTAMP', 0],
-					'user_allow_comments'       => ['TINT:1', 1],
 				],
 				'PRIMARY_KEY'       => 'user_id',
 				'KEYS'      => [

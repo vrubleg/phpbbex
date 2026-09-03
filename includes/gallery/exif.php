@@ -268,10 +268,9 @@ class phpbb_gallery_exif
 	/**
 	* Sends the exif into the template
 	*
-	* @param    bool    $expand_view    Shall we expand the exif data on page view or collapse?
 	* @param    string  $block          Name of the template loop the exifs are displayed in.
 	*/
-	public function send_to_template($expand_view = true, $block = 'exif_value')
+	public function send_to_template($block = 'exif_value')
 	{
 		$this->prepare_data();
 
@@ -288,7 +287,6 @@ class phpbb_gallery_exif
 			}
 			$template->assign_vars([
 				'S_EXIF_DATA'   => true,
-				'S_VIEWEXIF'    => $expand_view,
 			]);
 		}
 	}

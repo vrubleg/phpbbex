@@ -48,15 +48,11 @@ $lang = array_merge($lang, [
 	'REMOVE_FROM_FAVORITES'         => 'Remove from favorites',
 
 	'UNSUBSCRIBE'                   => 'stop watching',
-	'USER_ALLOW_COMMENTS'           => 'Allow users to comment your images',
-
 	'YOUR_FAVORITE_IMAGES'          => 'Here you can see your favorite-images. You may remove them, if you don’t like them anymore.',
 	'YOUR_SUBSCRIPTIONS'            => 'Here you see albums and images you get notified on.',
 
-	'VIEWEXIFS_DEFAULT'             => 'View Exif-Data by default',
-
 	'WATCH_CHANGED'                 => 'Settings stored',
 	'WATCH_COM'                     => 'Subscribe commented images by default',
-	'WATCH_NOTE'                    => 'This option only affects on new images. All other images need to be added by the “subscribe image“ option.',
+	'WATCH_NOTE'                    => 'These default subscription settings affect only new images and comments.',
 	'WATCH_OWN'                     => 'Subscribe own images by default',
 ]);
