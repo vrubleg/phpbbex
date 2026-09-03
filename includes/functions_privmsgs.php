@@ -107,42 +107,12 @@ function get_folder($user_id, $folder_id = false)
 		]);
 	}
 
-	if ($folder_id !== false && $folder_id !== PRIVMSGS_HOLD_BOX && !isset($folder[$folder_id]))
+	if ($folder_id !== false && !isset($folder[$folder_id]))
 	{
 		trigger_error('UNKNOWN_FOLDER');
 	}
 
 	return $folder;
-}
-
-/**
-* Delete Messages From Sentbox
-* we are doing this here because this saves us a bunch of checks and queries
-*/
-function clean_sentbox($num_sentbox_messages)
-{
-	global $db, $user, $config;
-
-	// Check Message Limit
-	if ($user->data['message_limit'] && $num_sentbox_messages > $user->data['message_limit'])
-	{
-		// Delete old messages
-		$sql = 'SELECT t.msg_id
-			FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
-			WHERE t.msg_id = p.msg_id
-				AND t.user_id = ' . $user->data['user_id'] . '
-				AND t.folder_id = ' . PRIVMSGS_SENTBOX . '
-			ORDER BY p.message_time ASC';
-		$result = $db->sql_query_limit($sql, ($num_sentbox_messages - $user->data['message_limit']));
-
-		$delete_ids = [];
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$delete_ids[] = $row['msg_id'];
-		}
-		$db->sql_freeresult($result);
-		delete_pm($user->data['user_id'], $delete_ids, PRIVMSGS_SENTBOX);
-	}
 }
 
 /**
@@ -166,7 +136,7 @@ function update_pm_counts()
 	$sql = 'SELECT COUNT(msg_id) as num_messages
 		FROM ' . PRIVMSGS_TO_TABLE . '
 		WHERE pm_new = 1
-			AND folder_id IN (' . PRIVMSGS_NO_BOX . ', ' . PRIVMSGS_HOLD_BOX . ')
+			AND folder_id = ' . PRIVMSGS_NO_BOX . '
 			AND user_id = ' . $user->data['user_id'];
 	$result = $db->sql_query($sql);
 	$user->data['user_new_privmsg'] = (int) $db->sql_fetchfield('num_messages');
@@ -177,13 +147,13 @@ function update_pm_counts()
 		'user_new_privmsg'      => (int) $user->data['user_new_privmsg'],
 	]) . ' WHERE user_id = ' . $user->data['user_id']);
 
-	// Ok, here we need to repair something, other boxes than privmsgs_no_box and privmsgs_hold_box should not carry the pm_new flag.
+	// Boxes other than PRIVMSGS_NO_BOX should not carry the pm_new flag.
 	if (!$user->data['user_new_privmsg'])
 	{
 		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
 			SET pm_new = 0
 			WHERE pm_new = 1
-				AND folder_id NOT IN (' . PRIVMSGS_NO_BOX . ', ' . PRIVMSGS_HOLD_BOX . ')
+				AND folder_id <> ' . PRIVMSGS_NO_BOX . '
 				AND user_id = ' . $user->data['user_id'];
 		$db->sql_query($sql);
 	}
@@ -192,29 +162,17 @@ function update_pm_counts()
 /**
 * Place new messages into the inbox
 */
-function place_pm_into_folder($release = false)
+function place_pm_into_folder()
 {
-	global $db, $user, $config;
+	global $db, $user;
 
 	if (!$user->data['user_new_privmsg'])
 	{
-		return ['not_moved' => 0, 'removed' => 0];
+		return;
 	}
 
 	$user_id = (int) $user->data['user_id'];
-
 	$msg_ids = [];
-	$num_removed = 0;
-
-	// Newly processing on-hold messages
-	if ($release)
-	{
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
-			SET folder_id = ' . PRIVMSGS_NO_BOX . '
-			WHERE folder_id = ' . PRIVMSGS_HOLD_BOX . "
-				AND user_id = {$user_id}";
-		$db->sql_query($sql);
-	}
 
 	// Get messages not yet placed into the inbox.
 	$sql = 'SELECT msg_id
@@ -228,128 +186,16 @@ function place_pm_into_folder($release = false)
 	}
 	$db->sql_freeresult($result);
 
-	$move_into_folder = sizeof($msg_ids) ? [PRIVMSGS_INBOX => $msg_ids] : [];
-
-	// Move into folder
-	$folder = [];
-
-	if (sizeof($move_into_folder))
-	{
-		// Determine Full Folder Action - we need the move to folder id later eventually
-		$full_folder_action = ($user->data['user_full_folder'] == FULL_FOLDER_NONE) ? ($config['full_folder_action'] - (FULL_FOLDER_NONE*(-1))) : $user->data['user_full_folder'];
-
-		$sql_folder = array_keys($move_into_folder);
-		if ($full_folder_action >= 0)
-		{
-			$sql_folder[] = $full_folder_action;
-		}
-
-		$sql = 'SELECT folder_id, pm_count
-			FROM ' . PRIVMSGS_FOLDER_TABLE . '
-			WHERE ' . $db->sql_in_set('folder_id', $sql_folder) . "
-				AND user_id = {$user_id}";
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$folder[(int) $row['folder_id']] = (int) $row['pm_count'];
-		}
-		$db->sql_freeresult($result);
-
-		unset($sql_folder);
-
-		if (isset($move_into_folder[PRIVMSGS_INBOX]))
-		{
-			$sql = 'SELECT COUNT(msg_id) as num_messages
-				FROM ' . PRIVMSGS_TO_TABLE . "
-				WHERE user_id = {$user_id}
-					AND folder_id = " . PRIVMSGS_INBOX;
-			$result = $db->sql_query($sql);
-			$folder[PRIVMSGS_INBOX] = (int) $db->sql_fetchfield('num_messages');
-			$db->sql_freeresult($result);
-		}
-	}
-
-	// Here we have ideally only one folder to move into
-	foreach ($move_into_folder as $folder_id => $msg_ary)
-	{
-		$dest_folder = $folder_id;
-		$full_folder_action = FULL_FOLDER_NONE;
-
-		// Check Message Limit - we calculate with the complete array, most of the time it is one message
-		// But we are making sure that the other way around works too (more messages in queue than allowed to be stored)
-		if ($user->data['message_limit'] && ($folder[$folder_id] + sizeof($msg_ary)) > $user->data['message_limit'])
-		{
-			$full_folder_action = ($user->data['user_full_folder'] == FULL_FOLDER_NONE) ? ($config['full_folder_action'] - (FULL_FOLDER_NONE*(-1))) : $user->data['user_full_folder'];
-
-			// If destination folder itself is full...
-			if ($full_folder_action >= 0 && (($folder[$full_folder_action] ?? 0) + sizeof($msg_ary)) > $user->data['message_limit'])
-			{
-				$full_folder_action = $config['full_folder_action'] - (FULL_FOLDER_NONE*(-1));
-			}
-
-			// If Full Folder Action is to move to another folder, we simply adjust the destination folder
-			if ($full_folder_action >= 0)
-			{
-				$dest_folder = $full_folder_action;
-			}
-			else if ($full_folder_action == FULL_FOLDER_DELETE)
-			{
-				// Delete some messages. NOTE: Ordered by msg_id here instead of message_time!
-				$sql = 'SELECT msg_id
-					FROM ' . PRIVMSGS_TO_TABLE . "
-					WHERE user_id = {$user_id}
-						AND folder_id = {$dest_folder}
-					ORDER BY msg_id ASC";
-				$result = $db->sql_query_limit($sql, (($folder[$dest_folder] + sizeof($msg_ary)) - $user->data['message_limit']));
-
-				$delete_ids = [];
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$delete_ids[] = $row['msg_id'];
-				}
-				$db->sql_freeresult($result);
-
-				$num_removed += sizeof($delete_ids);
-				delete_pm($user_id, $delete_ids, $dest_folder);
-			}
-		}
-
-		//
-		if ($full_folder_action == FULL_FOLDER_HOLD)
-		{
-			$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
-				SET folder_id = ' . PRIVMSGS_HOLD_BOX . '
-				WHERE folder_id = ' . PRIVMSGS_NO_BOX . "
-					AND user_id = {$user_id}
-					AND " . $db->sql_in_set('msg_id', $msg_ary);
-			$db->sql_query($sql);
-		}
-		else
-		{
-			$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . "
-				SET folder_id = {$dest_folder}, pm_new = 0
-				WHERE folder_id = " . PRIVMSGS_NO_BOX . "
-					AND user_id = {$user_id}
-					AND pm_new = 1
-					AND " . $db->sql_in_set('msg_id', $msg_ary);
-			$db->sql_query($sql);
-
-			if ($dest_folder != PRIVMSGS_INBOX)
-			{
-				$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . '
-					SET pm_count = pm_count + ' . (int) $db->sql_affectedrows() . "
-					WHERE folder_id = {$dest_folder}
-						AND user_id = {$user_id}";
-				$db->sql_query($sql);
-			}
-		}
-	}
-
 	if (sizeof($msg_ids))
 	{
+		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
+			SET folder_id = ' . PRIVMSGS_INBOX . ', pm_new = 0
+			WHERE folder_id = ' . PRIVMSGS_NO_BOX . "
+				AND user_id = {$user_id}
+				AND " . $db->sql_in_set('msg_id', $msg_ids);
+		$db->sql_query($sql);
+
 		// Move from OUTBOX to SENTBOX
-		// We are not checking any full folder status here... SENTBOX is a special treatment (old messages get deleted)
 		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
 			SET folder_id = ' . PRIVMSGS_SENTBOX . '
 			WHERE folder_id = ' . PRIVMSGS_OUTBOX . '
@@ -359,25 +205,14 @@ function place_pm_into_folder($release = false)
 
 	// Update new/unread count
 	update_pm_counts();
-
-	// Now check how many messages got not moved...
-	$sql = 'SELECT COUNT(msg_id) as num_messages
-		FROM ' . PRIVMSGS_TO_TABLE . "
-		WHERE user_id = {$user_id}
-			AND folder_id = " . PRIVMSGS_HOLD_BOX;
-	$result = $db->sql_query($sql);
-	$num_not_moved = (int) $db->sql_fetchfield('num_messages');
-	$db->sql_freeresult($result);
-
-	return ['not_moved' => $num_not_moved, 'removed' => $num_removed];
 }
 
 /**
 * Move PM from one to another folder
 */
-function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_folder_id)
+function move_pm($user_id, $move_msg_ids, $dest_folder, $cur_folder_id)
 {
-	global $db, $user;
+	global $db;
 
 	$num_moved = 0;
 
@@ -392,7 +227,7 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 		// We have to check the destination folder ;)
 		if ($dest_folder != PRIVMSGS_INBOX)
 		{
-			$sql = 'SELECT folder_id, folder_name, pm_count
+			$sql = 'SELECT folder_id
 				FROM ' . PRIVMSGS_FOLDER_TABLE . "
 				WHERE folder_id = {$dest_folder}
 					AND user_id = {$user_id}";
@@ -403,30 +238,6 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 			if (!$row)
 			{
 				trigger_error('NOT_AUTHORISED');
-			}
-
-			if ($message_limit && $row['pm_count'] + sizeof($move_msg_ids) > $message_limit)
-			{
-				$message = sprintf($user->lang['NOT_ENOUGH_SPACE_FOLDER'], $row['folder_name']) . '<br /><br />';
-				$message .= sprintf($user->lang['CLICK_RETURN_FOLDER'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $row['folder_id']) . '">', '</a>', $row['folder_name']);
-				trigger_error($message);
-			}
-		}
-		else
-		{
-			$sql = 'SELECT COUNT(msg_id) as num_messages
-				FROM ' . PRIVMSGS_TO_TABLE . '
-				WHERE folder_id = ' . PRIVMSGS_INBOX . "
-					AND user_id = {$user_id}";
-			$result = $db->sql_query($sql);
-			$num_messages = (int) $db->sql_fetchfield('num_messages');
-			$db->sql_freeresult($result);
-
-			if ($message_limit && $num_messages + sizeof($move_msg_ids) > $message_limit)
-			{
-				$message = sprintf($user->lang['NOT_ENOUGH_SPACE_FOLDER'], $user->lang['PM_INBOX']) . '<br /><br />';
-				$message .= sprintf($user->lang['CLICK_RETURN_FOLDER'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=inbox') . '">', '</a>', $user->lang['PM_INBOX']);
-				trigger_error($message);
 			}
 		}
 
@@ -964,35 +775,6 @@ function write_pm_addresses($address_field, $plaintext = false)
 }
 
 /**
-* Get folder status
-*/
-function get_folder_status($folder_id, $folder)
-{
-	global $db, $user, $config;
-
-	if (isset($folder[$folder_id]))
-	{
-		$folder = $folder[$folder_id];
-	}
-	else
-	{
-		return false;
-	}
-
-	$return = [
-		'folder_name'   => $folder['folder_name'],
-		'cur'           => $folder['num_messages'],
-		'remaining'     => ($user->data['message_limit']) ? $user->data['message_limit'] - $folder['num_messages'] : 0,
-		'max'           => $user->data['message_limit'],
-		'percent'       => ($user->data['message_limit']) ? (($user->data['message_limit'] > 0) ? round(($folder['num_messages'] / $user->data['message_limit']) * 100) : 100) : 0,
-	];
-
-	$return['message']  = sprintf($user->lang['FOLDER_STATUS_MSG'], $return['percent'], $return['cur'], $return['max']);
-
-	return $return;
-}
-
-/**
 * Return recipients who have added the sender to their foes list.
 *
 * @param int   $sender_id     User attempting to send the private message
@@ -1437,8 +1219,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 	// Select all receipts and the author from the pm we currently view, to only display their pm-history
 	$sql = 'SELECT author_id, user_id
 		FROM ' . PRIVMSGS_TO_TABLE . "
-		WHERE msg_id = {$msg_id}
-			AND folder_id <> " . PRIVMSGS_HOLD_BOX;
+		WHERE msg_id = {$msg_id}";
 	$result = $db->sql_query($sql);
 
 	$recipients = [];
@@ -1455,7 +1236,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 		FROM ' . PRIVMSGS_TABLE . ' p, ' . PRIVMSGS_TO_TABLE . ' t, ' . USERS_TABLE . ' u
 		WHERE t.msg_id = p.msg_id
 			AND p.author_id = u.user_id
-			AND t.folder_id NOT IN (' . PRIVMSGS_NO_BOX . ', ' . PRIVMSGS_HOLD_BOX . ')
+			AND t.folder_id <> ' . PRIVMSGS_NO_BOX . '
 			AND ' . $db->sql_in_set('t.author_id', $recipients, false, true) . "
 			AND t.user_id = {$user_id}";
 
@@ -1603,16 +1384,6 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 	]);
 
 	return true;
-}
-
-/**
-* Set the user's maximum messages per PM folder.
-*/
-function set_user_message_limit()
-{
-	global $user, $config;
-
-	$user->data['message_limit'] = $config['pm_max_msgs'];
 }
 
 /**

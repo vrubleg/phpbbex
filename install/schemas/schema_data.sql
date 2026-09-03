@@ -102,7 +102,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('feed_item_statisti
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('flood_interval', '15');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('form_token_mintime', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('forwarded_for_check', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('full_folder_action', '2');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_mysql_indexed', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_mysql_max_word_len', '254');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('fulltext_mysql_min_word_len', '4');
@@ -188,7 +187,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PA
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.9');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_edit_time', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_boxes', '4');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_msgs', '1000');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_recipients', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('posting_topic_review', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');

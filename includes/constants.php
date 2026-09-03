@@ -120,16 +120,10 @@ define('LOG_USERS', 3);
 define('LOG_REGISTER', 4);
 
 // Private messaging
-define('PRIVMSGS_HOLD_BOX', -4);
 define('PRIVMSGS_NO_BOX', -3);
 define('PRIVMSGS_OUTBOX', -2);
 define('PRIVMSGS_SENTBOX', -1);
 define('PRIVMSGS_INBOX', 0);
-
-// Full Folder Actions
-define('FULL_FOLDER_NONE', -3);
-define('FULL_FOLDER_DELETE', -2);
-define('FULL_FOLDER_HOLD', -1);
 
 // Download Modes - Attachments
 define('INLINE_LINK', 1);

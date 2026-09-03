@@ -20,50 +20,6 @@ function message_options($mode)
 	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=options");
 
 	add_form_key('ucp_pm_options');
-	// Change "full folder" setting - what to do if folder is full
-	if (isset($_POST['fullfolder']))
-	{
-		if (!check_form_key('ucp_pm_options'))
-		{
-			trigger_error('FORM_INVALID');
-		}
-
-		$full_action = request_var('full_action', 0);
-
-		$set_folder_id = 0;
-		switch ($full_action)
-		{
-			case 1:
-				$set_folder_id = FULL_FOLDER_DELETE;
-			break;
-
-			case 2:
-				$set_folder_id = request_var('full_move_to', PRIVMSGS_INBOX);
-			break;
-
-			case 3:
-				$set_folder_id = FULL_FOLDER_HOLD;
-			break;
-
-			default:
-				$full_action = 0;
-			break;
-		}
-
-		if ($full_action)
-		{
-			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_full_folder = ' . $set_folder_id . '
-				WHERE user_id = ' . $user->data['user_id'];
-			$db->sql_query($sql);
-
-			$user->data['user_full_folder'] = $set_folder_id;
-
-			$message = $user->lang['FULL_FOLDER_OPTION_CHANGED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $redirect_url . '">', '</a>');
-			meta_refresh(3, $redirect_url);
-			trigger_error($message);
-		}
-	}
 
 	// Add Folder
 	if (isset($_POST['addfolder']))
@@ -224,7 +180,7 @@ function message_options($mode)
 			{
 				// Move Messages
 				case 1:
-					$num_moved = move_pm($user->data['user_id'], $user->data['message_limit'], $msg_ids, $move_to, $remove_folder_id);
+					$num_moved = move_pm($user->data['user_id'], $msg_ids, $move_to, $remove_folder_id);
 
 					// Something went wrong, only partially moved?
 					if ($num_moved != $folder_row['pm_count'])
@@ -244,17 +200,6 @@ function message_options($mode)
 				WHERE user_id = {$user->data['user_id']}
 					AND folder_id = {$remove_folder_id}";
 			$db->sql_query($sql);
-
-			// Check full folder option. If the removed folder has been specified as destination switch back to inbox
-			if ($user->data['user_full_folder'] == $remove_folder_id)
-			{
-				$sql = 'UPDATE ' . USERS_TABLE . '
-					SET user_full_folder = ' . PRIVMSGS_INBOX . '
-					WHERE user_id = ' . $user->data['user_id'];
-				$db->sql_query($sql);
-
-				$user->data['user_full_folder'] = PRIVMSGS_INBOX;
-			}
 
 			$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode={$mode}");
 			$message = $user->lang['FOLDER_REMOVED'];
@@ -281,7 +226,7 @@ function message_options($mode)
 
 	$folder[PRIVMSGS_INBOX] = [
 		'folder_name'       => $user->lang['PM_INBOX'],
-		'message_status'    => sprintf($user->lang['FOLDER_MESSAGE_STATUS'], $num_messages, $user->data['message_limit'])
+		'message_status'    => ($num_messages == 1) ? $user->lang['VIEW_PM_MESSAGE'] : sprintf($user->lang['VIEW_PM_MESSAGES'], $num_messages)
 	];
 
 	$sql = 'SELECT folder_id, folder_name, pm_count
@@ -295,27 +240,16 @@ function message_options($mode)
 		$num_user_folder++;
 		$folder[$row['folder_id']] = [
 			'folder_name'       => $row['folder_name'],
-			'message_status'    => sprintf($user->lang['FOLDER_MESSAGE_STATUS'], $row['pm_count'], $user->data['message_limit'])
+			'message_status'    => ($row['pm_count'] == 1) ? $user->lang['VIEW_PM_MESSAGE'] : sprintf($user->lang['VIEW_PM_MESSAGES'], $row['pm_count'])
 		];
 	}
 	$db->sql_freeresult($result);
 
-	$s_full_folder_options = $s_to_folder_options = $s_folder_options = '';
-
-	if ($user->data['user_full_folder'] == FULL_FOLDER_NONE)
-	{
-		// -3 here to let the correct folder id be selected
-		$to_folder_id = $config['full_folder_action'] - 3;
-	}
-	else
-	{
-		$to_folder_id = $user->data['user_full_folder'];
-	}
+	$s_to_folder_options = $s_folder_options = '';
 
 	foreach ($folder as $folder_id => $folder_ary)
 	{
-		$s_full_folder_options .= '<option value="' . $folder_id . '"' . (($user->data['user_full_folder'] == $folder_id) ? ' selected="selected"' : '') . '>' . $folder_ary['folder_name'] . ' (' . $folder_ary['message_status'] . ')</option>';
-		$s_to_folder_options .= '<option value="' . $folder_id . '"' . (($to_folder_id == $folder_id) ? ' selected="selected"' : '') . '>' . $folder_ary['folder_name'] . ' (' . $folder_ary['message_status'] . ')</option>';
+		$s_to_folder_options .= '<option value="' . $folder_id . '">' . $folder_ary['folder_name'] . ' (' . $folder_ary['message_status'] . ')</option>';
 
 		if ($folder_id != PRIVMSGS_INBOX)
 		{
@@ -323,34 +257,10 @@ function message_options($mode)
 		}
 	}
 
-	$s_delete_checked = ($user->data['user_full_folder'] == FULL_FOLDER_DELETE) ? ' checked="checked"' : '';
-	$s_hold_checked = ($user->data['user_full_folder'] == FULL_FOLDER_HOLD) ? ' checked="checked"' : '';
-	$s_move_checked = ($user->data['user_full_folder'] >= 0) ? ' checked="checked"' : '';
-
-	if ($user->data['user_full_folder'] == FULL_FOLDER_NONE)
-	{
-		switch ($config['full_folder_action'])
-		{
-			case 1:
-				$s_delete_checked = ' checked="checked"';
-			break;
-
-			case 2:
-				$s_hold_checked = ' checked="checked"';
-			break;
-		}
-	}
-
 	$template->assign_vars([
-		'S_FULL_FOLDER_OPTIONS' => $s_full_folder_options,
 		'S_TO_FOLDER_OPTIONS'   => $s_to_folder_options,
 		'S_FOLDER_OPTIONS'      => $s_folder_options,
-		'S_DELETE_CHECKED'      => $s_delete_checked,
-		'S_HOLD_CHECKED'        => $s_hold_checked,
-		'S_MOVE_CHECKED'        => $s_move_checked,
 		'S_MAX_FOLDER_REACHED'  => ($num_user_folder >= $config['pm_max_boxes']),
 		'S_MAX_FOLDER_ZERO'     => ($config['pm_max_boxes'] == 0),
-
-		'DEFAULT_ACTION'        => ($config['full_folder_action'] == 1) ? $user->lang['DELETE_OLDEST_MESSAGES'] : $user->lang['HOLD_NEW_MESSAGES'],
 	]);
 }

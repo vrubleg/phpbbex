@@ -735,7 +735,6 @@ CREATE TABLE phpbb_users (
 	user_new_privmsg int(4) DEFAULT '0' NOT NULL,
 	user_unread_privmsg int(4) DEFAULT '0' NOT NULL,
 	user_last_privmsg int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	user_full_folder int(11) DEFAULT '-3' NOT NULL,
 	user_notify tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_notify_pm tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	user_notify_type tinyint(4) DEFAULT '0' NOT NULL,

@@ -106,7 +106,6 @@ class ucp_pm
 			break;
 
 			case 'options':
-				set_user_message_limit();
 				get_folder($user->data['user_id']);
 
 				require_once(PHPBB_ROOT_PATH . 'includes/ucp/ucp_pm_options.php');
@@ -136,9 +135,6 @@ class ucp_pm
 			break;
 
 			case 'view':
-
-				set_user_message_limit();
-
 				if ($folder_specified)
 				{
 					$folder_id = $folder_specified;
@@ -164,13 +160,6 @@ class ucp_pm
 					trigger_error('NO_AUTH_READ_MESSAGE');
 				}
 
-				// Do not allow hold messages to be seen
-				if ($folder_id == PRIVMSGS_HOLD_BOX)
-				{
-					trigger_error('NO_AUTH_READ_HOLD_MESSAGE');
-				}
-
-
 				// First Handle Mark actions and moving messages
 				$submit_mark    = isset($_POST['submit_mark']);
 				$move_pm        = isset($_POST['move_pm']);
@@ -191,7 +180,7 @@ class ucp_pm
 					$move_msg_ids   = (isset($_POST['marked_msg_id'])) ? request_var('marked_msg_id', [0]) : [];
 					$cur_folder_id  = request_var('cur_folder_id', PRIVMSGS_NO_BOX);
 
-					if (move_pm($user->data['user_id'], $user->data['message_limit'], $move_msg_ids, $dest_folder, $cur_folder_id))
+					if (move_pm($user->data['user_id'], $move_msg_ids, $dest_folder, $cur_folder_id))
 					{
 						// Return to folder view if single message moved
 						if ($action == 'view_message')
@@ -210,14 +199,9 @@ class ucp_pm
 				}
 
 				// If new messages arrived, place them into the appropriate folder
-				$num_not_moved = $num_removed = 0;
-				$release = request_var('release', 0);
-
 				if ($user->data['user_new_privmsg'] && ($action == 'view_folder' || $action == 'view_message'))
 				{
-					$return = place_pm_into_folder($release);
-					$num_not_moved = $return['not_moved'];
-					$num_removed = $return['removed'];
+					place_pm_into_folder();
 				}
 
 				if (!$msg_id && $folder_id == PRIVMSGS_NO_BOX)
@@ -304,19 +288,9 @@ class ucp_pm
 					$s_to_folder_options .= ($f_id != PRIVMSGS_OUTBOX && $f_id != PRIVMSGS_SENTBOX) ? $option : '';
 					$s_folder_options .= $option;
 				}
-				clean_sentbox($folder[PRIVMSGS_SENTBOX]['num_messages']);
-
-				// Header for message view - folder and so on
-				$folder_status = get_folder_status($folder_id, $folder);
-
 				$template->assign_vars([
 					'CUR_FOLDER_ID'         => $folder_id,
-					'CUR_FOLDER_NAME'       => $folder_status['folder_name'],
-					'NUM_NOT_MOVED'         => $num_not_moved,
-					'NUM_REMOVED'           => $num_removed,
-					'RELEASE_MESSAGE_INFO'  => sprintf($user->lang['RELEASE_MESSAGES'], '<a href="' . $this->u_action . '&amp;folder=' . $folder_id . '&amp;release=1">', '</a>'),
-					'NOT_MOVED_MESSAGES'    => ($num_not_moved == 1) ? $user->lang['NOT_MOVED_MESSAGE'] : sprintf($user->lang['NOT_MOVED_MESSAGES'], $num_not_moved),
-					'FULL_FOLDER_REMOVED_MESSAGES' => ($num_removed == 1) ? $user->lang['FULL_FOLDER_REMOVED_MESSAGE'] : sprintf($user->lang['FULL_FOLDER_REMOVED_MESSAGES'], $num_removed),
+					'CUR_FOLDER_NAME'       => $folder[$folder_id]['folder_name'],
 
 					'S_FOLDER_OPTIONS'      => $s_folder_options,
 					'S_TO_FOLDER_OPTIONS'   => $s_to_folder_options,
@@ -333,11 +307,7 @@ class ucp_pm
 					'S_IN_OUTBOX'           => ($folder_id == PRIVMSGS_OUTBOX),
 					'S_IN_SENTBOX'          => ($folder_id == PRIVMSGS_SENTBOX),
 
-					'FOLDER_STATUS'             => $folder_status['message'],
-					'FOLDER_MAX_MESSAGES'       => $folder_status['max'],
-					'FOLDER_CUR_MESSAGES'       => $folder_status['cur'],
-					'FOLDER_REMAINING_MESSAGES' => $folder_status['remaining'],
-					'FOLDER_PERCENT'            => $folder_status['percent'],
+					'FOLDER_CUR_MESSAGES'   => $folder[$folder_id]['num_messages'],
 				]);
 
 				if ($action == 'view_folder')

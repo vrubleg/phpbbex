@@ -200,7 +200,6 @@ function user_add($user_row, $cp_data = false)
 		'user_new_privmsg'      => 0,
 		'user_unread_privmsg'   => 0,
 		'user_last_privmsg'     => 0,
-		'user_full_folder'      => PRIVMSGS_NO_BOX,
 
 		'user_notify'           => 0,
 		'user_notify_pm'        => 1,

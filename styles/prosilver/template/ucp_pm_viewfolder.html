@@ -2,18 +2,6 @@
 
 	<!-- INCLUDE ucp_pm_message_header.html -->
 
-	<!-- IF NUM_REMOVED -->
-		<div class="notice">
-			<p>{FULL_FOLDER_REMOVED_MESSAGES}</p>
-		</div>
-	<!-- ENDIF -->
-
-	<!-- IF NUM_NOT_MOVED -->
-		<div class="notice">
-			<p>{NOT_MOVED_MESSAGES}<br />{RELEASE_MESSAGE_INFO}</p>
-		</div>
-	<!-- ENDIF -->
-
 	<!-- IF .messagerow -->
 		<ul class="topiclist">
 			<li class="header">
@@ -70,7 +58,6 @@
 	<hr />
 
 	<ul class="linklist">
-		<!-- IF FOLDER_STATUS and FOLDER_MAX_MESSAGES neq 0 --><li class="leftside">{FOLDER_STATUS}</li><!-- ENDIF -->
 		<!-- IF TOTAL_MESSAGES or S_VIEW_MESSAGE -->
 		<li class="rightside pagination">
 			<!-- IF TOTAL_MESSAGES -->{TOTAL_MESSAGES}<!-- ENDIF -->

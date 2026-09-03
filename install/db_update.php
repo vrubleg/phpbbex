@@ -334,7 +334,6 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	set_config('max_post_smilies', '20');
 	set_config('max_post_urls', '20');
 	set_config('max_quote_depth', '2');
-	set_config('pm_max_msgs', '1000');
 	set_config('posts_per_page', '20');
 	set_config('topics_per_page', '50');
 	set_config('external_links_newwindow', '0');
@@ -767,6 +766,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_lastpage');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_message_rules');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_full_folder');
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_sig = LEFT(user_sig, 500) WHERE CHAR_LENGTH(user_sig) > 500");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_sig varchar(500) DEFAULT '' NOT NULL");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_interests = LEFT(user_interests, 1000) WHERE CHAR_LENGTH(user_interests) > 1000");
@@ -812,6 +812,20 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	// Private message filtering rules are gone.
 	$db->sql_query("DROP TABLE {$table_prefix}privmsgs_rules");
+
+	// Move messages held by the old folder limit into the inbox.
+	$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
+		SET folder_id = 0, pm_new = 0
+		WHERE folder_id = -4');
+	$db->sql_query('UPDATE ' . USERS_TABLE . ' u
+		SET user_new_privmsg = (
+			SELECT COUNT(t.msg_id)
+			FROM ' . PRIVMSGS_TO_TABLE . ' t
+			WHERE t.user_id = u.user_id
+				AND t.folder_id = -3
+				AND t.pm_new = 1
+		)');
+	remove_config_values(['full_folder_action', 'pm_max_msgs']);
 
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
 

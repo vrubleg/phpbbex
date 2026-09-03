@@ -34,12 +34,6 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		trigger_error($message);
 	}
 
-	// Do not allow hold messages to be seen
-	if ($folder_id == PRIVMSGS_HOLD_BOX)
-	{
-		trigger_error('NO_AUTH_READ_HOLD_MESSAGE');
-	}
-
 	// Grab icons
 	$icons = $cache->obtain_icons();
 
