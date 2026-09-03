@@ -1262,31 +1262,14 @@ function phpbb_delete_user_pms($user_id)
 */
 function rebuild_header($check_ary)
 {
-	global $db;
-
 	$address = [];
 
 	foreach ($check_ary as $check_type => $address_field)
 	{
-		// Split Addresses into users and groups
-		preg_match_all('/:?(u|g)_([0-9]+):?/', $address_field, $match);
-
-		$u = $g = [];
-		foreach ($match[1] as $id => $type)
+		preg_match_all('/:?u_([0-9]+):?/', $address_field, $match);
+		foreach ($match[1] as $user_id)
 		{
-			${$type}[] = (int) $match[2][$id];
-		}
-
-		$_types = ['u', 'g'];
-		foreach ($_types as $type)
-		{
-			if (count(${$type}))
-			{
-				foreach (${$type} as $id)
-				{
-					$address[$type][$id] = $check_type;
-				}
-			}
+			$address[(int) $user_id] = $check_type;
 		}
 	}
 
@@ -1304,29 +1287,13 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 
 	foreach ($check_ary as $check_type => $address_field)
 	{
-		if (!is_array($address_field))
-		{
-			// Split Addresses into users and groups
-			preg_match_all('/:?(u|g)_([0-9]+):?/', $address_field, $match);
-
-			$u = $g = [];
-			foreach ($match[1] as $id => $type)
-			{
-				${$type}[] = (int) $match[2][$id];
-			}
-		}
-		else
-		{
-			$u = $address_field['u'];
-			$g = $address_field['g'];
-		}
-
+		$recipient_ids = array_keys(rebuild_header([$check_type => $address_field]));
 		$address = [];
-		if (sizeof($u))
+		if (sizeof($recipient_ids))
 		{
 			$sql = 'SELECT user_id, username, user_colour
 				FROM ' . USERS_TABLE . '
-				WHERE ' . $db->sql_in_set('user_id', $u);
+				WHERE ' . $db->sql_in_set('user_id', $recipient_ids);
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1339,93 +1306,22 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 					}
 					else
 					{
-						$address['user'][$row['user_id']] = ['name' => $row['username'], 'colour' => $row['user_colour']];
+						$address[$row['user_id']] = ['name' => $row['username'], 'colour' => $row['user_colour']];
 					}
 				}
 			}
 			$db->sql_freeresult($result);
 		}
 
-		if (sizeof($g))
-		{
-			if ($plaintext)
-			{
-				$sql = 'SELECT group_name, group_type
-					FROM ' . GROUPS_TABLE . '
-						WHERE ' . $db->sql_in_set('group_id', $g);
-				$result = $db->sql_query($sql);
-
-				while ($row = $db->sql_fetchrow($result))
-				{
-					if ($check_type == 'to' || $author_id == $user->data['user_id'] || $row['user_id'] == $user->data['user_id'])
-					{
-						$address[] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
-					}
-				}
-				$db->sql_freeresult($result);
-			}
-			else
-			{
-				$sql = 'SELECT g.group_id, g.group_name, g.group_colour, g.group_type, ug.user_id
-					FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . ' ug
-						WHERE ' . $db->sql_in_set('g.group_id', $g) . '
-						AND g.group_id = ug.group_id
-						AND ug.user_pending = 0';
-				$result = $db->sql_query($sql);
-
-				while ($row = $db->sql_fetchrow($result))
-				{
-					if (!isset($address['group'][$row['group_id']]))
-					{
-						if ($check_type == 'to' || $author_id == $user->data['user_id'] || $row['user_id'] == $user->data['user_id'])
-						{
-							$row['group_name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
-							$address['group'][$row['group_id']] = ['name' => $row['group_name'], 'colour' => $row['group_colour']];
-						}
-					}
-
-					if (isset($address['user'][$row['user_id']]))
-					{
-						$address['user'][$row['user_id']]['in_group'] = $row['group_id'];
-					}
-				}
-				$db->sql_freeresult($result);
-			}
-		}
-
 		if (sizeof($address) && !$plaintext)
 		{
 			$template->assign_var('S_' . strtoupper($check_type) . '_RECIPIENT', true);
 
-			foreach ($address as $type => $adr_ary)
+			foreach ($address as $id => $row)
 			{
-				foreach ($adr_ary as $id => $row)
-				{
-					$tpl_ary = [
-						'IS_GROUP'  => ($type == 'group'),
-						'IS_USER'   => ($type == 'user'),
-						'UG_ID'     => $id,
-						'NAME'      => $row['name'],
-						'COLOUR'    => ($row['colour']) ? '#' . $row['colour'] : '',
-						'TYPE'      => $type,
-					];
-
-					if ($type == 'user')
-					{
-						$tpl_ary = array_merge($tpl_ary, [
-							'U_VIEW'        => get_username_string('profile', $id, $row['name'], $row['colour']),
-							'NAME_FULL'     => get_username_string('full', $id, $row['name'], $row['colour']),
-						]);
-					}
-					else
-					{
-						$tpl_ary = array_merge($tpl_ary, [
-							'U_VIEW'        => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $id),
-						]);
-					}
-
-					$template->assign_block_vars($check_type . '_recipient', $tpl_ary);
-				}
+				$template->assign_block_vars($check_type . '_recipient', [
+					'NAME_FULL' => get_username_string('full', $id, $row['name'], $row['colour']),
+				]);
 			}
 		}
 
@@ -1529,53 +1425,23 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	if ($mode != 'edit' && $mode != 'reparse')
 	{
 		// Build Recipient List
-		// u|g => array($user_id => 'to'|'bcc')
-		$_types = ['u', 'g'];
-		foreach ($_types as $ug_type)
+		// array($user_id => 'to'|'bcc')
+		if (!empty($data['address_list']) && is_array($data['address_list']))
 		{
-			if (isset($data['address_list'][$ug_type]) && sizeof($data['address_list'][$ug_type]))
+			foreach ($data['address_list'] as $id => $field)
 			{
-				foreach ($data['address_list'][$ug_type] as $id => $field)
+				$id = (int) $id;
+
+				// Do not rely on the address list being valid.
+				if (!$id || $id == ANONYMOUS || is_array($field))
 				{
-					$id = (int) $id;
-
-					// Do not rely on the address list being "valid"
-					if (!$id || ($ug_type == 'u' && $id == ANONYMOUS))
-					{
-						continue;
-					}
-
-					$field = ($field == 'to') ? 'to' : 'bcc';
-					if ($ug_type == 'u')
-					{
-						$recipients[$id] = $field;
-					}
-					${$field}[] = $ug_type . '_' . $id;
+					continue;
 				}
+
+				$field = ($field == 'to') ? 'to' : 'bcc';
+				$recipients[$id] = $field;
+				${$field}[] = 'u_' . $id;
 			}
-		}
-
-		if (isset($data['address_list']['g']) && sizeof($data['address_list']['g']))
-		{
-			// We need to check the PM status of group members (do they want to receive PM's?)
-			// Only check if not a moderator or admin, since they are allowed to override this user setting
-			$sql_allow_pm = (!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_')) ? ' AND u.user_allow_pm = 1' : '';
-
-			$sql = 'SELECT u.user_type, ug.group_id, ug.user_id
-				FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . ' ug
-				WHERE ' . $db->sql_in_set('ug.group_id', array_keys($data['address_list']['g'])) . '
-					AND ug.user_pending = 0
-					AND u.user_id = ug.user_id
-					AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')' .
-					$sql_allow_pm;
-			$result = $db->sql_query($sql);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$field = ($data['address_list']['g'][$row['group_id']] == 'to') ? 'to' : 'bcc';
-				$recipients[$row['user_id']] = $field;
-			}
-			$db->sql_freeresult($result);
 		}
 
 		// Silently omit recipients who have added the sender to their foes list.
@@ -2110,13 +1976,12 @@ function set_user_message_limit()
 }
 
 /**
-* Generates an array of coloured recipient names from a list of PMs - (groups & users)
+* Generates an array of coloured recipient names from a list of PMs.
 *
 * @param    array   $pm_by_id   An array of rows from PRIVMSGS_TABLE, keys are the msg_ids.
 *
-* @return   array               2D Array: array(msg_id => array('username or group string', ...), ...)
+* @return   array               2D Array: array(msg_id => array('username string', ...), ...)
 *                               Usernames are generated with {@link get_username_string get_username_string}
-*                               Groups are coloured and have a link to the membership page
 */
 function get_recipient_strings($pm_by_id)
 {
@@ -2124,74 +1989,36 @@ function get_recipient_strings($pm_by_id)
 
 	$address_list = $recipient_list = $address = [];
 
-	$_types = ['u', 'g'];
-
 	foreach ($pm_by_id as $message_id => $row)
 	{
+		$address_list[$message_id] = [];
 		$address[$message_id] = rebuild_header(['to' => $row['to_address'], 'bcc' => $row['bcc_address']]);
 
-		foreach ($_types as $ug_type)
+		foreach ($address[$message_id] as $user_id => $in_to)
 		{
-			if (isset($address[$message_id][$ug_type]) && sizeof($address[$message_id][$ug_type]))
-			{
-				foreach ($address[$message_id][$ug_type] as $ug_id => $in_to)
-				{
-					$recipient_list[$ug_type][$ug_id] = ['name' => $user->lang['NA'], 'colour' => ''];
-				}
-			}
+			$recipient_list[$user_id] = ['name' => $user->lang['NA'], 'colour' => ''];
 		}
 	}
 
-	foreach ($_types as $ug_type)
+	if (!empty($recipient_list))
 	{
-		if (!empty($recipient_list[$ug_type]))
+		$sql = 'SELECT user_id as id, username as name, user_colour as colour
+			FROM ' . USERS_TABLE . '
+			WHERE ' . $db->sql_in_set('user_id', array_keys($recipient_list));
+		$result = $db->sql_query($sql);
+
+		while ($row = $db->sql_fetchrow($result))
 		{
-			if ($ug_type == 'u')
-			{
-				$sql = 'SELECT user_id as id, username as name, user_colour as colour
-					FROM ' . USERS_TABLE . '
-					WHERE ';
-			}
-			else
-			{
-				$sql = 'SELECT group_id as id, group_name as name, group_colour as colour, group_type
-					FROM ' . GROUPS_TABLE . '
-					WHERE ';
-			}
-			$sql .= $db->sql_in_set(($ug_type == 'u') ? 'user_id' : 'group_id', array_map('intval', array_keys($recipient_list[$ug_type])));
-
-			$result = $db->sql_query($sql);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				if ($ug_type == 'g')
-				{
-					$row['name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['name']] : $row['name'];
-				}
-
-				$recipient_list[$ug_type][$row['id']] = ['name' => $row['name'], 'colour' => $row['colour']];
-			}
-			$db->sql_freeresult($result);
+			$recipient_list[$row['id']] = ['name' => $row['name'], 'colour' => $row['colour']];
 		}
+		$db->sql_freeresult($result);
 	}
 
-	foreach ($address as $message_id => $adr_ary)
+	foreach ($address as $message_id => $id_ary)
 	{
-		foreach ($adr_ary as $type => $id_ary)
+		foreach ($id_ary as $user_id => $in_to)
 		{
-			foreach ($id_ary as $ug_id => $_id)
-			{
-				if ($type == 'u')
-				{
-					$address_list[$message_id][] = get_username_string('full', $ug_id, $recipient_list[$type][$ug_id]['name'], $recipient_list[$type][$ug_id]['colour']);
-				}
-				else
-				{
-					$user_colour = ($recipient_list[$type][$ug_id]['colour']) ? ' style="font-weight: bold; color:#' . $recipient_list[$type][$ug_id]['colour'] . '"' : '';
-					$link = '<a href="' . append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $ug_id) . '"' . $user_colour . '>';
-					$address_list[$message_id][] = $link . $recipient_list[$type][$ug_id]['name'] . (($link) ? '</a>' : '');
-				}
-			}
+			$address_list[$message_id][] = get_username_string('full', $user_id, $recipient_list[$user_id]['name'], $recipient_list[$user_id]['colour']);
 		}
 	}
 

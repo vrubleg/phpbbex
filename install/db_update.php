@@ -724,6 +724,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'u_sendemail',
 		'u_pm_download',
 		'u_sendim',
+		'u_masspm_group',
 	]);
 
 	// Add the PM recipient-limit bypass permission without granting it to any role.
@@ -794,6 +795,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
 	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_message_limit');
 	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_max_recipients');
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_receive_pm');
 	$db->sql_query("DROP TABLE {$table_prefix}forums_access");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 
@@ -2022,46 +2024,6 @@ function change_database_data(&$no_updates, $version)
 			set_config('enable_queue_trigger', '0');
 			set_config('queue_trigger_posts', '3');
 
-			// Add new permission u_masspm_group and duplicate settings from u_masspm
-			require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
-			$auth_admin = new auth_admin();
-
-			// Only add the new permission if it does not already exist
-			if (empty($auth_admin->acl_options['id']['u_masspm_group']))
-			{
-				$auth_admin->acl_add_option(['global' => ['u_masspm_group']]);
-
-				// Now the tricky part, filling the permission
-				$old_id = $auth_admin->acl_options['id']['u_masspm'];
-				$new_id = $auth_admin->acl_options['id']['u_masspm_group'];
-
-				$tables = [ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE];
-
-				foreach ($tables as $table)
-				{
-					$sql = 'SELECT *
-						FROM ' . $table . '
-						WHERE auth_option_id = ' . $old_id;
-					$result = _sql($sql, $errored, $error_ary);
-
-					$sql_ary = [];
-					while ($row = $db->sql_fetchrow($result))
-					{
-						$row['auth_option_id'] = $new_id;
-						$sql_ary[] = $row;
-					}
-					$db->sql_freeresult($result);
-
-					if (sizeof($sql_ary))
-					{
-						$db->sql_multi_insert($table, $sql_ary);
-					}
-				}
-
-				// Remove any old permission entries
-				$auth_admin->acl_clear_prefetch();
-			}
-
 			$sql = 'UPDATE ' . MODULES_TABLE . '
 				SET module_auth = \'acl_a_email && cfg_email_enable\'
 				WHERE module_class = \'acp\'
@@ -2331,8 +2293,8 @@ function change_database_data(&$no_updates, $version)
 				if (!$errored)
 				{
 					// Now add the correct data to the roles...
-					// The standard role says that new users are not able to send a PM, Mass PM, are not able to PM groups
-					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT {$u_role}, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_sendpm', 'u_masspm', 'u_masspm_group')";
+					// The standard role says that new users are not able to send a PM or Mass PM.
+					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT {$u_role}, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_sendpm', 'u_masspm')";
 					_sql($sql, $errored, $error_ary);
 
 					// Add user role to group

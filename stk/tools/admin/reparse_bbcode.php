@@ -476,9 +476,6 @@ class reparse_bbcode
 		// Reparse
 		$this->message_parser->parse($this->flags['enable_bbcode'], $this->flags['enable_magic_url'], $this->flags['enable_smilies'], $this->flags['img_status'], $this->flags['flash_status'], true, $this->flags['enable_urls']);
 
-		// Rebuild addresslist
-		$this->data['address_list'] = rebuild_header(['to' => $this->data['to_address'], 'bcc' => $this->data['bcc_address']]);
-
 		$pm_data = [
 			'msg_id'            => $this->data['msg_id'],
 			'from_user_id'      => $this->data['author_id'],
@@ -495,7 +492,6 @@ class reparse_bbcode
 			'message'           => $this->message_parser->message,
 			'attachment_data'   => $this->message_parser->attachment_data,
 			'filename_data'     => $this->message_parser->filename_data,
-			'address_list'      => $this->data['address_list'],
 		];
 	}
 

@@ -234,7 +234,6 @@ $lang = array_merge($lang, [
 	'NO_AVATAR_CATEGORY'            => 'Нет',
 
 	'NO_AUTH_EDIT_MESSAGE'          => 'У вас нет доступа к редактированию личных сообщений.',
-	'NO_AUTH_GROUP_MESSAGE'         => 'У вас нет доступа к отправке личных сообщений в группы.',
 	'NO_AUTH_PASSWORD_REMINDER'     => 'У вас нет доступа к получению нового пароля.',
 	'NO_AUTH_READ_HOLD_MESSAGE'     => 'У вас нет доступа к чтению отложенных личных сообщений.',
 	'NO_AUTH_READ_MESSAGE'          => 'У вас нет доступа к чтению личных сообщений.',

@@ -168,7 +168,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	$url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm');
 
 	// Number of "to" recipients
-	$num_recipients = (int) preg_match_all('/:?(u|g)_([0-9]+):?/', $message_row['to_address'], $match);
+	$num_recipients = (int) preg_match_all('/:?u_([0-9]+):?/', $message_row['to_address'], $match);
 
 	$bbcode_status  = ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode'));
 

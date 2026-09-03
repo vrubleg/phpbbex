@@ -25,7 +25,6 @@ if (!defined('IN_PHPBB'))
 *
 *   Composing Messages (mode=compose):
 *       To specific user (u=[user_id])
-*       To specific group (g=[group_id])
 *       Quoting a post (action=quotepost&p=[post_id])
 *       Quoting a PM (action=quote&p=[msg_id])
 *       Forwarding a PM (action=forward&p=[msg_id])
