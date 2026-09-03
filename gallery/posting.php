@@ -222,15 +222,7 @@ else
 {
 	if ($mode == 'upload')
 	{
-		// Upload Quota Check
-		// 1. Check album-configuration Quota
-		if ((phpbb_gallery_config::get('album_images') >= 0) && ($album_data['album_images'] >= phpbb_gallery_config::get('album_images')))
-		{
-			//@todo: Add return link
-			trigger_error('ALBUM_REACHED_QUOTA');
-		}
-
-		// 2. Check user-limit, if he is not allowed to go unlimited
+		// Check per-user album quota, unless the user may ignore it.
 		if (!phpbb_gallery::$auth->acl_check('i_unlimited', $album_id, $album_data['album_user_id']))
 		{
 			$sql = 'SELECT COUNT(image_id) count
@@ -401,15 +393,7 @@ else
 	{
 		if ($submit)
 		{
-			// Upload Quota Check
-			// 1. Check album-configuration Quota
-			if ((phpbb_gallery_config::get('album_images') >= 0) && ($album_data['album_images'] >= phpbb_gallery_config::get('album_images')))
-			{
-				//@todo: Add return link
-				trigger_error('ALBUM_REACHED_QUOTA');
-			}
-
-			// 2. Check user-limit, if he is not allowed to go unlimited
+			// Check per-user album quota, unless the user may ignore it.
 			if (!phpbb_gallery::$auth->acl_check('i_unlimited', $album_id, $album_data['album_user_id']))
 			{
 				$sql = 'SELECT COUNT(image_id) count

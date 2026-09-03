@@ -307,7 +307,6 @@ class acp_gallery_config
 			'album_display'         => ['lang' => 'RRC_DISPLAY_OPTIONS',    'validate' => 'int',    'type' => 'custom',         'gallery' => true,  'explain' => false, 'method' => 'rrc_display'],
 			'default_sort_key'      => ['lang' => 'DEFAULT_SORT_METHOD',    'validate' => 'string', 'type' => 'custom',         'gallery' => true,  'explain' => false, 'method' => 'sort_method_select'],
 			'default_sort_dir'      => ['lang' => 'DEFAULT_SORT_ORDER', 'validate' => 'string', 'type' => 'custom',         'gallery' => true,  'explain' => false, 'method' => 'sort_order_select'],
-			'album_images'          => ['lang' => 'MAX_IMAGES_PER_ALBUM',   'validate' => 'int',    'type' => 'text:7:7',       'gallery' => true,  'explain' => true],
 			'mini_thumbnail_disp'   => ['lang' => 'DISP_FAKE_THUMB',        'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'mini_thumbnail_size'   => ['lang' => 'FAKE_THUMB_SIZE',        'validate' => 'int',    'type' => 'text:7:4',       'gallery' => true,  'explain' => true,  'append' => 'PIXELS'],
 

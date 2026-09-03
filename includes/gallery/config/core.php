@@ -25,7 +25,6 @@ class phpbb_gallery_config_core
 	static public $configs = [
 		'album_columns'     => 3,
 		'album_display'     => 254,
-		'album_images'      => 2500,
 		'album_rows'        => 4,
 		'allow_comments'    => true,
 		'allow_gif'         => true,

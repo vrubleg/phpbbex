@@ -27,7 +27,6 @@ $lang = array_merge($lang, [
 	'ALBUM_NAME'                    => 'Album name',
 	'ALBUM_NOT_EXIST'               => 'This album does not exist',
 	'ALBUM_PERMISSIONS'             => 'Album Permissions',
-	'ALBUM_REACHED_QUOTA'           => 'This album has reached the quota of images. You cannot upload images anymore.<br />Please contact the administrator for more information.',
 	'ALBUM_UPLOAD_NEED_APPROVAL'        => 'Your images have been uploaded successfully.<br /><br />But your image must be approved by a administrator or a moderator before they are public visible.',
 	'ALBUM_UPLOAD_NEED_APPROVAL_ERROR'  => 'Some of your images have been uploaded successfully.<br /><br />But your images must be approved by a administrator or a moderator before they are public visible.<br /><br /><p class="error">%s</p>',
 	'ALBUM_UPLOAD_SUCCESSFUL'       => 'Your images have been uploaded successfully.',

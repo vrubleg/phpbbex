@@ -626,6 +626,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 			AND module_mode = 'manage_albums'");
 
 	remove_config_values([
+		'phpbb_gallery_album_images',
 		'phpbb_gallery_allow_zip',
 		'phpbb_gallery_comment_length',
 		'phpbb_gallery_contests_ended',

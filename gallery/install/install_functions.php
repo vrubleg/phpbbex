@@ -303,7 +303,6 @@ function config_mapping()
 		'newest_pgallery_user_colour'   => 'newest_pega_user_colour',
 		'newest_pgallery_album_id'      => 'newest_pega_album_id',
 
-		'images_per_album'      => 'album_images',
 		'upload_images'         => 'num_uploads',
 	];
 }
