@@ -234,7 +234,6 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'S_HAS_ATTACHMENTS' => (sizeof($attachments) > 0),
 		'S_DISPLAY_NOTICE'  => $display_notice && $message_row['message_attachment'],
 		'S_AUTHOR_DELETED'  => ($author_id == ANONYMOUS),
-		'S_SPECIAL_FOLDER'  => in_array($folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]),
 		'S_PM_RECIPIENTS'   => $num_recipients,
 		'S_BBCODE_ALLOWED'  => ($bbcode_status) ? 1 : 0,
 

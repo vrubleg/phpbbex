@@ -60,22 +60,6 @@ function view_folder($id, $mode, $folder_id, $folder)
 		$s_mark_options .= '<option value="' . $mark_option . '">' . $user->lang[strtoupper($mark_option)] . '</option>';
 	}
 
-	// We do the folder moving options here too, for template authors to use...
-	$s_folder_move_options = '';
-	if ($folder_id != PRIVMSGS_NO_BOX && $folder_id != PRIVMSGS_OUTBOX)
-	{
-		foreach ($folder as $f_id => $folder_ary)
-		{
-			if ($f_id == PRIVMSGS_OUTBOX || $f_id == PRIVMSGS_SENTBOX || $f_id == $folder_id)
-			{
-				continue;
-			}
-
-			$s_folder_move_options .= '<option' . (($f_id != PRIVMSGS_INBOX) ? ' class="sep"' : '') . ' value="' . $f_id . '">';
-			$s_folder_move_options .= sprintf($user->lang['MOVE_MARKED_TO_FOLDER'], $folder_ary['folder_name']);
-			$s_folder_move_options .= (($folder_ary['unread_messages']) ? ' [' . $folder_ary['unread_messages'] . '] ' : '') . '</option>';
-		}
-	}
 	$friend = $foe = [];
 
 	// Get friends and foes
@@ -91,10 +75,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 	}
 	$db->sql_freeresult($result);
 
-	$template->assign_vars([
-		'S_MARK_OPTIONS'        => $s_mark_options,
-		'S_MOVE_MARKED_OPTIONS' => $s_folder_move_options]
-	);
+	$template->assign_var('S_MARK_OPTIONS', $s_mark_options);
 
 	// Okay, lets dump out the page ...
 	if (sizeof($folder_info['pm_list']))

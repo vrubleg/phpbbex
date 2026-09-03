@@ -186,7 +186,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('override_user_time
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pass_complex', 'PASS_TYPE_ANY');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('phpbbex_version', '1.9.9');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_edit_time', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_boxes', '4');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('pm_max_recipients', '5');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('posting_topic_review', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('posts_per_page', '20');

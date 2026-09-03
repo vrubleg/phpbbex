@@ -441,15 +441,6 @@ CREATE TABLE phpbb_privmsgs (
 	KEY root_level (root_level)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-CREATE TABLE phpbb_privmsgs_folder (
-	folder_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	folder_name varchar(255) DEFAULT '' NOT NULL,
-	pm_count mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (folder_id),
-	KEY user_id (user_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 CREATE TABLE phpbb_privmsgs_to (
 	msg_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,

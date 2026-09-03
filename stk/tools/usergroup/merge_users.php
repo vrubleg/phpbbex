@@ -319,16 +319,6 @@ class merge_users
 				],
 				null,
 			],
-			// Only custom folders making this easy as 3.14159
-			'privmsgs_folder'       => [
-				[
-					'user_id'       => 'id',
-				],
-				[
-					'user_id',
-					'user_id',
-				],
-			],
 			'privmsgs_to'           => [
 				[
 					'user_id'   => 'id', // Destination user

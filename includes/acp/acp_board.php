@@ -229,7 +229,6 @@ class acp_board
 					'vars'  => [
 						'legend1'               => 'GENERAL_SETTINGS',
 						'allow_privmsg'         => ['lang' => 'BOARD_PM',               'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
-						'pm_max_boxes'          => ['lang' => 'BOXES_MAX',              'validate' => 'int:0',  'type' => 'text:4:4', 'explain' => true],
 						'pm_edit_time'          => ['lang' => 'PM_EDIT_TIME',           'validate' => 'int:0',  'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['MINUTES']],
 						'allow_mass_pm'         => ['lang' => 'ALLOW_MASS_PM',          'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'pm_max_recipients'     => ['lang' => 'PM_MAX_RECIPIENTS',      'validate' => 'int:0',  'type' => 'text:5:5', 'explain' => true],

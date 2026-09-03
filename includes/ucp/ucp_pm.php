@@ -85,7 +85,7 @@ class ucp_pm
 			case 'compose':
 				$action = request_var('action', 'post');
 
-				$user_folders = get_folder($user->data['user_id']);
+				get_folder($user->data['user_id']);
 
 				if (!$auth->acl_get('u_sendpm'))
 				{
@@ -100,18 +100,9 @@ class ucp_pm
 				}
 
 				require_once(PHPBB_ROOT_PATH . 'includes/ucp/ucp_pm_compose.php');
-				compose_pm($id, $mode, $action, $user_folders);
+				compose_pm($id, $mode, $action);
 
 				$tpl_file = 'posting_body';
-			break;
-
-			case 'options':
-				get_folder($user->data['user_id']);
-
-				require_once(PHPBB_ROOT_PATH . 'includes/ucp/ucp_pm_options.php');
-				message_options($mode);
-
-				$tpl_file = 'ucp_pm_options';
 			break;
 
 			case 'drafts':
@@ -160,37 +151,9 @@ class ucp_pm
 					trigger_error('NO_AUTH_READ_MESSAGE');
 				}
 
-				// First Handle Mark actions and moving messages
+				// Handle actions on marked messages
 				$submit_mark    = isset($_POST['submit_mark']);
-				$move_pm        = isset($_POST['move_pm']);
 				$mark_option    = request_var('mark_option', '');
-				$dest_folder    = request_var('dest_folder', PRIVMSGS_NO_BOX);
-
-				// Is moving PM triggered through mark options?
-				if (!in_array($mark_option, ['mark_important', 'delete_marked']) && $submit_mark)
-				{
-					$move_pm = true;
-					$dest_folder = (int) $mark_option;
-					$submit_mark = false;
-				}
-
-				// Move PM
-				if ($move_pm)
-				{
-					$move_msg_ids   = (isset($_POST['marked_msg_id'])) ? request_var('marked_msg_id', [0]) : [];
-					$cur_folder_id  = request_var('cur_folder_id', PRIVMSGS_NO_BOX);
-
-					if (move_pm($user->data['user_id'], $move_msg_ids, $dest_folder, $cur_folder_id))
-					{
-						// Return to folder view if single message moved
-						if ($action == 'view_message')
-						{
-							$msg_id     = 0;
-							$folder_id  = request_var('cur_folder_id', PRIVMSGS_NO_BOX);
-							$action     = 'view_folder';
-						}
-					}
-				}
 
 				// Message Mark Options
 				if ($submit_mark)
@@ -280,27 +243,16 @@ class ucp_pm
 
 				$folder = get_folder($user->data['user_id'], $folder_id);
 
-				$s_folder_options = $s_to_folder_options = '';
-				foreach ($folder as $f_id => $folder_ary)
-				{
-					$option = '<option' . ((!in_array($f_id, [PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX])) ? ' class="sep"' : '') . ' value="' . $f_id . '"' . (($f_id == $folder_id) ? ' selected="selected"' : '') . '>' . $folder_ary['folder_name'] . (($folder_ary['unread_messages']) ? ' [' . $folder_ary['unread_messages'] . '] ' : '') . '</option>';
-
-					$s_to_folder_options .= ($f_id != PRIVMSGS_OUTBOX && $f_id != PRIVMSGS_SENTBOX) ? $option : '';
-					$s_folder_options .= $option;
-				}
 				$template->assign_vars([
 					'CUR_FOLDER_ID'         => $folder_id,
 					'CUR_FOLDER_NAME'       => $folder[$folder_id]['folder_name'],
 
-					'S_FOLDER_OPTIONS'      => $s_folder_options,
-					'S_TO_FOLDER_OPTIONS'   => $s_to_folder_options,
 					'S_FOLDER_ACTION'       => $this->u_action . '&amp;action=view_folder',
 					'S_PM_ACTION'           => $this->u_action . '&amp;action=' . $action,
 
 					'U_INBOX'               => $this->u_action . '&amp;folder=inbox',
 					'U_OUTBOX'              => $this->u_action . '&amp;folder=outbox',
 					'U_SENTBOX'             => $this->u_action . '&amp;folder=sentbox',
-					'U_CREATE_FOLDER'       => $this->u_action . '&amp;mode=options',
 					'U_CURRENT_FOLDER'      => $this->u_action . '&amp;folder=' . $folder_id,
 
 					'S_IN_INBOX'            => ($folder_id == PRIVMSGS_INBOX),

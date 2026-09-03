@@ -60,22 +60,6 @@ function get_folder($user_id, $folder_id = false)
 		'unread_messages'   => $num_unread[PRIVMSGS_INBOX]
 	];
 
-	// Custom Folder
-	$sql = 'SELECT folder_id, folder_name, pm_count
-		FROM ' . PRIVMSGS_FOLDER_TABLE . "
-			WHERE user_id = {$user_id}";
-	$result = $db->sql_query($sql);
-
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$folder[$row['folder_id']] = [
-			'folder_name'       => $row['folder_name'],
-			'num_messages'      => $row['pm_count'],
-			'unread_messages'   => $num_unread[$row['folder_id']] ?? 0,
-		];
-	}
-	$db->sql_freeresult($result);
-
 	$folder[PRIVMSGS_OUTBOX] = [
 		'folder_name'       => $user->lang['PM_OUTBOX'],
 		'num_messages'      => $num_messages[PRIVMSGS_OUTBOX],
@@ -88,7 +72,7 @@ function get_folder($user_id, $folder_id = false)
 		'unread_messages'   => $num_unread[PRIVMSGS_SENTBOX]
 	];
 
-	// Define Folder Array for template designers (and for making custom folders usable by the template too)
+	// Define folder array for template designers.
 	foreach ($folder as $f_id => $folder_ary)
 	{
 		$folder_id_name = ($f_id == PRIVMSGS_INBOX) ? 'inbox' : (($f_id == PRIVMSGS_OUTBOX) ? 'outbox' : 'sentbox');
@@ -99,11 +83,10 @@ function get_folder($user_id, $folder_id = false)
 			'NUM_MESSAGES'      => $folder_ary['num_messages'],
 			'UNREAD_MESSAGES'   => $folder_ary['unread_messages'],
 
-			'U_FOLDER'          => ($f_id > 0) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $f_id) : append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $folder_id_name),
+			'U_FOLDER'          => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $folder_id_name),
 
 			'S_CUR_FOLDER'      => ($f_id === $folder_id),
 			'S_UNREAD_MESSAGES' => (bool) $folder_ary['unread_messages'],
-			'S_CUSTOM_FOLDER'   => ($f_id > 0),
 		]);
 	}
 
@@ -205,78 +188,6 @@ function place_pm_into_folder()
 
 	// Update new/unread count
 	update_pm_counts();
-}
-
-/**
-* Move PM from one to another folder
-*/
-function move_pm($user_id, $move_msg_ids, $dest_folder, $cur_folder_id)
-{
-	global $db;
-
-	$num_moved = 0;
-
-	if (!is_array($move_msg_ids))
-	{
-		$move_msg_ids = [$move_msg_ids];
-	}
-
-	if (sizeof($move_msg_ids) && !in_array($dest_folder, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX]) &&
-		!in_array($cur_folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]) && $cur_folder_id != $dest_folder)
-	{
-		// We have to check the destination folder ;)
-		if ($dest_folder != PRIVMSGS_INBOX)
-		{
-			$sql = 'SELECT folder_id
-				FROM ' . PRIVMSGS_FOLDER_TABLE . "
-				WHERE folder_id = {$dest_folder}
-					AND user_id = {$user_id}";
-			$result = $db->sql_query($sql);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			if (!$row)
-			{
-				trigger_error('NOT_AUTHORISED');
-			}
-		}
-
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . "
-			SET folder_id = {$dest_folder}
-			WHERE folder_id = {$cur_folder_id}
-				AND user_id = {$user_id}
-				AND " . $db->sql_in_set('msg_id', $move_msg_ids);
-		$db->sql_query($sql);
-		$num_moved = $db->sql_affectedrows();
-
-		// Update pm counts
-		if ($num_moved)
-		{
-			if (!in_array($cur_folder_id, [PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX]))
-			{
-				$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
-					SET pm_count = pm_count - {$num_moved}
-					WHERE folder_id = {$cur_folder_id}
-						AND user_id = {$user_id}";
-				$db->sql_query($sql);
-			}
-
-			if ($dest_folder != PRIVMSGS_INBOX)
-			{
-				$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
-					SET pm_count = pm_count + {$num_moved}
-					WHERE folder_id = {$dest_folder}
-						AND user_id = {$user_id}";
-				$db->sql_query($sql);
-			}
-		}
-	}
-	else if (in_array($cur_folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]))
-	{
-		trigger_error('CANNOT_MOVE_SPECIAL');
-	}
-
-	return $num_moved;
 }
 
 /**
@@ -460,15 +371,6 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 				AND " . $db->sql_in_set('msg_id', array_keys($delete_rows));
 		$db->sql_query($sql);
 		$num_deleted = $db->sql_affectedrows();
-	}
-
-	// if folder id is user defined folder then decrease pm_count
-	if (!in_array($folder_id, [PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX, PRIVMSGS_NO_BOX]))
-	{
-		$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
-			SET pm_count = pm_count - {$num_deleted}
-			WHERE folder_id = {$folder_id}";
-		$db->sql_query($sql);
 	}
 
 	// Update unread and new status field

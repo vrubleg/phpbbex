@@ -711,6 +711,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module('acp', 'board', 'cookie');
 	remove_module('acp', 'quick_reply', 'quick_reply');
 	remove_module('ucp', 'pm', 'popup');
+	remove_module('ucp', 'pm', 'options');
 	remove_module('acp', 'database', 'backup');
 	remove_module('acp', 'database', 'restore');
 	remove_module('acp', 'search', 'index');
@@ -817,6 +818,16 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
 		SET folder_id = 0, pm_new = 0
 		WHERE folder_id = -4');
+
+	// Move messages from removed user-defined folders into the inbox.
+	$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
+		SET folder_id = 0
+		WHERE folder_id > 0');
+
+	// Custom PM folders are gone.
+	$db->sql_query("DROP TABLE {$table_prefix}privmsgs_folder");
+
+	// Resync new private messages count for all users.
 	$db->sql_query('UPDATE ' . USERS_TABLE . ' u
 		SET user_new_privmsg = (
 			SELECT COUNT(t.msg_id)
@@ -825,7 +836,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 				AND t.folder_id = -3
 				AND t.pm_new = 1
 		)');
-	remove_config_values(['full_folder_action', 'pm_max_msgs']);
+
+	// Remove no more used PM related settings.
+	remove_config_values(['full_folder_action', 'pm_max_boxes', 'pm_max_msgs']);
 
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
 
@@ -1223,7 +1236,6 @@ if (request_var('utf8mb4', 0))
 			case POLL_OPTIONS_TABLE:
 			case POLL_VOTES_TABLE:
 			case PRIVMSGS_TABLE:
-			case PRIVMSGS_FOLDER_TABLE:
 			case PRIVMSGS_TO_TABLE:
 			case PROFILE_FIELDS_TABLE:
 			case PROFILE_FIELDS_DATA_TABLE:
