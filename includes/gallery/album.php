@@ -629,11 +629,7 @@ class phpbb_gallery_album
 
 		if (isset($mode_personal))
 		{
-			$sql_array['LEFT_JOIN'][] = [
-				'FROM'  => [USERS_TABLE => 'u'],
-				'ON'    => 'u.user_id = a.album_user_id'
-			];
-			$sql_array['ORDER_BY'] = 'u.username_clean, a.left_id';
+			$sql_array['ORDER_BY'] = 'a.album_last_image_time DESC, a.album_id';
 		}
 		$sql = $db->sql_build_query('SELECT', [
 			'SELECT'    => $sql_array['SELECT'],
