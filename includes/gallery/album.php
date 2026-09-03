@@ -392,27 +392,18 @@ class phpbb_gallery_album
 	*/
 	static public function generate_nav(&$album_data)
 	{
-		global $db, $user, $template;
+		global $user, $template;
 
 		// Get album parents
 		$album_parents = self::get_parents($album_data);
 
-		// Display username for personal albums
+		// Add the personal albums index for personal albums.
 		if ($album_data['album_user_id'] > self::PUBLIC_ALBUM)
 		{
-			$sql = 'SELECT user_id, username, user_colour
-				FROM ' . USERS_TABLE . '
-				WHERE user_id = ' . (int) $album_data['album_user_id'];
-			$result = $db->sql_query($sql);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$template->assign_block_vars('navlinks', [
-					'FORUM_NAME'    => $user->lang['PERSONAL_ALBUMS'],
-					'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('index', 'mode=personal'),
-				]);
-			}
-			$db->sql_freeresult($result);
+			$template->assign_block_vars('navlinks', [
+				'FORUM_NAME'    => $user->lang['PERSONAL_ALBUMS'],
+				'U_VIEW_FORUM'  => phpbb_gallery_url::append_sid('index', 'mode=personal'),
+			]);
 		}
 
 		// Build navigation links
