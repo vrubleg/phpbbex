@@ -110,7 +110,7 @@ class ucp_pm
 				get_folder($user->data['user_id']);
 
 				require_once(PHPBB_ROOT_PATH . 'includes/ucp/ucp_pm_options.php');
-				message_options($id, $mode, $global_privmsgs_rules, $global_rule_conditions);
+				message_options($mode);
 
 				$tpl_file = 'ucp_pm_options';
 			break;
@@ -215,7 +215,7 @@ class ucp_pm
 
 				if ($user->data['user_new_privmsg'] && ($action == 'view_folder' || $action == 'view_message'))
 				{
-					$return = place_pm_into_folder($global_privmsgs_rules, $release);
+					$return = place_pm_into_folder($release);
 					$num_not_moved = $return['not_moved'];
 					$num_removed = $return['removed'];
 				}
@@ -316,7 +316,7 @@ class ucp_pm
 					'NUM_REMOVED'           => $num_removed,
 					'RELEASE_MESSAGE_INFO'  => sprintf($user->lang['RELEASE_MESSAGES'], '<a href="' . $this->u_action . '&amp;folder=' . $folder_id . '&amp;release=1">', '</a>'),
 					'NOT_MOVED_MESSAGES'    => ($num_not_moved == 1) ? $user->lang['NOT_MOVED_MESSAGE'] : sprintf($user->lang['NOT_MOVED_MESSAGES'], $num_not_moved),
-					'RULE_REMOVED_MESSAGES' => ($num_removed == 1) ? $user->lang['RULE_REMOVED_MESSAGE'] : sprintf($user->lang['RULE_REMOVED_MESSAGES'], $num_removed),
+					'FULL_FOLDER_REMOVED_MESSAGES' => ($num_removed == 1) ? $user->lang['FULL_FOLDER_REMOVED_MESSAGE'] : sprintf($user->lang['FULL_FOLDER_REMOVED_MESSAGES'], $num_removed),
 
 					'S_FOLDER_OPTIONS'      => $s_folder_options,
 					'S_TO_FOLDER_OPTIONS'   => $s_to_folder_options,

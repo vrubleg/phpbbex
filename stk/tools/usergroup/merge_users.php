@@ -329,23 +329,6 @@ class merge_users
 					'user_id',
 				],
 			],
-			'privmsgs_rules'        => [
-				[
-					'user_id'       => 'id',
-					'rule_user_id'  => 'id',
-					'rule_string'   => 'name', // Not all the time
-				],
-				// Rules referencing our source user
-				[
-					'rule_user_id',
-					['rule_user_id', 'rule_string'],
-				],
-				// Rules created by our source user
-				[
-					'user_id',
-					'user_id',
-				],
-			],
 			'privmsgs_to'           => [
 				[
 					'user_id'   => 'id', // Destination user
@@ -544,17 +527,6 @@ class merge_users
 				$update['target']['user_' . $var] = $source['user_' . $var] + $target['user_' . $var];
 				$update['source']['user_' . $var] = 0;
 			}
-		}
-
-		if ($source['user_message_rules'])
-		{
-			// Update this only if the source has rules
-			if (!$target['user_message_rules'])
-			{
-				$update['target']['user_message_rules'] = 1;
-			}
-			// No longer has rules ;)
-			$update['source']['user_message_rules'] = 0;
 		}
 
 		if ($source['user_notify_type'] != $target['user_notify_type'] && $target['user_notify_type'] != NOTIFY_BOTH)

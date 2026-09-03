@@ -10,99 +10,6 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-/*
-	Ability to simply add own rules by doing three things:
-		1) Add an appropriate constant
-		2) Add a new check array to the global_privmsgs_rules variable and the condition array (if one is required)
-		3) Add a new language variable to ucp.php
-
-		The user is then able to select the new rule. It will be checked against and handled as specified.
-		To add new actions (yes, checks can be added here too) to the rule management, the core code has to be modified.
-*/
-
-define('RULE_IS_LIKE', 1);      // Is Like
-define('RULE_IS_NOT_LIKE', 2);  // Is Not Like
-define('RULE_IS', 3);           // Is
-define('RULE_IS_NOT', 4);       // Is Not
-define('RULE_BEGINS_WITH', 5);  // Begins with
-define('RULE_ENDS_WITH', 6);    // Ends with
-define('RULE_IS_FRIEND', 7);    // Is Friend
-define('RULE_IS_FOE', 8);       // Is Foe
-define('RULE_IS_USER', 9);      // Is User
-define('RULE_IS_GROUP', 10);    // Is In Usergroup
-define('RULE_ANSWERED', 11);    // Answered
-define('RULE_FORWARDED', 12);   // Forwarded
-define('RULE_TO_ME', 15);       // Me
-
-define('ACTION_PLACE_INTO_FOLDER', 1);
-define('ACTION_MARK_AS_READ', 2);
-define('ACTION_MARK_AS_IMPORTANT', 3);
-define('ACTION_DELETE_MESSAGE', 4);
-
-define('CHECK_SUBJECT', 1);
-define('CHECK_SENDER', 2);
-define('CHECK_MESSAGE', 3);
-define('CHECK_STATUS', 4);
-define('CHECK_TO', 5);
-
-/**
-* Global private message rules
-* These rules define what to do if a rule is hit
-*/
-$global_privmsgs_rules = [
-	CHECK_SUBJECT   => [
-		RULE_IS_LIKE        => ['check0' => 'message_subject', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
-		RULE_IS_NOT_LIKE    => ['check0' => 'message_subject', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'],
-		RULE_IS             => ['check0' => 'message_subject', 'function' => '{CHECK0} == {STRING}'],
-		RULE_IS_NOT         => ['check0' => 'message_subject', 'function' => '{CHECK0} != {STRING}'],
-		RULE_BEGINS_WITH    => ['check0' => 'message_subject', 'function' => 'preg_match("/^" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
-		RULE_ENDS_WITH      => ['check0' => 'message_subject', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "$/i", {CHECK0})'],
-	],
-
-	CHECK_SENDER    => [
-		RULE_IS_LIKE        => ['check0' => 'username', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
-		RULE_IS_NOT_LIKE    => ['check0' => 'username', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'],
-		RULE_IS             => ['check0' => 'username', 'function' => '{CHECK0} == {STRING}'],
-		RULE_IS_NOT         => ['check0' => 'username', 'function' => '{CHECK0} != {STRING}'],
-		RULE_BEGINS_WITH    => ['check0' => 'username', 'function' => 'preg_match("/^" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
-		RULE_ENDS_WITH      => ['check0' => 'username', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "$/i", {CHECK0})'],
-		RULE_IS_FRIEND      => ['check0' => 'friend', 'function' => '{CHECK0} == 1'],
-		RULE_IS_FOE         => ['check0' => 'foe', 'function' => '{CHECK0} == 1'],
-		RULE_IS_USER        => ['check0' => 'author_id', 'function' => '{CHECK0} == {USER_ID}'],
-		RULE_IS_GROUP       => ['check0' => 'author_in_group', 'function' => 'in_array({GROUP_ID}, {CHECK0})'],
-	],
-
-	CHECK_MESSAGE   => [
-		RULE_IS_LIKE        => ['check0' => 'message_text', 'function' => 'preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0})'],
-		RULE_IS_NOT_LIKE    => ['check0' => 'message_text', 'function' => '!(preg_match("/" . preg_quote({STRING}, "/") . "/i", {CHECK0}))'],
-		RULE_IS             => ['check0' => 'message_text', 'function' => '{CHECK0} == {STRING}'],
-		RULE_IS_NOT         => ['check0' => 'message_text', 'function' => '{CHECK0} != {STRING}'],
-	],
-
-	CHECK_STATUS    => [
-		RULE_ANSWERED       => ['check0' => 'pm_replied', 'function' => '{CHECK0} == 1'],
-		RULE_FORWARDED      => ['check0' => 'pm_forwarded', 'function' => '{CHECK0} == 1'],
-	],
-
-	CHECK_TO        => [
-		RULE_TO_ME          => ['check0' => 'to', 'function' => 'in_array("u_" . $user_id, {CHECK0})'],
-	]
-];
-
-/**
-* This is for defining which condition fields to show for which Rule
-*/
-$global_rule_conditions = [
-	RULE_IS_LIKE        => 'text',
-	RULE_IS_NOT_LIKE    => 'text',
-	RULE_IS             => 'text',
-	RULE_IS_NOT         => 'text',
-	RULE_BEGINS_WITH    => 'text',
-	RULE_ENDS_WITH      => 'text',
-	RULE_IS_USER        => 'user',
-	RULE_IS_GROUP       => 'group'
-];
-
 /**
 * Get all folder
 */
@@ -239,77 +146,6 @@ function clean_sentbox($num_sentbox_messages)
 }
 
 /**
-* Check Rule against Message Information
-*/
-function check_rule(&$rules, &$rule_row, &$message_row, $user_id)
-{
-	global $user, $config;
-
-	if (!isset($rules[$rule_row['rule_check']][$rule_row['rule_connection']]))
-	{
-		return false;
-	}
-
-	$check_ary = $rules[$rule_row['rule_check']][$rule_row['rule_connection']];
-
-	// Replace Check Literals
-	$evaluate = $check_ary['function'];
-	$evaluate = preg_replace('/{(CHECK[0-9])}/', '$message_row[$check_ary[strtolower("\1")]]', $evaluate);
-
-	// Replace Rule Literals
-	$evaluate = preg_replace('/{(STRING|USER_ID|GROUP_ID)}/', '$rule_row["rule_" . strtolower("\1")]', $evaluate);
-
-	// Evil Statement
-	$result = false;
-	eval('$result = boolval(' . $evaluate . ');');
-
-	if (!$result)
-	{
-		return false;
-	}
-
-	switch ($rule_row['rule_action'])
-	{
-		case ACTION_PLACE_INTO_FOLDER:
-			return ['action' => $rule_row['rule_action'], 'folder_id' => $rule_row['rule_folder_id']];
-		break;
-
-		case ACTION_MARK_AS_READ:
-		case ACTION_MARK_AS_IMPORTANT:
-			return ['action' => $rule_row['rule_action'], 'pm_unread' => $message_row['pm_unread'], 'pm_marked' => $message_row['pm_marked']];
-		break;
-
-		case ACTION_DELETE_MESSAGE:
-			global $db, $auth;
-
-			// Check for admins/mods - users are not allowed to remove those messages...
-			// We do the check here to make sure the data we use is consistent
-			$sql = 'SELECT user_id, user_type, user_permissions
-				FROM ' . USERS_TABLE . '
-				WHERE user_id = ' . (int) $message_row['author_id'];
-			$result = $db->sql_query($sql);
-			$userdata = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-
-			$auth2 = new phpbb_auth();
-			$auth2->acl($userdata);
-
-			if (!$auth2->acl_get('a_') && !$auth2->acl_get('m_') && !$auth2->acl_getf_global('m_'))
-			{
-				return ['action' => $rule_row['rule_action'], 'pm_unread' => $message_row['pm_unread'], 'pm_marked' => $message_row['pm_marked']];
-			}
-
-			return false;
-		break;
-
-		default:
-			return false;
-	}
-
-	return false;
-}
-
-/**
 * Update user PM count
 */
 function update_pm_counts()
@@ -354,9 +190,9 @@ function update_pm_counts()
 }
 
 /**
-* Place new messages into appropriate folder
+* Place new messages into the inbox
 */
-function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
+function place_pm_into_folder($release = false)
 {
 	global $db, $user, $config;
 
@@ -365,10 +201,9 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		return ['not_moved' => 0, 'removed' => 0];
 	}
 
-	$user_message_rules = (int) $user->data['user_message_rules'];
 	$user_id = (int) $user->data['user_id'];
 
-	$action_ary = $move_into_folder = [];
+	$msg_ids = [];
 	$num_removed = 0;
 
 	// Newly processing on-hold messages
@@ -381,197 +216,19 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		$db->sql_query($sql);
 	}
 
-	// Get those messages not yet placed into any box
-	$retrieve_sql = 'SELECT t.*, p.*, u.username, u.user_id, u.group_id
-		FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . " u
-		WHERE t.user_id = {$user_id}
-			AND p.author_id = u.user_id
-			AND t.folder_id = " . PRIVMSGS_NO_BOX . '
-			AND t.msg_id = p.msg_id';
-
-	// Just place into the appropriate arrays if no rules need to be checked
-	if (!$user_message_rules)
+	// Get messages not yet placed into the inbox.
+	$sql = 'SELECT msg_id
+		FROM ' . PRIVMSGS_TO_TABLE . "
+		WHERE user_id = {$user_id}
+			AND folder_id = " . PRIVMSGS_NO_BOX;
+	$result = $db->sql_query($sql);
+	while ($row = $db->sql_fetchrow($result))
 	{
-		$result = $db->sql_query($retrieve_sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$action_ary[$row['msg_id']][] = ['action' => false];
-		}
-		$db->sql_freeresult($result);
+		$msg_ids[] = (int) $row['msg_id'];
 	}
-	else
-	{
-		$user_rules = $zebra = $check_rows = [];
-		$user_ids = $memberships = [];
+	$db->sql_freeresult($result);
 
-		// First of all, grab all rules and retrieve friends/foes
-		$sql = 'SELECT *
-			FROM ' . PRIVMSGS_RULES_TABLE . "
-			WHERE user_id = {$user_id}";
-		$result = $db->sql_query($sql);
-		$user_rules = $db->sql_fetchrowset($result);
-		$db->sql_freeresult($result);
-
-		if (sizeof($user_rules))
-		{
-			$sql = 'SELECT zebra_id, friend, foe
-				FROM ' . ZEBRA_TABLE . "
-				WHERE user_id = {$user_id}";
-			$result = $db->sql_query($sql);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$zebra[$row['zebra_id']] = $row;
-			}
-			$db->sql_freeresult($result);
-		}
-
-		// Now build a bare-bone check_row array
-		$result = $db->sql_query($retrieve_sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$check_rows[] = array_merge($row, [
-				'to'                => explode(':', $row['to_address']),
-				'friend'            => (isset($zebra[$row['author_id']])) ? $zebra[$row['author_id']]['friend'] : 0,
-				'foe'               => (isset($zebra[$row['author_id']])) ? $zebra[$row['author_id']]['foe'] : 0,
-				'author_in_group'   => []]
-			);
-
-			$user_ids[] = $row['user_id'];
-		}
-		$db->sql_freeresult($result);
-
-		// Retrieve user memberships
-		if (sizeof($user_ids))
-		{
-			$sql = 'SELECT *
-				FROM ' . USER_GROUP_TABLE . '
-				WHERE ' . $db->sql_in_set('user_id', $user_ids) . '
-					AND user_pending = 0';
-			$result = $db->sql_query($sql);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$memberships[$row['user_id']][] = $row['group_id'];
-			}
-			$db->sql_freeresult($result);
-		}
-
-		// Now place into the appropriate folder
-		foreach ($check_rows as $row)
-		{
-			// Add membership if set
-			if (isset($memberships[$row['author_id']]))
-			{
-				$row['author_in_group'] = $memberships[$row['user_id']];
-			}
-
-			// Check Rule - this should be very quick since we have all information we need
-			$is_match = false;
-			foreach ($user_rules as $rule_row)
-			{
-				if (($action = check_rule($global_privmsgs_rules, $rule_row, $row, $user_id)) !== false)
-				{
-					$is_match = true;
-					$action_ary[$row['msg_id']][] = $action;
-				}
-			}
-
-			if (!$is_match)
-			{
-				$action_ary[$row['msg_id']][] = ['action' => false];
-			}
-		}
-
-		unset($user_rules, $zebra, $check_rows, $user_ids, $memberships);
-	}
-
-	// We place actions into arrays, to save queries.
-	$sql = $unread_ids = $delete_ids = $important_ids = [];
-
-	foreach ($action_ary as $msg_id => $msg_ary)
-	{
-		// It is allowed to execute actions more than once, except placing messages into folder
-		$folder_action = $message_removed = false;
-
-		foreach ($msg_ary as $pos => $rule_ary)
-		{
-			if ($folder_action && $rule_ary['action'] == ACTION_PLACE_INTO_FOLDER)
-			{
-				continue;
-			}
-
-			switch ($rule_ary['action'])
-			{
-				case ACTION_PLACE_INTO_FOLDER:
-					// Folder actions have precedence, so we will remove any other ones
-					$folder_action = true;
-					$move_into_folder[(int) $rule_ary['folder_id']][] = $msg_id;
-				break;
-
-				case ACTION_MARK_AS_READ:
-					if ($rule_ary['pm_unread'])
-					{
-						$unread_ids[] = $msg_id;
-					}
-				break;
-
-				case ACTION_DELETE_MESSAGE:
-					$delete_ids[] = $msg_id;
-					$message_removed = true;
-				break;
-
-				case ACTION_MARK_AS_IMPORTANT:
-					if (!$rule_ary['pm_marked'])
-					{
-						$important_ids[] = $msg_id;
-					}
-				break;
-			}
-		}
-
-		// We place this here because it could happen that the messages are doubled if a rule marks a message and then moves it into a specific
-		// folder. Here we simply move the message into the INBOX if it gets not removed and also not put into a custom folder.
-		if (!$folder_action && !$message_removed)
-		{
-			$move_into_folder[PRIVMSGS_INBOX][] = $msg_id;
-		}
-	}
-
-	// Do not change the order of processing
-	// The number of queries needed to be executed here highly depends on the defined rules and are
-	// only gone through if new messages arrive.
-
-	// Delete messages
-	if (sizeof($delete_ids))
-	{
-		$num_removed += sizeof($delete_ids);
-		delete_pm($user_id, $delete_ids, PRIVMSGS_NO_BOX);
-	}
-
-	// Set messages to Unread
-	if (sizeof($unread_ids))
-	{
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
-			SET pm_unread = 0
-			WHERE ' . $db->sql_in_set('msg_id', $unread_ids) . "
-				AND user_id = {$user_id}
-				AND folder_id = " . PRIVMSGS_NO_BOX;
-		$db->sql_query($sql);
-	}
-
-	// mark messages as important
-	if (sizeof($important_ids))
-	{
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
-			SET pm_marked = 1 - pm_marked
-			WHERE folder_id = ' . PRIVMSGS_NO_BOX . "
-				AND user_id = {$user_id}
-				AND " . $db->sql_in_set('msg_id', $important_ids);
-		$db->sql_query($sql);
-	}
+	$move_into_folder = sizeof($msg_ids) ? [PRIVMSGS_INBOX => $msg_ids] : [];
 
 	// Move into folder
 	$folder = [];
@@ -621,12 +278,12 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 
 		// Check Message Limit - we calculate with the complete array, most of the time it is one message
 		// But we are making sure that the other way around works too (more messages in queue than allowed to be stored)
-		if ($user->data['message_limit'] && $folder[$folder_id] && ($folder[$folder_id] + sizeof($msg_ary)) > $user->data['message_limit'])
+		if ($user->data['message_limit'] && ($folder[$folder_id] + sizeof($msg_ary)) > $user->data['message_limit'])
 		{
 			$full_folder_action = ($user->data['user_full_folder'] == FULL_FOLDER_NONE) ? ($config['full_folder_action'] - (FULL_FOLDER_NONE*(-1))) : $user->data['user_full_folder'];
 
 			// If destination folder itself is full...
-			if ($full_folder_action >= 0 && ($folder[$full_folder_action] + sizeof($msg_ary)) > $user->data['message_limit'])
+			if ($full_folder_action >= 0 && (($folder[$full_folder_action] ?? 0) + sizeof($msg_ary)) > $user->data['message_limit'])
 			{
 				$full_folder_action = $config['full_folder_action'] - (FULL_FOLDER_NONE*(-1));
 			}
@@ -689,14 +346,14 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		}
 	}
 
-	if (sizeof($action_ary))
+	if (sizeof($msg_ids))
 	{
 		// Move from OUTBOX to SENTBOX
 		// We are not checking any full folder status here... SENTBOX is a special treatment (old messages get deleted)
 		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
 			SET folder_id = ' . PRIVMSGS_SENTBOX . '
 			WHERE folder_id = ' . PRIVMSGS_OUTBOX . '
-				AND ' . $db->sql_in_set('msg_id', array_keys($action_ary));
+				AND ' . $db->sql_in_set('msg_id', $msg_ids);
 		$db->sql_query($sql);
 	}
 

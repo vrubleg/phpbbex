@@ -235,7 +235,6 @@ define('POST_RATES_TABLE',          $table_prefix . 'post_rates');
 define('POSTS_TABLE',               $table_prefix . 'posts');
 define('PRIVMSGS_TABLE',            $table_prefix . 'privmsgs');
 define('PRIVMSGS_FOLDER_TABLE',     $table_prefix . 'privmsgs_folder');
-define('PRIVMSGS_RULES_TABLE',      $table_prefix . 'privmsgs_rules');
 define('PRIVMSGS_TO_TABLE',         $table_prefix . 'privmsgs_to');
 define('PROFILE_FIELDS_TABLE',      $table_prefix . 'profile_fields');
 define('PROFILE_FIELDS_DATA_TABLE', $table_prefix . 'profile_fields_data');

@@ -450,20 +450,6 @@ CREATE TABLE phpbb_privmsgs_folder (
 	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-CREATE TABLE phpbb_privmsgs_rules (
-	rule_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_check mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_connection mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_string varchar(255) DEFAULT '' NOT NULL,
-	rule_user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_group_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_action mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_folder_id int(11) DEFAULT '0' NOT NULL,
-	PRIMARY KEY (rule_id),
-	KEY user_id (user_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 CREATE TABLE phpbb_privmsgs_to (
 	msg_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -749,7 +735,6 @@ CREATE TABLE phpbb_users (
 	user_new_privmsg int(4) DEFAULT '0' NOT NULL,
 	user_unread_privmsg int(4) DEFAULT '0' NOT NULL,
 	user_last_privmsg int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	user_message_rules tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_full_folder int(11) DEFAULT '-3' NOT NULL,
 	user_notify tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_notify_pm tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,

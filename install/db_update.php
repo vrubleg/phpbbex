@@ -766,6 +766,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_lastpage');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_message_rules');
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_sig = LEFT(user_sig, 500) WHERE CHAR_LENGTH(user_sig) > 500");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_sig varchar(500) DEFAULT '' NOT NULL");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_interests = LEFT(user_interests, 1000) WHERE CHAR_LENGTH(user_interests) > 1000");
@@ -809,8 +810,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		WHERE bcc_address <> ''");
 	$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN bcc_address');
 
-	// Rules matching private messages addressed to a group are no longer supported.
-	$db->sql_query('DELETE FROM ' . PRIVMSGS_RULES_TABLE . ' WHERE rule_option = 14');
+	// Private message filtering rules are gone.
+	$db->sql_query("DROP TABLE {$table_prefix}privmsgs_rules");
 
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
 
@@ -1209,7 +1210,6 @@ if (request_var('utf8mb4', 0))
 			case POLL_VOTES_TABLE:
 			case PRIVMSGS_TABLE:
 			case PRIVMSGS_FOLDER_TABLE:
-			case PRIVMSGS_RULES_TABLE:
 			case PRIVMSGS_TO_TABLE:
 			case PROFILE_FIELDS_TABLE:
 			case PROFILE_FIELDS_DATA_TABLE:
