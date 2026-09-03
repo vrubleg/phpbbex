@@ -11,79 +11,61 @@ if (!defined('IN_PHPBB'))
 }
 
 /**
-* Get all folder
+* Get private message folders
 */
 function get_folder($user_id, $folder_id = false)
 {
 	global $db, $user, $template;
 
-	$folder = [];
+	$folder = [
+		PRIVMSGS_INBOX => [
+			'folder_name'     => $user->lang['PM_INBOX'],
+			'num_messages'    => 0,
+			'unread_messages' => 0,
+		],
+		PRIVMSGS_OUTBOX => [
+			'folder_name'     => $user->lang['PM_OUTBOX'],
+			'num_messages'    => 0,
+			'unread_messages' => 0,
+		],
+		PRIVMSGS_SENTBOX => [
+			'folder_name'     => $user->lang['PM_SENTBOX'],
+			'num_messages'    => 0,
+			'unread_messages' => 0,
+		],
+	];
+	$folder_url_names = [
+		PRIVMSGS_INBOX   => 'inbox',
+		PRIVMSGS_OUTBOX  => 'outbox',
+		PRIVMSGS_SENTBOX => 'sentbox',
+	];
 
-	// Get folder information
+	// Get message counts for the system folders.
 	$sql = 'SELECT folder_id, COUNT(msg_id) as num_messages, SUM(pm_unread) as num_unread
-		FROM ' . PRIVMSGS_TO_TABLE . "
-		WHERE user_id = {$user_id}
-			AND folder_id <> " . PRIVMSGS_NO_BOX . '
+		FROM ' . PRIVMSGS_TO_TABLE . '
+		WHERE user_id = ' . (int) $user_id . '
+			AND ' . $db->sql_in_set('folder_id', array_keys($folder)) . '
 		GROUP BY folder_id';
 	$result = $db->sql_query($sql);
 
-	$num_messages = $num_unread = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$num_messages[(int) $row['folder_id']] = $row['num_messages'];
-		$num_unread[(int) $row['folder_id']] = $row['num_unread'];
+		$f_id = (int) $row['folder_id'];
+		$folder[$f_id]['num_messages'] = (int) $row['num_messages'];
+		$folder[$f_id]['unread_messages'] = ($f_id == PRIVMSGS_OUTBOX) ? (int) $row['num_messages'] : (int) $row['num_unread'];
 	}
 	$db->sql_freeresult($result);
 
-	// Make sure the default boxes are defined
-	$available_folder = [PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX];
-
-	foreach ($available_folder as $default_folder)
-	{
-		if (!isset($num_messages[$default_folder]))
-		{
-			$num_messages[$default_folder] = 0;
-		}
-
-		if (!isset($num_unread[$default_folder]))
-		{
-			$num_unread[$default_folder] = 0;
-		}
-	}
-
-	// Adjust unread status for outbox
-	$num_unread[PRIVMSGS_OUTBOX] = $num_messages[PRIVMSGS_OUTBOX];
-
-	$folder[PRIVMSGS_INBOX] = [
-		'folder_name'       => $user->lang['PM_INBOX'],
-		'num_messages'      => $num_messages[PRIVMSGS_INBOX],
-		'unread_messages'   => $num_unread[PRIVMSGS_INBOX]
-	];
-
-	$folder[PRIVMSGS_OUTBOX] = [
-		'folder_name'       => $user->lang['PM_OUTBOX'],
-		'num_messages'      => $num_messages[PRIVMSGS_OUTBOX],
-		'unread_messages'   => $num_unread[PRIVMSGS_OUTBOX]
-	];
-
-	$folder[PRIVMSGS_SENTBOX] = [
-		'folder_name'       => $user->lang['PM_SENTBOX'],
-		'num_messages'      => $num_messages[PRIVMSGS_SENTBOX],
-		'unread_messages'   => $num_unread[PRIVMSGS_SENTBOX]
-	];
-
-	// Define folder array for template designers.
+	// Define folder array for templates.
 	foreach ($folder as $f_id => $folder_ary)
 	{
-		$folder_id_name = ($f_id == PRIVMSGS_INBOX) ? 'inbox' : (($f_id == PRIVMSGS_OUTBOX) ? 'outbox' : 'sentbox');
-
 		$template->assign_block_vars('folder', [
 			'FOLDER_ID'         => $f_id,
 			'FOLDER_NAME'       => $folder_ary['folder_name'],
 			'NUM_MESSAGES'      => $folder_ary['num_messages'],
 			'UNREAD_MESSAGES'   => $folder_ary['unread_messages'],
 
-			'U_FOLDER'          => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $folder_id_name),
+			'U_FOLDER'          => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $folder_url_names[$f_id]),
 
 			'S_CUR_FOLDER'      => ($f_id === $folder_id),
 			'S_UNREAD_MESSAGES' => (bool) $folder_ary['unread_messages'],
