@@ -2877,13 +2877,6 @@ dl.mini dd
 	line-height: 2.5em;
 }
 
-/* PM panel adjustments */
-.reply-all
-{
-	font-size: 11px;
-	padding-top: 5px;
-}
-
 /* PM Message history */
 #topicreview a.current
 {

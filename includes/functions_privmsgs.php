@@ -1228,6 +1228,8 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 			$previous_history_pm = $prev_id;
 		}
 
+		$num_recipients = sizeof(rebuild_header($row['to_address']));
+
 		$template->assign_block_vars('history_row', [
 			'MESSAGE_AUTHOR_QUOTE'      => (($decoded_message) ? addslashes(get_username_string('username', $author_id, $row['username'], $row['user_colour'], $row['username'])) : ''),
 			'MESSAGE_AUTHOR_FULL'       => get_username_string('full', $author_id, $row['username'], $row['user_colour'], $row['username']),
@@ -1246,9 +1248,11 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 			'S_IN_POST_MODE'    => $in_post_mode,
 
 			'MSG_ID'            => $row['msg_id'],
-			'U_VIEW_MESSAGE'    => "{$url}&amp;f={$folder_id}&amp;p=" . $row['msg_id'],
-			'U_QUOTE'           => (!$in_post_mode && $auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f=" . $folder_id . "&amp;p=" . $row['msg_id'] : '',
-			'U_POST_REPLY_PM'   => ($author_id != $user->data['user_id'] && $author_id != ANONYMOUS && $auth->acl_get('u_sendpm')) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p=" . $row['msg_id'] : '']
+			'U_VIEW_MESSAGE'    => "{$url}&amp;f={$folder_id}&amp;p={$row['msg_id']}",
+			'U_REPLY'           => ($author_id != $user->data['user_id'] && $author_id != ANONYMOUS && $auth->acl_get('u_sendpm')) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p={$row['msg_id']}" : '',
+			'U_REPLY_TO_ALL'    => ($num_recipients > 1 && $author_id != $user->data['user_id'] && $author_id != ANONYMOUS && $auth->acl_get('u_sendpm')) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p={$row['msg_id']}&amp;reply_to_all=1" : '',
+			'U_QUOTE'           => (!$in_post_mode && $auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p={$row['msg_id']}" : '',
+			'U_QUOTE_TO_ALL'    => ($num_recipients > 1 && !$in_post_mode && $auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p={$row['msg_id']}&amp;reply_to_all=1" : '']
 		);
 		unset($rowset[$i]);
 		$prev_id = $id;

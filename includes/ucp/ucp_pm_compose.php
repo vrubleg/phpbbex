@@ -257,9 +257,7 @@ function compose_pm($id, $mode, $action)
 				else
 				{
 					// We try to include every previously listed member from the TO Header - Reply to all
-					$address_list = rebuild_header($post['to_address']);
-
-					$address_list[] = (int) $post['author_id'];
+					$address_list = array_merge([(int) $post['author_id']], rebuild_header($post['to_address']));
 					$address_list = array_values(array_unique($address_list));
 
 					// Now, make sure the user itself is not listed. ;)

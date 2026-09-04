@@ -222,10 +222,11 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'U_DELETE'          => "{$url}&amp;mode=compose&amp;action=delete&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'],
 		'U_EMAIL'           => $user_info['email'],
 		'U_REPORT'          => ($config['allow_pm_report']) ? append_sid(PHPBB_ROOT_PATH . 'report.php', "pm=" . $message_row['msg_id']) : '',
-		'U_QUOTE'           => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
 		'U_EDIT'            => (($message_row['message_time'] > time() - ($config['pm_edit_time'] * 60) || !$config['pm_edit_time']) && $folder_id == PRIVMSGS_OUTBOX && $auth->acl_get('u_pm_edit')) ? "{$url}&amp;mode=compose&amp;action=edit&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
-		'U_POST_REPLY_PM'   => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
-		'U_POST_REPLY_ALL'  => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;reply_to_all=1&amp;p=" . $message_row['msg_id'] : '',
+		'U_REPLY'           => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p={$message_row['msg_id']}" : '',
+		'U_REPLY_TO_ALL'    => ($num_recipients > 1 && $auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p={$message_row['msg_id']}&amp;reply_to_all=1" : '',
+		'U_QUOTE'           => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p={$message_row['msg_id']}" : '',
+		'U_QUOTE_TO_ALL'    => ($num_recipients > 1 && $auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p={$message_row['msg_id']}&amp;reply_to_all=1" : '',
 
 		'U_PM_ACTION'       => $url . '&amp;mode=compose&amp;f=' . $folder_id . '&amp;p=' . $message_row['msg_id'],
 

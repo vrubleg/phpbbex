@@ -233,7 +233,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 		'S_SELECT_SORT_DAYS'    => $s_limit_days,
 		'S_TOPIC_ICONS'         => (bool) $config['enable_pm_icons'],
 
-		'U_POST_NEW_TOPIC'  => ($auth->acl_get('u_sendpm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose') : '',
+		'U_COMPOSE_PM'      => ($auth->acl_get('u_sendpm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose') : '',
 		'S_PM_ACTION'       => append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f={$folder_id}" . (($start !== 0) ? "&amp;start={$start}" : '')),
 	]);
 
