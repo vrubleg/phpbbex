@@ -801,44 +801,107 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("DROP TABLE {$table_prefix}forums_access");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 
-	// BCC in PMs is gone.
-	$db->sql_query('UPDATE ' . PRIVMSGS_TABLE . "
-		SET to_address = CASE
-			WHEN to_address = '' THEN bcc_address
-			WHEN bcc_address = '' THEN to_address
-			ELSE CONCAT(to_address, ':', bcc_address)
-		END
-		WHERE bcc_address <> ''");
-	$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN bcc_address');
+	// PM schema updates.
+	if ($db_tools->sql_table_exists("{$table_prefix}privmsgs_folder"))
+	{
+		// BCC in PMs is gone.
+		$db->sql_query('UPDATE ' . PRIVMSGS_TABLE . "
+			SET to_address = CASE
+				WHEN to_address = '' THEN bcc_address
+				WHEN bcc_address = '' THEN to_address
+				ELSE CONCAT(to_address, ':', bcc_address)
+			END
+			WHERE bcc_address <> ''");
+		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN bcc_address');
 
-	// Private message filtering rules are gone.
-	$db->sql_query("DROP TABLE {$table_prefix}privmsgs_rules");
+		// Private message filtering rules are gone.
+		$db->sql_query("DROP TABLE {$table_prefix}privmsgs_rules");
 
-	// Move messages held by the old folder limit into the inbox.
-	$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
-		SET folder_id = 0, pm_new = 0
-		WHERE folder_id = -4');
+		// Move messages held by the old folder limit into the inbox.
+		$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
+			SET folder_id = 0, pm_new = 0
+			WHERE folder_id = -4');
 
-	// Move messages from removed user-defined folders into the inbox.
-	$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
-		SET folder_id = 0
-		WHERE folder_id > 0');
+		// Move messages from removed user-defined folders into the inbox.
+		$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
+			SET folder_id = 0
+			WHERE folder_id > 0');
 
-	// Custom PM folders are gone.
-	$db->sql_query("DROP TABLE {$table_prefix}privmsgs_folder");
+		// Moving all custom folders into the inbox can merge several copies of the
+		// same message belonging to the same user. Preserve their combined state.
+		$db->sql_return_on_error(false);
+		$sql = 'SELECT msg_id, user_id, folder_id,
+				MAX(author_id) AS author_id,
+				MIN(pm_deleted) AS pm_deleted,
+				MAX(pm_new) AS pm_new,
+				MAX(pm_unread) AS pm_unread,
+				MAX(pm_replied) AS pm_replied,
+				MAX(pm_marked) AS pm_marked,
+				MAX(pm_forwarded) AS pm_forwarded
+			FROM ' . PRIVMSGS_TO_TABLE . '
+			GROUP BY msg_id, user_id, folder_id
+			HAVING COUNT(*) > 1';
+		$result = $db->sql_query($sql);
+		$duplicate_pms = $db->sql_fetchrowset($result);
+		$db->sql_freeresult($result);
 
-	// Resync new private messages count for all users.
-	$db->sql_query('UPDATE ' . USERS_TABLE . ' u
-		SET user_new_privmsg = (
-			SELECT COUNT(t.msg_id)
-			FROM ' . PRIVMSGS_TO_TABLE . ' t
-			WHERE t.user_id = u.user_id
-				AND t.folder_id = -3
-				AND t.pm_new = 1
-		)');
+		if (!empty($duplicate_pms))
+		{
+			$db->sql_transaction('begin');
 
-	// Remove no more used PM related settings.
-	remove_config_values(['full_folder_action', 'pm_max_boxes', 'pm_max_msgs']);
+			foreach ($duplicate_pms as $row)
+			{
+				$msg_id = (int) $row['msg_id'];
+				$user_id = (int) $row['user_id'];
+				$folder_id = (int) $row['folder_id'];
+
+				$db->sql_query('DELETE FROM ' . PRIVMSGS_TO_TABLE . "
+					WHERE msg_id = {$msg_id}
+						AND user_id = {$user_id}
+						AND folder_id = {$folder_id}");
+
+				$db->sql_query('INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', [
+					'msg_id'       => $msg_id,
+					'user_id'      => $user_id,
+					'author_id'    => (int) $row['author_id'],
+					'pm_deleted'   => (int) $row['pm_deleted'],
+					'pm_new'       => (int) $row['pm_new'],
+					'pm_unread'    => (int) $row['pm_unread'],
+					'pm_replied'   => (int) $row['pm_replied'],
+					'pm_marked'    => (int) $row['pm_marked'],
+					'pm_forwarded' => (int) $row['pm_forwarded'],
+					'folder_id'    => $folder_id,
+				]));
+			}
+
+			$db->sql_transaction('commit');
+		}
+		unset($duplicate_pms);
+		$db->sql_return_on_error(true);
+
+		// Custom PM folders are gone.
+		$db->sql_query("DROP TABLE {$table_prefix}privmsgs_folder");
+
+		// Resync private message counts for all users.
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' u
+			SET user_new_privmsg = (
+				SELECT COUNT(t.msg_id)
+				FROM ' . PRIVMSGS_TO_TABLE . ' t
+				WHERE t.user_id = u.user_id
+					AND t.folder_id = -3
+					AND t.pm_new = 1
+			),
+			user_unread_privmsg = (
+				SELECT COUNT(t.msg_id)
+				FROM ' . PRIVMSGS_TO_TABLE . ' t
+				WHERE t.user_id = u.user_id
+					AND t.folder_id <> -2
+					AND t.pm_unread = 1
+			)');
+
+		// Remove no more used PM related settings.
+		remove_config_values(['full_folder_action', 'pm_max_boxes', 'pm_max_msgs']);
+	}
 
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
 
