@@ -71,7 +71,6 @@ function compose_pm($id, $mode, $action)
 	$submit     = isset($_POST['post']) && !$refresh && !$preview;
 
 	$action     = ($delete && !$preview && !$refresh && $submit) ? 'delete' : $action;
-	$select_single = (!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm'));
 
 	$error = [];
 	$current_time = time();
@@ -95,8 +94,7 @@ function compose_pm($id, $mode, $action)
 	{
 		$template->assign_vars([
 			'S_SHOW_PM_BOX'     => true,
-			'S_ALLOW_MASS_PM'   => ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')),
-			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single={$select_single}"),
+			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single=true'),
 		]);
 	}
 
@@ -356,11 +354,13 @@ function compose_pm($id, $mode, $action)
 		redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=view&amp;action=view_message&amp;p=' . $msg_id));
 	}
 
-	// Get maximum number of allowed recipients. Zero means unlimited.
-	$max_recipients = $auth->acl_get('u_masspm_nomax') ? 0 : (int) $config['pm_max_recipients'];
+	$allow_mass_pm = ($config['allow_mass_pm'] && $auth->acl_get('u_masspm'));
 
-	// If this is a quote/reply "to all"... we may increase the max_recpients to the number of original recipients
-	if (($action == 'reply' || $action == 'quote') && $max_recipients && $reply_to_all)
+	// Get maximum number of allowed recipients. Zero means unlimited.
+	$max_recipients = $allow_mass_pm ? ($auth->acl_get('u_masspm_nomax') ? 0 : (int) $config['pm_max_recipients']) : 1;
+
+	// If this is a quote/reply "to all"... we may increase the max_recipients to the number of original recipients
+	if ($allow_mass_pm && ($action == 'reply' || $action == 'quote') && $max_recipients && $reply_to_all)
 	{
 		// We try to include every previously listed member from the TO Header
 		$list = rebuild_header($post['to_address']);
@@ -375,13 +375,6 @@ function compose_pm($id, $mode, $action)
 
 	// Handle recipient adding/removing
 	handle_message_list_actions($address_list, $error, $remove_u, $add_to, $refresh, $submit);
-
-	// Check mass pm to users permission
-	if ((!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm')) && sizeof($address_list) > 1)
-	{
-		$address_list = array_slice($address_list, 0, 1);
-		$error[] = $user->lang('TOO_MANY_RECIPIENTS', 1);
-	}
 
 	// Check for too many recipients
 	if ($max_recipients && sizeof($address_list) > $max_recipients)
@@ -886,7 +879,8 @@ function compose_pm($id, $mode, $action)
 		'MAX_FONT_SIZE'         => (int) $config['max_post_font_size'],
 		'MINI_POST_IMG'         => $user->img('icon_post_target', $user->lang['PM']),
 		'ERROR'                 => (sizeof($error)) ? implode('<br />', $error) : '',
-		'MAX_RECIPIENTS'        => ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')) ? $max_recipients : 0,
+		'MAX_RECIPIENTS'        => $max_recipients,
+		'NUM_RECIPIENTS'        => sizeof($address_list),
 
 		'S_COMPOSE_PM'          => true,
 		'S_EDIT_POST'           => ($action == 'edit'),

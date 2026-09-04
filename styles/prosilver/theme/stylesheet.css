@@ -2174,23 +2174,6 @@ fieldset.polls dd div
 	background-repeat: no-repeat;
 }
 
-/* pm list in compose message if mass pm is enabled */
-dl.pmlist dt
-{
-	width: 60% !important;
-}
-
-dl.pmlist dt textarea
-{
-	width: 95%;
-}
-
-dl.pmlist dd
-{
-	margin-left: 61% !important;
-	margin-bottom: 2px;
-}
-
 /* Profiles on left
 ---------------------------------------- */
 body.style-mp-on-left .attachbox

@@ -9,45 +9,22 @@
 	<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
 
 	<!-- IF S_PRIVMSGS and not S_SHOW_DRAFTS -->
-
-		<!-- IF S_ALLOW_MASS_PM -->
+		<dl>
+			<dt><label for="username_list">{L_TO}:</label></dt>
 			<!-- IF .to_recipient -->
-				<dl>
-					<dt><label>{L_TO}:</label></dt>
-					<dd>
-						<!-- BEGIN to_recipient -->
-							<!-- IF not to_recipient.S_FIRST_ROW and to_recipient.S_ROW_COUNT mod 2 eq 0 --></dd><dd><!-- ENDIF -->
-							{to_recipient.NAME_FULL}&nbsp;
-							<!-- IF not S_EDIT_POST --><input type="submit" name="remove_{to_recipient.TYPE}[{to_recipient.UG_ID}]" value="x" class="button2" />&nbsp;<!-- ENDIF -->
-						<!-- END to_recipient -->
-					</dd>
-				</dl>
+				<dd>
+					<!-- BEGIN to_recipient -->
+						<!-- IF not to_recipient.S_FIRST_ROW and to_recipient.S_ROW_COUNT mod 2 eq 0 --></dd><dd><!-- ENDIF -->
+						{to_recipient.NAME_FULL}&nbsp;
+						<!-- IF not S_EDIT_POST --><input type="submit" name="remove_{to_recipient.TYPE}[{to_recipient.UG_ID}]" value="x" class="button2" />&nbsp;<!-- ENDIF -->
+					<!-- END to_recipient -->
+				</dd>
 			<!-- ENDIF -->
-			<!-- IF not S_EDIT_POST -->
-			<dl class="pmlist">
-				<dt><textarea id="username_list" name="username_list" class="inputbox" cols="50" rows="2" tabindex="1" spellcheck="false"></textarea></dt>
-				<dd><span><a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a></span></dd>
-				<dd><input type="submit" name="add_to" value="{L_ADD}" class="button2" tabindex="1" /></dd>
-			</dl>
-			<!-- ENDIF -->
-		<!-- ELSE -->
-			<dl>
-				<dt><label for="username_list">{L_TO}:</label><!-- IF not S_EDIT_POST --><br /><span><a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false">{L_FIND_USERNAME}</a></span><!-- ENDIF --></dt>
-				<!-- IF .to_recipient -->
-					<dd>
-						<!-- BEGIN to_recipient -->
-							<!-- IF not to_recipient.S_FIRST_ROW and to_recipient.S_ROW_COUNT mod 2 eq 0 --></dd><dd><!-- ENDIF -->
-							{to_recipient.NAME_FULL}&nbsp;
-							<!-- IF not S_EDIT_POST --><input type="submit" name="remove_{to_recipient.TYPE}[{to_recipient.UG_ID}]" value="x" class="button2" />&nbsp;<!-- ENDIF -->
-						<!-- END to_recipient -->
-					</dd>
-				<!-- ENDIF -->
 
-				<!-- IF not S_EDIT_POST -->
-				<dd><input class="inputbox autowidth" type="text" name="username_list" id="username_list" size="30" value="" /> <input type="submit" name="add_to" value="{L_ADD}" class="button2" /></dd>
-				<!-- ENDIF -->
-			</dl>
-		<!-- ENDIF -->
+			<!-- IF not S_EDIT_POST and (not MAX_RECIPIENTS or NUM_RECIPIENTS < MAX_RECIPIENTS) -->
+			<dd><input class="inputbox autowidth" type="text" name="username_list" id="username_list" size="30" value="" /> <input type="submit" name="add_to" value="{L_ADD}" class="button2" /><br /><span><a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a></span></dd>
+			<!-- ENDIF -->
+		</dl>
 
 	<!-- ENDIF -->
 
