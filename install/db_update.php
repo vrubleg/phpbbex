@@ -814,6 +814,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 			WHERE bcc_address <> ''");
 		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN bcc_address');
 
+		// PM forwarding is gone.
+		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TO_TABLE . ' DROP COLUMN pm_forwarded');
+
 		// Private message filtering rules are gone.
 		$db->sql_query("DROP TABLE {$table_prefix}privmsgs_rules");
 
@@ -836,8 +839,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 				MAX(pm_new) AS pm_new,
 				MAX(pm_unread) AS pm_unread,
 				MAX(pm_replied) AS pm_replied,
-				MAX(pm_marked) AS pm_marked,
-				MAX(pm_forwarded) AS pm_forwarded
+				MAX(pm_marked) AS pm_marked
 			FROM ' . PRIVMSGS_TO_TABLE . '
 			GROUP BY msg_id, user_id, folder_id
 			HAVING COUNT(*) > 1';
@@ -869,7 +871,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 					'pm_unread'    => (int) $row['pm_unread'],
 					'pm_replied'   => (int) $row['pm_replied'],
 					'pm_marked'    => (int) $row['pm_marked'],
-					'pm_forwarded' => (int) $row['pm_forwarded'],
 					'folder_id'    => $folder_id,
 				]));
 			}

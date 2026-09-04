@@ -27,7 +27,6 @@ if (!defined('IN_PHPBB'))
 *       To specific user (u=[user_id])
 *       Quoting a post (action=quotepost&p=[post_id])
 *       Quoting a PM (action=quote&p=[msg_id])
-*       Forwarding a PM (action=forward&p=[msg_id])
 */
 class ucp_pm
 {

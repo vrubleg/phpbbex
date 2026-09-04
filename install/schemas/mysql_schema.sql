@@ -450,7 +450,6 @@ CREATE TABLE phpbb_privmsgs_to (
 	pm_unread tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	pm_replied tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	pm_marked tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	pm_forwarded tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	folder_id int(11) DEFAULT '0' NOT NULL,
 	KEY msg_id (msg_id),
 	KEY author_id (author_id),

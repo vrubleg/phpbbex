@@ -786,7 +786,6 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 
 		// no break
 
-		case 'forward':
 		case 'post':
 		case 'quotepost':
 			$sql_data = [
@@ -834,7 +833,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	{
 		$query = '';
 
-		if ($mode == 'post' || $mode == 'reply' || $mode == 'quote' || $mode == 'quotepost' || $mode == 'forward')
+		if ($mode == 'post' || $mode == 'reply' || $mode == 'quote' || $mode == 'quotepost')
 		{
 			$db->sql_query('INSERT INTO ' . PRIVMSGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_data));
 			$data['msg_id'] = $db->sql_nextid();
@@ -872,8 +871,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				'author_id'     => (int) $data['from_user_id'],
 				'folder_id'     => PRIVMSGS_NO_BOX,
 				'pm_new'        => 1,
-				'pm_unread'     => 1,
-				'pm_forwarded'  => ($mode == 'forward') ? 1 : 0
+				'pm_unread'     => 1
 			];
 		}
 
@@ -893,14 +891,13 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				'author_id'     => (int) $data['from_user_id'],
 				'folder_id'     => PRIVMSGS_OUTBOX,
 				'pm_new'        => 0,
-				'pm_unread'     => 0,
-				'pm_forwarded'  => ($mode == 'forward') ? 1 : 0])
+				'pm_unread'     => 0])
 			);
 		}
 	}
 
 	// Set user last post time
-	if ($mode == 'reply' || $mode == 'quote' || $mode == 'quotepost' || $mode == 'forward' || $mode == 'post')
+	if ($mode == 'reply' || $mode == 'quote' || $mode == 'quotepost' || $mode == 'post')
 	{
 		$sql = 'UPDATE ' . USERS_TABLE . "
 			SET user_lastpost_time = {$current_time}
@@ -909,7 +906,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	}
 
 	// Submit Attachments
-	if (!empty($data['attachment_data']) && $data['msg_id'] && in_array($mode, ['post', 'reply', 'edit', 'reparse', 'quote', 'quotepost', 'forward']))
+	if (!empty($data['attachment_data']) && $data['msg_id'] && in_array($mode, ['post', 'reply', 'edit', 'reparse', 'quote', 'quotepost']))
 	{
 		$space_taken = $files_added = 0;
 		$orphan_rows = [];

@@ -2329,7 +2329,6 @@ div.postbody div.remark
 .locked-icon span   { background: url("{IMG_BUTTON_TOPIC_LOCKED_SRC}") 0 0 no-repeat; }
 .pmreply-icon span  { background: url("{IMG_BUTTON_PM_REPLY_SRC}") 0 0 no-repeat; }
 .newpm-icon span    { background: url("{IMG_BUTTON_PM_NEW_SRC}") 0 0 no-repeat; }
-.forwardpm-icon span { background: url("{IMG_BUTTON_PM_FORWARD_SRC}") 0 0 no-repeat; }
 
 /* Set big button dimensions */
 .buttons div.reply-icon     { width: {IMG_BUTTON_TOPIC_REPLY_WIDTH}px; height: {IMG_BUTTON_TOPIC_REPLY_HEIGHT}px; }
@@ -2337,7 +2336,6 @@ div.postbody div.remark
 .buttons div.locked-icon    { width: {IMG_BUTTON_TOPIC_LOCKED_WIDTH}px; height: {IMG_BUTTON_TOPIC_LOCKED_HEIGHT}px; }
 .buttons div.pmreply-icon   { width: {IMG_BUTTON_PM_REPLY_WIDTH}px; height: {IMG_BUTTON_PM_REPLY_HEIGHT}px; }
 .buttons div.newpm-icon     { width: {IMG_BUTTON_PM_NEW_WIDTH}px; height: {IMG_BUTTON_PM_NEW_HEIGHT}px; }
-.buttons div.forwardpm-icon { width: {IMG_BUTTON_PM_FORWARD_WIDTH}px; height: {IMG_BUTTON_PM_FORWARD_HEIGHT}px; }
 
 /* Icon images
 ---------------------------------------- */

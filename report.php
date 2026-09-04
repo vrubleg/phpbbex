@@ -217,7 +217,6 @@ if ($submit && $reason_id)
 				'pm_unread'     => 0,
 				'pm_replied'    => 0,
 				'pm_marked'     => 0,
-				'pm_forwarded'  => 0,
 				'folder_id'     => PRIVMSGS_INBOX,
 			];
 
