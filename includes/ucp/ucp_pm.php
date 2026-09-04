@@ -191,35 +191,6 @@ class ucp_pm
 				$message_row = [];
 				if ($action == 'view_message' && $msg_id)
 				{
-					// Get Message user want to see
-					if ($view == 'next' || $view == 'previous')
-					{
-						$sql_condition = ($view == 'next') ? '>' : '<';
-						$sql_ordering = ($view == 'next') ? 'ASC' : 'DESC';
-
-						$sql = 'SELECT t.msg_id
-							FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . PRIVMSGS_TABLE . " p2
-							WHERE p2.msg_id = {$msg_id}
-								AND t.folder_id = {$folder_id}
-								AND t.user_id = " . $user->data['user_id'] . "
-								AND t.msg_id = p.msg_id
-								AND p.message_time {$sql_condition} p2.message_time
-							ORDER BY p.message_time {$sql_ordering}";
-						$result = $db->sql_query_limit($sql, 1);
-						$row = $db->sql_fetchrow($result);
-						$db->sql_freeresult($result);
-
-						if (!$row)
-						{
-							$message = ($view == 'next') ? 'NO_NEWER_PM' : 'NO_OLDER_PM';
-							trigger_error($message);
-						}
-						else
-						{
-							$msg_id = $row['msg_id'];
-						}
-					}
-
 					$sql = 'SELECT t.*, p.*, u.*
 						FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . ' u
 						WHERE t.user_id = ' . $user->data['user_id'] . "
