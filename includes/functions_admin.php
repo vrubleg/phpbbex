@@ -1474,6 +1474,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 			if (!sizeof($forum_ids))
 			{
+				$db->sql_transaction('commit');
 				break;
 			}
 
@@ -1644,6 +1645,7 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			break;
 
 		case 'topic':
+
 			if ($sync_extra)
 			{
 				// Resync the post flags from their source data before rolling them up to the topics.
@@ -1720,15 +1722,6 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			}
 			$db->sql_freeresult($result);
 
-			foreach ($topic_data as $topic_id => $row)
-			{
-				$post_ids[] = $row['first_post_id'];
-				if ($row['first_post_id'] != $row['last_post_id'])
-				{
-					$post_ids[] = $row['last_post_id'];
-				}
-			}
-
 			// Now we delete empty topics and orphan posts
 			if (sizeof($delete_posts))
 			{
@@ -1736,18 +1729,12 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 				unset($delete_posts);
 			}
 
-			if (!sizeof($topic_data))
-			{
-				// If we get there, topic ids were invalid or topics did not contain any posts
-				delete_topics($where_type, $where_ids, true);
-				return;
-			}
-
 			if (sizeof($delete_topics))
 			{
 				$delete_topic_ids = [];
 				foreach ($delete_topics as $topic_id => $void)
 				{
+					$resync_forums[$topic_data[$topic_id]['forum_id']] = $topic_data[$topic_id]['forum_id'];
 					unset($topic_data[$topic_id]);
 					$delete_topic_ids[] = $topic_id;
 				}
@@ -1756,39 +1743,50 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 				unset($delete_topics, $delete_topic_ids);
 			}
 
-			$sql = 'SELECT p.post_id, p.topic_id, p.post_approved, p.poster_id, p.post_subject, p.post_username, p.post_time, u.username, u.user_colour
-				FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . ' u
-				WHERE ' . $db->sql_in_set('p.post_id', $post_ids) . '
-					AND u.user_id = p.poster_id';
-			$result = $db->sql_query($sql);
-
-			$post_ids = [];
-			while ($row = $db->sql_fetchrow($result))
+			foreach ($topic_data as $row)
 			{
-				$topic_id = intval($row['topic_id']);
-
-				if ($row['post_id'] == $topic_data[$topic_id]['first_post_id'])
+				$post_ids[] = $row['first_post_id'];
+				if ($row['first_post_id'] != $row['last_post_id'])
 				{
-					if ($topic_data[$topic_id]['topic_approved'] != $row['post_approved'])
-					{
-						$approved_unapproved_ids[] = $topic_id;
-					}
-					$topic_data[$topic_id]['time'] = $row['post_time'];
-					$topic_data[$topic_id]['poster'] = $row['poster_id'];
-					$topic_data[$topic_id]['first_poster_name'] = ($row['poster_id'] == ANONYMOUS) ? $row['post_username'] : $row['username'];
-					$topic_data[$topic_id]['first_poster_colour'] = $row['user_colour'];
-				}
-
-				if ($row['post_id'] == $topic_data[$topic_id]['last_post_id'])
-				{
-					$topic_data[$topic_id]['last_poster_id'] = $row['poster_id'];
-					$topic_data[$topic_id]['last_post_subject'] = $row['post_subject'];
-					$topic_data[$topic_id]['last_post_time'] = $row['post_time'];
-					$topic_data[$topic_id]['last_poster_name'] = ($row['poster_id'] == ANONYMOUS) ? $row['post_username'] : $row['username'];
-					$topic_data[$topic_id]['last_poster_colour'] = $row['user_colour'];
+					$post_ids[] = $row['last_post_id'];
 				}
 			}
-			$db->sql_freeresult($result);
+
+			if (sizeof($post_ids))
+			{
+				$sql = 'SELECT p.post_id, p.topic_id, p.post_approved, p.poster_id, p.post_subject, p.post_username, p.post_time, u.username, u.user_colour
+					FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . ' u
+					WHERE ' . $db->sql_in_set('p.post_id', $post_ids) . '
+						AND u.user_id = p.poster_id';
+				$result = $db->sql_query($sql);
+
+				while ($row = $db->sql_fetchrow($result))
+				{
+					$topic_id = intval($row['topic_id']);
+
+					if ($row['post_id'] == $topic_data[$topic_id]['first_post_id'])
+					{
+						if ($topic_data[$topic_id]['topic_approved'] != $row['post_approved'])
+						{
+							$approved_unapproved_ids[] = $topic_id;
+						}
+						$topic_data[$topic_id]['time'] = $row['post_time'];
+						$topic_data[$topic_id]['poster'] = $row['poster_id'];
+						$topic_data[$topic_id]['first_poster_name'] = ($row['poster_id'] == ANONYMOUS) ? $row['post_username'] : $row['username'];
+						$topic_data[$topic_id]['first_poster_colour'] = $row['user_colour'];
+					}
+
+					if ($row['post_id'] == $topic_data[$topic_id]['last_post_id'])
+					{
+						$topic_data[$topic_id]['last_poster_id'] = $row['poster_id'];
+						$topic_data[$topic_id]['last_post_subject'] = $row['post_subject'];
+						$topic_data[$topic_id]['last_post_time'] = $row['post_time'];
+						$topic_data[$topic_id]['last_poster_name'] = ($row['poster_id'] == ANONYMOUS) ? $row['post_username'] : $row['username'];
+						$topic_data[$topic_id]['last_poster_colour'] = $row['user_colour'];
+					}
+				}
+				$db->sql_freeresult($result);
+			}
 
 			// Make sure shadow topics do link to existing topics
 			if (sizeof($moved_topics))
