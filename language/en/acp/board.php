@@ -175,8 +175,6 @@ $lang = array_merge($lang, [
 	'ALLOW_FLASH_PM'            => 'Allow use of <code>[FLASH]</code> BBCode tag',
 	'ALLOW_FLASH_PM_EXPLAIN'    => 'Note that the ability to use flash in private messages, if enabled here, also depends on the permissions.',
 	'ALLOW_IMG_PM'              => 'Allow use of <code>[IMG]</code> BBCode tag',
-	'ALLOW_MASS_PM'             => 'Allow sending of private messages to multiple users',
-	'ALLOW_MASS_PM_EXPLAIN'     => 'Allows users with the corresponding permission to select multiple recipients for one private message.',
 	'ALLOW_QUOTE_PM'            => 'Allow quotes in private messages',
 	'ALLOW_SIG_PM'              => 'Allow signature in private messages',
 	'ALLOW_SMILIES_PM'          => 'Allow smilies in private messages',
@@ -184,7 +182,7 @@ $lang = array_merge($lang, [
 	'PM_EDIT_TIME'              => 'Limit editing time',
 	'PM_EDIT_TIME_EXPLAIN'      => 'Limits the time available to edit a private message not already delivered. Setting the value to 0 disables this behaviour.',
 	'PM_MAX_RECIPIENTS'         => 'Maximum number of allowed recipients',
-	'PM_MAX_RECIPIENTS_EXPLAIN' => 'The maximum number of allowed recipients in a private message. If 0 is entered, an unlimited number is allowed.',
+	'PM_MAX_RECIPIENTS_EXPLAIN' => 'Enter 1 to disable sending to multiple users, or 0 to allow an unlimited number.',
 ]);
 
 // Post Settings

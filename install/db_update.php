@@ -619,6 +619,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	{
 		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_allow_viewemail = 0');
 	}
+	if (isset($config['allow_mass_pm']) && !$config['allow_mass_pm'])
+	{
+		set_config('pm_max_recipients', '1');
+	}
 
 	// Remove obsolete config values.
 
@@ -676,6 +680,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'fulltext_native_load_upd',
 		'fulltext_native_max_chars',
 		'fulltext_native_min_chars',
+		'allow_mass_pm',
 	]);
 
 	// New defaults.
@@ -699,8 +704,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('allow_avatar_upload', '1');
 	set_config('allow_avatar_remote_upload', '0');
 	set_config('avatar_filesize', '20480');
-	set_config('allow_mass_pm', '0');
-	set_config('pm_max_recipients', '5');
 
 	// Remove obsolete modules.
 
@@ -725,15 +728,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'u_pm_download',
 		'u_sendim',
 		'u_masspm_group',
+		'u_masspm_nomax',
 	]);
-
-	// Add the PM recipient-limit bypass permission without granting it to any role.
-	require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
-	$auth_admin = new auth_admin();
-	if (empty($auth_admin->acl_options['id']['u_masspm_nomax']))
-	{
-		$auth_admin->acl_add_option(['global' => ['u_masspm_nomax']]);
-	}
 
 	// Update cached module rights.
 

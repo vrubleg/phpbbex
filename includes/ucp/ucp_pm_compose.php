@@ -352,13 +352,11 @@ function compose_pm($id, $mode, $action)
 		redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=view&amp;action=view_message&amp;p=' . $msg_id));
 	}
 
-	$allow_mass_pm = ($config['allow_mass_pm'] && $auth->acl_get('u_masspm'));
-
-	// Get maximum number of allowed recipients. Zero means unlimited.
-	$max_recipients = $allow_mass_pm ? ($auth->acl_get('u_masspm_nomax') ? 0 : (int) $config['pm_max_recipients']) : 1;
+	// Get maximum number of allowed recipients. One disables multiple recipients, zero means unlimited.
+	$max_recipients = $auth->acl_get('u_masspm') ? (int) $config['pm_max_recipients'] : 1;
 
 	// If this is a quote/reply "to all"... we may increase the max_recipients to the number of original recipients
-	if ($allow_mass_pm && ($action == 'reply' || $action == 'quote') && $max_recipients && $reply_to_all)
+	if ($max_recipients > 1 && ($action == 'reply' || $action == 'quote') && $reply_to_all)
 	{
 		// We try to include every previously listed member from the TO Header
 		$list = rebuild_header($post['to_address']);
