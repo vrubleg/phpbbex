@@ -1323,62 +1323,13 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			break;
 
 		case 'post_reported':
-			$post_ids = $post_reported = [];
-
-			$db->sql_transaction('begin');
-
-			$sql = 'SELECT p.post_id, p.post_reported
-				FROM ' . POSTS_TABLE . " p
-				{$where_sql}
-				GROUP BY p.post_id, p.post_reported";
-			$result = $db->sql_query($sql);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$post_ids[$row['post_id']] = $row['post_id'];
-				if ($row['post_reported'])
-				{
-					$post_reported[$row['post_id']] = 1;
-				}
-			}
-			$db->sql_freeresult($result);
-
-			$sql = 'SELECT DISTINCT(post_id)
-				FROM ' . REPORTS_TABLE . '
-				WHERE ' . $db->sql_in_set('post_id', $post_ids) . '
-					AND report_closed = 0';
-			$result = $db->sql_query($sql);
-
-			$post_ids = [];
-			while ($row = $db->sql_fetchrow($result))
-			{
-				if (!isset($post_reported[$row['post_id']]))
-				{
-					$post_ids[] = $row['post_id'];
-				}
-				else
-				{
-					unset($post_reported[$row['post_id']]);
-				}
-			}
-			$db->sql_freeresult($result);
-
-			// $post_reported should be empty by now, if it's not it contains
-			// posts that are falsely flagged as reported
-			foreach ($post_reported as $post_id => $void)
-			{
-				$post_ids[] = $post_id;
-			}
-
-			if (sizeof($post_ids))
-			{
-				$sql = 'UPDATE ' . POSTS_TABLE . '
-					SET post_reported = 1 - post_reported
-					WHERE ' . $db->sql_in_set('post_id', $post_ids);
-				$db->sql_query($sql);
-			}
-
-			$db->sql_transaction('commit');
+			$sql = 'UPDATE ' . POSTS_TABLE . ' p
+				LEFT JOIN ' . REPORTS_TABLE . ' r
+					ON r.post_id = p.post_id
+						AND r.report_closed = 0
+				SET p.post_reported = (r.post_id IS NOT NULL)
+				' . $where_sql_and . ' p.post_reported <> (r.post_id IS NOT NULL)';
+			$db->sql_query($sql);
 			break;
 
 		case 'topic_reported':
@@ -1428,62 +1379,13 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 			break;
 
 		case 'post_attachment':
-			$post_ids = $post_attachment = [];
-
-			$db->sql_transaction('begin');
-
-			$sql = 'SELECT p.post_id, p.post_attachment
-				FROM ' . POSTS_TABLE . " p
-				{$where_sql}
-				GROUP BY p.post_id, p.post_attachment";
-			$result = $db->sql_query($sql);
-
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$post_ids[$row['post_id']] = $row['post_id'];
-				if ($row['post_attachment'])
-				{
-					$post_attachment[$row['post_id']] = 1;
-				}
-			}
-			$db->sql_freeresult($result);
-
-			$sql = 'SELECT DISTINCT(post_msg_id)
-				FROM ' . ATTACHMENTS_TABLE . '
-				WHERE ' . $db->sql_in_set('post_msg_id', $post_ids) . '
-					AND in_message = 0';
-			$result = $db->sql_query($sql);
-
-			$post_ids = [];
-			while ($row = $db->sql_fetchrow($result))
-			{
-				if (!isset($post_attachment[$row['post_msg_id']]))
-				{
-					$post_ids[] = $row['post_msg_id'];
-				}
-				else
-				{
-					unset($post_attachment[$row['post_msg_id']]);
-				}
-			}
-			$db->sql_freeresult($result);
-
-			// $post_attachment should be empty by now, if it's not it contains
-			// posts that are falsely flagged as having attachments
-			foreach ($post_attachment as $post_id => $void)
-			{
-				$post_ids[] = $post_id;
-			}
-
-			if (sizeof($post_ids))
-			{
-				$sql = 'UPDATE ' . POSTS_TABLE . '
-					SET post_attachment = 1 - post_attachment
-					WHERE ' . $db->sql_in_set('post_id', $post_ids);
-				$db->sql_query($sql);
-			}
-
-			$db->sql_transaction('commit');
+			$sql = 'UPDATE ' . POSTS_TABLE . ' p
+				LEFT JOIN ' . ATTACHMENTS_TABLE . ' a
+					ON a.post_msg_id = p.post_id
+						AND a.in_message = 0
+				SET p.post_attachment = (a.post_msg_id IS NOT NULL)
+				' . $where_sql_and . ' p.post_attachment <> (a.post_msg_id IS NOT NULL)';
+			$db->sql_query($sql);
 			break;
 
 		case 'topic_attachment':
