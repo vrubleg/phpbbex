@@ -667,11 +667,6 @@ class ucp_main
 			// Replies
 			$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
 
-			if ($row['topic_status'] == ITEM_MOVED && !empty($row['topic_moved_id']))
-			{
-				$topic_id = $row['topic_moved_id'];
-			}
-
 			// Get folder img, topic status/type related information
 			$folder_img = $folder_alt = $topic_type = '';
 			topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);

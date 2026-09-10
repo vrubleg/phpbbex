@@ -1189,8 +1189,6 @@ class acp_forums
 
 		if ($sync)
 		{
-			// Delete ghost topics that link back to the same forum then resync counters
-			sync('topic_moved');
 			sync('forum', 'forum_id', $to_id, false, true);
 		}
 

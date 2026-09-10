@@ -507,11 +507,6 @@ function move_topics($topic_ids, $forum_id, $auto_sync = true)
 		$topic_ids = [$topic_ids];
 	}
 
-	$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-		WHERE ' . $db->sql_in_set('topic_moved_id', $topic_ids) . '
-			AND forum_id = ' . $forum_id;
-	$db->sql_query($sql);
-
 	if ($auto_sync)
 	{
 		$sql = 'SELECT DISTINCT forum_id
@@ -655,7 +650,7 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 		$where_clause = $db->sql_in_set($where_type, $where_ids);
 	}
 
-	$sql = 'SELECT topic_id, forum_id, topic_approved, topic_moved_id, topic_first_post_id
+	$sql = 'SELECT topic_id, forum_id, topic_approved, topic_first_post_id
 		FROM ' . TOPICS_TABLE . '
 		WHERE ' . $where_clause;
 	$result = $db->sql_query($sql);
@@ -665,14 +660,11 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 		$forum_ids[] = $row['forum_id'];
 		$topic_ids[] = $row['topic_id'];
 
-		if (!$row['topic_moved_id'])
-		{
-			$first_post_ids[] = (int) $row['topic_first_post_id'];
+		$first_post_ids[] = (int) $row['topic_first_post_id'];
 
-			if ($row['topic_approved'])
-			{
-				$approved_topics++;
-			}
+		if ($row['topic_approved'])
+		{
+			$approved_topics++;
 		}
 	}
 	$db->sql_freeresult($result);
@@ -722,28 +714,6 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 		SET topic_id = 0
 		WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
 	$db->sql_query($sql);
-
-	$moved_topic_ids = [];
-
-	// update the other forums
-	$sql = 'SELECT topic_id, forum_id
-		FROM ' . TOPICS_TABLE . '
-		WHERE ' . $db->sql_in_set('topic_moved_id', $topic_ids);
-	$result = $db->sql_query($sql);
-
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$forum_ids[] = $row['forum_id'];
-		$moved_topic_ids[] = $row['topic_id'];
-	}
-	$db->sql_freeresult($result);
-
-	if (sizeof($moved_topic_ids))
-	{
-		$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-			WHERE ' . $db->sql_in_set('topic_id', $moved_topic_ids);
-		$db->sql_query($sql);
-	}
 
 	if (sizeof($user_topic_counts))
 	{
@@ -1152,68 +1122,6 @@ function delete_attachments($mode, $ids, $resync = true)
 }
 
 /**
-* Deletes shadow topics pointing to a specified forum.
-*
-* @param int        $forum_id       The forum id
-* @param string     $sql_more       Additional WHERE statement, e.g. t.topic_time < (time() - 1234)
-* @param bool       $auto_sync      Will call sync() if this is true
-*
-* @return array     Array with affected forums
-*
-* @author bantu
-*/
-function delete_topic_shadows($forum_id, $sql_more = '', $auto_sync = true)
-{
-	global $db;
-
-	if (!$forum_id)
-	{
-		// Nothing to do.
-		return;
-	}
-
-	// Set of affected forums we have to resync
-	$sync_forum_ids = [];
-
-	// Amount of topics we select and delete at once.
-	$batch_size = 500;
-
-	do
-	{
-		$sql = 'SELECT t2.forum_id, t2.topic_id
-			FROM ' . TOPICS_TABLE . ' t2, ' . TOPICS_TABLE . ' t
-			WHERE t2.topic_moved_id = t.topic_id
-				AND t.forum_id = ' . (int) $forum_id . '
-				' . (($sql_more) ? 'AND ' . $sql_more : '');
-		$result = $db->sql_query_limit($sql, $batch_size);
-
-		$topic_ids = [];
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$topic_ids[] = (int) $row['topic_id'];
-
-			$sync_forum_ids[(int) $row['forum_id']] = (int) $row['forum_id'];
-		}
-		$db->sql_freeresult($result);
-
-		if (!empty($topic_ids))
-		{
-			$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-				WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
-			$db->sql_query($sql);
-		}
-	}
-	while (sizeof($topic_ids) == $batch_size);
-
-	if ($auto_sync)
-	{
-		sync('forum', 'forum_id', $sync_forum_ids, true, true);
-	}
-
-	return $sync_forum_ids;
-}
-
-/**
 * Delete attached file
 */
 function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
@@ -1252,7 +1160,6 @@ function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
 * Modes:
 * - forum               Resync complete forum
 * - topic               Resync topics
-* - topic_moved         Removes topic shadows that would be in the same forum as the topic they link to
 * - topic_approved      Resyncs the topic_approved flag according to the status of the first post
 * - post_reported       Resyncs the post_reported flag, relying on actual reports
 * - topic_reported      Resyncs the topic_reported flag, relying on post_reported flags
@@ -1306,14 +1213,6 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 
 	switch ($mode)
 	{
-		case 'topic_moved':
-			$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-				USING ' . TOPICS_TABLE . ' t1, ' . TOPICS_TABLE . " t2
-				WHERE t1.topic_moved_id = t2.topic_id
-					AND t1.forum_id = t2.forum_id";
-			$db->sql_query($sql);
-			break;
-
 		case 'topic_approved':
 
 			$sql = 'UPDATE ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
@@ -1510,16 +1409,14 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 					$sql = 'SELECT SUM(t.topic_replies + 1) AS forum_posts
 						FROM ' . TOPICS_TABLE . ' t
 						WHERE ' . $db->sql_in_set('t.forum_id', $forum_ids) . '
-							AND t.topic_approved = 1
-							AND t.topic_status <> ' . ITEM_MOVED;
+						AND t.topic_approved = 1';
 				}
 				else
 				{
 					$sql = 'SELECT t.forum_id, SUM(t.topic_replies + 1) AS forum_posts
 						FROM ' . TOPICS_TABLE . ' t
 						WHERE ' . $db->sql_in_set('t.forum_id', $forum_ids) . '
-							AND t.topic_approved = 1
-							AND t.topic_status <> ' . ITEM_MOVED . '
+						AND t.topic_approved = 1
 						GROUP BY t.forum_id';
 				}
 
@@ -1653,23 +1550,17 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 				sync('topic_attachment', $where_type, $where_ids, false, true);
 			}
 
-			$topic_data = $post_ids = $approved_unapproved_ids = $resync_forums = $delete_topics = $delete_posts = $moved_topics = [];
+			$topic_data = $post_ids = $approved_unapproved_ids = $resync_forums = $delete_topics = $delete_posts = [];
 
 			$db->sql_transaction('begin');
 
-			$sql = 'SELECT t.topic_id, t.forum_id, t.topic_moved_id, t.topic_approved, t.topic_poster, t.topic_time, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_first_poster_name, t.topic_first_poster_colour, t.topic_last_post_id, t.topic_last_post_subject, t.topic_last_poster_id, t.topic_last_poster_name, t.topic_last_poster_colour, t.topic_last_post_time
+			$sql = 'SELECT t.topic_id, t.forum_id, t.topic_approved, t.topic_poster, t.topic_time, t.topic_replies, t.topic_replies_real, t.topic_first_post_id, t.topic_first_poster_name, t.topic_first_poster_colour, t.topic_last_post_id, t.topic_last_post_subject, t.topic_last_poster_id, t.topic_last_poster_name, t.topic_last_poster_colour, t.topic_last_post_time
 				FROM ' . TOPICS_TABLE . " t
 				{$where_sql}";
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				if ($row['topic_moved_id'])
-				{
-					$moved_topics[] = $row['topic_id'];
-					continue;
-				}
-
 				$topic_id = (int) $row['topic_id'];
 				$topic_data[$topic_id] = $row;
 				$topic_data[$topic_id]['replies_real'] = -1;
@@ -1786,116 +1677,6 @@ function sync($mode, $where_type = '', $where_ids = '', $resync_parents = false,
 					}
 				}
 				$db->sql_freeresult($result);
-			}
-
-			// Make sure shadow topics do link to existing topics
-			if (sizeof($moved_topics))
-			{
-				$delete_topics = [];
-
-				$sql = 'SELECT t1.topic_id, t1.topic_moved_id
-					FROM ' . TOPICS_TABLE . ' t1
-					LEFT JOIN ' . TOPICS_TABLE . ' t2 ON (t2.topic_id = t1.topic_moved_id)
-					WHERE ' . $db->sql_in_set('t1.topic_id', $moved_topics) . '
-						AND t2.topic_id IS NULL';
-				$result = $db->sql_query($sql);
-
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$delete_topics[] = $row['topic_id'];
-				}
-				$db->sql_freeresult($result);
-
-				if (sizeof($delete_topics))
-				{
-					delete_topics('topic_id', $delete_topics, false);
-				}
-				unset($delete_topics);
-
-				// Make sure shadow topics having no last post data being updated (this only rarely happens...)
-				$sql = 'SELECT topic_id, topic_moved_id, topic_last_post_id, topic_first_post_id
-					FROM ' . TOPICS_TABLE . '
-					WHERE ' . $db->sql_in_set('topic_id', $moved_topics) . '
-						AND topic_last_post_time = 0';
-				$result = $db->sql_query($sql);
-
-				$shadow_topic_data = $post_ids = [];
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$shadow_topic_data[$row['topic_moved_id']] = $row;
-					$post_ids[] = $row['topic_last_post_id'];
-					$post_ids[] = $row['topic_first_post_id'];
-				}
-				$db->sql_freeresult($result);
-
-				$sync_shadow_topics = [];
-				if (sizeof($post_ids))
-				{
-					$sql = 'SELECT p.post_id, p.topic_id, p.post_approved, p.poster_id, p.post_subject, p.post_username, p.post_time, u.username, u.user_colour
-						FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . ' u
-						WHERE ' . $db->sql_in_set('p.post_id', $post_ids) . '
-							AND u.user_id = p.poster_id';
-					$result = $db->sql_query($sql);
-
-					$post_ids = [];
-					while ($row = $db->sql_fetchrow($result))
-					{
-						$topic_id = (int) $row['topic_id'];
-
-						// Ok, there should be a shadow topic. If there isn't, then there's something wrong with the db.
-						// However, there's not much we can do about it.
-						if (!empty($shadow_topic_data[$topic_id]))
-						{
-							if ($row['post_id'] == $shadow_topic_data[$topic_id]['topic_first_post_id'])
-							{
-								$orig_topic_id = $shadow_topic_data[$topic_id]['topic_id'];
-
-								if (!isset($sync_shadow_topics[$orig_topic_id]))
-								{
-									$sync_shadow_topics[$orig_topic_id] = [];
-								}
-
-								$sync_shadow_topics[$orig_topic_id]['topic_time'] = $row['post_time'];
-								$sync_shadow_topics[$orig_topic_id]['topic_poster'] = $row['poster_id'];
-								$sync_shadow_topics[$orig_topic_id]['topic_first_poster_name'] = ($row['poster_id'] == ANONYMOUS) ? $row['post_username'] : $row['username'];
-								$sync_shadow_topics[$orig_topic_id]['topic_first_poster_colour'] = $row['user_colour'];
-							}
-
-							if ($row['post_id'] == $shadow_topic_data[$topic_id]['topic_last_post_id'])
-							{
-								$orig_topic_id = $shadow_topic_data[$topic_id]['topic_id'];
-
-								if (!isset($sync_shadow_topics[$orig_topic_id]))
-								{
-									$sync_shadow_topics[$orig_topic_id] = [];
-								}
-
-								$sync_shadow_topics[$orig_topic_id]['topic_last_poster_id'] = $row['poster_id'];
-								$sync_shadow_topics[$orig_topic_id]['topic_last_post_subject'] = $row['post_subject'];
-								$sync_shadow_topics[$orig_topic_id]['topic_last_post_time'] = $row['post_time'];
-								$sync_shadow_topics[$orig_topic_id]['topic_last_poster_name'] = ($row['poster_id'] == ANONYMOUS) ? $row['post_username'] : $row['username'];
-								$sync_shadow_topics[$orig_topic_id]['topic_last_poster_colour'] = $row['user_colour'];
-							}
-						}
-					}
-					$db->sql_freeresult($result);
-
-					$shadow_topic_data = [];
-
-					// Update the information we collected
-					if (sizeof($sync_shadow_topics))
-					{
-						foreach ($sync_shadow_topics as $sync_topic_id => $sql_ary)
-						{
-							$sql = 'UPDATE ' . TOPICS_TABLE . '
-								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
-								WHERE topic_id = ' . $sync_topic_id;
-							$db->sql_query($sql);
-						}
-					}
-				}
-
-				unset($sync_shadow_topics, $shadow_topic_data);
 			}
 
 			// approved becomes unapproved, and vice-versa

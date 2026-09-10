@@ -455,7 +455,6 @@ $lang = array_merge($lang, [
 	'LOG_APPROVE_TOPIC'         => '<strong>Approved topic</strong><br />» %s',
 	'LOG_BUMP_TOPIC'            => '<strong>User bumped topic</strong><br />» %s',
 	'LOG_DELETE_POST'           => '<strong>Deleted post “%1$s” written by</strong><br />» %2$s',
-	'LOG_DELETE_SHADOW_TOPIC'   => '<strong>Deleted shadow topic</strong><br />» %s',
 	'LOG_DELETE_TOPIC'          => '<strong>Deleted topic “%1$s” written by</strong><br />» %2$s',
 	'LOG_FORK'                  => '<strong>Copied topic</strong><br />» from %s',
 	'LOG_LOCK'                  => '<strong>Locked topic</strong><br />» %s',

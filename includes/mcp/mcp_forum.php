@@ -193,14 +193,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 		$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
 
-		if ($row['topic_status'] == ITEM_MOVED)
-		{
-			$unread_topic = false;
-		}
-		else
-		{
-			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
-		}
+		$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 
 		// Get folder img, topic status/type related information
 		$folder_img = $folder_alt = $topic_type = '';
@@ -239,42 +232,30 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 			'LAST_POST_SUBJECT' => $row['topic_last_post_subject'],
 			'LAST_VIEW_TIME'    => $user->format_date($row['topic_last_view_time']),
 
-			'S_TOPIC_REPORTED'      => (!empty($row['topic_reported']) && empty($row['topic_moved_id']) && $auth->acl_get('m_report', $row['forum_id'])),
+			'S_TOPIC_REPORTED'      => (!empty($row['topic_reported']) && $auth->acl_get('m_report', $row['forum_id'])),
 			'S_TOPIC_UNAPPROVED'    => $topic_unapproved,
 			'S_POSTS_UNAPPROVED'    => $posts_unapproved,
 			'S_UNREAD_TOPIC'        => $unread_topic,
 		];
 
-		if ($row['topic_status'] == ITEM_MOVED)
+		if ($action == 'merge_topic' || $action == 'merge_topics')
 		{
-			$topic_row = array_merge($topic_row, [
-				'U_VIEW_TOPIC'      => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$row['topic_moved_id']}"),
-				'U_DELETE_TOPIC'    => ($auth->acl_get('m_delete', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;topic_id_list[]={$row['topic_id']}&amp;mode=forum_view&amp;action=delete_topic") : '',
-				'S_MOVED_TOPIC'     => true,
-				'TOPIC_ID'          => $row['topic_moved_id'],
-			]);
+			$u_select_topic = $url . "&amp;i={$id}&amp;mode=forum_view&amp;action={$action}&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
 		}
 		else
 		{
-			if ($action == 'merge_topic' || $action == 'merge_topics')
-			{
-				$u_select_topic = $url . "&amp;i={$id}&amp;mode=forum_view&amp;action={$action}&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
-			}
-			else
-			{
-				$u_select_topic = $url . "&amp;i={$id}&amp;mode=topic_view&amp;action=merge&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
-			}
-			$topic_row = array_merge($topic_row, [
-				'U_VIEW_TOPIC'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;t={$row['topic_id']}&amp;mode=topic_view"),
-
-				'S_SELECT_TOPIC'    => ($merge_select && !in_array($row['topic_id'], $source_topic_ids)),
-				'U_SELECT_TOPIC'    => $u_select_topic,
-				'U_MCP_QUEUE'       => $u_mcp_queue,
-				'U_MCP_REPORT'      => ($auth->acl_get('m_report', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=topic_view&amp;t=' . $row['topic_id'] . '&amp;action=reports') : '',
-				'TOPIC_ID'          => $row['topic_id'],
-				'S_TOPIC_CHECKED'   => ($topic_id_list && in_array($row['topic_id'], $topic_id_list)),
-			]);
+			$u_select_topic = $url . "&amp;i={$id}&amp;mode=topic_view&amp;action=merge&amp;to_topic_id=" . $row['topic_id'] . $selected_ids;
 		}
+		$topic_row = array_merge($topic_row, [
+			'U_VIEW_TOPIC'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;f={$forum_id}&amp;t={$row['topic_id']}&amp;mode=topic_view"),
+
+			'S_SELECT_TOPIC'    => ($merge_select && !in_array($row['topic_id'], $source_topic_ids)),
+			'U_SELECT_TOPIC'    => $u_select_topic,
+			'U_MCP_QUEUE'       => $u_mcp_queue,
+			'U_MCP_REPORT'      => ($auth->acl_get('m_report', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main&amp;mode=topic_view&amp;t=' . $row['topic_id'] . '&amp;action=reports') : '',
+			'TOPIC_ID'          => $row['topic_id'],
+			'S_TOPIC_CHECKED'   => ($topic_id_list && in_array($row['topic_id'], $topic_id_list)),
+		]);
 
 		$template->assign_block_vars('topicrow', $topic_row);
 	}

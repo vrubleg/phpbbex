@@ -1430,29 +1430,6 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 
 	$db->sql_transaction('begin');
 
-	// we must make sure to update forums that contain the shadow'd topic
-	if ($post_mode == 'delete_topic')
-	{
-		$shadow_forum_ids = [];
-
-		$sql = 'SELECT forum_id
-			FROM ' . TOPICS_TABLE . '
-			WHERE ' . $db->sql_in_set('topic_moved_id', $topic_id);
-		$result = $db->sql_query($sql);
-		while ($row = $db->sql_fetchrow($result))
-		{
-			if (!isset($shadow_forum_ids[(int) $row['forum_id']]))
-			{
-				$shadow_forum_ids[(int) $row['forum_id']] = 1;
-			}
-			else
-			{
-				$shadow_forum_ids[(int) $row['forum_id']]++;
-			}
-		}
-		$db->sql_freeresult($result);
-	}
-
 	if (($post_mode == 'delete_topic') || ($post_mode == 'delete_first_post'))
 	{
 		if ($data['post_approved'] && $data['post_postcount'])
@@ -1480,15 +1457,6 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 	switch ($post_mode)
 	{
 		case 'delete_topic':
-
-			foreach ($shadow_forum_ids as $updated_forum => $topic_count)
-			{
-				// counting is fun! we only have to do sizeof($forum_ids) number of queries,
-				// even if the topic is moved back to where its shadow lives (we count how many times it is in a forum)
-				$db->sql_query('UPDATE ' . FORUMS_TABLE . ' SET forum_topics_real = forum_topics_real - ' . $topic_count . ', forum_topics = forum_topics - ' . $topic_count . ' WHERE forum_id = ' . $updated_forum);
-				update_post_information('forum', $updated_forum);
-			}
-
 			delete_topics('topic_id', [$topic_id], false);
 
 			$sql_data[FORUMS_TABLE] .= 'forum_topics_real = forum_topics_real - 1';

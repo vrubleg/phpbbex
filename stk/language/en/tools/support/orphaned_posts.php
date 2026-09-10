@@ -35,10 +35,6 @@ $lang = array_merge($lang, [
 	'NONEXISTENT_TOPIC_IDS'     => 'The following target topic IDs do not exist: %s.<br />Please verify the specified topic IDs.',
 	'REASSIGN'                  => 'Reassign',
 
-	'DELETE_SHADOWS'            => 'Delete all selected shadow topics by clicking on this button. (Can’t be undone!)',
-	'ORPHANED_SHADOWS'          => 'Orphaned Shadow Topics',
-	'ORPHANED_SHADOWS_EXPLAIN'  => 'These are shadow topics whose target topic no longer exists.',
-	'NO_ORPHANED_SHADOWS'       => 'No orphaned shadow topics found',
 
 	'POSTS_DELETED'             => '%d posts deleted',
 	'POSTS_REASSIGNED'          => '%d posts re-assigned',

@@ -75,7 +75,6 @@ define('FORUM_POST', 1);
 define('FORUM_LINK', 2);
 define('ITEM_UNLOCKED', 0);
 define('ITEM_LOCKED', 1);
-define('ITEM_MOVED', 2);
 
 // Forum Flags
 define('FORUM_FLAG_LINK_TRACK', 1);

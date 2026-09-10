@@ -791,60 +791,50 @@ function topic_status(&$topic_row, $replies, $unread_topic, &$folder_img, &$fold
 
 	$folder = $folder_new = '';
 
-	if ($topic_row['topic_status'] == ITEM_MOVED)
+	switch ($topic_row['topic_type'])
 	{
-		$topic_type = $user->lang['VIEW_TOPIC_MOVED'];
-		$folder_img = 'topic_moved';
-		$folder_alt = 'TOPIC_MOVED';
-	}
-	else
-	{
-		switch ($topic_row['topic_type'])
-		{
-			case POST_GLOBAL:
-				$topic_type = $user->lang['VIEW_TOPIC_GLOBAL'];
-				$folder = 'announce_read';
-				$folder_new = 'announce_unread';
-			break;
+		case POST_GLOBAL:
+			$topic_type = $user->lang['VIEW_TOPIC_GLOBAL'];
+			$folder = 'announce_read';
+			$folder_new = 'announce_unread';
+		break;
 
-			case POST_ANNOUNCE:
-				$topic_type = $user->lang['VIEW_TOPIC_ANNOUNCEMENT'];
-				$folder = 'announce_read';
-				$folder_new = 'announce_unread';
-			break;
+		case POST_ANNOUNCE:
+			$topic_type = $user->lang['VIEW_TOPIC_ANNOUNCEMENT'];
+			$folder = 'announce_read';
+			$folder_new = 'announce_unread';
+		break;
 
-			case POST_STICKY:
-				$topic_type = $user->lang['VIEW_TOPIC_STICKY'];
-				$folder = 'sticky_read';
-				$folder_new = 'sticky_unread';
-			break;
+		case POST_STICKY:
+			$topic_type = $user->lang['VIEW_TOPIC_STICKY'];
+			$folder = 'sticky_read';
+			$folder_new = 'sticky_unread';
+		break;
 
-			default:
-				$topic_type = '';
-				$folder = 'topic_read';
-				$folder_new = 'topic_unread';
-			break;
-		}
-
-		if ($topic_row['topic_status'] == ITEM_LOCKED)
-		{
-			$topic_type = $user->lang['VIEW_TOPIC_LOCKED'];
-			$folder .= '_locked';
-			$folder_new .= '_locked';
-		}
-
-
-		$folder_img = ($unread_topic) ? $folder_new : $folder;
-		$folder_alt = ($unread_topic) ? 'UNREAD_POSTS' : (($topic_row['topic_status'] == ITEM_LOCKED) ? 'TOPIC_LOCKED' : 'NO_UNREAD_POSTS');
-
-		// Posted image?
-		if (!empty($topic_row['topic_posted']) && $topic_row['topic_posted'])
-		{
-			$folder_img .= '_mine';
-		}
+		default:
+			$topic_type = '';
+			$folder = 'topic_read';
+			$folder_new = 'topic_unread';
+		break;
 	}
 
-	if ($topic_row['poll_start'] && $topic_row['topic_status'] != ITEM_MOVED)
+	if ($topic_row['topic_status'] == ITEM_LOCKED)
+	{
+		$topic_type = $user->lang['VIEW_TOPIC_LOCKED'];
+		$folder .= '_locked';
+		$folder_new .= '_locked';
+	}
+
+	$folder_img = ($unread_topic) ? $folder_new : $folder;
+	$folder_alt = ($unread_topic) ? 'UNREAD_POSTS' : (($topic_row['topic_status'] == ITEM_LOCKED) ? 'TOPIC_LOCKED' : 'NO_UNREAD_POSTS');
+
+	// Posted image?
+	if (!empty($topic_row['topic_posted']) && $topic_row['topic_posted'])
+	{
+		$folder_img .= '_mine';
+	}
+
+	if ($topic_row['poll_start'])
 	{
 		$topic_type = $user->lang['VIEW_TOPIC_POLL'];
 	}
@@ -956,7 +946,6 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 			'S_POST_GLOBAL'         => ($row['topic_type'] == POST_GLOBAL),
 			'S_POST_STICKY'         => ($row['topic_type'] == POST_STICKY),
 			'S_TOPIC_LOCKED'        => ($row['topic_status'] == ITEM_LOCKED),
-			'S_TOPIC_MOVED'         => ($row['topic_status'] == ITEM_MOVED),
 			'S_TOPIC_TYPE_SWITCH'   => ($s_type_switch == $s_type_switch_test) ? -1 : $s_type_switch_test,
 
 			'U_NEWEST_POST'         => $view_topic_url . '&amp;view=unread#unread',
@@ -1040,7 +1029,6 @@ function display_active_topics($tpl_loopname, $total_limit)
 		WHERE ' . $db->sql_in_set('topic_id', $excluded_topic_ids, true) . '
 			AND ' . $db->sql_in_set('forum_id', $forum_ids) . '
 			AND topic_type <> ' . POST_GLOBAL . '
-			AND topic_status <> ' . ITEM_MOVED . '
 			AND (' . $db->sql_in_set('forum_id', $m_approve_ids, false, true) . '
 				OR topic_approved = 1)
 		ORDER BY topic_last_post_time DESC';

@@ -177,8 +177,7 @@ class acp_main
 								SELECT p.poster_id AS user_id, COUNT(t.topic_id) AS num_topics
 								FROM ' . TOPICS_TABLE . ' t
 								INNER JOIN ' . POSTS_TABLE . ' p ON p.post_id = t.topic_first_post_id
-								WHERE t.topic_moved_id = 0
-									AND p.post_postcount = 1
+								WHERE p.post_postcount = 1
 									AND p.post_approved = 1
 								GROUP BY p.poster_id
 							) topic_counts ON topic_counts.user_id = u.user_id

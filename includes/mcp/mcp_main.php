@@ -428,7 +428,6 @@ function mcp_move_topic($topic_ids)
 	if (confirm_box(true))
 	{
 		$topic_data = get_topic_data($topic_ids);
-		$leave_shadow = isset($_POST['move_leave_shadow']);
 
 		$forum_sync_data = [];
 
@@ -499,50 +498,6 @@ function mcp_move_topic($topic_ids)
 			$forum_ids[] = $row['forum_id'];
 			add_log('mod', $to_forum_id, $topic_id, 'LOG_MOVE', $row['forum_name'], $forum_data['forum_name']);
 
-			// Leave a redirection if required and only if the topic is visible to users
-			if ($leave_shadow && $row['topic_approved'])
-			{
-				$shadow = [
-					'forum_id'              =>  (int) $row['forum_id'],
-					'icon_id'               =>  (int) $row['icon_id'],
-					'topic_attachment'      =>  (int) $row['topic_attachment'],
-					'topic_approved'        =>  1, // a shadow topic is always approved
-					'topic_reported'        =>  0, // a shadow topic is never reported
-					'topic_title'           =>  (string) $row['topic_title'],
-					'topic_poster'          =>  (int) $row['topic_poster'],
-					'topic_time'            =>  (int) $row['topic_time'],
-					'topic_time_limit'      =>  (int) $row['topic_time_limit'],
-					'topic_views'           =>  (int) $row['topic_views'],
-					'topic_replies'         =>  (int) $row['topic_replies'],
-					'topic_replies_real'    =>  (int) $row['topic_replies_real'],
-					'topic_status'          =>  ITEM_MOVED,
-					'topic_type'            =>  POST_NORMAL,
-					'topic_first_post_id'   =>  (int) $row['topic_first_post_id'],
-					'topic_first_poster_colour'=>(string) $row['topic_first_poster_colour'],
-					'topic_first_poster_name'=> (string) $row['topic_first_poster_name'],
-					'topic_last_post_id'    =>  (int) $row['topic_last_post_id'],
-					'topic_last_poster_id'  =>  (int) $row['topic_last_poster_id'],
-					'topic_last_poster_colour'=>(string) $row['topic_last_poster_colour'],
-					'topic_last_poster_name'=>  (string) $row['topic_last_poster_name'],
-					'topic_last_post_subject'=> (string)  $row['topic_last_post_subject'],
-					'topic_last_post_time'  =>  (int) $row['topic_last_post_time'],
-					'topic_last_view_time'  =>  (int) $row['topic_last_view_time'],
-					'topic_moved_id'        =>  (int) $row['topic_id'],
-					'topic_bumped'          =>  (int) $row['topic_bumped'],
-					'topic_bumper'          =>  (int) $row['topic_bumper'],
-					'poll_title'            =>  (string) $row['poll_title'],
-					'poll_start'            =>  (int) $row['poll_start'],
-					'poll_length'           =>  (int) $row['poll_length'],
-					'poll_max_options'      =>  (int) $row['poll_max_options'],
-					'poll_last_vote'        =>  (int) $row['poll_last_vote']
-				];
-
-				$db->sql_query('INSERT INTO ' . TOPICS_TABLE . $db->sql_build_array('INSERT', $shadow));
-
-				// Shadow topics only count on new "topics" and not posts... a shadow topic alone has 0 posts
-				$topics_removed--;
-				$topics_authed_removed--;
-			}
 		}
 		unset($topic_data);
 
@@ -579,7 +534,6 @@ function mcp_move_topic($topic_ids)
 	{
 		$template->assign_vars([
 			'S_FORUM_SELECT'        => make_forum_select($to_forum_id, $forum_id, false, true, true, true),
-			'S_CAN_LEAVE_SHADOW'    => true,
 			'ADDITIONAL_MSG'        => $additional_msg,
 		]);
 
@@ -643,15 +597,8 @@ function mcp_delete_topic($topic_ids)
 
 		foreach ($data as $topic_id => $row)
 		{
-			if ($row['topic_moved_id'])
-			{
-				add_log('mod', $row['forum_id'], $topic_id, 'LOG_DELETE_SHADOW_TOPIC', $row['topic_title']);
-			}
-			else
-			{
-				decode_message($posts[$row['topic_first_post_id']]['post_text'], $posts[$row['topic_first_post_id']]['bbcode_uid']);
-				add_log('mod', $row['forum_id'], $topic_id, 'LOG_DELETE_TOPIC', $row['topic_title'], $row['topic_first_poster_name'], $posts[$row['topic_first_post_id']]['post_text']);
-			}
+			decode_message($posts[$row['topic_first_post_id']]['post_text'], $posts[$row['topic_first_post_id']]['bbcode_uid']);
+			add_log('mod', $row['forum_id'], $topic_id, 'LOG_DELETE_TOPIC', $row['topic_title'], $row['topic_first_poster_name'], $posts[$row['topic_first_post_id']]['post_text']);
 		}
 
 		$return = delete_topics('topic_id', $topic_ids);
@@ -1110,7 +1057,6 @@ function mcp_fork_topic($topic_ids)
 	{
 		$template->assign_vars([
 			'S_FORUM_SELECT'        => make_forum_select($to_forum_id, false, false, true, true, true),
-			'S_CAN_LEAVE_SHADOW'    => false,
 			'ADDITIONAL_MSG'        => $additional_msg,
 		]);
 

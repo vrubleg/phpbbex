@@ -1090,6 +1090,32 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module_category('acp', 'ACP_STYLE_MANAGEMENT');
 	remove_module_category('acp', 'ACP_CAT_STYLES');
 
+	// Remove shadow topics and their obsolete schema support.
+	if ($db_tools->sql_column_exists(TOPICS_TABLE, 'topic_moved_id'))
+	{
+		$shadow_forum_ids = [];
+		$result = $db->sql_query('SELECT DISTINCT forum_id FROM ' . TOPICS_TABLE . ' WHERE topic_moved_id <> 0');
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$shadow_forum_ids[] = (int) $row['forum_id'];
+		}
+		$db->sql_freeresult($result);
+
+		$db->sql_query('DELETE FROM ' . TOPICS_TABLE . ' WHERE topic_moved_id <> 0');
+
+		if (!$db_tools->sql_index_exists(TOPICS_TABLE, 'fid_time'))
+		{
+			$db_tools->sql_create_index(TOPICS_TABLE, 'fid_time', ['forum_id', 'topic_last_post_time']);
+		}
+		if ($db_tools->sql_index_exists(TOPICS_TABLE, 'fid_time_moved'))
+		{
+			$db_tools->sql_index_drop(TOPICS_TABLE, 'fid_time_moved');
+		}
+		$db_tools->sql_column_remove(TOPICS_TABLE, 'topic_moved_id');
+
+		sync('forum', 'forum_id', $shadow_forum_ids, false, true);
+	}
+
 	// Clear cache and reset bots.
 
 	$bots_default = true;
@@ -2545,52 +2571,6 @@ function change_database_data(&$no_updates, $version)
 			];
 
 			_add_modules($modules_to_install);
-
-			// Delete shadow topics pointing to not existing topics
-			$batch_size = 500;
-
-			// Set of affected forums we have to resync
-			$sync_forum_ids = [];
-
-			do
-			{
-				$sql_array = [
-					'SELECT'    => 't1.topic_id, t1.forum_id',
-					'FROM'      => [
-						TOPICS_TABLE    => 't1',
-					],
-					'LEFT_JOIN' => [
-						[
-							'FROM'  => [TOPICS_TABLE    => 't2'],
-							'ON'    => 't1.topic_moved_id = t2.topic_id',
-						],
-					],
-					'WHERE'     => 't1.topic_moved_id <> 0
-								AND t2.topic_id IS NULL',
-				];
-				$sql = $db->sql_build_query('SELECT', $sql_array);
-				$result = $db->sql_query_limit($sql, $batch_size);
-
-				$topic_ids = [];
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$topic_ids[] = (int) $row['topic_id'];
-
-					$sync_forum_ids[(int) $row['forum_id']] = (int) $row['forum_id'];
-				}
-				$db->sql_freeresult($result);
-
-				if (!empty($topic_ids))
-				{
-					$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-						WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
-					$db->sql_query($sql);
-				}
-			}
-			while (sizeof($topic_ids) == $batch_size);
-
-			// Sync the forums we have deleted shadow topics from.
-			sync('forum', 'forum_id', $sync_forum_ids, true, true);
 
 			// Unread posts search load switch
 			set_config('load_unreads_search', '1');
