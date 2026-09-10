@@ -473,7 +473,6 @@ $lang = array_merge($lang, [
 
 	'LOG_TOPIC_APPROVED'        => '<strong>Approved topic</strong><br />» %s',
 	'LOG_TOPIC_DISAPPROVED'     => '<strong>Disapproved topic “%1$s” with the following reason</strong><br />%2$s',
-	'LOG_TOPIC_RESYNC'          => '<strong>Resynchronised topic counters</strong><br />» %s',
 	'LOG_TOPIC_TYPE_CHANGED'    => '<strong>Changed topic type</strong><br />» %s',
 	'LOG_UNLOCK'                => '<strong>Unlocked topic</strong><br />» %s',
 	'LOG_UNLOCK_POST'           => '<strong>Unlocked post</strong><br />» %s',

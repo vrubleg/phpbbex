@@ -42,16 +42,6 @@ function mcp_topic_view($id, $mode, $action)
 	$sort           = isset($_POST['sort']);
 	$checked_ids = $post_id_list = request_var('post_id_list', [0]);
 
-	// Resync Topic?
-	if ($action == 'resync')
-	{
-		if (!function_exists('mcp_resync_topics'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/mcp/mcp_forum.php');
-		}
-		mcp_resync_topics([$topic_id]);
-	}
-
 	// Split Topic?
 	if ($action == 'split_all' || $action == 'split_beyond')
 	{
@@ -318,7 +308,6 @@ function mcp_topic_view($id, $mode, $action)
 		'S_CAN_APPROVE'     => ($has_unapproved_posts && $auth->acl_get('m_approve', $topic_info['forum_id'])),
 		'S_CAN_LOCK'        => (bool) $auth->acl_get('m_lock', $topic_info['forum_id']),
 		'S_CAN_REPORT'      => (bool) $auth->acl_get('m_report', $topic_info['forum_id']),
-		'S_CAN_SYNC'        => $auth->acl_get('m_', $topic_info['forum_id']),
 		'S_REPORT_VIEW'     => ($action == 'reports'),
 		'S_MERGE_VIEW'      => ($action == 'merge'),
 		'S_SPLIT_VIEW'      => ($action == 'split'),

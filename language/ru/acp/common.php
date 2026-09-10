@@ -473,7 +473,6 @@ $lang = array_merge($lang, [
 
 	'LOG_TOPIC_APPROVED'        => '<strong>Одобрение темы</strong><br />» %s',
 	'LOG_TOPIC_DISAPPROVED'     => '<strong>Отклонение темы «%1$s» по причине</strong><br />%2$s',
-	'LOG_TOPIC_RESYNC'          => '<strong>Синхронизированы счётчики темы</strong><br />» %s',
 	'LOG_TOPIC_TYPE_CHANGED'    => '<strong>Изменён тип темы</strong><br />» %s',
 	'LOG_UNLOCK'                => '<strong>Открыта тема</strong><br />» %s',
 	'LOG_UNLOCK_POST'           => '<strong>Разблокировано сообщение</strong><br />» %s',

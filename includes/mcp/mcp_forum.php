@@ -45,14 +45,8 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 	$url = append_sid(PHPBB_ROOT_PATH . "mcp.php?{$url_extra}");
 
-	// Resync Topics
 	switch ($action)
 	{
-		case 'resync':
-			$topic_ids = request_var('topic_id_list', [0]);
-			mcp_resync_topics($topic_ids);
-		break;
-
 		case 'merge_topics':
 			$source_topic_ids = $topic_id_list;
 		case 'merge_topic':
@@ -107,7 +101,6 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		'S_CAN_MOVE'            => $auth->acl_get('m_move', $forum_id),
 		'S_CAN_FORK'            => $auth->acl_get('m_', $forum_id),
 		'S_CAN_LOCK'            => $auth->acl_get('m_lock', $forum_id),
-		'S_CAN_SYNC'            => $auth->acl_get('m_', $forum_id),
 		'S_CAN_APPROVE'         => $auth->acl_get('m_approve', $forum_id),
 		'S_MERGE_SELECT'        => $merge_select,
 		'S_CAN_MAKE_NORMAL'     => $auth->acl_gets('f_sticky', 'f_announce', $forum_id),
@@ -260,48 +253,6 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 		$template->assign_block_vars('topicrow', $topic_row);
 	}
 	unset($topic_rows);
-}
-
-/**
-* Resync topics
-*/
-function mcp_resync_topics($topic_ids)
-{
-	global $auth, $db, $template, $user;
-
-	if (!sizeof($topic_ids))
-	{
-		trigger_error('NO_TOPIC_SELECTED');
-	}
-
-	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', ['m_']))
-	{
-		return;
-	}
-
-	// Sync everything, including reported and attachment flags
-	sync('topic', 'topic_id', $topic_ids, true, true);
-
-	$sql = 'SELECT topic_id, forum_id, topic_title
-		FROM ' . TOPICS_TABLE . '
-		WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
-	$result = $db->sql_query($sql);
-
-	// Log this action
-	while ($row = $db->sql_fetchrow($result))
-	{
-		add_log('mod', $row['forum_id'], $row['topic_id'], 'LOG_TOPIC_RESYNC', $row['topic_title']);
-	}
-	$db->sql_freeresult($result);
-
-	$msg = (sizeof($topic_ids) == 1) ? $user->lang['TOPIC_RESYNC_SUCCESS'] : $user->lang['TOPICS_RESYNC_SUCCESS'];
-
-	$redirect = request_var('redirect', build_url(['quickmod']));
-
-	meta_refresh(3, $redirect);
-	trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
-
-	return;
 }
 
 /**
