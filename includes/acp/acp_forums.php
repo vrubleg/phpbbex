@@ -115,7 +115,6 @@ class acp_forums
 						'forum_rules_options'   => 7,
 						'forum_rules_bitfield'  => '',
 						'forum_rules_link'      => request_var('forum_rules_link', ''),
-						'forum_image'           => request_var('forum_image', ''),
 						'display_subforum_list' => request_var('display_subforum_list', false),
 						'display_on_index'      => request_var('display_on_index', false),
 						'forum_topic_sortby_type'   => request_var('topic_sortby_type', ''),
@@ -298,7 +297,6 @@ class acp_forums
 							'forum_desc'            => '',
 							'forum_rules'           => '',
 							'forum_rules_link'      => '',
-							'forum_image'           => '',
 							'display_subforum_list' => true,
 							'display_on_index'      => true,
 							'forum_topic_sortby_type'   => '',
@@ -468,8 +466,6 @@ class acp_forums
 
 					'FORUM_NAME'                => $forum_data['forum_name'],
 					'FORUM_DATA_LINK'           => $forum_data['forum_link'],
-					'FORUM_IMAGE'               => $forum_data['forum_image'],
-					'FORUM_IMAGE_SRC'           => ($forum_data['forum_image']) ? PHPBB_ROOT_PATH . $forum_data['forum_image'] : '',
 					'FORUM_POST'                => FORUM_POST,
 					'FORUM_LINK'                => FORUM_LINK,
 					'FORUM_CAT'                 => FORUM_CAT,
@@ -662,8 +658,6 @@ class acp_forums
 
 				$template->assign_block_vars('forums', [
 					'FOLDER_IMAGE'      => $folder_image,
-					'FORUM_IMAGE'       => ($row['forum_image']) ? '<img src="' . PHPBB_ROOT_PATH . $row['forum_image'] . '" alt="" />' : '',
-					'FORUM_IMAGE_SRC'   => ($row['forum_image']) ? PHPBB_ROOT_PATH . $row['forum_image'] : '',
 					'FORUM_NAME'        => $row['forum_name'],
 					'FORUM_DESCRIPTION' => generate_text_for_display($row['forum_desc'], $row['forum_desc_uid'], $row['forum_desc_bitfield'], $row['forum_desc_options']),
 					'FORUM_SUBFORUMS'   => (int) $row['forum_subforums'],
@@ -753,11 +747,6 @@ class acp_forums
 		{
 			$forum_data['prune_days'] = $forum_data['prune_viewed'] = $forum_data['prune_freq'] = 0;
 			$errors[] = $user->lang['FORUM_DATA_NEGATIVE'];
-		}
-
-		if (!empty($forum_data['forum_image']) && !file_exists(PHPBB_ROOT_PATH . $forum_data['forum_image']))
-		{
-			$errors[] = $user->lang['FORUM_IMAGE_NO_EXIST'];
 		}
 
 		// Set forum flags
@@ -1189,8 +1178,6 @@ class acp_forums
 
 		if ($sync)
 		{
-			// Delete ghost topics that link back to the same forum then resync counters
-			sync('topic_moved');
 			sync('forum', 'forum_id', $to_id, false, true);
 		}
 

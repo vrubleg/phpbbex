@@ -456,7 +456,6 @@ $lang = array_merge($lang, [
 	'LOG_BUMP_TOPIC'            => '<strong>Поднята тема</strong><br />» %s',
 	'LOG_DELETE_POST'           => '<strong>Удалено сообщение</strong><br />Тема: %1$s<br />Автор: %2$s<br />%3$s',
 	'LOG_DELETE_TOPIC'          => '<strong>Удалена тема</strong><br />Название: %1$s<br />Автор: %2$s<br />%3$s',
-	'LOG_DELETE_SHADOW_TOPIC'   => '<strong>Удалена ссылка на перенесённую тему</strong><br />» %s',
 	'LOG_FORK'                  => '<strong>Скопирована тема</strong><br />» из раздела %s',
 	'LOG_LOCK'                  => '<strong>Закрыта тема</strong><br />» %s',
 	'LOG_LOCK_POST'             => '<strong>Заблокировано сообщение</strong><br />» %s',
@@ -474,7 +473,6 @@ $lang = array_merge($lang, [
 
 	'LOG_TOPIC_APPROVED'        => '<strong>Одобрение темы</strong><br />» %s',
 	'LOG_TOPIC_DISAPPROVED'     => '<strong>Отклонение темы «%1$s» по причине</strong><br />%2$s',
-	'LOG_TOPIC_RESYNC'          => '<strong>Синхронизированы счётчики темы</strong><br />» %s',
 	'LOG_TOPIC_TYPE_CHANGED'    => '<strong>Изменён тип темы</strong><br />» %s',
 	'LOG_UNLOCK'                => '<strong>Открыта тема</strong><br />» %s',
 	'LOG_UNLOCK_POST'           => '<strong>Разблокировано сообщение</strong><br />» %s',

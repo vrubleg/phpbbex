@@ -775,7 +775,6 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 		$sql = 'SELECT topic_id, topic_last_post_time
 			FROM ' . TOPICS_TABLE . '
 			WHERE ' . $db->sql_in_set('forum_id', $forum_ids) . '
-				AND topic_moved_id = 0
 				AND (topic_approved = 1
 					' . $sql_m_approve . ')
 			ORDER BY topic_last_post_time DESC';
@@ -903,7 +902,6 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 		$sql = 'SELECT topic_id, topic_last_post_time
 			FROM ' . TOPICS_TABLE . '
 			WHERE ' . $db->sql_in_set('forum_id', $forum_ids) . '
-				AND topic_moved_id = 0
 				' . ((!$m_approve) ? 'AND topic_approved = 1' : '') . '
 			ORDER BY topic_last_post_time DESC';
 		$result = $db->sql_query_limit($sql, $this->num_items);
@@ -1102,7 +1100,6 @@ class phpbb_feed_news extends phpbb_feed_topic_base
 		$sql = 'SELECT topic_first_post_id, topic_time
 			FROM ' . TOPICS_TABLE . '
 			WHERE ' . $db->sql_in_set('forum_id', $in_fid_ary) . '
-				AND topic_moved_id = 0
 				AND topic_approved = 1
 			ORDER BY topic_time DESC';
 		$result = $db->sql_query_limit($sql, $this->num_items);
@@ -1175,7 +1172,6 @@ class phpbb_feed_topics extends phpbb_feed_topic_base
 		$sql = 'SELECT topic_first_post_id, topic_time
 			FROM ' . TOPICS_TABLE . '
 			WHERE ' . $db->sql_in_set('forum_id', $in_fid_ary) . '
-				AND topic_moved_id = 0
 				AND topic_approved = 1
 			ORDER BY topic_time DESC';
 		$result = $db->sql_query_limit($sql, $this->num_items);
@@ -1269,7 +1265,6 @@ class phpbb_feed_topics_active extends phpbb_feed_topic_base
 		$sql = 'SELECT topic_last_post_id, topic_last_post_time
 			FROM ' . TOPICS_TABLE . '
 			WHERE ' . $db->sql_in_set('forum_id', $in_fid_ary) . '
-				AND topic_moved_id = 0
 				AND topic_approved = 1
 				' . $last_post_time_sql . '
 			ORDER BY topic_last_post_time DESC';

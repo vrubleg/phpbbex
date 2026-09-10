@@ -191,7 +191,6 @@ CREATE TABLE phpbb_forums (
 	forum_desc_options int(11) UNSIGNED DEFAULT '7' NOT NULL,
 	forum_desc_uid varchar(8) DEFAULT '' NOT NULL,
 	forum_link varchar(255) DEFAULT '' NOT NULL,
-	forum_image varchar(255) DEFAULT '' NOT NULL,
 	forum_rules text NOT NULL,
 	forum_rules_link varchar(255) DEFAULT '' NOT NULL,
 	forum_rules_bitfield varchar(255) DEFAULT '' NOT NULL,
@@ -255,7 +254,6 @@ CREATE TABLE phpbb_groups (
 	group_rank mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	group_colour varchar(6) DEFAULT '' NOT NULL,
 	group_sig_chars mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	group_receive_pm tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	group_legend tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	PRIMARY KEY (group_id),
 	KEY group_legend_name (group_legend, group_name)
@@ -434,36 +432,12 @@ CREATE TABLE phpbb_privmsgs (
 	message_edit_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	message_edit_count smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
 	to_address text NOT NULL,
-	bcc_address text NOT NULL,
 	message_reported tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (msg_id),
 	KEY author_ip (author_ip),
 	KEY message_time (message_time),
 	KEY author_id (author_id),
 	KEY root_level (root_level)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_privmsgs_folder (
-	folder_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	folder_name varchar(255) DEFAULT '' NOT NULL,
-	pm_count mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (folder_id),
-	KEY user_id (user_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_privmsgs_rules (
-	rule_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_check mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_connection mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_string varchar(255) DEFAULT '' NOT NULL,
-	rule_user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_group_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_action mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	rule_folder_id int(11) DEFAULT '0' NOT NULL,
-	PRIMARY KEY (rule_id),
-	KEY user_id (user_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_privmsgs_to (
@@ -475,7 +449,6 @@ CREATE TABLE phpbb_privmsgs_to (
 	pm_unread tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	pm_replied tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	pm_marked tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	pm_forwarded tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	folder_id int(11) DEFAULT '0' NOT NULL,
 	KEY msg_id (msg_id),
 	KEY author_id (author_id),
@@ -658,7 +631,6 @@ CREATE TABLE phpbb_topics (
 	topic_last_post_subject varchar(255) DEFAULT '' NOT NULL,
 	topic_last_post_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_last_view_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	topic_moved_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_bumped tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_bumper mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	poll_title varchar(255) DEFAULT '' NOT NULL,
@@ -677,7 +649,7 @@ CREATE TABLE phpbb_topics (
 	KEY last_post_time (topic_last_post_time),
 	KEY topic_approved (topic_approved),
 	KEY forum_appr_last (forum_id, topic_approved, topic_last_post_id),
-	KEY fid_time_moved (forum_id, topic_last_post_time, topic_moved_id)
+	KEY fid_time (forum_id, topic_last_post_time)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_topics_track (
@@ -751,8 +723,6 @@ CREATE TABLE phpbb_users (
 	user_new_privmsg int(4) DEFAULT '0' NOT NULL,
 	user_unread_privmsg int(4) DEFAULT '0' NOT NULL,
 	user_last_privmsg int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	user_message_rules tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	user_full_folder int(11) DEFAULT '-3' NOT NULL,
 	user_notify tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	user_notify_pm tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	user_notify_type tinyint(4) DEFAULT '0' NOT NULL,

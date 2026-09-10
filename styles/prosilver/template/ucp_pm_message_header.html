@@ -5,12 +5,10 @@
 <div class="panel">
 	<div class="inner">
 
-	<!-- IF U_POST_REPLY_PM or U_POST_NEW_TOPIC or U_FORWARD_PM -->
+	<!-- IF U_REPLY or U_COMPOSE_PM -->
 		<div class="buttons">
-			<!-- IF U_POST_REPLY_PM --><div class="pmreply-icon"><a title="{L_POST_REPLY_PM}" href="{U_POST_REPLY_PM}"><span></span>{L_POST_REPLY_PM}</a></div>
-			<!-- ELSEIF U_POST_NEW_TOPIC --><div class="newpm-icon"><a href="{U_POST_NEW_TOPIC}" accesskey="n" title="{L_UCP_PM_COMPOSE}"><span></span>{L_UCP_PM_COMPOSE}</a></div><!-- ENDIF -->
-			<!-- IF U_FORWARD_PM --><div class="forwardpm-icon"><a title="{L_POST_FORWARD_PM}" href="{U_FORWARD_PM}"><span></span>{L_FORWARD_PM}</a></div><!-- ENDIF -->
-			<!-- IF U_POST_REPLY_PM and S_PM_RECIPIENTS gt 1 --><div class="reply-all"><a title="{L_REPLY_TO_ALL}" href="{U_POST_REPLY_ALL}">{L_REPLY_TO_ALL}</a></div><!-- ENDIF -->
+			<!-- IF U_REPLY --><div class="pmreply-icon"><a title="<!-- IF U_REPLY_TO_ALL -->{L_REPLY_TO_ALL}<!-- ELSE -->{L_POST_REPLY_PM}<!-- ENDIF -->" href="<!-- IF U_REPLY_TO_ALL -->{U_REPLY_TO_ALL}<!-- ELSE -->{U_REPLY}<!-- ENDIF -->"><span></span>{L_POST_REPLY_PM}</a></div>
+			<!-- ELSEIF U_COMPOSE_PM --><div class="newpm-icon"><a href="{U_COMPOSE_PM}" accesskey="n" title="{L_UCP_PM_COMPOSE}"><span></span>{L_UCP_PM_COMPOSE}</a></div><!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
 

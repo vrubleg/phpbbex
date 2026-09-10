@@ -75,7 +75,6 @@ define('FORUM_POST', 1);
 define('FORUM_LINK', 2);
 define('ITEM_UNLOCKED', 0);
 define('ITEM_LOCKED', 1);
-define('ITEM_MOVED', 2);
 
 // Forum Flags
 define('FORUM_FLAG_LINK_TRACK', 1);
@@ -121,16 +120,10 @@ define('LOG_REGISTER', 4);
 define('LOG_GALLERY', 10);
 
 // Private messaging
-define('PRIVMSGS_HOLD_BOX', -4);
 define('PRIVMSGS_NO_BOX', -3);
 define('PRIVMSGS_OUTBOX', -2);
 define('PRIVMSGS_SENTBOX', -1);
 define('PRIVMSGS_INBOX', 0);
-
-// Full Folder Actions
-define('FULL_FOLDER_NONE', -3);
-define('FULL_FOLDER_DELETE', -2);
-define('FULL_FOLDER_HOLD', -1);
 
 // Download Modes - Attachments
 define('INLINE_LINK', 1);
@@ -235,8 +228,6 @@ define('POLL_VOTES_TABLE',          $table_prefix . 'poll_votes');
 define('POST_RATES_TABLE',          $table_prefix . 'post_rates');
 define('POSTS_TABLE',               $table_prefix . 'posts');
 define('PRIVMSGS_TABLE',            $table_prefix . 'privmsgs');
-define('PRIVMSGS_FOLDER_TABLE',     $table_prefix . 'privmsgs_folder');
-define('PRIVMSGS_RULES_TABLE',      $table_prefix . 'privmsgs_rules');
 define('PRIVMSGS_TO_TABLE',         $table_prefix . 'privmsgs_to');
 define('PROFILE_FIELDS_TABLE',      $table_prefix . 'profile_fields');
 define('PROFILE_FIELDS_DATA_TABLE', $table_prefix . 'profile_fields_data');

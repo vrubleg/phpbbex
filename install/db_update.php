@@ -334,7 +334,6 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	set_config('max_post_smilies', '20');
 	set_config('max_post_urls', '20');
 	set_config('max_quote_depth', '2');
-	set_config('pm_max_msgs', '1000');
 	set_config('posts_per_page', '20');
 	set_config('topics_per_page', '50');
 	set_config('external_links_newwindow', '0');
@@ -863,6 +862,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	{
 		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_allow_viewemail = 0');
 	}
+	if (isset($config['allow_mass_pm']) && !$config['allow_mass_pm'])
+	{
+		set_config('pm_max_recipients', '1');
+	}
 
 	// Remove obsolete config values.
 
@@ -920,6 +923,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'fulltext_native_load_upd',
 		'fulltext_native_max_chars',
 		'fulltext_native_min_chars',
+		'allow_mass_pm',
 	]);
 
 	// New defaults.
@@ -943,8 +947,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('allow_avatar_upload', '1');
 	set_config('allow_avatar_remote_upload', '0');
 	set_config('avatar_filesize', '20480');
-	set_config('allow_mass_pm', '0');
-	set_config('pm_max_recipients', '5');
 
 	// Remove obsolete modules.
 
@@ -955,6 +957,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module('acp', 'board', 'cookie');
 	remove_module('acp', 'quick_reply', 'quick_reply');
 	remove_module('ucp', 'pm', 'popup');
+	remove_module('ucp', 'pm', 'options');
 	remove_module('acp', 'database', 'backup');
 	remove_module('acp', 'database', 'restore');
 	remove_module('acp', 'search', 'index');
@@ -967,15 +970,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'u_sendemail',
 		'u_pm_download',
 		'u_sendim',
+		'u_masspm_group',
+		'u_masspm_nomax',
 	]);
-
-	// Add the PM recipient-limit bypass permission without granting it to any role.
-	require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
-	$auth_admin = new auth_admin();
-	if (empty($auth_admin->acl_options['id']['u_masspm_nomax']))
-	{
-		$auth_admin->acl_add_option(['global' => ['u_masspm_nomax']]);
-	}
 
 	// Update cached module rights.
 
@@ -1008,6 +1005,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
 	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_lastpage');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_message_rules');
+	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_full_folder');
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_sig = LEFT(user_sig, 500) WHERE CHAR_LENGTH(user_sig) > 500");
 	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_sig varchar(500) DEFAULT '' NOT NULL");
 	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_interests = LEFT(user_interests, 1000) WHERE CHAR_LENGTH(user_interests) > 1000");
@@ -1037,8 +1036,112 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
 	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_message_limit');
 	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_max_recipients');
+	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_receive_pm');
 	$db->sql_query("DROP TABLE {$table_prefix}forums_access");
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
+
+	// PM schema updates.
+	if ($db_tools->sql_table_exists("{$table_prefix}privmsgs_folder"))
+	{
+		// BCC in PMs is gone.
+		$db->sql_query('UPDATE ' . PRIVMSGS_TABLE . "
+			SET to_address = CASE
+				WHEN to_address = '' THEN bcc_address
+				WHEN bcc_address = '' THEN to_address
+				ELSE CONCAT(to_address, ':', bcc_address)
+			END
+			WHERE bcc_address <> ''");
+		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN bcc_address');
+
+		// PM forwarding is gone.
+		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TO_TABLE . ' DROP COLUMN pm_forwarded');
+
+		// Private message filtering rules are gone.
+		$db->sql_query("DROP TABLE {$table_prefix}privmsgs_rules");
+
+		// Move messages held by the old folder limit into the inbox.
+		$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
+			SET folder_id = 0, pm_new = 0
+			WHERE folder_id = -4');
+
+		// Move messages from removed user-defined folders into the inbox.
+		$db->sql_query('UPDATE ' . PRIVMSGS_TO_TABLE . '
+			SET folder_id = 0
+			WHERE folder_id > 0');
+
+		// Moving all custom folders into the inbox can merge several copies of the
+		// same message belonging to the same user. Preserve their combined state.
+		$db->sql_return_on_error(false);
+		$sql = 'SELECT msg_id, user_id, folder_id,
+				MAX(author_id) AS author_id,
+				MIN(pm_deleted) AS pm_deleted,
+				MAX(pm_new) AS pm_new,
+				MAX(pm_unread) AS pm_unread,
+				MAX(pm_replied) AS pm_replied,
+				MAX(pm_marked) AS pm_marked
+			FROM ' . PRIVMSGS_TO_TABLE . '
+			GROUP BY msg_id, user_id, folder_id
+			HAVING COUNT(*) > 1';
+		$result = $db->sql_query($sql);
+		$duplicate_pms = $db->sql_fetchrowset($result);
+		$db->sql_freeresult($result);
+
+		if (!empty($duplicate_pms))
+		{
+			$db->sql_transaction('begin');
+
+			foreach ($duplicate_pms as $row)
+			{
+				$msg_id = (int) $row['msg_id'];
+				$user_id = (int) $row['user_id'];
+				$folder_id = (int) $row['folder_id'];
+
+				$db->sql_query('DELETE FROM ' . PRIVMSGS_TO_TABLE . "
+					WHERE msg_id = {$msg_id}
+						AND user_id = {$user_id}
+						AND folder_id = {$folder_id}");
+
+				$db->sql_query('INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', [
+					'msg_id'       => $msg_id,
+					'user_id'      => $user_id,
+					'author_id'    => (int) $row['author_id'],
+					'pm_deleted'   => (int) $row['pm_deleted'],
+					'pm_new'       => (int) $row['pm_new'],
+					'pm_unread'    => (int) $row['pm_unread'],
+					'pm_replied'   => (int) $row['pm_replied'],
+					'pm_marked'    => (int) $row['pm_marked'],
+					'folder_id'    => $folder_id,
+				]));
+			}
+
+			$db->sql_transaction('commit');
+		}
+		unset($duplicate_pms);
+		$db->sql_return_on_error(true);
+
+		// Custom PM folders are gone.
+		$db->sql_query("DROP TABLE {$table_prefix}privmsgs_folder");
+
+		// Resync private message counts for all users.
+		$db->sql_query('UPDATE ' . USERS_TABLE . ' u
+			SET user_new_privmsg = (
+				SELECT COUNT(t.msg_id)
+				FROM ' . PRIVMSGS_TO_TABLE . ' t
+				WHERE t.user_id = u.user_id
+					AND t.folder_id = -3
+					AND t.pm_new = 1
+			),
+			user_unread_privmsg = (
+				SELECT COUNT(t.msg_id)
+				FROM ' . PRIVMSGS_TO_TABLE . ' t
+				WHERE t.user_id = u.user_id
+					AND t.folder_id <> -2
+					AND t.pm_unread = 1
+			)');
+
+		// Remove no more used PM related settings.
+		remove_config_values(['full_folder_action', 'pm_max_boxes', 'pm_max_msgs']);
+	}
 
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
 
@@ -1225,6 +1328,38 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module_category('acp', 'ACP_STYLE_COMPONENTS');
 	remove_module_category('acp', 'ACP_STYLE_MANAGEMENT');
 	remove_module_category('acp', 'ACP_CAT_STYLES');
+
+	// Remove shadow topics and their obsolete schema support.
+	if ($db_tools->sql_column_exists(TOPICS_TABLE, 'topic_moved_id'))
+	{
+		$shadow_forum_ids = [];
+		$result = $db->sql_query('SELECT DISTINCT forum_id FROM ' . TOPICS_TABLE . ' WHERE topic_moved_id <> 0');
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$shadow_forum_ids[] = (int) $row['forum_id'];
+		}
+		$db->sql_freeresult($result);
+
+		$db->sql_query('DELETE FROM ' . TOPICS_TABLE . ' WHERE topic_moved_id <> 0');
+
+		if (!$db_tools->sql_index_exists(TOPICS_TABLE, 'fid_time'))
+		{
+			$db_tools->sql_create_index(TOPICS_TABLE, 'fid_time', ['forum_id', 'topic_last_post_time']);
+		}
+		if ($db_tools->sql_index_exists(TOPICS_TABLE, 'fid_time_moved'))
+		{
+			$db_tools->sql_index_drop(TOPICS_TABLE, 'fid_time_moved');
+		}
+		$db_tools->sql_column_remove(TOPICS_TABLE, 'topic_moved_id');
+
+		sync('forum', 'forum_id', $shadow_forum_ids, false, true);
+	}
+
+	// Forum images are no longer supported.
+	if ($db_tools->sql_column_exists(FORUMS_TABLE, 'forum_image'))
+	{
+		$db_tools->sql_column_remove(FORUMS_TABLE, 'forum_image');
+	}
 
 	// Clear cache and reset bots.
 
@@ -1436,8 +1571,6 @@ if (request_var('utf8mb4', 0))
 			case POLL_OPTIONS_TABLE:
 			case POLL_VOTES_TABLE:
 			case PRIVMSGS_TABLE:
-			case PRIVMSGS_FOLDER_TABLE:
-			case PRIVMSGS_RULES_TABLE:
 			case PRIVMSGS_TO_TABLE:
 			case PROFILE_FIELDS_TABLE:
 			case PROFILE_FIELDS_DATA_TABLE:
@@ -2265,46 +2398,6 @@ function change_database_data(&$no_updates, $version)
 			set_config('enable_queue_trigger', '0');
 			set_config('queue_trigger_posts', '3');
 
-			// Add new permission u_masspm_group and duplicate settings from u_masspm
-			require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
-			$auth_admin = new auth_admin();
-
-			// Only add the new permission if it does not already exist
-			if (empty($auth_admin->acl_options['id']['u_masspm_group']))
-			{
-				$auth_admin->acl_add_option(['global' => ['u_masspm_group']]);
-
-				// Now the tricky part, filling the permission
-				$old_id = $auth_admin->acl_options['id']['u_masspm'];
-				$new_id = $auth_admin->acl_options['id']['u_masspm_group'];
-
-				$tables = [ACL_GROUPS_TABLE, ACL_ROLES_DATA_TABLE, ACL_USERS_TABLE];
-
-				foreach ($tables as $table)
-				{
-					$sql = 'SELECT *
-						FROM ' . $table . '
-						WHERE auth_option_id = ' . $old_id;
-					$result = _sql($sql, $errored, $error_ary);
-
-					$sql_ary = [];
-					while ($row = $db->sql_fetchrow($result))
-					{
-						$row['auth_option_id'] = $new_id;
-						$sql_ary[] = $row;
-					}
-					$db->sql_freeresult($result);
-
-					if (sizeof($sql_ary))
-					{
-						$db->sql_multi_insert($table, $sql_ary);
-					}
-				}
-
-				// Remove any old permission entries
-				$auth_admin->acl_clear_prefetch();
-			}
-
 			$sql = 'UPDATE ' . MODULES_TABLE . '
 				SET module_auth = \'acl_a_email && cfg_email_enable\'
 				WHERE module_class = \'acp\'
@@ -2574,8 +2667,8 @@ function change_database_data(&$no_updates, $version)
 				if (!$errored)
 				{
 					// Now add the correct data to the roles...
-					// The standard role says that new users are not able to send a PM, Mass PM, are not able to PM groups
-					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT {$u_role}, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_sendpm', 'u_masspm', 'u_masspm_group')";
+					// The standard role says that new users are not able to send a PM or Mass PM.
+					$sql = 'INSERT INTO ' . ACL_ROLES_DATA_TABLE . " (role_id, auth_option_id, auth_setting) SELECT {$u_role}, auth_option_id, 0 FROM " . ACL_OPTIONS_TABLE . " WHERE auth_option LIKE 'u_%' AND auth_option IN ('u_sendpm', 'u_masspm')";
 					_sql($sql, $errored, $error_ary);
 
 					// Add user role to group
@@ -2723,52 +2816,6 @@ function change_database_data(&$no_updates, $version)
 			];
 
 			_add_modules($modules_to_install);
-
-			// Delete shadow topics pointing to not existing topics
-			$batch_size = 500;
-
-			// Set of affected forums we have to resync
-			$sync_forum_ids = [];
-
-			do
-			{
-				$sql_array = [
-					'SELECT'    => 't1.topic_id, t1.forum_id',
-					'FROM'      => [
-						TOPICS_TABLE    => 't1',
-					],
-					'LEFT_JOIN' => [
-						[
-							'FROM'  => [TOPICS_TABLE    => 't2'],
-							'ON'    => 't1.topic_moved_id = t2.topic_id',
-						],
-					],
-					'WHERE'     => 't1.topic_moved_id <> 0
-								AND t2.topic_id IS NULL',
-				];
-				$sql = $db->sql_build_query('SELECT', $sql_array);
-				$result = $db->sql_query_limit($sql, $batch_size);
-
-				$topic_ids = [];
-				while ($row = $db->sql_fetchrow($result))
-				{
-					$topic_ids[] = (int) $row['topic_id'];
-
-					$sync_forum_ids[(int) $row['forum_id']] = (int) $row['forum_id'];
-				}
-				$db->sql_freeresult($result);
-
-				if (!empty($topic_ids))
-				{
-					$sql = 'DELETE FROM ' . TOPICS_TABLE . '
-						WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
-					$db->sql_query($sql);
-				}
-			}
-			while (sizeof($topic_ids) == $batch_size);
-
-			// Sync the forums we have deleted shadow topics from.
-			sync('forum', 'forum_id', $sync_forum_ids, true, true);
 
 			// Unread posts search load switch
 			set_config('load_unreads_search', '1');

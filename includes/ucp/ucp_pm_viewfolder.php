@@ -60,22 +60,6 @@ function view_folder($id, $mode, $folder_id, $folder)
 		$s_mark_options .= '<option value="' . $mark_option . '">' . $user->lang[strtoupper($mark_option)] . '</option>';
 	}
 
-	// We do the folder moving options here too, for template authors to use...
-	$s_folder_move_options = '';
-	if ($folder_id != PRIVMSGS_NO_BOX && $folder_id != PRIVMSGS_OUTBOX)
-	{
-		foreach ($folder as $f_id => $folder_ary)
-		{
-			if ($f_id == PRIVMSGS_OUTBOX || $f_id == PRIVMSGS_SENTBOX || $f_id == $folder_id)
-			{
-				continue;
-			}
-
-			$s_folder_move_options .= '<option' . (($f_id != PRIVMSGS_INBOX) ? ' class="sep"' : '') . ' value="' . $f_id . '">';
-			$s_folder_move_options .= sprintf($user->lang['MOVE_MARKED_TO_FOLDER'], $folder_ary['folder_name']);
-			$s_folder_move_options .= (($folder_ary['unread_messages']) ? ' [' . $folder_ary['unread_messages'] . '] ' : '') . '</option>';
-		}
-	}
 	$friend = $foe = [];
 
 	// Get friends and foes
@@ -91,10 +75,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 	}
 	$db->sql_freeresult($result);
 
-	$template->assign_vars([
-		'S_MARK_OPTIONS'        => $s_mark_options,
-		'S_MOVE_MARKED_OPTIONS' => $s_folder_move_options]
-	);
+	$template->assign_var('S_MARK_OPTIONS', $s_mark_options);
 
 	// Okay, lets dump out the page ...
 	if (sizeof($folder_info['pm_list']))
@@ -252,7 +233,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 		'S_SELECT_SORT_DAYS'    => $s_limit_days,
 		'S_TOPIC_ICONS'         => (bool) $config['enable_pm_icons'],
 
-		'U_POST_NEW_TOPIC'  => ($auth->acl_get('u_sendpm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose') : '',
+		'U_COMPOSE_PM'      => ($auth->acl_get('u_sendpm')) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose') : '',
 		'S_PM_ACTION'       => append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode=view&amp;action=view_folder&amp;f={$folder_id}" . (($start !== 0) ? "&amp;start={$start}" : '')),
 	]);
 
@@ -292,7 +273,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 		$sql_sort_order = $sort_by_sql[$sort_key] . ' ' . $direction;
 	}
 
-	$sql = 'SELECT t.*, p.root_level, p.message_time, p.message_subject, p.icon_id, p.to_address, p.message_attachment, p.bcc_address, u.username, u.username_clean, u.user_colour, p.message_reported
+	$sql = 'SELECT t.*, p.root_level, p.message_time, p.message_subject, p.icon_id, p.to_address, p.message_attachment, u.username, u.username_clean, u.user_colour, p.message_reported
 		FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . " u
 		WHERE t.user_id = {$user_id}
 			AND p.author_id = u.user_id

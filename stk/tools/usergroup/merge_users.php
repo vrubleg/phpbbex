@@ -319,33 +319,6 @@ class merge_users
 				],
 				null,
 			],
-			// Only custom folders making this easy as 3.14159
-			'privmsgs_folder'       => [
-				[
-					'user_id'       => 'id',
-				],
-				[
-					'user_id',
-					'user_id',
-				],
-			],
-			'privmsgs_rules'        => [
-				[
-					'user_id'       => 'id',
-					'rule_user_id'  => 'id',
-					'rule_string'   => 'name', // Not all the time
-				],
-				// Rules referencing our source user
-				[
-					'rule_user_id',
-					['rule_user_id', 'rule_string'],
-				],
-				// Rules created by our source user
-				[
-					'user_id',
-					'user_id',
-				],
-			],
 			'privmsgs_to'           => [
 				[
 					'user_id'   => 'id', // Destination user
@@ -528,7 +501,7 @@ class merge_users
 			$update['target']['user_ip']        = $source['user_ip'];
 		}
 
-		foreach (['lastvisit', 'lastmark', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime', 'full_folder'] as $var)
+		foreach (['lastvisit', 'lastmark', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime'] as $var)
 		{
 			if ($source['user_' . $var] > $target['user_' . $var])
 			{
@@ -544,17 +517,6 @@ class merge_users
 				$update['target']['user_' . $var] = $source['user_' . $var] + $target['user_' . $var];
 				$update['source']['user_' . $var] = 0;
 			}
-		}
-
-		if ($source['user_message_rules'])
-		{
-			// Update this only if the source has rules
-			if (!$target['user_message_rules'])
-			{
-				$update['target']['user_message_rules'] = 1;
-			}
-			// No longer has rules ;)
-			$update['source']['user_message_rules'] = 0;
 		}
 
 		if ($source['user_notify_type'] != $target['user_notify_type'] && $target['user_notify_type'] != NOTIFY_BOTH)
@@ -835,16 +797,15 @@ class merge_users
 	{
 		global $db;
 
-		$sql = 'SELECT msg_id, to_address, bcc_address
+		$sql = 'SELECT msg_id, to_address
 			FROM ' . PRIVMSGS_TABLE . "
-			WHERE to_address LIKE '%u_{$source['user_id']}%'
-				OR bcc_address LIKE '%u_{$source['user_id']}%'";
+			WHERE to_address LIKE '%u_{$source['user_id']}%'";
 		$result = $db->sql_query($sql);
 
 		$sql = [];
 
 		while ($row = $db->sql_fetchrow($result))
-        {
+		{
 			$to_id = explode(':',$row['to_address']);
 			foreach ($to_id as $key => $v1)
 			{
@@ -856,25 +817,10 @@ class merge_users
 			}
 			$to_address = implode(':', $to_id);
 
-			$bcc_id = explode(':',$row['bcc_address']);
-			foreach ($bcc_id as $key => $v1)
-			{
-				$trimmed = (int) ltrim($v1, 'u_');
-				if ($trimmed === $source['user_id'])
-				{
-					$bcc_id[$key] = 'u_' . $target['user_id'];
-				}
-			}
-			$bcc_address = implode(':', $bcc_id);
-
-
-            $sql[] = 'UPDATE ' . PRIVMSGS_TABLE . '
-                SET ' . $db->sql_build_array('UPDATE', [
-					'to_address'    => $to_address,
-					'bcc_address'   => $bcc_address,
-            ]) . '
-            WHERE msg_id = ' . (int) $row['msg_id'];
-        }
+			$sql[] = 'UPDATE ' . PRIVMSGS_TABLE . '
+				SET ' . $db->sql_build_array('UPDATE', ['to_address' => $to_address]) . '
+				WHERE msg_id = ' . (int) $row['msg_id'];
+		}
 
 		return $sql;
 	}

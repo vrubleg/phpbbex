@@ -1285,13 +1285,6 @@ ul.topiclist li.row dt a.subforum.unread
 	background-image: url("{IMG_SUBFORUM_UNREAD_SRC}");
 }
 
-ul.topiclist .forum-image
-{
-	float: left;
-	padding-top: 5px;
-	margin-right: 5px;
-}
-
 ul.topiclist li.row
 {
 	border-top: 1px solid #ffffff;
@@ -2174,23 +2167,6 @@ fieldset.polls dd div
 	background-repeat: no-repeat;
 }
 
-/* pm list in compose message if mass pm is enabled */
-dl.pmlist dt
-{
-	width: 60% !important;
-}
-
-dl.pmlist dt textarea
-{
-	width: 95%;
-}
-
-dl.pmlist dd
-{
-	margin-left: 61% !important;
-	margin-bottom: 2px;
-}
-
 /* Profiles on left
 ---------------------------------------- */
 body.style-mp-on-left .attachbox
@@ -2329,7 +2305,6 @@ div.postbody div.remark
 .locked-icon span   { background: url("{IMG_BUTTON_TOPIC_LOCKED_SRC}") 0 0 no-repeat; }
 .pmreply-icon span  { background: url("{IMG_BUTTON_PM_REPLY_SRC}") 0 0 no-repeat; }
 .newpm-icon span    { background: url("{IMG_BUTTON_PM_NEW_SRC}") 0 0 no-repeat; }
-.forwardpm-icon span { background: url("{IMG_BUTTON_PM_FORWARD_SRC}") 0 0 no-repeat; }
 
 /* Set big button dimensions */
 .buttons div.reply-icon     { width: {IMG_BUTTON_TOPIC_REPLY_WIDTH}px; height: {IMG_BUTTON_TOPIC_REPLY_HEIGHT}px; }
@@ -2337,7 +2312,6 @@ div.postbody div.remark
 .buttons div.locked-icon    { width: {IMG_BUTTON_TOPIC_LOCKED_WIDTH}px; height: {IMG_BUTTON_TOPIC_LOCKED_HEIGHT}px; }
 .buttons div.pmreply-icon   { width: {IMG_BUTTON_PM_REPLY_WIDTH}px; height: {IMG_BUTTON_PM_REPLY_HEIGHT}px; }
 .buttons div.newpm-icon     { width: {IMG_BUTTON_PM_NEW_WIDTH}px; height: {IMG_BUTTON_PM_NEW_HEIGHT}px; }
-.buttons div.forwardpm-icon { width: {IMG_BUTTON_PM_FORWARD_WIDTH}px; height: {IMG_BUTTON_PM_FORWARD_HEIGHT}px; }
 
 /* Icon images
 ---------------------------------------- */
@@ -2894,13 +2868,6 @@ dl.mini dd
 #pm-menu
 {
 	line-height: 2.5em;
-}
-
-/* PM panel adjustments */
-.reply-all
-{
-	font-size: 11px;
-	padding-top: 5px;
 }
 
 /* PM Message history */

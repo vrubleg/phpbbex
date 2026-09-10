@@ -34,12 +34,6 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		trigger_error($message);
 	}
 
-	// Do not allow hold messages to be seen
-	if ($folder_id == PRIVMSGS_HOLD_BOX)
-	{
-		trigger_error('NO_AUTH_READ_HOLD_MESSAGE');
-	}
-
 	// Grab icons
 	$icons = $cache->obtain_icons();
 
@@ -52,8 +46,8 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		$bbcode = new bbcode($message_row['bbcode_bitfield']);
 	}
 
-	// Assign TO/BCC Addresses to template
-	write_pm_addresses(['to' => $message_row['to_address'], 'bcc' => $message_row['bcc_address']], $author_id);
+	// Assign recipients to template
+	write_pm_addresses($message_row['to_address']);
 
 	$user_info = get_user_information($author_id, $message_row);
 
@@ -168,7 +162,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	$url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm');
 
 	// Number of "to" recipients
-	$num_recipients = (int) preg_match_all('/:?(u|g)_([0-9]+):?/', $message_row['to_address'], $match);
+	$num_recipients = (int) preg_match_all('/:?u_([0-9]+):?/', $message_row['to_address'], $match);
 
 	$bbcode_status  = ($config['allow_bbcode'] && $config['auth_bbcode_pm'] && $auth->acl_get('u_pm_bbcode'));
 
@@ -181,7 +175,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'RANK_TITLE'        => $user_info['rank_title'],
 		'RANK_IMG'          => $user_info['rank_image'],
 		'AUTHOR_AVATAR'     => $user_info['avatar'] ?? '',
-		'AUTHOR_JOINED'     => $user->format_date($user_info['user_regdate']),
+		'AUTHOR_JOINED'     => $user->format_date($user_info['user_regdate'], false, false, true),
 		'AUTHOR_WITH_US'    => !empty($config['style_mp_show_with_us']) ? get_verbal_time_delta($user_info['user_regdate'], time(), false, 2) : '',
 		'AUTHOR_POSTS'      => (int) $user_info['user_posts'],
 		'AUTHOR_TOPICS'     => (int) $user_info['user_topics'],
@@ -228,24 +222,21 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'U_DELETE'          => "{$url}&amp;mode=compose&amp;action=delete&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'],
 		'U_EMAIL'           => $user_info['email'],
 		'U_REPORT'          => ($config['allow_pm_report']) ? append_sid(PHPBB_ROOT_PATH . 'report.php', "pm=" . $message_row['msg_id']) : '',
-		'U_QUOTE'           => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
 		'U_EDIT'            => (($message_row['message_time'] > time() - ($config['pm_edit_time'] * 60) || !$config['pm_edit_time']) && $folder_id == PRIVMSGS_OUTBOX && $auth->acl_get('u_pm_edit')) ? "{$url}&amp;mode=compose&amp;action=edit&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
-		'U_POST_REPLY_PM'   => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '',
-		'U_POST_REPLY_ALL'  => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;reply_to_all=1&amp;p=" . $message_row['msg_id'] : '',
-		'U_PREVIOUS_PM'     => "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=previous",
-		'U_NEXT_PM'         => "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=next",
+		'U_REPLY'           => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p={$message_row['msg_id']}" : '',
+		'U_REPLY_TO_ALL'    => ($num_recipients > 1 && $auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=reply&amp;f={$folder_id}&amp;p={$message_row['msg_id']}&amp;reply_to_all=1" : '',
+		'U_QUOTE'           => ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p={$message_row['msg_id']}" : '',
+		'U_QUOTE_TO_ALL'    => ($num_recipients > 1 && $auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "{$url}&amp;mode=compose&amp;action=quote&amp;f={$folder_id}&amp;p={$message_row['msg_id']}&amp;reply_to_all=1" : '',
 
 		'U_PM_ACTION'       => $url . '&amp;mode=compose&amp;f=' . $folder_id . '&amp;p=' . $message_row['msg_id'],
 
 		'S_HAS_ATTACHMENTS' => (sizeof($attachments) > 0),
 		'S_DISPLAY_NOTICE'  => $display_notice && $message_row['message_attachment'],
 		'S_AUTHOR_DELETED'  => ($author_id == ANONYMOUS),
-		'S_SPECIAL_FOLDER'  => in_array($folder_id, [PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX]),
 		'S_PM_RECIPIENTS'   => $num_recipients,
 		'S_BBCODE_ALLOWED'  => ($bbcode_status) ? 1 : 0,
 
-		'U_PRINT_PM'        => "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=print",
-		'U_FORWARD_PM'      => ($auth->acl_get('u_sendpm')) ? "{$url}&amp;mode=compose&amp;action=forward&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] : '']
+		'U_PRINT_PM'        => "{$url}&amp;f={$folder_id}&amp;p=" . $message_row['msg_id'] . "&amp;view=print"]
 	);
 
 	if (class_exists('phpbb_gallery_integration'))

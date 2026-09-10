@@ -205,8 +205,6 @@ function user_add($user_row, $cp_data = false)
 		'user_new_privmsg'      => 0,
 		'user_unread_privmsg'   => 0,
 		'user_last_privmsg'     => 0,
-		'user_message_rules'    => 0,
-		'user_full_folder'      => PRIVMSGS_NO_BOX,
 
 		'user_notify'           => 0,
 		'user_notify_pm'        => 1,
@@ -484,7 +482,7 @@ function user_delete($mode, $user_id, $post_username = false)
 
 	$db->sql_transaction('begin');
 
-	$table_ary = [USERS_TABLE, USER_GROUP_TABLE, TOPICS_WATCH_TABLE, FORUMS_WATCH_TABLE, ACL_USERS_TABLE, TOPICS_TRACK_TABLE, FORUMS_TRACK_TABLE, PROFILE_FIELDS_DATA_TABLE, MODERATOR_CACHE_TABLE, DRAFTS_TABLE, BOOKMARKS_TABLE, SESSIONS_KEYS_TABLE, PRIVMSGS_FOLDER_TABLE, PRIVMSGS_RULES_TABLE];
+	$table_ary = [USERS_TABLE, USER_GROUP_TABLE, TOPICS_WATCH_TABLE, FORUMS_WATCH_TABLE, ACL_USERS_TABLE, TOPICS_TRACK_TABLE, FORUMS_TRACK_TABLE, PROFILE_FIELDS_DATA_TABLE, MODERATOR_CACHE_TABLE, DRAFTS_TABLE, BOOKMARKS_TABLE, SESSIONS_KEYS_TABLE];
 
 	if (class_exists('phpbb_gallery_integration'))
 	{

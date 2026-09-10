@@ -611,7 +611,7 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0, $warnin
 			'bbcode_bitfield'       => $message_parser->bbcode_bitfield,
 			'bbcode_uid'            => $message_parser->bbcode_uid,
 			'message'               => $message_parser->message,
-			'address_list'          => ['u' => [$user_row['user_id'] => 'to']],
+			'address_list'          => [$user_row['user_id']],
 		];
 
 		submit_pm('post', $lang[strtoupper($warning_type).'_PM_SUBJECT'], $pm_data, false);

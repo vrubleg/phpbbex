@@ -481,7 +481,6 @@ class ucp_groups
 							$submit_ary = [
 								'colour'        => request_var('group_colour', ''),
 								'rank'          => request_var('group_rank', 0),
-								'receive_pm'    => isset($_REQUEST['group_receive_pm']) ? 1 : 0,
 							];
 
 							if (!check_form_key('ucp_groups'))
@@ -506,7 +505,6 @@ class ucp_groups
 								$test_variables = [
 									'colour'        => 'string',
 									'rank'          => 'int',
-									'receive_pm'    => 'int',
 									'legend'        => 'int',
 								];
 
@@ -585,8 +583,6 @@ class ucp_groups
 							'S_SPECIAL_GROUP'   => ($group_type == GROUP_SPECIAL),
 
 							'ERROR_MSG'             => (sizeof($error)) ? implode('<br />', $error) : '',
-							'GROUP_RECEIVE_PM'      => (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
-
 							'GROUP_DESC'            => $group_desc_data['text'],
 							'S_DESC_BBCODE_CHECKED' => $group_desc_data['allow_bbcode'],
 							'S_DESC_URLS_CHECKED'   => $group_desc_data['allow_urls'],

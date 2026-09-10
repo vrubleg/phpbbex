@@ -999,8 +999,7 @@ if ($submit || $preview || $refresh)
 		{
 			$sql = 'UPDATE ' . TOPICS_TABLE . "
 				SET topic_status = {$change_topic_status}
-				WHERE topic_id = {$topic_id}
-					AND topic_moved_id = 0";
+				WHERE topic_id = {$topic_id}";
 			$db->sql_query($sql);
 
 			$user_lock = ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $post_data['topic_poster']) ? 'USER_' : '';

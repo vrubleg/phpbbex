@@ -24,7 +24,7 @@
 			<!-- IF U_EDIT --><li class="edit-icon"><a href="{U_EDIT}" title="{L_POST_EDIT_PM}"><span>{L_POST_EDIT_PM}</span></a></li><!-- ENDIF -->
 			<!-- IF U_DELETE --><li class="delete-icon"><a href="{U_DELETE}" title="{L_DELETE_MESSAGE}"><span>{L_DELETE_MESSAGE}</span></a></li><!-- ENDIF -->
 			<!-- IF U_REPORT --><li class="report-icon"><a href="{U_REPORT}" title="{L_REPORT_PM}"><span>{L_REPORT_PM}</span></a></li><!-- ENDIF -->
-			<!-- IF U_QUOTE --><li class="quote-icon"><a href="{U_QUOTE}" title="{L_POST_QUOTE_PM}"><span>{L_POST_QUOTE_PM}</span></a></li><!-- ENDIF -->
+			<!-- IF U_QUOTE --><li class="quote-icon"><a href="<!-- IF U_QUOTE_TO_ALL -->{U_QUOTE_TO_ALL}<!-- ELSE -->{U_QUOTE}<!-- ENDIF -->" title="{L_POST_QUOTE_PM}"><span>{L_POST_QUOTE_PM}</span></a></li><!-- ENDIF -->
 		</ul>
 		<!-- ENDIF -->
 
@@ -33,8 +33,7 @@
 		<p class="author">
 			<strong>{L_SENT_AT}:</strong> {SENT_DATE}
 			<br /><strong>{L_PM_FROM}:</strong> {MESSAGE_AUTHOR_FULL}
-			<!-- IF S_TO_RECIPIENT --><br /><strong>{L_TO}:</strong> <!-- BEGIN to_recipient --><!-- IF to_recipient.NAME_FULL -->{to_recipient.NAME_FULL}<!-- ELSE --><a href="{to_recipient.U_VIEW}" style="color:<!-- IF to_recipient.COLOUR -->{to_recipient.COLOUR}<!-- ELSEIF to_recipient.IS_GROUP -->#0000ff<!-- ENDIF -->;">{to_recipient.NAME}</a><!-- ENDIF -->&nbsp;<!-- END to_recipient --><!-- ENDIF -->
-			<!-- IF S_BCC_RECIPIENT --><br /><strong>{L_BCC}:</strong> <!-- BEGIN bcc_recipient --><!-- IF bcc_recipient.NAME_FULL -->{bcc_recipient.NAME_FULL}<!-- ELSE --><a href="{bcc_recipient.U_VIEW}" style="color:<!-- IF bcc_recipient.COLOUR -->{bcc_recipient.COLOUR}<!-- ELSEIF bcc_recipient.IS_GROUP -->#0000ff<!-- ENDIF -->;">{bcc_recipient.NAME}</a><!-- ENDIF -->&nbsp;<!-- END bcc_recipient --><!-- ENDIF -->
+			<!-- IF S_TO_RECIPIENT --><br /><strong>{L_TO}:</strong> <!-- BEGIN to_recipient -->{to_recipient.NAME_FULL}&nbsp;<!-- END to_recipient --><!-- ENDIF -->
 		</p>
 
 
@@ -71,7 +70,7 @@
 		<!-- IF AUTHOR_AVATAR --><dd class="avatar"><a href="{U_MESSAGE_AUTHOR}">{AUTHOR_AVATAR}</a></dd><!-- ENDIF -->
 		<dd class="fseparator"></dd>
 		<!-- IF STYLE_MP_SHOW_WARNINGS and AUTHOR_WARNINGS --><dd><strong>{L_WARNINGS}:</strong> {AUTHOR_WARNINGS}</dd><!-- ENDIF -->
-		<!-- IF STYLE_MP_SHOW_AGE and AUTHOR_AGE and AUTHOR_AGE < 65 and AUTHOR_AGE > 10 --><dd><strong>{L_AGE}:</strong> {AUTHOR_AGE}</dd><!-- ENDIF -->
+		<!-- IF STYLE_MP_SHOW_AGE and AUTHOR_AGE --><dd><strong>{L_AGE}:</strong> {AUTHOR_AGE}</dd><!-- ENDIF -->
 		<!-- IF STYLE_MP_SHOW_FROM and AUTHOR_FROM --><dd><strong>{L_LOCATION}:</strong> {AUTHOR_FROM}</dd><!-- ENDIF -->
 		<!-- IF S_RATE_ENABLED and (STYLE_MP_SHOW_RATING or STYLE_MP_SHOW_RATING_DETAILED) --><dd><strong>{L_USER_RATING}:</strong> <!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --><!-- IF STYLE_MP_SHOW_RATING and STYLE_MP_SHOW_RATING_DETAILED -->{AUTHOR_RATING} (+{AUTHOR_RATING_POSITIVE}/−{AUTHOR_RATING_NEGATIVE})<!-- ELSEIF STYLE_MP_SHOW_RATING_DETAILED -->+{AUTHOR_RATING_POSITIVE}/−{AUTHOR_RATING_NEGATIVE}<!-- ELSE --><span title="+{AUTHOR_RATING_POSITIVE}/−{AUTHOR_RATING_NEGATIVE}">{AUTHOR_RATING}</span><!-- ENDIF --><!-- ELSE -->{AUTHOR_RATING}<!-- ENDIF --></dd><!-- ENDIF -->
 		<!-- IF S_RATE_ENABLED and (STYLE_MP_SHOW_RATED or STYLE_MP_SHOW_RATED_DETAILED) --><dd><strong>{L_USER_RATED}:</strong> <!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --><!-- IF STYLE_MP_SHOW_RATED and STYLE_MP_SHOW_RATED_DETAILED -->{AUTHOR_RATED} (+{AUTHOR_RATED_POSITIVE}/−{AUTHOR_RATED_NEGATIVE})<!-- ELSEIF STYLE_MP_SHOW_RATED_DETAILED -->+{AUTHOR_RATED_POSITIVE}/−{AUTHOR_RATED_NEGATIVE}<!-- ELSE --><span title="+{AUTHOR_RATED_POSITIVE}/−{AUTHOR_RATED_NEGATIVE}">{AUTHOR_RATED}</span><!-- ENDIF --><!-- ELSE -->{AUTHOR_RATED}<!-- ENDIF --></dd><!-- ENDIF -->
@@ -96,19 +95,6 @@
 
 	</div>
 </div>
-
-<!-- IF S_VIEW_MESSAGE -->
-<fieldset class="display-options">
-	<!-- IF U_PREVIOUS_PM --><a href="{U_PREVIOUS_PM}" class="left-box nav-to-left">{L_VIEW_PREVIOUS_PM}</a><!-- ENDIF -->
-	<!-- IF U_NEXT_PM --><a href="{U_NEXT_PM}" class="right-box nav-to-right">{L_VIEW_NEXT_PM}</a><!-- ENDIF -->
-
-	<!-- IF S_MARK_OPTIONS --><label for="mark_option"><select name="mark_option" id="mark_option">{S_MARK_OPTIONS}</select></label>&nbsp;<input class="button2" type="submit" name="submit_mark" value="{L_GO}" /><!-- ENDIF -->
-	<!-- IF not S_UNREAD and not S_SPECIAL_FOLDER --><label for="dest_folder"><!-- IF S_VIEW_MESSAGE -->{L_MOVE_TO_FOLDER}: <!-- ELSE -->{L_MOVE_MARKED_TO_FOLDER}<!-- ENDIF --> <select name="dest_folder" id="dest_folder">{S_TO_FOLDER_OPTIONS}</select></label> <input class="button2" type="submit" name="move_pm" value="{L_GO}" /><!-- ENDIF -->
-	<input type="hidden" name="marked_msg_id[]" value="{MSG_ID}" />
-	<input type="hidden" name="cur_folder_id" value="{CUR_FOLDER_ID}" />
-	<input type="hidden" name="p" value="{MSG_ID}" />
-</fieldset>
-<!-- ENDIF -->
 
 <!-- INCLUDE ucp_pm_message_footer.html -->
 

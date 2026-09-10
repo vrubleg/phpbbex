@@ -455,7 +455,6 @@ $lang = array_merge($lang, [
 	'LOG_APPROVE_TOPIC'         => '<strong>Approved topic</strong><br />» %s',
 	'LOG_BUMP_TOPIC'            => '<strong>User bumped topic</strong><br />» %s',
 	'LOG_DELETE_POST'           => '<strong>Deleted post “%1$s” written by</strong><br />» %2$s',
-	'LOG_DELETE_SHADOW_TOPIC'   => '<strong>Deleted shadow topic</strong><br />» %s',
 	'LOG_DELETE_TOPIC'          => '<strong>Deleted topic “%1$s” written by</strong><br />» %2$s',
 	'LOG_FORK'                  => '<strong>Copied topic</strong><br />» from %s',
 	'LOG_LOCK'                  => '<strong>Locked topic</strong><br />» %s',
@@ -474,7 +473,6 @@ $lang = array_merge($lang, [
 
 	'LOG_TOPIC_APPROVED'        => '<strong>Approved topic</strong><br />» %s',
 	'LOG_TOPIC_DISAPPROVED'     => '<strong>Disapproved topic “%1$s” with the following reason</strong><br />%2$s',
-	'LOG_TOPIC_RESYNC'          => '<strong>Resynchronised topic counters</strong><br />» %s',
 	'LOG_TOPIC_TYPE_CHANGED'    => '<strong>Changed topic type</strong><br />» %s',
 	'LOG_UNLOCK'                => '<strong>Unlocked topic</strong><br />» %s',
 	'LOG_UNLOCK_POST'           => '<strong>Unlocked post</strong><br />» %s',

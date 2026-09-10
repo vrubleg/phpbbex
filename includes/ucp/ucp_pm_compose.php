@@ -14,7 +14,7 @@ if (!defined('IN_PHPBB'))
 * Compose private message
 * Called from ucp_pm with mode == 'compose'
 */
-function compose_pm($id, $mode, $action, $user_folders = [])
+function compose_pm($id, $mode, $action)
 {
 	global $template, $db, $auth, $user, $config;
 
@@ -30,7 +30,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 
 	// Grab only parameters needed here
 	$to_user_id      = request_var('u', 0);
-	$to_group_id     = request_var('g', 0);
 	$msg_id          = request_var('p', 0);
 	$load_draft_id   = request_var('d', 0);
 	$loaded_draft_id = request_var('loaded_draft_id', 0);
@@ -39,11 +38,24 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	$reply_to_all   = request_var('reply_to_all', 0);
 
 	// Do NOT use request_var or specialchars here
-	$address_list   = $_REQUEST['address_list'] ?? [];
-
-	if (!is_array($address_list))
+	$submitted_address_list = $_REQUEST['address_list'] ?? [];
+	$address_list = [];
+	if (is_array($submitted_address_list))
 	{
-		$address_list = [];
+		foreach ($submitted_address_list as $user_id)
+		{
+			if (!is_scalar($user_id))
+			{
+				continue;
+			}
+
+			$user_id = (int) $user_id;
+			if ($user_id && $user_id != ANONYMOUS)
+			{
+				$address_list[] = $user_id;
+			}
+		}
+		$address_list = array_values(array_unique($address_list));
 	}
 
 	$preview    = isset($_POST['preview']);
@@ -53,15 +65,12 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	$delete     = isset($_POST['delete']);
 
 	$remove_u   = isset($_REQUEST['remove_u']);
-	$remove_g   = isset($_REQUEST['remove_g']);
 	$add_to     = isset($_REQUEST['add_to']);
-	$add_bcc    = isset($_REQUEST['add_bcc']);
 	$refresh    = isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || $save || $load
-		|| $remove_u || $remove_g || $add_to || $add_bcc;
+		|| $remove_u || $add_to;
 	$submit     = isset($_POST['post']) && !$refresh && !$preview;
 
 	$action     = ($delete && !$preview && !$refresh && $submit) ? 'delete' : $action;
-	$select_single = (!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm'));
 
 	$error = [];
 	$current_time = time();
@@ -83,42 +92,9 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	// Output PM_TO box if message composing
 	if ($action != 'edit')
 	{
-		// Add groups to PM box
-		if ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group'))
-		{
-			$sql = 'SELECT g.group_id, g.group_name, g.group_type
-				FROM ' . GROUPS_TABLE . ' g';
-
-			if (!$auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
-			{
-				$sql .= ' LEFT JOIN ' . USER_GROUP_TABLE . ' ug
-					ON (
-						g.group_id = ug.group_id
-						AND ug.user_id = ' . $user->data['user_id'] . '
-						AND ug.user_pending = 0
-					)
-					WHERE (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
-			}
-
-			$sql .= ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? ' WHERE ' : ' AND ';
-
-			$sql .= 'g.group_receive_pm = 1
-				ORDER BY g.group_type DESC, g.group_name ASC';
-			$result = $db->sql_query($sql);
-
-			$group_options = '';
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$group_options .= '<option' . (($row['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
-			}
-			$db->sql_freeresult($result);
-		}
-
 		$template->assign_vars([
 			'S_SHOW_PM_BOX'     => true,
-			'S_ALLOW_MASS_PM'   => ($config['allow_mass_pm'] && $auth->acl_get('u_masspm')),
-			'S_GROUP_OPTIONS'   => ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group')) ? $group_options : '',
-			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single={$select_single}"),
+			'U_FIND_USERNAME'   => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=postform&amp;field=username_list&amp;select_single=true'),
 		]);
 	}
 
@@ -138,7 +114,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 
 		case 'reply':
 		case 'quote':
-		case 'forward':
 		case 'quotepost':
 			if (!$msg_id)
 			{
@@ -199,11 +174,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		default:
 			trigger_error('NO_ACTION_MODE', E_USER_ERROR);
 		break;
-	}
-
-	if ($action == 'forward' && !$auth->acl_get('u_sendpm'))
-	{
-		trigger_error('NO_AUTH_SEND_MESSAGE');
 	}
 
 	if ($action == 'edit' && !$auth->acl_get('u_pm_edit'))
@@ -282,27 +252,21 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 				// Add the original author as the recipient if quoting a post or only replying and not having checked "reply to all"
 				if ($action == 'quotepost' || !$reply_to_all)
 				{
-					$address_list = ['u' => [$post['author_id'] => 'to']];
+					$address_list = [$post['author_id']];
 				}
 				else
 				{
 					// We try to include every previously listed member from the TO Header - Reply to all
-					$address_list = rebuild_header(['to' => $post['to_address']]);
-
-					// Add the author (if he is already listed then this is no shame (it will be overwritten))
-					$address_list['u'][$post['author_id']] = 'to';
+					$address_list = array_merge([(int) $post['author_id']], rebuild_header($post['to_address']));
+					$address_list = array_values(array_unique($address_list));
 
 					// Now, make sure the user itself is not listed. ;)
-					if (isset($address_list['u'][$user->data['user_id']]))
-					{
-						unset($address_list['u'][$user->data['user_id']]);
-					}
+					$address_list = array_values(array_diff($address_list, [$user->data['user_id']]));
 				}
 			}
 			else if ($action == 'edit' && !sizeof($address_list) && !$refresh && !$submit && !$preview)
 			{
-				// Rebuild TO and BCC Header
-				$address_list = rebuild_header(['to' => $post['to_address'], 'bcc' => $post['bcc_address']]);
+				$address_list = rebuild_header($post['to_address']);
 			}
 
 			if ($action == 'quotepost')
@@ -322,18 +286,10 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 
 		if ($to_user_id && $to_user_id != ANONYMOUS && $action == 'post')
 		{
-			$address_list['u'][$to_user_id] = 'to';
-		}
-		else if ($to_group_id && $action == 'post')
-		{
-			$address_list['g'][$to_group_id] = 'to';
+			$address_list[] = $to_user_id;
+			$address_list = array_values(array_unique($address_list));
 		}
 		$check_value = 0;
-	}
-
-	if (($to_group_id || isset($address_list['g'])) && (!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm_group')))
-	{
-		trigger_error('NO_AUTH_GROUP_MESSAGE');
 	}
 
 	if ($action == 'edit' && !$refresh && !$preview && !$submit)
@@ -396,50 +352,30 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		redirect(append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=view&amp;action=view_message&amp;p=' . $msg_id));
 	}
 
-	// Get maximum number of allowed recipients. Zero means unlimited.
-	$max_recipients = $auth->acl_get('u_masspm_nomax') ? 0 : (int) $config['pm_max_recipients'];
+	// Get maximum number of allowed recipients. One disables multiple recipients, zero means unlimited.
+	$max_recipients = $auth->acl_get('u_masspm') ? (int) $config['pm_max_recipients'] : 1;
 
-	// If this is a quote/reply "to all"... we may increase the max_recpients to the number of original recipients
-	if (($action == 'reply' || $action == 'quote') && $max_recipients && $reply_to_all)
+	// If this is a quote/reply "to all"... we may increase the max_recipients to the number of original recipients
+	if ($max_recipients > 1 && ($action == 'reply' || $action == 'quote') && $reply_to_all)
 	{
 		// We try to include every previously listed member from the TO Header
-		$list = rebuild_header(['to' => $post['to_address']]);
+		$list = rebuild_header($post['to_address']);
 
-		// Can be an empty array too ;)
-		$list = (!empty($list['u'])) ? $list['u'] : [];
-		$list[$post['author_id']] = 'to';
-
-		if (isset($list[$user->data['user_id']]))
-		{
-			unset($list[$user->data['user_id']]);
-		}
+		$list[] = (int) $post['author_id'];
+		$list = array_values(array_unique(array_diff($list, [$user->data['user_id']])));
 
 		$max_recipients = ($max_recipients < sizeof($list)) ? sizeof($list) : $max_recipients;
 
 		unset($list);
 	}
 
-	// Handle User/Group adding/removing
-	handle_message_list_actions($address_list, $error, $remove_u, $remove_g, $add_to, $add_bcc, $refresh, $submit);
-
-	// Check mass pm to group permission
-	if ((!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm_group')) && !empty($address_list['g']))
-	{
-		$address_list = [];
-		$error[] = $user->lang['NO_AUTH_GROUP_MESSAGE'];
-	}
-
-	// Check mass pm to users permission
-	if ((!$config['allow_mass_pm'] || !$auth->acl_get('u_masspm')) && num_recipients($address_list) > 1)
-	{
-		$address_list = get_recipients($address_list, 1);
-		$error[] = $user->lang('TOO_MANY_RECIPIENTS', 1);
-	}
+	// Handle recipient adding/removing
+	handle_message_list_actions($address_list, $error, $remove_u, $add_to, $refresh, $submit);
 
 	// Check for too many recipients
-	if (!empty($address_list['u']) && $max_recipients && sizeof($address_list['u']) > $max_recipients)
+	if ($max_recipients && sizeof($address_list) > $max_recipients)
 	{
-		$address_list = get_recipients($address_list, $max_recipients);
+		$address_list = array_slice($address_list, 0, $max_recipients);
 		$error[] = $user->lang('TOO_MANY_RECIPIENTS', $max_recipients);
 	}
 
@@ -461,7 +397,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$db->sql_freeresult($result);
 	}
 
-	if (!in_array($action, ['quote', 'edit', 'delete', 'forward']))
+	if (!in_array($action, ['quote', 'edit', 'delete']))
 	{
 		$enable_sig     = ($config['allow_sig'] && $config['allow_sig_pm'] && $auth->acl_get('u_sig') && $user->optionget('attachsig'));
 		$enable_smilies = ($config['allow_smilies'] && $auth->acl_get('u_pm_smilies') && $user->optionget('smilies'));
@@ -563,7 +499,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 					'message'         => $message,
 					'loaded_draft_id' => $loaded_draft_id,
 					'u'               => $to_user_id,
-					'g'               => $to_group_id,
 					'p'               => $msg_id]
 				);
 				$s_hidden_fields .= build_address_field($address_list);
@@ -646,7 +581,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		// Parse Attachments - before checksum is calculated
 		$message_parser->parse_attachments('fileupload', $action, 0, $submit, $preview, $refresh, true);
 
-		if (sizeof($message_parser->warn_msg) && !($remove_u || $remove_g || $add_to || $add_bcc))
+		if (sizeof($message_parser->warn_msg) && !($remove_u || $add_to))
 		{
 			$error[] = implode('<br />', $message_parser->warn_msg);
 			$message_parser->warn_msg = [];
@@ -719,12 +654,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			$inbox_folder_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=inbox');
 			$outbox_folder_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=outbox');
 
-			$folder_url = '';
-			if (($folder_id > 0) && isset($user_folders[$folder_id]))
-			{
-				$folder_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $folder_id);
-			}
-
 			$return_box_url = ($action === 'post' || $action === 'edit') ? $outbox_folder_url : $inbox_folder_url;
 			$return_box_lang = ($action === 'post' || $action === 'edit') ? 'PM_OUTBOX' : 'PM_INBOX';
 
@@ -732,13 +661,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			$save_message = ($action === 'edit') ? $user->lang['MESSAGE_EDITED'] : $user->lang['MESSAGE_STORED'];
 			$message = $save_message . '<br /><br />' . $user->lang('VIEW_PRIVATE_MESSAGE', '<a href="' . $return_message_url . '">', '</a>');
 
-			$last_click_type = 'CLICK_RETURN_FOLDER';
-			if ($folder_url)
-			{
-				$message .= '<br /><br />' . sprintf($user->lang['CLICK_RETURN_FOLDER'], '<a href="' . $folder_url . '">', '</a>', $user_folders[$folder_id]['folder_name']);
-				$last_click_type = 'CLICK_GOTO_FOLDER';
-			}
-			$message .= '<br /><br />' . sprintf($user->lang[$last_click_type], '<a href="' . $return_box_url . '">', '</a>', $user->lang[$return_box_lang]);
+			$message .= '<br /><br />' . sprintf($user->lang['CLICK_RETURN_FOLDER'], '<a href="' . $return_box_url . '">', '</a>', $user->lang[$return_box_lang]);
 
 			meta_refresh(3, $return_message_url);
 			trigger_error($message);
@@ -806,7 +729,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	}
 
 	// Decode text for message display
-	$bbcode_uid = (($action == 'quote' || $action == 'forward') && !$preview && !$refresh && (!sizeof($error) || (sizeof($error) && !$submit))) ? $bbcode_uid : $message_parser->bbcode_uid;
+	$bbcode_uid = ($action == 'quote' && !$preview && !$refresh && (!sizeof($error) || (sizeof($error) && !$submit))) ? $bbcode_uid : $message_parser->bbcode_uid;
 
 	$message_parser->decode_message($bbcode_uid);
 
@@ -836,30 +759,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		$message_subject = ((!preg_match('/^Re:/', $message_subject)) ? 'Re: ' : '') . censor_text($message_subject);
 	}
 
-	if ($action == 'forward' && !$preview && !$refresh && !$submit)
-	{
-		$fwd_to_field = write_pm_addresses(['to' => $post['to_address']], 0, true);
-
-		if ($config['allow_post_links'])
-		{
-			$quote_username_text = '[url=' . generate_board_url() . "/memberlist.php?mode=viewprofile&amp;u={$post['author_id']}]{$quote_username}[/url]";
-		}
-		else
-		{
-			$quote_username_text = $quote_username . ' (' . generate_board_url() . "/memberlist.php?mode=viewprofile&amp;u={$post['author_id']})";
-		}
-
-		$forward_text = [];
-		$forward_text[] = $user->lang['FWD_ORIGINAL_MESSAGE'];
-		$forward_text[] = sprintf($user->lang['FWD_SUBJECT'], censor_text($message_subject));
-		$forward_text[] = sprintf($user->lang['FWD_DATE'], $user->format_date($message_time, false, true));
-		$forward_text[] = sprintf($user->lang['FWD_FROM'], $quote_username_text);
-		$forward_text[] = sprintf($user->lang['FWD_TO'], implode(', ', $fwd_to_field['to']));
-
-		$message_parser->message = implode("\n", $forward_text) . "\n\n[quote=&quot;{$quote_username}&quot;]\n" . censor_text(trim($message_parser->message)) . "\n[/quote]";
-		$message_subject = ((!preg_match('/^Fwd:/', $message_subject)) ? 'Fwd: ' : '') . censor_text($message_subject);
-	}
-
 	$attachment_data = $message_parser->attachment_data;
 	$filename_data = $message_parser->filename_data;
 	$message_text = $message_parser->message;
@@ -880,106 +779,40 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	posting_gen_inline_attachments($attachment_data);
 
 	// Build address list for display
-	// array('u' => array($author_id => 'to'));
-	if (sizeof($address_list))
+	// array($user_id, ...)
+	if (!empty($address_list))
 	{
-		// Get Usernames and Group Names
-		$result = [];
-		if (!empty($address_list['u']))
+		$sql = 'SELECT user_id as id, username as name, user_colour as colour
+			FROM ' . USERS_TABLE . '
+			WHERE ' . $db->sql_in_set('user_id', $address_list) . '
+			ORDER BY username_clean ASC';
+		$result = $db->sql_query($sql);
+
+		$recipients = [];
+		while ($row = $db->sql_fetchrow($result))
 		{
-			$sql = 'SELECT user_id as id, username as name, user_colour as colour
-				FROM ' . USERS_TABLE . '
-				WHERE ' . $db->sql_in_set('user_id', array_map('intval', array_keys($address_list['u']))) . '
-				ORDER BY username_clean ASC';
-			$result['u'] = $db->sql_query($sql);
+			$recipients[$row['id']] = ['name' => $row['name'], 'colour' => $row['colour']];
 		}
-
-		if (!empty($address_list['g']))
-		{
-			$sql = 'SELECT g.group_id AS id, g.group_name AS name, g.group_colour AS colour, g.group_type
-				FROM ' . GROUPS_TABLE . ' g';
-
-			if (!$auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
-			{
-				$sql .= ' LEFT JOIN ' . USER_GROUP_TABLE . ' ug
-					ON (
-						g.group_id = ug.group_id
-						AND ug.user_id = ' . $user->data['user_id'] . '
-						AND ug.user_pending = 0
-					)
-					WHERE (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
-			}
-
-			$sql .= ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? ' WHERE ' : ' AND ';
-
-			$sql .= 'g.group_receive_pm = 1
-				AND ' . $db->sql_in_set('g.group_id', array_map('intval', array_keys($address_list['g']))) . '
-				ORDER BY g.group_name ASC';
-
-			$result['g'] = $db->sql_query($sql);
-		}
-
-		$u = $g = [];
-		$_types = ['u', 'g'];
-		foreach ($_types as $type)
-		{
-			if (isset($result[$type]) && $result[$type])
-			{
-				while ($row = $db->sql_fetchrow($result[$type]))
-				{
-					if ($type == 'g')
-					{
-						$row['name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['name']] : $row['name'];
-					}
-
-					${$type}[$row['id']] = ['name' => $row['name'], 'colour' => $row['colour']];
-				}
-				$db->sql_freeresult($result[$type]);
-			}
-		}
+		$db->sql_freeresult($result);
 
 		// Now Build the address list
-		$plain_address_field = '';
-		foreach ($address_list as $type => $adr_ary)
+		foreach ($address_list as $key => $id)
 		{
-			foreach ($adr_ary as $id => $field)
+			if (!isset($recipients[$id]))
 			{
-				if (!isset(${$type}[$id]))
-				{
-					unset($address_list[$type][$id]);
-					continue;
-				}
-
-				$field = ($field == 'to') ? 'to' : 'bcc';
-				$type = ($type == 'u') ? 'u' : 'g';
-				$id = (int) $id;
-
-				$tpl_ary = [
-					'IS_GROUP'  => ($type == 'g'),
-					'IS_USER'   => ($type == 'u'),
-					'UG_ID'     => $id,
-					'NAME'      => ${$type}[$id]['name'],
-					'COLOUR'    => (${$type}[$id]['colour']) ? '#' . ${$type}[$id]['colour'] : '',
-					'TYPE'      => $type,
-				];
-
-				if ($type == 'u')
-				{
-					$tpl_ary = array_merge($tpl_ary, [
-						'U_VIEW'        => get_username_string('profile', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
-						'NAME_FULL'     => get_username_string('full', $id, ${$type}[$id]['name'], ${$type}[$id]['colour']),
-					]);
-				}
-				else
-				{
-					$tpl_ary = array_merge($tpl_ary, [
-						'U_VIEW'        => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group&amp;g=' . $id),
-					]);
-				}
-
-				$template->assign_block_vars($field . '_recipient', $tpl_ary);
+				unset($address_list[$key]);
+				continue;
 			}
+
+			$id = (int) $id;
+
+			$template->assign_block_vars('to_recipient', [
+				'UG_ID'     => $id,
+				'TYPE'      => 'u',
+				'NAME_FULL' => get_username_string('full', $id, $recipients[$id]['name'], $recipients[$id]['colour']),
+			]);
 		}
+		$address_list = array_values($address_list);
 	}
 
 	// Build hidden address list
@@ -1013,10 +846,6 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 			$page_title = $user->lang['POST_EDIT_PM'];
 		break;
 
-		case 'forward':
-			$page_title = $user->lang['POST_FORWARD_PM'];
-		break;
-
 		default:
 			trigger_error('NO_ACTION_MODE', E_USER_ERROR);
 		break;
@@ -1046,7 +875,8 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 		'MAX_FONT_SIZE'         => (int) $config['max_post_font_size'],
 		'MINI_POST_IMG'         => $user->img('icon_post_target', $user->lang['PM']),
 		'ERROR'                 => (sizeof($error)) ? implode('<br />', $error) : '',
-		'MAX_RECIPIENTS'        => ($config['allow_mass_pm'] && ($auth->acl_get('u_masspm') || $auth->acl_get('u_masspm_group'))) ? $max_recipients : 0,
+		'MAX_RECIPIENTS'        => $max_recipients,
+		'NUM_RECIPIENTS'        => sizeof($address_list),
 
 		'S_COMPOSE_PM'          => true,
 		'S_EDIT_POST'           => ($action == 'edit'),
@@ -1087,7 +917,7 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 	posting_gen_attachment_entry($attachment_data, $filename_data, $allowed);
 
 	// Message History
-	if ($action == 'reply' || $action == 'quote' || $action == 'forward')
+	if ($action == 'reply' || $action == 'quote')
 	{
 		if (message_history($msg_id, $user->data['user_id'], $post, [], true))
 		{
@@ -1099,34 +929,20 @@ function compose_pm($id, $mode, $action, $user_folders = [])
 /**
 * For composing messages, handle list actions
 */
-function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove_g, $add_to, $add_bcc, &$refresh, &$submit)
+function handle_message_list_actions(&$address_list, &$error, $remove_u, $add_to, &$refresh, &$submit)
 {
 	global $auth, $db, $user;
 
-	// Delete User [TO/BCC]
+	// Delete user
 	if ($remove_u && !empty($_REQUEST['remove_u']) && is_array($_REQUEST['remove_u']))
 	{
 		$remove_user_id = array_keys($_REQUEST['remove_u']);
 
 		if (isset($remove_user_id[0]))
 		{
-			unset($address_list['u'][(int) $remove_user_id[0]]);
+			$address_list = array_values(array_diff($address_list, [(int) $remove_user_id[0]]));
 		}
 	}
-
-	// Delete Group [TO/BCC]
-	if ($remove_g && !empty($_REQUEST['remove_g']) && is_array($_REQUEST['remove_g']))
-	{
-		$remove_group_id = array_keys($_REQUEST['remove_g']);
-
-		if (isset($remove_group_id[0]))
-		{
-			unset($address_list['g'][(int) $remove_group_id[0]]);
-		}
-	}
-
-	// Add Selected Groups
-	$group_list = request_var('group_list', [0]);
 
 	// Build usernames to add
 	$usernames = request_var('username', '', true);
@@ -1138,8 +954,8 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 	}
 	$usernames = array_values(array_unique(array_filter(array_map('trim', $usernames), function ($username) { return $username !== ''; })));
 
-	// If add to or add bcc not pressed, users could still have usernames listed they want to add...
-	if (!$add_to && !$add_bcc && (sizeof($group_list) || sizeof($usernames)))
+	// Usernames could still be listed when submitting the message directly.
+	if (!$add_to && sizeof($usernames))
 	{
 		$add_to = true;
 
@@ -1151,19 +967,9 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 		}
 	}
 
-	// Add User/Group [TO]
-	if ($add_to || $add_bcc)
+	// Add users
+	if ($add_to)
 	{
-		$type = ($add_to) ? 'to' : 'bcc';
-
-		if (sizeof($group_list))
-		{
-			foreach ($group_list as $group_id)
-			{
-				$address_list['g'][$group_id] = $type;
-			}
-		}
-
 		// User ID's to add...
 		$user_id_ary = [];
 
@@ -1187,30 +993,30 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 		}
 
 		// Add Friends if specified
-		$friend_list = (isset($_REQUEST['add_' . $type]) && is_array($_REQUEST['add_' . $type])) ? array_map('intval', array_keys($_REQUEST['add_' . $type])) : [];
+		$friend_list = (isset($_REQUEST['add_to']) && is_array($_REQUEST['add_to'])) ? array_map('intval', array_keys($_REQUEST['add_to'])) : [];
 		$user_id_ary = array_merge($user_id_ary, $friend_list);
 
 		foreach ($user_id_ary as $user_id)
 		{
-			if ($user_id == ANONYMOUS)
+			$user_id = (int) $user_id;
+			if (!$user_id || $user_id == ANONYMOUS)
 			{
 				continue;
 			}
 
-			$address_list['u'][$user_id] = $type;
+			$address_list[] = $user_id;
 		}
+
+		$address_list = array_values(array_unique($address_list));
 	}
 
 	// Check for disallowed recipients
-	if (!empty($address_list['u']))
+	if (!empty($address_list))
 	{
-		$blocked_recipients = get_pm_recipients_blocking_sender($user->data['user_id'], array_keys($address_list['u']));
+		$blocked_recipients = get_pm_recipients_blocking_sender($user->data['user_id'], $address_list);
 		if (!empty($blocked_recipients))
 		{
-			foreach ($blocked_recipients as $blocked_user_id)
-			{
-				unset($address_list['u'][$blocked_user_id]);
-			}
+			$address_list = array_values(array_diff($address_list, $blocked_recipients));
 
 			$error[] = $user->lang['PM_YOU_ARE_BLOCKED'];
 		}
@@ -1221,21 +1027,21 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 		{
 			$sql = 'SELECT user_id
 				FROM ' . USERS_TABLE . '
-				WHERE ' . $db->sql_in_set('user_id', array_keys($address_list['u'])) . '
+				WHERE ' . $db->sql_in_set('user_id', $address_list) . '
 					AND user_allow_pm = 0';
 			$result = $db->sql_query($sql);
 
-			$removed = false;
+			$removed_user_ids = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$removed = true;
-				unset($address_list['u'][$row['user_id']]);
+				$removed_user_ids[] = (int) $row['user_id'];
 			}
 			$db->sql_freeresult($result);
 
 			// print a notice about users not being added who do not want to receive pms
-			if ($removed)
+			if (sizeof($removed_user_ids))
 			{
+				$address_list = array_values(array_diff($address_list, $removed_user_ids));
 				$error[] = $user->lang['PM_USERS_REMOVED_NO_PM'];
 			}
 		}
@@ -1248,51 +1054,9 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 function build_address_field($address_list)
 {
 	$s_hidden_address_field = '';
-	foreach ($address_list as $type => $adr_ary)
+	foreach ($address_list as $id)
 	{
-		foreach ($adr_ary as $id => $field)
-		{
-			$s_hidden_address_field .= '<input type="hidden" name="address_list[' . (($type == 'u') ? 'u' : 'g') . '][' . (int) $id . ']" value="' . (($field == 'to') ? 'to' : 'bcc') . '" />';
-		}
+		$s_hidden_address_field .= '<input type="hidden" name="address_list[]" value="' . (int) $id . '" />';
 	}
 	return $s_hidden_address_field;
-}
-
-/**
-* Return number of private message recipients
-*/
-function num_recipients($address_list)
-{
-	$num_recipients = 0;
-
-	foreach ($address_list as $field => $adr_ary)
-	{
-		$num_recipients += sizeof($adr_ary);
-	}
-
-	return $num_recipients;
-}
-
-/**
-* Get number of 'num_recipients' recipients from first position
-*/
-function get_recipients($address_list, $num_recipients = 1)
-{
-	$recipient = [];
-
-	$count = 0;
-	foreach ($address_list as $field => $adr_ary)
-	{
-		foreach ($adr_ary as $id => $type)
-		{
-			if ($count >= $num_recipients)
-			{
-				break 2;
-			}
-			$recipient[$field][$id] = $type;
-			$count++;
-		}
-	}
-
-	return $recipient;
 }

@@ -316,7 +316,6 @@ class acp_groups
 					$submit_ary = [
 						'colour'            => request_var('group_colour', ''),
 						'rank'              => request_var('group_rank', 0),
-						'receive_pm'        => isset($_REQUEST['group_receive_pm']) ? 1 : 0,
 						'legend'            => isset($_REQUEST['group_legend']) ? 1 : 0,
 						'founder_manage'    => 0,
 						'skip_auth'         => request_var('group_skip_auth', 0),
@@ -348,7 +347,6 @@ class acp_groups
 						$test_variables = [
 							'colour'        => 'string',
 							'rank'          => 'int',
-							'receive_pm'    => 'int',
 							'legend'        => 'int',
 							'founder_manage'=> 'int',
 							'skip_auth'     => 'int',
@@ -499,7 +497,6 @@ class acp_groups
 					'GROUP_NAME'            => ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
 					'GROUP_INTERNAL_NAME'   => $group_name,
 					'GROUP_DESC'            => $group_desc_data['text'],
-					'GROUP_RECEIVE_PM'      => (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
 					'GROUP_FOUNDER_MANAGE'  => (isset($group_row['group_founder_manage']) && $group_row['group_founder_manage']) ? ' checked="checked"' : '',
 					'GROUP_LEGEND'          => (isset($group_row['group_legend']) && $group_row['group_legend']) ? ' checked="checked"' : '',
 					'GROUP_COLOUR'          => $group_row['group_colour'] ?? '',

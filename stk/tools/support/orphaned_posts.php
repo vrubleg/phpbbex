@@ -24,7 +24,6 @@ class orphaned_posts
 		$sql = 'SELECT t.topic_id
 			FROM ' . TOPICS_TABLE . ' t
 			LEFT JOIN ' . POSTS_TABLE . ' p ON (p.topic_id = t.topic_id)
-			WHERE t.topic_moved_id = 0
 			GROUP BY t.topic_id
 			HAVING COUNT(p.post_id) = 0';
 		$result = $db->sql_query($sql);
@@ -90,35 +89,9 @@ class orphaned_posts
 		}
 		$db->sql_freeresult($result);
 
-		//
-		// Orphaned shadow topics
-		//
-		$sql = 'SELECT t.topic_id, t.topic_moved_id, t.topic_title, t.topic_poster, t.forum_id, f.forum_name, u.user_id, u.username, u.user_colour
-			FROM ' . TOPICS_TABLE . ' t
-			JOIN ' . USERS_TABLE . ' u ON (u.user_id = t.topic_poster)
-			JOIN ' . FORUMS_TABLE . ' f ON (f.forum_id = t.forum_id)
-			WHERE topic_moved_id <> 0
-				AND NOT EXISTS (SELECT topic_id FROM ' . TOPICS_TABLE . ' WHERE topic_id = t.topic_moved_id)';
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$template->assign_block_vars('shadows', [
-				'FORUM_ID'      => $row['forum_id'],
-				'FORUM_NAME'    => $row['forum_name'],
-				'U_FORUM'       => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id']),
-				'TOPIC_ID'      => $row['topic_id'],
-				'TOPIC_TITLE'   => $row['topic_title'],
-				'USER_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'USER_ID'       => $row['user_id'],
-			]);
-		}
-		$db->sql_freeresult($result);
-
 		$template->assign_vars([
 			'U_EMPTY_TOPICS'    => append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'empty_topics']),
 			'U_ORPHANED_POSTS'  => append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_posts', 'submit' => 1]),
-			'U_ORPHANED_SHADOWS'=> append_sid(STK_INDEX, ['c' => 'support', 't' => 'orphaned_posts', 'mode' => 'orphaned_shadows']),
 		]);
 
 		$template->set_filenames([
@@ -150,7 +123,6 @@ class orphaned_posts
 		switch ($mode)
 		{
 			case 'empty_topics':
-			case 'orphaned_shadows':
 				$topic_ids = request_var('topics', [0 => 0]);
 				if (!sizeof($topic_ids))
 				{

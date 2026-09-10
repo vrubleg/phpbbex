@@ -270,7 +270,6 @@ $template->assign_vars([
 	'FOLDER_STICKY_UNREAD_IMG'  => $user->img('sticky_unread', 'POST_STICKY'),
 	'FOLDER_ANNOUNCE_IMG'       => $user->img('announce_read', 'POST_ANNOUNCEMENT'),
 	'FOLDER_ANNOUNCE_UNREAD_IMG'=> $user->img('announce_unread', 'POST_ANNOUNCEMENT'),
-	'FOLDER_MOVED_IMG'          => $user->img('topic_moved', 'TOPIC_MOVED'),
 	'REPORTED_IMG'              => $user->img('icon_topic_reported', 'TOPIC_REPORTED'),
 	'UNAPPROVED_IMG'            => $user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
 	'GOTO_PAGE_IMG'             => $user->img('icon_post_target', 'GOTO_PAGE'),
@@ -429,9 +428,6 @@ while ($row = $db->sql_fetchrow($result))
 }
 $db->sql_freeresult($result);
 
-// For storing shadow topics
-$shadow_topic_list = [];
-
 if (sizeof($topic_list))
 {
 	// SQL array for obtaining topics/stickies
@@ -451,66 +447,10 @@ if (sizeof($topic_list))
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		if ($row['topic_status'] == ITEM_MOVED)
-		{
-			$shadow_topic_list[$row['topic_moved_id']] = $row['topic_id'];
-		}
-
 		$rowset[$row['topic_id']] = $row;
 	}
 	$db->sql_freeresult($result);
 }
-
-// If we have some shadow topics, update the rowset to reflect their topic information
-if (sizeof($shadow_topic_list))
-{
-	$sql = 'SELECT *
-		FROM ' . TOPICS_TABLE . '
-		WHERE ' . $db->sql_in_set('topic_id', array_keys($shadow_topic_list));
-	$result = $db->sql_query($sql);
-
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$orig_topic_id = $shadow_topic_list[$row['topic_id']];
-
-		// If the shadow topic is already listed within the rowset (happens for active topics for example), then do not include it...
-		if (isset($rowset[$row['topic_id']]))
-		{
-			// We need to remove any trace regarding this topic. :)
-			unset($rowset[$orig_topic_id]);
-			unset($topic_list[array_search($orig_topic_id, $topic_list)]);
-			$topics_count--;
-
-			continue;
-		}
-
-		// Do not include those topics the user has no permission to access
-		if (!$auth->acl_get('f_read', $row['forum_id']))
-		{
-			// We need to remove any trace regarding this topic. :)
-			unset($rowset[$orig_topic_id]);
-			unset($topic_list[array_search($orig_topic_id, $topic_list)]);
-			$topics_count--;
-
-			continue;
-		}
-
-		// We want to retain some values
-		$row = array_merge($row, [
-			'topic_moved_id'    => $rowset[$orig_topic_id]['topic_moved_id'],
-			'topic_status'      => $rowset[$orig_topic_id]['topic_status'],
-			'topic_type'        => $rowset[$orig_topic_id]['topic_type'],
-			'topic_title'       => $rowset[$orig_topic_id]['topic_title'],
-		]);
-
-		// Shadow topics are never reported
-		$row['topic_reported'] = 0;
-
-		$rowset[$orig_topic_id] = $row;
-	}
-	$db->sql_freeresult($result);
-}
-unset($shadow_topic_list);
 
 // Ok, adjust topics count for active topics list
 if ($s_display_active)
@@ -581,15 +521,7 @@ if (sizeof($topic_list))
 		// Replies
 		$replies = ($auth->acl_get('m_approve', $topic_forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
 
-		if ($row['topic_status'] == ITEM_MOVED)
-		{
-			$topic_id = $row['topic_moved_id'];
-			$unread_topic = false;
-		}
-		else
-		{
-			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
-		}
+		$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 
 		// Get folder img, topic status/type related information
 		$folder_img = $folder_alt = $topic_type = '';
@@ -647,7 +579,6 @@ if (sizeof($topic_list))
 			'S_POST_GLOBAL'         => ($row['topic_type'] == POST_GLOBAL),
 			'S_POST_STICKY'         => ($row['topic_type'] == POST_STICKY),
 			'S_TOPIC_LOCKED'        => ($row['topic_status'] == ITEM_LOCKED),
-			'S_TOPIC_MOVED'         => ($row['topic_status'] == ITEM_MOVED),
 
 			'U_NEWEST_POST'         => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;view=unread') . '#unread',
 			'U_LAST_POST'           => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
