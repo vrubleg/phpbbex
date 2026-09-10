@@ -1116,6 +1116,12 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		sync('forum', 'forum_id', $shadow_forum_ids, false, true);
 	}
 
+	// Forum images are no longer supported.
+	if ($db_tools->sql_column_exists(FORUMS_TABLE, 'forum_image'))
+	{
+		$db_tools->sql_column_remove(FORUMS_TABLE, 'forum_image');
+	}
+
 	// Clear cache and reset bots.
 
 	$bots_default = true;

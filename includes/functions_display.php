@@ -276,8 +276,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 				'FORUM_DESC'            => generate_text_for_display($row['forum_desc'], $row['forum_desc_uid'], $row['forum_desc_bitfield'], $row['forum_desc_options']),
 				'FORUM_FOLDER_IMG'      => '',
 				'FORUM_FOLDER_IMG_SRC'  => '',
-				'FORUM_IMAGE'           => ($row['forum_image']) ? '<img src="' . PHPBB_ROOT_PATH . $row['forum_image'] . '" alt="' . $user->lang['FORUM_CAT'] . '" />' : '',
-				'FORUM_IMAGE_SRC'       => ($row['forum_image']) ? PHPBB_ROOT_PATH . $row['forum_image'] : '',
 				'U_VIEWFORUM'           => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id'])]
 			);
 
@@ -433,8 +431,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			'FORUM_FOLDER_IMG'      => $user->img($folder_image, $folder_alt),
 			'FORUM_FOLDER_IMG_SRC'  => $user->img($folder_image, $folder_alt, false, '', 'src'),
 			'FORUM_FOLDER_IMG_ALT'  => $user->lang[$folder_alt] ?? '',
-			'FORUM_IMAGE'           => ($row['forum_image']) ? '<img src="' . PHPBB_ROOT_PATH . $row['forum_image'] . '" alt="' . $user->lang[$folder_alt] . '" />' : '',
-			'FORUM_IMAGE_SRC'       => ($row['forum_image']) ? PHPBB_ROOT_PATH . $row['forum_image'] : '',
 			'LAST_POST_ID'          => $last_post_id,
 			'LAST_POST_SUBJECT'     => censor_text($last_post_subject),
 			'LAST_POST_TIME'        => $last_post_time,

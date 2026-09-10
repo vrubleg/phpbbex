@@ -1285,13 +1285,6 @@ ul.topiclist li.row dt a.subforum.unread
 	background-image: url("{IMG_SUBFORUM_UNREAD_SRC}");
 }
 
-ul.topiclist .forum-image
-{
-	float: left;
-	padding-top: 5px;
-	margin-right: 5px;
-}
-
 ul.topiclist li.row
 {
 	border-top: 1px solid #ffffff;

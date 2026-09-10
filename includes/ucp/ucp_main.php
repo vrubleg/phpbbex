@@ -292,8 +292,6 @@ class ucp_main
 							'FORUM_ID'              => $forum_id,
 							'FORUM_FOLDER_IMG'      => $user->img($folder_image, $folder_alt),
 							'FORUM_FOLDER_IMG_SRC'  => $user->img($folder_image, $folder_alt, false, '', 'src'),
-							'FORUM_IMAGE'           => ($row['forum_image']) ? '<img src="' . PHPBB_ROOT_PATH . $row['forum_image'] . '" alt="' . $user->lang[$folder_alt] . '" />' : '',
-							'FORUM_IMAGE_SRC'       => ($row['forum_image']) ? PHPBB_ROOT_PATH . $row['forum_image'] : '',
 							'FORUM_NAME'            => $row['forum_name'],
 							'FORUM_DESC'            => generate_text_for_display($row['forum_desc'], $row['forum_desc_uid'], $row['forum_desc_bitfield'], $row['forum_desc_options']),
 							'LAST_POST_SUBJECT'     => $row['forum_last_post_subject'],

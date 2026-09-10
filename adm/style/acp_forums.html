@@ -158,13 +158,6 @@
 			<label><input type="checkbox" class="radio" name="desc_parse_smilies"<!-- IF S_DESC_SMILIES_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_PARSE_SMILIES}</label>
 			<label><input type="checkbox" class="radio" name="desc_parse_urls"<!-- IF S_DESC_URLS_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_PARSE_URLS}</label></dd>
 	</dl>
-	<dl>
-		<dt><label for="forum_image">{L_FORUM_IMAGE}:</label><br /><span>{L_FORUM_IMAGE_EXPLAIN}</span></dt>
-		<dd><input class="text medium" type="text" id="forum_image" name="forum_image" value="{FORUM_IMAGE}" maxlength="255" /></dd>
-		<!-- IF FORUM_IMAGE_SRC -->
-			<dd><img src="{FORUM_IMAGE_SRC}" alt="{L_FORUM_IMAGE}" /></dd>
-		<!-- ENDIF -->
-	</dl>
 	</fieldset>
 
 	<div id="forum_cat_options">
@@ -386,7 +379,6 @@
 			<tr>
 				<td style="width: 5%; text-align: center;">{forums.FOLDER_IMAGE}</td>
 				<td>
-					<!-- IF forums.FORUM_IMAGE --><div style="float: left; margin-right: 5px;">{forums.FORUM_IMAGE}</div><!-- ENDIF -->
 					<strong><!-- IF forums.S_FORUM_LINK -->{forums.FORUM_NAME}<!-- ELSE --><a href="{forums.U_FORUM}">{forums.FORUM_NAME}</a><!-- ENDIF --></strong>
 					<!-- IF forums.FORUM_DESCRIPTION --><br /><span>{forums.FORUM_DESCRIPTION}</span><!-- ENDIF -->
 					<!-- IF forums.FORUM_SUBFORUMS or forums.S_FORUM_POST --><br /><span><!-- IF forums.FORUM_SUBFORUMS -->{L_SUBFORUMS}: <strong>{forums.FORUM_SUBFORUMS}</strong><!-- IF forums.S_FORUM_POST --> / <!-- ENDIF --><!-- ENDIF --><!-- IF forums.S_FORUM_POST -->{L_TOPICS}: <strong>{forums.FORUM_TOPICS}</strong> / {L_POSTS}: <strong>{forums.FORUM_POSTS}</strong><!-- ENDIF --></span><!-- ENDIF -->
