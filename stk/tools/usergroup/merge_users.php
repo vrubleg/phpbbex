@@ -306,16 +306,11 @@ class merge_users
 			'post_rates'            => null,
 			'privmsgs'              => [
 				[
-					'author_id'         => 'id',
-					'message_edit_user' => 'id',
+					'author_id' => 'id',
 				],
 				[
 					'author_id',
 					'author_id',
-				],
-				[
-					'message_edit_user',
-					'message_edit_user',
 				],
 				null,
 			],

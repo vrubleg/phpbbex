@@ -798,6 +798,15 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 
 	// PM schema updates.
+	if ($db_tools->sql_column_exists(PRIVMSGS_TABLE, 'message_edit_reason'))
+	{
+		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN message_edit_reason');
+	}
+	if ($db_tools->sql_column_exists(PRIVMSGS_TABLE, 'message_edit_user'))
+	{
+		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN message_edit_user');
+	}
+
 	if ($db_tools->sql_table_exists("{$table_prefix}privmsgs_folder"))
 	{
 		// BCC in PMs is gone.

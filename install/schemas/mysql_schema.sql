@@ -424,8 +424,6 @@ CREATE TABLE phpbb_privmsgs (
 	enable_sig tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	message_subject varchar(255) DEFAULT '' NOT NULL,
 	message_text mediumtext NOT NULL,
-	message_edit_reason varchar(255) DEFAULT '' NOT NULL,
-	message_edit_user mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	message_attachment tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT '' NOT NULL,
 	bbcode_uid varchar(8) DEFAULT '' NOT NULL,
