@@ -444,10 +444,11 @@ function phpbb_delete_user_pms($user_id)
 	// Part 2: get PMs the user sent, but have yet to be received
 	// We cannot simply delete them. First we have to check,
 	// whether another user already received and read the message.
-	$sql = 'SELECT msg_id
-		FROM ' . PRIVMSGS_TO_TABLE . '
-		WHERE author_id = ' . $user_id . '
-			AND folder_id = ' . PRIVMSGS_NO_BOX;
+	$sql = 'SELECT t.msg_id
+		FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
+		WHERE p.author_id = ' . $user_id . '
+			AND t.msg_id = p.msg_id
+			AND t.folder_id = ' . PRIVMSGS_NO_BOX;
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
@@ -470,12 +471,13 @@ function phpbb_delete_user_pms($user_id)
 		// from their NO_BOX to another folder. We do not delete such
 		// messages, but only delete them for users, who have not yet
 		// received them.
-		$sql = 'SELECT msg_id
-			FROM ' . PRIVMSGS_TO_TABLE . '
-			WHERE author_id = ' . $user_id . '
-				AND folder_id <> ' . PRIVMSGS_NO_BOX . '
-				AND folder_id <> ' . PRIVMSGS_OUTBOX . '
-				AND folder_id <> ' . PRIVMSGS_SENTBOX;
+		$sql = 'SELECT t.msg_id
+			FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
+			WHERE p.author_id = ' . $user_id . '
+				AND t.msg_id = p.msg_id
+				AND t.folder_id <> ' . PRIVMSGS_NO_BOX . '
+				AND t.folder_id <> ' . PRIVMSGS_OUTBOX . '
+				AND t.folder_id <> ' . PRIVMSGS_SENTBOX;
 		$result = $db->sql_query($sql);
 
 		$delivered_msg = [];
@@ -490,12 +492,13 @@ function phpbb_delete_user_pms($user_id)
 		$undelivered_user = [];
 
 		// Count the messages we delete, so we can correct the user pm data
-		$sql = 'SELECT user_id, COUNT(msg_id) as num_undelivered_privmsgs
-			FROM ' . PRIVMSGS_TO_TABLE . '
-			WHERE author_id = ' . $user_id . '
-				AND folder_id = ' . PRIVMSGS_NO_BOX . '
-					AND ' . $db->sql_in_set('msg_id', array_merge($undelivered_msg, $delivered_msg)) . '
-			GROUP BY user_id';
+		$sql = 'SELECT t.user_id, COUNT(t.msg_id) as num_undelivered_privmsgs
+			FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
+			WHERE p.author_id = ' . $user_id . '
+				AND t.msg_id = p.msg_id
+				AND t.folder_id = ' . PRIVMSGS_NO_BOX . '
+					AND ' . $db->sql_in_set('t.msg_id', array_merge($undelivered_msg, $delivered_msg)) . '
+			GROUP BY t.user_id';
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -590,11 +593,6 @@ function phpbb_delete_user_pms($user_id)
 
 	// Set the remaining author id to anonymous
 	// This way users are still able to read messages from users being removed
-	$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
-		SET author_id = ' . ANONYMOUS . '
-		WHERE author_id = ' . $user_id;
-	$db->sql_query($sql);
-
 	$sql = 'UPDATE ' . PRIVMSGS_TABLE . '
 		SET author_id = ' . ANONYMOUS . '
 		WHERE author_id = ' . $user_id;
@@ -868,7 +866,6 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 			$sql_ary[] = [
 				'msg_id'        => (int) $data['msg_id'],
 				'user_id'       => (int) $user_id,
-				'author_id'     => (int) $data['from_user_id'],
 				'folder_id'     => PRIVMSGS_NO_BOX,
 				'pm_new'        => 1,
 				'pm_unread'     => 1
@@ -888,7 +885,6 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 			$db->sql_query('INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', [
 				'msg_id'        => (int) $data['msg_id'],
 				'user_id'       => (int) $data['from_user_id'],
-				'author_id'     => (int) $data['from_user_id'],
 				'folder_id'     => PRIVMSGS_OUTBOX,
 				'pm_new'        => 0,
 				'pm_unread'     => 0])
@@ -1095,8 +1091,8 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 {
 	global $db, $user, $config, $template, $auth, $bbcode;
 
-	// Select all receipts and the author from the pm we currently view, to only display their pm-history
-	$sql = 'SELECT author_id, user_id
+	// Select all recipients from the pm we currently view, to only display their pm-history
+	$sql = 'SELECT user_id
 		FROM ' . PRIVMSGS_TO_TABLE . "
 		WHERE msg_id = {$msg_id}";
 	$result = $db->sql_query($sql);
@@ -1105,9 +1101,9 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$recipients[] = (int) $row['user_id'];
-		$recipients[] = (int) $row['author_id'];
 	}
 	$db->sql_freeresult($result);
+	$recipients[] = (int) $message_row['author_id'];
 	$recipients = array_unique($recipients);
 
 	// Get History Messages (could be newer)
@@ -1116,7 +1112,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 		WHERE t.msg_id = p.msg_id
 			AND p.author_id = u.user_id
 			AND t.folder_id <> ' . PRIVMSGS_NO_BOX . '
-			AND ' . $db->sql_in_set('t.author_id', $recipients, false, true) . "
+			AND ' . $db->sql_in_set('p.author_id', $recipients, false, true) . "
 			AND t.user_id = {$user_id}";
 
 	// We no longer need those.

@@ -314,20 +314,7 @@ class merge_users
 				],
 				null,
 			],
-			'privmsgs_to'           => [
-				[
-					'user_id'   => 'id', // Destination user
-					'author_id' => 'id', // Author
-				],
-				[
-					'user_id',
-					'user_id',
-				],
-				[
-					'author_id',
-					'author_id',
-				],
-			],
+			'privmsgs_to'           => 'user_id',
 			'profile_fields_data'   => null,
 
 			'reports'   => 'user_id',

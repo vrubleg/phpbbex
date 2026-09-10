@@ -806,6 +806,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	{
 		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TABLE . ' DROP COLUMN message_edit_user');
 	}
+	if ($db_tools->sql_column_exists(PRIVMSGS_TO_TABLE, 'author_id'))
+	{
+		$db->sql_query('ALTER TABLE ' . PRIVMSGS_TO_TABLE . ' DROP COLUMN author_id');
+	}
 
 	if ($db_tools->sql_table_exists("{$table_prefix}privmsgs_folder"))
 	{
@@ -839,7 +843,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		// same message belonging to the same user. Preserve their combined state.
 		$db->sql_return_on_error(false);
 		$sql = 'SELECT msg_id, user_id, folder_id,
-				MAX(author_id) AS author_id,
 				MIN(pm_deleted) AS pm_deleted,
 				MAX(pm_new) AS pm_new,
 				MAX(pm_unread) AS pm_unread,
@@ -870,7 +873,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 				$db->sql_query('INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', [
 					'msg_id'       => $msg_id,
 					'user_id'      => $user_id,
-					'author_id'    => (int) $row['author_id'],
 					'pm_deleted'   => (int) $row['pm_deleted'],
 					'pm_new'       => (int) $row['pm_new'],
 					'pm_unread'    => (int) $row['pm_unread'],

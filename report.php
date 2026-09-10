@@ -210,7 +210,6 @@ if ($submit && $reason_id)
 			$sql_ary = [
 				'msg_id'        => $pm_id,
 				'user_id'       => ANONYMOUS,
-				'author_id'     => (int) $report_data['author_id'],
 				'pm_deleted'    => 0,
 				'pm_new'        => 0,
 				'pm_unread'     => 0,

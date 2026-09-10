@@ -441,7 +441,6 @@ CREATE TABLE phpbb_privmsgs (
 CREATE TABLE phpbb_privmsgs_to (
 	msg_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	author_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	pm_deleted tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	pm_new tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	pm_unread tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
@@ -449,7 +448,6 @@ CREATE TABLE phpbb_privmsgs_to (
 	pm_marked tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	folder_id int(11) DEFAULT '0' NOT NULL,
 	KEY msg_id (msg_id),
-	KEY author_id (author_id),
 	KEY usr_flder_id (user_id, folder_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
