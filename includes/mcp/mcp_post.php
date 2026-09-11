@@ -241,10 +241,9 @@ function mcp_post_details($id, $mode, $action)
 	// Get Reports
 	if ($auth->acl_get('m_report', $post_info['forum_id']))
 	{
-		$sql = 'SELECT r.*, re.*, u.user_id, u.username
-			FROM ' . REPORTS_TABLE . ' r, ' . USERS_TABLE . ' u, ' . REPORTS_REASONS_TABLE . " re
+		$sql = 'SELECT r.*, u.user_id, u.username
+			FROM ' . REPORTS_TABLE . ' r, ' . USERS_TABLE . " u
 			WHERE r.post_id = {$post_id}
-				AND r.reason_id = re.reason_id
 				AND u.user_id = r.user_id
 			ORDER BY r.report_time DESC";
 		$result = $db->sql_query($sql);
@@ -255,17 +254,8 @@ function mcp_post_details($id, $mode, $action)
 
 			do
 			{
-				// If the reason is defined within the language file, we will use the localized version, else just use the database entry...
-				if (isset($user->lang['report_reasons']['TITLE'][strtoupper($row['reason_title'])]) && isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])]))
-				{
-					$row['reson_description'] = $user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])];
-					$row['reason_title'] = $user->lang['report_reasons']['TITLE'][strtoupper($row['reason_title'])];
-				}
-
 				$template->assign_block_vars('reports', [
 					'REPORT_ID'     => $row['report_id'],
-					'REASON_TITLE'  => $row['reason_title'],
-					'REASON_DESC'   => $row['reason_description'],
 					'REPORTER'      => ($row['user_id'] != ANONYMOUS) ? $row['username'] : $user->lang['GUEST'],
 					'U_REPORTER'    => ($row['user_id'] != ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=viewprofile&amp;u=' . $row['user_id']) : '',
 					'USER_NOTIFY'   => (bool) $row['user_notify'],

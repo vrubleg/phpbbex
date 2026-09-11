@@ -1129,6 +1129,55 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		$db_tools->sql_column_remove(FORUMS_TABLE, 'forum_image');
 	}
 
+	// Replace report categories with free-text reasons. Keep existing report text intact.
+	if ($db_tools->sql_column_exists(REPORTS_TABLE, 'reason_id'))
+	{
+		if ($db_tools->sql_table_exists("{$table_prefix}reports_reasons"))
+		{
+			$lang_report_reasons = [
+				'en' => [
+					'WAREZ'     => 'Warez',
+					'SPAM'      => 'Spam',
+					'OFF_TOPIC' => 'Off-topic',
+					'OTHER'     => 'Other',
+				],
+				'ru' => [
+					'WAREZ'     => 'Варез',
+					'SPAM'      => 'Спам',
+					'OFF_TOPIC' => 'Оффтопик',
+					'OTHER'     => 'Другое',
+				],
+			];
+			$report_lang_code = $config['default_lang_code'] ?? $config['default_lang'] ?? 'en';
+
+			$result = $db->sql_query("SELECT reason_id, reason_title, reason_description FROM {$table_prefix}reports_reasons");
+			$report_reason_rows = $db->sql_fetchrowset($result);
+			$db->sql_freeresult($result);
+			foreach ($report_reason_rows as $report_reason)
+			{
+				$report_reason_key = strtoupper($report_reason['reason_title']);
+				$report_reason_text = $lang_report_reasons[$report_lang_code][$report_reason_key] ?? $lang_report_reasons['en'][$report_reason_key] ?? $report_reason['reason_description'];
+				$db->sql_query('UPDATE ' . REPORTS_TABLE . "
+					SET report_text = '" . $db->sql_escape($report_reason_text) . "'
+					WHERE reason_id = " . (int) $report_reason['reason_id'] . "
+						AND report_text = ''");
+			}
+			unset($lang_report_reasons, $report_lang_code, $report_reason_rows, $report_reason, $report_reason_key, $report_reason_text);
+		}
+		$db->sql_query('ALTER TABLE ' . REPORTS_TABLE . ' DROP COLUMN reason_id');
+	}
+	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}reports_reasons");
+	remove_module('acp', 'reasons', 'main');
+	remove_permissions(['a_reasons']);
+
+	// Keep report details accessible by direct links, but hidden from the MCP menu.
+	$db->sql_query('UPDATE ' . MODULES_TABLE . "
+		SET module_display = 0
+		WHERE module_class = 'mcp'
+			AND ((module_basename = 'reports' AND module_mode = 'report_details')
+				OR (module_basename = 'pm_reports' AND module_mode = 'pm_report_details'))");
+	$cache->destroy('_modules_mcp');
+
 	// Clear cache and reset bots.
 
 	$bots_default = true;
@@ -1346,7 +1395,6 @@ if (request_var('utf8mb4', 0))
 			case PROFILE_LANG_TABLE:
 			case RANKS_TABLE:
 			case REPORTS_TABLE:
-			case REPORTS_REASONS_TABLE:
 			case SEARCH_RESULTS_TABLE:
 			case SESSIONS_TABLE:
 			case SESSIONS_KEYS_TABLE:

@@ -18,7 +18,6 @@ $user->setup('mcp');
 $forum_id       = request_var('f', 0);
 $post_id        = request_var('p', 0);
 $pm_id          = request_var('pm', 0);
-$reason_id      = request_var('reason_id', 0);
 $report_text    = utf8_normalize_nfc(request_var('report_text', '', true));
 $user_notify    = ($user->data['is_registered']) ? request_var('notify', 0) : false;
 
@@ -137,7 +136,7 @@ $error  = [];
 $s_hidden_fields = '';
 
 // Submit report?
-if ($submit && $reason_id)
+if ($submit)
 {
 	if (isset($captcha))
 	{
@@ -148,14 +147,7 @@ if ($submit && $reason_id)
 		}
 	}
 
-	$sql = 'SELECT *
-		FROM ' . REPORTS_REASONS_TABLE . "
-		WHERE reason_id = {$reason_id}";
-	$result = $db->sql_query($sql);
-	$row = $db->sql_fetchrow($result);
-	$db->sql_freeresult($result);
-
-	if (!$row || (!$report_text && strtolower($row['reason_title']) == 'other'))
+	if (trim($report_text) === '')
 	{
 		$error[] = $user->lang('EMPTY_REPORT');
 	}
@@ -168,7 +160,6 @@ if ($submit && $reason_id)
 		}
 
 		$sql_ary = [
-			'reason_id'     => (int) $reason_id,
 			'post_id'       => $post_id,
 			'pm_id'         => $pm_id,
 			'user_id'       => (int) $user->data['user_id'],
@@ -240,9 +231,6 @@ if ($submit && $reason_id)
 	}
 }
 
-// Generate the reasons
-display_reasons($reason_id);
-
 $page_title = ($pm_id) ? $user->lang['REPORT_MESSAGE'] : $user->lang['REPORT_POST'];
 
 if (isset($captcha) && $captcha->is_solved() === false)
@@ -264,7 +252,10 @@ $template->assign_vars([
 	'S_CAN_NOTIFY'      => (bool) $user->data['is_registered'],
 ]);
 
-generate_forum_nav($forum_data);
+if ($post_id)
+{
+	generate_forum_nav($forum_data);
+}
 
 // Start output of page
 page_header($page_title);

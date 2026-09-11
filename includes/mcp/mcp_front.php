@@ -156,7 +156,6 @@ function mcp_front_view($id, $mode, $action)
 
 					'FROM'      => [
 						REPORTS_TABLE           => 'r',
-						REPORTS_REASONS_TABLE   => 'rr',
 						TOPICS_TABLE            => 't',
 						USERS_TABLE             => ['u', 'u2'],
 						POSTS_TABLE             => 'p'
@@ -172,7 +171,6 @@ function mcp_front_view($id, $mode, $action)
 					'WHERE'     => 'r.post_id = p.post_id
 						AND r.pm_id = 0
 						AND r.report_closed = 0
-						AND r.reason_id = rr.reason_id
 						AND p.topic_id = t.topic_id
 						AND r.user_id = u.user_id
 						AND p.poster_id = u2.user_id
@@ -251,7 +249,6 @@ function mcp_front_view($id, $mode, $action)
 
 				'FROM'      => [
 					REPORTS_TABLE           => 'r',
-					REPORTS_REASONS_TABLE   => 'rr',
 					USERS_TABLE             => ['u', 'u2'],
 					PRIVMSGS_TABLE              => 'p'
 				],
@@ -259,7 +256,6 @@ function mcp_front_view($id, $mode, $action)
 				'WHERE'     => 'r.pm_id = p.msg_id
 					AND r.post_id = 0
 					AND r.report_closed = 0
-					AND r.reason_id = rr.reason_id
 					AND r.user_id = u.user_id
 					AND p.author_id = u2.user_id',
 

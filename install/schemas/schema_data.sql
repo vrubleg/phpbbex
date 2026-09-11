@@ -355,7 +355,6 @@ INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_phpinfo', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_profile', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_prune', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_ranks', 1);
-INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_reasons', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_roles', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_search', 1);
 INSERT INTO phpbb_acl_options (auth_option, is_global) VALUES ('a_server', 1);
@@ -688,11 +687,6 @@ INSERT INTO phpbb_icons (icons_url, icons_width, icons_height, icons_order, disp
 INSERT INTO phpbb_icons (icons_url, icons_width, icons_height, icons_order, display_on_posting) VALUES ('smile/question.gif', 16, 16, 6, 1);
 INSERT INTO phpbb_icons (icons_url, icons_width, icons_height, icons_order, display_on_posting) VALUES ('smile/alert.gif', 16, 16, 7, 1);
 
-# -- reasons
-INSERT INTO phpbb_reports_reasons (reason_title, reason_description, reason_order) VALUES ('warez', '{L_REPORT_WAREZ}', 1);
-INSERT INTO phpbb_reports_reasons (reason_title, reason_description, reason_order) VALUES ('spam', '{L_REPORT_SPAM}', 2);
-INSERT INTO phpbb_reports_reasons (reason_title, reason_description, reason_order) VALUES ('off_topic', '{L_REPORT_OFF_TOPIC}', 3);
-INSERT INTO phpbb_reports_reasons (reason_title, reason_description, reason_order) VALUES ('other', '{L_REPORT_OTHER}', 4);
 
 # -- extension_groups
 INSERT INTO phpbb_extension_groups (group_name, cat_id, allow_group, download_mode, upload_icon, max_filesize, allowed_forums, allow_in_pm) VALUES ('IMAGES', 1, 1, 1, '', 0, '', 1);

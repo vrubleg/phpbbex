@@ -71,7 +71,7 @@ $lang = array_merge($lang, [
 	'DISPLAY_LOG'               => 'Display entries from previous',
 	'DISPLAY_OPTIONS'           => 'Display options',
 
-	'EMPTY_REPORT'                  => 'You must enter a description when selecting this reason.',
+	'EMPTY_REPORT'                  => 'You must enter a reason for this report.',
 	'EMPTY_TOPICS_REMOVED_WARNING'  => 'Please note that one or several topics have been removed from the database because they were or become empty.',
 
 	'FEEDBACK'              => 'Feedback',
@@ -269,7 +269,6 @@ $lang = array_merge($lang, [
 	'REPORT_NOTIFY'             => 'Notify me',
 	'REPORT_NOTIFY_EXPLAIN'     => 'Informs you when your report is dealt with.',
 	'REPORT_POST_EXPLAIN'       => 'Use this form to report the selected post to the forum moderators and board administrators. Reporting should generally be used only if the post breaks forum rules.',
-	'REPORT_REASON'             => 'Report reason',
 	'REPORT_TIME'               => 'Report time',
 	'REPORT_TOTAL'              => 'In total there is <strong>1</strong> report to review.',
 	'RETURN_MESSAGE'            => '%sReturn to the message%s',
@@ -365,19 +364,4 @@ $lang = array_merge($lang, [
 	'WARNING_PM_BODY'       => '%s',
 
 	'YOU_SELECTED_TOPIC'    => 'You selected topic number %d: %s.',
-
-	'report_reasons'        => [
-		'TITLE' => [
-			'WAREZ'     => 'Warez',
-			'SPAM'      => 'Spam',
-			'OFF_TOPIC' => 'Off-topic',
-			'OTHER'     => 'Other',
-		],
-		'DESCRIPTION' => [
-			'WAREZ'     => 'The message contains links to illegal or pirated software.',
-			'SPAM'      => 'The reported message has the only purpose to advertise for a website or another product.',
-			'OFF_TOPIC' => 'The reported message is off topic.',
-			'OTHER'     => 'The reported message does not fit into any other category, please use the further information field.',
-		]
-	],
 ]);

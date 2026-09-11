@@ -511,7 +511,6 @@ CREATE TABLE phpbb_ranks (
 
 CREATE TABLE phpbb_reports (
 	report_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-	reason_id smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
 	post_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	pm_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -522,14 +521,6 @@ CREATE TABLE phpbb_reports (
 	PRIMARY KEY (report_id),
 	KEY post_id (post_id),
 	KEY pm_id (pm_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_reports_reasons (
-	reason_id smallint(4) UNSIGNED NOT NULL auto_increment,
-	reason_title varchar(255) DEFAULT '' NOT NULL,
-	reason_description mediumtext NOT NULL,
-	reason_order smallint(4) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (reason_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_search_results (

@@ -220,16 +220,6 @@ if ($mode == '' || $mode == 'unapproved_topics' || $mode == 'unapproved_posts')
 	$module->set_display('queue', 'approve_details', false);
 }
 
-if ($mode == '' || $mode == 'reports' || $mode == 'reports_closed' || $mode == 'pm_reports' || $mode == 'pm_reports_closed' || $mode == 'pm_report_details')
-{
-	$module->set_display('reports', 'report_details', false);
-}
-
-if ($mode == '' || $mode == 'reports' || $mode == 'reports_closed' || $mode == 'pm_reports' || $mode == 'pm_reports_closed' || $mode == 'report_details')
-{
-	$module->set_display('pm_reports', 'pm_report_details', false);
-}
-
 if (!$topic_id)
 {
 	$module->set_display('main', 'topic_view', false);
