@@ -760,7 +760,6 @@ function disapprove_post($post_id_list, $id, $mode)
 
 	$redirect = request_var('redirect', build_url(['t', 'mode', 'quickmod']) . "&amp;mode={$mode}");
 	$reason = utf8_normalize_nfc(request_var('reason', '', true));
-	$reason_id = request_var('reason_id', 0);
 	$success_msg = $additional_msg = '';
 
 	$s_hidden_fields = build_hidden_fields([
@@ -772,37 +771,15 @@ function disapprove_post($post_id_list, $id, $mode)
 	);
 
 	$notify_poster = isset($_REQUEST['notify_poster']);
-	$disapprove_reason = '';
+	$disapprove_reason = $reason;
+	$email_disapprove_reason = $reason;
 
-	if ($reason_id)
+	if (isset($_POST['confirm']) && trim($reason) === '')
 	{
-		$sql = 'SELECT reason_title, reason_description
-			FROM ' . REPORTS_REASONS_TABLE . "
-			WHERE reason_id = {$reason_id}";
-		$result = $db->sql_query($sql);
-		$row = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-
-		if (!$row || (!$reason && strtolower($row['reason_title']) == 'other'))
-		{
-			$additional_msg = $user->lang['NO_REASON_DISAPPROVAL'];
-			unset($_REQUEST['confirm_key']);
-			unset($_POST['confirm_key']);
-			unset($_POST['confirm']);
-		}
-		else
-		{
-			// If the reason is defined within the language file, we will use the localized version, else just use the database entry...
-			$disapprove_reason = (strtolower($row['reason_title']) != 'other') ? ($user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])] ?? $row['reason_description']) : '';
-			$disapprove_reason .= ($reason) ? "\n\n" . $reason : '';
-
-			if (isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])]))
-			{
-				$disapprove_reason_lang = strtoupper($row['reason_title']);
-			}
-
-			$email_disapprove_reason = $disapprove_reason;
-		}
+		$additional_msg = $user->lang['NO_REASON_DISAPPROVAL'];
+		unset($_REQUEST['confirm_key']);
+		unset($_POST['confirm_key']);
+		unset($_POST['confirm']);
 	}
 
 	$post_info = get_post_data($post_id_list, 'm_approve');
@@ -888,42 +865,11 @@ function disapprove_post($post_id_list, $id, $mode)
 		// Notify Poster?
 		if ($notify_poster)
 		{
-			$lang_reasons = [];
-
 			foreach ($post_info as $post_id => $post_data)
 			{
 				if ($post_data['poster_id'] == ANONYMOUS)
 				{
 					continue;
-				}
-
-				if (isset($disapprove_reason_lang))
-				{
-					// Okay we need to get the reason from the posters language
-					if (!isset($lang_reasons[$post_data['user_lang_code']]))
-					{
-						// Assign the current users translation as the default, this is not ideal but getting the board default adds another layer of complexity.
-						$lang_reasons[$post_data['user_lang_code']] = $user->lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang];
-
-						// Only load up the language pack if the language is different to the current one
-						if ($post_data['user_lang_code'] != $user->lang_code && file_exists(PHPBB_ROOT_PATH . '/language/' . $post_data['user_lang_code'] . '/mcp.php'))
-						{
-							// Load up the language pack
-							$lang = [];
-							@include(PHPBB_ROOT_PATH . '/language/' . basename($post_data['user_lang_code']) . '/mcp.php');
-
-							// If we find the reason in this language pack use it
-							if (isset($lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang]))
-							{
-								$lang_reasons[$post_data['user_lang_code']] = $lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang];
-							}
-
-							unset($lang); // Free memory
-						}
-					}
-
-					$email_disapprove_reason = $lang_reasons[$post_data['user_lang_code']];
-					$email_disapprove_reason .= ($reason) ? "\n\n" . $reason : '';
 				}
 
 				$email_template = ($post_data['post_id'] == $post_data['topic_first_post_id'] && $post_data['post_id'] == $post_data['topic_last_post_id']) ? 'topic_disapproved' : 'post_disapproved';
@@ -942,10 +888,8 @@ function disapprove_post($post_id_list, $id, $mode)
 
 				$messenger->send($post_data['user_notify_type']);
 			}
-
-			unset($lang_reasons);
 		}
-		unset($post_info, $disapprove_reason, $email_disapprove_reason, $disapprove_reason_lang);
+		unset($post_info, $disapprove_reason, $email_disapprove_reason);
 
 		$messenger->save_queue();
 
@@ -961,8 +905,6 @@ function disapprove_post($post_id_list, $id, $mode)
 	else
 	{
 		require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
-
-		display_reasons($reason_id);
 
 		$show_notify = false;
 

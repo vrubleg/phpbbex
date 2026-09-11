@@ -273,7 +273,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 		$sql_sort_order = $sort_by_sql[$sort_key] . ' ' . $direction;
 	}
 
-	$sql = 'SELECT t.*, p.root_level, p.message_time, p.message_subject, p.icon_id, p.to_address, p.message_attachment, u.username, u.username_clean, u.user_colour, p.message_reported
+	$sql = 'SELECT t.*, p.author_id, p.root_level, p.message_time, p.message_subject, p.icon_id, p.to_address, p.message_attachment, u.username, u.username_clean, u.user_colour, p.message_reported
 		FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . " u
 		WHERE t.user_id = {$user_id}
 			AND p.author_id = u.user_id

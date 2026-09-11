@@ -66,10 +66,9 @@ class mcp_reports
 				// closed reports are accessed by report id
 				$report_id = request_var('r', 0);
 
-				$sql = 'SELECT r.post_id, r.user_id, r.report_id, r.report_closed, report_time, r.report_text, rr.reason_title, rr.reason_description, u.username, u.username_clean, u.user_colour
-					FROM ' . REPORTS_TABLE . ' r, ' . REPORTS_REASONS_TABLE . ' rr, ' . USERS_TABLE . ' u
+				$sql = 'SELECT r.post_id, r.user_id, r.report_id, r.report_closed, report_time, r.report_text, u.username, u.username_clean, u.user_colour
+					FROM ' . REPORTS_TABLE . ' r, ' . USERS_TABLE . ' u
 					WHERE ' . (($report_id) ? 'r.report_id = ' . $report_id : "r.post_id = {$post_id}") . '
-						AND rr.reason_id = r.reason_id
 						AND r.user_id = u.user_id
 						AND r.pm_id = 0
 					ORDER BY report_closed ASC';
@@ -98,13 +97,6 @@ class mcp_reports
 				}
 
 				$post_info = $post_info[$post_id];
-
-				$reason = ['title' => $report['reason_title'], 'description' => $report['reason_description']];
-				if (isset($user->lang['report_reasons']['TITLE'][strtoupper($reason['title'])]) && isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($reason['title'])]))
-				{
-					$reason['description'] = $user->lang['report_reasons']['DESCRIPTION'][strtoupper($reason['title'])];
-					$reason['title'] = $user->lang['report_reasons']['TITLE'][strtoupper($reason['title'])];
-				}
 
 				if (topic_review($post_info['topic_id'], $post_info['forum_id'], 'topic_review', 0, false))
 				{
@@ -207,8 +199,6 @@ class mcp_reports
 					'REPORTED_IMG'              => $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
 					'REPORT_DATE'               => $user->format_date($report['report_time']),
 					'REPORT_ID'                 => $report_id,
-					'REPORT_REASON_TITLE'       => $reason['title'],
-					'REPORT_REASON_DESCRIPTION' => $reason['description'],
 					'REPORT_TEXT'               => $report['report_text'],
 
 					'POST_AUTHOR_FULL'      => get_username_string('full', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),

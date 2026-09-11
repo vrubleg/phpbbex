@@ -93,7 +93,6 @@ $lang = array_merge($lang, [
 	'ACP_MANAGE_EXTENSIONS'     => 'Manage extensions',
 	'ACP_MANAGE_FORUMS'         => 'Manage forums',
 	'ACP_MANAGE_RANKS'          => 'Manage ranks',
-	'ACP_MANAGE_REASONS'        => 'Manage report/denial reasons',
 	'ACP_MANAGE_USERS'          => 'Manage users',
 	'ACP_MASS_EMAIL'            => 'Mass email',
 	'ACP_MESSAGES'              => 'Messages',
@@ -119,7 +118,6 @@ $lang = array_merge($lang, [
 	'ACP_QUICK_ACCESS'          => 'Quick access',
 
 	'ACP_RANKS'                 => 'Ranks',
-	'ACP_REASONS'               => 'Report/denial reasons',
 	'ACP_REGISTER_SETTINGS'     => 'User registration settings',
 	'ACP_REGISTER_LOGS'         => 'Registrations log',
 

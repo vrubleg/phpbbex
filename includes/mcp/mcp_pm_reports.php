@@ -68,10 +68,9 @@ class mcp_pm_reports
 
 				$report_id = request_var('r', 0);
 
-				$sql = 'SELECT r.pm_id, r.user_id, r.report_id, r.report_closed, report_time, r.report_text, rr.reason_title, rr.reason_description, u.username, u.username_clean, u.user_colour
-					FROM ' . REPORTS_TABLE . ' r, ' . REPORTS_REASONS_TABLE . ' rr, ' . USERS_TABLE . ' u
+				$sql = 'SELECT r.pm_id, r.user_id, r.report_id, r.report_closed, report_time, r.report_text, u.username, u.username_clean, u.user_colour
+					FROM ' . REPORTS_TABLE . ' r, ' . USERS_TABLE . ' u
 					WHERE r.report_id = ' . $report_id . '
-						AND rr.reason_id = r.reason_id
 						AND r.user_id = u.user_id
 						AND r.post_id = 0
 					ORDER BY report_closed ASC';
@@ -97,13 +96,6 @@ class mcp_pm_reports
 				$pm_info = $pm_info[$pm_id];
 
 				write_pm_addresses($pm_info['to_address']);
-
-				$reason = ['title' => $report['reason_title'], 'description' => $report['reason_description']];
-				if (isset($user->lang['report_reasons']['TITLE'][strtoupper($reason['title'])]) && isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($reason['title'])]))
-				{
-					$reason['description'] = $user->lang['report_reasons']['DESCRIPTION'][strtoupper($reason['title'])];
-					$reason['title'] = $user->lang['report_reasons']['TITLE'][strtoupper($reason['title'])];
-				}
 
 				// Process message, leave it uncensored
 				$message = $pm_info['message_text'];
@@ -175,8 +167,6 @@ class mcp_pm_reports
 					'REPORTED_IMG'              => $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
 					'REPORT_DATE'               => $user->format_date($report['report_time']),
 					'REPORT_ID'                 => $report_id,
-					'REPORT_REASON_TITLE'       => $reason['title'],
-					'REPORT_REASON_DESCRIPTION' => $reason['description'],
 					'REPORT_TEXT'               => $report['report_text'],
 
 					'POST_AUTHOR_FULL'      => get_username_string('full', $pm_info['author_id'], $pm_info['username'], $pm_info['user_colour']),

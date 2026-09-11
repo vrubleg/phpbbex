@@ -530,7 +530,7 @@ class acp_users
 
 								$sql = 'SELECT msg_id
 									FROM ' . PRIVMSGS_TO_TABLE . "
-									WHERE author_id = {$user_id}
+									WHERE user_id = {$user_id}
 										AND folder_id = " . PRIVMSGS_OUTBOX;
 								$result = $db->sql_query($sql);
 

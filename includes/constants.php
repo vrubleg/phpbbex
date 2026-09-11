@@ -235,7 +235,6 @@ define('PROFILE_FIELDS_LANG_TABLE', $table_prefix . 'profile_fields_lang');
 define('PROFILE_LANG_TABLE',        $table_prefix . 'profile_lang');
 define('RANKS_TABLE',               $table_prefix . 'ranks');
 define('REPORTS_TABLE',             $table_prefix . 'reports');
-define('REPORTS_REASONS_TABLE',     $table_prefix . 'reports_reasons');
 define('SEARCH_RESULTS_TABLE',      $table_prefix . 'search_results');
 define('SESSIONS_TABLE',            $table_prefix . 'sessions');
 define('SESSIONS_KEYS_TABLE',       $table_prefix . 'sessions_keys');

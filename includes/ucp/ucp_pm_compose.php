@@ -165,10 +165,11 @@ function compose_pm($id, $mode, $action)
 				trigger_error('NO_MESSAGE');
 			}
 
-			$sql = 'SELECT msg_id, pm_unread, pm_new, author_id, folder_id
-				FROM ' . PRIVMSGS_TO_TABLE . '
-				WHERE user_id = ' . $user->data['user_id'] . "
-					AND msg_id = {$msg_id}";
+			$sql = 'SELECT t.msg_id, t.pm_unread, t.pm_new, p.author_id, t.folder_id
+				FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
+				WHERE t.user_id = ' . $user->data['user_id'] . "
+					AND t.msg_id = {$msg_id}
+					AND t.msg_id = p.msg_id";
 		break;
 
 		default:

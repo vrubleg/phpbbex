@@ -16,7 +16,7 @@ class mcp_pm_reports_info
 			'modes'     => [
 				'pm_reports'        => ['title' => 'MCP_PM_REPORTS_OPEN', 'auth' => 'aclf_m_report', 'cat' => ['MCP_REPORTS']],
 				'pm_reports_closed' => ['title' => 'MCP_PM_REPORTS_CLOSED', 'auth' => 'aclf_m_report', 'cat' => ['MCP_REPORTS']],
-				'pm_report_details' => ['title' => 'MCP_PM_REPORT_DETAILS', 'auth' => 'aclf_m_report', 'cat' => ['MCP_REPORTS']],
+				'pm_report_details' => ['title' => 'MCP_PM_REPORT_DETAILS', 'auth' => 'aclf_m_report', 'cat' => ['MCP_REPORTS'], 'display' => false],
 			],
 		];
 	}

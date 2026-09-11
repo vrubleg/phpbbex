@@ -97,9 +97,10 @@ else
 		}
 
 		// Check if the attachment is within the users scope...
-		$sql = 'SELECT user_id, author_id
-			FROM ' . PRIVMSGS_TO_TABLE . '
-			WHERE msg_id = ' . $attachment['post_msg_id'];
+		$sql = 'SELECT t.user_id, p.author_id
+			FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
+			WHERE t.msg_id = ' . $attachment['post_msg_id'] . '
+				AND t.msg_id = p.msg_id';
 		$result = $db->sql_query($sql);
 
 		$allowed = false;

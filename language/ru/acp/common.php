@@ -93,7 +93,6 @@ $lang = array_merge($lang, [
 	'ACP_MANAGE_EXTENSIONS'     => 'Расширения',
 	'ACP_MANAGE_FORUMS'         => 'Управление разделами',
 	'ACP_MANAGE_RANKS'          => 'Управление званиями',
-	'ACP_MANAGE_REASONS'        => 'Управление жалобами',
 	'ACP_MANAGE_USERS'          => 'Управление пользователями',
 	'ACP_MASS_EMAIL'            => 'Массовая рассылка почты',
 	'ACP_MESSAGES'              => 'Сообщения',
@@ -119,7 +118,6 @@ $lang = array_merge($lang, [
 	'ACP_QUICK_ACCESS'          => 'Быстрый доступ',
 
 	'ACP_RANKS'                 => 'Звания',
-	'ACP_REASONS'               => 'Управление жалобами',
 	'ACP_REGISTER_SETTINGS'     => 'Регистрация пользователей',
 	'ACP_REGISTER_LOGS'         => 'Лог регистраций',
 
