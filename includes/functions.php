@@ -2185,11 +2185,6 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 		}
 	}
 
-	// Delete old confirm keys
-	$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . "
-		WHERE confirm_time < " . (time() - 900);
-	$db->sql_query($sql);
-
 	if ($check && $confirm)
 	{
 		static $confirm_keys_cache = [];
@@ -2210,7 +2205,9 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 
 		// Checking confirm key
 		$sql = "SELECT * FROM " . USER_CONFIRM_KEYS_TABLE . "
-			WHERE user_id = " . $user->data['user_id'] . " AND confirm_key = '" . $db->sql_escape($confirm_key) . "'";
+			WHERE user_id = " . $user->data['user_id'] . "
+				AND confirm_key = '" . $db->sql_escape($confirm_key) . "'
+				AND confirm_time >= " . (time() - 600);
 		$result = $db->sql_query($sql);
 		if(!$db->sql_fetchrow($result))
 		{

@@ -687,7 +687,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	set_config('allow_login_via_email', '1');
 	set_config('max_autologin_time', '400');
-	set_config('session_length', '7200');
+	set_config('session_gc', '600');
+	set_config('session_length', '3600');
 	set_config('ip_login_limit_max', '10');
 	set_config('ip_login_limit_time', '43200');
 	set_config('referer_validation', '1');
@@ -999,6 +1000,11 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' ADD INDEX session_bot_id(session_bot_id)');
 
 	$db->sql_return_on_error(false);
+
+	if (!$db_tools->sql_index_exists(USER_CONFIRM_KEYS_TABLE, 'confirm_time'))
+	{
+		$db->sql_query('ALTER TABLE ' . USER_CONFIRM_KEYS_TABLE . ' ADD INDEX confirm_time(confirm_time)');
+	}
 
 	if ($db_tools->sql_column_exists(BOTS_TABLE, 'user_id'))
 	{

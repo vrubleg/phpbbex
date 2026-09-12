@@ -783,7 +783,8 @@ CREATE TABLE phpbb_user_confirm_keys (
 	user_id mediumint(8) UNSIGNED NOT NULL,
 	confirm_time int(11) UNSIGNED NOT NULL,
 	PRIMARY KEY  (confirm_key),
-	KEY user_id (user_id)
+	KEY user_id (user_id),
+	KEY confirm_time (confirm_time)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_browser_tracking (

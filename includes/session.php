@@ -293,7 +293,7 @@ class phpbb_session
 					if (!$session_expired)
 					{
 						// Only update session DB a minute or so after last update.
-						if ($this->time_now - $this->data['session_time'] > 60)
+						if ($this->time_now - $this->data['session_time'] >= 60)
 						{
 							$this->data['session_time'] = $this->time_now;
 							$sql_ary = ['session_time' => $this->time_now];
@@ -558,7 +558,7 @@ class phpbb_session
 				$this->session_id = $this->data['session_id'];
 
 				// Only update session DB a minute or so after last update.
-				if ($this->time_now - $this->data['session_time'] > 60)
+				if ($this->time_now - $this->data['session_time'] >= 60)
 				{
 					$this->data['session_time'] = $this->data['session_last_visit'] = $this->time_now;
 
@@ -736,16 +736,6 @@ class phpbb_session
 			$this->data['tracking_first_ip'] = $tracking['tracking_first_ip'];
 		}
 		$db->sql_freeresult($result);
-
-		// Garbage collection.
-		if(rand(0, 1000) == 1)
-		{
-			$sql = "DELETE FROM " . BROWSER_TRACKING_TABLE . "
-				WHERE (tracking_hits <= 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+3600*12 < " . $this->time_now . ")
-					OR (tracking_hits > 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+86400*7 < " . $this->time_now . ")
-					OR (tracking_last_time+86400*365 < " . $this->time_now . ")";
-			$db->sql_query($sql);
-		}
 	}
 
 	/**
@@ -831,6 +821,8 @@ class phpbb_session
 			$this->time_now = time();
 		}
 
+		set_config('session_last_gc', $this->time_now, true);
+
 		$expire_time = $this->time_now - $config['session_length'];
 
 		// Update last visit times from the most recent expired session for each user.
@@ -850,8 +842,7 @@ class phpbb_session
 			WHERE session_time < ' . (int) $expire_time;
 		$db->sql_query($sql);
 
-		set_config('session_last_gc', $this->time_now, true);
-
+		// Delete all expired autologin keys.
 		if ($config['max_autologin_time'])
 		{
 			$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
@@ -863,6 +854,18 @@ class phpbb_session
 		}
 		$db->sql_query($sql);
 
+		// Delete obsolete browser tracking entries.
+		$sql = "DELETE FROM " . BROWSER_TRACKING_TABLE . "
+			WHERE (tracking_hits <= 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+3600*12 < " . $this->time_now . ")
+				OR (tracking_hits > 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+86400*7 < " . $this->time_now . ")
+				OR (tracking_last_time+86400*365 < " . $this->time_now . ")";
+		$db->sql_query($sql);
+
+		// Delete expired confirmation dialog keys.
+		$sql = 'DELETE FROM ' . USER_CONFIRM_KEYS_TABLE . '
+			WHERE confirm_time < ' . ($this->time_now - 600);
+		$db->sql_query($sql);
+
 		// Session GC runs infrequently, so collect expired CAPTCHA data here as well.
 		require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
 		phpbb_captcha_factory::garbage_collect($config['captcha_plugin']);
@@ -870,8 +873,6 @@ class phpbb_session
 		$sql = 'DELETE FROM ' . LOGIN_ATTEMPT_TABLE . '
 			WHERE attempt_time < ' . (time() - (int) $config['ip_login_limit_time']);
 		$db->sql_query($sql);
-
-		return;
 	}
 
 	/**

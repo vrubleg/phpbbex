@@ -207,8 +207,8 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('search_store_resul
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_deny', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_allow_empty_referer', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('secure_downloads', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_gc', '3600');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '7200');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_gc', '600');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('session_length', '3600');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('site_desc', '{L_CONFIG_SITE_DESC}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('sitename', '{L_CONFIG_SITENAME}');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('smilies_per_page', '50');
