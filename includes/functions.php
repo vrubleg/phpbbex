@@ -1220,6 +1220,36 @@ function mark_read($mode, $forum_id = false, $topic_id = false, $time = 0, $user
 }
 
 /**
+* Mark everything read up to the last visit for users without sessions after the configured delay.
+*/
+function auto_mark_read_all()
+{
+	global $db, $config;
+
+	if (!$config['enable_read_tracking'])
+	{
+		return;
+	}
+
+	$sql = 'SELECT u.user_id, u.user_last_visit
+		FROM ' . USERS_TABLE . ' u
+		WHERE u.user_id <> ' . ANONYMOUS . '
+			AND u.user_last_visit > u.user_mark_time
+			AND u.user_last_visit <= ' . (time() - (int) $config['auto_mark_read_delay']) . '
+			AND NOT EXISTS (
+				SELECT 1 FROM ' . SESSIONS_TABLE . ' s
+				WHERE s.session_user_id = u.user_id
+			)';
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
+	{
+		mark_read('all', false, false, (int) $row['user_last_visit'], (int) $row['user_id']);
+	}
+	$db->sql_freeresult($result);
+}
+
+/**
 * Mark topics from the given rowset where the given user has posted.
 */
 function mark_user_posted_topics(&$rowset, $user_id = false)

@@ -748,6 +748,8 @@ class phpbb_session
 				WHERE user_id = ' . (int) $this->data['user_id'];
 			$db->sql_query($sql);
 
+			auto_mark_read_all();
+
 			if ($this->cookie_data['k'])
 			{
 				$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
@@ -821,6 +823,8 @@ class phpbb_session
 		$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
 			WHERE session_time < ' . (int) $expire_time;
 		$db->sql_query($sql);
+
+		auto_mark_read_all();
 
 		// Delete all expired autologin keys.
 		if ($config['max_autologin_time'])

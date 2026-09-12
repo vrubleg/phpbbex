@@ -707,6 +707,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('allow_avatar_remote_upload', '0');
 	set_config('avatar_filesize', '20480');
 	set_config('enable_read_tracking', '1');
+	set_config('auto_mark_read_delay', '3600');
 
 	// Remove obsolete modules.
 
