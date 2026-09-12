@@ -39,7 +39,7 @@ $sort_dir       = request_var('sd', 'd');
 $return_chars   = request_var('ch', ($topic_id) ? -1 : 300);
 $search_forum   = request_var('fid', [0]);
 
-// We put login boxes for the case if search_id is newposts, egosearch or unreadposts
+// We put login boxes for the case if search_id is newposts or egosearch
 // because a guest should be able to log in even if guests search is not permitted
 
 switch ($search_id)
@@ -53,20 +53,7 @@ switch ($search_id)
 		}
 	break;
 
-	// Search for unread posts needs to be allowed and user to be logged in if topics tracking for guests is disabled
-	case 'unreadposts':
-		if (!$config['enable_read_tracking'])
-		{
-			$template->assign_var('S_NO_SEARCH', true);
-			trigger_error('NO_SEARCH_UNREADS');
-		}
-		else if (!$user->data['is_registered'])
-		{
-			login_box('', $user->lang['LOGIN_EXPLAIN_UNREADSEARCH']);
-		}
-	break;
-
-	// The "new posts" search uses session_last_visit, so it should require user to log in.
+	// The "new posts" search uses personal visit and read times, so it requires login.
 	case 'newposts':
 		if ($user->data['user_id'] == ANONYMOUS)
 		{
@@ -103,7 +90,7 @@ if (!$auth->acl_get('u_search') || !$auth->acl_getf_global('f_search'))
 // It is applicable if the configuration setting is non-zero, and the user cannot
 // ignore the flood setting, and the search is a keyword search.
 $interval = ($user->data['user_id'] == ANONYMOUS) ? $config['search_anonymous_interval'] : $config['search_interval'];
-if ($interval && !in_array($search_id, ['unreadposts', 'active_topics', 'egosearch']) && !$auth->acl_get('u_ignoreflood'))
+if ($interval && !in_array($search_id, ['newposts', 'active_topics', 'egosearch']) && !$auth->acl_get('u_ignoreflood'))
 {
 	if ($user->data['user_last_search'] > time() - $interval)
 	{
@@ -343,23 +330,13 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$field = 'topic_id';
 			break;
 
-			case 'unreadposts':
-				$l_search_title = $user->lang['SEARCH_UNREAD'];
-				// force sorting
-				$show_results = 'topics';
-				$sort_key = 't';
-				$sort_by_sql['t'] = 't.topic_last_post_time';
-				$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
-				$sql_sort = 'ORDER BY ' . $sort_by_sql[$sort_key] . $sql_sort_dir . ', t.topic_id' . $sql_sort_dir;
-
-				$sql_where = str_replace(['p.', 'post_'], ['t.', 'topic_'], $m_approve_fid_sql) . '
-					' . ((sizeof($ex_fid_ary)) ? 'AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '');
-
-				gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
-				$s_sort_key = $s_sort_dir = $u_sort_param = $s_limit_days = '';
-			break;
-
 			case 'newposts':
+				$last_visit = min((int) $user->data['session_last_visit'], (int) $user->data['user_last_visit']);
+				if ($config['enable_read_tracking'] && $user->data['user_mark_time'])
+				{
+					$last_visit = min($last_visit, (int) $user->data['user_mark_time']);
+				}
+
 				$l_search_title = $user->lang['SEARCH_NEW'];
 				// force sorting
 				$show_results = (request_var('sr', 'topics') == 'posts') ? 'posts' : 'topics';
@@ -376,7 +353,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				{
 					$sql = 'SELECT p.post_id
 						FROM ' . POSTS_TABLE . ' p
-						WHERE p.post_time > ' . $user->data['session_last_visit'] . "
+						WHERE p.post_time > ' . $last_visit . "
 							{$m_approve_fid_sql}
 							" . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '') . "
 						{$sql_sort}";
@@ -386,7 +363,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				{
 					$sql = 'SELECT t.topic_id
 						FROM ' . TOPICS_TABLE . ' t
-						WHERE t.topic_last_post_time > ' . $user->data['session_last_visit'] . '
+						WHERE t.topic_last_post_time > ' . $last_visit . '
 							' . str_replace(['p.', 'post_'], ['t.', 'topic_'], $m_approve_fid_sql) . '
 							' . ((sizeof($ex_fid_ary)) ? 'AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '') . "
 						{$sql_sort}";
@@ -433,11 +410,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$id_ary[] = (int) $row[$field];
 			}
 			$db->sql_freeresult($result);
-		}
-		else if ($search_id == 'unreadposts')
-		{
-			// Only return up to $total_matches_limit+1 ids (the last one will be removed later)
-			$id_ary = array_keys(get_unread_topics($user->data['user_id'], $sql_where, $sql_sort, $total_matches_limit + 1));
 		}
 		else
 		{
@@ -596,7 +568,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'U_SEARCH_SELF_IN'          => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch' . $u_amp_search_forum),
 		'U_SEARCH_SELF_TOPICS_IN'   => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost' . $u_amp_search_forum),
 		'U_SEARCH_NEW_IN'           => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts' . $u_amp_search_forum),
-		'U_SEARCH_UNREAD_IN'        => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts' . $u_amp_search_forum),
 		'U_SEARCH_ACTIVE_TOPICS_IN' => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics' . $u_amp_search_forum),
 	]);
 

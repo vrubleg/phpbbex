@@ -3416,7 +3416,6 @@ function page_header($page_title = '', $display_online_list = true)
 		'U_SEARCH_SELF'         => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch'),
 		'U_SEARCH_SELF_TOPICS'  => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost'),
 		'U_SEARCH_NEW'          => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts'),
-		'U_SEARCH_UNREAD'       => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts'),
 		'U_SEARCH_ACTIVE_TOPICS'=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics'),
 		'U_TEAM'                => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=leaders'),
 		'U_TERMS_OF_USE'        => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
@@ -3452,7 +3451,6 @@ function page_header($page_title = '', $display_online_list = true)
 		'S_ENABLE_FEEDS_TOPICS_ACTIVE'  => (bool) $config['feed_topics_active'],
 		'S_ENABLE_FEEDS_NEWS'       => (bool) $s_feed_news,
 
-		'S_LOAD_UNREADS'            => ($config['enable_read_tracking'] && $user->data['is_registered']),
 
 		'S_SEARCH_HIDDEN_FIELDS'    => build_hidden_fields($s_search_hidden_fields),
 
