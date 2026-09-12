@@ -73,7 +73,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		'LEFT_JOIN' => [],
 	];
 
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
 		$sql_array['LEFT_JOIN'][] = ['FROM' => [FORUMS_TRACK_TABLE => 'ft'], 'ON' => 'ft.user_id = ' . $user->data['user_id'] . ' AND ft.forum_id = f.forum_id'];
 		$sql_array['SELECT'] .= ', ft.mark_time';
@@ -144,7 +144,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			continue;
 		}
 
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
+		if ($config['enable_read_tracking'] && $user->data['is_registered'])
 		{
 			$forum_tracking_info[$forum_id] = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_mark_time'];
 		}
@@ -237,8 +237,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		$token = request_var('hash', '');
 		if (check_link_hash($token, 'global'))
 		{
-			// Add 0 to forums array to mark global announcements correctly
-			$forum_ids[] = 0;
 			mark_read('topics', $forum_ids);
 			redirect($redirect);
 		}
@@ -463,7 +461,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	}
 
 	$template->assign_vars([
-		'U_MARK_FORUMS'     => ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . '&amp;f=' . $root_data['forum_id'] . '&amp;mark=forums') : '',
+		'U_MARK_FORUMS'     => ($config['enable_read_tracking'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . '&amp;f=' . $root_data['forum_id'] . '&amp;mark=forums') : '',
 		'S_HAS_SUBFORUM'    => ($visible_forums > 0),
 		'L_SUBFORUM'        => ($visible_forums == 1) ? $user->lang['SUBFORUM'] : $user->lang['SUBFORUMS'],
 		'LAST_POST_IMG'     => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),

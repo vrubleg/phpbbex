@@ -137,6 +137,8 @@ $lang = array_merge($lang, [
 	'ANNOUNCE_INDEX'                => 'Display global annoucements',
 	'ACTIVE_TOPICS_ON_INDEX'        => 'Display active topics',
 	'ACTIVE_TOPICS_ON_INDEX_EXPLAIN'=> 'Leave empty or 0 to disable active topics on index.',
+	'ENABLE_READ_TRACKING'          => 'Enable unread topics',
+	'ENABLE_READ_TRACKING_EXPLAIN'  => 'Stores read/unread status information in the DB for registered users. If disabled, posts are always marked read.',
 
 	'RATINGS'                   => 'Post ratings',
 	'RATE_ENABLED'              => 'Enable ratings',
@@ -420,8 +422,6 @@ $lang = array_merge($lang, [
 	'YES_ONLINE_EXPLAIN'            => 'Display online user information on index page.',
 	'YES_ONLINE_TRACK'              => 'Enable display of user online/offline information',
 	'YES_ONLINE_TRACK_EXPLAIN'      => 'Display online information for user in profiles and topic pages.',
-	'YES_READ_MARKING'              => 'Enable unread topics',
-	'YES_READ_MARKING_EXPLAIN'      => 'Stores read/unread status information in the DB for registered users. If disabled, posts are always marked read.',
 ]);
 
 // Security Settings

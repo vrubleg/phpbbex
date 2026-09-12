@@ -681,6 +681,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'fulltext_native_max_chars',
 		'fulltext_native_min_chars',
 		'allow_mass_pm',
+		'load_db_lastread',
 	]);
 
 	// New defaults.
@@ -705,6 +706,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('allow_avatar_upload', '1');
 	set_config('allow_avatar_remote_upload', '0');
 	set_config('avatar_filesize', '20480');
+	set_config('enable_read_tracking', '1');
 
 	// Remove obsolete modules.
 

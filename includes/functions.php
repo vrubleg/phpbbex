@@ -1126,7 +1126,7 @@ function mark_read($mode, $forum_id = false, $topic_id = false, $time = 0, $user
 	global $db, $user, $config;
 
 	$user_id = (!$user_id) ? (int) $user->data['user_id'] : (int) $user_id;
-	if (!$user_id || $user_id == ANONYMOUS || !$config['load_db_lastread'])
+	if (!$user_id || $user_id == ANONYMOUS || !$config['enable_read_tracking'])
 	{
 		return;
 	}
@@ -1324,7 +1324,7 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 		$topic_ids = [$topic_ids];
 	}
 
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
 		global $db;
 
@@ -1394,7 +1394,7 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 		$sql_sort = 'ORDER BY t.topic_last_post_time DESC';
 	}
 
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
 		// Get list of the unread topics
 		$last_mark = (int) $user->data['user_mark_time'];
@@ -1445,7 +1445,7 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 *
 * @param int $forum_id the forum id to check
 * @param int $forum_last_post_time the forums last post time
-* @param int $f_mark_time the forums last mark time if user is registered and load_db_lastread enabled
+* @param int $f_mark_time the forums last mark time if user is registered and enable_read_tracking enabled
 * @param int $mark_time_forum false if the mark time needs to be obtained, else the last users forum mark time
 *
 * @return true if complete forum got marked read, else false.
@@ -1457,7 +1457,7 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 	// Determine the users last forum mark time if not given.
 	if ($mark_time_forum === false)
 	{
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
+		if ($config['enable_read_tracking'] && $user->data['is_registered'])
 		{
 			$mark_time_forum = (!empty($f_mark_time)) ? $f_mark_time : $user->data['user_mark_time'];
 		}
@@ -1469,7 +1469,7 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 
 	// Check the forum for any left unread topics.
 	// If there are none, we mark the forum as read.
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
 		if ($mark_time_forum >= $forum_last_post_time)
 		{
@@ -3583,7 +3583,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'S_ENABLE_FEEDS_TOPICS_ACTIVE'  => (bool) $config['feed_topics_active'],
 		'S_ENABLE_FEEDS_NEWS'       => (bool) $s_feed_news,
 
-		'S_LOAD_UNREADS'            => ($config['load_db_lastread'] && $user->data['is_registered']),
+		'S_LOAD_UNREADS'            => ($config['enable_read_tracking'] && $user->data['is_registered']),
 
 		'S_SEARCH_HIDDEN_FIELDS'    => build_hidden_fields($s_search_hidden_fields),
 

@@ -239,7 +239,7 @@ class ucp_main
 						'ORDER_BY'  => 'left_id'
 					];
 
-					if ($config['load_db_lastread'])
+					if ($config['enable_read_tracking'])
 					{
 						$sql_array['LEFT_JOIN'] = [
 							[
@@ -258,7 +258,7 @@ class ucp_main
 					{
 						$forum_id = $row['forum_id'];
 
-						if ($config['load_db_lastread'])
+						if ($config['enable_read_tracking'])
 						{
 							$forum_check = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_mark_time'];
 						}
@@ -607,7 +607,7 @@ class ucp_main
 
 		$sql_array['LEFT_JOIN'][] = ['FROM' => [FORUMS_TABLE => 'f'], 'ON' => 't.forum_id = f.forum_id'];
 
-		if ($config['load_db_lastread'])
+		if ($config['enable_read_tracking'])
 		{
 			$sql_array['LEFT_JOIN'][] = ['FROM' => [FORUMS_TRACK_TABLE => 'ft'], 'ON' => 'ft.forum_id = t.forum_id AND ft.user_id = ' . $user->data['user_id']];
 			$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
@@ -625,7 +625,7 @@ class ucp_main
 			$topic_list[] = $topic_id;
 			$rowset[$topic_id] = $row;
 
-			$topic_forum_list[$row['forum_id']]['forum_mark_time'] = ($config['load_db_lastread']) ? $row['forum_mark_time'] : 0;
+			$topic_forum_list[$row['forum_id']]['forum_mark_time'] = ($config['enable_read_tracking']) ? $row['forum_mark_time'] : 0;
 			$topic_forum_list[$row['forum_id']]['topics'][] = $topic_id;
 
 			if ($row['topic_type'] == POST_GLOBAL)
@@ -638,7 +638,7 @@ class ucp_main
 		mark_user_posted_topics($rowset);
 
 		$topic_tracking_info = [];
-		if ($config['load_db_lastread'])
+		if ($config['enable_read_tracking'])
 		{
 			foreach ($topic_forum_list as $f_id => $topic_row)
 			{

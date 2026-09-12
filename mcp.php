@@ -396,7 +396,7 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 			'WHERE'     => $db->sql_in_set('t.topic_id', $topic_ids)
 		];
 
-		if ($read_tracking && $config['load_db_lastread'])
+		if ($read_tracking && $config['enable_read_tracking'])
 		{
 			$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
 
@@ -480,7 +480,7 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 			AND t.topic_id = p.topic_id',
 	];
 
-	if ($read_tracking && $config['load_db_lastread'])
+	if ($read_tracking && $config['enable_read_tracking'])
 	{
 		$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
 
@@ -544,7 +544,7 @@ function get_forum_data($forum_id, $acl_list = 'f_list', $read_tracking = false)
 		return [];
 	}
 
-	if ($read_tracking && $config['load_db_lastread'])
+	if ($read_tracking && $config['enable_read_tracking'])
 	{
 		$read_tracking_join = ' LEFT JOIN ' . FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
 			AND ft.forum_id = f.forum_id)';

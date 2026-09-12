@@ -55,7 +55,7 @@ switch ($search_id)
 
 	// Search for unread posts needs to be allowed and user to be logged in if topics tracking for guests is disabled
 	case 'unreadposts':
-		if (!$config['load_db_lastread'])
+		if (!$config['enable_read_tracking'])
 		{
 			$template->assign_var('S_NO_SEARCH', true);
 			trigger_error('NO_SEARCH_UNREADS');
@@ -590,7 +590,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'LAST_POST_IMG'     => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
 		'U_SEARCH_WORDS'    => $u_search,
-		'U_MARK_FORUMS'     => ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
+		'U_MARK_FORUMS'     => ($config['enable_read_tracking'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 
 		// Search in current forums
 		'U_SEARCH_IN'               => append_sid(PHPBB_ROOT_PATH . 'search.php', $u_qst_search_forum),
@@ -637,7 +637,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 			if ($user->data['is_registered'])
 			{
-				if ($config['load_db_lastread'])
+				if ($config['enable_read_tracking'])
 				{
 					$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.user_id = ' . $user->data['user_id'] . '
 							AND t.topic_id = tt.topic_id)
@@ -668,7 +668,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 				$rowset[$row['topic_id']] = $row;
 
-				if (!isset($forums[$row['forum_id']]) && $user->data['is_registered'] && $config['load_db_lastread'])
+				if (!isset($forums[$row['forum_id']]) && $user->data['is_registered'] && $config['enable_read_tracking'])
 				{
 					$forums[$row['forum_id']]['mark_time'] = $row['f_mark_time'];
 				}
@@ -681,7 +681,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 			foreach ($forums as $forum_id => $forum)
 			{
-				if ($user->data['is_registered'] && $config['load_db_lastread'])
+				if ($user->data['is_registered'] && $config['enable_read_tracking'])
 				{
 					$topic_tracking_info[$forum_id] = get_topic_tracking($forum_id, $forum['topic_list'], $forum['rowset'], [$forum_id => $forum['mark_time']], ($forum_id) ? false : $forum['topic_list']);
 				}

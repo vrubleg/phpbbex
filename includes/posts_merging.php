@@ -210,7 +210,7 @@ if ($merge_post_data['enable_indexing'])
 mark_read('topic', $forum_id, $topic_id, $current_time);
 
 // Update forum tracking info
-if ($config['load_db_lastread'] && $user->data['is_registered'])
+if ($config['enable_read_tracking'] && $user->data['is_registered'])
 {
 	$sql = 'SELECT mark_time
 		FROM ' . FORUMS_TRACK_TABLE . '

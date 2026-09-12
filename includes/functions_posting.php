@@ -2381,7 +2381,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 	mark_read('topic', $data['forum_id'], $data['topic_id'], time());
 
 	// Update forum tracking info
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
 		$sql = 'SELECT mark_time
 			FROM ' . FORUMS_TRACK_TABLE . '
@@ -2503,7 +2503,7 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 	mark_read('topic', $forum_id, $topic_id, $bump_time);
 
 	// Update forum tracking info
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
 		$sql = 'SELECT mark_time
 			FROM ' . FORUMS_TRACK_TABLE . '

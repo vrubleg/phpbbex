@@ -30,7 +30,7 @@ $sql_from = FORUMS_TABLE . ' f';
 $lastread_select = '';
 
 // Grab appropriate forum data
-if ($config['load_db_lastread'] && $user->data['is_registered'])
+if ($config['enable_read_tracking'] && $user->data['is_registered'])
 {
 	$sql_from .= ' LEFT JOIN ' . FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
 		AND ft.forum_id = f.forum_id)';
@@ -163,8 +163,7 @@ if ($mark_read == 'topics')
 	$token = request_var('hash', '');
 	if (check_link_hash($token, 'global'))
 	{
-		// Add 0 to forums array to mark global announcements correctly
-		mark_read('topics', [$forum_id, 0]);
+		mark_read('topics', [$forum_id]);
 	}
 	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id);
 	redirect($redirect_url);
@@ -298,7 +297,7 @@ $template->assign_vars([
 	'U_MCP_FORUM'           => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&amp;i=main&amp;mode=forum_view") : '',
 	'U_POST_NEW_TOPIC'  => ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=post&amp;f=' . $forum_id) : '',
 	'U_VIEW_FORUM'      => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($start == 0) ? '' : "&amp;start={$start}")),
-	'U_MARK_TOPICS'     => ($config['load_db_lastread'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . "&amp;f={$forum_id}&amp;mark=topics") : '',
+	'U_MARK_TOPICS'     => ($config['enable_read_tracking'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . "&amp;f={$forum_id}&amp;mark=topics") : '',
 ]);
 
 // Grab icons
@@ -319,7 +318,7 @@ $sql_approved = ($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_app
 
 if ($user->data['is_registered'])
 {
-	if ($config['load_db_lastread'])
+	if ($config['enable_read_tracking'])
 	{
 		$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
 		$sql_array['SELECT'] .= ', tt.mark_time';
@@ -484,11 +483,11 @@ if (sizeof($topic_list))
 		$topic_forum_list = [];
 		foreach ($rowset as $t_id => $row)
 		{
-			$topic_forum_list[$row['forum_id']]['forum_mark_time'] = ($config['load_db_lastread'] && $user->data['is_registered'] && isset($row['forum_mark_time'])) ? $row['forum_mark_time'] : 0;
+			$topic_forum_list[$row['forum_id']]['forum_mark_time'] = ($config['enable_read_tracking'] && $user->data['is_registered'] && isset($row['forum_mark_time'])) ? $row['forum_mark_time'] : 0;
 			$topic_forum_list[$row['forum_id']]['topics'][] = $t_id;
 		}
 
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
+		if ($config['enable_read_tracking'] && $user->data['is_registered'])
 		{
 			foreach ($topic_forum_list as $f_id => $topic_row)
 			{
@@ -500,7 +499,7 @@ if (sizeof($topic_list))
 	}
 	else
 	{
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
+		if ($config['enable_read_tracking'] && $user->data['is_registered'])
 		{
 			$topic_tracking_info = get_topic_tracking($forum_id, $topic_list, $rowset, [$forum_id => $forum_data['mark_time']], $global_announce_list);
 			$mark_time_forum = $forum_data['mark_time'] ?: $user->data['user_mark_time'];
