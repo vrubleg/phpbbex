@@ -16,7 +16,6 @@ $auth->acl($user->data);
 
 // Start initial var setup
 $forum_id   = request_var('f', 0);
-$mark_read  = request_var('mark', '');
 $start      = request_var('start', 0);
 
 // Check if the user has actually sent a forum ID with his/her request
@@ -27,23 +26,15 @@ if (!$forum_id)
 }
 
 $sql_from = FORUMS_TABLE . ' f';
-$lastread_select = '';
-
-// Grab appropriate forum data
-if ($config['enable_read_tracking'] && $user->data['is_registered'])
-{
-	$sql_from .= ' LEFT JOIN ' . FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
-		AND ft.forum_id = f.forum_id)';
-	$lastread_select .= ', ft.mark_time';
-}
+$sql_select = '';
 
 if ($user->data['is_registered'])
 {
 	$sql_from .= ' LEFT JOIN ' . FORUMS_WATCH_TABLE . ' fw ON (fw.forum_id = f.forum_id AND fw.user_id = ' . $user->data['user_id'] . ')';
-	$lastread_select .= ', fw.notify_status';
+	$sql_select .= ', fw.notify_status';
 }
 
-$sql = "SELECT f.* {$lastread_select}
+$sql = "SELECT f.* {$sql_select}
 	FROM {$sql_from}
 	WHERE f.forum_id = {$forum_id}";
 $result = $db->sql_query($sql);
@@ -155,18 +146,6 @@ if (!$auth->acl_get('f_read', $forum_id))
 	]);
 
 	page_footer();
-}
-
-// Handle marking posts
-if ($mark_read == 'topics')
-{
-	$token = request_var('hash', '');
-	if (check_link_hash($token, 'global'))
-	{
-		mark_read('topics', [$forum_id]);
-	}
-	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id);
-	redirect($redirect_url);
 }
 
 // Do the forum Prune thang - cron type job ...
@@ -297,7 +276,6 @@ $template->assign_vars([
 	'U_MCP_FORUM'           => ($auth->acl_get('m_', $forum_id)) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "f={$forum_id}&amp;i=main&amp;mode=forum_view") : '',
 	'U_POST_NEW_TOPIC'  => ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', 'mode=post&amp;f=' . $forum_id) : '',
 	'U_VIEW_FORUM'      => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '') . (($start == 0) ? '' : "&amp;start={$start}")),
-	'U_MARK_TOPICS'     => ($config['enable_read_tracking'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . "&amp;f={$forum_id}&amp;mark=topics") : '',
 ]);
 
 // Grab icons
@@ -322,12 +300,6 @@ if ($user->data['is_registered'])
 	{
 		$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
 		$sql_array['SELECT'] .= ', tt.mark_time';
-
-		if ($s_display_active && sizeof($active_forum_ary))
-		{
-			$sql_array['LEFT_JOIN'][] = ['FROM' => [FORUMS_TRACK_TABLE => 'ft'], 'ON' => 'ft.forum_id = t.forum_id AND ft.user_id = ' . $user->data['user_id']];
-			$sql_array['SELECT'] .= ', ft.mark_time AS forum_mark_time';
-		}
 	}
 }
 
@@ -473,37 +445,9 @@ mark_user_posted_topics($rowset);
 // Okay, lets dump out the page ...
 if (sizeof($topic_list))
 {
-	$mark_forum_read = true;
-	$mark_time_forum = 0;
-
-	// Active topics?
-	if ($s_display_active && sizeof($active_forum_ary))
+	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
-		// Generate topic forum list...
-		$topic_forum_list = [];
-		foreach ($rowset as $t_id => $row)
-		{
-			$topic_forum_list[$row['forum_id']]['forum_mark_time'] = ($config['enable_read_tracking'] && $user->data['is_registered'] && isset($row['forum_mark_time'])) ? $row['forum_mark_time'] : 0;
-			$topic_forum_list[$row['forum_id']]['topics'][] = $t_id;
-		}
-
-		if ($config['enable_read_tracking'] && $user->data['is_registered'])
-		{
-			foreach ($topic_forum_list as $f_id => $topic_row)
-			{
-				$topic_tracking_info += get_topic_tracking($f_id, $topic_row['topics'], $rowset, [$f_id => $topic_row['forum_mark_time']], false);
-			}
-		}
-
-		unset($topic_forum_list);
-	}
-	else
-	{
-		if ($config['enable_read_tracking'] && $user->data['is_registered'])
-		{
-			$topic_tracking_info = get_topic_tracking($forum_id, $topic_list, $rowset, [$forum_id => $forum_data['mark_time']], $global_announce_list);
-			$mark_time_forum = $forum_data['mark_time'] ?: $user->data['user_mark_time'];
-		}
+		$topic_tracking_info = get_topic_tracking($topic_list, $rowset);
 	}
 
 	$s_type_switch = 0;
@@ -592,22 +536,8 @@ if (sizeof($topic_list))
 
 		$s_type_switch = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 
-		if ($unread_topic)
-		{
-			$mark_forum_read = false;
-		}
-
 		unset($rowset[$topic_id]);
 	}
-}
-
-// This is rather a fudge but it's the best I can think of without requiring information
-// on all topics (as we do in 2.0.x). It looks for unread or new topics, if it doesn't find
-// any it updates the forum last read cookie. This requires that the user visit the forum
-// after reading a topic
-if ($forum_data['forum_type'] == FORUM_POST && sizeof($topic_list) && $mark_forum_read)
-{
-	update_forum_tracking_info($forum_id, $forum_data['forum_last_post_time'], false, $mark_time_forum);
 }
 
 page_footer();

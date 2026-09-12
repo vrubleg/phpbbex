@@ -224,13 +224,6 @@ CREATE TABLE phpbb_forums (
 	KEY forum_lastpost_id (forum_last_post_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
-CREATE TABLE phpbb_forums_track (
-	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	mark_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (user_id, forum_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
 CREATE TABLE phpbb_forums_watch (
 	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
@@ -642,11 +635,9 @@ CREATE TABLE phpbb_topics (
 CREATE TABLE phpbb_topics_track (
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	mark_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (user_id, topic_id),
-	KEY topic_id (topic_id),
-	KEY forum_id (forum_id)
+	KEY topic_id (topic_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_topics_watch (

@@ -268,8 +268,7 @@ $lang = array_merge($lang, [
 
 	'MARK'                  => 'Mark',
 	'MARK_ALL'              => 'Mark all',
-	'MARK_FORUMS_READ'      => 'Mark forums read',
-	'MARK_SUBFORUMS_READ'   => 'Mark subforums read',
+	'MARK_ALL_READ'         => 'Mark all read',
 	'MB'                    => 'MB',
 	'MIB'                   => 'MiB',
 	'MCP'                   => 'Moderator Control Panel',

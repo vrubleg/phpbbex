@@ -170,11 +170,11 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	{
 		if ($config['enable_read_tracking'])
 		{
-			$topic_tracking_info = get_topic_tracking($forum_id, $topic_list, $topic_rows, [$forum_id => $forum_info['mark_time']], []);
+			$topic_tracking_info = get_topic_tracking($topic_list, $topic_rows);
 		}
 		else
 		{
-			$topic_tracking_info = get_complete_topic_tracking($forum_id, $topic_list, []);
+			$topic_tracking_info = get_topic_tracking($topic_list);
 		}
 	}
 

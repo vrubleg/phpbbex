@@ -45,7 +45,7 @@ class ucp_main
 				$forum_ary = $auth->acl_getf('f_read', true);
 				$forum_ary = array_unique(array_keys($forum_ary));
 
-				$topic_lists = $rowset = [];
+				$rowset = [];
 				if (sizeof($forum_ary))
 				{
 					$sql = "SELECT t.* {$sql_select}
@@ -57,10 +57,7 @@ class ucp_main
 
 					while ($row = $db->sql_fetchrow($result))
 					{
-						$forum_id = $row['forum_id'];
 						$topic_id = $row['topic_id'];
-						isset($topic_lists[$forum_id]) or $topic_lists[$forum_id] = [];
-						$topic_lists[$forum_id][] = $topic_id;
 						$rowset[$topic_id] = $row;
 					}
 					$db->sql_freeresult($result);
@@ -68,11 +65,7 @@ class ucp_main
 
 				mark_user_posted_topics($rowset);
 
-				$topic_tracking_info = [];
-				foreach ($topic_lists as $forum_id => $topic_list)
-				{
-					$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_list);
-				}
+				$topic_tracking_info = get_topic_tracking(array_keys($rowset));
 
 				foreach ($rowset as $row)
 				{
@@ -80,7 +73,7 @@ class ucp_main
 					$topic_id = $row['topic_id'];
 
 					$folder_img = $folder_alt = $topic_type = '';
-					$unread_topic = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$topic_id]);
+					$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 					topic_status($row, $row['topic_replies'], $unread_topic, $folder_img, $folder_alt, $topic_type);
 
 					$template->assign_block_vars('topicrow', [
@@ -239,31 +232,17 @@ class ucp_main
 						'ORDER_BY'  => 'left_id'
 					];
 
-					if ($config['enable_read_tracking'])
-					{
-						$sql_array['LEFT_JOIN'] = [
-							[
-								'FROM'  => [FORUMS_TRACK_TABLE => 'ft'],
-								'ON'    => 'ft.user_id = ' . $user->data['user_id'] . ' AND ft.forum_id = f.forum_id'
-							]
-						];
-
-						$sql_array['SELECT'] .= ', ft.mark_time ';
-					}
-
 					$sql = $db->sql_build_query('SELECT', $sql_array);
 					$result = $db->sql_query($sql);
+					$watched_forums = $db->sql_fetchrowset($result);
+					$db->sql_freeresult($result);
+					$unread_forums = get_unread_forums(array_column($watched_forums, 'forum_id'));
 
-					while ($row = $db->sql_fetchrow($result))
+					foreach ($watched_forums as $row)
 					{
 						$forum_id = $row['forum_id'];
 
-						if ($config['enable_read_tracking'])
-						{
-							$forum_check = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_mark_time'];
-						}
-
-						$unread_forum = ($row['forum_last_post_time'] > $forum_check);
+						$unread_forum = isset($unread_forums[$forum_id]);
 
 						// Which folder should we display?
 						if ($row['forum_status'] == ITEM_LOCKED)
@@ -306,7 +285,6 @@ class ucp_main
 							'U_VIEWFORUM'           => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $row['forum_id'])]
 						);
 					}
-					$db->sql_freeresult($result);
 				}
 
 				// Subscribed Topics
@@ -609,49 +587,26 @@ class ucp_main
 
 		if ($config['enable_read_tracking'])
 		{
-			$sql_array['LEFT_JOIN'][] = ['FROM' => [FORUMS_TRACK_TABLE => 'ft'], 'ON' => 'ft.forum_id = t.forum_id AND ft.user_id = ' . $user->data['user_id']];
 			$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
-			$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time AS forum_mark_time';
+			$sql_array['SELECT'] .= ', tt.mark_time';
 		}
 
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
 
-		$topic_list = $topic_forum_list = $global_announce_list = $rowset = [];
+		$topic_list = $rowset = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$topic_id = $row['b_topic_id'] ?? $row['topic_id'];
 
 			$topic_list[] = $topic_id;
 			$rowset[$topic_id] = $row;
-
-			$topic_forum_list[$row['forum_id']]['forum_mark_time'] = ($config['enable_read_tracking']) ? $row['forum_mark_time'] : 0;
-			$topic_forum_list[$row['forum_id']]['topics'][] = $topic_id;
-
-			if ($row['topic_type'] == POST_GLOBAL)
-			{
-				$global_announce_list[] = $topic_id;
-			}
 		}
 		$db->sql_freeresult($result);
 
 		mark_user_posted_topics($rowset);
 
-		$topic_tracking_info = [];
-		if ($config['enable_read_tracking'])
-		{
-			foreach ($topic_forum_list as $f_id => $topic_row)
-			{
-				$topic_tracking_info += get_topic_tracking($f_id, $topic_row['topics'], $rowset, [$f_id => $topic_row['forum_mark_time']], ($f_id == 0) ? $global_announce_list : false);
-			}
-		}
-		else
-		{
-			foreach ($topic_forum_list as $f_id => $topic_row)
-			{
-				$topic_tracking_info += get_complete_topic_tracking($f_id, $topic_row['topics'], $global_announce_list);
-			}
-		}
+		$topic_tracking_info = ($config['enable_read_tracking']) ? get_topic_tracking($topic_list, $rowset) : [];
 
 		foreach ($topic_list as $topic_id)
 		{

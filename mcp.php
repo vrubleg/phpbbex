@@ -398,16 +398,11 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 
 		if ($read_tracking && $config['enable_read_tracking'])
 		{
-			$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
+			$sql_array['SELECT'] .= ', tt.mark_time';
 
 			$sql_array['LEFT_JOIN'][] = [
 				'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
 				'ON'    => 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
-			];
-
-			$sql_array['LEFT_JOIN'][] = [
-				'FROM'  => [FORUMS_TRACK_TABLE => 'ft'],
-				'ON'    => 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
 			];
 		}
 
@@ -482,16 +477,11 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 
 	if ($read_tracking && $config['enable_read_tracking'])
 	{
-		$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
+		$sql_array['SELECT'] .= ', tt.mark_time';
 
 		$sql_array['LEFT_JOIN'][] = [
 			'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
 			'ON'    => 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
-		];
-
-		$sql_array['LEFT_JOIN'][] = [
-			'FROM'  => [FORUMS_TRACK_TABLE => 'ft'],
-			'ON'    => 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
 		];
 	}
 
@@ -528,7 +518,7 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 /**
 * Get simple forum data
 */
-function get_forum_data($forum_id, $acl_list = 'f_list', $read_tracking = false)
+function get_forum_data($forum_id, $acl_list = 'f_list')
 {
 	global $auth, $db, $user, $config;
 
@@ -544,20 +534,9 @@ function get_forum_data($forum_id, $acl_list = 'f_list', $read_tracking = false)
 		return [];
 	}
 
-	if ($read_tracking && $config['enable_read_tracking'])
-	{
-		$read_tracking_join = ' LEFT JOIN ' . FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
-			AND ft.forum_id = f.forum_id)';
-		$read_tracking_select = ', ft.mark_time';
-	}
-	else
-	{
-		$read_tracking_join = $read_tracking_select = '';
-	}
-
-	$sql = "SELECT f.* {$read_tracking_select}
-		FROM " . FORUMS_TABLE . " f{$read_tracking_join}
-		WHERE " . $db->sql_in_set('f.forum_id', $forum_id);
+	$sql = 'SELECT f.*
+		FROM ' . FORUMS_TABLE . ' f
+		WHERE ' . $db->sql_in_set('f.forum_id', $forum_id);
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))

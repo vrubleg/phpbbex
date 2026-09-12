@@ -57,7 +57,7 @@ if ($view && !$post_id)
 	if ($view == 'unread')
 	{
 		// Get topic tracking info
-		$topic_tracking_info = get_complete_topic_tracking($forum_id, $topic_id);
+		$topic_tracking_info = get_topic_tracking($topic_id);
 
 		$topic_last_read = $topic_tracking_info[$topic_id] ?? 0;
 
@@ -136,16 +136,11 @@ if ($user->data['is_registered'])
 
 	if ($config['enable_read_tracking'])
 	{
-		$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
+		$sql_array['SELECT'] .= ', tt.mark_time';
 
 		$sql_array['LEFT_JOIN'][] = [
 			'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
 			'ON'    => 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
-		];
-
-		$sql_array['LEFT_JOIN'][] = [
-			'FROM'  => [FORUMS_TRACK_TABLE => 'ft'],
-			'ON'    => 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
 		];
 	}
 }
@@ -305,7 +300,7 @@ if (!isset($topic_tracking_info))
 	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
 		$tmp_topic_data = [$topic_id => $topic_data];
-		$topic_tracking_info = get_topic_tracking($forum_id, $topic_id, $tmp_topic_data, [$forum_id => $topic_data['forum_mark_time']]);
+		$topic_tracking_info = get_topic_tracking($topic_id, $tmp_topic_data);
 		unset($tmp_topic_data);
 	}
 }
@@ -1700,47 +1695,17 @@ if ($last_page)
 // Only mark topic if it's currently unread. Also make sure we do not set topic tracking back if earlier pages are viewed.
 if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id] && $max_post_time > $topic_tracking_info[$topic_id])
 {
-	mark_read('topic', $forum_id, $topic_id, $max_post_time);
-
-	// Update forum info
-	$all_marked_read = update_forum_tracking_info($forum_id, $topic_data['forum_last_post_time'], $topic_data['forum_mark_time'] ?? false, false);
-}
-else
-{
-	$all_marked_read = true;
+	mark_read_topic($topic_id, $max_post_time);
 }
 
-// If there are absolutely no more unread posts in this forum and unread posts shown, we can savely show the #unread link
-if ($all_marked_read)
+// Link to an unread post on this page, or find the first unread post in the topic.
+if ($post_unread)
 {
-	if ($post_unread)
-	{
-		$template->assign_vars([
-			'U_VIEW_UNREAD_POST'    => '#unread',
-		]);
-	}
-	else if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id])
-	{
-		$template->assign_vars([
-			'U_VIEW_UNREAD_POST'    => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;view=unread") . '#unread',
-		]);
-	}
+	$template->assign_var('U_VIEW_UNREAD_POST', '#unread');
 }
-else if (!$all_marked_read)
+else if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id])
 {
-	// What can happen is that we are at the last displayed page. If so, we also display the #unread link based in $post_unread
-	if ($last_page && $post_unread)
-	{
-		$template->assign_vars([
-			'U_VIEW_UNREAD_POST'    => '#unread',
-		]);
-	}
-	else if (!$last_page)
-	{
-		$template->assign_vars([
-			'U_VIEW_UNREAD_POST'    => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;view=unread") . '#unread',
-		]);
-	}
+	$template->assign_var('U_VIEW_UNREAD_POST', append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;view=unread") . '#unread');
 }
 
 // let's set up quick_reply

@@ -1204,6 +1204,13 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 				OR (module_basename = 'pm_reports' AND module_mode = 'pm_report_details'))");
 	$cache->destroy('_modules_mcp');
 
+	// Unread topics tracking does not need these anymore.
+	$db->sql_query('DROP TABLE IF EXISTS ' . $table_prefix . 'forums_track');
+	if ($db_tools->sql_column_exists(TOPICS_TRACK_TABLE, 'forum_id'))
+	{
+		$db->sql_query('ALTER TABLE ' . TOPICS_TRACK_TABLE . ' DROP COLUMN forum_id');
+	}
+
 	// Clear cache and reset bots.
 
 	$bots_default = true;
@@ -1404,7 +1411,6 @@ if (request_var('utf8mb4', 0))
 			case EXTENSIONS_TABLE:
 			case EXTENSION_GROUPS_TABLE:
 			case FORUMS_TABLE:
-			case FORUMS_TRACK_TABLE:
 			case FORUMS_WATCH_TABLE:
 			case ICONS_TABLE:
 			case LANG_TABLE:

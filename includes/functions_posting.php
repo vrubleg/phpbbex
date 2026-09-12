@@ -2378,29 +2378,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 	// Mark this topic as read
 	// We do not use post_time here, this is intended (post_time can have a date in the past if editing a message)
-	mark_read('topic', $data['forum_id'], $data['topic_id'], time());
-
-	// Update forum tracking info
-	if ($config['enable_read_tracking'] && $user->data['is_registered'])
-	{
-		$sql = 'SELECT mark_time
-			FROM ' . FORUMS_TRACK_TABLE . '
-			WHERE user_id = ' . $user->data['user_id'] . '
-				AND forum_id = ' . $data['forum_id'];
-		$result = $db->sql_query($sql);
-		$f_mark_time = (int) $db->sql_fetchfield('mark_time');
-		$db->sql_freeresult($result);
-
-		// Update forum info
-		$sql = 'SELECT forum_last_post_time
-			FROM ' . FORUMS_TABLE . '
-			WHERE forum_id = ' . $data['forum_id'];
-		$result = $db->sql_query($sql);
-		$forum_last_post_time = (int) $db->sql_fetchfield('forum_last_post_time');
-		$db->sql_freeresult($result);
-
-		update_forum_tracking_info($data['forum_id'], $forum_last_post_time, $f_mark_time, false);
-	}
+	mark_read_topic($data['topic_id'], time());
 
 	// Send Notifications
 	if (($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $post_approval)
@@ -2500,29 +2478,7 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 	$db->sql_transaction('commit');
 
 	// Mark this topic as read
-	mark_read('topic', $forum_id, $topic_id, $bump_time);
-
-	// Update forum tracking info
-	if ($config['enable_read_tracking'] && $user->data['is_registered'])
-	{
-		$sql = 'SELECT mark_time
-			FROM ' . FORUMS_TRACK_TABLE . '
-			WHERE user_id = ' . $user->data['user_id'] . '
-				AND forum_id = ' . $forum_id;
-		$result = $db->sql_query($sql);
-		$f_mark_time = (int) $db->sql_fetchfield('mark_time');
-		$db->sql_freeresult($result);
-
-		// Update forum info
-		$sql = 'SELECT forum_last_post_time
-			FROM ' . FORUMS_TABLE . '
-			WHERE forum_id = ' . $forum_id;
-		$result = $db->sql_query($sql);
-		$forum_last_post_time = (int) $db->sql_fetchfield('forum_last_post_time');
-		$db->sql_freeresult($result);
-
-		update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_time, false);
-	}
+	mark_read_topic($topic_id, $bump_time);
 
 	add_log('mod', $forum_id, $topic_id, 'LOG_BUMP_TOPIC', $post_data['topic_title']);
 

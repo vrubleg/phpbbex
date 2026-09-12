@@ -213,7 +213,6 @@ define('DRAFTS_TABLE',              $table_prefix . 'drafts');
 define('EXTENSIONS_TABLE',          $table_prefix . 'extensions');
 define('EXTENSION_GROUPS_TABLE',    $table_prefix . 'extension_groups');
 define('FORUMS_TABLE',              $table_prefix . 'forums');
-define('FORUMS_TRACK_TABLE',        $table_prefix . 'forums_track');
 define('FORUMS_WATCH_TABLE',        $table_prefix . 'forums_watch');
 define('GROUPS_TABLE',              $table_prefix . 'groups');
 define('ICONS_TABLE',               $table_prefix . 'icons');

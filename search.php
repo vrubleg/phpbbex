@@ -66,7 +66,7 @@ switch ($search_id)
 		}
 	break;
 
-// The "new posts" search uses session_last_visit, so it should require user to log in.
+	// The "new posts" search uses session_last_visit, so it should require user to log in.
 	case 'newposts':
 		if ($user->data['user_id'] == ANONYMOUS)
 		{
@@ -590,7 +590,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		'LAST_POST_IMG'     => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
 		'U_SEARCH_WORDS'    => $u_search,
-		'U_MARK_FORUMS'     => ($config['enable_read_tracking'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'index.php', 'hash=' . generate_link_hash('global') . '&amp;mark=forums') : '',
 
 		// Search in current forums
 		'U_SEARCH_IN'               => append_sid(PHPBB_ROOT_PATH . 'search.php', $u_qst_search_forum),
@@ -640,10 +639,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				if ($config['enable_read_tracking'])
 				{
 					$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.user_id = ' . $user->data['user_id'] . '
-							AND t.topic_id = tt.topic_id)
-						LEFT JOIN ' . FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
-							AND ft.forum_id = f.forum_id)';
-					$sql_select .= ', tt.mark_time, ft.mark_time as f_mark_time';
+							AND t.topic_id = tt.topic_id)';
+					$sql_select .= ', tt.mark_time';
 				}
 			}
 
@@ -660,33 +657,22 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 		if ($show_results == 'topics')
 		{
-			$forums = $rowset = [];
+			$rowset = [];
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$row['forum_id'] = (int) $row['forum_id'];
 				$row['topic_id'] = (int) $row['topic_id'];
 
 				$rowset[$row['topic_id']] = $row;
-
-				if (!isset($forums[$row['forum_id']]) && $user->data['is_registered'] && $config['enable_read_tracking'])
-				{
-					$forums[$row['forum_id']]['mark_time'] = $row['f_mark_time'];
-				}
-				$forums[$row['forum_id']]['topic_list'][] = $row['topic_id'];
-				$forums[$row['forum_id']]['rowset'][$row['topic_id']] = &$rowset[$row['topic_id']];
 			}
 			$db->sql_freeresult($result);
 
 			mark_user_posted_topics($rowset);
 
-			foreach ($forums as $forum_id => $forum)
+			if ($user->data['is_registered'] && $config['enable_read_tracking'])
 			{
-				if ($user->data['is_registered'] && $config['enable_read_tracking'])
-				{
-					$topic_tracking_info[$forum_id] = get_topic_tracking($forum_id, $forum['topic_list'], $forum['rowset'], [$forum_id => $forum['mark_time']], ($forum_id) ? false : $forum['topic_list']);
-				}
+				$topic_tracking_info = get_topic_tracking(array_keys($rowset), $rowset);
 			}
-			unset($forums);
 		}
 		else
 		{
@@ -817,9 +803,9 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			if ($show_results == 'topics')
 			{
 				$folder_img = $folder_alt = $topic_type = '';
-				topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]), $folder_img, $folder_alt, $topic_type);
+				topic_status($row, $replies, (isset($topic_tracking_info[$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$row['topic_id']]), $folder_img, $folder_alt, $topic_type);
 
-				$unread_topic = (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]);
+				$unread_topic = (isset($topic_tracking_info[$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$row['topic_id']]);
 
 				$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id));
 				$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id));

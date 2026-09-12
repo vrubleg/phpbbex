@@ -20,23 +20,12 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 
 	$forum_rows = $subforums = $forum_ids = $forum_ids_moderator = $forum_moderators = $active_forum_ary = [];
 	$parent_id = $visible_forums = 0;
-	$sql_from = '';
 
-	// Mark forums read?
-	$mark_read = request_var('mark', '');
-
-	if ($mark_read == 'all')
-	{
-		$mark_read = '';
-	}
+	// Only the board-wide mark all read action is supported.
+	$mark_all = !$root_data && request_var('mark', '') === 'all';
 
 	if (!$root_data)
 	{
-		if ($mark_read == 'forums')
-		{
-			$mark_read = 'all';
-		}
-
 		$root_data = ['forum_id' => 0];
 		$sql_where = '';
 	}
@@ -46,13 +35,13 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	}
 
 	// Handle marking everything read
-	if ($mark_read == 'all')
+	if ($mark_all)
 	{
 		$redirect = build_url(['mark', 'hash']);
 
 		if (check_link_hash(request_var('hash', ''), 'global'))
 		{
-			mark_read('all');
+			mark_read_all();
 			redirect($redirect);
 		}
 		else
@@ -65,25 +54,9 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	// Display list of active topics for this category?
 	$show_active = (isset($root_data['forum_flags']) && ($root_data['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS));
 
-	$sql_array = [
-		'SELECT'    => 'f.*',
-		'FROM'      => [
-			FORUMS_TABLE        => 'f'
-		],
-		'LEFT_JOIN' => [],
-	];
-
-	if ($config['enable_read_tracking'] && $user->data['is_registered'])
-	{
-		$sql_array['LEFT_JOIN'][] = ['FROM' => [FORUMS_TRACK_TABLE => 'ft'], 'ON' => 'ft.user_id = ' . $user->data['user_id'] . ' AND ft.forum_id = f.forum_id'];
-		$sql_array['SELECT'] .= ', ft.mark_time';
-	}
-
 	$sql = $db->sql_build_query('SELECT', [
-		'SELECT'    => $sql_array['SELECT'],
-		'FROM'      => $sql_array['FROM'],
-		'LEFT_JOIN' => $sql_array['LEFT_JOIN'],
-
+		'SELECT'    => 'f.*',
+		'FROM'      => [FORUMS_TABLE => 'f'],
 		'WHERE'     => $sql_where,
 
 		'ORDER_BY'  => 'f.left_id',
@@ -91,7 +64,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 
 	$result = $db->sql_query($sql);
 
-	$forum_tracking_info = [];
 	$branch_root_id = $root_data['forum_id'];
 
 	// Check for unread global announcements (index page only)
@@ -109,17 +81,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$forum_id = $row['forum_id'];
-
-		// Mark forums read?
-		if ($mark_read == 'forums')
-		{
-			if ($auth->acl_get('f_list', $forum_id))
-			{
-				$forum_ids[] = $forum_id;
-			}
-
-			continue;
-		}
 
 		// Category with no members
 		if ($row['forum_type'] == FORUM_CAT && ($row['left_id'] + 1 == $row['right_id']))
@@ -144,10 +105,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			continue;
 		}
 
-		if ($config['enable_read_tracking'] && $user->data['is_registered'])
-		{
-			$forum_tracking_info[$forum_id] = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_mark_time'];
-		}
+		$forum_ids[] = (int) $forum_id;
 
 		// Count the difference of real to public topics, so we can display an information to moderators
 		$row['forum_id_unapproved_topics'] = ($auth->acl_get('m_approve', $forum_id) && ($row['forum_topics_real'] != $row['forum_topics'])) ? $forum_id : 0;
@@ -189,13 +147,11 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 				$branch_root_id = $forum_id;
 			}
 			$forum_rows[$parent_id]['forum_id_last_post'] = $row['forum_id'];
-			$forum_rows[$parent_id]['orig_forum_last_post_time'] = $row['forum_last_post_time'];
 		}
 		else if ($row['forum_type'] != FORUM_CAT)
 		{
 			$subforums[$parent_id][$forum_id]['display'] = (bool) $row['display_on_index'];
 			$subforums[$parent_id][$forum_id]['name'] = $row['forum_name'];
-			$subforums[$parent_id][$forum_id]['orig_forum_last_post_time'] = $row['forum_last_post_time'];
 			$subforums[$parent_id][$forum_id]['children'] = [];
 
 			if (isset($subforums[$parent_id][$row['parent_id']]) && !$row['display_on_index'])
@@ -230,24 +186,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	}
 	$db->sql_freeresult($result);
 
-	// Handle marking posts
-	if ($mark_read == 'forums')
-	{
-		$redirect = build_url(['mark', 'hash']);
-		$token = request_var('hash', '');
-		if (check_link_hash($token, 'global'))
-		{
-			mark_read('topics', $forum_ids);
-			redirect($redirect);
-		}
-		else
-		{
-			$message = sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>');
-			meta_refresh(3, $redirect);
-			trigger_error($message);
-		}
-
-	}
+	$unread_forums = get_unread_forums($forum_ids);
 
 	// Grab moderators ... if necessary
 	if ($display_moderators)
@@ -283,7 +222,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		$visible_forums++;
 		$forum_id = $row['forum_id'];
 
-		$forum_unread = (isset($forum_tracking_info[$forum_id]) && $row['orig_forum_last_post_time'] > $forum_tracking_info[$forum_id]);
+		$forum_unread = isset($unread_forums[$forum_id]);
 
 		// Mark the first visible forum on index as unread if there's any unread global announcement
 		if ($ga_unread && !empty($forum_ids_moderator) && $forum_id == $forum_ids_moderator[0])
@@ -299,13 +238,13 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		{
 			foreach ($subforums[$forum_id] as $subforum_id => $subforum_row)
 			{
-				$subforum_unread = (isset($forum_tracking_info[$subforum_id]) && $subforum_row['orig_forum_last_post_time'] > $forum_tracking_info[$subforum_id]);
+				$subforum_unread = isset($unread_forums[$subforum_id]);
 
 				if (!$subforum_unread && !empty($subforum_row['children']))
 				{
 					foreach ($subforum_row['children'] as $child_id)
 					{
-						if (isset($forum_tracking_info[$child_id]) && $subforums[$forum_id][$child_id]['orig_forum_last_post_time'] > $forum_tracking_info[$child_id])
+						if (isset($unread_forums[$child_id]))
 						{
 							// Once we found an unread child forum, we can drop out of this loop
 							$subforum_unread = true;
@@ -461,7 +400,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	}
 
 	$template->assign_vars([
-		'U_MARK_FORUMS'     => ($config['enable_read_tracking'] && $user->data['is_registered']) ? append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'hash=' . generate_link_hash('global') . '&amp;f=' . $root_data['forum_id'] . '&amp;mark=forums') : '',
 		'S_HAS_SUBFORUM'    => ($visible_forums > 0),
 		'L_SUBFORUM'        => ($visible_forums == 1) ? $user->lang['SUBFORUM'] : $user->lang['SUBFORUMS'],
 		'LAST_POST_IMG'     => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
@@ -860,23 +798,17 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 		WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
 	$result = $db->sql_query($sql);
 
-	$forums = [];
 	$topic_rows = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$topic_id = $row['topic_id'];
-		$forum_id = $row['forum_id'];
 		$topic_rows[$topic_id] = $row;
-		$forums[$forum_id][] = $topic_id;
 	}
 	$db->sql_freeresult($result);
 
 	mark_user_posted_topics($topic_rows);
 
-	foreach ($forums as $forum_id => $forum_topic_ids)
-	{
-		$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $forum_topic_ids);
-	}
+	$topic_tracking_info = get_topic_tracking(array_keys($topic_rows));
 
 	foreach ($topic_ids as $topic_id)
 	{
@@ -886,7 +818,7 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 
 		$s_type_switch_test = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 		$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
-		$unread_topic = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$topic_id]);
+		$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 
 		$folder_img = $folder_alt = $topic_type = '';
 		topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
