@@ -66,18 +66,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 
 	$branch_root_id = $root_data['forum_id'];
 
-	// Check for unread global announcements (index page only)
-	$ga_unread = false;
-	if ($root_data['forum_id'] == 0)
-	{
-		$unread_ga_list = get_unread_topics($user->data['user_id'], 'AND t.forum_id = 0', '', 1);
-
-		if (!empty($unread_ga_list))
-		{
-			$ga_unread = true;
-		}
-	}
-
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$forum_id = $row['forum_id'];
@@ -223,12 +211,6 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		$forum_id = $row['forum_id'];
 
 		$forum_unread = isset($unread_forums[$forum_id]);
-
-		// Mark the first visible forum on index as unread if there's any unread global announcement
-		if ($ga_unread && !empty($forum_ids_moderator) && $forum_id == $forum_ids_moderator[0])
-		{
-			$forum_unread = true;
-		}
 
 		$folder_image = $folder_alt = $l_subforums = '';
 		$subforums_list = [];
@@ -400,6 +382,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 	}
 
 	$template->assign_vars([
+		'S_HAS_UNREAD_TOPICS' => !empty($unread_forums),
 		'S_HAS_SUBFORUM'    => ($visible_forums > 0),
 		'L_SUBFORUM'        => ($visible_forums == 1) ? $user->lang['SUBFORUM'] : $user->lang['SUBFORUMS'],
 		'LAST_POST_IMG'     => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
