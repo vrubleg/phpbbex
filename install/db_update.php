@@ -713,6 +713,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	remove_module('acp', 'board', 'auth');
 	remove_module('acp', 'board', 'server');
+	remove_module('acp', 'board', 'load');
 	remove_module('acp', 'update', 'version_check');
 	remove_module('acp', 'send_statistics', 'send_statistics');
 	remove_module('acp', 'board', 'cookie');
