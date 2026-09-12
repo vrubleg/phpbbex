@@ -306,13 +306,13 @@ if ($user->data['is_registered'])
 if ($forum_data['forum_type'] == FORUM_POST || $s_display_active)
 {
 	// Obtain announcements ... removed sort ordering, sort by time in all cases
-	$forum_ids = [$forum_id, 0];
+	$forum_ids = [$forum_id];
 	if ($forum_data['forum_type'] == FORUM_CAT && sizeof($active_forum_ary))
 	{
 		$forum_ids = empty($active_forum_ary['exclude_forum_id'])
 			? $active_forum_ary['forum_id']
 			: array_diff($active_forum_ary['forum_id'], $active_forum_ary['exclude_forum_id']);
-		if (empty($forum_ids)) $forum_ids = [$forum_id, 0];
+		if (empty($forum_ids)) $forum_ids = [$forum_id];
 	}
 
 	$sql = $db->sql_build_query('SELECT', [
@@ -455,7 +455,7 @@ if (sizeof($topic_list))
 	{
 		$row = &$rowset[$topic_id];
 
-		$topic_forum_id = ($row['forum_id']) ? (int) $row['forum_id'] : $forum_id;
+		$topic_forum_id = (int) $row['forum_id'];
 
 		// This will allow the style designer to output a different header
 		// or even separate the list of announcements from sticky and normal topics

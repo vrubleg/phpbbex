@@ -896,7 +896,7 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 		global $auth, $db;
 
 		$m_approve = (bool) $auth->acl_get('m_approve', $this->forum_id);
-		$forum_ids = [0, $this->forum_id];
+		$forum_ids = [$this->forum_id];
 
 		// Determine topics with recent activity
 		$sql = 'SELECT topic_id, topic_last_post_time
