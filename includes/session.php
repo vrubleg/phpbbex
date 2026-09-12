@@ -298,26 +298,6 @@ class phpbb_session
 							$this->data['session_time'] = $this->time_now;
 							$sql_ary = ['session_time' => $this->time_now];
 
-							// Update the last visit time once an hour
-							if (!empty($this->data['session_bot_id']) && $this->time_now - $this->data['session_last_visit'] > 3600)
-							{
-								$sql_ary['session_last_visit'] = $this->data['session_last_visit'] ?: $this->time_now;
-								$this->data['session_last_visit'] = $this->time_now;
-								$sql = 'UPDATE ' . BOTS_TABLE . '
-									SET bot_lastvisit = ' . (int) $this->time_now . '
-									WHERE bot_id = ' . (int) $this->data['session_bot_id'];
-								$db->sql_query($sql);
-							}
-							else if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
-							{
-								$sql_ary['session_last_visit'] = $this->data['user_lastvisit'] ?: $this->time_now;
-								$this->data['user_lastvisit'] = $this->time_now;
-								$sql = 'UPDATE ' . USERS_TABLE . '
-									SET user_lastvisit = ' . (int) $this->time_now . '
-									WHERE user_id = ' . (int) $this->data['user_id'];
-								$db->sql_query($sql);
-							}
-
 							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
 							$result = $db->sql_query($sql);
