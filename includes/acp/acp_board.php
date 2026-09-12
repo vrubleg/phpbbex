@@ -86,6 +86,8 @@ class acp_board
 						'allow_nocensors'       => ['lang' => 'ALLOW_NO_CENSORS',       'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'allow_bookmarks'       => ['lang' => 'ALLOW_BOOKMARKS',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'allow_birthdays'       => ['lang' => 'ALLOW_BIRTHDAYS',        'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
+						'enable_read_tracking'  => ['lang' => 'ENABLE_READ_TRACKING',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
+						'auto_mark_read_delay'  => ['lang' => 'AUTO_MARK_READ_DELAY',   'validate' => 'int:0',  'type' => 'text:5:10', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 
 						'legend2'               => 'WARNINGS',
 						'warning_post_default'  => ['lang' => 'WARNING_POST_DEFAULT',   'validate' => 'string', 'type' => 'textarea:1:255', 'explain' => false],
@@ -389,7 +391,6 @@ class acp_board
 					'title' => 'ACP_LOAD_SETTINGS',
 					'vars'  => [
 						'legend1'               => 'GENERAL_OPTIONS',
-						'load_db_lastread'      => ['lang' => 'YES_READ_MARKING',       'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'load_user_activity'    => ['lang' => 'LOAD_USER_ACTIVITY', 'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'cache_mtime_check'     => ['lang' => 'CACHE_MTIME_CHECK',  'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 

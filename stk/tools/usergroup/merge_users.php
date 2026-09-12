@@ -258,7 +258,6 @@ class merge_users
 				],
 			],
 
-			'forums_track'  => null,
 			'forums_watch'  => null,
 
 			'log'   => [
@@ -483,7 +482,7 @@ class merge_users
 			$update['target']['user_ip']        = $source['user_ip'];
 		}
 
-		foreach (['lastvisit', 'lastmark', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime'] as $var)
+		foreach (['last_visit', 'mark_time', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime'] as $var)
 		{
 			if ($source['user_' . $var] > $target['user_' . $var])
 			{
@@ -765,11 +764,6 @@ class merge_users
 		return $sql;
 	}
 
-	function merge_forums_track($source, $target)
-	{
-		return $this->merge_track_tables('forum', $source, $target);
-	}
-
 	function merge_forums_watch($source, $target)
 	{
 		return $this->merge_watch_tables('forum', $source, $target);
@@ -882,11 +876,6 @@ class merge_users
 		];
 	}
 
-	function merge_topics_track($source, $target)
-	{
-		return $this->merge_track_tables('topic', $source, $target);
-	}
-
 	function merge_topics_watch($source, $target)
 	{
 		return $this->merge_watch_tables('topic', $source, $target);
@@ -980,14 +969,14 @@ class merge_users
 		return $sql;
 	}
 
-	function merge_track_tables($mode, $source, $target)
+	function merge_topics_track($source, $target)
 	{
 		global $db;
 
-		$table = $this->table_name($mode . 's_track');
+		$table = TOPICS_TRACK_TABLE;
 		$marks = [];
 
-		$sql = "SELECT {$mode}_id, mark_time
+		$sql = "SELECT topic_id, mark_time
 			FROM {$table}
 			WHERE user_id = {$target['user_id']}";
 
@@ -995,11 +984,11 @@ class merge_users
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$marks[(int) $row[$mode . '_id']] = (int) $row['mark_time'];
+			$marks[(int) $row['topic_id']] = (int) $row['mark_time'];
 		}
 		$db->sql_freeresult($result);
 
-		$sql = "SELECT {$mode}_id, mark_time
+		$sql = "SELECT topic_id, mark_time
 			FROM {$table}
 			WHERE user_id = {$source['user_id']}";
 
@@ -1009,22 +998,21 @@ class merge_users
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$id = (int) $row[$mode . '_id'];
+			$id = (int) $row['topic_id'];
 			$time = (int) $row['mark_time'];
 
-			if (isset($marks[$id]) && $time > $marks[$id]['time'])
+			if (isset($marks[$id]) && $time > $marks[$id])
 			{
 				$sql[] = "UPDATE {$table}
 					SET mark_time = {$time}
 					WHERE user_id = {$target['user_id']}
-						AND {$mode}_id = {$id}";
+						AND topic_id = {$id}";
 			}
 			else if (!isset($marks[$id]))
 			{
-				// Shouldn't mess up topics tracking without a forum_id
 				$sql[] = "INSERT INTO {$table} " . $db->sql_build_array('INSERT', [
 					'user_id'   => $target['user_id'],
-					"{$mode}_id"=> $id,
+					'topic_id'  => $id,
 					'mark_time' => $time,
 				]);
 			}

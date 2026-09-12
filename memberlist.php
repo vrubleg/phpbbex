@@ -587,7 +587,7 @@ switch ($mode)
 		if ($auth->acl_get('u_viewonline'))
 		{
 			$sort_key_text['l'] = $user->lang['SORT_LAST_ACTIVE'];
-			$sort_key_sql['l'] = 'u.user_lastvisit';
+			$sort_key_sql['l'] = 'u.user_last_visit';
 		}
 
 		$sort_key_text['m'] = $user->lang['SORT_RANK'];
@@ -715,7 +715,7 @@ switch ($mode)
 
 				if ($active_time !== false && $active_time !== -1)
 				{
-					$sql_where .= " AND u.user_lastvisit " . $find_key_match[$active_select] . ' ' . $active_time;
+					$sql_where .= " AND u.user_last_visit " . $find_key_match[$active_select] . ' ' . $active_time;
 				}
 			}
 
@@ -793,11 +793,11 @@ switch ($mode)
 			break;
 			case 'active':
 				$page_title = $user->lang['MEMBERLIST_ACTIVE_USERS'];
-				$sql_where .= " AND u.user_lastvisit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
+				$sql_where .= " AND u.user_last_visit > " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
 			break;
 			case 'inactive':
 				$page_title = $user->lang['MEMBERLIST_INACTIVE_USERS'];
-				$sql_where .= " AND u.user_lastvisit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
+				$sql_where .= " AND u.user_last_visit <= " . (time()-3600*24*((empty($config['active_users_days']) ? 90 : intval($config['active_users_days'])))) . " ";
 			break;
 		}
 
@@ -1085,7 +1085,7 @@ switch ($mode)
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$row['session_time'] = (!empty($session_times[$row['user_id']])) ? $session_times[$row['user_id']] : 0;
-				$row['last_visit'] = (!empty($row['session_time'])) ? $row['session_time'] : $row['user_lastvisit'];
+				$row['last_visit'] = (!empty($row['session_time'])) ? $row['session_time'] : $row['user_last_visit'];
 
 				$id_cache[$row['user_id']] = $row;
 			}
@@ -1101,7 +1101,7 @@ switch ($mode)
 				$profile_fields_cache = $cp->generate_profile_fields_template('grab', $user_list);
 			}
 
-			// If we sort by last active date we need to adjust the id cache due to user_lastvisit not being the last active date...
+			// If we sort by last active date we need to adjust the id cache due to user_last_visit not being the last active date...
 			if ($sort_key == 'l')
 			{
 				usort($user_list, function ($first, $second) use ($id_cache, $sort_dir)
@@ -1247,7 +1247,7 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 	if ($data['user_allow_viewonline'] || $auth->acl_get('u_viewonline'))
 	{
-		$last_visit = (!empty($data['session_time'])) ? $data['session_time'] : $data['user_lastvisit'];
+		$last_visit = (!empty($data['session_time'])) ? $data['session_time'] : $data['user_last_visit'];
 	}
 	else
 	{

@@ -268,8 +268,7 @@ $lang = array_merge($lang, [
 
 	'MARK'                  => 'Mark',
 	'MARK_ALL'              => 'Mark all',
-	'MARK_FORUMS_READ'      => 'Mark forums read',
-	'MARK_SUBFORUMS_READ'   => 'Mark subforums read',
+	'MARK_ALL_READ'         => 'Mark all read',
 	'MB'                    => 'MB',
 	'MIB'                   => 'MiB',
 	'MCP'                   => 'Moderator Control Panel',
@@ -453,7 +452,6 @@ $lang = array_merge($lang, [
 	'SEARCH_SELF'               => 'View your posts',
 	'SEARCH_SELF_TOPICS'        => 'View your topics',
 	'SEARCH_TOPIC'              => 'Search this topic…',
-	'SEARCH_UNREAD'             => 'View unread posts',
 	'SEARCH_USER_POSTS'         => 'Search user’s posts',
 	'SECONDS'                   => 'Seconds',
 	'SELECT'                    => 'Select',

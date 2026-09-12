@@ -20,13 +20,10 @@
 <!-- ENDIF -->
 
 <!-- IF S_HAS_SUBFORUM -->
-<!-- IF S_DISPLAY_SEARCH or U_MARK_FORUMS -->
+<!-- IF S_DISPLAY_SEARCH -->
 <ul class="linklist">
 	<!-- IF S_DISPLAY_SEARCH -->
-	<li><a href="{U_SEARCH_ACTIVE_TOPICS_IN}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- IF S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_UNREAD_IN}">{L_SEARCH_UNREAD}</a><!-- ENDIF --><!-- IF S_USER_LOGGED_IN --><!-- IF not S_LOAD_UNREADS --> &bull; <a href="{U_SEARCH_NEW_IN}">{L_SEARCH_NEW}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_SELF_TOPICS_IN}">{L_SEARCH_SELF_TOPICS}</a> &bull; <a href="{U_SEARCH_SELF_IN}">{L_SEARCH_SELF}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_IN}">{L_SEARCHING_FORUMS}</a></li>
-	<!-- ENDIF -->
-	<!-- IF U_MARK_FORUMS -->
-	<li class="rightside"><a rel="nofollow" href="{U_MARK_FORUMS}">{L_MARK_SUBFORUMS_READ}</a></li>
+	<li><a href="{U_SEARCH_ACTIVE_TOPICS_IN}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- IF S_USER_LOGGED_IN --> &bull; <a href="{U_SEARCH_NEW_IN}">{L_SEARCH_NEW}</a> &bull; <a href="{U_SEARCH_SELF_TOPICS_IN}">{L_SEARCH_SELF_TOPICS}</a> &bull; <a href="{U_SEARCH_SELF_IN}">{L_SEARCH_SELF}</a><!-- ENDIF --> &bull; <a href="{U_SEARCH_IN}">{L_SEARCHING_FORUMS}</a></li>
 	<!-- ENDIF -->
 </ul>
 <!-- ENDIF -->
@@ -56,7 +53,7 @@
 
 	<!-- IF PAGINATION or TOTAL_POSTS or TOTAL_TOPICS -->
 		<div class="pagination">
-			<!-- IF not S_IS_BOT and U_MARK_TOPICS --><a rel="nofollow" href="{U_MARK_TOPICS}" accesskey="m">{L_MARK_TOPICS_READ}</a> &bull; <!-- ENDIF --><!-- IF TOTAL_TOPICS -->{TOTAL_TOPICS}<!-- ENDIF -->
+			<!-- IF TOTAL_TOPICS -->{TOTAL_TOPICS}<!-- ENDIF -->
 			<!-- IF PAGE_NUMBER -->
 				<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF -->
 			<!-- ENDIF -->
@@ -193,7 +190,6 @@
 
 		<!-- IF PAGINATION or TOTAL_POSTS or TOTAL_TOPICS -->
 		<div class="pagination">
-			<!-- IF TOTAL_TOPICS and not S_IS_BOT and U_MARK_TOPICS --><a rel="nofollow" href="{U_MARK_TOPICS}">{L_MARK_TOPICS_READ}</a> &bull;  <!-- ENDIF -->
 			<!-- IF TOTAL_POSTS and not NEWEST_USER --> {TOTAL_POSTS}<!-- ELSEIF TOTAL_TOPICS and not NEWEST_USER --> {TOTAL_TOPICS}<!-- ENDIF -->
 			<!-- IF TOTAL_USERS -->{TOTAL_USERS}<!-- ENDIF -->
 			<!-- IF PAGINATION --> &bull;  <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a>

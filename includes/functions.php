@@ -1116,123 +1116,74 @@ function tz_select($default = '')
 // Functions handling topic/post tracking/marking
 
 /**
-* Marks a topic/forum as read
-* Marks a topic as posted to
-*
-* @param int $user_id can only be used with $mode == 'post'
+* Mark a topic as read.
 */
-function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $user_id = 0)
+function mark_read_topic($topic_id, $time = 0, $user_id = 0)
 {
 	global $db, $user, $config;
 
-	if ($mode == 'all')
-	{
-		if ($forum_id === false || !sizeof($forum_id))
-		{
-			if ($config['load_db_lastread'] && $user->data['is_registered'])
-			{
-				// Mark all forums read (index page)
-				$db->sql_query('DELETE FROM ' . TOPICS_TRACK_TABLE . " WHERE user_id = {$user->data['user_id']}");
-				$db->sql_query('DELETE FROM ' . FORUMS_TRACK_TABLE . " WHERE user_id = {$user->data['user_id']}");
-				$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_lastmark = ' . time() . " WHERE user_id = {$user->data['user_id']}");
-			}
-		}
+	$user_id = (!$user_id) ? (int) $user->data['user_id'] : (int) $user_id;
+	if (!$user_id || $user_id == ANONYMOUS || !$config['enable_read_tracking']) { return; }
+	$time = $time ? (int) $time : time();
 
+	$sql_ary = [
+		'user_id'       => $user_id,
+		'topic_id'      => (int) $topic_id,
+		'mark_time'     => $time,
+	];
+
+	$sql = 'INSERT INTO ' . TOPICS_TRACK_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary) . "
+		ON DUPLICATE KEY UPDATE mark_time = {$time}";
+	$db->sql_query($sql);
+}
+
+/**
+* Mark all topics as read.
+*/
+function mark_read_all($time = 0, $user_id = 0)
+{
+	global $db, $user, $config;
+
+	$user_id = (!$user_id) ? (int) $user->data['user_id'] : (int) $user_id;
+	if (!$user_id || $user_id == ANONYMOUS || !$config['enable_read_tracking']) { return; }
+	$time = $time ? (int) $time : time();
+
+	$db->sql_query('DELETE FROM ' . TOPICS_TRACK_TABLE . " WHERE user_id = {$user_id}");
+	$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_mark_time = {$time} WHERE user_id = {$user_id}");
+	if ($user_id == ($user->data['user_id'] ?? 0))
+	{
+		$user->data['user_mark_time'] = $time;
+	}
+}
+
+/**
+* Mark everything read up to the last visit for users without sessions after the configured delay.
+*/
+function auto_mark_read_all()
+{
+	global $db, $config;
+
+	if (!$config['enable_read_tracking'])
+	{
 		return;
 	}
-	else if ($mode == 'topics')
+
+	$sql = 'SELECT u.user_id, u.user_last_visit
+		FROM ' . USERS_TABLE . ' u
+		WHERE u.user_id <> ' . ANONYMOUS . '
+			AND u.user_last_visit > u.user_mark_time
+			AND u.user_last_visit <= ' . (time() - (int) $config['auto_mark_read_delay']) . '
+			AND NOT EXISTS (
+				SELECT 1 FROM ' . SESSIONS_TABLE . ' s
+				WHERE s.session_user_id = u.user_id
+			)';
+	$result = $db->sql_query($sql);
+
+	while ($row = $db->sql_fetchrow($result))
 	{
-		// Mark all topics in forums read
-		if (!is_array($forum_id))
-		{
-			$forum_id = [$forum_id];
-		}
-
-		// Add 0 to forums array to mark global announcements correctly
-		// $forum_id[] = 0;
-
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
-		{
-			$sql = 'DELETE FROM ' . TOPICS_TRACK_TABLE . "
-				WHERE user_id = {$user->data['user_id']}
-					AND " . $db->sql_in_set('forum_id', $forum_id);
-			$db->sql_query($sql);
-
-			$sql = 'SELECT forum_id
-				FROM ' . FORUMS_TRACK_TABLE . "
-				WHERE user_id = {$user->data['user_id']}
-					AND " . $db->sql_in_set('forum_id', $forum_id);
-			$result = $db->sql_query($sql);
-
-			$sql_update = [];
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$sql_update[] = (int) $row['forum_id'];
-			}
-			$db->sql_freeresult($result);
-
-			if (sizeof($sql_update))
-			{
-				$sql = 'UPDATE ' . FORUMS_TRACK_TABLE . '
-					SET mark_time = ' . time() . "
-					WHERE user_id = {$user->data['user_id']}
-						AND " . $db->sql_in_set('forum_id', $sql_update);
-				$db->sql_query($sql);
-			}
-
-			if ($sql_insert = array_diff($forum_id, $sql_update))
-			{
-				$sql_ary = [];
-				foreach ($sql_insert as $f_id)
-				{
-					$sql_ary[] = [
-						'user_id'   => (int) $user->data['user_id'],
-						'forum_id'  => (int) $f_id,
-						'mark_time' => time()
-					];
-				}
-
-				$db->sql_multi_insert(FORUMS_TRACK_TABLE, $sql_ary);
-			}
-		}
-
-		return;
+		mark_read_all((int) $row['user_last_visit'], (int) $row['user_id']);
 	}
-	else if ($mode == 'topic')
-	{
-		if ($topic_id === false || $forum_id === false)
-		{
-			return;
-		}
-
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
-		{
-			$sql = 'UPDATE ' . TOPICS_TRACK_TABLE . '
-				SET mark_time = ' . ($post_time ?: time()) . "
-				WHERE user_id = {$user->data['user_id']}
-					AND topic_id = {$topic_id}";
-			$db->sql_query($sql);
-
-			// insert row
-			if (!$db->sql_affectedrows())
-			{
-				$db->sql_return_on_error(true);
-
-				$sql_ary = [
-					'user_id'       => (int) $user->data['user_id'],
-					'topic_id'      => (int) $topic_id,
-					'forum_id'      => (int) $forum_id,
-					'mark_time'     => ($post_time) ? (int) $post_time : time(),
-				];
-
-				$db->sql_query('INSERT INTO ' . TOPICS_TRACK_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-
-				$db->sql_return_on_error(false);
-			}
-		}
-
-		return;
-	}
+	$db->sql_freeresult($result);
 }
 
 /**
@@ -1283,106 +1234,84 @@ function mark_user_posted_topics(&$rowset, $user_id = false)
 }
 
 /**
-* Get topic tracking info by using already fetched info
+* Get topic tracking info, loading marks from the database if no rowset is supplied.
 */
-function get_topic_tracking($forum_id, $topic_ids, &$rowset, $forum_mark_time, $global_announce_list = false)
+function get_topic_tracking($topic_ids, $rowset = null)
 {
-	global $config, $user;
+	global $db, $config, $user;
+
+	$topic_ids = (array) $topic_ids;
+	if (!$config['enable_read_tracking'] || !$user->data['is_registered'] || !$topic_ids)
+	{
+		return [];
+	}
+
+	if ($rowset === null)
+	{
+		$sql = 'SELECT topic_id, mark_time
+			FROM ' . TOPICS_TRACK_TABLE . '
+			WHERE user_id = ' . (int) $user->data['user_id'] . '
+				AND ' . $db->sql_in_set('topic_id', $topic_ids);
+		$result = $db->sql_query($sql);
+		$rowset = [];
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$rowset[$row['topic_id']] = $row;
+		}
+		$db->sql_freeresult($result);
+	}
 
 	$last_read = [];
-
-	if (!is_array($topic_ids))
-	{
-		$topic_ids = [$topic_ids];
-	}
-
 	foreach ($topic_ids as $topic_id)
 	{
-		if (!empty($rowset[$topic_id]['mark_time']))
-		{
-			$last_read[$topic_id] = $rowset[$topic_id]['mark_time'];
-		}
+		$last_read[$topic_id] = max((int) $user->data['user_mark_time'], (int) ($rowset[$topic_id]['mark_time'] ?? 0));
 	}
-
-	$topic_ids = array_diff($topic_ids, array_keys($last_read));
-
-	if (sizeof($topic_ids))
-	{
-		$mark_time = [];
-
-		if (!empty($forum_mark_time[$forum_id]) && $forum_mark_time[$forum_id] !== false)
-		{
-			$mark_time[$forum_id] = $forum_mark_time[$forum_id];
-		}
-
-		$user_lastmark = $mark_time[$forum_id] ?? $user->data['user_lastmark'];
-
-		foreach ($topic_ids as $topic_id)
-		{
-			$last_read[$topic_id] = $user_lastmark;
-		}
-	}
-
 	return $last_read;
 }
 
 /**
-* Get topic tracking info from db (for cookie based tracking only this function is used)
+* Get unread forum IDs for the current user, stopping at the first unread topic per forum.
+* Parent/subforum aggregation is handled by the caller.
 */
-function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_list = false)
+function get_unread_forums($forum_ids = false)
 {
-	global $config, $user;
+	global $db, $config, $user, $auth;
 
-	$last_read = [];
-
-	if (!is_array($topic_ids))
+	if (!$config['enable_read_tracking'] || !$user->data['is_registered'])
 	{
-		$topic_ids = [$topic_ids];
+		return [];
 	}
 
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	$readable = array_keys($auth->acl_getf('f_read', true));
+	$listed = array_keys($auth->acl_getf('f_list', true));
+	$forum_ids = array_intersect($readable, $listed, ($forum_ids === false) ? $readable : (array) $forum_ids);
+	if (!$forum_ids)
 	{
-		global $db;
-
-		$sql = 'SELECT topic_id, mark_time
-			FROM ' . TOPICS_TRACK_TABLE . "
-			WHERE user_id = {$user->data['user_id']}
-				AND " . $db->sql_in_set('topic_id', $topic_ids);
-		$result = $db->sql_query($sql);
-
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$last_read[$row['topic_id']] = $row['mark_time'];
-		}
-		$db->sql_freeresult($result);
-
-		$topic_ids = array_diff($topic_ids, array_keys($last_read));
-
-		if (sizeof($topic_ids))
-		{
-			$sql = 'SELECT forum_id, mark_time
-				FROM ' . FORUMS_TRACK_TABLE . "
-				WHERE user_id = {$user->data['user_id']}
-					AND forum_id = {$forum_id}";
-			$result = $db->sql_query($sql);
-
-			$mark_time = [];
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$mark_time[$row['forum_id']] = $row['mark_time'];
-			}
-			$db->sql_freeresult($result);
-
-			$user_lastmark = $mark_time[$forum_id] ?? $user->data['user_lastmark'];
-
-			foreach ($topic_ids as $topic_id)
-			{
-				$last_read[$topic_id] = $user_lastmark;
-			}
-		}
+		return [];
 	}
 
-	return $last_read;
+	$approve_forums = array_keys($auth->acl_getf('m_approve', true));
+	$user_id = (int) $user->data['user_id'];
+	$mark_time = (int) $user->data['user_mark_time'];
+	$sql = 'SELECT f.forum_id
+		FROM ' . FORUMS_TABLE . ' f
+		WHERE ' . $db->sql_in_set('f.forum_id', $forum_ids) . '
+			AND EXISTS (
+				SELECT 1 FROM ' . TOPICS_TABLE . ' t
+				LEFT JOIN ' . TOPICS_TRACK_TABLE . " tt ON tt.topic_id = t.topic_id AND tt.user_id = {$user_id}
+				WHERE t.forum_id = f.forum_id
+					AND t.topic_last_post_time > {$mark_time}
+					AND (tt.mark_time IS NULL OR t.topic_last_post_time > tt.mark_time)
+					AND (t.topic_approved = 1 OR " . $db->sql_in_set('t.forum_id', $approve_forums, false, true) . ')
+			)';
+	$result = $db->sql_query($sql);
+	$unread = [];
+	while ($row = $db->sql_fetchrow($result))
+	{
+		$unread[(int) $row['forum_id']] = true;
+	}
+	$db->sql_freeresult($result);
+	return $unread;
 }
 
 /**
@@ -1410,13 +1339,13 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 		$sql_sort = 'ORDER BY t.topic_last_post_time DESC';
 	}
 
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
+	if ($config['enable_read_tracking'] && $user->data['is_registered'])
 	{
 		// Get list of the unread topics
-		$last_mark = (int) $user->data['user_lastmark'];
+		$last_mark = (int) $user->data['user_mark_time'];
 
 		$sql_array = [
-			'SELECT'        => 't.topic_id, t.topic_last_post_time, tt.mark_time as topic_mark_time, ft.mark_time as forum_mark_time',
+			'SELECT'        => 't.topic_id, t.topic_last_post_time, tt.mark_time as topic_mark_time',
 
 			'FROM'          => [TOPICS_TABLE => 't'],
 
@@ -1425,19 +1354,10 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 					'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
 					'ON'    => "tt.user_id = {$user_id} AND t.topic_id = tt.topic_id",
 				],
-				[
-					'FROM'  => [FORUMS_TRACK_TABLE => 'ft'],
-					'ON'    => "ft.user_id = {$user_id} AND t.forum_id = ft.forum_id",
-				],
 			],
 
-			'WHERE'         => "
-				 t.topic_last_post_time > {$last_mark} AND
-				(
-				(tt.mark_time IS NOT NULL AND t.topic_last_post_time > tt.mark_time) OR
-				(tt.mark_time IS NULL AND ft.mark_time IS NOT NULL AND t.topic_last_post_time > ft.mark_time) OR
-				(tt.mark_time IS NULL AND ft.mark_time IS NULL)
-				)
+			'WHERE'         => "t.topic_last_post_time > {$last_mark}
+				AND (tt.mark_time IS NULL OR t.topic_last_post_time > tt.mark_time)
 				{$sql_extra}
 				{$sql_sort}",
 		];
@@ -1448,79 +1368,12 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$topic_id = (int) $row['topic_id'];
-			$unread_topics[$topic_id] = ($row['topic_mark_time']) ? (int) $row['topic_mark_time'] : (($row['forum_mark_time']) ? (int) $row['forum_mark_time'] : $last_mark);
+			$unread_topics[$topic_id] = max($last_mark, (int) $row['topic_mark_time']);
 		}
 		$db->sql_freeresult($result);
 	}
 
 	return $unread_topics;
-}
-
-/**
-* Check for read forums and update topic tracking info accordingly
-*
-* @param int $forum_id the forum id to check
-* @param int $forum_last_post_time the forums last post time
-* @param int $f_mark_time the forums last mark time if user is registered and load_db_lastread enabled
-* @param int $mark_time_forum false if the mark time needs to be obtained, else the last users forum mark time
-*
-* @return true if complete forum got marked read, else false.
-*/
-function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_time = false, $mark_time_forum = false)
-{
-	global $db, $tracking_topics, $user, $config, $auth;
-
-	// Determine the users last forum mark time if not given.
-	if ($mark_time_forum === false)
-	{
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
-		{
-			$mark_time_forum = (!empty($f_mark_time)) ? $f_mark_time : $user->data['user_lastmark'];
-		}
-	}
-
-	// Handle update of unapproved topics info.
-	// Only update for moderators having m_approve permission for the forum.
-	$sql_update_unapproved = ($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_approved = 1';
-
-	// Check the forum for any left unread topics.
-	// If there are none, we mark the forum as read.
-	if ($config['load_db_lastread'] && $user->data['is_registered'])
-	{
-		if ($mark_time_forum >= $forum_last_post_time)
-		{
-			// We do not need to mark read, this happened before. Therefore setting this to true
-			$row = true;
-		}
-		else
-		{
-			$sql = 'SELECT t.forum_id
-				FROM ' . TOPICS_TABLE . ' t
-				LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt
-					ON (tt.topic_id = t.topic_id
-						AND tt.user_id = ' . $user->data['user_id'] . ')
-				WHERE t.forum_id = ' . $forum_id . '
-					AND t.topic_last_post_time > ' . $mark_time_forum . ' ' .
-					$sql_update_unapproved . '
-					AND (tt.topic_id IS NULL
-						OR tt.mark_time < t.topic_last_post_time)';
-			$result = $db->sql_query_limit($sql, 1);
-			$row = $db->sql_fetchrow($result);
-			$db->sql_freeresult($result);
-		}
-	}
-	else
-	{
-		$row = true;
-	}
-
-	if (!$row)
-	{
-		markread('topics', $forum_id);
-		return true;
-	}
-
-	return false;
 }
 
 // Pagination functions
@@ -2185,11 +2038,6 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 		}
 	}
 
-	// Delete old confirm keys
-	$sql = "DELETE FROM " . USER_CONFIRM_KEYS_TABLE . "
-		WHERE confirm_time < " . (time() - 900);
-	$db->sql_query($sql);
-
 	if ($check && $confirm)
 	{
 		static $confirm_keys_cache = [];
@@ -2210,7 +2058,9 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 
 		// Checking confirm key
 		$sql = "SELECT * FROM " . USER_CONFIRM_KEYS_TABLE . "
-			WHERE user_id = " . $user->data['user_id'] . " AND confirm_key = '" . $db->sql_escape($confirm_key) . "'";
+			WHERE user_id = " . $user->data['user_id'] . "
+				AND confirm_key = '" . $db->sql_escape($confirm_key) . "'
+				AND confirm_time >= " . (time() - 600);
 		$result = $db->sql_query($sql);
 		if(!$db->sql_fetchrow($result))
 		{
@@ -3581,7 +3431,6 @@ function page_header($page_title = '', $display_online_list = true)
 		'U_SEARCH_SELF'         => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch'),
 		'U_SEARCH_SELF_TOPICS'  => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=egosearch&amp;sf=firstpost'),
 		'U_SEARCH_NEW'          => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=newposts'),
-		'U_SEARCH_UNREAD'       => append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=unreadposts'),
 		'U_SEARCH_ACTIVE_TOPICS'=> append_sid(PHPBB_ROOT_PATH . 'search.php', 'search_id=active_topics'),
 		'U_TEAM'                => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=leaders'),
 		'U_TERMS_OF_USE'        => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=terms'),
@@ -3617,7 +3466,6 @@ function page_header($page_title = '', $display_online_list = true)
 		'S_ENABLE_FEEDS_TOPICS_ACTIVE'  => (bool) $config['feed_topics_active'],
 		'S_ENABLE_FEEDS_NEWS'       => (bool) $s_feed_news,
 
-		'S_LOAD_UNREADS'            => ($config['load_db_lastread'] && $user->data['is_registered']),
 
 		'S_SEARCH_HIDDEN_FIELDS'    => build_hidden_fields($s_search_hidden_fields),
 

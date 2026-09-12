@@ -521,7 +521,7 @@ function move_topics($topic_ids, $forum_id, $auto_sync = true)
 		$db->sql_freeresult($result);
 	}
 
-	$table_ary = [TOPICS_TABLE, POSTS_TABLE, LOG_TABLE, DRAFTS_TABLE, TOPICS_TRACK_TABLE];
+	$table_ary = [TOPICS_TABLE, POSTS_TABLE, LOG_TABLE, DRAFTS_TABLE];
 	foreach ($table_ary as $table)
 	{
 		$sql = "UPDATE {$table}

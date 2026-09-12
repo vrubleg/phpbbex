@@ -116,12 +116,12 @@ class profile_list
 		$order = [
 			'user_regdate'          => 'JOINED',
 			'username_clean'        => 'USERNAME',
-			'user_lastvisit'        => 'LAST_VISIT',
+			'user_last_visit'       => 'LAST_VISIT',
 			'user_lastpost_time'    => 'LAST_POST',
 			'user_warnings'         => 'WARNINGS',
 			'user_posts'            => 'POSTS',
 		];
-		$timestamps = ['user_regdate', 'user_lastvisit', 'user_lastpost_time'];
+		$timestamps = ['user_regdate', 'user_last_visit', 'user_lastpost_time'];
 
 		foreach ($order as $option => $lang_key)
 		{
@@ -192,7 +192,7 @@ class profile_list
 				'SIGNATURE'         => ((!isset($options[$display]) || $display == 'user_sig') && $row['user_sig']) ? generate_text_for_display($row['user_sig'], $row['user_sig_bbcode_uid'], $row['user_sig_bbcode_bitfield'], 7) : '',
 				'USERID'            => ($user->data['user_id'] == $row['user_id']) ? false : $row['user_id'],
 				'USERNAME'          => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
-				'VISITED'           => ($row['user_lastvisit']) ? $user->format_date($row['user_lastvisit']) : 0,
+				'VISITED'           => ($row['user_last_visit']) ? $user->format_date($row['user_last_visit']) : 0,
 				'WARNINGS'          => $row['user_warnings'],
 				'WEBSITE'           => $row['user_website'],
 

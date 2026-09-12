@@ -107,15 +107,15 @@ class mcp_queue
 				$extensions = $attachments = $topic_tracking_info = [];
 
 				// Get topic tracking info
-				if ($config['load_db_lastread'])
+				if ($config['enable_read_tracking'])
 				{
 					$tmp_topic_data = [$post_info['topic_id'] => $post_info];
-					$topic_tracking_info = get_topic_tracking($post_info['forum_id'], $post_info['topic_id'], $tmp_topic_data, [$post_info['forum_id'] => $post_info['forum_mark_time']]);
+					$topic_tracking_info = get_topic_tracking($post_info['topic_id'], $tmp_topic_data);
 					unset($tmp_topic_data);
 				}
 				else
 				{
-					$topic_tracking_info = get_complete_topic_tracking($post_info['forum_id'], $post_info['topic_id']);
+					$topic_tracking_info = get_topic_tracking($post_info['topic_id']);
 				}
 
 				$post_unread = (isset($topic_tracking_info[$post_info['topic_id']]) && $post_info['post_time'] > $topic_tracking_info[$post_info['topic_id']]);

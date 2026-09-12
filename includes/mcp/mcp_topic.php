@@ -154,15 +154,15 @@ function mcp_topic_view($id, $mode, $action)
 	$topic_tracking_info = [];
 
 	// Get topic tracking info
-	if ($config['load_db_lastread'])
+	if ($config['enable_read_tracking'])
 	{
 		$tmp_topic_data = [$topic_id => $topic_info];
-		$topic_tracking_info = get_topic_tracking($topic_info['forum_id'], $topic_id, $tmp_topic_data, [$topic_info['forum_id'] => $topic_info['forum_mark_time']]);
+		$topic_tracking_info = get_topic_tracking($topic_id, $tmp_topic_data);
 		unset($tmp_topic_data);
 	}
 	else
 	{
-		$topic_tracking_info = get_complete_topic_tracking($topic_info['forum_id'], $topic_id);
+		$topic_tracking_info = get_topic_tracking($topic_id);
 	}
 
 	$has_unapproved_posts = false;

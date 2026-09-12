@@ -122,7 +122,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 	$topic_rows = [];
 
-	if ($config['load_db_lastread'])
+	if ($config['enable_read_tracking'])
 	{
 		$read_tracking_join = ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id'] . ')';
 		$read_tracking_select = ', tt.mark_time';
@@ -168,13 +168,13 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	// Get topic tracking info
 	if (sizeof($topic_list))
 	{
-		if ($config['load_db_lastread'])
+		if ($config['enable_read_tracking'])
 		{
-			$topic_tracking_info = get_topic_tracking($forum_id, $topic_list, $topic_rows, [$forum_id => $forum_info['mark_time']], []);
+			$topic_tracking_info = get_topic_tracking($topic_list, $topic_rows);
 		}
 		else
 		{
-			$topic_tracking_info = get_complete_topic_tracking($forum_id, $topic_list, []);
+			$topic_tracking_info = get_topic_tracking($topic_list);
 		}
 	}
 

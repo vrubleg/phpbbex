@@ -27,8 +27,6 @@ $lang = array_merge($lang, [
 	'LOGIN_NOTIFY_FORUM'    => 'You have been notified about this forum, please login to view it.',
 	'NO_READ_ACCESS'        => 'You do not have the required permissions to read topics within this forum.',
 
-	'MARK_TOPICS_READ'      => 'Mark topics read',
-
 	'NO_UNREAD_POSTS_LOCKED'    => 'No unread posts [ Locked ]',
 
 	'POST_FORUM_LOCKED'     => 'Forum is locked',

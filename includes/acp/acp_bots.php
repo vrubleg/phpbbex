@@ -286,9 +286,9 @@ class acp_bots
 			'S_BOT_OPTIONS' => $s_options,
 		]);
 
-		$sql = 'SELECT bot_id, bot_name, bot_active, bot_lastvisit
+		$sql = 'SELECT bot_id, bot_name, bot_active, bot_last_visit
 			FROM ' . BOTS_TABLE . '
-			ORDER BY bot_lastvisit DESC, bot_name ASC';
+			ORDER BY bot_last_visit DESC, bot_name ASC';
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -299,7 +299,7 @@ class acp_bots
 			$template->assign_block_vars('bots', [
 				'BOT_NAME'      => $row['bot_name'],
 				'BOT_ID'        => $row['bot_id'],
-				'LAST_VISIT'    => ($row['bot_lastvisit']) ? $user->format_date($row['bot_lastvisit']) : $user->lang['BOT_NEVER'],
+				'LAST_VISIT'    => ($row['bot_last_visit']) ? $user->format_date($row['bot_last_visit']) : $user->lang['BOT_NEVER'],
 
 				'U_ACTIVATE_DEACTIVATE' => $this->u_action . "&amp;id={$row['bot_id']}&amp;action={$active_value}",
 				'L_ACTIVATE_DEACTIVATE' => $user->lang[$active_lang],

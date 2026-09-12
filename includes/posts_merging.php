@@ -207,29 +207,7 @@ if ($merge_post_data['enable_indexing'])
 }
 
 // Mark the topic read
-markread('topic', $forum_id, $topic_id, $current_time);
-
-// Update forum tracking info
-if ($config['load_db_lastread'] && $user->data['is_registered'])
-{
-	$sql = 'SELECT mark_time
-		FROM ' . FORUMS_TRACK_TABLE . '
-		WHERE user_id = ' . $user->data['user_id'] . '
-			AND forum_id = ' . $forum_id;
-	$result = $db->sql_query($sql);
-	$f_mark_time = (int) $db->sql_fetchfield('mark_time');
-	$db->sql_freeresult($result);
-
-	// Update forum info
-	$sql = 'SELECT forum_last_post_time
-		FROM ' . FORUMS_TABLE . '
-		WHERE forum_id = ' . $forum_id;
-	$result = $db->sql_query($sql);
-	$forum_last_post_time = (int) $db->sql_fetchfield('forum_last_post_time');
-	$db->sql_freeresult($result);
-
-	update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_time, false);
-}
+mark_read_topic($topic_id, $current_time);
 
 // Send Notifications
 if ($auth->acl_get('f_noapprove', $data['forum_id']) || $auth->acl_get('m_approve', $data['forum_id']))

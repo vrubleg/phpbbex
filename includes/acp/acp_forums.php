@@ -1156,7 +1156,7 @@ class acp_forums
 	{
 		global $db;
 
-		$table_ary = [LOG_TABLE, POSTS_TABLE, TOPICS_TABLE, DRAFTS_TABLE, TOPICS_TRACK_TABLE];
+		$table_ary = [LOG_TABLE, POSTS_TABLE, TOPICS_TABLE, DRAFTS_TABLE];
 
 		foreach ($table_ary as $table)
 		{
@@ -1167,7 +1167,7 @@ class acp_forums
 		}
 		unset($table_ary);
 
-		$table_ary = [FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, MODERATOR_CACHE_TABLE];
+		$table_ary = [FORUMS_WATCH_TABLE, MODERATOR_CACHE_TABLE];
 
 		foreach ($table_ary as $table)
 		{
@@ -1436,7 +1436,7 @@ class acp_forums
 
 		delete_topics('forum_id', $forum_id, false, true);
 
-		$table_ary = [DRAFTS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE];
+		$table_ary = [DRAFTS_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE];
 
 		foreach ($table_ary as $table)
 		{

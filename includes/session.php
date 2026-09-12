@@ -293,30 +293,10 @@ class phpbb_session
 					if (!$session_expired)
 					{
 						// Only update session DB a minute or so after last update.
-						if ($this->time_now - $this->data['session_time'] > 60)
+						if ($this->time_now - $this->data['session_time'] >= 60)
 						{
 							$this->data['session_time'] = $this->time_now;
 							$sql_ary = ['session_time' => $this->time_now];
-
-							// Update the last visit time once an hour
-							if (!empty($this->data['session_bot_id']) && $this->time_now - $this->data['session_last_visit'] > 3600)
-							{
-								$sql_ary['session_last_visit'] = $this->data['session_last_visit'] ?: $this->time_now;
-								$this->data['session_last_visit'] = $this->time_now;
-								$sql = 'UPDATE ' . BOTS_TABLE . '
-									SET bot_lastvisit = ' . (int) $this->time_now . '
-									WHERE bot_id = ' . (int) $this->data['session_bot_id'];
-								$db->sql_query($sql);
-							}
-							else if ($this->data['user_id'] != ANONYMOUS && $this->time_now - $this->data['user_lastvisit'] > 3600)
-							{
-								$sql_ary['session_last_visit'] = $this->data['user_lastvisit'] ?: $this->time_now;
-								$this->data['user_lastvisit'] = $this->time_now;
-								$sql = 'UPDATE ' . USERS_TABLE . '
-									SET user_lastvisit = ' . (int) $this->time_now . '
-									WHERE user_id = ' . (int) $this->data['user_id'];
-								$db->sql_query($sql);
-							}
 
 							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
@@ -373,12 +353,11 @@ class phpbb_session
 
 		$this->data = [];
 
-		/* Garbage collection ... remove old sessions updating user information
-		// if necessary. It means (potentially) 11 queries but only infrequently
+		// Garbage collection ... remove old sessions updating user information if necessary.
 		if ($this->time_now > $config['session_last_gc'] + $config['session_gc'])
 		{
 			$this->session_gc();
-		}*/
+		}
 
 		// Do we allow autologin on this board? No? Then override anything that may be requested here.
 		if (!$config['max_autologin_time'])
@@ -501,7 +480,7 @@ class phpbb_session
 
 		if ($this->data['user_id'] != ANONYMOUS && !$bot)
 		{
-			$this->data['session_last_visit'] = (isset($this->data['session_time']) && $this->data['session_time']) ? $this->data['session_time'] : ($this->data['user_lastvisit'] ?: time());
+			$this->data['session_last_visit'] = (isset($this->data['session_time']) && $this->data['session_time']) ? $this->data['session_time'] : ($this->data['user_last_visit'] ?: time());
 		}
 		else
 		{
@@ -559,7 +538,7 @@ class phpbb_session
 				$this->session_id = $this->data['session_id'];
 
 				// Only update session DB a minute or so after last update.
-				if ($this->time_now - $this->data['session_time'] > 60)
+				if ($this->time_now - $this->data['session_time'] >= 60)
 				{
 					$this->data['session_time'] = $this->data['session_last_visit'] = $this->time_now;
 
@@ -571,7 +550,7 @@ class phpbb_session
 
 					// Update the last visit time
 					$sql = 'UPDATE ' . BOTS_TABLE . '
-						SET bot_lastvisit = ' . (int) $this->data['session_time'] . '
+						SET bot_last_visit = ' . (int) $this->data['session_time'] . '
 						WHERE bot_id = ' . (int) $bot;
 					$db->sql_query($sql);
 				}
@@ -679,7 +658,7 @@ class phpbb_session
 
 			// Update the last visit time
 			$sql = 'UPDATE ' . BOTS_TABLE . '
-				SET bot_lastvisit = ' . (int) $this->data['session_time'] . '
+				SET bot_last_visit = ' . (int) $this->data['session_time'] . '
 				WHERE bot_id = ' . (int) $bot;
 			$db->sql_query($sql);
 
@@ -737,16 +716,6 @@ class phpbb_session
 			$this->data['tracking_first_ip'] = $tracking['tracking_first_ip'];
 		}
 		$db->sql_freeresult($result);
-
-		// Garbage collection.
-		if(rand(0, 1000) == 1)
-		{
-			$sql = "DELETE FROM " . BROWSER_TRACKING_TABLE . "
-				WHERE (tracking_hits <= 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+3600*12 < " . $this->time_now . ")
-					OR (tracking_hits > 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+86400*7 < " . $this->time_now . ")
-					OR (tracking_last_time+86400*365 < " . $this->time_now . ")";
-			$db->sql_query($sql);
-		}
 	}
 
 	/**
@@ -775,9 +744,11 @@ class phpbb_session
 			}
 
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $this->data['session_time'] . '
+				SET user_last_visit = ' . (int) $this->data['session_time'] . '
 				WHERE user_id = ' . (int) $this->data['user_id'];
 			$db->sql_query($sql);
+
+			auto_mark_read_all();
 
 			if ($this->cookie_data['k'])
 			{
@@ -827,78 +798,65 @@ class phpbb_session
 	{
 		global $db, $config;
 
-		$batch_size = 10;
-
 		if (!$this->time_now)
 		{
 			$this->time_now = time();
 		}
 
-		// Delete expired guest sessions.
-		$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
-			WHERE session_user_id = ' . ANONYMOUS . '
-				AND session_time < ' . ($this->time_now - $config['session_length']);
+		set_config('session_last_gc', $this->time_now, true);
+
+		$expire_time = $this->time_now - $config['session_length'];
+
+		// Update last visit times from the most recent expired session for each user.
+		$sql = 'UPDATE ' . USERS_TABLE . ' u
+			INNER JOIN (
+				SELECT session_user_id, MAX(session_time) AS session_time
+				FROM ' . SESSIONS_TABLE . '
+				WHERE session_user_id <> ' . ANONYMOUS . '
+					AND session_time < ' . (int) $expire_time . '
+				GROUP BY session_user_id
+			) expired ON expired.session_user_id = u.user_id
+			SET u.user_last_visit = GREATEST(u.user_last_visit, expired.session_time)';
 		$db->sql_query($sql);
 
-		// Get expired sessions, only most recent for each user
-		$sql = 'SELECT session_user_id, MAX(session_time) AS recent_time
-			FROM ' . SESSIONS_TABLE . '
-			WHERE session_user_id <> ' . ANONYMOUS . '
-				AND session_time < ' . ($this->time_now - $config['session_length']) . '
-			GROUP BY session_user_id';
-		$result = $db->sql_query_limit($sql, $batch_size);
+		// Delete all expired sessions.
+		$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
+			WHERE session_time < ' . (int) $expire_time;
+		$db->sql_query($sql);
 
-		$del_user_id = [];
-		$del_sessions = 0;
+		auto_mark_read_all();
 
-		while ($row = $db->sql_fetchrow($result))
+		// Delete all expired autologin keys.
+		if ($config['max_autologin_time'])
 		{
-			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $row['recent_time'] . '
-				WHERE user_id = ' . (int) $row['session_user_id'];
-			$db->sql_query($sql);
-
-			$del_user_id[] = (int) $row['session_user_id'];
-			$del_sessions++;
+			$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
+				WHERE last_login < ' . (time() - (86400 * $config['max_autologin_time']));
 		}
-		$db->sql_freeresult($result);
-
-		if (sizeof($del_user_id))
+		else
 		{
-			// Delete expired sessions
-			$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
-				WHERE ' . $db->sql_in_set('session_user_id', $del_user_id) . '
-					AND session_time < ' . ($this->time_now - $config['session_length']);
-			$db->sql_query($sql);
+			$sql = 'TRUNCATE TABLE ' . SESSIONS_KEYS_TABLE;
 		}
+		$db->sql_query($sql);
 
-		if ($del_sessions < $batch_size)
-		{
-			// Less than 10 users, update gc timer ... else we want gc
-			// called again to delete other sessions
-			set_config('session_last_gc', $this->time_now, true);
+		// Delete obsolete browser tracking entries.
+		$sql = "DELETE FROM " . BROWSER_TRACKING_TABLE . "
+			WHERE (tracking_hits <= 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+3600*12 < " . $this->time_now . ")
+				OR (tracking_hits > 1 AND user_id = " . ANONYMOUS . " AND tracking_last_time+86400*7 < " . $this->time_now . ")
+				OR (tracking_last_time+86400*365 < " . $this->time_now . ")";
+		$db->sql_query($sql);
 
-			if ($config['max_autologin_time'])
-			{
-				$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
-					WHERE last_login < ' . (time() - (86400 * $config['max_autologin_time']));
-			}
-			else
-			{
-				$sql = 'TRUNCATE TABLE ' . SESSIONS_KEYS_TABLE;
-			}
-			$db->sql_query($sql);
+		// Delete expired confirmation dialog keys.
+		$sql = 'DELETE FROM ' . USER_CONFIRM_KEYS_TABLE . '
+			WHERE confirm_time < ' . ($this->time_now - 600);
+		$db->sql_query($sql);
 
-			// only called from CRON; should be a safe workaround until the infrastructure gets going
-			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
-			phpbb_captcha_factory::garbage_collect($config['captcha_plugin']);
+		// Session GC runs infrequently, so collect expired CAPTCHA data here as well.
+		require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
+		phpbb_captcha_factory::garbage_collect($config['captcha_plugin']);
 
-			$sql = 'DELETE FROM ' . LOGIN_ATTEMPT_TABLE . '
-				WHERE attempt_time < ' . (time() - (int) $config['ip_login_limit_time']);
-			$db->sql_query($sql);
-		}
-
-		return;
+		$sql = 'DELETE FROM ' . LOGIN_ATTEMPT_TABLE . '
+			WHERE attempt_time < ' . (time() - (int) $config['ip_login_limit_time']);
+		$db->sql_query($sql);
 	}
 
 	/**
@@ -1194,7 +1152,7 @@ class phpbb_session
 		if ($row)
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $row['session_time'] . '
+				SET user_last_visit = ' . (int) $row['session_time'] . '
 				WHERE user_id = ' . (int) $user_id;
 			$db->sql_query($sql);
 		}

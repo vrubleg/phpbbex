@@ -116,7 +116,7 @@ CREATE TABLE phpbb_bots (
 	bot_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 	bot_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
 	bot_name varchar(255) DEFAULT '' NOT NULL,
-	bot_lastvisit int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	bot_last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	bot_agent varchar(255) DEFAULT '' NOT NULL,
 	bot_ip varchar(255) DEFAULT '' NOT NULL,
 	PRIMARY KEY (bot_id),
@@ -222,13 +222,6 @@ CREATE TABLE phpbb_forums (
 	PRIMARY KEY (forum_id),
 	KEY left_right_id (left_id, right_id),
 	KEY forum_lastpost_id (forum_last_post_id)
-) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
-
-CREATE TABLE phpbb_forums_track (
-	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	mark_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	PRIMARY KEY (user_id, forum_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_forums_watch (
@@ -642,11 +635,9 @@ CREATE TABLE phpbb_topics (
 CREATE TABLE phpbb_topics_track (
 	user_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	topic_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
-	forum_id mediumint(8) UNSIGNED DEFAULT '0' NOT NULL,
 	mark_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	PRIMARY KEY (user_id, topic_id),
-	KEY topic_id (topic_id),
-	KEY forum_id (forum_id)
+	KEY topic_id (topic_id)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_topics_watch (
@@ -686,8 +677,8 @@ CREATE TABLE phpbb_users (
 	user_email varchar(100) DEFAULT '' NOT NULL,
 	user_birthday varchar(10) DEFAULT '' NOT NULL,
 	user_gender tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
-	user_lastvisit int(11) UNSIGNED DEFAULT '0' NOT NULL,
-	user_lastmark int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	user_last_visit int(11) UNSIGNED DEFAULT '0' NOT NULL,
+	user_mark_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_lastpost_time int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_last_search int(11) UNSIGNED DEFAULT '0' NOT NULL,
 	user_rating_positive mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
@@ -783,7 +774,8 @@ CREATE TABLE phpbb_user_confirm_keys (
 	user_id mediumint(8) UNSIGNED NOT NULL,
 	confirm_time int(11) UNSIGNED NOT NULL,
 	PRIMARY KEY  (confirm_key),
-	KEY user_id (user_id)
+	KEY user_id (user_id),
+	KEY confirm_time (confirm_time)
 ) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`;
 
 CREATE TABLE phpbb_browser_tracking (

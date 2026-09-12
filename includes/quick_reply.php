@@ -130,7 +130,7 @@ $show_attach_box = (PHP_FILE_UPLOADS && $auth->acl_get('f_attach', $forum_id) &&
 add_form_key('posting');
 
 $s_do_merge_allowed = $user->data['is_registered'] && $topic_data['topic_last_poster_id'] == $user->data['user_id'] && ($auth->acl_get('f_noapprove', $forum_id) || $auth->acl_get('m_approve', $forum_id));
-$s_do_merge_checked = $s_do_merge_allowed && ((time() - $topic_data['topic_last_post_time']) < intval($config['merge_interval']) * 3600);
+$s_do_merge_checked = $s_do_merge_allowed && ($topic_data['topic_first_post_id'] != $topic_data['topic_last_post_id']) && (time() - $topic_data['topic_last_post_time'] < intval($config['merge_interval']) * 3600);
 
 $allowed_extension_sizes = get_allowed_extension_sizes($forum_id);
 
