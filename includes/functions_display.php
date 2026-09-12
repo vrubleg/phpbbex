@@ -52,7 +52,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 
 		if (check_link_hash(request_var('hash', ''), 'global'))
 		{
-			markread('all');
+			mark_read('all');
 			redirect($redirect);
 		}
 		else
@@ -239,7 +239,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		{
 			// Add 0 to forums array to mark global announcements correctly
 			$forum_ids[] = 0;
-			markread('topics', $forum_ids);
+			mark_read('topics', $forum_ids);
 			redirect($redirect);
 		}
 		else

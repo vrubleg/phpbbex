@@ -164,7 +164,7 @@ if ($mark_read == 'topics')
 	if (check_link_hash($token, 'global'))
 	{
 		// Add 0 to forums array to mark global announcements correctly
-		markread('topics', [$forum_id, 0]);
+		mark_read('topics', [$forum_id, 0]);
 	}
 	$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id);
 	redirect($redirect_url);

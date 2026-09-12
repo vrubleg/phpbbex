@@ -1700,7 +1700,7 @@ if ($last_page)
 // Only mark topic if it's currently unread. Also make sure we do not set topic tracking back if earlier pages are viewed.
 if (isset($topic_tracking_info[$topic_id]) && $topic_data['topic_last_post_time'] > $topic_tracking_info[$topic_id] && $max_post_time > $topic_tracking_info[$topic_id])
 {
-	markread('topic', $forum_id, $topic_id, $max_post_time);
+	mark_read('topic', $forum_id, $topic_id, $max_post_time);
 
 	// Update forum info
 	$all_marked_read = update_forum_tracking_info($forum_id, $topic_data['forum_last_post_time'], $topic_data['forum_mark_time'] ?? false, false);

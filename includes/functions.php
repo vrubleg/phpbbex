@@ -1117,83 +1117,82 @@ function tz_select($default = '')
 
 /**
 * Marks a topic/forum as read
-* Marks a topic as posted to
+* The caller must authorize changes to another user's read state.
 *
-* @param int $user_id can only be used with $mode == 'post'
+* @param int $user_id Target user ID, or 0 for the current user
 */
-function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $user_id = 0)
+function mark_read($mode, $forum_id = false, $topic_id = false, $time = 0, $user_id = 0)
 {
 	global $db, $user, $config;
+
+	$user_id = (!$user_id) ? (int) $user->data['user_id'] : (int) $user_id;
+	if (!$user_id || $user_id == ANONYMOUS || !$config['load_db_lastread'])
+	{
+		return;
+	}
+
+	$time = $time ? (int) $time : time();
 
 	if ($mode == 'all')
 	{
 		if ($forum_id === false || !sizeof($forum_id))
 		{
-			if ($config['load_db_lastread'] && $user->data['is_registered'])
-			{
-				// Mark all forums read (index page)
-				$db->sql_query('DELETE FROM ' . TOPICS_TRACK_TABLE . " WHERE user_id = {$user->data['user_id']}");
-				$db->sql_query('DELETE FROM ' . FORUMS_TRACK_TABLE . " WHERE user_id = {$user->data['user_id']}");
-				$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_mark_time = ' . time() . " WHERE user_id = {$user->data['user_id']}");
-			}
+			// Mark all forums read.
+			$db->sql_query('DELETE FROM ' . TOPICS_TRACK_TABLE . " WHERE user_id = {$user_id}");
+			$db->sql_query('DELETE FROM ' . FORUMS_TRACK_TABLE . " WHERE user_id = {$user_id}");
+			$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_mark_time = {$time} WHERE user_id = {$user_id}");
 		}
 
 		return;
 	}
 	else if ($mode == 'topics')
 	{
-		// Mark all topics in forums read
+		// Mark all topics in forums read.
 		if (!is_array($forum_id))
 		{
 			$forum_id = [$forum_id];
 		}
 
-		// Add 0 to forums array to mark global announcements correctly
-		// $forum_id[] = 0;
+		$sql = 'DELETE FROM ' . TOPICS_TRACK_TABLE . "
+			WHERE user_id = {$user_id}
+				AND " . $db->sql_in_set('forum_id', $forum_id);
+		$db->sql_query($sql);
 
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
+		$sql = 'SELECT forum_id
+			FROM ' . FORUMS_TRACK_TABLE . "
+			WHERE user_id = {$user_id}
+				AND " . $db->sql_in_set('forum_id', $forum_id);
+		$result = $db->sql_query($sql);
+
+		$sql_update = [];
+		while ($row = $db->sql_fetchrow($result))
 		{
-			$sql = 'DELETE FROM ' . TOPICS_TRACK_TABLE . "
-				WHERE user_id = {$user->data['user_id']}
-					AND " . $db->sql_in_set('forum_id', $forum_id);
+			$sql_update[] = (int) $row['forum_id'];
+		}
+		$db->sql_freeresult($result);
+
+		if (sizeof($sql_update))
+		{
+			$sql = 'UPDATE ' . FORUMS_TRACK_TABLE . "
+				SET mark_time = {$time}
+				WHERE user_id = {$user_id}
+					AND " . $db->sql_in_set('forum_id', $sql_update);
 			$db->sql_query($sql);
+		}
 
-			$sql = 'SELECT forum_id
-				FROM ' . FORUMS_TRACK_TABLE . "
-				WHERE user_id = {$user->data['user_id']}
-					AND " . $db->sql_in_set('forum_id', $forum_id);
-			$result = $db->sql_query($sql);
-
-			$sql_update = [];
-			while ($row = $db->sql_fetchrow($result))
+		if ($sql_insert = array_diff($forum_id, $sql_update))
+		{
+			$sql_ary = [];
+			foreach ($sql_insert as $f_id)
 			{
-				$sql_update[] = (int) $row['forum_id'];
-			}
-			$db->sql_freeresult($result);
-
-			if (sizeof($sql_update))
-			{
-				$sql = 'UPDATE ' . FORUMS_TRACK_TABLE . '
-					SET mark_time = ' . time() . "
-					WHERE user_id = {$user->data['user_id']}
-						AND " . $db->sql_in_set('forum_id', $sql_update);
-				$db->sql_query($sql);
+				$sql_ary[] = [
+					'user_id'   => $user_id,
+					'forum_id'  => (int) $f_id,
+					'mark_time' => $time
+				];
 			}
 
-			if ($sql_insert = array_diff($forum_id, $sql_update))
-			{
-				$sql_ary = [];
-				foreach ($sql_insert as $f_id)
-				{
-					$sql_ary[] = [
-						'user_id'   => (int) $user->data['user_id'],
-						'forum_id'  => (int) $f_id,
-						'mark_time' => time()
-					];
-				}
-
-				$db->sql_multi_insert(FORUMS_TRACK_TABLE, $sql_ary);
-			}
+			$db->sql_multi_insert(FORUMS_TRACK_TABLE, $sql_ary);
 		}
 
 		return;
@@ -1205,31 +1204,16 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 			return;
 		}
 
-		if ($config['load_db_lastread'] && $user->data['is_registered'])
-		{
-			$sql = 'UPDATE ' . TOPICS_TRACK_TABLE . '
-				SET mark_time = ' . ($post_time ?: time()) . "
-				WHERE user_id = {$user->data['user_id']}
-					AND topic_id = {$topic_id}";
-			$db->sql_query($sql);
+		$sql_ary = [
+			'user_id'       => $user_id,
+			'topic_id'      => (int) $topic_id,
+			'forum_id'      => (int) $forum_id,
+			'mark_time'     => $time,
+		];
 
-			// insert row
-			if (!$db->sql_affectedrows())
-			{
-				$db->sql_return_on_error(true);
-
-				$sql_ary = [
-					'user_id'       => (int) $user->data['user_id'],
-					'topic_id'      => (int) $topic_id,
-					'forum_id'      => (int) $forum_id,
-					'mark_time'     => ($post_time) ? (int) $post_time : time(),
-				];
-
-				$db->sql_query('INSERT INTO ' . TOPICS_TRACK_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-
-				$db->sql_return_on_error(false);
-			}
-		}
+		$sql = 'INSERT INTO ' . TOPICS_TRACK_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary) . "
+			ON DUPLICATE KEY UPDATE mark_time = {$time}";
+		$db->sql_query($sql);
 
 		return;
 	}
@@ -1516,7 +1500,7 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 
 	if (!$row)
 	{
-		markread('topics', $forum_id);
+		mark_read('topics', $forum_id);
 		return true;
 	}
 

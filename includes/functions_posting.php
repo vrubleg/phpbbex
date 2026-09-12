@@ -2378,7 +2378,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 
 	// Mark this topic as read
 	// We do not use post_time here, this is intended (post_time can have a date in the past if editing a message)
-	markread('topic', $data['forum_id'], $data['topic_id'], time());
+	mark_read('topic', $data['forum_id'], $data['topic_id'], time());
 
 	// Update forum tracking info
 	if ($config['load_db_lastread'] && $user->data['is_registered'])
@@ -2500,7 +2500,7 @@ function phpbb_bump_topic($forum_id, $topic_id, $post_data, $bump_time = false)
 	$db->sql_transaction('commit');
 
 	// Mark this topic as read
-	markread('topic', $forum_id, $topic_id, $bump_time);
+	mark_read('topic', $forum_id, $topic_id, $bump_time);
 
 	// Update forum tracking info
 	if ($config['load_db_lastread'] && $user->data['is_registered'])
