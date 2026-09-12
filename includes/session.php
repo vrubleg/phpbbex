@@ -373,12 +373,11 @@ class phpbb_session
 
 		$this->data = [];
 
-		/* Garbage collection ... remove old sessions updating user information
-		// if necessary. It means (potentially) 11 queries but only infrequently
+		// Garbage collection ... remove old sessions updating user information if necessary.
 		if ($this->time_now > $config['session_last_gc'] + $config['session_gc'])
 		{
 			$this->session_gc();
-		}*/
+		}
 
 		// Do we allow autologin on this board? No? Then override anything that may be requested here.
 		if (!$config['max_autologin_time'])
@@ -827,76 +826,50 @@ class phpbb_session
 	{
 		global $db, $config;
 
-		$batch_size = 10;
-
 		if (!$this->time_now)
 		{
 			$this->time_now = time();
 		}
 
-		// Delete expired guest sessions.
-		$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
-			WHERE session_user_id = ' . ANONYMOUS . '
-				AND session_time < ' . ($this->time_now - $config['session_length']);
+		$expire_time = $this->time_now - $config['session_length'];
+
+		// Update last visit times from the most recent expired session for each user.
+		$sql = 'UPDATE ' . USERS_TABLE . ' u
+			INNER JOIN (
+				SELECT session_user_id, MAX(session_time) AS session_time
+				FROM ' . SESSIONS_TABLE . '
+				WHERE session_user_id <> ' . ANONYMOUS . '
+					AND session_time < ' . (int) $expire_time . '
+				GROUP BY session_user_id
+			) expired ON expired.session_user_id = u.user_id
+			SET u.user_lastvisit = GREATEST(u.user_lastvisit, expired.session_time)';
 		$db->sql_query($sql);
 
-		// Get expired sessions, only most recent for each user
-		$sql = 'SELECT session_user_id, MAX(session_time) AS recent_time
-			FROM ' . SESSIONS_TABLE . '
-			WHERE session_user_id <> ' . ANONYMOUS . '
-				AND session_time < ' . ($this->time_now - $config['session_length']) . '
-			GROUP BY session_user_id';
-		$result = $db->sql_query_limit($sql, $batch_size);
+		// Delete all expired sessions.
+		$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
+			WHERE session_time < ' . (int) $expire_time;
+		$db->sql_query($sql);
 
-		$del_user_id = [];
-		$del_sessions = 0;
+		set_config('session_last_gc', $this->time_now, true);
 
-		while ($row = $db->sql_fetchrow($result))
+		if ($config['max_autologin_time'])
 		{
-			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $row['recent_time'] . '
-				WHERE user_id = ' . (int) $row['session_user_id'];
-			$db->sql_query($sql);
-
-			$del_user_id[] = (int) $row['session_user_id'];
-			$del_sessions++;
+			$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
+				WHERE last_login < ' . (time() - (86400 * $config['max_autologin_time']));
 		}
-		$db->sql_freeresult($result);
-
-		if (sizeof($del_user_id))
+		else
 		{
-			// Delete expired sessions
-			$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
-				WHERE ' . $db->sql_in_set('session_user_id', $del_user_id) . '
-					AND session_time < ' . ($this->time_now - $config['session_length']);
-			$db->sql_query($sql);
+			$sql = 'TRUNCATE TABLE ' . SESSIONS_KEYS_TABLE;
 		}
+		$db->sql_query($sql);
 
-		if ($del_sessions < $batch_size)
-		{
-			// Less than 10 users, update gc timer ... else we want gc
-			// called again to delete other sessions
-			set_config('session_last_gc', $this->time_now, true);
+		// Session GC runs infrequently, so collect expired CAPTCHA data here as well.
+		require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
+		phpbb_captcha_factory::garbage_collect($config['captcha_plugin']);
 
-			if ($config['max_autologin_time'])
-			{
-				$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
-					WHERE last_login < ' . (time() - (86400 * $config['max_autologin_time']));
-			}
-			else
-			{
-				$sql = 'TRUNCATE TABLE ' . SESSIONS_KEYS_TABLE;
-			}
-			$db->sql_query($sql);
-
-			// only called from CRON; should be a safe workaround until the infrastructure gets going
-			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_factory.php');
-			phpbb_captcha_factory::garbage_collect($config['captcha_plugin']);
-
-			$sql = 'DELETE FROM ' . LOGIN_ATTEMPT_TABLE . '
-				WHERE attempt_time < ' . (time() - (int) $config['ip_login_limit_time']);
-			$db->sql_query($sql);
-		}
+		$sql = 'DELETE FROM ' . LOGIN_ATTEMPT_TABLE . '
+			WHERE attempt_time < ' . (time() - (int) $config['ip_login_limit_time']);
+		$db->sql_query($sql);
 
 		return;
 	}
