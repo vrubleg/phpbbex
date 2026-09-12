@@ -483,7 +483,7 @@ class merge_users
 			$update['target']['user_ip']        = $source['user_ip'];
 		}
 
-		foreach (['lastvisit', 'lastmark', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime'] as $var)
+		foreach (['last_visit', 'mark_time', 'lastpost_time', 'last_search', 'last_warning', 'last_privmsg', 'emailtime'] as $var)
 		{
 			if ($source['user_' . $var] > $target['user_' . $var])
 			{

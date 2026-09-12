@@ -66,7 +66,7 @@ switch ($search_id)
 		}
 	break;
 
-	// The "new posts" search uses user_lastvisit which is user based, so it should require user to log in.
+// The "new posts" search uses session_last_visit, so it should require user to log in.
 	case 'newposts':
 		if ($user->data['user_id'] == ANONYMOUS)
 		{
@@ -396,7 +396,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 					$sql = 'SELECT t.topic_id
 						FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . ' p
-						WHERE p.post_time > ' . $user->data['user_lastvisit'] . '
+						WHERE p.post_time > ' . $user->data['user_last_visit'] . '
 							AND t.topic_id = p.topic_id
 							' . $m_approve_fid_sql . '
 							' . ((sizeof($ex_fid_ary)) ? 'AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '') . "

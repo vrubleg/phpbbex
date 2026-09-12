@@ -366,7 +366,7 @@ class acp_main
 					'INACTIVE_DATE' => $user->format_date($row['user_inactive_time']),
 					'REMINDED_DATE' => $user->format_date($row['user_reminded_time']),
 					'JOINED'        => $user->format_date($row['user_regdate']),
-					'LAST_VISIT'    => (!$row['user_lastvisit']) ? ' - ' : $user->format_date($row['user_lastvisit']),
+					'LAST_VISIT'    => (!$row['user_last_visit']) ? ' - ' : $user->format_date($row['user_last_visit']),
 
 					'REASON'        => $row['inactive_reason'],
 					'USER_ID'       => $row['user_id'],

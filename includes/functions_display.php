@@ -146,7 +146,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 
 		if ($config['load_db_lastread'] && $user->data['is_registered'])
 		{
-			$forum_tracking_info[$forum_id] = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_lastmark'];
+			$forum_tracking_info[$forum_id] = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_mark_time'];
 		}
 
 		// Count the difference of real to public topics, so we can display an information to moderators

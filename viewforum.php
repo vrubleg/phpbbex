@@ -503,7 +503,7 @@ if (sizeof($topic_list))
 		if ($config['load_db_lastread'] && $user->data['is_registered'])
 		{
 			$topic_tracking_info = get_topic_tracking($forum_id, $topic_list, $rowset, [$forum_id => $forum_data['mark_time']], $global_announce_list);
-			$mark_time_forum = $forum_data['mark_time'] ?: $user->data['user_lastmark'];
+			$mark_time_forum = $forum_data['mark_time'] ?: $user->data['user_mark_time'];
 		}
 	}
 

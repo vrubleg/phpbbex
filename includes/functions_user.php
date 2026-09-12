@@ -185,8 +185,8 @@ function user_add($user_row, $cp_data = false)
 
 		'user_inactive_reason'  => 0,
 		'user_inactive_time'    => 0,
-		'user_lastmark'         => time(),
-		'user_lastvisit'        => 0,
+		'user_mark_time'        => time(),
+		'user_last_visit'       => 0,
 		'user_lastpost_time'    => 0,
 		'user_posts'            => 0,
 		'user_dst'              => (int) $config['board_dst'],

@@ -1134,7 +1134,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 				// Mark all forums read (index page)
 				$db->sql_query('DELETE FROM ' . TOPICS_TRACK_TABLE . " WHERE user_id = {$user->data['user_id']}");
 				$db->sql_query('DELETE FROM ' . FORUMS_TRACK_TABLE . " WHERE user_id = {$user->data['user_id']}");
-				$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_lastmark = ' . time() . " WHERE user_id = {$user->data['user_id']}");
+				$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_mark_time = ' . time() . " WHERE user_id = {$user->data['user_id']}");
 			}
 		}
 
@@ -1315,11 +1315,11 @@ function get_topic_tracking($forum_id, $topic_ids, &$rowset, $forum_mark_time, $
 			$mark_time[$forum_id] = $forum_mark_time[$forum_id];
 		}
 
-		$user_lastmark = $mark_time[$forum_id] ?? $user->data['user_lastmark'];
+		$user_mark_time = $mark_time[$forum_id] ?? $user->data['user_mark_time'];
 
 		foreach ($topic_ids as $topic_id)
 		{
-			$last_read[$topic_id] = $user_lastmark;
+			$last_read[$topic_id] = $user_mark_time;
 		}
 	}
 
@@ -1373,11 +1373,11 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 			}
 			$db->sql_freeresult($result);
 
-			$user_lastmark = $mark_time[$forum_id] ?? $user->data['user_lastmark'];
+			$user_mark_time = $mark_time[$forum_id] ?? $user->data['user_mark_time'];
 
 			foreach ($topic_ids as $topic_id)
 			{
-				$last_read[$topic_id] = $user_lastmark;
+				$last_read[$topic_id] = $user_mark_time;
 			}
 		}
 	}
@@ -1413,7 +1413,7 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 	if ($config['load_db_lastread'] && $user->data['is_registered'])
 	{
 		// Get list of the unread topics
-		$last_mark = (int) $user->data['user_lastmark'];
+		$last_mark = (int) $user->data['user_mark_time'];
 
 		$sql_array = [
 			'SELECT'        => 't.topic_id, t.topic_last_post_time, tt.mark_time as topic_mark_time, ft.mark_time as forum_mark_time',
@@ -1475,7 +1475,7 @@ function update_forum_tracking_info($forum_id, $forum_last_post_time, $f_mark_ti
 	{
 		if ($config['load_db_lastread'] && $user->data['is_registered'])
 		{
-			$mark_time_forum = (!empty($f_mark_time)) ? $f_mark_time : $user->data['user_lastmark'];
+			$mark_time_forum = (!empty($f_mark_time)) ? $f_mark_time : $user->data['user_mark_time'];
 		}
 	}
 

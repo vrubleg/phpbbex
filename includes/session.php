@@ -480,7 +480,7 @@ class phpbb_session
 
 		if ($this->data['user_id'] != ANONYMOUS && !$bot)
 		{
-			$this->data['session_last_visit'] = (isset($this->data['session_time']) && $this->data['session_time']) ? $this->data['session_time'] : ($this->data['user_lastvisit'] ?: time());
+			$this->data['session_last_visit'] = (isset($this->data['session_time']) && $this->data['session_time']) ? $this->data['session_time'] : ($this->data['user_last_visit'] ?: time());
 		}
 		else
 		{
@@ -550,7 +550,7 @@ class phpbb_session
 
 					// Update the last visit time
 					$sql = 'UPDATE ' . BOTS_TABLE . '
-						SET bot_lastvisit = ' . (int) $this->data['session_time'] . '
+						SET bot_last_visit = ' . (int) $this->data['session_time'] . '
 						WHERE bot_id = ' . (int) $bot;
 					$db->sql_query($sql);
 				}
@@ -658,7 +658,7 @@ class phpbb_session
 
 			// Update the last visit time
 			$sql = 'UPDATE ' . BOTS_TABLE . '
-				SET bot_lastvisit = ' . (int) $this->data['session_time'] . '
+				SET bot_last_visit = ' . (int) $this->data['session_time'] . '
 				WHERE bot_id = ' . (int) $bot;
 			$db->sql_query($sql);
 
@@ -744,7 +744,7 @@ class phpbb_session
 			}
 
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $this->data['session_time'] . '
+				SET user_last_visit = ' . (int) $this->data['session_time'] . '
 				WHERE user_id = ' . (int) $this->data['user_id'];
 			$db->sql_query($sql);
 
@@ -814,7 +814,7 @@ class phpbb_session
 					AND session_time < ' . (int) $expire_time . '
 				GROUP BY session_user_id
 			) expired ON expired.session_user_id = u.user_id
-			SET u.user_lastvisit = GREATEST(u.user_lastvisit, expired.session_time)';
+			SET u.user_last_visit = GREATEST(u.user_last_visit, expired.session_time)';
 		$db->sql_query($sql);
 
 		// Delete all expired sessions.
@@ -1148,7 +1148,7 @@ class phpbb_session
 		if ($row)
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_lastvisit = ' . (int) $row['session_time'] . '
+				SET user_last_visit = ' . (int) $row['session_time'] . '
 				WHERE user_id = ' . (int) $user_id;
 			$db->sql_query($sql);
 		}

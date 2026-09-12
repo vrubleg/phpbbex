@@ -1044,7 +1044,7 @@ class acp_users
 					unset($row);
 				}
 
-				$last_visit = (!empty($user_row['session_time'])) ? $user_row['session_time'] : $user_row['user_lastvisit'];
+				$last_visit = (!empty($user_row['session_time'])) ? $user_row['session_time'] : $user_row['user_last_visit'];
 
 				$inactive_reason = '';
 				if ($user_row['user_type'] == USER_INACTIVE)

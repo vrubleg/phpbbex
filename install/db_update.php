@@ -993,9 +993,26 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_browser_ua = '', user_ip = '' WHERE user_id = " . ANONYMOUS);
 
+	// Rename legacy activity tracking columns.
+	if ($db_tools->sql_column_exists(USERS_TABLE, 'user_lastvisit'))
+	{
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' CHANGE user_lastvisit user_last_visit int(11) UNSIGNED DEFAULT 0 NOT NULL');
+	}
+	if ($db_tools->sql_column_exists(USERS_TABLE, 'user_lastmark'))
+	{
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' CHANGE user_lastmark user_mark_time int(11) UNSIGNED DEFAULT 0 NOT NULL');
+	}
+
 	// Demote bots from users to guests.
 
-	$db->sql_query('ALTER TABLE ' . BOTS_TABLE . ' ADD COLUMN bot_lastvisit int(11) UNSIGNED DEFAULT 0 NOT NULL AFTER bot_name');
+	if ($db_tools->sql_column_exists(BOTS_TABLE, 'bot_lastvisit'))
+	{
+		$db->sql_query('ALTER TABLE ' . BOTS_TABLE . ' CHANGE bot_lastvisit bot_last_visit int(11) UNSIGNED DEFAULT 0 NOT NULL');
+	}
+	else if (!$db_tools->sql_column_exists(BOTS_TABLE, 'bot_last_visit'))
+	{
+		$db->sql_query('ALTER TABLE ' . BOTS_TABLE . ' ADD COLUMN bot_last_visit int(11) UNSIGNED DEFAULT 0 NOT NULL AFTER bot_name');
+	}
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' ADD COLUMN session_bot_id mediumint(8) UNSIGNED DEFAULT 0 NOT NULL AFTER session_user_id');
 	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' ADD INDEX session_bot_id(session_bot_id)');
 
@@ -1008,7 +1025,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	if ($db_tools->sql_column_exists(BOTS_TABLE, 'user_id'))
 	{
-		$sql = 'SELECT b.bot_id, b.user_id, u.user_lastvisit
+		$sql = 'SELECT b.bot_id, b.user_id, u.user_last_visit
 			FROM ' . BOTS_TABLE . ' b
 			LEFT JOIN ' . USERS_TABLE . ' u ON b.user_id = u.user_id
 			WHERE b.user_id <> 0';
@@ -1022,7 +1039,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 			$bot_user_ids[] = $bot_user_id;
 
 			$db->sql_query('UPDATE ' . BOTS_TABLE . '
-				SET bot_lastvisit = ' . (int) $row['user_lastvisit'] . "
+				SET bot_last_visit = ' . (int) $row['user_last_visit'] . "
 				WHERE bot_id = {$bot_id}");
 		}
 		$db->sql_freeresult($result);

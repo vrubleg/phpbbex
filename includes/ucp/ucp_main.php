@@ -260,7 +260,7 @@ class ucp_main
 
 						if ($config['load_db_lastread'])
 						{
-							$forum_check = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_lastmark'];
+							$forum_check = (!empty($row['mark_time'])) ? $row['mark_time'] : $user->data['user_mark_time'];
 						}
 
 						$unread_forum = ($row['forum_last_post_time'] > $forum_check);

@@ -390,7 +390,7 @@ class acp_prune
 			$count = request_var('count', '');
 
 			$key_match = ['lt' => '<', 'gt' => '>', 'eq' => '='];
-			$sort_by_types = ['username', 'user_email', 'user_posts', 'user_regdate', 'user_lastvisit'];
+			$sort_by_types = ['username', 'user_email', 'user_posts', 'user_regdate', 'user_last_visit'];
 
 			$where_sql = '';
 			$where_sql .= ($username) ? ' AND username_clean ' . $db->sql_like_expression(str_replace('*', $db->any_char, utf8_clean_string($username))) : '';
@@ -401,15 +401,15 @@ class acp_prune
 			// First handle pruning of users who never logged in, last active date is 0000-00-00
 			if (sizeof($active) && (int) $active[0] == 0 && (int) $active[1] == 0 && (int) $active[2] == 0)
 			{
-				$where_sql .= ' AND user_lastvisit = 0';
+				$where_sql .= ' AND user_last_visit = 0';
 			}
 			else if (sizeof($active) && $active_select != 'lt')
 			{
-				$where_sql .= ' AND user_lastvisit ' . $key_match[$active_select] . ' ' . gmmktime(0, 0, 0, (int) $active[1], (int) $active[2], (int) $active[0]);
+				$where_sql .= ' AND user_last_visit ' . $key_match[$active_select] . ' ' . gmmktime(0, 0, 0, (int) $active[1], (int) $active[2], (int) $active[0]);
 			}
 			else if (sizeof($active))
 			{
-				$where_sql .= ' AND (user_lastvisit > 0 AND user_lastvisit < ' . gmmktime(0, 0, 0, (int) $active[1], (int) $active[2], (int) $active[0]) . ')';
+				$where_sql .= ' AND (user_last_visit > 0 AND user_last_visit < ' . gmmktime(0, 0, 0, (int) $active[1], (int) $active[2], (int) $active[0]) . ')';
 			}
 		}
 
