@@ -337,10 +337,7 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 		// Message and return links
 		$success_msg = 'POSTS_MERGED_SUCCESS';
 
-		if (!function_exists('phpbb_update_rows_avoiding_duplicates_notify_status'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_database_helper.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_database_helper.php');
 
 		// Update the topic watch table.
 		phpbb_update_rows_avoiding_duplicates_notify_status($db, TOPICS_WATCH_TABLE, 'topic_id', $topic_ids, $to_topic_id);

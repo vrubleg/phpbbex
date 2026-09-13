@@ -844,10 +844,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		// Let's do the job - delete disapproved posts
 		if (sizeof($post_disapprove_list))
 		{
-			if (!function_exists('delete_posts'))
-			{
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-			}
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 			// We do not check for permissions here, because the moderator allowed approval/disapproval should be allowed to delete the disapproved posts
 			// Note: function delete_posts triggers related forums/topics sync,

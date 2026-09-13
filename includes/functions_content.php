@@ -411,10 +411,7 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 	// Parse bbcode if bbcode uid stored and bbcode enabled
 	if ($uid && ($flags & OPTION_FLAG_BBCODE))
 	{
-		if (!class_exists('bbcode'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/bbcode.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/bbcode.php');
 
 		if (empty($bbcode))
 		{
@@ -446,10 +443,7 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 		return;
 	}
 
-	if (!class_exists('parse_message'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
 	$message_parser = new parse_message($text);
 	$message_parser->parse($allow_bbcode, $allow_urls, $allow_smilies);

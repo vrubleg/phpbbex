@@ -88,10 +88,7 @@ function dbms_select($default = '')
 */
 function get_tables(&$db)
 {
-	if (!class_exists('phpbb_db_tools'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 
 	$db_tools = new phpbb_db_tools($db);
 

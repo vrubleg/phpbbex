@@ -639,10 +639,7 @@ function merge_posts($topic_id, $to_topic_id)
 		}
 		else
 		{
-			if (!function_exists('phpbb_update_rows_avoiding_duplicates_notify_status'))
-			{
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_database_helper.php');
-			}
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_database_helper.php');
 
 			// If the topic no longer exist, we will update the topic watch table.
 			phpbb_update_rows_avoiding_duplicates_notify_status($db, TOPICS_WATCH_TABLE, 'topic_id', [$topic_id], $to_topic_id);

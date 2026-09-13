@@ -72,10 +72,7 @@ class resync_registered
 	{
 		global $db;
 
-		if (!function_exists('group_memberships'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 		// Get teh group IDs
 		$g = $this->_get_group_ids();

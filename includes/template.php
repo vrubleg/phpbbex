@@ -252,10 +252,7 @@ class phpbb_template
 			return $filename;
 		}
 
-		if (!class_exists('template_compile'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_template.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_template.php');
 
 		// Inheritance - we point to another template file for this one.
 		if ($this->inherit_root && !file_exists($this->files[$handle]))

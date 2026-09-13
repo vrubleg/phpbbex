@@ -1882,10 +1882,7 @@ class phpbb_user extends phpbb_session
 			return false;
 		}
 
-		if (!function_exists('remove_newly_registered'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		if ($group = remove_newly_registered($this->data['user_id'], $this->data))
 		{
 			$this->data['group_id'] = $group;

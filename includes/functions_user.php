@@ -244,10 +244,7 @@ function user_add($user_row, $cp_data = false)
 	{
 		$cp_data['user_id'] = (int) $user_id;
 
-		if (!class_exists('custom_profile'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
 
 		$sql = 'INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . ' ' .
 			$db->sql_build_array('INSERT', custom_profile::build_insert_sql_array($cp_data));
@@ -464,10 +461,7 @@ function user_delete($mode, $user_id, $post_username = false)
 
 		case 'remove':
 
-			if (!function_exists('delete_posts'))
-			{
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-			}
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 			// Delete posts, attachments, etc.
 			delete_posts('poster_id', $user_id);
@@ -522,10 +516,7 @@ function user_delete($mode, $user_id, $post_username = false)
 	$db->sql_query($sql);
 
 	// Clean the private messages tables from the user
-	if (!function_exists('phpbb_delete_user_pms'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
 	phpbb_delete_user_pms($user_id);
 
 	$db->sql_transaction('commit');
@@ -543,10 +534,7 @@ function user_delete($mode, $user_id, $post_username = false)
 	}
 
 	// Delete user's rates
-	if (!function_exists('remove_rates_batch'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
 	remove_rates_batch('user', $user_id);
 
 	return false;
@@ -2394,10 +2382,7 @@ function group_delete($group_id, $group_name = false)
 	$db->sql_query($sql);
 
 	// Re-cache moderators
-	if (!function_exists('cache_moderators'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 	cache_moderators();
 
@@ -3085,19 +3070,13 @@ function group_update_listings($group_id)
 
 	if ($mod_permissions)
 	{
-		if (!function_exists('cache_moderators'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 		cache_moderators();
 	}
 
 	if ($mod_permissions || $admin_permissions)
 	{
-		if (!function_exists('update_foes'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 		update_foes([$group_id]);
 	}
 }

@@ -1083,10 +1083,7 @@ $db->sql_freeresult($result);
 // Load custom profile fields
 if ($config['load_cpf_viewtopic'])
 {
-	if (!class_exists('custom_profile'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_profile_fields.php');
 	$cp = new custom_profile();
 
 	// Grab all profile fields from users in id cache for later use - similar to the poster cache

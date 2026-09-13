@@ -109,10 +109,7 @@ class ucp_main
 
 				if ($config['load_user_activity'])
 				{
-					if (!function_exists('display_user_activity'))
-					{
-						require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
-					}
+					require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 					display_user_activity($user->data);
 				}
 

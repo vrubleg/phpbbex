@@ -56,10 +56,7 @@ class sql_query
 			return;
 		}
 
-		if (!function_exists('sql_split_queries'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 
 		$sql_query = sql_split_queries($sql_query);
 

@@ -13,20 +13,14 @@ if (!defined('IN_PHPBB'))
 /**
 * Placeholder for autoload
 */
-if (!class_exists('phpbb_default_captcha'))
-{
-	require_once(PHPBB_ROOT_PATH . 'includes/captcha/plugins/captcha_abstract.php');
-}
+require_once(PHPBB_ROOT_PATH . 'includes/captcha/plugins/captcha_abstract.php');
 
 class phpbb_captcha_gd_wave extends phpbb_default_captcha
 {
 
 	function __construct()
 	{
-		if (!class_exists('captcha'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_gd_wave.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/captcha/captcha_gd_wave.php');
 	}
 
 	static function get_instance()

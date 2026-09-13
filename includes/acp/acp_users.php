@@ -536,10 +536,7 @@ class acp_users
 
 								if ($row = $db->sql_fetchrow($result))
 								{
-									if (!function_exists('delete_pm'))
-									{
-										require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
-									}
+									require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
 
 									do
 									{
@@ -621,10 +618,7 @@ class acp_users
 								// Execute remove_rates_batch if needed
 								if ($delrates_type)
 								{
-									if (!function_exists('remove_rates_batch'))
-									{
-										require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
-									}
+									require_once(PHPBB_ROOT_PATH . 'includes/functions_rating.php');
 									remove_rates_batch('user', $user_id, $delrates_type & 1, $delrates_type & 2, $delrates_from, $delrates_to);
 									$lang = 'OK';
 								}

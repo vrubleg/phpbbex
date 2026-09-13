@@ -136,10 +136,7 @@ class sanitise_anonymous_user
 				$_other     = [];
 				$guests_gr  = $this->_anon_groups($_in_guests, $_other);
 
-				if (!function_exists('group_user_del'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-				}
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				// Loop through the others and remove this user from all these groups
 				foreach ($_other as $group)
@@ -188,10 +185,7 @@ class sanitise_anonymous_user
 		global $db;
 
 		// Fetch the groups our user is in
-		if (!function_exists('group_memberships'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		$groups = group_memberships(false, ANONYMOUS);
 
 		if (empty($groups))

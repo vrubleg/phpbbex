@@ -304,10 +304,7 @@ function get_user_information($user_id, $user_row)
 		}
 	}
 
-	if (!function_exists('get_user_avatar'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 	$user_row['avatar'] = ($user->optionget('viewavatars')) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']) : '';
 

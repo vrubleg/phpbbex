@@ -295,10 +295,7 @@ class mcp_warn
 		$message = smiley_text($message);
 
 		// Generate the appropriate user information for the user we are looking at
-		if (!function_exists('get_user_avatar'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 		get_user_rank($user_row['user_rank'], $user_row['user_posts'], $rank_title, $rank_img, $rank_img_src);
 		$avatar_img = get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']);
@@ -402,10 +399,7 @@ class mcp_warn
 		}
 
 		// Generate the appropriate user information for the user we are looking at
-		if (!function_exists('get_user_avatar'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 		get_user_rank($user_row['user_rank'], $user_row['user_posts'], $rank_title, $rank_img, $rank_img_src);
 		$avatar_img = get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']);
@@ -531,10 +525,7 @@ class mcp_warn
 		}
 
 		// Generate the appropriate user information for the user we are looking at
-		if (!function_exists('get_user_avatar'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 		$rank_title = $rank_img = '';
 		$avatar_img = get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']);

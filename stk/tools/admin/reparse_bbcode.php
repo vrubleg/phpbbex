@@ -141,19 +141,16 @@ class reparse_bbcode
 		}
 
 		// The message parser
-		if (!class_exists('parse_message'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/message_parser.php');
 
 		// Posting helper functions
-		if ($mode == BBCODE_REPARSE_POSTS && !function_exists('submit_post'))
+		if ($mode == BBCODE_REPARSE_POSTS)
 		{
 			require_once(PHPBB_ROOT_PATH . 'includes/functions_posting.php');
 		}
 
 		// PM helper function
-		if ($mode == BBCODE_REPARSE_PMS && !function_exists('submit_pm'))
+		if ($mode == BBCODE_REPARSE_PMS)
 		{
 			require_once(PHPBB_ROOT_PATH . 'includes/functions_privmsgs.php');
 		}

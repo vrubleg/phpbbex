@@ -975,10 +975,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	$smtp->add_backtrace('Connecting to ' . $config['smtp_host'] . ':' . $config['smtp_port']);
 
 	// Ok we have error checked as much as we can to this point let's get on it already.
-	if (!class_exists('phpbb_error_collector'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/error_collector.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/error_collector.php');
 	$collector = new phpbb_error_collector;
 	$collector->install();
 
@@ -1635,11 +1632,7 @@ function phpbb_mail($to, $subject, $msg, $headers, $eol, &$err_msg)
 	// Reference: http://bugs.php.net/bug.php?id=15841
 	$headers = implode($eol, $headers);
 
-	if (!class_exists('phpbb_error_collector'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/error_collector.php');
-	}
-
+	require_once(PHPBB_ROOT_PATH . 'includes/error_collector.php');
 	$collector = new phpbb_error_collector;
 	$collector->install();
 

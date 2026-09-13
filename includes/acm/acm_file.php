@@ -68,10 +68,7 @@ class acm
 
 		if (!$this->_write('data_global'))
 		{
-			if (!function_exists('phpbb_is_writable'))
-			{
-				require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
-			}
+			require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 
 			// Now, this occurred how often? ... phew, just tell the user then...
 			if (!phpbb_is_writable($this->cache_dir))
@@ -672,10 +669,7 @@ class acm
 			@flock($handle, LOCK_UN);
 			fclose($handle);
 
-			if (!function_exists('phpbb_chmod'))
-			{
-				require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
-			}
+			require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 
 			phpbb_chmod($file, CHMOD_READ | CHMOD_WRITE);
 
@@ -690,10 +684,7 @@ class acm
 	*/
 	function remove_file($filename, $check = false)
 	{
-		if (!function_exists('phpbb_is_writable'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 
 		if ($check && !phpbb_is_writable($this->cache_dir))
 		{

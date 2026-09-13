@@ -2783,10 +2783,7 @@ function change_database_data(&$no_updates, $version)
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				if (!class_exists('acp_bbcodes'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
-				}
+				require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
 				$bbcode_match = $row['bbcode_match'];
 				$bbcode_tpl = $row['bbcode_tpl'];
 
