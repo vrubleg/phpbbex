@@ -78,10 +78,13 @@ else
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		// Global announcement?
-		$f_download = (!$row) ? $auth->acl_getf_global('f_download') : $auth->acl_get('f_download', $row['forum_id']);
+		if (!$row)
+		{
+			http_response_code(404);
+			trigger_error('ERROR_NO_ATTACHMENT');
+		}
 
-		if (!$auth->acl_get('u_download') || !$f_download)
+		if (!$auth->acl_get('u_download') || !$auth->acl_get('f_download', $row['forum_id']))
 		{
 			http_response_code(403);
 			trigger_error('SORRY_AUTH_VIEW_ATTACH');
