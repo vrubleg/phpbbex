@@ -318,7 +318,26 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
 				$s_sort_key = $s_sort_dir = '';
 
-				$last_post_time_sql = ($sort_days) ? ' AND t.topic_last_post_time > ' . (time() - ($sort_days * 24 * 3600)) : '';
+				$last_post_time_sql = '';
+				if ($sort_days)
+				{
+					$min_post_time = time() - ($sort_days * 24 * 3600);
+					$sql_pending = '';
+					$approve_forums = array_diff(array_keys($auth->acl_getf('m_approve', true)), $ex_fid_ary);
+					if ($auth->acl_get('m_approve') || $approve_forums)
+					{
+						// Pending replies do not update the topic's last approved post time.
+						$sql_pending = ' OR EXISTS (
+							SELECT 1 FROM ' . POSTS_TABLE . ' p
+							WHERE p.topic_id = t.topic_id
+								AND p.forum_id = t.forum_id
+								AND p.post_time > ' . $min_post_time . '
+								AND p.post_approved = 0
+								' . ($auth->acl_get('m_approve') ? '' : 'AND ' . $db->sql_in_set('p.forum_id', $approve_forums)) . '
+						)';
+					}
+					$last_post_time_sql = ' AND (t.topic_last_post_time > ' . $min_post_time . $sql_pending . ')';
+				}
 
 				$sql = 'SELECT t.topic_last_post_time, t.topic_id
 					FROM ' . TOPICS_TABLE . " t
@@ -361,25 +380,27 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				}
 				else
 				{
+					$sql_pending = '';
+					$approve_forums = array_diff(array_keys($auth->acl_getf('m_approve', true)), $ex_fid_ary);
+					if ($auth->acl_get('m_approve') || $approve_forums)
+					{
+						// Pending replies do not update the topic's last approved post time.
+						$sql_pending = ' OR EXISTS (
+							SELECT 1 FROM ' . POSTS_TABLE . ' p
+							WHERE p.topic_id = t.topic_id
+								AND p.forum_id = t.forum_id
+								AND p.post_time > ' . $last_visit . '
+								AND p.post_approved = 0
+								' . ($auth->acl_get('m_approve') ? '' : 'AND ' . $db->sql_in_set('p.forum_id', $approve_forums)) . '
+						)';
+					}
+
 					$sql = 'SELECT t.topic_id
 						FROM ' . TOPICS_TABLE . ' t
-						WHERE t.topic_last_post_time > ' . $last_visit . '
+						WHERE (t.topic_last_post_time > ' . $last_visit . $sql_pending . ')
 							' . str_replace(['p.', 'post_'], ['t.', 'topic_'], $m_approve_fid_sql) . '
 							' . ((sizeof($ex_fid_ary)) ? 'AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '') . "
 						{$sql_sort}";
-/*
-		[Fix] queued replies missing from "view new posts" (Bug #42705 - Patch by Paul)
-		- Creates temporary table, query is far from optimized
-
-					$sql = 'SELECT t.topic_id
-						FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . ' p
-						WHERE p.post_time > ' . $user->data['user_last_visit'] . '
-							AND t.topic_id = p.topic_id
-							' . $m_approve_fid_sql . '
-							' . ((sizeof($ex_fid_ary)) ? 'AND ' . $db->sql_in_set('t.forum_id', $ex_fid_ary, true) : '') . "
-						GROUP BY t.topic_id
-						$sql_sort";
-*/
 					$field = 'topic_id';
 				}
 			break;
