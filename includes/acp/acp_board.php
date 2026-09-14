@@ -170,6 +170,7 @@ class acp_board
 						'style_mp_show_buttons'             => ['lang' => 'STYLE_MP_SHOW_BUTTONS',              'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 
 						'legend5'                           => 'STYLE_SETTINGS_PROFILE',
+						'load_user_activity'                => ['lang' => 'LOAD_USER_ACTIVITY',                 'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'style_p_show_rating'               => ['lang' => 'STYLE_MP_SHOW_RATING',               'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'style_p_show_rating_detailed'      => ['lang' => 'STYLE_MP_SHOW_RATING_DETAILED',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
 						'style_p_show_rated'                => ['lang' => 'STYLE_MP_SHOW_RATED',                'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => false],
@@ -386,19 +387,6 @@ class acp_board
 				];
 			break;
 
-			case 'load':
-				$display_vars = [
-					'title' => 'ACP_LOAD_SETTINGS',
-					'vars'  => [
-						'legend1'               => 'GENERAL_OPTIONS',
-						'load_user_activity'    => ['lang' => 'LOAD_USER_ACTIVITY', 'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
-						'cache_mtime_check'     => ['lang' => 'CACHE_MTIME_CHECK',  'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
-
-						'legend2'                   => 'ACP_SUBMIT_CHANGES',
-					]
-				];
-			break;
-
 			case 'security':
 				$display_vars = [
 					'title' => 'ACP_SECURITY_SETTINGS',
@@ -419,6 +407,7 @@ class acp_board
 						'ip_login_limit_time'   => ['lang' => 'IP_LOGIN_LIMIT_TIME',    'validate' => 'int:0',  'type' => 'text:5:5', 'explain' => true, 'append' => ' ' . $user->lang['SECONDS']],
 						'ip_login_limit_use_forwarded'  => ['lang' => 'IP_LOGIN_LIMIT_USE_FORWARDED',   'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'tpl_allow_php'         => ['lang' => 'TPL_ALLOW_PHP',          'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
+						'cache_mtime_check'     => ['lang' => 'CACHE_MTIME_CHECK',      'validate' => 'bool',   'type' => 'radio:yes_no', 'explain' => true],
 						'legend2'               => 'ACP_SUBMIT_CHANGES',
 					]
 				];

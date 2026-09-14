@@ -167,10 +167,7 @@ class mcp_notes
 		}
 
 		// Generate the appropriate user information for the user we are looking at
-		if (!function_exists('get_user_avatar'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
 
 		$rank_title = $rank_img = '';
 		$avatar_img = get_user_avatar($userrow['user_avatar'], $userrow['user_avatar_type'], $userrow['user_avatar_width'], $userrow['user_avatar_height']);

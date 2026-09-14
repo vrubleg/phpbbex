@@ -103,10 +103,7 @@ class phpbb_captcha_qa
 	{
 		global $db;
 
-		if (!class_exists('phpbb_db_tools'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 		$db_tool = new phpbb_db_tools($db);
 
 		return $db_tool->sql_table_exists(CAPTCHA_QUESTIONS_TABLE);
@@ -294,10 +291,7 @@ class phpbb_captcha_qa
 	{
 		global $db;
 
-		if (!class_exists('phpbb_db_tools'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/db/db_tools.php');
 		$db_tool = new phpbb_db_tools($db);
 
 		$tables = [CAPTCHA_QUESTIONS_TABLE, CAPTCHA_ANSWERS_TABLE, CAPTCHA_QA_CONFIRM_TABLE];
@@ -567,7 +561,7 @@ class phpbb_captcha_qa
 		global $db, $user;
 
 		$sql = 'DELETE FROM ' . CAPTCHA_QA_CONFIRM_TABLE . "
-			WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
+			WHERE confirm_id = '" . $db->sql_escape($this->confirm_id) . "'
 				AND session_id = '" . $db->sql_escape($user->session_id) . "'
 				AND confirm_type = " . $this->type;
 		$db->sql_query($sql);

@@ -546,10 +546,7 @@ class acp_modules
 				{
 					$class = str_replace(".php", '', $file) . '_info';
 
-					if (!class_exists($class))
-					{
-						require_once($directory . $file);
-					}
+					require_once($directory . $file);
 
 					// Get module title tag
 					if (class_exists($class))
@@ -569,10 +566,7 @@ class acp_modules
 			$filename = $module_class . '_' . basename($module);
 			$class = $module_class . '_' . basename($module) . '_info';
 
-			if (!class_exists($class))
-			{
-				require_once($directory . $filename . '.php');
-			}
+			require_once($directory . $filename . '.php');
 
 			// Get module title tag
 			if (class_exists($class))

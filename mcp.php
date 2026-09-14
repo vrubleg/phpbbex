@@ -411,12 +411,6 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			if (!$row['forum_id'])
-			{
-				// Global Announcement?
-				$row['forum_id'] = request_var('f', 0);
-			}
-
 			$rowset[$row['topic_id']] = $row;
 
 			if ($acl_list && !$auth->acl_gets($acl_list, $row['forum_id']))
@@ -491,12 +485,6 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		if (!$row['forum_id'])
-		{
-			// Global Announcement?
-			$row['forum_id'] = request_var('f', 0);
-		}
-
 		if ($acl_list && !$auth->acl_gets($acl_list, $row['forum_id']))
 		{
 			continue;
@@ -885,8 +873,6 @@ function check_ids(&$ids, $table, $sql_id, $acl_list = false, $single_forum = fa
 	{
 		return false;
 	}
-
-	// If forum id is false and ids populated we may have only global announcements selected (returning 0 because of (int) $forum_id)
 
 	return ($single_forum === false) ? true : (int) $forum_id;
 }

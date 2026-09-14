@@ -250,10 +250,7 @@ class restore_deleted_users
 	{
 		global $db, $config, $user;
 
-		if (!function_exists('user_add'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 		// Registered users group?
 		$sql = 'SELECT group_id, group_colour

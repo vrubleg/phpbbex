@@ -31,10 +31,7 @@ class recache_moderators
 	*/
 	function run_tool()
 	{
-		if (!function_exists('cache_moderators'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 		cache_moderators();
 

@@ -476,10 +476,7 @@ class phpbb_umil
 				}
 				else
 				{
-					if (!class_exists('phpbb_auth'))
-					{
-						require_once(PHPBB_ROOT_PATH . 'includes/auth.php');
-					}
+					require_once(PHPBB_ROOT_PATH . 'includes/auth.php');
 					$auth = new phpbb_auth();
 					$auth->acl_clear_prefetch();
 				}
@@ -774,10 +771,7 @@ class phpbb_umil
 
 			$classname = "{$class}_{$basename}_info";
 
-			if (!class_exists($classname))
-			{
-				require((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file);
-			}
+			require_once((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file);
 
 			$info = new $classname;
 			$module = $info->module();
@@ -965,10 +959,7 @@ class phpbb_umil
 
 			$classname = "{$class}_{$basename}_info";
 
-			if (!class_exists($classname))
-			{
-				require((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file);
-			}
+			require_once((($include_path === false) ? PHPBB_ROOT_PATH . 'includes/' : $include_path) . $info_file);
 
 			$info = new $classname;
 			$module_info = $info->module();
@@ -1161,10 +1152,7 @@ class phpbb_umil
 		// We've added permissions, so set to true to notify the user.
 		$this->permissions_added = true;
 
-		if (!class_exists('auth_admin'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/acp/auth.php');
 		$auth_admin = new auth_admin();
 
 		// We have to add a check to see if the !$global (if global, local, and if local, global) permission already exists.  If it does, acl_add_option currently has a bug which would break the ACL system, so we are having a work-around here.
@@ -1667,10 +1655,7 @@ class phpbb_umil
 			return $result;
 		}
 
-		if (!function_exists('get_tables'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 
 		$tables = get_tables($this->db);
 
@@ -1722,10 +1707,7 @@ class phpbb_umil
 			return $this->umil_end('NO_TABLE_DATA');
 		}
 
-		if (!function_exists('sql_split_queries'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_install.php');
 
 		/*
 		* This function has had numerous problems and is currently broken, so until phpBB uses it I will not be anymore

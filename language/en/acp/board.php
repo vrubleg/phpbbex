@@ -408,8 +408,6 @@ $lang = array_merge($lang, [
 
 // Load Settings
 $lang = array_merge($lang, [
-	'ACP_LOAD_SETTINGS_EXPLAIN' => 'Here you can enable and disable certain board functions to reduce the amount of processing required. On most servers there is no need to disable any functions. However on certain systems or in shared hosting environments it may be beneficial to disable capabilities you do not really need.',
-
 	'CUSTOM_PROFILE_FIELDS'         => 'Custom profile fields',
 	'LOAD_CPF_MEMBERLIST'           => 'Allow styles to display custom profile fields in memberlist',
 	'LOAD_CPF_VIEWPROFILE'          => 'Display custom profile fields in user profiles',

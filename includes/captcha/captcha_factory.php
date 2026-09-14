@@ -21,10 +21,7 @@ class phpbb_captcha_factory
 	static function get_instance($name)
 	{
 		$name = basename($name);
-		if (!class_exists($name))
-		{
-			require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$name}_plugin.php");
-		}
+		require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$name}_plugin.php");
 		return call_user_func([$name, 'get_instance']);
 	}
 
@@ -34,10 +31,7 @@ class phpbb_captcha_factory
 	static function garbage_collect($name)
 	{
 		$name = basename($name);
-		if (!class_exists($name))
-		{
-			require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$name}_plugin.php");
-		}
+		require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$name}_plugin.php");
 		call_user_func([$name, 'garbage_collect'], 0);
 	}
 
@@ -60,10 +54,7 @@ class phpbb_captcha_factory
 				if ((preg_match('#_plugin\.php' . '$#', $file)))
 				{
 					$name = preg_replace('#^(.*?)_plugin\.php' . '$#', '\1', $file);
-					if (!class_exists($name))
-					{
-						require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$file}");
-					}
+					require_once(PHPBB_ROOT_PATH . "includes/captcha/plugins/{$file}");
 
 					if (call_user_func([$name, 'is_available']))
 					{

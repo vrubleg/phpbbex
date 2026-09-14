@@ -129,10 +129,7 @@ class orphaned_posts
 					trigger_error('NO_TOPICS_SELECTED');
 				}
 
-				if (!function_exists('delete_topics'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-				}
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 				$return = delete_topics('topic_id', $topic_ids);
 				trigger_error(sprintf($user->lang['TOPICS_DELETED'], $return['topics']));
@@ -191,10 +188,7 @@ class orphaned_posts
 						trigger_error('NO_POSTS_SELECTED');
 					}
 
-					if (!function_exists('delete_posts'))
-					{
-						require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-					}
+					require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 					$return = delete_posts('post_id', $post_ids);
 					trigger_error(sprintf($user->lang['POSTS_DELETED'], $return));

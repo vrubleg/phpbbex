@@ -656,10 +656,7 @@ function mcp_delete_post($post_ids)
 
 	if (confirm_box(true))
 	{
-		if (!function_exists('delete_posts'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 		// Count the number of topics that are affected
 		// I did not use COUNT(DISTINCT ...) because I remember having problems

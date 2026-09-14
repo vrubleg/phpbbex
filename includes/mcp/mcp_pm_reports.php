@@ -50,10 +50,7 @@ class mcp_pm_reports
 					trigger_error('NO_REPORT_SELECTED');
 				}
 
-				if (!function_exists('close_report'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/mcp/mcp_reports.php');
-				}
+				require_once(PHPBB_ROOT_PATH . 'includes/mcp/mcp_reports.php');
 
 				close_report($report_id_list, $mode, $action, true);
 

@@ -1189,10 +1189,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	$topic_title = censor_text($topic_title);
 
 	// Exclude guests, current user and banned users from notifications
-	if (!function_exists('phpbb_get_banned_user_ids'))
-	{
-		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-	}
+	require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 	$sql_ignore_users = phpbb_get_banned_user_ids();
 	$sql_ignore_users[ANONYMOUS] = ANONYMOUS;
 	$sql_ignore_users[$user->data['user_id']] = $user->data['user_id'];

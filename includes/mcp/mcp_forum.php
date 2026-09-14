@@ -134,7 +134,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 	$sql = "SELECT t.topic_id
 		FROM " . TOPICS_TABLE . " t
-		WHERE t.forum_id IN({$forum_id}, 0)
+		WHERE t.forum_id = {$forum_id}
 			" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_approved = 1') . "
 			{$limit_time_sql}
 		ORDER BY t.topic_type DESC, t.topic_priority DESC, {$sort_order_sql}";
@@ -337,10 +337,7 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 		// Message and return links
 		$success_msg = 'POSTS_MERGED_SUCCESS';
 
-		if (!function_exists('phpbb_update_rows_avoiding_duplicates_notify_status'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_database_helper.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_database_helper.php');
 
 		// Update the topic watch table.
 		phpbb_update_rows_avoiding_duplicates_notify_status($db, TOPICS_WATCH_TABLE, 'topic_id', $topic_ids, $to_topic_id);

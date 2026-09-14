@@ -956,6 +956,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	remove_module('acp', 'board', 'auth');
 	remove_module('acp', 'board', 'server');
+	remove_module('acp', 'board', 'load');
 	remove_module('acp', 'update', 'version_check');
 	remove_module('acp', 'send_statistics', 'send_statistics');
 	remove_module('acp', 'board', 'cookie');
@@ -3025,10 +3026,7 @@ function change_database_data(&$no_updates, $version)
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				if (!class_exists('acp_bbcodes'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
-				}
+				require_once(PHPBB_ROOT_PATH . 'includes/acp/acp_bbcodes.php');
 				$bbcode_match = $row['bbcode_match'];
 				$bbcode_tpl = $row['bbcode_tpl'];
 

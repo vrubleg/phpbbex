@@ -32,7 +32,7 @@ function mcp_front_view($id, $mode, $action)
 		{
 			$sql = 'SELECT COUNT(post_id) AS total
 				FROM ' . POSTS_TABLE . '
-				WHERE forum_id IN (0, ' . implode(', ', $forum_list) . ')
+				WHERE forum_id IN (' . implode(', ', $forum_list) . ')
 					AND post_approved = 0';
 			$result = $db->sql_query($sql);
 			$total = (int) $db->sql_fetchfield('total');
@@ -53,7 +53,7 @@ function mcp_front_view($id, $mode, $action)
 
 				$sql = 'SELECT post_id
 					FROM ' . POSTS_TABLE . '
-					WHERE forum_id IN (0, ' . implode(', ', $forum_list) . ')
+					WHERE forum_id IN (' . implode(', ', $forum_list) . ')
 						AND post_approved = 0
 					ORDER BY post_time DESC';
 				$result = $db->sql_query_limit($sql, 5);
@@ -144,7 +144,7 @@ function mcp_front_view($id, $mode, $action)
 				WHERE r.post_id = p.post_id
 					AND r.pm_id = 0
 					AND r.report_closed = 0
-					AND p.forum_id IN (0, ' . implode(', ', $forum_list) . ')';
+					AND p.forum_id IN (' . implode(', ', $forum_list) . ')';
 			$result = $db->sql_query($sql);
 			$total = (int) $db->sql_fetchfield('total');
 			$db->sql_freeresult($result);
@@ -174,7 +174,7 @@ function mcp_front_view($id, $mode, $action)
 						AND p.topic_id = t.topic_id
 						AND r.user_id = u.user_id
 						AND p.poster_id = u2.user_id
-						AND p.forum_id IN (0, ' . implode(', ', $forum_list) . ')',
+						AND p.forum_id IN (' . implode(', ', $forum_list) . ')',
 
 					'ORDER_BY'  => 'p.post_time DESC'
 				]);
@@ -320,9 +320,6 @@ function mcp_front_view($id, $mode, $action)
 
 		if (!empty($forum_list))
 		{
-			// Add forum_id 0 for global announcements
-			$forum_list[] = 0;
-
 			$log_count = false;
 			$log = [];
 			view_log('mod', $log, $log_count, 5, 0, $forum_list);

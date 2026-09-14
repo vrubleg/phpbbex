@@ -66,10 +66,7 @@ class change_password
 		}
 
 		// Get the correct user data and make sure that he exists
-		if (!function_exists('user_get_id_name'))
-		{
-			include (PHPBB_ROOT_PATH . 'includes/functions_user.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 		$user_id = [];
 		$username = [];

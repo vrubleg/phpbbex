@@ -63,10 +63,7 @@ class ucp_attachments
 
 			if (confirm_box(true))
 			{
-				if (!function_exists('delete_attachments'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-				}
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 				delete_attachments('attach', $delete_ids);
 

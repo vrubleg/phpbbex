@@ -422,10 +422,7 @@ switch ($mode)
 		// Only check if the user is logged in
 		if ($user->data['is_registered'])
 		{
-			if (!class_exists('p_master'))
-			{
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_module.php');
-			}
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_module.php');
 			$module = new p_master();
 
 			$module->list_modules('ucp');
@@ -758,7 +755,7 @@ switch ($mode)
 					$sql = 'SELECT DISTINCT poster_id
 						FROM ' . POSTS_TABLE . '
 						WHERE poster_ip ' . ((strpos($ips, '%') !== false) ? 'LIKE' : 'IN') . " ({$ips})
-							AND forum_id IN (0, " . implode(', ', $ip_forums) . ')';
+							AND forum_id IN (" . implode(', ', $ip_forums) . ')';
 					$result = $db->sql_query($sql);
 
 					if ($row = $db->sql_fetchrow($result))

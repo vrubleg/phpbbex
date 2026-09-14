@@ -85,7 +85,6 @@ $lang = array_merge($lang, [
 
 	'ACP_LANGUAGE'              => 'Language management',
 	'ACP_LANGUAGE_PACKS'        => 'Language packs',
-	'ACP_LOAD_SETTINGS'         => 'Load settings',
 	'ACP_LOGGING'               => 'Logging',
 	'ACP_LOGGING_SETTINGS'      => 'Logging settings',
 

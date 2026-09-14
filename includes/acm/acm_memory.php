@@ -413,10 +413,7 @@ class acm_memory
 	*/
 	function remove_file($filename, $check = false)
 	{
-		if (!function_exists('phpbb_is_writable'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions.php');
 
 		if ($check && !phpbb_is_writable($this->cache_dir))
 		{

@@ -764,9 +764,6 @@ class phpbb_feed_overall extends phpbb_feed_post_base
 			return false;
 		}
 
-		// Add global forum id
-		$forum_ids[] = 0;
-
 		// m_approve forums
 		$fid_m_approve = $this->get_moderator_approve_forums();
 		$sql_m_approve = (!empty($fid_m_approve)) ? 'OR ' . $db->sql_in_set('forum_id', $fid_m_approve) : '';
@@ -896,7 +893,7 @@ class phpbb_feed_forum extends phpbb_feed_post_base
 		global $auth, $db;
 
 		$m_approve = (bool) $auth->acl_get('m_approve', $this->forum_id);
-		$forum_ids = [0, $this->forum_id];
+		$forum_ids = [$this->forum_id];
 
 		// Determine topics with recent activity
 		$sql = 'SELECT topic_id, topic_last_post_time

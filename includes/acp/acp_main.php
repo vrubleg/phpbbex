@@ -144,10 +144,7 @@ class acp_main
 						set_config('upload_dir_size', (float) $db->sql_fetchfield('stat'), true);
 						$db->sql_freeresult($result);
 
-						if (!function_exists('update_last_username'))
-						{
-							require_once(PHPBB_ROOT_PATH . "includes/functions_user.php");
-						}
+						require_once(PHPBB_ROOT_PATH . "includes/functions_user.php");
 						update_last_username();
 
 						add_log('admin', 'LOG_RESYNC_STATS');

@@ -124,10 +124,7 @@ class resync_user_groups
 	{
 		foreach (['resync_registered', 'resync_newly_registered'] as $class)
 		{
-			if (!class_exists($class))
-			{
-				require_once(STK_ROOT_PATH . "includes/resync_user_groups/{$class}.php");
-			}
+			require_once(STK_ROOT_PATH . "includes/resync_user_groups/{$class}.php");
 		}
 	}
 }

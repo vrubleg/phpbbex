@@ -23,13 +23,9 @@ class acp_board_info
 				'signature'     => ['title' => 'ACP_SIGNATURE_SETTINGS', 'auth' => 'acl_a_board', 'cat' => ['ACP_BOARD_CONFIGURATION']],
 				'feed'          => ['title' => 'ACP_FEED_SETTINGS', 'auth' => 'acl_a_board', 'cat' => ['ACP_BOARD_CONFIGURATION']],
 				'registration'  => ['title' => 'ACP_REGISTER_SETTINGS', 'auth' => 'acl_a_board', 'cat' => ['ACP_BOARD_CONFIGURATION']],
-
-				'email'     => ['title' => 'ACP_EMAIL_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_CLIENT_COMMUNICATION']],
-
-				'security'  => ['title' => 'ACP_SECURITY_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_SERVER_CONFIGURATION']],
-				'load'      => ['title' => 'ACP_LOAD_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_SERVER_CONFIGURATION']],
-
-				'logs'      => ['title' => 'ACP_LOGGING_SETTINGS', 'auth' => 'acl_a_clearlogs', 'cat' => ['ACP_FORUM_LOGS']],
+				'email'         => ['title' => 'ACP_EMAIL_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_CLIENT_COMMUNICATION']],
+				'security'      => ['title' => 'ACP_SECURITY_SETTINGS', 'auth' => 'acl_a_server', 'cat' => ['ACP_SERVER_CONFIGURATION']],
+				'logs'          => ['title' => 'ACP_LOGGING_SETTINGS', 'auth' => 'acl_a_clearlogs', 'cat' => ['ACP_FORUM_LOGS']],
 			],
 		];
 	}

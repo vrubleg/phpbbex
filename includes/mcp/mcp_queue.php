@@ -266,7 +266,7 @@ class mcp_queue
 
 					$sql = 'SELECT SUM(forum_topics) as sum_forum_topics
 						FROM ' . FORUMS_TABLE . "
-						WHERE forum_id IN (0, {$forum_list})";
+						WHERE forum_id IN ({$forum_list})";
 					$result = $db->sql_query($sql);
 					$forum_info['forum_topics'] = (int) $db->sql_fetchfield('sum_forum_topics');
 					$db->sql_freeresult($result);
@@ -304,7 +304,7 @@ class mcp_queue
 				{
 					$sql = 'SELECT p.post_id
 						FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t' . (($sort_order_sql[0] == 'u') ? ', ' . USERS_TABLE . ' u' : '') . "
-						WHERE p.forum_id IN (0, {$forum_list})
+						WHERE p.forum_id IN ({$forum_list})
 							AND p.post_approved = 0
 							" . (($sort_order_sql[0] == 'u') ? 'AND u.user_id = p.poster_id' : '') . '
 							' . (($topic_id) ? 'AND p.topic_id = ' . $topic_id : '') . "
@@ -359,7 +359,7 @@ class mcp_queue
 				{
 					$sql = 'SELECT t.forum_id, t.topic_id, t.topic_title, t.topic_title AS post_subject, t.topic_time AS post_time, t.topic_poster AS poster_id, t.topic_first_post_id AS post_id, t.topic_first_poster_name AS username, t.topic_first_poster_colour AS user_colour
 						FROM ' . TOPICS_TABLE . " t
-						WHERE forum_id IN (0, {$forum_list})
+						WHERE forum_id IN ({$forum_list})
 							AND topic_approved = 0
 							{$limit_time_sql}
 						ORDER BY {$sort_order_sql}";
@@ -844,10 +844,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		// Let's do the job - delete disapproved posts
 		if (sizeof($post_disapprove_list))
 		{
-			if (!function_exists('delete_posts'))
-			{
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
-			}
+			require_once(PHPBB_ROOT_PATH . 'includes/functions_admin.php');
 
 			// We do not check for permissions here, because the moderator allowed approval/disapproval should be allowed to delete the disapproved posts
 			// Note: function delete_posts triggers related forums/topics sync,

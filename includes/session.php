@@ -744,7 +744,7 @@ class phpbb_session
 			}
 
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_last_visit = ' . (int) $this->data['session_time'] . '
+				SET user_last_visit = GREATEST(user_last_visit, ' . (int) $this->data['session_time'] . ')
 				WHERE user_id = ' . (int) $this->data['user_id'];
 			$db->sql_query($sql);
 
@@ -1152,7 +1152,7 @@ class phpbb_session
 		if ($row)
 		{
 			$sql = 'UPDATE ' . USERS_TABLE . '
-				SET user_last_visit = ' . (int) $row['session_time'] . '
+				SET user_last_visit = GREATEST(user_last_visit, ' . (int) $row['session_time'] . ')
 				WHERE user_id = ' . (int) $user_id;
 			$db->sql_query($sql);
 		}
@@ -1882,10 +1882,7 @@ class phpbb_user extends phpbb_session
 			return false;
 		}
 
-		if (!function_exists('remove_newly_registered'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 		if ($group = remove_newly_registered($this->data['user_id'], $this->data))
 		{
 			$this->data['group_id'] = $group;

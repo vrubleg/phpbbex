@@ -30,10 +30,7 @@ class profile_list
 
 			if (confirm_box(true))
 			{
-				if (!function_exists('user_delete'))
-				{
-					require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-				}
+				require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 				// Delete them all
 				foreach ($uids as $uid)

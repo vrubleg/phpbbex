@@ -205,10 +205,7 @@ class add_user
 	{
 		global $config, $user;
 
-		if (!function_exists('validate_data'))
-		{
-			require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
-		}
+		require_once(PHPBB_ROOT_PATH . 'includes/functions_user.php');
 
 		$error = validate_data($data, [
 			'username'          => [
