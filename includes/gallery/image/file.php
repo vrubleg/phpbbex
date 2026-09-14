@@ -317,8 +317,8 @@ class phpbb_gallery_image_file
 			$dimension_colour = imagecolorallocate($this->image, 255, 255, 255);
 			$dimension_height = imagefontheight($dimension_font);
 			$dimension_width = imagefontwidth($dimension_font) * strlen($dimension_string);
-			$dimension_x = ($this->image_size['width'] - $dimension_width) / 2;
-			$dimension_y = $this->image_size['height'] + (($additional_height - $dimension_height) / 2);
+			$dimension_x = (int) (($this->image_size['width'] - $dimension_width) / 2);
+			$dimension_y = (int) ($this->image_size['height'] + (($additional_height - $dimension_height) / 2));
 			$black_background = imagecolorallocate($this->image, 0, 0, 0);
 			imagefilledrectangle($this->image, 0, $this->thumb_height, $this->thumb_width, $this->thumb_height + $additional_height, $black_background);
 			imagestring($this->image, 1, $dimension_x, $dimension_y, $dimension_string, $dimension_colour);
