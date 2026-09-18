@@ -1906,11 +1906,15 @@ dl.spoilerbox.spoilerbox-on > dd
 	overflow: auto;
 }
 
-.attach-image img
+.attachbox .attach-image img
 {
 	border: 1px solid #999999;
-/*  cursor: move; */
 	cursor: default;
+}
+
+.attachbox .attach-image img, .attachbox .thumbnail img
+{
+	vertical-align: bottom;
 }
 
 /* Inline image thumbnails */

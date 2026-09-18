@@ -65,6 +65,7 @@ $lang = array_merge($lang, [
 	'STYLE_MIN_WIDTH'                   => 'Minimum page width',
 	'STYLE_MAX_WIDTH'                   => 'Maximum page width',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'  => 'Display site name and description in header bar',
+	'STYLE_SHOW_TOPIC_VIEWS'            => 'Display topic view counts',
 	'STYLE_BACK_TO_TOP'                 => '"Back to top" button',
 	'STYLE_ROUNDED_CORNERS'             => 'Rounded corners',
 	'STYLE_NEW_YEAR'                    => 'Winter-style headerbar',

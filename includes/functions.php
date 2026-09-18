@@ -3518,6 +3518,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'style_rounded_corners',
 		'style_new_year',
 		'style_show_sitename_in_headerbar',
+		'style_show_topic_views',
 
 		// viewtopic
 		'style_vt_show_post_numbers',

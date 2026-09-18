@@ -42,7 +42,7 @@
 				<dl class="icon">
 					<dt>{L_TOPICS}</dt>
 					<dd class="posts">{L_REPLIES}</dd>
-					<dd class="views">{L_VIEWS}</dd>
+					<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{L_VIEWS}</dd><!-- ENDIF -->
 					<dd class="lastpost">{L_LAST_POST}</dd>
 				</dl>
 			</li>
@@ -62,7 +62,7 @@
 						<!-- IF not searchresults.S_TOPIC_GLOBAL -->{L_IN} <a href="{searchresults.U_VIEW_FORUM}">{searchresults.FORUM_TITLE}</a><!-- ELSE --> ({L_GLOBAL})<!-- ENDIF -->
 					</dt>
 					<dd class="posts">{searchresults.TOPIC_REPLIES}</dd>
-					<dd class="views">{searchresults.TOPIC_VIEWS}</dd>
+					<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{searchresults.TOPIC_VIEWS}</dd><!-- ENDIF -->
 					<dd class="lastpost">
 						{L_POST_BY_AUTHOR} {searchresults.LAST_POST_AUTHOR_FULL}
 						<!-- IF not S_IS_BOT --><a rel="nofollow" href="{searchresults.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{searchresults.LAST_POST_TIME}<br />
@@ -105,7 +105,7 @@
 				<dd>{L_GLOBAL}: <a href="{searchresults.U_VIEW_TOPIC}">{searchresults.TOPIC_TITLE}</a></dd>
 			<!-- ENDIF -->
 			<dd>{L_REPLIES}: <strong>{searchresults.TOPIC_REPLIES}</strong></dd>
-			<dd>{L_VIEWS}: <strong>{searchresults.TOPIC_VIEWS}</strong></dd>
+			<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd>{L_VIEWS}: <strong>{searchresults.TOPIC_VIEWS}</strong></dd><!-- ENDIF -->
 		</dl>
 
 		<ul class="searchresults">
