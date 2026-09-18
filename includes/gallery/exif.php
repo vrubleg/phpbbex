@@ -58,7 +58,7 @@ class phpbb_gallery_exif
 	public $orig_status = self::UNKNOWN;
 
 	/**
-	* Full data array, but serialized to a string
+	* Filtered data array, serialized to a string
 	*/
 	public $serialized  = '';
 
@@ -104,7 +104,7 @@ class phpbb_gallery_exif
 		$this->status = $status;
 		if ($this->status == self::DBSAVED)
 		{
-			$this->data = unserialize($data);
+			$this->data = $this->filter_data(unserialize($data));
 		}
 		elseif (($this->status == self::AVAILABLE) || ($this->status == self::UNKNOWN))
 		{
@@ -122,29 +122,10 @@ class phpbb_gallery_exif
 			return;
 		}
 
-		$this->data = @exif_read_data($this->file, 0, true);
+		$this->data = $this->filter_data(@exif_read_data($this->file, 0, true));
 
-		if (!empty($this->data["EXIF"]))
+		if (!empty($this->data))
 		{
-			// Unset invalid exifs
-			foreach ($this->data as $key => $array)
-			{
-				if (!in_array($key, self::$allowed_groups))
-				{
-					unset($this->data[$key]);
-				}
-				else
-				{
-					foreach ($this->data[$key] as $subkey => $array)
-					{
-						if (!in_array($subkey, self::$allowed_keys))
-						{
-							unset($this->data[$key][$subkey]);
-						}
-					}
-				}
-			}
-
 			$this->serialized = serialize($this->data);
 			$this->status = self::DBSAVED;
 		}
@@ -157,6 +138,23 @@ class phpbb_gallery_exif
 		{
 			$this->set_status();
 		}
+	}
+
+	/**
+	* Keep only the metadata displayed by the gallery.
+	*/
+	private function filter_data($data)
+	{
+		$filtered = [];
+		if (!empty($data['EXIF']['DateTimeOriginal']))
+		{
+			$filtered['EXIF']['DateTimeOriginal'] = $data['EXIF']['DateTimeOriginal'];
+		}
+		if (!empty($data['IFD0']['Model']))
+		{
+			$filtered['IFD0']['Model'] = $data['IFD0']['Model'];
+		}
+		return $filtered;
 	}
 
 	/**
@@ -181,87 +179,9 @@ class phpbb_gallery_exif
 				$this->prepared_data['exif_date'] = $user->format_date($timestamp + phpbb_gallery_exif::TIME_OFFSET);
 			}
 		}
-		if (isset($this->data["EXIF"]["FocalLength"]))
-		{
-			[$num, $den] = explode("/", $this->data["EXIF"]["FocalLength"]);
-			if ($den)
-			{
-				$this->prepared_data['exif_focal'] = sprintf($user->lang['EXIF_FOCAL_EXP'], ($num / $den));
-			}
-		}
-		if (isset($this->data["EXIF"]["ExposureTime"]))
-		{
-			[$num, $den] = explode("/", $this->data["EXIF"]["ExposureTime"]);
-			$exif_exposure = '';
-			if (($num > $den) && $den)
-			{
-				$exif_exposure = $num / $den;
-			}
-			else if ($num)
-			{
-				$exif_exposure = ' 1/' . $den / $num ;
-			}
-			if ($exif_exposure)
-			{
-				$this->prepared_data['exif_exposure'] = sprintf($user->lang['EXIF_EXPOSURE_EXP'], $exif_exposure);
-			}
-		}
-		if (isset($this->data["EXIF"]["FNumber"]))
-		{
-			[$num, $den] = explode("/", $this->data["EXIF"]["FNumber"]);
-			if ($den)
-			{
-				$this->prepared_data['exif_aperture'] = "F/" . ($num / $den);
-			}
-		}
-		if (isset($this->data["EXIF"]["ISOSpeedRatings"]) && !is_array($this->data["EXIF"]["ISOSpeedRatings"]))
-		{
-			$this->prepared_data['exif_iso'] = $this->data["EXIF"]["ISOSpeedRatings"];
-		}
-		if (isset($this->data["EXIF"]["WhiteBalance"]))
-		{
-			$this->prepared_data['exif_whiteb'] = $user->lang['EXIF_WHITEB_' . (($this->data["EXIF"]["WhiteBalance"]) ? 'MANU' : 'AUTO')];
-		}
-		if (isset($this->data["EXIF"]["Flash"]))
-		{
-			if (isset($user->lang['EXIF_FLASH_CASE_' . $this->data["EXIF"]["Flash"]]))
-			{
-				$this->prepared_data['exif_flash'] = $user->lang['EXIF_FLASH_CASE_' . $this->data["EXIF"]["Flash"]];
-			}
-		}
 		if (isset($this->data["IFD0"]["Model"]))
 		{
 			$this->prepared_data['exif_cam_model'] = ucwords($this->data["IFD0"]["Model"]);
-		}
-		if (isset($this->data["EXIF"]["ExposureProgram"]))
-		{
-			if (isset($user->lang['EXIF_EXPOSURE_PROG_' . $this->data["EXIF"]["ExposureProgram"]]))
-			{
-				$this->prepared_data['exif_exposure_prog'] = $user->lang['EXIF_EXPOSURE_PROG_' . $this->data["EXIF"]["ExposureProgram"]];
-			}
-		}
-		if (isset($this->data["EXIF"]["ExposureBiasValue"]))
-		{
-			[$num,$den] = explode("/", $this->data["EXIF"]["ExposureBiasValue"]);
-			if ($den)
-			{
-				if (($num / $den) == 0)
-				{
-					$exif_exposure_bias = 0;
-				}
-				else
-				{
-					$exif_exposure_bias = $this->data["EXIF"]["ExposureBiasValue"];
-				}
-				$this->prepared_data['exif_exposure_bias'] = sprintf($user->lang['EXIF_EXPOSURE_BIAS_EXP'], $exif_exposure_bias);
-			}
-		}
-		if (isset($this->data["EXIF"]["MeteringMode"]))
-		{
-			if (isset($user->lang['EXIF_METERING_MODE_' . $this->data["EXIF"]["MeteringMode"]]))
-			{
-				$this->prepared_data['exif_metering_mode'] = $user->lang['EXIF_METERING_MODE_' . $this->data["EXIF"]["MeteringMode"]];
-			}
 		}
 	}
 
@@ -285,9 +205,6 @@ class phpbb_gallery_exif
 					'EXIF_VALUE'        => htmlspecialchars($value),
 				]);
 			}
-			$template->assign_vars([
-				'S_EXIF_DATA'   => true,
-			]);
 		}
 	}
 
@@ -310,26 +227,4 @@ class phpbb_gallery_exif
 		$db->sql_query($sql);
 	}
 
-	/**
-	* There are lots of possible Exif Groups and Values.
-	* But you will never heard of the missing ones. so we just allow the most common ones.
-	*/
-	static private $allowed_groups      = [
-		'EXIF',
-		'IFD0',
-	];
-
-	static private $allowed_keys        = [
-		'DateTimeOriginal',
-		'FocalLength',
-		'ExposureTime',
-		'FNumber',
-		'ISOSpeedRatings',
-		'WhiteBalance',
-		'Flash',
-		'Model',
-		'ExposureProgram',
-		'ExposureBiasValue',
-		'MeteringMode',
-	];
 }

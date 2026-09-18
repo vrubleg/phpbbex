@@ -240,7 +240,7 @@ if (phpbb_gallery_config::get('disp_exifdata') && ($image_data['image_has_exif']
 	$exif = new phpbb_gallery_exif(phpbb_gallery_url::path('upload') . $image_data['image_filename'], $image_id);
 	$exif->interpret($image_data['image_has_exif'], $image_data['image_exif_data']);
 
-	if (!empty($exif->data["EXIF"]))
+	if (!empty($exif->data))
 	{
 		$exif->send_to_template();
 	}
