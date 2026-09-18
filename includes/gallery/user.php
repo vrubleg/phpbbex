@@ -115,126 +115,67 @@ class phpbb_gallery_user
 
 	/**
 	* Updates/Inserts the data, depending on whether the user already exists or not.
-	*   Example: 'SET key = x'
 	*/
 	public function update_data($data)
 	{
 		$this->force_load();
 
-		$suc = false;
+		$update_ary = $this->validate_data($data);
+		unset($update_ary['user_id']);
+		if (!$update_ary)
+		{
+			return true;
+		}
+
+		$insert_ary = array_merge(self::$default_values, $update_ary, ['user_id' => $this->id]);
+		$sql = 'INSERT INTO ' . GALLERY_USERS_TABLE . '
+			' . $this->db->sql_build_array('INSERT', $insert_ary) . '
+			ON DUPLICATE KEY UPDATE ' . $this->db->sql_build_array('UPDATE', $update_ary);
+		if ($this->db->sql_query($sql) === false)
+		{
+			return false;
+		}
+
 		if ($this->entry_exists)
 		{
-			$suc = $this->update($data);
+			$this->data = array_merge($this->data, $update_ary);
 		}
-
-		if (($suc === false) || !$this->entry_exists)
+		else
 		{
-			$suc = $this->insert($data);
+			$this->data = $insert_ary;
+			$this->entry_exists = true;
 		}
-
-		return $suc;
+		return true;
 	}
 
 	/**
 	* Increase/Inserts the data, depending on whether the user already exists or not.
-	*   Example: 'SET key = key + x'
 	*/
 	public function update_images($num)
 	{
-		$suc = false;
-		if ($this->entry_exists || is_null($this->entry_exists))
-		{
-			$suc = $this->update_image_count($num);
-			if ($suc === false)
-			{
-				$suc = $this->update(['user_images' => max(0, $num)]);
-			}
-		}
-
-		if ($suc === false)
-		{
-			$suc = $this->insert(['user_images' => max(0, $num)]);
-		}
-
-		return $suc;
-	}
-
-	/**
-	* Updates the users table with the new data.
-	*
-	* @param    array   $data   Array of data we want to add/update.
-	* @return   bool            Returns true if the columns were updated successfully
-	*/
-	private function update($data)
-	{
-		$sql_ary = array_merge($this->validate_data($data), [
-			'user_last_update'  => time(),
+		$num = (int) $num;
+		$insert_ary = array_merge(self::$default_values, [
+			'user_id'     => $this->id,
+			'user_images' => max(0, $num),
 		]);
-		unset($sql_ary['user_id']);
-
-		$sql = 'UPDATE ' . GALLERY_USERS_TABLE . '
-			SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
-			WHERE user_id = ' . $this->id;
-		$this->db->sql_query($sql);
-
-		$this->data = array_merge($this->data, $sql_ary);
-
-		return ($this->db->sql_affectedrows() == 1);
-	}
-
-	/**
-	* Updates the users table by increasing the values.
-	*
-	* @param    array   $data   Array of data we want to increment
-	* @return   mixed           Returns true if the columns were updated successfully, else false
-	*/
-	private function update_image_count($num)
-	{
-		$sql = 'UPDATE ' . GALLERY_USERS_TABLE . '
-			SET user_images = user_images ' . (($num > 0) ? (' + ' . $num) : (' - ' . abs($num))) . ',
-				user_last_update = ' . time() . '
-			WHERE ' . (($num < 0) ? ' user_images > ' . abs($num) . ' AND ' : '') . '
-				user_id = ' . $this->id;
-		$this->db->sql_query($sql);
-
-		if ($this->db->sql_affectedrows() == 1)
-		{
-			if (!empty($this->data))
-			{
-				$this->data['user_last_update'] = time();
-				$this->data['user_images'] += $num;
-			}
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	* Updates the users table with the new data.
-	*
-	* @param    array   $data   Array of data we want to insert
-	* @return   bool            Returns true if the data was inserted successfully
-	*/
-	private function insert($data)
-	{
-		$sql_ary = array_merge(self::$default_values, $this->validate_data($data), [
-			'user_id'           => $this->id,
-			'user_last_update'  => time(),
-		]);
-
-		$this->db->sql_return_on_error(true);
-
 		$sql = 'INSERT INTO ' . GALLERY_USERS_TABLE . '
-			' . $this->db->sql_build_array('INSERT', $sql_ary);
-		$this->db->sql_query($sql);
-		$error = $this->db->sql_error_triggered;
+			' . $this->db->sql_build_array('INSERT', $insert_ary) . '
+			ON DUPLICATE KEY UPDATE user_images = GREATEST(0, CAST(user_images AS SIGNED) + ' . $num . ')';
+		if ($this->db->sql_query($sql) === false)
+		{
+			return false;
+		}
 
-		$this->db->sql_return_on_error(false);
-
-		$this->data = $sql_ary;
-		$this->entry_exists = true;
-
-		return !$error;
+		if ($this->entry_exists === true)
+		{
+			$this->data['user_images'] = max(0, (int) $this->data['user_images'] + $num);
+		}
+		elseif ($this->entry_exists === false)
+		{
+			$this->data = $insert_ary;
+			$this->entry_exists = true;
+		}
+		return true;
 	}
 
 	/**
@@ -274,9 +215,7 @@ class phpbb_gallery_user
 	{
 		global $db;
 
-		$sql_ary = array_merge(self::validate_data($data), [
-			'user_last_update'  => time(),
-		]);
+		$sql_ary = self::validate_data($data);
 		unset($sql_ary['user_id']);
 
 		$sql_where = self::sql_build_where($user_ids);
@@ -332,8 +271,8 @@ class phpbb_gallery_user
 				case 'user_id':
 				case 'user_images':
 				case 'personal_album_id':
-				case 'user_lastmark':
-				case 'user_last_update':
+				case 'user_mark_time':
+				case 'user_last_visit':
 					if ($inc && ($name == 'user_images'))
 					{
 						// While incrementing, the iamges might be lower than 0.
@@ -364,8 +303,8 @@ class phpbb_gallery_user
 	static protected $default_values = [
 		'user_images'       => 0,
 		'personal_album_id' => 0,
-		'user_lastmark'     => 0,
-		'user_last_update'  => 0,
+		'user_mark_time'    => 0,
+		'user_last_visit'   => 0,
 		'user_permissions_changed'  => 0,
 
 		'user_permissions'  => '',

@@ -229,7 +229,7 @@ $template->assign_vars([
 	'U_USERS_PERSONAL_GALLERIES'    => (phpbb_gallery::$auth->acl_check('a_list', phpbb_gallery_auth::PERSONAL_ALBUM)) ? phpbb_gallery_url::append_sid('index', 'mode=personal') : '',
 	'S_USERS_PERSONAL_GALLERIES'    => (!phpbb_gallery_config::get('pegas_index_album') && phpbb_gallery::$auth->acl_check('a_list', phpbb_gallery_auth::PERSONAL_ALBUM)),
 
-	'U_MARK_ALBUMS'                 => ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('index', 'hash=' . generate_link_hash('global') . '&amp;mark=albums') : '',
+	'U_MARK_ALBUMS'                 => ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('index', (($mode == 'personal') ? 'mode=personal&amp;' : '') . 'hash=' . generate_link_hash('global') . '&amp;mark=albums') : '',
 
 	'U_G_SEARCH_COMMENTED'          => (phpbb_gallery_config::get('allow_comments')) ? phpbb_gallery_url::append_sid('search', 'search_id=commented') : '',
 	'U_G_SEARCH_RANDOM'             => phpbb_gallery_url::append_sid('search', 'search_id=random'),

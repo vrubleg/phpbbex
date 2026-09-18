@@ -886,6 +886,15 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 			}
 		}
 
+		if ($db_tools->sql_column_exists(GALLERY_USERS_TABLE, 'user_lastmark'))
+		{
+			$db->sql_query('ALTER TABLE ' . GALLERY_USERS_TABLE . ' CHANGE user_lastmark user_mark_time int(11) UNSIGNED DEFAULT 0 NOT NULL');
+		}
+		if ($db_tools->sql_column_exists(GALLERY_USERS_TABLE, 'user_last_update'))
+		{
+			$db->sql_query('ALTER TABLE ' . GALLERY_USERS_TABLE . ' CHANGE user_last_update user_last_visit int(11) UNSIGNED DEFAULT 0 NOT NULL');
+		}
+
 		$db->sql_query('UPDATE ' . GALLERY_USERS_TABLE . "
 			SET user_permissions = '',
 				user_permissions_changed = " . time());

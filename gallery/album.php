@@ -225,7 +225,7 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 // End of "We have album_type so that there may be images ..."
 
 // Page is ready loaded, mark album as "read"
-phpbb_gallery_misc::markread('album', $album_id);
+phpbb_gallery_misc::mark_read_albums([$album_id]);
 
 $watch_mode = ($album_data['watch_id']) ? 'unwatch' : 'watch';
 

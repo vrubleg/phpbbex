@@ -54,114 +54,79 @@ class phpbb_gallery_misc
 	}
 
 	/**
-	* Marks a album as read
+	* Mark albums as read
 	*
-	* borrowed from phpBB3
-	* @author: phpBB Group
-	* @function: markread
 	*/
-	static public function markread($mode, $album_id = false)
+	static public function mark_read_albums($album_ids)
 	{
 		global $db, $user;
 
-		// Sorry, no guest support!
-		if ($user->data['user_id'] == ANONYMOUS)
+		if ($user->data['user_id'] == ANONYMOUS || !$album_ids)
 		{
 			return;
 		}
 
-		if ($mode == 'all')
+		$album_ids = array_map('intval', $album_ids);
+		$mark_time = time();
+		$user_id = (int) $user->data['user_id'];
+		$values = [];
+		foreach (array_unique($album_ids) as $album_id)
 		{
-			if ($album_id === false || !sizeof($album_id))
-			{
-				// Mark all albums read (index page)
-				$sql = 'DELETE FROM ' . GALLERY_ATRACK_TABLE . '
-					WHERE user_id = ' . $user->data['user_id'];
-				$db->sql_query($sql);
+			$values[] = "({$user_id}, {$album_id}, {$mark_time})";
+		}
 
-				phpbb_gallery::$user->update_data([
-						'user_lastmark'     => time(),
-				]);
-			}
+		$sql = 'INSERT INTO ' . GALLERY_ATRACK_TABLE . ' (user_id, album_id, mark_time)
+			VALUES ' . implode(', ', $values) . '
+			ON DUPLICATE KEY UPDATE mark_time = ' . $mark_time;
+		$db->sql_query($sql);
+	}
 
+	/**
+	* Mark every album as read for a user
+	*/
+	static public function mark_read_all($time = 0, $user_id = 0)
+	{
+		global $db, $user;
+
+		$user_id = $user_id ? (int) $user_id : (int) $user->data['user_id'];
+		if (!$user_id || $user_id == ANONYMOUS)
+		{
 			return;
 		}
-		else if ($mode == 'albums')
+		$time = $time ? (int) $time : time();
+
+		$sql = 'DELETE FROM ' . GALLERY_ATRACK_TABLE . '
+			WHERE user_id = ' . $user_id;
+		$db->sql_query($sql);
+
+		$sql = 'UPDATE ' . GALLERY_USERS_TABLE . '
+			SET user_mark_time = ' . $time . '
+			WHERE user_id = ' . $user_id;
+		$db->sql_query($sql);
+	}
+
+	/**
+	* Mark gallery albums read up to the last visit when the user has no sessions.
+	*/
+	static public function auto_mark_read_all()
+	{
+		global $db, $config;
+
+		$sql = 'SELECT gu.user_id, gu.user_last_visit
+			FROM ' . GALLERY_USERS_TABLE . ' gu
+			WHERE gu.user_id <> ' . ANONYMOUS . '
+				AND gu.user_last_visit > gu.user_mark_time
+				AND gu.user_last_visit <= ' . (time() - (int) $config['auto_mark_read_delay']) . '
+				AND NOT EXISTS (
+					SELECT 1 FROM ' . SESSIONS_TABLE . ' s
+					WHERE s.session_user_id = gu.user_id
+				)';
+		$result = $db->sql_query($sql);
+
+		while ($row = $db->sql_fetchrow($result))
 		{
-			// Mark album read
-			if (!is_array($album_id))
-			{
-				$album_id = [$album_id];
-			}
-
-			$sql = 'SELECT album_id
-				FROM ' . GALLERY_ATRACK_TABLE . "
-				WHERE user_id = {$user->data['user_id']}
-					AND " . $db->sql_in_set('album_id', $album_id);
-			$result = $db->sql_query($sql);
-
-			$sql_update = [];
-			while ($row = $db->sql_fetchrow($result))
-			{
-				$sql_update[] = $row['album_id'];
-			}
-			$db->sql_freeresult($result);
-
-			if (sizeof($sql_update))
-			{
-				$sql = 'UPDATE ' . GALLERY_ATRACK_TABLE . '
-					SET mark_time = ' . time() . "
-					WHERE user_id = {$user->data['user_id']}
-						AND " . $db->sql_in_set('album_id', $sql_update);
-				$db->sql_query($sql);
-			}
-
-			if ($sql_insert = array_diff($album_id, $sql_update))
-			{
-				$sql_ary = [];
-				foreach ($sql_insert as $a_id)
-				{
-					$sql_ary[] = [
-						'user_id'   => (int) $user->data['user_id'],
-						'album_id'  => (int) $a_id,
-						'mark_time' => time()
-					];
-				}
-
-				$db->sql_multi_insert(GALLERY_ATRACK_TABLE, $sql_ary);
-			}
-
-			return;
+			self::mark_read_all((int) $row['user_last_visit'], (int) $row['user_id']);
 		}
-		else if ($mode == 'album')
-		{
-			if ($album_id === false)
-			{
-				return;
-			}
-
-			$sql = 'UPDATE ' . GALLERY_ATRACK_TABLE . '
-				SET mark_time = ' . time() . "
-				WHERE user_id = {$user->data['user_id']}
-					AND album_id = {$album_id}";
-			$db->sql_query($sql);
-
-			if (!$db->sql_affectedrows())
-			{
-				$db->sql_return_on_error(true);
-
-				$sql_ary = [
-					'user_id'       => (int) $user->data['user_id'],
-					'album_id'      => (int) $album_id,
-					'mark_time'     => time(),
-				];
-
-				$db->sql_query('INSERT INTO ' . GALLERY_ATRACK_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
-
-				$db->sql_return_on_error(false);
-			}
-
-			return;
-		}
+		$db->sql_freeresult($result);
 	}
 }

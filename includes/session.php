@@ -749,6 +749,7 @@ class phpbb_session
 			$db->sql_query($sql);
 
 			auto_mark_read_all();
+			phpbb_gallery_misc::auto_mark_read_all();
 
 			if ($this->cookie_data['k'])
 			{
@@ -825,6 +826,7 @@ class phpbb_session
 		$db->sql_query($sql);
 
 		auto_mark_read_all();
+		phpbb_gallery_misc::auto_mark_read_all();
 
 		// Delete all expired autologin keys.
 		if ($config['max_autologin_time'])

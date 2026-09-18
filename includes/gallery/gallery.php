@@ -22,7 +22,7 @@ class phpbb_gallery
 	/**
 	* Constructor: setup() also creates a phpbb-session, if you already have one, be sure to use init()
 	*/
-	static public function setup($lang_set = false, $update_session = true)
+	static public function setup($lang_set = false, $track_visit = true)
 	{
 		global $auth, $config, $db, $template, $user, $cache;
 
@@ -37,7 +37,7 @@ class phpbb_gallery
 		}
 
 		// Start session management
-		$user->session_begin($update_session);
+		$user->session_begin();
 		/**
 		* Maybe we need this for the feed
 		if (!empty($config['feed_http_auth']) && request_var('auth', '') == 'http')
@@ -57,6 +57,15 @@ class phpbb_gallery
 		$user->data['user_id'] = (int) $user->data['user_id'];
 
 		self::$user = new phpbb_gallery_user($db, $user->data['user_id']);
+
+		if ($track_visit && $user->data['user_id'] != ANONYMOUS)
+		{
+			$visit_time = time();
+			if ($visit_time - (int) self::$user->get_data('user_last_visit') >= 60)
+			{
+				self::$user->update_data(['user_last_visit' => $visit_time]);
+			}
+		}
 
 		$user_id = ($user->data['user_perm_from'] == 0) ? $user->data['user_id'] : $user->data['user_perm_from'];
 		self::$auth = new phpbb_gallery_auth($user_id);

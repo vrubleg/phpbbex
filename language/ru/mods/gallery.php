@@ -31,7 +31,6 @@ $lang = array_merge($lang, [
 	'ALBUM_UPLOAD_NEED_APPROVAL_ERROR'  => 'Часть фотографий загружена.<br /><br />Опубликованы они будут после одобрения администратором или модератором.<br /><br /><p class="error">%s</p>',
 	'ALBUM_UPLOAD_SUCCESSFUL'       => 'Фотография загружена',
 	'ALBUM_UPLOAD_SUCCESSFUL_ERROR' => 'Часть фотографий загружена.<br /><br /><span class="error">%s</span>',
-	'ALBUMS_MARKED'                 => 'Все альбомы отмечены как просмотренные.',
 	'ALL'                           => 'Все',
 	'ALL_IMAGES'                    => 'Все фото',
 	'ALLOW_COMMENTS'                => 'Разрешить комментарии к фотографии.',
@@ -128,7 +127,6 @@ $lang = array_merge($lang, [
 	'LOGIN_EXPLAIN_GALLERY_VIEW'    => 'Авторизуйтесь для просмотра галереи',
 	'LOGIN_EXPLAIN_GALLERY_UPLOAD'  => 'Авторизуйтесь для загрузки фотографий',
 
-	'MARK_ALBUMS_READ'              => 'Отметить альбомы как просмотренные',
 	'MAX_DIMENSIONS'                => 'Максимальное разрешение',
 	'MAX_FILE_SIZE'                 => 'Максимальный размер файла',
 	'MAX_HEIGHT'                    => 'Максимальная высота',
@@ -190,7 +188,6 @@ $lang = array_merge($lang, [
 	'RECENT_COMMENTS'               => 'Последние комментарии',
 	'RECENT_IMAGES'                 => 'Последние фото',
 	'REPORT_IMAGE'                  => 'Пожаловаться на фото',
-	'RETURN_ALBUM'                  => '%sВернуться в альбом%s',
 	'ROTATE_IMAGE'                  => 'Повернуть фото',
 	'ROTATE_LEFT'                   => '270°',
 	'ROTATE_NONE'                   => 'нет',

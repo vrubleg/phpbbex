@@ -31,7 +31,6 @@ $lang = array_merge($lang, [
 	'ALBUM_UPLOAD_NEED_APPROVAL_ERROR'  => 'Some of your images have been uploaded successfully.<br /><br />But your images must be approved by a administrator or a moderator before they are public visible.<br /><br /><p class="error">%s</p>',
 	'ALBUM_UPLOAD_SUCCESSFUL'       => 'Your images have been uploaded successfully.',
 	'ALBUM_UPLOAD_SUCCESSFUL_ERROR' => 'Some of your images have been uploaded successfully.<br /><br /><span class="error">%s</span>',
-	'ALBUMS_MARKED'                 => 'All albums have been marked read.',
 	'ALL'                           => 'All',
 	'ALL_IMAGES'                    => 'All image',
 	'ALLOW_COMMENTS'                => 'Allow comments for this image.',
@@ -128,7 +127,6 @@ $lang = array_merge($lang, [
 	'LOGIN_EXPLAIN_GALLERY_VIEW'    => 'Log in to view gallery',
 	'LOGIN_EXPLAIN_GALLERY_UPLOAD'  => 'Log in to upload images',
 
-	'MARK_ALBUMS_READ'              => 'Mark albums read',
 	'MAX_DIMENSIONS'                => 'Maximum dimensions',
 	'MAX_FILE_SIZE'                 => 'Maximum file size',
 	'MAX_HEIGHT'                    => 'Maximum image height',
@@ -190,7 +188,6 @@ $lang = array_merge($lang, [
 	'RECENT_COMMENTS'               => 'Recent comments',
 	'RECENT_IMAGES'                 => 'Recent Images',
 	'REPORT_IMAGE'                  => 'Report image',
-	'RETURN_ALBUM'                  => '%sReturn to the album last visited%s',
 	'ROTATE_IMAGE'                  => 'Rotate image',
 	'ROTATE_LEFT'                   => '90° left',
 	'ROTATE_NONE'                   => 'none',

@@ -578,29 +578,15 @@ class phpbb_gallery_album
 		$sql_from = '';
 		$mode = request_var('mode', '');
 
-		// Mark albums read?
-		$mark_read = request_var('mark', '');
-
-		if ($mark_read == 'all')
-		{
-			$mark_read = '';
-		}
+		$mark = (!$root_data || $root_data == 'personal') ? request_var('mark', '') : '';
 
 		if (!$root_data)
 		{
-			if ($mark_read == 'albums')
-			{
-				$mark_read = 'all';
-			}
 			$root_data = ['album_id' => self::PUBLIC_ALBUM];
 			$sql_where = 'a.album_user_id = ' . self::PUBLIC_ALBUM;
 		}
 		else if ($root_data == 'personal')
 		{
-			if ($mark_read == 'albums')
-			{
-				$mark_read = 'all';
-			}
 			$root_data = ['album_id' => 0];//@todo: I think this is incorrect!?
 			$sql_where = 'a.album_user_id > ' . self::PUBLIC_ALBUM;
 
@@ -611,6 +597,16 @@ class phpbb_gallery_album
 		else
 		{
 			$sql_where = 'a.left_id > ' . $root_data['left_id'] . ' AND a.left_id < ' . $root_data['right_id'] . ' AND a.album_user_id = ' . $root_data['album_user_id'];
+		}
+
+		if ($mark && !check_link_hash(request_var('hash', ''), 'global'))
+		{
+			redirect(build_url(['mark', 'hash']));
+		}
+		if ($mark == 'all')
+		{
+			phpbb_gallery_misc::mark_read_all();
+			redirect(build_url(['mark', 'hash']));
 		}
 
 		$sql_array = [
@@ -642,20 +638,11 @@ class phpbb_gallery_album
 		$result = $db->sql_query($sql);
 
 		$album_tracking_info = [];
+		$has_unread_albums = false;
 		$branch_root_id = $root_data['album_id'];
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$album_id = $row['album_id'];
-
-			// Mark albums read?
-			if ($mark_read == 'albums' || $mark_read == 'all')
-			{
-				if (phpbb_gallery::$auth->acl_check('a_list', $album_id, $row['album_user_id']))
-				{
-					$album_ids[] = $album_id;
-					continue;
-				}
-			}
 
 			// Category with no members
 			if (!$row['album_type'] && ($row['left_id'] + 1 == $row['right_id']))
@@ -680,7 +667,15 @@ class phpbb_gallery_album
 				continue;
 			}
 
-			$album_tracking_info[$album_id] = (!empty($row['mark_time'])) ? $row['mark_time'] : phpbb_gallery::$user->get_data('user_lastmark');
+			$album_tracking_info[$album_id] = (!empty($row['mark_time'])) ? $row['mark_time'] : phpbb_gallery::$user->get_data('user_mark_time');
+			if ($user->data['is_registered'] && $row['album_type'] && $row['album_last_image_time'] > $album_tracking_info[$album_id])
+			{
+				$has_unread_albums = true;
+				if ($mark == 'albums')
+				{
+					$album_ids[] = (int) $album_id;
+				}
+			}
 
 			$row['album_images'] = $row['album_images'];
 			$row['album_images_real'] = $row['album_images_real'];
@@ -732,32 +727,13 @@ class phpbb_gallery_album
 		}
 		$db->sql_freeresult($result);
 
-		// Handle marking albums
-		if ($mark_read == 'albums' || $mark_read == 'all')
+		if ($mark == 'albums')
 		{
-			$redirect = build_url('mark', 'hash');
-			$token = request_var('hash', '');
-			if (check_link_hash($token, 'global'))
+			if ($album_ids)
 			{
-				if ($mark_read == 'all')
-				{
-					phpbb_gallery_misc::markread('all');
-					$message = sprintf($user->lang['RETURN_INDEX'], '<a href="' . $redirect . '">', '</a>');
-				}
-				else
-				{
-					phpbb_gallery_misc::markread('albums', $album_ids);
-					$message = sprintf($user->lang['RETURN_ALBUM'], '<a href="' . $redirect . '">', '</a>');
-				}
-				meta_refresh(3, $redirect);
-				trigger_error($user->lang['ALBUMS_MARKED'] . '<br /><br />' . $message);
+				phpbb_gallery_misc::mark_read_albums($album_ids);
 			}
-			else
-			{
-				$message = sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>');
-				meta_refresh(3, $redirect);
-				trigger_error($message);
-			}
+			redirect(build_url(['mark', 'hash']));
 		}
 
 		if (isset($mode_personal))
@@ -959,7 +935,7 @@ class phpbb_gallery_album
 		}
 
 		$template->assign_vars([
-			'U_MARK_ALBUMS'     => ($user->data['is_registered']) ? phpbb_gallery_url::append_sid('album', 'hash=' . generate_link_hash('global') . '&amp;album_id=' . $root_data['album_id'] . '&amp;mark=albums') : '',
+			'S_HAS_UNREAD_ALBUMS' => $has_unread_albums,
 			'S_HAS_SUBALBUM'    => (bool) $visible_albums,
 			'L_SUBFORUM'        => ($visible_albums == 1) ? $user->lang['SUBALBUM'] : $user->lang['SUBALBUMS'],
 			'LAST_POST_IMG'     => $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
