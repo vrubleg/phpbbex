@@ -582,11 +582,8 @@ class ucp_main
 
 		$sql_array['LEFT_JOIN'][] = ['FROM' => [FORUMS_TABLE => 'f'], 'ON' => 't.forum_id = f.forum_id'];
 
-		if ($config['enable_read_tracking'])
-		{
-			$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
-			$sql_array['SELECT'] .= ', tt.mark_time';
-		}
+		$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
+		$sql_array['SELECT'] .= ', tt.mark_time';
 
 		$sql = $db->sql_build_query('SELECT', $sql_array);
 		$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
@@ -603,7 +600,7 @@ class ucp_main
 
 		mark_user_posted_topics($rowset);
 
-		$topic_tracking_info = ($config['enable_read_tracking']) ? get_topic_tracking($topic_list, $rowset) : [];
+		$topic_tracking_info = get_topic_tracking($topic_list, $rowset);
 
 		foreach ($topic_list as $topic_id)
 		{

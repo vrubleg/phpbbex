@@ -396,7 +396,7 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 			'WHERE'     => $db->sql_in_set('t.topic_id', $topic_ids)
 		];
 
-		if ($read_tracking && $config['enable_read_tracking'])
+		if ($read_tracking)
 		{
 			$sql_array['SELECT'] .= ', tt.mark_time';
 
@@ -469,7 +469,7 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 			AND t.topic_id = p.topic_id',
 	];
 
-	if ($read_tracking && $config['enable_read_tracking'])
+	if ($read_tracking)
 	{
 		$sql_array['SELECT'] .= ', tt.mark_time';
 

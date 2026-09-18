@@ -351,7 +351,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 			case 'newposts':
 				$last_visit = min((int) $user->data['session_last_visit'], (int) $user->data['user_last_visit']);
-				if ($config['enable_read_tracking'] && $user->data['user_mark_time'])
+				if ($user->data['user_mark_time'])
 				{
 					$last_visit = min($last_visit, (int) $user->data['user_mark_time']);
 				}
@@ -628,12 +628,9 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 			if ($user->data['is_registered'])
 			{
-				if ($config['enable_read_tracking'])
-				{
-					$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.user_id = ' . $user->data['user_id'] . '
-							AND t.topic_id = tt.topic_id)';
-					$sql_select .= ', tt.mark_time';
-				}
+				$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.user_id = ' . $user->data['user_id'] . '
+						AND t.topic_id = tt.topic_id)';
+				$sql_select .= ', tt.mark_time';
 			}
 
 			$sql = "SELECT {$sql_select}
@@ -661,7 +658,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 			mark_user_posted_topics($rowset);
 
-			if ($user->data['is_registered'] && $config['enable_read_tracking'])
+			if ($user->data['is_registered'])
 			{
 				$topic_tracking_info = get_topic_tracking(array_keys($rowset), $rowset);
 			}

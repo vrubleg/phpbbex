@@ -132,7 +132,6 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_birthdays', '
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_memberlist', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_viewprofile', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_cpf_viewtopic', '0');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('enable_read_tracking', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('auto_mark_read_delay', '3600');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_moderators', '0');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('load_online', '1');

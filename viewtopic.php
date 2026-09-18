@@ -134,15 +134,12 @@ if ($user->data['is_registered'])
 		];
 	}
 
-	if ($config['enable_read_tracking'])
-	{
-		$sql_array['SELECT'] .= ', tt.mark_time';
+	$sql_array['SELECT'] .= ', tt.mark_time';
 
-		$sql_array['LEFT_JOIN'][] = [
-			'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
-			'ON'    => 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
-		];
-	}
+	$sql_array['LEFT_JOIN'][] = [
+		'FROM'  => [TOPICS_TRACK_TABLE => 'tt'],
+		'ON'    => 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
+	];
 }
 
 if (!$post_id)
@@ -297,7 +294,7 @@ if (!isset($topic_tracking_info))
 	$topic_tracking_info = [];
 
 	// Get topic tracking info
-	if ($config['enable_read_tracking'] && $user->data['is_registered'])
+	if ($user->data['is_registered'])
 	{
 		$tmp_topic_data = [$topic_id => $topic_data];
 		$topic_tracking_info = get_topic_tracking($topic_id, $tmp_topic_data);
