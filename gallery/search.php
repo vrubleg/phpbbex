@@ -71,8 +71,11 @@ if (phpbb_gallery_config::get('allow_comments'))
 }
 
 $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
-gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
-$sql_order = $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC');
+if ($search_id != 'recent' && $search_id != 'random')
+{
+	gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
+	$sql_order = $sort_by_sql[$sort_key] . ' ' . (($sort_dir == 'd') ? 'DESC' : 'ASC');
+}
 
 /**
 * Search
@@ -354,8 +357,9 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 	$u_hilit = urlencode(htmlspecialchars_decode(str_replace('|', ' ', $hilit)));
 	$u_search_album = implode('&amp;aid%5B%5D=', $search_album);
 
-	$u_search = phpbb_gallery_url::append_sid('search', $u_sort_param);
-	$u_search .= ($search_id) ? '&amp;search_id=' . $search_id : '';
+	$u_search_params = $u_sort_param;
+	$u_search_params .= ($search_id) ? (($u_search_params) ? '&amp;' : '') . 'search_id=' . $search_id : '';
+	$u_search = phpbb_gallery_url::append_sid('search', $u_search_params);
 	//@todo:
 	$u_search .= ($search_terms != 'all') ? '&amp;terms=' . $search_terms : '';
 	$u_search .= ($u_hilit) ? '&amp;keywords=' . urlencode(htmlspecialchars_decode($keywords)) : '';

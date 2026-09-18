@@ -87,16 +87,12 @@ function toggleElement(oElement)
 </div>
 <!-- ENDIF -->
 
-<!-- IF PAGINATION or .imagerow or ((S_SELECT_SORT_KEY or S_SELECT_SORT_DAYS) and SEARCH_IN_RESULTS) -->
+<!-- IF S_SELECT_SORT_KEY and SEARCH_IN_RESULTS -->
 	<form method="post" action="{S_SEARCH_ACTION}">
 
 	<fieldset class="display-options">
-		<!-- IF PREVIOUS_PAGE --><a href="{PREVIOUS_PAGE}" class="left-box nav-to-left">{L_PREVIOUS}</a><!-- ENDIF -->
-		<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box nav-to-right">{L_NEXT}</a><!-- ENDIF -->
-		<!-- IF S_SELECT_SORT_KEY and SEARCH_IN_RESULTS -->
-			<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
-			<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
-		<!-- ENDIF -->
+		<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
+		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
 	</fieldset>
 
 	</form>
