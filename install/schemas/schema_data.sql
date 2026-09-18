@@ -226,8 +226,8 @@ INSERT INTO phpbb_config (config_name, config_value) VALUES ('warning_post_defau
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_expire_days', '90');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('warnings_gc', '14400');
 
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_min_width', '875');
-INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_max_width', '1280');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_min_width', '800');
+INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_max_width', '1120');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_back_to_top', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_rounded_corners', '1');
 INSERT INTO phpbb_config (config_name, config_value) VALUES ('style_new_year', '-1');

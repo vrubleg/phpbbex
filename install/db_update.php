@@ -273,8 +273,6 @@ if (empty($config['phpbbex_version']) || version_compare($config['phpbbex_versio
 	set_config('rate_change_time', 60*5);
 	set_config('rate_no_negative', '0');
 	set_config('rate_no_positive', '0');
-	set_config('style_min_width', '875');
-	set_config('style_max_width', '1280');
 	set_config('style_back_to_top', '1');
 	set_config('style_rounded_corners', '1');
 	set_config('style_new_year', '-1');
@@ -708,6 +706,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('avatar_filesize', '20480');
 	set_config('enable_read_tracking', '1');
 	set_config('auto_mark_read_delay', '3600');
+	set_config('style_min_width', '800');
+	set_config('style_max_width', '1120');
 
 	// Remove obsolete modules.
 
