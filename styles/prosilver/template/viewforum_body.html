@@ -125,7 +125,7 @@
 				<dl class="icon">
 					<dt><!-- IF topicrow.S_TOPIC_TYPE_SWITCH and (topicrow.S_POST_ANNOUNCE or topicrow.S_POST_GLOBAL) -->{L_ANNOUNCEMENTS}<!-- ELSE --><!-- IF S_DISPLAY_ACTIVE -->{L_ACTIVE_TOPICS}<!-- ELSE -->{L_TOPICS}<!-- ENDIF --><!-- ENDIF --></dt>
 					<dd class="posts">{L_REPLIES}</dd>
-					<dd class="views">{L_VIEWS}</dd>
+					<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{L_VIEWS}</dd><!-- ENDIF -->
 					<dd class="lastpost">{L_LAST_POST}</dd>
 				</dl>
 			</li>
@@ -142,7 +142,7 @@
 					{L_POST_BY_AUTHOR} {topicrow.TOPIC_AUTHOR_FULL} &raquo; {topicrow.FIRST_POST_TIME}
 				</dt>
 				<dd class="posts">{topicrow.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
-				<dd class="views">{topicrow.VIEWS} <dfn>{L_VIEWS}</dfn></dd>
+				<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{topicrow.VIEWS} <dfn>{L_VIEWS}</dfn></dd><!-- ENDIF -->
 				<dd class="lastpost"><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {topicrow.LAST_POST_AUTHOR_FULL}
 					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{topicrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{topicrow.LAST_POST_TIME}
 				</dd>

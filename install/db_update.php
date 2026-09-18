@@ -709,6 +709,11 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('style_min_width', '800');
 	set_config('style_max_width', '1120');
 
+	if (!isset($config['style_show_topic_views']))
+	{
+		set_config('style_show_topic_views', '0');
+	}
+
 	// Remove obsolete modules.
 
 	remove_module('acp', 'board', 'auth');

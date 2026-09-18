@@ -65,6 +65,7 @@ $lang = array_merge($lang, [
 	'STYLE_MIN_WIDTH'                   => 'Минимальная ширина страницы',
 	'STYLE_MAX_WIDTH'                   => 'Максимальная ширина страницы',
 	'STYLE_SHOW_SITENAME_IN_HEADERBAR'  => 'Отображать название и описание сайта в шапке',
+	'STYLE_SHOW_TOPIC_VIEWS'            => 'Отображать количество просмотров тем',
 	'STYLE_BACK_TO_TOP'                 => 'Кнопка «В начало страницы»',
 	'STYLE_ROUNDED_CORNERS'             => 'Скруглять углы',
 	'STYLE_NEW_YEAR'                    => 'Зимний стиль',

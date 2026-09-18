@@ -11,7 +11,7 @@
 				<dl class="icon">
 					<dt>{L_ANNOUNCEMENTS}</dt>
 					<dd class="posts">{L_REPLIES}</dd>
-					<dd class="views">{L_VIEWS}</dd>
+					<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{L_VIEWS}</dd><!-- ENDIF -->
 					<dd class="lastpost">{L_LAST_POST}</dd>
 				</dl>
 			</li>
@@ -30,7 +30,7 @@
 					<!-- IF not announcetopic.S_TOPIC_GLOBAL -->{L_IN} <a href="{announcetopic.U_VIEW_FORUM}">{announcetopic.FORUM_TITLE}</a><!-- ELSE --> ({L_GLOBAL})<!-- ENDIF -->
 				</dt>
 				<dd class="posts">{announcetopic.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
-				<dd class="views">{announcetopic.VIEWS} <dfn>{L_VIEWS}</dfn></dd>
+				<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{announcetopic.VIEWS} <dfn>{L_VIEWS}</dfn></dd><!-- ENDIF -->
 				<dd class="lastpost"><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {announcetopic.LAST_POST_AUTHOR_FULL}
 					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{announcetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <br /><!-- ENDIF -->{L_POSTED_ON_DATE} {announcetopic.LAST_POST_TIME}
 				</dd>
@@ -51,7 +51,7 @@
 			<dl class="icon">
 				<dt><!-- IF S_DISPLAY_SEARCH --><a href="{U_SEARCH_ACTIVE_TOPICS}">{L_SEARCH_ACTIVE_TOPICS}</a><!-- ELSE -->{L_SEARCH_ACTIVE_TOPICS}<!-- ENDIF --></dt>
 				<dd class="posts">{L_REPLIES}</dd>
-				<dd class="views">{L_VIEWS}</dd>
+				<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{L_VIEWS}</dd><!-- ENDIF -->
 				<dd class="lastpost">{L_LAST_POST}</dd>
 			</dl>
 		</li>
@@ -71,7 +71,7 @@
 					<!-- IF not activetopic.S_TOPIC_GLOBAL -->{L_IN} <a href="{activetopic.U_VIEW_FORUM}">{activetopic.FORUM_TITLE}</a><!-- ELSE --> ({L_GLOBAL})<!-- ENDIF -->
 				</dt>
 				<dd class="posts">{activetopic.REPLIES}</dd>
-				<dd class="views">{activetopic.VIEWS}</dd>
+				<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{activetopic.VIEWS}</dd><!-- ENDIF -->
 				<dd class="lastpost">
 					{L_POST_BY_AUTHOR} {activetopic.LAST_POST_AUTHOR_FULL}
 					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{activetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{activetopic.LAST_POST_TIME}<br />
