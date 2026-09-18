@@ -112,6 +112,11 @@ class phpbb_gallery_misc
 	{
 		global $db, $config;
 
+		if (empty($config['phpbb_gallery_version']))
+		{
+			return;
+		}
+
 		$sql = 'SELECT gu.user_id, gu.user_last_visit
 			FROM ' . GALLERY_USERS_TABLE . ' gu
 			WHERE gu.user_id <> ' . ANONYMOUS . '
