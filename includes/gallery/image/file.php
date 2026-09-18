@@ -191,8 +191,7 @@ class phpbb_gallery_image_file
 	}
 
 	/**
-	* We need to disable the "last-modified" caching for guests and in cases of image-errors,
-	* so that they can view them, if they logged in or the error was fixed.
+	* Disable browser caching for image errors, so they can be retried after the user logs in.
 	*/
 	public function disable_browser_cache()
 	{
@@ -251,7 +250,6 @@ class phpbb_gallery_image_file
 			}
 		}
 
-		header('Pragma: public');
 		header('Content-Type: ' . $this->image_content_type);
 		header('X-Content-Type-Options: nosniff');
 		header('Content-Disposition: inline');
@@ -268,6 +266,10 @@ class phpbb_gallery_image_file
 		{
 			$this->set_last_modified(@filemtime($this->image_source));
 			$cached = $this->set_modified_headers();
+		}
+		else
+		{
+			header('Cache-Control: no-store');
 		}
 
 		if ($cached)
