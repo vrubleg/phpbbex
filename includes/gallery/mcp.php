@@ -250,12 +250,19 @@ class phpbb_gallery_mcp
 			]);
 		}
 
+		$image_src = phpbb_gallery_url::append_sid('image', 'image_id=' . $row['image_id']);
+		$image_link_mode = phpbb_gallery_config::get('link_thumbnail');
+		$image_link = ($image_link_mode == 'none') ? '' : (($image_link_mode == 'image_page') ? phpbb_gallery_url::append_sid('image_page', 'image_id=' . $row['image_id']) : $image_src);
+
 		$template->assign_vars([
 			'IMAGE_NAME'        => $row['image_name'],
 			'IMAGE_DESC'        => generate_text_for_display($row['image_desc'], $row['image_desc_uid'], $row['image_desc_bitfield'], 7),
 			'UPLOADER'          => get_username_string('full', $row['image_user_id'], $row['image_username'], $row['image_user_colour']),
 			'IMAGE_TIME'        => $user->format_date($row['image_time']),
-			'UC_IMAGE'          => phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_thumbnail'), $row['image_id'], $row['image_name'], $album_id),
+			'U_IMAGE_SRC'       => $image_src,
+			'U_IMAGE_LINK'      => $image_link,
+			'IMAGE_RSZ_WIDTH'  => phpbb_gallery_config::get('medium_width'),
+			'IMAGE_RSZ_HEIGHT' => phpbb_gallery_config::get('medium_height'),
 			'U_EDIT_IMAGE'      => phpbb_gallery_url::append_sid('posting', 'mode=edit&amp;image_id=' . $row['image_id']),
 			'U_DELETE_IMAGE'    => phpbb_gallery_url::append_sid('posting', 'mode=delete&amp;image_id=' . $row['image_id']),
 			'S_MCP_ACTION'      => phpbb_gallery_url::append_sid('mcp', "mode=" . (($mode == 'report_details') ? 'report_open' : 'queue_unapproved') . "&amp;album_id={$album_id}"),

@@ -254,7 +254,6 @@ define('ZEBRA_TABLE',               $table_prefix . 'zebra');
 define('GALLERY_ALBUMS_TABLE',          $table_prefix . 'gallery_albums');
 define('GALLERY_ATRACK_TABLE',          $table_prefix . 'gallery_albums_track');
 define('GALLERY_COMMENTS_TABLE',        $table_prefix . 'gallery_comments');
-define('GALLERY_CONFIG_TABLE',          $table_prefix . 'gallery_config');
 define('GALLERY_FAVORITES_TABLE',       $table_prefix . 'gallery_favorites');
 define('GALLERY_IMAGES_TABLE',          $table_prefix . 'gallery_images');
 define('GALLERY_MODSCACHE_TABLE',       $table_prefix . 'gallery_modscache');

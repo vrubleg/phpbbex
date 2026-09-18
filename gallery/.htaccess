@@ -3,3 +3,9 @@
 		Require all denied
 	</Files>
 </IfModule>
+
+<IfModule mod_expires.c>
+	<Files "image.php">
+		ExpiresActive Off
+	</Files>
+</IfModule>

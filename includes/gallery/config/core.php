@@ -63,12 +63,11 @@ class phpbb_gallery_config_core
 		'link_image_icon'       => 'image_page',
 
 		'max_filesize'          => 512000,
-		'max_height'            => 1024,
+		'max_height'            => 1600,
 		'max_rating'            => 10,
-		'max_width'             => 1280,
-		'medium_cache'          => true,
-		'medium_height'         => 600,
-		'medium_width'          => 800,
+		'max_width'             => 1600,
+		'medium_height'         => 768,
+		'medium_width'          => 1024,
 		'mini_thumbnail_disp'   => true,
 		'mini_thumbnail_size'   => 70,
 

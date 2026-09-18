@@ -104,31 +104,23 @@ if ($image_error)
 }
 
 $mode = request_var('mode', '');
-if (!in_array($mode, ['medium', 'thumbnail']))
+if ($mode != 'thumbnail')
 {
 	$mode = 'default';
 }
 
 switch ($mode)
 {
-	case 'medium':
-		$image_source_path = phpbb_gallery_url::path('medium');
-	break;
 	case 'thumbnail':
 		$image_source_path = phpbb_gallery_url::path('thumbnail');
 	break;
 	default:
 		$image_source_path = phpbb_gallery_url::path('upload');
 
-		// Increase the view count only for full images, if not already counted
-		$view = request_var('view', '');
-		if (!$user->data['is_bot'] && $view != 'no_count')
-		{
-			$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
-				SET image_view_count = image_view_count + 1
-				WHERE image_id = ' . $image_id;
-			$db->sql_query($sql);
-		}
+		$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
+			SET image_view_count = image_view_count + 1
+			WHERE image_id = ' . $image_id;
+		$db->sql_query($sql);
 	break;
 }
 
@@ -138,24 +130,11 @@ $image_tools = new phpbb_gallery_image_file();
 $image_tools->set_image_options(phpbb_gallery_config::get('max_filesize'), phpbb_gallery_config::get('max_height'), phpbb_gallery_config::get('max_width'));
 $image_tools->set_image_data($image_source, $image_data['image_name']);
 
-if (!$user->data['is_registered'])
+// Generate a thumbnail if it is missing
+if ($mode == 'thumbnail')
 {
-	$image_tools->disable_browser_cache();
-}
-
-// Generate the sourcefile, if it's missing
-if (($mode == 'medium') || ($mode == 'thumbnail'))
-{
-	if ($mode == 'thumbnail')
-	{
-		$resize_width = phpbb_gallery_config::get('thumbnail_width');
-		$resize_height = phpbb_gallery_config::get('thumbnail_height');
-	}
-	else
-	{
-		$resize_width = phpbb_gallery_config::get('medium_width');
-		$resize_height = phpbb_gallery_config::get('medium_height');
-	}
+	$resize_width = phpbb_gallery_config::get('thumbnail_width');
+	$resize_height = phpbb_gallery_config::get('thumbnail_height');
 
 	if (!file_exists($image_source))
 	{
@@ -171,24 +150,15 @@ if (($mode == 'medium') || ($mode == 'thumbnail'))
 
 			if (($image_size['width'] > $resize_width) || ($image_size['height'] > $resize_height))
 			{
-				$put_details = (phpbb_gallery_config::get('thumbnail_infoline') && ($mode == 'thumbnail'));
+				$put_details = phpbb_gallery_config::get('thumbnail_infoline');
 				$image_tools->create_thumbnail($resize_width, $resize_height, $put_details, phpbb_gallery_constants::THUMBNAIL_INFO_HEIGHT, $image_size);
 			}
 
-			if (phpbb_gallery_config::get($mode . '_cache'))
+			if (phpbb_gallery_config::get('thumbnail_cache'))
 			{
-				$image_tools->write_image($image_source, (($mode == 'thumbnail') ? phpbb_gallery_config::get('thumbnail_quality') : phpbb_gallery_config::get('jpg_quality')), false);
-
-				if ($mode == 'thumbnail')
-				{
-					$image_data['filesize_cache'] = @filesize($image_source);
-					$sql_ary = ['filesize_cache' => $image_data['filesize_cache']];
-				}
-				else
-				{
-					$image_data['filesize_medium'] = @filesize($image_source);
-					$sql_ary = ['filesize_medium' => $image_data['filesize_medium']];
-				}
+				$image_tools->write_image($image_source, phpbb_gallery_config::get('thumbnail_quality'), false);
+				$image_data['filesize_cache'] = @filesize($image_source);
+				$sql_ary = ['filesize_cache' => $image_data['filesize_cache']];
 				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . $db->sql_in_set('image_id', $image_id);
 				$db->sql_query($sql);

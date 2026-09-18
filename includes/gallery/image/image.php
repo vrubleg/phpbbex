@@ -239,7 +239,7 @@ class phpbb_gallery_image
 
 		$template->assign_block_vars($template_block, [
 			'IMAGE_ID'      => $image_data['image_id'],
-			'UC_IMAGE_NAME' => ($display & phpbb_gallery_block::DISPLAY_IMAGENAME) ? self::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id'], false, true, "&amp;sk={$sk}&amp;sd={$sd}&amp;st={$st}") : '',
+			'UC_IMAGE_NAME' => ($display & phpbb_gallery_block::DISPLAY_IMAGENAME) ? self::generate_link('image_name', phpbb_gallery_config::get('link_image_name'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id'], "&amp;sk={$sk}&amp;sd={$sd}&amp;st={$st}") : '',
 			'UC_THUMBNAIL'  => self::generate_link('thumbnail', phpbb_gallery_config::get('link_thumbnail'), $image_data['image_id'], $image_data['image_name'], $image_data['image_album_id']),
 			'U_ALBUM'       => ($display & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? phpbb_gallery_url::append_sid('album', 'album_id=' . $image_data['image_album_id']) : '',
 			'S_UNAPPROVED'  => (phpbb_gallery::$auth->acl_check('m_status', $image_data['image_album_id'], $album_user_id) && ($image_data['image_status'] == self::STATUS_UNAPPROVED)),
@@ -286,23 +286,20 @@ class phpbb_gallery_image
 	/**
 	* Generate link to image
 	*
-	* @param    string  $content    what's in the link: image_name, thumbnail, fake_thumbnail, medium or lastimage_icon
-	* @param    string  $mode       where the link leads to: image_page, image, none or next
+	* @param    string  $content    what's in the link: image_name, thumbnail, fake_thumbnail or lastimage_icon
+	* @param    string  $mode       where the link leads to: image_page, image or none
 	* @param    int     $image_id
 	* @param    string  $image_name
 	* @param    int     $album_id
-	* @param    bool    $is_gif     we need to know whether we display a gif, so we can use a better medium-image
-	* @param    bool    $count      shall the image-link be counted as view? (Set to false from image_page.php to deny double increment)
 	* @param    string  $additional_parameters      additional parameters for the url, (starting with &amp;)
 	*/
-	static public function generate_link($content, $mode, $image_id, $image_name, $album_id, $is_gif = false, $count = true, $additional_parameters = '', $next_image = 0)
+	static public function generate_link($content, $mode, $image_id, $image_name, $album_id, $additional_parameters = '')
 	{
 		global $user;
 
 		$image_page_url = phpbb_gallery_url::append_sid('image_page', "image_id={$image_id}{$additional_parameters}");
-		$image_url = phpbb_gallery_url::append_sid('image', "image_id={$image_id}{$additional_parameters}" . ((!$count) ? '&amp;view=no_count' : ''));
-		$thumb_url = phpbb_gallery_url::append_sid('image', "mode=thumbnail&amp;image_id={$image_id}{$additional_parameters}");
-		$medium_url = phpbb_gallery_url::append_sid('image', "mode=medium&amp;image_id={$image_id}{$additional_parameters}");
+		$image_url = phpbb_gallery_url::append_sid('image', "image_id={$image_id}");
+		$thumb_url = phpbb_gallery_url::append_sid('image', "mode=thumbnail&amp;image_id={$image_id}");
 		switch ($content)
 		{
 			case 'image_name':
@@ -315,16 +312,6 @@ class phpbb_gallery_image
 			case 'fake_thumbnail':
 				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="max-width: {FAKE_THUMB_SIZE}px; max-height: {FAKE_THUMB_SIZE}px;" />';
 				$content = str_replace(['{U_THUMBNAIL}', '{IMAGE_NAME}', '{FAKE_THUMB_SIZE}'], [$thumb_url, $image_name, phpbb_gallery_config::get('mini_thumbnail_size')], $content);
-			break;
-			case 'medium':
-				$content = '<img src="{U_MEDIUM}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" />';
-				$content = str_replace(['{U_MEDIUM}', '{IMAGE_NAME}'], [$medium_url, $image_name], $content);
-				//cheat for animated/transparent gifs
-				if ($is_gif)
-				{
-					$content = '<img src="{U_MEDIUM}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="max-width: {MEDIUM_WIDTH_SIZE}px; max-height: {MEDIUM_HEIGHT_SIZE}px;" />';
-					$content = str_replace(['{U_MEDIUM}', '{IMAGE_NAME}', '{MEDIUM_HEIGHT_SIZE}', '{MEDIUM_WIDTH_SIZE}'], [$image_url, $image_name, phpbb_gallery_config::get('medium_height'), phpbb_gallery_config::get('medium_width')], $content);
-				}
 			break;
 			case 'lastimage_icon':
 				$content = $user->img('icon_topic_latest', 'VIEW_LATEST_IMAGE');
@@ -344,17 +331,6 @@ class phpbb_gallery_image
 			break;
 			case 'none':
 				$tpl = '{CONTENT}';
-			break;
-			case 'next':
-				if ($next_image)
-				{
-					$url = phpbb_gallery_url::append_sid('image_page', "image_id={$next_image}{$additional_parameters}");
-					$tpl = '<a href="{IMAGE_URL}" title="{IMAGE_NAME}">{CONTENT}</a>';
-				}
-				else
-				{
-					$tpl = '{CONTENT}';
-				}
 			break;
 			default:
 				$url = $image_url;

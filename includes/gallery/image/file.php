@@ -217,6 +217,8 @@ class phpbb_gallery_image_file
 	*/
 	function set_modified_headers()
 	{
+		header('Cache-Control: private, max-age=86400');
+
 		// let's see if we have to send the file at all
 		$last_load = phpbb_parse_if_modified_since();
 		if ($last_load !== false && $last_load >= $this->last_modified)
@@ -227,7 +229,6 @@ class phpbb_gallery_image_file
 		else
 		{
 			header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $this->last_modified) . ' GMT');
-			header('Cache-Control: max-age=1, must-revalidate');
 		}
 		return false;
 	}

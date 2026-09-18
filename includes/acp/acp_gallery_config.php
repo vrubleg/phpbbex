@@ -321,7 +321,6 @@ class acp_gallery_config
 			'allow_resize'          => ['lang' => 'RESIZE_IMAGES',          'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'allow_rotate'          => ['lang' => 'ROTATE_IMAGES',          'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'jpg_quality'           => ['lang' => 'JPG_QUALITY',            'validate' => 'int',    'type' => 'text:7:5',       'gallery' => true,  'explain' => true],
-			'medium_cache'          => ['lang' => 'MEDIUM_CACHE',           'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'medium_width'          => ['lang' => 'RSZ_WIDTH',              'validate' => 'int',    'type' => 'text:7:4',       'gallery' => true,  'explain' => false, 'append' => 'PIXELS'],
 			'medium_height'         => ['lang' => 'RSZ_HEIGHT',         'validate' => 'int',    'type' => 'text:7:4',       'gallery' => true,  'explain' => false, 'append' => 'PIXELS'],
 			'allow_gif'             => ['lang' => 'GIF_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],

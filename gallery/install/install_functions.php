@@ -29,27 +29,7 @@ function get_gallery_version()
 	$config_data = $db->sql_fetchfield('config_value');
 	$db->sql_freeresult($result);
 
-	if ($config_data)
-	{
-		return $config_data;
-	}
-
-	$db->sql_return_on_error(true);
-
-	$sql = 'SELECT config_value
-		FROM ' . GALLERY_CONFIG_TABLE . "
-		WHERE config_name = 'phpbb_gallery_version'";
-	$result = $db->sql_query($sql);
-	$config_data = $db->sql_fetchfield('config_value');
-	$db->sql_freeresult($result);
-
-	if ($config_data)
-	{
-		$db->sql_return_on_error(false);
-		return $config_data;
-	}
-
-	return '0.0.0';
+	return $config_data ?: '0.0.0';
 }
 
 /*
@@ -278,7 +258,6 @@ function config_mapping()
 		'max_file_size'         => 'max_filesize',
 		'max_width'             => 'max_width',
 		'max_height'            => 'max_height',
-		'medium_cache'          => 'medium_cache',
 		'preview_rsz_height'    => 'medium_height',
 		'preview_rsz_width'     => 'medium_width',
 

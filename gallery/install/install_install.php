@@ -187,9 +187,7 @@ class install_install extends module
 		]);
 
 		$directories = [
-			'import',
 			'upload',
-			'medium',
 			'thumbnail',
 		];
 
@@ -277,7 +275,6 @@ class install_install extends module
 			[GALLERY_ALBUMS_TABLE,          phpbb_gallery_dbal_schema::get_table_data('albums')],
 			[GALLERY_ATRACK_TABLE,          phpbb_gallery_dbal_schema::get_table_data('albums_track')],
 			[GALLERY_COMMENTS_TABLE,        phpbb_gallery_dbal_schema::get_table_data('comments')],
-			[GALLERY_CONFIG_TABLE,          phpbb_gallery_dbal_schema::get_table_data('config')],
 			[GALLERY_FAVORITES_TABLE,       phpbb_gallery_dbal_schema::get_table_data('favorites')],
 			[GALLERY_IMAGES_TABLE,          phpbb_gallery_dbal_schema::get_table_data('images')],
 			[GALLERY_MODSCACHE_TABLE,       phpbb_gallery_dbal_schema::get_table_data('modscache')],

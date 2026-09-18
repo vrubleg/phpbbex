@@ -102,16 +102,6 @@ if (in_array($mode, ['watch', 'unwatch', 'favorite', 'unfavorite']) && check_lin
 /**
 * Main work here...
 */
-// Increase the counter, as we load the image with increment-blocker from this site it's no problem.
-// We also copy some parts from topic_views here
-if (isset($user->data['session_page']) && !$user->data['is_bot'] && (strpos($user->data['session_page'], '&image_id=' . $image_id) === false || isset($user->data['session_created'])))
-{
-	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
-		SET image_view_count = image_view_count + 1
-		WHERE image_id = ' . $image_id;
-	$db->sql_query($sql);
-}
-
 $image_status_sql = ' AND image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN;
 if (!phpbb_gallery::$auth->acl_check('m_status', $album_id, $album_data['album_user_id']))
 {
@@ -192,14 +182,22 @@ $image_desc = generate_text_for_display($image_data['image_desc'], $image_data['
 $favorite_mode = (($image_data['favorite_id']) ? 'un' : '') . 'favorite';
 $watch_mode = (($image_data['watch_id']) ? 'un' : '') . 'watch';
 
+$image_src = phpbb_gallery_url::append_sid('image', "image_id={$image_id}");
+$next_image_url = (!empty($next_data)) ? phpbb_gallery_url::append_sid('image_page', 'image_id=' . $next_data['image_id']) : '';
+$image_link_mode = phpbb_gallery_config::get('link_imagepage');
+$image_link = ($image_link_mode == 'none') ? '' : (($image_link_mode == 'next') ? $next_image_url : $image_src);
+
 $template->assign_vars([
 	'U_VIEW_ALBUM'        => phpbb_gallery_url::append_sid('album', "album_id={$album_id}"),
 
 	'PREVIOUS_IMAGE_NAME' => $previous_data['image_name'] ?? '',
 	'U_PREVIOUS_IMAGE'    => (!empty($previous_data)) ? phpbb_gallery_url::append_sid('image_page', 'image_id=' . $previous_data['image_id']) : '',
-	'UC_IMAGE'            => phpbb_gallery_image::generate_link('medium', phpbb_gallery_config::get('link_imagepage'), $image_id, $image_data['image_name'], $album_id, (substr($image_data['image_filename'], 0 -3) == 'gif'), false, '', !empty($next_data) ? $next_data['image_id'] : 0),
+	'U_IMAGE_SRC'         => $image_src,
+	'U_IMAGE_LINK'        => $image_link,
+	'IMAGE_RSZ_WIDTH'    => phpbb_gallery_config::get('medium_width'),
+	'IMAGE_RSZ_HEIGHT'   => phpbb_gallery_config::get('medium_height'),
 	'NEXT_IMAGE_NAME'     => $next_data['image_name'] ?? '',
-	'U_NEXT_IMAGE'        => (!empty($next_data)) ? phpbb_gallery_url::append_sid('image_page', 'image_id=' . $next_data['image_id']) : '',
+	'U_NEXT_IMAGE'        => $next_image_url,
 
 	'EDIT_IMG'          => $user->img('icon_post_edit', 'EDIT_IMAGE'),
 	'DELETE_IMG'        => $user->img('icon_post_delete', 'DELETE_IMAGE'),
@@ -212,7 +210,7 @@ $template->assign_vars([
 
 	'IMAGE_NAME'        => $image_data['image_name'],
 	'IMAGE_DESC'        => $image_desc,
-	'IMAGE_IMGURL_BBCODE'   => (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}&amp;mode=thumbnail", true, '') . '[/img][/url]' : '',
+	'IMAGE_IMGURL_BBCODE'   => (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "mode=thumbnail&amp;image_id={$image_id}", true, '') . '[/img][/url]' : '',
 	'IMAGE_URL'         => (phpbb_gallery_config::get('disp_image_url')) ? phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') : '',
 	'IMAGE_TIME'        => $user->format_date($image_data['image_time']),
 	'IMAGE_VIEW'        => $image_data['image_view_count'],

@@ -180,7 +180,11 @@
 				</p>
 
 				<div class="content">
-					<div style="text-align: center; padding: 20px;">{UC_IMAGE}</div>
+					<div style="text-align: center; padding: 20px;">
+						<!-- IF U_IMAGE_LINK --><a href="{U_IMAGE_LINK}" title="{IMAGE_NAME}"><!-- ENDIF -->
+						<img src="{U_IMAGE_SRC}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="width: auto; height: auto; max-width: 100%; max-width: min(100%, {IMAGE_RSZ_WIDTH}px); max-height: {IMAGE_RSZ_HEIGHT}px;" />
+						<!-- IF U_IMAGE_LINK --></a><!-- ENDIF -->
+					</div>
 					<!-- IF IMAGE_DESC -->
 						<hr />
 						<span style="font-weight: bold;">{L_IMAGE_DESC}:</span><br />

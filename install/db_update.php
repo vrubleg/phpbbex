@@ -190,6 +190,34 @@ function remove_config_values($names)
 	$db->sql_query('DELETE FROM ' . CONFIG_TABLE . " WHERE config_name IN ('" . implode("', '", $names) . "')");
 }
 
+function remove_directory_recursive($path)
+{
+	$directory = @opendir($path);
+	if ($directory === false)
+	{
+		return;
+	}
+	while (($entry = readdir($directory)) !== false)
+	{
+		if ($entry == '.' || $entry == '..')
+		{
+			continue;
+		}
+		$entry_path = $path . '/' . $entry;
+		if (is_dir($entry_path))
+		{
+			remove_directory_recursive($entry_path);
+		}
+		else
+		{
+			@unlink($entry_path);
+		}
+	}
+
+	closedir($directory);
+	@rmdir($path);
+}
+
 // Update!
 
 $purge_default = 'cache';
@@ -630,6 +658,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'phpbb_gallery_description_length',
 		'phpbb_gallery_disp_nextprev_thumbnail',
 		'phpbb_gallery_gdlib_version',
+		'phpbb_gallery_medium_cache',
 		'phpbb_gallery_rrc_gindex_contests',
 		'phpbb_gallery_shortnames',
 		'phpbb_gallery_watermark_changed',
@@ -639,6 +668,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'phpbb_gallery_watermark_source',
 		'phpbb_gallery_watermark_width',
 	]);
+	set_config('phpbb_gallery_max_width', 1600);
+	set_config('phpbb_gallery_max_height', 1600);
+	set_config('phpbb_gallery_medium_width', 1024);
+	set_config('phpbb_gallery_medium_height', 768);
 
 	if ($db_tools->sql_table_exists(GALLERY_ALBUMS_TABLE) && $db_tools->sql_column_exists(GALLERY_ALBUMS_TABLE, 'album_watermark'))
 	{
@@ -794,7 +827,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	}
 	if ($db_tools->sql_table_exists(GALLERY_IMAGES_TABLE))
 	{
-		foreach (['image_contest', 'image_contest_end', 'image_contest_rank'] as $column)
+		foreach (['image_contest', 'image_contest_end', 'image_contest_rank', 'filesize_medium'] as $column)
 		{
 			if ($db_tools->sql_column_exists(GALLERY_IMAGES_TABLE, $column))
 			{
@@ -806,6 +839,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		}
 	}
 	foreach ($db_tools->sql_table_drop($table_prefix . 'gallery_contests') as $sql)
+	{
+		$db->sql_query($sql);
+	}
+	foreach ($db_tools->sql_table_drop($table_prefix . 'gallery_config') as $sql)
 	{
 		$db->sql_query($sql);
 	}
@@ -853,6 +890,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 			SET user_permissions = '',
 				user_permissions_changed = " . time());
 	}
+
+	// Remove obsolete gallery directories and their contents.
+	remove_directory_recursive(PHPBB_ROOT_PATH . 'gallery/images/medium');
+	remove_directory_recursive(PHPBB_ROOT_PATH . 'gallery/images/import');
 
 	// Migrate settings.
 
@@ -1744,10 +1785,6 @@ if (request_var('utf8mb4', 0))
 			case "{$table_prefix}gallery_users":
 			case "{$table_prefix}gallery_watch":
 				break;
-			case "{$table_prefix}gallery_config":
-				$sql .= ", MODIFY config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";
-				break;
-
 			// Portal MOD tables.
 			case "{$table_prefix}portal_config":
 				$sql .= ", MODIFY config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";

@@ -18,7 +18,11 @@
 			<!-- IF U_NEXT_IMAGE --><a class="g-image-navigation-next nav-to-right" href="{U_NEXT_IMAGE}" title="{NEXT_IMAGE_NAME}">{L_NEXT_IMAGE}</a><!-- ENDIF -->
 		</div>
 		<!-- ENDIF -->
-		<div class="g-current-image">{UC_IMAGE}</div>
+		<div class="g-current-image">
+			<!-- IF U_IMAGE_LINK --><a href="{U_IMAGE_LINK}" title="{IMAGE_NAME}"><!-- ENDIF -->
+			<img src="{U_IMAGE_SRC}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="width: auto; height: auto; max-width: 100%; max-width: min(100%, {IMAGE_RSZ_WIDTH}px); max-height: {IMAGE_RSZ_HEIGHT}px;" />
+			<!-- IF U_IMAGE_LINK --></a><!-- ENDIF -->
+		</div>
 		<!-- IF S_IMAGE_REPORTED --><div class="center"><a href="{U_IMAGE_REPORTED}"><span class="error">{L_IMAGE_REPORTED}</span></a></div><!-- ENDIF -->
 	</div>
 </div>

@@ -186,7 +186,6 @@ class acp_gallery
 					{
 						$sql_ary = [
 							'filesize_upload'       => @filesize(phpbb_gallery_url::path('upload') . $row['image_filename']),
-							'filesize_medium'       => @filesize(phpbb_gallery_url::path('medium') . $row['image_filename']),
 							'filesize_cache'        => @filesize(phpbb_gallery_url::path('thumbnail') . $row['image_filename']),
 						];
 						$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
@@ -224,18 +223,7 @@ class acp_gallery
 					}
 					@closedir($cache_dir);
 
-					$medium_dir = @opendir(phpbb_gallery_url::path('medium'));
-					while ($medium_file = @readdir($medium_dir))
-					{
-						if (preg_match('/(\.gif$|\.png$|\.jpg|\.jpeg)$/is', $medium_file))
-						{
-							@unlink(phpbb_gallery_url::path('medium') . $medium_file);
-						}
-					}
-					@closedir($medium_dir);
-
 					$sql_ary = [
-						'filesize_medium'       => 0,
 						'filesize_cache'        => 0,
 					];
 					$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
@@ -249,6 +237,7 @@ class acp_gallery
 
 		$board_days = max(1.0, (time() - $config['board_startdate']) / 86400);
 		$images_per_day = sprintf($user->lang['N_PER_DAY'], phpbb_gallery_config::get('num_images') / $board_days);
+		$comments_per_day = sprintf($user->lang['N_PER_DAY'], phpbb_gallery_config::get('num_comments') / $board_days);
 
 		$sql = 'SELECT COUNT(album_user_id) AS num_albums
 			FROM ' . GALLERY_ALBUMS_TABLE . '
@@ -257,7 +246,7 @@ class acp_gallery
 		$num_albums = (int) $db->sql_fetchfield('num_albums');
 		$db->sql_freeresult($result);
 
-		$sql = 'SELECT SUM(filesize_upload) AS stat, SUM(filesize_medium) AS stat_medium, SUM(filesize_cache) AS stat_cache
+		$sql = 'SELECT SUM(filesize_upload) AS stat, SUM(filesize_cache) AS stat_cache
 			FROM ' . GALLERY_IMAGES_TABLE;
 		$result = $db->sql_query($sql);
 		$dir_sizes = $db->sql_fetchrow($result);
@@ -270,10 +259,11 @@ class acp_gallery
 
 			'TOTAL_IMAGES'          => phpbb_gallery_config::get('num_images'),
 			'IMAGES_PER_DAY'        => $images_per_day,
+			'TOTAL_COMMENTS'        => phpbb_gallery_config::get('num_comments'),
+			'COMMENTS_PER_DAY'      => $comments_per_day,
 			'TOTAL_ALBUMS'          => $num_albums,
 			'TOTAL_PERSONALS'       => phpbb_gallery_config::get('num_pegas'),
 			'GUPLOAD_DIR_SIZE'      => get_formatted_filesize(!empty($dir_sizes['stat']) ? $dir_sizes['stat'] : 0),
-			'MEDIUM_DIR_SIZE'       => get_formatted_filesize(!empty($dir_sizes['stat_medium']) ? $dir_sizes['stat_medium'] : 0),
 			'CACHE_DIR_SIZE'        => get_formatted_filesize(!empty($dir_sizes['stat_cache']) ? $dir_sizes['stat_cache'] : 0),
 
 			'S_FOUNDER'             => ($user->data['user_type'] == USER_FOUNDER),

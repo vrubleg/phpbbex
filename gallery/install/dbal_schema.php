@@ -129,18 +129,6 @@ class phpbb_gallery_dbal_schema
 				],
 			],
 		],
-		'config'    => [
-			'full_name'     => GALLERY_CONFIG_TABLE,
-			'added'         => '0.0.0',
-			'modified'      => '0.0.0',
-			'structure'     => [
-				'COLUMNS'       => [
-					'config_name'       => ['VCHAR:191', ''],
-					'config_value'      => ['VCHAR:255', ''],
-				],
-				'PRIMARY_KEY'   => 'config_name',
-			],
-		],
 		'copyts_albums' => [
 			'full_name'     => 'phpbb_gallery_copyts_albums',
 			'added'         => '0.0.0',
@@ -221,7 +209,6 @@ class phpbb_gallery_dbal_schema
 					'image_favorited'       => ['UINT', 0],
 					'image_reported'        => ['UINT', 0],
 					'filesize_upload'       => ['UINT:20', 0],
-					'filesize_medium'       => ['UINT:20', 0],
 					'filesize_cache'        => ['UINT:20', 0],
 				],
 				'PRIMARY_KEY'               => 'image_id',
