@@ -296,11 +296,8 @@ $sql_approved = ($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_app
 
 if ($user->data['is_registered'])
 {
-	if ($config['enable_read_tracking'])
-	{
-		$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
-		$sql_array['SELECT'] .= ', tt.mark_time';
-	}
+	$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
+	$sql_array['SELECT'] .= ', tt.mark_time';
 }
 
 if ($forum_data['forum_type'] == FORUM_POST || $s_display_active)
@@ -445,7 +442,7 @@ mark_user_posted_topics($rowset);
 // Okay, lets dump out the page ...
 if (sizeof($topic_list))
 {
-	if ($config['enable_read_tracking'] && $user->data['is_registered'])
+	if ($user->data['is_registered'])
 	{
 		$topic_tracking_info = get_topic_tracking($topic_list, $rowset);
 	}

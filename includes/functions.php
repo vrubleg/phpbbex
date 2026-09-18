@@ -1120,10 +1120,10 @@ function tz_select($default = '')
 */
 function mark_read_topic($topic_id, $time = 0, $user_id = 0)
 {
-	global $db, $user, $config;
+	global $db, $user;
 
 	$user_id = (!$user_id) ? (int) $user->data['user_id'] : (int) $user_id;
-	if (!$user_id || $user_id == ANONYMOUS || !$config['enable_read_tracking']) { return; }
+	if (!$user_id || $user_id == ANONYMOUS) { return; }
 	$time = $time ? (int) $time : time();
 
 	$sql_ary = [
@@ -1142,10 +1142,10 @@ function mark_read_topic($topic_id, $time = 0, $user_id = 0)
 */
 function mark_read_all($time = 0, $user_id = 0)
 {
-	global $db, $user, $config;
+	global $db, $user;
 
 	$user_id = (!$user_id) ? (int) $user->data['user_id'] : (int) $user_id;
-	if (!$user_id || $user_id == ANONYMOUS || !$config['enable_read_tracking']) { return; }
+	if (!$user_id || $user_id == ANONYMOUS) { return; }
 	$time = $time ? (int) $time : time();
 
 	$db->sql_query('DELETE FROM ' . TOPICS_TRACK_TABLE . " WHERE user_id = {$user_id}");
@@ -1162,11 +1162,6 @@ function mark_read_all($time = 0, $user_id = 0)
 function auto_mark_read_all()
 {
 	global $db, $config;
-
-	if (!$config['enable_read_tracking'])
-	{
-		return;
-	}
 
 	$sql = 'SELECT u.user_id, u.user_last_visit
 		FROM ' . USERS_TABLE . ' u
@@ -1238,10 +1233,10 @@ function mark_user_posted_topics(&$rowset, $user_id = false)
 */
 function get_topic_tracking($topic_ids, $rowset = null)
 {
-	global $db, $config, $user;
+	global $db, $user;
 
 	$topic_ids = (array) $topic_ids;
-	if (!$config['enable_read_tracking'] || !$user->data['is_registered'] || !$topic_ids)
+	if (!$user->data['is_registered'] || !$topic_ids)
 	{
 		return [];
 	}
@@ -1275,9 +1270,9 @@ function get_topic_tracking($topic_ids, $rowset = null)
 */
 function get_unread_forums($forum_ids = false)
 {
-	global $db, $config, $user, $auth;
+	global $db, $user, $auth;
 
-	if (!$config['enable_read_tracking'] || !$user->data['is_registered'])
+	if (!$user->data['is_registered'])
 	{
 		return [];
 	}
@@ -1327,7 +1322,7 @@ function get_unread_forums($forum_ids = false)
 */
 function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $sql_limit = 1001, $sql_limit_offset = 0)
 {
-	global $config, $db, $user;
+	global $db, $user;
 
 	$user_id = ($user_id === false) ? (int) $user->data['user_id'] : (int) $user_id;
 
@@ -1339,7 +1334,7 @@ function get_unread_topics($user_id = false, $sql_extra = '', $sql_sort = '', $s
 		$sql_sort = 'ORDER BY t.topic_last_post_time DESC';
 	}
 
-	if ($config['enable_read_tracking'] && $user->data['is_registered'])
+	if ($user->data['is_registered'])
 	{
 		// Get list of the unread topics
 		$last_mark = (int) $user->data['user_mark_time'];

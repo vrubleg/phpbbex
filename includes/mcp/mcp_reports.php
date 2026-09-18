@@ -109,16 +109,9 @@ class mcp_reports
 
 				$topic_tracking_info = $extensions = $attachments = [];
 				// Get topic tracking info
-				if ($config['enable_read_tracking'])
-				{
-					$tmp_topic_data = [$post_info['topic_id'] => $post_info];
-					$topic_tracking_info = get_topic_tracking($post_info['topic_id'], $tmp_topic_data);
-					unset($tmp_topic_data);
-				}
-				else
-				{
-					$topic_tracking_info = get_topic_tracking($post_info['topic_id']);
-				}
+				$tmp_topic_data = [$post_info['topic_id'] => $post_info];
+				$topic_tracking_info = get_topic_tracking($post_info['topic_id'], $tmp_topic_data);
+				unset($tmp_topic_data);
 
 				$post_unread = (isset($topic_tracking_info[$post_info['topic_id']]) && $post_info['post_time'] > $topic_tracking_info[$post_info['topic_id']]);
 

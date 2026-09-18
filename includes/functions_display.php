@@ -42,13 +42,9 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 		if (check_link_hash(request_var('hash', ''), 'global'))
 		{
 			mark_read_all();
-			redirect($redirect);
 		}
-		else
-		{
-			meta_refresh(3, $redirect);
-			trigger_error(sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
-		}
+
+		redirect($redirect);
 	}
 
 	// Display list of active topics for this category?

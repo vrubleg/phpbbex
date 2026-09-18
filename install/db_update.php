@@ -952,6 +952,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		'load_online_guests',
 		'load_online_bots',
 		'load_db_track',
+		'enable_read_tracking',
 		'override_user_dateformat',
 		'merge_no_forums',
 		'merge_no_topics',
@@ -997,7 +998,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('allow_avatar_upload', '1');
 	set_config('allow_avatar_remote_upload', '0');
 	set_config('avatar_filesize', '20480');
-	set_config('enable_read_tracking', '1');
 	set_config('auto_mark_read_delay', '3600');
 	set_config('style_min_width', '800');
 	set_config('style_max_width', '1120');
