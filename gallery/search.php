@@ -88,7 +88,7 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 	$id_ary = [];
 
 	// This is what our Search could so far
-	if ($user_id)
+	if ($user_id && $search_id != 'recent' && $search_id != 'random')
 	{
 		$search_id = 'usersearch';
 	}
@@ -174,6 +174,7 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 				$sql = 'SELECT image_id
 					FROM ' . GALLERY_IMAGES_TABLE . '
 					WHERE image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN . '
+						' . ($user_id ? 'AND image_user_id = ' . $user_id : '') . '
 						AND ((' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('i_view'), false, true) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ')
 							OR ' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('m_status'), false, true) . ')
 					ORDER BY ' . $sql_order;
@@ -188,6 +189,7 @@ if ($keywords || $username || $user_id || $search_id || $submit)
 				$sql = 'SELECT image_id
 					FROM ' . GALLERY_IMAGES_TABLE . '
 					WHERE image_status <> ' . phpbb_gallery_image::STATUS_ORPHAN . '
+						' . ($user_id ? 'AND image_user_id = ' . $user_id : '') . '
 						AND ((' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('i_view'), false, true) . ' AND image_status <> ' . phpbb_gallery_image::STATUS_UNAPPROVED . ')
 							OR ' . $db->sql_in_set('image_album_id', phpbb_gallery::$auth->acl_album_ids('m_status'), false, true) . ')
 					ORDER BY ' . $sql_order;

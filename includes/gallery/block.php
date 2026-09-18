@@ -414,7 +414,7 @@ class phpbb_gallery_block
 		{
 			$num = 0;
 			$template->assign_block_vars($this->template_block_images, [
-				'U_BLOCK'           => phpbb_gallery_url::append_sid('search', 'search_id=recent'),
+				'U_BLOCK'           => phpbb_gallery_url::append_sid('search', 'search_id=recent' . (count($this->users) == 1 ? '&amp;user_id=' . reset($this->users) : '')),
 				'BLOCK_NAME'        => $user->lang['RECENT_IMAGES'],
 				'S_COL_WIDTH'       => (100 / $this->num_columns) . '%',
 				'S_COLS'            => $this->num_columns,
@@ -439,7 +439,7 @@ class phpbb_gallery_block
 		{
 			$num = 0;
 			$template->assign_block_vars($this->template_block_images, [
-				'U_BLOCK'           => phpbb_gallery_url::append_sid('search', 'search_id=random'),
+				'U_BLOCK'           => phpbb_gallery_url::append_sid('search', 'search_id=random' . (count($this->users) == 1 ? '&amp;user_id=' . reset($this->users) : '')),
 				'BLOCK_NAME'        => $user->lang['RANDOM_IMAGES'],
 				'S_COL_WIDTH'       => (100 / $this->num_columns) . '%',
 				'S_COLS'            => $this->num_columns,
