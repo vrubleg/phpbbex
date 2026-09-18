@@ -248,24 +248,20 @@ class acp_gallery_config
 	}
 
 	/**
-	* Select RRC-Config on gallery/index.php and in the profile
+	* Select RRC modes on gallery/index.php and in the profile
 	*/
 	function rrc_modes($value, $key)
 	{
-		global $user;
-
-		$rrc_mode_options = '';
-
-		$rrc_mode_options .= "<option value='" . phpbb_gallery_block::MODE_NONE . "'>" . $user->lang['RRC_MODE_NONE'] . '</option>';
-		$rrc_mode_options .= '<option' . (($value & phpbb_gallery_block::MODE_RECENT) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::MODE_RECENT . "'>" . $user->lang['RRC_MODE_RECENT'] . '</option>';
-		$rrc_mode_options .= '<option' . (($value & phpbb_gallery_block::MODE_RANDOM) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::MODE_RANDOM . "'>" . $user->lang['RRC_MODE_RANDOM'] . '</option>';
+		$options = [
+			phpbb_gallery_block::MODE_RECENT => 'RRC_MODE_RECENT',
+			phpbb_gallery_block::MODE_RANDOM => 'RRC_MODE_RANDOM',
+		];
 		if ($key != 'rrc_profile_mode')
 		{
-			$rrc_mode_options .= '<option' . (($value & phpbb_gallery_block::MODE_COMMENT) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::MODE_COMMENT . "'>" . $user->lang['RRC_MODE_COMMENTS'] . '</option>';
+			$options[phpbb_gallery_block::MODE_COMMENT] = 'RRC_MODE_COMMENTS';
 		}
 
-		// Cheating is an evil-thing, but most times it's successful, that's why it is used.
-		return "<input type='hidden' name='config[{$key}]' value='{$value}' /><select name='" . $key . "[]' multiple='multiple' id='{$key}'>{$rrc_mode_options}</select>";
+		return $this->rrc_checkboxes($value, $key, $options);
 	}
 
 	/**
@@ -273,22 +269,36 @@ class acp_gallery_config
 	*/
 	function rrc_display($value, $key)
 	{
+		$options = [
+			phpbb_gallery_block::DISPLAY_ALBUMNAME => 'RRC_DISPLAY_ALBUMNAME',
+			phpbb_gallery_block::DISPLAY_COMMENTS => 'RRC_DISPLAY_COMMENTS',
+			phpbb_gallery_block::DISPLAY_IMAGENAME => 'RRC_DISPLAY_IMAGENAME',
+			phpbb_gallery_block::DISPLAY_IMAGETIME => 'RRC_DISPLAY_IMAGETIME',
+			phpbb_gallery_block::DISPLAY_IMAGEVIEWS => 'RRC_DISPLAY_IMAGEVIEWS',
+			phpbb_gallery_block::DISPLAY_USERNAME => 'RRC_DISPLAY_USERNAME',
+			phpbb_gallery_block::DISPLAY_RATINGS => 'RRC_DISPLAY_RATINGS',
+			phpbb_gallery_block::DISPLAY_IP => 'RRC_DISPLAY_IP',
+		];
+
+		return $this->rrc_checkboxes($value, $key, $options);
+	}
+
+	/**
+	* Render a bitmask as independent checkboxes.
+	*/
+	function rrc_checkboxes($value, $key, $options)
+	{
 		global $user;
 
-		$rrc_display_options = '';
+		$checkboxes = [];
+		foreach ($options as $flag => $lang_key)
+		{
+			$id = ($checkboxes) ? "{$key}_{$flag}" : $key;
+			$checked = ($value & $flag) ? ' checked="checked"' : '';
+			$checkboxes[] = "<label><input type='checkbox' class='radio' name='{$key}[]' id='{$id}' value='{$flag}'{$checked} /> " . $user->lang[$lang_key] . '</label>';
+		}
 
-		$rrc_display_options .= "<option value='" . phpbb_gallery_block::DISPLAY_NONE . "'>" . $user->lang['RRC_DISPLAY_NONE'] . '</option>';
-		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_ALBUMNAME) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_ALBUMNAME . "'>" . $user->lang['RRC_DISPLAY_ALBUMNAME'] . '</option>';
-		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_COMMENTS) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_COMMENTS . "'>" . $user->lang['RRC_DISPLAY_COMMENTS'] . '</option>';
-		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_IMAGENAME) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_IMAGENAME . "'>" . $user->lang['RRC_DISPLAY_IMAGENAME'] . '</option>';
-		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_IMAGETIME) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_IMAGETIME . "'>" . $user->lang['RRC_DISPLAY_IMAGETIME'] . '</option>';
-		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_IMAGEVIEWS) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_IMAGEVIEWS . "'>" . $user->lang['RRC_DISPLAY_IMAGEVIEWS'] . '</option>';
-		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_USERNAME) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_USERNAME . "'>" . $user->lang['RRC_DISPLAY_USERNAME'] . '</option>';
-		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_RATINGS) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_RATINGS . "'>" . $user->lang['RRC_DISPLAY_RATINGS'] . '</option>';
-		$rrc_display_options .= '<option' . (($value & phpbb_gallery_block::DISPLAY_IP) ? ' selected="selected"' : '') . " value='" . phpbb_gallery_block::DISPLAY_IP . "'>" . $user->lang['RRC_DISPLAY_IP'] . '</option>';
-
-		// Cheating is an evil-thing, but most times it's successful, that's why it is used.
-		return "<input type='hidden' name='config[{$key}]' value='{$value}' /><select name='" . $key . "[]' multiple='multiple' id='{$key}'>{$rrc_display_options}</select>";
+		return "<input type='hidden' name='config[{$key}]' value='{$value}' />" . implode('<br />', $checkboxes);
 	}
 
 	var $display_vars = [
