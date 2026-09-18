@@ -1935,6 +1935,11 @@ div.inline-attachment .hide-in-inline
 	display: none;
 }
 
+.attachbox .attach-image img, .attachbox .thumbnail img
+{
+	vertical-align: bottom;
+}
+
 dl.file
 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
