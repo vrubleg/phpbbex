@@ -303,7 +303,7 @@ $lang = array_merge($lang, [
 	'NUMBER_USERS'      => 'Number of users',
 	'NUMBER_ORPHAN'     => 'Orphan attachments',
 
-	'PHP_VERSION_OLD'   => 'The version of PHP on this server is obsolete. Upgrading PHP to 7.4 or newer is recommended.',
+	'PHP_VERSION_OLD'   => 'The version of PHP on this server is obsolete. Upgrading PHP to 8.2 or newer is recommended.',
 	'PHPBBEX_VERSION'   => 'phpBBex version',
 	'UPDATE_AVAILABLE'  => 'A new release <strong>%1$s</strong> is available. Please read more information to learn about what it has to offer, and how to upgrade.',
 

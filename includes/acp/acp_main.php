@@ -241,7 +241,7 @@ class acp_main
 		}
 
 		// Version check
-		if ($auth->acl_get('a_server') && PHP_VERSION_ID < 70400)
+		if ($auth->acl_get('a_server') && PHP_VERSION_ID < 80200)
 		{
 			$template->assign_vars([
 				'S_PHP_VERSION_OLD' => true,
