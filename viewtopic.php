@@ -682,10 +682,11 @@ if (!empty($topic_data['poll_start']))
 
 	// Get poll voters.
 	$poll_total = 0;
+	$poll_converted = false;
 	if($topic_data['poll_show_voters'])
 	{
 		$sql = '
-			SELECT u.user_id, u.username, u.user_colour, pv.poll_option_id, pv.vote_time
+			SELECT pv.vote_user_id, u.user_id, u.username, u.user_colour, pv.poll_option_id, pv.vote_time
 			FROM ' . POLL_VOTES_TABLE . ' pv
 			LEFT JOIN ' . USERS_TABLE . ' u ON pv.vote_user_id = u.user_id
 			WHERE pv.topic_id = ' . $topic_id . '
@@ -696,24 +697,37 @@ if (!empty($topic_data['poll_start']))
 		$votes = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$voters[(int)$row['user_id']] = true;
-			$votes[(int)$row['poll_option_id']][] = $row;
+			$voters[(int)$row['vote_user_id']] = true;
+			if ((int)$row['poll_option_id'] == VOTE_CONVERTED)
+			{
+				$poll_converted = true;
+			}
+			else
+			{
+				$votes[(int)$row['poll_option_id']][(int)$row['vote_user_id']] = $row;
+			}
 		}
-		$poll_total = count($voters);
+		$poll_total = $poll_converted ? array_sum(array_column($poll_info, 'poll_option_total')) : count($voters);
 		unset($voters);
 		$db->sql_freeresult($result);
 
 		foreach ($poll_info as &$option)
 		{
 			$option['poll_option_voters'] = '';
-			$option['poll_option_total'] = 0;
+			if (!$poll_converted)
+			{
+				$option['poll_option_total'] = 0;
+			}
 
 			if (empty($votes[(int)$option['poll_option_id']]))
 			{
 				continue;
 			}
 
-			$option['poll_option_total'] = count($votes[(int)$option['poll_option_id']]);
+			if (!$poll_converted)
+			{
+				$option['poll_option_total'] = count($votes[(int)$option['poll_option_id']]);
+			}
 			foreach ($votes[(int)$option['poll_option_id']] as $vote)
 			{
 				$option['poll_option_voters'] .= ', ' . get_username_string('full', $vote['user_id'], $vote['username'], $vote['user_colour'], $vote['username'], false, $vote['vote_time'] ? $user->format_date($vote['vote_time']) : '');
@@ -724,12 +738,37 @@ if (!empty($topic_data['poll_start']))
 	}
 	else
 	{
-		$sql = 'SELECT COUNT(DISTINCT vote_user_id) as count
+		$sql = 'SELECT poll_option_id, vote_user_id
 			FROM ' . POLL_VOTES_TABLE . '
 			WHERE topic_id = ' . $topic_id;
 		$result = $db->sql_query($sql);
-		$poll_total = (int) $db->sql_fetchfield('count');
+
+		$voters = [];
+		$votes = [];
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$voters[(int)$row['vote_user_id']] = true;
+			if ((int)$row['poll_option_id'] == VOTE_CONVERTED)
+			{
+				$poll_converted = true;
+			}
+			else
+			{
+				$votes[(int)$row['poll_option_id']][(int)$row['vote_user_id']] = true;
+			}
+		}
+		$poll_total = $poll_converted ? array_sum(array_column($poll_info, 'poll_option_total')) : count($voters);
+		unset($voters);
 		$db->sql_freeresult($result);
+
+		foreach ($poll_info as &$option)
+		{
+			if (!$poll_converted)
+			{
+				$option['poll_option_total'] = count($votes[(int)$option['poll_option_id']] ?? []);
+			}
+		}
+		unset($option);
 	}
 
 	foreach ($poll_info as $poll_option)
