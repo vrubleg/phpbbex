@@ -1217,6 +1217,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		$db->sql_query('ALTER TABLE ' . TOPICS_TRACK_TABLE . ' DROP COLUMN forum_id');
 	}
 
+	// Use zero as the marker for votes converted from phpBB 2.
+	$db->sql_query('UPDATE ' . POLL_VOTES_TABLE . ' SET poll_option_id = 0 WHERE poll_option_id = 127');
+
 	// Clear cache and reset bots.
 
 	$bots_default = true;

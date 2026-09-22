@@ -182,7 +182,7 @@ define('CAPTCHA_WIDTH', 360);
 define('CAPTCHA_HEIGHT', 96);
 
 // Legacy votes
-define('VOTE_CONVERTED', 127);
+define('VOTE_CONVERTED', 0);
 
 // Genders
 define('GENDER_X', 0);

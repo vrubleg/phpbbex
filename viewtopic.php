@@ -562,8 +562,10 @@ if (!empty($topic_data['poll_start']))
 	{
 		$voted_id   = request_var('vote_id', ['' => 0]);
 		$voted_id = (sizeof($voted_id) > 1) ? array_unique($voted_id) : $voted_id;
+		$valid_poll_option_ids = array_map('intval', array_column($poll_info, 'poll_option_id'));
+		$invalid_vote = (bool) array_diff($voted_id, $valid_poll_option_ids);
 
-		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options']) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
+		if (!$unvote && (!sizeof($voted_id) || sizeof($voted_id) > $topic_data['poll_max_options'] || $invalid_vote) || in_array(VOTE_CONVERTED, $cur_voted_id) || !check_form_key('posting'))
 		{
 			$redirect_url = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}" . (($start == 0) ? '' : "&amp;start={$start}"));
 
@@ -575,6 +577,10 @@ if (!empty($topic_data['poll_start']))
 			else if (!$unvote && sizeof($voted_id) > $topic_data['poll_max_options'])
 			{
 				$message = 'TOO_MANY_VOTE_OPTIONS';
+			}
+			else if (!$unvote && $invalid_vote)
+			{
+				$message = 'FORM_INVALID';
 			}
 			else if (in_array(VOTE_CONVERTED, $cur_voted_id))
 			{
