@@ -639,6 +639,8 @@ if (version_compare($config['phpbbex_version'], '1.9.9', '<'))
 // Not ready yet. Replace '<=' by '<' before the release.
 if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 {
+	echo "Updating DB scheme to v1.10.0...\n";
+
 	// Remove obsolete Gallery stuff.
 	remove_module('acp', 'gallery', 'import_images');
 	remove_permissions(['a_gallery_import']);
@@ -1050,55 +1052,58 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	$db->sql_query("DROP TABLE {$table_prefix}search_wordmatch");
 	$db->sql_query("DROP TABLE {$table_prefix}search_wordlist");
 
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_passchg user_password_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_pass_convert user_password_reset tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_newpasswd user_password_pending varchar(40) DEFAULT '' NOT NULL AFTER user_password");
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_email_hash');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_last_confirm_key');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_type');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_dir');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_type');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_dir');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_dateformat');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topics_per_page');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_lastpage');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_message_rules');
-	$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_full_folder');
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_sig = LEFT(user_sig, 500) WHERE CHAR_LENGTH(user_sig) > 500");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_sig varchar(500) DEFAULT '' NOT NULL");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_interests = LEFT(user_interests, 1000) WHERE CHAR_LENGTH(user_interests) > 1000");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_interests user_about varchar(1000) DEFAULT '' NOT NULL");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_about = LEFT(CONCAT(user_occ, IF(user_about = '', '', '\n'), user_about), 1000), user_occ = '' WHERE CHAR_LENGTH(user_occ) > 50");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_occ user_occupation varchar(50) DEFAULT '' NOT NULL");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_about = LEFT(CONCAT(user_from, IF(user_about = '', '', '\n'), user_about), 1000), user_from = '' WHERE CHAR_LENGTH(user_from) > 50");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_from varchar(50) DEFAULT '' NOT NULL");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_jabber = LEFT(user_jabber, 100) WHERE CHAR_LENGTH(user_jabber) > 100");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_skype = LEFT(user_skype, 32) WHERE CHAR_LENGTH(user_skype) > 32");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_telegram = LEFT(user_telegram, 32) WHERE CHAR_LENGTH(user_telegram) > 32");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_website = LEFT(user_website, 100) WHERE CHAR_LENGTH(user_website) > 100");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_jabber varchar(100) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_skype varchar(32) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_telegram varchar(32) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_website varchar(100) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
-	$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' DROP INDEX post_text');
-	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci");
-	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_text mediumtext NOT NULL COLLATE utf8mb4_unicode_ci");
-	$db->sql_query("ALTER TABLE " . POSTS_TABLE . " ADD INDEX poster_topic(poster_id, topic_id)"); // For checking if a user posted in listed topics.
-	$db->sql_query("DROP TABLE {$table_prefix}topics_posted");
-	$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
-	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_password');
-	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topic_show_days');
-	$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
-	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_message_limit');
-	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_max_recipients');
-	$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_receive_pm');
-	$db->sql_query("DROP TABLE {$table_prefix}forums_access");
-	$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
+	if ($db_tools->sql_column_exists(USERS_TABLE, 'user_email_hash'))
+	{
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_passchg user_password_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_pass_convert user_password_reset tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_newpasswd user_password_pending varchar(40) DEFAULT '' NOT NULL AFTER user_password");
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP INDEX user_email_hash');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_email_hash');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_last_confirm_key');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_type');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topic_sortby_dir');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_type');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_post_sortby_dir');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_dateformat');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_topics_per_page');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_posts_per_page');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_emailtime');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_lastpage');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_message_rules');
+		$db->sql_query('ALTER TABLE ' . USERS_TABLE . ' DROP COLUMN user_full_folder');
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_sig = LEFT(user_sig, 500) WHERE CHAR_LENGTH(user_sig) > 500");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_sig varchar(500) DEFAULT '' NOT NULL");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_interests = LEFT(user_interests, 1000) WHERE CHAR_LENGTH(user_interests) > 1000");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_interests user_about varchar(1000) DEFAULT '' NOT NULL");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_about = LEFT(CONCAT(user_occ, IF(user_about = '', '', '\n'), user_about), 1000), user_occ = '' WHERE CHAR_LENGTH(user_occ) > 50");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_occ user_occupation varchar(50) DEFAULT '' NOT NULL");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_about = LEFT(CONCAT(user_from, IF(user_about = '', '', '\n'), user_about), 1000), user_from = '' WHERE CHAR_LENGTH(user_from) > 50");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_from varchar(50) DEFAULT '' NOT NULL");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_jabber = LEFT(user_jabber, 100) WHERE CHAR_LENGTH(user_jabber) > 100");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_skype = LEFT(user_skype, 32) WHERE CHAR_LENGTH(user_skype) > 32");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_telegram = LEFT(user_telegram, 32) WHERE CHAR_LENGTH(user_telegram) > 32");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_website = LEFT(user_website, 100) WHERE CHAR_LENGTH(user_website) > 100");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_jabber varchar(100) DEFAULT '' NOT NULL");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_skype varchar(32) DEFAULT '' NOT NULL");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_telegram varchar(32) DEFAULT '' NOT NULL");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_website varchar(100) DEFAULT '' NOT NULL");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " MODIFY user_allow_viewemail tinyint(1) UNSIGNED DEFAULT '0' NOT NULL");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " ADD INDEX user_email(user_email)");
+		$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' DROP INDEX post_text');
+		$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci");
+		$db->sql_query("ALTER TABLE " . POSTS_TABLE . " MODIFY post_text mediumtext NOT NULL COLLATE utf8mb4_unicode_ci");
+		$db->sql_query("ALTER TABLE " . POSTS_TABLE . " ADD INDEX poster_topic(poster_id, topic_id)"); // For checking if a user posted in listed topics.
+		$db->sql_query("DROP TABLE {$table_prefix}topics_posted");
+		$db->sql_query('ALTER TABLE ' . SESSIONS_TABLE . ' DROP COLUMN session_page');
+		$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_password');
+		$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topic_show_days');
+		$db->sql_query('ALTER TABLE ' . FORUMS_TABLE . ' DROP COLUMN forum_topics_per_page');
+		$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_message_limit');
+		$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_max_recipients');
+		$db->sql_query('ALTER TABLE ' . GROUPS_TABLE . ' DROP COLUMN group_receive_pm');
+		$db->sql_query("DROP TABLE {$table_prefix}forums_access");
+		$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
+	}
 
 	// PM schema updates.
 	if ($db_tools->sql_column_exists(PRIVMSGS_TABLE, 'message_edit_reason'))
@@ -1216,28 +1221,31 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	// Use lang_code as a universal language id instead of the old lang_id, lang_iso, and lang_dir.
 
-	$db->sql_query("UPDATE " . LANG_TABLE . " SET lang_dir = LEFT(lang_dir, 5) WHERE CHAR_LENGTH(lang_dir) > 5");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " CHANGE lang_dir lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " ADD COLUMN lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER field_id");
-	$db->sql_query("UPDATE " . PROFILE_LANG_TABLE . " pl, " . LANG_TABLE . " l SET pl.lang_code = l.lang_code WHERE pl.lang_id = l.lang_id");
-	$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " DROP PRIMARY KEY");
-	$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " DROP COLUMN lang_id");
-	$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " ADD PRIMARY KEY (field_id, lang_code)");
-	$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " ADD COLUMN lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER field_id");
-	$db->sql_query("UPDATE " . PROFILE_FIELDS_LANG_TABLE . " pfl, " . LANG_TABLE . " l SET pfl.lang_code = l.lang_code WHERE pfl.lang_id = l.lang_id");
-	$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " DROP PRIMARY KEY");
-	$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " DROP COLUMN lang_id");
-	$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " ADD PRIMARY KEY (field_id, lang_code, option_id)");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_id tinyint(4) NOT NULL");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP PRIMARY KEY");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP INDEX lang_iso");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_id");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_iso");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " ADD PRIMARY KEY (lang_code)");
-	$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_author");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_lang = LEFT(user_lang, 5) WHERE CHAR_LENGTH(user_lang) > 5");
-	$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_lang user_lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL");
-	$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_name = 'default_lang_code' WHERE config_name = 'default_lang'");
+	if ($db_tools->sql_column_exists(LANG_TABLE, 'lang_iso'))
+	{
+		$db->sql_query("UPDATE " . LANG_TABLE . " SET lang_dir = LEFT(lang_dir, 5) WHERE CHAR_LENGTH(lang_dir) > 5");
+		$db->sql_query("ALTER TABLE " . LANG_TABLE . " CHANGE lang_dir lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL");
+		$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " ADD COLUMN lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER field_id");
+		$db->sql_query("UPDATE " . PROFILE_LANG_TABLE . " pl, " . LANG_TABLE . " l SET pl.lang_code = l.lang_code WHERE pl.lang_id = l.lang_id");
+		$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " DROP PRIMARY KEY");
+		$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " DROP COLUMN lang_id");
+		$db->sql_query("ALTER TABLE " . PROFILE_LANG_TABLE . " ADD PRIMARY KEY (field_id, lang_code)");
+		$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " ADD COLUMN lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL AFTER field_id");
+		$db->sql_query("UPDATE " . PROFILE_FIELDS_LANG_TABLE . " pfl, " . LANG_TABLE . " l SET pfl.lang_code = l.lang_code WHERE pfl.lang_id = l.lang_id");
+		$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " DROP PRIMARY KEY");
+		$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " DROP COLUMN lang_id");
+		$db->sql_query("ALTER TABLE " . PROFILE_FIELDS_LANG_TABLE . " ADD PRIMARY KEY (field_id, lang_code, option_id)");
+		$db->sql_query("ALTER TABLE " . LANG_TABLE . " MODIFY lang_id tinyint(4) NOT NULL");
+		$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP PRIMARY KEY");
+		$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP INDEX lang_iso");
+		$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_id");
+		$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_iso");
+		$db->sql_query("ALTER TABLE " . LANG_TABLE . " ADD PRIMARY KEY (lang_code)");
+		$db->sql_query("ALTER TABLE " . LANG_TABLE . " DROP COLUMN lang_author");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_lang = LEFT(user_lang, 5) WHERE CHAR_LENGTH(user_lang) > 5");
+		$db->sql_query("ALTER TABLE " . USERS_TABLE . " CHANGE user_lang user_lang_code varchar(5) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL");
+		$db->sql_query("UPDATE " . CONFIG_TABLE . " SET config_name = 'default_lang_code' WHERE config_name = 'default_lang'");
+	}
 
 	// Adjust QA CAPTCHA tables.
 
@@ -1256,14 +1264,17 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	// Migrate phpbb_user_browser_ids to the new phpbb_browser_tracking.
 
-	$db->sql_query("ALTER TABLE {$table_prefix}user_browser_ids RENAME TO " . BROWSER_TRACKING_TABLE);
-	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE created tracking_first_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
-	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE last_visit tracking_last_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
-	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE visits tracking_hits int(11) UNSIGNED DEFAULT '0' NOT NULL");
-	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE agent browser_ua varchar(250) DEFAULT '' NOT NULL");
-	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " ADD COLUMN tracking_first_ip varchar(40) DEFAULT '' NOT NULL AFTER browser_ua");
-	$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE last_ip tracking_last_ip varchar(40) DEFAULT '' NOT NULL");
-	$db->sql_query("UPDATE " . BROWSER_TRACKING_TABLE . " SET tracking_first_ip = tracking_last_ip WHERE tracking_first_ip = ''");
+	if ($db_tools->sql_table_exists("{$table_prefix}user_browser_ids"))
+	{
+		$db->sql_query("ALTER TABLE {$table_prefix}user_browser_ids RENAME TO " . BROWSER_TRACKING_TABLE);
+		$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE created tracking_first_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
+		$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE last_visit tracking_last_time int(11) UNSIGNED DEFAULT '0' NOT NULL");
+		$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE visits tracking_hits int(11) UNSIGNED DEFAULT '0' NOT NULL");
+		$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE agent browser_ua varchar(250) DEFAULT '' NOT NULL");
+		$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " ADD COLUMN tracking_first_ip varchar(40) DEFAULT '' NOT NULL AFTER browser_ua");
+		$db->sql_query("ALTER TABLE " . BROWSER_TRACKING_TABLE . " CHANGE last_ip tracking_last_ip varchar(40) DEFAULT '' NOT NULL");
+		$db->sql_query("UPDATE " . BROWSER_TRACKING_TABLE . " SET tracking_first_ip = tracking_last_ip WHERE tracking_first_ip = ''");
+	}
 
 	// Rename legacy UA column names to make it clear that they store user-agent strings.
 
@@ -1380,47 +1391,50 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 			// If there are some users in the group, make it not special at least.
 			$db->sql_query("UPDATE " . GROUPS_TABLE . " SET group_type = " . GROUP_HIDDEN . " WHERE group_id = {$bot_group_id}");
 		}
+		$bots_default = true;
 	}
 
 	// Style components are merged into a single style table.
 	// Currently, prosilver is the only v1.10 compatible theme in the world, so we can remove the rest from DB.
+	if ($db_tools->sql_table_exists("{$table_prefix}styles_imageset_data"))
+	{
+		$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_template");
+		$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_template_data");
+		$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_theme");
+		$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_imageset");
+		$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_imageset_data");
+		$db->sql_query("DROP TABLE IF EXISTS " . STYLES_TABLE);
+		$db->sql_query("CREATE TABLE " . STYLES_TABLE . " (
+			style_id mediumint(8) UNSIGNED NOT NULL auto_increment,
+			style_name varchar(30) DEFAULT '' NOT NULL,
+			style_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
+			template_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
+			theme_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
+			imageset_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
+			PRIMARY KEY (style_id),
+			UNIQUE style_name (style_name)
+		) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
+		$db->sql_query("INSERT INTO " . STYLES_TABLE . " (style_name, style_active, template_dir, theme_dir, imageset_dir) VALUES ('prosilver', 1, 'prosilver', 'prosilver', 'prosilver')");
+		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_style = 1");
+		set_config('default_style', '1');
 
-	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_template");
-	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_template_data");
-	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_theme");
-	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_imageset");
-	$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_imageset_data");
-	$db->sql_query("DROP TABLE IF EXISTS " . STYLES_TABLE);
-	$db->sql_query("CREATE TABLE " . STYLES_TABLE . " (
-		style_id mediumint(8) UNSIGNED NOT NULL auto_increment,
-		style_name varchar(30) DEFAULT '' NOT NULL,
-		style_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
-		template_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
-		theme_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
-		imageset_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
-		PRIMARY KEY (style_id),
-		UNIQUE style_name (style_name)
-	) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
-	$db->sql_query("INSERT INTO " . STYLES_TABLE . " (style_name, style_active, template_dir, theme_dir, imageset_dir) VALUES ('prosilver', 1, 'prosilver', 'prosilver', 'prosilver')");
-	$db->sql_query("UPDATE " . USERS_TABLE . " SET user_style = 1");
-	set_config('default_style', '1');
-
-	remove_module('acp', 'styles', 'template');
-	remove_module('acp', 'styles', 'theme');
-	remove_module('acp', 'styles', 'imageset');
-	remove_module('acp', 'styles', 'style');
-	_add_modules([
-		'style' => [
-			'class' => 'acp',
-			'cat'   => 'ACP_GENERAL_TASKS',
-			'base'  => 'styles',
-			'title' => 'ACP_STYLES',
-			'auth'  => 'acl_a_styles',
-		],
-	]);
-	remove_module_category('acp', 'ACP_STYLE_COMPONENTS');
-	remove_module_category('acp', 'ACP_STYLE_MANAGEMENT');
-	remove_module_category('acp', 'ACP_CAT_STYLES');
+		remove_module('acp', 'styles', 'template');
+		remove_module('acp', 'styles', 'theme');
+		remove_module('acp', 'styles', 'imageset');
+		remove_module('acp', 'styles', 'style');
+		_add_modules([
+			'style' => [
+				'class' => 'acp',
+				'cat'   => 'ACP_GENERAL_TASKS',
+				'base'  => 'styles',
+				'title' => 'ACP_STYLES',
+				'auth'  => 'acl_a_styles',
+			],
+		]);
+		remove_module_category('acp', 'ACP_STYLE_COMPONENTS');
+		remove_module_category('acp', 'ACP_STYLE_MANAGEMENT');
+		remove_module_category('acp', 'ACP_CAT_STYLES');
+	}
 
 	// Remove shadow topics and their obsolete schema support.
 	if ($db_tools->sql_column_exists(TOPICS_TABLE, 'topic_moved_id'))
@@ -1515,7 +1529,6 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	// Clear cache and reset bots.
 
-	$bots_default = true;
 	$purge_default = 'all';
 
 	set_config('phpbbex_version', '1.10.0');
@@ -1524,6 +1537,8 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 // Update bots if bots=1 is passed.
 if (request_var('bots', $bots_default))
 {
+	echo "Updating bots list...\n";
+
 	$bots_updates = [
 		// Bot deletions.
 		'Aport [Bot]'               => false,
@@ -1649,9 +1664,28 @@ if (request_var('bots', $bots_default))
 	}
 }
 
-// Convert tables to InnoDB with utf8mb4 encoding if utf8mb4=1 is passed.
-if (request_var('utf8mb4', 0))
+// Get list of tables that are not in utf8mb4 encoding.
+$convert_tables = [];
+
+$sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$table_prefix}%' AND `Collation` <> 'utf8mb4_bin'";
+$result = $db->sql_query($sql);
+while ($row = $db->sql_fetchrow($result))
 {
+	$convert_tables[] = $row['Name'];
+}
+$db->sql_freeresult($result);
+
+// Move POSTS_TABLE to the last position (it has to be processed last).
+if (($posts_table_key = array_search(POSTS_TABLE, $convert_tables)) !== false)
+{
+	$convert_tables[] = array_splice($convert_tables, $posts_table_key, 1)[0];
+}
+
+// Convert tables to InnoDB with utf8mb4 encoding if the posts table is not converted yet.
+if (request_var('utf8mb4', in_array(POSTS_TABLE, $convert_tables)))
+{
+	echo "Running utf8mb4 conversion...\n";
+
 	// Drop fulltext search index if present.
 
 	$drop_indexes = [];
@@ -1676,18 +1710,6 @@ if (request_var('utf8mb4', 0))
 		}
 		$result = $db->sql_query($sql);
 	}
-
-	// Get list of tables that are not in utf8mb4 encoding.
-
-	$convert_tables = [];
-
-	$sql = "SHOW TABLE STATUS WHERE `Name` LIKE '{$table_prefix}%' AND `Collation` <> 'utf8mb4_bin'";
-	$result = $db->sql_query($sql);
-	while ($row = $db->sql_fetchrow($result))
-	{
-		$convert_tables[] = $row['Name'];
-	}
-	$db->sql_freeresult($result);
 
 	// Convert tables to InnoDB with utf8mb4 encoding.
 
@@ -1777,11 +1799,6 @@ if (request_var('utf8mb4', 0))
 					MODIFY username_clean varchar(191) DEFAULT '' NOT NULL";
 				break;
 
-			// Simple Chat MOD tables.
-			case "{$table_prefix}chat_messages":
-			case "{$table_prefix}chat_sessions":
-				break;
-
 			// Gallery MOD tables.
 			case "{$table_prefix}gallery_albums":
 			case "{$table_prefix}gallery_albums_track":
@@ -1796,10 +1813,6 @@ if (request_var('utf8mb4', 0))
 			case "{$table_prefix}gallery_roles":
 			case "{$table_prefix}gallery_users":
 			case "{$table_prefix}gallery_watch":
-				break;
-			// Portal MOD tables.
-			case "{$table_prefix}portal_config":
-				$sql .= ", MODIFY config_name varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' NOT NULL";
 				break;
 
 			// Skip unknown tables.
@@ -1844,6 +1857,8 @@ if ($posts_table_engine === 'MyISAM' || $posts_table_engine === 'InnoDB')
 
 if (!isset($config['fulltext_mysql_indexed']))
 {
+	echo "Creating MySQL fulltext index...\n";
+
 	require_once(PHPBB_ROOT_PATH . 'includes/search/fulltext_mysql.php');
 	$db->sql_return_on_error(true);
 	$search = new fulltext_mysql();
