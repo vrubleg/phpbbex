@@ -76,7 +76,7 @@ class dbal_mysql extends dbal
 			}
 			else
 			{
-				@mysqli_query($this->db_connect_id, "SET NAMES 'utf8mb4'");
+				@mysqli_set_charset($this->db_connect_id, 'utf8mb4');
 
 				$result = @mysqli_query($this->db_connect_id, 'SELECT @@session.sql_mode AS sql_mode');
 				$row = @mysqli_fetch_assoc($result);

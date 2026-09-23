@@ -811,6 +811,10 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 		$db->sql_query("DROP TABLE {$table_prefix}forums_access");
 		$db->sql_query("ALTER TABLE " . CONFIRM_TABLE . " MODIFY code varchar(32) DEFAULT '' NOT NULL");
 	}
+	if ($db_tools->sql_column_exists(POSTS_TABLE, 'post_checksum'))
+	{
+		$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' DROP COLUMN post_checksum');
+	}
 
 	// PM schema updates.
 	if ($db_tools->sql_column_exists(PRIVMSGS_TABLE, 'message_edit_reason'))
