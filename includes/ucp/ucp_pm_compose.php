@@ -874,7 +874,7 @@ function compose_pm($id, $mode, $action)
 		'URL_STATUS'            => ($url_status) ? $user->lang['URL_IS_ON'] : $user->lang['URL_IS_OFF'],
 		'MIN_FONT_SIZE'         => (int) $config['min_post_font_size'],
 		'MAX_FONT_SIZE'         => (int) $config['max_post_font_size'],
-		'MINI_POST_IMG'         => $user->img('icon_post_target', $user->lang['PM']),
+		'MINI_POST_IMG'         => $user->img('icon_post_target', 'PM'),
 		'ERROR'                 => (sizeof($error)) ? implode('<br />', $error) : '',
 		'MAX_RECIPIENTS'        => $max_recipients,
 		'NUM_RECIPIENTS'        => sizeof($address_list),

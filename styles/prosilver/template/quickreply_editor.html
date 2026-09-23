@@ -20,7 +20,7 @@
 				<dt><label for="icon">{L_ICON}:</label></dt>
 				<dd>
 					<label for="icon"><input type="radio" name="icon" id="icon" value="0" {S_NO_ICON_CHECKED} /> {L_NO_TOPIC_ICON}</label>
-					<!-- BEGIN topic_icon --><label for="icon-{topic_icon.ICON_ID}"><input type="radio" name="icon" id="icon-{topic_icon.ICON_ID}" value="{topic_icon.ICON_ID}" {topic_icon.S_ICON_CHECKED} /><img src="{topic_icon.ICON_IMG}" width="{topic_icon.ICON_WIDTH}" height="{topic_icon.ICON_HEIGHT}" alt="" title="" /></label> <!-- END topic_icon -->
+					<!-- BEGIN topic_icon --><label for="icon-{topic_icon.ICON_ID}"><input type="radio" name="icon" id="icon-{topic_icon.ICON_ID}" value="{topic_icon.ICON_ID}" {topic_icon.S_ICON_CHECKED} /><img src="{topic_icon.ICON_IMG}" width="{topic_icon.ICON_WIDTH}" height="{topic_icon.ICON_HEIGHT}" loading="lazy" /></label> <!-- END topic_icon -->
 				</dd>
 			</dl>
 			<!-- ENDIF -->
@@ -61,7 +61,7 @@
 			<div id="smiley-box">
 				<!-- IF S_SMILIES_ALLOWED and .smiley -->
 					<!-- BEGIN smiley -->
-						<a onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" /></a>
+						<a onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" loading="lazy" /></a>
 					<!-- END smiley -->
 				<!-- ENDIF -->
 				<!-- IF S_SHOW_SMILEY_LINK and S_SMILIES_ALLOWED-->

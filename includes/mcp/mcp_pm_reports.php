@@ -157,11 +157,11 @@ class mcp_pm_reports
 					'U_MCP_WARN_REPORTER'       => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
 					'U_MCP_WARN_USER'           => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $pm_info['author_id']) : '',
 
-					'EDIT_IMG'              => $user->img('icon_post_edit', $user->lang['EDIT_POST']),
+					'EDIT_IMG'              => $user->img('icon_post_edit', 'EDIT_POST'),
 					'MINI_POST_IMG'         => $user->img('icon_post_target', 'POST'),
 
 					'RETURN_REPORTS'            => sprintf($user->lang['RETURN_REPORTS'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports' . (($pm_info['message_reported']) ? '&amp;mode=pm_reports' : '&amp;mode=pm_reports_closed') . '&amp;start=' . $start) . '">', '</a>'),
-					'REPORTED_IMG'              => $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
+					'REPORTED_IMG'              => $user->img('icon_topic_reported', 'POST_REPORTED'),
 					'REPORT_DATE'               => $user->format_date($report['report_time']),
 					'REPORT_ID'                 => $report_id,
 					'REPORT_TEXT'               => $report['report_text'],

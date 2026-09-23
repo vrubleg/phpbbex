@@ -250,7 +250,7 @@ switch ($mode)
 		$db->sql_freeresult($result);
 
 		$template->assign_vars([
-			'PM_IMG'        => $user->img('icon_contact_pm', $user->lang['SEND_PRIVATE_MESSAGE'])]
+			'PM_IMG'        => $user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE')]
 		);
 	break;
 
@@ -489,12 +489,12 @@ switch ($mode)
 			'TOPICS_IN_QUEUE'=> $member['topics_in_queue'],
 
 			'AVATAR_IMG'    => $poster_avatar,
-			'PM_IMG'        => $user->img('icon_contact_pm', $user->lang['SEND_PRIVATE_MESSAGE']),
-			'EMAIL_IMG'     => $user->img('icon_contact_email', $user->lang['EMAIL']),
-			'WWW_IMG'       => $user->img('icon_contact_www', $user->lang['WWW']),
-			'JABBER_IMG'    => $user->img('icon_contact_jabber', $user->lang['JABBER']),
-			'TELEGRAM_IMG'  => $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
-			'SEARCH_IMG'    => $user->img('icon_user_search', $user->lang['SEARCH']),
+			'PM_IMG'        => $user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
+			'EMAIL_IMG'     => $user->img('icon_contact_email', 'EMAIL'),
+			'WWW_IMG'       => $user->img('icon_contact_www', 'WWW'),
+			'JABBER_IMG'    => $user->img('icon_contact_jabber', 'JABBER'),
+			'TELEGRAM_IMG'  => $user->img('icon_contact_telegram', 'TELEGRAM'),
+			'SEARCH_IMG'    => $user->img('icon_user_search', 'SEARCH'),
 
 			'S_PROFILE_ACTION'  => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=group'),
 			'S_GROUP_OPTIONS'   => $group_options,
@@ -1162,13 +1162,13 @@ switch ($mode)
 			'PAGE_NUMBER'   => on_page($total_users, $config['topics_per_page'], $start),
 			'TOTAL_USERS'   => ($total_users == 1) ? $user->lang['LIST_USER'] : sprintf($user->lang['LIST_USERS'], $total_users),
 
-			'PROFILE_IMG'   => $user->img('icon_user_profile', $user->lang['PROFILE']),
-			'PM_IMG'        => $user->img('icon_contact_pm', $user->lang['SEND_PRIVATE_MESSAGE']),
-			'EMAIL_IMG'     => $user->img('icon_contact_email', $user->lang['EMAIL']),
-			'WWW_IMG'       => $user->img('icon_contact_www', $user->lang['WWW']),
-			'JABBER_IMG'    => $user->img('icon_contact_jabber', $user->lang['JABBER']),
-			'TELEGRAM_IMG'  => $user->img('icon_contact_telegram', $user->lang['TELEGRAM']),
-			'SEARCH_IMG'    => $user->img('icon_user_search', $user->lang['SEARCH']),
+			'PROFILE_IMG'   => $user->img('icon_user_profile', 'PROFILE'),
+			'PM_IMG'        => $user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
+			'EMAIL_IMG'     => $user->img('icon_contact_email', 'EMAIL'),
+			'WWW_IMG'       => $user->img('icon_contact_www', 'WWW'),
+			'JABBER_IMG'    => $user->img('icon_contact_jabber', 'JABBER'),
+			'TELEGRAM_IMG'  => $user->img('icon_contact_telegram', 'TELEGRAM'),
+			'SEARCH_IMG'    => $user->img('icon_user_search', 'SEARCH'),
 
 			'U_FIND_MEMBER'         => ($config['load_search'] || $auth->acl_get('a_')) ? append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser') : '',
 			'U_HIDE_FIND_MEMBER'    => ($mode == 'searchuser') ? $u_hide_find_member : '',

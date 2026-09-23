@@ -99,7 +99,7 @@
 	<!-- BEGIN items -->
 		<!-- IF items.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
 
-		<td style="text-align: center;"><img src="{items.IMG_SRC}" alt="" title="" /><input type="hidden" name="image[{items.IMG}]" value="1" /></td>
+		<td style="text-align: center;"><img src="{items.IMG_SRC}" /><input type="hidden" name="image[{items.IMG}]" value="1" /></td>
 		<td style="vertical-align: top;">[{items.IMG}]</td>
 		<!-- IF S_SMILIES -->
 			<td><input class="text post" type="text" name="code[{items.IMG}]" value="{items.CODE}" size="10" maxlength="50" /></td>
@@ -130,7 +130,7 @@
 	</tr>
 	<tr class="row1">
 		<td style="text-align: center;"><select name="add_image" id="add_image" onchange="update_image(this.options[selectedIndex].value);">{S_IMG_OPTIONS}</select></td>
-		<td style="vertical-align: top;"><img src="{IMG_SRC}" id="add_image_src" alt="" title="" /></td>
+		<td style="vertical-align: top;"><img src="{IMG_SRC}" id="add_image_src" /></td>
 		<td><input class="text post" type="text" name="add_code" id="add_code" value="{CODE}" size="10" maxlength="50" /></td>
 		<td><input class="text post" type="text" name="add_emotion" id="add_emotion" value="{EMOTION}" size="10" maxlength="50" /></td>
 		<td><input class="text post" type="text" size="3" name="add_width" id="add_width" value="{WIDTH}" /></td>

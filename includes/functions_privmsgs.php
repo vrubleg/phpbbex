@@ -1243,7 +1243,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 	}
 
 	$template->assign_vars([
-		'QUOTE_IMG'         => $user->img('icon_post_quote', $user->lang['REPLY_WITH_QUOTE']),
+		'QUOTE_IMG'         => $user->img('icon_post_quote', 'REPLY_WITH_QUOTE'),
 		'HISTORY_TITLE'     => $title,
 
 		'U_VIEW_NEXT_HISTORY'       => ($next_history_pm) ? "{$url}&amp;p=" . $next_history_pm : '',
