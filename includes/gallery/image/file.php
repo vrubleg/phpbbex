@@ -283,25 +283,15 @@ class phpbb_gallery_image_file
 		}
 		else
 		{
-			// Try to deliver in chunks
-			@set_time_limit(0);
-
-			$fp = @fopen($this->image_source, 'rb');
-
-			if ($fp !== false)
+			if (isset($_SERVER['XSENDFILE']) && strtolower($_SERVER['XSENDFILE']) == 'on')
 			{
-				while (!feof($fp))
-				{
-					echo fread($fp, 8192);
-				}
-				fclose($fp);
+				header('X-SendFile: ' . realpath($this->image_source));
 			}
 			else
 			{
+				@set_time_limit(0);
 				@readfile($this->image_source);
 			}
-
-			flush();
 		}
 	}
 
