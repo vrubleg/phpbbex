@@ -46,7 +46,6 @@ function view_folder($id, $mode, $folder_id, $folder)
 	foreach ($color_rows as $var)
 	{
 		$template->assign_block_vars('pm_colour_info', [
-			'IMG'   => $user->img("pm_{$var}", ''),
 			'CLASS' => "pm_{$var}_colour",
 			'LANG'  => $user->lang[strtoupper($var) . '_MESSAGE']]
 		);
@@ -126,12 +125,11 @@ function view_folder($id, $mode, $folder_id, $folder)
 				'SUBJECT'           => censor_text($row['message_subject']),
 				'FOLDER'            => (isset($folder[$row['folder_id']])) ? $folder[$row['folder_id']]['folder_name'] : '',
 				'U_FOLDER'          => (isset($folder[$row['folder_id']])) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'folder=' . $row['folder_id']) : '',
-				'PM_ICON_IMG'       => (!empty($icons[$row['icon_id']])) ? '<img src="' . TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] . '" width="' . $icons[$row['icon_id']]['width'] . '" height="' . $icons[$row['icon_id']]['height'] . '" alt="" title="" />' : '',
+				'PM_ICON_IMG'       => (!empty($icons[$row['icon_id']])) ? '<img src="' . TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] . '" width="' . $icons[$row['icon_id']]['width'] . '" height="' . $icons[$row['icon_id']]['height'] . '" />' : '',
 				'PM_ICON_URL'       => (!empty($icons[$row['icon_id']])) ? TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] : '',
 				'FOLDER_IMG'        => $user->img($folder_img, $folder_alt),
 				'FOLDER_IMG_SRC'    => $user->img($folder_img, $folder_alt, false, '', 'src'),
-				'PM_IMG'            => ($row_indicator) ? $user->img('pm_' . $row_indicator, '') : '',
-				'ATTACH_ICON_IMG'   => ($auth->acl_get('u_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', $user->lang['TOTAL_ATTACHMENTS']) : '',
+				'ATTACH_ICON_IMG'   => ($auth->acl_get('u_download') && $row['message_attachment'] && $config['allow_pm_attach']) ? $user->img('icon_topic_attach', 'TOTAL_ATTACHMENTS') : '',
 
 				'S_PM_UNREAD'       => (bool) $row['pm_unread'],
 				'S_PM_DELETED'      => (bool) $row['pm_deleted'],

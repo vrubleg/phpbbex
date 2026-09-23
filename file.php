@@ -261,21 +261,6 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 	// Now the tricky part... let's dance
 	header('Cache-Control: public');
 
-	/**
-	* Commented out X-Sendfile support. To not expose the physical filename within the header if xsendfile is absent we need to look into methods of checking it's status.
-	*
-	* Try X-Sendfile since it is much more server friendly - only works if the path is *not* outside of the root path...
-	* lighttpd has core support for it. An apache2 module is available at http://celebnamer.celebworld.ws/stuff/mod_xsendfile/
-	*
-	* Not really ideal, but should work fine...
-	* <code>
-	*   if (strpos($upload_dir, '/') !== 0 && strpos($upload_dir, '../') === false)
-	*   {
-	*       header('X-Sendfile: ' . $filename);
-	*   }
-	* </code>
-	*/
-
 	// Send out the Headers.
 	header('Content-Type: ' . $attachment['mimetype']);
 	header('X-Content-Type-Options: nosniff');
@@ -293,25 +278,15 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 			header("Content-Length: {$size}");
 		}
 
-		// Try to deliver in chunks
-		@set_time_limit(0);
-
-		$fp = @fopen($filename, 'rb');
-
-		if ($fp !== false)
+		if (isset($_SERVER['XSENDFILE']) && strtolower($_SERVER['XSENDFILE']) == 'on')
 		{
-			while (!feof($fp))
-			{
-				echo fread($fp, 8192);
-			}
-			fclose($fp);
+			header('X-SendFile: ' . realpath($filename));
 		}
 		else
 		{
+			@set_time_limit(0);
 			@readfile($filename);
 		}
-
-		flush();
 	}
 	file_gc();
 }

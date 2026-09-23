@@ -184,12 +184,12 @@ class mcp_reports
 					'U_VIEW_POST'               => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $post_info['post_id'] . '#p' . $post_info['post_id']),
 					'U_VIEW_TOPIC'              => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $post_info['topic_id']),
 
-					'EDIT_IMG'              => $user->img('icon_post_edit', $user->lang['EDIT_POST']),
+					'EDIT_IMG'              => $user->img('icon_post_edit', 'EDIT_POST'),
 					'MINI_POST_IMG'         => ($post_unread) ? $user->img('icon_post_target_unread', 'UNREAD_POST') : $user->img('icon_post_target', 'POST'),
-					'UNAPPROVED_IMG'        => $user->img('icon_topic_unapproved', $user->lang['POST_UNAPPROVED']),
+					'UNAPPROVED_IMG'        => $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
 
 					'RETURN_REPORTS'            => sprintf($user->lang['RETURN_REPORTS'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports' . (($post_info['post_reported']) ? '&amp;mode=reports' : '&amp;mode=reports_closed') . '&amp;start=' . $start . '&amp;f=' . $post_info['forum_id']) . '">', '</a>'),
-					'REPORTED_IMG'              => $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
+					'REPORTED_IMG'              => $user->img('icon_topic_reported', 'POST_REPORTED'),
 					'REPORT_DATE'               => $user->format_date($report['report_time']),
 					'REPORT_ID'                 => $report_id,
 					'REPORT_TEXT'               => $report['report_text'],

@@ -3481,7 +3481,7 @@ function page_header($page_title = '', $display_online_list = true)
 		'T_IMAGESET_NAME'       => $user->theme['imageset_dir'],
 		'T_IMAGESET_LANG_NAME'  => $user->lang_code,
 
-		'SITE_LOGO_IMG'         => $user->img('site_logo'),
+		'SITE_LOGO_IMG'         => $user->img('site_logo', $config['sitename']),
 	]);
 
 	// Login via E-Mail

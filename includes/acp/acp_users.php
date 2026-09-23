@@ -1685,7 +1685,7 @@ class acp_users
 				}
 
 				// Generate users avatar
-				$avatar_img = ($user_row['user_avatar']) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height'], 'USER_AVATAR', true) : '<img src="' . PHPBB_ADMIN_PATH . 'images/no_avatar.gif" alt="" />';
+				$avatar_img = ($user_row['user_avatar']) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height'], true) : '<img src="' . PHPBB_ROOT_PATH . 'images/avatars/noavatar.png" width="100" height="100" loading="lazy" />';
 
 				$display_gallery = isset($_POST['display_gallery']);
 				$avatar_select = basename(request_var('avatar_select', ''));

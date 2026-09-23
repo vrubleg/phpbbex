@@ -628,7 +628,7 @@ class ucp_profile
 
 				$template->assign_vars([
 					'ERROR'         => (sizeof($error)) ? implode('<br />', $error) : '',
-					'AVATAR'        => get_user_avatar($user->data['user_avatar'], $user->data['user_avatar_type'], $user->data['user_avatar_width'], $user->data['user_avatar_height'], 'USER_AVATAR', true),
+					'AVATAR'        => get_user_avatar($user->data['user_avatar'], $user->data['user_avatar_type'], $user->data['user_avatar_width'], $user->data['user_avatar_height'], true),
 					'AVATAR_SIZE'   => $config['avatar_filesize'],
 					'AVATAR_WIDTH'  => $user->data['user_avatar_width'],
 					'AVATAR_HEIGHT' => $user->data['user_avatar_height'],

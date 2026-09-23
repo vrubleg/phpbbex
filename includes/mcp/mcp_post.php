@@ -190,10 +190,10 @@ function mcp_post_details($id, $mode, $action)
 
 		'RETURN_TOPIC'          => sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p={$post_id}") . "#p{$post_id}\">", '</a>'),
 		'RETURN_FORUM'          => sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$post_info['forum_id']}&amp;start={$start}") . '">', '</a>'),
-		'REPORTED_IMG'          => $user->img('icon_topic_reported', $user->lang['POST_REPORTED']),
-		'UNAPPROVED_IMG'        => $user->img('icon_topic_unapproved', $user->lang['POST_UNAPPROVED']),
-		'EDIT_IMG'              => $user->img('icon_post_edit', $user->lang['EDIT_POST']),
-		'SEARCH_IMG'            => $user->img('icon_user_search', $user->lang['SEARCH']),
+		'REPORTED_IMG'          => $user->img('icon_topic_reported', 'POST_REPORTED'),
+		'UNAPPROVED_IMG'        => $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
+		'EDIT_IMG'              => $user->img('icon_post_edit', 'EDIT_POST'),
+		'SEARCH_IMG'            => $user->img('icon_user_search', 'SEARCH'),
 
 		'POST_AUTHOR_FULL'      => get_username_string('full', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),
 		'POST_AUTHOR_COLOUR'    => get_username_string('colour', $post_info['user_id'], $post_info['username'], $post_info['user_colour'], $post_info['post_username']),

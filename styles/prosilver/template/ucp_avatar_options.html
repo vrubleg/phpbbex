@@ -9,7 +9,7 @@
 	<!-- IF ERROR --><p class="error">{ERROR}</p><!-- ENDIF -->
 	<dl>
 		<dt><label>{L_CURRENT_IMAGE}:</label><br /><span>{L_AVATAR_EXPLAIN}</span></dt>
-		<dd><!-- IF AVATAR -->{AVATAR}<!-- ELSE --><img src="{T_THEME_PATH}/images/no_avatar.gif" alt="" /><!-- ENDIF --></dd>
+		<dd><!-- IF AVATAR -->{AVATAR}<!-- ELSE --><img src="{ROOT_PATH}images/avatars/noavatar.png" width="100" height="100" loading="lazy" /><!-- ENDIF --></dd>
 		<dd><label for="delete"><input type="checkbox" name="delete" id="delete" /> {L_DELETE_AVATAR}</label></dd>
 	</dl>
 
@@ -45,7 +45,7 @@
 
 		<div id="gallery">
 		<!-- BEGIN avatar_row --><!-- BEGIN avatar_column -->
-			<label for="av-{avatar_row.S_ROW_COUNT}-{avatar_row.avatar_column.S_ROW_COUNT}"><img src="{avatar_row.avatar_column.AVATAR_IMAGE}" alt="" /><br />
+			<label for="av-{avatar_row.S_ROW_COUNT}-{avatar_row.avatar_column.S_ROW_COUNT}"><img src="{avatar_row.avatar_column.AVATAR_IMAGE}" /><br />
 				<input type="radio" name="avatar_select" id="av-{avatar_row.S_ROW_COUNT}-{avatar_row.avatar_column.S_ROW_COUNT}" value="{avatar_row.avatar_column.AVATAR_FILE}" /></label>
 		<!-- END avatar_column --><!-- END avatar_row -->
 		</div>
